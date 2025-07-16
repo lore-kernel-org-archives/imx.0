@@ -1,322 +1,246 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD3028E611
-	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 19:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9BC288C2D
+	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 19:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752694880; cv=none; b=uzmICe4cCthGNIF0SRjH/4B8krlSzHKctGLlXUoEbJbKM9QrVYjinj/5MH5uVkPEYtwfrPtqOqYc+GBVEaRZSLUvpbn994JNZaN2e9oKRF/f66H9mA2rUR+6B637414G7UNfWgc8nSG2nDBurcEA88EmOQlkNrpx8BD2CWw4JVs=
+	t=1752695261; cv=none; b=tNEEq+fhM/1o97AivgcOPKq32NaVx1AVbrpHyxzlArsXl2fODR3ujhi3d6sjskwzZBOdn0rIbATCHGwXlfE8LszI3uZUdDg0RtR/LpzSshtoCMmydR+QVxyBi5OJ6bxf9WNnvdp+4PwY6N8AhH2C5cb/vn6PSzq39LG6wRPpQzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752694880; c=relaxed/simple;
-	bh=F+pokThyroEh4wA6nO/q9lUgWfwAgwA4isbxDAyY7OM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e5ObI5z/IVCbEbKCUkeIeF2Dhiyf/rClJwntmb0Jl6eLzzK8AKIRsO7MjgSTB09oNKxfQIfRgcigyi7fXGc0ljHSPaTQxLJ5M6Yvl+5W7Ce34IZiUDZ7NgWl5oyNx70idfFBB8Swy+ru2zr9T/TAuh4VZma/W97KkwwhereJrbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CMXge2gf; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752695261; c=relaxed/simple;
+	bh=VIvKiAu57glx8OBUXhgigGV8r6azz78jvj6eZu2+N0U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H4HAJEdQrAswV5LWg9e01YA6XsjL1hU41viKDyfPvzBtmK6iHWigsHVxgun4gJh7Ub7kCCbWiLSxsUcJ6af9V9ugNhlPyqWNw0TMmt0EG5ArWVEvVsFj/oix+hvSP5TpUncSN+7IibBon0EbLiJ8J5GIINQCJKXTJ6XJ4X+YqMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HYtY3M4a; arc=none smtp.client-ip=209.85.167.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CMXge2gf"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2357c61cda7so2985ad.1
-        for <imx@lists.linux.dev>; Wed, 16 Jul 2025 12:41:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HYtY3M4a"
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-401c43671ecso164828b6e.0
+        for <imx@lists.linux.dev>; Wed, 16 Jul 2025 12:47:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752694878; x=1753299678; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6cBcxFpY+leZiSm2ZlkvHJhd+tn3lpuAd2BWjNqwWsU=;
-        b=CMXge2gfFZyJyjYRVIr62hM42Kb13fN/P795VmDMiJo8jWItBMVQRt93+YW+WM7ct6
-         RycPHQHxqw6R3Xwj9qi3H0cGtmrQDbNpphccJQ1wfu7OH3e2OYWXy/0jbQ/EcgHXfgu6
-         tTohWzJgYzi+oWnwnlaUnubHI/JRLOu+6hYivjnXOw4b20mycN8y1ZUMkJioYALhpD5X
-         XjJfAmmokGeFpkZxyoNBOUveKcvtV62yzHlMHw9GGm4V/hxXYJ5gzNzuDi+JWuHT8NVj
-         N7WQWP0setcSxtYeMPbdwEyQNSPgVPOmF3IvafUekU5swjWaMTo3OBcjv5gYz96F7rN/
-         SNlA==
+        d=gmail.com; s=20230601; t=1752695259; x=1753300059; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CGRHMbakmgtVzUhbhesoGMHoeYFQSQCOILI1FjneuZk=;
+        b=HYtY3M4aKy+r5Uty8KOvd4AWehw1waVZUaIs7o7b0xFxdfW0PvEuWGz0Z46eTkx4q0
+         MG33AnEyRPAJ3skE9nHTPHBzKPZllZjxWsGaTgzTduFqQJwnFxc/hCZyXF57NJdzTrdm
+         WLfrlQZ/HgvTioqEC6ADdcDXUWS6dBw08xpo/tpLpV+QZrRTFpnGa23dnj0ihheRaKem
+         auVKpsadhsFMaZxeua+aALHzLCW+GqM9WbKUEH4Ng8avPZir1OT+7pmbZEiRYUBTG+Lk
+         +nVlAPlmt7JSV3/lWHxIFPhxBp/lwU+/KxIy9vVOvNJkCmp2hxWqBr3neiYqx10ksNvT
+         gkvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752694878; x=1753299678;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6cBcxFpY+leZiSm2ZlkvHJhd+tn3lpuAd2BWjNqwWsU=;
-        b=AC9R92KDegnryhK2hKSjraxvaJ2GNgoBFiToOUUvdcKPvLdp5O2T0H31uhkDFBov75
-         cPZ/0fqHuz29b7Yyfl+mRhlDL8KlB7sfOEP9RtgxO4GGeOj19LivS8n3ChFxjAgxIw1W
-         HFa7s45TAqRqHHJCe/6rEvHFsXttYw4cpP5zPQf55B77lJkMuALyJErU0Pm2/IicQ4oM
-         73TyUyzkl2m+zx4HWJ0DCkvBU0tK1WbKF9IPStVDGzpImWzhD0h0A683rbgilmh8eipF
-         89klW1DLoAmg9oxv0eZmsDw0o3aK64zTA8HNf9M+CWJlKQVCvYQFPisbboaF7HAo5DcP
-         lLgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUviAPEclHeNBa3KbQ2EphEhjCFj9Get4kHT0sifPtV/1wB3tOWFX7YuGCFmaS0KAY9WC8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyZSDGy9fHIhMj7MumucIgt/jG0F6htFeQUbBjwAbR40QHkwZef
-	57D0Rvlbpk6Y5uUCd+9aTidGNmdpO/2lR3GSdc+uPmEcGbWTzx5V13sj6kH4VSXP48k4Dz2//gm
-	ck6k8AZal/oNiZP+xTSDuaqG1CbjFFePY8pMv2Qvv
-X-Gm-Gg: ASbGncu/YjeVJQJuTeFyDrlGIY34oMZ+fdLHtEJbsXY8rJ7L/tv/tqkHvJT9ikEaTzE
-	vkCXc1/HXCYcYm4nL/hbJMXx1mDLFUakDX+/X1sYQespWgSAzUnuuzyxC92JjQPtoqOWzpoNvPC
-	a8fMt5G5cRduQ5v8M9w/FWX+BuZLRPWabQDt5svNRHm1qrRg7X8Y8BxFTuKwsZrDS+DlfJbcQHa
-	77bGVS3
-X-Google-Smtp-Source: AGHT+IFyX+XCNjY83DoIYD6wz3oMr28OgEv5cSQ9ojCgkzsna4P0DmbzE8rFt2raxHhdvl1dI8tDi1DCHzWnQLePCe8=
-X-Received: by 2002:a17:903:174e:b0:234:a734:4ab9 with SMTP id
- d9443c01a7336-23e2fe3a9f6mr605605ad.20.1752694877565; Wed, 16 Jul 2025
- 12:41:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752695259; x=1753300059;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CGRHMbakmgtVzUhbhesoGMHoeYFQSQCOILI1FjneuZk=;
+        b=suEWHmYq4gPDmK72QhHDbmq/UxLoI0VApBMMHP2uHS2sXWY04zAEw4uOrcXZaf9zfg
+         atGrHxfcmJ6in8e2mt7ofFdaPoWo7KsDhBk4V0VceeegsDSG4xzGNamtc04dWWmnVEsm
+         Gu4utGs4WQZIQetz+ukD6LQ6TGNwPYpt+rzlRyzQjZuwN6/L1SR4iHkcAidVIA5JXASL
+         mM9hi04db5CjzzmPStggoxpN7w+jLAav2uYmF1Q/cuJKfzu1Byy9s0jwjj+WlCbvBiNb
+         13ejhvWxvrtmWBg3rcelGW903MaU+nJEh36mBZ2RvqzZxgzlYxpnUuJYtT/LEzbw2HB6
+         eNSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVzT+Iwz55s5G59NABb9FRGQfXVaBZ/gX72e7Xr6iXA/W6Nfh2aAIoJZqyr3rqrc4kLvSg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwxAfFpSNHcdBRuZF8hX01+R6LkPbSL86d64oNAuJ/wnLnM5DKa
+	CRLtK4Il8OqfwbQ6KH1o9CsBkhdHU8/TdJ71j26S842E7WSEMwaAEpQd
+X-Gm-Gg: ASbGncviuej9TfFkpVtveqqx/N3aOdzC3kIZV4woJ43MTntRbjZUf+aKqbfbrYUNy97
+	kk0wXLLzV4yfUL6nIQ38g+Zx3OZDQ0GZjqWXIyL1lM19lWSSlIxlV6YZ/vSchVXsq+y7Wok75cy
+	QOw8jdfkG/1Xpl2JsYX+AGcgtlVJCcHOVZPZpd1JJP763heY90K5Rt2snsYVZAuUVlNPfKPueUf
+	5Ef43Fct56r0Rihwo37rkgmAjLLdHgPMqdHB4MNVSyFMb8eziArDy8sGv8KstSuMTkQDQJthyWS
+	3X55BYX/6I4hmGMWxUDO3bT0VA8iJUPHTXWorL4thMdFSKma/13pF0Xwhmkm431omYlxhL3rxFx
+	l/X8NQ8aCQgl2Pbtbb3teLtuX7jvdTfD+X5yVAg==
+X-Google-Smtp-Source: AGHT+IFtuXI2LHUt381msMlgUjQyWjsjC4freVrIjMdBLr8CPfK8bhqR6K4a0vFEIy+s/Zb2bC8y8Q==
+X-Received: by 2002:a05:6808:4fd1:b0:408:fb4c:85ad with SMTP id 5614622812f47-41e2dcc2e05mr602994b6e.4.1752695259074;
+        Wed, 16 Jul 2025 12:47:39 -0700 (PDT)
+Received: from localhost.localdomain ([2804:1b3:a7c1:459e:e3dd:d2e:b1ee:b9ec])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4141bcd27b6sm2954810b6e.29.2025.07.16.12.47.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Jul 2025 12:47:37 -0700 (PDT)
+From: Hiago De Franco <hiagofranco@gmail.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	linux-remoteproc@vger.kernel.org
+Cc: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	daniel.baluta@nxp.com,
+	iuliana.prodan@oss.nxp.com,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH v8] remoteproc: imx_rproc: detect and attach to pre-booted remote cores
+Date: Wed, 16 Jul 2025 16:46:38 -0300
+Message-Id: <20250716194638.113115-1-hiagofranco@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250714120047.35901-1-byungchul@sk.com> <20250714120047.35901-3-byungchul@sk.com>
- <CAHS8izO393X_BDJxnX2d-auhTwrUZK5wYdoAh_tJc0GBf0AqcQ@mail.gmail.com>
- <CAHS8izNh7aCJOb1WKTx7CXNDPv_UBqFyq2XEHHhqHH=5JPmJCQ@mail.gmail.com>
- <20250715013626.GA49874@system.software.com> <CAHS8izNgfrN-MimH1uv349AqNudvQJoeOsyHpoBT_QokF3Zv=w@mail.gmail.com>
- <20250716045124.GB12760@system.software.com>
-In-Reply-To: <20250716045124.GB12760@system.software.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 16 Jul 2025 12:41:04 -0700
-X-Gm-Features: Ac12FXwMabx4wvazw8X8IufyySuAWIkeeHz9sZZKQ1flAeUQa_1pSj5SZBgkO6M
-Message-ID: <CAHS8izMK2JA4rGNMRMqQbZtJVEP8b_QPLXzoKNeVgQFzAmdv3g@mail.gmail.com>
-Subject: Re: [PATCH net-next v10 02/12] netmem: use netmem_desc instead of
- page to access ->pp in __netmem_get_pp()
-To: Byungchul Park <byungchul@sk.com>, "Lobakin, Aleksander" <aleksander.lobakin@intel.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kernel_team@skhynix.com, ilias.apalodimas@linaro.org, 
-	harry.yoo@oracle.com, akpm@linux-foundation.org, andrew+netdev@lunn.ch, 
-	asml.silence@gmail.com, toke@redhat.com, david@redhat.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
-	vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com, 
-	jackmanb@google.com, wei.fang@nxp.com, shenwei.wang@nxp.com, 
-	xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com, 
-	przemyslaw.kitszel@intel.com, sgoutham@marvell.com, gakula@marvell.com, 
-	sbhatta@marvell.com, hkelam@marvell.com, bbhushan2@marvell.com, 
-	tariqt@nvidia.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, 
-	mbloch@nvidia.com, danishanwar@ti.com, rogerq@kernel.org, nbd@nbd.name, 
-	lorenzo@kernel.org, ryder.lee@mediatek.com, shayne.chen@mediatek.com, 
-	sean.wang@mediatek.com, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, horms@kernel.org, m-malladi@ti.com, 
-	krzysztof.kozlowski@linaro.org, matthias.schiffer@ew.tq-group.com, 
-	robh@kernel.org, imx@lists.linux.dev, intel-wired-lan@lists.osuosl.org, 
-	linux-arm-kernel@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 15, 2025 at 9:51=E2=80=AFPM Byungchul Park <byungchul@sk.com> w=
-rote:
->
-> On Tue, Jul 15, 2025 at 12:09:34PM -0700, Mina Almasry wrote:
-> > On Mon, Jul 14, 2025 at 6:36=E2=80=AFPM Byungchul Park <byungchul@sk.co=
-m> wrote:
-> > >
-> > > On Mon, Jul 14, 2025 at 12:58:15PM -0700, Mina Almasry wrote:
-> > > > On Mon, Jul 14, 2025 at 12:37=E2=80=AFPM Mina Almasry <almasrymina@=
-google.com> wrote:
-> > > > >
-> > > > > On Mon, Jul 14, 2025 at 5:01=E2=80=AFAM Byungchul Park <byungchul=
-@sk.com> wrote:
-> > > > > >
-> > > > > > To eliminate the use of the page pool fields in struct page, th=
-e page
-> > > > > > pool code should use netmem descriptor and APIs instead.
-> > > > > >
-> > > > > > However, __netmem_get_pp() still accesses ->pp via struct page.=
-  So
-> > > > > > change it to use struct netmem_desc instead, since ->pp no long=
-er will
-> > > > > > be available in struct page.
-> > > > > >
-> > > > > > While at it, add a helper, pp_page_to_nmdesc(), that can be use=
-d to
-> > > > > > extract netmem_desc from page only if it's pp page.  For now th=
-at
-> > > > > > netmem_desc overlays on page, it can be achieved by just castin=
-g.
-> > > > > >
-> > > > > > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > > > > > ---
-> > > > > >  include/net/netmem.h | 13 ++++++++++++-
-> > > > > >  1 file changed, 12 insertions(+), 1 deletion(-)
-> > > > > >
-> > > > > > diff --git a/include/net/netmem.h b/include/net/netmem.h
-> > > > > > index 535cf17b9134..2b8a7b51ac99 100644
-> > > > > > --- a/include/net/netmem.h
-> > > > > > +++ b/include/net/netmem.h
-> > > > > > @@ -267,6 +267,17 @@ static inline struct net_iov *__netmem_cle=
-ar_lsb(netmem_ref netmem)
-> > > > > >         return (struct net_iov *)((__force unsigned long)netmem=
- & ~NET_IOV);
-> > > > > >  }
-> > > > > >
-> > > > > > +static inline struct netmem_desc *pp_page_to_nmdesc(struct pag=
-e *page)
-> > > > > > +{
-> > > > > > +       DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page));
-> > > > > > +
-> > > > > > +       /* XXX: How to extract netmem_desc from page must be ch=
-anged,
-> > > > > > +        * once netmem_desc no longer overlays on page and will=
- be
-> > > > > > +        * allocated through slab.
-> > > > > > +        */
-> > > > > > +       return (struct netmem_desc *)page;
-> > > > > > +}
-> > > > > > +
-> > > > >
-> > > > > Same thing. Do not create a generic looking pp_page_to_nmdesc hel=
-per
-> > > > > which does not check that the page is the correct type. The
-> > > > > DEBUG_NET... is not good enough.
-> > > > >
-> > > > > You don't need to add a generic helper here. There is only one ca=
-ll
-> > > > > site. Open code this in the callsite. The one callsite is marked =
-as
-> > > > > unsafe, only called by code that knows that the netmem is specifi=
-cally
-> > > > > a pp page. Open code this in the unsafe callsite, instead of crea=
-ting
-> > > > > a generic looking unsafe helper and not even documenting it's uns=
-afe.
-> > > > >
-> > > >
-> > > > On second read through the series, I actually now think this is a
-> > > > great idea :-) Adding this helper has simplified the series greatly=
-. I
-> > > > did not realize you were converting entire drivers to netmem just t=
-o
-> > > > get rid of page->pp accesses. Adding a pp_page_to_nmdesc helper mak=
-es
-> > > > the entire series simpler.
-> > > >
-> > > > You're also calling it only from code paths like drivers that alrea=
-dy
-> > > > assumed that the page is a pp page and did page->pp deference witho=
-ut
-> > > > a check, so this should be safe.
-> > > >
-> > > > Only thing I would change is add a comment explaining that the call=
-ing
-> > > > code needs to check the page is pp page or know it's a pp page (lik=
-e a
-> > > > driver that supports pp).
-> > > >
-> > > >
-> > > > > >  /**
-> > > > > >   * __netmem_get_pp - unsafely get pointer to the &page_pool ba=
-cking @netmem
-> > > > > >   * @netmem: netmem reference to get the pointer from
-> > > > > > @@ -280,7 +291,7 @@ static inline struct net_iov *__netmem_clea=
-r_lsb(netmem_ref netmem)
-> > > > > >   */
-> > > > > >  static inline struct page_pool *__netmem_get_pp(netmem_ref net=
-mem)
-> > > > > >  {
-> > > > > > -       return __netmem_to_page(netmem)->pp;
-> > > > > > +       return pp_page_to_nmdesc(__netmem_to_page(netmem))->pp;
-> > > > > >  }
-> > > > >
-> > > > > This makes me very sad. Casting from netmem -> page -> nmdesc...
-> > > > >
-> > > > > Instead, we should be able to go from netmem directly to nmdesc. =
-I
-> > > > > would suggest rename __netmem_clear_lsb to netmem_to_nmdesc and h=
-ave
-> > > > > it return netmem_desc instead of net_iov. Then use it here.
-> > > > >
-> > > > > We could have an unsafe version of netmem_to_nmdesc which convert=
-s the
-> > > > > netmem to netmem_desc without clearing the lsb and mark it unsafe=
-.
-> > > > >
-> > > >
-> > > > This, I think, we should address to keep some sanity in the code an=
-d
-> > > > reduce the casts and make it a bit more maintainable.
-> > >
-> > > I will reflect your suggestions.  To summarize:
-> > >
-> > >    1) The current implementation of pp_page_to_nmdesc() is good enoug=
-h
-> > >       to keep, but add a comment on it like "Check if the page is a p=
-p
-> > >       page before calling this function or know it's a pp page.".
-> > >
-> >
-> > Yes please.
-> >
-> > >    2) Introduce the unsafe version, __netmem_to_nmdesc(), and use it =
-in
-> > >       __netmem_get_pp().
-> > >
-> >
-> > No need following Pavel's feedback. We can just delete
-> > __netmem_get_pp. If we do find a need in the future to extract the
-> > netmem_desc from a netmem_ref, I would rather we do a straight cast
-> > from netmem_ref to netmem_desc rather than netmem_ref -> pages/net_iov
-> > -> netmem_desc.
-> >
-> > But that seems unnecessary for this series.
->
-> No.  The series should remove accessing ->pp through page.
->
-> I will kill __netmem_get_pp() as you and I prefer.  However,
-> __netmem_get_pp() users e.i. libeth_xdp_return_va() and
-> libeth_xdp_tx_fill_buf() should be altered.  I will modify the code like:
->
-> as is: __netmem_get_pp(netmem)
-> to be: __netmem_nmdesc(netmem)->pp
->
-> Is it okay with you?
->
+From: Hiago De Franco <hiago.franco@toradex.com>
 
-When Pavel and I were saying 'remove __netmem_get_pp', I think we
-meant to remove the entire concept of unsafe netmem -> page
-conversions. I think we both don't like them. From this perspective,
-__netmem_nmdesc(netmem)->pp is just as bad as __netmem_get_pp(netmem).
+When the Cortex-M remote core is started and already running before
+Linux boots (typically by the Cortex-A bootloader using a command like
+bootaux), the current driver is unable to attach to it. This is because
+the driver only checks for remote cores running in different SCU
+partitions. However in this case, the M-core is in the same partition as
+Linux and is already powered up and running by the bootloader.
 
-I think since the unsafe netmem-to-page casts are already in mainline,
-lets assume they should stay there until someone feels strongly enough
-to remove them. The logic in Olek's patch is sound:
+This patch adds a check using dev_pm_genpd_is_on() to verify whether the
+M-core's power domains are already on. If all power domain devices are
+on, the driver assumes the M-core is running and proceed to attach to
+it.
 
-https://lore.kernel.org/all/20241203173733.3181246-8-aleksander.lobakin@int=
-el.com/
+To accomplish this, we need to avoid passing any attach_data or flags to
+dev_pm_domain_attach_list(), allowing the platform device become a
+consumer of the power domain provider without changing its current
+state.
 
-Header buffer page pools do always use pages and will likely remain so
-for a long time, so I guess lets continue to support them rather than
-try to remove them in this series. A followup series could try to
-remove them.
+During probe, also enable and sync the device runtime PM to make sure
+the power domains are correctly managed when the core is controlled by
+the kernel.
 
-> > >    3) Rename __netmem_clear_lsb() to netmem_to_nmdesc(), and return
-> > >       netmem_desc, and use it in all users of __netmem_clear_lsb().
-> > >
-> >
-> > Following Pavel's comment, this I think also is not necessary for this
-> > series. Cleaning up the return value of __netmem_clear_lsb is good
-> > work I think, but we're already on v10 of this and I think it would
-> > unnecessary to ask for added cleanups. We can do the cleanup on top.
->
-> However, I still need to include 'introduce __netmem_nmdesc() helper'
+Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+---
+Hi Mathieu, Ulf,
 
-Yes.
+This is the v8 of patch3 from the patch series:
+https://lore.kernel.org/all/20250629172512.14857-1-hiagofranco@gmail.com/
 
-> in this series since it should be used to remove __netmem_get_pp() as I
+As patches 1 and 2 are already applied on Ulf's next branch, as
+requested I am sending now only the v8 of patch 3.
 
-lets keep __netmem_get_pp, which does a `return
-__netmem_nmdesc(netmem)->pp;` In general we avoid allowing the driver
-to do any netmem casts in the driver code, and we do any casting in
-core.
+I made a small correction into the commit description, s/SCFW
+partitions/SCU partitions/g and updated with the check for the return
+value.
 
-> described above.  I think I'd better add netmem_nmdesc() too while at it.
->
+I hope this is ok.
 
-Yes. netmem_nmdesc should replace __netmem_clear_lsb.
+Thanks!
 
-> I assume __netmem_nmdesc() is an unsafe version not clearing lsb.  The
+Hiago.
 
-Yes.
+v7 -> v8:
+    - Added return error check for dev_pm_domain_attach_list().
+    - Commit description: changed to use "SCU partitions" instead of
+      "SCFW partitions". This is more accurate since these are hardware
+      enforced partitions.
+v6 -> v7:
+ - Added Peng reviewed-by.
+v5 -> v6:
+ - Commit description improved, as suggested. Added Ulf Hansson reviewed
+   by. Comment on imx-rproc.c improved.
+v4 -> v5:
+ - pm_runtime_get_sync() removed in favor of
+   pm_runtime_resume_and_get(). Now it also checks the return value of
+   this function.
+ - Added pm_runtime_disable() and pm_runtime_put() to imx_rproc_remove()
+   function.
+v3 -> v4:
+ - Changed to use the new dev_pm_genpd_is_on() function instead, as
+   suggested by Ulf. This will now get the power status of the two
+   remote cores power domains to decided if imx_rpoc needs to attach or
+   not. In order to do that, pm_runtime_enable() and
+   pm_runtime_get_sync() were introduced and pd_data was removed.
+v2 -> v3:
+ - Unchanged.
+v1 -> v2:
+ - Dropped unecessary include. Removed the imx_rproc_is_on function, as
+   suggested.
+---
+---
+ drivers/remoteproc/imx_rproc.c | 41 +++++++++++++++++++++++++++++-----
+ 1 file changed, 35 insertions(+), 6 deletions(-)
 
-> safe version, netmem_nmdesc() needs an additional operation clearing lsb.
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 627e57a88db2..a6eef0080ca9 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -18,6 +18,7 @@
+ #include <linux/of_reserved_mem.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_domain.h>
++#include <linux/pm_runtime.h>
+ #include <linux/reboot.h>
+ #include <linux/regmap.h>
+ #include <linux/remoteproc.h>
+@@ -890,10 +891,8 @@ static int imx_rproc_partition_notify(struct notifier_block *nb,
+ static int imx_rproc_attach_pd(struct imx_rproc *priv)
+ {
+ 	struct device *dev = priv->dev;
+-	int ret;
+-	struct dev_pm_domain_attach_data pd_data = {
+-		.pd_flags = PD_FLAG_DEV_LINK_ON,
+-	};
++	int ret, i;
++	bool detached = true;
+ 
+ 	/*
+ 	 * If there is only one power-domain entry, the platform driver framework
+@@ -902,8 +901,25 @@ static int imx_rproc_attach_pd(struct imx_rproc *priv)
+ 	if (dev->pm_domain)
+ 		return 0;
+ 
+-	ret = dev_pm_domain_attach_list(dev, &pd_data, &priv->pd_list);
+-	return ret < 0 ? ret : 0;
++	ret = dev_pm_domain_attach_list(dev, NULL, &priv->pd_list);
++	if (ret < 0)
++		return ret;
++	/*
++	 * If all the power domain devices are already turned on, the remote
++	 * core is already powered up and running when the kernel booted (e.g.,
++	 * started by U-Boot's bootaux command). In this case attach to it.
++	 */
++	for (i = 0; i < ret; i++) {
++		if (!dev_pm_genpd_is_on(priv->pd_list->pd_devs[i])) {
++			detached = false;
++			break;
++		}
++	}
++
++	if (detached)
++		priv->rproc->state = RPROC_DETACHED;
++
++	return 0;
+ }
+ 
+ static int imx_rproc_detect_mode(struct imx_rproc *priv)
+@@ -1146,6 +1162,15 @@ static int imx_rproc_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	if (dcfg->method == IMX_RPROC_SCU_API) {
++		pm_runtime_enable(dev);
++		ret = pm_runtime_resume_and_get(dev);
++		if (ret) {
++			dev_err(dev, "pm_runtime get failed: %d\n", ret);
++			goto err_put_clk;
++		}
++	}
++
+ 	ret = rproc_add(rproc);
+ 	if (ret) {
+ 		dev_err(dev, "rproc_add failed\n");
+@@ -1171,6 +1196,10 @@ static void imx_rproc_remove(struct platform_device *pdev)
+ 	struct rproc *rproc = platform_get_drvdata(pdev);
+ 	struct imx_rproc *priv = rproc->priv;
+ 
++	if (priv->dcfg->method == IMX_RPROC_SCU_API) {
++		pm_runtime_disable(priv->dev);
++		pm_runtime_put(priv->dev);
++	}
+ 	clk_disable_unprepare(priv->clk);
+ 	rproc_del(rproc);
+ 	imx_rproc_put_scu(rproc);
+-- 
+2.39.5
 
-Yes.
-
-
---
-Thanks,
-Mina
