@@ -1,325 +1,1321 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011001.outbound.protection.outlook.com [52.101.70.1])
+Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012047.outbound.protection.outlook.com [52.101.71.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F541DA21
-	for <imx@lists.linux.dev>; Thu, 17 Jul 2025 12:35:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACD22C17B4
+	for <imx@lists.linux.dev>; Thu, 17 Jul 2025 12:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752755715; cv=fail; b=qh/cvmm8UTmak4i+VVpiGRuCppzBWWKkURCexpRfMT3tOFFO8GKH4xiiqN0udGiFMGQV9ni96nLbF6/xtU49JdI4/3oGFYGwrYpU01BHThSDaGQEFVh9ZdpzFYjbEde0hx/7t10r50V227Qz7iaUN+XcuyiSs5JdiWnQckGcUIo=
+	t=1752755831; cv=fail; b=fSZWXlsVTd+BiPd5yI4r0w6XpkRETy1hD9QI2Zu2+a18gnZI6kyguukKEq78uzLQdkPJWs+TyJZDZFcVd8oXb7sv6QYrsZWnpWlJjntgVDDqaoj7+1E6iBJdIyKSTFDmbGaneakk4cy5fU/YaWWz5+H6M8iDV3WI9Njpehey2YI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752755715; c=relaxed/simple;
-	bh=SUB2s6Zvm6exiKrQjXJzp8wNs+lMkAUqLfOmIqtLa+g=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=sh0deyJ/+5dsxb6FogopbIp9e+fvcJnOm0mmNdKXyerSlzSqfW2BuvqMhZIUq+mNyCJYeDJe7ToQleLObkmAVf9X3V7eg7AAggVaOfzA3Gr/Ui02bhIh/zvJaIx5+lcBEqObmdWFMdtamaGxBry7PF8UfQtsFuRaKgtQwjDBYhg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=d5eMmlLG; arc=fail smtp.client-ip=52.101.70.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1752755831; c=relaxed/simple;
+	bh=DDydvKyncYWBPVdqXCbV3t48ubHq4FOvtO8PmDac3m0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=rK7OZ8bYzwePd6Vpkgjh4ZZBjptI8GYD1jaa1RcDEVDmWsP/scKpA5PHGJV06w5feY51bJbA6Nrx5RVSWZ+ETq7tI2Vr3VmTfljyOpzpVdGhFBMgMTE7LYNHIFjsS7YV9nF4cTcQprOVptJPpa6a2M0MNUIFENYmzXEG+aTMRXA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=MbGVVusk; arc=fail smtp.client-ip=52.101.71.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="d5eMmlLG"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="MbGVVusk"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tDOeQb3wgmxEgbe89zuIuaXtUb8/uNKQfNnwQpngzIF8FCNQx3KRa+18dRBwwDxKpxykeCTwkVLEe+8m/Ez91e7BnyBYjRhIvxkvyBuSIYRmwN89LDR9lx56XCINKgYhpRQPBuuAr7qUQYlaBfSmunUg6yLKkfWy/Dj2cYcO4Ta/pcEMVucAcyfbgVr6+Qka7hnVxNAhK6kHOjMEOaueo/6FgJJNnJptadJJ+Xik1kPHUk1xiY3aK1VXHgU9XlH/VjRUnklQ2eBWSdAAThui76xpERiCvEplKvl+DRbiEXlkao3d7Jc0WhfpQT3Ho8UGzuAk9w5Z9tCl9MUadu9bqA==
+ b=qPYKDZd7MWz1BKcgU+ZJ/+2NqXNoXXwrDoeT1HSRQg+7v20EyGDFdR6PqOuBIqQh+mh12zVrHV55FTGfcW1xBIlK1U/qG6l9C8NzsSx5PULJbSQy+gofIiWl1ZVq3x+X77dl4cYjjWfh8VKEQxDfsh8MTY87TInjuF+cvJc9q5P8OQZBQPoxlFqWR9OmMdYdhi6h8Yb+GWjNnS9a/j3SifuBDtLmlmGARXn1zdTzF4Cb/YEJ/6o/T/CWRz5qWtktQIMY8JgXe1E1woHXosX/YC3YWwykdE4Sy/bg51atv5a5P/z8yOFMGskBhALO8vc4wAMUjLo7MkpQsTwB30W2sg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Mse9zzmecWFzs9FQLycuZQoQCwJ7ACLL0JySgMLtVuY=;
- b=wZHvXvE5JpoJ8yitBlyNf51Xq6rv6ET+re9CKKcRoLboJkYGiS7t7Yup3rdWnrKUSNdQHjOjLV9zff2HE2ot3nVHc6/KxGhd1uuzwzzgTlYm2ApG7YidjQdZjDJRlwx1T9n0f9UkwmnjYxQTF44oaAnRYfXDJJJMSyUcSECAQCV5jTcF4VE4TiD3une7reRuaUGDr0nKPyx5WJ351RrewdNe5fbTzS9lfCIUdAY4PUkUTfc3TKqtni6ym+nAndPXnbhhd0ql3AXbTQxY05BraScC1n1huLnE37BeVjWOIvzWmmd4ar0jl2hoLNjpwKFoMDJuPQ7ZpZKQks3DJvdibw==
+ bh=kRmULqoSeZhWwjsoKXavT4V9nk/1ydY50ZImrDaVBQc=;
+ b=wFVEkLk/E/m43gZYrGyLBP+SdXYBftL9D9XptxpV9v13hXtLPWj+HIAjLOm7EhinOwkyJ0C/Avz7DH4m2z1RfITzjdt9s183yejNSc4E5XImEmxQ2nP4z97sI5FEFT8U+ZuN0kqwWIcuALZliwTBJMaiTbpF6MqYrWsu+5Xh13/iGdZbf83hpF0A9w3hJbM89qEHQlWHn4LfEP27sxGFfQO122U5qsLH5jDbZEWtr1lGtAhcFu+fQ7B7Ezmbu3wDA1eA05NwNYnKEMBCAf4ThkCu/yqESMZ7yQad0hBgGbKVlh5cVEH7APAzAh89ZvsrFAKjKbVCUUrLPmOb1zKNzA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Mse9zzmecWFzs9FQLycuZQoQCwJ7ACLL0JySgMLtVuY=;
- b=d5eMmlLGJyoa5KsNxjv4mTlLN5kafC9WvLS8qJQaD3gS+kj1168/jDpW8eQJqJd1CiCMIllUuGe6PPGaBJ5rxoMrA60jXRarK6HzstrLY/DekoT8FyHalX9a8QiS01Sue/cAyLCMnFQeODAI2q979wfutOGQMh3QzG04xE3SRbb42IlVnbSvnF/4aNffgLvy2FRTXLm5i5MsGpK/Ycd/uCMJHN7TyzJ5S910uFoIzpXYWKcn+Cons4whufoMzbq6JDV3v5dmyUVbYcpjpXl52cBEteLYQK0ZnMNMZGZPiDQuiAiTsy3b241n+Q9iAnD9/t0AJeVrv2LXW3pNQv0/tA==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AS8PR04MB8183.eurprd04.prod.outlook.com (2603:10a6:20b:3f1::11) with
+ bh=kRmULqoSeZhWwjsoKXavT4V9nk/1ydY50ZImrDaVBQc=;
+ b=MbGVVuskLkPoIwK/4TNDEfEv+D9U5O533eZf9X+vHVbqE7+u4ddHgDKTAwn06KAuUl579OdB2NQQBsQX3nO9/7c1rWHeWvoSMY8RYGieOFqtyM6+/4GfDsZjFy3PVTyJNikrDQvc551bOvM9wnyIEOIer3xScJKOY1ijyw84MXwxKS4aPBT0PdOvFtbUH0sf7DFdAucFJACS269g+7NbntLAm4i+9BOThVO1tyo2ldlSDFq6fa4t02/99gxlVBuQwxvENkMmg549UJd6Kk4L+S7Bq09Lnsu5TAsYl5qAvI1L+g69H5Oi0ZRTKRpvNA1w1cgSBCMg0ImaWYiVmWkeYg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS4PR04MB9576.eurprd04.prod.outlook.com (2603:10a6:20b:4fe::12)
+ by DB9PR04MB8362.eurprd04.prod.outlook.com (2603:10a6:10:241::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Thu, 17 Jul
- 2025 12:35:10 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8922.028; Thu, 17 Jul 2025
- 12:35:10 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-CC: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, Claudiu Manoil
-	<claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Clark
- Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de"
-	<s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, "F.S.
- Peng" <fushi.peng@nxp.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: RE: [PATCH v2 net-next 12/14] net: enetc: add PTP synchronization
- support for ENETC v4
-Thread-Topic: [PATCH v2 net-next 12/14] net: enetc: add PTP synchronization
- support for ENETC v4
-Thread-Index: AQHb9iaTMw7wWMBukEKvuK11OYCKQ7Q1PTuAgAEA5pA=
-Date: Thu, 17 Jul 2025 12:35:10 +0000
-Message-ID:
- <PAXPR04MB85104A1A15F6BD7399E746718851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250716073111.367382-1-wei.fang@nxp.com>
- <20250716073111.367382-13-wei.fang@nxp.com>
- <aHgTG1hIXoN45cQo@lizhi-Precision-Tower-5810>
-In-Reply-To: <aHgTG1hIXoN45cQo@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS8PR04MB8183:EE_
-x-ms-office365-filtering-correlation-id: 90b9b505-a84f-49a8-87c9-08ddc52e5e7b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|366016|19092799006|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?GunHkl3Q+gJQGudZjWLBUHclj3WIh//LPd5YTTMt3Qu8svczT+c+Ev5dG5ww?=
- =?us-ascii?Q?D3RORBdCQWJMZkiOcKKE8lTMfo5oJdVNtLqz11Ne2v/7HKaAy4W1ILFOV4RL?=
- =?us-ascii?Q?PFvCgadwgJT1I61GXIXtjrQB5XqwgTR//i4nPbFoV8AjU8HvpyryKMrT5sUz?=
- =?us-ascii?Q?iEG7L5vxQ2CyS/iR97l1IzCLdnIC4xhTnWlr2qOszvYNSlazLLgFIvo+FfF8?=
- =?us-ascii?Q?OJRu3T0lUG/EsQAbNVvW4H8mAVoa2Q6QORyiHECCMdeOuUSBKO6tvfEtNW0Y?=
- =?us-ascii?Q?q7Omi4PLfYD41qVgZyt04kWhxdHKCwh1FhlGnxrN3PXegHrpJqnQorJNyoEw?=
- =?us-ascii?Q?rF8aGf0liV/8dE6abooCACp9mHyDa2pw1T+YmkDuD0hRrHUPWQVbhH4Lb3o5?=
- =?us-ascii?Q?7ItYquxx6Ybd2TSIeKI59ILUA2Q+RxzqNF86p2ImWTcr/aRztUFgAfAnchBs?=
- =?us-ascii?Q?Skw2Ycf7hx9vcZvkUk2sLdmZ0Kk60V0j8SPubuUNzU5bM0dUTogQAxPscq1x?=
- =?us-ascii?Q?VMiwovCKc55Hrj8O2wqMHDI74dlN018g00L2yUePwqLKmowHlLSYtEkHBw8D?=
- =?us-ascii?Q?/AxMe8G0kuuPmrqPCsAguBCco98nJ7xrZiJzH0Ibvcs0l2zBWIyTzTniwtTl?=
- =?us-ascii?Q?5LyoJ+IhLeZ3W8JOc1XMJ3TsY92eQamz/RdKAcNg4DxILm0QOEpuVjvVR6i/?=
- =?us-ascii?Q?AXnEys3Q+Kf5AfkoQ/1NSCTGrN4LNrZXxFkQTNu9TCzsQhzP8AP9JCuxFeKT?=
- =?us-ascii?Q?o3roE7erPFNtbsfnhdz5v7YIPPCq8jBCa8TmA9KW1FAkpWMUiLKMV2dJkrBl?=
- =?us-ascii?Q?ayjHdFJ875v/2ct4LFleIWW6fiq7ViwsSY34C0zVhVEUFiCVlsTtGYE0/oYn?=
- =?us-ascii?Q?tKcLrf5F4heXAM4+nCHMUewV5+cVYNky3vfuyh1AGd/gCUpG2gIiCtIICDfP?=
- =?us-ascii?Q?SO1OpZQLHhEjc+mL65M4TeAWoYhtmjSADzL332W5VdnRjIs0IIqkAIkAkd2F?=
- =?us-ascii?Q?M+8AlJTmx5JFh2PzaLtPGeS85wWCXFILsz3akrjpJEd8S3+OlFFmL1n5MUcF?=
- =?us-ascii?Q?wZc3KpIVv5ehvQEZlJ29UAM4mzTrIHWZVpov/zipAhGYOmSb9NNW2va/zp8D?=
- =?us-ascii?Q?yEGuuRS8zmYFHX2BbtanQoDembQsr7yRhD8maQ0qrTvCpbt8DcYZURF1cK4K?=
- =?us-ascii?Q?Z6SUb4UvSIR+/Xwu86kgoJJfYBx1NKeOnAnXfB6jHMj3VOG74wYuvjU5qnex?=
- =?us-ascii?Q?nBAFKO6SemXMHRp0827Qc4JqAO2u/MkmpkxgceT3oaknPLzeEfzCVGnhOhZD?=
- =?us-ascii?Q?BsAmDAI1AeW2SavtK7dovrizt3Mzc51lHfQAqKv62AGRIJEcCqfFvQPbBPRc?=
- =?us-ascii?Q?nHOrIXsD756ukdrKx08u5STlk0kW87V3/c17tQgK5xwplxJHMCEhaf9Smx6L?=
- =?us-ascii?Q?ofLqZatMfRgihNBw5InD1EkCptLr0LkPnPCGvAqEGQU0ZPmbin8Pw1Prf1ke?=
- =?us-ascii?Q?4pn3eqnBvsuI/uk=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(19092799006)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?7p0wKjixZ5qtqGD7YVG16ARAv5UIuwaBkjFBVmiMMFcqog4LmjulbWVLPNDD?=
- =?us-ascii?Q?ipA23PQgP5jesKZNeXzc1xyabdEjW/G3XcMLwyJRt9NN0Cquw/QMT8xs9gGp?=
- =?us-ascii?Q?D3qgiQrha03oru8IMz2ACBYgn/B5vPJ5fvY6Hly5tlUXV3+tf0DjFINIvQeu?=
- =?us-ascii?Q?lde9kwbg4l3JkMfNCWBHf8BHt34wKAyvhK8aDXT9Rd+ktFFtVkrklPONZLsN?=
- =?us-ascii?Q?AoHB6PfPsxLkEG3r1KLEOjDtaWx27/PPs5U3+/ws7ptVSOmtDvzo+bewY+So?=
- =?us-ascii?Q?5ebPa3F3QACvIHUh8qCt1oObDWhcCRY5bVk6j7OOkRqvU5Uii7VbA9oGkoPg?=
- =?us-ascii?Q?cSQYraXx5F64AUTdtegiWmWjlj9gsxM+H8JF0YnyrpwV0CUcmXubWI5gM5XG?=
- =?us-ascii?Q?FuAfMmGFyx94DRk0XrPvsDzeKuUpEM5USEql5pgfWU0yNZjdvKwMGz65+rKj?=
- =?us-ascii?Q?JzbOtdCmHe2Py69Tw4gUI49MPZ9omiHjM1VBj5D7sDXupTAD0zzpbclyW6DL?=
- =?us-ascii?Q?WmO3v5qDi0KMDS4k3ABdjkJolZ9InHawoGMwEIvtcJWoR6WAD8UsM3ab2RDu?=
- =?us-ascii?Q?uBiv6wuEkFCP9oOzTHFUX85ZFgKpOfbqlOR/dwFzx4ZR3Jk7NUbLT5wsY5GB?=
- =?us-ascii?Q?VSfYNPpqpFfcmh0iXAWlGBYrbbvAFdtEcmkU8brNjLIPZeztlCpfHLGYrabd?=
- =?us-ascii?Q?BovtA3L2HUkoDNEs75ytDLJqqYhDu6KvAfTCTeOAPsa76nE0iHfKJ+TDHge8?=
- =?us-ascii?Q?uFw6+0b/2GOjEB0zodns+aEuhvZR0Gmi5nvphtcVDSqvPXFvsHgHsBszI+9q?=
- =?us-ascii?Q?3LruQ+iaofq/BEWQpw9NKV/V2CZPUUBUA1JWFIxgAYJRy7DthKsupv2Vy1Tg?=
- =?us-ascii?Q?2g05M4FilSxjAz98emGGA8dK6k410vysuxqvhitd/zYbHGZzIV1aJOB0VpcD?=
- =?us-ascii?Q?kYfCK8DHddxl8D73Ak8PiLAb34C3g/RApmhywUiPXpP+psV0NW8NrkjmEwg4?=
- =?us-ascii?Q?zYCPt8dwzzp9pQvk4xq1RifDb+rPkEzrPs0blowkFUKOn7/jnwjlAztQ0fZP?=
- =?us-ascii?Q?xfKQpoaX5vv2gKSAqoHJShShlkxdZIidEJoFpsoUgx6QD0LtPOE/uq6Hic33?=
- =?us-ascii?Q?5yxqNkrJIUXgNC7ta10CzTCUuLLpdyjm2P70QVeVKeje/p0jpl0nlpnGIuoN?=
- =?us-ascii?Q?acQGzFpZaGhiQwEtxQXdCAY+lVTtshNQtbVJEBoB14K6gU0TyN/UMcDaeQWH?=
- =?us-ascii?Q?JCs/Dd8f+loatmfRNpeveYkHZaLQGzD5LlSagowFxGoNk2nx0/OtiIEmpPlS?=
- =?us-ascii?Q?8AphLzPh2zfReeWU3sChgj2cr1881CJCj9DaM9U7kyXzukuahJYhWqCCcifa?=
- =?us-ascii?Q?UeMKbCQAqgCSvJBieek7W4G4MAvVnHoFxyNZifUkD1Q1unhqQX3hJPMQ5Cer?=
- =?us-ascii?Q?PiSnJyDQNTLY6YUZsXMpLORNmsvaLGusB2/LuhYddezesUmHx4mNt+k0pXBb?=
- =?us-ascii?Q?L8tiFwRfiW9eTSROTq8Ky1X7ZNcfVWFH/BKta7+7PxWYsUP/E0gr5+8GYAtv?=
- =?us-ascii?Q?23WZzijJFdYsFiK8l+g=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 2025 12:37:03 +0000
+Received: from AS4PR04MB9576.eurprd04.prod.outlook.com
+ ([fe80::9cf2:8eae:c3d1:2f30]) by AS4PR04MB9576.eurprd04.prod.outlook.com
+ ([fe80::9cf2:8eae:c3d1:2f30%4]) with mapi id 15.20.8901.021; Thu, 17 Jul 2025
+ 12:37:02 +0000
+Date: Thu, 17 Jul 2025 15:36:57 +0300
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: imx@lists.linux.dev, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org, Sandor Yu <sandor.yu@nxp.com>, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 07/10] drm/imx: Add support for i.MX94 DCIF
+Message-ID: <3o7umdxu3nah5muxkbm5qnt4mbafcmzpc2ve5pog3rksk4unem@pa3zsmad5emu>
+References: <20250716081519.3400158-1-laurentiu.palcu@oss.nxp.com>
+ <20250716081519.3400158-8-laurentiu.palcu@oss.nxp.com>
+ <aHf2WlIHRaUUM4bw@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aHf2WlIHRaUUM4bw@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: FR4P281CA0005.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c8::13) To AS4PR04MB9576.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4fe::12)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9576:EE_|DB9PR04MB8362:EE_
+X-MS-Office365-Filtering-Correlation-Id: 763fc107-3f48-4d2d-a9b8-08ddc52ea0f3
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|7416014|1800799024|19092799006;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?m5oCGHysSNbwQh0BbdP6iLToNBi7eAQx5o64ELx9k3NRZe5cCbL/ULkNCGVk?=
+ =?us-ascii?Q?Y+uo8+7EFQOze7kiNbdSLBbklZhdT+J1yzjpEx6k6oib43kZzTN9JXW60dkw?=
+ =?us-ascii?Q?P/m80Vyxdonacz6FCJylh6Zqzu7sgiaTBpf7Vfx53nxwxh0QDc2jmnQphCL/?=
+ =?us-ascii?Q?EJFqowbpszupef0aanZ0dO3QzNeFEG0+Lkqt0sDAKF4+Z+chOHctvh5t/ix6?=
+ =?us-ascii?Q?HtQhoqJz72gFgfmV9dKRHaDRZk7xQx+qsfvf/VyTcklx0PYzt4cJq0YdgxSB?=
+ =?us-ascii?Q?4Dnw5E23A6InYLg1J6OJ3mBqXBlus5m/rqYsPz+/r6ojGbgu+6O+sjQ144o+?=
+ =?us-ascii?Q?pstm3EyGaYiUFjbQKUs4QiE4AAjmw9RLZyit8wGUINgrPb/ssjJdCEB5y2o4?=
+ =?us-ascii?Q?MVt7n+0f0NBBQe+M8YjSe5x7XkCos4tq/3Ed0o/Fhjy43xCk5tsY1I3WcUMi?=
+ =?us-ascii?Q?zxvk2Acyb1NGIE/Ul5Pnu0P4scyQWeXLaL1yxqXnJiHrf3Nlm6XK6KwsKYxg?=
+ =?us-ascii?Q?yen20WSkz5STx8liv9FMLZYuKVvCKMjaewxVTJd39J8hhlS9pgsRvobI5W28?=
+ =?us-ascii?Q?z5Fa1e31xFx7ah9sBbN10tbNGqzkVWajpmpPIqhUirlcCuWRqVnEe6iBGNU7?=
+ =?us-ascii?Q?m3nlVciNNmyFWXoIOiyn2m2jxe6/y5WRr542JlFeIUTOBh7xBHAa1nN4qQSK?=
+ =?us-ascii?Q?DKNeMhk60annUIhE/bMer41wV2hwllTy6fHPx3rsqqn1ijBnD5etg8XSkb+t?=
+ =?us-ascii?Q?//nt9XIaPcuMIGnMQtFK0rCZTaYA1nVPqcLQgRG7NdR0TRp4ZLWnrfsFz4yF?=
+ =?us-ascii?Q?UvOz2kCdi4RO1RV6Lf8THt7K8Gd8ljDv7aO+8dxfkkjIDY3bFGkkqQl0lcqf?=
+ =?us-ascii?Q?Y/x4vjEpI4pao9Zr7x8CtRrvl5MhM1lQliT4cKjJLNnykNGMJYIPTPrQBw3u?=
+ =?us-ascii?Q?XSUQ4IYlUuCRW+yDiMioUP1ASMglbC+F+Us//Fs7ZoR3S3hgZf/mp5rXLMoU?=
+ =?us-ascii?Q?hj5npnXL05H0E8Kaj26J9Qm7G7dkKSPkQ2eCm11Q+NP30G4V/J7kRxod0E0F?=
+ =?us-ascii?Q?wYCl6bpfaCH7v7CNqcVez0u5yBpZaO20ibw3Dz967YlcIwdzr+BQBQBQXeAK?=
+ =?us-ascii?Q?FZ9NGrNpOUEbu/u6u/DDACVSw3px4cT3S7u7MSKJS1rDkQtIGk+Vyg+eA0HU?=
+ =?us-ascii?Q?fof6LQwxKA+AE29Su8xCe+r4czPHq6/5uHSNuc8DEtLE0GaJzESr/4C3HTj2?=
+ =?us-ascii?Q?opIbslGcO/No3GxaMgUAq9SDJMoHYw/NGKA9EROEWjXNqnmAB7r8RcC9R+J/?=
+ =?us-ascii?Q?ACTS5dgaE8wX66bzRTl8IOeoxCdTp3y6TYV/fqXIlEB+ppNlkAL8PZ/kBfUt?=
+ =?us-ascii?Q?AZRIzUpuMdi3RlZUbcQnHWOsU288NvRI3ZAW3nzxDIQWOmGKLq+JduGIdF5b?=
+ =?us-ascii?Q?Bhs6VLGQ+YA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9576.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(19092799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5LJB2Cm3pCgS/hvaYikFi+8jZwHaTF7i4qBZiOXfCqDlRv9lE2AYqW8VZWqT?=
+ =?us-ascii?Q?nWNOtJu891so6I6aQ6idvWpgDmWGh2bFQnzJCpKNq9rNRhW38rGNnVBJ80+X?=
+ =?us-ascii?Q?aRne+Mz613aJaIqF0jmdTlPA7y9euwm/CEEdWl6rv9vAhGOjh8ono0xSD91f?=
+ =?us-ascii?Q?1Bd0fJS3EDu0BqR3i0RRtX6xUzGvBZXiKufIb8+mmCR1AK5YA+5ka7Mh8IZK?=
+ =?us-ascii?Q?EfryY1yq+pJevswExjtnvmt2jaOoquPe9dPhm2fyd4MhpVHBA59kN4gy+pvE?=
+ =?us-ascii?Q?eMY/vra31BPtqhbUfD4QJRHhD/Ri+7mSVOVDsu8DQaDeulrYukmYFeGNtVOP?=
+ =?us-ascii?Q?hQXQWstkuG0yGb0qlFHS7LdeOUzEAhJzHlYW2GDqhrqhXuNjMs2JtQzMUVBO?=
+ =?us-ascii?Q?jkJ/7hfSwViMwPmXvdKGAZoo+QIQdz7msRDx+ZX5C4cOfkMWXq4i3X5VhQoT?=
+ =?us-ascii?Q?a4ATrCerKcUBNTboHwHuUzmdX4KKp7ZybFoNv31S8TVIs3AFUe255nd8b1ZZ?=
+ =?us-ascii?Q?wBucJ6x00Z43hp2fIBbFuiiewZp0x5Uuo7BU0HrGJjyW/YftHMJe6tiUTg8Z?=
+ =?us-ascii?Q?zLKL5jZgafP1JwTmpl6QS1YgcjolS2mQ1RAA/45MhzhuMRj381gjrvpHI6LX?=
+ =?us-ascii?Q?GzAejVUGVQ+f1HnN77LZO8tjKubJuMBAI39PsZr4T+epHwjnCnVPMgksenmy?=
+ =?us-ascii?Q?hUHVx7HKFCSMHJ0A0rRFn1MfnIWrHU12Ba5OYo/ZKQAO5RL3mAdFKYz6imwk?=
+ =?us-ascii?Q?i3Fe8/RiQAVGknwePGXRRxIdeLJykmOzCphFYLl9Pj5c20RQ7q1plg3eG+ns?=
+ =?us-ascii?Q?xSn7Y3H5AyFdeGMkmn2WuFZCev8FTKAWLqKv0tiSND7yN01b0sdSwe6hZhu0?=
+ =?us-ascii?Q?AKBfo3NaNlenjDYuOLhlNoSMwSou2U0n9ZxUAeZm65TWLSYKWo7uxWXVVLc7?=
+ =?us-ascii?Q?zSDTCERZJUORPgmvGOwvg9Z6Oy2nVIUUhSieDORIi+TcjCp70wRJnY4vP6qN?=
+ =?us-ascii?Q?oOpzI+Dl58o9XvkMcISXMiHCkCg/Ce7Rfu4cpwWzZuTDv3KCelNg8Wdp1TcQ?=
+ =?us-ascii?Q?+u/gDVz6G1u7A1wuurMn7vk9L9+zexbDa8onWe1mIxgU1BPE+ONCLbX1Y76p?=
+ =?us-ascii?Q?y5nPWKdcTmOjDqvjyLdNhRQDINrWsrfpbdxhnZuhkk+t9p9oqQO4x3YfddJD?=
+ =?us-ascii?Q?QjYGWWKVFsQ1FjhUFJvot29DlXMpZt6NtBpPS8mwBnmEhZ69GX7Ju0s4Q5zp?=
+ =?us-ascii?Q?iH5WnJoU5C739Bt82gdHBHogMOpKZzX+O3TeKqrKCzeSEpfoVNP1vQsSvN0g?=
+ =?us-ascii?Q?Lzz7FroAJu7FhAWn+bhjkSIV4yYG6OwdHpfiCzEYs9qAG+Bu0M5KS/Ral1xL?=
+ =?us-ascii?Q?ywEQQuJOjmCtkICaqDbC5Dun0uteg4Gpmtnzi8+jitVD9Rq3EtdpWttOTmfS?=
+ =?us-ascii?Q?Hs2XsMdioo71SpmqXe6fWCRBg821tzdPiBJR/ncUAaOndV7SZmp12FS/C1OT?=
+ =?us-ascii?Q?JFFeHXwyzH/NWOJ6d94E2lGXeASGicOGgJqNBnCPc8DKXj1lNsAsdlK2oKQI?=
+ =?us-ascii?Q?Zn5hb1RqhHg9+zyXyeDxlW5Ebq7iSSkHG8bKHrwIGtHVWwReMwtJtPIU6OZK?=
+ =?us-ascii?Q?ng=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 763fc107-3f48-4d2d-a9b8-08ddc52ea0f3
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9576.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90b9b505-a84f-49a8-87c9-08ddc52e5e7b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jul 2025 12:35:10.0365
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2025 12:37:02.2692
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xoA/sWSXZsLj4jN/WmKjux5JF0fK5mIQVkuSL1pZRSGABz5/LgTvHjhT6XSiM3CH+9UL2Iu8sVXUo8a96DP5ag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8183
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VJRfGLHNBMkrwM/mDze3Q0YgxJ6e78eD5Mfaqb5OcOYZblt0JOoxzNYgKvyTUQxkAt15eHK1aiGCcA9096mmJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8362
 
-> > +static void enetc_set_one_step_ts(struct enetc_si *si, bool udp, int
-> > +offset) {
-> > +	u32 val =3D ENETC_PM0_SINGLE_STEP_EN;
-> > +
-> > +	val |=3D ENETC_SET_SINGLE_STEP_OFFSET(offset);
-> > +	if (udp)
-> > +		val |=3D ENETC_PM0_SINGLE_STEP_CH;
-> > +
-> > +	/* the "Correction" field of a packet is updated based on the
-> > +	 * current time and the timestamp provided
-> > +	 */
-> > +	enetc_port_mac_wr(si, ENETC_PM0_SINGLE_STEP, val); }
-> > +
-> > +static void enetc4_set_one_step_ts(struct enetc_si *si, bool udp, int
-> > +offset) {
-> > +	u32 val =3D PM_SINGLE_STEP_EN;
-> > +
-> > +	val |=3D PM_SINGLE_STEP_OFFSET_SET(offset);
-> > +	if (udp)
-> > +		val |=3D PM_SINGLE_STEP_CH;
-> > +
-> > +	enetc_port_mac_wr(si, ENETC4_PM_SINGLE_STEP(0), val); }
-> > +
-> >  static u32 enetc_update_ptp_sync_msg(struct enetc_ndev_priv *priv,
-> >  				     struct sk_buff *skb)
-> >  {
-> > @@ -234,7 +259,6 @@ static u32 enetc_update_ptp_sync_msg(struct
-> enetc_ndev_priv *priv,
-> >  	u32 lo, hi, nsec;
-> >  	u8 *data;
-> >  	u64 sec;
-> > -	u32 val;
-> >
-> >  	lo =3D enetc_rd_hot(hw, ENETC_SICTR0);
-> >  	hi =3D enetc_rd_hot(hw, ENETC_SICTR1); @@ -279,12 +303,10 @@ static
-> > u32 enetc_update_ptp_sync_msg(struct enetc_ndev_priv *priv,
-> >  	*(__be32 *)(data + tstamp_off + 6) =3D new_nsec;
-> >
-> >  	/* Configure single-step register */
-> > -	val =3D ENETC_PM0_SINGLE_STEP_EN;
-> > -	val |=3D ENETC_SET_SINGLE_STEP_OFFSET(corr_off);
-> > -	if (enetc_cb->udp)
-> > -		val |=3D ENETC_PM0_SINGLE_STEP_CH;
-> > -
-> > -	enetc_port_mac_wr(priv->si, ENETC_PM0_SINGLE_STEP, val);
-> > +	if (is_enetc_rev1(si))
-> > +		enetc_set_one_step_ts(si, enetc_cb->udp, corr_off);
-> > +	else
-> > +		enetc4_set_one_step_ts(si, enetc_cb->udp, corr_off);
->=20
-> Can you use callback function to avoid change this logic when new version
-> appear in future?
+Hi Frank,
 
-According to Jakub's previous suggestion, there is no need to add callbacks
-for such trivial things.=20
-https://lore.kernel.org/imx/20250115140042.63b99c4f@kernel.org/
-
-If the differences between the two versions result in a lot of different
-code, using a callback is more appropriate.
-
->=20
+On Wed, Jul 16, 2025 at 02:58:34PM -0400, Frank Li wrote:
+> On Wed, Jul 16, 2025 at 11:15:11AM +0300, Laurentiu Palcu wrote:
+> > From: Sandor Yu <sandor.yu@nxp.com>
 > >
-> >  	return lo & ENETC_TXBD_TSTAMP;
-> >  }
-> > @@ -303,6 +325,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr
-> *tx_ring, struct sk_buff *skb)
-> >  	unsigned int f;
-> >  	dma_addr_t dma;
-> >  	u8 flags =3D 0;
-> > +	u32 tstamp;
+> > The i.MX94 Display Control Interface features:
+> >  * Up to maximum 3 layers of alpha blending:
+> >     - 1 background layer(Layer 0);
+> >     - 1 foreground layer(Layer 1);
+> >     - A programmable constant color behind the background layer;
+> >  * Each layer supports:
+> >     - programmable plane size;
+> >     - programmable background color;
+> >     - embedded alpha and global alpha;
+> >  * Data output with CRC checksum for 4 programmable regions;
 > >
-> >  	enetc_clear_tx_bd(&temp_bd);
-> >  	if (skb->ip_summed =3D=3D CHECKSUM_PARTIAL) { @@ -327,6 +350,13 @@
-> > static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff=
- *skb)
-> >  		}
-> >  	}
+> > Signed-off-by: Sandor Yu <sandor.yu@nxp.com>
+> > Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> > ---
+> >  drivers/gpu/drm/imx/Kconfig           |   1 +
+> >  drivers/gpu/drm/imx/Makefile          |   1 +
+> >  drivers/gpu/drm/imx/dcif/Kconfig      |  15 +
+> >  drivers/gpu/drm/imx/dcif/Makefile     |   5 +
+> >  drivers/gpu/drm/imx/dcif/dcif-crc.c   | 211 ++++++++
+> >  drivers/gpu/drm/imx/dcif/dcif-crc.h   |  52 ++
+> >  drivers/gpu/drm/imx/dcif/dcif-crtc.c  | 695 ++++++++++++++++++++++++++
+> >  drivers/gpu/drm/imx/dcif/dcif-drv.c   | 282 +++++++++++
+> >  drivers/gpu/drm/imx/dcif/dcif-drv.h   |  87 ++++
+> >  drivers/gpu/drm/imx/dcif/dcif-kms.c   | 101 ++++
+> >  drivers/gpu/drm/imx/dcif/dcif-plane.c | 269 ++++++++++
+> >  drivers/gpu/drm/imx/dcif/dcif-reg.h   | 266 ++++++++++
+> >  12 files changed, 1985 insertions(+)
+> >  create mode 100644 drivers/gpu/drm/imx/dcif/Kconfig
+> >  create mode 100644 drivers/gpu/drm/imx/dcif/Makefile
+> >  create mode 100644 drivers/gpu/drm/imx/dcif/dcif-crc.c
+> >  create mode 100644 drivers/gpu/drm/imx/dcif/dcif-crc.h
+> >  create mode 100644 drivers/gpu/drm/imx/dcif/dcif-crtc.c
+> >  create mode 100644 drivers/gpu/drm/imx/dcif/dcif-drv.c
+> >  create mode 100644 drivers/gpu/drm/imx/dcif/dcif-drv.h
+> >  create mode 100644 drivers/gpu/drm/imx/dcif/dcif-kms.c
+> >  create mode 100644 drivers/gpu/drm/imx/dcif/dcif-plane.c
+> >  create mode 100644 drivers/gpu/drm/imx/dcif/dcif-reg.h
 > >
-> > +	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
-> > +		do_onestep_tstamp =3D true;
-> > +		tstamp =3D enetc_update_ptp_sync_msg(priv, skb);
-> > +	} else if (enetc_cb->flag & ENETC_F_TX_TSTAMP) {
-> > +		do_twostep_tstamp =3D true;
-> > +	}
+> > diff --git a/drivers/gpu/drm/imx/Kconfig b/drivers/gpu/drm/imx/Kconfig
+> > index 3e8c6edbc17c2..1b6ced5c60b51 100644
+> > --- a/drivers/gpu/drm/imx/Kconfig
+> > +++ b/drivers/gpu/drm/imx/Kconfig
+> > @@ -1,6 +1,7 @@
+> >  # SPDX-License-Identifier: GPL-2.0-only
+> >
+> >  source "drivers/gpu/drm/imx/dc/Kconfig"
+> > +source "drivers/gpu/drm/imx/dcif/Kconfig"
+> >  source "drivers/gpu/drm/imx/dcss/Kconfig"
+> >  source "drivers/gpu/drm/imx/ipuv3/Kconfig"
+> >  source "drivers/gpu/drm/imx/lcdc/Kconfig"
+> > diff --git a/drivers/gpu/drm/imx/Makefile b/drivers/gpu/drm/imx/Makefile
+> > index c7b317640d71d..2b9fd85eefaa3 100644
+> > --- a/drivers/gpu/drm/imx/Makefile
+> > +++ b/drivers/gpu/drm/imx/Makefile
+> > @@ -1,6 +1,7 @@
+> >  # SPDX-License-Identifier: GPL-2.0
+> >
+> >  obj-$(CONFIG_DRM_IMX8_DC) += dc/
+> > +obj-$(CONFIG_DRM_IMX_DCIF) += dcif/
+> >  obj-$(CONFIG_DRM_IMX_DCSS) += dcss/
+> >  obj-$(CONFIG_DRM_IMX) += ipuv3/
+> >  obj-$(CONFIG_DRM_IMX_LCDC) += lcdc/
+> > diff --git a/drivers/gpu/drm/imx/dcif/Kconfig b/drivers/gpu/drm/imx/dcif/Kconfig
+> > new file mode 100644
+> > index 0000000000000..c33c662721d36
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/imx/dcif/Kconfig
+> > @@ -0,0 +1,15 @@
+> > +config DRM_IMX_DCIF
+> > +	tristate "DRM support for NXP i.MX94 DCIF"
+> > +	select DRM_KMS_HELPER
+> > +	select VIDEOMODE_HELPERS
+> > +	select DRM_GEM_DMA_HELPER
+> > +	select DRM_DISPLAY_HELPER
+> > +	select DRM_BRIDGE_CONNECTOR
+> > +	select DRM_CLIENT_SELECTION
+> > +	depends on DRM && OF && ARCH_MXC
+> > +	depends on COMMON_CLK
+> > +	help
+> > +	  Enable NXP i.MX94 Display Control Interface(DCIF) support. The DCIF is
+> > +	  a system master that fetches graphics stored in memory and displays
+> > +	  them on a TFT LCD panel or connects to a display interface depending
+> > +	  on the chip configuration.
+> > diff --git a/drivers/gpu/drm/imx/dcif/Makefile b/drivers/gpu/drm/imx/dcif/Makefile
+> > new file mode 100644
+> > index 0000000000000..b429572040f0e
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/imx/dcif/Makefile
+> > @@ -0,0 +1,5 @@
+> > +# SPDX-License-Identifier: GPL-2.0
 > > +
-> >  	i =3D tx_ring->next_to_use;
-> >  	txbd =3D ENETC_TXBD(*tx_ring, i);
-> >  	prefetchw(txbd);
-> > @@ -346,11 +376,6 @@ static int enetc_map_tx_buffs(struct enetc_bdr
-> *tx_ring, struct sk_buff *skb)
-> >  	count++;
-> >
-> >  	do_vlan =3D skb_vlan_tag_present(skb);
-> > -	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP)
-> > -		do_onestep_tstamp =3D true;
-> > -	else if (enetc_cb->flag & ENETC_F_TX_TSTAMP)
-> > -		do_twostep_tstamp =3D true;
-> > -
->=20
-> why need move this block up?
-
-Because we need check the flag to determine whether perform PTP
-one-step, if yes, we need to call enetc_update_ptp_sync_msg() to
-modify the sync packet before calling dma_map_single(). ENETCv4
-do not support dma-coherent, I have explained in the commit message.
-
->=20
-> >  	tx_swbd->do_twostep_tstamp =3D do_twostep_tstamp;
-> >  	tx_swbd->qbv_en =3D !!(priv->active_offloads & ENETC_F_QBV);
-> >  	tx_swbd->check_wb =3D tx_swbd->do_twostep_tstamp ||
-> tx_swbd->qbv_en;
-> > @@ -393,8 +418,6 @@ static int enetc_map_tx_buffs(struct enetc_bdr
-> *tx_ring, struct sk_buff *skb)
-> >  		}
-> >
-> >  		if (do_onestep_tstamp) {
-> > -			u32 tstamp =3D enetc_update_ptp_sync_msg(priv, skb);
-> > -
-> >  			/* Configure extension BD */
-> >  			temp_bd.ext.tstamp =3D cpu_to_le32(tstamp);
-> >  			e_flags |=3D ENETC_TXBD_E_FLAGS_ONE_STEP_PTP; @@ -3314,7
-> +3337,7 @@
-> > int enetc_hwtstamp_set(struct net_device *ndev,
-> >  	struct enetc_ndev_priv *priv =3D netdev_priv(ndev);
-> >  	int err, new_offloads =3D priv->active_offloads;
-> >
-> > -	if (!IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK))
-> > +	if (!enetc_ptp_clock_is_enabled(priv->si))
-> >  		return -EOPNOTSUPP;
-> >
-> >  	switch (config->tx_type) {
-> > @@ -3364,7 +3387,7 @@ int enetc_hwtstamp_get(struct net_device *ndev,
-> > {
-> >  	struct enetc_ndev_priv *priv =3D netdev_priv(ndev);
-> >
-> > -	if (!IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK))
-> > +	if (!enetc_ptp_clock_is_enabled(priv->si))
-> >  		return -EOPNOTSUPP;
-> >
-> >  	if (priv->active_offloads & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) diff
-> > --git a/drivers/net/ethernet/freescale/enetc/enetc.h
-> > b/drivers/net/ethernet/freescale/enetc/enetc.h
-> > index c65aa7b88122..6bacd851358c 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc.h
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-> > @@ -598,6 +598,14 @@ static inline void enetc_cbd_free_data_mem(struct
-> > enetc_si *si, int size,  void enetc_reset_ptcmsdur(struct enetc_hw
-> > *hw);  void enetc_set_ptcmsdur(struct enetc_hw *hw, u32
-> > *queue_max_sdu);
-> >
-> > +static inline bool enetc_ptp_clock_is_enabled(struct enetc_si *si) {
-> > +	if (is_enetc_rev1(si))
-> > +		return IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK);
+> > +imx-dcif-drm-objs := dcif-crc.o dcif-crtc.o dcif-drv.o dcif-kms.o dcif-plane.o
 > > +
-> > +	return IS_ENABLED(CONFIG_PTP_1588_CLOCK_NETC);
+> > +obj-$(CONFIG_DRM_IMX_DCIF) += imx-dcif-drm.o
+> > diff --git a/drivers/gpu/drm/imx/dcif/dcif-crc.c b/drivers/gpu/drm/imx/dcif/dcif-crc.c
+> > new file mode 100644
+> > index 0000000000000..f7d182039d06c
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/imx/dcif/dcif-crc.c
+> > @@ -0,0 +1,211 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +/*
+> > + * Copyright 2025 NXP
+> > + */
+> > +
+> > +#include <linux/regmap.h>
+> > +
+> > +#include <drm/drm_atomic.h>
+> > +#include <drm/drm_rect.h>
+> > +
+> > +#include "dcif-crc.h"
+> > +#include "dcif-reg.h"
+> > +
+> ...
+> > +#include <drm/drm_atomic_helper.h>
+> > +#include <drm/drm_drv.h>
+> > +#include <drm/drm_fbdev_dma.h>
+> > +#include <drm/drm_gem_dma_helper.h>
+> > +#include <drm/drm_modeset_helper.h>
+> > +#include <drm/drm_probe_helper.h>
+> > +
+> > +#include "dcif-drv.h"
+> > +#include "dcif-reg.h"
+> > +
+> > +#define QOS_SETTING			0x1c
+> > +#define  DISPLAY_PANIC_QOS_MASK		0x70
+> > +#define  DISPLAY_PANIC_QOS(n)		(((n) & 0x7) << 4)
+> > +#define  DISPLAY_ARQOS_MASK		0x7
+> > +#define  DISPLAY_ARQOS(n)		((n) & 0x7)
+> > +
+> > +#define DCIF_CPU_DOMAIN			0
+> > +
+> > +#define DRIVER_NAME			"imx-dcif-drm"
+> 
+> Only use once, needn't such define. There are a bunch of patch to remove
+> this kind define in recent mail list.
+> 
+> > +
+> > +DEFINE_DRM_GEM_DMA_FOPS(dcif_driver_fops);
+> > +
+> > +static struct drm_driver dcif_driver = {
+> > +	.driver_features	= DRIVER_MODESET | DRIVER_GEM | DRIVER_ATOMIC,
+> > +	DRM_GEM_DMA_DRIVER_OPS,
+> > +	DRM_FBDEV_DMA_DRIVER_OPS,
+> > +	.fops			= &dcif_driver_fops,
+> > +	.name			= "imx-dcif",
+> > +	.desc			= "i.MX DCIF DRM graphics",
+> > +	.major			= 1,
+> > +	.minor			= 0,
+> > +	.patchlevel		= 0,
+> > +};
+> > +
+> > +static int dcif_set_qos(struct dcif_dev *dcif)
+> > +{
+> > +	struct drm_device *drm = &dcif->drm;
+> > +	int ret;
+> > +
+> > +	ret = regmap_update_bits(dcif->blkctrl_regmap, QOS_SETTING,
+> > +				 DISPLAY_PANIC_QOS_MASK | DISPLAY_ARQOS_MASK,
+> > +				 DISPLAY_PANIC_QOS(0x3) | DISPLAY_ARQOS(0x3));
+> 
+> Are you sure have to set qos here? This kind of private interface to other
+> controller is not perferred now.
+
+What are the alternatives then? AFAIK, there is no dedicated QoS subsystem in
+Linux kernel, unless I'm missing something... I see various places where
+syscon is used for setting QoS. But, if there is a better way of doing
+this, I'm willing to change it.
+
+Thanks,
+Laurentiu
+
+> 
+> Frank
+> > +	if (ret < 0)
+> > +		dev_err(drm->dev, "failed to set QoS: %d\n", ret);
+> > +
+> > +	return ret;
 > > +}
 > > +
->=20
-> why v1 check CONFIG_FSL_ENETC_PTP_CLOCK and other check
-> CONFIG_PTP_1588_CLOCK_NETC
-
-Because they use different PTP drivers, so the configs are different.
-
+> > +static void dcif_read_chip_info(struct dcif_dev *dcif)
+> > +{
+> > +	struct drm_device *drm = &dcif->drm;
+> > +	u32 val, vmin, vmaj;
+> > +
+> > +	pm_runtime_get_sync(drm->dev);
+> > +
+> > +	regmap_read(dcif->regmap, DCIF_VER, &val);
+> > +
+> > +	dcif->has_crc = val & 0x2;
+> > +
+> > +	vmin = DCIF_VER_GET_MINOR(val);
+> > +	vmaj = DCIF_VER_GET_MAJOR(val);
+> > +	DRM_DEV_DEBUG(drm->dev, "DCIF version is %d.%d\n", vmaj, vmin);
+> > +
+> > +	pm_runtime_put_sync(drm->dev);
+> > +}
+> > +
+> > +static const struct regmap_config dcif_regmap_config = {
+> > +	.reg_bits = 32,
+> > +	.val_bits = 32,
+> > +	.reg_stride = 4,
+> > +	.fast_io = true,
+> > +	.max_register = 0x20250,
+> > +	.cache_type = REGCACHE_NONE,
+> > +	.disable_locking = true,
+> > +};
+> > +
+> > +static const char * const dcif_clks[] = {
+> > +	"apb",
+> > +	"axi",
+> > +	"pix",
+> > +};
+> > +
+> > +static int dcif_probe(struct platform_device *pdev)
+> > +{
+> > +	struct device_node *np = pdev->dev.of_node;
+> > +	struct dcif_dev *dcif;
+> > +	struct drm_device *drm;
+> > +	int ret;
+> > +	int i;
+> > +
+> > +	if (!pdev->dev.of_node)
+> > +		return -ENODEV;
+> 
+> Needn't check this.
+> 
+> > +
+> > +	dcif = devm_drm_dev_alloc(&pdev->dev, &dcif_driver, struct dcif_dev, drm);
+> > +	if (IS_ERR(dcif))
+> > +		return PTR_ERR(dcif);
+> > +
+> > +	/* CPU 0 domain for interrupt control */
+> > +	dcif->cpu_domain = DCIF_CPU_DOMAIN;
+> > +
+> > +	drm = &dcif->drm;
+> > +	dev_set_drvdata(&pdev->dev, dcif);
+> > +
+> > +	dcif->reg_base = devm_platform_ioremap_resource(pdev, 0);
+> > +	if (IS_ERR(dcif->reg_base))
+> > +		return dev_err_probe(drm->dev, PTR_ERR(dcif->reg_base),
+> > +				     "failed to get reg base\n");
+> > +
+> > +	for (i = 0; i < 3; i++) {
+> > +		dcif->irq[i] = platform_get_irq(pdev, i);
+> > +		if (dcif->irq[i] < 0)
+> > +			return dev_err_probe(drm->dev, dcif->irq[i],
+> > +					     "failed to get domain%d irq\n", i);
+> > +	}
+> > +
+> > +	dcif->blkctrl_regmap = syscon_regmap_lookup_by_phandle(np, "nxp,blk-ctrl");
+> > +	if (IS_ERR(dcif->blkctrl_regmap))
+> > +		return dev_err_probe(drm->dev, PTR_ERR(dcif->blkctrl_regmap),
+> > +				     "failed to get blk-ctrl regmap\n");
+> > +
+> > +	dcif->regmap = devm_regmap_init_mmio(drm->dev, dcif->reg_base, &dcif_regmap_config);
+> > +	if (IS_ERR(dcif->regmap))
+> > +		return dev_err_probe(drm->dev, PTR_ERR(dcif->regmap),
+> > +				     "failed to init DCIF regmap\n");
+> > +
+> > +	dcif->num_clks = ARRAY_SIZE(dcif_clks);
+> > +	dcif->clks = devm_kcalloc(drm->dev, dcif->num_clks, sizeof(*dcif->clks), GFP_KERNEL);
+> > +	if (!dcif->clks)
+> > +		return -ENOMEM;
+> > +
+> > +	for (i = 0; i < dcif->num_clks; i++)
+> > +		dcif->clks[i].id = dcif_clks[i];
+> > +
+> > +	ret = devm_clk_bulk_get(drm->dev, dcif->num_clks, dcif->clks);
+> 
+> If use devm_clk_bulk_get_all() will simplify code much. needn't
+> dcif->clks = devm_kcalloc(drm->dev, dcif->num_clks, sizeof(*dcif->clks), GFP_KERNEL)
+> and dcif_clks.
+> 
+> > +	if (ret)
+> > +		return dev_err_probe(drm->dev, ret, "cannot get required clocks\n");
+> > +
+> > +	dma_set_mask_and_coherent(drm->dev, DMA_BIT_MASK(32));
+> > +
+> > +	devm_pm_runtime_enable(drm->dev);
+> > +
+> > +	ret = devm_request_irq(drm->dev, dcif->irq[dcif->cpu_domain],
+> > +			       dcif_irq_handler, 0, drm->driver->name, drm);
+> > +	if (ret < 0) {
+> > +		dev_err(drm->dev, "failed to install IRQ handler: %d\n", ret);
+> > +		return ret;
+> 
+> return dev_err_probe
+> 
+> > +	}
+> > +
+> > +	dcif_read_chip_info(dcif);
+> > +
+> > +	ret = dcif_kms_prepare(dcif);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = drm_dev_register(drm, 0);
+> > +	if (ret) {
+> > +		dev_err(drm->dev, "failed to register drm device: %d\n", ret);
+> > +		return ret;
+> 
+> return dev_err_probe
+> 
+> Frank
+> > +	}
+> > +
+> > +	drm_client_setup(drm, NULL);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static void dcif_remove(struct platform_device *pdev)
+> > +{
+> > +	struct dcif_dev *dcif = dev_get_drvdata(&pdev->dev);
+> > +	struct drm_device *drm = &dcif->drm;
+> > +
+> > +	drm_dev_unregister(drm);
+> > +
+> > +	drm_atomic_helper_shutdown(drm);
+> > +}
+> > +
+> > +static void dcif_shutdown(struct platform_device *pdev)
+> > +{
+> > +	struct dcif_dev *dcif = dev_get_drvdata(&pdev->dev);
+> > +	struct drm_device *drm = &dcif->drm;
+> > +
+> > +	drm_atomic_helper_shutdown(drm);
+> > +}
+> > +
+> > +static int dcif_runtime_suspend(struct device *dev)
+> > +{
+> > +	struct dcif_dev *dcif = dev_get_drvdata(dev);
+> > +
+> > +	clk_bulk_disable_unprepare(dcif->num_clks, dcif->clks);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int dcif_runtime_resume(struct device *dev)
+> > +{
+> > +	struct dcif_dev *dcif = dev_get_drvdata(dev);
+> > +	int ret;
+> > +
+> > +	ret = clk_bulk_prepare_enable(dcif->num_clks, dcif->clks);
+> > +	if (ret) {
+> > +		dev_err(dev, "failed to enable clocks: %d\n", ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	ret = dcif_set_qos(dcif);
+> > +	if (ret) {
+> > +		clk_bulk_disable_unprepare(dcif->num_clks, dcif->clks);
+> > +		return ret;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int dcif_suspend(struct device *dev)
+> > +{
+> > +	struct dcif_dev *dcif = dev_get_drvdata(dev);
+> > +	int ret;
+> > +
+> > +	ret = drm_mode_config_helper_suspend(&dcif->drm);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	if (pm_runtime_suspended(dev))
+> > +		return 0;
+> > +
+> > +	return dcif_runtime_suspend(dev);
+> > +}
+> > +
+> > +static int dcif_resume(struct device *dev)
+> > +{
+> > +	struct dcif_dev *dcif = dev_get_drvdata(dev);
+> > +	int ret;
+> > +
+> > +	if (!pm_runtime_suspended(dev)) {
+> > +		ret = dcif_runtime_resume(dev);
+> > +		if (ret < 0)
+> > +			return ret;
+> > +	}
+> > +
+> > +	return drm_mode_config_helper_resume(&dcif->drm);
+> > +}
+> > +
+> > +static const struct dev_pm_ops dcif_pm_ops = {
+> > +	SET_SYSTEM_SLEEP_PM_OPS(dcif_suspend, dcif_resume)
+> > +	SET_RUNTIME_PM_OPS(dcif_runtime_suspend, dcif_runtime_resume, NULL)
+> > +};
+> > +
+> > +static const struct of_device_id dcif_dt_ids[] = {
+> > +	{ .compatible = "nxp,imx94-dcif", },
+> > +	{ /* sentinel */ }
+> > +};
+> > +MODULE_DEVICE_TABLE(of, dcif_dt_ids);
+> > +
+> > +static struct platform_driver dcif_platform_driver = {
+> > +	.probe	= dcif_probe,
+> > +	.remove	= dcif_remove,
+> > +	.shutdown = dcif_shutdown,
+> > +	.driver	= {
+> > +		.name		= DRIVER_NAME,
+> > +		.of_match_table	= dcif_dt_ids,
+> > +		.pm		= pm_ptr(&dcif_pm_ops),
+> > +	},
+> > +};
+> > +module_platform_driver(dcif_platform_driver);
+> > +
+> > +MODULE_AUTHOR("NXP Semiconductor");
+> > +MODULE_DESCRIPTION("i.MX94 DCIF DRM driver");
+> > +MODULE_LICENSE("GPL");
+> > diff --git a/drivers/gpu/drm/imx/dcif/dcif-drv.h b/drivers/gpu/drm/imx/dcif/dcif-drv.h
+> > new file mode 100644
+> > index 0000000000000..f4073c90b40d4
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/imx/dcif/dcif-drv.h
+> > @@ -0,0 +1,87 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +
+> > +/*
+> > + * Copyright 2025 NXP
+> > + */
+> > +
+> > +#ifndef __DCIF_DRV_H__
+> > +#define __DCIF_DRV_H__
+> > +
+> > +#include <linux/clk.h>
+> > +#include <linux/irqreturn.h>
+> > +#include <linux/kernel.h>
+> > +
+> > +#include <drm/drm_crtc.h>
+> > +#include <drm/drm_device.h>
+> > +#include <drm/drm_encoder.h>
+> > +#include <drm/drm_plane.h>
+> > +#include <drm/drm_vblank.h>
+> > +
+> > +struct dcif_crc;
+> > +
+> > +struct dcif_dev {
+> > +	struct drm_device drm;
+> > +	void __iomem *reg_base;
+> > +
+> > +	struct regmap *regmap;
+> > +	struct regmap *blkctrl_regmap;
+> > +	int irq[3];
+> > +
+> > +	unsigned int num_clks;
+> > +	struct clk_bulk_data *clks;
+> > +
+> > +	struct drm_crtc crtc;
+> > +	struct {
+> > +		struct drm_plane primary;
+> > +		struct drm_plane overlay;
+> > +	} planes;
+> > +	struct drm_encoder encoder;
+> > +
+> > +	struct drm_pending_vblank_event *event;
+> > +	/* Implement crc */
+> > +	bool has_crc;
+> > +	bool crc_is_enabled;
+> > +
+> > +	/* CPU domain for interrupt control */
+> > +	int cpu_domain;
+> > +};
+> > +
+> > +enum dcif_crc_source {
+> > +	DCIF_CRC_SRC_NONE,
+> > +	DCIF_CRC_SRC_FRAME,
+> > +	DCIF_CRC_SRC_FRAME_ROI,
+> > +};
+> > +
+> > +struct dcif_crc {
+> > +	enum dcif_crc_source	source;
+> > +	struct drm_rect		roi;
+> > +};
+> > +
+> > +struct dcif_crtc_state {
+> > +	struct drm_crtc_state	base;
+> > +	struct dcif_crc		crc;
+> > +	u32			bus_format;
+> > +	u32			bus_flags;
+> > +};
+> > +
+> > +static inline struct dcif_dev *to_dcif_dev(struct drm_device *drm_dev)
+> > +{
+> > +	return container_of(drm_dev, struct dcif_dev, drm);
+> > +}
+> > +
+> > +static inline struct dcif_dev *crtc_to_dcif_dev(struct drm_crtc *crtc)
+> > +{
+> > +	return to_dcif_dev(crtc->dev);
+> > +}
+> > +
+> > +static inline struct dcif_crtc_state *to_dcif_crtc_state(struct drm_crtc_state *s)
+> > +{
+> > +	return container_of(s, struct dcif_crtc_state, base);
+> > +}
+> > +
+> > +irqreturn_t dcif_irq_handler(int irq, void *data);
+> > +int dcif_crtc_init(struct dcif_dev *dcif);
+> > +int dcif_plane_init(struct dcif_dev *dcif);
+> > +int dcif_kms_prepare(struct dcif_dev *dcif);
+> > +
+> > +#endif
+> > diff --git a/drivers/gpu/drm/imx/dcif/dcif-kms.c b/drivers/gpu/drm/imx/dcif/dcif-kms.c
+> > new file mode 100644
+> > index 0000000000000..4e4c9248d7cb7
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/imx/dcif/dcif-kms.c
+> > @@ -0,0 +1,101 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +/*
+> > + * Copyright 2025 NXP
+> > + */
+> > +
+> > +#include <drm/drm_atomic_helper.h>
+> > +#include <drm/drm_bridge.h>
+> > +#include <drm/drm_bridge_connector.h>
+> > +#include <drm/drm_gem_framebuffer_helper.h>
+> > +#include <drm/drm_print.h>
+> > +#include <drm/drm_probe_helper.h>
+> > +#include <drm/drm_simple_kms_helper.h>
+> > +
+> > +#include "dcif-drv.h"
+> > +#include "dcif-reg.h"
+> > +
+> > +static int dcif_kms_init(struct dcif_dev *dcif)
+> > +{
+> > +	struct drm_device *drm = &dcif->drm;
+> > +	struct device_node *np = drm->dev->of_node;
+> > +	struct drm_connector *connector;
+> > +	struct drm_bridge *bridge;
+> > +	int ret;
+> > +
+> > +	ret = dcif_crtc_init(dcif);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	bridge = devm_drm_of_get_bridge(drm->dev, np, 0, 0);
+> > +	if (IS_ERR(bridge))
+> > +		return dev_err_probe(drm->dev, PTR_ERR(bridge), "Failed to find bridge\n");
+> > +
+> > +	dcif->encoder.possible_crtcs = drm_crtc_mask(&dcif->crtc);
+> > +	ret = drm_simple_encoder_init(drm, &dcif->encoder, DRM_MODE_ENCODER_NONE);
+> > +	if (ret) {
+> > +		drm_err(drm, "failed to initialize encoder: %d\n", ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	ret = drm_bridge_attach(&dcif->encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+> > +	if (ret) {
+> > +		drm_err(drm, "failed to attach bridge to encoder: %d\n", ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	connector = drm_bridge_connector_init(drm, &dcif->encoder);
+> > +	if (IS_ERR(connector)) {
+> > +		drm_err(drm, "failed to initialize bridge connector: %d\n", ret);
+> > +		return PTR_ERR(connector);
+> > +	}
+> > +
+> > +	ret = drm_connector_attach_encoder(connector, &dcif->encoder);
+> > +	if (ret)
+> > +		drm_err(drm, "failed to attach encoder to connector: %d\n", ret);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static const struct drm_mode_config_funcs dcif_mode_config_funcs = {
+> > +	.fb_create     = drm_gem_fb_create,
+> > +	.atomic_check  = drm_atomic_helper_check,
+> > +	.atomic_commit = drm_atomic_helper_commit,
+> > +};
+> > +
+> > +static const struct drm_mode_config_helper_funcs dcif_mode_config_helpers = {
+> > +	.atomic_commit_tail = drm_atomic_helper_commit_tail_rpm,
+> > +};
+> > +
+> > +int dcif_kms_prepare(struct dcif_dev *dcif)
+> > +{
+> > +	struct drm_device *drm = &dcif->drm;
+> > +	int ret;
+> > +
+> > +	ret = drmm_mode_config_init(drm);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = dcif_kms_init(dcif);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	drm->mode_config.min_width	= 1;
+> > +	drm->mode_config.min_height	= 1;
+> > +	drm->mode_config.max_width	= 1920;
+> > +	drm->mode_config.max_height	= 1920;
+> > +	drm->mode_config.funcs		= &dcif_mode_config_funcs;
+> > +	drm->mode_config.helper_private	= &dcif_mode_config_helpers;
+> > +
+> > +	ret = drm_vblank_init(drm, 1);
+> > +	if (ret < 0) {
+> > +		drm_err(drm, "failed to initialize vblank: %d\n", ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	drm_mode_config_reset(drm);
+> > +
+> > +	drmm_kms_helper_poll_init(drm);
+> > +
+> > +	return 0;
+> > +}
+> > diff --git a/drivers/gpu/drm/imx/dcif/dcif-plane.c b/drivers/gpu/drm/imx/dcif/dcif-plane.c
+> > new file mode 100644
+> > index 0000000000000..54ab8edd11e0c
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/imx/dcif/dcif-plane.c
+> > @@ -0,0 +1,269 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +/*
+> > + * Copyright 2025 NXP
+> > + */
+> > +
+> > +#include <linux/regmap.h>
+> > +
+> > +#include <drm/drm_atomic.h>
+> > +#include <drm/drm_atomic_helper.h>
+> > +#include <drm/drm_blend.h>
+> > +#include <drm/drm_fb_dma_helper.h>
+> > +#include <drm/drm_fourcc.h>
+> > +#include <drm/drm_framebuffer.h>
+> > +#include <drm/drm_gem_atomic_helper.h>
+> > +#include <drm/drm_gem_dma_helper.h>
+> > +#include <drm/drm_print.h>
+> > +#include <drm/drm_rect.h>
+> > +
+> > +#include "dcif-drv.h"
+> > +#include "dcif-reg.h"
+> > +
+> > +static const u32 dcif_primary_plane_formats[] = {
+> > +	/* RGB */
+> > +	DRM_FORMAT_RGB565,
+> > +	DRM_FORMAT_RGB888,
+> > +	DRM_FORMAT_XBGR8888,
+> > +	DRM_FORMAT_XRGB1555,
+> > +	DRM_FORMAT_XRGB4444,
+> > +	DRM_FORMAT_XRGB8888,
+> > +
+> > +	/* Packed YCbCr */
+> > +	DRM_FORMAT_YUYV,
+> > +	DRM_FORMAT_YVYU,
+> > +	DRM_FORMAT_UYVY,
+> > +	DRM_FORMAT_VYUY,
+> > +};
+> > +
+> > +static const u32 dcif_overlay_plane_formats[] = {
+> > +	/* RGB */
+> > +	DRM_FORMAT_RGB565,
+> > +	DRM_FORMAT_RGB888,
+> > +	DRM_FORMAT_XBGR8888,
+> > +	DRM_FORMAT_XRGB1555,
+> > +	DRM_FORMAT_XRGB4444,
+> > +	DRM_FORMAT_XRGB8888,
+> > +};
+> > +
+> > +static inline struct dcif_dev *plane_to_dcif_dev(struct drm_plane *plane)
+> > +{
+> > +	return to_dcif_dev(plane->dev);
+> > +}
+> > +
+> > +static inline dma_addr_t drm_plane_state_to_baseaddr(struct drm_plane_state *state)
+> > +{
+> > +	struct drm_framebuffer *fb = state->fb;
+> > +	struct drm_gem_dma_object *dma_obj;
+> > +	unsigned int x = state->src.x1 >> 16;
+> > +	unsigned int y = state->src.y1 >> 16;
+> > +
+> > +	dma_obj = drm_fb_dma_get_gem_obj(fb, 0);
+> > +
+> > +	return dma_obj->dma_addr + fb->offsets[0] + fb->pitches[0] * y + fb->format->cpp[0] * x;
+> > +}
+> > +
+> > +static int dcif_plane_get_layer_id(struct drm_plane *plane)
+> > +{
+> > +	return (plane->type == DRM_PLANE_TYPE_PRIMARY) ? 0 : 1;
+> > +}
+> > +
+> > +static int dcif_plane_atomic_check(struct drm_plane *plane, struct drm_atomic_state *state)
+> > +{
+> > +	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(state, plane);
+> > +	struct drm_plane_state *old_plane_state = drm_atomic_get_old_plane_state(state, plane);
+> > +	struct dcif_dev *dcif = plane_to_dcif_dev(plane);
+> > +	struct drm_framebuffer *fb = new_plane_state->fb;
+> > +	struct drm_framebuffer *old_fb = old_plane_state->fb;
+> > +	struct drm_crtc_state *crtc_state;
+> > +
+> > +	if (!fb)
+> > +		return 0;
+> > +
+> > +	crtc_state = drm_atomic_get_new_crtc_state(state, &dcif->crtc);
+> > +	if (WARN_ON(!crtc_state))
+> > +		return -EINVAL;
+> > +
+> > +	/*
+> > +	 * Force CRTC mode change if framebuffer stride or pixel format have changed.
+> > +	 */
+> > +	if (plane->type == DRM_PLANE_TYPE_PRIMARY && old_fb &&
+> > +	    (fb->pitches[0] != old_fb->pitches[0] || fb->format->format != old_fb->format->format))
+> > +		crtc_state->mode_changed = true;
+> > +
+> > +	return drm_atomic_helper_check_plane_state(new_plane_state, crtc_state,
+> > +						   DRM_PLANE_NO_SCALING, DRM_PLANE_NO_SCALING, true,
+> > +						   true);
+> > +}
+> > +
+> > +static void dcif_plane_atomic_update(struct drm_plane *plane, struct drm_atomic_state *state)
+> > +{
+> > +	struct drm_plane_state *new_state = drm_atomic_get_new_plane_state(state, plane);
+> > +	struct dcif_dev *dcif = plane_to_dcif_dev(plane);
+> > +	int layer_id = dcif_plane_get_layer_id(plane);
+> > +	struct drm_framebuffer *fb = new_state->fb;
+> > +	u32 crtc_x, crtc_y, crtc_h, crtc_w;
+> > +	u32 layer_fmt = 0, yuv_fmt = 0;
+> > +	dma_addr_t baseaddr;
+> > +	u32 reg;
+> > +
+> > +	if (!fb)
+> > +		return;
+> > +
+> > +	crtc_x = new_state->crtc_x;
+> > +	crtc_y = new_state->crtc_y;
+> > +	crtc_h = new_state->crtc_h;
+> > +	crtc_w = new_state->crtc_w;
+> > +
+> > +	/* visible portion of plane on crtc */
+> > +	regmap_write(dcif->regmap, DCIF_CTRLDESC1(layer_id),
+> > +		     DCIF_CTRLDESC1_POSX(crtc_x) | DCIF_CTRLDESC1_POSY(crtc_y));
+> > +	regmap_write(dcif->regmap, DCIF_CTRLDESC2(layer_id),
+> > +		     DCIF_CTRLDESC2_WIDTH(crtc_w) | DCIF_CTRLDESC2_HEIGHT(crtc_h));
+> > +
+> > +	/* pitch size */
+> > +	reg = DCIF_CTRLDESC3_P_SIZE(2) | DCIF_CTRLDESC3_T_SIZE(2) |
+> > +	      DCIF_CTRLDESC3_PITCH(fb->pitches[0]);
+> > +	regmap_write(dcif->regmap, DCIF_CTRLDESC3(layer_id), reg);
+> > +
+> > +	/*  address */
+> > +	baseaddr = drm_fb_dma_get_gem_addr(new_state->fb, new_state, 0);
+> > +
+> > +	drm_dbg_kms(plane->dev, "[PLANE:%d:%s] fb address %pad, pitch 0x%08x\n",
+> > +		    plane->base.id, plane->name, &baseaddr, fb->pitches[0]);
+> > +
+> > +	regmap_write(dcif->regmap, DCIF_CTRLDESC4(layer_id), baseaddr);
+> > +
+> > +	/* Format */
+> > +	switch (fb->format->format) {
+> > +	/* RGB Formats */
+> > +	case DRM_FORMAT_RGB565:
+> > +		layer_fmt = CTRLDESCL0_FORMAT_RGB565;
+> > +		break;
+> > +	case DRM_FORMAT_RGB888:
+> > +		layer_fmt = CTRLDESCL0_FORMAT_RGB888;
+> > +		break;
+> > +	case DRM_FORMAT_XRGB1555:
+> > +		layer_fmt = CTRLDESCL0_FORMAT_ARGB1555;
+> > +		break;
+> > +	case DRM_FORMAT_XRGB4444:
+> > +		layer_fmt = CTRLDESCL0_FORMAT_ARGB4444;
+> > +		break;
+> > +	case DRM_FORMAT_XBGR8888:
+> > +		layer_fmt = CTRLDESCL0_FORMAT_ABGR8888;
+> > +		break;
+> > +	case DRM_FORMAT_XRGB8888:
+> > +		layer_fmt = CTRLDESCL0_FORMAT_ARGB8888;
+> > +		break;
+> > +
+> > +	/* YUV Formats */
+> > +	case DRM_FORMAT_YUYV:
+> > +		layer_fmt = CTRLDESCL0_FORMAT_YCBCR422;
+> > +		yuv_fmt = CTRLDESCL0_YUV_FORMAT_VY2UY1;
+> > +		break;
+> > +	case DRM_FORMAT_YVYU:
+> > +		layer_fmt = CTRLDESCL0_FORMAT_YCBCR422;
+> > +		yuv_fmt = CTRLDESCL0_YUV_FORMAT_UY2VY1;
+> > +		break;
+> > +	case DRM_FORMAT_UYVY:
+> > +		layer_fmt = CTRLDESCL0_FORMAT_YCBCR422;
+> > +		yuv_fmt = CTRLDESCL0_YUV_FORMAT_Y2VY1U;
+> > +		break;
+> > +	case DRM_FORMAT_VYUY:
+> > +		layer_fmt = CTRLDESCL0_FORMAT_YCBCR422;
+> > +		yuv_fmt = CTRLDESCL0_YUV_FORMAT_Y2UY1V;
+> > +		break;
+> > +
+> > +	default:
+> > +		dev_err(dcif->drm.dev, "Unknown pixel format 0x%x\n", fb->format->format);
+> > +		break;
+> > +	}
+> > +
+> > +	if (plane->type == DRM_PLANE_TYPE_OVERLAY && yuv_fmt == CTRLDESCL0_YUV_FORMAT_Y2UY1V) {
+> > +		dev_err(dcif->drm.dev, "Overlay plane could not support YUV format\n");
+> > +		return;
+> > +	}
+> > +
+> > +	reg = DCIF_CTRLDESC0_EN | DCIF_CTRLDESC0_SHADOW_LOAD_EN |
+> > +	      DCIF_CTRLDESC0_FORMAT(layer_fmt) | DCIF_CTRLDESC0_YUV_FORMAT(yuv_fmt);
+> > +
+> > +	/* Alpha */
+> > +	reg |= DCIF_CTRLDESC0_GLOBAL_ALPHA(new_state->alpha >> 8) | ALPHA_GLOBAL;
+> > +
+> > +	regmap_write(dcif->regmap, DCIF_CTRLDESC0(layer_id), reg);
+> > +}
+> > +
+> > +static void dcif_overlay_plane_atomic_disable(struct drm_plane *plane,
+> > +					      struct drm_atomic_state *state)
+> > +{
+> > +	struct dcif_dev *dcif = plane_to_dcif_dev(plane);
+> > +
+> > +	regmap_update_bits(dcif->regmap, DCIF_CTRLDESC0(1),
+> > +			   DCIF_CTRLDESC0_EN | DCIF_CTRLDESC0_SHADOW_LOAD_EN,
+> > +			   DCIF_CTRLDESC0_SHADOW_LOAD_EN);
+> > +}
+> > +
+> > +static const struct drm_plane_helper_funcs dcif_primary_plane_helper_funcs = {
+> > +	.prepare_fb	= drm_gem_plane_helper_prepare_fb,
+> > +	.atomic_check	= dcif_plane_atomic_check,
+> > +	.atomic_update	= dcif_plane_atomic_update,
+> > +};
+> > +
+> > +static const struct drm_plane_helper_funcs dcif_overlay_plane_helper_funcs = {
+> > +	.atomic_check	= dcif_plane_atomic_check,
+> > +	.atomic_update	= dcif_plane_atomic_update,
+> > +	.atomic_disable = dcif_overlay_plane_atomic_disable,
+> > +};
+> > +
+> > +static const struct drm_plane_funcs dcif_plane_funcs = {
+> > +	.update_plane		= drm_atomic_helper_update_plane,
+> > +	.disable_plane		= drm_atomic_helper_disable_plane,
+> > +	.destroy		= drm_plane_cleanup,
+> > +	.reset			= drm_atomic_helper_plane_reset,
+> > +	.atomic_duplicate_state	= drm_atomic_helper_plane_duplicate_state,
+> > +	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
+> > +};
+> > +
+> > +int dcif_plane_init(struct dcif_dev *dcif)
+> > +{
+> > +	const u32 supported_encodings = BIT(DRM_COLOR_YCBCR_BT601) |
+> > +					BIT(DRM_COLOR_YCBCR_BT709) |
+> > +					BIT(DRM_COLOR_YCBCR_BT2020);
+> > +	const u32 supported_ranges = BIT(DRM_COLOR_YCBCR_LIMITED_RANGE) |
+> > +				     BIT(DRM_COLOR_YCBCR_FULL_RANGE);
+> > +	int ret;
+> > +
+> > +	/* primary plane */
+> > +	drm_plane_helper_add(&dcif->planes.primary, &dcif_primary_plane_helper_funcs);
+> > +	ret = drm_universal_plane_init(&dcif->drm, &dcif->planes.primary, 1, &dcif_plane_funcs,
+> > +				       dcif_primary_plane_formats,
+> > +				       ARRAY_SIZE(dcif_primary_plane_formats), NULL,
+> > +				       DRM_PLANE_TYPE_PRIMARY, NULL);
+> > +	if (ret) {
+> > +		drm_err(&dcif->drm, "failed to initialize primary plane: %d\n", ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	ret = drm_plane_create_color_properties(&dcif->planes.primary, supported_encodings,
+> > +						supported_ranges, DRM_COLOR_YCBCR_BT601,
+> > +						DRM_COLOR_YCBCR_LIMITED_RANGE);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = drm_plane_create_alpha_property(&dcif->planes.primary);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	/* overlay plane */
+> > +	drm_plane_helper_add(&dcif->planes.overlay, &dcif_overlay_plane_helper_funcs);
+> > +	ret = drm_universal_plane_init(&dcif->drm, &dcif->planes.overlay, 1, &dcif_plane_funcs,
+> > +				       dcif_overlay_plane_formats,
+> > +				       ARRAY_SIZE(dcif_overlay_plane_formats), NULL,
+> > +				       DRM_PLANE_TYPE_OVERLAY, NULL);
+> > +	if (ret) {
+> > +		drm_err(&dcif->drm, "failed to initialize overlay plane: %d\n", ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	return drm_plane_create_alpha_property(&dcif->planes.overlay);
+> > +}
+> > diff --git a/drivers/gpu/drm/imx/dcif/dcif-reg.h b/drivers/gpu/drm/imx/dcif/dcif-reg.h
+> > new file mode 100644
+> > index 0000000000000..f918bbb6d2d15
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/imx/dcif/dcif-reg.h
+> > @@ -0,0 +1,266 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +
+> > +/*
+> > + * Copyright 2025 NXP
+> > + */
+> > +#ifndef __DCIF_REG_H__
+> > +#define __DCIF_REG_H__
+> > +
+> > +#include <linux/bits.h>
+> > +
+> > +/* Version ID Register */
+> > +#define DCIF_VER				0x0
+> > +#define   DCIF_VER_GET_FEATURE(x)		FIELD_GET(GENMASK(15, 0), x)
+> > +#define   DCIF_VER_GET_MINOR(x)			FIELD_GET(GENMASK(23, 16), x)
+> > +#define   DCIF_VER_GET_MAJOR(x)			FIELD_GET(GENMASK(31, 24), x)
+> > +
+> > +/* Parameter Registers */
+> > +#define DCIF_PAR_0				0x4
+> > +#define   DCIF_PAR_0_LAYER_NUM(x)		FIELD_PREP(GENMASK(3, 0), x)
+> > +#define   DCIF_PAR_0_DOMAIN_NUM(x)		FIELD_PREP(GENMASK(5, 4), x)
+> > +#define   DCIF_PAR_0_AXI_DATA_WIDTH(x)		FIELD_PREP(GENMASK(7, 6), x)
+> > +#define   DCIF_PAR_0_CLUT_RAM_NUM(x)		FIELD_PREP(GENMASK(11, 8), x)
+> > +#define   DCIF_PAR_0_CSC_NUM(x)			FIELD_PREP(GENMASK(13, 12), x)
+> > +#define   DCIF_PAR_0_CRC_REGION_NUM(x)		FIELD_PREP(GENMASK(18, 16), x)
+> > +#define   DCIF_PAR_0_BACKUP(x)			FIELD_PREP(GENMASK(31, 28), x)
+> > +
+> > +#define DCIF_PAR_1				0x8
+> > +#define   DCIF_PAR_1_LAYER0_FIFO_SIZE(x)	FIELD_PREP(GENMASK(3, 0), x)
+> > +#define   DCIF_PAR_1_LAYER1_FIFO_SIZE(x)	FIELD_PREP(GENMASK(7, 4), x)
+> > +
+> > +/* Display Control and Parameter Registers */
+> > +#define DCIF_DISP_CTRL				0x10
+> > +#define   DCIF_DISP_CTRL_DISP_ON		BIT(0)
+> > +#define   DCIF_DISP_CTRL_AXI_RD_HOLD		BIT(30)
+> > +#define   DCIF_DISP_CTRL_SW_RST			BIT(31)
+> > +#define DCIF_DISP_PAR				0x14
+> > +#define   DCIF_DISP_PAR_BGND_B(x)		FIELD_PREP(GENMASK(7, 0), x)
+> > +#define   DCIF_DISP_PAR_BGND_G(x)		FIELD_PREP(GENMASK(15, 8), x)
+> > +#define   DCIF_DISP_PAR_BGND_R(x)		FIELD_PREP(GENMASK(23, 16), x)
+> > +#define DCIF_DISP_SIZE				0x18
+> > +#define   DCIF_DISP_SIZE_DISP_WIDTH(x)		FIELD_PREP(GENMASK(11, 0), x)
+> > +#define   DCIF_DISP_SIZE_DISP_HEIGHT(x)		FIELD_PREP(GENMASK(27, 16), x)
+> > +
+> > +/* Display Status Registers */
+> > +#define DCIF_DISP_SR0				0x1C
+> > +#define   DCIF_DISP_SR0_AXI_RD_PEND(x)		FIELD_PREP(GENMASK(4, 0), x)
+> > +#define   DCIF_DISP_SR0_DPI_BUSY(x)		FIELD_PREP(GENMASK(14, 14), x)
+> > +#define   DCIF_DISP_SR0_AXI_RD_BUSY(x)		FIELD_PREP(GENMASK(15, 15), x)
+> > +#define DCIF_DISP_SR0_TXFIFO_CNT(x)		FIELD_PREP(GENMASK(23, 16), x)
+> > +
+> > +#define DCIF_DISP_SR1				0x20
+> > +#define   DCIF_DISP_SR1_H_CNT(x)		FIELD_PREP(GENMASK(11, 0), x)
+> > +#define   DCIF_DISP_SR1_V_CNT(x)		FIELD_PREP(GENMASK(27, 16), x)
+> > +
+> > +/* Interrupt Enable and Status Registers, n=0-2*/
+> > +#define DCIF_IE0(n)				(0x24 + (n) * 0x10000)
+> > +#define DCIF_IS0(n)				(0x28 + (n) * 0x10000)
+> > +#define   DCIF_INT0_VSYNC			BIT(0)
+> > +#define   DCIF_INT0_UNDERRUN			BIT(1)
+> > +#define   DCIF_INT0_VS_BLANK			BIT(2)
+> > +#define   DCIF_INT0_HIST_DONE			BIT(5)
+> > +#define   DCIF_INT0_CRC_ERR			BIT(6)
+> > +#define   DCIF_INT0_CRC_ERR_SAT			BIT(7)
+> > +
+> > +#define DCIF_IE1(n)				(0x2C + (n) * 0x10000)
+> > +#define DCIF_IS1(n)				(0x30 + (n) * 0x10000)
+> > +#define   DCIF_INT1_FIFO_PANIC0			BIT(0)
+> > +#define   DCIF_INT1_FIFO_PANIC1			BIT(1)
+> > +#define   DCIF_INT1_DMA_ERR0			BIT(8)
+> > +#define   DCIF_INT1_DMA_ERR1			BIT(9)
+> > +#define   DCIF_INT1_DMA_DONE0			BIT(16)
+> > +#define   DCIF_INT1_DMA_DONE1			BIT(17)
+> > +#define   DCIF_INT1_FIFO_EMPTY0			BIT(24)
+> > +#define   DCIF_INT1_FIFO_EMPTY1			BIT(25)
+> > +
+> > +/* DPI Control and Sync Parameter Registers */
+> > +#define DCIF_DPI_CTRL				0x40
+> > +#define   DCIF_DPI_CTRL_HSYNC_POL_LOW		BIT(0)
+> > +#define   DCIF_DPI_CTRL_VSYNC_POL_LOW		BIT(1)
+> > +#define   DCIF_DPI_CTRL_DE_POL_LOW		BIT(2)
+> > +#define   DCIF_DPI_CTRL_PCLK_EDGE_FALLING	BIT(3)
+> > +#define   DCIF_DPI_CTRL_POL_MASK		GENMASK(3, 0)
+> > +#define   DCIF_DPI_CTRL_DATA_INV(x)		FIELD_PREP(GENMASK(4, 4), x)
+> > +#define   DCIF_DPI_CTRL_DEF_BGND_EN(x)		FIELD_PREP(GENMASK(5, 5), x)
+> > +#define   DCIF_DPI_CTRL_FETCH_OPT(x)		FIELD_PREP(GENMASK(9, 8), x)
+> > +#define   DCIF_DPI_CTRL_DISP_MODE(x)		FIELD_PREP(GENMASK(13, 12), x)
+> > +#define   DCIF_DPI_CTRL_DATA_PATTERN_MASK	GENMASK(18, 16)
+> > +#define   DCIF_DPI_CTRL_DATA_PATTERN(x)		FIELD_PREP(GENMASK(18, 16), x)
+> > +#define   PATTERN_RGB888			0
+> > +#define   PATTERN_RBG888			1
+> > +#define   PATTERN_GBR888			2
+> > +#define   PATTERN_GRB888			3
+> > +#define   PATTERN_BRG888			4
+> > +#define   PATTERN_BGR888			5
+> > +#define   PATTERN_RGB555			6
+> > +#define   PATTERN_RGB565			7
+> > +
+> > +#define DCIF_DPI_HSYN_PAR			0x44
+> > +#define   DCIF_DPI_HSYN_PAR_FP_H(x)		FIELD_PREP(GENMASK(11, 0), x)
+> > +#define   DCIF_DPI_HSYN_PAR_BP_H(x)		FIELD_PREP(GENMASK(27, 16), x)
+> > +
+> > +#define DCIF_DPI_VSYN_PAR			0x48
+> > +#define   DCIF_DPI_VSYN_PAR_FP_V(x)		FIELD_PREP(GENMASK(11, 0), x)
+> > +#define   DCIF_DPI_VSYN_PAR_BP_V(x)		FIELD_PREP(GENMASK(27, 16), x)
+> > +
+> > +#define DCIF_DPI_VSYN_HSYN_WIDTH		0x4C
+> > +#define   DCIF_DPI_VSYN_HSYN_WIDTH_PW_H(x)	FIELD_PREP(GENMASK(11, 0), x)
+> > +#define   DCIF_DPI_VSYN_HSYN_WIDTH_PW_V(x)	FIELD_PREP(GENMASK(27, 16), x)
+> > +
+> > +/* Control Descriptor Registers, n=0-1*/
+> > +#define DCIF_CTRLDESC0(n)			(0x10000 + (n) * 0x10000)
+> > +#define   DCIF_CTRLDESC0_AB_MODE(x)		FIELD_PREP(GENMASK(1, 0), x)
+> > +#define   ALPHA_EMBEDDED			0
+> > +#define   ALPHA_GLOBAL				1
+> > +#define   DCIF_CTRLDESC0_YUV_FORMAT_MASK	GENMASK(15, 14)
+> > +#define   DCIF_CTRLDESC0_YUV_FORMAT(x)		FIELD_PREP(GENMASK(15, 14), x)
+> > +#define   CTRLDESCL0_YUV_FORMAT_Y2VY1U		0x0
+> > +#define   CTRLDESCL0_YUV_FORMAT_Y2UY1V		0x1
+> > +#define   CTRLDESCL0_YUV_FORMAT_VY2UY1		0x2
+> > +#define   CTRLDESCL0_YUV_FORMAT_UY2VY1		0x3
+> > +#define   DCIF_CTRLDESC0_GLOBAL_ALPHA(x)	FIELD_PREP(GENMASK(23, 16), x)
+> > +#define   DCIF_CTRLDESC0_FORMAT_MASK		GENMASK(27, 24)
+> > +#define   DCIF_CTRLDESC0_FORMAT(x)		FIELD_PREP(GENMASK(27, 24), x)
+> > +#define   CTRLDESCL0_FORMAT_RGB565		0x4
+> > +#define   CTRLDESCL0_FORMAT_ARGB1555		0x5
+> > +#define   CTRLDESCL0_FORMAT_ARGB4444		0x6
+> > +#define   CTRLDESCL0_FORMAT_YCBCR422		0x7
+> > +#define   CTRLDESCL0_FORMAT_RGB888		0x8
+> > +#define   CTRLDESCL0_FORMAT_ARGB8888		0x9
+> > +#define   CTRLDESCL0_FORMAT_ABGR8888		0xa
+> > +#define   DCIF_CTRLDESC0_SHADOW_LOAD_EN		BIT(30)
+> > +#define   DCIF_CTRLDESC0_EN			BIT(31)
+> > +
+> > +#define DCIF_CTRLDESC1(n)			(0x10004 + (n) * 0x10000)
+> > +#define   DCIF_CTRLDESC1_POSX(x)		FIELD_PREP(GENMASK(11, 0), x)
+> > +#define   DCIF_CTRLDESC1_POSY(x)		FIELD_PREP(GENMASK(27, 16), x)
+> > +
+> > +#define DCIF_CTRLDESC2(n)			(0x10008 + (n) * 0x10000)
+> > +#define   DCIF_CTRLDESC2_WIDTH(x)		FIELD_PREP(GENMASK(11, 0), x)
+> > +#define   DCIF_CTRLDESC2_HEIGHT(x)		FIELD_PREP(GENMASK(27, 16), x)
+> > +
+> > +#define DCIF_CTRLDESC3(n)			(0x1000C + (n) * 0x10000)
+> > +#define   DCIF_CTRLDESC3_PITCH(x)		FIELD_PREP(GENMASK(15, 0), x)
+> > +#define   DCIF_CTRLDESC3_T_SIZE(x)		FIELD_PREP(GENMASK(17, 16), x)
+> > +#define   DCIF_CTRLDESC3_P_SIZE(x)		FIELD_PREP(GENMASK(22, 20), x)
+> > +
+> > +#define DCIF_CTRLDESC4(n)			(0x10010 + (n) * 0x10000)
+> > +#define   DCIF_CTRLDESC4_ADDR(x)		FIELD_PREP(GENMASK(31, 0), x)
+> > +
+> > +#define DCIF_CTRLDESC5(n)			(0x10014 + (n) * 0x10000)
+> > +#define DCIF_CTRLDESC6(n)			(0x10018 + (n) * 0x10000)
+> > +#define   DCIF_CTRLDESC6_BCLR_B(x)		FIELD_PREP(GENMASK(7, 0), x)
+> > +#define   DCIF_CTRLDESC6_BCLR_G(x)		FIELD_PREP(GENMASK(15, 8), x)
+> > +#define   DCIF_CTRLDESC6_BCLR_R(x)		FIELD_PREP(GENMASK(23, 16), x)
+> > +#define   DCIF_CTRLDESC6_BCLR_A(x)		FIELD_PREP(GENMASK(31, 24), x)
+> > +
+> > +/* CLUT control Register */
+> > +#define DCIF_CLUT_CTRL				0x1003C
+> > +#define   DCIF_CLUT_CTRL_CLUT0_SEL(x)		FIELD_PREP(GENMASK(0, 0), x)
+> > +#define   DCIF_CLUT_CTRL_CLUT1_SEL(x)		FIELD_PREP(GENMASK(3, 3), x)
+> > +#define   DCIF_CLUT_CTRL_CLUT_MUX(x)		FIELD_PREP(GENMASK(29, 28), x)
+> > +#define   DCIF_CLUT_CTRL_CLUT_SHADOW_LOAD_EN(x)	FIELD_PREP(GENMASK(31, 31), x)
+> > +
+> > +/* FIFO Panic Threshold Register, n=0-1 */
+> > +#define DCIF_PANIC_THRES(n)			(0x10040 + (n) * 0x10000)
+> > +#define   DCIF_PANIC_THRES_LOW_MASK		GENMASK(11, 0)
+> > +#define   DCIF_PANIC_THRES_LOW(x)		FIELD_PREP(GENMASK(11, 00), x)
+> > +#define   DCIF_PANIC_THRES_HIGH_MASK		GENMASK(27, 16)
+> > +#define   DCIF_PANIC_THRES_HIGH(x)		FIELD_PREP(GENMASK(27, 16), x)
+> > +#define   DCIF_PANIC_THRES_REQ_EN		BIT(31)
+> > +#define   PANIC0_THRES_MAX			511
+> > +
+> > +/* Layer Status Register 0, n=0-1 */
+> > +#define DCIF_LAYER_SR0(n)			(0x10044 + (n) * 0x10000)
+> > +#define   DCIF_LAYER_SR0_L0_FIFO_CNT_MASK	GENMASK(9, 0)
+> > +#define   DCIF_LAYER_SR0_L0_FIFO_CNT(x)		FIELD_PREP(GENMASK(9, 0), x)
+> > +
+> > +/* Color Space Conversion Control and Coefficient Registers for Layer 0 */
+> > +#define DCIF_CSC_CTRL_L0			0x10050
+> > +#define   DCIF_CSC_CTRL_L0_CSC_EN		BIT(0)
+> > +#define   DCIF_CSC_CTRL_L0_CSC_MODE_YCBCR2RGB	BIT(1)
+> > +
+> > +#define DCIF_CSC_COEF0_L0			0x10054
+> > +#define   DCIF_CSC_COEF0_L0_A1(x)		FIELD_PREP_CONST(GENMASK(10, 0), x)
+> > +#define   DCIF_CSC_COEF0_L0_A2(x)		FIELD_PREP_CONST(GENMASK(26, 16), x)
+> > +
+> > +#define DCIF_CSC_COEF1_L0			0x10058
+> > +#define   DCIF_CSC_COEF1_L0_A3(x)		FIELD_PREP_CONST(GENMASK(10, 0), x)
+> > +#define   DCIF_CSC_COEF1_L0_B1(x)		FIELD_PREP_CONST(GENMASK(26, 16), x)
+> > +
+> > +#define DCIF_CSC_COEF2_L0			0x1005C
+> > +#define   DCIF_CSC_COEF2_L0_B2(x)		FIELD_PREP_CONST(GENMASK(10, 0), x)
+> > +#define   DCIF_CSC_COEF2_L0_B3(x)		FIELD_PREP_CONST(GENMASK(26, 16), x)
+> > +
+> > +#define DCIF_CSC_COEF3_L0			0x10060
+> > +#define   DCIF_CSC_COEF3_L0_C1(x)		FIELD_PREP_CONST(GENMASK(10, 0), x)
+> > +#define   DCIF_CSC_COEF3_L0_C2(x)		FIELD_PREP_CONST(GENMASK(26, 16), x)
+> > +
+> > +#define DCIF_CSC_COEF4_L0			0x10064
+> > +#define   DCIF_CSC_COEF4_L0_C3(x)		FIELD_PREP_CONST(GENMASK(10, 0), x)
+> > +#define   DCIF_CSC_COEF4_L0_D1(x)		FIELD_PREP_CONST(GENMASK(24, 16), x)
+> > +
+> > +#define DCIF_CSC_COEF5_L0			0x10068
+> > +#define   DCIF_CSC_COEF5_L0_D2(x)		FIELD_PREP_CONST(GENMASK(8, 0), x)
+> > +#define   DCIF_CSC_COEF5_L0_D3(x)		FIELD_PREP_CONST(GENMASK(24, 16), x)
+> > +
+> > +/* CRC Control, Threshold, and Histogram Coefficient Registers */
+> > +#define DCIF_CRC_CTRL				0x20100
+> > +#define   DCIF_CRC_CTRL_CRC_EN(x)		(1 << (x))
+> > +#define   DCIF_CRC_CTRL_HIST_REGION_SEL(x)	FIELD_PREP(GENMASK(17, 16), x)
+> > +#define   DCIF_CRC_CTRL_HIST_MODE		BIT(21)
+> > +#define   DCIF_CRC_CTRL_HIST_TRIG		BIT(22)
+> > +#define   DCIF_CRC_CTRL_HIST_EN			BIT(23)
+> > +#define   DCIF_CRC_CTRL_CRC_MODE		BIT(28)
+> > +#define   DCIF_CRC_CTRL_CRC_TRIG		BIT(29)
+> > +#define   DCIF_CRC_CTRL_CRC_ERR_CNT_RST		BIT(30)
+> > +#define   DCIF_CRC_CTRL_CRC_SHADOW_LOAD_EN	BIT(31)
+> > +
+> > +#define DCIF_CRC_THRES				0x20104
+> > +#define   DCIF_CRC_THRES_CRC_THRESHOLD_MASK	GENMASK(31, 0)
+> > +#define   DCIF_CRC_THRES_CRC_THRESHOLD(x)	FIELD_PREP(GENMASK(31, 0), x)
+> > +
+> > +#define DCIF_CRC_HIST_COEF			0x20108
+> > +#define   DCIF_CRC_HIST_COEF_HIST_WB_MASK	GENMASK(7, 0)
+> > +#define   DCIF_CRC_HIST_COEF_HIST_WB(x)		FIELD_PREP(GENMASK(7, 0), x)
+> > +#define   DCIF_CRC_HIST_COEF_HIST_WG_MASK	GENMASK(15, 8)
+> > +#define   DCIF_CRC_HIST_COEF_HIST_WG(x)		FIELD_PREP(GENMASK(15, 8), x)
+> > +#define   DCIF_CRC_HIST_COEF_HIST_WR_MASK	GENMASK(23, 16)
+> > +#define   DCIF_CRC_HIST_COEF_HIST_WR(x)		FIELD_PREP(GENMASK(23, 16), x)
+> > +
+> > +#define DCIF_CRC_ERR_CNT			0x2010C
+> > +#define   DCIF_CRC_ERR_CNT_CRC_ERR_CNT_MASK	GENMASK(31, 0)
+> > +#define   DCIF_CRC_ERR_CNT_CRC_ERR_CNT(x)	FIELD_PREP(GENMASK(31, 0), x)
+> > +
+> > +#define DCIF_CRC_SR				0x20110
+> > +#define   DCIF_CRC_SR_HIST_CNT_SAT_MASK		BIT(13)
+> > +#define   DCIF_CRC_SR_HIST_CNT_SAT(x)		FIELD_PREP(GENMASK(13, 13), x)
+> > +#define   DCIF_CRC_SR_HIST_SAT_MASK		BIT(14)
+> > +#define   DCIF_CRC_SR_HIST_SAT(x)		FIELD_PREP(GENMASK(14, 14), x)
+> > +#define   DCIF_CRC_SR_HIST_BUSY_MASK		BIT(15)
+> > +#define   DCIF_CRC_SR_HIST_BUSY(x)		FIELD_PREP(GENMASK(15, 15), x)
+> > +#define   DCIF_CRC_SR_CRC_STATUS_MASK		BIT(31)
+> > +#define   DCIF_CRC_SR_CRC_STATUS(x)		FIELD_PREP(GENMASK(31, 31), x)
+> > +
+> > +#define DCIF_CRC_HIST_CNT_B(n)			(0x20114 + (n) * 4)
+> > +#define   DCIF_B_BIN_CNT_MASK			GENMASK(20, 0)
+> > +#define   DCIF_B_BIN_CNT(x)			FIELD_PREP(GENMASK(20, 0), x)
+> > +
+> > +/* CRC Region Position, Size, Value, and Expected Value Registers, n=0-3 */
+> > +#define DCIF_CRC_POS_R(n)			(0x20214 + (n) * 0x10)
+> > +#define   DCIF_CRC_POS_CRC_HOR_POS(x)		FIELD_PREP(GENMASK(11, 0), x)
+> > +#define   DCIF_CRC_POS_CRC_VER_POS(x)		FIELD_PREP(GENMASK(27, 16), x)
+> > +
+> > +#define DCIF_CRC_SIZE_R(n)			(0x20218 + (n) * 0x10)
+> > +#define   DCIF_CRC_SIZE_CRC_HOR_SIZE(x)		FIELD_PREP(GENMASK(11, 0), x)
+> > +#define   DCIF_CRC_SIZE_CRC_VER_SIZE(x)		FIELD_PREP(GENMASK(27, 16), x)
+> > +
+> > +#define DCIF_CRC_VAL_R(n)			(0x2021C + (n) * 0x10)
+> > +#define   DCIF_CRC_VAL_CRC_VAL_MASK		GENMASK(31, 0)
+> > +#define   DCIF_CRC_VAL_CRC_VAL(x)		FIELD_PREP(GENMASK(31, 0), x)
+> > +
+> > +#define DCIF_CRC_EXP_VAL_R(n)			(0x20220 + (n) * 0x10)
+> > +#define   DCIF_CRC_EXP_VAL_CRC_EXP_VAL_MASK	GENMASK(31, 0)
+> > +#define   DCIF_CRC_EXP_VAL_CRC_EXP_VAL(x)	FIELD_PREP(GENMASK(31, 0), x)
+> > +
+> > +#endif /* __DCIF_REG_H__ */
+> > --
+> > 2.34.1
+> >
