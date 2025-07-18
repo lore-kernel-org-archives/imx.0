@@ -1,92 +1,242 @@
-Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C5D27726
-	for <imx@lists.linux.dev>; Fri, 18 Jul 2025 13:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724B8146588
+	for <imx@lists.linux.dev>; Fri, 18 Jul 2025 13:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752844590; cv=none; b=RbFuh8IpXl2NG8hauD98GGDcJal5OA5YmLCRHM4o+y073pxzrTn03OV2jVrO7cXBO8xVStHRMhVTPxUVl6Eadpr2QXiLI/2n8mX3cAX6wu3HdaDiCaI0tC4hS08+knvv4FMNzNdzRcc7u8AzjnYCkyURZO9YIutuBOcRD3NkZ+w=
+	t=1752846184; cv=none; b=CSsoTPknj/2XynGp2NFuCPsnY+uOHJRByJoIrCuyLvyMgv30eH6SucOHEHM7+srwKCThSNFinlDWhC13TXMGQTdYGgZ4jIPjNY6KIb67rFRS0Op70T+PBbq3Pb8Lzvo8fe275doEbKhIbWzk/IjQ5ILwNVSabyFCWKtbRQE40Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752844590; c=relaxed/simple;
-	bh=aRnDQrCYUBk/LDKhnGyuWMtVBPgBQdZosKC63wybPCc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UXenn1XmXKrjBuSgK9Mz01A5P53jjUn5QSfANl0IBsGSlwiu4KlK6SFjNIghwTgQ+icebL+O9N0JAnVmHlzCWQIW4LXENPzg9rUrEWYnvapFQt3nFjPaqZGN6STV+vRyYXAX0cEpFOLs/AWS/mXFK2iszny2h88DWM4BL3RXcrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=lqBr9JbL; arc=none smtp.client-ip=185.70.43.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+	s=arc-20240116; t=1752846184; c=relaxed/simple;
+	bh=LWuetKShAh86Z24SW0fa7M2L7EXl1/ZdmVgKTctzTdU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=DJPNuOqOuXNx4ifgcjyGkV4mIm29zoJzlteRKCzL5036VUluuwgbocb1cnWqJGKn3AftfK7lkPYh0+W30x+ZiF6aBRL42WI4OgFtBQdIqKVMArdv1UFGy7MFFrZrpxcBt7kL+DCxKHyZ+UJMKKjjorrfTbcJHtGVlEFSicXvo3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=CkoBcYsg; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="lqBr9JbL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1752844584; x=1753103784;
-	bh=w5mFdxT2E55cBl/6uXS9G8hfrL+IO2X+Cc4+swbUN2Q=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=lqBr9JbLrA3cUDVZDcRJPSh39bcoH7zgIMzkz8a4SdXkc0E+qtkBvKzQp3mmShmeO
-	 mSHJBcYCHZPv5S1bRioStQq16a/U9ov1c2wPakrJDU97nJc0ILifinIxWj6S+dt/CI
-	 4vJFEbeY7TWT4JGTaxfOEmJQ6kbDwJbGOvlJovcQpnfiSIN1nfhXRPdntRx6SNgkvb
-	 uBY15upqiIqIX5IWYBAlXMkpwT8Xp1v8m1iNBPv2La0JgkJEEFxZYiZjWhBkehCnbh
-	 Gc7Dl/C/qXfXucvhWitKrRRuSFikUhQo5F94V+tXBaTQq7jeGg4ypHb8LZyRFRTesh
-	 OmIe96G8Epcqw==
-Date: Fri, 18 Jul 2025 13:16:16 +0000
-To: samuel.kayode@savoirfairelinux.com
-From: Sean Nyekjaer <sean@geanix.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>, imx@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>, Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>, Robin Gong <yibin.gong@nxp.com>, Enric Balletbo i Serra <eballetbo@gmail.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH v9 4/6] input: pf1550: add onkey support
-Message-ID: <67ki6m7dg5sbh7wknrnlermv5l3pw5fyx4agjtljbv54e5pxyj@d3l5jbz7osiz>
-In-Reply-To: <20250716-pf1550-v9-4-502a647f04ef@savoirfairelinux.com>
-References: <20250716-pf1550-v9-0-502a647f04ef@savoirfairelinux.com> <20250716-pf1550-v9-4-502a647f04ef@savoirfairelinux.com>
-Feedback-ID: 134068486:user:proton
-X-Pm-Message-ID: b4707700d9b27a7fb9b454f27aadd55bfec2e4c5
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="CkoBcYsg"
+Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 780C820779;
+	Fri, 18 Jul 2025 15:34:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1752845683;
+	bh=XOk35ZzBn37AEr/mW9u2vChIBOYONAdbfp7TIWwzLCA=; h=From:To:Subject;
+	b=CkoBcYsghFk1GxTRNki8tgsuHIbOZ7FY5af/1MI+ete+HSy3UqmsoUn2uknqrp9/z
+	 X0m5IQBKU/Zo1Gh99fAcqxk88cb+24V3Hp7xWlSxJPdHbXxhfiBkTIr2dVrdnzzOWX
+	 2oRyP7P9o+G1hwSoY8VHlmros8eFIUr/rHvR16sso3znp31ao4dTBIsGlrWT4L4MpZ
+	 IT/OPhiPFW7J+iTNwPabwrzfePz8rxdduxsW8/i50E16fjCBlFFA4PNA6uBucDrfnQ
+	 +C+SkzV04bInphmtO2eBDK50JnhNxJrmigVJmS6yEBfH1uwmk1ulFaJU3TZrH7vpSD
+	 fsd4PN51SbRPw==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Dong Aisheng <aisheng.dong@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Primoz Fiser <primoz.fiser@norik.com>
+Subject: [PATCH v5 1/2] i2c: lpi2c: use readl_poll_timeout() for register polling
+Date: Fri, 18 Jul 2025 15:34:28 +0200
+Message-Id: <20250718133429.67219-2-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250718133429.67219-1-francesco@dolcini.it>
+References: <20250718133429.67219-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 16, 2025 at 11:11:47AM +0100, Samuel Kayode via B4 Relay wrote:
-> From: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
->=20
-> Add support for the onkey of the pf1550 PMIC.
->=20
-> Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-> ---
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[...]
+Replaces polling loops with the readl_poll_timeout() helper macro.
 
-> +
-> +static int pf1550_onkey_probe(struct platform_device *pdev)
-> +{
-> +=09struct onkey_drv_data *onkey;
-> +=09struct input_dev *input;
-> +=09bool key_power =3D false;
-> +=09int i, irq, error;
-> +
-> +=09onkey =3D devm_kzalloc(&pdev->dev, sizeof(*onkey), GFP_KERNEL);
-> +=09if (!onkey)
-> +=09=09return -ENOMEM;
-> +
-> +=09onkey->dev =3D &pdev->dev;
-> +
-> +=09onkey->pf1550 =3D dev_get_drvdata(pdev->dev.parent);
-> +=09if (!onkey->pf1550->regmap)
-> +=09=09return dev_err_probe(&pdev->dev, -ENODEV,
-> +=09=09=09=09     "failed to get regmap\n");
-> +
-> +=09onkey->wakeup =3D device_property_read_bool(pdev->dev.parent,
-> +=09=09=09=09=09=09  "wakeup-source");
-> +
-> +=09if (device_property_read_bool(pdev->dev.parent,
-> +=09=09=09=09      "nxp,disable-key-power")) {
-> +=09=09error =3D regmap_write(onkey->pf1550->regmap,
-> +=09=09=09=09     PF1550_PMIC_REG_PWRCTRL1, 0);
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Carlos Song <carlos.song@nxp.com>
+Tested-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+v4 -> v5
+- rebased due to commit 614b1c3cbfb0 ("i2c: use inclusive callbacks in struct i2c_algorithm").
+- add Tested-by Primoz
 
-I would use regmap_clear_bits() here.
+v3 -> v4
+- Split the patch into two parts: one for the readl_poll_timeout() and one for the atomic implementation.
+- Change the readl_poll_timeout() delay to 0 us to do not change the behavior of the driver.
+- Use err variable consistently.
 
-/Sean
+v2 -> v3
+- Closes: https://lore.kernel.org/oe-kbuild-all/202505130735.zh3WuTNu-lkp@intel.com/. Using the return value of
+lpi2c_imx_read_msr_poll_timeout() to check for errors.
+
+v1 -> v2
+- Rename READL_POLL_TIMEOUT to lpi2c_imx_read_msr_poll_timeout
+- Remove addr and timeout_us parameters from lpi2c_imx_read_msr_poll_timeout since they are used always with the same value
+- add r-b tag from Carlos Song
+---
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 94 ++++++++++++++----------------
+ 1 file changed, 45 insertions(+), 49 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 064bc83840a6..4a25c92adfc1 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -16,6 +16,7 @@
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/iopoll.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+@@ -187,6 +188,10 @@ struct lpi2c_imx_struct {
+ 	struct i2c_client	*target;
+ };
+ 
++#define lpi2c_imx_read_msr_poll_timeout(val, cond)                            \
++		  readl_poll_timeout(lpi2c_imx->base + LPI2C_MSR, val, cond,  \
++				     0, 500000)
++
+ static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
+ 			      unsigned int enable)
+ {
+@@ -195,33 +200,34 @@ static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
+ 
+ static int lpi2c_imx_bus_busy(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+-	unsigned long orig_jiffies = jiffies;
++	int err;
+ 	unsigned int temp;
+ 
+-	while (1) {
+-		temp = readl(lpi2c_imx->base + LPI2C_MSR);
+-
+-		/* check for arbitration lost, clear if set */
+-		if (temp & MSR_ALF) {
+-			writel(temp, lpi2c_imx->base + LPI2C_MSR);
+-			return -EAGAIN;
+-		}
++	err = lpi2c_imx_read_msr_poll_timeout(temp,
++					      temp & (MSR_ALF | MSR_BBF | MSR_MBF));
+ 
+-		if (temp & (MSR_BBF | MSR_MBF))
+-			break;
++	/* check for arbitration lost, clear if set */
++	if (temp & MSR_ALF) {
++		writel(temp, lpi2c_imx->base + LPI2C_MSR);
++		return -EAGAIN;
++	}
+ 
+-		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500))) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "bus not work\n");
+-			if (lpi2c_imx->adapter.bus_recovery_info)
+-				i2c_recover_bus(&lpi2c_imx->adapter);
+-			return -ETIMEDOUT;
+-		}
+-		schedule();
++	/* check for bus not busy */
++	if (err) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "bus not work\n");
++		if (lpi2c_imx->adapter.bus_recovery_info)
++			i2c_recover_bus(&lpi2c_imx->adapter);
++		return -ETIMEDOUT;
+ 	}
+ 
+ 	return 0;
+ }
+ 
++static u32 lpi2c_imx_txfifo_cnt(struct lpi2c_imx_struct *lpi2c_imx)
++{
++	return readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
++}
++
+ static void lpi2c_imx_set_mode(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+ 	unsigned int bitrate = lpi2c_imx->bitrate;
+@@ -259,25 +265,18 @@ static int lpi2c_imx_start(struct lpi2c_imx_struct *lpi2c_imx,
+ 
+ static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+-	unsigned long orig_jiffies = jiffies;
+ 	unsigned int temp;
++	int err;
+ 
+ 	writel(GEN_STOP << 8, lpi2c_imx->base + LPI2C_MTDR);
+ 
+-	do {
+-		temp = readl(lpi2c_imx->base + LPI2C_MSR);
+-		if (temp & MSR_SDF)
+-			break;
++	err = lpi2c_imx_read_msr_poll_timeout(temp, temp & MSR_SDF);
+ 
+-		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500))) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "stop timeout\n");
+-			if (lpi2c_imx->adapter.bus_recovery_info)
+-				i2c_recover_bus(&lpi2c_imx->adapter);
+-			break;
+-		}
+-		schedule();
+-
+-	} while (1);
++	if (err) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "stop timeout\n");
++		if (lpi2c_imx->adapter.bus_recovery_info)
++			i2c_recover_bus(&lpi2c_imx->adapter);
++	}
+ }
+ 
+ /* CLKLO = I2C_CLK_RATIO * CLKHI, SETHOLD = CLKHI, DATAVD = CLKHI/2 */
+@@ -393,26 +392,23 @@ static int lpi2c_imx_pio_msg_complete(struct lpi2c_imx_struct *lpi2c_imx)
+ 
+ static int lpi2c_imx_txfifo_empty(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+-	unsigned long orig_jiffies = jiffies;
+-	u32 txcnt;
+-
+-	do {
+-		txcnt = readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
++	unsigned int temp;
++	int err;
+ 
+-		if (readl(lpi2c_imx->base + LPI2C_MSR) & MSR_NDF) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "NDF detected\n");
+-			return -EIO;
+-		}
++	err = lpi2c_imx_read_msr_poll_timeout(temp,
++					      (temp & MSR_NDF) || !lpi2c_imx_txfifo_cnt(lpi2c_imx));
+ 
+-		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500))) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "txfifo empty timeout\n");
+-			if (lpi2c_imx->adapter.bus_recovery_info)
+-				i2c_recover_bus(&lpi2c_imx->adapter);
+-			return -ETIMEDOUT;
+-		}
+-		schedule();
++	if (temp & MSR_NDF) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "NDF detected\n");
++		return -EIO;
++	}
+ 
+-	} while (txcnt);
++	if (err) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "txfifo empty timeout\n");
++		if (lpi2c_imx->adapter.bus_recovery_info)
++			i2c_recover_bus(&lpi2c_imx->adapter);
++		return -ETIMEDOUT;
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
 
