@@ -1,185 +1,133 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012025.outbound.protection.outlook.com [52.101.66.25])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A0A17A2E3
-	for <imx@lists.linux.dev>; Fri, 18 Jul 2025 02:08:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752804513; cv=fail; b=Y2b5y4dy7lKokN1MP7WqiaJQnwOBdouT2lOQJv8GJd3JlMw94pd1XjKeVXi5NLutMyTSy4iWcKm2RDfFwptmshqWx8uVWTgaX0CsUJP89cEKpFCv7z5LyOD6siHb+ROvn8fn0E9RDXvi2BN7y8SNFOqq0D9KKZHI26R3h4+TAXU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752804513; c=relaxed/simple;
-	bh=Edm9bI1whk3oz5OOtGDlHd98W/ibPAYr//D7T6fk40A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=FTZfNsbagF4G8rOsbBCkXSTcanXafGqLE+9ZPRkWoBGDqCefIYp7pHql9D0IuNuqW0kt4HrA7qmBAnupqSVmx7rapKySoOOm/WA+kcEqy0XkiksUvPXsYJLEwwN4YpOXeDRyD/YR/Y74q7BSpw1uoZKZxVhq24z77Hge7JMKBcE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fpR1hdKW; arc=fail smtp.client-ip=52.101.66.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4201DF994
+	for <imx@lists.linux.dev>; Fri, 18 Jul 2025 05:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752815457; cv=none; b=lE8g/QkjM4QOJYkJvYR38bL2BfZTm9VVcRWaMlmkQJGfmtCQjO9sqWywsdb5KWHArxKi4EKTSNhKbhsH1/ycS5Zxpzvrus6Uwh6ooxOafwaiKp2Ni5LGYzzDIxz7/Jo/9Z9x4iUWjw+u4a1gKEUKpNkYLkTemZHsEFPCnK3hHRA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752815457; c=relaxed/simple;
+	bh=n/+1h1fSJ7IjErV3BUyMPtlXMl0SjcnOvGwnTapubNg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a4VgZzCwyvkoEAimHdeHLfvNBzZc91SxTvoOsllq6G5CyjtqF+LkKpoEk2sbNrC8nq/uGukxvbd9L2d7smQYQlWuqPNELOAJ+S9fWZ38+Vela/JQdt1xFmx6zZrp8oa1k+iwvT91ydZ9mQB92yNbVayjBMwn5Sofj+TcP94nw3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=bHtpiwwM; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fpR1hdKW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LPGr/clbEHLb/Z7Ne6H0uXaWG3taO/+jq6fytuKXHukNfQaoCfDKXIWJcFtp+S/ik2+0/UV851nzySCUDQYHRVeP7UTvKjORHl5cDr4rZvr5Uytgf4sOfQctUc4UxNnQISfxCpLpdg0myQxqoDp25nN69d3wsNE5D0MCwWek3yx3avGWT8FdSWhYe7+mr7UYJ7+7TsUJi6XX54MO/ME62zkmd5XmSj8lYYlMFXn/gvDk8iTGP91DWDL8avSOyzJxR67RNNrA0ckS0xWkWIB1qS+4RQZ+ysralSwbrQOquEy7SkrMoOTREA43+lSu4eYb2cvKC8e8jsTq15JlyjwekQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KdpsP6DZA9PxNngcPrt9s9/o9ORw8ZsTw3hnoQ43BW8=;
- b=fddDWlfCD3wxXXf+FnYofzkUta6n7x+64/6q6j2PSiA7TM/z4M2pGBnPngXekTxrqDclKRDEx+g/oz7GPMOSY9Yp7CtbXQViqu9AMqSyeMO2CnVkUw4vFaMT+CQe+A0SgFjatA6+9Ik0qLw+WfZcVNLezxVGkcZzm0AkvnJLiBSHChX9eJFY3LgzpYJ1zFXXvdsdbh6MJ5d1xmI5CB6yBYpxtFnbUCfzg82jBbDznTv845VMBzIu8laobBdSREulvNxf6xd6iEnSFxR+7rX4XlOyar3vNq1wIFHwbnRDS6NyJ92geqFinK9b4NfQX6Z+68PR4L35JenAQctC3xtWcA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KdpsP6DZA9PxNngcPrt9s9/o9ORw8ZsTw3hnoQ43BW8=;
- b=fpR1hdKWbMiDSZNsd/71/LvWzfP3OAv2khNiL5xkSOhuBixBkM4486BbB40hWl0qF9K74R75R/C1URoiY32T3o9d9WKl8JSDT+1q2PMcX/smBUuk/oGxyRfTVsBUvEbZHH5sNl+oCnqe65OvbJxmZpWSslal4VIWHCGNhFRcY9ZzxkJMpgyEZk4Dxj4yfXEsSyG2NQjDym/khCmk3F5ka+7mudCb+fUT+Kt3S/bbv+pprHE78PtKl01Pu8VGWvZ3ecQErQE5FzEAX+yBoj1GFOTwe77xpHjUpEdi5yU5smgRLkodkfoE0Xqqar+Yvu3i+CcykGPlkukhWoTN2WaiVA==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PAWPR04MB9742.eurprd04.prod.outlook.com (2603:10a6:102:389::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Fri, 18 Jul
- 2025 02:08:28 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8922.028; Fri, 18 Jul 2025
- 02:08:28 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-CC: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, Claudiu Manoil
-	<claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Clark
- Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de"
-	<s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, "F.S.
- Peng" <fushi.peng@nxp.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: RE: [PATCH v2 net-next 04/14] ptp: netc: add PTP_CLK_REQ_PPS support
-Thread-Topic: [PATCH v2 net-next 04/14] ptp: netc: add PTP_CLK_REQ_PPS support
-Thread-Index: AQHb9iZuKYxtnoJNJkq/rP1bHUAsm7Q1LcuAgAEJczCAADe3gIAAtl2A
-Date: Fri, 18 Jul 2025 02:08:28 +0000
-Message-ID:
- <PAXPR04MB85104B281581D95FDAFE59D98850A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250716073111.367382-1-wei.fang@nxp.com>
- <20250716073111.367382-5-wei.fang@nxp.com>
- <aHgGJ6sia5Xe7AA9@lizhi-Precision-Tower-5810>
- <PAXPR04MB85101A40D9D866083BA88E6B8851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <aHkTkdFaYd8IOkpG@lizhi-Precision-Tower-5810>
-In-Reply-To: <aHkTkdFaYd8IOkpG@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PAWPR04MB9742:EE_
-x-ms-office365-filtering-correlation-id: b1d2402b-3503-4699-6aeb-08ddc59ffca5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|19092799006|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?hW6G4ilFK61HyKO4+0H+RvuHG/FEwmRTkI2cmHVF3TCYwaOPz7KljPIVzCmg?=
- =?us-ascii?Q?ymije7S6jaeF9S363glzmfRsgxmdLj2+vJIAg8TQ3TmzLRPvwt/c9dWNv2RC?=
- =?us-ascii?Q?Fdd9hm6fWma054tU2CpRyJr9p31S8h5KJPd7VOP40J80rgTRoCit+PVu1uNK?=
- =?us-ascii?Q?9LdRFQkPAI9U0/w1WT4Ax3AdYoo9Iqb8RU3mUp62rtLjF0x1zCGYd2eqvD6T?=
- =?us-ascii?Q?hrHcy8Yc9vNnMrDwLX3pcTUhOfibvbKBipLxBkqas1tV8y2JyzTchFcjr5r+?=
- =?us-ascii?Q?l3sVhTRPoZfprLyfD7zsiBCXJgPSjI9eTzP+zFTAGbG845m7k/EUxC9G86U3?=
- =?us-ascii?Q?LnMYy6r3qmKzOON4tXTRRJGNis9IhUYcOkPQWzWBR7kj+E9p98M6Z9qY0qm3?=
- =?us-ascii?Q?9qVPbB2xPNo+KxRHoUtOKnAkbnIyTBRSEJTSjcsOaf3uRrYhTU/FF7n4HJCJ?=
- =?us-ascii?Q?MS+7owvRvyK/fbJgHycsVM4gwHB8g7OmrljNgqZHgE5lakp0B22MCy/9lt6h?=
- =?us-ascii?Q?Xfa6T0CRSCerrct+FiwwCAsGJux1K5/UoP9LhrvzNiMxRyHKCX9nZt8sCsX8?=
- =?us-ascii?Q?K+yXmhY3w3CQTZYeEvdIppey9d1N6igiuWRYVEZBcL0y+/9kfCAUGVLFoP7J?=
- =?us-ascii?Q?MVWczYS7SEreoM3RVt3WPaeofJ0SbavPJLJuoRj7D3rYxKgnCoOQr1tU3PTJ?=
- =?us-ascii?Q?teHP5PriEUXUh9zFJpPkyHIKXcWZeySFIrt3Y00Q5sQPpMI4ZnOP8r3zWS2Z?=
- =?us-ascii?Q?ef5FFvTJGxGnGUpy87M+4ZQJ+x88U7iL8whEuN8xebP7YDUv5zMEjIGJjVPu?=
- =?us-ascii?Q?Xn9cEjFSPufYdeQ+ZAsA/4SK5d/YyEFcsWT0ZN7iIyz3Ib8tVIEMUqYzh0xi?=
- =?us-ascii?Q?tNPfPpvo6rBJfLD8oG3ebGuoXqMRZxGdaVdMFX7F2NUMsAo2xalJuo7Uxuy3?=
- =?us-ascii?Q?n5SBRUmi3w0+S6dSeVNY9+KnxRVE/V+Hxo+BgZyTkr8TIpLEN8P6g3npTr6W?=
- =?us-ascii?Q?5H+jD4JsNBkj6i4CUFzcYNlR29OEjKJxQgMCtHtAxYGslcXSt7BP521cnzXS?=
- =?us-ascii?Q?+D5RUA9Y1nZX7gQwA6bIVH7tIFTj3uxQmB22xUjSD2AhRW1eVPX5BvQoIGeV?=
- =?us-ascii?Q?xS7rjGGlzgZ7KiNPwABhsY9EXXF81NwGSFwQO7att33UbLGqONSLk7/I3OoU?=
- =?us-ascii?Q?zsoUX2W1jOjNwRbc7z7wBd05URpuDv0+N0Zl3B4k+EsX3dlDDJ8Nbg1Un9Mn?=
- =?us-ascii?Q?d/8AKmPwPbvIv39kmyEX3Yu0DrCNYq3Y49HEOZW/hvNWYfJ1heHZwYGJaaAz?=
- =?us-ascii?Q?go1tdv9ziwicEYP0NmuH9W6gyBAVke8GHzTmFJ0n0/9M+7xqIkafPBs2ytt+?=
- =?us-ascii?Q?OJjUJE8bA8tn+9vfgJSJnZLxUQt01uIHZUsbbb6ypzyKDZaEclifn5/CyFZK?=
- =?us-ascii?Q?k0WmJ2xslgGT/1zeVkfiC1W1RibqgyC6bZUAkBMqLX+F+uNdmELR2g=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(19092799006)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?xmcQCbRCDNoqIVQ2bK0az4om/mDrAa8qDrC+Ol8vPrs55TbZfRXG2Sbq7pC1?=
- =?us-ascii?Q?mSiAMYu+Hvzlj+5Xe9D5GYhmkBXP4PXtKhT/HmsJIlRXbu0a0zqMbpLHQF5G?=
- =?us-ascii?Q?tkqx0sy51xGGP6RTZ/QwbXSRoKkhOCn/grPTjPa7ZGnkrWqlyB3gfQofWgHI?=
- =?us-ascii?Q?McPaVBzPfCtmgJMxkiKNZP57A9Mrow1t2anZgP7BJtBYiNfgoATZVpQC7VWj?=
- =?us-ascii?Q?rRgMzWJ1Mu34dUFQ/yw6qr+nRRHXtndDn2DX3tPvNoWz8kB+/ew9FJr4CPtF?=
- =?us-ascii?Q?qt8xzJcMp4mw5V+lTKFEv+MVDbzEgP7Bwdd2MOiAjqQbtSXC2K5B4IAu0yxS?=
- =?us-ascii?Q?Sf7qDyopB8XRuv06f+WtLSK0lzcgYxZJhKMk80wq5Q+aK+Xx7efyYjXdG3P+?=
- =?us-ascii?Q?/dl5UUaGCbSvuw0WrAXZckb/M4+JNNZJYPsky1TldLbwEDaLEOXX0E1tWUb8?=
- =?us-ascii?Q?cQQ9Y3XPhHqL/TE803rW+qXUkQd8l6NILrgFP7538HEeSsc79q/rH3Tb7LrE?=
- =?us-ascii?Q?Q0DfS22OIWpo8+Q4PZ37sshFnIgEkfGs6Y2eojLg4gTkiD7xpci94XC6ptxi?=
- =?us-ascii?Q?VP3YZJSxV5qZ+/SW+VUhcrqdUdyod1ktTdKC/E1JQMZ8EbMU4Us49RgYN2BK?=
- =?us-ascii?Q?xXZjVdjKTsbzDqCtiyYjDBb8sfCJltgbMXLc6oCWkWKzD9KSWbNcDDIGD8v/?=
- =?us-ascii?Q?u3zF2/VFtUkTvlbNFM9knsISeQ5pX6ii0vEbEFjHx6PhexTcvFK4EouLrOpv?=
- =?us-ascii?Q?OrpHYRGF8D/qN3/ivjdOV4HVQxCx4kEVFoNlJgtje4DvxJnv+AhMEog0Orl+?=
- =?us-ascii?Q?Humx01BEZkuEvHoEYHnB1TIW4x/qVrI6qsSJRk4a1Jt7YzWPtP0HzQMY8VlH?=
- =?us-ascii?Q?hhHSPXvNTbkXEsAHImRLN0nJQSQ6f44VYwSoMXLMUHHOcu9CGeAq2lsTl9P8?=
- =?us-ascii?Q?K3G1SfR3c4Sfhw5HtKCn8E+C5iFVpIWHPI3qje4O9CMyRSu9lV6FB3RUj6+/?=
- =?us-ascii?Q?Q/drpXAloEESnBoyFbLDUrnZEKng2uKSUtm0E92/Ms54MtRFikOWKzst8clN?=
- =?us-ascii?Q?z1OYPkjtcP7NQ5y/Csp4DYX1HucY07Pd8EMm1/pltkv/gjGQcLiBCktK652k?=
- =?us-ascii?Q?83EArFBtUi8sIB3B6oxwxX6As7ukXr+a8bs7IC+TQhwjhQW3bzDVyGU65o+a?=
- =?us-ascii?Q?52jISJaMzLT7X6gLDY5SDPd+PibhiSe08pAgn+M4OoHUwgFo2dZzkzd4cM37?=
- =?us-ascii?Q?k14+45CBLcWsLMgqzJfKBPZ9FvLCnkKQUjqorlmnYoocSfawixlVR2ynVQm8?=
- =?us-ascii?Q?PWWuiGKaAFTWuA97WtsR8xpjYUB54qiCcyQQFULMe3g8NQYM1vcnYqUoQVsk?=
- =?us-ascii?Q?w/3Lx5o+BHOcEydDFIJcRML079+KYbrnSZlq4t3qbqq3oiR6IS5tg+rh2/LK?=
- =?us-ascii?Q?FlVGXlVwB9lqwZWo0fKPsKQBDPdQxZxhgR3hBCsyBXMKEXiTBN7CDHjiYCkG?=
- =?us-ascii?Q?x4IRWyRzMsXxjSaeiGpQZ8QZS1Zw/ln/7/XfCrbxCQguWaKomkmUUlHnQoQs?=
- =?us-ascii?Q?COTOzoINueDmzdKVcNY=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="bHtpiwwM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=W/KPWTypw68rlP2ivlSO9Nj2ROf6caTcYTdVpsWKxvc=; b=bHtpiwwMCcg9TRDTp1vAU0mAOP
+	UjNvWxcSyqSJ1QV/cYhkOdE7c4/VHxifdUj0l19MpDEXumGku8zcyYtRE/wTEdvZMmJBBicB0kTEh
+	Wg5k1ZH2+24DmV/mquzZDK+0fpj65l1nbauMJG6b7w/oJv3LZdhyFJy3dOhRUFG8pypH+zRXWzqDC
+	fGUWkB3gjZAzgGhQ8EMG3d5s0ga0H4gQMlHyQQVTG9fPhWoRIZNXRpVsIEhfA0wq54aCWnnUFK1wc
+	dmH2yiqBHomhi/mzhjf/YKY0q3UlI4McXLMS7XTKkJJBGVIGz1eC1NKy4x1dF3iMmZblqw8P9zDuo
+	UtlbD7jQ==;
+Received: from [89.212.21.243] (port=48060 helo=[192.168.69.116])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1ucdN0-000Axh-0k;
+	Fri, 18 Jul 2025 07:10:53 +0200
+Message-ID: <4a882430-877c-40e9-b7bd-21d423340b20@norik.com>
+Date: Fri, 18 Jul 2025 07:10:49 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1d2402b-3503-4699-6aeb-08ddc59ffca5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jul 2025 02:08:28.5160
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RenkYtEagz/G/R+e4LuM5J7aTXqzkN5CVWa0ZjKXbNByG0ES34z8LUQx3M5i71q0a7iRFubxK50QK4AX3RufXQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9742
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] Populate of_node for i.MX netdevs
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, imx@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, upstream@lists.phytec.de,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>
+References: <20250717090037.4097520-1-primoz.fiser@norik.com>
+ <20250717070204.66e34588@kernel.org>
+Content-Language: en-US
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <20250717070204.66e34588@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-> On Thu, Jul 17, 2025 at 11:59:30AM +0000, Wei Fang wrote:
-> > > > +static u32 netc_timer_calculate_fiper_pw(struct netc_timer *priv,
-> > > > +					 u32 fiper)
-> > > > +{
-> > > > +	u64 divisor, pulse_width;
-> > > > +
-> > > > +	/* Set the FIPER pulse width to half FIPER interval by default.
-> > > > +	 * pulse_width =3D (fiper / 2) / TMR_GCLK_period,
-> > > > +	 * TMR_GCLK_period =3D NSEC_PER_SEC / TMR_GCLK_freq,
-> > > > +	 * TMR_GCLK_freq =3D (clk_freq / oclk_prsc) Hz,
-> > > > +	 * so pulse_width =3D fiper * clk_freq / (2 * NSEC_PER_SEC * oclk=
-_prsc).
-> > > > +	 */
-> > > > +	divisor =3D mul_u32_u32(2000000000U, priv->oclk_prsc);
-> > >
-> > > is it 2*PSEC_PER_SEC ?
-> > >
-> >
-> > No, it is 2 * NSEC_PER_SEC, NSEC_PER_SEC is 1000000000.
->=20
-> Use 2 * NSEC_PER_SEC, instead of hardcode number.
->=20
-Sure, thanks.
+Hi Jakub,
 
+On 17. 07. 25 16:02, Jakub Kicinski wrote:
+> On Thu, 17 Jul 2025 11:00:35 +0200 Primoz Fiser wrote:
+>> Recently when working on predictable network names for i.MX SoCs, it
+>> was discovered that of_node sysfs properties are missing for FEC and
+>> EQOS interfaces.
+>>
+>> Without this, udev is unable to expose the OF_* properties (OF_NAME,
+>> OF_FULLNAME, OF_COMPATIBLE, OF_ALIAS, etc.) and thus we cannot identify
+>> interface based on those properties.
+>>
+>> Fix this by populating netdev of_node in respective drivers.
+> 
+> Seems legit, but would be good to CC Open Firmware maintainers.
+
+Added Rob & Saravana to CC.
+
+> 
+> If we want to make propagating the OF linkage a think I think we should
+> add a flavor of SET_NETDEV_DEV() which does that for the caller.
+> SET_NETDEV_DEV_OF() ?
+
+OK, so you suggest to add MACRO:
+
+#define SET_NETDEV_DEV_OF(net, np)  ((net)->dev.of_node = (np))
+
+I like the idea too.
+
+Way cleaner especially if others will join later.
+
+Shall we do that already for v2 or as a separate series?
+
+BR,
+Primoz
+
+
+-- 
+Primoz Fiser
+phone: +386-41-390-545
+email: primoz.fiser@norik.com
+--
+Norik systems d.o.o.
+Your embedded software partner
+Slovenia, EU
+phone: +386-41-540-545
+email: info@norik.com
