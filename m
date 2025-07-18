@@ -1,32 +1,33 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72552149C4D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7250B148850
 	for <imx@lists.linux.dev>; Fri, 18 Jul 2025 13:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752846184; cv=none; b=FhlGt+WXM8q892kvQPxFnTtlIpx/4oK3EDTBFSEkPQ80rngFnLeLpIVAGZY1uKB5ZS+BNRe9nQmidgXX1UMAJ8kYcjQmX6XmWEJbvCX4H885Ggdj7emUJB/AKrf6yLCUi061OCN2pSV4AWiJKwzPMKz0lAmzmf06AHHZF3qvi68=
+	t=1752846184; cv=none; b=VjCwkKcVCOCmbdbrqcc67bQBsiOzCOJ/AeOzP6h/GRGH6VpUM0RrEnu4/t3rJTLQ6FrdyCF1JslnfcWBKdmCRqo6dKYFcDPXcyFmdfS9H2OlEAk40kKrLFC/InKTJ8P/YTh+CaUNWiwpDd4S/IomFUTv+7jo6Dw7JuC6oGE/6/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752846184; c=relaxed/simple;
-	bh=otTGygr7TVGTYqcr0fX9VequzUeg+oyf0nTBNcNXdAE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oxvtG1ceDcz1GDnsezvShsJdaT4R6sYYXwMscPa6SKoSBVz/DudMJjlnf+E+x6UJ8Lb/OkgsYsgWsaq3ucB6nKKo0q6lxcUadIHorg44T6OszSvg5NL2834+GzTJ4RQF4Cok8oTKi1LYCSltbE3So5xqGky923qVtxvp+T8z2qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=u+5twy+G; arc=none smtp.client-ip=217.194.8.81
+	bh=4o0XLnoYEv06WquFm8G1VOSfBCM6/RJdVDFE27BeSxA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Et5AZuPrZoenZG9YnU0QqiPtHHQtTmvef6BqQT9fR3OBzIsHjffN8YTJhht+ZZjSpxgLNek9KQ7B70PLmMaNPScpwkBEa98/ZBp8wvsxDJJktLHYX2zAIwFqdALMMHq4MdDLDTa224clOlIlbzd6ASKUdn89P6Mu2j9Xo4fVsew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=rAq3GYp9; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="u+5twy+G"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="rAq3GYp9"
 Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id DB6B01FBBB;
-	Fri, 18 Jul 2025 15:34:41 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 335BC21150;
+	Fri, 18 Jul 2025 15:34:43 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1752845682;
-	bh=MzOMyIV68qHQ0Kt7SHQ+0I+blgrtc5hfOPRGbkCaOXw=; h=From:To:Subject;
-	b=u+5twy+GcjC/2I6RtkO5b91F9NkV42c6eu1+N4v8XBtVuWd2u44uSNSfeEpTlzqol
-	 P2krDTV4T4ozRlh0UxoHkIS8o0E9SaGlGtB7U18vh8nTDdBCbhSSFWC5Hu6/sG0R6+
-	 x/PVztIBIzhWcj4tPx4AOSpNngR3RlY1bhdQRQWI4ocr0x/RN/KJeZoW3Di4E7ZI0R
-	 bn8ph+yymT5vJr2p+vtks3c3qWPqRePFLcuJHvMCFYvulIarz4Kay7P2jF4nFOOSN2
-	 /cWCtnQ4pCwYIk0RFzrpq0lARzB8V4acIaUmyzV2+9DddvdhTXv3Xd37hfCDcu8e3S
-	 imOGSNF4fAIlQ==
+	s=default; t=1752845683;
+	bh=e+XXjpP7TXtXVQhaF0YZvfr+9FnAUoMLkIbOnA62APk=; h=From:To:Subject;
+	b=rAq3GYp9bLJjHDp9OxCW+xI6C/88NydvBn3jI+2NQEKIjW/rCvhcGylE7QwzKSMad
+	 4eXiTo6QGIhxI9jYVKCk/sMBDu6Hl2WLQTbetLOs6hdzlWNsow50gngFFjx1iXjgFP
+	 amzv7es3gyjRB1r+CahMxnL7ARTk1LTuwKqr73Cumzt8g0sSp11lssIBxArwWCU+sQ
+	 iWL+ScHX1EKKZVnQyHpPlP5ocBYmCgH7MbdwHmYwtSNX9t9FOGbgYxV3Cf0vvmiGGP
+	 fqmnt0pjIVxLpsEFniZ0Q4gOMGkVUoYyzrvoLEjsle0gq3L/5mQYvMSimUEcIoAcrJ
+	 73gX/ATRDEtXg==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Dong Aisheng <aisheng.dong@nxp.com>,
 	Andi Shyti <andi.shyti@kernel.org>,
@@ -34,15 +35,20 @@ To: Dong Aisheng <aisheng.dong@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
 	linux-i2c@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 0/2] i2c: lpi2c: implement master_xfer_atomic callback
-Date: Fri, 18 Jul 2025 15:34:27 +0200
-Message-Id: <20250718133429.67219-1-francesco@dolcini.it>
+	linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Primoz Fiser <primoz.fiser@norik.com>
+Subject: [PATCH v5 2/2] i2c: lpi2c: implement xfer_atomic callback
+Date: Fri, 18 Jul 2025 15:34:29 +0200
+Message-Id: <20250718133429.67219-3-francesco@dolcini.it>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250718133429.67219-1-francesco@dolcini.it>
+References: <20250718133429.67219-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,25 +57,385 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-This series adds atomic operations support to the imx-lpi2c driver and split
-the previous v3 patch into two separate patches.
+Rework the read and write code paths in the driver to support operation
+in atomic contexts. To achieve this, the driver must not rely on IRQs
+or perform any scheduling, e.g., via a sleep or schedule routine.
 
-The first patch replaces the open-coded polling loops with readl_poll_timeout.
-This improves readability and consistency, and prepares the code for
-integration of the second patch, while maintaining the same functionality.
+Implement atomic, sleep-free, and IRQ-less operation. This increases
+complexity but is necessary for atomic I2C transfers required by some
+hardware configurations, e.g., to trigger reboots on an external PMIC chip.
 
-The second patch implements the .master_xfer_atomic() callback, enabling
-support for atomic I2C transfers.
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Carlos Song <carlos.song@nxp.com>
+Tested-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+v4 -> v5
+- rebased due to commit 614b1c3cbfb0 ("i2c: use inclusive callbacks in struct i2c_algorithm").
+- add Tested-by: Primoz 
 
-Emanuele Ghidoli (2):
-  i2c: lpi2c: use readl_poll_timeout() for register polling
-  i2c: lpi2c: implement xfer_atomic callback
+v3 -> v4
+- Split the patch into two parts: one for the readl_poll_timeout() and one for the atomic implementation.
+- Change the readl_poll_timeout() delay to 0 us to do not change the behavior of the driver.
+- Use err variable consistently.
 
- drivers/i2c/busses/i2c-imx-lpi2c.c | 254 +++++++++++++++++++----------
- 1 file changed, 172 insertions(+), 82 deletions(-)
+v2 -> v3
+- Closes: https://lore.kernel.org/oe-kbuild-all/202505130735.zh3WuTNu-lkp@intel.com/. Using the return value of
+lpi2c_imx_read_msr_poll_timeout() to check for errors.
 
+v1 -> v2
+- Rename READL_POLL_TIMEOUT to lpi2c_imx_read_msr_poll_timeout
+- Remove addr and timeout_us parameters from lpi2c_imx_read_msr_poll_timeout since they are used always with the same value
+- add r-b tag from Carlos Song
+---
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 170 ++++++++++++++++++++++-------
+ 1 file changed, 132 insertions(+), 38 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 4a25c92adfc1..3ba7825f66ef 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -188,9 +188,11 @@ struct lpi2c_imx_struct {
+ 	struct i2c_client	*target;
+ };
+ 
+-#define lpi2c_imx_read_msr_poll_timeout(val, cond)                            \
++#define lpi2c_imx_read_msr_poll_timeout(atomic, val, cond)                    \
++	(atomic ? readl_poll_timeout_atomic(lpi2c_imx->base + LPI2C_MSR, val, \
++					    cond, 0, 500000) :                \
+ 		  readl_poll_timeout(lpi2c_imx->base + LPI2C_MSR, val, cond,  \
+-				     0, 500000)
++				     0, 500000))
+ 
+ static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
+ 			      unsigned int enable)
+@@ -198,12 +200,12 @@ static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
+ 	writel(enable, lpi2c_imx->base + LPI2C_MIER);
+ }
+ 
+-static int lpi2c_imx_bus_busy(struct lpi2c_imx_struct *lpi2c_imx)
++static int lpi2c_imx_bus_busy(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
+ {
+ 	int err;
+ 	unsigned int temp;
+ 
+-	err = lpi2c_imx_read_msr_poll_timeout(temp,
++	err = lpi2c_imx_read_msr_poll_timeout(atomic, temp,
+ 					      temp & (MSR_ALF | MSR_BBF | MSR_MBF));
+ 
+ 	/* check for arbitration lost, clear if set */
+@@ -248,7 +250,7 @@ static void lpi2c_imx_set_mode(struct lpi2c_imx_struct *lpi2c_imx)
+ }
+ 
+ static int lpi2c_imx_start(struct lpi2c_imx_struct *lpi2c_imx,
+-			   struct i2c_msg *msgs)
++			   struct i2c_msg *msgs, bool atomic)
+ {
+ 	unsigned int temp;
+ 
+@@ -260,17 +262,17 @@ static int lpi2c_imx_start(struct lpi2c_imx_struct *lpi2c_imx,
+ 	temp = i2c_8bit_addr_from_msg(msgs) | (GEN_START << 8);
+ 	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
+ 
+-	return lpi2c_imx_bus_busy(lpi2c_imx);
++	return lpi2c_imx_bus_busy(lpi2c_imx, atomic);
+ }
+ 
+-static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
++static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
+ {
+ 	unsigned int temp;
+ 	int err;
+ 
+ 	writel(GEN_STOP << 8, lpi2c_imx->base + LPI2C_MTDR);
+ 
+-	err = lpi2c_imx_read_msr_poll_timeout(temp, temp & MSR_SDF);
++	err = lpi2c_imx_read_msr_poll_timeout(atomic, temp, temp & MSR_SDF);
+ 
+ 	if (err) {
+ 		dev_dbg(&lpi2c_imx->adapter.dev, "stop timeout\n");
+@@ -390,12 +392,12 @@ static int lpi2c_imx_pio_msg_complete(struct lpi2c_imx_struct *lpi2c_imx)
+ 	return time_left ? 0 : -ETIMEDOUT;
+ }
+ 
+-static int lpi2c_imx_txfifo_empty(struct lpi2c_imx_struct *lpi2c_imx)
++static int lpi2c_imx_txfifo_empty(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
+ {
+ 	unsigned int temp;
+ 	int err;
+ 
+-	err = lpi2c_imx_read_msr_poll_timeout(temp,
++	err = lpi2c_imx_read_msr_poll_timeout(atomic, temp,
+ 					      (temp & MSR_NDF) || !lpi2c_imx_txfifo_cnt(lpi2c_imx));
+ 
+ 	if (temp & MSR_NDF) {
+@@ -432,7 +434,7 @@ static void lpi2c_imx_set_rx_watermark(struct lpi2c_imx_struct *lpi2c_imx)
+ 	writel(temp << 16, lpi2c_imx->base + LPI2C_MFCR);
+ }
+ 
+-static void lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx)
++static bool lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
+ {
+ 	unsigned int data, txcnt;
+ 
+@@ -447,13 +449,19 @@ static void lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx)
+ 		txcnt++;
+ 	}
+ 
+-	if (lpi2c_imx->delivered < lpi2c_imx->msglen)
+-		lpi2c_imx_intctrl(lpi2c_imx, MIER_TDIE | MIER_NDIE);
+-	else
++	if (lpi2c_imx->delivered < lpi2c_imx->msglen) {
++		if (!atomic)
++			lpi2c_imx_intctrl(lpi2c_imx, MIER_TDIE | MIER_NDIE);
++		return false;
++	}
++
++	if (!atomic)
+ 		complete(&lpi2c_imx->complete);
++
++	return true;
+ }
+ 
+-static void lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx)
++static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
+ {
+ 	unsigned int blocklen, remaining;
+ 	unsigned int temp, data;
+@@ -478,8 +486,9 @@ static void lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx)
+ 	remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
+ 
+ 	if (!remaining) {
+-		complete(&lpi2c_imx->complete);
+-		return;
++		if (!atomic)
++			complete(&lpi2c_imx->complete);
++		return true;
+ 	}
+ 
+ 	/* not finished, still waiting for rx data */
+@@ -497,7 +506,10 @@ static void lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx)
+ 		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
+ 	}
+ 
+-	lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE);
++	if (!atomic)
++		lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE);
++
++	return false;
+ }
+ 
+ static void lpi2c_imx_write(struct lpi2c_imx_struct *lpi2c_imx,
+@@ -505,11 +517,29 @@ static void lpi2c_imx_write(struct lpi2c_imx_struct *lpi2c_imx,
+ {
+ 	lpi2c_imx->tx_buf = msgs->buf;
+ 	lpi2c_imx_set_tx_watermark(lpi2c_imx);
+-	lpi2c_imx_write_txfifo(lpi2c_imx);
++	lpi2c_imx_write_txfifo(lpi2c_imx, false);
+ }
+ 
+-static void lpi2c_imx_read(struct lpi2c_imx_struct *lpi2c_imx,
+-			   struct i2c_msg *msgs)
++static int lpi2c_imx_write_atomic(struct lpi2c_imx_struct *lpi2c_imx,
++				  struct i2c_msg *msgs)
++{
++	u32 temp;
++	int err;
++
++	lpi2c_imx->tx_buf = msgs->buf;
++
++	err = lpi2c_imx_read_msr_poll_timeout(true, temp,
++					      (temp & MSR_NDF) ||
++					      lpi2c_imx_write_txfifo(lpi2c_imx, true));
++
++	if (temp & MSR_NDF)
++		return -EIO;
++
++	return err;
++}
++
++static void lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
++				struct i2c_msg *msgs)
+ {
+ 	unsigned int temp;
+ 
+@@ -520,8 +550,43 @@ static void lpi2c_imx_read(struct lpi2c_imx_struct *lpi2c_imx,
+ 	temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
+ 	temp |= (RECV_DATA << 8);
+ 	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
++}
+ 
+-	lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE | MIER_NDIE);
++static bool lpi2c_imx_read_chunk_atomic(struct lpi2c_imx_struct *lpi2c_imx)
++{
++	u32 rxcnt;
++
++	rxcnt = (readl(lpi2c_imx->base + LPI2C_MFSR) >> 16) & 0xFF;
++	if (!rxcnt)
++		return false;
++
++	if (!lpi2c_imx_read_rxfifo(lpi2c_imx, true))
++		return false;
++
++	return true;
++}
++
++static int lpi2c_imx_read_atomic(struct lpi2c_imx_struct *lpi2c_imx,
++				 struct i2c_msg *msgs)
++{
++	u32 temp;
++	int tmo_us;
++
++	tmo_us = 1000000;
++	do {
++		if (lpi2c_imx_read_chunk_atomic(lpi2c_imx))
++			return 0;
++
++		temp = readl(lpi2c_imx->base + LPI2C_MSR);
++
++		if (temp & MSR_NDF)
++			return -EIO;
++
++		udelay(100);
++		tmo_us -= 100;
++	} while (tmo_us > 0);
++
++	return -ETIMEDOUT;
+ }
+ 
+ static bool is_use_dma(struct lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
+@@ -541,14 +606,27 @@ static int lpi2c_imx_pio_xfer(struct lpi2c_imx_struct *lpi2c_imx,
+ {
+ 	reinit_completion(&lpi2c_imx->complete);
+ 
+-	if (msg->flags & I2C_M_RD)
+-		lpi2c_imx_read(lpi2c_imx, msg);
+-	else
++	if (msg->flags & I2C_M_RD) {
++		lpi2c_imx_read_init(lpi2c_imx, msg);
++		lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE | MIER_NDIE);
++	} else {
+ 		lpi2c_imx_write(lpi2c_imx, msg);
++	}
+ 
+ 	return lpi2c_imx_pio_msg_complete(lpi2c_imx);
+ }
+ 
++static int lpi2c_imx_pio_xfer_atomic(struct lpi2c_imx_struct *lpi2c_imx,
++				     struct i2c_msg *msg)
++{
++	if (msg->flags & I2C_M_RD) {
++		lpi2c_imx_read_init(lpi2c_imx, msg);
++		return lpi2c_imx_read_atomic(lpi2c_imx, msg);
++	}
++
++	return lpi2c_imx_write_atomic(lpi2c_imx, msg);
++}
++
+ static int lpi2c_imx_dma_timeout_calculate(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+ 	unsigned long time = 0;
+@@ -943,8 +1021,8 @@ static int lpi2c_imx_dma_xfer(struct lpi2c_imx_struct *lpi2c_imx,
+ 	return ret;
+ }
+ 
+-static int lpi2c_imx_xfer(struct i2c_adapter *adapter,
+-			  struct i2c_msg *msgs, int num)
++static int lpi2c_imx_xfer_common(struct i2c_adapter *adapter,
++				 struct i2c_msg *msgs, int num, bool atomic)
+ {
+ 	struct lpi2c_imx_struct *lpi2c_imx = i2c_get_adapdata(adapter);
+ 	unsigned int temp;
+@@ -955,7 +1033,7 @@ static int lpi2c_imx_xfer(struct i2c_adapter *adapter,
+ 		return result;
+ 
+ 	for (i = 0; i < num; i++) {
+-		result = lpi2c_imx_start(lpi2c_imx, &msgs[i]);
++		result = lpi2c_imx_start(lpi2c_imx, &msgs[i], atomic);
+ 		if (result)
+ 			goto disable;
+ 
+@@ -967,28 +1045,33 @@ static int lpi2c_imx_xfer(struct i2c_adapter *adapter,
+ 		lpi2c_imx->tx_buf = NULL;
+ 		lpi2c_imx->delivered = 0;
+ 		lpi2c_imx->msglen = msgs[i].len;
+-		init_completion(&lpi2c_imx->complete);
+ 
+-		if (is_use_dma(lpi2c_imx, &msgs[i])) {
+-			result = lpi2c_imx_dma_xfer(lpi2c_imx, &msgs[i]);
+-			if (result && lpi2c_imx->dma->using_pio_mode)
+-				result = lpi2c_imx_pio_xfer(lpi2c_imx, &msgs[i]);
++		if (atomic) {
++			result = lpi2c_imx_pio_xfer_atomic(lpi2c_imx, &msgs[i]);
+ 		} else {
+-			result = lpi2c_imx_pio_xfer(lpi2c_imx, &msgs[i]);
++			init_completion(&lpi2c_imx->complete);
++
++			if (is_use_dma(lpi2c_imx, &msgs[i])) {
++				result = lpi2c_imx_dma_xfer(lpi2c_imx, &msgs[i]);
++				if (result && lpi2c_imx->dma->using_pio_mode)
++					result = lpi2c_imx_pio_xfer(lpi2c_imx, &msgs[i]);
++			} else {
++				result = lpi2c_imx_pio_xfer(lpi2c_imx, &msgs[i]);
++			}
+ 		}
+ 
+ 		if (result)
+ 			goto stop;
+ 
+ 		if (!(msgs[i].flags & I2C_M_RD)) {
+-			result = lpi2c_imx_txfifo_empty(lpi2c_imx);
++			result = lpi2c_imx_txfifo_empty(lpi2c_imx, atomic);
+ 			if (result)
+ 				goto stop;
+ 		}
+ 	}
+ 
+ stop:
+-	lpi2c_imx_stop(lpi2c_imx);
++	lpi2c_imx_stop(lpi2c_imx, atomic);
+ 
+ 	temp = readl(lpi2c_imx->base + LPI2C_MSR);
+ 	if ((temp & MSR_NDF) && !result)
+@@ -1004,6 +1087,16 @@ static int lpi2c_imx_xfer(struct i2c_adapter *adapter,
+ 	return (result < 0) ? result : num;
+ }
+ 
++static int lpi2c_imx_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs, int num)
++{
++	return lpi2c_imx_xfer_common(adapter, msgs, num, false);
++}
++
++static int lpi2c_imx_xfer_atomic(struct i2c_adapter *adapter, struct i2c_msg *msgs, int num)
++{
++	return lpi2c_imx_xfer_common(adapter, msgs, num, true);
++}
++
+ static irqreturn_t lpi2c_imx_target_isr(struct lpi2c_imx_struct *lpi2c_imx,
+ 					u32 ssr, u32 sier_filter)
+ {
+@@ -1066,9 +1159,9 @@ static irqreturn_t lpi2c_imx_master_isr(struct lpi2c_imx_struct *lpi2c_imx)
+ 	if (temp & MSR_NDF)
+ 		complete(&lpi2c_imx->complete);
+ 	else if (temp & MSR_RDF)
+-		lpi2c_imx_read_rxfifo(lpi2c_imx);
++		lpi2c_imx_read_rxfifo(lpi2c_imx, false);
+ 	else if (temp & MSR_TDF)
+-		lpi2c_imx_write_txfifo(lpi2c_imx);
++		lpi2c_imx_write_txfifo(lpi2c_imx, false);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -1265,6 +1358,7 @@ static u32 lpi2c_imx_func(struct i2c_adapter *adapter)
+ 
+ static const struct i2c_algorithm lpi2c_imx_algo = {
+ 	.xfer = lpi2c_imx_xfer,
++	.xfer_atomic = lpi2c_imx_xfer_atomic,
+ 	.functionality = lpi2c_imx_func,
+ 	.reg_target = lpi2c_imx_register_target,
+ 	.unreg_target = lpi2c_imx_unregister_target,
 -- 
 2.39.5
 
