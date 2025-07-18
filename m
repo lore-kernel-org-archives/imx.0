@@ -1,248 +1,214 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECBA1D54EE
-	for <imx@lists.linux.dev>; Fri, 18 Jul 2025 10:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1C928B41A
+	for <imx@lists.linux.dev>; Fri, 18 Jul 2025 10:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752835509; cv=none; b=Gs0xQ2T81pQx2ruSA8bjzd5mtTsIxgHgDSMxnX/G+n9e6j2fzbW/F/BeunHGq2c6CoQ/8cQwNXXy+ER9Y/7ClbQG23DU0ctK0qOWMCIbQZooEcCyIOqqc9IcHsxpgs/K9rCfDesQJ/pJYTCca0vlmzS0ChKEg+FOVkCqWGuDQvk=
+	t=1752836280; cv=none; b=KKLMiTUaHuV/xoEU6aghUVuNPlK/RwmAxcggDdYkuLk4BYQe6NlMUJOHY7hPhWDB0mLPhm3+Mr776BRhPyCWaxpboFjPumFONXx9m+WGZFjPHn28g41OZCPUGKpwQvhJtbPwhXTLDDygTh8YaOGfWkIrh2ontt87IHHg+tySHjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752835509; c=relaxed/simple;
-	bh=rUWr73j1f8m00qKKyCmRslv5muc4NtxmmGcWkGS4euQ=;
+	s=arc-20240116; t=1752836280; c=relaxed/simple;
+	bh=n56fvNCbZYpjA+6v2NlTwoRSF0+TcObwWezUlSX3UEo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jWc6DJbTjBtD7wj7P8b1UnMVsxWp23HtE4CMVEJ/AqTdhuMH9bvHpBvGL36vLrc9XzRJaPyDe4urEqDweZKmELvPMyYK1GvEy6CC4ioC2+58ireEYig+4Gso+6bDvZEyGdmPnBD8GV9ZzQhgrs9BETmcFiIgUNbBXvwOsdtqewo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=whi9qsNg; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 To:Cc:Content-Type; b=rAmDIlU6aaFTkAzRiPrXND+U0lzC11vORBU6kUuFFXd3mi5fYWTF+ixyN1rjgEPa8BKdmzL4gw5m7nzqPCBUgbO/F3MHge+GDG2+WTtcZpZ3+OKL+k6Ioih1Q5lcTA9P9rur4Y0Mw9bFME2GDGsvGrYWfAhF4ut5+jngo6qsVQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nguTyx0T; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="whi9qsNg"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7183d264e55so19778887b3.2
-        for <imx@lists.linux.dev>; Fri, 18 Jul 2025 03:45:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nguTyx0T"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-31ca042d3b8so1686203a91.0
+        for <imx@lists.linux.dev>; Fri, 18 Jul 2025 03:57:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752835506; x=1753440306; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=eL4ot+dqM/gHvOleLPQUu1Tr2WKMQ0Kb3pxoJXxeucY=;
-        b=whi9qsNgS0TdYJ7nisPDcSgjXjFNO1tgA0bKTLKS6qNdmOLXsSQ0U5JdeBxd496kpe
-         k+g9JAg/H7eqE1IKsbO0mBcZOUP6Xiol3FM6aLcs5RDw8kegTDhzl1L+r4SoPrzJOf+C
-         YwssW8opUWwc7X3EV3H7slTOYJ5e+crayIFOlyZ6T/3BkldReVul895Fz0W7/3o48U7H
-         iqpDpo1iaX9jBcgA96+wYBMPDkgh4SuKSHRPOWt/0KuFgNVoZm6BBQeOFEVRXqwYOkQv
-         h3nz+FQ8f/GoK4ouondtygDP/JnQE8wkio40CfJZkis0mgnVbCLJ4tnglDD4FVUSOEl/
-         ZCnQ==
+        d=gmail.com; s=20230601; t=1752836279; x=1753441079; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=crJfUyaZFUd3zm6f6eWNF5fFGcJayPgP/WBKMvt7miw=;
+        b=nguTyx0TzfGYnXa77bMlgA5E2DB8kEyjH6dISUV/NrnOu8P/DRx/d9uujJSvsMSaG1
+         /KuRp+ZMVtRP5aPUheS5+KHnd7FFv7VOWljVipwBDl8UuG9aSO74nP8EujV3dfivMZBx
+         7VsiLixAaV2cOWW3C1ThVvNuadXboLlJCmID4JEP+94sMk1WciIoQRsk9ZnKLWg1n2FJ
+         tjDqeTnnNt1cfSWZM5/TJo7TxVqaeV4liwylAsUbkANYrqVnIYkJxz3LdY8etckpB0xo
+         FwC9/7NFNpMsCoK03zkmEQJQw+0C7T4TnaRO2mrmIox+qzKpti0R67mkHpq33IQn6lXT
+         0TEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752835506; x=1753440306;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eL4ot+dqM/gHvOleLPQUu1Tr2WKMQ0Kb3pxoJXxeucY=;
-        b=DIzUloy0HctcNIqUnFBOUWHCzEYTyqkeKuCDgDff/Kd15yzbgQCg6HRJZS4s/h/A7O
-         57j/eaYpwlp1TBfVvABpl92RHdFTRxMbvNel7J5H9hEx3MqkKiZZaT5BXq+g87hQlvv9
-         monq5u2jHzx1hJmq6hArKeV18QJqmvf5nz6f5lFX6JBbTiN+LvK3fdrymxYmwTIEyUJp
-         I6vxTdyjb0hWic+tGr146flgCMjeork4EEkJWrG0JxvI4a/lYEo8aiUg5WivANPZhEuX
-         spnsy6u1WBgH9+9bIUx02x0abWv35xvUR5axK4E1FV/l+YB4ZWMrcSBhwCb/ZqZw9/YZ
-         ZZEA==
-X-Forwarded-Encrypted: i=1; AJvYcCXrbtPSV2X1nKE1X/gxfIaW0znzHVVAFg9pxDdKcyEaeoV6mtia2sF1hs725k6uI5uUQXA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyVvCvjTDWh7udBnVwRom8h+hCqsf65cjv0NrspiUkC+UOEq/ka
-	+OJ+SCYJr1lKOJKhu1YkLSrpbDkDFFIPn3Ms9qzLKey4sIo3UvM0Gztp9OxZHSipRZw5BrAGqDg
-	eTEitGH2tQoA/xNPmujmT8jCL8CbjnVaPe65jbfvGKw==
-X-Gm-Gg: ASbGnctZdzeVwJ1/x15Qp2XE3pBQJHRSG2JyNyglh0C8AhuE4n/w4EP2fdLap58TEke
-	RdfmlRJNyI7oXpq7t4ox1WlGGSNSUfNdG1cNQPMWND1KpH1RW4PxH6zwAw/NsFfzIKeO08S8IIO
-	ZEK43z4UoXE1FaZq2bBDDSUB38/Cgxol9ukiHCw8nmsRYyWb/2C9UibvfbNJmRzovZsPkPbJhE/
-	MKrWAzb
-X-Google-Smtp-Source: AGHT+IFQ1mnk1ZgI1gkcyMhNGTwcwNL/MUejQfWzddIamhebdceSEWNxbqRvh2fYEhcrWIWkwSIrRt9TLlwJqykznrc=
-X-Received: by 2002:a05:690c:25c3:b0:70e:7706:824e with SMTP id
- 00721157ae682-718a332563dmr82661557b3.6.1752835505656; Fri, 18 Jul 2025
- 03:45:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752836279; x=1753441079;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=crJfUyaZFUd3zm6f6eWNF5fFGcJayPgP/WBKMvt7miw=;
+        b=ZCOG0Trnt3runLtMe25A7TCn2dVVTrU+O55LP06PJSZbvO067v53cUjfBBRMqXLHo5
+         j5Yvk+I+/H+t2CAvxBZbbGvOHJ+Ik3Q0oSWEDHv4OT/P9C12JU0SBq4SZyXsNkhBgfhs
+         eDL0nibAj6RUZq396k7mFqMKdEu6saCY+Yw1MnC0Jm+36IJL6wsPN8k35oEHDO7TIz24
+         42dHLIxLYKOZbMAkB/W8NrUbz9NnRTVDnW/qGEQvYyavMNrI1WEcKVFFqzoRsCcsQDQN
+         /HAM74ZCx/xAz96Lr2tfZ+qZJcd2X2AmW6E66RME7KRD3MuNGWobE4HgW+ojdrhB3YoK
+         4zaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXZxywpaWSjiwtXUsF/kt0T1E/z5k3JLPFKY/wa2v5MbcJL5UmlHmAvIHJ9QLzfF9iq79g=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwU72HQAQ8dBPeaqh9bRvEOojumVwO3wZZQX6QgQwthRqbfBRhH
+	kX4cOODLD1LhYAfjER6VnKO7Vgaje711uycYUUGoH9mfa3VF226PtxS6fo7ZsbCl/O0RC4cibHI
+	bn+NSQvgV386SNCYX1K8bPusiRXYYD+k=
+X-Gm-Gg: ASbGncvlnu8jAzZbBcThYANKh3/eYueMV/92X6+k/D/f1pgOi4FvzzudybUCwGaS8BS
+	P/rMgjfSx3NqoeWPrr7eOz1yHV5cpaUSlKY02Y8bZkZQGKbib6zfZn7zIm2BN+6tqYHcgUzCIkT
+	RcvHb11FDzFk/Mj9LMUbRMZ2IVCL7wYbKw1otDQbwB/uHE4nyghVDZJgnFMsm6oZ8VVe5Jv+jIP
+	Yf7
+X-Google-Smtp-Source: AGHT+IG3K+OJchpvRdKs3tFgBFIPgoho17ujC5cDtqCUPyeRXXDSSMCfEs84NE1rrM2vaVhaZ1ZL/UjRgJAtRS/XdRE=
+X-Received: by 2002:a17:90b:57c7:b0:311:eb85:96df with SMTP id
+ 98e67ed59e1d1-31c9e75b966mr17155358a91.17.1752836278553; Fri, 18 Jul 2025
+ 03:57:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250716194638.113115-1-hiagofranco@gmail.com>
-In-Reply-To: <20250716194638.113115-1-hiagofranco@gmail.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Fri, 18 Jul 2025 12:44:28 +0200
-X-Gm-Features: Ac12FXz3wdFyhRFKPg_XEl0cRf6bRNkkouJRpcUk47StJD9WCjNNZdufcqO3Rys
-Message-ID: <CAPDyKFqWkWSahkGkap8SUiuYvmtk_b4OgN-bSyB-H519wf=eBw@mail.gmail.com>
-Subject: Re: [PATCH v8] remoteproc: imx_rproc: detect and attach to pre-booted
- remote cores
-To: Hiago De Franco <hiagofranco@gmail.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, linux-remoteproc@vger.kernel.org, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Bjorn Andersson <andersson@kernel.org>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Hiago De Franco <hiago.franco@toradex.com>, 
-	Peng Fan <peng.fan@nxp.com>
+References: <20250704052529.1040602-1-shengjiu.wang@nxp.com> <20250704052529.1040602-2-shengjiu.wang@nxp.com>
+In-Reply-To: <20250704052529.1040602-2-shengjiu.wang@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Fri, 18 Jul 2025 14:00:03 +0300
+X-Gm-Features: Ac12FXyvAM2zuSZO19tjGTn3I8j6ZBYP1ezDycsLSWPMXkx77mmnhd_OLQ_GFhA
+Message-ID: <CAEnQRZDeXrhHaU-tiAizXL3cNK-6rpbACx9QGNVpV8GBEKAPYQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] remoteproc: imx_dsp_rproc: Add support of recovery process
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: andersson@kernel.org, mathieu.poirier@linaro.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 16 Jul 2025 at 21:47, Hiago De Franco <hiagofranco@gmail.com> wrote:
+On Fri, Jul 4, 2025 at 8:29=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.com=
+> wrote:
 >
-> From: Hiago De Franco <hiago.franco@toradex.com>
->
-> When the Cortex-M remote core is started and already running before
-> Linux boots (typically by the Cortex-A bootloader using a command like
-> bootaux), the current driver is unable to attach to it. This is because
-> the driver only checks for remote cores running in different SCU
-> partitions. However in this case, the M-core is in the same partition as
-> Linux and is already powered up and running by the bootloader.
->
-> This patch adds a check using dev_pm_genpd_is_on() to verify whether the
-> M-core's power domains are already on. If all power domain devices are
-> on, the driver assumes the M-core is running and proceed to attach to
-> it.
->
-> To accomplish this, we need to avoid passing any attach_data or flags to
-> dev_pm_domain_attach_list(), allowing the platform device become a
-> consumer of the power domain provider without changing its current
-> state.
->
-> During probe, also enable and sync the device runtime PM to make sure
-> the power domains are correctly managed when the core is controlled by
-> the kernel.
->
-> Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+> When recovery is triggered, rproc_stop() is called first then
+> rproc_start(), but there is no rproc_unprepare_device() and
+> rproc_prepare_device() in the flow. As the software reset is needed
+> before DSP starts, so move software reset from imx_dsp_runtime_resume()
+> to .load() to make the recovery work. And make sure memory is cleared
+> before loading firmware.
 
-Applied for next, thanks!
+Hello Shengjiu,
 
-Kind regards
-Uffe
+Commit mostly looking good but the key point when writing a commit
+is to explain why the commit is needed and less about what the
+commit does (this should be obvious from the source code).
 
+
+So, I would start with the context and that is:
+
+Following commit: 6eed169c7fefd9cdbbccb5ba7a98470cc0c09c63
+    remoteproc: imx_rproc: Enable attach recovery for i.MX8QM/QXP
+
+enabled FW recovery, but is broken because <and here explain the reason tha=
+t
+you mostly described in the original commit>.
+
+Then at the end add the Fixes tag.
+
+Also, allow me on more day on Monday to test this patch.
+
+Thanks,
+Daniel.
+
+>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > ---
-> Hi Mathieu, Ulf,
+>  drivers/remoteproc/imx_dsp_rproc.c | 43 +++++++++++++++++++-----------
+>  1 file changed, 27 insertions(+), 16 deletions(-)
 >
-> This is the v8 of patch3 from the patch series:
-> https://lore.kernel.org/all/20250629172512.14857-1-hiagofranco@gmail.com/
->
-> As patches 1 and 2 are already applied on Ulf's next branch, as
-> requested I am sending now only the v8 of patch 3.
->
-> I made a small correction into the commit description, s/SCFW
-> partitions/SCU partitions/g and updated with the check for the return
-> value.
->
-> I hope this is ok.
->
-> Thanks!
->
-> Hiago.
->
-> v7 -> v8:
->     - Added return error check for dev_pm_domain_attach_list().
->     - Commit description: changed to use "SCU partitions" instead of
->       "SCFW partitions". This is more accurate since these are hardware
->       enforced partitions.
-> v6 -> v7:
->  - Added Peng reviewed-by.
-> v5 -> v6:
->  - Commit description improved, as suggested. Added Ulf Hansson reviewed
->    by. Comment on imx-rproc.c improved.
-> v4 -> v5:
->  - pm_runtime_get_sync() removed in favor of
->    pm_runtime_resume_and_get(). Now it also checks the return value of
->    this function.
->  - Added pm_runtime_disable() and pm_runtime_put() to imx_rproc_remove()
->    function.
-> v3 -> v4:
->  - Changed to use the new dev_pm_genpd_is_on() function instead, as
->    suggested by Ulf. This will now get the power status of the two
->    remote cores power domains to decided if imx_rpoc needs to attach or
->    not. In order to do that, pm_runtime_enable() and
->    pm_runtime_get_sync() were introduced and pd_data was removed.
-> v2 -> v3:
->  - Unchanged.
-> v1 -> v2:
->  - Dropped unecessary include. Removed the imx_rproc_is_on function, as
->    suggested.
-> ---
-> ---
->  drivers/remoteproc/imx_rproc.c | 41 +++++++++++++++++++++++++++++-----
->  1 file changed, 35 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 627e57a88db2..a6eef0080ca9 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -18,6 +18,7 @@
->  #include <linux/of_reserved_mem.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_domain.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/reboot.h>
->  #include <linux/regmap.h>
->  #include <linux/remoteproc.h>
-> @@ -890,10 +891,8 @@ static int imx_rproc_partition_notify(struct notifier_block *nb,
->  static int imx_rproc_attach_pd(struct imx_rproc *priv)
+> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_=
+dsp_rproc.c
+> index 5ee622bf5352..ba764fc55686 100644
+> --- a/drivers/remoteproc/imx_dsp_rproc.c
+> +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> @@ -774,7 +774,6 @@ static int imx_dsp_rproc_prepare(struct rproc *rproc)
 >  {
->         struct device *dev = priv->dev;
-> -       int ret;
-> -       struct dev_pm_domain_attach_data pd_data = {
-> -               .pd_flags = PD_FLAG_DEV_LINK_ON,
-> -       };
-> +       int ret, i;
-> +       bool detached = true;
+>         struct imx_dsp_rproc *priv =3D rproc->priv;
+>         struct device *dev =3D rproc->dev.parent;
+> -       struct rproc_mem_entry *carveout;
+>         int ret;
 >
->         /*
->          * If there is only one power-domain entry, the platform driver framework
-> @@ -902,8 +901,25 @@ static int imx_rproc_attach_pd(struct imx_rproc *priv)
->         if (dev->pm_domain)
->                 return 0;
+>         ret =3D imx_dsp_rproc_add_carveout(priv);
+> @@ -785,15 +784,6 @@ static int imx_dsp_rproc_prepare(struct rproc *rproc=
+)
 >
-> -       ret = dev_pm_domain_attach_list(dev, &pd_data, &priv->pd_list);
-> -       return ret < 0 ? ret : 0;
-> +       ret = dev_pm_domain_attach_list(dev, NULL, &priv->pd_list);
-> +       if (ret < 0)
-> +               return ret;
-> +       /*
-> +        * If all the power domain devices are already turned on, the remote
-> +        * core is already powered up and running when the kernel booted (e.g.,
-> +        * started by U-Boot's bootaux command). In this case attach to it.
-> +        */
-> +       for (i = 0; i < ret; i++) {
-> +               if (!dev_pm_genpd_is_on(priv->pd_list->pd_devs[i])) {
-> +                       detached = false;
-> +                       break;
-> +               }
-> +       }
-> +
-> +       if (detached)
-> +               priv->rproc->state = RPROC_DETACHED;
-> +
-> +       return 0;
+>         pm_runtime_get_sync(dev);
+>
+> -       /*
+> -        * Clear buffers after pm rumtime for internal ocram is not
+> -        * accessible if power and clock are not enabled.
+> -        */
+> -       list_for_each_entry(carveout, &rproc->carveouts, node) {
+> -               if (carveout->va)
+> -                       memset(carveout->va, 0, carveout->len);
+> -       }
+> -
+>         return  0;
 >  }
 >
->  static int imx_rproc_detect_mode(struct imx_rproc *priv)
-> @@ -1146,6 +1162,15 @@ static int imx_rproc_probe(struct platform_device *pdev)
->                 }
->         }
+> @@ -1022,13 +1012,39 @@ static int imx_dsp_rproc_parse_fw(struct rproc *r=
+proc, const struct firmware *fw
+>         return 0;
+>  }
 >
-> +       if (dcfg->method == IMX_RPROC_SCU_API) {
-> +               pm_runtime_enable(dev);
-> +               ret = pm_runtime_resume_and_get(dev);
-> +               if (ret) {
-> +                       dev_err(dev, "pm_runtime get failed: %d\n", ret);
-> +                       goto err_put_clk;
-> +               }
+> +static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware=
+ *fw)
+> +{
+> +       struct imx_dsp_rproc *priv =3D rproc->priv;
+> +       const struct imx_dsp_rproc_dcfg *dsp_dcfg =3D priv->dsp_dcfg;
+> +       struct rproc_mem_entry *carveout;
+> +       int ret;
+> +
+> +       /* Reset DSP if needed */
+> +       if (dsp_dcfg->reset)
+> +               dsp_dcfg->reset(priv);
+> +       /*
+> +        * Clear buffers after pm rumtime for internal ocram is not
+> +        * accessible if power and clock are not enabled.
+> +        */
+> +       list_for_each_entry(carveout, &rproc->carveouts, node) {
+> +               if (carveout->va)
+> +                       memset(carveout->va, 0, carveout->len);
 > +       }
 > +
->         ret = rproc_add(rproc);
->         if (ret) {
->                 dev_err(dev, "rproc_add failed\n");
-> @@ -1171,6 +1196,10 @@ static void imx_rproc_remove(struct platform_device *pdev)
->         struct rproc *rproc = platform_get_drvdata(pdev);
->         struct imx_rproc *priv = rproc->priv;
+> +       ret =3D imx_dsp_rproc_elf_load_segments(rproc, fw);
+> +       if (ret)
+> +               return ret;
+> +
+> +       return 0;
+> +}
+> +
+>  static const struct rproc_ops imx_dsp_rproc_ops =3D {
+>         .prepare        =3D imx_dsp_rproc_prepare,
+>         .unprepare      =3D imx_dsp_rproc_unprepare,
+>         .start          =3D imx_dsp_rproc_start,
+>         .stop           =3D imx_dsp_rproc_stop,
+>         .kick           =3D imx_dsp_rproc_kick,
+> -       .load           =3D imx_dsp_rproc_elf_load_segments,
+> +       .load           =3D imx_dsp_rproc_load,
+>         .parse_fw       =3D imx_dsp_rproc_parse_fw,
+>         .handle_rsc     =3D imx_dsp_rproc_handle_rsc,
+>         .find_loaded_rsc_table =3D rproc_elf_find_loaded_rsc_table,
+> @@ -1214,7 +1230,6 @@ static int imx_dsp_runtime_resume(struct device *de=
+v)
+>  {
+>         struct rproc *rproc =3D dev_get_drvdata(dev);
+>         struct imx_dsp_rproc *priv =3D rproc->priv;
+> -       const struct imx_dsp_rproc_dcfg *dsp_dcfg =3D priv->dsp_dcfg;
+>         int ret;
 >
-> +       if (priv->dcfg->method == IMX_RPROC_SCU_API) {
-> +               pm_runtime_disable(priv->dev);
-> +               pm_runtime_put(priv->dev);
-> +       }
->         clk_disable_unprepare(priv->clk);
->         rproc_del(rproc);
->         imx_rproc_put_scu(rproc);
+>         /*
+> @@ -1235,10 +1250,6 @@ static int imx_dsp_runtime_resume(struct device *d=
+ev)
+>                 return ret;
+>         }
+>
+> -       /* Reset DSP if needed */
+> -       if (dsp_dcfg->reset)
+> -               dsp_dcfg->reset(priv);
+> -
+>         return 0;
+>  }
+>
 > --
-> 2.39.5
+> 2.34.1
+>
 >
