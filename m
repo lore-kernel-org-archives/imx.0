@@ -1,174 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB0C1BC3F;
-	Fri, 18 Jul 2025 07:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CE12206A6
+	for <imx@lists.linux.dev>; Fri, 18 Jul 2025 08:06:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752825032; cv=none; b=Evbstnf+b063pinDpn2LM1gmErg+gEbWSaKAEXym0WdRYxkL5hTKx5akUqILUf2fEBRPEdxxgnLQX5KWvKhEbWeSk2YJzxjAM0YijEF0qp3MIwzfQQJxP/a3Oxzg1YdRquJaiygbbTXfBkzq9gBYNP2j9J1EJH/afiusCg4RuOA=
+	t=1752826005; cv=none; b=B9sl1x6HiHVHeHM/UP0QAQ7URP/1p3UX5OCkjbVsS7v6TtoN59bIIuPhR0nOQu5XmgGWbhaR0i4H9flqOOyiOHBHYS3b51RzepF9Z4EK8nq6M9MjnX/N6rAJbt26h3ZqyKQ3GFgtZD1l7ze0y4Y1PgC60h5G0WSoVXZMCxv9tdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752825032; c=relaxed/simple;
-	bh=8ipV0NoSWDyzyTACs+2WmaxExih69IxxoJtY0zLKEmw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=dc+1qmPe4XKWRxiPNULVuDZTCrJn5Lw4mnjc6wHMR0ZTaFOi8GR72oHAkKSb4avLIFbwI3P0VP5anYDsXsDYBsJTIh9YseoXvU4tfAUXnEpawrtdaLi0CK7WXiW2HQulrSS4ya27Vr+4p0ZkpnW2PGZuUqYj1POsMoHK5++c4Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/yuIYu4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752826005; c=relaxed/simple;
+	bh=vHKy9Eu5YOu8HwZrm54A0VoUJII7CXBIo0gGClqXxxI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RXDO4oYgl3Wuci/+/8DPAf/OO31/5RWeF3fcSnarydEb0avc7LlAM1GuTeKTttsV+XaoNwA8/ezByuJxOlBWtsH+FWJQl+UktcY7Otnv+7CHA42aNpPT4GnKzxUZcaa6qZdTHbn5TebA31jbG/sg0mZfY4iFyqcOLA1xfWxf2g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cEP0735N; arc=none smtp.client-ip=209.85.166.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/yuIYu4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F62C4CEEB;
-	Fri, 18 Jul 2025 07:50:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752825031;
-	bh=8ipV0NoSWDyzyTACs+2WmaxExih69IxxoJtY0zLKEmw=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=R/yuIYu46SjJxXDqtU6zjC4MKxqn/0RLwoiWE4VVhJqV6b0KuHHIPJOsPPz7Cxzsh
-	 N63t6QC8ym3E2AuL1UGPVYPxmvmZbU5RqPzIDTiNQG6GqvnEMDylw85qRbWtV7fIln
-	 gumFX73PKAQd09jyDagkP937H+kBVgFLEQ6EfVgbwvHaKAXyYvS/61YneaPp2GIstN
-	 GISPrSPV4F0wswqwEGzWhH7YvzLEjoe81CavNdbdg654EkH5KskyGMN8uieay3AYJn
-	 xhf7AH9nLvbHQuLcKtE1k5i42nlVvQLgf/lzLQRHbjR2nU+oujbzrrwu6VSzl+l/bi
-	 HxQE2Tf2TE50w==
-Message-ID: <50cdc52b-b0e6-4448-a35d-b033671bb623@kernel.org>
-Date: Fri, 18 Jul 2025 09:50:24 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cEP0735N"
+Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-87967784150so107756239f.3
+        for <imx@lists.linux.dev>; Fri, 18 Jul 2025 01:06:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752826002; x=1753430802; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vx0q77AoxjqthF4ccMdayGHHZsrST9CpwJM5Mt74LpI=;
+        b=cEP0735N3h6OwALpZYgaNUQh0nzDxSpTfWRz0SpkMQBJKwpTAn0ilV3XG/HDgWpEAT
+         UGAW6w+Po9zGJkoIBCqfPPoIWrUb6BPSXVdiJ7k4Y0TAQKQK9gPGGD2zTR6VILy3xiLt
+         6ZwG6y/AarL7yUqnIOEh+LeMWtzST/Vt+wZ17qaHjFUx5Wo425UTTKOrA+Dn7xsSsHo1
+         WeJHEkPSfdADGBdnl7hUf7+Z6vUwNtl2lPC/oT0PYfK5Ov2SMgEJ/1n02nZvQT9ahEpI
+         NI2T1Lhx1sPtezXEH2uuX5q8a/HIzbZaGMDj0RkVx5kb1AddcINjDPjxPneuDDK9+qKx
+         rYjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752826002; x=1753430802;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vx0q77AoxjqthF4ccMdayGHHZsrST9CpwJM5Mt74LpI=;
+        b=dHeCK+LguWZDNYjiqmmy2g4DyRPA8dy3jg2XUGtaXGIZ76jnrSgjGgHVKbDkuPiiAe
+         KulhM2ChRjyXmzVE2PJK1UwL/8ubkqXBeAtiKZxrF9baLvekqn9/NlMr+WAAjILWvIOV
+         JDePKEM/K4bDZyC3PU4PC8U47qImSFtgtSzA/qW84h5H0M3tm2VLA+QYeNnj3T3vLpXu
+         CtahrLGUG3AfFOMbm1Tq5hDYbR7wE4O0k06Gk4E2vH66Ss9UYLkS5tHm2TfwPdUOkTP0
+         O0AKDfOwOPSmes/IJfjytVylVWF+w4VU34CUXcnaqCz0mgcA+y/2L7u1ua2fW3LR8qyl
+         ayVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUYt1IEaj91Pwys2BijMNoxVRXYk42CveZbDuRGCQLxii4ofUmBJRGuOoFLxMA/+4E8/sA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzxbFdIlnKmpzFKwa7k+YNEYHt3MAeYsmBNLCdP8Z8Ai6MCgAhp
+	PICHbcf0f01a0dEiLr/rapSaCvvYyd4J426rPp+FMvSIhWmTVzRFz7TyvZaxNCTJ3EaFl2VGItY
+	6WuAWtma2Z2k9/ooPWVRENMMUIT9UOdA=
+X-Gm-Gg: ASbGnctnNAoyJwCa/i1GIoiU6IuQEyCM2yQayTeFNqDZogQGVA+AA3IOt+bhEZk/X3f
+	OCGawOHCccjLZA+DLsk4Xygs77NHYUm4w8PoURBO41YEV0gsz4QPmr3+HxDm1aGpxZhHsJIJyB8
+	coPUHt9TdYnognG9Uoi9zyQlqQXi7NwYZuu7POkjD/kfIlYbxBhx7F8LFoP8VaTlnz7utnWML/G
+	IbCDxg=
+X-Google-Smtp-Source: AGHT+IE7GtvrLtIVr6iZFDN2EctnHvZOIyXlxWh6MzNugLEC1QoF3JNN0biXxaa1KHAjBcNYlASQWsOf7emqcbdQTgg=
+X-Received: by 2002:a05:6602:6b07:b0:861:d8ca:3587 with SMTP id
+ ca18e2360f4ac-879c29170cdmr1158031539f.4.1752826002287; Fri, 18 Jul 2025
+ 01:06:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net-next 02/14] dt-bindings: net: add nxp,netc-timer
- property
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "robh@kernel.org" <robh@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "richardcochran@gmail.com" <richardcochran@gmail.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Clark Wang
- <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@google.com" <edumazet@google.com>,
- "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "vadim.fedorenko@linux.dev"
- <vadim.fedorenko@linux.dev>, Frank Li <frank.li@nxp.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>, "F.S. Peng" <fushi.peng@nxp.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>
-References: <20250716073111.367382-1-wei.fang@nxp.com>
- <20250716073111.367382-3-wei.fang@nxp.com>
- <20250717-sceptical-quoll-of-protection-9c2104@kuoka>
- <PAXPR04MB8510EB38C3DCF5713C6AC5C48851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250717-masterful-uppish-impala-b1d256@kuoka>
- <PAXPR04MB85109FE64C4FCAD6D46895428851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <af75073c-4ce8-44c1-9e48-b22902373e81@kernel.org>
- <PAXPR04MB8510426F58E3065B22943D8C8851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250718-enchanted-cornflower-llama-f7baea@kuoka>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250718-enchanted-cornflower-llama-f7baea@kuoka>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250716061114.2405272-1-shengjiu.wang@nxp.com>
+ <20250716061114.2405272-2-shengjiu.wang@nxp.com> <aHf6q9asHvmw2Zc8@lizhi-Precision-Tower-5810>
+In-Reply-To: <aHf6q9asHvmw2Zc8@lizhi-Precision-Tower-5810>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 18 Jul 2025 16:06:30 +0800
+X-Gm-Features: Ac12FXzO6DToRCzTYT9Ee12DWJJ77xXjVtDSkAwa86OZgA_lFa-sYoMhsihMh14
+Message-ID: <CAA+D8AM_3zK5Gp0_OWzc9B-qJU9CNYvDynMH5_a-o8+4ShE6Mw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] arm64: dts: imx8mm-evk: support more sample rates for
+ wm8524 card
+To: Frank Li <Frank.li@nxp.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 18/07/2025 09:46, Krzysztof Kozlowski wrote:
-> On Thu, Jul 17, 2025 at 10:26:28AM +0000, Wei Fang wrote:
->>>> timestamper:	provides control node reference and
->>>> 			the port channel within the IP core
->>>>
->>>> The "timestamper" property lives in a phy node and links a time
->>>> stamping channel from the controller device to that phy's MII bus.
->>>>
->>>> But for NETC, we only need the node parameter, and this property is
->>>> added to the MAC node.
->>>
->>> I think we do not understand each other. I ask if this is the
->>> timestamper and you explain about arguments of the phandle. The
->>> arguments are not relevant.
->>>
->>> What is this purpose/role/function of the timer device?
->>
->> The timer device provides PHC with nanosecond resolution, so the
->> ptp_netc driver provides interfaces to adjust the PHC, and this PHC
->> is used by the ENETC device, so that the ENECT can capture the
->> timestamp of the packets.
->>
->>>
->>> What is the purpose of this new property in the binding here?
->>>
->>
->> This property is to allow the ENETC to find the timer device that is
->> physically bound to it. so that ENETC can perform PTP synchronization
->> with other network devices.
-> 
-> 
-> Looks exactly how existing timestamper property is described.
-> 
-> If this is not timestamper then probably someone with better domain
-> knowledge should explain it clearly, so I will understand why it is not
-> timestamper and what is the timestamper property. Then you should think
-> if you need new generic binding for it, IOW, whether this is typical
-> problem you solve here or not, and add such binding if needed.
-> 
-> Maybe there is another property describing a time provider in the
-> kernel or dtschema. Please look for it. This all looks like you are
-> implementing typical use case in non-typical, but vendor-like, way.
+On Thu, Jul 17, 2025 at 3:17=E2=80=AFAM Frank Li <Frank.li@nxp.com> wrote:
+>
+> On Wed, Jul 16, 2025 at 02:11:12PM +0800, Shengjiu Wang wrote:
+> > The wm8524 codec is connected to the SAI interface. There are two audio
+> > plls on i.MX8MM, one pll can be the clock source of 44kHz series rates,
+> > another pll can be clock source of 48kHz series rates.
+> >
+> > Add mclk-fs property for the clock ratio, remove 'clocks' property for
+> > codec that doesn't need to handle clock enablement, add
+> > 'system-clock-direction-out' for clock is from cpu dai.
+>
+> Can you provide the reason why need such change?
 
+As commit
+17cc308b1833 ASoC: wm8524: enable constraints when sysclk is configured.
+make wm8524 release the constraint when codec's sysclk is not configured
+so we can configure the cpu dai's sysclk to support more rates. previously =
+it
+only support 48k series rates, now it can support 44k series rates.
 
-BTW, I am also very disappointed that we had exactly that talk in v1,
-for 10 or 20 emails (!!!) and then you send the same.
+will add these info is commit message.
 
-I feel like you do not want to actually solve this problem, but just
-push whatever you have. Otherwise why unresolved comments in v1 would
-result in the same code in v2 leading to the same lengthy discussion?
+>
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi | 17 +++++++++++++----
+> >  1 file changed, 13 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi b/arch/arm64=
+/boot/dts/freescale/imx8mm-evk.dtsi
+> > index 622caaa78eaf..ff7ca2075230 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
+> > @@ -147,6 +147,7 @@ sound-wm8524 {
+> >               simple-audio-card,format =3D "i2s";
+> >               simple-audio-card,frame-master =3D <&cpudai>;
+> >               simple-audio-card,bitclock-master =3D <&cpudai>;
+> > +             simple-audio-card,mclk-fs =3D <256>;
+>
+> what's measn 256? Do you need mention in commit message?
 
-If you send the same v3, I will just NAK it without even discussing,
-because 20 emails in v1 and 20 emails in v2 is way too much wasting my time.
+mclk-fs is the ratio to calculate the sysclk,  sysclk =3D mclk-fs * sample =
+rate.
+256 is a common ratio for audio.
 
-Best regards,
-Krzysztof
+will add these info in commit message.
+
+best regards
+Shengjiu Wang
+>
+> Frank
+> >               simple-audio-card,widgets =3D
+> >                       "Line", "Left Line Out Jack",
+> >                       "Line", "Right Line Out Jack";
+> > @@ -158,11 +159,11 @@ cpudai: simple-audio-card,cpu {
+> >                       sound-dai =3D <&sai3>;
+> >                       dai-tdm-slot-num =3D <2>;
+> >                       dai-tdm-slot-width =3D <32>;
+> > +                     system-clock-direction-out;
+> >               };
+> >
+> >               simple-audio-card,codec {
+> >                       sound-dai =3D <&wm8524>;
+> > -                     clocks =3D <&clk IMX8MM_CLK_SAI3_ROOT>;
+> >               };
+> >       };
+> >
+> > @@ -570,9 +571,17 @@ &sai2 {
+> >  &sai3 {
+> >       pinctrl-names =3D "default";
+> >       pinctrl-0 =3D <&pinctrl_sai3>;
+> > -     assigned-clocks =3D <&clk IMX8MM_CLK_SAI3>;
+> > -     assigned-clock-parents =3D <&clk IMX8MM_AUDIO_PLL1_OUT>;
+> > -     assigned-clock-rates =3D <24576000>;
+> > +     assigned-clocks =3D <&clk IMX8MM_AUDIO_PLL1>,
+> > +                       <&clk IMX8MM_AUDIO_PLL2>,
+> > +                       <&clk IMX8MM_CLK_SAI3>;
+> > +     assigned-clock-parents =3D <0>, <0>, <&clk IMX8MM_AUDIO_PLL1_OUT>=
+;
+> > +     assigned-clock-rates =3D <393216000>, <361267200>, <24576000>;
+> > +     fsl,sai-mclk-direction-output;
+> > +     clocks =3D <&clk IMX8MM_CLK_SAI3_IPG>, <&clk IMX8MM_CLK_DUMMY>,
+> > +             <&clk IMX8MM_CLK_SAI3_ROOT>, <&clk IMX8MM_CLK_DUMMY>,
+> > +             <&clk IMX8MM_CLK_DUMMY>, <&clk IMX8MM_AUDIO_PLL1_OUT>,
+> > +             <&clk IMX8MM_AUDIO_PLL2_OUT>;
+> > +     clock-names =3D "bus", "mclk0", "mclk1", "mclk2", "mclk3", "pll8k=
+", "pll11k";
+> >       status =3D "okay";
+> >  };
+> >
+> > --
+> > 2.34.1
+> >
