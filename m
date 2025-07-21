@@ -1,60 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29941D540;
-	Mon, 21 Jul 2025 11:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7212868A6;
+	Mon, 21 Jul 2025 12:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753095853; cv=none; b=oQV+qKRtZ5U++pDRLNBgjgC+TPfkTnlhjlKQN4TEvIByh2lrpPKmcNy4PMCdpmjtuaz1j81wbvJFo8UTTV4+hPHuNtYXJgx+z7uYLvfXnWRLN6i6qz2WBRc4QoGXsPB/RRQsXkmXZQGCuk6NlAa10JqGF0pe3NyTph5nj3A4m6M=
+	t=1753099251; cv=none; b=il7HaQsTdjcWFrJJHMMi4Sy7k4Uo3TCs/d0h5ptqrQLzb4LNeXjitJjlIEVqSkvBE5Lid+CcyJea6RCflyEMDxZDy3rpABCKxR6wQxSBuQ9te7YJfw1CM/sktN8RvqzFMHq8SVfaInPGtLIwW/WFdWE/ClMS4I440M9WNp6yIzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753095853; c=relaxed/simple;
-	bh=FOl8B1w1BTmtkYtHJ9aUUMR1Sx99lJ8Y65IBMge6HNA=;
+	s=arc-20240116; t=1753099251; c=relaxed/simple;
+	bh=eZrqXDRoArSD+He7HcN7c1ckjiiP/g2WQgcUTvBuw0g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hfMRBv02qbzPBPSZgpcRcdxf3Vrcl5bT0JFQcgfvNSULzHQk8J9KifDNDJZ2FFVxtrn8NSFjD9LeZZR8ETxLvLvJANEBCbundH4kPcs0dAr5WfAw1x/fRDzTUIoHijfHOfmiCwd4bpgL+MimU6f4u/77e+RS9NUQKQLZoWvji2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUAyLweq; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=egeZ8srmDaXZSAfPHRSJZNkSBrxkk4xQGLmUBEW0ioe8Dh/kbKGQ0mc/gmlTLSc49JB5iALoTDe1dji8+VebLQV9njafnG3z3gMkrYKBxwA3WOveIyH0DEhTm35GTkhCEprDuncag34Rio/nHgDKbAKHVVIhnHzMd2mg8vfMcck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oyvt4w/F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUAyLweq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CF1C4CEED;
-	Mon, 21 Jul 2025 11:04:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753095852;
-	bh=FOl8B1w1BTmtkYtHJ9aUUMR1Sx99lJ8Y65IBMge6HNA=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oyvt4w/F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B680C4CEED;
+	Mon, 21 Jul 2025 12:00:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753099251;
+	bh=eZrqXDRoArSD+He7HcN7c1ckjiiP/g2WQgcUTvBuw0g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SUAyLweqpIGhQZIudql067twi9TaYbc6LhEXkUSayi7DwqO5Wmzqr+cuIGdvwAgnU
-	 CDj/v+Itds6YJySP2wR46qf7cMTqVF4YrMeOBWzz/T70J3jhiDQ1C+Mn0SHpHglfZy
-	 AlgsLCfEuor/6uWKB0XQw9lNP0rQCZOIeinw+XDE=
-Date: Mon, 21 Jul 2025 13:04:09 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: sfr@canb.auug.org.au, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH] usb: core: add urb->sgt parameter description
-Message-ID: <2025072159-banjo-resisting-db29@gregkh>
-References: <20250721104417.3442530-1-xu.yang_2@nxp.com>
+	b=oyvt4w/Fg25JiliT3I5h4KIo42BbZIMQAdpRXWNj4NiI4uESUka0Bj08XTLctidX2
+	 gkavhwuRHacqXptKHjSseGibMhG8WCGi3s4eKesRvlZ28nsAMJIGTolLHZcP4sAmWb
+	 AhLsvOJGEYwIrh35p9twCkKEDtbDUf+Eu1NL7yJmcZrq7eQENWLrzNZ3HSH2zMJP2j
+	 qcQ1zRA9QDaGy5avtfxXiTh+AZ9JMVAoBh6F3wWzVanWy5wMWoy229/erMjDa3LnZX
+	 dl/40Jp7obz9ISFW7htiRWtlFYKCqyV51QndgeXOV6n2YSwB74Ah+nY7XSIl+E3I4d
+	 hHYxvmHTeAA6A==
+Date: Mon, 21 Jul 2025 13:00:45 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Joy Zou <joy.zou@nxp.com>, Liam Girdwood <lgirdwood@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>, Ye Li <ye.li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: regulator: add PF0900 regulator yaml
+Message-ID: <e0777d1d-8e69-495b-8067-9f4896b2b845@sirena.org.uk>
+References: <20250721-b4-pf09-v2-v2-0-e2c568548032@nxp.com>
+ <20250721-b4-pf09-v2-v2-1-e2c568548032@nxp.com>
+ <e9f38e38-7df7-4d19-b5c0-2f18aeebcc78@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="UHW08PibDF+bPV5c"
+Content-Disposition: inline
+In-Reply-To: <e9f38e38-7df7-4d19-b5c0-2f18aeebcc78@kernel.org>
+X-Cookie: Microwaves frizz your heir.
+
+
+--UHW08PibDF+bPV5c
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250721104417.3442530-1-xu.yang_2@nxp.com>
 
-On Mon, Jul 21, 2025 at 06:44:17PM +0800, Xu Yang wrote:
-> The parameter description of urb->sgt is lost, this will add it for
-> completeness.
-> 
-> Reported-by: Stephen Rothwell<sfr@canb.auug.org.au>
-> Closes: https://lore.kernel.org/all/20250711182803.1d548467@canb.auug.org.au/
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
->  include/linux/usb.h | 4 ++++
->  1 file changed, 4 insertions(+)
+On Mon, Jul 21, 2025 at 09:28:59AM +0200, Krzysztof Kozlowski wrote:
 
-What commit id does this fix?
+> > +  nxp,i2c-crc-enable:
+> > +    type: boolean
+> > +    description: If the PMIC OTP_I2C_CRC_EN is enable, you need to add this property.
 
-thanks,
+> 1. Why you cannot just read registers to check for this?
+> 2. You need anyway proper description what is this about and then wrap
+> according to Linux coding style.
 
-greg k-h
+Looking at the driver code the CRCs are also done on reads as well.
+
+--UHW08PibDF+bPV5c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmh+K+0ACgkQJNaLcl1U
+h9DzBwf/aBg3HMcKbw20S0T9cViDfv3UCOdAdgy5dEcBir0qtCHEDpVkuOkNBya0
+8I4T3pt+M1Aepw5L+918G6UJD8jaD/UzKbu5DwOPCbFabF9ijzAVguwaSiELlv/5
+1wezdzlz9De1v0BDAzU4dJSEYfYV+YTbDHLOucluwzDkoqqTzxpaMyPWkWwDUJM2
+XkcucMB8RfzNakHqnb1VJDJ2lvp95aWnKdFWpLJt3Cluf4eMSq7BLuKiMwrYZ+Km
+/L4we5+2vpexsk4kT5ovz2Yb6oDNHGp1H5W6ya6zP9tFgXrynZ1EoP0dENCuoPF2
+Jr80quKyqA/NqNbpUWcpIRfQZl9Yqg==
+=aCZh
+-----END PGP SIGNATURE-----
+
+--UHW08PibDF+bPV5c--
