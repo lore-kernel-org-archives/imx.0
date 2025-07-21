@@ -1,48 +1,48 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C332D8DCA;
-	Mon, 21 Jul 2025 14:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5605F2DCBE0;
+	Mon, 21 Jul 2025 14:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753107052; cv=none; b=hZRZxZGXrd6FNxyzA6XzY8GuQN3F3g7swbb+ZqrfkNU4eUzI7zTzB3D+dqLupgNjug0uMeKBwmZcwv976Nv8+vBwCVRQ5td5Xc664Ons9Wx+dLUgGi1vnKres1HauFleII756NzgX8xQ2kbgngY/nt/Hhqrv7Ve5Ecd/Y2yMMH4=
+	t=1753107195; cv=none; b=pmQgtHW86pqoNMH8GQuiilIBcASKEada5DrRsgF67JBjmMBeZKhR3hVIFBY8fULF657dbm5c6vEQY9kN9LSSJ1/d9xPh/sm2qVdz22H9bGmD0lIolvYO1CemwN6VTLAu/NDrejYUSwGstijI1EWODRmoVw9aRdQpWYqprEjFLic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753107052; c=relaxed/simple;
-	bh=gfBZrQM1TIPK5QmWH+MeLKo35k/zfTpYv/KPq8pP6XA=;
+	s=arc-20240116; t=1753107195; c=relaxed/simple;
+	bh=8RFdCQOm4vZFdehj3bUDpcy+jvON4CmFDASZMU7AMWA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=jTS/gWD2iKiymP8mvqLNdRUESP1h1SKtFRSuHhNEjJTgcgW6d1bPtQ3DD2AvQ3mzXRYTY42COdTlo+RkGMTVUkejYghV6I2l1e4q7suAmPWzJS5t1vw6FAJ/aCcswwgOCbsz5OLSHTv5NqbFaz3jMfGQcfgO1A0Nu4H0yn4lAyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=FTRU1S7c; arc=none smtp.client-ip=198.47.23.235
+	 In-Reply-To:Content-Type; b=eomNdBUFdXFZvUkHcSkRx7CzdNn0m5tRi1y/TR82T7snqc2zM9ogY5lXJpI1srtGWczcj3XNPux3kcd6VPkfndMiUuGsHniLCzDWZVIP+jJ3MP6nyXjvxWhXkHnYQLtpL2Ix9GeoEa8Or91dsTRrRBCD0sQ1Akq2ThrvJww2PCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Tan0eiZc; arc=none smtp.client-ip=198.47.23.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="FTRU1S7c"
-Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56LEAaWw1287724;
-	Mon, 21 Jul 2025 09:10:36 -0500
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Tan0eiZc"
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56LED2k1822189;
+	Mon, 21 Jul 2025 09:13:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1753107036;
-	bh=Oywn0X9thZxpwHoq6E9zsRAlXFyL01BrvALB43n7K4o=;
+	s=ti-com-17Q1; t=1753107182;
+	bh=Nh59/lkpsvmg1ZVKHRMN4ZHHZVoi4kbwnBYZr5gHbjk=;
 	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=FTRU1S7cFPcSOmGvp+kwZi/8aKS66qkks2Ksxniim52Ctpderbs5lhk1Ca0ixxBa0
-	 1mp962mxEfuENK2G2qCfkvcN+QVIxcCItvMZEPrJKPTioPdGTuXFzuQqUhqWstH6qO
-	 E2dKkijr6cdQ2UY5CjwACzT2tGFEgmdCFKT2P71c=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56LEAaWY922931
+	b=Tan0eiZcqW0I4uKlbNIWRM0tM9SYQhScxKr03owyfIXsdfK6Eg2wbd4rpAVZT3mHK
+	 LJFMV0SATt60zWidBxtGSs2JPgwg0KciWceCgh6iOwIzZ87vjLxNE+WDLN9Skg4Qmg
+	 2P62ufFNwCpBx3CIv/H0Mbrx9LFEnvVcwgVgdwh0=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56LED2ux1417486
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Mon, 21 Jul 2025 09:10:36 -0500
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+	Mon, 21 Jul 2025 09:13:02 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 21
- Jul 2025 09:10:35 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ Jul 2025 09:13:02 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Mon, 21 Jul 2025 09:10:35 -0500
+ Frontend Transport; Mon, 21 Jul 2025 09:13:02 -0500
 Received: from [10.249.141.75] ([10.249.141.75])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56LEAVjD3952843;
-	Mon, 21 Jul 2025 09:10:32 -0500
-Message-ID: <05a07a03-3f59-489b-ae55-5f454266bafb@ti.com>
-Date: Mon, 21 Jul 2025 19:40:30 +0530
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56LECvBl3955460;
+	Mon, 21 Jul 2025 09:12:58 -0500
+Message-ID: <86bbb4c1-18a9-4917-8554-97d540b72b5a@ti.com>
+Date: Mon, 21 Jul 2025 19:42:57 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,7 +52,9 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/7] arm64: dts: ti: k3-j721s2-main: Add interrupts
  property
-To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, <nm@ti.com>,
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+        Yemike Abhilash Chandra
+	<y-abhilashchandra@ti.com>, <nm@ti.com>,
         <vigneshr@ti.com>
 CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <conor+dt@kernel.org>, <vaishnav.a@ti.com>,
@@ -62,72 +64,36 @@ CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
 References: <20250714092708.3944641-1-y-abhilashchandra@ti.com>
  <20250714092708.3944641-2-y-abhilashchandra@ti.com>
  <72545187-4605-40bb-9c68-54670c2e5332@ti.com>
+ <92627ace-1fc8-45a7-a25e-76f410427f0c@kernel.org>
 Content-Language: en-US
 From: "Kumar, Udit" <u-kumar1@ti.com>
-In-Reply-To: <72545187-4605-40bb-9c68-54670c2e5332@ti.com>
+In-Reply-To: <92627ace-1fc8-45a7-a25e-76f410427f0c@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
 
-On 7/21/2025 7:37 PM, Kumar, Udit wrote:
+On 7/21/2025 7:39 PM, Krzysztof Kozlowski wrote:
+> On 21/07/2025 16:07, Kumar, Udit wrote:
+>>> diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
+>>> index 62f45377a2c9..6f32a2b0c40c 100644
+>>> --- a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
+>>> +++ b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
+>>> @@ -1248,6 +1248,9 @@ ti_csi2rx0: ticsi2rx@4500000 {
+>>>    		cdns_csi2rx0: csi-bridge@4504000 {
+>>>    			compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
+>>>    			reg = <0x00 0x04504000 0x00 0x1000>;
+>>> +			interrupts = <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>,
+>>> +				     <GIC_SPI 152 IRQ_TYPE_LEVEL_HIGH>;
+>> Just cosmetic thing, if you are doing v2 then consider 152 first ,
+>> followed by 153.
 >
-> On 7/14/2025 2:57 PM, Yemike Abhilash Chandra wrote:
->> Add interrupts property for CDNS CSI2RX. Interrupt IDs are taken from 
->> the
->> J721S2 TRM [0].
->>
->> Interrupt Line      | Source Interrupt
->> --------------------|----------------------------
->> GIC500SS_SPI_IN_153 | CSI_RX_IF1_CSI_ERR_IRQ_0
->> GIC500SS_SPI_IN_152 | CSI_RX_IF1_CSI_IRQ_0
->> GIC500SS_SPI_IN_157 | CSI_RX_IF2_CSI_ERR_IRQ_0
->> GIC500SS_SPI_IN_156 | CSI_RX_IF2_CSI_IRQ_0
->>
->> [0]: https://www.ti.com/lit/zip/spruj28
->>
->> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
->> ---
->>   arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi | 6 ++++++
->>   1 file changed, 6 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi 
->> b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
->> index 62f45377a2c9..6f32a2b0c40c 100644
->> --- a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
->> +++ b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
->> @@ -1248,6 +1248,9 @@ ti_csi2rx0: ticsi2rx@4500000 {
->>           cdns_csi2rx0: csi-bridge@4504000 {
->>               compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
->>               reg = <0x00 0x04504000 0x00 0x1000>;
->> +            interrupts = <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>,
->> +                     <GIC_SPI 152 IRQ_TYPE_LEVEL_HIGH>;
+> No, you cannot just randomly change numbers or the order.
 >
-> Just cosmetic thing, if you are doing v2 then consider 152 first , 
-> followed by 153.
->
-> Otherwise
->
-> Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+To be precise both , interrupt-names and interrupts,
+
+if this make sense to change.
 
 
-Sorry, sent too fast, offset of 32 missing .
-
-
->
->> +            interrupt-names = "error_irq", "irq";
->>               clocks = <&k3_clks 38 3>, <&k3_clks 38 1>, <&k3_clks 38 
->> 3>,
->>                   <&k3_clks 38 3>, <&k3_clks 38 4>, <&k3_clks 38 4>;
->>               clock-names = "sys_clk", "p_clk", "pixel_if0_clk",
->> @@ -1301,6 +1304,9 @@ ti_csi2rx1: ticsi2rx@4510000 {
->>           cdns_csi2rx1: csi-bridge@4514000 {
->>               compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
->>               reg = <0x00 0x04514000 0x00 0x1000>;
->> +            interrupts = <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>,
->> +                     <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>;
->> +            interrupt-names = "error_irq", "irq";
->>               clocks = <&k3_clks 39 3>, <&k3_clks 39 1>, <&k3_clks 39 
->> 3>,
->>                   <&k3_clks 39 3>, <&k3_clks 39 4>, <&k3_clks 39 4>;
->>               clock-names = "sys_clk", "p_clk", "pixel_if0_clk",
+> Best regards,
+> Krzysztof
