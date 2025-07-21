@@ -1,72 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE5C28C014;
-	Mon, 21 Jul 2025 09:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DA428C2B3
+	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 10:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753090754; cv=none; b=N1f+YLbUcCAf/QcYW3F4BFWnMu/5JS59cWzy8G4cyp3BdAgcDZOALAS2lvhNPYcND6Sx+6JCpQBR51URsp+nudyQbw+dY/Y7efKEgMMeal1+HWBJmf0lPzp4PoaswTZDKRaAXXQBhb+qYSy6AAAqftf5rxBd0qamSCJjzB9nd5c=
+	t=1753092516; cv=none; b=Wv51X/6xMMQir7WSBzzaW+7bFEBiAb1g2DY0sPI7UPO2OQUsV1ywD916W6NOph09xTFU6H6BIFBzAqvpDFbxP4w2+KpHqlknX1VQ5KouDBVAF4eZZiTsN3y8vPMPcVBN+PFI9DfMgtF8FQoxNU4FYLGIk7jlFFG6idYuXoQXda4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753090754; c=relaxed/simple;
-	bh=WiX27AOv2yJA6I29GkVHqgcg0Ip92T/WuBgZC4cMNIc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SIrInHQUYOornqXoR1+s2SSvzO9Xn32lIqpM3G9F9WiHaXAtIY8fD85bAyFY/eKBKVWld5zM7RGBWH/S4tPEjPocrkrewyyEjZm1TSf6L4N0iIfzfCtKRqJ5ja8+8BU2oCwhSinhZB21zAlwc8113ebjRu21nViGb82fEo8ebtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XFbUl/kx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753092516; c=relaxed/simple;
+	bh=YlMqV9K0VO+qrL5y6ZXQy+k0bzHkUIsVHeFAWRt+jUM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dmQW0dzc+LdMYkXSZLhDNN1aK1SjMTUWnQ1W7RePRe3G9jjAz0Lt+0XtQp5mNLxmL/hSqG46cwGRGXiygUC/6O/RgUVmUzE2IED+RHNYm3PkpNpp+0QmyZV0Vh/AW0Z3+v1E1P8BvtqvsnQ4NGUgyEv7YOrOG/a3LG9YguYFYxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=rGiSV8bS; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XFbUl/kx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3524C4CEED;
-	Mon, 21 Jul 2025 09:39:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753090754;
-	bh=WiX27AOv2yJA6I29GkVHqgcg0Ip92T/WuBgZC4cMNIc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XFbUl/kxNIxSfbroWuxmNrYXHBY6cbd043RehTih0N6YlDU8z3nYFZFxnx5alRma/
-	 rdrzMnQwtP7aWh6aD6zYFFWtbx/Da4IivlgGYFPIM4ysKMw4VmSncqcl7S2YuNRLPQ
-	 2ZUwVutqJHVVaACubFZ3bD9+MGvRKHcSVhH+3hFEp8ANiPgGVI2lorsyuzGu1qfpJ+
-	 DMOpwuMWVNEo8uzFSiyJybSduIIElsHdardzTAkUv38BzfPqxeD9/HxA69nc378rhz
-	 YT75eeq+35mW8Fh+uVcpogyuBvBxiuhByWJgfemwexQ7QwBGvtqa8sPzkXckJtylZl
-	 Us6PNM5B12+qQ==
-Date: Mon, 21 Jul 2025 11:39:11 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Li Jun <jun.li@nxp.com>, 
-	Xu Yang <xu.yang_2@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
-	"open list:GENERIC PHY FRAMEWORK" <linux-phy@lists.infradead.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] dt-bindings: phy: imx8mq-usb: Drop ref for
- fsl,phy-pcs-tx-deemph-3p5db-attenuation-db
-Message-ID: <20250721-imported-quaint-crayfish-d4e44b@kuoka>
-References: <20250721065424.4192351-1-peng.fan@nxp.com>
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="rGiSV8bS"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4F3BEC75FD;
+	Mon, 21 Jul 2025 12:08:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
+	t=1753092512; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=G6t649V1EzrZ/HP6mEg0Xb/fiQdeIFETtkrsh9N4wsQ=;
+	b=rGiSV8bSE//KClQUGVH00FIpD29OIIppuf94nldIor2qJQf6POkkVsT/+Ud2t92fpdLvVh
+	4hifYR24p/EzCkMj3/eI/h8E3yvbMWGGWQJmQL/f2d/LxBM8W62vBva0fTtYZjwmPu6Eh2
+	m8LUD5h0W9Y5AFYdF+iNdigARckHT73lGd0bQmsOO2ZkiioUiTF9rXsR7qfDootIu+NgJG
+	DdgabyI/Wfr+gKBXkx1qzkaVJ12sKbihQULF1qr55MA3NKqqJaDi94WT8rP3K248JX0+vq
+	JatLmETUU6ErU5a4VFgpuu4Tyj3bNBAEXDFt0rMvsORNQsK3P7fkqIn2SDNBjA==
+From: Frieder Schrempf <frieder@fris.de>
+To: linux-arm-kernel@lists.infradead.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [PATCH v2 02/12] arm64: dts: imx8mm-kontron: Remove unused regulator
+Date: Mon, 21 Jul 2025 12:05:36 +0200
+Message-ID: <20250721100701.115548-3-frieder@fris.de>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250721100701.115548-1-frieder@fris.de>
+References: <20250721100701.115548-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250721065424.4192351-1-peng.fan@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Jul 21, 2025 at 02:54:24PM +0800, Peng Fan wrote:
-> Address the device tree check warning: "phy@4c1f0040 (fsl,imx95-usb-phy):
-> fsl,phy-pcs-tx-deemph-3p5db-attenuation-db: 17 is not of type 'array'"
-> 
-> And dt_binding_check reports:
-> properties:fsl,phy-pcs-tx-deemph-3p5db-attenuation-db: '$ref' should not be
-> valid under {'const': '$ref'}
-> hint: Standard unit suffix properties don't need a type $ref
-> 
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-I already sent it, since I did the change in dtschema...
+This regulator is not used anywhere and is not available in hardware.
+Remove it.
 
-https://lore.kernel.org/linux-devicetree/20250627-dt-bindings-db-v1-2-d5c7072acbee@linaro.org/
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+ arch/arm64/boot/dts/freescale/imx8mm-kontron-bl-osm-s.dts | 8 --------
+ 1 file changed, 8 deletions(-)
 
-Best regards,
-Krzysztof
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl-osm-s.dts b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl-osm-s.dts
+index 33f8d7d1970e0..3a166cf0afcb7 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl-osm-s.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl-osm-s.dts
+@@ -48,14 +48,6 @@ pwm-beeper {
+ 		pwms = <&pwm2 0 5000 0>;
+ 	};
+ 
+-	reg_rst_eth2: regulator-rst-eth2 {
+-		compatible = "regulator-fixed";
+-		gpio = <&gpio1 1 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-		regulator-always-on;
+-		regulator-name = "rst-usb-eth2";
+-	};
+-
+ 	reg_vdd_5v: regulator-5v {
+ 		compatible = "regulator-fixed";
+ 		regulator-always-on;
+-- 
+2.50.1
 
