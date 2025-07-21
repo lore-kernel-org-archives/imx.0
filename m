@@ -1,196 +1,225 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012050.outbound.protection.outlook.com [52.101.66.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4369289812
-	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 08:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753087006; cv=fail; b=a/o2lMBVtlRmZS/LuI2MJpAhmIiun+m16k5sXKGGKy7FUWHn7CquJDTJMwoFqrWp/OFAabaT7FSTw2lj1e9cG8+M5UHAKnIM81AcA/E8O+Hs5NcUec9bL5E9NL+W9781bsTjwJQcUwqi2nQyanKSVaZBsZRY4zGF60jgVE8GKbA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753087006; c=relaxed/simple;
-	bh=vVZl8jg6H3FszuLBP9EmWFZYCuztdt3qs5Hb5e7mtAc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nbnnanjBXTgprQkROz96aaVEpuUv023DlfAmk1PNKtP2yXLg2HO/iVhqmp9OTXMV9w0QuSuhNwuOUKU8AWcCYAFTJML8M4NwCT9JEaNF9WBshVIqMZYooyXIv4gZWJ0JzCrlSGxeBVskeSUTSxD34iIPRvNGZN1Il0CStkJyOFM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=FjyZHw3Z; arc=fail smtp.client-ip=52.101.66.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6ABA21FF28
+	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 09:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753088902; cv=none; b=lZa4InMf2S1gziEm6JQGkRC2vaDMGgEMZCm9rf4oN/8bsn+PWCc2WOkfkS0zg2R2Xrj6SBPrd0mQVSvTJrwCcy2Fqddz/Qoo3oG//mUsgxD3fA0Zj8S8xd2H0e2k/O8DQZSZU4zQoxa0raeU4HJ14iXZ6sVJeKtBKJbDLJZ2zVg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753088902; c=relaxed/simple;
+	bh=OgsguQcDxU4ROzAr8FLZ3Ayjk8vUdVmKWdH6eZ50VUI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qx/KLuwzKh3Oi9F/OjtPW7YTQo2VD/1LxAZYuoL3oujDTN0VA0p01RtbzfsmuWm8MLTizm6EtIeoMCHYO6j9xoiAx8SC882cMIeycG16uiTWdPEiBLSYf4pVdhkIy/WBoXh/C96EXSnp+8Ll9kZhUVvgsK6wdT9jvtn0OEASLck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SjBzKHqS; arc=none smtp.client-ip=209.85.166.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="FjyZHw3Z"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v6KnQT4VPHwnUXaYy1NS03PQQ0J35K6ruWkNYksmx0aPKv/Z+XxO3I1re/ocgBqEXvZGuJ+/lyz5VIR9Hc2tBp1hwnQF9oqtq8HChe306ciRUKtAKwXSiL6V00Q23AjuezOiBM9P0jFC8/zFC3l5Ac3t6WliEE27B41B2pj70tai0NTqcxsDUTOEokXVUD+Xzl0B4z30MvHezztNzKARCxJiKOHHX90doD4J6o4fN9r/lDpI27+bLyELcV7Tg8zds8U53LjCxGaSJMHL6hukfG5CNA4ousu8YAaqIz5LZd9i1AV2nXlzJGXRPRzlQ+wL1lR016gXCXaBjem31HKBhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iyIEjbIBlIbc54EHBdLN7/7mtFwlLBQ1SOHaTx2O9cs=;
- b=PFY4q7XaBZ8xgATmQ4/w6gsC3l/Sjd4/yDXdCtnQKe7c/YqwPvdaFT0xKD3rpvrAXPOaJjJro+ecz0Y2mzRWVV38xK5Wj6lGIySv0qM3HHTdutdDzHaPGba9hQ6+rwR5KkPXxUmIAQaaKOY3iPb3RbbP+IjrkCbjmzK0FxMgIryevw3sZu2GPUxfhi7t2DwrNyw6nmNtSqrSfaklHpiBYFBiEZ90lrhQ4pafcv4iT7K7uLNog697taK9Y3k2IEGXilR/BKoTzeP/wNVHS0naHJqYr3N/K2VwPK6sPv5FZWQtN3r7+EXBx3lTPze7+Nc9mRwlqO1DcpGpu4UldtGhXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iyIEjbIBlIbc54EHBdLN7/7mtFwlLBQ1SOHaTx2O9cs=;
- b=FjyZHw3Z3GX3asY+aylQt49d2RzhQtzW8ZbBqD7T9c/kKlIc98XBTYHr6p5nvzYR1suXfOpG8r4ZoMYwC38/sN/dBeyoVpvg52jAtRmxJlwicXLQ9Ou9A1ldzJWI46n5GNDhn7g7lMWMaXQ4sMP514c8nc6krfLsqj+NVLtF6eyt5WjVUJbsBkqeEHESL1iqfOKYYwHqslCgqeXqce2PocWgevsSJoOqVlO54zcwvKjd3tyPCaOcEDuttcSdZjULQ0P9BdLKtdjCtRejVOwG4poVz9rQdM8J78v+us4C3dcP4KZFx/sUnsLlaaaBkseeRuBbUkGkqDg4wKdvCOrD5w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by GVXPR04MB9925.eurprd04.prod.outlook.com (2603:10a6:150:112::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Mon, 21 Jul
- 2025 08:36:40 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.8943.029; Mon, 21 Jul 2025
- 08:36:40 +0000
-Date: Mon, 21 Jul 2025 17:47:05 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Primoz Fiser <primoz.fiser@norik.com>
-Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, upstream@lists.phytec.de
-Subject: Re: [PATCH 2/2] net: stmmac: Populate netdev of_node
-Message-ID: <20250721094705.GF4844@nxa18884-linux.ap.freescale.net>
-References: <20250717090037.4097520-1-primoz.fiser@norik.com>
- <20250717090037.4097520-3-primoz.fiser@norik.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250717090037.4097520-3-primoz.fiser@norik.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: MA0PR01CA0098.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:af::8) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SjBzKHqS"
+Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-3e2ab85e0b4so5078395ab.1
+        for <imx@lists.linux.dev>; Mon, 21 Jul 2025 02:08:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753088900; x=1753693700; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fP2qdhjigbAmBeoHDgFhVXmJAdHPCBK9T5wak81mhb8=;
+        b=SjBzKHqS8sWWdb7p8PkkhTcHTvsOh9ETnl/5OxFtUwN1LGNHU2itUK3oao7nudiX9l
+         2z8evNva9bViuUQgeRYH2f6IhW7Opxxi2/NeWCwPpBK4tgm0SzCcr5QNxxMzcYsrOYcJ
+         OWJaQFg/OvZBTQbiH3ixb3b5V3vsWCn38BO47uKzmIIlzI+8KEAMasfQppdA/dfGBRjD
+         7aI12nCnjFvWV0JVeHbzVu3YpaXS2Tyb2uShXSE85qDH74FcnvXY80YsBJqVDTgyyxFU
+         IfMPXgkooBLBo5ZJtLG8/lca83ZTztjytzfNI90ZivshUB1e59EyGH65iddo7jBh9eR9
+         iU9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753088900; x=1753693700;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fP2qdhjigbAmBeoHDgFhVXmJAdHPCBK9T5wak81mhb8=;
+        b=JINQHvEWhFPLbV7TDRzBNJhAl2NXNwjKnku3WTqzpJ9mP0VSFUsND/lCgJaXR1fwmh
+         Agbut3yXhEcenJm6XocVAMSvlQQDtQhNU7THiK3JLcmZDPIu97n/V7Vp76YNznlOj2SA
+         rhhlZ8RUo3xaLlKm9S/ApYdjTCFSTbtjmoLqy89G/KgYrBEm3LdJ/h4fOzqOtdjPTc1i
+         QWE6DqdfnMjl4VYJmnkDNJJitfrIcAwGWf1EZiPQA+w3GerzJWWYHvn2EMWtVlJHGEGU
+         mVjuBfPmNCiKnxhJyd/FMjrORfhdKSqUYzFbXvbx0jtnd7qcJ1G9BL5dXI45XnO4cd20
+         FtAA==
+X-Forwarded-Encrypted: i=1; AJvYcCVVujW/GEKKvxRK1zQokxvy0OP0FXysIwB24G7hyCF4J6CHT0EM1FcffIrD8eo2X0YbvUw=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzb3Cbczxq2pQDOXVtTkq5Avi1klWru93eTmwa0I4GHpnkRZFqX
+	IOU1ipN+q1ouuMx5Rcc2bbu70IUu+d9cB9VO7m4uBGGWXpWtxurQz+X4e3SezGJL57Sd6c5PeCA
+	SzJfNXrniv4QRTshxG2ejM2P+XBytLKVqLQ==
+X-Gm-Gg: ASbGnct0sN0ABxzQvXziUGBBwocsgicGjK7+z1XeJqf39JdEBEz9ysXIfSn4onPs5rH
+	+tQMyktuNR3V4GmVmY/GMnOxVBr0n6NYsMBhdAKeLpgE19PmBRV9JrM1jqT2Cea9Glwxjd1gO1a
+	ZJ8xbOB7H5T+pJnrLKRAWNjomMuI9VndCbPmeTkDACpCH97dP+6vrMKQSyB9tghHwCw7kM+W/ow
+	6ikXWk=
+X-Google-Smtp-Source: AGHT+IF18j1rx0DNGpmrwGS5dReQiw1r4g3RlvoyFjCSL132gx55Rm/6nV7uh+iqAAGP1WIjgLw0qylp3KDR5ZpttP4=
+X-Received: by 2002:a05:6e02:164d:b0:3e2:84aa:f473 with SMTP id
+ e9e14a558f8ab-3e28bd601a8mr140906605ab.1.1753088899813; Mon, 21 Jul 2025
+ 02:08:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|GVXPR04MB9925:EE_
-X-MS-Office365-Filtering-Correlation-Id: bb421a75-faef-4873-5cc5-08ddc831b6b7
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|19092799006|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?v7AuwTyRNQFP+N6euWYeLw7S5JrxIY+iOIzUhaqQ0PPZQdHPyl/XtijhkW4g?=
- =?us-ascii?Q?9nfvcrCp10hXc9Ovd8bvWAr2DTvAaNUXIH60TRlxljcH19q3oDiiM9my32dD?=
- =?us-ascii?Q?mJcO1+xvJKvoLcajzCeRnZJWZA6rRnpnIaacmUj1km70FF5K5zvDIznFWxeb?=
- =?us-ascii?Q?uievTbyYo5X6cT9NvGMFarETYWR82sL1sSqIZebX1bbzBtDjqvvEScCRP9c4?=
- =?us-ascii?Q?teSX9OWacHyxHLh3MaXeoIhax3SHlQ0en2eNWwT3zbQDWnm9qwdTOS0NYzgv?=
- =?us-ascii?Q?fLbO3sr3UF2JFsEvbuCDIUVCN5dg3z2g8p0H4OfrXvURQB3PgFBn7s5wz2+e?=
- =?us-ascii?Q?ZeaX2U/pTZgnbkN/01QEQWTWtzpZFRhzSHqZeSq23mZH8dwKYHJyQvvHDeJ/?=
- =?us-ascii?Q?Qx4YUC92TpSyghDQ22irT6vjw576jiGAcrV+H+804atS1ps8AwOR0vimKPl0?=
- =?us-ascii?Q?5FUJ4E5z/t6xnom0HpCtCHoOmqqMQfg2NTjGLmMYr7WRtBNBagzaJ3yAOmcT?=
- =?us-ascii?Q?NPYfwAzpatUB1DO7uUQxKB0zMDaUUclaoOaz1J4uVIyoitX6JnoRE5KUVy1B?=
- =?us-ascii?Q?MuG/JOAodhG8gEyrhXaYR/Vidu70Mu68GqT28PxPFRJbw6s6MRsB5KOSAnGK?=
- =?us-ascii?Q?qSO36T8W0VqqDX8JKtWf4S0O0SRARLr1hD3m9l9tkqvsWJM3rv+ocbtaC/Ru?=
- =?us-ascii?Q?h4tuWfqnSAMhYgZl8ZtiAFFX7UVW3QzEkbMmiSrgr5A2iOKYBtGd3Jg0eFhL?=
- =?us-ascii?Q?9qLDWCLnhGLGa9WXqmK1QhOX/6SgDFQK/PjO6VBbZEYKIPP7R3mb2p8fmAAM?=
- =?us-ascii?Q?dwIJvcMl94Igv8/BkaEUlr2PNwnwuhaauRW7zhPNLF0E/OKHyyafHvPnEE40?=
- =?us-ascii?Q?XB2gwhgeP/PKi5dTa4NMSqvw+9obMyWo53C2hkw5Vd5JJOZNosyrnfWscusW?=
- =?us-ascii?Q?2Mi5VhOQf7es3km3egcdgmMct5+xBUhiMf5YoxKUhXU4X9E1CqAXtlQAYeMH?=
- =?us-ascii?Q?wiE12ICwIAUvNcLirz6KbyoBX3KCkZxePaW7nYksBSV6cEjj2LAI2jYA2onx?=
- =?us-ascii?Q?t2fBUGVWnMFpJD32xt3CtGCzg0juC411pr1PtimAl5ZoJQLhm4ehYB0szS4M?=
- =?us-ascii?Q?ODduugNTSxPKRiS3P0J1MT0X3kfO+xLTi6TdfY31wHbdJU596pOqTfJ2IzXO?=
- =?us-ascii?Q?leK/DOM8emCsJsUIaSflRhUO/0E/ZZAwVBN2T4nKiiV9JvB/ARMJPHkNheWF?=
- =?us-ascii?Q?sewxGjUJbPTWUS0VT29vZ2MtcQAq5GJHwE/OYB/6+hZQEA/zrryu5fzPb4Xt?=
- =?us-ascii?Q?EHEIZYHmgbqTNXq83c3NKHe1xC0/0idLHdSksVSNrdfOtbRdx2kObV7+h5x7?=
- =?us-ascii?Q?QZUnd/uMuQ+ENcvqQftVflhOuRJMDE2EtNonnfQwCBVTg5y7gefNgu5eTpGZ?=
- =?us-ascii?Q?GZIE3em1KS0HrO8B4mKmhfcRxZIR0eML4Od052e2Tu6QFlI63Rip+w=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(19092799006)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1auKVO+gPL1sYyezb2w+4zgdX4ksa/YZqMcVTm9Mnm4BTkL3m4ozHmTQ+2ic?=
- =?us-ascii?Q?DDP/VgfwflROgeT6ti+cXKImgEqzMlf0hkLDpCrx0n2/9RD5HTHwrDnO68Lj?=
- =?us-ascii?Q?Oyz0BFzlfpeHklgfyBl6njCZcd6OdA6thUTHabIFQ7sNfgu71NUN9x+L6jUx?=
- =?us-ascii?Q?YlpPr7fu6vJQVu8aoPnBuO6qRaRzdfuQzDT42mAAmmsQdGeIExy+/Aobpzp9?=
- =?us-ascii?Q?Xm2Uq7B5Hn0kTDGyETxMM/SfJN0GsgboRPwU1oM5G75VucwvfP1LGIVD8XoM?=
- =?us-ascii?Q?YgCHKwuYMYnMjBKBZPosvQ0jgXXQA/oUTPdOc+8xj3zL9vHRXrUZ1FkykYKo?=
- =?us-ascii?Q?svg07Dg/qROqlLZbjVXn0zQ9FRsIQzP+yzv87OPPsq2GhO6RGimKl3hPX8zg?=
- =?us-ascii?Q?dhhj8Gv2avBTsdsLe9rwrTbnTGH89o2bS0J4e3Nze+dpkMcZBR9h980njTJB?=
- =?us-ascii?Q?3X9O2NpLnBs4aL9jX1ZtOdbmct2A8ZdGYSSZwLqowYm1uztBTkLRoG/V4Uf4?=
- =?us-ascii?Q?3JW1oQ9SIiZ9DFhgfRenJHa3CeHVF1cIkjdseZk4Xf6mKJOKTdkxUKNtGFDk?=
- =?us-ascii?Q?3bHjohsT5JmKfVOqehNCFKyArYPbl59+TvBZF/fWjAHMAwqkTXxNd8ayoclt?=
- =?us-ascii?Q?2XHbL6yqvqXNtrOYZMlr11zm5TwDLuabUve8Uq5wl4t8/7zmCOAPi2wxorH9?=
- =?us-ascii?Q?UuqY5Ul7kvc/4kZfjW5w9FQL5lMcSBwY2hdF6MhvmpX1Sw+McNAyipKl4HmH?=
- =?us-ascii?Q?rbmKJSL0TNOsm+5dzETBkwmYpw4QlOUoa3Rx6IE3SIs5IAAsuXegFa6rgvAG?=
- =?us-ascii?Q?md3MiChyq3kLqi4jiVP2MR4hKOzlIFuUZy0GavTh2DsIKaZkha7qpND5t9Ae?=
- =?us-ascii?Q?1VzdsG3ZbxEg8WHp4X5SV/hapCMLzhb0pBzqgUFMO7jCw8VmYRMw+tlT6CbM?=
- =?us-ascii?Q?Vu8N0R54Q62ohDwrnjzXjTd425Vcq/PbfModMYqsFFr9EzZd4WMsxOwtoEWT?=
- =?us-ascii?Q?oX5FdI0Y/hCNjmJb36r3nWXg/VZ62t7JycNWLWVZu884lJ44g8Hzaa+ScT+G?=
- =?us-ascii?Q?zg08Q3St52tNH35AAa6FWPXYVvSZKGNPMLN1tMFpZYZVk6pD5nFYvSjSdTmH?=
- =?us-ascii?Q?Tdzp8c7AmlkfP1fpxyhiccm6FQ/HyJEKQvwUzE9sQ8XMJkS59cEqYvvO3zqF?=
- =?us-ascii?Q?2eAg2wyzVcF8Z4DnIA3KwHNV/3wFaPOjhsi01K7tXC1mDCvnNkiVJNpsz5db?=
- =?us-ascii?Q?FmdbmkKeo2KmcfABsqXvvtr/YEcnva0GLWJWaIwHFn3hWMJ5aPjz1bVwNc9q?=
- =?us-ascii?Q?GEqs7V8WXit9ryc6bDWi8Aw8p5HAdHncK2XSGaEeY5H6IgdmJla3z+XDDOM4?=
- =?us-ascii?Q?5W4jozaLO5Qa//zyHVlMHdFSzc+WNCtq7OFjRMPQsE/q7vnEBNTh1pOOLz/k?=
- =?us-ascii?Q?tmHQ4nLGdGQTt0uDrRVJf5WEk1GDkVOAQadXC65bPIDRE9dQTZ7eBcsVMmke?=
- =?us-ascii?Q?I6Az8rq65YleOSHEb5RYhQECEBVRIYIvSnvD4nStadGxL26b35sc+LHB+xFA?=
- =?us-ascii?Q?mlqbPLlQwwtJgCvop8SjHMGcfU9OK0pqgmCUjDbf?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb421a75-faef-4873-5cc5-08ddc831b6b7
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2025 08:36:40.2124
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Wd2q7DjJEWYs1IndsikVIPS0FRPX0OMntBhEjGfc03dNN93o3eMApLlN4d53njGSprPQ18AFcWXTsZk7/9Ekyw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9925
+References: <20250704052529.1040602-1-shengjiu.wang@nxp.com>
+ <20250704052529.1040602-2-shengjiu.wang@nxp.com> <CAEnQRZDeXrhHaU-tiAizXL3cNK-6rpbACx9QGNVpV8GBEKAPYQ@mail.gmail.com>
+In-Reply-To: <CAEnQRZDeXrhHaU-tiAizXL3cNK-6rpbACx9QGNVpV8GBEKAPYQ@mail.gmail.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Mon, 21 Jul 2025 17:08:03 +0800
+X-Gm-Features: Ac12FXzQmStbQ2f20k4GC_7DKq8-KQmdC6HQD5O_YE8Y5hNo-EjvRf34-Q_a6Ww
+Message-ID: <CAA+D8AOzxf2J5GwzH0MZps3r3_qRYBsp+s40L8uVL6v_cGhz5A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] remoteproc: imx_dsp_rproc: Add support of recovery process
+To: Daniel Baluta <daniel.baluta@gmail.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, andersson@kernel.org, mathieu.poirier@linaro.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 17, 2025 at 11:00:37AM +0200, Primoz Fiser wrote:
->Populate netdev of_node with device of_node so that the network device
->inherits the device tree node information in case of platform device.
->On the other hand, when stmmac_dvr_probe() is called from pci device,
->of_node will be NULL preserving current behavior.
+On Fri, Jul 18, 2025 at 7:24=E2=80=AFPM Daniel Baluta <daniel.baluta@gmail.=
+com> wrote:
 >
->With this in place, when initiated from platform device, udev will be
->able to export OF_* properties (OF_NAME, OF_FULLNAME, OF_COMPATIBLE,
->OF_ALIAS, etc) for the network interface. These properties are commonly
->used by udev rules and other userspace tools for device identification
->and configuration.
+> On Fri, Jul 4, 2025 at 8:29=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.c=
+om> wrote:
+> >
+> > When recovery is triggered, rproc_stop() is called first then
+> > rproc_start(), but there is no rproc_unprepare_device() and
+> > rproc_prepare_device() in the flow. As the software reset is needed
+> > before DSP starts, so move software reset from imx_dsp_runtime_resume()
+> > to .load() to make the recovery work. And make sure memory is cleared
+> > before loading firmware.
 >
->Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
->---
-> drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 1 +
-> 1 file changed, 1 insertion(+)
+> Hello Shengjiu,
 >
->diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->index f350a6662880..dfd503a87f22 100644
->--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->@@ -7487,6 +7487,7 @@ int stmmac_dvr_probe(struct device *device,
-> 		return -ENOMEM;
-> 
-> 	SET_NETDEV_DEV(ndev, device);
->+	ndev->dev.of_node = device->of_node;
+> Commit mostly looking good but the key point when writing a commit
+> is to explain why the commit is needed and less about what the
+> commit does (this should be obvious from the source code).
+>
+>
+> So, I would start with the context and that is:
+>
+> Following commit: 6eed169c7fefd9cdbbccb5ba7a98470cc0c09c63
+>     remoteproc: imx_rproc: Enable attach recovery for i.MX8QM/QXP
+>
+> enabled FW recovery, but is broken because <and here explain the reason t=
+hat
+> you mostly described in the original commit>.
+>
+> Then at the end add the Fixes tag.
 
-You may need to device_set_node.
+Thanks for comments, will update in next version.
 
-TBH: I am not sure why device_set_node does not increments the refcnt,
-while device_set_of_node_from_dev has. But this driver supports
-non-OF platform, so using device_set_of_node_from_dev may not be good,
-and I would suggest use device_set_node.
-
-Regards
-Peng
-
-> 
-> 	priv = netdev_priv(ndev);
-> 	priv->device = device;
->-- 
->2.34.1
+Best regards
+Shengjiu Wang
+>
+> Also, allow me on more day on Monday to test this patch.
+>
+> Thanks,
+> Daniel.
+>
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  drivers/remoteproc/imx_dsp_rproc.c | 43 +++++++++++++++++++-----------
+> >  1 file changed, 27 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/im=
+x_dsp_rproc.c
+> > index 5ee622bf5352..ba764fc55686 100644
+> > --- a/drivers/remoteproc/imx_dsp_rproc.c
+> > +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> > @@ -774,7 +774,6 @@ static int imx_dsp_rproc_prepare(struct rproc *rpro=
+c)
+> >  {
+> >         struct imx_dsp_rproc *priv =3D rproc->priv;
+> >         struct device *dev =3D rproc->dev.parent;
+> > -       struct rproc_mem_entry *carveout;
+> >         int ret;
+> >
+> >         ret =3D imx_dsp_rproc_add_carveout(priv);
+> > @@ -785,15 +784,6 @@ static int imx_dsp_rproc_prepare(struct rproc *rpr=
+oc)
+> >
+> >         pm_runtime_get_sync(dev);
+> >
+> > -       /*
+> > -        * Clear buffers after pm rumtime for internal ocram is not
+> > -        * accessible if power and clock are not enabled.
+> > -        */
+> > -       list_for_each_entry(carveout, &rproc->carveouts, node) {
+> > -               if (carveout->va)
+> > -                       memset(carveout->va, 0, carveout->len);
+> > -       }
+> > -
+> >         return  0;
+> >  }
+> >
+> > @@ -1022,13 +1012,39 @@ static int imx_dsp_rproc_parse_fw(struct rproc =
+*rproc, const struct firmware *fw
+> >         return 0;
+> >  }
+> >
+> > +static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmwa=
+re *fw)
+> > +{
+> > +       struct imx_dsp_rproc *priv =3D rproc->priv;
+> > +       const struct imx_dsp_rproc_dcfg *dsp_dcfg =3D priv->dsp_dcfg;
+> > +       struct rproc_mem_entry *carveout;
+> > +       int ret;
+> > +
+> > +       /* Reset DSP if needed */
+> > +       if (dsp_dcfg->reset)
+> > +               dsp_dcfg->reset(priv);
+> > +       /*
+> > +        * Clear buffers after pm rumtime for internal ocram is not
+> > +        * accessible if power and clock are not enabled.
+> > +        */
+> > +       list_for_each_entry(carveout, &rproc->carveouts, node) {
+> > +               if (carveout->va)
+> > +                       memset(carveout->va, 0, carveout->len);
+> > +       }
+> > +
+> > +       ret =3D imx_dsp_rproc_elf_load_segments(rproc, fw);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       return 0;
+> > +}
+> > +
+> >  static const struct rproc_ops imx_dsp_rproc_ops =3D {
+> >         .prepare        =3D imx_dsp_rproc_prepare,
+> >         .unprepare      =3D imx_dsp_rproc_unprepare,
+> >         .start          =3D imx_dsp_rproc_start,
+> >         .stop           =3D imx_dsp_rproc_stop,
+> >         .kick           =3D imx_dsp_rproc_kick,
+> > -       .load           =3D imx_dsp_rproc_elf_load_segments,
+> > +       .load           =3D imx_dsp_rproc_load,
+> >         .parse_fw       =3D imx_dsp_rproc_parse_fw,
+> >         .handle_rsc     =3D imx_dsp_rproc_handle_rsc,
+> >         .find_loaded_rsc_table =3D rproc_elf_find_loaded_rsc_table,
+> > @@ -1214,7 +1230,6 @@ static int imx_dsp_runtime_resume(struct device *=
+dev)
+> >  {
+> >         struct rproc *rproc =3D dev_get_drvdata(dev);
+> >         struct imx_dsp_rproc *priv =3D rproc->priv;
+> > -       const struct imx_dsp_rproc_dcfg *dsp_dcfg =3D priv->dsp_dcfg;
+> >         int ret;
+> >
+> >         /*
+> > @@ -1235,10 +1250,6 @@ static int imx_dsp_runtime_resume(struct device =
+*dev)
+> >                 return ret;
+> >         }
+> >
+> > -       /* Reset DSP if needed */
+> > -       if (dsp_dcfg->reset)
+> > -               dsp_dcfg->reset(priv);
+> > -
+> >         return 0;
+> >  }
+> >
+> > --
+> > 2.34.1
+> >
+> >
 >
