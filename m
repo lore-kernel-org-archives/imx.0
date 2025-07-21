@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F06F146D6A;
-	Mon, 21 Jul 2025 07:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70A91D54E9;
+	Mon, 21 Jul 2025 07:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753082944; cv=none; b=ibZJf26IMVEfkoOwm5hCFUi1I9fZH2046BDEZvh0r7FPtVSKLzCEQ5nWsOmeaidnDcznOLuhif4PHCekyCRZWDWB1CX/wJ80xu9f7baJLi0KNlO31t4zUVz4TCQuwpmqAY2BIfKisczA6z9djuHApenTTMMVyOrl/2azuCVJfvs=
+	t=1753083046; cv=none; b=WxqyqHED7CjUPXe+uYEnvukroOB10ypD0kVdePq/dfU+uCB5EzZLLxvSq4aE7RU1N3DqmzlbBMoSeBoIwKdbVPyNomG0SWWgSKFvkVPd4e8KSthBxXqhoRL5JzT4Jd8Z79P9pfwpy08gf9P8/YihiPD/KXKXMbSeDao/RiLKcbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753082944; c=relaxed/simple;
-	bh=99tcxX9Mv+sSzg0Pq7/FvisH8MO5rj5LQBuYaspEdT8=;
+	s=arc-20240116; t=1753083046; c=relaxed/simple;
+	bh=TOBtZP7QgVwBg3aIlCLDvPd6hxOo+8YeD7e/NEGgLtU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dhbytWIlR5aJ5xo2Xn7LURfpXQ+6fYs6Z+x5Y4VTeos9vlyeW4qxHNbV8YDDA+mjJ9C/3gXAS05RFF0UYxPUQbuMHUsy+0fYnHdQZEIB+bOZWFC0HLw1/3FegX6xV5JCVl3lWn8NFj1TXHz3XiIomrjSqqFaG7gm9suQ/z6MDgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DpNw7YRQ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=NpCmFXHClxDb8rfaaaHTzYG/HxG9P/e20ioF3XVMFVFVuTK9kPIB9w/mMum4NmWGRQui12qnE3H+VM5yHjCj7IWgF9yhyGmWIxLRoMFERd5iyTggKygWAzB6hiRYBw1A8RiJOyjyVinqWsmAkMpG0+83Jwgqqcz4LrlM6zLUXFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h2B+x5At; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DpNw7YRQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF47DC4CEED;
-	Mon, 21 Jul 2025 07:29:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h2B+x5At"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375BBC4CEED;
+	Mon, 21 Jul 2025 07:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753082943;
-	bh=99tcxX9Mv+sSzg0Pq7/FvisH8MO5rj5LQBuYaspEdT8=;
+	s=k20201202; t=1753083045;
+	bh=TOBtZP7QgVwBg3aIlCLDvPd6hxOo+8YeD7e/NEGgLtU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DpNw7YRQX9Bdi2hiAZb9CHVkiu23f+NA3UHy2lga7F3ih28UJjcaKrShgW+IRP9Ur
-	 syjzTMmCY9MyVsvPFy4N1D3CMVCX9qs3vn1n2xrtO35JYLbWEhSBCAt39iyLekuxyD
-	 Sjvh/BU9HBDkTZbHKNGdMAgVmswsD2r7NLl1JJrCyHekgDsbfidXRGJeIm+VR9ekQ6
-	 yRT70Pu5l/xV/QYvzVZpqiVZiRwhBVriKR8qMsCW3uVQmQV6FsAwgr85+XgCWbhzON
-	 RMn3BoQ1jgjiA/GYs3rGJUvHfhsnMobYhSaAQ14auTVxWcwtA2LBGnYgJWdwXbS8wx
-	 5GhbB/2Eswxxg==
-Message-ID: <e9f38e38-7df7-4d19-b5c0-2f18aeebcc78@kernel.org>
-Date: Mon, 21 Jul 2025 09:28:59 +0200
+	b=h2B+x5AtfxLWDnFSl2WzlO/TIEPvjgDhPyHBf7xTJ8OAh4m9BuoG0fO9V+76PF0xi
+	 zTUA7XaFtp+F5esefs7nHZK5gGujMcaSOCEmLTF3mas6FfQ3UfeDIqaaY2j+CCiWIX
+	 +3oCH9S2HumShPQBHRQlDwYme+qzbOf8bCOsuWTXGZatDV7/5+uF/f+PntskvwuLor
+	 wOgj4k1HsYnRHFV6eOUT2emUxuaR2GBxFie8V7o5oX8It8DD4TUd12YLs8KsptIbID
+	 iLupNyOt4L+oNGz+fRROJ3aK/QR+7i02HL4QL7wsdVqKFsJBIgV9amXd/lTQtUqgyT
+	 alA9nDWPDmCpw==
+Message-ID: <27e3c18e-bcfd-4dfc-8c60-3f619152de99@kernel.org>
+Date: Mon, 21 Jul 2025 09:30:40 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,15 +35,16 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: regulator: add PF0900 regulator yaml
+Subject: Re: [PATCH v2 2/2] regulator: pf0900: Add PMIC PF0900 support
 To: Joy Zou <joy.zou@nxp.com>, Liam Girdwood <lgirdwood@gmail.com>,
  Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
 Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
  imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>, Ye Li <ye.li@nxp.com>,
- Jacky Bai <ping.bai@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>
+ Jacky Bai <ping.bai@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+ kernel test robot <lkp@intel.com>
 References: <20250721-b4-pf09-v2-v2-0-e2c568548032@nxp.com>
- <20250721-b4-pf09-v2-v2-1-e2c568548032@nxp.com>
+ <20250721-b4-pf09-v2-v2-2-e2c568548032@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -89,84 +90,26 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250721-b4-pf09-v2-v2-1-e2c568548032@nxp.com>
+In-Reply-To: <20250721-b4-pf09-v2-v2-2-e2c568548032@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 21/07/2025 09:11, Joy Zou wrote:
+> The PF0900 is a power management integrated circuit (PMIC) optimized
+> for high performance i.MX9x based applications. It features five high
+> efficiency buck converters, three linear and one vaon regulators.
+> It provides low quiescent current in Standby and low power off Modes.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202506181134.0Hkvy7CK-lkp@intel.com/
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
 
-Subject: Reverse prefixes.
+Missing separator. See submitting patches.
 
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
+> 
+> Changes for v2:
+> 1. modify the copyright comment block to C++ style.
 
-> +
-> +  regulators:
-> +    type: object
-> +    additionalProperties: false
-> +
-> +    properties:
-> +      VAON:
-
-Lowercase names.
-
-> +        type: object
-> +        $ref: regulator.yaml#
-> +        unevaluatedProperties: false
-> +
-> +    patternProperties:
-> +      "^LDO[1-3]$":
-> +        type: object
-> +        $ref: regulator.yaml#
-> +        unevaluatedProperties: false
-> +
-> +      "^SW[1-5]$":
-> +        type: object
-> +        $ref: regulator.yaml#
-> +        unevaluatedProperties: false
-> +
-> +        properties:
-> +          nxp,dvs-run-microvolt:
-> +            minimum: 300000
-> +            maximum: 1350000
-> +            description:
-> +              PMIC default "RUN" state voltage in uV.
-
-Why existing properties are not suitable?
-
-> +
-> +          nxp,dvs-standby-microvolt:
-
-Why existing standby state bindings are not suitable?
-
-> +            minimum: 300000
-> +            maximum: 1350000
-> +            description:
-> +              PMIC default "STANDBY" state voltage in uV.
-> +
-> +  nxp,i2c-crc-enable:
-> +    type: boolean
-> +    description: If the PMIC OTP_I2C_CRC_EN is enable, you need to add this property.
-
-
-1. Why you cannot just read registers to check for this?
-2. You need anyway proper description what is this about and then wrap
-according to Linux coding style.
-
-
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - regulators
-> +
-> +additionalProperties: false
-> +
 
 
 
