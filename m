@@ -1,103 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1C72E11D6;
-	Mon, 21 Jul 2025 17:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC33A155CB3;
+	Mon, 21 Jul 2025 18:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753119287; cv=none; b=m4unM7xlfGzT06qCjN241mVhmqFu91QONVihSgOBLg+hwnq7Mrrp2C8szeAS6boijoZKpALr7IG7BsOyKVX7EPsnIpVgGz5eTKJMxEYkALYm/T/ihEedImih8EfAfwkJ9szvYuLrAe3TwfWa+0p8d1XDGPwq1n0fsOqK7/xkOBg=
+	t=1753121598; cv=none; b=pU70840kiMiSmbDcSZvEEJ5u+d68tJCmOXjg9Sj50AKay1yaEyawJuZA79JwfVL8+IFVmWvooP3OkJ7+e5RZHOmMGyhxsVlY84hfODA0cm3C3mOu4gMwqRHal/AIFbDSNawbTaWW/oaANJWd3VevvW2pEmAC+W8doJ1lmUx6tu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753119287; c=relaxed/simple;
-	bh=V/CfjxoEsKYCsa9Ewp5zLHqhCdlau2qmxdYvbksj8K0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VC2ARtHexC83OO3nxP2EXq2U6asVCa0nW5oCyk1Ujl1b2riINBkGCUHnQzq4Lpch3C20b/C+E9ajVrkJF4YYASxVKqyWMgmksmke+UNHHV6BvTL8BguT8xQY2nQF8GGnRLFzqZetw5wQn94jtAYRBC1W3f4meNcyWLyO2UGU364=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M7diNgsZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753121598; c=relaxed/simple;
+	bh=3PgcKhpIaXlMlRNGMqdPnU7Ne37vkZj31f11YeqXC84=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hGmPR8oDwA2XT4eG6mrBGda4YjAvxnj1CJbv2jXyI2lYgHQAlQi8VDs9CiyBi8rF0tfb8XxIOGWeJoPw9vDYe3EsdD0wVvO4taSEC/algKRp7AOXpRM/iB4V3DCCpTA3//8L7zMp3yIp0t2KPk6g6JH8qFZVyENMUqYchLmHwGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=yJc04kwr; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M7diNgsZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A63C4CEF4;
-	Mon, 21 Jul 2025 17:34:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753119287;
-	bh=V/CfjxoEsKYCsa9Ewp5zLHqhCdlau2qmxdYvbksj8K0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M7diNgsZycI8nmdD1vqsLiLyvQW4lt3MSDPn42taIptUhJV3ffM3zqJMHttjZt3+u
-	 nf/A/8luOCJRRFowuIDDdn4zdPBS4hZCv7Dg36XjWDsep4ZWov6Bb0mfT6rRrAO2p1
-	 ThFPJkv20FUbw64XzqcdkXHnqHS5TxSD5Mhf+jWb88c4EqzT5eoeyCYQKn20KvcdjK
-	 uMJjuz95HD3IgiWDH/iJwmir+eEq8QOnIk0ipej8m2x9s58y6wZ75f4sM0HshkuRuz
-	 P4DzghlEEyXQXYqBOFFB3oGozWRnXFKZg7DKgBG69At9457gttbA237nC9+z8yjgHk
-	 MeAaOKAPZ9JxQ==
-Date: Mon, 21 Jul 2025 18:34:40 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-spi@vger.kernel.org, Heiko Schocher <hs@denx.de>,
-	linux-kernel@vger.kernel.org,
-	Andrei Lalaev <andrey.lalaev@gmail.com>,
-	Chanh Nguyen <chanh@os.amperecomputing.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Grant Peltier <grantpeltier93@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Naresh Solanki <naresh.solanki@9elements.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: (subset) [PATCH v1 0/3] spidev: introduce trivial abb sensor
- device
-Message-ID: <2a99b64a-b6d4-46de-acb1-8a9328b7d5f6@sirena.org.uk>
-References: <20250719063355.73111-1-hs@denx.de>
- <175311337130.327079.7374455187420344577.b4-ty@kernel.org>
- <d677ecd9-42d6-43fe-8fe1-a5afd4d270e2@kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="yJc04kwr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=YIa0kKk/C8c2jce3V3xpos3VNuh0qirWQs9kAO9t8uA=; b=yJc04kwrwI98p907tw5o2Eoh4T
+	PCpcXrFfWNSLl+AkJp2u1hKiiv2WKibHBk5+Cunxj1qd0qHCfY4qLn98HA8WSEfcEW9EES3Qjmde4
+	6Zkb/JSPxE+OLOfykeqHo78z2YF6OXf5LP1n+r+QRQyODnLo2C2x9CxX2cxNvLgkNCLzdgo51kPdo
+	ULZPepYd/7y5u6UvKTAE1KW+VK0kf7MkFYCH07mZkF+r+eAm8152gi1m0GJRkz85LzvY2HpVFjqEH
+	8Z+KQ6HfRMTih3QCXF88kvxg/CbSnjcoONfnl21mGP8h/jyWQ2M/rFSP/lOrZhknW2Ga/CCgFDvwi
+	z0LdxihA==;
+Received: from [50.53.25.54] (helo=[192.168.254.17])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1udv0l-00000000P1i-20bR;
+	Mon, 21 Jul 2025 18:13:15 +0000
+Message-ID: <53b1a47d-2338-44f3-8d78-8c4b02e0fa81@infradead.org>
+Date: Mon, 21 Jul 2025 11:13:14 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="WCNX58Rd1dpGFNKG"
-Content-Disposition: inline
-In-Reply-To: <d677ecd9-42d6-43fe-8fe1-a5afd4d270e2@kernel.org>
-X-Cookie: Microwaves frizz your heir.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: core: add urb->sgt parameter description
+To: Xu Yang <xu.yang_2@nxp.com>, gregkh@linuxfoundation.org,
+ sfr@canb.auug.org.au
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-next@vger.kernel.org, imx@lists.linux.dev
+References: <20250721104417.3442530-1-xu.yang_2@nxp.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20250721104417.3442530-1-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
---WCNX58Rd1dpGFNKG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Mon, Jul 21, 2025 at 06:24:55PM +0200, Krzysztof Kozlowski wrote:
-> On 21/07/2025 17:56, Mark Brown wrote:
+On 7/21/25 3:44 AM, Xu Yang wrote:
+> The parameter description of urb->sgt is lost, this will add it for
+> completeness.
+> 
+> Reported-by: Stephen Rothwell<sfr@canb.auug.org.au>
+> Closes: https://lore.kernel.org/all/20250711182803.1d548467@canb.auug.org.au/
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-> > [1/3] dt-bindings: trivial-devices: Document ABB sensors
-> >       commit: aad2f87cbcab56b322109d26d7b11842a09df91f
-> > [2/3] spi: spidev: Add an entry for the ABB spi sensors
-> >       commit: d60f7cab7c04944a79af16caa43c141e780a59c6
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
 
-> That's unexpected, Mark. Patches received two objections/comments and I
-> don't think discussion was resolved.
+Thanks.
 
-Oh, sorry - I'd missed those (possibly due to only being CCed on part of
-the series).  I guess I'll drop this then.
+> ---
+>  include/linux/usb.h | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/include/linux/usb.h b/include/linux/usb.h
+> index 535ac37198a1..9d662c6abb4d 100644
+> --- a/include/linux/usb.h
+> +++ b/include/linux/usb.h
+> @@ -1455,6 +1455,10 @@ typedef void (*usb_complete_t)(struct urb *);
+>   * @sg: scatter gather buffer list, the buffer size of each element in
+>   * 	the list (except the last) must be divisible by the endpoint's
+>   * 	max packet size if no_sg_constraint isn't set in 'struct usb_bus'
+> + * @sgt: used to hold a scatter gather table returned by usb_alloc_noncoherent(),
+> + *      which describes the allocated non-coherent and possibly non-contiguous
+> + *      memory and is guaranteed to have 1 single DMA mapped segment. The
+> + *      allocated memory needs to be freed by usb_free_noncoherent().
+>   * @num_mapped_sgs: (internal) number of mapped sg entries
+>   * @num_sgs: number of entries in the sg list
+>   * @transfer_buffer_length: How big is transfer_buffer.  The transfer may
 
---WCNX58Rd1dpGFNKG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmh+ei8ACgkQJNaLcl1U
-h9Ce3wf7Bhl+JzqbBICKswFFhvnGdkCuL1QR2PvMdJB/QjSKKq/6JpkPEt53OxqO
-tBQJYCf6QNpcc+HJqlVumz4r4cwpyp8SXuwmwaxihthqVYRcCyiLA1d/RHFIJ9n9
-CyAl/gGjzncNxEIe3trDjSvAzTjGadbAaqmLN54jvS0KPnWfK2S9lzr7r9mkRfqr
-m6iikZoind5xRzssX5XFuiCmMxI3wY9StJ4LocjQB2GPD/aWOtNnIQFBUFiaAE4u
-376S1CX9/m5tthTqMtLfHRICcz4nAFULDsfYmBPq638I5ZguqDiXhz0JoioTP+ka
-SiTSXqIh1a/YSdVXjWkgt6fEzQV0Hw==
-=Xbls
------END PGP SIGNATURE-----
-
---WCNX58Rd1dpGFNKG--
+-- 
+~Randy
