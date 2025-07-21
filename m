@@ -1,91 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078D825760;
-	Mon, 21 Jul 2025 14:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A961229CB45;
+	Mon, 21 Jul 2025 14:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753106679; cv=none; b=ozyRD6dVr69gvnspMo0LQyWAY9LJvtB7EaVnM3Kifr4LI0HADQUomG/SHPIe6hSQuA4/de/1ZI7wyGdRtl0ElFbbF0cxncCIN1aTy4bKC8dFTJhU0jMdPVdHQHXPBqIgvVfXpa4HDkpB/KLX0XzQ2Ni0uuF4ROcJzG7Jwzdj6pQ=
+	t=1753106857; cv=none; b=KG5aobEt62Ps4G7o24TtwUeKhKp+B+Ppga+8eSmGvZK6gIK5WV6B/mmS3T/KtlkI+Yrhg0CM3qSFgboV/15n/qZlXfBfb6uVgKoLI8JtRMlVw9CZYFrP/N01dVxRE9mxAvFVD3jY8/Fd/ayB9JyM2K2/F1pNvX6rWK+r+k3aOXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753106679; c=relaxed/simple;
-	bh=ZRFSItDRtsrkuR9rheQjoPP+y9yHZtan8WCMiLO9Ffc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NK5axumBmslBNuVapiE0DVkpybJHtNIrU7TTIMI+pdRGqQ8K5chpXMcpkLh0yIjC7yIUefnqxoQNZtT4tt0CtMTxqIPzVq9lnk+c8rw0wW1WZM+kgnTRze5Z+ZvKrQ4QyG9UuWjilzbNQ4Uke5ZQlK92KeoJSLrtVqOyLZ88W6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfToHOwT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753106857; c=relaxed/simple;
+	bh=RCoAC62sIF375dvK8CczQIxI3oZZHMnsTp+yqvHmY+g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=sMj3VC4r7qBAz0fVhYwQ45XG3V+OQKPdw4uuUyGbMJbotDKY8UwGwX9D+7eyQWN59EbiK90kvHi59QY/ml/R+V9qSI6suOVyqkauHaeYTkKqPl3+QLJnYQ+6639Ktvz1CbzHMiZeE60PTrj8zjjXvoXCiAqYykaebP53m9ZA8Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=obiR0xeW; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfToHOwT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349C0C4CEF6;
-	Mon, 21 Jul 2025 14:04:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753106678;
-	bh=ZRFSItDRtsrkuR9rheQjoPP+y9yHZtan8WCMiLO9Ffc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OfToHOwTr0a14oiBpRqljFKUgpT31x7VxRPnBJPHLJ3GKg+GjUMj5o1Idi0TQ4wd4
-	 PUiSTPnZxIrIrryEUSKWW/TuqiDPaeCLn5d/tl6D0pByTdR/22tKXaR3gjR7uYSEFF
-	 /z0ZUYtM4Od1LjU5rITjYMsTwlmi2WW6p4gYlUyXtgJv0VzJckaJmLQGslq+KMlXq6
-	 BHc9NFdX465Uhge5OsxMzI19rpdtAioXw2DYartFzDZmEwXb1t69e/H+ed9K3FNOec
-	 JvZrfdB7p4jh4InhhWXfvNyd/L90sdHOIQ5KTmGttkx1jvvq9RC6moG8aJyDZmph5t
-	 H0O2ucR7fNR2A==
-Date: Mon, 21 Jul 2025 15:04:33 +0100
-From: Mark Brown <broonie@kernel.org>
-To: James Clark <james.clark@linaro.org>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Frank Li <Frank.li@nxp.com>, Christoph Hellwig <hch@lst.de>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/6] spi: spi-fsl-dspi: Store status directly in
- cur_msg->status
-Message-ID: <a1f01911-8cba-418a-8393-1d6ad3badb2f@sirena.org.uk>
-References: <20250627-james-nxp-spi-dma-v4-0-178dba20c120@linaro.org>
- <20250627-james-nxp-spi-dma-v4-2-178dba20c120@linaro.org>
- <20250627213041.vp6yfcgf4xysdklf@skbuf>
- <eb704af4-5800-49b6-9915-c990c5b23fa1@linaro.org>
- <20250721133958.dhityxa7vvtqov3d@skbuf>
- <e23bac2c-c39c-4446-9305-e7e51eabcb4b@linaro.org>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="obiR0xeW"
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56LE7E4X1272907;
+	Mon, 21 Jul 2025 09:07:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1753106834;
+	bh=soVyBj6MPIY1VOaKT/v86ILGRdMXLp+19Ble5d58VLs=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=obiR0xeWBf2p9hVCANQNLf3a+0T/HXSfHfsXNYzwycV/IKWc4nJhiZ/QmgZSUCLh5
+	 qRF4HVPAnb1UKRg8fwWiKPFgYvM830GfBur75wkXBwq+3FgFB1fcYC8JN8dkHCEM+d
+	 fx19WT+oMxLKuchJUwLdmJIfU3AMRIG1FKeGJ/dY=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56LE7E6w921270
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Mon, 21 Jul 2025 09:07:14 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 21
+ Jul 2025 09:07:14 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Mon, 21 Jul 2025 09:07:14 -0500
+Received: from [10.249.141.75] ([10.249.141.75])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56LE7AAR3643505;
+	Mon, 21 Jul 2025 09:07:10 -0500
+Message-ID: <72545187-4605-40bb-9c68-54670c2e5332@ti.com>
+Date: Mon, 21 Jul 2025 19:37:09 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="aMtzLzsOA1vyg0LI"
-Content-Disposition: inline
-In-Reply-To: <e23bac2c-c39c-4446-9305-e7e51eabcb4b@linaro.org>
-X-Cookie: Microwaves frizz your heir.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] arm64: dts: ti: k3-j721s2-main: Add interrupts
+ property
+To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, <nm@ti.com>,
+        <vigneshr@ti.com>
+CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <vaishnav.a@ti.com>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <u-kumar1@ti.com>
+References: <20250714092708.3944641-1-y-abhilashchandra@ti.com>
+ <20250714092708.3944641-2-y-abhilashchandra@ti.com>
+Content-Language: en-US
+From: "Kumar, Udit" <u-kumar1@ti.com>
+In-Reply-To: <20250714092708.3944641-2-y-abhilashchandra@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
 
---aMtzLzsOA1vyg0LI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 7/14/2025 2:57 PM, Yemike Abhilash Chandra wrote:
+> Add interrupts property for CDNS CSI2RX. Interrupt IDs are taken from the
+> J721S2 TRM [0].
+>
+> Interrupt Line      | Source Interrupt
+> --------------------|----------------------------
+> GIC500SS_SPI_IN_153 | CSI_RX_IF1_CSI_ERR_IRQ_0
+> GIC500SS_SPI_IN_152 | CSI_RX_IF1_CSI_IRQ_0
+> GIC500SS_SPI_IN_157 | CSI_RX_IF2_CSI_ERR_IRQ_0
+> GIC500SS_SPI_IN_156 | CSI_RX_IF2_CSI_IRQ_0
+>
+> [0]: https://www.ti.com/lit/zip/spruj28
+>
+> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+> ---
+>   arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi | 6 ++++++
+>   1 file changed, 6 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
+> index 62f45377a2c9..6f32a2b0c40c 100644
+> --- a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
+> +++ b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
+> @@ -1248,6 +1248,9 @@ ti_csi2rx0: ticsi2rx@4500000 {
+>   		cdns_csi2rx0: csi-bridge@4504000 {
+>   			compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
+>   			reg = <0x00 0x04504000 0x00 0x1000>;
+> +			interrupts = <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 152 IRQ_TYPE_LEVEL_HIGH>;
 
-On Mon, Jul 21, 2025 at 03:02:09PM +0100, James Clark wrote:
+Just cosmetic thing, if you are doing v2 then consider 152 first , 
+followed by 153.
 
-> I'm also not sure if it would fit with can_dma as that starts mapping stuff
-> in the core layer. We want to avoid that because we need to write that
-> control word for each SPI word. We could still change mode conditionally in
-> the DSPI driver though, or make can_dma more flexible. But on top of this
-> for sure.
+Otherwise
 
-Even if you need to open code the infrastructure the idea of a copybreak
-should still be useful.
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
 
---aMtzLzsOA1vyg0LI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmh+SPAACgkQJNaLcl1U
-h9DpZgf+MdtFYAGs9n+vc1jIjGnB48vgl+5FmAp59DjbjL+tkhyv0h2qjTJ+gf+i
-SwE9pkbEScK/vElogElVJAVWt1xW9F/v3XJyrwJqZWBnGs1USBtafHUBxd3qovLt
-W/ook1uKpYTY9UwNPKev3eFVaRiT7H35lVf/nb75jJix8yGsMd/lLPWU9DHq//pp
-SQURHCCohq1tK55hQb6YpynEwQJcmv/ib6mxJGLfPy/0Ex5bnczkGE7O4gkwxlG8
-v0a1ALL5+or1dWySYO0IiRtPHn3U+tfZ5x9h9zjaGVt5x/XvGyyxFjlGedBMXm80
-HXCsQ35DUbMpNKIedcL2FKA/vCEXtQ==
-=Mo7R
------END PGP SIGNATURE-----
-
---aMtzLzsOA1vyg0LI--
+> +			interrupt-names = "error_irq", "irq";
+>   			clocks = <&k3_clks 38 3>, <&k3_clks 38 1>, <&k3_clks 38 3>,
+>   				<&k3_clks 38 3>, <&k3_clks 38 4>, <&k3_clks 38 4>;
+>   			clock-names = "sys_clk", "p_clk", "pixel_if0_clk",
+> @@ -1301,6 +1304,9 @@ ti_csi2rx1: ticsi2rx@4510000 {
+>   		cdns_csi2rx1: csi-bridge@4514000 {
+>   			compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
+>   			reg = <0x00 0x04514000 0x00 0x1000>;
+> +			interrupts = <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "error_irq", "irq";
+>   			clocks = <&k3_clks 39 3>, <&k3_clks 39 1>, <&k3_clks 39 3>,
+>   				<&k3_clks 39 3>, <&k3_clks 39 4>, <&k3_clks 39 4>;
+>   			clock-names = "sys_clk", "p_clk", "pixel_if0_clk",
