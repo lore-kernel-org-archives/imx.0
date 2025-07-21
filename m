@@ -1,161 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AC6176AC8;
-	Mon, 21 Jul 2025 12:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602DE176AC8;
+	Mon, 21 Jul 2025 12:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753100632; cv=none; b=A/31OfZPzCi5h/hOWUM7goRgfjZ3gI6l8sV6+UKXIxCoXhZ6jmqF+mVTR8hhomconEkSJdtca/uE9OYk+bh62NdsxeHP5SwADkQabH6cqfNbnYlomfsmMYB7J8MNqOfHzA0SgRRJV+SrdzZEWOuQXdDixR1O+7JwlM2gmMlheJ0=
+	t=1753100766; cv=none; b=pxrNCZcrlFsTGd/pQksyjucymANBDh1qC09oxtB/wgR6AEDOPy+OSA/1uPjmO8+i8jsRNEPPLgXqoS0Rydj8eh220UWWt+bgL4alI4ElC1ulnLjszZzIY+m74cGAjCkqVknKSZf0qoKwDAWMn6gN4RQ0w6mkKIEmeQ39EGGa/Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753100632; c=relaxed/simple;
-	bh=lK05y5EfyxlFdSQJMti7U0pF1916g64aU29cskH7E+E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZQG77On6In6+53CEQCutU2Jo0rlwo72q/TNfn5KdzgyANjmuLUgA9oNPhWjcgtjDKtM05DY4LryqrY7g5Vs0YC85vL6IdZQo8bUrG321j2VhLwArgkqSvjKmvik+gLquoAK/COJ9U2ZIYf6/JQ0c3U8dfxe3YHXSA6QSrLzKyb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s7fGIw3N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753100766; c=relaxed/simple;
+	bh=Vo2leQpJHEn6ju7V/6oT8q9qM3p5xBkpL6xkES47luE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eLSHgUB1eFPxI2oUlaK1DHuxazh3sAlEBuqxYW94nzRJunQ2wEHVPuiNmUhnU708RYXEvce17RGMsUbhgFNpxib5RttQWAIcaiZk1pP4q8zcBKcms4qnvLhn9C3noxt0MQXapS6lkbqWY+GtRm/Ri94gfIQbfPN2bq8EAkU8shU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jvQQNgZE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s7fGIw3N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFF3C4CEED;
-	Mon, 21 Jul 2025 12:23:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jvQQNgZE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6874FC4CEED;
+	Mon, 21 Jul 2025 12:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753100632;
-	bh=lK05y5EfyxlFdSQJMti7U0pF1916g64aU29cskH7E+E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=s7fGIw3NZXpV2Fk5Vf1Kp4PwBNjcUE/L3hCyjNwqc3Ozv0XfB3nd9uMQK7Bg/O6SY
-	 OYtkV655pHUDzzj1Wwkl6wtoCxSHtAtLpt9xyro42qX8YPEyMEveR2d1rOE71j7jzU
-	 hQm2zEAgDgYkqLzGELqH0oawrBvuVgntZCUEtIWBvQaZNQ+9U2PY4V3anZJBvKsSbt
-	 p8KaRnJJTUXrwQHmCdGDIr+uX8no7K8V/gDFsPLSul2hohIXNarZ991ImIBE6senma
-	 +nXfWRemvRin4baWmcZh4STewq3NEjhwDChCH28sQgN5q6W6msTKXq4APBo+b+opzp
-	 uYfmOfjWQcxQA==
-Message-ID: <79e28c65-8dbe-4449-b795-645029c37f88@kernel.org>
-Date: Mon, 21 Jul 2025 14:23:45 +0200
+	s=k20201202; t=1753100765;
+	bh=Vo2leQpJHEn6ju7V/6oT8q9qM3p5xBkpL6xkES47luE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jvQQNgZEC9pEajow0hPQBJU12cKqN7Zi76tILLVFc4fFpXn7hCG6FWTpgCuEPf+Cs
+	 RKYzslSE+fvljo3b6QSeB7hlbGEjOwMcPjHdw263Hk0174rLCQpSY8MyvhhtXKdIkw
+	 OLwPsHy2VxdrMtCe/2MHG4NcALxaRCje3jEhn9rnh8kGzvzJMtt1ydudk+LfrAbpjy
+	 tF6m+ctwkLL44NllmoDNVjw4AMSVaDpf0hh4VsV/LL5/ZvEt8/YF9L6YCLbkkgl429
+	 LzCS3psxoUo0fFvkQlQpbbNcEbcTxXVVZiwF8Z5rEjdcwVy+uKrrNavXfxk+E69G8F
+	 inFGrFNACdEvA==
+Date: Mon, 21 Jul 2025 13:26:00 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Joy Zou <joy.zou@nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>, Ye Li <ye.li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v2 2/2] regulator: pf0900: Add PMIC PF0900 support
+Message-ID: <6e3d022c-daec-4c3f-b064-33abdd7e2c93@sirena.org.uk>
+References: <20250721-b4-pf09-v2-v2-0-e2c568548032@nxp.com>
+ <20250721-b4-pf09-v2-v2-2-e2c568548032@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net-next 02/14] dt-bindings: net: add nxp,netc-timer
- property
-To: Vladimir Oltean <vladimir.oltean@nxp.com>,
- "richardcochran@gmail.com" <richardcochran@gmail.com>
-Cc: Wei Fang <wei.fang@nxp.com>, "robh@kernel.org" <robh@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@google.com" <edumazet@google.com>,
- "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "vadim.fedorenko@linux.dev"
- <vadim.fedorenko@linux.dev>, Frank Li <frank.li@nxp.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>, "F.S. Peng" <fushi.peng@nxp.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>
-References: <20250716073111.367382-1-wei.fang@nxp.com>
- <20250716073111.367382-3-wei.fang@nxp.com>
- <20250717-sceptical-quoll-of-protection-9c2104@kuoka>
- <PAXPR04MB8510EB38C3DCF5713C6AC5C48851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250717-masterful-uppish-impala-b1d256@kuoka>
- <PAXPR04MB85109FE64C4FCAD6D46895428851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <af75073c-4ce8-44c1-9e48-b22902373e81@kernel.org>
- <PAXPR04MB8510426F58E3065B22943D8C8851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250718-enchanted-cornflower-llama-f7baea@kuoka>
- <20250718120105.b42gyo7ywj42fcw4@skbuf>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250718120105.b42gyo7ywj42fcw4@skbuf>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 18/07/2025 14:01, Vladimir Oltean wrote:
->> Maybe there is another property describing a time provider in the
->> kernel or dtschema. Please look for it. This all looks like you are
->> implementing typical use case in non-typical, but vendor-like, way.
->>
->> Best regards,
->> Krzysztof
-> 
-> An MII timestamper and a PTP clock (as integrated in a MAC or a PHY) are
-> similar but have some notable differences.
-> 
-> A timestamper is an external device with a free-running counter, which
-> sniffs the MII bus between the MAC and the PHY, and provides timestamps
-> when the first octet of a packet hits the wire.
-> 
-> A PTP clock is also a high precision counter, which can be free-running
-> or it can be precisely adjusted. It does not have packet timestamping
-> capabilities itself, instead the Ethernet MAC can snapshot this counter
-> when it places the first octet of a packet on the MII bus. PTP clocks
-> frequently have other auxiliary functions, like emitting external
-> signals based on the internal time, or snapshotting external signals.
-> 
-> The timestamper is not required to have these functions. In fact, I am
-> looking at ptp_ines.c, the only non-PHY MII timestamper supported by the
-> kernel, and I am noting the fact that it does not call ptp_clock_register()
-> at all, presumably because it has no controllable PTP clock to speak of.
-> 
-> That being said, my understanding is based on analyzing the public code
-> available to me, and I do not have practical experience with MII bus
-> snooping devices, so if Richard could chime in, it would be great.
-> 
-> I am also in favor of using the "ptp-timer" phandle to describe the link
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="m10v8VWyX797GPl6"
+Content-Disposition: inline
+In-Reply-To: <20250721-b4-pf09-v2-v2-2-e2c568548032@nxp.com>
+X-Cookie: Microwaves frizz your heir.
 
 
-And it is already used in other binding, so yes, that's the candidate.
+--m10v8VWyX797GPl6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> between the MAC and the internal PTP clock that will be snapshot when
-> taking packet timestamps. The fman-dtsec.yaml schema also uses it for an
-> identical purpose.
+On Mon, Jul 21, 2025 at 03:11:28PM +0800, Joy Zou wrote:
 
+> The PF0900 is a power management integrated circuit (PMIC) optimized
+> for high performance i.MX9x based applications. It features five high
+> efficiency buck converters, three linear and one vaon regulators.
+> It provides low quiescent current in Standby and low power off Modes.
 
-Best regards,
-Krzysztof
+This looks basically fine, one very minor issue since it looks like you
+need to resubmit for the bindings:
+
+> +static const struct regmap_config pf0900_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.volatile_table = &pf0900_volatile_regs,
+> +	.max_register = PF0900_MAX_REGISTER - 1,
+> +	.cache_type = REGCACHE_RBTREE,
+> +};
+
+Unless you've got a strong reason to do something else new drivers
+should use _MAPLE, it's a more modern data structure.
+
+--m10v8VWyX797GPl6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmh+MdgACgkQJNaLcl1U
+h9Dolgf/ZXjoYj0D4u/FKUTn7FgSCHdoW8DT9uP5G+N9gvBWhQF19Jw6X6M/2Hfo
+6AXoUrlTEqkdqr8fuBi9oBxGXy89ej94iiQABrOH7St3R/c7vokFZo80HSmmI4pL
+3qpUPE0+wm0UlQfLq4URpTB7nG7aTUM/wb/cmRxQH13Jma0ZdI3Ub4klu/yd6gfX
+97W67RQRNObtcQ/Qm6ZmauERjsPkil+onUwZagG2qNwqMN/VuyP+9NpnMit0fJse
+txEg1WfmPNWCTOh/kCzEKrq6SD+ZnkxiIeQ+A0dJqyKAnHXK6JIqd7e+pzV/dH4X
+BH7ZikaAFE/Y87yCGTVi48/coDAEGw==
+=oygU
+-----END PGP SIGNATURE-----
+
+--m10v8VWyX797GPl6--
