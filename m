@@ -1,163 +1,205 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4422D7808
-	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 13:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34B52D6607
+	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 13:25:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753104325; cv=none; b=KGNGhR4yZ3PdDj+929Ko1U/a+O5uDFLiAsHWgwZExkElBmgc8V5TzpM85N2FQC73PLXr7VXtOVahNEvSsOwBSodl6bFBfaYkvVloGozaNHpL1XE3ZgZliRXlf5WCKS/VqaKvXwXLai+N5nb6Wa0koiP6rXkuCudFOMkzCwbEMqI=
+	t=1753104361; cv=none; b=RGjPCRlPmQfRaHXRWk8CL+nF0tySTM59pRSKHaHkIR6PejaNcPWFw1La63UdlZ/6zAZ7RlFXe1CNo0co9iONo79M9/1DyZZgLXbdfd30bcKzGxrWF5AsPwWQfe9bUiZaz+UARafJIZboUZvhwLArcSKQy/awDjGaZA5DkAhC5z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753104325; c=relaxed/simple;
-	bh=UIGaP2WMgsKajna8R0R2j3HUDLSthHfOLtrl0z1bpfg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SiYf9o01lHK+r2MI8s25/TChbzMaAT2F0r7MBsO5/PHuTdM2UGeG2J5AmWvEZqk4iiGI3xhAwfZTvG25FKaxAS3nVTuKbxxBVt0RIWvgAmwRQJ3umHPxWj21295YdlqTLr03luqiz5EtU2msViSYJnnUIhWGo6GJQ0nzek+yRR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=i7Af87Rl; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1753104361; c=relaxed/simple;
+	bh=CgTHlnjqXlrhyYXlIsSOMJg+dqhEDhk8I+VMOO7ZHLA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cC1qZDXfiv71lDZrdTo+bZm67qT3JICY6zQ8oBZxS4ehDdz/seNtqebzzKL96r0Oqh6+1Np8D6aLdqmEXwf8EHHtE66IRBMhMBqoWWMdg/qdUkM1zVRDxT3vD3XI47MuiUsn0f+EzOrcATszc/r8mLKu1Cyjoc4FAlWizqdqUBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l6hBXEQp; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="i7Af87Rl"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56L9fY5j029341
-	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 13:25:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	rZQHynXS9Aj+ofzqFulsvS4teiqfVzJDlJMHSlRQVic=; b=i7Af87RlSsyPtyRr
-	HrR0kGeh9hBMhTS8D+mPtI2cUrZ6cZFvfm6WqrUYS9Lgng9+sPvqV0ogMQKwBuZf
-	h+z88asJNbJ/WqxDZZloocEJ+hJyjC23vnIIV0IJPY5RQXT6SPNwAQO9jJBPFLYo
-	3Q6MDy2LOp0vidV8nn3ODILDkEbq3J/wB7gz9TTXsBmeCV2WcYt7BYNa3u5zF4Z9
-	eUdRlsZNCVI2SA50hRM7wk6IX81r25SPRz5A2ykwvTMQkQdc03t9MKcKpxqtCe7U
-	yc+xa3PP7yfNN4RgoyPomX+v4r6wAxjMr1MSR9iT8OnEK1MZ5CiStaKJu2OLtz8L
-	koqCgw==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48048td6a9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 13:25:22 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-74ae13e99d6so2715250b3a.0
-        for <imx@lists.linux.dev>; Mon, 21 Jul 2025 06:25:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l6hBXEQp"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45610582d07so33763025e9.0
+        for <imx@lists.linux.dev>; Mon, 21 Jul 2025 06:25:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1753104357; x=1753709157; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e1nIdAg0sGnGTxCABOmv04iQ5WEkBiWRfTjeSG6hZ6w=;
+        b=l6hBXEQpUjE6F4buANcHReqQdKG9lBNqFY7lAdv+HgMnm40g8iFbUqho+noMGFjAKb
+         PpszFyWMroaGNp0FIkFUkHR972u5/jefg4HC2VrHbWlAux59KdD5QHKhJYuTm0cSaNoq
+         rOHy0wONIQyAEKYmCAN4p2pWfB2LvYxcEx4QzmWPxamM7huSmeuKZ7VMTP0ZevDj48Xd
+         SCdWfeRo4Dol3qVRRKS9W7GzAhHX3+qgyrriF/WUgpakkUT9chdoCkSmiqZdtp3TX1iF
+         hm8bMEZtFBQYnGj5dYfBnsppcHcHugk9YzIoPa9Pqjk+saoezFoclZLhLKDwopGg7pJ4
+         xtuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753104321; x=1753709121;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rZQHynXS9Aj+ofzqFulsvS4teiqfVzJDlJMHSlRQVic=;
-        b=oTS27jURd9/8apc+0aZSg1JfxkzStnz5qtYNtNxdV5CfGIGKdM9r8ZUMpGRSvbs3K6
-         qR/JKsNKR4sU6bB3RTqMG0ePvVhV+8ipHPjCWtIoqHG3H+7jgHDNIHekhiXy4c2N64QY
-         +knUbvG42McOaVKizN0mC4e863SCJ3E5OwS2u88QJdNe+M5TQNFZRl8huGjtU6C52tyT
-         1V2cFhAlurAoMqIL/5XpVGH4ZBxTlB795mgjcNazF6VWCVRGn/30CgazzCf4G9oNDVeC
-         D+FlvKPudDJOnTxoAZetPmt60m2RarIir08DgiC4PesNe6fk1FSKWcaG7L31kNAmgZDj
-         gPwg==
-X-Forwarded-Encrypted: i=1; AJvYcCVRyA9BHwihp0Ti/yHlRgX5Y3wfMXqzz9Oicu/4qbUkHlqolePnqXW65ABSktcaSffCFdk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyYYH5GjQuqp6qa5GW7U1utyXWfdpM3l2lzA/kMNiBeRpdKp+Av
-	JETFz1xRa+O7JqJ+LESaCmaILS7dT9YFbgTnIuum44pOVjmpgV93plvbhTtsDW0p8u01vB/UcPh
-	Y9p0o5jo9G+VAo2VSrsBmQRNuCKp27LpWDg3xha76UTJFtd4T7FFYgjk=
-X-Gm-Gg: ASbGncvVbWTTN5kJENm33bjBwD3N19sCouA2G7HBpbi/UDeKguVLz5ERDLo2RqHBslo
-	NvQ14Fu7xvE1A2fOea4FOHQ75SuliTgytSiSUAUpdrKYmp3CF+20En2/ys+FpGMRMoi792xQkbR
-	R+jmVY2NSJJS0bgeofeMwAvpE5aTKbJUOsPufQ+ME9FOTavwWLa18rY3A9YtOwdJiFak12LC+ls
-	Izn59ar8HAoxb71oFPsvhk9jZNmtsJ9vQP4HKT9CvqI5cm2mhog/Upzt7sD4SpRyQTc4NyxkKls
-	s/U1DC8JDIx3W2RVDDw/OYs=
-X-Received: by 2002:a05:6a00:440b:b0:74e:aaca:c32d with SMTP id d2e1a72fcca58-7583806f7c9mr22318748b3a.10.1753104321185;
-        Mon, 21 Jul 2025 06:25:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFVAG2MuKiinbLb8Q53VUsMTuw7REYbjlHCJcq0ez6hDk7d0Yrje6e4GNuTCOXMv94W2Rtf2A==
-X-Received: by 2002:a05:6a00:440b:b0:74e:aaca:c32d with SMTP id d2e1a72fcca58-7583806f7c9mr22318689b3a.10.1753104320687;
-        Mon, 21 Jul 2025 06:25:20 -0700 (PDT)
-Received: from work.. ([120.60.76.1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759cb76da69sm5688821b3a.115.2025.07.21.06.25.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Jul 2025 06:25:20 -0700 (PDT)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-X-Google-Original-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Kishon Vijay Abraham I <kishon@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-        Shuah Khan <shuah@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-        Frank Li <Frank.Li@nxp.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, Niklas Cassel <cassel@kernel.org>,
-        dlemoal@kernel.org, jdmason@kudzu.us, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, imx@lists.linux.dev,
-        devicetree@vger.kernel.org
-Subject: Re: (subset) [PATCH v21 0/9] PCI: EP: Add RC-to-EP doorbell with platform MSI controller
-Date: Mon, 21 Jul 2025 18:55:05 +0530
-Message-ID: <175310419611.11873.17918717791350182486.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250710-ep-msi-v21-0-57683fc7fb25@nxp.com>
-References: <20250710-ep-msi-v21-0-57683fc7fb25@nxp.com>
+        d=1e100.net; s=20230601; t=1753104357; x=1753709157;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e1nIdAg0sGnGTxCABOmv04iQ5WEkBiWRfTjeSG6hZ6w=;
+        b=vbJTpqlfWfIrRzmgGYAE8ivDOpocM2QLwCOYVPk29q4u28PJAxJ6A9dqfj0kv1A/Lg
+         it43zn2O1tVO87jMLjuEe9npl5VAawWG5HtpCELICdeQu42ScCQaghCJxYO+MfqCRewq
+         6tkSvDoU2JfqZ6WDehUjjUb5/a8VpXXd69drOozQMp/WZR2HEoNf6Zici9GBbzxJJoZJ
+         KDmox9rcM5IWnGsk7MLNBVC7u72T8fET5EJ2DlRMnwmWfAZgzWNRFx8qUMT9SM/oT8Gc
+         50K4c822o9XYvQaLIIdhhzPlvKvtVXhRw6JdYs/MzZBwrrsUSc5UrqwIQbDugsBsfaze
+         437Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUwkCyvjXGzDm4wcjPqXRL3WRzEhClZ6Y5JG+VpBrYCY+LekkHy5CChSB35r5oYb7NLwCk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyobJwhn69ISHGMq7PWEjeO3iIDGvBcjDzkgrZVmzZGV5YLH2pi
+	VXuGPFhGuvDJxy5sj5EczN8u91QP/iey+gIgEf0PN6rMeMDn7HY+G7dMR8Y5J4F4g4HSxKLl43k
+	ILsmVBas=
+X-Gm-Gg: ASbGncuM8B53V/OcSUgw/jxnGMF0zDx6imLvDu01LObahBvSZF4pMN9Ilgx2qzepl2q
+	WQ6EEhxj1MUAV/pZrm/oTZxxZe/k4RqF0k3YxPc/dR/0Knh0BDluE8ngmLA/EvFvKy8JHrk71HM
+	08FF+JaTorVOZHD/7WvAMdfspWa8XTqpcYYlb1JqFI4WGTsskMRLiBdBumUg4i+zkKlyuI5pj4y
+	8r2cpFGuDwwrCpgo+DauBma5uv8emkjRMkGeVpgdDmeI9moyBPJ23UEVw7Eg1H/ILnOYiSic3uW
+	w0HsHISa/RrM7/czKno7GPruKCajlkPOhigDV2k/QM+k/lzktvQBqaBZMR0YTRvJt+5u9ucCj6C
+	bei/HjDIv3an4nnfgTZcJ6OTjREk=
+X-Google-Smtp-Source: AGHT+IFTflohdCxvNvNb8RYTzDCG+r6gd9qoG/lJIe4OeYl2GcySLLIOxdTc/nCyWsZxvyoNDRS5RA==
+X-Received: by 2002:a05:600c:8507:b0:456:161c:3d6f with SMTP id 5b1f17b1804b1-4563c266ae9mr112757965e9.11.1753104357063;
+        Mon, 21 Jul 2025 06:25:57 -0700 (PDT)
+Received: from [192.168.1.3] ([185.48.76.109])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4563b5c84absm102784195e9.16.2025.07.21.06.25.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Jul 2025 06:25:56 -0700 (PDT)
+Message-ID: <eb704af4-5800-49b6-9915-c990c5b23fa1@linaro.org>
+Date: Mon, 21 Jul 2025 14:25:55 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIxMDExOSBTYWx0ZWRfX7TiL94pLVBTm
- 3kou7CiiVJY3vv6nqd6L1ZYHgOByuMjww9HXn1pyCXDW6x6eKHcLMQCZGYD0igOw3q1LIjUUqht
- hKSFN92SA05m5fXx/fAPpM89jY8C5f7NhJGpj8qPc1P6KU3rMX81UpAFyynjDeRVaIFWoveKBv4
- tnEmZCtCI0mLpdRfVdh7s6nLDRa7Jd2fgK5jpMH59joJ0urAlNImmnEJ/PuSZ/m5XFP4zrA67Z/
- SUpmdx990rzbpWgQ9ubnFI9DJNAu/1zNp2crGIUc3gM8Dp48Lw64ykCi1gzlXdICqjq3+dAudEr
- 5sxj1YCtW9TXhyRG+uaHvLNT9RW4AOj54cx7vl88xEjn/BlIlDzteFzzc3AybusU+C6ThiJFEW8
- B+La6xsKDHvv7NO0XUj7zDtAJ/MHkRTwWyf04/iCuuaQUFMc4uvh/6nqTUgv6i/QNGO/gRPV
-X-Authority-Analysis: v=2.4 cv=Jb68rVKV c=1 sm=1 tr=0 ts=687e3fc2 cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=5oemJFBbzWj47VPNxq3P8A==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=mrIX6-fznQKVqVjsUugA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-GUID: _dV204_7Q9flRPXRGOfPraw6SUDyVZGM
-X-Proofpoint-ORIG-GUID: _dV204_7Q9flRPXRGOfPraw6SUDyVZGM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-21_04,2025-07-21_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=994 adultscore=0 priorityscore=1501 clxscore=1011 phishscore=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 malwarescore=0 mlxscore=0
- spamscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507210119
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/6] spi: spi-fsl-dspi: Store status directly in
+ cur_msg->status
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Larisa Grigore <larisa.grigore@nxp.com>,
+ Frank Li <Frank.li@nxp.com>, Christoph Hellwig <hch@lst.de>,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20250627-james-nxp-spi-dma-v4-0-178dba20c120@linaro.org>
+ <20250627-james-nxp-spi-dma-v4-2-178dba20c120@linaro.org>
+ <20250627213041.vp6yfcgf4xysdklf@skbuf>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <20250627213041.vp6yfcgf4xysdklf@skbuf>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-On Thu, 10 Jul 2025 15:13:46 -0400, Frank Li wrote:
-> ┌────────────┐   ┌───────────────────────────────────┐   ┌────────────────┐
-> │            │   │                                   │   │                │
-> │            │   │ PCI Endpoint                      │   │ PCI Host       │
-> │            │   │                                   │   │                │
-> │            │◄──┤ 1.platform_msi_domain_alloc_irqs()│   │                │
-> │            │   │                                   │   │                │
-> │ MSI        ├──►│ 2.write_msi_msg()                 ├──►├─BAR<n>         │
-> │ Controller │   │   update doorbell register address│   │                │
-> │            │   │   for BAR                         │   │                │
-> │            │   │                                   │   │ 3. Write BAR<n>│
-> │            │◄──┼───────────────────────────────────┼───┤                │
-> │            │   │                                   │   │                │
-> │            ├──►│ 4.Irq Handle                      │   │                │
-> │            │   │                                   │   │                │
-> │            │   │                                   │   │                │
-> └────────────┘   └───────────────────────────────────┘   └────────────────┘
+
+On 27/06/2025 10:30 pm, Vladimir Oltean wrote:
+> On Fri, Jun 27, 2025 at 11:21:38AM +0100, James Clark wrote:
+>> This will allow us to return a status from the interrupt handler in a
+>> later commit and avoids copying it at the end of
+>> dspi_transfer_one_message(). For consistency make polling and DMA modes
+>> use the same mechanism.
+>>
+>> Refactor dspi_rxtx() and dspi_poll() to not return -EINPROGRESS because
+>> this isn't actually a status that was ever returned to the core layer
+>> but some internal state. Wherever that was used we can look at dspi->len
+>> instead.
+>>
+>> No functional changes intended.
+>>
+>> Signed-off-by: James Clark <james.clark@linaro.org>
+>> ---
 > 
-> [...]
+> This commit doesn't work, please do not merge this patch.
+> 
+> You are changing the logic in DMA mode, interrupt-based FIFO and PIO all
+> in one go, in a commit whose title and primary purpose is unrelated to
+> that. Just a mention of the type "while at it, also do that". And in
+> that process, that bundled refactoring introduces a subtle, but severe bug.
+> 
+> No, that is discouraged. Make one patch per logical change, where only
+> one thing is happening and which is obviously correct. It helps you and
+> it helps the reviewer.
+> 
+> Please find attached a set of 3 patches that represent a broken down and
+> corrected variant of this one. First 2 should be squashed together in
+> your next submission, they are just to illustrate the bug that you've
+> introduced (which can be reproduced on any SoC in XSPI mode).
+> 
+> The panic message is slightly confusing and does not directly point to
+> the issue, I'm attaching it just for the sake of having a future reference.
+> 
+> [    4.154185] DSA: tree 0 setup
+> [    4.157380] sja1105 spi2.0: Probed switch chip: SJA1105S
+> [    4.173894] sja1105 spi2.0: configuring for fixed/sgmii link mode
+> [    4.232527] sja1105 spi2.0: Link is Up - 1Gbps/Full - flow control off
+> [    4.312798] sja1105 spi2.0 sw0p0 (uninitialized): PHY [0000:00:00.3:07] driver [RTL8211F Gigabit Ethernet] (irq=POLL)
+> [    4.443689] sja1105 spi2.0 sw0p1 (uninitialized): PHY [0000:00:00.3:00] driver [Microsemi GE VSC8502 SyncE] (irq=POLL)
+> [    4.575718] sja1105 spi2.0 sw0p2 (uninitialized): PHY [0000:00:00.3:01] driver [Microsemi GE VSC8502 SyncE] (irq=POLL)
+> [    4.588012] Unable to handle kernel paging request at virtual address ffff8000801ac000
+> [    4.595960] Mem abort info:
+> [    4.598757]   ESR = 0x0000000096000007
+> [    4.602515]   EC = 0x25: DABT (current EL), IL = 32 bits
+> [    4.607843]   SET = 0, FnV = 0
+> [    4.610902]   EA = 0, S1PTW = 0
+> [    4.614048]   FSC = 0x07: level 3 translation fault
+> [    4.618939] Data abort info:
+> [    4.621822]   ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
+> [    4.627323]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+> [    4.632388]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> [    4.637714] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000082b7a000
+> [    4.644437] [ffff8000801ac000] pgd=0000000000000000, p4d=1000002080020403, pud=1000002080021403, pmd=1000002080022403, pte=0000000000000000
+> [    4.657016] Internal error: Oops: 0000000096000007 [#1]  SMP
+> [    4.662693] Modules linked in:
+> [    4.665756] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.16.0-rc3+ #30 PREEMPT
+> [    4.673615] Hardware name: random LS1028A board
+> [    4.679116] pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [    4.686103] pc : dspi_8on32_host_to_dev+0x8/0x24
+> [    4.690742] lr : dspi_fifo_write+0x178/0x1cc
+> [    4.695025] sp : ffff800080003eb0
+> [    4.698346] x29: ffff800080003ec0 x28: ffffc25414698b00 x27: ffffc2541464c170
+> [    4.705512] x26: 0000000000000001 x25: ffffc25414b06000 x24: 0000000111705fd3
+> [    4.712677] x23: ffffc25414257bae x22: ffff8000801ab5e8 x21: 00000000fffffd98
+> [    4.719842] x20: 0000000000000000 x19: ffff00200039a480 x18: 0000000000000006
+> [    4.727007] x17: ffff3dcc6b076000 x16: ffff800080000000 x15: 0000000078b30c40
+> [    4.734171] x14: 0000000000000000 x13: 0000000000000048 x12: 0000000000000128
+> [    4.741335] x11: 0000000000000001 x10: 0000000000000000 x9 : 0000000100010001
+> [    4.748500] x8 : ffff8000801ac000 x7 : 0000000000000000 x6 : 0000000000000000
+> [    4.755664] x5 : 0000000000000000 x4 : ffffc25411a308d0 x3 : 0000000000000000
+> [    4.762828] x2 : 0000000000000000 x1 : ffff800080003eb4 x0 : ffff00200039a480
+> [    4.769992] Call trace:
+> [    4.772441]  dspi_8on32_host_to_dev+0x8/0x24 (P)
+> [    4.777074]  dspi_interrupt+0x6c/0xf0
+> [    4.780747]  __handle_irq_event_percpu+0x8c/0x160
+> [    4.785470]  handle_irq_event+0x48/0xa0
+> [    4.789319]  handle_fasteoi_irq+0xf4/0x208
+> [    4.793428]  generic_handle_domain_irq+0x40/0x64
+> [    4.798060]  gic_handle_irq+0x4c/0x110
+> [    4.801820]  call_on_irq_stack+0x24/0x30
+> [    4.805757]  el1_interrupt+0x74/0xc0
+> [    4.809346]  el1h_64_irq_handler+0x18/0x24
+> [    4.813457]  el1h_64_irq+0x6c/0x70
+> [    4.816867]  arch_local_irq_enable+0x8/0xc (P)
+> [    4.821330]  cpuidle_enter+0x38/0x50
+> [    4.824914]  do_idle+0x1c4/0x250
+> [    4.828152]  cpu_startup_entry+0x34/0x38
+> [    4.832087]  kernel_init+0x0/0x1a0
+> [    4.835500]  start_kernel+0x2ec/0x398
+> [    4.839175]  __primary_switched+0x88/0x90
+> [    4.843200] Code: f9003008 d65f03c0 d503245f f9402c08 (b9400108)
+> [    4.849313] ---[ end trace 0000000000000000 ]---
+> [    4.853943] Kernel panic - not syncing: Oops: Fatal exception in interrupt
+> [    4.860840] SMP: stopping secondary CPUs
+> [    4.864788] Kernel Offset: 0x425391a00000 from 0xffff800080000000
+> [    4.870900] PHYS_OFFSET: 0xfff1000080000000
+> [    4.875093] CPU features: 0x1000,000804b0,02000801,0400421b
+> [    4.880683] Memory Limit: none
+> [    4.883750] ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
+> 
+> I still intend to do more testing, so please don't send the next version
+> just yet. Tracking down this issue took a bit more than I was planning.
 
-Applied, thanks!
+Hi Vladimir,
 
-[1/9] PCI: imx6: Add helper function imx_pcie_add_lut_by_rid()
-      commit: 9d0ca8df2451eb66a0c13a9932f348d417d9603b
-[2/9] PCI: imx6: Add LUT configuration for MSI/IOMMU in Endpoint mode
-      commit: 234b9258c6907cabbb2594ee366286d35ff056f3
+Just wanted to check if you are ok for me to send a new version with 
+your fixes included now?
 
-NOTE: I've dropped the Tested-by tag from Niklas since the tag was only given
-for the EP patches.
+I assume from the other discussion that we don't want to always enable 
+DMA mode either, and we'll just leave it for s32g target mode only?
 
-Best regards,
--- 
-Manivannan Sadhasivam <mani@kernel.org>
+Thanks
+James
+
