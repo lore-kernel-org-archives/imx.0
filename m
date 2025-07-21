@@ -1,206 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35121E7C10;
-	Sat, 19 Jul 2025 11:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAD81E261F
+	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 02:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752925764; cv=none; b=HGExiLYo4hbKLvkWdxQNzAWg9tDKsr+bmQJ57uS88KFJ5qVgVvvrHQYfvNGY+BGt3HTXMHjirj6tjOn+mXKjt/v3pi8sBaAOOsq22g9FlyCzqLgj3WD5S0U/JpkU0ySb2dw088wOG3roukaRRBJpkLqphJZHdiym+he1ZvmUn94=
+	t=1753064333; cv=none; b=sZfuf9Md0CXA/D8vEO3F/n3w4rMhBzecYiNabEbFRbM9RxPK6544wy60s0xymPn4jVE8MVGnFnmNgS/CpSEVXE+0aPK773kUTQulXeXlGU7xXGn8ZFUgdqw+PWIGrxKs4gFiiniV+eAcs/Fa3NEGNS8dHa/KtZSkG5A+ePwF6TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752925764; c=relaxed/simple;
-	bh=ji5NuuZw96p1y7UG1zaDiHhl0TkRDc1FoWgIsQTk1B4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lVyTCFk+KMJ/IHy7tIciohg7G/ssoWR3EgMsRctULUl2L6ycJDVt93HNddVexv67FC1kTu17Ff2foA7gudwCVgfV1RIVOw3mYcNlLSL9WY/pI5hTdgeB2O4o7g5V/I0Lr6kdfD/Nqcaj2FeJ2SjwiV24lyV/MBsqsNMGVpghcw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uxYyLBtz; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxYyLBtz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074C5C4CEE3;
-	Sat, 19 Jul 2025 11:49:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752925763;
-	bh=ji5NuuZw96p1y7UG1zaDiHhl0TkRDc1FoWgIsQTk1B4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uxYyLBtz+MpnD29HvpPg8MORaiwSeEuBRF0TRLpOii8eU5KEfmlKIQyS012jd0WF5
-	 Qhm5cO8XqAM86JdgyxcozM02GomXmfHgFbPIhpE8jYWwKT/A1q2ViHzDVUU57dSZ4Q
-	 Rnj1NBinK0maC3cjM5AeAojpm9MpoxgtMJCzsWjYAHf9jHrSDJep8iyjL+WvNJZ6w9
-	 jsvw93ncEcnWqYPtQs/vSF3Rtffo2LWaa+em/P8U9vgJD1ls8IHMyH5usPlHNm5GXR
-	 rxF81Nav8TVf5GSc48nOar2S5jOl/Mzd3V7CLktRMiTZabw1XW3/k2GhpZaCMnpAr5
-	 HLIO9mqHXMNhg==
-Date: Sat, 19 Jul 2025 12:49:14 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Primoz Fiser <primoz.fiser@norik.com>
-Cc: David Lechner <dlechner@baylibre.com>, Haibo Chen <haibo.chen@nxp.com>,
- Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Andy Shevchenko
- <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- linux-iio@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- upstream@lists.phytec.de, andrej.picej@norik.com
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration
- properties
-Message-ID: <20250719124914.27536d4a@jic23-huawei>
-In-Reply-To: <c9d17343-e4a5-49ab-9a3e-b6da9d591195@norik.com>
-References: <20250710073905.1105417-1-primoz.fiser@norik.com>
-	<20250710073905.1105417-2-primoz.fiser@norik.com>
-	<2bcd758b-c2d0-488a-8ead-ec7fb39f93e2@baylibre.com>
-	<20250713160247.0f22bbfe@jic23-huawei>
-	<de2c8e15-14e9-4c61-9a13-97ef1ec567a4@norik.com>
-	<6b32118a13e9e28b7cf12152af33642c76367c34.camel@gmail.com>
-	<c9d17343-e4a5-49ab-9a3e-b6da9d591195@norik.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1753064333; c=relaxed/simple;
+	bh=VOGdoBvhjejH77efcQeoJr+PQGtGpIFL66Y/taM0X0s=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=fi8x9am8igJxWQOmFCk6FbIc3n0T4AjEXKtPTK0tgGZEk9d9en8pet3GTwrpIILLnWcw1qp0smT0SOcydNmBkHj6bzJLM0oFlN1ZDwwbNlWFUbBCepp3wqTN0do2RfgbFgJ+9OELsBBw5MW3YrCbiPlUexVEqmgPMMhkUOrLykU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-669ff7000002311f-6b-687da386ed5a
+From: Byungchul Park <byungchul@sk.com>
+To: willy@infradead.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel_team@skhynix.com,
+	almasrymina@google.com,
+	ilias.apalodimas@linaro.org,
+	harry.yoo@oracle.com,
+	akpm@linux-foundation.org,
+	andrew+netdev@lunn.ch,
+	asml.silence@gmail.com,
+	toke@redhat.com,
+	david@redhat.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org,
+	vishal.moola@gmail.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	jackmanb@google.com,
+	wei.fang@nxp.com,
+	shenwei.wang@nxp.com,
+	xiaoning.wang@nxp.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	sgoutham@marvell.com,
+	gakula@marvell.com,
+	sbhatta@marvell.com,
+	hkelam@marvell.com,
+	bbhushan2@marvell.com,
+	tariqt@nvidia.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	mbloch@nvidia.com,
+	danishanwar@ti.com,
+	rogerq@kernel.org,
+	nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	aleksander.lobakin@intel.com,
+	horms@kernel.org,
+	m-malladi@ti.com,
+	krzysztof.kozlowski@linaro.org,
+	matthias.schiffer@ew.tq-group.com,
+	robh@kernel.org,
+	imx@lists.linux.dev,
+	intel-wired-lan@lists.osuosl.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH net-next v12 04/12] netdevsim: access ->pp through netmem_desc instead of page
+Date: Mon, 21 Jul 2025 11:18:27 +0900
+Message-Id: <20250721021835.63939-5-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20250721021835.63939-1-byungchul@sk.com>
+References: <20250721021835.63939-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0yTZxTGeb97K41fCuinbllSY5aZiYK6nMTLjLrkXQwLinMX3LSBT9vY
+	AimKoCF2yKYSBdxwgtQI4SJQhKYM6bQFKQQIeClVSRlIpSrx0u4CWigorED875dzznOec3IO
+	R8r76aWcOumwqEtSahSMlJL6QktX/VKWqVpzLf8TMNTXMtA7VkqDcSIdrj620OCsFuCmY4IA
+	Q811BK8DAyyYzwySMNbeyUBZqZ+EgOkcBYZ72RS8qZ8k4VmHh4Uu+zsKjOYYcFeOUGA91URC
+	25sV4MnrYuBc9hQJRUM/MzDz1xQNtsDfLGRZqgiwvWpkwXE9l4aCyQoSmvSPg15P+mi4f8PA
+	wP2TvQiGamdoGLEHDb1VgyzkGi8hsLdUM5CVvRa8ja9Z+PdCOwnu3C0wXZgGHSWLwN/jRTBQ
+	8ZCAGauFhbtDdTS01zcR8GA4QIL/7GUGcnx5CB4W3SDg9mUTDeU9D4jgHHHQN/OWgN+cJQw8
+	yXYjcLZ5KCj+KRdBfbOLhv+swZWnJgzMlq24zfsPiS2PyhH+o7qfwM/zpwnsau4m8J+XHrG4
+	xHwEN1StxGXWFwTOcTlJbK45w2Dz6K8sHuyzMrircIrCDeUn8POGIhT74ffSjYmiRp0m6lZv
+	3i9VNVWUopQySfr5i35ajxxsDpJwAr9OcE/2Ee95eNhFzTLDfyy4XAFylsP5KGHM0xmMSzmS
+	vxMq2BoK5wRh/I9Cc0HrHFP8CuGdyzMnkPHrhW7DTWq+6UeC0XRrLi7hPxM8wfPPsjxY431p
+	oedrrkqErvKYeV4itFa5qHwkK0EhNUiuTkrTKtWadZGqjCR1emRCstaMgg9Xmfk23oJGHXF2
+	xHNIESpLoTJVclqZlpqhtSOBIxXhMtx5TCWXJSozjom65H26Ixox1Y6WcZRisSzafzRRzh9U
+	HhYPiWKKqHufJTjJUj068HRHwudnA5UxYV+et61WhezmlJN64+m949vqdu+I+LalNtnp+6GQ
+	nD5+NNq0YCs9MvDdqK+nNfabDxzEyXZtuKX4yvi+l5rtO/V77kkXZtji3avYL0Yiugv6r+Xv
+	3R+2KWzDrhOfPsvbZryw2USLsXpbyNfLl5l+P937Vdb4niW+EK2CSlUpo1aSulTl//TCgJ5s
+	AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSaUyTaRDHfd6zbWx8rURfNfFoom5IRI1HhmiMiR981Hhk1yMeWanyxjaU
+	QlpowISIUi8UFNEsaFlbCy4Fs8WitkpBLcRWUYSCpCpXixCPenJoRcSC8dtv5j8z/0lmRKTM
+	QU8TqTQpglajUMsZCSXZuDxr/lFLhnJhMH8iGG1XGWjqM9NQ/jUN/uty0uCz8lDV+JUAY9lN
+	BP3hFyzYT7SR0FfnYcBiHiQhXJFDgfGJgYIB2zcSeu4HWfC6hykot2+Aziu9FLiOOUioHZgD
+	wdNeBnIMQyQUdhxhYOT5EA3V4fcsHHaWElBb9CASvr3BQuPNXBrOfSshwZHZFTHsbqWh+baR
+	geasJgQdV0do6HVHXEOlbSzkll9A4L5jZeCwYTGEbvSz8PF8HQmduavgR4Ee7psmw2B9CMGL
+	kqcEjLicLDR0/E9Dnc1BQEsgTMLgqSIGst+dRvC08DYBj4oqaCiubyEie/wFrSPfCcj3mRjo
+	NnQi8NUGKbh4KBeBrcZPwyeXgVq1GteGPpDY2V6M8HXrMwK/OvODwP6ahwS+daGdxSZ7Kq4s
+	jcYW12sCZ/t9JLaXnWCw/fNZFre1uhjsLRiicGXxQfyqshBtnrFTsiJeUKv0gnbByjiJ0lFi
+	RskWcVreP4N0Jmpks5FYxHNL+EDAT40yw83j/f4wOcpR3CK+L+iJ5CUikns8nq+uLCBGhUnc
+	33zNuXtjTHFz+GF/cKxByi3lHxqrqF9DZ/LlFXfH8mJuGR+MnHyUZZGa0BsnfQZJTGhcGYpS
+	afSJCpV6aYwuQZmuUaXF7EtKtKPIO13J+J7nRP3Na9yIEyH5eGkylaGU0Qq9Lj3RjXgRKY+S
+	Ys8BpUwar0g/IGiT9mhT1YLOjaaLKPkU6brtQpyM269IERIEIVnQ/lYJkXhaJlJ8zo/xfbGt
+	T+852rvDvjo1ljkuVpru3I3aHF2ys4l2V3VXtz+4nKa2dIn/ne15ND827uWfNvuWqZ7QXNq6
+	ldYzge3eTSfXJqjNJ4OJE1p2xZsD28pm7dqW1/Q8JcGbpfFcHFjy+NLunt19DcnzUhzW2OEd
+	2fUDf1xLashp9cTvfSendErFomhSq1P8BMLy5gNKAwAA
+X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, 15 Jul 2025 07:46:44 +0200
-Primoz Fiser <primoz.fiser@norik.com> wrote:
+To eliminate the use of struct page in page pool, the page pool users
+should use netmem descriptor and APIs instead.
 
-> Hi Nuno,
->=20
-> On 14. 07. 25 18:11, Nuno S=C3=A1 wrote:
-> > On Mon, 2025-07-14 at 07:56 +0200, Primoz Fiser wrote: =20
-> >> Hi all,
-> >>
-> >> On 13. 07. 25 17:02, Jonathan Cameron wrote: =20
-> >>> On Thu, 10 Jul 2025 10:46:44 -0500
-> >>> David Lechner <dlechner@baylibre.com> wrote:
-> >>> =20
-> >>>> On 7/10/25 2:39 AM, Primoz Fiser wrote: =20
-> >>>>> From: Andrej Picej <andrej.picej@norik.com>
-> >>>>>
-> >>>>> Document i.MX93 ADC calibration properties and how to set them.
-> >>>>>
-> >>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> >>>>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-> >>>>> ---
-> >>>>> =C2=A0.../bindings/iio/adc/nxp,imx93-adc.yaml=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 | 21 +++++++++++++++++++
-> >>>>> =C2=A01 file changed, 21 insertions(+)
-> >>>>>
-> >>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-
-> >>>>> adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.=
-yaml
-> >>>>> index c2e5ff418920..d1c04cf85fe6 100644
-> >>>>> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> >>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> >>>>> @@ -52,6 +52,27 @@ properties:
-> >>>>> =C2=A0=C2=A0 "#io-channel-cells":
-> >>>>> =C2=A0=C2=A0=C2=A0=C2=A0 const: 1
-> >>>>> =C2=A0
-> >>>>> +=C2=A0 nxp,calib-avg-en:
-> >>>>> +=C2=A0=C2=A0=C2=A0 default: 1
-> >>>>> +=C2=A0=C2=A0=C2=A0 description:
-> >>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Enable or disable calibration avera=
-ging function (AVGEN).
-> >>>>> +=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.yaml#/definitions/uint32
-> >>>>> +=C2=A0=C2=A0=C2=A0 enum: [ 0, 1 ]
-> >>>>> +
-> >>>>> +=C2=A0 nxp,calib-nr-samples:
-> >>>>> +=C2=A0=C2=A0=C2=A0 default: 512
-> >>>>> +=C2=A0=C2=A0=C2=A0 description:
-> >>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Selects number of samples (NRSMPL) =
-to be used during calibration.
-> >>>>> +=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.yaml#/definitions/uint32
-> >>>>> +=C2=A0=C2=A0=C2=A0 enum: [ 16, 32, 128, 512 ] =20
-> >>>
-> >>> Allow 1 as a value and drop the enabled above.=C2=A0=C2=A0 Averaging =
-over 1 sample
-> >>> is same as no averaging and gives simpler binding.
-> >>> =20
-> >>>>> +
-> >>>>> +=C2=A0 nxp,calib-t-sample:
-> >>>>> +=C2=A0=C2=A0=C2=A0 default: 22
-> >>>>> +=C2=A0=C2=A0=C2=A0 description:
-> >>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Selects sample time (TSAMP) of cali=
-bration conversions in ADC
-> >>>>> clock cycles
-> >>>>> +=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.yaml#/definitions/uint32
-> >>>>> +=C2=A0=C2=A0=C2=A0 enum: [ 8, 16, 22, 32 ]
-> >>>>> +
-> >>>>> =C2=A0required:
-> >>>>> =C2=A0=C2=A0 - compatible
-> >>>>> =C2=A0=C2=A0 - reg=C2=A0  =20
-> >>>>
-> >>>> This seem like things that should be set at runtime rather than
-> >>>> in the devicetree. Unless there is some justification on why
-> >>>> these values depend on how the chip is wired up? =20
-> >>
-> >> It depends how ADC 1.8V Vref is wired up, especially how noisy it is.
-> >> =20
-> >>>
-> >>> Further to that, I'd like to see some explanation of why we care
-> >>> to change it at all. Is it ever a bad idea to enable averaging and
-> >>> pick a large number of samples for calibration? =20
-> >>
-> >> This is a snippet from the i.MX93 TRM, chapter Analog-to-Digital
-> >> Converter (SAR_ADC) describing calibration steps:
-> >>
-> >> 1. Wait for deassertion of functional reset.
-> >> 2. Configure SAR controller operating clock (MCR[ADCLKSE] =3D 0).
-> >> 3. Bring ADC out of Power-down state (MCR[PWDN] =3D 0).
-> >> 4. Configure desired calibration settings (default values kept for
-> >> highest accuracy maximum time).
-> >> =E2=80=A2 MCR[TSAMP]: Sample time for calibration conversion
-> >> =E2=80=A2 MCR[NRSMPL]: Number of samples in averaging
-> >> =E2=80=A2 MCR[AVGEN]: Averaging function enable in calibration
-> >> 5. Run calibration by writing a one to MCR[CALSTART].
-> >> 6. Check calibration run status in MSR[CALBUSY]=E2=80=94wait until MSR=
-[CALBUSY]
-> >> =3D 0; alternatively, MSR[ADCSTAT] can be
-> >> used to check status.
-> >> 7. Check calibration pass/fail status in MSR[CALFAIL] field. If
-> >> MSR[CALFAIL] =3D 1 then calibration failed. Detailed status
-> >> can be checked in CALSTAT.
-> >>
-> >>
-> >> See point 4).
-> >>
-> >> Not sure why would there be an option to configure i.MX93 ADC
-> >> calibration parameters if one use-case (max accuracy max time) to rule
-> >> them all?
-> >> =20
-> >=20
-> > Sometimes HW guys just want to give you some options. Does not mean we =
-have to
-> > use them all :).
-> >=20
-> > I guess what Jonathan is interested in, is to understand in what condit=
-ions the
-> > defaults are no good for the calibration? If we can have a set of value=
-s that
-> > should pretty much always work, no need to further complicate the bindi=
-ngs or
-> > the driver. =20
->=20
-> In case you have a noisy Vref you can adjust the parameters to pass the
-> calibration and have a working ADC.
+Make netdevsim access ->pp through netmem_desc instead of page.
 
-That's a fairly odd sounding situation.  Is this a case of it will always
-pass because there is some drift going on or something low frequency like t=
-hat?
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+---
+ drivers/net/netdevsim/netdev.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Or is it a case of retry until it passes?
-
-Jonathan
-
-
->=20
-> The trade-off is a less precise ADC but at least a working one.
->=20
-> In ideal case you would have Vref supplied by the dedicated LDO and tons
-> of decoupling caps, but in real-world you have it connected to a noisy
-> SMPS and you need to adjust the parameters accordingly.
->=20
-> That's it :)
->=20
-> BR,
-> Primoz
->=20
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index 611e7f65291c..2b80591981dc 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -898,7 +898,8 @@ nsim_pp_hold_write(struct file *file, const char __user *data,
+ 		if (!ns->page)
+ 			ret = -ENOMEM;
+ 	} else {
+-		page_pool_put_full_page(ns->page->pp, ns->page, false);
++		page_pool_put_full_page(pp_page_to_nmdesc(ns->page)->pp,
++					ns->page, false);
+ 		ns->page = NULL;
+ 	}
+ 
+@@ -1126,7 +1127,8 @@ void nsim_destroy(struct netdevsim *ns)
+ 
+ 	/* Put this intentionally late to exercise the orphaning path */
+ 	if (ns->page) {
+-		page_pool_put_full_page(ns->page->pp, ns->page, false);
++		page_pool_put_full_page(pp_page_to_nmdesc(ns->page)->pp,
++					ns->page, false);
+ 		ns->page = NULL;
+ 	}
+ 
+-- 
+2.17.1
 
