@@ -1,117 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70A91D54E9;
-	Mon, 21 Jul 2025 07:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3E6288C2F
+	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 08:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753083046; cv=none; b=WxqyqHED7CjUPXe+uYEnvukroOB10ypD0kVdePq/dfU+uCB5EzZLLxvSq4aE7RU1N3DqmzlbBMoSeBoIwKdbVPyNomG0SWWgSKFvkVPd4e8KSthBxXqhoRL5JzT4Jd8Z79P9pfwpy08gf9P8/YihiPD/KXKXMbSeDao/RiLKcbU=
+	t=1753086295; cv=none; b=JC59vRcigpbVloUUgZp35RuB9O6QIptVGgXWcDkryt3DzTbva8dLLgMTmo9AIfIouKNmIW+0D11xTXBFcuoyNW6GMiT6Sqj25YOGqVjxsL4VD85tLcyEtIZsOYRYrAY61jUiVQi6oR9ppNiJtO+Q3vWataXO+4kOjfkEb9MJ/jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753083046; c=relaxed/simple;
-	bh=TOBtZP7QgVwBg3aIlCLDvPd6hxOo+8YeD7e/NEGgLtU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NpCmFXHClxDb8rfaaaHTzYG/HxG9P/e20ioF3XVMFVFVuTK9kPIB9w/mMum4NmWGRQui12qnE3H+VM5yHjCj7IWgF9yhyGmWIxLRoMFERd5iyTggKygWAzB6hiRYBw1A8RiJOyjyVinqWsmAkMpG0+83Jwgqqcz4LrlM6zLUXFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h2B+x5At; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753086295; c=relaxed/simple;
+	bh=GToabdAjteaGCUpBSIfqJ1avVfcQNejcqdkif1y1MYA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kAYmWfdbes33dZSIDCoFGL/Is67bsqjAQcPp6b/Or4mYw1Af7ElnnvJQbLdo1iAZsaA6C4Ha1idq9QpAqvk/o/5d1Fk4P0dnT4P++WQFsmJIIveXC+dEzWpVugtpi4vnE9sbnhZ21gFGoHh/f2JJZeyqJD4Zh2SRst/A0ebT+Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ekc/MAQ0; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h2B+x5At"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375BBC4CEED;
-	Mon, 21 Jul 2025 07:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753083045;
-	bh=TOBtZP7QgVwBg3aIlCLDvPd6hxOo+8YeD7e/NEGgLtU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=h2B+x5AtfxLWDnFSl2WzlO/TIEPvjgDhPyHBf7xTJ8OAh4m9BuoG0fO9V+76PF0xi
-	 zTUA7XaFtp+F5esefs7nHZK5gGujMcaSOCEmLTF3mas6FfQ3UfeDIqaaY2j+CCiWIX
-	 +3oCH9S2HumShPQBHRQlDwYme+qzbOf8bCOsuWTXGZatDV7/5+uF/f+PntskvwuLor
-	 wOgj4k1HsYnRHFV6eOUT2emUxuaR2GBxFie8V7o5oX8It8DD4TUd12YLs8KsptIbID
-	 iLupNyOt4L+oNGz+fRROJ3aK/QR+7i02HL4QL7wsdVqKFsJBIgV9amXd/lTQtUqgyT
-	 alA9nDWPDmCpw==
-Message-ID: <27e3c18e-bcfd-4dfc-8c60-3f619152de99@kernel.org>
-Date: Mon, 21 Jul 2025 09:30:40 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ekc/MAQ0"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ae36dc91dc7so652596266b.2
+        for <imx@lists.linux.dev>; Mon, 21 Jul 2025 01:24:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1753086292; x=1753691092; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sdywicGMC8PWpQoI79nyLjxZDbmHom2ul/36bE097Ak=;
+        b=ekc/MAQ0N2yDSaAuRWUGqhsj+kE7rAK3KusRxvZt66hHxqa+X/0WMUtXN58/kZdnFe
+         mgSxPs0ZkAAGgwdhX4ziS4IDY2uqbMG7M4vLFgiG5rTnqL+ARSJroWRP/aETcw6PYaX5
+         2aP3b/KYMRJkvSwleKWFySQQLcAQ9LuZB6k8Go27cTzMNksdfotyivAFHPdT7Svk2MuZ
+         G97f1tVuVgs0oORyjTweEA2OeAMcuo/6rfoCU4Xtv1JVvp23OYub4Bzxp3qJJQMVuzgN
+         /xmpTvx/1w4I95q564I5bW9G5b+nAvrhK5YN1/mMry1MA9TNAujhTyB0gvmWna3ZBwQt
+         nAAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753086292; x=1753691092;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sdywicGMC8PWpQoI79nyLjxZDbmHom2ul/36bE097Ak=;
+        b=AOLQBfPKC1dGKKOI3Z5jP/B/dhaYRPLgQwmY28g1EHc/cS6wF7wdcN7TJz4L7ohZb6
+         T1qYqSM/faL5hkrV7fCuxCnC+r2kNQnBE9hD7Ow+mZvauqHhzaScRMHnZGfAJZ2ndH5u
+         V+p5m8U/m4wyt+AtteAqzwCGn0DBZhRRaH/zAgg5ByFRr+rgHGNznrXheu9TS/WEMvQg
+         ZXzhw4OfPs8wXE4FClOvQeRRxjbzOvN6JQKpXuk5g3hg2aHXeJ00hhf7MKQ4iBrq88KJ
+         de2PMPjhiqXfMEzW7INC7xSYyKGQ2fp5o+Pddp7lDQGJJ/RFEkNsP1ClRiqJsaO3Facb
+         JQng==
+X-Forwarded-Encrypted: i=1; AJvYcCUKw2CQQIq1fhpKq0UU8ztTylByKr9SSCJo3xt0hjNDs0ObcqBv0PxVZ/rkKX+hcnr9Th8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxtRhaS1iPkLTJnP76EatCaIlHTSzNQywP1+aOfws/9k+6ygaFF
+	6SEaJXjB2cJyK140AS4hfmt7fDBFTclt31L4imk5ybW/2wr4FTej7EyNxIpkCIhzwI4=
+X-Gm-Gg: ASbGncvzaNNI/2tWANoLQEwXqheaCNI/wffslaYDfYyLnHqELFVghyP1XNZUemezjTA
+	Ls+zJ7cRJw3Kwpc801j5PhvygufsMbGtsfso4HyiyFwOZO6IHVuBRQ6CNPMD2SHQt060RD3DtKx
+	k2tkZZWoHcCoqjU1mnHSR+eAT5bCeC1VUExPhQ1Vr+GMMr75fgtubtY8kbsXxiZtoDl2ctTl2gR
+	rXk6tFVF1Qw4mvHrMXMNIwjGMmW+KpfOtx6nbPMDgIHyO4bgdij4TEHDdzW3UCtSAq01uK5r8jl
+	wnFdDN7YXiKbR76Lwkqk0zLoThwCoRdsCVBLac38SR/b/m6I5hGX8v7a1dt3+RXph3Sl2v4utdP
+	aHlPTl6m3u4VaHqbCD7Km
+X-Google-Smtp-Source: AGHT+IGXBWkrr0OYxAUb4JL3ZpYz7yNfjNojugUdotLeKq4sWMewk8MwN0wQ2Tv8Q662Ax1Tz4MBzA==
+X-Received: by 2002:a17:907:1c17:b0:ad8:ae51:d16 with SMTP id a640c23a62f3a-ae9ce198bf6mr1960198566b.55.1753086291837;
+        Mon, 21 Jul 2025 01:24:51 -0700 (PDT)
+Received: from hackbox.lan ([82.79.186.23])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6ca7d330sm633826566b.126.2025.07.21.01.24.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Jul 2025 01:24:51 -0700 (PDT)
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Frank Li <frank.li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>
+Cc: linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sandor Yu <Sandor.yu@nxp.com>
+Subject: Re: (subset) [PATCH v3 0/6] clock: imx95: Add LVDS/DISPLAY CSR for i.MX94
+Date: Mon, 21 Jul 2025 11:24:46 +0300
+Message-Id: <175308625432.1291588.12529765608002208630.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250707-imx95-blk-ctl-7-1-v3-0-c1b676ec13be@nxp.com>
+References: <20250707-imx95-blk-ctl-7-1-v3-0-c1b676ec13be@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] regulator: pf0900: Add PMIC PF0900 support
-To: Joy Zou <joy.zou@nxp.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>, Ye Li <ye.li@nxp.com>,
- Jacky Bai <ping.bai@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>,
- kernel test robot <lkp@intel.com>
-References: <20250721-b4-pf09-v2-v2-0-e2c568548032@nxp.com>
- <20250721-b4-pf09-v2-v2-2-e2c568548032@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
- QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
- +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
- ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
- 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
- hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
- tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
- 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
- naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
- hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
- whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
- qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
- RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
- Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
- H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
- dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
- AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
- jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
- zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
- XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250721-b4-pf09-v2-v2-2-e2c568548032@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 21/07/2025 09:11, Joy Zou wrote:
-> The PF0900 is a power management integrated circuit (PMIC) optimized
-> for high performance i.MX9x based applications. It features five high
-> efficiency buck converters, three linear and one vaon regulators.
-> It provides low quiescent current in Standby and low power off Modes.
+
+On Mon, 07 Jul 2025 10:24:36 +0800, Peng Fan wrote:
+> Similar to i.MX95, i.MX94 also has LVDS/DISPLAY CSR to provide
+> clock gate for LVDS and DISPLAY Controller. So following same approach
+> to add the support, as what have been done for i.MX95.
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202506181134.0Hkvy7CK-lkp@intel.com/
-> Signed-off-by: Joy Zou <joy.zou@nxp.com>
-
-Missing separator. See submitting patches.
-
+> Patch 1 is to add the binding doc.
+> Patch 2 is fixes when supporting i.MX94, but the issues are
+> also exposed to i.MX95 even not triggered. No need to rush the
+> two patches for 6.16.
+> Patch 3 and 4 is to add the clk driver. Patch 3 is almost picked from
+> NXP downstream with a minor update. Patch 4 is modified from NXP
+> downstream with a few minor patches merged and updated.
+> Patch 5 is the dts part to give reviewer a whole view on how it is used.
 > 
-> Changes for v2:
-> 1. modify the copyright comment block to C++ style.
+> [...]
 
+Applied, thanks!
 
-
+[1/6] dt-bindings: clock: Add support for i.MX94 LVDS/DISPLAY CSR
+      commit: 0b0cd1857b783711b4bdfb8eb513c263b8a84f6d
+[2/6] clk: imx95-blk-ctl: Fix synchronous abort
+      commit: b08217a257215ed9130fce93d35feba66b49bf0a
+[3/6] clk: imx95-blk-ctl: Rename lvds and displaymix csr blk
+      commit: 88768d6f8c13ede81b248177fed3ac285499f77c
+[4/6] clk: imx95-blk-ctl: Add clock for i.MX94 LVDS/Display CSR
+      commit: 9678bc7661cb34bec4be92685039eec68ca67dad
+[5/6] MAINTAINERS: Update i.MX Clock Entry
+      commit: c78865241ecffaff7ce5db00ed5b71c1a70c0ff1
 
 Best regards,
-Krzysztof
+-- 
+Abel Vesa <abel.vesa@linaro.org>
