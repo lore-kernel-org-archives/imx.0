@@ -1,169 +1,158 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011014.outbound.protection.outlook.com [52.101.70.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B69528FAAD
-	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 10:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753094544; cv=fail; b=LSH7YmyH9SsH7DDd3xgwgmIxWCPTQJSYY2btNeHItFfxFQei5t48AVkmNP9p3ElC8olxEY6Ah5hHw6d3nIl7KS2GX/rdjw48dz2zJje6KzmuaoLg+K0q+3fmAY1KKcKLKTrWY/vSzAFjl2FqYV9vq7dMrTqFc2Jpnu47BE+xd1o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753094544; c=relaxed/simple;
-	bh=FsxZm5EyIyKFVz8YnRm1c1Mvb5VRQ9OvoXqnOEMt9xY=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=L759+/G5P5zjfrYK6d8bYLnYaOt/4QeqDQKLi7KFZDb1qxW/WYVrrLAqADSFsaCX0aLO2cM53AjSXArg+8V8GfZR8f5fLLbHiT52bTltv6vLf9H8OS5gzQcpj1Fvzu5Z3YIZ06AVvVG9aIx6xkWcobXckkQLBoQd/tjJm4mSg0w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=i/mg1suB; arc=fail smtp.client-ip=52.101.70.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859A51D540;
+	Mon, 21 Jul 2025 11:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753095843; cv=none; b=ZTTN3vH3yQJ5RsgjSsY6F8bpm+7+AMwq5Famaw1xsnfsNOUgwmlwfq6qXXJWFx/UOmR70Bnx12RHTidLi3d/so0YK69JPk750ds29ZWUd0N8OMdX3u80jQ1h/E76x+LUMNEECh46R5DViDFAOYItUg0G+GPBBve6+28w/BwLtf0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753095843; c=relaxed/simple;
+	bh=EcW+PuwhhXhVoa+pRSceK3tuWnx91zSNXUwkaiOBF8c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZTlDnozOK60vQl81gwY0zuu6tO0AwY6Gwohvks4aodJ82CeMwC7XIqaoWaSA3MLIrucZPMLqjhcMW8wyRh1R4kYHXP+dFAJVw1U5kj/x1VEsBfNJDlL5iedleRmv5mb/aZGALqosub7cC4PYRM0B1xekvBpiVwPPhduiVUbdalk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u9dOftA3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="i/mg1suB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VJL/eBrKb2RpsMpjUB0VcTA/dSJs4POvK+jRxuEYIauAN6iow5fBEvSsvGrEQruARmSM0ifKsWVy+PT8Q+5LIHTWlkWsBqYeGVVx6NCXDoATrqJZ3TJaa6boslK4Hu+ENCuOVALfir48T6MCdR9OGXqthOxewvzFWWugkoubwl/eEdaQHZZdOTYGBsfm96il79CXJvpA1e4p+TpId/W37W150ChMcDEmX7BS71N/TCgm00XxM8OC6F0O2bFHWHGzQAAs7xswdgtal+uaf8N6wEnhXv9zcx99K+Hn2C7WaH38H4tHzOzr0Z+zII47/uRvDC/wHuzhOIb7yJiVhPKGgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B0wO3G0aVcPdnc3gpcPBqVsDD21qoiONDm/7H+kZFT8=;
- b=TUpDBv7jlLTwbVFXQI4tuOQh1DrYRBQUDvJF6d17PdaH65ekjXTrEIiZvND4rFr/d6DBemRi6CRThzDZ5azerkxMFEJlMq2q0mOWvhYsFAgpJrubB6Db6z57gq6Ii1l2mKknoGymNTR6TWG5SSOOGtoNjpa5MkzSBQrr/Dcki2F0JabrpYTjdFDxwbjVKgvTVJh5HxFA7LMmR/X0S62k9DeJFGhzR7ohTV8Mb/YOZdOxPjbkHuiUjHpCZR9x8WMsY3Pc0C+GPKBkS/P6XVTBaboufhd7ZYa+KaanfLXUqfu3k/D7zKUied7sLGthyjMrCC4oDGkTIrNDijwF63dYhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B0wO3G0aVcPdnc3gpcPBqVsDD21qoiONDm/7H+kZFT8=;
- b=i/mg1suB1o7lEXBmvAK3nq81WS6CjaciiMzGCA+YvRUeb/hy+w0W9k1rVjF2pu0zjECyMpVHmX5/nMen6E2kMEvMhvvFBLz5NAO5x33IfRZp0OZe0YqBOm17XUlVIpp7+Ecxqn1IhPU0uFcBnkUotTZ4NQ+bkKBv/B1yLg60HG+gdtyOg2QR3ElDRQSBSqABT3M5uTZOfFFZ+OTZqNZ3C+HwLkOHwLxeUJj9ES9Ep/H2ZPM4zRHxTWDouz45wPGbG6rs4Kp7olQ2z86bkWs53PgGTKJMBFO+8recsXdT7PEjJ3TsjgkHwEBS8nAvWMvNMLdyUaXnNQmpASxLRx/adw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by DB9PR04MB9449.eurprd04.prod.outlook.com (2603:10a6:10:36a::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Mon, 21 Jul
- 2025 10:42:18 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%4]) with mapi id 15.20.8943.029; Mon, 21 Jul 2025
- 10:42:17 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: gregkh@linuxfoundation.org,
-	sfr@canb.auug.org.au
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-next@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH] usb: core: add urb->sgt parameter description
-Date: Mon, 21 Jul 2025 18:44:17 +0800
-Message-Id: <20250721104417.3442530-1-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MAXP287CA0024.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:49::32) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u9dOftA3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1423EC4CEED;
+	Mon, 21 Jul 2025 11:04:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753095842;
+	bh=EcW+PuwhhXhVoa+pRSceK3tuWnx91zSNXUwkaiOBF8c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u9dOftA3ryJYz+Ay2nJJO8r8Hjj/RBFk0OgmQdtlf1ef3l6DokAE5VHSbTQQBdGeX
+	 Qs420DHiuJsJdHGxj2+MO60aUY+0fPelpG7Zs6f4LQHL/+GScWKMwlUZNa6ARyTbTn
+	 0l7Lac6JhTYbLZDtPLQ05t/ebureu9JR/BoCoG39DPhfOiFsmDFIGNAswmIRQ1H22R
+	 nw397Iu/AyML2rPT6zYqAA1lc6HIqW3xlP7RXKuAMNms2X7fGJWJ6zdBx0opk0qbRr
+	 WObsBeaqSg0ThVBTem2M+P4/ZK7jaRP/oG6qtjYG2wq6q4Rrgz6ook2haBB4v3DwKY
+	 AvAGuqkAACxoA==
+Date: Mon, 21 Jul 2025 13:03:59 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	linux-pwm@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] pwm: imx-tpm: reset counter if CMOD is 0
+Message-ID: <7wsbi7pcwa2otxqkon3zfat7faprhr3l7wc35fkzctmm3cv67m@ph6w7hzwt322>
+References: <20250714123634.6442-1-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DB9PR04MB9449:EE_
-X-MS-Office365-Filtering-Correlation-Id: e6a617c2-0d84-490e-394d-08ddc8434362
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|19092799006|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ceaLlnhLQ+p55lWQ9GLqnlIgpY94FQn5JtCM6kTROO3vMpTfrPBEcrD76hmg?=
- =?us-ascii?Q?9enU4cAMYwTjgh54lXOpnZTwFOsnAgvTq2rw+H3b65H4uiutBK30fJvW2lSk?=
- =?us-ascii?Q?dn+ZH3PReKAWkqCegW0JmdYAJQmgEE9bMewAh098+MMJmGywOZ5JeZ8CQGHk?=
- =?us-ascii?Q?a1h7rqYZE5mnOkYAIgDonb4toComF45LXUj3fVrsoHAcsBIT/WNGqNrwhRvl?=
- =?us-ascii?Q?K1wcR+gBiLhL3a8yFjOboiRP0RH97uC4aLHtEqVcNltt9aNxhJvMs/aDJjPg?=
- =?us-ascii?Q?0cWfFVJA7DF7rCK4ndpH430MHr5OGchEEyREOtja1J+VsFe6H5HvXMz/0RGP?=
- =?us-ascii?Q?9PFvGUyoTtOewPyC8ce8IpX4aGfONLv09MkFlzqUNVh2bZeQBCpILnxZfn9A?=
- =?us-ascii?Q?UvwehjAmQqIvaxZPMpyqMz64i/0xd/x2JXxHTYtsFbN2DM+n14Iklw6Eo9Bj?=
- =?us-ascii?Q?G9kq4aXXm6W/cHwA7FnYpiIfa2rb0039ysNbcHGJrmIClw8VBhBauIaAgCJR?=
- =?us-ascii?Q?0LK+2NoZTC4Z37y4+loewk6bOVcRPUx+31hncrni4WleRJrgKlW6BxPBQV0F?=
- =?us-ascii?Q?jkPRoUJa0JHuxcCDiqtkN8C8ia2wKfhVst/4Nr+7t0W9KqzqdEqKnWL7deaa?=
- =?us-ascii?Q?deHLiC3TEB24PhUj3WdX3wwvsdff1KbaeuE+L3N0Xq2hgD6Rtm0Mcp4p/bHR?=
- =?us-ascii?Q?XuzvhD9+gw/jQRovZ6ngVEMn8l7Hi8Eyq2niX+XNkZDyqLMRe9z3y2UuVxDX?=
- =?us-ascii?Q?ZxovIE1GWYZrs8FZD5QSfHvF0T2VbPUnmZQfTKNLoUzSUq3OE4XbXTVu+zCN?=
- =?us-ascii?Q?g6EkItiGyowvfczg8w41001zy1CbNUTKogRwX9dKU0fOXTUIx+KLy/0/eDyD?=
- =?us-ascii?Q?FmwVt71Wu13EHksjQepJdMoNURgz0nEwUBScLpnFON1Wh40WUW+K8QtFkOrk?=
- =?us-ascii?Q?ysdJlgfd9IsmGvp+knvDV0A/QSracrgPbVVIX0REikv2QDxGG5j1tgwTkTxF?=
- =?us-ascii?Q?MyaNBZsQVFE3S0Ez7b79Gro+GnThAMsmO0n/tHw+dkPz89gEIK6GTlyjuG74?=
- =?us-ascii?Q?rU8LHTMbEDyq2Kd1g4OzSSWwW1KqU4zBe02b7MAcZIqJhT1VfRuXrrI1gP+Y?=
- =?us-ascii?Q?4bozZD+xFWZBvlBhnIBCaXbuHdkMEsvPfGH6tIIR6TqOdZo4wnlAlq7jDuJY?=
- =?us-ascii?Q?IMhyVF8lSyNocimRwBPOdefknyJgK2v7MLbQzH2Ds/aypr5XIUaNJen8bf9z?=
- =?us-ascii?Q?Yx3/NHl3/U95duOKAhZ9DmOgWvfWWY1LTZmurXd71Az8C3ExFkSVR3Ualzle?=
- =?us-ascii?Q?PKXdvhMukMksnGo1ut6VrqRniVwjZ7aagRjuJhczokoHLFSILOjoG3jk9XLd?=
- =?us-ascii?Q?iXsiNhxDMotinDmpomgGbCtXj981z3QyHFpZUB921z0U5AuNBAKPmsq/3mDJ?=
- =?us-ascii?Q?2pWBAT+MPeZoHNjUURtvN9L0VNJCvyBaOqgcgQFXZmkf7Rh0e0Ho7lScFhrg?=
- =?us-ascii?Q?9R36ubVUUYs1EKg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?0zoQ0eYkG6gz+rR8Y7fBzrwPPyu+xkpWb9Lxco1BBiTvp5NtRaEMIzu+h5kx?=
- =?us-ascii?Q?zw1OgplsQU/LmB+UBEonYUQqr9qQEi8UJBIIe0djAos760ALxuUeEnMxXa6o?=
- =?us-ascii?Q?OqchY0o5f+AxBhu2ln+uC1n1pGmLv+JD7gOM41UMNKrBdA9SfSb3RmQUvIpv?=
- =?us-ascii?Q?2pYJeSH7p0/i0rlPXp0O/dWe7hnnjtBhm37DiKZ9EdcWDiSNYjuJ5vJlN/OE?=
- =?us-ascii?Q?oowXAr4hpsRQDE02Srx+M6hoDpCeG1BAsOU5KSKj9GxTmr5PHy896ZdrJVcX?=
- =?us-ascii?Q?3i9AqgHpOfptqcTuiFnjrK5lEJnCarCwWaAUjt69BdF5W/0XESh3Vq5FF+9i?=
- =?us-ascii?Q?heyWprWI2sQzAGRY2rkwI1bFtvCGXwFTA/HcdySns/SSHYMqoWSWAoHaLZXM?=
- =?us-ascii?Q?5/nX6zKX1jGVgKGqzzMlAlxmBqgLQob7Gl0bZ+XAWdY4u5xqzaZqvpDUMytF?=
- =?us-ascii?Q?HXyN7UqTJHRxaMOqis1TX/dIQ7YmMPPr4MtymZm59GQNb7ToIfr5JVzF3mkj?=
- =?us-ascii?Q?6fhETchY/PeuvBiw/tBZB5UEguEPwaQCfrnuUjumHwEJkwEjrulckAXdqnTX?=
- =?us-ascii?Q?Y8j+kzhLlagcwbn0JF64ipslvj76aRBsV0M7jdDgCo7ldlGEqYSjWYbrewbZ?=
- =?us-ascii?Q?A2IBC0V8OSNGp8GSLOfojfpWZLsdXH3KhW5+jW6KrGDgLr3qQ03j5i9TAvET?=
- =?us-ascii?Q?TrRU9gP/yJKvbWRvcpgNG99gC+ITaSHJ+rH/AL5GwCd9oXUZK+6gJDWaOivH?=
- =?us-ascii?Q?2x4tFfNiaXDF7GjGFw3f3CsSdRXtJgUk+nPe+9awcIygeiyV1TumzxKBAqA8?=
- =?us-ascii?Q?u3eZeFfcL2Mje4nDeWpZ97WrbJ9ieb2KNTZ9WeJPXgiZGrVqizgzrJ4mLQyf?=
- =?us-ascii?Q?wGaJ6kegnUrsus515nqi3AHjirtDJWiTRsLhbxj//zsytPPPQA6RMza/Q7wb?=
- =?us-ascii?Q?SlJ34CgqtAY58TkcKUaoIfIA9v9W71x/YqYpzg/VOUF3Ryfl7jP+/1+03Hkk?=
- =?us-ascii?Q?Wtxvq2I1Rx4qePDyGARF/Jb+TLv8Lnv1Sh16ztNQgqCynBe3knwUpMbteirS?=
- =?us-ascii?Q?IGSn+Bad/+JFteR377zmAy4cGlaN9ybhkTUJRFrP7Xs6w0eiX1w3phWAiCrb?=
- =?us-ascii?Q?qiipf2HVoPrQaklJqbjLn1Jblg9b1DIcmiaN+42Hi2dlVU98DFCXdhz5rSpW?=
- =?us-ascii?Q?PTAJlManwgR6MzGeprI9OHRIp47CVwn6wDtluUMGX6iBV43CdJlbz0zqobqs?=
- =?us-ascii?Q?bAF9KbcdNDOwLMkTK5NvuOtvFgoT/tKg/Ot5huytJx6Zw6qbLs/8qPyHsZ8c?=
- =?us-ascii?Q?DG2EPX+7QYRF4eZHnTKfFouMPHGp0o9y9+2JHFeLphLyb6IYv+SOiZ42YR5D?=
- =?us-ascii?Q?6oPNtqMy3Wi1NMn8c28CVDLWHQCOJlXE+gVfHp2ez3UedU91tlhBjzwah7KK?=
- =?us-ascii?Q?yfhq2TxpTsFn0bbZ+rVqzc+FqtMgGFfmQ848JOYKM537SNI6unPV1S+01gv7?=
- =?us-ascii?Q?GiiqrF7w0zzUK+Os+TeKPqKieBJxF8qVIX64Tr6I1jGbmSNd0HjshmitQvpn?=
- =?us-ascii?Q?QoqLEDcxHo7MiY925b1uHL5N+6F86ceChv3aOyUQ?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6a617c2-0d84-490e-394d-08ddc8434362
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2025 10:42:17.8145
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3YtZaF1fMZTa4sFFuy1K7kKwvjIf20j/PVKa3uxgK5H7ZXtKlRXZfCZ/grAMNIL/sC+g8C361ik0fVqVvUHDhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9449
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="umamwlivydbce7bu"
+Content-Disposition: inline
+In-Reply-To: <20250714123634.6442-1-laurentiumihalcea111@gmail.com>
 
-The parameter description of urb->sgt is lost, this will add it for
-completeness.
 
-Reported-by: Stephen Rothwell<sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/all/20250711182803.1d548467@canb.auug.org.au/
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
----
- include/linux/usb.h | 4 ++++
- 1 file changed, 4 insertions(+)
+--umamwlivydbce7bu
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2] pwm: imx-tpm: reset counter if CMOD is 0
+MIME-Version: 1.0
 
-diff --git a/include/linux/usb.h b/include/linux/usb.h
-index 535ac37198a1..9d662c6abb4d 100644
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -1455,6 +1455,10 @@ typedef void (*usb_complete_t)(struct urb *);
-  * @sg: scatter gather buffer list, the buffer size of each element in
-  * 	the list (except the last) must be divisible by the endpoint's
-  * 	max packet size if no_sg_constraint isn't set in 'struct usb_bus'
-+ * @sgt: used to hold a scatter gather table returned by usb_alloc_noncoherent(),
-+ *      which describes the allocated non-coherent and possibly non-contiguous
-+ *      memory and is guaranteed to have 1 single DMA mapped segment. The
-+ *      allocated memory needs to be freed by usb_free_noncoherent().
-  * @num_mapped_sgs: (internal) number of mapped sg entries
-  * @num_sgs: number of entries in the sg list
-  * @transfer_buffer_length: How big is transfer_buffer.  The transfer may
--- 
-2.34.1
+Hello Laurentiu,
 
+On Mon, Jul 14, 2025 at 08:36:34AM -0400, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>=20
+> As per the i.MX93 TRM, section 67.3.2.1 "MOD register update", the value
+> of the TPM counter does NOT get updated when writing MOD.MOD unless
+> SC.CMOD !=3D 0. Therefore, with the current code, assuming the following
+> sequence:
+>=20
+> 	1) pwm_disable()
+> 	2) pwm_apply_might_sleep() /* period is changed here */
+> 	3) pwm_enable()
+>=20
+> and assuming only one channel is active, if CNT.COUNT is higher than the
+> MOD.MOD value written during the pwm_apply_might_sleep() call then, when
+> re-enabling the PWM during pwm_enable(), the counter will end up resetting
+> after UINT32_MAX - CNT.COUNT + MOD.MOD cycles instead of MOD.MOD cycles as
+> normally expected.
+>=20
+> Fix this problem by forcing a reset of the TPM counter before MOD.MOD is
+> written.
+>=20
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+
+This needs backporting to stable, right? So we need a reference to the
+commit that introduced the problem. I guess that's 738a1cfec2ed ("pwm:
+Add i.MX TPM PWM driver support")? (Please add a matching Fixes: line in
+your v3.)
+
+> ---
+> Changes in v2:
+>   - dropped the "VERY IMPORTANT" bit as per Uwe's suggestion.
+>   - Link to v1: https://lore.kernel.org/lkml/20250701220147.1007786-1-lau=
+rentiumihalcea111@gmail.com/
+>=20
+>  drivers/pwm/pwm-imx-tpm.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>=20
+> diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
+> index 7ee7b65b9b90..b15c22796ba9 100644
+> --- a/drivers/pwm/pwm-imx-tpm.c
+> +++ b/drivers/pwm/pwm-imx-tpm.c
+> @@ -204,6 +204,19 @@ static int pwm_imx_tpm_apply_hw(struct pwm_chip *chi=
+p,
+>  		val |=3D FIELD_PREP(PWM_IMX_TPM_SC_PS, p->prescale);
+>  		writel(val, tpm->base + PWM_IMX_TPM_SC);
+> =20
+> +		/*
+> +		 * if CMOD is set to 0 then writing MOD will NOT reset the
+> +		 * value of the TPM counter.
+> +		 *
+> +		 * Therefore, if CNT.COUNT > MOD.MOD, the counter will reset
+> +		 * after UINT32_MAX - CNT.COUNT + MOD.MOD cycles, which is
+> +		 * incorrect.
+> +		 *
+> +		 * To avoid this, we need to force a reset of the
+> +		 * counter before writing the new MOD value.
+> +		 */
+
+I asked in reply to v1 about these register semantics. The idea was not
+that you explain them by mail, but improve the comment accordingly that
+someone reading the driver doesn't need to consult the reference manual
+to understand it.
+
+So maybe something like:
+
+	/*
+	 * If the counter is disabled (CMOD =3D=3D 0), programming the new
+	 * period length (MOD) doesn't reset the counter (CNT). If
+	 * CNT.COUNT happens to be bigger than the new MOD value it will
+	 * reset way to late. So reset it manually to zero.
+	 */
+
+?
+
+> +		if (!cmod)
+> +			writel(0x0, tpm->base + PWM_IMX_TPM_CNT);
+>  		/*
+>  		 * set period count:
+>  		 * if the PWM is disabled (CMOD[1:0] =3D 2b00), then MOD register
+
+Best regards
+Uwe
+
+--umamwlivydbce7bu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmh+HpwACgkQj4D7WH0S
+/k4BGwf+P6kPo7r1ntY/Esoxxhlamfit/RB+dpcIWq3XtsaG5FJjB9BtFHeBQUs3
+MgzKcSUT04Ka4PRhM0pFJnJtOTZ2YA5l8tsjM1CHLQXHuYW9x335vbkzjnn3PcBj
+thDW2pGSiSioUrY9HHo+JwHeqPSRQaZMNvBroQvxsJyVZd8Cd1lmA1S6+hTDsM6l
+ZRqetIHUwQFlFZtAu4DF+J5ApamyNkwmrKFskNX32yKkhcJjYbhgx0H4Ei4ZdbQy
+VRdBztPhA+4N+7v3rmUVmnj9NRzjd5yuoMPDdNjVEmuuI2n4q3iPYPK2Xkx1xqQa
+U9Lw9/bDBBnrfC4N79YWPy4WQ+3HCw==
+=yx+y
+-----END PGP SIGNATURE-----
+
+--umamwlivydbce7bu--
