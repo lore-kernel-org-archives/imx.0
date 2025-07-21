@@ -1,56 +1,52 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D3928C2A9
-	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 10:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A6D28C85A
+	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 10:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753092518; cv=none; b=pvUOLoD2ACgOGGYV56aVjYJ+C83vztoS9uo1RlYgsTKY3e7Q0wkoZyFQeuwP4fzkWy0XWSHXnJfKP/T1q8M6/InHcVksnJI87VnoIFuRU101KiS8fBdRUuml8N1dznc3DBaYAx2zJb65FqickQVhIQ7w+SFgU2QQQJ2zX+szpGQ=
+	t=1753092518; cv=none; b=egxUfd6/x9EvSmEfpXbFHtdaQ3kYUkHP/+pAkSQo9Kb6h6Zh8RSb/3cUBUsEZTI5OBRwDknoi3JecBlU+No0ZaDtPtSarunLmoSIJvMNvoKpNR/Rkf8OhwelfYpoS5Cd/gpvhrvWD4zGbcCXMNxYInNg+p+f4atcLZZBDOU9r1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753092518; c=relaxed/simple;
-	bh=rMzb3d5qtjFKfc/bGqjqPlJqlTMcEsjCcMdBwBiNQqI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X6bbkpRe1Q3OYD7tBHgbufWxLA4E3Or/rsxzYXmehbyhBUVHH21p3WPFTZGrF35Xd1aDwkcuL/NTCoWmA27rQYsvIb8enF6CKqDq6PHbBkcjtSlTKN6YXaCPvOcpuHp7tAyJJ7DwfVjmc5GlZRvlT5nfmdC922jkM2lSvgWTHaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=1XbQZC15; arc=none smtp.client-ip=116.203.77.234
+	bh=NjzxlCy4iLe+iFTThgtcXMxtWo5BqnZQWysZbGrFBQ8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NlScwWnwAymukohYecQLQ4pJXcBc4I5fT4lftJJS6UKRNYCFIav/qf4XtP1rQycTeltP5bXYAeSzCJavPMkgo9lQi+le7//vTa9T2QCyzYnSa4j0CT0xXowQLgPSYJzp67JhK5kZata7scKvgyICYqOhRJ411xH2/Ob8ubbg95w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=J5exG3Do; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="1XbQZC15"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A6E40C75F8;
-	Mon, 21 Jul 2025 12:08:22 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="J5exG3Do"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BB6B2C75FE;
+	Mon, 21 Jul 2025 12:08:33 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
-	t=1753092506; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=4wQsUSF34x7aot1sElNjzy3g37v/3VUcwunuzv0HHdc=;
-	b=1XbQZC15gvy/KqcMus1Nt1rlueqbgzD8Ds2iHTBPWAh5j6pYh+24xqpNd2YTlERkhvr+nX
-	MhIKVOulkPRHychu6uiXA+WoyAhb3agZUGtqeqHeldPEKodK5DaTXICN2Gdu6JHZxxaGu0
-	4rj/Gp60AlcRp4SIghFi0/DZ94TkLXHMo/nwJhHR4x70lQ5hdII1RDVC2KxgqK670E70UL
-	s4XhuWZxBFE0mnzc9RJL97Rwz+IF/sfVzdA5okmxpIS2XMWCsPkvZ5NET2T6RTnK8hBWM1
-	H2lL64E9x8DuSzyuabAlHy1xK0yrWpm25inlnt3kjkwGWtY0ypR7znD4Swi87g==
+	t=1753092514; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=K+2J52d5biqNZJ5H4QTYCracuhxxNgVwtad88cT/8Y0=;
+	b=J5exG3DowrjEaesjdpPL432Wui8mNTFGjJ83xvPLjOYz9HYA1ZptCI/SB0EMx5Lu9cfQvT
+	Tf0oIc4rW3ibY/h8XZXV+6ZjPTN35fbA1lMfsc/82kXzog70oAFNyKqepjbzTIk+ZAOTQ9
+	zcCYlLhoKGM+iJHWxfyAQLbyTjOhUzSWSN5BRpy+DuaSzjhGTTDx/lRoZpv+KKqJuWUvMQ
+	OZ5J1d8LM9wDFBIc8DU5C9OsAZyGJxLc7MfDAoJE2sJfc0OfqdL09lW9FUEQiQG6uqvoAm
+	keSJzs6P7b/FPvC+X/5bOB13fcSQ6CIhndHbvw+Vz83GYFqMeOL8BcRWfCYh3Q==
 From: Frieder Schrempf <frieder@fris.de>
 To: linux-arm-kernel@lists.infradead.org,
 	Conor Dooley <conor+dt@kernel.org>,
 	devicetree@vger.kernel.org,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
 	imx@lists.linux.dev,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Andrej Picej <andrej.picej@norik.com>,
-	Annette Kobou <annette.kobou@kontron.de>,
-	Eberhard Stoll <eberhard.stoll@kontron.de>,
+Cc: Eberhard Stoll <eberhard.stoll@kontron.de>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Liu Ying <victor.liu@nxp.com>,
-	Oualid Derouiche <oualid.derouiche@kontron.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Teresa Remmet <t.remmet@phytec.de>,
-	Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH v2 00/12] Misc fixups and changes for Kontron i.MX8M and i.MX93 DTs
-Date: Mon, 21 Jul 2025 12:05:34 +0200
-Message-ID: <20250721100701.115548-1-frieder@fris.de>
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [PATCH v2 03/12] arm64: dts: imx8mm-kontron: Use GPIO for RS485 transceiver control
+Date: Mon, 21 Jul 2025 12:05:37 +0200
+Message-ID: <20250721100701.115548-4-frieder@fris.de>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250721100701.115548-1-frieder@fris.de>
+References: <20250721100701.115548-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,51 +56,52 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+From: Eberhard Stoll <eberhard.stoll@kontron.de>
 
-This is a collection of changes for several Kontron ARM64
-board devicetrees. Some are related to hardware changes,
-some are bugfixes and some are improvements.
+For this IP the correct control of the CTS signal for transceiver direction
+switching is difficult and - maybe also buggy - in the driver. Especially
+the bootup requires special handling for most hardware implementations.
 
-Changes for v2:
-* fix touchscreen node name
-* add touchscreen labels
-* fix commit message for RTC interrupt patch
+Therefore we simply use a GPIO now, which is fully under software control
+and which is not problematic on bootup.
 
-Annette Kobou (3):
-  arm64: dts: imx8mm-kontron: Add overlay for LTE extension board
-  arm64: dts: imx8mp-kontron: Fix CAN_ADDR0 and CAN_ADDR1 GPIOs
-  arm64: dts: imx93-kontron: Fix GPIO for panel regulator
+Signed-off-by: Eberhard Stoll <eberhard.stoll@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+ arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-Eberhard Stoll (1):
-  arm64: dts: imx8mm-kontron: Use GPIO for RS485 transceiver control
-
-Frieder Schrempf (7):
-  arm64: dts: imx8mm-kontron: Remove unused regulator
-  arm64: dts: imx8mm-kontron: Sort reg nodes alphabetically
-  arm64: dts: imx8mm-kontron: Name USB regulators according to OSM
-    scheme
-  arm64: dts: imx8mp-kontron: Fix GPIO labels for latest BL board
-  arm64: dts: imx8mp-kontron: Fix USB hub reset
-  arm64: dts: imx93-kontron: Add RTC interrupt signal
-  arm64: dts: imx93-kontron: Fix USB port assignment
-
-Oualid Derouiche (1):
-  arm64: dts: imx8mm-kontron: Add Sitronix touch controller in DL
-    devicetree
-
- arch/arm64/boot/dts/freescale/Makefile        |   2 +
- .../dts/freescale/imx8mm-kontron-bl-lte.dtso  | 186 ++++++++++++++++++
- .../dts/freescale/imx8mm-kontron-bl-osm-s.dts |   8 -
- .../boot/dts/freescale/imx8mm-kontron-bl.dts  |  12 +-
- .../boot/dts/freescale/imx8mm-kontron-dl.dtso |  13 +-
- .../dts/freescale/imx8mm-kontron-osm-s.dtsi   |  50 ++---
- .../dts/freescale/imx8mp-kontron-bl-osm-s.dts |  59 +++---
- .../dts/freescale/imx93-kontron-bl-osm-s.dts  |  32 +--
- .../dts/freescale/imx93-kontron-osm-s.dtsi    |   9 +
- 9 files changed, 301 insertions(+), 70 deletions(-)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-kontron-bl-lte.dtso
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
+index d16490d876874..e756fe5db56b6 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts
+@@ -268,8 +268,16 @@ &uart1 {
+ &uart2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart2>;
++	/*
++	 * During bootup the CTS needs to stay LOW, which is only possible if this
++	 * pin is controlled by a GPIO. The UART IP always sets CTS to HIGH if not
++	 * running. So using 'uart-has-rtscts' is not a good choice here! There are
++	 * workarounds for this, but they introduce unnecessary complexity and are
++	 * therefore avoided here. For more information about this see:
++	 * https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit?id=79d0224f6bf296d04cd843cfc49921b19c97bb09
++	 */
++	rts-gpios = <&gpio4 29 GPIO_ACTIVE_HIGH>;
+ 	linux,rs485-enabled-at-boot-time;
+-	uart-has-rtscts;
+ 	status = "okay";
+ };
+ 
+@@ -439,7 +447,7 @@ pinctrl_uart2: uart2grp {
+ 			MX8MM_IOMUXC_SAI3_TXFS_UART2_DCE_RX		0x0
+ 			MX8MM_IOMUXC_SAI3_TXC_UART2_DCE_TX		0x0
+ 			MX8MM_IOMUXC_SAI3_RXD_UART2_DCE_RTS_B		0x0
+-			MX8MM_IOMUXC_SAI3_RXC_UART2_DCE_CTS_B		0x0
++			MX8MM_IOMUXC_SAI3_RXC_GPIO4_IO29		0x19
+ 		>;
+ 	};
+ 
 -- 
 2.50.1
 
