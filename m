@@ -1,237 +1,234 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011048.outbound.protection.outlook.com [52.101.70.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BC51DA4E
-	for <imx@lists.linux.dev>; Mon, 21 Jul 2025 21:06:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753131983; cv=none; b=Jt2ft9MA2/ALQ4RFCD5pu5E8Tt4VLUjnY9cBpcRW++5RfasFQ/UFx3ysWkTQnhgOeZp7+4LbbLR6VQFGWZyzjrV0rQ1TdXx3TgeqIVJwpACppxa8l5XPXLLP9uETFcseoPSP1MrZopN/KVzsQWc7Ai6pLtb+XeDr/jvc7N/sq+c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753131983; c=relaxed/simple;
-	bh=zjLicVkc0C/6IAdAKsOjFSGUc3j3ugV0Pp2+JYkGJ4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ae8I63DlPRLssOceqL4GRdFvN/+VumBcphkdPefyGoomS008jzsSo4vAm7zK378nv8oLAj9kVBJV5mfDswrBiSl6f9zJQLF6tfY9UJnzyiFVXrIr+0a+O6HS5nX+hVULZTm6wjMf8oyu2kV/b4RVspuyXElwPzFDWkpqINd4K8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=LDA9mQZe; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BAB2A8C1
+	for <imx@lists.linux.dev>; Tue, 22 Jul 2025 01:33:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753148037; cv=fail; b=c+6cFKCOoQKmpRMjQsXgFoXUcd6cFq2SFo1pjLYgM6VmWpu1apNLjG7ftHBUgO+vIy37VqliRgtZkPCGBvmhgZECD4sqF1IEWTi7A0JV6KFmm2w6hnNcVr+2W4VvYJCmjBlb4BCictr0imf82ghN9YKzTUn3jHKmTHTXMkUc8DQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753148037; c=relaxed/simple;
+	bh=49yxw/ISj94fSAuY9LTiCCuYgMyONW9TUFyr2n/JbHc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qBxTRlqkudV4YPQz9fTBgGgePd16ZkxAVQWxwm48kzozL1tCCz8rWnH5uBHqcskgaypcGIJCkPuRoznVJKqZQaITb4b918D9qMBJof/lC6QRYwOUXrt+3EHlurodAtrpg+ohSK4KyGJmKRg+XVmVsoESdY2mkQI4X9rEF2ppvT8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qn1WnlQ3; arc=fail smtp.client-ip=52.101.70.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="LDA9mQZe"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D5E5D1027235A;
-	Mon, 21 Jul 2025 23:06:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1753131977; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=thKRdw3kXRGji+6JCd7tx86+QfpE7R4ymI26oelJ9l0=;
-	b=LDA9mQZeGJ84HzhFTkWldHixuCTUA/2gE47EdutdCG+Queg5IVgKVkacRhbSBE9pi4toBn
-	YJd+Q+hW3wat8/0owk0Y66IS3WJaNw5Rwyng+Is6zLxORIdFz5YH8OaN+ULShn7wwQn7+L
-	dWPT/cbpL76ZkNS3FINCOYXeQQaI3Szr4cnkhOCpmPDoQtFxWdICD5Ru8Ea4HvdjTig3Q2
-	aSoHgioT/8mOJp0+c+Ihr5af1VabgqEYZDZKxuUEZY8/y/Jv90wx4vJG+6+xwE5Co0uTvZ
-	3YFyhX1rxpWhfqXtj4o1f0b7WkhYqwQlZPq4y0EcKaQHGRBDGW1inBrF/1GXPA==
-Date: Mon, 21 Jul 2025 23:06:11 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
- <andrew@lunn.ch>
-Subject: Re: [net-next v15 04/12] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250721230611.45fb74df@wsk>
-In-Reply-To: <20250718181028.00cda754@kernel.org>
-References: <20250716214731.3384273-1-lukma@denx.de>
-	<20250716214731.3384273-5-lukma@denx.de>
-	<20250718181028.00cda754@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qn1WnlQ3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ubamCOAAHNbwzc+GoBIz5oRI5BvRLBef9YswK8dRyOCF5HnRxdmpiL7hFBzjujVc5e7Q1XnOu28tdiC6iKPDul7IbqfzkBNN9WrjkOpgIjyufItrwrkIrmKXyoVTTNmb5EZYlviY1TYd6Ds8rI9KRz/FBL8h3Wlnlunhe+t22efJcuVUJtP5M39R7RYe14JZqkA0KQbHoIoI1DlCSagYaxxyP/kRYRitaFaqGDhvoqlqSMdxvwHQ5hrfNix8nQ6e1+huWBoNksiZQwM6b3FuGJMHkN43RozJsiL4tPggKMPtaj9AMVtRBLuODH3c2UuswGekL97jzOPjkGA/rkW2/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MMaA81rDgxPq8so74Puxj9z5EX9BSXN4J+31eBa79a4=;
+ b=irWKakBfjrKAH5hFKNoNqe9wzfs48uTYe1y/EDMVqOdDl1A7zbBmWJp5bSCa5NtId4tqzIYMQnFnQTflL2AsV1Z9oLlyCl7SfB+iZt1srBF92CyxB/J6nevs+HePwIbFMXA5+B3TC9KQ2VnTcoMzpP6fjSC78zNUlB+WbfaKiQdBntouaFTNaxBG51d3qol9yO13FCzPd0ifcTgr6kicbQ/zwp/GKyI04JdqhXve6yswwt9SmGnSSd3US6944a5fag0ZV2DYuGWiPWAigNvggkB42Pk3FSJVkwl8R162EH+4xCJkO7RFkrvdI5O5VH/CLJQICqtypitUW7FKTHQwFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MMaA81rDgxPq8so74Puxj9z5EX9BSXN4J+31eBa79a4=;
+ b=qn1WnlQ3gsalCceSEEGdJ2j8I/2t6PLdkoOOi84t5JwZPRGjXbTelczBzb4hEQQ5EcuadPY/YBjwJIyGYnmaO+lYYL/XIp30QSZVcbMq/XvhkV6JGnes6Xn9gXdz8NZASyX4MEZiHHCR8FavufZqwB/3upfpkeVK/bIJy8aT8/du6pmBt5Hj5qAHuxTnEs5iFVhU5BMbcEfz8+lfTXXW15U5AqE9rWsWE203QdohYgwTklgSB0bSpbeOkb2tNEKn406008EzL9pWlRy+u+kLL1Ms7mI+eEOPawr8os7uq+s9sgeBJUM8bT60OveyYfKFGihhOQ9R6ko1yOgQS7+Ceg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by VI1PR04MB9738.eurprd04.prod.outlook.com (2603:10a6:800:1dc::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Tue, 22 Jul
+ 2025 01:33:50 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.8943.029; Tue, 22 Jul 2025
+ 01:33:50 +0000
+Date: Tue, 22 Jul 2025 10:44:12 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Peng Fan <peng.fan@nxp.com>, "Rob Herring (Arm)" <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	Frank Li <frank.li@nxp.com>, Bjorn Andersson <andersson@kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Daniel Baluta <daniel.baluta@nxp.com>
+Subject: Re: [PATCH v4 0/5] remoteproc: imx_rproc: Support i.MX95
+Message-ID: <20250722024412.GA11182@nxa18884-linux.ap.freescale.net>
+References: <20250710-imx95-rproc-1-v4-0-a7123e857dfb@nxp.com>
+ <175224423523.783161.17907302929832941912.robh@kernel.org>
+ <PAXPR04MB845959EF2767C96794EAE6DD8854A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <aHkNS51jgV5ulsNB@p14s>
+ <20250718082033.GA25126@nxa18884-linux>
+ <aHp-_BRk7Iz81OFp@p14s>
+ <20250721041823.GA4844@nxa18884-linux.ap.freescale.net>
+ <CANLsYkwZz4xLOG25D6S-AEGFeUBWwyp1=ytmu2q90NyEpkoX9g@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANLsYkwZz4xLOG25D6S-AEGFeUBWwyp1=ytmu2q90NyEpkoX9g@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-ClientProxiedBy: MA5PR01CA0011.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:174::17) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/yEbJNgP2XSHi9_nucQvhE7B";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|VI1PR04MB9738:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9bda1915-082d-4e0c-23c2-08ddc8bfcf2c
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?KW5ONRaM7E5B5QehQGJsPGvKsGZqkRZ+SssEpsLPtHpdpX+0z4YbgHyiM4Ix?=
+ =?us-ascii?Q?kEk8wl2veY273Py478hy+K8z9nZ4ZbdnuTNLXd6rhbENNH8Q+i7tAO/ZzTWw?=
+ =?us-ascii?Q?iOjqlt25UkK1rAaSxuCeQY+OyT7t0CEKG+aasJ6vu9vgUQ9d70YGdB7To/db?=
+ =?us-ascii?Q?4ehUHTD1HBoI20nSGMkJ0syzCUAcVoqPATJALu142CtTEBLcAu5gLD8tj0nU?=
+ =?us-ascii?Q?Vq0ekQWtpBhBUP8RFRjCWLN7xtT3nvP/QoRyE6Xj7S5eYzuxDrG/VTLkWPKJ?=
+ =?us-ascii?Q?vT3tbYDRia9MxdcRPIJmu7Upwo1QrjDdXnck+BrDRuf7oSrSHCo5XAekwGt9?=
+ =?us-ascii?Q?9lrQ1hhdIR8Ic/AdWDAiaP1v1xwhrsbsjsPPBaCbtWBAV2EZR+53mFUcdyiR?=
+ =?us-ascii?Q?HilarCy3bnYz5MXGC1R6WpAZmewIgIO/S9AeZBtrXv5eWhIR2uKjpSpB0uDI?=
+ =?us-ascii?Q?p2+cBHqqQQtVN4xwl2XslQAaGbN3w9jEQvBNOsQgmoc3q663g3A4fPHZDVvp?=
+ =?us-ascii?Q?3n0yNsYSpYPJ8fcz+nsJjVnUahakPHoJYJZXiD4l585i2gQRRXYRjfmyzg0A?=
+ =?us-ascii?Q?6rusjSbRAwix7Ci3Ozz9sBZ2P9b71F6gTYY3aoo9TTPouREw+0TihfrmkPa0?=
+ =?us-ascii?Q?STbHCOaU02LkpGZIbVXyc5VVHDeLSQBIPbjARtYiVNDpRHuBjcNLL1271vhB?=
+ =?us-ascii?Q?7GXukRzA1kKRK6BtXu7zJikHHqmPYJcYIJ0dVxcZBdHmRrxCfe6DFimGYhE3?=
+ =?us-ascii?Q?xwRv07JHzixAeMSnPFFkGtmq5jG5FhKyPHJGjLgG0gcaXDmdXpDcu/9tGg1C?=
+ =?us-ascii?Q?QnbdFrXF7UQiqaq4sGXapX7f77dE7sGFMoiu+xq0r4EvSoDBKafS+j6ChyFG?=
+ =?us-ascii?Q?GeYE3yeutFw1BppuYp+ZxW33fDxD18Z01QTJTlUOzjXakEbWkO0n7QYg1Z7Z?=
+ =?us-ascii?Q?Ytd4vT/5Pu4395YH064iaQB+1Rx59h4Ed2cJttZFfd0BHjRXAG7eQWyJA4EV?=
+ =?us-ascii?Q?CF+WmiW/2FeuxXQ7hKrhduLgnjqVli/koOdtPC56TCcBg92ym7B3QWV6j5C7?=
+ =?us-ascii?Q?z4CpUnKxfDCFRr+e8LXC+qjKD1r3XjtwWZ94BTqXBlyeiL8z08ofxHN69nSW?=
+ =?us-ascii?Q?OT/GE+GggEghMFQkBIWGQIBDAP/3EetQ/iALHAxkVCX9ivU4TsA552xPSFHL?=
+ =?us-ascii?Q?YtfcC807aDeECOyQECF4W9LoRRzLajtSU0pPZvoKzNAb0CO5aHBMZlff873w?=
+ =?us-ascii?Q?nTCWUbv6Wtv1Gel4atvWjOkraJvURMm9Z3uwLBJsZmRyOM/ttWG3NVVhQcCA?=
+ =?us-ascii?Q?2EMMsU5Fb1wduIuqIQz8izRQphmgFT7wtu4BrIdHj/VgCChqxtjNpAQGBy6f?=
+ =?us-ascii?Q?UAGNPh0wIZKzSFOns8TJ2vf8lv/8oI6xmzd/aFxVqcX7ITkmxlMJT6dYz4Jz?=
+ =?us-ascii?Q?oRohRreIcQjk7Vi0hptWdIqWjZdVuciPLNGSTbRmTLwefEr6VJpBv3pKvJ1J?=
+ =?us-ascii?Q?Ikun41M6tc6jPMI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6vFf5LHSMax6P1GX9hMRzlTvaFE3SUFlv9qQD13cgeNKBF7Dm9bERMq5XEGX?=
+ =?us-ascii?Q?jYI9Rv6uzIr8QlwZbFK4tYcMnbRez80KEb702LcQNNl29c/QVb72DpD+yzq7?=
+ =?us-ascii?Q?rPUDadEm8aPfRgBWGk+bFQFo4rlV8YtfXhluSyUbHC0akw3RMZ0aMNfzmuW/?=
+ =?us-ascii?Q?qDYMm6xW9HYCno+vLQwsStclkrJjIscizflz+SM9rB/l890ucKBMUYyhwlR8?=
+ =?us-ascii?Q?TlbWm5y1TMdSmqFOYUhgaDgEwaGF15OIhp1N3gtmtdPCbOScCNqYTkwgkBkc?=
+ =?us-ascii?Q?WJj5eopYSh3Jd00bMUwGzXwhGhWGhaJy9WxB7+E6GXi0Y/Hr/B2NxolPkXSC?=
+ =?us-ascii?Q?IFY8LIvgiWyT7rohVB7i/NCXGARJv7ENq28YNuUViwTnQoGeUCGBm61+4iXR?=
+ =?us-ascii?Q?4ObE8z40TxTJ04M8X2cjGPiRQsjVzjlOCj8Z7DutUoaXGgLdYf2WAw9Szt3Z?=
+ =?us-ascii?Q?Ud3Sud9KPsK4gchP5/ADsHCG/2EX1ai4lH2kvWFpeUm3V8aPxT4n/3ce/4Iv?=
+ =?us-ascii?Q?t049LWwhQf0PS5aLPY5qrTAU69Dix6n2eMKWK0QDdF/Um0OqhWYdICSEXgDB?=
+ =?us-ascii?Q?MHNTOwAUMhV8HmdpSpEBzDCqDNhP+WHYOzn8k/0jkvLP6G2LRCUh1QtOG9QL?=
+ =?us-ascii?Q?x0Sn903w4VjWtd9a4pWe7n3n4EslOI41o7laRGM7H5+a8dsZL7HxnhttNHgH?=
+ =?us-ascii?Q?i25sY8NpbcQG9SxFnNL4axfUPt307Stnvu46xdlikt1wp34VKOXIrEODE+sd?=
+ =?us-ascii?Q?qA+WGRJ4QUC1WTZSIu2sM4GnqMDwu6/0Nyol5MHz9OrkCaL7qxivi0L4ed6E?=
+ =?us-ascii?Q?OCqyTdImIu2SH6hU1BBJrQCfzyJhTBG8ByYlYisCFp7SlSjcfBk9PSjv2VEF?=
+ =?us-ascii?Q?X9Uz5mxwCozexjC/AmDFJNM0ak5WYchC+0bkQzGYL6SKrxRthMzZ/8hWhGgd?=
+ =?us-ascii?Q?nTSi6p0ZXfXvyohqKLps4pYQgO6RJzW539W7YarQZ80TCHKQsq2KALNlR+kr?=
+ =?us-ascii?Q?JvaRNqNx6B41njQrjwSlZ7MnmehHp8nkTUq0tKJ5lUbAW3dfT2mUfmdeaS7b?=
+ =?us-ascii?Q?0S4isPXTWJYNMJouM4Bbd2vAM67EcN5eqN2F8QDvPQipBVzeraEm/esBSrQt?=
+ =?us-ascii?Q?Nha9d2FaKRu8LhPxM3Fi9ChaqlyiyXKlCMsGVP2YhdWHquzXeTP+vX1HC/tF?=
+ =?us-ascii?Q?Cin7UOyL2XcUtSvfB85/XXwgUsQWYyQXpWBRZSgjG7OFFvwpPH/oJpmEQax+?=
+ =?us-ascii?Q?dx0lirNEE6iZ5k4x8w1MRDccPb6mn3mwQh7hLlmOAu98E3CTFgB7Qm6i1vNh?=
+ =?us-ascii?Q?HwKD+VnEUKjWelPwzvKjSkc1ysXhJzUfS3MJcARVXyp+paeY77r6k3OLFNnk?=
+ =?us-ascii?Q?d0Q+VDNbnMm/TNsz1AVWl2sAwEsONY/6Ubf41Hxc2vOgIeromZSzs69iuQnO?=
+ =?us-ascii?Q?aYAF8+K0OTkGUUU7G7icKuT731D9UAL2Yfr99IzX1IAH4Px0arS7P5pWBvBe?=
+ =?us-ascii?Q?A2kb3tCrVcq4PX70eWG2FZurb+Y4+CKdOYbeBdSHIp0w5GEcO9sBmVautbq/?=
+ =?us-ascii?Q?TM7SI1E29pLamn8OCValYX3zfv2czxmuchqfIb8l?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bda1915-082d-4e0c-23c2-08ddc8bfcf2c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2025 01:33:50.5520
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MqhJ1xeCuGtGQbliwakLPFR70xrvH66GlgQSU87GJfLAh8e+RnPhwOi/9QT1mzdlm6BUfDK+gMupRnQ1ZZxkYA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9738
 
---Sig_/yEbJNgP2XSHi9_nucQvhE7B
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Mon, Jul 21, 2025 at 08:23:42AM -0600, Mathieu Poirier wrote:
+>On Sun, 20 Jul 2025 at 21:08, Peng Fan <peng.fan@oss.nxp.com> wrote:
+>>
+>> On Fri, Jul 18, 2025 at 11:06:04AM -0600, Mathieu Poirier wrote:
+>> >On Fri, Jul 18, 2025 at 04:20:34PM +0800, Peng Fan wrote:
+>> >> On Thu, Jul 17, 2025 at 08:48:43AM -0600, Mathieu Poirier wrote:
+>> >> >On Mon, Jul 14, 2025 at 11:52:05AM +0000, Peng Fan wrote:
+>> >> >> > Subject: Re: [PATCH v4 0/5] remoteproc: imx_rproc: Support i.MX95
+>> >> >> >
+>> >> >> [...]
+>> >> >> > New warnings running 'make CHECK_DTBS=y for
+>> >> >> > arch/arm64/boot/dts/freescale/' for 20250710-imx95-rproc-1-v4-0-
+>> >> >> > a7123e857dfb@nxp.com:
+>> >> >> >
+>> >> >> > arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dtb:
+>> >> >> > scmi (arm,scmi): Unevaluated properties are not allowed
+>> >> >> > ('protocol@80', 'protocol@81', 'protocol@82', 'protocol@84' were
+>> >> >> > unexpected)
+>> >> >>
+>> >> >> Same as replied in v3.
+>> >> >> This is because [1] is still not picked, not because of my patchset.
+>> >> >
+>> >> >I won't move on this patchset until this is resolved.
+>> >> >
+>> >>
+>> >> Not understand why hold on this patchset. I suppose you may not
+>> >> understand what the error means. The warning is totally irrelevant
+>> >> to this patchset, there is no dependency.
+>> >>
+>> >> Others added a property to arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
+>> >> &scmi_bbm {
+>> >>         linux,code = <KEY_POWER>;
+>> >> };
+>> >> But this "linux,code" property not landed(missed to be picked up) to DT binding.
+>> >>
+>> >> This patchset does not touch scmi_bbm. I could help address the warning
+>> >> in the other patch, but I do not see why "linux,code" under scmi_bbm node
+>> >> could block this patchset.
+>> >>
+>> >> Please help clarify if you still think to hold on this patchset.
+>> >>
+>> >> BTW: with [1] "remoteproc: imx_rproc: skip clock enable when M-core is managed by the SCU"
+>> >> merged in Ulf's tree, there is a minor conflict with patch 2. Please suggest
+>> >> what I should do with this patchset.
+>> >>
+>> >
+>> >I was afraid of that.  The best way forward with this work is to wait for the
+>> >"linux,code" property to be picked up by Sudeep.  I suggest you make sure that
+>> >he, or anyone else, picks it up for the next merge window.  If that happens
+>>
+>>
+>> I respect you as maintainer, but there is no reason to block this patch
+>> because of "linux,code" property. It is totally irrelevant.
+>>
+>> Even if I help to resubmit that "linux,code" patch, there is no chance to
+>> land into 6.17-rc1, both Sudeep and Shawn sent their PR to arm-soc earlier
+>> before your comments. You could raise in V3.. which there was time left.
+>>
+>
+>I don't know what you mean by V3.
 
-Hi Jakub,
+Patch version 3 got same CHECK_DTBS warning.
+https://lore.kernel.org/all/20250626035602.GA13855@nxa18884-linux/
 
-> On Wed, 16 Jul 2025 23:47:23 +0200 Lukasz Majewski wrote:
-> > +static void mtip_ndev_cleanup(struct switch_enet_private *fep)
-> > +{
-> > +	struct mtip_ndev_priv *priv;
-> > +	int i;
-> > +
-> > +	for (i =3D 0; i < SWITCH_EPORT_NUMBER; i++) {
-> > +		if (fep->ndev[i]) { =20
->=20
-> this just checks if netdev is NULL
->=20
-> > +			priv =3D netdev_priv(fep->ndev[i]);
-> > +			cancel_work_sync(&priv->tx_timeout_work);
-> > +
-> > +			unregister_netdev(fep->ndev[i]); =20
->=20
-> and if not unregisters
->=20
-> > +			free_netdev(fep->ndev[i]);
-> > +		}
-> > +	}
-> > +}
-> > +
-> > +static int mtip_ndev_init(struct switch_enet_private *fep,
-> > +			  struct platform_device *pdev)
-> > +{
-> > +	struct mtip_ndev_priv *priv;
-> > +	int i, ret =3D 0;
-> > +
-> > +	for (i =3D 0; i < SWITCH_EPORT_NUMBER; i++) {
-> > +		fep->ndev[i] =3D alloc_netdev(sizeof(struct
-> > mtip_ndev_priv), =20
->=20
-> but we assign the pointer immediatelly
->=20
-> > +					    fep->ndev_name[i],
-> > NET_NAME_USER,
-> > +					    ether_setup);
-> > +		if (!fep->ndev[i]) {
-> > +			ret =3D -ENOMEM;
-> > +			break;
-> > +		}
-> > +
-> > +		fep->ndev[i]->ethtool_ops =3D &mtip_ethtool_ops;
-> > +		fep->ndev[i]->netdev_ops =3D &mtip_netdev_ops;
-> > +		SET_NETDEV_DEV(fep->ndev[i], &pdev->dev);
-> > +
-> > +		priv =3D netdev_priv(fep->ndev[i]);
-> > +		priv->dev =3D fep->ndev[i];
-> > +		priv->fep =3D fep;
-> > +		priv->portnum =3D i + 1;
-> > +		fep->ndev[i]->irq =3D fep->irq;
-> > +
-> > +		mtip_setup_mac(fep->ndev[i]);
-> > +
-> > +		ret =3D register_netdev(fep->ndev[i]); =20
->=20
-> and don't clear it when register fails
->=20
-> > +		if (ret) {
-> > +			dev_err(&fep->ndev[i]->dev,
-> > +				"%s: ndev %s register err: %d\n",
-> > __func__,
-> > +				fep->ndev[i]->name, ret);
-> > +			break;
-> > +		}
-> > +
-> > +		dev_dbg(&fep->ndev[i]->dev, "%s: MTIP eth L2
-> > switch %pM\n",
-> > +			fep->ndev[i]->name,
-> > fep->ndev[i]->dev_addr);
-> > +	}
-> > +
-> > +	if (ret)
-> > +		mtip_ndev_cleanup(fep); =20
->=20
-> You're probably better off handling the unwind on error separately
-> from the full cleanup function, but I guess that's subjective.
+Anyway, it doesn't matter now.
 
-Yes, you are right - I shall add:
-fep->ndev[i] =3D NULL;
+Thanks,
+Peng
 
-just after free_ndev(fep->ndev[i]); in the
-mtip_ndev_cleanup() function.
-
->=20
-> > +	return ret;
-> > +} =20
->=20
-> > +static int mtip_sw_probe(struct platform_device *pdev)
-> > +{ =20
->=20
-> > +	ret =3D mtip_ndev_init(fep, pdev);
-> > +	if (ret) {
-> > +		dev_err(&pdev->dev, "%s: Failed to create virtual
-> > ndev (%d)\n",
-> > +			__func__, ret);
-> > +		goto ndev_init_err;
-> > +	}
-> > +
-> > +	ret =3D mtip_switch_dma_init(fep); =20
->=20
-> > +	ret =3D mtip_mii_init(fep, pdev); =20
->=20
-> Seems like we're registering the netdevs before fully initializing=20
-> the HW? Is it safe if user (or worse, some other kernel subsystem)=20
-> tries to open the netdevs before the driver finished the init?
-> =20
-
-This needs to be reordered - the ndev registration shall be the last
-step.
-
-Thanks for pointing this out.
-
->=20
-> > +	if (ret) {
-> > +		dev_err(&pdev->dev, "%s: Cannot init phy bus
-> > (%d)!\n", __func__,
-> > +			ret);
-> > +		goto mii_init_err;
-> > +	}
-> > +	/* setup timer for learning aging function */
-> > +	timer_setup(&fep->timer_mgnt, mtip_mgnt_timer, 0);
-> > +	mod_timer(&fep->timer_mgnt,
-> > +		  jiffies +
-> > msecs_to_jiffies(LEARNING_AGING_INTERVAL)); +
-> > +	return 0;
-> > +
-> > + mii_init_err:
-> > + dma_init_err:
-> > +	mtip_ndev_cleanup(fep); =20
->=20
-> Please name the labels after the action they jump to, not the location
-> where they jump from.
-
-Ok.
-
->=20
-> > + ndev_init_err:
-> > +
-> > +	return ret; =20
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH, Managing Director: Johanna Denk,
-Tabea Lutz HRB 165235 Munich, Office: Kirchenstr.5, D-82194
-Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/yEbJNgP2XSHi9_nucQvhE7B
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmh+q8MACgkQAR8vZIA0
-zr0HdggAwco5wjKk7FZTResfk+vt1Mqevf2S3izXGuVnFYMYDXkwS5yUJyI858DL
-fafdGgSK3ohngKrEv4OIz35sfT8KxYWCtxMo0hNP8YyJsknOAQSeAvrofp75T/Ej
-R9bgz/dJKUls586SPXfLjy37a567H06CJHVk9kGuxDigPKbmv9PgTyS31ng+n9jq
-0Ugb4u4zU4/I7Ul4BjnwWC6tckzbtawepEyHEO/pcaVdpI+W7yoOetDfCShbYnL/
-VPwticChtJfuOgKiXD9HVcP0QVL0PkCXlKluklqKnHeSPHC8J5W7CnAtOZhi3IHH
-+S9Q+H1D5mGWD+M2PeMRZYcn8aZ5sA==
-=1O0w
------END PGP SIGNATURE-----
-
---Sig_/yEbJNgP2XSHi9_nucQvhE7B--
