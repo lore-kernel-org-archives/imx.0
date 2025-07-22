@@ -1,147 +1,109 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D772E03E8
-	for <imx@lists.linux.dev>; Tue, 22 Jul 2025 10:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB1A155CB3
+	for <imx@lists.linux.dev>; Tue, 22 Jul 2025 10:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753179620; cv=none; b=CHXaTvU3SXYTdFrSPPfe2vPRquL1SWnnmQHt55O/tFW2v4TrcUcO3NYzpSTld47ZMHkA43FAG5TCQBxSduD77Jf0edBDV9GSNb7AM78ccOJl0gIVf51dnMl5ozjiovCgdT/4dofHtFqLB48NjZKFp98xX/PAaETNbLtle35k4j0=
+	t=1753180638; cv=none; b=u1cQ2D851U9jmqVnINoGxTG9vfNJqKZsCOBYF0bBQwGlH3aYV+rYYO3xym/ifn7SN8Dqr7IyumVQtFhTaZOuYjO+UdBSK9RSU+fuhEuNsIU6n+p+6+DwNqXaIF2KXrS+xml7h8u9KFfdX7SraCCxhGmNXmgVIHtWCff+hJh+fLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753179620; c=relaxed/simple;
-	bh=FY/g2nytNwGTYIlxhvIPA3OaPQkLlCJPhaAgPjZYxmQ=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JSNplPwdf/bsB6dSodxw+XOFsFyfwrhA5C1L9teB4wE//U06G31QbQWVaGXJlx4yXIEi4+HETLAhHd8slLecZzpdXPyfOsM41JwrhOLyZOlfaTLLJfGaU/i3YFz4BGsGfJUZ+jDwxoE04aMaWtyv1ZxxdjhDBlBlG0slS4Xj8PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bmY8949v4z6GDDg;
-	Tue, 22 Jul 2025 18:16:25 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6FA181400E3;
-	Tue, 22 Jul 2025 18:20:15 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 22 Jul
- 2025 12:20:14 +0200
-Date: Tue, 22 Jul 2025 11:20:13 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Guenter Roeck <linux@roeck-us.net>
-CC: <hs@denx.de>, Krzysztof Kozlowski <krzk@kernel.org>, Mark Brown
-	<broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Andrei Lalaev <andrey.lalaev@gmail.com>,
-	Chanh Nguyen <chanh@os.amperecomputing.com>, Conor Dooley
-	<conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Grant Peltier
-	<grantpeltier93@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Michal Simek
-	<michal.simek@amd.com>, Naresh Solanki <naresh.solanki@9elements.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring
-	<robh@kernel.org>, Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
-	<devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: (subset) [PATCH v1 0/3] spidev: introduce trivial abb sensor
- device
-Message-ID: <20250722112013.0000597e@huawei.com>
-In-Reply-To: <2e9c96c6-6dfb-4232-a9ab-a3e78b718fc2@roeck-us.net>
-References: <20250719063355.73111-1-hs@denx.de>
-	<175311337130.327079.7374455187420344577.b4-ty@kernel.org>
-	<d677ecd9-42d6-43fe-8fe1-a5afd4d270e2@kernel.org>
-	<8a8106ea-83d3-e02a-9ae7-ea4a66e4c248@denx.de>
-	<2e9c96c6-6dfb-4232-a9ab-a3e78b718fc2@roeck-us.net>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1753180638; c=relaxed/simple;
+	bh=fzd736V1k3v1vCZM3Ch2IkXksn65O+KzpQBR36Q5RZ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QUYx+2ZWzoMiHa3SQ2icgWeYj1JLoLPt3VfX+zqerBrTSuXySdlsYUO+R1GCp5lRX4HiTAUOU0u7/yrxZB14xdCv06gNnBa7tyeCbRJfj7ao0n1ESpq9Q6Q5ZbZkhI/Q0u6ZyhSBwHeoZLm+1l5O+mVhHaGcU5cvv1DlPQryGY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=Fjh7tWBs; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Fjh7tWBs"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ae0b2ead33cso939272566b.0
+        for <imx@lists.linux.dev>; Tue, 22 Jul 2025 03:37:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1753180634; x=1753785434; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=F1iQ+DzVo9DQ7ELRKT5wsmUCmjLHRUNTNjWFoL4XTeQ=;
+        b=Fjh7tWBsuta4GwECkLVM4NG7IHx0ODgXBVpZ47p3CeFUG0FYqIN+WRAPUHDTNmusk0
+         yL533aEimTpuUADqFI1nF+ieHCmyJgHYjkptk9UvFB4tx8OlrrNyl/3HEO2rBxq9WCjt
+         VV5yW4l1YHyC43O+PmbdxMNr/ph4Vo2+OufVQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753180634; x=1753785434;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F1iQ+DzVo9DQ7ELRKT5wsmUCmjLHRUNTNjWFoL4XTeQ=;
+        b=SACr1E3mKj+ovck1Yo/iZeLEgv1G21l21mlvPTCLAL9G2LkTjMyZd5JyDlGUSuFFKN
+         SDyQKLjQ+uj4UR86Mh0f3IWlAPUXSTYLzBxBjl8E02gfZQ2F/qZiKMbvMFGPM7dX2Fpd
+         newU8kIDnArHChfl8eDt+FJoo+avrZT7iPeYtv6cBp3Ghekz0s/TI/7BrkvX+61n9y8I
+         dijOZzXIJZmOrJYKHSOgF9QuJjFZYEMoqMsiqXBeO5WlKK22z8E0pWLgUY0GEIY5Q/4s
+         w1CVOMtB4JnTsA7htB9H9gqe8cXL9p/orzYVGdOPIlT9uDjIlGXDAk0c3PtVLt24Iaai
+         SqmA==
+X-Forwarded-Encrypted: i=1; AJvYcCW3Ywf4bAiK7Wr2k3nJgoKcJruuxaOnQy9nJPwinfzsLOX2r+EEozrGAr7RvwYFeealeOo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzFhnU8MYM8jDvi8aun5tl+ScPKvLZmBVMVxFn6HxmXI9jGo67O
+	riV4OR8GubN9d0xWpdmCEum/UtLFMfC3iICCDmY6ef1XO8pMVzBmhbtEIiSI8YtEiVk=
+X-Gm-Gg: ASbGncsxz+3vX21qTvK4W0hb1mZl8WHeClc7EsQZF7qblOHHVY1eB1LtxmpxzKpR7a0
+	a0A4BELY1q9Hy45pII9jMKAu0FGE/uOemya0NX9/JNbnSmcZG7EcnApDDKb5qrX1oXsiJML8H+B
+	Uv5LGBLWsjQ7cee0dzKz96BvSm1/+v+sqCBZ44IxjXbH+RAlGvCcWyjFqWcndJa4ylr+KXzaViZ
+	SI9aMPvSWPqsPuKIH5Te7ZFmxcZigPgDzWXJtXuJJXFDL+kUibZ+XfwBVhO4L5P9HvqFmjfNMdy
+	8GcxpfwpnKmP4JjLvJmg4KSoimKNuicDQWXOc/z5kkIVdP/Z+XfnwuE5m6tB0WEvqFCgZG8gaI/
+	8nHG+O4iT4o714vfT0tfyaknLZxuguKqz/6hptyh+qZIWdVeN7LfCjz1M2DQ=
+X-Google-Smtp-Source: AGHT+IHSThhFTO10wKsOhlI2B+/WINETFfgihIq5+JjYua7ZAoLLp3FbG8jE6ltycXzk2pFdKzcM2w==
+X-Received: by 2002:a17:907:3f15:b0:ae0:5137:6d6 with SMTP id a640c23a62f3a-af152bf63cfmr214633166b.9.1753180633782;
+        Tue, 22 Jul 2025 03:37:13 -0700 (PDT)
+Received: from localhost.localdomain ([2001:b07:6474:ebbf:2bba:d7b0:8e79:c982])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6ca310e2sm844568766b.79.2025.07.22.03.37.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jul 2025 03:37:13 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH 0/4] Input: imx6ul_tsc - set glitch threshold by dts property
+Date: Tue, 22 Jul 2025 12:36:14 +0200
+Message-ID: <20250722103706.3440777-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Transfer-Encoding: 8bit
 
-On Mon, 21 Jul 2025 21:58:10 -0700
-Guenter Roeck <linux@roeck-us.net> wrote:
+The series allows setting the glitch threshold for the detected signal
+from a DTS property instead of a hardcoded value.
+In addition, I applied a patch that replaces opencoded masking and
+shifting, with BIT(), GENMASK(), FIELD_GET() and FIELD_PREP() macros.
 
-> On 7/21/25 21:05, Heiko Schocher wrote:
-> > Hello Krzysztof,
-> >=20
-> > On 21.07.25 18:24, Krzysztof Kozlowski wrote: =20
-> >> On 21/07/2025 17:56, Mark Brown wrote: =20
-> >>> On Sat, 19 Jul 2025 08:33:51 +0200, Heiko Schocher wrote: =20
-> >>>> This series introduces the changes needed for trivial spi
-> >>>> based sensors from ABB, currently operated from userspace.
-> >>>>
-> >>>> The last patch adds the spidevices to the DTS files, already
-> >>>> in mainline.
-> >>>>
-> >>>> make dtbs_check showed no errors/warnings for the dts files
-> >>>>
-> >>>> [...] =20
-> >>>
-> >>> Applied to
-> >>>
-> >>> =A0=A0=A0 https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi=
-.git for-next
-> >>>
-> >>> Thanks!
-> >>>
-> >>> [1/3] dt-bindings: trivial-devices: Document ABB sensors
-> >>> =A0=A0=A0=A0=A0=A0 commit: aad2f87cbcab56b322109d26d7b11842a09df91f
-> >>> [2/3] spi: spidev: Add an entry for the ABB spi sensors
-> >>> =A0=A0=A0=A0=A0=A0 commit: d60f7cab7c04944a79af16caa43c141e780a59c6
-> >>> =20
-> >>
-> >>
-> >> That's unexpected, Mark. Patches received two objections/comments and I
-> >> don't think discussion was resolved.
-> >>
-> >> ABB is huge company, probably making hundreds or more of sensors. The
-> >> patchset basically claims that all of them work with spidev. It does n=
-ot
-> >> providing any model names or details, so it seems really incomplete to
-> >> call them trivial devices. =20
-> >=20
-> > I do not know how many different sensors they have, nor if that departm=
-ent can
-> > speak for the whole company...
-> >=20
-> > What I have as information is:
-> > https://lore.kernel.org/linux-spi/2477dc64-92a0-9dc9-d168-56646d0d796e@=
-denx.de/
-> >=20
-> > and I get no more information about them currently. May I should
-> > add some sort of trivial into compatible name? Something like
-> >=20
-> > "abb,spi-trivial-sensor"
-> > or
-> > "abb,spidev-trivial-sensor"
-> >=20
-> > which makes it clearer, that only ABB trivial sensor, controlled throug=
-h spidev
-> > driver, is connected here?
-> >  =20
->=20
-> FWIW, I always thought that devicetree is not supposed to contain such ge=
-neric
-> information. Is it even appropriate to list something like this in device=
-tree
-> in the first place ?
->=20
-> If so, what prevents anyone from submitting hundreds of
-> "<company>,spidev-trivial-<device-type>" entries, using the same line of =
-argument ?
 
-Agreed.  These should have separate compatibles based on what any OS etc
-might want to bind to them.  Just because their model in Linux is spidev etc
-that shouldn't mean a generic ID is appropriate.
+Dario Binacchi (3):
+  dt-bindings: input: touchscreen: fsl,imx6ul-tsc: add
+    fsl,glitch-threshold
+  Input: imx6ul_tsc - set glitch threshold by DTS property
+  Input: imx6ul_tsc - use BIT, FIELD_{GET,PREP} and GENMASK macros
 
-Can we at least have some examples to motivate the discussion?
+Michael Trimarchi (1):
+  Input: imx6ul_tsc - fix typo in register name
 
-Jonathan
+ .../input/touchscreen/fsl,imx6ul-tsc.yaml     |  18 +++
+ drivers/input/touchscreen/imx6ul_tsc.c        | 112 +++++++++++-------
+ 2 files changed, 86 insertions(+), 44 deletions(-)
 
->=20
-> Guenter
->=20
+-- 
+2.43.0
 
+base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
+branch: tsc_de_glitch
