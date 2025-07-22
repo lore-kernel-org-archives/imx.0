@@ -1,67 +1,48 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC5C1DF247
-	for <imx@lists.linux.dev>; Tue, 22 Jul 2025 04:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872BD28C87F;
+	Tue, 22 Jul 2025 05:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753160296; cv=none; b=JhXTdfwE6MPRFLLIly51fNOSZX4SRVbg4pzeBlIbh5dPydfkfUIyHBcTnHbI7LdHPMqnNSlCrMUWnJlaF9dlgUkr2t5/HH4SjtQBt23YPTns29JKZAfA/jD238RkvZhdJn7O32uEfdgb7K1ionWyBi2g1M6oA8FjE00xtU/+3CM=
+	t=1753163467; cv=none; b=IhfxaE//JvtsFabV9cvIGtiPUgJ9LbW6eGCSvZAhjti6ybv9oYh3mU5L9NNhI/yUfLOKrDBU7rhJyJUnrfM4LPQojObyTXdNfsmOO5cfM3oXRB5W83j59pfy9UvUyHy7Sfr+g5ydeKtvEzB/LuhWOmO+VOf7FXv32ohqw6q4dpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753160296; c=relaxed/simple;
-	bh=6F5Za1FdmxKsTDVtryfn1tdiv9tDrOCpIXBGPPonZiQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PWkbBJZnnJ7Gm0NeomipSO+Uj6LRf3dljz+6ISs1YIgVwSVL6uPBM6QkYPvZMdZgBvdoeCwgXyzmNcN3F2xHeEcxSOB5n8eBYDRMu8mues3czMBn98OMoqyvX54RNhF9CH6SkFfLJfPh+BTjTgjQaLDAnknd7IV48kLV1jVkGe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VsCRznvt; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753163467; c=relaxed/simple;
+	bh=lLdzGqsqwQjhOsz2WfLsv4rKsYxR9ZpICAIUjq8d/nw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UgVtSNVY2EgZmdi4LDO8woduGrsN/FdZA6XOkN1orduh8v0150L87PIL5YV5FE7d4QIU4iK6alGMu1taa5jfukAbYe4sYwz3fy2+fc7AqiRprs0i0qPWTlaZLcsKlnMtU9bw7Q9cX6o+2PFAYv2v/uWvmPuY1IOByevUlREb5c0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=NkULTkd8; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VsCRznvt"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b31f0ef5f7aso2625010a12.3
-        for <imx@lists.linux.dev>; Mon, 21 Jul 2025 21:58:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753160293; x=1753765093; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=hQqfu6KV2LEedciSC1FzGWW9xz4Dazd2sXJ7SsnkNfk=;
-        b=VsCRznvtikUQcdkHz63Zx4Rdlvk0zpXrf1un4GTJjDvr6fTD8JJOv9fXpJ2bvq4zzA
-         3ogHPxX+orHgxQPKnxQstMhDqr9ZJjZLfHJq7GrkJ6ikk7+A2l2uyMfu2KWxbmYWg6ld
-         tE+RaZv/uVJXjQ1UnsCGtH7bMnF61enmlAOWiRlq2eyNaOSu51CK6FkWCgIecWVmDIbH
-         xp9Af9SgujsyDxiIhbv0W8/X+7p28BfKgFT53auCRu2Ei+1ze6OVa8A+DNiGZruLc6Bv
-         W6jDV/7GgWG6WgigC0vtR23LtfZK/E+MkWtg6Hxa4/w8zZh9dDwH9dpLtsc/LKv8hGC7
-         AIGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753160293; x=1753765093;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hQqfu6KV2LEedciSC1FzGWW9xz4Dazd2sXJ7SsnkNfk=;
-        b=i7hS4rSEzlSall8TyJld/SD4Hbv81rISv2MzAZO/WnuBfyMef30gEtDQ32aMNXeO1M
-         CkHGye7ERhLhOWm40/nHSSHzwldZz4TpfhL/cEj1iVpDCaHOizbGwaRTsC0l0l5TcKNa
-         y0MApyMziupZgAgl6fdppn7rZqpI0TQ1zecmMrguspDwh0ntjbUJl8qpuX+8rXHT5oXe
-         wUOTc5wcXwLjvxsFtxDDMUa1bV4Jqb+yKNvwU5fxNbzA84f68fpo8nfucQQLM3K4Brre
-         XafsIyIOr1FaMEwxiYllIEmJ93BpxSsDi2dgCjrMbpCnnhJam6t5TSnLKrKdA2yLVmiE
-         zJMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUAR6zJCuaNZRlbVOxhY8me0lTsKb7w4BXuZ+Ry8iBTOcDErhg06JD5T4yiORQLg9TLmBQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx1zA1YMD4V52/EDjdz7TTKaeSiScH2h7L7G9FhTr/5YS65zpPD
-	N7laSV95ouL/mVa1mBcTrXYFigw5tQx6y8oyzIltyKSuxdNrlR5y3jy0
-X-Gm-Gg: ASbGncvaQ0VTodE6RDiNFJx/G4Yq7qAv2ZYu/qukAssa7x2J76sjxKz6Aa0U30LLR/N
-	njLg9d+jtUdB51P2HYujlqu+T0tDMIVgkhlnWPAfBw/FIN2SgfxX8rPgL2PwjA+o5sHHi4TVxBA
-	Rk9h5UzJf7nNxQ7weWzoIjex08zBk/DQ6KM4Q5aH129bPISJK8SEMCsedpvowUoU5STXHsOiSLl
-	1eePf3C9P7WRnw7M4Qp0SMb2134xZQYscsRMKo7/sWpNwdsnDqx8WHssZPnco1HsXrDecWXiLQl
-	bDztLSGctdLC45Z+Q/BOknJgQMdQ3a+uGWdYCJ9og+zioZ18dSwVeZZ2cEMfXX4uNjPvNaAJ2TJ
-	fwQkAaO3ScgoYw0MmLXspollwi56W3rV3WQeVmCuAj+hsCKDUetXBnQJAmTg8EYdZVNGZM+A=
-X-Google-Smtp-Source: AGHT+IFONxPppaW3ozIBQzjr6I8fgJ+phfZt+V8YLrEQddIILmr1qCkBYP+C9eg364XGludvSH4+bw==
-X-Received: by 2002:a17:90b:184d:b0:311:f684:d3cd with SMTP id 98e67ed59e1d1-31c9f3c6068mr34563581a91.12.1753160293400;
-        Mon, 21 Jul 2025 21:58:13 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31cc3f44970sm7172415a91.39.2025.07.21.21.58.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Jul 2025 21:58:12 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <2e9c96c6-6dfb-4232-a9ab-a3e78b718fc2@roeck-us.net>
-Date: Mon, 21 Jul 2025 21:58:10 -0700
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="NkULTkd8"
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56M5ouYR975209;
+	Tue, 22 Jul 2025 00:50:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1753163456;
+	bh=/HA54An8RWm8lbhsfU7W1tLrMDcipcyCl86TuK6LUpE=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=NkULTkd8CLRwZL9F4AcpCREgbRZ0ibeZauJ1ob/YiYnlraZPHpzoJgze025JXhc6w
+	 kCi1OsbCQoV3H9LJG83V5k3eXnqkESUqLaKSJOSYr9IqK7k3BXjhIqE5LQkkhQioyR
+	 uZonsnsJfF6Tin4Yk4T050tRH8cx5z+7P5jUGmBY=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56M5ouKh1882953
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Tue, 22 Jul 2025 00:50:56 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 22
+ Jul 2025 00:50:55 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Tue, 22 Jul 2025 00:50:55 -0500
+Received: from [172.24.227.115] (abhilash-hp.dhcp.ti.com [172.24.227.115])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56M5opG6535126;
+	Tue, 22 Jul 2025 00:50:52 -0500
+Message-ID: <457e2428-f766-4e8d-bfb0-32084de45b5a@ti.com>
+Date: Tue, 22 Jul 2025 11:20:51 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,137 +50,109 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: (subset) [PATCH v1 0/3] spidev: introduce trivial abb sensor
- device
-To: hs@denx.de, Krzysztof Kozlowski <krzk@kernel.org>,
- Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrei Lalaev <andrey.lalaev@gmail.com>,
- Chanh Nguyen <chanh@os.amperecomputing.com>,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Grant Peltier <grantpeltier93@gmail.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Michal Simek <michal.simek@amd.com>,
- Naresh Solanki <naresh.solanki@9elements.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20250719063355.73111-1-hs@denx.de>
- <175311337130.327079.7374455187420344577.b4-ty@kernel.org>
- <d677ecd9-42d6-43fe-8fe1-a5afd4d270e2@kernel.org>
- <8a8106ea-83d3-e02a-9ae7-ea4a66e4c248@denx.de>
+Subject: Re: [PATCH 1/7] arm64: dts: ti: k3-j721s2-main: Add interrupts
+ property
+To: "Kumar, Udit" <u-kumar1@ti.com>, <nm@ti.com>, <vigneshr@ti.com>
+CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <vaishnav.a@ti.com>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+References: <20250714092708.3944641-1-y-abhilashchandra@ti.com>
+ <20250714092708.3944641-2-y-abhilashchandra@ti.com>
+ <72545187-4605-40bb-9c68-54670c2e5332@ti.com>
+ <05a07a03-3f59-489b-ae55-5f454266bafb@ti.com>
 Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <8a8106ea-83d3-e02a-9ae7-ea4a66e4c248@denx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+In-Reply-To: <05a07a03-3f59-489b-ae55-5f454266bafb@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 7/21/25 21:05, Heiko Schocher wrote:
-> Hello Krzysztof,
+Hi Udit,
+
+Thanks for the review.
+
+On 21/07/25 19:40, Kumar, Udit wrote:
 > 
-> On 21.07.25 18:24, Krzysztof Kozlowski wrote:
->> On 21/07/2025 17:56, Mark Brown wrote:
->>> On Sat, 19 Jul 2025 08:33:51 +0200, Heiko Schocher wrote:
->>>> This series introduces the changes needed for trivial spi
->>>> based sensors from ABB, currently operated from userspace.
->>>>
->>>> The last patch adds the spidevices to the DTS files, already
->>>> in mainline.
->>>>
->>>> make dtbs_check showed no errors/warnings for the dts files
->>>>
->>>> [...]
->>>
->>> Applied to
->>>
->>>     https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
->>>
->>> Thanks!
->>>
->>> [1/3] dt-bindings: trivial-devices: Document ABB sensors
->>>        commit: aad2f87cbcab56b322109d26d7b11842a09df91f
->>> [2/3] spi: spidev: Add an entry for the ABB spi sensors
->>>        commit: d60f7cab7c04944a79af16caa43c141e780a59c6
->>>
+> On 7/21/2025 7:37 PM, Kumar, Udit wrote:
 >>
+>> On 7/14/2025 2:57 PM, Yemike Abhilash Chandra wrote:
+>>> Add interrupts property for CDNS CSI2RX. Interrupt IDs are taken from 
+>>> the
+>>> J721S2 TRM [0].
+>>>
+>>> Interrupt Line      | Source Interrupt
+>>> --------------------|----------------------------
+>>> GIC500SS_SPI_IN_153 | CSI_RX_IF1_CSI_ERR_IRQ_0
+>>> GIC500SS_SPI_IN_152 | CSI_RX_IF1_CSI_IRQ_0
+>>> GIC500SS_SPI_IN_157 | CSI_RX_IF2_CSI_ERR_IRQ_0
+>>> GIC500SS_SPI_IN_156 | CSI_RX_IF2_CSI_IRQ_0
+>>>
+>>> [0]: https://www.ti.com/lit/zip/spruj28
+>>>
+>>> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+>>> ---
+>>>   arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi | 6 ++++++
+>>>   1 file changed, 6 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi 
+>>> b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
+>>> index 62f45377a2c9..6f32a2b0c40c 100644
+>>> --- a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
+>>> +++ b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
+>>> @@ -1248,6 +1248,9 @@ ti_csi2rx0: ticsi2rx@4500000 {
+>>>           cdns_csi2rx0: csi-bridge@4504000 {
+>>>               compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
+>>>               reg = <0x00 0x04504000 0x00 0x1000>;
+>>> +            interrupts = <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>,
+>>> +                     <GIC_SPI 152 IRQ_TYPE_LEVEL_HIGH>;
 >>
->> That's unexpected, Mark. Patches received two objections/comments and I
->> don't think discussion was resolved.
+>> Just cosmetic thing, if you are doing v2 then consider 152 first , 
+>> followed by 153.
 >>
->> ABB is huge company, probably making hundreds or more of sensors. The
->> patchset basically claims that all of them work with spidev. It does not
->> providing any model names or details, so it seems really incomplete to
->> call them trivial devices.
+>> Otherwise
+>>
+>> Reviewed-by: Udit Kumar <u-kumar1@ti.com>
 > 
-> I do not know how many different sensors they have, nor if that department can
-> speak for the whole company...
 > 
-> What I have as information is:
-> https://lore.kernel.org/linux-spi/2477dc64-92a0-9dc9-d168-56646d0d796e@denx.de/
-> 
-> and I get no more information about them currently. May I should
-> add some sort of trivial into compatible name? Something like
-> 
-> "abb,spi-trivial-sensor"
-> or
-> "abb,spidev-trivial-sensor"
-> 
-> which makes it clearer, that only ABB trivial sensor, controlled through spidev
-> driver, is connected here?
+> Sorry, sent too fast, offset of 32 missing .
 > 
 
-FWIW, I always thought that devicetree is not supposed to contain such generic
-information. Is it even appropriate to list something like this in devicetree
-in the first place ?
+ From what I’ve seen, the SPI interrupt IDs on J721S2 start from 0,
+so I don’t think we need to subtract the 32 offset.
 
-If so, what prevents anyone from submitting hundreds of
-"<company>,spidev-trivial-<device-type>" entries, using the same line of argument ?
 
-Guenter
+Interrupt Input Line   Interrupt ID    Source Interrupt
+-------------------------------------------------------------
+GIC500SS_SPI_IN_00     0               ESM0_ESM_INT_CFG_LVL_0
 
+To confirm this, I’ve latched onto the correct interrupt line, and
+my IRQ handler is getting triggered as expected. I’m also seeing the
+desired output [0].
+
+Let me know if I might be missing anything.
+
+[0]: 
+https://gist.github.com/Yemike-Abhilash-Chandra/f46587ec1ef72671ee31803dd93434b4
+
+Thanks and Regards
+Yemike Abhilash Chandra
+
+> 
+>>
+>>> +            interrupt-names = "error_irq", "irq";
+>>>               clocks = <&k3_clks 38 3>, <&k3_clks 38 1>, <&k3_clks 38 
+>>> 3>,
+>>>                   <&k3_clks 38 3>, <&k3_clks 38 4>, <&k3_clks 38 4>;
+>>>               clock-names = "sys_clk", "p_clk", "pixel_if0_clk",
+>>> @@ -1301,6 +1304,9 @@ ti_csi2rx1: ticsi2rx@4510000 {
+>>>           cdns_csi2rx1: csi-bridge@4514000 {
+>>>               compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
+>>>               reg = <0x00 0x04514000 0x00 0x1000>;
+>>> +            interrupts = <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>,
+>>> +                     <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>;
+>>> +            interrupt-names = "error_irq", "irq";
+>>>               clocks = <&k3_clks 39 3>, <&k3_clks 39 1>, <&k3_clks 39 
+>>> 3>,
+>>>                   <&k3_clks 39 3>, <&k3_clks 39 4>, <&k3_clks 39 4>;
+>>>               clock-names = "sys_clk", "p_clk", "pixel_if0_clk",
