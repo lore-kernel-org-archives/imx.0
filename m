@@ -1,234 +1,139 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011048.outbound.protection.outlook.com [52.101.70.48])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BAB2A8C1
-	for <imx@lists.linux.dev>; Tue, 22 Jul 2025 01:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753148037; cv=fail; b=c+6cFKCOoQKmpRMjQsXgFoXUcd6cFq2SFo1pjLYgM6VmWpu1apNLjG7ftHBUgO+vIy37VqliRgtZkPCGBvmhgZECD4sqF1IEWTi7A0JV6KFmm2w6hnNcVr+2W4VvYJCmjBlb4BCictr0imf82ghN9YKzTUn3jHKmTHTXMkUc8DQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753148037; c=relaxed/simple;
-	bh=49yxw/ISj94fSAuY9LTiCCuYgMyONW9TUFyr2n/JbHc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qBxTRlqkudV4YPQz9fTBgGgePd16ZkxAVQWxwm48kzozL1tCCz8rWnH5uBHqcskgaypcGIJCkPuRoznVJKqZQaITb4b918D9qMBJof/lC6QRYwOUXrt+3EHlurodAtrpg+ohSK4KyGJmKRg+XVmVsoESdY2mkQI4X9rEF2ppvT8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qn1WnlQ3; arc=fail smtp.client-ip=52.101.70.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F9D4C92
+	for <imx@lists.linux.dev>; Tue, 22 Jul 2025 04:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753157127; cv=none; b=BpDs1csrKZH1PxvSVmqoIVP9VGYVklHBsrKJb4QP/gQ29ylzM76M10EnmoWYX7rGa0jAp6CCND3piElwR06NX88EQdupNNmt70oqV53Fq3ccROSDIPXw+0V/W5jgWLXgvwXp9Eog0kdRZRXinKKlXNBqcTUYEh8Tl5w8tySlUDM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753157127; c=relaxed/simple;
+	bh=K55yD1Ma6eC2A9HLm8c2k7UNaTufGqyNoR229HTD7Jk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NMfJ2b48alGBLfZWWQy546dja3bu88IX81deNEgadU/ms9D8XTRZ5LDlDuqPRojU5cI6zVU0svrEtGYveqGFqNPc7F2ND33i4lDIcgQs7pRxp7McRiZFR0pIFAjtslgrJZov1SIsim0xNZwyLryIdDBbyr5MtL9EhzmICEm9oRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=SDY32tfS; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qn1WnlQ3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ubamCOAAHNbwzc+GoBIz5oRI5BvRLBef9YswK8dRyOCF5HnRxdmpiL7hFBzjujVc5e7Q1XnOu28tdiC6iKPDul7IbqfzkBNN9WrjkOpgIjyufItrwrkIrmKXyoVTTNmb5EZYlviY1TYd6Ds8rI9KRz/FBL8h3Wlnlunhe+t22efJcuVUJtP5M39R7RYe14JZqkA0KQbHoIoI1DlCSagYaxxyP/kRYRitaFaqGDhvoqlqSMdxvwHQ5hrfNix8nQ6e1+huWBoNksiZQwM6b3FuGJMHkN43RozJsiL4tPggKMPtaj9AMVtRBLuODH3c2UuswGekL97jzOPjkGA/rkW2/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MMaA81rDgxPq8so74Puxj9z5EX9BSXN4J+31eBa79a4=;
- b=irWKakBfjrKAH5hFKNoNqe9wzfs48uTYe1y/EDMVqOdDl1A7zbBmWJp5bSCa5NtId4tqzIYMQnFnQTflL2AsV1Z9oLlyCl7SfB+iZt1srBF92CyxB/J6nevs+HePwIbFMXA5+B3TC9KQ2VnTcoMzpP6fjSC78zNUlB+WbfaKiQdBntouaFTNaxBG51d3qol9yO13FCzPd0ifcTgr6kicbQ/zwp/GKyI04JdqhXve6yswwt9SmGnSSd3US6944a5fag0ZV2DYuGWiPWAigNvggkB42Pk3FSJVkwl8R162EH+4xCJkO7RFkrvdI5O5VH/CLJQICqtypitUW7FKTHQwFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MMaA81rDgxPq8so74Puxj9z5EX9BSXN4J+31eBa79a4=;
- b=qn1WnlQ3gsalCceSEEGdJ2j8I/2t6PLdkoOOi84t5JwZPRGjXbTelczBzb4hEQQ5EcuadPY/YBjwJIyGYnmaO+lYYL/XIp30QSZVcbMq/XvhkV6JGnes6Xn9gXdz8NZASyX4MEZiHHCR8FavufZqwB/3upfpkeVK/bIJy8aT8/du6pmBt5Hj5qAHuxTnEs5iFVhU5BMbcEfz8+lfTXXW15U5AqE9rWsWE203QdohYgwTklgSB0bSpbeOkb2tNEKn406008EzL9pWlRy+u+kLL1Ms7mI+eEOPawr8os7uq+s9sgeBJUM8bT60OveyYfKFGihhOQ9R6ko1yOgQS7+Ceg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by VI1PR04MB9738.eurprd04.prod.outlook.com (2603:10a6:800:1dc::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Tue, 22 Jul
- 2025 01:33:50 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.8943.029; Tue, 22 Jul 2025
- 01:33:50 +0000
-Date: Tue, 22 Jul 2025 10:44:12 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Peng Fan <peng.fan@nxp.com>, "Rob Herring (Arm)" <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	Frank Li <frank.li@nxp.com>, Bjorn Andersson <andersson@kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Daniel Baluta <daniel.baluta@nxp.com>
-Subject: Re: [PATCH v4 0/5] remoteproc: imx_rproc: Support i.MX95
-Message-ID: <20250722024412.GA11182@nxa18884-linux.ap.freescale.net>
-References: <20250710-imx95-rproc-1-v4-0-a7123e857dfb@nxp.com>
- <175224423523.783161.17907302929832941912.robh@kernel.org>
- <PAXPR04MB845959EF2767C96794EAE6DD8854A@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <aHkNS51jgV5ulsNB@p14s>
- <20250718082033.GA25126@nxa18884-linux>
- <aHp-_BRk7Iz81OFp@p14s>
- <20250721041823.GA4844@nxa18884-linux.ap.freescale.net>
- <CANLsYkwZz4xLOG25D6S-AEGFeUBWwyp1=ytmu2q90NyEpkoX9g@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANLsYkwZz4xLOG25D6S-AEGFeUBWwyp1=ytmu2q90NyEpkoX9g@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: MA5PR01CA0011.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:174::17) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="SDY32tfS"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 824221026E02A;
+	Tue, 22 Jul 2025 06:05:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1753157121;
+	h=from:reply-to:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=m7b5hGarLAQZ7wJX3z+HKwupNShCIskH0D5h01nt0B4=;
+	b=SDY32tfSFz9zqLNKR+pX3Uk/W/Xzd5ZVXPEe2q4ZUeHX9EYBDOu+y3zT0mwKenJdgN3v+0
+	5+MD523v3CJvOvs2LVpxJ7xzUTuZYyCiqaUxeKBa83xzMdTf3e1G7Lgbmytn0OFHvKh0bS
+	JMDz4IVw0Ztc628Hbc0RqGVbYBg3Hi9SQrB8eSKCk84hsLWAkde6tW86HY5+rGgI0dZlFH
+	yl7LppaXBVsN8EMt1+4CQMcmvXcWfXSep+IFQIUyHspcOlre4bdBSWZrjan7oheXBckaNp
+	lFByEhJrXrlDnVH2AR+Im6UKjYKVFrvAMEQR8T3N2t261YXDOWPGTXVfrNVTzw==
+Message-ID: <8a8106ea-83d3-e02a-9ae7-ea4a66e4c248@denx.de>
+Date: Tue, 22 Jul 2025 06:05:36 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|VI1PR04MB9738:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9bda1915-082d-4e0c-23c2-08ddc8bfcf2c
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KW5ONRaM7E5B5QehQGJsPGvKsGZqkRZ+SssEpsLPtHpdpX+0z4YbgHyiM4Ix?=
- =?us-ascii?Q?kEk8wl2veY273Py478hy+K8z9nZ4ZbdnuTNLXd6rhbENNH8Q+i7tAO/ZzTWw?=
- =?us-ascii?Q?iOjqlt25UkK1rAaSxuCeQY+OyT7t0CEKG+aasJ6vu9vgUQ9d70YGdB7To/db?=
- =?us-ascii?Q?4ehUHTD1HBoI20nSGMkJ0syzCUAcVoqPATJALu142CtTEBLcAu5gLD8tj0nU?=
- =?us-ascii?Q?Vq0ekQWtpBhBUP8RFRjCWLN7xtT3nvP/QoRyE6Xj7S5eYzuxDrG/VTLkWPKJ?=
- =?us-ascii?Q?vT3tbYDRia9MxdcRPIJmu7Upwo1QrjDdXnck+BrDRuf7oSrSHCo5XAekwGt9?=
- =?us-ascii?Q?9lrQ1hhdIR8Ic/AdWDAiaP1v1xwhrsbsjsPPBaCbtWBAV2EZR+53mFUcdyiR?=
- =?us-ascii?Q?HilarCy3bnYz5MXGC1R6WpAZmewIgIO/S9AeZBtrXv5eWhIR2uKjpSpB0uDI?=
- =?us-ascii?Q?p2+cBHqqQQtVN4xwl2XslQAaGbN3w9jEQvBNOsQgmoc3q663g3A4fPHZDVvp?=
- =?us-ascii?Q?3n0yNsYSpYPJ8fcz+nsJjVnUahakPHoJYJZXiD4l585i2gQRRXYRjfmyzg0A?=
- =?us-ascii?Q?6rusjSbRAwix7Ci3Ozz9sBZ2P9b71F6gTYY3aoo9TTPouREw+0TihfrmkPa0?=
- =?us-ascii?Q?STbHCOaU02LkpGZIbVXyc5VVHDeLSQBIPbjARtYiVNDpRHuBjcNLL1271vhB?=
- =?us-ascii?Q?7GXukRzA1kKRK6BtXu7zJikHHqmPYJcYIJ0dVxcZBdHmRrxCfe6DFimGYhE3?=
- =?us-ascii?Q?xwRv07JHzixAeMSnPFFkGtmq5jG5FhKyPHJGjLgG0gcaXDmdXpDcu/9tGg1C?=
- =?us-ascii?Q?QnbdFrXF7UQiqaq4sGXapX7f77dE7sGFMoiu+xq0r4EvSoDBKafS+j6ChyFG?=
- =?us-ascii?Q?GeYE3yeutFw1BppuYp+ZxW33fDxD18Z01QTJTlUOzjXakEbWkO0n7QYg1Z7Z?=
- =?us-ascii?Q?Ytd4vT/5Pu4395YH064iaQB+1Rx59h4Ed2cJttZFfd0BHjRXAG7eQWyJA4EV?=
- =?us-ascii?Q?CF+WmiW/2FeuxXQ7hKrhduLgnjqVli/koOdtPC56TCcBg92ym7B3QWV6j5C7?=
- =?us-ascii?Q?z4CpUnKxfDCFRr+e8LXC+qjKD1r3XjtwWZ94BTqXBlyeiL8z08ofxHN69nSW?=
- =?us-ascii?Q?OT/GE+GggEghMFQkBIWGQIBDAP/3EetQ/iALHAxkVCX9ivU4TsA552xPSFHL?=
- =?us-ascii?Q?YtfcC807aDeECOyQECF4W9LoRRzLajtSU0pPZvoKzNAb0CO5aHBMZlff873w?=
- =?us-ascii?Q?nTCWUbv6Wtv1Gel4atvWjOkraJvURMm9Z3uwLBJsZmRyOM/ttWG3NVVhQcCA?=
- =?us-ascii?Q?2EMMsU5Fb1wduIuqIQz8izRQphmgFT7wtu4BrIdHj/VgCChqxtjNpAQGBy6f?=
- =?us-ascii?Q?UAGNPh0wIZKzSFOns8TJ2vf8lv/8oI6xmzd/aFxVqcX7ITkmxlMJT6dYz4Jz?=
- =?us-ascii?Q?oRohRreIcQjk7Vi0hptWdIqWjZdVuciPLNGSTbRmTLwefEr6VJpBv3pKvJ1J?=
- =?us-ascii?Q?Ikun41M6tc6jPMI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6vFf5LHSMax6P1GX9hMRzlTvaFE3SUFlv9qQD13cgeNKBF7Dm9bERMq5XEGX?=
- =?us-ascii?Q?jYI9Rv6uzIr8QlwZbFK4tYcMnbRez80KEb702LcQNNl29c/QVb72DpD+yzq7?=
- =?us-ascii?Q?rPUDadEm8aPfRgBWGk+bFQFo4rlV8YtfXhluSyUbHC0akw3RMZ0aMNfzmuW/?=
- =?us-ascii?Q?qDYMm6xW9HYCno+vLQwsStclkrJjIscizflz+SM9rB/l890ucKBMUYyhwlR8?=
- =?us-ascii?Q?TlbWm5y1TMdSmqFOYUhgaDgEwaGF15OIhp1N3gtmtdPCbOScCNqYTkwgkBkc?=
- =?us-ascii?Q?WJj5eopYSh3Jd00bMUwGzXwhGhWGhaJy9WxB7+E6GXi0Y/Hr/B2NxolPkXSC?=
- =?us-ascii?Q?IFY8LIvgiWyT7rohVB7i/NCXGARJv7ENq28YNuUViwTnQoGeUCGBm61+4iXR?=
- =?us-ascii?Q?4ObE8z40TxTJ04M8X2cjGPiRQsjVzjlOCj8Z7DutUoaXGgLdYf2WAw9Szt3Z?=
- =?us-ascii?Q?Ud3Sud9KPsK4gchP5/ADsHCG/2EX1ai4lH2kvWFpeUm3V8aPxT4n/3ce/4Iv?=
- =?us-ascii?Q?t049LWwhQf0PS5aLPY5qrTAU69Dix6n2eMKWK0QDdF/Um0OqhWYdICSEXgDB?=
- =?us-ascii?Q?MHNTOwAUMhV8HmdpSpEBzDCqDNhP+WHYOzn8k/0jkvLP6G2LRCUh1QtOG9QL?=
- =?us-ascii?Q?x0Sn903w4VjWtd9a4pWe7n3n4EslOI41o7laRGM7H5+a8dsZL7HxnhttNHgH?=
- =?us-ascii?Q?i25sY8NpbcQG9SxFnNL4axfUPt307Stnvu46xdlikt1wp34VKOXIrEODE+sd?=
- =?us-ascii?Q?qA+WGRJ4QUC1WTZSIu2sM4GnqMDwu6/0Nyol5MHz9OrkCaL7qxivi0L4ed6E?=
- =?us-ascii?Q?OCqyTdImIu2SH6hU1BBJrQCfzyJhTBG8ByYlYisCFp7SlSjcfBk9PSjv2VEF?=
- =?us-ascii?Q?X9Uz5mxwCozexjC/AmDFJNM0ak5WYchC+0bkQzGYL6SKrxRthMzZ/8hWhGgd?=
- =?us-ascii?Q?nTSi6p0ZXfXvyohqKLps4pYQgO6RJzW539W7YarQZ80TCHKQsq2KALNlR+kr?=
- =?us-ascii?Q?JvaRNqNx6B41njQrjwSlZ7MnmehHp8nkTUq0tKJ5lUbAW3dfT2mUfmdeaS7b?=
- =?us-ascii?Q?0S4isPXTWJYNMJouM4Bbd2vAM67EcN5eqN2F8QDvPQipBVzeraEm/esBSrQt?=
- =?us-ascii?Q?Nha9d2FaKRu8LhPxM3Fi9ChaqlyiyXKlCMsGVP2YhdWHquzXeTP+vX1HC/tF?=
- =?us-ascii?Q?Cin7UOyL2XcUtSvfB85/XXwgUsQWYyQXpWBRZSgjG7OFFvwpPH/oJpmEQax+?=
- =?us-ascii?Q?dx0lirNEE6iZ5k4x8w1MRDccPb6mn3mwQh7hLlmOAu98E3CTFgB7Qm6i1vNh?=
- =?us-ascii?Q?HwKD+VnEUKjWelPwzvKjSkc1ysXhJzUfS3MJcARVXyp+paeY77r6k3OLFNnk?=
- =?us-ascii?Q?d0Q+VDNbnMm/TNsz1AVWl2sAwEsONY/6Ubf41Hxc2vOgIeromZSzs69iuQnO?=
- =?us-ascii?Q?aYAF8+K0OTkGUUU7G7icKuT731D9UAL2Yfr99IzX1IAH4Px0arS7P5pWBvBe?=
- =?us-ascii?Q?A2kb3tCrVcq4PX70eWG2FZurb+Y4+CKdOYbeBdSHIp0w5GEcO9sBmVautbq/?=
- =?us-ascii?Q?TM7SI1E29pLamn8OCValYX3zfv2czxmuchqfIb8l?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9bda1915-082d-4e0c-23c2-08ddc8bfcf2c
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2025 01:33:50.5520
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MqhJ1xeCuGtGQbliwakLPFR70xrvH66GlgQSU87GJfLAh8e+RnPhwOi/9QT1mzdlm6BUfDK+gMupRnQ1ZZxkYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9738
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: (subset) [PATCH v1 0/3] spidev: introduce trivial abb sensor
+ device
+Content-Language: en-US
+To: Krzysztof Kozlowski <krzk@kernel.org>, Mark Brown <broonie@kernel.org>,
+ linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Andrei Lalaev <andrey.lalaev@gmail.com>,
+ Chanh Nguyen <chanh@os.amperecomputing.com>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Grant Peltier <grantpeltier93@gmail.com>, Guenter Roeck
+ <linux@roeck-us.net>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Michal Simek <michal.simek@amd.com>,
+ Naresh Solanki <naresh.solanki@9elements.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20250719063355.73111-1-hs@denx.de>
+ <175311337130.327079.7374455187420344577.b4-ty@kernel.org>
+ <d677ecd9-42d6-43fe-8fe1-a5afd4d270e2@kernel.org>
+Reply-To: hs@denx.de
+From: Heiko Schocher <hs@denx.de>
+In-Reply-To: <d677ecd9-42d6-43fe-8fe1-a5afd4d270e2@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Jul 21, 2025 at 08:23:42AM -0600, Mathieu Poirier wrote:
->On Sun, 20 Jul 2025 at 21:08, Peng Fan <peng.fan@oss.nxp.com> wrote:
->>
->> On Fri, Jul 18, 2025 at 11:06:04AM -0600, Mathieu Poirier wrote:
->> >On Fri, Jul 18, 2025 at 04:20:34PM +0800, Peng Fan wrote:
->> >> On Thu, Jul 17, 2025 at 08:48:43AM -0600, Mathieu Poirier wrote:
->> >> >On Mon, Jul 14, 2025 at 11:52:05AM +0000, Peng Fan wrote:
->> >> >> > Subject: Re: [PATCH v4 0/5] remoteproc: imx_rproc: Support i.MX95
->> >> >> >
->> >> >> [...]
->> >> >> > New warnings running 'make CHECK_DTBS=y for
->> >> >> > arch/arm64/boot/dts/freescale/' for 20250710-imx95-rproc-1-v4-0-
->> >> >> > a7123e857dfb@nxp.com:
->> >> >> >
->> >> >> > arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dtb:
->> >> >> > scmi (arm,scmi): Unevaluated properties are not allowed
->> >> >> > ('protocol@80', 'protocol@81', 'protocol@82', 'protocol@84' were
->> >> >> > unexpected)
->> >> >>
->> >> >> Same as replied in v3.
->> >> >> This is because [1] is still not picked, not because of my patchset.
->> >> >
->> >> >I won't move on this patchset until this is resolved.
->> >> >
->> >>
->> >> Not understand why hold on this patchset. I suppose you may not
->> >> understand what the error means. The warning is totally irrelevant
->> >> to this patchset, there is no dependency.
->> >>
->> >> Others added a property to arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
->> >> &scmi_bbm {
->> >>         linux,code = <KEY_POWER>;
->> >> };
->> >> But this "linux,code" property not landed(missed to be picked up) to DT binding.
->> >>
->> >> This patchset does not touch scmi_bbm. I could help address the warning
->> >> in the other patch, but I do not see why "linux,code" under scmi_bbm node
->> >> could block this patchset.
->> >>
->> >> Please help clarify if you still think to hold on this patchset.
->> >>
->> >> BTW: with [1] "remoteproc: imx_rproc: skip clock enable when M-core is managed by the SCU"
->> >> merged in Ulf's tree, there is a minor conflict with patch 2. Please suggest
->> >> what I should do with this patchset.
->> >>
->> >
->> >I was afraid of that.  The best way forward with this work is to wait for the
->> >"linux,code" property to be picked up by Sudeep.  I suggest you make sure that
->> >he, or anyone else, picks it up for the next merge window.  If that happens
->>
->>
->> I respect you as maintainer, but there is no reason to block this patch
->> because of "linux,code" property. It is totally irrelevant.
->>
->> Even if I help to resubmit that "linux,code" patch, there is no chance to
->> land into 6.17-rc1, both Sudeep and Shawn sent their PR to arm-soc earlier
->> before your comments. You could raise in V3.. which there was time left.
->>
->
->I don't know what you mean by V3.
+Hello Krzysztof,
 
-Patch version 3 got same CHECK_DTBS warning.
-https://lore.kernel.org/all/20250626035602.GA13855@nxa18884-linux/
+On 21.07.25 18:24, Krzysztof Kozlowski wrote:
+> On 21/07/2025 17:56, Mark Brown wrote:
+>> On Sat, 19 Jul 2025 08:33:51 +0200, Heiko Schocher wrote:
+>>> This series introduces the changes needed for trivial spi
+>>> based sensors from ABB, currently operated from userspace.
+>>>
+>>> The last patch adds the spidevices to the DTS files, already
+>>> in mainline.
+>>>
+>>> make dtbs_check showed no errors/warnings for the dts files
+>>>
+>>> [...]
+>>
+>> Applied to
+>>
+>>     https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+>>
+>> Thanks!
+>>
+>> [1/3] dt-bindings: trivial-devices: Document ABB sensors
+>>        commit: aad2f87cbcab56b322109d26d7b11842a09df91f
+>> [2/3] spi: spidev: Add an entry for the ABB spi sensors
+>>        commit: d60f7cab7c04944a79af16caa43c141e780a59c6
+>>
+> 
+> 
+> That's unexpected, Mark. Patches received two objections/comments and I
+> don't think discussion was resolved.
+> 
+> ABB is huge company, probably making hundreds or more of sensors. The
+> patchset basically claims that all of them work with spidev. It does not
+> providing any model names or details, so it seems really incomplete to
+> call them trivial devices.
 
-Anyway, it doesn't matter now.
+I do not know how many different sensors they have, nor if that department can
+speak for the whole company...
 
-Thanks,
-Peng
+What I have as information is:
+https://lore.kernel.org/linux-spi/2477dc64-92a0-9dc9-d168-56646d0d796e@denx.de/
 
+and I get no more information about them currently. May I should
+add some sort of trivial into compatible name? Something like
+
+"abb,spi-trivial-sensor"
+or
+"abb,spidev-trivial-sensor"
+
+which makes it clearer, that only ABB trivial sensor, controlled through spidev
+driver, is connected here?
+
+Looking into definiton of "trivial devices" in
+Documentation/devicetree/bindings/trivial-devices.yaml
+"""
+description: |
+   This is a list of trivial I2C and SPI devices that have simple device tree
+   bindings, consisting only of a compatible field, an address and possibly an
+   interrupt line.
+"""
+
+which fits exactly, as they even have nothing more than the SPI lines
+connected to the carrier board(s).
+
+bye,
+Heiko
+-- 
+DENX Software Engineering GmbH, Managing Director: Johanna Denk, Tabea Lutz
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-52   Fax: +49-8142-66989-80   Email: hs@denx.de
