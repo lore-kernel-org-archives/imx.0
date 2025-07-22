@@ -1,276 +1,217 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013068.outbound.protection.outlook.com [52.101.83.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE4D2EAB86
-	for <imx@lists.linux.dev>; Tue, 22 Jul 2025 14:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753195005; cv=none; b=Q8bU7ms96e2SBlJhmXumXmGN3gkWnEf9JvGoBzkOQZZOu57OAiHhUpzdphiGO0cQG+8bVw2XPhwr57Fv+ZFhGBDL8FhE6O6SWCsoTdUqeXK7+o8c5AMLJ3+h2+UV40BFgbdHR1ioTGe56epQ+DKtdrOOuxLndY2wOLrr8pw2Cog=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753195005; c=relaxed/simple;
-	bh=U38vHwYvj/snWXvCq8nA+Zbfq/F5HTG8jvr3xzABwS4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u33noZ4RbKE6Hwau/nLr2x5NafGIlV0lxpXVlBnpQVQsnP5U5k7JWFml6JMF//SLnD8qnV+WshwdvGXvnbVDZj+vCBoXOzo9BPo8+twDQYo6DYQ5mrJQxHLy82ywgiE09uEhc7PMVMGzqosF/52HhYlSSZfauQzguJ+pHdXyY4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HkNAr99t; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xjaK24uY; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HkNAr99t; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xjaK24uY; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0262EB5C9
+	for <imx@lists.linux.dev>; Tue, 22 Jul 2025 14:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753195008; cv=fail; b=SGSTUlMVbZHLWHi1/ZviunB6DHEZeQ353Jcu0NEHOMZZnSejazLv8ed2i2P+nM3FqvzPPrNelPEKGZlDmBs6fWN6fsLjS75aled3VKg8utnlWos2YlNZJ3kAss0P5Y0pgt5/aPhh1fvKMHDbGtBVswnj+stKBX7gq7aRxg/547s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753195008; c=relaxed/simple;
+	bh=l+vmdkzDdfFfkwoOboEvJYuQJlpmy1vec9+ZUO8SGXY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ArFmvPrhOWhusVocDZsbKSgtHqrzgphoJs/leqKqdGYm4CdqfheOAo1IOtkNLF2e4J/Z16Ce8kAf0Fw6fdlWKfIZPyuqQqcDbBactiHZWwMrGz5cLWTacd/53BM9GOokWpQeLy7gksOxTosfJuvhPasLmLJeP81o5i7C+5yyF60=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oHKXrFVZ; arc=fail smtp.client-ip=52.101.83.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HkNAr99t";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xjaK24uY";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HkNAr99t";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xjaK24uY"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 78A45211CF;
-	Tue, 22 Jul 2025 14:36:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753195001; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AYaGKdibHtzw4fA/0MfIQrIP4w9AF7TLkj3JQ1iP4C4=;
-	b=HkNAr99tGIBqUgCRhmCW9rD1j50SonENlFbfH0MtJBJHTKkCeFuUhsQE1jolCxWHzSKIQc
-	4eKVstQcJwVsADzWHRSSbhmRrMPzOGnGpUBQlVzffTitT64t7PcJHW18/gszLGMllbC+Om
-	aRtF/BkDKNjhdrHtc5Z0FPNIg/p+yLg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753195001;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AYaGKdibHtzw4fA/0MfIQrIP4w9AF7TLkj3JQ1iP4C4=;
-	b=xjaK24uYmPjCkFM0ssUCyZJ6kBuqE835ky/2krTcOOWZMPec3/BHPdPNyLWF41Z0kLvsYa
-	TlbwdTSzzKPcOnAQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HkNAr99t;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xjaK24uY
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753195001; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AYaGKdibHtzw4fA/0MfIQrIP4w9AF7TLkj3JQ1iP4C4=;
-	b=HkNAr99tGIBqUgCRhmCW9rD1j50SonENlFbfH0MtJBJHTKkCeFuUhsQE1jolCxWHzSKIQc
-	4eKVstQcJwVsADzWHRSSbhmRrMPzOGnGpUBQlVzffTitT64t7PcJHW18/gszLGMllbC+Om
-	aRtF/BkDKNjhdrHtc5Z0FPNIg/p+yLg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753195001;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AYaGKdibHtzw4fA/0MfIQrIP4w9AF7TLkj3JQ1iP4C4=;
-	b=xjaK24uYmPjCkFM0ssUCyZJ6kBuqE835ky/2krTcOOWZMPec3/BHPdPNyLWF41Z0kLvsYa
-	TlbwdTSzzKPcOnAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2D574132EA;
-	Tue, 22 Jul 2025 14:36:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ED+DKPChf2jxKQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 22 Jul 2025 14:36:32 +0000
-Message-ID: <638111c1-454a-40c6-b3ce-6842a76ae11e@suse.de>
-Date: Tue, 22 Jul 2025 16:36:23 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oHKXrFVZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P3YR81EGNkVFlcS5CsJE6dH6Cy/lgJUnDiu3srOX7tlJ/beAMz/HnVlyfOBz/eJl4ccOtP7W5KlU8eEaivgOHYIuPbvFSMTZZefzbqKl7e9JCYuOpe4Hy/tHmtOhUvjULkM+5FQO2mPwstE43GoCNETNDiLefH85OI3wkQCc20OrrdtZsfOAo3WDD7DFMm3sBW1U4ToSgs/RfT3cvsUo3y2HRbK902Uol2pbDBcZIo8YULmF8VPFYodq+9/SM/7QugMGuWDze8AUiARYob5Lp/YuBa+v2KveWVAWqayeMrARXUdNKqMfyY1fwHGrgWN+PM/aDnIFrejRG43ziUyThA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y6l9vCAqr3h83Qgy5ghlKIy6dmhGm3xGaZGah9hgzQM=;
+ b=n59noJqb4OBCNJBd080HGcniw2Ko20o1LeNjJANnZkY1fwRLIyzQ/p34gi3TG3nglMcKf42kNcOixkYyzEoxiCO0grGCgK9PvNdEd+1bxd3swtQQCWPjvh7QJBiqY8eaxo4zsqUNd9OqNTUt7FrEYHPxsYYs/1alOO/axpKAjOAW7W1CspdiKneakMsWu5h2cb6ngTElzQCUzt+MrLclrA7VJnZqZgmPlqyfQrAt/0BUkJot1Y8D0X5w1DeqzJDnXC+7ofp704E+/bf9AQlSWx/fyXVZB/UH+DIsqnVQTuA1N4gYN9C664bb/44eGPDH/tnqh5hpYD9vlgvQstto/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y6l9vCAqr3h83Qgy5ghlKIy6dmhGm3xGaZGah9hgzQM=;
+ b=oHKXrFVZAg8HkRjjag19X8y470e8IoaPH3fzMJ8x9Ygc5l9SjW91ywcgzU244Ofu4VWwSL7HTyExOF8Yp5EufiD1gVbTXAkpW6ITycdbhU/IX3Sro2qEi6OEjyipBEz7UiR8elRkiKyvt0mReTzVNu2RLtldZSrIkOSXX+Akvkpa86N8kMg7QqC8d2d7ZvSm7IIERZ1HlCuoUix2h1Wpnkd61rPEgmJ1KY6I0Bg/TeLl5/f/ORvZ/cgIF3+lY2aX4Hx+tiyu6MBDWrmxRd6X1+OcnYz0u8yM68VLhbQlkQTpTmcR3Se46cTY5ZCZOyO3jP5ZP0/jaTd4c3p+WUHWmA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB7790.eurprd04.prod.outlook.com (2603:10a6:102:cc::8)
+ by PR3PR04MB7226.eurprd04.prod.outlook.com (2603:10a6:102:8e::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Tue, 22 Jul
+ 2025 14:36:42 +0000
+Received: from PA4PR04MB7790.eurprd04.prod.outlook.com
+ ([fe80::6861:40f7:98b3:c2bc]) by PA4PR04MB7790.eurprd04.prod.outlook.com
+ ([fe80::6861:40f7:98b3:c2bc%4]) with mapi id 15.20.8943.029; Tue, 22 Jul 2025
+ 14:36:42 +0000
+Date: Tue, 22 Jul 2025 17:36:38 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"F.S. Peng" <fushi.peng@nxp.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>
+Subject: Re: [PATCH v2 net-next 01/14] dt-bindings: ptp: add NETC Timer PTP
+ clock
+Message-ID: <20250722143638.av4nlnbqdhgueygx@skbuf>
+References: <20250716073111.367382-1-wei.fang@nxp.com>
+ <20250716073111.367382-2-wei.fang@nxp.com>
+ <20250717-furry-hummingbird-of-growth-4f5f1d@kuoka>
+ <PAXPR04MB8510F642E509E915B85062318851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250717090547.f5c46ehp5rzey26b@skbuf>
+ <PAXPR04MB851096B3E7F59181C7377A128851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250717124241.f4jca65dswas6k47@skbuf>
+ <aHkRbNu61h4tgByd@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aHkRbNu61h4tgByd@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: VI1PR0102CA0099.eurprd01.prod.exchangelabs.com
+ (2603:10a6:803:15::40) To PA4PR04MB7790.eurprd04.prod.outlook.com
+ (2603:10a6:102:cc::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/25] drm/dumb-buffers: Fix and improve buffer-size
- calculation
-To: simona@ffwll.ch, airlied@gmail.com, mripard@kernel.org,
- maarten.lankhorst@linux.intel.com, geert@linux-m68k.org,
- tomi.valkeinen@ideasonboard.com
-Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
- freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
- nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
- spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
- intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org
-References: <20250613090431.127087-1-tzimmermann@suse.de>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20250613090431.127087-1-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	URIBL_BLOCKED(0.00)[suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_TO(0.00)[ffwll.ch,gmail.com,kernel.org,linux.intel.com,linux-m68k.org,ideasonboard.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_DN_NONE(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLqtkr6cif1ebgurukgmwdm7xc)];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 78A45211CF
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB7790:EE_|PR3PR04MB7226:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef8118fd-a960-49ab-2409-08ddc92d2d1c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|10070799003|376014|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?wm+vL9leibWb9M8wriv7Zch/KxW8OfW9P6oeHb56wuMzOfG3aqin0l0p/Krr?=
+ =?us-ascii?Q?Fg1cOdiMAPrFymfxvn8NFPmxv/aPGS6Iv7VP6z4DDIhU6hXmbFfZ0kNrM0ck?=
+ =?us-ascii?Q?n2ue2ljNOF7Vibwb/2fm88SHCl1tVizWuRVSKP1yCXlvXWUBUIJETUF5CNHj?=
+ =?us-ascii?Q?Ila9f/rlqfacw5kzBoeHSvxu7VcEfEZJW7lSQKQCOaseaBsKX9EwPB6xDMGW?=
+ =?us-ascii?Q?AuPFYSlKKR0nmLy0GeZJ4Vn4zd8vd9RyYX54fzFCuma0lDX0/SDE08Q3sMcu?=
+ =?us-ascii?Q?KZQnzUu0cyNhdzBI80oQ6GTdeatmbUh2NgyZXFAw/l1Z+gjo7UkO5a+c4haX?=
+ =?us-ascii?Q?nO+eOkQZ+Zfm7mXp15PXgHkSQ4uT8hNsmbUim760mXk9wFRJ0PUBKbB68cLA?=
+ =?us-ascii?Q?vH6UPderw57hdL3x2q5bdRBKyMwgXAcgnxxpsDtjDksFJV5xSGtWXbdj/Te7?=
+ =?us-ascii?Q?axSoTMibW7wOjFaoo8/VbxMipNVw+ke/q133ekrCewklHeNKLFoXc1JbTjrk?=
+ =?us-ascii?Q?NSkxb3G5m62qIZ98b09ZWdttMQcueltw21XixOikXpi2sA9qz5fLUOnzBRux?=
+ =?us-ascii?Q?pRFvNZmsyCTG6JaZfedOgIx8pFFlI5Ub71giF6I4PJzL/0z0bBvCfxBHQ0ne?=
+ =?us-ascii?Q?+d3SwnUTigqWqR2s23OMT3KSoDMDGZeMiq88+0q3uPa2pjC9vG8C7l3Xjzcz?=
+ =?us-ascii?Q?Dk0m4PMZuiJByD7D33/Xs2iM+Q1c0Z+Ozmkoubv7rCH+jRjwsM9PYGb0gY/l?=
+ =?us-ascii?Q?o/lX2kSURQIk0Kh1obmjwYQ4Cfofr1TaFxjLtNqgFQRtNpZn0dMifXSx6Tvo?=
+ =?us-ascii?Q?nZvo/sR8uU7+ZKTbKCBJeRgLpMqaZs9PhO+0yU4qZ7fxbsT3am5hWYyJ9sdX?=
+ =?us-ascii?Q?//URuFHeIF2MCS9gtlLnzBD4cf4IGCd19365vxBiJW0opkKV76gDTjs9NNYK?=
+ =?us-ascii?Q?ySfbqZAiCBwbwan0Ci0TKjKK2Y1nPdcsuGTiRbaLwoZtNAOgIcvPSYWiP1TT?=
+ =?us-ascii?Q?Mfh1mVKNlXOV81iXD6Mqz6hxxgZ1ijpkMZhu6N0KQmT3JvE9jjPY8/XS8f/1?=
+ =?us-ascii?Q?5vW5w/szXy+eXi0GSRE9qz5DBqfqrw9AB+66MRfqWVLe2s9LcAJF6oZpTbp1?=
+ =?us-ascii?Q?Hug5rQ6Iuk4lr/TYbKKm8BKS4rJ7O5GpwYeRXx/8XlkEDhBq6n0qsDEkWZwO?=
+ =?us-ascii?Q?voKSK4bH69m1QMshWRC9jRPHenDdDoIOZKHXdACBjR+DMfyBnWrLAM08W/W3?=
+ =?us-ascii?Q?CFPQ/I1WnDQEZGmExAPlgEWmu49xRVhjvhbcLyV71N3x76jNZ3KxgfitXxmr?=
+ =?us-ascii?Q?AvmdaqseNrJP58JzXHTahd77rkGeezlaKlBhIFIeNN+DffJloEcuUG8Gr3/4?=
+ =?us-ascii?Q?jMAz1Q5XB2Hr03ff9jiFhlyTW4oFpkth2AbFA/iGJVxo8pcT7wdMCRYDs5lx?=
+ =?us-ascii?Q?mKXeQ8vjtl0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7790.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(10070799003)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?7Y0tVa8F3Nd9+3NrTh4qSkpQhvJfklwUcZSJmAgnOTWEm8IfW+JaKtW9A+5S?=
+ =?us-ascii?Q?jWTrRxjJIWT7g8ZH9BPDE58nzhcVtutDYhIIsc19jasdSAdDO6OxnJAVpyjU?=
+ =?us-ascii?Q?6OVCPCCgHqssKR4bGrf6FjDsvHWoAWANhPEYBwsPC9jgcwKLjYFsK6CVCa4h?=
+ =?us-ascii?Q?hDUKvvFkumqsKtJ2a9mh3PM7lC52qmMCS1atzGL8PVRUHcZVhnegv45mjaIe?=
+ =?us-ascii?Q?G7sXtpefCLIgt4UQOf5bn2DTREFFNaRWHIkYc98Wly5+QlM8UV5KEKyEGlZa?=
+ =?us-ascii?Q?QKVLzi6Oq1oyRg0qZSDKcgDtEvD2+NfBBRCevpKR3xehhVkZLPanasyA01p6?=
+ =?us-ascii?Q?gHGhCjJn3XwyjrZQfgLSOhUMeTvjL7PhBxCJJu4tMqr1SHyRDfT2mBdeseJH?=
+ =?us-ascii?Q?Hy1af62KsxG5QDvUpQzLu/77ge/aoHgsTv809OgjiR+FoDZ1ALpkxi2f/f8f?=
+ =?us-ascii?Q?rWXC/M7vqSJk29Z9tjgLBzbFjTAVeWh380v2Yc/OMzeF/FWbI9OufWzuBYYc?=
+ =?us-ascii?Q?9y15V9EOwNN/olBRm+wPl06dvpodMpv3ESbZV7OmbNQNYqxi0/fX0PRt6cxN?=
+ =?us-ascii?Q?woWWyjIdes3OPw3Y5+no2mcW9u9TsN1LlV29hCfWHAn9Gy0QaalCXfOU+NJx?=
+ =?us-ascii?Q?3FWZBlHiwSDQGMlkv2FruM+tV2Ws9pfiwe333CuWmI9fEJxsKsASLs7c5p77?=
+ =?us-ascii?Q?5mQchKOQLzy2Iuwgxfjy2FRjtM0T5fOq9eLrX2QTobIuxE/RhZa6Q57GHn9U?=
+ =?us-ascii?Q?qGcLbl6IzI/w4vipE+t1RCEfsD2II3dEnvHDyN2IwvmrZjHA3lkcUNQ3MZhy?=
+ =?us-ascii?Q?oeRwGVUjQm9egsU1zMRh+xSrWwLW6k+Hj+9gzvLFkIYt8e57mZXCsu+LZO3+?=
+ =?us-ascii?Q?LN6AAbI3KL4kUP2jhqiSkM/D2aziWbwZ+faDWJ51nxFKPZPUXK2LuiiULllG?=
+ =?us-ascii?Q?f7KwQEYEmLQGrk1S6/fPalZJilKyWalhbFFgQfmF2YsLBWPd1QSneCYV9ahT?=
+ =?us-ascii?Q?0edMLVIHydbE3BjgMVDrsYfBJFS6B0Bjoiv9fovnITcei2CHOiDNadXkS+yC?=
+ =?us-ascii?Q?w/Co33x7j9Vm9zUQL1vEZNaJVA57XscDHn3HlmFbbL0IgT9YcJG3h6RANbtE?=
+ =?us-ascii?Q?RFkAaklHlmHZWwGz6OtS1rWgg8OaUV02hZvYpbCb2tDJkM9y7oeU2ETm3tHr?=
+ =?us-ascii?Q?3c+QzzxyfEXjPX3Ymbm8RX1WS+ECYX47KD0d/rtJy46r66fK0QOU9bMJ2vN6?=
+ =?us-ascii?Q?+dYS4IAqCBDKx6Pad5l4jc2qNUSINa5Sb9J6K2rQinVsjyt42W9XpxATTIUC?=
+ =?us-ascii?Q?A3mIV1qcG2uJTGQHB+SrVNf2+hrMUD3HqP+vghBc8qQktph//wvlUYUOFEYP?=
+ =?us-ascii?Q?cTkiuUCzPTFsLBhzXR91WSCPbbyabcGbrjBbPgKacBi8PUOnTsJfjfpJY3NV?=
+ =?us-ascii?Q?YzkxMcLUkgMjaauo1xvTrwThWEfI0Xb2GxA5EeorOXzGgfYnf/yAXQ9Z29Lk?=
+ =?us-ascii?Q?ybhm1DDD+Exbgc1pttHDBxzcB1o8/XbzpsV3DrZMeh1TKsiRV/v5hBvgbXm9?=
+ =?us-ascii?Q?tf+T0C/+Odao6Q6sIdbxlJIVrydMWqnulVjcnAY0KdvGLvKLSfXB6+ntC50j?=
+ =?us-ascii?Q?1QY1CfXf0OFxidXFGN162egTv3DBl0g02do1kWpGRe/JidcvpqvRVy1pzy9g?=
+ =?us-ascii?Q?T7MWvQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef8118fd-a960-49ab-2409-08ddc92d2d1c
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7790.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2025 14:36:42.6367
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kG6McjuKWQ8xhORxrhXdBS7oRTV+XC8iUx4DqfjTUSotXo2Acsvb5htLyLDsIzxKOenHsfqWjKnxbKapq/o/sg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7226
 
-Ping for additional reviews. Especially patches 3, 4, and 5, which cover 
-a wide range of drivers..
+Hi Frank,
 
-Am 13.06.25 um 11:00 schrieb Thomas Zimmermann:
-> Dumb-buffer pitch and size is specified by width, height, bits-per-pixel
-> plus various hardware-specific alignments. The calculation of these
-> values is inconsistent and duplicated among drivers. The results for
-> formats with bpp < 8 are sometimes incorrect.
->
-> This series fixes this for most drivers. Default scanline pitch and
-> buffer size are now calculated with the existing 4CC helpers. There is
-> a new helper drm_mode_size_dumb() that calculates scanline pitch and
-> buffer size according to driver requirements.
->
-> The series fixes the common GEM implementations for DMA, SHMEM and
-> VRAM. It further changes most implementations of dumb_create to use
-> the new helper. A small number of drivers has more complicated
-> calculations and will be updated by a later patches.
->
-> v5:
-> - use check_mul_overflow() for overflow test (Tomi)
-> - imx: fix intermediate code (Tomi)
-> - rz-du: include dumb-buffers header
-> v4:
-> - improve UAPI documentation
-> - document bpp special cases
-> - use drm_warn_once()
-> - add TODO lists
-> - armada: fix pitch alignment
-> v3:
-> - document UAPI semantics
-> - fall back to bpp-based allocation for unknown color modes
-> - cleanups
-> v2:
-> - rewrite series
-> - convert many individual drivers besides the shared GEM helpers
->
-> Thomas Zimmermann (25):
->    drm/dumb-buffers: Sanitize output on errors
->    drm/dumb-buffers: Provide helper to set pitch and size
->    drm/gem-dma: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/gem-shmem: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/gem-vram: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/armada: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/exynos: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/gma500: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/hibmc: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/imx/ipuv3: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/loongson: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/mediatek: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/msm: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/nouveau: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/omapdrm: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/qxl: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/renesas/rcar-du: Compute dumb-buffer sizes with
->      drm_mode_size_dumb()
->    drm/renesas/rz-du: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/rockchip: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/tegra: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/virtio: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/vmwgfx: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/xe: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/xen: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/xlnx: Compute dumb-buffer sizes with drm_mode_size_dumb()
->
->   Documentation/gpu/todo.rst                    |  27 +++
->   drivers/gpu/drm/armada/armada_gem.c           |  16 +-
->   drivers/gpu/drm/drm_dumb_buffers.c            | 170 ++++++++++++++++--
->   drivers/gpu/drm/drm_gem_dma_helper.c          |   7 +-
->   drivers/gpu/drm/drm_gem_shmem_helper.c        |  16 +-
->   drivers/gpu/drm/drm_gem_vram_helper.c         |  89 +++------
->   drivers/gpu/drm/exynos/exynos_drm_gem.c       |   8 +-
->   drivers/gpu/drm/gma500/gem.c                  |  21 +--
->   .../gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c   |  25 ++-
->   drivers/gpu/drm/imx/ipuv3/imx-drm-core.c      |  29 ++-
->   drivers/gpu/drm/loongson/lsdc_gem.c           |  29 +--
->   drivers/gpu/drm/mediatek/mtk_gem.c            |  13 +-
->   drivers/gpu/drm/msm/msm_gem.c                 |  27 ++-
->   drivers/gpu/drm/nouveau/nouveau_display.c     |   7 +-
->   drivers/gpu/drm/omapdrm/omap_gem.c            |  15 +-
->   drivers/gpu/drm/qxl/qxl_dumb.c                |  17 +-
->   drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c |   7 +-
->   drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c  |   8 +-
->   drivers/gpu/drm/rockchip/rockchip_drm_gem.c   |  12 +-
->   drivers/gpu/drm/tegra/gem.c                   |   8 +-
->   drivers/gpu/drm/virtio/virtgpu_gem.c          |  11 +-
->   drivers/gpu/drm/vmwgfx/vmwgfx_surface.c       |  21 +--
->   drivers/gpu/drm/xe/xe_bo.c                    |   8 +-
->   drivers/gpu/drm/xen/xen_drm_front.c           |   7 +-
->   drivers/gpu/drm/xlnx/zynqmp_kms.c             |   7 +-
->   include/drm/drm_dumb_buffers.h                |  14 ++
->   include/drm/drm_gem_vram_helper.h             |   6 -
->   include/uapi/drm/drm_mode.h                   |  50 +++++-
->   28 files changed, 447 insertions(+), 228 deletions(-)
->   create mode 100644 include/drm/drm_dumb_buffers.h
->
->
-> base-commit: 75238c32deae15ee4120b42a5be556ec36807a84
-> prerequisite-patch-id: c67e5d886a47b7d0266d81100837557fda34cb24
-> prerequisite-patch-id: a5a973e527c88a5b47053d7a72aefe0b550197cb
-> prerequisite-patch-id: 719d09751d38f5da743beed6266585ee063e1e29
+On Thu, Jul 17, 2025 at 11:06:20AM -0400, Frank Li wrote:
+> On Thu, Jul 17, 2025 at 03:42:41PM +0300, Vladimir Oltean wrote:
+> > On Thu, Jul 17, 2025 at 12:55:27PM +0300, Wei Fang wrote:
+> > > > > "system" is the system clock of the NETC subsystem, we can explicitly specify
+> > > > > this clock as the PTP reference clock of the Timer in the DT node. Or do not
+> > > > > add clock properties to the DT node, it implicitly indicates that the reference
+> > > > > clock of the Timer is the "system" clock.
+> > > >
+> > > > It's unusual to name the clock after the source rather than after the
+> > > > destination. When "clock-names" takes any of the above 3 values, it's
+> > > > still the same single IP clock, just taken from 3 different sources.
+> > > >
+> > > > I see you need to update TMR_CTRL[CK_SEL] depending on where the IP
+> > > > clock is sourced from. You use the "clock-names" for that. Whereas the
+> > > > very similar ptp-qoriq uses a separate "fsl,cksel" property. Was that
+> > > > not an acceptable solution, do we need a new way of achieving the same
+> > > > thing?
+> > >
+> > > This an option, as I also mentioned in v1, either we have to parse the
+> > > clock-names or we need to add a new property.
+> >
+> > I think a new property like "fsl,cksel" is preferable, due to the
+> > arguments above: already used for ptp_qoriq, and the alternative of
+> > parsing the clock-names implies going against the established convention
+> > that the clock name should be from the perspective of this IP, not from
+> > the perspective of the provider.
+> 
+> The similar problem already was discussed at
+> https://lore.kernel.org/imx/20250403103346.3064895-2-ciprianmarian.costea@oss.nxp.com/
+> 
+> Actually there are clock mux inside IP, which have some inputs. Only one
+> was chosen. Rob prefer use clock-names to distingish which one is used.
+> 
+> discuss thread in https://lore.kernel.org/imx/59261ba0-2086-4520-8429-6e3f08107077@oss.nxp.com/
+> 
+> Frank
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+Thanks for the reference. From the linked discussion you provided, I
+am not able to draw the conclusion "Rob prefers to use clock-names to
+distinguish which one is used". This seems to have been Ciprian Costea's
+preference, and Rob just stated "Really, you probably should [ list all
+possible clock sources ] no matter what, as you need to describe what's
+in the h/w, not configuration".
 
+Really, Rob just didn't object to the use of clock-names to identify the
+source, but I don't see him expressing a preference for it.
