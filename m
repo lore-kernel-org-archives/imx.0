@@ -1,53 +1,83 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F9D4C92
-	for <imx@lists.linux.dev>; Tue, 22 Jul 2025 04:05:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC5C1DF247
+	for <imx@lists.linux.dev>; Tue, 22 Jul 2025 04:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753157127; cv=none; b=BpDs1csrKZH1PxvSVmqoIVP9VGYVklHBsrKJb4QP/gQ29ylzM76M10EnmoWYX7rGa0jAp6CCND3piElwR06NX88EQdupNNmt70oqV53Fq3ccROSDIPXw+0V/W5jgWLXgvwXp9Eog0kdRZRXinKKlXNBqcTUYEh8Tl5w8tySlUDM=
+	t=1753160296; cv=none; b=JhXTdfwE6MPRFLLIly51fNOSZX4SRVbg4pzeBlIbh5dPydfkfUIyHBcTnHbI7LdHPMqnNSlCrMUWnJlaF9dlgUkr2t5/HH4SjtQBt23YPTns29JKZAfA/jD238RkvZhdJn7O32uEfdgb7K1ionWyBi2g1M6oA8FjE00xtU/+3CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753157127; c=relaxed/simple;
-	bh=K55yD1Ma6eC2A9HLm8c2k7UNaTufGqyNoR229HTD7Jk=;
+	s=arc-20240116; t=1753160296; c=relaxed/simple;
+	bh=6F5Za1FdmxKsTDVtryfn1tdiv9tDrOCpIXBGPPonZiQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NMfJ2b48alGBLfZWWQy546dja3bu88IX81deNEgadU/ms9D8XTRZ5LDlDuqPRojU5cI6zVU0svrEtGYveqGFqNPc7F2ND33i4lDIcgQs7pRxp7McRiZFR0pIFAjtslgrJZov1SIsim0xNZwyLryIdDBbyr5MtL9EhzmICEm9oRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=SDY32tfS; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	 In-Reply-To:Content-Type; b=PWkbBJZnnJ7Gm0NeomipSO+Uj6LRf3dljz+6ISs1YIgVwSVL6uPBM6QkYPvZMdZgBvdoeCwgXyzmNcN3F2xHeEcxSOB5n8eBYDRMu8mues3czMBn98OMoqyvX54RNhF9CH6SkFfLJfPh+BTjTgjQaLDAnknd7IV48kLV1jVkGe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VsCRznvt; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="SDY32tfS"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 824221026E02A;
-	Tue, 22 Jul 2025 06:05:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1753157121;
-	h=from:reply-to:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=m7b5hGarLAQZ7wJX3z+HKwupNShCIskH0D5h01nt0B4=;
-	b=SDY32tfSFz9zqLNKR+pX3Uk/W/Xzd5ZVXPEe2q4ZUeHX9EYBDOu+y3zT0mwKenJdgN3v+0
-	5+MD523v3CJvOvs2LVpxJ7xzUTuZYyCiqaUxeKBa83xzMdTf3e1G7Lgbmytn0OFHvKh0bS
-	JMDz4IVw0Ztc628Hbc0RqGVbYBg3Hi9SQrB8eSKCk84hsLWAkde6tW86HY5+rGgI0dZlFH
-	yl7LppaXBVsN8EMt1+4CQMcmvXcWfXSep+IFQIUyHspcOlre4bdBSWZrjan7oheXBckaNp
-	lFByEhJrXrlDnVH2AR+Im6UKjYKVFrvAMEQR8T3N2t261YXDOWPGTXVfrNVTzw==
-Message-ID: <8a8106ea-83d3-e02a-9ae7-ea4a66e4c248@denx.de>
-Date: Tue, 22 Jul 2025 06:05:36 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VsCRznvt"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b31f0ef5f7aso2625010a12.3
+        for <imx@lists.linux.dev>; Mon, 21 Jul 2025 21:58:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753160293; x=1753765093; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=hQqfu6KV2LEedciSC1FzGWW9xz4Dazd2sXJ7SsnkNfk=;
+        b=VsCRznvtikUQcdkHz63Zx4Rdlvk0zpXrf1un4GTJjDvr6fTD8JJOv9fXpJ2bvq4zzA
+         3ogHPxX+orHgxQPKnxQstMhDqr9ZJjZLfHJq7GrkJ6ikk7+A2l2uyMfu2KWxbmYWg6ld
+         tE+RaZv/uVJXjQ1UnsCGtH7bMnF61enmlAOWiRlq2eyNaOSu51CK6FkWCgIecWVmDIbH
+         xp9Af9SgujsyDxiIhbv0W8/X+7p28BfKgFT53auCRu2Ei+1ze6OVa8A+DNiGZruLc6Bv
+         W6jDV/7GgWG6WgigC0vtR23LtfZK/E+MkWtg6Hxa4/w8zZh9dDwH9dpLtsc/LKv8hGC7
+         AIGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753160293; x=1753765093;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hQqfu6KV2LEedciSC1FzGWW9xz4Dazd2sXJ7SsnkNfk=;
+        b=i7hS4rSEzlSall8TyJld/SD4Hbv81rISv2MzAZO/WnuBfyMef30gEtDQ32aMNXeO1M
+         CkHGye7ERhLhOWm40/nHSSHzwldZz4TpfhL/cEj1iVpDCaHOizbGwaRTsC0l0l5TcKNa
+         y0MApyMziupZgAgl6fdppn7rZqpI0TQ1zecmMrguspDwh0ntjbUJl8qpuX+8rXHT5oXe
+         wUOTc5wcXwLjvxsFtxDDMUa1bV4Jqb+yKNvwU5fxNbzA84f68fpo8nfucQQLM3K4Brre
+         XafsIyIOr1FaMEwxiYllIEmJ93BpxSsDi2dgCjrMbpCnnhJam6t5TSnLKrKdA2yLVmiE
+         zJMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUAR6zJCuaNZRlbVOxhY8me0lTsKb7w4BXuZ+Ry8iBTOcDErhg06JD5T4yiORQLg9TLmBQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx1zA1YMD4V52/EDjdz7TTKaeSiScH2h7L7G9FhTr/5YS65zpPD
+	N7laSV95ouL/mVa1mBcTrXYFigw5tQx6y8oyzIltyKSuxdNrlR5y3jy0
+X-Gm-Gg: ASbGncvaQ0VTodE6RDiNFJx/G4Yq7qAv2ZYu/qukAssa7x2J76sjxKz6Aa0U30LLR/N
+	njLg9d+jtUdB51P2HYujlqu+T0tDMIVgkhlnWPAfBw/FIN2SgfxX8rPgL2PwjA+o5sHHi4TVxBA
+	Rk9h5UzJf7nNxQ7weWzoIjex08zBk/DQ6KM4Q5aH129bPISJK8SEMCsedpvowUoU5STXHsOiSLl
+	1eePf3C9P7WRnw7M4Qp0SMb2134xZQYscsRMKo7/sWpNwdsnDqx8WHssZPnco1HsXrDecWXiLQl
+	bDztLSGctdLC45Z+Q/BOknJgQMdQ3a+uGWdYCJ9og+zioZ18dSwVeZZ2cEMfXX4uNjPvNaAJ2TJ
+	fwQkAaO3ScgoYw0MmLXspollwi56W3rV3WQeVmCuAj+hsCKDUetXBnQJAmTg8EYdZVNGZM+A=
+X-Google-Smtp-Source: AGHT+IFONxPppaW3ozIBQzjr6I8fgJ+phfZt+V8YLrEQddIILmr1qCkBYP+C9eg364XGludvSH4+bw==
+X-Received: by 2002:a17:90b:184d:b0:311:f684:d3cd with SMTP id 98e67ed59e1d1-31c9f3c6068mr34563581a91.12.1753160293400;
+        Mon, 21 Jul 2025 21:58:13 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31cc3f44970sm7172415a91.39.2025.07.21.21.58.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Jul 2025 21:58:12 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <2e9c96c6-6dfb-4232-a9ab-a3e78b718fc2@roeck-us.net>
+Date: Mon, 21 Jul 2025 21:58:10 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: (subset) [PATCH v1 0/3] spidev: introduce trivial abb sensor
  device
-Content-Language: en-US
-To: Krzysztof Kozlowski <krzk@kernel.org>, Mark Brown <broonie@kernel.org>,
- linux-spi@vger.kernel.org
+To: hs@denx.de, Krzysztof Kozlowski <krzk@kernel.org>,
+ Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Andrei Lalaev <andrey.lalaev@gmail.com>,
  Chanh Nguyen <chanh@os.amperecomputing.com>,
  Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Grant Peltier <grantpeltier93@gmail.com>, Guenter Roeck
- <linux@roeck-us.net>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Grant Peltier <grantpeltier93@gmail.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
  Michal Simek <michal.simek@amd.com>,
@@ -60,80 +90,116 @@ Cc: linux-kernel@vger.kernel.org, Andrei Lalaev <andrey.lalaev@gmail.com>,
 References: <20250719063355.73111-1-hs@denx.de>
  <175311337130.327079.7374455187420344577.b4-ty@kernel.org>
  <d677ecd9-42d6-43fe-8fe1-a5afd4d270e2@kernel.org>
-Reply-To: hs@denx.de
-From: Heiko Schocher <hs@denx.de>
-In-Reply-To: <d677ecd9-42d6-43fe-8fe1-a5afd4d270e2@kernel.org>
+ <8a8106ea-83d3-e02a-9ae7-ea4a66e4c248@denx.de>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <8a8106ea-83d3-e02a-9ae7-ea4a66e4c248@denx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hello Krzysztof,
-
-On 21.07.25 18:24, Krzysztof Kozlowski wrote:
-> On 21/07/2025 17:56, Mark Brown wrote:
->> On Sat, 19 Jul 2025 08:33:51 +0200, Heiko Schocher wrote:
->>> This series introduces the changes needed for trivial spi
->>> based sensors from ABB, currently operated from userspace.
->>>
->>> The last patch adds the spidevices to the DTS files, already
->>> in mainline.
->>>
->>> make dtbs_check showed no errors/warnings for the dts files
->>>
->>> [...]
->>
->> Applied to
->>
->>     https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
->>
->> Thanks!
->>
->> [1/3] dt-bindings: trivial-devices: Document ABB sensors
->>        commit: aad2f87cbcab56b322109d26d7b11842a09df91f
->> [2/3] spi: spidev: Add an entry for the ABB spi sensors
->>        commit: d60f7cab7c04944a79af16caa43c141e780a59c6
->>
+On 7/21/25 21:05, Heiko Schocher wrote:
+> Hello Krzysztof,
 > 
+> On 21.07.25 18:24, Krzysztof Kozlowski wrote:
+>> On 21/07/2025 17:56, Mark Brown wrote:
+>>> On Sat, 19 Jul 2025 08:33:51 +0200, Heiko Schocher wrote:
+>>>> This series introduces the changes needed for trivial spi
+>>>> based sensors from ABB, currently operated from userspace.
+>>>>
+>>>> The last patch adds the spidevices to the DTS files, already
+>>>> in mainline.
+>>>>
+>>>> make dtbs_check showed no errors/warnings for the dts files
+>>>>
+>>>> [...]
+>>>
+>>> Applied to
+>>>
+>>>     https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+>>>
+>>> Thanks!
+>>>
+>>> [1/3] dt-bindings: trivial-devices: Document ABB sensors
+>>>        commit: aad2f87cbcab56b322109d26d7b11842a09df91f
+>>> [2/3] spi: spidev: Add an entry for the ABB spi sensors
+>>>        commit: d60f7cab7c04944a79af16caa43c141e780a59c6
+>>>
+>>
+>>
+>> That's unexpected, Mark. Patches received two objections/comments and I
+>> don't think discussion was resolved.
+>>
+>> ABB is huge company, probably making hundreds or more of sensors. The
+>> patchset basically claims that all of them work with spidev. It does not
+>> providing any model names or details, so it seems really incomplete to
+>> call them trivial devices.
 > 
-> That's unexpected, Mark. Patches received two objections/comments and I
-> don't think discussion was resolved.
+> I do not know how many different sensors they have, nor if that department can
+> speak for the whole company...
 > 
-> ABB is huge company, probably making hundreds or more of sensors. The
-> patchset basically claims that all of them work with spidev. It does not
-> providing any model names or details, so it seems really incomplete to
-> call them trivial devices.
+> What I have as information is:
+> https://lore.kernel.org/linux-spi/2477dc64-92a0-9dc9-d168-56646d0d796e@denx.de/
+> 
+> and I get no more information about them currently. May I should
+> add some sort of trivial into compatible name? Something like
+> 
+> "abb,spi-trivial-sensor"
+> or
+> "abb,spidev-trivial-sensor"
+> 
+> which makes it clearer, that only ABB trivial sensor, controlled through spidev
+> driver, is connected here?
+> 
 
-I do not know how many different sensors they have, nor if that department can
-speak for the whole company...
+FWIW, I always thought that devicetree is not supposed to contain such generic
+information. Is it even appropriate to list something like this in devicetree
+in the first place ?
 
-What I have as information is:
-https://lore.kernel.org/linux-spi/2477dc64-92a0-9dc9-d168-56646d0d796e@denx.de/
+If so, what prevents anyone from submitting hundreds of
+"<company>,spidev-trivial-<device-type>" entries, using the same line of argument ?
 
-and I get no more information about them currently. May I should
-add some sort of trivial into compatible name? Something like
+Guenter
 
-"abb,spi-trivial-sensor"
-or
-"abb,spidev-trivial-sensor"
-
-which makes it clearer, that only ABB trivial sensor, controlled through spidev
-driver, is connected here?
-
-Looking into definiton of "trivial devices" in
-Documentation/devicetree/bindings/trivial-devices.yaml
-"""
-description: |
-   This is a list of trivial I2C and SPI devices that have simple device tree
-   bindings, consisting only of a compatible field, an address and possibly an
-   interrupt line.
-"""
-
-which fits exactly, as they even have nothing more than the SPI lines
-connected to the carrier board(s).
-
-bye,
-Heiko
--- 
-DENX Software Engineering GmbH, Managing Director: Johanna Denk, Tabea Lutz
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-52   Fax: +49-8142-66989-80   Email: hs@denx.de
