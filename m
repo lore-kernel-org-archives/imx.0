@@ -1,262 +1,172 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451022E336B
-	for <imx@lists.linux.dev>; Tue, 22 Jul 2025 10:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D8D28C2B2;
+	Tue, 22 Jul 2025 11:07:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753180643; cv=none; b=kkGCNowyqQz3Xt8sTRh24nT0mPgKFXZfzNiq6/DXz8lWSbqCyPb1ZVeoVEvflSfLGrEBUoaTKA6ix/Z9+N0DAwKb9yxjegpabWrfzN4uduyKlVqxib1DPivh53YjDrOh6ijFnoRcAtsGtoxPEkA2oCjPcIwM4VUxZNCKArdADJM=
+	t=1753182468; cv=none; b=HO0541ePuy2NhNmaCudXcbeLJHMlUaHk9syEweaKOoTh1cWGxL9UhPwqowCuXkSmbC66r9noNVA0/HL+8kadPo6miUT5ZR8CC1IZ4Mm8Wsusz3JNr3M5GNWec91CrZNR4ZTJ/wjBASUeelareZWD9mXYc/nL5tnIJaAmGzeNjiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753180643; c=relaxed/simple;
-	bh=544owQth2eYHOtuZem85B7R//X9yXkusHL8qgRLe1MY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGaSO2YVEfbsx/GLI3DZErtQOr+9M464UbBSD6aR7eOECHvuHn34ojjkB8R4yXQeksJ1xYtA3DL0g7OInQxb3PsmlbyDqPtQwI19z0tbgtT38ZPkisCtxfXNkFWj/tKEWRUJyygYHK6GJ0AyL+tfnjNbkvWt49X2pujARYBd888=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=DtHG6Bua; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1753182468; c=relaxed/simple;
+	bh=/14uXHwAwgSzAFwwMlCyP9/kFWZdtLnT4aQT+J/gJeM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LzkVDtSq+MVevwrhk3/PA6sgn2lv1JFXc4gMb7YpYl33XzrRnF3GQ9pI8ULLkYM4j39aszUP7HilwZINi+zkX+16aBmrpK0R/uSKCwog3+Bm/c6fwgWCasXO2kjLj1HeWtCGsHgb4npsSmMWFsuZrk3nWkRiNVVSAlM2pQwBpeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gW45WRJ6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="DtHG6Bua"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-611f74c1837so10224743a12.3
-        for <imx@lists.linux.dev>; Tue, 22 Jul 2025 03:37:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1753180640; x=1753785440; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2oVD/JfoNNaDmsm+Xmi5oDSaNjfSX3YkjZgxJuhnDRo=;
-        b=DtHG6Bua4ijT0uwPuSHT06Tx9qfNbqgTjBboOW8Qo9TAXzjJfCdFcOaDxYPntEJ1gs
-         qtGSirnNup+myRqLofqtTU3NHJlKGd2geOLi286Bms3MKdlC/vzD+lm6WMUsIKTBz3WQ
-         94EP+s86RR1miRX1vnaiMxYcnIbYGSpAOG6tw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753180640; x=1753785440;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2oVD/JfoNNaDmsm+Xmi5oDSaNjfSX3YkjZgxJuhnDRo=;
-        b=PWX2UxCItes98wcD2bschg+3bdOVsavCfr0rN05ZqTCeuxvh1S0tmAeukcAc45GNQF
-         b5Ih1K8X3aJAS7oY+VXPuh9owzMldUR8NggpxvBFNoCGiMHVQo/6Xu9krsnTt4OxxuKF
-         daF3PbWYnHr5KDXzQthFFGECwtiqXrBFQohtR0q5VE289el1bVZ5/9QrkzqGrP88d+1y
-         vHneGzi4Lf8K+otoDWdRJ5dMmLmHpQk+Nb1Elh5HZyx8oaBYjyzYBBsocxjqRTlamgTX
-         Md1nPY9VxpNTvIZ6UNeUMPqPDEtwDn6ustGkL8qtQRBnz2D+603bzl/k/Nku6mbh1sTo
-         Rm5w==
-X-Forwarded-Encrypted: i=1; AJvYcCXBRUcMyETUO/jrpZ5G29EELmepOFvyoTVIfVPhpoWsNRqDboc5pcVS1SxhxFi8HuNGD3Q=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz7ZgXb6lxHqSirxJ+gNJhgG/ai8wHHN3ZIT0ch0h/3L7GvuWAQ
-	BpVl8qgnLit4wxkrZQSzC1bnPz0YkdZjeWD4EkPK+1Y8M72MLDc4GaD86SxZc2MdnGc=
-X-Gm-Gg: ASbGncukhEpxrPf96SjZyoDcM7ZkvoIAC9Ld3HETQhFPATr/fFtRMY6zbuPBwGvUZwT
-	ScURNcshTbRdy+tibMBzaOB9xOXnlYNOXJZ4NHB5NvTc1XJ2FviDLs1RJAhjsOSHoAGL6GWfHOv
-	Fh70V/Igs4OM/EKCC+BuFomQ2xxvXxlfnmxb5y0EqsCgNX9E7GcMKWO/bMNm1W0jWIjhiQKqcPi
-	rm49aBGkpdbx+ObzG3ZbD/Nq2y8LJPHBGHyD0xPLm2X44XW4miH/mejCy0CnrmQFDOOy1Ymf5vR
-	bLI0a0/GYKYXQZLaiz39izGO4ie8A03ea6awS3TP5gsAa7UqxRLkqLsnbgh9SWs3uqXXqfPZh7z
-	EkzCwhC3ICdv6/8lWTAAeS3kW6/keirYX+gWaRz1tiSXiKLwPmaLZsDZ+4ME=
-X-Google-Smtp-Source: AGHT+IGStQC9p3KnKnSdXHMyUMvaqHcAacRkAh69PXIKKkeDsY2m0YgH1GOz6iF/AlAHUl9+4h+0Uw==
-X-Received: by 2002:a17:907:3e93:b0:ae3:d026:36cd with SMTP id a640c23a62f3a-aec6a6235eemr1682182966b.42.1753180639487;
-        Tue, 22 Jul 2025 03:37:19 -0700 (PDT)
-Received: from localhost.localdomain ([2001:b07:6474:ebbf:2bba:d7b0:8e79:c982])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6ca310e2sm844568766b.79.2025.07.22.03.37.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 03:37:19 -0700 (PDT)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-amarula@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Trimarchi <michael@amarulasolutions.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH 4/4] Input: imx6ul_tsc - use BIT, FIELD_{GET,PREP} and GENMASK macros
-Date: Tue, 22 Jul 2025 12:36:18 +0200
-Message-ID: <20250722103706.3440777-5-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250722103706.3440777-1-dario.binacchi@amarulasolutions.com>
-References: <20250722103706.3440777-1-dario.binacchi@amarulasolutions.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gW45WRJ6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8896CC4CEEB;
+	Tue, 22 Jul 2025 11:07:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753182467;
+	bh=/14uXHwAwgSzAFwwMlCyP9/kFWZdtLnT4aQT+J/gJeM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gW45WRJ6520Gtzde2MTNJNG/WTRctoEQS/jOoYMh5KKIZkAcxGIJT6aa/TV3WyHmK
+	 X2fXDNM6iwYTuSZkQndh1aBuyrg14w4hVGkLtvP29O/SdOILBp3UT6OlD704hPR0o5
+	 9NyImMd6XXmkcJ96Sb6OSxMTgbV1LMoBtKFdslSQv5LYY0JuWzW/RHdM1wS2AW2gQZ
+	 DLgtz0SytHpEebb6LhMrlbB8bFi3V0Q2A+3ZvlPa2pkU/CHXywOobI4ZsuhV/DgAcH
+	 aICP06t3ew7J6TupHEJEdFnMCHNCV8RGaSqvN8vj3xg878T2+9dGxJwYuagZt53cwa
+	 mazM7CaZESpsg==
+Message-ID: <07ac9244-c4cb-441e-83c1-20dfd01b2fe7@kernel.org>
+Date: Tue, 22 Jul 2025 13:07:40 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: (subset) [PATCH v1 0/3] spidev: introduce trivial abb sensor
+ device
+To: hs@denx.de, Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Andrei Lalaev <andrey.lalaev@gmail.com>,
+ Chanh Nguyen <chanh@os.amperecomputing.com>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Grant Peltier <grantpeltier93@gmail.com>, Guenter Roeck
+ <linux@roeck-us.net>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Michal Simek <michal.simek@amd.com>,
+ Naresh Solanki <naresh.solanki@9elements.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20250719063355.73111-1-hs@denx.de>
+ <175311337130.327079.7374455187420344577.b4-ty@kernel.org>
+ <d677ecd9-42d6-43fe-8fe1-a5afd4d270e2@kernel.org>
+ <8a8106ea-83d3-e02a-9ae7-ea4a66e4c248@denx.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <8a8106ea-83d3-e02a-9ae7-ea4a66e4c248@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Replace opencoded masking and shifting, with BIT(), GENMASK(),
-FIELD_GET() and FIELD_PREP() macros.
+On 22/07/2025 06:05, Heiko Schocher wrote:
+> Hello Krzysztof,
+> 
+> On 21.07.25 18:24, Krzysztof Kozlowski wrote:
+>> On 21/07/2025 17:56, Mark Brown wrote:
+>>> On Sat, 19 Jul 2025 08:33:51 +0200, Heiko Schocher wrote:
+>>>> This series introduces the changes needed for trivial spi
+>>>> based sensors from ABB, currently operated from userspace.
+>>>>
+>>>> The last patch adds the spidevices to the DTS files, already
+>>>> in mainline.
+>>>>
+>>>> make dtbs_check showed no errors/warnings for the dts files
+>>>>
+>>>> [...]
+>>>
+>>> Applied to
+>>>
+>>>     https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+>>>
+>>> Thanks!
+>>>
+>>> [1/3] dt-bindings: trivial-devices: Document ABB sensors
+>>>        commit: aad2f87cbcab56b322109d26d7b11842a09df91f
+>>> [2/3] spi: spidev: Add an entry for the ABB spi sensors
+>>>        commit: d60f7cab7c04944a79af16caa43c141e780a59c6
+>>>
+>>
+>>
+>> That's unexpected, Mark. Patches received two objections/comments and I
+>> don't think discussion was resolved.
+>>
+>> ABB is huge company, probably making hundreds or more of sensors. The
+>> patchset basically claims that all of them work with spidev. It does not
+>> providing any model names or details, so it seems really incomplete to
+>> call them trivial devices.
+> 
+> I do not know how many different sensors they have, nor if that department can
+> speak for the whole company...
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Considering how big company is, they could have 1 or 1000 sensors.
 
----
+> 
+> What I have as information is:
+> https://lore.kernel.org/linux-spi/2477dc64-92a0-9dc9-d168-56646d0d796e@denx.de/
+> 
+> and I get no more information about them currently. May I should
+> add some sort of trivial into compatible name? Something like
+> 
+> "abb,spi-trivial-sensor"
+> or
+> "abb,spidev-trivial-sensor"
 
- drivers/input/touchscreen/imx6ul_tsc.c | 88 ++++++++++++++------------
- 1 file changed, 48 insertions(+), 40 deletions(-)
+No, you need model numbers.
 
-diff --git a/drivers/input/touchscreen/imx6ul_tsc.c b/drivers/input/touchscreen/imx6ul_tsc.c
-index a6066643bd48..e74999c5e22f 100644
---- a/drivers/input/touchscreen/imx6ul_tsc.c
-+++ b/drivers/input/touchscreen/imx6ul_tsc.c
-@@ -21,25 +21,23 @@
- #include <linux/log2.h>
- 
- /* ADC configuration registers field define */
--#define ADC_AIEN		(0x1 << 7)
-+#define ADC_AIEN		BIT(7)
-+#define ADC_ADCH_MASK		GENMASK(4, 0)
- #define ADC_CONV_DISABLE	0x1F
--#define ADC_AVGE		(0x1 << 5)
--#define ADC_CAL			(0x1 << 7)
--#define ADC_CALF		0x2
--#define ADC_12BIT_MODE		(0x2 << 2)
--#define ADC_CONV_MODE_MASK	(0x3 << 2)
-+#define ADC_AVGE		BIT(5)
-+#define ADC_CAL			BIT(7)
-+#define ADC_CALF		BIT(1)
-+#define ADC_CONV_MODE_MASK	GENMASK(3, 2)
-+#define ADC_12BIT_MODE		0x2
- #define ADC_IPG_CLK		0x00
--#define ADC_INPUT_CLK_MASK	0x3
--#define ADC_CLK_DIV_8		(0x03 << 5)
--#define ADC_CLK_DIV_MASK	(0x3 << 5)
--#define ADC_SHORT_SAMPLE_MODE	(0x0 << 4)
--#define ADC_SAMPLE_MODE_MASK	(0x1 << 4)
--#define ADC_HARDWARE_TRIGGER	(0x1 << 13)
--#define ADC_AVGS_SHIFT		14
--#define ADC_AVGS_MASK		(0x3 << 14)
-+#define ADC_INPUT_CLK_MASK	GENMASK(1, 0)
-+#define ADC_CLK_DIV_8		0x03
-+#define ADC_CLK_DIV_MASK	GENMASK(6, 5)
-+#define ADC_SAMPLE_MODE		BIT(4)
-+#define ADC_HARDWARE_TRIGGER	BIT(13)
-+#define ADC_AVGS_MASK		GENMASK(15, 14)
- #define SELECT_CHANNEL_4	0x04
- #define SELECT_CHANNEL_1	0x01
--#define DISABLE_CONVERSION_INT	(0x0 << 7)
- 
- /* ADC registers */
- #define REG_ADC_HC0		0x00
-@@ -66,20 +64,26 @@
- #define REG_TSC_DEBUG_MODE	0x70
- #define REG_TSC_DEBUG_MODE2	0x80
- 
-+/* TSC_MEASURE_VALUE register field define */
-+#define X_VALUE_MASK		GENMASK(27, 16)
-+#define Y_VALUE_MASK		GENMASK(11, 0)
-+
- /* TSC configuration registers field define */
--#define DETECT_4_WIRE_MODE	(0x0 << 4)
--#define AUTO_MEASURE		0x1
--#define MEASURE_SIGNAL		0x1
--#define DETECT_SIGNAL		(0x1 << 4)
--#define VALID_SIGNAL		(0x1 << 8)
--#define MEASURE_INT_EN		0x1
--#define MEASURE_SIG_EN		0x1
--#define VALID_SIG_EN		(0x1 << 8)
-+#define MEASURE_DELAY_TIME_MASK	GENMASK(31, 8)
-+#define DETECT_5_WIRE_MODE	BIT(4)
-+#define AUTO_MEASURE		BIT(0)
-+#define MEASURE_SIGNAL		BIT(0)
-+#define DETECT_SIGNAL		BIT(4)
-+#define VALID_SIGNAL		BIT(8)
-+#define MEASURE_INT_EN		BIT(0)
-+#define MEASURE_SIG_EN		BIT(0)
-+#define VALID_SIG_EN		BIT(8)
- #define DE_GLITCH_MASK		GENMASK(30, 29)
- #define DE_GLITCH_DEF		0x02
--#define START_SENSE		(0x1 << 12)
--#define TSC_DISABLE		(0x1 << 16)
-+#define START_SENSE		BIT(12)
-+#define TSC_DISABLE		BIT(16)
- #define DETECT_MODE		0x2
-+#define STATE_MACHINE_MASK	GENMASK(22, 20)
- 
- struct imx6ul_tsc {
- 	struct device *dev;
-@@ -115,19 +119,20 @@ static int imx6ul_adc_init(struct imx6ul_tsc *tsc)
- 
- 	adc_cfg = readl(tsc->adc_regs + REG_ADC_CFG);
- 	adc_cfg &= ~(ADC_CONV_MODE_MASK | ADC_INPUT_CLK_MASK);
--	adc_cfg |= ADC_12BIT_MODE | ADC_IPG_CLK;
--	adc_cfg &= ~(ADC_CLK_DIV_MASK | ADC_SAMPLE_MODE_MASK);
--	adc_cfg |= ADC_CLK_DIV_8 | ADC_SHORT_SAMPLE_MODE;
-+	adc_cfg |= FIELD_PREP(ADC_CONV_MODE_MASK, ADC_12BIT_MODE) |
-+		FIELD_PREP(ADC_INPUT_CLK_MASK, ADC_IPG_CLK);
-+	adc_cfg &= ~(ADC_CLK_DIV_MASK | ADC_SAMPLE_MODE);
-+	adc_cfg |= FIELD_PREP(ADC_CLK_DIV_MASK, ADC_CLK_DIV_8);
- 	if (tsc->average_enable) {
- 		adc_cfg &= ~ADC_AVGS_MASK;
--		adc_cfg |= (tsc->average_select) << ADC_AVGS_SHIFT;
-+		adc_cfg |= FIELD_PREP(ADC_AVGS_MASK, tsc->average_select);
- 	}
- 	adc_cfg &= ~ADC_HARDWARE_TRIGGER;
- 	writel(adc_cfg, tsc->adc_regs + REG_ADC_CFG);
- 
- 	/* enable calibration interrupt */
- 	adc_hc |= ADC_AIEN;
--	adc_hc |= ADC_CONV_DISABLE;
-+	adc_hc |= FIELD_PREP(ADC_ADCH_MASK, ADC_CONV_DISABLE);
- 	writel(adc_hc, tsc->adc_regs + REG_ADC_HC0);
- 
- 	/* start ADC calibration */
-@@ -167,19 +172,21 @@ static void imx6ul_tsc_channel_config(struct imx6ul_tsc *tsc)
- {
- 	u32 adc_hc0, adc_hc1, adc_hc2, adc_hc3, adc_hc4;
- 
--	adc_hc0 = DISABLE_CONVERSION_INT;
-+	adc_hc0 = FIELD_PREP(ADC_AIEN, 0);
- 	writel(adc_hc0, tsc->adc_regs + REG_ADC_HC0);
- 
--	adc_hc1 = DISABLE_CONVERSION_INT | SELECT_CHANNEL_4;
-+	adc_hc1 = FIELD_PREP(ADC_AIEN, 0) |
-+		FIELD_PREP(ADC_ADCH_MASK, SELECT_CHANNEL_4);
- 	writel(adc_hc1, tsc->adc_regs + REG_ADC_HC1);
- 
--	adc_hc2 = DISABLE_CONVERSION_INT;
-+	adc_hc2 = FIELD_PREP(ADC_AIEN, 0);
- 	writel(adc_hc2, tsc->adc_regs + REG_ADC_HC2);
- 
--	adc_hc3 = DISABLE_CONVERSION_INT | SELECT_CHANNEL_1;
-+	adc_hc3 = FIELD_PREP(ADC_AIEN, 0) |
-+		FIELD_PREP(ADC_ADCH_MASK, SELECT_CHANNEL_1);
- 	writel(adc_hc3, tsc->adc_regs + REG_ADC_HC3);
- 
--	adc_hc4 = DISABLE_CONVERSION_INT;
-+	adc_hc4 = FIELD_PREP(ADC_AIEN, 0);
- 	writel(adc_hc4, tsc->adc_regs + REG_ADC_HC4);
- }
- 
-@@ -194,8 +201,9 @@ static void imx6ul_tsc_set(struct imx6ul_tsc *tsc)
- 	u32 debug_mode2;
- 	u32 start;
- 
--	basic_setting |= tsc->measure_delay_time << 8;
--	basic_setting |= DETECT_4_WIRE_MODE | AUTO_MEASURE;
-+	basic_setting |= FIELD_PREP(MEASURE_DELAY_TIME_MASK,
-+				    tsc->measure_delay_time);
-+	basic_setting |= AUTO_MEASURE;
- 	writel(basic_setting, tsc->tsc_regs + REG_TSC_BASIC_SETTING);
- 
- 	debug_mode2 = FIELD_PREP(DE_GLITCH_MASK, tsc->de_glitch);
-@@ -255,7 +263,7 @@ static bool tsc_wait_detect_mode(struct imx6ul_tsc *tsc)
- 
- 		usleep_range(200, 400);
- 		debug_mode2 = readl(tsc->tsc_regs + REG_TSC_DEBUG_MODE2);
--		state_machine = (debug_mode2 >> 20) & 0x7;
-+		state_machine = FIELD_GET(STATE_MACHINE_MASK, debug_mode2);
- 	} while (state_machine != DETECT_MODE);
- 
- 	usleep_range(200, 400);
-@@ -283,8 +291,8 @@ static irqreturn_t tsc_irq_fn(int irq, void *dev_id)
- 
- 	if (status & MEASURE_SIGNAL) {
- 		value = readl(tsc->tsc_regs + REG_TSC_MEASURE_VALUE);
--		x = (value >> 16) & 0x0fff;
--		y = value & 0x0fff;
-+		x = FIELD_GET(X_VALUE_MASK, value);
-+		y = FIELD_GET(Y_VALUE_MASK, value);
- 
- 		/*
- 		 * In detect mode, we can get the xnur gpio value,
--- 
-2.43.0
+> 
+> which makes it clearer, that only ABB trivial sensor, controlled through spidev
+> driver, is connected here?
 
+No, what is trivial? Which one is trivial and which one is not? How one
+judges that one sensor should go here and other should not?
+
+
+Best regards,
+Krzysztof
