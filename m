@@ -1,51 +1,49 @@
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DCD20FAB4
-	for <imx@lists.linux.dev>; Wed, 23 Jul 2025 04:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA722E371B;
+	Wed, 23 Jul 2025 05:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753246184; cv=none; b=CHQD+0j2o5gC7jG0Qe/X/5f+CO50a2yUPWYsAleuCvOtOqdMRh0rtccFpPeE05o0RPzsJHdLkTtZoz95uQEDMS1JK/QaeLUJQ1aYRxCA3AzBrurwtg/+kViBEzTrFgIehg7kWbQ15LklyKFMOQIMQdk6lBLdIYjmIVqRD5PCDTI=
+	t=1753247000; cv=none; b=p93jzfkqEowMHGg6YTv5HivkmOn6Tc17DXg5/GEW5cpMG2hHpn6OKK8/+tgBei8djNWXpyhgw6MSo8q34Ct2wWRv4unVaMzP+q/gJBeswbO/X+7ZJlvsuLwp28woosGyDQCV05sIVoq+e0HxqpqHvqZmCLWTuG1rcL1EmpL7TnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753246184; c=relaxed/simple;
-	bh=26EE2xjoIICOObnyz/2jnRgqEmWOtW4bbfbTz6qa83o=;
+	s=arc-20240116; t=1753247000; c=relaxed/simple;
+	bh=sGUgLIaP/Z0tvkzXFj01jJ3wxnd0SZ2j65uyOh60nU8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bKsHJjoD6i3cMoBb3Cz1qaxk3b+mZPsbzopmL3T7sfG31TE2seuhhIOnXL8m0M8v5Pl39jdTKNeaps+FaHC4I1j1jkBToK8EC3SvzjvtqiQohIr7kKyviyZ31rmJhqVfcrVEW2jvloGvSIBpC5+WGw/x6PP2cYnnvos9JNgttYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-681ff7000002311f-ec-688069e2743d
-Date: Wed, 23 Jul 2025 13:49:33 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: willy@infradead.org, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel_team@skhynix.com, almasrymina@google.com,
-	ilias.apalodimas@linaro.org, harry.yoo@oracle.com,
-	akpm@linux-foundation.org, andrew+netdev@lunn.ch,
-	asml.silence@gmail.com, toke@redhat.com, david@redhat.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, linux-rdma@vger.kernel.org,
-	bpf@vger.kernel.org, vishal.moola@gmail.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, jackmanb@google.com, wei.fang@nxp.com,
-	shenwei.wang@nxp.com, xiaoning.wang@nxp.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	sgoutham@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
-	hkelam@marvell.com, bbhushan2@marvell.com, tariqt@nvidia.com,
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
-	leon@kernel.org, mbloch@nvidia.com, danishanwar@ti.com,
-	rogerq@kernel.org, nbd@nbd.name, lorenzo@kernel.org,
-	ryder.lee@mediatek.com, shayne.chen@mediatek.com,
-	sean.wang@mediatek.com, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	aleksander.lobakin@intel.com, horms@kernel.org, m-malladi@ti.com,
-	krzysztof.kozlowski@linaro.org, matthias.schiffer@ew.tq-group.com,
-	robh@kernel.org, imx@lists.linux.dev,
-	intel-wired-lan@lists.osuosl.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v12 00/12] Split netmem from struct page
-Message-ID: <20250723044933.GA8691@system.software.com>
-References: <20250721021835.63939-1-byungchul@sk.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=amg951U3+pbJTzl8EsQaorfpnmcaIRiJKE+HRy6tZ4dupKiu8/LM8W6i90dBFK8gadahuzc215567iGplBiMm5RKKWLnNqoDvkkL6gqzKwNbLdJf2rL96JKbVKaLtv9yfmY9s+3KJBpzaV+oIlJhmU/QCTVLtKLvzKPZCpHuZa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FFgEIPu6; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FFgEIPu6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA37BC4CEE7;
+	Wed, 23 Jul 2025 05:03:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753247000;
+	bh=sGUgLIaP/Z0tvkzXFj01jJ3wxnd0SZ2j65uyOh60nU8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FFgEIPu6EtnEWZfeCcl7APZas9ZV/jC40tp36n3EIp3UKg9u+eUDU/r7QPtMC6P4Q
+	 VQYwQyS/i9wKs4m6/WTcYuqrB42CNH3M1FmZ60WeahCovItnFKxozFtfertYHnbUac
+	 1lwlt44WaPTjHODh4/7ulZngjKNdV9IHvk7YzJ2a2DisyqywDmCHxM7+RXX2DV9Kvf
+	 eJdR7nLSOJbVCxJBS/E2+JMbiRVYS1KYhotkq+MFsBlK6p6BvbWdez+EGizC2tUBry
+	 fZE1OD8tADJ7hVdTk4vrrU/XxuL0AJT1jfF/IN1ljbMDcB1sJfPJT8xROh9fWCRdQk
+	 uv6LtbP0pa0MA==
+Date: Wed, 23 Jul 2025 00:03:19 -0500
+From: Rob Herring <robh@kernel.org>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-input@vger.kernel.org
+Subject: Re: [PATCH 2/4] dt-bindings: input: touchscreen: fsl,imx6ul-tsc: add
+ fsl,glitch-threshold
+Message-ID: <20250723050319.GA1239529-robh@kernel.org>
+References: <20250722103706.3440777-1-dario.binacchi@amarulasolutions.com>
+ <20250722103706.3440777-3-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,217 +52,57 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250721021835.63939-1-byungchul@sk.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTZxTG8973frWjyV0n7p2ELOlmlpEA6tSdkfkRN+Pd4jIjicnc4mzG
-	zdoI1RRtgWSjIszZrUjAZbYrGU4sn4opAzqsbBaCnZrxJVj5KA42glpErVQqrqzXzMz/njzn
-	ye85Jzk8Vleyy3i9Yb9kNGizNaySVs4k/JQ6qbfoVnh3g7OpkYW+8AkGGubzoOaGh4H+OgLn
-	eucpcNa3IngQHeHAfWQUQ7jrIgsnT0QwRM/aaHD2FNMw1/QIw9/dExz4ff/Q0OD+AMZdUzR4
-	D7dh6JxbDhNH/SzYihcw2IMlLCwOLzBwPnqHgyJPLQXnb7dw0NtaysCxR6cwtFluxLsmhxgY
-	aHeyMHCoD0GwcZGBKV+8MFQ7ykFpgwOB79c6FoqK34BQywMO7n7XhWG8dCPEjpugu2opRC6H
-	EIycGqRg0evh4I/gGQa6mtoouPpnFEPk20oWrDNHEQza2ym4UnmWgerLV6n4HpkwtPiYgor+
-	KhYmi8cR9HdO0PDDwVIETR0BBu554ycvzDvZjZvEztAsFj1j1Uj8ue46JU6XxSgx0HGJEn9x
-	jHFilfuA2FybIp703qREa6Afi+76I6zovl/OiaNDXlb0H1+gxebqQnG62Y62Je9Uvp0lZetN
-	kjF9/W6lzve9ndpXti4veK0CW1BNuhUpeCKsJm1fVaCneup0JS1rWlhOHn5dwciaFV4jgUAU
-	WxHPLxHSyVD5R1ak5LFwMIFMh2xYzrwgbCYufzsrZ1TCm8QSTpZttbCGhG55nmBUwvPkd/tf
-	T/BYSCGB2E1KjmMhidTEeNlWCGvJRPw/ZJ0ovEJ+a71IyVVEmFKQMxdm/1vzJXKhNkCXIcHx
-	DNbxDNbxP7YK4Xqk1htMOVp99uo0Xb5Bn5f22d4cN4o/reuLxx970P3eTB8SeKRJUFlaCnVq
-	RmvKzc/xIcJjzRJV5NyXOrUqS5tfIBn3fmo8kC3l+lAST2teVK2KmLPUwufa/dIeSdonGZ9O
-	KV6xzIKoolt7fFvL3hteqcw4vYGkHrs3IjWGt3U0JJpnMt9PchUGDyfv2pGyvUSlNy/tDpk+
-	2ZThV8x5pkXbZqvd9m7XW3fuftg6vMJV9GOB25oa3rJr+3ODW8fKC2LmxENrHloMO+Gdktdd
-	PePeb3ZkZM2aS7g0tGVV5OWeAYNkeLUv47qGztVpV6ZgY672X7cHPHiwAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Se0xTdxTO7/7ui4Yb7yrDG3FL1sUZSZQtvk6iGybGcLPExYUZnfFBgze2
-	A6procKSYdGazWZUlI3ZUhJQ5K0lRaBCRVeYgJqpFLAqFq0bAVfng4KWsmJrssz/vnPO9zh/
-	fCyWh6mFrFqTK2k1ymwFLSNlX6w9vMyvNqg+vl7yAdjsTTTcmqyioPFVPtQ+cFIwUC9A581X
-	BNga2hAEQ/cYcBwdwTDZ00vD6appDKHmYhJsN4wkTNlnMPx1xc9An/tfEhodm2C0ZowE1w/t
-	GLqnFoP/WB8NxcYwBovvCA1zd8MUXAz9w8AhZx0B3RX90fHvVgZutpkp+HnmDIZ2w4No4KNh
-	CjwdNho8h28h8DXNUTDmjqYG6kYYMDdaEbgv1dNwyLgCAq1BBp790oNh1LweIif1cKUyEaav
-	BRDcOzNEwJzLycAfvnMU9NjbCRh8GMIw/VMFDaYnxxAMWToIuF7RTEH1tUEi+kc6DM/NElA6
-	UEnDI+MogoFuPwnlRWYE9i4vBc9dRnL9BrE78BSLzvvVSDxff4cQx0sihOjtukqIF6z3GbHS
-	kSe21CWLp10ThGjyDmDR0XCUFh0vTjDiyLCLFvtOhkmxpfqgON5iQZvf3y5bt0fKVuslbcpn
-	GTKV+1cLsb/k03zf7VJsQLUpJhTHCvxKYexsBRnDJL9YePljKRXDNL9E8HpD2IRYNoFPEYZP
-	fG1CMhbzRfHCeKAYxzjz+Y1CTV8HHeNw/BrBMPlebC3nVwmBx843Nhz/jtBv+fONPeaTBW9k
-	gojRMZ8k1EbY2DqOXy34o52I4Xf5D4XLbb1ECeKsb6mtb6mt/6srEW5ACWqNPkepzl61XJel
-	KtCo85dn7stxoGgla76fPe5EQU+aG/EsUsRzhtaDKjml1OsKctxIYLEigZvuLFTJuT3Kgu8k
-	7b7d2rxsSedGSSypWMB9vlXKkPN7lblSliTtl7T/XQk2bqEBpS7b9HLBXfztog1lEfNmQ5DD
-	X5Vn2TqbS6fsHbNLf0trMj7ZSeWdO1B28XjeN5nBVI/nam2z/EhNfvnMjR31iUVdZ8eTuLKq
-	das1232ndqf9vmhbYa4ulO5cUljOFMxLjcDjXRnz5Dk7Mh1beqvCienJXw7F09sI/dBlV9nE
-	R/2DClKnUn6SjLU65WsqBJKsjgMAAA==
-X-CFilter-Loop: Reflected
+In-Reply-To: <20250722103706.3440777-3-dario.binacchi@amarulasolutions.com>
 
-On Mon, Jul 21, 2025 at 11:18:23AM +0900, Byungchul Park wrote:
-> Hi all,
+On Tue, Jul 22, 2025 at 12:36:16PM +0200, Dario Binacchi wrote:
+> Add support for glitch threshold configuration. A detected signal is valid
+> only if it lasts longer than the set threshold; otherwise, it is regarded
+> as a glitch.
 > 
-> The MM subsystem is trying to reduce struct page to a single pointer.
-> See the following link for your information:
-> 
->    https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
-> 
-> The first step towards that is splitting struct page by its individual
-> users, as has already been done with folio and slab.  This patchset does
-> that for page pool.
-> 
-> Matthew Wilcox tried and stopped the same work, you can see in:
-> 
->    https://lore.kernel.org/linux-mm/20230111042214.907030-1-willy@infradead.org/
-> 
-> I focused on removing the page pool members in struct page this time,
-> not moving the allocation code of page pool from net to mm.  It can be
-> done later if needed.
-> 
-> The final patch that removes the page pool fields will be posted once
-> all the conversions are completed.
-> 
-> 	Byungchul
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 > ---
-> Changes from v11:
-> 	1. Rebase on net-next/main as of Jul 21.
-> 	2. Change page_pool_page_is_pp() to check for const type of
-> 	   page.  For now that it's called along with every
-> 	   pp_page_to_nmdesc() call as Pavel suggested,
-> 	   page_pool_page_is_pp() should also cover const type of page.
+> 
+>  .../input/touchscreen/fsl,imx6ul-tsc.yaml      | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-tsc.yaml b/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-tsc.yaml
+> index 678756ad0f92..2fee2940213f 100644
+> --- a/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-tsc.yaml
+> +++ b/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-tsc.yaml
+> @@ -62,6 +62,23 @@ properties:
+>      description: Number of data samples which are averaged for each read.
+>      enum: [ 1, 4, 8, 16, 32 ]
+>  
+> +  fsl,glitch-threshold:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    default: 0
+> +    enum: [ 0, 1, 2, 3 ]
+> +    description: |
+> +      Indicates the glitch threshold. The threshold is defined by number
+> +      of clock cycles. A detect signal is only valid if it is exist longer
+> +      than threshold; otherwise, it is regarded as a glitch.
+> +      0: Normal function: 8191 clock cycles
+> +         Low power mode: 9 clock cycles
+> +      1: Normal function: 4095 clock cycles
+> +         Low power mode: 7 clock cycles
+> +      2: Normal function: 2047 clock cycles
+> +         Low power mode: 5 clock cycles
+> +      3: Normal function: 1023 clock cycles
+> +         Low power mode: 3 clock cycles
 
-I believe the curretn version is good enough.
+Don't we have common properties for this expressed in time? Debounce 
+time IIRC.
 
-	Byungchul
-
-> Changes from v10:
-> 	1. Introduce __netmem_to_nmdesc() and use it in
-> 	   __netmem_get_pp(). (feedbacked by Mina)
-> 	2. Fix a bug that fails on casting 'const page -> const
-> 	   netmem_desc', by using macros and _Generic. (feedbacked by
-> 	   test robot)
-> 	3. Add comment on pp_page_to_nmdesc() to ask for more attention
-> 	   before using the helper. (feedbacked by Mina)
-> 
-> Changes from v9:
-> 	1. Remove the patch 'page_pool: access ->pp_magic through
-> 	   netmem_desc in page_pool_page_is_pp()' and decide to wait for
-> 	   Pavel's work of PageNetpp() to identify page type for page
-> 	   pool, that doesn't need to access ->pp_magic.
-> 	2. Rename page_to_nmdesc() to pp_page_to_nmdesc() and add
-> 	   DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page)) in it,
-> 	   just in case. (feedbacked by Pavel)
-> 	3. Apply just simple casting from page to netmem_desc for
-> 	   accessing ->pp and ->pp_ref_count, instead of full converting
-> 	   page to netmem_ref for network drivers e.g. mlx4, netdevsim,
-> 	   and mt76.
-> 	4. Expand the support for drivers to access ->pp and
-> 	   ->pp_ref_count to fec, octeontx2-pf, iavf, idpf, mlx5, ti,
-> 	   and xdp.
-> 	5. Squash each helper with its first user. (feedbacked by Mina)
-> 
-> Changes from v8:
-> 	1. Rebase on net-next/main as of Jul 10.
-> 	2. Exclude non-controversial patches that have already been
-> 	   merged to net-next.
-> 	3. Re-add the patches that focus on removing accessing the page
-> 	   pool fields in struct page.
-> 	4. Add utility APIs e.g. casting, to use struct netmem_desc as
-> 	   descriptor, to support __netmem_get_pp() that has started to
-> 	   be used again e.g. by libeth.
-> 
-> Changes from v7 (no actual updates):
-> 	1. Exclude "netmem: introduce struct netmem_desc mirroring
-> 	   struct page" that might be controversial.
-> 	2. Exclude "netmem: introduce a netmem API,
-> 	   virt_to_head_netmem()" since there are no users.
-> 
-> Changes from v6 (no actual updates):
-> 	1. Rebase on net-next/main as of Jun 25.
-> 	2. Supplement a comment describing struct net_iov.
-> 	3. Exclude a controversial patch, "page_pool: access ->pp_magic
-> 	   through struct netmem_desc in page_pool_page_is_pp()".
-> 	4. Exclude "netmem: remove __netmem_get_pp()" since the API
-> 	   started to be used again by libeth.
-> 
-> Changes from v5 (no actual updates):
-> 	1. Rebase on net-next/main as of Jun 20.
-> 	2. Add given 'Reviewed-by's and 'Acked-by's, thanks to all.
-> 	3. Add missing cc's.
-> 
-> Changes from v4:
-> 	1. Add given 'Reviewed-by's, thanks to all.
-> 	2. Exclude potentially controversial patches.
-> 
-> Changes from v3:
-> 	1. Relocates ->owner and ->type of net_iov out of netmem_desc
-> 	   and make them be net_iov specific.
-> 	2. Remove __force when casting struct page to struct netmem_desc.
-> 
-> Changes from v2:
-> 	1. Introduce a netmem API, virt_to_head_netmem(), and use it
-> 	   when it's needed.
-> 	2. Introduce struct netmem_desc as a new struct and union'ed
-> 	   with the existing fields in struct net_iov.
-> 	3. Make page_pool_page_is_pp() access ->pp_magic through struct
-> 	   netmem_desc instead of struct page.
-> 	4. Move netmem alloc APIs from include/net/netmem.h to
-> 	   net/core/netmem_priv.h.
-> 	5. Apply trivial feedbacks, thanks to Mina, Pavel, and Toke.
-> 	6. Add given 'Reviewed-by's, thanks to Mina.
-> 
-> Changes from v1:
-> 	1. Rebase on net-next's main as of May 26.
-> 	2. Check checkpatch.pl, feedbacked by SJ Park.
-> 	3. Add converting of page to netmem in mt76.
-> 	4. Revert 'mlx5: use netmem descriptor and APIs for page pool'
-> 	   since it's on-going by Tariq Toukan.  I will wait for his
-> 	   work to be done.
-> 	5. Revert 'page_pool: use netmem APIs to access page->pp_magic
-> 	   in page_pool_page_is_pp()' since we need more discussion.
-> 	6. Revert 'mm, netmem: remove the page pool members in struct
-> 	   page' since there are some prerequisite works to remove the
-> 	   page pool fields from struct page.  I can submit this patch
-> 	   separatedly later.
-> 	7. Cancel relocating a page pool member in struct page.
-> 	8. Modify static assert for offests and size of struct
-> 	   netmem_desc.
-> 
-> Changes from rfc:
-> 	1. Rebase on net-next's main branch.
-> 	   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/
-> 	2. Fix a build error reported by kernel test robot.
-> 	   https://lore.kernel.org/all/202505100932.uzAMBW1y-lkp@intel.com/
-> 	3. Add given 'Reviewed-by's, thanks to Mina and Ilias.
-> 	4. Do static_assert() on the size of struct netmem_desc instead
-> 	   of placing place-holder in struct page, feedbacked by
-> 	   Matthew.
-> 	5. Do struct_group_tagged(netmem_desc) on struct net_iov instead
-> 	   of wholly renaming it to strcut netmem_desc, feedbacked by
-> 	   Mina and Pavel.
-> 
-> Byungchul Park (12):
->   netmem: introduce struct netmem_desc mirroring struct page
->   netmem: use netmem_desc instead of page to access ->pp in
->     __netmem_get_pp()
->   netmem, mlx4: access ->pp_ref_count through netmem_desc instead of
->     page
->   netdevsim: access ->pp through netmem_desc instead of page
->   mt76: access ->pp through netmem_desc instead of page
->   net: fec: access ->pp through netmem_desc instead of page
->   octeontx2-pf: access ->pp through netmem_desc instead of page
->   iavf: access ->pp through netmem_desc instead of page
->   idpf: access ->pp through netmem_desc instead of page
->   mlx5: access ->pp through netmem_desc instead of page
->   net: ti: icssg-prueth: access ->pp through netmem_desc instead of page
->   libeth: xdp: access ->pp through netmem_desc instead of page
-> 
->  drivers/net/ethernet/freescale/fec_main.c     |  10 +-
->  drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   2 +-
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c   |   8 +-
->  .../marvell/octeontx2/nic/otx2_txrx.c         |   2 +-
->  drivers/net/ethernet/mellanox/mlx4/en_rx.c    |   4 +-
->  .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |   3 +-
->  .../net/ethernet/ti/icssg/icssg_prueth_sr1.c  |   4 +-
->  drivers/net/netdevsim/netdev.c                |   6 +-
->  drivers/net/wireless/mediatek/mt76/mt76.h     |   3 +-
->  include/linux/mm.h                            |   4 +-
->  include/net/libeth/xdp.h                      |   2 +-
->  include/net/netmem.h                          | 153 +++++++++++++++---
->  12 files changed, 161 insertions(+), 40 deletions(-)
-> 
-> 
-> base-commit: 4701ee5044fb3992f1c910630a9673c2dc600ce5
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -94,4 +111,5 @@ examples:
+>          measure-delay-time = <0xfff>;
+>          pre-charge-time = <0xffff>;
+>          touchscreen-average-samples = <32>;
+> +        fsl,glitch-threshold = <2>;
+>      };
 > -- 
-> 2.17.1
+> 2.43.0
+> 
