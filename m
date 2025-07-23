@@ -1,110 +1,60 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348601F8AD3
-	for <imx@lists.linux.dev>; Wed, 23 Jul 2025 21:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDEF221F29;
+	Wed, 23 Jul 2025 22:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753305117; cv=none; b=cijhNmKpfoahH6SX2W5uFadY1i04IjLI8eGVT0FDS7HeVKC9FftXbybzC4U/YNlVFcyPP65CbIsYd6ua6BmOIaZ66ojO6eRsUwvekfDgU28THLpRX1lj0j31bOsvpRg74OfqCQdlJmGfQpUGxm8SrzzHilYACU4tAwpLOZLfHWA=
+	t=1753311219; cv=none; b=NwX8CT6W8flNqAEywP4Nvnzq80YhiZvB3lHHSftd/Ybv/RMuuuqmJja9jF2QONLub0Cvj9t+a4+/au0k+P8tQOtciqWInCvb8gHEDHBQyRl/Y670CTY5BzfNunYDiXiNx0kEaowAiAB3ETn8x66/sYUVYmevVeX9StkxGWXIr7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753305117; c=relaxed/simple;
-	bh=q0mE4UUBWfCV+wTusBCOf5CCslH2279SZu5XfCB7RLY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UXfi32LP2+H60u+VCrLiFvkoHdQiFJB/w7DH2Tc8ofLiUow/dPXeQo6CDk1lL6+O4KETU5wX5DeSeYLMFmZ5b9Z/egHj3UEX/vzWG0bHNniMKaPlXDvJ30cZEpTp4Q+XHyVH4vf1vQ7FISiB/HBU5VNMe/EzakZiPFwYLpDXKsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=fRMF/9wp; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1753311219; c=relaxed/simple;
+	bh=H9LloSRiugXBEdYC4N9Q/SYB3RgU55GOfsoctf+gWG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uPzV0Wi+xGPRl22+L5QRYgi954Bdmugg49CJ8L6yn8hC/PKazaun1uxf86lbPbA9D5F5hBcWGxNQpKVGaiyMxGSj9cFOmPdvQsTaityrih+lpG4jGJh73KnBeufP/4/6xK4HsNjZW0MCjvxTg4aWE/4U2Iw2I5rgMRGj96KWw8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tLz/eyru; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="fRMF/9wp"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9B4021026ADA7;
-	Wed, 23 Jul 2025 23:11:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1753305113; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=q0mE4UUBWfCV+wTusBCOf5CCslH2279SZu5XfCB7RLY=;
-	b=fRMF/9wp7KlMF/vwBka+uclAaSlW7YKY/JnQQJxJbt/Vy4/EXLXSlhWO8w3MOS08JzX0Yv
-	34ERCNVYApCkC0605fFmqgxYmbl7Ss+2tbY14/xoT5syVwrDncCYVfoesmUeGXSmdxX4tm
-	Jhz724Z9cn8fGKyPElCSDKu7KvVhWcKP1Tkio5QROCo1UlkZ7S2M7tOji0w/TWjMs3PU1F
-	3x7fYX9RJcOuPfU//SvkYSk8N2659arFmkf8Rw80d7QlD9psltkXvneHbXWPb+sm27fYi9
-	K6W+yWXFw1LUvPtxf6IUnTEr7jWpQ77DcceVACvs/FhOXalVjAEb0rC1azIfkQ==
-Date: Wed, 23 Jul 2025 23:11:48 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v15 06/12] net: mtip: Add net_device_ops functions to
- the L2 switch driver
-Message-ID: <20250723231148.3c7448a5@wsk>
-In-Reply-To: <20250723131704.1f16a13a@kernel.org>
-References: <20250716214731.3384273-1-lukma@denx.de>
-	<20250716214731.3384273-7-lukma@denx.de>
-	<20250718182840.7ab7e202@kernel.org>
-	<20250722111639.3a53b450@wsk>
-	<20250723220517.063c204b@wsk>
-	<20250723131704.1f16a13a@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tLz/eyru"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16187C4CEE7;
+	Wed, 23 Jul 2025 22:53:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753311219;
+	bh=H9LloSRiugXBEdYC4N9Q/SYB3RgU55GOfsoctf+gWG0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tLz/eyrusc8ybCkp9nqH5av1ejQFs6TDjviXQSB+yuUmKzZdODC4fIAZVmQJ178f3
+	 jUaQfOl+vrWme/Y5kkaBY/q2Cch+UZqEDDYUWNONsEiSL72JC1bv1d7qbkpt8OQh8r
+	 +d48MaNHfA9bbD6bh7iyp/o+jqHzyrapnqt7jxGXCnOIrJ9g75PoR+5OG9XFm14p7k
+	 3M79NHeuqKkOIgbsa8BKPpwXOK+E8Ks+FLOlkrcvgyf4GWoWxmaRFm8l5UcVwBqBe2
+	 dSqCGDZow9m5QbmIYQONZMCDyn+Frc8wggvhsqE5o0+bWbm18XURlo3vzbglRjX1pi
+	 wv+BfLrm11kMg==
+Date: Thu, 24 Jul 2025 00:53:36 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Francesco Dolcini <francesco.dolcini@toradex.com>, 
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 0/2] i2c: lpi2c: implement master_xfer_atomic callback
+Message-ID: <aysffqj3gzcjwgdch37aghudi6bg7vqwtg6ot7dxl23riuiafa@6mwakofxbbhx>
+References: <20250718133429.67219-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/M8WPw5wCXj1LYwZ0GVHQLmu";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250718133429.67219-1-francesco@dolcini.it>
 
---Sig_/M8WPw5wCXj1LYwZ0GVHQLmu
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Francesco,
 
-Hi Jakub,
+On Fri, Jul 18, 2025 at 03:34:27PM +0200, Francesco Dolcini wrote:
+> Emanuele Ghidoli (2):
+>   i2c: lpi2c: use readl_poll_timeout() for register polling
+>   i2c: lpi2c: implement xfer_atomic callback
 
-> On Wed, 23 Jul 2025 22:05:17 +0200 Lukasz Majewski wrote:
-> > Do you have more comments and questions regarding this driver after
-> > my explanation?
-> >=20
-> > Shall I do something more? =20
->=20
-> Addressing the comments may be more useful than explaining them away.
+merged to i2c/i2c-host.
 
-As I've already described what are the issues I try to solve (and some
-design decisions), I will correct them (where applicable) and prepare
-next code version.
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH, Managing Director: Johanna Denk,
-Tabea Lutz HRB 165235 Munich, Office: Kirchenstr.5, D-82194
-Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/M8WPw5wCXj1LYwZ0GVHQLmu
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmiBUBQACgkQAR8vZIA0
-zr1uVwf/ZkcfzdhljMsZvGmXGsgINoyLcSM9aaTPSiBsJLo6kHbkhO5BQ45r7aFs
-PAq5vR7/YlMNpmne5x86thl3jp7jjUobLRAee/jyLDCpsSWsC8P4Iq1ogX1J4GGY
-YR+MYHjNWFsd8t/77fQA9NXYqf+EEay3tTgk8g72rftPmbOvR+JUSI+x2LFbZ3hd
-lo14UI23C3C1QCfTMGtySwQDFAtve9Da/rBxhgkz2OVQs5z4tTeRl9NTCbyj/FEx
-4bisM6SJrcKXKP7w3gOMdbu9XGmvOIzbd5tIhAY7W7l+ck7Izs6KwNRxcHMciDvT
-2Ogt8uTTtktdP5xgf6bqBrlTDKYwlg==
-=XciX
------END PGP SIGNATURE-----
-
---Sig_/M8WPw5wCXj1LYwZ0GVHQLmu--
+Thanks,
+Andi
