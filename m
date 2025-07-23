@@ -1,59 +1,59 @@
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473F0191493
-	for <imx@lists.linux.dev>; Wed, 23 Jul 2025 07:40:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83589248F5F
+	for <imx@lists.linux.dev>; Wed, 23 Jul 2025 07:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753256412; cv=none; b=h2SIuvbojSkfDtpp8OPRvaJhH+nwjymIaWwkTy0RL57iOSGv9Nyg6sayy7j+bg0rBfl1arGhoeNf1HxtHytp0vAZF/FXDgPy8pRYcG7Gf8akLILJ5f7aAzNyyHhsaUYStARpYbVmBNKiRC56aBSFWe+4Dwie5JsuYbOXVSjbWmI=
+	t=1753256467; cv=none; b=A4BaXPuD5JNf/AR6AqLRAiwMovCnOvLbPUppDlu6+df7sNvu2pOIKkWuLO/ektiDpTDEHy5WS4xoSOGj0uCOF/y4N6s5XPwPjwBfWEIieP1yMudmrLOrDwbNBnKAzLCq7VjyLQdiHwDwfijX8MGSxTcjMOjjs5/MWuHhYTqw+WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753256412; c=relaxed/simple;
-	bh=YsVapOu3EE9tFDs0Jdu77Bx59dIcgo7GphpDAmjUC1k=;
+	s=arc-20240116; t=1753256467; c=relaxed/simple;
+	bh=KfP1ywzLLeyAW58cpJqwY6sGIJRR7/qC8x/PsTBeZe4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qxw2FjtwVu4wrO82L7fvrl9esOLZVVDs9hlotH6InhzD981iZIJIIpjYYdNp1opBdBiZVpGkaTYwR+7Ic6yV78VZlLe+kJh1XeNPFZN1bnG1YGXE+ZFbpCqzhQR2T65GodS15KGd4MG2dGBAqK3z1+yWDzX+MdU37rk7y9DHzX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OndzDpwX; arc=none smtp.client-ip=209.85.166.170
+	 To:Cc:Content-Type; b=Q92Xx7fk7MAouWBrvCO3yIlznIWLTwc+yUSLB6MYSchtbnfn1eiedO3HCILdkVlccNKxHpHdrgcwpDhcxnqCkgl/dtmhRGQTqC96W+FP0qDmNugVyQo9oBwiYMRk1LhLQUxMQmKNo4u25eGqvGWQ+FcohA6067noZFkLr1OjDb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DNaVnL93; arc=none smtp.client-ip=209.85.166.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OndzDpwX"
-Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-3ddb4a7ac19so26239285ab.3
-        for <imx@lists.linux.dev>; Wed, 23 Jul 2025 00:40:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DNaVnL93"
+Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3df2ccbb895so54464705ab.3
+        for <imx@lists.linux.dev>; Wed, 23 Jul 2025 00:41:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753256410; x=1753861210; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1753256466; x=1753861266; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fbcyqc764F2sEfaCBH+UYC7rWjF6m5+2vt4yx/ptU5M=;
-        b=OndzDpwX5AsAObQ8plJU1UPPaba+f25f6Dzz02QUzOy6aSU0SmNRSzjGHnlB99DkoL
-         9z4F5VVE00CcmPgZR6dBJAxSSUsJsv7lCqI4JHxtK8ROPcS+58wbfD+IDxt+D74U4/UU
-         Hto6MKJATgUV48shfcTEZ84jWOAkjLGJ3S0Uh268exzSYOABG9XqYSuPy/9cVpk3Fai2
-         RhzWgFZKT3NlKWVvclZavvv4TByTp5HERYAQ8x7CVH6dpYBLXKK7+375DAMpVcIpVu4Q
-         OXKZIUHcWxUBKZs2BwOxJXio8Ys7ilsXOhh1JR6YOhMM8d+fWc8QVFKC9U8IMCcnSPQj
-         vxOg==
+        bh=81Y9fywoqF7EeyNEvfPWdoet0imEzVFFJD69wE8Ijuo=;
+        b=DNaVnL937QfU3Y6Z5QRKrd98nCh7kRDq80qeWMoxuYuUfeJuo44nzXCDzZTdLzBxK1
+         4QRRzbT22SmXNigF/Cn5XBmEKKsEGYE6btoOHJuDyPYQt1dk0hc5UYVPsPQPb0rtDrSC
+         UzsJOIUBrfJYiwxt6Ztp7NufbZefDfE6QJyEkC/3qNwnzyhqNZPGP1bXEPqCDNZxVvva
+         wh7Y8wEKWkAfZXDvcRcZGRC0cdwpFqE60TrE6RfllE1xMWD8AZghd+wY9I2p4nc25ERm
+         ozI4P9K+S1sZR0sT7ILJR9pGFFelszPbRqxlXap+B1mjORgbKksIjodCZJrSWfII3TdW
+         4K9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753256410; x=1753861210;
+        d=1e100.net; s=20230601; t=1753256466; x=1753861266;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fbcyqc764F2sEfaCBH+UYC7rWjF6m5+2vt4yx/ptU5M=;
-        b=c05x+y/Vi+nzQBul+NVucDCsVnB/hxkGUSBGzJEtZE2DwheBYw9YGog46Kf553aXTD
-         R7qiDeqa9Vb9yu6TJTCP0Md+1YrUwCt7rSch7hrNZTqtoyghYKJDUXw5CWtcdypOw5oj
-         vUNUNWtM29PwFJhD+Zo3nhC1LVbmD4pV84aGysUoiDL6uSb0srleA9AUfiwObcpf4dyt
-         bLDG+LUOJ5kKRn/e+8gSs8FxmWjy9SVP+XwwkT1Jeza4N42ZalIdvwimdcn2PiN1NK2W
-         tmiNgQMds1gfoVoVH1K1ENlzZfUyL70kusV6TSaTdSG+xdXgbcfaVDpSasyiiT6nwl+G
-         kjig==
-X-Forwarded-Encrypted: i=1; AJvYcCWvOl/PTyezijPtUjB9jcyvZgiy/3cS2nkX80R42lB4mzuiRgyJ1iqP57tt1MmsBue/mos=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy97pUTHLRI5l9VGKNU8L0ttLooR3AWGRzLToWxBquv1l878GgW
-	JMojbWK29XALadAHXWn18mAePbyJOn5Ti2ixHImzD9MyujGTKTfHbTBTYThYVLd5/A2KacaYt84
-	Kn2BIV9qpleRblffdxoRZXqCH8WRpDwc=
-X-Gm-Gg: ASbGncuMI8AWwmoaGFewQY8hvTJ0eFfNuCtlA0Qz7un1mus4L/AoTtMcu+jm9VpPeYw
-	rRt+dIzg3TfA9NOMLCXvY5xSfLoZsi+9t8QiB354IwZlS1oYnkk6YbCllu1QlDO5N9l4H/jmpAs
-	Pj+F2G+w6Hq9BNOepCevkgZEBtmneBjumQ0CNr9+Ikhww2EwH52UAEYlOHwW38bIttkXWtg7d/P
-	wwbRcg=
-X-Google-Smtp-Source: AGHT+IHOQzFpAKaWouHfVtjkvOSjGIpAMkfJ0fzLv3wWAksIErfPgEwi7A4hu+IQvIt5kc5elxr2GeZinpnDwDpuoiI=
-X-Received: by 2002:a05:6e02:2483:b0:3e2:99f3:9c5f with SMTP id
- e9e14a558f8ab-3e32fc0705bmr33701305ab.9.1753256410269; Wed, 23 Jul 2025
- 00:40:10 -0700 (PDT)
+        bh=81Y9fywoqF7EeyNEvfPWdoet0imEzVFFJD69wE8Ijuo=;
+        b=Blw746R6kefaPrJ5qY3nl2PekDuGjpG1AWr6pmdaMJezCjx/chOzqrvQ2n8KHfzjMY
+         dwFM8TK1yPl4Gt/K+//WgjYmrWEySW6S0p74jtv8w3Hb/xk6OZu13T8H+kR/bWhTg7oU
+         0PqCo+2xiV769YzKYQ39id2kBXZ4KLp4MNUVwfORwA2Rv3VPFx4+OeMY8CZ6L8gOKiqR
+         5GNvDglZSPDX7jReBjpt3PuWhOBAAV62p8Ou6baEaKggR0r0r4NPL1LGHBQAZeKNJSp7
+         sJ0RUOtkNo2bz39CUWNts8hpD2MV41mZGWuMxaDXgrizAHR7PCftOBdE/jRQIZxuFLSy
+         gQrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXHjEnAaN/lsbqAQYPEc9NBDqKTfZLb55UnK1Ft58xZWzQf+GqM0D5TGNl1MirNLd9GlEg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwvgSefLaJrn35kBCBL/sQjmztHXGwZu3wkJQW5zGSVa9WN8UOS
+	IIkKR70RUxmvPHttyJITpLwgjeCVa7JW2SBB+avIp6FQmPeV5PSoTSsYKxau119MJl2sjb0ieCU
+	EiiggTeYfglLvgRzQuflQx5tq1h1dxSc=
+X-Gm-Gg: ASbGncsNmfNR8pu6+T8K7x7NYG+ZiwzGW8bbgyDrxdStrcBPBgClRO5NjlYRpcrjbVD
+	2hZLkJ6eFecLKl/qU0JpO2zo18ScGh8KAiX1W6LovH9HtU8WZvjbDx4ixS007qk1CD0PsdarjpF
+	a/b4Ry2kmDACkXh7NQMD/Ndhaw0nal21Qu6MwMScWDWfjqvxsa96hhEC1OfbNKTSptlKBXPsaeI
+	RjAstA=
+X-Google-Smtp-Source: AGHT+IFxfL3iPUA5T5lDVBBDYyqD7VIFaDA3fQJ5O2oa4O2dCluRKQiYM4kl1jFwdLxNmmpTIZDHo7HQtauQmGufUFM=
+X-Received: by 2002:a05:6e02:2384:b0:3e2:c212:6164 with SMTP id
+ e9e14a558f8ab-3e3354dfeb9mr37438145ab.12.1753256465669; Wed, 23 Jul 2025
+ 00:41:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,16 +61,17 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20250718101150.3681002-1-shengjiu.wang@nxp.com>
- <20250718101150.3681002-4-shengjiu.wang@nxp.com> <a5621775-5032-4422-80bb-5f8f60351dbe@nxp.com>
-In-Reply-To: <a5621775-5032-4422-80bb-5f8f60351dbe@nxp.com>
+ <20250718101150.3681002-3-shengjiu.wang@nxp.com> <4668607.LvFx2qVVIh@steina-w>
+ <CAA+D8ANQdOuEiHrOWAbqVN2oFAAop2agBzKB2_YsoQ3_SFYYNw@mail.gmail.com> <85f1b9f3-0134-4385-9ac6-f3c6c2eb546f@nxp.com>
+In-Reply-To: <85f1b9f3-0134-4385-9ac6-f3c6c2eb546f@nxp.com>
 From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 23 Jul 2025 15:39:56 +0800
-X-Gm-Features: Ac12FXzRGVFmJEyGYLyQXwRt2VBDjuGoJJq-BPWCprf56oset2phf0Q2wkTdTTc
-Message-ID: <CAA+D8ANb7kZETxO_CQazoz6-DiNCOGivLhJVwhw9p78ynP1ntQ@mail.gmail.com>
-Subject: Re: [PATCH 3/4] dt-bindings: display: imx: add binding for i.MX8MP
- HDMI PAI
+Date: Wed, 23 Jul 2025 15:40:52 +0800
+X-Gm-Features: Ac12FXwt3CFjI2gmqrSV6-EQJlh4rFyR_XU_vqi0YUQRGTQLoRTFr6d47NZAQO4
+Message-ID: <CAA+D8AN6HSTwByHvqfkLnZ=UFPo8W48N5oRf2CtF6pXdCwSXag@mail.gmail.com>
+Subject: Re: [PATCH 2/4] drm/bridge: imx: add driver for HDMI TX Parallel
+ Audio Interface
 To: Liu Ying <victor.liu@nxp.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com, 
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>, andrzej.hajda@intel.com, 
 	neil.armstrong@linaro.org, rfoss@kernel.org, 
 	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
 	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
@@ -80,176 +81,46 @@ Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com,
 	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
 	festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
 	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	p.zabel@pengutronix.de, devicetree@vger.kernel.org, l.stach@pengutronix.de
+	p.zabel@pengutronix.de, devicetree@vger.kernel.org, l.stach@pengutronix.de, 
+	Shengjiu Wang <shengjiu.wang@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 22, 2025 at 3:16=E2=80=AFPM Liu Ying <victor.liu@nxp.com> wrote=
+On Tue, Jul 22, 2025 at 3:50=E2=80=AFPM Liu Ying <victor.liu@nxp.com> wrote=
 :
 >
 > Hi Shengjiu,
 >
-> On 07/18/2025, Shengjiu Wang wrote:
-> > Add binding for the i.MX8MP HDMI parallel Audio interface block.
-> > As this port is linked to imx8mp-hdmi-tx, add port@2 in
-> > fsl,imx8mp-hdmi-tx.yaml document.
+> On 07/21/2025, Shengjiu Wang wrote:
+> > On Fri, Jul 18, 2025 at 7:51=E2=80=AFPM Alexander Stein
+> > <alexander.stein@ew.tq-group.com> wrote:
+>
+> [...]
+>
+> >> Am Freitag, 18. Juli 2025, 12:11:48 CEST schrieb Shengjiu Wang:
+>
+> [...]
+>
+> >>> +     /* IEC60958 format */
+> >>> +     val =3D 31 << FIELD_CTRL_P_SEL_SHIFT;
+> >>> +     val |=3D 30 << FIELD_CTRL_C_SEL_SHIFT;
+> >>> +     val |=3D 29 << FIELD_CTRL_U_SEL_SHIFT;
+> >>> +     val |=3D 28 << FIELD_CTRL_V_SEL_SHIFT;
+> >>> +     val |=3D 4 << FIELD_CTRL_D_SEL_SHIFT;
+> >>> +     val |=3D 0 << FIELD_CTRL_PRE_SEL_SHIFT;
+>
+> [...]
+>
+> >> But where do these numbers come from? I can see that downstream kernel
+> >> sets these bits depending on audio config being passed.
 > >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  .../display/bridge/fsl,imx8mp-hdmi-tx.yaml    | 13 ++++
-> >  .../display/imx/fsl,imx8mp-hdmi-pai.yaml      | 61 +++++++++++++++++++
-> >  2 files changed, 74 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,i=
-mx8mp-hdmi-pai.yaml
+> > These numbers are defined in standard IEC958 spec.
 >
-> Usually, to add a new driver, a DT binding patch comes first.
+> Can these be defined by macros, even in a certain common header file,
+> include/sound/asoundef.h?
 
-ok, will move it to first patch
+yes, then will include ALSA maintainer for the change.
 
->
-> >
-> > diff --git a/Documentation/devicetree/bindings/display/bridge/fsl,imx8m=
-p-hdmi-tx.yaml b/Documentation/devicetree/bindings/display/bridge/fsl,imx8m=
-p-hdmi-tx.yaml
-> > index 05442d437755..cf810b277557 100644
-> > --- a/Documentation/devicetree/bindings/display/bridge/fsl,imx8mp-hdmi-=
-tx.yaml
-> > +++ b/Documentation/devicetree/bindings/display/bridge/fsl,imx8mp-hdmi-=
-tx.yaml
-> > @@ -49,9 +49,14 @@ properties:
-> >          $ref: /schemas/graph.yaml#/properties/port
-> >          description: HDMI output port
-> >
-> > +      port@2:
-> > +        $ref: /schemas/graph.yaml#/properties/port
-> > +        description: Parallel audio input port
-> > +
-> >      required:
-> >        - port@0
-> >        - port@1
-> > +      - port@2
->
-> Can port@2 be optional?
-> Note that video output can work with only port@0 and port@1.
-
-yes, it can be optional
-
->
-> >
-> >  required:
-> >    - compatible
-> > @@ -98,5 +103,13 @@ examples:
-> >                      remote-endpoint =3D <&hdmi0_con>;
-> >                  };
-> >              };
-> > +
-> > +            port@2 {
-> > +                reg =3D <2>;
-> > +
-> > +                endpoint {
-> > +                    remote-endpoint =3D <&pai_to_hdmi_tx>;
-> > +                };
-> > +            };
-> >          };
-> >      };
-> > diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx8mp-h=
-dmi-pai.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdm=
-i-pai.yaml
-> > new file mode 100644
-> > index 000000000000..d2d723935032
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdmi-pai=
-.yaml
-> > @@ -0,0 +1,61 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/display/imx/fsl,imx8mp-hdmi-pai.yam=
-l#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Freescale i.MX8MP HDMI Parallel Audio Interface
-> > +
-> > +maintainers:
-> > +  - Shengjiu Wang <shengjiu.wang@nxp.com>
-> > +
-> > +description:
-> > +  The HDMI TX Parallel Audio Interface (HTX_PAI) is a digital module t=
-hat acts as the
-> > +  bridge between the Audio Subsystem to the HDMI TX Controller.
-> > +
-> > +properties:
->
-> In i.MX8MP TRM, HTX_PAI block diagram mentions an APB interface.
-> Does it mean a clock is needed?
-
-The APB clock is bound with the power domain, so no need to add it here.
-
->
-> > +  compatible:
-> > +    const: fsl,imx8mp-hdmi-pai
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +  power-domains:
-> > +    maxItems: 1
-> > +
-> > +  port:
-> > +    $ref: /schemas/graph.yaml#/properties/port
-> > +    description: Output to the HDMI TX controller.
-> > +    unevaluatedProperties: false
->
-> Why do you need this line?
-
-per my understanding, this line can be added or removed.
-
->
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +  - power-domains
-> > +  - port
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
->
-> Unused. Drop.
-
-Ok.
->
-> > +    #include <dt-bindings/power/imx8mp-power.h>
-> > +
-> > +    hdmi@32fc4800 {
-> > +        compatible =3D "fsl,imx8mp-hdmi-pai";
-> > +        reg =3D <0x32fc4800 0x800>;
-> > +        interrupt-parent =3D <&irqsteer_hdmi>;
-> > +        interrupts =3D <14>;
-> > +        power-domains =3D <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_PAI>;
-> > +
-> > +        port {
-> > +
->
-> Drop this blank line.
-
-Ok.
-
-Best regards
-Shengjiu Wang
->
-> > +            pai_to_hdmi_tx: endpoint {
-> > +                remote-endpoint =3D <&hdmi_tx_from_pai>;
-> > +            };
-> > +        };
-> > +    };
 >
 > --
 > Regards,
