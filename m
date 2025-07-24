@@ -1,48 +1,79 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010056.outbound.protection.outlook.com [52.101.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1285E2459E1
-	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 07:24:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753341857; cv=fail; b=AFOPVr8dca0UDdMm076NMue2Jkw/RHSQ8H4+FQQywAFRhcP9Fg+93MP2GOMhZnrVVaUXrD72522E6cPr4dVKx4StLyJTKqocfI0w1bDl0NaHENRj/4BDu5a6XEwFofuUOJuJzH2odvelSCj4cIXuJ0N+2dHFWO2NCwLbYiW/sX0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753341857; c=relaxed/simple;
-	bh=e4hrKhl681Yd7i2OzeUZnldUJMPuFCz8JK6rNqnirvs=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ot/21ZTZgRvkyFA5WY7EKASHgT4Bff2EKgaPB8UukSggzqGDwWaxZ6Y8hRCjfLxZsZESmh2GCLFgFz+jkJfj0HBX6bUbTpvpQCNg6Gp9o4Uh59D2MdGa9OFWIqkYo3vr3P1In1NvrgpjOaQEka+hdgWSI57dc2zS3jdCf2qy5pM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZbfOaE9E; arc=fail smtp.client-ip=52.101.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D4124DD0C
+	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 07:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753342634; cv=none; b=DA9V1G7Mhp4O6TesbqnojRYbNQ8Iq/43IdKINdIyN1F0iY54RvkWOjPdnp1+aYMoCziL6qiJQXbfO7ww24wdcjHxoA3/klfgvO7+ST5eLa7p797+v0Pv2NUMTEYN5iLBrILUy9IOXMhgh4DdWcXzCmmkSn1sJFZQNQSdJGPRWH0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753342634; c=relaxed/simple;
+	bh=oYliYTiynIz5BqhDzeFuwYRcIXemghySuaUubvcJXek=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q8iAdFzy9DWXpR1EVswcY2zIWOqogpcmIGeFFKoCPpzCNFPobHHJU0oZzzyXsMHvIFg2XvNzm0Vc1hOKDWtEfXgPtFfYQxV67vTLneg9/6W9p1r3NOX4Id7TF6Fn3vGAp7eVPKrytwrKvX0uo3OgY/Nf1CCuyVWj1S/9kkWShjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iSmpZvav; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z4rbEGUw; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iSmpZvav; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z4rbEGUw; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZbfOaE9E"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xTqeWq7O/piAmqtBSQ4fHX1lFKr+WAWb44oVGdrs4TYpqRKn365YGq/z3fn5LcU5oCOiuVPzW1/HxbkXpDmEGYVCZA8WP/guPCyblKJ7+Jg0BE6W9g1EF65mA2GYmtM4kflipIBEdXbBQz9fOGaS4iaHZKuWRVHLNMeM86ABMGHx/s7pamU1gocWQz/LekBhXuQ2wzYIFPcmNCHVk1TbOMHcW7EHwNxV8jZz5L9n586A2/9ynvfuSYjNkcSQV9MnWXRg1DuMYvG9e8Do1W3X6EvYgLL0yWfbpK8U8klmkFeSuW7pW32Zlm/KCXss9BbJGHj8w4Bh7JvXFs8nj0KdLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7taTqWMgOdVV5Uo+opymyCbS/QrTJvq/xL96hycnptE=;
- b=NVoYJqglV64I60bWaEbXZ5/tXyITv9AiH/kHYx4399+vdDYdTILUotFIJ9Aahh/sBox7z4++XDx5l2KXGDPkeYU4ITOmUFV10wSFZFs4eYs7YmYF1UFpx5Sl9vG53ztBJEyFKox6dxdtF/cAxlOoiVRsfmu+mW9rTpvtTOIKiGklPbieJi/pM9DCXhqULRxpmzdVpE+iGLzc0Sc+VTa/J7MdQ78uSEvqj39sgV8Tg5sfx/UjQUzNS1hE6/sNZkwPRa7SZa8yvZCiqJZ33ym1ndcaXo4uN3XnOydmvjXgiie3kdyJ7rre56fonYTUCM9xapD6vqZ89K2uWn1Ts3ZwaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7taTqWMgOdVV5Uo+opymyCbS/QrTJvq/xL96hycnptE=;
- b=ZbfOaE9E4otEeDE3qNUo9PYWr5ochHZmL2pf6sg8jKkcysDGRitlxqi0zPBifi7xJZZY2fQyj3m6ZURjqgjatSDtlvg2H9O7DwKh0yqZ8wfd3rtP/12Dt1OYeTJY1jpPRjgjuznf20OattJtkn/E16mCux671fMSe3xdiI8gck27gBSRuYMEVNmpdV9vCWEnSqPpsT3PAAS60QSaPTWtLJ5Sj4jwsD0gRCb5H2wilHLbebw+aJ0+mKrlphlGNSQRKK0UX+lS65LQIZGwJCrfT8vP8h/KTQTgibnTAU1BclDW8Jb12ScToKdE31IEhhVcHhzkQbPb86Q6Px8CMZKqgA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
- by AM0PR04MB6915.eurprd04.prod.outlook.com (2603:10a6:208:187::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.21; Thu, 24 Jul
- 2025 07:24:13 +0000
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::7be0:296:768c:e891%5]) with mapi id 15.20.8964.021; Thu, 24 Jul 2025
- 07:24:12 +0000
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: andrzej.hajda@intel.com,
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iSmpZvav";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z4rbEGUw";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iSmpZvav";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z4rbEGUw"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8AB781F394;
+	Thu, 24 Jul 2025 07:37:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1753342630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/LBu7qSBaLkXMmbSWG/aE/FgzcMzPqdoHLqQXT0G0B0=;
+	b=iSmpZvav8lnYGFgYWT9RAL6mampmVxsQdOjORxZQmpl2iwQ5NuepLPirg2axvQMywNZgsg
+	sM/0rzB57rZzEH02wqXjW5wz+pcC37QvGMCoeNz+fEKMCHQtyI/iIz9EuMlZaSg5Zjlh9u
+	Cqykg5TDSqTxG//PZUt1z2wPWxaauJM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1753342630;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/LBu7qSBaLkXMmbSWG/aE/FgzcMzPqdoHLqQXT0G0B0=;
+	b=z4rbEGUwD7bCn2kBeVEXY5/AYO2k2An2G2PY3o03wE+J5eEo0PlaGSqS80GqXeQKv6Rpds
+	ExwDAG9wh3tpu4BA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1753342630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/LBu7qSBaLkXMmbSWG/aE/FgzcMzPqdoHLqQXT0G0B0=;
+	b=iSmpZvav8lnYGFgYWT9RAL6mampmVxsQdOjORxZQmpl2iwQ5NuepLPirg2axvQMywNZgsg
+	sM/0rzB57rZzEH02wqXjW5wz+pcC37QvGMCoeNz+fEKMCHQtyI/iIz9EuMlZaSg5Zjlh9u
+	Cqykg5TDSqTxG//PZUt1z2wPWxaauJM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1753342630;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/LBu7qSBaLkXMmbSWG/aE/FgzcMzPqdoHLqQXT0G0B0=;
+	b=z4rbEGUwD7bCn2kBeVEXY5/AYO2k2An2G2PY3o03wE+J5eEo0PlaGSqS80GqXeQKv6Rpds
+	ExwDAG9wh3tpu4BA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A643D13302;
+	Thu, 24 Jul 2025 07:37:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7gjAJqXigWjKMgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Thu, 24 Jul 2025 07:37:09 +0000
+Date: Thu, 24 Jul 2025 09:37:09 +0200
+Message-ID: <87jz3ykpju.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: andrzej.hajda@intel.com,
 	neil.armstrong@linaro.org,
 	rfoss@kernel.org,
 	Laurent.pinchart@ideasonboard.com,
@@ -76,180 +107,87 @@ To: andrzej.hajda@intel.com,
 	perex@perex.cz,
 	tiwai@suse.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH v2 6/6] arm64: dts: imx8mp: Add hdmi parallel audio interface node
-Date: Thu, 24 Jul 2025 15:22:48 +0800
-Message-Id: <20250724072248.1517569-7-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20250724072248.1517569-1-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v2 2/6] ALSA: Add definitions for the bits in IEC958 subframe
+In-Reply-To: <20250724072248.1517569-3-shengjiu.wang@nxp.com>
 References: <20250724072248.1517569-1-shengjiu.wang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA0PR01CA0104.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:af::10) To AM0PR04MB7044.eurprd04.prod.outlook.com
- (2603:10a6:208:191::20)
+	<20250724072248.1517569-3-shengjiu.wang@nxp.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|AM0PR04MB6915:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91f61783-a01a-491b-e845-08ddca831682
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|52116014|7416014|376014|366016|1800799024|19092799006|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?hYzbJw0wYs+MpkZzW7tuYSJdMZExJVk4Xe4IxfmpYPxaqkCF656OC0zGaq+K?=
- =?us-ascii?Q?5eVtRujz9CojZ0b7yoLiRP21iR/39TBQSKWkQGSU3olrESseMv0DBDfKZsWL?=
- =?us-ascii?Q?M2Tn6d2ldgXlnqY5X+ZWcVBzUmCQNvLTzA4biaMpL1PfCCgFUD5LgkiKWqKi?=
- =?us-ascii?Q?9V8BRrTyhw3keuAqzV6ILi2jho93PTRsw2SBIeqqoCTsyR6jgIQmwKL1Prh5?=
- =?us-ascii?Q?1N6ESVo+uPMZ+0LNNfz0ZEV+0JrJu5qSgBdDertk1h0+VFb5N4JzoCcCS8g7?=
- =?us-ascii?Q?OQEtxC/ylAuPmzk+XTsDk2s6NgLWowRA+7p3fTzIWdCgdGN4cCL2yLV7k3G4?=
- =?us-ascii?Q?xuoxxyhYWmZZInHj9kpW+DxmNxQ7EiuHedlajMqr/BpWCYGTcdgi5q1LwoMb?=
- =?us-ascii?Q?6Ogt4xAOf/Db5xU86QxFbITkN0AjBXRfNrxgl6UZSswyQh9URUKQn0n92e2U?=
- =?us-ascii?Q?PJlHCxOYL6NreYUgdbGW7h+m0lso0awFHq6LaCMKOc4SyIHFmwfdEk0cuNfq?=
- =?us-ascii?Q?9bUhjNEvXn8vTt4RgcQ6Tp0S5y4LvxZ2ueWGVZ7U/P6J8zHEmnAige0G6cSc?=
- =?us-ascii?Q?//LnVYi8MKkBHtj4Wher9Fv7O+YAIy8pmmHGAaf60LdK0S3WaJS6nyEwp23D?=
- =?us-ascii?Q?lYbZZbtJGIAxp4q1ukKfmwtsAGE1ostBRYEveneKfUmpw10z1aPHyjhzoopN?=
- =?us-ascii?Q?pj7mthsKHziq9H3VgquH9XAmaghoBv6LVA82s7tX0K6K5L9Qx/qnXfxaA8gT?=
- =?us-ascii?Q?1JcfWbcVHB/nL3Lj6XEtkvon0N5RFmmQlW9LWIZ+A+JoFUPH+CnrzOXYFF6T?=
- =?us-ascii?Q?NXUOL80M8LLdSWypED26XIXCr4khfWY8jGjlekiNERXVH+C9uvzSlCPb7AZX?=
- =?us-ascii?Q?YyIoArxRE9nTQmy39UYb827pEIXa+bxH79miwgB2Xjz9LPJ6lQ1Jlx5n4QI0?=
- =?us-ascii?Q?41sqATmwfd5laNNSfeKCsSM8Ob7bnpKhtMcInClqTxEEGLQ18vcXfOyXqx2D?=
- =?us-ascii?Q?aDAY8aLDcIgDNf+SHH5oaoqlm3+TbR6SzwjjhYA4v1CGVlFmSu2f86RVq4Ln?=
- =?us-ascii?Q?Zbf8jhYO9BbklXK74oMJ6foRsGPZS6I0oLrMH0cHvncZ+F9j9Tf+bEbP8EWc?=
- =?us-ascii?Q?cLEUlLLG56nMRJw54xsr86O3SAuh+FSnKVGzKN0/VIzl/qXsdsBx5rHYI86W?=
- =?us-ascii?Q?MTqVQrqQhEQYs0QLwIdHBE8D2mqvZD4WRiaCLbDjfV8n4+CqfmSJZnOo4y7e?=
- =?us-ascii?Q?hRPHMa17m38KixMIFdH2ffnuZo9elcuyckhDLZ2R7Cm9B8imnTOa+FNsi4DR?=
- =?us-ascii?Q?GtutohiyC8S9DX1awSG2zAy3HUSmiDa2PVLr4RBaT5LeYn8KZmfq4QUIMnhW?=
- =?us-ascii?Q?On7zDyy22PvQtaezrXNTsYIs381dLSMdV8RPr3R3Vl9aJC6vQk0Kx+2EuF87?=
- =?us-ascii?Q?xIYQy/7qvEDAUHX3mRcDyx68R4wIwauVCWtY/V/IqTJHRe3cQFRN+AV7+Mip?=
- =?us-ascii?Q?Rdf6AXhOHmM1o7s=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(366016)(1800799024)(19092799006)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?hi+xk9xqFChR+JVbwbtoNOpNWTiVBP4ZNk/J4YyaYsEz+l5L3MzKIJCeF7pe?=
- =?us-ascii?Q?ZOIgj0vh2eGpThWFE8Wju4wY/aVVl300aVjvPSQYoehLsUHEpWpJtmz2xy7K?=
- =?us-ascii?Q?eZdr+tbrp0/8isMGw+pk7+llRhO7weCfzl6R2CIsBuiLX2XByFiGz2XhZ0Gs?=
- =?us-ascii?Q?LCvvwb9v0P3CWBw14R5I3G9dPxlZ6+F/PxNIphQujiW3cgoBmf7LHD2nyQma?=
- =?us-ascii?Q?BwTBQtNugts8xV5ZP0ZGMAkYDVrGhynHpBJYBv7sB3M1nGVYboOCdJN3oU2y?=
- =?us-ascii?Q?rIgPikz7aI6sC6G88OZKRz5CNoiFhmN/bnVDjHV7SIkkMjbU6Dz8e/JIUy/9?=
- =?us-ascii?Q?QOg0P6tgdNjrnONfOhhz3AcwBCagtKLgHCxnZ/5SHbL6dN5kc81BXdRcrsNx?=
- =?us-ascii?Q?QdmSwMnTvJrrmpLe9WHXJWBCW91oZ63WtV8KmDWEMFJT7MaaVT3u9br0R7/F?=
- =?us-ascii?Q?KDoVGwKFH1hKs6SxB7Msk14rl1LwFmn+uWLtPQu2ARwd4lQaFQN+YRD07GPe?=
- =?us-ascii?Q?syEyEC++F7h4ctpyUf/kPDdHpvXdrkKbNEHgyJteW4EXMSQqpmWL64DzDseC?=
- =?us-ascii?Q?i94f5kc5jVuk/VWMnXZcigPiX188/AAEDaOhOpjCnGdC6PsTMHKUvzZ1MQvc?=
- =?us-ascii?Q?UNB/mpnCXatJNYIb6L8bahqj35ufP1G7w2a6X4ItY1U9Oxcb1rRJ8cLy/o/5?=
- =?us-ascii?Q?h5rHt3uOKmzmRyAZDBErhmHcIYUkjb2cWUkGsmv2z0xmPoPgEUV7zbl5Fa3j?=
- =?us-ascii?Q?kj5KUy2CGrh6B/umgO1f/E1mO0wIG5QLvx2gbAa0Sl/AuXNz2f8s/DPEsIDk?=
- =?us-ascii?Q?KiFWKOVNzS659qScwUwyrDkqtALQ/bKCaNtOTxrOdwrfIdgYItPbHtXB5mCW?=
- =?us-ascii?Q?tR8CB3yG5adUzCpbZhDan7nd+9yADJ7YtdYO7D2xMGsW3kky5Ni/DCONZ6oq?=
- =?us-ascii?Q?HJrISrQ48zVnM9JgJ6Jjj7sp/L8KWbH8cVr/7OFnVTAkGFW1OfBfy8RaU4rL?=
- =?us-ascii?Q?5UNLK0a/rjaPWDKw5tNv3V9BTkUl4pf/kb0l+wM5QlDBGARKw+ZkdNjubNRn?=
- =?us-ascii?Q?WvU9OTqP5Fla80sCpbBZkgQE1gWPZBq2jRfqHiu/0XhVzvccjVf/G8dxvCak?=
- =?us-ascii?Q?X/l660DlbXb8Li7bu437t6UlfR9dIgwKoGh8nv4IW7nyPbjqzhT+MCCWaPDe?=
- =?us-ascii?Q?mdTkQqd49JaNfu+c/bE+WZiLCwaHqHMKUKgZmW7nEzoZhVNY79tZB5aDbj2t?=
- =?us-ascii?Q?SqWNBi3j71qlVlzAIlnrLVziYYwAm/mnjdJobklXIAmWbl1d8ayvQCP7fTWU?=
- =?us-ascii?Q?JE36Xyi0QhVSXFb7O8dxsKttxPB79VD1+AZrc2u5Hp/sgjpGSm8bS4BXJDar?=
- =?us-ascii?Q?3Cbr4MQbfDN9Fml5Zm4tT6UTzIvXLsvFiPTxgbBoF+Rvq8f5+82jYqC3Y438?=
- =?us-ascii?Q?zGmGTw57hUCoGDqNRfpaeODtYt42UGjnQv7EUmyINSnOuxBEU0+aB4fj+9qR?=
- =?us-ascii?Q?NtAlROrjS8XIGlC6DK/viu7H8+cz2ji0yCZL5AxMmF4Hrut9J7uIv22z9ufp?=
- =?us-ascii?Q?E3ZER2aVfEG2h9WO3DWUJJ7OrSzskoWm5ABJevz6?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91f61783-a01a-491b-e845-08ddca831682
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 07:24:12.6307
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ci2wuYMupttXx8nyzfWvsE/jkCirZ6APj63F3+NjClkASgJOnBwDwBNILqYzHkGX+p13xTnrZtIHSpov6OEw+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6915
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[35];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,chromium.org,collabora.com,bootlin.com,lists.freedesktop.org,vger.kernel.org,nxp.com,pengutronix.de,lists.linux.dev,lists.infradead.org,perex.cz,suse.com];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[dt];
+	R_RATELIMIT(0.00)[to_ip_from(RL8m7tqgwaqu97o1bbfnn6ewdz)];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -1.80
 
-The HDMI TX Parallel Audio Interface (HTX_PAI) is a bridge between the
-Audio Subsystem to the HDMI TX Controller.
+On Thu, 24 Jul 2025 09:22:44 +0200,
+Shengjiu Wang wrote:
+> 
+> The IEC958 subframe format SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE are used
+> in HDMI and DisplayPort to describe the audio stream, but hardware device
+> may need to reorder the IEC958 bits for internal transmission, so need
+> these standard bits definitions for IEC958 subframe format.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  include/sound/asoundef.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/include/sound/asoundef.h b/include/sound/asoundef.h
+> index 09b2c3dffb30..7efd61568636 100644
+> --- a/include/sound/asoundef.h
+> +++ b/include/sound/asoundef.h
+> @@ -12,6 +12,15 @@
+>   *        Digital audio interface					    *
+>   *                                                                          *
+>   ****************************************************************************/
+> +/* IEC958 subframe format */
+> +#define IEC958_SUBFRAME_PREAMBLE_MASK	(0xf)
+> +#define IEC958_SUBFRAME_AUXILIARY_MASK	(0xf<<4)
+> +#define IEC958_SUBFRAME_SAMPLE_24_MASK	(0xffffff<<4)
+> +#define IEC958_SUBFRAME_SAMPLE_20_MASK	(0xfffff<<8)
+> +#define IEC958_SUBFRAME_VALIDITY	(0x1<<28)
+> +#define IEC958_SUBFRAME_USER_DATA	(0x1<<29)
+> +#define IEC958_SUBFRAME_CHANNEL_STATUS	(0x1<<30)
+> +#define IEC958_SUBFRAME_PARITY		(0x1<<31)
 
-Shrink register map size of hdmi_pvi to avoid overlapped hdmi_pai device.
+I'd use "U" suffix as it can reach to the MSB.
+Also, you can put spaces around the operators to align with the
+standard format, too.  I guess you followed to the other code there,
+but following to the standard coding style would be better.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8mp-evk.dts |  4 +++
- arch/arm64/boot/dts/freescale/imx8mp.dtsi    | 28 +++++++++++++++++++-
- 2 files changed, 31 insertions(+), 1 deletion(-)
+With those addressed, feel free to take my ack for this patch:
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-index c0cc5611048e..cc9351a5bd65 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-@@ -442,6 +442,10 @@ &flexcan2 {
- 	status = "disabled";/* can2 pin conflict with pdm */
- };
- 
-+&hdmi_pai {
-+	status = "okay";
-+};
-+
- &hdmi_pvi {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index bb24dba7338e..a0b00cbcb680 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -2063,7 +2063,7 @@ irqsteer_hdmi: interrupt-controller@32fc2000 {
- 
- 			hdmi_pvi: display-bridge@32fc4000 {
- 				compatible = "fsl,imx8mp-hdmi-pvi";
--				reg = <0x32fc4000 0x1000>;
-+				reg = <0x32fc4000 0x800>;
- 				interrupt-parent = <&irqsteer_hdmi>;
- 				interrupts = <12>;
- 				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_PVI>;
-@@ -2089,6 +2089,24 @@ pvi_to_hdmi_tx: endpoint {
- 				};
- 			};
- 
-+			hdmi_pai: audio-bridge@32fc4800 {
-+				compatible = "fsl,imx8mp-hdmi-pai";
-+				reg = <0x32fc4800 0x800>;
-+				interrupt-parent = <&irqsteer_hdmi>;
-+				interrupts = <14>;
-+				clocks = <&clk IMX8MP_CLK_HDMI_APB>;
-+				clock-names = "apb";
-+				power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_PAI>;
-+				status = "disabled";
-+
-+				port {
-+
-+					pai_to_hdmi_tx: endpoint {
-+						remote-endpoint = <&hdmi_tx_from_pai>;
-+					};
-+				};
-+			};
-+
- 			lcdif3: display-controller@32fc6000 {
- 				compatible = "fsl,imx8mp-lcdif";
- 				reg = <0x32fc6000 0x1000>;
-@@ -2140,6 +2158,14 @@ port@1 {
- 						reg = <1>;
- 						/* Point endpoint to the HDMI connector */
- 					};
-+
-+					port@2 {
-+						reg = <2>;
-+
-+						hdmi_tx_from_pai: endpoint {
-+							remote-endpoint = <&pai_to_hdmi_tx>;
-+						};
-+					};
- 				};
- 			};
- 
--- 
-2.34.1
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
 
+
+thanks,
+
+Takashi
