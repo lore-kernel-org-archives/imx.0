@@ -1,152 +1,163 @@
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B93F25F995
-	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 10:14:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936CC263F34
+	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 10:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753352065; cv=none; b=FXwEqZmAcXCoZAKCdFX7Clw0M1VcQqi/qoWjLxCke68pjyAIt9ctFn4dkC89LH3irrSFn3hUMzWVe+b9ACb+L63xrzFx0YF2Sph2z4NvzDkmviC4Ub8/hjAwsyiLHADYAbnHHLCObNtebWHYgsLCp/E9Pyvwd7RW82ROyKxRddo=
+	t=1753352319; cv=none; b=L0rfnUnOH34XSQGDlQ5ZNNaQZoq0EO6B/0/vXHzAeyXX3gqrm6VCwsj5GEsmQRXdqG9yTKTchlXeOg61swaY/HaqtHSNv6vD8F6jx2mxLzFK9GAVR4CZ2vSTXX5BpDsyPikaaWUtabtxZ2K2GXhckHlfQjNT1DYNoPiuKLeKzzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753352065; c=relaxed/simple;
-	bh=j/tNROBJ9AqaM/+F/rmOXFHzO6aVOQ/0E5dPcthSGq0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BXY1uwk0Bca0uYIAV1HLAkY76vmpPorJPFQAlN7pXDq1az3NVpY4JyL0V3kxdyP1LIMCYmBbPhNGE7epFsUxWjJ26Yr0hMAHFoBI0VXVcF4fQdLgLmSYvGNHj9H4PbXi8nYnI3ONykAo6y2quc+PAPc0a/y9sHKam760w17ZXc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LJ55q9De; arc=none smtp.client-ip=209.85.166.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753352319; c=relaxed/simple;
+	bh=JLkLYAH22NWgewI322Vrwpot7jEz+TvDPcHtEM57dY4=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a2z7Na8+G8lhc/qnQ1FXxgvzsfaLCOweoIpm9HAmXfOlyuBDV9fgfpyr8naM3p8PJ8yIDZpvEybsZAtp101EH6buHlg2jFhet1zr70IuYSmVKO/fhXJ/oib/u2YxXjZXg5H5SIeIu1eSV4ufmpWIn2Vcf2NUu/RwTKt5Zx/kbQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=mV70eaIc; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=C1LqdSyf reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LJ55q9De"
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3e2c683524fso3405775ab.0
-        for <imx@lists.linux.dev>; Thu, 24 Jul 2025 03:14:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="mV70eaIc";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="C1LqdSyf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753352063; x=1753956863; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zoxQrE9BQllINJgA23hOAwgoifAhEszw6BlmYIQoAW8=;
-        b=LJ55q9De/J6iC1nSmpaKzOWHPPS8cJRuN01LfwlhhpZe2izsr6qqcjQsl49tuWgnq6
-         p3iaiZw+2hGW88NPnsZcYtT9joS2edOPAMnfUyI02a/or1jMcfbMNjZfMhKp7prpRC8r
-         /a5TmMTMMtCUyVilg4z3ZMcSBwG4YPDhB3kBBsPEDSvwPrEtMv59Xm7zNvvHfcpx0oCw
-         QaNVdfR1dkNo76Yuuop0LhuPh5qiaJJYFIo4UUDq/jV9uD0kJH5OdDlTxCz3hdGQ7NBj
-         /jzmRSKm7XYmis+jgZ+drQOSLzyYeswd94aUmUEn+tQ6iXHleZ4kDLCttaI7mxU6KqKF
-         E3Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753352063; x=1753956863;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zoxQrE9BQllINJgA23hOAwgoifAhEszw6BlmYIQoAW8=;
-        b=As1f2rgYfbMCR8DnPkIREDAoJHwtuZZ4JsSOJeAGqAh9oEeHr3u/8coGXaiLa5SuaN
-         I/aEE10mAOkIgTEUOHoZUVu5ZzAj+hEl+J5d/lAYJJnFL5Jj00Lazr7wfweu1fz0Ys8Y
-         YCC8Kv8XZJkfJDAsDOxxBLb4QeL+yLeqeSqJgQrY/2GBzBI622qgekvJDbFtCktxHYro
-         M3i49bwQVzTr7J8GaKcTwmJ4/4jhYLGSXdPyoTbhn8ieZpULokzOLTVknUy1cw+y7MnS
-         F0deiJTu1Asnoby69mFgasBDQFfHGTRna0Y9hOoC5UesTXLBMzK6dwXFvYwvlql8Utlh
-         YfIA==
-X-Forwarded-Encrypted: i=1; AJvYcCXO/Y98lgdydBaYH5cUCMVmsWKZkAfGBP/Ikp8H6ptkycvOa6u17p90vkrvHS2Pmqm2aMo=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy3LxaNlEW0EKCcu0yxeIF3zz8uCh1fXFM6yQXCZ9KSSGoJE+p4
-	efYm+od1tYp2jH4Y5i1Z4ufoQ5s/HnzcivxSreoEdm1+capBn6sNEZZO4V6OJm1GkQ9hbE6ldjb
-	Yz3G/iiFQ/WDggUvbFYoP2FvIMJXtJb4=
-X-Gm-Gg: ASbGncuA789KtEVDt6TOd75NXT3Sw0bs2s2Hpc444eFlTesKddY5TByZVp7Hrc03h9a
-	hP1DQX2LARsj40NzArJXraMXyytS6lwHgJd+pEhYfOJO5ixQNymqWVA6E7NDoLcfDrSTHHeFa6J
-	XES8Vzm2R/pEWjivJ5Q10//UxyWCe30QZOde09l4Z0CevucoHxX8J8n1c5zLNhNwz7r0r68gXaW
-	U4ODdM=
-X-Google-Smtp-Source: AGHT+IFuX+HkjjMmIqfOcPi1Vf9XVVv1BJDb7TK2k3LjKb0AvDjYDmsh1XyejNfF4igxDfky969ahsCQGQoG5Rin4/s=
-X-Received: by 2002:a05:6e02:1945:b0:3e2:a40e:d29f with SMTP id
- e9e14a558f8ab-3e3418d71c5mr88504975ab.9.1753352063278; Thu, 24 Jul 2025
- 03:14:23 -0700 (PDT)
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1753352316; x=1784888316;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=hiOv6C/osTxNoBk72SCJemyk6qpcTT9EtOlEQ172ii0=;
+  b=mV70eaIcy9y5USdTuuKJugYcDNQqqh/JZj156dw9aruPM0QY+TKrvS/K
+   ef2mUs8xCqocFjPf8UjESdj8fZalaIiWESBBj7CgpFXiyf1ub+xGgTlDv
+   2P9thbHQOAh/ADEUjKeQ+kwc09tPo3CvbJd3qkaJwS1PdwJMp1jIS6Wqb
+   Y+WCH0b2gGksjTZLcBS2aPmVsfgCl7TjCI5OqH7W2WDr1REXVQt3hpY7F
+   WNZF6qVv/HwB17VHj4YYADM3lGmSQts+mjAf9is3c0atcoDXZeLTeCP3r
+   TyUFVHaPUeoP0VbNmcrGNbJsJDLw/YfmC5cpKD3DogFcN7PloMu1sTCgm
+   w==;
+X-CSE-ConnectionGUID: UuHEozAeSU+hDFJUEFRMjQ==
+X-CSE-MsgGUID: UEqPGTtkSUqZZKPgemzn6w==
+X-IronPort-AV: E=Sophos;i="6.16,336,1744063200"; 
+   d="scan'208";a="45397445"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 24 Jul 2025 12:17:24 +0200
+X-CheckPoint: {68820833-41-FE216C80-D1ADDD01}
+X-MAIL-CPID: A07D5907D5C628A30C31B649D2719C0D_4
+X-Control-Analysis: str=0001.0A00211B.688207DF.004C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A755416829F;
+	Thu, 24 Jul 2025 12:17:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1753352239;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hiOv6C/osTxNoBk72SCJemyk6qpcTT9EtOlEQ172ii0=;
+	b=C1LqdSyflPIbcD2U9v4RWxYpSFTyQ0p3JRnY1O/JHfae1FTAqA+O+uFGg0GYv4Mo7vF3RS
+	2F8VHf71Uqfq49G8djYxfcbV+ow2tsIjsxhXjbPHbkJhBb1J7LOh/qozDYIEcGyam5XKbw
+	2LHyBxBAljMFbZ0G6IP1j/GhQFUmVV0ugGO9i1yzBiptQbNuecGejBP/hDm9B0taef2ikw
+	R/pOalXQ7/dbdUdgXSIGT47FurwqKiwjtonHR3HfA10BMSl4QthQtSD8UfzZYyYhB3pc4Y
+	17WQApXH9KtBg/yYm0WL34Y4eSgxd9qvfc0+U9Zlf52Q+2KAusTJyBbqFF1tpw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: mathieu.poirier@linaro.org, Peng Fan <peng.fan@nxp.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "open list:SYSTEM CONTROL MANAGEMENT INTERFACE (SCMI) i.MX..."
+ <arm-scmi@vger.kernel.org>,
+ "open list:SYSTEM CONTROL MANAGEMENT INTERFACE (SCMI) i.MX..."
+ <imx@lists.linux.dev>,
+ "moderated list:SYSTEM CONTROL MANAGEMENT INTERFACE (SCMI) i.MX..."
+ <linux-arm-kernel@lists.infradead.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH V2 RESEND] dt-bindings: firmware: imx95-scmi: Allow linux,
+ code for protocol@81
+Date: Thu, 24 Jul 2025 12:17:17 +0200
+Message-ID: <2793923.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250718094723.3680482-1-peng.fan@nxp.com>
+References: <20250718094723.3680482-1-peng.fan@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250724072248.1517569-1-shengjiu.wang@nxp.com>
- <20250724072248.1517569-3-shengjiu.wang@nxp.com> <87jz3ykpju.wl-tiwai@suse.de>
- <20250724-fair-sheep-of-success-e02586-mkl@pengutronix.de>
-In-Reply-To: <20250724-fair-sheep-of-success-e02586-mkl@pengutronix.de>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 24 Jul 2025 18:14:10 +0800
-X-Gm-Features: Ac12FXy8l34qKKJsPON1hex-xaVDf1J211wM6fAeHOddOjpvI8f17HQ8iYSYGc8
-Message-ID: <CAA+D8AN2B_RZ9iZ3qE5zMBfs7BMAkruSRQupoXyrsr7Tt+Gfkg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] ALSA: Add definitions for the bits in IEC958 subframe
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Takashi Iwai <tiwai@suse.de>, Shengjiu Wang <shengjiu.wang@nxp.com>, imx@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	Laurent.pinchart@ideasonboard.com, andrzej.hajda@intel.com, 
-	festevam@gmail.com, simona@ffwll.ch, robh@kernel.org, rfoss@kernel.org, 
-	airlied@gmail.com, tiwai@suse.com, jernej.skrabec@gmail.com, 
-	p.zabel@pengutronix.de, luca.ceresoli@bootlin.com, devicetree@vger.kernel.org, 
-	conor+dt@kernel.org, tzimmermann@suse.de, jonas@kwiboo.se, victor.liu@nxp.com, 
-	s.hauer@pengutronix.de, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	linux-sound@vger.kernel.org, perex@perex.cz, 
-	linux-arm-kernel@lists.infradead.org, neil.armstrong@linaro.org, 
-	lumag@kernel.org, dianders@chromium.org, kernel@pengutronix.de, 
-	cristian.ciocaltea@collabora.com, krzk+dt@kernel.org, shawnguo@kernel.org, 
-	l.stach@pengutronix.de
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Jul 24, 2025 at 3:40=E2=80=AFPM Marc Kleine-Budde <mkl@pengutronix.=
-de> wrote:
->
-> On 24.07.2025 09:37:09, Takashi Iwai wrote:
-> > On Thu, 24 Jul 2025 09:22:44 +0200,
-> > Shengjiu Wang wrote:
-> > >
-> > > The IEC958 subframe format SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE are us=
-ed
-> > > in HDMI and DisplayPort to describe the audio stream, but hardware de=
-vice
-> > > may need to reorder the IEC958 bits for internal transmission, so nee=
-d
-> > > these standard bits definitions for IEC958 subframe format.
-> > >
-> > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > > ---
-> > >  include/sound/asoundef.h | 9 +++++++++
-> > >  1 file changed, 9 insertions(+)
-> > >
-> > > diff --git a/include/sound/asoundef.h b/include/sound/asoundef.h
-> > > index 09b2c3dffb30..7efd61568636 100644
-> > > --- a/include/sound/asoundef.h
-> > > +++ b/include/sound/asoundef.h
-> > > @@ -12,6 +12,15 @@
-> > >   *        Digital audio interface                                   =
-   *
-> > >   *                                                                  =
-        *
-> > >   *******************************************************************=
-*********/
-> > > +/* IEC958 subframe format */
-> > > +#define IEC958_SUBFRAME_PREAMBLE_MASK      (0xf)
-> > > +#define IEC958_SUBFRAME_AUXILIARY_MASK     (0xf<<4)
-> > > +#define IEC958_SUBFRAME_SAMPLE_24_MASK     (0xffffff<<4)
-> > > +#define IEC958_SUBFRAME_SAMPLE_20_MASK     (0xfffff<<8)
-> > > +#define IEC958_SUBFRAME_VALIDITY   (0x1<<28)
-> > > +#define IEC958_SUBFRAME_USER_DATA  (0x1<<29)
-> > > +#define IEC958_SUBFRAME_CHANNEL_STATUS     (0x1<<30)
-> > > +#define IEC958_SUBFRAME_PARITY             (0x1<<31)
-> >
-> > I'd use "U" suffix as it can reach to the MSB.
-> > Also, you can put spaces around the operators to align with the
-> > standard format, too.  I guess you followed to the other code there,
-> > but following to the standard coding style would be better.
-> >
-> > With those addressed, feel free to take my ack for this patch:
->
-> Or make use of the BIT() and GEN_MASK() helpers.
+Hi,
 
-Is it acceptable to include the headers in this file?
+Am Freitag, 18. Juli 2025, 11:47:22 CEST schrieb Peng Fan:
+> From: Alexander Stein <alexander.stein@ew.tq-group.com>
+>=20
+> BBM protocol supports a single power button, supported by driver
+> imx-sm-bbm-key.c. By default this is KEY_POWER, but can also be overwritt=
+en
+> using linux,code. Add a reference to this schema and add linux,code as a
+> supported property.
+>=20
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>=20
+> Resend [1].
+> I not see a reason that why this patch could block i.MX95 remoteproc supp=
+ort[2].
+> But to speed up the work, I took Alexander's work and resend it. Hope this
+> could catch 6.17
+>=20
+> [1]https://lore.kernel.org/imx/20250513-whimsical-almond-quoll-e3ad5b@sud=
+eepholla/
+> [2]https://lore.kernel.org/linux-remoteproc/PAXPR04MB8459A0F330554EB69E99=
+0E048850A@PAXPR04MB8459.eurprd04.prod.outlook.com/T/#t
 
-Best regards
-Shengjiu Wang
+Thanks for resending, I lost track of this patch and though it as applied a=
+lready.
+
+Best regards,
+Alexander
+
+>=20
+>  .../devicetree/bindings/firmware/nxp,imx95-scmi.yaml   | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.ya=
+ml b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
+> index 2bda2e0e1369..7a5a02da2719 100644
+> --- a/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
+> +++ b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
+> @@ -24,13 +24,19 @@ properties:
+>          const: 0x80
+> =20
+>    protocol@81:
+> -    $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
+> -    unevaluatedProperties: false
+> +    type: object
+> +    allOf:
+> +      - $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
+> +      - $ref: /schemas/input/input.yaml#
+> +    additionalProperties: false
+> =20
+>      properties:
+>        reg:
+>          const: 0x81
+> =20
+> +      linux,code:
+> +        default: 116  # KEY_POWER
+> +
+>    protocol@82:
+>      description:
+>        SCMI CPU Protocol which allows an agent to start or stop a CPU. It=
+ is
+>=20
 
 
->
-> Marc
->
-> --
-> Pengutronix e.K.                 | Marc Kleine-Budde          |
-> Embedded Linux                   | https://www.pengutronix.de |
-> Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-> Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
