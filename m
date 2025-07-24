@@ -1,85 +1,85 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3853BBF0
-	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 11:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5028620A5EB
+	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 11:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753355609; cv=none; b=bDR+s+muR11xUVjWLlip1qwFWvdybC4YMXTviPg+IIYq1NQoM0hJqrfeEUlXVY5ojfGiVceiydXEy2qRbH+VEhwoKEon26Jx1eXaXthWFM7lTwLyN+BfXXMo88gIHvCwCz+oCOYruhky29sJNYD3AnQPok3c8cyRlKPbbvSwENY=
+	t=1753355714; cv=none; b=odvMaYo/yg9ipjW0IvAqXiLjTTsuzED2hC0zLVK8gYRUBJ6ye2lN8mssXqyiUBsWj9brKvVFHpsKTzPIt4m3PUxLAN+Zte1pjGq7vLFRgTVMtOVQP/Lsb+Uj+ySFkYR8hGiihzOxlOMLadTKV7Ohs06TN/xntkYoYXdpIebdhjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753355609; c=relaxed/simple;
-	bh=+xsk3eLTqVSLGwJ2sXxrjX5jHw9wBvQeSl2HaOa9FDQ=;
+	s=arc-20240116; t=1753355714; c=relaxed/simple;
+	bh=QAtHv6jVtOKPfBxG+t4sPI1ngV8CsevwVhkX4+9+HYY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YPX2ZhcxZBKWc0ud1E/U3Ba2VF7dx3igx4LlCBM3eDZw9h9j8FlHr3Zg1JLEbvqGv4rhvUgw0/zBr2rexECBoYzG+5OFikwd2kpZFVPIOcvipO9S1qiBaITPtkE+UDM2G49yZzinvBj3SdJ/AQp58hgKHOu4/yZkNtsNMqvXlmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lLtqWSZk; arc=none smtp.client-ip=209.85.208.42
+	 To:Cc:Content-Type; b=p012xFKqKpGxkVx9z9b/tJnOtSkWg6Y40Is630NPMlRa3BL5WYVRAL/jK1l3MzzPNi4sIPyI+rVLfuf7IScw8ElGF2wvNn4IC9ReIMslRsIrMGMY+tuKKcVPH969YDIUjeSJv5oCe5BHD/qYZLqZCNGl5NY/BtbptyGLvEZRiGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GApDDdzD; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lLtqWSZk"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-606b58241c9so1428968a12.3
-        for <imx@lists.linux.dev>; Thu, 24 Jul 2025 04:13:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GApDDdzD"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-60c01f70092so1471164a12.3
+        for <imx@lists.linux.dev>; Thu, 24 Jul 2025 04:15:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753355606; x=1753960406; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1753355709; x=1753960509; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hZNixusr+c3cACc4GCTidZUQE/E0dLpa/Bb6bVcQhms=;
-        b=lLtqWSZk3IVgYe4XoRAQDk6sBiwiulTNqmbmjB/DbsAMjEZpizMyy9MnJSrxG92jtb
-         3uHTgHZuzPhn/Zf9zMuGrmLcOn5Sz8GcCXpD62Z298SbqtOcCu4UiEQtGV7OcRvAqmcZ
-         oQXTi1i1XuvQiNwi04xE6OMT7TIQuh001vy/ECBzc1B+pDWcasA+j5kdpHe3tj9/kcYQ
-         QbG3fv9csvZOmVzTFsSXExpXClH63BnZ5qrGNRFd+b0ILz/Fg3p8/EWzLssXFSdQ9cU1
-         rSi6DJkY5EkuifpLA/WDloSpOaw+kUHdYzqf+NV7TvlT9O08JT1YteY2XS8WvHeNqD7V
-         dILw==
+        bh=QAtHv6jVtOKPfBxG+t4sPI1ngV8CsevwVhkX4+9+HYY=;
+        b=GApDDdzD9uVW9p1OD8gP47XqEhSZ6B38qVmU8gJipDEFneXQhm28p/RZmp4NfANJj+
+         UGauB2w7GO3pcDMHCtt9puHQDiCZnzJwe23vwN7DgOmg0M8JYAsMMsqqiUEJ1KZBEJJe
+         w/SpeHSb84gh6PFe+jpMHmC0Q5e0P2oiVVONZJ8R0/RSWK0B3axuZgnWzP8p7Ljb0Iu5
+         zcKPZWZo3rfarqOFRahD5/76YGivJvAz9pWG9XPzsAE//OiMKvNCJkbActKuYfgxe6yL
+         LGKggUuxjKnCf0Z6EhJiFLaDoHfHSAruzkVSgOJYmyNAjMJaYgUxOAbohQJM5yzwzVLE
+         SgbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753355606; x=1753960406;
+        d=1e100.net; s=20230601; t=1753355709; x=1753960509;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hZNixusr+c3cACc4GCTidZUQE/E0dLpa/Bb6bVcQhms=;
-        b=wcIV2LIPxAhmyQh4Mn2oDpdh0DqZw5qJSdEQFQjPhs71l60dIWOl3H4+wH2y8V2wnZ
-         XlVkGJi6Ov0xpq6sEC7+vVeaaHzPIBmPcfnOA6ZjZlTEQaqOFfIfDjWYcUhUyOfK//Qq
-         g/344J9XGDv1yU82ofD9s1DDPCqalgKWbRL4hAla4Blo9/jKKbPi2nFauaFg7pFBC81H
-         OXBRDHYPXHb+paz8/bstiOC8eO0tCwS/Zx1bjJjjSaNdBSjpOrRvJnctOIWH0bYTjGaV
-         /my2E2olEK7THk4A+sB46LSQ/Spf1hzjCEiYrKG6xGJdiz8Mt+FuQ7BAPZVaxjZZMo4r
-         zZew==
-X-Forwarded-Encrypted: i=1; AJvYcCWQXRdNikVP/ln8nSGE4lcywdyG52S8uaYbR0UFnwOzRn3I37TA9KJk0fMLnJAgHJ7uFwU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxAdmq326FQu9jv8HvMNwJEgeTbxYk9cJ7ur1LTaCPUttROvetu
-	m0ED8cNmYmqfO5sDrj2QXuSdNfDtl3rgLdSl4jJ49ChhoQvQDPa6zaiwo0fDUwN35F9oH8Mjdik
-	0v2z3fqwyeB2WPqVpTaAY67R0Ef7D5j8=
-X-Gm-Gg: ASbGncsrkv09oPbv1pVszJUiqJ0R5fd6X1ZVgKIEsfaU0a4Dvbeoa0ylCaSjWhBbkEK
-	q8pb6nTi0R32ef7So2zeLAK7Ky7HsE7PzsJbkS0z088/bBsNfcxrg6S7BNaeB6g9sFtqYFqjon8
-	LdfGibXPTaE8zkGHahJbu7FiBK+FiXddW0BLAyTQY1/mu/4+P1O9YqMHkd6DtbfLFgtMCvtdIv1
-	IpPV3TxvP6fBy9j1lmH
-X-Google-Smtp-Source: AGHT+IELZnhRssUojeUfzx03q7k6D/HSNcNEJ5i+elToR/sTLOJXIaiozbv7LfFc6lY38aKQkwYpn9FdGW+sEeYsiSw=
-X-Received: by 2002:a17:906:f581:b0:ade:2e4b:50d1 with SMTP id
- a640c23a62f3a-af2f895ad43mr692412466b.29.1753355605638; Thu, 24 Jul 2025
- 04:13:25 -0700 (PDT)
+        bh=QAtHv6jVtOKPfBxG+t4sPI1ngV8CsevwVhkX4+9+HYY=;
+        b=X9HAfokL9XD6dNsocLcWtWyxge3SLJ842eZM4Czw/Gz93rog5dxi0RNef/V4Z/zcpQ
+         wLDYkBScnMOLVjQczo+jCDbU4k2K6oCdKLEzlT0OXYWUEEimVLKTNHKs+tVAyP5+WSH4
+         e1EN5cujDt1fAMBeksMlM8GC+UPQ2vdHDVsN5lVsmOcoL6KdDGyqhF2N8gFB9yFIHvPD
+         5F1jvlBoJrc670JSb25vWk7184IxIiNPkDLA1Eyi7Yciio55DpCGi6Lz99Q7uXo03b5G
+         EsvowKYGUIw9CV8n8aWJlObBJ7veEP76B8fn7636Ixz8NdhVTpTyPZWutP2yu3l1RujY
+         Hxqg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0nx8p7DRbFraENOkZCv5g/I5I2Q2KYZbOZoxkjKVLwFUxjJKWBKcN8u/ICL6eRgPSl6E=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzN2EUc3ubfG6UCNHBI0y/3M5DF5LoSGalkitLnaTG7yy61NeSD
+	KB3g0QfqjRa5XAITTa0Y8EHKLvb4LwOzUIGcuMvfl3TI5n8MOAVwijVMb9TzwdeMa+TFyQ1PHYG
+	SuwPTKz5IJ+KaoLSmUTYHazu1wqFsmWw=
+X-Gm-Gg: ASbGncv+4Imurj+lvLIRI238AXmH32u0I24vh+hhWJxBRynfySVzlb1SF7QwqvpCOMz
+	iFKOXl78gn83d4iFAsNX/sjmbRO8l093mD45HphQ7CXCQ8GXEIq0tCbH2iH7W+E8kllDePz2wQT
+	Q6Lyrzw3ax4LVFfpgPgjzxy+kKd9S6QLpGixo2q0PVElNcHeV1aCAERGPN8jKo+qObhCB6THLNo
+	wUlosip5p7Frti1CFta
+X-Google-Smtp-Source: AGHT+IGWvdFdi6zzckyJlm6N2JYQgwAj1cZ4UkHgtQjTXi3F8fk1lJZ/2HIRvhtKXI2VlvbdwgIvW4p0HjJsBk5xRxw=
+X-Received: by 2002:a17:907:9487:b0:ae0:e065:ddfb with SMTP id
+ a640c23a62f3a-af2f6c0ae2fmr725433866b.18.1753355709200; Thu, 24 Jul 2025
+ 04:15:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org>
- <20250724-pinctrl-gpio-pinfuncs-v3-1-af4db9302de4@linaro.org> <e1253b8a-4940-417f-b530-09e57c6a8932@lucifer.local>
-In-Reply-To: <e1253b8a-4940-417f-b530-09e57c6a8932@lucifer.local>
+References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org> <20250724-pinctrl-gpio-pinfuncs-v3-9-af4db9302de4@linaro.org>
+In-Reply-To: <20250724-pinctrl-gpio-pinfuncs-v3-9-af4db9302de4@linaro.org>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 24 Jul 2025 13:12:49 +0200
-X-Gm-Features: Ac12FXx4uwXTilr-eVY-szF3msWYq6-eRwPAeJOQDJhF69DCjZUNeC203FQ8yl0
-Message-ID: <CAHp75VeWbhuL1pYvEza44Pnb5YUufgY=1WYXSx2nNMJVfcytTA@mail.gmail.com>
-Subject: Re: [PATCH v3 01/15] lib: provide kmemdup_const()
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+Date: Thu, 24 Jul 2025 13:14:32 +0200
+X-Gm-Features: Ac12FXyOn0y78pX82gZjLVt_m4TA-GVnUEaS_-xxL1ntUx22Wj5veadNWvnjdU4
+Message-ID: <CAHp75VcEX6FBzAu3+-5iia6Z1+kSQLYFGp0FnO71gXwCF+-wDg@mail.gmail.com>
+Subject: Re: [PATCH v3 09/15] pinctrl: constify pinmux_generic_get_function()
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
 	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
 	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>, 
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
 	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
 	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
 	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
@@ -92,31 +92,15 @@ Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij <linus.walleij@linaro.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 24, 2025 at 1:10=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
-> On Thu, Jul 24, 2025 at 11:24:29AM +0200, Bartosz Golaszewski wrote:
-
-...
-
-> >  extern void *kmemdup_noprof(const void *src, size_t len, gfp_t gfp) __=
-realloc_size(2);
-> >  #define kmemdup(...) alloc_hooks(kmemdup_noprof(__VA_ARGS__))
-> >
-> > +extern const void *kmemdup_const(const void *src, size_t len, gfp_t gf=
-p);
+On Thu, Jul 24, 2025 at 11:25=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
 >
-> Please drop extern, it's unnecessary.
+> With all users of struct function_desc limited to only accessing it using
+> the dedicated function and never modifying it, we can now constify the
+> return value of pinmux_generic_get_function() treewide.
 
-It's all over the header. This should be done as a precursor patch and
-I know that usually people push back on doing that. I gave up on this.
-Kernel is going to rot sooner or later... :-(
-
-> >  extern void *kvmemdup(const void *src, size_t len, gfp_t gfp) __reallo=
-c_size(2);
-> >  extern char *kmemdup_nul(const char *s, size_t len, gfp_t gfp);
-> >  extern void *kmemdup_array(const void *src, size_t count, size_t eleme=
-nt_size, gfp_t gfp)
-
+I like this change.
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
 --=20
 With Best Regards,
