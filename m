@@ -1,163 +1,235 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011046.outbound.protection.outlook.com [52.101.70.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936CC263F34
-	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 10:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753352319; cv=none; b=L0rfnUnOH34XSQGDlQ5ZNNaQZoq0EO6B/0/vXHzAeyXX3gqrm6VCwsj5GEsmQRXdqG9yTKTchlXeOg61swaY/HaqtHSNv6vD8F6jx2mxLzFK9GAVR4CZ2vSTXX5BpDsyPikaaWUtabtxZ2K2GXhckHlfQjNT1DYNoPiuKLeKzzk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753352319; c=relaxed/simple;
-	bh=JLkLYAH22NWgewI322Vrwpot7jEz+TvDPcHtEM57dY4=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a2z7Na8+G8lhc/qnQ1FXxgvzsfaLCOweoIpm9HAmXfOlyuBDV9fgfpyr8naM3p8PJ8yIDZpvEybsZAtp101EH6buHlg2jFhet1zr70IuYSmVKO/fhXJ/oib/u2YxXjZXg5H5SIeIu1eSV4ufmpWIn2Vcf2NUu/RwTKt5Zx/kbQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=mV70eaIc; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=C1LqdSyf reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9727C269CE6
+	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 10:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753354291; cv=fail; b=WkM9dn26607zz5VIwvYLS6KS/Dar7ONGPbrHa3hbqIhOE6T0AQTHOaFgL6lnOUHpdSbMDkM+ZC0c3WgqB0HMkHJ3FFweUseMx7dA/ybpNqyfNmXL3yxQe5TmVFI+2naEdW/efPfattbya4I257kk2Gt9QReSFGtj4DhhblWRjrg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753354291; c=relaxed/simple;
+	bh=4NcBXDTMLiLWSsCegk1GavAixu6H8a4kVEdzWXQLKC8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JiX1xzP5l7AO4252yEIou2uokFuPoCQAnwHJRJanbFpkHbMk+QCVgrFi+QRGIO9mNQyXvsWKyvNrsTBk4uMAQu1rdBPXPtaDAxf3Shd+UQc52Q8gY9NDJSZ0pRAlYqSb6JSLVV3GvJv4Sf50B8LNW/oS3n5Z75Kp7w7bDAz1ENs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MC3EFd06; arc=fail smtp.client-ip=52.101.70.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="mV70eaIc";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="C1LqdSyf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1753352316; x=1784888316;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=hiOv6C/osTxNoBk72SCJemyk6qpcTT9EtOlEQ172ii0=;
-  b=mV70eaIcy9y5USdTuuKJugYcDNQqqh/JZj156dw9aruPM0QY+TKrvS/K
-   ef2mUs8xCqocFjPf8UjESdj8fZalaIiWESBBj7CgpFXiyf1ub+xGgTlDv
-   2P9thbHQOAh/ADEUjKeQ+kwc09tPo3CvbJd3qkaJwS1PdwJMp1jIS6Wqb
-   Y+WCH0b2gGksjTZLcBS2aPmVsfgCl7TjCI5OqH7W2WDr1REXVQt3hpY7F
-   WNZF6qVv/HwB17VHj4YYADM3lGmSQts+mjAf9is3c0atcoDXZeLTeCP3r
-   TyUFVHaPUeoP0VbNmcrGNbJsJDLw/YfmC5cpKD3DogFcN7PloMu1sTCgm
-   w==;
-X-CSE-ConnectionGUID: UuHEozAeSU+hDFJUEFRMjQ==
-X-CSE-MsgGUID: UEqPGTtkSUqZZKPgemzn6w==
-X-IronPort-AV: E=Sophos;i="6.16,336,1744063200"; 
-   d="scan'208";a="45397445"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 24 Jul 2025 12:17:24 +0200
-X-CheckPoint: {68820833-41-FE216C80-D1ADDD01}
-X-MAIL-CPID: A07D5907D5C628A30C31B649D2719C0D_4
-X-Control-Analysis: str=0001.0A00211B.688207DF.004C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A755416829F;
-	Thu, 24 Jul 2025 12:17:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1753352239;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hiOv6C/osTxNoBk72SCJemyk6qpcTT9EtOlEQ172ii0=;
-	b=C1LqdSyflPIbcD2U9v4RWxYpSFTyQ0p3JRnY1O/JHfae1FTAqA+O+uFGg0GYv4Mo7vF3RS
-	2F8VHf71Uqfq49G8djYxfcbV+ow2tsIjsxhXjbPHbkJhBb1J7LOh/qozDYIEcGyam5XKbw
-	2LHyBxBAljMFbZ0G6IP1j/GhQFUmVV0ugGO9i1yzBiptQbNuecGejBP/hDm9B0taef2ikw
-	R/pOalXQ7/dbdUdgXSIGT47FurwqKiwjtonHR3HfA10BMSl4QthQtSD8UfzZYyYhB3pc4Y
-	17WQApXH9KtBg/yYm0WL34Y4eSgxd9qvfc0+U9Zlf52Q+2KAusTJyBbqFF1tpw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: mathieu.poirier@linaro.org, Peng Fan <peng.fan@nxp.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "open list:SYSTEM CONTROL MANAGEMENT INTERFACE (SCMI) i.MX..."
- <arm-scmi@vger.kernel.org>,
- "open list:SYSTEM CONTROL MANAGEMENT INTERFACE (SCMI) i.MX..."
- <imx@lists.linux.dev>,
- "moderated list:SYSTEM CONTROL MANAGEMENT INTERFACE (SCMI) i.MX..."
- <linux-arm-kernel@lists.infradead.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH V2 RESEND] dt-bindings: firmware: imx95-scmi: Allow linux,
- code for protocol@81
-Date: Thu, 24 Jul 2025 12:17:17 +0200
-Message-ID: <2793923.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250718094723.3680482-1-peng.fan@nxp.com>
-References: <20250718094723.3680482-1-peng.fan@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MC3EFd06"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GBhchEeP0D/JUIes1kUocXVgMXLp+DiNhk28QmJw99SzDRYtg0EbQGcoU5/SPfe7eHLg5mN63RB0TgTpmxTcyqjYQm8OH27WDPQpwbbcOZmQchy6BW4CZaBsmV8j/G3WXWpdT+Tzcub3PDL2PXQDX7/6SsiGQAPNBY3oAETDLb9nH1nNQjQDh7GRQKge+yEwKA5RDzE/LiIgO6uQH/e2umBx2/hU7Nwzqc324jvd797sIGt0SEZ2v6US4Q8B0D2OpFC6FQ1aKnMTop8EBx+juDNVhBy+nDJYrBBIDZSM3A3NqeA/kq0TX1Uo0igDx9EdowlVXo/2NeTC518KRyMAOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XN/zApS5mcF9H0zlfIuePMvGTu2jL4QdAxTWIncWbzM=;
+ b=rH3ZP+8uvtv5YMw2zOwYiPWl0wop91Lsohar5MFQws+Vc/SLbRsTZjFEZicKHWZYG+EA7jl3YpcBwS9ET60NNbib9pEyZ1Ihl/kLvAKOXOePwRg8A7GI4mSTJfuNF8PkaJTM1ULLjtXK26ixyjXAydP+tROKoMKYTqe5wYTYFfcw/ZauOeVf7d4mtZMaGrDH5uotE4WEkqWcb6wV8r2Khym291vL+OZfiPlHrWZemqWWMLaPgwqxhDxt77CE22h5+jY8bbShxZRzxzEuAOJFGvAemQHGQFSx5R8MnvlMmD8JTfQOgcXjmMQz/e9gAi9TBAfLoAWQDaPD5Hw2Eh5GYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XN/zApS5mcF9H0zlfIuePMvGTu2jL4QdAxTWIncWbzM=;
+ b=MC3EFd06aa29++x7zQ2LGMQcyy5lucg8vKZwvtNN6UA6MjMO4IufXzAfJJBuwDjU/a+ooCagKwlLBEULjQis/IuHGEjWqj8Hl/B6ibE88UHoq/wTW2IdOvYEb6A5eKQMIl+4+sZ+rA/oyHnbv4k/dirlaoeueT9lhYxDKkp9AMvTRpfLPGW/toHyk2ukA1I1j3ZQvT7uJ6FzIYfWirvJwJKCfIKg5AY1jtcHKPxMdf0kHrUZbkDaq/5Ge+Z7YLmul/bMZdCt0eF7TTHP/W3S8uE4RfD+RkmC8hmKtc508PU51FnW0Z0NaRljeD8hpK28WkEOhPsgc/Qep7z4kGMNsA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS4PR04MB9386.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::8)
+ by DBBPR04MB7643.eurprd04.prod.outlook.com (2603:10a6:10:203::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Thu, 24 Jul
+ 2025 10:51:25 +0000
+Received: from AS4PR04MB9386.eurprd04.prod.outlook.com
+ ([fe80::261e:eaf4:f429:5e1c]) by AS4PR04MB9386.eurprd04.prod.outlook.com
+ ([fe80::261e:eaf4:f429:5e1c%7]) with mapi id 15.20.8964.019; Thu, 24 Jul 2025
+ 10:51:25 +0000
+Date: Thu, 24 Jul 2025 18:51:15 +0800
+From: Joy Zou <joy.zou@nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>, Ye Li <ye.li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: regulator: add PF0900 regulator yaml
+Message-ID: <20250724105115.GA1748604@shlinux88>
+References: <20250721-b4-pf09-v2-v2-0-e2c568548032@nxp.com>
+ <20250721-b4-pf09-v2-v2-1-e2c568548032@nxp.com>
+ <e9f38e38-7df7-4d19-b5c0-2f18aeebcc78@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e9f38e38-7df7-4d19-b5c0-2f18aeebcc78@kernel.org>
+X-ClientProxiedBy: MA1PR01CA0168.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:d::23) To AS4PR04MB9386.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4e9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9386:EE_|DBBPR04MB7643:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c189265-f4ef-4457-a832-08ddcaa008fe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|52116014|19092799006|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Xycj2YJrczwVT6tR6zAma7XrvuictAn2iyEm090q4v7FQWiLP7cVlzwV6CvX?=
+ =?us-ascii?Q?Dayro2yFZqSFSN55gCdxpdeWaTWU0gz0XoZanLDgpo2ut6mXtI8NDsZa6F4B?=
+ =?us-ascii?Q?ExYPj0XmykaJB1/KVJpwYShOJCzIsaptRUJe6Xyj3SkSp+mROLKncm0S8rKF?=
+ =?us-ascii?Q?hyeFQpc0KVh153IwyhM2zIHT4judd6p/dSRUQJ3Bz9G3eU6Su9jAd+DSNuE+?=
+ =?us-ascii?Q?4gcbdsStYKMQUhWYiUXgctkcSnBzwBBY0rzL0CtqSK/Z8g29EweaSC+CsbTI?=
+ =?us-ascii?Q?R2cKCfz8HwJD5p8Yh0lsL74QxepgEGXgiT6aDJNZyysp+cG3n20Z3+WQD2y3?=
+ =?us-ascii?Q?uTNcD1i/YpzqBveu/ZXn/tWubdzO6nnkPdrVOsUuginRVuPTVzkZpCAtXrHf?=
+ =?us-ascii?Q?2Vw/qQC0/kovAUUhWesN2tbsdhVCU6X+01nv6/tO9VcltLXxdca6pwIz6OTT?=
+ =?us-ascii?Q?RKn3V5Qhf2oMq9Rz0X4VoXO1e3akAM2GrGQq1zv1uE1AEBry34PaGfWzL3bW?=
+ =?us-ascii?Q?OXqJa5fVUHOkhOPCj9H0aUx49iyC5dHsmtPMX/nGQDRyJ3v1x2ct3A/fmOAg?=
+ =?us-ascii?Q?1+qqvud5T9T6CWcxwwNVHvDq19VbY6nGOJUnTeilFHa22reBQppufxV1HHo5?=
+ =?us-ascii?Q?JeNcEMm78aJB8JZlDy5XbTY6LZ5e+DBOYgcnpOrMNbkEmzPZv6nVOq3JVGov?=
+ =?us-ascii?Q?LH6PkFwFMffe7gUJVDIEm+vXgIgnM007gqnRRcYgLD7IJQ3bipGNe2TgUQSV?=
+ =?us-ascii?Q?wzD9G2n16GIOl++W7t8Z9GuMa7dvXBPtU356Zuc/+IJU4rinuIP3OzKFsYo+?=
+ =?us-ascii?Q?NyC56TXrXZn2DMEu84trWlaXe7Vjy9HU1nXBko0RFl4PdOPiLIkvcqPPZL7i?=
+ =?us-ascii?Q?XRE90VTfuEkmPg0gMzIiNprplHpNLTEypYStro97a8a4IO9EaB06yaudfxbZ?=
+ =?us-ascii?Q?EzZKuoMBX1pY1MFGhEoY6/hGFBwjZ5OaRa8J8iRNT/vRiXNrh6xrM7bXUQM/?=
+ =?us-ascii?Q?zN4UEjEnMcyM1ogjBpaKsXutgkdvSe/pwXSQAbJgLOt0BVEaw9cGIEqFXA/j?=
+ =?us-ascii?Q?/8O2RBj8VOPoHRQ57tPRBUEsztwCAki6VXClKJ7mQgQJJPqD99gPF5O9MoEu?=
+ =?us-ascii?Q?jdakmacIVNanqdmeltYU2vaz+nVKFfwOkGe8k0jAheon/0Eg5M0gmod1Qm55?=
+ =?us-ascii?Q?B4pppT/SPtK79v0Jb8tY7ck+2jTqEYIVRh63V+0vq8bl1+DAeXSy48RtHPNt?=
+ =?us-ascii?Q?WTx7YwDtHJRvrmkydAhXs3c+a/5anN9ePkiRj8/2TnUE9PAiSdVUyYVhjVLe?=
+ =?us-ascii?Q?lzm14PjFD8Fwu7zmQSXyr1udYnPTHUC8R9G+LAJTNhO7LRVEqpkk21bW0AGa?=
+ =?us-ascii?Q?TM1ttRxDRLsD0APVEivTUtb94JwRA1T4lxq2DXrbLIZvGtiZtvUtjTOGLtGV?=
+ =?us-ascii?Q?kGQ7Xiqg8EovsQcltnM+GOVGwxNou8OlCQDMGG4jGT5vgfnx3K7u1toGUYgj?=
+ =?us-ascii?Q?zPU2nlbraqOVszc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9386.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(19092799006)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gBs9lE+n6rIxlJhE3NXHOCDJDgDPY97Xuc5nWZpEjIkFUfsgwE0QQl5CtAxY?=
+ =?us-ascii?Q?D97QjyMIrw+195qOqIxPpyr+n3l8WgOWY+1l8dQapMbblXWii2Rc3+dm+Y/0?=
+ =?us-ascii?Q?aS08PY2nXmAi3PWkz9uTBh/scT2Jl7tU0c0cTqxc3uSzTdmEucEu5crCLda3?=
+ =?us-ascii?Q?D2OXWoGTlbSxT0vsNVZblWPYyOF7i8vH5Z9tK01SxMct0w/aNQP4gAqg4jcZ?=
+ =?us-ascii?Q?vbXo9r8/iixdJTdMEvZCaaMtoYAiI7AT8totzwEe4Hjl6LQjzokWy2JSLW21?=
+ =?us-ascii?Q?V3q9OBxlNIxhrulHsltrqJ7fWDUe25jbCW4u8ALvLqO9TlYjICwY2HpNL5KR?=
+ =?us-ascii?Q?1fxKumz9HdtLbbaFS49BYzs8upROTdiiIDWhAOGO7vIdYZuyL3aN+PdlrH3H?=
+ =?us-ascii?Q?+f4k+yP3+HXKjIbIyC+bjo4r4p2ocEc50qUSJwFE+n2cBl9yRUPSu8lp8fyu?=
+ =?us-ascii?Q?VVsnqewbJVTkk09Y2o+SoDQgx5GDjYN8kztGgtOY4qDDMfwfzx8n9wajmn6o?=
+ =?us-ascii?Q?pABrP7xsbpp7/d+65YgEXcdFi6aao5//htVc9m1z0u014JDN/hoU0GNB2aQ9?=
+ =?us-ascii?Q?iX5fqYy4RmxOsWHmnoWAopaG4OhQTt87MyGDf8xkjCgO95iD+D/iIbKsSXMS?=
+ =?us-ascii?Q?qWRVfyGCz789rxJbaZ+r61IPK9Mi9qHFlzPlhCX4XxacIii2Pek9kz1L4uDG?=
+ =?us-ascii?Q?gZL4Qrqy7wsGULq0eq+t3ISl22g1Hr+hOW99MHbUAcdAk1lYCqJcIn2LnDu7?=
+ =?us-ascii?Q?AhTXlsDsnBfKxu6+g+UxUqxim5blBwbjFAX0JYMN8o1EeTmRoWF0bOphPBUk?=
+ =?us-ascii?Q?7aqLCNhIf0SW3ewMlXfgZscoLDZYGKKtwuWFisdwjjtAvy2ZZKs9TrgldKno?=
+ =?us-ascii?Q?IPkw/2OzMibA8jV292yBPZnSFvAZ9RPFri+0fz0ctv4pHZzUgqXhs4QY5mRc?=
+ =?us-ascii?Q?GZUgmD+TSx9lXrWgsVVL/m9D5M5rDLVpY+ajwrDrzAQskGkR5YgzTobRip0k?=
+ =?us-ascii?Q?iA+uYzMOb+A23WoIlLIonRV2x+2BNMz42TygOmhsTRACMlW6q7dIIlphfVsB?=
+ =?us-ascii?Q?w6+OCZdJIaXlbevWvkyzEFoW4dDB5IheofL4Ycldj2Ayju66d4ascZyCCeqp?=
+ =?us-ascii?Q?LcKgMhFtPaxOY+V663jnbUUWknI2dyyaI5bmMd5t8SjzdCq5W4Tyw9JyA8MA?=
+ =?us-ascii?Q?KmEg/f8mPQcq9lzM1IjRzEw9ujlBgvQ/zMenJs3H2lu9y0vBZM1Foz5nFxRL?=
+ =?us-ascii?Q?NmRqF9wZBS65bhGLYjtBvHW1cSpxP0q1/AfIPqrGutsK/oTgFpXoCpm8j3YC?=
+ =?us-ascii?Q?+AwfH08ClpbHa+AWKze9xTGkATYy6gER6tCSaf698fJPY5w0stNoXPq4rD4a?=
+ =?us-ascii?Q?h4kmlGqHIl0exvv8kskBvLpcAwlsSkBckWRzxt0jZtglG9OPIricSGm6D870?=
+ =?us-ascii?Q?2KHaeazedqYMyhH9t4BhM4K+bxEAM3KUco7bKqR2zbMVezyaj0dEiXqz3qQ9?=
+ =?us-ascii?Q?vlLSQnHd8Ux0wJXxt434qExIMtJ3hMtXi7zLcyyoNGhxumUl9nqFuN0bePi8?=
+ =?us-ascii?Q?7Llc3NAPolzEnz3BpXV0MLC15bBVFwvnwNcJVvYR?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c189265-f4ef-4457-a832-08ddcaa008fe
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9386.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 10:51:25.5070
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EiR7OLolwOHUun55Gc8YzBk/AyKBbVshzKIBNDO3Yd53PRHCddTWOafWpRJQNPHt
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7643
 
-Hi,
-
-Am Freitag, 18. Juli 2025, 11:47:22 CEST schrieb Peng Fan:
-> From: Alexander Stein <alexander.stein@ew.tq-group.com>
->=20
-> BBM protocol supports a single power button, supported by driver
-> imx-sm-bbm-key.c. By default this is KEY_POWER, but can also be overwritt=
-en
-> using linux,code. Add a reference to this schema and add linux,code as a
-> supported property.
->=20
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->=20
-> Resend [1].
-> I not see a reason that why this patch could block i.MX95 remoteproc supp=
-ort[2].
-> But to speed up the work, I took Alexander's work and resend it. Hope this
-> could catch 6.17
->=20
-> [1]https://lore.kernel.org/imx/20250513-whimsical-almond-quoll-e3ad5b@sud=
-eepholla/
-> [2]https://lore.kernel.org/linux-remoteproc/PAXPR04MB8459A0F330554EB69E99=
-0E048850A@PAXPR04MB8459.eurprd04.prod.outlook.com/T/#t
-
-Thanks for resending, I lost track of this patch and though it as applied a=
-lready.
-
-Best regards,
-Alexander
-
->=20
->  .../devicetree/bindings/firmware/nxp,imx95-scmi.yaml   | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.ya=
-ml b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
-> index 2bda2e0e1369..7a5a02da2719 100644
-> --- a/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
-> +++ b/Documentation/devicetree/bindings/firmware/nxp,imx95-scmi.yaml
-> @@ -24,13 +24,19 @@ properties:
->          const: 0x80
-> =20
->    protocol@81:
-> -    $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
-> -    unevaluatedProperties: false
-> +    type: object
-> +    allOf:
-> +      - $ref: '/schemas/firmware/arm,scmi.yaml#/$defs/protocol-node'
-> +      - $ref: /schemas/input/input.yaml#
-> +    additionalProperties: false
-> =20
->      properties:
->        reg:
->          const: 0x81
-> =20
-> +      linux,code:
-> +        default: 116  # KEY_POWER
-> +
->    protocol@82:
->      description:
->        SCMI CPU Protocol which allows an agent to start or stop a CPU. It=
- is
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+On Mon, Jul 21, 2025 at 09:28:59AM +0200, Krzysztof Kozlowski wrote:
+> On 21/07/2025 09:11, Joy Zou wrote:
+> 
+> Subject: Reverse prefixes.
+> 
+> Please use subject prefixes matching the subsystem. You can get them for
+> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+> your patch is touching. For bindings, the preferred subjects are
+> explained here:
+> https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
+> 
+> > +
+> > +  regulators:
+> > +    type: object
+> > +    additionalProperties: false
+> > +
+> > +    properties:
+> > +      VAON:
+> 
+> Lowercase names.
+> 
+> > +        type: object
+> > +        $ref: regulator.yaml#
+> > +        unevaluatedProperties: false
+> > +
+> > +    patternProperties:
+> > +      "^LDO[1-3]$":
+> > +        type: object
+> > +        $ref: regulator.yaml#
+> > +        unevaluatedProperties: false
+> > +
+> > +      "^SW[1-5]$":
+> > +        type: object
+> > +        $ref: regulator.yaml#
+> > +        unevaluatedProperties: false
+> > +
+> > +        properties:
+> > +          nxp,dvs-run-microvolt:
+> > +            minimum: 300000
+> > +            maximum: 1350000
+> > +            description:
+> > +              PMIC default "RUN" state voltage in uV.
+> 
+> Why existing properties are not suitable?
+Have not found the property that can set run state voltage in regulator.yaml.
+Can we add a property for run state such as regulator-suspend-microvolt?
+> 
+> > +
+> > +          nxp,dvs-standby-microvolt:
+> 
+> Why existing standby state bindings are not suitable?
+Have found regulator-suspend-microvolt property that can set standby state voltage.
+But the regulator-suspend-microvolt property is now deprecated. Can we use it?
+> 
+> > +            minimum: 300000
+> > +            maximum: 1350000
+> > +            description:
+> > +              PMIC default "STANDBY" state voltage in uV.
+> > +
+> > +  nxp,i2c-crc-enable:
+> > +    type: boolean
+> > +    description: If the PMIC OTP_I2C_CRC_EN is enable, you need to add this property.
+> 
+> 
+> 1. Why you cannot just read registers to check for this?
+> 2. You need anyway proper description what is this about and then wrap
+> according to Linux coding style.
+Controlled by customer unviewable fuse bits OTP_I2C_CRC_EN. Check chip part number.
+So can not get the I2C_CRC_EN config by reading register.
+BR
+Joy Zou
+> 
+> 
+> 
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - interrupts
+> > +  - regulators
+> > +
+> > +additionalProperties: false
+> > +
+> 
+> 
+> 
+> Best regards,
+> Krzysztof
