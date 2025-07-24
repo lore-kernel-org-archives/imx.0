@@ -1,84 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0B42EE616;
-	Thu, 24 Jul 2025 21:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F412EE962;
+	Thu, 24 Jul 2025 21:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753391356; cv=none; b=iLWatgp9SbwY9z73cRKF+0cOJMcF2r/Rb5cvo4Y6gQK0WxL/8B/5D4xRUJPsZN6Eq7FhDNZs7gQRHvkrsEMYj7/bVcGY4f1j4PLNN2Y1wCu2f1U+OSyfYDQ3MD42lfxlqIJC7RYl3Dopg8WGwCmG7ov+bPcjU+KPdQbibF7MmDc=
+	t=1753392368; cv=none; b=qTUo7GenNuWC64P1i28kBLCMphvuAgwBUo8jbsieYJVrAW8nML6eP896dE4jGYXCK9Wlelw0ns+Z0hNueiOTfJ9HMCL7tytxb6VG++2p1Yg8El5ji1QbiNCdh9R7rdGYUl0uwTqrlKPMket6knAxtT0IXI2hfMKqARk8DN0av4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753391356; c=relaxed/simple;
-	bh=nWp31srlWOly544EzYSydGTw01FUN6i0u3AAl2ah1sE=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=moXw8qjVA/aw1GeIaNpUV4KsOMSgH7hYQ1BYgPuDA5L8CBaTXm6zcZnHSvV2TE3nVLgykyaq9+g7fmZrDgtFbtUfL1U5iSyY7wHK3hZv+nhJNNEj4jbMdIbxFzWyb4dBHqLQXiBjYj1VVXh8WgHuf+vYiYIQxqZu99S1wOHpYMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSepwrjY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753392368; c=relaxed/simple;
+	bh=d7nh7vIZnOGTJ2Q7+CHcn6S/FQkqs3hhF4VLfbiutBk=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=U0+DQ9RADDbj2lQRiC99KwTjJZUt/joWldMn7rmrMn0iRkrRw1hD+j6wz0yS2ko2bBMe5kQSykujP1bH3H+XUJycRFFLnUtippABLhHtzM5K3/LgJ3RfUBQkWC/FOZMh3r2OvUUQajADJNoU/zrKRdJhsv3wXqWiW0UIyv4VQiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bediCilz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSepwrjY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BD2C4CEF5;
-	Thu, 24 Jul 2025 21:09:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bediCilz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B05C4CEED;
+	Thu, 24 Jul 2025 21:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753391356;
-	bh=nWp31srlWOly544EzYSydGTw01FUN6i0u3AAl2ah1sE=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=gSepwrjYRHTadeORqfLdJJj+3A5uUgVNePHG2U2rxx0RxjUgeRkA8SD5R6E7W0Tqk
-	 B0fIKoVSPZZsj9OhUXd4zAFk1438aywHt/cseC0oSCJtKbvB+w5yZMpj6bSZ/7ADMX
-	 GhwVrY0Vaod6B4sgsx/UJB1V05XjCWpHcBC8yy3FqpsPdsfNtkIf70TCYrodVxsbLA
-	 zsVSZtn0KHqqAneBwN+VztaWKUmybaFZCIZEAQwt3gRECNgvn0DjNg370fAPdc9sAM
-	 9NpyUM/m6Bqh+D+IWde95lOIdzaZbOioE92BQicoNFL/C0reV5JHFc8tlsDFM0yHG9
-	 P/EQf23ZcC52A==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- shawnguo@kernel.org, linux-kernel@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Chancel Liu <chancel.liu@nxp.com>
-In-Reply-To: <20250723073725.787844-1-chancel.liu@nxp.com>
-References: <20250723073725.787844-1-chancel.liu@nxp.com>
-Subject: Re: [PATCH v2] ASoC: imx-card: Add WM8524 support
-Message-Id: <175339135330.153218.9643329948012933654.b4-ty@kernel.org>
-Date: Thu, 24 Jul 2025 22:09:13 +0100
+	s=k20201202; t=1753392367;
+	bh=d7nh7vIZnOGTJ2Q7+CHcn6S/FQkqs3hhF4VLfbiutBk=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=bediCilzphDUqADyYda7TkSGHJPd+s3alMQJh438M6Xq26Azcxe1d2POQfySLVG6Q
+	 NGWV41CKOIQ8ERu2aeq41M3gqnm3AkgtYS19vddlVPl7fp96mUR2XzDkfkR0VzPYn5
+	 Ro/jdnkQ14buJ7e36m+xn08jgQKEt2J5EoqF+VKUK0O3SrxOt1VjsVKeKW44YHcIuZ
+	 F7JVE4+/imb2J2+gD0duceCke9cwH+UD/8tCt69kkbI1hvSVIALH6ZiXiybMxLURt+
+	 Gc2i47TKhgtfDpM+EX0spX+gvpPrVhpOva24IXWFf05CXkPZRmu2QTwk1Y+x0sG9MM
+	 vH0jTrkRH3FBQ==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-cff91
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250606162410.1361169-1-Frank.Li@nxp.com>
+References: <20250606162410.1361169-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: clock: convert lpc1850-cgu.txt to yaml format
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev
+To: Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 24 Jul 2025 14:26:06 -0700
+Message-ID: <175339236615.3513.13676829954251081345@lazor>
+User-Agent: alot/0.11
 
-On Wed, 23 Jul 2025 16:37:25 +0900, Chancel Liu wrote:
-> WM8524 is a stereo DAC. Add support for this codec in imx-card ASoC
-> machine driver.
-> 
-> 
+Quoting Frank Li (2025-06-06 09:24:09)
+> Convert lpc1850-cgu.txt to yaml format.
+>=20
+> Additional changes:
+> - remove extra clock source nodes in example.
+> - remove clock consumer in example.
+> - remove clock-output-names and clock-clock-indices from required list to
+>   match existed dts.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: imx-card: Add WM8524 support
-      commit: 2260bc6ea8bd57aec92cbda770de9cc95232f64d
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Applied to clk-next
