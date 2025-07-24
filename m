@@ -1,193 +1,146 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D4124DD0C
-	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 07:37:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F95A2580CA
+	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 07:41:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753342634; cv=none; b=DA9V1G7Mhp4O6TesbqnojRYbNQ8Iq/43IdKINdIyN1F0iY54RvkWOjPdnp1+aYMoCziL6qiJQXbfO7ww24wdcjHxoA3/klfgvO7+ST5eLa7p797+v0Pv2NUMTEYN5iLBrILUy9IOXMhgh4DdWcXzCmmkSn1sJFZQNQSdJGPRWH0=
+	t=1753342882; cv=none; b=QlkVwXVHjuX3Fe0sumTDiJQLIvLzgUPZZIJvIVfe3Q75NsEyuaVCu7iAxsdHP3SKbQDQFS3dxFjcyk3/KscxX/lMrEsnuFkfygDAVGcph/uFfREGXS/Ac6ac9fPvDb6CsErXhQdI25gwZEAz/lxDOpzam3+THWSPgOWpgn/wzUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753342634; c=relaxed/simple;
-	bh=oYliYTiynIz5BqhDzeFuwYRcIXemghySuaUubvcJXek=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q8iAdFzy9DWXpR1EVswcY2zIWOqogpcmIGeFFKoCPpzCNFPobHHJU0oZzzyXsMHvIFg2XvNzm0Vc1hOKDWtEfXgPtFfYQxV67vTLneg9/6W9p1r3NOX4Id7TF6Fn3vGAp7eVPKrytwrKvX0uo3OgY/Nf1CCuyVWj1S/9kkWShjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iSmpZvav; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z4rbEGUw; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iSmpZvav; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z4rbEGUw; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iSmpZvav";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z4rbEGUw";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iSmpZvav";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z4rbEGUw"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	s=arc-20240116; t=1753342882; c=relaxed/simple;
+	bh=Q/2NW7sSfTz9KcB7mML04f45vFgLMXJOtnTmM4OcWvs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jnQKNCiVLz8powiNWAif7gBsJ1SenzCG2d5rKC57RRJTBNWQHB3m3fnyYhG9vYFbB6fIH9cR4HutWTJwBSchIlmjkmEsrFCOi8Yxg6Z5RSbzpaWKLN6yVyXnE7Kayx/Y644esYmRzLgDWr7iNfGYa72UnwLdMqrMIT9NZ1mI4DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1ueqZC-0004mm-Cq; Thu, 24 Jul 2025 09:40:38 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1ueqZ9-00A1Dn-32;
+	Thu, 24 Jul 2025 09:40:35 +0200
+Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8AB781F394;
-	Thu, 24 Jul 2025 07:37:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753342630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/LBu7qSBaLkXMmbSWG/aE/FgzcMzPqdoHLqQXT0G0B0=;
-	b=iSmpZvav8lnYGFgYWT9RAL6mampmVxsQdOjORxZQmpl2iwQ5NuepLPirg2axvQMywNZgsg
-	sM/0rzB57rZzEH02wqXjW5wz+pcC37QvGMCoeNz+fEKMCHQtyI/iIz9EuMlZaSg5Zjlh9u
-	Cqykg5TDSqTxG//PZUt1z2wPWxaauJM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753342630;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/LBu7qSBaLkXMmbSWG/aE/FgzcMzPqdoHLqQXT0G0B0=;
-	b=z4rbEGUwD7bCn2kBeVEXY5/AYO2k2An2G2PY3o03wE+J5eEo0PlaGSqS80GqXeQKv6Rpds
-	ExwDAG9wh3tpu4BA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753342630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/LBu7qSBaLkXMmbSWG/aE/FgzcMzPqdoHLqQXT0G0B0=;
-	b=iSmpZvav8lnYGFgYWT9RAL6mampmVxsQdOjORxZQmpl2iwQ5NuepLPirg2axvQMywNZgsg
-	sM/0rzB57rZzEH02wqXjW5wz+pcC37QvGMCoeNz+fEKMCHQtyI/iIz9EuMlZaSg5Zjlh9u
-	Cqykg5TDSqTxG//PZUt1z2wPWxaauJM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753342630;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/LBu7qSBaLkXMmbSWG/aE/FgzcMzPqdoHLqQXT0G0B0=;
-	b=z4rbEGUwD7bCn2kBeVEXY5/AYO2k2An2G2PY3o03wE+J5eEo0PlaGSqS80GqXeQKv6Rpds
-	ExwDAG9wh3tpu4BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A643D13302;
-	Thu, 24 Jul 2025 07:37:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7gjAJqXigWjKMgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Thu, 24 Jul 2025 07:37:09 +0000
-Date: Thu, 24 Jul 2025 09:37:09 +0200
-Message-ID: <87jz3ykpju.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	lumag@kernel.org,
-	dianders@chromium.org,
-	cristian.ciocaltea@collabora.com,
-	luca.ceresoli@bootlin.com,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	victor.liu@nxp.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	p.zabel@pengutronix.de,
-	devicetree@vger.kernel.org,
-	l.stach@pengutronix.de,
-	shengjiu.wang@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] ALSA: Add definitions for the bits in IEC958 subframe
-In-Reply-To: <20250724072248.1517569-3-shengjiu.wang@nxp.com>
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 5B108447D62;
+	Thu, 24 Jul 2025 07:40:35 +0000 (UTC)
+Date: Thu, 24 Jul 2025 09:40:34 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Takashi Iwai <tiwai@suse.de>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, imx@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, Laurent.pinchart@ideasonboard.com, 
+	andrzej.hajda@intel.com, festevam@gmail.com, simona@ffwll.ch, robh@kernel.org, 
+	shengjiu.wang@gmail.com, rfoss@kernel.org, airlied@gmail.com, tiwai@suse.com, 
+	jernej.skrabec@gmail.com, p.zabel@pengutronix.de, luca.ceresoli@bootlin.com, 
+	devicetree@vger.kernel.org, conor+dt@kernel.org, tzimmermann@suse.de, jonas@kwiboo.se, 
+	victor.liu@nxp.com, s.hauer@pengutronix.de, maarten.lankhorst@linux.intel.com, 
+	mripard@kernel.org, linux-sound@vger.kernel.org, perex@perex.cz, 
+	linux-arm-kernel@lists.infradead.org, neil.armstrong@linaro.org, lumag@kernel.org, 
+	dianders@chromium.org, kernel@pengutronix.de, cristian.ciocaltea@collabora.com, 
+	krzk+dt@kernel.org, shawnguo@kernel.org, l.stach@pengutronix.de
+Subject: Re: [PATCH v2 2/6] ALSA: Add definitions for the bits in IEC958
+ subframe
+Message-ID: <20250724-fair-sheep-of-success-e02586-mkl@pengutronix.de>
 References: <20250724072248.1517569-1-shengjiu.wang@nxp.com>
-	<20250724072248.1517569-3-shengjiu.wang@nxp.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+ <20250724072248.1517569-3-shengjiu.wang@nxp.com>
+ <87jz3ykpju.wl-tiwai@suse.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,chromium.org,collabora.com,bootlin.com,lists.freedesktop.org,vger.kernel.org,nxp.com,pengutronix.de,lists.linux.dev,lists.infradead.org,perex.cz,suse.com];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[dt];
-	R_RATELIMIT(0.00)[to_ip_from(RL8m7tqgwaqu97o1bbfnn6ewdz)];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -1.80
-
-On Thu, 24 Jul 2025 09:22:44 +0200,
-Shengjiu Wang wrote:
-> 
-> The IEC958 subframe format SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE are used
-> in HDMI and DisplayPort to describe the audio stream, but hardware device
-> may need to reorder the IEC958 bits for internal transmission, so need
-> these standard bits definitions for IEC958 subframe format.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  include/sound/asoundef.h | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/include/sound/asoundef.h b/include/sound/asoundef.h
-> index 09b2c3dffb30..7efd61568636 100644
-> --- a/include/sound/asoundef.h
-> +++ b/include/sound/asoundef.h
-> @@ -12,6 +12,15 @@
->   *        Digital audio interface					    *
->   *                                                                          *
->   ****************************************************************************/
-> +/* IEC958 subframe format */
-> +#define IEC958_SUBFRAME_PREAMBLE_MASK	(0xf)
-> +#define IEC958_SUBFRAME_AUXILIARY_MASK	(0xf<<4)
-> +#define IEC958_SUBFRAME_SAMPLE_24_MASK	(0xffffff<<4)
-> +#define IEC958_SUBFRAME_SAMPLE_20_MASK	(0xfffff<<8)
-> +#define IEC958_SUBFRAME_VALIDITY	(0x1<<28)
-> +#define IEC958_SUBFRAME_USER_DATA	(0x1<<29)
-> +#define IEC958_SUBFRAME_CHANNEL_STATUS	(0x1<<30)
-> +#define IEC958_SUBFRAME_PARITY		(0x1<<31)
-
-I'd use "U" suffix as it can reach to the MSB.
-Also, you can put spaces around the operators to align with the
-standard format, too.  I guess you followed to the other code there,
-but following to the standard coding style would be better.
-
-With those addressed, feel free to take my ack for this patch:
-
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vpabkhcgtahxjd2o"
+Content-Disposition: inline
+In-Reply-To: <87jz3ykpju.wl-tiwai@suse.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
 
-thanks,
+--vpabkhcgtahxjd2o
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 2/6] ALSA: Add definitions for the bits in IEC958
+ subframe
+MIME-Version: 1.0
 
-Takashi
+On 24.07.2025 09:37:09, Takashi Iwai wrote:
+> On Thu, 24 Jul 2025 09:22:44 +0200,
+> Shengjiu Wang wrote:
+> >=20
+> > The IEC958 subframe format SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE are used
+> > in HDMI and DisplayPort to describe the audio stream, but hardware devi=
+ce
+> > may need to reorder the IEC958 bits for internal transmission, so need
+> > these standard bits definitions for IEC958 subframe format.
+> >=20
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  include/sound/asoundef.h | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >=20
+> > diff --git a/include/sound/asoundef.h b/include/sound/asoundef.h
+> > index 09b2c3dffb30..7efd61568636 100644
+> > --- a/include/sound/asoundef.h
+> > +++ b/include/sound/asoundef.h
+> > @@ -12,6 +12,15 @@
+> >   *        Digital audio interface					    *
+> >   *                                                                    =
+      *
+> >   *********************************************************************=
+*******/
+> > +/* IEC958 subframe format */
+> > +#define IEC958_SUBFRAME_PREAMBLE_MASK	(0xf)
+> > +#define IEC958_SUBFRAME_AUXILIARY_MASK	(0xf<<4)
+> > +#define IEC958_SUBFRAME_SAMPLE_24_MASK	(0xffffff<<4)
+> > +#define IEC958_SUBFRAME_SAMPLE_20_MASK	(0xfffff<<8)
+> > +#define IEC958_SUBFRAME_VALIDITY	(0x1<<28)
+> > +#define IEC958_SUBFRAME_USER_DATA	(0x1<<29)
+> > +#define IEC958_SUBFRAME_CHANNEL_STATUS	(0x1<<30)
+> > +#define IEC958_SUBFRAME_PARITY		(0x1<<31)
+>=20
+> I'd use "U" suffix as it can reach to the MSB.
+> Also, you can put spaces around the operators to align with the
+> standard format, too.  I guess you followed to the other code there,
+> but following to the standard coding style would be better.
+>=20
+> With those addressed, feel free to take my ack for this patch:
+
+Or make use of the BIT() and GEN_MASK() helpers.
+
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--vpabkhcgtahxjd2o
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmiB428ACgkQDHRl3/mQ
+kZw/twgArxwtsVQVLCtwTC1hTu1XO6jfEwAQpaPieSPwdzfilkYMvr5Y9dRXex55
+jD6ZICtiqq+5U58pzhF7kpFQn1zBXU35xuvqu4H7EmC8yNPcgPr3gZd7FZOyFv+M
+dehm4FgajYh4JhZBpfLNISc5DSTLiKiWA1fMQUPmfsyaHcikhRBPntgFqRp7Qz6Q
+rnjazptVZ4MOkFgCL/Gnuzjs+0go1y4H6rLEcDdvFqGx9id/GJiQ+DHUWXEHnmr4
+12scaPJb4fWgbwJ3/YtzCDHPUG6wVyoaQ3oek6NRQaXZ8T3Zic0IGem1++odVGZM
+b7VK73jGSrhTMmTWcU3DIsNHR5b8mw==
+=My/c
+-----END PGP SIGNATURE-----
+
+--vpabkhcgtahxjd2o--
