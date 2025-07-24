@@ -1,117 +1,253 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11022142.outbound.protection.outlook.com [40.107.75.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5F6192B75
-	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 02:00:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753322423; cv=none; b=BDK8MMcQJsROla0tAso9qMoof9sOwmqLcs0C87Y6ARkKbYNvrXDBPXU2j0jlwh8yJmkeS0Ai8c/J7hSnlSuLL1k+BPEI/xjU8lNzyAeGhej8qBZmYo1MoyFeDmDp+iY7c1dsimkHkZJ+D7XNNmkiqNTgV016F6fKLfivpJA8DJs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753322423; c=relaxed/simple;
-	bh=BpiBxoeu56d35+/JzOYrXKdHXbJJT/hxC16C6lp6gcA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=c8/wn9trpgTF+jGw3d0JfMdYKisQsq+YDEfk34uzE1+mnI8TFIkd1oeALKeqP6T8SQq32jWm9gTb4pBjG4v8ShoX4/tOTp43mDV0VQMFyaziOk2BhYWdBgQnv2QrzGYSv1nLQrnvhNYvh0KJyyPvff/DFEVJWtDVKFxujbrsowY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZpVLHS3; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519771553A3
+	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 02:35:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.75.142
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753324508; cv=fail; b=qGfAUmqFp++UL57RWn7koBfNfL1q2HBpLqb+2aBPrbI7sQe7s97i7jNIXYv3WnWWz4g8o6OnPfYCgiQAY2du7+xC/5EooEjUSEk5lrBAf8QFqCvxzu+bxdmN7Q6np4h69AVXDmogzIsaYPDD41V4yILHQO4xxuCGjHcfQTSlkdE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753324508; c=relaxed/simple;
+	bh=zExS8c+tuLRVxRZjAFU7I4D+ZKPXgTgyDCUyPn+QcGA=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=VSWxqvMw+ClPofx5qKLbIQpliK+w7/fMA5R+3I/lU9nHP3lH4ZVxNt5B+Dy2MbjnEcpq5DP9ExgM5ZkGwiVI0UwJBKqi6AQDRBq2yDvddNs3KcFJotGHQdjx+4WriXt2VMYYBhKqxzoOOJ+yhfXQjfqTeNZysU22p3AHZF4/n+c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=technexion.com; spf=pass smtp.mailfrom=technexion.com; dkim=pass (1024-bit key) header.d=technexion.onmicrosoft.com header.i=@technexion.onmicrosoft.com header.b=AdhPaWfc; arc=fail smtp.client-ip=40.107.75.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=technexion.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=technexion.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZpVLHS3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6749DC4CEE7;
-	Thu, 24 Jul 2025 02:00:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753322423;
-	bh=BpiBxoeu56d35+/JzOYrXKdHXbJJT/hxC16C6lp6gcA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=FZpVLHS3icbEQYbRG1+helDdBFX+wQpCFSiakNNIv0ThNYsWN8+wKwU2x1N3sV8Gv
-	 DXyX6qd9uvS9jbrnH0u1AgyvOaQft9DZtNjlPlsDXjoox7TvcPgZF/8wxi/eoD80UI
-	 pIvFlEM4HcIYFB8rWvVJbTSH6/DXIoGZ9E25Df4gXS0SPlyC1AGBcuDyjGXIo4nkX8
-	 X35iuPt2DKaZYuJFYaIKvTAJD2ICgAWE1rhevidTMwzKKjRKBODq2DoqE4ZEKRvMtb
-	 TxPoHsoPDEoXYaEYxkkgSrElK9ZWMvipIX7CN8ER7eNLHuBZQez7JQAhtnpZdBVBWh
-	 97HvXJttZJJ3w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD9E383BF4E;
-	Thu, 24 Jul 2025 02:00:42 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=technexion.onmicrosoft.com header.i=@technexion.onmicrosoft.com header.b="AdhPaWfc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P/6FPnKM6wf/FxZGFx54UpWx1IyLUGjE72XOAowKm4pYVG7ioruZ+FvBNRD01Y00YEpkX5lcIZCEFQPAgcbkpgVrvBhGZ3mkrgBI+QfBAkBcVoIAWr5Ri94p/tdYG2KdGu0Q7Y29AzWfAvCQ1ON2MD604cozqqI/ryxz90ZuoDHApb0DVpRts8msYqnFSlgVVJSTzexQTXHFFKnoL8nAfxC8f3kJ8UeNK1007Ua65T7/iZd3WzTYhPQq+CTCGxVKVLBFRuc45VcYAuPShvV+h5s2Sxegj7RBUb2PZDXMvo/opn2q+UI3lIEXhp4W3wHru+hwT1kAXTF3kUPLmr0hOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5zhKceNjp/l9N0hLndB0M22NIDnQ2xzw2clZOxAh/uk=;
+ b=HuA0xeowHsgbLfYi+WGsB8+R3PbMFx3aL8BYVRcQJ8b/kkv67+gxaQWUoJ9GWB9XzunlGHLWf5JTFGwmXtE6lfcWPPjjduJKBnsDOfqpuXYMAwxq2R6g9I9k/R4ouEJL1Y5+CTLwcWEPfOw0aPO+J7KF/XhTCjds98MZkpqIMsOAeb1bDwigoKYb27NZc/qcqjOjCdZo7srKcX2yhUe7dxOR7EMyhr7q4jiz8LhLnMtpZOwfC1BH2q2DvZdfGz4J5SNaKKZQzMidb4ZT8lVJouF3LwSbgu0pfRjllmx4Oldli0NzyKoKVI8wyrn79NL3S6I0XhEjneDu1fTU+0Kihw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=technexion.com; dmarc=pass action=none
+ header.from=technexion.com; dkim=pass header.d=technexion.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=technexion.onmicrosoft.com; s=selector2-technexion-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5zhKceNjp/l9N0hLndB0M22NIDnQ2xzw2clZOxAh/uk=;
+ b=AdhPaWfcEfV2NUxf2q/D9IH07G/ZeCSxY/R0JcFkgcbEYxPRbtGwGrfyHGlcELm4EugayOClZFXbJnRSCAZuXSNu3Dg7PqbB588aWeDzYas+q5ctmGx+HLJQLMwxiv4pwbwSeCzBoOlV3WLr+DEXNWESEe6HFZZ5MUwemRnVgzw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=technexion.com;
+Received: from KL1PR03MB7454.apcprd03.prod.outlook.com (2603:1096:820:ed::7)
+ by TYUPR03MB7032.apcprd03.prod.outlook.com (2603:1096:400:35e::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.22; Thu, 24 Jul
+ 2025 02:34:59 +0000
+Received: from KL1PR03MB7454.apcprd03.prod.outlook.com
+ ([fe80::5ac3:4497:4694:db94]) by KL1PR03MB7454.apcprd03.prod.outlook.com
+ ([fe80::5ac3:4497:4694:db94%6]) with mapi id 15.20.8943.029; Thu, 24 Jul 2025
+ 02:34:59 +0000
+From: Richard Hu <richard.hu@technexion.com>
+Subject: [PATCH v4 0/2] Add TechNexion EDM-G-IMX8M-PLUS SOM and WB-EDM-G
+ carrier board support
+Date: Thu, 24 Jul 2025 10:34:04 +0800
+Message-Id: <20250724-add-technexion-edm-g-imx8m-plus-som-v4-0-d1c88155d6f4@technexion.com>
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJybgWgC/43NTQ6CMBAF4KuYrh1TWrDUlfcwLvozQBMLhGKDI
+ dzdQmJYuGH5JvO+N5OAg8NAbqeZDBhdcF2bQn4+EdOotkZwNmXCKCvoleagrIURTdPilF4BrYc
+ anJ9KD/3rHSB0HoRUtqKaS4GaJKkfsHLTtvJ4pty4MHbDZxuNbL3+/OKQHxlQsLpQQmvkpszve
+ +NiOk/Wkch3WFB5DOYJFiyzmSwNMqr/4GVZvuhyXuQ0AQAA
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Richard Hu <richard.hu@technexion.com>, 
+ Ray Chang <ray.chang@technexion.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1753324497; l=2955;
+ i=richard.hu@technexion.com; s=20250604; h=from:subject:message-id;
+ bh=zExS8c+tuLRVxRZjAFU7I4D+ZKPXgTgyDCUyPn+QcGA=;
+ b=tCHpHucngS5VDRgk9x/o0G8Cqz5X6434H29y57uE7g+JHDSr5Xy2/eoe57NOu+uqR+pw49l81
+ uK4bSmM2NFdBIL0l1TU0ldJZ21NNEDtevpppEMFRxXhco8SrzSDwg5t
+X-Developer-Key: i=richard.hu@technexion.com; a=ed25519;
+ pk=MKoW0/U0r4MjJdRNaq37Tb25KE1fzJUdMN0pa8XBJSA=
+X-ClientProxiedBy: TPYP295CA0051.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:8::11) To KL1PR03MB7454.apcprd03.prod.outlook.com
+ (2603:1096:820:ed::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v12 00/12] Split netmem from struct page
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175332244124.1844642.1793292791852018522.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Jul 2025 02:00:41 +0000
-References: <20250721021835.63939-1-byungchul@sk.com>
-In-Reply-To: <20250721021835.63939-1-byungchul@sk.com>
-To: Byungchul Park <byungchul@sk.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, kernel_team@skhynix.com, almasrymina@google.com,
- ilias.apalodimas@linaro.org, harry.yoo@oracle.com, akpm@linux-foundation.org,
- andrew+netdev@lunn.ch, asml.silence@gmail.com, toke@redhat.com,
- david@redhat.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, linux-rdma@vger.kernel.org,
- bpf@vger.kernel.org, vishal.moola@gmail.com, hannes@cmpxchg.org,
- ziy@nvidia.com, jackmanb@google.com, wei.fang@nxp.com, shenwei.wang@nxp.com,
- xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com,
- przemyslaw.kitszel@intel.com, sgoutham@marvell.com, gakula@marvell.com,
- sbhatta@marvell.com, hkelam@marvell.com, bbhushan2@marvell.com,
- tariqt@nvidia.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
- leon@kernel.org, mbloch@nvidia.com, danishanwar@ti.com, rogerq@kernel.org,
- nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
- shayne.chen@mediatek.com, sean.wang@mediatek.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, aleksander.lobakin@intel.com,
- horms@kernel.org, m-malladi@ti.com, krzysztof.kozlowski@linaro.org,
- matthias.schiffer@ew.tq-group.com, robh@kernel.org, imx@lists.linux.dev,
- intel-wired-lan@lists.osuosl.org, linux-arm-kernel@lists.infradead.org,
- linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: KL1PR03MB7454:EE_|TYUPR03MB7032:EE_
+X-MS-Office365-Filtering-Correlation-Id: 58a21f54-6ac0-4754-29c5-08ddca5aaf79
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?b2Q0VW1jQlVtR2Y1OUE0Sko0YTJlMHRjU2VGRlhCZzVObXlmY0dnWVhZUitK?=
+ =?utf-8?B?ZVdqSk04U1FwTExqWk1ncXlhVFZnR01NR0lmWC9Fa2xnZCtmMWcxTVVDYkhI?=
+ =?utf-8?B?WVJDQU11RzJaWlNseHhBSjAzaUpQQno1aU5oVW1XaERNZHFSWm5PNndBVGll?=
+ =?utf-8?B?dFhLZnNJWk9FcGtFREpEUWdwdzFyL1NHTWJDemMvUWs4N0l5bE1wTzhTQjJk?=
+ =?utf-8?B?ck9VR0VpcmdyQjIySVc2UG9QZDR5TUR1cG5WU3RxdXJrUFViQ3M3UURNT1NW?=
+ =?utf-8?B?SjIzdUZ6RXE3b3FQUnpXZkt6dmRFMWRkTnJyYXNodm5EQXEzNTl2ZkdlQ3Nj?=
+ =?utf-8?B?OWtRS2pTRVB3K0dqMDJIQmV3QWx2TitYbml3SVY0Y3FVeFl5Rm01NGd0cjd4?=
+ =?utf-8?B?QXFsRytqT3pwL3lCVUs4UHozYnd1cW9GS2krbnZNWjZBd0RndEllck41d08r?=
+ =?utf-8?B?enY2WUNvejBpazNMVy9sNFo4R2J3VUpRNUl4M3UvY1A4emlFdlE4bWVZaElI?=
+ =?utf-8?B?YTdwa2poQjdNZEpxTThleHY5YjdwdG93MUVhS1hPM2VOK25DbWtuY0lzaDJC?=
+ =?utf-8?B?NnYwQmhZVzc5NWgzUnowRHZ5N08xd1loWHNMdit6aFVKSCsvZkxsRVIzSThX?=
+ =?utf-8?B?TzJRd1JyYnNLQ3ZweWZYaytIV1F1b25aK05LYlVHVHR2S0w3V2NTZndQRFFj?=
+ =?utf-8?B?K3lGTEQ3R29JV3EzdkZ0M3U0b1FwbFdEeWtwZ2UrWlBIQlhRanRxUmJna2Nk?=
+ =?utf-8?B?NTJlZHU0c1pkVkQwdjNRWkJFSGlQSmMzOEgwdFpGMzJuaUtZc2hKWGFjVENi?=
+ =?utf-8?B?MXIzclB1NXNValR3bW1NRHNZM2tVRWZBc3lGbkNCMVlmbkxhdVR3YVlYc2VC?=
+ =?utf-8?B?Ym9ZOEF4MkdNcFN0UmhpM0tGTmhZZzJZM0RNT3NmS2Z1cytiaGdpa1FzRTJw?=
+ =?utf-8?B?VUMzN0haU3crNTlPd24rMTUxRVF3dnZtbGJnelQ0QXIyVzBZNUozcExYZWJH?=
+ =?utf-8?B?Wis3eVpNZzBLWWdsM3h5bWhnb1llcDRHM0JJa2FpSU5kMGRxdlp3L0NVWGN0?=
+ =?utf-8?B?dUdGOStNSGowa0Q5aUwybzU5Zi9lWEFRR1l2VEZEMHBjMGJjNkw0NTRRSzhN?=
+ =?utf-8?B?M0F0NUhPQUxndlE2azQ3aG5paHpkMEhRbFlCV0NLQUFrd1pjOElsaVJhanhW?=
+ =?utf-8?B?ZWhvWVl2Z1pwdTJjWTAzcldpV2FwRUY3RWNEUGhKcEdWTzdlN2oyUFU1RWFa?=
+ =?utf-8?B?bjhFaGFXNU4yZkVkdW5WaEVYYjNDZitqOUREdzN0ZjlZemhIVktuWnRodStI?=
+ =?utf-8?B?amJ4bUZwQ2pDZ1F1LzdZamxWZFMzMUhqRHZROFFTRzlKQnZ5Wnh4VHVnUzc1?=
+ =?utf-8?B?ZHNnOTBnUWJVbWpINkw4RWpzS2ZLMnU0VG9FTnh2cDI2MzlHeWwzTWtvNXF2?=
+ =?utf-8?B?ZzNnZndqS3lTb1A0T2Qrc1BqbHRoS2l1WFJ6dDhINmxaNDdkQnBnbnlxSzVZ?=
+ =?utf-8?B?VlcwNkwyZXBSQlZjb0dsci9UamhZYWU0djNBKzgrTXczcTV3TEZJTGFnVUpX?=
+ =?utf-8?B?WTV1WWM2VElISkFCRGE0dklCcFAwOFlmelRBVjJEOVFVQnd1VFhzTGE0MG8v?=
+ =?utf-8?B?YmlZcGpqdmphK0V2U1hFNHBoa1hraEVxN1I2ZTF5aGJPV0FnS1dQMlNzQ1o4?=
+ =?utf-8?B?d0FDUnB3UmYwMWtVZk50OFEwYVEraGN6YmJWOXZCdFpnU0NvQ1hoaGZNMHNC?=
+ =?utf-8?B?a2U3L2krenBlM3pTNWwzREN3WG5QeWhyU2s1MW0rTlJwb2puMEZITFNWaStx?=
+ =?utf-8?B?QzllL2VLVE9VazRrYnp4d0hxdXI5YU5hTFRXV2Z4eHBTOXN3bXZ4VjZHV3JN?=
+ =?utf-8?B?TzFueHNiNFhyRFBXc29WcW1aM3dqR3dWS2pYdkIzQlJNQmM1cTNGbThOM0U4?=
+ =?utf-8?B?WjIvTmRRN09EUTduQTBkdTA1T1NITi84bzkwbEl4ZGpVYXVFdThDZEdWb1dV?=
+ =?utf-8?B?dXNjMmJzZmtRPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR03MB7454.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TnIzZFIzM2tha2QxY0pIVmRzeW40WENLeDhEQ0hDWGs1ekp2RkZzcW5KaWJ2?=
+ =?utf-8?B?MUNScDRNQ2MvQ2RjM0NsUlRpSVg5T0Fra24wL1VkSHVOSlA0Zzg5ZllRcHFv?=
+ =?utf-8?B?UXllVllHRFZqbzN5TnpoaHBJeXhXTU5CSmR3Um5WRjZoRVdqYnRqTmNTcFlX?=
+ =?utf-8?B?U2pJY2ZXejRYLzNHYUhGZHFuQ2RVYnhMZ0hvb3NIc09zc3cwQ1ZOZG9XbExO?=
+ =?utf-8?B?VVM0bHhpdEMvSE1WZE8yNThEbjVwM0VHK0hNRUNVb2RkdHZDK2NXYWFtWmpG?=
+ =?utf-8?B?KzN0U29oeU9TZzVzYldFWS9DMUJhT3NnNTd2UkQyQjJPNmwyOWRrTnZKTmhp?=
+ =?utf-8?B?bzdNWHoxMWJhcXhNdEZjbWYzUjBiUjVDQXRFSGdtK0QrK2toeExadVI2aU5j?=
+ =?utf-8?B?Nk5UZDdIV1REaS9nK0RBZnoyaEc5QU9ITklvanc2RXFhY3pGazVkL0xNN3l5?=
+ =?utf-8?B?ZDVuNGFCWklteGFDQUNhZ25Kd2luTWJ0Zjc2SVhzTjBGWkIwandGYlRpbi9t?=
+ =?utf-8?B?WlI5UGEvSVRjOEVqNTlRamRjSEQzb2djWG00TGRPN2grWmdvQ2VPQ0k1cUda?=
+ =?utf-8?B?ZFhSZnk4UFo0M3lmVFEycFFMT3dwN3VLRXhldzZFYVM3VHhjdEEvY0dKL2M3?=
+ =?utf-8?B?T1JpejlOY1Q4T24zZGFvQWtvUmtCVmU0Vy9kZG9uUXhXYi8xVk5SMDJEUmRW?=
+ =?utf-8?B?ZDZ0bVI0ZFYyWXZYMDUxTlZ1R1FuQVRuTm1RTGhFcm1BTEhROTQwaGVCbC8x?=
+ =?utf-8?B?RGpKSUt4STVsZGdDSDZhSUgyUDdQS09zL2JjekxnSllMeUQ1TWd5ejRycnNs?=
+ =?utf-8?B?cE5MM0lJbHZsTXU5R0VzRm02N1BVZ21uSFpkNnRIaHhWRzlFOWVTSkxIM1ps?=
+ =?utf-8?B?NEl1b2RXeHdMeE9FRnI2N1djK1p4MWpaU25MRFBoalNqaSs5VGN3QUhMNmMw?=
+ =?utf-8?B?ZXk1d2RLSEZUK2s5cWZuUzdJS0Q0Mlk2QnF0R1VRckZLTmwzMDloQVpybER5?=
+ =?utf-8?B?bkNFTVU0Ly9WaFpNUmJNQkM2YTVQekdBYlVxd0hnblkvaUhLTnpUekxsdDNX?=
+ =?utf-8?B?eXp5OXdiYSt1Rnp1YzZlYjNpM0pFdVd2cWU5dVpDbFdrbUV4SFpUQnR2R1Rr?=
+ =?utf-8?B?RE1VK1QyRWNBU1d1WU9hcnQydnpldjkvd0luMURuL244eWRIZWRla3gwT3lW?=
+ =?utf-8?B?NDFzQUgwdVlxVlR0Z3pqQW9EbEIxL0pRcGs5ZkkyQWZCemd4UnFtQlptMUZ2?=
+ =?utf-8?B?dXFHWmhsaXNDYStSUzhOUk45c0NaYkRQYll1NFZjVzY0Nzd4bks2c2o5SXJ2?=
+ =?utf-8?B?N2pTVlE1R2VrWm51KzV6bWJMRDRlS3dmYk1aUXU0bkF3Z092RzFCQ3YyWHhr?=
+ =?utf-8?B?ekZxQXN2cmY1b1FpcXJUWTcwS3BhZmJBWUV6b3V3c0tlQzBKNkMzbTNSdzNx?=
+ =?utf-8?B?QjBaVGZQb1FpeEluNmRiaVRPLys3WXlWMlZWYVkwdCtRZHJmMWxWRGNNdGpz?=
+ =?utf-8?B?M3crUVFPL1JkOFN6Vy9VRjVlRXQ2UHhHR0lUZXZrNTB5OVVDdGh0UktjTTFr?=
+ =?utf-8?B?eWxNeHlrUUdBYzFMUkVVdmlsUitOVk5IMTYzTHpJcnAyL1FxR0p0VlhHMjRT?=
+ =?utf-8?B?dXRZQkRyZWNTSmlqWG5tYVlLdENBVzNSaU1xbkREaUdCTDl2MFlJeGp6cjRq?=
+ =?utf-8?B?b2xKSHNOeCs1OWROMmhkeHhWcS9xUFpWTEhPb0lMZVc4NUw5L1NsK2NuTkdM?=
+ =?utf-8?B?eUFXNUlRQ2xjcUQ4ZnlUMXZ4STNaY1FHQ1Rtc09GdjVtMDE2Nk9pUmczKzlS?=
+ =?utf-8?B?OHVPSnNpUUpLM2k4M0lOR2l2M2ZoVDliSnVIdjJWS0Z4blhGM0RQRDM2aVRl?=
+ =?utf-8?B?ZzNHREs1UHF5SDh4ZVB0azhUSGUrREVYTElxRnJTaExHV1NaamRuYnV1WEEr?=
+ =?utf-8?B?SXB6NzlGTFNZSkE3dStvaHN3U0JOQlIwaVhPMVVLQTRyTHpNZUt2YU8rT2JE?=
+ =?utf-8?B?SUNuWUJOK2RUVUt3Vlc1YkQ0ZFlYYTlTd1FyaXVRQ2VjaytabGUzVndwSUMz?=
+ =?utf-8?B?MTg4VTJtb2w1bGRIUnUxYzdoWVFOQkVOREdGLzEzNWYvaGdjd2JVVTJFR2RW?=
+ =?utf-8?B?M1l2SC9YdVZlK2E3K28wV1RGSmV3bG4wNGMvNTY3cTkvNmJiaDMvelgzY0Ru?=
+ =?utf-8?B?S3c9PQ==?=
+X-OriginatorOrg: technexion.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58a21f54-6ac0-4754-29c5-08ddca5aaf79
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR03MB7454.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 02:34:59.8260
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5ee19679-b9a6-4497-8ed2-1eda849e753b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BZKYenN8vzZ5nRXMm8SjCSRvz4gJ81N5Rcc8KyG99bn7yub7qbTB7GaWBV2sXzqF49v3jSIr1ZoeLEnz1fBJqKyVBSvqS3wh0nlo/NkBiok=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYUPR03MB7032
 
-Hello:
+Add initial support for TechNexion EDM-G-IMX8M-PLUS SOM and WB-EDM-G
+carrier board.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Changes in v4:
+- Incorporate review feedback from Shawn and apply further cleanups to DTS
+  style and node naming.
 
-On Mon, 21 Jul 2025 11:18:23 +0900 you wrote:
-> Hi all,
-> 
-> The MM subsystem is trying to reduce struct page to a single pointer.
-> See the following link for your information:
-> 
->    https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
-> 
-> [...]
+in patch 2/2:
+       - Addressed formatting issues by adding newlines and removing
+         unnecessary backslashes.
 
-Here is the summary with links:
-  - [net-next,v12,01/12] netmem: introduce struct netmem_desc mirroring struct page
-    https://git.kernel.org/netdev/net-next/c/f3d85c9ee510
-  - [net-next,v12,02/12] netmem: use netmem_desc instead of page to access ->pp in __netmem_get_pp()
-    https://git.kernel.org/netdev/net-next/c/38a436d4e264
-  - [net-next,v12,03/12] netmem, mlx4: access ->pp_ref_count through netmem_desc instead of page
-    https://git.kernel.org/netdev/net-next/c/89ade7c73065
-  - [net-next,v12,04/12] netdevsim: access ->pp through netmem_desc instead of page
-    https://git.kernel.org/netdev/net-next/c/6fd824342a57
-  - [net-next,v12,05/12] mt76: access ->pp through netmem_desc instead of page
-    https://git.kernel.org/netdev/net-next/c/87dda483e63f
-  - [net-next,v12,06/12] net: fec: access ->pp through netmem_desc instead of page
-    https://git.kernel.org/netdev/net-next/c/65589e860a80
-  - [net-next,v12,07/12] octeontx2-pf: access ->pp through netmem_desc instead of page
-    https://git.kernel.org/netdev/net-next/c/58831a178551
-  - [net-next,v12,08/12] iavf: access ->pp through netmem_desc instead of page
-    https://git.kernel.org/netdev/net-next/c/c8d6830e32eb
-  - [net-next,v12,09/12] idpf: access ->pp through netmem_desc instead of page
-    https://git.kernel.org/netdev/net-next/c/fc16f6a5877d
-  - [net-next,v12,10/12] mlx5: access ->pp through netmem_desc instead of page
-    https://git.kernel.org/netdev/net-next/c/5445a5f71209
-  - [net-next,v12,11/12] net: ti: icssg-prueth: access ->pp through netmem_desc instead of page
-    https://git.kernel.org/netdev/net-next/c/c0bcfabd7752
-  - [net-next,v12,12/12] libeth: xdp: access ->pp through netmem_desc instead of page
-    https://git.kernel.org/netdev/net-next/c/9dfd871a3e2e
+       - Removed the lvds-backlight node for the optional display panel,
+         which will be handled by a device tree overlay.
 
-You are awesome, thank you!
+       - Aligned several node names with DT conventions. For example:
+         - `codec@1a` -> `audio-codec@1a`
+         - `gpio-leds` -> `leds`
+         - `pcie0-refclk` -> `clock-pcie-ref`
+         - `wlreg-on` -> `regulator-wl-reg-on`
+
+Changes in v3:
+- The changes address DT schema warnings, remove unused regulators, and
+  improve the overall structure.
+
+in patch 2/2:
+       - Fixed DT Schema Warnings: Renamed the i2c-gpio node to i2c-0 to
+         resolve a naming convention warning reported by Rob's checker.
+
+       - Removed Unused Regulators: Removed several unused regulator-fixed
+         nodes for LVDS, backlight, ethernet power, and the OTG VBUS, as
+         pointed out by Peng Fan.
+
+       - Added EEPROM Nodes: Added device tree nodes for the EEPROMs
+         present on both the SOM and the baseboard.
+
+       - Node Reorganization: Relocated the iomuxc node to the end of the
+         device tree files for better readability.
+
+Change in V2:
+- Ensured accurate `To:` and `Cc:` addresses by utilizing
+  `b4 prep --auto-to-cc`. (Thanks to Krzysztof Kozlowski for the
+  tip on this command and helpful suggestion from Rob Herring).
+
+in patch 1/2:
+        - Add Acked-by tag.
+
+in patch 2/2:
+        - Generic Node Naming: Refactored device tree node names for I2C
+          GPIO expanders, the USB Type-C controller, and the PMIC to adhere
+          to generic naming conventions (e.g., `gpio@21`, `usb-typec@67`,
+          `pmic@25`).
+
+        - Removed Unused SPI Node: Eliminated the `spidev1` node due to an
+          incorrect and non-existent compatible string (`rohm,dh2228fv`).
+
+        - Minor formatting improvements (e.g., whitespace, indentation).
+
+Signed-off-by: Richard Hu <richard.hu@technexion.com>
+---
+Ray Chang (1):
+      dt-bindings: arm: fsl: Add EDM-G-IMX8M-PLUS SOM and WB-EDM-G carrier board
+
+Richard Hu (1):
+      arm64: dts: imx8mp: Add TechNexion EDM-G-IMX8M-PLUS SOM on WB-EDM-G carrier board
+
+ Documentation/devicetree/bindings/arm/fsl.yaml    |   7 +
+ arch/arm64/boot/dts/freescale/Makefile            |   1 +
+ arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts | 372 ++++++++++
+ arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi   | 806 ++++++++++++++++++++++
+ 4 files changed, 1186 insertions(+)
+---
+base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
+change-id: 20250604-add-technexion-edm-g-imx8m-plus-som-79adf0b397eb
+
+Best regards,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Richard Hu <richard.hu@technexion.com>
 
