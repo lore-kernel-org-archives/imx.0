@@ -1,1394 +1,842 @@
-Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11022123.outbound.protection.outlook.com [40.107.75.123])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010063.outbound.protection.outlook.com [52.101.84.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194951B6D06
-	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 02:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.75.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C89F1553A3
+	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 02:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753324514; cv=fail; b=Vb5rxTLNCKxe8ruvPwkyl7sJH7igqJAshsndBoRsos3i5LscuokZyhdkk9I/qO/QHaDQ/i1wrLOz8kGnk+Z09HJfn5xfUr3DSlxy7T0kwczFia8M+47LhSVI74zhLngqPDBlwSGoHm/aUSAf9o2D6M6XH5rPiEpKLAnQ6+EHATQ=
+	t=1753324572; cv=fail; b=CapqxPP/JsDL6bZck0hYHai5ymEE6jEJ0gSb+Z40yCZ/CAwjRIhUC2Dv6LamkJ90dF5Rv3taYtq1rKz1+3p63vntrJDFdYOyPnOCuofkFH6F5KxoMGtKWLHrRZlfXTDRr0CJi77qXkuKUl3n88DJ6Un9LwskqdRXkCLAiOJcFv4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753324514; c=relaxed/simple;
-	bh=iH3hXIP8bJiq4VPdh2f/YMDyELgkuFzMwNjbcTExxqk=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=WB3/uCldea6+9bF++Z3fRB5aZjs4HIuzUx7ZByAd43K/gas6XPaX4z/zIe5GJUXDT6sTP36R+992Gpeaof/Yb72BX0tzizLuoI4i+SmV5AoZBAk2A0HzjU3/QkiJ6XWrx9JKMODF/nNqJ/3/P2MBbb9rqjXlly5lQPN/tXoz6+A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=technexion.com; spf=pass smtp.mailfrom=technexion.com; dkim=pass (1024-bit key) header.d=technexion.onmicrosoft.com header.i=@technexion.onmicrosoft.com header.b=rKN7xMW2; arc=fail smtp.client-ip=40.107.75.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=technexion.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=technexion.com
+	s=arc-20240116; t=1753324572; c=relaxed/simple;
+	bh=wMqPH0221yhberMoW5veGvRlFfejuMuJB/HpRAg904M=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bk9jY47qTY0z9DmE8waMqlYhDXQsqL5mUjIkTc1pgfQlM0cmcF5DqdzxpkhD24lDk4sabSHWLobDh3AWl0yFon9KOJAhqDZpfqFQ2jTZcpHJyosBCrivbyqJtLSosa3P7Q2ByKw8ck4EjdtGZVfIlqTRa9q8MymBLDJOHHeXqtI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JuVe4/Ob; arc=fail smtp.client-ip=52.101.84.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=technexion.onmicrosoft.com header.i=@technexion.onmicrosoft.com header.b="rKN7xMW2"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JuVe4/Ob"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bXUUDjtLBasxOWKkhupbpQuhaI1s10IQKLcTqReJL4CKr+2ojhY3QqwYctd94Xtm1vXGxRpXPW0ArhpYLyIrZf+GGyD+dU62aR8AJzXteJAh+oJFoq69xz/6/EvhVmwS8S1FNzbBLp43aHjYrARagUk2yRRn3nYaV7uHjVmMk4pUKVJWbcz0d3LLGHzzdrWTbneougMAmpmTSdz2Xrrcz04iQgsF5l+uGAEVbX5IF7FdzKHv+PFvOTOxHYUHkEkgCdE82ZDar/uarG65A+5p3XQTzpQVJp306XdpHB8+ZRbtbp3E0uTESJ79QC7w3Ldr1BgLv7ou9hHj5E78ncNlyQ==
+ b=oAp+TGCqYulA6aJfZRqYDN9fOLXAW2+vUj9+HpJlWlJo9m8VIb/mQMmJoEFx4xrVZ6iRlqzK5giNnUJ/spvOCDyTnDeFQw5zdGKuj25NOywTRl6TcEZhT1Lq87mUXQKfQEwZ/M7zPRQ96o/RlROAw+ocG0T3ZwkVMqXKYBOMX9MceuyEZAfbRYITDRp8jGR8KJgIwgXJ8uA36IiyPG9LA/jkqfI4by4Oj5xR7VLuwB74N4x/mP72HPe1gvRbg+KTcdAT/TM5PeD27iG5cwI51vog1uxrtuV0l8jN6/aj1XF7kk6lwJARhbHDrrxHak48WaBiEbB5swz2gyGuDtIWRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cBnSJPwoIuAlFlQi9mkb9QvMXwAAcnlHsqAFvlAbuuY=;
- b=hTJgZT9jqfoLY0wOyvqqgWl9szx1z+s4Lb8ezx4XDFzS0ew0q286HugYI1G97TZmV04aa+dMU1GemLAndDB0p4XuWPpd/UbrvK89j9Rt/wkFdJ8W2TUbaQlRrhJDzKzIUFo6BlFMEtAc/+Y11loR5ha19ub3n1KJ9qKVgmGB0qCaKjz4VDfz+OwMOta+fNGa780a5U1eTglg6HF/6qNxr5x/0UI5wTmEUPDIJRVWlF6HRviK+izWM+jGWAt3t8ql8A3i5ac8iF8TlPYh7tGLi8GxcMAtr0oXcxwk8OFRAEmTcRAT4GseFVoFD6hTOZe25B9yw8vybqFINXMuMAtJ8w==
+ bh=yieAe8N2LSJzJmlznwz70T+DF/bTtz1pv219vkD7ARM=;
+ b=iRzHApIQy08yKCBjDnIbR8QLHYkEGuz+qTJcij72yEXp1UqMxak1E/hDwSOrlD0tBaacZI7q6nsnirglV9Bsol4DFfeyVWwuTN9SmQwRwuJTpVT1+LJHKxkr1RxM/Z6CmXr0JxQzsWadLll5A1Rn0MXKjogRKkvWvu+Gn1zDMLCYSEIUmvU4vH8l4De3jBcVTBv64QDbMGQp/ZKWYN8iPwKFNU81FTCEdkCGuW3JiqQ+DiSE666Rance0SF+E0DwDHDQj15ItSABAp0uawWrJ93LBkl00eKUjdGiP7x4ruBYLcUNqcLKdkaC40Ubzdqiisa4JFZNEYx9VPkytYIrAg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=technexion.com; dmarc=pass action=none
- header.from=technexion.com; dkim=pass header.d=technexion.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=technexion.onmicrosoft.com; s=selector2-technexion-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cBnSJPwoIuAlFlQi9mkb9QvMXwAAcnlHsqAFvlAbuuY=;
- b=rKN7xMW2ebwO9ghgspriYUXx3ShUl2aqtD9IyQAwgFol2ndPDtl5CbHnjXRYOjGjjs++HcDZTJoHEaQykKaMteGjfgZ0JR2TMhbcjSdS7XGjmvNs+d2urpVLPvHyH7MerU8PZJZOdFT0hXJWZTtq+rz2oCK2G5tc05jFrBa8NQU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=technexion.com;
-Received: from KL1PR03MB7454.apcprd03.prod.outlook.com (2603:1096:820:ed::7)
- by SEZPR03MB7565.apcprd03.prod.outlook.com (2603:1096:101:128::8) with
+ bh=yieAe8N2LSJzJmlznwz70T+DF/bTtz1pv219vkD7ARM=;
+ b=JuVe4/Ob18z20LnljHzNxrn4HnMx9f+zDWbB3mw5dpQ6EEz1kWsoSKn9YXM8NKe41BW4yU7ozTW21MIsf2RTbHhqK8HHQbbpZOgSAHLEVYKMNT8pGctUjL2cP69fpHuC7KF6SQZqflOtGhmwhAsoQltoFKi9xRSAY89RXe4fk/i571lbY6MIZ6wZO9hS+Btb3LfJIo6vOjDetZ0zuvnZUWFs7YTLkmZzXWXuwsgyHDCyXMrQyNkrazqqpib0yLgGkSn8qUlel0MT0RIaQgbg5Mx+Nz1mpCdqIffVRiGWb+goNgmL5MCgteKhlv81muFksF088+TxfatmurrIZfF6fw==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by VI0PR04MB10782.eurprd04.prod.outlook.com (2603:10a6:800:25d::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.21; Thu, 24 Jul
- 2025 02:35:05 +0000
-Received: from KL1PR03MB7454.apcprd03.prod.outlook.com
- ([fe80::5ac3:4497:4694:db94]) by KL1PR03MB7454.apcprd03.prod.outlook.com
- ([fe80::5ac3:4497:4694:db94%6]) with mapi id 15.20.8943.029; Thu, 24 Jul 2025
- 02:35:04 +0000
-From: Richard Hu <richard.hu@technexion.com>
-Date: Thu, 24 Jul 2025 10:34:06 +0800
-Subject: [PATCH v4 2/2] arm64: dts: imx8mp: Add TechNexion EDM-G-IMX8M-PLUS
- SOM on WB-EDM-G carrier board
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250724-add-technexion-edm-g-imx8m-plus-som-v4-2-d1c88155d6f4@technexion.com>
-References: <20250724-add-technexion-edm-g-imx8m-plus-som-v4-0-d1c88155d6f4@technexion.com>
-In-Reply-To: <20250724-add-technexion-edm-g-imx8m-plus-som-v4-0-d1c88155d6f4@technexion.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Richard Hu <richard.hu@technexion.com>, 
- Ray Chang <ray.chang@technexion.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1753324497; l=30321;
- i=richard.hu@technexion.com; s=20250604; h=from:subject:message-id;
- bh=iH3hXIP8bJiq4VPdh2f/YMDyELgkuFzMwNjbcTExxqk=;
- b=b7gJ5ma6+7CqtS6x80IZrGXSpO5a7gOezEnx29alVhIZFgMCW7xHdxa8wqM8F9W6pcklGdhnI
- thpgkXvJ4EtDhEJLoVRsCdqN9Gh4AZggAyVV6yQZdJXg3hMa4VwB+DK
-X-Developer-Key: i=richard.hu@technexion.com; a=ed25519;
- pk=MKoW0/U0r4MjJdRNaq37Tb25KE1fzJUdMN0pa8XBJSA=
-X-ClientProxiedBy: TPYP295CA0051.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:7d0:8::11) To KL1PR03MB7454.apcprd03.prod.outlook.com
- (2603:1096:820:ed::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Thu, 24 Jul
+ 2025 02:36:04 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8922.042; Thu, 24 Jul 2025
+ 02:36:04 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>, Claudiu Manoil
+	<claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>, Frank Li
+	<frank.li@nxp.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "festevam@gmail.com"
+	<festevam@gmail.com>, "F.S. Peng" <fushi.peng@nxp.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "kernel@pengutronix.de"
+	<kernel@pengutronix.de>
+Subject: RE: [PATCH v2 net-next 03/14] ptp: netc: add NETC Timer PTP driver
+ support
+Thread-Topic: [PATCH v2 net-next 03/14] ptp: netc: add NETC Timer PTP driver
+ support
+Thread-Index: AQHb9iZqIKdSDIDCCUCMd3Bsvy9xQrQ/6+YAgACrDvA=
+Date: Thu, 24 Jul 2025 02:36:04 +0000
+Message-ID:
+ <PAXPR04MB85109C7DC309F3490BCDC3E1885EA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250716073111.367382-1-wei.fang@nxp.com>
+ <20250716073111.367382-4-wei.fang@nxp.com>
+ <20250723160900.x57uikenvbd7223c@skbuf>
+In-Reply-To: <20250723160900.x57uikenvbd7223c@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|VI0PR04MB10782:EE_
+x-ms-office365-filtering-correlation-id: 0aa2ef66-c35c-4187-3058-08ddca5ad620
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|19092799006|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?TrOe+xY/zZuyAb348D2puv/uFV+cqsWS7k5JRlAy4fFGRIvmQUpVdHM5zst8?=
+ =?us-ascii?Q?T+iL+HDm324SzmdjHgY+keNUQ4NE6gufPAriuDnw5OFN+KscrSo5YWQkprSt?=
+ =?us-ascii?Q?imAePj1l1TGi91bR1weRQsZCQFPtUQ+4G3tkXoYR49ncZ5N1q3qunPtFJpjW?=
+ =?us-ascii?Q?Ojb/e+DZerYkoO/g7y+KEKZKXBxJEDx6cw7QqcFa17sGjlgQbrXi2UIMXRyT?=
+ =?us-ascii?Q?iWOrD8DFevoIBnrO1ZrhbfubltbDYwiukhNZMZp+xqOhsEUtXO7QjYbq/4iO?=
+ =?us-ascii?Q?92kSr1rvqAnCD1rEGj8FemNdjMiHnCZhcI58axQh0m6qiZ9iQ8DhfbDtmyjF?=
+ =?us-ascii?Q?tBHvSc/9ll9uUv4QZNvtpcNzaxQ83EW6wEQo0o4iZMHdqFGR/YZur4S8A6yz?=
+ =?us-ascii?Q?2m0c+NmipiV/JXb4HpuaFo3BmmXHgW0HGRc0xM0quqRovnd0MrUg9RHDzv5k?=
+ =?us-ascii?Q?d5aykfaDviuokSVMeMqmN+VZBhLUlZJlpQOXgldBsEeryqMarlYivE8B5WZx?=
+ =?us-ascii?Q?rLQyGYkvWFiuTF1HpUEX87ukQWCpcpnL0oAXpuQgHFo6VzfANL/g49UJUHdz?=
+ =?us-ascii?Q?5AYCzIr76B7T+di3MnvoVMvRUUAgxqaKBG+RKHOHQ07XzQDaZ6+poZXoSpas?=
+ =?us-ascii?Q?GNGd0EAP/bNEiPPlP5a1fkbljcrvRB8T9BHttVYdr01UAV9PuSMuFM1n6BVw?=
+ =?us-ascii?Q?Ebq/MBteg5PnphKcWTmJOwegWT1cSogZm8Rm3KSBSOpSATnfRDM1Woa7u1mW?=
+ =?us-ascii?Q?zjNwZ+6ZO+7fa8Ukt/Q3iLGzeGNEvX+Kw1/89NnzzOb71r0jY0o7oUxJacgc?=
+ =?us-ascii?Q?MUEZ7WOOcgYwSOt7VSYq89G+OsR4Zyp4ZyMQurxdIZtl5jqkCt0XhFayPd1M?=
+ =?us-ascii?Q?xTelvCiZmh5kyqsJXT8xef0YvqwrphPsTF1d9n5xFQGs2hse0wvkEdA/vJYj?=
+ =?us-ascii?Q?hrugB/UTwSXzE20muYQFR0I+Om1nPbB15Lrt8RksscbusZLnBT9+Y+T+R/rc?=
+ =?us-ascii?Q?VgA1Eop86Q1UgHydFxqP5O40+0GqHQ9xUZtaQANQKNU839tc+cpHyS58JyfK?=
+ =?us-ascii?Q?3XXsHqjUkANooUaO6FKEeh9FCXasTM2G2Cbm7RG/CajDWOzK/9v4L5tcOO5L?=
+ =?us-ascii?Q?aeLxBKHYS+uGsU56eGcILBx2W4EMsXMKb5Cyv3iT2qagY+cxfLLNuHUus/6L?=
+ =?us-ascii?Q?lro/KGxJ3i8wxCkDCVDxdp9ERAboHoAb+xk6deRdG6mTxjKUrRtwhzT2pYGB?=
+ =?us-ascii?Q?kUTVQ/2BRj9az+FlIQgCgX28biqhNUt78fmhzbZ9UPppvWT7p/nUbrUXLmty?=
+ =?us-ascii?Q?L6lVE3nbbOvzacVsGOoaATvZYjUqQI+4EhcxT4uvGLnS1HeVjcVojCocau3v?=
+ =?us-ascii?Q?w2CxbDFb7qGpQE8vSd5cNQ5BReZ76+J5u2tbUKED2rhYqbkBaR+WWJLb93jt?=
+ =?us-ascii?Q?wuJ25cJz29XYJZz1J+IiXhPda07U7jm30d0l24a9kjrAsdcpwMg/Fg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(19092799006)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Ge2moLkLGc7cYTAGe1eHpd6gr5fYrtJ3Rq/wblMY53UE9ExG2vL+W7D9KX3D?=
+ =?us-ascii?Q?JJRCJ4VH2lq0JUs+27RanlSs41UOmd8g3+Kl2wp3C7T2CpyDs+XVYtcPs/7e?=
+ =?us-ascii?Q?cad7YmXlWn2WTQS6CZIMISaB/b97nPhuUzC2HytsKjfWCri2ue8v8DJU0Xmt?=
+ =?us-ascii?Q?89V6P7BghFQYOcm5JVCvdgLUDo6V9fgIXSiGwvnleuRRB+FRibAP+XKb3ozP?=
+ =?us-ascii?Q?Db6l3PciI/JDmY4RokUbVfbq4Ct5ODR+L3Vj2kT3fkAoZeVRBLR3WBFBfvJO?=
+ =?us-ascii?Q?3fTBkoW8pD606wV+l4d0jKyFghT7xTgNPFCGdM7LuSJ88ZrmCMO5JgGFuvae?=
+ =?us-ascii?Q?/jjRrQQUkTh6Sb1T5u6x+ZslSH5B8rR95hDz8Jyqq5oWR9DJlmdq/x6eQarn?=
+ =?us-ascii?Q?qgSQWwjqXkaWsFA5WXXrrh0FkMXBlKUlLYyajcmV5xFjKJQH/j//lMWVqo6N?=
+ =?us-ascii?Q?+BE/mAe4Dou9O3ieGh1B++9z5EqSHzo5pMwIGy5hgI9+/PJUok9vVQF5Uixo?=
+ =?us-ascii?Q?S77duOcjUWM0Ieq7ByghSTzJ7iGkA+2czO+ZVvZ9Or4xtt069KSOMSgz5sl6?=
+ =?us-ascii?Q?BAnVkkJoTZS+/pq23ARvQzrXiA+lghp9j2gHi1UCahfqJaRte50EzQ753R6a?=
+ =?us-ascii?Q?OnIms07G1+jxMLLDHelDFa+OaH0K+h0ie7cOAz4ERsbyrYanKm1/yCKcN//e?=
+ =?us-ascii?Q?Ue+NsIEqqWigIFTdLkThhVArCS6O+M7stWXOKfLaB0pRBpWE8GTWSIzF4uth?=
+ =?us-ascii?Q?omoT3WJBo047M0nxCaDpOUj2HnYkwPepa8OVaZfvd2MaDO+ZMFNHEuTaaT3q?=
+ =?us-ascii?Q?TSZnOVTcVCA88AK/ylrnzuLh59PorWqMTF0tpxkt/SApohBmZWMK/f0RdJ/I?=
+ =?us-ascii?Q?zFYNkg6C6xBeRTsZ4n5Kh0Fqj3VpA/8h2G4tllran3xNg21aUUslPmvaA321?=
+ =?us-ascii?Q?kFNzE+m6qcbxEnAJU08ST7ZJBL2ZVDiaEgG/fdGJ3tH+JIZJlPqwIqt139F+?=
+ =?us-ascii?Q?Sgd53xfVUvNkkVZcYlMZziaBSzjk6Gd6W3Xdg6Elix1Vu/ln62y+xF4LWAo7?=
+ =?us-ascii?Q?l0CNXS9mzbqa3UF/YIUyMzvUTnZK6D2y1w4qlBJ1oH03XfDycY1og1wXCim4?=
+ =?us-ascii?Q?ztCrJ4y+qp1npI/jUXyfE6c6S6mF4mh1spRYf3yo55sON0ZpNDI0njpEm8G+?=
+ =?us-ascii?Q?MTDd21OjDsUzlhE3PwSMo6aINwckNj5Tz97Cj1dVOUSJKKEgaagins8M8zrw?=
+ =?us-ascii?Q?EWk/bZaBLjB1HxBwgCyvNJXS+oqrlGGvvzxjMW5/bM/ldgxSPVf/2AKtJT3D?=
+ =?us-ascii?Q?WyiepGRM8R6O4gUN2L48lK8ht5f6lF1eu32XpVwsxIfFTOQROniOkE64GqYY?=
+ =?us-ascii?Q?QBLFYpVZylK7yICtKpo+DQmzLt5CbNCGVyGCQ54fmHyNIjusOXTr4Xrzo58e?=
+ =?us-ascii?Q?m+nRlDHe+/8efor1ttuNbofVJSvTUWq6zqQPkq/n64/KzHPlce2DC16qEUK3?=
+ =?us-ascii?Q?UMhud92odjnH0ffVnXMTI091P0ouz+gkPP5DU5pYikiIRCkTIQtw0xdcH9JU?=
+ =?us-ascii?Q?rukujC4jUEjVfygG+Nk=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: KL1PR03MB7454:EE_|SEZPR03MB7565:EE_
-X-MS-Office365-Filtering-Correlation-Id: 767b5b45-f733-485f-fbc7-08ddca5ab20d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bmdzSzBqeDhoZnJxSjRpeWtKTDEyQkdFRm1GMUN6SW9CUUo3U2dFdGJ4YnJh?=
- =?utf-8?B?UFNtcDFXTU5neGVQYzRySktoYUVCUWRsUEpKMXhPUThVZTlISzRhdkd5c0tJ?=
- =?utf-8?B?QVAwQ0RxVy9ld0pRRHV2OFZvRHFxZ0IvMlRmR29PRXROMG0xQ2k0ZFF4bjJj?=
- =?utf-8?B?VXowN0pFL01SL3pCYTJ1OXUwSmZiK2dsbDk5ME85ckY3QnQ2MUR6Vi9OQnVS?=
- =?utf-8?B?TldZTkQrK2pISFM5aVJpWlE2RnNCZHRGVVNQTnVGNllNMzlrMzVpK0VCV1E5?=
- =?utf-8?B?dXpxYVY3amJxZEk5cWEzaC9RVlNUY21POUdPTVNHSU9GYnVieiszT3Q3UlJq?=
- =?utf-8?B?aEJ5ME01VmNmc1BnU1dIazN3eHJYdjRwYlBKdkVIRVIzYUMxM3RMU1dNTmkx?=
- =?utf-8?B?VGF3clFUbGJ6SDNQUURVMFJWTXJwZEZOWElwZGdOSk1sanNzSGtTQVc3UG5M?=
- =?utf-8?B?bUZvNXlJOWJyWGR3Z1BXaktuMjZUZ3NDeStsaGdWSUZBaVNMMmJSTUpaRmNh?=
- =?utf-8?B?NTNQTkhuMTlkQ0RTQ1ZIVHBFSFhIU2xGR1lJTFFqa1JBWFlQZlFEbEtuQXBj?=
- =?utf-8?B?ZWNHaUNIdlJHUnRxL0lVQ0VNZDArRlErdjEzSjFsUzh3VmxkZWdRSmhmdVFL?=
- =?utf-8?B?T1d6RTBSdmlDbnpHc1l1UU85akRpT0ZFaGdJNCtacFBaVTllQ3ZnSHBzU2JE?=
- =?utf-8?B?RHRiUXNwRDNvYUpPb3RQbDVERVpycU9heWhWem9QY1VlMHpveGI4aFRhMFRD?=
- =?utf-8?B?dG55QmNBS0tTaHUvSUd0NDBnUG94WHZBVnhNNlg2OElqelphaklvS0pSbk5r?=
- =?utf-8?B?dUJPK1Q3RFY1WE45YnIxS2VwNWhyL3hFb09pYjZlL2Fra1ZWV3A5bWRUZVQr?=
- =?utf-8?B?U0hybDlVOU5ZR0xyUHlwTWJDUCtTWWwyd201U0JoTXBEWjI0cVpuSEtUc055?=
- =?utf-8?B?ditiN1FSQUxGcWNIbXRXdHdYcjFIZFpBZTlBOGxtN1dFQVJob3NiOXgxK0Jh?=
- =?utf-8?B?RzFxTTBGS2ZSZFE2d2pLNVRBaUVhSktIYlFWenNOU1ZrSUc0dmVRaVdIUTcx?=
- =?utf-8?B?YWoyVXhiZWxOSDlWT29TZ1VkeVBQb0cxeVNjcmN4V0tpYU0yMElEQkxMM3U0?=
- =?utf-8?B?QjBseGlEN1p4MDRFMDZJREt3T0MvZ0orRTc3NVpOZm1tZU83Q29tbkRqTkhH?=
- =?utf-8?B?MiszVWFSaWYrckNHK3M4YXdFajVQWmxoU3VlejkveUZyNk56UmxwS3JyeTIz?=
- =?utf-8?B?cTBIb25KK0dZNWEzYWRpeDBwcEtFaGtCNUVXb29TTmxWcDV2TTQ5bkFsRzVJ?=
- =?utf-8?B?V1lYUzBZemZuNm5QeXRLNUUzakxsalQrT1R5TmNKVVBYcTlHL2pCTlArb1dC?=
- =?utf-8?B?ZGc5WXJReXNSV3RFRHVHa2J3VEhoT0MzeEduaE9CZjhFdmRBUDc1d3gzV1NP?=
- =?utf-8?B?MFJydkE3LzcwaFNiRDBjT0szVWRZd0ZrcVkxRHRJaTBZRlloUCtnQWoweVBV?=
- =?utf-8?B?NkdCcGZhazM0R3pDMGV6OC8vSzQ4OTdjQkJScXNFcWdRcjdyWnFpbU05cDhk?=
- =?utf-8?B?SDhlOGhHVXdZczBFeU1PL2RoVkkyS29TVituRlBGYUZkZFRNYWM2TGFKZWRz?=
- =?utf-8?B?cFhrTnRYNFF0TlhBc21XM2JzYlBTV2U2SGVsQ3liSHFGMlhMbUlNZC9kYXBW?=
- =?utf-8?B?blhsZzNwOVRPSUt0S0M3MHFpVlF3NGQxL0dyZFdBTXNtRkFDWXZHeWhtK21C?=
- =?utf-8?B?YVRBUzYvMGh4UGdybUJqRTVKb1gwZjJjVExKdVFVMHRIc1pRQmc4UGlkclov?=
- =?utf-8?B?ek8rQi9QMlNjSXBnOHUzMTh3bVBOYWFJaGxUc1RhUzdteWhHOHBNT1k2Wkl1?=
- =?utf-8?B?c0NBVFFpWUxCK1BLYjA5dWswRUtldVRzWGRQL3d2TkZXNm5NalFSVytUYzda?=
- =?utf-8?B?cGRaN1hhQldYQ0tlZi95ZGQwQVBoVTd4OVJuc3JoVjQvNkQrKzlkaFRkZDVr?=
- =?utf-8?B?ZituYTZzMWJnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR03MB7454.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Sk1tK09VczVORDZVVXAvUWZNaXFRQk4zeVdWL3Q5NFdxdGhLWXAzbGVyb1pL?=
- =?utf-8?B?ZlJ6ZnpHVWkreGs2MnNHNU0wa3ZObytpbDVkQ3hWUmtRYkZleHlKQjBXMTBY?=
- =?utf-8?B?eGhyY2pQeEFrQzVWTlhCdytUWXlqdFplMlRYdnZaTk80d3M4d0NWUDg5SWQ2?=
- =?utf-8?B?QUpwbkkwUEF3VlpFZ2xKSGZLSkV3NEltYnYwdXdjNEk2Um1Hb050UFZyVExU?=
- =?utf-8?B?Q0JTZjVueE5wUlFJYWRVem93NDlqeTFmR1AwNUJaNTZwN08rUVBFeXd1ZTkv?=
- =?utf-8?B?Ympxc3dUUGVwWk5NUVI3R0ZGUXVKSGY3bm5OMnZhYk03bkRPVjRrUmZLY0dB?=
- =?utf-8?B?Q1dDeEVleTN0SkJ2eG9FTzZ5K3QweDBLeTVGY1VhMHlwcElWaDUzZFMwcVNl?=
- =?utf-8?B?US84OEU4Z2hmMVArWkNnbjZsbUJiZFFDZnUwUno5KzUwbldTaFNMOTlIMmlm?=
- =?utf-8?B?MGxVTEZBeTQwaUNxbzR1VDluM3o3RjAySVRjSldjbUk1R29XR0dJTXpicGNz?=
- =?utf-8?B?Zk5KZ05HRHFYRW9oOHZzMWZnMnJTL3oxS2hCbFlrY0IrZExheHJKeUVCRUFI?=
- =?utf-8?B?K3pxWG9NNlZ1STM2WWhWR1AwaVBtK3lBYmVjMTltQjQzVDEvS204QlNvbUZ1?=
- =?utf-8?B?WUFwd2RZbmtkSzRqWVg5YnJ0bGFlK2NaZUx6NTk2NEpVNGJqblcySkZTR1ZO?=
- =?utf-8?B?aFhwQ1padTc2TFVKVW8yOUZubGtBSjRsRlc2TzdUWWtNTGlVbnZKRUNNekJR?=
- =?utf-8?B?cjRBRzdYWVQ2ODVZOEJBNFJ3endqWUhxU1QrancwcDk3bXpNSlJUemVzTnZC?=
- =?utf-8?B?Ri9VbmJwajA0VjliRFUwYk5ld3lkRE9tS2NiS0dBeWlRTGZ5VC9HclpOMzZ6?=
- =?utf-8?B?Ri9aMlJuTkVQUU0vVkcwUGgzc29wcEVZRytRQUlyY0tITWtiaytVQklSaTBh?=
- =?utf-8?B?THNmeGtIaWdGZ091aDYvempNRDNaM3p6aEUrZTBuT1hBeXZnYm93TlorQzFK?=
- =?utf-8?B?ajNZRGRxeEFNb3I4OVFWYXlYYlZ1a3hIamNzMEhSMSt1M05ESGJIVjZHOFF4?=
- =?utf-8?B?MG5IY3RQY0JDbTR6VnA5a1puS2FWWjF2YTQ5TmVGa1U5MG1ydUxxdXpjQTFh?=
- =?utf-8?B?ajBFYWVDcGVINFdMdDBvZ3lvd3RjRUQ4eXRVZVZudHdVZm1GVFhYS1NYcENC?=
- =?utf-8?B?eHpFT2NKMmR5VDZoZUg5dU1sNkV5WnZQeFpoTmZ3Y3liak9tbXN2QVIwTTVG?=
- =?utf-8?B?c2NXNmZMWEQyYWlUTUx0b3R4ZSt3dlBxaHU0eXk3TXBtNG1pVzJ4SWlOSlN3?=
- =?utf-8?B?anhtbEpKTmo0YnBBV0cwQlpJeFY3a2k2ZE1ma3R3eXh5c3hOYXRaUms3L3o0?=
- =?utf-8?B?Ri95RDc0WlE1Z0pXb1FET0g1anpuOWhLY1hTaUhpQmFNM2RGZW9DWWNEWmc0?=
- =?utf-8?B?NDNVWVNXdXkvN2NxQ0daTmlOUyt0UGw2Y1VmRDAxa3JJTEZLeFk0TmE0RURM?=
- =?utf-8?B?K25aQ1JTNWxONGNBRXJxVlg1KzRCMzR6QllCTGwzWnQ4N25oMnRyUGFqWUhi?=
- =?utf-8?B?UEsrcko5VEJhL0FROWRvWVp5U0d0a05WTjYycXhUN1FYM0xYbjNxei9HeGJO?=
- =?utf-8?B?SllVcnBNWGRWRDZaV3hJc1RBSndaYXRwTVN0TXcxdFYwYlVRVGVZd0FVcnNM?=
- =?utf-8?B?N1cwbFhMTGxNSUQzWDlqZElQYVFuam5wendxbEp2N21kdGpGRGxSNW1BU2xy?=
- =?utf-8?B?SWdoYTIxMi8xQ1lRaGpzdXcrK1lZMnE2ano2SFZQamU0UzRrUzRVR1ZNb1po?=
- =?utf-8?B?b3ljdk9VNG83Q3o3Rml2RmR0bGJQQzFvU1VKVXpBL2pYSDEzdDhvLzllYU9i?=
- =?utf-8?B?bVQ0dGpEV09pVWxoejZJUlhpUXV4dXRRVG1JRjY3QUE0aEQ0UGJKaHQwL0g1?=
- =?utf-8?B?VHErdE5Bd004a2Z1UzNaQzI1K3NLOEJMZjFnN3JZbXpRYndaQ0RYc1hMai9S?=
- =?utf-8?B?ZWhkbW55RFJHYTdDSERrejE5dHRsaGJuZ2o0V29kY25NSUppVnpLNGtZNGMy?=
- =?utf-8?B?OWx2UWU2akdDSzllWk55K0lBclJjaHB5SENOWEhNdHQyL0dvUEVKSkdsRk1T?=
- =?utf-8?B?QjdxazFENmcrdzFRbzd5bDl1Vm42REl5YXBPVUlJYWRjS09XS3NYbjVNWVk4?=
- =?utf-8?B?NlE9PQ==?=
-X-OriginatorOrg: technexion.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 767b5b45-f733-485f-fbc7-08ddca5ab20d
-X-MS-Exchange-CrossTenant-AuthSource: KL1PR03MB7454.apcprd03.prod.outlook.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 02:35:04.2460
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0aa2ef66-c35c-4187-3058-08ddca5ad620
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jul 2025 02:36:04.4244
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5ee19679-b9a6-4497-8ed2-1eda849e753b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kKaPWRBzB5XqMTHbtWPXwg0aHOOQtk9DUgLWMUM5b3FUQaKra596blEowRlz6jqr2Mvg/IvErz7sCv8NZXqrN3YbpOVSkxk1w6BDFrYAJS0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR03MB7565
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SrRQE7zJISGT7s++qJlV8XyjA6c0ZV4x2BRdI7mPmDoZm8uWK8dNHh6oyEBKGX7Pt7zXerBp0cqTNW2Ks8+QWA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10782
 
-Add support for TechNexion EDM-G-IMX8M-PLUS SOM and WB-EDM-G carrier board.
-Key interfaces include:
-- Gigabit Ethernet
-- USB 3.0
-- I2S, UART, SPI, I2C, PWM, GPIO
+> On Wed, Jul 16, 2025 at 03:31:00PM +0800, Wei Fang wrote:
+> > NETC Timer provides current time with nanosecond resolution, precise
+> > periodic pulse, pulse on timeout (alarm), and time capture on external
+> > pulse support. And it supports time synchronization as required for
+> > IEEE 1588 and IEEE 802.1AS-2020. The enetc v4 driver can implement PTP
+> > synchronization through the relevant interfaces provided by the driver.
+> > Note that the current driver does not support PEROUT, PPS and EXTTS yet=
+,
+> > and support will be added one by one in subsequent patches.
+>=20
+> Would you mind adding a paragraph justifying why you are introducing a
+> new driver, rather than extending the similar ptp_qoriq.c?
+>=20
 
-Signed-off-by: Richard Hu <richard.hu@technexion.com>
-Signed-off-by: Ray Chang <ray.chang@technexion.com>
----
- arch/arm64/boot/dts/freescale/Makefile            |   1 +
- arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts | 372 ++++++++++
- arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi   | 806 ++++++++++++++++++++++
- 3 files changed, 1179 insertions(+)
+Sure, I will add paragraph to explain this. Thanks.
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 0b473a23d120..b56c866d4a9d 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -201,6 +201,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-drc02.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk3.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-picoitx.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-edimm2.2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-iota2-lumpy.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts b/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts
-new file mode 100644
-index 000000000000..5441328afb20
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts
-@@ -0,0 +1,372 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2024 TechNexion Ltd.
-+ *
-+ * Author: Ray Chang <ray.chang@technexion.com>
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx8mp-edm-g.dtsi"
-+
-+/ {
-+	compatible = "technexion,edm-g-imx8mp-wb", "technexion,edm-g-imx8mp", "fsl,imx8mp";
-+	model = "TechNexion EDM-G-IMX8MP SOM on WB-EDM-G";
-+
-+	connector {
-+		compatible = "usb-c-connector";
-+		data-role = "dual";
-+		label = "USB-C";
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+
-+				hs_ep: endpoint {
-+					remote-endpoint = <&usb3_hs_ep>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+
-+				ss_ep: endpoint {
-+					remote-endpoint = <&hd3ss3220_in_ep>;
-+				};
-+			};
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		led {
-+			default-state = "on";
-+			gpios = <&expander2 1 GPIO_ACTIVE_HIGH>;
-+			label = "gpio-led";
-+		};
-+	};
-+
-+	native-hdmi-connector {
-+		compatible = "hdmi-connector";
-+		label = "HDMI OUT";
-+		type = "a";
-+
-+		port {
-+			hdmi_in: endpoint {
-+				remote-endpoint = <&hdmi_tx_out>;
-+			};
-+		};
-+	};
-+
-+	pcie0_refclk: clock-pcie-ref {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <100000000>;
-+	};
-+
-+	reg_pcie0: regulator-pcie {
-+		compatible = "regulator-fixed";
-+		regulator-max-microvolt = <3300000>;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-name = "PCIE_CLKREQ_N";
-+		gpio = <&gpio1 13 GPIO_ACTIVE_LOW>;
-+	};
-+
-+	reg_pwr_3v3: regulator-pwr-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-name = "pwr-3v3";
-+	};
-+
-+	reg_pwr_5v: regulator-pwr-5v {
-+		compatible = "regulator-fixed";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-max-microvolt = <5000000>;
-+		regulator-min-microvolt = <5000000>;
-+		regulator-name = "pwr-5v";
-+	};
-+
-+	sound-hdmi {
-+		compatible = "fsl,imx-audio-hdmi";
-+		audio-cpu = <&aud2htx>;
-+		hdmi-out;
-+		model = "audio-hdmi";
-+	};
-+
-+	sound-wm8960 {
-+		compatible = "simple-audio-card";
-+		simple-audio-card,bitclock-master = <&cpudai>;
-+		simple-audio-card,format = "i2s";
-+		simple-audio-card,frame-master = <&cpudai>;
-+		simple-audio-card,name = "wm8960-audio";
-+		simple-audio-card,routing = "Headphone Jack", "HP_L",
-+			"Headphone Jack", "HP_R",
-+			"External Speaker", "SPK_LP",
-+			"External Speaker", "SPK_LN",
-+			"External Speaker", "SPK_RP",
-+			"External Speaker", "SPK_RN",
-+			"LINPUT1", "Mic Jack",
-+			"RINPUT1", "Mic Jack",
-+			"Mic Jack", "MICB";
-+		simple-audio-card,widgets = "Headphone", "Headphone Jack",
-+			"Speaker", "External Speaker",
-+			"Microphone", "Mic Jack";
-+
-+		simple-audio-card,codec {
-+			sound-dai = <&wm8960>;
-+		};
-+
-+		cpudai: simple-audio-card,cpu {
-+			sound-dai = <&sai3>;
-+		};
-+	};
-+};
-+
-+&aud2htx {
-+	status = "okay";
-+};
-+
-+&flexcan1 {
-+	status = "okay";
-+};
-+
-+&gpio1 {
-+	gpio-line-names =
-+		"", "", "", "", "", "", "DSI_RST", "",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "", "";
-+	pinctrl-0 = <&pinctrl_gpio1>;
-+};
-+
-+&gpio4 {
-+	gpio-line-names =
-+		"", "", "", "", "", "", "GPIO_P249", "GPIO_P251",
-+		"", "GPIO_P255", "", "", "", "", "", "",
-+		"DSI_BL_EN", "DSI_VDDEN", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "", "";
-+	pinctrl-0 = <&pinctrl_gpio4>;
-+};
-+
-+&hdmi_pvi {
-+	status = "okay";
-+};
-+
-+&hdmi_tx {
-+	pinctrl-0 = <&pinctrl_hdmi>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			hdmi_tx_out: endpoint {
-+				remote-endpoint = <&hdmi_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&hdmi_tx_phy {
-+	status = "okay";
-+};
-+
-+&i2c2 {
-+	status = "okay";
-+
-+	wm8960: audio-codec@1a {
-+		compatible = "wlf,wm8960";
-+		reg = <0x1a>;
-+		clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI3_MCLK1>;
-+		clock-names = "mclk";
-+		#sound-dai-cells = <0>;
-+		AVDD-supply = <&reg_pwr_3v3>;
-+		DBVDD-supply = <&reg_pwr_3v3>;
-+		DCVDD-supply = <&reg_pwr_3v3>;
-+		SPKVDD1-supply = <&reg_pwr_5v>;
-+		SPKVDD2-supply = <&reg_pwr_5v>;
-+		wlf,hp-cfg = <2 2 3>;
-+		wlf,shared-lrclk;
-+	};
-+
-+	expander1: gpio@21 {
-+		compatible = "nxp,pca9555";
-+		reg = <0x21>;
-+		#gpio-cells = <2>;
-+		gpio-controller;
-+		gpio-line-names = "EXPOSURE_TRIG_IN1", "FLASH_OUT1",
-+				  "INFO_TRIG_IN1", "CAM_SHUTTER1", "XVS1",
-+				  "PWR1_TIME0", "PWR1_TIME1", "PWR1_TIME2",
-+				  "EXPOSURE_TRIG_IN2", "FLASH_OUT2",
-+				  "INFO_TRIG_IN2", "CAM_SHUTTER2", "XVS2",
-+				  "PWR2_TIME0", "PWR2_TIME1", "PWR2_TIME2";
-+	};
-+
-+	expander2: gpio@23 {
-+		compatible = "nxp,pca9555";
-+		reg = <0x23>;
-+		#interrupt-cells = <2>;
-+		interrupt-controller;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		#gpio-cells = <2>;
-+		gpio-controller;
-+		gpio-line-names = "M2_DISABLE_N", "LED_EN", "", "",
-+				  "", "", "", "USB_OTG_OC",
-+				  "EXT_GPIO8", "EXT_GPIO9", "", "",
-+				  "", "CSI1_PDB", "CSI2_PDB", "PD_FAULT";
-+		pinctrl-0 = <&pinctrl_expander2_irq>;
-+		pinctrl-names = "default";
-+	};
-+
-+	usb_typec: usb-typec@67 {
-+		compatible = "ti,hd3ss3220";
-+		reg = <0x67>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
-+		pinctrl-0 = <&pinctrl_hd3ss3220_irq>;
-+		pinctrl-names = "default";
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+
-+				hd3ss3220_in_ep: endpoint {
-+					remote-endpoint = <&ss_ep>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+
-+				hd3ss3220_out_ep: endpoint {
-+					remote-endpoint = <&usb3_role_switch>;
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&i2c_0 {
-+	eeprom2: eeprom@51 {
-+		compatible = "atmel,24c02";
-+		reg = <0x51>;
-+		pagesize = <16>;
-+	};
-+};
-+
-+&lcdif3 {
-+	status = "okay";
-+};
-+
-+&pcie {
-+	vpcie-supply = <&reg_pcie0>;
-+	status = "okay";
-+};
-+
-+&pcie_phy {
-+	clocks = <&pcie0_refclk>;
-+	clock-names = "ref";
-+	fsl,clkreq-unsupported;
-+	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
-+	status = "okay";
-+};
-+
-+&usb3_0 {
-+	status = "okay";
-+};
-+
-+&usb3_1 {
-+	status = "okay";
-+};
-+
-+&usb3_phy0 {
-+	status = "okay";
-+};
-+
-+&usb3_phy1 {
-+	status = "okay";
-+};
-+
-+&usb_dwc3_0 {
-+	/* dual role is implemented but not a full featured OTG */
-+	adp-disable;
-+	dr_mode = "otg";
-+	hnp-disable;
-+	role-switch-default-mode = "peripheral";
-+	srp-disable;
-+	usb-role-switch;
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		port@0 {
-+			reg = <0>;
-+
-+			usb3_hs_ep: endpoint {
-+				remote-endpoint = <&hs_ep>;
-+			};
-+		};
-+
-+		port@1 {
-+			reg = <1>;
-+
-+			usb3_role_switch: endpoint {
-+				remote-endpoint = <&hd3ss3220_out_ep>;
-+			};
-+		};
-+	};
-+};
-+
-+&usb_dwc3_1 {
-+	dr_mode = "host";
-+};
-+
-+&iomuxc {
-+	pinctrl_expander2_irq: expander2-irqgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_TXC__GPIO4_IO11		0x140 /* GPIO_P247 */
-+		>;
-+	};
-+
-+	pinctrl_gpio1: gpio1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO06__GPIO1_IO06		0x16 /* DSI_RST */
-+		>;
-+	};
-+
-+	pinctrl_gpio4: gpio4grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_RXD4__GPIO4_IO06		0x16 /* GPIO_P249 */
-+			MX8MP_IOMUXC_SAI1_RXD5__GPIO4_IO07		0x16 /* GPIO_P251 */
-+			MX8MP_IOMUXC_SAI1_RXD7__GPIO4_IO09		0x16 /* GPIO_P255 */
-+			MX8MP_IOMUXC_SAI1_TXD4__GPIO4_IO16		0x16 /* DSI_BL_EN */
-+			MX8MP_IOMUXC_SAI1_TXD5__GPIO4_IO17		0x16 /* DSI_VDDEN */
-+		>;
-+	};
-+
-+	pinctrl_hd3ss3220_irq: hd3ss3220-irqgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_RXD6__GPIO4_IO08		0x41 /* GPIO_P253 */
-+		>;
-+	};
-+
-+	pinctrl_hdmi: hdmigrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x1c2
-+			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x1c2
-+			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x10
-+		>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi
-new file mode 100644
-index 000000000000..cc0b37158b0a
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi
-@@ -0,0 +1,806 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2024 TechNexion Ltd.
-+ *
-+ * Author: Ray Chang <ray.chang@technexion.com>
-+ */
-+
-+#include <dt-bindings/phy/phy-imx8-pcie.h>
-+#include <dt-bindings/usb/pd.h>
-+#include "imx8mp.dtsi"
-+
-+/ {
-+	chosen {
-+		stdout-path = &uart2;
-+	};
-+
-+	i2c_0: i2c {
-+		compatible = "i2c-gpio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		clock-frequency = <100000>;
-+		pinctrl-0 = <&pinctrl_i2c_brd_conf>;
-+		pinctrl-names = "default";
-+		scl-gpios = <&gpio4 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+		sda-gpios = <&gpio4 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+
-+		eeprom: eeprom@53 {
-+			compatible = "atmel,24c02";
-+			reg = <0x53>;
-+			pagesize = <16>;
-+		};
-+	};
-+
-+	reg_usdhc2_vmmc: regulator-usdhc2 {
-+		compatible = "regulator-fixed";
-+		off-on-delay-us = <12000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-name = "VSD_3V3";
-+		startup-delay-us = <100>;
-+		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+
-+	rfkill {
-+		compatible = "rfkill-gpio";
-+		name = "rfkill";
-+		pinctrl-0 = <&pinctrl_bt_ctrl>;
-+		pinctrl-names = "default";
-+		radio-type = "bluetooth";
-+		shutdown-gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	wl_reg_on: regulator-wl-reg-on {
-+		compatible = "regulator-fixed";
-+		off-on-delay-us = <20000>;
-+		pinctrl-0 = <&pinctrl_wifi_ctrl>;
-+		pinctrl-names = "default";
-+		regulator-max-microvolt = <3300000>;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-name = "WL_REG_ON";
-+		startup-delay-us = <100>;
-+		gpio = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+
-+	memory@40000000 {
-+		reg = <0x0 0x40000000 0 0xc0000000>,
-+		      <0x1 0x00000000 0 0xc0000000>;
-+		device_type = "memory";
-+	};
-+};
-+
-+&A53_0 {
-+	cpu-supply = <&buck2>;
-+};
-+
-+&A53_1 {
-+	cpu-supply = <&buck2>;
-+};
-+
-+&A53_2 {
-+	cpu-supply = <&buck2>;
-+};
-+
-+&A53_3 {
-+	cpu-supply = <&buck2>;
-+};
-+
-+&ecspi1 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
-+	num-cs = <1>;
-+	pinctrl-0 = <&pinctrl_ecspi1 &pinctrl_ecspi1_cs>;
-+	pinctrl-names = "default";
-+};
-+
-+&eqos {
-+	phy-handle = <&ethphy0>;
-+	phy-mode = "rgmii-id";
-+	pinctrl-0 = <&pinctrl_eqos>;
-+	pinctrl-names = "default";
-+	snps,force_thresh_dma_mode;
-+	snps,mtl-rx-config = <&mtl_rx_setup>;
-+	snps,mtl-tx-config = <&mtl_tx_setup>;
-+	status = "okay";
-+
-+	mdio {
-+		compatible = "snps,dwmac-mdio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy0: ethernet-phy@1 {
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <1>;
-+			eee-broken-1000t;
-+			reset-assert-us = <35000>;
-+			reset-deassert-us = <75000>;
-+			reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
-+			realtek,clkout-disable;
-+		};
-+	};
-+
-+	mtl_rx_setup: rx-queues-config {
-+		snps,rx-queues-to-use = <5>;
-+		snps,rx-sched-sp;
-+
-+		queue0 {
-+			snps,dcb-algorithm;
-+			snps,map-to-dma-channel = <0>;
-+			snps,priority = <0x1>;
-+		};
-+
-+		queue1 {
-+			snps,dcb-algorithm;
-+			snps,map-to-dma-channel = <1>;
-+			snps,priority = <0x2>;
-+		};
-+
-+		queue2 {
-+			snps,dcb-algorithm;
-+			snps,map-to-dma-channel = <2>;
-+			snps,priority = <0x4>;
-+		};
-+
-+		queue3 {
-+			snps,dcb-algorithm;
-+			snps,map-to-dma-channel = <3>;
-+			snps,priority = <0x8>;
-+		};
-+
-+		queue4 {
-+			snps,dcb-algorithm;
-+			snps,map-to-dma-channel = <4>;
-+			snps,priority = <0xf0>;
-+		};
-+	};
-+
-+	mtl_tx_setup: tx-queues-config {
-+		snps,tx-queues-to-use = <5>;
-+
-+		queue0 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x1>;
-+		};
-+
-+		queue1 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x2>;
-+		};
-+
-+		queue2 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x4>;
-+		};
-+
-+		queue3 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x8>;
-+		};
-+
-+		queue4 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0xf0>;
-+		};
-+	};
-+};
-+
-+&flexcan1 {
-+	pinctrl-0 = <&pinctrl_flexcan1>;
-+	pinctrl-names = "default";
-+};
-+
-+&flexcan2 {
-+	pinctrl-0 = <&pinctrl_flexcan2>;
-+	pinctrl-names = "default";
-+};
-+
-+&i2c1 {
-+	clock-frequency = <100000>;
-+	pinctrl-0 = <&pinctrl_i2c1>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+
-+	pmic: pmic@25 {
-+		compatible = "nxp,pca9450c";
-+		reg = <0x25>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <3 GPIO_ACTIVE_LOW>;
-+		/* PMIC PCA9450 PMIC_nINT GPIO1_IO3 */
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_pmic>;
-+
-+		regulators {
-+			buck1: BUCK1 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-max-microvolt = <2187500>;
-+				regulator-min-microvolt = <600000>;
-+				regulator-name = "BUCK1";
-+				regulator-ramp-delay = <3125>;
-+			};
-+
-+			buck2: BUCK2 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-max-microvolt = <2187500>;
-+				regulator-min-microvolt = <600000>;
-+				regulator-name = "BUCK2";
-+				regulator-ramp-delay = <3125>;
-+				nxp,dvs-run-voltage = <950000>;
-+				nxp,dvs-standby-voltage = <850000>;
-+			};
-+
-+			buck4: BUCK4 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-max-microvolt = <3400000>;
-+				regulator-min-microvolt = <600000>;
-+				regulator-name = "BUCK4";
-+			};
-+
-+			buck5: BUCK5 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-max-microvolt = <3400000>;
-+				regulator-min-microvolt = <600000>;
-+				regulator-name = "BUCK5";
-+			};
-+
-+			buck6: BUCK6 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-max-microvolt = <3400000>;
-+				regulator-min-microvolt = <600000>;
-+				regulator-name = "BUCK6";
-+			};
-+
-+			ldo1: LDO1 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-min-microvolt = <1600000>;
-+				regulator-name = "LDO1";
-+			};
-+
-+			ldo2: LDO2 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-max-microvolt = <1150000>;
-+				regulator-min-microvolt = <800000>;
-+				regulator-name = "LDO2";
-+			};
-+
-+			ldo3: LDO3 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-min-microvolt = <800000>;
-+				regulator-name = "LDO3";
-+			};
-+
-+			ldo4: LDO4 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-min-microvolt = <800000>;
-+				regulator-name = "LDO4";
-+			};
-+
-+			ldo5: LDO5 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-min-microvolt = <1800000>;
-+				regulator-name = "LDO5";
-+			};
-+		};
-+	};
-+};
-+
-+&i2c2 {
-+	/* I2C_B on EDMG */
-+	clock-frequency = <400000>;
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	pinctrl-names = "default";
-+};
-+
-+&i2c3 {
-+	clock-frequency = <100000>;
-+	pinctrl-0 = <&pinctrl_i2c3>;
-+	pinctrl-names = "default";
-+};
-+
-+&i2c4 {
-+	/* I2C_A on EDMG */
-+	clock-frequency = <100000>;
-+	pinctrl-0 = <&pinctrl_i2c4>;
-+	pinctrl-names = "default";
-+};
-+
-+&i2c5 {
-+	/* I2C_C on EDMG */
-+	clock-frequency = <400000>;
-+	pinctrl-0 = <&pinctrl_i2c5>;
-+	pinctrl-names = "default";
-+};
-+
-+&pcie {
-+	pinctrl-0 = <&pinctrl_pcie>;
-+	pinctrl-names = "default";
-+	reset-gpio = <&gpio1 1 GPIO_ACTIVE_LOW>;
-+};
-+
-+&pwm1 {
-+	pinctrl-0 = <&pinctrl_pwm1>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
-+&pwm2 {
-+	pinctrl-0 = <&pinctrl_pwm2>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
-+&pwm3 {
-+	pinctrl-0 = <&pinctrl_pwm3>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
-+&pwm4 {
-+	pinctrl-0 = <&pinctrl_pwm4>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
-+&sai2 {
-+	/* AUD_B on EDMG */
-+	assigned-clocks = <&clk IMX8MP_CLK_SAI2>;
-+	assigned-clock-rates = <12288000>;
-+	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL1_OUT>;
-+	pinctrl-0 = <&pinctrl_sai2>;
-+	pinctrl-names = "default";
-+	fsl,sai-mclk-direction-output;
-+	status = "okay";
-+};
-+
-+&sai3 {
-+	/* AUD_A on EDMG */
-+	assigned-clocks = <&clk IMX8MP_CLK_SAI3>;
-+	assigned-clock-rates = <12288000>;
-+	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL1_OUT>;
-+	pinctrl-0 = <&pinctrl_sai3>;
-+	pinctrl-names = "default";
-+	fsl,sai-mclk-direction-output;
-+	status = "okay";
-+};
-+
-+&uart1 {
-+	/* BT */
-+	assigned-clocks = <&clk IMX8MP_CLK_UART1>;
-+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	pinctrl-names = "default";
-+	uart-has-rtscts;
-+	status = "okay";
-+};
-+
-+&uart2 {
-+	/* UART_A on EDMG, console */
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
-+&uart3 {
-+	/* UART_C on EDMG */
-+	assigned-clocks = <&clk IMX8MP_CLK_UART3>;
-+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
-+	pinctrl-0 = <&pinctrl_uart3>;
-+	pinctrl-names = "default";
-+	uart-has-rtscts;
-+	status = "okay";
-+};
-+
-+&uart4 {
-+	/* UART_B on EDMG */
-+	assigned-clocks = <&clk IMX8MP_CLK_UART4>;
-+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
-+	pinctrl-0 = <&pinctrl_uart4>;
-+	pinctrl-names = "default";
-+	uart-has-rtscts;
-+	status = "okay";
-+};
-+
-+&usdhc1 {
-+	/* WIFI SDIO */
-+	assigned-clocks = <&clk IMX8MP_CLK_USDHC1>;
-+	assigned-clock-rates = <200000000>;
-+	bus-width = <4>;
-+	keep-power-in-suspend;
-+	non-removable;
-+	pinctrl-0 = <&pinctrl_usdhc1>;
-+	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	vmmc-supply = <&wl_reg_on>;
-+	status = "okay";
-+};
-+
-+&usdhc2 {
-+	/* SD card on baseboard */
-+	assigned-clocks = <&clk IMX8MP_CLK_USDHC2>;
-+	assigned-clock-rates = <400000000>;
-+	bus-width = <4>;
-+	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	vmmc-supply = <&reg_usdhc2_vmmc>;
-+	status = "okay";
-+};
-+
-+&usdhc3 {
-+	/* eMMC on SOM */
-+	assigned-clocks = <&clk IMX8MP_CLK_USDHC3>;
-+	assigned-clock-rates = <400000000>;
-+	bus-width = <8>;
-+	non-removable;
-+	pinctrl-0 = <&pinctrl_usdhc3>;
-+	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	status = "okay";
-+};
-+
-+&wdog1 {
-+	pinctrl-0 = <&pinctrl_wdog>;
-+	pinctrl-names = "default";
-+	fsl,ext-reset-output;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl-0 = <&pinctrl_hog>;
-+	pinctrl-names = "default";
-+
-+	pinctrl_bt_ctrl: bt-ctrlgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO05__GPIO1_IO05	0x41 /* BT_REG_ON */
-+			MX8MP_IOMUXC_SAI1_TXD7__GPIO4_IO19	0x41 /* BT_WAKE_HOST */
-+		>;
-+	};
-+
-+	pinctrl_ecspi1_cs: ecspi1csgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09	0x40000
-+		>;
-+	};
-+
-+	pinctrl_ecspi1: ecspi1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ECSPI1_SCLK__ECSPI1_SCLK	0x82
-+			MX8MP_IOMUXC_ECSPI1_MOSI__ECSPI1_MOSI	0x82
-+			MX8MP_IOMUXC_ECSPI1_MISO__ECSPI1_MISO	0x82
-+		>;
-+	};
-+
-+	pinctrl_eqos: eqosgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC			0x3
-+			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO			0x23
-+			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0		0x91
-+			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1		0x91
-+			MX8MP_IOMUXC_ENET_RD2__ENET_QOS_RGMII_RD2		0x91
-+			MX8MP_IOMUXC_ENET_RD3__ENET_QOS_RGMII_RD3		0x91
-+			MX8MP_IOMUXC_ENET_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x91
-+			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL		0x91
-+			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0		0x1f
-+			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1		0x1f
-+			MX8MP_IOMUXC_ENET_TD2__ENET_QOS_RGMII_TD2		0x1f
-+			MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3		0x1f
-+			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL		0x1f
-+			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x1f
-+			MX8MP_IOMUXC_GPIO1_IO09__GPIO1_IO09			0x19
-+			MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12			0x19
-+		>;
-+	};
-+
-+	pinctrl_flexcan1: flexcan1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI5_RXD2__CAN1_RX		0x154
-+			MX8MP_IOMUXC_SAI5_RXD1__CAN1_TX		0x154
-+		>;
-+	};
-+
-+	pinctrl_flexcan2: flexcan2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI5_MCLK__CAN2_RX		0x154
-+			MX8MP_IOMUXC_SAI5_RXD3__CAN2_TX		0x154
-+		>;
-+	};
-+
-+	pinctrl_hog: hoggrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD	0x40000019
-+		>;
-+	};
-+
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL		0x400001a3
-+			MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA		0x400001a3
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL		0x400001a3
-+			MX8MP_IOMUXC_I2C2_SDA__I2C2_SDA		0x400001a3
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL		0x400001c3
-+			MX8MP_IOMUXC_I2C3_SDA__I2C3_SDA		0x400001c3
-+		>;
-+	};
-+
-+	pinctrl_i2c4: i2c4grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C4_SCL__I2C4_SCL		0x400001c3
-+			MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA		0x400001c3
-+		>;
-+	};
-+
-+	pinctrl_i2c5: i2c5grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SPDIF_TX__I2C5_SCL		0x400001a3
-+			MX8MP_IOMUXC_SPDIF_RX__I2C5_SDA		0x400001a3
-+		>;
-+	};
-+
-+	pinctrl_i2c_brd_conf: i2cbrdconfgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI3_RXFS__GPIO4_IO28	0x1c3 /* BRD_CONF_SCL, bitbang */
-+			MX8MP_IOMUXC_SAI3_RXC__GPIO4_IO29	0x1c3 /* BRD_CONF_SDA, bitbang */
-+		>;
-+	};
-+
-+	pinctrl_pcie: pciegrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO13__GPIO1_IO13	0x41 /* PCIE CLKREQ */
-+			MX8MP_IOMUXC_SAI2_RXFS__GPIO4_IO21	0x41 /* PCIE WAKE */
-+			MX8MP_IOMUXC_GPIO1_IO01__GPIO1_IO01	0x41 /* PCIE RST */
-+		>;
-+	};
-+
-+	pinctrl_pmic: pmicirqgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03	0x41
-+		>;
-+	};
-+
-+	pinctrl_pwm1: pwm1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SPDIF_EXT_CLK__PWM1_OUT	0x116
-+		>;
-+	};
-+
-+	pinctrl_pwm2: pwm2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI5_RXD0__PWM2_OUT	0x116
-+		>;
-+	};
-+
-+	pinctrl_pwm3: pwm3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI5_RXC__PWM3_OUT		0x116
-+		>;
-+	};
-+
-+	pinctrl_pwm4: pwm4grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI5_RXFS__PWM4_OUT	0x116
-+		>;
-+	};
-+
-+	pinctrl_sai2: sai2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI2_MCLK__AUDIOMIX_SAI2_MCLK	0xd6
-+			MX8MP_IOMUXC_SAI2_TXFS__AUDIOMIX_SAI2_TX_SYNC	0xd6
-+			MX8MP_IOMUXC_SAI2_TXC__AUDIOMIX_SAI2_TX_BCLK	0xd6
-+			MX8MP_IOMUXC_SAI2_RXD0__AUDIOMIX_SAI2_RX_DATA00	0xd6
-+			MX8MP_IOMUXC_SAI2_TXD0__AUDIOMIX_SAI2_TX_DATA00	0xd6
-+		>;
-+	};
-+
-+	pinctrl_sai3: sai3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI3_MCLK__AUDIOMIX_SAI3_MCLK	0xd6
-+			MX8MP_IOMUXC_SAI3_TXFS__AUDIOMIX_SAI3_TX_SYNC	0xd6
-+			MX8MP_IOMUXC_SAI3_TXC__AUDIOMIX_SAI3_TX_BCLK	0xd6
-+			MX8MP_IOMUXC_SAI3_RXD__AUDIOMIX_SAI3_RX_DATA00	0xd6
-+			MX8MP_IOMUXC_SAI3_TXD__AUDIOMIX_SAI3_TX_DATA00	0xd6
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART1_RXD__UART1_DCE_RX	0x140
-+			MX8MP_IOMUXC_UART1_TXD__UART1_DCE_TX	0x140
-+			MX8MP_IOMUXC_UART3_RXD__UART1_DCE_CTS	0x140
-+			MX8MP_IOMUXC_UART3_TXD__UART1_DCE_RTS	0x140
-+		>;
-+	};
-+
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX	0x140
-+			MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX	0x140
-+			MX8MP_IOMUXC_UART4_RXD__UART2_DCE_CTS	0x140
-+			MX8MP_IOMUXC_UART4_TXD__UART2_DCE_RTS	0x140
-+		>;
-+	};
-+
-+	pinctrl_uart3: uart3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_DATA7__UART3_DCE_RX	0x140
-+			MX8MP_IOMUXC_SD1_DATA6__UART3_DCE_TX	0x140
-+			MX8MP_IOMUXC_SD1_STROBE__UART3_DCE_CTS	0x140
-+			MX8MP_IOMUXC_SD1_RESET_B__UART3_DCE_RTS	0x140
-+		>;
-+	};
-+
-+	pinctrl_uart4: uart4grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ECSPI2_SCLK__UART4_DCE_RX	0x140
-+			MX8MP_IOMUXC_ECSPI2_MOSI__UART4_DCE_TX	0x140
-+			MX8MP_IOMUXC_ECSPI2_MISO__UART4_DCE_CTS	0x140
-+			MX8MP_IOMUXC_ECSPI2_SS0__UART4_DCE_RTS	0x140
-+		>;
-+	};
-+
-+	pinctrl_usdhc1: usdhc1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x190
-+			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d0
-+			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d0
-+			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d0
-+			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d0
-+			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d0
-+		>;
-+	};
-+
-+	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x194
-+			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d4
-+			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d4
-+			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d4
-+			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d4
-+			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d4
-+		>;
-+	};
-+
-+	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x196
-+			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d6
-+			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d6
-+			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d6
-+			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d6
-+			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d6
-+		>;
-+	};
-+
-+	pinctrl_usdhc2: usdhc2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK	0x190
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD	0x1d0
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d0
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d0
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d0
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d0
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT	0xc1
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK	0x194
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD	0x1d4
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d4
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d4
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d4
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d4
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT 0xc1
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK	0x196
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD	0x1d6
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d6
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d6
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d6
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d6
-+			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT 0xc1
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CD_B__GPIO2_IO12	0x1c4
-+			MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19	0x41
-+		>;
-+	};
-+
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK	0x190
-+			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD	0x1d0
-+			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0	0x1d0
-+			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1	0x1d0
-+			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2	0x1d0
-+			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3	0x1d0
-+			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4	0x1d0
-+			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5	0x1d0
-+			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6	0x1d0
-+			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7	0x1d0
-+			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE	0x190
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK	0x194
-+			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD	0x1d4
-+			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0	0x1d4
-+			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1	0x1d4
-+			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2	0x1d4
-+			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3	0x1d4
-+			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4	0x1d4
-+			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5	0x1d4
-+			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6	0x1d4
-+			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7	0x1d4
-+			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE	0x194
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK	0x196
-+			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD	0x1d6
-+			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0	0x1d6
-+			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1	0x1d6
-+			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2	0x1d6
-+			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3	0x1d6
-+			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4	0x1d6
-+			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5	0x1d6
-+			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6	0x1d6
-+			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7	0x1d6
-+			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE	0x196
-+		>;
-+	};
-+
-+	pinctrl_wdog: wdoggrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO02__WDOG1_WDOG_B	0xc6
-+		>;
-+	};
-+
-+	pinctrl_wifi_ctrl: wifi-ctrlgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO00__GPIO1_IO00	0x41 /* WL_REG_ON */
-+			MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18	0x41 /* WL_WAKE_HOST */
-+		>;
-+	};
-+};
+> >
+> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> >
+> > ---
+> > v2 changes:
+> > 1. Rename netc_timer_get_source_clk() to
+> >    netc_timer_get_reference_clk_source() and refactor it
+> > 2. Remove the scaled_ppm check in netc_timer_adjfine()
+> > 3. Add a comment in netc_timer_cur_time_read()
+> > 4. Add linux/bitfield.h to fix the build errors
+> > ---
+> >  drivers/ptp/Kconfig             |  11 +
+> >  drivers/ptp/Makefile            |   1 +
+> >  drivers/ptp/ptp_netc.c          | 568
+> ++++++++++++++++++++++++++++++++
+> >  include/linux/fsl/netc_global.h |  12 +-
+> >  4 files changed, 591 insertions(+), 1 deletion(-)
+> >  create mode 100644 drivers/ptp/ptp_netc.c
+> >
+> > diff --git a/drivers/ptp/Kconfig b/drivers/ptp/Kconfig
+> > index 204278eb215e..3e005b992aef 100644
+> > --- a/drivers/ptp/Kconfig
+> > +++ b/drivers/ptp/Kconfig
+> > @@ -252,4 +252,15 @@ config PTP_S390
+> >  	  driver provides the raw clock value without the delta to
+> >  	  userspace. That way userspace programs like chrony could steer
+> >  	  the kernel clock.
+> > +
+> > +config PTP_1588_CLOCK_NETC
+> > +	bool "NXP NETC Timer PTP Driver"
+> > +	depends on PTP_1588_CLOCK=3Dy
+> > +	depends on PCI_MSI
+> > +	help
+> > +	  This driver adds support for using the NXP NETC Timer as a PTP
+> > +	  clock. This clock is used by ENETC MAC or NETC Switch for PTP
+> > +	  synchronization. It also supports periodic output signal (e.g.
+> > +	  PPS) and external trigger timestamping.
+> > +
+> >  endmenu
+> > diff --git a/drivers/ptp/Makefile b/drivers/ptp/Makefile
+> > index 25f846fe48c9..d48fe4009fa4 100644
+> > --- a/drivers/ptp/Makefile
+> > +++ b/drivers/ptp/Makefile
+> > @@ -23,3 +23,4 @@ obj-$(CONFIG_PTP_1588_CLOCK_VMW)	+=3D ptp_vmw.o
+> >  obj-$(CONFIG_PTP_1588_CLOCK_OCP)	+=3D ptp_ocp.o
+> >  obj-$(CONFIG_PTP_DFL_TOD)		+=3D ptp_dfl_tod.o
+> >  obj-$(CONFIG_PTP_S390)			+=3D ptp_s390.o
+> > +obj-$(CONFIG_PTP_1588_CLOCK_NETC)	+=3D ptp_netc.o
+> > diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
+> > new file mode 100644
+> > index 000000000000..82cb1e6a0fe9
+> > --- /dev/null
+> > +++ b/drivers/ptp/ptp_netc.c
+> > @@ -0,0 +1,568 @@
+> > +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+> > +/*
+> > + * NXP NETC Timer driver
+> > + * Copyright 2025 NXP
+> > + */
+> > +
+> > +#include <linux/bitfield.h>
+> > +#include <linux/clk.h>
+> > +#include <linux/fsl/netc_global.h>
+> > +#include <linux/module.h>
+> > +#include <linux/of.h>
+> > +#include <linux/of_platform.h>
+> > +#include <linux/ptp_clock_kernel.h>
+> > +
+> > +#define NETC_TMR_PCI_VENDOR		0x1131
+> > +#define NETC_TMR_PCI_DEVID		0xee02
+> > +
+> > +#define NETC_TMR_CTRL			0x0080
+> > +#define  TMR_CTRL_CK_SEL		GENMASK(1, 0)
+> > +#define  TMR_CTRL_TE			BIT(2)
+> > +#define  TMR_COMP_MODE			BIT(15)
+> > +#define  TMR_CTRL_TCLK_PERIOD		GENMASK(25, 16)
+> > +#define  TMR_CTRL_FS			BIT(28)
+> > +#define  TMR_ALARM1P			BIT(31)
+> > +
+> > +#define NETC_TMR_TEVENT			0x0084
+> > +#define  TMR_TEVENT_ALM1EN		BIT(16)
+> > +#define  TMR_TEVENT_ALM2EN		BIT(17)
+> > +
+> > +#define NETC_TMR_TEMASK			0x0088
+> > +#define NETC_TMR_CNT_L			0x0098
+> > +#define NETC_TMR_CNT_H			0x009c
+> > +#define NETC_TMR_ADD			0x00a0
+> > +#define NETC_TMR_PRSC			0x00a8
+> > +#define NETC_TMR_OFF_L			0x00b0
+> > +#define NETC_TMR_OFF_H			0x00b4
+> > +
+> > +/* i =3D 0, 1, i indicates the index of TMR_ALARM */
+> > +#define NETC_TMR_ALARM_L(i)		(0x00b8 + (i) * 8)
+> > +#define NETC_TMR_ALARM_H(i)		(0x00bc + (i) * 8)
+> > +
+> > +#define NETC_TMR_FIPER_CTRL		0x00dc
+> > +#define  FIPER_CTRL_DIS(i)		(BIT(7) << (i) * 8)
+> > +#define  FIPER_CTRL_PG(i)		(BIT(6) << (i) * 8)
+> > +
+> > +#define NETC_TMR_CUR_TIME_L		0x00f0
+> > +#define NETC_TMR_CUR_TIME_H		0x00f4
+> > +
+> > +#define NETC_TMR_REGS_BAR		0
+> > +
+> > +#define NETC_TMR_FIPER_NUM		3
+> > +#define NETC_TMR_DEFAULT_PRSC		2
+> > +#define NETC_TMR_DEFAULT_ALARM		GENMASK_ULL(63, 0)
+> > +
+> > +/* 1588 timer reference clock source select */
+> > +#define NETC_TMR_CCM_TIMER1		0 /* enet_timer1_clk_root, from
+> CCM */
+> > +#define NETC_TMR_SYSTEM_CLK		1 /* enet_clk_root/2, from CCM */
+> > +#define NETC_TMR_EXT_OSC		2 /* tmr_1588_clk, from IO pins */
+> > +
+> > +#define NETC_TMR_SYSCLK_333M		333333333U
+> > +
+> > +struct netc_timer {
+> > +	void __iomem *base;
+> > +	struct pci_dev *pdev;
+> > +	spinlock_t lock; /* Prevent concurrent access to registers */
+> > +
+> > +	struct clk *src_clk;
+> > +	struct ptp_clock *clock;
+> > +	struct ptp_clock_info caps;
+> > +	int phc_index;
+> > +	u32 clk_select;
+> > +	u32 clk_freq;
+> > +	u32 oclk_prsc;
+> > +	/* High 32-bit is integer part, low 32-bit is fractional part */
+> > +	u64 period;
+> > +
+> > +	int irq;
+> > +};
+> > +
+> > +#define netc_timer_rd(p, o)		netc_read((p)->base + (o))
+> > +#define netc_timer_wr(p, o, v)		netc_write((p)->base + (o), v)
+> > +#define ptp_to_netc_timer(ptp)		container_of((ptp), struct
+> netc_timer, caps)
+> > +
+> > +static u64 netc_timer_cnt_read(struct netc_timer *priv)
+> > +{
+> > +	u32 tmr_cnt_l, tmr_cnt_h;
+> > +	u64 ns;
+> > +
+> > +	/* The user must read the TMR_CNC_L register first to get
+> > +	 * correct 64-bit TMR_CNT_H/L counter values.
+> > +	 */
+> > +	tmr_cnt_l =3D netc_timer_rd(priv, NETC_TMR_CNT_L);
+> > +	tmr_cnt_h =3D netc_timer_rd(priv, NETC_TMR_CNT_H);
+> > +	ns =3D (((u64)tmr_cnt_h) << 32) | tmr_cnt_l;
+> > +
+> > +	return ns;
+> > +}
+> > +
+> > +static void netc_timer_cnt_write(struct netc_timer *priv, u64 ns)
+> > +{
+> > +	u32 tmr_cnt_h =3D upper_32_bits(ns);
+> > +	u32 tmr_cnt_l =3D lower_32_bits(ns);
+> > +
+> > +	/* The user must write to TMR_CNT_L register first. */
+> > +	netc_timer_wr(priv, NETC_TMR_CNT_L, tmr_cnt_l);
+> > +	netc_timer_wr(priv, NETC_TMR_CNT_H, tmr_cnt_h);
+> > +}
+> > +
+> > +static u64 netc_timer_offset_read(struct netc_timer *priv)
+> > +{
+> > +	u32 tmr_off_l, tmr_off_h;
+> > +	u64 offset;
+> > +
+> > +	tmr_off_l =3D netc_timer_rd(priv, NETC_TMR_OFF_L);
+> > +	tmr_off_h =3D netc_timer_rd(priv, NETC_TMR_OFF_H);
+> > +	offset =3D (((u64)tmr_off_h) << 32) | tmr_off_l;
+> > +
+> > +	return offset;
+> > +}
+> > +
+> > +static void netc_timer_offset_write(struct netc_timer *priv, u64 offse=
+t)
+> > +{
+> > +	u32 tmr_off_h =3D upper_32_bits(offset);
+> > +	u32 tmr_off_l =3D lower_32_bits(offset);
+> > +
+> > +	netc_timer_wr(priv, NETC_TMR_OFF_L, tmr_off_l);
+> > +	netc_timer_wr(priv, NETC_TMR_OFF_H, tmr_off_h);
+> > +}
+> > +
+> > +static u64 netc_timer_cur_time_read(struct netc_timer *priv)
+> > +{
+> > +	u32 time_h, time_l;
+> > +	u64 ns;
+> > +
+> > +	/* The user should read NETC_TMR_CUR_TIME_L first to
+> > +	 * get correct current time.
+> > +	 */
+> > +	time_l =3D netc_timer_rd(priv, NETC_TMR_CUR_TIME_L);
+> > +	time_h =3D netc_timer_rd(priv, NETC_TMR_CUR_TIME_H);
+> > +	ns =3D (u64)time_h << 32 | time_l;
+> > +
+> > +	return ns;
+> > +}
+> > +
+> > +static void netc_timer_alarm_write(struct netc_timer *priv,
+> > +				   u64 alarm, int index)
+> > +{
+> > +	u32 alarm_h =3D upper_32_bits(alarm);
+> > +	u32 alarm_l =3D lower_32_bits(alarm);
+> > +
+> > +	netc_timer_wr(priv, NETC_TMR_ALARM_L(index), alarm_l);
+> > +	netc_timer_wr(priv, NETC_TMR_ALARM_H(index), alarm_h);
+> > +}
+> > +
+> > +static void netc_timer_adjust_period(struct netc_timer *priv, u64 peri=
+od)
+> > +{
+> > +	u32 fractional_period =3D lower_32_bits(period);
+> > +	u32 integral_period =3D upper_32_bits(period);
+> > +	u32 tmr_ctrl, old_tmr_ctrl;
+> > +	unsigned long flags;
+> > +
+> > +	spin_lock_irqsave(&priv->lock, flags);
+> > +
+> > +	old_tmr_ctrl =3D netc_timer_rd(priv, NETC_TMR_CTRL);
+> > +	tmr_ctrl =3D u32_replace_bits(old_tmr_ctrl, integral_period,
+> > +				    TMR_CTRL_TCLK_PERIOD);
+> > +	if (tmr_ctrl !=3D old_tmr_ctrl)
+> > +		netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
+> > +
+> > +	netc_timer_wr(priv, NETC_TMR_ADD, fractional_period);
+> > +
+> > +	spin_unlock_irqrestore(&priv->lock, flags);
+> > +}
+> > +
+> > +static int netc_timer_adjfine(struct ptp_clock_info *ptp, long scaled_=
+ppm)
+> > +{
+> > +	struct netc_timer *priv =3D ptp_to_netc_timer(ptp);
+> > +	u64 new_period;
+> > +
+> > +	new_period =3D adjust_by_scaled_ppm(priv->period, scaled_ppm);
+> > +	netc_timer_adjust_period(priv, new_period);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int netc_timer_adjtime(struct ptp_clock_info *ptp, s64 delta)
+> > +{
+> > +	struct netc_timer *priv =3D ptp_to_netc_timer(ptp);
+> > +	u64 tmr_cnt, tmr_off;
+> > +	unsigned long flags;
+> > +
+> > +	spin_lock_irqsave(&priv->lock, flags);
+> > +
+> > +	tmr_off =3D netc_timer_offset_read(priv);
+> > +	if (delta < 0 && tmr_off < abs(delta)) {
+>=20
+> You go to great lengths to avoid letting TMROFF become negative, but is
+> there any problem if you just let it do so, and delete the imprecise
+> "TMR_CNT +=3D delta" code path altogether? An addition with the two's
+> complement of a number is the same as a subtraction.
 
--- 
-2.43.0
+Because the RM does not specify that the TMROFF register is signed, I
+thought it was unsigned at the time, so I came up with this logic. I should
+do an experiment to prove whether it is signed. Thank you for your reminder=
+.
+I think I can do this experiment now. If it is signed, I will improve this =
+logic.
 
+>=20
+> Let's say delta=3D-10, and the current TMROFF value is 5.
+> Your condition deviates the adjustment through the imprecise method,
+> but if we write TMROFF =3D -5 =3D 0xffffffff_fffffffb, we should get the
+> correct result, no?
+>=20
+> I thought about this a number of ways, and they all seem to be fine.
+> Like, the worst thing that can happen is a TMROFF value which became
+> negative by accident, due to too many netc_timer_adjtime() values with a
+> large (but positive) delta.
+>=20
+> But even that should be fine, because an overflow on TMROFF is
+> indistinguishable from an overflow on TMR_CNT.
+>=20
+> Anyway, _this_ is the time of logic which could really use a comment to
+> explain the intention behind it.
+
+Yeah, I will add a comment.
+
+>=20
+> > +		delta +=3D tmr_off;
+> > +		if (!tmr_off)
+> > +			netc_timer_offset_write(priv, 0);
+> > +
+> > +		tmr_cnt =3D netc_timer_cnt_read(priv);
+> > +		tmr_cnt +=3D delta;
+> > +		netc_timer_cnt_write(priv, tmr_cnt);
+> > +	} else {
+> > +		tmr_off +=3D delta;
+> > +		netc_timer_offset_write(priv, tmr_off);
+> > +	}
+> > +
+> > +	spin_unlock_irqrestore(&priv->lock, flags);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int netc_timer_gettimex64(struct ptp_clock_info *ptp,
+> > +				 struct timespec64 *ts,
+> > +				 struct ptp_system_timestamp *sts)
+> > +{
+> > +	struct netc_timer *priv =3D ptp_to_netc_timer(ptp);
+> > +	unsigned long flags;
+> > +	u64 ns;
+> > +
+> > +	spin_lock_irqsave(&priv->lock, flags);
+> > +
+> > +	ptp_read_system_prets(sts);
+> > +	ns =3D netc_timer_cur_time_read(priv);
+> > +	ptp_read_system_postts(sts);
+> > +
+> > +	spin_unlock_irqrestore(&priv->lock, flags);
+> > +
+> > +	*ts =3D ns_to_timespec64(ns);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int netc_timer_settime64(struct ptp_clock_info *ptp,
+> > +				const struct timespec64 *ts)
+> > +{
+> > +	struct netc_timer *priv =3D ptp_to_netc_timer(ptp);
+> > +	u64 ns =3D timespec64_to_ns(ts);
+> > +	unsigned long flags;
+> > +
+> > +	spin_lock_irqsave(&priv->lock, flags);
+> > +	netc_timer_offset_write(priv, 0);
+> > +	netc_timer_cnt_write(priv, ns);
+> > +	spin_unlock_irqrestore(&priv->lock, flags);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +int netc_timer_get_phc_index(struct pci_dev *timer_pdev)
+> > +{
+> > +	struct netc_timer *priv;
+> > +
+> > +	if (!timer_pdev)
+> > +		return -ENODEV;
+> > +
+> > +	priv =3D pci_get_drvdata(timer_pdev);
+> > +	if (!priv)
+> > +		return -EINVAL;
+> > +
+> > +	return priv->phc_index;
+> > +}
+> > +EXPORT_SYMBOL_GPL(netc_timer_get_phc_index);
+> > +
+> > +static const struct ptp_clock_info netc_timer_ptp_caps =3D {
+> > +	.owner		=3D THIS_MODULE,
+> > +	.name		=3D "NETC Timer PTP clock",
+> > +	.max_adj	=3D 500000000,
+> > +	.n_alarm	=3D 2,
+>=20
+> Is n_alarm functionally hooked with anything in the PTP core, other than
+> the "n_alarms" read-only sysfs? I didn't see anything.
+>=20
+> > +	.n_pins		=3D 0,
+> > +	.adjfine	=3D netc_timer_adjfine,
+> > +	.adjtime	=3D netc_timer_adjtime,
+> > +	.gettimex64	=3D netc_timer_gettimex64,
+> > +	.settime64	=3D netc_timer_settime64,
+> > +};
+> > +
+> > +static void netc_timer_init(struct netc_timer *priv)
+> > +{
+> > +	u32 tmr_emask =3D TMR_TEVENT_ALM1EN | TMR_TEVENT_ALM2EN;
+> > +	u32 fractional_period =3D lower_32_bits(priv->period);
+> > +	u32 integral_period =3D upper_32_bits(priv->period);
+> > +	u32 tmr_ctrl, fiper_ctrl;
+> > +	struct timespec64 now;
+> > +	u64 ns;
+> > +	int i;
+> > +
+> > +	/* Software must enable timer first and the clock selected must be
+> > +	 * active, otherwise, the registers which are in the timer clock
+> > +	 * domain are not accessible.
+> > +	 */
+> > +	tmr_ctrl =3D (priv->clk_select & TMR_CTRL_CK_SEL) | TMR_CTRL_TE;
+>=20
+> Candidate for FIELD_PREP()?
+>=20
+> > +	netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
+> > +	netc_timer_wr(priv, NETC_TMR_PRSC, priv->oclk_prsc);
+> > +
+> > +	/* Disable FIPER by default */
+> > +	fiper_ctrl =3D netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> > +	for (i =3D 0; i < NETC_TMR_FIPER_NUM; i++) {
+> > +		fiper_ctrl |=3D FIPER_CTRL_DIS(i);
+> > +		fiper_ctrl &=3D ~FIPER_CTRL_PG(i);
+> > +	}
+> > +	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
+> > +
+> > +	ktime_get_real_ts64(&now);
+> > +	ns =3D timespec64_to_ns(&now);
+> > +	netc_timer_cnt_write(priv, ns);
+> > +
+> > +	/* Allow atomic writes to TCLK_PERIOD and TMR_ADD, An update to
+> > +	 * TCLK_PERIOD does not take effect until TMR_ADD is written.
+> > +	 */
+> > +	tmr_ctrl |=3D ((integral_period << 16) & TMR_CTRL_TCLK_PERIOD) |
+>=20
+> Candidate for FIELD_PREP()?
+>=20
+> > +		     TMR_COMP_MODE | TMR_CTRL_FS;
+> > +	netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
+> > +	netc_timer_wr(priv, NETC_TMR_ADD, fractional_period);
+> > +	netc_timer_wr(priv, NETC_TMR_TEMASK, tmr_emask);
+> > +}
+> > +
+> > +static int netc_timer_pci_probe(struct pci_dev *pdev)
+> > +{
+> > +	struct device *dev =3D &pdev->dev;
+> > +	struct netc_timer *priv;
+> > +	int err, len;
+> > +
+> > +	pcie_flr(pdev);
+> > +	err =3D pci_enable_device_mem(pdev);
+> > +	if (err)
+> > +		return dev_err_probe(dev, err, "Failed to enable device\n");
+> > +
+> > +	err =3D dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
+> > +	if (err) {
+> > +		dev_err(dev, "dma_set_mask_and_coherent() failed, err:%pe\n",
+> > +			ERR_PTR(err));
+> > +		goto disable_dev;
+> > +	}
+> > +
+> > +	err =3D pci_request_mem_regions(pdev, KBUILD_MODNAME);
+> > +	if (err) {
+> > +		dev_err(dev, "pci_request_regions() failed, err:%pe\n",
+> > +			ERR_PTR(err));
+> > +		goto disable_dev;
+> > +	}
+> > +
+> > +	pci_set_master(pdev);
+> > +	priv =3D kzalloc(sizeof(*priv), GFP_KERNEL);
+> > +	if (!priv) {
+> > +		err =3D -ENOMEM;
+> > +		goto release_mem_regions;
+> > +	}
+> > +
+> > +	priv->pdev =3D pdev;
+> > +	len =3D pci_resource_len(pdev, NETC_TMR_REGS_BAR);
+> > +	priv->base =3D ioremap(pci_resource_start(pdev, NETC_TMR_REGS_BAR),
+> len);
+> > +	if (!priv->base) {
+> > +		err =3D -ENXIO;
+> > +		dev_err(dev, "ioremap() failed\n");
+> > +		goto free_priv;
+> > +	}
+> > +
+> > +	pci_set_drvdata(pdev, priv);
+> > +
+> > +	return 0;
+> > +
+> > +free_priv:
+> > +	kfree(priv);
+> > +release_mem_regions:
+> > +	pci_release_mem_regions(pdev);
+> > +disable_dev:
+> > +	pci_disable_device(pdev);
+> > +
+> > +	return err;
+> > +}
+> > +
+> > +static void netc_timer_pci_remove(struct pci_dev *pdev)
+> > +{
+> > +	struct netc_timer *priv =3D pci_get_drvdata(pdev);
+> > +
+> > +	iounmap(priv->base);
+> > +	kfree(priv);
+> > +	pci_release_mem_regions(pdev);
+> > +	pci_disable_device(pdev);
+> > +}
+> > +
+> > +static int netc_timer_get_reference_clk_source(struct netc_timer *priv=
+)
+> > +{
+> > +	struct device *dev =3D &priv->pdev->dev;
+> > +	struct device_node *np =3D dev->of_node;
+> > +	const char *clk_name =3D NULL;
+> > +	u64 ns =3D NSEC_PER_SEC;
+>=20
+> Nitpick: It's strange to keep a constant in a variable.
+>=20
+> > +
+> > +	/* Select NETC system clock as the reference clock by default */
+> > +	priv->clk_select =3D NETC_TMR_SYSTEM_CLK;
+> > +	priv->clk_freq =3D NETC_TMR_SYSCLK_333M;
+> > +	priv->period =3D div_u64(ns << 32, priv->clk_freq);
+>=20
+> When reviewing, I found "NSEC_PER_SEC << 32" deeply confusing, since it
+> has no physical meaning, and I was left wondering "Why is priv->period
+> equal to 4294967296 ns divided by the clock frequency?".
+>=20
+> It would be helpful if you added a comment explaining that in order to
+> store the period in the desired 32-bit fixed-point format, you can
+> multiply the numerator of the fraction by 2^32.
+>=20
+
+Okay, I will add a comment
+
+> > +
+> > +	if (!np)
+> > +		return 0;
+> > +
+> > +	of_property_read_string(np, "clock-names", &clk_name);
+> > +	if (!clk_name)
+> > +		return 0;
+> > +
+> > +	/* Update the clock source of the reference clock if the clock
+> > +	 * name is specified in DTS node.
+> > +	 */
+> > +	if (!strcmp(clk_name, "system"))
+> > +		priv->clk_select =3D NETC_TMR_SYSTEM_CLK;
+> > +	else if (!strcmp(clk_name, "ccm_timer"))
+> > +		priv->clk_select =3D NETC_TMR_CCM_TIMER1;
+> > +	else if (!strcmp(clk_name, "ext_1588"))
+> > +		priv->clk_select =3D NETC_TMR_EXT_OSC;
+> > +	else
+> > +		return -EINVAL;
+> > +
+> > +	priv->src_clk =3D devm_clk_get(dev, clk_name);
+> > +	if (IS_ERR(priv->src_clk)) {
+> > +		dev_err(dev, "Failed to get reference clock source\n");
+>=20
+> Can this return -EPROBE_DEFER? Should you use dev_err_probe() instead,
+> to suppress error messages in that case?
+>=20
+> > +		return PTR_ERR(priv->src_clk);
+> > +	}
+> > +
+> > +	priv->clk_freq =3D clk_get_rate(priv->src_clk);
+> > +	priv->period =3D div_u64(ns << 32, priv->clk_freq);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int netc_timer_parse_dt(struct netc_timer *priv)
+> > +{
+> > +	return netc_timer_get_reference_clk_source(priv);
+> > +}
+> > +
+> > +static irqreturn_t netc_timer_isr(int irq, void *data)
+> > +{
+> > +	struct netc_timer *priv =3D data;
+> > +	u32 tmr_event, tmr_emask;
+> > +	unsigned long flags;
+> > +
+> > +	spin_lock_irqsave(&priv->lock, flags);
+>=20
+> In hardirq context (this is not threaded) you don't need irqsave/irqresto=
+re.
+
+You are right, I will improve this
+
+>=20
+> > +
+> > +	tmr_event =3D netc_timer_rd(priv, NETC_TMR_TEVENT);
+> > +	tmr_emask =3D netc_timer_rd(priv, NETC_TMR_TEMASK);
+>=20
+> The value of the NETC_TMR_TEMASK register is a runtime invariant, does
+> it make sense to cache it in the driver, to avoid a register read per
+> interrupt?
+>=20
+> > +
+> > +	tmr_event &=3D tmr_emask;
+> > +	if (tmr_event & TMR_TEVENT_ALM1EN)
+> > +		netc_timer_alarm_write(priv, NETC_TMR_DEFAULT_ALARM, 0);
+> > +
+> > +	if (tmr_event & TMR_TEVENT_ALM2EN)
+> > +		netc_timer_alarm_write(priv, NETC_TMR_DEFAULT_ALARM, 1);
+>=20
+> Writing GENMASK_ULL(63, 0) has the effect of disabling the alarm, right?
+> What is the functional need to have this logic wired up at this stage?
+> Somebody needs to have armed the alarm in the first place, yet I see no
+> such code.
+
+Hmm, I am sorry, I will remove the alarm logic to PPS patch.
+>=20
+> > +
+> > +	/* Clear interrupts status */
+> > +	netc_timer_wr(priv, NETC_TMR_TEVENT, tmr_event);
+> > +
+> > +	spin_unlock_irqrestore(&priv->lock, flags);
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> > +static int netc_timer_probe(struct pci_dev *pdev,
+> > +			    const struct pci_device_id *id)
+> > +{
+> > +	struct device *dev =3D &pdev->dev;
+> > +	struct netc_timer *priv;
+> > +	int err;
+> > +
+> > +	err =3D netc_timer_pci_probe(pdev);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	priv =3D pci_get_drvdata(pdev);
+> > +	err =3D netc_timer_parse_dt(priv);
+> > +	if (err) {
+> > +		dev_err(dev, "Failed to parse DT node\n");
+> > +		goto timer_pci_remove;
+> > +	}
+> > +
+> > +	priv->caps =3D netc_timer_ptp_caps;
+> > +	priv->oclk_prsc =3D NETC_TMR_DEFAULT_PRSC;
+> > +	priv->phc_index =3D -1; /* initialize it as an invalid index */
+>=20
+> A better use of the comment space would be to explain why, not just to
+> add obvious and unhelpful subtitles to the code.
+>=20
+> When is the priv->phc_index value of -1 preserved (not overwritten with
+> the ptp_clock_index() result)? It seems to be when the driver fails to
+> probe.
+>=20
+> But in that case, doesn't device_unbind_cleanup() call "dev_set_drvdata(d=
+ev,
+> NULL);",
+> to prevent what would otherwise be a use-after-free?
+>=20
+
+My bad, this line is not reasonable, I will remove it.
+
+> > +	spin_lock_init(&priv->lock);
+> > +
+> > +	err =3D clk_prepare_enable(priv->src_clk);
+> > +	if (err) {
+> > +		dev_err(dev, "Failed to enable timer source clock\n");
+> > +		goto timer_pci_remove;
+> > +	}
+> > +
+> > +	err =3D netc_timer_init_msix_irq(priv);
+> > +	if (err)
+> > +		goto disable_clk;
+> > +
+> > +	netc_timer_init(priv);
+> > +	priv->clock =3D ptp_clock_register(&priv->caps, dev);
+> > +	if (IS_ERR(priv->clock)) {
+> > +		err =3D PTR_ERR(priv->clock);
+> > +		goto free_msix_irq;
+> > +	}
+> > +
+> > +	priv->phc_index =3D ptp_clock_index(priv->clock);
+> > +
+> > +	return 0;
+> > +
+> > +free_msix_irq:
+> > +	netc_timer_free_msix_irq(priv);
+> > +disable_clk:
+> > +	clk_disable_unprepare(priv->src_clk);
+> > +timer_pci_remove:
+> > +	netc_timer_pci_remove(pdev);
+> > +
+> > +	return err;
+> > +}
