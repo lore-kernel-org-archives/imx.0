@@ -1,60 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDEF221F29;
-	Wed, 23 Jul 2025 22:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5F6192B75
+	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 02:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753311219; cv=none; b=NwX8CT6W8flNqAEywP4Nvnzq80YhiZvB3lHHSftd/Ybv/RMuuuqmJja9jF2QONLub0Cvj9t+a4+/au0k+P8tQOtciqWInCvb8gHEDHBQyRl/Y670CTY5BzfNunYDiXiNx0kEaowAiAB3ETn8x66/sYUVYmevVeX9StkxGWXIr7o=
+	t=1753322423; cv=none; b=BDK8MMcQJsROla0tAso9qMoof9sOwmqLcs0C87Y6ARkKbYNvrXDBPXU2j0jlwh8yJmkeS0Ai8c/J7hSnlSuLL1k+BPEI/xjU8lNzyAeGhej8qBZmYo1MoyFeDmDp+iY7c1dsimkHkZJ+D7XNNmkiqNTgV016F6fKLfivpJA8DJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753311219; c=relaxed/simple;
-	bh=H9LloSRiugXBEdYC4N9Q/SYB3RgU55GOfsoctf+gWG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uPzV0Wi+xGPRl22+L5QRYgi954Bdmugg49CJ8L6yn8hC/PKazaun1uxf86lbPbA9D5F5hBcWGxNQpKVGaiyMxGSj9cFOmPdvQsTaityrih+lpG4jGJh73KnBeufP/4/6xK4HsNjZW0MCjvxTg4aWE/4U2Iw2I5rgMRGj96KWw8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tLz/eyru; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753322423; c=relaxed/simple;
+	bh=BpiBxoeu56d35+/JzOYrXKdHXbJJT/hxC16C6lp6gcA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=c8/wn9trpgTF+jGw3d0JfMdYKisQsq+YDEfk34uzE1+mnI8TFIkd1oeALKeqP6T8SQq32jWm9gTb4pBjG4v8ShoX4/tOTp43mDV0VQMFyaziOk2BhYWdBgQnv2QrzGYSv1nLQrnvhNYvh0KJyyPvff/DFEVJWtDVKFxujbrsowY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZpVLHS3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tLz/eyru"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16187C4CEE7;
-	Wed, 23 Jul 2025 22:53:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZpVLHS3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6749DC4CEE7;
+	Thu, 24 Jul 2025 02:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753311219;
-	bh=H9LloSRiugXBEdYC4N9Q/SYB3RgU55GOfsoctf+gWG0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tLz/eyrusc8ybCkp9nqH5av1ejQFs6TDjviXQSB+yuUmKzZdODC4fIAZVmQJ178f3
-	 jUaQfOl+vrWme/Y5kkaBY/q2Cch+UZqEDDYUWNONsEiSL72JC1bv1d7qbkpt8OQh8r
-	 +d48MaNHfA9bbD6bh7iyp/o+jqHzyrapnqt7jxGXCnOIrJ9g75PoR+5OG9XFm14p7k
-	 3M79NHeuqKkOIgbsa8BKPpwXOK+E8Ks+FLOlkrcvgyf4GWoWxmaRFm8l5UcVwBqBe2
-	 dSqCGDZow9m5QbmIYQONZMCDyn+Frc8wggvhsqE5o0+bWbm18XURlo3vzbglRjX1pi
-	 wv+BfLrm11kMg==
-Date: Thu, 24 Jul 2025 00:53:36 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Francesco Dolcini <francesco.dolcini@toradex.com>, 
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/2] i2c: lpi2c: implement master_xfer_atomic callback
-Message-ID: <aysffqj3gzcjwgdch37aghudi6bg7vqwtg6ot7dxl23riuiafa@6mwakofxbbhx>
-References: <20250718133429.67219-1-francesco@dolcini.it>
+	s=k20201202; t=1753322423;
+	bh=BpiBxoeu56d35+/JzOYrXKdHXbJJT/hxC16C6lp6gcA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=FZpVLHS3icbEQYbRG1+helDdBFX+wQpCFSiakNNIv0ThNYsWN8+wKwU2x1N3sV8Gv
+	 DXyX6qd9uvS9jbrnH0u1AgyvOaQft9DZtNjlPlsDXjoox7TvcPgZF/8wxi/eoD80UI
+	 pIvFlEM4HcIYFB8rWvVJbTSH6/DXIoGZ9E25Df4gXS0SPlyC1AGBcuDyjGXIo4nkX8
+	 X35iuPt2DKaZYuJFYaIKvTAJD2ICgAWE1rhevidTMwzKKjRKBODq2DoqE4ZEKRvMtb
+	 TxPoHsoPDEoXYaEYxkkgSrElK9ZWMvipIX7CN8ER7eNLHuBZQez7JQAhtnpZdBVBWh
+	 97HvXJttZJJ3w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD9E383BF4E;
+	Thu, 24 Jul 2025 02:00:42 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250718133429.67219-1-francesco@dolcini.it>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v12 00/12] Split netmem from struct page
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175332244124.1844642.1793292791852018522.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Jul 2025 02:00:41 +0000
+References: <20250721021835.63939-1-byungchul@sk.com>
+In-Reply-To: <20250721021835.63939-1-byungchul@sk.com>
+To: Byungchul Park <byungchul@sk.com>
+Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kernel_team@skhynix.com, almasrymina@google.com,
+ ilias.apalodimas@linaro.org, harry.yoo@oracle.com, akpm@linux-foundation.org,
+ andrew+netdev@lunn.ch, asml.silence@gmail.com, toke@redhat.com,
+ david@redhat.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, linux-rdma@vger.kernel.org,
+ bpf@vger.kernel.org, vishal.moola@gmail.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, jackmanb@google.com, wei.fang@nxp.com, shenwei.wang@nxp.com,
+ xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com, sgoutham@marvell.com, gakula@marvell.com,
+ sbhatta@marvell.com, hkelam@marvell.com, bbhushan2@marvell.com,
+ tariqt@nvidia.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+ leon@kernel.org, mbloch@nvidia.com, danishanwar@ti.com, rogerq@kernel.org,
+ nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+ shayne.chen@mediatek.com, sean.wang@mediatek.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, aleksander.lobakin@intel.com,
+ horms@kernel.org, m-malladi@ti.com, krzysztof.kozlowski@linaro.org,
+ matthias.schiffer@ew.tq-group.com, robh@kernel.org, imx@lists.linux.dev,
+ intel-wired-lan@lists.osuosl.org, linux-arm-kernel@lists.infradead.org,
+ linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
 
-Hi Francesco,
+Hello:
 
-On Fri, Jul 18, 2025 at 03:34:27PM +0200, Francesco Dolcini wrote:
-> Emanuele Ghidoli (2):
->   i2c: lpi2c: use readl_poll_timeout() for register polling
->   i2c: lpi2c: implement xfer_atomic callback
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-merged to i2c/i2c-host.
+On Mon, 21 Jul 2025 11:18:23 +0900 you wrote:
+> Hi all,
+> 
+> The MM subsystem is trying to reduce struct page to a single pointer.
+> See the following link for your information:
+> 
+>    https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
+> 
+> [...]
 
-Thanks,
-Andi
+Here is the summary with links:
+  - [net-next,v12,01/12] netmem: introduce struct netmem_desc mirroring struct page
+    https://git.kernel.org/netdev/net-next/c/f3d85c9ee510
+  - [net-next,v12,02/12] netmem: use netmem_desc instead of page to access ->pp in __netmem_get_pp()
+    https://git.kernel.org/netdev/net-next/c/38a436d4e264
+  - [net-next,v12,03/12] netmem, mlx4: access ->pp_ref_count through netmem_desc instead of page
+    https://git.kernel.org/netdev/net-next/c/89ade7c73065
+  - [net-next,v12,04/12] netdevsim: access ->pp through netmem_desc instead of page
+    https://git.kernel.org/netdev/net-next/c/6fd824342a57
+  - [net-next,v12,05/12] mt76: access ->pp through netmem_desc instead of page
+    https://git.kernel.org/netdev/net-next/c/87dda483e63f
+  - [net-next,v12,06/12] net: fec: access ->pp through netmem_desc instead of page
+    https://git.kernel.org/netdev/net-next/c/65589e860a80
+  - [net-next,v12,07/12] octeontx2-pf: access ->pp through netmem_desc instead of page
+    https://git.kernel.org/netdev/net-next/c/58831a178551
+  - [net-next,v12,08/12] iavf: access ->pp through netmem_desc instead of page
+    https://git.kernel.org/netdev/net-next/c/c8d6830e32eb
+  - [net-next,v12,09/12] idpf: access ->pp through netmem_desc instead of page
+    https://git.kernel.org/netdev/net-next/c/fc16f6a5877d
+  - [net-next,v12,10/12] mlx5: access ->pp through netmem_desc instead of page
+    https://git.kernel.org/netdev/net-next/c/5445a5f71209
+  - [net-next,v12,11/12] net: ti: icssg-prueth: access ->pp through netmem_desc instead of page
+    https://git.kernel.org/netdev/net-next/c/c0bcfabd7752
+  - [net-next,v12,12/12] libeth: xdp: access ->pp through netmem_desc instead of page
+    https://git.kernel.org/netdev/net-next/c/9dfd871a3e2e
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
