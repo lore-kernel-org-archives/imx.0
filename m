@@ -1,138 +1,268 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012007.outbound.protection.outlook.com [52.101.66.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8EF207A2A;
-	Thu, 24 Jul 2025 18:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753383509; cv=none; b=k1xiiPp/Hcjmt3VZ041ReZVnTBGVOJdVL83XKsXDza0JKyyvXH0yTQepDgFWiY1oIMvUzJslwWLHfkdyfs/cxsFBb/s0ZzgkmveqTMZ/fZ2Cj8VnplEx6pTKcsRtBV4ftSdBzL4MOI6Fkbh2FmwJCn05a7lywqWwVfJx6po+dho=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753383509; c=relaxed/simple;
-	bh=JWqs0DCwp33CJZvGVJN1aOVkKWgHcZ1EKRdVLuQSeho=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cIIdq3U2Z0loAFNBYZcRm+mFuigeSV3kmD5meXd4YdFJlB6Nx9KpebC9Ggrc2UsbVTRfBWEihldGUHLhbldvJlZQ9bl7YRfEk04OdLjr/7uPW+ActXub+ggjlaa+PzP8fn2hustfACO7PbUZYGAzj/oEy2P6HcDH1xnyFtv47dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rUDRMHsU; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033FD1F418F
+	for <imx@lists.linux.dev>; Thu, 24 Jul 2025 19:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753383842; cv=fail; b=YxDlR8wqbKTvL9b4qyVMZKEeU87XNIPPQg9awp23zCK7npQfkywKMhlLg2HkKjEzSU2KvWEWEDsW3YeB9zuSSEEHH2Ul7HknjzOqKTSAa2trvlWaImN9W2dV0lH6GMTZXgBSv7IzqCfLvuwmpA1HlAKhCfOL+9CT1+anialMJAE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753383842; c=relaxed/simple;
+	bh=WqWBGJnU6uXIwXEKmKST0AZyXf4eakqcSzBZDyGIRu8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Uq/gW/9yAynxywBpvQTWu00QQd8m7Z3lG328jo1BhSX7X6+3dzErUVPwYHgtru2XNbFbpeWLqiCIYggpD4obOx8cZ/3Hccc6sH5B6xtB66ZSWrpLcQGB4S/aMbG7WEFrBSkvg+c/R2gQw277hcq05ky/BH8zYf6K+o7jt/iQWyE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nq/wIuWB; arc=fail smtp.client-ip=52.101.66.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rUDRMHsU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52AEC4CEED;
-	Thu, 24 Jul 2025 18:58:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753383508;
-	bh=JWqs0DCwp33CJZvGVJN1aOVkKWgHcZ1EKRdVLuQSeho=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rUDRMHsUp4A4xHOrcS8RdcDGddOg5X6MQCctf22ccUb2Jaw7CCAPxQfhWBhg7SlXq
-	 Aq05965PJHPWjWIBpU8U8+X5SIRM/tp3Rgwx4ucoPcfarGsX2dntHU6pdeuqV9bX+I
-	 +UfB0Fk6L0bthGuiaq+1762gL8lAyQmaNGYRYnPsp+qM88qicUOhGx6Ys3iWJ6raoQ
-	 71GFwOSkYllHJrXsjKaBHYgK/EdwC6qwWSihzLgYIZ43/06/Y1V/z2Sr9MHrv8AF9A
-	 yi8gEFH1y6F3e2KzpiYODw124GIQNDm8D8/xDSDi9QIv+/k98XwTdyDEbddzaCHVzC
-	 mtZhjr58IX4ng==
-Message-ID: <1a8bdd00-aaa3-49bb-954e-52c84dad63a3@kernel.org>
-Date: Thu, 24 Jul 2025 20:58:23 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nq/wIuWB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rsN9NK9A5ysB4DKjVfQO2MhpDGGBKGE9rjCQVOcSJvLxu1UnY6vRAbrSZ5RftjmG4u6k9jb7yqZI6FZgCi44r9XFPuBxhvlRxMI2WY4oR8wYRrVGMwBBvFXz1W6kPtRhilopVuA9DRtldbirCGSKjf+aG/wUKtkkUhliDqdwvfV7sQsWyki8YfXo9raParaKjRhyg41+PgBjOIN0gcqyOqGoC76ZErUnBl6QXaaHP6wEzi9bUfpscywqHnGl3pVqxFsagfFLVV43zTGg8JJjFk5+us5fq83vRN4lza2/41qr1QZf91aKLswXu7BtDEsv+5WiiPKVY99A5kpIp5Up6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ElEXyeZhH95ofqP659NccKyIj1raktMWByUByPIolr0=;
+ b=wtLNwIz5rltOtiuMUyt23MSBaq5g6medVDwCXQ47af6oZNV083UUZi429MXySui3GFqs8TXwH5p73TkP7kPRAVhcINxBvCNexYpc2MW4c7+ILgiWfdqnw8tfNcyjjzKYxCc/yQgIHKlO0sdxh10f/aowzmXl5lOlsfbBU3CKjqhwAk7y2413E7/KII01iMEm6rt9xXzuC8JCoVxuPiT9V6FsnS2A86qb+MuwD0P/nmx5fomX0pC91h2xl27qBC1j2YIzxYuxRMmqIHwk76reoVjMGw+kllfyoZkuqDE6jCtyUuzkgIRIk/g8xy21sky7KvJZSG4wbb73wYj9rd4KcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ElEXyeZhH95ofqP659NccKyIj1raktMWByUByPIolr0=;
+ b=nq/wIuWBY4Uwxdjh5zCXpfPlxnhkjRoWse2mqpFQXMUVB5hSoKVIHMiRlxjTeKeFFCrS9bRsQBJqGm46Eb/Mo3jxOl/+GYF0KfESHIviY2SRXinJwoYIBULDEmzcryBfhvDaV57ipXtxo8lNNqMqjlQprrUsRhCcDgVJDPcOQMaau/MrE73jLI0PnsaehuLYyCpbXn9ZruQCdinOZt5+3QulfBFA1GXTmB7VeFO/IjS/bb3ymhiQxB+3An8O1XCdahWnb0iyUBx5fpdPkd0IO/innO4wiqOTgqnxQ4HzcowR2X85SuZWmq6xV5geIIOwiiibHLxiySE4Ez60yfNNgQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PAXPR04MB8271.eurprd04.prod.outlook.com (2603:10a6:102:1ca::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.21; Thu, 24 Jul
+ 2025 19:03:55 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8943.029; Thu, 24 Jul 2025
+ 19:03:55 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [RESEND v2 1/1] dt-bindings: fsl: convert fsl,vf610-mscm-ir.txt to yaml format
+Date: Thu, 24 Jul 2025 15:03:41 -0400
+Message-Id: <20250724190342.1321632-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4PR10CA0017.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d8::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: regulator: add PF0900 regulator yaml
-To: Joy Zou <joy.zou@nxp.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev, Frank Li
- <Frank.Li@nxp.com>, Ye Li <ye.li@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
- Dong Aisheng <aisheng.dong@nxp.com>
-References: <20250721-b4-pf09-v2-v2-0-e2c568548032@nxp.com>
- <20250721-b4-pf09-v2-v2-1-e2c568548032@nxp.com>
- <e9f38e38-7df7-4d19-b5c0-2f18aeebcc78@kernel.org>
- <20250724105115.GA1748604@shlinux88>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250724105115.GA1748604@shlinux88>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8271:EE_
+X-MS-Office365-Filtering-Correlation-Id: dccea088-7f69-49be-fda6-08ddcae4d5e7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|19092799006|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?zZxQUTMB9s+vuKs/p0BA6qaZCK5mj5jaS9zEFg2aQ4i5s6lspGc+Fm3Tg7CW?=
+ =?us-ascii?Q?Bs3VyMMmyCptraTwzUPnMN/g9JkWdOMAEoaqul+YsEWU5QO3PPJDodfDUC/B?=
+ =?us-ascii?Q?cql6u58GidRFmM3aGpOheeQcE8JHDjbhh8uql0QLKHT8yGtYUf4NPNEVGNqs?=
+ =?us-ascii?Q?lNU6rjc8unTB0RyMIeqY4seMkAc/M98wNEfDmvd499kTBL2PPj3qs2U6Vc5X?=
+ =?us-ascii?Q?2CXon6Q80TNKON8d+3Li6PRNCLP/8VD3/uK9RGl36ERhdB6HlOuBpnqYc4mu?=
+ =?us-ascii?Q?dvresavHGxH88f6wHgDehHh1iUpbUYM3eKD2syodSxrHaSkKYRGrZETZPKYc?=
+ =?us-ascii?Q?r8wVktcN2fVta8oAOekki2lHzWfMmUaZ1HFZQ/TDZQozRg3L5SUWqDWHKDTt?=
+ =?us-ascii?Q?TSHSpM9XtekCFrRtZdfAgfMQfOilXgRGXfEAepEahGsZQfR7sV+fBST5MEsT?=
+ =?us-ascii?Q?rkFWM7k5Dni01dfdkXTsxq9amGzY9Y1xvK3S0stxU1f9n2vo7l8I/x6mZf44?=
+ =?us-ascii?Q?jS5FOoba6n7O7TN7Ir4N0xpuPhxuE4Mw27ThCNi5kVeOuCrOcSnkTza4KVkE?=
+ =?us-ascii?Q?Ejpft8KUD514UlKHX0TiYDQpWj3fI6rE2BJFgEpdG1eeQvKUKNFkzKwrspgr?=
+ =?us-ascii?Q?6KtGV6pRvIoURZ40y8Nu0MLsSirVe+UNHK19Ijd0K7RnuGAsK+5it7jSWJXH?=
+ =?us-ascii?Q?VwJ3Mv1WsSHvEE93gr/3y2CM4ae2RIdtYSxStMicMrWg9kZ9fTNnig84c8EZ?=
+ =?us-ascii?Q?X9ndU5f01xFqbxRROAfu4aqwPJ+CCaRFDTsvjFV66TZ2DWPua7A9PFXtuLgc?=
+ =?us-ascii?Q?rLGtAmh/+Svsm32Hh10548yfa/KWgnNNZaYHFXjS6kthrgpDRo0WxE+Ur7hg?=
+ =?us-ascii?Q?FL3nKsGc2Mho8hgLwXtAOelPEt2tIEUq+uSD8sjyem+jv7NfVMTjyMTPKEJk?=
+ =?us-ascii?Q?FnV4RUSrYhIZsvJIqEzgppJIoip8Imw+rR1mNVul+0Xdb/qHPLr4GMEl74Ye?=
+ =?us-ascii?Q?oYY/xsuuFYG+RzOTqp0eQaPR3Zthcy4Qepur8igmSIJcjdRWOTQDxP2wROwk?=
+ =?us-ascii?Q?fLsfFngDGLp5BysCCyqqKhfpJKVuTNlqYOULGY+41DAScKF91a6LPbCWWR5e?=
+ =?us-ascii?Q?xqZwpXsSXSKUo9wPxK6SmcPu6PDBCgcuNeVPSSPusgx2IkBsIHoctCmEDfZL?=
+ =?us-ascii?Q?Xvtgu6y7efX7pcFZO2DTW9B6rniPlPZq4OBV+od88aQecAMQkA4qYoMl+kXt?=
+ =?us-ascii?Q?9J7FoUu90XqRSfB60/6JqN66jiRYXbwT+UTZsNMRagVpr2OUllxvnfNWs83Q?=
+ =?us-ascii?Q?atoThhe3X3VVVI5yGTZJCGEcg17t+jRmzA9+Us1nywSiD38/Tb5GUQ+6f3Z4?=
+ =?us-ascii?Q?yySaIg6KTTeVQPYqwMYrF8YMJgczkfPqlfmTkcvYBS1KsCpMIguNuHTXx8T1?=
+ =?us-ascii?Q?Yx61KlGO48M=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?q4ajoLDySefLFg0dG6qpfxcfUq11+y9M5f2LEfDNj7nYoMhkT3CmleHmHywT?=
+ =?us-ascii?Q?unRP+1XFx53msIBSonKIeJcLAOZXHaXaIVVJp2nvAtp7QNQhrH+e7Yh9+i1m?=
+ =?us-ascii?Q?EYkRDrHawisk4DjynpVgFwXs7jbdwps0v2BdwXhvoWfWRJHVC8xKZGgbzCxZ?=
+ =?us-ascii?Q?DPZewWqISTBlDwxEsvBhD+9HVM7si5aN+sLrJKv7hLiaOQRRY0hnU2GzmW+6?=
+ =?us-ascii?Q?XfYHb2v26FNvOaan1OzUKKS+YKzguqqo0uMgM/gYKpQUjncSM2oZ57rIUo1q?=
+ =?us-ascii?Q?w2w1/ZxJ/3HqbJ21eaR3ArxTruBFtRTIDsIM+hauc6z//fXAFMh+jAu9ZizB?=
+ =?us-ascii?Q?ZoBEOhPJBH79CJsfQTRRh+izdWSzbTH8SEts3SWnwM7x2aBlhAiRFyQ0wjwt?=
+ =?us-ascii?Q?6tBzToalfX2yb6J0yvxlpj4K24fQr42uMAQOptRy1+bJSOCuhNTje/yWog3y?=
+ =?us-ascii?Q?QawTiqrfSyLn9ituUyLseTMddTuL1jwJM+4JSO94Q4xiWMlkrU99buaOsr7L?=
+ =?us-ascii?Q?seNcGQHflG5h3CZDtHGhQ6eWb10NuLFxOQxw0bqCFawq5LMCg3y7PwjUNm5r?=
+ =?us-ascii?Q?IKmbRYHyjryRg3PGoUuKNlKXlhkiLXP4QydcrgFtKgtcDLzXf3mG0ubLg8sM?=
+ =?us-ascii?Q?iYT6lELjaG+dA66NF5WB7DlQrVmO8dklb1uNqDPQM4CIwSWoaW/wAckGQbJP?=
+ =?us-ascii?Q?sWxPUVcT8DBFJneXzqlICf1VGQ4Sn1TeuRHkq0TIxAXEKMWoqrJAnkOhsS8Q?=
+ =?us-ascii?Q?NjgvibU1Ox6nVVLsJ2t3R8sSdaQl6ThH75vK4pkymJZeYGNO94Y7o/K2JwJq?=
+ =?us-ascii?Q?WKFCIMjloKOlyn1O57itkDPj/06BU86Dz1+MhfO0qra4El2tpdBE6vW2bPMx?=
+ =?us-ascii?Q?aHxpBFu3oJCFiqAyLOD1xZsVBcd8lY5qTvz3tW3CHmnnHKEi/adiVFUqZjbc?=
+ =?us-ascii?Q?HIfnZNmMrF5G2ZxjCHon9SZRgLefdYcW8Jf6jLMgqV58b1cYdJ9+yHQFpff+?=
+ =?us-ascii?Q?Ndk+Dy8NsApIK2e/P3z6fdmsSI1h5zVpTuK6qMYOYvQwzebDg47V83p6GFtX?=
+ =?us-ascii?Q?BvO0d6eNaGbYgKjGsRK9MX1L6+fBo//IsSh0aQAPtjwQ6KPBjaiV2nQhw8+q?=
+ =?us-ascii?Q?fDcfs3uW6QKpxv3atzgbgNJO5RgKtfJAxy72yK6GTVl5zadPjcfGju6yxAAw?=
+ =?us-ascii?Q?ZL86a0/gSm5OoUDte/C4tmPVYxXg1Sprw0Ch252cv0JyR08PszM7dneEyur4?=
+ =?us-ascii?Q?Hvkd7Vi2pYbWfptSNXyw5scmuvM4zgm7bqHdRFOm6cIjYlXjMQ57eTHatHL4?=
+ =?us-ascii?Q?8RQIdjk3WUAJsYTLuCuK0HBPFQD8RWhZP+DHApRIf+lW3wKhvKS8MWfiJbGy?=
+ =?us-ascii?Q?TgT/mkT0Uf5ZcSLDktiTKxiNnPRKIhQafdSHb9U05aaDPkgnTtXtEzaUcNfo?=
+ =?us-ascii?Q?4hiiHPYGN4ThBLvP//OSC/wWOB700qMwvoacBtShCDJaGEM/V5ejDlGxFzDa?=
+ =?us-ascii?Q?Md6eaPbVZYjf7RowBpHbJU+BIj9I+rbR14KJ6MVZ8/0iR2o57Fx5KJ/44+Df?=
+ =?us-ascii?Q?sEInTHXg7NkmEaxqCVc=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dccea088-7f69-49be-fda6-08ddcae4d5e7
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 19:03:54.9976
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tE9Fd3/qmV9+ypGVdtnBQ9s6i/hXIl4gc1kXgr7IsYMD7mjjzlT3pHah+jeqZTQH6Rr28WPh4A+2axWDu1hMIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8271
 
-On 24/07/2025 12:51, Joy Zou wrote:
->>> +        type: object
->>> +        $ref: regulator.yaml#
->>> +        unevaluatedProperties: false
->>> +
->>> +    patternProperties:
->>> +      "^LDO[1-3]$":
->>> +        type: object
->>> +        $ref: regulator.yaml#
->>> +        unevaluatedProperties: false
->>> +
->>> +      "^SW[1-5]$":
->>> +        type: object
->>> +        $ref: regulator.yaml#
->>> +        unevaluatedProperties: false
->>> +
->>> +        properties:
->>> +          nxp,dvs-run-microvolt:
->>> +            minimum: 300000
->>> +            maximum: 1350000
->>> +            description:
->>> +              PMIC default "RUN" state voltage in uV.
->>
->> Why existing properties are not suitable?
-> Have not found the property that can set run state voltage in regulator.yaml.
-> Can we add a property for run state such as regulator-suspend-microvolt?
->>
->>> +
->>> +          nxp,dvs-standby-microvolt:
->>
->> Why existing standby state bindings are not suitable?
-> Have found regulator-suspend-microvolt property that can set standby state voltage.
-> But the regulator-suspend-microvolt property is now deprecated. Can we use it?
+Convert fsl,vf610-mscm-ir.txt to yaml format.
 
-You have regulator-min/max properties for that. Please check with
-bindings and other existing code how this looks like. I feel like you
-did not try enough to solve it with existing code.
+Additional changes:
+- remove label at example dts.
 
-Best regards,
-Krzysztof
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+V2 resend, add Krzysztof Kozlowski's review by.
+
+Change from v1 to v2
+- move under interrupt-controller
+---
+ .../arm/freescale/fsl,vf610-mscm-ir.txt       | 30 ---------
+ .../fsl,vf610-mscm-ir.yaml                    | 63 +++++++++++++++++++
+ 2 files changed, 63 insertions(+), 30 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/arm/freescale/fsl,vf610-mscm-ir.txt
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/fsl,vf610-mscm-ir.yaml
+
+diff --git a/Documentation/devicetree/bindings/arm/freescale/fsl,vf610-mscm-ir.txt b/Documentation/devicetree/bindings/arm/freescale/fsl,vf610-mscm-ir.txt
+deleted file mode 100644
+index 6dd6f399236d5..0000000000000
+--- a/Documentation/devicetree/bindings/arm/freescale/fsl,vf610-mscm-ir.txt
++++ /dev/null
+@@ -1,30 +0,0 @@
+-Freescale Vybrid Miscellaneous System Control - Interrupt Router
+-
+-The MSCM IP contains multiple sub modules, this binding describes the second
+-block of registers which control the interrupt router. The interrupt router
+-allows to configure the recipient of each peripheral interrupt. Furthermore
+-it controls the directed processor interrupts. The module is available in all
+-Vybrid SoC's but is only really useful in dual core configurations (VF6xx
+-which comes with a Cortex-A5/Cortex-M4 combination).
+-
+-Required properties:
+-- compatible:		"fsl,vf610-mscm-ir"
+-- reg:			the register range of the MSCM Interrupt Router
+-- fsl,cpucfg:		The handle to the MSCM CPU configuration node, required
+-			to get the current CPU ID
+-- interrupt-controller:	Identifies the node as an interrupt controller
+-- #interrupt-cells:	Two cells, interrupt number and cells.
+-			The hardware interrupt number according to interrupt
+-			assignment of the interrupt router is required.
+-			Flags get passed only when using GIC as parent. Flags
+-			encoding as documented by the GIC bindings.
+-
+-Example:
+-	mscm_ir: interrupt-controller@40001800 {
+-		compatible = "fsl,vf610-mscm-ir";
+-		reg = <0x40001800 0x400>;
+-		fsl,cpucfg = <&mscm_cpucfg>;
+-		interrupt-controller;
+-		#interrupt-cells = <2>;
+-		interrupt-parent = <&intc>;
+-	}
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,vf610-mscm-ir.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,vf610-mscm-ir.yaml
+new file mode 100644
+index 0000000000000..fdc254f8d013c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,vf610-mscm-ir.yaml
+@@ -0,0 +1,63 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/interrupt-controller/fsl,vf610-mscm-ir.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale Vybrid Miscellaneous System Control - Interrupt Router
++
++description:
++  The MSCM IP contains multiple sub modules, this binding describes the second
++  block of registers which control the interrupt router. The interrupt router
++  allows to configure the recipient of each peripheral interrupt. Furthermore
++  it controls the directed processor interrupts. The module is available in all
++  Vybrid SoC's but is only really useful in dual core configurations (VF6xx
++  which comes with a Cortex-A5/Cortex-M4 combination).
++
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    const: fsl,vf610-mscm-ir
++
++  reg:
++    maxItems: 1
++
++  fsl,cpucfg:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      The handle to the MSCM CPU configuration node, required
++      to get the current CPU ID
++
++  interrupt-controller: true
++
++  '#interrupt-cells':
++    const: 2
++    description:
++      Two cells, interrupt number and cells.
++      The hardware interrupt number according to interrupt
++      assignment of the interrupt router is required.
++      Flags get passed only when using GIC as parent. Flags
++      encoding as documented by the GIC bindings.
++
++required:
++  - compatible
++  - reg
++  - fsl,cpucfg
++  - interrupt-controller
++  - '#interrupt-cells'
++
++additionalProperties: false
++
++examples:
++  - |
++    interrupt-controller@40001800 {
++        compatible = "fsl,vf610-mscm-ir";
++        reg = <0x40001800 0x400>;
++        fsl,cpucfg = <&mscm_cpucfg>;
++        interrupt-controller;
++        #interrupt-cells = <2>;
++        interrupt-parent = <&intc>;
++    };
+-- 
+2.34.1
+
