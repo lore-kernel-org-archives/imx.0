@@ -1,282 +1,195 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E251F3B83
-	for <imx@lists.linux.dev>; Fri, 25 Jul 2025 11:00:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA1720E023;
+	Fri, 25 Jul 2025 11:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753441239; cv=none; b=ef6sg/N+HFcLTg4KC0mT//OLHVp4ss5NzB1R0B/xDQo8LoYFVhIesZryenIuP7uUZk/98YCSPT6R7xPhPcfzfwtVerYpOkZo6N0ilDyzQ+xEsK7pm3/prKtaziPk0d9NuYEEgNZHk7uGJ39RGnY/s7xRBDC7FE24mRiJLF1VD/I=
+	t=1753441587; cv=none; b=RNwolRrR1Rrx21o+KZJBB4XubsgU9jRF725ycYgVxegUQF14FzA8wztegfOz+81L+P6NyyYPMr89b8w1BM1ngUe/M3SxzEqoH5cdnlAUP9kyuCjRA0NxOAdy10TMth9aY43eXq5ahrfxch6dMky1bQz4VXtkg2rz/H3ou/EPth4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753441239; c=relaxed/simple;
-	bh=IFbdLct/XlwhI0CCt9Krv57xH4aepmQc/wV8PhqxXlg=;
+	s=arc-20240116; t=1753441587; c=relaxed/simple;
+	bh=4ODTp0UV/5yld+rfWin+qb9F8EdCt5NLU8TsGWCsgrM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e5JNo6c4k1tw2MZpHfQg62SrVgW+UoV4HMzPqu2mNJLalwW0jgpIcqzyjOkpZUHMkq7nzguP7dBluova7a1Mx+TgTIx0AKxPcrbQ8RpBIKya+qqoBuxaURGvLCECsJ4E59YkD6FphjxpAVEIEqc2tlujLAour1a/utw6ythdS8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Ecf4Nay+; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=d/OXTiMoniGVq/PncIxi+Y9EyfAsCzmC7+EE/dXtA7R8dbb35Xoag5A/vlzwjcEQ84LrlHdMvbGSKEMshWUr42Fw7rwgaNWVhiZMKfi0I2afm2iS6sn29I0KXRGnWqusW3QvmE2prkeQg/FYrtmPVPxCAwdLbPIrvdJHTr6vR00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N7W6UML2; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Ecf4Nay+"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 9947BC73;
-	Fri, 25 Jul 2025 12:59:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1753441189;
-	bh=IFbdLct/XlwhI0CCt9Krv57xH4aepmQc/wV8PhqxXlg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ecf4Nay+jvm7qaSw1pKsJS+aA6w9KPFinLg45do9/DXKm4NlftA89lY5GzdOMOxeY
-	 GKJzNngxQCLk3Vt1WczN1ITLRq82QCbtwk5YTmmx+gn6uW6cqwScK8KMyOiV9PQHZM
-	 485HO/935In6WJZlFtSUbJxi8HFkvY1CVEgSGGI4=
-Date: Fri, 25 Jul 2025 14:00:24 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Tarang Raval <tarang.raval@siliconsignals.io>
-Cc: "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	=?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Arec Kao <arec.kao@intel.com>,
-	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Dongcheng Yan <dongcheng.yan@intel.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Hans de Goede <hansg@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>, Hao Yao <hao.yao@intel.com>,
-	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
-	Jacopo Mondi <jacopo@jmondi.org>, Jimmy Su <jimmy.su@intel.com>,
-	Jingjing Xiong <jingjing.xiong@intel.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Leon Luo <leonl@leopardimaging.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Matthew Majewski <mattwmajewski@gmail.com>,
-	Matthias Fend <matthias.fend@emfend.at>,
-	Mikhail Rudenko <mike.rudenko@gmail.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Pavel Machek <pavel@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Shunqian Zheng <zhengsq@rock-chips.com>,
-	Sylvain Petinot <sylvain.petinot@foss.st.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Todor Tomov <todor.too@gmail.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Tony Lindgren <tony@atomide.com>, Zhi Mao <zhi.mao@mediatek.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>
-Subject: Re: [PATCH 00/72] media: i2c: Reduce cargo-cult
-Message-ID: <20250725110024.GA30386@pendragon.ideasonboard.com>
-References: <20250710174808.5361-1-laurent.pinchart@ideasonboard.com>
- <PN3P287MB1829DD1254FB74391A750F498B5EA@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
- <20250724115202.GK11202@pendragon.ideasonboard.com>
- <PN3P287MB1829C9E8C78ADD70259A68F08B5EA@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
- <20250724135259.GR11202@pendragon.ideasonboard.com>
- <PN3P287MB1829E1FEE7D2468CE9915C778B5EA@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
- <20250724154414.GE22016@pendragon.ideasonboard.com>
- <PN3P287MB1829FC781EA3A94E0B8F16B98B59A@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
- <20250725093805.GY11202@pendragon.ideasonboard.com>
- <PN3P287MB1829C2D2D0577D4DA82D6AF58B59A@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N7W6UML2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753441586; x=1784977586;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4ODTp0UV/5yld+rfWin+qb9F8EdCt5NLU8TsGWCsgrM=;
+  b=N7W6UML2ztUZTEHyCft2dCh8aNbm34grXdmu0y0oQxoz79peKge0D46W
+   xRW0CoNvqgcQYuShaNPfs1Do9CbCtBbTew9yhNZhbJLmXCNh/Ftz25Sl9
+   8xLvxo6d+VNnTFaibVqVR6BdqUwL+jO/5pzuXYITH5AOQpfN9yHI8aaAa
+   AZvzYEa2Sr/D5y3sJBydJz2hca7XNKe94McWIEPEjXlNQoGaYDDr0jePq
+   dpeLJsnbjm+aZsFHpqmTqWhaqbIjMHSxqNp+LxfKwT3caSovdTHIbMNaN
+   Pu2AyNRqqXyedUtAF2X0zBVGLzjuVRMMf6nFeI9bGwIjauO4FIX8szndd
+   w==;
+X-CSE-ConnectionGUID: E7WHhcOERu6f+odrRJKQ7A==
+X-CSE-MsgGUID: TXzk91+bRniSMY4kkjCNHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="73355868"
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
+   d="scan'208";a="73355868"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 04:06:25 -0700
+X-CSE-ConnectionGUID: 4dpPtvj9S5OlyM73/KA5iw==
+X-CSE-MsgGUID: DbED2/rCRkSTnILVrQc1Vg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
+   d="scan'208";a="161593680"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 25 Jul 2025 04:06:18 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ufGFk-000LGp-1A;
+	Fri, 25 Jul 2025 11:06:16 +0000
+Date: Fri, 25 Jul 2025 19:06:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org, rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+	jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org,
+	cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	victor.liu@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de,
+	devicetree@vger.kernel.org, l.stach@pengutronix.de
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 5/6] drm/bridge: imx: add driver for HDMI TX Parallel
+ Audio Interface
+Message-ID: <202507251859.rtsTHw8u-lkp@intel.com>
+References: <20250724072248.1517569-6-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PN3P287MB1829C2D2D0577D4DA82D6AF58B59A@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+In-Reply-To: <20250724072248.1517569-6-shengjiu.wang@nxp.com>
 
-On Fri, Jul 25, 2025 at 10:35:28AM +0000, Tarang Raval wrote:
-> > On Fri, Jul 25, 2025 at 07:00:40AM +0000, Tarang Raval wrote:
-> > > > On Thu, Jul 24, 2025 at 02:20:10PM +0000, Tarang Raval wrote:
-> > > > > > > > > 2. In the regulator code, you can reduce boilerplate by using
-> > > > > > > > >    devm_regulator_bulk_get_enable().
-> > > > > > > >
-> > > > > > > > devm_regulator_bulk_get_enable() doesn't seem to be a good idea. You
-> > > > > > > > generally don't want to enable power everywhere unconditionally, and
-> > > > > > > > sensors very often need a guaranteed power up sequence.
-> > >
-> > > -----(1)
-> > >
-> > > > > > >
-> > > > > > > The regulators are optional, we supply power to the camera sensor directly
-> > > > > > > through dedicated power rails and there is no strict enable sequence
-> > > > > > > required in this case.
-> > > > > >
-> > > > > > What exactly do you mean by "this case" ? Are you talking about one
-> > > > > > particular sensor ? One particular camera module ?
-> > > > >
-> > > > > Laurent, by “this case” I meant the common scenario where power to the
-> > > > > camera sensor is supplied by a PMIC regulator that is always-on. In such
-> > > > > setups, the regulator is fixed and cannot be enabled or disabled from the
-> > > > > driver, the sensor is always powered.
-> > > > >
-> > > > > This is what I’ve seen in most platforms, where the CSI input connector
-> > > > > provides fixed 3.3V/1.8V power rails directly to the camera module.
-> > > > >
-> > > > > Of course, if the camera supply comes from a dedicated regulator controlled
-> > > > > via a GPIO, then the driver would need to handle enable/disable sequencing
-> > > > > explicitly. But I’m specifically referring to the first case, where the power rails
-> > > > > are always-on.
-> > > >
-> > > > How does the sensor driver know which of those two cases it is dealing
-> > > > with ?
-> > >
-> > > The sensor driver typically determines this via the presence (or absence)
-> > > of regulator supply entries in the Device Tree. If a supply is not defined,
-> > > it's assumed to be always-on (e.g., provided by the board via fixed rails).
-> > 
-> > Do we have sensor drivers that check the presense of supply properties ?
-> > Drivers generally shouldn't.
-> > 
-> > > When defined, the driver retrieves and manages the regulator. This approach
-> > > allows a single driver to support both cases, by treating supplies as optional
-> > > and only enabling them when explicitly defined.
-> > 
-> > I don't see what you're trying to do here. A sensor always needs
-> > supplies, regardless of whether or not they're always on. Drivers should
-> > get the supplies with regulator_get() (or possibly the bulk API), and
-> > then implement the power enable/disable sequences that the sensor
-> > requires. If all suplies are manually controllable, this will produce
-> > the correct sequence. If the supplies are always on, it will be a no-op.
-> > That's a single implementation in the driver, you don't need to care
-> > about the nature of the supplies, or their presence in DT.
-> > 
-> > > At comment (1): you gave two reasons why we cannot use devm_regulator_bulk_get_enable.
-> > >
-> > > What I’m trying to say is:
-> > >
-> > > You mentioned "generally don't want to enable power everywhere unconditionally,"
-> > > but on almost every platform, the power rails are always-on.
-> > 
-> > "almost every platform" doesn't sound right to me. It does happen though.
-> > 
-> > > And regarding the second point — "sensors very often need a guaranteed power-up sequence"
-> > > I don’t understand why this would be an issue. Even if we use devm_regulator_bulk_get_enable,
-> > > the power-up sequence remains the same. So how is it not a good option in this case?
-> > 
-> > Because the bulk API enables all regulators in parallel, it doesn't
-> > guarantee sequencing.
-> 
-> Except for a few drivers, almost all camera drivers use the bulk API, which suggests
-> that a guaranteed power-up sequence may not be strictly required in most cases.
->  
-> > Don't use devm_regulator_bulk_get_enable() in sensor drivers, implement
-> > power enable/disable functions that do the right thing. That's the code
-> > pattern I want to see.
-> 
-> Perhaps I wasnt clear in my explanation. If you look at the patch below, you'll 
-> see that we are not changing any sequencing behavior.
+Hi Shengjiu,
 
-You end up getting regulators every time power is enabled, and you don't
-turn the supplies off at power off time. How is that even supposed to
-work ? It completely breaks power management.
+kernel test robot noticed the following build errors:
 
-> I am not suggesting we use this API everywhere, only where it's appropriate and 
-> doesn't compromise sequencing requirements. 
-> 
-> Best Regards,
-> Tarang
-> 
-> ------
-> 
-> diff --git a/drivers/media/i2c/imx283.c b/drivers/media/i2c/imx283.c
-> index da618c8cbadc..4dbf7215cef4 100644
-> --- a/drivers/media/i2c/imx283.c
-> +++ b/drivers/media/i2c/imx283.c
-> @@ -1176,8 +1176,8 @@ static int imx283_power_on(struct device *dev)
->         struct imx283 *imx283 = to_imx283(sd);
->         int ret;
->  
-> -       ret = regulator_bulk_enable(ARRAY_SIZE(imx283_supply_name),
-> -                                   imx283->supplies);
-> +       ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(imx283_supply_name),
-> +                                   imx283_supply_name);
->         if (ret) {
->                 dev_err(imx283->dev, "failed to enable regulators\n");
->                 return ret;
-> @@ -1186,7 +1186,7 @@ static int imx283_power_on(struct device *dev)
->         ret = clk_prepare_enable(imx283->xclk);
->         if (ret) {
->                 dev_err(imx283->dev, "failed to enable clock\n");
-> -               goto reg_off;
-> +               return ret;
->         }
->  
->         gpiod_set_value_cansleep(imx283->reset_gpio, 0);
-> @@ -1195,10 +1195,6 @@ static int imx283_power_on(struct device *dev)
->                      IMX283_XCLR_MIN_DELAY_US + IMX283_XCLR_DELAY_RANGE_US);
->  
->         return 0;
-> -
-> -reg_off:
-> -       regulator_bulk_disable(ARRAY_SIZE(imx283_supply_name), imx283->supplies);
-> -       return ret;
->  }
->  
->  static int imx283_power_off(struct device *dev)
-> @@ -1207,24 +1203,11 @@ static int imx283_power_off(struct device *dev)
->         struct imx283 *imx283 = to_imx283(sd);
->  
->         gpiod_set_value_cansleep(imx283->reset_gpio, 1);
-> -       regulator_bulk_disable(ARRAY_SIZE(imx283_supply_name), imx283->supplies);
->         clk_disable_unprepare(imx283->xclk);
->  
->         return 0;
->  }
->  
-> -static int imx283_get_regulators(struct imx283 *imx283)
-> -{
-> -       unsigned int i;
-> -
-> -       for (i = 0; i < ARRAY_SIZE(imx283_supply_name); i++)
-> -               imx283->supplies[i].supply = imx283_supply_name[i];
-> -
-> -       return devm_regulator_bulk_get(imx283->dev,
-> -                                      ARRAY_SIZE(imx283_supply_name),
-> -                                      imx283->supplies);
-> -}
-> -
->  /* Verify chip ID */
->  static int imx283_identify_module(struct imx283 *imx283)
->  {
-> @@ -1480,12 +1463,6 @@ static int imx283_probe(struct i2c_client *client)
->                 return -EINVAL;
->         }
->  
-> -       ret = imx283_get_regulators(imx283);
-> -       if (ret) {
-> -               return dev_err_probe(imx283->dev, ret,
-> -                               "failed to get regulators\n");
-> -       }
-> -
->         ret = imx283_parse_endpoint(imx283);
->         if (ret) {
->                 dev_err(imx283->dev, "failed to parse endpoint configuration\n");
+[auto build test ERROR on shawnguo/for-next]
+[also build test ERROR on robh/for-next tiwai-sound/for-next tiwai-sound/for-linus linus/master v6.16-rc7 next-20250725]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Shengjiu-Wang/dt-bindings-display-imx-add-HDMI-PAI-for-i-MX8MP/20250724-152710
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
+patch link:    https://lore.kernel.org/r/20250724072248.1517569-6-shengjiu.wang%40nxp.com
+patch subject: [PATCH v2 5/6] drm/bridge: imx: add driver for HDMI TX Parallel Audio Interface
+config: nios2-randconfig-002-20250725 (https://download.01.org/0day-ci/archive/20250725/202507251859.rtsTHw8u-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250725/202507251859.rtsTHw8u-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507251859.rtsTHw8u-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c: In function 'imx8mp_hdmi_pai_enable':
+>> drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c:20:26: error: implicit declaration of function 'FIELD_PREP' [-Werror=implicit-function-declaration]
+    #define   WTMK_HIGH(n)   FIELD_PREP(WTMK_HIGH_MASK, (n))
+                             ^~~~~~~~~~
+   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c:53:9: note: in expansion of macro 'WTMK_HIGH'
+     val =  WTMK_HIGH(3) | WTMK_LOW(3);
+            ^~~~~~~~~
+>> drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c:59:9: error: implicit declaration of function 'FIELD_PREP_CONST'; did you mean 'FILE_REF_NOREF'? [-Werror=implicit-function-declaration]
+      val = FIELD_PREP_CONST(P_SEL,
+            ^~~~~~~~~~~~~~~~
+            FILE_REF_NOREF
+>> drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c:60:12: error: implicit declaration of function '__bf_shf'; did you mean '__ffs64'? [-Werror=implicit-function-declaration]
+               __bf_shf(IEC958_SUBFRAME_PARITY));
+               ^~~~~~~~
+               __ffs64
+   cc1: some warnings being treated as errors
+
+
+vim +/FIELD_PREP +20 drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c
+
+    15	
+    16	#define HTX_PAI_CTRL_EXT		0x04
+    17	#define   WTMK_HIGH_MASK		GENMASK(31, 24)
+    18	#define   WTMK_LOW_MASK			GENMASK(23, 16)
+    19	#define   NUM_CH_MASK			GENMASK(10, 8)
+  > 20	#define   WTMK_HIGH(n)			FIELD_PREP(WTMK_HIGH_MASK, (n))
+    21	#define   WTMK_LOW(n)			FIELD_PREP(WTMK_LOW_MASK, (n))
+    22	
+    23	#define HTX_PAI_FIELD_CTRL		0x08
+    24	#define   B_FILT			BIT(31)
+    25	#define   PARITY_EN			BIT(30)
+    26	#define   END_SEL			BIT(29)
+    27	#define   PRE_SEL			GENMASK(28, 24)
+    28	#define   D_SEL				GENMASK(23, 20)
+    29	#define   V_SEL				GENMASK(19, 15)
+    30	#define   U_SEL				GENMASK(14, 10)
+    31	#define   C_SEL				GENMASK(9, 5)
+    32	#define   P_SEL				GENMASK(4, 0)
+    33	
+    34	#define HTX_PAI_STAT			0x0c
+    35	#define HTX_PAI_IRQ_NOMASK		0x10
+    36	#define HTX_PAI_IRQ_MASKED		0x14
+    37	#define HTX_PAI_IRQ_MASK		0x18
+    38	
+    39	struct imx8mp_hdmi_pai {
+    40		struct device	*dev;
+    41		struct regmap	*regmap;
+    42	};
+    43	
+    44	static void imx8mp_hdmi_pai_enable(struct dw_hdmi *dw_hdmi, int channel,
+    45					   int width, int rate, int non_pcm,
+    46					   int iec958)
+    47	{
+    48		const struct dw_hdmi_plat_data *pdata = dw_hdmi_to_plat_data(dw_hdmi);
+    49		struct imx8mp_hdmi_pai *hdmi_pai = (struct imx8mp_hdmi_pai *)pdata->priv_audio;
+    50		int val;
+    51	
+    52		/* PAI set control extended */
+    53		val =  WTMK_HIGH(3) | WTMK_LOW(3);
+    54		val |= FIELD_PREP(NUM_CH_MASK, channel - 1);
+    55		regmap_write(hdmi_pai->regmap, HTX_PAI_CTRL_EXT, val);
+    56	
+    57		/* IEC60958 format */
+    58		if (iec958) {
+  > 59			val = FIELD_PREP_CONST(P_SEL,
+  > 60					       __bf_shf(IEC958_SUBFRAME_PARITY));
+    61			val |= FIELD_PREP_CONST(C_SEL,
+    62						__bf_shf(IEC958_SUBFRAME_CHANNEL_STATUS));
+    63			val |= FIELD_PREP_CONST(U_SEL,
+    64						__bf_shf(IEC958_SUBFRAME_USER_DATA));
+    65			val |= FIELD_PREP_CONST(V_SEL,
+    66						__bf_shf(IEC958_SUBFRAME_VALIDITY));
+    67			val |= FIELD_PREP_CONST(D_SEL,
+    68						__bf_shf(IEC958_SUBFRAME_SAMPLE_24_MASK));
+    69			val |= FIELD_PREP_CONST(PRE_SEL,
+    70						__bf_shf(IEC958_SUBFRAME_PREAMBLE_MASK));
+    71		} else {
+    72			/* PCM choose 24bit*/
+    73			val = FIELD_PREP(D_SEL, width - 24);
+    74		}
+    75	
+    76		regmap_write(hdmi_pai->regmap, HTX_PAI_FIELD_CTRL, val);
+    77	
+    78		/* PAI start running */
+    79		regmap_write(hdmi_pai->regmap, HTX_PAI_CTRL, ENABLE);
+    80	}
+    81	
 
 -- 
-Regards,
-
-Laurent Pinchart
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
