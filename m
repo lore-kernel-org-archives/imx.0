@@ -1,100 +1,143 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774831FC3;
-	Fri, 25 Jul 2025 19:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C19A19D06B;
+	Fri, 25 Jul 2025 22:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753473389; cv=none; b=RlMIiSi9EwdO3ojN85kTHy67ol5xgoIoleA4NEXsG11IdWhpYrftgeWiwHkMfoPo4JlNcAnkki2o/yEL/jYLrV5V3mEfL7p5v2UweUNdmRfrRU2c9ItLOloP3GnI07PhfBJ9rhTu2XQPQptsALo7LoOrUIt9MJNnm3qeEkc+jPA=
+	t=1753481781; cv=none; b=domqD+Eas15LRNsDdpKUeTSkl8F0nYR3RaQRcpgus2+nIXgOUfFvQGlwY/oEAaqSNwXKSaJuxB9Dfh9sPWzEjNslxOokS/Jh4BkkdJey9U+myTZc9kP6Ze0kbp0szT3fTtn3EV7QffBcgIEwDl5HHJeTs/x+wL6+R9IdIIoyGp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753473389; c=relaxed/simple;
-	bh=DTyhXDpELPxUegquRGP0YjMOW25NNz7AxUozPicBFOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AK5RZYUKsYq8F+US/1pzeBb9dG7TWN+6CClmWMRdGiktNXxt5CNK1BFWJ+X3/MPvQY9wS+1uzR6E/x07EuDNtTKAgvqsvGgW+vHbxsDeqbJQsMDrWOrQugI/mNB8ir6V76udmR0yv02BS88D9czmYc554uI+jhmvn5JWsiI91oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frOkazwW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753481781; c=relaxed/simple;
+	bh=zcCljp+/O3021EXF1kCLQYobxVhkF/h2q9zxHMYLlrk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LV+IVS9t8mA5SBcAwIoxJHCraoFE93DIMcnbxRq3oroX+a4DhiNK23OlSrADLe6oJE2qwBgJMYuaPSv/MZz3Uh77Fyjab3HKz7O4ihXnMOiDnJAHCxAARXHnoWInMLSNat+7GOEjiVOb3EMqCvmXRYwq2GRw+hRsW9IFlNNpHNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZKOhAYk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frOkazwW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8D6C4CEE7;
-	Fri, 25 Jul 2025 19:56:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZKOhAYk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C206C4CEEF;
+	Fri, 25 Jul 2025 22:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753473388;
-	bh=DTyhXDpELPxUegquRGP0YjMOW25NNz7AxUozPicBFOU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=frOkazwWgScxWj9Ie1H1vZoYNmsQNr7dVhn2BbXTTxPSWpKrvU/+y6O5X2wNDNWt4
-	 HEPwNTXUslgORw25Yq54t31DH2cIZoLD5jMTB4h9J0wyXOAKSZ+75gSBjY7xqtjrbM
-	 RnGiKmGjdjVb1gneLqyooYmr4G6dbx0MXZ7ArwpHI90VRqDQ/wP1CHa58laC3NtSPt
-	 licddS8nwRgwU/LmjH+ynwbYagi4Q2fdWiugV0OgCmJwUp5ksOJ3XwhiegE7wpEQZ1
-	 JFASNVwmPJCltQ61dJcQ9R+X7JjiJov9W3LdYi8UYoa9JHIm9lXa8i4hAlxIfmFtko
-	 SLYYm4CMU0FwQ==
-Date: Fri, 25 Jul 2025 14:56:28 -0500
-From: Rob Herring <robh@kernel.org>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matthias Schiffer <matthias.schiffer@tq-group.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com, Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v4 1/2] dt-bindings: arm: add TQMLS1012AL
-Message-ID: <20250725195628.GA1747130-robh@kernel.org>
-References: <20250725062454.271191-1-alexander.stein@ew.tq-group.com>
+	s=k20201202; t=1753481780;
+	bh=zcCljp+/O3021EXF1kCLQYobxVhkF/h2q9zxHMYLlrk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=YZKOhAYkjdfG8UL5HyJCFIY5sTjEDtSgODpdhnxJHWSijrZUGlWcW8bnm9QR/3Bo8
+	 MOu7XWmbuz2fW/3mr6s58b1HlBXH/j3Dr5hwwJe7jRQAKLeIpVdfloTiX1kPjPj6LX
+	 RXfHwUTSK6J1UNfxEMAd7zMN50FiHYgDcMkEZmHuCQbFPIvUcS+hmvAxhDVis2PI6F
+	 IMFQ4cGUHzYx3+9Zwm2s7jH6YxyUqcaj+M9S7iriu1EofrRPo3E4488GIgFXE8D07a
+	 WuoDsvFFqj3rxBASIDmQ3E79npvARYh4fHJ9XG+9hMQzqx2MIGGsHOXsBeIZ88Qw00
+	 meD+hksXofvbw==
+Date: Fri, 25 Jul 2025 15:16:18 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
+Subject: Re: [net-next v16 06/12] net: mtip: Add net_device_ops functions to
+ the L2 switch driver
+Message-ID: <20250725151618.0bc84bdb@kernel.org>
+In-Reply-To: <20250724223318.3068984-7-lukma@denx.de>
+References: <20250724223318.3068984-1-lukma@denx.de>
+	<20250724223318.3068984-7-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250725062454.271191-1-alexander.stein@ew.tq-group.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 25, 2025 at 08:24:50AM +0200, Alexander Stein wrote:
-> From: Matthias Schiffer <matthias.schiffer@tq-group.com>
-> 
-
-The subject could use a 'fsl: '.
-
-> TQMLS1012AL is a SOM using NXP LS1012A CPU. MBLS1012AL is a carrier
-> reference design.
-> 
-> [1] https://www.tq-group.com/en/products/tq-embedded/qoriq-layerscape/tqmls1012al
-> 
-> Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> ---
-> Changes in v3:
-> * Fixed commit message subject
-> 
-> Changes in v3:
-> * None
-> 
-> Changes in v2:
-> * Collected Conor's A-b
-> 
->  Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-> index f494ada0c1966..0beb0040a7d34 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -1571,6 +1571,12 @@ properties:
->                - fsl,ls1012a-qds
->            - const: fsl,ls1012a
->  
-> +      - description: TQ Systems TQMLS12AL SoM on MBLS1012AL board
-> +        items:
-> +          - const: tq,ls1012a-tqmls1012al-mbls1012al
-> +          - const: tq,ls1012a-tqmls1012al
-> +          - const: fsl,ls1012a
+On Fri, 25 Jul 2025 00:33:12 +0200 Lukasz Majewski wrote:
+> +static void swap_buffer(void *bufaddr, int len)
+> +{
+> +	int i;
+> +	unsigned int *buf = bufaddr;
 > +
->        - description: LS1021A based Boards
->          items:
->            - enum:
-> -- 
-> 2.43.0
-> 
+
+nit: reverse xmas tree
+
+> +	if (status & BD_ENET_TX_READY) {
+> +		/* All transmit buffers are full. Bail out.
+> +		 * This should not happen, since dev->tbusy should be set.
+> +		 */
+> +		netif_stop_queue(dev);
+> +		dev_err_ratelimited(&fep->pdev->dev, "%s: tx queue full!.\n",
+> +				    dev->name);
+> +		spin_unlock(&fep->hw_lock);
+
+As we discussed on previous revision you have many to one mapping
+of netdevs to queues. I think the warning should only be printed
+if the drivers is in "single netdev" mode. Otherwise it _will_
+trigger.
+
+BTW you should put the print after the unlock, console writes are slow.
+
+> +static void mtip_timeout(struct net_device *dev, unsigned int txqueue)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	struct cbd_t *bdp;
+> +	int i;
+> +
+> +	dev->stats.tx_errors++;
+> +
+> +	if (IS_ENABLED(CONFIG_SWITCH_DEBUG)) {
+
+why are you hiding the debug info under a CONFIG_ ? 
+(which BTW appears not to be defined at all)
+Seems useful to know the state of the HW when the queue hung.
+You can use a DO_ONCE() if you want to avoid spamming logs
+
+> +	/* Set buffer length and buffer pointer */
+> +	bufaddr = skb->data;
+
+You should call skb_cow_data() if you want to write to the skb data.
+
+> +static void mtip_timeout(struct net_device *dev, unsigned int txqueue)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	struct cbd_t *bdp;
+> +	int i;
+> +
+> +	dev->stats.tx_errors++;
+
+timeouts are already counted by the stack, I think the statistic
+is exposed per-queue in sysfs
+
+> +		spin_lock_bh(&fep->hw_lock);
+> +		dev_info(&dev->dev, "%s: transmit timed out.\n", dev->name);
+> +		dev_info(&dev->dev,
+> +			 "Ring data: cur_tx %lx%s, dirty_tx %lx cur_rx: %lx\n",
+> +			 (unsigned long)fep->cur_tx,
+> +			 fep->tx_full ? " (full)" : "",
+> +			 (unsigned long)fep->dirty_tx,
+> +			 (unsigned long)fep->cur_rx);
+> +
+> +		bdp = fep->tx_bd_base;
+> +		dev_info(&dev->dev, " tx: %u buffers\n", TX_RING_SIZE);
+> +		for (i = 0; i < TX_RING_SIZE; i++) {
+> +			dev_info(&dev->dev, "  %08lx: %04x %04x %08x\n",
+> +				 (kernel_ulong_t)bdp, bdp->cbd_sc,
+> +				 bdp->cbd_datlen, (int)bdp->cbd_bufaddr);
+> +			bdp++;
+> +		}
+> +
+> +		bdp = fep->rx_bd_base;
+> +		dev_info(&dev->dev, " rx: %lu buffers\n",
+> +			 (unsigned long)RX_RING_SIZE);
+> +		for (i = 0 ; i < RX_RING_SIZE; i++) {
+> +			dev_info(&dev->dev, "  %08lx: %04x %04x %08x\n",
+> +				 (kernel_ulong_t)bdp,
+> +				 bdp->cbd_sc, bdp->cbd_datlen,
+> +				 (int)bdp->cbd_bufaddr);
+> +			bdp++;
+> +		}
+> +		spin_unlock_bh(&fep->hw_lock);
