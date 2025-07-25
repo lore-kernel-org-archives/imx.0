@@ -1,241 +1,83 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BF32E5433
-	for <imx@lists.linux.dev>; Fri, 25 Jul 2025 17:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9A81E766F;
+	Fri, 25 Jul 2025 19:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753466241; cv=none; b=hMyvi2BegYN7qta5YSARNxqj2m/g0ObTp1jreUAI0Mixz6Ais82gepUn+jXC4QdOqKaxzrIGqugx0BPSzqL9SOMjzV5/UXvMyKhQ5HkH3BRzYOw3+4CjPGtz6nPH89UBEkTnbKJb5Q3noHN61UTfyN6pBqmZ7LiR8m+oxgAites=
+	t=1753473104; cv=none; b=rhXRLgU1hERyQM+Au7a/WJIduCNrpgaIKqcobltYix3BzPSetSheJTw+8sobLEqOZZKhfNmpMgwaBwsUKoeRrC8zjtNazv+/o23qKyIRYRyeKCkIgk3JHzwSGskpuZ6T3k+NDelUIuL1VkJACAN+Oj4oIwZEVMHhD87uhRutdhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753466241; c=relaxed/simple;
-	bh=5ldzZ9vyLUpLw7BH0/+el75YcJaK4n9pqdRVPuEkdaQ=;
+	s=arc-20240116; t=1753473104; c=relaxed/simple;
+	bh=HIFZCasQnvflawLHEinivIZ7CGoYHgz1TfOYSlsci5A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DXOVCAKhx6AFi0SuVPAANTXar7dRDs7ejPpnguDyuE5BvYJVU6sNWdGh/ijGS/g4Dwwq0qeDCzIEqiAJdJ7nHK6HoedtAXG51JPolKmBECqXb59LjJ2reQEkqR9od4JmGn/IIzr0JQnIf+r4OKme3H68N6DLMTtsMX1gN0XwBXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=GUoipYeI; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ldnfDQEBz/AiF0lbR9kIaBmUyPtzyt+w5M/1V6uC02F0d0W+/xr09lbFwoyEfnemFOtYXPFdZMVR+vU2ESGF7sa1RhunO+8oHXNt9gUkOd0bpXowjpUQGzk+YitlIgEXp1V6X4+EHly7lR0BIp8+WOvjJFiUAb1L6hw4XoANDFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7IReT1m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="GUoipYeI"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 0FEA0C66;
-	Fri, 25 Jul 2025 19:56:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1753466197;
-	bh=5ldzZ9vyLUpLw7BH0/+el75YcJaK4n9pqdRVPuEkdaQ=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7IReT1m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08BEC4CEE7;
+	Fri, 25 Jul 2025 19:51:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753473103;
+	bh=HIFZCasQnvflawLHEinivIZ7CGoYHgz1TfOYSlsci5A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GUoipYeI4r5hxShSrw8p3pKpANuUknHdeOB6tf2trLpU50/AJJHr2gSz0BvuCacl0
-	 0ntiCKiiL74GFeFu/Ve3GUvIUxwe9JPu+bCOJCB4aVY3Ls/b3dDYN3wABpEzw/GBgk
-	 YM80nWbUZ6egMPhVsFIE1V0L1aIEyGQr47DuN5Yo=
-Date: Fri, 25 Jul 2025 20:57:11 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	b=c7IReT1m8egDm2RiZG6IZs9XJkWSVWWEaWM2T9QRwgauUdX2AFDzeVRji+7xYvf7w
+	 2q5Iq3z3/d+RbsVRQ2TymUaZsf7afz1W1pHCg6neFeqOeAH092Rfhqb0RwuYUv7/pA
+	 2sUaBr7obPmpG9Dd+eD7eFRQnZXyNO/znE8rgPc/yqfp/pRLxTXZbhso5dJxsmagpv
+	 TEojpnKd1CEmpaXLYT1n7FyiMD7faZq0Mif46V7ZOTZe5uPTjHDb2XJEnNM0sbPn1w
+	 2KIQ1Ox/iZbrveQ7eeXIjyiu0LwcAfEAOsUWt8NOXvbsJPC5FW7GzEYVn6MTJJP2R/
+	 lSDhPTaQdiSJQ==
+Date: Fri, 25 Jul 2025 14:51:43 -0500
+From: Rob Herring <robh@kernel.org>
+To: Maud Spierings <maudspierings@gocontroll.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Daniel Thompson <danielt@kernel.org>, Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org, Lee Jones <lee@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-media@vger.kernel.org,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+	Pavel Machek <pavel@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	Alice Yuan <alice.yuan@nxp.com>,
-	Robert Chiras <robert.chiras@nxp.com>,
-	Zhipeng Wang <zhipeng.wang_1@nxp.com>
-Subject: Re: [PATCH v3 2/4] media: nxp: add V4L2 subdev driver for camera
- parallel interface (CPI)
-Message-ID: <20250725175711.GA27425@pendragon.ideasonboard.com>
-References: <20250708-imx8qxp_pcam-v3-0-c8533e405df1@nxp.com>
- <20250708-imx8qxp_pcam-v3-2-c8533e405df1@nxp.com>
- <20250725000404.GW11202@pendragon.ideasonboard.com>
- <aIOk9W/RBKmS8uVQ@lizhi-Precision-Tower-5810>
+	Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH 1/4] dt-bindings: backlight: Add max25014 bindings
+Message-ID: <20250725195143.GA1735522-robh@kernel.org>
+References: <20250725-max25014-v1-0-0e8cce92078e@gocontroll.com>
+ <20250725-max25014-v1-1-0e8cce92078e@gocontroll.com>
+ <175345006903.1002291.4212198267952446360.robh@kernel.org>
+ <03096180-1e33-4dd0-b027-cc18a5010e46@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aIOk9W/RBKmS8uVQ@lizhi-Precision-Tower-5810>
+In-Reply-To: <03096180-1e33-4dd0-b027-cc18a5010e46@gocontroll.com>
 
-On Fri, Jul 25, 2025 at 11:38:29AM -0400, Frank Li wrote:
-> On Fri, Jul 25, 2025 at 03:04:04AM +0300, Laurent Pinchart wrote:
-> > Hi Frank,
-> >
-> > Thank you for the patch.
-> >
-> > On Tue, Jul 08, 2025 at 01:48:43PM -0400, Frank Li via B4 Relay wrote:
-> > > From: Alice Yuan <alice.yuan@nxp.com>
-> > >
-> > > Add a V4L2 sub-device driver for the CPI controller found on i.MX8QXP,
-> > > i.MX8QM, and i.MX93 SoCs. This controller supports parallel camera sensors
-> > > and enables image data capture through a parallel interface.
-> > >
-> > > Signed-off-by: Alice Yuan <alice.yuan@nxp.com>
-> > > Signed-off-by: Robert Chiras <robert.chiras@nxp.com>
-> > > Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On Fri, Jul 25, 2025 at 04:06:45PM +0200, Maud Spierings wrote:
+> 
+> 
+> On 7/25/25 15:27, Rob Herring (Arm) wrote:
+> > 
+> > On Fri, 25 Jul 2025 13:09:23 +0200, Maud Spierings wrote:
+> > > The Maxim MAX25014 is a 4-channel automotive grade backlight driver IC
+> > > with intgrated boost controller.
+> > > 
+> > > Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 > > > ---
-> > > change in v3
-> > > - replace csi with cpi
-> > > - use __free(fwnode_handle) to simpilfy code
-> > > - remove imx91 driver data, which is the same as imx93
-> > >
-> > > change in v2
-> > > - remove MODULE_ALIAS
-> > > - use devm_pm_runtime_enable() and cleanup remove function
-> > > - change output format to 1x16. controller convert 2x8 to 1x16 format
-> > > ---
-> > >  MAINTAINERS                                   |   1 +
-> > >  drivers/media/platform/nxp/Kconfig            |  11 +
-> > >  drivers/media/platform/nxp/Makefile           |   1 +
-> > >  drivers/media/platform/nxp/imx-parallel-cpi.c | 920 ++++++++++++++++++++++++++
-> > >  4 files changed, 933 insertions(+)
-> > >
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index 8ae0667d2bb41fb6a1549bd3b2b33f326cbd1303..14842a3b860a6f23846f12a684eedcbb9eb69e19 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -15112,6 +15112,7 @@ F:	Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
-> > >  F:	Documentation/devicetree/bindings/media/nxp,imx7-csi.yaml
-> > >  F:	Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> > >  F:	drivers/media/platform/nxp/imx-mipi-csis.c
-> > > +F:	drivers/media/platform/nxp/imx-parallel-cpi.c
-> > >  F:	drivers/media/platform/nxp/imx7-media-csi.c
-> > >  F:	drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > >
-> > > diff --git a/drivers/media/platform/nxp/Kconfig b/drivers/media/platform/nxp/Kconfig
-> > > index 40e3436669e213fdc5da70821dc0b420e1821f4f..504ae1c6494f331c16124a224421ac7acd433ba5 100644
-> > > --- a/drivers/media/platform/nxp/Kconfig
-> > > +++ b/drivers/media/platform/nxp/Kconfig
-> > > @@ -39,6 +39,17 @@ config VIDEO_IMX_MIPI_CSIS
-> > >  	  Video4Linux2 sub-device driver for the MIPI CSI-2 CSIS receiver
-> > >  	  v3.3/v3.6.3 found on some i.MX7 and i.MX8 SoCs.
-> > >
-> > > +config VIDEO_IMX_PARALLEL_CPI
-> > > +	tristate "NXP i.MX9/i.MX8 Parallel CPI Driver"
-> >
-> > I'd write it in numerical order, "i.MX8/i.MX9"
-> >
-> > > +	depends on ARCH_MXC || COMPILE_TEST
-> > > +	depends on VIDEO_DEV
-> > > +	select MEDIA_CONTROLLER
-> > > +	select V4L2_FWNODE
-> > > +	select VIDEO_V4L2_SUBDEV_API
-> > > +	help
-> > > +	  Video4Linux2 sub-device driver for PARALLEL CPI receiver found
-> > > +	  on some iMX8 and iMX9 SoCs.
-> > > +
-> > >  source "drivers/media/platform/nxp/imx8-isi/Kconfig"
-> > >
-> > >  # mem2mem drivers
-> > > diff --git a/drivers/media/platform/nxp/Makefile b/drivers/media/platform/nxp/Makefile
-> > > index 4d90eb71365259ebdda84ea58483e1c4131d3ac7..5346919d2f1083b51ec99b66981c5d38b3df960c 100644
-> > > --- a/drivers/media/platform/nxp/Makefile
-> > > +++ b/drivers/media/platform/nxp/Makefile
-> > > @@ -7,5 +7,6 @@ obj-y += imx8-isi/
-> > >  obj-$(CONFIG_VIDEO_IMX7_CSI) += imx7-media-csi.o
-> > >  obj-$(CONFIG_VIDEO_IMX8MQ_MIPI_CSI2) += imx8mq-mipi-csi2.o
-> > >  obj-$(CONFIG_VIDEO_IMX_MIPI_CSIS) += imx-mipi-csis.o
-> > > +obj-$(CONFIG_VIDEO_IMX_PARALLEL_CPI) += imx-parallel-cpi.o
-> > >  obj-$(CONFIG_VIDEO_IMX_PXP) += imx-pxp.o
-> > >  obj-$(CONFIG_VIDEO_MX2_EMMAPRP) += mx2_emmaprp.o
-> > > diff --git a/drivers/media/platform/nxp/imx-parallel-cpi.c b/drivers/media/platform/nxp/imx-parallel-cpi.c
-> > > new file mode 100644
-> > > index 0000000000000000000000000000000000000000..718f02bf70c4d0ae74ecf842c1ecb1a1afbcdd45
-> > > --- /dev/null
-> > > +++ b/drivers/media/platform/nxp/imx-parallel-cpi.c
-> > > @@ -0,0 +1,920 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +/*
-> > > + * i.MX Parallel CPI receiver driver.
-> > > + *
-> > > + * Copyright 2019-2025 NXP
-> > > + *
-> > > + */
-> > > +
-> > > +#include <linux/bits.h>
-> > > +#include <linux/clk.h>
-> > > +#include <linux/debugfs.h>
-> >
-> > I don't think you use this.
-> >
-> > > +#include <linux/delay.h>
-> > > +#include <linux/errno.h>
-> > > +#include <linux/interrupt.h>
-> >
-> > I don't think you use this either.
-> >
-> > > +#include <linux/io.h>
-> > > +#include <linux/kernel.h>
-> > > +#include <linux/module.h>
-> > > +#include <linux/mutex.h>
-> > > +#include <linux/mfd/syscon.h>
-> >
-> > Alphabetical order please.
-> >
-> > > +#include <linux/of.h>
-> > > +#include <linux/platform_device.h>
-> > > +#include <linux/pm_domain.h>
-> >
-> > This doesn't seem needed.
-> >
-> > > +#include <linux/pm_runtime.h>
-> > > +#include <linux/regulator/consumer.h>
-> > > +#include <linux/reset.h>
-> >
-> > Same here.
-> >
-> > > +#include <linux/spinlock.h>
-> >
-> > And here. Please verify all headers, drop the ones you don't need, and
-> > add any you may have forgotten. That includes the media/ headers.
+> > >   .../bindings/leds/backlight/maxim,max25014.yaml    | 78 ++++++++++++++++++++++
+> > >   MAINTAINERS                                        |  5 ++
+> > >   2 files changed, 83 insertions(+)
+> > > 
+> > 
+> > My bot found errors running 'make dt_binding_check' on your patch:
 > 
-> Do you have good method to check it?
+> Pretty sure I did that, but I've never gotten those tools to work quite
+> right, I'll look at it for v2
 
-There are tools such as include-what-you-use, but I haven't tested that
-one with the kernel.
+What's the issue?
 
-> > > +
-> > > +#include <media/v4l2-common.h>
-> > > +#include <media/v4l2-device.h>
-> > > +#include <media/v4l2-event.h>
-> > > +#include <media/v4l2-fwnode.h>
-> > > +#include <media/v4l2-mc.h>
-> > > +#include <media/v4l2-subdev.h>
-> 
-> ...
-> 
-> > > +
-> > > +	/* Software Reset */
-> > > +	imx_cpi_sw_reset(pcpidev);
-> > > +
-> > > +	/* Config PL Data Type */
-> > > +	val = readl(pcpidev->regs + pdata->if_ctrl_reg);
-> > > +	val |= IF_CTRL_REG_DATA_TYPE(DATA_TYPE_OUT_YUV444);
-> >
-> > Don't you need to clear the field first ? Same everywhere else where
-> > applicable.
-> 
-> imx_cpi_sw_reset() clean all register.
-
-OK. I wonder if you could then replace some (most ? all ?) of the
-read-update-write sequences with plain writes.
-
-> > > +	writel(val, pcpidev->regs + pdata->if_ctrl_reg);
-> > > +
-> > > +	/* Enable sync Force */
-> > > +	val = readl(pcpidev->regs + pdata->interface_ctrl_reg);
-> > > +	val |= (CPI_CTRL_REG_HSYNC_FORCE_EN | CPI_CTRL_REG_VSYNC_FORCE_EN);
-> > > +	writel(val, pcpidev->regs + pdata->interface_ctrl_reg);
-> 
-> ....
-
--- 
-Regards,
-
-Laurent Pinchart
+Rob
