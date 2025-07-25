@@ -1,195 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA1720E023;
-	Fri, 25 Jul 2025 11:06:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5942E5B3F;
+	Fri, 25 Jul 2025 11:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753441587; cv=none; b=RNwolRrR1Rrx21o+KZJBB4XubsgU9jRF725ycYgVxegUQF14FzA8wztegfOz+81L+P6NyyYPMr89b8w1BM1ngUe/M3SxzEqoH5cdnlAUP9kyuCjRA0NxOAdy10TMth9aY43eXq5ahrfxch6dMky1bQz4VXtkg2rz/H3ou/EPth4=
+	t=1753441767; cv=none; b=EnFkMrn8DBKgI7/m+B7ba36AyBYiJpX9ytkhkyEOxY9crjkmspOyIyj3eo6dLbx1OqOYS811VpSMR1JL52JRpJzuJzT2+0mektQg0JRIz4a68XsqcT4ih6QOocT9yIoiMt3fD/Rto6hWNKV0dnflRwe06eJwnIOtn1wnRavIbiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753441587; c=relaxed/simple;
-	bh=4ODTp0UV/5yld+rfWin+qb9F8EdCt5NLU8TsGWCsgrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d/OXTiMoniGVq/PncIxi+Y9EyfAsCzmC7+EE/dXtA7R8dbb35Xoag5A/vlzwjcEQ84LrlHdMvbGSKEMshWUr42Fw7rwgaNWVhiZMKfi0I2afm2iS6sn29I0KXRGnWqusW3QvmE2prkeQg/FYrtmPVPxCAwdLbPIrvdJHTr6vR00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N7W6UML2; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1753441767; c=relaxed/simple;
+	bh=KbANwn4NmNO7jNz4SGe7SAKLtyBDL4GI6/j143/N1/E=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=F29d/5RLYPdyo/VHqw5G8d5sxlk/UqVWlO1Z0920kEOWzKeV7ooDjZa8naTSJiMbuF5y8NCiXabPWdMHGJs19r0JIMXn/GDAWZzDEVazbTyAcNuosLzEGnaUbn2+Yy/Uxz5eovM4f4YSly0otZZvKpSoaMSI2ZKQ9XhftNKzzas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W9sPIwOC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N7W6UML2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753441586; x=1784977586;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4ODTp0UV/5yld+rfWin+qb9F8EdCt5NLU8TsGWCsgrM=;
-  b=N7W6UML2ztUZTEHyCft2dCh8aNbm34grXdmu0y0oQxoz79peKge0D46W
-   xRW0CoNvqgcQYuShaNPfs1Do9CbCtBbTew9yhNZhbJLmXCNh/Ftz25Sl9
-   8xLvxo6d+VNnTFaibVqVR6BdqUwL+jO/5pzuXYITH5AOQpfN9yHI8aaAa
-   AZvzYEa2Sr/D5y3sJBydJz2hca7XNKe94McWIEPEjXlNQoGaYDDr0jePq
-   dpeLJsnbjm+aZsFHpqmTqWhaqbIjMHSxqNp+LxfKwT3caSovdTHIbMNaN
-   Pu2AyNRqqXyedUtAF2X0zBVGLzjuVRMMf6nFeI9bGwIjauO4FIX8szndd
-   w==;
-X-CSE-ConnectionGUID: E7WHhcOERu6f+odrRJKQ7A==
-X-CSE-MsgGUID: TXzk91+bRniSMY4kkjCNHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="73355868"
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="73355868"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 04:06:25 -0700
-X-CSE-ConnectionGUID: 4dpPtvj9S5OlyM73/KA5iw==
-X-CSE-MsgGUID: DbED2/rCRkSTnILVrQc1Vg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="161593680"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 25 Jul 2025 04:06:18 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ufGFk-000LGp-1A;
-	Fri, 25 Jul 2025 11:06:16 +0000
-Date: Fri, 25 Jul 2025 19:06:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org, rfoss@kernel.org,
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
-	jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org,
-	cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	victor.liu@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de,
-	devicetree@vger.kernel.org, l.stach@pengutronix.de
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2 5/6] drm/bridge: imx: add driver for HDMI TX Parallel
- Audio Interface
-Message-ID: <202507251859.rtsTHw8u-lkp@intel.com>
-References: <20250724072248.1517569-6-shengjiu.wang@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W9sPIwOC"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DD64DC4CEE7;
+	Fri, 25 Jul 2025 11:09:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753441766;
+	bh=KbANwn4NmNO7jNz4SGe7SAKLtyBDL4GI6/j143/N1/E=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=W9sPIwOCB5dNs2yTE7GskZjS3l63MyPbMenDtqb2FOXjCWml2zp9FjDmsmuJ+QGEn
+	 6yo9aMmWsR4WinMQt4VBv2eXbOD7modh25V/zbZ7tXfAt2qiFTEK0FzRI0MPMSxtnV
+	 LiHjfmIw4C2CTVY4dIKYaKs+DE6SOsEU/Rb4Mczs8Mw41I3S2Tp/JEyrgDeGNpfWMc
+	 XZ3owU0So9alJvD6pMSFMKuAijgYcqRpURpLZyOUeK+g7yv4874xrgKAzwZVEwzlRb
+	 mDu6wcPrA9iOkKgFydnEk7ZQJw8EPW4spzrmdY14hLh9sxQCa9fjCZ6Z5BlsiMumxL
+	 QPXqWBwUEpPZw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C88D7C87FCD;
+	Fri, 25 Jul 2025 11:09:26 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Subject: [PATCH 0/4] backlight: add new max25014 backlight driver
+Date: Fri, 25 Jul 2025 13:09:22 +0200
+Message-Id: <20250725-max25014-v1-0-0e8cce92078e@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250724072248.1517569-6-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOJlg2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDMyMz3dzECiDL0ETXxMjA3NTSMNUwMc1UCai8oCg1LbMCbFR0bG0tAB3
+ YAxhaAAAA
+X-Change-ID: 20250626-max25014-4207591e1af5
+To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
+ Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-fbdev@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Maud Spierings <maudspierings@gocontroll.com>, 
+ "Maud Spierings maudspierings"@gocontroll.com
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1753441765; l=1452;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=KbANwn4NmNO7jNz4SGe7SAKLtyBDL4GI6/j143/N1/E=;
+ b=PjTusrgPlZupmtwnWn9StKXy2DkRV3eFf5M+adbF+rEkvyz1mG3L2XP9PPZrorFH+PUwg5zR7
+ EKaU2GeBddlCmwwgOer6BZEklYbXnOarE4DYHFsHnMYmH89T2htQs71
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-Hi Shengjiu,
+The Maxim MAX25014 is an automotive grade backlight driver IC. Its
+datasheet can be found at [1].
 
-kernel test robot noticed the following build errors:
+With its integrated boost controller, it can power 4 channels (led
+strings) and has a number of different modes using pwm and or i2c.
+Currently implemented is only i2c control.
 
-[auto build test ERROR on shawnguo/for-next]
-[also build test ERROR on robh/for-next tiwai-sound/for-next tiwai-sound/for-linus linus/master v6.16-rc7 next-20250725]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+link: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX25014.pdf [1]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Shengjiu-Wang/dt-bindings-display-imx-add-HDMI-PAI-for-i-MX8MP/20250724-152710
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
-patch link:    https://lore.kernel.org/r/20250724072248.1517569-6-shengjiu.wang%40nxp.com
-patch subject: [PATCH v2 5/6] drm/bridge: imx: add driver for HDMI TX Parallel Audio Interface
-config: nios2-randconfig-002-20250725 (https://download.01.org/0day-ci/archive/20250725/202507251859.rtsTHw8u-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250725/202507251859.rtsTHw8u-lkp@intel.com/reproduce)
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+---
+Maud Spierings (4):
+      dt-bindings: backlight: Add max25014 bindings
+      backlight: add max25014atg backlight
+      arm64: dts: freescale: moduline-display-av101hdt-a10: add backlight
+      arm64: dts: freescale: moduline-display-av123z7m-n17: add backlight
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507251859.rtsTHw8u-lkp@intel.com/
+ .../bindings/leds/backlight/maxim,max25014.yaml    |  78 ++++
+ MAINTAINERS                                        |   7 +
+ ...x8p-ml81-moduline-display-106-av101hdt-a10.dtso |  21 +
+ ...x8p-ml81-moduline-display-106-av123z7m-n17.dtso |  19 +-
+ drivers/video/backlight/Kconfig                    |   7 +
+ drivers/video/backlight/Makefile                   |   1 +
+ drivers/video/backlight/max25014.c                 | 449 +++++++++++++++++++++
+ include/linux/platform_data/max25014.h             |  24 ++
+ 8 files changed, 605 insertions(+), 1 deletion(-)
+---
+base-commit: d7af19298454ed155f5cf67201a70f5cf836c842
+change-id: 20250626-max25014-4207591e1af5
 
-All errors (new ones prefixed by >>):
-
-   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c: In function 'imx8mp_hdmi_pai_enable':
->> drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c:20:26: error: implicit declaration of function 'FIELD_PREP' [-Werror=implicit-function-declaration]
-    #define   WTMK_HIGH(n)   FIELD_PREP(WTMK_HIGH_MASK, (n))
-                             ^~~~~~~~~~
-   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c:53:9: note: in expansion of macro 'WTMK_HIGH'
-     val =  WTMK_HIGH(3) | WTMK_LOW(3);
-            ^~~~~~~~~
->> drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c:59:9: error: implicit declaration of function 'FIELD_PREP_CONST'; did you mean 'FILE_REF_NOREF'? [-Werror=implicit-function-declaration]
-      val = FIELD_PREP_CONST(P_SEL,
-            ^~~~~~~~~~~~~~~~
-            FILE_REF_NOREF
->> drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c:60:12: error: implicit declaration of function '__bf_shf'; did you mean '__ffs64'? [-Werror=implicit-function-declaration]
-               __bf_shf(IEC958_SUBFRAME_PARITY));
-               ^~~~~~~~
-               __ffs64
-   cc1: some warnings being treated as errors
-
-
-vim +/FIELD_PREP +20 drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c
-
-    15	
-    16	#define HTX_PAI_CTRL_EXT		0x04
-    17	#define   WTMK_HIGH_MASK		GENMASK(31, 24)
-    18	#define   WTMK_LOW_MASK			GENMASK(23, 16)
-    19	#define   NUM_CH_MASK			GENMASK(10, 8)
-  > 20	#define   WTMK_HIGH(n)			FIELD_PREP(WTMK_HIGH_MASK, (n))
-    21	#define   WTMK_LOW(n)			FIELD_PREP(WTMK_LOW_MASK, (n))
-    22	
-    23	#define HTX_PAI_FIELD_CTRL		0x08
-    24	#define   B_FILT			BIT(31)
-    25	#define   PARITY_EN			BIT(30)
-    26	#define   END_SEL			BIT(29)
-    27	#define   PRE_SEL			GENMASK(28, 24)
-    28	#define   D_SEL				GENMASK(23, 20)
-    29	#define   V_SEL				GENMASK(19, 15)
-    30	#define   U_SEL				GENMASK(14, 10)
-    31	#define   C_SEL				GENMASK(9, 5)
-    32	#define   P_SEL				GENMASK(4, 0)
-    33	
-    34	#define HTX_PAI_STAT			0x0c
-    35	#define HTX_PAI_IRQ_NOMASK		0x10
-    36	#define HTX_PAI_IRQ_MASKED		0x14
-    37	#define HTX_PAI_IRQ_MASK		0x18
-    38	
-    39	struct imx8mp_hdmi_pai {
-    40		struct device	*dev;
-    41		struct regmap	*regmap;
-    42	};
-    43	
-    44	static void imx8mp_hdmi_pai_enable(struct dw_hdmi *dw_hdmi, int channel,
-    45					   int width, int rate, int non_pcm,
-    46					   int iec958)
-    47	{
-    48		const struct dw_hdmi_plat_data *pdata = dw_hdmi_to_plat_data(dw_hdmi);
-    49		struct imx8mp_hdmi_pai *hdmi_pai = (struct imx8mp_hdmi_pai *)pdata->priv_audio;
-    50		int val;
-    51	
-    52		/* PAI set control extended */
-    53		val =  WTMK_HIGH(3) | WTMK_LOW(3);
-    54		val |= FIELD_PREP(NUM_CH_MASK, channel - 1);
-    55		regmap_write(hdmi_pai->regmap, HTX_PAI_CTRL_EXT, val);
-    56	
-    57		/* IEC60958 format */
-    58		if (iec958) {
-  > 59			val = FIELD_PREP_CONST(P_SEL,
-  > 60					       __bf_shf(IEC958_SUBFRAME_PARITY));
-    61			val |= FIELD_PREP_CONST(C_SEL,
-    62						__bf_shf(IEC958_SUBFRAME_CHANNEL_STATUS));
-    63			val |= FIELD_PREP_CONST(U_SEL,
-    64						__bf_shf(IEC958_SUBFRAME_USER_DATA));
-    65			val |= FIELD_PREP_CONST(V_SEL,
-    66						__bf_shf(IEC958_SUBFRAME_VALIDITY));
-    67			val |= FIELD_PREP_CONST(D_SEL,
-    68						__bf_shf(IEC958_SUBFRAME_SAMPLE_24_MASK));
-    69			val |= FIELD_PREP_CONST(PRE_SEL,
-    70						__bf_shf(IEC958_SUBFRAME_PREAMBLE_MASK));
-    71		} else {
-    72			/* PCM choose 24bit*/
-    73			val = FIELD_PREP(D_SEL, width - 24);
-    74		}
-    75	
-    76		regmap_write(hdmi_pai->regmap, HTX_PAI_FIELD_CTRL, val);
-    77	
-    78		/* PAI start running */
-    79		regmap_write(hdmi_pai->regmap, HTX_PAI_CTRL, ENABLE);
-    80	}
-    81	
-
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Maud Spierings <maudspierings@gocontroll.com>
+
+
