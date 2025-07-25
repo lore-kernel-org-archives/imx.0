@@ -1,237 +1,241 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC39D219E93
-	for <imx@lists.linux.dev>; Fri, 25 Jul 2025 17:27:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BF32E5433
+	for <imx@lists.linux.dev>; Fri, 25 Jul 2025 17:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753464470; cv=none; b=b/ypH/RUgJP+btOauWpvB75G5Q5KddclGXBl+EQIY1geWegNtowC4nnZHfNWIyw3txN80Zq5YIbWhmVX2sDcGpNiFfbbk4fY8VXc6Hpd6qqW5e6ef5foxiIYzi4QiX+w1XIs+IgDqw6NYkr+e+gnhmzbspwp6jHunCaPff5b6Tk=
+	t=1753466241; cv=none; b=hMyvi2BegYN7qta5YSARNxqj2m/g0ObTp1jreUAI0Mixz6Ais82gepUn+jXC4QdOqKaxzrIGqugx0BPSzqL9SOMjzV5/UXvMyKhQ5HkH3BRzYOw3+4CjPGtz6nPH89UBEkTnbKJb5Q3noHN61UTfyN6pBqmZ7LiR8m+oxgAites=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753464470; c=relaxed/simple;
-	bh=JulBuFHYdgKvNoi/Uuf1v9zXL91cqjkYaYHW6vNvzZ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O5NKIHDnACOVI4TuuZ5ygTr2RQlS/DKuCPQ5gK4pr7J2HNT158QUeeJMHVk6d5k2t3H9LDiwJdkBTK8Q6DbzvLIOpwZzXkEptnED295/o+6gJ2iXnrOIU+hQPv9kgofC2Dv69tHr9xVJPLsFc8ytjfMhqXibyYu3txcvpBKaZso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=TwR16l5Z; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1753466241; c=relaxed/simple;
+	bh=5ldzZ9vyLUpLw7BH0/+el75YcJaK4n9pqdRVPuEkdaQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DXOVCAKhx6AFi0SuVPAANTXar7dRDs7ejPpnguDyuE5BvYJVU6sNWdGh/ijGS/g4Dwwq0qeDCzIEqiAJdJ7nHK6HoedtAXG51JPolKmBECqXb59LjJ2reQEkqR9od4JmGn/IIzr0JQnIf+r4OKme3H68N6DLMTtsMX1gN0XwBXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=GUoipYeI; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="TwR16l5Z"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 246C610391E80;
-	Fri, 25 Jul 2025 19:27:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1753464464; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=3UlWs5l+oOrBrkVYNeILHZoYkNbA2xQARHEE4h2fbS8=;
-	b=TwR16l5ZRojyZ9aw5+k0dhQkwb/1kaLqVhqH2QvioVY0qVECNvy5CTzAUcBxLKHRlYRQjN
-	8e2RhplWmYn2pXCnyjXv7Xt3k2NXMrp+y6B/21scJzfPchyJEThoMSyNb5Byw5TBTTd9qs
-	arMXYG8ykNZshXDXwpwkvVIsVIxMQ3TWcnVc3IG4Fu3umERajzNZKMfX5tnSHAF0NK4Nos
-	nRDGiFbmSzKHPLjnfQ5gyVU6FL+LVM9nVhPcTs2idRcrmLtdmXN7aZqOTYnO5Yo5zGtAMj
-	I2rPEdrBela6GoksRl3a/KSW9EYXEeeKue53IHAWNyV11yRaOHXjsoLgjTDAaQ==
-Date: Fri, 25 Jul 2025 19:27:38 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Simon Horman <horms@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>
-Subject: Re: [net-next v16 06/12] net: mtip: Add net_device_ops functions to
- the L2 switch driver
-Message-ID: <20250725192738.0fffece9@wsk>
-In-Reply-To: <20250725155440.GF1367887@horms.kernel.org>
-References: <20250724223318.3068984-1-lukma@denx.de>
-	<20250724223318.3068984-7-lukma@denx.de>
-	<20250725155440.GF1367887@horms.kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="GUoipYeI"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 0FEA0C66;
+	Fri, 25 Jul 2025 19:56:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1753466197;
+	bh=5ldzZ9vyLUpLw7BH0/+el75YcJaK4n9pqdRVPuEkdaQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GUoipYeI4r5hxShSrw8p3pKpANuUknHdeOB6tf2trLpU50/AJJHr2gSz0BvuCacl0
+	 0ntiCKiiL74GFeFu/Ve3GUvIUxwe9JPu+bCOJCB4aVY3Ls/b3dDYN3wABpEzw/GBgk
+	 YM80nWbUZ6egMPhVsFIE1V0L1aIEyGQr47DuN5Yo=
+Date: Fri, 25 Jul 2025 20:57:11 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	Alice Yuan <alice.yuan@nxp.com>,
+	Robert Chiras <robert.chiras@nxp.com>,
+	Zhipeng Wang <zhipeng.wang_1@nxp.com>
+Subject: Re: [PATCH v3 2/4] media: nxp: add V4L2 subdev driver for camera
+ parallel interface (CPI)
+Message-ID: <20250725175711.GA27425@pendragon.ideasonboard.com>
+References: <20250708-imx8qxp_pcam-v3-0-c8533e405df1@nxp.com>
+ <20250708-imx8qxp_pcam-v3-2-c8533e405df1@nxp.com>
+ <20250725000404.GW11202@pendragon.ideasonboard.com>
+ <aIOk9W/RBKmS8uVQ@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/VpCMvLfcku4gQXj7ihFznS1";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aIOk9W/RBKmS8uVQ@lizhi-Precision-Tower-5810>
 
---Sig_/VpCMvLfcku4gQXj7ihFznS1
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Fri, Jul 25, 2025 at 11:38:29AM -0400, Frank Li wrote:
+> On Fri, Jul 25, 2025 at 03:04:04AM +0300, Laurent Pinchart wrote:
+> > Hi Frank,
+> >
+> > Thank you for the patch.
+> >
+> > On Tue, Jul 08, 2025 at 01:48:43PM -0400, Frank Li via B4 Relay wrote:
+> > > From: Alice Yuan <alice.yuan@nxp.com>
+> > >
+> > > Add a V4L2 sub-device driver for the CPI controller found on i.MX8QXP,
+> > > i.MX8QM, and i.MX93 SoCs. This controller supports parallel camera sensors
+> > > and enables image data capture through a parallel interface.
+> > >
+> > > Signed-off-by: Alice Yuan <alice.yuan@nxp.com>
+> > > Signed-off-by: Robert Chiras <robert.chiras@nxp.com>
+> > > Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > > change in v3
+> > > - replace csi with cpi
+> > > - use __free(fwnode_handle) to simpilfy code
+> > > - remove imx91 driver data, which is the same as imx93
+> > >
+> > > change in v2
+> > > - remove MODULE_ALIAS
+> > > - use devm_pm_runtime_enable() and cleanup remove function
+> > > - change output format to 1x16. controller convert 2x8 to 1x16 format
+> > > ---
+> > >  MAINTAINERS                                   |   1 +
+> > >  drivers/media/platform/nxp/Kconfig            |  11 +
+> > >  drivers/media/platform/nxp/Makefile           |   1 +
+> > >  drivers/media/platform/nxp/imx-parallel-cpi.c | 920 ++++++++++++++++++++++++++
+> > >  4 files changed, 933 insertions(+)
+> > >
+> > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > index 8ae0667d2bb41fb6a1549bd3b2b33f326cbd1303..14842a3b860a6f23846f12a684eedcbb9eb69e19 100644
+> > > --- a/MAINTAINERS
+> > > +++ b/MAINTAINERS
+> > > @@ -15112,6 +15112,7 @@ F:	Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
+> > >  F:	Documentation/devicetree/bindings/media/nxp,imx7-csi.yaml
+> > >  F:	Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> > >  F:	drivers/media/platform/nxp/imx-mipi-csis.c
+> > > +F:	drivers/media/platform/nxp/imx-parallel-cpi.c
+> > >  F:	drivers/media/platform/nxp/imx7-media-csi.c
+> > >  F:	drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> > >
+> > > diff --git a/drivers/media/platform/nxp/Kconfig b/drivers/media/platform/nxp/Kconfig
+> > > index 40e3436669e213fdc5da70821dc0b420e1821f4f..504ae1c6494f331c16124a224421ac7acd433ba5 100644
+> > > --- a/drivers/media/platform/nxp/Kconfig
+> > > +++ b/drivers/media/platform/nxp/Kconfig
+> > > @@ -39,6 +39,17 @@ config VIDEO_IMX_MIPI_CSIS
+> > >  	  Video4Linux2 sub-device driver for the MIPI CSI-2 CSIS receiver
+> > >  	  v3.3/v3.6.3 found on some i.MX7 and i.MX8 SoCs.
+> > >
+> > > +config VIDEO_IMX_PARALLEL_CPI
+> > > +	tristate "NXP i.MX9/i.MX8 Parallel CPI Driver"
+> >
+> > I'd write it in numerical order, "i.MX8/i.MX9"
+> >
+> > > +	depends on ARCH_MXC || COMPILE_TEST
+> > > +	depends on VIDEO_DEV
+> > > +	select MEDIA_CONTROLLER
+> > > +	select V4L2_FWNODE
+> > > +	select VIDEO_V4L2_SUBDEV_API
+> > > +	help
+> > > +	  Video4Linux2 sub-device driver for PARALLEL CPI receiver found
+> > > +	  on some iMX8 and iMX9 SoCs.
+> > > +
+> > >  source "drivers/media/platform/nxp/imx8-isi/Kconfig"
+> > >
+> > >  # mem2mem drivers
+> > > diff --git a/drivers/media/platform/nxp/Makefile b/drivers/media/platform/nxp/Makefile
+> > > index 4d90eb71365259ebdda84ea58483e1c4131d3ac7..5346919d2f1083b51ec99b66981c5d38b3df960c 100644
+> > > --- a/drivers/media/platform/nxp/Makefile
+> > > +++ b/drivers/media/platform/nxp/Makefile
+> > > @@ -7,5 +7,6 @@ obj-y += imx8-isi/
+> > >  obj-$(CONFIG_VIDEO_IMX7_CSI) += imx7-media-csi.o
+> > >  obj-$(CONFIG_VIDEO_IMX8MQ_MIPI_CSI2) += imx8mq-mipi-csi2.o
+> > >  obj-$(CONFIG_VIDEO_IMX_MIPI_CSIS) += imx-mipi-csis.o
+> > > +obj-$(CONFIG_VIDEO_IMX_PARALLEL_CPI) += imx-parallel-cpi.o
+> > >  obj-$(CONFIG_VIDEO_IMX_PXP) += imx-pxp.o
+> > >  obj-$(CONFIG_VIDEO_MX2_EMMAPRP) += mx2_emmaprp.o
+> > > diff --git a/drivers/media/platform/nxp/imx-parallel-cpi.c b/drivers/media/platform/nxp/imx-parallel-cpi.c
+> > > new file mode 100644
+> > > index 0000000000000000000000000000000000000000..718f02bf70c4d0ae74ecf842c1ecb1a1afbcdd45
+> > > --- /dev/null
+> > > +++ b/drivers/media/platform/nxp/imx-parallel-cpi.c
+> > > @@ -0,0 +1,920 @@
+> > > +// SPDX-License-Identifier: GPL-2.0
+> > > +/*
+> > > + * i.MX Parallel CPI receiver driver.
+> > > + *
+> > > + * Copyright 2019-2025 NXP
+> > > + *
+> > > + */
+> > > +
+> > > +#include <linux/bits.h>
+> > > +#include <linux/clk.h>
+> > > +#include <linux/debugfs.h>
+> >
+> > I don't think you use this.
+> >
+> > > +#include <linux/delay.h>
+> > > +#include <linux/errno.h>
+> > > +#include <linux/interrupt.h>
+> >
+> > I don't think you use this either.
+> >
+> > > +#include <linux/io.h>
+> > > +#include <linux/kernel.h>
+> > > +#include <linux/module.h>
+> > > +#include <linux/mutex.h>
+> > > +#include <linux/mfd/syscon.h>
+> >
+> > Alphabetical order please.
+> >
+> > > +#include <linux/of.h>
+> > > +#include <linux/platform_device.h>
+> > > +#include <linux/pm_domain.h>
+> >
+> > This doesn't seem needed.
+> >
+> > > +#include <linux/pm_runtime.h>
+> > > +#include <linux/regulator/consumer.h>
+> > > +#include <linux/reset.h>
+> >
+> > Same here.
+> >
+> > > +#include <linux/spinlock.h>
+> >
+> > And here. Please verify all headers, drop the ones you don't need, and
+> > add any you may have forgotten. That includes the media/ headers.
+> 
+> Do you have good method to check it?
 
-Hi Simon,
+There are tools such as include-what-you-use, but I haven't tested that
+one with the kernel.
 
-> On Fri, Jul 25, 2025 at 12:33:12AM +0200, Lukasz Majewski wrote:
-> > This patch provides callbacks for struct net_device_ops for MTIP
-> > L2 switch.
-> >=20
-> > Signed-off-by: Lukasz Majewski <lukma@denx.de> =20
->=20
+> > > +
+> > > +#include <media/v4l2-common.h>
+> > > +#include <media/v4l2-device.h>
+> > > +#include <media/v4l2-event.h>
+> > > +#include <media/v4l2-fwnode.h>
+> > > +#include <media/v4l2-mc.h>
+> > > +#include <media/v4l2-subdev.h>
+> 
 > ...
->=20
-> > +static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
-> > +					struct net_device *dev,
-> > int port) +{
-> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > +	struct switch_enet_private *fep =3D priv->fep;
-> > +	unsigned short status;
-> > +	struct cbd_t *bdp;
-> > +	void *bufaddr;
-> > +
-> > +	spin_lock_bh(&fep->hw_lock);
-> > +
-> > +	if (!fep->link[0] && !fep->link[1]) {
-> > +		/* Link is down or autonegotiation is in progress.
-> > */
-> > +		netif_stop_queue(dev);
-> > +		spin_unlock_bh(&fep->hw_lock);
-> > +		return NETDEV_TX_BUSY;
-> > +	}
-> > +
-> > +	/* Fill in a Tx ring entry */
-> > +	bdp =3D fep->cur_tx;
-> > +	status =3D bdp->cbd_sc;
-> > +
-> > +	if (status & BD_ENET_TX_READY) {
-> > +		/* All transmit buffers are full. Bail out.
-> > +		 * This should not happen, since dev->tbusy should
-> > be set.
-> > +		 */
-> > +		netif_stop_queue(dev);
-> > +		dev_err_ratelimited(&fep->pdev->dev, "%s: tx queue
-> > full!.\n",
-> > +				    dev->name);
-> > +		spin_unlock(&fep->hw_lock); =20
->=20
-> Sorry be the one to point out this needle in a haystack,
-> but this should be spin_unlock_bh()
+> 
+> > > +
+> > > +	/* Software Reset */
+> > > +	imx_cpi_sw_reset(pcpidev);
+> > > +
+> > > +	/* Config PL Data Type */
+> > > +	val = readl(pcpidev->regs + pdata->if_ctrl_reg);
+> > > +	val |= IF_CTRL_REG_DATA_TYPE(DATA_TYPE_OUT_YUV444);
+> >
+> > Don't you need to clear the field first ? Same everywhere else where
+> > applicable.
+> 
+> imx_cpi_sw_reset() clean all register.
 
-I must have overlooked it when working on the code.
+OK. I wonder if you could then replace some (most ? all ?) of the
+read-update-write sequences with plain writes.
 
-Anyway, I need to wait if there are other comments from Jakub or Paolo
-- as they had some comments (addressed already by this patch set) for
-  previous version.
+> > > +	writel(val, pcpidev->regs + pdata->if_ctrl_reg);
+> > > +
+> > > +	/* Enable sync Force */
+> > > +	val = readl(pcpidev->regs + pdata->interface_ctrl_reg);
+> > > +	val |= (CPI_CTRL_REG_HSYNC_FORCE_EN | CPI_CTRL_REG_VSYNC_FORCE_EN);
+> > > +	writel(val, pcpidev->regs + pdata->interface_ctrl_reg);
+> 
+> ....
 
->=20
-> Flagged by Smatch.
->=20
-> > +		return NETDEV_TX_BUSY;
-> > +	}
-> > +
-> > +	/* Clear all of the status flags */
-> > +	status &=3D ~BD_ENET_TX_STATS;
-> > +
-> > +	/* Set buffer length and buffer pointer */
-> > +	bufaddr =3D skb->data;
-> > +	bdp->cbd_datlen =3D skb->len;
-> > +
-> > +	/* On some FEC implementations data must be aligned on
-> > +	 * 4-byte boundaries. Use bounce buffers to copy data
-> > +	 * and get it aligned.spin
-> > +	 */
-> > +	if ((unsigned long)bufaddr & MTIP_ALIGNMENT) {
-> > +		unsigned int index;
-> > +
-> > +		index =3D bdp - fep->tx_bd_base;
-> > +		memcpy(fep->tx_bounce[index], skb->data, skb->len);
-> > +		bufaddr =3D fep->tx_bounce[index];
-> > +	}
-> > +
-> > +	if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
-> > +		swap_buffer(bufaddr, skb->len);
-> > +
-> > +	/* Push the data cache so the CPM does not get stale memory
-> > +	 * data.
-> > +	 */
-> > +	bdp->cbd_bufaddr =3D dma_map_single(&fep->pdev->dev, bufaddr,
-> > +					  MTIP_SWITCH_TX_FRSIZE,
-> > +					  DMA_TO_DEVICE);
-> > +	if (unlikely(dma_mapping_error(&fep->pdev->dev,
-> > bdp->cbd_bufaddr))) {
-> > +		dev_err(&fep->pdev->dev,
-> > +			"Failed to map descriptor tx buffer\n");
-> > +		dev->stats.tx_dropped++;
-> > +		dev_kfree_skb_any(skb);
-> > +		goto err;
-> > +	}
-> > +
-> > +	/* Save skb pointer. */
-> > +	fep->tx_skbuff[fep->skb_cur] =3D skb;
-> > +	fep->skb_cur =3D (fep->skb_cur + 1) & TX_RING_MOD_MASK;
-> > +
-> > +	/* Send it on its way.  Tell FEC it's ready, interrupt
-> > when done,
-> > +	 * it's the last BD of the frame, and to put the CRC on
-> > the end.
-> > +	 */
-> > +
-> > +	status |=3D (BD_ENET_TX_READY | BD_ENET_TX_INTR |
-> > BD_ENET_TX_LAST |
-> > +		   BD_ENET_TX_TC);
-> > +
-> > +	/* Synchronize all descriptor writes */
-> > +	wmb();
-> > +	bdp->cbd_sc =3D status;
-> > +
-> > +	skb_tx_timestamp(skb);
-> > +
-> > +	/* Trigger transmission start */
-> > +	writel(MCF_ESW_TDAR_X_DES_ACTIVE, fep->hwp + ESW_TDAR);
-> > +
-> > +	dev->stats.tx_bytes +=3D skb->len;
-> > +	/* If this was the last BD in the ring,
-> > +	 * start at the beginning again.
-> > +	 */
-> > +	if (status & BD_ENET_TX_WRAP)
-> > +		bdp =3D fep->tx_bd_base;
-> > +	else
-> > +		bdp++;
-> > +
-> > +	if (bdp =3D=3D fep->dirty_tx) {
-> > +		fep->tx_full =3D 1;
-> > +		netif_stop_queue(dev);
-> > +	}
-> > +
-> > +	fep->cur_tx =3D bdp;
-> > + err:
-> > +	spin_unlock_bh(&fep->hw_lock);
-> > +
-> > +	return NETDEV_TX_OK;
-> > +} =20
->=20
-> ...
+-- 
+Regards,
 
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH, Managing Director: Johanna Denk,
-Tabea Lutz HRB 165235 Munich, Office: Kirchenstr.5, D-82194
-Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/VpCMvLfcku4gQXj7ihFznS1
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmiDvooACgkQAR8vZIA0
-zr1bvQgA44ZH/osB57cH3YVOvl8W4ulZu0p5blupZwTqPyhtEWfShe4Gefx2DbBt
-Qi87KMsl8a4Z6SIAcgfuGtn1dFzMua0tj/sJ8fY2oyUtexOv2y6tQGiDr1j8DO/k
-BSF/t0HZeHfT8iNCM2QHMc/6ffmXu1Db115OJaE8C5eJ8P/vl209TV/KjlLYxeeE
-t0k4PpCGy5ek0A1LveQLbn7PAHNDiy3sbSyadvrisQmHBpUcOjpbeIWzafC5KZXN
-3XWWzQYYw3s9sL2MMTa4zrEMqdUB3iX2jm09OQJkcI/tZi3PEWHQOIMws/5kr9yq
-b01X7Ygc7fueQ3yXYUE3WxIIPCQ8xw==
-=jTi0
------END PGP SIGNATURE-----
-
---Sig_/VpCMvLfcku4gQXj7ihFznS1--
+Laurent Pinchart
