@@ -1,84 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB75288CAF;
-	Sat, 26 Jul 2025 18:40:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA57207A22
+	for <imx@lists.linux.dev>; Sat, 26 Jul 2025 20:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753555208; cv=none; b=lHiLqw0suD5tEKTAYcUtAH3mrtDi0hLebVil6O3lhWHx4LmDYDst2tIH9mgBalVVM8aLO4Na9Jt8hb4AWDGqEdL2eET5hhDyIzNA21ty5T7bgRoAouV4NBaoWTh25nBkPkQ4gur/F7hhuBef0TzLVReyWXwN4uayoXUdoNWDdj4=
+	t=1753560816; cv=none; b=IcWW1zTKkAV3AwHMp+Wvm5PudlwksBXTGwISJirqsSIYXBAVEoeUjmIq7BLr4NXLYbrezd3Xn5faTGU8vSXPlJ0Y/eqq1TSzzHkjZmPhruGfEsEaR/tn4+ZYiCpUukHwmYWvhaFbjgD959G/j5vI47D8Wj42JTktWqiXEov3uik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753555208; c=relaxed/simple;
-	bh=slhXj9ZnZblb/hPj1KmavhFL4eNp8rvn2VLkAoSF4Yw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=GQoP1Dj8eLwtusytMDNXA0UZSJdWcz1GjJOwtyyERuym2x5C7BDtYesNmep/8o0j7OQ9wvIaB+OFmUxUqxL2+oUyTPYmEiaXejX5dyfeH6bGlIPhfKu5Xt3z1kUMRkb47nCxDzGrabFUO1QMokpBX9cPRFcpY2vGdzDeeLz8UhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aKmuLd9N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753560816; c=relaxed/simple;
+	bh=eXFBzQMIOgJACkkiirYjWqbaUNq5h419yPTnWlIryIY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=igi+sNNi+mIV1Hcb81BAMCmn63dLvm4g3CuCb+4G3Q7LRfRzvxGGDn1u/PsHzioaZl5JBMmwVrXQQVQiAN3l6aZs5hlVQEmCn3ZnZW0Vzd4fV2lpuLRxEL0AlK7NhdJ73bt1w1EKECzG6nzrljYXvWjYq7pobyy215MBzucVyX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=WAUpxAve; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aKmuLd9N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491FAC4CEED;
-	Sat, 26 Jul 2025 18:40:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753555208;
-	bh=slhXj9ZnZblb/hPj1KmavhFL4eNp8rvn2VLkAoSF4Yw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=aKmuLd9NUEDBWiehiKidDGOLyTaHP+FVIo66IPc6HzY8W6vN7nbDxcVTV6UjD6QR+
-	 8Y3gjMgOc079huDHpqCy9EQaWDHBxDaFalRh9a/vZIc0ZLT0Ul1bdpF9AE8ifcp8iu
-	 usD+328flA76vLtlzQjpvwlDHl8vJE9OfNeJfPdsZ3fCi7u278oeclaW9Vt7kR8EAi
-	 44Kokim/gcAYzLPIO4JT5AV8cwfKUZrXkzqoH3nb3BMbxBWb1P/TQV2ZdGMbRgHdSg
-	 EFEtpibLvQb+4bEttayxLmSgyy4aaV2lCaXQFLMxXWO5Ca9Ig455CnKD8EtMd33Ll3
-	 bq6JQ6Y4r3WUA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE20D383BF4E;
-	Sat, 26 Jul 2025 18:40:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="WAUpxAve"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CEA6010391E80;
+	Sat, 26 Jul 2025 22:13:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1753560811; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=TWGAw9HUc5B0uTkDq7v2wXCo5i2oNA3eTY8zlOASEHM=;
+	b=WAUpxAveeRNrvct46TWQ/f5v6/UOhl/3j5bocPV7TalPE7I2Nf7mF1teQT53k6EZ3haj/H
+	4Ic4Kv6vhrx3W9oeFSHeDXnuVeaoHVg9bSGO4H63FvtRNM8N33xCIVchxBDi2n4BJvIr7X
+	HL+fE0L2uKoRhLm7NmLugowT8OM2yfwgLybhfhGxjrr+sIOMg9H7jZOFw9h+vb2JRAQzML
+	5GyaJdICf/g1xecNRK3jgIQ++DuL6KOl6uxa+xU/5gGEpdSuq3Ga78Aeqf3XZ6UnzUS3Sf
+	U24HFTBtB2dO54LfmaZDKbQmJNseF43LNIzJDdt7I1sGA6vwzkxQWIQKsRbInQ==
+Date: Sat, 26 Jul 2025 22:13:23 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v16 04/12] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250726221323.0754f3cd@wsk>
+In-Reply-To: <20250725151829.40bd5f4e@kernel.org>
+References: <20250724223318.3068984-1-lukma@denx.de>
+	<20250724223318.3068984-5-lukma@denx.de>
+	<20250725151829.40bd5f4e@kernel.org>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [RESEND v3 1/1] dt-bindings: ieee802154: Convert at86rf230.txt
- yaml
- format
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175355522524.3664802.13412387588392922957.git-patchwork-notify@kernel.org>
-Date: Sat, 26 Jul 2025 18:40:25 +0000
-References: <20250724230129.1480174-1-Frank.Li@nxp.com>
-In-Reply-To: <20250724230129.1480174-1-Frank.Li@nxp.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, nicolas.ferre@microchip.com,
- alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev
+Content-Type: multipart/signed; boundary="Sig_/QBKx1stqUcQHszVRzo3MNYj";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+--Sig_/QBKx1stqUcQHszVRzo3MNYj
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Hi Jakub,
 
-On Thu, 24 Jul 2025 19:01:24 -0400 you wrote:
-> Convert at86rf230.txt yaml format.
-> 
-> Additional changes:
-> - Add ref to spi-peripheral-props.yaml.
-> - Add parent spi node in examples.
-> 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> 
-> [...]
+> On Fri, 25 Jul 2025 00:33:10 +0200 Lukasz Majewski wrote:
+> > +	for (i =3D 0; i < SWITCH_EPORT_NUMBER; i++) {
+> > +		fep->ndev[i] =3D alloc_netdev(sizeof(struct
+> > mtip_ndev_priv),
+> > +					    fep->ndev_name[i],
+> > NET_NAME_USER,
+> > +					    ether_setup);
+> > +		if (!fep->ndev[i]) {
+> > +			ret =3D -ENOMEM;
+> > +			break;
+> > +		}
+> > +
+> > +		fep->ndev[i]->ethtool_ops =3D &mtip_ethtool_ops;
+> > +		fep->ndev[i]->netdev_ops =3D &mtip_netdev_ops;
+> > +		SET_NETDEV_DEV(fep->ndev[i], &pdev->dev);
+> > +
+> > +		priv =3D netdev_priv(fep->ndev[i]);
+> > +		priv->dev =3D fep->ndev[i];
+> > +		priv->fep =3D fep;
+> > +		priv->portnum =3D i + 1;
+> > +		fep->ndev[i]->irq =3D fep->irq;
+> > +
+> > +		mtip_setup_mac(fep->ndev[i]);
+> > +
+> > +		ret =3D register_netdev(fep->ndev[i]);
+> > +		if (ret) {
+> > +			dev_err(&fep->ndev[i]->dev,
+> > +				"%s: ndev %s register err: %d\n",
+> > __func__,
+> > +				fep->ndev[i]->name, ret);
+> > +			break;
+> > +		} =20
+>=20
+> Error handling in case of register_netdev() still buggy, AFAICT.
 
-Here is the summary with links:
-  - [RESEND,v3,1/1] dt-bindings: ieee802154: Convert at86rf230.txt yaml format
-    https://git.kernel.org/netdev/net-next/c/d7e0d327805b
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+I've added the code to set fep->ndev[i] =3D NULL to mtip_ndev_cleanup().
+IMHO this is the correct place to add it.
 
 
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH, Managing Director: Johanna Denk,
+Tabea Lutz HRB 165235 Munich, Office: Kirchenstr.5, D-82194
+Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/QBKx1stqUcQHszVRzo3MNYj
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmiFNuMACgkQAR8vZIA0
+zr1nZAgAuEPG2jcxe5x4z5+TI7n7rwPtz3Cgbueuh1wjlJ58IWVvM/Q6XbLQ0Av9
+1Fgmn5jR6AY8Zhh/9/rW6jb12GTvFA/fmOgqykhvRFhUbaMfWw6mZqROiGBQZ6lX
+Esg9sYHVGwMr3W2efNc3FCw4jfHJMtW7D6wPCFkCXjnppo6lD88tstj4saczatDO
+asEz2RqDh8HQFbi542j/iUcCNYVm2K7WNRq0RhZf43a789W4I3ARMDFrxwioK5uJ
+8a/Cu/P5ITnAnAIgjgdXBouLIMeSf9iAQy/W9Xu6bGJSk6Ng4i8u9C+TTwUlzJdw
+VPWafe7Gb1LENnDxHz07QYeWtVB9AQ==
+=27wW
+-----END PGP SIGNATURE-----
+
+--Sig_/QBKx1stqUcQHszVRzo3MNYj--
