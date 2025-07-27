@@ -1,32 +1,32 @@
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD59221FBC
-	for <imx@lists.linux.dev>; Sun, 27 Jul 2025 10:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA72720ADEE
+	for <imx@lists.linux.dev>; Sun, 27 Jul 2025 10:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753610539; cv=none; b=tgWqiEhzMQk8yjZnXGE2oL7dqFPjDBe4CNmQqoy6HOyAxYi+t6Mr7pk7oaZNIRjoA6SKWRB549HenQyEoRarAxerD+95AloIGPyuyL+bFulaLN1pVZlXerZT7ZgGiv5u5zF7bEZBg9SV4QReWrjVpTvbXnJ2mDdl7zexkZo2SAw=
+	t=1753610541; cv=none; b=HzlTTg0oBEjp3qXyjlW+azag8RHsNv2XSSAgAAWaIMLQH5gw0K9NMXgEc5By803DuDfBObZXyxIm8szAsj0kXSbajH9MMJZygkku5kwrtRZSgXtYtQN+iIHjR4qDuzJjCOzviFZrb+svl/6bgv91oo1zHag3ZkL+C6XmeZo4IAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753610539; c=relaxed/simple;
-	bh=7067KxM/pMChzJ2lv0TkDStnXCEGHv8x8RnQVFLIdZ0=;
+	s=arc-20240116; t=1753610541; c=relaxed/simple;
+	bh=I3YJiPxJglj4KqiXGhvURUZqw8Aa6Y7B1fNxOOSm7Pc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jh1aH0ccAWHvtr8GzcoCdjYKW5AAMs9Pkt8US/d/xg6Y7YAk6zsM9Sf/R7K+dmSheScrnNNkmiIN/J/oYveADzHAokgT6J2qGP0z627Ldjula4Ho1CT9ZWdZ5A5rgwy1WozGGVvTFkIWKlFcNLRK7b9c04kyOLR06MyIJp9tgjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=A4wFE7QW; arc=none smtp.client-ip=89.58.32.78
+	 MIME-Version; b=dW0SaiJkd7loQhgakP1jCbS+Xs7DPE1iNWOQRjRrdSabLqo2tPlu3UA8o0n6z/TlRjegQakCN3YpJ/fUp1hMYDzzV7QXl7w5qkX1vELn5OIIWJyvyT0i5hR93gVmT7U1S4tA+owJmvxcez/YR0zq8NSsQ+YihhRCjyTEls41+jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=E9VDOzSt; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="A4wFE7QW"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A0F881038C128;
-	Sun, 27 Jul 2025 12:02:12 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="E9VDOzSt"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 330EE1038C12B;
+	Sun, 27 Jul 2025 12:02:16 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1753610534; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1753610537; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=pPQCGCHZnc1w9e9D0FRee2V8hg33bKqEmBhf7dT6C3Q=;
-	b=A4wFE7QWHrkII1SPgDDVKoJzHTpy8OVPiKrXRHeRIqJod4Um9qjSD1vCmZFoNo1apHYjzf
-	Yv52NyjTr4Ob+ZIM/b+Ht0G/LOcseITK4BQVeGFTWxtNlVijHGU/7eGUOgedGKzV14gAO4
-	b/wmb137xIUPVH/YOC7jKJLz7wT6/F3OUge0nF3bfj40ivjXS08E7oxNJFfrels4JC0TvJ
-	7KOrLd8YufI2Vkuhx6J3vuIm+eBJrm4SWirXfwp4Z6CVTBl8+HVWAWecc6MkxcLfF8YbWM
-	zzxF6JiaVYWj3l80ppWCg1swuSDyKZCLCDrdlY6kZ/wtU3dnMW/Ku9baxRcEmQ==
+	bh=Ld6XcFo2nFClhnmI2e8dmSx4ODmTEkT33YgLtXkJqxQ=;
+	b=E9VDOzStwgb7sWdjjQdQzC/V5MsiTTxYsz54RdAD+Nm33qiSgSSceX60eFYu0Bo/Zv08o8
+	F25QRq5w0DYgIpx8KSbnZr7u1N534AYsmC+Bl8k6Wu0Onj1ylwH0FgSVkkdYMTsILyj31H
+	XZoMKm+kv3HfG9Qfma5YrLlcuBCIxVnm9uOJYyVLEg+RiwnSJ5Npm3CN5JkxLrW73zRKr+
+	2zj4XaT4qBTVtV0b3eGkRriqtEYKG0+JdVlhKyqKi9BWbQopVLKb84OeOJjjd1f4QHIHbw
+	23ZvaUumYo/kQz0CGIUEEaM3+/0/OCz+J/lFS8z8nnSCCZkvU1Ee/7bkxp9V5A==
 From: Lukasz Majewski <lukma@denx.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	davem@davemloft.net,
@@ -49,9 +49,9 @@ Cc: Sascha Hauer <s.hauer@pengutronix.de>,
 	Stefan Wahren <wahrenst@gmx.net>,
 	Simon Horman <horms@kernel.org>,
 	Lukasz Majewski <lukma@denx.de>
-Subject: [net-next v17 10/12] ARM: mxs_defconfig: Enable CONFIG_NFS_FSCACHE
-Date: Sun, 27 Jul 2025 12:01:26 +0200
-Message-Id: <20250727100128.1411514-11-lukma@denx.de>
+Subject: [net-next v17 12/12] ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2 switch
+Date: Sun, 27 Jul 2025 12:01:28 +0200
+Message-Id: <20250727100128.1411514-13-lukma@denx.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250727100128.1411514-1-lukma@denx.de>
 References: <20250727100128.1411514-1-lukma@denx.de>
@@ -64,47 +64,51 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-It is not possible to enable by user the CONFIG_NETFS_SUPPORT anymore and
-hence it depends on CONFIG_NFS_FSCACHE being enabled.
+This patch enables support for More Than IP L2 switch available on some
+imx28[7] devices.
 
-This patch fixes potential performance regression for NFS on the mxs
-devices.
+Moreover, it also enables CONFIG_SWITCHDEV and CONFIG_BRIDGE required
+by this driver for correct operation.
 
 Signed-off-by: Lukasz Majewski <lukma@denx.de>
 Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Suggested-by: Stefan Wahren <wahrenst@gmx.net>
-
 ---
-Changes for v6:
+Changes for v4:
 - New patch
 
-Changes for v7 - v17:
+Changes for v5:
+- Apply this patch on top of patch, which updates mxs_defconfig to
+  v6.15-rc1
+- Add more verbose commit message with explanation why SWITCHDEV and
+  BRIDGE must be enabled as well
+
+Changes for v6 - v17:
 - None
 ---
- arch/arm/configs/mxs_defconfig | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm/configs/mxs_defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defconfig
-index c76d66135abb..22f7639f61fe 100644
+index b1a31cb914c8..ef4556222274 100644
 --- a/arch/arm/configs/mxs_defconfig
 +++ b/arch/arm/configs/mxs_defconfig
-@@ -138,8 +138,6 @@ CONFIG_PWM_MXS=y
- CONFIG_NVMEM_MXS_OCOTP=y
- CONFIG_EXT4_FS=y
- # CONFIG_DNOTIFY is not set
--CONFIG_NETFS_SUPPORT=m
--CONFIG_FSCACHE=y
- CONFIG_FSCACHE_STATS=y
- CONFIG_CACHEFILES=m
- CONFIG_VFAT_FS=y
-@@ -155,6 +153,7 @@ CONFIG_NFS_FS=y
- CONFIG_NFS_V3_ACL=y
- CONFIG_NFS_V4=y
- CONFIG_ROOT_NFS=y
-+CONFIG_NFS_FSCACHE=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_CODEPAGE_850=y
- CONFIG_NLS_ISO8859_1=y
+@@ -34,6 +34,8 @@ CONFIG_IP_PNP_DHCP=y
+ CONFIG_SYN_COOKIES=y
+ # CONFIG_INET_DIAG is not set
+ # CONFIG_IPV6 is not set
++CONFIG_BRIDGE=y
++CONFIG_NET_SWITCHDEV=y
+ CONFIG_CAN=m
+ # CONFIG_WIRELESS is not set
+ CONFIG_DEVTMPFS=y
+@@ -52,6 +54,7 @@ CONFIG_EEPROM_AT24=y
+ CONFIG_SCSI=y
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_NETDEVICES=y
++CONFIG_FEC_MTIP_L2SW=y
+ CONFIG_ENC28J60=y
+ CONFIG_ICPLUS_PHY=y
+ CONFIG_MICREL_PHY=y
 -- 
 2.39.5
 
