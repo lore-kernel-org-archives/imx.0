@@ -1,136 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68809220F22;
-	Sat, 26 Jul 2025 21:50:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D7513DDAE
+	for <imx@lists.linux.dev>; Sun, 27 Jul 2025 08:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753566635; cv=none; b=s1qjNOmGyKHLXjW0JxcMnrkYKpowodJR0i/wvVEiTSR+3/hI5uCw9Tvw3gM6SG+uadLGnFjEcgy2G2U7Nve/g4tsRvpZophnqtxO/KHcP/KHmutiSjDeZP8xh7QZxSWkgUWQYFXK1NbnJryweDIxpqk5dKtBUe/BB60inyP5f2Q=
+	t=1753603550; cv=none; b=sxPOWnRfSIfJao3kj37euxke9hERjR1hUF2brAu40+mEwkRtENuxwVyZ5xbH/LLlnY8aquMLJ8rp1TKgppj8i8Qr0biOVE4TlBKyWA/5/viVPJ6iUTZlnNHYnHQGczWSHl81kaAVbRMwAgAU1lWGuBhd2oWD3V5zqZd3T9hvk+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753566635; c=relaxed/simple;
-	bh=hSbqujNyJtfgoVzH7Vax+KT9pmAhM1E22Hv7yYf+bQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OB3z7H0kKX0IardTUCFOqZZkMeyoWdYmbUaOUvacnikxaiPvy6hg5DoZgofsTmgG/78mUMTx6zjylmG6ZFjZNu/7cQun7GXUms40qZwt5mJZ26Maps0LZqR80MLqrNOn5zlqPklcLIaQDqxaXOQMjSlk0B4k2wyjRDtSz0XqdFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kRu/PbZN; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1753603550; c=relaxed/simple;
+	bh=e61m84fGX2vrBugF0y+lPAXMApbOPGKCY7UvCfdkjDc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YYQkIHPCNyqFl0hI76Z2F17d6qI3u4d3bD+49RWNXHp7JujKkwZY/pThTf+wTl1nF46SrjTZhsSZtTqDmNfRf/iZeOhXjIHecR/n5eaX6FXAaY5gbzVgh6hi+bwXnrJ8SRoRICuaQ+jaK1JgmTIOk5ZXeQP125Qu+jphDe8Ly+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=QiNliuiO; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kRu/PbZN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753566635; x=1785102635;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hSbqujNyJtfgoVzH7Vax+KT9pmAhM1E22Hv7yYf+bQ0=;
-  b=kRu/PbZN9ATlJCM6RgFcm1KZXVu8/K1qDjSdStQA+7hQFj2vX853tDwQ
-   b1Inm0JXVsImfUPmiYHU3wxJsYAC0JOst1ZcD0CVvTWPX9d6LLXoZVgET
-   GShMDfaz9J75+4gtWoWs9qckDXsO0Sq152BE8NcklaOfy3M0kc21wTOYe
-   O+iuDAlX+585YuLoL39yo65ynCI8q16Mz3st1sar76A/R0rd4WtbWBQLq
-   ML2udDvaUKmbt8p15XHzBuyCpWYdjtWRfOnM4J1J94k+kXFUDkDo40Em0
-   j/BZ7D9dhVm5r2+sfCjnU4SRiOHmvtX2HnU3kB5hZe3fZtAI7igWvzBh3
-   w==;
-X-CSE-ConnectionGUID: BXP0/iBkSHWU6wnsP0OCWQ==
-X-CSE-MsgGUID: o3mEF4HfQOW4gSBlVYwzBw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11504"; a="55721668"
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="55721668"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2025 14:50:34 -0700
-X-CSE-ConnectionGUID: YUbCUJRlSDSYtBKh9alZxQ==
-X-CSE-MsgGUID: msO8MjvYQuO0CppyXIzicw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="192644434"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 26 Jul 2025 14:50:29 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ufmmg-000MJH-2B;
-	Sat, 26 Jul 2025 21:50:26 +0000
-Date: Sun, 27 Jul 2025 05:50:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>,
-	Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fbdev@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Maud Spierings <maudspierings@gocontroll.com>,
-	MaudSpieringsmaudspierings@gocontroll.com
-Subject: Re: [PATCH 2/4] backlight: add max25014atg backlight
-Message-ID: <202507270543.G0TT6f25-lkp@intel.com>
-References: <20250725-max25014-v1-2-0e8cce92078e@gocontroll.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="QiNliuiO"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 335AC1038C126;
+	Sun, 27 Jul 2025 10:05:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1753603545; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=RkBrq8EwJtKrLLyc89nHWZVNStBBKpPPsVnWhREsJ3M=;
+	b=QiNliuiOiHMjVLrreXLPVMtdb6modtyn9YS0LJimse60TjPW5KL5jdyhUQZDOY0BJv6vC1
+	QmtyZEOevEZTYA8m6jqbfaSVYXBgqvsZR5E2aR97uWQuTuifRl+698ko3S6iiGtHpKLFNe
+	yWEyEguBDDn1mGpPhlu9LbqolnulGLNkJiZNQrF8qGy6n+isjMCBKOxr62Ll1SUBoTHz4P
+	xkRalhn9K9xq/3l8AhS2ydZJsbY+TPWDUm6YcCY3nXF9/ilaZrewuDzrXnrMtfFD/G8MSS
+	2ZqOD584dzQgbM+HYAc1wjEuastuPoEVRDpORsPcjxGHBfbGC0svhTytmYE0XQ==
+Date: Sun, 27 Jul 2025 10:05:37 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v16 04/12] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250727100537.4abf90fd@wsk>
+In-Reply-To: <20250726133835.6e28a717@kernel.org>
+References: <20250724223318.3068984-1-lukma@denx.de>
+	<20250724223318.3068984-5-lukma@denx.de>
+	<20250725151829.40bd5f4e@kernel.org>
+	<20250726221323.0754f3cd@wsk>
+	<20250726133835.6e28a717@kernel.org>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250725-max25014-v1-2-0e8cce92078e@gocontroll.com>
+Content-Type: multipart/signed; boundary="Sig_/0V+L.IMPpnGggWz/bxwq32Y";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Maud,
+--Sig_/0V+L.IMPpnGggWz/bxwq32Y
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-kernel test robot noticed the following build warnings:
+Hi Jakub,
 
-[auto build test WARNING on d7af19298454ed155f5cf67201a70f5cf836c842]
+> On Sat, 26 Jul 2025 22:13:23 +0200 Lukasz Majewski wrote:
+> > > > +		ret =3D register_netdev(fep->ndev[i]);
+> > > > +		if (ret) {
+> > > > +			dev_err(&fep->ndev[i]->dev,
+> > > > +				"%s: ndev %s register err:
+> > > > %d\n", __func__,
+> > > > +				fep->ndev[i]->name, ret);
+> > > > +			break;
+> > > > +		}     =20
+> > >=20
+> > > Error handling in case of register_netdev() still buggy, AFAICT.
+> > >  =20
+> >=20
+> > I've added the code to set fep->ndev[i] =3D NULL to
+> > mtip_ndev_cleanup(). IMHO this is the correct place to add it. =20
+>=20
+> If register_netdev() fails you will try to unregister it and hit=20
+> a BUG_ON().
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Maud-Spierings-via-B4-Relay/dt-bindings-backlight-Add-max25014-bindings/20250725-191221
-base:   d7af19298454ed155f5cf67201a70f5cf836c842
-patch link:    https://lore.kernel.org/r/20250725-max25014-v1-2-0e8cce92078e%40gocontroll.com
-patch subject: [PATCH 2/4] backlight: add max25014atg backlight
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20250727/202507270543.G0TT6f25-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250727/202507270543.G0TT6f25-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507270543.G0TT6f25-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/video/backlight/max25014.c:86:4: warning: variable 'res' is uninitialized when used here [-Wuninitialized]
-      86 |                         res |= 1 << i;
-         |                         ^~~
-   drivers/video/backlight/max25014.c:82:13: note: initialize the variable 'res' to silence this warning
-      82 |         uint8_t res, i;
-         |                    ^
-         |                     = '\0'
-   1 warning generated.
+Ach.... right. Thanks for explanation.
 
 
-vim +/res +86 drivers/video/backlight/max25014.c
+Best regards,
 
-    73	
-    74	/**
-    75	 * @brief get the bit mask for the DISABLE register.
-    76	 *
-    77	 * @param strings the led string configuration array.
-    78	 * @return uint8_t bits to set in the register.
-    79	 */
-    80	static uint8_t strings_mask(struct max25014 *maxim)
-    81	{
-    82		uint8_t res, i;
-    83	
-    84		for (i = 0; i < 4; i++) {
-    85			if (maxim->pdata->strings[i] == 0)
-  > 86				res |= 1 << i;
-    87		}
-    88		return res;
-    89	}
-    90	
+Lukasz Majewski
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--
+
+DENX Software Engineering GmbH, Managing Director: Johanna Denk,
+Tabea Lutz HRB 165235 Munich, Office: Kirchenstr.5, D-82194
+Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/0V+L.IMPpnGggWz/bxwq32Y
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmiF3dEACgkQAR8vZIA0
+zr3XqAgA2sXocPAdmK/F5WB7kLsc6cqCUe6c3iGLjKWISsBkLMNQpfTzN8u3AMt+
+SE64cZAf1HmhN+dCrW+M+/xlKliLHwlkMF6E+Xpd+GhfIeNRijyPXBrcAB2c+Npd
+5yqu9q6rVYD+icUz8AuRiWJQQhKHxrj35cdP7rKD0iyL/NjetQJwRRnlBIF1Asb6
+Y8qLJY52pRfXxgr2pdlmkE2onr9sEnM4VsZrnWy0yuyb0ufMy8NEuRy+mh6TYeqk
+O1TmsdbbUMAcXaGk3XYR6btXXu5bkgn3hGdEJnORLtq1I+W9RH13kbHiKqm7w5Jb
+gZuhF67G07ueQCFJDxAjLMjVflKSOQ==
+=Tm9v
+-----END PGP SIGNATURE-----
+
+--Sig_/0V+L.IMPpnGggWz/bxwq32Y--
