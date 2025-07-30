@@ -1,178 +1,128 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873EE202F67;
-	Wed, 30 Jul 2025 19:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C33F1E5711
+	for <imx@lists.linux.dev>; Wed, 30 Jul 2025 19:53:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753904125; cv=none; b=ocFLH4NM8F5iOic1fj51Aq70r+gSGKBhW4RUSo/L+95XFP/to36W2S+d14AbnKKuVunZjEE7k0oEhUsYTwp6WqBUiXVXjN3F2gh2+XED2qC/X7ijHcTe37L2Fj7xkd5eZW/zxE5zFLZ/gPABptC4ARQdxRGoITmp/F+LQeG31Rw=
+	t=1753905185; cv=none; b=P+S0lL9WoWZwVSnclKS6M1A/qscYzgO8mSw0eI258UHfw2Xopi9n1wpYX8y8QPLhEDHAR4PKX9vLWKi0u8QMYF9hBMdLM6GuT44cOADRE/OFhlniCNDeWzY/+YzAq+cQfCs8b2Sa1jxgYpSZgcvh4tVryH8LgHPguelidzUlkw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753904125; c=relaxed/simple;
-	bh=EatnAFvxUfn9CL+hmmDtELT3YUiiXKFRCHGcG4FczKE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=q6lE1h2r2lp+0sEsWTXCwNxZN/6ir6oRu0Yx8EgTITZyuiAwJ4k8HnovmpLfy1peu5cMrQqWUZXSWwNOsKtmIY9bJWIpXqB+Xaq7bSDAsx/6xB9mlO6MqkshBck3rYJbSxPLH2s3Ew3XUP1WyDXf4OFVu41MUJS+29wpChG02E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=wov6FKbR; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1753905185; c=relaxed/simple;
+	bh=MfTnB37EEj32Y5FjkQTo/dmxJhOyRQ8e/zW2nSleFZs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oZ8p1X9q8+wVTjBk84Lj3sMxHup7PXHNmjMi5Mc+VTpZ/bUH7PW9JUtKot4L8ubou6vG+hRgNJnQRjoLuy3LJ2c1rRpwRr79C2Zuu5hN1TNbeZ1xa073Al6dIA5JdiVu50Cw6JkOyj1kh8xkjmcfQt4mVa5vNF424k40KcyrEYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VEpcbgn7; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="wov6FKbR"
-Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56UJZ7NY3317915;
-	Wed, 30 Jul 2025 14:35:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1753904107;
-	bh=G4zPmGDVYviav51y4z07PJNmrLYIefFNe+Z0UW0kyWU=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=wov6FKbRnFzXn0KFhskBVG/N65oXBAzsXXL165S809P9YK9nWpg9b3/Tm6JWG9F/W
-	 nRiegl2o7OAO+AcmqvZZXrk6WVgLOHa3lcOwWO1QiCl4F88YiAw4Ebc1RU/B9wrcsD
-	 UaMgY6mj7Zau93L2LD05XsCqdwfDwyH9v9mRWn0Y=
-Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
-	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56UJZ7c63413840
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Wed, 30 Jul 2025 14:35:07 -0500
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Wed, 30
- Jul 2025 14:35:07 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Wed, 30 Jul 2025 14:35:07 -0500
-Received: from [128.247.81.81] (uda0499903.dhcp.ti.com [128.247.81.81])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56UJZ7ew1443664;
-	Wed, 30 Jul 2025 14:35:07 -0500
-Message-ID: <570aa0e3-194e-4f5a-8cfc-a4dc525ae002@ti.com>
-Date: Wed, 30 Jul 2025 14:35:06 -0500
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VEpcbgn7"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45619d70c72so9986725e9.0
+        for <imx@lists.linux.dev>; Wed, 30 Jul 2025 12:53:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1753905181; x=1754509981; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WTJ04XJW9rCytOzTtWrCv6iwwB/BOv81eXrzl0rsCXk=;
+        b=VEpcbgn7wJTxYj/K+IWhmh/uQh+KYulvecM3Q76hmHbK8IIE9OOco+gq4yT24CAP29
+         5esPQw5whgjsFUGokteTtB/PM1lh/i9I4QSP2OZRw2uSEeGGaKZ5r/u0QHRLJsgydJ3T
+         Nl95KWU5QEEjyJIn+3/qr/iPnsodx8/TWGKAxPes47hy4rbrrUhk++QQW61oOyIUF86N
+         K4YMluFxayciS2MX3J+yZHkFhDbQ7WtlVvzk3d5vWJs1TqP7quFi0wESin2xoQDzPS0b
+         T1FfAbUm8cYCdXjXEfjRWNq9ZlbA0Em9u+svMvhfKCyVenaTvFg+Ion/RQRswVKTnf1k
+         l6cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753905181; x=1754509981;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WTJ04XJW9rCytOzTtWrCv6iwwB/BOv81eXrzl0rsCXk=;
+        b=RQ3CZ0t8u3LErf44DRu1aNYQMKgjPqoDos7k4KC72h/U5B4HYBScjUu8mLzpBjkM8z
+         nX95onfTHJipIPx6fnoX/Mzfk1eZnNqoVQtrbH5YQT2SOKqJqBBiVDvg8lF7EHZa0uVz
+         QozOdH1mw882eIXYqE3q6om3c8IwLQf3y9HXSY6KvmLz8x5WZVwWV/EnL3iiCTdoeeDG
+         MfIzNUdpSbK7RtSOQ/hJSdAcY6DBDskF1JbIvwxLFFcTzaNKlVmlFQli7VjroX6qmt0L
+         2bk595n/Ua1vezq9c6bbZg+myGTMY6A45GI2kyXlR9II6dDjJI6sGgaZ3xpXUbLydjFH
+         RqyA==
+X-Forwarded-Encrypted: i=1; AJvYcCW88u518WCR6AOMhpaFEkjaNkLyNcwhADkhHmFtUl1pRC1wnyn18dK4hgFK1NUqeF8m9k0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzvCu7NYHkzH/HGFhmtT0b6V9ffKeNswMT3sCeFOBW8cERZKn5p
+	Oxdqap1AlX8vemL/7G34DCqmMwSttvhI/ktN2n2JGGHVn3MZ057KeUM0YMadjS3Kbm8=
+X-Gm-Gg: ASbGncvI5oCJV19JXmrjg5GfVAR8VoFBxXU5ZydvtKj+V6m249tfEIKl1xxpOXkn9OD
+	f7rvy9aHtrYi0ez9UKZ9YpH/Xh2lVjhPTAkM3hDiLXYMB3Z4wqJBcpGE8aQz101hcHJnTgra4sT
+	jsn2RXeuMSmioXnCWz5yQDsPLXwDE0rTDk0cJBUEoIovtS6YpgxCTqSSDCYjQi/vakGo8f42NwU
+	QFixkRo67UEmmcPQ0Tef9fKNe652wJsGmVdCaNZrNjITCTUpN7f4Z4UqzM9oK0L82nd/H20qDim
+	NgMZ5Mfdef0q7A1E0M9Bs4GQSo19yALLH3XV5OSwq9CPVLvkJl/j5m1fxp9NLdwx0jjRKwXJ7LI
+	7WhbAHyDkKP/rksWUW9EAbyvMjv5s895vNqSPBUj/1wWpmu96
+X-Google-Smtp-Source: AGHT+IF1QpqFcMkkrFcPI7L92Qa8qVcCM46GAZ3UfOx8fwQ0i6q08CK1SCZ+XKjU+FsVU7KYpwE0Xw==
+X-Received: by 2002:a05:6000:2890:b0:3b7:879c:c14e with SMTP id ffacd0b85a97d-3b78e6239b0mr7443255f8f.20.1753905181405;
+        Wed, 30 Jul 2025 12:53:01 -0700 (PDT)
+Received: from mai.. (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b78b26a4dcsm9556193f8f.32.2025.07.30.12.53.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Jul 2025 12:53:00 -0700 (PDT)
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+To: mbrugger@suse.com,
+	chester62515@gmail.com,
+	ghennadi.procopciuc@oss.nxp.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de
+Cc: s32@nxp.com,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/8] Add the STM and the SWT descriptions for the s32g2 and s32g3
+Date: Wed, 30 Jul 2025 21:50:13 +0200
+Message-ID: <20250730195022.449894-1-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/7] arm64: dts: ti: k3-j721s2-main: Add interrupts
- property
-To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-        "Kumar, Udit"
-	<u-kumar1@ti.com>, <nm@ti.com>, <vigneshr@ti.com>
-CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <vaishnav.a@ti.com>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>
-References: <20250714092708.3944641-1-y-abhilashchandra@ti.com>
- <20250714092708.3944641-2-y-abhilashchandra@ti.com>
- <72545187-4605-40bb-9c68-54670c2e5332@ti.com>
- <05a07a03-3f59-489b-ae55-5f454266bafb@ti.com>
- <457e2428-f766-4e8d-bfb0-32084de45b5a@ti.com>
-Content-Language: en-US
-From: Jared McArthur <j-mcarthur@ti.com>
-In-Reply-To: <457e2428-f766-4e8d-bfb0-32084de45b5a@ti.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 7/22/25 00:50, Yemike Abhilash Chandra wrote:
-> Hi Udit,
-> 
-> Thanks for the review.
-> 
-> On 21/07/25 19:40, Kumar, Udit wrote:
->>
->> On 7/21/2025 7:37 PM, Kumar, Udit wrote:
->>>
->>> On 7/14/2025 2:57 PM, Yemike Abhilash Chandra wrote:
->>>> Add interrupts property for CDNS CSI2RX. Interrupt IDs are taken from the
->>>> J721S2 TRM [0].
->>>>
->>>> Interrupt Line      | Source Interrupt
->>>> --------------------|----------------------------
->>>> GIC500SS_SPI_IN_153 | CSI_RX_IF1_CSI_ERR_IRQ_0
->>>> GIC500SS_SPI_IN_152 | CSI_RX_IF1_CSI_IRQ_0
->>>> GIC500SS_SPI_IN_157 | CSI_RX_IF2_CSI_ERR_IRQ_0
->>>> GIC500SS_SPI_IN_156 | CSI_RX_IF2_CSI_IRQ_0
->>>>
->>>> [0]: https://www.ti.com/lit/zip/spruj28
->>>>
->>>> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
->>>> ---
->>>>   arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi | 6 ++++++
->>>>   1 file changed, 6 insertions(+)
->>>>
->>>> diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
->>>> index 62f45377a2c9..6f32a2b0c40c 100644
->>>> --- a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
->>>> +++ b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
->>>> @@ -1248,6 +1248,9 @@ ti_csi2rx0: ticsi2rx@4500000 {
->>>>           cdns_csi2rx0: csi-bridge@4504000 {
->>>>               compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
->>>>               reg = <0x00 0x04504000 0x00 0x1000>;
->>>> +            interrupts = <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>,
->>>> +                     <GIC_SPI 152 IRQ_TYPE_LEVEL_HIGH>;
->>>
->>> Just cosmetic thing, if you are doing v2 then consider 152 first , followed by 153.
->>>
->>> Otherwise
->>>
->>> Reviewed-by: Udit Kumar <u-kumar1@ti.com>
->>
->>
->> Sorry, sent too fast, offset of 32 missing .
->>
-> 
-> From what I’ve seen, the SPI interrupt IDs on J721S2 start from 0,
-> so I don’t think we need to subtract the 32 offset.
-> 
-> 
-> Interrupt Input Line   Interrupt ID    Source Interrupt
-> -------------------------------------------------------------
-> GIC500SS_SPI_IN_00     0               ESM0_ESM_INT_CFG_LVL_0
-> 
-> To confirm this, I’ve latched onto the correct interrupt line, and
-> my IRQ handler is getting triggered as expected. I’m also seeing the
-> desired output [0].
-> 
-> Let me know if I might be missing anything.
-> 
+The NXP S32 SoC family includes timers and watchdogs that can be
+dedicated to the CPUs present in the system. The documentation refers
+to them as the System Timer Module (STM) and the Software Watchdog
+Timer (SWT).  This design originates from the automotive domain, where
+the SoC can be partitioned, and a group of CPUs may run different
+operating systems or firmware.
 
-The interrupt lines are correct (153, 152, 157, and 152), but when I
-read the TRM (specifically the Appendix xls) [0], the lines'
-definitions include the offset. Where are you looking for the line
-name?
+On the S32G2, we found 8 timers and 7 watchdogs. On the S32G3, there
+are 12 timers and 12 watchdogs.  Please note that the 8th timer
+(STM_07) is not described here, as it is coupled with a specific STM
+instance used for timestamping. This makes it somewhat special and
+requires custom handling in the driver. It will be added later.
 
-Interrupt Input Line                       | Source Interrupt
--------------------------------------------|-----------------------------
-COMPUTE_CLUSTER0_CLEC_SOC_EVENTS_IN_IN_184 | CSI_RX_IF0_CSI_IRQ_OUT_0
-COMPUTE_CLUSTER0_CLEC_SOC_EVENTS_IN_IN_185 | CSI_RX_IF0_CSI_ERR_IRQ_OUT_0
-COMPUTE_CLUSTER0_CLEC_SOC_EVENTS_IN_IN_188 | CSI_RX_IF1_CSI_IRQ_OUT_0
-COMPUTE_CLUSTER0_CLEC_SOC_EVENTS_IN_IN_189 | CSI_RX_IF1_CSI_ERR_IRQ_OUT_0
+All timers and watchdogs are disabled by default, and are selectively
+enabled depending on the platform configuration, which may include
+different combinations of Cortex-M7 and Cortex-A53 cores.
 
-You may want to change your comment to reflect the TRM's appendix.
+This patch series introduces support for the SoC and enables both the
+s32g274a-rdb2 and s32g399a-rdb3 platforms.
 
-[0]: https://www.ti.com/lit/zip/spruj28
+Testing was done only on the s32g274a-rdb2, as I do not have access to
+a s32g399a-rdb3 board.
 
-> [0]: https://gist.github.com/Yemike-Abhilash-Chandra/f46587ec1ef72671ee31803dd93434b4
-> 
-> Thanks and Regards
-> Yemike Abhilash Chandra
-> 
->>
->>>
->>>> +            interrupt-names = "error_irq", "irq";
->>>>               clocks = <&k3_clks 38 3>, <&k3_clks 38 1>, <&k3_clks 38 3>,
->>>>                   <&k3_clks 38 3>, <&k3_clks 38 4>, <&k3_clks 38 4>;
->>>>               clock-names = "sys_clk", "p_clk", "pixel_if0_clk",
->>>> @@ -1301,6 +1304,9 @@ ti_csi2rx1: ticsi2rx@4510000 {
->>>>           cdns_csi2rx1: csi-bridge@4514000 {
->>>>               compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
->>>>               reg = <0x00 0x04514000 0x00 0x1000>;
->>>> +            interrupts = <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>,
->>>> +                     <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>;
->>>> +            interrupt-names = "error_irq", "irq";
->>>>               clocks = <&k3_clks 39 3>, <&k3_clks 39 1>, <&k3_clks 39 3>,
->>>>                   <&k3_clks 39 3>, <&k3_clks 39 4>, <&k3_clks 39 4>;
->>>>               clock-names = "sys_clk", "p_clk", "pixel_if0_clk",
-> 
+Daniel Lezcano (8):
+  arm64: dts: s32g2: Add the STM description
+  arm64: dts: s32g274-rd2: Enable the STM timers
+  arm64: dts: s32g3: Add the STM descriptions
+  arm64: dts: s32g399a-rdb3: Enable the STM timers
+  arm64: dts: s32g2: Add the Software Timer Watchdog (SWT) description
+  arm64: dts: s32g274-rd2: Enable the SWT watchdog
+  arm64: dts: s32g3: Add the Software Timer Watchdog (SWT) description
+  arm64: dts: s32g399a-rdb3: Enable the SWT watchdog
+
+ arch/arm64/boot/dts/freescale/s32g2.dtsi      | 119 +++++++++++
+ .../boot/dts/freescale/s32g274a-rdb2.dts      |  20 ++
+ arch/arm64/boot/dts/freescale/s32g3.dtsi      | 195 ++++++++++++++++++
+ .../boot/dts/freescale/s32g399a-rdb3.dts      |  36 ++++
+ 4 files changed, 370 insertions(+)
 
 -- 
-Best,
-Jared McArthur
+2.43.0
+
