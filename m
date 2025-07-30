@@ -1,163 +1,123 @@
-Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22C212B73;
-	Wed, 30 Jul 2025 11:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33563262FD9
+	for <imx@lists.linux.dev>; Wed, 30 Jul 2025 12:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753875691; cv=none; b=dPMvqJDrYUn9E5dZaNi27+aO/nxZtdne7Bh1f4ws6vX6RPSw+qBt3+ApBbvzUwJfCyBDrkck2TWkkRys1+Kv4n/HsVsMaukvePICacfuE87Qk2/WgRcYPeI1v5jvRwgusjPlNIlrqc8v11f19dUuDQZcQVAboku7MgIyoRttk9E=
+	t=1753879831; cv=none; b=YsiVDICeQj6oNYNbQomisnM60x9iJE28DYXPeh60rB/Hz+DOjMImQcz5aqo6xhI1iYCC6+P4QPQFr0lVPTj0OqDEofH+b2kvYeZeZmbcOLrhoIRjGh7ZmeT58T0eVhfPfFfdoP3PrtX5eo36oHJS2gRGHkmJfbthkuSZ7kc4HuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753875691; c=relaxed/simple;
-	bh=Q+yabLyIW7uC1xqhnObba1fTmUcHSjCC07MPdQrhtrI=;
+	s=arc-20240116; t=1753879831; c=relaxed/simple;
+	bh=mAirr7gyYUrBa/ClKW/JlnzUq/0q+Y/udQ6/llJgM1M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uJf0zsUTRdSXSD4MN/2ckKHqoPa4Q/4XrcdzQrwlYdRRrB9nFoqClJahrMz5Rt6Y4Kgo+3bFrpGTNNko8BNdhN2WfPC6Qfz8oGLXfICwQ5qS4A5qhM9LpyP4ZU9GaUWrjEv4kdXJ0VQoQLYPR8uprzfAMGN19Gs69De5LRJ1/PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.166.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	 To:Cc:Content-Type; b=kcEHO/6eW5/qwaMH0kZwgAZEqafx+J54nz1/2nvhu5WEtoi6cIdQTkA0Y3G1H1CN4ytm83NS6rXsRK1w9zlK/NQI17Q2OvAoLPL5T7LBtH37LvaCg5nwrtQThzVO5A+IeLLbua0NnMBa7WqkX8pm3yJycRY7lafFnOuXBkfQzdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cEVtjbbH; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f43.google.com with SMTP id ca18e2360f4ac-87c241da47dso207094139f.3;
-        Wed, 30 Jul 2025 04:41:29 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cEVtjbbH"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-61592ff5ebbso1004264a12.3
+        for <imx@lists.linux.dev>; Wed, 30 Jul 2025 05:50:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753879828; x=1754484628; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Tvvn2gu3QwfMvEps+Es99aXQTd4n5DxwynGQISYrqRE=;
+        b=cEVtjbbHWizM2Z8FLduCNwjw40XR2nUM+KLgPyOucKWGYt6jfAZF3Xm1yhHccMssty
+         8PDL3PihlVG3mnKvAJEN/UhV4aAogD4YTyhVimvizST/Z74idzbmgarURn04lUrMDFbx
+         r8gK7TJGFz8jPmCg73FUQ4AA5YOriis7u8p9toej/NSwqxvUnRYmDdn59RHZ6y0d8a0X
+         hLjy+x/ZGbrBnHUiaOloYol9+/ilThuOMVLEn2HoQe0Cq8oJ7wcFNH3OkJr8/Z/KDiM/
+         SlVLt5wjVvCoG6KyK/qjRGeuxpKjXz0RHHt9tFD2A0aaKL0Evoy+jygv7DaiL8Cy77GU
+         s0xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753875689; x=1754480489;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nW9Fed3oaCcY5j8zAXTzmhRy4s/lDYERKz+lZhw5SjM=;
-        b=HQthWLsHLewLgQTifuWRi3xjNuBfxYDjtXv9UhjiGoda2uTX4HoH0yz7Ii+PUBcwZj
-         UVkWhBDxaXRzVy/C/FQtt/zicLq+qOT6D6myAqaq9+YuC7VMtW8NNaGc8lt+ru7MnrE6
-         ALsBM/F/PZcjwKBh5Ra/CgsxYfVF2EftKt8GXt5IWc/5g5cqMF5TH8KPsnDrfxC0LTOm
-         Y/pn+Wn3/zUMrMR0KmWFh3zoO9lQDrqjKStaCYgg/UjfUpT9AbGcXErilt8ZOk3gjGAY
-         gvH7atvd7sWiI3X98hy4QvTKGHbAOHFMSG/m9Gw8ZJsvQuef/kLGx4uNZHBcSVIG7c0G
-         aYQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUDzWYuUaPvvAURlojSWhM2YSPxRIyFK1fpHLizDK1mLcvn7OxNGWRVPwpX1YbXDYtnjIX/RQ==@lists.linux.dev, AJvYcCW1jmSeQphTEJXzgMszkzcJkJ1S/O7j5+0PlOykDHfw38qCcUfvv9ot7GoSPBcKucqy5Ya/INKE2qMKiYY=@lists.linux.dev, AJvYcCW8ayUKW7FZeXUsWD2hQQhEQsH8cv+SWjWvUIUHh9kOK3Ui2vtIo9/7iyNX0g3E/KATHdqi@lists.linux.dev
-X-Gm-Message-State: AOJu0YycIz91AlFkx9h1XzjwEAbxlUXx0Ivn/NOhBBrZw80iGoff3wCg
-	D6hc6CcEbCpT33hqBlen9+LpZ/p9ZaDX8ghaP8fezMslUNqKacTbVVsSrzYYBX1kfn4=
-X-Gm-Gg: ASbGncv6o7xDmSKAsWdZHxrx8kNFRyeARdD584LnyVd8LO2f9U6tpYtAYvgC67kpfIA
-	P+T3F8e7y62BRaDv0EaxnXvJLqrVyjWf0zp6e2PD4FFud4mjv8INiy/wTrfL2uq6GhJXZm6SU2C
-	2LDqqqFckJgN3/zs9T5HWM+Q6pSfnQ9WKF7nUP8PsXH+x8uUf/xjGt4T0CvlA6jrG1duzNebnnC
-	93CUDfrLpDwyUhvHo41NIaDrEBk3DxSAn3ZG4I09easy9so1IAiK4MQ5YfOEaqnpFFkwJfSgf8x
-	VrncALnPtblb4jpgMdjwdvNs4GPHC5KaOdhGt8eRO3pQ6sA0y6DqLQxL0/ZUgbG5CNqt5uPkgxt
-	VhC9DqVKUktytBIBFHYBcHytDA1FmLQ1dpqRbtAg5YoguAsesJupdUfQXa9avHaLkqC8eTHpSgT
-	A=
-X-Google-Smtp-Source: AGHT+IHr/hv7p0aFh7X56jny2EszDcxB1sF41n/SGyCbqmuDqNulJO4TS99/31Peh8ntjeRwM3cWsQ==
-X-Received: by 2002:a05:6602:1d19:b0:87c:3417:cc11 with SMTP id ca18e2360f4ac-881374d12d2mr453434439f.1.1753875688595;
-        Wed, 30 Jul 2025 04:41:28 -0700 (PDT)
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com. [209.85.166.181])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-880f7a29612sm256873039f.24.2025.07.30.04.41.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Jul 2025 04:41:28 -0700 (PDT)
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3e3d238b3a7so50552135ab.0;
-        Wed, 30 Jul 2025 04:41:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUhv1ptrw5+EtOO6Qie8f1q+wrgSx3qGJ/nrmcaNBOXIU8cQV9uEfxfVkZGvxZop6s4F+bs@lists.linux.dev, AJvYcCXEN4Jxx4uQ0BCIsMZIRNdcSiZa4kZUFdimBeONh9NOlZ6sDxkeey4VryXs4DmCPkFHd37TtOMhMNyJiQo=@lists.linux.dev, AJvYcCXL9rHr6YxBt1QIJGEc/UTHsaUDYYZJXvtHz0kKpD/uFsAZ3dk1QYUeQSA10CMWbKzRls/cLQ==@lists.linux.dev
-X-Received: by 2002:a05:6102:418b:b0:4c5:4591:ffda with SMTP id
- ada2fe7eead31-4fbe87b425emr1711001137.21.1753875189085; Wed, 30 Jul 2025
- 04:33:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753879828; x=1754484628;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Tvvn2gu3QwfMvEps+Es99aXQTd4n5DxwynGQISYrqRE=;
+        b=WVtrcWcLIf8lIVo5xanJjYMHpQgUtXqxj7KBOLYShyDMp0GA0xq37pLaIvWvLt05i7
+         ZjxZrshbEDrMN+6KE7lTrcluXy0cvWRdPsf66iUDvRhqXBlLK82NHcVhtfL57k5GymID
+         fTuRiJaiy+pkMtkdaaY5Xwjqf1n7ZwC0zqvtP0x0nMBMUf3ELh5PwoeI2TNnE4ZWXxdc
+         M19WTqAdYB2LT2T/30Fzby3gPD4N9MQkQ4Ya8i70RYAcYjEooA7ijfemEzGPW3pehgAZ
+         vw2D0h9bStpRn9xRj+PVaB36VXjV4ssbVzeatmXDTs9tPY32spTtjYprje3/MZHfVLZY
+         fxNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVF7TQSpZG3ab5w+tDG6CKJR4Snn5cSWn3pDFfyeQcOtJyYH9Ohh75E2cR7A5NNvko6bus=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxTS/UhPIf9ywOKaxYu4x/nCrPCs+BlDoAEoA1t4r8blp2oyApE
+	f4YQ3dZKmXr3ikp0Ps+yW9YblGwXlaHLxIklHrUFq4taRR1JjJZ0CeQ7W18+8uOCyFkCVftsTrM
+	IF5fFUYBXYMGBJd8XFyJpRLPb/J130uI=
+X-Gm-Gg: ASbGncsfmDrkEBOZuZnojsdigTPImOECsSkmMVbbRN4fML5Ew006dE50yNJ6Pab5A8O
+	Cn1XWC1TeUy9fVnJ/uJJEuexv8RBa998WeWt4mj9fuFqm+ndKqAxBlrHJ7nHRIe4MfFtN3rea7S
+	s3Rtx1vzhIqeDjVRq5yjvRM8vhJtX+6ZtXWYSOGHcYwmjgDfzNRRis+w5aYYMvc1ArOgKEeCH9L
+	0xn2j1bQw==
+X-Google-Smtp-Source: AGHT+IEJQOY2N21rRHh/x9SsZgR/AC6673gfg/Aq7DulgeR+61NEupHsjseGW2o2I6RkO01k98hTvI6/W9mnPdZHDTE=
+X-Received: by 2002:a17:906:6a12:b0:ae0:b33d:2a4a with SMTP id
+ a640c23a62f3a-af8fd97569fmr398869466b.35.1753879828299; Wed, 30 Jul 2025
+ 05:50:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250730-topic-dma_genise_cookie-v1-0-b505c1238f9f@oss.qualcomm.com>
- <20250730-topic-dma_genise_cookie-v1-3-b505c1238f9f@oss.qualcomm.com>
-In-Reply-To: <20250730-topic-dma_genise_cookie-v1-3-b505c1238f9f@oss.qualcomm.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 30 Jul 2025 13:32:58 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdV0JO=qtregrrHsBZ-6tpNdPUj3G1_LWRfRsj0vBb+qyw@mail.gmail.com>
-X-Gm-Features: Ac12FXwFObS4veqAcz-kMArtfpOLnucchkvqP_CejUTAp0AxApTTYboaikMMzJA
-Message-ID: <CAMuHMdV0JO=qtregrrHsBZ-6tpNdPUj3G1_LWRfRsj0vBb+qyw@mail.gmail.com>
-Subject: Re: [PATCH RFC 3/6] dmaengine: qcom: gpi: Accept protocol ID hints
-To: Konrad Dybcio <konradybcio@kernel.org>
-Cc: Vinod Koul <vkoul@kernel.org>, Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>, 
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>, Neal Gompa <neal@gompa.dev>, 
-	Ludovic Desroches <ludovic.desroches@microchip.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, Paul Cercueil <paul@crapouillou.net>, 
-	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, Viresh Kumar <vireshk@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Frank Li <Frank.Li@nxp.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Taichi Sugaya <sugaya.taichi@socionext.com>, Takao Orito <orito.takao@socionext.com>, 
-	=?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Daniel Mack <daniel@zonque.org>, 
-	Haojian Zhuang <haojian.zhuang@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Patrice Chotard <patrice.chotard@foss.st.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	=?UTF-8?Q?Am=C3=A9lie_Delaunay?= <amelie.delaunay@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Laxman Dewangan <ldewangan@nvidia.com>, 
-	Jon Hunter <jonathanh@nvidia.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Michal Simek <michal.simek@amd.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
-	=?UTF-8?Q?Martin_Povi=C5=A1er?= <povik+lin@cutebit.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>, Viken Dadhaniya <quic_vdadhani@quicinc.com>, 
-	Andi Shyti <andi.shyti@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Marijn Suijten <marijn.suijten@somainline.org>, dmaengine@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, asahi@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
-	linux-actions@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+References: <20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org>
+ <20250724-pinctrl-gpio-pinfuncs-v3-12-af4db9302de4@linaro.org>
+ <CAHp75Vc4vsJh_-GbP+YO50veoGoGtfAPL4tjcF+73uophfmnGw@mail.gmail.com> <CAMRc=Mc1ophkofB6MmtD4adBAi69C3JyovM-S9YD_y7UA3V1qA@mail.gmail.com>
+In-Reply-To: <CAMRc=Mc1ophkofB6MmtD4adBAi69C3JyovM-S9YD_y7UA3V1qA@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 30 Jul 2025 14:49:51 +0200
+X-Gm-Features: Ac12FXxgFDuQutFN_-MaFgaos1SbYd6nY92Ty-kjNsHnooD1EOK3KyGkMl4TA4s
+Message-ID: <CAHp75VcV=K-DfOGs0z64==nO+wQNoEB2Ngd2vc+dLYr3WLChjg@mail.gmail.com>
+Subject: Re: [PATCH v3 12/15] pinctrl: allow to mark pin functions as
+ requestable GPIOs
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Konrad,
-
-On Wed, 30 Jul 2025 at 11:35, Konrad Dybcio <konradybcio@kernel.org> wrote:
-> From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+On Wed, Jul 30, 2025 at 11:54=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
 >
-> Client drivers may now pass hints to dmaengine drivers. GPI DMA's only
-> consumers (GENI SEs) need to pass a protocol (I2C, I3C, SPI, etc.) ID
-> to the DMA engine driver, for it to take different actions.
+> On Thu, Jul 24, 2025 at 2:22=E2=80=AFPM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> >
+> > >  struct pinfunction {
+> > >         const char *name;
+> > >         const char * const *groups;
+> > >         size_t ngroups;
+> > > +       unsigned long flags;
+> >
+> > Not sure we need this. If the function is GPIO, pin control already
+> > knows about this. The pin muxing has gpio request / release callbacks
+> > that change the state. Why do we need an additional flag(s)?
+> >
 >
-> Currently, that's done through passing that ID through device tree,
-> with each Serial Engine expressed NUM_PROTOCOL times, resulting in
-> terrible dt-bindings that are full of useless copypasta.
->
-> To help get rid of that, accept the driver cookie instead, while
-> keeping backwards compatibility.
->
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> I'm not following, how does the pin controller know that the function
+> is GPIO exactly, other than by the bit set in this field?
 
-Thanks for your patch!
+AFAICS the gpio_owner !=3D NULL means that. No need to have a duplicate
+of this information.
 
-> --- a/drivers/dma/qcom/gpi.c
-> +++ b/drivers/dma/qcom/gpi.c
-> @@ -2145,7 +2151,8 @@ static struct dma_chan *gpi_of_dma_xlate(struct of_phandle_args *args,
->         }
->
->         gchan->seid = seid;
-> -       gchan->protocol = args->args[2];
-> +       /* The protocol ID is in the teens range, simply ignore the higher bits */
-> +       gchan->protocol = (u32)((u64)proto);
-
-A single cast "(uintptr_t)" should be sufficient.
-Casing the pointer to u64 on 32-bit may trigger:
-
-    warning: cast from pointer to integer of different size
-[-Wpointer-to-int-cast]
-
->
->         return dma_get_slave_channel(&gchan->vc.chan);
->  }
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--=20
+With Best Regards,
+Andy Shevchenko
