@@ -1,147 +1,132 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9BE225A32
-	for <imx@lists.linux.dev>; Wed, 30 Jul 2025 21:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724F4199FAB
+	for <imx@lists.linux.dev>; Wed, 30 Jul 2025 21:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753910160; cv=none; b=aBAi49LAheNyTzPQhXDBiQqRECqfCSOJlJCIyieb0XmePr/Cd1EgWwa8qYm2iF0u700K79A4EA8gi8v/ig1R0qzjz+mwvBV8HerJ9dk6UIXGxOH9PziaBWzx8CPPxvA/938pvQjnZaM1FeTvq2mjkfHKVo7mYMUfmCo86rDu/UQ=
+	t=1753911898; cv=none; b=AeYzu542jH39ocGBDik5f+60+SPcwwVycV5uPs5Zh21BHMiuk9Td8J7IOhsJOmmveRn7p2ZdiX3OpBw32oFJ1JX+LmWyXXs2ZEBiapsxWBXGGvfLTheHegLn+i1WxfYFqnaA5VUT+Bx3t+FW9tUUZkVjFOhb6sipyIuG3cqjMCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753910160; c=relaxed/simple;
-	bh=MhTEx3J9zNXBfEucck8oQ1XK6cImKP7msyEGVpc96GA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XOFBdDfjerm4U+UiVMIQCFICQVas1ITYNkDwzWQ7x3unVm3Qu4pVzwLIuME6o7DcsF3wthYZqzw54y0mYXEcwrJpDYeR8JjamJGTD0yKFrio2dXLY3cdIkx/D98tY9eOm9y9rGmh+Wwiax3HrxeAKNLqsfUQf2cxqUhHX8nz3fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Au5Pvta6; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1753911898; c=relaxed/simple;
+	bh=PPRlwx1CPANTimR56E3Tq9xJjZZGDr/ycInC7SqiA7w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X2eD2pm+SZiz3VriR7Sw9Wfbpq9qy1oKDO0KYlpFG7oCKImRlGjinY6pQB6y7QqNTDGQ0c2Duel7VomrvjShSebFWKdxQpSubJ9eTErbKC1XlmBuFFxImq3GcYFndXROC6kxDwFaiyJg68nb18N9PFbtIxofpHoe4TFBQ0O80GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NefG+6+A; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Au5Pvta6"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3b788feab29so167540f8f.2
-        for <imx@lists.linux.dev>; Wed, 30 Jul 2025 14:15:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1753910156; x=1754514956; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HTZ24rJm+Pue1YLQjE0bpMb81Dlei+K5VJgH8GnuVPg=;
-        b=Au5Pvta6udZt2XE7NpwLb/iQ9/D83GmxiHW89dv9SpRQmCyLEXiEW8M5gpzRxF+Bfk
-         qI8scVIz6aK4nau0hcge+kedMYT096Y5OPJlHX7HnKZbj+h9WhpxCkgs2cgbT0663lSh
-         MPtXF8MLpC15bkk+QtMRq3CsXpPDqGxns4daP4AtESnaMhCsLNYyjiCuPR94t8gSZZE/
-         532obNR3UssC5hoMSFUhvrizuxEk0PXDgq53Nl73l5r4GkZFsViv6x5qQiShDu+AtGrX
-         5ho4k3GoK3LT1osjllkOPXvAwIIFBwTj3czvYcHij1YaLoqs+wRVjSWuG68r+jX0CfMX
-         NsnA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NefG+6+A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753911895;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=etY/MDRGFrNa3/NcGdo98kEahLCyg5BbKHxxOTQSp/k=;
+	b=NefG+6+AoB+nFdpZ+Mvu2NIzuXZlagaCp//jX+1tbnrdjPncw7v6yX2nAiBAio1zkx6niJ
+	gUHhSY3aAFEOzAafEwReh8wVfBbiY6PRCmjRy2pqoIkoRfBRl6CzHHeh/74hcaFFuKN+Lj
+	YirNP4/+yqXVhT4auVKrq63d+e1PXqY=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-567-7rB-20E2Nom2sWgSZG_o2A-1; Wed, 30 Jul 2025 17:44:54 -0400
+X-MC-Unique: 7rB-20E2Nom2sWgSZG_o2A-1
+X-Mimecast-MFC-AGG-ID: 7rB-20E2Nom2sWgSZG_o2A_1753911893
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-af905b8978dso13309066b.3
+        for <imx@lists.linux.dev>; Wed, 30 Jul 2025 14:44:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753910156; x=1754514956;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HTZ24rJm+Pue1YLQjE0bpMb81Dlei+K5VJgH8GnuVPg=;
-        b=Ujrz4Y33yLioKOMyV6uH/64dHxvFYyr+GLrR0CuURu6GYGvmtaPupuBq1l4CT07Ds1
-         7tfbBLlpLYb4ivBkOB/SN5p4ZsLBc3V2upgqAAS2fFYV+4iqHOkCT5O1UB4XMeB2pDw9
-         XP6GDO9RKnIDeXbtgMmehYvrxnbi2Bqvkl9v8jGj2HG7sdXDAu8EBTL/xAARYGoWRU4G
-         wEZAAS3rFxtFGR26Y/1+sysadr/S7AAfq7k0WJWa4XrtyOkMiJ1Cu250EY9Q8N1abidv
-         Ue0JPgG8UhWMFi5gNnGCio8BIa+mgr4q12IYglMCTYzQdS2L9vql+FAD37MfYP3vnpc5
-         tTvw==
-X-Forwarded-Encrypted: i=1; AJvYcCWhGDdCDu9I75H8UYW+CWRAF4zQ4ocKeZz75q+eXQ/MSFyxqoZvO/84OcxqgKoURrRHYzk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzr2GcsVivcSf607ssN6bxB/e85lKLbVoX2XcSHCLp/z1BAY9Fn
-	IRuZImmUrOsS24yCSSvxnXUN2OXcKzcp/uTSteCRY7/ppL7w7NXt+d9KYgaG8sfzhVo=
-X-Gm-Gg: ASbGncvANAI+N3VfLCLmXw15QrP/8RB9FBZiB+26jmcTJKmMItzQvOXd+L2HtmFgd6d
-	mALnZMWd2s4oOPtkHiP2QkMyOvsiOzlcqS5z69y3IFVvbnSf4KeKOTp3DhaaeNXieOC8/zknqKq
-	o8vAeAk1EEUQo2BpGX/mQEd8zfbdpnh21KgvCm2s8TCxy9bOROckrgqj0bqUaAK9GinGkmBdxf5
-	yk+EXdC+0nXIlNRciWo/y3fjcKMWfCvv/0o7LvQYSqt/Tcpkjs51dGCP/kYjljN0vtIsw+xtMHq
-	/UExZJ+LHcFzh+vGB+yDIZAdX3jvU4qqp9JwQ+l49gU+8nR8k2ywWXfl284EYwTIt1GpydkE9IQ
-	1HMccG3J29X5nenzNQeGn5j2yRq72Sx84J8JwAYIBKK1O4Ev8Ngo06sl0h9ScgA==
-X-Google-Smtp-Source: AGHT+IHQkznpibqUF8XL+omLAf+uDsGuaH8lAZ0YQHFkhu+hPUSUSN7QyTWCfS2BgMUd882X/GeefQ==
-X-Received: by 2002:a05:6000:1a8d:b0:3b7:8481:e365 with SMTP id ffacd0b85a97d-3b794fbe269mr3794834f8f.10.1753910156462;
-        Wed, 30 Jul 2025 14:15:56 -0700 (PDT)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3b79c45346asm122454f8f.39.2025.07.30.14.15.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Jul 2025 14:15:55 -0700 (PDT)
-Message-ID: <87d40626-8789-4e71-8ac3-fa8fff0a7435@linaro.org>
-Date: Wed, 30 Jul 2025 23:15:54 +0200
+        d=1e100.net; s=20230601; t=1753911893; x=1754516693;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=etY/MDRGFrNa3/NcGdo98kEahLCyg5BbKHxxOTQSp/k=;
+        b=V3Q/9VFDmZU1foRJA9o7f6BoHZ/ue/Ta7RRvVZqWGM9CTuJLiEEqqBE1KZkMFxhjTH
+         5Nh0dPbSe0c7Kze+A7tfLmUpHoBmI8MgKZtUPUcZmZy2nwl5BIQo4g6GVBNJge+YlCwN
+         GTU2pPtVNHnOEG2gICkG85BZbuvlkNpvc74QX88twekFmzE41DhgoQbMkcWjpX1olwhx
+         piDfCYisV9sSqug8xmRtihjjrXu37OaidcC+wAXGXX7uvh47epCNd9Oi5w8eb/JYwDfV
+         LzP3y9Dg3iWRsV5pLY9gufH6VVygOXzC88WkQG7vzYsvFtK7Ppev3+unSbbpnl7c3zct
+         Mu0g==
+X-Forwarded-Encrypted: i=1; AJvYcCUmO+DA4AkAaiMpjWg7ZLa3S3AUrEe344ch0e337jDbmGAqSxzUFfMwT16pJWXiKVdo+7o=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwojV45Z8iXXOeOAx8OVenBPnsdz0whn4x36WFl4vZ7k7d2da7b
+	9nuTd04c0v0KEL/RVxPEYJwGA4C6FEdesilnkHuWDa+fVxrDTteFKR1/0CtTImV0eoRXP8FrSx2
+	rMHBiW6Pxre+Qpy0mGSQCa51eJMEjeAxU4xczX7ssXrLA8Fn6A1OvIR9mbD3RUrmC36jcccM5dU
+	Ywm0+2kKdigPcu2dUXmyYcy9iLE1nO
+X-Gm-Gg: ASbGnctmXWv6YiQoeLLrQz/6kzCcEp0x7SKm66tseQJciE9yq+UynDWQvo4ATmpOlyu
+	yd6PwwjI6OsssJloCktgIVeGFbf8ido+zMZ7AXd7ONy5FfvBXG6rvxNCvuFfKzREo/X2LYqBBtR
+	dC9C5DBGVQBpCxvixAivKk
+X-Received: by 2002:a17:906:478c:b0:aec:4881:6e2b with SMTP id a640c23a62f3a-af8fd95983cmr588748566b.28.1753911892814;
+        Wed, 30 Jul 2025 14:44:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IETx/Q8z8JkM7YCT5hwYxMVdj/tg+Mt8q7qzSVGG/eKji/F1PzdcrMN7TdxkQSZqczHP8nko8qLTPufvPgLTYo=
+X-Received: by 2002:a17:906:478c:b0:aec:4881:6e2b with SMTP id
+ a640c23a62f3a-af8fd95983cmr588742766b.28.1753911892317; Wed, 30 Jul 2025
+ 14:44:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/8] arm64: dts: s32g274-rd2: Enable the STM timers
-To: Frank Li <Frank.li@nxp.com>
-Cc: mbrugger@suse.com, chester62515@gmail.com,
- ghennadi.procopciuc@oss.nxp.com, shawnguo@kernel.org,
- s.hauer@pengutronix.de, s32@nxp.com, kernel@pengutronix.de,
- festevam@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
- Thomas Fossati <thomas.fossati@linaro.org>
-References: <20250730195022.449894-1-daniel.lezcano@linaro.org>
- <20250730195022.449894-3-daniel.lezcano@linaro.org>
- <aIp+4mWS1k73Vf/A@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <aIp+4mWS1k73Vf/A@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250710-drm-clk-round-rate-v1-0-601b9ea384c3@redhat.com>
+ <20250710-drm-clk-round-rate-v1-9-601b9ea384c3@redhat.com> <20250711-adorable-winged-petrel-3a55df@houat>
+In-Reply-To: <20250711-adorable-winged-petrel-3a55df@houat>
+From: Brian Masney <bmasney@redhat.com>
+Date: Wed, 30 Jul 2025 17:44:40 -0400
+X-Gm-Features: Ac12FXzMGo-MKds2pkAwVkvrlMlbQL40TOGBvmpmqZ_c-U-gdfMUVGNxYave4ac
+Message-ID: <CABx5tqKuOcE83t+BVz=1WudVtBxJYTzcjWJ_n4se0JQWeU_Y1w@mail.gmail.com>
+Subject: Re: [PATCH 9/9] drm/sun4i/sun4i_tcon_dclk: convert from round_rate()
+ to determine_rate()
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Abhinav Kumar <abhinav.kumar@linux.dev>, Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
+	Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>, 
+	Yannick Fertre <yannick.fertre@foss.st.com>, 
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+	Philippe Cornu <philippe.cornu@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Stephen Boyd <sboyd@kernel.org>, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-sunxi@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Ebs4_n1-3cYjvh30fLAfhCYtcpKPJM2Dse940K9v08o_1753911893
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 30/07/2025 22:21, Frank Li wrote:
-> On Wed, Jul 30, 2025 at 09:50:15PM +0200, Daniel Lezcano wrote:
->> Enable the timers STM0 -> STM3 on the s32g274-rd2
->>
->> The platform has 4 CPUs and the Linux STM timer driver is per
->> CPU. Enable 4 timers which will be used, other timers are useless for
->> the Linux kernel and there is no benefit to enable them.
-> 
-> S32 have not ARM local timer? It is quite strange!
+On Fri, Jul 11, 2025 at 3:05=E2=80=AFAM Maxime Ripard <mripard@kernel.org> =
+wrote:
+> On Thu, Jul 10, 2025 at 01:43:10PM -0400, Brian Masney wrote:
+> > -static long sun4i_dclk_round_rate(struct clk_hw *hw, unsigned long rat=
+e,
+> > -                               unsigned long *parent_rate)
+> > +static int sun4i_dclk_determine_rate(struct clk_hw *hw,
+> > +                                  struct clk_rate_request *req)
+> >  {
+> >       struct sun4i_dclk *dclk =3D hw_to_dclk(hw);
+> >       struct sun4i_tcon *tcon =3D dclk->tcon;
+> > @@ -77,7 +77,7 @@ static long sun4i_dclk_round_rate(struct clk_hw *hw, =
+unsigned long rate,
+> >       int i;
+> >
+> >       for (i =3D tcon->dclk_min_div; i <=3D tcon->dclk_max_div; i++) {
+> > -             u64 ideal =3D (u64)rate * i;
+> > +             u64 ideal =3D (u64) req->rate * i;
+>
+> There shouldn't be any space after the cast.
+>
+> Once fixed,
+> Acked-by: Maxime Ripard <mripard@kernel.org>
 
-I'm not saying there is no architected timers but there are the STM. May 
-be I can reword the sentence to prevent this ambiguity.
+OK. I'm planning to submit a v2 of this series on August 11th when
+v6.17rc1 is out. Unless the maintainer that picks up this whole series
+plans to drop the space on merge.
 
->> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
->> Cc: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
->> Cc: Thomas Fossati <thomas.fossati@linaro.org>
->> ---
->>   arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts | 16 ++++++++++++++++
->>   1 file changed, 16 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
->> index b5ba51696f43..505776d19151 100644
->> --- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
->> +++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
->> @@ -40,6 +40,22 @@ &uart1 {
->>   	status = "okay";
->>   };
->>
->> +&stm0 {
->> +	status = "okay";
->> +};
->> +
->> +&stm1 {
->> +	status = "okay";
->> +};
->> +
->> +&stm2 {
->> +	status = "okay";
->> +};
->> +
->> +&stm3 {
->> +	status = "okay";
->> +};
->> +
->>   &usdhc0 {
->>   	pinctrl-names = "default", "state_100mhz", "state_200mhz";
->>   	pinctrl-0 = <&pinctrl_usdhc0>;
->> --
->> 2.43.0
->>
+Brian
 
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
