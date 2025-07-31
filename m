@@ -1,120 +1,259 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676342D4B77
-	for <imx@lists.linux.dev>; Thu, 31 Jul 2025 14:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7223F1C5F06;
+	Thu, 31 Jul 2025 17:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753970530; cv=none; b=G9cP2ITnLL0RQsUE/alfYF6IMvEMM3PoMD4Q5oMEwfi/y+xznh+dc3OZ3NRH1mL1tI4AwoD13OvxIub59xMHLXraYw4lX7owuXgwyYs50L3DAzb8Enhz9Dsmljo/saMS2RFNqNkooaECkap+3vSUWK0X4tHbh7mftyFLvwm856U=
+	t=1753983723; cv=none; b=l0Y80jNS8ZncUy09yHXF5nIi7DGpENsDgY9iDevK9zvNDAsrdOUcLSz0kJxEQLrlOit/qZA+1j8XoSOzjqUHlCburD0ycN0idK515qrnnS5vrytn3uw/J90xC1a+HQA/PLOEF1dtKSTj2yMsPT6BWOXUIj6IjS/hJ+vpbaCsSCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753970530; c=relaxed/simple;
-	bh=Q6gqUDKWSByswweoa4MByrpih4dPJFAYYxh1yHsXWcE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=orrCMyVF5mdD47jBLEVegvhWuUVLea0bsjECgqGgVdZbwrlxLhnZpDFG/Uw+OdZoZl3O7KKYZ0UUxSVnftZtLOi+0FgMP0wStmOyD1fZezM+uzAOkS+VgLwmAwDfh9sxI61eCVICBWe0OzEEmfdLocK07DrvDtQgV41KTyd/xIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pFLOF8rA; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1753983723; c=relaxed/simple;
+	bh=DOEjPRA2MgCwVcAX8nCWOwTlHqRodzpZ9gS+A8XgiM8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ok1QkXltB/GLelrkynVZKIHkKrHxCB0V84OKd+/vivtYM8UT6r1mRcxgZkP53ovCsquQTTafzeJfN9XQaTvCxLDev+aDgWfHmLLAt5QZbtQvFnE2N7dnxtYTJAdERlAbDc1+foYeb5qzw/uew6VcyU+NE7ZdQ5vu620ycRz6Gik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6OTR0vG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pFLOF8rA"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4560cdf235cso5048155e9.1
-        for <imx@lists.linux.dev>; Thu, 31 Jul 2025 07:02:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1753970527; x=1754575327; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+UbYDXw5XC5hpPAAcjH/Cyq+ROm5RlEeQDd+B8eN0DU=;
-        b=pFLOF8rANquIQGlYBauYC5laCHbLWeqhjrJvk3It9/pmMQtJW3Kl5kphkp4bdv4Gq4
-         PE8iwA/mvHjWPgeur8908gehmtIinv1uAOWYdmAnNlgWBt9EKtGsqPs38utYBax6COMR
-         o/7+uJXI3XeGLW73m9an1WR/U3IHh8nWXeWDGOwmOB4sPlmDvmID80IibTO0tvbViBxf
-         zHpPWAZOFE+GCbn31YEvrqrskdAt19875DGU+ffbAZ8RjxpAa3nAlkDxcwomFTyWNAFm
-         nWwdzVNQB2/sDm8ODJgaAJv01hWSQyAyXMUZJrRSuaOVeQ+hmSdC0UCn4TGGhyb0wNIY
-         tq6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753970527; x=1754575327;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+UbYDXw5XC5hpPAAcjH/Cyq+ROm5RlEeQDd+B8eN0DU=;
-        b=WggwZQAaWTVLhX0t+e6ewJpkO5igLLVQRu2l55ibgop/qweDS/hgZWav7lYQHNGTeh
-         8EkH/ltaHNkbHudmc4DxorH6VgIjqNHYmcLQkMr/jR/YxpSSleU1cZvusuWA5ns7T4rX
-         xwLEKbIpliaRj0gNKKXB5BlC/AjMpfnkGDOBALP7ozmmuIbUP5DGsGrBar/rbgGvl5Xm
-         5bw4r7saZje6w3+x3ThghdEJSZ0aEvYsxyOoLnYLGkp2gGQGgizMFZ4PBpK+DDvkdCmn
-         t5QyFri6xxRbd+JJHxWhqBUjW3vdS1T10g9AKYDNrW6XA4lvhMsXUD8Mlr2UcQzI8Owu
-         K5Tg==
-X-Forwarded-Encrypted: i=1; AJvYcCUkIkdYve9BHYDU8ETPPHxWg9f+Y+FC8nQIosux6MWoXHjxqVqd4xlYU/BCepIokPFnREc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxzLLlQkBjW06tlr8GxNrujSo2WWCfhEdsYgAHOvBYqYWux3O/E
-	qM7tOLBf1sJFQRBWV6cnpsdAkd3h2qypU7erJyzXiY9gLqcjKPnwW057HmcqRfP7OIA=
-X-Gm-Gg: ASbGncvNpSdpgcjaa3LHOTH+suI7W9jL6Zqxy6gRmC0EzxHPLyppQ4gE1y9Sv1/xy5t
-	jhMoWvWWkdf6ux8yoiTrRhJF981CQtXeS13wDmEKBeNpFR3kpVZFVB3ridO1cwpuBNosptNTOxA
-	vrGpZg+96k3qlD7laUJ6UcILI4PBpCUEOgSK0fEdHpbMZwEudKmrOiqZwa8a6nNMXJzu16N7KkC
-	qvQaLEv24gfZvbIaxjMInkws0UZ2Dq1p26VoEIxDGLYetLFe6thBTDpzqczS/lH5Fi0pL0p1zyA
-	4AtXa6XezASftWpmrhcIWbl8oWAFuxqV2TUpiTnEWGTGhCZhpU2tL9PLCij6pYTq/5tHuAIcFEV
-	1yveZJwpa8/x60NaO0BU2D33VU88VA+yACRIv2M8Cj23YWPs1ib7/kCUBzaw=
-X-Google-Smtp-Source: AGHT+IGoCseWUX+0lPWppwUdmNG0l0frr+iK8vwkU/QkBfN7U5WGI3OnPVlPht7D/5AVPZPGmJkn8g==
-X-Received: by 2002:a05:600c:8812:b0:455:ed48:144f with SMTP id 5b1f17b1804b1-458930ec808mr51382735e9.14.1753970526033;
-        Thu, 31 Jul 2025 07:02:06 -0700 (PDT)
-Received: from mai.. (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4589ee57c18sm28121285e9.28.2025.07.31.07.02.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Jul 2025 07:02:05 -0700 (PDT)
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-To: mbrugger@suse.com,
-	chester62515@gmail.com,
-	ghennadi.procopciuc@oss.nxp.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de
-Cc: s32@nxp.com,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
-	Thomas Fossati <thomas.fossati@linaro.org>
-Subject: [PATCH v2 8/8] arm64: dts: s32g399a-rdb3: Enable the SWT watchdog
-Date: Thu, 31 Jul 2025 16:01:41 +0200
-Message-ID: <20250731140146.62960-9-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250731140146.62960-1-daniel.lezcano@linaro.org>
-References: <20250731140146.62960-1-daniel.lezcano@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6OTR0vG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDF6C4CEEF;
+	Thu, 31 Jul 2025 17:42:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753983723;
+	bh=DOEjPRA2MgCwVcAX8nCWOwTlHqRodzpZ9gS+A8XgiM8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=X6OTR0vGCieHQ2Xl3R5A7G8OZ3bRlNPxC5NxxjqmYZDt5lxXxbNVB81yeHhkwG/0A
+	 +hnH520zgQgiYUSD/AS8yUsHYDPHQsyIvCgRd6kCd/kFgCpWGbM1ReSkNSZcrQugyP
+	 YTrbtBX98KsJVtKRMzNQIXNQIcoHsT+rsE04L98OBuoKTa3rZxJ7aGYTclJzTAJGtg
+	 x2ULMVR499zaU2No33p5v2X9EZ989LpSKU+Ru30zq6VCAui5c0NRAcS9xsqtHERk8w
+	 aEEVwZH+lOZh2/xS23rDg3rM1X6AMsYrecuJznecogrYKDVfdR3aNiPBmYulfsuH/G
+	 R5vWnoG5YGfFw==
+Date: Thu, 31 Jul 2025 12:42:01 -0500
+From: Rob Herring <robh@kernel.org>
+To: Joy Zou <joy.zou@nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: regulator: add PF0900 regulator yaml
+Message-ID: <20250731174201.GA2270846-robh@kernel.org>
+References: <20250731-b4-pf09-v2-v3-0-4c2659516582@nxp.com>
+ <20250731-b4-pf09-v2-v3-1-4c2659516582@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250731-b4-pf09-v2-v3-1-4c2659516582@nxp.com>
 
-The SWT0 is directly connected to the reset line and only one instance
-is useful for its purpose. Let's enable it on the s32g399a-rdb3.
+On Thu, Jul 31, 2025 at 06:44:41PM +0800, Joy Zou wrote:
+> Add device binding doc for PF0900 PMIC driver.
+> 
+> Can not get the I2C_CRC_EN config by reading register. If the PMIC
+> OTP_I2C_CRC_EN is enable, need to add the nxp,i2c-crc-enable property.
+> 
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> ---
+> Changes for v3:
+> 1. change regulator node names into lowercase.
+> 2. add the following description for nxp,i2c-crc-enable.
+>    The CRC enabled during register read/write. Controlled by customer
+>    unviewable fuse bits OTP_I2C_CRC_EN. Check chip part number.
+>    So can not get the I2C_CRC_EN config by reading register.
+>    If the PMIC OTP_I2C_CRC_EN is enable, need to add this
+>    property.
+> 3. add more nxp,i2c-crc-enable description for commit message.
+> 4. remove the unnecessary nxp,dvs-run/standby-voltage.
+>    These changes come from review comments:
+>    https://lore.kernel.org/imx/e9f38e38-7df7-4d19-b5c0-2f18aeebcc78@kernel.org/
+> 5. add regulator-state-mem property for example.
+> 
+> Changes for v2:
+> 1. modify the binding file name to match compatible string.
+> 2. add one space for dt_binding_check warning.
+> 3. remove unnecessary quotes from "VAON".
+> 4. remove the unnecessary empty line.
+> 5. move unevaluatedProperties after the $ref.
+> 6. move additionalProperties after regulator type.
+> 7. remove unnecessary regulator description
+> ---
+>  .../devicetree/bindings/regulator/nxp,pf0900.yaml  | 163 +++++++++++++++++++++
+>  1 file changed, 163 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/regulator/nxp,pf0900.yaml b/Documentation/devicetree/bindings/regulator/nxp,pf0900.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..8c8fc2cd4cedb0bef220d73f5cbc9a5f83072608
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/regulator/nxp,pf0900.yaml
+> @@ -0,0 +1,163 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/regulator/nxp,pf0900.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP PF0900 Power Management Integrated Circuit regulators
+> +
+> +maintainers:
+> +  - Joy Zou <joy.zou@nxp.com>
+> +
+> +description:
+> +  The PF0900 is a power management integrated circuit (PMIC) optimized
+> +  for high performance i.MX9x based applications. It features five high
+> +  efficiency buck converters, three linear and one vaon regulators. It
+> +  provides low quiescent current in Standby and low power off Modes.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - nxp,pf0900
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  regulators:
+> +    type: object
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      vaon:
+> +        type: object
+> +        $ref: regulator.yaml#
+> +        unevaluatedProperties: false
+> +
+> +    patternProperties:
+> +      "^ldo[1-3]$":
+> +        type: object
+> +        $ref: regulator.yaml#
+> +        unevaluatedProperties: false
+> +
+> +      "^sw[1-5]$":
+> +        type: object
+> +        $ref: regulator.yaml#
+> +        unevaluatedProperties: false
+> +
+> +  nxp,i2c-crc-enable:
+> +    type: boolean
+> +    description:
+> +      The CRC enabled during register read/write. Controlled by customer
+> +      unviewable fuse bits OTP_I2C_CRC_EN. Check chip part number.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - regulators
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        pmic@8 {
+> +            compatible = "nxp,pf0900";
+> +            reg = <0x08>;
+> +            interrupt-parent = <&pcal6524>;
+> +            interrupts = <89 IRQ_TYPE_LEVEL_LOW>;
+> +            nxp,i2c-crc-enable;
+> +
+> +            regulators {
+> +                vaon {
+> +                    regulator-name = "VAON";
+> +                    regulator-min-microvolt = <1800000>;
+> +                    regulator-max-microvolt = <3300000>;
+> +                    regulator-boot-on;
+> +                    regulator-always-on;
+> +                };
+> +
+> +                sw1 {
+> +                    regulator-name = "SW1";
+> +                    regulator-min-microvolt = <500000>;
+> +                    regulator-max-microvolt = <3300000>;
+> +                    regulator-boot-on;
+> +                    regulator-always-on;
+> +                    regulator-ramp-delay = <1950>;
+> +                    regulator-state-mem {
+> +                        regulator-on-in-suspend;
+> +                        regulator-suspend-max-microvolt = <650000>;
+> +                        regulator-suspend-min-microvolt = <650000>;
+> +                    };
+> +                };
+> +
+> +                sw2 {
+> +                    regulator-name = "SW2";
+> +                    regulator-min-microvolt = <300000>;
+> +                    regulator-max-microvolt = <3300000>;
+> +                    regulator-boot-on;
+> +                    regulator-always-on;
+> +                    regulator-ramp-delay = <1950>;
+> +                };
+> +
+> +                sw3 {
+> +                    regulator-name = "SW3";
+> +                    regulator-min-microvolt = <300000>;
+> +                    regulator-max-microvolt = <3300000>;
+> +                    regulator-boot-on;
+> +                    regulator-always-on;
+> +                    regulator-ramp-delay = <1950>;
+> +                };
+> +
+> +                sw4 {
+> +                    regulator-name = "SW4";
+> +                    regulator-min-microvolt = <300000>;
+> +                    regulator-max-microvolt = <3300000>;
+> +                    regulator-boot-on;
+> +                    regulator-always-on;
+> +                    regulator-ramp-delay = <1950>;
+> +                };
+> +
+> +                sw5 {
+> +                    regulator-name = "SW5";
+> +                    regulator-min-microvolt = <300000>;
+> +                    regulator-max-microvolt = <3300000>;
+> +                    regulator-boot-on;
+> +                    regulator-always-on;
+> +                    regulator-ramp-delay = <1950>;
+> +                };
+> +
+> +                ldo1 {
+> +                    regulator-name = "LDO1";
+> +                    regulator-min-microvolt = <750000>;
+> +                    regulator-max-microvolt = <3300000>;
+> +                    regulator-boot-on;
+> +                    regulator-always-on;
+> +                };
+> +
+> +                ldo2 {
+> +                    regulator-name = "LDO2";
+> +                    regulator-min-microvolt = <650000>;
+> +                    regulator-max-microvolt = <3300000>;
+> +                    regulator-boot-on;
+> +                    regulator-always-on;
+> +                };
+> +
+> +                ldo3 {
+> +                    regulator-name = "LDO3";
+> +                    regulator-min-microvolt = <650000>;
+> +                    regulator-max-microvolt = <3300000>;
+> +                    regulator-boot-on;
+> +                    regulator-always-on;
+> +                };
+> +            };
+> +        };
+> +     };
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-Cc: Thomas Fossati <thomas.fossati@linaro.org>
----
- arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+Wrong indentation. Otherwise,
 
-diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-index 467e0c105c3f..e94f70ad82d9 100644
---- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-+++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-@@ -72,6 +72,10 @@ &stm8 {
- 	status = "okay";
- };
- 
-+&swt0 {
-+	status = "okay";
-+};
-+
- &i2c4 {
- 	current-sensor@40 {
- 		compatible = "ti,ina231";
--- 
-2.43.0
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
+Rob
