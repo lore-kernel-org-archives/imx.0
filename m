@@ -1,65 +1,33 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190491F4613
-	for <imx@lists.linux.dev>; Fri,  1 Aug 2025 08:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F59118C02E;
+	Fri,  1 Aug 2025 08:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754037310; cv=none; b=QmMaEa4BnNHv91vvGsbygQcXhN8HEhG/tM+k7KDwgVlgGvItCm5UYeLURvgM8UYyo63THXAjAY+A5q129BywbHksTSVDdGIeeiGE3GMx4auxdm9CpAh0XBMhtFfm16f1dpqOLbGhb6TEiwPvjZa9Aixq9S/iP3qT2qU5ATgPyw0=
+	t=1754038506; cv=none; b=ud0BgI1JMwX0bsoWgPvsNxTtjHevu4E+c8uUfQ2dttb1tfUA3qd5fojQcSTcIWeDTIOtSMvWfIoBmdWLCBYSKVWeyBU9+QN6USAs41i+hDUICqCN9vZvB7KrRPN5WanEd/omjqrIQ8tQkoVTRgbTxb3cR9L1KpAxIqkLQYlylZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754037310; c=relaxed/simple;
-	bh=FqOy+mMo2rR0EN6LQz9aSmLP9UV6EGx2ngQ1VQrZuL4=;
+	s=arc-20240116; t=1754038506; c=relaxed/simple;
+	bh=Bz6BUp7Tw0CSmTxMjKUZlbJzRNbtQ7byvHPMgJbKn6k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Irl64fF7mQY5/khVe/5RLmTZDMhIdBUPerFt7XZuHYF67WijtJxDzN0zddcbmP6HjZtdOHKGa5Q5gG8auJTyFLnwCArK80ujYpKNqol4D/LoZtEp/Sqmd5XB9hLGXmCg0BAXe9SM/qTedgNne+ruJ5McLc5LMNyn52a+hyeGDDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=euGdmYAA; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=EdZoUpMLit9o6dz6pUS48EiwHqP9VAHW+ch3cTqwRyjBKCssQ8Yi64ORTj0sRUPWsGNPVUBsTfFbu7ToUq9MZ0669784ApRkcWim1U6qPsjr1iZ0FxuAvdi/US6TwugPfJpXglbXK5wBARIOLHz2auGni57cDqOZxgibvu8AX8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHtz1BnW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="euGdmYAA"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3b788feab29so809196f8f.2
-        for <imx@lists.linux.dev>; Fri, 01 Aug 2025 01:35:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1754037306; x=1754642106; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jiFqr0OPCqHVXSpWzCqecK/S1S4l0jHxVTGQ1xBrzUE=;
-        b=euGdmYAA3SXcR9d6xRO6ctcq8U29PlkQ5mDTJHeqXUK5iNT9+oJfpL3jKcBU2W+fYK
-         0794xdCfRcWuAnLB+fMGKjI2kqpt1fSXLf3k2xCkE+/tpOX8PpJLu6QXrKJpigQ0nvgF
-         VLI9q8kuBDlvVil8EDi3eSSIGdwtCqSIT+tSPhLJZmsFxejU2ZS/+zrsvfQO2I+uKgB/
-         t0q9+TAkrJgU3ORRWnLP7ZHDRbVMxnTBqiQTOSFl3bg2AXy7KjF7CYkvLquUVrx7aQjf
-         fuzD3fp3MXAArWznzwGWLqqMv4Uy8tsSh2ojz4lH0Zm/101c/sbQXLYaZXMelmQcb9C+
-         3Qxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754037306; x=1754642106;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jiFqr0OPCqHVXSpWzCqecK/S1S4l0jHxVTGQ1xBrzUE=;
-        b=PXo01x9Oh2WDQzHhNFJUjVyaecj/4ZzF3NtoVNGL1mw8DH9J4sln9it6WHsSqCMqhW
-         2ULRFaajQunUyeo2kKhlmdgcLV6lrPfX7q7yXStJ+C+3AAeljP6Vz1Uz/WoK7D9ododx
-         FByiynuaHCmBQrJMlvawPti8z0lF4CWoFegHq075kMSLBmmx3XKpaQvOp0tisqZ8qvpn
-         4cf0sREsfg/GlLjQ3dNGry4ditZVYVLXOPqSMImpUQakFElnzC0hUpPZC4cOU20BYvax
-         1rN8kHt96YjoEfPPlqWNTxuICtMbzVWj7phVGdtJ5Jug+1vuYOBd257it8Ve+yvbwWYr
-         pp5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUwYjjzkxoXl9Dm4izukE3JccZUlOmaS37n+KUuks5uPLKMTNCJrAzPdu4vrjhQNHmR9K0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzR4OYXIYdzE7KY6bhIewqsxH9lTnpGgSHnXcKsPuOZJJ82AAwj
-	fAF7tVVPCFPDcl6HtWBdcjBmIIbF4P1+0NtO+ka1PX28Zml+YAsDBpDgJ1HZ2TWTzjM=
-X-Gm-Gg: ASbGncsuczA5GHPbAmpaZIAf8CK+CKGPNZENvw8jBx7KsfTrPtEIIYSGN9DaSxcdbN6
-	5Fi862u9EuXUwGGaMAwcUC2Y/OUH0z6S2MRi9G3qpy+4HwVc8X94EAHBFfJ1YuXl+6KYWIMTrqh
-	U+/yt/7v1xoOrQucSPjwAZSoUetMKWndxIxCXwGpQ2eE38IYo/wQ8yabrLW+gchdlLE+ivl1iBD
-	qcJ17VUHsf6CLFL5u3dnM/szSLb63mK9gltXEVxtxRiTgQ2Rw8zXQVRxI/59kkeD+XPuNNE6OBk
-	UiPDb2a4vM6dZ7o1nWQ/d8SKYO4Ym+eLKZUqWX7hmRxb3+14N6flnhxSQk3i1JpXditMMC9ZmIg
-	ydPUJb6RTdw9Rcs7oFhRMEqvNo6WmntGsdfMvXpofb/ZVzjqqptgbt8f2EP7aAA==
-X-Google-Smtp-Source: AGHT+IGS+73xkShFl6cO1Qu7hyyuX9oTyEOMrN6GMT2KH3N0L9G6LCMIuM6NsKe0gCwLrUaUqn7Ybg==
-X-Received: by 2002:a05:6000:2884:b0:3b7:99cb:16ed with SMTP id ffacd0b85a97d-3b799cb1a28mr6844043f8f.40.1754037306324;
-        Fri, 01 Aug 2025 01:35:06 -0700 (PDT)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-458953f8e02sm92820875e9.32.2025.08.01.01.35.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Aug 2025 01:35:05 -0700 (PDT)
-Message-ID: <164402ad-2762-4d6b-aa34-38ff1b506600@linaro.org>
-Date: Fri, 1 Aug 2025 10:35:04 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHtz1BnW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D92C4CEE7;
+	Fri,  1 Aug 2025 08:55:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754038505;
+	bh=Bz6BUp7Tw0CSmTxMjKUZlbJzRNbtQ7byvHPMgJbKn6k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SHtz1BnWgNBv1aHxw7Qwt+9luZxSzBVGlJZplqDMfYU3l+B7T6wIfEWG1EdoLVd5b
+	 rkTjImQNw6tdZacd1YRN7IkkXved6gWsfAc0qAbfDYVQPjlCVSeLkvYy6XPtVrPw6c
+	 OXAfSjY5YEIt4UXEVgK7snJShbWhNtOL+E9e2cPEfq4H7Jt3di/BT3YbRblqiDvjT4
+	 EY/CvESf5d7pnGxtAaJ6lkeWVIwqO3YUaP6DQQgStgerXosD0x7KfdPBsYjxogcZPv
+	 2vinLouEiiZCHcGp9xeIp0Bp5UdeRhlKNXIqOHmpySdoutLNwikAYis0GQDTQI7bzd
+	 j9yt3s5KGVrIA==
+Message-ID: <8dcbdb51-82ba-44bd-800f-ceb43f88cf4d@kernel.org>
+Date: Fri, 1 Aug 2025 10:55:00 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,68 +35,89 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] arm64: dts: s32g2: Add the STM description
-To: Frank Li <Frank.li@nxp.com>
-Cc: mbrugger@suse.com, chester62515@gmail.com,
- ghennadi.procopciuc@oss.nxp.com, shawnguo@kernel.org,
- s.hauer@pengutronix.de, s32@nxp.com, kernel@pengutronix.de,
- festevam@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
- Thomas Fossati <thomas.fossati@linaro.org>
-References: <20250730195022.449894-1-daniel.lezcano@linaro.org>
- <20250730195022.449894-2-daniel.lezcano@linaro.org>
- <aIp+XTCSpNGee2qx@lizhi-Precision-Tower-5810>
- <5be6d858-01e1-4c2d-bd5c-0e3385251af7@linaro.org>
- <aIv6L30mf5bzUqup@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v2 1/4] dt-bindings: thermal: qoriq: Update compatible
+ string for imx93
+To: Jacky Bai <ping.bai@nxp.com>, rafael@kernel.org,
+ daniel.lezcano@linaro.org, rui.zhang@intel.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org
+Cc: linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, kernel@pengutronix.de, festevam@gmail.com
+References: <20250801081119.1999298-1-ping.bai@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <aIv6L30mf5bzUqup@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250801081119.1999298-1-ping.bai@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 01/08/2025 01:20, Frank Li wrote:
-> On Wed, Jul 30, 2025 at 11:15:40PM +0200, Daniel Lezcano wrote:
-
-[ ... ]
-
->>>> +			compatible = "nxp,s32g2-stm";
->>>> +			reg = <0x4011c000 0x3000>;
->>>> +			interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
->>>> +			clocks = <&clks 0x3b>, <&clks 0x3c>, <&clks 0x3c>;
->>>> +			clock-names = "counter", "module", "register";
->>>> +			status = "disabled";
->>>
->>> why not default enable.
->>
->> The S32G2 and S32G3 can have different variants with 2, 4, 8 Cortex-A53 and
->> 3 or 4 Cortex-M7. We enable the same number of CPUs present on the system.
->>
->> AFAIU:
->> 	S32G233A : 2 x Cortex-A53
->> 	S32G274A : 4 x Cortex-A53
->>
->> 	S32G399A : 8 x Cortex-A53
->> 	S32G379A : 4 x Cortex-A53
->>
->> Otherwise we would have to do the opposite, that is disable the unused ones
->> in the s32g274a-rdb2.dts, s32g399a-rdb3.dts and other dts which include the
->> s32g2.dtsi and s32g3.dtsi.
->>
+On 01/08/2025 10:11, Jacky Bai wrote:
+> The TMU used on i.MX93 has some slight differences and bugs compared with
+> the one used on QorIQ platforam even the basic function is the same. Add
+> i.MX93 specific compatible string and keep the fallback ability.
 > 
-> That's fine by default disabled. but what's impact if it is enable but no
-> one use it?
+> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
 
-At the first glance I would say we call the probe function for nothing, 
-so adding an extra overhead. When repeated into multiple drivers that 
-increases the boot time significantly. It is certainly a good practice 
-as a rule of thumb to enable only the ones we really need.
+<form letter>
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time.
+
+Please kindly resend and include all necessary To/Cc entries.
+</form letter>
+
+Best regards,
+Krzysztof
