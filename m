@@ -1,128 +1,190 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F69A34D3B4
-	for <imx@lists.linux.dev>; Sat,  1 Nov 2025 20:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E100270545
+	for <imx@lists.linux.dev>; Sat,  1 Nov 2025 21:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762028961; cv=none; b=MT1Fjhy3lpUCq8O9r4JkQb6X9Hia0C8xeb/MojOyk5kIb40fcgKElJGKe40cQnsMgC7BprPg+ZL+8AoTSoQfozrw8Kz9FaWHWKm2HuCvE/LRZKdrfWP0e53cQTuViyHLeHM7wbmV+eCvMCsdiWblmU8gFRmlC3hcfb5NXjJbt84=
+	t=1762032461; cv=none; b=dKjulp+lsurNBPHfyCshifAS7hpPbXq1/cxf7/PS5+mN62xHMBmWaii7j9P862ABcJAeP/cwJ5PrOrm6hwYEFeyqMMtRoQjrlTdi+MGk/Dh2O8hR7STyiM2jOpToP/4ULaj7M2i1tZiE3/FxoJmFiGFJml7UMAl8icAyAmWPxw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762028961; c=relaxed/simple;
-	bh=f4ly8cg8WNIJApwHlFk7r+UQI1Q1uI2E782wrY3RmGE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=s8RCuZX81hLmQeKytdkH+GS3D3vHJWCcqEwIgofXYUkp9nPoiWgeBMSMRDcb7VaO4fgSQP0+YK5hnd9tf25kP6CFsCcg5PDLUCbH6trRxYNn4w43TsLmmFpSB+EPkpGSxcTZFyL78uEK4p2H9IiKUU/WnqqecuBQHgFoE1qmsAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KN16mONW; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KN16mONW"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8906eb94264so404644585a.0
-        for <imx@lists.linux.dev>; Sat, 01 Nov 2025 13:29:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762028958; x=1762633758; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uXG3lN4x/ShRe5qXk1rZTrbqpeJ5XP/xqHhXD9nerjs=;
-        b=KN16mONWqSBilqsDEdNaTrhZH23O9OxSwJDPiVvfC/gpqGgoZRMFTSd0x+988Qrdjo
-         g5FjcDsyyUpqCtaR0+8Fe5IH/REJFoG6qD5h61O1EsSzSEkdE2DwhLKfYF7jwkUljHMK
-         ir6BkyfCVAQUNe8321qU9KHgOULZUVl0toWG05p8fKI37zxV8isidu5Jv/waEhKOVtWf
-         Bj97gry6IRR8vrRcgJg0cyXQFvoSTapaRIL5U5ZujLdOo9a0Vhz0QZOJWuhEDUuRwBwb
-         uBj/Fgt5/TrW5FpcA1eKB5wWWMMtx0Guc72wpw9C3tT5Cm1isQWekaGVcAF6PI1aSRB0
-         3K+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762028958; x=1762633758;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uXG3lN4x/ShRe5qXk1rZTrbqpeJ5XP/xqHhXD9nerjs=;
-        b=j/93NyX+zFBvTwVuZMUxGfGJme9yANumI+P6DQ/xhqZBeLEpdT5C9wIk7qPCnCXBeD
-         he2b0vTkdsijMveZAQTPtI9EWREx0R5KHGkiu0mU6j8rRQSPj0Uu1LAEJLyr2+Z98h8Y
-         tDh8CzjovRJZFJJE5kO+cKnEPLPgI/JNiJ2NzplRcUxN/q+RWy+J6cVXFTjobl5qXIBB
-         8krAgl9vMuF6PPkLUHglNP+EydeQm92Ns9zo7gl8r8dtI2JdQ9u7Cu4xy5NiLfifKvaF
-         EtfoXDdbdNbdY4fY4bTxR2y1PDUq19O8JP0QxnXLygkszAQvyvRTwXoA8dXGGmztx/NF
-         dK1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVRsQ2KmfFK+ZQJHztjVXPXlu2lLCwMtPm1mNapDZYuOFjU+dX4MPkPfIHJiefOkz6rayU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxsyzq+liklojVkVjppweF6eYisHAwDc9lwkRCJJQpV4zTSzYrB
-	10Zv8+w52Sn171h5SFde2nJsI0LkXIQu1ALs9vcQYkysWcIBWddD3Maum6+rwWwm
-X-Gm-Gg: ASbGncu9padu+qpePXgIGkamNE3MwVydgOzs1y2NlwZDR7W16scxb7CGSt+ZrFQwDoE
-	S5cavCcslNOJVUw7PRRiZpSMIEcBLV8aXTg+X8b9522/iPt55FvnRkEPXDcZR8xbHC3NXb2W2Rk
-	1XtxwGukwXpHOAh5bc5k+8ldXF8WE6xZcrMRlWEo7EQaOavIN408r9fQjMs2tFK6k0meqjhVcvq
-	2JcpamTXlvCIaqEQDY1HQJbSQEt9+zyE0drwBss21w1booiuzhtBdu5Lei/j+zIunsdeg8Mzxi0
-	ePNQQUs8JOqFlZjZX9Z5ooraZMf+82Q4i1hiz9QuOCfPRZEX4yH5BoUt1s+odB4DDAfeWtMAB68
-	WxZS4SYemIzKs+sLatz/tJGKtSIwK4/N7pIOLJlCvnLBl2wW/jzV7InnZnd2ICgzBiDPbkxvQrU
-	ONkV/L0JmrkrGvHNRb
-X-Google-Smtp-Source: AGHT+IGIbFfwxftIcSQPMj+XA/sS67b8NDWPfF8Kb4beEyqUHTpSix4Gfe2Z2Mgh1GHHIM3iPiAGoA==
-X-Received: by 2002:a05:620a:4016:b0:85b:8a42:eff9 with SMTP id af79cd13be357-8ab9acee01bmr979641085a.53.1762028958452;
-        Sat, 01 Nov 2025 13:29:18 -0700 (PDT)
-Received: from [10.73.222.215] ([142.182.130.176])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ed352deaf3sm30290891cf.29.2025.11.01.13.29.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Nov 2025 13:29:17 -0700 (PDT)
-From: Samuel Kayode <samkay014@gmail.com>
-Date: Sat, 01 Nov 2025 16:28:47 -0400
-Subject: [PATCH v2] MAINTAINERS: update PF1550 driver email address
+	s=arc-20240116; t=1762032461; c=relaxed/simple;
+	bh=IyMOrE3IZXQkr57uglInK4/AoFrP2M5HRazI6poDrPc=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=gL6Vzk7jXSRad3fCH+s/3QBEnASI09jkMmSCD0CseKhkCPC2V9hPW89m8mryOCIJjJQzAJk7jUQ/8dravx3H0g+n6+qy2Ln71uktP7V6nTY3TGX5Bw6cgwAQM0+Yb3zaZ0cfxICyE4AZF/T6wA2yuN9Buggy/rfDaAU6LD4WXTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=ndufresne.ca; spf=fail smtp.mailfrom=ndufresne.ca; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=ndufresne.ca
+Received: from [IPv6:2606:6d00:17:ebd3::5ac] (unknown [IPv6:2606:6d00:17:ebd3::5ac])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1674F17E13F9;
+	Sat,  1 Nov 2025 22:27:28 +0100 (CET)
+Message-ID: <4d1260be46be22d7b40fab9788763af796d118dc.camel@ndufresne.ca>
+Subject: Re: [PATCH v3 2/4] media: docs: dev-decoder: Trigger dynamic
+ source change for colorspace
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: ming.qian@oss.nxp.com, mchehab@kernel.org, hverkuil-cisco@xs4all.nl
+Cc: sebastian.fricke@collabora.com, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, 	kernel@pengutronix.de, festevam@gmail.com,
+ linux-imx@nxp.com, xiahong.bao@nxp.com, 	eagle.zhou@nxp.com,
+ imx@lists.linux.dev, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20250418085422.193-2-ming.qian@oss.nxp.com>
+References: <20250418085422.193-1-ming.qian@oss.nxp.com>
+	 <20250418085422.193-2-ming.qian@oss.nxp.com>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0MU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAY29sbGFib3JhLmNvbT6ImQQTFg
+ oAQQIbAwULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgBYhBO8NUoEVxMPCGgRvEtlBlFEpYHL0BQJ
+ oLLLGBQkJZfd1AAoJENlBlFEpYHL0BEkA/3qkWYt99myYFSmTJUF8UB/7OroEm3vr1HRqXeQe9Qp2
+ AP0bsoAe6KjEPa/pJfuJ2khrOPPHxvyt/PBNbI5BYcIABLQnTmljb2xhcyBEdWZyZXNuZSA8bmljb
+ 2xhc0BuZHVmcmVzbmUuY2E+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQ
+ TvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyy+AUJCWX3dQAKCRDZQZRRKWBy9FJ5AQCNy8SX8DpHbLa
+ cy58vgDwyIpB89mok9eWGGejY9mqpRwEAhHzs+/n5xlVlM3bqy1yHnAzJqVwqBE1D0jG0a9V6VQI=
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-7roVwGdgaHQCxf+hVe0E"
+Date: Fri, 01 Aug 2025 11:23:35 -0400
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251101-update-email-v2-1-175d221ec40f@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAH5tBmkC/3XOQQ7CIBAF0Ks0rMXAUBBdeQ/TxRQGJbFWgTaap
- ncXde3y/8l/mYVlSpEyOzQLSzTHHMdbDbBpmLvg7Uw8+poZCNBSwJ5Pd4+FOA0YrzxY7FvwEjX
- tWZ3cE4X4/HKnruZLzGVMr68+y0/7B5ollzwoG1qN6IDs8fzpt24cWLf+5ESPqf5XfjzrMROv9
- yGWQ4M7b0BrFH1QApwAi85YoU1rlEJTTR2MlL5i6xvNc3la9AAAAA==
-X-Change-ID: 20251029-update-email-f8ab42d1a5e9
-To: Lee Jones <lee@kernel.org>
-Cc: Lukas Bulwahn <lbulwahn@redhat.com>, 
- Jerome Oufella <jerome.oufella@savoirfairelinux.com>, 
- Samuel Kayode <samkay014@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Sean Nyekjaer <sean@geanix.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762028956; l=1134;
- i=samkay014@gmail.com; s=20251028; h=from:subject:message-id;
- bh=f4ly8cg8WNIJApwHlFk7r+UQI1Q1uI2E782wrY3RmGE=;
- b=Q6W8p83xhBLpUQv/Kus5iJ+jaQweIa1jJo11C9T/BzNslQMtocpefTW+kzY7l7u6foGia4ybA
- 7QiGFn5K8YlDSdV4wiFd3OMp45/q6fFwtcSIcyyU1S8H60rDS8ZL6HV
-X-Developer-Key: i=samkay014@gmail.com; a=ed25519;
- pk=favoK08ilD1j62PrGf+RHihBzbqJGWMC6f2nszR5UIc=
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 
-Update Sam's email address for the PF1550 PMIC driver.
 
-Signed-off-by: Samuel Kayode <samkay014@gmail.com>
----
-Changes in v2:
-- rebase on ib-mfd-input-power-regulator-v6.19
-- Link to v1: https://lore.kernel.org/r/20251029-update-email-v1-1-f38f45aac2e8@gmail.com
----
-I left Savoir-faire Linux but I do intend to continue maintaining this
-driver.
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--=-7roVwGdgaHQCxf+hVe0E
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2a9330f05e2fca6b8661bb698dea17dcfd7fc254..c44d2cf7e7b85104a6eb09142da8ef3d9fa7e55d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18608,7 +18608,7 @@ F:	Documentation/devicetree/bindings/regulator/nxp,pf5300.yaml
- F:	drivers/regulator/pf530x-regulator.c
- 
- NXP PF1550 PMIC MFD DRIVER
--M:	Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-+M:	Samuel Kayode <samkay014@gmail.com>
- L:	imx@lists.linux.dev
- S:	Maintained
- F:	Documentation/devicetree/bindings/mfd/nxp,pf1550.yaml
+Hi Ming,
 
----
-base-commit: a7d6255a0bf302c028ac680564633a6aac5f611d
-change-id: 20251029-update-email-f8ab42d1a5e9
+Le vendredi 18 avril 2025 =C3=A0 16:54 +0800, ming.qian@oss.nxp.com a =C3=
+=A9crit=C2=A0:
+> From: Ming Qian <ming.qian@oss.nxp.com>
+>=20
+> If colorspace changes, the client needs to renegotiate the pipeline,
+> otherwise the decoded frame may not be displayed correctly.
+>=20
+> When a colorspace change in the stream, the decoder sends a
+> V4L2_EVENT_SOURCE_CHANGE event with changes set to
+> V4L2_EVENT_SRC_CH_COLORSPACE. After client receive this source change
+> event, then client can switch to the correct stream setting. And each
+> frame can be displayed properly.
 
-Best regards,
--- 
-Samuel Kayode <samkay014@gmail.com>
+sorry for the long delay. While reading this, in any case userspace have to=
+ read
+the new format. Why can't userspace compare the old and new v4l2_format and
+decide to avoid re-allocation that way ?
 
+There is also backward compatbility issues for driver that was sending
+V4L2_EVENT_SRC_CH_RESOLUTION for colorspace change before. Despite the cost=
+ly
+re-allocation, userspace only watching for V4L2_EVENT_SRC_CH_RESOLUTION wou=
+ld
+endup not updating the colorspace anymore.
+
+Combining both would be an option, but then V4L2_EVENT_SRC_CH_RESOLUTION me=
+ans
+any v4l2_format changes, which is awkward. What do you think of leaving to
+userspace the task of comparing the old and new v4l2_format ?
+
+Nicolas
+
+>=20
+> So add colorspace as a trigger parameter for dynamic resolution change.
+>=20
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> ---
+> v2
+> - Add V4L2_EVENT_SRC_CH_COLORSPACE for colorspace source change event
+>=20
+> =C2=A0.../userspace-api/media/v4l/dev-decoder.rst=C2=A0=C2=A0=C2=A0=C2=A0=
+ | 17 +++++++++++++----
+> =C2=A01 file changed, 13 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/Documentation/userspace-api/media/v4l/dev-decoder.rst
+> b/Documentation/userspace-api/media/v4l/dev-decoder.rst
+> index ef8e8cf31f90..51d6da3eea4a 100644
+> --- a/Documentation/userspace-api/media/v4l/dev-decoder.rst
+> +++ b/Documentation/userspace-api/media/v4l/dev-decoder.rst
+> @@ -784,8 +784,8 @@ before the sequence started. Last of the buffers will=
+ have
+> the
+> =C2=A0must check if there is any pending event and:
+> =C2=A0
+> =C2=A0* if a ``V4L2_EVENT_SOURCE_CHANGE`` event with ``changes`` set to
+> -=C2=A0 ``V4L2_EVENT_SRC_CH_RESOLUTION`` is pending, the `Dynamic Resolut=
+ion
+> -=C2=A0 Change` sequence needs to be followed,
+> +=C2=A0 ``V4L2_EVENT_SRC_CH_RESOLUTION`` or ``V4L2_EVENT_SRC_CH_COLORSPAC=
+E`` is
+> pending,
+> +=C2=A0 the `Dynamic Resolution Change` sequence needs to be followed,
+> =C2=A0
+> =C2=A0* if a ``V4L2_EVENT_EOS`` event is pending, the `End of Stream` seq=
+uence
+> needs
+> =C2=A0=C2=A0 to be followed.
+> @@ -932,13 +932,17 @@ reflected by corresponding queries):
+> =C2=A0
+> =C2=A0* the minimum number of buffers needed for decoding,
+> =C2=A0
+> -* bit-depth of the bitstream has been changed.
+> +* bit-depth of the bitstream has been changed,
+> +
+> +* colorspace of the bitstream has been changed.
+> =C2=A0
+> =C2=A0Whenever that happens, the decoder must proceed as follows:
+> =C2=A0
+> =C2=A01.=C2=A0 After encountering a resolution change in the stream, the =
+decoder sends a
+> =C2=A0=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SOURCE_CHANGE`` event with ``change=
+s`` set to
+> -=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SRC_CH_RESOLUTION``.
+> +=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SRC_CH_RESOLUTION``, or a colorspace cha=
+nge in the stream,
+> the
+> +=C2=A0=C2=A0=C2=A0 decoder sends a ``V4L2_EVENT_SOURCE_CHANGE`` event wi=
+th ``changes`` set
+> to
+> +=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SRC_CH_COLORSPACE``.
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0 .. important::
+> =C2=A0
+> @@ -946,6 +950,11 @@ Whenever that happens, the decoder must proceed as
+> follows:
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 values applying to the stream =
+after the resolution change, including
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 queue formats, selection recta=
+ngles and controls.
+> =C2=A0
+> +.. note::
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 A ``V4L2_EVENT_SOURCE_CHANGE`=
+` event with ``changes`` set to
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SRC_CH_RESOLUTIO=
+N`` will affect the allocation, but
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SRC_CH_COLORSPAC=
+E`` won't.
+> +
+> =C2=A02.=C2=A0 The decoder will then process and decode all remaining buf=
+fers from
+> before
+> =C2=A0=C2=A0=C2=A0=C2=A0 the resolution change point.
+> =C2=A0
+
+--=-7roVwGdgaHQCxf+hVe0E
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaIzb9AAKCRDZQZRRKWBy
+9J4AAPsHUIFEn3VY8agsSDDBhYSCgjQgdq6VCsTIZOI/onEoFwD/eMf1L5FSeA/7
+DuR3YPAOrYGgjgJ5M4KhzEvWSIq08ws=
+=mLm3
+-----END PGP SIGNATURE-----
+
+--=-7roVwGdgaHQCxf+hVe0E--
