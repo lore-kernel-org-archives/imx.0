@@ -1,206 +1,167 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012047.outbound.protection.outlook.com [52.101.66.47])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E361FAC34
-	for <imx@lists.linux.dev>; Fri,  1 Aug 2025 04:35:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754022911; cv=fail; b=osUzKfAqPi6iSW9YIsYZZHBboKkJnJmBHveIKyupfvUNOrVLx6igOOL8+yHC7c8CpeRBsEwchOeJhyqJOtotczuUFyYZe0fRRw4jRyjlFl2kGLvA4VBdjNigMOE/MXFGsaZJzCxllnYfrppDWMwsofjIQ4Umyy+trcbD/QLt+Gw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754022911; c=relaxed/simple;
-	bh=xp++JJRoAxX8jN5gPlb5hwg2gm/dy5GVIBpRvUzPZM0=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=SrtlkwZieAxhpTxg8Hn5JhBllscO16umsQ7YFLXGiUWb2X/y54vioq/ixcCkARZv9Lv0kCEdF72WUwmdDVQma3x+CS9iDFAMsS22sLv6UI1CgYxPiQe8Hwc426FWKBDGvTEKvRkBw/eRuACQ5TygE64nip94WyLwVIru3Ukt2r4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=B7RjqX7P; arc=fail smtp.client-ip=52.101.66.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3BB2E36F5
+	for <imx@lists.linux.dev>; Fri,  1 Aug 2025 04:45:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754023546; cv=none; b=JOyDEU0K0BMh3CsAngR/p3iRDXaTY1fjhbLmW9faNdVRcuT2K1dlZvog8jywYmbI5V2ZuxbpidOhg+OdMbblzrVeCyvkzxTtJ1BU345eECHwESKEMJk2K00zEk282kBsvlaa/Zvyr6mwwGEbFOHA+g8OZsqo3EfR9Cbg9BQVB+I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754023546; c=relaxed/simple;
+	bh=f0kSnytsj68XbFg2s9F9w28FfWo8pGYjLeMe3biLdCQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PbBINidvTnLAbocHNxerhsNlmHlIqHSEPifSEDa7So7LMudYO5r+pyKyRMd8c3utUHOEraw2JbrdnG2aYrllBJU82fL6hYDFjIMK00bh1/bhFVuVA1b576fAQfCqrQ8rcK0rWrZOh9cO9MsLuBklM4VCA027/f9eWYNsh0MbheU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=gz+Z5D+i; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="B7RjqX7P"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A1mbw+AhQbHTJ5pdnu6JSSSo1UzKWvdsEOzCSYK2jCO0fXO6b/gVn3YGW05ljdgwGhKHnA1JsXMFm2EnUyb0fqMmVfe/EE+fQ5IuSiCNHhtyhgSbxz2YDon+dPJ4J/2gHWRs3VI+a745/Zmyyr240tINTC6uy5Xr94oAq43KgkHMvMgyl55kmmsbPz3DTD9ofBBEecHyc2BxrjMfQt4ndhFh0c1yx2Q9TMs95TgWBZevS/v7kus1Fcm0AuDE+ZIF1qlvrdCYZtKZlPz5kJB08EpYKfAAEGSJicA5EOMe5ATHiVX3HaH2vLk5rNAFt1P/xJTx6yNl3ifqnpohKfg5BQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pkb/QAZ5ffb6HpNPKm4tGtXWVn8/4l3Gi7oJRiokwa4=;
- b=hYFgrE0nwxF4zZJ4YJWELyigi0agt+mEmrkMY6Iq7fQ9U0Jvps1m/UEBaeY4ENxaSM6kNpVeJLZaMagcJiJQ3MAlJeHfZEAwT5YJYvJeL2p17yC1DhLxNNuwtxO3rEiTWDf1Hv0RGHNdCbItW/DqDXcXl9BDsQ4jjfaiZI5JcJJQ0inCWWa/2ALH21ZIUGwUdLzg02mhNHp6GmLjMP3/6ZMQykyFNTJnM+3k+iIsEcO/lekfBRq/UPNIj34BFhuYo6BTjm7gZysqOXeCLkj+T05dKHHLdaaf3fGan3DUaCVJxqEST4peNLKN8clLVt/S6mEKvMHmgdwLBI+D4spHwA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pkb/QAZ5ffb6HpNPKm4tGtXWVn8/4l3Gi7oJRiokwa4=;
- b=B7RjqX7PsZyTEVKh8REDrIWog9tXPgqsp8OLuZQOIVf5CG/7GjNSwcQggxCwBU8T/6V6ALeizZAeEehz/OaqjuCRhRa1PmIkzKf+fbR4VfzK3qye8NR0hyeNKfQuknNqJACPnU5htfAaDehiabyjUKo1QHaJDusmYByC1MEFUS/pEkb+oZxqP70cdZ+sSnS8DjiTIPaR0gm9DGsSSMEQivU8MuUrqodetwvr0n10hrAOhMEbklQ0kK+OgKEzokick+f0l7L+yGk4KKHKMESf1TM6LPlmZ/1Ey9bLD0fobTZuuG6UppOxiUkpJk08124V/xRqJ9G/duRsCMblQ2I3og==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by DU4PR04MB10600.eurprd04.prod.outlook.com (2603:10a6:10:588::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.13; Fri, 1 Aug
- 2025 04:35:05 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.8989.013; Fri, 1 Aug 2025
- 04:35:05 +0000
-From: Peng Fan <peng.fan@nxp.com>
-Date: Fri, 01 Aug 2025 12:34:24 +0800
-Subject: [PATCH v2 3/3] usb: dwc3: imx8mp: Set out of band wakeup for
- i.MX95
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250801-pm-v2-3-97c8fb2a433c@nxp.com>
-References: <20250801-pm-v2-0-97c8fb2a433c@nxp.com>
-In-Reply-To: <20250801-pm-v2-0-97c8fb2a433c@nxp.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
- Pavel Machek <pavel@kernel.org>, Peter Chen <peter.chen@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, Xu Yang <xu.yang_2@nxp.com>
-Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-usb@vger.kernel.org, imx@lists.linux.dev, arm-scmi@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754022883; l=1001;
- i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
- bh=xp++JJRoAxX8jN5gPlb5hwg2gm/dy5GVIBpRvUzPZM0=;
- b=1HC5Ld4j1zFHvdt6y668wcU6qmxwtdnRpM9m+EtcTIQ3FFtZNuZCeGOOD8XbaesDco9yVOkjc
- XnUm6swZ2AXCLs4qBWe2fuX1uO9qG1U+3YAyDrfYm4kUT5rsotqb6AA
-X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
- pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
-X-ClientProxiedBy: SI2PR02CA0046.apcprd02.prod.outlook.com
- (2603:1096:4:196::15) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="gz+Z5D+i"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F28EA1038C126;
+	Fri,  1 Aug 2025 06:45:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1754023534;
+	h=from:reply-to:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=cazfz037LmHclW8XHXBHFZq0vEjND40W4TWSxFvy07E=;
+	b=gz+Z5D+i9YMV7qtc9jV2wB6l2n5mM6a5kkQ8N5Nrm4TkChr51IhcMCajFKXKFKQIDQsjt4
+	ShW3SLCe9XFh86uBmcTWkbHL2WbZATD/fRJZArT33UNgyIIrrdu4BBXN/LgGL0EgOfgJKe
+	kpEJ1HUwHN3gjuI/8WQAdhOM6WfrmJD3mlm/T+2Wss+jq3N+L3LfjcIxIipHcGxUU/MI2m
+	r1YZkcuFOuap5h6DZ3ytvYUiNMClLZyFlPKjbZO5LgT7qxUlivfIemKy9HNtBkvFhAx3cc
+	0IBrCFR61MfOwW9lvrYnv978S00+JLzejurw223yvP9RyOXsg3NBCeigGls2Sw==
+Message-ID: <0c6dcc6f-e09c-266d-f65a-12d18244a2c6@denx.de>
+Date: Fri, 1 Aug 2025 06:45:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DU4PR04MB10600:EE_
-X-MS-Office365-Filtering-Correlation-Id: 075d0ef6-17d1-40d1-ee94-08ddd0b4c9dc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|19092799006|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VDhGbE45T0YzZ0xmYlpLUWl5REFMTERicS9aaS9XajY2M3pHcFRzU2RYOHFO?=
- =?utf-8?B?QTBlOTZRRHYxZGlGRUI1d1IrN0xLK1BGQ1JhTm55NzdHeGc5bGZ2THV6M2o4?=
- =?utf-8?B?WlE2QXIrbjgwOG83SldZLzdTeGpsNGsraGtNVThEWWxDQm92M0hneXN3K3g1?=
- =?utf-8?B?cUFTTUtqOHJUa2RFVEJ4clpTeDVaOWlneG95SG45TjNMaXBIcUx0WUg2alRI?=
- =?utf-8?B?UFlUTDZ0WEo0Tld2WWVPS1VyYXpwLzg0enVCMm9ZTURmOFFrbXgycjI1cUNH?=
- =?utf-8?B?SUVISU4wNlhCMHYvVlYxVzUvL1NtdFdhME5xMWhHOFZ6TGgydjk3RmN0Mm9K?=
- =?utf-8?B?U0JlakdQckx4bzV6enk1K1ZBQm5DRXA3VGNvQ0dhYnFCOHl5VmwwNHdFcUdp?=
- =?utf-8?B?ZmpncGNGNW1XQk9MQUIvcjl0eFRMQzArTUdtNVRnbkd5SjJISWVOZ1JRRUhN?=
- =?utf-8?B?NTFSUGgvY1k2QTl1UTRrdWl5d3haS3hSNFFVZzFrWUhLbFdwMHh0Wno4Mmky?=
- =?utf-8?B?M3J3ampoUEdSQldtcy9pay9jenBJSXdVVjFkL0VrUkp2UzRacFNaUDFCYWxt?=
- =?utf-8?B?dmM1R1JxOS9TdFRaSHFQZ3JSVTViNG96ajF2ZzFIaEV3T0tDMzJxd28zRWI2?=
- =?utf-8?B?TUhPRDlyY3FKODhhUXdLQ2hJakRMMFo2Q3BPSzRzM3VhZCtYbGNUVVEvclpF?=
- =?utf-8?B?MWZUOFMxa2N3M1J1MkpYMWlLSStpbjJzZmhhY2FlUWFtQVNsTVBvaWZ2YWlF?=
- =?utf-8?B?UGJLSENmT1haZHdXdEZkVDR1TTV1V2l6S1dJdkk2OE1JM2V6V0M2OWpUUGtO?=
- =?utf-8?B?SXR0R3VhdUJpRFhKVmV6ODBMT3ZTVVZzMEI1aTZUc1lHdmJwRUxWb1hFYVpW?=
- =?utf-8?B?N1IxbTNHTFZ5clY4Z0x2NlhBVGRvUDlDUFRJNHpGM2s1ZzUyZEdhejdDYlVS?=
- =?utf-8?B?UHNKMVc2LytCdDhCNngya1pNNk4xc1VoY0lXL2k4MWNQN0h4cUxKUzU0OVpp?=
- =?utf-8?B?MHZTaVJOQUpoalY1Z1ZLY1Zka1lFaGh2Zms4Rm40U0o1RndYUnlYWUdMSVZC?=
- =?utf-8?B?c1Bra0tuRXlmTkRTVjQ4QUJ6Tm9pMHFnVmZSWUxpK1dCSVR6L2JBRThYUjY3?=
- =?utf-8?B?TVhSaEVJUVd4NUxyQXhOK3dwY1VxS0F3T21ZRi9ScWwwTFVqNDdWNytTUHNX?=
- =?utf-8?B?NHFNUkZiK1FTOVdaZzdsYWJkbVNpclV6OFJZdmNnUTgwS2FMZFlYRzVRMWp3?=
- =?utf-8?B?cE1nQzA3UlR6RExKSDc5UlpKbXVsWHJwTG0wS1dINDVDd3JxSmtST29WdnhS?=
- =?utf-8?B?d3BxS2d3MEpROFhlK1h4Ym9HOFJUbmFUSjVtOHZFN3JodXZEZStjdTA5SURl?=
- =?utf-8?B?aFNKMHROQjh5NFFLQ0VsRUtVc3RDRURsQ3EvaHlFMEtncjdTUHpCRlFreVRq?=
- =?utf-8?B?cXJpVjhIQnRGRmpmaDZYYURzVHpCdVV0RTI0VWtHZExwMFRaZG9ocTQ4QlFj?=
- =?utf-8?B?bDNkSFlCSWt0bVJ1M2EyWGtVK0FVc1BhdUJzWDFaUWRZckI3Zmh4VG1paDlC?=
- =?utf-8?B?ZG5qYm4wTFZBV2JEa3hGeWpyOEhiczNNN3RqNG9lNDBUSGJGeXg5bGVoQjVP?=
- =?utf-8?B?Y1lTbWlwNkJWQlhEclErQ21QV0FseUhHeVk4WFlaNmw4ck9CbkJpMVZCaXJn?=
- =?utf-8?B?empBeXZSUzJrV2o0NzZWSVlYbEE4TGVzdU9HNGRnSHR3Rk9STHNwcjNVaEp3?=
- =?utf-8?B?SHdTeXdXWFgzYnJuVFExWGJGbmF2MFJzV0RCVGtSeWh3Ui9YZFZ3OHo5d0RF?=
- =?utf-8?B?Y3lFcStPMEdkMzd3aGQ5bEZZODZXanp2ME1CcDI3ZC9SWWdRWUUyczFBYThU?=
- =?utf-8?B?Z29TZmJQWjlLRGMyamFQQXhTcUc3emdyZ1QvaUd4elZ1dHV0S1F6YmZ3Y1ht?=
- =?utf-8?B?K3hWRW5HMDJQb1RuYkV1QzR0T3FDVmVWeFpER2ZWbkdWT2hnZHNObi8ySi8r?=
- =?utf-8?Q?kE9o/qbXNVx/AqEjcMSL0YviEhVD5U=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(19092799006)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bWtrN3ZhcHd4aDdzOThHMlQ1U00xQkcxamdPdk5GMkVBaEVkYW1GY2N4ZXlG?=
- =?utf-8?B?SmZsV3gzc0tCVS9EOElkcWJpMVlMaEJvUTZxeUdwT0lqU08xVmFTT0xXUGlT?=
- =?utf-8?B?anZZRDVkbWdWR1g2QkdkYmQwS2tkZkdGUWZXUldwak05ZjQzL00vNFBJdEJG?=
- =?utf-8?B?cHdMeU5Ra3k5VkxRb24rYjZFZXM5QndPTFdscHdTZTdqTVpEYnB2d015Q1Nz?=
- =?utf-8?B?ZHJRMUoyWFduaDhqOW5kNkc5R3owQ0ZTT1N2QXhsN1JSUUdrR3BGSENZL2lt?=
- =?utf-8?B?Ti9LOXV2TUIwb2pOdWVkUll2M0dMYVVPbmttUDlxclpsdWhtc3pLbGZQTU94?=
- =?utf-8?B?TUhkcWhqOFk1T3FSYzBpbmxvYjFpaGR3RVlMVzQ2dnlNRWVwT2t0cjBRaVIy?=
- =?utf-8?B?L3dOUjZlL3AyZWUzSzgzT3BKUXM4L1o2RncyRTArbnhpZkJ4RVY3QnBhTmtD?=
- =?utf-8?B?eGUvbmNIZWRwL3hybTNHVkRPd0hKbnIwZlgyLzdjbVhnZnZGYy9qTzJuU21C?=
- =?utf-8?B?MUs5U0JGYXlpKzJSRk9QaGFWc3p6YVBiUGNWbjV6cFo5aDRhd3VsRXhLZlA5?=
- =?utf-8?B?TE5wMi9LYnhXOTBYTXB4ai9mL2prWmVuNWt5OC9idTh2d0s4VFdNU1V2d2pm?=
- =?utf-8?B?aUJPT3BSWllYS25ibFBENWhVN3FDMUlzWklJWkRyRmh1akwrVm1ucmo2SEYr?=
- =?utf-8?B?NmZVdzJUMHRJeERDN1h4RUxtUVRPeXNtaERYZ0pZajhoOWdkTFNGbHhIZWg0?=
- =?utf-8?B?YVR6Wk8yY1dMWWNtZUI1ajJRWjZtRjA4N2tTRnQ4ZTU5MUtiWU5MZUdHSmwv?=
- =?utf-8?B?M3VOSHV3a1Y2SEJxejNpTTBEKzQzQXZyWnh5VnF3Vk9oTDJyQVlwYllPR2da?=
- =?utf-8?B?blVPU004ck8xdFRBWUtmQk5pYkxYeVJBaDB5ZS9TSUYwWkNOSDJjVWhXdmNO?=
- =?utf-8?B?dXk4aVI4U2U0dUV0SzNJckVFM0ZNcGpCanFoZEVpM3BFMjkxTEdjdDQyVG1k?=
- =?utf-8?B?UVpiYXhmR09Bd0o2RHoyM0NzSC92UWptV25qckw1ajRtZWd3KzNaL3dlWnhP?=
- =?utf-8?B?ekc3SG5tdXFaQVF6K3VOcG00TkFFOEZ4ZytKcDJYZ3lJMkc1SG9FQytEM1RS?=
- =?utf-8?B?SDFaYStTQ01MSmZyaS9EOFVzbXBmeGltQ0FBQUpQWVA0NDU4VHFFRzhzb01m?=
- =?utf-8?B?RWU4aGhicThQdzU1UjFOZ1pHbWFtMHV1ZG1vTjN4VjlrTVcyc21MNUtqdHZZ?=
- =?utf-8?B?YTJ6ZG5ESWhocU0rVG5DTVB0Nkcya1pudVBqczEyOWd5TWYzY291ejVDVS9J?=
- =?utf-8?B?bm9WMXlHMGlPbFAvK3pXTEwwaEEvT1lIeXY3R1hIT1NVeGl5My9hV3hxczI2?=
- =?utf-8?B?ci96eXdiY3JuVG1NZDN3VDF2cGtraVVPU2lQTkNKdUdYQkR1NGlRN3BxRVdn?=
- =?utf-8?B?OEFVT1MyalRxbHRxUnBmN29kTHBaRXQyZFJGTm8yQjh3cU0vNWxKb1RjOGox?=
- =?utf-8?B?U2s3MDNpOWs0Vy9iRFlJT1VhNmIwdXVJREk2MzU3Y1R5K05VRkVLMnkwSmgv?=
- =?utf-8?B?ZjZ1WGxqaGIrUDBmaVhKcERCdFhaUDVEMTNCc3Jkd2dwMmIwZ3c1QUE4WGlG?=
- =?utf-8?B?ejBCVEcvU0dXekFIT1hjRkNoUElkcE5UejVmSERvTG9Od1N2Z05POXdvZGor?=
- =?utf-8?B?RllHZzdBdnkvQmVFUWlUallYZ29Cc25RNWVEaVVHL2YvWkx1RHZIT2ZWMk9R?=
- =?utf-8?B?S2dkYlp4VlBpaEtiOFd6dXllN0FURGZlRWFkeUc3R3hZM2dhWEEzMDNMTUl5?=
- =?utf-8?B?ZWhPRGdPdzNCTFp0RlovVTErV3hUR0t6di9Ya0xScWcremR6ZUUxSFNFOVFm?=
- =?utf-8?B?NzBrNFRpVHB5L0dzV2Qya2VyVHZmdkpmdWZRb0dodU9GK3dQL3dhRjhjek5r?=
- =?utf-8?B?b0orWTFyRFRoTC9PMlFnd2RJQ0M3MGpsMDJGY3ZYMVhZRVgxZGtDV1R1V3ZP?=
- =?utf-8?B?R2xvME1aSTNkZEhOOWkvTE1BU1VMUDRXZVloOW5YSDZFcEQ2WkNsYjVxNFhT?=
- =?utf-8?B?YnB2Q3JRTXFtS1gwd3QvTXBsaDVHVWZMZFlvRXlPczV0OEpBQ1U2V1ZrK0k3?=
- =?utf-8?Q?s923WRHsyrKkSuOU/Na0WroYB?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 075d0ef6-17d1-40d1-ee94-08ddd0b4c9dc
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2025 04:35:05.7403
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /EhlDfd4u/dKls+ZrO3KibjykFemnEARKcU7PHYpjoyEhAOc0fT646krD5NW0SHkUu5lJpSo+X/vF8my2mPMcA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: (subset) [PATCH v1 0/3] spidev: introduce trivial abb sensor
+ device
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Guenter Roeck <linux@roeck-us.net>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Mark Brown <broonie@kernel.org>,
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Andrei Lalaev <andrey.lalaev@gmail.com>,
+ Chanh Nguyen <chanh@os.amperecomputing.com>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Grant Peltier <grantpeltier93@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Michal Simek <michal.simek@amd.com>,
+ Naresh Solanki <naresh.solanki@9elements.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20250719063355.73111-1-hs@denx.de>
+ <175311337130.327079.7374455187420344577.b4-ty@kernel.org>
+ <d677ecd9-42d6-43fe-8fe1-a5afd4d270e2@kernel.org>
+ <8a8106ea-83d3-e02a-9ae7-ea4a66e4c248@denx.de>
+ <2e9c96c6-6dfb-4232-a9ab-a3e78b718fc2@roeck-us.net>
+ <20250722112013.0000597e@huawei.com>
+Reply-To: hs@denx.de
+From: Heiko Schocher <hs@denx.de>
+In-Reply-To: <20250722112013.0000597e@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-i.MX95 DWC3 inside HSIOMIX could still wakeup Linux, even if HSIOMIX
-power domain(Digital logic) is off. There is still always on logic
-have the wakeup capability which is out band wakeup capbility.
+Hello Jonathan,
 
-So use device_set_out_band_wakeup for i.MX95 to make sure DWC3 could
-wakeup system even if HSIOMIX power domain is in off state.
+On 22.07.25 12:20, Jonathan Cameron wrote:
+> On Mon, 21 Jul 2025 21:58:10 -0700
+> Guenter Roeck <linux@roeck-us.net> wrote:
+> 
+>> On 7/21/25 21:05, Heiko Schocher wrote:
+>>> Hello Krzysztof,
+>>>
+>>> On 21.07.25 18:24, Krzysztof Kozlowski wrote:
+>>>> On 21/07/2025 17:56, Mark Brown wrote:
+>>>>> On Sat, 19 Jul 2025 08:33:51 +0200, Heiko Schocher wrote:
+>>>>>> This series introduces the changes needed for trivial spi
+>>>>>> based sensors from ABB, currently operated from userspace.
+>>>>>>
+>>>>>> The last patch adds the spidevices to the DTS files, already
+>>>>>> in mainline.
+>>>>>>
+>>>>>> make dtbs_check showed no errors/warnings for the dts files
+>>>>>>
+>>>>>> [...]
+>>>>>
+>>>>> Applied to
+>>>>>
+>>>>>      https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+>>>>>
+>>>>> Thanks!
+>>>>>
+>>>>> [1/3] dt-bindings: trivial-devices: Document ABB sensors
+>>>>>         commit: aad2f87cbcab56b322109d26d7b11842a09df91f
+>>>>> [2/3] spi: spidev: Add an entry for the ABB spi sensors
+>>>>>         commit: d60f7cab7c04944a79af16caa43c141e780a59c6
+>>>>>   
+>>>>
+>>>>
+>>>> That's unexpected, Mark. Patches received two objections/comments and I
+>>>> don't think discussion was resolved.
+>>>>
+>>>> ABB is huge company, probably making hundreds or more of sensors. The
+>>>> patchset basically claims that all of them work with spidev. It does not
+>>>> providing any model names or details, so it seems really incomplete to
+>>>> call them trivial devices.
+>>>
+>>> I do not know how many different sensors they have, nor if that department can
+>>> speak for the whole company...
+>>>
+>>> What I have as information is:
+>>> https://lore.kernel.org/linux-spi/2477dc64-92a0-9dc9-d168-56646d0d796e@denx.de/
+>>>
+>>> and I get no more information about them currently. May I should
+>>> add some sort of trivial into compatible name? Something like
+>>>
+>>> "abb,spi-trivial-sensor"
+>>> or
+>>> "abb,spidev-trivial-sensor"
+>>>
+>>> which makes it clearer, that only ABB trivial sensor, controlled through spidev
+>>> driver, is connected here?
+>>>    
+>>
+>> FWIW, I always thought that devicetree is not supposed to contain such generic
+>> information. Is it even appropriate to list something like this in devicetree
+>> in the first place ?
+>>
+>> If so, what prevents anyone from submitting hundreds of
+>> "<company>,spidev-trivial-<device-type>" entries, using the same line of argument ?
+> 
+> Agreed.  These should have separate compatibles based on what any OS etc
+> might want to bind to them.  Just because their model in Linux is spidev etc
+> that shouldn't mean a generic ID is appropriate.
+> 
+> Can we at least have some examples to motivate the discussion?
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/usb/dwc3/dwc3-imx8mp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+I am sorry, I get no more information about the sensors... even I do
+not know the count of variants. What I can say is, that this sensors
+measure gases, and are only used "internal" on the aristainetos3 carriers.
 
-diff --git a/drivers/usb/dwc3/dwc3-imx8mp.c b/drivers/usb/dwc3/dwc3-imx8mp.c
-index bce6af82f54c24423c1e1fcc46913c8456b6f035..fde158d1f6e3d89d261ed3689a17d703878c7e37 100644
---- a/drivers/usb/dwc3/dwc3-imx8mp.c
-+++ b/drivers/usb/dwc3/dwc3-imx8mp.c
-@@ -248,6 +248,10 @@ static int dwc3_imx8mp_probe(struct platform_device *pdev)
- 	}
- 
- 	device_set_wakeup_capable(dev, true);
-+
-+	if (device_is_compatible(dev, "fsl,imx95-dwc3"))
-+		device_set_out_band_wakeup(dev, true);
-+
- 	pm_runtime_put(dev);
- 
- 	return 0;
+So a proposal would be:
+
+# ABB gas sensor on aristainetos3 carriers
+compatible "abb,aristainetos-gas-sensor"
+
+bye,
+Heiko
+> Jonathan
+> 
+>>
+>> Guenter
+>>
 
 -- 
-2.37.1
-
+DENX Software Engineering GmbH, Managing Director: Johanna Denk, Tabea Lutz
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-52   Fax: +49-8142-66989-80   Email: hs@denx.de
