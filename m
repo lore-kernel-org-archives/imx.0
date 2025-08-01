@@ -1,273 +1,158 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013028.outbound.protection.outlook.com [40.107.162.28])
+Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418CA6F53E
-	for <imx@lists.linux.dev>; Fri,  1 Aug 2025 15:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754061038; cv=fail; b=sJxAc3UBVvKJLPuuq5A8W7kWaP5wIWRzSU1kF/hnYS482ndLmvgGRfR3SUwHHOZb7xzk7H2wDs4k69qWYKsZ90Vt/L+V0z2aPBYN+ytoiHitgW3QrnQjmuPtwy+xhSqzkPiBbTWfP9PUo5Nl/cUOeck9XcJHQSJvnTmvFUo/jtA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754061038; c=relaxed/simple;
-	bh=htQTmuV0K9j4K7lHwV8BYgKFqFrHarCrVZoe2XQ9noo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=oOAXmktYmvNBAKv36wXgcW3dbT1BaNWxmNI/EARuFqm1Dvr4qTS0s5Bqfazpy0GblUOu8hWhXz75ruUlMM+rnDL0mlBj5PIukXgCizUcn0eAXS3mBlHGhPNPLeIbNybRpEnGLneUYySfMC+zEvbqiYSQmprnlJnxlekGqmaNoRA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ExGH9vVV; arc=fail smtp.client-ip=40.107.162.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B65419C556
+	for <imx@lists.linux.dev>; Fri,  1 Aug 2025 17:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.235
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754067939; cv=none; b=GVTj1VzECByHOC+ypwfmkkFAP19c7hIABRAORXePN0QuQHrDwIwET301I1fKWNZraASw6TCOCTjp8kE5HiQ/K48yrul8qHoy3Dq7nhbn2V9u1eAWIH4btAFTm1/B3zdcTCYLbSfKV3nt7CzNR6zMaSgUmcp0DOzklyUzH4UNMRU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754067939; c=relaxed/simple;
+	bh=77LGnkqRlcQzJx7xZ4uWapnv8ICF3iNyaEBAchhFd5I=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MHuZaitfEaIwY8jM4UD9ylc/Db2zIJ+lAgU2FVWoO7p/bqubDS1EQywM52PtyAeOjk2PtDo/kyw9krRG0Lfxpm0bBA+KybKe6wYgenlOPzxjpDmvkDoMvirhUNE2Jw/uuB0rBgbnfA37PAuOjzhVuEuz27o6J7LLrflweG6yNPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dYo82Kz2; arc=none smtp.client-ip=217.70.178.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ExGH9vVV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VjiwJIpdUKhEvrEqw3fRdHkeQNFRTFkjE8BjD8EVUzp+yFsekXQv+7x5myoMcT4/HUnxhDIg//uBRQRdRTYUjtMvYH3H21s3bfaI9Q1gQ/k0hoCMMhTRisgjFOKr/THsRf/O6stl+IDDuyA5SjVDhDt4RydiTLM4oR9TgksDrJuE1oL7mamIo0iTGKW4wSWbS++EBlMPuIe6wb6wgbfVXo7bnLEwUUR8oJ8OijBBKUU4nP0Jv/NHZ6yK4G9BLYC9O5ioMmdAnl/gH6yTg5pnEiJl6muDs6BLPfedcHNQ9YTZkqPWxwIRCgI5J4QjA3KaH3Elra8+FNUDnTJCSHPNTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7kEYbN1ZYsUeM4DWL45SyVK0aAWul3lje1xqpga8QDc=;
- b=rN0dSsUi2yYHkfKiG4N9m4WKdo1bv55N1LVqjNXCUcdR8Atw12jhAYl+ga/MJMiDW+7kTP0/0a/yzR9uJwuhTqTNrbbFhd2B21YSVehFBaTb9c+nOGu7YiwC3UuEz05+vYwRVrwTWopNxEZZk6Z73BuyECRZ8vlExtQZoYYO/shLitv0EkhPOn3Nzl12yhQxEMm85J04XhDYKhlD6+CFuYQLgb6cJttETfw4iHiYEoxSiyvCwgFsy9lebxzsZU4O+3ZFXcUpCc4Vwigm1zGPdzey+dJYfnCSTAATQGeTY1xWA/euec96IO8KybUa48zXEUT7kA3dryJzCH5iWySquw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7kEYbN1ZYsUeM4DWL45SyVK0aAWul3lje1xqpga8QDc=;
- b=ExGH9vVV9Tq86dI/yvq+6Tz6cilRJhhxs01kK5icJqqI5IvGkvD8mcYAkepKoPb4oPaqbLpZNKcfjSoxx9VoljUB030koSBCx9vKh/KOsEVPWY5po++gE8yKQol4d91HoJzbCEYJvYDTqd8EFb/X0o3yIf+62N8+tt3F2fkzeSUjYbBKHg4G1BulhNZgJVMe/flOQXmpDlYiNCaE7Mctr8iheEqoagkLlcJMNbGw5fa8iEsOgzXZZuefMslX05lh2mZCkJgFBb6nJZtwDMDCEw33NBsfdZSaxTedRIvDEiVPDypqeeoJ5PH9Rcycbn0Om2UapsRk28rpFtiD2GDrMQ==
-Received: from AS8PR04MB8642.eurprd04.prod.outlook.com (2603:10a6:20b:429::24)
- by GV1PR04MB10774.eurprd04.prod.outlook.com (2603:10a6:150:205::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.14; Fri, 1 Aug
- 2025 15:10:30 +0000
-Received: from AS8PR04MB8642.eurprd04.prod.outlook.com
- ([fe80::50d3:c32a:2a83:34bb]) by AS8PR04MB8642.eurprd04.prod.outlook.com
- ([fe80::50d3:c32a:2a83:34bb%5]) with mapi id 15.20.8989.015; Fri, 1 Aug 2025
- 15:10:30 +0000
-From: Jacky Bai <ping.bai@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-CC: "krzk@kernel.org" <krzk@kernel.org>, "rafael@kernel.org"
-	<rafael@kernel.org>, "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-	"rui.zhang@intel.com" <rui.zhang@intel.com>, "robh@kernel.org"
-	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>
-Subject: RE: [PATCH v2 3/4] thermal: qoriq: workaround the tmu temp jump on
- imx93
-Thread-Topic: [PATCH v2 3/4] thermal: qoriq: workaround the tmu temp jump on
- imx93
-Thread-Index: AQHcAruJ+AtIm1IjGk2fa0w8DXTeJ7RN1sOAgAAMGIA=
-Date: Fri, 1 Aug 2025 15:10:29 +0000
-Message-ID:
- <AS8PR04MB86428A54DA5B45CF3D8829628726A@AS8PR04MB8642.eurprd04.prod.outlook.com>
-References: <20250801081119.1999298-1-ping.bai@nxp.com>
- <20250801081119.1999298-3-ping.bai@nxp.com>
- <aIzK93Gs/+sXHBZU@lizhi-Precision-Tower-5810>
-In-Reply-To: <aIzK93Gs/+sXHBZU@lizhi-Precision-Tower-5810>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB8642:EE_|GV1PR04MB10774:EE_
-x-ms-office365-filtering-correlation-id: 05c26129-b960-41ac-86a5-08ddd10d8dd3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|1800799024|19092799006|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?f65g4bPdSRCTeGXzizerPVTsUs9YwGC4ivX9xuSx5sCWuXqAhP/Dui3eAmV8?=
- =?us-ascii?Q?nUD1LPToIEk4PYDD4pOA0goEsPtKQotKG1OJZcAxX0U9we+il9t8trtRFgHm?=
- =?us-ascii?Q?PU/IzFPCO/PPZbQzkSBefYSpnGeYyz1ccrXyi40YRWJOVOYQ6ocKmcNC0CKs?=
- =?us-ascii?Q?MipZQmUoZDIbAuwCrqz33/+ucEqF8nRb0Sh7LxSrTPY1iuH+9gLGHYo5iEjh?=
- =?us-ascii?Q?tzbO8YzT4MUc0Pw3NUzh0V9FEo/PKEDYyVdbkbcMD9ruIZm2V/SqHwSxtevh?=
- =?us-ascii?Q?0UtBVf3GywunJ7dD6bo+9n8NJ0+oLOkVx3bK2DGNmASlEW4GSM8w8cCMWvr4?=
- =?us-ascii?Q?mbQ7qod+HyZstePwPn7dE719ZeV5vDGG/GDKPZ4dWlw9baNq47L6eu+GQwcy?=
- =?us-ascii?Q?kUc2YxctuYl1M0ynXzo560j+xeuVDiSa2Iv4OF+ayx/zWject7jM8MsR08kS?=
- =?us-ascii?Q?Tg4bZn3+Z9nzvRxVtXVkJ0w7r4eE8KEea7fZ8ncobA5A5to6r1QcYlDpUMFu?=
- =?us-ascii?Q?RfvYZAuagK9NLAYnvqD0HtdR6lBzGurmW8Z+lcMQJ+jIYyWKLeEOY0Rxlhih?=
- =?us-ascii?Q?9nCdj3c8VfPOS1wXGl0T0duuZq9ahe8kO8f2lmquQFcBkTebg6LcO43qvFhO?=
- =?us-ascii?Q?xIZw9MtPVYwvsLdn+0LwO8C9JKao0VgsrxO1fylY8W86hRmUW1dUzdS0tm7T?=
- =?us-ascii?Q?G10d0GsXTHeWq4QMHSvQmnyu9BR9pDlHLUF7nyt8Jx1nEZsvM6dx7JBiFecv?=
- =?us-ascii?Q?+MvWueHLwGXCcJnZT1gBg0vpzAaZcp6EwbOAMjnXZuxZncEzPHtDw/JosqhY?=
- =?us-ascii?Q?4yApsmjlO62JOBYZQlqfcj4rjHyOfL81WO+iBmZ24vSfbIz97GrXCToUwrge?=
- =?us-ascii?Q?j1IUHKBKDioIgp0ZaNuJP2NQOJVkEUOkNk/m7HVRKisykgatOK9kKQiq8Nl0?=
- =?us-ascii?Q?4Ur4qojDhwDJcffvVtJUvE4y+7CsW3Vpas3bD9aijWdgbnO9mrwGwg9lzpQA?=
- =?us-ascii?Q?SjxinGYWX72qlNAa+7Yz9CKoN46nugJ2xf/sbpl8Nk3v7rscB9UzitJsUpXf?=
- =?us-ascii?Q?ZJntqnHb46XVOlR4K19hCV73H6k7GXP9N3PBYimZZHQ+kxpLPf47IAgvu7c4?=
- =?us-ascii?Q?/tcUqDibfAsnzyI2KYK+qjhbbCWmPoKjuoYfYLQrjghjsABcV2dSXRiW5hTz?=
- =?us-ascii?Q?JrjdgQfhrlxhoRGlq0s7/ZJDzVWGGsBw/RSq+f2KPNxKz97lNW6CJFUczkhH?=
- =?us-ascii?Q?SSraDKe3UGoeM3GnYXmcj6UrGTSNNMKxLPVmHSyaTDjIfa/rg0Gdzm/DObQK?=
- =?us-ascii?Q?19K3oMi+VWbI+FSDHHBnhJtZtVgyxoVMQ3qaWJoyeVOBhbIlPoTTLuFLAOcu?=
- =?us-ascii?Q?sHqVUxPKAxqOpjzdV6fpQGTtXjdUfW9ThWr4203B8M2Zrk0+yaWVznqLvUxb?=
- =?us-ascii?Q?5iZ36gg6h9f824br0atBZG6lLsSzFoIhb2nRn5AlnGwR0voQtSccvw=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(19092799006)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?suxHBe1nKIQlEEDJRocNIMJyfLNtz1c7ZObbm+lM1tAkP1/cC+RarpvHh+PG?=
- =?us-ascii?Q?ADQAarspJjRAD6FsvsWHlYq7I1d5z5aLtuMN0hl1wJSPhA+SDJPgtYzOA8AZ?=
- =?us-ascii?Q?AJaUSwSZrxwdUwQ98Qvf0yV1aMK27hzZ3+gDJeUume8zix3qiJvbL/c1lrKK?=
- =?us-ascii?Q?O+aVRqriMTRUg91ViBr5mlV4rZ+nR+mdLjhi6l2hZZysvI7ECYpxfGiszvoi?=
- =?us-ascii?Q?b/vOUyoUD0DxLU7c7uuoeghdYIGBRS4wWpTIBiMF5GPzyhL8j/GfrTLPAT0W?=
- =?us-ascii?Q?GhcyINq2x9aXaR0Q796gpAd71Cgwmv4yxakm2cYhpU2vxEBSp+SoMWZJlBJM?=
- =?us-ascii?Q?LuOvEBjcrCfb7qZxOzmrsKtRHFOaF+3T4+2G9Yg7ck+c0MQKFi48vHsW81JT?=
- =?us-ascii?Q?YZgkl+GfW9y6REAYOAyewUqp8kK3UubPgqWHIlKL1jG00UYGS3S+tfrDavEc?=
- =?us-ascii?Q?qBADq3GLqw9FWR+/JrKuBvGOWU0ztCg11RSO7xo0XSawXz3cdvueibHdgO9u?=
- =?us-ascii?Q?37pd0Xq4ERSO9HN9c0HPFPURCWz00t9aNUYJQMG6rvy/YN5Q+pZN2E7EMZkv?=
- =?us-ascii?Q?iQdIWq5wU0TWB++IH1mlLYCkmaMNQnyym0CzeoxC2GKmIwaed/fY2Zdy0hmj?=
- =?us-ascii?Q?1IEy+wfcgrfvVpcSSVUGdwhU0kTGG5+FDlgBtkWjQUbc+00Ay+MtmZn5uf6U?=
- =?us-ascii?Q?zajqEwpQy78adbxDmjw/pcxfaN82HKXiHygWrwdN8vl5GPN1ZqE9HMmaaJTi?=
- =?us-ascii?Q?LPX5AVd5F2ZouMizxquqmA3Jr20xQ2K6xalrUNbqSADZnRy5e72WdBE0/Vcp?=
- =?us-ascii?Q?gZVPCBM6HYfysNv3ZnfQDaP0sbtJpwxmtTwvoruYNF7gpCBagZO7t2ay6fXY?=
- =?us-ascii?Q?7FMvAZPtzArZLa5Wg9JBlsimrcj7uzA/hmSbGpRn1aDfvTc8l12lvgOpIu43?=
- =?us-ascii?Q?BvSK/TltY1tl0Knhe/3sNK+UQ/h4TrxeAFrsj7j9DvihiP6T1GcO61s/KJVv?=
- =?us-ascii?Q?MCgclME4YxrCRvbeev1Y0snTALM/p0UtxgOMfia1WLUhCL1X0gN/8vZLQHMs?=
- =?us-ascii?Q?IlyARyc/zkwxjsz//vJOn84vr5EtHAQ8pmYmOJvnxoGjDfMuUKvaKgsvfpv6?=
- =?us-ascii?Q?vp98R09M8KUU3jKy/rmtZx0L7ZUB1hWUaNAwarwgGDSUrNi+pItySqfuE9eB?=
- =?us-ascii?Q?HJkbQahcqCqXkXHeXCyb+lyzBpIYzixXQcRKSxAFvRvdvcyPSyuvqcsJIIZ4?=
- =?us-ascii?Q?c5bFlZV9QjHEBVYIZL+YXJ3F+Ezr1/Ey/adDopx2VzEDpev2OjsWNO12suR6?=
- =?us-ascii?Q?bqauiu/7Ez+/aD84flIuHRox6JPx5niVuusah+NEMRoqYlQropxH4BT+PjwM?=
- =?us-ascii?Q?B+njyxMN7gHjQ48Gw/viHj6Pcro+4fQa/LiSp7fPNF+Rhpf9TW1sUaz2iAzL?=
- =?us-ascii?Q?ZoeJuAsVC49fDM+8zEhbUoZQ5Do8pw3Tz+9bPVHWfRZkNPiQ8MYf/xD4wr+m?=
- =?us-ascii?Q?StA6OSQpnzSQ5IUH0iaMh0U58dXmW+Ao+Y6h0fyObM4O5AEw1p/A9IDIB3uX?=
- =?us-ascii?Q?Jn/h6FiJBCXKeE1LQMo=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dYo82Kz2"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 95A064422B;
+	Fri,  1 Aug 2025 17:05:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1754067935;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aD/nGiCc+YDCCx8g28qn2jStr5eOipu4kAA3wazt60A=;
+	b=dYo82Kz2g0XG37+HAIyUSe1wvU/3lqmUzqgOGOc9XPTUIlYZXzUXtV/IuhOsd6EoE5LdpW
+	/KHotDEkI8Pixvc/6UCyqmqxp/jL9YfbkF7MacTeVxn8Lx984eyNJzCXn8MY5aQuZgUCLr
+	dcjRsyaPqhVTBVy1PWbv61YJek8DpIa3MKriReGpRzPsedNf0KxQv8EvvcRab9cWnNcVOF
+	JX+3ShYH+RdKUOFnrv/zqTKRvK8DvPWfkFRURGyc53X5OaCrkzauS5PYHw0nuLEFoPoP5t
+	mYwc4VfRJZ7APdUF+Z3nEThkc7a61kyrWgSkuJ6xgANLoQ44Lvgn5C3IHJNNyA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH v2 0/9] drm/bridge: get/put the bridge returned by
+ drm_bridge_get_next_bridge()
+Date: Fri, 01 Aug 2025 19:05:22 +0200
+Message-Id: <20250801-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v2-0-888912b0be13@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05c26129-b960-41ac-86a5-08ddd10d8dd3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Aug 2025 15:10:30.0158
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: igzCUrh+cV4heaXBhf29B6uSk8GUTL0pV+D63fPn+x1S0RTOIuv7+PR5K3kQvrXUeyD+eMAAISDDWZ7wng6AQw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10774
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANLzjGgC/6WOTQ6DIBhEr2JYlwawpcVV79EYg/zolygYoMbGe
+ Pei7Q26fG+SmVlRNAFMRFWxomBmiOBdBnYqkOql6wwGnRkxwq7kRgTWYcRtAJ0TOQxe4c6k6ZV
+ 233x9k03jzJJ+jKm2XErLGS05ysVTMBaWY/RZZ+4hJh/ex4eZ7vavuZligi93wUgrlC25eLTep
+ wHcWfkR1du2fQA+e3GR9gAAAA==
+X-Change-ID: 20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-1df6aaf62136
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Zijun Hu <quic_zijuhu@quicinc.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddutdegvdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthekredtredtjeenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeejjefhgfffleevhefhfeduhedtfedttedtkefgkeeuieehtdeifeduveejffevgeenucffohhmrghinhepfhhrvggvuggvshhkthhophdrohhrghdpkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegludelvddrudeikedrudejkedruddukegnpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdelpdhrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehprdiirggsvghlsehpvghng
+ hhuthhrohhnihigrdguvgdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjfhuihdrrfhusehgvghhvggrlhhthhgtrghrvgdrtghomhdprhgtphhtthhopegurhhiqdguvghvvghlsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtoheprghnughriigvjhdrhhgrjhgurgesihhnthgvlhdrtghomhdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
 
-> Subject: Re: [PATCH v2 3/4] thermal: qoriq: workaround the tmu temp jump
-> on imx93
->=20
-> On Fri, Aug 01, 2025 at 04:11:18PM +0800, Jacky Bai wrote:
-> > On i.MX93, the temp read from tmu may jump wrongly(ERR052243), and
-> > invalid temp will be read out. To workaround such issue, we need to
-> > use the raising/falling edge threshold to filter out the wrong temp.
-> > When reading the temp, need to check the TIDR register to make sure no
-> jump happens.
-> >
-> > Please refer to NXP errata ERR052243 for more details.
->=20
-> Add download link here.
->=20
+Note: the cover in v1 was mentioning by mistake
+drm_bridge_get_last_bridge() instead of drm_bridge_get_next_bridge().
+               ^^^^
 
-Thx, will add the url here.
+This series adds drm_bridge_get/put() calls for DRM bridges returned by
+drm_bridge_get_next_bridge().
 
-> >
-> > Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> > ---
-> >  drivers/thermal/qoriq_thermal.c | 31
-> +++++++++++++++++++++++++++++--
-> >  1 file changed, 29 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/thermal/qoriq_thermal.c
-> > b/drivers/thermal/qoriq_thermal.c index fd4d162fc188..664cd5f7d8af
-> > 100644
-> > --- a/drivers/thermal/qoriq_thermal.c
-> > +++ b/drivers/thermal/qoriq_thermal.c
-> > @@ -46,6 +46,13 @@
-> >  #define REGS_TIER	0x020	/* Interrupt Enable Register */
-> >  #define TIER_DISABLE	0x0
-> >
-> > +#define REGS_TIDR	0x24
-> > +#define TMRTRCTR	0x70
-> > +#define TMRTRCTR_EN	BIT(31)
-> > +#define TMRTRCTR_TEMP(x)	((x) & 0xFF)
->=20
-> use GET_FIELD()
+This is part of the work towards removal of bridges from a still existing
+DRM pipeline without use-after-free. The grand plan was discussed in [1].
+Here's the work breakdown (➜ marks the current series):
 
-OK, will refine it will FILED_PREP macro.
+ 1. ➜ add refcounting to DRM bridges (struct drm_bridge)
+    (based on devm_drm_bridge_alloc() [0])
+    A. ✔ add new alloc API and refcounting (in v6.16-rc1)
+    B. ✔ convert all bridge drivers to new API (now in drm-misc-next)
+    C. ✔ kunit tests (now in drm-misc-next)
+    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+         and warn on old allocation pattern (now in drm-misc-next)
+    E. ➜ add get/put on drm_bridge accessors
+       1. ✔ drm_bridge_chain_get_first_bridge() + add a cleanup action
+       2. ✔ drm_bridge_get_prev_bridge()
+       3. ➜ drm_bridge_get_next_bridge()
+       4. … drm_for_each_bridge_in_chain()
+       5. drm_bridge_connector_init
+       6. of_drm_find_bridge
+       7. drm_of_find_panel_or_bridge, *_of_get_bridge
+    F. debugfs improvements
+ 2. handle gracefully atomic updates during bridge removal
+ 3. … avoid DSI host drivers to have dangling pointers to DSI devices
+ 4. finish the hotplug bridge work, removing the "always-disconnected"
+    connector, moving code to the core and potentially removing the
+    hotplug-bridge itself (this needs to be clarified as points 1-3 are
+    developed)
 
-BR
->=20
-> > +#define TMFTRCTR	0x74
-> > +#define TMFTRCTR_EN	BIT(31)
-> > +#define TMFTRCTR_TEMP(x)	((x) & 0xFF)
-> >
-> >  #define REGS_TTCFGR	0x080	/* Temperature Configuration Register
-> */
-> >  #define REGS_TSCFGR	0x084	/* Sensor Configuration Register */
-> > @@ -93,7 +100,7 @@ static int tmu_get_temp(struct thermal_zone_device
-> > *tz, int *temp)  {
-> >  	struct qoriq_sensor *qsensor =3D thermal_zone_device_priv(tz);
-> >  	struct qoriq_tmu_data *qdata =3D qoriq_sensor_to_data(qsensor);
-> > -	u32 val;
-> > +	u32 val, tidr;
-> >  	/*
-> >  	 * REGS_TRITSR(id) has the following layout:
-> >  	 *
-> > @@ -118,6 +125,15 @@ static int tmu_get_temp(struct
-> thermal_zone_device *tz, int *temp)
-> >  	if (!(val & TMR_ME))
-> >  		return -EAGAIN;
-> >
-> > +	/* ERR052243: If there raising or falling edge happens, try later */
-> > +	if (qdata->ver =3D=3D TMU_VER93) {
-> > +		regmap_read(qdata->regmap, REGS_TIDR, &tidr);
-> > +		if (tidr & GENMASK(25, 24)) {
-> > +			regmap_write(qdata->regmap, REGS_TIDR, GENMASK(25, 24));
-> > +			return -EAGAIN;
-> > +		}
-> > +	}
-> > +
-> >  	if (regmap_read_poll_timeout(qdata->regmap,
-> >  				     REGS_TRITSR(qsensor->id),
-> >  				     val,
-> > @@ -126,6 +142,15 @@ static int tmu_get_temp(struct
-> thermal_zone_device *tz, int *temp)
-> >  				     10 * USEC_PER_MSEC))
-> >  		return -ENODATA;
-> >
-> > +	/*ERR052243: If there raising or falling edge happens, try later */
-> > +	if (qdata->ver =3D=3D TMU_VER93) {
-> > +		regmap_read(qdata->regmap, REGS_TIDR, &tidr);
-> > +		if (tidr & GENMASK(25, 24)) {
-> > +			regmap_write(qdata->regmap, REGS_TIDR, GENMASK(25, 24));
-> > +			return -EAGAIN;
-> > +		}
-> > +	}
-> > +
-> >  	if (qdata->ver =3D=3D TMU_VER1) {
-> >  		*temp =3D (val & GENMASK(7, 0)) * MILLIDEGREE_PER_DEGREE;
-> >  	} else {
-> > @@ -232,12 +257,14 @@ static void qoriq_tmu_init_device(struct
-> qoriq_tmu_data *data)
-> >  	regmap_write(data->regmap, REGS_TIER, TIER_DISABLE);
-> >
-> >  	/* Set update_interval */
-> > -
-> >  	if (data->ver =3D=3D TMU_VER1) {
-> >  		regmap_write(data->regmap, REGS_TMTMIR, TMTMIR_DEFAULT);
-> >  	} else if (data->ver =3D=3D TMU_VER93) {
-> >  		regmap_write(data->regmap, REGS_V2_TMTMIR,
-> TMTMIR_DEFAULT);
-> >  		regmap_write(data->regmap, REGS_V2_TEUMR(0), TEUMR0_V21);
-> > +		/* ERR052243: Set the raising & falling edge monitor */
-> > +		regmap_write(data->regmap, TMRTRCTR, TMRTRCTR_EN |
-> TMRTRCTR_TEMP(0x7));
-> > +		regmap_write(data->regmap, TMFTRCTR, TMFTRCTR_EN |
-> > +TMFTRCTR_TEMP(0x7));
-> >  	} else {
-> >  		regmap_write(data->regmap, REGS_V2_TMTMIR,
-> TMTMIR_DEFAULT);
-> >  		regmap_write(data->regmap, REGS_V2_TEUMR(0), TEUMR0_V2);
-> > --
-> > 2.34.1
-> >
+There are various users of drm_bridge_get_next_bridge() which cannot be
+converted easily. Luckily they are not really looking for the next bridge,
+but for something else, such as getting the last bridge in the encoder
+chain or checking whether a bridge is the last in the encoder chain. So
+introduce better functions for those users and use them instead of
+drm_bridge_get_next_bridge(), making the code cleaner at the same time.
+
+Finally add a drm_bridge_get() to drm_bridge_get_next_bridge() and
+drm_bridge_put() to the remaining, and legitimate, calls.
+
+[0] https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/0cc6aadd7fc1e629b715ea3d1ba537ef2da95eec
+[1] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/t/#u
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Changes in v2:
+- Use cleanup action in patches 4, 8 and 9
+- Fix: replace get_last -> get_next in cover
+- Link to v1: https://lore.kernel.org/r/20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-0-48920b9cf369@bootlin.com
+
+---
+Luca Ceresoli (9):
+      list: add list_last_entry_or_null()
+      drm/bridge: add drm_bridge_chain_get_last_bridge()
+      drm/bridge: imx93-mipi-dsi: use drm_bridge_chain_get_last_bridge()
+      drm/omapdrm: use drm_bridge_chain_get_last_bridge()
+      drm/bridge: add drm_bridge_is_last()
+      drm/display: bridge_connector: use drm_bridge_is_last()
+      drm/bridge: get the bridge returned by drm_bridge_get_next_bridge()
+      drm/bridge: put the bridge returned by drm_bridge_get_next_bridge()
+      drm/imx: parallel-display: put the bridge returned by drm_bridge_get_next_bridge()
+
+ drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c    | 12 ++++------
+ drivers/gpu/drm/display/drm_bridge_connector.c |  5 ++--
+ drivers/gpu/drm/drm_bridge.c                   |  3 +--
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c   |  4 ++--
+ drivers/gpu/drm/omapdrm/omap_drv.c             |  6 ++---
+ include/drm/drm_bridge.h                       | 32 +++++++++++++++++++++++++-
+ include/linux/list.h                           | 14 +++++++++++
+ 7 files changed, 57 insertions(+), 19 deletions(-)
+---
+base-commit: b13c47e0f6f5a7be56ed93d596f80eb9d8e12c77
+change-id: 20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-1df6aaf62136
+
+Best regards,
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
+
