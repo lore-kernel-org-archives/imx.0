@@ -1,354 +1,130 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7BD21019C;
-	Fri,  1 Aug 2025 12:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F942EB10
+	for <imx@lists.linux.dev>; Fri,  1 Aug 2025 12:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754049625; cv=none; b=t24kMPQ/pFBKE7C5t6VisVCalG6Wj9ZFeHYh73OcJ3D/GHLWSyEhz2CGJOG+pqIuaDNOXouemmyBDylmdWl3d1eOqV9UE24Kq1z3pzFt0Uye0LSIosun6QfVKePvMpr2sUhW6hgaoH3v2RuWB4NlgRV74nq3iquVD9Me/zyAhcE=
+	t=1754050311; cv=none; b=uVi6EVOv9AJ83OOuOkb1wj8AYU/geThsFkjCOdKcjbUPYvHOD2ndHzk+WU9IHNdGO/PL9+sLmFOYw6JmELWGykNBHb/zog7IWDkY/Pkr/bBLzsi+K1Wd65WMkRnIScAs2E4cghFQ/ryrjNBrgVu9Yfd+CGdCTpRV0nib8zgEmRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754049625; c=relaxed/simple;
-	bh=EZzubd/xjF898M9Natt5msPracSUglnvBpuGxbey28Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MmI02IabFy375bpD663UP9aSP3Ly1XAa5fHX+aCK3wUu3m2beKqlPCLE7fETRz6SZ1evDYhm8crCvBqsaaZPcHtV7Gauh1jqGn2jt/zOMvzgiLp70VXiKgI6nC6LJ+4+i21SpqoadrUovZjw6zvWKUj4Lyh6X3CsuUixmNLJcHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=csSEQphS; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1754050311; c=relaxed/simple;
+	bh=o+RvfAEKe0RomM6tA+1Yt7h1qdgjQPP7umZQVLXtH78=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bcsD9PvksI71WZrHwVHxyn4+lno34nbQOQJz6wTKPtmgAmFVnbrXhEAIRU2z1q4k8RGclBDLmg167tQu93T6dh3E8+zu3yqHf3iKffymd465vPcR02n4Rw40tHDJJeGla+eTtkDjHUWSkpbeJb0TQ2VASkKkHZ06xspyGrZIhiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ngIepcIA; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="csSEQphS"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 3245AB5;
-	Fri,  1 Aug 2025 13:59:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1754049572;
-	bh=EZzubd/xjF898M9Natt5msPracSUglnvBpuGxbey28Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=csSEQphShVW12KdVnTQnQgd8x4xM5grcNqKzGR+ppmLQ+JFyJUCU+zHhmagy7Z3hm
-	 NpCO8zEN1Kn5Zp/oSyG4PzbGQc9rVQYUc8NxohQ878NFh/I5Zywoz5Hp+ONwmSSZpf
-	 yJq8N7gHMTda3o4TRvZBBaBio2AAjXuKtD0aWOu0=
-Date: Fri, 1 Aug 2025 15:00:07 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Konrad Dybcio <konradybcio@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Neal Gompa <neal@gompa.dev>,
-	Ludovic Desroches <ludovic.desroches@microchip.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Taichi Sugaya <sugaya.taichi@socionext.com>,
-	Takao Orito <orito.takao@socionext.com>,
-	Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	=?utf-8?Q?Am=C3=A9lie?= Delaunay <amelie.delaunay@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Martin =?utf-8?Q?Povi=C5=A1er?= <povik+lin@cutebit.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Viken Dadhaniya <quic_vdadhani@quicinc.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	imx@lists.linux.dev, linux-actions@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-sound@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH RFC 2/6] dmaengine: Make of_dma_request_slave_channel
- pass a cookie to of_xlate
-Message-ID: <20250801120007.GB4906@pendragon.ideasonboard.com>
-References: <20250730-topic-dma_genise_cookie-v1-0-b505c1238f9f@oss.qualcomm.com>
- <20250730-topic-dma_genise_cookie-v1-2-b505c1238f9f@oss.qualcomm.com>
- <aIpKz495WI1SJTeB@lizhi-Precision-Tower-5810>
- <20250730180417.GC21430@pendragon.ideasonboard.com>
- <aIpmgpXME1BmThxU@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ngIepcIA"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4563cfac2d2so7711395e9.3
+        for <imx@lists.linux.dev>; Fri, 01 Aug 2025 05:11:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754050308; x=1754655108; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T12VqVTqT9QY5bVVlcekdmYIYdB9sxvGnJLlTnRGMWs=;
+        b=ngIepcIAoreKPhRYxH39JvZhihL4CwqGK/pDWvxKr7ZSlKO3EpJSqO41Qu0EzZhGfH
+         X+RiPOIRrKB+n0e9/Y2gP8ICFYTcpPJ7K8QSN4SMkeGwJridWYweA6/plrSaMIlyDYvV
+         5KE20xGUheYuUGpv/R/It82/8mxXFxKEeYaTT1g1JCVSf2VuwdByxc5NzuyibhHsCvQz
+         SXeGTKbPFcm6M32jJdN9P6smuJ4/K9CzmSQSKl5yaOQ9+7tli2mMw6OOPqgEj8h1WEV6
+         R6p8uR1KIKEi6gePYIHuWD3KlgV84EVdHLy+QAtkP4kKIeqQx7zwewQkdQUFS5myNMS1
+         9Nfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754050308; x=1754655108;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T12VqVTqT9QY5bVVlcekdmYIYdB9sxvGnJLlTnRGMWs=;
+        b=m3/5vUMy5DbokIQ0ALMzhI9ybszIWIxOhh7vmRy8r2LLQ3vW1149AEd86hgzrO5r7M
+         IAj0iyhWffarMDQ5G2TgvkL3GYjZQp5HB7n2uGiIA+qyqON/gajpKdPLUQwFkJk49Ybr
+         OcQZ32SCkhxTwVHKeBz/VSnf6w7BOkLYLoeXL7FyVG0qBSNkEGctGVvGvURelGDwWmOL
+         DNatTvSBXu3KSSRtcrlznxgALCOgskc1Kb7NQpCvRpEPrtE88IRjitNneuu9flgEjkL5
+         QdUrUwaXGFMucXhNJ+1m+fQTpFSntGyikxxMeIhUtw/x0MbptmuSlOMGaV81JLd5sI5E
+         6RzA==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ6qyneZyVUQpu/9k1iJ8T0QmjGW1pCkcxczVcsZ1muUotHv0GejYyHvmAKSWILmXIRv8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwPDUzAkaCPGAVx7eLQ+2d1i2eb7dsdUyCVgVjXALMDt0BEC8eE
+	Igy7Wn6CNzfboq2u+BilcXKmoAqBXbi+qSuhMGrplLl4daQhBCKIYJcCny59yA==
+X-Gm-Gg: ASbGnctkp6Akxbk708shmPn3pCFF3lVfZ7K4ekyWpqUGzdfzOA4V5FoxLG+hs6KxnCx
+	irmOpKsl9opOZitglD5JUxs/vHuhWOaI+m1EiebmkBx105XATRqGKTthnq4coZhD2EcSkrY8wUa
+	5cemymLwnFqJlRlLRtNSipTIX/fukSf8Ct+8gZIMrqHqHepK2y9l2enaC3oe04jPnEmLRaC0RGr
+	YlEPjhjlqTw5UO9FDj6Ep6pfLT2PuizoZEUkvDpkoYR92GCfLDhJ+pjqZoZtRUFyGn15c43+BQr
+	AbdrPPUQq6xojm+uoXToxccPkuqqhwcS4s9yfibFOYDgL70OUx2uwZPridcAyA1BcxKBGy0IpyT
+	gy5epL+FQTV6yVsr0vPpNaLtU2bzwkyLfbCwafR/uMFBex5RkPVBUgF8aLerJ
+X-Google-Smtp-Source: AGHT+IFvST29zGsk85DMEnhGey+/+aFmHxqKGQr+Apz5n2YWFAlf/V3qjSSG5bEiZMA7xIBl8huCNw==
+X-Received: by 2002:a05:600c:3ba1:b0:456:1fd9:c8f0 with SMTP id 5b1f17b1804b1-45892b947c9mr122493875e9.2.1754050307932;
+        Fri, 01 Aug 2025 05:11:47 -0700 (PDT)
+Received: from [192.168.1.129] ([82.79.237.20])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458a22365c0sm62954395e9.3.2025.08.01.05.11.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 Aug 2025 05:11:47 -0700 (PDT)
+Message-ID: <8bc1a3c6-b7e0-4256-93ef-57b7b6a41d94@gmail.com>
+Date: Fri, 1 Aug 2025 15:11:46 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aIpmgpXME1BmThxU@lizhi-Precision-Tower-5810>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] arm64: defconfig: enable i.MX AIPSTZ driver
+To: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Shawn Guo <shawnguo@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev
+References: <20250707234628.164151-1-laurentiumihalcea111@gmail.com>
+ <20250707234628.164151-3-laurentiumihalcea111@gmail.com>
+ <3894475.kQq0lBPeGt@steina-w>
+Content-Language: en-US
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+In-Reply-To: <3894475.kQq0lBPeGt@steina-w>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Frank,
 
-On Wed, Jul 30, 2025 at 02:37:54PM -0400, Frank Li wrote:
-> On Wed, Jul 30, 2025 at 09:04:17PM +0300, Laurent Pinchart wrote:
-> > On Wed, Jul 30, 2025 at 12:39:43PM -0400, Frank Li wrote:
-> > > On Wed, Jul 30, 2025 at 11:33:29AM +0200, Konrad Dybcio wrote:
-> > > > From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> > > >
-> > > > The DMA subsystem attempts to make it theoretically possible to pair
-> > > > any DMA block with any user. While that's convenient from a
-> > > > codebase sanity perspective, some blocks are more intertwined.
-> > > >
-> > > > One such case is the Qualcomm GENI, where each wrapper contains a
-> > > > number of Serial Engine instances, each one of which can be programmed
-> > > > to support a different protocol (such as I2C, I3C, SPI, UART, etc.).
-> > > >
-> > > > The GPI DMA it's designed together with, needs to receive the ID of the
-> > > > protocol that's in use, to adjust its behavior accordingly. Currently,
-> > > > that's done through passing that ID through device tree, with each
-> > > > Serial Engine expressed NUM_PROTOCOL times, resulting in terrible
-> > > > dt-bindings that are full of useless copypasta.
-> > > >
-> > > > In a step to cut down on that, let the DMA user give the engine driver
-> > > > a hint at request time.
-> > > >
-> > > > Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> > > > ---
-> > > >  drivers/dma/amba-pl08x.c                       |  3 ++-
-> > > >  drivers/dma/apple-admac.c                      |  3 ++-
-> > > >  drivers/dma/at_hdmac.c                         |  6 ++++--
-> > > >  drivers/dma/at_xdmac.c                         |  3 ++-
-> > > >  drivers/dma/bcm2835-dma.c                      |  3 ++-
-> > > >  drivers/dma/dma-jz4780.c                       |  3 ++-
-> > > >  drivers/dma/dmaengine.c                        | 20 +++++++++++++++++---
-> > > >  drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c |  3 ++-
-> > > >  drivers/dma/dw/of.c                            |  3 ++-
-> > > >  drivers/dma/ep93xx_dma.c                       |  6 ++++--
-> > > >  drivers/dma/fsl-edma-main.c                    |  6 ++++--
-> > > >  drivers/dma/img-mdc-dma.c                      |  3 ++-
-> > > >  drivers/dma/imx-dma.c                          |  3 ++-
-> > > >  drivers/dma/imx-sdma.c                         |  3 ++-
-> > > >  drivers/dma/lgm/lgm-dma.c                      |  3 ++-
-> > > >  drivers/dma/milbeaut-hdmac.c                   |  4 +++-
-> > > >  drivers/dma/mmp_pdma.c                         |  3 ++-
-> > > >  drivers/dma/mmp_tdma.c                         |  3 ++-
-> > > >  drivers/dma/moxart-dma.c                       |  3 ++-
-> > > >  drivers/dma/mxs-dma.c                          |  3 ++-
-> > > >  drivers/dma/nbpfaxi.c                          |  3 ++-
-> > > >  drivers/dma/of-dma.c                           | 18 +++++++++++-------
-> > > >  drivers/dma/owl-dma.c                          |  3 ++-
-> > > >  drivers/dma/pl330.c                            |  3 ++-
-> > > >  drivers/dma/pxa_dma.c                          |  3 ++-
-> > > >  drivers/dma/qcom/bam_dma.c                     |  3 ++-
-> > > >  drivers/dma/qcom/gpi.c                         |  3 ++-
-> > > >  drivers/dma/qcom/qcom_adm.c                    |  3 ++-
-> > > >  drivers/dma/sh/rcar-dmac.c                     |  3 ++-
-> > > >  drivers/dma/sh/rz-dmac.c                       |  3 ++-
-> > > >  drivers/dma/sh/usb-dmac.c                      |  3 ++-
-> > > >  drivers/dma/st_fdma.c                          |  3 ++-
-> > > >  drivers/dma/ste_dma40.c                        |  3 ++-
-> > > >  drivers/dma/stm32/stm32-dma.c                  |  3 ++-
-> > > >  drivers/dma/stm32/stm32-dma3.c                 |  4 +++-
-> > > >  drivers/dma/stm32/stm32-mdma.c                 |  3 ++-
-> > > >  drivers/dma/sun4i-dma.c                        |  3 ++-
-> > > >  drivers/dma/sun6i-dma.c                        |  3 ++-
-> > > >  drivers/dma/tegra186-gpc-dma.c                 |  3 ++-
-> > > >  drivers/dma/tegra20-apb-dma.c                  |  3 ++-
-> > > >  drivers/dma/tegra210-adma.c                    |  3 ++-
-> > > >  drivers/dma/ti/cppi41.c                        |  3 ++-
-> > > >  drivers/dma/ti/edma.c                          |  3 ++-
-> > > >  drivers/dma/ti/k3-udma.c                       |  3 ++-
-> > > >  drivers/dma/uniphier-xdmac.c                   |  3 ++-
-> > > >  drivers/dma/xilinx/xilinx_dma.c                |  3 ++-
-> > > >  drivers/dma/xilinx/xilinx_dpdma.c              |  3 ++-
-> > > >  drivers/dma/xilinx/zynqmp_dma.c                |  3 ++-
-> > > >  include/linux/dmaengine.h                      |  7 +++++++
-> > > >  include/linux/of_dma.h                         | 16 +++++++++-------
-> > > >  sound/soc/apple/mca.c                          |  2 +-
-> > > >  sound/soc/renesas/rcar/dma.c                   |  2 +-
-> > > >  52 files changed, 146 insertions(+), 68 deletions(-)
-> > > >
-> > > > diff --git a/drivers/dma/amba-pl08x.c b/drivers/dma/amba-pl08x.c
-> > >
-> > > ...
-> > >
-> > > >  						const char *name)
-> > > >  {
-> > > > diff --git a/include/linux/of_dma.h b/include/linux/of_dma.h
-> > > > index fd706cdf255c61c82ce30ef9a2c44930bef34bc8..9f9bc4207b85d48d73c25aad4b362e7c84c01756 100644
-> > > > --- a/include/linux/of_dma.h
-> > > > +++ b/include/linux/of_dma.h
-> > > > @@ -19,7 +19,7 @@ struct of_dma {
-> > > >  	struct list_head	of_dma_controllers;
-> > > >  	struct device_node	*of_node;
-> > > >  	struct dma_chan		*(*of_dma_xlate)
-> > > > -				(struct of_phandle_args *, struct of_dma *);
-> > > > +				(struct of_phandle_args *, struct of_dma *, void *);
-> > >
-> > > I suggest pass down more informaiton, like client's dev point. So we can
-> > > auto create device link between client's dev and dma chan's device.
-> >
-> > Is .of_dma_xlate() really the right place to do that ? If you want to
-> > create a device link for PM reasons, isn't it better created when the
-> > channel is requested ? It should also be removed when the channel is
-> > freed.
-> 
-> I remember just need record client device pointer here.
-> 
-> > >
-> > > DMA Engineer device
-> > >    DMA chan device
-> > >        consumer clients' device.
-> > >
-> > > If consumer device runtime pm suspend can auto trigger DMA chan's device's
-> > > runtime pm function.
-> > >
-> > > It will simplifly DMA engine's run time pm manage. Currently many DMA run
-> > > time pm implement as, runtime_pm_get() when alloc and runtime_pm_put() at
-> > > free channel.  But many devices request dma channel at probe, which make
-> > > dma engine work at always 'on' state.
-> > >
-> > > But ideally, dma chan should be resume only when it is used to transfer.
-> >
-> > This is exactly what I was going to mention after reading the last
-> > paragraph. Is there anything that prevents a DMA engine driver to
-> > perform a rutime PM get() when a transfer is submitted
-> 
-> DMA description is a queue, It is hard to track each descriptor submit and
-> finished. espcially cycle buffer case.
-> 
-> And according to dma engine API defination, submit a descriptor not
-> neccessary to turn on clock, maybe just pure software operation, such as
-> enqueue it to a software list.
-> 
-> Many driver call dmaengine_submit() in irq context,  submit new descriptor
-> when previous descriptor finished. runtime_pm_get() can NOT be called in
-> atomic context.
-> 
-> And some driver submit many descripor advance. Only issue_transfer() is
-> actually trigger hardware to start transfer.
-> 
-> Some client use cycle descripor, such audio devices.  Some audio devices
-> have not free descriptor at their run time suspend function, just disable
-> audio devices's clocks.  Audio devices run time suspend, which means no
-> one use this dma channel, dma channel can auto suspend if built device link
-> between audio device and dma chan devices.
-> 
-> Some DMA client have not devices, such as memory to memory. for this kind
-> case, it need keep chan always on.
-> 
-> issue_transfer() can be call in atomic context. but trigger hardware transfer
-> need clock and runtime_pm_get() can't be called in atomic context.
-> 
-> Most case issue_transfer() is call in irq handle, which means device should
-> already be in runtime resume statue.  DMA engine can safely access their
-> register if using device link.
 
-You have good points there, in particular the fact the issue_transfer()
-can be called in interrupt context.
+On 7/8/2025 8:42 AM, Alexander Stein wrote:
+> Hi,
+>
+> Am Dienstag, 8. Juli 2025, 01:46:28 CEST schrieb Laurentiu Mihalcea:
+>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>>
+>> Enable the config (CONFIG_IMX_AIPSTZ) for the i.MX AIPSTZ driver, which
+>> is required for platforms using the AIPSTZ bridge (e.g. i.MX8MP).
+>>
+>> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>> ---
+>>  arch/arm64/configs/defconfig | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+>> index 739b19302865..4d7a60444bf5 100644
+>> --- a/arch/arm64/configs/defconfig
+>> +++ b/arch/arm64/configs/defconfig
+>> @@ -262,6 +262,7 @@ CONFIG_GOOGLE_FIRMWARE=y
+>>  CONFIG_GOOGLE_CBMEM=m
+>>  CONFIG_GOOGLE_COREBOOT_TABLE=m
+>>  CONFIG_EFI_CAPSULE_LOADER=y
+>> +CONFIG_IMX_AIPSTZ=y
+> Why not =m?
 
-For me this calls for new DMA engine operations to "start/stop" the DMA
-engine (better names are likely needed) from a client perspective.
+well, the thought process here was that since the audio block control driver (i.e.: clk-imx8mp-audiomix.c)
+is compiled as built-in (CONFIG_CLK_IMX8MP=y) we'd want to have the bridge as built-in too so as to not
+defer the probe of the clock provider and its consumers (in case there's any compiled as built-in).
 
-> > and a put() when
-> > it completes ? (Logically speaking, the actual implementation would
-> > likely be a bit different in drivers, but the result would be similar.)
-> >
-> > > >  	void			*(*of_dma_route_allocate)
-> > > >  				(struct of_phandle_args *, struct of_dma *);
-> > > >  	struct dma_router	*dma_router;
-> > > > @@ -34,7 +34,7 @@ struct of_dma_filter_info {
-> > > >  #ifdef CONFIG_DMA_OF
-> > > >  extern int of_dma_controller_register(struct device_node *np,
-> > > >  		struct dma_chan *(*of_dma_xlate)
-> > > > -		(struct of_phandle_args *, struct of_dma *),
-> > > > +		(struct of_phandle_args *, struct of_dma *, void *),
-> > > >  		void *data);
-> > > >  extern void of_dma_controller_free(struct device_node *np);
-> > > >
-> > > > @@ -45,16 +45,17 @@ extern int of_dma_router_register(struct device_node *np,
-> > > >  #define of_dma_router_free of_dma_controller_free
-> > > >
-> > > >  extern struct dma_chan *of_dma_request_slave_channel(struct device_node *np,
-> > > > -						     const char *name);
-> > > > +						     const char *name,
-> > > > +						     void *data);
-> > > >  extern struct dma_chan *of_dma_simple_xlate(struct of_phandle_args *dma_spec,
-> > > > -		struct of_dma *ofdma);
-> > > > +		struct of_dma *ofdma, void *data);
-> > > >  extern struct dma_chan *of_dma_xlate_by_chan_id(struct of_phandle_args *dma_spec,
-> > > > -		struct of_dma *ofdma);
-> > > > +		struct of_dma *ofdma, void *data);
-> > > >
-> > > >  #else
-> > > >  static inline int of_dma_controller_register(struct device_node *np,
-> > > >  		struct dma_chan *(*of_dma_xlate)
-> > > > -		(struct of_phandle_args *, struct of_dma *),
-> > > > +		(struct of_phandle_args *, struct of_dma *, void *),
-> > > >  		void *data)
-> > > >  {
-> > > >  	return -ENODEV;
-> > > > @@ -75,7 +76,8 @@ static inline int of_dma_router_register(struct device_node *np,
-> > > >  #define of_dma_router_free of_dma_controller_free
-> > > >
-> > > >  static inline struct dma_chan *of_dma_request_slave_channel(struct device_node *np,
-> > > > -						     const char *name)
-> > > > +							    const char *name,
-> > > > +							    void *data)
-> > > >  {
-> > > >  	return ERR_PTR(-ENODEV);
-> > > >  }
-> > > > diff --git a/sound/soc/apple/mca.c b/sound/soc/apple/mca.c
-> > > > index 5dd24ab90d0f052bb48f451cf009dc2e9128014d..43d48e4ac8161ee9955120fe64f7b911bfdfe1ca 100644
-> > > > --- a/sound/soc/apple/mca.c
-> > > > +++ b/sound/soc/apple/mca.c
-> > > > @@ -926,7 +926,7 @@ static struct dma_chan *mca_request_dma_channel(struct mca_cluster *cl, unsigned
-> > > >  	char *name = devm_kasprintf(cl->host->dev, GFP_KERNEL,
-> > > >  				    is_tx ? "tx%da" : "rx%db", cl->no);
-> > > >  #endif
-> > > > -	return of_dma_request_slave_channel(cl->host->dev->of_node, name);
-> > > > +	return of_dma_request_slave_channel(cl->host->dev->of_node, name, NULL);
-> > > >
-> > > >  }
-> > > >
-> > > > diff --git a/sound/soc/renesas/rcar/dma.c b/sound/soc/renesas/rcar/dma.c
-> > > > index 2035ce06fe4c4aeaa8620d817910a5319732fa58..dcbff2fc61a0472adea226371016a128563b3cd0 100644
-> > > > --- a/sound/soc/renesas/rcar/dma.c
-> > > > +++ b/sound/soc/renesas/rcar/dma.c
-> > > > @@ -204,7 +204,7 @@ struct dma_chan *rsnd_dma_request_channel(struct device_node *of_node, char *nam
-> > > >  		}
-> > > >
-> > > >  		if (i == rsnd_mod_id_raw(mod) && (!chan))
-> > > > -			chan = of_dma_request_slave_channel(np, x);
-> > > > +			chan = of_dma_request_slave_channel(np, x, NULL);
-> > > >  		i++;
-> > > >  	}
-> > > >
+however, the bridge driver could have just as well been compiled as a module so any of the two approaches
+is fine with me.
 
--- 
-Regards,
+>
+> Best regards
+> Alexander
+>
+>>  CONFIG_IMX_SCU=y
+>>  CONFIG_QCOM_TZMEM_MODE_SHMBRIDGE=y
+>>  CONFIG_QCOM_QSEECOM=y
+>>
+>
 
-Laurent Pinchart
