@@ -1,73 +1,73 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9E422B8A9
-	for <imx@lists.linux.dev>; Sat,  2 Aug 2025 12:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB0422F74D
+	for <imx@lists.linux.dev>; Sat,  2 Aug 2025 12:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754138290; cv=none; b=Yy8x48quSsK9BX8J8jkbUsJbQ4AXKcECbmKgJsaJAQT5jN0ZAL93ynJ3UPG4gCSIVg7u8KVpALbmAvvLSG9ugJANq5V0I647gn6S/hIA/GfvzarZTEo2/8mPbotygkF2qN7B28gq5UCXHCJPtua40HTdIDyqmBBkQDVGWskH1Kc=
+	t=1754138402; cv=none; b=jAaniAAMnaL1rmTSzBj+8iYdNlgwWXyFn/4gdBIgQk0RWoJTU5VbLOC9XRz35wy59PHM+4NdgG0atH2Rt6Z3TfOA4CHjFtTuiNsB64MWRrxR6XHGnn3F98iSLkOAm4wQuPy19jpjX79sHMlhCrU+jKldfuNZiijz1LlIc0HjY4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754138290; c=relaxed/simple;
-	bh=kjNMGi0IvuVGXF8RnqYfZcDE+z5GAU+wzdFjcp7iLnM=;
+	s=arc-20240116; t=1754138402; c=relaxed/simple;
+	bh=20GZjV/9etu8Dh+QrGksTZEKnBLbOiAfPjovI45mWjE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sTjq4nEN6r3gt4P1EFf5gtNAVdyZeYWyiy6qGyAQFHCVq6ljAZ98KPU7hOJ397/yTrYTNY6PIirye62+iKxBnh6eYlR+lXlrxH+UkQ9s0Onti4q41Az/gUi9t7ASE0sNX33H35Xb3/esvg00vbXjZSKmugKKnnwQuFxZWHiiKCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iLj+yzbI; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=PfvzpQQ7sgNg0kjkN4Vnrpr87/x1YQwBDsHLhcZJYxx6Ez5pAN78/7Vdy928ziq+hmioPj67WbV2hlmajQwumCNPhl39OGJx94h8ESelzfugzKaNWGxW4+6RaINjW5oyyGZ2UVJf4XBh+O+qJ0+rO6+ztWA7A8vH+h3kyv6lPds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DOQMtJD9; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iLj+yzbI"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 572C3dgp008799
-	for <imx@lists.linux.dev>; Sat, 2 Aug 2025 12:38:07 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DOQMtJD9"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5728pIYQ031955
+	for <imx@lists.linux.dev>; Sat, 2 Aug 2025 12:39:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	yY+5Vc4wWCp8Q+lqkXgyh1f1Eka3dbE6PZDRDj30axM=; b=iLj+yzbIUQdJmpPE
-	HSCMNc/WukNLpBT4WQTMuU2Elh3jlNsbdJ3wd7gziWpdQ65t+tBxIrNYtMU+MFuJ
-	HkIflk49HRXLBE2e9aKmEFEMADiJXGpyVkCfWqzZ2oRbpsC/Is+DUfmvIOCD1CL7
-	+su5CJLM5ymQuGWntuLQlXV8emoqlaA1Boot08Xzssob33f1R3HI/ecNvYw7Rexb
-	A0P7DlMACxYME3GtSMcdlQDuCabxpvlQxkQpGykwEkKpz6XKqy0U5VviVBINJlk4
-	vqmrWlp/XyTcfHt6AsjKW9089optU/83B4pIoedJbH9vwu6CHrl90A4PA/AyXS0L
-	8x2ZGA==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 489arwgt5u-1
+	r9VK3kXUy5TNVKQthyOGQ0SFCHNZ+dt1IH8nz2OWv34=; b=DOQMtJD9xjdE7K4H
+	vt+tAL+ijFCF/Ppx46PTq6wc0Tn4/X98XLLrGBLGuzMvbAxreC3RezQp8EyPZa0+
+	UzJW6dPZmAIDc6+9IQeviwcJmVcn12IlqcBecAfYSutXBJr+KyZvSqxFtgMMo9du
+	llmeNIzI2yHwmB8wloQBV8amiGbLg6kLeWquA++hJ11zyqHDF33b7slzh3B0tFYr
+	A1fOQ+7KHo3LhiJjF1ji/no0ao8zJy6eh31X7yiFpqa2FD+ip3SBTFBwj/8a5s4d
+	xvZZXb4ZGPo/7wRpiihVK7awCZ1GbbBUY6miBEig1e3yCvdFUp5HadPxMnra5b45
+	h8VRQw==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 489b2a0rss-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Sat, 02 Aug 2025 12:38:06 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4ab3f1d1571so7126931cf.3
-        for <imx@lists.linux.dev>; Sat, 02 Aug 2025 05:38:06 -0700 (PDT)
+	for <imx@lists.linux.dev>; Sat, 02 Aug 2025 12:39:59 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4af0100c0b5so1768361cf.2
+        for <imx@lists.linux.dev>; Sat, 02 Aug 2025 05:39:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754138286; x=1754743086;
+        d=1e100.net; s=20230601; t=1754138398; x=1754743198;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yY+5Vc4wWCp8Q+lqkXgyh1f1Eka3dbE6PZDRDj30axM=;
-        b=seu+ePtBbj1zMvm0DmmLSGgIqTH81bI35ORFtNQEntwnTJZtZbMufLypTlouEp5RlH
-         7yqiUlWlHY3bLIh5kdqP6J65kKMJ19/eobHLUfnNBHJid+Hk/CRCIWFJcXRM/TWATtkR
-         cOrqbXZaOgy7cdJXoG8JfAr9bPR9DH2lzQWDfVn1MU79oYJ5pU80EuR7bBjfM4rHjyum
-         zah7Iv0j9MVElVpcuBtWEDOgXUyVtnlI23IarmgsJMA0SH9739CpqvOjY5SmeC0z4YvZ
-         GEgsqG55v+tJKWhQS33rHffr5EuldjpmJAvS+uWLmmdyEB3Hj/booj5/xuhGD5HJvgUe
-         Rq2g==
-X-Forwarded-Encrypted: i=1; AJvYcCXS69MEzJI0DagP/HXz7ezHR8+C9mttIGDQIxyLhBegYN7DzO0J/s5JpUhR7vUndh8HW5Q=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxyorNdOPVZLgJsIiP6ntAl4SYMg2KizUyS7BCFT2q2UWUzHMuO
-	7a1Kt6lBareX3oo9r3eV/ngf+RgLDBLXh6CL74V04Ai64PfMVVgYMCRXfg6bbBeWzMe1tmLo232
-	87aRqBDbht22D9FGQAAI7QxWJtjAIHM7HeRbRR803DbqGzYli0m0+k+E=
-X-Gm-Gg: ASbGnctr2U2Gi6LgpxxW3jd7DfJigWdBUal0rgjQgSLPJiD3ZWKnLAmAAnd9QGjNzDc
-	0H984mWTKpN90ydKwrhwbbVlrrnmaJcsPboso1PVnN8gVb0P5+WK/fcmh96/3+iq1Dn4mxAElz2
-	uccEJhDobta9bj7XC6D0oPz0WxJpxDCZNluo4RJVBGWThWfCXbvXnOV8yCRWynJ2FYi+ADzdy7+
-	Zox9nJxZvE3ZbA6IhArpyDNVA8f8pwyTMNukBvbBOxjBkMcTsHsNmCT3jhPbRIfQsUFhEpLwVL2
-	3CWu036USz7xbI7S40rKQfv91scz+q+B8Efs+9YLINjB7qWPIf3Ufm2KDkWBnBhC6aM5iB6Lj48
-	XH+xRk8TZurVIr+qMDQ==
-X-Received: by 2002:a05:622a:54e:b0:4ab:67a3:ec09 with SMTP id d75a77b69052e-4af1094cd78mr22382701cf.6.1754138285394;
-        Sat, 02 Aug 2025 05:38:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGFPF9qOzJpGO98jPyAvuhk/RML1vSf6VMcwdOoFpMcr/LQVR1VYdVHuTAn5xus4wthkO0plg==
-X-Received: by 2002:a05:622a:54e:b0:4ab:67a3:ec09 with SMTP id d75a77b69052e-4af1094cd78mr22381721cf.6.1754138284551;
-        Sat, 02 Aug 2025 05:38:04 -0700 (PDT)
+        bh=r9VK3kXUy5TNVKQthyOGQ0SFCHNZ+dt1IH8nz2OWv34=;
+        b=lyLOe28b43O0dkw3sVyCod+8019gCaUujyu9SUqGlNvep0RNuiyG217sXcHTPwlobe
+         dHV+xsMdQ1lmqujZgZzEcVVL9mitlH//w02DX+CCuHBhuVflO6+3ywCGI/dHrsP+PfI/
+         N/JML3xYVwr9fQMJMTCH2ehZv5sNqEts0ly0OZcDJhMwPelhnoeipHY5cfvgVmFTZiDZ
+         bes6uAQBh9L84q9Nec7zmdWRLAOa8rK7kFb27m80fw+pFCAUAruo3p5y+9BiG/gKKop+
+         XuxycfKJ8gKP4LhRf/QBj1uUgu+GmNkgqW+cDlV5zbwy8OC0ywAPpiHfdBgoYUc+BXFD
+         gRAA==
+X-Forwarded-Encrypted: i=1; AJvYcCVknlzB/vfX91lSbFhOulqCHk5aK89KXcOEA8gIkzg1KdGQ9cSRU33lIFXVAD8qU/48EC8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw9PlO96PIuVwisY0uAcYEPWhPF8PvOiOL2mVpkjbQSjityNS3t
+	m9ExNyhAqRBM6RUYk8LHTEGMYylJGThgY5+fM8S1npOhtDrdvLswEglHTxNKC89PvrKOT9C5H/s
+	F+meQUopNwDCmZAxw8mG9UmFZA1/3bqmn0yH+4zr89ykv76yim5LIeXM=
+X-Gm-Gg: ASbGncur9LGqfJDzWLF0/vterXkJUUmN0IVcTsjkHAEnlPYqqwMmLuRG963BYrkZACC
+	KdPEVRZfvO+va4wI2eYW+wNNCmeKfx+gf+q1SblYVTKOA9YggIZ71JqTCvSr0mAf4EWZBdjqLZD
+	LVSwTp/wE/H/te6pHTGH74r9tHjQtb0DUnKWRmgCXz7tIXZ3x1yn6PrSHOkWcpEtDN09nA8+4JU
+	Q1M9GvIC2uoQTo07Dwm/1s+u1ZkYEJcTxuvjxUiwNbiLEme6pLRzxw6YjyisAFVLNMMh32Suu6u
+	cwh7brV2SVxVKAiHEgBT8qJOm65BYhvy7XsMFH8ByxH2UFyWaYyxoJntrvhxhKHNBewgTA0O6T3
+	eKIFXL3daAYwV/BT+2A==
+X-Received: by 2002:ac8:5f90:0:b0:4ab:5ac3:1347 with SMTP id d75a77b69052e-4af10a84c91mr23334121cf.13.1754138398247;
+        Sat, 02 Aug 2025 05:39:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEm4NEl6EUx3LCCGFmAhcLGEPc2/M/pvg1mmL0vg2ErLHKHgVKDYHB4PV/P/gfOCagScMPDYw==
+X-Received: by 2002:ac8:5f90:0:b0:4ab:5ac3:1347 with SMTP id d75a77b69052e-4af10a84c91mr23333291cf.13.1754138397693;
+        Sat, 02 Aug 2025 05:39:57 -0700 (PDT)
 Received: from [192.168.43.16] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0761f2sm434931766b.11.2025.08.02.05.37.55
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8fe77cfsm4167407a12.42.2025.08.02.05.39.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 02 Aug 2025 05:38:03 -0700 (PDT)
-Message-ID: <0c2cc631-21fd-41fd-9293-fd86dd09a2d2@oss.qualcomm.com>
-Date: Sat, 2 Aug 2025 14:37:54 +0200
+        Sat, 02 Aug 2025 05:39:57 -0700 (PDT)
+Message-ID: <e0886f9e-bcc1-48dc-a175-2147d8d4fc3e@oss.qualcomm.com>
+Date: Sat, 2 Aug 2025 14:39:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -75,13 +75,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 2/6] dmaengine: Make of_dma_request_slave_channel pass
- a cookie to of_xlate
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Frank Li <Frank.li@nxp.com>
-Cc: Konrad Dybcio <konradybcio@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>, Neal Gompa <neal@gompa.dev>,
+Subject: Re: [PATCH RFC 3/6] dmaengine: qcom: gpi: Accept protocol ID hints
+To: Geert Uytterhoeven <geert@linux-m68k.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
+Cc: Vinod Koul <vkoul@kernel.org>, Sven Peter <sven@kernel.org>,
+        Janne Grunau <j@jannau.net>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Neal Gompa <neal@gompa.dev>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
         Florian Fainelli <florian.fainelli@broadcom.com>,
         Broadcom internal kernel review list
@@ -91,7 +90,8 @@ Cc: Konrad Dybcio <konradybcio@kernel.org>, Vinod Koul <vkoul@kernel.org>,
         Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
         Viresh Kumar <vireshk@kernel.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Frank Li <Frank.Li@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Fabio Estevam <festevam@gmail.com>,
         Taichi Sugaya <sugaya.taichi@socionext.com>,
@@ -120,8 +120,9 @@ Cc: Konrad Dybcio <konradybcio@kernel.org>, Vinod Koul <vkoul@kernel.org>,
         Peter Ujfalusi <peter.ujfalusi@gmail.com>,
         Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
         Masami Hiramatsu <mhiramat@kernel.org>,
-        Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>,
-        Saravana Kannan <saravanak@google.com>,
+        Michal Simek <michal.simek@amd.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
         =?UTF-8?Q?Martin_Povi=C5=A1er?= <povik+lin@cutebit.org>,
         Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
         Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
@@ -144,150 +145,73 @@ Cc: Konrad Dybcio <konradybcio@kernel.org>, Vinod Koul <vkoul@kernel.org>,
         linux-sound@vger.kernel.org, linux-i2c@vger.kernel.org,
         linux-spi@vger.kernel.org
 References: <20250730-topic-dma_genise_cookie-v1-0-b505c1238f9f@oss.qualcomm.com>
- <20250730-topic-dma_genise_cookie-v1-2-b505c1238f9f@oss.qualcomm.com>
- <aIpKz495WI1SJTeB@lizhi-Precision-Tower-5810>
- <20250730180417.GC21430@pendragon.ideasonboard.com>
- <aIpmgpXME1BmThxU@lizhi-Precision-Tower-5810>
- <20250801120007.GB4906@pendragon.ideasonboard.com>
+ <20250730-topic-dma_genise_cookie-v1-3-b505c1238f9f@oss.qualcomm.com>
+ <CAMuHMdV0JO=qtregrrHsBZ-6tpNdPUj3G1_LWRfRsj0vBb+qyw@mail.gmail.com>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250801120007.GB4906@pendragon.ideasonboard.com>
+In-Reply-To: <CAMuHMdV0JO=qtregrrHsBZ-6tpNdPUj3G1_LWRfRsj0vBb+qyw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAyMDEwNSBTYWx0ZWRfX3aYE7Z5t2JnA
- SygVIynv8x+2d3U6EjVfXo8US+eb7bhkppCAyNDtO4iWL0Ybgxc/wCsacjRi+5xDcJMPTE5v0Za
- cOuQLFFYvpwsP6B6MVzuxZc1n9oumDlzZJwKzjPCPPYMNegjzRj+1S5VBSVfim1vXE34gP20FfU
- JQKmhuJNjvAMOufUf8N0AmHT2qmHqeTF07xO5DNnzw+TmIV8NFyLJgtpRSe8N5hKA72PQhMD/41
- c4uLX3l3/N+cvTdLnn0l00FEOEG1CPN+xJMzkmq80w9hy95cN1wUDU3fywAbMdaP7nAYTwSCqSs
- kW7L63qMmnQAl4ByHnKvbK/NYI36NXIiYzHJ9u3/g4z7C7l4WpssmuU18XRcFCNAyTQKXGvFJYg
- 1SGwBTRh44YUfrr4Ojmb2k50cWXC0cRHUr2ClA3xz5Trc1Cb9AXODCel/HuYFG4dJupoJz7w
-X-Authority-Analysis: v=2.4 cv=We8Ma1hX c=1 sm=1 tr=0 ts=688e06ae cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=Hh3C_mqfd76DgmRPW0UA:9
- a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22
-X-Proofpoint-GUID: t28zQNOpIVoOi5hVVGKDhjnkCF7QpTpi
-X-Proofpoint-ORIG-GUID: t28zQNOpIVoOi5hVVGKDhjnkCF7QpTpi
+X-Authority-Analysis: v=2.4 cv=OKwn3TaB c=1 sm=1 tr=0 ts=688e071f cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=sidZTQT7lcrlHK7IIakA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
+X-Proofpoint-ORIG-GUID: pF6ykWEbWtN8wkSaU7RIr5ntOQtLdUPt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAyMDEwNSBTYWx0ZWRfX+XyRSPYmTjEu
+ JYINzIVbJtRr9fe/WrBq7pEmsRXUzJRE3WNgxInlXbySeTzOVAJSlcA+4eB6f0CfcZZEU5rIJTh
+ cKY671OS3NZeON1hKp1sJ7L0gndnqFFZwhkYjUDv9ca78+3GDUYQjy14xjVuHyDW9CHiu9/TZmk
+ ua8q5qbNSZbylPLOVHTqBF0wl9f7+dYokdHVVYVqqmuZIVDY86HfzOQZyh3ytUNWtIqOuLnYCiO
+ 9jGvirTAx4E78mvkFRB356pnRnfeHrvTxTL3R3D7EpM0mY812iuddxPvrnRxTPIuRPANjm3sY2P
+ MsabUn7stJIHKhIUYo3i5pA7NTecv4ImO0hyeM3XQUuaZbW4uKmYOwMihkxAtd8puNYRMQkh8cG
+ GKeu4R/Cq1P78FmBRR3eiMCsGL6u60emMo+ZXNAfpPg+B4Y05fp+IrLT1HSotZ0wAVRlocg6
+X-Proofpoint-GUID: pF6ykWEbWtN8wkSaU7RIr5ntOQtLdUPt
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-01_08,2025-08-01_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 clxscore=1015 bulkscore=0 phishscore=0 mlxscore=0 suspectscore=0
- priorityscore=1501 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2508020105
+ bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=908 clxscore=1015
+ phishscore=0 impostorscore=0 priorityscore=1501 adultscore=0 mlxscore=0
+ malwarescore=0 lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2508020105
 
-On 8/1/25 2:00 PM, Laurent Pinchart wrote:
-> Hi Frank,
+On 7/30/25 1:32 PM, Geert Uytterhoeven wrote:
+> Hi Konrad,
 > 
-> On Wed, Jul 30, 2025 at 02:37:54PM -0400, Frank Li wrote:
->> On Wed, Jul 30, 2025 at 09:04:17PM +0300, Laurent Pinchart wrote:
->>> On Wed, Jul 30, 2025 at 12:39:43PM -0400, Frank Li wrote:
->>>> On Wed, Jul 30, 2025 at 11:33:29AM +0200, Konrad Dybcio wrote:
->>>>> From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->>>>>
->>>>> The DMA subsystem attempts to make it theoretically possible to pair
->>>>> any DMA block with any user. While that's convenient from a
->>>>> codebase sanity perspective, some blocks are more intertwined.
->>>>>
->>>>> One such case is the Qualcomm GENI, where each wrapper contains a
->>>>> number of Serial Engine instances, each one of which can be programmed
->>>>> to support a different protocol (such as I2C, I3C, SPI, UART, etc.).
->>>>>
->>>>> The GPI DMA it's designed together with, needs to receive the ID of the
->>>>> protocol that's in use, to adjust its behavior accordingly. Currently,
->>>>> that's done through passing that ID through device tree, with each
->>>>> Serial Engine expressed NUM_PROTOCOL times, resulting in terrible
->>>>> dt-bindings that are full of useless copypasta.
->>>>>
->>>>> In a step to cut down on that, let the DMA user give the engine driver
->>>>> a hint at request time.
->>>>>
->>>>> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->>>>> ---
+> On Wed, 30 Jul 2025 at 11:35, Konrad Dybcio <konradybcio@kernel.org> wrote:
+>> From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+>>
+>> Client drivers may now pass hints to dmaengine drivers. GPI DMA's only
+>> consumers (GENI SEs) need to pass a protocol (I2C, I3C, SPI, etc.) ID
+>> to the DMA engine driver, for it to take different actions.
+>>
+>> Currently, that's done through passing that ID through device tree,
+>> with each Serial Engine expressed NUM_PROTOCOL times, resulting in
+>> terrible dt-bindings that are full of useless copypasta.
+>>
+>> To help get rid of that, accept the driver cookie instead, while
+>> keeping backwards compatibility.
+>>
+>> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> 
+> Thanks for your patch!
+> 
+>> --- a/drivers/dma/qcom/gpi.c
+>> +++ b/drivers/dma/qcom/gpi.c
+>> @@ -2145,7 +2151,8 @@ static struct dma_chan *gpi_of_dma_xlate(struct of_phandle_args *args,
+>>         }
+>>
+>>         gchan->seid = seid;
+>> -       gchan->protocol = args->args[2];
+>> +       /* The protocol ID is in the teens range, simply ignore the higher bits */
+>> +       gchan->protocol = (u32)((u64)proto);
+> 
+> A single cast "(uintptr_t)" should be sufficient.
+> Casing the pointer to u64 on 32-bit may trigger:
+> 
+>     warning: cast from pointer to integer of different size
+> [-Wpointer-to-int-cast]
 
-[...]
-
->>>>> diff --git a/include/linux/of_dma.h b/include/linux/of_dma.h
->>>>> index fd706cdf255c61c82ce30ef9a2c44930bef34bc8..9f9bc4207b85d48d73c25aad4b362e7c84c01756 100644
->>>>> --- a/include/linux/of_dma.h
->>>>> +++ b/include/linux/of_dma.h
->>>>> @@ -19,7 +19,7 @@ struct of_dma {
->>>>>  	struct list_head	of_dma_controllers;
->>>>>  	struct device_node	*of_node;
->>>>>  	struct dma_chan		*(*of_dma_xlate)
->>>>> -				(struct of_phandle_args *, struct of_dma *);
->>>>> +				(struct of_phandle_args *, struct of_dma *, void *);
->>>>
->>>> I suggest pass down more informaiton, like client's dev point. So we can
->>>> auto create device link between client's dev and dma chan's device.
->>>
->>> Is .of_dma_xlate() really the right place to do that ? If you want to
->>> create a device link for PM reasons, isn't it better created when the
->>> channel is requested ? It should also be removed when the channel is
->>> freed.
->>
->> I remember just need record client device pointer here.
->>
->>>>
->>>> DMA Engineer device
->>>>    DMA chan device
->>>>        consumer clients' device.
->>>>
->>>> If consumer device runtime pm suspend can auto trigger DMA chan's device's
->>>> runtime pm function.
->>>>
->>>> It will simplifly DMA engine's run time pm manage. Currently many DMA run
->>>> time pm implement as, runtime_pm_get() when alloc and runtime_pm_put() at
->>>> free channel.  But many devices request dma channel at probe, which make
->>>> dma engine work at always 'on' state.
->>>>
->>>> But ideally, dma chan should be resume only when it is used to transfer.
->>>
->>> This is exactly what I was going to mention after reading the last
->>> paragraph. Is there anything that prevents a DMA engine driver to
->>> perform a rutime PM get() when a transfer is submitted
->>
->> DMA description is a queue, It is hard to track each descriptor submit and
->> finished. espcially cycle buffer case.
->>
->> And according to dma engine API defination, submit a descriptor not
->> neccessary to turn on clock, maybe just pure software operation, such as
->> enqueue it to a software list.
->>
->> Many driver call dmaengine_submit() in irq context,  submit new descriptor
->> when previous descriptor finished. runtime_pm_get() can NOT be called in
->> atomic context.
->>
->> And some driver submit many descripor advance. Only issue_transfer() is
->> actually trigger hardware to start transfer.
->>
->> Some client use cycle descripor, such audio devices.  Some audio devices
->> have not free descriptor at their run time suspend function, just disable
->> audio devices's clocks.  Audio devices run time suspend, which means no
->> one use this dma channel, dma channel can auto suspend if built device link
->> between audio device and dma chan devices.
->>
->> Some DMA client have not devices, such as memory to memory. for this kind
->> case, it need keep chan always on.
->>
->> issue_transfer() can be call in atomic context. but trigger hardware transfer
->> need clock and runtime_pm_get() can't be called in atomic context.
->>
->> Most case issue_transfer() is call in irq handle, which means device should
->> already be in runtime resume statue.  DMA engine can safely access their
->> register if using device link.
-> 
-> You have good points there, in particular the fact the issue_transfer()
-> can be called in interrupt context.
-> 
-> For me this calls for new DMA engine operations to "start/stop" the DMA
-> engine (better names are likely needed) from a client perspective.
-> 
->>> and a put() when
->>> it completes ? (Logically speaking, the actual implementation would
->>> likely be a bit different in drivers, but the result would be similar.)
-
-So.. do you folks want me to alter the patch in any way?
+Good point, not compiling for 32-bit always ends up biting.. thanks
 
 Konrad
