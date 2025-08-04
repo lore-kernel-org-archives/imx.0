@@ -1,148 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0842D22A4FE;
-	Mon,  4 Aug 2025 07:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A74EB672
+	for <imx@lists.linux.dev>; Mon,  4 Aug 2025 07:46:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754292425; cv=none; b=VhYHl6M+x5lDPHIy28yukQgmXngoQH/7I6BGt3vYIeIbxlgfdQcVi4WYuchdRSioTYnJ1NixxnccRiIAiM4l6J03i5hsyw5QO2OHGVmDxOkx+XpWORCuHt+fE5rYiiJSvGFSgmaPicsErPsxkGeKnEHZoKMK6Moh4l4EGgnx22o=
+	t=1754293622; cv=none; b=S9sHSYcQ4X7Zpjkc2T1j+LlmtkMZ9kGA8Decv0uwyG3AKq6K4dERUwv0sr9bCa/4oXlsORNxMt8HekQNdmI7ROcZkQqolHejKeYe2ZSnxtyn00Sbrq5dIkWvIvlxIU/6FZzccnznICnMflGG8101dEqtzZIfp73HqE7scygkTn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754292425; c=relaxed/simple;
-	bh=fbeMNsknj1jfMdMlUI3wgsG87na3shk5ZcyK+AxPEUQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TVbl57gk3sFA3gk/Ohb3nUGP6SkIrfomdvPJGE0jIbQWSGvOMjuMVqU1YWl9EtYz2AIc2vbWPg0Vta6OHQ9hnYLEmjnPhhZu9+wZizuLxdyayJIHh/wynh1N7KdfI4lb0qX+fY3BMdQL3BG0coV1WRUyg64ju2xN7uVupfjzn2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OjPij6bW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754293622; c=relaxed/simple;
+	bh=w2FQsejIW9tGu/d12dVCX72xaJq4TZ/tWsq4IMGd5/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kOk8xuSH5CMqXlrH+bBJb8U2JWuBtTJwOBazL0wBvO1AWdwGszPdgooA86pdWJvZoEmxsfWWIf2x2DlaarYz50GaoopM12EexGGMhT20CjI47u9J6RUZxshs0pPoQYXa8FUNxJaIOUCw61JLE7SSBNPhJi0lGmN1J4ePOyVykOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=ZUIYz1XZ; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ecKANMWN reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OjPij6bW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49DFC4CEE7;
-	Mon,  4 Aug 2025 07:26:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754292424;
-	bh=fbeMNsknj1jfMdMlUI3wgsG87na3shk5ZcyK+AxPEUQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OjPij6bWmzP0LitMnDkrFzaaGn/cbOohwvU/4ZlF0cQ+i3b/jKxiDDRR4NHr/muzx
-	 a/7CnvlsggRtq1eBFysjnqUpBK6V+rCeyvFsT4xCC7bRwo0E4HvIcKWSbUFAxE/LQV
-	 5O4yt7bk7CyEpDSi3hvwoF0zyTT1312B3C/JFWuukVB4rbvQH2BlPdXSuIa/4ctFDB
-	 Eq+p4YDB9x+E6vYpQMj+eFXDpgvfHdWORFQBnras3qxGRYrYWAuDBuqzmpWIMPaTpH
-	 Kq/FjynfBBGvv2g5uGlaGH3IaCu9j0v+nlTl8cNP/YU70fNIDt/YuTUKhxS10NorlU
-	 DQm9AzjxdTSVg==
-Message-ID: <b5775270-5306-4eb7-9fe5-44b087b20c40@kernel.org>
-Date: Mon, 4 Aug 2025 09:26:55 +0200
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="ZUIYz1XZ";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ecKANMWN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1754293618; x=1785829618;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=CdSfNikpGH6BscsmZd/Rx5luzG62PFHqKEcL/imgz3o=;
+  b=ZUIYz1XZsvElIzniBhj04Zm5wLjMlyexuzD225MC+aq3Zs34DigroWyd
+   EdLD7eT9JwkzU90uEG9D3vL2eyLYsyK/xagR1qFT1Csgy/MQObPPxrL2R
+   r33d2/bPhx04vVoYAbRT/ioazj6RsSL/yT+AKZs80p7Mjr3etkGlo+uEu
+   zy9CZk0pwqfE9W1fPZ1fxjWtnu/Ai0n/NovTN4xEpw6bu1ZsFO59Vz13l
+   2R6cOX2Hs1CJaDU3V5njuPW/XgN0/3R+IpvCwW0PBpJwCEJjvYHofEmzU
+   nykP7/A4HQL9VmYMeS+M92jxNaCAA5RYcUYtti6o/1mYLr2XPNRYT9WZi
+   Q==;
+X-CSE-ConnectionGUID: HpCTta7TRG6yj4QOSCB+Lw==
+X-CSE-MsgGUID: Aeglv0tvTyugj3tAdvpArw==
+X-IronPort-AV: E=Sophos;i="6.17,258,1747692000"; 
+   d="scan'208";a="45562890"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 04 Aug 2025 09:46:50 +0200
+X-CheckPoint: {6890656A-1C-BC5CDED5-F054443F}
+X-MAIL-CPID: 4AC64EF87B1BE66EB7BD5C8C8A82D21A_3
+X-Control-Analysis: str=0001.0A00210D.6890651C.0090,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B04091617E1;
+	Mon,  4 Aug 2025 09:46:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1754293606;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CdSfNikpGH6BscsmZd/Rx5luzG62PFHqKEcL/imgz3o=;
+	b=ecKANMWNDiOVfAMTmVMafSHm/DT+1YcSONM7nAJtnCxEO+Ziaf5xmwr7oQZbcP/FdHjQZg
+	c9ItJju72cOUClS8/+/I1KwLI6Mx+6sRV/eDMCLIxGgiHGjd9s8h+vVlbt6f5IDiEfhNag
+	hobttP7S4HZq6MYU5tMCWE+d1yVUgWdDYi2dyd/yDI341E/PzSpE+DttX7gYALtPMihhFX
+	HqF0S1rfCDNd+Qb1CKFuITUKGft2Ml4cKgH+TCeFZ40mc21dbV+99v0bDJNYMFB1wI2CNk
+	jGOHyQsuc6l8ivt3B0btn6LjKlWBiKlyxzaMRqUqvV8IP/+P0AudxGNX6UgbPQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [Resend 1/1] arm64: defconfig: Enable Marvell WiFi-Ex USB driver
+Date: Mon,  4 Aug 2025 09:46:41 +0200
+Message-ID: <20250804074642.75072-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 10/12] nvmem: s32g2_siul2: add NVMEM driver for SoC
- information
-To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
- Arnd Bergmann <arnd@arndb.de>, Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
- krzk+dt@kernel.org, Conor Dooley <conor+dt@kernel.org>,
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
- Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
- Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, aisheng.dong@nxp.com,
- Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Srinivas Kandagatla <srini@kernel.org>
-Cc: "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, NXP S32 Linux Team <s32@nxp.com>,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>, echanude@redhat.com,
- Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev,
- Vincent Guittot <vincent.guittot@linaro.org>
-References: <20250710142038.1986052-1-andrei.stefanescu@oss.nxp.com>
- <20250710142038.1986052-11-andrei.stefanescu@oss.nxp.com>
- <9d004ea4-0bb2-4a21-8501-82ecf3482c3e@app.fastmail.com>
- <fa24772b-0038-4f51-87c6-15b810d8d454@oss.nxp.com>
- <53bc13b9-365e-4212-84f9-85e67c23e067@oss.nxp.com>
- <ed072356-6881-4466-a0c2-0f55b72f92c8@kernel.org>
- <7902bac4-9f52-443c-995f-a15189102478@kernel.org>
- <0973e6d1-2823-4bfb-be73-b532c6f86784@oss.nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <0973e6d1-2823-4bfb-be73-b532c6f86784@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 04/08/2025 09:12, Andrei Stefanescu wrote:
-> Hi Krzysztof,
-> 
-> Thank you for the quick response!
-> On 02/08/2025 11:32, Krzysztof Kozlowski wrote:
->> On 02/08/2025 10:28, Krzysztof Kozlowski wrote:
->>> On 01/08/2025 16:36, Andrei Stefanescu wrote:
->>>> Apart from the proposed NVMEM driver, there is also an option of exporting
->>>> a syscon regmap for the registers which provide information about the SoC.
->>>>
->>>> I have seen that typically NVMEM drivers export information read from fuses
->>>> but I think having a NVMEM driver is nicer way to access the information
->>>> instead of using a syscon regmap and manually extracting the needed bits. 
->>>
->>>
->>> nvmem is not a syscon. Mixing these two means device is something
->>> completely else.
-> 
-> Yes, I don't want to mix them. The driver will either be a NVMEM driver or
-> a syscon. These registers are read-only. I suggested NVMEM because it's a
+This driver is used on imx93-tqma9352-mba91xxca.dts.
 
-We do not talk about drivers here, but hardware.
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+Added IMX Maintainers
 
-> an abstraction layer which makes it easier for drivers which want to use
-> that information without knowing where to actually read it i.e. reg address,
-> bit mask.
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sorry, but no. You design it for drivers, that's not the way. Describe
-properly the hardware.
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index c7520e78b6a11..2271ce6079bbb 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -441,6 +441,7 @@ CONFIG_IWLMVM=m
+ CONFIG_MWIFIEX=m
+ CONFIG_MWIFIEX_SDIO=m
+ CONFIG_MWIFIEX_PCIE=m
++CONFIG_MWIFIEX_USB=m
+ CONFIG_MT7921E=m
+ CONFIG_RSI_91X=m
+ CONFIG_WL18XX=m
+-- 
+2.43.0
 
-
-Best regards,
-Krzysztof
