@@ -1,146 +1,168 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D29C19DFA2;
-	Mon,  4 Aug 2025 00:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEDC15A8;
+	Mon,  4 Aug 2025 00:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754267780; cv=none; b=bDWGhH69vv3UGjjZk/HhPJ1FPBhvn3TgGni1mLghin3MPB7ull0PJimE3rb0w2t2IbK347J+bIEqWJY1IMQzWCl8VLHzjulXuO+zNtz5zoPBu0GmHOJyzJiR5vmkMXksXqJxL1FCgVtIONFfPrj181AMZ+4pTvlOxk2yWLyMNkw=
+	t=1754267827; cv=none; b=RvoMvxPr3/v6i7hA7rjkA/G8cgpzCqmhmOu7kBTrTavjMS0Hz9G4WYsVyPMgOZsJEz52Z4VaM1IJQ7GwbjFIwj9GHXhZ4PoGaz9V7Whvn2VX2IdTpa8zJRTj/XEMBXBMjIIRjW0QXSMa68TzyLKUROO6EqZR/WKZIKcsVX4pHow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754267780; c=relaxed/simple;
-	bh=HTCii5Oo+4Bro4IEOEsAfVVoexcXbMFm6hDvC+3p5/4=;
+	s=arc-20240116; t=1754267827; c=relaxed/simple;
+	bh=BlfZYz60IGMGAxA+cCD9L/qRFhnLBG5MQ7RPwZoB5aw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WBU1CpeODHVB30K7vyo211fTfbY1je+dVec1+OE6/0lxQvuCR30quFKFjQhmxdFefEviwAgHKQv+5sH1SirvSWKGNE5/J0+RxVJa6FtghyJJCyGTgFce4TIlwnhLmxLSwE4V63rM4mPGAg+hrpogiO6wRBX2fjZxTKDOe/cgw/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hVIL0uGB; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=uXoXVn3CASV9nVUNXQdB3t4Zt41tRVpDrPOUlprBt+x9QIaoqh9xCDUsVVtbYdYVacarOs4hRBWjFaXkDW1RwjQGgSmAsQqV91cd8rSEf+rtnNei+9He3/wK76w7QW2whm6GA4qx9xythZWfKa19ZZ94zLc9x2l2w8pRMtTopNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HK4Ek0Wb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hVIL0uGB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878C9C4CEEB;
-	Mon,  4 Aug 2025 00:36:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HK4Ek0Wb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EB1C4CEEB;
+	Mon,  4 Aug 2025 00:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754267780;
-	bh=HTCii5Oo+4Bro4IEOEsAfVVoexcXbMFm6hDvC+3p5/4=;
+	s=k20201202; t=1754267826;
+	bh=BlfZYz60IGMGAxA+cCD9L/qRFhnLBG5MQ7RPwZoB5aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hVIL0uGBrlyUt8F+O4YzsBZXXw4pf9AO4QLqofbbXIjUOnr4CXso0sGwL+c0ncmBY
-	 8Vv/BHNxOMfP2WH4lxxFDdUVhhVsM821ABYoA3K5qaW/BVeifSZ99drTZCqnXJY9HO
-	 DcLbQqlf8iZN0VjjPIVTZvt/1JIsPqmZLodmqo3iWSOFzJYHZnnQ9TWatGtW1bThOT
-	 WVEWhQz5Pm0ryJkNozlKd59HQ9UttmiY7Z4QYm9vDAXC/GODFjr3cf68jOrcxA5vQv
-	 XpgvAt8jVIfv9+SkMah99jPob7NarX+MNnLl/sllY84f5t+kZ2ZslMx91w5jJyuP0Q
-	 rraVgBdMtb7xg==
+	b=HK4Ek0WbldELOHbDIl3F8+zJnWlMKscou88wn81d/Fx/bZJAHj+Rts2CN4Jl19hdh
+	 /4LQi+TlKPxug6uRD5aMgJ5rlh7Xl2Te8asw+qvg6HW8I6BI32KLocxLjXydldoabY
+	 RcKKCJ9ONzTuRTW0LZMVclirJZzMGiO+tCXimXEEuOarQaaE/1p0s0zfizrsTW9yO4
+	 FRRt6WQB7JKhYmB/BY1dbFf80l8N8S8BnhUrcP3OohW4VsTstvC4vcm7yvSjyqqTaa
+	 F7Kdqf/eFlgL4hQC5S/tDKYPRD666+BU0AloZZVGKyML8zJggg/i4iNX7YYWbSh4B6
+	 z3kgTFk7+S2ZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
+Cc: Hiago De Franco <hiago.franco@toradex.com>,
+	Peng Fan <peng.fan@nxp.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
+	andersson@kernel.org,
 	shawnguo@kernel.org,
-	peng.fan@nxp.com,
+	linux-remoteproc@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 50/59] imx8m-blk-ctrl: set ISI panic write hurry level
-Date: Sun,  3 Aug 2025 20:34:04 -0400
-Message-Id: <20250804003413.3622950-50-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 09/51] remoteproc: imx_rproc: skip clock enable when M-core is managed by the SCU
+Date: Sun,  3 Aug 2025 20:36:01 -0400
+Message-Id: <20250804003643.3625204-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250804003413.3622950-1-sashal@kernel.org>
-References: <20250804003413.3622950-1-sashal@kernel.org>
+In-Reply-To: <20250804003643.3625204-1-sashal@kernel.org>
+References: <20250804003643.3625204-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.101
+X-stable-base: Linux 6.1.147
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Hałasa <khalasa@piap.pl>
+From: Hiago De Franco <hiago.franco@toradex.com>
 
-[ Upstream commit c01fba0b4869cada5403fffff416cd1675dba078 ]
+[ Upstream commit 496deecb020d14ba89ba7084fbc3024f91687023 ]
 
-Apparently, ISI needs cache settings similar to LCDIF.
-Otherwise we get artefacts in the image.
-Tested on i.MX8MP.
+For the i.MX8X and i.MX8 family SoCs, when the Cortex-M core is powered
+up and started by the Cortex-A core using the bootloader (e.g., via the
+U-Boot bootaux command), both M-core and Linux run within the same SCFW
+(System Controller Firmware) partition. With that, Linux has permission
+to control the M-core.
 
-Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
-Link: https://lore.kernel.org/r/m3ldr69lsw.fsf@t19.piap.pl
+But once the M-core is started by the bootloader, the SCFW automatically
+enables its clock and sets the clock rate. If Linux later attempts to
+enable the same clock via clk_prepare_enable(), the SCFW returns a
+'LOCKED' error, as the clock is already configured by the SCFW. This
+causes the probe function in imx_rproc.c to fail, leading to the M-core
+power domain being shut down while the core is still running. This
+results in a fault from the SCU (System Controller Unit) and triggers a
+system reset.
+
+To address this issue, ignore handling the clk for i.MX8X and i.MX8
+M-core, as SCFW already takes care of enabling and configuring the
+clock.
+
+Suggested-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+Acked-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Link: https://lore.kernel.org/r/20250629172512.14857-3-hiagofranco@gmail.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Based on my analysis of the commit and the surrounding code:
+Based on my analysis, I can now provide a definitive answer:
 
 **Backport Status: YES**
 
 This commit should be backported to stable kernel trees for the
 following reasons:
 
-1. **Fixes a real user-visible bug**: The commit fixes image artifacts
-   in the ISI (Image Sensor Interface) on i.MX8MP. This is a functional
-   bug that affects users of camera/image capture functionality.
+1. **Critical bug fix preventing system reset**: The commit fixes a
+   serious issue where the probe function failure causes the M-core
+   power domain to be shut down while the core is still running,
+   resulting in a fault from the SCU and triggering a system reset. This
+   is a severe user-impacting bug that can cause unexpected system
+   reboots.
 
-2. **Small and contained change**: The fix adds only 10 lines of code
-   that set ISI panic write hurry levels in the
-   `imx8mp_media_power_notifier` function. It's a minimal change
-   confined to the i.MX8MP media block controller.
+2. **Minimal and contained change**: The fix is very simple - it just
+   adds `|| dcfg->method == IMX_RPROC_SCU_API` to an existing condition
+   in the `imx_rproc_clk_enable()` function. This is a one-line change
+   that only affects the clock handling logic for i.MX8X and i.MX8
+   family SoCs when using SCU API method.
 
-3. **Follows established pattern**: The fix mirrors the existing LCDIF
-   panic read hurry level fix (commit 06a9a229b159) that was already
-   applied for display FIFO underflow issues. The ISI needs similar
-   cache settings to prevent artifacts.
+3. **Clear root cause**: The commit message clearly explains the issue -
+   when the M-core is started by the bootloader, the SCFW automatically
+   enables its clock. If Linux later attempts to enable the same clock,
+   SCFW returns a 'LOCKED' error, causing probe failure and subsequent
+   power domain shutdown while the core is running.
 
-4. **Hardware-specific fix**: The change only affects i.MX8MP hardware
-   and is guarded by the platform-specific power notifier function,
-   minimizing risk to other platforms.
+4. **No architectural changes**: This is purely a bug fix that doesn't
+   introduce new features or change the driver architecture. It simply
+   skips clock operations for a specific configuration where the clock
+   is already managed by the SCFW.
 
-5. **Clear problem and solution**: The commit message clearly states the
-   problem (image artifacts) and the solution (setting ISI panic write
-   hurry levels similar to LCDIF), making it a straightforward hardware
-   configuration fix.
+5. **Platform-specific fix with no regression risk**: The change only
+   affects i.MX8X and i.MX8 platforms using the SCU API method
+   (`IMX_RPROC_SCU_API`). Other platforms and methods are unaffected,
+   minimizing the risk of regression.
 
-6. **No architectural changes**: This is purely a hardware register
-   configuration change during power-on sequences, not introducing new
-   features or changing kernel architecture.
+6. **Prevents data corruption/loss**: System resets caused by this bug
+   could potentially lead to data loss or corruption, making this fix
+   important for system stability.
 
-The fix addresses a hardware-specific issue where the ISI (Image Sensor
-Interface) needs proper cache/priority settings to avoid image
-artifacts, similar to how the LCDIF (display interface) needs such
-settings to avoid display FIFO underflow. This is an important fix for
-anyone using camera functionality on i.MX8MP platforms.
+The specific code change in `imx_rproc_clk_enable()` at line 1033 simply
+extends the existing check from:
+```c
+if (dcfg->method == IMX_RPROC_NONE)
+```
+to:
+```c
+if (dcfg->method == IMX_RPROC_NONE || dcfg->method == IMX_RPROC_SCU_API)
+```
 
- drivers/pmdomain/imx/imx8m-blk-ctrl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+This ensures that for SCU-managed cores, Linux doesn't attempt to enable
+clocks that are already controlled by the SCFW, preventing the probe
+failure and subsequent system reset.
 
-diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-index cc5ef6e2f0a8..0dfaf1d14035 100644
---- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-@@ -664,6 +664,11 @@ static const struct imx8m_blk_ctrl_data imx8mn_disp_blk_ctl_dev_data = {
- #define  LCDIF_1_RD_HURRY	GENMASK(15, 13)
- #define  LCDIF_0_RD_HURRY	GENMASK(12, 10)
+ drivers/remoteproc/imx_rproc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index bbaba453383d..ff7acc326f09 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -750,8 +750,8 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
+ 	struct device *dev = priv->dev;
+ 	int ret;
  
-+#define ISI_CACHE_CTRL		0x50
-+#define  ISI_V_WR_HURRY		GENMASK(28, 26)
-+#define  ISI_U_WR_HURRY		GENMASK(25, 23)
-+#define  ISI_Y_WR_HURRY		GENMASK(22, 20)
-+
- static int imx8mp_media_power_notifier(struct notifier_block *nb,
- 				unsigned long action, void *data)
- {
-@@ -693,6 +698,11 @@ static int imx8mp_media_power_notifier(struct notifier_block *nb,
- 		regmap_set_bits(bc->regmap, LCDIF_ARCACHE_CTRL,
- 				FIELD_PREP(LCDIF_1_RD_HURRY, 7) |
- 				FIELD_PREP(LCDIF_0_RD_HURRY, 7));
-+		/* Same here for ISI */
-+		regmap_set_bits(bc->regmap, ISI_CACHE_CTRL,
-+				FIELD_PREP(ISI_V_WR_HURRY, 7) |
-+				FIELD_PREP(ISI_U_WR_HURRY, 7) |
-+				FIELD_PREP(ISI_Y_WR_HURRY, 7));
- 	}
+-	/* Remote core is not under control of Linux */
+-	if (dcfg->method == IMX_RPROC_NONE)
++	/* Remote core is not under control of Linux or it is managed by SCU API */
++	if (dcfg->method == IMX_RPROC_NONE || dcfg->method == IMX_RPROC_SCU_API)
+ 		return 0;
  
- 	return NOTIFY_OK;
+ 	priv->clk = devm_clk_get(dev, NULL);
 -- 
 2.39.5
 
