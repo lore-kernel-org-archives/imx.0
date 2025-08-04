@@ -1,189 +1,224 @@
-Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011013.outbound.protection.outlook.com [52.101.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CA113AD1C
-	for <imx@lists.linux.dev>; Mon,  4 Aug 2025 06:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.235
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754289116; cv=none; b=hzrCxByV4Av4Iw9EbHtnCtnhB6P067/ianhGlUiGeBhKEuyaiYeeiKyr7J2ARdF3yxXy6gQHd2IiW9zP+fBG2wZpcwYqmykGtnASBN/ldem4RwzwMVqsfHCjZRLOq/Q/ItNXR2wrCkWWl0afLgTHTokBaQlQpmtkZSjo4iP0eDE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754289116; c=relaxed/simple;
-	bh=GG99R7gLN4sGgR6J/q3H71APfiBbCI3EPW3gOJKxino=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OwqPjQkQrefBib5K6s7Iyq4Oa+SmhUCm19PeucHMPgwBj4shMO74E6I1KHPXf9dZ9oEq5R6TCnz1rGq1a2HyfSeWnzxM2IoHSr0naP/EsA1ALUIQFyOY0gIBDhK5zDOFLr9IUX3Kwf+3Nxan6ngZn0w6QT4T6+72XCgZxZ1AwPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eDvTaZk3; arc=none smtp.client-ip=217.70.178.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D13235341
+	for <imx@lists.linux.dev>; Mon,  4 Aug 2025 07:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754291539; cv=fail; b=d5wkn4vikpwltUg6V24isfI2ryQsaWwyuuj3yWhs/YKQBpofB0y8ibmWm3/UWHdm1zs3VhnbQwGlK9NfE4+BW1otjA23zZp8+5tqfqgkOV/TooaFq7SyLMmcvTbePFqjMNBc4VKhL1bclpdxqvH0vyC+2cfHsSdthGxdmqy+V9k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754291539; c=relaxed/simple;
+	bh=hSLaIKHpHYGwBdEB1VPrnKAB8vopRHrBkB7SkXWHbz0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=fOi0FEUCaUG7ebiyVj6DbMGtED1unNf/xLUdyzO8Vy14JQynqtLyUoq8y54+FgIiiD3QE9RzdPmMkAqArjhD8PNr5nq0DXyEPFRPW8Gk/dhN8jUpDGZ6cdPdpwkUSZ7jviHmOCHVbGvdQHmvDZ6bIr5AqIeX4SewQt2OQf7JrMk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=b+ZywwSi; arc=fail smtp.client-ip=52.101.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eDvTaZk3"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E239144281;
-	Mon,  4 Aug 2025 06:31:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1754289105;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gLDlLSD9fZLuz5Yso1GjOxmc4NefvSELVejvScgC8Ko=;
-	b=eDvTaZk3bkqgx1n26ovQ3mqqbNX48z5Xp6NQ1a7MgNuxqX8QJhrSPC/rmQaI8cPdTeWUVj
-	QtapNMe49PdRGEGnjJwPFju/rfQp2DnB3X5CcRau27QdUxQ3LrZEff5bL10NbtmKrnYqGI
-	PsgDXOxmYeZa39beHABjv6ByeKqoO9cwQzg3wOe7jcKE+Crdl/sLT6zMFeWSglChBiX+l1
-	/XfCBMx0wh62iVS/2RJmQ9AI/9o1hLJ9btsv2MkPtQ2jMWDi1EbBgE0gLk4dsRgqoRlENV
-	GiJZ2ju9VAVOs8cquXBs6ylBKq46ohHbekB6aQlPkgIkbkPhnIeErKS+PQTGEg==
-Date: Mon, 4 Aug 2025 08:31:36 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
- Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
- <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Philipp Zabel
- <p.zabel@pengutronix.de>, Hui Pu <Hui.Pu@gehealthcare.com>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Andrew Morton
- <akpm@linux-foundation.org>, Zijun Hu <quic_zijuhu@quicinc.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v2 0/9] drm/bridge: get/put the bridge returned by
- drm_bridge_get_next_bridge()
-Message-ID: <20250804083136.058353f9@booty>
-In-Reply-To: <1ebad5ca-26f3-4a5f-a812-8211129c764a@nxp.com>
-References: <20250801-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v2-0-888912b0be13@bootlin.com>
-	<1ebad5ca-26f3-4a5f-a812-8211129c764a@nxp.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="b+ZywwSi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NYfQGV/Ex4OUhl104nXFn/BFg3IwewuAg8V6oFVhMqufLpLnuEk8OvhsGCOZYBrxN+ZDiiwqWFGh8DLJu0ATq5iggVT5RMwEe9SUXqW4D9nDsWAKDKZ8zGGH0FmaKM9gHwTKpgP6w2TRENQYW3rrfyE9GcyWJS7SWU5InM7+eBCEqkLDq4RMD2/awLc1I3RkHDRbxBwmijL4eS6MvQezx9ElBfcOk4PW/y05V2dewrcfIxfZ/yF1XU1owZRJ8NpVaoBs1RJ0CzrOUachmDCYhU3+WFsQ359RzlwmLc1Nq7e436h2EWVGCbZbtLb7vykdZJ8E4HbvXEqOxvAd5ibG9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8hpbdWuKHbD35Ln+O69aaxlX/IZk7rNg5zMlIfMYyEU=;
+ b=K9pZ0T6vIuH41F/bWQmLUJP5pbbBTVYzTy1b4Dxgc/TBqLLqAAchTtlyTf02rB4bbgbJQ6QYpnJldLDUcF58sKmf4MCM0IL+XeKycRSPyLzMFz2KGPuhooIPjmFLNrlyOWhERVI3AvUqWNY+YduWQDtaxFRIkEYwz3NmPl7MSDcsb5twI03GaNpN+ZNjjmI7KSgdB1XbPJcZEBdPrjj17fR5GsUMqykzksCydqHHrJRgTRYWzhMN316JBldyGpZTZ02ymzI3tOJKGlCozmPkwCrVpBusVDkUbGuXEVz8ihKuYOI3W/LDIylIacYL1AH5zvyYOQpE4NOIkxd5aKuiTg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8hpbdWuKHbD35Ln+O69aaxlX/IZk7rNg5zMlIfMYyEU=;
+ b=b+ZywwSip0/pL4eWysJuz1DJt3idGbRiHDsKkqvrbZEXhaLcE8Q5yBxXvDWAWgnizCmKLzhK1zGUwimsoYQ97FrdXJDyAXauocaRPmXF/7lo+sh09eNEU67VUnBB6AjDtjNFAj8xPRFNkBTfydwIcgtd9IVUyzMuZdD+7LyW+MA0/cdaTGwAkTY/HMdDr34wSr2t+M1qxSsbb7SvPn0scnNIbfFEianl0edl0sjaKB40G6LNQhAF9iFf5oHFhdg8zcd4/uS7G+Ty6sF4R3dUubCG9JacpUkw1BNRv7QtFzfWC7JAqKK4noN1t3As2IYWEfzTSgCkWsX3RbuSlyslLw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM9PR04MB8487.eurprd04.prod.outlook.com (2603:10a6:20b:41a::6)
+ by DU0PR04MB9298.eurprd04.prod.outlook.com (2603:10a6:10:355::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Mon, 4 Aug
+ 2025 07:12:13 +0000
+Received: from AM9PR04MB8487.eurprd04.prod.outlook.com
+ ([fe80::6d7a:8d2:f020:455]) by AM9PR04MB8487.eurprd04.prod.outlook.com
+ ([fe80::6d7a:8d2:f020:455%5]) with mapi id 15.20.8989.018; Mon, 4 Aug 2025
+ 07:12:13 +0000
+Message-ID: <0973e6d1-2823-4bfb-be73-b532c6f86784@oss.nxp.com>
+Date: Mon, 4 Aug 2025 10:12:08 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 10/12] nvmem: s32g2_siul2: add NVMEM driver for SoC
+ information
+To: Krzysztof Kozlowski <krzk@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>, krzk+dt@kernel.org,
+ Conor Dooley <conor+dt@kernel.org>, Chester Lin <chester62515@gmail.com>,
+ Matthias Brugger <mbrugger@suse.com>,
+ Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>,
+ Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, aisheng.dong@nxp.com,
+ Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Srinivas Kandagatla <srini@kernel.org>
+Cc: "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, NXP S32 Linux Team <s32@nxp.com>,
+ Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
+ Enric Balletbo <eballetb@redhat.com>, echanude@redhat.com,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev,
+ Vincent Guittot <vincent.guittot@linaro.org>
+References: <20250710142038.1986052-1-andrei.stefanescu@oss.nxp.com>
+ <20250710142038.1986052-11-andrei.stefanescu@oss.nxp.com>
+ <9d004ea4-0bb2-4a21-8501-82ecf3482c3e@app.fastmail.com>
+ <fa24772b-0038-4f51-87c6-15b810d8d454@oss.nxp.com>
+ <53bc13b9-365e-4212-84f9-85e67c23e067@oss.nxp.com>
+ <ed072356-6881-4466-a0c2-0f55b72f92c8@kernel.org>
+ <7902bac4-9f52-443c-995f-a15189102478@kernel.org>
+Content-Language: en-US
+From: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+In-Reply-To: <7902bac4-9f52-443c-995f-a15189102478@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR02CA0149.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28d::16) To AM9PR04MB8487.eurprd04.prod.outlook.com
+ (2603:10a6:20b:41a::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudduheekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvdegjeejveehhfeigffftefhtdeiffehfeevtdegkeetjefftdevudegiefhvdeknecuffhomhgrihhnpehfrhgvvgguvghskhhtohhprdhorhhgpdhkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepfeejrdduiedurdekiedrieehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepfeejrdduiedurdekiedrieehpdhhvghlohepsghoohhthidpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvkedprhgtphhtthhopehvihgtthhorhdrlhhiuhesnhigphdrtghomhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrghdprhgtphhtthhopehrfhhoshhssehkvghrn
- hgvlhdrohhrghdprhgtphhtthhopefnrghurhgvnhhtrdhpihhntghhrghrthesihguvggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohepjhhonhgrsheskhifihgsohhordhsvgdprhgtphhtthhopehjvghrnhgvjhdrshhkrhgrsggvtgesghhmrghilhdrtghomhdprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8487:EE_|DU0PR04MB9298:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e48ebb5-628c-4782-94e3-08ddd3263bfa
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|19092799006|376014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NE1KcEltR0t1UXMrUkRoY045NTkvR3QxZlBCMGduMnVodEltdU5vMTdJMEpN?=
+ =?utf-8?B?OXlGWWp1bHB4RFlOQk5SL252RlI5UlVEMHVIOGtsVUpSV2pYRlFnTlo5WndB?=
+ =?utf-8?B?bktJVi9ncmVNaWFxQkJUQ3J1dDJDTXBaNzRRMk1EazhQbzNhcW12MjZJZjda?=
+ =?utf-8?B?d1Z4U3ZuWmJMU05tS3l3d1VXUVorTzJEWkhWUks1N1NLOFNhYWc2N0RUNGkw?=
+ =?utf-8?B?Ylp4ZWdObWhvdEVjTHZYc21CaTkrUmFTYTVqY0laYmZJMXdweUZFQ3p6SkVZ?=
+ =?utf-8?B?NGdld05VVSs3VEpFTm9iSW02eFFRbWZhYjFaNjcxNXplcDlKY1Nlek5ya2xE?=
+ =?utf-8?B?Z0ZLRG9JRVVwT09xUFliUVgvSHY1L3hjY0p0VGhFckR2OG4wOGY5MzlZajl2?=
+ =?utf-8?B?bzN1a1B6T2ZncnFub1hjbzVMUFplU0FmZ0hWc2hoZFJaTS9rUHJ1QUl5MHRZ?=
+ =?utf-8?B?b09NcURKckZRWmZsNEFYTTEzS1dLeVowcGF2VVBYcGpINjJ2Lzk2MWhFZGdR?=
+ =?utf-8?B?dnBnblIrSklZdmFEZk5JUlY2UHZhVGRpZ0IxaXZicE9VOVppeUpHSC9rZWdK?=
+ =?utf-8?B?eCtqWHdCMHptaWxqN2Z5cE16cFNQS2NyOXFGTi9tQzI3bWhhd1YyL0pYUVc3?=
+ =?utf-8?B?RWEvTjVtUWpFL001b0MzeFZ2M05OQ2Z1dXNPTVpDU2lyR0xOSlZFWm1jUjdZ?=
+ =?utf-8?B?aGlaZUVKK3BZaUFHMkNoSVpGU3VnRU5VRnI3M1g5WTFhNUVQWGFVTzY2dHZG?=
+ =?utf-8?B?a3pHRkszU2k1VC9ranJWVm16RGFRRnkyNjE0ckJ6a0VDWWhCS0tmOGRvTWJC?=
+ =?utf-8?B?Mi9qZCsxZzlXZGxtV25iTU9SQnJKKy9iUXA2NVFaWU56WEd2MStuY25NSEdQ?=
+ =?utf-8?B?K0NpZ2UrZTFjZTVValpBcFBXamRPejd1Z09BZE11SEhxR09pRTFDVHI4SmE2?=
+ =?utf-8?B?cW1aamlEejZJWHNkR3Nsc2ViMUtjWC9sN0JlMHRQb05jU01aS015SXB0b1VK?=
+ =?utf-8?B?blhycmR0UlgrR1JwaW8yYUZ6c3VIaGUvdjduSlRqYlZoa3BxYS9Mc0FPN2Q3?=
+ =?utf-8?B?dzVoeXV6SGI4SExOdFJIOVNnQ1dkdllkbnc0N0xRNDJiaURTMFdzWkJxOTRW?=
+ =?utf-8?B?WUxnbTMxT1lvZjNSZG9jZlJtQzFqUHJ4dlMyNXRmb3ZSWWRGa1lpbmR5QndV?=
+ =?utf-8?B?eXJYZHE1UEJWOWZaS0pNczhSdDRrMUVXR09pMEJ3Q1B3ZFN0NVNTTTY5Q2N6?=
+ =?utf-8?B?amRsZmNJZys1OTlVTTJVL09SMGsxbHRjc1pkM1AyTHI4NVlNUHZHOFduMlhY?=
+ =?utf-8?B?YVd4S25tSk4vYmFSSFl3RlNub3hFWkxBcWV2T2FtbDJONGtMVUVMbm1KQ2pD?=
+ =?utf-8?B?MDZsSkxIams2UFhKL29tY3F6cExBMDZKYysrbkZhc1lyQ2pqUXdha3hKaE5x?=
+ =?utf-8?B?dURQeTljZGh5bDhET21FNmlwYjErVUY4c1hHVVdmYWx3OUZqY0UxSDlveE9h?=
+ =?utf-8?B?Ni9ldUJtQituSTFrWS94ZlRsUkN4T2VNbUEzVGlWQUUvRElnNk56NlJsMVJp?=
+ =?utf-8?B?U0tGcHpYbnU2ZGxReUl1eDJUNmhnMmhRZGhORFNFQ1dJY05CMXJhcWR3Tk5F?=
+ =?utf-8?B?b1dSNE94d0hNY3NtUnlUcWNUTXg1RmNOVWhkc0hOOW1QRjdGalRsK0h5VmRL?=
+ =?utf-8?B?VXJpOGZKMkZJcWJ0RWJzZFRuTWhzUUZzKzdjRXRCY0ZGTGRpNWdvbFBiZ1VP?=
+ =?utf-8?B?dEtRaGJpZlJWaGkzUTRqSHRxQzBTcWhEVlhMc01UTFVJL3ZhbzJCVWdQRlZk?=
+ =?utf-8?B?cUNoZDIwUnBWRmhLMWVDaThKenhleWg5UE11NWovR3dQMVhTMkIwMi8vNlNK?=
+ =?utf-8?B?VVZFc3NsMHY2bHNHVVYzODg0MEpiMW5TVjhWOHdlVWpMRTJVNVN4QytnUkdH?=
+ =?utf-8?B?Smlud3YrOWErT1ZkK2t3VTl0RXFpRkZRQVFjaGdYL0tLcUErVklxSW5FRkEw?=
+ =?utf-8?B?VzFJTm5kQU1nPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8487.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(19092799006)(376014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UnhvNjQ5SldkTyt0U3Q4bENBNnF2bnp6b2RYSURhMHpNYlN0VkhPb0hINkNK?=
+ =?utf-8?B?bndmbHFVSXNsTEJBZ2hpd3dpNzdMTVp2bDFMM2RJVjNkT1JlMTRzNlQ1RDF5?=
+ =?utf-8?B?Y0theS9YeWJKWlFoYWpGbUNreklPSjc5ay93YmZ6M2lTNmFiK3JMbjhxbTBm?=
+ =?utf-8?B?VzNQQmkxNG5EYTZmTTVkMGx1T1dock5GUEhFNnI2VHVJNzlsWGdZRTV3M1hF?=
+ =?utf-8?B?eUF2MXJIallzdVk2SGpKUUJLRDlZSHF4RTd2VldmdiswREZCdFQwcll3Tmhm?=
+ =?utf-8?B?ODBJemhnSU9hUU9iN2JROStwUlRBcUxmeDY2ZVdlZWhyeTZsakFROWtGRHVz?=
+ =?utf-8?B?djRHV3NKSkQ0bFNzbWxaV1VqNkVWeFI3VHFvMjhCVW9wOFJCc1RCYXhEaDZq?=
+ =?utf-8?B?dFB4VDQrTXBZRmVkTVpQckNPSEwxcVFpUHViazVRMGJ4RTRqY2lOaVpXU1dI?=
+ =?utf-8?B?c0thdlIxSDU1YjNmTXRZdCt4MGVrdTBaSXIwWVNkVGs0NHJXQVNScWRBVHh6?=
+ =?utf-8?B?QXlCdm5uS1UwZWNRSEdxNEdCUC9EQmllT0gvck45SDR1OW9MYVNudWVobm5k?=
+ =?utf-8?B?Mk9pWkFFVXhBMkowTUVYd2lNamJRMVlzeUtjK2tmVmtVU0FWbGQ0K1VSMERk?=
+ =?utf-8?B?TjZUcmhOTTdPeUF5alJkamk0dmVHd0N3emdaMnFmQUk0NkFtR2RnbTNUU1Nv?=
+ =?utf-8?B?aEsyejZ6NDJ4NGFWSUZSQ2Z5eVNreE1vT21KVXY4eE5lRlgzMTZjbDhsUzZY?=
+ =?utf-8?B?aEQxQXB3eE5TaWdzd1d0VlJtaTN6VjltWW14TkQxMDV1b0ltbnJySmNoNlEv?=
+ =?utf-8?B?NHFPSXd3MkdMMWZObGRJSklKL3E4dWhSNWs5OXl1WjB3UHNPVFdjQ21BbExa?=
+ =?utf-8?B?cE5RMU9iMkd6R1R2YjRQVDlzaWVOUmdaS004RVhmS0pKeUJUbldyTVRrZjl5?=
+ =?utf-8?B?S1I5dGl2SlN0SER1RzZjZjYzSzFycVgzeXVMcUpBYVdIMi9qMVdvOG1SMUlr?=
+ =?utf-8?B?NHpHa3RPbW5xeXE4Y3ovV01JWkxHWmF4eFMydkFMWHRHbGwya1FKT25YNDlh?=
+ =?utf-8?B?VUtHU0xRVWNvdnlzQUU4N1h5cTJoc29QdWFyVUhnWG05enZmMUtzSFdBTkFo?=
+ =?utf-8?B?UnB5SlU4ZTBMTkVSM3dmYVVsRHkyUUJFOFRZRHQ2L2RKaDloMkhPcU5ER3Jo?=
+ =?utf-8?B?dXZIckR0NXdyWUE2SFZNM1BaakUwcHlvWGM2NFVjY09MWnNtbkhnNENzVVFt?=
+ =?utf-8?B?NmFvVmNpa2Z1N09XSGZjRU55NEJiUytSMThNM1BvajRDVVVCTlhlSXpMckNj?=
+ =?utf-8?B?RFN6c2hYVmNibWVpRjI5enF4SmFuc08rekpmaElDOEtIdURscXhLS1BFYWV5?=
+ =?utf-8?B?YTN6TUVyR0ltVkZ5S0FMd3JZbkpIODduWFRPT1E2bFQySWNCMGFQODh4TTBD?=
+ =?utf-8?B?ZGZjNi9XSDJOZE5BbzRsYktPQngySDg2REhHMmE5ZDM2MnZXRE0wWnFqWldh?=
+ =?utf-8?B?RWNxbW9PSEViL2U0N2Z2WVpMN0dtdEs1SzNsRGRWWnMrZlZZTXpZVVhvUGlv?=
+ =?utf-8?B?UUViYlBTWG03OGFXYTFScFpQc0VETGV1MzRncytZcE54R3RuTGRON0V0d3Vp?=
+ =?utf-8?B?Z0pCZm9reEc1TGEySm5kR2Fyd3NnRVAwOUFaVk1mVmRnS1lDU0E1WmU1bXZO?=
+ =?utf-8?B?cVhKdDk2WkN2N0lLRWRFRFJNcnlFUjBrZ2doRjIveGJ3WEowSEt2dEYwU1g0?=
+ =?utf-8?B?M01lY2RIa2p2cENoaWNUN01Yc3o2dzBuTkN3WWZFR21JSXordVN5NVg3ckxj?=
+ =?utf-8?B?b25kaHQ0SFdlT1V0MkwrUGFSWGY4RVFtY3pDSGI1R25McUpzRnA3ejZQOW5L?=
+ =?utf-8?B?SVJ4S3ZETllNT0FBTzVVWnNYRXhRdFAzSUxSYmNScHdEMDVlYXBsanhkTXk4?=
+ =?utf-8?B?YjFsTkJHNnJqQ2xZdXVVNTFHaWwyNytpWEs3QUNuRTRNODErb3ZZQXNQbDBv?=
+ =?utf-8?B?VGRpaE9HZlVPd3ViSWRmYldWS2QvZXIyWUk5Q0ZhSTFXNW4wN01UM0tOWnJh?=
+ =?utf-8?B?dTExUUxBVlZ0NUp3K2NMVlYrWEo1L2Z5L0xvSGpUbldCajJ6QnZRMS9Ic1A2?=
+ =?utf-8?B?L1ZOR3FONHplSHdodUc2VWZPTDJ1VFVyY2Jzck1aMEdnNTlZV093QmFVbWhS?=
+ =?utf-8?B?VFE9PQ==?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e48ebb5-628c-4782-94e3-08ddd3263bfa
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8487.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2025 07:12:13.0147
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3r/NKn0WwBOW7Wvu+3UAK/QyARBTqbtZDGTOgVpZGSKiWDVZP/nifZ8y2iMdwnuuHCNeiT9Lb1+1zsTed1HuItSiadutuk0J0mfQA2pPh94=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9298
 
-Hello Liu,
+Hi Krzysztof,
 
-thanks for having reviewed this series.
+Thank you for the quick response!
+On 02/08/2025 11:32, Krzysztof Kozlowski wrote:
+> On 02/08/2025 10:28, Krzysztof Kozlowski wrote:
+>> On 01/08/2025 16:36, Andrei Stefanescu wrote:
+>>> Apart from the proposed NVMEM driver, there is also an option of exporting
+>>> a syscon regmap for the registers which provide information about the SoC.
+>>>
+>>> I have seen that typically NVMEM drivers export information read from fuses
+>>> but I think having a NVMEM driver is nicer way to access the information
+>>> instead of using a syscon regmap and manually extracting the needed bits. 
+>>
+>>
+>> nvmem is not a syscon. Mixing these two means device is something
+>> completely else.
 
-On Mon, 4 Aug 2025 12:02:48 +0800
-Liu Ying <victor.liu@nxp.com> wrote:
+Yes, I don't want to mix them. The driver will either be a NVMEM driver or
+a syscon. These registers are read-only. I suggested NVMEM because it's a
+an abstraction layer which makes it easier for drivers which want to use
+that information without knowing where to actually read it i.e. reg address,
+bit mask.
 
-> Hi Luca,
->=20
-> On 08/01/2025, Luca Ceresoli wrote:
-> > Note: the cover in v1 was mentioning by mistake
-> > drm_bridge_get_last_bridge() instead of drm_bridge_get_next_bridge().
-> >                ^^^^
-> >=20
-> > This series adds drm_bridge_get/put() calls for DRM bridges returned by
-> > drm_bridge_get_next_bridge().
-> >=20
-> > This is part of the work towards removal of bridges from a still existi=
-ng
-> > DRM pipeline without use-after-free. The grand plan was discussed in [1=
-].
-> > Here's the work breakdown (=E2=9E=9C marks the current series):
-> >=20
-> >  1. =E2=9E=9C add refcounting to DRM bridges (struct drm_bridge)
-> >     (based on devm_drm_bridge_alloc() [0])
-> >     A. =E2=9C=94 add new alloc API and refcounting (in v6.16-rc1)
-> >     B. =E2=9C=94 convert all bridge drivers to new API (now in drm-misc=
--next)
-> >     C. =E2=9C=94 kunit tests (now in drm-misc-next)
-> >     D. =E2=9C=94 add get/put to drm_bridge_add/remove() + attach/detach=
-()
-> >          and warn on old allocation pattern (now in drm-misc-next)
-> >     E. =E2=9E=9C add get/put on drm_bridge accessors
-> >        1. =E2=9C=94 drm_bridge_chain_get_first_bridge() + add a cleanup=
- action
-> >        2. =E2=9C=94 drm_bridge_get_prev_bridge()
-> >        3. =E2=9E=9C drm_bridge_get_next_bridge()
-> >        4. =E2=80=A6 drm_for_each_bridge_in_chain()
-> >        5. drm_bridge_connector_init
-> >        6. of_drm_find_bridge
-> >        7. drm_of_find_panel_or_bridge, *_of_get_bridge
-> >     F. debugfs improvements
-> >  2. handle gracefully atomic updates during bridge removal
-> >  3. =E2=80=A6 avoid DSI host drivers to have dangling pointers to DSI d=
-evices
-> >  4. finish the hotplug bridge work, removing the "always-disconnected"
-> >     connector, moving code to the core and potentially removing the
-> >     hotplug-bridge itself (this needs to be clarified as points 1-3 are
-> >     developed)
-> >=20
-> > There are various users of drm_bridge_get_next_bridge() which cannot be
-> > converted easily. Luckily they are not really looking for the next brid=
-ge,
-> > but for something else, such as getting the last bridge in the encoder
-> > chain or checking whether a bridge is the last in the encoder chain. So
-> > introduce better functions for those users and use them instead of
-> > drm_bridge_get_next_bridge(), making the code cleaner at the same time.
-> >=20
-> > Finally add a drm_bridge_get() to drm_bridge_get_next_bridge() and
-> > drm_bridge_put() to the remaining, and legitimate, calls.
-> >=20
-> > [0] https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/0cc6aadd7fc=
-1e629b715ea3d1ba537ef2da95eec
-> > [1] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2=
-c9c3058@bootlin.com/t/#u
-> >=20
-> > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > ---
-> > Changes in v2:
-> > - Use cleanup action in patches 4, 8 and 9
-> > - Fix: replace get_last -> get_next in cover
-> > - Link to v1: https://lore.kernel.org/r/20250709-drm-bridge-alloc-getpu=
-t-drm_bridge_get_next_bridge-v1-0-48920b9cf369@bootlin.com
-> >=20
-> > ---
-> > Luca Ceresoli (9):
-> >       list: add list_last_entry_or_null()
-> >       drm/bridge: add drm_bridge_chain_get_last_bridge()
-> >       drm/bridge: imx93-mipi-dsi: use drm_bridge_chain_get_last_bridge()
-> >       drm/omapdrm: use drm_bridge_chain_get_last_bridge()
-> >       drm/bridge: add drm_bridge_is_last()
-> >       drm/display: bridge_connector: use drm_bridge_is_last()
-> >       drm/bridge: get the bridge returned by drm_bridge_get_next_bridge=
-()
-> >       drm/bridge: put the bridge returned by drm_bridge_get_next_bridge=
-()
-> >       drm/imx: parallel-display: put the bridge returned by drm_bridge_=
-get_next_bridge()
-> >=20
-> >  drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c    | 12 ++++------
-> >  drivers/gpu/drm/display/drm_bridge_connector.c |  5 ++--
-> >  drivers/gpu/drm/drm_bridge.c                   |  3 +--
-> >  drivers/gpu/drm/imx/ipuv3/parallel-display.c   |  4 ++--
-> >  drivers/gpu/drm/omapdrm/omap_drv.c             |  6 ++---
-> >  include/drm/drm_bridge.h                       | 32 ++++++++++++++++++=
-+++++++-
-> >  include/linux/list.h                           | 14 +++++++++++
-> >  7 files changed, 57 insertions(+), 19 deletions(-) =20
->=20
-> Looks like this one needs to be handled by this patch series?
->=20
-> drivers/gpu/drm/omapdrm/omap_encoder.c:101:
-> bridge =3D drm_bridge_get_next_bridge(bridge)) {
+What do think? Which one would be better? Do you have other suggestions?
 
-This is handled in a better way in a separate series, converting the
-for_each loops around the bridges in an encoder chain:
+Best regards,
+Andrei
 
-https://lore.kernel.org/all/20250723-drm-bridge-alloc-getput-for_each_bridg=
-e-v1-9-be8f4ae006e9@bootlin.com/
+> 
+> 
+> ... and yes, I am aware that three FSL/NXP bindings use nvmem as syscon
+> already. People are mixing hardware description (nvmem) with some
+> purpose for drivers (syscon) forgetting that syscon are miscellaneous
+> SoC internal registers, not non-volatile memory.
+> 
+> Best regards,
+> Krzysztof
 
-Luca
-
---=20
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
