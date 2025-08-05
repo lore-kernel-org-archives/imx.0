@@ -1,238 +1,119 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E84D238C16
-	for <imx@lists.linux.dev>; Tue,  5 Aug 2025 14:05:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0781025D1E5;
+	Tue,  5 Aug 2025 14:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754402712; cv=none; b=jjOttH0vlSg+1xRltz9NbSfF7qlsfOf5NiPgNZ/pxcLLqK595XLFwSOtRwS5HpMuXstREHe+1IUcrSRK+xSlKq13v8eyWy8UOLIOxPCKmq53EfVX0mwPJ6kcL9Ttogi5jF1BRPGGb6ri0aaVANxelQIIJRYQ7pJR3hMrJQfYcCk=
+	t=1754405474; cv=none; b=LMGeNDiIOZDV5om+x1mtVLnaGO4yitQE1r7escy+44qBT4I7BxSNCaVjIIpbG+oCNe/8FdDfsJ2JCo5nSlZAXCXiS9STTpiB8WWbhgPLHJTDBFVJATOTTbejmExkjFsq6Gxe+o1u60QuiDfiMGRRkvbq2fEE4Qr0t4/bvzYkfcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754402712; c=relaxed/simple;
-	bh=VwwDGPh3ds9A+awGPqwqcnNh6Gh4WFl0HqGJuWyvkkU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RG+ullAbLD/9PR0EQiNaqceZdbXy5H/6m94JdtVw0Le/sYvuiIcraH3O2ySzY3+vJwuO7FvY1CX1kdy0efcTMtkgjZ84cNeahtNP9IPzoDHd28LH586iXINtFggwgBl7hK5CDqe5GUZbcvRf0G/IjRT105+nIc9lF+9E590m3xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JswbVhN9; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1754405474; c=relaxed/simple;
+	bh=6JJJUKSGwNvzbye1CXhMaN2YPY31Ne0NqIPIES62I2I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ji2f1dkh3GfOn6RKkOqq0TkZp+u/YU3egprrmLslJfw5dspCrTfmeQjW1NlhYHGmfjcZV7xAdHjTBRhj1zjmhQA3Js5jCPRQ6HLApP9uNyWB0rD8YKIUpWZcV3fRnwfTiRRaR0Fu63vPQc5wAX8zKdRM5IuaLFAp5vlPScPx81o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OLVJi5ke; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JswbVhN9"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5757D22N003772
-	for <imx@lists.linux.dev>; Tue, 5 Aug 2025 14:05:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	FUcLnureUr1s/7YsNTnvW5Csv2CIZeOY1lQ56p5/Cj8=; b=JswbVhN9EiO/3bXB
-	KFFT2FK5zmrdDsAM9Z4O6z5zh7QsngVwmJQyJVPLIRQZy9tXuLlXFzx5q8QeK24Z
-	UuASYCo8lC5r5kPQilhktpk99gMDFXxhv/dT55dfFGKBCQXaaStS6SqslNBHs+Pk
-	6lpCnGjbmxM9hWGEUq1bYfANmhL1k2BCrodCT2z4jODPS9GZvl5Ka+gigTeBZa4j
-	hrLEdMvf9GRA+didrRj1V7EI/VkbiYXs7SbD328oyEfQp3RkEeUY0iTi8A1CYyOi
-	HGtkEWfS1GX9/TR+jdWzEglaT9vngedtZgPPmRClZ0L8g80N1lRCZfR6JAq2vIX7
-	73cJtw==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4898cjryeh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 05 Aug 2025 14:05:09 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7e802ee0d2aso14090285a.1
-        for <imx@lists.linux.dev>; Tue, 05 Aug 2025 07:05:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754402707; x=1755007507;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FUcLnureUr1s/7YsNTnvW5Csv2CIZeOY1lQ56p5/Cj8=;
-        b=QnmjpK4EoPEuxZTy2vlCwH0fyV76wwpxf8QFEOHChrHSKzdEy1SalipVZ6apzXtQSs
-         75h3ljzbvNUvoHgGyqUZUegY+yILfW8fJTJz3I02B0osarowvGnmGZN28HPNjGXuQ9cO
-         liX5oc1jAlY07YhlevIm5IWqzYoX9kodtheaTijZPMNIMDQRTAHNKkHw0yEBvK51Z7fQ
-         SWRXo08aGgNf1kB8OmvMtnjRk4BcFhz60sMYjxsUVNqkVtJ3qBNz3ln84fqnOT8df8Ef
-         ZJHqp0MWw63llqRMeHA6si+qsu46hHg5O+7JSIWgmrpIgoNKizlVpzoW04vaWb7EtLpA
-         YTbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX1XMSeTpSJSnLigXue+NGiL4WVEDhykNK2N3jmO2gtLWQXLs2LSqSpGcb4jC7HkOtFAJc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxrM+BJ+UNB3SMSsZikeMBFFoNTS+jN7RW29X37vliEU34nHpZ0
-	3d+Sq4MCLXit2cnUZpNieAHczJwTVnZr5OhjLxO9UkoqRrYKwT2Aivez/Gq3l+/wvZuEaKLC8B5
-	dTsln0DYtRR90lrkKo8AfoL9pX5VxhuzgQ2Hzkd2IX1iW4+x0ro3KOpY=
-X-Gm-Gg: ASbGncvM6qYk/n+K/cufiIthNcTyrdzL22xYDcufa1osD7Ey0J9uj3v3RNH6QZZ8bcH
-	tvm3NeiFlkxUxufSxBAOIztCReAj+mtlsiqYDNUbnHRMjADJIxvAH+7MIer4jdxnIH2ndkW+JJG
-	dEw1FBWoPy4zHBV58XURD+/S+ZqNqgQSTMy00yTtImqE9gsljDCHug+QAtHpbl21M14I/b9bzZm
-	ecKAbRzK4aM1RqCAQwBA0KGDqz3BtGL9ysaxoIIWmI9PXl2IOATvRqHfc4MWoS8KnDWTPNnCkYi
-	NmFj4YI8/jTCMu9/PC5fZRsy+Qpz+CrsqvxeFjMbt4PeSyVpC9VQ4rjyZg+qTr1MzKsRmBTNHtu
-	10m3PUrkBLtVlvgxyag==
-X-Received: by 2002:a05:620a:2a14:b0:7e7:fbbe:a193 with SMTP id af79cd13be357-7e7fbbea796mr612201385a.3.1754402707000;
-        Tue, 05 Aug 2025 07:05:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGu0CtTCnSeovH7oZZIpOsR6SihrS+IeJBeYEWKx2ZbtzZuol650T7aTGGDwlvwPzoxkQZS7A==
-X-Received: by 2002:a05:620a:2a14:b0:7e7:fbbe:a193 with SMTP id af79cd13be357-7e7fbbea796mr612187885a.3.1754402706081;
-        Tue, 05 Aug 2025 07:05:06 -0700 (PDT)
-Received: from [192.168.43.16] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8f17829sm8316020a12.19.2025.08.05.07.04.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 07:05:05 -0700 (PDT)
-Message-ID: <96cf6022-ef69-4749-88b0-e18a07bb8427@oss.qualcomm.com>
-Date: Tue, 5 Aug 2025 16:04:58 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OLVJi5ke"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754405473; x=1785941473;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6JJJUKSGwNvzbye1CXhMaN2YPY31Ne0NqIPIES62I2I=;
+  b=OLVJi5kessqO2IwWmkmbAgGKWQoCMSPRy+jgQKWtaycxiOHX77dNQ/27
+   0yR8WfpeHRec7znvl7LHSkvitQlUYgCsDaK7w0V7gTLEHOd2P3om1P94l
+   HNB41yL7apPDDT7Uvh/DhduWq1g5oxFj0MMdnFyyJCja237jmIqLt1xNr
+   pK1D/Wgo4wD+f5EagoBLn1b+n535NiiBvcoyPycglEU4fAUv2Hrgbq7iP
+   pKV3wsNUJzjoK38TfRdC7OU9u5YAmbe8S4PRwVvhWXR27/91MK9eCl88S
+   k5PaS1j9c0JXKvR3kRx3ky+J80PsTdIWcKn0IEMP8LNZqi3531ijmpB/T
+   g==;
+X-CSE-ConnectionGUID: aCHKITPkR86TQ62+gVopeA==
+X-CSE-MsgGUID: pIkv2C2PSgGbH+EG5euDIw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11513"; a="56780805"
+X-IronPort-AV: E=Sophos;i="6.17,265,1747724400"; 
+   d="scan'208";a="56780805"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 07:51:12 -0700
+X-CSE-ConnectionGUID: dg9Yxn2AQQmm7J+UhiEFxg==
+X-CSE-MsgGUID: WnuoX+2FRrmneZllg/7wMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,265,1747724400"; 
+   d="scan'208";a="195476429"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 05 Aug 2025 07:51:05 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ujJ0E-0000d8-1a;
+	Tue, 05 Aug 2025 14:51:00 +0000
+Date: Tue, 5 Aug 2025 22:50:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org, rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+	jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org,
+	cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	victor.liu@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de,
+	devicetree@vger.kernel.org, l.stach@pengutronix.de
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v3 5/6] drm/bridge: imx: add driver for HDMI TX Parallel
+ Audio Interface
+Message-ID: <202508052225.u407ulE0-lkp@intel.com>
+References: <20250804104722.601440-6-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 2/6] dmaengine: Make of_dma_request_slave_channel pass
- a cookie to of_xlate
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Frank Li <Frank.li@nxp.com>, Konrad Dybcio <konradybcio@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>, Sven Peter <sven@kernel.org>,
-        Janne Grunau <j@jannau.net>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Neal Gompa <neal@gompa.dev>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-        Viresh Kumar <vireshk@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Taichi Sugaya <sugaya.taichi@socionext.com>,
-        Takao Orito <orito.takao@socionext.com>,
-        =?UTF-8?Q?Andreas_F=C3=A4rber?=
- <afaerber@suse.de>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Patrice Chotard <patrice.chotard@foss.st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        =?UTF-8?Q?Am=C3=A9lie_Delaunay?= <amelie.delaunay@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Chen-Yu Tsai
- <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Laxman Dewangan
- <ldewangan@nvidia.com>,
-        Jon Hunter <jonathanh@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>,
-        Saravana Kannan <saravanak@google.com>,
-        =?UTF-8?Q?Martin_Povi=C5=A1er?= <povik+lin@cutebit.org>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-        Viken Dadhaniya <quic_vdadhani@quicinc.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Krzysztof Kozlowski
- <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        imx@lists.linux.dev, linux-actions@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
-        linux-tegra@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-sound@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-spi@vger.kernel.org
-References: <20250730-topic-dma_genise_cookie-v1-0-b505c1238f9f@oss.qualcomm.com>
- <20250730-topic-dma_genise_cookie-v1-2-b505c1238f9f@oss.qualcomm.com>
- <aIpKz495WI1SJTeB@lizhi-Precision-Tower-5810>
- <20250730180417.GC21430@pendragon.ideasonboard.com>
- <aIpmgpXME1BmThxU@lizhi-Precision-Tower-5810>
- <20250801120007.GB4906@pendragon.ideasonboard.com>
- <0c2cc631-21fd-41fd-9293-fd86dd09a2d2@oss.qualcomm.com>
- <20250804235140.GB12087@pendragon.ideasonboard.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250804235140.GB12087@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=MNBgmNZl c=1 sm=1 tr=0 ts=68920f95 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=IUwAV-ZVHCOG9dU_XxAA:9
- a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-ORIG-GUID: _VYNzjQ6NA0FgtDxi65I0s_He61FohTQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA1MDEwMiBTYWx0ZWRfXw95Zb7MBC5dM
- PEtLpoR9EI/TqVsA5+kj3Peem6B4Vj1buI7Gm4pHkMJ256NLdqrQ/uxemnMjtchDnzVa44vLDG1
- L+3JEz43HbWd5cP8KgQ/OTBwKtgxO2+h9Zsp0wgEVJRVNx7vF+iR+8BD0Z7JciZ5gTi4KQvQ9Of
- UYPnZMyGIGynlTt37/6jHPXw/hkMrOsh339XEkuQsaeLvjOqrnhgUC0eR1cTX2SlqQaYSzPLcH3
- XAC2OcQ7xnO+ZHm7sVW7qRiCh0fsyfOY29hkhrMFl29qRkezR5F5ivXkC7nNRTp8xGQHBIw4OzE
- jcmTaswvzYZKxJIWU7VeKgdIO7BOCtuoYq150lLCEgTwwBqr/vy2/elXY9PUh5fBEZC8CVti4Pb
- deqNsgr9ZlA2rHfzKjsQNVPGB1Pt/A/rH4JgvCLYuiOFH5Gfhj1bXZpE369P8juCZg9/qwTk
-X-Proofpoint-GUID: _VYNzjQ6NA0FgtDxi65I0s_He61FohTQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-05_04,2025-08-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 suspectscore=0
- spamscore=0 mlxscore=0 priorityscore=1501 clxscore=1015 adultscore=0
- lowpriorityscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2508050102
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250804104722.601440-6-shengjiu.wang@nxp.com>
 
-On 8/5/25 1:51 AM, Laurent Pinchart wrote:
-> On Sat, Aug 02, 2025 at 02:37:54PM +0200, Konrad Dybcio wrote:
->> On 8/1/25 2:00 PM, Laurent Pinchart wrote:
->>> On Wed, Jul 30, 2025 at 02:37:54PM -0400, Frank Li wrote:
->>>> On Wed, Jul 30, 2025 at 09:04:17PM +0300, Laurent Pinchart wrote:
->>>>> On Wed, Jul 30, 2025 at 12:39:43PM -0400, Frank Li wrote:
->>>>>> On Wed, Jul 30, 2025 at 11:33:29AM +0200, Konrad Dybcio wrote:
->>>>>>> From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->>>>>>>
->>>>>>> The DMA subsystem attempts to make it theoretically possible to pair
->>>>>>> any DMA block with any user. While that's convenient from a
->>>>>>> codebase sanity perspective, some blocks are more intertwined.
->>>>>>>
->>>>>>> One such case is the Qualcomm GENI, where each wrapper contains a
->>>>>>> number of Serial Engine instances, each one of which can be programmed
->>>>>>> to support a different protocol (such as I2C, I3C, SPI, UART, etc.).
->>>>>>>
->>>>>>> The GPI DMA it's designed together with, needs to receive the ID of the
->>>>>>> protocol that's in use, to adjust its behavior accordingly. Currently,
->>>>>>> that's done through passing that ID through device tree, with each
->>>>>>> Serial Engine expressed NUM_PROTOCOL times, resulting in terrible
->>>>>>> dt-bindings that are full of useless copypasta.
->>>>>>>
->>>>>>> In a step to cut down on that, let the DMA user give the engine driver
->>>>>>> a hint at request time.
->>>>>>>
->>>>>>> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
->>>>>>> ---
+Hi Shengjiu,
 
-[...]
+kernel test robot noticed the following build errors:
 
->> So.. do you folks want me to alter the patch in any way?
-> 
-> I think the runtime PM issue is orthogonal to the problem this series
-> addresses. It can be addressed separately.
-> 
-> That being said, I'm not a big fan of passing a void pointer to
-> .of_xlate() to carry device-specific information, in a device-specific
-> format. This seems prone to mismatch between clients and DMA engines.
-> .of_xlate() also seems the wrong place to do this. It would be cleaner
-> if we could use another operation, such as dmaengine_slave_config() for
-> instance.
+[auto build test ERROR on shawnguo/for-next]
+[also build test ERROR on robh/for-next tiwai-sound/for-next tiwai-sound/for-linus linus/master v6.16 next-20250805]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Right, I noticed that the drivers in question already apparently do the
-very same thing (passing data through a voidptr), inside slave_config
-(via the peripheral_config/_size fields)..
-But that doesn't solve the issue this series is trying to tackle, since
-every DMA consumer driver passes its own structure (or NULL).
+url:    https://github.com/intel-lab-lkp/linux/commits/Shengjiu-Wang/dt-bindings-display-imx-add-HDMI-PAI-for-i-MX8MP/20250804-185254
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
+patch link:    https://lore.kernel.org/r/20250804104722.601440-6-shengjiu.wang%40nxp.com
+patch subject: [PATCH v3 5/6] drm/bridge: imx: add driver for HDMI TX Parallel Audio Interface
+config: xtensa-randconfig-001-20250805 (https://download.01.org/0day-ci/archive/20250805/202508052225.u407ulE0-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 14.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250805/202508052225.u407ulE0-lkp@intel.com/reproduce)
 
-My immediate idea is to add yet another field, but that's lame. The other
-immediate idea would be to put an `u8 variant` at the start of all of 
-these structs ("we have tagged enums at home"), but that's lame *and*
-dangerous.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508052225.u407ulE0-lkp@intel.com/
 
-Ideas?
+All errors (new ones prefixed by >>):
 
-Konrad
+   `.exit.text' referenced in section `__jump_table' of lib/test_dynamic_debug.o: defined in discarded section `.exit.text' of lib/test_dynamic_debug.o
+   `.exit.text' referenced in section `__jump_table' of lib/test_dynamic_debug.o: defined in discarded section `.exit.text' of lib/test_dynamic_debug.o
+   xtensa-linux-ld: drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.o: in function `imx8mp_hdmi_pai_remove':
+>> imx8mp-hdmi-pai.c:(.text+0x8c): undefined reference to `dw_hdmi_to_plat_data'
+   xtensa-linux-ld: drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.o: in function `imx8mp_hdmi_pai_disable':
+   imx8mp-hdmi-pai.c:(.text+0x9a): undefined reference to `dw_hdmi_to_plat_data'
+>> xtensa-linux-ld: imx8mp-hdmi-pai.c:(.text+0xbc): undefined reference to `dw_hdmi_to_plat_data'
+   xtensa-linux-ld: drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.o: in function `imx8mp_hdmi_pai_enable':
+   imx8mp-hdmi-pai.c:(.text+0xd2): undefined reference to `dw_hdmi_to_plat_data'
+   `.exit.text' referenced in section `__jump_table' of net/ceph/ceph_common.o: defined in discarded section `.exit.text' of net/ceph/ceph_common.o
+   `.exit.text' referenced in section `__jump_table' of net/ceph/ceph_common.o: defined in discarded section `.exit.text' of net/ceph/ceph_common.o
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
