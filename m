@@ -1,72 +1,72 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B1F24887C
-	for <imx@lists.linux.dev>; Tue,  5 Aug 2025 07:49:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B652459CF
+	for <imx@lists.linux.dev>; Tue,  5 Aug 2025 07:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754380192; cv=none; b=QNnKsdwTnXN4t+PkzpD+Vbomawb7L1m5nGVelv4FB1/FXw9aVztOFR9LdnEn0l8qhswtO8t7OJ1d+TWcx2VuMQgfqV3Yegu3HCHPd2omTTqGpg3QjWQ8fcYvyqmcJNlOsAN8HjlcA0CVSKMfEZf7ABxWARlXnNotCnuLD66xVFw=
+	t=1754380310; cv=none; b=IEz8pu/OC1DsZIMuxuXvdIfBFNPLVXLPUOYpQaO++SF6HkmgV6ibyS38AZ30mPQTLQIx9kOFO+5WAdtD4ICRbHsRxOy4cTTp2BGG1mKIPA81pvPqdpnlAgvAozgiqft63J/T8V0bDH2p5g0tzQExig+R1CA2Gi0JV53dvL7wQhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754380192; c=relaxed/simple;
-	bh=nWNH5eCqyP/FjxukcloV1DRoOBCv8QarpVQi1BOYK0s=;
+	s=arc-20240116; t=1754380310; c=relaxed/simple;
+	bh=DF14p86C1doTAXUJtzsz/T5aS+HX53wfXuMCNvC5Hto=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WvYXLeaM40q6qMO9PYx/+xWQkCBD0GZ17l8RdvJui1p9jz9eL9s03UcWEOVWegp0l73IBReMPJNwvQtBzwRQdHg89BcxUdPMPb/cl5/1YadMAcc6WEMSyR36sHVyW68ZwBYyOdg41iG9yg8IKo6YlxZSsunW+KZd8r4P8m2dB6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VMUQHOAf; arc=none smtp.client-ip=209.85.216.49
+	 To:Cc:Content-Type; b=CxKzO6+A7kt20z/CBV1LLKJXkpz/jUhy/EU5VY60Iov7Mmpw1nZmQbWd3EqvwjpSqBR8feJEarIyc+X41B3EN7dcnj35EaXJZn1tYPDrnsRP07Yf40M6KX2zYiJb14TrmM6oodCGUwvuiA1/nQwo1jz20nr5lPrY2SNZj9vGsyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lX3f6tl+; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VMUQHOAf"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32117db952aso2413827a91.0
-        for <imx@lists.linux.dev>; Tue, 05 Aug 2025 00:49:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lX3f6tl+"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-76bee58e01cso3337592b3a.1
+        for <imx@lists.linux.dev>; Tue, 05 Aug 2025 00:51:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754380191; x=1754984991; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1754380308; x=1754985108; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nWNH5eCqyP/FjxukcloV1DRoOBCv8QarpVQi1BOYK0s=;
-        b=VMUQHOAfJIFSi4IaRWMtQHPSHEntmULEx27HbXlP8wMbTOqYs+nQlXGhuXmg0fIKH4
-         zR1dxdP7HO/6yseUNbfyyH+w9y39Z4YMef/7SiTt9AjQsqIk2hwE7IzqvgHKWS35rPQ/
-         7/E6bmsUDIDpiVe8bc15+YEk7DJ4BWy6QAbElc2VjCam/HAAQmjv5zGqsKMYpwYIXLPl
-         jUuu8JdNGd9gctZQYmCyn3drAka4p9rxZj2eTYgT/rMAVSrX1j5HBYjSZZNnxOt+/NAW
-         wJmxIzKDOlXGy4duWpGEX9kfcqFC57RwUZoQpYzr6YbljS7XSoe718dKljwVRQRm9jMx
-         wq1A==
+        bh=DF14p86C1doTAXUJtzsz/T5aS+HX53wfXuMCNvC5Hto=;
+        b=lX3f6tl+LlOOL1ZXAyW8S1UaeOPohzTf0RhcpucnECEyA7lf7tbJyYHThjf+25NrWL
+         BiDcJJom7KR1EDTfn08cbBxRwM+3wirlM+frkSJo9kZceR3+ZKH0csQRB9/2g9Fin2wZ
+         yhHyY7a1dn9sddsavWDXn/VQkKUbpzkbSmiODR33wvBhu2dvZj3EZs+FAHm6ovCtrGTy
+         vU8s9eKDPQuoupP03vdVM59eyb/4QIHGLCh+EeD3AIwZKItQw6y5Nd4KiCxWqblIz1g6
+         t3RbvHSDqjInnwI0PAH0PZ3PIpp7e9SbH3QbVp2DAwNzb8TC6IVKI8vZWNDS0ydWPucG
+         u4lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754380191; x=1754984991;
+        d=1e100.net; s=20230601; t=1754380308; x=1754985108;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nWNH5eCqyP/FjxukcloV1DRoOBCv8QarpVQi1BOYK0s=;
-        b=THhvIgDXwj6mJtOiDKHT057FeFCMRu49GoXlzRVesPJHoIIMz6wBnIB1sr1uKgutch
-         WGwQfcO5KtC7iR7RmwJL2FT6YUhCMHlLGhiVpMvOlG8JkWwcFoVNtIIyrwSRPubnUu8S
-         uQS2FzAoCgZVg0AhmgZnLdSVS5HOzEP73voanNYllkoGhroX4wPn6O4f6v9cOFDruGW1
-         OYt6PuE1WMKmMkJlaNIctlLnMY1K+dAN4MDGjinZUXHf4co/RbIuQlIbnB26H8h0IHiX
-         i3HFM6N/lTni7O1DHWVubTn2FYLjJmTW3JujeP0quo/AuXHIP1WiLPCnVCf/mNqbUQ80
-         wlKA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/KGcrLNGhw/9xhpbUVPYF+s4BKMB+eqX40PhzVM7VFZYocFVOLGwRRM+iyZTGaGiJKr8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy3uFpot8eqytokXe7sFqHyFsGjKnP4ahB8njDIGROft5aEjVeo
-	2VHWdkTUMnLbSE0H8Xvfwfk3Vb5kxLP7WnoznOpFe8TlvDXeO1WNRGxCoZQ2MDj3l8/kKxZ8YkJ
-	oH4I5RC71PBUWV1TjTXSOtWYtWTx91Fc=
-X-Gm-Gg: ASbGncuYKnTMI25U3rjfPGeC10dgVAWf0psqCIjR/cuivfv7m9Y6fr33uhMMgAH1gHB
-	gsWQaEsgBwAH/xowoqRWKiIs2BXCqxLbjmSfHg4jqn6pw8K2qiV268FU94IjonmiE+JnZspq3bW
-	IMjVbYkqh/TatuowsY65crpB7DNIy1Ao2Yz64xdSGoYdql+sCcsJ6rXfvxOVsP+73Ud+vzpMuTd
-	UFc
-X-Google-Smtp-Source: AGHT+IGzN/lG60iP8C5y42/6GZHUdwFTfQPnirMANk8NvV5b0No4/sTpu/QFLlH7OULW0Qi45yw+Mon+tegHBGVKjCQ=
-X-Received: by 2002:a17:90b:3e84:b0:321:1df6:97d3 with SMTP id
- 98e67ed59e1d1-3211df698c4mr12468336a91.4.1754380190738; Tue, 05 Aug 2025
- 00:49:50 -0700 (PDT)
+        bh=DF14p86C1doTAXUJtzsz/T5aS+HX53wfXuMCNvC5Hto=;
+        b=t1tyjgiXdDpnkRhC9C5l1DUTaKM0W3P2ypj08AVGZKMeVi4SVtefrB3GCyGbvQT2Rf
+         WtXo/oUuaAerTDa8PUzGOkkooi/wSyjdiy15Ndpxjc8YPcjaSw3srM2lCRrEPkRspO5z
+         s0NfI66t0kNH/DGHsqq49yGgXOO9kd/w48UMqkYVdF1zBXHhnN5aCbdlYS/K7m6sUoEH
+         GmE38LstWvZGRZpaNcCZjN+ckLvNFljRa79enVGmJga1om6ufcxE/zKUFLgqJWWzYiZJ
+         gHpjpXkxrL1KwIxqSJfqqmGRbFR3vGJmJ2dnNMib6hdp6VVwWr+szL/5GF3qm2w7QpPw
+         h6mg==
+X-Forwarded-Encrypted: i=1; AJvYcCUk9c6uP6SL2GPQ37uGsi5vWxvbsqnOHXodiGMRiBB7Fa8Tg1ByamGGiRSTkUrb4Wx90kw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwW+BMzUsDRN3t58wSQ5yo+hhyzU+N1arvDXOY41MitMomQvGXA
+	kylXA6aB2zJN5cdKjxogX+s52RSwiDUbNiChjfgPKdALSm7GwfpPLMPsVYFVbQJdlvy+YqxI3D3
+	uxdxAFDbeva+YsRL7u0jN4EkmwoQnhMg=
+X-Gm-Gg: ASbGnctknANqBCst8++Heao6/NeBWYtNaLY99MSpyg1l1rCKsxRh2enw34FGN7Tm9vx
+	5esBTQSUs+QUc8LsLU8wYytTWiLjCeELmNJNAYmgLuI2m9jb+RmzusBf4eyLP0IDC2/PUqQZeGa
+	gy41X3kagZ7yAEFJsXyNlB8FUhLq6elzqHBenvEoYN7jrYnp9JAmVRY+ubPJpXpmuIgfcBCBIs5
+	Iir
+X-Google-Smtp-Source: AGHT+IEWmtpQKbGUq/1bFP8Lljg+twjtflzwS9IvD3UxctPY665t4Ffz1Dc9oQm0cJB3lp//A3+8o9nPMjYNlLQTx4A=
+X-Received: by 2002:a05:6a20:6a0a:b0:240:198:77be with SMTP id
+ adf61e73a8af0-24001987cadmr11786044637.42.1754380308033; Tue, 05 Aug 2025
+ 00:51:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250804155407.285353-1-laurentiumihalcea111@gmail.com> <20250804155407.285353-6-laurentiumihalcea111@gmail.com>
-In-Reply-To: <20250804155407.285353-6-laurentiumihalcea111@gmail.com>
+References: <20250804155407.285353-1-laurentiumihalcea111@gmail.com> <20250804155407.285353-7-laurentiumihalcea111@gmail.com>
+In-Reply-To: <20250804155407.285353-7-laurentiumihalcea111@gmail.com>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 5 Aug 2025 10:51:56 +0300
-X-Gm-Features: Ac12FXz_yTxmGlhhGe-fi7WMSXizT1iAGAYfFnkICkWhi-5XkkI01xGLjDZkakI
-Message-ID: <CAEnQRZAAwmivz-uu2Z88Ky71eJ=5oRjdSJqqSQ2S4JT2cwQpOA@mail.gmail.com>
-Subject: Re: [PATCH 5/7] reset: imx8mp-audiomix: Extend the driver usage
+Date: Tue, 5 Aug 2025 10:53:50 +0300
+X-Gm-Features: Ac12FXzs-8MGoSs0GqH7OpNp3C2Lxecj08a45oMAKLepSFZX4ZB558QC9xKWl9w
+Message-ID: <CAEnQRZDxMc43_U1kwnFDLnQbYgpKDmPYkdqB6dd44K62Ka1GqQ@mail.gmail.com>
+Subject: Re: [PATCH 6/7] reset: imx8mp-audiomix: Support i.MX8ULP SIM LPAV
 To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
 	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
@@ -78,31 +78,12 @@ Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 4, 2025 at 6:57=E2=80=AFPM Laurentiu Mihalcea
+On Mon, Aug 4, 2025 at 6:59=E2=80=AFPM Laurentiu Mihalcea
 <laurentiumihalcea111@gmail.com> wrote:
 >
 > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >
-> Some NXP SoCs integrate one or more, per-subsystem, block control IPs,
-> which allow users to control the assertion and de-assertion of the
-> reset lines tied to some peripherals present in said subsystems. Some
-> examples of such SoCs include i.MX8MP with AUDIOMIX block control and
-> i.MX8ULP with SIM LPAV.
->
-> Some of the aformentioned block control IPs exhibit a common pattern with
-> respect to the assertion and de-assertion of the reset lines. Namely, the
-> user is able to control the state of the reset line by toggling a bit fro=
-m
-> one of the IP's registers.
->
-> Linux can take advantage of this pattern and, instead of having one drive=
-r
-> for each block control IP, a single, more generic driver could be used.
->
-> To allow this to happen, the previous approach, in which a single reset
-> map is used, is replaced by a per-driver approach, in which each auxiliar=
-y
-> device driver holds a reference to a certain reset map.
+> Support i.MX8ULP's SIM LPAV by adding its reset map definition.
 >
 > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
