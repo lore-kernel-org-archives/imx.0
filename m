@@ -1,186 +1,368 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CAB22DA1C
-	for <imx@lists.linux.dev>; Tue,  5 Aug 2025 07:10:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B044523A562
+	for <imx@lists.linux.dev>; Tue,  5 Aug 2025 07:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754377836; cv=none; b=uva365Z8soc/s4VM3WQ4JMk02lv0N8w5S1s5CrKT4Dv23yEzS3/T/4uWI7+PYzPS+2ge+eLHk4dVTfPV4gbWyUlmbjWCHTU1Gf6+L45eeB2pUmU2hW6Z6fbioonHbrl2DW7jYP/EFCVhm0Lbz6uGCQ3i71r/0N4SntCUmYRSAGY=
+	t=1754379725; cv=none; b=J1fCFSAJqYwaCF+/pqHeWUMYUhQ8kKjXfWxv5r51AGnVeYSr2XDG24XHvYModBLnhxS65oO//vdVCZkJdIfh5d8wEL6p4vUzNhidUAVHTLBQartSjEtOv9VUDvgDDXEEZFzCI99pJ0xPngAzU2OuNlEdoNJtODtvVXf3mVaOqsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754377836; c=relaxed/simple;
-	bh=zSNJZOZFX9hckn6mXpstET/OnFkhJk3WprzXlL1fO90=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h+TqpVBaHadYHGfIxaoWgmtTmyDn4PUAChhcNwq5HyxJyiJ4p+nAL+66JcU8bXZ6/S9lREJR51ucAjRAkphGvHbM1iqMKDnCC27x9sTGZgnSNeg+Ko1Y+ZK5FCj//R2xbEa6P+k6gQXplD+qP/yi26Rlpz4OctUE/fikM/bnz9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=HAJR91iB; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=glCnyA+f reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="HAJR91iB";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="glCnyA+f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1754377833; x=1785913833;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=EeUMDc2WntfI8A+x14TyU5FunBo17nAG01EM1yXferM=;
-  b=HAJR91iBbT63tIwUg1IEeINpaQt3TLkEv41wn6oNryp8rEOwrN1t2xEi
-   xDg1je1JPD18RbZjF3h0VimXtyo5eqxembw7/oNX4GTpPyGLoEgutd8xc
-   XbTakK8VsaDqdvehM8qZJ5mv0I83uiguYs8d5T4HoiiujK1OpNcAWZPTZ
-   USoiIeKH0/Qujl089g+ylzHRfs0/bWxIWU8SnNs5AdspGQFldRfMPriPV
-   Ru2G8ILbZbuqJGLchX/k0dmwoQ01wD4wwMR6Dnw9jlQB147jcb82jH/U2
-   3gksY5T7Jc511gVOWDMgKb+2Y6Squ4VhKJb6D2kVW3UbbZM3cgrQlp4l1
-   Q==;
-X-CSE-ConnectionGUID: 8OggMXCVRb67Yq9VaFkfPg==
-X-CSE-MsgGUID: 8IVFNqAAS7ej/ExTuYvMvg==
-X-IronPort-AV: E=Sophos;i="6.17,265,1747692000"; 
-   d="scan'208";a="45583489"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 05 Aug 2025 09:10:30 +0200
-X-CheckPoint: {6891AE67-1-D4215818-E44699D1}
-X-MAIL-CPID: 2D3DFB7860E93CFACCD9674F0CED3F89_0
-X-Control-Analysis: str=0001.0A00210F.6891ADD9.008C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8BCE91726E2;
-	Tue,  5 Aug 2025 09:10:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1754377826;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EeUMDc2WntfI8A+x14TyU5FunBo17nAG01EM1yXferM=;
-	b=glCnyA+fmdYQNcL4hjR8TMji7ODikkmnhi0R1O5XQKeNugloKyyvHZQ83XwJsYjuB6+8Ae
-	1udmhwtm9IlRZMmkW5O1u4TvP2X52nDpukEcApOm7q1jggNxlhFiQhYMnuxkCUJjAVr7Vn
-	tfIQBcOQ7fdpjlqABQzQMMWOql2v0VjnXLsJ2ofukHDzU+/Pw5YpmRrN/NdoFKg1UVpgJB
-	yKrDxvf9s14PS8vHOXhKatmVvMjbNox2QiHoGEdtuIblD/2y4CEOtq7+KQPObM2JexudQy
-	Ov1xWntFqW8YSfXdMs5lUCO5+PAVsG9gunueaE/fPDP386+Ov+rHz04r9B8CsQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.com, simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org,
- cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- victor.liu@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, p.zabel@pengutronix.de, devicetree@vger.kernel.org,
- l.stach@pengutronix.de, shengjiu.wang@gmail.com, perex@perex.cz,
- tiwai@suse.com, linux-sound@vger.kernel.org
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject:
- Re: [PATCH v3 6/6] arm64: dts: imx8mp: Add hdmi parallel audio interface node
-Date: Tue, 05 Aug 2025 09:10:25 +0200
-Message-ID: <1932645.tdWV9SEqCh@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250804104722.601440-7-shengjiu.wang@nxp.com>
-References:
- <20250804104722.601440-1-shengjiu.wang@nxp.com>
- <20250804104722.601440-7-shengjiu.wang@nxp.com>
+	s=arc-20240116; t=1754379725; c=relaxed/simple;
+	bh=1qW0jic5qgSouRAJ0K8gWbRDvMtLz1uULmdexDci+H4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b3Z0bHDBtg0fakYbDTrbqTw+j5duvVSKcToTxaDXuKyFpZ8RPSB+OQzvG7tQ0KlUGdXnWsaGRsMVpwKIoiMmvrKQtz1u8xEDINbu2lJzeF7cw/06304pEPmIt7SP9ZtD12VOyZpA3vG2RSYy/QO3zOGhBR2xysa+CPKovFy24WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mtr@pengutronix.de>)
+	id 1ujCHA-0005yv-K9; Tue, 05 Aug 2025 09:40:00 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mtr@pengutronix.de>)
+	id 1ujCGr-00C0Ka-13;
+	Tue, 05 Aug 2025 09:39:41 +0200
+Received: from mtr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mtr@pengutronix.de>)
+	id 1ujCGr-00A7fC-02;
+	Tue, 05 Aug 2025 09:39:41 +0200
+Date: Tue, 5 Aug 2025 09:39:40 +0200
+From: Michael Tretter <m.tretter@pengutronix.de>
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Devarsh Thakkar <devarsht@ti.com>, Benoit Parrot <bparrot@ti.com>,
+	Hans Verkuil <hverkuil@kernel.org>, Mike Isely <isely@pobox.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Christian Gromm <christian.gromm@microchip.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
+	Dongliang Mu <dzm91@hust.edu.cn>, Jonathan Corbet <corbet@lwn.net>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andy Walls <awalls@md.metrocast.net>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Bin Liu <bin.liu@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Osipenko <digetx@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Mirela Rabulea <mirela.rabulea@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Michal Simek <michal.simek@amd.com>, Ming Qian <ming.qian@nxp.com>,
+	Zhou Peng <eagle.zhou@nxp.com>,
+	Xavier Roumegue <xavier.roumegue@oss.nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>, Samuel Holland <samuel@sholland.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Jackson Lee <jackson.lee@chipsnmedia.com>,
+	Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
+	Houlong Wei <houlong.wei@mediatek.com>,
+	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+	Tiffany Lin <tiffany.lin@mediatek.com>,
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
+	Jacob Chen <jacob-chen@iotwrt.com>,
+	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	=?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
+	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Fabien Dessenne <fabien.dessenne@foss.st.com>,
+	Hugues Fruchet <hugues.fruchet@foss.st.com>,
+	Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Corentin Labbe <clabbe@baylibre.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org,
+	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+	linux-sunxi@lists.linux.dev, linux-usb@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	mjpeg-users@lists.sourceforge.net
+Subject: Re: [PATCH 29/65] media: allegro: Access v4l2_fh from file
+Message-ID: <aJG1PC0poVY-QZRb@pengutronix.de>
+Mail-Followup-To: Michael Tretter <m.tretter@pengutronix.de>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Devarsh Thakkar <devarsht@ti.com>, Benoit Parrot <bparrot@ti.com>,
+	Hans Verkuil <hverkuil@kernel.org>, Mike Isely <isely@pobox.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Christian Gromm <christian.gromm@microchip.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
+	Dongliang Mu <dzm91@hust.edu.cn>, Jonathan Corbet <corbet@lwn.net>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andy Walls <awalls@md.metrocast.net>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Bin Liu <bin.liu@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Osipenko <digetx@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Mirela Rabulea <mirela.rabulea@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Michal Simek <michal.simek@amd.com>, Ming Qian <ming.qian@nxp.com>,
+	Zhou Peng <eagle.zhou@nxp.com>,
+	Xavier Roumegue <xavier.roumegue@oss.nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>, Samuel Holland <samuel@sholland.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Jackson Lee <jackson.lee@chipsnmedia.com>,
+	Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
+	Houlong Wei <houlong.wei@mediatek.com>,
+	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+	Tiffany Lin <tiffany.lin@mediatek.com>,
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
+	Jacob Chen <jacob-chen@iotwrt.com>,
+	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	=?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
+	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Fabien Dessenne <fabien.dessenne@foss.st.com>,
+	Hugues Fruchet <hugues.fruchet@foss.st.com>,
+	Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Corentin Labbe <clabbe@baylibre.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org,
+	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+	linux-sunxi@lists.linux.dev, linux-usb@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	mjpeg-users@lists.sourceforge.net
+References: <20250802-media-private-data-v1-0-eb140ddd6a9d@ideasonboard.com>
+ <20250802-media-private-data-v1-29-eb140ddd6a9d@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250802-media-private-data-v1-29-eb140ddd6a9d@ideasonboard.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mtr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Am Montag, 4. August 2025, 12:47:22 CEST schrieb Shengjiu Wang:
-> The HDMI TX Parallel Audio Interface (HTX_PAI) is a bridge between the
-> Audio Subsystem to the HDMI TX Controller.
->=20
-> Shrink register map size of hdmi_pvi to avoid overlapped hdmi_pai device.
->=20
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Hi Jacopo,
+
+On Sat, 02 Aug 2025 11:22:51 +0200, Jacopo Mondi wrote:
+> The v4l2_fh associated with an open file handle is now guaranteed
+> to be available in file->private_data, initialised by v4l2_fh_add().
+> 
+> Access the v4l2_fh, and from there the driver-specific structure,
+> from the file * in all ioctl handlers.
+> 
+> While at it remove the only left user of fh_to_channel() and remove
+> the macro completely.
+
+Thanks for the cleanup!
+
+Minor suggestion below, but even without it
+
+> 
+> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+
+Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
+
 > ---
->  arch/arm64/boot/dts/freescale/imx8mp-evk.dts |  4 +++
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi    | 28 +++++++++++++++++++-
-
-Please separate commits for SoC and board files. Thanks
-
-Best regards,
-Alexander
-
->  2 files changed, 31 insertions(+), 1 deletion(-)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/bo=
-ot/dts/freescale/imx8mp-evk.dts
-> index c0cc5611048e..cc9351a5bd65 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-> @@ -442,6 +442,10 @@ &flexcan2 {
->  	status =3D "disabled";/* can2 pin conflict with pdm */
+>  drivers/media/platform/allegro-dvt/allegro-core.c | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/media/platform/allegro-dvt/allegro-core.c b/drivers/media/platform/allegro-dvt/allegro-core.c
+> index 5e3b1f5d7206d84b8ccb9ea3b3f3f1fe75becf99..81c6afcf2d06f9e39015e49d355346238c5033d8 100644
+> --- a/drivers/media/platform/allegro-dvt/allegro-core.c
+> +++ b/drivers/media/platform/allegro-dvt/allegro-core.c
+> @@ -197,8 +197,6 @@ static const struct regmap_config allegro_sram_config = {
+>  	.cache_type = REGCACHE_NONE,
 >  };
-> =20
-> +&hdmi_pai {
-> +	status =3D "okay";
-> +};
-> +
->  &hdmi_pvi {
->  	status =3D "okay";
->  };
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mp.dtsi
-> index 841d155685ee..00d8474bd1b1 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -2066,7 +2066,7 @@ irqsteer_hdmi: interrupt-controller@32fc2000 {
-> =20
->  			hdmi_pvi: display-bridge@32fc4000 {
->  				compatible =3D "fsl,imx8mp-hdmi-pvi";
-> -				reg =3D <0x32fc4000 0x1000>;
-> +				reg =3D <0x32fc4000 0x800>;
->  				interrupt-parent =3D <&irqsteer_hdmi>;
->  				interrupts =3D <12>;
->  				power-domains =3D <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_PVI>;
-> @@ -2092,6 +2092,24 @@ pvi_to_hdmi_tx: endpoint {
->  				};
->  			};
-> =20
-> +			hdmi_pai: audio-bridge@32fc4800 {
-> +				compatible =3D "fsl,imx8mp-hdmi-pai";
-> +				reg =3D <0x32fc4800 0x800>;
-> +				interrupt-parent =3D <&irqsteer_hdmi>;
-> +				interrupts =3D <14>;
-> +				clocks =3D <&clk IMX8MP_CLK_HDMI_APB>;
-> +				clock-names =3D "apb";
-> +				power-domains =3D <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_PAI>;
-> +				status =3D "disabled";
-> +
-> +				port {
-> +
-> +					pai_to_hdmi_tx: endpoint {
-> +						remote-endpoint =3D <&hdmi_tx_from_pai>;
-> +					};
-> +				};
-> +			};
-> +
->  			lcdif3: display-controller@32fc6000 {
->  				compatible =3D "fsl,imx8mp-lcdif";
->  				reg =3D <0x32fc6000 0x1000>;
-> @@ -2143,6 +2161,14 @@ port@1 {
->  						reg =3D <1>;
->  						/* Point endpoint to the HDMI connector */
->  					};
-> +
-> +					port@2 {
-> +						reg =3D <2>;
-> +
-> +						hdmi_tx_from_pai: endpoint {
-> +							remote-endpoint =3D <&pai_to_hdmi_tx>;
-> +						};
-> +					};
->  				};
->  			};
-> =20
->=20
+>  
+> -#define fh_to_channel(__fh) container_of(__fh, struct allegro_channel, fh)
+> -
+>  struct allegro_channel {
+>  	struct allegro_dev *dev;
+>  	struct v4l2_fh fh;
+> @@ -3284,7 +3282,7 @@ static int allegro_enum_fmt_vid(struct file *file, void *fh,
+>  static int allegro_g_fmt_vid_cap(struct file *file, void *fh,
+>  				 struct v4l2_format *f)
+>  {
+> -	struct allegro_channel *channel = fh_to_channel(fh);
+> +	struct allegro_channel *channel = file_to_channel(file);
+>  
+>  	f->fmt.pix.field = V4L2_FIELD_NONE;
+>  	f->fmt.pix.width = channel->width;
+> @@ -3326,7 +3324,7 @@ static int allegro_try_fmt_vid_cap(struct file *file, void *fh,
+>  static int allegro_s_fmt_vid_cap(struct file *file, void *fh,
+>  				 struct v4l2_format *f)
+>  {
+> -	struct allegro_channel *channel = fh_to_channel(fh);
+> +	struct allegro_channel *channel = file_to_channel(file);
+>  	struct vb2_queue *vq;
+>  	int err;
+>  
+> @@ -3350,7 +3348,7 @@ static int allegro_s_fmt_vid_cap(struct file *file, void *fh,
+>  static int allegro_g_fmt_vid_out(struct file *file, void *fh,
+>  				 struct v4l2_format *f)
+>  {
+> -	struct allegro_channel *channel = fh_to_channel(fh);
+> +	struct allegro_channel *channel = file_to_channel(file);
+>  
+>  	f->fmt.pix.field = V4L2_FIELD_NONE;
+>  
+> @@ -3397,7 +3395,7 @@ static int allegro_try_fmt_vid_out(struct file *file, void *fh,
+>  static int allegro_s_fmt_vid_out(struct file *file, void *fh,
+>  				 struct v4l2_format *f)
+>  {
+> -	struct allegro_channel *channel = fh_to_channel(fh);
+> +	struct allegro_channel *channel = file_to_channel(file);
+>  	int err;
+>  
+>  	err = allegro_try_fmt_vid_out(file, fh, f);
+> @@ -3438,7 +3436,7 @@ static int allegro_channel_cmd_start(struct allegro_channel *channel)
+>  static int allegro_encoder_cmd(struct file *file, void *fh,
+>  			       struct v4l2_encoder_cmd *cmd)
+>  {
+> -	struct allegro_channel *channel = fh_to_channel(fh);
+> +	struct allegro_channel *channel = file_to_channel(file);
+>  	int err;
+>  
+>  	err = v4l2_m2m_ioctl_try_encoder_cmd(file, fh, cmd);
+> @@ -3488,7 +3486,7 @@ static int allegro_ioctl_streamon(struct file *file, void *priv,
+>  				  enum v4l2_buf_type type)
+>  {
+>  	struct v4l2_fh *fh = file_to_v4l2_fh(file);
+> -	struct allegro_channel *channel = fh_to_channel(fh);
+> +	struct allegro_channel *channel = file_to_channel(file);
 
+You could remove the local fh entirely, if you change
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+	return v4l2_m2m_streamon(file, fh->m2m_ctx, type);
 
+to
 
+	return v4l2_m2m_streamon(file, channel->fh.m2m_ctx, type);
+
+in the allegro_ioctl_streamon() function.
+
+Michael
+
+>  	int err;
+>  
+>  	if (type == V4L2_BUF_TYPE_VIDEO_CAPTURE) {
+> @@ -3503,7 +3501,7 @@ static int allegro_ioctl_streamon(struct file *file, void *priv,
+>  static int allegro_g_parm(struct file *file, void *fh,
+>  			  struct v4l2_streamparm *a)
+>  {
+> -	struct allegro_channel *channel = fh_to_channel(fh);
+> +	struct allegro_channel *channel = file_to_channel(file);
+>  	struct v4l2_fract *timeperframe;
+>  
+>  	if (a->type != V4L2_BUF_TYPE_VIDEO_OUTPUT)
+> @@ -3520,7 +3518,7 @@ static int allegro_g_parm(struct file *file, void *fh,
+>  static int allegro_s_parm(struct file *file, void *fh,
+>  			  struct v4l2_streamparm *a)
+>  {
+> -	struct allegro_channel *channel = fh_to_channel(fh);
+> +	struct allegro_channel *channel = file_to_channel(file);
+>  	struct v4l2_fract *timeperframe;
+>  	int div;
+>  
+> 
+> -- 
+> 2.49.0
+> 
+> 
