@@ -1,49 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2441B1EFF96;
-	Tue,  5 Aug 2025 06:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A1A42A82;
+	Tue,  5 Aug 2025 07:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754375761; cv=none; b=O0FDRK5iLmgxabfgz67XDgEKv/q1vmWQw3Ihe6BEs9O1F622o4AOYK/ea2no/+mFeKULjFXodpGQETPjYuznXX6h0mmdUK38WlmKZ+7BPpIrfI7IZDVpGbaA7m7Y/YvUv9u5CmO8Juzs3ral7x1XFQQ/6ntiFAnqpZcHykUC0mM=
+	t=1754377287; cv=none; b=g55mQkyI2d57GEm1cSnCYJ+WxAwfWlAh0VgCjesd1iIonEH7X1R+fItkDLnP/OAXQ0arhmNla156hRO2SGCU6OnqryNoQIFDa7dGn1A3XZWk24kPQs/H84CPB+gKCke424dxXE4VqNCNY52Lk8SwqIAHN+/I41hi4peNI5/MT7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754375761; c=relaxed/simple;
-	bh=sIHPITH9zG/L0PbzCUmZDWaszbXx38hkA/bHt1tkCsY=;
+	s=arc-20240116; t=1754377287; c=relaxed/simple;
+	bh=JC1N8+EDHFSvpQmSWYP4IQBCKd4LuqodETgoH4R7NJg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fKo2Q3SkqQQVFmEd7JuPAzOq0iv0O/bNfnxNLuSiaE1Jl3XuvOSUPjgnBvTMVU4C7oOwCJXdTFQRcWXJHyRaOGE9UixasiUq7OsYNYi4TQCGCGgJtsWyZq7w99Paq6WkvfBFgQXkMeMLAWlN9wY0PA+hzMWdOmet1PE3YQ7dTXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vOetwG6w; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=BEqyVJ39Zvn8y993Yxk1itvk605WuNr2rOlVzQBWfNXz5vPCkuMTvMHgFSb+BPgppXZmIdo/xHZq/32rzQveVw5UQ8LhaaH5+0qW3XVd/KeJQ88UwRVlD7mkQSmVMVrnlcfUGmeNUz7jePTg4C9tw9903mBJNS5hf/9MK/aKQWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ar9ji4xR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vOetwG6w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB18C4CEF4;
-	Tue,  5 Aug 2025 06:35:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ar9ji4xR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CB2C4CEF4;
+	Tue,  5 Aug 2025 07:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754375760;
-	bh=sIHPITH9zG/L0PbzCUmZDWaszbXx38hkA/bHt1tkCsY=;
+	s=k20201202; t=1754377287;
+	bh=JC1N8+EDHFSvpQmSWYP4IQBCKd4LuqodETgoH4R7NJg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vOetwG6wjPaFORrkROIrDOatq5ormVU2vdtjv/cTfRt7ABu2cGpYaG7vuXplt88PO
-	 eKnp/n+o346f6/YG8oB0r+bYIfWKNkbsnmX+moad9d9FBnPPpmHy/EUXFx4NgLHNtx
-	 ucu3PxmCL14qKSC1XJlI9SENNJMRxUivtYlWFKW+ongQ7WgRYC9uAtSV41x2PE8zHP
-	 m/Lz5HNXUpJPaTn7ZgTHnrUFAF8qwvfwH4HGRn7Vrm+Z+7NUxXbpxVBjhaL/zzqzdc
-	 IQfC4RvRWmK8w2Hq2+tZKGZ9PNcDLQCQ/t08gO4s/GcwGBq4BWIthFB+6lAEzlJ+jY
-	 BGGAuyxnJFixg==
-Date: Tue, 5 Aug 2025 08:35:58 +0200
+	b=Ar9ji4xRtlUqcDAwsHuBWUNlxjyu681opyVGK5UyqWJZhuLYNNNBsQ+/ZN2+elZLe
+	 aZtUhbs2A8YMj77XDSJ3dV+0Ry61v9NCfdH+dlFAlcbXWkaPEOkBO4Ol5nR0TYqat5
+	 MQORFDAutzwQv1tfuRxqGAAoG4j2dScNl8wFKgsuia2wG94uOmVckNYPsS32bfV8Nz
+	 lV1zcYh2lV5c5Ns/T6AObeT7LwnDHO2y7qdXGvkNFsho5STMSi83UjUK/3+wFUOPCf
+	 bmmLMB17PNGOUVoevocn+MaFmfgNcI2LYkAYRd5tNkyH9KF8GJAuuFKIST6frG0DRM
+	 APQ1fABVfbDCw==
+Date: Tue, 5 Aug 2025 09:01:24 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, 
-	simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org, 
-	cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, victor.liu@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	p.zabel@pengutronix.de, devicetree@vger.kernel.org, l.stach@pengutronix.de, 
-	shengjiu.wang@gmail.com, perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] dt-bindings: display: imx: add HDMI PAI for
- i.MX8MP
-Message-ID: <20250805-realistic-hawk-of-merriment-f84ef2@kuoka>
-References: <20250804104722.601440-1-shengjiu.wang@nxp.com>
- <20250804104722.601440-2-shengjiu.wang@nxp.com>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH 1/7] dt-bindings: reset: imx8ulp: add SIM LPAV reset ID
+ definitions
+Message-ID: <20250805-efficient-amigurumi-kingfisher-ffdb56@kuoka>
+References: <20250804155407.285353-1-laurentiumihalcea111@gmail.com>
+ <20250804155407.285353-2-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,28 +49,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250804104722.601440-2-shengjiu.wang@nxp.com>
+In-Reply-To: <20250804155407.285353-2-laurentiumihalcea111@gmail.com>
 
-On Mon, Aug 04, 2025 at 06:47:17PM +0800, Shengjiu Wang wrote:
-> Add binding for the i.MX8MP HDMI parallel Audio interface block.
+On Mon, Aug 04, 2025 at 11:54:01AM -0400, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > 
-> The HDMI TX Parallel Audio Interface (HTX_PAI) is a digital module that
-> acts as the bridge between the Audio Subsystem to the HDMI TX Controller.
-> This IP block is found in the HDMI subsystem of the i.MX8MP SoC.
+> Add ID definitions for i.MX8ULP's SIM LPAV reset lines.
 > 
-> Aud2htx module in Audio Subsystem, HDMI PAI module and HDMI TX
-> Controller compose the HDMI audio pipeline.
-> 
-> In fsl,imx8mp-hdmi-tx.yaml, add port@2 that is linked to pai_to_hdmi_tx.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > ---
->  .../display/bridge/fsl,imx8mp-hdmi-tx.yaml    | 12 ++++
->  .../display/imx/fsl,imx8mp-hdmi-pai.yaml      | 69 +++++++++++++++++++
->  2 files changed, 81 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdmi-pai.yaml
+>  .../dt-bindings/reset/imx8ulp-reset-sim-lpav.h   | 16 ++++++++++++++++
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+This belongs to the bindings patch.
+
+Also, use proper filename - compatible.
 
 Best regards,
 Krzysztof
