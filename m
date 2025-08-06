@@ -1,59 +1,59 @@
 Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367AD1F4C99
-	for <imx@lists.linux.dev>; Wed,  6 Aug 2025 05:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAC013E02D
+	for <imx@lists.linux.dev>; Wed,  6 Aug 2025 06:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754458961; cv=none; b=tVoY0aIzbpYLjiWeeQtNlqwxniVbx3pymy0M5OPpFh1WPKYwSX8EOJg19BwbQf/Wu7wkfH4MPWYvi3fWX87NX5iYWe2wGRUgv/HTyJbGOxwO/4W6c7uhh4qJhk9EPTEXsmc/x5BONjIUWofOylkovmGEM684JSGWh83OERKNpIQ=
+	t=1754460029; cv=none; b=aGRBj5N7sIUFmY6l8ZYi6dbhl2JiSs6S8pTN1OQI/lhSYOPVgG8ZkSsKI74dO/5b4kf2t63FHTEgohGnLOZ1kUVDOY44eB/C3qKiy6OnFZ3S1E+d6bsIsyOPDHCWEC9sT1UWDCr4hxSM93NHXiNtvehvV7PDJASFhqsRgWXQ7Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754458961; c=relaxed/simple;
-	bh=XEFDjwxyGn7GRK2szJGynViSzaqmC6nMvkN1KXCrqjw=;
+	s=arc-20240116; t=1754460029; c=relaxed/simple;
+	bh=TyxJGKUYLvDm7A+CsbW7a2gkxaF33iKAsGeXuyBY7/E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X9U0Kjm9ZUa2jHD3WkB6G36k0uZVXWlP2n5nBsfctish3LlP136sZ9MQn6Td7IL5kBKNL+HzjYWlAtK0xL18VSD2ULFzEFCnEUgpRQo9/mxzHuE+B+CdZD5CZFwPHa/pMbjLUIe6tu8mv6VAzrFlN4eWgnWauGnfFasnYAsjKew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LoVTWWfg; arc=none smtp.client-ip=209.85.166.49
+	 To:Cc:Content-Type; b=LxIyQ13XlrRWpmH+WDlu2papLGeaVIEemUcRBAKRCdRZFTd7iRGd2sj6CyefCk9PETZ/rXhyvgfze1fAFrumuCLft5Jpmt9Js8hGdqAGGpdwJB6Yc59l9OYvxqYT2zm6NAjmlgLVuDfGYq4HyM8PVQMpSB//d8LUfFBrunTrmGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W7BGFVmu; arc=none smtp.client-ip=209.85.166.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LoVTWWfg"
-Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-8818be8d6e4so186265939f.2
-        for <imx@lists.linux.dev>; Tue, 05 Aug 2025 22:42:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W7BGFVmu"
+Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-87999c368e9so455258739f.0
+        for <imx@lists.linux.dev>; Tue, 05 Aug 2025 23:00:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754458956; x=1755063756; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1754460025; x=1755064825; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QHauIS8VslQcBTCDTTdkK4LmnH1Wk0DYHNjYnbBqri4=;
-        b=LoVTWWfgpMVpWT3jM6jhJ/4ez182WeZsP3PT05ZXUelwOaWBJNg1GPq8OwtX/uDFYT
-         d9+nZcv8Smj7vG6hZCSZ6mS2FKvOPRSW6/WwqDkBaakqIqAZxdA/Dw21dUqBDKOybwMI
-         h7djpHSDHgInnc7vOz/z6QV3Xb6e8NP49eSwQfzJbqb4UOW6SI26iiVoj47X75nM9NOI
-         hihs4udTVChTA2RLa5H56HbhKaYa7GgBUXLnJgGUBE/dmyFYVePABDPzf8TiclodsB9n
-         hHm216NJSREbF6VFnTJxcP1oT5OSOaJJWNT8bx+kVDR42TBurUCr+ao3Tn+VFVerjIJq
-         FeFw==
+        bh=7LOjQGBKez5S1iGyBaU0i1tLauar5otkV86mmIjmqK0=;
+        b=W7BGFVmuZtPzMatM5OQKVcEdSqui+lYdpMGp0yiknwq5EQBZ0GKLUbkPTSLw8C9wPj
+         xT/+1pylMdVh/S/6pzAY42huo8JsY99SQjKpknwkNd+W6oQUkU1V4myoJS71uFJ5OCnb
+         UqZ/U5Z8aCDwviK0oFzqNAoR7mHy4cq/KfBOFRzkdb9oBe9ZVXTXU1HolVMB4PzjTdkU
+         ACG2fOc9F6NfEikcQW5DOnmuEn+kpYBpMJijYhnnhjuP+/jBPHQgdtUiJn3EhoU5mU+T
+         dLMHL9pDl0rEeXTWCeFyltjmVhEQMou7d7/DSY0KyzyuVuZlqmwvbddtEUXhpALdLOZy
+         mJJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754458956; x=1755063756;
+        d=1e100.net; s=20230601; t=1754460025; x=1755064825;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QHauIS8VslQcBTCDTTdkK4LmnH1Wk0DYHNjYnbBqri4=;
-        b=qwOdA8L6rognfC2L1GTiO2gaHdfsuB9Nk2LVZWWFslskcpLNWLblCzSjm4HXLeBe7S
-         vIZ4z9gjHelLwLoftkURGq2lES57YgCCVXoARTtXM9VAnlmh2gCRBjWqgeQUNzl8hEu0
-         gRpJTAwESnOS+8ShxImYzcs1+c2Z4y3GjUEm+R+HplP40whCMVmZ1tGpacqjWBXbZ3YG
-         o/CGzK2M/wK79GP5MZhflehl5uEQQJSJctBi+IjKxVYUXcqD0f/L+s2pAkQkGX/R7NWZ
-         VX2zcgCIn9e1QqO5SLsmmeccM2WF9V/gdkjWrPJjEGNhS1RABhNj1Mp+kulvtVlCVYWZ
-         7WHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVVS29coHi2JruMXAmn8qCJNorBGHA88QtQ60baiK47wYo4APHIcMyDl9DbNvM/htChq98=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw1jirk4gUIwz364c+9cukcqrTEjQO0on8H1s/xtRWqRhjSd+3H
-	7Oi586Az5TDawup3CXq6C6cc/QUe4qMZTXg3jPx9fwhtoQv0Dp0Azh4K++8ht0vxtExrKqfPCru
-	8W76Cte70O7lvq72sqHEqcGo9sbooiwk=
-X-Gm-Gg: ASbGncstPb+AkPUiLkQjK3/upzqynoD69mmNyAoYokH9kSCBhgzVRlHjYQMw7FDa8Dz
-	uHbkpM9ihrhvi52FbEaVlVTydaRXeWQbRuZGxkvHfv+B/EuXHhvpnb47QsRKFLWkThVtIXcTl4W
-	hFIiM0lPVH3NK1Ugy5Qhsv8s/BriflPUdzuBidcubAFZtHz3sHoc3K07tO+w4KY87gTJ96g/csv
-	m8hCSE=
-X-Google-Smtp-Source: AGHT+IECmzK2OYEDadcx1xb2ZQCI3OV3aypgzNJvM+m1QQlytd+LfV9SXOQitTe7El49SPBkrrzfxhGitycgVD/2o3g=
-X-Received: by 2002:a05:6602:3fd3:b0:881:9412:c917 with SMTP id
- ca18e2360f4ac-8819eda4411mr351161239f.0.1754458955859; Tue, 05 Aug 2025
- 22:42:35 -0700 (PDT)
+        bh=7LOjQGBKez5S1iGyBaU0i1tLauar5otkV86mmIjmqK0=;
+        b=JG9xZNaEHP8cswAFjP1hbeH0QsmwyxoP91d+0m+H+9ZeTxs7Z/Rio52qzVsFuStuqp
+         DjXD27PVrwVcdjqgbbuVW8Qn7/LUk7mSfZ9qoSq2XBhrI7szAsXagIuL+dk6y4b9qGz5
+         Dsrkf2tx3291zjFNAdxXDRxX1zHSG8k+2tlSzwD3g6QOrIAFcwZY16eQbVBJCWa9XnjK
+         CfYihETuJBMCeW2+3a8dEB7qtizgA8PGq40lt07LfF4yy8Kj6NkOirIB7DJbkcoye+FI
+         SPAcs26zsx6uFUrav8ylu9uuW94GZ7ciTHmJDtAarzy+Y/mxyQI+Uv1QJNMDr/KjyA93
+         0/Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+kVERUOE6Y8VQn+rx3TI4MD32KO+OC6ANEmKHjwSowbGwfH6DtxeTY0P9K/KDNYjY1/Q=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwdIBzBOF3dwoLF6wKjk4/zr48QcZzEr0lGkbnQ2L8PJOC/hjJP
+	y09oDRtscSjROBNo+L+Aql5sP0twTzsnS7QI3Vkk7Jrb1/OUfDT1k5cZ0NSiSyKE/rml+an6652
+	72buLACwSW+YRH9SJTb248wvhN5t4G+I=
+X-Gm-Gg: ASbGncuZSErYfCt1a+78svzA/JEOq1UxNVjbTJGmTPfrEj7z2XIxKzyUuXvJj8o2jda
+	NVNT18l9NqDRqu87+ZBq+hAI5AjQl7y9KyPtyZO+4Ca/yT1F+k0K2VU10glrGDnFg1IB49AFx32
+	47d8cAuQ32pZrZhTmbl3p3ZJ3GLF6e1ZD3MmNK1YGXLgQnFuxk1xto4uW5SbnnWHr/sRZPjw2Z9
+	ndAn6s=
+X-Google-Smtp-Source: AGHT+IGXTd343+VF/DxWVcdW2rLvvEJ8x/TFUG5Tpo/FEQ7fHX2BzAtVcAbQoY4hyy1ohYC0jFv/9H1yMpGG0tLM+1M=
+X-Received: by 2002:a05:6602:6c14:b0:87c:30d4:65f2 with SMTP id
+ ca18e2360f4ac-8819f2dc2f6mr259724639f.3.1754460025324; Tue, 05 Aug 2025
+ 23:00:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,9 +64,9 @@ References: <20250804104722.601440-1-shengjiu.wang@nxp.com>
  <20250804104722.601440-6-shengjiu.wang@nxp.com> <fa455148-a071-4433-8c9c-26add3872604@nxp.com>
 In-Reply-To: <fa455148-a071-4433-8c9c-26add3872604@nxp.com>
 From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 6 Aug 2025 13:42:16 +0800
-X-Gm-Features: Ac12FXzE8ELOd9wvaEtNxu_4hqBHJ1GNH1m_A1__IZXWyAfic17tlm42XJMvvFE
-Message-ID: <CAA+D8AN4n0H6M_0EqX4z_37ViSCyThKbmtMgqPmipintJ8Wtwg@mail.gmail.com>
+Date: Wed, 6 Aug 2025 14:00:05 +0800
+X-Gm-Features: Ac12FXw0nnoM3OTdXQVUBKMi5kWO9s__PdvorJUHLc_FVvpTTZTj4ms-phKQiNs
+Message-ID: <CAA+D8AN9Ay8jnSS=h3G_Kepc_5WYQRAUrWmtu5N056GsnvGrTA@mail.gmail.com>
 Subject: Re: [PATCH v3 5/6] drm/bridge: imx: add driver for HDMI TX Parallel
  Audio Interface
 To: Liu Ying <victor.liu@nxp.com>
@@ -140,6 +140,10 @@ nd
 >
 > select REGMAP
 > select REGMAP_MMIO
+
+
+will add them.
+
 >
 > > +     help
 > > +       Choose this to enable support for the internal HDMI TX Parallel
@@ -180,6 +184,8 @@ ge/imx/Makefile
 > > +#include <linux/platform_device.h>
 >
 > #include <linux/regmap.h>
+
+ok,
 >
 > > +#include <drm/bridge/dw_hdmi.h>
 > > +#include <sound/asoundef.h>
@@ -194,6 +200,9 @@ ge/imx/Makefile
 >
 > Add NUM_CH(n) and use it when programming HTX_PAI_CTRL_EXT.
 > #define NUM_CH(n)                       FIELD_PREP(NUM_CH_MASK, (n - 1))
+
+Ok, will add it.
+
 >
 > > +#define   WTMK_HIGH(n)                       FIELD_PREP(WTMK_HIGH_MASK=
 , (n))
@@ -206,6 +215,9 @@ ge/imx/Makefile
 > > +#define   END_SEL                    BIT(29)
 >
 > The above 3 bits are unused.  Drop.
+
+Ok.
+
 >
 > > +#define   PRE_SEL                    GENMASK(28, 24)
 > > +#define   D_SEL                              GENMASK(23, 20)
@@ -220,6 +232,9 @@ ge/imx/Makefile
 > > +#define HTX_PAI_IRQ_MASK             0x18
 >
 > The above 4 registers are not pratically used.  Drop.
+
+They are used by regmap to make a full definition.
+
 >
 > > +
 > > +struct imx8mp_hdmi_pai {
@@ -239,6 +254,8 @@ ata->priv_audio;
 >
 > I don't think you need to convert type explicitly.  Same for the other
 > explicit conversions in this driver.
+
+ok, can be removed.
 >
 > > +     int val;
 > > +
@@ -271,6 +288,18 @@ _MASK));
 > > +             val =3D FIELD_PREP(D_SEL, width - 24);
 >
 > Why 'width - 24'?  Can it be expressed by a helper or macro?
+
+                /*
+                 * The allowed width are 24bit and 32bit, as they are
+supported by
+                 * aud2htx module.
+                 * for 24bit, D_SEL =3D 0, select all the bits.
+                 * for 32bit, D_SEL =3D 8, select the MSB.
+                 */
+will add such comments.
+
+best regards
+Shengjiu wang
 >
 > > +     }
 > > +
@@ -318,18 +347,6 @@ master, void *data)
 > > +     plat_data->priv_audio =3D NULL;
 >
 > Do you really need to set these ptrs to NULL?
-
-yes.  below code in dw-hdmi.c use the pdata->enable_audio as condition.
-
-        if (pdata->enable_audio)
-                pdata->enable_audio(hdmi,
-                                    hdmi->channels,
-                                    hdmi->sample_width,
-                                    hdmi->sample_rate,
-                                    hdmi->sample_non_pcm,
-                                    hdmi->sample_iec958);
-
-
 >
 > > +}
 > > +
@@ -414,11 +431,6 @@ tx
 all
 > the other stuff to bind() callback to avoid unnecessary things being done=
  here.
-
-component helper functions don't have such dependency that the aggregate
-driver or component driver must be probed or not.  if imx8mp-hdmi-tx is not
-enabled, there is no problem, just the bind() callback is not called.
-
 >
 > > +}
 > > +
@@ -486,10 +498,6 @@ _ops =3D {
 > As component_bind_all() would bind imx8mp-hdmi-pai and hence set
 > {enable,disable}_audio callbacks, you need to call dw_hdmi_probe() after
 > component_bind_all() instead of too early in probe() callback.
-
-There is no such dependency.
-Maybe you mixed the hdmi->enable_audio() with pdata->enable_audio().
-
 >
 > > +
 > > +     return 0;
@@ -536,9 +544,6 @@ vice *pdev)
 > > +     if (remote && of_device_is_available(remote)) {
 >
 > Doesn't of_graph_get_remote_node() ensure that remote is avaiable?
-
-No.  'remote' is the node,  not the 'device'.
-
 >
 > > +             drm_of_component_match_add(dev, &match, component_compare=
 _of, remote);
@@ -559,17 +564,6 @@ play.
 > No, since PAI node is available here, it has to be bound.  Yet you still =
 need
 > to properly handle the case where PAI node is inavailable.
-
-This is for aggregate driver registration,  not for bind()
-
-The bind() is called after both drivers have been registered.  again there =
-is no
-dependency for both aggregate driver and component driver should be
-registered or probed.
-
-best regards
-shengjiu wang
-
 >
 > > +              */
 > > +     }
