@@ -1,289 +1,303 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013028.outbound.protection.outlook.com [52.101.83.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AD123FC4C;
-	Wed,  6 Aug 2025 10:24:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754475847; cv=none; b=XkwRRFRgZt4HPki0UTArTS8dLh9L823eepoEvGYlVA15oIcIkg0LVa+QAX9jRKy94bdMD/HIQ+HGuQUi69WqaNYei0uuVEgFCHMABJUr7dS/wql/wPuOcPNsL2IbL4AyV5cw+IrYNNXFkmstFUdVrkoJZN+b+Bpih1Yr5ng903E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754475847; c=relaxed/simple;
-	bh=l70ptxZLQqmas0XfEsGv6By1cn6ZG33TtWo6AIwUVzY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=a5DNFNG4YvwatJvJI72jUJbrarB1GPvwARQt3KK6TrI4o+LkADy4RRLo19LMC25g9civvXukMVyIuqEZ7Q026i3hR2Icx2ZMa0Gf7pwIH4hmBE7GBkzaO2D4wRM3uQS2xQyb8c82pg9sr5dIfG85zK4uek/HamfdkZmZ1Pej/20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JrWPG7JK; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA431232386
+	for <imx@lists.linux.dev>; Wed,  6 Aug 2025 11:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754480534; cv=fail; b=cUwQnUEuexcTfnZPQ9f8nksJ0GlNVqILEfUsB7WYOVLQ5Wj+gf9f/S4PxG7KsxkFfuVWWuRfOv1iUsZRfecyTa6Pj41/n+iV7GWyaBRLDGx8gHwz4njbu5m7perjUgHxAIT4bgoVC4Oj1oad9UK0jCvvZdUGaB2vLYrVRIaPdY4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754480534; c=relaxed/simple;
+	bh=VDMIlyZR1wUosGCWlSVapeVA1zbEUwC2hLR4V/m5B8I=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=AGCF/3HhjaLJXar3PWPYmLMITDvSF7PUaOlfTOCBFFRdrAMlkex1P8rMY7TEx5p1zSgftAyyITlT/TCRxcOocDE3MGZIgb3chnTOageR2LTVcA4s73yZ5QV7KaXap+NQUN6Oyh3DiolB9/OQ/14T5wcjfoBOSqz6TiemL+zXUxc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cS2ZX9H9; arc=fail smtp.client-ip=52.101.83.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JrWPG7JK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554E6C4CEE7;
-	Wed,  6 Aug 2025 10:23:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754475846;
-	bh=l70ptxZLQqmas0XfEsGv6By1cn6ZG33TtWo6AIwUVzY=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=JrWPG7JKmLOWiqyPyPHBEwdNSOhBgbgwZKlr53ch1KYUqMW5NJhgqWGt37Bfpu5kz
-	 qlK/s7XBDhAWY0ePEoJGylQwPvPthAY1cgG03gzQ0xnpLyNfYH9Ltn6bRO9o6VKIgv
-	 8mL/VP5WkpU6/u8BHdtm+iCND03lhAl9fYMzEq00cNwYjcE4kn4g2K7GUjcU1SxcIh
-	 oRJMiMZbiPrzXULl22miQXDKokgCLeq9OBsipp+PpQccKHMl2ra3uH+9Je0d/Du/UB
-	 W2HdU2A3sG91p4NrtXbhl0f8Q5lRZPdIG4rgH0nDKYqpAltVKIDHkj/Whd+ALlZqaM
-	 XT3W88x3kCbog==
-Message-ID: <5840e9b2-4940-4343-9f55-58ad3dfb7075@kernel.org>
-Date: Wed, 6 Aug 2025 12:23:44 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cS2ZX9H9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RxGUIARjq4CZMMqQk27QqdjuQFMXf1BELXF0YDn/sqkSCWoBrWey8yQy2pGMyzjIMX2Bsv2/h6NSvpZSD6FCKhofdBCKR8Wj0QGbSw8mqEFSgHWC8lWsLpJAkaVYGlXdidX6lplxwlv17IYGMnOIkDXilwQLqre6r4M3gGpjOQ4AQgHgUmBBihHIao5oI7BYLfJwzx5J5f8iTp0Q8/7kzIaCuKUDVu0qESswXcGMxkOJTyEjvI5RT1Zoretf/0LVpL74GhIs843y0TRXdjEIgwcUgQXfWq/h+pB0YJWPE4TaBq/HykoU3VSEARihPTllf5bHJwvSt6fVtWLibnUIpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rqKHWw1mwSPS9FPjSAMko+hyTgzgjMm5s7ZkeYCv9jQ=;
+ b=d0UZV+avoFhXHkTfPG1WGuYlONrrR4GoTtd65czrMlOLchruQz3VrMZs7XcbiisJvTQczSofqnhjt3Mvqugeh8AXCpK63Z8j29NoX7zqjipGdgCzGF1ibU8Wc1bzLOHO+MMTlsHZDHihelC1mk5Hn509bMCw1B21WKRvg23v4CUNSsikeCB7kyb/Nj74CWsCiqHCiZnq2tL3Xo8x86t0PWPg1UY3C1jVW8gvBIiRBAq4GZtNg7wUsmBSPv4jqPLp6NR3XDGZ0knExikjWx6yYXBclyQboZ8W/nreIGAjaWvpmcLX4dxVSM7ntQrPUHFuaFau7KSoj++EKl1UVCHLNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rqKHWw1mwSPS9FPjSAMko+hyTgzgjMm5s7ZkeYCv9jQ=;
+ b=cS2ZX9H9Q4000B829iMQ5kPwosO4T8+3LSbBLjPfhFOIN4sA5Z0LIwG6VFOygq55vCApSpFnDzpBW1znp9COssioi0blEbCoEhiKdZRdeb93itR693WkXjMrHjeen6786yvjJDy4K5poltibBkghmghBz8yThJywtybq4+DO9pT4hi3mcFjHq/NZ1rfApUnl1+MJufuQdg14ASg3/ljAg38ICDZr7nS45KozDezoIIL/wrPFWh2+bkKutV3s9fBwdG1BMYJoC/YRznX5idqkLnYAUQhTQmzOot0H/3I3EnaelrTzqqy8U4KITwA4rwGSw0I85dyeCexO6QbAPunxUA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS4PR04MB9386.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::8)
+ by AS8PR04MB8312.eurprd04.prod.outlook.com (2603:10a6:20b:3f1::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.14; Wed, 6 Aug
+ 2025 11:42:08 +0000
+Received: from AS4PR04MB9386.eurprd04.prod.outlook.com
+ ([fe80::261e:eaf4:f429:5e1c]) by AS4PR04MB9386.eurprd04.prod.outlook.com
+ ([fe80::261e:eaf4:f429:5e1c%7]) with mapi id 15.20.9009.013; Wed, 6 Aug 2025
+ 11:42:07 +0000
+From: Joy Zou <joy.zou@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	peng.fan@nxp.com,
+	richardcochran@gmail.com,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	ulf.hansson@linaro.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	frieder.schrempf@kontron.de,
+	primoz.fiser@norik.com,
+	othacehe@gnu.org,
+	Markus.Niebel@ew.tq-group.com,
+	alexander.stein@ew.tq-group.com
+Cc: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com,
+	netdev@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Frank.Li@nxp.com
+Subject: [PATCH v8 00/11] Add i.MX91 platform support
+Date: Wed,  6 Aug 2025 19:41:08 +0800
+Message-Id: <20250806114119.1948624-1-joy.zou@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0031.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::11) To AS4PR04MB9386.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4e9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: Re: [PATCH 11/65] media: Replace file->private_data access with
- custom functions
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Devarsh Thakkar
- <devarsht@ti.com>, Benoit Parrot <bparrot@ti.com>,
- Hans Verkuil <hverkuil@kernel.org>, Mike Isely <isely@pobox.com>,
- Hans de Goede <hansg@kernel.org>,
- Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
- Christian Gromm <christian.gromm@microchip.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Shi
- <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
- Dongliang Mu <dzm91@hust.edu.cn>, Jonathan Corbet <corbet@lwn.net>,
- Tomasz Figa <tfiga@chromium.org>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Andy Walls <awalls@md.metrocast.net>,
- Michael Tretter <m.tretter@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Bin Liu <bin.liu@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Dmitry Osipenko <digetx@gmail.com>, Thierry Reding
- <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>,
- Mirela Rabulea <mirela.rabulea@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
- Michal Simek <michal.simek@amd.com>, Ming Qian <ming.qian@nxp.com>,
- Zhou Peng <eagle.zhou@nxp.com>, Xavier Roumegue
- <xavier.roumegue@oss.nxp.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Vikash Garodia <quic_vgarodia@quicinc.com>,
- Dikshita Agarwal <quic_dikshita@quicinc.com>,
- Abhinav Kumar <abhinav.kumar@linux.dev>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
- Samuel Holland <samuel@sholland.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Nas Chung <nas.chung@chipsnmedia.com>,
- Jackson Lee <jackson.lee@chipsnmedia.com>,
- Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
- Houlong Wei <houlong.wei@mediatek.com>,
- Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
- Tiffany Lin <tiffany.lin@mediatek.com>,
- Yunfei Dong <yunfei.dong@mediatek.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>,
- Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
- Jacob Chen <jacob-chen@iotwrt.com>,
- Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
- Heiko Stuebner <heiko@sntech.de>,
- Detlev Casanova <detlev.casanova@collabora.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
- <alim.akhtar@samsung.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>,
- =?UTF-8?Q?=C5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
- Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
- Jacek Anaszewski <jacek.anaszewski@gmail.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Fabien Dessenne <fabien.dessenne@foss.st.com>,
- Hugues Fruchet <hugues.fruchet@foss.st.com>,
- Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Nicolas Dufresne <nicolas.dufresne@collabora.com>,
- Benjamin Gaignard <benjamin.gaignard@collabora.com>,
- Steve Longerbeam <slongerbeam@gmail.com>, Maxime Ripard
- <mripard@kernel.org>, Paul Kocialkowski <paulk@sys-base.io>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
- Corentin Labbe <clabbe@baylibre.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Bingbu Cao <bingbu.cao@intel.com>, Tianshu Qiu <tian.shu.qiu@intel.com>,
- Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-staging@lists.linux.dev, linux-doc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-tegra@vger.kernel.org, imx@lists.linux.dev,
- linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, linux-sunxi@lists.linux.dev,
- linux-usb@vger.kernel.org, linux-amlogic@lists.infradead.org,
- linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, mjpeg-users@lists.sourceforge.net
-References: <20250802-media-private-data-v1-0-eb140ddd6a9d@ideasonboard.com>
- <20250802-media-private-data-v1-11-eb140ddd6a9d@ideasonboard.com>
- <49e753f4-f626-49ae-bf23-d2aecfcc6282@kernel.org>
- <20250806094822.GA24768@pendragon.ideasonboard.com>
-Content-Language: en-US, nl
-In-Reply-To: <20250806094822.GA24768@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9386:EE_|AS8PR04MB8312:EE_
+X-MS-Office365-Filtering-Correlation-Id: b537854b-4377-49cc-ce7d-08ddd4de45c1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|1800799024|52116014|7416014|376014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ZhTpALJwGdWzAUzrpO4Xso5/pS5jOJz0QG8ndbuzznsfAJBpRcb4xWALcAZF?=
+ =?us-ascii?Q?J/8QSjTzXi72vUNzWvs0JzoxxZJhdzhcUb2MqXMgleDiLW9VRBqHoYKoLima?=
+ =?us-ascii?Q?P6AMxvnHB1xN/mWbhZ9nbzL1So9W08aNGhL4Fs3rOxuO3/75k0eArL2okS82?=
+ =?us-ascii?Q?O3MhQQEDQXHsvOCQIr6OALSh9PH1DNdrXicB4ik1tXJXCSfqqCg6sB8TerzL?=
+ =?us-ascii?Q?MqSFNjG15uv8V5UAU0TucXHPoCcPo+a4CZB2fnokynv3z4CNevatOHy09As5?=
+ =?us-ascii?Q?OQ3Sqn0zHySuXus0V4gYto+QG9TGrwis8cCKwZg2jYg8PgwQBiiEumjj5uMF?=
+ =?us-ascii?Q?qe1rSkod//iKvmmddMzrsS9SkaQvDt+It7oEZajnRZuIEv3k9jpltJOgE5vJ?=
+ =?us-ascii?Q?2jPO8sBqlBqpvd528tm+xZ6KDjj58V/uPdGOkTwU5YzLHwIO93If2HIMLhnI?=
+ =?us-ascii?Q?bzVQqw/VRDqfQo+23YxW4F0CWo9WV/xL7rcRb4bmwJM5vYASHgLCINHSONi+?=
+ =?us-ascii?Q?oZpTmrhR69QACgSe57pZVJ1IAX/DJaxHVNJmLDy0/qxQAGul6wn0tUD3CO8A?=
+ =?us-ascii?Q?b/M7SKWhq5IlRA5z3I/nBqgnU8wH7SIe9hf0LAwdnIRNLI+50jJbfDvzgdIy?=
+ =?us-ascii?Q?VrZxVXHusKDpeDxasXPLa7i2c6T2zwdsSCg+yG5+kcfRphZTXoW4Ax1aq4XB?=
+ =?us-ascii?Q?Or3OCbyylAY6A/K9w2H2nh7XZTbpiwUAjD/CVN+zrgFkwrLEozBxhtM9ZETF?=
+ =?us-ascii?Q?LX2Nq/AHOwVxQqf402CXbAUOCs+CZKaf/KshxzEyPUOk/GlLZoMwKnVPO2mI?=
+ =?us-ascii?Q?ddtK+pID7Dc4P7f2D4opu96rQUBWazFjGQ5hSwhhmWBtkG9qBP1RHehqafwa?=
+ =?us-ascii?Q?blmdON/KhtFpcTetRyqvZxL9tu9N7qg5sZ9hDVbnKBLjkIUfVcdklsphHkrQ?=
+ =?us-ascii?Q?joeTNQdBZc2njXKJ2caVyiyDIG/mZbB6+x8195VbXg8h03izgmY6jS0EoAGs?=
+ =?us-ascii?Q?Rv7alg+OurOnpVAKXsXL+vhWcNSB+LXyeXlFK6IK4jczPp2zCgZRls+A/AgL?=
+ =?us-ascii?Q?21BQRmvOQv6Xj37pnOjLtUjTDH19S42rcCC8tJ7gnlVfGtbdPhAz6g+ohxFB?=
+ =?us-ascii?Q?cBFLVgvWjSjrqAymV3f2Rs7hfvTxrLwooFSeEPXalFAi9Rx0bEKA48hBEFyf?=
+ =?us-ascii?Q?6r3oCUo7QKuxhmt9Wi1X33eU/uL3dFpEaFH2WXeIKiEN4rR2pjQJa9/PTfkv?=
+ =?us-ascii?Q?2xOOj2wBv+E5p1u17I0HmkdFm0L9xKL4NSKwinTHfrr3R68gBUtFVn+zvEKF?=
+ =?us-ascii?Q?WmYix7R3NyqDCn63E7BD9h+veWNZCVvqE9vWY2cHCtE0BEZZH/RLl5b0eg21?=
+ =?us-ascii?Q?LZf5Duc065OKO03r+I5XjVZO+zcm6Pn2mzhEhz8OKfYL00sOLtDse/vnb3nv?=
+ =?us-ascii?Q?Ovrs8cg72O1F/Qqyb04MfaQGvtuqynH2?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9386.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(52116014)(7416014)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MHEprWjcmExKaDTYKNjTKgJ9iO4I2g0qYQwF/bcdeOVu0eeGPrn5P9j4M+6C?=
+ =?us-ascii?Q?pmbxWSgyntq605ulPlWjmT6NGpHG0/7866uNErIy/oVuXKE2QdQXo7TTL46l?=
+ =?us-ascii?Q?4DDzHVpPZCYReZvcBTedmroMsokwhTGSKR2xF+SxcX9S2T4eC3Zjm4VFZy4g?=
+ =?us-ascii?Q?nEuaU0AMFvlwXxc9rz7yfpdnHHZEuFcN/o6ESyMHaxU8Og4dY4x4bkOfWrO5?=
+ =?us-ascii?Q?e+UR89zV0PWDZ6fY9gUx9NN3ZYsKY3OG9p//LzTKfWbfjpmj/fjynbJL5K0C?=
+ =?us-ascii?Q?DuayVpd26KaHp80ssKipjHh3bGHd9rx1m9Uiemf+L4gf4mmk/crN5AjH3RK+?=
+ =?us-ascii?Q?8aEs8Mozc0/eBJnzHl/bcLOBYEQ517+B7qhpk0U/bYncvDp0Qqp8dHF4Xw+l?=
+ =?us-ascii?Q?C/zbBlpSHBsmhm9qZsQumtlX3efI/vX1XN4ADNlUCh05oBZniuzbDZrdA+bO?=
+ =?us-ascii?Q?wTTs1RuIqvjPUf5oZ4iLzE7mDgI528DSyvzMQZ0vmV0u1KlYV58VqRvExT5a?=
+ =?us-ascii?Q?144CpKqKJDPYOFzdVGFLmY6ZaPq3oHQTVqsNLCsdjn9YDGwhYaeX3gq5qPSs?=
+ =?us-ascii?Q?c+7JXsM85daBtANafO71YPh1e/CpJRieuvCq+vek4umYOVfwmLIjKWiOdo6J?=
+ =?us-ascii?Q?IhStqIKsvwOorFncYPT9ERx5XBRuzA1zonmHrA8TaQq9MJBBI7gmQB75Hq/W?=
+ =?us-ascii?Q?ouJtLhtGDC5YqshtdlKQpHwRPq88oABzitd5Dci/u4lxAaQQ1S01b0zhE7Qr?=
+ =?us-ascii?Q?ZVxikqrlYasO9U65n8TPvJXDL1cEapt0yEaUqTsfsIKAVbR1+GqrxP61034F?=
+ =?us-ascii?Q?pUKsC8G5fmiv5FuBR3kG67CYtLThMcUPnYtn9ZrkYGL4cGKh7OeQYc32Y/st?=
+ =?us-ascii?Q?iUi0D/SEbwiDAMr/oE0X0/cowl8vvcOBcHYN+3mUKHkSckXmBG0Kx/AFnt9H?=
+ =?us-ascii?Q?ZYy5dQ9Z2EIlckAQk+7FbVGNrXFVV6GV9B0UYUDjl/99AGusCr//FwIsxQ7i?=
+ =?us-ascii?Q?aoSnFPnq20L+kB7qLMnAX9y7RJ+Fwrq9T3vTbzl3NmieYRv+YZLhRJG0PKR/?=
+ =?us-ascii?Q?LcQnnTP8JA5jIDkfkKx2Iy2MD/79juo0HTUUZWbh/MJ0NL0pxDElCUbjNXz+?=
+ =?us-ascii?Q?XLeeE7ElE6l8kMBW3OHhPB/psLybamyP6A8hvz2pMcQLjd+/9rP2jGEOn1iK?=
+ =?us-ascii?Q?5Hv1kJUlzdfVk2m2tWYIQz7WPtAb087leC+NbCOF9YlwGOtfMTUIUleKLf/V?=
+ =?us-ascii?Q?k0hH3buDe9FtItWealMI3tSk2TjJLhhB25cwc+AEsCxOqmsSx8o/ags7g9NE?=
+ =?us-ascii?Q?vBvhSmPootTowxQ7fkaNumCPqtM3HL7LMeA6oB0Ov3wJyr5Dd7PIoyY0PlHn?=
+ =?us-ascii?Q?It/b2VmCEI6/vxeOt5uvDS60VpcBrxnAQdn44JFQhQaS+1SRWz5JTf56YBKd?=
+ =?us-ascii?Q?lk1KF9VQwKiK3AYCauSlQI1tIWCNaIE25rAFsEO3yhw2q81OAe2olSIf+RnN?=
+ =?us-ascii?Q?LcRzGw8UdVaRvQKWEXaS3jt+uw+jBovw7LCz7+JQNCueG1eORL75PoZOxBUR?=
+ =?us-ascii?Q?p/1UWvVvqdo6bPUKRXf9QkJPmTEKCE8CvQqjpKjV?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b537854b-4377-49cc-ce7d-08ddd4de45c1
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9386.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2025 11:42:07.7403
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: my6sGuj44jZYkpfxnGNXmCgcZsXt1wUPNb8A8SgTsSmfSLlILeLIrXSUCFHLyexD
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8312
 
-On 06/08/2025 11:48, Laurent Pinchart wrote:
-> Hi Hans,
-> 
-> On Wed, Aug 06, 2025 at 10:16:37AM +0200, Hans Verkuil wrote:
->> On 02/08/2025 11:22, Jacopo Mondi wrote:
->>> From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->>>
->>> Accessing file->private_data manually to retrieve the v4l2_fh pointer is
->>> error-prone, as the field is a void * and will happily cast implicitly
->>> to any pointer type.
->>>
->>> Replace all remaining locations that read the v4l2_fh pointer directly
->>> from file->private_data and cast it to driver-specific file handle
->>> structures with driver-specific functions that use file_to_v4l2_fh() and
->>> perform the same cast.
->>>
->>> No functional change is intended, this only paves the way to remove
->>> direct accesses to file->private_data and make V4L2 drivers safer.
->>> Other accesses to the field will be addressed separately.
->>>
->>> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->>> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
->>> ---
->>>  drivers/media/pci/ivtv/ivtv-driver.h               |  5 ++++
->>>  drivers/media/pci/ivtv/ivtv-fileops.c              | 10 +++----
->>>  drivers/media/pci/ivtv/ivtv-ioctl.c                |  8 +++---
->>>  drivers/media/platform/allegro-dvt/allegro-core.c  |  7 ++++-
->>>  drivers/media/platform/amlogic/meson-ge2d/ge2d.c   |  8 ++++--
->>>  .../media/platform/chips-media/coda/coda-common.c  |  7 ++++-
->>>  .../platform/chips-media/wave5/wave5-helper.c      |  2 +-
->>>  .../media/platform/chips-media/wave5/wave5-vpu.h   |  5 ++++
->>>  drivers/media/platform/m2m-deinterlace.c           |  7 ++++-
->>>  .../media/platform/mediatek/jpeg/mtk_jpeg_core.c   |  7 ++++-
->>>  drivers/media/platform/mediatek/mdp/mtk_mdp_m2m.c  |  7 ++++-
->>>  .../media/platform/mediatek/mdp3/mtk-mdp3-m2m.c    |  7 ++++-
->>>  .../mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c   |  2 +-
->>>  .../mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h   |  5 ++++
->>>  .../mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c   |  2 +-
->>>  .../mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h   |  5 ++++
->>>  drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c     |  7 ++++-
->>>  drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c |  7 ++++-
->>>  drivers/media/platform/nxp/mx2_emmaprp.c           |  7 ++++-
->>>  drivers/media/platform/renesas/rcar_fdp1.c         |  7 ++++-
->>>  drivers/media/platform/renesas/rcar_jpu.c          |  7 ++++-
->>>  drivers/media/platform/rockchip/rga/rga.c          |  3 +--
->>>  drivers/media/platform/rockchip/rga/rga.h          |  5 ++++
->>>  drivers/media/platform/rockchip/rkvdec/rkvdec.c    |  2 +-
->>>  drivers/media/platform/rockchip/rkvdec/rkvdec.h    |  5 ++++
->>>  .../media/platform/samsung/exynos-gsc/gsc-core.h   |  6 +++++
->>>  .../media/platform/samsung/exynos-gsc/gsc-m2m.c    |  6 ++---
->>>  .../media/platform/samsung/exynos4-is/fimc-core.h  |  5 ++++
->>>  .../media/platform/samsung/exynos4-is/fimc-m2m.c   |  2 +-
->>>  drivers/media/platform/samsung/s5p-g2d/g2d.c       |  7 +++--
->>>  .../media/platform/samsung/s5p-jpeg/jpeg-core.c    |  9 +++++--
->>>  drivers/media/platform/samsung/s5p-mfc/s5p_mfc.c   |  6 ++---
->>>  .../platform/samsung/s5p-mfc/s5p_mfc_common.h      |  6 +++++
->>>  drivers/media/platform/st/sti/bdisp/bdisp-v4l2.c   |  7 ++++-
->>>  drivers/media/platform/st/sti/delta/delta-v4l2.c   | 26 +++++++++++-------
->>>  drivers/media/platform/st/sti/hva/hva-v4l2.c       | 31 ++++++++++++----------
->>>  drivers/media/platform/st/sti/hva/hva.h            |  2 --
->>>  drivers/media/platform/st/stm32/dma2d/dma2d.c      |  7 +++--
->>>  drivers/media/platform/sunxi/sun8i-di/sun8i-di.c   |  3 +--
->>>  .../platform/sunxi/sun8i-rotate/sun8i_rotate.c     |  3 +--
->>>  drivers/media/platform/ti/omap3isp/ispvideo.c      |  4 +--
->>>  drivers/media/platform/ti/omap3isp/ispvideo.h      |  6 +++++
->>>  drivers/media/platform/verisilicon/hantro.h        |  5 ++++
->>>  drivers/media/platform/verisilicon/hantro_drv.c    |  3 +--
->>>  drivers/staging/media/imx/imx-media-csc-scaler.c   |  7 ++++-
->>>  drivers/staging/media/meson/vdec/vdec.c            | 24 ++++++-----------
->>>  drivers/staging/media/meson/vdec/vdec.h            |  5 ++++
->>>  drivers/staging/media/sunxi/cedrus/cedrus.c        |  3 +--
->>>  drivers/staging/media/sunxi/cedrus/cedrus.h        |  5 ++++
->>>  drivers/staging/media/sunxi/cedrus/cedrus_video.c  |  5 ----
->>>  50 files changed, 237 insertions(+), 100 deletions(-)
->>>
->>> diff --git a/drivers/media/pci/ivtv/ivtv-driver.h b/drivers/media/pci/ivtv/ivtv-driver.h
->>> index a6ffa99e16bc64a5b7d3e48c1ab32b49a7989242..cad548b28e360ecfe2bcb9fcb5d12cd8823c3727 100644
->>> --- a/drivers/media/pci/ivtv/ivtv-driver.h
->>> +++ b/drivers/media/pci/ivtv/ivtv-driver.h
->>> @@ -388,6 +388,11 @@ static inline struct ivtv_open_id *fh2id(struct v4l2_fh *fh)
->>>  	return container_of(fh, struct ivtv_open_id, fh);
->>>  }
->>>  
->>> +static inline struct ivtv_open_id *file2id(struct file *filp)
->>> +{
->>> +	return container_of(file_to_v4l2_fh(filp), struct ivtv_open_id, fh);
->>
->> Why not write:
->>
->> 	return fh2id(file_to_v4l2_fh(filp));
->>
->> Same for all other drivers that do this. I prefer to have the contained_of()
->> in just one place.
-> 
-> Because fh2id gets removed in "[PATCH 57/65] media: ivtv: Access v4l2_fh
-> from file". I can use it in this patch and drop it later, would you
-> prefer that ?
+The design of i.MX91 platform is very similar to i.MX93.
+Extracts the common parts in order to reuse code.
 
-Based on the irc discussion some drivers need both, so yes, I prefer that the
-file2foo inline calls the fh2foo inline.
+The mainly difference between i.MX91 and i.MX93 is as follows:
+- i.MX91 removed some clocks and modified the names of some clocks.
+- i.MX91 only has one A core.
+- i.MX91 has different pinmux.
 
-Regards,
+---
+Changes for v8:
+- add Reviewed-by tag for patch #2/3/4/5/6/7/8/9/11.
+- modify commit message for patch #10.
+- move imx91 before imx93 in Makefile for patch #6.
+- modify the commit message to keep wrap at 75 chars for patch #5.
+- Link to v7: https://lore.kernel.org/imx/20250728071438.2332382-1-joy.zou@nxp.com/
 
-	Hans
+Changes for v7:
+- Optimize i.MX91 num_clks hardcode with ARRAY_SIZE()for patch #10.
+- Add new patch in order to optimize i.MX93 num_clks hardcode
+  with ARRAY_SIZE() for patch #9.
+- remove this unused comments for patch #6.
+- align all pinctrl value to the same column for patch #6.
+- add aliases because remove aliases from common dtsi for patch #6.
+- remove fec property eee-broken-1000t from imx91 and imx93 board dts
+  for patch #6 and #7.
+- The aliases are removed from common.dtsi because the imx93.dtsi
+  aliases are removed for patch #4.
+- Add new patch that move aliases from imx93.dtsi to board dts for
+  patch #3.
+- These aliases aren't common, so need to drop in imx93.dtsi for patch #3.
+- Only add aliases using to imx93 board dts for patch #3.
+- patch #3 changes come from review comments:
+  https://lore.kernel.org/imx/4e8f2426-92a1-4c7e-b860-0e10e8dd886c@kernel.org/
+- add clocks constraints in the if-else branch for patch #2.
+- reorder the imx93 and imx91 if-else branch for patch #2.
+- patch #2 changes come from review comments:
+  https://lore.kernel.org/imx/urgfsmkl25woqy5emucfkqs52qu624po6rd532hpusg3fdnyg3@s5iwmhnfsi26/
+- add Reviewed-by tag for patch #2.
+- Link to v6: https://lore.kernel.org/imx/20250623095732.2139853-1-joy.zou@nxp.com/
 
-> 
->>> +}
->>> +
->>>  struct yuv_frame_info
->>>  {
->>>  	u32 update;
->>
->> <snip>
->>
->>> diff --git a/drivers/media/platform/allegro-dvt/allegro-core.c b/drivers/media/platform/allegro-dvt/allegro-core.c
->>> index 1f134e08923a528cc676f825da68951c97ac2f25..74977f3ae4844022c04de877f31b4fc6aaac0749 100644
->>> --- a/drivers/media/platform/allegro-dvt/allegro-core.c
->>> +++ b/drivers/media/platform/allegro-dvt/allegro-core.c
->>> @@ -302,6 +302,11 @@ struct allegro_channel {
->>>  	unsigned int error;
->>>  };
->>>  
->>> +static inline struct allegro_channel *file_to_channel(struct file *filp)
->>> +{
->>> +	return container_of(file_to_v4l2_fh(filp), struct allegro_channel, fh);
->>> +}
->>> +
->>>  static inline int
->>>  allegro_channel_get_i_frame_qp(struct allegro_channel *channel)
->>>  {
->>> @@ -3229,7 +3234,7 @@ static int allegro_open(struct file *file)
->>>  
->>>  static int allegro_release(struct file *file)
->>>  {
->>> -	struct allegro_channel *channel = fh_to_channel(file->private_data);
->>> +	struct allegro_channel *channel = file_to_channel(file);
->>
->> So a file_to_channel inline function was added, but it is used in just one
->> place.
->>
->> I would prefer to just drop the inline function and instead write:
->>
->> 	struct allegro_channel *channel = fh_to_channel(file_to_v4l2_fh(file));
->>
->> If this is needed in two or more places, then the extra inline makes sense,
->> but it is a fairly common pattern that it is only needed in the release function.
->>
->> Adding a new inline just for that seems overkill to me.
-> 
-> file_to_channel() gets used in more places in "[PATCH 29/65] media:
-> allegro: Access v4l2_fh from file", where fh_to_channel() is dropped.
-> I'd rather keep it in this patch instead of having to modify the
-> allegro_release() function in patch 29/65.
-> 
->>>  
->>>  	v4l2_m2m_ctx_release(channel->fh.m2m_ctx);
->>>  
-> 
+Changes for v6:
+- add changelog in per patch.
+- correct commit message spell for patch #1.
+- merge rename imx93.dtsi to imx91_93_common.dtsi and move i.MX93
+  specific part from imx91_93_common.dtsi to imx93.dtsi for patch #3.
+- modify the commit message for patch #3.
+- restore copyright time and add modification time for common dtsi for
+  patch #3.
+- remove unused map0 label in imx91_93_common.dtsi for patch #3.
+- remove tmu related node for patch #4.
+- remove unused regulators and pinctrl settings for patch #5.
+- add new modification for aliases change patch #6.
+- Link to v5: https://lore.kernel.org/imx/20250613100255.2131800-1-joy.zou@nxp.com/
+
+Changes for v5:
+- rename imx93.dtsi to imx91_93_common.dtsi.
+- move imx93 specific part from imx91_93_common.dtsi to imx93.dtsi.
+- modify the imx91.dtsi to use imx91_93_common.dtsi.
+- add new the imx93-blk-ctrl binding and driver patch for imx91 support.
+- add new net patch for imx91 support.
+- change node name codec and lsm6dsm into common name audio-codec and
+  inertial-meter, and add BT compatible string for imx91 board dts.
+- Link to v4: https://lore.kernel.org/imx/20250121074017.2819285-1-joy.zou@nxp.com/
+
+Changes for v4:
+- Add one imx93 patch that add labels in imx93.dtsi
+- modify the references in imx91.dtsi
+- modify the code alignment
+- remove unused newline
+- delete the status property
+- align pad hex values
+- Link to v3: https://lore.kernel.org/imx/20241120094945.3032663-1-pengfei.li_1@nxp.com/
+
+Changes for v3:
+- Add Conor's ack on patch #1
+- format imx91-11x11-evk.dts with the dt-format tool
+- add lpi2c1 node
+- Link to v2: https://lore.kernel.org/imx/20241118051541.2621360-1-pengfei.li_1@nxp.com/
+
+Changes for v2:
+- change ddr node pmu compatible
+- remove mu1 and mu2
+- change iomux node compatible and enable 91 pinctrl
+- refine commit message for patch #2
+- change hex to lowercase in pinfunc.h
+- ordering nodes with the dt-format tool
+- Link to v1: https://lore.kernel.org/imx/20241108022703.1877171-1-pengfei.li_1@nxp.com/
+
+Joy Zou (10):
+  dt-bindings: soc: imx-blk-ctrl: add i.MX91 blk-ctrl compatible
+  arm64: dts: freescale: move aliases from imx93.dtsi to board dts
+  arm64: dts: freescale: rename imx93.dtsi to imx91_93_common.dtsi and
+    modify them
+  arm64: dts: imx91: add i.MX91 dtsi support
+  arm64: dts: freescale: add i.MX91 11x11 EVK basic support
+  arm64: dts: imx93-11x11-evk: remove fec property eee-broken-1000t
+  arm64: defconfig: enable i.MX91 pinctrl
+  pmdomain: imx93-blk-ctrl: use ARRAY_SIZE() instead of hardcode number
+  pmdomain: imx93-blk-ctrl: mask DSI and PXP PD domain register on
+    i.MX91
+  net: stmmac: imx: add i.MX91 support
+
+Pengfei Li (1):
+  dt-bindings: arm: fsl: add i.MX91 11x11 evk board
+
+ .../devicetree/bindings/arm/fsl.yaml          |    6 +
+ .../soc/imx/fsl,imx93-media-blk-ctrl.yaml     |   59 +-
+ arch/arm64/boot/dts/freescale/Makefile        |    1 +
+ .../boot/dts/freescale/imx91-11x11-evk.dts    |  674 ++++++++
+ arch/arm64/boot/dts/freescale/imx91-pinfunc.h |  770 +++++++++
+ arch/arm64/boot/dts/freescale/imx91.dtsi      |   71 +
+ .../{imx93.dtsi => imx91_93_common.dtsi}      |  176 +-
+ .../boot/dts/freescale/imx93-11x11-evk.dts    |   20 +-
+ .../boot/dts/freescale/imx93-14x14-evk.dts    |   15 +
+ .../boot/dts/freescale/imx93-9x9-qsb.dts      |   18 +
+ .../dts/freescale/imx93-kontron-bl-osm-s.dts  |   21 +
+ .../dts/freescale/imx93-phyboard-nash.dts     |   21 +
+ .../dts/freescale/imx93-phyboard-segin.dts    |    9 +
+ .../freescale/imx93-tqma9352-mba91xxca.dts    |   11 +
+ .../freescale/imx93-tqma9352-mba93xxca.dts    |   25 +
+ .../freescale/imx93-tqma9352-mba93xxla.dts    |   25 +
+ .../dts/freescale/imx93-var-som-symphony.dts  |   17 +
+ arch/arm64/boot/dts/freescale/imx93.dtsi      | 1512 ++---------------
+ arch/arm64/configs/defconfig                  |    1 +
+ .../net/ethernet/stmicro/stmmac/dwmac-imx.c   |    2 +
+ drivers/pmdomain/imx/imx93-blk-ctrl.c         |   23 +-
+ 21 files changed, 1938 insertions(+), 1539 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91-pinfunc.h
+ create mode 100644 arch/arm64/boot/dts/freescale/imx91.dtsi
+ copy arch/arm64/boot/dts/freescale/{imx93.dtsi => imx91_93_common.dtsi} (90%)
+ rewrite arch/arm64/boot/dts/freescale/imx93.dtsi (97%)
+
+-- 
+2.37.1
 
