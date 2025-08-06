@@ -1,74 +1,46 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8366B1A23A0
-	for <imx@lists.linux.dev>; Wed,  6 Aug 2025 14:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE0428F958;
+	Wed,  6 Aug 2025 15:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754491716; cv=none; b=lBmM6w9EsJrm87AJfdamI0TlaUB4V7eBeYGHvzlbBeTWVGj3qFWiBWbN33d5/kwjNkm3wmvb3OciUN71FvpVzN8bUfpjiBa3ZM2vaGLLalmoR8H0oHLZBz2vL/ZEJlfgzX1Mj3qXQVKIRX7d/A2lKdJ2HKOYjzQHjdcNYuv//UE=
+	t=1754492493; cv=none; b=NFdQUPjAKj0mGhdDrqTWCZeZphteE1Y8J9q2CA3csW9cTKL91Jwdv/krWjb6roQBZIsaV5cZhiLU4XXLOPkDLoU067DjrrV4udDa+Rbdk8BGes5iaOfSWdDc0CJ3A2rmZxyrOfGdlNlTTB2iI/rA6Ww+xF8huJ9qXtv3e1cWt1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754491716; c=relaxed/simple;
-	bh=/WaxHr/fcNNvwBMyYXeMTnOq8nei6iL8c2DAY83YZms=;
+	s=arc-20240116; t=1754492493; c=relaxed/simple;
+	bh=rQNIJlHRHG4C4FgpSDwf66MC/i7tJ+Xz17XeBAYuppg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NzkFBHpCkXxyTHMCCuRiCQm19pU2HQ5XI24zOSsiOmYvJB4a2bCArd1fzJ4bA2gvMRvWhtF6inHTV2SktHPmjAhn6UWAc+r5yjHLllnNJjqA3JD+K8uSkcUUvcxEyfWuqVXPUJalNhVHGXujD6L5hXDb9HjIDHBZPLzTFFxapZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=W5/NmI/J; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+	 Content-Type:Content-Disposition:In-Reply-To; b=iXIzG8MrBnwrqAc3rSR0e8WPzpEBy54KYoUWcUJ8/AYAq67AP1flCDv0Ol/5CY/2f9fx7Br4rogUQMEx5+v32aglJnvZB/vRYqHqka/nKLpu3UtO4GpF53bMTfkjsnmTGQr8iv4xNgol3LC5rOHS/ERGGyOtFTqfrgmsu116lTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=xfjbSbKw; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="W5/NmI/J"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7e6696eb422so678493985a.1
-        for <imx@lists.linux.dev>; Wed, 06 Aug 2025 07:48:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1754491712; x=1755096512; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=d+IXGiQjY6etL1HijGeumViSvmoghZhD/MAbBHOTCY8=;
-        b=W5/NmI/JrabXPrd8c4kXoCg/0U5XJz9M2VmKt6QCDh0wFGafawIh74fnIEzkgYaeoK
-         cVC7hcbTVl83TiMWxglFRNMTxTW80HYBOgC8N2wIx4uAXkSZXlZGnpntCGE1iveYOwon
-         3VazlqD+jJ3tUcBMrksi7TF/v6aR1Vl93vG1XYqgkfcPtM+4bWXFsgw7aITlwLLaTtU3
-         zH1dsk5cfgwxA29wWiqayl/FpwmXyPVRCBKouPf2saX7sVShlZUDXk2vTkXDbXqW1DVN
-         IEJnFleC3Kleq0lm3o4lxgweFPuzxWbly3mvIYyupOkvPDT3DInMschuUp40EZLf9Gmu
-         tUBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754491712; x=1755096512;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d+IXGiQjY6etL1HijGeumViSvmoghZhD/MAbBHOTCY8=;
-        b=czWpKwoqcxsGUOcAL4ptSIHR7AtmnJxgYHwYK1EDbu5g901wLy+wBzEsxXHMQxyrEc
-         oXTOzUIUH4TdbbCz5tKrqquvSsPrXFJSjVfprfRMZcOsmH5M/c50CFKNvK8i6n7PrYT8
-         QlawvTIpSvSbV4M8ATXQ44GkUe4OD+Epr7tbFHlzxHslM0KT1bpXnduBZJoxMtOjPLuf
-         9+kK0Oon8P4Y+EkHJSUqC9bbBTCgr3IXwBxMNGaSV9qvHj5Q/GBFF77U7JKsof+Gzsgg
-         ASb3Rf9vhHAeUCrd0oOqjqFrxMIjqRPXTOGzbJNp1UZOynL7AFxsy4gpc+WCvxq2N4jn
-         ceSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXxPkFDcLnjnMwHJ3t/kgpp3RzZJRpoItnsMl0Z8hLPtLpXtXls1cHkkC3EzDwj3jWeMMw=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx1w+QGxgHW3wCiL5jeaIvU6xCgwRbYAwUfMTWks70zswY70erD
-	lQv0G1AQSsm66JrgEpFxk3V5+Ct5+vK4qy+ZByn+rInLiFEQY7PpSxCAWI4wmr8vXQ==
-X-Gm-Gg: ASbGncthI7c3ZeDPvWzrqN3LvHSp+vk2JXc23O7DKhvIvcv2FO3cpkIOKrDKeRqbpLE
-	1CTFLHBzYUWC0S3KkwKCxqE4sOgCAkHBrCCQA/lweEryQrpTQvTRWOw3Xlhw3vWLx1WjTLp/ZPy
-	1kCqsEmQRaJCSxLZ+HPaRBpssJTgmpUv1HGi8Jac38gC7BAlLUUenduWXxL1UbnbhcPiPiVxUWG
-	TkSow7KdQCkdDqN6Tj/7YPKfDprUjz3JcXSM9QHjRS+MAZHb9vSt16sRYrHJla0cUa1oJEwJeb1
-	KKpCJUD4daBsnHgUtVZLrMV5fmz0xVTYyu9z4wlZvNV3PrFRvAf53uHpBbDL//dVpjyh7SwwMYf
-	8rNM9DMPreGQ/YePcLggbcbAzlwXAbjBVgz8NRek0
-X-Google-Smtp-Source: AGHT+IEoV2J1KPJpYzF/n7at19yY+noWoVgVnUNgi+OTjlcXhUx/F0riVfkSgi2p1CxUP3mVELiYww==
-X-Received: by 2002:a05:620a:2914:b0:7e6:9c12:f0ce with SMTP id af79cd13be357-7e814ed1dadmr517512885a.66.1754491712397;
-        Wed, 06 Aug 2025 07:48:32 -0700 (PDT)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e7fa87e7d0sm445254285a.82.2025.08.06.07.48.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Aug 2025 07:48:31 -0700 (PDT)
-Date: Wed, 6 Aug 2025 10:48:27 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xfjbSbKw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Ryoa+Ztf111PO2c6Sqsua4pClHmpT5cAMCQqHL/qJjY=; b=xfjbSbKwbPlNkpJVFJlfUR23Tw
+	i3hDZ6cZZgt2wxW38lWbp3fQuJIms89XGInfbcyuvw7m/OcPaNFemqGVxHKnz48S85CGCdaRJyxOO
+	Er8/xi7Ewr13KUYVqOkpIFuJWs7+asspOM2lOPLID72aIMFL8Cy1jW/twCYr+NigEQlk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1ujfdq-003tJZ-IS; Wed, 06 Aug 2025 17:01:22 +0200
+Date: Wed, 6 Aug 2025 17:01:22 +0200
+From: Andrew Lunn <andrew@lunn.ch>
 To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, mingo@kernel.org, tglx@linutronix.de,
-	jun.li@nxp.com, viro@zeniv.linux.org.uk,
-	thomas.weissschuh@linutronix.de, andriy.shevchenko@linux.intel.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH] usb: core: hcd: fix accessing unmapped memory in
- SINGLE_STEP_SET_FEATURE test
-Message-ID: <2f0148fa-ba18-4711-81dd-89da3bdd1627@rowland.harvard.edu>
-References: <20250806083955.3325299-1-xu.yang_2@nxp.com>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, hkallweit1@gmail.com,
+	o.rempel@pengutronix.de, pabeni@redhat.com, netdev@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [RESEND] net: phy: fix NULL pointer dereference in
+ phy_polling_mode()
+Message-ID: <b9140415-2478-4264-a674-c158ca14eb07@lunn.ch>
+References: <20250806082931.3289134-1-xu.yang_2@nxp.com>
+ <aJMWDRNyq9VDlXJm@shell.armlinux.org.uk>
+ <ywr5p6ccsbvoxronpzpbtxjqyjlwp5g6ksazbeyh47vmhta6sb@xxl6dzd2hsgg>
+ <aJNSDeyJn5aZG7xs@shell.armlinux.org.uk>
+ <unh332ly5fvcrjgur4y3lgn4m4zlzi7vym4hyd7yek44xvfrh5@fmavbivvjfjn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,29 +49,105 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250806083955.3325299-1-xu.yang_2@nxp.com>
+In-Reply-To: <unh332ly5fvcrjgur4y3lgn4m4zlzi7vym4hyd7yek44xvfrh5@fmavbivvjfjn>
 
-On Wed, Aug 06, 2025 at 04:39:55PM +0800, Xu Yang wrote:
-> The USB core will unmap urb->transfer_dma after SETUP stage completes.
-> Then the USB controller will access unmapped memory when it received
-> device descriptor. If iommu is equipped, the entire test can't be
-> completed due to the memory accessing is blocked.
+> > > Reproduce step is simple:
+> > > 
+> > > 1. connect an USB to Ethernet device to USB port, I'm using "D-Link Corp.
+> > >    DUB-E100 Fast Ethernet Adapter".
+
+static const struct driver_info dlink_dub_e100_info = {
+        .description = "DLink DUB-E100 USB Ethernet",
+        .bind = ax88172_bind,
+        .status = asix_status,
+        .link_reset = ax88172_link_reset,
+        .reset = ax88172_link_reset,
+        .flags =  FLAG_ETHER | FLAG_LINK_INTR,
+        .data = 0x009f9d9f,
+};
+
+{
+        // DLink DUB-E100
+        USB_DEVICE (0x2001, 0x1a00),
+        .driver_info =  (unsigned long) &dlink_dub_e100_info,
+}, {
+
+Is this the device you have?
+
+> > > 2. the asix driver (drivers/net/usb/asix_devices.c) will bind to this USB
+> > >    device.
+> > > 
+> > > root@imx95evk:~# lsusb -t
+> > > /:  Bus 001.Port 001: Dev 001, Class=root_hub, Driver=ci_hdrc/1p, 480M
+> > >     |__ Port 001: Dev 003, If 0, Class=Vendor Specific Class, Driver=asix, 480M
+> > > 
+> > > 3. then the driver will create many mdio devices. 
+> > > 
+> > > root@imx95evk:/sys/bus/mdio_bus# ls -d devices/usb*
+> > > devices/usb-001:005:00  devices/usb-001:005:04  devices/usb-001:005:08  devices/usb-001:005:0c  devices/usb-001:005:10  devices/usb-001:005:14  devices/usb-001:005:18  devices/usb-001:005:1c
+> > > devices/usb-001:005:01  devices/usb-001:005:05  devices/usb-001:005:09  devices/usb-001:005:0d  devices/usb-001:005:11  devices/usb-001:005:15  devices/usb-001:005:19  devices/usb-001:005:1d
+> > > devices/usb-001:005:02  devices/usb-001:005:06  devices/usb-001:005:0a  devices/usb-001:005:0e  devices/usb-001:005:12  devices/usb-001:005:16  devices/usb-001:005:1a  devices/usb-001:005:1e
+> > > devices/usb-001:005:03  devices/usb-001:005:07  devices/usb-001:005:0b  devices/usb-001:005:0f  devices/usb-001:005:13  devices/usb-001:005:17  devices/usb-001:005:1b  devices/usb-001:005:1f
+> > 
+> > This looks broken - please check what
+> > /sys/bus/mdio_bus/devices/usb*/phy_id contains.
 > 
-> Fix it by calling map_urb_for_dma() again for IN stage. To reduce
-> redundant map for urb->transfer_buffer, this will also set
-> URB_NO_TRANSFER_DMA_MAP flag before first map_urb_for_dma() to skip
-> dma map for urb->transfer_buffer and clear URB_NO_TRANSFER_DMA_MAP
-> flag before second map_urb_for_dma().
-> 
-> Fixes: 216e0e563d81 ("usb: core: hcd: use map_urb_for_dma for single step set feature urb")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Jun Li <jun.li@nxp.com>
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
+> root@imx95evk:~# cat /sys/bus/mdio_bus/devices/usb*/phy_id
+> 0x00000000
+> 0x00000000
+> 0x00000000
+> 0x02430c54
+> 0x0c540c54
+> 0x0c540c54
+> 0x0c540c54
+> 0x0c540c54
 
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+This suggests which version of the asix device has broken MDIO bus
+access.
 
-I guess we both overlooked the fact that the URBs used in this debugging 
-pathway get submitted in two partial steps.
+The first three 0x00000000 are odd. If there is no device at an
+address you expect to read 0xffffffff. phylib will ignore 0xffffffff
+and not create a device. 0x00000000 suggests something actually is on
+the bus, and is responding to reads of registers 2 and 3, but
+returning 0x0000 is not expected.
 
-Alan Stern
+And then 0x02430c54 for all other addresses suggests the device is not
+correctly handling the bus address, and is mapping the address
+parameter to a single bus address.
+
+What does asix_read_phy_addr() return?
+
+This is completely untested, not even compiled:
+
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 9b0318fb50b5..e136b25782d9 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -260,13 +260,20 @@ static int ax88172_bind(struct usbnet *dev, struct usb_interface *intf)
+        dev->mii.dev = dev->net;
+        dev->mii.mdio_read = asix_mdio_read;
+        dev->mii.mdio_write = asix_mdio_write;
+-       dev->mii.phy_id_mask = 0x3f;
+        dev->mii.reg_num_mask = 0x1f;
+ 
+        dev->mii.phy_id = asix_read_phy_addr(dev, true);
+        if (dev->mii.phy_id < 0)
+                return dev->mii.phy_id;
+ 
++       if (dev->mii.phy_id > 31) {
++               netdev_err(dev->net, "Invalid PHY address %d\n",
++                          dev->mii.phy_id);
++               return -EINVAL;
++       }
++
++       dev->mii.phy_id_mask = BIT(dev->mii.phy_id);
++
+        dev->net->netdev_ops = &ax88172_netdev_ops;
+        dev->net->ethtool_ops = &ax88172_ethtool_ops;
+        dev->net->needed_headroom = 4; /* cf asix_tx_fixup() */
+
+The idea is to limit the scanning of the bus to just the address where
+we expect the PHY to be.  See if this gives you a single PHY, and that
+PHY actually works.
+
+	Andrew
