@@ -1,63 +1,64 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB17134BD
-	for <imx@lists.linux.dev>; Wed,  6 Aug 2025 13:27:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8017D28C866
+	for <imx@lists.linux.dev>; Wed,  6 Aug 2025 13:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754486837; cv=none; b=YB33bYDYu2nOf+6gZY11OAPJsxz8UY6pKTFFPqC0okRTLHU0wp9LJsYNArnxnsW92uJd28rOL7kTy7KvLaI9Bz+v/RxP/pvl+u0grYKXjaJuZxDnvH1ay9miS2tF9GXPigW5r7e1fPWE+Dea7dPZh+oEWS3xvcKjejcDvm9EqNg=
+	t=1754488170; cv=none; b=lETAxNLMZVSudVV9RmYOjvGsBE4UF83akuQHAHphR2TDEVRSOQcJQMZGN4esW+CFDCz/Ysb7X9m8bhS7Q0N3aSQdt7b/Xo43zk4DTSP4S4ayMGpqRtEDNTMhFbhXaqOYv/Pdpu73WfRzdjcw2N+sJ1t2nTikW3J5dDva0zWivUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754486837; c=relaxed/simple;
-	bh=2SL2HIqFBKBgfphArow9T9jHTK03gKBHImShrrU36+E=;
+	s=arc-20240116; t=1754488170; c=relaxed/simple;
+	bh=EZOPf18f1ehT/pYeALbvj9ffOHKrv9bhpiMWGVx09fs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WJfCc8bm2+y2Km7JraxF+aZ4lIGSb4i7MAJa8UKUUpYCGJgK96d7AnNHumSZJn3jJKpOasj5zzdMiMXxvdDrtHbIYXEz4g0q0fVal4ewT7DplrLZkZzf7kx5Jq3RIiJXTVehbb4i+vU8uR6BC8xU/0qD247mSo3ZBEnz0j/xoOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ujeAY-0007wq-Ev; Wed, 06 Aug 2025 15:27:02 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	 Content-Type:Content-Disposition:In-Reply-To; b=DXW1TDm1HYda2lFi0noBcQ5xrmLPsQD4pVNvpPGy6PcYR0dDR4hlQDqzg8PTsUS0HTRqyJLjHaKZGSH66VLIMJ5hutkAKHlvf32FZGKpPsbAKK/xQ4opzzP56upAUVLoLJC3cMVwotZ8upknS3xAKYh+S9M9i7QNQugL08gGIJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=HIj33Esb; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="HIj33Esb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Hx75GfJBE17gahFtByj409jMkcTDImb3a5kJ8Lf/J/o=; b=HIj33Esb5PfQk7IBwUmIlHkHUA
+	LRuy+nHOQx2DwWZCk/jisqrsCt8fo5S8Jx/N+tYAAJKTWiLXwROaNNmqInc9CviRg+tof3dzGs5df
+	tcaakCTGvzKPOHUt37VX4VWBIJ7ljBcud31mWEagk93ylSie7vhn0KKS+ZuX3MU+jiJfUZ+h0hbQi
+	AEJYzuP68hqbqsRS/o0ARTZSSW3K5taUDByDOaKPBHdQeZ6idA4TwSfkeTO143/Mf5Qk/ScIqS6y4
+	FfNbZ3L41f3L5G9icNbagOYuj/QeTQ5IG/KYt5CUa+DuFW1MwxPXdRYRBTXj5piPS85kyD3WjjYWZ
+	L8TU60yQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54790)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ujeAX-00CDWu-2f;
-	Wed, 06 Aug 2025 15:27:01 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ujeAX-00CH9C-2J;
-	Wed, 06 Aug 2025 15:27:01 +0200
-Date: Wed, 6 Aug 2025 15:27:01 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	Frank Li <frank.li@nxp.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [EXT] Re: [PATCH v18 3/7] firmware: imx: add driver for NXP
- EdgeLock Enclave
-Message-ID: <20250806132701.fouikyuqtzdsxqwh@pengutronix.de>
-References: <20250619-imx-se-if-v18-3-c98391ba446d@nxp.com>
- <20250625105546.pxuatcnfpe7mssgs@pengutronix.de>
- <AM9PR04MB8604611B8D91B5526C9704E69545A@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <20250627084653.6vgwnm3llf3zknlp@pengutronix.de>
- <b02055bb-0995-4fd8-99f3-4ca5146eedd4@kontron.de>
- <20250630121722.wviidlggt7hguyt7@pengutronix.de>
- <087b8689-7443-4720-a94c-160edd31a5da@kontron.de>
- <AM9PR04MB8604C05882605EDB4913DA089549A@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <20250714094124.e6fnkrocnqagbm22@pengutronix.de>
- <AM9PR04MB8604EFCC5400DEBB7DF0CF49952DA@AM9PR04MB8604.eurprd04.prod.outlook.com>
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1ujeVb-0004cA-2P;
+	Wed, 06 Aug 2025 14:48:47 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1ujeVV-00079n-1X;
+	Wed, 06 Aug 2025 14:48:41 +0100
+Date: Wed, 6 Aug 2025 14:48:41 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Joy Zou <joy.zou@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, peng.fan@nxp.com, richardcochran@gmail.com,
+	catalin.marinas@arm.com, will@kernel.org, ulf.hansson@linaro.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, frieder.schrempf@kontron.de,
+	primoz.fiser@norik.com, othacehe@gnu.org,
+	Markus.Niebel@ew.tq-group.com, alexander.stein@ew.tq-group.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com, netdev@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	Frank.Li@nxp.com
+Subject: Re: [PATCH v8 11/11] net: stmmac: imx: add i.MX91 support
+Message-ID: <aJNdOTZHfyG7fMgE@shell.armlinux.org.uk>
+References: <20250806114119.1948624-1-joy.zou@nxp.com>
+ <20250806114119.1948624-12-joy.zou@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,155 +67,19 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AM9PR04MB8604EFCC5400DEBB7DF0CF49952DA@AM9PR04MB8604.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20250806114119.1948624-12-joy.zou@nxp.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 25-08-06, Pankaj Gupta wrote:
-> > On 25-07-09, Pankaj Gupta wrote:
-> > > > Am 30.06.25 um 14:17 schrieb Marco Felsch:
-
-...
-
-> > Lockdown: For a verified boot setup you need to burn an eFuse at some
-> point,
-> > to tell the bootROM to boot only correct verified firmware images.
-> > 
-> > After this lockdown it's no longer possible to burn eFuses from the REE
-> albeit
-> > the production line setup still requires the support.
-> > 
-> Understood. ELE access from both secure and non-secure world is fixed in Q3
-> release.
-> User can be able to modify eFuses via OPTEE.
-
-Splitting the read and write between two drivers is even worse.
-
-Can you please point out why you can't just move the driver parts into
-the tee? I do see many advantages if only op-tee is used:
-
- + Minimize the maintainer effort, because only one driver
-   implementation is used.
- + TEE code could be reused by other OSes
- + You could already start adding the support for it to OP-TEE because
-   no ELE-FW update is required.
- + TEE is used anyway for new projects due to CRA and friends
- + Concurrent access handling is done by the TEE core
-
-The only downside of this approach is the integration effort for the
-TEE, but this shouldn't be an excuse. Mostly all well known buildsystems
-like: Yocto/OE, buildroot, ptxdist do have mainline support for OP-TEE.
-
-> > > >>  - With new regulations like the EU CRA I think we need some sort of
-> > > >>    secure-enclave anyway.
-> > >
-> > > > Probably some sort of, yes. But not necessarily in the form of TEE
-> > > > or TrustZone, I guess.
-> > > To use ELE features through Linux, there is no dependency on OPTEE-OS.
-> > 
-> > Once again, still no fix available and if your system requires a TEE
-> you're forced
-> > to move the ELE communication into the TEE (at least until now).
-> > 
-> > Also the eFuse R/W access is not possible from the REE/Linux after doing
-> the
-> > device lockdown.
-> > 
-> ELE access from both secure and non-secure world will be fixed in Q3
-> release.
-> User can be able to modify eFuses via OPTEE.
-
-NACK, please see my comment above.
-
-> > > >>  - Making it optional cause more paths of potential errors e.g. by
-> not
-> > > >>    including the correct "secure.dtsi". Multiple paths also require
-> more
-> > > >>    maintain- and testing effort. IMHO I do think that one of the
-> paths
-> > > >>    get unmaintened at some point but we would need to keep it for
-> > > >>    backward compatibility.
-> > > >>
-> > > >>    Having one implementation eliminates this since.
-> > > >>
-> > > >>  - All above points assume that the ELE-FW and -HW is capable of
-> talking
-> > > >>    to both world, which is not the case. As we learned NXP doesn't
-> have
-> > > >>    a fix for the 2-MUs ELE yet and even more important there are 1-MU
-> > > >>    ELE-IPs.
-> > >
-> > > For i.MX9x SoC(s) there is at least one dedicated ELE MU(s) for each
-> > > world - Linux(one or more) and OPTEE-OS (one or more), that needs to
-> > > be shared between them.
-> > 
-> > Please mention this within your commit message.
-> Accepted & mentioned.
+On Wed, Aug 06, 2025 at 07:41:19PM +0800, Joy Zou wrote:
+> Add i.MX91 specific settings for EQoS.
 > 
-> > 
-> > > As mentioned earlier, there is an issue of using MUs simultaneously,
-> > > from both worlds. Fix is in progress.
-> > 
-> > So until now no fix available and i.MX93 based products which do use a TEE
-> > are forced to move the communication into OP-TEE.
-> > 
-> > > >> I do see the (minimal) drawback of having +1 FW but I think this is
-> > > >> more an integration problem.
-> > > >> Speaking of FW files, for the new i.MX9* you already have plenty fo
-> > > >> them: bootloader, TF-A, ele-fw, scu-fw (i.MX95). So your integation
-> > > >> needs to handle multiple firmware files already.
-> > >
-> > > > Sure, but I really like to keep the complexity and therefore the
-> > > > number of FW files as low as possible. I'm not sure what has more
-> > > > weight in terms of
-> > > > security: shipping an additional firmware and therefore increasing
-> > > > the attack surface or maintaining an additional code-path.
-> > >
-> > > There is no +1 firmware in case of i.MX93.
-> > >
-> > > >>
-> > > >>> Anyway, I see your point of having a single implementation for the
-> > > >>> ELE API in the "right" place. But as far as I know other platforms
-> > > >>> like
-> > > >>> STM32MP1 also implement both ways for the HWRNG, secure access via
-> > > >>> OPTEE and non-secure access via kernel directly.
-> > > >>
-> > > >> I'm not a STM32MP1 expert but here you have this setup with the
-> > > >> *-scmi.dtsi. So you have two code paths which needs to be
-> > > >> maintained and tested. Also if one customer of yours want to use
-> > > >> OP-TEE you need the integration anyway, so you (Kontron) needs to
-> > > >> maintain multiple configuration as well. I don't see the added value.
-> > > >>
-> > > >> I think for STM32MP1 the *-scmi.dtsi support was added later
-> > > >> because it required a lot effort to support it. This is not the
-> > > >> case for the
-> > > >> i.MX9* series.
-> > >
-> > > > Anyway, thanks for elaborating. Your points are all valid and
-> > > > basically I
-> > > agree. I'm fine with either way. But I'm afraid that implementing the
-> > > ELE API in OP-TEE only will cause another tremendous delay for having
-> > > ELE access in the kernel, especially seeing how slow NXP seems to be
-> > > working on these topics right now.
-> > >
-> > > To use ELE features through Linux, there is no dependency on OPTEE-OS.
-> > 
-> > How exactly do you provide the eFuse write access after the device was
-> locked
-> > down?
-> As mentioned above by you. It will be done via OPTEE-OS (or may be via TFA).
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
 
-Why TF-A? Please see my comments above.
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-At the moment I don't see why the ELE must be a Linux driver. You could
-start adding a TEE driver now, because there is no need to wait 3 months
-for a ELE-FW fix.
+Thanks!
 
-IMHO having a dedicated normal-world driver makes only sense for
-bootlaoders which don't have support for the TEE communication but need
-access to the ELE. This is not the case for the kernel.
-
-Regards,
-  Marco
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
