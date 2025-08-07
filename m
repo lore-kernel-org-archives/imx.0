@@ -1,232 +1,284 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013070.outbound.protection.outlook.com [52.101.72.70])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A171CAA65
-	for <imx@lists.linux.dev>; Thu,  7 Aug 2025 04:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754539754; cv=fail; b=b+3i6LNobohh7pY13R9Tyn29Ar6Ma2pMev/lex8Osx8tAZ8uxCi+eUjZAV3/80BqLK3ImHKIeIyqlj5oEz1eROATCIsTYuwTKuujibh1RDeQVBpQkVg1X+2STgdYvQFk3h9pexlZBc5s27JJGXztfxY2jwc3GfNXEnZ3s6v2ehs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754539754; c=relaxed/simple;
-	bh=f5LLofqDBvOpQEOCRHIA4tCkT3dfs40tGK0r1pnsoEg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=AZaE5ncKYvHqvyw+OXtWXXdbsmmXX1a+iv23camBZRXnLeAVD11ryv7RuINx5IjBwCeA4jEpGdFuwd3UovskW8TlywisoxLgAWDTrWg4JpNmdSm4yr1jnV6Mo+LGHjcZ+FdRiMcrQhuMSt8jVF6aUDWdGvN0MbZnCddi0CImiGs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NVj0tKcG; arc=fail smtp.client-ip=52.101.72.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B6D1F542E
+	for <imx@lists.linux.dev>; Thu,  7 Aug 2025 05:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754542812; cv=none; b=m58xdVasBZWAi+G0X35uSsvr4hcs4Ea6MB9xocE1GbRBP4b3p2/u15f92/N2K0303en8lz5EZiCNO2MnHEf0IoXoqiACDn3wZAOwz1uz388fT+UItkj1zmhNZzbxQoSzu7gsH57A6gk3KgW033/AD0rZEoqr0Ig/bYrm8fuYb5I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754542812; c=relaxed/simple;
+	bh=yOYzFohhd2o0XfNFY9p4eemwAkmIDupzEGpfmoODdWc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=umOpaGIYCs6gQLukiFK0OEma664umqz0XsqT3HdHQdpDqJyxa5yOIAjBRQHtM3NEH9AtsLuE2Shg3mvhdxRmU+z5usGn9Qa4hdhmBnIo4I4Ni647Mb0s2ZfQXjW+L6633jLoZ/+mPVaBDB6t92iBBKIChRSNOoR5Xxvyp1BE5nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=QmRBNN0h; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NVj0tKcG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kI9DfG6F36sQvR5TXOElnilVOTXcMEKteZfAWTCpU96FCYmFEIsa5FVW5c1UFPW56/8iLwg1N0vpqDbCHH8hWpkIQ3eD59XlGxmtIK0LqzHcBPIQ+UyygGg+SvLS631Bj372jssoHxhwsWBFkPiLePmIMVWVsxIvhriE1aFk5pfggP3pimA0/fJLvre1Z0/i2MEty1TVTuY++aA+MEvoh61nQTq0EQR+Ct5q+cuRv0+oFbQaH4dgwAw7KzNr2fatbByWn3axEU5B+1znkIA1rebnaFyr0l8Nw1HIZTXOSd2D4sRdLzj+qdNtRWnau/mUqHUF885BsZ7p6ajqfyuK1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jKYCWVe5wjxo6uiMy90g4/+7L1yLg4irLZURNGzlg88=;
- b=tldMQO5DWra736Z1Z0C9zCUz3y6oKgTwSMOIjGYvVGd/hyOq/Q6JsC+DgyUaohLZbqCl8rwM2ZO7mDdNa3wAWNM1KNZkrjA7IOSXttrC/5GRPfJHIBmbTdwphk0lpOk9obf6rjbxrtJ8tEjDwpB9N7G6SyOAJaRxrUBzyJZV4W2iwz4/9DsNcdLCi4LTNtNJlf4gsKvxca3u13OFDAdQy6MlWDDGMN/vtq1DzTB1PV1GamBR8ppTwpZyLn+UPc0nKyZlQd45bPmXsu6vib5yYftSMa702SFtcbyIjshhhWaX5l7gtGp3OnUoI3CvUYq+7mweDFWfJ4IFKPCyx4zhuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jKYCWVe5wjxo6uiMy90g4/+7L1yLg4irLZURNGzlg88=;
- b=NVj0tKcGSUUTrsiKmj/vf4gu8LCr+Yz86KvgEjwtgFmFYPj/N1gUjgdZ+DRdnL9UFZKdYqC3BmVJR+BOUT65STSKMJlW2hxmKYCcUS0gtquKCVDnAyCp+N/SGYHdcnMlINyE+SazusBh5hAJ46le3/6XnERg1CkOmaZGxxIprQZzbwAed+l9bv8FxxVW1TYVGLE41/UMGOL3jJefjWS/3m/dF5MCC8N6zj2Bye2oYReDn8I7Et/sRNvOkhW0lMvWrgk3cH/BAj+QJSvtx5ONdhZTxJxo0E5FVWByfYGmYkwdU94jY2UhddmzV+rxpqXxA+gmGtFhMJ58nKp5VEke9Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by GVXPR04MB10520.eurprd04.prod.outlook.com (2603:10a6:150:1df::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.13; Thu, 7 Aug
- 2025 04:09:07 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%4]) with mapi id 15.20.9009.013; Thu, 7 Aug 2025
- 04:09:07 +0000
-Date: Thu, 7 Aug 2025 12:03:39 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, max.schulze@online.de, khalasa@piap.pl, 
-	o.rempel@pengutronix.de, linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH] net: usb: asix: avoid to call phylink_stop() a second
- time
-Message-ID: <e3oew536p4eghgtryz7luciuzg5wnwg27b6d3xn5btynmbjaes@dz46we4z4pzv>
-References: <20250806083017.3289300-1-xu.yang_2@nxp.com>
- <a28f38d5-215b-49fb-aad7-66e0a30247b9@lunn.ch>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a28f38d5-215b-49fb-aad7-66e0a30247b9@lunn.ch>
-X-ClientProxiedBy: SG2PR01CA0198.apcprd01.prod.exchangelabs.com
- (2603:1096:4:189::7) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="QmRBNN0h"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=PBcZyW0XcKbk668IHk0f4cPCJPghlABu1S2hNa+xTlg=; b=QmRBNN0hK8PStTUgV85T22s04e
+	WgqmOQqb5nXuQpUSPTVtrFJ4jwiyUDSLnFrlT34DlyUR3XY45NEjHReEKGI2+lJXn1WLnYRsxNcQ8
+	dwG7cMEsEbcdG47oMPalE/S5HHg283Q+9m3utRi0MqnjIaR1F+qHTI0dOtmMLdSzuDLM3OZbEMw5d
+	dK7GxCyKLtc+lKuORHZHR7jbgc1HMtvgCtR1T5dsJuPQ3dDXntI4A5Ua+bHG/6eXp4v7eDFdBHAPM
+	0RU/NegtPqNNHBDxRdomtCd3n/2M/ge8X0tlWJqU+5zCB7D52m21lvCgDG4Ldhlv+kTlTOyIhPdS3
+	ysVTpW6A==;
+Received: from [89.212.21.243] (port=38786 helo=[192.168.69.116])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1ujsNe-00BlMl-0p;
+	Thu, 07 Aug 2025 06:37:29 +0200
+Message-ID: <19634e51-0568-421a-a3c4-b9988c2ccfb1@norik.com>
+Date: Thu, 7 Aug 2025 06:37:27 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|GVXPR04MB10520:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e92867c-4a7f-44e9-a419-08ddd568274f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|19092799006|52116014|1800799024|366016|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jJPHC9aFTUFmjxuUYO/YOtFAahESyYwdtWBzPNvpP79w4bwRu5sPb1xjdeAN?=
- =?us-ascii?Q?of+4mhJfsy0lq5kPwshCBHotFy0m9z7X+StckXZr8DSzhAHba0DaN0CvBXO9?=
- =?us-ascii?Q?TWfaJCO7eA61/T4x8PkZFMeq9iZyRn+WK7dNYlCRrDX1mNXhd+TU9J6TYVlO?=
- =?us-ascii?Q?BKCklMwZ8vAnAuSwSXKca2/wEu6geyTFCj3a682pZ8L/l13cQLiRbpspcB7M?=
- =?us-ascii?Q?ShxPclFWqVf5Rx2RWIgfOw9xgvqWGSYDt//3Tw8DsaDPjfiLHQOf/F4rbkQ3?=
- =?us-ascii?Q?kz1jc0K0f16zOG+D6bG4W9TVvtCqBZGz8DEpuIJ302i9zPt0rH7lsmxvRNUF?=
- =?us-ascii?Q?Om9lLNeJgp0fFcev1oeUfP1OZO6FN4kxJJ9rUh0ZkD1FjUcnSylxZKLM4Uoa?=
- =?us-ascii?Q?qJBeFyXtPoGAEBhN5iFRftRuD3kyd+OLXmozGTHqu5deEDOzF3V8C61mNk0q?=
- =?us-ascii?Q?wUD/W8qGDroTsBTnInk/qAcFrSknWcm+XJ9dwDCsZO7O9WvGflRNPQa1NYRi?=
- =?us-ascii?Q?cnxINOYvk5+ya70KFOBbsoCKoZcc9VG5hUDBGoUAGeCxlS5ismJaObN9UYDe?=
- =?us-ascii?Q?ys9eeypVdPVuJMMRAhapq3m9DjoVpUa0pIl0Hnw28UtQpE6KEy0CSJWyGf8B?=
- =?us-ascii?Q?EPeTNTyyYmeKYXaQCpqRf7MVL26DWOv6VJnvlelyym4j/2MGrlrtEI3ri6HS?=
- =?us-ascii?Q?klvijRfZHPQFcxg+04dI4EyXOt/a27YZDdJ0kYa7xOq1liwRwVLPptrO4AB+?=
- =?us-ascii?Q?rIJsX8zjNPxpAYy76W3P92KfXN+EsiZWuL3pjtrqqYoivVOIXX9UZzlQ958d?=
- =?us-ascii?Q?dWN9mZvjiE6LYcPa/nasJp0Ya1Abv3VIOP25B7NM3VH56BxM4R1s31aHSGKv?=
- =?us-ascii?Q?pUiRJudSGy1hnLD4GNVpZ+MID8LQOaBZRrcNQuDd9VdPjnGGcoJih7UZnBxk?=
- =?us-ascii?Q?DtHhCD3/4tJXyyuFl8iOoZPtjSUO/9gXzYQlPqVwskHUGz69N/7W2MRN4HyG?=
- =?us-ascii?Q?QNeS8NXLQujxS2XpfqcbPfly4FEdzD0mRCu6EC/+lMCldhuMqnAOwFxeKpt2?=
- =?us-ascii?Q?s7eKpnaNNjS5bdyPa1A9zu9i0vPwBnWFsp70FTRr0XLUw1v4/QaB6UQ8aU3Z?=
- =?us-ascii?Q?O09qoT4ae1D7baVTY+6t89gpCBDnjSkdiaAP5PN1BBDHqIE9Q7rf/ghXnkPR?=
- =?us-ascii?Q?Wbv73OT13sk9bZCX9AJUYsbqCs07ld5CiqmaCXOujg6dA8oXhs2YvUpuM9e7?=
- =?us-ascii?Q?yH1eWNzr32eY+NTYOFwuRw9fVNZx5CKL0eqeJ9191sE/A7Vjyv0sJKhGQ9uE?=
- =?us-ascii?Q?fw7wsfo5DReOUE8m+RjyS/zDrVhjQbkxH8gQHuJ773FL+ctGMYw2JIcjbzqa?=
- =?us-ascii?Q?wT9wqDn7Zsyw04BuBAIc36DDgLPgRAqk8SkvFuFHu2afoqQNEszmqi28JUVb?=
- =?us-ascii?Q?9840VTtd3nRxYTuniYjgdqprgd+Q7Ji4+SY8Ksw7wcmO03fuutZVNA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(52116014)(1800799024)(366016)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1QLrLFWfjTFW75Udm08JELfFUi+qTkwMSO7H+eQ//atw5KpfGzRilFtiFlo9?=
- =?us-ascii?Q?S+hYzhXP22tHuLta4LkRQ/biVqYFa6L5a9n7Rl6g2FjsceyT0jWK7AkfpDk7?=
- =?us-ascii?Q?7PKG0QqzsGsrjhVoS7OBchMiYDlGi/Ht/b9CBOdws9kTD9mCTRwtyHxUNmus?=
- =?us-ascii?Q?EwRGym7psBeMowVxRRlmG8AFI+DezbJ2WWlAnP99ZmRqf74sYI62LZ+IvrzV?=
- =?us-ascii?Q?Gkt4DDOhGe1NfAjQrNpqJdq3OhKlQMjoZuReiRKDuw0fVIT7GqS/B4f9R31J?=
- =?us-ascii?Q?S2Z6WcpY3bEPCkzCWkPWp0WeXYteFY8Q3KsMT70OtZqL0W37jxS1bQDupFeQ?=
- =?us-ascii?Q?b1RBA2DP0zp/YHvEn73jLFStQzsi5SPcgijmhowZ9o8SHAvtP52JUAa6U/L0?=
- =?us-ascii?Q?qJKJP9had/1gpaIDrJETpaF2WPzqR3N9FDUfUZkoV/Z3kfo0EjqTQpHEMBKG?=
- =?us-ascii?Q?D6ICciXLRNY0cLjknSPdJWgoVN0IrSh4uewVu7qc5lW38xGxOJKwcTo4iP8w?=
- =?us-ascii?Q?iPJjY8H96aUrgBJMT/iUDzxxLsM95vJAcxok39lzVQ9xz/yXIwV9Bx4l2Iei?=
- =?us-ascii?Q?zBW8XrB/EnoWh/2+JpqgftOGrHTBtIWSYbjKXsFpIvhcsDFEopKbU1aN7gW4?=
- =?us-ascii?Q?OUmjTggs4BbxsqsN9YkD9Os8iMQxE8GSdx1P899pEMElqnvjgKjBR99o6Nzw?=
- =?us-ascii?Q?+cuWqjylehOyc15gRnqPJ4B0hbRIt1NQPG4sEGhFyj4E0yojLFc9MR2WjiQm?=
- =?us-ascii?Q?T12HsV9pXtBzZwwmLk1X34ByfmN/VK94WhPCYwVYiBKZoZU9NFgQDElCdMV/?=
- =?us-ascii?Q?qJR0E0NbPvHnA3mw9AJHRJrjPNfcnwj1MzJfQ29oH9vQEYtDz6vTDP3aMrlp?=
- =?us-ascii?Q?hOnEVXhrgLUbRJBFYKpygMeT58Q2W5xPYnexxno07zOAQlFsjjiqEUqprOt9?=
- =?us-ascii?Q?XBj4ixGow4tNAtAPHEpXIauW1XzL8EjqAPkoDQUYWfjZOTDqv2MhBSe1cvBx?=
- =?us-ascii?Q?3srPm7Ff2SGZ6zgIPKwdEAUeZnji56dQ5uHbymeShrhpGTvec/zkdm55lVRL?=
- =?us-ascii?Q?5QkG/vqtgbsntBCWhmOKDrcZKmPVfOMOXuqo1AIEaseNaUKJ0ZyPjuxihT98?=
- =?us-ascii?Q?enZx78gsPOdqO1SLJi8pC0DNk8CEJW0zO0e1/LgQFnj9IDfztpdBdF9CkgyS?=
- =?us-ascii?Q?O+0A8Xq0y5s3JIWdubyW3XlBBepLX/OPUhIY+m8iED4oqJS2ysqb1eUpty5s?=
- =?us-ascii?Q?JP0EudF+M08qVAiThN6d7XKNS4TSn7tkRXvA7jFeTihclAUJgSss46g6ixsm?=
- =?us-ascii?Q?y4wpGdfqrvi/MiHSBqda+bIaxOuym/7kisNlJCGWd3TSys9Gcm19QDNFhYnA?=
- =?us-ascii?Q?fxeP7oQTZu+5MGokDgg38zx77yEaMy3ierecLBfVwWOflQP3QNVm9fNQQKFH?=
- =?us-ascii?Q?QkNt37FGc/F+F1++bq7e6Gn26J1lITstJrLCyF7PIfxzRGofjoGyjDTyXWmp?=
- =?us-ascii?Q?ypmeK02/1vgkMis7SLPALokcIQwX2RguXKtfEj7azt15LH2uCMHDzWcLmpfD?=
- =?us-ascii?Q?U5eNE0WquJqux+MUQtmIYVQsk4uNrt3ar8VAErYn?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e92867c-4a7f-44e9-a419-08ddd568274f
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 04:09:07.1565
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: drKOwECIvlC9S7/b0OMKn4/eGRKCWlbzIWhHNmPI92dZ8uIWa9mQlWm8001j3PTXOcgVcEptePEP7tLC+t2Dpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10520
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration
+ properties
+To: Bough Chen <haibo.chen@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+ Nuno S? <noname.nuno@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "upstream@lists.phytec.de" <upstream@lists.phytec.de>,
+ "andrej.picej@norik.com" <andrej.picej@norik.com>
+References: <20250710073905.1105417-1-primoz.fiser@norik.com>
+ <20250710073905.1105417-2-primoz.fiser@norik.com>
+ <2bcd758b-c2d0-488a-8ead-ec7fb39f93e2@baylibre.com>
+ <20250713160247.0f22bbfe@jic23-huawei>
+ <de2c8e15-14e9-4c61-9a13-97ef1ec567a4@norik.com>
+ <6b32118a13e9e28b7cf12152af33642c76367c34.camel@gmail.com>
+ <20250721093847.GD4844@nxa18884-linux.ap.freescale.net>
+ <DU0PR04MB9496FCE8DF07CD0E270B72AF905DA@DU0PR04MB9496.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <DU0PR04MB9496FCE8DF07CD0E270B72AF905DA@DU0PR04MB9496.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hi Andrew,
+Hi,
 
-Thanks for your comments!
-
-On Wed, Aug 06, 2025 at 05:58:18PM +0200, Andrew Lunn wrote:
-> On Wed, Aug 06, 2025 at 04:30:17PM +0800, Xu Yang wrote:
-> > The kernel will have below dump when system resume if the USB net device
-> > was already disconnected during system suspend.
+On 21. 07. 25 11:09, Bough Chen wrote:
+>> -----Original Message-----
+>> From: Peng Fan (OSS) <peng.fan@oss.nxp.com>
+>> Sent: 2025年7月21日 17:39
+>> To: Nuno S? <noname.nuno@gmail.com>
+>> Cc: Primoz Fiser <primoz.fiser@norik.com>; Jonathan Cameron
+>> <jic23@kernel.org>; David Lechner <dlechner@baylibre.com>; Bough Chen
+>> <haibo.chen@nxp.com>; Nuno Sa <nuno.sa@analog.com>; Andy Shevchenko
+>> <andy@kernel.org>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
+>> <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Shawn Guo
+>> <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>;
+>> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+>> <festevam@gmail.com>; linux-iio@vger.kernel.org; imx@lists.linux.dev;
+>> devicetree@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
+>> linux-kernel@vger.kernel.org; upstream@lists.phytec.de;
+>> andrej.picej@norik.com
+>> Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration properties
+>>
+>> On Mon, Jul 14, 2025 at 05:11:31PM +0100, Nuno S? wrote:
+>>> On Mon, 2025-07-14 at 07:56 +0200, Primoz Fiser wrote:
+>>>> Hi all,
+>>>>
+>>>> On 13. 07. 25 17:02, Jonathan Cameron wrote:
+>>>>> On Thu, 10 Jul 2025 10:46:44 -0500
+>>>>> David Lechner <dlechner@baylibre.com> wrote:
+>>>>>
+>>>>>> On 7/10/25 2:39 AM, Primoz Fiser wrote:
+>>>>>>> From: Andrej Picej <andrej.picej@norik.com>
+>>>>>>>
+>>>>>>> Document i.MX93 ADC calibration properties and how to set them.
+>>>>>>>
+>>>>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+>>>>>>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+>>>>>>> ---
+>>>>>>> ??.../bindings/iio/adc/nxp,imx93-adc.yaml???????????? | 21
+>>>>>>> +++++++++++++++++++
+>>>>>>> ??1 file changed, 21 insertions(+)
+>>>>>>>
+>>>>>>> diff --git
+>>>>>>> a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-
+>>>>>>> adc.yaml
+>>>>>>> b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>>>> index c2e5ff418920..d1c04cf85fe6 100644
+>>>>>>> ---
+>>>>>>> a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.y
+>>>>>>> +++ aml
+>>>>>>> @@ -52,6 +52,27 @@ properties:
+>>>>>>> ???? "#io-channel-cells":
+>>>>>>> ???????? const: 1
+>>>>>>> ??
+>>>>>>> +?? nxp,calib-avg-en:
+>>>>>>> +?????? default: 1
+>>>>>>> +?????? description:
+>>>>>>> +?????????? Enable or disable calibration averaging function (AVGEN).
+>>>>>>> +?????? $ref: /schemas/types.yaml#/definitions/uint32
+>>>>>>> +?????? enum: [ 0, 1 ]
+>>>>>>> +
+>>>>>>> +?? nxp,calib-nr-samples:
+>>>>>>> +?????? default: 512
+>>>>>>> +?????? description:
+>>>>>>> +?????????? Selects number of samples (NRSMPL) to be used during
+>> calibration.
+>>>>>>> +?????? $ref: /schemas/types.yaml#/definitions/uint32
+>>>>>>> +?????? enum: [ 16, 32, 128, 512 ]
+>>>>>
+>>>>> Allow 1 as a value and drop the enabled above.???? Averaging over 1
+>>>>> sample is same as no averaging and gives simpler binding.
+>>>>>
+>>>>>>> +
+>>>>>>> +?? nxp,calib-t-sample:
+>>>>>>> +?????? default: 22
+>>>>>>> +?????? description:
+>>>>>>> +?????????? Selects sample time (TSAMP) of calibration
+>>>>>>> +conversions in ADC
+>>>>>>> clock cycles
+>>>>>>> +?????? $ref: /schemas/types.yaml#/definitions/uint32
+>>>>>>> +?????? enum: [ 8, 16, 22, 32 ]
+>>>>>>> +
+>>>>>>> ??required:
+>>>>>>> ???? - compatible
+>>>>>>> ???? - reg??
+>>>>>>
+>>>>>> This seem like things that should be set at runtime rather than
+>>>>>> in the devicetree. Unless there is some justification on why
+>>>>>> these values depend on how the chip is wired up?
+>>>>
+>>>> It depends how ADC 1.8V Vref is wired up, especially how noisy it is.
+>>>>
+>>>>>
+>>>>> Further to that, I'd like to see some explanation of why we care to
+>>>>> change it at all. Is it ever a bad idea to enable averaging and
+>>>>> pick a large number of samples for calibration?
+>>>>
+>>>> This is a snippet from the i.MX93 TRM, chapter Analog-to-Digital
+>>>> Converter (SAR_ADC) describing calibration steps:
+>>>>
+>>>> 1. Wait for deassertion of functional reset.
+>>>> 2. Configure SAR controller operating clock (MCR[ADCLKSE] = 0).
+>>>> 3. Bring ADC out of Power-down state (MCR[PWDN] = 0).
+>>>> 4. Configure desired calibration settings (default values kept for
+>>>> highest accuracy maximum time).
+>>>> ??? MCR[TSAMP]: Sample time for calibration conversion ???
+>>>> MCR[NRSMPL]: Number of samples in averaging ??? MCR[AVGEN]: Averaging
+>>>> function enable in calibration 5. Run calibration by writing a one to
+>>>> MCR[CALSTART].
+>>>> 6. Check calibration run status in MSR[CALBUSY]???wait until
+>>>> MSR[CALBUSY] = 0; alternatively, MSR[ADCSTAT] can be used to check
+>>>> status.
+>>>> 7. Check calibration pass/fail status in MSR[CALFAIL] field. If
+>>>> MSR[CALFAIL] = 1 then calibration failed. Detailed status can be
+>>>> checked in CALSTAT.
+>>>>
+>>>>
+>>>> See point 4).
+>>>>
+>>>> Not sure why would there be an option to configure i.MX93 ADC
+>>>> calibration parameters if one use-case (max accuracy max time) to
+>>>> rule them all?
+>>>>
+>>>
+>>> Sometimes HW guys just want to give you some options. Does not mean we
+>>> have to use them all :).
+>>>
+>>> I guess what Jonathan is interested in, is to understand in what
+>>> conditions the defaults are no good for the calibration? If we can have
+>>> a set of values that should pretty much always work, no need to further
+>>> complicate the bindings or the driver.
+>>
+>> Just my understanding, it is hard to use one fixed settings to fit all kinds of
+>> conditions.
+>>
+>>                  Noise induced from PCB tracks  Electro- magnetic noise
+>> 		     |                           |
+>> 		     V                           V
+>>  ---------
+>> |SOC(ADC)|   <---------------------------------<- (~) external Signal
+>>  ---------
+>>                  ^                 ^
+>>                  |                 |
+>>              I/O coupled noise    Internal noise
+>>
+>>
+>> So OEM A's board may needs different settings compared with OEM B's board.
 > 
-> By disconnected, you mean pulled out?
+> The noise on Vref did impact the calibration, we did get report from customer, and IC guys suggested to do like the following patch, what's your comments?
+> 
+> https://patchwork.kernel.org/project/linux-iio/patch/20250423-adcpatch-v1-1-b0e84c27ae98@nxp.com/
 
-Yes.
+With this patch we still get calibration warning however ADC is
+eventually working.
+
+Where can we get mapping for this register:
+
+#define IMX93_ADC_CALCFG0	0X3A0
+
+It seems that public i.MX 93 TRM goes up to offset 0x39C only?
+
+BR,
+Primoz
 
 > 
-> > It's because usb_resume_interface() will be skipped if the USB core found
-> > the USB device was already disconnected. In this case, asix_resume() will
-> > not be called anymore. So asix_suspend/resume() can't be balanced. When
-> > ax88772_stop() is called, the phy device was already stopped. To avoid
-> > calling phylink_stop() a second time, check whether usb net device is
-> > already in suspend state.
-> > 
-> > Fixes: e0bffe3e6894 ("net: asix: ax88772: migrate to phylink")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > ---
-> >  drivers/net/usb/asix_devices.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-> > index 9b0318fb50b5..ac28f5fe7ac2 100644
-> > --- a/drivers/net/usb/asix_devices.c
-> > +++ b/drivers/net/usb/asix_devices.c
-> > @@ -932,7 +932,8 @@ static int ax88772_stop(struct usbnet *dev)
-> >  {
-> >  	struct asix_common_private *priv = dev->driver_priv;
-> >  
-> > -	phylink_stop(priv->phylink);
-> > +	if (!dev->suspend_count)
-> > +		phylink_stop(priv->phylink);
-> 
-> Looking at ax88172a.c, lan78xx.c and smsc95xx.c, they don't have
-> anything like this. Is asix special, or are all the others broken as
-> well?
+> Regards
+> Haibo Chen 
+>>
+>> Regards,
+>> Peng
+>>
+>>>
+>>> - Nuno S??
+>>>> On the other hand, public TRM doesn't give much more information and
+>>>>>
 
-I have limited USB net devices. So I can't test others now.
-
-But based on the error path, only below driver call phy_stop() or phylink_stop()
-in their stop() callback:
-
-drivers/net/usb/asix_devices.c
-  ax88772_stop()
-    phylink_stop()
-
-drivers/net/usb/ax88172a.c
-  ax88172a_stop()
-    phy_stop()
-
-drivers/net/usb/lan78xx.c
-  lan78xx_stop()
-    phylink_stop()
-
-drivers/net/usb/smsc95xx.c
-  smsc95xx_stop()
-    phy_stop()
-
-However, only asix_devices.c and lan78xx.c call phylink_suspend() in suspend()
-callback. So I think lan78xx.c has this issue too.
-
-Should I change usbnet common code like below?
-
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index c39dfa17813a..44a8d325dfb1 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -839,7 +839,7 @@ int usbnet_stop (struct net_device *net)
-        pm = usb_autopm_get_interface(dev->intf);
-        /* allow minidriver to stop correctly (wireless devices to turn off
-         * radio etc) */
--       if (info->stop) {
-+       if (info->stop && !dev->suspend_count) {
-                retval = info->stop(dev);
-                if (retval < 0)
-                        netif_info(dev, ifdown, dev->net,
-
-Thanks,
-Xu Yang
-
-> 
-> 	Andrew
+-- 
+Primoz Fiser
+phone: +386-41-390-545
+email: primoz.fiser@norik.com
+--
+Norik systems d.o.o.
+Your embedded software partner
+Slovenia, EU
+phone: +386-41-540-545
+email: info@norik.com
