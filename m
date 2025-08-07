@@ -1,270 +1,191 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09C4227EB9
-	for <imx@lists.linux.dev>; Thu,  7 Aug 2025 06:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024244A06;
+	Thu,  7 Aug 2025 06:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754549347; cv=none; b=GIAyJM/yNBycQKmP1P8nopbMw7i6s1RS5bftl+i0ul4daZ0viMAk10aNAmLjgma19YX2ocOqb8dpzRZ2qTQscPGuY+eI5AJamSYypaXERR/DyVj1K3xNmldjxlTZUD6I3RskyeLe5wRL+mqSdxYRm5Elg9olHetzxLNJbDifJsc=
+	t=1754549905; cv=none; b=sE3dnLbyk7aeGo8V/P2JoH2/phZPobMtAabpt4Dvque/goCrZw7d4vJJmbR6/t26S1Sl746F+krMZR2FVADxRJYp2VqIjZZdGCd/4HgEkJgKFQo/ZOOG93u/V6M+t5S77JDhWLC21n+6v6NZAbImRygwMi482Gro/bEYVKzmZxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754549347; c=relaxed/simple;
-	bh=jlhYYqseoKELITQ5ATLhE0ZFe5RLa7WX/i7FJKV2WnU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z6S2+XiXE8CaeTdA5lt9FU7CncCoqUWr0umxovQSzg0mzdsK3R6sHn5Edp6RmoFNDllup4QvOfnw3BI7YJ5KOaXBIZYUs9Yh6kXNfG/jOEiUU2m3TYqigwGcxSu5nuNjEL1a2fxMrQTvZlEKGFZ1kJrC3eltpLiyBfzXfOChlPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=pZWfpnLb; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=mrGZMwTt reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1754549905; c=relaxed/simple;
+	bh=tNf8yXWpoqOnHiYWPw3fqpNsTnL+1s/P0u4Xeao7oac=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Qfitpwl2/m9T5CLc5/dE22fHuvZEwOedX6ZVkgvao2cb50cFWwyBGk/4eWkNgd6Cz8g72vrKOweaxcXkAWDYXmlBVoDz2ADsQGlY3wigo/gDVKQfdWIpqB732zMD2XHIiY+W5UoOqT3CwNaexnxc4cQ8fMRJ1ZAd9wGKO5rtATI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FiIz5oVg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="pZWfpnLb";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="mrGZMwTt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1754549343; x=1786085343;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7Sx8JUyM3/4H7bRCB9wNV/IluDw2UIz1vKgHRy/QEVw=;
-  b=pZWfpnLbLkLSTwhqoLH+889uraf2IJuIrg+5j+VlpsDTu4TiZIlof11Y
-   DTMwp2M4KtyoJI72fWR1cPwY0jpWzzeQnqdcMqr62dfZ2LiFpVX5UyG2H
-   jPjCmMQHZJVKuHa1bN2lmOBZ3N0tXonBwr4fx8N5K9y6rw9OpjZOvEeet
-   YTnFMB7xxm9xq72kqdj+865UQG0aC85iDxl+omTb4fJIRKdXrbohBPn1B
-   IJAglWru+YnXpdYoA1vloIiHA2AmUEfjuRdyuj+fn4Gz8kqc7n0ziAVxn
-   z4ck6G6cMlixMIEB2sVuDdoUEEogvWkE7QH+4oBlQyYZEh5+HpQpPdEi/
-   w==;
-X-CSE-ConnectionGUID: I2PmyxDYScSuTRFw+H5RPw==
-X-CSE-MsgGUID: XDJruS2UTWOZejcJYgaFyQ==
-X-IronPort-AV: E=Sophos;i="6.17,271,1747692000"; 
-   d="scan'208";a="45628058"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 07 Aug 2025 08:48:51 +0200
-X-CheckPoint: {68944C53-3-299FBAB0-EF52EDE7}
-X-MAIL-CPID: 9B87D54F7B707BEEAED780E1C71972C8_5
-X-Control-Analysis: str=0001.0A002116.68944C87.0028,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 509341613DA;
-	Thu,  7 Aug 2025 08:48:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1754549326;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7Sx8JUyM3/4H7bRCB9wNV/IluDw2UIz1vKgHRy/QEVw=;
-	b=mrGZMwTtVtjo5kHwbg35IQX/P5TNnTWBQcIxNa9iUC7uSo7rTQLbuzsOAR0XdkbAgHVYVL
-	jhBCsFQ9GwQKTzxzFPGU93q2evcLKB7X2GV5sLvGVSMBpjyhMaVcnVV/rYGDshvdUVR1aY
-	2Yr7vXdhMvML4A8B1d0fq+SM2JIoHoGGPg5LifurXToqn06YRqsdSb21SAOEInEIwqMk0B
-	FooH5azD929SoI3ZX6geUNC3FRIAAorL18g5SBmBcTIs88LaVBmxpepG81KTLhjPbZWHHe
-	v6eTmkjeBRyGiFoqWRFob27/ZWAQLxM6SzAIhAMo6/mr1j/iTjRKpAZKOAuMnA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.com, simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org,
- cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- victor.liu@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, p.zabel@pengutronix.de, devicetree@vger.kernel.org,
- l.stach@pengutronix.de, perex@perex.cz, tiwai@suse.com,
- linux-sound@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject:
- Re: [PATCH v3 5/6] drm/bridge: imx: add driver for HDMI TX Parallel Audio
- Interface
-Date: Thu, 07 Aug 2025 08:48:35 +0200
-Message-ID: <3006103.e9J7NaK4W3@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To:
- <CAA+D8AMqBqfRuR7oGLwH4CUrAdY4q1XGmnPXGQYUGndY0eS=yw@mail.gmail.com>
-References:
- <20250804104722.601440-1-shengjiu.wang@nxp.com> <2380862.ElGaqSPkdT@steina-w>
- <CAA+D8AMqBqfRuR7oGLwH4CUrAdY4q1XGmnPXGQYUGndY0eS=yw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FiIz5oVg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3474EC4CEEB;
+	Thu,  7 Aug 2025 06:58:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754549903;
+	bh=tNf8yXWpoqOnHiYWPw3fqpNsTnL+1s/P0u4Xeao7oac=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=FiIz5oVgOYMO6q4869RWcOtlVdu9nL+0h0TxLPttL1GsnNHj8WeGZvdTa0hQ9g2IF
+	 b2wpXZEdscZwcYTFUfD3Vak7J29IVobTHxanKkkz14AEYU/ukIZ++vsVvVAw99umRg
+	 fszGhSjaHM5r+e6TZDl+fqCQot/inXgAQ76e8uSvp7C7I/EYbVds7D778J5GQxDrvP
+	 K/8R8NLvCgWzWtfarV/vXEHBez0mayIYSmeKfaDsccXFY1Pe71Jfa20pHWGtm9MUgF
+	 6fVTDAxHrEq3NGzLwa0Z2/p/Q8or6h4Ic4LhSq8VFOMX6ph8bptUk/1SV7iMmp4cMZ
+	 528aoa8dBtCjQ==
+Message-ID: <d8875dea-aa04-41fc-b1b4-519d06ed6cba@kernel.org>
+Date: Thu, 7 Aug 2025 08:58:01 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: Re: [PATCH 58/65] media: zoran: Remove access to __fh
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Devarsh Thakkar
+ <devarsht@ti.com>, Benoit Parrot <bparrot@ti.com>,
+ Hans Verkuil <hverkuil@kernel.org>, Mike Isely <isely@pobox.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Hans de Goede <hansg@kernel.org>,
+ Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+ Christian Gromm <christian.gromm@microchip.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Shi
+ <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
+ Dongliang Mu <dzm91@hust.edu.cn>, Jonathan Corbet <corbet@lwn.net>,
+ Tomasz Figa <tfiga@chromium.org>, Marek Szyprowski
+ <m.szyprowski@samsung.com>, Andy Walls <awalls@md.metrocast.net>,
+ Michael Tretter <m.tretter@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Bin Liu <bin.liu@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Dmitry Osipenko <digetx@gmail.com>, Thierry Reding
+ <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>,
+ Mirela Rabulea <mirela.rabulea@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ Michal Simek <michal.simek@amd.com>, Ming Qian <ming.qian@nxp.com>,
+ Zhou Peng <eagle.zhou@nxp.com>, Xavier Roumegue
+ <xavier.roumegue@oss.nxp.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Vikash Garodia <quic_vgarodia@quicinc.com>,
+ Dikshita Agarwal <quic_dikshita@quicinc.com>,
+ Abhinav Kumar <abhinav.kumar@linux.dev>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
+ Samuel Holland <samuel@sholland.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Nas Chung <nas.chung@chipsnmedia.com>,
+ Jackson Lee <jackson.lee@chipsnmedia.com>,
+ Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
+ Houlong Wei <houlong.wei@mediatek.com>,
+ Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+ Tiffany Lin <tiffany.lin@mediatek.com>,
+ Yunfei Dong <yunfei.dong@mediatek.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
+ Jacob Chen <jacob-chen@iotwrt.com>,
+ Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+ Heiko Stuebner <heiko@sntech.de>,
+ Detlev Casanova <detlev.casanova@collabora.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>,
+ =?UTF-8?Q?=C5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
+ Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+ Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Fabien Dessenne <fabien.dessenne@foss.st.com>,
+ Hugues Fruchet <hugues.fruchet@foss.st.com>,
+ Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ Steve Longerbeam <slongerbeam@gmail.com>, Maxime Ripard
+ <mripard@kernel.org>, Paul Kocialkowski <paulk@sys-base.io>,
+ =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+ Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Corentin Labbe <clabbe@baylibre.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Bingbu Cao <bingbu.cao@intel.com>, Tianshu Qiu <tian.shu.qiu@intel.com>,
+ Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-tegra@vger.kernel.org, imx@lists.linux.dev,
+ linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-sunxi@lists.linux.dev,
+ linux-usb@vger.kernel.org, linux-amlogic@lists.infradead.org,
+ linux-rockchip@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, mjpeg-users@lists.sourceforge.net
+References: <20250802-media-private-data-v1-0-eb140ddd6a9d@ideasonboard.com>
+ <20250802-media-private-data-v1-58-eb140ddd6a9d@ideasonboard.com>
+Content-Language: en-US, nl
+In-Reply-To: <20250802-media-private-data-v1-58-eb140ddd6a9d@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 02/08/2025 11:23, Jacopo Mondi wrote:
+> The __fh parameter is assigned to an unsued variable. Remove it
+> and remove the unused struct zoran_fh type.
+> 
+> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+> ---
+>  drivers/media/pci/zoran/zoran.h        | 6 ------
+>  drivers/media/pci/zoran/zoran_driver.c | 3 +--
+>  2 files changed, 1 insertion(+), 8 deletions(-)
+> 
+> diff --git a/drivers/media/pci/zoran/zoran.h b/drivers/media/pci/zoran/zoran.h
+> index 1cd990468d3de9db8b14b72483972041c57bfee2..d05e222b392156bf1b3b4c83c6591db642c3c377 100644
+> --- a/drivers/media/pci/zoran/zoran.h
+> +++ b/drivers/media/pci/zoran/zoran.h
+> @@ -154,12 +154,6 @@ struct zoran_jpg_settings {
+>  
+>  struct zoran;
+>  
+> -/* zoran_fh contains per-open() settings */
+> -struct zoran_fh {
+> -	struct v4l2_fh fh;
+> -	struct zoran *zr;
+> -};
+> -
+>  struct card_info {
+>  	enum card_type type;
+>  	char name[32];
+> diff --git a/drivers/media/pci/zoran/zoran_driver.c b/drivers/media/pci/zoran/zoran_driver.c
+> index f42f596d3e6295e31e3b33cd83c5f7243911bd30..ec7fc1da4cc02f5a344cb49bb9a783c41c758195 100644
+> --- a/drivers/media/pci/zoran/zoran_driver.c
+> +++ b/drivers/media/pci/zoran/zoran_driver.c
+> @@ -511,12 +511,11 @@ static int zoran_s_fmt_vid_cap(struct file *file, void *__fh,
 
-Am Mittwoch, 6. August 2025, 05:49:13 CEST schrieb Shengjiu Wang:
-> On Tue, Aug 5, 2025 at 3:09=E2=80=AFPM Alexander Stein
-> <alexander.stein@ew.tq-group.com> wrote:
-> [snip]
-> > > +static int imx8mp_dw_hdmi_bind(struct device *dev)
-> > > +{
-> > > +     struct dw_hdmi_plat_data *plat_data;
-> > > +     struct imx8mp_hdmi *hdmi;
-> > > +     int ret;
-> > > +
-> > > +     hdmi =3D dev_get_drvdata(dev);
-> > > +     plat_data =3D &hdmi->plat_data;
-> > > +
-> > > +     ret =3D component_bind_all(dev, plat_data);
-> >
-> > Do you really need plat_data variable?
->=20
-> yes,  it is used in imx8mp_hdmi_pai_bind()
+This driver uses __fh as the name for the second argument of the ioctl
+callbacks. Can you take this opportunity to rename it to either 'fh' or 'priv'?
 
-Sorry for not being clear. I'm not talking about struct dw_hdmi_plat_data, =
-but
-the local variable plat_data. You can use
+Generally it's not a good idea to prefix variables with __ for no good reason.
 
-ret =3D component_bind_all(dev, &hdmi->plat_data);
+Grepping for __fh also shows two other drivers:
 
-directly.
+drivers/media/platform/chips-media/coda/coda-common.c:#define fh_to_ctx(__fh)   container_of(__fh, struct coda_ctx, fh)
+drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h:#define fh_to_ctx(__fh) container_of(__fh, struct s5p_mfc_ctx, fh)
 
->=20
-> >
-> > > +     if (ret)
-> > > +             return dev_err_probe(dev, ret, "component_bind_all fail=
-ed!\n");
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > > +static void imx8mp_dw_hdmi_unbind(struct device *dev)
-> > > +{
-> > > +     struct dw_hdmi_plat_data *plat_data;
-> > > +     struct imx8mp_hdmi *hdmi;
-> > > +
-> > > +     hdmi =3D dev_get_drvdata(dev);
-> > > +     plat_data =3D &hdmi->plat_data;
-> > > +
-> > > +     component_unbind_all(dev, plat_data);
-> >
-> > Do you really need plat_data variable?
->=20
-> yes,  it is used by imx8mp_hdmi_pai_unbind()
+I think it is a good idea to rename __fh to fh there as well.
 
-Same as above. Call
+Regards,
 
-component_unbind_all(dev, &hdmi->plat_data)
+	Hans
 
-directly. Also consider assigning struct imx8mp_hdmi *hdmi =3D dev_get_drvd=
-ata(dev);
-directly.
-
-Best regards,
-Alexander
-
->=20
-> >
-> > > +}
-> > > +
-> > > +static const struct component_master_ops imx8mp_dw_hdmi_ops =3D {
-> > > +     .bind   =3D imx8mp_dw_hdmi_bind,
-> > > +     .unbind =3D imx8mp_dw_hdmi_unbind,
-> > > +};
-> > > +
-> > >  static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
-> > >  {
-> > >       struct device *dev =3D &pdev->dev;
-> > >       struct dw_hdmi_plat_data *plat_data;
-> > > +     struct component_match *match;
-> >
-> > Set match =3D NULL for drm_of_component_match_add (and subcalls) to all=
-ocate memory.
->=20
-> Ok.
->=20
-> best regards
-> Shengjiu wang.
-> >
-> > Best regards
-> > Alexander
-> >
-> > > +     struct device_node *remote;
-> > >       struct imx8mp_hdmi *hdmi;
-> > > +     int ret;
-> > >
-> > >       hdmi =3D devm_kzalloc(dev, sizeof(*hdmi), GFP_KERNEL);
-> > >       if (!hdmi)
-> > > @@ -108,6 +145,22 @@ static int imx8mp_dw_hdmi_probe(struct platform_=
-device *pdev)
-> > >
-> > >       platform_set_drvdata(pdev, hdmi);
-> > >
-> > > +     /* port@2 is for hdmi_pai device */
-> > > +     remote =3D of_graph_get_remote_node(pdev->dev.of_node, 2, 0);
-> > > +     if (remote && of_device_is_available(remote)) {
-> > > +             drm_of_component_match_add(dev, &match, component_compa=
-re_of, remote);
-> > > +
-> > > +             of_node_put(remote);
-> > > +
-> > > +             ret =3D component_master_add_with_match(dev, &imx8mp_dw=
-_hdmi_ops, match);
-> > > +             if (ret)
-> > > +                     dev_warn(dev, "Unable to register aggregate dri=
-ver\n");
-> > > +             /*
-> > > +              * This audio function is optional for avoid blocking d=
-isplay.
-> > > +              * So just print warning message and no error is return=
-ed.
-> > > +              */
-> > > +     }
-> > > +
-> > >       return 0;
-> > >  }
-> > >
-> > > @@ -115,6 +168,8 @@ static void imx8mp_dw_hdmi_remove(struct platform=
-_device *pdev)
-> > >  {
-> > >       struct imx8mp_hdmi *hdmi =3D platform_get_drvdata(pdev);
-> > >
-> > > +     component_master_del(&pdev->dev, &imx8mp_dw_hdmi_ops);
-> > > +
-> > >       dw_hdmi_remove(hdmi->dw_hdmi);
-> > >  }
-> > >
-> > > diff --git a/include/drm/bridge/dw_hdmi.h b/include/drm/bridge/dw_hdm=
-i.h
-> > > index 095cdd9b7424..336f062e1f9d 100644
-> > > --- a/include/drm/bridge/dw_hdmi.h
-> > > +++ b/include/drm/bridge/dw_hdmi.h
-> > > @@ -143,6 +143,12 @@ struct dw_hdmi_plat_data {
-> > >                                          const struct drm_display_inf=
-o *info,
-> > >                                          const struct drm_display_mod=
-e *mode);
-> > >
-> > > +     /*
-> > > +      * priv_audio is specially used for additional audio device to =
-get
-> > > +      * driver data through this dw_hdmi_plat_data.
-> > > +      */
-> > > +     void *priv_audio;
-> > > +
-> > >       /* Platform-specific audio enable/disable (optional) */
-> > >       void (*enable_audio)(struct dw_hdmi *hdmi, int channel,
-> > >                            int width, int rate, int non_pcm, int iec9=
-58);
-> > >
-> >
-> >
-> > --
-> > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, =
-Germany
-> > Amtsgericht M=C3=BCnchen, HRB 105018
-> > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan=
- Schneider
-> > http://www.tq-group.com/
-> >
-> >
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
-
+>  			       struct v4l2_format *fmt)
+>  {
+>  	struct zoran *zr = video_drvdata(file);
+> -	struct zoran_fh *fh = __fh;
+>  	int i;
+>  	int res = 0;
+>  
+>  	if (fmt->fmt.pix.pixelformat == V4L2_PIX_FMT_MJPEG)
+> -		return zoran_s_fmt_vid_out(file, fh, fmt);
+> +		return zoran_s_fmt_vid_out(file, __fh, fmt);
+>  
+>  	for (i = 0; i < NUM_FORMATS; i++)
+>  		if (fmt->fmt.pix.pixelformat == zoran_formats[i].fourcc)
+> 
 
