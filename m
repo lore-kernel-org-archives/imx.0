@@ -1,160 +1,86 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2BC26A1BE;
-	Thu,  7 Aug 2025 17:01:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA87256C6F;
+	Thu,  7 Aug 2025 19:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754586113; cv=none; b=HCo+zEOip7oP97sCRhOBhLKY6gJ84FcvO/tQHR9l9//M4kioKqYxPWmndR2atKzNtNQBLZPvWZwwJDK4QVYfKam90ZUv1oAsXMxHBz6nSp2BcwyE6IQQk/izZJh4Ph5RD3axXlInDU/jHReqH8gfY69QIiIPHWYJbH7q/7d+xQw=
+	t=1754593748; cv=none; b=Z2317sS8LBoErMU5g++LJ0P4k46t/M5ZeKoBrVWZ5Ub4QytMUIUZK8hSeQY0vaItbRmwv4Qm5LT6Z/BVCVKDvB5CH96zu1e1Li3plGGdZk4fr58LoH/2R+TJwE3ycYUkqvX4VfD9ACksQXSgr2wE0zwpYhYSqV5kEGClrvC7yTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754586113; c=relaxed/simple;
-	bh=eCCvrUfJfnarnq3XXGkIUqgdLZRCxGn7qHjBBcKOTfw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ovA90uuVZFccXNLk9e042tRt45N/jc+M5ywVx+iYo6bC15rU8MXDtnZT6PgRPx3nHTHltfYdPu/C+LvKlMYhPmd7+lodprN28vB1otp3VFHKZy6tsBO9W8vI0WSvgssZB7SuiEzuVbSBFttIcYAJZuFcGARGW3jQ1fopZEmkKHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=qa00LrRf; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1754593748; c=relaxed/simple;
+	bh=8imx6wVOsRR9QqBAU1K+vLxoVDn3qj25QOkvyaNjn5I=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=uoE4TlQJmxtQ0isxUrXthkcisXQk0x/Qj07snjCzoGMwXOggnNwT/z9CJA/xECvJzdY2gZYPmxFDWDsN1hkx0vrhMoLohEl0S3aiWn4+Ky/ghW88+6XN7Fy5ml3mlFSKHX5YGxA3RX5P8wUynXgt3tdwunLhZcpfIEjNXYbRzss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EoSn5UIl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="qa00LrRf"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 609F3DF3;
-	Thu,  7 Aug 2025 19:01:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1754586061;
-	bh=eCCvrUfJfnarnq3XXGkIUqgdLZRCxGn7qHjBBcKOTfw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qa00LrRfBwStZ0MwGF3BUrJozKPWBnVWsdgf1+OsXtES651W59SuzWCKxRv+u0MzL
-	 vdERPfJcXzpEuCfXJ6WUgW/ioMSeo/eds5iVtoV11pjp77cqXeHbO0+r7ju3n1fnSe
-	 peqJ6m9QUqBn7XnXj1slNAXIOCZtBOMXK7pPJ91I=
-Date: Thu, 7 Aug 2025 20:01:35 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Devarsh Thakkar <devarsht@ti.com>, Benoit Parrot <bparrot@ti.com>,
-	Hans Verkuil <hverkuil@kernel.org>, Mike Isely <isely@pobox.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Christian Gromm <christian.gromm@microchip.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
-	Dongliang Mu <dzm91@hust.edu.cn>, Jonathan Corbet <corbet@lwn.net>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andy Walls <awalls@md.metrocast.net>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Bin Liu <bin.liu@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Osipenko <digetx@gmail.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Mirela Rabulea <mirela.rabulea@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Michal Simek <michal.simek@amd.com>, Ming Qian <ming.qian@nxp.com>,
-	Zhou Peng <eagle.zhou@nxp.com>,
-	Xavier Roumegue <xavier.roumegue@oss.nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>, Samuel Holland <samuel@sholland.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Jackson Lee <jackson.lee@chipsnmedia.com>,
-	Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
-	Houlong Wei <houlong.wei@mediatek.com>,
-	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-	Tiffany Lin <tiffany.lin@mediatek.com>,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
-	Jacob Chen <jacob-chen@iotwrt.com>,
-	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	=?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
-	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Fabien Dessenne <fabien.dessenne@foss.st.com>,
-	Hugues Fruchet <hugues.fruchet@foss.st.com>,
-	Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-	Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Corentin Labbe <clabbe@baylibre.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org,
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, linux-usb@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	mjpeg-users@lists.sourceforge.net
-Subject: Re: [PATCH 64/65] media: staging: ipu7: isys: Don't set
- V4L2_FL_USES_V4L2_FH manually
-Message-ID: <20250807170135.GH11583@pendragon.ideasonboard.com>
-References: <20250802-media-private-data-v1-0-eb140ddd6a9d@ideasonboard.com>
- <20250802-media-private-data-v1-64-eb140ddd6a9d@ideasonboard.com>
- <aJRswZIVKCuzqCpr@kekkonen.localdomain>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EoSn5UIl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB43C4CEEB;
+	Thu,  7 Aug 2025 19:09:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754593747;
+	bh=8imx6wVOsRR9QqBAU1K+vLxoVDn3qj25QOkvyaNjn5I=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=EoSn5UIlQzkuzMZqejHE9gOuwmJr2Jxxh8vAC+6a/2i7W6ghc7W77pdcMSeNBKUMl
+	 v6gMqcQ2FPhH+3f74lXawftn2X993N1x7aRqBUZ8YTxTPeNh8wnSvMzB5rpZyB/yn2
+	 2N59rOYEiwD9F64jPIf1Y2SU1vqSCuhFDeXeboOkN0QeU67VLTAZCN9CR0ztxORWrl
+	 R98CmwqkxteU8pWM0gbbpHiJRiDEPjZ0rdIMSgn2K1DQ+VDPoYsdItXzdUXnKcJ3L5
+	 L6Z0rDUUvC5pQnUWfr8uYZMeAhp2/qqeQRZZh/hLkfq8O3SUgOzK9s57Nh/uTz6p5w
+	 +S79G9CN5+AcA==
+From: Mark Brown <broonie@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
+ Stefan Wahren <wahrenst@gmx.net>
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <20250807100742.9917-1-wahrenst@gmx.net>
+References: <20250807100742.9917-1-wahrenst@gmx.net>
+Subject: Re: [PATCH] spi: spi-fsl-lpspi: Clamp too high speed_hz
+Message-Id: <175459374603.106952.5886117499907652645.b4-ty@kernel.org>
+Date: Thu, 07 Aug 2025 20:09:06 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aJRswZIVKCuzqCpr@kekkonen.localdomain>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
 
-Hi Sakari,
-
-On Thu, Aug 07, 2025 at 09:07:13AM +0000, Sakari Ailus wrote:
-> On Sat, Aug 02, 2025 at 11:23:26AM +0200, Jacopo Mondi wrote:
-> > From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > 
-> > The V4L2_FL_USES_V4L2_FH flag is set by v4l2_fh_init(). It is not meant
-> > to be set manually by drivers. Drop it from the ipu7-isys driver.
-> > 
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+On Thu, 07 Aug 2025 12:07:42 +0200, Stefan Wahren wrote:
+> Currently the driver is not able to handle the case that a SPI device
+> specifies a higher spi-max-frequency than half of per-clk:
 > 
-> Thanks, Jacopo!
+>     per-clk should be at least two times of transfer speed
 > 
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Fix this by clamping to the max possible value and use the minimum SCK
+> period of 2 cycles.
+> 
+> [...]
 
-Can we get you review on patch 63/65 too (for the IPU6 driver) too ?
+Applied to
 
--- 
-Regards,
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Laurent Pinchart
+Thanks!
+
+[1/1] spi: spi-fsl-lpspi: Clamp too high speed_hz
+      commit: af357a6a3b7d685e7aa621c6fb1d4ed6c349ec9e
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
