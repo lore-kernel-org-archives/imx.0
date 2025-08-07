@@ -1,284 +1,270 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B6D1F542E
-	for <imx@lists.linux.dev>; Thu,  7 Aug 2025 05:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09C4227EB9
+	for <imx@lists.linux.dev>; Thu,  7 Aug 2025 06:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754542812; cv=none; b=m58xdVasBZWAi+G0X35uSsvr4hcs4Ea6MB9xocE1GbRBP4b3p2/u15f92/N2K0303en8lz5EZiCNO2MnHEf0IoXoqiACDn3wZAOwz1uz388fT+UItkj1zmhNZzbxQoSzu7gsH57A6gk3KgW033/AD0rZEoqr0Ig/bYrm8fuYb5I=
+	t=1754549347; cv=none; b=GIAyJM/yNBycQKmP1P8nopbMw7i6s1RS5bftl+i0ul4daZ0viMAk10aNAmLjgma19YX2ocOqb8dpzRZ2qTQscPGuY+eI5AJamSYypaXERR/DyVj1K3xNmldjxlTZUD6I3RskyeLe5wRL+mqSdxYRm5Elg9olHetzxLNJbDifJsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754542812; c=relaxed/simple;
-	bh=yOYzFohhd2o0XfNFY9p4eemwAkmIDupzEGpfmoODdWc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=umOpaGIYCs6gQLukiFK0OEma664umqz0XsqT3HdHQdpDqJyxa5yOIAjBRQHtM3NEH9AtsLuE2Shg3mvhdxRmU+z5usGn9Qa4hdhmBnIo4I4Ni647Mb0s2ZfQXjW+L6633jLoZ/+mPVaBDB6t92iBBKIChRSNOoR5Xxvyp1BE5nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=QmRBNN0h; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1754549347; c=relaxed/simple;
+	bh=jlhYYqseoKELITQ5ATLhE0ZFe5RLa7WX/i7FJKV2WnU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z6S2+XiXE8CaeTdA5lt9FU7CncCoqUWr0umxovQSzg0mzdsK3R6sHn5Edp6RmoFNDllup4QvOfnw3BI7YJ5KOaXBIZYUs9Yh6kXNfG/jOEiUU2m3TYqigwGcxSu5nuNjEL1a2fxMrQTvZlEKGFZ1kJrC3eltpLiyBfzXfOChlPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=pZWfpnLb; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=mrGZMwTt reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="QmRBNN0h"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=PBcZyW0XcKbk668IHk0f4cPCJPghlABu1S2hNa+xTlg=; b=QmRBNN0hK8PStTUgV85T22s04e
-	WgqmOQqb5nXuQpUSPTVtrFJ4jwiyUDSLnFrlT34DlyUR3XY45NEjHReEKGI2+lJXn1WLnYRsxNcQ8
-	dwG7cMEsEbcdG47oMPalE/S5HHg283Q+9m3utRi0MqnjIaR1F+qHTI0dOtmMLdSzuDLM3OZbEMw5d
-	dK7GxCyKLtc+lKuORHZHR7jbgc1HMtvgCtR1T5dsJuPQ3dDXntI4A5Ua+bHG/6eXp4v7eDFdBHAPM
-	0RU/NegtPqNNHBDxRdomtCd3n/2M/ge8X0tlWJqU+5zCB7D52m21lvCgDG4Ldhlv+kTlTOyIhPdS3
-	ysVTpW6A==;
-Received: from [89.212.21.243] (port=38786 helo=[192.168.69.116])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1ujsNe-00BlMl-0p;
-	Thu, 07 Aug 2025 06:37:29 +0200
-Message-ID: <19634e51-0568-421a-a3c4-b9988c2ccfb1@norik.com>
-Date: Thu, 7 Aug 2025 06:37:27 +0200
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="pZWfpnLb";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="mrGZMwTt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1754549343; x=1786085343;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=7Sx8JUyM3/4H7bRCB9wNV/IluDw2UIz1vKgHRy/QEVw=;
+  b=pZWfpnLbLkLSTwhqoLH+889uraf2IJuIrg+5j+VlpsDTu4TiZIlof11Y
+   DTMwp2M4KtyoJI72fWR1cPwY0jpWzzeQnqdcMqr62dfZ2LiFpVX5UyG2H
+   jPjCmMQHZJVKuHa1bN2lmOBZ3N0tXonBwr4fx8N5K9y6rw9OpjZOvEeet
+   YTnFMB7xxm9xq72kqdj+865UQG0aC85iDxl+omTb4fJIRKdXrbohBPn1B
+   IJAglWru+YnXpdYoA1vloIiHA2AmUEfjuRdyuj+fn4Gz8kqc7n0ziAVxn
+   z4ck6G6cMlixMIEB2sVuDdoUEEogvWkE7QH+4oBlQyYZEh5+HpQpPdEi/
+   w==;
+X-CSE-ConnectionGUID: I2PmyxDYScSuTRFw+H5RPw==
+X-CSE-MsgGUID: XDJruS2UTWOZejcJYgaFyQ==
+X-IronPort-AV: E=Sophos;i="6.17,271,1747692000"; 
+   d="scan'208";a="45628058"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 07 Aug 2025 08:48:51 +0200
+X-CheckPoint: {68944C53-3-299FBAB0-EF52EDE7}
+X-MAIL-CPID: 9B87D54F7B707BEEAED780E1C71972C8_5
+X-Control-Analysis: str=0001.0A002116.68944C87.0028,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 509341613DA;
+	Thu,  7 Aug 2025 08:48:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1754549326;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7Sx8JUyM3/4H7bRCB9wNV/IluDw2UIz1vKgHRy/QEVw=;
+	b=mrGZMwTtVtjo5kHwbg35IQX/P5TNnTWBQcIxNa9iUC7uSo7rTQLbuzsOAR0XdkbAgHVYVL
+	jhBCsFQ9GwQKTzxzFPGU93q2evcLKB7X2GV5sLvGVSMBpjyhMaVcnVV/rYGDshvdUVR1aY
+	2Yr7vXdhMvML4A8B1d0fq+SM2JIoHoGGPg5LifurXToqn06YRqsdSb21SAOEInEIwqMk0B
+	FooH5azD929SoI3ZX6geUNC3FRIAAorL18g5SBmBcTIs88LaVBmxpepG81KTLhjPbZWHHe
+	v6eTmkjeBRyGiFoqWRFob27/ZWAQLxM6SzAIhAMo6/mr1j/iTjRKpAZKOAuMnA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ airlied@gmail.com, simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org,
+ cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ victor.liu@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, p.zabel@pengutronix.de, devicetree@vger.kernel.org,
+ l.stach@pengutronix.de, perex@perex.cz, tiwai@suse.com,
+ linux-sound@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject:
+ Re: [PATCH v3 5/6] drm/bridge: imx: add driver for HDMI TX Parallel Audio
+ Interface
+Date: Thu, 07 Aug 2025 08:48:35 +0200
+Message-ID: <3006103.e9J7NaK4W3@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To:
+ <CAA+D8AMqBqfRuR7oGLwH4CUrAdY4q1XGmnPXGQYUGndY0eS=yw@mail.gmail.com>
+References:
+ <20250804104722.601440-1-shengjiu.wang@nxp.com> <2380862.ElGaqSPkdT@steina-w>
+ <CAA+D8AMqBqfRuR7oGLwH4CUrAdY4q1XGmnPXGQYUGndY0eS=yw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration
- properties
-To: Bough Chen <haibo.chen@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
- Nuno S? <noname.nuno@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "upstream@lists.phytec.de" <upstream@lists.phytec.de>,
- "andrej.picej@norik.com" <andrej.picej@norik.com>
-References: <20250710073905.1105417-1-primoz.fiser@norik.com>
- <20250710073905.1105417-2-primoz.fiser@norik.com>
- <2bcd758b-c2d0-488a-8ead-ec7fb39f93e2@baylibre.com>
- <20250713160247.0f22bbfe@jic23-huawei>
- <de2c8e15-14e9-4c61-9a13-97ef1ec567a4@norik.com>
- <6b32118a13e9e28b7cf12152af33642c76367c34.camel@gmail.com>
- <20250721093847.GD4844@nxa18884-linux.ap.freescale.net>
- <DU0PR04MB9496FCE8DF07CD0E270B72AF905DA@DU0PR04MB9496.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-Autocrypt: addr=primoz.fiser@norik.com; keydata=
- xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
- JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
- ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
- gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
- jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
- 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
- TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
- AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
-Organization: Norik systems d.o.o.
-In-Reply-To: <DU0PR04MB9496FCE8DF07CD0E270B72AF905DA@DU0PR04MB9496.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-Last-TLS-Session-Version: TLSv1.3
 
 Hi,
 
-On 21. 07. 25 11:09, Bough Chen wrote:
->> -----Original Message-----
->> From: Peng Fan (OSS) <peng.fan@oss.nxp.com>
->> Sent: 2025年7月21日 17:39
->> To: Nuno S? <noname.nuno@gmail.com>
->> Cc: Primoz Fiser <primoz.fiser@norik.com>; Jonathan Cameron
->> <jic23@kernel.org>; David Lechner <dlechner@baylibre.com>; Bough Chen
->> <haibo.chen@nxp.com>; Nuno Sa <nuno.sa@analog.com>; Andy Shevchenko
->> <andy@kernel.org>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
->> <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Shawn Guo
->> <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>;
->> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
->> <festevam@gmail.com>; linux-iio@vger.kernel.org; imx@lists.linux.dev;
->> devicetree@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
->> linux-kernel@vger.kernel.org; upstream@lists.phytec.de;
->> andrej.picej@norik.com
->> Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration properties
->>
->> On Mon, Jul 14, 2025 at 05:11:31PM +0100, Nuno S? wrote:
->>> On Mon, 2025-07-14 at 07:56 +0200, Primoz Fiser wrote:
->>>> Hi all,
->>>>
->>>> On 13. 07. 25 17:02, Jonathan Cameron wrote:
->>>>> On Thu, 10 Jul 2025 10:46:44 -0500
->>>>> David Lechner <dlechner@baylibre.com> wrote:
->>>>>
->>>>>> On 7/10/25 2:39 AM, Primoz Fiser wrote:
->>>>>>> From: Andrej Picej <andrej.picej@norik.com>
->>>>>>>
->>>>>>> Document i.MX93 ADC calibration properties and how to set them.
->>>>>>>
->>>>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
->>>>>>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
->>>>>>> ---
->>>>>>> ??.../bindings/iio/adc/nxp,imx93-adc.yaml???????????? | 21
->>>>>>> +++++++++++++++++++
->>>>>>> ??1 file changed, 21 insertions(+)
->>>>>>>
->>>>>>> diff --git
->>>>>>> a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-
->>>>>>> adc.yaml
->>>>>>> b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>>>> index c2e5ff418920..d1c04cf85fe6 100644
->>>>>>> ---
->>>>>>> a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.y
->>>>>>> +++ aml
->>>>>>> @@ -52,6 +52,27 @@ properties:
->>>>>>> ???? "#io-channel-cells":
->>>>>>> ???????? const: 1
->>>>>>> ??
->>>>>>> +?? nxp,calib-avg-en:
->>>>>>> +?????? default: 1
->>>>>>> +?????? description:
->>>>>>> +?????????? Enable or disable calibration averaging function (AVGEN).
->>>>>>> +?????? $ref: /schemas/types.yaml#/definitions/uint32
->>>>>>> +?????? enum: [ 0, 1 ]
->>>>>>> +
->>>>>>> +?? nxp,calib-nr-samples:
->>>>>>> +?????? default: 512
->>>>>>> +?????? description:
->>>>>>> +?????????? Selects number of samples (NRSMPL) to be used during
->> calibration.
->>>>>>> +?????? $ref: /schemas/types.yaml#/definitions/uint32
->>>>>>> +?????? enum: [ 16, 32, 128, 512 ]
->>>>>
->>>>> Allow 1 as a value and drop the enabled above.???? Averaging over 1
->>>>> sample is same as no averaging and gives simpler binding.
->>>>>
->>>>>>> +
->>>>>>> +?? nxp,calib-t-sample:
->>>>>>> +?????? default: 22
->>>>>>> +?????? description:
->>>>>>> +?????????? Selects sample time (TSAMP) of calibration
->>>>>>> +conversions in ADC
->>>>>>> clock cycles
->>>>>>> +?????? $ref: /schemas/types.yaml#/definitions/uint32
->>>>>>> +?????? enum: [ 8, 16, 22, 32 ]
->>>>>>> +
->>>>>>> ??required:
->>>>>>> ???? - compatible
->>>>>>> ???? - reg??
->>>>>>
->>>>>> This seem like things that should be set at runtime rather than
->>>>>> in the devicetree. Unless there is some justification on why
->>>>>> these values depend on how the chip is wired up?
->>>>
->>>> It depends how ADC 1.8V Vref is wired up, especially how noisy it is.
->>>>
->>>>>
->>>>> Further to that, I'd like to see some explanation of why we care to
->>>>> change it at all. Is it ever a bad idea to enable averaging and
->>>>> pick a large number of samples for calibration?
->>>>
->>>> This is a snippet from the i.MX93 TRM, chapter Analog-to-Digital
->>>> Converter (SAR_ADC) describing calibration steps:
->>>>
->>>> 1. Wait for deassertion of functional reset.
->>>> 2. Configure SAR controller operating clock (MCR[ADCLKSE] = 0).
->>>> 3. Bring ADC out of Power-down state (MCR[PWDN] = 0).
->>>> 4. Configure desired calibration settings (default values kept for
->>>> highest accuracy maximum time).
->>>> ??? MCR[TSAMP]: Sample time for calibration conversion ???
->>>> MCR[NRSMPL]: Number of samples in averaging ??? MCR[AVGEN]: Averaging
->>>> function enable in calibration 5. Run calibration by writing a one to
->>>> MCR[CALSTART].
->>>> 6. Check calibration run status in MSR[CALBUSY]???wait until
->>>> MSR[CALBUSY] = 0; alternatively, MSR[ADCSTAT] can be used to check
->>>> status.
->>>> 7. Check calibration pass/fail status in MSR[CALFAIL] field. If
->>>> MSR[CALFAIL] = 1 then calibration failed. Detailed status can be
->>>> checked in CALSTAT.
->>>>
->>>>
->>>> See point 4).
->>>>
->>>> Not sure why would there be an option to configure i.MX93 ADC
->>>> calibration parameters if one use-case (max accuracy max time) to
->>>> rule them all?
->>>>
->>>
->>> Sometimes HW guys just want to give you some options. Does not mean we
->>> have to use them all :).
->>>
->>> I guess what Jonathan is interested in, is to understand in what
->>> conditions the defaults are no good for the calibration? If we can have
->>> a set of values that should pretty much always work, no need to further
->>> complicate the bindings or the driver.
->>
->> Just my understanding, it is hard to use one fixed settings to fit all kinds of
->> conditions.
->>
->>                  Noise induced from PCB tracks  Electro- magnetic noise
->> 		     |                           |
->> 		     V                           V
->>  ---------
->> |SOC(ADC)|   <---------------------------------<- (~) external Signal
->>  ---------
->>                  ^                 ^
->>                  |                 |
->>              I/O coupled noise    Internal noise
->>
->>
->> So OEM A's board may needs different settings compared with OEM B's board.
-> 
-> The noise on Vref did impact the calibration, we did get report from customer, and IC guys suggested to do like the following patch, what's your comments?
-> 
-> https://patchwork.kernel.org/project/linux-iio/patch/20250423-adcpatch-v1-1-b0e84c27ae98@nxp.com/
+Am Mittwoch, 6. August 2025, 05:49:13 CEST schrieb Shengjiu Wang:
+> On Tue, Aug 5, 2025 at 3:09=E2=80=AFPM Alexander Stein
+> <alexander.stein@ew.tq-group.com> wrote:
+> [snip]
+> > > +static int imx8mp_dw_hdmi_bind(struct device *dev)
+> > > +{
+> > > +     struct dw_hdmi_plat_data *plat_data;
+> > > +     struct imx8mp_hdmi *hdmi;
+> > > +     int ret;
+> > > +
+> > > +     hdmi =3D dev_get_drvdata(dev);
+> > > +     plat_data =3D &hdmi->plat_data;
+> > > +
+> > > +     ret =3D component_bind_all(dev, plat_data);
+> >
+> > Do you really need plat_data variable?
+>=20
+> yes,  it is used in imx8mp_hdmi_pai_bind()
 
-With this patch we still get calibration warning however ADC is
-eventually working.
+Sorry for not being clear. I'm not talking about struct dw_hdmi_plat_data, =
+but
+the local variable plat_data. You can use
 
-Where can we get mapping for this register:
+ret =3D component_bind_all(dev, &hdmi->plat_data);
 
-#define IMX93_ADC_CALCFG0	0X3A0
+directly.
 
-It seems that public i.MX 93 TRM goes up to offset 0x39C only?
+>=20
+> >
+> > > +     if (ret)
+> > > +             return dev_err_probe(dev, ret, "component_bind_all fail=
+ed!\n");
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static void imx8mp_dw_hdmi_unbind(struct device *dev)
+> > > +{
+> > > +     struct dw_hdmi_plat_data *plat_data;
+> > > +     struct imx8mp_hdmi *hdmi;
+> > > +
+> > > +     hdmi =3D dev_get_drvdata(dev);
+> > > +     plat_data =3D &hdmi->plat_data;
+> > > +
+> > > +     component_unbind_all(dev, plat_data);
+> >
+> > Do you really need plat_data variable?
+>=20
+> yes,  it is used by imx8mp_hdmi_pai_unbind()
 
-BR,
-Primoz
+Same as above. Call
 
-> 
-> Regards
-> Haibo Chen 
->>
->> Regards,
->> Peng
->>
->>>
->>> - Nuno S??
->>>> On the other hand, public TRM doesn't give much more information and
->>>>>
+component_unbind_all(dev, &hdmi->plat_data)
 
--- 
-Primoz Fiser
-phone: +386-41-390-545
-email: primoz.fiser@norik.com
---
-Norik systems d.o.o.
-Your embedded software partner
-Slovenia, EU
-phone: +386-41-540-545
-email: info@norik.com
+directly. Also consider assigning struct imx8mp_hdmi *hdmi =3D dev_get_drvd=
+ata(dev);
+directly.
+
+Best regards,
+Alexander
+
+>=20
+> >
+> > > +}
+> > > +
+> > > +static const struct component_master_ops imx8mp_dw_hdmi_ops =3D {
+> > > +     .bind   =3D imx8mp_dw_hdmi_bind,
+> > > +     .unbind =3D imx8mp_dw_hdmi_unbind,
+> > > +};
+> > > +
+> > >  static int imx8mp_dw_hdmi_probe(struct platform_device *pdev)
+> > >  {
+> > >       struct device *dev =3D &pdev->dev;
+> > >       struct dw_hdmi_plat_data *plat_data;
+> > > +     struct component_match *match;
+> >
+> > Set match =3D NULL for drm_of_component_match_add (and subcalls) to all=
+ocate memory.
+>=20
+> Ok.
+>=20
+> best regards
+> Shengjiu wang.
+> >
+> > Best regards
+> > Alexander
+> >
+> > > +     struct device_node *remote;
+> > >       struct imx8mp_hdmi *hdmi;
+> > > +     int ret;
+> > >
+> > >       hdmi =3D devm_kzalloc(dev, sizeof(*hdmi), GFP_KERNEL);
+> > >       if (!hdmi)
+> > > @@ -108,6 +145,22 @@ static int imx8mp_dw_hdmi_probe(struct platform_=
+device *pdev)
+> > >
+> > >       platform_set_drvdata(pdev, hdmi);
+> > >
+> > > +     /* port@2 is for hdmi_pai device */
+> > > +     remote =3D of_graph_get_remote_node(pdev->dev.of_node, 2, 0);
+> > > +     if (remote && of_device_is_available(remote)) {
+> > > +             drm_of_component_match_add(dev, &match, component_compa=
+re_of, remote);
+> > > +
+> > > +             of_node_put(remote);
+> > > +
+> > > +             ret =3D component_master_add_with_match(dev, &imx8mp_dw=
+_hdmi_ops, match);
+> > > +             if (ret)
+> > > +                     dev_warn(dev, "Unable to register aggregate dri=
+ver\n");
+> > > +             /*
+> > > +              * This audio function is optional for avoid blocking d=
+isplay.
+> > > +              * So just print warning message and no error is return=
+ed.
+> > > +              */
+> > > +     }
+> > > +
+> > >       return 0;
+> > >  }
+> > >
+> > > @@ -115,6 +168,8 @@ static void imx8mp_dw_hdmi_remove(struct platform=
+_device *pdev)
+> > >  {
+> > >       struct imx8mp_hdmi *hdmi =3D platform_get_drvdata(pdev);
+> > >
+> > > +     component_master_del(&pdev->dev, &imx8mp_dw_hdmi_ops);
+> > > +
+> > >       dw_hdmi_remove(hdmi->dw_hdmi);
+> > >  }
+> > >
+> > > diff --git a/include/drm/bridge/dw_hdmi.h b/include/drm/bridge/dw_hdm=
+i.h
+> > > index 095cdd9b7424..336f062e1f9d 100644
+> > > --- a/include/drm/bridge/dw_hdmi.h
+> > > +++ b/include/drm/bridge/dw_hdmi.h
+> > > @@ -143,6 +143,12 @@ struct dw_hdmi_plat_data {
+> > >                                          const struct drm_display_inf=
+o *info,
+> > >                                          const struct drm_display_mod=
+e *mode);
+> > >
+> > > +     /*
+> > > +      * priv_audio is specially used for additional audio device to =
+get
+> > > +      * driver data through this dw_hdmi_plat_data.
+> > > +      */
+> > > +     void *priv_audio;
+> > > +
+> > >       /* Platform-specific audio enable/disable (optional) */
+> > >       void (*enable_audio)(struct dw_hdmi *hdmi, int channel,
+> > >                            int width, int rate, int non_pcm, int iec9=
+58);
+> > >
+> >
+> >
+> > --
+> > TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, =
+Germany
+> > Amtsgericht M=C3=BCnchen, HRB 105018
+> > Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan=
+ Schneider
+> > http://www.tq-group.com/
+> >
+> >
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
+
+
