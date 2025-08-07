@@ -1,371 +1,236 @@
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013041.outbound.protection.outlook.com [52.101.83.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678DB2A1CF
-	for <imx@lists.linux.dev>; Thu,  7 Aug 2025 10:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754564311; cv=none; b=aQhJ/lNgFIidwn+ZNjAL8Zl2/t0m2MqnZh6Do8dFRO7uVNoNAoTXtsPlZytY/SS5G7tbBP01Le8a7ObchgP8nQabe80vm7/PFuGbO9izsWrQOnAYEFS/DcCj8XWCh71GACUhQTuEXarTDEQ85XUwt8oYMEx0dg+rh8iSjlb05FY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754564311; c=relaxed/simple;
-	bh=BJZZIjaCNP9cY68tcTgiHdHm/mpm2TZTSvFFCy9daD8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D6Gp0UYkJwtYUXNLy/RtWxMF+xaMWgPWZludnaD8xPRivw/eXUgYmSrCfDQyfIYu0VIRIXpr4vD2kzX94qJtxKi5rvVxV5GhU+Uxnhgw8PUCgr/+0BT7OzWWCsXXRB+u3LCQE0p+/NKLVzpj8x9cr40QaxnrfNy7mqSAkTH8U8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lTZJMPrG; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72876238C16
+	for <imx@lists.linux.dev>; Thu,  7 Aug 2025 11:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754566036; cv=fail; b=cpfkXzIPWjdnstmGml91DUfcNGUdZBZUKyctnpjImOmHapd1sZMynAI5tGvmxWXGFMDP/Ufdc5ktMQ76u21PBQ8LxWGVxpTZbGTLEV0Y0y2D9McoQAMx2LX1AV4kb7qfFw87lOPNiY2bCMJ128bvhwXPDf+QdP43UVAxVKzUSEg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754566036; c=relaxed/simple;
+	bh=E/88ov/x223XIwbZ3mzYHUNcIl4GmP/M/LyrVHYhhB4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=L7svLoCac0AGt01XGipLATltTDk/4JeG1JqhkMgZZpIjM1snYXcwBJe9xDG+oSxAXoYnAdoq2WbP9Kfk+0gTLNLW7N/mF9zmnOfdnAQC4Skt05IQBYuyvcvIiDXRZosoPKjFotcxeKYMBIUh2MJsVucq8+DU77hGeok4Y3yLpGE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oXJaDEr7; arc=fail smtp.client-ip=52.101.83.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lTZJMPrG"
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3e3f1e69090so4223215ab.0
-        for <imx@lists.linux.dev>; Thu, 07 Aug 2025 03:58:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754564308; x=1755169108; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8tWMOA3+MxqIET7zOeogQlZpQrCQ4ulH5geagIzb9wU=;
-        b=lTZJMPrG4a4tdYD1ymUU+NJJZZ82oip2x/6j3He81Jpr+k/a4NUH7AcTWG5tQp+v2u
-         hp18cJiHJE9TakYPjMpBHrpW2MHOWZWA10rYJgCqqLd82jWE6y0ILtJyYSt1peX4YFHL
-         vm+gltCdZ19ZGKXIp9hS/gJvJ6JaXZDxeFAXpPRp5RBrb7NKVaRbaxejnNNPjBkFLOsj
-         0ONNXEoqKaW56VU6msmYM2HwM22M5M+LZyJHc2yhUpbiJt/OfYPiO+DO8FP5NqObLWUi
-         GXkcGD95i24F61Re+8r0DvBoxj7CRqYiGkbszYnxMsmYWGPIkacYyyIPV1nikLQsprP3
-         QWBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754564308; x=1755169108;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8tWMOA3+MxqIET7zOeogQlZpQrCQ4ulH5geagIzb9wU=;
-        b=eaTDFSzN4IfW6vz3yk5a1DzKv/RaHO/GXITcUQIOunF94WaBdNaNJD0z6+MUWcTCCT
-         4BWKSnfE1+7CsmzZT35D+lF8A3pKhFBBvSPkP/1Ro9ehucuN8yfAWZtk+plCjSgatATR
-         AJ74a56l2EEE6nTNDv/xyaIBdmJaqzCoXNYLt1xyU7o8CcOvl+o5hc8EbSba7ibwTJ0e
-         4HHuD+/oGgchUkhMzY/IAkchafwk2LjtZXNV58qA0CI0QeqMIkvX2lN28cAlCKbyOLkk
-         kHRfxIVXSCQv1f3MVixVPj4tElxZ0GEW65f2CKmxMVXBHZeT+iwhVVlwIMGtzZWoghak
-         8WEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVZSA27dIXOTxFneAEOwl0CMIICnXOLQfWGF9XNFMecqQw438slkdVhssNUbcDffisRDIw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YySudbze079hhjIgEvXy9iMwGKgDc88mvoL1OyrkrJAPNljbGuZ
-	A7P05mLC4Vk0ELkgi8lQ6Ud8nyOhcKljzKkaILAVGTzJZ0+8/ocLmiHdbUH1ozgA3gs58zNPC2k
-	K7ZhXMeoGjo36Mto0RN9Mfi4x29Kcsy4=
-X-Gm-Gg: ASbGncuE1I5n4fxjhFH76vLNZCWzBlgEAxUeZqJyLYOUtURMRmxhUppaQZLKdiUp0Ev
-	BBx4ZT1CGq+jRTfk7TBlWH9GKU8l3gOrdKvm1GEjKiCvJ/FLBW5s8tUYKSFFq3c60boeasZi5IX
-	zhUZsy+bm1V1s6YlYq50uFGXSQAhks/O5asxlucENJRtSk8MnVaOu5qiCbC+QkciN72cN88e4CM
-	P1dcWI=
-X-Google-Smtp-Source: AGHT+IHFyEqQlwA4nzQRnsXvPUsGwZOgKB36m7+Ke65jmW1lXiVYvMW77eXhUFaYX4r2OmzVe+1dFNu46sXVYvnzZ80=
-X-Received: by 2002:a05:6e02:18c7:b0:3df:3598:7688 with SMTP id
- e9e14a558f8ab-3e51b93cc8dmr120096585ab.21.1754564308346; Thu, 07 Aug 2025
- 03:58:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oXJaDEr7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=x/dTOQzU7zL/XTc/5fOUlufV2ule3NhCcf6mX0Sn4DNDd4zpVuBp1LJ0cU60H6e71X6IfwBFp/3udSbylciX2/bQSQVjBVTxG7PrFkd5euViN63B8aBNBJrxn9MiIcIUyqpW6X8w+vpJPYwKOFAOtZi3FqyfgmUkjJf0WT8wVW2Iq/fdeWurq3hyNdz9ww4PomuZhc91pTkoyisp/pe7sWjLF7dsrufsI2h+unZC74M0SQN2nLKo2KfvKW9netRFWHSnVJo6JGnVTMPDv1Zd3xTcJEDaPqWyTfC9oDg36alV2EKhaFEcNiUkBkIj5zWt0xbHL/eUZaKXTPLnIN70Pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NQ25TxmlEDdIysoZhETNnsqcWy5ROS0ceUv5UG3TtnY=;
+ b=k4c18cD4vGuFnsy46hNpM54RV4lK+omUcR8T3b6fBV6ZjaAhtFA04P+kPjAm1JeXqeIgvc7pINqnjkZ9nXduZSVD5bI3Wuby5Sssbb5b3NU3XGS1O5epalZfO3IYqQ80I4DlrvLXOA0pgYqNMmZoYLMX/md9p4tNNvQ74uwM8OANFKF0ps/9LsQHb9PrCRGsAgAvvvDuuppOLUqbBzPvQjkFK+4l09lUDZkFObZNIwrH7iD4ooWYFoF9K0GIxZcNdUEojXohsrkh7pXhF3s0W5YwxZ8+bMyv5DC8xSRVmgCYjYUWJFydc4cpJggy/jJ8iLt9CsOSg4kimMqnaXMJTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NQ25TxmlEDdIysoZhETNnsqcWy5ROS0ceUv5UG3TtnY=;
+ b=oXJaDEr7hAk7Lm0TOOAw0haHm7pSf/2q6Zz5FBK2aBqyZszXZUAVpSfiVIV8AMrJdGC3wdhDRQ6Oaepw8eFCNL2eXnn9eoJ2FmmpJ4ELefj+twPuiDk2TLCKzXQt4bZri7rjyi7jXvXVC+F/JX3l1ctdL1fqd0Hwrw25kI/vss3SZ9FK9KMO9OSqmegfo5wMR5+Kr2PNtpSDndqDfEYE0PElAVbM8u3NFCSUlQdG/gU08Ri8sdX9ucro3fc2PfRAZcYdZR0r6TFjDTbYHJBIrlLvxacINjpTgocRWBQqI873N5z2gIBuahTodaEXdvOmyNOAkUknp6OyG5KZQmmYew==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by AM8PR04MB8020.eurprd04.prod.outlook.com (2603:10a6:20b:244::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.15; Thu, 7 Aug
+ 2025 11:27:09 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%4]) with mapi id 15.20.9009.013; Thu, 7 Aug 2025
+ 11:27:09 +0000
+Date: Thu, 7 Aug 2025 19:21:46 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, hkallweit1@gmail.com, 
+	o.rempel@pengutronix.de, pabeni@redhat.com, netdev@vger.kernel.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [RESEND] net: phy: fix NULL pointer dereference in
+ phy_polling_mode()
+Message-ID: <3mkwdhodm4zl3t6zsavcrrkuawvd3qjxtdvhxwi6gwe42ic7rs@tevlpedpwlag>
+References: <20250806082931.3289134-1-xu.yang_2@nxp.com>
+ <aJMWDRNyq9VDlXJm@shell.armlinux.org.uk>
+ <ywr5p6ccsbvoxronpzpbtxjqyjlwp5g6ksazbeyh47vmhta6sb@xxl6dzd2hsgg>
+ <aJNSDeyJn5aZG7xs@shell.armlinux.org.uk>
+ <unh332ly5fvcrjgur4y3lgn4m4zlzi7vym4hyd7yek44xvfrh5@fmavbivvjfjn>
+ <b9140415-2478-4264-a674-c158ca14eb07@lunn.ch>
+ <aJOHObGgfzxIDzHW@shell.armlinux.org.uk>
+ <2b3fvsi7c47oit4p6drgjqeaxgwyzyopt7czfv3g2a74j2ay5j@qu22cohdcrjs>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2b3fvsi7c47oit4p6drgjqeaxgwyzyopt7czfv3g2a74j2ay5j@qu22cohdcrjs>
+X-ClientProxiedBy: AM0PR02CA0116.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28c::13) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250804104722.601440-1-shengjiu.wang@nxp.com>
- <20250804104722.601440-6-shengjiu.wang@nxp.com> <fa455148-a071-4433-8c9c-26add3872604@nxp.com>
- <CAA+D8AN4n0H6M_0EqX4z_37ViSCyThKbmtMgqPmipintJ8Wtwg@mail.gmail.com> <ba02693b-8ad2-4297-ab89-5b39d5c4315f@nxp.com>
-In-Reply-To: <ba02693b-8ad2-4297-ab89-5b39d5c4315f@nxp.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 7 Aug 2025 18:58:15 +0800
-X-Gm-Features: Ac12FXwUPM-Znt5cq2SUHVDzi6o3wmoQ462FD5iaVLkULQVZBddMO5yf_2W0GwQ
-Message-ID: <CAA+D8AN3VzFx1g=8wyxJROw96xS2-qoVs3X4vUfFnJtUCqFj_w@mail.gmail.com>
-Subject: Re: [PATCH v3 5/6] drm/bridge: imx: add driver for HDMI TX Parallel
- Audio Interface
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com, 
-	neil.armstrong@linaro.org, rfoss@kernel.org, 
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
-	airlied@gmail.com, simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org, 
-	cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	p.zabel@pengutronix.de, devicetree@vger.kernel.org, l.stach@pengutronix.de, 
-	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|AM8PR04MB8020:EE_
+X-MS-Office365-Filtering-Correlation-Id: 26835cf7-f7bf-4a8c-163e-08ddd5a5587e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|19092799006|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?J8b9y4PogCnrT/03elsC3EjXsNbfGritsceLt5HCjYs+C8ldx4mZ7a2Emtxz?=
+ =?us-ascii?Q?TXAi0tdEodA4UgkYkK52UKp5Cu6KQUul5dsOqTV2p6SvLuUGT9Y6ABfHunke?=
+ =?us-ascii?Q?tr/EwvKuxZPU9bXU0KKK2ZPOIppMk1rZNEnCmOwlIAtr8+8cQoBUMXnRaVsg?=
+ =?us-ascii?Q?aWiBWhcljhAe4+uPet7GKRG12dAIqKLCfC43jzf+Gpn5sbwUIvZ5wThYpPv1?=
+ =?us-ascii?Q?9FmW5YtBXrUyxePtsE3uF7obNEREJnNvEETHpzSNoM3pzOy0h6FZpxbstzho?=
+ =?us-ascii?Q?nVNTKocrIgDctBUxabwPCiLQTfppeXnsanU5GCtSeEbNuVGO7gW6Bkb7Ay8y?=
+ =?us-ascii?Q?GrHHvlv+0B32jsow56LGVa/Ou4VM4XqEvWjfVE3NjC/A16J+aBB0u1/WroEq?=
+ =?us-ascii?Q?UhKImRZlM1HoPxSdtAdSSbwSC02RgTpOLb9AMMbjXcKMprAH8mImZUzaFJhz?=
+ =?us-ascii?Q?/QmXVDapaEa9sUBG9L+cW2reDsKuI15RVicUw9pKYzUO3nqAEw5e/FqtonpJ?=
+ =?us-ascii?Q?Wo63r5KvdO0msdvyMS9E4K8EQ+XKipQDW9Wl497QG2ozU5gOce3G2At5BQBo?=
+ =?us-ascii?Q?6jgfe9maf7zdp+3upv8C7wtL1PG//KGg1yrvTCu3ibRXTPePTAiCSznma5hd?=
+ =?us-ascii?Q?DtlDD60IdzNjeoi52YJBoe4zRbO+GVCoT+5rVjRPI9JokXaZKlmolNauZ3e8?=
+ =?us-ascii?Q?/hHJ5dDqSNjbZfdK8I/HhRZJvaPxxZV889RTHED7idvkktdgCtEEqi9ESvQf?=
+ =?us-ascii?Q?ciptoydC8DibmTxbJ2z7ZyEJ6c3hK4WE3liC5v5DoZI7r6W65LEdm7DE8NMk?=
+ =?us-ascii?Q?9V1Tcav9Fz3o+pqRxC4cmq1QZsdB+86Wf8KI8qOsieqKLKzY8ztUFub3FaSm?=
+ =?us-ascii?Q?K5WYVmZ4mB4u9aljnSON7UD7GlO6hecwZUxsGFeW6ncagiYSqdzAYUhuglpQ?=
+ =?us-ascii?Q?pUp3cS9ow4ZSn0Gyg7pb2mxguzmWLLv0SZQUKCYAc93EWq9S2qXep09IcaYr?=
+ =?us-ascii?Q?0NSpsehmHmrXoiilZsoCJ4rOfFB/Ljak9zMZlyx2/5zx7ri0lA5rg+bhZ2J5?=
+ =?us-ascii?Q?qR0DFTgLcjm8XEVmjmrV+2rBBjJEXrYeP68qXV2M4JXKW+VI3lS90fO6F5f0?=
+ =?us-ascii?Q?nmXdaiixPSnew0eqcWfkhpSZLPNONsMzCYxOgaxaVmRuyPbQD5rKG5C63Krz?=
+ =?us-ascii?Q?6HnxHg2+kaGGpq5mrnMhDdFXLtKev13RiKe/ujcxrIpiiChzqdLOFzgO2Fup?=
+ =?us-ascii?Q?eztfbwz8QOjMCGRxqq3a/NdnZzhh00zQTwryd5I1V+iNj6kpbScFZ2mu9CwL?=
+ =?us-ascii?Q?/h8YA8NHyHz+D2TpRJN83eUWLja6nT9T0wZisfZJNJsxMh6lZvDbIvB8ZNaY?=
+ =?us-ascii?Q?HXziWheFsZFwGwHV2dXTpeBTLnp779AGn+Kc/dbXVSousPj4REVrHqyoP3Ez?=
+ =?us-ascii?Q?tJfaC1JNTeI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?19az5Pn8hAuUbV9qRinTCKo06rpXw4i9aw1O2bEsWlzAq7xmWqZXKHl0becB?=
+ =?us-ascii?Q?xhV5GupTSc5GisYhXEtIUj1QD1fQUsROrOpXSNmE0VdcTPIMlSXS+TGB7u+V?=
+ =?us-ascii?Q?WlefOHlFdXd3CYryynPVEEwZQByVuCtkVXU7rRKefcsnaXt+WHzCy1bH8Ky0?=
+ =?us-ascii?Q?lHvf2C8iGNe6mE12G0XcTtSQqzra9U5iS430sus/ozKvUEEEkC4V1oechhur?=
+ =?us-ascii?Q?r7fmSySKkYdYhFrkhYDj2pAt+unmxte8R4MVVgO8ntr6yceFuHd511izKEpP?=
+ =?us-ascii?Q?4EwmAspnLxSgNvmk/4HBYAPaUE3mmxrfgRBUROpUBGFDbt7NvmnYBgEx9lHd?=
+ =?us-ascii?Q?tCGsc+6/9twtj50XPvZcWASFXioujPqzP1xd4OqAo7wQDOZV2ysOXOSqMtFt?=
+ =?us-ascii?Q?+upyptXjKY+WkEwFRPodmKKf/cf4+7UY4P7fxcipYna2Q6BAhFNrCmERu3Or?=
+ =?us-ascii?Q?bKOJz/9AaP2dNQ82BP3y26g9YBz7VJOwoOyTVFMAI3Bo5lh+QbE57IeD4d6f?=
+ =?us-ascii?Q?0yTDoxt8lEdIMKxdRsw9W7T9MaNqAz9goW0ifihcwtGQaqhweYlKmWzm05sy?=
+ =?us-ascii?Q?In4sm14y8ZlA7qbA3A6dFCoGo33YFpyrAmkcFIsYCkaz3y0oe0CxCtxObWJB?=
+ =?us-ascii?Q?+2hZDPjxV8kEpARhe5rFJhfhOF7Da4gdKIoDQRoMr+SMTKBdramf5gv8ONxx?=
+ =?us-ascii?Q?dNOFoUo8rCQm0WlGYgPqUctURnXlTRH7K8bRFOepGsIHR3ewG+Uk9JicaOxS?=
+ =?us-ascii?Q?nVqkj9h2EEJwT3IfK/N3GMDa88L4+7wvROTen49TE6HawavvJxEPJFveghGC?=
+ =?us-ascii?Q?/7hqRfMUVbh9LBG2s0oanLu8sDWAGPc4yaM9SfDRMOGRso665i+3K46+F8i0?=
+ =?us-ascii?Q?/YEo6ErvbEEVAsT9QD+f1J3IzZ8tf/3MDVLGP3ch/m8XkZNAfD+ogIngP9j+?=
+ =?us-ascii?Q?VrgUJtoPjMxzC0Bj9xgdlhLL6ChZWZGEtioUytGbIc+7Iqfz//CU9avh9Ysg?=
+ =?us-ascii?Q?DQhF7SwEGPVpOvuwrspO73zdpZ8N4NRootrPOtwtxmFl8bY0jpacuS7dVMR0?=
+ =?us-ascii?Q?RjTcn3xLvZvyvtrwAJsAcJXTljcUSwcJL1XO4SiE+HgqzUwCeWYUhB6E9anT?=
+ =?us-ascii?Q?SVVSq5os8/9cajIJFCvBgUIhlvZu5V8DRa05bWHT3p971iNtK7RStM2b1TtX?=
+ =?us-ascii?Q?y7W5ms3mCquPHgpnTsD+O7ccVI2NKxVV55yqrDzi1Apa+axG7VhFMJ+YiDe4?=
+ =?us-ascii?Q?ds1/nMclziGK+M1RYMOr5tAP77OcbBWxtjXIS6QoMUyAJt7ThxA+enqdUWHp?=
+ =?us-ascii?Q?uIxisy1yWmntuiBnyFVRA6z73wJLqbceDM9jTO1uot47luxws4v/7gGZzCBG?=
+ =?us-ascii?Q?27Bu8d9BOKM9g9281FAii97Z4K/RpSQ4XDzMD2dYtGwvt9SeFqvyfMfYBhvS?=
+ =?us-ascii?Q?DM/3zMaJswoHoLWuHL1EVAT7d5LUYp+yQim3jb74MLRluJML3wUa6oGAajqQ?=
+ =?us-ascii?Q?g/6o16JB0vUBlHpLTqyLsJM9e3g0p5ZQtfraIRgfl8HwKy3L4o6BJYzP6Kls?=
+ =?us-ascii?Q?SkS9dXpsQfbWDqxAhaTN37soIkfHSePklvukQorM?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26835cf7-f7bf-4a8c-163e-08ddd5a5587e
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 11:27:08.9924
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xvB9pDxWiEksOB79ifpSuMQQkezqa1niszwddoNncYE9Xy6dPPRd0wDHk489ZzgTPWkfyJNsKbe5znxc/e1qYA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB8020
 
-On Wed, Aug 6, 2025 at 2:52=E2=80=AFPM Liu Ying <victor.liu@nxp.com> wrote:
->
-> On 08/06/2025, Shengjiu Wang wrote:
-> > On Tue, Aug 5, 2025 at 4:55=E2=80=AFPM Liu Ying <victor.liu@nxp.com> wr=
-ote:
-> >>
-> >> On 08/04/2025, Shengjiu Wang wrote:
->
+Hi Russell and Andrew,
+
+On Thu, Aug 07, 2025 at 05:23:24PM +0800, Xu Yang wrote:
+> On Wed, Aug 06, 2025 at 05:47:53PM +0100, Russell King (Oracle) wrote:
+> > On Wed, Aug 06, 2025 at 05:01:22PM +0200, Andrew Lunn wrote:
+> > > > > > Reproduce step is simple:
+> > > > > > 
+> > > > > > 1. connect an USB to Ethernet device to USB port, I'm using "D-Link Corp.
+> > > > > >    DUB-E100 Fast Ethernet Adapter".
+> > > 
+> > > static const struct driver_info dlink_dub_e100_info = {
+> > >         .description = "DLink DUB-E100 USB Ethernet",
+> > >         .bind = ax88172_bind,
+> > >         .status = asix_status,
+> > >         .link_reset = ax88172_link_reset,
+> > >         .reset = ax88172_link_reset,
+> > >         .flags =  FLAG_ETHER | FLAG_LINK_INTR,
+> > >         .data = 0x009f9d9f,
+> > > };
+> > > 
+> 
 > [...]
->
-> >>> +static int imx8mp_hdmi_pai_bind(struct device *dev, struct device *m=
-aster, void *data)
-> >>> +{
-> >>> +     struct dw_hdmi_plat_data *plat_data =3D (struct dw_hdmi_plat_da=
-ta *)data;
-> >>> +     struct imx8mp_hdmi_pai *hdmi_pai;
-> >>> +
-> >>> +     hdmi_pai =3D dev_get_drvdata(dev);
-> >>> +
-> >>> +     plat_data->enable_audio =3D imx8mp_hdmi_pai_enable;
-> >>> +     plat_data->disable_audio =3D imx8mp_hdmi_pai_disable;
-> >>> +     plat_data->priv_audio =3D hdmi_pai;
-> >>> +
-> >>> +     return 0;
-> >>> +}
-> >>> +
-> >>> +static void imx8mp_hdmi_pai_unbind(struct device *dev, struct device=
- *master, void *data)
-> >>> +{
-> >>> +     struct dw_hdmi_plat_data *plat_data =3D (struct dw_hdmi_plat_da=
-ta *)data;
-> >>> +
-> >>> +     plat_data->enable_audio =3D NULL;
-> >>> +     plat_data->disable_audio =3D NULL;
-> >>> +     plat_data->priv_audio =3D NULL;
-> >>
-> >> Do you really need to set these ptrs to NULL?
-> >
-> > yes.  below code in dw-hdmi.c use the pdata->enable_audio as condition.
->
-> Note that this is all about tearing down components.
-> If this is done properly as the below snippet of pseudo-code, then
-> hdmi->{enable,disable}_audio() and pdata->{enable,disable}_audio() won't =
-be
-> called after audio device is removed by dw_hdmi_remove().  So, it's unnec=
-essary
-> to set these pointers to NULL here.
->
-> imx8mp_dw_hdmi_unbind()
-> {
->    dw_hdmi_remove(); // platform_device_unregister(hdmi->audio);
->    component_unbind_all(); //imx8mp_hdmi_pai_unbind()
-> }
->
-> BTW, I suggest the below snippet[1] to bind components.
->
-> imx8mp_dw_hdmi_bind()
-> {
->    component_bind_all(); // imx8mp_hdmi_pai_bind()
->                          //   set pdata->{enable,disable}_audio
->    dw_hdmi_probe(); // hdmi->audio =3D platform_device_register_full(&pde=
-vinfo);
-> }
+> 
+> > 
+> > Notice that the following return the PHY 3 register 3 value, so
+> > I suspect for anything that isn't PHY 3, it just returns whatever
+> > data was last read from PHY 3. This makes it an incredibly buggy
+> > USB device.
+> > 
+> > Looking at usbnet_read_cmd(), the above can be the only explanation,
+> > as usbnet_read_cmd() memcpy()'s the data into &res, so the value
+> > in the kmalloc()'d buf (which likely be poisoned on free, or if not
+> > unlikely to reallocate the same memory - that needs to be verified)
+> > must be coming from firmware on the device itself.
+> 
+> I confirm it's returned by the device. I capture the USB transfer with
+> an USB analyzer too.
+> 
+> > 
+> > asix_read_cmd() will catch a short read, and usbnet_read_cmd() will
+> > catch a zero-length read as invalid.
+> > 
+> > So, my conclusion is... broken firmware on this device.
+> 
+> The data transfer function works fine on my side. And even if something
+> is wrong with this device, the linux system shouldn't be broken down
+> because of this.
 
-Looks like we should use dw_hdmi_bind() here to make unbind -> bind work.
-But can't get the encoder pointer.  the encoder pointer is from lcdif_drv.c=
-,
-the probe sequence of lcdif, pvi, dw_hdmi should be dw_hdmi first, then pvi=
-,
-then lcdif, because current implementation in lcdif and pvi driver.
+Thanks for your review!
 
-Should the lcdif and pvi driver be modified to use component helper?
-This seems out of the scope of this patch set.
+With more debug on why asix_devices.c driver is creating so many mdio devices,
+I found the mdio->phy_mask setting may be missing.
 
-Best regards
-Shengjiu Wang
->
-> >
-> >         if (pdata->enable_audio)
-> >                 pdata->enable_audio(hdmi,
-> >                                     hdmi->channels,
-> >                                     hdmi->sample_width,
-> >                                     hdmi->sample_rate,
-> >                                     hdmi->sample_non_pcm,
-> >                                     hdmi->sample_iec958);
-> >
-> >
-> >>
->
-> [...]
->
-> >>> +     return component_add(dev, &imx8mp_hdmi_pai_ops);
-> >>
-> >> Imagine that users could enable this driver without enabling imx8mp-hd=
-mi-tx
-> >> driver, you may add the component in this probe() callback only and mo=
-ve all
-> >> the other stuff to bind() callback to avoid unnecessary things being d=
-one here.
-> >
-> > component helper functions don't have such dependency that the aggregat=
-e
-> > driver or component driver must be probed or not.  if imx8mp-hdmi-tx is=
- not
-> > enabled, there is no problem, just the bind() callback is not called.
->
-> I meant I'd write imx8mp_hdmi_pai_probe() as below snippet and do all the
-> other stuff in imx8mp_hdmi_pai_bind().  This ensures minimum things are d=
-one
-> in imx8mp_hdmi_pai_probe() if imx8mp-hdmi-tx doesn't probe.
->
-> static int imx8mp_hdmi_pai_probe(struct platform_device *pdev)
-> {
->         return component_add(&pdev->dev, &imx8mp_hdmi_pai_ops);
-> }
->
-> >
-> >>
-> >>> +}
-> >>> +
-> >>> +static void imx8mp_hdmi_pai_remove(struct platform_device *pdev)
-> >>> +{
-> >>> +     component_del(&pdev->dev, &imx8mp_hdmi_pai_ops);
-> >>> +}
-> >>> +
-> >>> +static const struct of_device_id imx8mp_hdmi_pai_of_table[] =3D {
-> >>> +     { .compatible =3D "fsl,imx8mp-hdmi-pai" },
-> >>> +     { /* Sentinel */ }
-> >>> +};
-> >>> +MODULE_DEVICE_TABLE(of, imx8mp_hdmi_pai_of_table);
-> >>> +
-> >>> +static struct platform_driver imx8mp_hdmi_pai_platform_driver =3D {
-> >>> +     .probe          =3D imx8mp_hdmi_pai_probe,
-> >>> +     .remove         =3D imx8mp_hdmi_pai_remove,
-> >>> +     .driver         =3D {
-> >>> +             .name   =3D "imx8mp-hdmi-pai",
-> >>> +             .of_match_table =3D imx8mp_hdmi_pai_of_table,
-> >>> +     },
-> >>> +};
-> >>> +module_platform_driver(imx8mp_hdmi_pai_platform_driver);
-> >>> +
-> >>> +MODULE_DESCRIPTION("i.MX8MP HDMI PAI driver");
-> >>> +MODULE_LICENSE("GPL");
-> >>> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gp=
-u/drm/bridge/imx/imx8mp-hdmi-tx.c
-> >>> index 1e7a789ec289..ee08084d2394 100644
-> >>> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> >>> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
-> >>> @@ -5,11 +5,13 @@
-> >>>   */
-> >>>
-> >>>  #include <linux/clk.h>
-> >>> +#include <linux/component.h>
-> >>>  #include <linux/mod_devicetable.h>
-> >>>  #include <linux/module.h>
-> >>>  #include <linux/platform_device.h>
-> >>>  #include <drm/bridge/dw_hdmi.h>
-> >>>  #include <drm/drm_modes.h>
-> >>> +#include <drm/drm_of.h>
-> >>>
-> >>>  struct imx8mp_hdmi {
-> >>>       struct dw_hdmi_plat_data plat_data;
-> >>> @@ -79,11 +81,46 @@ static const struct dw_hdmi_phy_ops imx8mp_hdmi_p=
-hy_ops =3D {
-> >>>       .update_hpd     =3D dw_hdmi_phy_update_hpd,
-> >>>  };
-> >>>
-> >>> +static int imx8mp_dw_hdmi_bind(struct device *dev)
-> >>> +{
-> >>> +     struct dw_hdmi_plat_data *plat_data;
-> >>> +     struct imx8mp_hdmi *hdmi;
-> >>> +     int ret;
-> >>> +
-> >>> +     hdmi =3D dev_get_drvdata(dev);
-> >>> +     plat_data =3D &hdmi->plat_data;
-> >>> +
-> >>> +     ret =3D component_bind_all(dev, plat_data);
-> >>> +     if (ret)
-> >>> +             return dev_err_probe(dev, ret, "component_bind_all fail=
-ed!\n");
-> >>
-> >> As component_bind_all() would bind imx8mp-hdmi-pai and hence set
-> >> {enable,disable}_audio callbacks, you need to call dw_hdmi_probe() aft=
-er
-> >> component_bind_all() instead of too early in probe() callback.
-> >
-> > There is no such dependency.
-> > Maybe you mixed the hdmi->enable_audio() with pdata->enable_audio().
->
-> As the above snippet[1] shows, once dw_hdmi_probe() registers audio devic=
-e,
-> the audio device could be functional soon after audio driver probes, henc=
-e
-> hdmi->enable_audio() would be called and hence pdata->enable_audio() woul=
-d
-> be called. So, you need to set pdata->enable_audio() before dw_hdmi_probe=
-()
-> is called, otherwise pdata->enable_audio could be NULL when is called by
-> audio driver.
->
-> [...]
->
-> >>> +     remote =3D of_graph_get_remote_node(pdev->dev.of_node, 2, 0);
-> >>> +     if (remote && of_device_is_available(remote)) {
-> >>
-> >> Doesn't of_graph_get_remote_node() ensure that remote is avaiable?
-> >
-> > No.  'remote' is the node,  not the 'device'.
->
-> See of_device_is_available() is called by of_graph_get_remote_node():
->
-> struct device_node *of_graph_get_remote_node(const struct device_node *no=
-de,
->                                              u32 port, u32 endpoint)
-> {
->         struct device_node *endpoint_node, *remote;
->
->         endpoint_node =3D of_graph_get_endpoint_by_regs(node, port, endpo=
-int);
->         if (!endpoint_node) {
->                 pr_debug("no valid endpoint (%d, %d) for node %pOF\n",
->                          port, endpoint, node);
->                 return NULL;
->         }
->
->         remote =3D of_graph_get_remote_port_parent(endpoint_node);
->         of_node_put(endpoint_node);
->         if (!remote) {
->                 pr_debug("no valid remote node\n");
->                 return NULL;
->         }
->
->         if (!of_device_is_available(remote)) {
->              ^~~~~~~~~~~~~~~~~~~~~~
->                 pr_debug("not available for remote node\n");
->                 of_node_put(remote);
->                 return NULL;
->         }
->
->         return remote;
-> }
-> EXPORT_SYMBOL(of_graph_get_remote_node);
->
-> >
-> >>
-> >>> +             drm_of_component_match_add(dev, &match, component_compa=
-re_of, remote);
-> >>> +
-> >>> +             of_node_put(remote);
-> >>> +
-> >>> +             ret =3D component_master_add_with_match(dev, &imx8mp_dw=
-_hdmi_ops, match);
-> >>> +             if (ret)
-> >>> +                     dev_warn(dev, "Unable to register aggregate dri=
-ver\n");
-> >>> +             /*
-> >>> +              * This audio function is optional for avoid blocking d=
-isplay.
-> >>> +              * So just print warning message and no error is return=
-ed.
-> >>
-> >> No, since PAI node is available here, it has to be bound.  Yet you sti=
-ll need
-> >> to properly handle the case where PAI node is inavailable.
-> >
-> > This is for aggregate driver registration,  not for bind()
-> >
-> > The bind() is called after both drivers have been registered.  again th=
-ere is no
-> > dependency for both aggregate driver and component driver should be
-> > registered or probed.
->
-> Sorry for not being clear about my previous wording.  I meant since PAI n=
-ode is
-> available here, component_master_add_with_match() must be called to regis=
-ter
-> the master and if it fails to register it, imx8mp_dw_hdmi_probe() should =
-return
-> proper error code, not 0.
->
-> --
-> Regards,
-> Liu Ying
+When I add mdio->phy_mask setting, only one mdio device is created and the NULL
+pointer dereference issue is gone too.
+
+root@imx95evk:~# ls /sys/bus/mdio_bus/devices/
+usb-001:003:03
+
+root@imx95evk:~# cat /sys/bus/mdio_bus/devices/usb-001:003:03/phy_id
+0x02430c54
+
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index 9b0318fb50b5..9fba1cb17134 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -676,6 +676,7 @@ static int ax88772_init_mdio(struct usbnet *dev)
+        priv->mdio->read = &asix_mdio_bus_read;
+        priv->mdio->write = &asix_mdio_bus_write;
+        priv->mdio->name = "Asix MDIO Bus";
++       priv->mdio->phy_mask = ~BIT(priv->phy_addr);
+        /* mii bus name is usb-<usb bus number>-<usb device number> */
+        snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+                 dev->udev->bus->busnum, dev->udev->devnum);
+
+Is this the right thing to do?
+
+Thanks,
+Xu Yang
+
+> 
+> Thanks,
+> Xu Yang
+> 
+> > 
+> > -- 
+> > RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> > FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
