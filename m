@@ -1,48 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5244A18FC92;
-	Thu,  7 Aug 2025 08:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008C0155333;
+	Thu,  7 Aug 2025 08:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754555642; cv=none; b=tc52qqP+1taLxuOgMB5HgrdJcnzy9sij//2C9rTqPivCT8Pe8N5qTXqtj8txTbSxrjgzx59NisD17bDSP0kjjcXooWq2q9wZpfygT1E5JhrbYNQtfsAPb+Xll2oWF0JK5JN0Z9FKEvaY+1QziE23nzq3osAEYjXzTGIWwTAsaUk=
+	t=1754556626; cv=none; b=q70LzdazaXHzETeBYt/2sBQ8FdzWe/bIHVZtdmllMHfNPW2uscPoTRi9Z9NgcFWCSE+bO9iTXjdia9JCjffhb4iV2NslKVX4UCphk+I/oI9JxYw41LjaL9krJXF8L4+h6TO4uwePpTnzxR44DpnoiTXT4Vv+03Z8L8tPyHCUQsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754555642; c=relaxed/simple;
-	bh=m8Wmo3xaDB+aWRD2CluuYq5IQa40NOivyY3r5ZFPsjQ=;
+	s=arc-20240116; t=1754556626; c=relaxed/simple;
+	bh=gL61jIkUnYe2UH9PY1tqVu8MSrP9GJ7rcyYdJzJBz6o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Di72ChN9HitlrZtbEuVxmwaQgEJvZyjGmPXGQayBLT5aJ/Kg+bWKdPPU9A28N5y/ZICfv5Yx/7lb5yYCX8qMGW4jlC8Bbq1DPv01kZrxzJICl5Bk6D+CV413UX5sXtJbqENH5o7Ux8lHiy3o1ukAzrS1Ic5qP73B3gGfnN2DQk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhyU4wYw; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=J7SfHrrZElrRRSM+HySroQcNcuXI6N6BtX6lDB3oEZJpqSVtBS9roxH9Yj4Fx4jiPfgRNpSNwf3YTRXfNhinspLCUkROdTzeiR3z69Y/Ar9Ewfm4pjQC5Gnt0afUUrCciZcXc9o2i+DMj5Vi5ev8ocn8x5yxqGiigcNHfKdaVfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=k6iuvsJX; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhyU4wYw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5544BC4CEEB;
-	Thu,  7 Aug 2025 08:33:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754555641;
-	bh=m8Wmo3xaDB+aWRD2CluuYq5IQa40NOivyY3r5ZFPsjQ=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="k6iuvsJX"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 0086B3C3A;
+	Thu,  7 Aug 2025 10:49:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1754556571;
+	bh=gL61jIkUnYe2UH9PY1tqVu8MSrP9GJ7rcyYdJzJBz6o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BhyU4wYwRUAUWRwCWl4V6zMGJIaZnRU4rDCuwxJBjCDPT6aDRbAxlWNfh+/ni239U
-	 61FBKFBVlPBbPvSNrfw7fFGN7qiOTriuIwx2PRy17SkGhSAhflhXthnLuaqM02JWw8
-	 rqHPgg2x66lfuCqfk+8+/aGIQTVdzbkhP8gghU+t9w6wJopyHKXfmza1i3fi+Ivotv
-	 AE+UqBvdFAGaw77+KOa4aCZzpY/dkllaRdD51UYCQLBtuubXgGmt+2vzXqAC8e3Czb
-	 W0HOT9ZnZGQ/ue8iAiBLnB/EOOf9rpoweK2q1BNuSbc6Vrx4ACoEWf3cjsBO1oJHsO
-	 ccDigjrF6uRtg==
-Date: Thu, 7 Aug 2025 14:03:53 +0530
-From: "mani@kernel.org" <mani@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Hans Zhang <hans.zhang@cixtech.com>, Frank Li <frank.li@nxp.com>, 
-	"Z.Q. Hou" <zhiqiang.hou@nxp.com>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>, "Jonthan.Cameron@huawei.com" <Jonthan.Cameron@huawei.com>, 
-	"lukas@wunner.de" <lukas@wunner.de>, "feng.tang@linux.alibaba.com" <feng.tang@linux.alibaba.com>, 
-	"jingoohan1@gmail.com" <jingoohan1@gmail.com>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "robh@kernel.org" <robh@kernel.org>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH v1 2/2] PCI: dwc: Fetch dedicated AER/PME interrupters
-Message-ID: <pxes6n4nja4v2yfrr335b6ynggwbz3n6t5cgjx26462thefr64@po4bdjwp43h3>
-References: <20250807070917.2245463-1-hongxing.zhu@nxp.com>
- <20250807070917.2245463-3-hongxing.zhu@nxp.com>
- <b721ecf5-5da6-4ab1-b352-b7ce19d1b13a@cixtech.com>
- <AS8PR04MB88331790CE4783BC0856A82A8C2CA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+	b=k6iuvsJXTNE0oJK45xZdiWrLWdQa+u3XUfWpJVm3zs0YId8LnXkSMsvLP8ZrhCZyM
+	 fZ9bVGHoYZbm0Fb7DRiaI/2NlGxo7A96nMs6gff/n0QCKZ/sHDKgsJRFvUCEEdkred
+	 C4gqI95AquETDpPRaBSesLFWMKcdtOgXkDQ4BCVI=
+Date: Thu, 7 Aug 2025 11:50:03 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Devarsh Thakkar <devarsht@ti.com>, Benoit Parrot <bparrot@ti.com>,
+	Hans Verkuil <hverkuil@kernel.org>, Mike Isely <isely@pobox.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Christian Gromm <christian.gromm@microchip.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
+	Dongliang Mu <dzm91@hust.edu.cn>, Jonathan Corbet <corbet@lwn.net>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andy Walls <awalls@md.metrocast.net>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Bin Liu <bin.liu@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Osipenko <digetx@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Mirela Rabulea <mirela.rabulea@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Michal Simek <michal.simek@amd.com>, Ming Qian <ming.qian@nxp.com>,
+	Zhou Peng <eagle.zhou@nxp.com>,
+	Xavier Roumegue <xavier.roumegue@oss.nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>, Samuel Holland <samuel@sholland.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Jackson Lee <jackson.lee@chipsnmedia.com>,
+	Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
+	Houlong Wei <houlong.wei@mediatek.com>,
+	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+	Tiffany Lin <tiffany.lin@mediatek.com>,
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
+	Jacob Chen <jacob-chen@iotwrt.com>,
+	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	=?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
+	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Fabien Dessenne <fabien.dessenne@foss.st.com>,
+	Hugues Fruchet <hugues.fruchet@foss.st.com>,
+	Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Corentin Labbe <clabbe@baylibre.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org,
+	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+	linux-sunxi@lists.linux.dev, linux-usb@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	mjpeg-users@lists.sourceforge.net
+Subject: Re: [PATCH 27/65] media: Reset file->private_data to NULL in
+ v4l2_fh_del()
+Message-ID: <20250807085003.GE11583@pendragon.ideasonboard.com>
+References: <20250802-media-private-data-v1-0-eb140ddd6a9d@ideasonboard.com>
+ <20250802-media-private-data-v1-27-eb140ddd6a9d@ideasonboard.com>
+ <e9aaf929-5e0d-4379-996b-a564acd3e331@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,118 +135,210 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB88331790CE4783BC0856A82A8C2CA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+In-Reply-To: <e9aaf929-5e0d-4379-996b-a564acd3e331@kernel.org>
 
-On Thu, Aug 07, 2025 at 07:38:06AM GMT, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Hans Zhang <hans.zhang@cixtech.com>
-> > Sent: 2025年8月7日 15:21
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>; Frank Li <frank.li@nxp.com>;
-> > Z.Q. Hou <zhiqiang.hou@nxp.com>; bhelgaas@google.com;
-> > ilpo.jarvinen@linux.intel.com; Jonthan.Cameron@huawei.com;
-> > lukas@wunner.de; feng.tang@linux.alibaba.com; jingoohan1@gmail.com;
-> > mani@kernel.org; lpieralisi@kernel.org; kwilczynski@kernel.org;
-> > robh@kernel.org
-> > Cc: linux-pci@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > imx@lists.linux.dev
-> > Subject: Re: [PATCH v1 2/2] PCI: dwc: Fetch dedicated AER/PME interrupters
+On Wed, Aug 06, 2025 at 02:45:14PM +0200, Hans Verkuil wrote:
+> On 02/08/2025 11:22, Jacopo Mondi wrote:
+> > From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 > > 
+> > Multiple drivers that use v4l2_fh and call v4l2_fh_del() manually reset
+> > the file->private_data pointer to NULL in their video device .release()
+> > file operation handler. Move the code to the v4l2_fh_del() function to
+> > avoid direct access to file->private_data in drivers. This requires
+> > adding a file pointer argument to the function.
 > > 
+> > Changes to drivers have been generated with the following coccinelle
+> > semantic patch:
 > > 
-> > On 2025/8/7 15:09, Richard Zhu wrote:
-> > > EXTERNAL EMAIL
-> > >
-> > > Some PCI host bridges have limitation that AER/PME can't work over MSI.
-> > > Vendors route the AER/PME via the dedicated SPI interrupter which is
-> > > only handled by the controller driver.
-> > >
-> > > Because that aer and pme had been defined in the snps,dw-pcie.yaml
-> > > document. Fetch the vendor specific AER/PME interrupters if they are
-> > > defined in the fdt file by generic bridge->get_service_irqs hook.
-> > >
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > ---
-> > >   .../pci/controller/dwc/pcie-designware-host.c | 32
-> > +++++++++++++++++++
-> > >   1 file changed, 32 insertions(+)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > index 906277f9ffaf7..9393dc99df81f 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > @@ -13,11 +13,13 @@
-> > >   #include <linux/irqdomain.h>
-> > >   #include <linux/msi.h>
-> > >   #include <linux/of_address.h>
-> > > +#include <linux/of_irq.h>
-> > >   #include <linux/of_pci.h>
-> > >   #include <linux/pci_regs.h>
-> > >   #include <linux/platform_device.h>
-> > >
-> > >   #include "../../pci.h"
-> > > +#include "../../pcie/portdrv.h"
-> > >   #include "pcie-designware.h"
-> > >
-> > >   static struct pci_ops dw_pcie_ops;
-> > > @@ -461,6 +463,35 @@ static int dw_pcie_host_get_resources(struct
-> > dw_pcie_rp *pp)
-> > >          return 0;
-> > >   }
-> > >
-> > > +static int dw_pcie_get_service_irqs(struct pci_host_bridge *bridge,
-> > > +                                   int *irqs, int mask) {
-> > > +       struct device *dev = bridge->dev.parent;
-> > > +       struct device_node *np = dev->of_node;
-> > > +       int ret, count = 0;
-> > > +
-> > > +       if (!np)
-> > > +               return 0;
-> > > +
-> > > +       if (mask & PCIE_PORT_SERVICE_AER) {
-> > > +               ret = of_irq_get_byname(np, "aer");
-> > > +               if (ret > 0) {
-> > > +                       irqs[PCIE_PORT_SERVICE_AER_SHIFT] = ret;
-> > > +                       count++;
-> > > +               }
-> > > +       }
-> > > +
-> > > +       if (mask & PCIE_PORT_SERVICE_PME) {
-> > > +               ret = of_irq_get_byname(np, "pme");
-> > > +               if (ret > 0) {
-> > > +                       irqs[PCIE_PORT_SERVICE_PME_SHIFT] = ret;
-> > > +                       count++;
-> > > +               }
-> > > +       }
-> > > +
+> > @@
+> > expression fh;
+> > identifier filp;
+> > identifier release;
+> > type ret;
+> > @@
+> > ret release(..., struct file *filp, ...)
+> > {
+> > 	<...
+> > -	filp->private_data = NULL;
+> > 	...
+> > -	v4l2_fh_del(fh);
+> > +	v4l2_fh_del(fh, filp);
+> > 	...>
+> > }
 > > 
-> > Hi Richard,
+> > @@
+> > expression fh;
+> > identifier filp;
+> > identifier release;
+> > type ret;
+> > @@
+> > ret release(..., struct file *filp, ...)
+> > {
+> > 	<...
+> > -	v4l2_fh_del(fh);
+> > +	v4l2_fh_del(fh, filp);
+> > 	...
+> > -	filp->private_data = NULL;
+> > 	...>
+> > }
 > > 
-> > As far as I know, some SoCs directly use the misc SPI interrupt derived from
-> > Synopsys PCIe IP. This includes PME, AER and other interrupts. So here, can
-> > we assign the interrupt number ourselves?
-> >
-> [Richard Zhu] Yes, they can be assigned by vendor themselves. The
->  different PME, AER or other interrupts can be defined in the chip
->  specific dts files.
-> > Also, whether to trigger the AER/PME interrupt in a similar way.
-> > (generic_handle_domain_irq)
-> [Richard Zhu] This patch-set is just fetch the dedicated AER/PME
-> interrupt for portdrv in none MSI/MSI-x/INTx mode. The trigger of
->  AER/PME would be handled in portdrv.
-> > Because there may be a misc SPI interrupt that requires a clear related state,
-> > what is referred to here is not the AER/PME state.
-> [Richard Zhu]How about to do the other misc SPI interrupts related state
->  clear in vendor local driver?
+> > @@
+> > expression fh;
+> > identifier filp;
+> > identifier release;
+> > type ret;
+> > @@
+> > ret release(..., struct file *filp, ...)
+> > {
+> > 	<...
+> > -	v4l2_fh_del(fh);
+> > +	v4l2_fh_del(fh, filp);
+> > 	...>
+> > }
+> > 
+> > Manual changes have been applied to Documentation/ to update the usage
+> > patterns, to drivers/media/v4l2-core/v4l2-fh.c to update the
+> > v4l2_fh_del() prototype and reset file->private_data, and to
+> > include/media/v4l2-fh.h to update the v4l2_fh_del() function prototype
+> > and its documentation.
+> > 
+> > Additionally, white space issues have been fixed manually in
+> > drivers/usb/gadget/function/uvc_v4l2.c
+> > 
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+> > ---
+> >  Documentation/driver-api/media/v4l2-fh.rst                         | 4 ++--
+> >  Documentation/translations/zh_CN/video4linux/v4l2-framework.txt    | 4 ++--
+> >  drivers/media/pci/cx18/cx18-fileops.c                              | 4 ++--
+> >  drivers/media/pci/ivtv/ivtv-fileops.c                              | 4 ++--
+> >  drivers/media/pci/saa7164/saa7164-encoder.c                        | 2 +-
+> >  drivers/media/pci/saa7164/saa7164-vbi.c                            | 2 +-
+> >  drivers/media/platform/allegro-dvt/allegro-core.c                  | 2 +-
+> >  drivers/media/platform/amlogic/meson-ge2d/ge2d.c                   | 2 +-
+> >  drivers/media/platform/amphion/vpu_v4l2.c                          | 4 ++--
+> >  drivers/media/platform/chips-media/coda/coda-common.c              | 4 ++--
+> >  drivers/media/platform/chips-media/wave5/wave5-helper.c            | 2 +-
+> >  drivers/media/platform/imagination/e5010-jpeg-enc.c                | 4 ++--
+> >  drivers/media/platform/m2m-deinterlace.c                           | 2 +-
+> >  drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c               | 4 ++--
+> >  drivers/media/platform/mediatek/mdp/mtk_mdp_m2m.c                  | 4 ++--
+> >  drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c                | 4 ++--
+> >  .../media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c    | 4 ++--
+> >  .../media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c    | 4 ++--
+> >  drivers/media/platform/nvidia/tegra-vde/v4l2.c                     | 2 +-
+> >  drivers/media/platform/nxp/dw100/dw100.c                           | 2 +-
+> >  drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c                     | 4 ++--
+> >  drivers/media/platform/nxp/imx-pxp.c                               | 2 +-
+> >  drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c                 | 2 +-
+> >  drivers/media/platform/nxp/mx2_emmaprp.c                           | 2 +-
+> >  drivers/media/platform/qcom/iris/iris_vidc.c                       | 3 +--
+> >  drivers/media/platform/qcom/venus/core.c                           | 2 +-
+> >  drivers/media/platform/renesas/rcar_fdp1.c                         | 2 +-
+> >  drivers/media/platform/renesas/rcar_jpu.c                          | 4 ++--
+> >  drivers/media/platform/renesas/vsp1/vsp1_video.c                   | 2 +-
+> >  drivers/media/platform/rockchip/rga/rga.c                          | 2 +-
+> >  drivers/media/platform/rockchip/rkvdec/rkvdec.c                    | 2 +-
+> >  drivers/media/platform/samsung/exynos-gsc/gsc-m2m.c                | 4 ++--
+> >  drivers/media/platform/samsung/exynos4-is/fimc-m2m.c               | 4 ++--
+> >  drivers/media/platform/samsung/s5p-g2d/g2d.c                       | 2 +-
+> >  drivers/media/platform/samsung/s5p-jpeg/jpeg-core.c                | 4 ++--
+> >  drivers/media/platform/samsung/s5p-mfc/s5p_mfc.c                   | 4 ++--
+> >  drivers/media/platform/st/sti/bdisp/bdisp-v4l2.c                   | 4 ++--
+> >  drivers/media/platform/st/sti/delta/delta-v4l2.c                   | 4 ++--
+> >  drivers/media/platform/st/sti/hva/hva-v4l2.c                       | 4 ++--
+> >  drivers/media/platform/st/stm32/dma2d/dma2d.c                      | 2 +-
+> >  drivers/media/platform/sunxi/sun8i-di/sun8i-di.c                   | 2 +-
+> >  drivers/media/platform/sunxi/sun8i-rotate/sun8i_rotate.c           | 2 +-
+> >  drivers/media/platform/ti/omap3isp/ispvideo.c                      | 5 ++---
+> >  drivers/media/platform/ti/vpe/vpe.c                                | 2 +-
+> >  drivers/media/platform/verisilicon/hantro_drv.c                    | 4 ++--
+> >  drivers/media/test-drivers/vicodec/vicodec-core.c                  | 2 +-
+> >  drivers/media/test-drivers/vim2m.c                                 | 2 +-
+> >  drivers/media/test-drivers/visl/visl-core.c                        | 2 +-
+> >  drivers/media/usb/pvrusb2/pvrusb2-v4l2.c                           | 3 +--
+> >  drivers/media/v4l2-core/v4l2-fh.c                                  | 7 ++++---
+> >  drivers/media/v4l2-core/v4l2-subdev.c                              | 5 ++---
+> >  drivers/staging/media/imx/imx-media-csc-scaler.c                   | 4 ++--
+> >  drivers/staging/media/meson/vdec/vdec.c                            | 2 +-
+> >  drivers/staging/media/sunxi/cedrus/cedrus.c                        | 2 +-
+> >  drivers/staging/most/video/video.c                                 | 4 ++--
+> >  drivers/usb/gadget/function/uvc_v4l2.c                             | 3 +--
+> >  include/media/v4l2-fh.h                                            | 5 ++++-
+> >  57 files changed, 89 insertions(+), 90 deletions(-)
+> > 
 > 
+> <snip>
+> 
+> > diff --git a/drivers/media/v4l2-core/v4l2-fh.c b/drivers/media/v4l2-core/v4l2-fh.c
+> > index b59b1084d8cdf1b62da12879e21dbe56c2109648..df3ba9d4674bd25626cfcddc2d0cb28c233e3cc3 100644
+> > --- a/drivers/media/v4l2-core/v4l2-fh.c
+> > +++ b/drivers/media/v4l2-core/v4l2-fh.c
+> > @@ -67,7 +67,7 @@ int v4l2_fh_open(struct file *filp)
+> >  }
+> >  EXPORT_SYMBOL_GPL(v4l2_fh_open);
+> >  
+> > -void v4l2_fh_del(struct v4l2_fh *fh)
+> > +void v4l2_fh_del(struct v4l2_fh *fh, struct file *filp)
+> 
+> Instead of adding a second argument, perhaps it is better to
+> just provide the filp pointer. After all, you can get the v4l2_fh
+> from filp->private_data.
+> 
+> It simplifies the code a bit.
 
-I'd expect the controller drivers to call the relevant part of the AER/PME
-handlers from their own platform IRQ handler. This will work for platforms using
-the shared IRQ line, and platforms requiring clearing custom bits in their own
-register space before handling the interrupts.
+That's an interesting idea. I'll give it a try.
 
-- Mani
+> >  {
+> >  	unsigned long flags;
+> >  
+> > @@ -75,6 +75,8 @@ void v4l2_fh_del(struct v4l2_fh *fh)
+> >  	list_del_init(&fh->list);
+> >  	spin_unlock_irqrestore(&fh->vdev->fh_lock, flags);
+> >  	v4l2_prio_close(fh->vdev->prio, fh->prio);
+> > +
+> > +	filp->private_data = NULL;
+> >  }
+> >  EXPORT_SYMBOL_GPL(v4l2_fh_del);
+> >  
+> > @@ -94,10 +96,9 @@ int v4l2_fh_release(struct file *filp)
+> >  	struct v4l2_fh *fh = file_to_v4l2_fh(filp);
+> >  
+> >  	if (fh) {
+> > -		v4l2_fh_del(fh);
+> > +		v4l2_fh_del(fh, filp);
+> >  		v4l2_fh_exit(fh);
+> >  		kfree(fh);
+> > -		filp->private_data = NULL;
+> >  	}
+> >  	return 0;
+> >  }
+> 
+> <snip>
+> 
+> > diff --git a/include/media/v4l2-fh.h b/include/media/v4l2-fh.h
+> > index d8fcf49f10e09452b73499f4a9bd1285bc2835a5..5e4c761635120608e0b588e0b0daf63e69588d38 100644
+> > --- a/include/media/v4l2-fh.h
+> > +++ b/include/media/v4l2-fh.h
+> > @@ -114,12 +114,15 @@ int v4l2_fh_open(struct file *filp);
+> >   * v4l2_fh_del - Remove file handle from the list of file handles.
+> >   *
+> >   * @fh: pointer to &struct v4l2_fh
+> > + * @filp: pointer to &struct file associated with @fh
+> > + *
+> > + * The function resets filp->private_data to NULL.
+> >   *
+> >   * .. note::
+> >   *    Must be called in v4l2_file_operations->release\(\) handler if the driver
+> >   *    uses &struct v4l2_fh.
+> >   */
+> > -void v4l2_fh_del(struct v4l2_fh *fh);
+> > +void v4l2_fh_del(struct v4l2_fh *fh, struct file *filp);
+> >  
+> >  /**
+> >   * v4l2_fh_exit - Release resources related to a file handle.
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Regards,
+
+Laurent Pinchart
