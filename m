@@ -1,79 +1,219 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5DC214813;
-	Thu,  7 Aug 2025 12:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03371238C26;
+	Thu,  7 Aug 2025 13:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754571493; cv=none; b=a088UQBF3A/d52MVg2glJwKMTf0vAUBXkPjcgJRppi8ZdS0t3+xszmIAK5Ps5COuShRGsgnw4WVXBkgiMfU+AQDV4HwBfd5rwPI3o/FykLnULQZGB4U2MD3CM3wersc4Ch8xdwpW2lkzWzPvN4L9iCx/lrw3Kycl5nFoVeMz/1g=
+	t=1754572724; cv=none; b=aDf086oprbcXKiFpp9n+rxgdGCU0Ckwu+D8E9LGTgAiIy1mwW7U7hX0omrWrQu3WfHtsU3K3ghGvNVh0b/yv7QE/sLVtJdG9G/3zIDBbNSMOdxiYgOik9ZsAuoWm8pcedjXJpuo1c+zpXS6JSPk7Ri3HZSxblExpn7sigy0khw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754571493; c=relaxed/simple;
-	bh=+GiEi5fx67ekIT8julrx4RFZSPiNtm6xOyQGY0aZCf8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BBbIiWHR2bVPNT+JjBe/HUuyrA5Zt7hQXU996O6EZsWV2qTcOf72IUpnMlpNQbKrRqvOqPLBLUhIWwKEITKyQUVaY2oyaYsxeBAdIhUawa0zu30s/x/th+o8yCcZ/VHJMIUvZZZlcO7htlzUvmqPgpwIjnhskD/kBijwz/nLUbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=aWNGyfuI; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1754572724; c=relaxed/simple;
+	bh=jhZGuKs+VTL1EX9JQsLLNKW9dU7Cq1mi1XfmDpxGgmo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AGT/DfvD9gGdlmfcdAziBCe8fsiivrt5X0MW/T/lxJCcx7A/IV88SEBgX32Gbqs/OYaNMnY0+ZzTqgeQW1gQxMK1UUcUaCBGsDxPaOLeqYDVWvmOhSXvBVd/o6JOPDpcCyhjEPtkqvKrxTH4CqSUc0WxIyaNPVN9IfviZGG1Paw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JrXszesK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="aWNGyfuI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=aGy12hdeb0T0FjvhNhxL30PNOwV/0qscO7Mccamc3ts=; b=aWNGyfuI6aCddNgTzdLOWfFKZF
-	QKEIO2PRl0y1yQaTk/6Sgeit7uzgEFku87zor86s5yhyAynvrKsT2JPVgzYF2sWX4d1zz1TC73EHu
-	XtFj6X/pPN8Sm24IIgMY7yq3DurP9doKknvpZfX9DDtv0Eyqn1Nj7lJf+vv/eWxbHslo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uk0C5-003yA0-QI; Thu, 07 Aug 2025 14:58:05 +0200
-Date: Thu, 7 Aug 2025 14:58:05 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Xu Yang <xu.yang_2@nxp.com>, hkallweit1@gmail.com,
-	pabeni@redhat.com, netdev@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RESEND] net: phy: fix NULL pointer dereference in
- phy_polling_mode()
-Message-ID: <d137518b-604b-4be3-9eb1-96d49123a251@lunn.ch>
-References: <aJMWDRNyq9VDlXJm@shell.armlinux.org.uk>
- <ywr5p6ccsbvoxronpzpbtxjqyjlwp5g6ksazbeyh47vmhta6sb@xxl6dzd2hsgg>
- <aJNSDeyJn5aZG7xs@shell.armlinux.org.uk>
- <unh332ly5fvcrjgur4y3lgn4m4zlzi7vym4hyd7yek44xvfrh5@fmavbivvjfjn>
- <b9140415-2478-4264-a674-c158ca14eb07@lunn.ch>
- <aJOHObGgfzxIDzHW@shell.armlinux.org.uk>
- <2b3fvsi7c47oit4p6drgjqeaxgwyzyopt7czfv3g2a74j2ay5j@qu22cohdcrjs>
- <3mkwdhodm4zl3t6zsavcrrkuawvd3qjxtdvhxwi6gwe42ic7rs@tevlpedpwlag>
- <aJSSNg4aZNfoqqZh@shell.armlinux.org.uk>
- <aJSf0JaBl4cKphFi@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JrXszesK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7EEC4CEEB;
+	Thu,  7 Aug 2025 13:18:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754572721;
+	bh=jhZGuKs+VTL1EX9JQsLLNKW9dU7Cq1mi1XfmDpxGgmo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JrXszesK5tUM43V2eGqUN+jLW7uAsSpNpdAmHts3xnx9QnJBpsYabAVOkIMuN0hlu
+	 vzSFO46kPooQ1U2SGy2fglffZP201jX0qjnxVu3is1h2rPaX0wgEZlqC1slHgg6arf
+	 yfim2V/46ZQzB6iWcvcGW/VFgwkYTHHWrZeMvCx5Q571Hhw5KHIT3k0pRTF/MjEovO
+	 ZwltMIlwKlapLaLNAQpAk4dMiYSWyUMDBcDlSWqJ56K+t555RJyDC/bTgOZ+V4Nys1
+	 PFvalFsiCbVAcywS7w3AHHACq/81AbcrBbBOyU/09/Ie/BhylPBBz3NbkFZV04DH0t
+	 fUmdplWqOQxWQ==
+Message-ID: <8c24481d-dfdf-4923-9629-3f6b074c27da@kernel.org>
+Date: Thu, 7 Aug 2025 15:18:19 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aJSf0JaBl4cKphFi@pengutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 58/65] media: zoran: Remove access to __fh
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Devarsh Thakkar
+ <devarsht@ti.com>, Benoit Parrot <bparrot@ti.com>,
+ Hans Verkuil <hverkuil@kernel.org>, Mike Isely <isely@pobox.com>,
+ Hans de Goede <hansg@kernel.org>,
+ Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+ Christian Gromm <christian.gromm@microchip.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Shi
+ <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
+ Dongliang Mu <dzm91@hust.edu.cn>, Jonathan Corbet <corbet@lwn.net>,
+ Tomasz Figa <tfiga@chromium.org>, Marek Szyprowski
+ <m.szyprowski@samsung.com>, Andy Walls <awalls@md.metrocast.net>,
+ Michael Tretter <m.tretter@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Bin Liu <bin.liu@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Dmitry Osipenko <digetx@gmail.com>, Thierry Reding
+ <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>,
+ Mirela Rabulea <mirela.rabulea@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ Michal Simek <michal.simek@amd.com>, Ming Qian <ming.qian@nxp.com>,
+ Zhou Peng <eagle.zhou@nxp.com>, Xavier Roumegue
+ <xavier.roumegue@oss.nxp.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Vikash Garodia <quic_vgarodia@quicinc.com>,
+ Dikshita Agarwal <quic_dikshita@quicinc.com>,
+ Abhinav Kumar <abhinav.kumar@linux.dev>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
+ Samuel Holland <samuel@sholland.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Nas Chung <nas.chung@chipsnmedia.com>,
+ Jackson Lee <jackson.lee@chipsnmedia.com>,
+ Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
+ Houlong Wei <houlong.wei@mediatek.com>,
+ Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+ Tiffany Lin <tiffany.lin@mediatek.com>,
+ Yunfei Dong <yunfei.dong@mediatek.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
+ Jacob Chen <jacob-chen@iotwrt.com>,
+ Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+ Heiko Stuebner <heiko@sntech.de>,
+ Detlev Casanova <detlev.casanova@collabora.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>,
+ =?UTF-8?Q?=C5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
+ Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+ Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Fabien Dessenne <fabien.dessenne@foss.st.com>,
+ Hugues Fruchet <hugues.fruchet@foss.st.com>,
+ Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ Steve Longerbeam <slongerbeam@gmail.com>, Maxime Ripard
+ <mripard@kernel.org>, Paul Kocialkowski <paulk@sys-base.io>,
+ =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+ Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+ Corentin Labbe <clabbe@baylibre.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Bingbu Cao <bingbu.cao@intel.com>, Tianshu Qiu <tian.shu.qiu@intel.com>,
+ Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-tegra@vger.kernel.org, imx@lists.linux.dev,
+ linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-sunxi@lists.linux.dev,
+ linux-usb@vger.kernel.org, linux-amlogic@lists.infradead.org,
+ linux-rockchip@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, mjpeg-users@lists.sourceforge.net
+References: <20250802-media-private-data-v1-0-eb140ddd6a9d@ideasonboard.com>
+ <20250802-media-private-data-v1-58-eb140ddd6a9d@ideasonboard.com>
+ <d8875dea-aa04-41fc-b1b4-519d06ed6cba@kernel.org>
+ <20250807123157.GF11583@pendragon.ideasonboard.com>
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250807123157.GF11583@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> Hm, I guess, with this change there will be a subtile regression.
-> In case of an external PHYs the ax88772_init_phy() is using PHYlib to
-> suspend the internal PHY.
+On 8/7/25 14:31, Laurent Pinchart wrote:
+> On Thu, Aug 07, 2025 at 08:58:01AM +0200, Hans Verkuil wrote:
+>> On 02/08/2025 11:23, Jacopo Mondi wrote:
+>>> The __fh parameter is assigned to an unsued variable. Remove it
+>>> and remove the unused struct zoran_fh type.
+>>>
+>>> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+>>> ---
+>>>  drivers/media/pci/zoran/zoran.h        | 6 ------
+>>>  drivers/media/pci/zoran/zoran_driver.c | 3 +--
+>>>  2 files changed, 1 insertion(+), 8 deletions(-)
+>>>
+>>> diff --git a/drivers/media/pci/zoran/zoran.h b/drivers/media/pci/zoran/zoran.h
+>>> index 1cd990468d3de9db8b14b72483972041c57bfee2..d05e222b392156bf1b3b4c83c6591db642c3c377 100644
+>>> --- a/drivers/media/pci/zoran/zoran.h
+>>> +++ b/drivers/media/pci/zoran/zoran.h
+>>> @@ -154,12 +154,6 @@ struct zoran_jpg_settings {
+>>>  
+>>>  struct zoran;
+>>>  
+>>> -/* zoran_fh contains per-open() settings */
+>>> -struct zoran_fh {
+>>> -	struct v4l2_fh fh;
+>>> -	struct zoran *zr;
+>>> -};
+>>> -
+>>>  struct card_info {
+>>>  	enum card_type type;
+>>>  	char name[32];
+>>> diff --git a/drivers/media/pci/zoran/zoran_driver.c b/drivers/media/pci/zoran/zoran_driver.c
+>>> index f42f596d3e6295e31e3b33cd83c5f7243911bd30..ec7fc1da4cc02f5a344cb49bb9a783c41c758195 100644
+>>> --- a/drivers/media/pci/zoran/zoran_driver.c
+>>> +++ b/drivers/media/pci/zoran/zoran_driver.c
+>>> @@ -511,12 +511,11 @@ static int zoran_s_fmt_vid_cap(struct file *file, void *__fh,
+>>
+>> This driver uses __fh as the name for the second argument of the ioctl
+>> callbacks. Can you take this opportunity to rename it to either 'fh' or 'priv'?
 > 
-> May be:
->   priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
+> It's a bit of yak shaving, but not too difficult so it will be addressed
+> in the next version (Jacopo already wrote the patches, thanks).
+> 
+>> Generally it's not a good idea to prefix variables with __ for no good reason.
+>>
+>> Grepping for __fh also shows two other drivers:
+>>
+>> drivers/media/platform/chips-media/coda/coda-common.c:#define fh_to_ctx(__fh)   container_of(__fh, struct coda_ctx, fh)
+>> drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h:#define fh_to_ctx(__fh) container_of(__fh, struct s5p_mfc_ctx, fh)
+>>
+>> I think it is a good idea to rename __fh to fh there as well.
+> 
+> That can't be done, otherwise things like
+> 
+> #define fh_to_ctx(fh)	container_of(fh, struct coda_ctx, fh)
+> 
+> static inline struct coda_ctx *file_to_ctx(struct file *filp)
+> {
+> 	return fh_to_ctx(file_to_v4l2_fh(filp));
+> }
+> 
+> will expand in the file_to_ctx() function to
+> 
+> 	return container_of(file_to_v4l2_fh(filp), struct coda_ctx, file_to_v4l2_fh(filp))
 
-I looked at that:
+If the fh_to_ctx #define is changed to a static inline, then there is no problem.
 
-	ret = asix_read_phy_addr(dev, true);
-	if (ret < 0)
-		return ret;
+That said, it is overkill.
 
-	priv->phy_addr = ret;
-	priv->embd_phy = ((priv->phy_addr & 0x1f) == AX_EMBD_PHY_ADDR);
+Regards,
 
-So priv->phy_addr has to be the address of the internal PHY, so this
-should just work without anything special for the embedded PHY.
+	Hans
 
-	Andrew
+> 
+> We could rename the __fh argument to vfh or v4l2fh, but I think __fh is
+> equally good there. It's just the macro argument name.
+> 
+>>>  			       struct v4l2_format *fmt)
+>>>  {
+>>>  	struct zoran *zr = video_drvdata(file);
+>>> -	struct zoran_fh *fh = __fh;
+>>>  	int i;
+>>>  	int res = 0;
+>>>  
+>>>  	if (fmt->fmt.pix.pixelformat == V4L2_PIX_FMT_MJPEG)
+>>> -		return zoran_s_fmt_vid_out(file, fh, fmt);
+>>> +		return zoran_s_fmt_vid_out(file, __fh, fmt);
+>>>  
+>>>  	for (i = 0; i < NUM_FORMATS; i++)
+>>>  		if (fmt->fmt.pix.pixelformat == zoran_formats[i].fourcc)
+> 
+
