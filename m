@@ -1,147 +1,371 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D84012E7F
-	for <imx@lists.linux.dev>; Thu,  7 Aug 2025 10:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678DB2A1CF
+	for <imx@lists.linux.dev>; Thu,  7 Aug 2025 10:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754561279; cv=none; b=YeHBsJ++0hWia4oFe2dRgnQaT3Kp498wwh0Ug/nUk6uoyiqZ6LCO7wCLHox7r88Jb3VQt8U2NHQUNJ46ky4x1GnrPqIEb5ch7cYHCnVfWsQjzG2vb/NwMEfd4HK0pCmmcEYTGQ3o3UpvoMMalJL38Pst3r4yxzPSKaT/6FeTEzM=
+	t=1754564311; cv=none; b=aQhJ/lNgFIidwn+ZNjAL8Zl2/t0m2MqnZh6Do8dFRO7uVNoNAoTXtsPlZytY/SS5G7tbBP01Le8a7ObchgP8nQabe80vm7/PFuGbO9izsWrQOnAYEFS/DcCj8XWCh71GACUhQTuEXarTDEQ85XUwt8oYMEx0dg+rh8iSjlb05FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754561279; c=relaxed/simple;
-	bh=ttH59wqrImyhHUkFmLmP74mNxfU/HlC0dMS+1VMvhdY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ltyGwb6CLB1ASGNCaDkbkR8PpRUOa11Dd2MkohxGs32dm9yCpFgxIPockqAiinDdQXYVI2saQmpws0a4s6qVsPr6ASKiqDLdb5XUrrusVShj1M6DDIMu7aLr/9Uod4h+B8hfSoLlOfBIE13LWNCwTEf4WMpt3CAEkZwVNVxFtdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=c2olVYZ8; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1754564311; c=relaxed/simple;
+	bh=BJZZIjaCNP9cY68tcTgiHdHm/mpm2TZTSvFFCy9daD8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=D6Gp0UYkJwtYUXNLy/RtWxMF+xaMWgPWZludnaD8xPRivw/eXUgYmSrCfDQyfIYu0VIRIXpr4vD2kzX94qJtxKi5rvVxV5GhU+Uxnhgw8PUCgr/+0BT7OzWWCsXXRB+u3LCQE0p+/NKLVzpj8x9cr40QaxnrfNy7mqSAkTH8U8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lTZJMPrG; arc=none smtp.client-ip=209.85.166.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="c2olVYZ8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1754561265; x=1755166065; i=wahrenst@gmx.net;
-	bh=RxWym3zzt2d/9rcYlsMwAmxOxMg4sFEbqrDvRtkZMkI=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=c2olVYZ8vjMUDQca+dvwqbMOqaKO4r854YK1Gq98/367nRNppMobyxQ5e9YqsF/O
-	 67sMLEmjd1fy+va4ISUijq9XuIzasZqRFejqx26z7O2m9fceP0ZB14AQGPCzKDJTx
-	 G3llaESr8jQEx2O2v56aJFBgQ74JYMDWf5+XT582Ug/q3TY/bkoPQ5PCdq/xEjuEe
-	 w6q/oUsEvMH9GVefpZEIFr8fVfDRibLMFOhK92YR8EGquS6pCb2SWpbVD+io6h3Ki
-	 hgAfygo6c+Hd/97D26eQMRgCkAswPskwdiDE/Ex28HAKjdsjyHMhmyDVTINHAWuIl
-	 Ya/Oj50NXeS6MRU1Xw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from stefanw-SCHENKER ([79.235.128.112]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mgeo8-1u7ZqX1uqi-00nBnl; Thu, 07
- Aug 2025 12:07:45 +0200
-From: Stefan Wahren <wahrenst@gmx.net>
-To: Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Clark Wang <xiaoning.wang@nxp.com>
-Cc: linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH] spi: spi-fsl-lpspi: Clamp too high speed_hz
-Date: Thu,  7 Aug 2025 12:07:42 +0200
-Message-Id: <20250807100742.9917-1-wahrenst@gmx.net>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lTZJMPrG"
+Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3e3f1e69090so4223215ab.0
+        for <imx@lists.linux.dev>; Thu, 07 Aug 2025 03:58:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754564308; x=1755169108; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8tWMOA3+MxqIET7zOeogQlZpQrCQ4ulH5geagIzb9wU=;
+        b=lTZJMPrG4a4tdYD1ymUU+NJJZZ82oip2x/6j3He81Jpr+k/a4NUH7AcTWG5tQp+v2u
+         hp18cJiHJE9TakYPjMpBHrpW2MHOWZWA10rYJgCqqLd82jWE6y0ILtJyYSt1peX4YFHL
+         vm+gltCdZ19ZGKXIp9hS/gJvJ6JaXZDxeFAXpPRp5RBrb7NKVaRbaxejnNNPjBkFLOsj
+         0ONNXEoqKaW56VU6msmYM2HwM22M5M+LZyJHc2yhUpbiJt/OfYPiO+DO8FP5NqObLWUi
+         GXkcGD95i24F61Re+8r0DvBoxj7CRqYiGkbszYnxMsmYWGPIkacYyyIPV1nikLQsprP3
+         QWBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754564308; x=1755169108;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8tWMOA3+MxqIET7zOeogQlZpQrCQ4ulH5geagIzb9wU=;
+        b=eaTDFSzN4IfW6vz3yk5a1DzKv/RaHO/GXITcUQIOunF94WaBdNaNJD0z6+MUWcTCCT
+         4BWKSnfE1+7CsmzZT35D+lF8A3pKhFBBvSPkP/1Ro9ehucuN8yfAWZtk+plCjSgatATR
+         AJ74a56l2EEE6nTNDv/xyaIBdmJaqzCoXNYLt1xyU7o8CcOvl+o5hc8EbSba7ibwTJ0e
+         4HHuD+/oGgchUkhMzY/IAkchafwk2LjtZXNV58qA0CI0QeqMIkvX2lN28cAlCKbyOLkk
+         kHRfxIVXSCQv1f3MVixVPj4tElxZ0GEW65f2CKmxMVXBHZeT+iwhVVlwIMGtzZWoghak
+         8WEg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZSA27dIXOTxFneAEOwl0CMIICnXOLQfWGF9XNFMecqQw438slkdVhssNUbcDffisRDIw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YySudbze079hhjIgEvXy9iMwGKgDc88mvoL1OyrkrJAPNljbGuZ
+	A7P05mLC4Vk0ELkgi8lQ6Ud8nyOhcKljzKkaILAVGTzJZ0+8/ocLmiHdbUH1ozgA3gs58zNPC2k
+	K7ZhXMeoGjo36Mto0RN9Mfi4x29Kcsy4=
+X-Gm-Gg: ASbGncuE1I5n4fxjhFH76vLNZCWzBlgEAxUeZqJyLYOUtURMRmxhUppaQZLKdiUp0Ev
+	BBx4ZT1CGq+jRTfk7TBlWH9GKU8l3gOrdKvm1GEjKiCvJ/FLBW5s8tUYKSFFq3c60boeasZi5IX
+	zhUZsy+bm1V1s6YlYq50uFGXSQAhks/O5asxlucENJRtSk8MnVaOu5qiCbC+QkciN72cN88e4CM
+	P1dcWI=
+X-Google-Smtp-Source: AGHT+IHFyEqQlwA4nzQRnsXvPUsGwZOgKB36m7+Ke65jmW1lXiVYvMW77eXhUFaYX4r2OmzVe+1dFNu46sXVYvnzZ80=
+X-Received: by 2002:a05:6e02:18c7:b0:3df:3598:7688 with SMTP id
+ e9e14a558f8ab-3e51b93cc8dmr120096585ab.21.1754564308346; Thu, 07 Aug 2025
+ 03:58:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20250804104722.601440-1-shengjiu.wang@nxp.com>
+ <20250804104722.601440-6-shengjiu.wang@nxp.com> <fa455148-a071-4433-8c9c-26add3872604@nxp.com>
+ <CAA+D8AN4n0H6M_0EqX4z_37ViSCyThKbmtMgqPmipintJ8Wtwg@mail.gmail.com> <ba02693b-8ad2-4297-ab89-5b39d5c4315f@nxp.com>
+In-Reply-To: <ba02693b-8ad2-4297-ab89-5b39d5c4315f@nxp.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 7 Aug 2025 18:58:15 +0800
+X-Gm-Features: Ac12FXwUPM-Znt5cq2SUHVDzi6o3wmoQ462FD5iaVLkULQVZBddMO5yf_2W0GwQ
+Message-ID: <CAA+D8AN3VzFx1g=8wyxJROw96xS2-qoVs3X4vUfFnJtUCqFj_w@mail.gmail.com>
+Subject: Re: [PATCH v3 5/6] drm/bridge: imx: add driver for HDMI TX Parallel
+ Audio Interface
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com, 
+	neil.armstrong@linaro.org, rfoss@kernel.org, 
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
+	airlied@gmail.com, simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org, 
+	cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	p.zabel@pengutronix.de, devicetree@vger.kernel.org, l.stach@pengutronix.de, 
+	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:z7HJ19V5RDNWe3wuUth2csYyED0MSNHqcGL6c9q6bNE97zmefzb
- pIDi2rnjgzpM7PbFJPu3W0vam1Z6Z1uH6XTNHeS5b/9S/ajgshgS6aSVlGpCvWJ8EJmOkpm
- Q+a0ZEEJcaqcdfwfHBTDnDm/Yxl+vXqF4mhZYS50Kgsl9z+3y1ZIPK5YOj6RdQxpOB9uCuI
- SSkigJEbHa2gjUiatoU0w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:b8UDEti39Ts=;snWGwqAm5Ggde0HWeQ/++G0J6+e
- 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
 
-Currently the driver is not able to handle the case that a SPI device
-specifies a higher spi-max-frequency than half of per-clk:
+On Wed, Aug 6, 2025 at 2:52=E2=80=AFPM Liu Ying <victor.liu@nxp.com> wrote:
+>
+> On 08/06/2025, Shengjiu Wang wrote:
+> > On Tue, Aug 5, 2025 at 4:55=E2=80=AFPM Liu Ying <victor.liu@nxp.com> wr=
+ote:
+> >>
+> >> On 08/04/2025, Shengjiu Wang wrote:
+>
+> [...]
+>
+> >>> +static int imx8mp_hdmi_pai_bind(struct device *dev, struct device *m=
+aster, void *data)
+> >>> +{
+> >>> +     struct dw_hdmi_plat_data *plat_data =3D (struct dw_hdmi_plat_da=
+ta *)data;
+> >>> +     struct imx8mp_hdmi_pai *hdmi_pai;
+> >>> +
+> >>> +     hdmi_pai =3D dev_get_drvdata(dev);
+> >>> +
+> >>> +     plat_data->enable_audio =3D imx8mp_hdmi_pai_enable;
+> >>> +     plat_data->disable_audio =3D imx8mp_hdmi_pai_disable;
+> >>> +     plat_data->priv_audio =3D hdmi_pai;
+> >>> +
+> >>> +     return 0;
+> >>> +}
+> >>> +
+> >>> +static void imx8mp_hdmi_pai_unbind(struct device *dev, struct device=
+ *master, void *data)
+> >>> +{
+> >>> +     struct dw_hdmi_plat_data *plat_data =3D (struct dw_hdmi_plat_da=
+ta *)data;
+> >>> +
+> >>> +     plat_data->enable_audio =3D NULL;
+> >>> +     plat_data->disable_audio =3D NULL;
+> >>> +     plat_data->priv_audio =3D NULL;
+> >>
+> >> Do you really need to set these ptrs to NULL?
+> >
+> > yes.  below code in dw-hdmi.c use the pdata->enable_audio as condition.
+>
+> Note that this is all about tearing down components.
+> If this is done properly as the below snippet of pseudo-code, then
+> hdmi->{enable,disable}_audio() and pdata->{enable,disable}_audio() won't =
+be
+> called after audio device is removed by dw_hdmi_remove().  So, it's unnec=
+essary
+> to set these pointers to NULL here.
+>
+> imx8mp_dw_hdmi_unbind()
+> {
+>    dw_hdmi_remove(); // platform_device_unregister(hdmi->audio);
+>    component_unbind_all(); //imx8mp_hdmi_pai_unbind()
+> }
+>
+> BTW, I suggest the below snippet[1] to bind components.
+>
+> imx8mp_dw_hdmi_bind()
+> {
+>    component_bind_all(); // imx8mp_hdmi_pai_bind()
+>                          //   set pdata->{enable,disable}_audio
+>    dw_hdmi_probe(); // hdmi->audio =3D platform_device_register_full(&pde=
+vinfo);
+> }
 
-    per-clk should be at least two times of transfer speed
+Looks like we should use dw_hdmi_bind() here to make unbind -> bind work.
+But can't get the encoder pointer.  the encoder pointer is from lcdif_drv.c=
+,
+the probe sequence of lcdif, pvi, dw_hdmi should be dw_hdmi first, then pvi=
+,
+then lcdif, because current implementation in lcdif and pvi driver.
 
-Fix this by clamping to the max possible value and use the minimum SCK
-period of 2 cycles.
+Should the lcdif and pvi driver be modified to use component helper?
+This seems out of the scope of this patch set.
 
-Fixes: 77736a98b859 ("spi: lpspi: add the error info of transfer speed set=
-ting")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-=2D--
- drivers/spi/spi-fsl-lpspi.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 67d4000c3cef..313e444a34f3 100644
-=2D-- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -330,13 +330,11 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_da=
-ta *fsl_lpspi)
- 	}
-=20
- 	if (config.speed_hz > perclk_rate / 2) {
--		dev_err(fsl_lpspi->dev,
--		      "per-clk should be at least two times of transfer speed");
--		return -EINVAL;
-+		div =3D 2;
-+	} else {
-+		div =3D DIV_ROUND_UP(perclk_rate, config.speed_hz);
- 	}
-=20
--	div =3D DIV_ROUND_UP(perclk_rate, config.speed_hz);
--
- 	for (prescale =3D 0; prescale <=3D prescale_max; prescale++) {
- 		scldiv =3D div / (1 << prescale) - 2;
- 		if (scldiv >=3D 0 && scldiv < 256) {
-=2D-=20
-2.34.1
-
+Best regards
+Shengjiu Wang
+>
+> >
+> >         if (pdata->enable_audio)
+> >                 pdata->enable_audio(hdmi,
+> >                                     hdmi->channels,
+> >                                     hdmi->sample_width,
+> >                                     hdmi->sample_rate,
+> >                                     hdmi->sample_non_pcm,
+> >                                     hdmi->sample_iec958);
+> >
+> >
+> >>
+>
+> [...]
+>
+> >>> +     return component_add(dev, &imx8mp_hdmi_pai_ops);
+> >>
+> >> Imagine that users could enable this driver without enabling imx8mp-hd=
+mi-tx
+> >> driver, you may add the component in this probe() callback only and mo=
+ve all
+> >> the other stuff to bind() callback to avoid unnecessary things being d=
+one here.
+> >
+> > component helper functions don't have such dependency that the aggregat=
+e
+> > driver or component driver must be probed or not.  if imx8mp-hdmi-tx is=
+ not
+> > enabled, there is no problem, just the bind() callback is not called.
+>
+> I meant I'd write imx8mp_hdmi_pai_probe() as below snippet and do all the
+> other stuff in imx8mp_hdmi_pai_bind().  This ensures minimum things are d=
+one
+> in imx8mp_hdmi_pai_probe() if imx8mp-hdmi-tx doesn't probe.
+>
+> static int imx8mp_hdmi_pai_probe(struct platform_device *pdev)
+> {
+>         return component_add(&pdev->dev, &imx8mp_hdmi_pai_ops);
+> }
+>
+> >
+> >>
+> >>> +}
+> >>> +
+> >>> +static void imx8mp_hdmi_pai_remove(struct platform_device *pdev)
+> >>> +{
+> >>> +     component_del(&pdev->dev, &imx8mp_hdmi_pai_ops);
+> >>> +}
+> >>> +
+> >>> +static const struct of_device_id imx8mp_hdmi_pai_of_table[] =3D {
+> >>> +     { .compatible =3D "fsl,imx8mp-hdmi-pai" },
+> >>> +     { /* Sentinel */ }
+> >>> +};
+> >>> +MODULE_DEVICE_TABLE(of, imx8mp_hdmi_pai_of_table);
+> >>> +
+> >>> +static struct platform_driver imx8mp_hdmi_pai_platform_driver =3D {
+> >>> +     .probe          =3D imx8mp_hdmi_pai_probe,
+> >>> +     .remove         =3D imx8mp_hdmi_pai_remove,
+> >>> +     .driver         =3D {
+> >>> +             .name   =3D "imx8mp-hdmi-pai",
+> >>> +             .of_match_table =3D imx8mp_hdmi_pai_of_table,
+> >>> +     },
+> >>> +};
+> >>> +module_platform_driver(imx8mp_hdmi_pai_platform_driver);
+> >>> +
+> >>> +MODULE_DESCRIPTION("i.MX8MP HDMI PAI driver");
+> >>> +MODULE_LICENSE("GPL");
+> >>> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c b/drivers/gp=
+u/drm/bridge/imx/imx8mp-hdmi-tx.c
+> >>> index 1e7a789ec289..ee08084d2394 100644
+> >>> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> >>> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c
+> >>> @@ -5,11 +5,13 @@
+> >>>   */
+> >>>
+> >>>  #include <linux/clk.h>
+> >>> +#include <linux/component.h>
+> >>>  #include <linux/mod_devicetable.h>
+> >>>  #include <linux/module.h>
+> >>>  #include <linux/platform_device.h>
+> >>>  #include <drm/bridge/dw_hdmi.h>
+> >>>  #include <drm/drm_modes.h>
+> >>> +#include <drm/drm_of.h>
+> >>>
+> >>>  struct imx8mp_hdmi {
+> >>>       struct dw_hdmi_plat_data plat_data;
+> >>> @@ -79,11 +81,46 @@ static const struct dw_hdmi_phy_ops imx8mp_hdmi_p=
+hy_ops =3D {
+> >>>       .update_hpd     =3D dw_hdmi_phy_update_hpd,
+> >>>  };
+> >>>
+> >>> +static int imx8mp_dw_hdmi_bind(struct device *dev)
+> >>> +{
+> >>> +     struct dw_hdmi_plat_data *plat_data;
+> >>> +     struct imx8mp_hdmi *hdmi;
+> >>> +     int ret;
+> >>> +
+> >>> +     hdmi =3D dev_get_drvdata(dev);
+> >>> +     plat_data =3D &hdmi->plat_data;
+> >>> +
+> >>> +     ret =3D component_bind_all(dev, plat_data);
+> >>> +     if (ret)
+> >>> +             return dev_err_probe(dev, ret, "component_bind_all fail=
+ed!\n");
+> >>
+> >> As component_bind_all() would bind imx8mp-hdmi-pai and hence set
+> >> {enable,disable}_audio callbacks, you need to call dw_hdmi_probe() aft=
+er
+> >> component_bind_all() instead of too early in probe() callback.
+> >
+> > There is no such dependency.
+> > Maybe you mixed the hdmi->enable_audio() with pdata->enable_audio().
+>
+> As the above snippet[1] shows, once dw_hdmi_probe() registers audio devic=
+e,
+> the audio device could be functional soon after audio driver probes, henc=
+e
+> hdmi->enable_audio() would be called and hence pdata->enable_audio() woul=
+d
+> be called. So, you need to set pdata->enable_audio() before dw_hdmi_probe=
+()
+> is called, otherwise pdata->enable_audio could be NULL when is called by
+> audio driver.
+>
+> [...]
+>
+> >>> +     remote =3D of_graph_get_remote_node(pdev->dev.of_node, 2, 0);
+> >>> +     if (remote && of_device_is_available(remote)) {
+> >>
+> >> Doesn't of_graph_get_remote_node() ensure that remote is avaiable?
+> >
+> > No.  'remote' is the node,  not the 'device'.
+>
+> See of_device_is_available() is called by of_graph_get_remote_node():
+>
+> struct device_node *of_graph_get_remote_node(const struct device_node *no=
+de,
+>                                              u32 port, u32 endpoint)
+> {
+>         struct device_node *endpoint_node, *remote;
+>
+>         endpoint_node =3D of_graph_get_endpoint_by_regs(node, port, endpo=
+int);
+>         if (!endpoint_node) {
+>                 pr_debug("no valid endpoint (%d, %d) for node %pOF\n",
+>                          port, endpoint, node);
+>                 return NULL;
+>         }
+>
+>         remote =3D of_graph_get_remote_port_parent(endpoint_node);
+>         of_node_put(endpoint_node);
+>         if (!remote) {
+>                 pr_debug("no valid remote node\n");
+>                 return NULL;
+>         }
+>
+>         if (!of_device_is_available(remote)) {
+>              ^~~~~~~~~~~~~~~~~~~~~~
+>                 pr_debug("not available for remote node\n");
+>                 of_node_put(remote);
+>                 return NULL;
+>         }
+>
+>         return remote;
+> }
+> EXPORT_SYMBOL(of_graph_get_remote_node);
+>
+> >
+> >>
+> >>> +             drm_of_component_match_add(dev, &match, component_compa=
+re_of, remote);
+> >>> +
+> >>> +             of_node_put(remote);
+> >>> +
+> >>> +             ret =3D component_master_add_with_match(dev, &imx8mp_dw=
+_hdmi_ops, match);
+> >>> +             if (ret)
+> >>> +                     dev_warn(dev, "Unable to register aggregate dri=
+ver\n");
+> >>> +             /*
+> >>> +              * This audio function is optional for avoid blocking d=
+isplay.
+> >>> +              * So just print warning message and no error is return=
+ed.
+> >>
+> >> No, since PAI node is available here, it has to be bound.  Yet you sti=
+ll need
+> >> to properly handle the case where PAI node is inavailable.
+> >
+> > This is for aggregate driver registration,  not for bind()
+> >
+> > The bind() is called after both drivers have been registered.  again th=
+ere is no
+> > dependency for both aggregate driver and component driver should be
+> > registered or probed.
+>
+> Sorry for not being clear about my previous wording.  I meant since PAI n=
+ode is
+> available here, component_master_add_with_match() must be called to regis=
+ter
+> the master and if it fails to register it, imx8mp_dw_hdmi_probe() should =
+return
+> proper error code, not 0.
+>
+> --
+> Regards,
+> Liu Ying
