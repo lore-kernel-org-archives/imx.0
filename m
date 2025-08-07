@@ -1,110 +1,221 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73CA1EA7E9
-	for <imx@lists.linux.dev>; Thu,  7 Aug 2025 11:47:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC094A0A;
+	Thu,  7 Aug 2025 12:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754567235; cv=none; b=odB88PBZCrtzyz1/a3b1o2EYYaH1BzFinFV0pc/rFc0sk5LBRhm9GmZPYsu2WUMFjgP4OtwGy5xeGJqyKBIZJPnmKmDRn/jNJeIYJIIcTin2gO9nqMVDL5yor8yEd2zcekX5hY4xCDpzyrVLz25VXVkuVbY8NwctWQ96QnMy/tI=
+	t=1754569938; cv=none; b=dz41E9nERz6UQcXajF9vBI+bWbmLhpbkE7uhj+v/zFtFg43g6yFnsrf2f/G3k34OtXdUd5ff2PEBbkgYuMMQcamtBYFAw+QLBng2mMAjJfNjsNGaQ0Wum//CDEtwesTH3Qx1Yyh06fT2QFJq2utEEu/d8SYcjtbHxLCBfzaZQD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754567235; c=relaxed/simple;
-	bh=CaekhXMweGEbATse0Ot72S3jQtMglVWzZIiE6Ss2x3Y=;
+	s=arc-20240116; t=1754569938; c=relaxed/simple;
+	bh=mDLUQyipon3TC8s7Xe5hlhtx/kxMnlzT8INeN44SBME=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KokRyLJ1o/fvFVBTGowBpMGoJZo/k9eFdSyvUecfMTTcvHCu4SOZSBJMttlSuzgLJNdDcMHftEffXSFTV5YkLbUkh5gIdppdR9yc7z40k46lOeDyprI1yIiYynZoKAVkDaGZBjMkpfE02Xp1jSm27D+LSzRFxoiL2A1OPolT3OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=SOQ/bEIE; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=mEiZVcganbbQbr5v0yaxpu6Mfkwb15aY55k6yyvoNh5n9Hb5LSD414yuTtEIVfIYmSi9CZh0+4sd+1MslliCYexGM6lvdp6Bww5QFQ2kw5q449TNM28fgU+Kh9+r2vqQWBleZWT5MbVgoADPi19Q09gGWvMbMs7n0ecU+0Mr/vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=LACv+uFT; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="SOQ/bEIE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=F55w2O7FP54zLnSv0RQaIMc8o0k83eet7kxdJLTSrDQ=; b=SOQ/bEIERLfEtrsw8VCWsMERFC
-	HG0U/2splUQG/TUua8sz+wxDsDVSNHxEDlUVj1HgSAosKi2DyPSD895afUXx0hI+bVarIdR8piwJF
-	Mc+SSd0Kkz0WElFQHLMj50fS6LwCALLUGWVQeds5QEjTMM5OlP60ZBvS3JPtgvDJ3j9DJuS9cNDfJ
-	j39TEHKHUzeda1tY3FXPnTLBlh5n7vWTcBvyCDsWviU25jmWfqCu9GaFDdXVetVatE7/LYFSHKlXP
-	v74zXGnPp6BiQda04ImRtVHwkTEzwOq04dWJsB8AmNnjbtlTyvBTqCy9ZfrByVGy2EPZoz5vLbpeQ
-	+SAJpBvQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34792)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1ujz5O-00061v-11;
-	Thu, 07 Aug 2025 12:47:06 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1ujz5K-00085X-32;
-	Thu, 07 Aug 2025 12:47:03 +0100
-Date: Thu, 7 Aug 2025 12:47:02 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, hkallweit1@gmail.com,
-	o.rempel@pengutronix.de, pabeni@redhat.com, netdev@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RESEND] net: phy: fix NULL pointer dereference in
- phy_polling_mode()
-Message-ID: <aJSSNg4aZNfoqqZh@shell.armlinux.org.uk>
-References: <20250806082931.3289134-1-xu.yang_2@nxp.com>
- <aJMWDRNyq9VDlXJm@shell.armlinux.org.uk>
- <ywr5p6ccsbvoxronpzpbtxjqyjlwp5g6ksazbeyh47vmhta6sb@xxl6dzd2hsgg>
- <aJNSDeyJn5aZG7xs@shell.armlinux.org.uk>
- <unh332ly5fvcrjgur4y3lgn4m4zlzi7vym4hyd7yek44xvfrh5@fmavbivvjfjn>
- <b9140415-2478-4264-a674-c158ca14eb07@lunn.ch>
- <aJOHObGgfzxIDzHW@shell.armlinux.org.uk>
- <2b3fvsi7c47oit4p6drgjqeaxgwyzyopt7czfv3g2a74j2ay5j@qu22cohdcrjs>
- <3mkwdhodm4zl3t6zsavcrrkuawvd3qjxtdvhxwi6gwe42ic7rs@tevlpedpwlag>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="LACv+uFT"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id EDCB18FA;
+	Thu,  7 Aug 2025 14:31:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1754569883;
+	bh=mDLUQyipon3TC8s7Xe5hlhtx/kxMnlzT8INeN44SBME=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LACv+uFTAOqCoVr6y4n8xhP/phvZ2YaIqX4nfPzsq8htw1/33Ig2joQ5o1c7g1TI/
+	 sm6fQdyxttR4+gfZN8u7QpF8EcmmN4qBOEZ1BO6Gpa7oo5sCerPApF06+UQkNeTbXv
+	 CoAosKL4r64nC+r6TFuPhQz7Lyc1Gdn1yLFrA/Yc=
+Date: Thu, 7 Aug 2025 15:31:57 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Devarsh Thakkar <devarsht@ti.com>, Benoit Parrot <bparrot@ti.com>,
+	Hans Verkuil <hverkuil@kernel.org>, Mike Isely <isely@pobox.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Christian Gromm <christian.gromm@microchip.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
+	Dongliang Mu <dzm91@hust.edu.cn>, Jonathan Corbet <corbet@lwn.net>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andy Walls <awalls@md.metrocast.net>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Bin Liu <bin.liu@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Osipenko <digetx@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Mirela Rabulea <mirela.rabulea@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Michal Simek <michal.simek@amd.com>, Ming Qian <ming.qian@nxp.com>,
+	Zhou Peng <eagle.zhou@nxp.com>,
+	Xavier Roumegue <xavier.roumegue@oss.nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>, Samuel Holland <samuel@sholland.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Jackson Lee <jackson.lee@chipsnmedia.com>,
+	Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
+	Houlong Wei <houlong.wei@mediatek.com>,
+	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+	Tiffany Lin <tiffany.lin@mediatek.com>,
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
+	Jacob Chen <jacob-chen@iotwrt.com>,
+	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	=?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
+	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Fabien Dessenne <fabien.dessenne@foss.st.com>,
+	Hugues Fruchet <hugues.fruchet@foss.st.com>,
+	Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Corentin Labbe <clabbe@baylibre.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org,
+	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+	linux-sunxi@lists.linux.dev, linux-usb@vger.kernel.org,
+	linux-amlogic@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	mjpeg-users@lists.sourceforge.net
+Subject: Re: [PATCH 58/65] media: zoran: Remove access to __fh
+Message-ID: <20250807123157.GF11583@pendragon.ideasonboard.com>
+References: <20250802-media-private-data-v1-0-eb140ddd6a9d@ideasonboard.com>
+ <20250802-media-private-data-v1-58-eb140ddd6a9d@ideasonboard.com>
+ <d8875dea-aa04-41fc-b1b4-519d06ed6cba@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3mkwdhodm4zl3t6zsavcrrkuawvd3qjxtdvhxwi6gwe42ic7rs@tevlpedpwlag>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <d8875dea-aa04-41fc-b1b4-519d06ed6cba@kernel.org>
 
-On Thu, Aug 07, 2025 at 07:21:46PM +0800, Xu Yang wrote:
-> Hi Russell and Andrew,
+On Thu, Aug 07, 2025 at 08:58:01AM +0200, Hans Verkuil wrote:
+> On 02/08/2025 11:23, Jacopo Mondi wrote:
+> > The __fh parameter is assigned to an unsued variable. Remove it
+> > and remove the unused struct zoran_fh type.
+> > 
+> > Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+> > ---
+> >  drivers/media/pci/zoran/zoran.h        | 6 ------
+> >  drivers/media/pci/zoran/zoran_driver.c | 3 +--
+> >  2 files changed, 1 insertion(+), 8 deletions(-)
+> > 
+> > diff --git a/drivers/media/pci/zoran/zoran.h b/drivers/media/pci/zoran/zoran.h
+> > index 1cd990468d3de9db8b14b72483972041c57bfee2..d05e222b392156bf1b3b4c83c6591db642c3c377 100644
+> > --- a/drivers/media/pci/zoran/zoran.h
+> > +++ b/drivers/media/pci/zoran/zoran.h
+> > @@ -154,12 +154,6 @@ struct zoran_jpg_settings {
+> >  
+> >  struct zoran;
+> >  
+> > -/* zoran_fh contains per-open() settings */
+> > -struct zoran_fh {
+> > -	struct v4l2_fh fh;
+> > -	struct zoran *zr;
+> > -};
+> > -
+> >  struct card_info {
+> >  	enum card_type type;
+> >  	char name[32];
+> > diff --git a/drivers/media/pci/zoran/zoran_driver.c b/drivers/media/pci/zoran/zoran_driver.c
+> > index f42f596d3e6295e31e3b33cd83c5f7243911bd30..ec7fc1da4cc02f5a344cb49bb9a783c41c758195 100644
+> > --- a/drivers/media/pci/zoran/zoran_driver.c
+> > +++ b/drivers/media/pci/zoran/zoran_driver.c
+> > @@ -511,12 +511,11 @@ static int zoran_s_fmt_vid_cap(struct file *file, void *__fh,
 > 
-> With more debug on why asix_devices.c driver is creating so many mdio devices,
-> I found the mdio->phy_mask setting may be missing.
+> This driver uses __fh as the name for the second argument of the ioctl
+> callbacks. Can you take this opportunity to rename it to either 'fh' or 'priv'?
 
-mdio->phy_mask is really only a workaround/optimisation to prevent
-the automatic scanning of the MDIO bus.
+It's a bit of yak shaving, but not too difficult so it will be addressed
+in the next version (Jacopo already wrote the patches, thanks).
 
-If we know for certain that we're only interested in a PHY at a
-certain set of addresses, then it's appropriate to tell the MDIO/phylib
-layer not to bother scanning the other addresses, but this will mean
-if the driver uses e.g. phy_find_first(), it will find the first PHY
-amongst those that phy_mask allows to be scanned, rather than the first
-on the bus.
-
-In other words... it's dependent on the driver.
-
-> diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-> index 9b0318fb50b5..9fba1cb17134 100644
-> --- a/drivers/net/usb/asix_devices.c
-> +++ b/drivers/net/usb/asix_devices.c
-> @@ -676,6 +676,7 @@ static int ax88772_init_mdio(struct usbnet *dev)
->         priv->mdio->read = &asix_mdio_bus_read;
->         priv->mdio->write = &asix_mdio_bus_write;
->         priv->mdio->name = "Asix MDIO Bus";
-> +       priv->mdio->phy_mask = ~BIT(priv->phy_addr);
->         /* mii bus name is usb-<usb bus number>-<usb device number> */
->         snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
->                  dev->udev->bus->busnum, dev->udev->devnum);
+> Generally it's not a good idea to prefix variables with __ for no good reason.
 > 
-> Is this the right thing to do?
+> Grepping for __fh also shows two other drivers:
+> 
+> drivers/media/platform/chips-media/coda/coda-common.c:#define fh_to_ctx(__fh)   container_of(__fh, struct coda_ctx, fh)
+> drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h:#define fh_to_ctx(__fh) container_of(__fh, struct s5p_mfc_ctx, fh)
+> 
+> I think it is a good idea to rename __fh to fh there as well.
 
-If we're only expecting a MDIO device at priv->phy_addr, then I
-guess it's fine. Looking at the driver, I don't understand the
-mixture of dev->mii.* and priv->mdio->*, and sadly I don't have
-time to look in depth at this driver to work that out.
+That can't be done, otherwise things like
+
+#define fh_to_ctx(fh)	container_of(fh, struct coda_ctx, fh)
+
+static inline struct coda_ctx *file_to_ctx(struct file *filp)
+{
+	return fh_to_ctx(file_to_v4l2_fh(filp));
+}
+
+will expand in the file_to_ctx() function to
+
+	return container_of(file_to_v4l2_fh(filp), struct coda_ctx, file_to_v4l2_fh(filp))
+
+We could rename the __fh argument to vfh or v4l2fh, but I think __fh is
+equally good there. It's just the macro argument name.
+
+> >  			       struct v4l2_format *fmt)
+> >  {
+> >  	struct zoran *zr = video_drvdata(file);
+> > -	struct zoran_fh *fh = __fh;
+> >  	int i;
+> >  	int res = 0;
+> >  
+> >  	if (fmt->fmt.pix.pixelformat == V4L2_PIX_FMT_MJPEG)
+> > -		return zoran_s_fmt_vid_out(file, fh, fmt);
+> > +		return zoran_s_fmt_vid_out(file, __fh, fmt);
+> >  
+> >  	for (i = 0; i < NUM_FORMATS; i++)
+> >  		if (fmt->fmt.pix.pixelformat == zoran_formats[i].fourcc)
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Regards,
+
+Laurent Pinchart
