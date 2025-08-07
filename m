@@ -1,47 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4554423184F;
-	Thu,  7 Aug 2025 07:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA981A8F97;
+	Thu,  7 Aug 2025 07:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754551748; cv=none; b=ZKhw6bd1i6fNbxImZwlFdDvLrkv35DIZAHtg4Lqgvhrh/py2ICojJvPc1BO7Sgbr+y8LfpVL00nJrPPOY7YZBrLPQ3xFGAS+eU593XQ4Q4f+pBnnX6+9+s8sdMWWwDGI8sDl4GqQ43BeRCC4gKnqsNlW26WotO9n2JAqpVLSGLQ=
+	t=1754551909; cv=none; b=iAzDtiIuwCn6Lg47w03mAc0XmpFVhG+yxGXBnOgYv3R6iT9sp1JzT4u9a8lEON+102nTIBaOFIyqVnl1FdUheGE01R7vAH4OzIirSvSM5WX3IsDjA/IAV+mV3/7nBcGobo4y10ASHBJ4PYcqFeqKZD/l8wPxk9lXyGVnQtng8kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754551748; c=relaxed/simple;
-	bh=BPOrOe6Ks1WSFeqdgv+rLZaq6MjbwOFkeEJJHOUYbIU=;
+	s=arc-20240116; t=1754551909; c=relaxed/simple;
+	bh=4THJ8Z+Q9mlw0DN/9Ry88kfBt+XVJ3Smmy5qShyVwkY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M71ZtKjYt/FW3fE2hIM8zlETX9bpCjsmJJfku2zxYHUCHz4Uq/GHbKj7ukl1lF3J2wwSxJ/nGpa9HyNw0NNxgaZjFX+UbAeWeEZ0/Ab9TSiEYnJ4+PjP0GM+06SwL2N+BDkR0QNGvBiZt7CuvMANxeG21W3Qn2lIkn1ci0H6Jb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LdWc4I8g; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=VlkT7sJ9lif1//PeHk+c8dEr6ncaklFZqNra7XujH1ZgeMGhL/9XMmKNd7H/4k88vXuUgdDXvAfhHkfCdRnaKipfF2HLM92hF03eu7DmdibR9eyOkvybdY+L5uhrS/qP/98OcfuwZyfr696BvzE55DaIqtbYojaUid5jfKViOqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=coaz+St/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LdWc4I8g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A37C4CEEB;
-	Thu,  7 Aug 2025 07:29:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="coaz+St/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B22AC4CEEB;
+	Thu,  7 Aug 2025 07:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754551747;
-	bh=BPOrOe6Ks1WSFeqdgv+rLZaq6MjbwOFkeEJJHOUYbIU=;
+	s=k20201202; t=1754551909;
+	bh=4THJ8Z+Q9mlw0DN/9Ry88kfBt+XVJ3Smmy5qShyVwkY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LdWc4I8gF0rtG32Vov1M61PgSNVNH5fNQBqZavWPSx6RrwL9naqlfeKshageFZsEa
-	 pcullofjttvEKmZNgF7FlPvOtXhiaQJ3Hi5idPJqtzJNu6wxBt8tccKuSuqE163Mtt
-	 aw6i++aPgfPE+0fJXFS/uJ5w9tMWlPl2n33m0Tw0fbG52ZnzctZQlUd/kw9tTCWxTl
-	 RZB15zs8KVwtYd8E31X0imhQyAFM2FqUkkxifWTHSzsvwoC6vU9PAi65uBVgW4UvXm
-	 NnXQGhSM7zby1FRQ1uC2w2nZqk+ww7vYElEmLoI+UTD0gD3om89MxeYsxHdpSO9y3v
-	 aglCu0I9UNmXA==
-Date: Thu, 7 Aug 2025 09:29:05 +0200
+	b=coaz+St/3IS8hCIwa8TQ+vz4/c+RH9vUh8a046Yo+8zvm0nGdai47maL19XNycBee
+	 2Kkf0fVgxnFgmbdv3J2/jU/Nu5mtYcPgAjvC+PLC+zghYSbyXEnzau09n9rUy1f6qJ
+	 8FRAX2EWv+mLVwuerfUtKhmZ5YKZuj0YaFzG/ffbAdHFLxA1uS+uvqGTxFo1323dbb
+	 TYTGMKdk1bZB2gZCpQ+wfb1ruTwmhPjzvkyxaanHPF9I7n37SRnsohybwfT8rlEf9g
+	 3F5yTCl2uyEaDxT4cA4Jiu0fpKd6rAwOTjIabN9l5JPw4k4mQULoCLgKSa9D0AdJJJ
+	 Uy2ATNJmGqzjg==
+Date: Thu, 7 Aug 2025 09:31:46 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: imx@lists.linux.dev, Abel Vesa <abelvesa@kernel.org>, 
-	Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+Cc: imx@lists.linux.dev, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
 	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 6/9] dt-bindings: clock: nxp,imx95-blk-ctl: Add
- optional ldb property
-Message-ID: <20250807-airborne-rich-lobster-6f8e2e@kuoka>
+Subject: Re: [PATCH v3 7/9] arm64: dts: imx943: Add display pipeline nodes
+Message-ID: <20250807-illustrious-cuckoo-of-management-dacca0@kuoka>
 References: <20250806150521.2174797-1-laurentiu.palcu@oss.nxp.com>
- <20250806150521.2174797-7-laurentiu.palcu@oss.nxp.com>
+ <20250806150521.2174797-8-laurentiu.palcu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,19 +47,51 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250806150521.2174797-7-laurentiu.palcu@oss.nxp.com>
+In-Reply-To: <20250806150521.2174797-8-laurentiu.palcu@oss.nxp.com>
 
-On Wed, Aug 06, 2025 at 06:05:13PM +0300, Laurentiu Palcu wrote:
-> Since the BLK CTL registers, like the LVDS CSR, can be used to control the
-> LVDS Display Bridge controllers, add optional 'ldb' property to handle
-> these use cases.
+On Wed, Aug 06, 2025 at 06:05:14PM +0300, Laurentiu Palcu wrote:
+> Add display controller and LDB support in imx943.
+> 
+> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx943.dtsi | 55 ++++++++++++++++++++++-
+>  1 file changed, 54 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx943.dtsi b/arch/arm64/boot/dts/freescale/imx943.dtsi
+> index 657c81b6016f2..70dec03c5608e 100644
+> --- a/arch/arm64/boot/dts/freescale/imx943.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx943.dtsi
+> @@ -148,7 +148,7 @@ l3_cache: l3-cache {
+>  		};
+>  	};
+>  
+> -	clock-ldb-pll-div7 {
+> +	clock_ldb_pll_div7: clock-ldb-pll-div7 {
+>  		compatible = "fixed-factor-clock";
+>  		#clock-cells = <0>;
+>  		clocks = <&scmi_clk IMX94_CLK_LDBPLL>;
+> @@ -174,9 +174,62 @@ dispmix_csr: syscon@4b010000 {
+>  		lvds_csr: syscon@4b0c0000 {
+>  			compatible = "nxp,imx94-lvds-csr", "syscon";
+>  			reg = <0x0 0x4b0c0000 0x0 0x10000>;
+> +			#address-cells = <1>;
+> +			#size-cells = <1>;
+>  			clocks = <&scmi_clk IMX94_CLK_DISPAPB>;
+>  			#clock-cells = <1>;
+>  			power-domains = <&scmi_devpd IMX94_PD_DISPLAY>;
+> +
+> +			ldb: ldb@4 {
+> +				compatible = "fsl,imx94-ldb";
+> +				reg = <0x4 0x4>, <0x8 0x4>;
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
 
-You did not add property here. You added child node.
+Why? There are no children with addressing. You never tested it because
+this would easily be flagged by tools.
 
-I don't understand the rationale at all. How the registers could appear
-in this hardware? What changed that registers were not there?
+> +				reg-names = "ldb", "lvds";
 
-Why every device here has ldb child? Why camera has ldb?
+Follow DTS coding style.
 
 Best regards,
 Krzysztof
