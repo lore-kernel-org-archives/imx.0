@@ -1,221 +1,277 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013051.outbound.protection.outlook.com [52.101.83.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC094A0A;
-	Thu,  7 Aug 2025 12:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754569938; cv=none; b=dz41E9nERz6UQcXajF9vBI+bWbmLhpbkE7uhj+v/zFtFg43g6yFnsrf2f/G3k34OtXdUd5ff2PEBbkgYuMMQcamtBYFAw+QLBng2mMAjJfNjsNGaQ0Wum//CDEtwesTH3Qx1Yyh06fT2QFJq2utEEu/d8SYcjtbHxLCBfzaZQD4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754569938; c=relaxed/simple;
-	bh=mDLUQyipon3TC8s7Xe5hlhtx/kxMnlzT8INeN44SBME=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mEiZVcganbbQbr5v0yaxpu6Mfkwb15aY55k6yyvoNh5n9Hb5LSD414yuTtEIVfIYmSi9CZh0+4sd+1MslliCYexGM6lvdp6Bww5QFQ2kw5q449TNM28fgU+Kh9+r2vqQWBleZWT5MbVgoADPi19Q09gGWvMbMs7n0ecU+0Mr/vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=LACv+uFT; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794152EAE3
+	for <imx@lists.linux.dev>; Thu,  7 Aug 2025 12:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754570035; cv=fail; b=Qt7NMPzJtVFqqYHcXAsRyHDg9+aVXTDjBhG7uYfZvcZ4OCMjir7sB3pGEG3tTngJZGtEGlH+T1aLxzd6FuFYO+0hFLvaUuuZPoESkESXjk22WPiTftDePPzo5S30AhOab+wDo3akElliji98YwNYzWXNJ/rA7W7Ne01CnSMFxLw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754570035; c=relaxed/simple;
+	bh=Lo0dls7srr/PSJRkabZekbRNu4GXrtxbLldPhHY6hP4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hV0KTZc42RBtMC+keKuSA3loAgQAw+YVLyV+Zdogk9RcFH7EQ0jLQAEZ96GjgKk8/oD/vtMglN/b28R9EhD4fNpIjyfLqj87Biu9jeaji58HCuavDJzumJhYyghKlsh5y/m82QPMhDgxxMKsy+1jEPphnGMxUJ+DGAwzcrBvsN0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=FRj2yO3N; arc=fail smtp.client-ip=52.101.83.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="LACv+uFT"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id EDCB18FA;
-	Thu,  7 Aug 2025 14:31:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1754569883;
-	bh=mDLUQyipon3TC8s7Xe5hlhtx/kxMnlzT8INeN44SBME=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LACv+uFTAOqCoVr6y4n8xhP/phvZ2YaIqX4nfPzsq8htw1/33Ig2joQ5o1c7g1TI/
-	 sm6fQdyxttR4+gfZN8u7QpF8EcmmN4qBOEZ1BO6Gpa7oo5sCerPApF06+UQkNeTbXv
-	 CoAosKL4r64nC+r6TFuPhQz7Lyc1Gdn1yLFrA/Yc=
-Date: Thu, 7 Aug 2025 15:31:57 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Hans Verkuil <hverkuil+cisco@kernel.org>
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Devarsh Thakkar <devarsht@ti.com>, Benoit Parrot <bparrot@ti.com>,
-	Hans Verkuil <hverkuil@kernel.org>, Mike Isely <isely@pobox.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Christian Gromm <christian.gromm@microchip.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
-	Dongliang Mu <dzm91@hust.edu.cn>, Jonathan Corbet <corbet@lwn.net>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andy Walls <awalls@md.metrocast.net>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Bin Liu <bin.liu@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Osipenko <digetx@gmail.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Mirela Rabulea <mirela.rabulea@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Michal Simek <michal.simek@amd.com>, Ming Qian <ming.qian@nxp.com>,
-	Zhou Peng <eagle.zhou@nxp.com>,
-	Xavier Roumegue <xavier.roumegue@oss.nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>, Samuel Holland <samuel@sholland.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Jackson Lee <jackson.lee@chipsnmedia.com>,
-	Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
-	Houlong Wei <houlong.wei@mediatek.com>,
-	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-	Tiffany Lin <tiffany.lin@mediatek.com>,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
-	Jacob Chen <jacob-chen@iotwrt.com>,
-	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	=?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
-	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Fabien Dessenne <fabien.dessenne@foss.st.com>,
-	Hugues Fruchet <hugues.fruchet@foss.st.com>,
-	Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-	Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Corentin Labbe <clabbe@baylibre.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org,
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, linux-usb@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	mjpeg-users@lists.sourceforge.net
-Subject: Re: [PATCH 58/65] media: zoran: Remove access to __fh
-Message-ID: <20250807123157.GF11583@pendragon.ideasonboard.com>
-References: <20250802-media-private-data-v1-0-eb140ddd6a9d@ideasonboard.com>
- <20250802-media-private-data-v1-58-eb140ddd6a9d@ideasonboard.com>
- <d8875dea-aa04-41fc-b1b4-519d06ed6cba@kernel.org>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="FRj2yO3N"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PkquX79G4VsUB3ROsnOWfXrvjdqt78tQdQ7uJgt+g86T27w14zl0S0G2Cs1oX6+umQlP6XpW3FauihGotO7LUu8322y8bsAdae274MGHNDImFLmwz3+i0sPLdqVkf6ziaDHD81lwqTTZttTX849jnj2fctzlxmzy7koUeVUm25QEB8r5NRPcqodXACij+gwaTXSLgfu9xOuIU6he1LdERdnmf2GnINou8LobS8uyU9VXOauTRaOCUr20TexLWwUN0ub2Ih/caPNEiByFzD5BvsyZ5avZAQqfSXwLjhq2h89c18ryxv+Gt1Orij+9eDm5Rv7HH0zOauzp7VoYVdz0aA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vQzz+dwjhL7jxEhO9jDaLg+TwcqUJpFSv9VvX2uZ3wk=;
+ b=I7mjsww8KwzUbZuauBNcNy3gguS2n8Nwc4l6ppCnVsCDIDoVZUCZkSx6sqI9l270mSak9inuFwo25YT8a+JKIVq3EnRYYKQTvovsCrtz2n8dYvqaaJGn3rxeAQz11zGLNvRltXNGVgsYgZNLzJT+1HHlLc8dqLBzUg/27eZ03rGtC0xbxw28JFF1lbXbYPb5tkAJ+OlAu1f6EEmAWrqiaF9AHjpbxSBNZCk+q/TIEW77YUnXQK0gPYejoyoLC7Oo9p3RWsDJak5AG/8fHCkw7TcF8RrVSVQLqRC3S3jNwNnlEU4Hvlx5UkcYspNJkzB/2+ERDpSkGDFHKXDBxrsEUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vQzz+dwjhL7jxEhO9jDaLg+TwcqUJpFSv9VvX2uZ3wk=;
+ b=FRj2yO3NpV7syl1isW5FhdRVnegsixw3NCns+1SLDKcsbejfWvS0+WvTQTEc02BxmPEqc+G1JxGzqPQFD4YYz6mJ3povoYemvfUwnTVFjUzwbHBWrSEyGHrFH07APrPN/Oq72aCdTGnfxDRN96ImLNPEqXCUgMILfcm4/moqWyfrNf+KTRzjfNZwAzLnCrpI+1r9kPsIO8urLym42qPLFoJkkCSTjTC55KXFpuNv8QrdN2oAZxDhTEHBJ0bTjpawHJ6jOuG1QU8R35T4FQp1u5NtJWmGK+CmcPsA5p0lGsYNVzArYZsAkUch45U+qFhN1TCXN/N+kn1dquZb331uiw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV1PR04MB9135.eurprd04.prod.outlook.com (2603:10a6:150:26::19)
+ by AS8PR04MB8246.eurprd04.prod.outlook.com (2603:10a6:20b:3f6::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.14; Thu, 7 Aug
+ 2025 12:33:49 +0000
+Received: from GV1PR04MB9135.eurprd04.prod.outlook.com
+ ([fe80::b1f6:475e:de5d:8442]) by GV1PR04MB9135.eurprd04.prod.outlook.com
+ ([fe80::b1f6:475e:de5d:8442%5]) with mapi id 15.20.9009.013; Thu, 7 Aug 2025
+ 12:33:49 +0000
+Date: Thu, 7 Aug 2025 15:33:45 +0300
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: imx@lists.linux.dev, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 4/9] dt-bindings: display: imx: Add bindings for
+ i.MX94 DCIF
+Message-ID: <rivixxb2o2tvabkmvh52xm4xql6xvpfkismsfjpdvmjyxt77ll@3c3hf5hxns2d>
+References: <20250806150521.2174797-1-laurentiu.palcu@oss.nxp.com>
+ <20250806150521.2174797-5-laurentiu.palcu@oss.nxp.com>
+ <aJN0cI+VEXjI8zPC@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJN0cI+VEXjI8zPC@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: FR4P281CA0133.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b9::14) To GV1PR04MB9135.eurprd04.prod.outlook.com
+ (2603:10a6:150:26::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d8875dea-aa04-41fc-b1b4-519d06ed6cba@kernel.org>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV1PR04MB9135:EE_|AS8PR04MB8246:EE_
+X-MS-Office365-Filtering-Correlation-Id: bed3ae0a-1466-47e3-5af8-08ddd5aea8bc
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?8NpAYb8iZoRBssMxTlq16Vvwnd5oDtndXUmj3gPazJSEu47WiylKjDpTAiyp?=
+ =?us-ascii?Q?faouPKOBvjWqJtx3fzxu9pQoUHwSuQvYhCnlCMkJQbG/RmwRv8EGMCOqAk71?=
+ =?us-ascii?Q?zq0YN8f8q8Q+MZli8YqUV7V3sOwFU/bBNZ5GhJm03F15Yk02vYqoe20hpOcT?=
+ =?us-ascii?Q?h8+nW5789e+CdScHVeW6WRgX/BJAgPzOGhMq1tX5OcnG1HHhqKxEun+3tFkA?=
+ =?us-ascii?Q?JEP9SH6ikLmvFW75M6uDO2l7WyiSVd55f6xtlvKVfvy6KXGtTIr1WSW0rybc?=
+ =?us-ascii?Q?ovDGIwcFuHuWtwkHMQYoMMN+j12Qu3mVfmalyaK5ccUapi+WpiiwO+uU2SIm?=
+ =?us-ascii?Q?FowQfoYoEvyFK5KUjICPa3ykF1eYWq6GI9qyVqjiVprmOVfqdFbPCEIZ1z/I?=
+ =?us-ascii?Q?EdkbWcs9Iq6cScPCPRIqgOsulH5pWeadl9o/cfsO0mLsbw6Zjt/gVlcFaJ2b?=
+ =?us-ascii?Q?oizepv5EWHcqucKc+xSDqnhQ1IMrrWJAVTaw8vgpfUIwd4FEOyIc3Ws+UdLd?=
+ =?us-ascii?Q?2NdJSzn6hlCP6D7zpNz/xYi58e7qV4eWhG9AbRRJWOe4oCjrRDNGmPnVAlKn?=
+ =?us-ascii?Q?Jr1bf3f96uJ6N+eaib5Uc7uLuaf+/VpkCOSv4cOml4yTYTq2PANFz3Ctm5vK?=
+ =?us-ascii?Q?hSARKFgjcEMEnWwM+29VToKw/jXOS5gpbqXQPuYpHC36uguvbnvviAY4c2xF?=
+ =?us-ascii?Q?BKQjD5lPwQq5iNQ/PFK+p2Ii4wpssXvW1N/IQ4BnV4j5ib5ZiFyrtB/R4ewn?=
+ =?us-ascii?Q?uoD8rJfIrJbuz7zFg6oRiMXwhQMM/iYfPgX8FoVahDFA9mllEMcloZXeGAya?=
+ =?us-ascii?Q?b8tT6pZyluI96Pf0aJh0+lmF6Tv46ka0MK79hmMORJcEsEDO5JLsNOG7/3xa?=
+ =?us-ascii?Q?yEbYPuTxWix06Ndgy6eM5Wy3grYBmjD548aur/LtMBVbG3t3VrEBLenD01Zy?=
+ =?us-ascii?Q?EoF7lyeiNFyRjsf+u6WqUamBnFuzvFRpVR8PI5hmsSb0PGRbvAh0ouw16pSh?=
+ =?us-ascii?Q?Nam8CJmGMZiHT33NmTUfGllYXkMzvz+OYaM+2iu63rbOf1+asJWjW/lTOoAk?=
+ =?us-ascii?Q?hEaYOnsu3gj2aMC7InUFLQtfXbHrRMEtm2KVyQXNHYA7OqEke0oroz59+COI?=
+ =?us-ascii?Q?G1KDZGbNDhhZQxm9zVnsIZUUY7nFloXC5W6ZdYGSjo7PYKns1QdhiLezNUGZ?=
+ =?us-ascii?Q?IcCzLEcoPVOCA07mowY2OwjAn9JkcAQgIOTqVx2KL1SaNMdqql8vZhCexesy?=
+ =?us-ascii?Q?Z+fZB7HNkSF3c790ipe0m1ST/S3TAwcx4vSawDz24rO7IxjHeuJUyJn2Ho5d?=
+ =?us-ascii?Q?Cw8zT/A4q5AW5MKFxQmkD1w6Klea0kRCvoKaD0Gj+BEyH25MdUfIkXOOEcnW?=
+ =?us-ascii?Q?isJajP17fR4L5aEo3fXTB7A5bIkE?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9135.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?LVRyTjTniHlLx81TQKCtkmVaeQdDfkLeLGo5D8nN/Xws0gaI5yQhrvrbUZTS?=
+ =?us-ascii?Q?5BDIQMUFLkqwIHm2I3cfYGuR+L00NQFJGgILVGLZoppiivj144q0sq21CwKk?=
+ =?us-ascii?Q?VB8ke/b4tH4Sqsx5B/v44Tbhk04AZgkwbBxQ3no9X5uHAeWl2BGmb2+ZovyL?=
+ =?us-ascii?Q?247rkP2Qfn2HxfjZfkhdjGpCJduiYDoWRXF9nr2iBltdlLkxV3bJQvjCY16x?=
+ =?us-ascii?Q?cVbokhFJkZoSpmJnJZXgmD3l4Psz6LW7j3GYtHGdUAVj3A6c+YF+gresSvl6?=
+ =?us-ascii?Q?4WDdwZ/4ZRxDEnx3wO2wUBSxAC69KAVPZDmsRqWr2jFa7OYlbTgMEYkBqt6p?=
+ =?us-ascii?Q?H6xE2RyFhgifcd/+4Rq08c36sNGDWAHQBdWNEeQez/UiWgZxQZhx8PqeAjtu?=
+ =?us-ascii?Q?nhtq+FNpQ9EXv0MrqVo0HcTs0kUuELJt1hf4OGkEEAmlS9W0r6Alj5VsnBLR?=
+ =?us-ascii?Q?KeNY7+CudxbhDdAlVZJnoEShY7a/bLWarDND9DR4Oe3G+YhQEUEg8OABli0H?=
+ =?us-ascii?Q?px8nuD+Fbs+M8VIphwAWdqgtwDSPwSX5kzyhNUBaMXc5WLz01h6wq7agNRcU?=
+ =?us-ascii?Q?+zQypPZ3a6BrKt2/nQSwuplgkB/u1VEGrPzOU61Jua1UoQg1KTNVU/CWeeya?=
+ =?us-ascii?Q?nN/mYLfUQPaBcJRUt4B2QxlSj5f8vUNhV+Qy90HfsWRn6/4K//GyfJ1Qli3x?=
+ =?us-ascii?Q?AI61vgZdH4BH0/90OxXCVmmE8FMKzyXYp//4MtxuVlR0eI/eswF6YZcWmjqW?=
+ =?us-ascii?Q?C+DyVkUdNCG9NkvZF/6y3Pp6zY0W4uoP91UJjYPq62IUUiYJ636fy4w6eVG1?=
+ =?us-ascii?Q?XNQtXPmxUW6S8p/vYcM0NdkD5uUmujVRE/USD78YFU2r+JPcZXW2jR0XdA/k?=
+ =?us-ascii?Q?9/0OEEK8fKqxUFgNplFsNGPKbeMVuMkVC2JP9XyjZpQBF498pWGdLuHm4uow?=
+ =?us-ascii?Q?i0y1o2FJ+pmjjEc5yFY7YvnkG7J0d56e0YbSMC6PUx8MBwkOBSdyZAwgnSyR?=
+ =?us-ascii?Q?MBHwFSy3GPMrMcOQ8qPBvObM1kUC0K3mIgqtQwE/PNIzfoNd3cmlLIxvYee4?=
+ =?us-ascii?Q?eevu4becPUbU6+qKHnfteGbLz4sjJ7Sug2v9INZCgHF1OatJiLh/5lBvOTRx?=
+ =?us-ascii?Q?s7EVpN1HGdWZPONxPY0vabWVIaJ8ah1ko2DWdSoxEtibXIEQXLBpp7BbjD7K?=
+ =?us-ascii?Q?A5ihhW6rCDJPxem38uO4tQyCBwXlX2+YfXa8cz6dpMc2sZEm+ged/S6euQIl?=
+ =?us-ascii?Q?v2Wz7XagLCx/xjBqtxeqfTFrepFufk3Gq7CyEYDrhy/oMlv38lI1U4wYqi6F?=
+ =?us-ascii?Q?zG4GatRQgV1loORcdjxRAM7LiCR0zX81sDu6KfV1RBgFiDzBHyKQB+7ZZweo?=
+ =?us-ascii?Q?ETB9oaFQwkuac3pgYBwrN7DSdqqcRsV4flIHCBp0kZYvkWt6CWPZoJgqInX8?=
+ =?us-ascii?Q?XEsuEfbA+VzzJLHcmSYrnjP1i2pCjuyaPAbNmgHuzO8ziu3ZoTITLzdfykp8?=
+ =?us-ascii?Q?2RTtohqEUkRtc4/ZHPiAxbISn+qV+cbAT5YgFvd5jUnmz46mDvDsduzB7Nj3?=
+ =?us-ascii?Q?TMj+2mQUtNH90PrYnKg571jBMDr27va7ZrdzzEQkKW13eoiPZ0L5e5gBtTSn?=
+ =?us-ascii?Q?rA=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bed3ae0a-1466-47e3-5af8-08ddd5aea8bc
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB9135.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 12:33:49.3459
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pYakl9TrJDUPKZDcv1xRJuKa45ckDIJPcNcYSIBbmzgT8hOi1aTnnsH6dLHZ2tlEVajHGj53/0f9GiebOGiB1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8246
 
-On Thu, Aug 07, 2025 at 08:58:01AM +0200, Hans Verkuil wrote:
-> On 02/08/2025 11:23, Jacopo Mondi wrote:
-> > The __fh parameter is assigned to an unsued variable. Remove it
-> > and remove the unused struct zoran_fh type.
-> > 
-> > Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+On Wed, Aug 06, 2025 at 11:27:44AM -0400, Frank Li wrote:
+> On Wed, Aug 06, 2025 at 06:05:11PM +0300, Laurentiu Palcu wrote:
+> > DCIF is the i.MX94 Display Controller Interface which is used to
+> > drive a TFT LCD panel or connects to a display interface depending
+> > on the chip configuration.
+> 
+> nit: wrap at 75 chars
+> 
+> >
+> > Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 > > ---
-> >  drivers/media/pci/zoran/zoran.h        | 6 ------
-> >  drivers/media/pci/zoran/zoran_driver.c | 3 +--
-> >  2 files changed, 1 insertion(+), 8 deletions(-)
-> > 
-> > diff --git a/drivers/media/pci/zoran/zoran.h b/drivers/media/pci/zoran/zoran.h
-> > index 1cd990468d3de9db8b14b72483972041c57bfee2..d05e222b392156bf1b3b4c83c6591db642c3c377 100644
-> > --- a/drivers/media/pci/zoran/zoran.h
-> > +++ b/drivers/media/pci/zoran/zoran.h
-> > @@ -154,12 +154,6 @@ struct zoran_jpg_settings {
-> >  
-> >  struct zoran;
-> >  
-> > -/* zoran_fh contains per-open() settings */
-> > -struct zoran_fh {
-> > -	struct v4l2_fh fh;
-> > -	struct zoran *zr;
-> > -};
-> > -
-> >  struct card_info {
-> >  	enum card_type type;
-> >  	char name[32];
-> > diff --git a/drivers/media/pci/zoran/zoran_driver.c b/drivers/media/pci/zoran/zoran_driver.c
-> > index f42f596d3e6295e31e3b33cd83c5f7243911bd30..ec7fc1da4cc02f5a344cb49bb9a783c41c758195 100644
-> > --- a/drivers/media/pci/zoran/zoran_driver.c
-> > +++ b/drivers/media/pci/zoran/zoran_driver.c
-> > @@ -511,12 +511,11 @@ static int zoran_s_fmt_vid_cap(struct file *file, void *__fh,
+> >  .../bindings/display/imx/nxp,imx94-dcif.yaml  | 82 +++++++++++++++++++
+> >  1 file changed, 82 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml b/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
+> > new file mode 100644
+> > index 0000000000000..54419c589ef74
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
+> > @@ -0,0 +1,82 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +# Copyright 2025 NXP
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/display/imx/nxp,imx94-dcif.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: i.MX94 Display Control Interface (DCIF)
+> > +
+> > +maintainers:
+> > +  - Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> > +
+> > +description:
+> > +  The Display Control Interface(DCIF) is a system master that fetches graphics
+> > +  stored in memory and displays them on a TFT LCD panel or connects to a
+> > +  display interface depending on the chip configuration.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: nxp,imx94-dcif
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    items:
+> > +      - description: CPU domain 0 (controlled by common registers group).
+> > +      - description: CPU domain 1 (controlled by background layer registers group).
+> > +      - description: CPU domain 2 (controlled by foreground layer registers group).
+> > +
+> > +  interrupt-names:
+> > +    items:
+> > +      - const: common
+> > +      - const: bg_layer
+> > +      - const: fg_layer
+> > +
+> > +  clocks:
+> > +    maxItems: 3
+> > +
+> > +  clock-names:
+> > +    items:
+> > +      - const: apb
+> > +      - const: axi
+> > +      - const: pix
+> > +
+> > +  power-domains:
+> > +    maxItems: 1
+> > +
+> > +  port:
+> > +    $ref: /schemas/graph.yaml#/properties/port
+> > +    description: Display Pixel Interface(DPI) output port
 > 
-> This driver uses __fh as the name for the second argument of the ioctl
-> callbacks. Can you take this opportunity to rename it to either 'fh' or 'priv'?
-
-It's a bit of yak shaving, but not too difficult so it will be addressed
-in the next version (Jacopo already wrote the patches, thanks).
-
-> Generally it's not a good idea to prefix variables with __ for no good reason.
+> I think need
 > 
-> Grepping for __fh also shows two other drivers:
+>     properties:
+>       endpoint:
+>         $ref: video-interfaces.yaml#
+>         unevaluatedProperties: false
 > 
-> drivers/media/platform/chips-media/coda/coda-common.c:#define fh_to_ctx(__fh)   container_of(__fh, struct coda_ctx, fh)
-> drivers/media/platform/samsung/s5p-mfc/s5p_mfc_common.h:#define fh_to_ctx(__fh) container_of(__fh, struct s5p_mfc_ctx, fh)
+> Most likely need set
 > 
-> I think it is a good idea to rename __fh to fh there as well.
+> bus-width, hsync-active, vsync-active
 
-That can't be done, otherwise things like
+We don't set these in DTS for DCIF. Hence, we don't need a specialiazed
+binding for the endpoint. 
 
-#define fh_to_ctx(fh)	container_of(fh, struct coda_ctx, fh)
+Laurentiu
 
-static inline struct coda_ctx *file_to_ctx(struct file *filp)
-{
-	return fh_to_ctx(file_to_v4l2_fh(filp));
-}
-
-will expand in the file_to_ctx() function to
-
-	return container_of(file_to_v4l2_fh(filp), struct coda_ctx, file_to_v4l2_fh(filp))
-
-We could rename the __fh argument to vfh or v4l2fh, but I think __fh is
-equally good there. It's just the macro argument name.
-
-> >  			       struct v4l2_format *fmt)
-> >  {
-> >  	struct zoran *zr = video_drvdata(file);
-> > -	struct zoran_fh *fh = __fh;
-> >  	int i;
-> >  	int res = 0;
-> >  
-> >  	if (fmt->fmt.pix.pixelformat == V4L2_PIX_FMT_MJPEG)
-> > -		return zoran_s_fmt_vid_out(file, fh, fmt);
-> > +		return zoran_s_fmt_vid_out(file, __fh, fmt);
-> >  
-> >  	for (i = 0; i < NUM_FORMATS; i++)
-> >  		if (fmt->fmt.pix.pixelformat == zoran_formats[i].fourcc)
-
--- 
-Regards,
-
-Laurent Pinchart
+> 
+> Frank
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> > +
+> > +    soc {
+> > +        #address-cells = <2>;
+> > +        #size-cells = <2>;
+> > +
+> > +        display-controller@4b120000 {
+> > +            compatible = "nxp,imx94-dcif";
+> > +            reg = <0x0 0x4b120000 0x0 0x300000>;
+> > +            interrupts = <GIC_SPI 377 IRQ_TYPE_LEVEL_HIGH>,
+> > +                         <GIC_SPI 378 IRQ_TYPE_LEVEL_HIGH>,
+> > +                         <GIC_SPI 379 IRQ_TYPE_LEVEL_HIGH>;
+> > +            interrupt-names = "common", "bg_layer", "fg_layer";
+> > +            clocks = <&scmi_clk 69>, <&scmi_clk 70>, <&dispmix_csr 0>;
+> > +            clock-names = "apb", "axi", "pix";
+> > +            assigned-clocks = <&dispmix_csr 0>;
+> > +            assigned-clock-parents = <&ldb_pll_pixel>;
+> > +            power-domains = <&scmi_devpd 11>;
+> > +
+> > +            port {
+> > +                dcif_out: endpoint {
+> > +                    remote-endpoint = <&ldb_in>;
+> > +                };
+> > +            };
+> > +        };
+> > +    };
+> > --
+> > 2.49.0
+> >
