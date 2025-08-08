@@ -1,183 +1,316 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013018.outbound.protection.outlook.com [52.101.72.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E58246BD5;
-	Fri,  8 Aug 2025 07:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754637766; cv=none; b=NXJF35xBAGVp9Slrmhoqf/fh4ZHrUGZEc1+nROKZb21JdaGV85pRVyKu0LK8323sfZJEWHS+SPoL8xmWEw4lln1zT2g+SbT/1C7HVMSLvi4F805gwWVYFVqOr4WmG5llySy8/uTM5HFeN/fKuB5u/gDAFuqS4FI7tNQwFyoWo+Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754637766; c=relaxed/simple;
-	bh=fbLBorPezoJWXQtvSg4WV87SLfHofuZpGSIX8FwjR+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ms1iq8uOCjvB/FKC1QIIwifZ+kmurlPsMzYDgElzbUydOMZBQ1BdMm10ThL49eWkgukouhuqmohoH9zMKQmrN/wz9jlS5H14B5xoDA04/7edggjEupUvBC1bGBvZkoEk+uZjUvhgymlT47tjhjxjPxzaRd9Bx5I9C+l2ECTtxJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SjoHuh8E; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF81D214801
+	for <imx@lists.linux.dev>; Fri,  8 Aug 2025 07:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754639365; cv=fail; b=qGzfqIt18yR0uGjM+0HGjmhIRReW8ceUcNpvOLvRuz/FRZCLXS5U6sefDPDuanvapgArfXU9RWYE56Einf4pFvslzbcqy5K+jbm8cc4u8fBY3uncCMWF8sjYS4SikJ4JXgYU71+pMmF2d0mYSr0kDNYIhkNMcC4V7XsKlXDEBWA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754639365; c=relaxed/simple;
+	bh=llNSsuzdgPpZhv6iLTQeTv75PQG+XtJkg7YOIJxkeXw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=GqTzGak2U8ieoasL5PZNSrgn/b6W6iXGOpAK52sgulbNG8+XjqFReidSbpyjf7jizObbncxbz2yxsK50mWWJqQUWIvWruXrT1KZjCx6uot6D6+ZN2N2aGDUA4vh2zfNI+w7lB1EGqRuELmqSBwF681fbvpecnGu/9HYeo1h+sq0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DRyH2RyS; arc=fail smtp.client-ip=52.101.72.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SjoHuh8E"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754637765; x=1786173765;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fbLBorPezoJWXQtvSg4WV87SLfHofuZpGSIX8FwjR+A=;
-  b=SjoHuh8EtHrM7tgnpeCISrbn+ybxjw+1nTrgNHifhOx0XgOgVkr5Cuuq
-   QTgS2euRU21K08ExSx6XWM4R3aJ8MHoCdI5B9BeUSigO294lBNzoUbC4s
-   3qTDTaw6I8B2rpsik9gfMzELmwTRBR+1lR0r0bH9lLTXcB1xJXhtfCPts
-   GUjZiAOGkr3QPNoN903b6dHEavWdVXdEAoHumJnWb5Km9bjKoCgAv4RBG
-   GYMoPvvKd/s0yCUtz03HPgpoiRDbPr4wOkEFMm+Ux/OF22JWdWGT1dBHz
-   +oR2ceLdD6cLS/EVyr8iFK4KlFzt2aF94wG5fzNrbwYTdMRt9scHowyn5
-   g==;
-X-CSE-ConnectionGUID: bAIiAh+oRdCOguhB7yoT7w==
-X-CSE-MsgGUID: B1yS/pezQKuMbxtn4zwhXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="82427442"
-X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
-   d="scan'208";a="82427442"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2025 00:22:44 -0700
-X-CSE-ConnectionGUID: OdNPlVlrR9m1H28JVd9Cfw==
-X-CSE-MsgGUID: 6MIOtN9XTOqpGi12upForA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
-   d="scan'208";a="188944168"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.151])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2025 00:22:33 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 7FB8211FC97;
-	Fri,  8 Aug 2025 10:22:31 +0300 (EEST)
-Date: Fri, 8 Aug 2025 07:22:31 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Devarsh Thakkar <devarsht@ti.com>, Benoit Parrot <bparrot@ti.com>,
-	Hans Verkuil <hverkuil@kernel.org>, Mike Isely <isely@pobox.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Christian Gromm <christian.gromm@microchip.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
-	Dongliang Mu <dzm91@hust.edu.cn>, Jonathan Corbet <corbet@lwn.net>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andy Walls <awalls@md.metrocast.net>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Bin Liu <bin.liu@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Osipenko <digetx@gmail.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Mirela Rabulea <mirela.rabulea@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Michal Simek <michal.simek@amd.com>, Ming Qian <ming.qian@nxp.com>,
-	Zhou Peng <eagle.zhou@nxp.com>,
-	Xavier Roumegue <xavier.roumegue@oss.nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>, Samuel Holland <samuel@sholland.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Jackson Lee <jackson.lee@chipsnmedia.com>,
-	Minghsiu Tsai <minghsiu.tsai@mediatek.com>,
-	Houlong Wei <houlong.wei@mediatek.com>,
-	Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
-	Tiffany Lin <tiffany.lin@mediatek.com>,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Mikhail Ulyanov <mikhail.ulyanov@cogentembedded.com>,
-	Jacob Chen <jacob-chen@iotwrt.com>,
-	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	=?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>,
-	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Fabien Dessenne <fabien.dessenne@foss.st.com>,
-	Hugues Fruchet <hugues.fruchet@foss.st.com>,
-	Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund@ragnatech.se>,
-	Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Corentin Labbe <clabbe@baylibre.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org,
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, linux-usb@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	mjpeg-users@lists.sourceforge.net
-Subject: Re: [PATCH 64/65] media: staging: ipu7: isys: Don't set
- V4L2_FL_USES_V4L2_FH manually
-Message-ID: <aJWltxB6NfXg53KI@kekkonen.localdomain>
-References: <20250802-media-private-data-v1-0-eb140ddd6a9d@ideasonboard.com>
- <20250802-media-private-data-v1-64-eb140ddd6a9d@ideasonboard.com>
- <aJRswZIVKCuzqCpr@kekkonen.localdomain>
- <20250807170135.GH11583@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DRyH2RyS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FJhd3HfXWEjQmlaldhzEBNQqQ/ExEfqTb0SK8+vWtRPqLACTTnlp9TO2p/IoNbf5SGfvJpKTkxg5W2jwjQ9flnKJoydrlpWQfirApgL99ky6iKaZC+IF2OBn6rS23E65h/sNQpUe2mjbq7RmtpG1FR++buid3uc0rTw73MKjVGefq9dSxeHhnnfvOibk1NTg+4h7sO5W1URfRrrdq8tlKjkRR6CmRxycKX1YIqZmCZKvP0ZzkGrNCvus03OjALMk9RpZNsEV9QgrO/YhDSCPr8Qd9qiRothpgiInNPxnIU3NbFfj1UkLEU7Skqjmovew2JaHP9rL8nB6LH5RTi4MhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AVC+wX4pHkOlpu7HjK5fTqN+LXSzX6hjD0AITQ4NycE=;
+ b=qwfS8IvQcnpU5D8LT+1d05K7VGyXrlq+WqWgi+W3BQL65bZoctU9AXiIu+qjEAdlK/gD86QwUJJhkrEnHN5W8eqdx1ELJteYlcF1bo9pec34qCiQeMs5PKvpuLlkYSTM4VGMB/aBXj6XjE1amHdkP3NXpI4CRAaZkT8hlAjNduvabOCq2YsI7cEk+SGqkSe4sXwY1BzmXzJvMhPAqL/QVeittfcmGbKNwgIipSMVG8mbn41naC28LXCDcY0gHpj/DDbS+IE4vgAQLV6/cw4Cm4H1kg7fRsaTLBBIBwjqaulMw3OsZ5GO0Y9bh4mkLxhIodeMJQnhbG5aenIm8ELo4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AVC+wX4pHkOlpu7HjK5fTqN+LXSzX6hjD0AITQ4NycE=;
+ b=DRyH2RySDa2Pudv7DDJ+wetz0b+n9UkMz6mjQO93ynJ+oYp0i/xVnIYvuKfTlMFLNHafCzRkqw8OCf6G0ge00SLePM1xUDB5nKjc60Mqq6z6t6Jv77f1nByDFje6XhjxN6pCnVERyDD+9xrbljq0sKijE+NeGpbsWVzprZvFyA61hiRTP0pQB2cgDLOBJDnG8z0X9vVyTPk/L4oXZiHRnp84N3qfxADjXOWltwJtuexy6WCDiOa9CdKJj677ZtqxNcwZ14i4jOduKGhaB0QiDx3uYu18DJZRmhielWD8uGlrT6t1byEjwvp4slgtQUyWK+4vtR942yxmxTIBKLmfGA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by AS8PR04MB8561.eurprd04.prod.outlook.com (2603:10a6:20b:420::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Fri, 8 Aug
+ 2025 07:49:20 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::d1ce:ea15:6648:6f90%5]) with mapi id 15.20.9009.017; Fri, 8 Aug 2025
+ 07:49:20 +0000
+Message-ID: <0ee5fcbc-a553-4385-b930-b1a40693add5@nxp.com>
+Date: Fri, 8 Aug 2025 15:50:49 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/6] drm/bridge: imx: add driver for HDMI TX Parallel
+ Audio Interface
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ lumag@kernel.org, dianders@chromium.org, cristian.ciocaltea@collabora.com,
+ luca.ceresoli@bootlin.com, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, p.zabel@pengutronix.de, devicetree@vger.kernel.org,
+ l.stach@pengutronix.de, perex@perex.cz, tiwai@suse.com,
+ linux-sound@vger.kernel.org
+References: <20250804104722.601440-1-shengjiu.wang@nxp.com>
+ <20250804104722.601440-6-shengjiu.wang@nxp.com>
+ <fa455148-a071-4433-8c9c-26add3872604@nxp.com>
+ <CAA+D8AN4n0H6M_0EqX4z_37ViSCyThKbmtMgqPmipintJ8Wtwg@mail.gmail.com>
+ <ba02693b-8ad2-4297-ab89-5b39d5c4315f@nxp.com>
+ <CAA+D8AN3VzFx1g=8wyxJROw96xS2-qoVs3X4vUfFnJtUCqFj_w@mail.gmail.com>
+ <481c4a38-e638-49ea-88d4-765e581afca7@nxp.com>
+ <CAA+D8AMmQo=TgaJTubLL6xRp0NV3GpeE0JKwhBjmhZjtBnBQjA@mail.gmail.com>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <CAA+D8AMmQo=TgaJTubLL6xRp0NV3GpeE0JKwhBjmhZjtBnBQjA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SG2PR02CA0096.apcprd02.prod.outlook.com
+ (2603:1096:4:90::36) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250807170135.GH11583@pendragon.ideasonboard.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS8PR04MB8561:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68f36119-afa0-4ccf-84ff-08ddd6501530
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?Q2RNYmVXSHVVQVZKamxxNGZWNUgxM2ZwQk5NZURuYWRRL3N4YjEwZ3llU1Jt?=
+ =?utf-8?B?NURWeWsyczRWaTQwazNGT21XR2NiQ1poOG1MY0Yxb1FZQzZKY2F6bjRvdlN1?=
+ =?utf-8?B?eEhpZGxmdUJUR3NWUk4wNEwxN20vWmREUktKUTlDVnd6ZXNyRkIyN0liVlhj?=
+ =?utf-8?B?WjFWY2pVak55YmVlblN2WTE0QXVrNnNkMmVyeXk0M2RPVUgzSmZJVTQyMXJ0?=
+ =?utf-8?B?Sm54eVVZTDlJL29GUi96V3NjNnFDUGJLN1hDa2pCaGJUME9Lb0diYzlSQVJQ?=
+ =?utf-8?B?elFLVDFpSE91dTIzSVFCS0o4NnlzbkVEWXFyaEo5dURrZ2VlR2NHbFNpNUhF?=
+ =?utf-8?B?aFpxanRSZzg4M05JMmJBTitTWmtESWtycVVKSCtnQnlnSnZlc2R3UERVYTZB?=
+ =?utf-8?B?aVVUWkVZZWVhM3o5SnBpSjgxOUswRjV6NG05YlVTTGt0TTRpNFNKbzhSTksy?=
+ =?utf-8?B?QWN3c2xyWEh2S2tSaFFVdDRBTllLSWp4eTFLSyszekhzdTZFZUR6bktTeW1L?=
+ =?utf-8?B?N0hzL003ZWJqTzZKd3dSVmZoODFCWU1ibTB0WE1YVFd5TG1wZ2ljQW1BWGcr?=
+ =?utf-8?B?WTNhU3ZJaWtFV1hSNXlHTzk2WlFIZHl3Wm9RMUIvNld2UmJneXJWd1NybWhX?=
+ =?utf-8?B?OTlsdmtvUTFRQVhxaFppd3B6N29ERnYxaVNIUHZSQ0M4K0VRRi9YL3JsWVho?=
+ =?utf-8?B?eURWeW53bUM0NzJ4WFNTMUl6VDZJU2U3L2lDd2c3ZzhFcjNSRUFGN0tPMDRa?=
+ =?utf-8?B?UWtZQXZmSVBXeFhRRkFYMFVlV256c3FiUkgrSys3VHdPcnNVcnpTczAyUHJa?=
+ =?utf-8?B?ZmdYN0l0UXljWERzNmprUHp0STBPTTM1QXlQUjJKK2tGZ1BJUjNtMjBJbE8y?=
+ =?utf-8?B?eWRnTzI4WFNkakpLeWszZ1M0LzRsUm1GTGtoUlhOb0daejZNMkNRQzBvSXpG?=
+ =?utf-8?B?Z1V4Z3ZiWjVUdCtuaXJZU0lCRU1pakE0U1VJc3Qvc1l6L2ZjYzdlTGQ4WTkw?=
+ =?utf-8?B?NlFzY0ZzZ0w1SFBtUjJhc2R1QWlMQlNEbm5IOW5nb0UrL1cyNWlNNm9mYnFN?=
+ =?utf-8?B?OTdDSnNSeTdtNE1OMU4zdUNNN1pRZ1FSYWhOVWdmOGQvR0Y4K3lua3ZFRStE?=
+ =?utf-8?B?TkJONVppZFczRWI5QW9Cbm1JNm1oRkpsdUVpY3RlaWV4Z0RZYzh5bDBpajl3?=
+ =?utf-8?B?NWVQWFpEdlU4ZnlxY1c0NzV5WHQ2SldqVmxpcHBWdXU3WUhxN2EwU083b3dj?=
+ =?utf-8?B?cU05cEJmU2ltN1BKd01abWxzSStyNzB1NS93czFwTEthVFJxVDVQcDFxTUE2?=
+ =?utf-8?B?UFNla2FhZWhhb2lrVngyRnFmUnlGdFMyblZTVnRxaVdGNjEvMXU2OXNPUnZT?=
+ =?utf-8?B?S2Y3RFgvT0F4TWcvN1NXRFlhanl3dHRsbWE0Q2UvN1NIRGhPeDhFdFVHalJD?=
+ =?utf-8?B?d0NqeDdkeDNQMUJ1VlVrVk0vT3Z1b3hDRFdGSGg5K2NuZDN6RUhjYWl6dFJk?=
+ =?utf-8?B?MmsrQW8vZkRPSXQ0YXdtSTBEckw4MnBtVFF0MkU2TFpadFlKeklkZ3Z1aUxa?=
+ =?utf-8?B?UUE3N2xQUDdPMGJFN1hpRm5IZzIzWDBaZVY4WGdkOVlnN2J4dHZiU3ZGUnU2?=
+ =?utf-8?B?RnZjRnRId0hVLzF2MHhlcEtXS3dEUDRZS3FLbDJQZ1FEKzZkbnpaSkIxSGZC?=
+ =?utf-8?B?clpObXg1S0tzMEdDdlMrdDVUYUhJMkk1SkRrdDhMSmh5MS9nMzdZVDkyTm1o?=
+ =?utf-8?B?a2tVaTVpN1FxcXVBUitsTVJIRHdaZTBITW5WbmVWdlc5MGQ0MCtNUWFkOFRM?=
+ =?utf-8?B?Rm9Nd2pBamg5SEFacUNlbzV6M1gvSTZkTm8xNHQ4YmFvamk0TGI2TmRGSmNs?=
+ =?utf-8?B?WlFPYXRsdFV2YzFnQk9BaGNiVHh2OXluY1FRdzhhUXZadys0VERzUmJYbXZI?=
+ =?utf-8?Q?KWt0xQ3N1bM=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?TUNsOWU3eTA2anYzamgyUE5BVVcxZzRiMDRCdFhPQjZSYUU3dWhCYS9lNUNI?=
+ =?utf-8?B?OU13OCtqRENta1FJYXlsa2lYcUpSY2s4Y040cGF2Sk5zVzhadTRzQUxxWFo3?=
+ =?utf-8?B?cXROSVBKQmJPTFBKdG8xRTA5WGNJbEFjdTlsRzZpcmlmRVYxYm9lcXkzdGQr?=
+ =?utf-8?B?T000MzRaTkpibkZuRUlHUnoweUxZRWYvbklyNjhaWWhvblpVSjJSWnM1WG82?=
+ =?utf-8?B?Q2twYTZzaW1mR2tDS3IrVURXQWgwTWxwNzJLbmJ0K0dpYUQ5b0xDb1RVRms3?=
+ =?utf-8?B?Y2xXSE00d01qV3hsYVROVmxOZ1hyWjdvdE8ra0dKc0NqUWI3SFJKK3JPOGk0?=
+ =?utf-8?B?UWFZUmZXYnhMN0hFRW40LzlIWmM2NCtXQ0xzRXpsR2RxV0JOZlQ0YWE4MEU0?=
+ =?utf-8?B?VVNpNGc0eVB2bWhXYVFJRFJ2SEMyQUtZejRZR2VMcEVDcFFVK2x6OSsrc09p?=
+ =?utf-8?B?Yi9JenlQZlhDYUVYT0twWDNVRi8xaDlHR1FuQmZGaHRMVDg0UktQdjQzUVV5?=
+ =?utf-8?B?Nzh5R3pGOC94TmgvOHppQ3hqQUJEV21QZXdMVGpkckMyQUZtRGxXYnVKQS9H?=
+ =?utf-8?B?ZkJUSUJ1T3RyTFYwVFRpZnNVb1dvSlJzMWYvVTRZUU55VWo2Rk84OWN3Q1lv?=
+ =?utf-8?B?MXBNb0pZQmN1bDFpYmw4VTYwMzFEbGtrRzllUnNSN2FCWE9mL09NV0lzNEdh?=
+ =?utf-8?B?ckJpaDJuN2dSWVJNcWUxNDhNaHFDWFBQbkRjMWUycmludTZtY21lMTdTN1pq?=
+ =?utf-8?B?andQVCt3VkdNbERXdlpRc2hRUlFkVVlUcERxbDdxRlpWUThiK1h5cnZ5R29C?=
+ =?utf-8?B?dEVHQ2l6WFB3Rlo2enBZd2NkeG1tMG5hSE1ROUpVY0VsOXk2a0dwMjRMejYw?=
+ =?utf-8?B?Z29jSWNiTVpsb3ppWUhvV1ZtQ3hPQytlbHNoQXRDZldESjVnclBYNWlHeVpp?=
+ =?utf-8?B?Mld5ZG80NEEyY1pVbUwxWXZKV0FyUE44TDh6SFdicy9hY2FXRTNmY2dXNEdX?=
+ =?utf-8?B?NzAwc2FlUVJtM0o0Uk9CM2pQVmZMMEZCZHFhRG42eTQzSFNibHpaZVNXbEtl?=
+ =?utf-8?B?N21adnJXeFhTZ1BmMHZhTDBPZ2FtTFl3ZXB6K213WVJxaHVua2RGUTVTcHhU?=
+ =?utf-8?B?bUxiNjVsS1JqRXJ4b2hXU0FRU29TR2FNdVByODdLTXV1R2h4SHB4RmtnNGFu?=
+ =?utf-8?B?aEhuckJ2MGptVEpQRU9qWldYRngxandMd21YaG5jRVNvWTJyZHppcyt2MldI?=
+ =?utf-8?B?dkNCdGh6VWZUNjlnZGcrSlJOckM3ZnNIaDdKSG0wVTZmeGUzZHBpQ2NtMHBa?=
+ =?utf-8?B?c21Tb21zbC9CRE82YkVPUWV4UHZQM29qVW9iUUNwNmdrN2NIOXV3NkNZTmJL?=
+ =?utf-8?B?cjhxU2VJWU8xQm5BZTRsNFJBMy9NREV5NExkU0t5VGpoOTJWZWNSbDFxbVB3?=
+ =?utf-8?B?TnV1SFJMTDg0ZndBV0F5dmhwV0Zld1R3cnZ4aklmb3lpTHNNa0J4ZTRJQ2di?=
+ =?utf-8?B?Q204UE5nd0FTNnZKeFNLRmpCQlJFQnlQUHJ2aFNId05nOTdkVEl1M2NIbG1T?=
+ =?utf-8?B?dWdRa3dFb2QzYi9PTzZOMzlKa1llazFrZ3NMeVRvWEhlcmpIQi9qSHJKSkU0?=
+ =?utf-8?B?T2pFZFRrd2c0cURhNllNamdLSVhpbnRpY1JCSVBwZGNoL2g5MnhSL3AxZjFi?=
+ =?utf-8?B?dm9OcjRiQjg0QUh5dXNiRzE4TCtJZnJNcDlCRUdTanQ1NFpmWDROQTgvbXhm?=
+ =?utf-8?B?RURWdDYrZjBoOGthRFNkektmUFZVbEI0N0U1bW85YjZpVHo0RVdaRXBuREpi?=
+ =?utf-8?B?QXozTFdEQVdlS3NvbEFVeHgyOU5MdVh5SWFPN2dhMHJOZ0twK1RYS0J5SUg0?=
+ =?utf-8?B?NlE4UXpHN3hiVWgrcDAwTHdNWU1TZzlDdnQ0elZBSjZjNGNUREJ4TnF0YVBH?=
+ =?utf-8?B?UlhaL3ZCNHBuY0wxRWhpWmV2blRCcjBnMkVEZzJib0x1K3ZCSzNvTUQ0REVR?=
+ =?utf-8?B?Zkh2Yk81amRWUW5MczJHdkJUZnI0NmsxRkFpaGZGam1LekxHWGlRb1FLUzJn?=
+ =?utf-8?B?TmlVSE9pMlZSVjNWSThsL3JRbVpKOEtlTm5ESSswYm94VTVPMmNyWTFWR2lO?=
+ =?utf-8?Q?U5UFRxkHvXlXuuwxbCc2YT93m?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68f36119-afa0-4ccf-84ff-08ddd6501530
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2025 07:49:19.9643
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mhIM04Fej9aT4MNReqs6o8p/Qso9Hs5fu+ORHnqSeDO89X5Z7I+2kGGrc7Fs2Vqy/7HYho6D+BnfTGF9Cr8Lcw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8561
 
-On Thu, Aug 07, 2025 at 08:01:35PM +0300, Laurent Pinchart wrote:
-> Hi Sakari,
+On 08/08/2025, Shengjiu Wang wrote:
+> On Fri, Aug 8, 2025 at 2:32 PM Liu Ying <victor.liu@nxp.com> wrote:
+>>
+>> On 08/07/2025, Shengjiu Wang wrote:
+>>> On Wed, Aug 6, 2025 at 2:52 PM Liu Ying <victor.liu@nxp.com> wrote:
+>>>>
+>>>> On 08/06/2025, Shengjiu Wang wrote:
+>>>>> On Tue, Aug 5, 2025 at 4:55 PM Liu Ying <victor.liu@nxp.com> wrote:
+>>>>>>
+>>>>>> On 08/04/2025, Shengjiu Wang wrote:
+>>>>
+>>>> [...]
+>>>>
+>>>>>>> +static int imx8mp_hdmi_pai_bind(struct device *dev, struct device *master, void *data)
+>>>>>>> +{
+>>>>>>> +     struct dw_hdmi_plat_data *plat_data = (struct dw_hdmi_plat_data *)data;
+>>>>>>> +     struct imx8mp_hdmi_pai *hdmi_pai;
+>>>>>>> +
+>>>>>>> +     hdmi_pai = dev_get_drvdata(dev);
+>>>>>>> +
+>>>>>>> +     plat_data->enable_audio = imx8mp_hdmi_pai_enable;
+>>>>>>> +     plat_data->disable_audio = imx8mp_hdmi_pai_disable;
+>>>>>>> +     plat_data->priv_audio = hdmi_pai;
+>>>>>>> +
+>>>>>>> +     return 0;
+>>>>>>> +}
+>>>>>>> +
+>>>>>>> +static void imx8mp_hdmi_pai_unbind(struct device *dev, struct device *master, void *data)
+>>>>>>> +{
+>>>>>>> +     struct dw_hdmi_plat_data *plat_data = (struct dw_hdmi_plat_data *)data;
+>>>>>>> +
+>>>>>>> +     plat_data->enable_audio = NULL;
+>>>>>>> +     plat_data->disable_audio = NULL;
+>>>>>>> +     plat_data->priv_audio = NULL;
+>>>>>>
+>>>>>> Do you really need to set these ptrs to NULL?
+>>>>>
+>>>>> yes.  below code in dw-hdmi.c use the pdata->enable_audio as condition.
+>>>>
+>>>> Note that this is all about tearing down components.
+>>>> If this is done properly as the below snippet of pseudo-code, then
+>>>> hdmi->{enable,disable}_audio() and pdata->{enable,disable}_audio() won't be
+>>>> called after audio device is removed by dw_hdmi_remove().  So, it's unnecessary
+>>>> to set these pointers to NULL here.
+>>>>
+>>>> imx8mp_dw_hdmi_unbind()
+>>>> {
+>>>>    dw_hdmi_remove(); // platform_device_unregister(hdmi->audio);
+>>>>    component_unbind_all(); //imx8mp_hdmi_pai_unbind()
+>>>> }
+>>>>
+>>>> BTW, I suggest the below snippet[1] to bind components.
+>>>>
+>>>> imx8mp_dw_hdmi_bind()
+>>>> {
+>>>>    component_bind_all(); // imx8mp_hdmi_pai_bind()
+>>>>                          //   set pdata->{enable,disable}_audio
+>>>>    dw_hdmi_probe(); // hdmi->audio = platform_device_register_full(&pdevinfo);
+>>>> }
+>>>
+>>> Looks like we should use dw_hdmi_bind() here to make unbind -> bind work.
+>>
+>> I don't get your idea here.
+>>
+>> What are you trying to make work?
+>> Why dw_hdmi_probe() can't be used?
+>> How does dw_hdmi_bind() help here?
 > 
-> On Thu, Aug 07, 2025 at 09:07:13AM +0000, Sakari Ailus wrote:
-> > On Sat, Aug 02, 2025 at 11:23:26AM +0200, Jacopo Mondi wrote:
-> > > From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > 
-> > > The V4L2_FL_USES_V4L2_FH flag is set by v4l2_fh_init(). It is not meant
-> > > to be set manually by drivers. Drop it from the ipu7-isys driver.
-> > > 
-> > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> > 
-> > Thanks, Jacopo!
-> > 
-> > Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> bind() is ok.  but unbind(),  then bind() there is an issue.
 > 
-> Can we get you review on patch 63/65 too (for the IPU6 driver) too ?
+>>
+>>> But can't get the encoder pointer.  the encoder pointer is from lcdif_drv.c,
+>>> the probe sequence of lcdif, pvi, dw_hdmi should be dw_hdmi first, then pvi,
+>>> then lcdif, because current implementation in lcdif and pvi driver.
+>>
+>> We use deferral probe to make sure the probe sequence is
+>> DW_HDMI -> PVI -> LCDIF.
+>>
+>> LCDIF driver would call devm_drm_of_get_bridge() to get the next bridge PVI
+>> and it defers probe if devm_drm_of_get_bridge() returns ERR_PTR(-EPROBE_DEFER).
+>> Same to PVI driver, it would call of_drm_find_bridge() to get the next bridge
+>> DW_HDMI and defers probe if needed.
+> 
+> right, probe is no problem,  but after probe,  if unbind pai, hdmi_tx,
+>  then bind
+> them again,  there is a problem,  because no one call the
+> drm_bridge_attach() again.
 
-Done.
+In my mind, this is a common issue as DRM bridges are not properly detached
+and attached again.
+For now, only drm_encoder_cleanup() calls drm_bridge_detach().
+
+Anyway, this issue is not introduced by this patch series, i.e. it's already
+there.
+
+> 
+>>
+>>>
+>>> Should the lcdif and pvi driver be modified to use component helper?
+>>
+>> Why should they use component helper?
+>>
+>> BTW, I've tried testing the snippets suggested by me on i.MX8MP EVK and
+>> the components bind successfully:
+> 
+> right, probe is no problem. but if try to unbind() then bind, there is issue.
+
+I don't think the DRM bridge detach/attach issue would be addressed by
+using component helper.
+
+> 
+> best regards
+> shengjiu Wang
+>>
+>> cat /sys/kernel/debug/device_component/32fd8000.hdmi
+>> aggregate_device name                                            status
+>> -----------------------------------------------------------------------
+>> 32fd8000.hdmi                                                     bound
+>>
+>> device name                                                      status
+>> -----------------------------------------------------------------------
+>> 32fc4800.audio-bridge                                             bound
+>>
+>>> This seems out of the scope of this patch set.
+>>>
+>>> Best regards
+>>> Shengjiu Wang
+>>
+>> [...]
+>>
+>> --
+>> Regards,
+>> Liu Ying
+
 
 -- 
-Sakari Ailus
+Regards,
+Liu Ying
