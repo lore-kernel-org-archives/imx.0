@@ -1,45 +1,49 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28581A7264
-	for <imx@lists.linux.dev>; Sun, 10 Aug 2025 01:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8491DB154;
+	Sun, 10 Aug 2025 01:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754789562; cv=none; b=VyWvEjK3heJC6LqRvsOHombyQotUL5B1M5CAbpTlnzDi4vefi4CBHDqsEv4xeVp8cb0Y8PpM5hOpmxlankTxbJRdujwE8+TsNkvM8dA/7I5/7Bm7OlJRMEh6wGaDCsH93AEdcWf7grHrvBOE0ScgBz7EQ4epWVfew0WkO1eyDzc=
+	t=1754789596; cv=none; b=KG7hZXHPlw3aL5aSNeFtmzBXOwbYRQyUiFZfrzbcDfH3Tx9bn5wZhyMhngMavzWjVQEiCse/DOyFyP17DW1ch8BR7EbGIqy69z/ho1OnfueKO2lATrjmzWsHFGSJhia9xMcsiqZlcZjQK2yJUCcFv8UovAkCCI224vJEw+fazZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754789562; c=relaxed/simple;
-	bh=+PbuaC8xIvQc2lZuS6NyqvYPmav84Z8vJv9xYpgkwv4=;
+	s=arc-20240116; t=1754789596; c=relaxed/simple;
+	bh=1dP0gqieA4IYv3wyTB37hTBt2kmaz/Nywv73C1Govuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l44fxPmFb5tDksqIiKnwy6RBYMW8mNFPoEzfd/mDYcBpjY3U6DIsgjzmwSCcGycyr8svdLenun/ZELm/mSgXOH4S0F8X2OGQJDQQxNgUDmgFltuQ385JsnT5gIqapkIj/Jjr6IkObXrdT08WHU7qDS11wmVJ79GGphV6GnWamss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=g0v/Fws3; arc=none smtp.client-ip=213.167.242.64
+	 MIME-Version; b=Q0qxuMG01RZCq7QhIBNfjG4OkkOQESbLDCllKgwbi057C+3kNGwphVTk6VBMwvH1OzZCx0UM+GQaga4rKys2dVannmbXE5gPunxYkdI98DJgDZMrL785Adpk59Y+2+2sKGu9zWh9LClTJhOTptJY/lazC4tIP2AKMXTx/dCCgCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=HKBHL1HW; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="g0v/Fws3"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="HKBHL1HW"
 Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 87ACE104D;
-	Sun, 10 Aug 2025 03:31:48 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 3FE7A18B9;
+	Sun, 10 Aug 2025 03:32:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1754789508;
-	bh=+PbuaC8xIvQc2lZuS6NyqvYPmav84Z8vJv9xYpgkwv4=;
+	s=mail; t=1754789542;
+	bh=1dP0gqieA4IYv3wyTB37hTBt2kmaz/Nywv73C1Govuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0v/Fws3rohFyfNqCRyDl5W620VC6eInsoYMhvIewceLd9CpZwf7rnsj7dLk7jGW5
-	 0kswRxAdKJEU673NR/v1cSelR2FQk5cXFsPQUQZxwy8bN1d3bhZMgrZenwieGSfpXU
-	 54auMP5Wiaw/Bf+PheMInPXn9+NgBAuaR5KNEEUw=
+	b=HKBHL1HWD/YEhYZu8p7OopczcbX43TGDosZXqCOgMF+0frPGcGh2nK/I2RJfec2UN
+	 Myk6WLlT1N7Dctir+psbryMdQrxh63VqyVSCLgUixkt0MCQ6v4Vk3zeY8KNgeqEzyg
+	 AF31CS9kcYRCygvmaOu/8dm7Bh8snEBkQLp15m5Y=
 From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 To: linux-media@vger.kernel.org
 Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
 	Hans Verkuil <hans@jjverkuil.nl>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
+	linux-staging@lists.linux.dev,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 47/76] media: imx-isi: Access v4l2_fh from file
-Date: Sun, 10 Aug 2025 04:30:29 +0300
-Message-ID: <20250810013100.29776-48-laurent.pinchart+renesas@ideasonboard.com>
+Subject: [PATCH v3 68/76] media: staging: imx: Access v4l2_fh from file
+Date: Sun, 10 Aug 2025 04:30:50 +0300
+Message-ID: <20250810013100.29776-69-laurent.pinchart+renesas@ideasonboard.com>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250810013100.29776-1-laurent.pinchart+renesas@ideasonboard.com>
 References: <20250810013100.29776-1-laurent.pinchart+renesas@ideasonboard.com>
@@ -67,74 +71,77 @@ Changes since v1:
 
 - Update file-to-ctx macro due to removal of fh-to-ctx macro
 ---
- .../media/platform/nxp/imx8-isi/imx8-isi-m2m.c  | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/staging/media/imx/imx-media-csc-scaler.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-index 31298307c672..5501214cc6c0 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-@@ -74,14 +74,9 @@ to_isi_m2m_buffer(struct vb2_v4l2_buffer *buf)
- 	return container_of(buf, struct mxc_isi_m2m_buffer, buf.vb);
- }
+diff --git a/drivers/staging/media/imx/imx-media-csc-scaler.c b/drivers/staging/media/imx/imx-media-csc-scaler.c
+index dc7f9a77cbe6..1869c5792ecb 100644
+--- a/drivers/staging/media/imx/imx-media-csc-scaler.c
++++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
+@@ -23,8 +23,6 @@
  
--static inline struct mxc_isi_m2m_ctx *to_isi_m2m_ctx(struct v4l2_fh *fh)
--{
--	return container_of(fh, struct mxc_isi_m2m_ctx, fh);
--}
+ #include "imx-media.h"
+ 
+-#define fh_to_ctx(__fh)	container_of(__fh, struct ipu_csc_scaler_ctx, fh)
 -
- static inline struct mxc_isi_m2m_ctx *file_to_isi_m2m_ctx(struct file *filp)
+ #define IMX_CSC_SCALER_NAME "imx-csc-scaler"
+ 
+ enum {
+@@ -68,7 +66,7 @@ struct ipu_csc_scaler_ctx {
+ 
+ static inline struct ipu_csc_scaler_ctx *file_to_ctx(struct file *filp)
  {
--	return to_isi_m2m_ctx(file_to_v4l2_fh(filp));
-+	return container_of(file_to_v4l2_fh(filp), struct mxc_isi_m2m_ctx, fh);
+-	return fh_to_ctx(file_to_v4l2_fh(filp));
++	return container_of(file_to_v4l2_fh(filp), struct ipu_csc_scaler_ctx, fh);
  }
  
- static inline struct mxc_isi_m2m_ctx_queue_data *
-@@ -432,7 +427,7 @@ static int mxc_isi_m2m_try_fmt_vid(struct file *file, void *fh,
- 	const enum mxc_isi_video_type type =
- 		f->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE ?
- 		MXC_ISI_VIDEO_M2M_OUT : MXC_ISI_VIDEO_M2M_CAP;
--	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
-+	struct mxc_isi_m2m_ctx *ctx = file_to_isi_m2m_ctx(file);
- 
- 	__mxc_isi_m2m_try_fmt_vid(ctx, &f->fmt.pix_mp, type);
- 
-@@ -442,7 +437,7 @@ static int mxc_isi_m2m_try_fmt_vid(struct file *file, void *fh,
- static int mxc_isi_m2m_g_fmt_vid(struct file *file, void *fh,
- 				 struct v4l2_format *f)
+ static struct ipu_csc_scaler_q_data *get_q_data(struct ipu_csc_scaler_ctx *ctx,
+@@ -184,7 +182,7 @@ static int ipu_csc_scaler_enum_fmt(struct file *file, void *fh,
+ static int ipu_csc_scaler_g_fmt(struct file *file, void *priv,
+ 				struct v4l2_format *f)
  {
--	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
-+	struct mxc_isi_m2m_ctx *ctx = file_to_isi_m2m_ctx(file);
- 	const struct mxc_isi_m2m_ctx_queue_data *qdata =
- 		mxc_isi_m2m_ctx_qdata(ctx, f->type);
+-	struct ipu_csc_scaler_ctx *ctx = fh_to_ctx(priv);
++	struct ipu_csc_scaler_ctx *ctx = file_to_ctx(file);
+ 	struct ipu_csc_scaler_q_data *q_data;
  
-@@ -457,7 +452,7 @@ static int mxc_isi_m2m_s_fmt_vid(struct file *file, void *fh,
- 	const enum mxc_isi_video_type type =
- 		f->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE ?
- 		MXC_ISI_VIDEO_M2M_OUT : MXC_ISI_VIDEO_M2M_CAP;
--	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
-+	struct mxc_isi_m2m_ctx *ctx = file_to_isi_m2m_ctx(file);
- 	struct v4l2_pix_format_mplane *pix = &f->fmt.pix_mp;
- 	const struct mxc_isi_format_info *info;
+ 	q_data = get_q_data(ctx, f->type);
+@@ -197,7 +195,7 @@ static int ipu_csc_scaler_g_fmt(struct file *file, void *priv,
+ static int ipu_csc_scaler_try_fmt(struct file *file, void *priv,
+ 				  struct v4l2_format *f)
+ {
+-	struct ipu_csc_scaler_ctx *ctx = fh_to_ctx(priv);
++	struct ipu_csc_scaler_ctx *ctx = file_to_ctx(file);
+ 	struct ipu_csc_scaler_q_data *q_data = get_q_data(ctx, f->type);
+ 	struct ipu_image test_in, test_out;
+ 	enum v4l2_field field;
+@@ -245,8 +243,8 @@ static int ipu_csc_scaler_try_fmt(struct file *file, void *priv,
+ static int ipu_csc_scaler_s_fmt(struct file *file, void *priv,
+ 				struct v4l2_format *f)
+ {
++	struct ipu_csc_scaler_ctx *ctx = file_to_ctx(file);
+ 	struct ipu_csc_scaler_q_data *q_data;
+-	struct ipu_csc_scaler_ctx *ctx = fh_to_ctx(priv);
  	struct vb2_queue *vq;
-@@ -489,7 +484,7 @@ static int mxc_isi_m2m_s_fmt_vid(struct file *file, void *fh,
- static int mxc_isi_m2m_streamon(struct file *file, void *fh,
- 				enum v4l2_buf_type type)
- {
--	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
-+	struct mxc_isi_m2m_ctx *ctx = file_to_isi_m2m_ctx(file);
- 	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
- 	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
- 	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
-@@ -577,7 +572,7 @@ static int mxc_isi_m2m_streamon(struct file *file, void *fh,
- static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
- 				 enum v4l2_buf_type type)
- {
--	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
-+	struct mxc_isi_m2m_ctx *ctx = file_to_isi_m2m_ctx(file);
- 	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
- 	struct mxc_isi_m2m *m2m = ctx->m2m;
+ 	int ret;
  
+@@ -301,7 +299,7 @@ static int ipu_csc_scaler_s_fmt(struct file *file, void *priv,
+ static int ipu_csc_scaler_g_selection(struct file *file, void *priv,
+ 				      struct v4l2_selection *s)
+ {
+-	struct ipu_csc_scaler_ctx *ctx = fh_to_ctx(priv);
++	struct ipu_csc_scaler_ctx *ctx = file_to_ctx(file);
+ 	struct ipu_csc_scaler_q_data *q_data;
+ 
+ 	switch (s->target) {
+@@ -339,7 +337,7 @@ static int ipu_csc_scaler_g_selection(struct file *file, void *priv,
+ static int ipu_csc_scaler_s_selection(struct file *file, void *priv,
+ 				      struct v4l2_selection *s)
+ {
+-	struct ipu_csc_scaler_ctx *ctx = fh_to_ctx(priv);
++	struct ipu_csc_scaler_ctx *ctx = file_to_ctx(file);
+ 	struct ipu_csc_scaler_q_data *q_data;
+ 
+ 	switch (s->target) {
 -- 
 Regards,
 
