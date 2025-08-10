@@ -1,52 +1,67 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8491DB154;
-	Sun, 10 Aug 2025 01:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA8814AD2D
+	for <imx@lists.linux.dev>; Sun, 10 Aug 2025 16:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754789596; cv=none; b=KG7hZXHPlw3aL5aSNeFtmzBXOwbYRQyUiFZfrzbcDfH3Tx9bn5wZhyMhngMavzWjVQEiCse/DOyFyP17DW1ch8BR7EbGIqy69z/ho1OnfueKO2lATrjmzWsHFGSJhia9xMcsiqZlcZjQK2yJUCcFv8UovAkCCI224vJEw+fazZY=
+	t=1754841845; cv=none; b=rS3R1e9YPyxvDwF8C4oQ/juHZAJFrBmAHIuiTaosAPjIMjKBN6FIHWRXZtAE4F2CEAnmCLSZ2KVVCZejoqoCesaZ68ixpoqEGziZB0O4NkVBW7Tn+scnDaIz7uxE7LHjBdktZlScbHve9DsBdMilojBdIcVK1VpF/yp/o3d4a0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754789596; c=relaxed/simple;
-	bh=1dP0gqieA4IYv3wyTB37hTBt2kmaz/Nywv73C1Govuc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0qxuMG01RZCq7QhIBNfjG4OkkOQESbLDCllKgwbi057C+3kNGwphVTk6VBMwvH1OzZCx0UM+GQaga4rKys2dVannmbXE5gPunxYkdI98DJgDZMrL785Adpk59Y+2+2sKGu9zWh9LClTJhOTptJY/lazC4tIP2AKMXTx/dCCgCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=HKBHL1HW; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1754841845; c=relaxed/simple;
+	bh=Xrs4WZwP3wbWjguXSwjEBFs5QZtQ2a4UDLCDDLpj49U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a8syHVw6oi1BvGy4u3cd2L7+MKu4PYOtrTmKDuyNE7TFyLxjQY1iQ2zC6DLNWVXU4gkpsSBc7iw+n1VdCImYFEk5RT/2OckZ0kcJdUMJQRKhT4BGgSc3t8U3KyTrIhdmOaYCWWiHi1oalzIvr9RFKQnqcTt03q0VIJk0PkHehls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=WeXbLkLy; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=KXalXkxz; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="HKBHL1HW"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 3FE7A18B9;
-	Sun, 10 Aug 2025 03:32:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1754789542;
-	bh=1dP0gqieA4IYv3wyTB37hTBt2kmaz/Nywv73C1Govuc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HKBHL1HWD/YEhYZu8p7OopczcbX43TGDosZXqCOgMF+0frPGcGh2nK/I2RJfec2UN
-	 Myk6WLlT1N7Dctir+psbryMdQrxh63VqyVSCLgUixkt0MCQ6v4Vk3zeY8KNgeqEzyg
-	 AF31CS9kcYRCygvmaOu/8dm7Bh8snEBkQLp15m5Y=
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-To: linux-media@vger.kernel.org
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Hans Verkuil <hans@jjverkuil.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="WeXbLkLy";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="KXalXkxz"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4c0MyL4698z9smZ;
+	Sun, 10 Aug 2025 18:03:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1754841834;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bFTUh9SwYeasiDREoxvaQj17XkkmaFIe8D9gtwB8r/M=;
+	b=WeXbLkLyIGJODrRBejRDsAyjLMr+GBrwkDlcYgwDBhBxBXAHaur34Gn3OIQPldSUW6tW5S
+	kHcLBqf2B9TBdXIc26A61qA7zm0nHCSJg+0CDAj/pmSv5Bmgo60Y+flm7k1mcvNfh/my6H
+	z/xtRhqNGoNJvlp0I3hBVyBO28WBJJ0Gxk4k55GjIqc5Rpf9Ffu9KRq20Itv2DM3Xaed8x
+	liqZdGLm5AupxOUoBEP0aabpDalBd+zzWsMStpgZPSreOF4BbEWXmkGY16fLwqNkjt+CnD
+	gmYRdrCMkJ9vUJCPPax/K0k2See8/OBlayZldr4FalglxANtBl9zypBOk/Q0Bw==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=KXalXkxz;
+	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
+From: Marek Vasut <marek.vasut@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1754841832;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bFTUh9SwYeasiDREoxvaQj17XkkmaFIe8D9gtwB8r/M=;
+	b=KXalXkxzZzQNZC863YsGVJFKRrgqTSMPP7CxMSZ4BG2T7Dsiws9tSG/tPXoAtodC0oJ2nc
+	gF9Ce3mO5BiZr5UC+Pt3PjmUVlQQaMt9uDdKxWpll7YMV1N8TfjNAukksQ6yvuqcHT3Bqd
+	gcB7EJdcIDNkWmzSYTRNmMw92/nXpDI4STR1mqsYEsPIu3FTtMJMkS/BOxu0iOPav5jgVy
+	ezN0wd9WXzoA9HYkuqKpq7v2l25VRFIzkTO0a9NvEAASZF7HluR+pWHDf/suPTztajSDuD
+	ZoOcV9MTcY0XVp78MkjIbym8Y+bwOMrTkWYSaWbs4war/0/qUkeiTvcYqvKBAA==
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marek.vasut@mailbox.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-staging@lists.linux.dev,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 68/76] media: staging: imx: Access v4l2_fh from file
-Date: Sun, 10 Aug 2025 04:30:50 +0300
-Message-ID: <20250810013100.29776-69-laurent.pinchart+renesas@ideasonboard.com>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20250810013100.29776-1-laurent.pinchart+renesas@ideasonboard.com>
-References: <20250810013100.29776-1-laurent.pinchart+renesas@ideasonboard.com>
+	kernel@dh-electronics.com
+Subject: [PATCH] arm64: dts: imx8mp: Fix missing microSD slot vqmmc on DH electronics i.MX8M Plus DHCOM
+Date: Sun, 10 Aug 2025 18:03:07 +0200
+Message-ID: <20250810160340.10042-1-marek.vasut@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,96 +69,45 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 113fc956646a692c002
+X-MBO-RS-META: bmbrtg1j8bosgd16iqjre398getbzgqs
+X-Rspamd-Queue-Id: 4c0MyL4698z9smZ
 
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Add missing microSD slot vqmmc-supply property, otherwise the kernel
+might shut down LDO5 regulator and that would power off the microSD
+card slot, possibly while it is in use. Add the property to make sure
+the kernel is aware of the LDO5 regulator which supplies the microSD
+slot and keeps the LDO5 enabled.
 
-The v4l2_fh associated with an open file handle is now guaranteed
-to be available in file->private_data, initialised by v4l2_fh_add().
-
-Access the v4l2_fh, and from there the driver-specific structure,
-from the file * in all ioctl handlers.
-
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Co-developed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Fixes: 8d6712695bc8 ("arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM and PDK2")
+Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
 ---
-Changes since v1:
-
-- Update file-to-ctx macro due to removal of fh-to-ctx macro
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: kernel@dh-electronics.com
+Cc: linux-arm-kernel@lists.infradead.org
 ---
- drivers/staging/media/imx/imx-media-csc-scaler.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/staging/media/imx/imx-media-csc-scaler.c b/drivers/staging/media/imx/imx-media-csc-scaler.c
-index dc7f9a77cbe6..1869c5792ecb 100644
---- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-+++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-@@ -23,8 +23,6 @@
- 
- #include "imx-media.h"
- 
--#define fh_to_ctx(__fh)	container_of(__fh, struct ipu_csc_scaler_ctx, fh)
--
- #define IMX_CSC_SCALER_NAME "imx-csc-scaler"
- 
- enum {
-@@ -68,7 +66,7 @@ struct ipu_csc_scaler_ctx {
- 
- static inline struct ipu_csc_scaler_ctx *file_to_ctx(struct file *filp)
- {
--	return fh_to_ctx(file_to_v4l2_fh(filp));
-+	return container_of(file_to_v4l2_fh(filp), struct ipu_csc_scaler_ctx, fh);
- }
- 
- static struct ipu_csc_scaler_q_data *get_q_data(struct ipu_csc_scaler_ctx *ctx,
-@@ -184,7 +182,7 @@ static int ipu_csc_scaler_enum_fmt(struct file *file, void *fh,
- static int ipu_csc_scaler_g_fmt(struct file *file, void *priv,
- 				struct v4l2_format *f)
- {
--	struct ipu_csc_scaler_ctx *ctx = fh_to_ctx(priv);
-+	struct ipu_csc_scaler_ctx *ctx = file_to_ctx(file);
- 	struct ipu_csc_scaler_q_data *q_data;
- 
- 	q_data = get_q_data(ctx, f->type);
-@@ -197,7 +195,7 @@ static int ipu_csc_scaler_g_fmt(struct file *file, void *priv,
- static int ipu_csc_scaler_try_fmt(struct file *file, void *priv,
- 				  struct v4l2_format *f)
- {
--	struct ipu_csc_scaler_ctx *ctx = fh_to_ctx(priv);
-+	struct ipu_csc_scaler_ctx *ctx = file_to_ctx(file);
- 	struct ipu_csc_scaler_q_data *q_data = get_q_data(ctx, f->type);
- 	struct ipu_image test_in, test_out;
- 	enum v4l2_field field;
-@@ -245,8 +243,8 @@ static int ipu_csc_scaler_try_fmt(struct file *file, void *priv,
- static int ipu_csc_scaler_s_fmt(struct file *file, void *priv,
- 				struct v4l2_format *f)
- {
-+	struct ipu_csc_scaler_ctx *ctx = file_to_ctx(file);
- 	struct ipu_csc_scaler_q_data *q_data;
--	struct ipu_csc_scaler_ctx *ctx = fh_to_ctx(priv);
- 	struct vb2_queue *vq;
- 	int ret;
- 
-@@ -301,7 +299,7 @@ static int ipu_csc_scaler_s_fmt(struct file *file, void *priv,
- static int ipu_csc_scaler_g_selection(struct file *file, void *priv,
- 				      struct v4l2_selection *s)
- {
--	struct ipu_csc_scaler_ctx *ctx = fh_to_ctx(priv);
-+	struct ipu_csc_scaler_ctx *ctx = file_to_ctx(file);
- 	struct ipu_csc_scaler_q_data *q_data;
- 
- 	switch (s->target) {
-@@ -339,7 +337,7 @@ static int ipu_csc_scaler_g_selection(struct file *file, void *priv,
- static int ipu_csc_scaler_s_selection(struct file *file, void *priv,
- 				      struct v4l2_selection *s)
- {
--	struct ipu_csc_scaler_ctx *ctx = fh_to_ctx(priv);
-+	struct ipu_csc_scaler_ctx *ctx = file_to_ctx(file);
- 	struct ipu_csc_scaler_q_data *q_data;
- 
- 	switch (s->target) {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
+index 7f754e0a5d693..68c2e0156a5c8 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
+@@ -609,6 +609,7 @@ &usdhc2 {
+ 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+ 	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
++	vqmmc-supply = <&ldo5>;
+ 	bus-width = <4>;
+ 	status = "okay";
+ };
 -- 
-Regards,
-
-Laurent Pinchart
+2.47.2
 
