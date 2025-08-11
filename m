@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0C72EAB80;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4CA2EACF4;
 	Mon, 11 Aug 2025 15:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754925513; cv=none; b=L6S6laDyWAM54GL89d6fh2hf8/9jC8mfalsdLrlxYikRO3aY9ZWmOFakOJls29irxf0cbbA9jP08rG+mQtikiNPMjwHcQwuJILPLkFbaICYXcq8klM61Smy1nV8p0E2zL1eohNHTKCR9M5GD30WPCl13QrvDJiyG9iXB+12ilIY=
+	t=1754925513; cv=none; b=N+esugATQjr63VKq+L/gpimSOq43TmufWGlxj/ZP0d0quIMAX96Rn0jjAL+6xqxcRo5h6TkjRu3Bi+HA56FUFbCS9t5JeQBiX+Opcle9YRsFowjnIrbsaLPYMsuMDswTWz4Z+s60vy9BGHq6PZggSqBjSt2cOT4xUQGei1U42D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1754925513; c=relaxed/simple;
-	bh=kyXwVH/uH12G7KnV8s+VJp2QA1FKPQ38QMmrM7aLhb0=;
+	bh=RNPN2SiCBEbc+AcF/cCn7c00+Qgz+KU2YQyyc+F0hh8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=c3tq3g5a2m1dH0v680JlhK8UJUM2QiAbFpWt9ld31uOeE2QFaTZC/iV8M1A3FbfsCyXEVzYzoszLNyN/yOgvblUJSvSEsty1rVeqXqpMmtFEAWGuWKXNa30P9v7CJUx8VTDbLkZkPwmfc5uKo/NJFq/j5yxXfNyEKq468ncnqIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHe8YByV; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Xauk1OOxIgOs73en6GuZa+vXKS21JQQ/pJp8use+76XhMwncNFLBcpRFxDZstRFTDBwZ4uuBSW55bmBhknLHe3dSqv7DJBeKFoy0/wQK3dHM2B8GXEs2GTyxIyAtAX0csDUs9p/7yICAeqsVkBKuv30wDZOI/+wqgN9d/qGAmWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t2hwY9sd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHe8YByV"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 699DAC4FEB4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t2hwY9sd"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A998FC32786;
 	Mon, 11 Aug 2025 15:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1754925511;
-	bh=kyXwVH/uH12G7KnV8s+VJp2QA1FKPQ38QMmrM7aLhb0=;
+	bh=RNPN2SiCBEbc+AcF/cCn7c00+Qgz+KU2YQyyc+F0hh8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=bHe8YByVTug7zFBSasY2LjdYzD6ctHsYLGlxPjMxLIAWKxclApNmZPOisbwfxuu/w
-	 zy88B4Vm/wgCT70vme4k9TRefnxZS7V0MQ/ZvAQD6Zx98veNDrh2LC4b3Bhy11sath
-	 xeMSB3BsKdqqNZQwsFbWjhDeJvRMbxagTR4busninzSqF6RrtM9jTvIOso6hGM3O2b
-	 lsTts1+v4G5tA8fymMD8dt1oX3oE69DXQ80zJsyS1S55VtVM6y6/CD7Nm4QwdZxcAW
-	 54FyWcLcHSHMMll4EzMNp2nun7/s0wM9tIsnjTqBI4NnmgYfWlR+IJyuGoZ6fYj6+o
-	 QYTZuDVRvoBqA==
+	b=t2hwY9sdUh0bm2cJzQus5a7pmmTtJ1p10X4Pqq7bErinFn93puCU3RhuSQpXD2VNM
+	 DnkH6sDiwtEZg22wt1xhACCaFQ62Pc1UmsR9IaV+toF64SMmorMGwW732gtr/gc/pw
+	 ifeOCgQ5KLWkEJhudQ26hBMLXqB0Kj7jgpcxi2F5lfPPkVF+O/9lhcc1tC7AJkLcqX
+	 v8jbZ7VNKkS+6lqWI7MxnHy9aWKmNrbu/7sQcqSVyYnIb9emYa9URvMUZuEoKbh2Y3
+	 cgWU5ZO60SSbJthgMpeKsFlEGR3JL43AVOJYC6+FQA5yuppJuAXHVVxaNXGEAm+SpV
+	 lKC9os4EPHuHQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 531F9CA0EC4;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96794CA0EC8;
 	Mon, 11 Aug 2025 15:18:31 +0000 (UTC)
 From: Brian Masney via B4 Relay <devnull+bmasney.redhat.com@kernel.org>
-Date: Mon, 11 Aug 2025 11:18:53 -0400
-Subject: [PATCH 061/114] clk: versaclock3: convert from round_rate() to
+Date: Mon, 11 Aug 2025 11:18:55 -0400
+Subject: [PATCH 063/114] clk: wm831x: convert from round_rate() to
  determine_rate()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250811-clk-for-stephen-round-rate-v1-61-b3bf97b038dc@redhat.com>
+Message-Id: <20250811-clk-for-stephen-round-rate-v1-63-b3bf97b038dc@redhat.com>
 References: <20250811-clk-for-stephen-round-rate-v1-0-b3bf97b038dc@redhat.com>
 In-Reply-To: <20250811-clk-for-stephen-round-rate-v1-0-b3bf97b038dc@redhat.com>
 To: Michael Turquette <mturquette@baylibre.com>, 
@@ -107,11 +107,11 @@ Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev, 
  Brian Masney <bmasney@redhat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754925498; l=5741;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754925498; l=1764;
  i=bmasney@redhat.com; s=20250528; h=from:subject:message-id;
- bh=x1gk5CWY++REB/H0mP/sVdcE9c/YjIWz/q2lVSc7ESA=;
- b=peRVxnYs7QDW/YHfBEOKOACtE5gDHZfYw8aUr3ja2EfQNK9f9nV/lM84YyA0fUXdVXbM8Xmpn
- +mM7A/gFsAFAtaY1WFRt8TWSirYPkMsSt9X+JJVvlKBeKoGu9FoBqmD
+ bh=i3mGQJOb3sx5V+uesOSQVIfVUYnnH5uB5xAx+9cEFco=;
+ b=aidwsVEIvZ+L+XneRcHzWbpXu94vZIAi7Yj2KRjHRri8gKtW0c35Ea1zgQaMMkInRQPd/tOVx
+ 9oCiKSbQHxUBeyDV1JzfSaCerGqesbxDPGJP4z48iYQ/SSe7+qsc6RO
 X-Developer-Key: i=bmasney@redhat.com; a=ed25519;
  pk=x20f2BQYftANnik+wvlm4HqLqAlNs/npfVcbhHPOK2U=
 X-Endpoint-Received: by B4 Relay for bmasney@redhat.com/20250528 with
@@ -127,167 +127,48 @@ on the cover letter of this series.
 
 Signed-off-by: Brian Masney <bmasney@redhat.com>
 ---
- drivers/clk/clk-versaclock3.c | 70 +++++++++++++++++++++++++------------------
- 1 file changed, 41 insertions(+), 29 deletions(-)
+ drivers/clk/clk-wm831x.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/clk-versaclock3.c b/drivers/clk/clk-versaclock3.c
-index 9fe27dace1117aa9e2f29be76744cdefceea3de3..1849863dbd673f3b133b9a295dc608ea43931de6 100644
---- a/drivers/clk/clk-versaclock3.c
-+++ b/drivers/clk/clk-versaclock3.c
-@@ -289,22 +289,25 @@ static unsigned long vc3_pfd_recalc_rate(struct clk_hw *hw,
- 	return rate;
+diff --git a/drivers/clk/clk-wm831x.c b/drivers/clk/clk-wm831x.c
+index 34e9d4d541e25c1adf766b48333f11c2d5b219fb..263e927138c2ead84d9f154d5e0f2d7b068f1c1f 100644
+--- a/drivers/clk/clk-wm831x.c
++++ b/drivers/clk/clk-wm831x.c
+@@ -133,18 +133,20 @@ static unsigned long wm831x_fll_recalc_rate(struct clk_hw *hw,
+ 	return 0;
  }
  
--static long vc3_pfd_round_rate(struct clk_hw *hw, unsigned long rate,
--			       unsigned long *parent_rate)
-+static int vc3_pfd_determine_rate(struct clk_hw *hw,
-+				  struct clk_rate_request *req)
+-static long wm831x_fll_round_rate(struct clk_hw *hw, unsigned long rate,
+-				  unsigned long *unused)
++static int wm831x_fll_determine_rate(struct clk_hw *hw,
++				     struct clk_rate_request *req)
  {
- 	struct vc3_hw_data *vc3 = container_of(hw, struct vc3_hw_data, hw);
- 	const struct vc3_pfd_data *pfd = vc3->data;
- 	unsigned long idiv;
+ 	int best = 0;
+ 	int i;
  
- 	/* PLL cannot operate with input clock above 50 MHz. */
--	if (rate > 50000000)
-+	if (req->rate > 50000000)
- 		return -EINVAL;
+ 	for (i = 0; i < ARRAY_SIZE(wm831x_fll_auto_rates); i++)
+-		if (abs(wm831x_fll_auto_rates[i] - rate) <
+-		    abs(wm831x_fll_auto_rates[best] - rate))
++		if (abs(wm831x_fll_auto_rates[i] - req->rate) <
++		    abs(wm831x_fll_auto_rates[best] - req->rate))
+ 			best = i;
  
- 	/* CLKIN within range of PLL input, feed directly to PLL. */
--	if (*parent_rate <= 50000000)
--		return *parent_rate;
-+	if (req->best_parent_rate <= 50000000) {
-+		req->rate = req->best_parent_rate;
- 
--	idiv = DIV_ROUND_UP(*parent_rate, rate);
-+		return 0;
-+	}
-+
-+	idiv = DIV_ROUND_UP(req->best_parent_rate, req->rate);
- 	if (pfd->num == VC3_PFD1 || pfd->num == VC3_PFD3) {
- 		if (idiv > 63)
- 			return -EINVAL;
-@@ -313,7 +316,9 @@ static long vc3_pfd_round_rate(struct clk_hw *hw, unsigned long rate,
- 			return -EINVAL;
- 	}
- 
--	return *parent_rate / idiv;
-+	req->rate = req->best_parent_rate / idiv;
+-	return wm831x_fll_auto_rates[best];
++	req->rate = wm831x_fll_auto_rates[best];
 +
 +	return 0;
  }
  
- static int vc3_pfd_set_rate(struct clk_hw *hw, unsigned long rate,
-@@ -354,7 +359,7 @@ static int vc3_pfd_set_rate(struct clk_hw *hw, unsigned long rate,
- 
- static const struct clk_ops vc3_pfd_ops = {
- 	.recalc_rate = vc3_pfd_recalc_rate,
--	.round_rate = vc3_pfd_round_rate,
-+	.determine_rate = vc3_pfd_determine_rate,
- 	.set_rate = vc3_pfd_set_rate,
- };
- 
-@@ -385,36 +390,38 @@ static unsigned long vc3_pll_recalc_rate(struct clk_hw *hw,
- 	return rate;
- }
- 
--static long vc3_pll_round_rate(struct clk_hw *hw, unsigned long rate,
--			       unsigned long *parent_rate)
-+static int vc3_pll_determine_rate(struct clk_hw *hw,
-+				  struct clk_rate_request *req)
- {
- 	struct vc3_hw_data *vc3 = container_of(hw, struct vc3_hw_data, hw);
- 	const struct vc3_pll_data *pll = vc3->data;
- 	u64 div_frc;
- 
--	if (rate < pll->vco.min)
--		rate = pll->vco.min;
--	if (rate > pll->vco.max)
--		rate = pll->vco.max;
-+	if (req->rate < pll->vco.min)
-+		req->rate = pll->vco.min;
-+	if (req->rate > pll->vco.max)
-+		req->rate = pll->vco.max;
- 
--	vc3->div_int = rate / *parent_rate;
-+	vc3->div_int = req->rate / req->best_parent_rate;
- 
- 	if (pll->num == VC3_PLL2) {
- 		if (vc3->div_int > 0x7ff)
--			rate = *parent_rate * 0x7ff;
-+			req->rate = req->best_parent_rate * 0x7ff;
- 
- 		/* Determine best fractional part, which is 16 bit wide */
--		div_frc = rate % *parent_rate;
-+		div_frc = req->rate % req->best_parent_rate;
- 		div_frc *= BIT(16) - 1;
- 
--		vc3->div_frc = min_t(u64, div64_ul(div_frc, *parent_rate), U16_MAX);
--		rate = (*parent_rate *
--			(vc3->div_int * VC3_2_POW_16 + vc3->div_frc) / VC3_2_POW_16);
-+		vc3->div_frc = min_t(u64,
-+				     div64_ul(div_frc, req->best_parent_rate),
-+				     U16_MAX);
-+		req->rate = (req->best_parent_rate *
-+			     (vc3->div_int * VC3_2_POW_16 + vc3->div_frc) / VC3_2_POW_16);
- 	} else {
--		rate = *parent_rate * vc3->div_int;
-+		req->rate = req->best_parent_rate * vc3->div_int;
- 	}
- 
--	return rate;
-+	return 0;
- }
- 
- static int vc3_pll_set_rate(struct clk_hw *hw, unsigned long rate,
-@@ -441,7 +448,7 @@ static int vc3_pll_set_rate(struct clk_hw *hw, unsigned long rate,
- 
- static const struct clk_ops vc3_pll_ops = {
- 	.recalc_rate = vc3_pll_recalc_rate,
--	.round_rate = vc3_pll_round_rate,
-+	.determine_rate = vc3_pll_determine_rate,
- 	.set_rate = vc3_pll_set_rate,
- };
- 
-@@ -498,8 +505,8 @@ static unsigned long vc3_div_recalc_rate(struct clk_hw *hw,
- 				   div_data->flags, div_data->width);
- }
- 
--static long vc3_div_round_rate(struct clk_hw *hw, unsigned long rate,
--			       unsigned long *parent_rate)
-+static int vc3_div_determine_rate(struct clk_hw *hw,
-+				  struct clk_rate_request *req)
- {
- 	struct vc3_hw_data *vc3 = container_of(hw, struct vc3_hw_data, hw);
- 	const struct vc3_div_data *div_data = vc3->data;
-@@ -511,11 +518,16 @@ static long vc3_div_round_rate(struct clk_hw *hw, unsigned long rate,
- 		bestdiv >>= div_data->shift;
- 		bestdiv &= VC3_DIV_MASK(div_data->width);
- 		bestdiv = vc3_get_div(div_data->table, bestdiv, div_data->flags);
--		return DIV_ROUND_UP(*parent_rate, bestdiv);
-+		req->rate = DIV_ROUND_UP(req->best_parent_rate, bestdiv);
-+
-+		return 0;
- 	}
- 
--	return divider_round_rate(hw, rate, parent_rate, div_data->table,
--				  div_data->width, div_data->flags);
-+	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
-+				       div_data->table,
-+				       div_data->width, div_data->flags);
-+
-+	return 0;
- }
- 
- static int vc3_div_set_rate(struct clk_hw *hw, unsigned long rate,
-@@ -534,7 +546,7 @@ static int vc3_div_set_rate(struct clk_hw *hw, unsigned long rate,
- 
- static const struct clk_ops vc3_div_ops = {
- 	.recalc_rate = vc3_div_recalc_rate,
--	.round_rate = vc3_div_round_rate,
-+	.determine_rate = vc3_div_determine_rate,
- 	.set_rate = vc3_div_set_rate,
- };
- 
+ static int wm831x_fll_set_rate(struct clk_hw *hw, unsigned long rate,
+@@ -214,7 +216,7 @@ static const struct clk_ops wm831x_fll_ops = {
+ 	.is_prepared = wm831x_fll_is_prepared,
+ 	.prepare = wm831x_fll_prepare,
+ 	.unprepare = wm831x_fll_unprepare,
+-	.round_rate = wm831x_fll_round_rate,
++	.determine_rate = wm831x_fll_determine_rate,
+ 	.recalc_rate = wm831x_fll_recalc_rate,
+ 	.set_rate = wm831x_fll_set_rate,
+ 	.get_parent = wm831x_fll_get_parent,
 
 -- 
 2.50.1
