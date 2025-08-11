@@ -1,109 +1,164 @@
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8042D027F
-	for <imx@lists.linux.dev>; Mon, 11 Aug 2025 06:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EDA20B7F9;
+	Mon, 11 Aug 2025 08:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754894706; cv=none; b=BNcmpoN8d3WL2kxCaq1i3kZ5cKDziKyXiQtWmN/Fuoc3SnO+7UC7xZtpwobhFGbTtnQkwFDxHfW0u/aFwNK1troYE0BhCNIjrMhpdMGOLDy1AihlkEiSyohgK8vljtAFFYS5UhaxDJXU0C124cofsKLtPvZKuVwDWJCdv3K73fg=
+	t=1754899260; cv=none; b=bXR6mb7d6CWIJ3+VQ1dFwCIGYUdKRFV3Hw0Pt1VjkD18f7QkdLwaaR5vWowQg9DHP6V7jsZhoB9bmiynvNxzXvQmSiaOdynu8J33TOQR9iEsl4joKD94qLqAa2JoPIZ1UO4stm61P/sMGBhHOTwdth2nhEzL3e7kV8nH3qDa3D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754894706; c=relaxed/simple;
-	bh=mD95dRVFmK4BbDr/sN8HqSFcSBgqlctasaYLRzzGoWg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=IXnxOkYvT5xJDeCONZYl1OgynjllPDV8EwdVl/IFFYQEgONEf5FMt3KF/YojazjI4Co89tjFjGV3MfGaaRfHuPLqWVCx9NUnzodqrl3RGHY3a7aP+4Q41d2rZGNT+YVMOIo8NAQVOxveKzN/sF6J1PWN2zeb+cqHxQcYQoyT1SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=iK/zGLLL; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
+	s=arc-20240116; t=1754899260; c=relaxed/simple;
+	bh=srkUTP+YUtpEUUTBY0f0QKZb5Nq7ktoTvVw8gPJrI4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q1NS7tiCT6ow5OXelFcyuVNwyGcoIIjWdvu7yECHFhStExnVr+3MYVerm/H3HHmtVOmhkfmHyJSrPCvmLhaAk/hrJJuBAkNgnGu8pdolNygJ2NdPhj1mr/7wRNVxhdpDaOWIrE5B2TQYR08TVz4xNIwixlLDtVZ8Pj6GtkXFQZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BST4RaTp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="iK/zGLLL"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 24117148003B;
-	Mon, 11 Aug 2025 08:38:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1754894340; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=EJcwko3c7uyCeYh/tGW6fF+83okM4Hcdm+WEAVIUDSw=;
-	b=iK/zGLLLcQTsPRVVPlSXi2vZprXSiexLaEk1zoq/cLARMbJaH7pt3Fo6l2dlWU4cVkf7xh
-	uD5OgMfZzNpYuW+EjxC4Y5XTs4AVkET+1g6uVem78JkYWjXg5lf0ejTZOvn7vxVWSYsOn6
-	RqcDERKnXYeNnSNIltHtIvxspfIXwU/2ae7Ce4ZA7sM91uWsTjLoVivPUF0nkSoX5smp4M
-	CMQHukpCDDjjSZsEYSDFufXThGL6QWy/VGXTIbS/5eePGG3PTfCTndQNNCxlCA0/9stdjP
-	rZ2bKEj04VpSCGOeMiM4CcJrIaPfGcF4ded9LSabspywR2zCCilvh/BRqgyx5A==
-From: Alexander Dahl <ada@thorsis.com>
-To: devicetree@vger.kernel.org
-Cc: Frank Li <Frank.li@nxp.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v3] arm64: dts: imx8dxl-ss-conn: Disable USB3 nodes
-Date: Mon, 11 Aug 2025 08:38:54 +0200
-Message-Id: <20250811063855.46431-1-ada@thorsis.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BST4RaTp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9DEC4CEED;
+	Mon, 11 Aug 2025 08:00:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754899259;
+	bh=srkUTP+YUtpEUUTBY0f0QKZb5Nq7ktoTvVw8gPJrI4w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BST4RaTpjHP8ItttfIowfKeh0pqkoeEBV4Vnoq4Oz8gDhVzuBRcgJBFGNzis6dgHl
+	 vCfir7NSUpdKq4mzd6cQSwrZGWqE5AaaYDDuHDgnNYOxNDwVXdfNAXTgwv9h4iRfsZ
+	 aekPgle3MI50jEWQDSwU5jkM9WbycrPYMz515EKHUhLn9+wTYlegpIHoo9DqA8uDd+
+	 QiyfZ9cYMweQqLL5ZnMOMM5yvg6bGVaqk3rN4NH/2Es9hBN4wQnEpEM+PMJokbOc65
+	 h3vt3mqHMpp/yt6iwv8cbimBerBEyTPQ4TIvSgeY3szdTCTr13VSuHS0eHmETKi0DW
+	 Z0OAUMX99h0Pw==
+Date: Mon, 11 Aug 2025 10:00:56 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Will Whang <will@willwhang.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: media: Add Sony IMX585 CMOS image
+ sensor
+Message-ID: <20250811-successful-military-dragon-d72486@kuoka>
+References: <20250810220921.14307-1-will@willwhang.com>
+ <20250810220921.14307-2-will@willwhang.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250810220921.14307-2-will@willwhang.com>
 
-The i.MX 8DualXLite/8SoloXLite has a different connectivity memory map
-than the generic i.MX8 has.  One conflicting resource is usb, where the
-imx8dxl has a second usb2 phy @5b110000, while the generic imx8 dtsi has
-one usb2 phy and one usb3 phy, and the usb3otg @5b110000.  When
-including both imx8dxl-ss-conn.dtsi and imx8-ss-conn.dtsi as done in
-imx8dxl.dtsi this leads to a duplicate unit-address warning.
+On Sun, Aug 10, 2025 at 11:09:18PM +0100, Will Whang wrote:
+> +description:
+> +  IMX585 sensor is a Sony CMOS sensor with 4K and FHD outputs.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - sony,imx585
+> +      - sony,imx585-mono
 
-The usb3otg node was introduced after the initial imx8dxl support with
-commit a8bd7f155126 ("arm64: dts: imx8qxp: add cadence usb3 support")
-and since then leads to warnings like this (when built with W=2):
+I don't understand this second compatible. Is this different hardware?
+Can you point me to "mono" datasheet?
 
-      DTC     arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb
-    …/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi:148.24-182.4: Warning (unique_unit_address): /bus@5b000000/usb@5b110000: duplicate unit-address (also used in node /bus@5b000000/usbphy@5b110000)
-      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi:41.23-50.4
-      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts:645.8-653.3
+Your description should explain this. Commit msg as well, instead of
+speaking about driver (in fact drop all driver related comments).
 
-Delete usb3 related nodes at dxl to fix above warning.
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  assigned-clocks: true
+> +  assigned-clock-parents: true
+> +  assigned-clock-rates: true
 
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
----
+Drop all three.
 
-Notes:
-    v3:
-    - reworded commit message (thrown out irrelevant parts)
-    - rebased on v6.17-rc1
-    
-    v2:
-    - reworded commit message (build on mainline with W=2)
-    - rebased on v6.16-rc3
-    - Link: https://lore.kernel.org/linux-devicetree/20250623075440.36660-1-ada@thorsis.com/
-    
-    v1:
-    - Link: https://lore.kernel.org/linux-devicetree/20250610060756.8212-1-ada@thorsis.com/
+> +
+> +  clocks:
+> +    description: Clock frequency 74.25MHz, 37.125MHz, 72MHz, 27MHz, 24MHz
+> +    maxItems: 1
+> +
+> +  vana-supply:
+> +    description: Analog power supply (3.3V)
+> +
+> +  vddl-supply:
+> +    description: Interface power supply (1.8V)
+> +
+> +  vdig-supply:
+> +    description: Digital power supply (1.1V)
+> +
+> +  reset-gpios:
+> +    description: Sensor reset (XCLR) GPIO
+> +    maxItems: 1
+> +
+> +  sony,sync-mode:
+> +    description: |
+> +      Select the synchronisation mode of the sensor
+> +        0 =E2=80=93 internal sync, leader (default)
+> +        1 =E2=80=93 internal sync, follower
+> +        2 =E2=80=93 external sync
+> +    $ref: /schemas/types.yaml#/definitions/uint8
+> +    enum: [ 0, 1, 2 ]
 
- arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+Previous comments not applied.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-index 9b114bed084b..a66ba6d0a8c0 100644
---- a/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-@@ -5,6 +5,8 @@
- 
- /delete-node/ &enet1_lpcg;
- /delete-node/ &fec2;
-+/delete-node/ &usbotg3;
-+/delete-node/ &usb3_phy;
- 
- / {
- 	conn_enet0_root_clk: clock-conn-enet0-root {
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/$defs/port-base
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      endpoint:
+> +        $ref: /schemas/media/video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          data-lanes:
+> +            oneOf:
+> +              - items:
+> +                  - const: 1
+> +                  - const: 2
+> +              - items:
+> +                  - const: 1
+> +                  - const: 2
+> +                  - const: 3
+> +                  - const: 4
+> +
+> +          link-frequencies: true
 
-base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
--- 
-2.39.5
+Drop
+
+> +
+> +        required:
+> +          - data-lanes
+> +          - link-frequencies
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - port
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        imx585@1a {
+
+Nothing improved.
+
+You replied that you applied comment, but send the same.
+
+
+Best regards,
+Krzysztof
 
