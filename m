@@ -1,73 +1,73 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A5B28CF6F
-	for <imx@lists.linux.dev>; Mon, 11 Aug 2025 10:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AB628D83E
+	for <imx@lists.linux.dev>; Mon, 11 Aug 2025 10:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754909817; cv=none; b=TvZ4mPiuZKx1DrSff/yWoSCGqnbxxRIr/Ggk8Sx84wTgay54B2D6s50FMdN885yreIF/62Ougur4cmnIc08n/L9i9cRoeQkpo+vRWEengYsvlG1NK5BEYPKz3qnqF1+NxbarxfjOoJVBnu4GfC+DyjyNyXSEWObcPU3N6JkYRvQ=
+	t=1754909819; cv=none; b=SiAGD/Wuh3rX6VjrfPKbBo7SRgGv7DLMorJuMwgJ++G/tN0gDyxOf1ZqQ/TYGrx+Rb58XqNsomU32RGWf7xjU+EePg9BSvZf5OEY69UGIxvBALGSRMNVuEhKGON5ATXr2i4D85W6MrcdJW2m6VRvLFzxQvXfCoyjJf+46q6E4m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754909817; c=relaxed/simple;
-	bh=4SmOn45QQwwyMezbBb5tx+ffOCKNsfDDe6H8Sa9QRwg=;
+	s=arc-20240116; t=1754909819; c=relaxed/simple;
+	bh=y0KLkFzoWiBCsjyKHVyFf5yBXdH+nrgv9bMtrhIbLXo=;
 	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
-	 To:Cc:Content-Type; b=Ic3wUeXB4cEhf+6/E4CXV0KHou2Vc7+M0W04AIRId1SludhfRfyGYkCC/mSknD/3VAqRdAucW2/hJ9ItWad27EB2mb+SzpO4j0avE/W74riirWDpgLH0tOSMJZ2CscpZU0n7Uu8y9t2Ggr+cMXjuVXvNnmJjHQu02B5HvFV/hug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZmKz3ngK; arc=none smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=Ubdu3Q2BJ1eDH7USijbPc7nTi5uz+/zB7rjtiHu9875pTE9fHDf1gByoOigkcaF3/gJpHA8ZYbdrV3BjnJpivo63BZvkAKC8/2vBJf4Wf3VeTpROkg3o/Y/WMb8jMJ6zg+NtYU6B8PfBJUZg16vne9W/OrgA4OA4VS6u5iXlY7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eUMN4dSQ; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZmKz3ngK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eUMN4dSQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754909815;
+	s=mimecast20190719; t=1754909817;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=t+Rztee25JuVOb3qnfGrbYzil++DqREMLNxo1mFDVeU=;
-	b=ZmKz3ngKEg085dC3N9H8JghM1nP36OE5KfMbtmfqSgrdaaB5LpYJk5odYroEKPl3tQoNWc
-	M9PeWGFglU7zJE6QqV/8rRo2jpsOHWxBPSLEIpStNCLAb6tu5U+b8Uja+ls4hzYjgDLHm6
-	4H6nFHaVG0mJKNCaUFW6Z8niikKdrAw=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=CR+LHOxQNJH4mrdkRrblEPU2A6Ou6dlR4qZMmeyZ4e8=;
+	b=eUMN4dSQ3le9FS/Y+6Y244khcoOhLYX3ErDME7G3+JqrItrM3btxiZa4VxtdirKP6n+uVz
+	bKdOfahB50Z39mmUTDcCmij99rrkoz/YQHYs97rsBTh7lYgC0fX7KFzWbQTg/8Dqn5Y990
+	K+ndaUng1xI4r+jRbtzKOn34Udo47z8=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-RdLdxSLeMfKd4KY3NACBHA-1; Mon, 11 Aug 2025 06:56:52 -0400
-X-MC-Unique: RdLdxSLeMfKd4KY3NACBHA-1
-X-Mimecast-MFC-AGG-ID: RdLdxSLeMfKd4KY3NACBHA_1754909812
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7e7ffe84278so885973185a.2
-        for <imx@lists.linux.dev>; Mon, 11 Aug 2025 03:56:52 -0700 (PDT)
+ us-mta-207-1rLbW9jZMVq9qD-8JihuEw-1; Mon, 11 Aug 2025 06:56:56 -0400
+X-MC-Unique: 1rLbW9jZMVq9qD-8JihuEw-1
+X-Mimecast-MFC-AGG-ID: 1rLbW9jZMVq9qD-8JihuEw_1754909815
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7e7f74baf26so993006585a.1
+        for <imx@lists.linux.dev>; Mon, 11 Aug 2025 03:56:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754909812; x=1755514612;
+        d=1e100.net; s=20230601; t=1754909815; x=1755514615;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=t+Rztee25JuVOb3qnfGrbYzil++DqREMLNxo1mFDVeU=;
-        b=fm32w25XnMs4F3OvT/nChT3wsz2dWMXTE/EoKNA04DGrzNtt2PXFkZq+Ewprh/knnn
-         oyNS6zrD1lcsArVCYpf8A/v4ygMQ7gll9zoO31mopQKx5Bmnvxa0Cwi8ddMP40FFexZk
-         bUTGUw3tnydd+El+pIGZmWK036IIfTxyhWvvHY3XGANHc6yBa2sIHZXW8OUghYvgxkrA
-         /1usasuwiowndykhAioVCOSrAxKugEjju9DfzPL1VxKXeeyc0ojttRuNMZ8h+EycbS1X
-         POPTpkfB9Xfdl84oh2pCP0eZE9GWe+n9CutxHTSma1ykluaDTbStQly2Uf5kko32pLkz
-         zFKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVFKIYsHwSJtKkuCT6EfwGNTQ45qvltfEwc3XIpUtcoWPUx24DH/A0hyiSr7+VvkOX0Wwo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxmA+ajswx2thRlV24p2LoMlK+jLW0vNztFOcFOhUwsdbjJokv6
-	D46dlHgyWSq9ajvln/xAS59Ox9H3f6otLqWovRaF1xFYS1Ig4wJ4KHzGPyiiTRew+SlEh76cM9U
-	kq56O3E9UhiGJFhNK0OmP9NCwM5f7wenXA96DFbp6kRaCf5dSu/ii/g==
-X-Gm-Gg: ASbGnctQB0UYJuzVIjm+09OqqN5rQYG4e0DRU4WpDx58ITE+Xp8jW+Elld5g9Hak6vF
-	JV2Rms1V+fEcfjk3BpxsfqA6CKsDKuafBB48WAbA0iQ0XlGDJGm7zuJ5rXwijiaE0rkM/AdwhzH
-	rvQ7Cu/vpR+8gjvmZAATmgXQzNrQyOLormgF/M7I64FPjU3IecnuTlWSwC4dK2B7IzWcvmCJML1
-	8mJjvJWTfeaCdTQV6naDbol1RkgSRz5HwEKJRvcLTU0S5fCU2tN59qyh9jEq3IwBSv4iIjRRfFL
-	z71P9kX40GdR8KNy8wfkbY91EOiDtU2hP699bzHwSalFpZ2LulmdqEmZhLFfD+X8LWBFfHdqeyI
-	8Hvc=
-X-Received: by 2002:a05:620a:c50:b0:7e8:1b64:2187 with SMTP id af79cd13be357-7e82c75f958mr1792739385a.33.1754909811722;
-        Mon, 11 Aug 2025 03:56:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEK2Etk94d7jqWBuBTsPUBpC0ORVIn7oE21Xh8O9EOQgSk7vq5RIMLYWuxIl1Nwz+nt1Y38MA==
-X-Received: by 2002:a05:620a:c50:b0:7e8:1b64:2187 with SMTP id af79cd13be357-7e82c75f958mr1792735585a.33.1754909811152;
-        Mon, 11 Aug 2025 03:56:51 -0700 (PDT)
+        bh=CR+LHOxQNJH4mrdkRrblEPU2A6Ou6dlR4qZMmeyZ4e8=;
+        b=xQYG56TKIIXbKkquM4spemPUzuRRdYxddbfpyj0eQIDebMXMU5TqGFfVb4zIZDhXI8
+         LOuIglp+j40dPYg/SZMeebjTParjLOCcj7DqlQDjxRK72Kl79UQVo+5FuT26oAPwk0oD
+         i9GsyAmB+T7OnjKM3F7DZ8PTXN9xqkDbRj69d7IjQsk1pRZPKW1kkxTsaviw1l/BbXWQ
+         uWEIQoxTajPMnQwX0N2lwWNHVnP7D+4NHpsWSGZ0fS5iHCNiMaKP/qEb34W3ADyE0D4m
+         /nhS7tM8Et5S+Oq6x4wNy9MoKGIukiZlwFLZqdG82DvH+wRYsWm4NrxdEocEuZsh/2aS
+         QI+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVb2NWf77CEZlwfp23rsjf+1ahvGtblkLib2/HDLSYpIFQATWJKhRq3ki4Mg5+Hiq1NvaI=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzr81yueZUfXG6gozol1izjGv4h/9YPL3dNNdbaX8aAprX1QRd1
+	Qbw2egOopGlV6LZ0hgi7JIkb8QJ6ET8hMLseCJklC2xf/ZGiciMhMhu/0ytNqjD1oOeUhDSPib2
+	kLfKRzBVjfURIty84MtlW2ae40/XHStbgQ+mYpcmpVxmeJ44/WLtQ4w==
+X-Gm-Gg: ASbGncsftv7so1RwGodXX2He2Z+m73erEB7jABu3QmYv+MGlTrsBRt4HB7KR6fYaHsq
+	D+NLnxovSjdOBz2eleyjB4NkXDb98g9WprpirbQerDMIJU0iNhk8TWLnDUWyJfsgog2ZYNlUIo/
+	L3F7uhgRuCX+Odzbi7jl35GmG/qYRCpMbW09IjoaDZcm73bfLpwm8WIbpilKcc0dBJjKAjInJca
+	pvbiS6ONIXhZlkmdGw0RfAIvPi6L1CIKD87j3es8LPL/TukBSP51kIq5jh7FQywRc7XSLvQoa+o
+	QbepS1JavNF2vcRTGbmeUVnjzp6HdQuy2WibRWYEyVYdz61WAD76AN5k34WX9S8FwIcApY7KUzm
+	Si0w=
+X-Received: by 2002:a05:620a:1996:b0:7e8:54f7:67cd with SMTP id af79cd13be357-7e854f76862mr91487785a.50.1754909815370;
+        Mon, 11 Aug 2025 03:56:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFSii5P15b+af3L4E7F/cQGCM1Xz8KwmyfhCdGkZGKODW+eFh6Bky1dDzTK+GfwnJZiiMZJQQ==
+X-Received: by 2002:a05:620a:1996:b0:7e8:54f7:67cd with SMTP id af79cd13be357-7e854f76862mr91484185a.50.1754909814934;
+        Mon, 11 Aug 2025 03:56:54 -0700 (PDT)
 Received: from [192.168.1.15] (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e698de2df7sm1273446485a.80.2025.08.11.03.56.48
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e698de2df7sm1273446485a.80.2025.08.11.03.56.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Aug 2025 03:56:50 -0700 (PDT)
+        Mon, 11 Aug 2025 03:56:53 -0700 (PDT)
 From: Brian Masney <bmasney@redhat.com>
-Date: Mon, 11 Aug 2025 06:56:12 -0400
-Subject: [PATCH v2 8/9] drm/sun4i/sun4i_hdmi_ddc_clk: convert from
+Date: Mon, 11 Aug 2025 06:56:13 -0400
+Subject: [PATCH v2 9/9] drm/sun4i/sun4i_tcon_dclk: convert from
  round_rate() to determine_rate()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -75,7 +75,7 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <20250811-drm-clk-round-rate-v2-8-4a91ccf239cf@redhat.com>
+Message-Id: <20250811-drm-clk-round-rate-v2-9-4a91ccf239cf@redhat.com>
 References: <20250811-drm-clk-round-rate-v2-0-4a91ccf239cf@redhat.com>
 In-Reply-To: <20250811-drm-clk-round-rate-v2-0-4a91ccf239cf@redhat.com>
 To: Philipp Zabel <p.zabel@pengutronix.de>, 
@@ -104,15 +104,15 @@ Cc: linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
  freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
  linux-sunxi@lists.linux.dev, Brian Masney <bmasney@redhat.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754909781; l=1693;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754909781; l=2307;
  i=bmasney@redhat.com; s=20250528; h=from:subject:message-id;
- bh=4SmOn45QQwwyMezbBb5tx+ffOCKNsfDDe6H8Sa9QRwg=;
- b=D6lQv4uU9BbCtmlsDXvXPLa8dR0h0DlOWWckbVaEkFndxlEt+IyMNkfDuSVR8NgDYOThGx2MA
- 72BwKh/6cLNDsrNiAlNie395a35C4+/kjwVpt/wftlDiaqzAFDkxkOV
+ bh=y0KLkFzoWiBCsjyKHVyFf5yBXdH+nrgv9bMtrhIbLXo=;
+ b=j1ZnE8gcsk3YjO3zCEvUNiC5B3rrw/rsR6rCeLo5Q9BxZp8jvK69xEFMszvH1iDCwux2pSDHd
+ eRkR0peMpaDCxDNa8Bi3chrL3Nda3ZZTmewCk0Eb5cefUz9pD7/Qw2Q
 X-Developer-Key: i=bmasney@redhat.com; a=ed25519;
  pk=x20f2BQYftANnik+wvlm4HqLqAlNs/npfVcbhHPOK2U=
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: otjak0aEi1rKnUItCa8BZicp4jDwlQN6Tm2uk774umU_1754909812
+X-Mimecast-MFC-PROC-ID: LOSkYEnFv8WVKVaOt6e-LUq-PdUYLUKj1IUBAvw4cRY_1754909815
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -124,42 +124,66 @@ on the cover letter of this series.
 Acked-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Brian Masney <bmasney@redhat.com>
 ---
- drivers/gpu/drm/sun4i/sun4i_hdmi_ddc_clk.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/sun4i/sun4i_tcon_dclk.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/sun4i/sun4i_hdmi_ddc_clk.c b/drivers/gpu/drm/sun4i/sun4i_hdmi_ddc_clk.c
-index 12430b9d4e930f7e7b0536a5cabdf788ba182176..b1beadb9bb59f8fffd23fd5f1a175d7385cd5e06 100644
---- a/drivers/gpu/drm/sun4i/sun4i_hdmi_ddc_clk.c
-+++ b/drivers/gpu/drm/sun4i/sun4i_hdmi_ddc_clk.c
-@@ -59,13 +59,15 @@ static unsigned long sun4i_ddc_calc_divider(unsigned long rate,
- 	return best_rate;
+diff --git a/drivers/gpu/drm/sun4i/sun4i_tcon_dclk.c b/drivers/gpu/drm/sun4i/sun4i_tcon_dclk.c
+index 03d7de1911cd654f395ea85ad914588c4351f391..4afb12bd5281f0d1720cfe2c8f79b80d97244ef2 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_tcon_dclk.c
++++ b/drivers/gpu/drm/sun4i/sun4i_tcon_dclk.c
+@@ -67,8 +67,8 @@ static unsigned long sun4i_dclk_recalc_rate(struct clk_hw *hw,
+ 	return parent_rate / val;
  }
  
--static long sun4i_ddc_round_rate(struct clk_hw *hw, unsigned long rate,
--				 unsigned long *prate)
-+static int sun4i_ddc_determine_rate(struct clk_hw *hw,
-+				    struct clk_rate_request *req)
+-static long sun4i_dclk_round_rate(struct clk_hw *hw, unsigned long rate,
+-				  unsigned long *parent_rate)
++static int sun4i_dclk_determine_rate(struct clk_hw *hw,
++				     struct clk_rate_request *req)
  {
- 	struct sun4i_ddc *ddc = hw_to_ddc(hw);
+ 	struct sun4i_dclk *dclk = hw_to_dclk(hw);
+ 	struct sun4i_tcon *tcon = dclk->tcon;
+@@ -77,7 +77,7 @@ static long sun4i_dclk_round_rate(struct clk_hw *hw, unsigned long rate,
+ 	int i;
  
--	return sun4i_ddc_calc_divider(rate, *prate, ddc->pre_div,
--				      ddc->m_offset, NULL, NULL);
-+	req->rate = sun4i_ddc_calc_divider(req->rate, req->best_parent_rate,
-+					   ddc->pre_div, ddc->m_offset, NULL, NULL);
+ 	for (i = tcon->dclk_min_div; i <= tcon->dclk_max_div; i++) {
+-		u64 ideal = (u64)rate * i;
++		u64 ideal = (u64)req->rate * i;
+ 		unsigned long rounded;
+ 
+ 		/*
+@@ -99,17 +99,19 @@ static long sun4i_dclk_round_rate(struct clk_hw *hw, unsigned long rate,
+ 			goto out;
+ 		}
+ 
+-		if (abs(rate - rounded / i) <
+-		    abs(rate - best_parent / best_div)) {
++		if (abs(req->rate - rounded / i) <
++		    abs(req->rate - best_parent / best_div)) {
+ 			best_parent = rounded;
+ 			best_div = i;
+ 		}
+ 	}
+ 
+ out:
+-	*parent_rate = best_parent;
++	req->best_parent_rate = best_parent;
+ 
+-	return best_parent / best_div;
++	req->rate = best_parent / best_div;
 +
 +	return 0;
  }
  
- static unsigned long sun4i_ddc_recalc_rate(struct clk_hw *hw,
-@@ -101,7 +103,7 @@ static int sun4i_ddc_set_rate(struct clk_hw *hw, unsigned long rate,
+ static int sun4i_dclk_set_rate(struct clk_hw *hw, unsigned long rate,
+@@ -155,7 +157,7 @@ static const struct clk_ops sun4i_dclk_ops = {
+ 	.is_enabled	= sun4i_dclk_is_enabled,
  
- static const struct clk_ops sun4i_ddc_ops = {
- 	.recalc_rate	= sun4i_ddc_recalc_rate,
--	.round_rate	= sun4i_ddc_round_rate,
-+	.determine_rate = sun4i_ddc_determine_rate,
- 	.set_rate	= sun4i_ddc_set_rate,
- };
+ 	.recalc_rate	= sun4i_dclk_recalc_rate,
+-	.round_rate	= sun4i_dclk_round_rate,
++	.determine_rate = sun4i_dclk_determine_rate,
+ 	.set_rate	= sun4i_dclk_set_rate,
  
+ 	.get_phase	= sun4i_dclk_get_phase,
 
 -- 
 2.50.1
