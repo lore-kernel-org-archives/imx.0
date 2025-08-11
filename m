@@ -1,220 +1,291 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010008.outbound.protection.outlook.com [52.101.84.8])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE31221739
-	for <imx@lists.linux.dev>; Mon, 11 Aug 2025 10:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754906942; cv=fail; b=Mi0Ey/Hl2lePedqZ904E6vwyjlNCAod+jdgPO3Cp2dQ09LKo/DS+3QatUITtutfRWo7lahe/f2xZH+WE9wsmJ/cqmL/HbOZmUNo9Jpc/XocoabTNNNpeu6Olp33ED5iLGrgR8/IRTyy/jt7VKm2zR434WdIUv0N1JlxsEt4MR1Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754906942; c=relaxed/simple;
-	bh=VjkAfocmxF+5x8NF9FPX+yKjap7V0MhftEzrh0gshOM=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=TycsobXyd3hWsCiZNyelLB8OTXmTU38l+BIEOumEA4JZJtB4CU3wg23L/AIyIysQHR8axV8ttwh4ajUl3vAtX18pi32mbIbdT3aHlUEQl0hdCMy9y2u+cfYY7CJLgvTJdt/8ZTht2lR5CR4mr58ZPr6nd3Ar+mLOuphIUbsz7No=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=E7mcMMUf; arc=fail smtp.client-ip=52.101.84.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F06270EBF
+	for <imx@lists.linux.dev>; Mon, 11 Aug 2025 10:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754909791; cv=none; b=SecBwqsmZGd2NJSkg6MhTel+dMaILgZTAOn5vbXC8thL+8hpR4dc5aHUc1CDKkfxGpcNNu8rZ6TFRzuEgY25A6QQyZzJnn/9QaaUn+65erKiNAmRrThTH6WIiMa6Vja66+xfwDZas2YRsVPHQiSdjzrqPFGP4dPNMfFr81BGqLg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754909791; c=relaxed/simple;
+	bh=PIea/i4Y2q/6salydRYDw/qDzf1o1hZNE4V2kDbPHLM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:To:Cc:Content-Type; b=Rz6HHe8ameydrJUycUVwkWXbOxcoyFb8b7WRcsu4AcNYrFBQPe7bTta6inj9/GZT3d1THftBiZAmx6m6olMmRbrBF0V5YCW59o27e7POxlwlBJwQ9tBKLZ0MZCqBeUb8grxwgER9hGoOceDk29ANDVbNiC0CTBJShI9yMDoSX9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mu0MgDYK; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="E7mcMMUf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S1bGKawdmQYm+PS+PlvzU8QmAod+Y5JEPl8uxB3aThKy/xXc0PLfz4UfTyomlUiw23V/E7LHmF/sG7VZQJmYly+bCeFfbxTx/+H6nOvF/7vlx86cSc4D5Mal/JuzteBWtIUGnfYW6KHPskNEzjl4rdLkPAsc/sNYjmq5FmaHF8RJWnfjD+gf2jc1kOf02pKfNvoeknIYqOs7uGFCsKIa/tVjv+i0AuLgGc59mxX0B0Dx+mgp5TDEMZe1WzxoK4cmRqk0TbFJE/5eknxOJp9kINEDHxe0w9M+1ZG+HSJvMJKYapi5f7+Aa7m0rk46iBiKb917JPB0mgiuLUF6l3RVcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rMexpinF+AUpWDeEYK+I1r3+//yR3GPo8ae4MbP/9mc=;
- b=Wlo+MiliNsXN+yl5Zw2ag1RGiZXnUiDJPYswYNSgtEyNW6Rqrwdlwh63iGm1elQ/3Wep+uaKS0/2baxlf0wlf5UIBXbJC+vtkFYqWMyeqFHCdWSjzzAo42mG06j6dIs/2fqWsihszTEy0dlGUjg6rIxPE1IcTvOdXvcuRzEQWm4seJSYwPyc0wwLS8TGxX+bqOTcMKSM1e+PcI7RZup87ClttWQfNl8oIWQcgyT2ZWzAT/ufImBNUnl54fYyUnVdHScsGh0fSsDwlcgs0M8oREhaa94g4wFz0iS8Li5o5YmSasCNH1k1dEc7ZXtqY4ooFIYbBf3mPMrHMXrAcfWzvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rMexpinF+AUpWDeEYK+I1r3+//yR3GPo8ae4MbP/9mc=;
- b=E7mcMMUf/JiWY+EcU28pTXIksz5hjvw6E6UMfH+MNS9LgjJkGp41mQm2Ku2DQbCI9X2lEnOp4kYLEm5m2U2lmV3LiLUxfR4JEKN5eD/3vWKoV/tIVG52apqLOavoh8MMu2ecgIwhO7U2Ip5MO2jYcXG4EKHVtjTnkQ5A2h+X88xlU8++cW/bCPRu2oxnRiCrxtIkoM1YHBq2H8yQhAoBdCW8gEVgDNOLAi/uh5GU4kl1SwVs51OEjyPXAmEPYwVk7CT4gVSRhFMqgzDcBeuH9G7eCP0fAgy8rlHvEgENvBgBAEd3Lfj9r9MeK438O+jHxXg06fnNN6ujHJ3o62pvxw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by PR3PR04MB7388.eurprd04.prod.outlook.com (2603:10a6:102:84::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Mon, 11 Aug
- 2025 10:08:55 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%4]) with mapi id 15.20.9031.011; Mon, 11 Aug 2025
- 10:08:55 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: peter.chen@kernel.org,
-	gregkh@linuxfoundation.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-usb@vger.kernel.org,
-	imx@lists.linux.dev,
-	jun.li@nxp.com
-Subject: [PATCH] usb: chipidea: imx: improve usbmisc_imx7d_pullup()
-Date: Mon, 11 Aug 2025 18:08:33 +0800
-Message-Id: <20250811100833.862876-1-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR04CA0002.apcprd04.prod.outlook.com
- (2603:1096:4:197::17) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mu0MgDYK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754909787;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=cXP3JhYEHDsI5xw9s9ngejjJCnQI06FB4xWiEKgLmT8=;
+	b=Mu0MgDYK06RXoLC6OnDnAEg2aN4pQaxSFpOlnB1L/TcvqCHiVK9kseL+UjtyVn1TN8xFsG
+	jAA+Fqk1jWK+3u1rTuatATY1LWS3tz6agyDLeXjTK7H5ja6dM2LHl65mqUXDs1ZWr1ZoZh
+	aaq5Y+RjxLXsXrJH7qi+ptxiwa21Qd4=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-404-wOa8Hwk8NPm_m8gXJJy4NA-1; Mon, 11 Aug 2025 06:56:26 -0400
+X-MC-Unique: wOa8Hwk8NPm_m8gXJJy4NA-1
+X-Mimecast-MFC-AGG-ID: wOa8Hwk8NPm_m8gXJJy4NA_1754909786
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7e8106a41e7so1030787985a.2
+        for <imx@lists.linux.dev>; Mon, 11 Aug 2025 03:56:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754909786; x=1755514586;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cXP3JhYEHDsI5xw9s9ngejjJCnQI06FB4xWiEKgLmT8=;
+        b=KSKHskQXfEQCUiutHEIl0hDul9cGQlWEEO7skAV/i3JPE+rKarbfsfamqNB91q/lG1
+         15cUOhgxjAX9f0XGL566J4PFhNVBq8nFH9n6pPHfwM9pj+LZyty4O4DYQ7trnYbAhfHv
+         3Xa3kqVDa9tGhQwviCDsKOtnUxrpLsHHw8ocBPdPhujLwG675iT/Yultpzmmh9Kay+TS
+         diLeSREKFC6VRx0NR5icOOHHJ1jr3DTz87y7NQJx1TeL3i65/hxKL88V0hSNES7p+uc8
+         0C+h+BJCJWVHB7TjwxWp7A21lajml+J5zdFJEawy2d+uxWAbvuSJn7SbaVhGpzC30sRh
+         3R/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVeotFvipT2fgdoZHC05TrYHtgy6ulcB2dyHn2Vfw7K99FOUEWTS2+IkFoMiqGY/RGqPv8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwBq94+V2HbXTAMmX2V7hKPvQzGJAl49mLUxkL1QbUgOBcaT7OJ
+	b0YETqy3tleuvxn3n1NowK3wUhIYcBL3Ea1MYSbDHxqSdewEaW67bDRFW8G4H/HSZaU2NubeHpg
+	3CTGK7qYvhmZjKF3BffpH+4A4aFKbBX8J+5ZysnK/7UlkySbR2Q85fQ==
+X-Gm-Gg: ASbGncvj/xVtfnIJY9UQ1ZXc4fxJfCxX65dTYUL4oethEZnOl/3rxiLFlIxykLSFzwS
+	BWjl4BXBkfDaCoZl+Nr9jkN1KKx/Fps4MalFLM0XjXU7uWPhaZpY94ie7Mv2Vx3WG7Y3krk3yN5
+	ys7yD9HzIPYWka69UXPr0tmJUJwoO7SxmOAvVliP5gZFYMehUsYq8pZ2ddwDRNg7SGPozQ+FQEd
+	1CF3MyKYuZIsHUDFRMak4NN+A1XFLu5xph5DyN1smw5U7Q0v0IL1n0jV8RlQKHE6ZJe3u/49GpB
+	KZ3mm+K3/tN5WeScpfVFxfLDZ/j6yY6ivHuv6DRBnAKBwOis2BqJsI0udsum7kna28ViwLWajjC
+	CrcI=
+X-Received: by 2002:a05:620a:19a7:b0:7e6:8580:67f9 with SMTP id af79cd13be357-7e82c7268b7mr1766294385a.39.1754909786033;
+        Mon, 11 Aug 2025 03:56:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHR8+CCi/SOVhR+SKRFj6lKvJMHxUZZffNiDttlUcNIvFehaFMGmyLzcvBT31Mi5D8YTjxp6w==
+X-Received: by 2002:a05:620a:19a7:b0:7e6:8580:67f9 with SMTP id af79cd13be357-7e82c7268b7mr1766283185a.39.1754909784503;
+        Mon, 11 Aug 2025 03:56:24 -0700 (PDT)
+Received: from [192.168.1.15] (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e698de2df7sm1273446485a.80.2025.08.11.03.56.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Aug 2025 03:56:23 -0700 (PDT)
+From: Brian Masney <bmasney@redhat.com>
+Subject: [PATCH v2 0/9] drm: convert from clk round_rate() to
+ determine_rate()
+Date: Mon, 11 Aug 2025 06:56:04 -0400
+Message-Id: <20250811-drm-clk-round-rate-v2-0-4a91ccf239cf@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|PR3PR04MB7388:EE_
-X-MS-Office365-Filtering-Correlation-Id: 07ef7c8a-67a8-44b3-d532-08ddd8bf14c6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?P9VBwqXpzwzD3hyXkfGT1QJrIqKOGwUQJ31Yvvw0o38D6+4Ayt62TBncRQ+i?=
- =?us-ascii?Q?7GxEmNifLNM6Kzj4ZrcdhDXV24PvLfgjLzUYDO1V9AJBgMkB5mi5x28GQJvW?=
- =?us-ascii?Q?1Og/SUOwa5MjUy+KPh/qge75CiHeyx/dVsXAb/0CtRddsnq/531rqqb7ohLa?=
- =?us-ascii?Q?Zz4BRfY/HVMhrbkk70zpc4btk3xwzhcN1GjWmOsqRhzgKubnT0XG4fDpX5hg?=
- =?us-ascii?Q?GvWSuPUX9VbKiOLTZfFmEJ1zSmT8jEDttqqHig5TByZOPccbuUpUMQ7bhGMG?=
- =?us-ascii?Q?y4qXyx5ca+ArLsrtLSFZ64/J7MLy9jVMMD+Wrg/SwZJKVmZLP4JoDGyT9PsR?=
- =?us-ascii?Q?c8Y2dkChfl+iN/erWldLrJavI7eDfx38kJDRk9LfDci0O0+/9YH3RfjTamgW?=
- =?us-ascii?Q?CQ+jlJRo1kxEFwmHrl63uxSEGINWHG6qAddT9j6H6RptlQZIC/v2B9X45xXp?=
- =?us-ascii?Q?O+dIQ9wjAULOIAWBppgnyLkkNuYI7GD8hgc5uyZigNExU0cXWX8MHPVDV+e6?=
- =?us-ascii?Q?1Z2NnH3KnTe71/5ffwrPVxHUJVyQlwERvNoj1Mim1swUnIVcqvx3itZ3D9wt?=
- =?us-ascii?Q?0tq3UedK5YFbse4VmOETB1W4jUHouVSQs25DBUYwtwi/oxJK/e1nRhkx1dI1?=
- =?us-ascii?Q?6BjdFRHK+jRk1JcP1Tc7BGZzpI2v9A08+IF/ZQd7KuT2w85yxzjXSxjQkvoN?=
- =?us-ascii?Q?xWTbFNe8qCVCb2xAuc+kBLsAIUbB0ojoSKgCzHH76GQeOZzb6Pdk7dj9lGQm?=
- =?us-ascii?Q?iPd8qzPW+bA3juMJKC1oI7xAV7YCJV0S/SPK+0AXtzw9+nFeiLCy+UqqWtN9?=
- =?us-ascii?Q?KM+f6eDpJALmOTUnF8N3iaAjK5tZiS5t7JXSpF55qi113HQVypt0E8ykNm4o?=
- =?us-ascii?Q?nqTlyLtOuV/gMnOX60r5KcuAKNem5e0TjlhljbH6vWxG2Vc1fqvxv9/4T1qZ?=
- =?us-ascii?Q?51bp6Y2afSZR+mUHGaXwXHK7/8+5mi3AGrEGsEcMac8m843j/o9rkOiV2fkI?=
- =?us-ascii?Q?rX1AwvyIaVWngPub8iNr9r8v80NMQMjMRvtPOGLzuJurVE3BN7V7Bw9vPR5C?=
- =?us-ascii?Q?gIKD1HG93qJ5HOy+iQaRqQnNd0Qr3K7LjCwY7+UrkKNpx0wR98bagalTnZf7?=
- =?us-ascii?Q?n/yiiRXHrzYn8TYCbcQDwhxYRtBl1VgH52znmYvKX8UImISs8Fzz6Rxsoh+V?=
- =?us-ascii?Q?SoYZtnPGlwtcepqKEdKNOijs8IdNIRQ8UW1ksRVzdgqDzUrTyeMiGoV50YpJ?=
- =?us-ascii?Q?lf2bDMLzdMn6I3JM+pX2L5TjFepSQmZdpPf4/5SRBtSApg7Gxs6ZlWv2t0Wi?=
- =?us-ascii?Q?9CWW6SMUsmNHk8fte5Coo8X4fMWiYXOF2V//VmRdo3MPMYHlKMaYQgbModPl?=
- =?us-ascii?Q?7gBYBFjfU5XACY7YftkiwyrgGvaczsx7NysBTGuJgRito/2TvH74j57gDESf?=
- =?us-ascii?Q?VS2vwh4FuhFfJyCDYhYmfZJSfh6/wF9bJ4h+RaMJImewjEGI7CWa1A=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?R06XLYgI35QkGVEY1y9Jh/kQH/GYWUVqqsb1nPc5bNeSk7+VC4O/pWqjWrXY?=
- =?us-ascii?Q?h3Zz3Fgn61a5ACBnwmykksHCcE2oDzc25Je1fnlm+GLZW0WyFzD2ApO42rJ/?=
- =?us-ascii?Q?M92wlOelHPC7SADyRG6thM2gKDZ/hUt0hlNi5ozhGzpRIJljnFdnfdhSSFcD?=
- =?us-ascii?Q?Dl5rqP56nHfokUxHghQ6arTEslQ8hdk9SDa2eR6JzHqXJDTJxfYS5x/7sEQV?=
- =?us-ascii?Q?PmdW7ReA5P5y8uonhCGXDFrpTlW/a6TpR++Qjk099o8nuIa/iimh2vkWjvVM?=
- =?us-ascii?Q?uK3LxvQYkKEOBiUuiY764PXXbeDGpLo9JrBrVExEc1AHk95Y1p+PtrQcehbR?=
- =?us-ascii?Q?NIWgrho+867H9eR7X4JgKMXJVa3vp3dqgonbHd3gjpJ0rgt94zRThz2w6U7V?=
- =?us-ascii?Q?iHbQEUhZ0k750uBRx0HNi3KwHtK/yPts+82vOmm235gMuO8xZ61CrAhWC1to?=
- =?us-ascii?Q?l/oBDz6iQoTJClHmNkD6ZWnAn0RV3IZDrlKP4ke9S/G3aiA9tG/qHoyXjOML?=
- =?us-ascii?Q?MZK0J+f+gAVvgeWOTnOayZiu+lea+I2n+djP8WEJOEbhT/i9QDcOSzTyNAxi?=
- =?us-ascii?Q?+f506XxTrfj59gXRaBeqdolW+KuQR3Pk78pb2AgTJvnm1oo6L58/3za4LjE2?=
- =?us-ascii?Q?vrQLEGcIitEcLd3mhoiGtucKSpRNNA5hsQF2fEuIcg4Pu+/254QdVZ4LWzNO?=
- =?us-ascii?Q?Xcbb0RvJwCUhUjymz26kPtQ8hixTbfLqVA+Ev3x9+y4e3v/dOc61kQ02yPaG?=
- =?us-ascii?Q?HBW+T0JKfRxDaGKtntNmwjYoF0zXEZn1M+5AMjyg6BTkYpNqSmjkPFjUtDJM?=
- =?us-ascii?Q?frgmwwMplpLdpTSsE4HQZkEspfNHjfSKAS47SFFbLQJcnz+OsOqNJt1pERq0?=
- =?us-ascii?Q?N/HgHJhGLh3nUvE/NuSRlBEnhC1ZAfL0MWo8RQDbKUoA6xK5GMTKPQzeKR4j?=
- =?us-ascii?Q?s0BzFagUZLl3teYI9LPrOWvGCPOzRE5xmYlpEzT+jmfmifPVrk63q9vS4+UC?=
- =?us-ascii?Q?z2mbqjVZKqP2cZYQG5xNjz1UHrrqIxczq6a7DuTH0y3m3fjyuR7akCZcvbCL?=
- =?us-ascii?Q?3CBUCZ7i8BCaS3cqxzXHK9OfFUzv5UJgdwqCbOPw39tzqS2X6MgkFINqkB7f?=
- =?us-ascii?Q?Gy2f/NRGiVpzfh9l2tmsBsBHrZVTihyHrjJUTp/4KsGtCIxWLhWnQIqOT2w3?=
- =?us-ascii?Q?AjwhEAK8AvzHsjm5y1czHSArqQ/2UmOxxK/63hzAArU6vkoxJiAIFY0jPP++?=
- =?us-ascii?Q?OOuY0hZnB2DdOXeSPS5YrtGt1dbaIo4EdJVJv0eY/TEbf0odOthwHkkKUp4z?=
- =?us-ascii?Q?+eI7RskgqGD9N9tthG0xEVztA+7TY+YyTZcHHKDZ/tWI123vg82FlzogIzZK?=
- =?us-ascii?Q?R40lH0FUsxUyy7T+8JfIdOECvS31gi6hyZD3VdCjB+BOiqSlAAvV1V2NViXm?=
- =?us-ascii?Q?JiFColuaqZKRiOeWC/CIXhpjgrZkLpVeS/iHU6D/g65xImyJ+93pNmSDz0I2?=
- =?us-ascii?Q?velyaWNMM+HJxzTA9GOsMmIlbSV5EKsVdkBMwaYrtQcpsRZV5rpCFxLLe6ai?=
- =?us-ascii?Q?RFo3H0Bver88b2+DuTqNYYOFZZDVTzAOdn4zeyT/?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07ef7c8a-67a8-44b3-d532-08ddd8bf14c6
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 10:08:55.7329
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3qEFInJXPzWUN8cNWK+ClwQ/vKOl8Mt00PbSRf2ukhpteQ8nKQ3fjF8igtT4uZWVTuhZUgexM2quZWO5pmCLBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7388
+X-B4-Tracking: v=1; b=H4sIAEXMmWgC/x2M0QpAQBAAf0X7bOucJH5FHs7dYsPRHlK6f3d5n
+ KaZFwIJU4A2e0Ho5sC7T6DzDOxs/ETILjFopStVFwqdbGjXBWW/vEMxJ+GQVNNYZUtTQwoPoZG
+ ff9r1MX5z1hFLZAAAAA==
+X-Change-ID: 20250710-drm-clk-round-rate-b25099c0c3a7
+To: Philipp Zabel <p.zabel@pengutronix.de>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Rob Clark <robin.clark@oss.qualcomm.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Abhinav Kumar <abhinav.kumar@linux.dev>, 
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>, Sean Paul <sean@poorly.run>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Yannick Fertre <yannick.fertre@foss.st.com>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+ Philippe Cornu <philippe.cornu@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-sunxi@lists.linux.dev, Brian Masney <bmasney@redhat.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1754909781; l=5717;
+ i=bmasney@redhat.com; s=20250528; h=from:subject:message-id;
+ bh=PIea/i4Y2q/6salydRYDw/qDzf1o1hZNE4V2kDbPHLM=;
+ b=Fjs6oyZBop8brn89Wis9Wmv9d/YiKRi2CsQG8Y9p4VeZHPd25iPf4ZojTiOdduqVItv0hvHzz
+ qP6WUnq2F02AwCFtKnsda9khMDCy+eoFbTEarTYyadGpvit3bjTpK8f
+X-Developer-Key: i=bmasney@redhat.com; a=ed25519;
+ pk=x20f2BQYftANnik+wvlm4HqLqAlNs/npfVcbhHPOK2U=
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 9FBhPenobET_XjmaSRXRxPUcG1oafoVERZzc7OIk3fM_1754909786
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-When add workaround for ERR051725, the usbmisc will put PHY to
-Non-driving mode (OPMODE = 01) after stopping the device controller
-and put PHY back to Normal mode (OPMODE = 00) after starting the device
-controller.
+The round_rate() clk ops is deprecated in the clk framework in favor
+of the determine_rate() clk ops, so let's go ahead and convert the
+drivers in the drm subsystem using the Coccinelle semantic patch
+posted below. I did a few minor cosmetic cleanups of the code in a
+few cases.
 
-However, this will bring issue for host controller. Because the PHY may
-stay in Non-driving mode after switching the role from device to host.
-Then the port will not work if USB device is attached. To fix this issue,
-improving the workaround by putting PHY to Non-driving mode for a certain
-period and back to Normal mode finally. To make host detect a disconnect
-signal, the period should be at least 125us (a micro-frame time) for
-high-speed link.
+Changes since v1:
+- Drop space after the cast (Maxime)
+- Added various Acked-by and Reviewed-by tags
 
-And only working as high-speed mode will need workaround for ERR051725.
-So this will also filter the pullup event for high-speed.
+Coccinelle semantic patch:
 
-Fixes: 11992b410083 ("usb: chipidea: imx: implement workaround for ERR051725")
-Reviewed-by: Jun Li <jun.li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+    virtual patch
+
+    // Look up the current name of the round_rate function
+    @ has_round_rate @
+    identifier round_rate_name =~ ".*_round_rate";
+    identifier hw_param, rate_param, parent_rate_param;
+    @@
+
+    long round_rate_name(struct clk_hw *hw_param, unsigned long rate_param,
+                  unsigned long *parent_rate_param)
+    {
+    	...
+    }
+
+    // Rename the route_rate function name to determine_rate()
+    @ script:python generate_name depends on has_round_rate @
+    round_rate_name << has_round_rate.round_rate_name;
+    new_name;
+    @@
+
+    coccinelle.new_name = round_rate_name.replace("_round_rate", "_determine_rate")
+
+    // Change rate to req->rate; also change occurrences of 'return XXX'.
+    @ chg_rate depends on generate_name @
+    identifier has_round_rate.round_rate_name;
+    identifier has_round_rate.hw_param;
+    identifier has_round_rate.rate_param;
+    identifier has_round_rate.parent_rate_param;
+    identifier ERR =~ "E.*";
+    expression E;
+    @@
+
+    long round_rate_name(struct clk_hw *hw_param, unsigned long rate_param,
+                  unsigned long *parent_rate_param)
+    {
+    <...
+    (
+    -return -ERR;
+    +return -ERR;
+    |
+    - return rate_param;
+    + return 0;
+    |
+    - return E;
+    + req->rate = E;
+    +
+    + return 0;
+    |
+    - rate_param
+    + req->rate
+    )
+    ...>
+    }
+
+    // Coccinelle only transforms the first occurrence of the rate parameter
+    // Run a second time. FIXME: Is there a better way to do this?
+    @ chg_rate2 depends on generate_name @
+    identifier has_round_rate.round_rate_name;
+    identifier has_round_rate.hw_param;
+    identifier has_round_rate.rate_param;
+    identifier has_round_rate.parent_rate_param;
+    @@
+
+    long round_rate_name(struct clk_hw *hw_param, unsigned long rate_param,
+                  unsigned long *parent_rate_param)
+    {
+    <...
+    - rate_param
+    + req->rate
+    ...>
+    }
+
+    // Change parent_rate to req->best_parent_rate
+    @ chg_parent_rate depends on generate_name @
+    identifier has_round_rate.round_rate_name;
+    identifier has_round_rate.hw_param;
+    identifier has_round_rate.rate_param;
+    identifier has_round_rate.parent_rate_param;
+    @@
+
+    long round_rate_name(struct clk_hw *hw_param, unsigned long rate_param,
+                  unsigned long *parent_rate_param)
+    {
+    <...
+    (
+    - *parent_rate_param
+    + req->best_parent_rate
+    |
+    - parent_rate_param
+    + &req->best_parent_rate
+    )
+    ...>
+    }
+
+    // Convert the function definition from round_rate() to determine_rate()
+    @ func_definition depends on chg_rate @
+    identifier has_round_rate.round_rate_name;
+    identifier has_round_rate.hw_param;
+    identifier has_round_rate.rate_param;
+    identifier has_round_rate.parent_rate_param;
+    identifier generate_name.new_name;
+    @@
+
+    - long round_rate_name(struct clk_hw *hw_param, unsigned long rate_param,
+    -               unsigned long *parent_rate_param)
+    + int new_name(struct clk_hw *hw, struct clk_rate_request *req)
+    {
+        ...
+    }
+
+    // Update the ops from round_rate() to determine_rate()
+    @ ops depends on func_definition @
+    identifier has_round_rate.round_rate_name;
+    identifier generate_name.new_name;
+    @@
+
+    {
+        ...,
+    -   .round_rate = round_rate_name,
+    +   .determine_rate = new_name,
+        ...,
+    }
+
+Note that I used coccinelle 1.2 instead of 1.3 since the newer version
+adds unnecessary braces as described in this post.
+https://lore.kernel.org/cocci/67642477-5f3e-4b2a-914d-579a54f48cbd@intel.com/
+
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c |  3 ++-
- drivers/usb/chipidea/usbmisc_imx.c | 23 ++++++++++++++++-------
- 2 files changed, 18 insertions(+), 8 deletions(-)
+Brian Masney (9):
+      drm/imx/ipuv3/imx-tve: convert from round_rate() to determine_rate()
+      drm/mcde/mcde_clk_div: convert from round_rate() to determine_rate()
+      drm/msm/disp/mdp4/mdp4_lvds_pll: convert from round_rate() to determine_rate()
+      drm/msm/hdmi_pll_8960: convert from round_rate() to determine_rate()
+      drm/pl111: convert from round_rate() to determine_rate()
+      drm/stm/dw_mipi_dsi-stm: convert from round_rate() to determine_rate()
+      drm/stm/lvds: convert from round_rate() to determine_rate()
+      drm/sun4i/sun4i_hdmi_ddc_clk: convert from round_rate() to determine_rate()
+      drm/sun4i/sun4i_tcon_dclk: convert from round_rate() to determine_rate()
 
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index e1ec9b38f5b9..d7c2a1a3c271 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -338,7 +338,8 @@ static int ci_hdrc_imx_notify_event(struct ci_hdrc *ci, unsigned int event)
- 			schedule_work(&ci->usb_phy->chg_work);
- 		break;
- 	case CI_HDRC_CONTROLLER_PULLUP_EVENT:
--		if (ci->role == CI_ROLE_GADGET)
-+		if (ci->role == CI_ROLE_GADGET &&
-+		    ci->gadget.speed == USB_SPEED_HIGH)
- 			imx_usbmisc_pullup(data->usbmisc_data,
- 					   ci->gadget.connected);
- 		break;
-diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
-index 3d20c5e76c6a..b1418885707c 100644
---- a/drivers/usb/chipidea/usbmisc_imx.c
-+++ b/drivers/usb/chipidea/usbmisc_imx.c
-@@ -1068,15 +1068,24 @@ static void usbmisc_imx7d_pullup(struct imx_usbmisc_data *data, bool on)
- 	unsigned long flags;
- 	u32 val;
- 
-+	if (on)
-+		return;
-+
- 	spin_lock_irqsave(&usbmisc->lock, flags);
- 	val = readl(usbmisc->base + MX7D_USBNC_USB_CTRL2);
--	if (!on) {
--		val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_MASK;
--		val |= MX7D_USBNC_USB_CTRL2_OPMODE(1);
--		val |= MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_EN;
--	} else {
--		val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_EN;
--	}
-+	val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_MASK;
-+	val |= MX7D_USBNC_USB_CTRL2_OPMODE(1);
-+	val |= MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_EN;
-+	writel(val, usbmisc->base + MX7D_USBNC_USB_CTRL2);
-+	spin_unlock_irqrestore(&usbmisc->lock, flags);
-+
-+	/* Last for at least 1 micro-frame to let host see disconnect signal */
-+	usleep_range(125, 150);
-+
-+	spin_lock_irqsave(&usbmisc->lock, flags);
-+	val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_MASK;
-+	val |= MX7D_USBNC_USB_CTRL2_OPMODE(0);
-+	val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_EN;
- 	writel(val, usbmisc->base + MX7D_USBNC_USB_CTRL2);
- 	spin_unlock_irqrestore(&usbmisc->lock, flags);
- }
+ drivers/gpu/drm/imx/ipuv3/imx-tve.c           | 17 ++++++++++-------
+ drivers/gpu/drm/mcde/mcde_clk_div.c           | 13 ++++++++-----
+ drivers/gpu/drm/msm/disp/mdp4/mdp4_lvds_pll.c | 13 ++++++++-----
+ drivers/gpu/drm/msm/hdmi/hdmi_pll_8960.c      | 12 +++++++-----
+ drivers/gpu/drm/pl111/pl111_display.c         | 13 ++++++++-----
+ drivers/gpu/drm/stm/dw_mipi_dsi-stm.c         | 14 ++++++++------
+ drivers/gpu/drm/stm/lvds.c                    | 12 +++++++-----
+ drivers/gpu/drm/sun4i/sun4i_hdmi_ddc_clk.c    | 12 +++++++-----
+ drivers/gpu/drm/sun4i/sun4i_tcon_dclk.c       | 18 ++++++++++--------
+ 9 files changed, 73 insertions(+), 51 deletions(-)
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250710-drm-clk-round-rate-b25099c0c3a7
+
+Best regards,
 -- 
-2.34.1
+Brian Masney <bmasney@redhat.com>
 
