@@ -1,343 +1,152 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012004.outbound.protection.outlook.com [52.101.66.4])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D292F2907
-	for <imx@lists.linux.dev>; Tue, 12 Aug 2025 15:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755013979; cv=fail; b=HIX0ZOJCcjUyj4zmSo2fl0dYi4fnh1X93wN3j3MXVwvYk2G6Jq+MSDUWU78/4ZxmG6pUQIZxOhVuZlAL2YeH4GXCAUUY4uOA8kh5D5W694KgFbmtoGr0muVwSQ/Qerbpa/d1hFQ/p08rX8brRHksNIqVSwLLKgtoSiSaWLhObH4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755013979; c=relaxed/simple;
-	bh=FMgtPeNBMoOc3spp4SlfJ2tDFKKt3XIeBGbP4il9f7I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=oG6Mh2LyqnhRSibvLPCULRDqnEy53/jrMK4OY57mxYwYSHzSqRBdwbRy4xd7wON/qjD+CoYSuSNT888OjpFWqdJUxV9tlyI0YuEFD96dxxPmsPhrs5f2stp/Uo3tr7nGSKeFSigjqOkkK5VHm5UczcxiGecLftZh5z/7YnJZz+M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aZjeOzs6; arc=fail smtp.client-ip=52.101.66.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aZjeOzs6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZvYqXaMA3JwOj5PUEQcmjTdK57yBx77lgV3IcmOthR84wrqQuuSe5lKZqzhq2lfiHAjG6rXmYQXnI3TxfxeIMz0+7jTC70WUW6qQ3uVroCpUNRUNNXReVfGX1jhd1VIBf8tH2DhMMQgGoBtjTkbqPin6n0FBGayHHEfYlWUH7+KbNelZR12XhuDuj4kFjRqEyyj93l25szJ1S6iiTIz6z0ZHrp6xcnDvpqTVJmaFgkUkCi+5pjwed6sIhl4jMj6esCuLGH9+B2LSZAM8gRJXMjp9U8nBrKn1LTdrTBbDYibdgX+6qJW6JFQBmLezubL8Am8wJ51kXi2L1Ch3izFhNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VgJFe1jlye15LPOTokLajAoFAB9gvaOKNeQg5cQm0BA=;
- b=kkAoCr3apn27zZX1+vtZDdK4cudt0uDhbPSKGFMz5nnEndPOeY0xuw6NazKPEtpvFlkUh7Iznuudj9dGZKFfm+ksXd5xRCAQkCZY99S/WMw6WkSaG5K/6TLjnHyV67Nr86FcEV80ZesbV9H4FUflQsUYhfcio4PTjveyv7USWq4a39Ekuyain3nierrg8SzJ662bOssZXvJgcxS4o/auqb6mu3FPKhVuWHSlLFfeZsY1R94N/DUy+KFaA3KGeOlF0cNONeHzFTRJy5L9bLXW4iDRbzQuAxPnfLsAZs1Kinbw8IALEJ3Ga9l+Pw3MbwuoKJ1F0IgdkYzm3RzxHypOBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VgJFe1jlye15LPOTokLajAoFAB9gvaOKNeQg5cQm0BA=;
- b=aZjeOzs69G/1HJJs3NjNfUQWN1c+znoceYgwlavS4ynPYF3wNFeyZISGZZ3Sf2uCZ/EvCBN0nD8F1167VoLXca725f/ccbWzfU/gPJPMOCmV6gIGyfb5J5NJoy1yxyjoKfFmJSzIxNqlkFpgVvZ+QyJiY/UyTzsYm5wcI9uoibfiwHNszid6CmgbHSsA2cshptbwrx5ijNAOED4aQi3o4Oyikvl43XS4/EK+TnqLcKA3/i2JZi1GoJYt/1tZJV1vCpoAHDAO5pUjaUuy8AhYpA6i05JsqyXpRcpqbKN/fxXnx1rJT+fTOPh7P97ppuE8PE99AkphrSs0sp73bs9YuQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM7PR04MB7174.eurprd04.prod.outlook.com (2603:10a6:20b:11a::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.13; Tue, 12 Aug
- 2025 15:52:51 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.9031.011; Tue, 12 Aug 2025
- 15:52:51 +0000
-Date: Tue, 12 Aug 2025 11:52:41 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	richardcochran@gmail.com, claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-	fushi.peng@nxp.com, devicetree@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, kernel@pengutronix.de
-Subject: Re: [PATCH v3 net-next 11/15] net: enetc: extract
- enetc_update_ptp_sync_msg() to handle PTP Sync packets
-Message-ID: <aJtjSbZGZC/w1YAs@lizhi-Precision-Tower-5810>
-References: <20250812094634.489901-1-wei.fang@nxp.com>
- <20250812094634.489901-12-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250812094634.489901-12-wei.fang@nxp.com>
-X-ClientProxiedBy: BYAPR11CA0098.namprd11.prod.outlook.com
- (2603:10b6:a03:f4::39) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399CB305E3E
+	for <imx@lists.linux.dev>; Tue, 12 Aug 2025 15:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755014031; cv=none; b=m3SzXHtSlexdnzDnRopFNKt1JTBRMiEqJ7flHoz0AnkyIRnFWGBd5oTW/wsdMjYyrPT97QrlZsYIfJYeev5IUZJj5mHHDGqVYWsJqN0RfWNXkDz89tqHeAkomTC8TilHPyvYPqN7dSfVbOYFX83R2wKxuBGzwL49Rkcr1j5kDyk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755014031; c=relaxed/simple;
+	bh=BBheX8sbWCgYegYhKcL7467b7LoL9F8LRRRwdBxBPuo=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ThXrZNlG2kCSLxzHiAnkH/ncT4f+WwISoWHuId6BHXjMc+E69elkHcmRf+dFPs+L44iDRcwuBQ6bbFtoGVFwtixYVM42Njm32POVzasThjZFziKc7f27OLKRp2j2ww1ujiKgZx3SIP5fVUHwb+NcBiexu7bsJ8SyW/K7TepzbNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c1bbV6Zzlz6M4bb;
+	Tue, 12 Aug 2025 23:51:50 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5929F1401DC;
+	Tue, 12 Aug 2025 23:53:47 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 12 Aug
+ 2025 17:53:46 +0200
+Date: Tue, 12 Aug 2025 16:53:45 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Primoz Fiser <primoz.fiser@norik.com>
+CC: Haibo Chen <haibo.chen@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+	<nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	<linux-iio@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	"upstream@lists.phytec.de" <upstream@lists.phytec.de>
+Subject: Re: [PATCH v2 2/2] iio: adc: imx93_adc: load calibrated values even
+ calibration failed
+Message-ID: <20250812165345.000002a4@huawei.com>
+In-Reply-To: <ffafc9d6-2cfe-4e3f-a610-9bddc7eb49f4@norik.com>
+References: <20250812-adc-v2-0-0260833f13b8@nxp.com>
+	<20250812-adc-v2-2-0260833f13b8@nxp.com>
+	<ffafc9d6-2cfe-4e3f-a610-9bddc7eb49f4@norik.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM7PR04MB7174:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25d9ffe7-a27b-45ae-bb78-08ddd9b84aae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|52116014|19092799006|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ccoufyF1AYM7P2jWW9+npNJr1/nwFsANFopgh3S4xF5SbYqdg6NQJgwd9pJh?=
- =?us-ascii?Q?oyc0det4IuKlWNX8optJynuyWoyt39Ittco59SNJpyW71TPOiPej6L26f9E9?=
- =?us-ascii?Q?HKzpzCFGOgMhFOwsyqiPomIIH5b7GyDGULJIuBPkD6toGi0MxiPSxlfVIHGV?=
- =?us-ascii?Q?A3TJdhnDQQxCiDhBKoEIG2ntjQeEWCau6Yt/5+cQ9Zh06bFMcWOYsY42flhR?=
- =?us-ascii?Q?5FoccdYlX1BiG1DWMVPtUNeDIUDn+7cwH9oIw/fcp3d5TpRcW97aac2wPS01?=
- =?us-ascii?Q?I2giW9ztkmFeuW15S65VkRWz1Wb+caPzrGdatxsr5kFEC6/0zdFlIKcNbXlG?=
- =?us-ascii?Q?gre0kdGV0nPjIS6qwzV/UeI7ONx0oNUT++Yjaljhy7VJWZHngzfbk0AHodOZ?=
- =?us-ascii?Q?LAY9SpmqRkW9m5vyP5U66YUqdlYNp4Y4GUNOmXn2LhbvioPgp80do5DeMLvc?=
- =?us-ascii?Q?PhdslsyFOt98rFfEKYKu+SRuFHU7cnWaVpozd5tTS1FDQmTsMEh25yPvR0/G?=
- =?us-ascii?Q?I5xA3ZID/0h0f6fA9cPf9Wt7q0KDkbK3XVQkaUD+2rR+OPfKs9ijK+uUTb3Q?=
- =?us-ascii?Q?sR2OaK+P5gNK6SXQ2TQNFrpBgfC8HWjRFEHc0QSOe5miLkcRIg9nMZwnQSkr?=
- =?us-ascii?Q?R2DeneQzNWD+XTwlTUSp5YsN82d6D1KwloqyjtNETkGMVhuRETju4+sJBQ3d?=
- =?us-ascii?Q?B7LQLbCeS2ECAt85B5LPf3c2xbRI30N2DzIFWgbEqoy6rwryixfAlMO+wDu4?=
- =?us-ascii?Q?BP2rdQUbaHjpfDg42jcU977EG4GFE3tE/yfU1YYMLFcIEe4uC5tgtZXf6cgX?=
- =?us-ascii?Q?6uqQhXN0znhN5yLalCg5sVnIcARxw+yANc/A/EgKfw+ZEDReeEaAO+GFiwmR?=
- =?us-ascii?Q?h6rXYOXjSi4Tzr9CnVjwG3x2V3wfvXmrgai0e8UnF0i78TTXt4BBguba8q0m?=
- =?us-ascii?Q?bXEFVSef+kfQ3+1ewl+7H2acyYEHCAaBl0QFVbmIhZ5OaeQZz06fcPAZr28c?=
- =?us-ascii?Q?jE4Asc0xSCMwMUgImd5YhgHm6YzQ3NiYG9LNlcGkS+B0JFtVEOkcvAV7u27a?=
- =?us-ascii?Q?S73VLAcJyv499HR0VwxhXEZZfNCIpT3YPSrRrulIvtYcaCtCkWZ1shoJgmc/?=
- =?us-ascii?Q?VGbeg8YCG/7SF5gMXVQT/QyneHvBWBaX8z7h4LdRzn28DxJEwSLpzqRXzzln?=
- =?us-ascii?Q?N76lDgOm17IcKcPLAoZGBSw1PaqvfEJDPQ6wqBDHueEzjHSIYZeEymii1sIj?=
- =?us-ascii?Q?IZReu50OMw3uQUYiNFJnBrsUIgdyp7uGdFBRRT4tnFFhWbTH44V2ujzL+mLa?=
- =?us-ascii?Q?4RV2yXN+hWuXzgSx4Ft3M3r4DbZ+89Lw3YXWvNwxVBRWM5ViEdZszYRB3ia5?=
- =?us-ascii?Q?QVuQAFxTdBMmk0sBLuFTTDxnimNTICNUswqdnrQXNwpwkJjV+o/SIqTCVXwr?=
- =?us-ascii?Q?BEKRoLOsa2xYb51tKygrqr5jKn2WpTsMcvgI2fInM6gD+mLe6MK7gg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?e28g2Kq3Z9CHBa05rnCNKByW9/cFEoXWGcDee7e4ckcvNZuDlURoHKZTMvfc?=
- =?us-ascii?Q?Rw7vlwNi5nvqGzX/U3XSyVoKs9H/gHW36jyyISz9Df1+sEJisWBbhGDE8f2N?=
- =?us-ascii?Q?CmWj0ZhBpPtS4tj0Fc8GHAE1U1DRYZFUAVCjNHPWUkp8o7SeTmBPCbgeGuSU?=
- =?us-ascii?Q?xfcgzdPqr2Pa/x2NBK3S+C+mPWfjJJ+U3NIfG6V+NUK1p9ti6dj2yf8s7V/p?=
- =?us-ascii?Q?an3MSNW729Q82oZ8MEStB7NLeh+LgL5ty+xRk8fwDG01nsmL3u9zFijL3cv6?=
- =?us-ascii?Q?yrAhUdS0kSo4Kj/5L5Cy2JB7hIw7HRNtrFLWWPvnpAhGBIg7f7/4XlPkaS+v?=
- =?us-ascii?Q?96992ccNGs8CiBM9OCFYCgxhGSyvxOF8TWKmi4PLADxnivpKELtTda2lGw2K?=
- =?us-ascii?Q?ytJMHaJy3h8ldwW1F58yZU3fGtHbPpkq5hNgl2KDv+svuoGu1Cocu4mnrMCA?=
- =?us-ascii?Q?X6eFQMDY+GdLLEv41GTyHiOonFs4lkD4uRMKBW7UEXeaUSOu/c4YZay3iHzE?=
- =?us-ascii?Q?k5ByCCiVYwuecpBOrnnUSpfBHR+9/leB7WwK0EThHoDzIKIJWlzlrNEnjx1I?=
- =?us-ascii?Q?aO/U73LX9vCmB1vn/0JthnsT9G9EoF9OPPOMQQNHHKLwcLhT05e+3AihR/BI?=
- =?us-ascii?Q?xkBpsqibZODvmAz1zRAfRBM+ulgttJcOr5AA+IzvGvm/R7JJK1wKFZYV9asH?=
- =?us-ascii?Q?Z0BUCDhqWymdcDCXusaVbMPg/ps0WVSRRsbEN2heUAfyMWidDqn311zxYo5z?=
- =?us-ascii?Q?cg/KKfG8pmXkENfIBvzI/FxHbj4h53ZzlRi9qmCcfBjT/jm9aoKPyhUuoLYo?=
- =?us-ascii?Q?UB1Zfi/uwjSQTDHzn0QbkHe9ySoqj5RC0550A7U79fnsdThdKkIzEEII1jtl?=
- =?us-ascii?Q?RJ5Jclcwfh+b1WAiXSKbKoxayLC8BgH27zmTo7iDs4O/NS7owBZN+JOeBVAi?=
- =?us-ascii?Q?KHT+ckhKr6ryNDQIKlpzgQbeR8U69/QBAwu7nc2Xc7hI5eP9KLuliFrBUSvZ?=
- =?us-ascii?Q?k0ZYHnDT0JlWyjKtSIKdsTLNlR+Rpkky46ZFOQLsB8QSm/W/SZVvVxXbttnH?=
- =?us-ascii?Q?etfqxgLuMxXuVkl14SfkrLPsg6qN5VX/pybHzSZGddVUHYdBgRfofK8RJEg9?=
- =?us-ascii?Q?cfFu8zA9GrNEQJplzBuitEH9kWzJzbEqXUQfR8eo2bn7ut14gl3fFN2TpRhE?=
- =?us-ascii?Q?fpeSM4GSs3jSGPI68iEWo4vrIlNZUxA6+974IonelIN/Qdb2UoHRxda8hIww?=
- =?us-ascii?Q?sZDxpoF751jyeCCQapQF3m9qLay9Rcn9cdNpgZ8gLnxfp3NO/wwyoyyXt8Ko?=
- =?us-ascii?Q?eDVMwoj5rYxypRfabwmaJEJdMxKMsnURw5hrEYN1fMfSBVriB43DirOCCWQe?=
- =?us-ascii?Q?DCdhKew3G6238nT3i5FuvXKTIeChGTQAQuZkE1Tc2KAcY4wfIKRLEiSNwkfD?=
- =?us-ascii?Q?weY6Zz8eA7z78C/ZGb5g4YzEg4Gy4UDeH+mHcBX/aemnw3JIxysEW/8TUtsa?=
- =?us-ascii?Q?j0NpxGrLg3L1CFX9O6Ls4wEytjyDqWqSKVar1cX/To3AWA4L0zVrFv/zIlq2?=
- =?us-ascii?Q?zyTx1XdvhlmgSByJqxbqh1XSwY9R2z7hFpaFYhI2?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25d9ffe7-a27b-45ae-bb78-08ddd9b84aae
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 15:52:50.9102
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mfbw3yz0YFQHoueoSk7KltePfQ470khHnfkggZEGMC4vF4/ZBsiZdj08JeTcGJL2GvekQ7hd+SFDTFE5Fx9YUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7174
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Tue, Aug 12, 2025 at 05:46:30PM +0800, Wei Fang wrote:
-> Move PTP Sync packet processing from enetc_map_tx_buffs() to a new helper
-> function enetc_update_ptp_sync_msg() to simplify the original function.
-> Prepare for upcoming ENETC v4 one-step support.
+On Tue, 12 Aug 2025 10:45:48 +0200
+Primoz Fiser <primoz.fiser@norik.com> wrote:
 
-Add "no functional change".
+> Hi Haibo,
+> 
+> On 12. 08. 25 10:04, Haibo Chen wrote:
+> > ADC calibration might fail because of the noise on reference voltage.
+> > To avoid calibration fail, need to meet the following requirement:
+> >     ADC reference voltage Noise < 1.8V * 1/2^ENOB
+> > 
+> > For the case which the ADC reference voltage on board do not meet
+> > the requirement, still load the calibrated values, so ADC can also
+> > work but maybe not that accurate.  
+> 
+> Reviewed-by: Primoz Fiser <primoz.fiser@norik.com>
+> 
+> Thanks for fixing this.
+> 
+> BR,
+> Primoz
+> 
+> > 
+> > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> > ---
+> >  drivers/iio/adc/imx93_adc.c | 18 +++++++++++++++---
+> >  1 file changed, 15 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
+> > index 8471737ac04a2bac0417a6397f20865f6a2c01ca..17b0a2548b0a3614ac537b01e28bc3144d17d6fc 100644
+> > --- a/drivers/iio/adc/imx93_adc.c
+> > +++ b/drivers/iio/adc/imx93_adc.c
+> > @@ -38,6 +38,7 @@
+> >  #define IMX93_ADC_PCDR6		0x118
+> >  #define IMX93_ADC_PCDR7		0x11C
+> >  #define IMX93_ADC_CALSTAT	0x39C
+> > +#define IMX93_ADC_CALCFG0	0x3A0
+> >  
+> >  /* ADC bit shift */
+> >  #define IMX93_ADC_MCR_MODE_MASK			BIT(29)
+> > @@ -58,6 +59,8 @@
+> >  #define IMX93_ADC_IMR_ECH_MASK			BIT(0)
+> >  #define IMX93_ADC_PCDR_CDATA_MASK		GENMASK(11, 0)
+> >  
+> > +#define IMX93_ADC_CALCFG0_LDFAIL_MASK		BIT(4)
+> > +
+> >  /* ADC status */
+> >  #define IMX93_ADC_MSR_ADCSTATUS_IDLE			0
+> >  #define IMX93_ADC_MSR_ADCSTATUS_POWER_DOWN		1
+> > @@ -145,7 +148,7 @@ static void imx93_adc_config_ad_clk(struct imx93_adc *adc)
+> >  
+> >  static int imx93_adc_calibration(struct imx93_adc *adc)
+> >  {
+> > -	u32 mcr, msr;
+> > +	u32 mcr, msr, calcfg;
+> >  	int ret;
+> >  
+> >  	/* make sure ADC in power down mode */
+> > @@ -158,6 +161,11 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
+> >  
+> >  	imx93_adc_power_up(adc);
+> >  
+> > +	/* Enable loading of calibrated values even in fail condition */
+> > +	calcfg = readl(adc->regs + IMX93_ADC_CALCFG0);
+> > +	calcfg |= IMX93_ADC_CALCFG0_LDFAIL_MASK;
+> > +	writel(calcfg, adc->regs + IMX93_ADC_CALCFG0);
+> > +
+> >  	/*
+> >  	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
+> >  	 * can add the setting of these bit if need in future.
+> > @@ -180,9 +188,13 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
+> >  	/* check whether calbration is success or not */
+> >  	msr = readl(adc->regs + IMX93_ADC_MSR);
+> >  	if (msr & IMX93_ADC_MSR_CALFAIL_MASK) {
+> > +		/*
+> > +		 * Only give warning here, this means the noise of the
+> > +		 * reference voltage do not meet the requirement:
+> > +		 *     ADC reference voltage Noise < 1.8V * 1/2^ENOB
+> > +		 * And the resault of ADC is not that accurate.
 
->
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
->
-> ---
-> v2: no changes
-> v3: Change the subject and improve the commit message
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc.c  | 129 ++++++++++--------
->  .../net/ethernet/freescale/enetc/enetc_hw.h   |   1 +
->  2 files changed, 71 insertions(+), 59 deletions(-)
->
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index 54ccd7c57961..ef002ed2fdb9 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -221,12 +221,79 @@ static void enetc_unwind_tx_frame(struct enetc_bdr *tx_ring, int count, int i)
->  	}
->  }
->
-> +static u32 enetc_update_ptp_sync_msg(struct enetc_ndev_priv *priv,
-> +				     struct sk_buff *skb)
-> +{
-> +	struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
-> +	u16 tstamp_off = enetc_cb->origin_tstamp_off;
-> +	u16 corr_off = enetc_cb->correction_off;
-> +	struct enetc_si *si = priv->si;
-> +	struct enetc_hw *hw = &si->hw;
-> +	__be32 new_sec_l, new_nsec;
-> +	__be16 new_sec_h;
-> +	u32 lo, hi, nsec;
-> +	u8 *data;
-> +	u64 sec;
-> +	u32 val;
-> +
-> +	lo = enetc_rd_hot(hw, ENETC_SICTR0);
-> +	hi = enetc_rd_hot(hw, ENETC_SICTR1);
-> +	sec = (u64)hi << 32 | lo;
-> +	nsec = do_div(sec, 1000000000);
-> +
-> +	/* Update originTimestamp field of Sync packet
-> +	 * - 48 bits seconds field
-> +	 * - 32 bits nanseconds field
-> +	 *
-> +	 * In addition, the UDP checksum needs to be updated
-> +	 * by software after updating originTimestamp field,
-> +	 * otherwise the hardware will calculate the wrong
-> +	 * checksum when updating the correction field and
-> +	 * update it to the packet.
-> +	 */
-> +
-> +	data = skb_mac_header(skb);
-> +	new_sec_h = htons((sec >> 32) & 0xffff);
-> +	new_sec_l = htonl(sec & 0xffffffff);
-> +	new_nsec = htonl(nsec);
-> +	if (enetc_cb->udp) {
-> +		struct udphdr *uh = udp_hdr(skb);
-> +		__be32 old_sec_l, old_nsec;
-> +		__be16 old_sec_h;
-> +
-> +		old_sec_h = *(__be16 *)(data + tstamp_off);
-> +		inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
-> +					 new_sec_h, false);
-> +
-> +		old_sec_l = *(__be32 *)(data + tstamp_off + 2);
-> +		inet_proto_csum_replace4(&uh->check, skb, old_sec_l,
-> +					 new_sec_l, false);
-> +
-> +		old_nsec = *(__be32 *)(data + tstamp_off + 6);
-> +		inet_proto_csum_replace4(&uh->check, skb, old_nsec,
-> +					 new_nsec, false);
-> +	}
-> +
-> +	*(__be16 *)(data + tstamp_off) = new_sec_h;
-> +	*(__be32 *)(data + tstamp_off + 2) = new_sec_l;
-> +	*(__be32 *)(data + tstamp_off + 6) = new_nsec;
-> +
-> +	/* Configure single-step register */
-> +	val = ENETC_PM0_SINGLE_STEP_EN;
-> +	val |= ENETC_SET_SINGLE_STEP_OFFSET(corr_off);
-> +	if (enetc_cb->udp)
-> +		val |= ENETC_PM0_SINGLE_STEP_CH;
-> +
-> +	enetc_port_mac_wr(priv->si, ENETC_PM0_SINGLE_STEP, val);
-> +
-> +	return lo & ENETC_TXBD_TSTAMP;
-> +}
-> +
->  static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
->  {
->  	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
->  	struct enetc_ndev_priv *priv = netdev_priv(tx_ring->ndev);
->  	struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
-> -	struct enetc_hw *hw = &priv->si->hw;
->  	struct enetc_tx_swbd *tx_swbd;
->  	int len = skb_headlen(skb);
->  	union enetc_tx_bd temp_bd;
-> @@ -326,67 +393,11 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
->  		}
->
->  		if (do_onestep_tstamp) {
-> -			u16 tstamp_off = enetc_cb->origin_tstamp_off;
-> -			u16 corr_off = enetc_cb->correction_off;
-> -			__be32 new_sec_l, new_nsec;
-> -			u32 lo, hi, nsec, val;
-> -			__be16 new_sec_h;
-> -			u8 *data;
-> -			u64 sec;
-> -
-> -			lo = enetc_rd_hot(hw, ENETC_SICTR0);
-> -			hi = enetc_rd_hot(hw, ENETC_SICTR1);
-> -			sec = (u64)hi << 32 | lo;
-> -			nsec = do_div(sec, 1000000000);
-> +			u32 tstamp = enetc_update_ptp_sync_msg(priv, skb);
->
->  			/* Configure extension BD */
-> -			temp_bd.ext.tstamp = cpu_to_le32(lo & 0x3fffffff);
-> +			temp_bd.ext.tstamp = cpu_to_le32(tstamp);
->  			e_flags |= ENETC_TXBD_E_FLAGS_ONE_STEP_PTP;
-> -
-> -			/* Update originTimestamp field of Sync packet
-> -			 * - 48 bits seconds field
-> -			 * - 32 bits nanseconds field
-> -			 *
-> -			 * In addition, the UDP checksum needs to be updated
-> -			 * by software after updating originTimestamp field,
-> -			 * otherwise the hardware will calculate the wrong
-> -			 * checksum when updating the correction field and
-> -			 * update it to the packet.
-> -			 */
-> -			data = skb_mac_header(skb);
-> -			new_sec_h = htons((sec >> 32) & 0xffff);
-> -			new_sec_l = htonl(sec & 0xffffffff);
-> -			new_nsec = htonl(nsec);
-> -			if (enetc_cb->udp) {
-> -				struct udphdr *uh = udp_hdr(skb);
-> -				__be32 old_sec_l, old_nsec;
-> -				__be16 old_sec_h;
-> -
-> -				old_sec_h = *(__be16 *)(data + tstamp_off);
-> -				inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
-> -							 new_sec_h, false);
-> -
-> -				old_sec_l = *(__be32 *)(data + tstamp_off + 2);
-> -				inet_proto_csum_replace4(&uh->check, skb, old_sec_l,
-> -							 new_sec_l, false);
-> -
-> -				old_nsec = *(__be32 *)(data + tstamp_off + 6);
-> -				inet_proto_csum_replace4(&uh->check, skb, old_nsec,
-> -							 new_nsec, false);
-> -			}
-> -
-> -			*(__be16 *)(data + tstamp_off) = new_sec_h;
-> -			*(__be32 *)(data + tstamp_off + 2) = new_sec_l;
-> -			*(__be32 *)(data + tstamp_off + 6) = new_nsec;
-> -
-> -			/* Configure single-step register */
-> -			val = ENETC_PM0_SINGLE_STEP_EN;
-> -			val |= ENETC_SET_SINGLE_STEP_OFFSET(corr_off);
-> -			if (enetc_cb->udp)
-> -				val |= ENETC_PM0_SINGLE_STEP_CH;
-> -
-> -			enetc_port_mac_wr(priv->si, ENETC_PM0_SINGLE_STEP,
-> -					  val);
->  		} else if (do_twostep_tstamp) {
->  			skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
->  			e_flags |= ENETC_TXBD_E_FLAGS_TWO_STEP_PTP;
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> index 73763e8f4879..377c96325814 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-> @@ -614,6 +614,7 @@ enum enetc_txbd_flags {
->  #define ENETC_TXBD_STATS_WIN	BIT(7)
->  #define ENETC_TXBD_TXSTART_MASK GENMASK(24, 0)
->  #define ENETC_TXBD_FLAGS_OFFSET 24
-> +#define ENETC_TXBD_TSTAMP	GENMASK(29, 0)
+result
 
-Suppose this type patch no any addtional change to reduce review efforts.
+If nothing else comes up I'll probably just fix that whilst applying.
 
-Or you need say replace 0x3fffffff with ENETC_TXBD_TSTAMP.
+Jonathan
 
-Frank
 
->
->  static inline __le32 enetc_txbd_set_tx_start(u64 tx_start, u8 flags)
->  {
-> --
-> 2.34.1
->
+> > +		 */
+> >  		dev_warn(adc->dev, "ADC calibration failed!\n");
+> > -		imx93_adc_power_down(adc);
+> > -		return -EAGAIN;
+> >  	}
+> >  
+> >  	return 0;
+> >   
+> 
+
