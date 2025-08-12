@@ -1,134 +1,135 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EA52EAB70
-	for <imx@lists.linux.dev>; Tue, 12 Aug 2025 08:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C229C2E6122;
+	Tue, 12 Aug 2025 08:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754987482; cv=none; b=k76VwEP9I8d8Hd28ONYJq4jJYZPuhEot+vc+xvFqw3XR5BL6A+Kt5zWn/Mop3SKtSepnwdiBO5vRGTQFjSbBROZydGeEWHip012fBKYEWOCdHRCpsYr/pHsnlBv3YtJVH8LQuckCldyIcQdJf0jtE11HiPBVOFGitldYOlaIcz8=
+	t=1754987682; cv=none; b=kDhsk5vWss57PnbiTc6/xzOHlR80LXO6jw8Lx4W2+OSMu8tTLqdOqZGuy4qqRK1l1EojqOqrUQP8A4edflVPfDOrv8lAs+LOPUKQzDcltSlqw/3BSyy7Gj9fHB+6wsPHiHybyz5E4MZWc0ptKiWBuoDxrWwWeB4bIkWtuN7HJBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754987482; c=relaxed/simple;
-	bh=KyWvc+fSymgKCL0GRQPWtgUM4Zj1mcZAccRcc1bmEbA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hwFMTSCDTy12U81uWtKFFe167s7qHYK6cf348LI5CZwiG9658sVweYMlGN9UN8kF0waUGfdQtM/k87PqDARkebriXVLY2DahTKJlKd6aQz5bjNTXYZdRsTr8cJ7IZUUDYw9CNnYkuCFb+nX8Fi6U2snBMz6pJVp6mBIcrbLza+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=lX8PpZHP; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ZnmkILdK; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1754987682; c=relaxed/simple;
+	bh=2MJ1NCzhGmqIN9pIkbfSl91UKFEjnOImS9czaaPpWO4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gQRvFFMjVSKZVp7qrHJaGuOwaJjEnGvIjw6Pl7IHDMPvtcjqb5kY7zP435WbIn6YzmD7s8UdXFonEFC9X/UJ3CDHoTABWkuwLhFtyTfRrbKfdh2cby+RWUAQvxSuXq/vPRVGluv2idsg9jgFe8FQeK39RoMjOlEcaJLku9CIXaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=srjC+Ch+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="lX8PpZHP";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ZnmkILdK"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4c1PqB03t9z9tN0;
-	Tue, 12 Aug 2025 10:31:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1754987478;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y+owiGaKJShsteiVbcTBTUc/hirR4YHzq/zN3nuByxA=;
-	b=lX8PpZHP5zfeKWhSVKjObDpMH9j1h1ha0bG72TgSfceqb4j5xfa8JxdM//QvJ9ZmQmWddk
-	/IN6gIB1S+tIqczrvl2w8gSFaydee6G5B3BfBO8MhfmgdwuS7ttOaV86Fr/RREMC/UYQoi
-	sNqMUKaAwcFOjHn23B+4/6R95nAAjkfvxQB9nIxTLkX4EwgTYC3K4E5hpysxmHKJax+erR
-	6qwIhTKZzVW0CQWbN8px1dQamWfVtPx7cQLtUbVA8SZaBCIK7qdW1EMcr2hy7Fyn2XJbV6
-	6NEaJ0Mi9jbBWL5iWvZ8F7VB6q6UW8/8RlZq1zYJTeDf+nbSLBbZCUAeYRrRaQ==
-From: Lukasz Majewski <lukasz.majewski@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1754987476;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y+owiGaKJShsteiVbcTBTUc/hirR4YHzq/zN3nuByxA=;
-	b=ZnmkILdKGuEIIy8J7PSxfbWteqZUULNhlel6a4N2kSrsQ2Mbbc+ll3pvCP4g+4xAio70qN
-	N+3tlKZiONpH5plBBQIDnlFFKKyxImiXYykibRrb1otzGhD4Xua5ajut25yXD2jJT+mUJE
-	M0PSCHdffUsarLbdy3zdW2QdO9tylsnxIgu+4gdCoHDbETc69bmQco+dJEL90sEoAgfPiX
-	COJz7rsz9kUyr8/tzdi6FFwfTDdEKpOnrCbYff1nw6LWJlKmNGYnhxk+iuA/YSuiowlXW/
-	7aFRFq6EPM7QjZzov9LXq+rdKwYMNdEGAtmg7GJ4wV9wIdCFjgpf+Kl1+P4w9A==
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Lukasz Majewski <lukasz.majewski@mailbox.org>
-Subject: [net-next RESEND v17 12/12] ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2 switch
-Date: Tue, 12 Aug 2025 10:29:39 +0200
-Message-Id: <20250812082939.541733-13-lukasz.majewski@mailbox.org>
-In-Reply-To: <20250812082939.541733-1-lukasz.majewski@mailbox.org>
-References: <20250812082939.541733-1-lukasz.majewski@mailbox.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="srjC+Ch+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85282C4CEF0;
+	Tue, 12 Aug 2025 08:34:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754987682;
+	bh=2MJ1NCzhGmqIN9pIkbfSl91UKFEjnOImS9czaaPpWO4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=srjC+Ch+HW1pv9HQfhBrpK5dXf2VGT+ld9ItwRRhyvGEjjLHTHa8C/I1N6G4zEnh5
+	 bmtoTtYY+gTxW/b+kRDl5G9GPKc56Zttf4yK53Z/q1byFQpIsGHxuXJsa1RKAYLXE/
+	 cOnN98Fx2KMVpNOxhJT/fRwNcgRud61ye4hgH2aX9N5qFTDXNCnrARWDBcG8AKKOfW
+	 F1fb++F/3GwAzn7LAuURf39WLxMDudSIR/vfSrHCJgac5Q2+4uhZbREcCWnp5ath8w
+	 Qh6BNdDxjLSatHLb8RSNlEZYqTtjSht7fWWo9VzF7cjCXf3NQ2Q9S+0YWRRUiwvq03
+	 Yr9M3/7115XIw==
+Message-ID: <c6576234-3117-48a6-bd71-96bc819215ad@kernel.org>
+Date: Tue, 12 Aug 2025 10:34:36 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 37480c92e5da9a3fcad
-X-MBO-RS-META: k1moa7pj74k133tsd59foiihhk366wks
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] media: dt-bindings: nxp,imx8mq-mipi-csi2: Add
+ i.MX8ULP compatible string
+To: guoniu.zhou@oss.nxp.com, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: rmfrfs@gmail.com, laurent.pinchart@ideasonboard.com, martink@posteo.de,
+ kernel@puri.sm, mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, frank.li@nxp.com
+References: <20250812081923.1019345-1-guoniu.zhou@oss.nxp.com>
+ <20250812081923.1019345-2-guoniu.zhou@oss.nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250812081923.1019345-2-guoniu.zhou@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This patch enables support for More Than IP L2 switch available on some
-imx28[7] devices.
+On 12/08/2025 10:19, guoniu.zhou@oss.nxp.com wrote:
+> From: Guoniu Zhou <guoniu.zhou@nxp.com>
+> 
+> The CSI-2 receiver in the i.MX8ULP is almost identical to the
+> version present in the i.MX8QXP/QM. But have different reset
+> and clock design, so add a device-specific compatible string
+> for i.MX8ULP to handle the difference.
+> 
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> ---
+>  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 23 +++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> index 3389bab266a9..83fdda2252e5 100644
+> --- a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> @@ -20,6 +20,7 @@ properties:
+>        - enum:
+>            - fsl,imx8mq-mipi-csi2
+>            - fsl,imx8qxp-mipi-csi2
+> +          - fsl,imx8ulp-mipi-csi2
+>        - items:
+>            - const: fsl,imx8qm-mipi-csi2
+>            - const: fsl,imx8qxp-mipi-csi2
+> @@ -39,12 +40,17 @@ properties:
+>                       clock that the RX DPHY receives.
+>        - description: ui is the pixel clock (phy_ref up to 333Mhz).
+>                       See the reference manual for details.
+> +      - description: pclk is the lpav bus clock of i.MX8ULP.
+> +                     See the reference manual for details.
+> +    minItems: 3
 
-Moreover, it also enables CONFIG_SWITCHDEV and CONFIG_BRIDGE required
-by this driver for correct operation.
+You need to restrict all variants. Or explain why old hardware has now 4
+clocks. That explanation is missing.
 
-Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
----
-Changes for v4:
-- New patch
-
-Changes for v5:
-- Apply this patch on top of patch, which updates mxs_defconfig to
-  v6.15-rc1
-- Add more verbose commit message with explanation why SWITCHDEV and
-  BRIDGE must be enabled as well
-
-Changes for v6 - v17:
-- None
----
- arch/arm/configs/mxs_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defconfig
-index b1a31cb914c8..ef4556222274 100644
---- a/arch/arm/configs/mxs_defconfig
-+++ b/arch/arm/configs/mxs_defconfig
-@@ -34,6 +34,8 @@ CONFIG_IP_PNP_DHCP=y
- CONFIG_SYN_COOKIES=y
- # CONFIG_INET_DIAG is not set
- # CONFIG_IPV6 is not set
-+CONFIG_BRIDGE=y
-+CONFIG_NET_SWITCHDEV=y
- CONFIG_CAN=m
- # CONFIG_WIRELESS is not set
- CONFIG_DEVTMPFS=y
-@@ -52,6 +54,7 @@ CONFIG_EEPROM_AT24=y
- CONFIG_SCSI=y
- CONFIG_BLK_DEV_SD=y
- CONFIG_NETDEVICES=y
-+CONFIG_FEC_MTIP_L2SW=y
- CONFIG_ENC28J60=y
- CONFIG_ICPLUS_PHY=y
- CONFIG_MICREL_PHY=y
--- 
-2.39.5
-
+Best regards,
+Krzysztof
