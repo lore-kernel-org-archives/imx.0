@@ -1,141 +1,158 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DDF2C21D4
-	for <imx@lists.linux.dev>; Tue, 12 Aug 2025 18:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02392F066E
+	for <imx@lists.linux.dev>; Tue, 12 Aug 2025 20:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024908; cv=none; b=D+scHlkl7kzS9mY3e1FOyOzgR/GV5+oSyyM7CVdDSXCnoHlRjYMsbXRH+r69vPI+xYpof4WpOiYKs042743iY+jDkBChRAB6SC92E0AQpVfcSXa8nrNAW+sbPSmsBLDOsyvBXm1KxlpxLFSezL7jYjVWiWQQV3jlfhjlWTSTY2I=
+	t=1755029443; cv=none; b=gP036ceeZ2d4XhDZ0oMTKnvzSW+Nl21yDC2+s3jpThzdf684T9rK31sjTBVnB+J/RkvgAQD9HyP6w22QOxOu1JijpqrEGNfEd+8fbalbvBlZS+kP/oNUFvhBWDe4HsSMya52EZDrbYEgxvmjmvGPEgTgzDlSQievvErH23il9/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024908; c=relaxed/simple;
-	bh=7PhDiTML2Leu6mAZAooPW7UR7XwEZjCvYHbSTEynN8E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=WYKJIdkKr5QIS6LD7T3+VSywE1AfV4jdkEp4m06V8JS8wgIEV/TYCAnyCHfA6UARv2WKBdtuh9e3EDgdOVMFjP59ZWPffU9AMuKjEr+XIKgSOjrWk0HLVLSsbA3w/58A7dagWEMQb7SB/bzY/kHDmH/EqMzkMA67B9wPUEovQJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=Esv8hrOE; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1755029443; c=relaxed/simple;
+	bh=y3/6BwugXLBKiQaYfKuU9CxTQhT3nKf7WIMviYHgs5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XhPk3QCEEOUhg9qQ9h8VARVjhKpjTPiyaxe+gOqaUwM6uDjv3VG6txmYNIt+gQD1DZk5216ix99YCPuzKV35Ts+IhTVbfFI9ZL17PP65YHbWLg9W8LtK9vaZo2Lm7rn/fpXLY8r1ZRRuo2imcIjph0u3WgQyfit5mKrhEO6cPgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=S8nHmjS/; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="Esv8hrOE"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id EC733A09CA;
-	Tue, 12 Aug 2025 20:55:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=wCnuwYNdbOLXRQStadB5
-	ZhpjYXYSEvPGQdAZSpeQblY=; b=Esv8hrOE8VaDXHhKzo4wS30ry+q1SjiBDOvl
-	8iTup1pIRTj3lX1msjbxwSGDJRc3BGduJEgZ4qbW1Qq6beoiiZGUHrkIWschKGqw
-	O1UODUtF5tcCnn9uQQjGGyathNxxeSFYsjkqenh0kz5jmJIgT/MXBvLO2gtST2cW
-	gxGhkC0nAIztR3Y+MSY6petwGAt9VFr9/W5z6snx+dj4rkPMdsRWEEYLPsocNFTy
-	LsrBRlR9dxC1AfHMVP5LBbc5jYADj3zMMEaA6W2icnKX8PDAMSERYDEgawWT9Chz
-	KP5m4jWS5dkwF3h+APGFXjyKxPaEVpfh1myETVlPj9Ngc2NVtXhrIXC7gY+umsVt
-	vEEYOQb6ZVjgl+fOQPi3o/Utl70anBOmFNCsvPBecG9cWOLDC4M4NKplgs2oiIwb
-	KQOWWkXbX7FdhvJdQNSsUNmYX8K3hKVslroxieEjDt7iAUC+7NosDZU7JHZ8zCO9
-	9dq/HLOnOEzaGelBfE/4wvwwYBIFIje9diG8nyw7lEZCSGrR7k983JGnKH+7Z7he
-	BMzyHpr/8VsbFSfdC0GYMjqfnwKUUqCsM2yeOUg7WyWG0G69X/MGclmR1ONZLmOw
-	1vHwmJhz3fKla6GEfy4fpp6DbOUEiSYFsLB3sA7QsIX7tQ9HCN0MsuMRdICrH4wu
-	J5pc9xs=
-From: =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-Date: Tue, 12 Aug 2025 20:54:44 +0200
-Subject: [PATCH v3 2/2] ARM: dts: imx6-utilite: Replace license text
- comment with SPDX identifier
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="S8nHmjS/"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id A8CE7446;
+	Tue, 12 Aug 2025 22:09:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755029386;
+	bh=y3/6BwugXLBKiQaYfKuU9CxTQhT3nKf7WIMviYHgs5U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S8nHmjS//v3WDOHDDPQx7XNg+fuw2xNK+9V0L7/Q9JK7KAPPNNlYGxa7Smck/BbXz
+	 1FBdzu7Wn7BV16W9VEmOwxRHGoeANl3NYpiilOCdrgmnH+4qyCZo13MmvsNeDEL3jG
+	 RvCD6A32cgVXBkCzW1/lobOwYjYwMMtkdiTLpHOk=
+Date: Tue, 12 Aug 2025 23:10:20 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, linux-media@vger.kernel.org,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	=?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Arec Kao <arec.kao@intel.com>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Dongcheng Yan <dongcheng.yan@intel.com>,
+	Dongchun Zhu <dongchun.zhu@mediatek.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>, Hao Yao <hao.yao@intel.com>,
+	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
+	Jacopo Mondi <jacopo@jmondi.org>,
+	Jason Chen <jason.z.chen@intel.com>, Jimmy Su <jimmy.su@intel.com>,
+	Jingjing Xiong <jingjing.xiong@intel.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Leon Luo <leonl@leopardimaging.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Matthew Majewski <mattwmajewski@gmail.com>,
+	Matthias Fend <matthias.fend@emfend.at>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Pavel Machek <pavel@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Shunqian Zheng <zhengsq@rock-chips.com>,
+	Sylvain Petinot <sylvain.petinot@foss.st.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Tarang Raval <tarang.raval@siliconsignals.io>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Todor Tomov <todor.too@gmail.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Tony Lindgren <tony@atomide.com>, Zhi Mao <zhi.mao@mediatek.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org
+Subject: Re: (subset) [PATCH 00/72] media: i2c: Reduce cargo-cult
+Message-ID: <20250812201020.GB12797@pendragon.ideasonboard.com>
+References: <20250710174808.5361-1-laurent.pinchart@ideasonboard.com>
+ <175495482477.157244.17354544707184168458.b4-ty@kernel.org>
+ <20250812085112.GH30054@pendragon.ideasonboard.com>
+ <ca1f08c9-244d-482b-b719-c7997913f56e@kernel.org>
+ <20250812093915.GI30054@pendragon.ideasonboard.com>
+ <e91ed87c-7e2c-4c43-b405-ce3470697a2a@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20250812-clab-dts-lic-v3-2-bf7aa5462766@prolan.hu>
-References: <20250812-clab-dts-lic-v3-0-bf7aa5462766@prolan.hu>
-In-Reply-To: <20250812-clab-dts-lic-v3-0-bf7aa5462766@prolan.hu>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	=?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>, "Christopher
- Spinrath" <christopher.spinrath@rwth-aachen.de>
-X-Mailer: b4 0.14.2
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1755024904;VERSION=7995;MC=4075309719;ID=1014994;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2998FD515E617465
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <e91ed87c-7e2c-4c43-b405-ce3470697a2a@kernel.org>
 
-Replace verbatim license text with a `SPDX-License-Identifier`.
+On Tue, Aug 12, 2025 at 12:28:28PM +0200, Krzysztof Kozlowski wrote:
+> On 12/08/2025 11:39, Laurent Pinchart wrote:
+> >>>>
+> >>>> [12/72] arm64: dts: qcom: sdm845-db845c-navigation-mezzanine: Replace clock-frequency in camera sensor node
+> >>>>         commit: 5433560caa5e7e677a8d4310bbec08312be765b4
+> >>>
+> >>> I'm afraid that's too soon. This will introduce a breakage without a
+> >>> corresponding change to the camera sensor driver.
+> >>>
+> >>> I will post a v2 with the patches reordered. We could merge the V4L2
+> >>> side in a rc1-based stable branch and merge than in the arm-soc tree as
+> >>
+> >> You cannot ("cannot" as not following the process) merge drivers into
+> >> DTS branch.
+> > 
+> > Ah, I wasn't aware of that. DTS trees don't allow merging stable
+> > branches shared with other subsystems ? Does it mean that a DTS change
+> 
+> Not with driver subsystems. Why? Because it breaks encapsulation of
+> hardware description being entirely independent of given Linux driver
+> implementation.
+> 
+> BTW, it is already documented in maintainer-soc in ABI stability (I will
+> fix "devicetree" ambiguity to DTS) and driver branch dependencies.
 
-The comment header mis-attributes this license to be "X11", but the
-license text does not include the last line "Except as contained in this
-notice, the name of the X Consortium shall not be used in advertising or
-otherwise to promote the sale, use or other dealings in this Software
-without prior written authorization from the X Consortium.". Therefore,
-this license is actually equivalent to the SPDX "MIT" license (confirmed
-by text diffing).
+I've just read that document, and didn't interpret it as stricly
+forbidding merging a driver branch in the arm-soc tree. The rule makes
+sense though, as it makes it easier to ensure that backward
+compatibility isn't broken by accident. The downside is that it can slow
+down merging patches in some cases.
 
-Cc: Christopher Spinrath <christopher.spinrath@rwth-aachen.de>
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
----
- arch/arm/boot/dts/nxp/imx/imx6q-utilite-pro.dts | 39 +------------------------
- 1 file changed, 1 insertion(+), 38 deletions(-)
-
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-utilite-pro.dts b/arch/arm/boot/dts/nxp/imx/imx6q-utilite-pro.dts
-index aae81feee00dba2761f140fc2a76a828f69a8308..f7ba19141ffb70a811b78537a7149333e52b054a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-utilite-pro.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-utilite-pro.dts
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
- /*
-  * Copyright 2013 CompuLab Ltd.
-  * Copyright 2016 Christopher Spinrath
-@@ -6,44 +7,6 @@
-  * Utilite Pro:
-  *	Copyright 2013 CompuLab Ltd.
-  *	Author: Valentin Raevsky <valentin@compulab.co.il>
-- *
-- * This file is dual-licensed: you can use it either under the terms
-- * of the GPL or the X11 license, at your option. Note that this dual
-- * licensing only applies to this file, and not this project as a
-- * whole.
-- *
-- *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of the
-- *     License, or (at your option) any later version.
-- *
-- *     This file is distributed in the hope that it will be useful,
-- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *     GNU General Public License for more details.
-- *
-- * Or, alternatively,
-- *
-- *  b) Permission is hereby granted, free of charge, to any person
-- *     obtaining a copy of this software and associated documentation
-- *     files (the "Software"), to deal in the Software without
-- *     restriction, including without limitation the rights to use,
-- *     copy, modify, merge, publish, distribute, sublicense, and/or
-- *     sell copies of the Software, and to permit persons to whom the
-- *     Software is furnished to do so, subject to the following
-- *     conditions:
-- *
-- *     The above copyright notice and this permission notice shall be
-- *     included in all copies or substantial portions of the Software.
-- *
-- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-- *     OTHER DEALINGS IN THE SOFTWARE.
-  */
- 
- #include <dt-bindings/input/input.h>
+> > that depends on a driver change always need to be delayed by one kernel
+> > version ?
+> 
+> This is one solution, although as I mentioned later it still affects all
+> other users of DTS, so it has its own drawbacks.
+> 
+> Other solution is to keep both properties for more than one cycle.
+> 
+> >>> well, but I think we can also delay the .dts changes to the next kernel
+> >>
+> >> All users of DTS will be anyway affected and commit msg should address that.
+> > 
+> > Which commit message, the one for the driver changes or the one for the
+> > DTS changes ? I plan in the next version to indicate that the DT changes
+> > depend on the driver changes.
+> 
+> DTS changes, so the soc maintainers can judge whether they care about
+> other DTS users or they do not.
 
 -- 
-2.43.0
+Regards,
 
-
+Laurent Pinchart
