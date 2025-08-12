@@ -1,178 +1,135 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6B22E765A
-	for <imx@lists.linux.dev>; Tue, 12 Aug 2025 08:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409082E5B0F
+	for <imx@lists.linux.dev>; Tue, 12 Aug 2025 08:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754988360; cv=none; b=tQVkJG4Cq5hRtYBsxX5Ylcn3A89LGFvJuZaEDUpus1qu2Nojfdli3aHhU0lkThl2IQHkPQNTiwP9CieHK97DXxNUXJ9q/YEJswymeMrHeuZFlu2OBW4O6xn9RwZc5QbqNtv0JqM9cPBt1d8xDuZ0NoHdwlty2frwSH0yHwaxAaQ=
+	t=1754988701; cv=none; b=UFgyMBNFBfGbxIDrV1wXBdsoEaabvuyn0ja67RLcSnVr7pRhb8Ar2sQF/YWhGATrYHk3RTrfDsUTbxCQshT/bt3PbQegw2pgTlXYN+MUvNEdK2iLXL2tZOaOqbPekjoEIw2XhiMh92IJjTTNzyEJ9YJPdyTgSjj1eNx6SSqIFuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754988360; c=relaxed/simple;
-	bh=nUQlyN1n4j3UgDVGQCRzPb4qjKkiojRa8wCKJO7ioYo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QXDqEyRP+XlgdCaoxk3eKsF/X/p+OQfghT73YmE87VTnrSQdSMPaERUk/PUSq6YKytIiP9Rtt3K3Tcr4owQ8hTh++rwy1lbrAA0w6AiVePdeTlNpt0/leu0vqkgHwdZBA87fFOSa8KvMipF7zCpOrovL31CWqUTiP8h1Pco0xLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=lng0be1E; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1754988701; c=relaxed/simple;
+	bh=uWunz3Mv4f9pwZDDQLQYeUZk+J7flLykw7MQNQ5U70Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j90kGCFKlORB30OCIT91C1e0sMx5BVpYo4Qd8nYr3QZ9AXgujLpZLHipwWB0HlODpF+XXyf8w/P1jluX5WDrBWqQphlYXPRWarZto/C/TcEA+t8LVObCSALS0EI0oEAXIC+SasGYB6b0gIKsxlCKGTnStyygz9qFo9AYL55AFAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=C3aucEYb; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="lng0be1E"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=4fqFKZRX+VXRgMC+0U0SHSLoX7IVzWzQk49myeTjMC0=; b=lng0be1EtH1NwTkyOrfJ1ypzjm
-	Ddta3DOel3KELJHU7Ljf6sNwYidTcfJRFDolNYD4s4qiCTxkgCrn1Y1XPQAm+t/R1QPosqnglWg2P
-	eoTtqS1uE6Mm2Z4KuWN2TqGNPwsI/qNiAtBT5l7PPRPOlAwkz9YUdQgc/AB9xsQMTAzsyJTUmr2Ji
-	6rVQjAgQ2fWxwnE/ZwXlpCWuwoPZG8AsXWfYRmMbZaYy6NR5kCfthx6GKrzajxmqgBSPqA/wp61cw
-	KCS+JVHajYr1LZSW/2uQPtMLDxsRtKN3gpex3QBS5z74C8cLYHomnHe3omMdksCoTgSknxUaKp7OF
-	TnXF1q+w==;
-Received: from [89.212.21.243] (port=39484 helo=[192.168.69.116])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1ulkdj-00DLjg-0H;
-	Tue, 12 Aug 2025 10:45:50 +0200
-Message-ID: <ffafc9d6-2cfe-4e3f-a610-9bddc7eb49f4@norik.com>
-Date: Tue, 12 Aug 2025 10:45:48 +0200
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="C3aucEYb"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 58B6C228;
+	Tue, 12 Aug 2025 10:50:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1754988638;
+	bh=uWunz3Mv4f9pwZDDQLQYeUZk+J7flLykw7MQNQ5U70Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C3aucEYbV0P7yp/axUQALhXq6bp8VBvc2J2Y7oxywS2DT0wkQcULimUysw6t2Wj9A
+	 02yqs0eGLRkh/tHSmaR/e3cSXgz6j1mowZZ/U7BJU1Gh9rA6wq0grt3RYB9zU7naYg
+	 AJwsTgVjQMR+YPXtsC5u0TEPyDTgoszJVunGgoA8=
+Date: Tue, 12 Aug 2025 11:51:12 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Bjorn Andersson <andersson@kernel.org>
+Cc: linux-media@vger.kernel.org,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	=?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Arec Kao <arec.kao@intel.com>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Bryan O'Donoghue <bod@kernel.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Dongcheng Yan <dongcheng.yan@intel.com>,
+	Dongchun Zhu <dongchun.zhu@mediatek.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>, Hao Yao <hao.yao@intel.com>,
+	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
+	Jacopo Mondi <jacopo@jmondi.org>,
+	Jason Chen <jason.z.chen@intel.com>, Jimmy Su <jimmy.su@intel.com>,
+	Jingjing Xiong <jingjing.xiong@intel.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Leon Luo <leonl@leopardimaging.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Matthew Majewski <mattwmajewski@gmail.com>,
+	Matthias Fend <matthias.fend@emfend.at>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Pavel Machek <pavel@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Shunqian Zheng <zhengsq@rock-chips.com>,
+	Sylvain Petinot <sylvain.petinot@foss.st.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Tarang Raval <tarang.raval@siliconsignals.io>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Todor Tomov <todor.too@gmail.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Tony Lindgren <tony@atomide.com>, Zhi Mao <zhi.mao@mediatek.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org
+Subject: Re: (subset) [PATCH 00/72] media: i2c: Reduce cargo-cult
+Message-ID: <20250812085112.GH30054@pendragon.ideasonboard.com>
+References: <20250710174808.5361-1-laurent.pinchart@ideasonboard.com>
+ <175495482477.157244.17354544707184168458.b4-ty@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: adc: imx93_adc: load calibrated values even
- calibration failed
-To: Haibo Chen <haibo.chen@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
- David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-iio@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- "upstream@lists.phytec.de" <upstream@lists.phytec.de>
-References: <20250812-adc-v2-0-0260833f13b8@nxp.com>
- <20250812-adc-v2-2-0260833f13b8@nxp.com>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-Autocrypt: addr=primoz.fiser@norik.com; keydata=
- xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
- JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
- ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
- gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
- jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
- 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
- TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
- AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
-Organization: Norik systems d.o.o.
-In-Reply-To: <20250812-adc-v2-2-0260833f13b8@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <175495482477.157244.17354544707184168458.b4-ty@kernel.org>
 
-Hi Haibo,
+Hi Bjorn,
 
-On 12. 08. 25 10:04, Haibo Chen wrote:
-> ADC calibration might fail because of the noise on reference voltage.
-> To avoid calibration fail, need to meet the following requirement:
->     ADC reference voltage Noise < 1.8V * 1/2^ENOB
+On Mon, Aug 11, 2025 at 06:27:01PM -0500, Bjorn Andersson wrote:
+> On Thu, 10 Jul 2025 20:46:56 +0300, Laurent Pinchart wrote:
+> > This patch series build on top of Mehdi's introduction of the
+> > devm_v4l2_sensor_clk_get() helper (see [1]) to drastically reduce
+> > cargo-cult in camera sensor drivers.
+> > 
+> > A large number of camera sensor drivers directly use the
+> > "clock-frequency" property to retrieve the effective or desired external
+> > clock rate. This is standard behaviour on ACPI platforms that don't
+> > implement MIPI DisCo for Imaging, but usage of the property has leaked
+> > to OF-based platforms, due to a combination of historical reasons (using
+> > "clock-frequency" was initially considered right until before the
+> > introduction of "assigned-clock-rates") and plain cargo-cult.
+> > 
+> > [...]
 > 
-> For the case which the ADC reference voltage on board do not meet
-> the requirement, still load the calibrated values, so ADC can also
-> work but maybe not that accurate.
-
-Reviewed-by: Primoz Fiser <primoz.fiser@norik.com>
-
-Thanks for fixing this.
-
-BR,
-Primoz
-
+> Applied, thanks!
 > 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
->  drivers/iio/adc/imx93_adc.c | 18 +++++++++++++++---
->  1 file changed, 15 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
-> index 8471737ac04a2bac0417a6397f20865f6a2c01ca..17b0a2548b0a3614ac537b01e28bc3144d17d6fc 100644
-> --- a/drivers/iio/adc/imx93_adc.c
-> +++ b/drivers/iio/adc/imx93_adc.c
-> @@ -38,6 +38,7 @@
->  #define IMX93_ADC_PCDR6		0x118
->  #define IMX93_ADC_PCDR7		0x11C
->  #define IMX93_ADC_CALSTAT	0x39C
-> +#define IMX93_ADC_CALCFG0	0x3A0
->  
->  /* ADC bit shift */
->  #define IMX93_ADC_MCR_MODE_MASK			BIT(29)
-> @@ -58,6 +59,8 @@
->  #define IMX93_ADC_IMR_ECH_MASK			BIT(0)
->  #define IMX93_ADC_PCDR_CDATA_MASK		GENMASK(11, 0)
->  
-> +#define IMX93_ADC_CALCFG0_LDFAIL_MASK		BIT(4)
-> +
->  /* ADC status */
->  #define IMX93_ADC_MSR_ADCSTATUS_IDLE			0
->  #define IMX93_ADC_MSR_ADCSTATUS_POWER_DOWN		1
-> @@ -145,7 +148,7 @@ static void imx93_adc_config_ad_clk(struct imx93_adc *adc)
->  
->  static int imx93_adc_calibration(struct imx93_adc *adc)
->  {
-> -	u32 mcr, msr;
-> +	u32 mcr, msr, calcfg;
->  	int ret;
->  
->  	/* make sure ADC in power down mode */
-> @@ -158,6 +161,11 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
->  
->  	imx93_adc_power_up(adc);
->  
-> +	/* Enable loading of calibrated values even in fail condition */
-> +	calcfg = readl(adc->regs + IMX93_ADC_CALCFG0);
-> +	calcfg |= IMX93_ADC_CALCFG0_LDFAIL_MASK;
-> +	writel(calcfg, adc->regs + IMX93_ADC_CALCFG0);
-> +
->  	/*
->  	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
->  	 * can add the setting of these bit if need in future.
-> @@ -180,9 +188,13 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
->  	/* check whether calbration is success or not */
->  	msr = readl(adc->regs + IMX93_ADC_MSR);
->  	if (msr & IMX93_ADC_MSR_CALFAIL_MASK) {
-> +		/*
-> +		 * Only give warning here, this means the noise of the
-> +		 * reference voltage do not meet the requirement:
-> +		 *     ADC reference voltage Noise < 1.8V * 1/2^ENOB
-> +		 * And the resault of ADC is not that accurate.
-> +		 */
->  		dev_warn(adc->dev, "ADC calibration failed!\n");
-> -		imx93_adc_power_down(adc);
-> -		return -EAGAIN;
->  	}
->  
->  	return 0;
-> 
+> [12/72] arm64: dts: qcom: sdm845-db845c-navigation-mezzanine: Replace clock-frequency in camera sensor node
+>         commit: 5433560caa5e7e677a8d4310bbec08312be765b4
+
+I'm afraid that's too soon. This will introduce a breakage without a
+corresponding change to the camera sensor driver.
+
+I will post a v2 with the patches reordered. We could merge the V4L2
+side in a rc1-based stable branch and merge than in the arm-soc tree as
+well, but I think we can also delay the .dts changes to the next kernel
+version. Do you have a preference ?
 
 -- 
-Primoz Fiser
-phone: +386-41-390-545
-email: primoz.fiser@norik.com
---
-Norik systems d.o.o.
-Your embedded software partner
-Slovenia, EU
-phone: +386-41-540-545
-email: info@norik.com
+Regards,
+
+Laurent Pinchart
