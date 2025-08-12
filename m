@@ -1,52 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F2E2EBB9A;
-	Tue, 12 Aug 2025 11:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBF52EE262;
+	Tue, 12 Aug 2025 11:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754996705; cv=none; b=knLlIfx8iIEduOCpR77/4YcpgywT5g0k+A1k01RO3GvTIUd6jPItF7ueESX+2OXD6cBU/7cIx2uT0dqZKhlq1aCW1qHknmP8WsHrQgDLKdr2t1D9gb+tNyXUnqlqleeHVCCjeAx0fWWPGDEiebho+22lA8caeCjNVK3d7st123E=
+	t=1754996719; cv=none; b=J/8+rM+fFy3iwOWegBUsoxxJHhi44RhooVoS4Bh+K2+KNSpf1jbSvJ0YrUVDVH9B+K0YqCARChDvkA1IBroRFkYgW2f3f9jznctwtq/nF3ZbSJxCtEgM34/WfbqUD/Z/5imgzsi/olR70MES7cvscsmPKh+LQkk1cPhhphw3G9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754996705; c=relaxed/simple;
-	bh=+sjD5DBMwZ01KvsXUAV5SJn+sj8/ohUTnEVYWG/4NUM=;
+	s=arc-20240116; t=1754996719; c=relaxed/simple;
+	bh=0BwRILpusAVrivTLcsAixdNdRY4nvTJgi3xEFY4YsN8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=uhLA1c031KcQZgu1JjsvdqSocIRV4K/HcFjHX8WbMUSca90viWBafeaU3J78KK40y+P5JxEid7/wPKdReDfMHdAUPaZu3jlfTQRr7QMN7Yq4coosl7tKT5HouKg3LXLKfFaeIo8TjVRRUOF8s6TPbxpEjiMVnBjezm4U0jS+8A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qidwNdk5; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=J7tA/g92PKMh4CpIZoRwkABq5pfV0A1zK8C6aK1BQwVr/aTRm3fMllnX5NTkpTCwVfJvUZNPJo8Vg75QFWHRB5V80nVpC4wekbWCOI0soCRFsMryJWSqnXYLRRT84FoXp7fi4QJbi0fRZdDZiKJzIQrlB0k1I7jTS2vuv7xMHfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PWSKHm9m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qidwNdk5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443CFC4CEF4;
-	Tue, 12 Aug 2025 11:05:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PWSKHm9m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2FDC4CEF0;
+	Tue, 12 Aug 2025 11:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754996704;
-	bh=+sjD5DBMwZ01KvsXUAV5SJn+sj8/ohUTnEVYWG/4NUM=;
+	s=k20201202; t=1754996719;
+	bh=0BwRILpusAVrivTLcsAixdNdRY4nvTJgi3xEFY4YsN8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=qidwNdk5LLHuh+RkonL10l5tIMuz1EL1iLZsnU6Y4QMR9aGNbmkxH7776FpFuodKp
-	 lFELFbWkzrAVpLNGIBxOEgpd5P1I4Oe3lhnyQpWxcckU3Lda8qEusVUL241OWOoVSd
-	 R8vI01bQF4eogEX9fkP2VVWKoSZsjvE8oFWxQaZkySPQM7dYCXtMLPZ+AdRq2Z0Vd+
-	 UdD3wEDzneXPBzyQV/EEIrdC5FzbbqrjEz9u63C49Q/uE1nub1OMh5Jsz6IN9I8Fl/
-	 1ZdChx9KQyQRCsVIpqIGpF0Ma9ajCc60c+ltAWQ3YlwMXN73/vRK8I87rwaBwbKbuQ
-	 LkM2p84dzj6wg==
+	b=PWSKHm9maPZ82AuMYOrCQxHej/6dypc7ijXS9T0jfJ7mV9Ii54WMJrtrYOjOksuVA
+	 X4QUGxJMgUrqHN3kw2FSiTDb/mh8v2wPpKJK+etKn6Mj296uUUQm4ZJw1/QUtv/vZO
+	 BgQDfr5WgcaFsPh/NajPl62ZKwYH7YBNu3MDpILaW6DabjIrPWv0JVCd5aiBPgHcWQ
+	 R00UEF8FIFTq8Xksz44XIfAhxuIDYZ2+TYc65zyroiBhvEqrP4Wt3pctmfgYqESXlL
+	 BdONDglSkxV6WWf7ICTwrn3bW9ydDnZ7odVOmgQRiUuRUUNJGKTbcnkaVBiHmjwkE1
+	 s9YeWIuV7Y8vg==
 From: Mark Brown <broonie@kernel.org>
 To: Liam Girdwood <lgirdwood@gmail.com>, 
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
- Bard Liao <yung-chuan.liao@linux.intel.com>, 
- Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, 
- Daniel Baluta <daniel.baluta@nxp.com>, 
- Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Waqar Hameed <waqar.hameed@axis.com>
-Cc: kernel@axis.com, sound-open-firmware@alsa-project.org, 
- linux-sound@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-In-Reply-To: <pndpldam7tf.a.out@axis.com>
-References: <pndpldam7tf.a.out@axis.com>
-Subject: Re: [PATCH v2] ASoC: SOF: imx: Remove error print for
- devm_add_action_or_reset()
-Message-Id: <175499670102.16031.12835450413879680065.b4-ty@kernel.org>
-Date: Tue, 12 Aug 2025 12:05:01 +0100
+ Fabio Estevam <festevam@gmail.com>, "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250807214358.4172451-1-robh@kernel.org>
+References: <20250807214358.4172451-1-robh@kernel.org>
+Subject: Re: [PATCH] ASoC: dt-bindings: Drop imx-audio-sgtl5000.txt
+Message-Id: <175499671651.16031.1365399416603486475.b4-ty@kernel.org>
+Date: Tue, 12 Aug 2025 12:05:16 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,15 +51,11 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-cff91
 
-On Tue, 05 Aug 2025 11:33:32 +0200, Waqar Hameed wrote:
-> When `devm_add_action_or_reset()` fails, it is due to a failed memory
-> allocation and will thus return `-ENOMEM`. `dev_err_probe()` doesn't do
-> anything when error is `-ENOMEM`. Therefore, remove the useless call to
-> `dev_err_probe()` when `devm_add_action_or_reset()` fails, and just
-> return the value instead.
+On Thu, 07 Aug 2025 16:43:57 -0500, Rob Herring (Arm) wrote:
+> The "fsl,imx-audio-sgtl5000" binding is already covered by
+> fsl-asoc-card.yaml, so remove the old text binding.
 > 
 > 
-> [...]
 
 Applied to
 
@@ -73,8 +63,8 @@ Applied to
 
 Thanks!
 
-[1/1] ASoC: SOF: imx: Remove error print for devm_add_action_or_reset()
-      commit: 9d6a51651faa577e5d2be9d67915b7621c5c589a
+[1/1] ASoC: dt-bindings: Drop imx-audio-sgtl5000.txt
+      commit: 605d902bb6b6f5b12a5baeaca0dc359ced7685cb
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
