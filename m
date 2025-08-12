@@ -1,147 +1,171 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253D924BD0C
-	for <imx@lists.linux.dev>; Tue, 12 Aug 2025 06:31:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936BF204C36;
+	Tue, 12 Aug 2025 06:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754980277; cv=none; b=WLgBUoe4TGbYyQvtjWRZx1q8V0diQfmYOREm11bOCETrRYEfx1ctIFsC1PBkQ7jF0v5iYcT1BzQ30lxNZFRNgKYSRzXJ97Dku4D2H7ulWydyUAQxZXWqYl0SVdC9BwNU73aLJYcDTwGDAl1RAURm7n1b8hbsQnULaCFl3Py1n/s=
+	t=1754981239; cv=none; b=EXePrb7UqSimLRTSSVe5KHWUmV1tFxvpfhNDAnN6TwZs6tImTOhdrk3IhKmj7WzAMTQ1tR39VMQUE3G3bhtG1IsvmnLt1kjg8TY1vfkvjmF546NnhrLieOYautrrKJvrRd2W5dguSy6m9zq26XVOM3YYZzhva87ZzeM6Mlh1WLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754980277; c=relaxed/simple;
-	bh=LLYxMLN/+FoH7IMS9WyWZ3aQqJ9EbmJgwK779ugBzYc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DfgL2jFzhueDvFo12gplsfL948dZ4NAwJzHqNcYJ1GNazOcMUG0zCjd5uZZPMr+xY4K0rohFpOxuMRepp6HFDTNZAar3yLL8rR+PfDUpdsslOGTtSDLTWumed2Vkrdec+dYenp/CmZzw9NdNghrvOk4/XgsWRf7d+UGejTPPCDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=willwhang.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=willwhang.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6180b9e4e74so5504677a12.2
-        for <imx@lists.linux.dev>; Mon, 11 Aug 2025 23:31:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754980273; x=1755585073;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BnSCoQK0EBBhR+KMV2scx1OY/S2RO6MiphSzki2soYo=;
-        b=c/vrn0InFShIThsc3lw4duNwoPNH61pTDtDmzy0XItnUqJRXpRZq1KwA2EWvIq1moy
-         nOoV8XeMA9FwQ7tnqsXwSt+TgaPKqSh8T//G/lMSMoqOl+hSj1KtQxCuITpbcwdkOuBl
-         AKXfMFNCddd0eqE/7CHWcziXsZWcQiWkPhjJ08FynzOpm1hNmACNGF0FUUDYn3klovFt
-         W0kuxsBDc0I7EMyNyJQKVQOGZds0/ChE7MOVSb3QxhTHL2rOGt8UDHXHbqrdyENo/C1v
-         p2E6z17rRvrjNd59RG+ufmL8BWk/2y2cw+HVwXgk8KIqTuChgR9SoHZH6NAW9616kUJu
-         tbWw==
-X-Forwarded-Encrypted: i=1; AJvYcCXbMTAYwgHujVc4UFUSzSXaWZRWYEPcgryLW2/PS9x6a2i14TUcUonivgUUioBepKhaKbE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw6SWOH/awOyr1beOBaybKZJOLVrIoRrpz8xXASSUxUoZlOENVo
-	ZpALVunCc60HNHAS2sG6LI1at4YeQpCj68zGyELjt0qh+/nl+wwDJLE3om+qSlZqUc4=
-X-Gm-Gg: ASbGncsIfF55FVzRhX01+2DIJ+k1wxNEOrKuaaqQC2hZDPj/zJviuUZTmFxfksk27Z8
-	DGeYIed8DunM5pVy39J/drrU5S7G1H8uhGl3AjeyZd1gNb1ykJnFrfTZ9/qJExO30MrqYTK33pe
-	EPsvv2OLsISQpd9wtvh1NgfC66IYoh/PljuASpGohY/cV23SDAlKjMnoZyY4Vm7mojapS0FlsLf
-	rVvzU5W4ZzUqvqUlsAKaTBLSJ844DW/c3zN7VC6X6Ol1k2Wm47Qei7wpcPKH4CG69zCih2+7dXv
-	wizSblW/Os6m8zNPS5HtTdasRo8xWOByLJ5ktUFtGNINeO6wlXCW7m1lQKFvKypUpzwHgkHhn20
-	7cdkSckbF4tytkOnxqkIg2G/btaq0ARZAEEy63kFBHywSoBGur6pNVzfIug==
-X-Google-Smtp-Source: AGHT+IEd8kMv3DF8+DdeVRmZ9GMdyaIMZqueUvj9g84g1vvkeseNXsVzBR5LQk2jJlvxZ4vyql9XwA==
-X-Received: by 2002:a17:907:9446:b0:ae3:4f57:2110 with SMTP id a640c23a62f3a-af9c6588280mr1561558066b.54.1754980273027;
-        Mon, 11 Aug 2025 23:31:13 -0700 (PDT)
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com. [209.85.208.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0771f9sm2172654266b.16.2025.08.11.23.31.12
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 23:31:12 -0700 (PDT)
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6180b9e4e74so5504648a12.2
-        for <imx@lists.linux.dev>; Mon, 11 Aug 2025 23:31:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVzKowXM7xID6WbB8NzWxBDbcl6i+Um3GqkfkLrR0g0vWbzn3poHuqWThKivEimR2R7Kd8=@lists.linux.dev
-X-Received: by 2002:a17:906:7952:b0:af9:1184:68b3 with SMTP id
- a640c23a62f3a-af9c658d4e5mr1347054566b.55.1754980272254; Mon, 11 Aug 2025
- 23:31:12 -0700 (PDT)
+	s=arc-20240116; t=1754981239; c=relaxed/simple;
+	bh=/HZqQfR9eGDYw52QNI2P2rJt4fBRwuB/h0GTLpd4Xek=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FTBhm0hDZZDAGSD369U/EOcw7eTTdFq8PBjzjtD2W4OHG4wJ3NsfN0hm1kDXGfvDnhJWKL1FgyhP3F7FIfxWQJb10ak9/9g7qY0XMlfDBLzFyOB0YJxqq1BEc0iJjQfuJ7eL968RrQnDO/LyW9RjNPA8RTRChuT2NQ4aP3wjYaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXTxxK6U; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXTxxK6U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA68C4CEF0;
+	Tue, 12 Aug 2025 06:47:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754981237;
+	bh=/HZqQfR9eGDYw52QNI2P2rJt4fBRwuB/h0GTLpd4Xek=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IXTxxK6UaeBi3I4CEDYFNOhvzeZDrcnMZRNlK4ga9/i8THpqqn3sj5jecXiGOKOsM
+	 u8YT828jgG+PTBp86bsbR36fuRfDDiuMvnDtZIC5xQTUvezx6bH3GoaoZtuUcSeEQm
+	 R0eA5lNuvMdKRKe7JCF3ZWqnAh7cGS3pTLLepqk3LC+dGmxPoSfCVQObpcSdxWPQFT
+	 +tTuzrIXVjgtp7YEnnUN2P7nRc0q8v4uuzbroJvbX0CxIaBnQ3QNdnMzOdRbCRqNm+
+	 2IC70RGDkRsFkeVLkfSQnOo7fz31ag4mJI10DKwoYWZXXvbr5ReQfinot5xj9SdKSU
+	 CsAnAYBpK1y9Q==
+Message-ID: <e695c61a-e183-4eea-a7f6-1b2861b2129f@kernel.org>
+Date: Tue, 12 Aug 2025 08:47:12 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250810220921.14307-1-will@willwhang.com> <20250810220921.14307-2-will@willwhang.com>
- <20250811-successful-military-dragon-d72486@kuoka> <CAFoNnrxWwqT9WA-h2WOsUe6Q-qEoz2mTHLpDogAyMwiXXZ9MrA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] dt-bindings: media: Add Sony IMX585 CMOS image
+ sensor
+To: Will Whang <will@willwhang.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250810220921.14307-1-will@willwhang.com>
+ <20250810220921.14307-2-will@willwhang.com>
+ <20250811-successful-military-dragon-d72486@kuoka>
+ <CAFoNnrxWwqT9WA-h2WOsUe6Q-qEoz2mTHLpDogAyMwiXXZ9MrA@mail.gmail.com>
  <f12e6ff3-6ec3-487f-bf9c-0f8c06ee6444@kernel.org>
-In-Reply-To: <f12e6ff3-6ec3-487f-bf9c-0f8c06ee6444@kernel.org>
-From: Will Whang <will@willwhang.com>
-Date: Mon, 11 Aug 2025 23:31:01 -0700
-X-Gmail-Original-Message-ID: <CAFoNnrxhUof8BBrefm1L1peTxg==Koz72TY+54G_8QUy-rrT8g@mail.gmail.com>
-X-Gm-Features: Ac12FXxUPGaJyzFRIVDPhYuVZhaEvNZeEF-rPdc7e_SppFMnCWmGszG5kWhfTm4
-Message-ID: <CAFoNnrxhUof8BBrefm1L1peTxg==Koz72TY+54G_8QUy-rrT8g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] dt-bindings: media: Add Sony IMX585 CMOS image sensor
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <CAFoNnrxhUof8BBrefm1L1peTxg==Koz72TY+54G_8QUy-rrT8g@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <CAFoNnrxhUof8BBrefm1L1peTxg==Koz72TY+54G_8QUy-rrT8g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Krzysztof,
+On 12/08/2025 08:31, Will Whang wrote:
+> Hi Krzysztof,
+> 
+> Reply inline,
+> Thanks,
+> Will Whang
+> 
+> On Mon, Aug 11, 2025 at 11:23 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>
+>> On 12/08/2025 04:47, Will Whang wrote:
+>>> Hi Krzysztof,
+>>> Reply inline.
+>>> Thanks,
+>>> Will Whang
+>>>
+>>> On Mon, Aug 11, 2025 at 1:01 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>>
+>>>> On Sun, Aug 10, 2025 at 11:09:18PM +0100, Will Whang wrote:
+>>>>> +description:
+>>>>> +  IMX585 sensor is a Sony CMOS sensor with 4K and FHD outputs.
+>>>>> +
+>>>>> +properties:
+>>>>> +  compatible:
+>>>>> +    enum:
+>>>>> +      - sony,imx585
+>>>>> +      - sony,imx585-mono
+>>>>
+>>>> I don't understand this second compatible. Is this different hardware?
+>>>> Can you point me to "mono" datasheet?
+>>>>
+>>>> Your description should explain this. Commit msg as well, instead of
+>>>> speaking about driver (in fact drop all driver related comments).
+>>>>
+>>> Mono version of this sensor is basically just removing the bayer
+>>> filter, so the sensor itself actually doesn't know if it is color or
+>>> mono and from my knowledge there are no registers programmed in the
+>>> factory that will show the variant and model number. (That is why when
+>>> the driver probing it only test blacklevel register because there are
+>>> no ID registers)
+>>> Originally in V1 patch I've made the switch between color and mono in
+>>> dtoverlay config but reviewer comments is to move it to compatible
+>>> string and not property.(https://lore.kernel.org/linux-media/20250703175121.GA17709@pendragon.ideasonboard.com/)
+>>
+>> You only partially answer and judging by mentioning driver below:
+>>
+>>
+>>>
+>>> In this case, what would you recommend?
+>>>
+>>> compatible:
+>>>   enum:
+>>>     - sony,imx585
+>>>     - sony,imx585-mono
+>>>   description: IMX585 has two variants, color and mono which the
+>>> driver supports both.
+>>
+>> ... I still have doubts that you really understand what I am asking. Is
+>> this one device or two different devices?
+> One device that has two variants: IMX585-AAMJ1 (Mono) and IMX585-AAQJ1
+> (Color). Silicon-wise the difference is just with or without bayer
+> filter.
+Then I would propose to use sony,imx585-aamj1 and -aaqj1 with short
+explanation either in comment or description about difference in RGB
+mosaic filter.
 
-Reply inline,
-Thanks,
-Will Whang
-
-On Mon, Aug 11, 2025 at 11:23=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.o=
-rg> wrote:
->
-> On 12/08/2025 04:47, Will Whang wrote:
-> > Hi Krzysztof,
-> > Reply inline.
-> > Thanks,
-> > Will Whang
-> >
-> > On Mon, Aug 11, 2025 at 1:01=E2=80=AFAM Krzysztof Kozlowski <krzk@kerne=
-l.org> wrote:
-> >>
-> >> On Sun, Aug 10, 2025 at 11:09:18PM +0100, Will Whang wrote:
-> >>> +description:
-> >>> +  IMX585 sensor is a Sony CMOS sensor with 4K and FHD outputs.
-> >>> +
-> >>> +properties:
-> >>> +  compatible:
-> >>> +    enum:
-> >>> +      - sony,imx585
-> >>> +      - sony,imx585-mono
-> >>
-> >> I don't understand this second compatible. Is this different hardware?
-> >> Can you point me to "mono" datasheet?
-> >>
-> >> Your description should explain this. Commit msg as well, instead of
-> >> speaking about driver (in fact drop all driver related comments).
-> >>
-> > Mono version of this sensor is basically just removing the bayer
-> > filter, so the sensor itself actually doesn't know if it is color or
-> > mono and from my knowledge there are no registers programmed in the
-> > factory that will show the variant and model number. (That is why when
-> > the driver probing it only test blacklevel register because there are
-> > no ID registers)
-> > Originally in V1 patch I've made the switch between color and mono in
-> > dtoverlay config but reviewer comments is to move it to compatible
-> > string and not property.(https://lore.kernel.org/linux-media/2025070317=
-5121.GA17709@pendragon.ideasonboard.com/)
->
-> You only partially answer and judging by mentioning driver below:
->
->
-> >
-> > In this case, what would you recommend?
-> >
-> > compatible:
-> >   enum:
-> >     - sony,imx585
-> >     - sony,imx585-mono
-> >   description: IMX585 has two variants, color and mono which the
-> > driver supports both.
->
-> ... I still have doubts that you really understand what I am asking. Is
-> this one device or two different devices?
-One device that has two variants: IMX585-AAMJ1 (Mono) and IMX585-AAQJ1
-(Color). Silicon-wise the difference is just with or without bayer
-filter.
->
->
-> Best regards,
-> Krzysztof
+Best regards,
+Krzysztof
