@@ -1,147 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF72286D61;
-	Tue, 12 Aug 2025 17:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F8961FFE
+	for <imx@lists.linux.dev>; Tue, 12 Aug 2025 18:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755018748; cv=none; b=GoK7lavrVcrPZ1McQ/GQPpP+i0P9YbjSeo3GtPSKyaP1iHkUr5azqC2cLmpTcU6+lxkHaFvOrtdm1lFkQ0n3OUvbayoaStn7VtpaRHlcX+LqaLkWEqZuZsu2g3XBFmBb3MBR9G9/hbUF/jzhz8l1mrnx1/MWx7ytFCqV/m5Ffrc=
+	t=1755022644; cv=none; b=VFrauyuXyBha6f94ZJoUI/Ith/C/wv41fCYbvIwgqHJy8/4LbS6oDasYBEVVX2K912JESKmj/q2ASvaRFRzyQwDWK1IvD1P2kjs3o/UtK9NEWRp/ljTaUVnNS9Difvt+06thbQjirN0k+TJTU7JfihR9nCn9gTUFymalSjhMvlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755018748; c=relaxed/simple;
-	bh=sbkCPKwftTrUkZdiXc/EE3AJ3jJBcpouENbdl33Fz34=;
+	s=arc-20240116; t=1755022644; c=relaxed/simple;
+	bh=EMvQd3d1WlKkMgyYl6nmwZf21rQLaUhdMd88yyw2ml8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tqP1T4AcejwfOEHWbQIcFtST9FsaVABNxY3lL/lZLMAYuAxJtGPEpwYnmppoCC9C2L+pZOXmJS8FNvNk5QFZ6vIoo2vm1FILHHa63OZBPmn7ksS2dvy2tZmcy8opVX1bIBMaXA06Czlp7NaMPTXNH+ANoDN22h//hKdUavg4jpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXx9gseD; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GJF6EH+LmTrTGIvW5utq5VPvom9ZsvSIDMw3gQOTN1Qlwexng6t32SmkRbAetZb5f6GaH/vof1er41k73s18Qy1OGNPkZViBZYrGvnkzMqndmZ9b/wY/qRL/Y8U2K8dmOgdux6hSzSgMTOhT+U/AHpmTpdhoKvYE0djKvRdaX70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=G7sMDTrb; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXx9gseD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B54C4CEF0;
-	Tue, 12 Aug 2025 17:12:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755018747;
-	bh=sbkCPKwftTrUkZdiXc/EE3AJ3jJBcpouENbdl33Fz34=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oXx9gseDXKIuFwtIIhveZDwIf2HCNERDvQcwjBm11f0IoKqQfl16vACxSWboPJ2vT
-	 ZmlgdaRgw2T11JvWC+MrugfTSEOKkcNF6de6dcUu4+7+L2XiA8dzz/DTpkF2wbxSA8
-	 lkFScCz4E8iTgYebg9Uvan5h7Z/NOnpSGCtwdsN1BDbSHMdaCbpCpJjwICJEJ4llkX
-	 EJhhnU+PAyYoGwX31zZaNUjgy+DQ15n0nZ014YLlUciPnPdD39h5neAMEZfxyd2jQU
-	 Q1BvJaIxYpI3gnnUvezXBXr07frMKY7rYXSIBnp81Og5N/djbx+PnhKikvjnmYK88/
-	 LeHLfMA/8TgsA==
-Date: Tue, 12 Aug 2025 22:42:17 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="G7sMDTrb"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-31ee880f7d2so6583746a91.0
+        for <imx@lists.linux.dev>; Tue, 12 Aug 2025 11:17:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1755022642; x=1755627442; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SMsriY29YvNF5zAGx23oTqCNdYx68Xnkyo51DYe24q0=;
+        b=G7sMDTrbd+sCM/tTqEvaminZHhrEWRO1SeC4DZh2fRhjsFT1MzZZIa/nzm72YObK+I
+         0WeXVqaaC7gLw4qdSUVWUkDJty1LyRrVrlDi3qR40eLgYaJRBS6h3lvw7ulg2YmcfJHS
+         svvsf6RpHBpPfR0jQMlqsnFVcm0cjpuOhe2+85UhV67HOE2cC4/Jj5GJOxRLXNxobpSt
+         U9bDBvsUKRNa/chTsf1bziGfh222NwaNgMhJRwuM+56dV0eDsCO258mhLj3fuzzrtV/I
+         OUfgy6ud4D6EhLC1wYZEgGG9HAu62SkQ3vemekPkPwtUKmbAK5DHiTFlPcHFQMYeXzVE
+         wWyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755022642; x=1755627442;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SMsriY29YvNF5zAGx23oTqCNdYx68Xnkyo51DYe24q0=;
+        b=J3W9b3sLwIQnepCTSx3Fc8VrEEL+ksQpS4MEFcOJA2o+G7Owx8iBlLMXOFCeLaZGKs
+         Os5B0ZH4AHZLWi832YgiUk+MgsEaL3WvuNEhoc2aONjHP4R7dD91rb8nCP/kwxe5RIki
+         WRVSC7CvU+vB9+1mtnahy++11JjPa6F4bfxT7dvFlLD/ST7eWVuynlrmYOba09n7hVg/
+         uWNb9xL3PgjFLT4DtCtKO4TNqGTOagBtOv8bwpCNI2UhoFOf6LI+gAGsVNu/4lE9BSRB
+         gxcEFdlw14lL1d0uD/Uo04iJTNngdLR2DjyCL/GCvQbjcTyrFnwEfQsp8PLINIEBsxGn
+         6Tog==
+X-Forwarded-Encrypted: i=1; AJvYcCUDV2l6k8S+d+KnQn4NaIN2OUwGaCSq6/0sW2NArBECUa+CLl5TonAuSdrWvSg8tDB+YYM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyTmEFQTc+uGK46LYr2O8pfqOalA4Ns00KxNv+LFoAO6Nvk9Ehg
+	3gujA22CL/HAghrlXoSes+IZT+ZGzKDwAHAq/Kq5ZfO+knbfv5x3ViZrpVP+FAaqyLk=
+X-Gm-Gg: ASbGncuhU8FsLnDohq0l/BE54mHoUOtOCt4EXdu0q656pzMY06pO2Xa5cJMYM1Ivn5r
+	MxpAlzbfPFyQNe8IgYgZViXvRrA5bBiYC0a3nW2pXJQ0FnOdozeXv9Nqqf0+Yc9B9L8z+J9RHTp
+	WplgO0zpYu504aYMhqHwr+JEPpT8G1AmLUIMSbMBgx/lUS+SYLsqW7pkBGOxcmLuWxa0dKoLZRj
+	RSpq4nkQuHXuNJfJR/qNK3oOnfb7hxlPFUUpgpbdxGf36W+MXVLZpSErcQmtN7jlA49Pf/+6ISM
+	fwogOwvjKxIDaxCLd4s2DfEJOhtHALjgOT+iAIBJJtmEiqFlSEfXBhYIWduV141On6qwrFqKv0c
+	h70fpQMhZne/9Oft6OvUkAMsI0bzEjdLnQEN1zY3YJ2ByLGbrzvu1ox3m8zo0hRCbdlSvu3Ik
+X-Google-Smtp-Source: AGHT+IHNhWzWkwRf4t4T8nX0GvXq0IE7nZzVv4i5678hX4iND6uqFIFh5YX2G/IUawi7Y4lWCYrvwA==
+X-Received: by 2002:a17:90b:1a88:b0:31e:ec58:62e2 with SMTP id 98e67ed59e1d1-321d0e6d0famr45436a91.19.1755022642311;
+        Tue, 12 Aug 2025 11:17:22 -0700 (PDT)
+Received: from MacBook-Air.local (c-73-222-201-58.hsd1.ca.comcast.net. [73.222.201.58])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-321611dd694sm17922432a91.1.2025.08.12.11.17.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 11:17:21 -0700 (PDT)
+Date: Tue, 12 Aug 2025 11:17:19 -0700
+From: Joe Damato <joe@dama.to>
+To: Waqar Hameed <waqar.hameed@axis.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	kernel@axis.com, imx@lists.linux.dev, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] PCI: imx6: Enable the vpcie regulator when fetch it
-Message-ID: <zl6ie74kyeen2oudt3l2hv6ba5fwjsuiqlpdgaao5l7al7zjwu@bsj3agyukypn>
-References: <20250619072438.125921-1-hongxing.zhu@nxp.com>
+Subject: Re: [PATCH RESEND net-next v2] net: enetc: Remove error print for
+ devm_add_action_or_reset()
+Message-ID: <aJuFL__jLySvTNIp@MacBook-Air.local>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Waqar Hameed <waqar.hameed@axis.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	kernel@axis.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+References: <pnd1ppghh4p.a.out@axis.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250619072438.125921-1-hongxing.zhu@nxp.com>
+In-Reply-To: <pnd1ppghh4p.a.out@axis.com>
 
-On Thu, Jun 19, 2025 at 03:24:38PM GMT, Richard Zhu wrote:
-> Enable the vpcie regulator at probe time and keep it enabled for the
-> entire PCIe controller lifecycle. This ensures support for outbound
-> wake-up mechanism such as WAKE# signaling.
-
-I'm not sure about this part. For supporting WAKE#, Vaux supply has to be
-supplied to the endpoint. But here, 'vpcie' looks like the main 3.3V supply. So
-keeping it always on to support WAKE#, sounds to me that the component never
-enters the D3Cold state. So no WAKE# is required.
-
-- Mani
-
+On Tue, Aug 12, 2025 at 02:13:58PM +0200, Waqar Hameed wrote:
+> When `devm_add_action_or_reset()` fails, it is due to a failed memory
+> allocation and will thus return `-ENOMEM`. `dev_err_probe()` doesn't do
+> anything when error is `-ENOMEM`. Therefore, remove the useless call to
+> `dev_err_probe()` when `devm_add_action_or_reset()` fails, and just
+> return the value instead.
 > 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 27 ++++-----------------------
->  1 file changed, 4 insertions(+), 23 deletions(-)
+> Changes in v2:
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 5a38cfaf989b..7cab4bcfae56 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -159,7 +159,6 @@ struct imx_pcie {
->  	u32			tx_deemph_gen2_6db;
->  	u32			tx_swing_full;
->  	u32			tx_swing_low;
-> -	struct regulator	*vpcie;
->  	struct regulator	*vph;
->  	void __iomem		*phy_base;
->  
-> @@ -1198,15 +1197,6 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  	struct imx_pcie *imx_pcie = to_imx_pcie(pci);
->  	int ret;
->  
-> -	if (imx_pcie->vpcie) {
-> -		ret = regulator_enable(imx_pcie->vpcie);
-> -		if (ret) {
-> -			dev_err(dev, "failed to enable vpcie regulator: %d\n",
-> -				ret);
-> -			return ret;
-> -		}
-> -	}
-> -
->  	if (pp->bridge && imx_check_flag(imx_pcie, IMX_PCIE_FLAG_HAS_LUT)) {
->  		pp->bridge->enable_device = imx_pcie_enable_device;
->  		pp->bridge->disable_device = imx_pcie_disable_device;
-> @@ -1222,7 +1212,7 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  	ret = imx_pcie_clk_enable(imx_pcie);
->  	if (ret) {
->  		dev_err(dev, "unable to enable pcie clocks: %d\n", ret);
-> -		goto err_reg_disable;
-> +		return ret;
->  	}
->  
->  	if (imx_pcie->phy) {
-> @@ -1269,9 +1259,6 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  	phy_exit(imx_pcie->phy);
->  err_clk_disable:
->  	imx_pcie_clk_disable(imx_pcie);
-> -err_reg_disable:
-> -	if (imx_pcie->vpcie)
-> -		regulator_disable(imx_pcie->vpcie);
->  	return ret;
->  }
->  
-> @@ -1286,9 +1273,6 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
->  		phy_exit(imx_pcie->phy);
->  	}
->  	imx_pcie_clk_disable(imx_pcie);
-> -
-> -	if (imx_pcie->vpcie)
-> -		regulator_disable(imx_pcie->vpcie);
->  }
->  
->  static void imx_pcie_host_post_init(struct dw_pcie_rp *pp)
-> @@ -1739,12 +1723,9 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  	pci->max_link_speed = 1;
->  	of_property_read_u32(node, "fsl,max-link-speed", &pci->max_link_speed);
->  
-> -	imx_pcie->vpcie = devm_regulator_get_optional(&pdev->dev, "vpcie");
-> -	if (IS_ERR(imx_pcie->vpcie)) {
-> -		if (PTR_ERR(imx_pcie->vpcie) != -ENODEV)
-> -			return PTR_ERR(imx_pcie->vpcie);
-> -		imx_pcie->vpcie = NULL;
-> -	}
-> +	ret = devm_regulator_get_enable_optional(&pdev->dev, "vpcie");
-> +	if (ret < 0 && ret != -ENODEV)
-> +		return dev_err_probe(dev, ret, "failed to enable vpcie");
->  
->  	imx_pcie->vph = devm_regulator_get_optional(&pdev->dev, "vph");
->  	if (IS_ERR(imx_pcie->vph)) {
-> -- 
-> 2.37.1
+> * Split the patch to one seperate patch for each sub-system.
 > 
+> Link to v1: https://lore.kernel.org/all/pnd7c0s6ji2.fsf@axis.com/
+> 
+>  drivers/net/ethernet/freescale/enetc/enetc4_pf.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> index b3dc1afeefd1..38fb81db48c2 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> @@ -1016,8 +1016,7 @@ static int enetc4_pf_probe(struct pci_dev *pdev,
+>  
+>  	err = devm_add_action_or_reset(dev, enetc4_pci_remove, pdev);
+>  	if (err)
+> -		return dev_err_probe(dev, err,
+> -				     "Add enetc4_pci_remove() action failed\n");
+> +		return err;
 
--- 
-மணிவண்ணன் சதாசிவம்
+I looked at a couple other drivers that use devm_add_action_or_reset and most
+follow the pattern proposed by this change.
+
+Reviewed-by: Joe Damato <joe@dama.to>
