@@ -1,169 +1,146 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C106C25F975
-	for <imx@lists.linux.dev>; Wed, 13 Aug 2025 04:31:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E132BE02B;
+	Wed, 13 Aug 2025 04:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755059474; cv=none; b=uFdxQNrJU2PPkS0a8rFaWm0bgS4NdwlSZ4TlpplNxp9IBovsdlTMXhP2iGTxjqvsYmKC/0YCWzXVxbjl9Ck0xNclBhI/GL63yxhklzJQOH35xJq9gfVtN3/Vma3FWwl6MEKu3cZl4+gCvxntVfRF9xT6DuD5gxEsJ8RJxLjJUDk=
+	t=1755060376; cv=none; b=ZYPRam+NBWys6nrk7z/qLuX18348QDhqRQpw1s9CPd7ou/1a3Y0kstwt7jWdofltaFAmLCLp3T5dyVd80ZBux85Gd9v6C7naBRngvulSZW7C5piLUnoFCehfNBpJMYmrm5C1wOyqC7xPfUcu3zy7JTVzo6Mwl5UJZMmScIhQx6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755059474; c=relaxed/simple;
-	bh=1+lPN/7RaXvAgaTP1wg5cSNxAX1xzdUfHWFU4t8MroE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rXH9j37xGezABqWN5oXSKJlBz4z/wQY3UkYvbL1/QZhn0Oa1di2MyteSWZLNqIfNTon0OCDMbrk3qIWAXmlFLGryTPF3pTR70uMZP3wXG/bkJ1VvVQ2W+lurG7CiQB9y2ZMS8I/6XJ6ytWIkFp0XAXOGn+Hhn5BG0l3Jeiy/Lbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=willwhang.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=willwhang.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6182b3218aeso5218912a12.2
-        for <imx@lists.linux.dev>; Tue, 12 Aug 2025 21:31:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755059470; x=1755664270;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jEitumvRdECaQFnfUf7n8uN2sOMlQVkaq/vshRF+hlY=;
-        b=odPtSR9+S2gM1cTyo1VkFEZViy0nH2LKwMmFWP7RpFrBDj8GBaeMVXMsxyVn5ABxnb
-         raukdvf0jtCtcnk49XRaG/tch/X9F6IqIUq2lIpzIXbnfXcUyVgBVx9yR0ENRGbAcwSF
-         L7bivgG7EIqhM7FaAO82aHXQ2VC/uKUQjehTjMdevYLMswhjFW7UsrrYCLDlNNqcNS6h
-         BVFL2xjEMy9qgorTUckSSL9HCbncckfio02mp+Tv8DLvkw6JOK+eroNHdul+/3SsVMBO
-         2jU+jLWJ6lIs9G9P/+Ja/I+KA4IGP8Pg2dFT2cCSS7VsVP+puL+S2QohlevUkD8SQVbB
-         qAbw==
-X-Forwarded-Encrypted: i=1; AJvYcCWY9XmFO5qnAZC5S9GHMhYHwL2+twcPdydoox6BhkDI3nofGXO5WGxUifAW7JSwp8sltcs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YykLZXDd2zjYlQeJd5kFYnk8aETEwzyOoWYwxtbwUQRCZ8uyM7D
-	IMlhK2mF1Gmj/n4mdGG+1rv4lMb8lSEmrbmlqww7iZqhkIzrgSJKyNtN2vcOu/RAugc=
-X-Gm-Gg: ASbGnctXez321aCc/00z7PR2uRBUcKLIEC3P/uR1iXLr+j1xS275kTeeCY23VeOXlE4
-	Gl9K3I2VWDYC/W/9wpv98s2zB8iHVYh2w+yNPr5b2pJ5nXI4K7C0CUlAOGoslEYoA0Lfr97YEJX
-	4qHVr8u06GS1bSqd6MVNbAEnSUeE7tWri751xcHvo/w+aJSj62oxroJGi7AhltOnGgYKlsfmzVe
-	kNs6NT69JRkMC071ZLmy5GczJ31mRutik1qqQIVx2dUJcoccdF06JRgMVVB1uby4EyTbQj0tUCY
-	/phKq+2rNCubQYYXZRqoJcDFqsb8/LzHtbBLVgItQ1zRU7SyFDbjECkP4k5Ucww2xj31Uc8+NF1
-	XAQ55YVkJ72XFnD5iJLSZZa0ysnLmj8S6fNs0WnVjhxOBOPA9eRgOhgKiIg==
-X-Google-Smtp-Source: AGHT+IGTu8701W7tFVCugKdYYfiBmcO19eXFTa+9RwMbQNXmI/+awjbflD9Yat+Y6JnRWRXUpt7hEw==
-X-Received: by 2002:a05:6402:13ca:b0:617:91d5:7cb2 with SMTP id 4fb4d7f45d1cf-6186bfc95f5mr1140800a12.23.1755059469842;
-        Tue, 12 Aug 2025 21:31:09 -0700 (PDT)
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com. [209.85.208.42])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6180ce5b9e3sm6604172a12.9.2025.08.12.21.31.09
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Aug 2025 21:31:09 -0700 (PDT)
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6182b3218aeso5218887a12.2
-        for <imx@lists.linux.dev>; Tue, 12 Aug 2025 21:31:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXwKxUg6SfYc3v+PfpZwRAAFogMKLfx+BEEp72KoU0qrHmp6t3BvgAROMIi8LLpp7ZzPGQ=@lists.linux.dev
-X-Received: by 2002:a05:6402:5251:b0:615:539b:7acf with SMTP id
- 4fb4d7f45d1cf-6186b75b54cmr834464a12.2.1755059469148; Tue, 12 Aug 2025
- 21:31:09 -0700 (PDT)
+	s=arc-20240116; t=1755060376; c=relaxed/simple;
+	bh=CNCPr3061lzFu/y/M0rHp79zv5MIDNX8YMnD5Ix53Jo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VG6oucO+WKNai391MIcTABWLIxLgZvzRy2JO9lXHtj9NsLLTHMNzbwDIwH2wO0MFnNWfEPfpX4KVPfFEyhvgzxvYEWz+Js05PTMvRcNSrPWYl+/O1V1u6O7iImplW/QzctQQkA92FR5eK7hYeSAITO8Ji5Vxn29Znn4aQhdAMsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NmB21kcX; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NmB21kcX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755060375; x=1786596375;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CNCPr3061lzFu/y/M0rHp79zv5MIDNX8YMnD5Ix53Jo=;
+  b=NmB21kcXpnILhp3s4NlKKq5K7bseKLgG47aqhATHKiKsD8tuwCjNLfn+
+   qm4WippDEITbVfhkwluUkaoupFsOdMBtbMy0NEUFuCAgH/38FHtJWIIuj
+   k2bf6zoptj7LMkWjM+bFD5lNI/PiLPFLVscExMyfhto9wXesEUHDDOgGI
+   cnUGUdnOVFyjY+iditLAOwiKTGIsFstHoIpGxf7xo7UN+jqE5x0rElpT2
+   E5Xs77NiwRJ1PCRyyi+5/SUJSvol9xo44EjJfmxJAKs/sP61s0OPs2hqL
+   o2fPuGtZjLRG7pD4sXVP5u/RPvZbfdl4IknrBWCiL5FxYfhqg80qtbv6c
+   Q==;
+X-CSE-ConnectionGUID: FfIWMBBLSPqR227j0r3Jnw==
+X-CSE-MsgGUID: /44CJZDhS2KsfFRg2S15HA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="56553156"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="56553156"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 21:46:14 -0700
+X-CSE-ConnectionGUID: 73YJIUzuTVOR1yb0seCTWw==
+X-CSE-MsgGUID: z+eiv8i/SgKgheRVY/VAhw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="170573343"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa005.fm.intel.com with ESMTP; 12 Aug 2025 21:46:09 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1um3NG-0009XE-2t;
+	Wed, 13 Aug 2025 04:46:06 +0000
+Date: Wed, 13 Aug 2025 12:45:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wei Fang <wei.fang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, richardcochran@gmail.com,
+	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	vadim.fedorenko@linux.dev, Frank.Li@nxp.com, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, festevam@gmail.com
+Cc: oe-kbuild-all@lists.linux.dev, fushi.peng@nxp.com,
+	devicetree@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	kernel@pengutronix.de
+Subject: Re: [PATCH v3 net-next 04/15] ptp: netc: add NETC V4 Timer PTP
+ driver support
+Message-ID: <202508131032.BQJ5m6ky-lkp@intel.com>
+References: <20250812094634.489901-5-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250810220921.14307-1-will@willwhang.com> <20250810220921.14307-2-will@willwhang.com>
- <20250811-successful-military-dragon-d72486@kuoka> <CAFoNnrxWwqT9WA-h2WOsUe6Q-qEoz2mTHLpDogAyMwiXXZ9MrA@mail.gmail.com>
- <f12e6ff3-6ec3-487f-bf9c-0f8c06ee6444@kernel.org> <CAFoNnrxhUof8BBrefm1L1peTxg==Koz72TY+54G_8QUy-rrT8g@mail.gmail.com>
- <e695c61a-e183-4eea-a7f6-1b2861b2129f@kernel.org> <20250812095543.GJ30054@pendragon.ideasonboard.com>
-In-Reply-To: <20250812095543.GJ30054@pendragon.ideasonboard.com>
-From: Will Whang <will@willwhang.com>
-Date: Tue, 12 Aug 2025 21:30:58 -0700
-X-Gmail-Original-Message-ID: <CAFoNnrzWot_Bf=YZFac1GkZgOOnJycwpidvwL93p3p-C-zn8BA@mail.gmail.com>
-X-Gm-Features: Ac12FXw_0xiUCO5_AdWCiXWdSKd3XS6pJsuGK-9Sx_SEJjxOfia3w-Vp2ADn6es
-Message-ID: <CAFoNnrzWot_Bf=YZFac1GkZgOOnJycwpidvwL93p3p-C-zn8BA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] dt-bindings: media: Add Sony IMX585 CMOS image sensor
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250812094634.489901-5-wei.fang@nxp.com>
 
-On Tue, Aug 12, 2025 at 2:56=E2=80=AFAM Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> On Tue, Aug 12, 2025 at 08:47:12AM +0200, Krzysztof Kozlowski wrote:
-> > On 12/08/2025 08:31, Will Whang wrote:
-> > > On Mon, Aug 11, 2025 at 11:23=E2=80=AFPM Krzysztof Kozlowski <krzk@ke=
-rnel.org> wrote:
-> > >> On 12/08/2025 04:47, Will Whang wrote:
-> > >>> On Mon, Aug 11, 2025 at 1:01=E2=80=AFAM Krzysztof Kozlowski <krzk@k=
-ernel.org> wrote:
-> > >>>> On Sun, Aug 10, 2025 at 11:09:18PM +0100, Will Whang wrote:
-> > >>>>> +description:
-> > >>>>> +  IMX585 sensor is a Sony CMOS sensor with 4K and FHD outputs.
-> > >>>>> +
-> > >>>>> +properties:
-> > >>>>> +  compatible:
-> > >>>>> +    enum:
-> > >>>>> +      - sony,imx585
-> > >>>>> +      - sony,imx585-mono
-> > >>>>
-> > >>>> I don't understand this second compatible. Is this different hardw=
-are?
-> > >>>> Can you point me to "mono" datasheet?
-> > >>>>
-> > >>>> Your description should explain this. Commit msg as well, instead =
-of
-> > >>>> speaking about driver (in fact drop all driver related comments).
-> > >>>>
-> > >>> Mono version of this sensor is basically just removing the bayer
-> > >>> filter, so the sensor itself actually doesn't know if it is color o=
-r
-> > >>> mono and from my knowledge there are no registers programmed in the
-> > >>> factory that will show the variant and model number. (That is why w=
-hen
-> > >>> the driver probing it only test blacklevel register because there a=
-re
-> > >>> no ID registers)
-> > >>> Originally in V1 patch I've made the switch between color and mono =
-in
-> > >>> dtoverlay config but reviewer comments is to move it to compatible
-> > >>> string and not property.(https://lore.kernel.org/linux-media/202507=
-03175121.GA17709@pendragon.ideasonboard.com/)
-> > >>
-> > >> You only partially answer and judging by mentioning driver below:
-> > >>
-> > >>> In this case, what would you recommend?
-> > >>>
-> > >>> compatible:
-> > >>>   enum:
-> > >>>     - sony,imx585
-> > >>>     - sony,imx585-mono
-> > >>>   description: IMX585 has two variants, color and mono which the
-> > >>> driver supports both.
-> > >>
-> > >> ... I still have doubts that you really understand what I am asking.=
- Is
-> > >> this one device or two different devices?
-> > >
-> > > One device that has two variants: IMX585-AAMJ1 (Mono) and IMX585-AAQJ=
-1
-> > > (Color). Silicon-wise the difference is just with or without bayer
-> > > filter.
-> >
-> > Then I would propose to use sony,imx585-aamj1 and -aaqj1 with short
-> > explanation either in comment or description about difference in RGB
-> > mosaic filter.
->
-> Works for me. We could possibly omit the "j1" suffix too.
->
-My thinking is that imx585 and imx585-mono are easier to comprehend
-than IMX585-AAM and IMX585-AAQ.
-Because in dtoverlay for the users/me they will have to know what is
-the exact name instead of easy to remember name.
+Hi Wei,
 
-dtoverlay=3Dimx585-aam
-is not as nice as
-dtoverlay=3Dimx585-mono
+kernel test robot noticed the following build warnings:
 
-which is what it does, a mono variant of the sensor.
+[auto build test WARNING on net-next/main]
 
-I really don't understand the standard for compatible string naming
-here, is there something I missed? Is it required to use the full name
-of the sensor parts number as a compatible string?
+url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Fang/dt-bindings-ptp-add-NETC-Timer-PTP-clock/20250812-181510
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20250812094634.489901-5-wei.fang%40nxp.com
+patch subject: [PATCH v3 net-next 04/15] ptp: netc: add NETC V4 Timer PTP driver support
+config: i386-allyesconfig (https://download.01.org/0day-ci/archive/20250813/202508131032.BQJ5m6ky-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250813/202508131032.BQJ5m6ky-lkp@intel.com/reproduce)
 
-> --
-> Regards,
->
-> Laurent Pinchart
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508131032.BQJ5m6ky-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/ptp/ptp_netc.c: In function 'netc_timer_get_reference_clk_source':
+>> drivers/ptp/ptp_netc.c:365:45: warning: left shift count >= width of type [-Wshift-count-overflow]
+     365 |         priv->period = div_u64(NSEC_PER_SEC << 32, priv->clk_freq);
+         |                                             ^~
+
+
+vim +365 drivers/ptp/ptp_netc.c
+
+   333	
+   334	static int netc_timer_get_reference_clk_source(struct netc_timer *priv)
+   335	{
+   336		struct device *dev = &priv->pdev->dev;
+   337		struct clk *clk;
+   338		int i;
+   339	
+   340		/* Select NETC system clock as the reference clock by default */
+   341		priv->clk_select = NETC_TMR_SYSTEM_CLK;
+   342		priv->clk_freq = NETC_TMR_SYSCLK_333M;
+   343	
+   344		/* Update the clock source of the reference clock if the clock
+   345		 * is specified in DT node.
+   346		 */
+   347		for (i = 0; i < ARRAY_SIZE(timer_clk_src); i++) {
+   348			clk = devm_clk_get_optional_enabled(dev, timer_clk_src[i]);
+   349			if (IS_ERR(clk))
+   350				return PTR_ERR(clk);
+   351	
+   352			if (clk) {
+   353				priv->clk_freq = clk_get_rate(clk);
+   354				priv->clk_select = i ? NETC_TMR_EXT_OSC :
+   355						       NETC_TMR_CCM_TIMER1;
+   356				break;
+   357			}
+   358		}
+   359	
+   360		/* The period is a 64-bit number, the high 32-bit is the integer
+   361		 * part of the period, the low 32-bit is the fractional part of
+   362		 * the period. In order to get the desired 32-bit fixed-point
+   363		 * format, multiply the numerator of the fraction by 2^32.
+   364		 */
+ > 365		priv->period = div_u64(NSEC_PER_SEC << 32, priv->clk_freq);
+   366	
+   367		return 0;
+   368	}
+   369	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
