@@ -1,318 +1,214 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999ED2ECEBD
-	for <imx@lists.linux.dev>; Wed, 13 Aug 2025 07:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D289A225762;
+	Wed, 13 Aug 2025 07:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755068939; cv=none; b=qiXDsRVVj4Uf45XXH2swUv2LLIBLieIhXBwqT1X/MOl8hVaF/dVQKERyQN+Od3tr/8nVKPRksoquAe1JOROmsCcmF/HWZLkmvDs7slq+lmH53DlVuA9JgJR4KEfjMHJ7FH/eQ0KMOdy4y38/1yYxPEdQ/1+jXvtwhvknyGW74WQ=
+	t=1755070467; cv=none; b=cbWs90LIGOjNJHJkxmYTaBsrNcThLGDnnJxCMSA++wa9gawh7E+xr+xNYlj/YfjbtJqu8YeauclBkwI73TJTJw4JbyQVMCl+v0HWRbjEhn7RhgIuKZwsva5jmBoWhfADDXt0v9xTAPnGYJ2XNk6e+0BW/r/uFjFvBXyA6CayMVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755068939; c=relaxed/simple;
-	bh=QYaxlKYoCnSUSTITH74gXHhQqP4vxVMhGv1+UnHTb74=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rOFSosxCCwzLHYiQ6C6bO4b1oGHPaKp/phEsb5geHeQIOFIIU3xrb4fBKcskJwHqSXHext8lc+odkglJmce8AN0n2qBaBtgWO+VwG4zrWYCUolJDQLP1LrloJ5FkENKZlBEttnfygSTSyo1dRzmL88ZtnI16jNgCy4N9c7NT9ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=TJ6lCE8a; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=GgP676hq; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1755070467; c=relaxed/simple;
+	bh=LOw47lq3lTR3OffAqvYBcY7aTdLFREjOhrLME4xQV7k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KtXKoR/J9vRHrb43o52ajG9ZJz71mCO4Nt+ZzKTxwMhGLzO++x6rKyhRiBPthoHkNoxWwprH9A8/b9Vp7HbcKmboxAMECq8nYeuFTdTDpgkpd33oeaWnm9czlAHdQOL4MnrVKreObaH9U6c9h6wvC/ejJu0SEmsgYK8JqqndIh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IgS2znVO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="TJ6lCE8a";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="GgP676hq"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4c1zxg1CW4z9sxM;
-	Wed, 13 Aug 2025 09:08:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1755068935;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8jexbxzipWzrxqlmph9PiBTpETZUbRAyJQiQmfwesXA=;
-	b=TJ6lCE8ajvCRDPp2Qm/byOLqXJnvECzLa0KhGFePXqqnZ09txZ0gVOFqCLn341Mx/Z8pvC
-	URzNxMLXD98Qj7LgLGy+v6LMWr6n7GVuP6AA121BKSJmTlSK44z2bHjwtYb1+YcFUImV2A
-	lYaQ0FJSb/jlz4AVdwAL5bUQKaY5LX1FhNkWjKBrI7VB6gd6xvKtWduSFyiG17A7Hpei25
-	BpIKn5RWWpnYkHe/knhb4GZj5lO1HHAAcctiSID5yFTnUZqrxxY9TxsQgCWvDOS2P3nSq6
-	aAOM1XHpvbHxMHJFpD5sCGNFn01SXCXv7inmT47zOxZSVRi3/G1vQ7dQjLbdtw==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=GgP676hq;
-	spf=pass (outgoing_mbo_mout: domain of lukasz.majewski@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=lukasz.majewski@mailbox.org
-From: Lukasz Majewski <lukasz.majewski@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1755068933;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8jexbxzipWzrxqlmph9PiBTpETZUbRAyJQiQmfwesXA=;
-	b=GgP676hqUjQQJUCeoTiHyvGv8pUUmkKmozcJMdzLbGWRcbv01NCnk3t6sOTxB8ihjzwp6r
-	/Jm8suMKH0AnQCE416CjX/8aFskKswhII9S2+EcuKZOqVnEnqIQi2Csjv/E/2zXP2SFruw
-	tnQ6TXGeScf+C1DKmHJVLKb1CvLV8wjVcwIHe1uIDZaHPFdvQb1VYZfgKgOUtvsOynxd/q
-	m/gPRs9KniIsMSfxgcNnu2cvH1BxiMRFwhmcOeB+gDeQq9S/9oN5unCR3Y8AYm5GklKZ5J
-	di4b/+3MFDcNXSosPVHVEgz8whrz0H1CxeMwJcCrhOBWP+IR0rhizEGaEjW4kQ==
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Lukasz Majewski <lukasz.majewski@mailbox.org>
-Subject: [net-next v18 7/7] net: mtip: Extend the L2 switch driver for imx287 with bridge operations
-Date: Wed, 13 Aug 2025 09:07:55 +0200
-Message-Id: <20250813070755.1523898-8-lukasz.majewski@mailbox.org>
-In-Reply-To: <20250813070755.1523898-1-lukasz.majewski@mailbox.org>
-References: <20250813070755.1523898-1-lukasz.majewski@mailbox.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IgS2znVO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C75BC4CEEB;
+	Wed, 13 Aug 2025 07:34:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755070466;
+	bh=LOw47lq3lTR3OffAqvYBcY7aTdLFREjOhrLME4xQV7k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IgS2znVOJsb/2yQQhCk1/XOsk+ALrk5kbMtqU25i8vDD5NQrfftFwFA/g+YUx1Lxr
+	 xvpbUjzDsFRLNZSQe4fyJZqyN48QvKuMCUdc7QP2dtGDlRp0CG/1HR1i60+JmYwhau
+	 Ts0bXuajM4QBb8Ah2QcyXbkvUAJ3tl+9P+Sl6Km+ZX+j5lcr5emk38sKtv3XZS/ywp
+	 6UkQQnhQXq/vKbSpiZ61ozXwQR6AeA19ov4U1UMQJ7hDK0+kmbzh/HfRZbFD+oejTY
+	 OGDhVwHorYMpMamFr8MorTN+w2urXI4l6gxkmWctNhW2bGuR9NEmtzgee5mdd8hw/n
+	 zh1Lhefw+iyCQ==
+Message-ID: <faf398eb-2be4-43cd-a5bf-2c688dd7bc18@kernel.org>
+Date: Wed, 13 Aug 2025 09:34:20 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] dt-bindings: media: Add Sony IMX585 CMOS image
+ sensor
+To: Will Whang <will@willwhang.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250810220921.14307-1-will@willwhang.com>
+ <20250810220921.14307-2-will@willwhang.com>
+ <20250811-successful-military-dragon-d72486@kuoka>
+ <CAFoNnrxWwqT9WA-h2WOsUe6Q-qEoz2mTHLpDogAyMwiXXZ9MrA@mail.gmail.com>
+ <f12e6ff3-6ec3-487f-bf9c-0f8c06ee6444@kernel.org>
+ <CAFoNnrxhUof8BBrefm1L1peTxg==Koz72TY+54G_8QUy-rrT8g@mail.gmail.com>
+ <e695c61a-e183-4eea-a7f6-1b2861b2129f@kernel.org>
+ <20250812095543.GJ30054@pendragon.ideasonboard.com>
+ <CAFoNnrzWot_Bf=YZFac1GkZgOOnJycwpidvwL93p3p-C-zn8BA@mail.gmail.com>
+ <6d6dc9e6-751f-4079-b21e-2e3461885b03@kernel.org>
+ <CAFoNnrwoRbtvTHHnjarDTKEHnQMaMDERPKi_vnYym3n8tVpzOA@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <CAFoNnrwoRbtvTHHnjarDTKEHnQMaMDERPKi_vnYym3n8tVpzOA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 71b44368fe03902302c
-X-MBO-RS-META: 4yikww5yjhzhwnbfzdtp181u6u8ig5q4
-X-Rspamd-Queue-Id: 4c1zxg1CW4z9sxM
 
-After this change the MTIP L2 switch can be configured as offloading
-device for packet switching when bridge on their interfaces is created.
+On 13/08/2025 08:38, Will Whang wrote:
+> On Tue, Aug 12, 2025 at 11:08 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>
+>> On 13/08/2025 06:30, Will Whang wrote:
+>>> On Tue, Aug 12, 2025 at 2:56 AM Laurent Pinchart
+>>> <laurent.pinchart@ideasonboard.com> wrote:
+>>>>
+>>>> On Tue, Aug 12, 2025 at 08:47:12AM +0200, Krzysztof Kozlowski wrote:
+>>>>> On 12/08/2025 08:31, Will Whang wrote:
+>>>>>> On Mon, Aug 11, 2025 at 11:23 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>>>>> On 12/08/2025 04:47, Will Whang wrote:
+>>>>>>>> On Mon, Aug 11, 2025 at 1:01 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>>>>>>> On Sun, Aug 10, 2025 at 11:09:18PM +0100, Will Whang wrote:
+>>>>>>>>>> +description:
+>>>>>>>>>> +  IMX585 sensor is a Sony CMOS sensor with 4K and FHD outputs.
+>>>>>>>>>> +
+>>>>>>>>>> +properties:
+>>>>>>>>>> +  compatible:
+>>>>>>>>>> +    enum:
+>>>>>>>>>> +      - sony,imx585
+>>>>>>>>>> +      - sony,imx585-mono
+>>>>>>>>>
+>>>>>>>>> I don't understand this second compatible. Is this different hardware?
+>>>>>>>>> Can you point me to "mono" datasheet?
+>>>>>>>>>
+>>>>>>>>> Your description should explain this. Commit msg as well, instead of
+>>>>>>>>> speaking about driver (in fact drop all driver related comments).
+>>>>>>>>>
+>>>>>>>> Mono version of this sensor is basically just removing the bayer
+>>>>>>>> filter, so the sensor itself actually doesn't know if it is color or
+>>>>>>>> mono and from my knowledge there are no registers programmed in the
+>>>>>>>> factory that will show the variant and model number. (That is why when
+>>>>>>>> the driver probing it only test blacklevel register because there are
+>>>>>>>> no ID registers)
+>>>>>>>> Originally in V1 patch I've made the switch between color and mono in
+>>>>>>>> dtoverlay config but reviewer comments is to move it to compatible
+>>>>>>>> string and not property.(https://lore.kernel.org/linux-media/20250703175121.GA17709@pendragon.ideasonboard.com/)
+>>>>>>>
+>>>>>>> You only partially answer and judging by mentioning driver below:
+>>>>>>>
+>>>>>>>> In this case, what would you recommend?
+>>>>>>>>
+>>>>>>>> compatible:
+>>>>>>>>   enum:
+>>>>>>>>     - sony,imx585
+>>>>>>>>     - sony,imx585-mono
+>>>>>>>>   description: IMX585 has two variants, color and mono which the
+>>>>>>>> driver supports both.
+>>>>>>>
+>>>>>>> ... I still have doubts that you really understand what I am asking. Is
+>>>>>>> this one device or two different devices?
+>>>>>>
+>>>>>> One device that has two variants: IMX585-AAMJ1 (Mono) and IMX585-AAQJ1
+>>>>>> (Color). Silicon-wise the difference is just with or without bayer
+>>>>>> filter.
+>>>>>
+>>>>> Then I would propose to use sony,imx585-aamj1 and -aaqj1 with short
+>>>>> explanation either in comment or description about difference in RGB
+>>>>> mosaic filter.
+>>>>
+>>>> Works for me. We could possibly omit the "j1" suffix too.
+>>>>
+>>> My thinking is that imx585 and imx585-mono are easier to comprehend
+>>> than IMX585-AAM and IMX585-AAQ.
+>>> Because in dtoverlay for the users/me they will have to know what is
+>>> the exact name instead of easy to remember name.
+>>>
+>>> dtoverlay=imx585-aam
+>>> is not as nice as
+>>> dtoverlay=imx585-mono
+>>
+>> I have datasheet for AAQ, so how above is easier for me to figure out
+>> which compatible I am using?
+>>
+> I propose this:
+> 
+> compatible:
+>   enum:
+>     - sony,imx585
+>     - sony,imx585-mono
+>     - sony,imx585-AAQJ1
+>     - sony,imx585-AAMJ1
+> 
+>   description: IMX585 has two variants, color (IMX585-AAQ) and mono
+> (IMX585-AAM) which
+> the driver supports both.
 
-Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
----
+So why four compatibles? BTW, driver does not matter.
 
-Changes for v13:
-- New patch - created by excluding some code from large (i.e. v12 and
-  earlier) MTIP driver
+> 
+> Description is there for a reason, dtoverlay has description also. See
+> sony,imx296.yaml as an example.
+> If you are looking at AAQ you know it is a color sensor and all the
+> color sensors from sony can be used with imx+three numbers in the
+> current list.
+> This is following the established convention.
+Which? Sorry, point me anywhere to convention that we do not use proper
+full model names but shortened version for some variant of a device?
+Such approach lead to many issues in the past, for example current
+Risc-v reset mess where contributor wants to remove completely
+incomplete compatible :/
 
-Changes for v14 - v15:
-- None
-
-Changes for v16:
-- Enable MTIP ports to support bridge offloading
-
-Changes for v17 - v18:
-- None
----
- .../net/ethernet/freescale/mtipsw/Makefile    |   2 +-
- .../net/ethernet/freescale/mtipsw/mtipl2sw.c  |   9 +-
- .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |   2 +
- .../ethernet/freescale/mtipsw/mtipl2sw_br.c   | 132 ++++++++++++++++++
- 4 files changed, 143 insertions(+), 2 deletions(-)
- create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
-
-diff --git a/drivers/net/ethernet/freescale/mtipsw/Makefile b/drivers/net/ethernet/freescale/mtipsw/Makefile
-index a99aaf6ddfb2..81e2b0e03e6c 100644
---- a/drivers/net/ethernet/freescale/mtipsw/Makefile
-+++ b/drivers/net/ethernet/freescale/mtipsw/Makefile
-@@ -1,4 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- obj-$(CONFIG_FEC_MTIP_L2SW) += nxp-mtipl2sw.o
--nxp-mtipl2sw-objs := mtipl2sw.o mtipl2sw_mgnt.o
-+nxp-mtipl2sw-objs := mtipl2sw.o mtipl2sw_mgnt.o mtipl2sw_br.o
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-index 4c9776fc5382..a67fd1f5c807 100644
---- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-@@ -1887,11 +1887,15 @@ static int mtip_sw_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret, "Could not alloc IRQ\n");
- 
-+	ret = mtip_register_notifiers(fep);
-+	if (ret)
-+		return ret;
-+
- 	ret = mtip_switch_dma_init(fep);
- 	if (ret) {
- 		dev_err(&pdev->dev, "%s: ethernet switch init fail (%d)!\n",
- 			__func__, ret);
--		return ret;
-+		goto unregister_notifiers;
- 	}
- 
- 	ret = mtip_mii_init(fep, pdev);
-@@ -1922,6 +1926,8 @@ static int mtip_sw_probe(struct platform_device *pdev)
- 			  fep->bd_dma);
- 	fep->rx_bd_base = NULL;
- 	fep->tx_bd_base = NULL;
-+ unregister_notifiers:
-+	mtip_unregister_notifiers(fep);
- 
- 	return ret;
- }
-@@ -1930,6 +1936,7 @@ static void mtip_sw_remove(struct platform_device *pdev)
- {
- 	struct switch_enet_private *fep = platform_get_drvdata(pdev);
- 
-+	mtip_unregister_notifiers(fep);
- 	mtip_ndev_cleanup(fep);
- 
- 	mtip_mii_remove(fep);
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-index 7e5373823d43..3dae94048917 100644
---- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-@@ -643,6 +643,8 @@ int mtip_port_learning_config(struct switch_enet_private *fep, int port,
- int mtip_port_blocking_config(struct switch_enet_private *fep, int port,
- 			      bool enable);
- bool mtip_is_switch_netdev_port(const struct net_device *ndev);
-+int mtip_register_notifiers(struct switch_enet_private *fep);
-+void mtip_unregister_notifiers(struct switch_enet_private *fep);
- int mtip_port_enable_config(struct switch_enet_private *fep, int port,
- 			    bool tx_en, bool rx_en);
- void mtip_clear_atable(struct switch_enet_private *fep);
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
-new file mode 100644
-index 000000000000..f961b9cc4e6a
---- /dev/null
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
-@@ -0,0 +1,132 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ *  L2 switch Controller driver for MTIP block - bridge network interface
-+ *
-+ *  Copyright (C) 2025 DENX Software Engineering GmbH
-+ *  Lukasz Majewski <lukma@denx.de>
-+ */
-+
-+#include <linux/etherdevice.h>
-+#include <linux/netdevice.h>
-+#include <linux/platform_device.h>
-+#include <net/switchdev.h>
-+
-+#include "mtipl2sw.h"
-+
-+static int mtip_ndev_port_link(struct net_device *ndev,
-+			       struct net_device *br_ndev,
-+			       struct netlink_ext_ack *extack)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(ndev), *other_priv;
-+	struct switch_enet_private *fep = priv->fep;
-+	struct net_device *other_ndev;
-+	int err;
-+
-+	/* Check if one port of MTIP switch is already bridged */
-+	if (fep->br_members && !fep->br_offload) {
-+		/* Get the second bridge ndev */
-+		other_ndev = fep->ndev[fep->br_members - 1];
-+		other_priv = netdev_priv(other_ndev);
-+		if (other_priv->master_dev != br_ndev) {
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "L2 offloading only possible for the same bridge!");
-+			return notifier_from_errno(-EOPNOTSUPP);
-+		}
-+
-+		fep->br_offload = 1;
-+		mtip_switch_dis_port_separation(fep);
-+		mtip_clear_atable(fep);
-+	}
-+
-+	if (!priv->master_dev)
-+		priv->master_dev = br_ndev;
-+
-+	fep->br_members |= BIT(priv->portnum - 1);
-+
-+	err = switchdev_bridge_port_offload(ndev, ndev, NULL, NULL, NULL,
-+					    false, extack);
-+	if (err) {
-+		dev_err(&ndev->dev, "can't offload bridge port %s [err: %d]\n",
-+			ndev->name, err);
-+		return err;
-+	}
-+
-+	dev_dbg(&ndev->dev,
-+		"%s: ndev: %s br: %s fep: %p members: 0x%x offload: %d\n",
-+		__func__, ndev->name,  br_ndev->name, fep, fep->br_members,
-+		fep->br_offload);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static void mtip_netdevice_port_unlink(struct net_device *ndev)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(ndev);
-+	struct switch_enet_private *fep = priv->fep;
-+
-+	dev_dbg(&ndev->dev, "%s: ndev: %s members: 0x%x\n", __func__,
-+		ndev->name, fep->br_members);
-+
-+	switchdev_bridge_port_unoffload(ndev, NULL, NULL, NULL);
-+
-+	fep->br_members &= ~BIT(priv->portnum - 1);
-+	priv->master_dev = NULL;
-+
-+	if (fep->br_members && fep->br_offload) {
-+		fep->br_offload = 0;
-+		mtip_switch_en_port_separation(fep);
-+		mtip_clear_atable(fep);
-+	}
-+}
-+
-+/* netdev notifier */
-+static int mtip_netdevice_event(struct notifier_block *unused,
-+				unsigned long event, void *ptr)
-+{
-+	struct net_device *ndev = netdev_notifier_info_to_dev(ptr);
-+	struct netdev_notifier_changeupper_info *info = ptr;
-+	struct netlink_ext_ack *extack;
-+	int ret = NOTIFY_DONE;
-+
-+	if (!mtip_is_switch_netdev_port(ndev))
-+		return NOTIFY_DONE;
-+
-+	extack = netdev_notifier_info_to_extack(&info->info);
-+
-+	switch (event) {
-+	case NETDEV_CHANGEUPPER:
-+		if (!netif_is_bridge_master(info->upper_dev))
-+			break;
-+
-+		if (info->linking)
-+			ret = mtip_ndev_port_link(ndev, info->upper_dev,
-+						  extack);
-+		else
-+			mtip_netdevice_port_unlink(ndev);
-+
-+		break;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+
-+	return notifier_from_errno(ret);
-+}
-+
-+static struct notifier_block mtip_netdevice_nb __read_mostly = {
-+	.notifier_call = mtip_netdevice_event,
-+};
-+
-+int mtip_register_notifiers(struct switch_enet_private *fep)
-+{
-+	int ret = register_netdevice_notifier(&mtip_netdevice_nb);
-+
-+	if (ret)
-+		dev_err(&fep->pdev->dev, "can't register netdevice notifier\n");
-+
-+	return ret;
-+}
-+
-+void mtip_unregister_notifiers(struct switch_enet_private *fep)
-+{
-+	unregister_netdevice_notifier(&mtip_netdevice_nb);
-+}
--- 
-2.39.5
-
+Best regards,
+Krzysztof
