@@ -1,47 +1,47 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013064.outbound.protection.outlook.com [52.101.83.64])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010001.outbound.protection.outlook.com [52.101.69.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A385D166F0C
-	for <imx@lists.linux.dev>; Wed, 13 Aug 2025 14:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4B61D5CC6
+	for <imx@lists.linux.dev>; Wed, 13 Aug 2025 15:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755096960; cv=fail; b=ueYTdIU+ePQ5wO0cMln1uRVgA5jMMB7QfCLRQERB697B+niNZSNlwm3kkD2DFoj/Z7DvxubvTDKevCo4fOMNxOTdQZU1uB8g9HO0YGpPdHjPD4zhST5cMm0cfuZkWqlDgTHStzkJF7pe07WWb8THWeIgyI6AN82G3/LaHycL6QA=
+	t=1755097634; cv=fail; b=HIwqtlQ6vRTM7+E+yIMKSSgEGBtH4z1UgEjssaWskbOAregbi9jHIG5/NMiiDOeISfk21SHWZY24PzBCqYNkn9LfLcI6ONx2DCY4KvDIiDwDJZ2rMHl+cbXmRLeI8qEfLyqKF7a6Z4AiKG7ICdgYj4VhE3IpcwmxclhIbwW5144=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755096960; c=relaxed/simple;
-	bh=gEd+DrsXX6xaKKIdTnH0zz2kqyr59RKcqH7yDKKH/v4=;
+	s=arc-20240116; t=1755097634; c=relaxed/simple;
+	bh=s5XSI4dOC2ZZY8fiqJnA3zrVradMLiVBxCLm61JTA1c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rBn7TBHuPK7l8M3JMtFeyq+ZJm+lX+OioTo41Md5Xy8rheVVqK1ABP+23rQFgolBOB6quHYOCNCNKrX5x9yGJmQEFyMk5fnoBM3knCqQ2UBymaehhupXmndLlryNDiMibqMNV0A6ZWJgdEMSFDqvNrtSoDILBNIR1wPMSVEZ+/E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XoMFmtt/; arc=fail smtp.client-ip=52.101.83.64
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QIoRqPQV1oVX+NW+Mmv5vxv1KJoLCRnkf60mAt1nujq9kOxb2a8dC4kRN8UzTBkd/HAWKYKd4hKOts58U98uSeuPMnJrUZtl//R3PsrrfMRGsdtgPNkGu//qsOdavqTRxljx0X+8WKb/isdfheknIZAFVcSiZpS/bgdNkiEeZ9k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZSOeaP4P; arc=fail smtp.client-ip=52.101.69.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XoMFmtt/"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZSOeaP4P"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EYcflgmmwIAmUUM8RbipU0G2NneTT+aWthGF48Vy3Ss+dBx4fs2Shdr6xhhnyixtPHXDyW/Hj/9tMEj5UxRM+bwt27arGaPwG+9CLX4CbFxCHg5ZaK0moac68cyClhXP0NKEh8s0aCDzTChoZ/13sdR8kF59Ynu+kXsqtu6LAT/x+CRRJGf7nqN9ugXlAjpCXjHIyQs8s3UrwlOGi8JAzMSdXcK60jV/hWQ0I2nGn4Ky+kJBuCHT5lAEwOWBMa1dWpNUwWcQ0j39Xafp0/eisCX4Yyms7XdMngP0fgy3CigaypM39Tp2CPyGIEXxmWiHWWXOMb8KPKAFUIIoxg7qhw==
+ b=YcsdXx12qtI9Cuseq0AkX+cnADFEaTqqPlMAYnno6IHn6zyLY5zyOuHeMGblMn9ZWu+ZCPUB1I7y7kabfvzJ0RaVWzsatJ/lrGfqmBpMdvCuFB6bGxGCA9UmTL+DJkdzLeJmk0iHzro3g8KvT0w2w4C2nrQ9eC9k1Q0U8678z40lNve0OXbzE4lMbfiKS2KeqSFoM8ooK8sQwHKVkalExu/Cd2E0JO0XZB000jKbwb2kOYEeTNghReEUzmcQwA/OrTKjz8Pfac0LROCekUJl4d74URdsBeKVwE+BeS1MRJr9psdwdeBznyB1IMFnwfqNjcI6AaUkAcO/6L/HMWzPYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TwMdOgOOQ+t+279t5VlHOngljEeNlSXVlgZWzOwkXpU=;
- b=Rs1lbuTE+rvO5UoSwPAjKV53fC+FvBd/pl8kxEPNKKd000EiPrskBdX1MW4m5+p92cCq3VQcjDGS32O3SpsVY0zvMUlYXOsnskCLJs9lSX4UbTT2lHeUuPfMID84ddgXatUREqdPFIgjjE443FmSkepS0Fcwvtcevt5QMnTVJOzrUYOA8+ER0IqZCMY3YHIiy+IF/5h6E9nhUZ7sqhNBULFZvU4M71L/ybEorf2if+c12xBMCWeq762OeV+hJWxOgiP6kNZ5oPSSw1l0nhz/fH0YdKonFp3hGU55KougxtBzZE0uEcuUAiYNIlmTzVi1y+VWHfxO+bGf7W0Abz5VEA==
+ bh=E9ZYDqy096uIvmNyoFQS3fZvfcXN/Hsk5yh213OxLnc=;
+ b=hOGWH/5oA09cm2opXW7jcJz9pO56Vyd+Ae5bRsoBpknddsguqb4XsB88VTcG0kXTCQqpljdIE5LdgKHKXEMWyN0y92xGnyehiqFF5wQaZ9qtT+j3gMn1OGm6ZDlpNAdpbf1Q3tgOYGMArTgv0ewrdt5Yf41dHBxAtK3M3TeP5Stuoq9shOl9IxqFyHYUUerh0Kxuz3hxPUNzwNCzk/6JWjX0ltEeR2bou5va5AmFfuNZ7/B8FqhwP5PDbYzDbIfEuMceBmWnyeIlpCjpFhmp0DgbbYW71OqVifYpHyTViZCT/ufWkemf654A6pGzY6+PSgD53c7Ca9gSCSINrTSC3A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TwMdOgOOQ+t+279t5VlHOngljEeNlSXVlgZWzOwkXpU=;
- b=XoMFmtt/LkHW2V0AT5LkdL3AizSUY3pkDsKAL407wJrsgAAhX2m79Ka6kM9RMUDWNFwBII7gg3OZvgICPI4suHaNjRCFm7/Ms7Pzyvh4xJZyimQnVmiDBCBUcxq2UVsyLnWbSdubFpCuR8rGs4pXcQxl8cnkVyayveVEkxoyLtxAytp6OmVrzwVu6Bp5VLFhCn6kEgsJzi2GXirS41/nK4zMJCAm/tOPGlF0BNxAdp3e7tmyuDbqlBMJeRrZ2X0aKhpB0Fagb0GgZUciCfSZQ28mZW1+hhWd6BjbzTxEkO0+pmX+XvWwiFzNEDApB9LaBIi3JwfaMDYM70y8vQspPQ==
+ bh=E9ZYDqy096uIvmNyoFQS3fZvfcXN/Hsk5yh213OxLnc=;
+ b=ZSOeaP4PUH9ekBCfUwO6qfUjL9nuHBPI/FKD21TNm1Prkj8ktyWyiYY36LfhJHvj5N6TmApuE+8QblPQWxK7ErRjwosilYxppXuHIg4dxXlP9g3S+bIUdJJeZkizONwBwGKRAed9JPF8WijhfiK4NJC7M3j+XZzU7iMzw4AnEjDpBKjs/ct42NpwsGqPmA5EM+xgNMXEBsSI5Rprhnq+fEcFAr5NcOiLRM/U9Je5NjmAhEF1GcCFC6rZKNhLLShO0FBKuehrpf8mHEBaobJEUIWQ/i9rywbOujkNdNf8n9RrYoP822jfHeI30AVbtVyn37+gSw5CfqkIln0A9hbVHg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VE1PR04MB7312.eurprd04.prod.outlook.com (2603:10a6:800:1a5::6) with
+ by AM9PR04MB8276.eurprd04.prod.outlook.com (2603:10a6:20b:3e7::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Wed, 13 Aug
- 2025 14:55:53 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Wed, 13 Aug
+ 2025 15:07:07 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.9031.014; Wed, 13 Aug 2025
- 14:55:53 +0000
-Date: Wed, 13 Aug 2025 10:55:40 -0400
+ 15:07:07 +0000
+Date: Wed, 13 Aug 2025 11:06:55 -0400
 From: Frank Li <Frank.li@nxp.com>
 To: Wei Fang <wei.fang@nxp.com>
 Cc: "robh@kernel.org" <robh@kernel.org>,
@@ -66,18 +66,17 @@ Cc: "robh@kernel.org" <robh@kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"imx@lists.linux.dev" <imx@lists.linux.dev>,
 	"kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: [PATCH v3 net-next 13/15] net: enetc: add PTP synchronization
- support for ENETC v4
-Message-ID: <aJynbJt7FFTfOKml@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v3 net-next 05/15] ptp: netc: add PTP_CLK_REQ_PPS support
+Message-ID: <aJyqDxFwzKgmeUdA@lizhi-Precision-Tower-5810>
 References: <20250812094634.489901-1-wei.fang@nxp.com>
- <20250812094634.489901-14-wei.fang@nxp.com>
- <aJtkpFbFTnmO1rbz@lizhi-Precision-Tower-5810>
- <PAXPR04MB85104E9C3BFAAD7FC566AF7F882AA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250812094634.489901-6-wei.fang@nxp.com>
+ <aJtZl3jgBD0hLyt0@lizhi-Precision-Tower-5810>
+ <PAXPR04MB85109D4D0866A0E03BF04611882AA@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PAXPR04MB85104E9C3BFAAD7FC566AF7F882AA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-X-ClientProxiedBy: BYAPR07CA0075.namprd07.prod.outlook.com
- (2603:10b6:a03:12b::16) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <PAXPR04MB85109D4D0866A0E03BF04611882AA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: SJ0PR05CA0115.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::30) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -86,485 +85,552 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VE1PR04MB7312:EE_
-X-MS-Office365-Filtering-Correlation-Id: f20db4db-6458-4d67-22bd-08ddda797fe3
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8276:EE_
+X-MS-Office365-Filtering-Correlation-Id: b2c0610a-d0e7-4a24-bb90-08ddda7b11ba
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|19092799006|52116014|7416014|366016|38350700014;
+	BCL:0;ARA:13230040|366016|19092799006|52116014|7416014|376014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XVdc3ubFuanLG0ioEfFDwzwIv4WKaW8XX1Rp7c0S3R//cVHkfrrSTQKtgGWV?=
- =?us-ascii?Q?AJXHc46S7ZhqXcBUcOAAch/zXHCebgwFR2/FbUt9OVpVfSCoQcSoZNU/CMWo?=
- =?us-ascii?Q?b6pdTUaqLH/Ylu1cmE8mMcCoAbJjb2j4Kj7LdTUU0Xg6gp5GC+pi68QxFQ3a?=
- =?us-ascii?Q?urckn0FO/hTT25jpBCIGbNM9EF+udiX1+XIKiI+vBQBzNzYRUyx3OG6ZPq4I?=
- =?us-ascii?Q?98Bg5QK3qMgHSinUjNih/K6Eagr2dy2/Zd+++As/gttW/3uo80TLROUKdop5?=
- =?us-ascii?Q?zhJJYlD6hm29MxbZC2P4hLan4uqnBh4W2V4WdW2PZVzd3x4zaR85bzj5N3Yf?=
- =?us-ascii?Q?moXZrBc/g9fb+J223zi5zOQqlf8d6gyGzl84p+/Uyqn9Afrn4pPMQ2gVKVD3?=
- =?us-ascii?Q?BgcrLh0aCK0JPdUtWubHFwtztNDQHnagC3EjfxW1JJtQliDVtbUFwQ709jJg?=
- =?us-ascii?Q?Eiq62d82a722bp/lMJBRe8heg1yiV9HgAu554DGymUx09bORvdUasrlcaRjC?=
- =?us-ascii?Q?bZvzJik7+virHNS0Iszn0kD1jrtpUgjd9RzfdF73A38o7Wvv3Y4/vETZwaWw?=
- =?us-ascii?Q?I3lg4/04bwfpGxmpAd5jTfp4kNxS1XooAVP/oht1mxO2bTS5YXTjIUuD44ys?=
- =?us-ascii?Q?39kXHzRNWZAZ+ab+h/Hy7L1G+6/QBm0faEvxmYg5VbB2w+XFph9FlVKN/Sj0?=
- =?us-ascii?Q?GJWw/c5BZjAGzZMiEORpooh2jOoa4C5NZrBk7GsN8gcjL0oZ3BL1y06MFclj?=
- =?us-ascii?Q?s9jhmTLuFw+bOI3NgdOKiuQfRethQpLbRO2fgeoPkNNG4rawgUEUy6J3Q2z5?=
- =?us-ascii?Q?n6UM30C5yqySEuMNxpoiO4Lg9IAuZ7s95NZ7UrEZHJ6+4Z7yjRS5SxPYUDoG?=
- =?us-ascii?Q?vkJdZTGHHJyQM3E7o2YzRxdtWf4mzX5dxIh1iV+pQRww2JUQRQnr8Mi1kWRc?=
- =?us-ascii?Q?+OB5Gi0RVCn6XmIb9DrrRLOvivdk19AjNF+PW2P4Pcb0wIJLuM+kkF6TpFb4?=
- =?us-ascii?Q?U4Apm7ccRAtppyFygwoo/Gxr9T/CN+IAK6jSpEQ5qcICmjuHiuXQYkGGYCvk?=
- =?us-ascii?Q?+u945ry+GWC6CYqSgHYrPDG0HivXvMw4MBiTYoNngT+wjLA4TpMBCtwXZXw5?=
- =?us-ascii?Q?5rhFq5+mOBjMlTld09c38Y9Eu43vhrUvSymOykSnXWtU2lRM1si/wPpiLxw9?=
- =?us-ascii?Q?01vLxr6yyvePZfzSC+cIpUHWkOQLsHb/q8wPsB49kjprOFPbmvH1+Xrz2t4m?=
- =?us-ascii?Q?ErBSDgRdjyHOuIM5vPX7h1qIeP/nwGZBtpr5JkgqGQ/rvhcHFgaOoWwXBMKc?=
- =?us-ascii?Q?oySEbeI68pyhgqw3qAQnZBm1qz0+7Lt0ZCHv16IY+kcbYnosLVQ8UjP9njmP?=
- =?us-ascii?Q?A/aHcxEQsD4Tf/VqNUogNdAyjW0eBQex7K8BHwaKSYHkH6M4xgOPha2itSzG?=
- =?us-ascii?Q?wUWjYKuM3ryG9o3/RBuLmFxZhREdUf+DQ2o+kHqHnssOitab7gki/A=3D=3D?=
+	=?us-ascii?Q?P0QRn9gTfjiqHBu8HJHSkBzgfawSabBEpodp5BslzqE5lkcjaO0B9kC+ZTz8?=
+ =?us-ascii?Q?D/Q8ukA0lX9jBL0Hlb1KN5I/CxX8Qv0UXQSutu1/1WcuXbNscHFKov8qYy+z?=
+ =?us-ascii?Q?PatD/bk3daoYnL2qfkCE+jSheR2u/w6Cpk9vBlNOE5yYwktfv4tSLZltLmFm?=
+ =?us-ascii?Q?wKyhdaZ9d2aZKA60K9Aqd0Haq6JSm8M+oEG++teiuu5Nu+9bTFyygnRcrlYa?=
+ =?us-ascii?Q?jGGX37ZjYMyZZjjI9f17k+3GxUkSnEyPPNvCN08jDfEya7X/xYPrBFec3JQO?=
+ =?us-ascii?Q?Q/CrcXD/mFmqdl+oQGSk0SX8te3tIWrzj45j+EvWygSd/EjUNk8GnrraDT4F?=
+ =?us-ascii?Q?EF0YjJ358DNxiDHs/bYbw/o05CzBywEpPsENBFD/zPC/iW2zzwwBDInnwPBu?=
+ =?us-ascii?Q?cYuFYSyeWT2CDSGXhBTpCkc/RnRqNYyA7ACtvW6ZYHVyLl0vqXOL1ck+Bcf5?=
+ =?us-ascii?Q?RpXx6b6N7Ddwl7yxHvxCp8w3CLf+Hk6Zuiv9FMehiUkQ8wOhwOWwASCR4Iwt?=
+ =?us-ascii?Q?2Y9H8YfgCL8qJplOt7cmuagZvG1/n5p3N5tjTuX7LyV9Ccu7FH5KgUy9ZEoN?=
+ =?us-ascii?Q?IpDDLB9QIf4d/5EUXeL1/WxFAFP49Vsz7LHpWO3FUOA6nAVxlHAtXnS0LWd9?=
+ =?us-ascii?Q?dxL8LYjfhhheB3it5W6SCFCWN7uNwqpPR9o4qMKRAvWb43XwOgi7OyVaScHu?=
+ =?us-ascii?Q?sKdh6Ssk4zVSufY+IjbaeiwmqgEfpkACjmwkE/fEiDkm2+CKx+wOnrxMQvfS?=
+ =?us-ascii?Q?gJSxbGYGNKUt5KQbchjtzKrV7TsM9tliTP07QFjVEd+goxlsrF8wZ/D0Wjaf?=
+ =?us-ascii?Q?uxRGE+Y0/iMLIRXqNMfitbbqAG4GtS0kpqULCF8Sn1XMHgymd39VZyjDMnxX?=
+ =?us-ascii?Q?uMMOpEIHCZqX1O+9Sw3G8QUcldNmr6jotxWWKPM4c/BWAWKFkklkD7lSRgMl?=
+ =?us-ascii?Q?qGHhODXgeiR+7z2zTVfNyBFwtdkZoRJycOsQyA5zPIG5lSx+C28lbMwf0VqO?=
+ =?us-ascii?Q?uM/vmCypBsMTTR98vzk1YOt8nN60TVtfRhfKybl/fG6bnpF1Bh1hUv9djQwH?=
+ =?us-ascii?Q?7P3wvXzIRWmE6krDwrdFF76E+6VrYLmMKEN8jt8OycGNFlBI+3ag4YSLB5M7?=
+ =?us-ascii?Q?mwTCBhPprN/R+8g5kkbsMcuBRmVzGK16s9frvcEIYWGJs+bwuka//WUawso/?=
+ =?us-ascii?Q?jjxYpZYEbsmzVOpHHhdEXxBTY3R1Z+HR9ho5G0c2cHh8CECb5wNxPNiswsJf?=
+ =?us-ascii?Q?BUahCUwiYvHxo3BJeDlBvRAfoT4PFM1k4g+58O2Qhvk1PEW16VdYzKY/jdk6?=
+ =?us-ascii?Q?OBMAkDbKZ+II3WRqUv8ZM9z2i/qMpCUAvqjLu/eiWQPHmyMbtjkuczwih2P6?=
+ =?us-ascii?Q?M3J3UxU+C1btqxou049fh0Z15xQQUm5TlcsCqIThSZStqimhLbkqBmurTxS2?=
+ =?us-ascii?Q?gSiO+C0kLiEtTvCqp0Eyy6rqwj4ciVXw7V2RltlG9OCH/5Ov0s/kY5ZXHkVD?=
+ =?us-ascii?Q?905hKv3G9ep1j9I=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(52116014)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/O7kwSnWCFq94HpxGETGGbgEEMcmjBOBa3+pKdu6PFuo3qgbuTkuCvwUJGyi?=
- =?us-ascii?Q?x8+ESi5sUlATIuKHpBP93rANQ5ITYA4IT6MU2tjLLC1gamvGThBf4NXTtfpD?=
- =?us-ascii?Q?yYlYDw9LsQgCndpniUbMZYCW7WNF1/yHOdeonm3VTwFv/g4gDEyez0hvCs3U?=
- =?us-ascii?Q?3mA5VdiDFSaLWSzOjO7iPcurDgvRztBr0khYb2mbVEj5Ey3APld1/rxs0DEP?=
- =?us-ascii?Q?Pzd9uTHM0fA2eguJAvQhZYdSoDMxXaT2PGAKB8aMBvBjAKMp8cAs/qaGXA9j?=
- =?us-ascii?Q?4hK0FaNDLvs045TuQBmgcwUi3c/eS6C6Ax8QpkkQpcbVCJKU2bHCoWGiY8/E?=
- =?us-ascii?Q?phmsQoRwBBFeVU92LBwWvmkDMuKsTqnobKjgYCjxIp52nLvdtUgn3124U5GI?=
- =?us-ascii?Q?HN5QYltjBOYItXjRCRi9CuXNetF/zVvsu1nPexwtvZILnm5DV+uKhUlCBKTj?=
- =?us-ascii?Q?iyq0b3rO64XjrdhqETuReErCyRdOlp0QjMBLC/M6c0KqZiRyUM2rysh1l6zA?=
- =?us-ascii?Q?Q2LrxGYL/FJiOgK7BEJ5Fg5cYJCZaHtNgEZtZbGiI24oxwdJXAzuSFdhbxhQ?=
- =?us-ascii?Q?Xwk6l1CCThCoItHSpvcg+OUShsNiBrCy6bkfXKd0KryZxx6DSdMaiqL19gqZ?=
- =?us-ascii?Q?AfTBE2hYmRM1+K27QhJuUX56stgV47U4JrkK+nOOQLxaLxfNlNCfW+YBPlzL?=
- =?us-ascii?Q?IAjZPKl0bmYutCRRaVUSK5xQGfZZZPiu/fhLkP8A20+5bd0MYvLju0ILiWcE?=
- =?us-ascii?Q?2rvtEHPnQ/amCWYFVye19bp4oFKc85uDn2ezmrpHMlIfWIn+dGjTtg3K+vwo?=
- =?us-ascii?Q?JBP/GFnLPn+ffmhLRhFrgaBEvffVaXm7ETgBPY89/KihnJeE8uWGLlCddSqJ?=
- =?us-ascii?Q?FUaWujfYaxkm7UUhWCUvq/0J/yef69Yb501Z3lCSLx7l+1ZDTesQM2AqKIoK?=
- =?us-ascii?Q?vWKlNNPd3sy+jShzg75x6fDOdksttSo0II/pCXUV1kgkf9U3Cdr5g0q/vhay?=
- =?us-ascii?Q?3ZbXtCgGI6eNy0+KouQN2rurKi0UnuXIYLZz2UcKYvFtr1mONE54r1S7/HK2?=
- =?us-ascii?Q?ahudEA1+4xdU7uhRWZlmdTjomRJ13q639g2Wmcd7ZmwY9L275fHKG3gx9Q/t?=
- =?us-ascii?Q?iy7OE05siq0ASF2LiFevxomRjzDbIuBhw+TC78006CN8HydtYAmCwynh2wBp?=
- =?us-ascii?Q?rt0us9PtKQFrRZ1xcy+eck0pnQYxuuuV0maB/phqAfm7sNX+Qs4CBSHU3i9R?=
- =?us-ascii?Q?oFh/jC7MgJGZ1GPt60Dqp68OruRuyCyX+iUOAqmiXnpQgd26a4PxTBIolSjj?=
- =?us-ascii?Q?92ITvO20gWu9GP+SE539UZH2p9qEUg7OgurpX0VeN0/gc4KpCs+56qzLO1K/?=
- =?us-ascii?Q?Xrh9dXagNitT1ku+F1ps0J5JPWsQRW0pk3n8r47kcgjZQ5pujGV8adZcmfvE?=
- =?us-ascii?Q?B63mLsKO7ZZ/uCtqnNN6rEJMTR//Ts/UhqqAXws2caiLucbvO+n/pPL4sIP2?=
- =?us-ascii?Q?exdYwRAb+ch8j3SEoCGEHMiGjEbVM/o1Pr5PqfCyxnayf8com/GXRAjfRqVV?=
- =?us-ascii?Q?CihLhACV31b5u1SfiSUtqKd6hiLeFZU83eO0CNDK?=
+	=?us-ascii?Q?dyQo8tlG3MrMoBHbUPPntzU2EKorOmTrCN8uR/gvsFX0/lF/H6Ur31IWE+Oo?=
+ =?us-ascii?Q?qgd41Mr7oyAoxAYljahszohxIC2vOtJG3jUFoPa3jFahEpf+e9ElimBpc25L?=
+ =?us-ascii?Q?4WMUrjnIN93g81KD1hqqvt6n3F0nPHEY2sBl8ZRueRE9kKWdrvrmawFNSA5g?=
+ =?us-ascii?Q?EGt6xN/j+HBAaA5pVXFLTI5kgwADJrxF1/KiNl/ihi47QI0LgSaL6IE9p1Ec?=
+ =?us-ascii?Q?+qVVBXALOBONBGacs2y66Sq2RC2ZXXo8NswGVVjSKp0AqJvPP7XAJC6cZ82b?=
+ =?us-ascii?Q?xFMK78ksW4zb22w1J6hZtTH+J8jjjLVbfz35fyQYgsR5ZGcR7VTHhzXiGvAx?=
+ =?us-ascii?Q?96STeiGh6oGFEFfRy78QnHw9GEmwcy6TJZRa+YO8R5OVUh44gWiOCcc1rUsD?=
+ =?us-ascii?Q?KcHWc0X/7kNZeX7DHwICy68CZMH4H/qFzB6cwvwygd8sovs9++Bdd4sWwJqd?=
+ =?us-ascii?Q?N6gsIOevSNnt7/oBVvTa6zleSLQ5tO9tKeaCNJ32jK8SHlAsGXM5HK8WkvZb?=
+ =?us-ascii?Q?XO9UEV2yko3ISecilRAtuUtKgRSzGlUnfjdjbePqPyWvrDUMK6uYtzU1wLMl?=
+ =?us-ascii?Q?x/uh4vwWxyt9JlWvp3M5HKuy6QYQggtw4tcSVcmUZt9jTKO9+H8F6busR26e?=
+ =?us-ascii?Q?tl45ro1NRVbAHrLyMJ1zH8/WRRdMzcMhvZtJAW2iZrLHdXUr+iiji4hrGogb?=
+ =?us-ascii?Q?gSS3+hSg1jKi10o7T0EvYZvkxNkcIoq42Z6kxhqhmEWQ2pWmty++S1HWOEzX?=
+ =?us-ascii?Q?qvWgX+gUl34oBwFM7OFgWn7u5bvmK2X5KI7PkhoXHmwORjq9bYTqHj+JBhq9?=
+ =?us-ascii?Q?pBpyp8O2A+ROWHO442Wm5C9sbv0THRpjYyy9bZBPsi4IM8nsu0+2urryEl+r?=
+ =?us-ascii?Q?1oWs75h0krx0f1lPfZtyf7jwHYCEimYPK7T3QJfpCSWiT+y2OmNyM9gl59ou?=
+ =?us-ascii?Q?QLnVoWI0C6SXsP+F2I0fbUKIny1HH756QwThazsQ7A54BzeX/cPZQmxWK+nc?=
+ =?us-ascii?Q?7zYcJ8WdOFg+qCb/yj8th56mzTvk8G7H21k7oA39t1/CuKqzpcDHZaYBGoSB?=
+ =?us-ascii?Q?sQRZc2n2PceEJklnEHNPcLgwc1ujBYSfwOiLH22eNQKs4DSfgBwsRkNDuujl?=
+ =?us-ascii?Q?Tlai3+NKU9LHgYz6xyGCQsGq3y0Byw03nPGtGnHj+gonIknDOW9UCHK5RvLS?=
+ =?us-ascii?Q?ED1xziVpo3db2J5ySqvbmf/e64Fu8NJATqa6pmvuLVCvPYKSNutYq3KB0V0B?=
+ =?us-ascii?Q?aOodBVQxS3/g1OUepqFGumg2duHMnTstBq9P0IsmpCW6q6iK3JH5yIbNich6?=
+ =?us-ascii?Q?YnNfFNIJ6xUPHTjejCcpkotVSM1Uq/joObMF4C7ircNBWEl/7ABvRyDw5QEj?=
+ =?us-ascii?Q?izWws1UheL9HEgchy2j103/Ej6ZtZOY5pfThAo8EQOg4neJ/BMP6SYr1ivN2?=
+ =?us-ascii?Q?PX5CzyohAm6WXA8fybgSgGtwtXxCuenfRxrYU/u13fPVpYJ+YPj7uf62Pl6V?=
+ =?us-ascii?Q?z/vZh3k7ZJX7mNNkd2uIT1Hasoc5OBmIZry+l5Gla98Y8oTZbAARJZq7/ky6?=
+ =?us-ascii?Q?3bUoLThhfigeOMomWzgTWEkPOs3kLFWjDkCyVOrS?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f20db4db-6458-4d67-22bd-08ddda797fe3
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2c0610a-d0e7-4a24-bb90-08ddda7b11ba
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 14:55:53.0264
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 15:07:07.1575
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rS0UGTugPiFDLEh0b7Bj48iE0bp+HUjCrHtKRfUnic/poYP4YABPqaUvjqvK4NnaSq9vvIRcm31qiQccic5IjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7312
+X-MS-Exchange-CrossTenant-UserPrincipalName: lomoRBZHxnxvrs/LgzJAHTTJWx2At0Mj8QuOHO2n++IvTGO50hYqVZnEINcGIki5t3+zhN97d5sGM+N14EJ0vA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8276
 
-On Wed, Aug 13, 2025 at 02:17:46AM +0000, Wei Fang wrote:
-> > On Tue, Aug 12, 2025 at 05:46:32PM +0800, Wei Fang wrote:
-> > > Regarding PTP, ENETC v4 has some changes compared to ENETC v1 (LS1028A),
-> > > mainly as follows.
+On Wed, Aug 13, 2025 at 01:59:01AM +0000, Wei Fang wrote:
+> > On Tue, Aug 12, 2025 at 05:46:24PM +0800, Wei Fang wrote:
+> > > The NETC Timer is capable of generating a PPS interrupt to the host. To
+> > > support this feature, a 64-bit alarm time (which is a integral second
+> > > of PHC in the future) is set to TMR_ALARM, and the period is set to
+> > > TMR_FIPER. The alarm time is compared to the current time on each update,
+> > > then the alarm trigger is used as an indication to the TMR_FIPER starts
+> > > down counting. After the period has passed, the PPS event is generated.
 > > >
-> > > 1. ENETC v4 uses a different PTP driver, so the way to get phc_index is
-> > > different from LS1028A. Therefore, enetc_get_ts_info() has been modified
-> > > appropriately to be compatible with ENETC v1 and v4.
+> > > According to the NETC block guide, the Timer has three FIPERs, any of
+> > > which can be used to generate the PPS events, but in the current
+> > > implementation, we only need one of them to implement the PPS feature,
+> > > so FIPER 0 is used as the default PPS generator. Also, the Timer has
+> > > 2 ALARMs, currently, ALARM 0 is used as the default time comparator.
 > > >
-> > > 2. The hardware of ENETC v4 does not support "dma-coherent", therefore,
-> > > to support PTP one-step, the PTP sync packets must be modified before
-> > > calling dma_map_single() to map the DMA cache of the packets. Otherwise,
-> > > the modification is invalid, the originTimestamp and correction fields
-> > > of the sent packets will still be the values before the modification.
+> > > However, if there is a time drift when PPS is enabled, the PPS event will
+> > > not be generated at an integral second of PHC. The suggested steps from
+> > > IP team if time drift happens:
 > >
-> > In patch, I have not find dma_map_single(), is it in enetc_map_tx_buffs()?
-> >
+> > according to patch, "drift" means timer adjust period?
 >
-> Yes, see below code snippet.
->
-> static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
-> {
-> 	[...]
-> 	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
-> 		do_onestep_tstamp = true;
-> 		tstamp = enetc_update_ptp_sync_msg(priv, skb, csum_offload);
-> 	} else if (enetc_cb->flag & ENETC_F_TX_TSTAMP) {
-> 		do_twostep_tstamp = true;
-> 	}
->
-> 	i = tx_ring->next_to_use;
-> 	txbd = ENETC_TXBD(*tx_ring, i);
-> 	prefetchw(txbd);
->
-> 	dma = dma_map_single(tx_ring->dev, skb->data, len, DMA_TO_DEVICE);
-> 	if (unlikely(dma_mapping_error(tx_ring->dev, dma)))
-> 		goto dma_err;
->
-> 	temp_bd.addr = cpu_to_le64(dma);
-> 	temp_bd.buf_len = cpu_to_le16(len);
-> 	[...]
-> }
->
-> > This move should be fix, even dma-coherent, it also should be before
-> > dma_map_single().  just hardware dma-coherent hidden the problem.
-> >
->
-> There are no visible issues with enetc v1, if it is considered a fix, it is only
-> a logical fix and have no effect on v1 . So this patch is fine to target to
-> net-next tree.
+> No only adjust period, but also including adjust time.
 
-I agree, is below more clear?
+I think 'adjust period and time' is more accurate then drift.  drift always
+happen. The problem should happen only at adjust.
 
-Move sync package content modification before dma_map_single() to follow
-correct DMA usage process, even though the previous sequence worked due
-to hardware DMA-coherence support.
+>
+> > netc_timer_adjust_period()
+> >
+> > generally, netc_timer_adjust_period() happen 4 times every second, does
+> > disable/re-enable impact pps accurate?
+>
+> PPS needs to be re-enabled only when the integer part of the period changes.
+> In this case, re-enabling PPS will result in a loss of PPS signal for 1 ~ 2 seconds.
+> In most cases, only the fractional part of the period is adjusted, so there is no
+> need to re-enable PPS.
+
+Lost 1-2 second should be okay when adjust time, which only happen at
+beginning of sync.
+
+Does software enable/disable impact PPS accurate? For example:
+
+suppose PPS plus at 10000ns position.
+
+enable/disable software take 112ns, does PPS plus at 10112ns Or still at
+10000ns position.
 
 Frank
 
 >
+> >
 > > >
-> > > 3. The PMa_SINGLE_STEP register has changed in ENETC v4, not only the
-> > > register offset, but also some register fields. Therefore, two helper
-> > > functions are added, enetc_set_one_step_ts() for ENETC v1 and
-> > > enetc4_set_one_step_ts() for ENETC v4.
+> > > 1. Disable FIPER before adjusting the hardware time
+> > > 2. Rearm ALARM after the time adjustment to make the next PPS event be
+> > > generated at an integral second of PHC.
+> > > 3. Re-enable FIPER.
 > > >
 > > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
 > > >
 > > > ---
 > > > v2 changes:
-> > > 1. Move the definition of enetc_ptp_clock_is_enabled() to resolve build
-> > > errors.
-> > > 2. Add parsing of "nxp,netc-timer" property to get PCIe device of NETC
-> > > Timer.
+> > > 1. Refine the subject and the commit message
+> > > 2. Add a comment to netc_timer_enable_pps()
+> > > 3. Remove the "nxp,pps-channel" logic from the driver
 > > > v3 changes:
-> > > 1. Change CONFIG_PTP_1588_CLOCK_NETC to CONFIG_PTP_NETC_V4_TIMER
-> > > 2. Change "nxp,netc-timer" to "ptp-timer"
+> > > 1. Use "2 * NSEC_PER_SEC" to instead of "2000000000U"
+> > > 2. Improve the commit message
+> > > 3. Add alarm related logic and the irq handler
+> > > 4. Add tmr_emask to struct netc_timer to save the irq masks instead of
+> > >    reading TMR_EMASK register
+> > > 5. Remove pps_channel from struct netc_timer and remove
+> > >    NETC_TMR_DEFAULT_PPS_CHANNEL
 > > > ---
-> > >  drivers/net/ethernet/freescale/enetc/enetc.c  | 55 +++++++----
-> > >  drivers/net/ethernet/freescale/enetc/enetc.h  |  8 ++
-> > >  .../net/ethernet/freescale/enetc/enetc4_hw.h  |  6 ++
-> > >  .../net/ethernet/freescale/enetc/enetc4_pf.c  |  3 +
-> > >  .../ethernet/freescale/enetc/enetc_ethtool.c  | 92 ++++++++++++++++---
-> > >  5 files changed, 135 insertions(+), 29 deletions(-)
+> > >  drivers/ptp/ptp_netc.c | 260
+> > ++++++++++++++++++++++++++++++++++++++++-
+> > >  1 file changed, 257 insertions(+), 3 deletions(-)
 > > >
-> > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > > index 4325eb3d9481..6dbc9cc811a0 100644
-> > > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > > @@ -221,6 +221,31 @@ static void enetc_unwind_tx_frame(struct
-> > enetc_bdr *tx_ring, int count, int i)
-> > >  	}
-> > >  }
+> > > diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
+> > > index cbe2a64d1ced..9026a967a5fe 100644
+> > > --- a/drivers/ptp/ptp_netc.c
+> > > +++ b/drivers/ptp/ptp_netc.c
+> > > @@ -20,7 +20,14 @@
+> > >  #define  TMR_CTRL_TE			BIT(2)
+> > >  #define  TMR_COMP_MODE			BIT(15)
+> > >  #define  TMR_CTRL_TCLK_PERIOD		GENMASK(25, 16)
+> > > +#define  TMR_CTRL_FS			BIT(28)
 > > >
-> > > +static void enetc_set_one_step_ts(struct enetc_si *si, bool udp, int offset)
-> > > +{
-> > > +	u32 val = ENETC_PM0_SINGLE_STEP_EN;
+> > > +#define NETC_TMR_TEVENT			0x0084
+> > > +#define  TMR_TEVNET_PPEN(i)		BIT(7 - (i))
+> > > +#define  TMR_TEVENT_PPEN_ALL		GENMASK(7, 5)
+> > > +#define  TMR_TEVENT_ALMEN(i)		BIT(16 + (i))
 > > > +
-> > > +	val |= ENETC_SET_SINGLE_STEP_OFFSET(offset);
-> > > +	if (udp)
-> > > +		val |= ENETC_PM0_SINGLE_STEP_CH;
+> > > +#define NETC_TMR_TEMASK			0x0088
+> > >  #define NETC_TMR_CNT_L			0x0098
+> > >  #define NETC_TMR_CNT_H			0x009c
+> > >  #define NETC_TMR_ADD			0x00a0
+> > > @@ -28,9 +35,19 @@
+> > >  #define NETC_TMR_OFF_L			0x00b0
+> > >  #define NETC_TMR_OFF_H			0x00b4
+> > >
+> > > +/* i = 0, 1, i indicates the index of TMR_ALARM */
+> > > +#define NETC_TMR_ALARM_L(i)		(0x00b8 + (i) * 8)
+> > > +#define NETC_TMR_ALARM_H(i)		(0x00bc + (i) * 8)
 > > > +
-> > > +	/* The "Correction" field of a packet is updated based on the
-> > > +	 * current time and the timestamp provided
-> > > +	 */
-> > > +	enetc_port_mac_wr(si, ENETC_PM0_SINGLE_STEP, val);
-> > > +}
+> > > +/* i = 0, 1, 2. i indicates the index of TMR_FIPER. */
+> > > +#define NETC_TMR_FIPER(i)		(0x00d0 + (i) * 4)
 > > > +
-> > > +static void enetc4_set_one_step_ts(struct enetc_si *si, bool udp, int offset)
-> > > +{
-> > > +	u32 val = PM_SINGLE_STEP_EN;
+> > >  #define NETC_TMR_FIPER_CTRL		0x00dc
+> > >  #define  FIPER_CTRL_DIS(i)		(BIT(7) << (i) * 8)
+> > >  #define  FIPER_CTRL_PG(i)		(BIT(6) << (i) * 8)
+> > > +#define  FIPER_CTRL_FS_ALARM(i)		(BIT(5) << (i) * 8)
+> > > +#define  FIPER_CTRL_PW(i)		(GENMASK(4, 0) << (i) * 8)
+> > > +#define  FIPER_CTRL_SET_PW(i, v)	(((v) & GENMASK(4, 0)) << 8 * (i))
+> > >
+> > >  #define NETC_TMR_CUR_TIME_L		0x00f0
+> > >  #define NETC_TMR_CUR_TIME_H		0x00f4
+> > > @@ -39,6 +56,9 @@
+> > >
+> > >  #define NETC_TMR_FIPER_NUM		3
+> > >  #define NETC_TMR_DEFAULT_PRSC		2
+> > > +#define NETC_TMR_DEFAULT_ALARM		GENMASK_ULL(63, 0)
+> > > +#define NETC_TMR_DEFAULT_FIPER		GENMASK(31, 0)
+> > > +#define NETC_TMR_FIPER_MAX_PW		GENMASK(4, 0)
+> > >
+> > >  /* 1588 timer reference clock source select */
+> > >  #define NETC_TMR_CCM_TIMER1		0 /* enet_timer1_clk_root, from
+> > CCM */
+> > > @@ -60,6 +80,10 @@ struct netc_timer {
+> > >  	u32 oclk_prsc;
+> > >  	/* High 32-bit is integer part, low 32-bit is fractional part */
+> > >  	u64 period;
 > > > +
-> > > +	val |= PM_SINGLE_STEP_OFFSET_SET(offset);
-> > > +	if (udp)
-> > > +		val |= PM_SINGLE_STEP_CH;
-> > > +
-> > > +	enetc_port_mac_wr(si, ENETC4_PM_SINGLE_STEP(0), val);
-> > > +}
-> > > +
-> > >  static u32 enetc_update_ptp_sync_msg(struct enetc_ndev_priv *priv,
-> > >  				     struct sk_buff *skb)
-> > >  {
-> > > @@ -234,7 +259,6 @@ static u32 enetc_update_ptp_sync_msg(struct
-> > enetc_ndev_priv *priv,
-> > >  	u32 lo, hi, nsec;
-> > >  	u8 *data;
-> > >  	u64 sec;
-> > > -	u32 val;
-> > >
-> > >  	lo = enetc_rd_hot(hw, ENETC_SICTR0);
-> > >  	hi = enetc_rd_hot(hw, ENETC_SICTR1);
-> > > @@ -279,12 +303,10 @@ static u32 enetc_update_ptp_sync_msg(struct
-> > enetc_ndev_priv *priv,
-> > >  	*(__be32 *)(data + tstamp_off + 6) = new_nsec;
-> > >
-> > >  	/* Configure single-step register */
-> > > -	val = ENETC_PM0_SINGLE_STEP_EN;
-> > > -	val |= ENETC_SET_SINGLE_STEP_OFFSET(corr_off);
-> > > -	if (enetc_cb->udp)
-> > > -		val |= ENETC_PM0_SINGLE_STEP_CH;
-> > > -
-> > > -	enetc_port_mac_wr(priv->si, ENETC_PM0_SINGLE_STEP, val);
-> > > +	if (is_enetc_rev1(si))
-> > > +		enetc_set_one_step_ts(si, enetc_cb->udp, corr_off);
-> > > +	else
-> > > +		enetc4_set_one_step_ts(si, enetc_cb->udp, corr_off);
-> > >
-> > >  	return lo & ENETC_TXBD_TSTAMP;
-> > >  }
-> > > @@ -303,6 +325,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr
-> > *tx_ring, struct sk_buff *skb)
-> > >  	unsigned int f;
-> > >  	dma_addr_t dma;
-> > >  	u8 flags = 0;
-> > > +	u32 tstamp;
-> > >
-> > >  	enetc_clear_tx_bd(&temp_bd);
-> > >  	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-> > > @@ -327,6 +350,13 @@ static int enetc_map_tx_buffs(struct enetc_bdr
-> > *tx_ring, struct sk_buff *skb)
-> > >  		}
-> > >  	}
-> > >
-> > > +	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
-> > > +		do_onestep_tstamp = true;
-> > > +		tstamp = enetc_update_ptp_sync_msg(priv, skb);
-> > > +	} else if (enetc_cb->flag & ENETC_F_TX_TSTAMP) {
-> > > +		do_twostep_tstamp = true;
-> > > +	}
-> > > +
-> > >  	i = tx_ring->next_to_use;
-> > >  	txbd = ENETC_TXBD(*tx_ring, i);
-> > >  	prefetchw(txbd);
-> > > @@ -346,11 +376,6 @@ static int enetc_map_tx_buffs(struct enetc_bdr
-> > *tx_ring, struct sk_buff *skb)
-> > >  	count++;
-> > >
-> > >  	do_vlan = skb_vlan_tag_present(skb);
-> > > -	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP)
-> > > -		do_onestep_tstamp = true;
-> > > -	else if (enetc_cb->flag & ENETC_F_TX_TSTAMP)
-> > > -		do_twostep_tstamp = true;
-> > > -
-> > >  	tx_swbd->do_twostep_tstamp = do_twostep_tstamp;
-> > >  	tx_swbd->qbv_en = !!(priv->active_offloads & ENETC_F_QBV);
-> > >  	tx_swbd->check_wb = tx_swbd->do_twostep_tstamp || tx_swbd->qbv_en;
-> > > @@ -393,8 +418,6 @@ static int enetc_map_tx_buffs(struct enetc_bdr
-> > *tx_ring, struct sk_buff *skb)
-> > >  		}
-> > >
-> > >  		if (do_onestep_tstamp) {
-> > > -			u32 tstamp = enetc_update_ptp_sync_msg(priv, skb);
-> > > -
-> > >  			/* Configure extension BD */
-> > >  			temp_bd.ext.tstamp = cpu_to_le32(tstamp);
-> > >  			e_flags |= ENETC_TXBD_E_FLAGS_ONE_STEP_PTP;
-> > > @@ -3314,7 +3337,7 @@ int enetc_hwtstamp_set(struct net_device *ndev,
-> > >  	struct enetc_ndev_priv *priv = netdev_priv(ndev);
-> > >  	int err, new_offloads = priv->active_offloads;
-> > >
-> > > -	if (!IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK))
-> > > +	if (!enetc_ptp_clock_is_enabled(priv->si))
-> > >  		return -EOPNOTSUPP;
-> > >
-> > >  	switch (config->tx_type) {
-> > > @@ -3364,7 +3387,7 @@ int enetc_hwtstamp_get(struct net_device *ndev,
-> > >  {
-> > >  	struct enetc_ndev_priv *priv = netdev_priv(ndev);
-> > >
-> > > -	if (!IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK))
-> > > +	if (!enetc_ptp_clock_is_enabled(priv->si))
-> > >  		return -EOPNOTSUPP;
-> > >
-> > >  	if (priv->active_offloads & ENETC_F_TX_ONESTEP_SYNC_TSTAMP)
-> > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h
-> > b/drivers/net/ethernet/freescale/enetc/enetc.h
-> > > index c65aa7b88122..815afdc2ec23 100644
-> > > --- a/drivers/net/ethernet/freescale/enetc/enetc.h
-> > > +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-> > > @@ -598,6 +598,14 @@ static inline void enetc_cbd_free_data_mem(struct
-> > enetc_si *si, int size,
-> > >  void enetc_reset_ptcmsdur(struct enetc_hw *hw);
-> > >  void enetc_set_ptcmsdur(struct enetc_hw *hw, u32 *queue_max_sdu);
-> > >
-> > > +static inline bool enetc_ptp_clock_is_enabled(struct enetc_si *si)
-> > > +{
-> > > +	if (is_enetc_rev1(si))
-> > > +		return IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK);
-> > > +
-> > > +	return IS_ENABLED(CONFIG_PTP_NETC_V4_TIMER);
-> > > +}
-> > > +
-> > >  #ifdef CONFIG_FSL_ENETC_QOS
-> > >  int enetc_qos_query_caps(struct net_device *ndev, void *type_data);
-> > >  int enetc_setup_tc_taprio(struct net_device *ndev, void *type_data);
-> > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-> > b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-> > > index aa25b445d301..a8113c9057eb 100644
-> > > --- a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-> > > +++ b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-> > > @@ -171,6 +171,12 @@
-> > >  /* Port MAC 0/1 Pause Quanta Threshold Register */
-> > >  #define ENETC4_PM_PAUSE_THRESH(mac)	(0x5064 + (mac) * 0x400)
-> > >
-> > > +#define ENETC4_PM_SINGLE_STEP(mac)	(0x50c0 + (mac) * 0x400)
-> > > +#define  PM_SINGLE_STEP_CH		BIT(6)
-> > > +#define  PM_SINGLE_STEP_OFFSET		GENMASK(15, 7)
-> > > +#define   PM_SINGLE_STEP_OFFSET_SET(o)
-> > FIELD_PREP(PM_SINGLE_STEP_OFFSET, o)
-> > > +#define  PM_SINGLE_STEP_EN		BIT(31)
-> > > +
-> > >  /* Port MAC 0 Interface Mode Control Register */
-> > >  #define ENETC4_PM_IF_MODE(mac)		(0x5300 + (mac) * 0x400)
-> > >  #define  PM_IF_MODE_IFMODE		GENMASK(2, 0)
-> > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> > b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> > > index b3dc1afeefd1..107f59169e67 100644
-> > > --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> > > +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-> > > @@ -569,6 +569,9 @@ static const struct net_device_ops enetc4_ndev_ops
-> > = {
-> > >  	.ndo_set_features	= enetc4_pf_set_features,
-> > >  	.ndo_vlan_rx_add_vid	= enetc_vlan_rx_add_vid,
-> > >  	.ndo_vlan_rx_kill_vid	= enetc_vlan_rx_del_vid,
-> > > +	.ndo_eth_ioctl		= enetc_ioctl,
-> > > +	.ndo_hwtstamp_get	= enetc_hwtstamp_get,
-> > > +	.ndo_hwtstamp_set	= enetc_hwtstamp_set,
+> > > +	int irq;
+> > > +	u32 tmr_emask;
+> > > +	bool pps_enabled;
 > > >  };
 > > >
-> > >  static struct phylink_pcs *
-> > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> > b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> > > index 961e76cd8489..b6014b1069de 100644
-> > > --- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> > > +++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-> > > @@ -2,8 +2,11 @@
-> > >  /* Copyright 2017-2019 NXP */
-> > >
-> > >  #include <linux/ethtool_netlink.h>
-> > > +#include <linux/fsl/netc_global.h>
-> > >  #include <linux/net_tstamp.h>
-> > >  #include <linux/module.h>
-> > > +#include <linux/of.h>
-> > > +
-> > >  #include "enetc.h"
-> > >
-> > >  static const u32 enetc_si_regs[] = {
-> > > @@ -877,23 +880,49 @@ static int enetc_set_coalesce(struct net_device
-> > *ndev,
-> > >  	return 0;
+> > >  #define netc_timer_rd(p, o)		netc_read((p)->base + (o))
+> > > @@ -124,6 +148,155 @@ static u64 netc_timer_cur_time_read(struct
+> > netc_timer *priv)
+> > >  	return ns;
 > > >  }
 > > >
-> > > -static int enetc_get_ts_info(struct net_device *ndev,
-> > > -			     struct kernel_ethtool_ts_info *info)
-> > > +static struct pci_dev *enetc4_get_default_timer_pdev(struct enetc_si *si)
-> > >  {
-> > > -	struct enetc_ndev_priv *priv = netdev_priv(ndev);
-> > > -	int *phc_idx;
-> > > -
-> > > -	phc_idx = symbol_get(enetc_phc_index);
-> > > -	if (phc_idx) {
-> > > -		info->phc_index = *phc_idx;
-> > > -		symbol_put(enetc_phc_index);
-> > > +	struct pci_bus *bus = si->pdev->bus;
-> > > +	int domain = pci_domain_nr(bus);
-> > > +	int bus_num = bus->number;
-> > > +	int devfn;
-> > > +
-> > > +	switch (si->revision) {
-> > > +	case ENETC_REV_4_1:
-> > > +		devfn = PCI_DEVFN(24, 0);
-> > > +		break;
-> > > +	default:
-> > > +		return NULL;
-> > >  	}
-> > >
-> > > -	if (!IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK)) {
-> > > -		info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE;
-> > > +	return pci_dev_get(pci_get_domain_bus_and_slot(domain, bus_num,
-> > devfn));
-> > > +}
-> > >
-> > > -		return 0;
-> > > -	}
-> > > +static struct pci_dev *enetc4_get_timer_pdev(struct enetc_si *si)
+> > > +static void netc_timer_alarm_write(struct netc_timer *priv,
+> > > +				   u64 alarm, int index)
 > > > +{
-> > > +	struct device_node *np = si->pdev->dev.of_node;
-> > > +	struct fwnode_handle *timer_fwnode;
-> > > +	struct device_node *timer_np;
+> > > +	u32 alarm_h = upper_32_bits(alarm);
+> > > +	u32 alarm_l = lower_32_bits(alarm);
 > > > +
-> > > +	if (!np)
-> > > +		return enetc4_get_default_timer_pdev(si);
-> > > +
-> > > +	timer_np = of_parse_phandle(np, "ptp-timer", 0);
-> > > +	if (!timer_np)
-> > > +		return enetc4_get_default_timer_pdev(si);
-> > > +
-> > > +	timer_fwnode = of_fwnode_handle(timer_np);
-> > > +	of_node_put(timer_np);
-> > > +	if (!timer_fwnode)
-> > > +		return NULL;
-> > > +
-> > > +	return pci_dev_get(to_pci_dev(timer_fwnode->dev));
+> > > +	netc_timer_wr(priv, NETC_TMR_ALARM_L(index), alarm_l);
+> > > +	netc_timer_wr(priv, NETC_TMR_ALARM_H(index), alarm_h);
 > > > +}
 > > > +
-> > > +static void enetc_get_ts_generic_info(struct net_device *ndev,
-> > > +				      struct kernel_ethtool_ts_info *info)
+> > > +static u32 netc_timer_get_integral_period(struct netc_timer *priv)
 > > > +{
-> > > +	struct enetc_ndev_priv *priv = netdev_priv(ndev);
-> > >
-> > >  	info->so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE |
-> > >  				SOF_TIMESTAMPING_RX_HARDWARE |
-> > > @@ -908,6 +937,42 @@ static int enetc_get_ts_info(struct net_device *ndev,
-> > >
-> > >  	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |
-> > >  			   (1 << HWTSTAMP_FILTER_ALL);
+> > > +	u32 tmr_ctrl, integral_period;
+> > > +
+> > > +	tmr_ctrl = netc_timer_rd(priv, NETC_TMR_CTRL);
+> > > +	integral_period = FIELD_GET(TMR_CTRL_TCLK_PERIOD, tmr_ctrl);
+> > > +
+> > > +	return integral_period;
 > > > +}
 > > > +
-> > > +static int enetc_get_ts_info(struct net_device *ndev,
-> > > +			     struct kernel_ethtool_ts_info *info)
+> > > +static u32 netc_timer_calculate_fiper_pw(struct netc_timer *priv,
+> > > +					 u32 fiper)
 > > > +{
-> > > +	struct enetc_ndev_priv *priv = netdev_priv(ndev);
-> > > +	struct enetc_si *si = priv->si;
-> > > +	struct pci_dev *timer_pdev;
-> > > +	int *phc_idx;
+> > > +	u64 divisor, pulse_width;
 > > > +
-> > > +	if (!enetc_ptp_clock_is_enabled(si))
-> > > +		goto timestamp_tx_sw;
+> > > +	/* Set the FIPER pulse width to half FIPER interval by default.
+> > > +	 * pulse_width = (fiper / 2) / TMR_GCLK_period,
+> > > +	 * TMR_GCLK_period = NSEC_PER_SEC / TMR_GCLK_freq,
+> > > +	 * TMR_GCLK_freq = (clk_freq / oclk_prsc) Hz,
+> > > +	 * so pulse_width = fiper * clk_freq / (2 * NSEC_PER_SEC * oclk_prsc).
+> > > +	 */
+> > > +	divisor = mul_u32_u32(2 * NSEC_PER_SEC, priv->oclk_prsc);
+> > > +	pulse_width = div64_u64(mul_u32_u32(fiper, priv->clk_freq), divisor);
 > > > +
-> > > +	if (is_enetc_rev1(si)) {
-> > > +		phc_idx = symbol_get(enetc_phc_index);
-> > > +		if (phc_idx) {
-> > > +			info->phc_index = *phc_idx;
-> > > +			symbol_put(enetc_phc_index);
-> > > +		}
+> > > +	/* The FIPER_PW field only has 5 bits, need to update oclk_prsc */
+> > > +	if (pulse_width > NETC_TMR_FIPER_MAX_PW)
+> > > +		pulse_width = NETC_TMR_FIPER_MAX_PW;
+> > > +
+> > > +	return pulse_width;
+> > > +}
+> > > +
+> > > +static void netc_timer_set_pps_alarm(struct netc_timer *priv, int channel,
+> > > +				     u32 integral_period)
+> > > +{
+> > > +	u64 alarm;
+> > > +
+> > > +	/* Get the alarm value */
+> > > +	alarm = netc_timer_cur_time_read(priv) +  NSEC_PER_MSEC;
+> > > +	alarm = roundup_u64(alarm, NSEC_PER_SEC);
+> > > +	alarm = roundup_u64(alarm, integral_period);
+> > > +
+> > > +	netc_timer_alarm_write(priv, alarm, 0);
+> > > +}
+> > > +
+> > > +/* Note that users should not use this API to output PPS signal on
+> > > + * external pins, because PTP_CLK_REQ_PPS trigger internal PPS event
+> > > + * for input into kernel PPS subsystem. See:
+> > > + *
+> > https://lore.kernel.org/r/20201117213826.18235-1-a.fatoum@pengutronix.de
+> > > + */
+> > > +static int netc_timer_enable_pps(struct netc_timer *priv,
+> > > +				 struct ptp_clock_request *rq, int on)
+> > > +{
+> > > +	u32 fiper, fiper_ctrl;
+> > > +	unsigned long flags;
+> > > +
+> > > +	spin_lock_irqsave(&priv->lock, flags);
+> > > +
+> > > +	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> > > +
+> > > +	if (on) {
+> > > +		u32 integral_period, fiper_pw;
+> > > +
+> > > +		if (priv->pps_enabled)
+> > > +			goto unlock_spinlock;
+> > > +
+> > > +		integral_period = netc_timer_get_integral_period(priv);
+> > > +		fiper = NSEC_PER_SEC - integral_period;
+> > > +		fiper_pw = netc_timer_calculate_fiper_pw(priv, fiper);
+> > > +		fiper_ctrl &= ~(FIPER_CTRL_DIS(0) | FIPER_CTRL_PW(0) |
+> > > +				FIPER_CTRL_FS_ALARM(0));
+> > > +		fiper_ctrl |= FIPER_CTRL_SET_PW(0, fiper_pw);
+> > > +		priv->tmr_emask |= TMR_TEVNET_PPEN(0) |
+> > TMR_TEVENT_ALMEN(0);
+> > > +		priv->pps_enabled = true;
+> > > +		netc_timer_set_pps_alarm(priv, 0, integral_period);
 > > > +	} else {
-> > > +		timer_pdev = enetc4_get_timer_pdev(si);
-> > > +		if (!timer_pdev)
-> > > +			goto timestamp_tx_sw;
+> > > +		if (!priv->pps_enabled)
+> > > +			goto unlock_spinlock;
 > > > +
-> > > +		info->phc_index = netc_timer_get_phc_index(timer_pdev);
-> > > +		pci_dev_put(timer_pdev);
-> > > +		if (info->phc_index < 0)
-> > > +			goto timestamp_tx_sw;
+> > > +		fiper = NETC_TMR_DEFAULT_FIPER;
+> > > +		priv->tmr_emask &= ~(TMR_TEVNET_PPEN(0) |
+> > > +				     TMR_TEVENT_ALMEN(0));
+> > > +		fiper_ctrl |= FIPER_CTRL_DIS(0);
+> > > +		priv->pps_enabled = false;
+> > > +		netc_timer_alarm_write(priv, NETC_TMR_DEFAULT_ALARM, 0);
 > > > +	}
 > > > +
-> > > +	enetc_get_ts_generic_info(ndev, info);
+> > > +	netc_timer_wr(priv, NETC_TMR_TEMASK, priv->tmr_emask);
+> > > +	netc_timer_wr(priv, NETC_TMR_FIPER(0), fiper);
+> > > +	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
+> > > +
+> > > +unlock_spinlock:
+> > > +	spin_unlock_irqrestore(&priv->lock, flags);
 > > > +
 > > > +	return 0;
+> > > +}
 > > > +
-> > > +timestamp_tx_sw:
-> > > +	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE;
+> > > +static void netc_timer_disable_pps_fiper(struct netc_timer *priv)
+> > > +{
+> > > +	u32 fiper_ctrl;
+> > > +
+> > > +	if (!priv->pps_enabled)
+> > > +		return;
+> > > +
+> > > +	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> > > +	fiper_ctrl |= FIPER_CTRL_DIS(0);
+> > > +	netc_timer_wr(priv, NETC_TMR_FIPER(0), NETC_TMR_DEFAULT_FIPER);
+> > > +	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
+> > > +}
+> > > +
+> > > +static void netc_timer_enable_pps_fiper(struct netc_timer *priv)
+> > > +{
+> > > +	u32 fiper_ctrl, integral_period, fiper;
+> > > +
+> > > +	if (!priv->pps_enabled)
+> > > +		return;
+> > > +
+> > > +	integral_period = netc_timer_get_integral_period(priv);
+> > > +	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> > > +	fiper_ctrl &= ~FIPER_CTRL_DIS(0);
+> > > +	fiper = NSEC_PER_SEC - integral_period;
+> > > +
+> > > +	netc_timer_set_pps_alarm(priv, 0, integral_period);
+> > > +	netc_timer_wr(priv, NETC_TMR_FIPER(0), fiper);
+> > > +	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
+> > > +}
+> > > +
+> > > +static int netc_timer_enable(struct ptp_clock_info *ptp,
+> > > +			     struct ptp_clock_request *rq, int on)
+> > > +{
+> > > +	struct netc_timer *priv = ptp_to_netc_timer(ptp);
+> > > +
+> > > +	switch (rq->type) {
+> > > +	case PTP_CLK_REQ_PPS:
+> > > +		return netc_timer_enable_pps(priv, rq, on);
+> > > +	default:
+> > > +		return -EOPNOTSUPP;
+> > > +	}
+> > > +}
+> > > +
+> > >  static void netc_timer_adjust_period(struct netc_timer *priv, u64 period)
+> > >  {
+> > >  	u32 fractional_period = lower_32_bits(period);
+> > > @@ -136,8 +309,11 @@ static void netc_timer_adjust_period(struct
+> > netc_timer *priv, u64 period)
+> > >  	old_tmr_ctrl = netc_timer_rd(priv, NETC_TMR_CTRL);
+> > >  	tmr_ctrl = u32_replace_bits(old_tmr_ctrl, integral_period,
+> > >  				    TMR_CTRL_TCLK_PERIOD);
+> > > -	if (tmr_ctrl != old_tmr_ctrl)
+> > > +	if (tmr_ctrl != old_tmr_ctrl) {
+> > > +		netc_timer_disable_pps_fiper(priv);
+> > >  		netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
+> > > +		netc_timer_enable_pps_fiper(priv);
+> > > +	}
+> > >
+> > >  	netc_timer_wr(priv, NETC_TMR_ADD, fractional_period);
+> > >
+> > > @@ -163,6 +339,8 @@ static int netc_timer_adjtime(struct ptp_clock_info
+> > *ptp, s64 delta)
+> > >
+> > >  	spin_lock_irqsave(&priv->lock, flags);
+> > >
+> > > +	netc_timer_disable_pps_fiper(priv);
+> > > +
+> > >  	/* Adjusting TMROFF instead of TMR_CNT is that the timer
+> > >  	 * counter keeps increasing during reading and writing
+> > >  	 * TMR_CNT, which will cause latency.
+> > > @@ -171,6 +349,8 @@ static int netc_timer_adjtime(struct ptp_clock_info
+> > *ptp, s64 delta)
+> > >  	tmr_off += delta;
+> > >  	netc_timer_offset_write(priv, tmr_off);
+> > >
+> > > +	netc_timer_enable_pps_fiper(priv);
+> > > +
+> > >  	spin_unlock_irqrestore(&priv->lock, flags);
 > > >
 > > >  	return 0;
-> > >  }
-> > > @@ -1296,6 +1361,7 @@ const struct ethtool_ops enetc4_pf_ethtool_ops = {
-> > >  	.get_rxfh = enetc_get_rxfh,
-> > >  	.set_rxfh = enetc_set_rxfh,
-> > >  	.get_rxfh_fields = enetc_get_rxfh_fields,
-> > > +	.get_ts_info = enetc_get_ts_info,
+> > > @@ -205,8 +385,12 @@ static int netc_timer_settime64(struct
+> > ptp_clock_info *ptp,
+> > >  	unsigned long flags;
+> > >
+> > >  	spin_lock_irqsave(&priv->lock, flags);
+> > > +
+> > > +	netc_timer_disable_pps_fiper(priv);
+> > >  	netc_timer_offset_write(priv, 0);
+> > >  	netc_timer_cnt_write(priv, ns);
+> > > +	netc_timer_enable_pps_fiper(priv);
+> > > +
+> > >  	spin_unlock_irqrestore(&priv->lock, flags);
+> > >
+> > >  	return 0;
+> > > @@ -232,10 +416,13 @@ static const struct ptp_clock_info
+> > netc_timer_ptp_caps = {
+> > >  	.name		= "NETC Timer PTP clock",
+> > >  	.max_adj	= 500000000,
+> > >  	.n_pins		= 0,
+> > > +	.n_alarm	= 2,
+> > > +	.pps		= 1,
+> > >  	.adjfine	= netc_timer_adjfine,
+> > >  	.adjtime	= netc_timer_adjtime,
+> > >  	.gettimex64	= netc_timer_gettimex64,
+> > >  	.settime64	= netc_timer_settime64,
+> > > +	.enable		= netc_timer_enable,
 > > >  };
 > > >
-> > >  void enetc_set_ethtool_ops(struct net_device *ndev)
+> > >  static void netc_timer_init(struct netc_timer *priv)
+> > > @@ -252,7 +439,7 @@ static void netc_timer_init(struct netc_timer *priv)
+> > >  	 * domain are not accessible.
+> > >  	 */
+> > >  	tmr_ctrl = FIELD_PREP(TMR_CTRL_CK_SEL, priv->clk_select) |
+> > > -		   TMR_CTRL_TE;
+> > > +		   TMR_CTRL_TE | TMR_CTRL_FS;
+> > >  	netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
+> > >  	netc_timer_wr(priv, NETC_TMR_PRSC, priv->oclk_prsc);
+> > >
+> > > @@ -372,6 +559,66 @@ static int netc_timer_parse_dt(struct netc_timer
+> > *priv)
+> > >  	return netc_timer_get_reference_clk_source(priv);
+> > >  }
+> > >
+> > > +static irqreturn_t netc_timer_isr(int irq, void *data)
+> > > +{
+> > > +	struct netc_timer *priv = data;
+> > > +	struct ptp_clock_event event;
+> > > +	u32 tmr_event;
+> > > +
+> > > +	spin_lock(&priv->lock);
+> > > +
+> > > +	tmr_event = netc_timer_rd(priv, NETC_TMR_TEVENT);
+> > > +	tmr_event &= priv->tmr_emask;
+> > > +	/* Clear interrupts status */
+> > > +	netc_timer_wr(priv, NETC_TMR_TEVENT, tmr_event);
+> > > +
+> > > +	if (tmr_event & TMR_TEVENT_ALMEN(0))
+> > > +		netc_timer_alarm_write(priv, NETC_TMR_DEFAULT_ALARM, 0);
+> > > +
+> > > +	if (tmr_event & TMR_TEVENT_PPEN_ALL) {
+> > > +		event.type = PTP_CLOCK_PPS;
+> > > +		ptp_clock_event(priv->clock, &event);
+> > > +	}
+> > > +
+> > > +	spin_unlock(&priv->lock);
+> > > +
+> > > +	return IRQ_HANDLED;
+> > > +}
+> > > +
+> > > +static int netc_timer_init_msix_irq(struct netc_timer *priv)
+> > > +{
+> > > +	struct pci_dev *pdev = priv->pdev;
+> > > +	char irq_name[64];
+> > > +	int err, n;
+> > > +
+> > > +	n = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_MSIX);
+> > > +	if (n != 1) {
+> > > +		err = (n < 0) ? n : -EPERM;
+> > > +		dev_err(&pdev->dev, "pci_alloc_irq_vectors() failed\n");
+> > > +		return err;
+> > > +	}
+> > > +
+> > > +	priv->irq = pci_irq_vector(pdev, 0);
+> > > +	snprintf(irq_name, sizeof(irq_name), "ptp-netc %s", pci_name(pdev));
+> > > +	err = request_irq(priv->irq, netc_timer_isr, 0, irq_name, priv);
+> > > +	if (err) {
+> > > +		dev_err(&pdev->dev, "request_irq() failed\n");
+> > > +		pci_free_irq_vectors(pdev);
+> > > +		return err;
+> > > +	}
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static void netc_timer_free_msix_irq(struct netc_timer *priv)
+> > > +{
+> > > +	struct pci_dev *pdev = priv->pdev;
+> > > +
+> > > +	disable_irq(priv->irq);
+> > > +	free_irq(priv->irq, priv);
+> > > +	pci_free_irq_vectors(pdev);
+> > > +}
+> > > +
+> > >  static int netc_timer_probe(struct pci_dev *pdev,
+> > >  			    const struct pci_device_id *id)
+> > >  {
+> > > @@ -395,17 +642,23 @@ static int netc_timer_probe(struct pci_dev *pdev,
+> > >  	priv->oclk_prsc = NETC_TMR_DEFAULT_PRSC;
+> > >  	spin_lock_init(&priv->lock);
+> > >
+> > > +	err = netc_timer_init_msix_irq(priv);
+> > > +	if (err)
+> > > +		goto timer_pci_remove;
+> > > +
+> > >  	netc_timer_init(priv);
+> > >  	priv->clock = ptp_clock_register(&priv->caps, dev);
+> > >  	if (IS_ERR(priv->clock)) {
+> > >  		err = PTR_ERR(priv->clock);
+> > > -		goto timer_pci_remove;
+> > > +		goto free_msix_irq;
+> > >  	}
+> > >
+> > >  	priv->phc_index = ptp_clock_index(priv->clock);
+> > >
+> > >  	return 0;
+> > >
+> > > +free_msix_irq:
+> > > +	netc_timer_free_msix_irq(priv);
+> > >  timer_pci_remove:
+> > >  	netc_timer_pci_remove(pdev);
+> > >
+> > > @@ -417,6 +670,7 @@ static void netc_timer_remove(struct pci_dev *pdev)
+> > >  	struct netc_timer *priv = pci_get_drvdata(pdev);
+> > >
+> > >  	ptp_clock_unregister(priv->clock);
+> > > +	netc_timer_free_msix_irq(priv);
+> > >  	netc_timer_pci_remove(pdev);
+> > >  }
+> > >
 > > > --
 > > > 2.34.1
 > > >
