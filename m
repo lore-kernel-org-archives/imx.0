@@ -1,134 +1,191 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09ECC223DF5;
-	Wed, 13 Aug 2025 05:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD6F1F099C;
+	Wed, 13 Aug 2025 06:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755064685; cv=none; b=UqcQ9JgTY1+v9I8UnMTz8NOZj8sQOMCJN4io61euoU2n4vgtp7LntnrIePFERV5/HG9s0m2Ra7hAdZ83oiuF7nMj+oz046agJfE34vpuNwtGrQSwwS2OU4aKfvJjRGWA4sboU1YSGaxJFucANW+q9hBoxC75Ow8r4McuEOPFNqk=
+	t=1755064824; cv=none; b=lSQth9dj2pY3jnXlGRNdh0ca7N6/ARRTBvIpH6tgspijueRskWyOnm6y5xUisVwclFVGrhgCOv2KO0iFayCxJSeZddeU46POqACpq0K7+7RjPBb4u15CRbZ1LECyXghU1PoP9gn53v0QtasROB6sBL7HdvE/lPt0uvatjo/XHhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755064685; c=relaxed/simple;
-	bh=DNJSU8lMsOO0RxeTjd8HYxrCW47ClBVgu5D1ztShDig=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nLTKFgFcw2k2q9I1Sc6KWLOvHdGkUvJcEuEWfYB6BQNjCxCeoRPGaaTmSl/+CO+zioakFXoxU7bUc+RgTGpGg+B0nVo4qOnC9fINiIJz7ZpWt0bkxtoeFOwi+1+4DsmifWdMjC5cyenPiNtkHeYqHm1K4+rUy4XZAQIVwI+tZFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBj06Sxt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755064824; c=relaxed/simple;
+	bh=yiqnatmjL9df9H+0s0wS55bl9IzIhgx0qIsceSspp+I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bwqJFGPCmUYMRFiPEk6BO73ZCb4+8X88natjJ9UPutXxk25u2rz514w3wQrZ0uNOLKNJkbwjyETuIRQON6pOV9kDnNrtmrYmYHBUMRehoSN/KMKWCLBKMVFlnkQZiO7t72a6x5XCl7qoEyKtRBQ0sVr4YOj30bll/NDwIo6svhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uecDUHo7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBj06Sxt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5089EC4CEEB;
-	Wed, 13 Aug 2025 05:58:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uecDUHo7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E416DC4CEEB;
+	Wed, 13 Aug 2025 06:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755064684;
-	bh=DNJSU8lMsOO0RxeTjd8HYxrCW47ClBVgu5D1ztShDig=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CBj06SxtTAvh+0DcxIjwg/9eCaSZH2bCVlRikhngWzr616sAIwOXVaOXj6PfCsK71
-	 uE/NMiYxLerxHOASfISZwNX2FlJXtjk1he8AoGo2kRTfVLKKP8cr6Zlx5eM52OnpId
-	 r6Ol13ylI1m/r5Gsp8w61Z2/pdIGOxtWqedCPtZ0BUFwF2rRBd/f4OdGBdAC54/fgO
-	 kB1KfJCB9OfRVjHWRa8IJLFmiTqV1H7/1tExp5Duk/trYriDZMcc/AGKWz0jdYUq+F
-	 0PSKqYghWj+1jUuoVS1prpLLnszyKOa7vpp/Gpsw3gHmcR684Vo3TllAJo/zZmrbzh
-	 JmRxLqTlqQeGQ==
-Date: Wed, 13 Aug 2025 13:58:00 +0800
-From: "Peter Chen (CIX)" <peter.chen@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH] usb: chipidea: imx: improve usbmisc_imx7d_pullup()
-Message-ID: <20250813055800.GA1143162@nchen-desktop>
-References: <20250811100833.862876-1-xu.yang_2@nxp.com>
+	s=k20201202; t=1755064823;
+	bh=yiqnatmjL9df9H+0s0wS55bl9IzIhgx0qIsceSspp+I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uecDUHo7bJz6sZeGzPnthW+Y8sFrPrI8j0TdQq6orhxeryF91g/nhLE25qJSLyWeg
+	 db/rXkyYO5OFMFDaSTIlxo6QVT4u58am4on63OvwPbmOdItygk2C7N1XY/QjkJFLiK
+	 0G2lMLWJaqCDNgNmfj+Axh3waeIap+MWfXm2R8qj7hHenjw+i6X81NOWmBuNKWWJSN
+	 lH3YPW2l0zbXakuR/4GrECy2wFoev4lfND8cbSRWAEpD6nqzAuxNIEU7753wspL/BF
+	 7THfta6TK/NEhVcy2nkMs9jxa3vL2VtIByRPlvuPDECrKU9vLGduLoBFTAU3Z3UK7+
+	 X1ebz3yFLGeOg==
+Message-ID: <6d6dc9e6-751f-4079-b21e-2e3461885b03@kernel.org>
+Date: Wed, 13 Aug 2025 08:00:17 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250811100833.862876-1-xu.yang_2@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] dt-bindings: media: Add Sony IMX585 CMOS image
+ sensor
+To: Will Whang <will@willwhang.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250810220921.14307-1-will@willwhang.com>
+ <20250810220921.14307-2-will@willwhang.com>
+ <20250811-successful-military-dragon-d72486@kuoka>
+ <CAFoNnrxWwqT9WA-h2WOsUe6Q-qEoz2mTHLpDogAyMwiXXZ9MrA@mail.gmail.com>
+ <f12e6ff3-6ec3-487f-bf9c-0f8c06ee6444@kernel.org>
+ <CAFoNnrxhUof8BBrefm1L1peTxg==Koz72TY+54G_8QUy-rrT8g@mail.gmail.com>
+ <e695c61a-e183-4eea-a7f6-1b2861b2129f@kernel.org>
+ <20250812095543.GJ30054@pendragon.ideasonboard.com>
+ <CAFoNnrzWot_Bf=YZFac1GkZgOOnJycwpidvwL93p3p-C-zn8BA@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <CAFoNnrzWot_Bf=YZFac1GkZgOOnJycwpidvwL93p3p-C-zn8BA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 25-08-11 18:08:33, Xu Yang wrote:
-> When add workaround for ERR051725, the usbmisc will put PHY to
-> Non-driving mode (OPMODE = 01) after stopping the device controller
-> and put PHY back to Normal mode (OPMODE = 00) after starting the device
-> controller.
+On 13/08/2025 06:30, Will Whang wrote:
+> On Tue, Aug 12, 2025 at 2:56 AM Laurent Pinchart
+> <laurent.pinchart@ideasonboard.com> wrote:
+>>
+>> On Tue, Aug 12, 2025 at 08:47:12AM +0200, Krzysztof Kozlowski wrote:
+>>> On 12/08/2025 08:31, Will Whang wrote:
+>>>> On Mon, Aug 11, 2025 at 11:23 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>>> On 12/08/2025 04:47, Will Whang wrote:
+>>>>>> On Mon, Aug 11, 2025 at 1:01 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>>>>> On Sun, Aug 10, 2025 at 11:09:18PM +0100, Will Whang wrote:
+>>>>>>>> +description:
+>>>>>>>> +  IMX585 sensor is a Sony CMOS sensor with 4K and FHD outputs.
+>>>>>>>> +
+>>>>>>>> +properties:
+>>>>>>>> +  compatible:
+>>>>>>>> +    enum:
+>>>>>>>> +      - sony,imx585
+>>>>>>>> +      - sony,imx585-mono
+>>>>>>>
+>>>>>>> I don't understand this second compatible. Is this different hardware?
+>>>>>>> Can you point me to "mono" datasheet?
+>>>>>>>
+>>>>>>> Your description should explain this. Commit msg as well, instead of
+>>>>>>> speaking about driver (in fact drop all driver related comments).
+>>>>>>>
+>>>>>> Mono version of this sensor is basically just removing the bayer
+>>>>>> filter, so the sensor itself actually doesn't know if it is color or
+>>>>>> mono and from my knowledge there are no registers programmed in the
+>>>>>> factory that will show the variant and model number. (That is why when
+>>>>>> the driver probing it only test blacklevel register because there are
+>>>>>> no ID registers)
+>>>>>> Originally in V1 patch I've made the switch between color and mono in
+>>>>>> dtoverlay config but reviewer comments is to move it to compatible
+>>>>>> string and not property.(https://lore.kernel.org/linux-media/20250703175121.GA17709@pendragon.ideasonboard.com/)
+>>>>>
+>>>>> You only partially answer and judging by mentioning driver below:
+>>>>>
+>>>>>> In this case, what would you recommend?
+>>>>>>
+>>>>>> compatible:
+>>>>>>   enum:
+>>>>>>     - sony,imx585
+>>>>>>     - sony,imx585-mono
+>>>>>>   description: IMX585 has two variants, color and mono which the
+>>>>>> driver supports both.
+>>>>>
+>>>>> ... I still have doubts that you really understand what I am asking. Is
+>>>>> this one device or two different devices?
+>>>>
+>>>> One device that has two variants: IMX585-AAMJ1 (Mono) and IMX585-AAQJ1
+>>>> (Color). Silicon-wise the difference is just with or without bayer
+>>>> filter.
+>>>
+>>> Then I would propose to use sony,imx585-aamj1 and -aaqj1 with short
+>>> explanation either in comment or description about difference in RGB
+>>> mosaic filter.
+>>
+>> Works for me. We could possibly omit the "j1" suffix too.
+>>
+> My thinking is that imx585 and imx585-mono are easier to comprehend
+> than IMX585-AAM and IMX585-AAQ.
+> Because in dtoverlay for the users/me they will have to know what is
+> the exact name instead of easy to remember name.
 > 
-> However, this will bring issue for host controller. Because the PHY may
-> stay in Non-driving mode after switching the role from device to host.
-> Then the port will not work if USB device is attached. To fix this issue,
-> improving the workaround by putting PHY to Non-driving mode for a certain
-> period and back to Normal mode finally. To make host detect a disconnect
-> signal, the period should be at least 125us (a micro-frame time) for
-> high-speed link.
-> 
-> And only working as high-speed mode will need workaround for ERR051725.
-> So this will also filter the pullup event for high-speed.
-> 
-> Fixes: 11992b410083 ("usb: chipidea: imx: implement workaround for ERR051725")
-> Reviewed-by: Jun Li <jun.li@nxp.com>
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> dtoverlay=imx585-aam
+> is not as nice as
+> dtoverlay=imx585-mono
 
-Acked-by: Peter Chen <peter.chen@kernel.org>
+I have datasheet for AAQ, so how above is easier for me to figure out
+which compatible I am using?
 
-Peter
-> ---
->  drivers/usb/chipidea/ci_hdrc_imx.c |  3 ++-
->  drivers/usb/chipidea/usbmisc_imx.c | 23 ++++++++++++++++-------
->  2 files changed, 18 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-> index e1ec9b38f5b9..d7c2a1a3c271 100644
-> --- a/drivers/usb/chipidea/ci_hdrc_imx.c
-> +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-> @@ -338,7 +338,8 @@ static int ci_hdrc_imx_notify_event(struct ci_hdrc *ci, unsigned int event)
->  			schedule_work(&ci->usb_phy->chg_work);
->  		break;
->  	case CI_HDRC_CONTROLLER_PULLUP_EVENT:
-> -		if (ci->role == CI_ROLE_GADGET)
-> +		if (ci->role == CI_ROLE_GADGET &&
-> +		    ci->gadget.speed == USB_SPEED_HIGH)
->  			imx_usbmisc_pullup(data->usbmisc_data,
->  					   ci->gadget.connected);
->  		break;
-> diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
-> index 3d20c5e76c6a..b1418885707c 100644
-> --- a/drivers/usb/chipidea/usbmisc_imx.c
-> +++ b/drivers/usb/chipidea/usbmisc_imx.c
-> @@ -1068,15 +1068,24 @@ static void usbmisc_imx7d_pullup(struct imx_usbmisc_data *data, bool on)
->  	unsigned long flags;
->  	u32 val;
->  
-> +	if (on)
-> +		return;
-> +
->  	spin_lock_irqsave(&usbmisc->lock, flags);
->  	val = readl(usbmisc->base + MX7D_USBNC_USB_CTRL2);
-> -	if (!on) {
-> -		val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_MASK;
-> -		val |= MX7D_USBNC_USB_CTRL2_OPMODE(1);
-> -		val |= MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_EN;
-> -	} else {
-> -		val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_EN;
-> -	}
-> +	val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_MASK;
-> +	val |= MX7D_USBNC_USB_CTRL2_OPMODE(1);
-> +	val |= MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_EN;
-> +	writel(val, usbmisc->base + MX7D_USBNC_USB_CTRL2);
-> +	spin_unlock_irqrestore(&usbmisc->lock, flags);
-> +
-> +	/* Last for at least 1 micro-frame to let host see disconnect signal */
-> +	usleep_range(125, 150);
-> +
-> +	spin_lock_irqsave(&usbmisc->lock, flags);
-> +	val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_MASK;
-> +	val |= MX7D_USBNC_USB_CTRL2_OPMODE(0);
-> +	val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_EN;
->  	writel(val, usbmisc->base + MX7D_USBNC_USB_CTRL2);
->  	spin_unlock_irqrestore(&usbmisc->lock, flags);
->  }
-> -- 
-> 2.34.1
+> which is what it does, a mono variant of the sensor.
 > 
+> I really don't understand the standard for compatible string naming
+> here, is there something I missed? Is it required to use the full name
+> of the sensor parts number as a compatible string?
 
--- 
+It's not part number. You have there different models. We don't add
+prose to compatibles, but use device or model names.
 
 Best regards,
-Peter
+Krzysztof
