@@ -1,42 +1,42 @@
 Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B08C2EAD00
-	for <imx@lists.linux.dev>; Wed, 13 Aug 2025 15:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FF52E41E
+	for <imx@lists.linux.dev>; Wed, 13 Aug 2025 15:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755097900; cv=none; b=YDmJE1XoBYRJni05+1/ZJdoA8lOOy2uBR1fKz397vkN5y1/TLULd2KOqHPhXTJzbdgFijykpZu85h9barl98MojQ+xIPW9sUksCv0qtL0oJmQjMPmul7Y0oB4YnkaMBHRLhhjJZGSzDiCphNAbhcTXUrWTawUOPiv1NmQrtPwF8=
+	t=1755098974; cv=none; b=ozZ20jz8pr1vgs1ypYRzPUkUDrYYbYlbk0MrpcoJP+HDjBrU2tdena3GnoNHvijzOV0PBzql2y79vDGDgrjmejWphLB65WzPptWMA2JoVzjCjQZsTQ+z2DZROpVh4SKrSR59rssmWx6xG8oI6aSwOxkjT9HT7iqzQXo493yRQQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755097900; c=relaxed/simple;
-	bh=Ye8Jm7fIId7BXsl1A0b32tlcCGzocCJI2em4ZIJ0umU=;
+	s=arc-20240116; t=1755098974; c=relaxed/simple;
+	bh=MR0DcSztgKA4jVA39j6euLbkCbLBnVIqd8/aw4ObGKI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=CX+asvFryyTSd4T5Jj+4mMD2njhDySZD/sLidtIuv09mEDoC7BY/vNvu4z8CrznHnwbGEOFtAnV2xGD7LhBzEdypuohSuazsIv2YYZgSq7NRFXqGx9IhtYBdsyl0pEZEA9geF8tUj+YQP6I9D8SSKrd4X3Mkz4ra0D3d+hfEHxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=GhwELWec; arc=none smtp.client-ip=193.68.50.107
+	 In-Reply-To:Content-Type; b=h5Jyc9W+3us978O9C4oBhZTpxDjf1LlrW0Iv0GMnlbBjvtMNz/s6kGZu8p7b8TmG5CYbhlv98vLBtVkaDtnD3vj6h/3rRS7TlJPCkWAsQmysWKKO9Cu4tHZKd4vVWSrY1bCRH82asyWZuq240Mlu+wNcuHaE2RLzSBV+P53qav8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=c1mbcx01; arc=none smtp.client-ip=193.68.50.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="GhwELWec"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="c1mbcx01"
 Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 63AD7A061F;
-	Wed, 13 Aug 2025 17:11:34 +0200 (CEST)
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id DBF74A09CA;
+	Wed, 13 Aug 2025 17:29:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=rNKKXxK3P24jwoIEtT+P
-	8L73dlGuPGKm5hmRD8zmlCs=; b=GhwELWec6dChTfssS6ZlxRQM/JsDcZG2MQAz
-	3LqA3VnhCkgYaxF8VI3uZLy5zBLXdZY2WbIn5ehRc76dVH3QaB30Kf1sxnJz4JB/
-	0OjOkod2zRuBAF66hEQj0CPrvisnCdS3XBEh1wRCbRThtUIVR/EIgCW1sZdHNXNQ
-	VICPbcwIkTaE4ePoxvlB/VroUPyvhj7AmPeAfgNOTSpnks4hRRv1kqG0TklOVb1O
-	yXODS6Keq1L5q1yGcnuTVexr/tLU2Q1y7ou00av8G0L5ul4qdxvLJH2WOgOoINih
-	44yEDbIhiKIgI9eUWDSZsxl8pvpbyHEGDiLQ6NxVsKVrVh8ewSr5zO5WinMltcLv
-	P2ubxLeumsokN6iVjwc5SlaCUkFPr3YGrxR0imLKDn4dZ8VT+GRudc/5QRTCLj7H
-	/GCCy6F3wmxDP03pDiQoiZV84H8/R4uUMQtUyQOt1FaFxzdpLINUqOAhPf4vSxKd
-	Z2g8dOO0G8efXcmgYzjiSVvIVMP4dd/4AyRxNwNknauaoOa45aW9cypveDMnlcvy
-	scKFVA1gXA729gBxFddEA4oMX8PbkYUynn9/lDC6jE4OvWPdrXDUA/V8wjULe0Yc
-	/MekLncNFC7niwoeJGWg2RAJ1cQRnvt9PuU9s52PQzKvJZ9frLT3msiysDRQVXpO
-	vECn6GQ=
-Message-ID: <58709258-9154-4ec1-b64c-5be161b061e8@prolan.hu>
-Date: Wed, 13 Aug 2025 17:11:32 +0200
+	:reply-to:subject:subject:to:to; s=mail; bh=EmjzUDwTEf/ZVzLY6NpU
+	Z7nq/gf392CNl+RtZjfZyd4=; b=c1mbcx01jkNEjwmMwbywiKqeRa2FdI/RIrSg
+	umyluj/3Jz/VgcmHExvEZ83/8clhYcXKnl4CNtKXLL4C6sVBzFUAIjIVFkIWmX1K
+	nWxzKsfWoB2/JqsuF2IIcTMZPu//8sLeZn5YkTpFL9NA7G49np1e6iNV5ZAawslC
+	aYeBn1UUll7OpxgQEapTQLW2IvXkuxUx7CcI436lWs8HpoCDSVjfI95sFiaW+Rap
+	cZdezw/NX7gwsL05oWWbrOrA4eMYPVc9ZfqGn8+XcpyGsXdQGcT7bCkPEU6VzfVr
+	w0toicu09s82GfT4ds9Z0yrh6gGZqg7ZE8dChtnkptX8Yad++Oov3h0tfpBRO6dl
+	pdDztiYuLU/yn1hM2KPBDRir09691LBhPlb5uLBiK0a7O+5a96VbYeMcTtGqDTOc
+	QGVnKDOZAXKZifJdHf9FInn4bG3oeC/EUXYmmTzS/OU+/GYRT348fgzEPKePlQ0x
+	Oft+ihlf9gHnF6ddkab0qJp4lGIZtsSGCoiKo+gbzTp60ug2CtIs2AWFlfUajqkQ
+	HbV/8dWEvFk14kMYJZ0wZUs/umE/Hn6BUZgkKFEt3MQxVS1dprivtz0x9x/2nOhr
+	yO+W5k22H7qaRqWDAj7B2hWObNHnV2mPCF2UGFLW0mlB4RQH4SKWHYSPLpqJ2Swd
+	nrQGohI=
+Message-ID: <db71a9dd-72b0-47ef-a7f0-bd527262c4e9@prolan.hu>
+Date: Wed, 13 Aug 2025 17:29:29 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,20 +44,20 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ARM: dts: imx6-aristainetos2: Replace license text
- comment with SPDX identifier
-To: Heiko Schocher <hs@denx.de>, Rob Herring <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn
- Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	"Pengutronix Kernel Team" <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>
+Subject: Re: [PATCH v2] ARM: dts: imx6-litesom: Replace license text comment
+ with SPDX identifier
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
 CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
 	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	"Erika Unter" <e.unter@denx.de>
-References: <20250709-abb-dts-lic-v2-1-adc5e4781f65@prolan.hu>
+	Marcin Niestroj <m.niestroj@grinn-global.com>, Piotr Figlarek
+	<piotr.figlarek@grinn-global.com>, Marcin Niestroj <m.niestroj@emb.dev>
+References: <20250709-litesom-dts-lic-v2-1-b907084ced96@prolan.hu>
 Content-Language: en-US
 From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <20250709-abb-dts-lic-v2-1-adc5e4781f65@prolan.hu>
+In-Reply-To: <20250709-litesom-dts-lic-v2-1-b907084ced96@prolan.hu>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-ClientProxiedBy: sinope.intranet.prolan.hu (10.254.0.237) To
@@ -65,9 +65,9 @@ X-ClientProxiedBy: sinope.intranet.prolan.hu (10.254.0.237) To
 X-EsetResult: clean, is OK
 X-EsetId: 37303A296767155E617765
 
-Hi Heiko,
+Hi,
 
-On 2025. 07. 09. 9:28, Bence Csókás wrote:
+On 2025. 07. 09. 9:31, Bence Csókás wrote:
 > Replace verbatim license text with a `SPDX-License-Identifier`.
 > 
 > The comment header mis-attributes this license to be "X11", but the
@@ -78,10 +78,125 @@ On 2025. 07. 09. 9:28, Bence Csókás wrote:
 > this license is actually equivalent to the SPDX "MIT" license (confirmed
 > by text diffing).
 > 
-> Cc: Heiko Schocher <hs@denx.de>
+> Cc: Marcin Niestroj <m.niestroj@grinn-global.com>
 > Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
 
-Do you agree with this change?
++Cc: Piotr Figlarek
 
-Bence
+> ---
+> Changes in v2:
+> - Fix msg
+> - Link to v1: https://lore.kernel.org/r/20250702-litesom-dts-lic-v1-1-401e4d141bf0@prolan.hu
+> ---
+>   arch/arm/boot/dts/nxp/imx/imx6ul-liteboard.dts | 38 +-------------------------
+>   arch/arm/boot/dts/nxp/imx/imx6ul-litesom.dtsi  | 38 +-------------------------
+>   2 files changed, 2 insertions(+), 74 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-liteboard.dts b/arch/arm/boot/dts/nxp/imx/imx6ul-liteboard.dts
+> index 5e62272acfba..7a4127670a6f 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-liteboard.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-liteboard.dts
+> @@ -1,44 +1,8 @@
+> +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
+>   /*
+>    * Copyright 2016 Grinn
+>    *
+>    * Author: Marcin Niestroj <m.niestroj@grinn-global.com>
+> - *
+> - * This file is dual-licensed: you can use it either under the terms
+> - * of the GPL or the X11 license, at your option. Note that this dual
+> - * licensing only applies to this file, and not this project as a
+> - * whole.
+> - *
+> - *  a) This file is free software; you can redistribute it and/or
+> - *     modify it under the terms of the GNU General Public License
+> - *     version 2 as published by the Free Software Foundation.
+> - *
+> - *     This file is distributed in the hope that it will be useful,
+> - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - *     GNU General Public License for more details.
+> - *
+> - * Or, alternatively,
+> - *
+> - *  b) Permission is hereby granted, free of charge, to any person
+> - *     obtaining a copy of this software and associated documentation
+> - *     files (the "Software"), to deal in the Software without
+> - *     restriction, including without limitation the rights to use,
+> - *     copy, modify, merge, publish, distribute, sublicense, and/or
+> - *     sell copies of the Software, and to permit persons to whom the
+> - *     Software is furnished to do so, subject to the following
+> - *     conditions:
+> - *
+> - *     The above copyright notice and this permission notice shall be
+> - *     included in all copies or substantial portions of the Software.
+> - *
+> - *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+> - *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+> - *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+> - *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+> - *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+> - *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> - *     OTHER DEALINGS IN THE SOFTWARE.
+>    */
+>   
+>   /dts-v1/;
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-litesom.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-litesom.dtsi
+> index 8d6893210842..c387753f833b 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-litesom.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-litesom.dtsi
+> @@ -1,44 +1,8 @@
+> +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
+>   /*
+>    * Copyright 2016 Grinn
+>    *
+>    * Author: Marcin Niestroj <m.niestroj@grinn-global.com>
+> - *
+> - * This file is dual-licensed: you can use it either under the terms
+> - * of the GPL or the X11 license, at your option. Note that this dual
+> - * licensing only applies to this file, and not this project as a
+> - * whole.
+> - *
+> - *  a) This file is free software; you can redistribute it and/or
+> - *     modify it under the terms of the GNU General Public License
+> - *     version 2 as published by the Free Software Foundation.
+> - *
+> - *     This file is distributed in the hope that it will be useful,
+> - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - *     GNU General Public License for more details.
+> - *
+> - * Or, alternatively,
+> - *
+> - *  b) Permission is hereby granted, free of charge, to any person
+> - *     obtaining a copy of this software and associated documentation
+> - *     files (the "Software"), to deal in the Software without
+> - *     restriction, including without limitation the rights to use,
+> - *     copy, modify, merge, publish, distribute, sublicense, and/or
+> - *     sell copies of the Software, and to permit persons to whom the
+> - *     Software is furnished to do so, subject to the following
+> - *     conditions:
+> - *
+> - *     The above copyright notice and this permission notice shall be
+> - *     included in all copies or substantial portions of the Software.
+> - *
+> - *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+> - *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+> - *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+> - *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+> - *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+> - *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> - *     OTHER DEALINGS IN THE SOFTWARE.
+>    */
+>   
+>   #include "imx6ul.dtsi"
+> 
+> ---
+> base-commit: 66701750d5565c574af42bef0b789ce0203e3071
+> change-id: 20250702-litesom-dts-lic-ad9774ebde3d
+> 
+> Best regards,
+
 
