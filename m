@@ -1,43 +1,43 @@
 Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6E02D6632
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A345288C9D
 	for <imx@lists.linux.dev>; Thu, 14 Aug 2025 07:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755157679; cv=none; b=WT3llpX8CWNOPtHVpZooXrS9a0oSF5SKkkiG9uFgVdMQhjz4Sy+HDzg1PuioYfpA2yA1xbCEKnrBSxmZEgDAfMC2Arw++x4jogDZ4o7eEMa0z/Fk1zUIiaPGXU6cHeTSAGbvtfnqYq3SQBYQssAsP5ow9eVYFmru5PCEN6tL1+Y=
+	t=1755157680; cv=none; b=dZlCott9ggNpafP3JaqPaMl+zube9MtTGm677iYWUkW1RWoIntUAkZPleErv7Su8jfN4aS7oFx6mU3fciwCtCRZkxelESoYPZeywAvZoKsTr0VN4RG3u1mjk8Gqiflloa1TgdnG/RMEOV8VnlLv6J0LO2+HKJOJ40cwtFj/QpKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755157679; c=relaxed/simple;
-	bh=zCHAqKKCFtSFWeMLfl3j4tqWJEwqnZDL20gwMjLCAlw=;
+	s=arc-20240116; t=1755157680; c=relaxed/simple;
+	bh=GeVu6uM/4tdVwYkz8tbsf4Jb/AwQtJauZvsoGMPc064=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=tk7CIOKMRqVypiEi0LO3hqbWtdUJ1mW9BoKWowKZ0FpGdSHwd2eXegypbswH+1y/Jxlxius6gFlWdpV4M1thm9Zgu0Us9OXPbTmHr9Pm7LqVPGnLLYmDPbqyrZJkDIgVPC5SQcsgI40jHzBjWEfjEP9/MIT6npsx9lOuRF627io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=moeDmzO9; arc=none smtp.client-ip=193.68.50.107
+	 In-Reply-To:To:CC; b=q/rZiaE2H/HZyEXTkyg5GhUYmyITnfV4KPMRs+yyoJso52h8RmJIRQ69d+fsePF68Fl/KWXCFLXAK7k2M/UgHdlXi4FoIIbDsO3Nx3mQAdCVsu922L94ty3yaGbTXI301nxYS3yVlejY8NxOyR3JHeqwHZ8O6S4uWJfukYk51c0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=hdqdb/y+; arc=none smtp.client-ip=193.68.50.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="moeDmzO9"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="hdqdb/y+"
 Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 15D59A0F9B;
-	Thu, 14 Aug 2025 09:47:50 +0200 (CEST)
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 806A1A0C24;
+	Thu, 14 Aug 2025 09:47:49 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=U5KR1zgb+2iVheVTOl3S
-	X/dmkA++aT5srmWbqsDAvzc=; b=moeDmzO9rmAP4cez4/AR8ncDqL5x/F9G7Wuh
-	BtKAZGeOCCS1dpIWqa3YwQK8jIbVmjyjRLNfahu7cqgWFilaeBITn7auGr+4hZET
-	NQtGwArkN5QSk5eT0YVEtYJcHBkQABU8YfhjvXkxsA7MZxT+dFGqU6BXH+N1bfG/
-	MIJqNKX1Gq1PEk4uKsH/RAiOWXh3hQZT/BRhHKe2cD2l9Q5z3QrP5+tqaABaieGu
-	bm0idR7OC5hbBbZhCj/WyqOFneUTTGQ5ykjalqXEpWjnogR70ZohyZkJaGz7RhwD
-	yOlntFjaYtAppG6YG/wpf73cEIP78sF1NWzgX7TS70DBClmHBMJE+66b8sLX54lC
-	uWPvo8//LI5AMDozCEq8/+uf+Uekw6UupA64muC7MVJJShxHDmboDco1xcbK4v5X
-	IL9dtCprXtqOISPFz9vq0tnHdG0AFF+RltnkRnGalDG0NlNMgsyuIqdOEABvAdDP
-	ajUnNa8CVGwhG1EPADzIrBxjgOlq2nLjbTp8wN77ma7+0sgmgQp4Ley8VXgUIHW6
-	kB3ETzNGDUqu4CB/Zek1/Nniu5qCHMJPRSC+yi6MYc3Bs7N3eEPrutqV/6/u+mUd
-	CerbdBrFuK5DdLGPQMmLG7DVMWlbicjgqFYJLHx2XDXFafpyMZ5Ip76C71a0xhp2
-	wgWFAG0=
+	:reply-to:subject:subject:to:to; s=mail; bh=5WROBXDUdvPcUQzLxywu
+	NcwJQ4ygTXe/a0Y+F+T+8IY=; b=hdqdb/y+IO8YdbM6ssmNO8OkDn/+miE6EALy
+	b8/OAOkDoOggGprTul+XnAv229bwLGSTx9GBHFTvKxJme6bpC4t8gmdwf3ebExCU
+	dO3R/IbEYnGVAsVZDaVyRjD1B8O1dvOy9jdRZEOhhawfProO4cb3rxRqcsEYfh0P
+	FJioxamO9R+Ys2Xlw+7smXVSWEc77gNlnXbrQpAdW+JLSdoPFnA1lWEsCS0a1yAT
+	/KdC8vrpqSAHK1DGxVZiIimzpxQjJuz5moEaZD1SAiOehKbsHbBuBJcLxpwQzQ5M
+	5M+MrzH08+yHvgFBuGvhPKRjXzGnhABqU5w0ilHHvgzcWdIAjVjw0lbtSFcEHYps
+	qU4hyAvT0qzJ/80Z6T36N3uuM9jHYDbYfUspSzEX1Uj2tDUB1TLc5m2lGG6TgHLl
+	oem5zC9p1Y6/vgNXhIY+BgBYzhJaCvrRVOIoWZoiHLDYO61WX3qXuxrnZiRW2pRq
+	7inpFpX5pzBqCU5ZNn0mI9r1iPR8TSkDiMHTpcsmo9oDv/+MSbmT8/TXTOYHgo0I
+	b7drU1h4lZLMnYT2TVcTljpBznXZLzglQiGKtqL7YhY4GJPvKwivegWV5weC1SW9
+	aCe9A4b5zHQE8wIKbuj7vLN35dzZl5AJuBKXl4SwYmStYzFXYLgkuwWSSqijaRVj
+	dPuRe+I=
 From: =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-Date: Thu, 14 Aug 2025 09:47:46 +0200
-Subject: [PATCH v2 4/8] ARM: dts: imx6-evi: Replace license text comment
+Date: Thu, 14 Aug 2025 09:47:43 +0200
+Subject: [PATCH v2 1/8] ARM: dts: imx53-ppd: Replace license text comment
  with SPDX identifier
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-ID: <20250814-imx-misc-dts-lic-v2-4-faff7db49a5f@prolan.hu>
+Message-ID: <20250814-imx-misc-dts-lic-v2-1-faff7db49a5f@prolan.hu>
 References: <20250814-imx-misc-dts-lic-v2-0-faff7db49a5f@prolan.hu>
 In-Reply-To: <20250814-imx-misc-dts-lic-v2-0-faff7db49a5f@prolan.hu>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -56,10 +56,10 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
 CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
 	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	=?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>, Joshua Clayton
-	<stillcompiling@gmail.com>
+	=?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>, Fabien Lahoudere
+	<fabienlahoudere.pro@gmail.com>
 X-Mailer: b4 0.14.2
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1755157669;VERSION=7995;MC=3336485094;ID=1088344;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1755157668;VERSION=7995;MC=3219109158;ID=1088341;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
 X-ESET-Antispam: OK
 X-EsetResult: clean, is OK
 X-EsetId: 37303A2998FD515E617667
@@ -74,30 +74,29 @@ without prior written authorization from the X Consortium.". Therefore,
 this license is actually equivalent to the SPDX "MIT" license (confirmed
 by text diffing).
 
-Cc: Joshua Clayton <stillcompiling@gmail.com>
+Cc: Fabien Lahoudere <fabienlahoudere.pro@gmail.com>
 Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
 ---
- arch/arm/boot/dts/nxp/imx/imx6q-evi.dts | 40 +--------------------------------
- 1 file changed, 1 insertion(+), 39 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx53-ppd.dts | 38 +--------------------------------
+ 1 file changed, 1 insertion(+), 37 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts b/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts
-index 78d941fef5dfb288c69d702ed190150caa92ba7a..0268b7f5a7d22c9abac848e71b4b05b76dccbfca 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts
-@@ -1,44 +1,6 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+diff --git a/arch/arm/boot/dts/nxp/imx/imx53-ppd.dts b/arch/arm/boot/dts/nxp/imx/imx53-ppd.dts
+index 2892e457fea7ef79ac5877f0a3c893f29b614fdf..8c1c15bf7becaaab808ddfd5dfc1eb4a9b75930c 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx53-ppd.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx53-ppd.dts
+@@ -1,42 +1,6 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2016 United Western Technologies.
+  * Copyright 2014 General Electric Company
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
 - * licensing only applies to this file, and not this project as a
-- * whole
+- * whole.
 - *
 - *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of the
-- *     License, or (at your option) any later version.
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -126,7 +125,6 @@ index 78d941fef5dfb288c69d702ed190150caa92ba7a..0268b7f5a7d22c9abac848e71b4b05b7
 - *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
-- *
   */
  
  /dts-v1/;
