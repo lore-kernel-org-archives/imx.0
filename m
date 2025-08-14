@@ -1,52 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502C4272E42;
-	Thu, 14 Aug 2025 20:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FB83597B;
+	Thu, 14 Aug 2025 21:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755205160; cv=none; b=uQ5sjzib1SREbmQL18QKX7inumMOmk+FxEKbii776ETKy5azmffMGQ8ss+8LhHP9EJF5Z+VZNgKVLwMLE0n9fV1twuNkyHLLJ1uletBK6DfAO2HVwokNXDEdFhK15fqDNF/Z/7+hA4ugcCHQLHv6DLsav154kq8n3nwNZcIA11I=
+	t=1755205921; cv=none; b=k9vByMbr1QNJ6XeZBhi6IYXcbtALfAhY+irCZrPOzKjY2ojuw/03E5C2qcU/eFP6yy6Bvkr1ECl6e6Cpfae5fKBEmPK86+906+IyA/XCtZLY5NpcmzRLFE/VwWQoxhoRdpYiMGw+7AR9g2Z6R1hU8yxJ1+1xOl6DoSDcXEfsEXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755205160; c=relaxed/simple;
-	bh=Tb8hGze9KVpCqWMZFaP75hh5mWHsorO7iqkAvfTQO0Q=;
+	s=arc-20240116; t=1755205921; c=relaxed/simple;
+	bh=Z4EeFVPF1em/O3CNPJOKEevSnWIxuVv3NAboAYUqiqE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ug68nprUDi1Px/uZvaR8mxw+lgeYDdhukztwYtHdH411ckkXWIZqyLTCq0hTcGMH7z+EMsZur6U51WkkJAJxYiwfUywP5FWWgOSv/V6L8HozGLknE3QrwWNcOc7nmyTCBnUi8ZuD1BS+xox+bFIAIhLvcVGiejDhFS6swNBJg7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZBTLYNL; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ovfUMOu4us6DGyfljEQ+gM6gfSEJsQnHnjFBRwd5G7khlK1x4THz064d0rWqox2KvvWY2Y5dZVzXC/5aYTnoELDeb4E3Lw0eN/UMqMaHqlNwkbS1DuBNvLgLp1BZQAjRPPkqetnHMNtHq7Y2NFSWyZ5SiAmh/BIV2ckyiWXi/ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FllSOPqY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZBTLYNL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE42C4CEED;
-	Thu, 14 Aug 2025 20:59:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FllSOPqY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 814A3C4CEED;
+	Thu, 14 Aug 2025 21:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755205158;
-	bh=Tb8hGze9KVpCqWMZFaP75hh5mWHsorO7iqkAvfTQO0Q=;
+	s=k20201202; t=1755205920;
+	bh=Z4EeFVPF1em/O3CNPJOKEevSnWIxuVv3NAboAYUqiqE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jZBTLYNLo7rNXtPYOKWDDRJLNg2SiYsR/U1wfMoexVHfzeh5+ZibOWLXayI+mIaTt
-	 ZT96Ozjsd1xBRGn3x5U6VisXs03AJvs8UQYinxH82K3zFUaiGzhh7yUTD6QIMGsgkE
-	 zTGnmu5MrD0sAe1rEjhoEAoZFexLOCe1g2gdsLiGUY8+jwGhDrLfNvg8aUx0F7cy98
-	 Lwq9S0qxDeGkK13MhRUcBYuUAXYe7GI485FoymZc3ZZQhJ41hudUfwPDxXllrku/9W
-	 v2P37OM35nBn/szcH83yL6eTCl3yGQIzS2ApXQNsaCBBp2/FLFgTqkBv0k58wKR11t
-	 zrMQg6cwn0jdg==
-Date: Thu, 14 Aug 2025 15:59:17 -0500
+	b=FllSOPqYzIEsdidYZFcoLP93zCsufkrQeTD8A7A+WbcA8OTiPqPWDZWgcpX5xGgRl
+	 UbvR7VVGW+XURGpvx9YYudVYLylGQSQCxF9OQmBgw4NaK9lfGxuga6SZk7GQSaek2j
+	 tjy619s6UD97+Ar1ICc0OoqC7VPBCMgXMq9x2xtm292VY7XBZir+PYewdBq7M1uwXQ
+	 sBAaS7ui4P2kp2NMbxdJRVMBu4Ex+pqJohMJ1hNa/zZWH3uLaxNp4F2+LdooKnvaNt
+	 C3kk50O05TWXdYEk3R87AZ06FtnZS4Wy70ktEXVecWElAPXFLk/UID16grlCp2RoBg
+	 BcmaZe5HM+Rwg==
+Date: Thu, 14 Aug 2025 16:11:59 -0500
 From: Rob Herring <robh@kernel.org>
-To: James Clark <james.clark@linaro.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Fugang Duan <B38611@freescale.com>, Gao Pan <pandy.gao@nxp.com>,
-	Fugang Duan <fugang.duan@nxp.com>,
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Larisa Grigore <larisa.grigore@oss.nxp.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
-	Ciprianmarian Costea <ciprianmarian.costea@nxp.com>, s32@nxp.com,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 11/13] dt-bindings: lpspi: Update maximum num-cs value
-Message-ID: <20250814205917.GA3894941-robh@kernel.org>
-References: <20250814-james-nxp-lpspi-v1-0-9586d7815d14@linaro.org>
- <20250814-james-nxp-lpspi-v1-11-9586d7815d14@linaro.org>
+	Conor Dooley <conor+dt@kernel.org>,
+	Kumar M <anil.mamidala@xilinx.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, "Guoniu.zhou" <guoniu.zhou@nxp.com>,
+	Stefan Hladnik <stefan.hladnik@gmail.com>,
+	Florian Rebaudo <frebaudo@witekio.com>
+Subject: Re: [PATCH v4 1/2] dt-bindings: media: i2c: Add bindings for AP1302
+Message-ID: <20250814211159.GA3912850-robh@kernel.org>
+References: <20250811-ap1302-v4-0-80cc41b91662@nxp.com>
+ <20250811-ap1302-v4-1-80cc41b91662@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,43 +50,164 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250814-james-nxp-lpspi-v1-11-9586d7815d14@linaro.org>
+In-Reply-To: <20250811-ap1302-v4-1-80cc41b91662@nxp.com>
 
-On Thu, Aug 14, 2025 at 05:06:51PM +0100, James Clark wrote:
-> As mentioned in commit f46b06e62c86 ("spi: spi-fsl-lpspi: Read
-> chip-select amount from hardware for i.MX93"), some devices support up
-> to 3 chip selects so update the max value.
+On Mon, Aug 11, 2025 at 04:42:30PM -0400, Frank Li wrote:
+> From: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
 > 
-> This isn't a fix or functional change because the devices with 3 chip
-> selects support reading the number of chip selects from hardware, so the
-> value wouldn't have needed to be set here. However the commit states
-> that the DT could be used to overwrite any HW value, so the full range
-> should be supported. This also avoids confusion for any readers about
-> how many chip selects there are.
-
-If reading the h/w gives you 3, when would the DT need to override that 
-with 3? You only need an override for 2 or less.
-
+> The AP1302 is a standalone ISP for ON Semiconductor sensors, which can
+> connect RAW sensors (AR0144).
 > 
-> Signed-off-by: James Clark <james.clark@linaro.org>
+> Add corresponding DT bindings.
+> 
+> Signed-off-by: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Signed-off-by: Stefan Hladnik <stefan.hladnik@gmail.com>
+> Signed-off-by: Florian Rebaudo <frebaudo@witekio.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Previous try:
+> https://lore.kernel.org/linux-media/1631091372-16191-2-git-send-email-anil.mamidala@xilinx.com/
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
-> index a65a42ccaafe..ce7bd44ee17e 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
-> +++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
-> @@ -64,7 +64,7 @@ properties:
->      description:
->        number of chip selects.
->      minimum: 1
-> -    maximum: 2
-> +    maximum: 3
->      default: 1
->  
->    power-domains:
+> Change in v4:
+> - base on discussion https://lore.kernel.org/imx/CAL_JsqLUj2h1OxUokOGFL34czroJnJ33cpvn9jO8b8=cu8Fz0g@mail.gmail.com/
+>   change to use onnn,model property to descript connected raw sensor
+> - Overall roll back to v2, move raw sensor information under "sensor" from
+>   ports.
+> - regs use enum [0, 1] to restrict address range
+> - add supply name from sensor
 > 
-> -- 
-> 2.34.1
+> Change in v3:
+> - Move sensors under ports
+> - use compatible string to indentify connected raw sensors
+> - Add onnn,ar0144.yaml
+> ---
+>  .../devicetree/bindings/media/i2c/onnn,ap1302.yaml | 184 +++++++++++++++++++++
+>  MAINTAINERS                                        |   8 +
+>  2 files changed, 192 insertions(+)
 > 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/onnn,ap1302.yaml b/Documentation/devicetree/bindings/media/i2c/onnn,ap1302.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..d66962d2eadca3f4d86c99a68d5ae7996bd1a522
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/i2c/onnn,ap1302.yaml
+> @@ -0,0 +1,184 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/i2c/onnn,ap1302.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ON Semiconductor AP1302 Advanced Image Coprocessor
+> +
+> +maintainers:
+> +  - Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description:
+
+You need a '>'
+
+> +  The AP1302 is a standalone ISP for ON Semiconductor sensors. It interfaces to
+> +  up to two RAW CMOS sensors over MIPI CSI-2 connections, processes the two
+> +  video streams and outputs YUV frames to the host over a MIPI CSI-2 interface.
+> +  Frames are output side by side or on two virtual channels.
+> +
+> +  The sensors must be identical. They are connected to the AP1302 on dedicated
+> +  I2C buses, and are controlled by the AP1302 firmware. They are not accessible
+> +  from the host.
+> +
+> +properties:
+> +  compatible:
+> +    const: onnn,ap1302
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description:
+> +          Reference to the CLK clock.
+> +
+> +  enable-gpios:
+> +    items:
+> +      - description:
+> +          Reference to the GPIO connected to the EN pin (active high).
+> +
+> +  reset-gpios:
+> +    items:
+> +      - description:
+> +          Reference to the GPIO connected to the RST pin (active low).
+> +
+> +  standby-gpios:
+> +    items:
+> +      - description:
+> +          Reference to the GPIO connected to the STANDBY pin (active high).
+> +
+> +  dvdd-supply: true
+> +
+> +  hmisc-supply: true
+> +
+> +  smisc-supply: true
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/$defs/port-base
+> +    unevaluatedProperties: false
+> +    description: MIPI CSI-2 output interface to the host.
+> +
+> +    properties:
+> +      endpoint:
+> +        $ref: /schemas/media/video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          data-lanes:
+> +            oneOf:
+> +              - items:
+> +                  - const: 1
+> +              - items:
+> +                  - const: 1
+> +                  - const: 2
+> +              - items:
+> +                  - const: 1
+> +                  - const: 2
+> +                  - const: 3
+> +                  - const: 4
+> +
+> +        required:
+> +          - data-lanes
+> +
+> +  sensors:
+> +    type: object
+> +    additionalProperties: false
+> +    description: List of connected sensors
+> +
+> +    properties:
+> +      "#address-cells":
+> +        const: 1
+> +
+> +      "#size-cells":
+> +        const: 0
+> +
+> +      onnn,model:
+> +        enum:
+> +          - onnn,ar0144
+> +          - onnn,ar0330
+> +          - onnn,ar1335
+> +        description:
+
+You need a '>'
+
+> +          Model of the connected sensors. Must be a valid compatible string.
+> +
+> +          If no sensor is connected, this property must no be specified, and
+> +          the AP1302 can be used with it's internal test pattern generator.
+> +
+> +    patternProperties:
+> +      "^sensor@[01]":
+
+"^sensor@[01]$"
+
+With those fixed,
+
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
