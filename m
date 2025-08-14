@@ -1,66 +1,67 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8E6247DEA
-	for <imx@lists.linux.dev>; Thu, 14 Aug 2025 16:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BD32494ED
+	for <imx@lists.linux.dev>; Thu, 14 Aug 2025 16:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755187625; cv=none; b=Wu2otDSB9Ow61PImA3RMioktW03bGfxhyrzZdZjfps0odTPoAdjSa1X8IWoNGZOrsFDOoyW2ZhVsqcE8acgy3injRQlrcc3/v/jkwkcLaEcptDhxV6GoQGz9DKIHm31ee8W2yOW2So5sCeHU5Ow5P6HxtKjPZLcfQQA49xs4ho4=
+	t=1755187626; cv=none; b=Pb80lcEs7J7WbaTVlidM5efRpKAfVx+XuoPI8ZaVCvMxJONkDdrE/RWmEQzwD6q3gDyaSyjNom9xlXFCxEkVETbA5caG4DBxXxn54yZ8BmLAj9i9cCTlvOUtuZFRwnqV73f7hSvD6iMgstGiYjuwj6JO1n57BfB11YEwxQEnjsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755187625; c=relaxed/simple;
-	bh=MEMndkwsKz3Wir01XY15+wsOAiobH1YxwPbkYo3eX7Y=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iskGET7XqvXBJ/jf0s1EzWsDTuip+PdHq4QVc31hXEpKZZ0YJuAxpBgZ2NbTaQRqgDvB4idlLNIigRVbGsg5Wp6szIM2bRszG3VV1z+3Qcts+XnSjh8vEzEnFguDLFX63fw8mL/XYd0YDsPRPpHHM2pZlrOEsyI/JTB1PPNypro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Me/6Od06; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1755187626; c=relaxed/simple;
+	bh=LIQFUNWTOqtolcuHkK+5pFdAZIsgYQVKYSFmavPARR8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rAss/qHui9Gm04fAWW53MrJ8ld8TKyQRvWAybqnqYEyOp/QtdYhxc4CQ3caNZvLnBy+GjE659ZjQ0hyTYOEle9DhTQXEco1huQ5y2QrN2CS7TiwWj8WhCPkE0SS/gXnumpjZ/VLGD+t40rgH76s1KW1NRTn4As4og+eCizVcxdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HG6ANY56; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Me/6Od06"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45a1b097037so6363885e9.2
-        for <imx@lists.linux.dev>; Thu, 14 Aug 2025 09:07:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HG6ANY56"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3b9df0bffc3so659484f8f.1
+        for <imx@lists.linux.dev>; Thu, 14 Aug 2025 09:07:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755187621; x=1755792421; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yj38X/0MfiFnhuC5i4RxM2VUGXAWD2Xbv8OmXp3rmdA=;
-        b=Me/6Od06rUBvlC2KCupUoCp0ob33n2bueXQ0sBJ4c5gfy5E8F8tPxwvV1wqLh4AXaP
-         XCaZX9PF2npSwhfi9GKtdhwrfz2w4k+ob9AffGHgled5fyasQmNi2Nej39JCEBgXlZNG
-         mJKZaCbFoDs5JuaASkkU3U7oQv6Oi/6MbkRKeemc+7iGKrSt54X2Rn1fEmNlPeOP6HRX
-         UUYHtuFV8uRc2FsIOh4TtdF8KkzR+qOV0VOw3+zpGeb5hIZdX7voTXFFEbXoOAtKBs2l
-         /e4dKVZH5xLozQok/jqvnqjLYTDPC5Jm8EkGHYcdNbYk4JoXTVDz1RWPzptcn+Fpota+
-         9p6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755187621; x=1755792421;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1755187622; x=1755792422; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yj38X/0MfiFnhuC5i4RxM2VUGXAWD2Xbv8OmXp3rmdA=;
-        b=MpNFUW+B9ibsQ/mRd3n70T3dxEaKM4vt1DqYazD6IcKEMuuHvcitjYfnssoK0nl8xw
-         7klUbEoY0CgU6O6X53Rv82N8iTV7UDmIGen9NFd81jxqnh2sfH0zR8ue3/rZP0EcybEC
-         hrcn6Oh1jcWptCORODYLq/jHG7nu31D92DiE5PIYfvYEOVWbG48EucjyIeySgDMOojW8
-         hMCS/YwpuToqaVG3MS6a02sX3ZIuXfuJpebVmYPBlvSAJefYYiyhJ2R35lpi5+px+8i8
-         EUFcshIVTxBHuhEqXKmCAs8S1eR0Tj1qyZtNjoomIMNIpQUoXCVWrF9UUTC3BaCoeUSi
-         7lKg==
-X-Forwarded-Encrypted: i=1; AJvYcCWf9qsaD+wqDxcKN3EvrDWi3Xq79/58dnlbdgYLG3cbv/TyuegmmMVPEm64HnhVx0pQLc8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YycUZclH1+l710Sqspvx/ZVMZ062g58AOVxfv61wQnFy2iAhDUD
-	QUb/L6apCTutRg1Jyx3RxOys5wE7UU2IbjKBwJjqw5CWv8Yb5g0w/F6DczI4WavmbNw=
-X-Gm-Gg: ASbGncv3APpAO9khhmfrpBufjrHKmjyHoCPFOu+t7iArw26o1iDPHFQtctRgD6XVTUN
-	Is5+t0xdRIRCydUYSKZWN90xVulSg8vS6sbXImbo2i777qVln7RRy/xsfg/3OHmHsFcepHgbxFL
-	7k0lfl9rs7tHpZYCmLhTUgb5wZxUeGseArf2/42v7qlQvNv3VE1BBQZFiw/BdbnVNmy0utw9Zis
-	z5RETTtWLRObX/C7PKTLDpYdAOefITYpicmhL/dMY9PwBJ6LQxn7FCRkIMypQFwR3HqAdURUvG6
-	QbS9zb8uds7H+AYkEhoW+7JuSranZcA65M3ZwvqpaKseeiZmusqjPSXcXMrWZQADM0O5MJxdB0q
-	v4lwhNlHhj5ECQoS04qsKDSuDDH2sBBI=
-X-Google-Smtp-Source: AGHT+IGccfHVH8S3HQU2QCeEdvi+7U1L+lLQrDOX9EP621ilEY0DVdTkWjRgqUW6HC5Zu2JnCCHaEg==
-X-Received: by 2002:a05:600c:470a:b0:459:db5a:b097 with SMTP id 5b1f17b1804b1-45a1b6489e0mr37662135e9.16.1755187621381;
-        Thu, 14 Aug 2025 09:07:01 -0700 (PDT)
+        bh=8Uvtvrck5DhEfDGyTURDlx1K5TeMVtpeGZ6H7CuQmSw=;
+        b=HG6ANY56JOW2uz8ylPiRWtR/cPR9jsjIDyorTgnusS2bbtSPBvlZ9FAKBMsiDgQSiz
+         4BGaQZ2tJsH99bV9vsyoDhNYgMzLPnuawTynac8SqqeGujSgWvZ7E26CUxrzcVWVYK7X
+         iRbdwF7XjWiDYcX9YUaUZI/KNNu3S2rT9x5EuqB/u3xTL0ogMJ4LED0iRJsEnUAfNx0e
+         pcRjonH3utagqM84WMhT6dv0LEVmigZbZMjx/6NhssHjuOUE56qk+gBrr/nd9y9H6hq5
+         cLVTUKIfKLcYfZsXJcpJrUI0p+y05yiDNbB+QJ99GEWxqtiVMoeiKafb7clVRNFhNNgs
+         jJ+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755187622; x=1755792422;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8Uvtvrck5DhEfDGyTURDlx1K5TeMVtpeGZ6H7CuQmSw=;
+        b=IzJjCpsUJOyzcTaI1oEZ8k7ruWjC7MfRTuTArig+S1rJoH2G9Ob5trdqYW3cNZUVZQ
+         vlwWaadgwpuBCiRZIFd55rCnDNZusElPE3Z642A6o91dEABKdrnWxBiFQLWHdnFBWRdU
+         YVeEC3a3qyaVwdplLcwRG47kI4hj+m2ohtTK493HnNCC/0+7JnYstipWzvHr6mIeIF55
+         HfM80M5Q1ckjnL9Nu0tu1CGnDJKOjM/VT0xfYBlX83VjdJTNoOSpVXJvcM738KOh6ajC
+         OJwRD0GTgoBlA/WFNcj5vBAXGyiROUryrshwnGUbcWhZ/0ebxLALvH4kOpG1nVj4EWp9
+         G31g==
+X-Forwarded-Encrypted: i=1; AJvYcCUzFoEivuzXlbXdTnOED5HX+BrD1YQbt99+Fy0ghlgnqBrqAUi6bxoK2a1D19aygme0Z6M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxC1BfKRTvUrQpJxQDuAicaCeYZ+nOi+HWFzs+IZlklTnfwx2AR
+	Atqu0KmgRbv2N0aAj9dh1XqK0QcqBENVEIVobnstyWdC7wq3NPcFLxJGxRyOyhTut/k=
+X-Gm-Gg: ASbGncv/EYoNt+caVCeas6vFYb3OLmoyAgwO5lo5ESVUOMuVDaP9BB7GMtcYQRjSCYI
+	EoqedBpiHP0tQYaYEhXNPdyiycJfF5Ik+eNDmauO8K0+7BUTm1ESykF4NYa2eCG9YK/VIdBZ7eS
+	v5vGmEfn/8g5zB0LJp+WoBdF7r5LIpfi9RHqB5Q5O7PoNZVObZ78iw4zWQZWMbEAChXCDBoOJpH
+	DUCr7tCeZlWx2x22rVx8PUVNruW/dMj0QUf0N+zdC55c1BfOfKQnS6YhBXBM9rh7ShJ5sK8czwf
+	MDKMvr9F+8Bo5ZY6Jnbxk/9QaJ3+2E5nNDDw7WtroB3f/dsuUYFzoB8YNPEVY0vSNTwvbWkmYFF
+	1DcgYID/y0uuQjkc5O2KYeQfOaf2bOYs/rGDfyE1xYA==
+X-Google-Smtp-Source: AGHT+IGGBjbFKFRqiepm/LRwXnuwS+AKKH1MPA2LgWH+5Eq1mmSqrnU9CryUHU5mJcv16mc4hIWejw==
+X-Received: by 2002:a05:6000:2893:b0:3b9:1d32:cf34 with SMTP id ffacd0b85a97d-3b9e415856amr2916372f8f.12.1755187622548;
+        Thu, 14 Aug 2025 09:07:02 -0700 (PDT)
 Received: from ho-tower-lan.lan ([185.48.76.109])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1c6bd172sm28363495e9.6.2025.08.14.09.07.00
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1c6bd172sm28363495e9.6.2025.08.14.09.07.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 09:07:00 -0700 (PDT)
+        Thu, 14 Aug 2025 09:07:02 -0700 (PDT)
 From: James Clark <james.clark@linaro.org>
-Subject: [PATCH 00/13] spi: spi-fsl-lpspi: Generic fixes and support for
- S32G devices
-Date: Thu, 14 Aug 2025 17:06:40 +0100
-Message-Id: <20250814-james-nxp-lpspi-v1-0-9586d7815d14@linaro.org>
+Date: Thu, 14 Aug 2025 17:06:41 +0100
+Subject: [PATCH 01/13] spi: spi-fsl-lpspi: Fix transmissions when using
+ CONT
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,10 +70,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJAJnmgC/2XOSwqDMBCA4atI1k3JgxjtqvcoXUSd6BRrQlKCR
- bx7oxRKcfkPzDezkAgBIZJLsZAACSO6KQc/FaQdzNQDxS43EUwoprmiD/OESKfZ09FHj5Rb06o
- KtDCqJnnLB7A47+LtnnvA+HLhvR9IfJt+LckPVuKU0a4uhdSVsbJtriNOJrizCz3ZsCR+QMWOz
- ySRAalryzvTlBrgD1jX9QNSTsKt8AAAAA==
+Message-Id: <20250814-james-nxp-lpspi-v1-1-9586d7815d14@linaro.org>
+References: <20250814-james-nxp-lpspi-v1-0-9586d7815d14@linaro.org>
+In-Reply-To: <20250814-james-nxp-lpspi-v1-0-9586d7815d14@linaro.org>
 To: Frank Li <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>, 
  Clark Wang <xiaoning.wang@nxp.com>, Fugang Duan <B38611@freescale.com>, 
  Gao Pan <pandy.gao@nxp.com>, Fugang Duan <fugang.duan@nxp.com>, 
@@ -88,61 +88,46 @@ Cc: James Clark <james.clark@linaro.org>, linux-spi@vger.kernel.org,
  devicetree@vger.kernel.org
 X-Mailer: b4 0.14.0
 
-Various fixes for LPSI along with some refactorings. None of the fixes
-are strictly related to S32G, however these changes all originate from
-the work to support S32G devices. The only commits that are strictly
-related are for the new s32g2 and s32g3 compatible strings.
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
+Commit 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use
+CONT") breaks transmissions when CONT is used. The TDIE interrupt should
+not be disabled in all cases. If CONT is used and the TX transfer is not
+yet completed yet, but the interrupt handler is called because there are
+characters to be received, TDIE is replaced with FCIE. When the transfer
+is finally completed, SR_TDF is set but the interrupt handler isn't
+called again.
+
+Fixes: 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use CONT")
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
 Signed-off-by: James Clark <james.clark@linaro.org>
 ---
-To: Frank Li <Frank.Li@nxp.com>
-To: Mark Brown <broonie@kernel.org>
-To: Clark Wang <xiaoning.wang@nxp.com>
-To: Fugang Duan <B38611@freescale.com>
-To: Gao Pan <pandy.gao@nxp.com>
-To: Fugang Duan <fugang.duan@nxp.com>
-To: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Conor Dooley <conor+dt@kernel.org>
-To: Shawn Guo <shawnguo@kernel.org>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-To: Fabio Estevam <festevam@gmail.com>
-To: Larisa Grigore <larisa.grigore@oss.nxp.com>
-To: Larisa Grigore <larisa.grigore@nxp.com>
-To: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-To: Ciprianmarian Costea <ciprianmarian.costea@nxp.com>
-To: s32@nxp.com
-Cc: linux-spi@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org
-Cc: devicetree@vger.kernel.org
+ drivers/spi/spi-fsl-lpspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
----
-James Clark (7):
-      spi: spi-fsl-lpspi: Enumerate all pin configuration definitions
-      spi: spi-fsl-lpspi: Add DT property to override default pin config
-      spi: spi-fsl-lpspi: Constify devtype datas
-      spi: spi-fsl-lpspi: Make prescale erratum a bool
-      spi: spi-fsl-lpspi: Parameterize reading num-cs from hardware
-      dt-bindings: lpspi: Update maximum num-cs value
-      dt-bindings: lpspi: Document nxp,lpspi-pincfg property
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 67d4000c3cef..d44a23f7d6c1 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -3,7 +3,7 @@
+ // Freescale i.MX7ULP LPSPI driver
+ //
+ // Copyright 2016 Freescale Semiconductor, Inc.
+-// Copyright 2018 NXP Semiconductors
++// Copyright 2018, 2023, 2025 NXP
+ 
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+@@ -787,7 +787,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+ 	if (temp_SR & SR_MBF ||
+ 	    readl(fsl_lpspi->base + IMX7ULP_FSR) & FSR_TXCOUNT) {
+ 		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
+-		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
++		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE | (temp_IER & IER_TDIE));
+ 		return IRQ_HANDLED;
+ 	}
+ 
 
-Larisa Grigore (6):
-      spi: spi-fsl-lpspi: Fix transmissions when using CONT
-      spi: spi-fsl-lpspi: Set correct chip-select polarity bit
-      spi: spi-fsl-lpspi: Reset FIFO and disable module on transfer abort
-      spi: spi-fsl-lpspi: Clear status register after disabling the module
-      spi: spi-fsl-lpspi: Add compatible for S32G
-      dt-bindings: lpspi: Document support for S32G
-
- .../devicetree/bindings/spi/spi-fsl-lpspi.yaml     | 21 +++++-
- drivers/spi/spi-fsl-lpspi.c                        | 87 +++++++++++++++-------
- 2 files changed, 82 insertions(+), 26 deletions(-)
----
-base-commit: 0cc53520e68bea7fb80fdc6bdf8d226d1b6a98d9
-change-id: 20250715-james-nxp-lpspi-1fac58e72a59
-
-Best regards,
 -- 
-James Clark <james.clark@linaro.org>
+2.34.1
 
