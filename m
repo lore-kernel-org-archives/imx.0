@@ -1,46 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6798D2E92A6;
-	Thu, 14 Aug 2025 08:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DE22580D7;
+	Thu, 14 Aug 2025 08:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755160060; cv=none; b=t7ZkiWCCFnnw8Cqp2FGTy4rlBsGGOo1K3it/XcS/zEZp/gFWoFUVnGHupQd2E20YPa6UqyhbuJIJ3QEVT87NXiTgkOhmbleyy7KY4jAuS2EC1RSSAYHWGe5Q/DtM/0/XzvLE5hVdXWdZKZ2Kjo7YUFP5+VEMeHzRL4rAKLHpJfs=
+	t=1755160188; cv=none; b=DY+hqeAJkVysTlSwNe3oO0fxf9B6kVQ4bGdRUJq7tjMfLn5TrXiMa7TLwGY1sNZjjZaBYoObHIkpduIV6hGVr/zzI/KuJporV8+ufcDIMLnimeYCb+ktpkf4R755bnGb2pWgeYwLANGr9nyqhUeuAQA76BAK8it6fMyt2iy+8UM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755160060; c=relaxed/simple;
-	bh=eBNqxL8xbh9FbFpZHtEdueQLB4k/JgbhTZ6T5smPqmg=;
+	s=arc-20240116; t=1755160188; c=relaxed/simple;
+	bh=czB9BQFUSwV/+y45czm/RfvfKjNZIL9R6PoXdqY73Hc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R2xxft2nZYQFGKvOefazyJIqgJ3hiHt1xrDAev/X9WeKdKsLlVqE3330yUZH/Iav21NDKdh0z6FLwnvKC0LEJr7xyrbzksmguiuqig82LgC/7fc6nPFirbFYAuoO3QoGU0/YX6FaJNpQsfyAr96hhyZKohp8AHtZSBki+WLf3EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JY0w+pPJ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kjwt9uFCFU8QGShMEBsMdxCZROlp6msNJxZdQBtlQXOjxOrKKi+MpCLOAaYoCjHUbyEv05EVB1gni1mNv8lCB4XGWOHgARZ0gKsNj7mD8yVcwk7NL7Rd78iw821jdNwaZS4OxsBLZfUJX4Qx1Q9Dk8/itn8oKFc4VakFTeol2a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpKKgtsd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JY0w+pPJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A383C4CEEF;
-	Thu, 14 Aug 2025 08:27:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpKKgtsd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67BBC4CEF7;
+	Thu, 14 Aug 2025 08:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755160059;
-	bh=eBNqxL8xbh9FbFpZHtEdueQLB4k/JgbhTZ6T5smPqmg=;
+	s=k20201202; t=1755160188;
+	bh=czB9BQFUSwV/+y45czm/RfvfKjNZIL9R6PoXdqY73Hc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JY0w+pPJyBMijIG29BFD7uVwbZG1a5GqJ6r/mdil8fW9VAnKwk8z8xzZCeIAk84nC
-	 Enhn1cq0Xp8rL1AWKLfXEaUp5gB4oHlIGnd3dfVp8CmJn9JyJYRlVCNa/wVEPz7nx9
-	 3kdKTzJe6WcwXwUtbKA5CD74rYNXappJQq2vWbL56uQvf+W5xTLzlpO1o/Axm6o3v/
-	 UHf6LV4s0wpk9TN4oY5o2PUn/bL9X7u7KbRyIQ7xUwZlK7V9GDb+MNUHpEelQux4Hz
-	 C/64O2E6+uxcv3VSNixFxdHcQPIwItqbE7iyHUHGhX3SZPDkZfnDmzRHcWyTjz3llC
-	 hx5ujnjYh5NiQ==
-Date: Thu, 14 Aug 2025 10:27:37 +0200
+	b=gpKKgtsd6bZYAKDZj6uqmdK41sXqXoT81mI+N6HfapbmEVGrDCYGUa2AQ1wiK5bwO
+	 QLnzgxc4sotDIP5DfgrRGM0w2xY7sEpjzrBHuOQCWKKDq/MgeBxRDEjVMtnc+jZDsf
+	 LIB7FQlpoxqZJbqVQiQJKzGAmfK8r/ub+hbFrgd62AnaFiXT+c2gV5XqEBbT6FzZrJ
+	 5dPy6pz+A62BmxEjYaQrREJm4IrP2NA6D/7Y1li6F5eIT31f6m7LWyocSac6qJ1INl
+	 ZBbozPIuwwMsLt5efmD7GwAvEnr+wheIvobMwpCCl+WF9icX/ZRTjtDt3e3U6b8pQZ
+	 7UQUEitABmgmQ==
+Date: Thu, 14 Aug 2025 10:29:45 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	richardcochran@gmail.com, claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, 
-	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev, Frank.Li@nxp.com, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, fushi.peng@nxp.com, 
-	devicetree@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, kernel@pengutronix.de
-Subject: Re: [PATCH v3 net-next 02/15] dt-bindings: net: add ptp-timer
- property
-Message-ID: <20250814-icy-intelligent-sambar-e504ec@kuoka>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>, "robh@kernel.org" <robh@kernel.org>, 
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
+	"richardcochran@gmail.com" <richardcochran@gmail.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, 
+	Vladimir Oltean <vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>, 
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>, 
+	"pabeni@redhat.com" <pabeni@redhat.com>, "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>, 
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
+	"festevam@gmail.com" <festevam@gmail.com>, "F.S. Peng" <fushi.peng@nxp.com>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>
+Subject: Re: [PATCH v3 net-next 03/15] dt-bindings: net: add an example for
+ ENETC v4
+Message-ID: <20250814-finicky-tall-wolverine-6a5b90@kuoka>
 References: <20250812094634.489901-1-wei.fang@nxp.com>
- <20250812094634.489901-3-wei.fang@nxp.com>
+ <20250812094634.489901-4-wei.fang@nxp.com>
+ <aJtR4j9+w5fVsJL4@lizhi-Precision-Tower-5810>
+ <PAXPR04MB8510925387F9F72A8E99AB82882AA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <aJyq2h+y+KBjqmsr@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,22 +57,26 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250812094634.489901-3-wei.fang@nxp.com>
+In-Reply-To: <aJyq2h+y+KBjqmsr@lizhi-Precision-Tower-5810>
 
-On Tue, Aug 12, 2025 at 05:46:21PM +0800, Wei Fang wrote:
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+On Wed, Aug 13, 2025 at 11:10:18AM -0400, Frank Li wrote:
+> On Wed, Aug 13, 2025 at 01:38:55AM +0000, Wei Fang wrote:
+> > > On Tue, Aug 12, 2025 at 05:46:22PM +0800, Wei Fang wrote:
+> > > > Add a DT node example for ENETC v4 device.
+> > >
+> > > Not sure why need add examples here? Any big difference with existed
+> > > example?
+> > >
+> >
+> > For enetc v4, we have added clocks, and it also supports ptp-timer
+> > property, these are different from enetc v1, so I think it is better to
+> > add an example for v4.
 > 
-> ---
-> v3 changes:
-> New patch, add a generic property instead of adding a property to
-> fsl,enetc.yaml
-> ---
->  .../devicetree/bindings/net/ethernet-controller.yaml         | 5 +++++
->  1 file changed, 5 insertions(+)
+> If there are not big change, needn't duplicate one example at yaml file,
+> the content should be in dts file already. Pass DTB_CHECK should be okay.
 
-In the same patch please remove redundancies: fsl,fman-dtsec.yaml and
-maybe more. That's always one logical change. Otherwise you introduce
-redundant or duplicated code.
+Two new properties is on the edge of justification of new example. I am
+fine with both - having this patch and dropping it.
 
 Best regards,
 Krzysztof
