@@ -1,217 +1,248 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010042.outbound.protection.outlook.com [52.101.84.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4A62222AA;
-	Thu, 14 Aug 2025 05:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755150263; cv=none; b=n3z8KWLfOLoyxhO4iWJuC3mw6fNwG/uSXHuQGHUXCB5iE7ov473CMz+RvRcaqLrbBwDcPHz0ouOvDmJg+Qiuhas/PBl2O3fe711+tnNyJXAvMoCAvD/E930vY4AkQ7Ctxl1NvIpobHgjAOAbRP2dGqWvU4h0ntpWnLgVEHSjs9Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755150263; c=relaxed/simple;
-	bh=g6R08dRtzi78aEFReCyHEuWUNRmsPZO1Bp8+EA825f0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PUJwmNvgoDMObxaF4sdiMOmI1e7xAV5AhyJkDRqbiXXlaz22xb+Wgl94FLkxGTIEFNNtdfuT5uw45adZ8C3O0csijiy+J8FbFzPmvLj0XEla9Bvb1/4LfRuG2SsvrfbTYQiKI8iW8zUjFeoeMyslTk+Fg26Hfz+73mRn4gzElfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bj/7PF46; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB66224220
+	for <imx@lists.linux.dev>; Thu, 14 Aug 2025 05:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755150901; cv=fail; b=Ou68f3JCpVVvDL3yUyWFNpW7yrpldYi9oSP2s3Y2IYCO+YrTPS1oOia7biXsMBIipVxlIT4cVfSAVlkXEkzDfPlRB0LodALTg+s9GS1cMMMg50NnfCQ/LQ4T7814o1BzhQuJl2PQO4lzBtJRLswsqZIhqVRtygK+v3u8psf4G7E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755150901; c=relaxed/simple;
+	bh=VTayRBcFitOD6C+Fm2ze4lfKe6N8uVHjn3nay1YQ2W4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qARA7k7Mui8SYx7cMRbWeolZWGhYDvPaSDmhyWkczH574Xda5S/yj6jRZ1IGC1GFZads7Xu919jl8u7FOZTh7iINDHd3qwFqi8v/sabTGQvF/UoDKh/80y2lwgoFlpURJkO8uNutvJ+xfIwq80jjFDf/BbdOYPWH7eu3hMKRKPQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=d1fQkK/4; arc=fail smtp.client-ip=52.101.84.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bj/7PF46"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755150261; x=1786686261;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=g6R08dRtzi78aEFReCyHEuWUNRmsPZO1Bp8+EA825f0=;
-  b=bj/7PF46qkqGFI2KHEYh9Vt4m6DO4DdzFk2Lh5UTOyRUa2UwN68xtlNv
-   WIX/xANyC1jezTA16WeMnUZ94LWhLlm7MugMS93kWC+mwIgnxWIbN4Yi6
-   Nqu7B2GZiTXrpi7PugVr/qbL4OrZFnmhjr3i17Mj7woUQxe2VCZduF7mL
-   /GRzgX9aaZLVwCK63MGBMhaSrwKt0ucDwaF/H9jPrpHyK13Dg0KcYPUH1
-   OV3PaRY+qTJZN3kfSM7Iww09tdoxzz9hh7YkPKPBe4wtvO6auOt1oIfbc
-   UBp6suryItGrauMrE7hk4TQkfjCdTegvrp8TJ/gc8TN9jOK2SKKNCpgpa
-   g==;
-X-CSE-ConnectionGUID: RQ7y8GoQShex3f7VFwj3uw==
-X-CSE-MsgGUID: KJr3PAmqSZmtrZO4NpUttA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="68063295"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="68063295"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 22:44:20 -0700
-X-CSE-ConnectionGUID: EW+xK8OMTcegzO0PV9/IwQ==
-X-CSE-MsgGUID: DyMXdD5CQGikV6ws5RD5Og==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="170876883"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 13 Aug 2025 22:44:14 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1umQkr-000AcW-2Z;
-	Thu, 14 Aug 2025 05:44:08 +0000
-Date: Thu, 14 Aug 2025 13:43:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Robin Murphy <robin.murphy@arm.com>, mingo@redhat.com, will@kernel.org,
-	mark.rutland@arm.com, acme@kernel.org, namhyung@kernel.org,
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-	irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org,
-	linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 13/19] perf: Add helper for checking grouped events
-Message-ID: <202508141353.JZWHsrYP-lkp@intel.com>
-References: <b05607c3ce0d3ce52de1784823ef9f6de324283c.1755096883.git.robin.murphy@arm.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="d1fQkK/4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RckwZvS0ofARQke2qMh3GwfrLKb+9Qm1+KMsl+QIncEoqANFlRW9mE4+of+0cRj4A/H99o5Qko9zEkvARA8HKI70rSanai8NzcjSYvOP5wdueRWUyIqgrpQVK/2MT/BOZw6hi6pGq1tzJy0BFoT5f9Hrh5QhKLdQrOhtCrzaxbxIP2gGHl0kJ0zz2RPMUL/hIUvtkMQrdqfcpBvyuJQARw9eq8+g9pNhHxQiyUkuVpp+YXdrOt2/OzbqvlVsD1gHIZ2Z8TKgXqT1QWK6cDsQpO1poer0qu6bTxvIAZu8pRjXq04oVDj8NZb4TnD38JkC/+5jy5aNl4mzCkvrQN7Jkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VTayRBcFitOD6C+Fm2ze4lfKe6N8uVHjn3nay1YQ2W4=;
+ b=Q8ZdiTtrqfvc0xCdqfwdlyjmFJ901JTNHVEzgsoN6gYUq0TnUNfFZRmBQdvoRAncHbxUT9nQV+x86ef3o+a2umMrhOxjQkZRFYMlPJcHaK6jSA0FXqsFP1LXfqu0gA7CU9RkmmeocF+t1t9mPgAQYzIQTH0Kk7El4lpKfB0YWnPAe9xLLS+mQNzuux97gAZlv5rOCQX06RHHxStn5Ht7N9SH/eB+7a0O3B/1im9+d+jmFD8aHHT0f1vcqgCfm42bdNoLdQ9dXasOqpwmqiwkXM+agndwXMlsszo4WsIpgiEk+Wen68cP4/wndjZZ7tUoxFAMk6a1aD2mPvVUu7CsCA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VTayRBcFitOD6C+Fm2ze4lfKe6N8uVHjn3nay1YQ2W4=;
+ b=d1fQkK/4QHoPq2UTZG4GuLdPIVM9kGI3au3GU9FZz5V+FLGpA5N7GJbKflCEVnUxeX8xZqCHCIXN0KTfleyAOQhyQgm1J8kyZpAR4/b832/h1hEpUWHyI0OL1iDqZdW9AWnLsJ9A43o7Jq3L6le0owCSj87oIDO/fFq8jFgJ1uMmNBfznHiSkbjZNgRoJi20Z5gTMVdHoMt99VqJetUyVrRm0aeGzfL7yu5O2AzA+6YQlrFzpBgC40OmqV4jf2fp4zq3IYoE/mftuDKhvwPE3aWeGPpx/J0fqlWCvJPWC01rvX04/V+lPTdC/LgCaZSUsmeeFmzyuFWuCym0JtvxYQ==
+Received: from DU2PR04MB8840.eurprd04.prod.outlook.com (2603:10a6:10:2e3::6)
+ by VE1PR04MB7229.eurprd04.prod.outlook.com (2603:10a6:800:1a3::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Thu, 14 Aug
+ 2025 05:54:54 +0000
+Received: from DU2PR04MB8840.eurprd04.prod.outlook.com
+ ([fe80::d507:6a35:df73:f6c]) by DU2PR04MB8840.eurprd04.prod.outlook.com
+ ([fe80::d507:6a35:df73:f6c%5]) with mapi id 15.20.9031.014; Thu, 14 Aug 2025
+ 05:54:54 +0000
+From: Hongxing Zhu <hongxing.zhu@nxp.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+CC: Frank Li <frank.li@nxp.com>, "l.stach@pengutronix.de"
+	<l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "robh@kernel.org"
+	<robh@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de"
+	<s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2] PCI: imx6: Enable the vpcie regulator when fetch it
+Thread-Topic: [PATCH v2] PCI: imx6: Enable the vpcie regulator when fetch it
+Thread-Index: AQHb4OuAs40gujNM2U+N9LYLz0oUoLRflquAgAJlavA=
+Date: Thu, 14 Aug 2025 05:54:54 +0000
+Message-ID:
+ <DU2PR04MB8840BC4FB0436EB03B2C56338C35A@DU2PR04MB8840.eurprd04.prod.outlook.com>
+References: <20250619072438.125921-1-hongxing.zhu@nxp.com>
+ <zl6ie74kyeen2oudt3l2hv6ba5fwjsuiqlpdgaao5l7al7zjwu@bsj3agyukypn>
+In-Reply-To: <zl6ie74kyeen2oudt3l2hv6ba5fwjsuiqlpdgaao5l7al7zjwu@bsj3agyukypn>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU2PR04MB8840:EE_|VE1PR04MB7229:EE_
+x-ms-office365-filtering-correlation-id: 91642de2-d960-4774-8aae-08dddaf717c2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|19092799006|7416014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?ZkVIUTkvTHh3QllHMDMxbEZFRjFaeGY5R0crN2NCQXJvUEs3T0hVWlI2VzBH?=
+ =?utf-8?B?enBWcURDNDlJLzF1OTl2bW94U1hMY3BlRkFyd3NpVEFOVHF6KzY3V0tHa21y?=
+ =?utf-8?B?NzFhZTNZNEdVZmNUV2FJVXg2TkhCOFl6eng0eC9UMXo2NTVPL0tFSmRRRU81?=
+ =?utf-8?B?VjFQeUVvdUxlL1VuRVNOaFlER1IwSi9qckJndkxTTWh5TldzUTFZN2NGMy9v?=
+ =?utf-8?B?QUx1MncvMnFtdkQ5VEVJWjVXaTJWOG8yNGhyTU41ck9rRUJyczdVTnprdHYx?=
+ =?utf-8?B?TUFQaDRQclpUVm9kMkZjcW90OFV1OTl1VXl3MjhQcytJSmNna01EVGpIUW9k?=
+ =?utf-8?B?YkFpbXQyQnU4RlhVa1p5R2QzcEoxRnpqS3MxRzA5VC9pTk01R3ByQ1AwQ3ZO?=
+ =?utf-8?B?K1VPc3lkV2hkQ1F1dDFyTWZ3T3BWUEdTN2ZacTJ2dmVZQVNwVmMrL1p2TEhD?=
+ =?utf-8?B?TDlRSzl1cllxZndwdjhtYkNKQmFQVElIbjZWcHl3L2dGNjg0dU5UTHVBaGgw?=
+ =?utf-8?B?R2RpdGtJVXJBR1VSdjBKUDlKVllOMTZkMW5QcGM1RjM4K0ptVmJBT2o0WXBj?=
+ =?utf-8?B?Q1NOMXd5K2hTbFdzb0d3a01UZm9zbk1va0hPdTYyMVlzMHdNK0R2Q1dZTE1z?=
+ =?utf-8?B?WFRzaTlqZFR5bnlrZklTSTA1NVJVNEcxdHFEQmo2clNyOHNOVkZ5UHMrWEh4?=
+ =?utf-8?B?SjkwaGIxYXh3dytJb0JoWlhmSXZZMzRYMmtDM0tLN0p0WjRCblljMkkxWERY?=
+ =?utf-8?B?bXRrZFVodGNlWG5FWW5EZ0htLzdPOUlIYS9wQTFOOHpDOEF3aVJPREloTGhU?=
+ =?utf-8?B?bG50UCt4RnpaYTc5SjlTbnVXazk2VENPQ1VYZzNqSWhWMVJENHNsVi90VUtX?=
+ =?utf-8?B?ZGNhZUpHbnMzWDFuN1FINXV6U0t0K1hvSXJoL2VjbGpEQkhMeTdFWUlrYWEw?=
+ =?utf-8?B?NXJQRWtKZ1ZUcVJNSksvR2MwM21hK1k2azJOa3VSc0VrMCtReE84enpPR0F0?=
+ =?utf-8?B?dWxQd0J3eHpnVWR2VmlBSUhna00za0hjRlBmV0VTRk1La0kxdmEwemYrcHIz?=
+ =?utf-8?B?eHZMZ2FRakc5cnJ1YlZ4bk5vSG9jd1VHZ2JLdVJSMmhPMVJuNkhNbjNqWTAv?=
+ =?utf-8?B?dEhUOUt6czN1WEtwam9CQ3hiY1d1M0VMdGFXNE9iWnh0Ykpkb1BvaXFxYmw3?=
+ =?utf-8?B?cGg4T3Fpb2xDWkVKWGFGOHFtUzlhVDVDOWxaVk12WnB3WHRtUG84WlhqWmRq?=
+ =?utf-8?B?dTRGWkZHS3VwbUN0TElmY1p4VExBVGgvTkY5aHVGQlJmV1kreGNOTzFtb2pv?=
+ =?utf-8?B?a3psT2UzazU2azVhalRPV3BMMVVsVTd6dWVGL0RoSTJKVHE0dTFNcnEwOXJs?=
+ =?utf-8?B?bmxCVHhtOStRQU1zb3d0Sy96MVJQbzRCV2wrY2FtVCswYmFwWE5PVUlDL0hZ?=
+ =?utf-8?B?ZmRVMW5FbkJTNUl6TlJmZEo1a3BBQUtSUTFiZ0ZCVWdGUGs5QjRQOFZ3cDN0?=
+ =?utf-8?B?dGpmaERpZm1ZeUVIOE53dVIwMjMwazBWNlY3Z3paRHVqb1NpWnBTRktmNGhX?=
+ =?utf-8?B?STBzLzJRT0RGRUUzdjhGRUFUL2poNlI1Z1N1YWQvWUdITVZJRExqS3FXTFYv?=
+ =?utf-8?B?emV0b0xHSE1MSlM0TndUNVhKeWYrdjJ5Mmp1bDJHakI0VFQxU3RsU3p4a0lp?=
+ =?utf-8?B?OEJYU1FITXM3YXkyWWl1SWZPdHFCa3NVVDBKY1ZJRkZ3akIzTU0zUTc0RGlH?=
+ =?utf-8?B?UmZQZVFWc0dOY3oxcThmeCt3eVNQYmExMlpkL1Z1bVJ4QzNGWGROdGprdzZJ?=
+ =?utf-8?B?ZHpwcHhDakVEQXA0MHFmS2JRTG4yK01mUmh3V3ZGOXJSR0diakVuN203OXVH?=
+ =?utf-8?B?UHcwQTg3MlR6b3lKUW5lVWp4bC8xbG1vc2UzVGZlTlBFNEd3M0p0WURQY1dG?=
+ =?utf-8?B?d3VOaldXUXVjNHBiRVFSSXRKc0oyNnBZY29WVXdDRU5nNkZOcWdyVFN2T09F?=
+ =?utf-8?B?TWJaSWxBSVJBPT0=?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8840.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(7416014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?aUE4bVdqY29lWUNmdk9EaHZ3bnJMRFdyL1ZmZlphZnpMZ2V2YWcxSkgzalNk?=
+ =?utf-8?B?VE54MzZVV3NITVhQNUdmOWZNSk1ILyt6WWMwM3FFQms2TjR3TmlwRlRDSkpM?=
+ =?utf-8?B?NFM2MVZ4TVJCeUlmelRpWEtBUVcxZEhHdzU1Zjl0QTZpdHlqTGZacldvRjkv?=
+ =?utf-8?B?SUsrKzBNMGpVVjA4akNZWCsvSFdVUjRIeVJyOUdnblI5dkQwZUJJM212QXds?=
+ =?utf-8?B?UVpOTHNiNTZFZHhpbFhrWVhIRmJGbzcyS2l4RXNDK2pBcTJScE94NS9DU2hv?=
+ =?utf-8?B?UGRnM3ZWeVpjc3ZYaWJNKytkRzhtR3RXSnZaUXgzdHBlWkNIWTlrMk1pNDRq?=
+ =?utf-8?B?YXR0QUcveGFhcTAyV29QQ0RsRHFRQ3FucGlUQUxwWFRxbXU2clFLN1JDdTh4?=
+ =?utf-8?B?UWkwSitCVnRiMUQwZkFDTFFaaHFrbUh5dUZXVG82bWNpelFSK0tGTG5KaXU1?=
+ =?utf-8?B?SnI2YUovS2YvcW9FS0pwVTRBa2dKTkFJckZzU1FXSWpLSGFhZ095UFZPZUFO?=
+ =?utf-8?B?UjBzcW1WQ1hPbDBuemVjM3U5NEhBTkJlT1QrYjVaS2VIdFhwRkV2MFkzRFFa?=
+ =?utf-8?B?WEtyZjM1V0hOR0ZUM0tqbWY5eFZoT010bVZQeGpUaWY4Y3RjbU5Tb0F6dkRr?=
+ =?utf-8?B?WCszZk1BWWJkcVN1bk45Z2hjMEFCNGxtZEd6VXNKQXJVT3BNK2pqOWZqU0Vh?=
+ =?utf-8?B?eWE2WmlvcDQybzNUa2hFVG9GNW1RenVMZG02L1VFUUpHN3pHdVZjczM0MXNY?=
+ =?utf-8?B?SzllOWZ4MElKN2VSM2FjVC9mRm15V0diV2ZkRElLSkg3Um1qeXNNa2k5RVJN?=
+ =?utf-8?B?dmhrelVyb1RxK3R0WjM1QUhnQ0xEVVR5alI5OGNLWjlDN1dzTzF0MWM4cmFT?=
+ =?utf-8?B?QU0xZ0hvZFcvbld5OGRCMkFkQ1pVUVRqN202ZXZUYzNIdFlTd3pIWnZKVERM?=
+ =?utf-8?B?TWJCSXpYa2h4WFZJZHBIdWFEbE9RWDRPZkFOYVprL2lsTlVQalljVU5uOER0?=
+ =?utf-8?B?TGtrY1NGY0s3Q2Fta1ArNGhoTTgrZXVXdEoxcW9HNlQrSmVBQXlJZk5rcEhW?=
+ =?utf-8?B?S1NyQ0lZRGFkb3FqTlRNZUg1QkNRMlE3S0l1aThQTDdDZjZrZUxMR3YwV3hE?=
+ =?utf-8?B?WGtjTGxNUEd3Vy9WcUtYYkZLeTJhNlJ3bEwrNXBBTEVzVmtxUkhyUnp1STND?=
+ =?utf-8?B?aHJsT3puSytzSGdLdnBoTkFkRTZqV2xpZEdwUHFaR1k5VWZGQ3hYZnMvM3V6?=
+ =?utf-8?B?L1dLa1pEbmFRc3VLMTltUm01QVNjMWVRVVY4ZjMwYTBpY203MXJHMFpVZEVn?=
+ =?utf-8?B?ZmJJcFdZT09iNTR1VEVvNzVnTStQUlN6eGJrRjZMcm5Zd0x1d0dHWC9qZWlT?=
+ =?utf-8?B?NEtqUUNPSExERWYwRFZ6K1ZsNkM0bjBTQW82TkJyZ3R3bEFjNCt2YkpOZlJY?=
+ =?utf-8?B?YWdFU3pUSHVqNXM0T094dVZvalJrWHdyL09kaFJOZG91N1lpc2VjcytQWm8v?=
+ =?utf-8?B?RVhmQmhUaDdVTEpuL1FmUTVqU2dWb2lvSkVySWNMMzlwNWVNY3MyZkJraDlm?=
+ =?utf-8?B?TE05YmV6SThrYUpobVdJaVBqSjFvYXU5bWNMQStwUDMvS0NpdFVwMnRLcnk4?=
+ =?utf-8?B?VitUUWU3QzB0VnVKTHk4dmVpVHE0cURtUUNUeDJlcmNUbU1ONzdUWWg2OHF6?=
+ =?utf-8?B?cnZpRkwxNllrNFpnait0QUVJQjBKMkxZZXg2OHBDdmY5MzdsS3FjMWgrTGh4?=
+ =?utf-8?B?dUJGTDFYQTBkOXNxT3YxenFJZU4vN29JQS9VUHZtQm11UnJrVkdnYzhjNGV0?=
+ =?utf-8?B?NVhSVStFaE1EVURKZW5QZTVPTmRIV2lIN3FUcUtYTTdkaE5TTHY4NlVsNlBB?=
+ =?utf-8?B?SVN2YXcvcUd5MGxMSjg4cTVtVDl2LzhTWnNDcTNVWDdRUndESXZseHZmSy9Q?=
+ =?utf-8?B?dWIwU0s1Z2t1OXhwaUFSNzlBWURiVmQ2ZE9zaHFsNUdOUjN4M21TVTlKNXN0?=
+ =?utf-8?B?SGVqaHVhb3JQMkJoTHcraG1uck5oNmtrQXdqbWhIajVFL2l0MksranlpUHd1?=
+ =?utf-8?B?NkRHZmxSMHk1eDZKYW83Q2lNN3hiTmozMjMvVW5XSWpzVzdmRHJrOTRrSmdv?=
+ =?utf-8?Q?QgLU=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b05607c3ce0d3ce52de1784823ef9f6de324283c.1755096883.git.robin.murphy@arm.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8840.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 91642de2-d960-4774-8aae-08dddaf717c2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Aug 2025 05:54:54.6289
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZJm/Km8eB91yduIy5Bl50jxbCRX3NiXoAz7MfFgSOn23F454Sa1kwPBnAQVm3CHzxozn9tCLVbVDxoN4CFDRGA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7229
 
-Hi Robin,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.17-rc1 next-20250814]
-[cannot apply to perf-tools-next/perf-tools-next tip/perf/core perf-tools/perf-tools acme/perf/core]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Robin-Murphy/perf-arm-cmn-Fix-event-validation/20250814-010626
-base:   linus/master
-patch link:    https://lore.kernel.org/r/b05607c3ce0d3ce52de1784823ef9f6de324283c.1755096883.git.robin.murphy%40arm.com
-patch subject: [PATCH 13/19] perf: Add helper for checking grouped events
-config: i386-randconfig-003-20250814 (https://download.01.org/0day-ci/archive/20250814/202508141353.JZWHsrYP-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250814/202508141353.JZWHsrYP-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508141353.JZWHsrYP-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> arch/x86/events/amd/ibs.c:264:6: warning: unused variable 'ret' [-Wunused-variable]
-     264 |         int ret;
-         |             ^~~
-   1 warning generated.
-
-
-vim +/ret +264 arch/x86/events/amd/ibs.c
-
-d20610c19b4a22 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-02-05  258  
-b716916679e720 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-09-21  259  static int perf_ibs_init(struct perf_event *event)
-b716916679e720 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-09-21  260  {
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  261  	struct hw_perf_event *hwc = &event->hw;
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  262  	struct perf_ibs *perf_ibs;
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  263  	u64 config;
-7c2128235eff99 arch/x86/events/amd/ibs.c                Ravi Bangoria  2023-06-20 @264  	int ret;
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  265  
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  266  	perf_ibs = get_ibs_pmu(event->attr.type);
-2fad201fe38ff9 arch/x86/events/amd/ibs.c                Ravi Bangoria  2023-05-04  267  	if (!perf_ibs)
-2fad201fe38ff9 arch/x86/events/amd/ibs.c                Ravi Bangoria  2023-05-04  268  		return -ENOENT;
-2fad201fe38ff9 arch/x86/events/amd/ibs.c                Ravi Bangoria  2023-05-04  269  
-450bbd493d436f arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2012-03-12  270  	config = event->attr.config;
-450bbd493d436f arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2012-03-12  271  
-450bbd493d436f arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2012-03-12  272  	if (event->pmu != &perf_ibs->pmu)
-b716916679e720 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-09-21  273  		return -ENOENT;
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  274  
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  275  	if (config & ~perf_ibs->config_mask)
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  276  		return -EINVAL;
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  277  
-0f9e0d7928d8e8 arch/x86/events/amd/ibs.c                Namhyung Kim   2023-11-30  278  	if (has_branch_stack(event))
-0f9e0d7928d8e8 arch/x86/events/amd/ibs.c                Namhyung Kim   2023-11-30  279  		return -EOPNOTSUPP;
-0f9e0d7928d8e8 arch/x86/events/amd/ibs.c                Namhyung Kim   2023-11-30  280  
-d29e744c71673a arch/x86/events/amd/ibs.c                Namhyung Kim   2024-12-03  281  	/* handle exclude_{user,kernel} in the IRQ handler */
-d29e744c71673a arch/x86/events/amd/ibs.c                Namhyung Kim   2024-12-03  282  	if (event->attr.exclude_host || event->attr.exclude_guest ||
-d29e744c71673a arch/x86/events/amd/ibs.c                Namhyung Kim   2024-12-03  283  	    event->attr.exclude_idle)
-d29e744c71673a arch/x86/events/amd/ibs.c                Namhyung Kim   2024-12-03  284  		return -EINVAL;
-d29e744c71673a arch/x86/events/amd/ibs.c                Namhyung Kim   2024-12-03  285  
-d29e744c71673a arch/x86/events/amd/ibs.c                Namhyung Kim   2024-12-03  286  	if (!(event->attr.config2 & IBS_SW_FILTER_MASK) &&
-d29e744c71673a arch/x86/events/amd/ibs.c                Namhyung Kim   2024-12-03  287  	    (event->attr.exclude_kernel || event->attr.exclude_user ||
-d29e744c71673a arch/x86/events/amd/ibs.c                Namhyung Kim   2024-12-03  288  	     event->attr.exclude_hv))
-d29e744c71673a arch/x86/events/amd/ibs.c                Namhyung Kim   2024-12-03  289  		return -EINVAL;
-d29e744c71673a arch/x86/events/amd/ibs.c                Namhyung Kim   2024-12-03  290  
-ccec93f5de464b arch/x86/events/amd/ibs.c                Robin Murphy   2025-08-13  291  	/*
-ccec93f5de464b arch/x86/events/amd/ibs.c                Robin Murphy   2025-08-13  292  	 * Grouping of IBS events is not possible since IBS can have only
-ccec93f5de464b arch/x86/events/amd/ibs.c                Robin Murphy   2025-08-13  293  	 * one event active at any point in time.
-ccec93f5de464b arch/x86/events/amd/ibs.c                Robin Murphy   2025-08-13  294  	 */
-ccec93f5de464b arch/x86/events/amd/ibs.c                Robin Murphy   2025-08-13  295  	if (in_hardware_group(event))
-ccec93f5de464b arch/x86/events/amd/ibs.c                Robin Murphy   2025-08-13  296  		return -EINVAL;
-7c2128235eff99 arch/x86/events/amd/ibs.c                Ravi Bangoria  2023-06-20  297  
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  298  	if (hwc->sample_period) {
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  299  		if (config & perf_ibs->cnt_mask)
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  300  			/* raw max_cnt may not be set */
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  301  			return -EINVAL;
-88c7bcad71c83f arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  302  
-b2fc7b282bf7c1 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  303  		if (event->attr.freq) {
-b2fc7b282bf7c1 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  304  			hwc->sample_period = perf_ibs->min_period;
-b2fc7b282bf7c1 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  305  		} else {
-88c7bcad71c83f arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  306  			/* Silently mask off lower nibble. IBS hw mandates it. */
-6accb9cf760804 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2012-04-02  307  			hwc->sample_period &= ~0x0FULL;
-b2fc7b282bf7c1 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  308  			if (hwc->sample_period < perf_ibs->min_period)
-b2fc7b282bf7c1 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  309  				return -EINVAL;
-b2fc7b282bf7c1 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  310  		}
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  311  	} else {
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  312  		u64 period = 0;
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  313  
-e1e7844ced88f9 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  314  		if (event->attr.freq)
-e1e7844ced88f9 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  315  			return -EINVAL;
-e1e7844ced88f9 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  316  
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  317  		if (perf_ibs == &perf_ibs_op) {
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  318  			period = (config & IBS_OP_MAX_CNT) << 4;
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  319  			if (ibs_caps & IBS_CAPS_OPCNTEXT)
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  320  				period |= config & IBS_OP_MAX_CNT_EXT_MASK;
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  321  		} else {
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  322  			period = (config & IBS_FETCH_MAX_CNT) << 4;
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  323  		}
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  324  
-db98c5faf8cb35 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  325  		config &= ~perf_ibs->cnt_mask;
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  326  		event->attr.sample_period = period;
-598bdf4fefff5a arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  327  		hwc->sample_period = period;
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  328  
-b2fc7b282bf7c1 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-01-15  329  		if (hwc->sample_period < perf_ibs->min_period)
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  330  			return -EINVAL;
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  331  	}
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  332  
-d20610c19b4a22 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-02-05  333  	if (perf_ibs_ldlat_event(perf_ibs, event)) {
-d20610c19b4a22 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-02-05  334  		u64 ldlat = event->attr.config1 & 0xFFF;
-d20610c19b4a22 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-02-05  335  
-d20610c19b4a22 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-02-05  336  		if (ldlat < 128 || ldlat > 2048)
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  337  			return -EINVAL;
-d20610c19b4a22 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-02-05  338  		ldlat >>= 7;
-d20610c19b4a22 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-02-05  339  
-d20610c19b4a22 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-02-05  340  		config |= (ldlat - 1) << 59;
-d20610c19b4a22 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-02-05  341  		config |= IBS_OP_L3MISSONLY | IBS_OP_LDLAT_EN;
-d20610c19b4a22 arch/x86/events/amd/ibs.c                Ravi Bangoria  2025-02-05  342  	}
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  343  
-6accb9cf760804 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2012-04-02  344  	/*
-6accb9cf760804 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2012-04-02  345  	 * If we modify hwc->sample_period, we also need to update
-6accb9cf760804 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2012-04-02  346  	 * hwc->last_period and hwc->period_left.
-6accb9cf760804 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2012-04-02  347  	 */
-6accb9cf760804 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2012-04-02  348  	hwc->last_period = hwc->sample_period;
-6accb9cf760804 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2012-04-02  349  	local64_set(&hwc->period_left, hwc->sample_period);
-6accb9cf760804 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2012-04-02  350  
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  351  	hwc->config_base = perf_ibs->msr;
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  352  	hwc->config = config;
-510419435c6948 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-12-15  353  
-b716916679e720 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-09-21  354  	return 0;
-b716916679e720 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-09-21  355  }
-b716916679e720 arch/x86/kernel/cpu/perf_event_amd_ibs.c Robert Richter 2011-09-21  356  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBNYW5pdmFubmFuIFNhZGhhc2l2
+YW0gPG1hbmlAa2VybmVsLm9yZz4NCj4gU2VudDogMjAyNeW5tDjmnIgxM+aXpSAxOjEyDQo+IFRv
+OiBIb25neGluZyBaaHUgPGhvbmd4aW5nLnpodUBueHAuY29tPg0KPiBDYzogRnJhbmsgTGkgPGZy
+YW5rLmxpQG54cC5jb20+OyBsLnN0YWNoQHBlbmd1dHJvbml4LmRlOw0KPiBscGllcmFsaXNpQGtl
+cm5lbC5vcmc7IGt3aWxjenluc2tpQGtlcm5lbC5vcmc7IHJvYmhAa2VybmVsLm9yZzsNCj4gYmhl
+bGdhYXNAZ29vZ2xlLmNvbTsgc2hhd25ndW9Aa2VybmVsLm9yZzsgcy5oYXVlckBwZW5ndXRyb25p
+eC5kZTsNCj4ga2VybmVsQHBlbmd1dHJvbml4LmRlOyBmZXN0ZXZhbUBnbWFpbC5jb207IGxpbnV4
+LXBjaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFk
+Lm9yZzsgaW14QGxpc3RzLmxpbnV4LmRldjsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9y
+Zw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYyXSBQQ0k6IGlteDY6IEVuYWJsZSB0aGUgdnBjaWUg
+cmVndWxhdG9yIHdoZW4gZmV0Y2ggaXQNCj4gDQo+IE9uIFRodSwgSnVuIDE5LCAyMDI1IGF0IDAz
+OjI0OjM4UE0gR01ULCBSaWNoYXJkIFpodSB3cm90ZToNCj4gPiBFbmFibGUgdGhlIHZwY2llIHJl
+Z3VsYXRvciBhdCBwcm9iZSB0aW1lIGFuZCBrZWVwIGl0IGVuYWJsZWQgZm9yIHRoZQ0KPiA+IGVu
+dGlyZSBQQ0llIGNvbnRyb2xsZXIgbGlmZWN5Y2xlLiBUaGlzIGVuc3VyZXMgc3VwcG9ydCBmb3Ig
+b3V0Ym91bmQNCj4gPiB3YWtlLXVwIG1lY2hhbmlzbSBzdWNoIGFzIFdBS0UjIHNpZ25hbGluZy4N
+Cj4gDQo+IEknbSBub3Qgc3VyZSBhYm91dCB0aGlzIHBhcnQuIEZvciBzdXBwb3J0aW5nIFdBS0Uj
+LCBWYXV4IHN1cHBseSBoYXMgdG8gYmUNCj4gc3VwcGxpZWQgdG8gdGhlIGVuZHBvaW50LiBCdXQg
+aGVyZSwgJ3ZwY2llJyBsb29rcyBsaWtlIHRoZSBtYWluIDMuM1Ygc3VwcGx5Lg0KPiBTbyBrZWVw
+aW5nIGl0IGFsd2F5cyBvbiB0byBzdXBwb3J0IFdBS0UjLCBzb3VuZHMgdG8gbWUgdGhhdCB0aGUN
+Cj4gY29tcG9uZW50IG5ldmVyIGVudGVycyB0aGUgRDNDb2xkIHN0YXRlLiBTbyBubyBXQUtFIyBp
+cyByZXF1aXJlZC4NCkhpIE1hbmk6DQpUaGFua3MgZm9yIHlvdXIgY29tbWVudHMuIFlvdSdyZSBy
+aWdodC4NCkFub3RoZXIgKzMuM1ZhdXggc2hvdWxkIGJlIGFkZGVkIHRvIHBvd2VyIHVwIHRoZSBX
+QUtFIyBjaXJjdWl0Lg0KDQpCZXN0IFJlZ2FyZHMNClJpY2hhcmQgWmh1DQo+IA0KPiAtIE1hbmkN
+Cj4gDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBSaWNoYXJkIFpodSA8aG9uZ3hpbmcuemh1QG54
+cC5jb20+DQo+ID4gLS0tDQo+ID4gIGRyaXZlcnMvcGNpL2NvbnRyb2xsZXIvZHdjL3BjaS1pbXg2
+LmMgfCAyNw0KPiA+ICsrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiA+ICAxIGZpbGUgY2hh
+bmdlZCwgNCBpbnNlcnRpb25zKCspLCAyMyBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1n
+aXQgYS9kcml2ZXJzL3BjaS9jb250cm9sbGVyL2R3Yy9wY2ktaW14Ni5jDQo+ID4gYi9kcml2ZXJz
+L3BjaS9jb250cm9sbGVyL2R3Yy9wY2ktaW14Ni5jDQo+ID4gaW5kZXggNWEzOGNmYWY5ODliLi43
+Y2FiNGJjZmFlNTYgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9wY2kvY29udHJvbGxlci9kd2Mv
+cGNpLWlteDYuYw0KPiA+ICsrKyBiL2RyaXZlcnMvcGNpL2NvbnRyb2xsZXIvZHdjL3BjaS1pbXg2
+LmMNCj4gPiBAQCAtMTU5LDcgKzE1OSw2IEBAIHN0cnVjdCBpbXhfcGNpZSB7DQo+ID4gIAl1MzIJ
+CQl0eF9kZWVtcGhfZ2VuMl82ZGI7DQo+ID4gIAl1MzIJCQl0eF9zd2luZ19mdWxsOw0KPiA+ICAJ
+dTMyCQkJdHhfc3dpbmdfbG93Ow0KPiA+IC0Jc3RydWN0IHJlZ3VsYXRvcgkqdnBjaWU7DQo+ID4g
+IAlzdHJ1Y3QgcmVndWxhdG9yCSp2cGg7DQo+ID4gIAl2b2lkIF9faW9tZW0JCSpwaHlfYmFzZTsN
+Cj4gPg0KPiA+IEBAIC0xMTk4LDE1ICsxMTk3LDYgQEAgc3RhdGljIGludCBpbXhfcGNpZV9ob3N0
+X2luaXQoc3RydWN0IGR3X3BjaWVfcnANCj4gKnBwKQ0KPiA+ICAJc3RydWN0IGlteF9wY2llICpp
+bXhfcGNpZSA9IHRvX2lteF9wY2llKHBjaSk7DQo+ID4gIAlpbnQgcmV0Ow0KPiA+DQo+ID4gLQlp
+ZiAoaW14X3BjaWUtPnZwY2llKSB7DQo+ID4gLQkJcmV0ID0gcmVndWxhdG9yX2VuYWJsZShpbXhf
+cGNpZS0+dnBjaWUpOw0KPiA+IC0JCWlmIChyZXQpIHsNCj4gPiAtCQkJZGV2X2VycihkZXYsICJm
+YWlsZWQgdG8gZW5hYmxlIHZwY2llIHJlZ3VsYXRvcjogJWRcbiIsDQo+ID4gLQkJCQlyZXQpOw0K
+PiA+IC0JCQlyZXR1cm4gcmV0Ow0KPiA+IC0JCX0NCj4gPiAtCX0NCj4gPiAtDQo+ID4gIAlpZiAo
+cHAtPmJyaWRnZSAmJiBpbXhfY2hlY2tfZmxhZyhpbXhfcGNpZSwgSU1YX1BDSUVfRkxBR19IQVNf
+TFVUKSkgew0KPiA+ICAJCXBwLT5icmlkZ2UtPmVuYWJsZV9kZXZpY2UgPSBpbXhfcGNpZV9lbmFi
+bGVfZGV2aWNlOw0KPiA+ICAJCXBwLT5icmlkZ2UtPmRpc2FibGVfZGV2aWNlID0gaW14X3BjaWVf
+ZGlzYWJsZV9kZXZpY2U7IEBAIC0xMjIyLDcNCj4gPiArMTIxMiw3IEBAIHN0YXRpYyBpbnQgaW14
+X3BjaWVfaG9zdF9pbml0KHN0cnVjdCBkd19wY2llX3JwICpwcCkNCj4gPiAgCXJldCA9IGlteF9w
+Y2llX2Nsa19lbmFibGUoaW14X3BjaWUpOw0KPiA+ICAJaWYgKHJldCkgew0KPiA+ICAJCWRldl9l
+cnIoZGV2LCAidW5hYmxlIHRvIGVuYWJsZSBwY2llIGNsb2NrczogJWRcbiIsIHJldCk7DQo+ID4g
+LQkJZ290byBlcnJfcmVnX2Rpc2FibGU7DQo+ID4gKwkJcmV0dXJuIHJldDsNCj4gPiAgCX0NCj4g
+Pg0KPiA+ICAJaWYgKGlteF9wY2llLT5waHkpIHsNCj4gPiBAQCAtMTI2OSw5ICsxMjU5LDYgQEAg
+c3RhdGljIGludCBpbXhfcGNpZV9ob3N0X2luaXQoc3RydWN0IGR3X3BjaWVfcnANCj4gKnBwKQ0K
+PiA+ICAJcGh5X2V4aXQoaW14X3BjaWUtPnBoeSk7DQo+ID4gIGVycl9jbGtfZGlzYWJsZToNCj4g
+PiAgCWlteF9wY2llX2Nsa19kaXNhYmxlKGlteF9wY2llKTsNCj4gPiAtZXJyX3JlZ19kaXNhYmxl
+Og0KPiA+IC0JaWYgKGlteF9wY2llLT52cGNpZSkNCj4gPiAtCQlyZWd1bGF0b3JfZGlzYWJsZShp
+bXhfcGNpZS0+dnBjaWUpOw0KPiA+ICAJcmV0dXJuIHJldDsNCj4gPiAgfQ0KPiA+DQo+ID4gQEAg
+LTEyODYsOSArMTI3Myw2IEBAIHN0YXRpYyB2b2lkIGlteF9wY2llX2hvc3RfZXhpdChzdHJ1Y3Qg
+ZHdfcGNpZV9ycA0KPiAqcHApDQo+ID4gIAkJcGh5X2V4aXQoaW14X3BjaWUtPnBoeSk7DQo+ID4g
+IAl9DQo+ID4gIAlpbXhfcGNpZV9jbGtfZGlzYWJsZShpbXhfcGNpZSk7DQo+ID4gLQ0KPiA+IC0J
+aWYgKGlteF9wY2llLT52cGNpZSkNCj4gPiAtCQlyZWd1bGF0b3JfZGlzYWJsZShpbXhfcGNpZS0+
+dnBjaWUpOw0KPiA+ICB9DQo+ID4NCj4gPiAgc3RhdGljIHZvaWQgaW14X3BjaWVfaG9zdF9wb3N0
+X2luaXQoc3RydWN0IGR3X3BjaWVfcnAgKnBwKSBAQA0KPiA+IC0xNzM5LDEyICsxNzIzLDkgQEAg
+c3RhdGljIGludCBpbXhfcGNpZV9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlDQo+ICpwZGV2
+KQ0KPiA+ICAJcGNpLT5tYXhfbGlua19zcGVlZCA9IDE7DQo+ID4gIAlvZl9wcm9wZXJ0eV9yZWFk
+X3UzMihub2RlLCAiZnNsLG1heC1saW5rLXNwZWVkIiwNCj4gPiAmcGNpLT5tYXhfbGlua19zcGVl
+ZCk7DQo+ID4NCj4gPiAtCWlteF9wY2llLT52cGNpZSA9IGRldm1fcmVndWxhdG9yX2dldF9vcHRp
+b25hbCgmcGRldi0+ZGV2LCAidnBjaWUiKTsNCj4gPiAtCWlmIChJU19FUlIoaW14X3BjaWUtPnZw
+Y2llKSkgew0KPiA+IC0JCWlmIChQVFJfRVJSKGlteF9wY2llLT52cGNpZSkgIT0gLUVOT0RFVikN
+Cj4gPiAtCQkJcmV0dXJuIFBUUl9FUlIoaW14X3BjaWUtPnZwY2llKTsNCj4gPiAtCQlpbXhfcGNp
+ZS0+dnBjaWUgPSBOVUxMOw0KPiA+IC0JfQ0KPiA+ICsJcmV0ID0gZGV2bV9yZWd1bGF0b3JfZ2V0
+X2VuYWJsZV9vcHRpb25hbCgmcGRldi0+ZGV2LCAidnBjaWUiKTsNCj4gPiArCWlmIChyZXQgPCAw
+ICYmIHJldCAhPSAtRU5PREVWKQ0KPiA+ICsJCXJldHVybiBkZXZfZXJyX3Byb2JlKGRldiwgcmV0
+LCAiZmFpbGVkIHRvIGVuYWJsZSB2cGNpZSIpOw0KPiA+DQo+ID4gIAlpbXhfcGNpZS0+dnBoID0g
+ZGV2bV9yZWd1bGF0b3JfZ2V0X29wdGlvbmFsKCZwZGV2LT5kZXYsICJ2cGgiKTsNCj4gPiAgCWlm
+IChJU19FUlIoaW14X3BjaWUtPnZwaCkpIHsNCj4gPiAtLQ0KPiA+IDIuMzcuMQ0KPiA+DQo+IA0K
+PiAtLQ0KPiDgrq7grqPgrr/grrXgrqPgr43grqPgrqngr40g4K6a4K6k4K6+4K6a4K6/4K614K6u
+4K+NDQo=
