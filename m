@@ -1,135 +1,178 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357742E36F3
-	for <imx@lists.linux.dev>; Thu, 14 Aug 2025 07:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D567E26E153
+	for <imx@lists.linux.dev>; Thu, 14 Aug 2025 07:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755157684; cv=none; b=X1VJEygRF181aFGvCuCqD46Fg0UTmR6h7a8IfEF1oBSrRX6Gh5ZAqMDnJnsZKet6tMxZyV4ovFBt1BT+68/UDv8etzjpYrqf+osTaWBJqZJV2XZmCFLQpjvkBQNiSe5VmPAozgeXCtHknKqyZ0MaPOsxjFff2VaGClcuI9BVR2Y=
+	t=1755157981; cv=none; b=bd2GxTcIys8U5P8sdLmWHRF/jskf2HpAeWeG0/13B+nFVEbawH6VcoiQV6GrZG7t32jd8+COONbyr4DPKlalQOhCJ9SZ0c2/GzGEVRL2pXpTroP+v+VSahfITNXvYs61LMR6waexAAx1Ipc2VetQyJSdfX5Q7RdhtjG9RzNylzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755157684; c=relaxed/simple;
-	bh=Iw7HAs6rSBnNRlmcHMEH/R55LWtd2r5t0gHDhIivMCY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=mCfj86S5VX+oFSnKQIbSfAVTu6cqnCIgONwB2E4upJhSYUvjMzRVJPWGzPzPD5cpYq4W5lKdwEBhh0ZgHfpt0D2LZiBP6HnCWd888Xi63df110k/5oi/B6JGqS+1Oc57oT3u6oHGgwh0VoJUDNHYjkbLXGewWGmB7lODWbzCyDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=QJ3pIdjS; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="QJ3pIdjS"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 59DC2A05FE;
-	Thu, 14 Aug 2025 09:47:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=bzwhe6wx91tLEyKuA/da
-	oDX+QZG0jTUxkCfGQJGuvzk=; b=QJ3pIdjSku+r0medOnyWGWX+Bxo16aWmhsXJ
-	lnB4jnXJSgu6HUA7HiC6kjJHgxEv950CVpAbeLRDw+B/E+gOMe5fbMFUmEWZBk//
-	L9ve0QSY8vXOfUkJpuewPXMkST6+lPCDZ0VYMcblByDFfEk+Q3O0ALIWysFnsZsD
-	7t1XAQ89vSiGXW9RMlTX+14LbqmVQGyuxvT8WSuiNieMwa/52kbLRSZafT0FisG7
-	ba09JC4U+2T7bICpQvQNuV3s2HXnGAFGa6jXfQb1vM2wcmXJ6mysTd8Q/kWZkWL7
-	Bg8NACqoxKFYHEnFYqcx5Jcl2L9pSuSwUhelUkQkvWeptDyLB9wkiyF/a2H/8ZmE
-	H3jRXsWoPZnyfCVrhP0mqAfsnrg88EXsBGyfmsGVDk7eJE8JsjPDjDjs03OqsGeX
-	IXHuX05e0EVaSy/k5Q4/+q0CMSo1Up1kShPysioFFtpvP1T9YEVrXHd0vkQ6u+y9
-	VWcGw97NBPhRB/EbZTP6uxvcztwg27eCsNgQyzjLeqIBwWxaKuJ3PRMD9Z/grxmG
-	n3zH0IxVIgHrBfJ4pclW3KMyY1iWxRbU2CkQ86KAReuWQoPB20PuNa5C1v8AVECg
-	Eo5gSX+DasCA4E3DYp+3ArF+GreTBQpylXfV/8HEtE62OTRN6gkRixsjGmyJDwPz
-	GX4tiAU=
-From: =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-Date: Thu, 14 Aug 2025 09:47:47 +0200
-Subject: [PATCH v2 5/8] ARM: dts: imx6-marsboard: Replace license text
- comment with SPDX identifier
+	s=arc-20240116; t=1755157981; c=relaxed/simple;
+	bh=Uzzj93Rq8ZnwcjdfSHcSIR8zGuEDTE4U/dOBn+K+4rE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AkVL9nl9EUIWN9vwYEACjqHZ5OY2lyKu5r1AR8KHC5LjDVxN/mAjX4WI8W1Ky87MU82qrQk1/BmCh5ZFnOBai/5qYbx4CkznuMyZXg7IxwZYFXSQGzG0+HMu5FY1RGbOTTxnguxB5+7/mKf3GILRH5xXPX0jcCxwZmivVch3X6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-50f8b94c6adso180643137.3
+        for <imx@lists.linux.dev>; Thu, 14 Aug 2025 00:52:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755157977; x=1755762777;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=r1Ih+GxrJlx9WnOtqCehCJ3Lo5kUOBdBINzHA4pU3lA=;
+        b=eM3MBLPcabYPk+mkpQhwY0cdTzXAR3Z5ylcDW7v9oFZaIMTnY1ZhIQxpfgT01IEGny
+         nPRFv73acAsEc+9BzuK7rKG9nyCfhe4xdKk/AUKBLOxsMtAsCOxiFvTG8ICk7i7q2ogZ
+         xThE9+uTitJJr3ExpfEIIiiTTklOEL4jvA1/M+vGluM4o7lZ4uTk0LRjuYz8B6+0ihUT
+         uYNqvLJTbtdPkjpHJGgTUz0UUPsjtCr0U1j6qmkpl6vNZqoFFAGIUHk7NbFPjLHOQCKV
+         AUmOyu9+t0HYw2OPn94IE9ycSCRf+HMIa/jZnOoVhYRzGS/KcxDJXDIbg8IDhkASoL8a
+         9Wkg==
+X-Forwarded-Encrypted: i=1; AJvYcCUwRdm6J/tqJ7ZLuvmZ2HdVzQzCOkqcKZEcQclbGXT/F2I4EgJ5S52zBRPBvLhMUdy9Els=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzrRYMAdLoNm051OHkmzX9IPWsA9wpcXTngIvfeNC0dfndnFeB7
+	Uzc6C5H6TJuvMNRHAX4DUIECNGgx0cy6YnsKk7RqAPg3gWrpT7fVrrOfJvL35PB1
+X-Gm-Gg: ASbGnctGGa1MRZpu7X3zVNY5JSuOMSqckf28aTDBC/kCai8K3snx7UEE7wqSuyXfO23
+	6ynk89d79rFzqIDrQYbJpQNXk1mvy/hJAlKeO/xWj62YZXj7RhgONxeL4uA0XzuAnTTmI/9Lnah
+	ZeFZoQcFHH5EJgXJ92bMjSiV9BXZHo7O6N6l0JRLjHzf9yK+wWLWxjkSX5epK72M6OVxduXiwiN
+	3CQz30SRe6d/fLpBXtBLIDphH704TqifphqAaduEubr1ROGB5XxuM64szdDLuGOqgSwkqRWaw+M
+	x1XO/nXSR7UZA0Cx09YPRDbOcTUAEFoYX0FehH/lgRLGcP8DUPydFYE51Y8T8VoU522WMI5HXAD
+	23te3WCEgU5dOiZ4OPnLPqDXsT2YNmZUij57396BpoI4YzZNeCXAx0vI4Bd2b
+X-Google-Smtp-Source: AGHT+IGR2QCMLRymY4uNNnoPEZUrhLVwrFSzGTHZ7+ukba/NHh2l6g80X/dchgoXzrAvgqhrUgBs1w==
+X-Received: by 2002:a05:6102:3fa9:b0:4fd:b71b:c66b with SMTP id ada2fe7eead31-50fdf4dcafcmr806281137.2.1755157977280;
+        Thu, 14 Aug 2025 00:52:57 -0700 (PDT)
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com. [209.85.222.50])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-88e56e00153sm878228241.25.2025.08.14.00.52.57
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Aug 2025 00:52:57 -0700 (PDT)
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-89018fa6f6dso174572241.1
+        for <imx@lists.linux.dev>; Thu, 14 Aug 2025 00:52:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXQIU40d9IbUfNQhyGCJq3yz5TQH4w6iMvyWoCuYQR3BjLBi+AC77jRMHubObXN1yF02Gs=@lists.linux.dev
+X-Received: by 2002:a05:6102:8011:b0:4fb:def3:d27c with SMTP id
+ ada2fe7eead31-50fea4aa249mr676943137.22.1755157976795; Thu, 14 Aug 2025
+ 00:52:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20250814-imx-misc-dts-lic-v2-5-faff7db49a5f@prolan.hu>
-References: <20250814-imx-misc-dts-lic-v2-0-faff7db49a5f@prolan.hu>
-In-Reply-To: <20250814-imx-misc-dts-lic-v2-0-faff7db49a5f@prolan.hu>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	=?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>, Sergio Prado
-	<sergio.prado@e-labworks.com>
-X-Mailer: b4 0.14.2
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1755157669;VERSION=7995;MC=851896819;ID=1088345;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2998FD515E617667
+References: <20250813214808.895654-1-robh@kernel.org>
+In-Reply-To: <20250813214808.895654-1-robh@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 14 Aug 2025 09:52:45 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXk4rsv5YEj5kJ4+tu-n_11rXOHe1zJiy7KYnvBwJZ=eQ@mail.gmail.com>
+X-Gm-Features: Ac12FXx9pwnYSd00OxlZFeC1ex7P8HZ3DAupd0C5lnYndVT3t4qqLZV8fVUeU-Q
+Message-ID: <CAMuHMdXk4rsv5YEj5kJ4+tu-n_11rXOHe1zJiy7KYnvBwJZ=eQ@mail.gmail.com>
+Subject: Re: [PATCH v4] remoteproc: Use of_reserved_mem_region_* functions for "memory-region"
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Magnus Damm <magnus.damm@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Peng Fan <peng.fan@nxp.com>, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Content-Type: text/plain; charset="UTF-8"
 
-Replace verbatim license text with a `SPDX-License-Identifier`.
+Hi Rob,
 
-The comment header mis-attributes this license to be "X11", but the
-license text does not include the last line "Except as contained in this
-notice, the name of the X Consortium shall not be used in advertising or
-otherwise to promote the sale, use or other dealings in this Software
-without prior written authorization from the X Consortium.". Therefore,
-this license is actually equivalent to the SPDX "MIT" license (confirmed
-by text diffing).
+On Wed, 13 Aug 2025 at 23:48, Rob Herring (Arm) <robh@kernel.org> wrote:
+> Use the newly added of_reserved_mem_region_to_resource() and
+> of_reserved_mem_region_count() functions to handle "memory-region"
+> properties.
+>
+> The error handling is a bit different in some cases. Often
+> "memory-region" is optional, so failed lookup is not an error. But then
+> an error in of_reserved_mem_lookup() is treated as an error. However,
+> that distinction is not really important. Either the region is available
+> and usable or it is not. So now, it is just
+> of_reserved_mem_region_to_resource() which is checked for an error.
+>
+> Acked-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+> Tested-by: Peng Fan <peng.fan@nxp.com> # i.MX93-11x11-EVK for imx_rproc.c
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-Cc: Sergio Prado <sergio.prado@e-labworks.com>
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
----
- arch/arm/boot/dts/nxp/imx/imx6q-marsboard.dts | 38 +--------------------------
- 1 file changed, 1 insertion(+), 37 deletions(-)
+Thanks for your patch!
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-marsboard.dts b/arch/arm/boot/dts/nxp/imx/imx6q-marsboard.dts
-index 2c9961333b0a8656b648c7a848b6c20db61f790e..37de44d1b84be1c578fa7d51a7ff86071dcae13a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-marsboard.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-marsboard.dts
-@@ -1,42 +1,6 @@
-+// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
- /*
-  * Copyright (C) 2016 Sergio Prado (sergio.prado@e-labworks.com)
-- *
-- * This file is dual-licensed: you can use it either under the terms
-- * of the GPL or the X11 license, at your option. Note that this dual
-- * licensing only applies to this file, and not this project as a
-- * whole.
-- *
-- *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License
-- *     version 2 as published by the Free Software Foundation.
-- *
-- *     This file is distributed in the hope that it will be useful,
-- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *     GNU General Public License for more details.
-- *
-- * Or, alternatively,
-- *
-- *  b) Permission is hereby granted, free of charge, to any person
-- *     obtaining a copy of this software and associated documentation
-- *     files (the "Software"), to deal in the Software without
-- *     restriction, including without limitation the rights to use,
-- *     copy, modify, merge, publish, distribute, sublicense, and/or
-- *     sell copies of the Software, and to permit persons to whom the
-- *     Software is furnished to do so, subject to the following
-- *     conditions:
-- *
-- *     The above copyright notice and this permission notice shall be
-- *     included in all copies or substantial portions of the Software.
-- *
-- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-- *     OTHER DEALINGS IN THE SOFTWARE.
-  */
- 
- /dts-v1/;
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be> # rcar
+
+One nit below (which applies to most drivers).
+
+> --- a/drivers/remoteproc/rcar_rproc.c
+> +++ b/drivers/remoteproc/rcar_rproc.c
+> @@ -52,41 +52,33 @@ static int rcar_rproc_prepare(struct rproc *rproc)
+>  {
+>         struct device *dev = rproc->dev.parent;
+>         struct device_node *np = dev->of_node;
+> -       struct of_phandle_iterator it;
+>         struct rproc_mem_entry *mem;
+> -       struct reserved_mem *rmem;
+> +       int i = 0;
+>         u32 da;
+>
+>         /* Register associated reserved memory regions */
+> -       of_phandle_iterator_init(&it, np, "memory-region", NULL, 0);
+> -       while (of_phandle_iterator_next(&it) == 0) {
+> -
+> -               rmem = of_reserved_mem_lookup(it.node);
+> -               if (!rmem) {
+> -                       of_node_put(it.node);
+> -                       dev_err(&rproc->dev,
+> -                               "unable to acquire memory-region\n");
+> -                       return -EINVAL;
+> -               }
+> +       while (1) {
+> +               struct resource res;
+> +               int ret;
+> +
+> +               ret = of_reserved_mem_region_to_resource(np, i++, &res);
+> +               if (ret)
+> +                       return 0;
+>
+> -               if (rmem->base > U32_MAX) {
+> -                       of_node_put(it.node);
+> +               if (res.start > U32_MAX)
+>                         return -EINVAL;
+> -               }
+>
+>                 /* No need to translate pa to da, R-Car use same map */
+> -               da = rmem->base;
+> +               da = res.start;
+>                 mem = rproc_mem_entry_init(dev, NULL,
+> -                                          rmem->base,
+> -                                          rmem->size, da,
+> +                                          res.start,
+> +                                          resource_size(&res), da,
+>                                            rcar_rproc_mem_alloc,
+>                                            rcar_rproc_mem_release,
+> -                                          it.node->name);
+> +                                          res.name);
+>
+> -               if (!mem) {
+> -                       of_node_put(it.node);
+> +               if (!mem)
+>                         return -ENOMEM;
+> -               }
+>
+>                 rproc_add_carveout(rproc, mem);
+>         }
+
+The "return 0;" below (out of context) is now unreachable.
+It may be wise to remove it, so the compiler will complain when someone
+ever adds a break statement, and people are forced to consider what
+is the proper value to return.
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-2.43.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
