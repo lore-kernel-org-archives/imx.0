@@ -1,161 +1,137 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E31428399
-	for <imx@lists.linux.dev>; Thu, 14 Aug 2025 07:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6E02D6632
+	for <imx@lists.linux.dev>; Thu, 14 Aug 2025 07:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755157064; cv=none; b=KZ0w3YuiBKB/pwRAtlHNpxZ+kqo9P7CdirYbmXV6em9gIfhokFU7/SVZyTAcn0y1zQm/BcBYgfzY94qlwikTiBfZ2RGdzKtSiLIKZk9mw0IDYB092ogviOQCnUJuOfxJ4Oon6k5Rtt9bZ0sWhmE0cBbrCAYSca2shmEMMR08fTM=
+	t=1755157679; cv=none; b=WT3llpX8CWNOPtHVpZooXrS9a0oSF5SKkkiG9uFgVdMQhjz4Sy+HDzg1PuioYfpA2yA1xbCEKnrBSxmZEgDAfMC2Arw++x4jogDZ4o7eEMa0z/Fk1zUIiaPGXU6cHeTSAGbvtfnqYq3SQBYQssAsP5ow9eVYFmru5PCEN6tL1+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755157064; c=relaxed/simple;
-	bh=i5bV8DJtt0kW/7rs56nYtMMFUHI8Xh3Xhpcajvy4BqQ=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ryfazzt1FVXFSOIJhRfh6dNT/zOSCWD66APGn5Pkj50kIefxq9JQ4YoWCOcVrk6ZSBZcr+eme7E9qJ0Jh8eO9qg8xa5rkI+7k3JaWZITi907OtvZtqpEhDMlN2oCR0FX747rOY7/zi7dGtVftQ/lTeM6GGgGOJnLni0a8+Wo4Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=lJwpP/g9; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	s=arc-20240116; t=1755157679; c=relaxed/simple;
+	bh=zCHAqKKCFtSFWeMLfl3j4tqWJEwqnZDL20gwMjLCAlw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=tk7CIOKMRqVypiEi0LO3hqbWtdUJ1mW9BoKWowKZ0FpGdSHwd2eXegypbswH+1y/Jxlxius6gFlWdpV4M1thm9Zgu0Us9OXPbTmHr9Pm7LqVPGnLLYmDPbqyrZJkDIgVPC5SQcsgI40jHzBjWEfjEP9/MIT6npsx9lOuRF627io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=moeDmzO9; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="lJwpP/g9"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-55ce527ffbfso530362e87.3
-        for <imx@lists.linux.dev>; Thu, 14 Aug 2025 00:37:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1755157060; x=1755761860; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:references
-         :mime-version:in-reply-to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E6lyA0E3BsgF3c0Firp9DhkX0QGDczU/GAUF9m624y8=;
-        b=lJwpP/g9YIpvE6huMriNlD1QV1ZL3+Pzz9J9ta1F+99MPN7LFMF95ohhIQFROP7Rym
-         THPlMWhp8682VFmreJ72OtWrYXZoVie17TSgFdH920tMlSwrbSm9XA5PbvnMlXaQjN0X
-         R5J871Qmz2GThRuR/VOJaU1T4ah59CjDYqG6ZISl+J3Yhc9H8Cxkm3T+YdVdN1UGn6Lw
-         QfI30OtRoncI7DWQhs5khg4yQkn4VJOcdeRm+kyulKaY/wgwrpS8KRfcAKWp2yM04FHF
-         GBAqiWsDi0AyJ6RHQflhHlHMA+xeZu8/t5aFNP6dJh54bBOSAkhwwWghMi/plfGjiWiH
-         gGfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755157060; x=1755761860;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:references
-         :mime-version:in-reply-to:from:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=E6lyA0E3BsgF3c0Firp9DhkX0QGDczU/GAUF9m624y8=;
-        b=Aav1Y7PnRwz9Up/d7lrz820sQFh4UXrgiUDs5XeKNb4IspdTKQFrpBnGwD2cskG0HT
-         C5YlYgnzy8iAwxilBqzS6khxGpMMxFEdslM7BVMqj9qpHZMMukdBWrd5epv/0TrUwVa3
-         WmHbQzUyki26ImrgUu/nXNcy5xz5oIlcyACfRx9lWvzsIBKmWJ2agAcp2wmCh05T9kdi
-         Wh3hAV0Kbo+UXnNwebjitedba0H4yKQjS85qxTRCT8wTww75OGZBsCloZp/q0rzsW3NZ
-         fhCSFdGUwc1w9eMlhhUSOTBf5rFEv7v8en9qXwew/9iVK+kiStOwH4pohDLc19XQEx1h
-         7ikw==
-X-Forwarded-Encrypted: i=1; AJvYcCXd2lGKFRCDiw5FVqDe4/Yfl59VGDtl9aY91sx1qTZtUzi11FJ3x6iporIlpwhri/YrYsM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx84bdxuT+SbNwH7I34y/FQm9YJNjWZCzdbRtrQ/Hnvnyfrhuf4
-	fqm4QgUO24VWlne6O8nunlUjAdnfvhtMIRpUGyN183qrolnKXeK05oQ/iCl5cwMWFSvbk1t0EZE
-	mcGHTg7HVZCK36gU0ho+gAVinKf71DwgojATdj5o6eA==
-X-Gm-Gg: ASbGnct6w2OuzUV9dBBSqIx5F+ryFUh+ReEwMjFnFfn8e1UNAHBkAB0KSaUYl8wM5Wt
-	Vv27aOYWEAKKx6HjFNJCvS9+ZLd4n0kvXdEuqbmqXU10uxbIqBeb8KCakzS825gGJnnf1t6cYW6
-	DFdoH0VMQlSKQvDLSdNIv+K/wYEInaAZ9aiM8/du07hQEayeBqPA3qrGfhXIZfyiUH1qxAJSrIt
-	T6ytNQKHyYBaCp983gAXnLKBCQng99c8YtvIoI=
-X-Google-Smtp-Source: AGHT+IH95og7bwOhUuHKkvwv0kTue2EveWatnb0pXZcfIY30oh+DnenMVeGiemPUTLNRulqOQX9vjsDh8YkJvs9r6SA=
-X-Received: by 2002:a05:6512:3d29:b0:55b:8f02:c9d0 with SMTP id
- 2adb3069b0e04-55ce4fe3984mr762477e87.0.1755157060157; Thu, 14 Aug 2025
- 00:37:40 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 14 Aug 2025 03:37:39 -0400
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 14 Aug 2025 03:37:39 -0400
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-In-Reply-To: <CAHp75VeSA=AYDKOV5XQ5nnz7EZRmnhbbVyJrcBUcMO2LrRMTmQ@mail.gmail.com>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="moeDmzO9"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 15D59A0F9B;
+	Thu, 14 Aug 2025 09:47:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=U5KR1zgb+2iVheVTOl3S
+	X/dmkA++aT5srmWbqsDAvzc=; b=moeDmzO9rmAP4cez4/AR8ncDqL5x/F9G7Wuh
+	BtKAZGeOCCS1dpIWqa3YwQK8jIbVmjyjRLNfahu7cqgWFilaeBITn7auGr+4hZET
+	NQtGwArkN5QSk5eT0YVEtYJcHBkQABU8YfhjvXkxsA7MZxT+dFGqU6BXH+N1bfG/
+	MIJqNKX1Gq1PEk4uKsH/RAiOWXh3hQZT/BRhHKe2cD2l9Q5z3QrP5+tqaABaieGu
+	bm0idR7OC5hbBbZhCj/WyqOFneUTTGQ5ykjalqXEpWjnogR70ZohyZkJaGz7RhwD
+	yOlntFjaYtAppG6YG/wpf73cEIP78sF1NWzgX7TS70DBClmHBMJE+66b8sLX54lC
+	uWPvo8//LI5AMDozCEq8/+uf+Uekw6UupA64muC7MVJJShxHDmboDco1xcbK4v5X
+	IL9dtCprXtqOISPFz9vq0tnHdG0AFF+RltnkRnGalDG0NlNMgsyuIqdOEABvAdDP
+	ajUnNa8CVGwhG1EPADzIrBxjgOlq2nLjbTp8wN77ma7+0sgmgQp4Ley8VXgUIHW6
+	kB3ETzNGDUqu4CB/Zek1/Nniu5qCHMJPRSC+yi6MYc3Bs7N3eEPrutqV/6/u+mUd
+	CerbdBrFuK5DdLGPQMmLG7DVMWlbicjgqFYJLHx2XDXFafpyMZ5Ip76C71a0xhp2
+	wgWFAG0=
+From: =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
+Date: Thu, 14 Aug 2025 09:47:46 +0200
+Subject: [PATCH v2 4/8] ARM: dts: imx6-evi: Replace license text comment
+ with SPDX identifier
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org>
- <20250812-pinctrl-gpio-pinfuncs-v4-3-bb3906c55e64@linaro.org> <CAHp75VeSA=AYDKOV5XQ5nnz7EZRmnhbbVyJrcBUcMO2LrRMTmQ@mail.gmail.com>
-Date: Thu, 14 Aug 2025 03:37:39 -0400
-X-Gm-Features: Ac12FXy2K4h4wcbTuyQHNLoBpmiM4n8vonnKvWP5_H1uDnS85jqeBZjb-G5DXZs
-Message-ID: <CAMRc=MfzSq+7EY8cV+J_AePve6r+yV5QEHqG=Z2N8Afmy+Bc2Q@mail.gmail.com>
-Subject: Re: [PATCH v4 03/15] pinctrl: airoha: replace struct function_desc
- with struct pinfunction
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-ID: <20250814-imx-misc-dts-lic-v2-4-faff7db49a5f@prolan.hu>
+References: <20250814-imx-misc-dts-lic-v2-0-faff7db49a5f@prolan.hu>
+In-Reply-To: <20250814-imx-misc-dts-lic-v2-0-faff7db49a5f@prolan.hu>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	=?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>, Joshua Clayton
+	<stillcompiling@gmail.com>
+X-Mailer: b4 0.14.2
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1755157669;VERSION=7995;MC=3336485094;ID=1088344;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2998FD515E617667
 
-On Wed, 13 Aug 2025 18:57:00 +0200, Andy Shevchenko
-<andy.shevchenko@gmail.com> said:
-> On Tue, Aug 12, 2025 at 10:27=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.=
-pl> wrote:
->>
->> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>
->> struct function_desc is a wrapper around struct pinfunction with an
->> additional void *data pointer. This driver doesn't use the data pointer.
->> We're also working towards reducing the usage of struct function_desc in
->> pinctrl drivers - they should only be created by pinmux core and
->> accessed by drivers using pinmux_generic_get_function(). Replace the
->> struct function_desc objects in this driver with smaller struct
->> pinfunction instances.
->
-> ...
->
->>  #define PINCTRL_FUNC_DESC(id)                                          =
-\
->>         {                                                               =
-\
->>                 .desc =3D {                                             =
-  \
->> -                       .func =3D {                                     =
-  \
->> -                               .name =3D #id,                          =
-  \
->> -                               .groups =3D id##_groups,                =
-  \
->> -                               .ngroups =3D ARRAY_SIZE(id##_groups),   =
-  \
->> -                       }                                               =
-\
->> +                       .name =3D #id,                                  =
-  \
->> +                       .groups =3D id##_groups,                        =
-  \
->> +                       .ngroups =3D ARRAY_SIZE(id##_groups),           =
-  \
->
-> Can this use PINCTRL_PINFUNCITON() ?
->
+Replace verbatim license text with a `SPDX-License-Identifier`.
 
-Yes, it can. I'll update v5.
+The comment header mis-attributes this license to be "X11", but the
+license text does not include the last line "Except as contained in this
+notice, the name of the X Consortium shall not be used in advertising or
+otherwise to promote the sale, use or other dealings in this Software
+without prior written authorization from the X Consortium.". Therefore,
+this license is actually equivalent to the SPDX "MIT" license (confirmed
+by text diffing).
 
-Bart
+Cc: Joshua Clayton <stillcompiling@gmail.com>
+Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+---
+ arch/arm/boot/dts/nxp/imx/imx6q-evi.dts | 40 +--------------------------------
+ 1 file changed, 1 insertion(+), 39 deletions(-)
 
->>                 },                                                      =
-\
->>                 .groups =3D id##_func_group,                            =
-  \
->>                 .group_size =3D ARRAY_SIZE(id##_func_group),            =
-  \
->
->>  };
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts b/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts
+index 78d941fef5dfb288c69d702ed190150caa92ba7a..0268b7f5a7d22c9abac848e71b4b05b76dccbfca 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts
+@@ -1,44 +1,6 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+ /*
+  * Copyright 2016 United Western Technologies.
+- *
+- * This file is dual-licensed: you can use it either under the terms
+- * of the GPL or the X11 license, at your option. Note that this dual
+- * licensing only applies to this file, and not this project as a
+- * whole
+- *
+- *  a) This file is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License, or (at your option) any later version.
+- *
+- *     This file is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- * Or, alternatively,
+- *
+- *  b) Permission is hereby granted, free of charge, to any person
+- *     obtaining a copy of this software and associated documentation
+- *     files (the "Software"), to deal in the Software without
+- *     restriction, including without limitation the rights to use,
+- *     copy, modify, merge, publish, distribute, sublicense, and/or
+- *     sell copies of the Software, and to permit persons to whom the
+- *     Software is furnished to do so, subject to the following
+- *     conditions:
+- *
+- *     The above copyright notice and this permission notice shall be
+- *     included in all copies or substantial portions of the Software.
+- *
+- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- *     OTHER DEALINGS IN THE SOFTWARE.
+- *
+  */
+ 
+ /dts-v1/;
+
+-- 
+2.43.0
+
+
