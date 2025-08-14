@@ -1,47 +1,47 @@
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236741F582A
-	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 04:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB508265CA6
+	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 04:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755491844; cv=none; b=jGvoWiDX1TuQUd4DKjsQIKSYlxi9H901Tsbzv9ll10SAGt8yxk9e1LGoG1oX2RPXq94V8O4Br/XWbXw4bJSdrjNItZIkOJGVETFgGQBqbIardVpNun0/n88B5spa/2wuCIJ49Iol/JJ3RNc4VSXYIYsLm7nWV/vz8dQyEXBhSrg=
+	t=1755491848; cv=none; b=WzwdGcydeSSmsXSsd5PEjp22EYY1R/sJzKuJQl7LyQBHVOJvKHEQm9CsvH39utJja2GFs2XYvfZ0aiK4MpvTSK88W/h6YCCdCZPvXN0Ld7yDxiWqWtACzKSs9rKrjK3fhHgvlXHTH3nHsdu6JS8b3qn01WYBHEeMKEbvrPwBHJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755491844; c=relaxed/simple;
-	bh=GGMEHVB0X2VGIc4wzUyfGmQwSg52QCIC5HEXNyGM8To=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 References; b=TtgYE/x7zTaOBoP3H306+VVcKaMNuOWX2AEqS1zbW/k5a+guZ2PBiuyMXYGrLWhM5ZgIjNKiqJ/AWAabxmQS9zGUJ1/WQ6DpKkZQAk7gEa+zcQerPWN04JqVg0r9Kx0HX0KIQ694+NUjA3Qe8MswqXlTH7YHi3xgChvKPfjgEEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=hs6f1N5I; arc=none smtp.client-ip=203.254.224.34
+	s=arc-20240116; t=1755491848; c=relaxed/simple;
+	bh=nI7T8dEbuydo3P7kHObkEw/Kb5zkf07VtRHdkDEp4Bc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=u8zxJoTe8/IN6bCI+i9ibvGPYp32xRjNyojjyA3zRGtkAOd8vC6wsxsLWt88HF4o3c0twSLxFiKgzCpPPIsWbZmJFMXbQBa1Tsm1DchK3oOhWsLmyF+kX4CWw0PpC5qFaPIugHQ4fa/DjDHkzen0Ud5N0t0mc+Sc7Fm5GhqB8ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=bAHeCtce; arc=none smtp.client-ip=203.254.224.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="hs6f1N5I"
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250818043718epoutp041bcca97f6ecd761fe368ed171649b666~cwobMZlnA2680126801epoutp04c
-	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 04:37:18 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250818043718epoutp041bcca97f6ecd761fe368ed171649b666~cwobMZlnA2680126801epoutp04c
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="bAHeCtce"
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20250818043724epoutp02f79d2bf1f22fb896051aae12e79c58ce~cwogyhHwp1614916149epoutp02B
+	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 04:37:24 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20250818043724epoutp02f79d2bf1f22fb896051aae12e79c58ce~cwogyhHwp1614916149epoutp02B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1755491839;
-	bh=44MXY/Ntu9rAF0ovbjOJnvuaxkF7loC1JC6bTAe9rcc=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=hs6f1N5IFuWk+6F5dtOPgis0vajdlWb4bFzF6EZRtUBVaHfpqrLJBxqSBsHDZKBT5
-	 /+rsGn7ltJQhYRWmKrNxZBVrFXUCdRALJQY8zXdS4dWcoKrdxSRj7civ/mQSjEkLCz
-	 7WWIA4dGzeIvz5Ob5KdBV6bfzRa5QfZsBIzhMQ8I=
-Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
-	20250818043718epcas5p3efbcae916de49e498b30a4a88463536a~cwoat_LHK0408004080epcas5p3U;
-	Mon, 18 Aug 2025 04:37:18 +0000 (GMT)
-Received: from epcas5p2.samsung.com (unknown [182.195.38.87]) by
-	epsnrtp04.localdomain (Postfix) with ESMTP id 4c50LG6cnmz6B9mL; Mon, 18 Aug
-	2025 04:37:10 +0000 (GMT)
+	s=mail20170921; t=1755491845;
+	bh=ZQkuArzUBJ5lpcVufyrUHpPfpl5KDWV5jQPGPwpyaM8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bAHeCtcePAv3CBWIaO6xtw+sQZqxVbw6kdogRL8dOFSNpbXeHI3ii6OUrVnWo/NHQ
+	 Tl6EBCB1gJUeWEbdy3MuXXM3l4UFhOc4G1kSTRy7BDF/GNesIPThWvmZnGS7mk5H3J
+	 u7D4JC2DrC05Jy/ZHJU+Dsqj3e8vTb8s1qDjhQjw=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
+	20250818043724epcas5p4db958c5a752ae5478793a9feaa79016a~cwogS1iFM0892908929epcas5p4z;
+	Mon, 18 Aug 2025 04:37:24 +0000 (GMT)
+Received: from epcas5p4.samsung.com (unknown [182.195.38.91]) by
+	epsnrtp03.localdomain (Postfix) with ESMTP id 4c50LW3f53z3hhTB; Mon, 18 Aug
+	2025 04:37:23 +0000 (GMT)
 Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
-	20250814140956epcas5p480aa24441933523484da5c241a201d3c~bp3QEJitT1225312253epcas5p4t;
-	Thu, 14 Aug 2025 14:09:56 +0000 (GMT)
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250814141009epcas5p153e4aacfc1ead3db8c9bb647c6e5c7c4~bp3cJoraC0184301843epcas5p1q;
+	Thu, 14 Aug 2025 14:10:09 +0000 (GMT)
 Received: from cheetah.samsungds.net (unknown [107.109.115.53]) by
 	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250814140952epsmtip2b069f926cc266c22788710b6b7b5e597~bp3MNOvQB1162411624epsmtip2h;
-	Thu, 14 Aug 2025 14:09:52 +0000 (GMT)
+	20250814141005epsmtip2d1643f4a1ca80c05e99ef3861a193ff7~bp3YUwBVU1817818178epsmtip2j;
+	Thu, 14 Aug 2025 14:10:05 +0000 (GMT)
 From: Inbaraj E <inbaraj.e@samsung.com>
 To: mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org,
 	krzk+dt@kernel.org, conor+dt@kernel.org, krzk@kernel.org,
@@ -55,10 +55,12 @@ Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-samsung-soc@vger.kernel.org, kernel@puri.sm, kernel@pengutronix.de,
 	festevam@gmail.com, linux-media@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, Inbaraj E <inbaraj.e@samsung.com>
-Subject: [PATCH v2 00/12] Add FSD CSI support
-Date: Thu, 14 Aug 2025 19:39:31 +0530
-Message-ID: <20250814140943.22531-1-inbaraj.e@samsung.com>
+Subject: [PATCH v2 02/12] clk: samsung: fsd: Add clk id for PCLK and PLL in
+ CAM_CSI block
+Date: Thu, 14 Aug 2025 19:39:33 +0530
+Message-ID: <20250814140943.22531-3-inbaraj.e@samsung.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250814140943.22531-1-inbaraj.e@samsung.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,73 +68,112 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250814140956epcas5p480aa24441933523484da5c241a201d3c
+X-CMS-MailID: 20250814141009epcas5p153e4aacfc1ead3db8c9bb647c6e5c7c4
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 X-Sendblock-Type: REQ_APPROVE
 CMS-TYPE: 105P
 cpgsPolicy: CPGSC10-541,Y
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250814140956epcas5p480aa24441933523484da5c241a201d3c
-References: <CGME20250814140956epcas5p480aa24441933523484da5c241a201d3c@epcas5p4.samsung.com>
+X-CMS-RootMailID: 20250814141009epcas5p153e4aacfc1ead3db8c9bb647c6e5c7c4
+References: <20250814140943.22531-1-inbaraj.e@samsung.com>
+	<CGME20250814141009epcas5p153e4aacfc1ead3db8c9bb647c6e5c7c4@epcas5p1.samsung.com>
 
-FSD CSI(Camera Serial Interface) IP bundles Link controller and DMA
-controller for receiving frames. FSD SoC has 12 instances of CSI IP and
-3 D-PHY. 4 instances of CSI IP use 1 D-PHY.
+Add clock id for PCLK and PLL. These clock id will be used for
+operation of CSI driver. PCLK is AXI2APB clock used for register
+access. PLL clock is main clock source for CAM_CSI block.
 
-This patch series does the following:
-1) Refactor the imx-mipi-csis driver to support platform specific
-clock names and interrupt handlers through device specific data
-(struct mipi_csis_info).
-2) Add FSD CSI link controller support in imx-mipi-csis driver.
-3) Introduce a new media driver for FSD CSI DMA providing support for
-video capture and streaming.
+Signed-off-by: Inbaraj E <inbaraj.e@samsung.com>
+---
+ drivers/clk/samsung/clk-fsd.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/clk/samsung/clk-fsd.c b/drivers/clk/samsung/clk-fsd.c
+index 594931334574..4124d65e3d18 100644
+--- a/drivers/clk/samsung/clk-fsd.c
++++ b/drivers/clk/samsung/clk-fsd.c
+@@ -89,7 +89,7 @@
+ #define CLKS_NR_FSYS1		(PCIE_LINK1_IPCLKPORT_SLV_ACLK + 1)
+ #define CLKS_NR_IMEM		(IMEM_TMU_GT_IPCLKPORT_I_CLK_TS + 1)
+ #define CLKS_NR_MFC		(MFC_MFC_IPCLKPORT_ACLK + 1)
+-#define CLKS_NR_CAM_CSI		(CAM_CSI2_3_IPCLKPORT_I_ACLK + 1)
++#define CLKS_NR_CAM_CSI		(CAM_CSI2_3_IPCLKPORT_I_PCLK + 1)
  
-These patches were tested on the FSD platform using the
-capture_raw_frames application.
-
-Changes since v1:
-1. Addressed review comments from Laurent Pinchart to integrate the
-with imx-mipi-csis.c to handle the CSIS and expose it as a subdev.
-
-Here is the link to v1 patch for reference:
-https://patchwork.kernel.org/project/linux-media/patch/7e7832c16925386b771ddb7e00e08661115aa0ea.1668963790.git.sathya@samsung.com/
-
-Inbaraj E (12):
-  dt-bindings: clock: Add CAM_CSI clock macro for FSD
-  clk: samsung: fsd: Add clk id for PCLK and PLL in CAM_CSI block
-  dt-bindings: media: nxp: Add support for FSD SoC
-  arm64: dts: fsd: Add CSI nodes
-  media: imx-mipi-csis: Move clk to mipi_csis_info structure
-  media: imx-mipi-csis: Move irq flag and handler to mipi_csis_info
-    structure
-  media: imx-mipi-csis: Add support to configure specific vc
-  media: imx-mipi-csis: Add support to dump all vc regs
-  media: imx-mipi-csis: Add support for FSD CSI Rx
-  dt-bindings: media: fsd: Document CSIS DMA controller
-  arm64: defconfig: Enable FSD CSIS DMA driver
-  media: fsd-csis: Add support for FSD CSIS DMA
-
- .../bindings/media/nxp,imx-mipi-csi2.yaml     |   88 +-
- .../bindings/media/tesla,fsd-csis-media.yaml  |   74 +
- MAINTAINERS                                   |    8 +
- arch/arm64/boot/dts/tesla/fsd-evb.dts         |   96 +
- arch/arm64/boot/dts/tesla/fsd.dtsi            |  552 ++++++
- arch/arm64/configs/defconfig                  |    1 +
- drivers/clk/samsung/clk-fsd.c                 |   28 +-
- drivers/media/platform/nxp/imx-mipi-csis.c    |  354 +++-
- drivers/media/platform/samsung/Kconfig        |    1 +
- drivers/media/platform/samsung/Makefile       |    1 +
- .../media/platform/samsung/fsd-csis/Kconfig   |   16 +
- .../media/platform/samsung/fsd-csis/Makefile  |    3 +
- .../platform/samsung/fsd-csis/fsd-csis.c      | 1730 +++++++++++++++++
- include/dt-bindings/clock/fsd-clk.h           |   13 +
- 14 files changed, 2890 insertions(+), 75 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/media/tesla,fsd-csis-media.yaml
- create mode 100644 drivers/media/platform/samsung/fsd-csis/Kconfig
- create mode 100644 drivers/media/platform/samsung/fsd-csis/Makefile
- create mode 100644 drivers/media/platform/samsung/fsd-csis/fsd-csis.c
-
+ static const unsigned long cmu_clk_regs[] __initconst = {
+ 	PLL_LOCKTIME_PLL_SHARED0,
+@@ -1646,7 +1646,7 @@ static const struct samsung_pll_rate_table pll_cam_csi_rate_table[] __initconst
+ };
+ 
+ static const struct samsung_pll_clock cam_csi_pll_clks[] __initconst = {
+-	PLL(pll_142xx, 0, "fout_pll_cam_csi", "fin_pll",
++	PLL(pll_142xx, CAM_CSI_PLL, "fout_pll_cam_csi", "fin_pll",
+ 	    PLL_LOCKTIME_PLL_CAM_CSI, PLL_CON0_PLL_CAM_CSI, pll_cam_csi_rate_table),
+ };
+ 
+@@ -1682,51 +1682,51 @@ static const struct samsung_gate_clock cam_csi_gate_clks[] __initconst = {
+ 	     GAT_CAM_CSI_BUS_D_CAM_CSI_IPCLKPORT_CLK__SYSTEM__NOC, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI0_0_IPCLKPORT_I_ACLK, "cam_csi0_0_ipclkport_i_aclk", "dout_cam_csi0_aclk",
+ 	     GAT_CAM_CSI0_0_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi0_0_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI0_0_IPCLKPORT_I_PCLK, "cam_csi0_0_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI0_0_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI0_1_IPCLKPORT_I_ACLK, "cam_csi0_1_ipclkport_i_aclk", "dout_cam_csi0_aclk",
+ 	     GAT_CAM_CSI0_1_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi0_1_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI0_1_IPCLKPORT_I_PCLK, "cam_csi0_1_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI0_1_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI0_2_IPCLKPORT_I_ACLK, "cam_csi0_2_ipclkport_i_aclk", "dout_cam_csi0_aclk",
+ 	     GAT_CAM_CSI0_2_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi0_2_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI0_2_IPCLKPORT_I_PCLK, "cam_csi0_2_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI0_2_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI0_3_IPCLKPORT_I_ACLK, "cam_csi0_3_ipclkport_i_aclk", "dout_cam_csi0_aclk",
+ 	     GAT_CAM_CSI0_3_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi0_3_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI0_3_IPCLKPORT_I_PCLK, "cam_csi0_3_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI0_3_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI1_0_IPCLKPORT_I_ACLK, "cam_csi1_0_ipclkport_i_aclk", "dout_cam_csi1_aclk",
+ 	     GAT_CAM_CSI1_0_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi1_0_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI1_0_IPCLKPORT_I_PCLK, "cam_csi1_0_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI1_0_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI1_1_IPCLKPORT_I_ACLK, "cam_csi1_1_ipclkport_i_aclk", "dout_cam_csi1_aclk",
+ 	     GAT_CAM_CSI1_1_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi1_1_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI1_1_IPCLKPORT_I_PCLK, "cam_csi1_1_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI1_1_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI1_2_IPCLKPORT_I_ACLK, "cam_csi1_2_ipclkport_i_aclk", "dout_cam_csi1_aclk",
+ 	     GAT_CAM_CSI1_2_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi1_2_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI1_2_IPCLKPORT_I_PCLK, "cam_csi1_2_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI1_2_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI1_3_IPCLKPORT_I_ACLK, "cam_csi1_3_ipclkport_i_aclk", "dout_cam_csi1_aclk",
+ 	     GAT_CAM_CSI1_3_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi1_3_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI1_3_IPCLKPORT_I_PCLK, "cam_csi1_3_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI1_3_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI2_0_IPCLKPORT_I_ACLK, "cam_csi2_0_ipclkport_i_aclk", "dout_cam_csi2_aclk",
+ 	     GAT_CAM_CSI2_0_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi2_0_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI2_0_IPCLKPORT_I_PCLK, "cam_csi2_0_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI2_0_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI2_1_IPCLKPORT_I_ACLK, "cam_csi2_1_ipclkport_i_aclk", "dout_cam_csi2_aclk",
+ 	     GAT_CAM_CSI2_1_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi2_1_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI2_1_IPCLKPORT_I_PCLK, "cam_csi2_1_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI2_1_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI2_2_IPCLKPORT_I_ACLK, "cam_csi2_2_ipclkport_i_aclk", "dout_cam_csi2_aclk",
+ 	     GAT_CAM_CSI2_2_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi2_2_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI2_2_IPCLKPORT_I_PCLK, "cam_csi2_2_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI2_2_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(CAM_CSI2_3_IPCLKPORT_I_ACLK, "cam_csi2_3_ipclkport_i_aclk", "dout_cam_csi2_aclk",
+ 	     GAT_CAM_CSI2_3_IPCLKPORT_I_ACLK, 21, CLK_IGNORE_UNUSED, 0),
+-	GATE(0, "cam_csi2_3_ipclkport_i_pclk", "dout_cam_csi_busp",
++	GATE(CAM_CSI2_3_IPCLKPORT_I_PCLK, "cam_csi2_3_ipclkport_i_pclk", "dout_cam_csi_busp",
+ 	     GAT_CAM_CSI2_3_IPCLKPORT_I_PCLK, 21, CLK_IGNORE_UNUSED, 0),
+ 	GATE(0, "cam_ns_brdg_cam_csi_ipclkport_clk__psoc_cam_csi__clk_cam_csi_d",
+ 	     "dout_cam_csi_busd",
 -- 
 2.49.0
 
