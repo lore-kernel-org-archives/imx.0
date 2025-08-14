@@ -1,62 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA622F60A8;
-	Wed, 13 Aug 2025 23:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005E51459EA;
+	Thu, 14 Aug 2025 00:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755128199; cv=none; b=Mg0SgeX1W8P94zJe8038oUZSrJrAtFyqwVe8QOk3yLqR578PwQIKonzb9ZEPn23SiOAwXpoKTJT1Hu04cYDWoEldwfn20c6ZmRLNFWiMfM5ovXz1cvTUUA8GOdZsgphAts/ABnxQDOWJYv10pI29wxqI4/drMXyuXBS3JfwASZg=
+	t=1755132005; cv=none; b=Fg2t5V9HuSKZno5dKOvihlqg/KTn44Zh7y9ln0hVzLoL21cuNwpzGLU/rs0AcFu0pRTHolceYJBDC4hU5Jf7d2jk5cnClP5ENljpvjIQytNWhaI3hKZf/m6q7SkzbbNDd7JKrPMHIWpWjL3Tfnd5+DKRrPwg3b2lQeCIntN875w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755128199; c=relaxed/simple;
-	bh=iIlYZ2rFZRhKoq1MEczmfzDZ3sh8XaeMe0QhC+qV2yg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HiAonhymyeJUm6+z/H7um6V4h/83XNe2BXzCIPzCGp6R2z2zWr2TppOB/R8lmoqnclb26lu/d3rXujDwhp099hT+1MVS0BLKWmjt9YSjg4QPUDyRCb6rdXLjKSXLCmyk4ZVrxe5yU0W8ZMpee3PfvQE8WDTCvDYqUzMPqDhG82c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lZ73VgqP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755132005; c=relaxed/simple;
+	bh=nLMkPPo4ZFDBU7rUwHDIQlXdUyxgc9cY3+lk5Y8ZfB8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Pd5Zdk/cKyyxTlpxeFzTJ2v3M0o6+hK5vd/d1NMpNxkW56cfPsxKsBng/UAlpQ+sLs6SmE9zxUKq3saENwgB1zoz8ImKoi9zz9Pcov8TY4A+BNRSWC6KwO9EBvbl0OYcPZjc9JL0E3V1NA5BKGWOPQm0L+QqlrGtmne4eCyzihY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FBYScG0I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lZ73VgqP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F238EC4CEEB;
-	Wed, 13 Aug 2025 23:36:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FBYScG0I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4920C4CEF6;
+	Thu, 14 Aug 2025 00:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755128197;
-	bh=iIlYZ2rFZRhKoq1MEczmfzDZ3sh8XaeMe0QhC+qV2yg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lZ73VgqPHBYXfJfl3GpSbhjQhFIatfnlyCPy4jchQyth3XBY5XgvVlEV23bjPtPAT
-	 EehO51xJ5Byid398hSV78PEkiZnyM10mk8lBfo13aUZg4TNVmW+189/cOG1qx96udZ
-	 Z9iPVzXjjLVz/3QLXYp6QRgG3ZNqACgXrdvJmw0jqCZ4aunG9pJNPwJQy29V94EFNY
-	 L6SOSIJaN9j/DDzkBEvZhVuVt4fCSs0ZT4SYVy/R/Yc44AYstz0GpwnHXHVO1pmDxU
-	 DzveLSKDltyZ+khOF5xxyfCF9a2eqwPS2eVFs5Y0QdKnYfaTCSBGo7VdPzhqDdaaWD
-	 KylZbSoMhQqwQ==
-Date: Wed, 13 Aug 2025 16:36:36 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: andrew@lunn.ch, o.rempel@pengutronix.de
-Cc: Xu Yang <xu.yang_2@nxp.com>, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, max.schulze@online.de, khalasa@piap.pl,
- linux-usb@vger.kernel.org, netdev@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH v2] net: usb: asix_devices: add phy_mask for ax88772
- mdio bus
-Message-ID: <20250813163636.21b5a3f5@kernel.org>
-In-Reply-To: <20250811092931.860333-1-xu.yang_2@nxp.com>
-References: <20250811092931.860333-1-xu.yang_2@nxp.com>
+	s=k20201202; t=1755132004;
+	bh=nLMkPPo4ZFDBU7rUwHDIQlXdUyxgc9cY3+lk5Y8ZfB8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=FBYScG0IxxdO6hUZj8JoJ9bh1ykysA4pn8hk7W/wU8YLeIfDeMwZOrD7m+GEU1VWe
+	 Gr7YAx0NroRWBmdurGEmFmpI7CzzbSR/mhoOJhq57/9EIl+OT0b7ZqKQF10Sm9BgDK
+	 Qo6bthnlkIMWXl+gk+aR1vmQqhDnC9yy+ixkk8Sn1EHPNMfIu7aJy99VogIt6sQ+AI
+	 7zTextaqih+gwSVT7pLGgzWtceKJvkPeHPoflV70AuM8007eGgsUTk3/1+B9PlnWCP
+	 pdQR4YAOgnBUmLCPwbLJ3fEPcggKyt7UfI4GwLureHW3gAYxiczytc3TOf55KIARre
+	 YKpFdslPnsCgQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD8C39D0C37;
+	Thu, 14 Aug 2025 00:40:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH RESEND net-next v2] net: enetc: Remove error print for
+ devm_add_action_or_reset()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175513201624.3832372.12289248453495855139.git-patchwork-notify@kernel.org>
+Date: Thu, 14 Aug 2025 00:40:16 +0000
+References: <pnd1ppghh4p.a.out@axis.com>
+In-Reply-To: <pnd1ppghh4p.a.out@axis.com>
+To: Waqar Hameed <waqar.hameed@axis.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, kernel@axis.com,
+ imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Mon, 11 Aug 2025 17:29:31 +0800 Xu Yang wrote:
-> Without setting phy_mask for ax88772 mdio bus, current driver may create
-> at most 32 mdio phy devices with phy address range from 0x00 ~ 0x1f.
-> DLink DUB-E100 H/W Ver B1 is such a device. However, only one main phy
-> device will bind to net phy driver. This is creating issue during system
-> suspend/resume since phy_polling_mode() in phy_state_machine() will
-> directly deference member of phydev->drv for non-main phy devices. Then
-> NULL pointer dereference issue will occur. Due to only external phy or
-> internal phy is necessary, add phy_mask for ax88772 mdio bus to workarnoud
-> the issue.
+Hello:
 
-Andrew, Oleksij, this looks like v2 of
-https://lore.kernel.org/all/20250806082931.3289134-1-xu.yang_2@nxp.com/
-are you willing to venture a Review tag here ? :)
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 12 Aug 2025 14:13:58 +0200 you wrote:
+> When `devm_add_action_or_reset()` fails, it is due to a failed memory
+> allocation and will thus return `-ENOMEM`. `dev_err_probe()` doesn't do
+> anything when error is `-ENOMEM`. Therefore, remove the useless call to
+> `dev_err_probe()` when `devm_add_action_or_reset()` fails, and just
+> return the value instead.
+> 
+> Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - [RESEND,net-next,v2] net: enetc: Remove error print for devm_add_action_or_reset()
+    https://git.kernel.org/netdev/net-next/c/3051f49b0e03
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
