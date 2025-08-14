@@ -1,198 +1,116 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013012.outbound.protection.outlook.com [40.107.162.12])
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F372B1DFE0B
-	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 02:01:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755482521; cv=fail; b=MVeGd4bF12PKRKIAjL+IyVsiPBkDFjELgQjAbr1pmF/MlQcXrwwDlPI4D5OJsuoAle3SNZG/i4kMxihNCS/290N9IbZGtKVGBrNUmBA03GDeH0Ja5wfGTr3J7w0c8yJaq7lumWu4rno7ku/Z3lQmUz2SODic/Yu+lB0TJO0Nzfo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755482521; c=relaxed/simple;
-	bh=xuO0YQhnPUk+2W3E8TfLsO7zaEDZyTPSe3vpv4NRIG0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=FygItr5SEdPN3AIaQA1mgAa+SOr/ApC51HSVf9dLVyxXarPAm1OE3Mj8uwT8PmefJJr2LBJmrZmbKFo7xpns7fEmiYsjBhAvh3kYBOTxCDU5ea84HsB/Yww1iuxApwsdzVcJ9AQFwTc1ZoHUsV5eYColn2/zVe/LgIDKINn3oPM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hCeCz4t4; arc=fail smtp.client-ip=40.107.162.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5507262FD3
+	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 04:37:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755491843; cv=none; b=E0ADD9v83CowZywphIjP9/Lmlv8WwhdezlwT/84NMjn0jJup++FG0KTe+VR8swUiOSKfV74GG8YZnlwPvoKSd6XD8nnfn1HWIZYBzIJe8gyyzbVY2OdjSXTmuzTdh0ldnMDWigvfv9dTp9nmGPpWrCe10Qsu09NbJP19IdtUMLY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755491843; c=relaxed/simple;
+	bh=eQ6mbLJ666ylH+iobL9nwWrhK1RwBh90HeDv3LHcVhs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=a3p7a9Z5PQ5KsiDzpPR1aE8QWkGyvYyWk3KxjX0CSyAXLwggJSb8PVBpBb+ZZR64NOqbG9ZcHu4dX2bUyAE+Bd/G83LxNB1e4NghjUURQstC38HSTC2suQNrkWTCvFhSAxLPAxGjvHyeWQbTKuoGzHkquCRJsxj1gaCCs60tlbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=jYemU/V/; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hCeCz4t4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qs5zLnGUb1Y42ujZm79Olg+5vqMxPgHcgoQGo31au69rERKbXadweZVInjVmlw5vPcD12KwNpxb4/zUMSsAqDdGfykrSSjL9ezVrx0aW4VJ42gZs1ny0knPakZ9f7BLIqjDaUaJtYJ9NJtG2swqIuMqyJcMg/ahtjOg+5J6Bz37M5BguIago5lZIP3IXKxp20H0MQiXb8GmSy7NKDLikZb3DWPPB1vjNGXoPMIoKEthma1QDpI0juoNzFKy9oZfByo4dFf9/wzZEzVHR8jVTnMG2SHDYKnohL03VlOgJwvPva67I4IkpBYeIf/t5ig+sqDabujPCWTYwkl8/B0hzBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3OTUoQBXlLsINuLRLU8VhPBK9NrrtiyATUM7ScVea6g=;
- b=g1IV/qXQGaotQjKX0zC6o4IsTjahRavpK22/v81oHDxUkYSuEZULxwloDCEBn5dGMZPYSSzmiTfldlA9mE8hBCta0rhyZfvDgEXLLKqUqOC9L0atqg266srucHxVjXzTTtwUfqGMgFgrFZP/yhL9UMl1FEjhlbKrtqCRKH72VMckEmp3xoGlYhPygBco71qhQX2wJ0MqVgmFlV9p0eNgh9gsY0Fq+sXhMyd/ZHJQKnwOp4LeQuSJC+f6tFEHE/xINgQ2cTmTl/BrqXgF2PldOGeTyrL0q9L8oacA1D1+R/AzILpTQMll1gcWmdEeqyCt2zEaPQfCmHTjaxRIAOt5AA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3OTUoQBXlLsINuLRLU8VhPBK9NrrtiyATUM7ScVea6g=;
- b=hCeCz4t4eo/tJQ6vNuAguX3RwJtxEdA1DCGC9QRjVCbOXpu66rTMz2hxs48BoXcc3rtndm4eWxIG7mc64erWIeWvE5/OlpYiffssSIaufkg1rn0aA3Opc0lQDQlPSTWqOrXtZJnq+e39grH2EtuqShWBcYUlLSSsNhdEKZDYjWThXqucfXuZngTo+yKuwTRscFe9EwxiMT7zCLrJmS+UwpSb+yWvdHeUMoDEZDgJFyr91ey1j0C5zUTcz7Nr972Fcv2+jF8X+Y5VrMWkRSr+y3z8T6lmikZ2t00PNQYlgatuMNx4ipitjql4rq0V+k+GuP+UZcTFnf7fnY1ZYEdhKA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by DU4PR04MB10530.eurprd04.prod.outlook.com (2603:10a6:10:55a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.12; Mon, 18 Aug
- 2025 02:01:57 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%5]) with mapi id 15.20.9052.011; Mon, 18 Aug 2025
- 02:01:57 +0000
-Message-ID: <980a990e-ff7e-4de3-b40e-2a28b769cc73@nxp.com>
-Date: Mon, 18 Aug 2025 10:03:27 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/21] drm: remove unneeded 'fast_io' parameter in
- regmap_config
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
- linux-kernel@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>, Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Sandy Huang <hjc@rock-chips.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?=
- <heiko@sntech.de>, Andy Yan <andy.yan@rock-chips.com>,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org
-References: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
- <20250813161517.4746-5-wsa+renesas@sang-engineering.com>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <20250813161517.4746-5-wsa+renesas@sang-engineering.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI1PR02CA0052.apcprd02.prod.outlook.com
- (2603:1096:4:1f5::20) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="jYemU/V/"
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20250818043719epoutp01f08b234520417f85174be3e9d95cf843~cwocAlFCt0482404824epoutp01p
+	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 04:37:19 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20250818043719epoutp01f08b234520417f85174be3e9d95cf843~cwocAlFCt0482404824epoutp01p
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1755491839;
+	bh=xl82Otcai0y60jQ/O2jr10UdDoE6TM4ftxxvpBCLJQM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jYemU/V/NSIjwx2P2zVz9QHeHiLPzTGKU2zfEGt5cM3QJ98lu1YulWakYgzC4fqaF
+	 /DqnWCrvI/dYcihH0SF2zLDz2TJj+hO73tSW8MkpwsrkmcER3U5HKa5zpDK40ztgJh
+	 ao1k7ANX4H9tXiS9fefTxWHjCrNltBMyc7oQ03uI=
+Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
+	20250818043719epcas5p4910c652177a448bc6bad489f6c7e881a~cwobik0sO1032010320epcas5p4g;
+	Mon, 18 Aug 2025 04:37:19 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.38.90]) by
+	epsnrtp01.localdomain (Postfix) with ESMTP id 4c50LQ2Nhjz6B9m4; Mon, 18 Aug
+	2025 04:37:18 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250814141003epcas5p167e0a3d0ecc52fd8af17151cdddd031a~bp3W8Nc0d0355303553epcas5p1H;
+	Thu, 14 Aug 2025 14:10:03 +0000 (GMT)
+Received: from cheetah.samsungds.net (unknown [107.109.115.53]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250814140959epsmtip2c60bd3f2bed42df98c8f3e5a092a9a7a~bp3THPJDQ1586615866epsmtip2A;
+	Thu, 14 Aug 2025 14:09:59 +0000 (GMT)
+From: Inbaraj E <inbaraj.e@samsung.com>
+To: mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, krzk@kernel.org,
+	s.nawrocki@samsung.com, s.hauer@pengutronix.de, shawnguo@kernel.org,
+	cw00.choi@samsung.com, rmfrfs@gmail.com, laurent.pinchart@ideasonboard.com,
+	martink@posteo.de, mchehab@kernel.org, linux-fsd@tesla.com, will@kernel.org,
+	catalin.marinas@arm.com, pankaj.dubey@samsung.com, shradha.t@samsung.com,
+	ravi.patel@samsung.com
+Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, alim.akhtar@samsung.com,
+	linux-samsung-soc@vger.kernel.org, kernel@puri.sm, kernel@pengutronix.de,
+	festevam@gmail.com, linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, Inbaraj E <inbaraj.e@samsung.com>
+Subject: [PATCH v2 01/12] dt-bindings: clock: Add CAM_CSI clock macro for
+ FSD
+Date: Thu, 14 Aug 2025 19:39:32 +0530
+Message-ID: <20250814140943.22531-2-inbaraj.e@samsung.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250814140943.22531-1-inbaraj.e@samsung.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DU4PR04MB10530:EE_
-X-MS-Office365-Filtering-Correlation-Id: d85a219f-5f77-4e1a-2fd6-08ddddfb35eb
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|19092799006|7053199007;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?WWdjaGw2STRIR096NEVveENvVmpUQ3d6NWYrZVVjTFk3MENVOVI1WjNvMjQ0?=
- =?utf-8?B?Qk5Qa3pWRWFNVC9GbDMwZmpFT0xENi83NHVxUHZDRTg1ZFZaMFo5R1JscDBU?=
- =?utf-8?B?RTdueDNZY1BhaE1sbXltY3R6N21seVNlWkU1MGFGaE9VVy92SmpFQWhRUVZC?=
- =?utf-8?B?QjBQbS9MUTEzVnNvU0Z5UUZZNUp1RzgyVTV3a29pYzZIYW13aXFlYi9CcklE?=
- =?utf-8?B?WEFsZ29LcHJVWWJETzA0VjByRUdiVmllNUJBTEJ4bWV2NzcvZmZhV1dsUzBH?=
- =?utf-8?B?MTNxTFJNdkpvTUZTc2NxYUZaMnVRKzhFSFd1ZlB4Zys1YW4xNGtvSkMyZDUy?=
- =?utf-8?B?WXN3emppYjA1Umh1SEkyTWRLUXAwVGZhcllkTzdoSnpiYWVlMjdnOE1XMzJP?=
- =?utf-8?B?czNMRmkwTE9uTlN0NjIzZ3BtRFZTSUVvemZLbVZXMWV2WDJzYnBrWE5Jb01s?=
- =?utf-8?B?YVhlZWYwTjNESkg4RXltZmM5UzVDZGJNY2JaY0ZKa1M0YVpDc1BZVUd4VC9R?=
- =?utf-8?B?TkpFM2dxaElKMG5udVlQMDlXcWdVZUU3RnM3MTI2Vnh2R3VPRVlQQzNOOUZK?=
- =?utf-8?B?K3ExTy9wV2I5dFNwVXBDTHM4bEdrNFBvV3FzbFdLdGk2U0hXWFBOUjU1Rm5l?=
- =?utf-8?B?aGhyQXpranczb3BDZFVzTlQwd3V6b0hJTHVXeTFpVWhubjdBaUNFNTZvbTg3?=
- =?utf-8?B?QkZIdzVMSnhZRE80bE5sT3E5S0cxakhRMWtsZkxaaTEwYTZiNm10SzdWcXBK?=
- =?utf-8?B?Qkp2MWI1RWNkVjFaVCtWcmpYazRmbTlxWmVpYmxqd0M1K2t4S3pySkxPMjZH?=
- =?utf-8?B?N1pNSUI5YkU1VkFMNHlkUTJmK21lc0hNbUxBV0hycWVMUWhFTnJPYjJuZVNK?=
- =?utf-8?B?RVk4NHNneTVjL3N4Y2pFSFgwM3JReGYwTmF1dGVISFdKUHV0NnBqYjJ1SHdV?=
- =?utf-8?B?L2pOZmREOHVQWVRwN2JNcnQ1S2tyQ09qKzlWL2Q2R3Z4cC9iRHJibHQ4QVdp?=
- =?utf-8?B?cEplSU84K0hQRHludmE0VHpVRm9CR0wzOU5aMEwyTWY5RVZ3SkkzV0lxcGxs?=
- =?utf-8?B?OWMzOXEySDk0U2EraXhZL2VEUlpFR0ZLdEdGWkQ5VUZnMFE4WEVaNXRnRVhv?=
- =?utf-8?B?Ky9LMm9qeW41aFEwZzlTMU4zbEVheGE3WUVGaUZqcVcvdGtDQXZWdEVpeDFk?=
- =?utf-8?B?UmdoY21LbDFxR05COHgyM09RSXZuYVpRZ2FNUWE1ZVBVSE5DYzllaXFKZXhM?=
- =?utf-8?B?SGtud3h5ZFdpSFNJZzVxU1VSM0ZqM0xGVmNDU2krYnJSWk9PWkpEQWNlM28y?=
- =?utf-8?B?bEVsRkFISVY4Z0xvN2Q1djB4Sm5pY1JxR09sYzBHQUlkdVJvcXV6K0Z2VGhR?=
- =?utf-8?B?VC9VdkJiWFpocFhjUlZROFl3NEJ3SWNQaFdSUThxWVQxZEFvZTF3L1cwMTh2?=
- =?utf-8?B?Y0pOV3Q0ME5FWkZJcy9SdFZuTzJDOVJha1BncXA4N1FUN3lpYllkNm0wRlU5?=
- =?utf-8?B?ZFJQL2VMZkZZdDhXSXdJcVNnbUdFakxpZXRqSGc5Z1F1RitvNmpWM1Z1MjZs?=
- =?utf-8?B?cEw5Q3h2ZDRldkhGbElWQ2kxZlA2cmplM3lndWtINHNXU0tBTWIxTDJiKzdL?=
- =?utf-8?B?ODRlbEVmcHl2NG9HZmdua2diWjJoTnZ6V2xIZWxVTGhhcEZIWUQwMEZsRXNR?=
- =?utf-8?B?bStlcitPazllWkhKMEdhVlBnWTZEdEJuN3UrZ1YzMWtBOCtkNkRYQ2poeko2?=
- =?utf-8?B?ZC9iUGRKSFAySGEvOWtsOUtUWkg1MmtBcXJCem9IWjdWYWt3OEMyS2NmYnhI?=
- =?utf-8?B?KzFXYk5JSlhoSXZEcE0zVzJUNzAzc2dsU0k4RlZFYllDTkV4aytqUXlMMTRY?=
- =?utf-8?B?eXhYQzRtY1FSN2VjbkxyRFQ5ekg4eHpVRFN2ZTBMWis0Z1dPRld5b1F2NGty?=
- =?utf-8?Q?EaO9f7EOyKQ=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(19092799006)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?Z1F3R3NWUU5xZ051Qm9mR0orbDhEaEQ1djBaM29iUEFIejNFazRacmoyQ0FQ?=
- =?utf-8?B?RU1BNm1rRmlkUmhhOEY3WXAzNm56UGFBd2VZME03SXIybW01a1JlSGVuV2M2?=
- =?utf-8?B?aGJhZ0NNRVJYNUwrZmthY3lBWVNhU1M0ZER1WjJSR3lmbFRWTkJGZSs4T2g5?=
- =?utf-8?B?RzRjZlFFdFkzSHlVQlpjRlRleUxhMGgzTHVtb2dJa2cvMXQ1Njhzd1FidHdh?=
- =?utf-8?B?N2hSYlAvOERWaUZaSWtJbzNPZG50cEpFT1lSM0xVdzBqeTNRZ21DdFNacVRM?=
- =?utf-8?B?WndRRzBVV2xsMHhCcUxGeWFmdldlT1FpSWlZT1pOeGhDK0FmdWd3dG45RE5y?=
- =?utf-8?B?S3dicWxBVS9VSit2ai9MaWQwQjdYY2NTWVllU3lMb0hacUFPMDVVeXVNL2xs?=
- =?utf-8?B?anhlMXJVVVBjdDNOMlpQYWF0M1RlOE95YUY5S3Yydkl2eUpqeWdnS3lWOWw1?=
- =?utf-8?B?SHBHcUR2UTJiZDR2M3ZMS2QrRjZ4KzlpSC9RZzV3R3hpbmNrR0RjMjZCelZ3?=
- =?utf-8?B?MDVTemVlQTU3RlNJZ3MzOG1CWmptdkdILzUwcm5weHVhVDJvbjljZUpCekdp?=
- =?utf-8?B?WHpKMVppOWJHaUZWNng5enA0d1l5MllpU3RCUUJvcFlHbnJoVXh4a08rQW1O?=
- =?utf-8?B?LzVGUmNEcW9mV3Jrb25YaFJ1TDZ2VGVjOG9SYmcvZEx6cFpBV2J4dG9UM21o?=
- =?utf-8?B?L2NkbTd1QVR1QXBaSlhwMDlBbFdMUkhiNkdrekNHdnFMVVh0NEI3NVpKUUFn?=
- =?utf-8?B?OUlNdTdnanpWZlEwMnM2SFBoZ0pRZWVtTXhRWktMS2RoZ0lEbElhaUo3THdF?=
- =?utf-8?B?WXQ1QWIyeVREbkZJa0kyYTFJc0lJakNkRFdVRXRWRkxFYmdVN09SMDB3cVMz?=
- =?utf-8?B?bEFWSDlORm5iSzN0YTR0ZUI5dERhYmRHTDdCYVVXdkt0ZnVEaTdQY3VBYWhM?=
- =?utf-8?B?VUFtcEtYNXBwSTZFWWJvWTlYdFdndHk1N0l6T2F0WVlMb2k1eml5NVp1Wi80?=
- =?utf-8?B?TmRhZ28za2Z5K3YvTnZXaFpkN1lPMStGbFppZUVhSGV0a3ZQVm03SlBGT29T?=
- =?utf-8?B?NFVjeXdxWXFka0xLZDVhZzVUTVkrVFJFTXVpczkvdVN2bThaZXJYcnZibGZ4?=
- =?utf-8?B?bXNNMnJGSnk0bWpKWERDRGlZemNHTmhaMHdTMFY4WGZWd01Ua1FNVHlNOGpX?=
- =?utf-8?B?L1p1Z0N0ZnM3eUxnYnd6Y1cyc3htNCtuNnVTU1libnpmNVpjeENXaWNpSFA4?=
- =?utf-8?B?TDFXeFpkNEM2Wmlzc2xvR1VqK3ZwMkVXUnJCVVg1YkpvMnVGTng3dUtKWVpq?=
- =?utf-8?B?d1VBMHU2d0xyZHdxL2VKV1J3SnZSajFHRXg4a1BFclJuT2IwcmRwNlZ1c01l?=
- =?utf-8?B?VERjcEVpTzR6NzJ6ekNPYUJaQjcwYm5ISjZMSXAvMGVLZkRBS0tSMXhPL3JD?=
- =?utf-8?B?ci9iNzU3RTNhaENwKzhMUHpvN0RpSGhoRCs1eDJlUUhlMUw2ZjlmcXFOSVl0?=
- =?utf-8?B?UWtQY1R5bHh3SldHN2kyYllHTWNYLytGcmF5bmJjcDlrM3VCUFJzRFBtYkVS?=
- =?utf-8?B?WjlYNVErQ0tlSVg1MXZ0eEZSaFpNa21QbDBhOEFtbTdNMU5hQjdkN2VZQXJo?=
- =?utf-8?B?UFBIeDBTZXBsRlBSSHEwcUpnUTM0dkM5Q05odTZHdVlGd3ZnWDUwYUp6QXdD?=
- =?utf-8?B?NGpKc08rR0JtdDA1VlloYnBQRVVjbVJ0RS9vU0VaUlFYa3BkMmF0MjF4U2ZS?=
- =?utf-8?B?V1VZU0FxQy90eGxJK0tVOEVIaW1ERUwzY204QWNIWXI4SnQxZW41VXpLU1FZ?=
- =?utf-8?B?RW1tNjYwTG1JdGsycGtMMnlXUUZFZmdJdFluV1NDL3lrNUkrWXFpczlJUHA1?=
- =?utf-8?B?bE4xTGorZVNRYVBiMEJqZzdFL3Njdjd6NzlCQ21La2lvVS9SdW5ZQjM4aDQy?=
- =?utf-8?B?aXU5ZnFqaDVMVUljYkZibExOSngvT2F5WG1GcnNySHZLaUllSHBjNnlpeXU1?=
- =?utf-8?B?L2V6aXBMZDZSeUNWMStxamlsQm8zZnJlRWlUZEpkRGtXN0FnYnRzdUpWN0Ev?=
- =?utf-8?B?MVJpU2ZVclVhekZMVExreDZBZ1ZqRkY5TnRlbk0rZVZQdUJPVHNBWmdadnky?=
- =?utf-8?Q?3GXIU5jEqS2aHKh7Z/AudQdu+?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d85a219f-5f77-4e1a-2fd6-08ddddfb35eb
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 02:01:56.9870
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HreyWUyxPln4nE1rkoPDfpOS2PsFO+2QmV613OKvTyXJSSIuA0h8wHAdATc71je1vCPbsr3eT4mfh/ZAqFaE2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10530
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250814141003epcas5p167e0a3d0ecc52fd8af17151cdddd031a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-541,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250814141003epcas5p167e0a3d0ecc52fd8af17151cdddd031a
+References: <20250814140943.22531-1-inbaraj.e@samsung.com>
+	<CGME20250814141003epcas5p167e0a3d0ecc52fd8af17151cdddd031a@epcas5p1.samsung.com>
 
-On 08/13/2025, Wolfram Sang wrote:
-> When using MMIO with regmap, fast_io is implied. No need to set it
-> again.
-> 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> ---
-> No dependencies, can be applied directly to the subsystem tree. Buildbot is
-> happy, too.
-> 
->  drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c   | 1 -
->  drivers/gpu/drm/imx/dc/dc-cf.c                   | 1 -
->  drivers/gpu/drm/imx/dc/dc-de.c                   | 1 -
->  drivers/gpu/drm/imx/dc/dc-ed.c                   | 2 --
->  drivers/gpu/drm/imx/dc/dc-fg.c                   | 1 -
->  drivers/gpu/drm/imx/dc/dc-fl.c                   | 1 -
->  drivers/gpu/drm/imx/dc/dc-fw.c                   | 2 --
->  drivers/gpu/drm/imx/dc/dc-ic.c                   | 1 -
->  drivers/gpu/drm/imx/dc/dc-lb.c                   | 2 --
->  drivers/gpu/drm/imx/dc/dc-tc.c                   | 1 -
->  drivers/gpu/drm/imx/ipuv3/imx-tve.c              | 2 --
->  drivers/gpu/drm/rockchip/dw-mipi-dsi2-rockchip.c | 1 -
->  12 files changed, 16 deletions(-)
+CAM_CSI block has ACLK, PCLK and PLL clocks. PCLK id is already
+assigned. To use PCLK and PLL clock in driver add id macro for CAM_CSI_PLL
+and CAM_CSI_PCLK.
 
-Reviewed-by: Liu Ying <victor.liu@nxp.com> # drivers/gpu/drm/imx/dc
+Signed-off-by: Inbaraj E <inbaraj.e@samsung.com>
+---
+ include/dt-bindings/clock/fsd-clk.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/include/dt-bindings/clock/fsd-clk.h b/include/dt-bindings/clock/fsd-clk.h
+index 3f7b64d93558..58fdec8f4c2a 100644
+--- a/include/dt-bindings/clock/fsd-clk.h
++++ b/include/dt-bindings/clock/fsd-clk.h
+@@ -139,5 +139,18 @@
+ #define CAM_CSI2_1_IPCLKPORT_I_ACLK		10
+ #define CAM_CSI2_2_IPCLKPORT_I_ACLK		11
+ #define CAM_CSI2_3_IPCLKPORT_I_ACLK		12
++#define CAM_CSI_PLL				13
++#define CAM_CSI0_0_IPCLKPORT_I_PCLK		14
++#define CAM_CSI0_1_IPCLKPORT_I_PCLK		15
++#define CAM_CSI0_2_IPCLKPORT_I_PCLK		16
++#define CAM_CSI0_3_IPCLKPORT_I_PCLK		17
++#define CAM_CSI1_0_IPCLKPORT_I_PCLK		18
++#define CAM_CSI1_1_IPCLKPORT_I_PCLK		19
++#define CAM_CSI1_2_IPCLKPORT_I_PCLK		20
++#define CAM_CSI1_3_IPCLKPORT_I_PCLK		21
++#define CAM_CSI2_0_IPCLKPORT_I_PCLK		22
++#define CAM_CSI2_1_IPCLKPORT_I_PCLK		23
++#define CAM_CSI2_2_IPCLKPORT_I_PCLK		24
++#define CAM_CSI2_3_IPCLKPORT_I_PCLK		25
+ 
+ #endif /*_DT_BINDINGS_CLOCK_FSD_H */
+-- 
+2.49.0
+
