@@ -1,232 +1,104 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8A32749E5
-	for <imx@lists.linux.dev>; Fri, 15 Aug 2025 12:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755261295; cv=pass; b=dkR9m+wo2CjYiOZ282q+I1tgZBnks85ftzoLCNPw3pta2b0tXxZpUBlxWg8NYOqsVJXOvsVcmhxwKbTm+f3mLyweT+usBnGW1x2jDEzKLWOoncAka2DdZyV5kgZucV3uEoN6JLZCEqDSejFvT3HQsHDFzspoUSWAq0BRfcMEnFI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755261295; c=relaxed/simple;
-	bh=tntn9cbIgPUt1BursIk5NYzmJyQ1zyzXYOnVlKbw8OM=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB06D24395C;
+	Fri, 15 Aug 2025 12:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755262768; cv=none; b=YmSSQJNw2S2zDaBQZBF2f86HcqhGPSMtGcQc+dufNu8H87AT7wN4oMbdbZIWXjtrupbBSvRv/UCHb3EqCvUZLPTrUI9iaoTyjoSwdtUrcECU3LjRsF43x0H3vLpIWVsomTJuNO4geICTQLJhEmK2xv1jv4R9XAfsd2/wTM+oBcs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755262768; c=relaxed/simple;
+	bh=gGAyaHnJFqG3yEOMHo+9099n/xMwq45fZnZWGT3Npv8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O2dPULVp3WzmWdYyvzDO9kJBp9ZZ+qgFYo+yJVK/zV+wD4fC44o2ljUHk9/N4CYaGW7dnMW36d/DvKAokAtEJO3aadSX0bAHJ00GXrB+Oqfb7zDmIUZqzRGfIb79WoLq61TaKxZxgu/+KrEjbdHL712MYoHcAwI03U4opVMDlCo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=GlNwJ9iB; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	 Content-Type:Content-Disposition:In-Reply-To; b=qF+itnm86M6Tb1PUdyQ8o5SjAbeXrJz0Xpg11UkodYJmlhOhPjmnkcMrEFL+3ipkcif3495LPJD2193Ty/G1qV4BhcBz/nmGEY8+i9K3mEERFAEQI/u8R06tsUM9Mgs8aJTyN13g3XwwZ+MBSSgHO5pPv31zSgw6yEYmuExswHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=h4QI56Rd; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="GlNwJ9iB"
-Received: from hillosipuli.retiisi.eu (91-158-51-183.elisa-laajakaista.fi [91.158.51.183])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sailus)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4c3M4h4gHNz49PyD;
-	Fri, 15 Aug 2025 15:34:44 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1755261286;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j/6Mcw8r3LsssT5hKIfF2I2kyTfi7DM26e0QtcBjbYI=;
-	b=GlNwJ9iBkw3glbp0ymIiCl63fTe5CZCe5pJslQbr1vG/kkI6fxWrY35JpmCqwJM/nz16Fm
-	xaO4q+bYwr8bKDJpEKt9Bvu0jD7j0PIIS8ivY6qOkq2o/C1sN6VdWjgUpg7whIbSqZzxna
-	FMpKOUZB1p2uopOxN+j7K+DU98KiqSerX3UkAqzN8OA5cv30EJw1ZEovF9LMAMRulfWy1h
-	9Nj51K92Df2RCEoiy0jUZMG1OtIIlLFgqkxwjgty5u03Y+olIueRWSgqsa01iNZjJDg4UV
-	9OcuGbzWCHKZJo+8tORvWJF+T3E84YvHGjnp7afMmpZEElhwOlBTaWqsRLLsRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1755261286;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j/6Mcw8r3LsssT5hKIfF2I2kyTfi7DM26e0QtcBjbYI=;
-	b=kCSurF1hkNHj6s7D5U303HsLuULSF6jJxI0QR8Z760AtTzH2wH/1ziX34RATtcTI3JsWnp
-	c7mbgno8qs7Cib4xDHD7dt2PY5XsZ+U3wC5MFytag8YBNefdASUH5cLFebqlbcYFurUxCE
-	nL5aLhJ5xfb9ck9KRZckUHHttQKPMFNN57UBwaqLx1nDrUtf64I7sLWJwGP7+3bq9WlV3Z
-	Z46w/oq221jc+bVWPIsxEJI6aI+EI7hR/T/gihUGJecpFLY1IVfaGlCafAlE76zzJETe8a
-	IYiVbtm3m7LKNgjoeYYnfqIOp7hfWeIgF1TRCqB6V71EjUh7hr7RfntS1qYJKg==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1755261286; a=rsa-sha256;
-	cv=none;
-	b=pef/pESmcs78EUdIVq28pz9/x/msj/tjvZJmM31B5rDcbrfLkPuYfFKBgocj7pffI6UBmX
-	6T/4H592XkX/LWtJJzbqNr87hTY3SMeZonwBikXXrrDPUpIBS1FyafXOb/fsAhtc0J6RYy
-	Hlw7K0JPH+qUzxvYGdJGHHmQ3bPuFuKrXI1+FaZ+yr5V+4Nn3i5anqq0ORdONI9ISjT9hW
-	b8LtQFgQNwHXMPvIJUcJj2XCoC2nfYU1cCDaSjhFaM3QEQPlSWbOY37lNW87rWnJfDIwY5
-	kPHyMOLL6Hjdrrch9pKVm5MQfeeGwdXDVYGs22vNwYG3vdblP6hhP5a3/p6c5g==
-Received: from valkosipuli.retiisi.eu (valkosipuli.local [192.168.4.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id CBFB4634C93;
-	Fri, 15 Aug 2025 15:33:45 +0300 (EEST)
-Date: Fri, 15 Aug 2025 12:33:46 +0000
-From: Sakari Ailus <sakari.ailus@iki.fi>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Isaac Scott <isaac.scott@ideasonboard.com>, linux-media@vger.kernel.org,
-	rmfrfs@gmail.com, martink@posteo.de, kernel@puri.sm,
-	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] imx-mipi-csis: Get the number of active lanes from
- mbus_config
-Message-ID: <aJ8pKs_6YpAiPjlq@valkosipuli.retiisi.eu>
-References: <20250814113701.165644-1-isaac.scott@ideasonboard.com>
- <aJ77VTtZy96JJCHE@valkosipuli.retiisi.eu>
- <20250815103205.GJ6201@pendragon.ideasonboard.com>
- <aJ8ZJFSn5Wxhj2Aj@valkosipuli.retiisi.eu>
- <20250815113633.GM6201@pendragon.ideasonboard.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="h4QI56Rd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=WxxMg2CpYRBJYb9noYcqcSAL3Z0uD1GOUX0iFK8kymE=; b=h4QI56RdN+OJNfEUm8boNTz1Js
+	xC2T2k6zgAT4Fp2KI51rLoYAt+siWmkmEtWlqH6rdje3QsEn5M+IlOJswPKlN6WviQfWWSR2u3+5P
+	d/uidX1zqxu61DpUYESdaRaETTSIQ/gOFJJBxXhaQaD09vLFW6Ax5iE59wQ+ZPYfiXgo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1umu1Y-004ox6-Dh; Fri, 15 Aug 2025 14:59:12 +0200
+Date: Fri, 15 Aug 2025 14:59:12 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, max.schulze@online.de,
+	khalasa@piap.pl, o.rempel@pengutronix.de, linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH] net: usb: asix: avoid to call phylink_stop() a second
+ time
+Message-ID: <1c352c2f-c8b3-4cbe-9921-8ba5f0e4b433@lunn.ch>
+References: <20250806083017.3289300-1-xu.yang_2@nxp.com>
+ <a28f38d5-215b-49fb-aad7-66e0a30247b9@lunn.ch>
+ <e3oew536p4eghgtryz7luciuzg5wnwg27b6d3xn5btynmbjaes@dz46we4z4pzv>
+ <c3e7m63qcff6dazjzualk7v2n3jtxujl43ynw7jtfuf34njt6w@5sml5vvq57gh>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250815113633.GM6201@pendragon.ideasonboard.com>
+In-Reply-To: <c3e7m63qcff6dazjzualk7v2n3jtxujl43ynw7jtfuf34njt6w@5sml5vvq57gh>
 
-Hi Laurent,
-
-On Fri, Aug 15, 2025 at 02:36:33PM +0300, Laurent Pinchart wrote:
-> On Fri, Aug 15, 2025 at 11:25:24AM +0000, Sakari Ailus wrote:
-> > Hi Laurent,
+> > > Looking at ax88172a.c, lan78xx.c and smsc95xx.c, they don't have
+> > > anything like this. Is asix special, or are all the others broken as
+> > > well?
 > > 
-> > On Fri, Aug 15, 2025 at 01:32:05PM +0300, Laurent Pinchart wrote:
-> > > On Fri, Aug 15, 2025 at 09:18:13AM +0000, Sakari Ailus wrote:
-> > > > On Thu, Aug 14, 2025 at 12:37:01PM +0100, Isaac Scott wrote:
-> > > > > Although 4 lanes may be physically available, we may not be using all of
-> > > > > them. Get the number of configured lanes in the case a driver has
-> > > > > implemented the get_mbus_config op.
-> > > > > 
-> > > > > Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-> > > > > 
-> > > > > ---
-> > > > > 
-> > > > > Currently, the imx-mipi-csis driver parses the device tree to determine
-> > > > > the number of configured lanes for the CSI receiver. This may be
-> > > > > incorrect in the case that the connected device only uses a subset of
-> > > > > lanes, for example. Allow the drivers for these cameras to create a
-> > > > > mbus_config to configure the number of lanes that are actually being
-> > > > > used.
-> > > > > 
-> > > > > If the driver does not support the get_mbus_config op, this patch will
-> > > > > have no functional change.
-> > > > > 
-> > > > > Compile tested against media-master (v6.17-rc1)
-> > > > > ---
-> > > > >  drivers/media/platform/nxp/imx-mipi-csis.c | 41 ++++++++++++++++++++++
-> > > > >  1 file changed, 41 insertions(+)
-> > > > > 
-> > > > > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > > > > index 2beb5f43c2c0..efe4e2ad0382 100644
-> > > > > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> > > > > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > > > > @@ -939,6 +939,43 @@ static struct mipi_csis_device *sd_to_mipi_csis_device(struct v4l2_subdev *sdev)
-> > > > >  	return container_of(sdev, struct mipi_csis_device, sd);
-> > > > >  }
-> > > > >  
-> > > > > +static int mipi_csis_get_active_lanes(struct v4l2_subdev *sd)
-> > > > > +{
-> > > > > +	struct mipi_csis_device *csis = sd_to_mipi_csis_device(sd);
-> > > > > +	struct v4l2_mbus_config mbus_config = { 0 };
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	ret = v4l2_subdev_call(csis->source.sd, pad, get_mbus_config,
-> > > > > +			       0, &mbus_config);
-> > > > > +	if (ret == -ENOIOCTLCMD) {
-> > > > > +		dev_dbg(csis->dev, "No remote mbus configuration available\n");
-> > > > > +		return 0;
-> > > > > +	}
-> > > > > +
-> > > > > +	if (ret) {
-> > > > > +		dev_err(csis->dev, "Failed to get remote mbus configuration\n");
-> > > > > +		return ret;
-> > > > > +	}
-> > > > > +
-> > > > > +	if (mbus_config.type != V4L2_MBUS_CSI2_DPHY) {
-> > > > > +		dev_err(csis->dev, "Unsupported media bus type %u\n",
-> > > > > +			mbus_config.type);
-> > > > > +		return -EINVAL;
-> > > > > +	}
-> > > > > +
-> > > > > +	if (mbus_config.bus.mipi_csi2.num_data_lanes > csis->bus.num_data_lanes) {
-> > > > > +		dev_err(csis->dev,
-> > > > > +			"Unsupported mbus config: too many data lanes %u\n",
-> > > > > +			mbus_config.bus.mipi_csi2.num_data_lanes);
-> > > > > +		return -EINVAL;
-> > > > > +	}
-> > > > > +
-> > > > > +	csis->bus.num_data_lanes = mbus_config.bus.mipi_csi2.num_data_lanes;
-> > > 
-> > > There's a bug here, you override the number of lanes retrieved from DT,
-> > > which is the number of connected lanes, with the number of lanes used by
-> > > the source for its particular configuration. You will never be able to
-> > > then use more lanes in a different source configuration.
-> > > 
-> > > > > +	dev_dbg(csis->dev, "Number of lanes: %d\n", csis->bus.num_data_lanes);
-> > > > 
-> > > > None of the above is really specific to this driver. Could you instead
-> > > > implement a function that parses the information from the fwnode endpoint
-> > > > and uses mbus configuration on top?
-> > > 
-> > > That would need to parse the endpoint every time we start streaming, it
-> > > doesn't sound ideal.
+> > I have limited USB net devices. So I can't test others now.
 > > 
-> > Perhaps not, but does that matter in practice? Parsing the endpoint is,
-> > after all, fairly trivial. The advantage would be simplifying drivers.
+> > But based on the error path, only below driver call phy_stop() or phylink_stop()
+> > in their stop() callback:
+> > 
+> > drivers/net/usb/asix_devices.c
+> >   ax88772_stop()
+> >     phylink_stop()
+> > 
+> > drivers/net/usb/ax88172a.c
+> >   ax88172a_stop()
+> >     phy_stop()
+> > 
+> > drivers/net/usb/lan78xx.c
+> >   lan78xx_stop()
+> >     phylink_stop()
+> > 
+> > drivers/net/usb/smsc95xx.c
+> >   smsc95xx_stop()
+> >     phy_stop()
+> > 
+> > However, only asix_devices.c and lan78xx.c call phylink_suspend() in suspend()
+> > callback. So I think lan78xx.c has this issue too.
+> > 
+> > Should I change usbnet common code like below?
+> > 
+> > diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+> > index c39dfa17813a..44a8d325dfb1 100644
+> > --- a/drivers/net/usb/usbnet.c
+> > +++ b/drivers/net/usb/usbnet.c
+> > @@ -839,7 +839,7 @@ int usbnet_stop (struct net_device *net)
+> >         pm = usb_autopm_get_interface(dev->intf);
+> >         /* allow minidriver to stop correctly (wireless devices to turn off
+> >          * radio etc) */
+> > -       if (info->stop) {
+> > +       if (info->stop && !dev->suspend_count) {
+> >                 retval = info->stop(dev);
+> >                 if (retval < 0)
+> >                         netif_info(dev, ifdown, dev->net,
 > 
-> It's trivial from a code point of view, but it's not a cheap operation.
-> I'd like to avoid making starting streaming more expensive.
+> Do you mind sharing some suggestions on this? Thanks in advance!
 
-How cheap is "not cheap"? I'd be surprised if parsing an endpoint took more
-time than e.g. an I²C register write. Of course it depends on the CPU...
+It does look to be a common problem, so solving it in usbnet would be
+best.
 
-> 
-> > Alternatively we could think of caching this information somewhere but I
-> > don't think it's worth it.
-> 
-> Drivers likely need to parse endpoints for other reasons. I'd cache the
-> value in drivers, like done today, and pass it to a get_active_lanes
-> helper.
-
-Then drivers presumably would also validate this against the endpoint
-configuration, wouldn't they? That's extra code in every CSI-2 receiver
-driver.
-
-> 
-> > > > The function could take struct media_pad pointer as an argument, or struct
-> > > > v4l2_subdev pointer and the pad number.
-> > > > 
-> > > > I wonder if any other parameters could change dynamically but I can't think
-> > > > of that now, so perhaps just the number of lanes is what the function
-> > > > should indeed return.
-> > > > 
-> > > > > +
-> > > > > +	return 0;
-> > > > > +}
-> > > > > +
-> > > > >  static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
-> > > > >  {
-> > > > >  	struct mipi_csis_device *csis = sd_to_mipi_csis_device(sd);
-> > > > > @@ -965,6 +1002,10 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
-> > > > >  	format = v4l2_subdev_state_get_format(state, CSIS_PAD_SINK);
-> > > > >  	csis_fmt = find_csis_format(format->code);
-> > > > >  
-> > > > > +	ret = mipi_csis_get_active_lanes(sd);
-> > > > > +	if (ret < 0)
-> > > > > +		dev_dbg(csis->dev, "Failed to get active lanes: %d", ret);
-> > > > > +
-> > > > >  	ret = mipi_csis_calculate_params(csis, csis_fmt);
-> > > > >  	if (ret < 0)
-> > > > >  		goto err_unlock;
-> 
-
--- 
-Regards,
-
-Sakari Ailus
+	Andrew
