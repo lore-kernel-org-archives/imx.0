@@ -1,148 +1,236 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D008EACE;
-	Fri, 15 Aug 2025 03:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D0925334B;
+	Fri, 15 Aug 2025 06:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755229086; cv=none; b=HvgXEvGMfYt8LGG7FO9TPD4nJdBlVFiw+UtjiHJqvBub6vC7im3Kupc313iyKTOhr7sc0GLD8+2HOJNp7WfHBfLA9/jeQHPacptgYgyGM5QzeuOMSb5sOQQ6f7f6RMWq72ss8Bx/ShJs/gjmKOT1p2EFdnD6PcEXIiDNDyP18is=
+	t=1755237920; cv=none; b=qxpy9I10Q+C/2GfN+vtnSBCeCO8chzY5ARb2Rly6O4QSZIjwoHlE8Xd6VjFljEi+XlI52r/VQROarH3luiEnbRmS1M2GDAeYIgHbowYfr7JCoS2DjkZjnr1Y7+qaeAeEkg3ZCKETyB9NFQN3YQlELzhwl9V9SZDi3eyh7nAkRnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755229086; c=relaxed/simple;
-	bh=h8lIgUKwTmS+ekZUNGUrFDR3LrVHggV9Oafs6V0kwNs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e/atS3h+KE9w9NDsjQWsgqhE6uahtQuXwjNp8p2Yrew+73hvEsCwEm+nSaFuBpLxXw81kQBY8WmGaljVn66T+pfBCTfRD8hlqcs6W7dupGsU3laTIio9jfghqBt0Ax11bdt7ESdKKa1B4572hRjxwssd2KSvFpQKnzQySoxzr+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R3oEspCR; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1755237920; c=relaxed/simple;
+	bh=yTQcmNIN/VvgA8Q36hNqkRMmGQohgKcXOjpdoM0mOL4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qGmEa+wJWwZ5YuneWTonleKXvRawfZz9iqaa/jC0d/7YgWelPnrQ6d4oV4W6DxyLW3/ztZPNxOQBxni02lVoRexQbGduR2EbJaltTHumRHyEdZSyPTGQT5+Zv0R+KdU1/CM4JOlasTDrwJ0lAQR9wvpPL88e38g1Ud8BZPNLs9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kllvPuZw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R3oEspCR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755229084; x=1786765084;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=h8lIgUKwTmS+ekZUNGUrFDR3LrVHggV9Oafs6V0kwNs=;
-  b=R3oEspCR+F+QMfGu6AZ0+LUnvrlvpc2OOPt0M0w8IyZwnOQ2hsGPt7Jg
-   uTvwm1cXOvIJadDRnGPV/x5kmIcJnfWk4UV4bmAc2h5DfW0STsHBkEtbt
-   LCAgcXrt3YaoegoGm1j+6XXV/ariscrlGwrdxfEXHr4ewORRS1vcBXFov
-   U68L5miuLRMmtbHCiQrB79vje7i5BSiO1eF7AEmSjbLEeCSsmbO5/rjhg
-   wxDWEj5cA6RfpNOEbalrZlVQ8isQ1/vCYSJ3hZhd8xgQ8NI4ba47BsFZ8
-   maVVTV5UkEn82c0Li0uNTIoc0O1gcTePtX8uLPmt+jXM4ZvedoVMi+n7e
-   w==;
-X-CSE-ConnectionGUID: 2pzZdb/9Sq26vbJB4OvYAg==
-X-CSE-MsgGUID: jzWbGE4FQqe7PG4Xe01kAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="61187447"
-X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
-   d="scan'208";a="61187447"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2025 20:38:03 -0700
-X-CSE-ConnectionGUID: 1CkzBkoBTUS0Q+uORQ+5Ug==
-X-CSE-MsgGUID: UFC4QNirQheTFLpH8/EwaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
-   d="scan'208";a="167296446"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa009.fm.intel.com with ESMTP; 14 Aug 2025 20:37:59 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1umlGG-000BW4-2a;
-	Fri, 15 Aug 2025 03:37:52 +0000
-Date: Fri, 15 Aug 2025 11:37:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: James Clark <james.clark@linaro.org>, Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>, Clark Wang <xiaoning.wang@nxp.com>,
-	Fugang Duan <B38611@freescale.com>, Gao Pan <pandy.gao@nxp.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Larisa Grigore <larisa.grigore@oss.nxp.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
-	Ciprianmarian Costea <ciprianmarian.costea@nxp.com>, s32@nxp.com
-Cc: oe-kbuild-all@lists.linux.dev, James Clark <james.clark@linaro.org>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 02/13] spi: spi-fsl-lpspi: Set correct chip-select
- polarity bit
-Message-ID: <202508151101.7lDGTaxi-lkp@intel.com>
-References: <20250814-james-nxp-lpspi-v1-2-9586d7815d14@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kllvPuZw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4483AC4CEF4;
+	Fri, 15 Aug 2025 06:05:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755237919;
+	bh=yTQcmNIN/VvgA8Q36hNqkRMmGQohgKcXOjpdoM0mOL4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kllvPuZw0FL1+4uxxDTXdseXW4cN4rayzjyy7AeypGp3egpPAZ/pBM7v1Tx3IVgic
+	 XLk1ayha77yqniWw+KZOpqTk8OxMV0+MkWNTgZtbtbZ+8sa+RhH4k/bR4zRM65RWu1
+	 QSFJcR+tunt76s9KBrKrZx90WFa/opDmJttR0y1K5HXlklW1/xnVezZ/O7D8lE3DXm
+	 S5/0yg53xvOtz7meKTiredPA5eodn93y2o1Rj+EjCyS4RRgbZPfTxESDPb0reYawhY
+	 sKLTVnjXE2ulNWc+VtrX91S1zMUyo+In7OKOPV+MtgzkMFUTbcl3KD9nsMkWfgNcKg
+	 Y2D2Ba27YScJg==
+Message-ID: <cf531bbd-dc07-4c13-9dbb-774c8dfca70c@kernel.org>
+Date: Fri, 15 Aug 2025 08:05:12 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814-james-nxp-lpspi-v1-2-9586d7815d14@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 net-next 01/15] dt-bindings: ptp: add NETC Timer PTP
+ clock
+To: Frank Li <Frank.li@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, richardcochran@gmail.com, claudiu.manoil@nxp.com,
+ vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, vadim.fedorenko@linux.dev, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, festevam@gmail.com, fushi.peng@nxp.com,
+ devicetree@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, kernel@pengutronix.de
+References: <20250812094634.489901-1-wei.fang@nxp.com>
+ <20250812094634.489901-2-wei.fang@nxp.com>
+ <20250814-hospitable-hyrax-of-health-21eef3@kuoka>
+ <aJ4v4D71OAaV3ZXy@lizhi-Precision-Tower-5810>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <aJ4v4D71OAaV3ZXy@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi James,
+On 14/08/2025 20:50, Frank Li wrote:
+> On Thu, Aug 14, 2025 at 10:25:14AM +0200, Krzysztof Kozlowski wrote:
+>> On Tue, Aug 12, 2025 at 05:46:20PM +0800, Wei Fang wrote:
+>>> NXP NETC (Ethernet Controller) is a multi-function PCIe Root Complex
+>>> Integrated Endpoint (RCiEP), the Timer is one of its functions which
+>>> provides current time with nanosecond resolution, precise periodic
+>>> pulse, pulse on timeout (alarm), and time capture on external pulse
+>>> support. And also supports time synchronization as required for IEEE
+>>> 1588 and IEEE 802.1AS-2020. So add device tree binding doc for the
+>>> PTP clock based on NETC Timer.
+>>>
+>>> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+>>>
+>>> ---
+>>> v2 changes:
+>>> 1. Refine the subject and the commit message
+>>> 2. Remove "nxp,pps-channel"
+>>> 3. Add description to "clocks" and "clock-names"
+>>> v3 changes:
+>>> 1. Remove the "system" clock from clock-names
+>>> ---
+>>>  .../devicetree/bindings/ptp/nxp,ptp-netc.yaml | 63 +++++++++++++++++++
+>>>  1 file changed, 63 insertions(+)
+>>>  create mode 100644 Documentation/devicetree/bindings/ptp/nxp,ptp-netc.yaml
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/ptp/nxp,ptp-netc.yaml b/Documentation/devicetree/bindings/ptp/nxp,ptp-netc.yaml
+>>> new file mode 100644
+>>> index 000000000000..60fb2513fd76
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/ptp/nxp,ptp-netc.yaml
+>>> @@ -0,0 +1,63 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/ptp/nxp,ptp-netc.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: NXP NETC V4 Timer PTP clock
+>>> +
+>>> +description:
+>>> +  NETC V4 Timer provides current time with nanosecond resolution, precise
+>>> +  periodic pulse, pulse on timeout (alarm), and time capture on external
+>>> +  pulse support. And it supports time synchronization as required for
+>>> +  IEEE 1588 and IEEE 802.1AS-2020.
+>>> +
+>>> +maintainers:
+>>> +  - Wei Fang <wei.fang@nxp.com>
+>>> +  - Clark Wang <xiaoning.wang@nxp.com>
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    enum:
+>>> +      - pci1131,ee02
+>>> +
+>>> +  reg:
+>>> +    maxItems: 1
+>>> +
+>>> +  clocks:
+>>> +    maxItems: 1
+>>> +    description:
+>>> +      The reference clock of NETC Timer, if not present, indicates that
+>>> +      the system clock of NETC IP is selected as the reference clock.
+>>> +
+>>> +  clock-names:
+>>> +    description:
+>>> +      The "ccm_timer" means the reference clock comes from CCM of SoC.
+>>> +      The "ext_1588" means the reference clock comes from external IO
+>>> +      pins.
+>>> +    enum:
+>>> +      - ccm_timer
+>>
+>> You should name here how the input pin is called, not the source. Pin is
+>> "ref"?
+>>
+>>> +      - ext_1588
+>>
+>> This should be just "ext"? We probably talked about this, but this feels
+>> like you describe one input in different ways.
+>>
+>> You will get the same questions in the future, if commit msg does not
+>> reflect previous talks.
+>>
+>>> +
+>>> +required:
+>>> +  - compatible
+>>> +  - reg
+>>> +
+>>> +allOf:
+>>> +  - $ref: /schemas/pci/pci-device.yaml
+>>> +
+>>> +unevaluatedProperties: false
+>>> +
+>>> +examples:
+>>> +  - |
+>>> +    pcie {
+>>> +        #address-cells = <3>;
+>>> +        #size-cells = <2>;
+>>> +
+>>> +        ethernet@18,0 {
+>>
+>> That's rather timer or ptp-timer or your binding is incorrect. Please
+>> describe COMPLETE device in your binding.
+> 
+> Krzysztof:
+> 
+> 	I have question about "COMPLETE" here. For some MFD/syscon, I know
+> need descript all children nodes to make MFD/syscon complete.
+> 
+> 	But here it is PCIe device.
+> 
+> pcie_4ca00000: pcie@4ca00000 {
+> 	compatible = "pci-host-ecam-generic";
+> 	...
+> 
+> 	enetc_port0: ethernet@0,0 {
+>         	compatible = "fsl,imx95-enetc", "...";
+> 		...
+> 
+> 	ptp-timer@18,0 {
+> 		compatible = "pci1131,ee02";
+> 	}
+> };
+> 
+> 	parent "pci-host-ecam-generic" is common pci binding, each children
+> is indepentant part.
+> 
+> 	I am not sure how to decript COMPLETE device for PCI devices.
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on 0cc53520e68bea7fb80fdc6bdf8d226d1b6a98d9]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/James-Clark/spi-spi-fsl-lpspi-Fix-transmissions-when-using-CONT/20250815-001554
-base:   0cc53520e68bea7fb80fdc6bdf8d226d1b6a98d9
-patch link:    https://lore.kernel.org/r/20250814-james-nxp-lpspi-v1-2-9586d7815d14%40linaro.org
-patch subject: [PATCH 02/13] spi: spi-fsl-lpspi: Set correct chip-select polarity bit
-config: csky-randconfig-002-20250815 (https://download.01.org/0day-ci/archive/20250815/202508151101.7lDGTaxi-lkp@intel.com/config)
-compiler: csky-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250815/202508151101.7lDGTaxi-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508151101.7lDGTaxi-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/spi/spi-fsl-lpspi.c: In function 'fsl_lpspi_config':
->> drivers/spi/spi-fsl-lpspi.c:428:25: error: implicit declaration of function 'FIELD_PREP' [-Wimplicit-function-declaration]
-     428 |                 temp |= FIELD_PREP(CFGR1_PCSPOL_MASK,
-         |                         ^~~~~~~~~~
+I don't know what is missing here, but naming it ethernet suggested
+there are other functions not being described in the binding.
 
 
-vim +/FIELD_PREP +428 drivers/spi/spi-fsl-lpspi.c
 
-   409	
-   410	static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
-   411	{
-   412		u32 temp;
-   413		int ret;
-   414	
-   415		if (!fsl_lpspi->is_target) {
-   416			ret = fsl_lpspi_set_bitrate(fsl_lpspi);
-   417			if (ret)
-   418				return ret;
-   419		}
-   420	
-   421		fsl_lpspi_set_watermark(fsl_lpspi);
-   422	
-   423		if (!fsl_lpspi->is_target)
-   424			temp = CFGR1_HOST;
-   425		else
-   426			temp = CFGR1_PINCFG;
-   427		if (fsl_lpspi->config.mode & SPI_CS_HIGH)
- > 428			temp |= FIELD_PREP(CFGR1_PCSPOL_MASK,
-   429					   BIT(fsl_lpspi->config.chip_select));
-   430	
-   431		writel(temp, fsl_lpspi->base + IMX7ULP_CFGR1);
-   432	
-   433		temp = readl(fsl_lpspi->base + IMX7ULP_CR);
-   434		temp |= CR_RRF | CR_RTF | CR_MEN;
-   435		writel(temp, fsl_lpspi->base + IMX7ULP_CR);
-   436	
-   437		temp = 0;
-   438		if (fsl_lpspi->usedma)
-   439			temp = DER_TDDE | DER_RDDE;
-   440		writel(temp, fsl_lpspi->base + IMX7ULP_DER);
-   441	
-   442		return 0;
-   443	}
-   444	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best regards,
+Krzysztof
