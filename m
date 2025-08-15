@@ -1,44 +1,45 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD3827FB09
-	for <imx@lists.linux.dev>; Fri, 15 Aug 2025 10:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643BF2FF17A
+	for <imx@lists.linux.dev>; Fri, 15 Aug 2025 10:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755253952; cv=none; b=taQu57Vf/uz3eTJsFCCIGhgiMFZ4UhD3OdL9X+CRNznqKH+EeHAq+xSzhrY2ei/1MurNQnaTKfVYoPLxzoyigQADrbIQc5XcW8vhvXkhWH3MdII+4tPxSuYStunhiydLn1Z3QVcNceZTENuSi560+XkMLyejkmo4ShCXu8nIR0g=
+	t=1755255597; cv=none; b=H404a2E/47wHd17YK519LvXIZp7pDI9Yz7okUdljDHETJjck4thqnmJC1VGGn0ONDcz/GfUb6bvlTdubIQmVa2lbxkoLrxJGQpBhv6npH3Y8SCEVFJ/6685hx4ERrYbNMnRe+pfmKzsqHxKxKem0FwUUk+Z2TFYnqEYrglc0b3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755253952; c=relaxed/simple;
-	bh=Tf06S22oGZwz4QF7IIkMPTnPInylNOcha5gpHU9syJw=;
+	s=arc-20240116; t=1755255597; c=relaxed/simple;
+	bh=NzWbvAg9ULrtbOcYxkB5gPQ39IzaRkhd+Wm2Y2RmPCM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BNflsRXiCXrvwYCobBwRmE2V/GpBAktJBHNcneiZXNXA7HOqnLcSJ3w4TfoLhrNtCtmNm/Csql3gm/dYccYxszWJSSPweaECfnIiP545H08awtd8JSB/mUdFyKGzKMyZEvM/ChtSYbGZQcLYefyfciaBzoJXtgSkgLJoU8dMRiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=V7Ysf9D5; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=h++puKCo4hSS4LkmZhq7zQG3q1VBxHpdNo1RHkhYe4AlB6KVYjDKvBzH4YTJfFzcqJPHTLYRZuSTrQMHJQ56qdTodc27IYZzcDhbSHACGAL2FhMRMmjifZBBPWx+scjPK43CEoXd0S43/cuBqWPZyQzeo+pr35jf4AUioXQeMOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Gp3CfCSA; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="V7Ysf9D5"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Gp3CfCSA"
 Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id ECEBD56D;
-	Fri, 15 Aug 2025 12:31:30 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 88BF556D;
+	Fri, 15 Aug 2025 12:58:53 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755253891;
-	bh=Tf06S22oGZwz4QF7IIkMPTnPInylNOcha5gpHU9syJw=;
+	s=mail; t=1755255533;
+	bh=NzWbvAg9ULrtbOcYxkB5gPQ39IzaRkhd+Wm2Y2RmPCM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V7Ysf9D5tktEaio/i6U2xspkdXxnp5hU0YBvOeLUAdQMu23AJ3fFGyWF1x2D9mK4Y
-	 U3/AgvCR06LNwzwhJf4TgGDJw1E1EYmvLXVCeriW6EdevB68Dyj/f3xZM1RWE6dL/2
-	 +hmQixZP0RPM/VmfoTG98thARprSrbdTcnQGySmk=
-Date: Fri, 15 Aug 2025 13:32:05 +0300
+	b=Gp3CfCSAa6INwM6KYAHJw54juTrynWOk78+YmthMNvgNydks071tCmBydEvA1qgjc
+	 BH6HfjIFpFZMUu1kcR3o04XgXzAqnzKAFmQbFkV3cqe/npe9SFMylPkBtdMQkcyTUS
+	 D3SWFQqAbJPhz9C1Z7csqDDBjfIgIHwSwwKXvI+E=
+Date: Fri, 15 Aug 2025 13:59:28 +0300
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Sakari Ailus <sakari.ailus@iki.fi>
-Cc: Isaac Scott <isaac.scott@ideasonboard.com>, linux-media@vger.kernel.org,
-	rmfrfs@gmail.com, martink@posteo.de, kernel@puri.sm,
-	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+To: Guoniu Zhou <guoniu.zhou@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] imx-mipi-csis: Get the number of active lanes from
- mbus_config
-Message-ID: <20250815103205.GJ6201@pendragon.ideasonboard.com>
-References: <20250814113701.165644-1-isaac.scott@ideasonboard.com>
- <aJ77VTtZy96JJCHE@valkosipuli.retiisi.eu>
+Subject: Re: [PATCH v2] media: nxp: imx8-isi: Add suspend/resume support for
+ ISI mem2mem
+Message-ID: <20250815105928.GL6201@pendragon.ideasonboard.com>
+References: <20250815-isi_m2m-v2-1-32e3720880cc@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,113 +48,136 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aJ77VTtZy96JJCHE@valkosipuli.retiisi.eu>
+In-Reply-To: <20250815-isi_m2m-v2-1-32e3720880cc@nxp.com>
 
-On Fri, Aug 15, 2025 at 09:18:13AM +0000, Sakari Ailus wrote:
-> On Thu, Aug 14, 2025 at 12:37:01PM +0100, Isaac Scott wrote:
-> > Although 4 lanes may be physically available, we may not be using all of
-> > them. Get the number of configured lanes in the case a driver has
-> > implemented the get_mbus_config op.
-> > 
-> > Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-> > 
-> > ---
-> > 
-> > Currently, the imx-mipi-csis driver parses the device tree to determine
-> > the number of configured lanes for the CSI receiver. This may be
-> > incorrect in the case that the connected device only uses a subset of
-> > lanes, for example. Allow the drivers for these cameras to create a
-> > mbus_config to configure the number of lanes that are actually being
-> > used.
-> > 
-> > If the driver does not support the get_mbus_config op, this patch will
-> > have no functional change.
-> > 
-> > Compile tested against media-master (v6.17-rc1)
-> > ---
-> >  drivers/media/platform/nxp/imx-mipi-csis.c | 41 ++++++++++++++++++++++
-> >  1 file changed, 41 insertions(+)
-> > 
-> > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > index 2beb5f43c2c0..efe4e2ad0382 100644
-> > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > @@ -939,6 +939,43 @@ static struct mipi_csis_device *sd_to_mipi_csis_device(struct v4l2_subdev *sdev)
-> >  	return container_of(sdev, struct mipi_csis_device, sd);
-> >  }
-> >  
-> > +static int mipi_csis_get_active_lanes(struct v4l2_subdev *sd)
-> > +{
-> > +	struct mipi_csis_device *csis = sd_to_mipi_csis_device(sd);
-> > +	struct v4l2_mbus_config mbus_config = { 0 };
-> > +	int ret;
-> > +
-> > +	ret = v4l2_subdev_call(csis->source.sd, pad, get_mbus_config,
-> > +			       0, &mbus_config);
-> > +	if (ret == -ENOIOCTLCMD) {
-> > +		dev_dbg(csis->dev, "No remote mbus configuration available\n");
-> > +		return 0;
-> > +	}
-> > +
-> > +	if (ret) {
-> > +		dev_err(csis->dev, "Failed to get remote mbus configuration\n");
-> > +		return ret;
-> > +	}
-> > +
-> > +	if (mbus_config.type != V4L2_MBUS_CSI2_DPHY) {
-> > +		dev_err(csis->dev, "Unsupported media bus type %u\n",
-> > +			mbus_config.type);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	if (mbus_config.bus.mipi_csi2.num_data_lanes > csis->bus.num_data_lanes) {
-> > +		dev_err(csis->dev,
-> > +			"Unsupported mbus config: too many data lanes %u\n",
-> > +			mbus_config.bus.mipi_csi2.num_data_lanes);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	csis->bus.num_data_lanes = mbus_config.bus.mipi_csi2.num_data_lanes;
-
-There's a bug here, you override the number of lanes retrieved from DT,
-which is the number of connected lanes, with the number of lanes used by
-the source for its particular configuration. You will never be able to
-then use more lanes in a different source configuration.
-
-> > +	dev_dbg(csis->dev, "Number of lanes: %d\n", csis->bus.num_data_lanes);
+On Fri, Aug 15, 2025 at 05:28:51PM +0800, Guoniu Zhou wrote:
+> Add suspend/resume support for ISI when work at memory to memory mode.
 > 
-> None of the above is really specific to this driver. Could you instead
-> implement a function that parses the information from the fwnode endpoint
-> and uses mbus configuration on top?
-
-That would need to parse the endpoint every time we start streaming, it
-doesn't sound ideal.
-
-> The function could take struct media_pad pointer as an argument, or struct
-> v4l2_subdev pointer and the pad number.
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Changes in v2:
+>   - Move mxc_isi_m2m_suspend()/resume() out of loop.
+>   - Replace ctx->chained with m2m->chained_count.
+>   - Link to v1: https://lore.kernel.org/all/20250717024353.1811576-1-guoniu.zhou@oss.nxp.com/
+> ---
+>  .../media/platform/nxp/imx8-isi/imx8-isi-core.c    |  9 ++++++
+>  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    | 11 +++++++
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c | 34 ++++++++++++++++++++++
+>  3 files changed, 54 insertions(+)
 > 
-> I wonder if any other parameters could change dynamically but I can't think
-> of that now, so perhaps just the number of lanes is what the function
-> should indeed return.
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> index 981648a0311374597a033a7ecbf39f7b0b252cb0..408e9cb61554d05ac92562c322d6a728080bb9e5 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> @@ -374,6 +374,8 @@ static int mxc_isi_pm_suspend(struct device *dev)
+>  		mxc_isi_video_suspend(pipe);
+>  	}
+>  
+> +	mxc_isi_m2m_suspend(&isi->m2m);
+> +
+>  	return pm_runtime_force_suspend(dev);
+>  }
+>  
+> @@ -403,6 +405,13 @@ static int mxc_isi_pm_resume(struct device *dev)
+>  		}
+>  	}
+>  
+> +	ret = mxc_isi_m2m_resume(&isi->m2m);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to resume ISI%u (%d) for m2m\n", i,
+
+Drop %u and i.
+
+No need to resubmit, I'll make the change locally.
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+> +			ret);
+> +		err = ret;
+> +	}
+> +
+>  	return err;
+>  }
+>  
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> index 206995bedca4a4c5d7873f3bc872fbae18b3cb75..6493eef907010934217d9f14a0d6d56acdc59ee0 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> @@ -343,6 +343,8 @@ int mxc_isi_video_buffer_prepare(struct mxc_isi_dev *isi, struct vb2_buffer *vb2
+>  #ifdef CONFIG_VIDEO_IMX8_ISI_M2M
+>  int mxc_isi_m2m_register(struct mxc_isi_dev *isi, struct v4l2_device *v4l2_dev);
+>  int mxc_isi_m2m_unregister(struct mxc_isi_dev *isi);
+> +void mxc_isi_m2m_suspend(struct mxc_isi_m2m *m2m);
+> +int mxc_isi_m2m_resume(struct mxc_isi_m2m *m2m);
+>  #else
+>  static inline int mxc_isi_m2m_register(struct mxc_isi_dev *isi,
+>  				       struct v4l2_device *v4l2_dev)
+> @@ -353,6 +355,15 @@ static inline int mxc_isi_m2m_unregister(struct mxc_isi_dev *isi)
+>  {
+>  	return 0;
+>  }
+> +
+> +static inline void mxc_isi_m2m_suspend(struct mxc_isi_m2m *m2m)
+> +{
+> +}
+> +
+> +static inline int mxc_isi_m2m_resume(struct mxc_isi_m2m *m2m)
+> +{
+> +	return 0;
+> +}
+>  #endif
+>  
+>  int mxc_isi_channel_acquire(struct mxc_isi_pipe *pipe,
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> index 22e49d3a128732c077beb7ac2e2f688e0899f8e2..26361fe2ca858098d907d4a0719b0fdacc6becd2 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> @@ -732,6 +732,40 @@ static const struct v4l2_file_operations mxc_isi_m2m_fops = {
+>  	.mmap		= v4l2_m2m_fop_mmap,
+>  };
+>  
+> +/* -----------------------------------------------------------------------------
+> + * Suspend & resume
+> + */
+> +
+> +void mxc_isi_m2m_suspend(struct mxc_isi_m2m *m2m)
+> +{
+> +	if (m2m->usage_count == 0)
+> +		return;
+> +
+> +	v4l2_m2m_suspend(m2m->m2m_dev);
+> +
+> +	if (m2m->chained_count > 0)
+> +		mxc_isi_channel_unchain(m2m->pipe);
+> +
+> +	mxc_isi_channel_disable(m2m->pipe);
+> +	mxc_isi_channel_put(m2m->pipe);
+> +}
+> +
+> +int mxc_isi_m2m_resume(struct mxc_isi_m2m *m2m)
+> +{
+> +	if (m2m->usage_count == 0)
+> +		return 0;
+> +
+> +	mxc_isi_channel_get(m2m->pipe);
+> +
+> +	if (m2m->chained_count > 0)
+> +		mxc_isi_channel_chain(m2m->pipe, false);
+> +
+> +	m2m->last_ctx = NULL;
+> +	v4l2_m2m_resume(m2m->m2m_dev);
+> +
+> +	return 0;
+> +}
+> +
+>  /* -----------------------------------------------------------------------------
+>   * Registration
+>   */
 > 
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
-> >  {
-> >  	struct mipi_csis_device *csis = sd_to_mipi_csis_device(sd);
-> > @@ -965,6 +1002,10 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
-> >  	format = v4l2_subdev_state_get_format(state, CSIS_PAD_SINK);
-> >  	csis_fmt = find_csis_format(format->code);
-> >  
-> > +	ret = mipi_csis_get_active_lanes(sd);
-> > +	if (ret < 0)
-> > +		dev_dbg(csis->dev, "Failed to get active lanes: %d", ret);
-> > +
-> >  	ret = mipi_csis_calculate_params(csis, csis_fmt);
-> >  	if (ret < 0)
-> >  		goto err_unlock;
+> ---
+> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+> change-id: 20250815-isi_m2m-3db166a97969
 
 -- 
 Regards,
