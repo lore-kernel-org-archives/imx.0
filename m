@@ -1,98 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B00153BD9;
-	Sat, 16 Aug 2025 13:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D3418C008
+	for <imx@lists.linux.dev>; Sat, 16 Aug 2025 19:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755350939; cv=none; b=Npzi+LLEcE0GqDZa101GG/XhdOgfFsMw/o4jZ/030YCdkynu9vzgmrjPFlJTfkf3NicmCpN9L9sHYLmBrIgSoBTK+nA2ptW9TYvtMjOlNu0frhebvgAYVd+QWWMVnUqcF6Pbgk8xrSiwrvdhw3jRc0vqFRqjq3ZToQDGGCKC+wQ=
+	t=1755373462; cv=none; b=rHoNilAp0dsgSwmRF1x7rzKG/mpbVy4yF4F8hUWJK+B758BrExRABsjKhHmLFYWPK4yVL+SSxOKcP173Ekqkuegb+07BOz/7PgXReiwcU0n7xdVWMYba3+H/GBbu0Ivyoqsw7WFu5tmc5IzZ8PjmNG7F6VNQCVFPfhV+dZEVSLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755350939; c=relaxed/simple;
-	bh=LhpgfZIG1p+iKd5jf1S6zPl8oL3nAGFq/mjJ8z+fS60=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hjKAoXKm19oXr+N7Dr/w1H7U22rtJfZWbh6SooxX2DTLmEp/+sgQ68qq5IiDv0VfVpnUgErb5V7usxbDXM6cTqGWb1wu4XontFVPp6W/dSmKLIWr5SG0n7DElhd9P47n8xamW1443/59YNLLmGZ0Mpw8PM/6VO+/b6X+hlgcQGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u0uNW2H9; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u0uNW2H9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32215C4CEEF;
-	Sat, 16 Aug 2025 13:28:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755350939;
-	bh=LhpgfZIG1p+iKd5jf1S6zPl8oL3nAGFq/mjJ8z+fS60=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=u0uNW2H97GYGYKNmLh/zJe+wyCd8Qrvbu7q+ZLdC1iXQjBQZqiKPV/tkWq/6RbjDb
-	 Pqy6XZv6fJxR/GC/h+z9GR4T6baTpI6vjqpqB04V5aE2RxqSxrlct/K2YoD13QTc9+
-	 irQ/tVt2BiUNHXNQAziQQeuELeNsySHyQlFM71t/B3dTEQidVgqjZICkvyQBX3aQr1
-	 3RGedHXiWiwfSxBzqPrBSdOTMyRMTY6FZn+eBTjNmYyUxEihEn9N8r7jOtrqlpLlZd
-	 kcjnsOcKHwNWGoYOcF/rjWXwlqfQp7UAu8CRMLZbFRl2wlvW8VrltyWzrOGHE8h7La
-	 04GlgZBjALwwg==
-Date: Sat, 16 Aug 2025 14:28:50 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Haibo Chen <haibo.chen@nxp.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- primoz.fiser@norik.com, linux-iio@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] Keep imx93 ADC works even calibration failed.
-Message-ID: <20250816142850.53948a13@jic23-huawei>
-In-Reply-To: <20250812-adc-v2-0-0260833f13b8@nxp.com>
-References: <20250812-adc-v2-0-0260833f13b8@nxp.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1755373462; c=relaxed/simple;
+	bh=CxOkN5Im8aBXZWyAkD76EEsI08M13nbfFlULVi6mYiw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=koPpKy9pLKBKklPMnmB5F8aU9qgnBgV3rqk0YTbJhzbEi6e2Klt5n0vkY99TP7eEZIyojdKRjesWoJ9DsGXN5l3AuPPWaO7L0vK5GhsYv9w3Pr7KydqZ44fpl/B28sb06o6r3RfJXlpRyvKo85UPWK0o47Hdlj8x+GA4aRW9As8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=willwhang.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=willwhang.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afcb7ae31caso520642866b.3
+        for <imx@lists.linux.dev>; Sat, 16 Aug 2025 12:44:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755373459; x=1755978259;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xhNfRQTJCTHs8wZzyX52sBmas0EwpebMHyW2WLiU29g=;
+        b=ifQHCMVFMHGvgdrzDbncAt4CU0EGVDtxntKtxuWxlHddAp9KsBTdrNahTYTh5q1rHr
+         1Whsuw1/nxw2Uq9EavYdQKUWbbmc0IRO2XZAFkY86DyPz9z29mjzW7YXfmFTY3+0e5DV
+         aMIDEDLjRuRVoHD3E2rBGF+3rgFQlOaoiSyOAzIWCEotUcExHSD/mUOo7W2dwDXhCToh
+         aCYbTI2yqBFf7HJEodkdnEunNGNbL6U5E/kepnjQ8EUJqR19FOqBsWcFAEu5G2FTJrlF
+         G2t3grpSCdkrjF6K3T4alT537OqgE6bnHXe0KmszoeDg/w5J9BsWnR5HVkoaosDuwL6N
+         GMig==
+X-Forwarded-Encrypted: i=1; AJvYcCVxkqFqIqz6/xaNgV4fsWhQT1FK4Vy+ML9XY5YXM17ktAZdkzCw9VqhEZIxNukwEl4R7I4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzDB/fF4gE/VNSruyAPXA5HJioUrFDqrlIXYsxW5OiSY2zqguP8
+	gAkNZGHcPRN4IToa19jIW+Mq/PdqY34ehhuuILR52GCioxHQvo9aPeRmFBvkoQ3tApo=
+X-Gm-Gg: ASbGnct0ryOEJRSdJQHEnVv62AjKnEomGqUVWq+U+Qvh/R0T9MqvHThZ0giqIbFAHV9
+	zuGUclm46mW0U/9uEcJNqiD+x+IqjvYv4fbQ9B4u8o8QzulCgc3f6jyZH/IEKm0l14TZgv0m6Q6
+	VgY68QmS3qYxACYtxdWq8MgiXI0AWg3cm8kUPm7xyMYNu7lUIQtqRfSF9W6NtA+l85nBhjH+toF
+	UZPPsVlhADeEJx/TB7q/AIfRsJzTvBEZg1skIH0tGbENan0mIZpLWMRpfOBz2CwCYxEuIsLjg9y
+	f9nuPGhRtO6bqzO0EQJht1VsWeBJ8zmW5xZfW87NrqzT8VZPTgVjuzTwI2nCrW17sBA2stQ5v9q
+	p/K7vS1dnOhvtMH6Adaa8IP28sahEAsHaBnzA8FM2L57Ki9CM8HjkqamVo11uzgmq46NA
+X-Google-Smtp-Source: AGHT+IFMMT4phhEQqjgO9c5CSrY0JXNgBtk7aO1Xrk6rg27oInkYzq/7O+9EQQc6c6cNY+CcHMZzCQ==
+X-Received: by 2002:a17:906:478b:b0:afa:1bf0:97fa with SMTP id a640c23a62f3a-afceacfb0camr312431066b.25.1755373458831;
+        Sat, 16 Aug 2025 12:44:18 -0700 (PDT)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdce53e52sm431666066b.25.2025.08.16.12.44.18
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 16 Aug 2025 12:44:18 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad681so4108527a12.0
+        for <imx@lists.linux.dev>; Sat, 16 Aug 2025 12:44:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW5kbEsGsj+YiYjmWZwxAgLhv4cnKnFEB6Fmb4c/Cm6oepZdODMBpf7iyaMOuDqgKM1g6c=@lists.linux.dev
+X-Received: by 2002:a05:6402:3495:b0:615:5bec:1df with SMTP id
+ 4fb4d7f45d1cf-619bf1f7206mr3258270a12.25.1755373458280; Sat, 16 Aug 2025
+ 12:44:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250810220921.14307-1-will@willwhang.com> <20250810220921.14307-4-will@willwhang.com>
+ <20250811-cinnamon-tapir-of-music-0bda96@kuoka>
+In-Reply-To: <20250811-cinnamon-tapir-of-music-0bda96@kuoka>
+From: Will Whang <will@willwhang.com>
+Date: Sat, 16 Aug 2025 12:44:05 -0700
+X-Gmail-Original-Message-ID: <CAFoNnryfrJvoEHNgQDpSZBbGiGjPr-bwnhhg4cgpNK_hW=0EbQ@mail.gmail.com>
+X-Gm-Features: Ac12FXy-vY_C5easw1Tym_fd5E3dOtxKIqhJ9wZAZ5bar5LAous57hWKnWEIrdU
+Message-ID: <CAFoNnryfrJvoEHNgQDpSZBbGiGjPr-bwnhhg4cgpNK_hW=0EbQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] media: i2c: imx585: Add Sony IMX585 image-sensor driver
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 12 Aug 2025 16:04:21 +0800
-Haibo Chen <haibo.chen@nxp.com> wrote:
+On Mon, Aug 11, 2025 at 1:06=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> On Sun, Aug 10, 2025 at 11:09:20PM +0100, Will Whang wrote:
+> > +
+> > +/* -------------------------------------------------------------------=
+-------
+> > + * Power / runtime PM
+> > + * -------------------------------------------------------------------=
+-------
+> > + */
+> > +
+> > +static int imx585_power_on(struct device *dev)
+> > +{
+> > +     struct v4l2_subdev *sd =3D dev_get_drvdata(dev);
+> > +     struct imx585 *imx585 =3D to_imx585(sd);
+> > +     int ret;
+> > +
+> > +     dev_dbg(imx585->clientdev, "power_on\n");
+> > +
+> > +     ret =3D regulator_bulk_enable(IMX585_NUM_SUPPLIES, imx585->suppli=
+es);
+> > +     if (ret) {
+> > +             dev_err(imx585->clientdev, "Failed to enable regulators\n=
+");
+> > +             return ret;
+> > +     }
+> > +
+> > +     ret =3D clk_prepare_enable(imx585->xclk);
+> > +     if (ret) {
+> > +             dev_err(imx585->clientdev, "Failed to enable clock\n");
+> > +             goto reg_off;
+> > +     }
+> > +
+> > +     gpiod_set_value_cansleep(imx585->reset_gpio, 1);
+>
+> You asserted reset gpio causing it to enter reset and you call this
+> "power on"?
+>
+> > +     usleep_range(IMX585_XCLR_MIN_DELAY_US,
+> > +                  IMX585_XCLR_MIN_DELAY_US + IMX585_XCLR_DELAY_RANGE_U=
+S);
+> > +     return 0;
+> > +
+> > +reg_off:
+> > +     regulator_bulk_disable(IMX585_NUM_SUPPLIES, imx585->supplies);
+> > +     return ret;
+> > +}
+> > +
+> > +static int imx585_power_off(struct device *dev)
+> > +{
+> > +     struct v4l2_subdev *sd =3D dev_get_drvdata(dev);
+> > +     struct imx585 *imx585 =3D to_imx585(sd);
+> > +
+> > +     dev_dbg(imx585->clientdev, "power_off\n");
+> > +
+> > +     gpiod_set_value_cansleep(imx585->reset_gpio, 0);
+>
+> And here device comes up, but you call it power off? Your functions or
+> reset gpio code are completely reversed/wrong.
 
-> imx93 ADC calibration has requirement for reference voltage:
->   ADC reference voltage Noise < 1.8V * 1/2^ENOB
-> 
-> Some boards can't meet such requirement, ADC calibration failed on these
-> boards, and adc can't be used. This is not appropriate, board can't meet
-> this requirement do not means ADC can't work, just means ADC can't work
-> that accurate. Here add an optimization, keep adc works even calibration
-> failed.
-> 
-> Changes in V2:
-> - add patch 1 to keep one style of the hex values according to
->   Andy Shevchenko's suggestion.
-> - keep {} when give the calibration failed warning log.
-> 
-> For the register 0x3A0, it is a new added register in latest imx93 RM,
-> please refer to this link:
-> https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-9-processors/i-mx-93-applications-processor-family-arm-cortex-a55-ml-acceleration-power-efficient-mpu:i.MX93
-> 
-> Patch v1 also pass test on one customer board, refer to this topic:
-> https://patchwork.kernel.org/project/linux-iio/patch/20250710073905.1105417-2-primoz.fiser@norik.com/
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Series applied to the togreg branch of iio.git.
+Reset pin High -> Run normally
+Reset pin Low -> Reset state
 
-I'll push that out as testing to get a bit of build coverage before
-risking letting next see it.
+See drivers/media/i2c/imx219.c with the same logic:
 
-Thanks,
+static int imx219_power_on(struct device *dev)
+{
+struct v4l2_subdev *sd =3D dev_get_drvdata(dev);
+struct imx219 *imx219 =3D to_imx219(sd);
+int ret;
 
-Jonathan
+ret =3D regulator_bulk_enable(IMX219_NUM_SUPPLIES,
+   imx219->supplies);
+if (ret) {
+dev_err(dev, "%s: failed to enable regulators\n",
+__func__);
+return ret;
+}
 
-> ---
-> Haibo Chen (2):
->       iio: adc: imx93_adc: keep one style of the hex values
->       iio: adc: imx93_adc: load calibrated values even calibration failed
-> 
->  drivers/iio/adc/imx93_adc.c | 22 +++++++++++++++++-----
->  1 file changed, 17 insertions(+), 5 deletions(-)
-> ---
-> base-commit: 2674d1eadaa2fd3a918dfcdb6d0bb49efe8a8bb9
-> change-id: 20250812-adc-839e49d55da9
-> 
+ret =3D clk_prepare_enable(imx219->xclk);
+if (ret) {
+dev_err(dev, "%s: failed to enable clock\n",
+__func__);
+goto reg_off;
+}
+
+gpiod_set_value_cansleep(imx219->reset_gpio, 1);
+usleep_range(IMX219_XCLR_MIN_DELAY_US,
+    IMX219_XCLR_MIN_DELAY_US + IMX219_XCLR_DELAY_RANGE_US);
+
+return 0;
+
+reg_off:
+regulator_bulk_disable(IMX219_NUM_SUPPLIES, imx219->supplies);
+
+return ret;
+}
+
+static int imx219_power_off(struct device *dev)
+{
+struct v4l2_subdev *sd =3D dev_get_drvdata(dev);
+struct imx219 *imx219 =3D to_imx219(sd);
+
+gpiod_set_value_cansleep(imx219->reset_gpio, 0);
+regulator_bulk_disable(IMX219_NUM_SUPPLIES, imx219->supplies);
+clk_disable_unprepare(imx219->xclk);
+
+return 0;
+}
+
+I really don't understand why this is a problem, it is up to the chip
+designer to decide
+what to do with reset behavior and not the reviewers.
+
+I'm simply writing the code following the datasheets here.
+
+
 > Best regards,
-
+> Krzysztof
+>
