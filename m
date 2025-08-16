@@ -1,138 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471E32C08C3;
-	Fri, 15 Aug 2025 21:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B11136988;
+	Sat, 16 Aug 2025 01:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755292753; cv=none; b=XNyTB6UuaGPMiWfs8uQUjq6yAaPODAa42yLYUAF9BwfPo615/JPg7F2GXpRdLKhNoJPdLJD84e3HgSXgzhp8rEEO04PE2Wtp6MHV9DD7X+8EuxxGjTzrhXm+eb8GpPUV2yU+P7WZCADmHzsGgbXQiDtDAOPWRH4MGhj0FsTdXVU=
+	t=1755307771; cv=none; b=K5qPHa/YG0/cyM714zaKlxYPBTJgTPernH2PGCXka2LsuizHJyUxoThD0OUDtPEnRYLzeYBZx/S7tbInc5kTX+n/BHoNFZZGXnqnkUt3+WpyTonqkN1eKCAauIKTjfZ05Ya+HpCsTQTq0FwEoJKmkOMdVwnAfjuJOLxxH8NDkVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755292753; c=relaxed/simple;
-	bh=SFuIvMcXySzIx6yuydmTiDrtSS+EI5n+sZ5HoAj+x0k=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=jyzZNOvaGbiq64FmAp66rdHYDDJN75ydYPB8/1j3WpmetP0fnV95/G6nPDC1wgQaf3FL5O8L1Kis9GRgBXunZdEvcv38cKj22TyrrdxJp2R1xHMC0+GubDQelGu2yuvLHQxauW3qQ7jv11AbLD5awoSQ2ydo/C1/NqJviOTH50Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=phFJpywg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755307771; c=relaxed/simple;
+	bh=DDOaVcjvN+Gdp6VEXtKQ3oqSO2YyXy4+KuhN05/0C/o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I0BLMCoKUep6DsMD17vro1e593PTx4p1FBujAtJjAq6SdBrRCnh2j3mo8mGQsRbdTMt3BL4HXHPJPbD/gUCBFOEG6bPC3iY/kcWLfOxsHX/XJhArElb2vEnYvBc9NjT21s9blKZ8YZNByjR3uh05+O1MuyGZIP5sNb1mKl2caWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JB4ABSy6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="phFJpywg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CF7C4CEEB;
-	Fri, 15 Aug 2025 21:19:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JB4ABSy6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA582C4CEF4;
+	Sat, 16 Aug 2025 01:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755292752;
-	bh=SFuIvMcXySzIx6yuydmTiDrtSS+EI5n+sZ5HoAj+x0k=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=phFJpywgeyQwzIyKIk+4Lh/bDlBiKZByUqRnjnYbPYVk3PX00e2+cGH6SyKH9x5Is
-	 L4ejGwt/Kgi9F/PAdXPi6kq39L+a6NmqapYkKNXC4lvrZgaRTlVVyXQ9Sn1lPDPxkc
-	 BuefW1nj6RUGcTz4yvJkk3VR/V5bv23/iEdTrs6uusRqFU9eyS+2ae5LZQ6dIV9RL5
-	 eaLFEQgwYKgNjFXCLNDGuFg/CFbvlwXQrrA7fFZZAlWnDMFxL8VF+M8I/i6xLPGXVQ
-	 jtkf6CPdG6AVQaJRZMT1yH6oRaxHi76MJbj5x4fwJOnBx0PnGpNiJApxyPTthU6zWX
-	 x4V/MBF2+d+gw==
-Date: Fri, 15 Aug 2025 16:19:12 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1755307771;
+	bh=DDOaVcjvN+Gdp6VEXtKQ3oqSO2YyXy4+KuhN05/0C/o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JB4ABSy62DS6ltXeHJdz3vKd7MkTxYq7DBvqNQnUQH7rWclUeZPUo3N2Mw4kfsVQ4
+	 9hpPhf5poMiiyABewuY965yhMOLFf81FGFtyr2C+MUN5jpsOK/cikSam3/qjh22KMe
+	 oKIeXTvzK0cIbK6FIZdUAINMSDXD7JDV77XYuy5S+auVihFqABEqfpFT+hOVObVY4y
+	 2RkYWy9YnE2f0zu+U7bnH/93kRicuVtbO6Z8IbaGDIFGlNplDj7zmzRLjx4/+ghL+7
+	 1SprBtEO+jrSYabo6qrpTb2OSstSXjeqmx3aVpWbkGnzywtQncaeAFh153JPABfMfb
+	 828YJ8+KqjKtA==
+Date: Fri, 15 Aug 2025 18:29:30 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Lukasz Majewski <lukasz.majewski@mailbox.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v18 2/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250815182930.196973bb@kernel.org>
+In-Reply-To: <20250813070755.1523898-3-lukasz.majewski@mailbox.org>
+References: <20250813070755.1523898-1-lukasz.majewski@mailbox.org>
+	<20250813070755.1523898-3-lukasz.majewski@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
- devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Luke Wang <ziniu.wang_1@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, Joy Zou <joy.zou@nxp.com>, 
- Conor Dooley <conor+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, 
- Frank Li <Frank.Li@nxp.com>
-To: Peng Fan <peng.fan@nxp.com>
-In-Reply-To: <20250815-imx9-dts-v1-0-e609eb4e3105@nxp.com>
-References: <20250815-imx9-dts-v1-0-e609eb4e3105@nxp.com>
-Message-Id: <175529260128.3212429.5776706257290268748.robh@kernel.org>
-Subject: Re: [PATCH 00/13] arm64: dts: imx95: various updates
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Wed, 13 Aug 2025 09:07:50 +0200 Lukasz Majewski wrote:
+> +	pkts = mtip_switch_rx(napi->dev, budget, &port);
+> +	if (pkts == -ENOMEM) {
+> +		napi_complete(napi);
+> +		return 0;
 
-On Fri, 15 Aug 2025 17:03:46 +0800, Peng Fan wrote:
-> This patchset is to upstream various downstream changes.
-> - Correct edma channel for lpuart7/8
-> - Add System Counter, SCMI LMM/CPU, V2X MU, coresight nodes
-> - Update alias
-> - Add phy supply for netc, pca9632, pf09/pf53 thermal, spidev, cma nodes
->   and etc.
-> 
-> dtbs_check will report a few failures, such as linux,code, db suffix.
-> The failures are not related to this patchset.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
-> Joy Zou (1):
->       arm64: dts: imx95: Correct the lpuart7 and lpuart8 srcid
-> 
-> Luke Wang (1):
->       arm64: dts: imx95-15x15-evk: Change pinctrl settings for usdhc2
-> 
-> Peng Fan (10):
->       arm64: dts: imx95: Add System Counter node
->       arm64: dts: imx95: Add LMM/CPU nodes
->       arm64: dts: imx95: Add more V2X MUs
->       arm64: dts: imx95: Add OCOTP node
->       arm64: dts: imx95: Add coresight nodes
->       arm64: dts: imx95-evk: Update alias
->       arm64: dts: imx95-19x19-evk: Add phy supply for netc
->       arm64: dts: imx95-19x19-evk: Add pca9632 node
->       arm64: dts: imx95-19x19-evk: Add pf09 and pf53 thermal zones
->       arm64: dts: imx95-19x19-evk: Add spidev0
-> 
-> Richard Zhu (1):
->       arm64: dts: imx95-19x19-evk: Add Tsettle delay in m2 regulator
-> 
->  arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts |  29 +++-
->  arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts | 120 ++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx95.dtsi          | 165 +++++++++++++++++++++-
->  3 files changed, 306 insertions(+), 8 deletions(-)
-> ---
-> base-commit: ff837884a4642382a24d10fd503acf2c3a472f10
-> change-id: 20250813-imx9-dts-664f7ba66ae7
-> 
-> Best regards,
-> --
-> Peng Fan <peng.fan@nxp.com>
-> 
-> 
-> 
+And what happens next? looks like you're not unmasking the interrupt in
+this case so we'll never get an IRQ until timeout kicks in?
 
+> +	}
+> +
+> +	if ((port == 1 || port == 2) && fep->ndev[port - 1])
+> +		mtip_switch_tx(fep->ndev[port - 1]);
+> +	else
+> +		mtip_switch_tx(napi->dev);
+> +
+> +	if (pkts < budget) {
+> +		napi_complete_done(napi, pkts);
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Please take napi_complete_done()'s return value into account
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-This patch series was applied (using b4) to base:
- Base: base-commit ff837884a4642382a24d10fd503acf2c3a472f10 not known, ignoring
- Base: attempting to guess base-commit...
- Base: tags/next-20250815 (exact match)
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250815-imx9-dts-v1-0-e609eb4e3105@nxp.com:
-
-arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dtb: scmi (arm,scmi): Unevaluated properties are not allowed ('protocol@80', 'protocol@81', 'protocol@82', 'protocol@84' were unexpected)
-	from schema $id: http://devicetree.org/schemas/firmware/arm,scmi.yaml#
-arch/arm64/boot/dts/freescale/imx95-19x19-evk.dtb: mdio@0,0 (pci1131,ee00): Unevaluated properties are not allowed ('phy-supply' was unexpected)
-	from schema $id: http://devicetree.org/schemas/net/fsl,enetc-mdio.yaml#
-arch/arm64/boot/dts/freescale/imx95-19x19-evk-sof.dtb: mdio@0,0 (pci1131,ee00): Unevaluated properties are not allowed ('phy-supply' was unexpected)
-	from schema $id: http://devicetree.org/schemas/net/fsl,enetc-mdio.yaml#
-
-
-
-
-
+> +		/* Set default interrupt mask for L2 switch */
+> +		writel(MCF_ESW_IMR_RXF | MCF_ESW_IMR_TXF,
+> +		       fep->hwp + ESW_IMR);
+> +	}
