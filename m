@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C051EEF9;
-	Sun, 17 Aug 2025 05:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EA613C8E8;
+	Sun, 17 Aug 2025 06:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755410006; cv=none; b=FaOyI8rYOZcT6BEtVNUQ3DIuO8ImtJq2fHb00qUBI8t2E8FqpePJck6qJv5QPwHbM9WLAvTAypoKLJkzPXJWR/KwxrCAxwlI8fkbvXnTCb0D/nl2wV8WNbJUECXt+8Fpigpeo2g02dYowK6Pk+HN4M2i1ZWVjKopfzhEG+xzYxc=
+	t=1755411188; cv=none; b=lPD+pDq9+NYajrgAugx3Fm3T/bG/AuUKpPWhYi9/AsdWd11HW25lIIv9wA+mvLYxVjh9r/FeIwor2UEzidERDeExF3enIPUqtjVgLLKyQfYM/BCsqPPcLHBG8oaq6alAh02o2w7G992lGRf8b8nHIr0dL1wWumv6sXsfnTk+Hdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755410006; c=relaxed/simple;
-	bh=CHAyhki5L7Mzq3s56yJYrOkTQB3/awW/UGDQmcXfgNY=;
+	s=arc-20240116; t=1755411188; c=relaxed/simple;
+	bh=lid+S2UZG+OF8iqGwXoZfpqZqgui8N3K+4MjmmWh4kY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HLy2XIGI4i5yAv4zw8ClGyDA/IY15lzlCUve7Sd+YIJaravcl60aRRfmAwaZJF3r+BQvF0JbEhW72Ou23r72RIBSwKfXGZDZBl2z3/B0uGZKM3e/fQKYim0zq7zKDemG4gFoTnsOQpfWE34EuVQcTGdvH7/DYIs7VlQOGcagkEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFTXjdD+; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=PH6D3c1nG7GOeqMDM0/FLHBGpq3UOa56cBpM+5+stb3zM6jYBzoxWyXEwqAoXRSGH8P7KPj7NNK6ZDOT6PcHhwHlYIdLNxXL0LBsB8SO2cvu/bjnBA0VwH8ht/GySCrHiWotEUI7WIIAKtC5P3s7KgXI8UC6/65y4PrJ81I8J90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDpNyKzE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFTXjdD+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE48C4CEEB;
-	Sun, 17 Aug 2025 05:53:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDpNyKzE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB13C4CEEB;
+	Sun, 17 Aug 2025 06:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755410005;
-	bh=CHAyhki5L7Mzq3s56yJYrOkTQB3/awW/UGDQmcXfgNY=;
+	s=k20201202; t=1755411187;
+	bh=lid+S2UZG+OF8iqGwXoZfpqZqgui8N3K+4MjmmWh4kY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JFTXjdD+JUdRe+wCLt5Qu4bjXfzfmPLaKH50KqEKxX6hJybmm8GEWVrNyOiudNR5L
-	 ljx1jwYSoAcDifQcuZ0wnm5CeA8/tFzcHRkvl9JLPDwhFChgpELdFTLpJFXwjyEVNu
-	 4JrnVfiwB8FkkVjRjUa6QjODixBQyliyQPIk0s2pvMwJGKxEZcIGS/TL4d8Vqa/W7/
-	 bW5d6Vw4WI87K0m+4pLWlOzlurJFTpdZVZtg4GMEWc7fohvtMxZXXl/HZ1zmFcWl4v
-	 GNt9FmRTPv8WeuvZ4apq2o4n8VUWjDrdSk2kI/ZVFMMy3cBXQy2eZdI0xITS32mOmM
-	 yXoiyi9FjYXVQ==
-Message-ID: <38b4d3fe-a716-4cc2-8c05-1891606f4c85@kernel.org>
-Date: Sun, 17 Aug 2025 07:53:19 +0200
+	b=sDpNyKzEK9ha0jQPpNT72h11TCoWyZIgCoPuQauMS8Y4J7khtPMTBmBwqhdmyWGeO
+	 DMuKBrro75dmZAlZTMOzJXvzsxDpHBZCv4sg8jSqho9EKsiyTvAYy5p3beW33u72Zd
+	 E9MLBSQ2uH3UAtKhrrxmbyuxC+xi/Mq2UOPCwTTLXRDcOTlYkE4EVeCrZrsSC73tcA
+	 9eEtVDnNdQZYAo8A4l0tawmVx0JDTwU7a4dgHTylH8ufxfIZEttsVoU929G35D/rD1
+	 CnVz2f5S5ABGRmFWIwgpacXcUn/Vk4FCtN/ZZKSF2o5/tXzSeq44Y7sWnqtzH4v8wJ
+	 dI2Fs1qMUkPDg==
+Message-ID: <adfb8732-3ac7-4496-9671-1fa2aa71139c@kernel.org>
+Date: Sun, 17 Aug 2025 08:13:01 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,23 +35,22 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] arm64: dts: s32g: Add device tree information for the
- OCOTP driver
-To: Dan Carpenter <dan.carpenter@linaro.org>,
- Chester Lin <chester62515@gmail.com>
-Cc: Matthias Brugger <mbrugger@suse.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
- NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+Subject: Re: [PATCH v2 3/4] media: i2c: imx585: Add Sony IMX585 image-sensor
+ driver
+To: Will Whang <will@willwhang.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linaro-s32@linaro.org,
- Srinivas Kandagatla <srini@kernel.org>
-References: <cover.1755341000.git.dan.carpenter@linaro.org>
- <9b3874c6aedf87f78cc6438fe840433162b06445.1755341000.git.dan.carpenter@linaro.org>
+ Fabio Estevam <festevam@gmail.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250810220921.14307-1-will@willwhang.com>
+ <20250810220921.14307-4-will@willwhang.com>
+ <20250811-cinnamon-tapir-of-music-0bda96@kuoka>
+ <CAFoNnryfrJvoEHNgQDpSZBbGiGjPr-bwnhhg4cgpNK_hW=0EbQ@mail.gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -97,52 +96,138 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <9b3874c6aedf87f78cc6438fe840433162b06445.1755341000.git.dan.carpenter@linaro.org>
+In-Reply-To: <CAFoNnryfrJvoEHNgQDpSZBbGiGjPr-bwnhhg4cgpNK_hW=0EbQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 16/08/2025 12:47, Dan Carpenter wrote:
-> Add the device tree information for the S32G On Chip One-Time
-> Programmable Controller (OCOTP) chip.
+On 16/08/2025 21:44, Will Whang wrote:
+> On Mon, Aug 11, 2025 at 1:06 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>
+>> On Sun, Aug 10, 2025 at 11:09:20PM +0100, Will Whang wrote:
+>>> +
+>>> +/* --------------------------------------------------------------------------
+>>> + * Power / runtime PM
+>>> + * --------------------------------------------------------------------------
+>>> + */
+>>> +
+>>> +static int imx585_power_on(struct device *dev)
+>>> +{
+>>> +     struct v4l2_subdev *sd = dev_get_drvdata(dev);
+>>> +     struct imx585 *imx585 = to_imx585(sd);
+>>> +     int ret;
+>>> +
+>>> +     dev_dbg(imx585->clientdev, "power_on\n");
+>>> +
+>>> +     ret = regulator_bulk_enable(IMX585_NUM_SUPPLIES, imx585->supplies);
+>>> +     if (ret) {
+>>> +             dev_err(imx585->clientdev, "Failed to enable regulators\n");
+>>> +             return ret;
+>>> +     }
+>>> +
+>>> +     ret = clk_prepare_enable(imx585->xclk);
+>>> +     if (ret) {
+>>> +             dev_err(imx585->clientdev, "Failed to enable clock\n");
+>>> +             goto reg_off;
+>>> +     }
+>>> +
+>>> +     gpiod_set_value_cansleep(imx585->reset_gpio, 1);
+>>
+>> You asserted reset gpio causing it to enter reset and you call this
+>> "power on"?
+>>
+>>> +     usleep_range(IMX585_XCLR_MIN_DELAY_US,
+>>> +                  IMX585_XCLR_MIN_DELAY_US + IMX585_XCLR_DELAY_RANGE_US);
+>>> +     return 0;
+>>> +
+>>> +reg_off:
+>>> +     regulator_bulk_disable(IMX585_NUM_SUPPLIES, imx585->supplies);
+>>> +     return ret;
+>>> +}
+>>> +
+>>> +static int imx585_power_off(struct device *dev)
+>>> +{
+>>> +     struct v4l2_subdev *sd = dev_get_drvdata(dev);
+>>> +     struct imx585 *imx585 = to_imx585(sd);
+>>> +
+>>> +     dev_dbg(imx585->clientdev, "power_off\n");
+>>> +
+>>> +     gpiod_set_value_cansleep(imx585->reset_gpio, 0);
+>>
+>> And here device comes up, but you call it power off? Your functions or
+>> reset gpio code are completely reversed/wrong.
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> ---
->  arch/arm64/boot/dts/freescale/s32g2.dtsi | 7 +++++++
->  arch/arm64/boot/dts/freescale/s32g3.dtsi | 7 +++++++
->  2 files changed, 14 insertions(+)
+> Reset pin High -> Run normally
+> Reset pin Low -> Reset state
+
+This is not how resets work. Logical reset value high means it is
+asserted and device does not work.
+
+Read carefully your datasheet. Because if you claim above this is not a
+reset line, but some other.
+
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> index 09d2fbbe1d8c..e58ea0d3b083 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> @@ -612,5 +612,12 @@ gic: interrupt-controller@50800000 {
->  			interrupt-controller;
->  			#interrupt-cells = <3>;
->  		};
-> +
-> +		ocotp: ocotp@400a4000 {
+> See drivers/media/i2c/imx219.c with the same logic:
 
-Nodename: efuse@ or nvmem@
+Great, so 10 year old buggy code is the example, but all other - 90% of
+correct drivers - are not?
 
-> +			compatible = "nxp,s32g2-ocotp";
-> +			reg = <0x400a4000 0x400>;
-> +			#address-cells = <1>;
-> +			#size-cells = <1>;
-> +		};
->  	};
->  };
-> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> index 39effbe8217c..184a29dea184 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> @@ -681,6 +681,13 @@ gic: interrupt-controller@50800000 {
->  			      <0x50420000 0x2000>;
->  			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
->  		};
-> +
-> +		ocotp: ocotp@400a4000 {
+> 
+> static int imx219_power_on(struct device *dev)
+> {
+> struct v4l2_subdev *sd = dev_get_drvdata(dev);
+> struct imx219 *imx219 = to_imx219(sd);
+> int ret;
+> 
+> ret = regulator_bulk_enable(IMX219_NUM_SUPPLIES,
+>    imx219->supplies);
+> if (ret) {
+> dev_err(dev, "%s: failed to enable regulators\n",
+> __func__);
+> return ret;
+> }
+> 
+> ret = clk_prepare_enable(imx219->xclk);
+> if (ret) {
+> dev_err(dev, "%s: failed to enable clock\n",
+> __func__);
+> goto reg_off;
+> }
+> 
+> gpiod_set_value_cansleep(imx219->reset_gpio, 1);
+> usleep_range(IMX219_XCLR_MIN_DELAY_US,
+>     IMX219_XCLR_MIN_DELAY_US + IMX219_XCLR_DELAY_RANGE_US);
+> 
+> return 0;
+> 
+> reg_off:
+> regulator_bulk_disable(IMX219_NUM_SUPPLIES, imx219->supplies);
+> 
+> return ret;
+> }
+> 
+> static int imx219_power_off(struct device *dev)
+> {
+> struct v4l2_subdev *sd = dev_get_drvdata(dev);
+> struct imx219 *imx219 = to_imx219(sd);
+> 
+> gpiod_set_value_cansleep(imx219->reset_gpio, 0);
+> regulator_bulk_disable(IMX219_NUM_SUPPLIES, imx219->supplies);
+> clk_disable_unprepare(imx219->xclk);
+> 
+> return 0;
+> }
+> 
+> I really don't understand why this is a problem, it is up to the chip
+> designer to decide
+> what to do with reset behavior and not the reviewers.
 
-Same here
+I explained to you. You are mixing logical level with line level. This
+is the problem, because (again I said it):
+
+It does not work.
+
+Your code or your DTS is incorrect.
+
 
 
 Best regards,
