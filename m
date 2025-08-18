@@ -1,65 +1,65 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5B7322549
-	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 13:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9C8340DA4
+	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 13:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523082; cv=none; b=jZTucpqgPByHxJ1ebtFRKVl7AGoGx0wY9sPCRgihlARzOQ8nYSLpB/4V3IXiPSU4bahfKGMEO4zuXedMfqPVStNkuYhASiThUe4990zg3im4k4a+g93aDLoyf9Vn7ZPedKxt5grQdRSIRnJmvlsScuugjoy5vTpGW2q+3PufXaU=
+	t=1755523292; cv=none; b=U0en8RZwZUgOi5Svb89/kn76pZ7pW+hjK40DwoSxALM2l0GPW6SOjKK6VP5IC2aVG8PPzascm7fgHZqkTQ4uvFuBQ9NsVIxUXmTpvYPLWU33eq5J0CjMxE0gn6Zo8tOGaHz9kCmgutJ1G/x9MSjuEXixt2Mn8lr+YDbKSrGl2Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523082; c=relaxed/simple;
-	bh=cN2Dr1U3N+epcvzyenIo+98wH45Absd+P6IxmKwk8T0=;
+	s=arc-20240116; t=1755523292; c=relaxed/simple;
+	bh=+cKh+v4Cm+T1peei9b5ebp+8tJt6yVUSf7x8iARtLHk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p+ogGuzCVMF4XhrwROlXr1Y9dby3Tld4HlOryYynZ6eRCPQOBeM2kZ4MGu0a4WZ/QnizpieBjVWnPnVh8Ks5Pi61hGF62S7ZfI2EpELxtvdVA7J1YBZfVMPnspnGBD7ITaGPkQxpGIFLXpo2pofGXXLhObMPupoU5J2FMe8o9Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=s6w2Z/IZ; arc=none smtp.client-ip=209.85.221.49
+	 In-Reply-To:Content-Type; b=D0Oi96oNDREeMddlZ76N5jcr8BJsCrO+V6QbwKltdR1kewDcRdG7lmhC366YJAyFmCQ36iut0B1Shacf8UH9M0qhCgkbxOgg+SCo+Jz2JpDl8NQ+imf7ZGrszUW71ZheZqOjRL+/agZAkhlgKjKnPijXDG07hbFSJ0TBgC0k4Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=N2wyLuO4; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="s6w2Z/IZ"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3b9d41cd38dso3313995f8f.0
-        for <imx@lists.linux.dev>; Mon, 18 Aug 2025 06:17:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="N2wyLuO4"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45a1b0bde14so21325525e9.2
+        for <imx@lists.linux.dev>; Mon, 18 Aug 2025 06:21:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755523078; x=1756127878; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1755523289; x=1756128089; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=WD8JY7wGfENB2vQCzVFhM+JL0GSgqtbytlovzqiUGn8=;
-        b=s6w2Z/IZN3ZxCiA0WHPj0h9+AA4oCRsWQv5cMU5YCLTHFclx1807HUaxSPwg84kwIX
-         S3+30s4lcDSubyQRlPyVyhmlAXtRsbNNIkSRszZ+hRs6rHue9+90/pauLzk2RFfViUwy
-         T9SeTpR7QhMLeV/Tk13ui+stADASQHYK0umgGZ/HP5PSNcU0zE8MucpFIY5rQIdjW1MS
-         kDG2xz8bctRzSVJq8YOumcg1g5cVQbXNEfiLflUKKazCQCMMtiJcTwoqM+CViApwXIxL
-         c98tcxorJboXRotzHQ/luao90G7amu5h2QlJEKe2oVbpo0L19cXen8KPyngP0iPbjsw6
-         fxIA==
+        bh=qHosbQ56I8nDu/Jz/4UBzucrPmhDO2H2KjGIBtWOyX8=;
+        b=N2wyLuO4FdqQoS0r4g358u7XWNXooBMQiaMs9DQxnPRiVeg2rsleQ+5UhyfQGTC1TH
+         8DBnDQKSDqpodtQ61z7I3R+FF/AWYaMEOB5HX2lTMx4ToLmgXRSZ+c8r5pJTI8xyT45d
+         DVQ9GsAf5EKftVWenrz4GWTheUg/wQ3q3x7c1GPajpMvvfSAkOczTqxw+o4u8rimV3PK
+         Z+53/ySAkVnzW0QsMTY5tYXY+GZ+T7k/jzR8F1pB9NlcB64LQ8EwSkCKAXNcdN2cy52v
+         NdysZ52jLEme+S/yIL6hrjYABY7xktZX+NfporRsSrGYBS6Z4i65PJsKg9/vCORTBfcm
+         OXaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755523078; x=1756127878;
+        d=1e100.net; s=20230601; t=1755523289; x=1756128089;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WD8JY7wGfENB2vQCzVFhM+JL0GSgqtbytlovzqiUGn8=;
-        b=FuknKjefdBGEODG6paCzufsU0bG0SIWe67gVcjawLfR61BAmi2G+KEHEFfVDqW00Iw
-         SjgatW2wpDXHqIlQnj1PWXxUH4BmcZB9gvwyKFL/UdrC8ZG72hUQLTvSDKaZQ5B5SuAC
-         MdhE3rI3Xzrq/hRxpIZO/ysgLCY1lVSt1cbZH6GWC3C723R5Jae/7e/tlFB4dBnLYpth
-         dTee2iTsr0siqms65P84x0eLIzjV9y5lQfB1FhpeVjgFDwHfGsuMJzYtk30dIXkrRfP1
-         EEfDBJ5jbvFZ52jG23BbXSEBFoXTgvLu+XZmaED5now+2h0lAIwN2mBMbuqS3q2r0KuN
-         J48A==
-X-Forwarded-Encrypted: i=1; AJvYcCXD/wrYD4gy69AD/xPx/nV/9rT45dLWgI5W7blNQxH+5ivr2vUTt8lz+u4/dmdOP5cCOGs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwS6svyCxxuH5KjL6/zE5v2UKMoGATAtKS8c4pCV0eYfbUX87LQ
-	npDo5NG5EeOQio9QoxvCdNgbdjNJrhaX/5qJ7yi/1JI+cebEQdGZ4DRYEctZovB/7m4=
-X-Gm-Gg: ASbGncvWeMXhIAyHAeXwVHIhoBSGq2jFPpQgxfij238TqNJCX7DePeq32l5QETWKtGk
-	+Kmxj8Scy1OM1sxtYe3bfNDBl2KE0fZ1jMJ0IK/A6W7YkQLP+3sJnK22IQjoLYDGulkXUt3CXFQ
-	aIg1iT7uIetLO+VBskQKQZE+/a0sA53+i1ZJffGyZKKFT8FYzHIeL8MUw+O0x3pHNWA5TDIpzf1
-	mw4ZXMvnfi+Jdz6IMUMvzKUe7dAuPXUdVRl+KSG1TygfxwkgKCWpRsa1yBR7L+qJzlD1IGuB2DM
-	dBDoEkpxUrEeyMDAaxS96JeT8/NBBHmQkamDy5aFKCRJ7jUClGRp7kJOw3ApgNwnGPdXqxJbe8u
-	IcKOIqEXau16spEhZLD6f6wczIDc=
-X-Google-Smtp-Source: AGHT+IFJio5fCS2fBNF+0hXuSZxnS4K+PQVhd5zP27O8GnG2aQ92KmNgjsK/8qAhqnk6lalVTMRMDQ==
-X-Received: by 2002:a05:6000:1a89:b0:3b9:717:4bcd with SMTP id ffacd0b85a97d-3bb68b0d589mr9121216f8f.40.1755523077542;
-        Mon, 18 Aug 2025 06:17:57 -0700 (PDT)
+        bh=qHosbQ56I8nDu/Jz/4UBzucrPmhDO2H2KjGIBtWOyX8=;
+        b=mupaJs4FFONo6ZLzrzLYFMus0YTzy/aBCPs/BP7sexULl1Y+6sKBGknVftKI6scorh
+         nCrkH3wK0FxhYeQY/9MrkEGIS9/NsZ6CXBoPY7gvEfOqMmZGtXhYflvgrilqn9ksmChB
+         RyIHCrfzCYZQQXDsPRBCWWmC3SvhnwWi3O+wpTceioZbIEyLKf3O07HeUpMvz1m3HZAy
+         Sr2Q+Dc0scP3nUWeGKgXRY1p+Wlx6446fMF+hviWQJrYu/6CWTeKZKBkkY+I8yvgnM2g
+         +YF1wNQ2MYKF6vtvYL0nRyMvWok1iFRuWBX9LvKjUSVPXGYjDOCAE+tnzbPWtbdeCBL5
+         Qmnw==
+X-Forwarded-Encrypted: i=1; AJvYcCXc/AzIvioyBWQcvtiBHz26pc0xOvKr9ITc4xvTnUQsJYm7lhlwVtBHNVUy1KkrMEQwI78=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzOhPBj05jfmna3gNRMxQqoNh/K73wPDV6ymOBpeqqsHVIAtmS8
+	7DtNu/W1T80dYVgIpnpk+kqz5qDO9CV/J7vCjcecn/ZSmFw3jNth6PZSczVeXBVw9U8=
+X-Gm-Gg: ASbGnctrw7gfFlzcVuEKxWDI1aupYoPWvRTPJqSssKk+PzTmLUEX23rYO4l93i76GX/
+	6T8zFDfqET3fjVzDau9bkQTkO8yOgJEtB6u2bemKU8zAnwPlbhONKf2b3ns9LiZsQL2wy+ilq3e
+	CxD9E7gZYzVD2glLTEoU6wM10daqddyHmk8Q4Er3Hk8YBzeS1bikARWjqrviq/J2Uuby3x8zlvL
+	eUs2AVvVqM0d2/fkfsj+XgArjfNUO16S60Z+keoKNU+TF4/wq5jP7DTl+jRhiaf6v9F6GQnOPPE
+	0Ajs4zkZcdGjLExk2yqZTk75In/sOnQzEAXvojqc3FuXs5MEP/lngQYBrImbU2sGcVxHs+M5NMB
+	3RmOpbD1Ib5ZcS8CE+aSAD6jQxHM=
+X-Google-Smtp-Source: AGHT+IHmQYSiITA4A2f3X+nYYnR5TguRUDLdC1f6m0CIICjfTIGcLFHLP+kZ1Fsg3j7tteqznpBIhw==
+X-Received: by 2002:a05:600c:a43:b0:459:db69:56bd with SMTP id 5b1f17b1804b1-45a21839e02mr89031265e9.20.1755523288609;
+        Mon, 18 Aug 2025 06:21:28 -0700 (PDT)
 Received: from [192.168.1.3] ([185.48.76.109])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a22321985sm131021375e9.17.2025.08.18.06.17.56
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1b1db885sm108362605e9.0.2025.08.18.06.21.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Aug 2025 06:17:57 -0700 (PDT)
-Message-ID: <7bd5e0aa-c7fc-4c3f-9e5c-998a1d4f5703@linaro.org>
-Date: Mon, 18 Aug 2025 14:17:55 +0100
+        Mon, 18 Aug 2025 06:21:28 -0700 (PDT)
+Message-ID: <40b29323-66db-492c-be00-71ff87f48d77@linaro.org>
+Date: Mon, 18 Aug 2025 14:21:26 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/13] spi: spi-fsl-lpspi: Reset FIFO and disable module
- on transfer abort
+Subject: Re: [PATCH 04/13] spi: spi-fsl-lpspi: Clear status register after
+ disabling the module
 To: Frank Li <Frank.li@nxp.com>
 Cc: Mark Brown <broonie@kernel.org>, Clark Wang <xiaoning.wang@nxp.com>,
  Fugang Duan <B38611@freescale.com>, Gao Pan <pandy.gao@nxp.com>,
@@ -83,59 +83,80 @@ Cc: Mark Brown <broonie@kernel.org>, Clark Wang <xiaoning.wang@nxp.com>,
  linux-spi@vger.kernel.org, imx@lists.linux.dev,
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 References: <20250814-james-nxp-lpspi-v1-0-9586d7815d14@linaro.org>
- <20250814-james-nxp-lpspi-v1-3-9586d7815d14@linaro.org>
- <aJ4UH8fSWGODwnmO@lizhi-Precision-Tower-5810>
+ <20250814-james-nxp-lpspi-v1-4-9586d7815d14@linaro.org>
+ <aJ4VpLhI+hZU+cpj@lizhi-Precision-Tower-5810>
 Content-Language: en-US
 From: James Clark <james.clark@linaro.org>
-In-Reply-To: <aJ4UH8fSWGODwnmO@lizhi-Precision-Tower-5810>
+In-Reply-To: <aJ4VpLhI+hZU+cpj@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 14/08/2025 5:51 pm, Frank Li wrote:
-> On Thu, Aug 14, 2025 at 05:06:43PM +0100, James Clark wrote:
+On 14/08/2025 5:58 pm, Frank Li wrote:
+> On Thu, Aug 14, 2025 at 05:06:44PM +0100, James Clark wrote:
 >> From: Larisa Grigore <larisa.grigore@nxp.com>
 >>
->> In DMA mode fsl_lpspi_reset() is always called at the end, even when the
->> transfer is aborted. When not using DMA, aborts skip the reset leaving
+>> Clear the error flags after disabling the module to avoid the case when
+>> a flag is set between when the flags were just cleared, and when the
+>> module is disabled.
 > 
-> Nit: s/"When not using DMA"/In PIO mode
+> between flags clear and module disable
+> 
+> And use SR_CLEAR_MASK to replace hardcoded value for improved readability
+> 
 
 Ack
 
 > 
 > Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > 
->> the FIFO filled and the module enabled.
 >>
->> Fix it by always calling fsl_lpspi_reset().
+>> Although fsl_lpspi_reset() was only introduced in commit a15dc3d657fa
+>> ("spi: lpspi: Fix CLK pin becomes low before one transfer"), the
+>> original driver only reset SR in the interrupt handler, making it
+>> vulnerable to the same issue. Therefore the fixes commit is set at the
+>> introduction of the driver.
 >>
->> Fixes: a15dc3d657fa ("spi: lpspi: Fix CLK pin becomes low before one transfer")
+>> Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
 >> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+>> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
 >> Signed-off-by: James Clark <james.clark@linaro.org>
 >> ---
->>   drivers/spi/spi-fsl-lpspi.c | 4 +---
->>   1 file changed, 1 insertion(+), 3 deletions(-)
+>>   drivers/spi/spi-fsl-lpspi.c | 9 +++++----
+>>   1 file changed, 5 insertions(+), 4 deletions(-)
 >>
 >> diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
->> index c65eb6d31ee7..aab92ee7eb94 100644
+>> index aab92ee7eb94..79b170426bee 100644
 >> --- a/drivers/spi/spi-fsl-lpspi.c
 >> +++ b/drivers/spi/spi-fsl-lpspi.c
->> @@ -734,12 +734,10 @@ static int fsl_lpspi_pio_transfer(struct spi_controller *controller,
->>   	fsl_lpspi_write_tx_fifo(fsl_lpspi);
+>> @@ -82,6 +82,8 @@
+>>   #define TCR_RXMSK	BIT(19)
+>>   #define TCR_TXMSK	BIT(18)
 >>
->>   	ret = fsl_lpspi_wait_for_completion(controller);
->> -	if (ret)
->> -		return ret;
+>> +#define SR_CLEAR_MASK	GENMASK(13, 8)
+>> +
+>>   struct fsl_lpspi_devtype_data {
+>>   	u8 prescale_max;
+>>   };
+>> @@ -536,14 +538,13 @@ static int fsl_lpspi_reset(struct fsl_lpspi_data *fsl_lpspi)
+>>   		fsl_lpspi_intctrl(fsl_lpspi, 0);
+>>   	}
 >>
->>   	fsl_lpspi_reset(fsl_lpspi);
+>> -	/* W1C for all flags in SR */
+>> -	temp = 0x3F << 8;
+>> -	writel(temp, fsl_lpspi->base + IMX7ULP_SR);
+>> -
+>>   	/* Clear FIFO and disable module */
+>>   	temp = CR_RRF | CR_RTF;
+>>   	writel(temp, fsl_lpspi->base + IMX7ULP_CR);
 >>
->> -	return 0;
->> +	return ret;
+>> +	/* W1C for all flags in SR */
+>> +	writel(SR_CLEAR_MASK, fsl_lpspi->base + IMX7ULP_SR);
+>> +
+>>   	return 0;
 >>   }
 >>
->>   static int fsl_lpspi_transfer_one(struct spi_controller *controller,
 >>
 >> --
 >> 2.34.1
