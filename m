@@ -1,63 +1,63 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E168277CB0
-	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 08:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD289303C99
+	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 08:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755506854; cv=none; b=DUXg7BUajVTm8I/eYjfPXpkExyOP9OBwmA/BsXKSkqawlCSXDVDLGveQxZiizTUbm2i5alTx42VmuThMqH7sRQ9px/hfKiJGc+tHnarjfNbA0P442u7Y8tD9/pCdGaRxRamXYR8fVnKTZy+1gQKDSwHVHvfIlzmORxL2hFfA6KI=
+	t=1755506857; cv=none; b=Mu8KUbHgZbrn9fDCnwguE0QqeloImzzjZhlG97atIMAtUbdiXwzlnDLa3LPCzDv5rxVrtl9cbTfPU2Mnx/wOw7Qlx4www/xvgywW5Fa58+entbw/iiiTKeaDoJBLE3QMSo5V7GfiEAOGwroIR8aN7ernYiq6y9GSySPpggdGvGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755506854; c=relaxed/simple;
-	bh=BFqb772XKvnkGz/X/GiHYC9tY0Kc1FlOx29S2g2BP6k=;
+	s=arc-20240116; t=1755506857; c=relaxed/simple;
+	bh=cfhhhzhQxZrXxPloRoYunXy+b+gOmZJrF1u84C5Mzbs=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Puxl9sSA2KETUHjvUzUrO1ynmhrQs3WQx6wt/nvQ/h1iSBV/tV8NCCDA8x1iRosKyrLmT4FdIDbBlgMad8uGDTkBf9iDHCdOcVxfZAgxxz2RAq+KVgn84SFCszSOdj0XYy0AOJ4t7EdJL1Joc6Pc/KEht5iH2OBHsL2svTpoWas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=caUrM1V3; arc=none smtp.client-ip=209.85.208.42
+	 MIME-Version:Content-Type; b=Iuu7BeAwcEMoA10Gd4bObGEl+vcEJmUBh4+dc6hPP0S0nc0hlzU7iIGB7+Vl1xoP5On/dq5EbZaenEJAYU3c5HNB6cAlq+BxSJjfiFdfXIMne8dMEzrViRPmJcE3RKrK8LfCiA+6tYHhUBVGotKp/IPSpkZuOmxjKA8H3Ln8rBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iI+XSIv/; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="caUrM1V3"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6188b67a951so647916a12.1
-        for <imx@lists.linux.dev>; Mon, 18 Aug 2025 01:47:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iI+XSIv/"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-61a54560c1fso47291a12.0
+        for <imx@lists.linux.dev>; Mon, 18 Aug 2025 01:47:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755506851; x=1756111651; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1755506854; x=1756111654; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BeuayamteocopIdawkFz8GBgWsuO6jcTjJdO7tqQ9I0=;
-        b=caUrM1V367Gq6ljfzx5W6QmQzFtlLhiCc6VFQf8gbdg7HSiCtzyH7f7GR5YPy8wS5Z
-         +zbV8u1iJpqNk2baMhEohmpkt93Ws4oiJFDDDZk+KMprRojJTb0ifajOAyTXEuhiHfYA
-         HnXcptIv5qiJgqmqXs0aqD8yfnsHlxH4VKTpLnCquMKfb1mJcFR2sK+ORTGjPJPgo4i5
-         M/I89yelzhEPGZXt8vodVrpgIkIOLGrjR1sIDUw1X026D5Y2tzHkPEG4ZBaPClowSxR+
-         8ucHXxPPO7CSxXFn6R21lc/gpsD3ifIkFoWInpWUxMt4VI8W5yFHkbVjd6BLJUavf/w7
-         LNow==
+        bh=p0L7vCqnemiga4MJSGEdKnywkyS4sL50zcZbVWgOu40=;
+        b=iI+XSIv/iMaBjTqO7bLv0Mc6MphLg0WBFs3aU39EgDceDpKuP00XAXPTpCgUqUEMrV
+         jOWX1cfpN6vEHgtjhl0OS0XGk9NJsooUiccntwVuqo36/5oKnNVzlHfGUseBBRvS2rbE
+         nSk4P/kI/NqvbCQIhnXhQsR7yLh36abzqld8ZFl+vGrggWrxVm/y1umx0cDX0nITeyat
+         FgVZEJ/nP8B6yeQlRa8Oj2vwbDlU0S9nf9FGxxkEZMGbJsfm9uX1Hd38ip5UqDoPiHN2
+         UcgE3e7EvM3kAlCJMyPZ9wQkCSO7nGnMThGCV5p8AlVxHNOG87JugTKaSSkrEMT5+Xw4
+         jUMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755506851; x=1756111651;
+        d=1e100.net; s=20230601; t=1755506854; x=1756111654;
         h=content-transfer-encoding:mime-version:date:message-id:subject
          :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BeuayamteocopIdawkFz8GBgWsuO6jcTjJdO7tqQ9I0=;
-        b=Pk5n8SqMqfrwyRmjvUmE3cMpoWIR+v3bK5m6mp7hLnSYHw5Dl1ERD+BadxQUOMoaMQ
-         mbinwvKZ0g/J64P7ZXbDUkFXkkMfRIgzHqmTHlWlCMYqx2UzcMl5EkCi2smuEFQ3L9Rb
-         E8bK02Xhhn4S3zX0jTUudtmI5tzmhaJybL8UUxUT1B2yku7spMKUo6V0+fSrrH+vn9ar
-         cE9WdXtxbrIrVrqr6eYWRwaGQA8NXX1gCTqC3uznJp96HPPzgbjeHOTmv1UFwPbLVe7D
-         PcJUOk8iFs0yjl+bH/sKtx+j3QIf+EpGn8Hss5o3dZ5Xqi37CDgd4gxuzTdGLql8xzrc
-         0Wxw==
-X-Forwarded-Encrypted: i=1; AJvYcCXy2IUOjMAEYhbi/tS5GFoe0pOmh8E9BFE7hsfFS7hZYF8hPzwkvEa5ZGu0ypM2hOlHqgQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz0OCSiUg12YmLZxeu0+mGXimzFuuVVDvCZmx4o7IyJYzcaXBtV
-	Or7oJ4fQnKpTnXZWJ4G4EJuMmOF1CZT6NkY/lltxC8bhkS9JGSj4iFuvJykbjAH+qbU=
-X-Gm-Gg: ASbGncvLQdk56DaQ6Ph9rZYnHkaARPv3hQvINBPEy4X2agtRCgYc61LfIsRqq7tdkVj
-	TWmbJ707IiyMobrN0X7t9Qea4aLZ9D2yMTHMy8PL/CLEYpf2V3sdlf0ds55wo5NxRaTU+Hu+qyF
-	3Ub1kuonb2fsuBqPXPhU/NSD5jngeX5BbUurP8m5HkPh4Ojxs2u33se827UY5zqvv0VPQ8NKHGO
-	ZYK/RL6tURSw4bYtQxvbVCGiE2bwe8qIYRiu1MDQBvckAeZwR/7Awe6soo68Xb0wShEd2Siwkyo
-	GYOK1lRhw+yYiD9b/MEkgxs8S/PGhfcoLuOnFhC20V6hPMkaw1E3RXrABoOfk8A5MWFqeHqx9U7
-	slkoT5CUdcb1z8RAVawqFOnE0w7smimDOme5Hsqi7VmotWdwn8g==
-X-Google-Smtp-Source: AGHT+IHnFT/QiiX+/jyxr6JrjJHBnX2ZgiTGkz6V56Qs5+zyrhsCVsoAqUSeVCMOf8wng75ASWqViQ==
-X-Received: by 2002:a05:6402:440a:b0:617:be23:1111 with SMTP id 4fb4d7f45d1cf-618b0865203mr4787283a12.7.1755506851453;
-        Mon, 18 Aug 2025 01:47:31 -0700 (PDT)
+        bh=p0L7vCqnemiga4MJSGEdKnywkyS4sL50zcZbVWgOu40=;
+        b=cu9Os2ZP4RN4BxAL+PWcV4o61niQSUDYPAhOgnPp4RLAVpZZZ/G7AAAuqcXslhDKQ6
+         rD13O9HJO4VjQZtPqxdTIrVHCOcQTZgsKt7vwn3appMU+8hSuYL0tu6MwNVMJWUafDfF
+         Wib+PiUf1AjC+FHgdR7DxrDissh6v6r4bLiTG3Nblo0U2e2ONmabsjUTHrdPP1GaRPd5
+         k20It9ZPwlbID1SVV0REWXL0vqF5+smVwGtCLwXdO4vXb8EC+J279tL2poWqEFwRZnS1
+         T2AtTKuLRJz6LRgm5Fwhz2iFlKtjTIAINPR0wK5R3EcKBA0JyYdiuZpLZqy9ClzXHjAu
+         EqDg==
+X-Forwarded-Encrypted: i=1; AJvYcCUW9kNu2jyp8A19XTvd0xVZ2o15/QErJTVeE+MpXgfdFdSftRGsDedoWfg7gWLSQJ6HxBc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxYRSNPS9r0rMryvBEhUSyZd7QRMyWFR8D342zrLEuXi57aM8u0
+	7mMKrp+jyTfx2GHRU6OFUma0oupw/9N1fehII2QWNah52qz7meiseIGvFinnYUNmV4Q=
+X-Gm-Gg: ASbGnctmoHmxFFcGUgaGSL3HhTxQTwOFkEqxF5l2vBDvD2wWMgcaEYdJ3tGnja0Z/dD
+	QULBgG1BfqTfNTB3JCVkRwzLy7EQZvHO927kfXsvDxv0wlx80VJr2TLgTnItyVwm0odjAknq/z9
+	4vGeEqRAIePghUeBvXtfldtH7+mPhRdSd/aCj6UrFuBhCtB1CHRRKLjR47LiCir3p+PA5dwncOh
+	HFRopCTbqa+zSzcor/vNr7sUpviIgjUValqLLbSxGFm2IGXGZESvVh2K7odQ6iWp+6TxzJDy0xI
+	5x3EpkYOirUPA3ETHxC+GbfIT8/NihVVKwbiNB8qIrFnrzmOi4m67jHUkPHgpPlNX4rlV3JWbPe
+	bY8VJM05S6aG2ZiXvlPFXqnnarVrWvxyXsbwuEIo=
+X-Google-Smtp-Source: AGHT+IHknpi+jVcAiHPe7qLq8tMu11yKP03M4lXkXrorN3kjMjAvXVfdd/sJwjbdKxYg4VZrpI7G9w==
+X-Received: by 2002:a05:6402:1d54:b0:615:5cc1:3446 with SMTP id 4fb4d7f45d1cf-618b0f1c504mr4641443a12.5.1755506853905;
+        Mon, 18 Aug 2025 01:47:33 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-618af9da68fsm6627647a12.22.2025.08.18.01.47.28
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-618af9da68fsm6627647a12.22.2025.08.18.01.47.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 01:47:30 -0700 (PDT)
+        Mon, 18 Aug 2025 01:47:33 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To: mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org, 
  krzk+dt@kernel.org, conor+dt@kernel.org, krzk@kernel.org, 
@@ -71,14 +71,14 @@ Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
  linux-samsung-soc@vger.kernel.org, kernel@puri.sm, kernel@pengutronix.de, 
  festevam@gmail.com, linux-media@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20250814140943.22531-2-inbaraj.e@samsung.com>
+In-Reply-To: <20250814140943.22531-3-inbaraj.e@samsung.com>
 References: <20250814140943.22531-1-inbaraj.e@samsung.com>
- <CGME20250814141003epcas5p167e0a3d0ecc52fd8af17151cdddd031a@epcas5p1.samsung.com>
- <20250814140943.22531-2-inbaraj.e@samsung.com>
-Subject: Re: (subset) [PATCH v2 01/12] dt-bindings: clock: Add CAM_CSI
- clock macro for FSD
-Message-Id: <175550684881.11777.14718777449068060989.b4-ty@linaro.org>
-Date: Mon, 18 Aug 2025 10:47:28 +0200
+ <CGME20250814141009epcas5p153e4aacfc1ead3db8c9bb647c6e5c7c4@epcas5p1.samsung.com>
+ <20250814140943.22531-3-inbaraj.e@samsung.com>
+Subject: Re: (subset) [PATCH v2 02/12] clk: samsung: fsd: Add clk id for
+ PCLK and PLL in CAM_CSI block
+Message-Id: <175550685171.11777.14695565851704310683.b4-ty@linaro.org>
+Date: Mon, 18 Aug 2025 10:47:31 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -90,17 +90,17 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.2
 
 
-On Thu, 14 Aug 2025 19:39:32 +0530, Inbaraj E wrote:
-> CAM_CSI block has ACLK, PCLK and PLL clocks. PCLK id is already
-> assigned. To use PCLK and PLL clock in driver add id macro for CAM_CSI_PLL
-> and CAM_CSI_PCLK.
+On Thu, 14 Aug 2025 19:39:33 +0530, Inbaraj E wrote:
+> Add clock id for PCLK and PLL. These clock id will be used for
+> operation of CSI driver. PCLK is AXI2APB clock used for register
+> access. PLL clock is main clock source for CAM_CSI block.
 > 
 > 
 
 Applied, thanks!
 
-[01/12] dt-bindings: clock: Add CAM_CSI clock macro for FSD
-        https://git.kernel.org/krzk/linux/c/5576d8098052952a6c95af86ad3dcb341554ac75
+[02/12] clk: samsung: fsd: Add clk id for PCLK and PLL in CAM_CSI block
+        https://git.kernel.org/krzk/linux/c/1a713bd3b0c60d826bdde633919bedc1fd38df4d
 
 Best regards,
 -- 
