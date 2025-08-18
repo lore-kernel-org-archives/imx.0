@@ -1,155 +1,152 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0D233EAE9;
-	Mon, 18 Aug 2025 14:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E16F341AB2
+	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 14:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526384; cv=none; b=Hosa68FS+yfEgNdEPB+JBgw7QoL7tqPDOxf5aJZPjkjn6ugXhwydcOUkgyoQEbydsza0IFT2Ry1Gg3MCgMnCcpEq8hREcMQ0BfxwXSi+1duUpZww+g5oe/+or7RbRKDA8IkD2fFbHD11xgJW8ReZBr8bt/toBXX0F2nup0KSqmw=
+	t=1755526951; cv=none; b=X/y99zGQ+lUnSxhw5UeibbCw/0xSYbSt7M5ab5l0d3aWBBHxp1NMcRwazt/Jjh6VtawRh5B2wRJr/faEePt6mizevjdLw/O4FcgxCFnFk1X5u3oL3OUSzU4IhqlmaaoC+hF0QSVgQK0SIEUNO0g2MCHR8TbeKrDWw5C5DAavAWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526384; c=relaxed/simple;
-	bh=T/CmkHuOLGFh1ps9RO37OptTPCwtI7brhG4vBsioHFM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:Message-ID:MIME-Version:
-	 Content-Type:References; b=Li7aJj85xFQHvnWG1R1JwEjORkEfRET2LRfFoa8pu4Qu5vKe26GmIWvykJCAzpF0ryL9/7LRHTKpk+t000KehpyR9DAk26fg5wQ/82UZRiRK+czoH2GOZrNzQ8QAKZuJXT4HMOpAHLnlNae2R7mkEy4tk0yvW8zBrw2b3Cqjiak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=FaiBwfuL; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1755526951; c=relaxed/simple;
+	bh=Ld4BTbysJvvmlTmsob/shBMtAaRTdrmxmv8v8XzejBg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gDzCGZG6bkHRnK6Cx2UIB4o4a0P6dNjeLO0A5hHA7oiZEUlR8YWbv2RtlwraoDJTJBfGF3/HFltRdqLLqPvQec4+/KrMs+sGiPQhLc0n2ikAADCYaoZsO5AKgtml9xhYeGRJBBw/OZLt1jbeh3qq+0WcG7Z/4BaH9qwthnkgUxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Pod5DKRl; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="FaiBwfuL"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250818141259euoutp01c5a5c72a970c88cb8463fa9bb50e5008~c4fDm0j1Y2172321723euoutp01y;
-	Mon, 18 Aug 2025 14:12:59 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250818141259euoutp01c5a5c72a970c88cb8463fa9bb50e5008~c4fDm0j1Y2172321723euoutp01y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1755526379;
-	bh=f6M/CURYsQXY3/uzXGcUkzo+e+ViGdgH1Lhlm1R/1iI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FaiBwfuLMFd8wcxb0jvuhKpukO35xdhs1to++ZaQ4Yqh+Gs6k/xhff2Sy966nKB1u
-	 Y4My6ONmPeJTOTI7B6gYhSXTwZkt1FTO9BnQ28BliriKoYXUtLcxp9F6Knuc9EUcs8
-	 MtUVtnwteswlZeCnCsdleiFKIXspagyS25wUueR4=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250818141258eucas1p21f750bd71f615e61da60af4f01b2bcdb~c4fDEmByv0907809078eucas1p2Q;
-	Mon, 18 Aug 2025 14:12:58 +0000 (GMT)
-Received: from localhost (unknown [106.120.51.111]) by eusmtip1.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20250818141258eusmtip1a60c9e78cf67f43b879dc2891aeb8d16~c4fDAo2330814408144eusmtip1y;
-	Mon, 18 Aug 2025 14:12:58 +0000 (GMT)
-From: Lukasz Stelmach <l.stelmach@samsung.com>
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	linux-media@vger.kernel.org,  linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,  linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-tegra@vger.kernel.org, imx@lists.linux.dev, 
-	linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-samsung-soc@vger.kernel.org, linux-sunxi@lists.linux.dev, 
-	linux-usb@vger.kernel.org, linux-amlogic@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, mjpeg-users@lists.sourceforge.net
-Subject: Re: [PATCH 27/65] media: Reset file->private_data to NULL in
- v4l2_fh_del()
-Date: Mon, 18 Aug 2025 16:12:58 +0200
-In-Reply-To: <20250802-media-private-data-v1-27-eb140ddd6a9d@ideasonboard.com>
-	(Jacopo Mondi's message of "Sat, 02 Aug 2025 11:22:49 +0200")
-Message-ID: <oypijd5xekra51.fsf%l.stelmach@samsung.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Pod5DKRl"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3b9e41101d4so2242198f8f.2
+        for <imx@lists.linux.dev>; Mon, 18 Aug 2025 07:22:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755526948; x=1756131748; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VFT7EYdl/U8S17HmCa7RikHeUwhOUF2kdHWiG5vKuDQ=;
+        b=Pod5DKRl2km3eSlfPEH23wdP/RtlhKugjGb6SVFv+y5evULQ4/Pbjwvk9QYt1nSAOV
+         0cocWSSFblJfa/UV5F4r6w8HVnT4eEm6QM+7OO0PQHnBwDaVdOF3OHtc01m7WeoOAO3H
+         N+uTidFedTLWJDcDUXd6K/u0ToL1EsSZ23BZQo4OGBILprEKX/SReTqaB4tg3V2T9vAc
+         KNhGORMJcOkKZ22NTvwcIEWFLuagitlSJa9YU7H00u5sc/ME2OlUpTdpC+JDI5G57zQ/
+         SMTOzKl+4wi5k5G9qo+SOZnx1I1uYjStakPx/X9GvoHElx3tGfsRfc62D1Zk0PnIWJ6u
+         ERAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755526948; x=1756131748;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VFT7EYdl/U8S17HmCa7RikHeUwhOUF2kdHWiG5vKuDQ=;
+        b=WvxARDb1VpncTYQxUKKMGnnYsw0sf0t2H1aKZZhXS5PdkBG4pLghe+Baqu3zI9gI/v
+         OwQvPK8HRzux+vdiWWduTPE6m3t0siLuOGcYRys840a+LPleoCbs2vKK9KVe7wyThTNP
+         8L5mhNbeQEwaz12oFQgoVUrf9uHAP6ls9fqdptBxhcXBJaVjSjAHCjUJ7AYOQngC72wq
+         OrkSL3lTcKUdeG2nkZpvHXBeEbfVeb4lfHDM5Hcxyp7VZ6h5a8PxJln0ylEbu19RxVzl
+         K7GrVLtMbrBEfbPsQaNKN7oAbnuyBuiG9iBJtdCacHFUWBNo/9AhbzpPamyt4GH2Ebvy
+         9qJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVPH9HOhcQX2uRRoa+/ggqAiPdk68USTeBkJKNdTENDvRaU94Joows6I08w6fV23FYclfU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxGao5w6YYaFUNdLne7ZWEqiKRXcz9IpF7h3aaqCCnU1QPr2cYG
+	D0OCriAFW2Sr3hzWL18D0n/4TbJtYRzn+nC/GXKbusf6DFzFkwadPzXsNXhE+TEWV8I=
+X-Gm-Gg: ASbGncviobQo5tMfkeylKl6mDcqq1kjhGMAsqLL5lQFrPThfCIycqhYY+HyjqLZq0kS
+	UhKcSF5NN8kCH11yePRFppWHnvAFUhSUkUwUrHqRyspquVDkiyNhZ9Yq9W21LCfpMerk5zAlYRA
+	aF6cb1X47wLsFMS04ijoLxp5Eo1SNTSKXw6PzFeXfJAWkumMVMTF0PC2WxMDor1XQ20Na5Ck7zJ
+	jSPKWTPfhASaPJdWHky2s9amool5FYTOFG6yGW+fKG9KbzEYYXBZuSqmpQjodfFoH8Rg9LWk57Q
+	YcgtQAPJHNvkexd1MkrUfc6+dBe/4JG9ItWugwibTZrO/7i7Mmua6GYayQdsmQoDXfIOZk+fwdM
+	fz9SHHw+bKg5iM0chrUJHbdWR6wI=
+X-Google-Smtp-Source: AGHT+IHXXBqcG5WtLIRqk/YWgEdHVWCYOOUWvQEUiJZ9gf9C/DO/NkLfo+uNFk8MgEI2qKitz8FZdg==
+X-Received: by 2002:a05:6000:2c09:b0:3b7:882c:790 with SMTP id ffacd0b85a97d-3bb68a1644bmr9651163f8f.37.1755526947830;
+        Mon, 18 Aug 2025 07:22:27 -0700 (PDT)
+Received: from [192.168.1.3] ([185.48.76.109])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1b226eecsm106540185e9.1.2025.08.18.07.22.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Aug 2025 07:22:27 -0700 (PDT)
+Message-ID: <14fd2e7a-0fe6-4f00-b826-7f3971dd09ae@linaro.org>
+Date: Mon, 18 Aug 2025 15:22:25 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-="; micalg="pgp-sha256";
-	protocol="application/pgp-signature"
-X-CMS-MailID: 20250818141258eucas1p21f750bd71f615e61da60af4f01b2bcdb
-X-Msg-Generator: CA
-X-RootMTR: 20250802092807eucas1p14e332744b667a8b03ef32135045d26c5
-X-EPHeader: CA
-X-CMS-RootMailID: 20250802092807eucas1p14e332744b667a8b03ef32135045d26c5
-References: <20250802-media-private-data-v1-0-eb140ddd6a9d@ideasonboard.com>
-	<CGME20250802092807eucas1p14e332744b667a8b03ef32135045d26c5@eucas1p1.samsung.com>
-	<20250802-media-private-data-v1-27-eb140ddd6a9d@ideasonboard.com>
-
---=-=-=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-
-It was <2025-08-02 sob 11:22>, when Jacopo Mondi wrote:
-> From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->
-> Multiple drivers that use v4l2_fh and call v4l2_fh_del() manually reset
-> the file->private_data pointer to NULL in their video device .release()
-> file operation handler. Move the code to the v4l2_fh_del() function to
-> avoid direct access to file->private_data in drivers. This requires
-> adding a file pointer argument to the function.
-
-[...]
-
-> diff --git a/drivers/media/platform/samsung/s5p-g2d/g2d.c b/drivers/media=
-/platform/samsung/s5p-g2d/g2d.c
-> index e34cae9c9cf65d3161822b68233d28472171f917..922262f61e7b53baf1b5840d3=
-5149bf5b4b2e7ad 100644
-> --- a/drivers/media/platform/samsung/s5p-g2d/g2d.c
-> +++ b/drivers/media/platform/samsung/s5p-g2d/g2d.c
-> @@ -280,7 +280,7 @@ static int g2d_release(struct file *file)
->  	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
->  	mutex_unlock(&dev->mutex);
->  	v4l2_ctrl_handler_free(&ctx->ctrl_handler);
-> -	v4l2_fh_del(&ctx->fh);
-> +	v4l2_fh_del(&ctx->fh, file);
->  	v4l2_fh_exit(&ctx->fh);
->  	kfree(ctx);
->  	v4l2_info(&dev->v4l2_dev, "instance closed\n");
-> diff --git a/drivers/media/platform/samsung/s5p-jpeg/jpeg-core.c b/driver=
-s/media/platform/samsung/s5p-jpeg/jpeg-core.c
-> index c4ad0196ed8f1bf579365a0a21dd8c4a78bdaa10..2a57efd181540183e7d2b66d5=
-1f9f2f274ddd100 100644
-> --- a/drivers/media/platform/samsung/s5p-jpeg/jpeg-core.c
-> +++ b/drivers/media/platform/samsung/s5p-jpeg/jpeg-core.c
-> @@ -1005,7 +1005,7 @@ static int s5p_jpeg_open(struct file *file)
->  	return 0;
->=20=20
->  error:
-> -	v4l2_fh_del(&ctx->fh);
-> +	v4l2_fh_del(&ctx->fh, file);
->  	v4l2_fh_exit(&ctx->fh);
->  	mutex_unlock(&jpeg->lock);
->  free:
-> @@ -1021,7 +1021,7 @@ static int s5p_jpeg_release(struct file *file)
->  	mutex_lock(&jpeg->lock);
->  	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
->  	v4l2_ctrl_handler_free(&ctx->ctrl_handler);
-> -	v4l2_fh_del(&ctx->fh);
-> +	v4l2_fh_del(&ctx->fh, file);
->  	v4l2_fh_exit(&ctx->fh);
->  	kfree(ctx);
->  	mutex_unlock(&jpeg->lock);
-
-Acked-by: =C5=81ukasz Stelmach <l.stelmach@samsung.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/13] spi: spi-fsl-lpspi: Parameterize reading num-cs
+ from hardware
+To: Frank Li <Frank.li@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>, Clark Wang <xiaoning.wang@nxp.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Larisa Grigore <larisa.grigore@oss.nxp.com>,
+ Larisa Grigore <larisa.grigore@nxp.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+ Ciprianmarian Costea <ciprianmarian.costea@nxp.com>, s32@nxp.com,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20250814-james-nxp-lpspi-v1-0-9586d7815d14@linaro.org>
+ <20250814-james-nxp-lpspi-v1-9-9586d7815d14@linaro.org>
+ <aJ4rmLgTm+A2hDA0@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <aJ4rmLgTm+A2hDA0@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
 
-[...]
+On 14/08/2025 7:31 pm, Frank Li wrote:
+> On Thu, Aug 14, 2025 at 05:06:49PM +0100, James Clark wrote:
+>> To avoid adding more string matching here for every new device, move
+>> this property into devtype data.
+> 
+> Add query_hw_for_num_cs in devtype to avoid directly check compatible
+> "fsl,imx93-spi".
+> 
+> No functionaltiy change.
+> 
+> Frank
 
+Ack
 
-=2D-=20
-=C5=81ukasz Stelmach
-Samsung R&D Institute Poland
-Samsung Electronics
+>>
+>> Signed-off-by: James Clark <james.clark@linaro.org>
+>> ---
+>>   drivers/spi/spi-fsl-lpspi.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+>> index 1013d5c994e9..6d0138b27785 100644
+>> --- a/drivers/spi/spi-fsl-lpspi.c
+>> +++ b/drivers/spi/spi-fsl-lpspi.c
+>> @@ -97,6 +97,7 @@ static const char * const pincfgs[] = {
+>>
+>>   struct fsl_lpspi_devtype_data {
+>>   	bool prescale_err : 1;
+>> +	bool query_hw_for_num_cs : 1;
+>>   };
+>>
+>>   struct lpspi_config {
+>> @@ -150,10 +151,12 @@ struct fsl_lpspi_data {
+>>    */
+>>   static const struct fsl_lpspi_devtype_data imx93_lpspi_devtype_data = {
+>>   	.prescale_err = true,
+>> +	.query_hw_for_num_cs = true,
+>>   };
+>>
+>>   static const struct fsl_lpspi_devtype_data imx7ulp_lpspi_devtype_data = {
+>>   	.prescale_err = false,
+>> +	.query_hw_for_num_cs = false,
+>>   };
+>>
+>>   static const struct of_device_id fsl_lpspi_dt_ids[] = {
+>> @@ -960,7 +963,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+>>   	fsl_lpspi->rxfifosize = 1 << ((temp >> 8) & 0x0f);
+>>   	if (of_property_read_u32((&pdev->dev)->of_node, "num-cs",
+>>   				 &num_cs)) {
+>> -		if (of_device_is_compatible(pdev->dev.of_node, "fsl,imx93-spi"))
+>> +		if (devtype_data->query_hw_for_num_cs)
+>>   			num_cs = ((temp >> 16) & 0xf);
+>>   		else
+>>   			num_cs = 1;
+>>
+>> --
+>> 2.34.1
+>>
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEXpuyqjq9kGEVr9UQsK4enJilgBAFAmijNOoACgkQsK4enJil
-gBAXpggAhxgfNJt5JHfaNRWL4tntTEflz9jY6aL37c5XVvyFfbAOD9ZUAipWxJ3g
-fm3satj2+sGjeHZtH4lAnwpLpNY8egrTC1c9muXvIy/ExVz7jwo1JW/IKM9a0tZl
-D9N1GuZeTlQeLoFPsXl4LQhDbj48llm8roSKgfK4mU8ymTEw6BYOQ7bMZcxWKd9+
-amU+zqtKIXE3OHNKDB3Hoo9pLBhOIBPXcqEV8rwNbC0dyidV8GvVUUv4ptQBlAyV
-SNaaVoSHo+4P9caRnQOeX3kj7NXJa3ES03Cgpj8IhhZigvTtXJ+VL0fL283OuvOe
-p2JcG+pKY00NgIMbtv0xGbMhZGox9A==
-=VvC9
------END PGP SIGNATURE-----
---=-=-=--
