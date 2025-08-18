@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5131E570D;
-	Mon, 18 Aug 2025 08:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C66304BB5;
+	Mon, 18 Aug 2025 08:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755506953; cv=none; b=lKJgUy4BBCY0ND7lw7pgys3Pj4uttq3+V+vYfKX5CLMownDsphgkQHQU2Dv8xmpuMSOpLE4M28P4tRomBb1KLu0u/SNLK84T6QXAP4ltdcedeTdERa5DBJOH7vMct0oRBDOeQt4gctkJ0qXniCZQyw2kESReOSxbNFP3+rCp/i8=
+	t=1755507303; cv=none; b=lHNG0l71nSyu+ivdL23JuXeFDnbNMgON3KUoshnh3nCixdheTisz5pYMd+qZwRKEAJs6psgvfHigpk8aBfZ10i9ybfohwx7sTTEka+lun1Co3nZL8wbRB0R7j4QqZ/rnDpE3eXMiPdfNFq414hmqaAzyEKZD3jn+jm5gxcGPHTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755506953; c=relaxed/simple;
-	bh=rhlsxxRk4EuwzcNd++izNC2AdIT+M5hU7gqXnfBxExo=;
+	s=arc-20240116; t=1755507303; c=relaxed/simple;
+	bh=DdcgAcLWIQCT5VfROVd53aunL6+3drS40MsdZ6YxQwY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lyH7rOiA+gJwj+tN3ZpVtQhIpfMImzrJWArxmBJib6XzYaFiZN8jmX1lPy0j/EpeDICvf7VtK6ZbiFmb+mgMe2N+PSh1U2WnGSrr1CIeq4mc7oznZyxNerWQmVwr9cje8h9ZcPqFRql5Uv+ZshuYUDMyKOYUh6lAJKs3FosA46I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hRdnMIdq; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=GwhZ4GLkorf7quTJBrvJKuTmwYgFw0pRvC+DIeik9sFBCVPfrAKGiME4S8sgRgAYDp6UAVqnKo4ReHvcGKt1SbO2n2SmZOnyvaQcULAAk18NNEp1sEAiMgPwJ1ZnKVHBEgTJH0RoUsNzdYU9O/kxiGQbz8hVpYmWR7din+8CFlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XujRCVbT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hRdnMIdq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540DDC4CEEB;
-	Mon, 18 Aug 2025 08:49:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XujRCVbT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215A3C4CEEB;
+	Mon, 18 Aug 2025 08:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755506953;
-	bh=rhlsxxRk4EuwzcNd++izNC2AdIT+M5hU7gqXnfBxExo=;
+	s=k20201202; t=1755507303;
+	bh=DdcgAcLWIQCT5VfROVd53aunL6+3drS40MsdZ6YxQwY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hRdnMIdqWRyqAgLEgNUSk4MAO2h1laN0DdNxmQoagjStkv8R1rR7Vitf/Svgki16B
-	 gN8Lw/8IdQs45h3awI0Yt2pghON+9UkJTYDFznKAnYUcOGIeHbtBQqDwtzzEYCkW6f
-	 +bKhYEsMbS7GoCzsFEQTbBgEBq2aJiMUma363h4u4WfkuwtbHMdFMDbDvuqTPbmjSl
-	 sK0/ON/lGK9/Nv4eGbw32IEj0DMbnVyxkgqcg2OULyAGE60qjOPYNRq08IQqqloBz7
-	 Yhs390atpNtI5EuiG6u5Kbs3iZjnyrNOqpYfyfgOpZ0ETdDPwqGgfx7YQ9CIkbpMq2
-	 paCBSYfSny+6Q==
-Message-ID: <b1f59033-12d0-4395-85f1-e296a5dbca5f@kernel.org>
-Date: Mon, 18 Aug 2025 10:49:04 +0200
+	b=XujRCVbTVgbXnEtb2wnloLWwnvLf/IQVX9CmJNw005j6auIGCBA9whch1w7PFO8ur
+	 cOBx29dxR/Lwe9oeeTV063HGf79Z2Rpok0Kb77Rn7CY8hSJetxXdbB4yVCbrjeoS6N
+	 ayjlTaLr3Pnitx0jd+9h4GPMIuCuQqvq5sMW3qTTJAfkiuyMd1V1RAbB7QccOnOSl3
+	 qdqyzjVpKYWxRpY5oQfP+qj4lc2JBkT44ii9Er6AEyQ6FZVz3kk6mQ2UJ/XNfEuegk
+	 D+Ze7NnImy2yyfl/jnQboBTPiMh2+0Ydq18nqhIMeGZiDw7mmMxCD0jXNWuEYZ2XnT
+	 Cl3W5NxOV9J1A==
+Message-ID: <9d00b76e-b13b-45cf-a95b-65727fa07300@kernel.org>
+Date: Mon, 18 Aug 2025 10:54:58 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,22 +35,19 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/12] media: fsd-csis: Add support for FSD CSIS DMA
-To: Inbaraj E <inbaraj.e@samsung.com>, mturquette@baylibre.com,
- sboyd@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- s.nawrocki@samsung.com, s.hauer@pengutronix.de, shawnguo@kernel.org,
- cw00.choi@samsung.com, rmfrfs@gmail.com, laurent.pinchart@ideasonboard.com,
- martink@posteo.de, mchehab@kernel.org, linux-fsd@tesla.com, will@kernel.org,
- catalin.marinas@arm.com, pankaj.dubey@samsung.com, shradha.t@samsung.com,
- ravi.patel@samsung.com
-Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, alim.akhtar@samsung.com,
- linux-samsung-soc@vger.kernel.org, kernel@puri.sm, kernel@pengutronix.de,
- festevam@gmail.com, linux-media@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20250814140943.22531-1-inbaraj.e@samsung.com>
- <CGME20250814141103epcas5p14516cbe45c21d28ba9e231da99940aa1@epcas5p1.samsung.com>
- <20250814140943.22531-13-inbaraj.e@samsung.com>
+Subject: Re: [PATCH v4 2/2] arm64: dts: imx8mp: Add TechNexion
+ EDM-G-IMX8M-PLUS SOM on WB-EDM-G carrier board
+To: Richard Hu <richard.hu@technexion.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Ray Chang <ray.chang@technexion.com>
+References: <20250724-add-technexion-edm-g-imx8m-plus-som-v4-0-d1c88155d6f4@technexion.com>
+ <20250724-add-technexion-edm-g-imx8m-plus-som-v4-2-d1c88155d6f4@technexion.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -96,287 +93,151 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250814140943.22531-13-inbaraj.e@samsung.com>
+In-Reply-To: <20250724-add-technexion-edm-g-imx8m-plus-som-v4-2-d1c88155d6f4@technexion.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 14/08/2025 16:09, Inbaraj E wrote:
-> FSD CSIS IP bundles DMA engine for receiving frames from MIPI-CSI2 bus.
-> Add support internal DMA controller to capture the frames.
+On 24/07/2025 04:34, Richard Hu wrote:
+> Add support for TechNexion EDM-G-IMX8M-PLUS SOM and WB-EDM-G carrier board.
+> Key interfaces include:
+> - Gigabit Ethernet
+> - USB 3.0
+> - I2S, UART, SPI, I2C, PWM, GPIO
 > 
-> Signed-off-by: Inbaraj E <inbaraj.e@samsung.com>
-
-I commented on order of patches and got more surprise - final driver
-patch after DTS defconfig. It's really wrong order.
-
+> Signed-off-by: Richard Hu <richard.hu@technexion.com>
+> Signed-off-by: Ray Chang <ray.chang@technexion.com>
 > ---
->  MAINTAINERS                                   |    8 +
->  drivers/media/platform/samsung/Kconfig        |    1 +
->  drivers/media/platform/samsung/Makefile       |    1 +
->  .../media/platform/samsung/fsd-csis/Kconfig   |   18 +
->  .../media/platform/samsung/fsd-csis/Makefile  |    3 +
->  .../platform/samsung/fsd-csis/fsd-csis.c      | 1709 +++++++++++++++++
->  6 files changed, 1740 insertions(+)
->  create mode 100644 drivers/media/platform/samsung/fsd-csis/Kconfig
->  create mode 100644 drivers/media/platform/samsung/fsd-csis/Makefile
->  create mode 100644 drivers/media/platform/samsung/fsd-csis/fsd-csis.c
+>  arch/arm64/boot/dts/freescale/Makefile            |   1 +
+>  arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts | 372 ++++++++++
+>  arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi   | 806 ++++++++++++++++++++++
+>  3 files changed, 1179 insertions(+)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index bd62ad58a47f..1e17fb0581d2 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3334,6 +3334,14 @@ S:	Maintained
->  F:	Documentation/devicetree/bindings/media/samsung,s5p-mfc.yaml
->  F:	drivers/media/platform/samsung/s5p-mfc/
->  
-> +ARM/SAMSUNG FSD BRIDGE DRIVER
-
-TESLA FSD BRIDGE DRIVER
-(because ARM/foo are only SoC maintainer entries)
-
-> +M:	Inbaraj E <inbaraj.e@samsung.com>
-> +L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-
-Replace above list with samsung-soc list.
-
-> +L:	linux-media@vger.kernel.org
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/media/tesla,fsd-csis-media.yaml
-> +F:	drivers/media/platform/samsung/fsd-csis/fsd-csis.c
-> +
->  ARM/SOCFPGA ARCHITECTURE
->  M:	Dinh Nguyen <dinguyen@kernel.org>
->  S:	Maintained
-> diff --git a/drivers/media/platform/samsung/Kconfig b/drivers/media/platform/samsung/Kconfig
-> index 0e34c5fc1dfc..4cebe2ae24a3 100644
-> --- a/drivers/media/platform/samsung/Kconfig
-> +++ b/drivers/media/platform/samsung/Kconfig
-> @@ -4,6 +4,7 @@ comment "Samsung media platform drivers"
->  
->  source "drivers/media/platform/samsung/exynos-gsc/Kconfig"
->  source "drivers/media/platform/samsung/exynos4-is/Kconfig"
-> +source "drivers/media/platform/samsung/fsd-csis/Kconfig"
->  source "drivers/media/platform/samsung/s3c-camif/Kconfig"
->  source "drivers/media/platform/samsung/s5p-g2d/Kconfig"
->  source "drivers/media/platform/samsung/s5p-jpeg/Kconfig"
-> diff --git a/drivers/media/platform/samsung/Makefile b/drivers/media/platform/samsung/Makefile
-> index 21fea3330e4b..fde1b9626713 100644
-> --- a/drivers/media/platform/samsung/Makefile
-> +++ b/drivers/media/platform/samsung/Makefile
-> @@ -1,6 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  obj-y += exynos-gsc/
->  obj-y += exynos4-is/
-> +obj-y += fsd-csis/
->  obj-y += s3c-camif/
->  obj-y += s5p-g2d/
->  obj-y += s5p-jpeg/
-> diff --git a/drivers/media/platform/samsung/fsd-csis/Kconfig b/drivers/media/platform/samsung/fsd-csis/Kconfig
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 0b473a23d120..b56c866d4a9d 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -201,6 +201,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-drc02.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk2.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk3.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-picoitx.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-edimm2.2.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-iota2-lumpy.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts b/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts
 > new file mode 100644
-> index 000000000000..99803e924682
+> index 000000000000..5441328afb20
 > --- /dev/null
-> +++ b/drivers/media/platform/samsung/fsd-csis/Kconfig
-> @@ -0,0 +1,18 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +#
-> +# FSD MIPI CSI-2 Rx controller configurations
-> +
-> +config VIDEO_FSD_CSIS
-
-VIDEO_TSLA_FSD_CSIS
-
-> +	tristate "FSD SoC MIPI-CSI2 media controller driver"
-> +	depends on VIDEO_DEV && VIDEO_V4L2_SUBDEV_API
-> +	depends on HAS_DMA
-> +	depends on OF
-
-OF seems unneeded dependency
-
-But you miss ARCH_TESLA_FSD instead.
-
-
-> +	select VIDEOBUF2_DMA_CONTIG
-> +	select V4L2_FWNODE
-> +	help
-> +	  This is a video4linux2 driver for FSD SoC MIPI-CSI2 Rx.
-
-Tesla FSD
-
-> +	  The driver provides interface for capturing frames.
-> +
-> +	  To compile this driver as a module, choose M here. The module
-> +	  will be called fsd-csis.
-> +
-> diff --git a/drivers/media/platform/samsung/fsd-csis/Makefile b/drivers/media/platform/samsung/fsd-csis/Makefile
-> new file mode 100644
-> index 000000000000..eba8c0c6a7cc
-> --- /dev/null
-> +++ b/drivers/media/platform/samsung/fsd-csis/Makefile
-> @@ -0,0 +1,3 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +
-> +obj-$(CONFIG_VIDEO_FSD_CSIS) += fsd-csis.o
-> diff --git a/drivers/media/platform/samsung/fsd-csis/fsd-csis.c b/drivers/media/platform/samsung/fsd-csis/fsd-csis.c
-> new file mode 100644
-> index 000000000000..74f46038d506
-> --- /dev/null
-> +++ b/drivers/media/platform/samsung/fsd-csis/fsd-csis.c
-> @@ -0,0 +1,1709 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts
+> @@ -0,0 +1,372 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 > +/*
-> + * Copyright (c) 2022-2025 Samsung Electronics Co., Ltd.
-> + *             https://www.samsung.com
+> + * Copyright 2024 TechNexion Ltd.
 > + *
-> + * FSD CSIS V4L2 Capture driver for FSD SoC.
-
-"Tesla FSD" in both places
-
+> + * Author: Ray Chang <ray.chang@technexion.com>
 > + */
 > +
-> +#include <linux/clk.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regmap.h>
-> +#include <media/v4l2-device.h>
-> +#include <media/v4l2-ioctl.h>
-> +#include <media/videobuf2-dma-contig.h>
-> +#include <media/v4l2-mc.h>
-
-How can you depend on OF if there is no single OF header?
-
+> +/dts-v1/;
 > +
-> +#define FSD_CSIS_DMA_COHERENT_MASK_SIZE		32
-> +#define FSD_CSIS_NB_MIN_CH			2
-> +#define FSD_CSIS_NB_VC				4
-> +#define FSD_CSIS_MEDIA_NUM_PADS			2
-> +#define FSD_CSIS_NB_DMA_OUT_CH			8
-> +#define FSD_CSIS_MAX_VC				4
-> +#define FSD_CSIS_NB_CLOCK			2
-> +#define FSD_CSIS_NB_OF_BUFS_ON_DMA_CHANNELS	2
-> +#define FSD_CSIS_DMA_LINE_ALIGN_SIZE		128
-> +#define FSD_CSIS_DMA_CH_OFFSET			0x100
+> +#include "imx8mp-edm-g.dtsi"
+> +
+> +/ {
+> +	compatible = "technexion,edm-g-imx8mp-wb", "technexion,edm-g-imx8mp", "fsl,imx8mp";
+> +	model = "TechNexion EDM-G-IMX8MP SOM on WB-EDM-G";
+> +
+> +	connector {
+> +		compatible = "usb-c-connector";
+> +		data-role = "dual";
+> +		label = "USB-C";
+> +
+> +		ports {
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			port@0 {
+> +				reg = <0>;
+> +
+> +				hs_ep: endpoint {
+> +					remote-endpoint = <&usb3_hs_ep>;
+> +				};
+> +			};
+> +
+> +			port@1 {
+> +				reg = <1>;
+> +
+> +				ss_ep: endpoint {
+> +					remote-endpoint = <&hd3ss3220_in_ep>;
+> +				};
+> +			};
+> +		};
+> +	};
+> +
+> +	leds {
+> +		compatible = "gpio-leds";
+> +
+> +		led {
+> +			default-state = "on";
+> +			gpios = <&expander2 1 GPIO_ACTIVE_HIGH>;
+> +			label = "gpio-led";
+> +		};
+> +	};
+> +
+> +	native-hdmi-connector {
+
+Just hdmi-connector
+
+Unless there is non-native one?
+
 
 ...
 
 > +
-> +static int fsd_csis_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct fsd_csis *csis;
-> +	int ret = 0;
-> +	int irq;
-> +
-> +	csis = devm_kzalloc(dev, sizeof(*csis), GFP_KERNEL);
-> +	if (!csis)
-> +		return -ENOMEM;
-> +
-> +	csis->dev = dev;
-> +	csis->info = of_device_get_match_data(dev);
-> +
-> +	csis->dma_base = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(csis->dma_base))
-> +		return PTR_ERR(csis->dma_base);
-> +
-> +	irq = platform_get_irq(pdev, 0);
-> +	if (irq < 0)
-> +		return irq;
-> +
-> +	ret = devm_request_irq(dev, irq,
-> +			csis_irq_handler, IRQF_SHARED, pdev->name, csis);
 
-Please align these (checkpatch --strict)
-
-> +
-> +	ret = fsd_csis_clk_get(csis);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	pm_runtime_enable(dev);
-> +	if (!pm_runtime_enabled(dev)) {
-
-That's odd code. Why?
-
-> +		ret = fsd_csis_runtime_resume(dev);
-
-Even more questions why?
-
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
-> +	platform_set_drvdata(pdev, csis);
-> +
-> +	ret = fsd_csis_enable_pll(csis);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = fsd_csis_media_init(csis);
-> +	if (ret)
-> +		return ret;
-
-I think you miss clean up of csis->pll completely. Just use
-devm_clk_get_enabled and convert everything here to devm.
-
-
-> +
-> +	ret = fsd_csis_async_register(csis);
-> +	if (ret)
-> +		goto err_media_cleanup;
-> +
-> +	return 0;
-> +
-> +err_media_cleanup:
-> +	fsd_csis_media_cleanup(csis);
-
-Also this...
-
-> +
-> +	return ret;
-> +}
-> +
-> +static void fsd_csis_remove(struct platform_device *pdev)
-> +{
-> +	struct fsd_csis *csis = platform_get_drvdata(pdev);
-> +
-> +	fsd_csis_media_cleanup(csis);
-> +
-> +	v4l2_async_nf_unregister(&csis->notifier);
-> +	v4l2_async_nf_cleanup(&csis->notifier);
-> +	v4l2_async_unregister_subdev(&csis->subdev.sd);
-> +
-> +	if (!pm_runtime_enabled(csis->dev))
-> +		fsd_csis_runtime_suspend(csis->dev);
-> +
-> +	pm_runtime_disable(csis->dev);
-> +	pm_runtime_set_suspended(csis->dev);
-> +}
-> +
-> +static const struct of_device_id fsd_csis_of_match[] = {
-> +	{ .compatible = "tesla,fsd-csis-media", },
-> +	{ },
+> +	pinctrl_hdmi: hdmigrp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x1c2
+> +			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x1c2
+> +			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x10
+> +		>;
+> +	};
 > +};
-> +
-> +MODULE_DEVICE_TABLE(of, fsd_csis_of_match);
-> +
-> +static struct platform_driver fsd_csis_driver = {
-> +	.probe		= fsd_csis_probe,
-> +	.remove		= fsd_csis_remove,
-> +	.driver		= {
-> +		.name		= FSD_CSIS_MODULE_NAME,
-> +		.of_match_table = of_match_ptr(fsd_csis_of_match),
-
-Drop of_match_ptr, it is not really correct.
-
-> +		.pm		= &fsd_csis_pm_ops,
-> +	},
-> +};
-> +
-> +module_platform_driver(fsd_csis_driver);
-> +
-> +MODULE_DESCRIPTION("FSD CSIS Driver");
-> +MODULE_AUTHOR("Inbaraj E <inbaraj.e@samsung.com>");
-> +MODULE_LICENSE("GPL");
-> +
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi
+> new file mode 100644
+> index 000000000000..cc0b37158b0a
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi
+> @@ -0,0 +1,806 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 
 
+Odd to see GPL-3.0 (and newer as well). Are you sure this is what you want?
+
+> +/*
+
+
+...
+
+> +
+> +&i2c1 {
+> +	clock-frequency = <100000>;
+> +	pinctrl-0 = <&pinctrl_i2c1>;
+> +	pinctrl-names = "default";
+> +	status = "okay";
+> +
+> +	pmic: pmic@25 {
+> +		compatible = "nxp,pca9450c";
+> +		reg = <0x25>;
+> +		interrupt-parent = <&gpio1>;
+> +		interrupts = <3 GPIO_ACTIVE_LOW>;
+
+Wrong define. And the flag is not NONE, either.
+
+You just copied same bug from some very old (5 years?) code.
+
+
+> +		/* PMIC PCA9450 PMIC_nINT GPIO1_IO3 */
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_pmic>;
+> +
 Best regards,
 Krzysztof
