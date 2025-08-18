@@ -1,243 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C66304BB5;
-	Mon, 18 Aug 2025 08:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2727E9
+	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 09:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755507303; cv=none; b=lHNG0l71nSyu+ivdL23JuXeFDnbNMgON3KUoshnh3nCixdheTisz5pYMd+qZwRKEAJs6psgvfHigpk8aBfZ10i9ybfohwx7sTTEka+lun1Co3nZL8wbRB0R7j4QqZ/rnDpE3eXMiPdfNFq414hmqaAzyEKZD3jn+jm5gxcGPHTU=
+	t=1755508921; cv=none; b=ahRVl0Jo9sDeCjXwGFQWzf/PpkzBEpLEsQmU+C4AkZTxw6aU7PDm3g6gjuNTriEvqJkyyfS8epqphTu+SZS2yx96EKOtGSeNmv0bOILYGRCExqakAtHVMYEDHBvpPwGMos1nabtmjGKlfShS9vqb50ayDstasHLIXjkrwew681Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755507303; c=relaxed/simple;
-	bh=DdcgAcLWIQCT5VfROVd53aunL6+3drS40MsdZ6YxQwY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GwhZ4GLkorf7quTJBrvJKuTmwYgFw0pRvC+DIeik9sFBCVPfrAKGiME4S8sgRgAYDp6UAVqnKo4ReHvcGKt1SbO2n2SmZOnyvaQcULAAk18NNEp1sEAiMgPwJ1ZnKVHBEgTJH0RoUsNzdYU9O/kxiGQbz8hVpYmWR7din+8CFlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XujRCVbT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755508921; c=relaxed/simple;
+	bh=kqWkwpZeDd3/I+FFiy2R27j1WrvPesd6DRcrbiWwlas=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CJnIeBIO0FBqfY2QpkGTfw4wdSsyvYCHCc4yJLZf619z74XZn2Ropzx6c3pgKqdqjKAl0i++YOYOLQI88aUZHYX0q1v+JLNwNBj2v44e4WmUm/W+F3gYBNDbTHfJ2UghGrCNP04iRHx/FlQby4pYEtZQvSVuXWpTgKIvYkCo30o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=MiNljGcw; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XujRCVbT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215A3C4CEEB;
-	Mon, 18 Aug 2025 08:54:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755507303;
-	bh=DdcgAcLWIQCT5VfROVd53aunL6+3drS40MsdZ6YxQwY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XujRCVbTVgbXnEtb2wnloLWwnvLf/IQVX9CmJNw005j6auIGCBA9whch1w7PFO8ur
-	 cOBx29dxR/Lwe9oeeTV063HGf79Z2Rpok0Kb77Rn7CY8hSJetxXdbB4yVCbrjeoS6N
-	 ayjlTaLr3Pnitx0jd+9h4GPMIuCuQqvq5sMW3qTTJAfkiuyMd1V1RAbB7QccOnOSl3
-	 qdqyzjVpKYWxRpY5oQfP+qj4lc2JBkT44ii9Er6AEyQ6FZVz3kk6mQ2UJ/XNfEuegk
-	 D+Ze7NnImy2yyfl/jnQboBTPiMh2+0Ydq18nqhIMeGZiDw7mmMxCD0jXNWuEYZ2XnT
-	 Cl3W5NxOV9J1A==
-Message-ID: <9d00b76e-b13b-45cf-a95b-65727fa07300@kernel.org>
-Date: Mon, 18 Aug 2025 10:54:58 +0200
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="MiNljGcw"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 9B7B417D1;
+	Mon, 18 Aug 2025 11:20:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755508858;
+	bh=kqWkwpZeDd3/I+FFiy2R27j1WrvPesd6DRcrbiWwlas=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MiNljGcwNxjzMcy1MqNDcTJD1GeWwOnpxjDNCVBmYPbX8wToXu5Dbi+7oatKDBds1
+	 pJOX746hIzx1pUtfClWxjOehH97MfSZLhhOpJRpwsem6DIamO9EzhWWPeyaRvEMAOv
+	 FMnsDM4Km1i9WLuos2TwoKQxhtibpk3R77xvujxo=
+Date: Mon, 18 Aug 2025 12:21:33 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Inbaraj E <inbaraj.e@samsung.com>
+Cc: mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, krzk@kernel.org,
+	s.nawrocki@samsung.com, s.hauer@pengutronix.de, shawnguo@kernel.org,
+	cw00.choi@samsung.com, rmfrfs@gmail.com, martink@posteo.de,
+	mchehab@kernel.org, linux-fsd@tesla.com, will@kernel.org,
+	catalin.marinas@arm.com, pankaj.dubey@samsung.com,
+	shradha.t@samsung.com, ravi.patel@samsung.com,
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, alim.akhtar@samsung.com,
+	linux-samsung-soc@vger.kernel.org, kernel@puri.sm,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 05/12] media: imx-mipi-csis: Move clk to
+ mipi_csis_info structure
+Message-ID: <20250818092133.GA5862@pendragon.ideasonboard.com>
+References: <20250814140943.22531-1-inbaraj.e@samsung.com>
+ <CGME20250814141025epcas5p2b226c4eaab5d60d0e95f684e2ef930f2@epcas5p2.samsung.com>
+ <20250814140943.22531-6-inbaraj.e@samsung.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] arm64: dts: imx8mp: Add TechNexion
- EDM-G-IMX8M-PLUS SOM on WB-EDM-G carrier board
-To: Richard Hu <richard.hu@technexion.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Ray Chang <ray.chang@technexion.com>
-References: <20250724-add-technexion-edm-g-imx8m-plus-som-v4-0-d1c88155d6f4@technexion.com>
- <20250724-add-technexion-edm-g-imx8m-plus-som-v4-2-d1c88155d6f4@technexion.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250724-add-technexion-edm-g-imx8m-plus-som-v4-2-d1c88155d6f4@technexion.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250814140943.22531-6-inbaraj.e@samsung.com>
 
-On 24/07/2025 04:34, Richard Hu wrote:
-> Add support for TechNexion EDM-G-IMX8M-PLUS SOM and WB-EDM-G carrier board.
-> Key interfaces include:
-> - Gigabit Ethernet
-> - USB 3.0
-> - I2S, UART, SPI, I2C, PWM, GPIO
+Hi Inbaraj,
+
+On Thu, Aug 14, 2025 at 07:39:36PM +0530, Inbaraj E wrote:
+> clock names in NXP SoC's is different from the FSD SoC. Inorder to
+
+s/clock/Clock/
+s/Inorder/In order/
+
+Is the difference really a matter of SoCs, or is it because the FSD SoC
+uses a different version of the IP ?
+
+I also suspect that the "phy" clock was added by mistake, and isn't
+needed in NXP SoCs. Could you please check and confirm if the v3.3 and
+v3.6.3 versions of the IP have an input PHY clock ?
+
+> extend this driver to use for FSD SoC. Move the clock names to
+> mipi_csis_info structure.
 > 
-> Signed-off-by: Richard Hu <richard.hu@technexion.com>
-> Signed-off-by: Ray Chang <ray.chang@technexion.com>
+> Signed-off-by: Inbaraj E <inbaraj.e@samsung.com>
 > ---
->  arch/arm64/boot/dts/freescale/Makefile            |   1 +
->  arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts | 372 ++++++++++
->  arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi   | 806 ++++++++++++++++++++++
->  3 files changed, 1179 insertions(+)
+>  drivers/media/platform/nxp/imx-mipi-csis.c | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> index 0b473a23d120..b56c866d4a9d 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -201,6 +201,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-drc02.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk2.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk3.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-picoitx.dtb
-> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-edimm2.2.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx8mp-iota2-lumpy.dtb
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts b/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts
-> new file mode 100644
-> index 000000000000..5441328afb20
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts
-> @@ -0,0 +1,372 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2024 TechNexion Ltd.
-> + *
-> + * Author: Ray Chang <ray.chang@technexion.com>
-> + */
+> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+> index 2beb5f43c2c0..4afa75734f05 100644
+> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> @@ -267,6 +267,8 @@ static const struct mipi_csis_event mipi_csis_events[] = {
+>  
+>  #define MIPI_CSIS_NUM_EVENTS ARRAY_SIZE(mipi_csis_events)
+>  
+> +#define MIPI_CSIS_MAX_CLOCKS	4
 > +
-> +/dts-v1/;
-> +
-> +#include "imx8mp-edm-g.dtsi"
-> +
-> +/ {
-> +	compatible = "technexion,edm-g-imx8mp-wb", "technexion,edm-g-imx8mp", "fsl,imx8mp";
-> +	model = "TechNexion EDM-G-IMX8MP SOM on WB-EDM-G";
-> +
-> +	connector {
-> +		compatible = "usb-c-connector";
-> +		data-role = "dual";
-> +		label = "USB-C";
-> +
-> +		ports {
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +
-> +			port@0 {
-> +				reg = <0>;
-> +
-> +				hs_ep: endpoint {
-> +					remote-endpoint = <&usb3_hs_ep>;
-> +				};
-> +			};
-> +
-> +			port@1 {
-> +				reg = <1>;
-> +
-> +				ss_ep: endpoint {
-> +					remote-endpoint = <&hd3ss3220_in_ep>;
-> +				};
-> +			};
-> +		};
-> +	};
-> +
-> +	leds {
-> +		compatible = "gpio-leds";
-> +
-> +		led {
-> +			default-state = "on";
-> +			gpios = <&expander2 1 GPIO_ACTIVE_HIGH>;
-> +			label = "gpio-led";
-> +		};
-> +	};
-> +
-> +	native-hdmi-connector {
+>  enum mipi_csis_clk {
+>  	MIPI_CSIS_CLK_PCLK,
+>  	MIPI_CSIS_CLK_WRAP,
+> @@ -274,13 +276,6 @@ enum mipi_csis_clk {
+>  	MIPI_CSIS_CLK_AXI,
+>  };
+>  
+> -static const char * const mipi_csis_clk_id[] = {
+> -	"pclk",
+> -	"wrap",
+> -	"phy",
+> -	"axi",
+> -};
+> -
+>  enum mipi_csis_version {
+>  	MIPI_CSIS_V3_3,
+>  	MIPI_CSIS_V3_6_3,
+> @@ -289,6 +284,7 @@ enum mipi_csis_version {
+>  struct mipi_csis_info {
+>  	enum mipi_csis_version version;
+>  	unsigned int num_clocks;
+> +	const char *clk_names[MIPI_CSIS_MAX_CLOCKS];
+>  };
+>  
+>  struct mipi_csis_device {
+> @@ -697,7 +693,7 @@ static int mipi_csis_clk_get(struct mipi_csis_device *csis)
+>  		return -ENOMEM;
+>  
+>  	for (i = 0; i < csis->info->num_clocks; i++)
+> -		csis->clks[i].id = mipi_csis_clk_id[i];
+> +		csis->clks[i].id = csis->info->clk_names[i];
+>  
+>  	ret = devm_clk_bulk_get(csis->dev, csis->info->num_clocks,
+>  				csis->clks);
+> @@ -1539,12 +1535,14 @@ static const struct of_device_id mipi_csis_of_match[] = {
+>  		.data = &(const struct mipi_csis_info){
+>  			.version = MIPI_CSIS_V3_3,
+>  			.num_clocks = 3,
+> +			.clk_names = {"pclk", "wrap", "phy"},
+>  		},
+>  	}, {
+>  		.compatible = "fsl,imx8mm-mipi-csi2",
+>  		.data = &(const struct mipi_csis_info){
+>  			.version = MIPI_CSIS_V3_6_3,
+>  			.num_clocks = 4,
+> +			.clk_names = {"pclk", "wrap", "phy", "axi"},
+>  		},
+>  	},
+>  	{ /* sentinel */ },
 
-Just hdmi-connector
+-- 
+Regards,
 
-Unless there is non-native one?
-
-
-...
-
-> +
-
-> +	pinctrl_hdmi: hdmigrp {
-> +		fsl,pins = <
-> +			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x1c2
-> +			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x1c2
-> +			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x10
-> +		>;
-> +	};
-> +};
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi
-> new file mode 100644
-> index 000000000000..cc0b37158b0a
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi
-> @@ -0,0 +1,806 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-
-
-Odd to see GPL-3.0 (and newer as well). Are you sure this is what you want?
-
-> +/*
-
-
-...
-
-> +
-> +&i2c1 {
-> +	clock-frequency = <100000>;
-> +	pinctrl-0 = <&pinctrl_i2c1>;
-> +	pinctrl-names = "default";
-> +	status = "okay";
-> +
-> +	pmic: pmic@25 {
-> +		compatible = "nxp,pca9450c";
-> +		reg = <0x25>;
-> +		interrupt-parent = <&gpio1>;
-> +		interrupts = <3 GPIO_ACTIVE_LOW>;
-
-Wrong define. And the flag is not NONE, either.
-
-You just copied same bug from some very old (5 years?) code.
-
-
-> +		/* PMIC PCA9450 PMIC_nINT GPIO1_IO3 */
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_pmic>;
-> +
-Best regards,
-Krzysztof
+Laurent Pinchart
