@@ -1,89 +1,99 @@
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B278428695
-	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 20:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BBD1FDD;
+	Mon, 18 Aug 2025 20:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755547738; cv=none; b=Gwjv7pyLfeamMR15PTAFQObyW5R0/59a2LuhJrcVJl3Jw1u52PEd3VZK78t4RTXnhIHHMw0JAHcvC7cPQ9Cxpa1AEE9rJeBUSzoWkYzuVpEHyBQumMqCgkPklW3tSPdNYUCgPRfQPxzHX9LfJ4log2KDtWuybJnFi8TfaRGp/vE=
+	t=1755548700; cv=none; b=MOTUi+21+0b4NkCoL1UjlLE4uzOwDj5d4/k7QOC1z5qD+RsucCnsdKPQHlTXb1t+IRSut8UWSNOyUmUhniB6AZXIoxeEVg+VWhCo51ZJtSmfIPTb3519L7uasg1GJqWeQ8eEyzty08+XtmYAWbomDyp4Bt/1H9FpTR/u27938lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755547738; c=relaxed/simple;
-	bh=eh3xMCOXyKgUJnXSbekRaaERghl4/yYfIIqbXegEsNA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PGwXpp/ouDxh/45i0GvHp0eqTT/5ln0NylE03nPb3VLElusdhHpE+8o62LN3FJZzTNrqp1/Fiv+0eQ47iWhvze1WExVy21hasOpFz/hj1acwX1McpIvPh32gBwRxkDSvExkOczn/iECMt2nKHaveJv3DjrIvFP6XiIuvUvXQ+7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=Gc9MgdMt; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=Gc9MgdMt; arc=none smtp.client-ip=178.79.152.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+	s=arc-20240116; t=1755548700; c=relaxed/simple;
+	bh=DWORNPSoaH+MkjUCn75Qd2KiRx9On7Gotf+b7ngssYs=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=Ckv2+BL9phOnnU1u5HC94Z/fe9A4sC/AyimIJwV9pBtC/DgC5/zquReY2khMNOiZ+lMcUv9sYcUa5l+ChELULVfHJcOqyZCIVrvA4xCrIoEewSziC8vTX6OZx+WbozFYX00Q/dfmutfnUK940ECG3ZhbKccbazakLt+4Xpxr/6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ic8tObN8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="Gc9MgdMt";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="Gc9MgdMt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1755547382; bh=eh3xMCOXyKgUJnXSbekRaaERghl4/yYfIIqbXegEsNA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gc9MgdMtwxpXDzaPzTZUlJ3RZkuXL0Ppvq+ZftY9pwlfXlNZwaOMoRyfCbMzIMmrB
-	 w9PqQMryQLNz3T3nM4NvTduVyawi+c8amAPbl6QvnN56q2nwokuYxByqg3RITWdYk3
-	 XLzWTwFpGHjSPqyMzjNuEP3YBLp6Kf1kMHLOBuWD3zCVSCmVQG1yBDP8miK27zacGS
-	 gLGdfgKh5ReCiiByKueYyVEiBwL0oePIudMEHRo6VtGyD6sCOU9Y9Be9w5nat707jn
-	 ICtepewfpNKao1W5lke1WvVw0C+fksnReLIroHfskqpvDkqRjVbjuoZBGxBp79u9Rv
-	 qXHTcYhw/2kjQ==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id 146333CDE9D;
-	Mon, 18 Aug 2025 20:03:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1755547382; bh=eh3xMCOXyKgUJnXSbekRaaERghl4/yYfIIqbXegEsNA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Gc9MgdMtwxpXDzaPzTZUlJ3RZkuXL0Ppvq+ZftY9pwlfXlNZwaOMoRyfCbMzIMmrB
-	 w9PqQMryQLNz3T3nM4NvTduVyawi+c8amAPbl6QvnN56q2nwokuYxByqg3RITWdYk3
-	 XLzWTwFpGHjSPqyMzjNuEP3YBLp6Kf1kMHLOBuWD3zCVSCmVQG1yBDP8miK27zacGS
-	 gLGdfgKh5ReCiiByKueYyVEiBwL0oePIudMEHRo6VtGyD6sCOU9Y9Be9w5nat707jn
-	 ICtepewfpNKao1W5lke1WvVw0C+fksnReLIroHfskqpvDkqRjVbjuoZBGxBp79u9Rv
-	 qXHTcYhw/2kjQ==
-Message-ID: <ddcd3af2-534d-4708-9f7d-e301a91373ab@mleia.com>
-Date: Mon, 18 Aug 2025 23:02:58 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ic8tObN8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8369DC4CEEB;
+	Mon, 18 Aug 2025 20:25:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755548700;
+	bh=DWORNPSoaH+MkjUCn75Qd2KiRx9On7Gotf+b7ngssYs=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=ic8tObN8DjU6IWxKiOeUkHXlkzm6Ho162M8Ov3UaeqzH7pN/YMUQuwGmAuFx47ius
+	 MdA34L14QpFsZUs0iM3927gfqeD5/OwbmXbmADzTqvPTVUhqeniEQdqJkfBxHM+0yg
+	 5e/+nxMtA8SxUGZ9YQwSyOk/r7QlfQTMtlQwRtxIXDCImfQ/GQq1LXZ/w/4ShPCFKQ
+	 APvr+K1EZSLsflkmA4kop8gVAnr0ol6ed1pbWwh1JdxLppWSA6UZ/6fYBoKvBEYFOG
+	 UJuwBDZqBqgBAwFk3VLgWTX+vIn8FA+oOmyNXxzmA6bca0NeuEWNjfTIi06cPAIwJP
+	 qcpCS8jBN+WXA==
+Date: Mon, 18 Aug 2025 15:24:59 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v2 1/1] dt-bindings: input: convert lpc32xx-key.txt to
- yaml format
-To: Frank Li <Frank.Li@nxp.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
- <linux-input@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "moderated list:ARM/LPC32XX SOC SUPPORT"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20250818183814.3603308-1-Frank.Li@nxp.com>
-From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <20250818183814.3603308-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20250818_200302_104236_E7C5C42E 
-X-CRM114-Status: UNSURE (   6.39  )
-X-CRM114-Notice: Please train this message. 
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: imx@lists.linux.dev, Conor Dooley <conor+dt@kernel.org>, 
+ linuxppc-dev@lists.ozlabs.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org
+To: Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20250818183427.3601986-1-Frank.Li@nxp.com>
+References: <20250818183427.3601986-1-Frank.Li@nxp.com>
+Message-Id: <175554869942.1999698.5388783109628696157.robh@kernel.org>
+Subject: Re: [RESEND v2 1/1] dt-bindings: soc: add vf610 reboot syscon
+ controller
 
-On 8/18/25 21:38, Frank Li wrote:
-> Convert lpc32xx-key.txt to yaml format.
+
+On Mon, 18 Aug 2025 14:34:26 -0400, Frank Li wrote:
+> Add vf610 reboot controller, which used to reboot whole system. Fix below
+> CHECK_DTB warnings:
 > 
-> Additional changes:
-> - set maximum of key-row(column) to 4.
-> - add ref to matrix-keymap.yaml.
+> arch/arm/boot/dts/nxp/vf/vf610-bk4.dtb: /soc/bus@40000000/src@4006e000:
+>     failed to match any schema with compatible: ['fsl,vf610-src', 'syscon']
 > 
-> Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+> IC reference manual call it as system reset controller(SRC), but it is not
+> module as linux reset controller, which used to reset individual device.
+> SRC work as reboot controller, which reboot whole system. It provides a
+> syscon interface to syscon-reboot.
+> 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change in v2
+> - change description to avoid confuse about reset controller.
+> - it is legacy device, more than 10 year. So try keep existed dts as it.
+> ---
+>  .../bindings/soc/fsl/fsl,vf610-src.yaml       | 47 +++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
+> 
 
-FWIW I'm fine, if this change enters over linux-input, otherwise I'll send it
-in a PR to linux-arm-kernel/for-next.
+My bot found errors running 'make dt_binding_check' on your patch:
 
--- 
-Best wishes,
-Vladimir
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml: $id: 'http://devicetree.org/schemas//soc/fsl/fsl,vf610-src.yaml#' does not match 'http://devicetree.org/schemas(/[^/ ]+)+\\.yaml#'
+	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250818183427.3601986-1-Frank.Li@nxp.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
