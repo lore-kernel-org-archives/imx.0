@@ -1,99 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BBD1FDD;
-	Mon, 18 Aug 2025 20:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07181E51FB;
+	Mon, 18 Aug 2025 20:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755548700; cv=none; b=MOTUi+21+0b4NkCoL1UjlLE4uzOwDj5d4/k7QOC1z5qD+RsucCnsdKPQHlTXb1t+IRSut8UWSNOyUmUhniB6AZXIoxeEVg+VWhCo51ZJtSmfIPTb3519L7uasg1GJqWeQ8eEyzty08+XtmYAWbomDyp4Bt/1H9FpTR/u27938lk=
+	t=1755549350; cv=none; b=B/kimMFfhdtgJtSFuTFt8rfP5py4gZvV2C/Tc/a/X3xiov6GI0qUgxATVmuoGbjshpxS/aGcVwz4adhhXSfugWGfYrCbKZoM5861/BwEqZzYBLoskyDE0AV/mdVfZwSReevp1r9DR0nMjOgDo3vbSooHKd0Y51/dquDV4ZmY014=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755548700; c=relaxed/simple;
-	bh=DWORNPSoaH+MkjUCn75Qd2KiRx9On7Gotf+b7ngssYs=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=Ckv2+BL9phOnnU1u5HC94Z/fe9A4sC/AyimIJwV9pBtC/DgC5/zquReY2khMNOiZ+lMcUv9sYcUa5l+ChELULVfHJcOqyZCIVrvA4xCrIoEewSziC8vTX6OZx+WbozFYX00Q/dfmutfnUK940ECG3ZhbKccbazakLt+4Xpxr/6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ic8tObN8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755549350; c=relaxed/simple;
+	bh=om2cfshnlMUz7DuvRjvZA14In9sewmxBtmoNs13zHqw=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=KYJJumbySV3UDGTp8wvIZVySvDKqT3O4KYSwVIzgZBdeHpQPcEjKtT2mJ64CA9MdioZUMf6VUH2IbYbX5LxSi2BOsvYWgpZ4qd5cLKv8B6r7qQu8aIAUGJlfkMvj4KWkos6kPs/7gRBpkngPLfuRUAqVWCMwhd/UHzR6CxVcQDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uQEVHSl+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ic8tObN8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8369DC4CEEB;
-	Mon, 18 Aug 2025 20:25:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uQEVHSl+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1177C4CEEB;
+	Mon, 18 Aug 2025 20:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755548700;
-	bh=DWORNPSoaH+MkjUCn75Qd2KiRx9On7Gotf+b7ngssYs=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=ic8tObN8DjU6IWxKiOeUkHXlkzm6Ho162M8Ov3UaeqzH7pN/YMUQuwGmAuFx47ius
-	 MdA34L14QpFsZUs0iM3927gfqeD5/OwbmXbmADzTqvPTVUhqeniEQdqJkfBxHM+0yg
-	 5e/+nxMtA8SxUGZ9YQwSyOk/r7QlfQTMtlQwRtxIXDCImfQ/GQq1LXZ/w/4ShPCFKQ
-	 APvr+K1EZSLsflkmA4kop8gVAnr0ol6ed1pbWwh1JdxLppWSA6UZ/6fYBoKvBEYFOG
-	 UJuwBDZqBqgBAwFk3VLgWTX+vIn8FA+oOmyNXxzmA6bca0NeuEWNjfTIi06cPAIwJP
-	 qcpCS8jBN+WXA==
-Date: Mon, 18 Aug 2025 15:24:59 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1755549349;
+	bh=om2cfshnlMUz7DuvRjvZA14In9sewmxBtmoNs13zHqw=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=uQEVHSl+duq+dWLUD9eW7eVtnhv2PmtTTxGShiVKLaoXm1AZwNzmFVVwBWbNLfnKg
+	 94Rptxkq/91UxwElGtWNKiw3S7i/v4rMR6FWZ1ZU6f3UTJDV4YDtGBJ0ulG1WCgOz1
+	 DSfa1jXtrrqlrbJE3cTEvmqjW4E2SWvBobJJfxl9qWfPRA16kgHJSoJ3jTGBtyUbUZ
+	 0LNddIr0zP9JhbNdc9h62WWL6M/vUZYDls/huH7FMIPUj5utoSBbq8q1m+fUwsl8aF
+	 N8Sv1p/4cz8QAo5VRqq6szY9e76eJ2vUc4mEZbqVB2J7MYIXScGH1mPu08d67/1H49
+	 XmSHZe5KSNIgw==
+From: Mark Brown <broonie@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>, Avi Fishman <avifishman70@gmail.com>, 
+ Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, 
+ Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, 
+ Benjamin Fair <benjaminfair@google.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, linux-spi@vger.kernel.org, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org, 
+ linux-arm-kernel@lists.infradead.org, Qianfeng Rong <rongqianfeng@vivo.com>
+In-Reply-To: <20250815082118.586422-1-rongqianfeng@vivo.com>
+References: <20250815082118.586422-1-rongqianfeng@vivo.com>
+Subject: Re: [PATCH 0/3] spi: use min_t() to improve code
+Message-Id: <175554934664.130972.8355246635589446804.b4-ty@kernel.org>
+Date: Mon, 18 Aug 2025 21:35:46 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: imx@lists.linux.dev, Conor Dooley <conor+dt@kernel.org>, 
- linuxppc-dev@lists.ozlabs.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org
-To: Frank Li <Frank.Li@nxp.com>
-In-Reply-To: <20250818183427.3601986-1-Frank.Li@nxp.com>
-References: <20250818183427.3601986-1-Frank.Li@nxp.com>
-Message-Id: <175554869942.1999698.5388783109628696157.robh@kernel.org>
-Subject: Re: [RESEND v2 1/1] dt-bindings: soc: add vf610 reboot syscon
- controller
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
 
-
-On Mon, 18 Aug 2025 14:34:26 -0400, Frank Li wrote:
-> Add vf610 reboot controller, which used to reboot whole system. Fix below
-> CHECK_DTB warnings:
+On Fri, 15 Aug 2025 16:21:14 +0800, Qianfeng Rong wrote:
+> Use min_t() to reduce the code and improve readability.
 > 
-> arch/arm/boot/dts/nxp/vf/vf610-bk4.dtb: /soc/bus@40000000/src@4006e000:
->     failed to match any schema with compatible: ['fsl,vf610-src', 'syscon']
+> No functional changes.
 > 
-> IC reference manual call it as system reset controller(SRC), but it is not
-> module as linux reset controller, which used to reset individual device.
-> SRC work as reboot controller, which reboot whole system. It provides a
-> syscon interface to syscon-reboot.
+> Qianfeng Rong (3):
+>   spi: spi-fsl-lpspi: use min_t() to improve code
+>   spi: npcm-fiu: use min_t() to improve code
+>   spi: spl022: use min_t() to improve code
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change in v2
-> - change description to avoid confuse about reset controller.
-> - it is legacy device, more than 10 year. So try keep existed dts as it.
-> ---
->  .../bindings/soc/fsl/fsl,vf610-src.yaml       | 47 +++++++++++++++++++
->  1 file changed, 47 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> 
+> [...]
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Applied to
 
-yamllint warnings/errors:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml: $id: 'http://devicetree.org/schemas//soc/fsl/fsl,vf610-src.yaml#' does not match 'http://devicetree.org/schemas(/[^/ ]+)+\\.yaml#'
-	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
+Thanks!
 
-doc reference errors (make refcheckdocs):
+[1/3] spi: spi-fsl-lpspi: use min_t() to improve code
+      commit: a750050349ea138e3e86c66a8a41de736619b9de
+[2/3] spi: npcm-fiu: use min_t() to improve code
+      commit: 1bdc716023a78c2c41fdcb3fc37f09da1be4b7df
+[3/3] spi: spl022: use min_t() to improve code
+      commit: 90179609efa421b1ccc7d8eafbc078bafb25777c
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250818183427.3601986-1-Frank.Li@nxp.com
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-pip3 install dtschema --upgrade
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+Thanks,
+Mark
 
