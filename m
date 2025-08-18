@@ -1,113 +1,200 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013065.outbound.protection.outlook.com [52.101.83.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198511F0E58
-	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 09:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755509456; cv=none; b=UTFNGFVghdCJ2Lz8CD4PgUnu6x2y+/6nCtp+0PpkAmUDkjSkZUMY2eMTBI2d1NNzS2WNsCbNO3YuA6YM0oSjHO4SkGzqavZp6zoqum/fIjjvUgYnXZFQ1+h7wKPtTrlzDVf0jvvvGaVXxbOqGwDneKuITbwL/s4oIhRWl5GnHr4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755509456; c=relaxed/simple;
-	bh=H/RXtCGHHBQ1De/TaksVJ3qWD5+W1hECG5Q6BNf8hho=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QeMRW1sOIVH3G/EPOLw0yZFsBRsJshaNfjppFfdTloK3te4Ly+NboukFqmknRNmigy2FbNHqFLZffVV58cY86BObP258HHvGAs65phtEddc/NH5VgzVEhfQ1kb5AprURmQ2g/ta45fzoVY108z/Bdm1cVND/4wtqYV5/O81IkXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WEvCwHrt; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ED61DF755
+	for <imx@lists.linux.dev>; Mon, 18 Aug 2025 09:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755509614; cv=fail; b=megqPSWDZHdlLvY59UrfucWK9leH1g8cbL3iUGAEaUgr0K81+kKS1fKPPocoQxTX6EngGkXQ9LmzGOgw20u/DaufzvA6B0F0XZocal64NfRZNlWxKTmxOD22/hFNbD3tlIkBbAO/zcY9p/QOHvQDQpA7r45m3WjoI7pxgT7aO6I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755509614; c=relaxed/simple;
+	bh=gttvk5m31FGx86jDqaHhwkI/KGyFMrph5NqIHqkfhLA=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=a6kDQpqJAcC4MolSEGsNurkVS/HjmHFYoWi+yvOguUizKsm0YeZHrLAHj9O0YBVk+JeRY9amshGLUIQEDcoOGHHH2QOqh3kqZNOIbI1pYlxmipuBlbFoWmoPmtca46n8Ul1Ttcdnq/3LTEs/yffpgxBmHWkyh7KO/m9U5CIe7TY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WpnleaET; arc=fail smtp.client-ip=52.101.83.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WEvCwHrt"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id A84E817D1;
-	Mon, 18 Aug 2025 11:29:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755509395;
-	bh=H/RXtCGHHBQ1De/TaksVJ3qWD5+W1hECG5Q6BNf8hho=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WEvCwHrtO2zW5f35Nzm4LD1pik4x3m01g/rzVvq5amdOzMDfxcHEbM1SBjhuZlUbn
-	 cdHrFSzhbRD36iU9dU+fKvvVVshrRm+mbJ8cLFex0lqSZnIQV0Ha12azlU7PpeCFla
-	 GIGsF+cQc6JPBw8OXJRgPKDt1IUfesZndTSM1xpY=
-Date: Mon, 18 Aug 2025 12:30:30 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Inbaraj E <inbaraj.e@samsung.com>
-Cc: mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, krzk@kernel.org,
-	s.nawrocki@samsung.com, s.hauer@pengutronix.de, shawnguo@kernel.org,
-	cw00.choi@samsung.com, rmfrfs@gmail.com, martink@posteo.de,
-	mchehab@kernel.org, linux-fsd@tesla.com, will@kernel.org,
-	catalin.marinas@arm.com, pankaj.dubey@samsung.com,
-	shradha.t@samsung.com, ravi.patel@samsung.com,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, alim.akhtar@samsung.com,
-	linux-samsung-soc@vger.kernel.org, kernel@puri.sm,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 08/12] media: imx-mipi-csis: Add support to dump all
- vc regs
-Message-ID: <20250818093030.GB5862@pendragon.ideasonboard.com>
-References: <20250814140943.22531-1-inbaraj.e@samsung.com>
- <CGME20250814141041epcas5p2b281659391a8e45c95e8db21d9867f98@epcas5p2.samsung.com>
- <20250814140943.22531-9-inbaraj.e@samsung.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WpnleaET"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W/DbRwUNp/dxAcqKmelqCsetP3xdU62fTDE2S1ZUoaxYep7q1QKIWSORl7TVT4x5azgl/N8RVq42zvtApbngE9CMCpu04LWAlc5JQfHAbcIWfdPWsFnkZdStPnl3vnlhl8tdszgxP9OJnORKIe7RHXIMJ/z0ag+A0DH0D2urXXqrAmLuNx5N32ub+0jyRkfvvRjkDCjoGzTDSmYQw780RTokOcAi39UMNWgIx7jVenpEvGWftR9vj/lOe3UF9h8B11H6KaEyBo/wdESNvMwpNmRFRLMo2uMSt5AnD/aLqgVTHRfhKuuk4nh4GyqmSceg2mahQxlSU3noD6Rxe6ghVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lozIDWC+aRB3xP0WBMuFzrowASSlpd7QxizH8zTCyGE=;
+ b=QNw1AGHLRS0C/mW1VB2ZYRo5Ku50xkc2dOrchSogsjCfmSNbg8QFwEpEwilSqiy6CinoA+xbgzNfIMMZezW1RYn0+kJNeU7yg/kV0dqFNsQLZNxXWHm6epQZr6O0ZdIyubfKxq+t9Ki7TSVkhw2Zvf6Cdgv9nLcbDjzyEL2TZ6M/KrmymrHtyAB+b1hDJS/3u4u5UULKz3K4UDQleEc3jUYkmiFCCugGlkz5mtipbj4gb7FGT8S+nS4Rk0Ve+18Zbzn14iDVqDwcRcwtCBSJwiDBoEqQWk5RSAsraWe92O4ikTcVSvUzIp3PuqkCaYnmzxGTSzKR9CbuzoF1hxFAfw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lozIDWC+aRB3xP0WBMuFzrowASSlpd7QxizH8zTCyGE=;
+ b=WpnleaETFWMKLN/UzgOWg3QhNKObn7Pj2pl/0XUO1GRM64d7FF5SpahkEPSd2eWRaBRM6J6Jb7zHia+2cQbZdJypm8zDtDgqlm1HUUfX+bmvjKjlqsajGRYVyN51nGzOsQ97SKLO3F53HAdHrKYMZ4otGZcwsus3gPJCFoc2Up0gPcI1iswvpRS3JOpBTPkboqKWaynN8wNAQrPjiIdZob/enPgcVfbGaumhU6nARKafY0zjalSlIUtH2fn1MkomTsD6696j88PcLtYWlLhSshQBul9GjlW0ejIvTRsHEVlW71s1O7tBww38yIOBYxtqYFWJIm/G+zfp8L8lZ1Y4RQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8642.eurprd04.prod.outlook.com (2603:10a6:20b:429::24)
+ by GVXPR04MB9976.eurprd04.prod.outlook.com (2603:10a6:150:117::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.9; Mon, 18 Aug
+ 2025 09:33:28 +0000
+Received: from AS8PR04MB8642.eurprd04.prod.outlook.com
+ ([fe80::50d3:c32a:2a83:34bb]) by AS8PR04MB8642.eurprd04.prod.outlook.com
+ ([fe80::50d3:c32a:2a83:34bb%5]) with mapi id 15.20.9052.011; Mon, 18 Aug 2025
+ 09:33:28 +0000
+From: Jacky Bai <ping.bai@nxp.com>
+Subject: [PATCH v3 0/4] Update the thermal support for imx93
+Date: Mon, 18 Aug 2025 17:33:10 +0800
+Message-Id: <20250818-imx93_tmu-v3-0-35f79a86c072@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFbzomgC/03MQQ6CMBBA0auQWVvSKSJTV97DGINlgFm0NC0aE
+ sLdbVy5fMnP3yFzEs5wrXZI/JEsSyhoThW4uQ8TKxmKwWjTatJnJX6zzXP1b9URkaN2wO7CUPq
+ YeJTt97o/ise0eLXOifv/A2pCRFujtdZYUqiihKl+9XILW6zd4uE4vj25OzuXAAAA
+X-Change-ID: 20250804-imx93_tmu-7888c85d176e
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Jacky Bai <ping.bai@nxp.com>, Alice Guo <alice.guo@nxp.com>, 
+ Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755509601; l=1079;
+ i=ping.bai@nxp.com; s=20250804; h=from:subject:message-id;
+ bh=gttvk5m31FGx86jDqaHhwkI/KGyFMrph5NqIHqkfhLA=;
+ b=mokhVv3oyToKxk4VT8cA3vG0ylDgZIHU1XdORYKCMsOOq7TxtcMJY4H/FFLl/vhvDadpDtyh+
+ OmXdnPqihbFCHcKgd4/5ZO/1N3UB7htbnxehTBBm/EfNxhec+bllRUB
+X-Developer-Key: i=ping.bai@nxp.com; a=ed25519;
+ pk=ckFjCfRynXBjQGmSmzOVI5hggMD9XnnNlwj/jcO/j1U=
+X-ClientProxiedBy: SI2PR02CA0018.apcprd02.prod.outlook.com
+ (2603:1096:4:194::18) To AS8PR04MB8642.eurprd04.prod.outlook.com
+ (2603:10a6:20b:429::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250814140943.22531-9-inbaraj.e@samsung.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8642:EE_|GVXPR04MB9976:EE_
+X-MS-Office365-Filtering-Correlation-Id: 36542a17-9248-4d34-64de-08ddde3a49ad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|19092799006|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZXdhQmN0aTR2MnJ5SzBpTkRHK3pMZ0FmVHRkeEpRakFpOHU4ZEV3TVRGN3dX?=
+ =?utf-8?B?bEFaWFdjTlkvNDc4UGlURHBMaWRRYnFDdE5zNmcvYXdPblp0NTlSa0NIZjl5?=
+ =?utf-8?B?RFJrWC9PL1NWeFZ5NkpUcEJKeldiQVp5SEEyY0R6ZmE1aTVaV1NrRHpCYnJ4?=
+ =?utf-8?B?V2svSEttZ0dYZ21iYW1ZVS9sYThYRUZCbmpGbW1MWGpaeWNZK3BXdkJrR2kr?=
+ =?utf-8?B?d0hBUzEwYWJvYVkwZ2M5aXprSlI5VUlzN0cwK0M3dXVVZ3JkYTV0b2Z5d1VT?=
+ =?utf-8?B?SW9xcXNsZFpIajdIS3d3bUVoNEtqL3RYVGNHR1cxNit5N2lJQi80SlZ0Q0ky?=
+ =?utf-8?B?VkdMVUtDRXBteERuaFFsRnRlSFY1OW94YmZlbGRFZUN4VFc4N1hrRnp4VzNw?=
+ =?utf-8?B?bGJuYnZWNmpFVEErTDJhU2NUVjJPR3RSYit2OFRVaUFWd1lVUytUODE5ZzV0?=
+ =?utf-8?B?L1p6MjZWMU1MZUlkS3hVUkhZUWt3K1dJSVBIbWRZVFRsTGV4d0RCcmtONDUr?=
+ =?utf-8?B?cHdVZk9lVW5yMWxuMFRNUDJzYkQrTkFxTDNkYjU1aWczUjZBMXFNWm96REdP?=
+ =?utf-8?B?Vlc2Z05pbHYvM3h2RUxHbkJUZ3QrdUNtVFZpM25jWmhuQWtEZkIvdUNhbjhL?=
+ =?utf-8?B?MEVBWTRzRmxUVHVIM0V6WG5leDIzZFZ5M0k3eUs4WmtkRkdsaHNPcUt1UVkr?=
+ =?utf-8?B?NGF1cEhOeDBkUE1JbXN3bkdNNW56MjFXUXVGdVZ4ZDRtVHg1Slp1aUthTW0x?=
+ =?utf-8?B?eEVER1VueGV6R1VBS21oWEdUOGpkSU5SSHFNWDNnY3JpQVJMQjNoc3dKSE5E?=
+ =?utf-8?B?enF5S1JVNllhVkNqcnFKakhDRXZ5bUhMTUJnaFRCUW4vSmtuLzlMZVJycEgz?=
+ =?utf-8?B?OURZZHgzanl4eTJrZTJib1NoUUVQb2xaZ3hhWVhHeFA5VUMwN2F1RWFEMTNU?=
+ =?utf-8?B?ZFhYS2tPS2p2Nk5Bb1I0TmJZQmU0V0JiSDBhU1ZnZTh1cm9qSFFRTEVBdTY5?=
+ =?utf-8?B?SDBGd1dBR3dPWTZFUm5kMHNSMmN0a1ViNXhMUEdKakFJd1oyNlpwazg0ZGU5?=
+ =?utf-8?B?bTk3SU05YlZoZUR4cWJjd2hkVi9tby9lejA1S2R3a2RrVWI0UkNvai9MVFRu?=
+ =?utf-8?B?OUV2UGFZY2dIem8zUEFxbVNXVjRQZ2pnZmdsVmx2enFvU0RLTzJsLzJybGtu?=
+ =?utf-8?B?dVdsSllxN2w5RCtpOEJtU0ZMNjllSFRzOFc4WkNuQjN2OW5XOFp3R0pieDBL?=
+ =?utf-8?B?S1NYazVKdXE0WjljNlczeDAxWHNMQmtoN3lHMjAxUkZlZDF2b0JIQnV5Rmpj?=
+ =?utf-8?B?OHVrbnI5SXBmMTVlRTN1cmgyRUI5emRpcjk3WkpqWUpsakFQdWVPcmhqeEE5?=
+ =?utf-8?B?WUVPZ1RXSWVuZXF3UFcxK3plSkgyek5aaEVDVHhsL1Y0cHJRYlR3L2lXU3Mv?=
+ =?utf-8?B?VDRhMnJTa05SMUg5Wktra1BnclJUTVArc28vdXZmdHZDNC9zT3VOc0JCbitI?=
+ =?utf-8?B?Nm4zK2lzeXhWYWdwZjFCUlJHSytLTFQrYlp1VzRPSDQvMXBkU0xGWk04U2Vn?=
+ =?utf-8?B?NVJreS9pVDJiQ2ZmdjZGLzhmaDlhaUFZZU5xS2JxbHJWakdMTzQwUUNldlRG?=
+ =?utf-8?B?S3ZXdnlEQkY2SDAweEMwK1pYTHBEdG0yRkNad2E0WUt6QmcwYW5Vc3RneU9C?=
+ =?utf-8?B?VlVSYURhc0lTaW5TNFROcGJ5cnhBMWxYZUZrcVBDV3AxQmsrSUhTYndjaHUx?=
+ =?utf-8?B?MTRpNXNmam03UndJSGpwbjd4S1ZPa2FvQmhWUnlZVzAxdm1IQU0xTTVFM29n?=
+ =?utf-8?B?UTVhOXVqVENYRFVERnorcXNkUGg3QzRRc3lzRElLL0NudUZOTnVjY0hMZXpB?=
+ =?utf-8?B?UHNrUk0vWHp3NXJhRzFERGtxdDh1N0Z2b0RENFNVMldRbWE2cnlhR1llODBx?=
+ =?utf-8?B?c0FmeTRYZ1dLUERaSUZRTityZ21Db1gvcWxjTitQL1owNFJVeTZaK2FNVkdN?=
+ =?utf-8?Q?1Lvv8gAIkAzIwSWHCYFYvFFc8gX/Kk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(19092799006)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?STlFSTdUcDFrdXdFaUFTdVFocmNJMW5QTGtTc2FVeVByeENkOFVrNzRKUTM3?=
+ =?utf-8?B?WWl0MGMrWTh5ODh4M0VjMVlmZG5OeWQ2SUdGbGhMYmw2OGdDdkNWSStXSjAy?=
+ =?utf-8?B?cHZPVy9lRlZjZTg1ZmhyZk9IRjhxSUJST3FnOUpPTlhZQUh6bFBDcmVCZjBk?=
+ =?utf-8?B?M1oyc0YzT1daM1laRTBiekp1NnZIeG1HRkxBV09ZUW1MOEx6ZTl2MUJ2Z0lB?=
+ =?utf-8?B?Y0pncG5JbUQzQXlDcWI1VGpOYnd0Nm9Cc0NYNFZGclBoc1pCemNPVHN4STJV?=
+ =?utf-8?B?Y05YdWxxdmoveE93N3NIQVBEM3pFYXRLSllWL3l5QTlURWJNditmb3ZaUlRV?=
+ =?utf-8?B?WFgxbC9tWE5jcWtBN0YzYmhJcUJlUk9YTnlQeS9tNFNqTTk1L3VWNkV5NjQx?=
+ =?utf-8?B?eXRpak81ejI1UHFocC9vT21UaXhuUGlETW1KMFA4VU01SjZKdzlPNSt3eExH?=
+ =?utf-8?B?UWVhb0xuaUlQbjVyRWt6UmlPdUZKUFowVlZrMWtkZklKZUw5Z2VDSm5xN1pW?=
+ =?utf-8?B?YUx0dmdBV1UzNnZxTlNFUzkrNmgvK0NFdmo0ckdFV2RMMTBHMTNKZTU3dG5Z?=
+ =?utf-8?B?dm1oN2MvZ242WTYzVmtqWkphaXlSY0t0WC9GbFdJa0NiVFNETkt1c201R3pr?=
+ =?utf-8?B?QTVxMmE2WVNaSDdaUzlwRW1PSloveUlMdS9PYVlCVlJPakVoUGZWQm1EWGxr?=
+ =?utf-8?B?aUM3TDlUWmNialRxRW15OVdsZ3BIN1hkUklZb0RvQWYwc2JqNitHSWdCY2Rh?=
+ =?utf-8?B?dlJOV2E1UmZsNjBvbWVPQlo3TVRSbkFhMGJsQk40d2ZxYXBFKzFFRGxESTd3?=
+ =?utf-8?B?Qkh0MTRFVnZUOTdiL2cvZGF2N2JJb0gxYnNRSTVic1FYREQ3TjltNFpwTVRz?=
+ =?utf-8?B?VFliMFRKbGxlUXBJb3g3VXYrMFl6TjNsR0k5bFZhMmlLREpnVUU3WGFPZVBB?=
+ =?utf-8?B?dlU5WklFUjJiZUhWNi82TDliNGFwbVovMXRzV2hiY21JZE4xNGE5YitodS84?=
+ =?utf-8?B?K2RxdmFLQVNjb1VIcWQrdjZhaWUvMlpaWDZybkIzMEVwUUo4MU40T3p5QVhZ?=
+ =?utf-8?B?N3Fwb2NESWd6K2ZJQ05jRklGbzNlTlNuWE42UkNJWU5jQ042SFQydkg2ZWxI?=
+ =?utf-8?B?YnIrUE1VdjYzZzNKQUdUSnhKb1pvekpMRjI3MDVvNnlML1k1cjZNV3hFUnFB?=
+ =?utf-8?B?Y1F0SGw5NGszK3BIMEY5aXBYY1RDeVJydFB5T1BLQ3doTXdUSVBrNFlCYVBh?=
+ =?utf-8?B?WjEvZDhtbzJySXpWUzE4eC9tWmJhNUM1RjU5QUJ4blNON0d4RVgweXdGcG5y?=
+ =?utf-8?B?SUd4RkdjditxaEQ0OWpKUUxGZjNHTk9JckI3TFBiTVBXQUVZR2ZibGxzdTc0?=
+ =?utf-8?B?SlJPckl6L2RUQWpHVG0zNkNoTitQUXhEY1ZkWVJwS2NIT3EvTmM3RjdERG1L?=
+ =?utf-8?B?R2hRdTViSmg5NXRQSXZTcC9oQy9sbEE5R1RQc3UzaVdBQ0M4bFo2ZHRocTEw?=
+ =?utf-8?B?cG8wUWh1ZzIwSW9GakZVbDBRdFZQQjJmT2JXR3pBMWFySmo4YXRrWUl6SEI3?=
+ =?utf-8?B?TTMzc1I5MnRvSUFaRFl4eGMwLzBRUjNhY0tWbDN6MUsvV3lFbFpUZlhUSk9K?=
+ =?utf-8?B?TlBJK0dxWnBVTmRBWDZObmtobVIrTFRmbmxvUzIrRGt2UW1DZW5pY2ZIWnZU?=
+ =?utf-8?B?UDlzOEwwTGxzaDE0bkJzbXdoSURuTkVQWjNkb3VWQkQ1N3VCNy9GbzYyaEgy?=
+ =?utf-8?B?MUFHZXVGSFk2UEcvZ3RzcWN5enRVSW10UnpCTzNydVNaa0NXcXhtTVA1d1VE?=
+ =?utf-8?B?WVM4cDMxOWJOa3JuTWswOFhUSzVpOFhLdENVV3pzSDdkVnIzMGR5bHV6dWFx?=
+ =?utf-8?B?MmFOVExhbkl6emU4ejVOVzBjVWQ1ajUzUnRzNU5RcWJucEhBbG9rUzB1THRt?=
+ =?utf-8?B?L3RXZVAweW5OTUFPaTIydk1lbGlwUXdtQlhkVkYra1JDVXA1Z3dTNHBzMWxw?=
+ =?utf-8?B?R1paRkFzRFRGTUp1bUpXTkpTME1SN2l0bXErV1hRQ2FJNk5WNUVvNjhFaEd2?=
+ =?utf-8?B?OGMraUYrWnI0TlN4OTE3aEtmZGFLM0VralZUaGRabGExVXJNOXhCWUVEa2Nk?=
+ =?utf-8?Q?8oe7fFyYKDOAwmWC6u3hSTvZk?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36542a17-9248-4d34-64de-08ddde3a49ad
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 09:33:28.3597
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 704EeRyElKfrMRmbTcldXq8z3/If+ego3cEww6yW9C64QWqP7PDpOFeMCFNNOHEwzCy2q2sw9AUSa0YGH67mQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9976
 
-Hi Inbaraj,
+The TMU (Thermal Monitoring Unit) on the i.MX93 requires specific
+configurations and workarounds that differ from previous implementations.
+So, using the 'fsl,qoriq-tmu' compatible string is not appropriate.
+To address this, a dedicated compatible string and corresponding driver
+changes need to be introduced to properly support the i.MX93 TMU.
 
-Please see [1] and in particular [2]. I would like to get that series
-merged for v6.18, but it's missing reviews. If you want to speed it up,
-you can review the patches :-)
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+---
+Jacky Bai (4):
+      dt-bindings: thermal: qoriq: Add compatible string for imx93
+      thermal: qoriq: add i.MX93 tmu support
+      thermal: qoriq: workaround unexpected temperature readings from tmu
+      arm64: dts: imx93: update the tmu compatible string
 
-[1] https://lore.kernel.org/linux-media/20250608235840.23871-1-laurent.pinchart@ideasonboard.com
-[2] https://lore.kernel.org/linux-media/20250608235840.23871-9-laurent.pinchart@ideasonboard.com/
+ .../devicetree/bindings/thermal/qoriq-thermal.yaml |  1 +
+ arch/arm64/boot/dts/freescale/imx93.dtsi           |  2 +-
+ drivers/thermal/qoriq_thermal.c                    | 60 ++++++++++++++++++++--
+ 3 files changed, 59 insertions(+), 4 deletions(-)
+---
+base-commit: b9ddaa95fd283bce7041550ddbbe7e764c477110
+change-id: 20250804-imx93_tmu-7888c85d176e
 
-On Thu, Aug 14, 2025 at 07:39:39PM +0530, Inbaraj E wrote:
-> Extend support to dump all 4 virtual channel register.
-> 
-> Signed-off-by: Inbaraj E <inbaraj.e@samsung.com>
-> ---
->  drivers/media/platform/nxp/imx-mipi-csis.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> index 4f6c417fdf58..c1653a738854 100644
-> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> @@ -876,11 +876,26 @@ static int mipi_csis_dump_regs(struct mipi_csis_device *csis)
->  		{ MIPI_CSIS_DPHY_SCTRL_L, "DPHY_SCTRL_L" },
->  		{ MIPI_CSIS_DPHY_SCTRL_H, "DPHY_SCTRL_H" },
->  		{ MIPI_CSIS_ISP_CONFIG_CH(0), "ISP_CONFIG_CH0" },
-> +		{ MIPI_CSIS_ISP_CONFIG_CH(1), "ISP_CONFIG_CH1" },
-> +		{ MIPI_CSIS_ISP_CONFIG_CH(2), "ISP_CONFIG_CH2" },
-> +		{ MIPI_CSIS_ISP_CONFIG_CH(3), "ISP_CONFIG_CH3" },
->  		{ MIPI_CSIS_ISP_RESOL_CH(0), "ISP_RESOL_CH0" },
-> +		{ MIPI_CSIS_ISP_RESOL_CH(1), "ISP_RESOL_CH1" },
-> +		{ MIPI_CSIS_ISP_RESOL_CH(2), "ISP_RESOL_CH2" },
-> +		{ MIPI_CSIS_ISP_RESOL_CH(3), "ISP_RESOL_CH3" },
->  		{ MIPI_CSIS_SDW_CONFIG_CH(0), "SDW_CONFIG_CH0" },
-> +		{ MIPI_CSIS_SDW_CONFIG_CH(1), "SDW_CONFIG_CH1" },
-> +		{ MIPI_CSIS_SDW_CONFIG_CH(2), "SDW_CONFIG_CH2" },
-> +		{ MIPI_CSIS_SDW_CONFIG_CH(3), "SDW_CONFIG_CH3" },
->  		{ MIPI_CSIS_SDW_RESOL_CH(0), "SDW_RESOL_CH0" },
-> +		{ MIPI_CSIS_SDW_RESOL_CH(1), "SDW_RESOL_CH1" },
-> +		{ MIPI_CSIS_SDW_RESOL_CH(2), "SDW_RESOL_CH2" },
-> +		{ MIPI_CSIS_SDW_RESOL_CH(3), "SDW_RESOL_CH3" },
->  		{ MIPI_CSIS_DBG_CTRL, "DBG_CTRL" },
->  		{ MIPI_CSIS_FRAME_COUNTER_CH(0), "FRAME_COUNTER_CH0" },
-> +		{ MIPI_CSIS_FRAME_COUNTER_CH(1), "FRAME_COUNTER_CH1" },
-> +		{ MIPI_CSIS_FRAME_COUNTER_CH(2), "FRAME_COUNTER_CH2" },
-> +		{ MIPI_CSIS_FRAME_COUNTER_CH(3), "FRAME_COUNTER_CH3" },
->  	};
->  
->  	unsigned int i;
-
+Best regards,
 -- 
-Regards,
+Jacky Bai <ping.bai@nxp.com>
 
-Laurent Pinchart
