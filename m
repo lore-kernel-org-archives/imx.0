@@ -1,118 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013035.outbound.protection.outlook.com [52.101.72.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EE6285CBB;
-	Tue, 19 Aug 2025 19:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755632018; cv=none; b=RCRMbBo7mYxB6n1pOz6HtDBCyT0NK3RUD0VVH7NeciB0iRhPQfsw2SsqNd8LY1gpq/mt1aPsF8/I/VnC4/qB5la4iZ5pNfy66Fq2EVJcAaDSBVaOyyyqkkL9GDe8oelnk73ndGBGQcM+Ua7jlfrvnZfnPLnNPZtB6nxhtT5ebIc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755632018; c=relaxed/simple;
-	bh=AHSmGNb1muH/++bYQyHtCOXRefIvHL5FtP/WnzUyhyI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=djDSr8xlrA8DVlcw5ZlhnMSgvnIjMS0wxS8CUyDCyKb5s8Bzq3NNh9Yv2tA4Y8Dnd//6dgG9/d1nv5zMKlifQ0PGGr5Ru1lMm7pXgzOOAcHXJK5uFxpvmb6oQZ6NInBk/1DQEdgV0JGCYri1Wkeq+Mp9Xvk6Utz6mnij7UIWsy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rY5G6YqM; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB55F340D85
+	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 19:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755632675; cv=fail; b=nWquEeNvD5N3qgBXIuZoaPZ4zvas9H7t4N+B5eLXSLQB6S6STKmjvKhRwSgre1MMgujVKyNOopxPo08lg75AeRS9ORZzoALxQjdLbEeuX3VDdfBSVwjcJmck482nuEbpDQ+RzRIz/O74ysLTAWnPwNBeo6VyDup/surcCgdc+kQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755632675; c=relaxed/simple;
+	bh=3mVn5t615q9QIQTDS5VlTTZSpDpB12ejIPduKOyDAIw=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=T/Ga1rDoHNNdKzyl1DE4hlokYwn14If9JWS4d/jxfb3W+Armc/a10l5s7EzZjF7U+gc4+CLbWDxMPaaI3GCQqFEthE2FQhj2UabWjBki4oOcpsdw48inLODaD+bq9l4q+rsp20BjEpKY9ONdbbTaA5B6sKA2kWw+bkmI8JQma6A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bhCQr0KA; arc=fail smtp.client-ip=52.101.72.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rY5G6YqM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC91C4CEF1;
-	Tue, 19 Aug 2025 19:33:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755632017;
-	bh=AHSmGNb1muH/++bYQyHtCOXRefIvHL5FtP/WnzUyhyI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=rY5G6YqMNHBJ7g1+ElR0XGhrZUvig859ScN/e8vVUOQM22d4lWMcUNr4LTFo1yrEG
-	 OL21YfyTG1UOyK5ZYVAiBpIpkE1vVI0cm9nigxVjY/CfUBovzp8twUUx0EG5nNysoK
-	 6w2uiyobZ94hkUdfuy7FisKTg88JkZWIQ8D6BscREKg9ECJbnGRKDAC8fs0Yj9yx1e
-	 /tWHRCw+e324DCI6q5PbKgkPQ7BvUWlEbmrZx8sr6miFJIi9LHTt4uCYWJNpuQo09y
-	 eGqHeVgzMZKZR7eROhDJnybc4baDZ/T3srjub3K1LUJrveDVgvg7BDwcrSyFR2Vv/v
-	 s9WAl4aKwAEGg==
-Date: Tue, 19 Aug 2025 14:33:36 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>,
-	"jingoohan1@gmail.com" <jingoohan1@gmail.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"mani@kernel.org" <mani@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [RESEND v3 1/5] PCI: dwc: Don't poll L2 if QUIRK_NOL2POLL_IN_PM
- is existing in suspend
-Message-ID: <20250819193336.GA588734@bhelgaas>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bhCQr0KA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iwWTojACzWdNWIgkb3N6r/PNc+VlBmmkEYMSAzKOqmIc5cOVplx4ytHRirac1H+0fpEgEeVVjWH9ilNq9j2oMqpu3fwzjP1cmZUGxEpw8ThaxKfEeQ0EvbN0CiHCVQkjLkbdPDMO+VllWfhQQ7w7gnfdRD0eCN15yHEhw4cU6ib0hLUu0ptes9rNitp7zkLCo4NRRVGa+aSqOhDfOnK35ohp6+IUBKBddRGcS5tTSCwJHhPoZUFzILU9SmL1NE1Tmj468rq9rJOfCfTnd/RCIGrMEQ5D4vdgB6guiEPp7lYJlIp62bbOdALco80PmPYaGIM8F8il9x9UKflykEJjBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CmA4o7hdxzYctj/B4jAQlNEWk2p8ITKVyW33j4cUsFU=;
+ b=Xj9fNkwum3ifnUH13MiOCRFDwPPl5hFaVO9QvrDUFckKZw/ggH718axdq8exFgx3U4viIV6XM8fKnE4NO2XDrSd2RfipnEV1P3O+CDv7YRmO5z/AOaXl98lj27Hsp4IA/LKCiUAnIjzLdoBj9TTB0bgJZhMPEC5/MN2wTiaaY1OzKpCrXN2PCLK8vNZhhReLEubUgpwkHVUTzigPa5/NmFSyPqIoyCv4IQurItrSQChKVuJkicdafGTZtiYnJtoH9c0xlgqLKYrjJOkqbvWZkHDX1jjc93rZ/17dSssV+afAdU6yXQpfMbMTEtDtubbDFnMg9a1QbFXjy3QipR40qQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CmA4o7hdxzYctj/B4jAQlNEWk2p8ITKVyW33j4cUsFU=;
+ b=bhCQr0KA0AjF/z32TVvcDgu7mSTBS4JPTU7Ois2+tWh4PdSnzwO42ZSzZkq+r8irw25CU5xPynIEF78r/x/6DqBy7om/vINYhLpNLmnKlluUQlqI8m1CRMV/jrh3wzs0WpZiYAmzk7vZBT/QX9e1f0oQh903+fu9rpLdiASoUkj8XiLOI+m3RZGJCsQlubNfaacUhNyP7yWBooLH/uo+fFGrPYjK0IKcVYZBhbj6OFGIojPUuqc7ta3Mgk9yHSwQPu6Y3O4Vny1fv0XkoEfSkslaahI2ESU4KjCa1Tj+HOVwHmg9GE22rKNEXsN7t8B3DRSdUqhlNBf35+N7JEBikg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM8PR04MB7313.eurprd04.prod.outlook.com (2603:10a6:20b:1c5::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.12; Tue, 19 Aug
+ 2025 19:44:30 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.9052.011; Tue, 19 Aug 2025
+ 19:44:30 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 0/4] ARM: dts: vf: fix CHECK_DTB warnings
+Date: Tue, 19 Aug 2025 15:44:05 -0400
+Message-Id: <20250819-vfxxx_warning-v1-0-080930d8e1ea@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAXUpGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDC0NL3bK0ioqK+PLEorzMvHTdtFSLZBPLVENzIzNzJaCegqLUtMwKsHn
+ RsbW1AKCjZ9tfAAAA
+X-Change-ID: 20250819-vfxxx_warning-fe8c49e17267
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Stefan Agner <stefan@agner.ch>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755632668; l=964;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=3mVn5t615q9QIQTDS5VlTTZSpDpB12ejIPduKOyDAIw=;
+ b=j7sLuHNHrEv4GH5l4fjGc3nseXBTgKrv7NgZYlXa9GTxEFVpjn9ZaJpqI5L6xKDVjDhDeG+Gl
+ SyuVnZkNYhGAvCF9EnOJhTHq+Tq4PQpBAFLk0t22fTM0MWRJlsNumfU
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: AM0PR08CA0016.eurprd08.prod.outlook.com
+ (2603:10a6:208:d2::29) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AS8PR04MB88338A64A256C92CE64A02018C30A@AS8PR04MB8833.eurprd04.prod.outlook.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM8PR04MB7313:EE_
+X-MS-Office365-Filtering-Correlation-Id: 50e6dcfe-e948-496d-adad-08dddf58d078
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|19092799006|7416014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?S0c3blNZY0tFTkNXdkZjYjJOYXp4NTZ0NVdNOE5LWG1aUVA4U0Zzd0xjN096?=
+ =?utf-8?B?eTBaZjJ2K0tMNG01ZU9LWHpzZVRLUkI3ZjE2L0Y0T2ZOMXFRSEtXYmJmYTFQ?=
+ =?utf-8?B?YWJGdXAwK1RYTi81MDFhdDdrdXJXdFdoelZMaFhKNGNxMTFaR012MllsQnBl?=
+ =?utf-8?B?Syt1M3dWVXdtcy9mUWdaV3NYSUxjZmhxZHlqM0VWMXU4UFM1WmdlODBveWtQ?=
+ =?utf-8?B?V2t3NEhuYjN2NHlxWno0cGR3ejVlc0Q5QkxyaDRKdUxnV3pkNit5QUJEYmhQ?=
+ =?utf-8?B?UDR2amlmSVpjbHY2bVB0WGxUSzBxZFl4Z3BrS09TTjU3SlhGL1RSNFdrZ0tM?=
+ =?utf-8?B?QTNNdzk2OXYvbktqYXVTbEVOOExtY1pwMUhMNjdEb0YzUlhBZXB3ZFBOQU9u?=
+ =?utf-8?B?M2RjTkxXL091TEI5bkJWRERlVWYyVmJZdWJtVTlFWExLVzkycTI2eGVDZkg0?=
+ =?utf-8?B?Ny9scG8rOE5jQjA5YnVWMkpNNEI4c2hsUWRxSWR5NndJdk85cGgwaHphS3Z2?=
+ =?utf-8?B?K1BXa0xJSkhheWs5Y1FZR21DTGZ2R21YMlJMMmNpdzI3VXpoYmMwaWNiSWZD?=
+ =?utf-8?B?Q3ErVnBjdFBPTnprd1lGR2YrRUVnNUdoLzd3bGRwankvYkd6WmQ3TWxUcDVW?=
+ =?utf-8?B?M3MvZlk2ck8va2NqR25YRlY0RHM1SVVSbDZUT0VOOEk0eFVkVk9EOW1GeTNq?=
+ =?utf-8?B?NmlLL3hQQnVIMWd4ZkhiYVdRbEd5ZnNRSGRhbEZuSTloemVibFIzWjRLSmhJ?=
+ =?utf-8?B?OVV5T3V3SjQ1Rm9KSk9CSm5FTW9LWjRuWUVzRk9qR1huWXJkV043VTN0QU9y?=
+ =?utf-8?B?b2NYaVBuRDJTbTUxeEVhRkJlVnByTm4xM0dhYkkxMWdQTjFVajNGMlBBS28z?=
+ =?utf-8?B?dDlhaG82SGFYZC9rQWpQSU4zbVpSSGcwYmxrY1NDOTg1emFlYVQweWlHYmQv?=
+ =?utf-8?B?Z1RFRlZ0cGFhMHNYSFE0NWp4aVZWVENhSVFjWHVIRTFWblVUcXBxUzY5blU2?=
+ =?utf-8?B?dVBBOVRpSTZXRi8vKzlVd3JjZVlLMGFZTlZGNXlQNktkeUR4VU11TklIT3Ax?=
+ =?utf-8?B?NlZkcjhWckk3azhyMzVHZGtQS2M0Q0RMajRKVERERU13MGNKVEc3ODFyY1NE?=
+ =?utf-8?B?L3NmRHAyd2orL3U3M0VTT2huMkdMNEFDeUdRc0hnTVRHcjBwdGhDQjcxUy9w?=
+ =?utf-8?B?aDhQQSsrVUh4ZjM5djNHZWQxa21Da09vSitKb3FaSnNPWU42N0ZzUW45R3NF?=
+ =?utf-8?B?U2tETGFXbGk4WGZSeW9VYzluYUpDSkxDY3k5M2xFdXQzZkI3YVlBeTBmTnZ2?=
+ =?utf-8?B?TmVVMHBPQlNXRUkxdWdJOHdZTTdJVTM1M3E0R3JRbm5YcThsTzB1bHVIcGkx?=
+ =?utf-8?B?aHdyZTg2cXc1Yy82WTNHQU1CUGd4RmcwTkh1Yk9GZHkvK250MnA4cXh4dkdD?=
+ =?utf-8?B?VjA1aStLU0pvUEJwdnlMVU1RVGJxSWI5ZjN5dy9lQWZDb2xKeUJGeHRpV1V6?=
+ =?utf-8?B?TnhoaG03VjFJRG5wcXhqQlA5TmJHK2VhU3R4N2JCRW9WUXJYT0R6SFc1YUJD?=
+ =?utf-8?B?N3pwMWl4dGlNam1nay9iR3Z1KzZzK3Z6MitZQkhZMm44aG9IRW0xM0ZJVTNB?=
+ =?utf-8?B?Y0NCQUwvQlAyOXBReTVWZDZYNEJ0YTRCQTQ4OEJLUWRIcUw1WnNpWDdTYzZa?=
+ =?utf-8?B?aWhMb2ovYVh2M2QweURveWw0OGpDblhGODNETWhhNml2T1NyZGJLL0FtNCtS?=
+ =?utf-8?B?VEVSYTBHaEw0RTlnZGFNUGpOL0k1OERqTzFEWHNuUlpuSDVHVzVQQkZWc3A1?=
+ =?utf-8?B?KzlHUytnV0N4Z2s1RWZKYVdwNWFESnkwRWhpM2E3Y2pHWnJKcTJGOHZYeWQ3?=
+ =?utf-8?B?YjVyTXB5VzlNZ1lLTmVHQ3JSVWJHVjFkK2N5VTM5UEtmTVNGQ0FGQ0JSeEw5?=
+ =?utf-8?Q?UTnStXwIsIYZqUazhcYyFlVHVyOTWpU0?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(19092799006)(7416014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VkRWeVpFSWtrZGJ6NERUaTlmbnRFYjNxWkJHWjNIRFNUdkhLMGE5Qnp4ZDBs?=
+ =?utf-8?B?SlhzUDNXUnFXWENtQU0vNzFZbHc1V1pOYjRqUmdocStEWnBhSTQvNlRRbHVY?=
+ =?utf-8?B?SVhPY2lJQW9uV0JCeVRvTTBEQlFhZmJnNXhUZmRMTzZFOVltOHZETGFBTFVH?=
+ =?utf-8?B?dWhpOERHOFA2OHFUYkhIVTNiWnNhOXJFTGhYQW1qMmUxZGhXTjRUWitkSG5t?=
+ =?utf-8?B?cmxYTDYxM04zeFhaSElhTEdUSERyOWp0TXhsNk1VanBuVG81bmZrRVIySVVN?=
+ =?utf-8?B?eHpWMHFnektkY05GR0QvY00yNmM5Y0plRjFibHViN2ZiSWdqN0NiRENGdlky?=
+ =?utf-8?B?Z1VOSndHL0ZrRHlqMzZPdmRoRkJBMEQ1UGRTS2x5eWp4Z1hnb1hNNk9zRVoy?=
+ =?utf-8?B?WEU3M1VTQVdOV3F2dVhINDRxQ1pGamRPOW5PTERVS2NUUzlPKzJoUDF5ODlj?=
+ =?utf-8?B?ZzM3QStQRmdJVzlQdlMrc29PNHN4YytkKzJBY3hTQWMyeVdlcW5MMDRZK1JH?=
+ =?utf-8?B?cUtRdXBEK3ZrMVZadmlPdHBYVW1YRWx6VU00azhJdUlHamxXTUdveVJFZ0hE?=
+ =?utf-8?B?RmhQQnFYakIrdDZ6RXVjeDg0MDQ5ajQ2SXZTWU9mTC9pSTFtd0JyUEY4Rkgr?=
+ =?utf-8?B?TGZsRUVQZFg3SjdlVmpJL2NyRzMvZ05MOFdkaThnTHMrSzB1K2VEMkt0SXVw?=
+ =?utf-8?B?Y0psMzBWRFY4d2xvcitHMnF4OWtjN25LMi9nZmR3TnFkZW5iVUpHcDBTb3pS?=
+ =?utf-8?B?NGsxYW1tUFc0dk9Pb1piMVErT2Vja0RqQ3dsNHh6RlVLYVlBN2VSdVAwT2do?=
+ =?utf-8?B?TW1aOFlQMThuemtQem1lNnVTYUFrQStpdWcweUU3a2dkcFVvUU95SFYzSDhn?=
+ =?utf-8?B?RVRlZU8wcDRDRU1tdkN2TjRINThGekdnMHEzdXhUb29JRmw0Z2FKWlZSMVJ4?=
+ =?utf-8?B?UThHVlkrOEUrNXZnOGZsK01JZndwaHgrOUlwc2Fwb1kyNmI2WFk4ekk1U21C?=
+ =?utf-8?B?ZURubHp3dm9tZ2k1b0lkYXNSeEZKbnI0SmRZWnlzYzJDQkxlTjBTcmpWc1BT?=
+ =?utf-8?B?STFPajNsYVlhYUkvYlJMTnlKT2VrUjEvR1dsTno5T2lTSk92dE1XWGpwVFQ5?=
+ =?utf-8?B?RVFIQXJ4QUhpRXcyaTkrYnlRcDlmbDgvdnNMZXhLR1lialRGMXZjdTdSVE9k?=
+ =?utf-8?B?TTVDS1VWcXlyajRXRVVpODVvUXpTZ2JZR1MvelZZdXhrT2dCRkJLckgwLy9s?=
+ =?utf-8?B?NXNJQ2ZTZFhGSzZCU3VOMzQ3SjNaN0Z0YmxhYndyMnVLV2pFSGZMY0FIYWd1?=
+ =?utf-8?B?TkJkdkZrUms3dDFuNHpjNTdETlAzNUlVQVN2akhCWUN2cG5BQkkvbGVWTm15?=
+ =?utf-8?B?Qm8zK245R0RqMi9IY3VyUmFEaVQ2Qm1GUktsaEhZRUI5NnNZQTVlYWhzV2Fh?=
+ =?utf-8?B?bzZxeWZCalJRU0t3djFFN3hCR0hRNktnd1BDYmw2d2JXZmp2cUpYRnJWS3lD?=
+ =?utf-8?B?K3pJYnB4NU5QMkxuNngvR3g1bXpMOXV3N05iVXNqNnIzNStLWHhKQjRLdVpC?=
+ =?utf-8?B?QkVDeW0xSE1DQ01RNFV5M3pmUWo5Nnp5L0VQV3lXd2dUNE5yNTg4RWoyeVZM?=
+ =?utf-8?B?R0VlbUJMSDUzQTNaRUdpNkw1Y2ZNZlhYa3RrM0F3QnB3ZzBIMitXNWxnTndN?=
+ =?utf-8?B?cm9Fd2l0aEtCWUZIU1V6bmViaHJNeDJVRlBrMHVGZllpWVpySVVwS0h1c2hh?=
+ =?utf-8?B?ekVDenNiY0dHKzRrblZiaTJzRkhVUGY2bWtFbWIvZmkxRVpFQ0ZmNWJJSk9a?=
+ =?utf-8?B?SDM1Z3VMUTdZN05Wem5NVCtmYkFWSkhNL1puWFBuSTg1N0F2SmZaS3g0UXVO?=
+ =?utf-8?B?QTJqcWwyODdtdEliZ1Z3K2xxVXhDcklzejIyU2hpNmNRUW9hazgwalBEOXI2?=
+ =?utf-8?B?R0o0MmRvSncveWhYc25oUGU2YWdNWitJREtzeEZ1TTVjUlk2Z3hFNTc3b0hU?=
+ =?utf-8?B?emVQVUU1YlRObWZDYWNRM2tVZ2VoUlBUd00xQVhmOWdEYkFocEhFdnZjeUFM?=
+ =?utf-8?B?alh5RWU3bW1jcWd6QklhK24xWGpvNnNhYTljbHN0Zlo2ZkFKUzBpdFozdWRk?=
+ =?utf-8?Q?+0h60i61Tt7jI2SbqOOMFin85?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 50e6dcfe-e948-496d-adad-08dddf58d078
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 19:44:30.5886
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BekOVOdMJA0+0awx5J14vN0rYC5LNntsayq1r4j5OlfdvG+KmxC5k7XD9tHSG/i+MhfFnBcJB3WtaX+mK24t6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7313
 
-On Tue, Aug 19, 2025 at 05:51:41AM +0000, Hongxing Zhu wrote:
-> > From: Bjorn Helgaas <helgaas@kernel.org>
-> > On Mon, Aug 18, 2025 at 03:32:01PM +0800, Richard Zhu wrote:
-> > > Refer to PCIe r6.0, sec 5.2, fig 5-1 Link Power Management State Flow
-> > > Diagram. Both L0 and L2/L3 Ready can be transferred to LDn directly.
-> ...
+Cleanup warning for vfxxx.
 
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > @@ -1007,7 +1007,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> > > {
-> > >  	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> > >  	u32 val;
-> > > -	int ret;
-> > > +	int ret = 0;
-> > >
-> > >       /*
-> > >        * If L1SS is supported, then do not put the link into L2 as
-> > > some
-> >          * devices such as NVMe expect low resume latency.
-> >          */
-> >          if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) &
-> > PCI_EXP_LNKCTL_ASPM_L1)
-> >                 return 0;
-> > 
-> > You didn't change it in this patch (the L1SS test was added by
-> > 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume
-> > functionality")), but this L1SS check is an encapsulation problem.
-> > The ASPM configuration shouldn't leak out here in such an ad hoc
-> > way.
+After apply binding patch
+https://lore.kernel.org/imx/20250819165317.3739366-1-Frank.Li@nxp.com/T/#u
 
-> Should I created another commit to get ride of the L1SS check codes?
+All warning under nxp/vf is eliminated.
 
-If we remove that check, I guess we would put the link into L2 when
-ASPM L1 is enabled (not when "L1SS is supported" as the comment
-claims).
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Frank Li (4):
+      ARM: dts: vfxxx: rename nodename iomux to pinctrl
+      ARM: dts: vf610: add grp surfix to pinctrl
+      ARM: dts: vfxxx: rename nand to nand-controller to fix DTB_CHECK warnings
+      ARM: dts: vfxxx: add arm,num-irq-priority-bits for nvic
 
-Obviously this check was added for a reason, so I assume something bad
-would happen if we removed it.  But at the same time, AFAICS this
-check only applies to imx6 and layerscape because none of the other
-drivers use dw_pcie_suspend_noirq().
+ arch/arm/boot/dts/nxp/vf/vf610-zii-dev-rev-b.dts |  8 ++++----
+ arch/arm/boot/dts/nxp/vf/vf610-zii-dev.dtsi      | 14 +++++++-------
+ arch/arm/boot/dts/nxp/vf/vf610m4.dtsi            |  4 ++++
+ arch/arm/boot/dts/nxp/vf/vfxxx.dtsi              |  4 ++--
+ 4 files changed, 17 insertions(+), 13 deletions(-)
+---
+base-commit: 9c15bfe5311638391431166b201d964304ecce89
+change-id: 20250819-vfxxx_warning-fe8c49e17267
 
-So yes, I do think it should be removed because it's only a partial
-band-aid for whatever the problem is.  It would probably break
-something, but it looks to me like it's already broken on most
-platforms, and we need to figure out a real solution that fixes
-everybody.
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
 
-> > *All* drivers, not just NVMe, would prefer low resume latency.
-> > 
-> > How do we deal with this in other host controller drivers?  If any
-> > other driver puts links in L2, I suppose they would have the same
-> > issue?  Maybe DWC is the only one that puts the link in L2?
-> > 
-> > What happens when we add a new driver that puts links in L2?  I
-> > guess we'll be debugging some NVMe issue again?
->
-> Up to now, this is the first one routine to do the L1SS check in L2
-> entry.
