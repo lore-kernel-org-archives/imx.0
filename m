@@ -1,236 +1,197 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011033.outbound.protection.outlook.com [52.101.70.33])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E24302CCF
-	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 03:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755575963; cv=fail; b=EEGRizLFVkm0mDCLRjq1rgKyIl2UF4of2ctT6EtZLoF86D3GmzY1U5yQ3CKbEJX3XF030q47THTf3BuCUOziM4/DfZpH3iAhiYDH/pAhD2zbZUJAxrATXDCABqd5W/FgArpnCZ6ocYNhVK9/xX6/tOp66dvK+eTt8W5pLfTwfs8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755575963; c=relaxed/simple;
-	bh=hTwDs/AV52GhLDf9FbVjQIQ6VSOWHjFvTeVUti0NTsU=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=Cc565oVUZfJ8r9trKFrHPirltceFeJU+wSQODccWfhPAUQxDqhIvrLyaJ4UypEwCly/iWmhyqCEnp9lxO6lrnAwkIyivrBcFwiitPhpuJZHwiq1C/3q0LtVhV4VfujYQ8ZONimktXMCoaT3iACL5X88JHkoiByay2NvKxIRzorE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UDFSU5uf; arc=fail smtp.client-ip=52.101.70.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BF92C2363;
+	Tue, 19 Aug 2025 04:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755578316; cv=none; b=iX+btgmZ+6bP6SfKqowgUKczmPV1jSAP/AkZq2+OT+LZQOjJno0OBn8+U5ER8MvUft2Rqx9QjhA/zoYFXF4zouzJi+50Pu0vmHJsWSE8hbSq5l/n+E5+CCQH82Lwf+luViRTWwW192WVOuLhhIEbjsnQX1cSDQCcKU+jeM4Uyfo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755578316; c=relaxed/simple;
+	bh=fX1fDtkJlgXe21ThnDLJ12QhRuLIMPpV4e+3sPurSW0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WkluJx1csFyIwI32QO0aYSu4Nn3tOj+onXap/AtVA6M0d9YRaOV0XlSZ5ayWJvbLVeOtrLG/C/zF5g3hyzVrcUfCYPPFO8BYQ8NIrbyk5sXs0BEqgdxEZkMWVZVTM6Q0NQ6V0Gu5Gy5jIo8FEPl7d8p2s5Wx43so0v+jTPgjWdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UxwsOZ1u; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UDFSU5uf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VtnjEzfLXSsY9cCcOcMdaaMXVg/qDV/EU4myLaFvYZmXwYHOELmum1GIOHW8PiafzETVcI+mhF8RxR9a7PM0fmqGOGENh4/q3meFjX2lJWnyEyLWTrI21DQL7c+G/ZNEKpkQVKX3l74tt9FzMr6j3LUtgkmDeeNYE7O6KL8CTlBuOBDuPfYANEbTpHRwjq8pNqlzoycJfG8ZpNZHPjAmKS+GQNDBI87AZJqy9s25wD0IO3ASdlbfUFGesczU9gKSZSyQ6SVG4pQ7R0ll4wOwnOxeA1QbdQ7zwNgGO8tAbeVW9kTsptSgQX7OyN06rYHAmyLvmfDOqWHjC5UFi5nGSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SW+6q39KT6F419wZ1Rru2ChZBwoOb1JET68HNDM/Ifk=;
- b=f/OPrUONhi5lqBPJ/aVD8MFP/76bDOwRhTLtH92MwYyCD8FCEfd4avzKzoJJbZ8ch+rWvGCdCFNYCiEzscWpVk1yYes4iBC4gUCuJ6b5H5H39rgJpeS82hKSGTltdpCURE7JDLvW0mcu76PL5RcksfWBvQBgtoMHwdCUUaI9WBtu4kpjAPHxQBXcLziuXFTaR1VsenckSIEkgV1bC/KEWGHVRkGGyKeT6AfTcQx4ymJHoqPFsv8jyDUjujvkWWWiuNpJMabgh2KPhhgcc4t0D9SAC1bUbH0U+QPlmCp3mDl1ppVTIbPTtLZAfszftzH/sPKYwOwsKh0+GIhw8xIqHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SW+6q39KT6F419wZ1Rru2ChZBwoOb1JET68HNDM/Ifk=;
- b=UDFSU5ufuuQxgSfCL837Rbsqr1RcbfuU5HDw/TDUrIrCaf2UXUBLb5jo4U37QI7p+rcPEkXWl7k8+fqqNsNkLNUTgQ7lA32H8XUUq2zNREdeojO7pywuRWqc0IJvAMKqmVOwYPEyqQKzwsvrUkGapKP1E8+izfp9WaoX4tqH6QcRTqg7SG27IW9RVmPzB7yAbHcguHZD/VjmhUPzg8CelZI8+mM8ihSfGQ/4Q2gxAJTMJ3v2qEDxcTQoEuAOZgBt4XYhqFlly9ICA/UfxLiFZsAhXSlfOWi3YZ1Dc8cw5cXgjx1z1Z7pI35ENtyDPOMFgk7oGHp7fGSxBei/N4yMOg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
- by AM8PR04MB7475.eurprd04.prod.outlook.com (2603:10a6:20b:1d4::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.12; Tue, 19 Aug
- 2025 03:59:17 +0000
-Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
- ([fe80::93bd:316b:682f:5e59]) by AS8PR04MB9080.eurprd04.prod.outlook.com
- ([fe80::93bd:316b:682f:5e59%6]) with mapi id 15.20.9052.011; Tue, 19 Aug 2025
- 03:59:17 +0000
-From: Guoniu Zhou <guoniu.zhou@nxp.com>
-Date: Tue, 19 Aug 2025 11:58:03 +0800
-Subject: [PATCH v4 4/4] media: imx8mq-mipi-csi2: Implement .get_frame_desc
- subdev callback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250819-csi2_imx8mq-v4-4-c16b1d8f88a9@nxp.com>
-References: <20250819-csi2_imx8mq-v4-0-c16b1d8f88a9@nxp.com>
-In-Reply-To: <20250819-csi2_imx8mq-v4-0-c16b1d8f88a9@nxp.com>
-To: Rui Miguel Silva <rmfrfs@gmail.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Frank Li <Frank.Li@nxp.com>, Guoniu Zhou <guoniu.zhou@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755575933; l=2047;
- i=guoniu.zhou@nxp.com; s=20250815; h=from:subject:message-id;
- bh=hTwDs/AV52GhLDf9FbVjQIQ6VSOWHjFvTeVUti0NTsU=;
- b=asXHLDcddkVZg+fXmCMmOcQf6iDkUQDsyjT3vQohf0c/nSPc3cp0Ba2pIMBCNivl+mYzwuQGb
- Mti0YyTB2c4D2M6C0bHtQDIl2qJgsy5aW+XJ9AQPNKF8EOi5arhdDK2
-X-Developer-Key: i=guoniu.zhou@nxp.com; a=ed25519;
- pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
-X-ClientProxiedBy: SI2P153CA0026.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::18) To AS8PR04MB9080.eurprd04.prod.outlook.com
- (2603:10a6:20b:447::16)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UxwsOZ1u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755578314; x=1787114314;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fX1fDtkJlgXe21ThnDLJ12QhRuLIMPpV4e+3sPurSW0=;
+  b=UxwsOZ1ulEZYVQIiVzewu33WAQcTwICFFB9AIRLG/YjXQDXUlLqRGFzC
+   Ie1ADYwBltMu2Nhr5WXpxhFSiUSG0/ph77cS8I524/5XK6VcnKKreHoDS
+   yvRtg0F9KxzQH1U3jlaD9GVZLy2DgS/mGcoWZ6vUdtAesYCxCtGKvna/d
+   DaUpiy86JDdcfsl2vEG0Xrsr6iwNG3V5fUPRNIMi01gIYrVlDTNoP06Q9
+   EdKL660xpWOgJhjyE97URmsqTVa/aiv/2+QvNvhXcqzD3d6Lcb60imyVv
+   QL+Yx3MLsU78U3XpMhTvpUXWYgIFYV3pwgXzTWzfLsjyeTOe7/WkOTHof
+   g==;
+X-CSE-ConnectionGUID: ggwf9MdqTfiOmfHq4iyzUg==
+X-CSE-MsgGUID: Hn+OKs5UTSOQKu17pmz95Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="57882456"
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
+   d="scan'208";a="57882456"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 21:38:33 -0700
+X-CSE-ConnectionGUID: xr1bnbrgSICKne4JN1ZibA==
+X-CSE-MsgGUID: Zwnm0lBgRl6z9KTr/9UVMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
+   d="scan'208";a="166981588"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 18 Aug 2025 21:38:29 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uoE78-000GVn-2D;
+	Tue, 19 Aug 2025 04:38:26 +0000
+Date: Tue, 19 Aug 2025 12:38:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jacky Bai <ping.bai@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Jacky Bai <ping.bai@nxp.com>
+Subject: Re: [PATCH v3 3/4] thermal: qoriq: workaround unexpected temperature
+ readings from tmu
+Message-ID: <202508191258.tYXB63eu-lkp@intel.com>
+References: <20250818-imx93_tmu-v3-3-35f79a86c072@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB9080:EE_|AM8PR04MB7475:EE_
-X-MS-Office365-Filtering-Correlation-Id: 84c12929-1896-4e1b-d7b2-08ddded4c4ab
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?Y0VGcGJSV0RiVldPNTNvL1RZanRyekE5VGlRVTBwckI4NGtoalJkbzR0dGdZ?=
- =?utf-8?B?dHZiZm9kWTJZNC84bmhnc21yV3dVcnFESjVHTk8yMVB3VWlRYkNRWHZINkZw?=
- =?utf-8?B?dE9UWE01eHJOUnhIM3c5cFFpbkNRY2c0QzE5U01qVWpPUnhRQjhxWFE0YU9O?=
- =?utf-8?B?azU4S3dSazViTC9jbXYvQUtxV1VsVmhGL0VGMk1oeFVvSWtNSDZHcDU0L1RV?=
- =?utf-8?B?OGdvYWNQTldCWE16Uk5oK3RjelZZMVNqVmZ2NUF2SHE0TzVGRWZvdERpU1ox?=
- =?utf-8?B?dkxwWTdWT0FlN0s2N1RQSXY2MVpyRXR6SVVTeUNwSmJYTGdON1dteUtvaUYv?=
- =?utf-8?B?OEdFWk13TGljbXpJNlJKYUVBb1lSR3d6TWZDd0JDU3NOTXJlNmtxbGovMFoz?=
- =?utf-8?B?NFhsYmRPYXJYNGltZUxXZE45S1V2ejdqWFpIdHBBTGQwREZEek9ONlMzSHdG?=
- =?utf-8?B?ai84UlpldGNDWDQvMFI5RkNObTBLUVdiTnZDVDh5alNyK2JBRmM2dWtabEMx?=
- =?utf-8?B?Skx0ZFpNcitRenZheXJKd0QxSHZzU2Z6OSsya3p3Q2J4dnd0Vi9yemZOd1JT?=
- =?utf-8?B?cWZYc2xYYWJsa1ZPVktrRW1uSkRoUStoQ2pkTmpOVGZXV2VOQVROQnlQR3lr?=
- =?utf-8?B?U3FpMzVWcFU2VXY1ckM1OW5nVkJLMXJBMzhINTIrNERIcXpMUGlmdUNuQzZk?=
- =?utf-8?B?WVdRV2JGOENjMlZKKy9JVWQ3dHZoTk5IL0tKRlJSa2NPNHF5NDFDVUpSMHpS?=
- =?utf-8?B?SUQyanFEV3hqMWVMTUw2bGlxc0Z4NG1lc1Z4SXFqQXNNSkR1K0orQVFhdjNt?=
- =?utf-8?B?Y0dtUXl3MzRtU1IydkdMRG1MUWhkVzJDQm44eFNzWjVINEYxcHdYKzc1eEpG?=
- =?utf-8?B?S3lKWWgrU2hoQ1pkRXVjMWxjZGtWZUczc20vRzc0KzE3cEt0d2NTY09PS1BR?=
- =?utf-8?B?bGsrL0FCNEtZQmtRSDltZVFpSFJFZVVkOEQ4TzcyQkJ2U0NLMUtSdTlIaTVI?=
- =?utf-8?B?Uk5QcUlmb09TZmo4MnlWNGJzcS93WXA5SzduWG1sR3BZNURyRTBXWUVaeE5U?=
- =?utf-8?B?ellQYXpydmtocTQ5YStxQ3RWSXJiSVZ5T21DSXJwdG9QQ2txRi9kQ3M2blRS?=
- =?utf-8?B?WFVSQXY1UkRibVMxd3RrMENKNmg0c200MVhaTmFhYnFqZEg5OVh6YWhwZ0NK?=
- =?utf-8?B?aVlWOEFXM3VDZnBqMUxxdFZybTJYV1FTSU9GZXJGYlVnTXQwQi9nTkEzZXJH?=
- =?utf-8?B?enRsOG5KSVhrOW9oZ2VBU2NMZ2NOVWdOekRIWHBlakFUT2g1QU9xVmNaQVpy?=
- =?utf-8?B?UXduTFkwSVhPYitjWDlmS25HMkNRa3FnQitSdFc1bTBmNTFLLzhuQUhvWWlU?=
- =?utf-8?B?VmxzcllKMzEvRUpjOGtiVUQ3WHlFa202WFlxRmp3aWRIWFUyMytPekpqUEht?=
- =?utf-8?B?c1JDRGI0VHlpQjBYQkw5TE9WanFaRHRwN1VVM2VQKy80ZWhIMXRvUzRINFBX?=
- =?utf-8?B?VWJvdlpPTjV0blZFeWJUTVdkY0I1L2pEZHhJbVVqS3RFbExzcURFWk5rN3hj?=
- =?utf-8?B?YWNKUGhDYzBmdElQQ0xVUFJOYnVKNThNcmI0MHVLYVQ4ZVJZdnZTc0ZtZGhG?=
- =?utf-8?B?ZUpUSS82aUFLR0FBYldOd25KV0EvbG5ENVpyTldzb3JVNUlwNXIyTjU4aU5J?=
- =?utf-8?B?OExpSWR5eVM3NWFtZzhVeGFVOVN3d1VXckJqWktZbk81L1JMdytXWHk5dWRG?=
- =?utf-8?B?aDZiWEZWNldwVzV4c251cEhENkd5NjlRdkVmK0plOXQ3bXBoQ3pENXhQamZX?=
- =?utf-8?B?d3dFdnRpd2dMR21CQTJ2S3IxTVJKeWFack1UTFBvM09XaVUweS9yNFA1VHdo?=
- =?utf-8?B?ZmEwY210SHhCRFRkamhjRi95U1RmWkVPZWJSR0hEdkdQcktHU2haQ2tpS01s?=
- =?utf-8?B?Vkw1Q3FHdEQrZDQ4UGRiWndSNTVYVkZMbVpjTjE3M0VFSTJXc0FiSEFvODc1?=
- =?utf-8?B?b1czUmdVcGFnPT0=?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?eTY0Y2VhYmZOS3NDcHdNQkNkYndycHJJU08vU2swZlljSEZOdzRSSHFvNFps?=
- =?utf-8?B?ZHlYUzVvbTVSL2sva0FvZVQwbDlFWndIWGJFeDZoWU5vR3QyOVh5eWNzSzJ0?=
- =?utf-8?B?R3dDL3pCbGZQRkY0OEhQbjFZazU5RTFSaUlwNTRzOENQaHZZcjJuejhOSGk2?=
- =?utf-8?B?Tm1GaG02RlhmS3VUQnhuby8ySDh4Y29CVE0ySjBqY1YybE8xN3poTjRXZ1dL?=
- =?utf-8?B?bmJHVk1UeHFieE16MHNzYldMWUFuSGNpbDJmUHhZK2RNVE9SR1lPZzIxaE02?=
- =?utf-8?B?amZ6M2VSMFdWNUFISU8xMGdRdjNPcWVRcmZacXdFWFZ6TWdCV2M5YXQ2V092?=
- =?utf-8?B?cDhOWXRTUW01Y1pMbUpSYkszUThPTi96Q2J1SHkva29NM0FuS09zczZxUlA5?=
- =?utf-8?B?eS9wVFZxY1lxZ1FpR2Z4dktHWDg3Z2dveUVaaWkvd0JUQUdldGtUd0dPZTJj?=
- =?utf-8?B?clhtMDE1eThaZzBFdFBiZEZGc0tvZVlxY1Q4TFZpcjdOdHQrVFdxZUpOWFF6?=
- =?utf-8?B?dC9BbFpSaDNSaFdEODBGQksxTS9UaVdiaTlucjhFU1JJMkdVRDBWeFdYc2l1?=
- =?utf-8?B?c3dXd2pjSmRNYysyUGQrYUFNOWtpTHU3aFdGMjU1VTEyVDhtTk41ZTVLYlUw?=
- =?utf-8?B?M1cyMUVkdHVVQWNQZlhDUlFSNnozbXNjeXBLT1NUWWFDMEJNSWxwR2U1YmlI?=
- =?utf-8?B?YnFBaVZManZYWHVhWTlsbSswcFhBUU5US3V1UHE3RTRGQ2l2Wmh6bzdFZ1Ez?=
- =?utf-8?B?Q0NWK3JieUtYNTM5MlJOUFVhRVVjSEVJS1hIYTNCOGNIcFBNU1pNeUpja2ZC?=
- =?utf-8?B?amRhK3ZoZEdlVVJPc3h0NzNMaGFlbVc5bklUaWs1bzArNUgwVzM0V2hJY3Fj?=
- =?utf-8?B?bEl4bXloRm1uSGxZaGRNRUIzbTJaeGZ1N2ZkM0FjRTVZcVMyTjRYMDBFUkhQ?=
- =?utf-8?B?YVhSdTRWRys3WldzZnVuVG8zVTNmV0hyTE9EUHZ4NXozSHJMb04yY0lFaUxs?=
- =?utf-8?B?UVhZOEZiU3JmeXJ1eWRISmEwSFNabVVzdWxITWw0enFCanFPWnFkL2srSDh0?=
- =?utf-8?B?UnBwZXZLUkpWMmZtd2taNWloaFBlQURUT2VVSVptVkRDN3V0MlkwR2ZRemFZ?=
- =?utf-8?B?ZENwNk5ydDVYdFJWdmkwT2R2OGhuQkMzU3loZG92a3p5RktJY2x5TUJTMXRn?=
- =?utf-8?B?QlNyNlZ1MXZ4NGRpbXAxMlFrc1Fka1ppTjZFK2o2ajYzbW1XVXJnQ096REFM?=
- =?utf-8?B?WDlMeVBMdTBhYjlMTncreFp4YjQ5VS8vamY0TS9Pc0pQK3V4SXJlSFBlT3Qw?=
- =?utf-8?B?RUl0MUd1dzZnNFBvSXBMZTVpQ3hMekpCbkRLZkVyVGE4NzhWTXQ1ZHIyaG9i?=
- =?utf-8?B?RmsxVEI5VElUdzN4Tk1EYUxZWFpjNk51S1B5WTJrK2NGdGV3MWY3Tys4WHVI?=
- =?utf-8?B?dnoxSm1HSEs5TmZEUkxRZkE2M01xY080MU40Y2xQakQvbWVQWG5IYVhEM1ZW?=
- =?utf-8?B?S0pscmpxWEwycTBoOW9Rck10bXBQRkpDMDJxTHd5RTlKODVKcW1JbklBaGY0?=
- =?utf-8?B?eGJ1N0RLbk5jQUYyVksrd0tXYzl3N1VJNFlueUZ4S3grUnBwV3pOblVPOTMr?=
- =?utf-8?B?ZVZhbTJDSVg0d0ZTS2lUbU53eDQ5UmgwQWl6b2ZzeWpHc1I4NVJHTVMxdmdI?=
- =?utf-8?B?ZTgvVlBMRWJUM3dCSUZGUlJTNEkwRmJhaFR1bEpJVHpyZ01FTnpYUUlhWjVr?=
- =?utf-8?B?Q1IrMG1rN0tpOHJHc0ZCdEhxWkswMk5jY1cxV0U4V2lpcDFEZ2t1UFlBekZK?=
- =?utf-8?B?cFUzaCtmN2dGdEhISnYyMUthc2VLbU1ucThxenpIU2kzaENYZ3pHOTg2TXRB?=
- =?utf-8?B?M0VZQ0ZMUVp0ckxJWis4VkpJdGtBR1dvd3Mvc2N1eWtZdGlEd3g4Z0ZwTC80?=
- =?utf-8?B?aEJWeFB6NHBlTmFwWk5HUUNaTVhpWHRmQVg5T3p5NXFhc0tsWEJTcXp5UlA0?=
- =?utf-8?B?Qzcybk80blpxbzhBRkdqc1J4SmJkS2RBSEJYR3dBNnpEb08xOVF6WE9Cd3Nl?=
- =?utf-8?B?R215TTIyTXpPKy8zTGt6V2MvbGUzb3h1NVdXWExDcFR0WlZ1YnRyUFF1T0RN?=
- =?utf-8?Q?fq1/6/6Y2Zj/KEiAexZWrQvLY?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84c12929-1896-4e1b-d7b2-08ddded4c4ab
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 03:59:17.2194
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ivRKPKVrDTFCb7cqsOoMlA4B5oPgs2aIYkeDYOc3Hc7qj5GG9kX/nUMtycGoXs9YTS2o21FHQjTsMRMKnOht+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7475
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250818-imx93_tmu-v3-3-35f79a86c072@nxp.com>
 
-Implement .get_frame_desc subdev callback since downstream subdev
-need to get frame description.
+Hi Jacky,
 
-Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
----
- drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 32 +++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+kernel test robot noticed the following build errors:
 
-diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-index 79c8b56c051eb96cf45bff8803041b294b8c4f89..bc30ba83fc97ee79e8fe87b58bf443e8aa4801fb 100644
---- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-+++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-@@ -670,6 +670,37 @@ static int imx8mq_mipi_csi_set_fmt(struct v4l2_subdev *sd,
- 	return 0;
- }
- 
-+static int imx8mq_mipi_csi_get_frame_desc(struct v4l2_subdev *sd,
-+					  unsigned int pad,
-+					  struct v4l2_mbus_frame_desc *fd)
-+{
-+	struct v4l2_mbus_frame_desc_entry *entry = &fd->entry[0];
-+	const struct csi2_pix_format *csi2_fmt;
-+	const struct v4l2_mbus_framefmt *fmt;
-+	struct v4l2_subdev_state *state;
-+
-+	if (pad != MIPI_CSI2_PAD_SOURCE)
-+		return -EINVAL;
-+
-+	state = v4l2_subdev_lock_and_get_active_state(sd);
-+	fmt = v4l2_subdev_state_get_format(state, MIPI_CSI2_PAD_SOURCE);
-+	csi2_fmt = find_csi2_format(fmt->code);
-+	v4l2_subdev_unlock_state(state);
-+
-+	if (!csi2_fmt)
-+		return -EPIPE;
-+
-+	fd->type = V4L2_MBUS_FRAME_DESC_TYPE_CSI2;
-+	fd->num_entries = 1;
-+
-+	entry->flags = 0;
-+	entry->pixelcode = csi2_fmt->code;
-+	entry->bus.csi2.vc = 0;
-+	entry->bus.csi2.dt = media_bus_fmt_to_csi2_dt(csi2_fmt->code);
-+
-+	return 0;
-+}
-+
- static const struct v4l2_subdev_video_ops imx8mq_mipi_csi_video_ops = {
- 	.s_stream	= imx8mq_mipi_csi_s_stream,
- };
-@@ -678,6 +709,7 @@ static const struct v4l2_subdev_pad_ops imx8mq_mipi_csi_pad_ops = {
- 	.enum_mbus_code		= imx8mq_mipi_csi_enum_mbus_code,
- 	.get_fmt		= v4l2_subdev_get_fmt,
- 	.set_fmt		= imx8mq_mipi_csi_set_fmt,
-+	.get_frame_desc		= imx8mq_mipi_csi_get_frame_desc,
- };
- 
- static const struct v4l2_subdev_ops imx8mq_mipi_csi_subdev_ops = {
+[auto build test ERROR on b9ddaa95fd283bce7041550ddbbe7e764c477110]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Jacky-Bai/dt-bindings-thermal-qoriq-Add-compatible-string-for-imx93/20250818-173822
+base:   b9ddaa95fd283bce7041550ddbbe7e764c477110
+patch link:    https://lore.kernel.org/r/20250818-imx93_tmu-v3-3-35f79a86c072%40nxp.com
+patch subject: [PATCH v3 3/4] thermal: qoriq: workaround unexpected temperature readings from tmu
+config: riscv-randconfig-001-20250819 (https://download.01.org/0day-ci/archive/20250819/202508191258.tYXB63eu-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 93d24b6b7b148c47a2fa228a4ef31524fa1d9f3f)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250819/202508191258.tYXB63eu-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508191258.tYXB63eu-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from drivers/thermal/qoriq_thermal.c:8:
+   In file included from include/linux/io.h:12:
+   In file included from arch/riscv/include/asm/io.h:136:
+   include/asm-generic/io.h:804:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     804 |         insb(addr, buffer, count);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/riscv/include/asm/io.h:104:53: note: expanded from macro 'insb'
+     104 | #define insb(addr, buffer, count) __insb(PCI_IOBASE + (addr), buffer, count)
+         |                                          ~~~~~~~~~~ ^
+   In file included from drivers/thermal/qoriq_thermal.c:8:
+   In file included from include/linux/io.h:12:
+   In file included from arch/riscv/include/asm/io.h:136:
+   include/asm-generic/io.h:812:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     812 |         insw(addr, buffer, count);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/riscv/include/asm/io.h:105:53: note: expanded from macro 'insw'
+     105 | #define insw(addr, buffer, count) __insw(PCI_IOBASE + (addr), buffer, count)
+         |                                          ~~~~~~~~~~ ^
+   In file included from drivers/thermal/qoriq_thermal.c:8:
+   In file included from include/linux/io.h:12:
+   In file included from arch/riscv/include/asm/io.h:136:
+   include/asm-generic/io.h:820:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     820 |         insl(addr, buffer, count);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/riscv/include/asm/io.h:106:53: note: expanded from macro 'insl'
+     106 | #define insl(addr, buffer, count) __insl(PCI_IOBASE + (addr), buffer, count)
+         |                                          ~~~~~~~~~~ ^
+   In file included from drivers/thermal/qoriq_thermal.c:8:
+   In file included from include/linux/io.h:12:
+   In file included from arch/riscv/include/asm/io.h:136:
+   include/asm-generic/io.h:829:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     829 |         outsb(addr, buffer, count);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/riscv/include/asm/io.h:118:55: note: expanded from macro 'outsb'
+     118 | #define outsb(addr, buffer, count) __outsb(PCI_IOBASE + (addr), buffer, count)
+         |                                            ~~~~~~~~~~ ^
+   In file included from drivers/thermal/qoriq_thermal.c:8:
+   In file included from include/linux/io.h:12:
+   In file included from arch/riscv/include/asm/io.h:136:
+   include/asm-generic/io.h:838:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     838 |         outsw(addr, buffer, count);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/riscv/include/asm/io.h:119:55: note: expanded from macro 'outsw'
+     119 | #define outsw(addr, buffer, count) __outsw(PCI_IOBASE + (addr), buffer, count)
+         |                                            ~~~~~~~~~~ ^
+   In file included from drivers/thermal/qoriq_thermal.c:8:
+   In file included from include/linux/io.h:12:
+   In file included from arch/riscv/include/asm/io.h:136:
+   include/asm-generic/io.h:847:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     847 |         outsl(addr, buffer, count);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/riscv/include/asm/io.h:120:55: note: expanded from macro 'outsl'
+     120 | #define outsl(addr, buffer, count) __outsl(PCI_IOBASE + (addr), buffer, count)
+         |                                            ~~~~~~~~~~ ^
+   In file included from drivers/thermal/qoriq_thermal.c:8:
+   In file included from include/linux/io.h:12:
+   In file included from arch/riscv/include/asm/io.h:136:
+   include/asm-generic/io.h:1175:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+    1175 |         return (port > MMIO_UPPER_LIMIT) ? NULL : PCI_IOBASE + port;
+         |                                                   ~~~~~~~~~~ ^
+>> drivers/thermal/qoriq_thermal.c:281:9: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     281 |                              FIELD_PREP(TMRTRCTR_TEMP_MASK, 0x7));
+         |                              ^
+   7 warnings and 1 error generated.
+
+
+vim +/FIELD_PREP +281 drivers/thermal/qoriq_thermal.c
+
+   264	
+   265	static void qoriq_tmu_init_device(struct qoriq_tmu_data *data)
+   266	{
+   267		/* Disable interrupt, using polling instead */
+   268		regmap_write(data->regmap, REGS_TIER, TIER_DISABLE);
+   269	
+   270		/* Set update_interval */
+   271		if (data->ver == TMU_VER1) {
+   272			regmap_write(data->regmap, REGS_TMTMIR, TMTMIR_DEFAULT);
+   273		} else {
+   274			regmap_write(data->regmap, REGS_V2_TMTMIR, TMTMIR_DEFAULT);
+   275			regmap_write(data->regmap, REGS_V2_TEUMR(0), GET_TEUMR0(data->drvdata));
+   276		}
+   277	
+   278		/* ERR052243: Set the raising & falling edge monitor */
+   279		if (CHECK_ERRATA_FLAG(data->drvdata, TMU_ERR052243)) {
+   280			regmap_write(data->regmap, TMRTRCTR, TMRTRCTR_EN |
+ > 281				     FIELD_PREP(TMRTRCTR_TEMP_MASK, 0x7));
+   282			regmap_write(data->regmap, TMFTRCTR, TMFTRCTR_EN |
+   283				     FIELD_PREP(TMFTRCTR_TEMP_MASK, 0x7));
+   284	
+   285		}
+   286		/* Disable monitoring */
+   287		regmap_write(data->regmap, REGS_TMR, TMR_DISABLE);
+   288	}
+   289	
 
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
