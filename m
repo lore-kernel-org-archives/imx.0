@@ -1,49 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3ECA26E17A;
-	Tue, 19 Aug 2025 19:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429F82BDC2A;
+	Tue, 19 Aug 2025 20:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755633011; cv=none; b=a5DTlnRZdm7AS0SmvJwxk+vdTg6r29gG88JvO9G9ulD0346LjhOTCfLQYk8YaWLycKPledorrZ/eWPTlf0Fxm+tHQVaY86YPy7zWFJGmpiZ7wIRfbozEA8TzTqb1aF9R3rdJcUsKLSv6eb41jnkamh9kPfGEUbO9gjLd2fpag9U=
+	t=1755636234; cv=none; b=Yl2fVogfGJW506w2TR3HxFOgR54b4iLVEY6sjI4xG4fxO+jJxwH7ftH4WzqJ2g0hZBBRkV+bp2TQP69WMkFaNucAWziGKQ1UE/ImwmQTUtWF+WmAfn1u+keNQDy/O+Ak6QUlsPobq9dw5je6SrQMSp0AntkGSaorutzyHF8Z/hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755633011; c=relaxed/simple;
-	bh=rXxbSd4NGFsxG7Du96tt0eWEUIA3BJVgGFwkWbEkdlI=;
+	s=arc-20240116; t=1755636234; c=relaxed/simple;
+	bh=fJayKz1iUIRUckBQ8dHMrsmPlqiqM0tYfP5QqS+HrQ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KO1QRVUODhOBgEfSJ+RgAOXERHDEplTpVSjinBNhlsRkZeQN/tVrQb3794dfp6q+xburA5mKFKIH9mWeqsExSghzhIJS1oTWDEBplZwEJSSMshkZ7QU/H1BKd4Wb9/pcVNB2LGOga/QBPDoQlUyXw0iMzral1eczYHzu8OrVQco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbSR4YNA; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mLwaut7OZ1KhtrJY3J4qzJsdDQCzEEsDKJTcz1mHCzF1MBmTOFyACBgJs73LCFjbAK4NikQC40WaBShfJtYplPjc2yVSSfRK/LsX0GCYgOV0Tc3L56AuI7hXJkT9b+a+DzDuZx5aQcNtXEQG8Z2XyCZ3vs+XW3k/mEzdGldLJu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dVYpq7zQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbSR4YNA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF38C4CEF1;
-	Tue, 19 Aug 2025 19:50:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dVYpq7zQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34C6C4CEF1;
+	Tue, 19 Aug 2025 20:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755633009;
-	bh=rXxbSd4NGFsxG7Du96tt0eWEUIA3BJVgGFwkWbEkdlI=;
+	s=k20201202; t=1755636233;
+	bh=fJayKz1iUIRUckBQ8dHMrsmPlqiqM0tYfP5QqS+HrQ4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hbSR4YNABzlsy9pJN7WzfYzMVwnfolauDV1rXZvGW1mI57p37MW6oOe/+01+xg9uF
-	 zOXCvwuNvXPxm6cWiQ+QwG4+aQ5CfXoZ0i5/CzsnUVt8SMTgpdKuzYChqbu9fZs7FM
-	 WQl10SuiBy8dl8BBGcq8xO+lE7sfEYW1Ll9/qOBU7AjSmHPDXQBC/eU36HnOrllsLg
-	 1tWHtEsc0si4gDYUsimTmzNppaCEJ2nBflrXkrQjRUTnlVAgSc5CY+2Sa6hb9i0Dsf
-	 GZyAXddObnGMRBLA4YPev/YmuJ+IsW4i9++EooA4pKs4GusYblwazFzCp2/tINsGiy
-	 atSDfqecI84Lw==
-Date: Tue, 19 Aug 2025 14:50:08 -0500
-From: Rob Herring <robh@kernel.org>
-To: Maud Spierings <maudspierings@gocontroll.com>
-Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: backlight: Add max25014 bindings
-Message-ID: <20250819195008.GA1218175-robh@kernel.org>
-References: <20250819-max25014-v2-0-5fd7aeb141ea@gocontroll.com>
- <20250819-max25014-v2-1-5fd7aeb141ea@gocontroll.com>
+	b=dVYpq7zQCDzaP5Jey+pgSlIjoyYr1H3CePAcxHgYgeyBAKkcih6y269p9yC7oce1Q
+	 IliUTtK33jrdmwBihvAwLpo3Hr5MN2uTNKzMEwrV/k/L0AOZdONpA/5g6dqtK+S2Wv
+	 2Ur1c9LhbCmXJC6HUQ67Nzrn3lm0E1cxwsT++TBrvA3cM1ChGCCZtAzDgPxp+S8pYp
+	 v3aOkqhmAshLnLDxFsjqDPiN+IIA5W14SCbQyA0fHBaE1OfXiJ5g8s2DmGuG+4PyYC
+	 VgZNiAsEzSNlRY5jC9eVF01DyPT583rius/TToZxQ2sqmfGHk1/wNVCjwORHLVrrkl
+	 VXEiE61UQWYMw==
+Date: Tue, 19 Aug 2025 15:43:52 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: shawnguo@kernel.org, kernel@pengutronix.de, vadim.fedorenko@linux.dev,
+	linux-kernel@vger.kernel.org, richardcochran@gmail.com,
+	s.hauer@pengutronix.de, edumazet@google.com, conor+dt@kernel.org,
+	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+	davem@davemloft.net, pabeni@redhat.com, andrew+netdev@lunn.ch,
+	festevam@gmail.com, fushi.peng@nxp.com, xiaoning.wang@nxp.com,
+	imx@lists.linux.dev, krzk+dt@kernel.org, Frank.Li@nxp.com,
+	devicetree@vger.kernel.org, netdev@vger.kernel.org, kuba@kernel.org
+Subject: Re: [PATCH v4 net-next 02/15] dt-bindings: net: move ptp-timer
+ property to ethernet-controller.yaml
+Message-ID: <175563623228.1286028.14650660035550911275.robh@kernel.org>
+References: <20250819123620.916637-1-wei.fang@nxp.com>
+ <20250819123620.916637-3-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,142 +50,40 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250819-max25014-v2-1-5fd7aeb141ea@gocontroll.com>
+In-Reply-To: <20250819123620.916637-3-wei.fang@nxp.com>
 
-On Tue, Aug 19, 2025 at 12:58:59PM +0200, Maud Spierings wrote:
-> The Maxim MAX25014 is a 4-channel automotive grade backlight driver IC
-> with intgrated boost controller.
+
+On Tue, 19 Aug 2025 20:36:07 +0800, Wei Fang wrote:
+> For some Ethernet controllers, the PTP timer function is not integrated.
+> Instead, the PTP timer is a separate device and provides PTP Hardware
+> Clock (PHC) to the Ethernet controller to use, such as NXP FMan MAC,
+> ENETC, etc. Therefore, a property is needed to indicate this hardware
+> relationship between the Ethernet controller and the PTP timer.
 > 
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> Since this use case is also very common, it is better to add a generic
+> property to ethernet-controller.yaml. According to the existing binding
+> docs, there are two good candidates, one is the "ptp-timer" defined in
+> fsl,fman-dtsec.yaml, and the other is the "ptimer-handle" defined in
+> fsl,fman.yaml. From the perspective of the name, the former is more
+> straightforward, so move the "ptp-timer" from fsl,fman-dtsec.yaml to
+> ethernet-controller.yaml.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> 
 > ---
->  .../bindings/leds/backlight/maxim,max25014.yaml    | 79 ++++++++++++++++++++++
->  MAINTAINERS                                        |  5 ++
->  2 files changed, 84 insertions(+)
+> v3 changes:
+> New patch, add a generic property instead of adding a property to
+> fsl,enetc.yaml
+> v4 changes:
+> 1. Change the title
+> 2. Remove "ptp-timer" from fsl,fman-dtsec.yaml
+> ---
+>  .../devicetree/bindings/net/ethernet-controller.yaml         | 5 +++++
+>  Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml    | 4 ----
+>  2 files changed, 5 insertions(+), 4 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..30b591152fa31d5e43243cac44c72028b05b5f8a
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
-> @@ -0,0 +1,79 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/leds/backlight/maxim,max25014.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Maxim max25014 backlight controller
-> +
-> +maintainers:
-> +  - Maud Spierings <maudspierings@gocontroll.com>
-> +
-> +allOf:
-> +  - $ref: common.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - maxim,max25014
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  enable-gpios:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  power-supply:
-> +    description: Regulator which controls the boost converter input rail.
-> +
-> +  pwms:
-> +    maxItems: 1
-> +
-> +  maxim,iset:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
 
-       maximum: 15
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-> +    default: 11
-> +    description:
-> +      Value of the ISET register field (0-15).
-
-Perhaps a little on what this controls? 
-
-> +
-> +  maxim,strings:
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    description:
-> +      A 4-bit bitfield that describes which led strings to turn on.
-> +    minItems: 4
-> +    maxItems: 4
-
-       items:
-         maximum: 1
-
-But why not just an 8-bit value 0x0-0xF?
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - maxim,strings
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        backlight: backlight@6f {
-
-Drop unused labels.
-
-> +            reg = <0x6f>;
-> +            compatible = "maxim,max25014";
-
-compatible is always first.
-
-> +            default-brightness = <50>;
-> +            enable-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
-> +            interrupt-parent = <&gpio1>;
-> +            interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
-> +            pinctrl-names = "default";
-> +            pinctrl-0 = <&pinctrl_backlight>;
-
-Generally we don't put pinctrl properties in examples as they are always 
-allowed.
-
-> +            power-supply = <&reg_backlight>;
-> +            pwms = <&pwm1>;
-> +            maxim,iset = <7>;
-> +            maxim,strings = <1 1 1 1>;
-> +        };
-> +    };
-> +
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e81d5f9fbd16cc384356804390d65652bbb9e3f6..11c73d2e37fac22aea852152746236c1472f41b8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14972,6 +14972,11 @@ F:	Documentation/userspace-api/media/drivers/max2175.rst
->  F:	drivers/media/i2c/max2175*
->  F:	include/uapi/linux/max2175.h
->  
-> +MAX25014 BACKLIGHT DRIVER
-> +M:	Maud Spierings <maudspierings@gocontroll.com>
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
-> +
->  MAX31335 RTC DRIVER
->  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
->  L:	linux-rtc@vger.kernel.org
-> 
-> -- 
-> 2.50.1
-> 
