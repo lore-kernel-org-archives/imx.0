@@ -1,47 +1,47 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013044.outbound.protection.outlook.com [52.101.83.44])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013000.outbound.protection.outlook.com [40.107.162.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A888280309
-	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 15:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2E0286D79
+	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 15:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.0
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755617131; cv=fail; b=lRIaqPjEv5ik8vzUyXA92F5UdNAmtqaEO3YZn9lq0faKMcvbOwQ9N+5uxWGMUPJRmWHx5nDNpMTiLM1nQ7c7ymIDhesZYHqenC075KJ/1gCY1x4h+WIPQA3rZdUSWimi64ijg2nxuP24g2HOOCfbRqWc8Wc03b8TEWQ5086udn4=
+	t=1755617348; cv=fail; b=XheMRHjxCqPZzjBsAONWqEVYZfd8rt2a5IZcrO7BcpgUx4pmiVUr7nqVjd5Ej29aYU2UKub5Xmuu5QkB4U6LEtM0JaWO6Ub9m0MujTGtAahTseArKKm10y31s/jmFCMkl8Lyp1tUg9fwSZdTkbulYMyL2yMzhxaqVZruBRp9Xy8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755617131; c=relaxed/simple;
-	bh=33jJJ4a/5Ohep98yB2KFKZcq+eNIpMC/vlgA8VIw10Q=;
+	s=arc-20240116; t=1755617348; c=relaxed/simple;
+	bh=HQu8Sa1fNLMi2h9D0LkjdctEm3kTaPcR186/EKWsoy0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=omEOzzDHxIQMcOCe9FOqMV1N5xRfq/ghXqPA9N8k4h49+KTNGf7YkrvAWlF0K7kQPjHfZJqQA6RD9RcE2siGrWT23sqmAY0JgJpXsBmfDk1Br6Iy328QWV+W3OFevN2EMJo7Qp7bZXzNfrHaP5heYkAP6aWu8PO5Zql6YS+BH5A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SGbjZokD; arc=fail smtp.client-ip=52.101.83.44
+	 Content-Disposition:In-Reply-To:MIME-Version; b=uat1BKOOlWozXybBFBKzDzls00qHykG8zz3l5pn3i0JPbife5+0oLa1dNZOYENhRGHBDHTEep1t1F9eLzSotmGNjT+kVEuO3Y5GpXr4aJq2TVIpO0ZILP8Q6g2imlZmCJZkPNqEc+QEGRPDifDFYyIY2XQI/DrH0vkyp0qm66t4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JgOWVOAs; arc=fail smtp.client-ip=40.107.162.0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SGbjZokD"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JgOWVOAs"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HfXAIfKWks/rivRANlGv4yVdrQUjdvV3wO12GP5wDqsUzlAd9sIlUKszAU0w7u6d4Fe8L/vBp9nrX40QWx9LPhV42uvzstLrQQIoWCx0l4txLiNXwA+zmbtu1FtJgO5nbOJeiu63f4iQvqkGIIEqlx1FZVuD9d3iKAAiTRXWY/EvCdcpEIwNRyp3h3DXD1lLswJfVR4zpDxhTXuD9dzfPuaK2tPupUrBsEpmY4xFt8c+gEuqBuiAOTo1yaSXgQaKN3LNbFDsyWXheNu4WzuKn72rpjL9DHnwqIjK4Te1s3yUK1Mukni3AbBILyEeuBiFxIP0/TGnByDuu1eT+yXMVw==
+ b=KJvQuJ8L+zmx9+JT/XU4rfPf8zSCpMbOwDMr/WCdHrHwARRa8qG5iEQLEeLzFNYSx5z7t0IJkkUAP/joLvYu+OGCP+KpuZBamLwbNubtyL9c6fCX7zrb0tQp6EA8lv9KpiV1RnLMnGjwGLa/HXDUCO7PPBDZwicCe77ziFkEbqVcCqjN1jJgGOtlDHVQJ7qb0gMof3/tD74/92Z+EMuaqmTLkLoaHRcHT96o3IR8Csvy5jE0Y/i+DxPScAWyosbv+WrjuZ0XRuN5hv97vu0mcLOsw0t3f7VmHzIYrJcOmYJGNx84xDHK0f+uK4GUXce+GavNKOsWbP2ay1e5f6hexQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WzUY6+VscFAw3zi7TUwCZ/kFpr2YNB3m0WYhuLGmcyI=;
- b=VOt3a+2yadvd3KOQl9yvtkeGIviVCzEHiQKrSHQbVDA6p82aGxlYZ4mjDVGB8CIAdO6rF0Dw+TB2uZdKBnqfr8MsiRat4+BH6FDsSrh/1/+PUAAcr6QOUNIiBHMV3PcL+JXExmPFek1fxJkPjLtJRdJNDX7ttQlCpk2Bcgofk53c//zjoq8tD2VLFDmLwD4PyHKeA31oVlLo8RKoNrl4Q/BmYNgJo0FVxEOqUdSbmrpvoxkn9NTxvtFv7SRM4jAyF+etgI0ulGYfaevZRe1eywiyygv+kQDHk/hxG+uu4/GI7AKOWvY4dUlZBWSiq7/MsBl0p3D8WJUQAVrQEOLQGA==
+ bh=JiYQyaNYOcFUp5R+i94kpBcM9aQm6IREpSgzVPRDFR4=;
+ b=WhTF0a6MPEVAAjYrz4KpF/5/PhaItR088RLdK+aLR3KXGrZLggIEslhKTDuXRE2MVFTZiSk4F4W4cMmXlTeoUiaTmgXRJMuUB0DjhUPj//oOaFGBzuHcpyS1sU0a0LrhCKG6muw7/wM5hmE+YhrNaczyJsHmKK4ayVUEkHGskDRtJHB3afR8Jq9Z0s9hEATNxgZT0w9aNms+GrQR+yNGhtsc31i3zic5DIpf4SXFuEDptfjP7/QQBY7SSJDqIXMS1B7FiEQLj5WaDQRgA3sZCPfaV5TdsCToe0CiJeoivyixOMpNL7GrZhj+7nNrH/F5Cd/H6xJu3kH10Zdu9XDfAQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WzUY6+VscFAw3zi7TUwCZ/kFpr2YNB3m0WYhuLGmcyI=;
- b=SGbjZokDeg/GUkh0S4oQBnZ0y11rcp8c9ypIlk0lFJD7Z9WW+cH1ijPQNeX/7Vl40lA7Xqy+Oai9ZUM1+ELOMRz1KCNNBVpY1ifER4jaLDqxzTJ5lAP9hK52GTbFyfzrwbum1yY/O687XNPloSsiOEunulwsYhqi0Q8MOd7QbnffxGKmcOsHaf2wJ+BinqdGUPGY8Aax+c+YCK79JFHjqYb+oYD4fZbbeIoOI6tsNxley/lqaeJuyfaLvK+Hv23xr8jphIFus2ADZX2+PGIQTvxe+7GDuoNujCmJ3ZghlS66m7VaRumQYwmfJhIKhrcMAcQbiyc8XzBIOmZ281l+Vg==
+ bh=JiYQyaNYOcFUp5R+i94kpBcM9aQm6IREpSgzVPRDFR4=;
+ b=JgOWVOAsxbWwTKqXeOsAkpbtgm7mbmf/egI8NSvyCqeXJbKOAHQfyYHRKbvT3k52rD6iA3HAM5cNOgSpcSakJTSpqlBTGXEMNMh+8i7ljW5hYIBKmMQlSp2by+sBh7ekJ5Z1+HYXbwZIXLYYHlyBryMBLTMSEOa622LN16SlRyPi9SexanMO20n/q2JnhAPpmiEobi6lbPiH5yTkc2c77wYh10zM27pRN+2W3pj/XsriqFV6sYfGH48JLIXtgOF8CVGJrorHRWIvy5+yQQqjCbeSAn/QnPljQfTN2icVnjPBAi6sdD5QNl6kN5dEc5MfBr920CTe2E5ZF5H7uhbc0Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI2PR04MB10593.eurprd04.prod.outlook.com (2603:10a6:800:275::15) with
+ by MRWPR04MB11492.eurprd04.prod.outlook.com (2603:10a6:501:75::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.12; Tue, 19 Aug
- 2025 15:25:24 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.12; Tue, 19 Aug
+ 2025 15:29:02 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.9052.011; Tue, 19 Aug 2025
- 15:25:24 +0000
-Date: Tue, 19 Aug 2025 11:25:14 -0400
+ 15:29:02 +0000
+Date: Tue, 19 Aug 2025 11:28:51 -0400
 From: Frank Li <Frank.li@nxp.com>
 To: Wei Fang <wei.fang@nxp.com>
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
@@ -53,15 +53,16 @@ Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
 	fushi.peng@nxp.com, devicetree@vger.kernel.org,
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev, kernel@pengutronix.de
-Subject: Re: [PATCH v4 net-next 05/15] ptp: netc: add PTP_CLK_REQ_PPS support
-Message-ID: <aKSXWumC80JpNqDt@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v4 net-next 06/15] ptp: netc: add periodic pulse output
+ support
+Message-ID: <aKSYMxObH1n9luEs@lizhi-Precision-Tower-5810>
 References: <20250819123620.916637-1-wei.fang@nxp.com>
- <20250819123620.916637-6-wei.fang@nxp.com>
+ <20250819123620.916637-7-wei.fang@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250819123620.916637-6-wei.fang@nxp.com>
-X-ClientProxiedBy: BY5PR16CA0026.namprd16.prod.outlook.com
- (2603:10b6:a03:1a0::39) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20250819123620.916637-7-wei.fang@nxp.com>
+X-ClientProxiedBy: SJ2PR07CA0011.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -70,519 +71,627 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI2PR04MB10593:EE_
-X-MS-Office365-Filtering-Correlation-Id: dbf1e4d4-47c7-445b-78b6-08dddf349e1c
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|MRWPR04MB11492:EE_
+X-MS-Office365-Filtering-Correlation-Id: 14a9b5ba-bdc3-40a9-f131-08dddf352021
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|52116014|38350700014;
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|52116014|7416014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?OtD00oKcdtnioT53lp+ph3bYYvIP5FyTTKnfwnFBOvqjdEjym2X5dHhC8bWh?=
- =?us-ascii?Q?ItWDNvIXwHB4a8KgKjlboYrbQGCMWO1FaTvuHpJ6QTxjA5Q492MK0wDwG3U9?=
- =?us-ascii?Q?D1conigaxsfRWG6F0nk2QlHD/7WerFZi8Dul/A5da+pyj9WfsJRc2e7zWWSW?=
- =?us-ascii?Q?4Fa49HZ1hY4awoLvt8gJUrG7J3s0oHkX60AKp+TQuyM672lbcpxJ9WtOWLBP?=
- =?us-ascii?Q?nBbgHWglSkgGBc/vhnQwH/+G5MJUbjhs6t5X14QqNfq4vRSU5/zoEkhyIkG7?=
- =?us-ascii?Q?OxhOAKdXqy7lB1W8mF458fn5kKfJuY3je1HufC7bBMRG9MiiDfu5P/Prre62?=
- =?us-ascii?Q?26zNiWNH0iNuhZooNuzJp/mZHa7Q24yl6gcELtMpBRNHFfpOu/rA5GXgRCy9?=
- =?us-ascii?Q?u+aj/lK5Xo7Y3Q0ZuJvghLlp/YmKSn3Sa+iOKHTCn1rGfa6aJSrvdEIA6Grr?=
- =?us-ascii?Q?gucZ4jR4BV/5Iu8GnKYmoTLiY+plGlbHUnaSlczlfBWddjburGWMR4jjx1wm?=
- =?us-ascii?Q?r/XoLv8TwsrEVIFQQBdy6g5OYApXGbfNvbDWLVby1Jq4TUBV/NJCiUOUuSls?=
- =?us-ascii?Q?ynsCr0znr6Y1NhspLY0uYpXS5g/LpA3Uwg6k/35BWdipKGDRnBJqar4Ovogm?=
- =?us-ascii?Q?cBWm5/yp51+q3Cw3RH+hWaHpgxNZ9hVcz36UdwnlCtgsLXOqoZdCwwHtqrMA?=
- =?us-ascii?Q?n9mFB75/Z1LWnQH+myKtDg+kN0Cp8jP/2zWcxyMQLQOTaJ6ptSGmbrl0Sj8S?=
- =?us-ascii?Q?eWcFqUdzbYDgvBmrk0VGkR8tZEcAiAov8ZFFcLnu1Txj6f8X9ZdRmYia0K27?=
- =?us-ascii?Q?tAZ7CR3+tSoWDusVvne6qnUiic5JRq8VfGMkQhZu/ME4xlsOkEfAt2GZDjuu?=
- =?us-ascii?Q?J8df+BhVa98kpmC+J+sr/cLJTv9fVc+Xet23JL3lUYRbrodFWQQuAtP6D404?=
- =?us-ascii?Q?O6DoaT47mqRvvaj/U+q+r7sYkCvGuPsCqcQ36spAT370iGYlYYsSoZZzGbvY?=
- =?us-ascii?Q?XpXcLSl7rtOODnWfL1+MV0pW0GMTUg/FBfr49vQys+oGHLU+ch5ukuth1ndp?=
- =?us-ascii?Q?Dttp+neGVqdvGrmRRNoJLZ3BaU5/odaRDL3rkozCf71v6xsYkZkL6Xzy800k?=
- =?us-ascii?Q?G2AmxwGmm92BglhO85T+s16jy32Ufr8D2dTQIQzWXrQnv75QTCfRGgy8FdeN?=
- =?us-ascii?Q?nT4tu6DP5izqY2Jxii/wRa37i62lFpRvfJKYReWDaFBW3FLxhShRFLeZJKw7?=
- =?us-ascii?Q?XDs74oASxj9201E8lXVZqxqAPhQyXUhj1CcRW8Vzq9DQuU03tI9VsF+WrZBM?=
- =?us-ascii?Q?MR/mxdIkpn3oV23flaO9pH/RGR+sTEISFdLuGkWGbW/J2wxxeY8nFjGawJ2C?=
- =?us-ascii?Q?OWUXlkXreJZR7MCc+Q7/IS5FNCvAh8W1NQP2pyavAW5qDnINzcmOppsxql+M?=
- =?us-ascii?Q?PSVFdqe1WPE=3D?=
+	=?us-ascii?Q?mHgyD7XZPIM2X1X5jrTiFw/elzeyhfZ5NLESatM44K3B351cskRiruzyC7Wf?=
+ =?us-ascii?Q?TmMYbNGAMj2LTJ7kU+JTOHBgfqUi9meygArMvDZWGklMXKAK9VaytW+fAik2?=
+ =?us-ascii?Q?bpxVJzx7wo/B11FfYEnJ7NyXdhNcJ62rdF9UZ1FFN0YahAxvPLIpqhLTCDij?=
+ =?us-ascii?Q?/uXLVxW6ahWo8Wh4pfLsIO4XJ64eBYR/36RMKYPYgMo9DYYDBbP1qxg2DiDi?=
+ =?us-ascii?Q?V9UcEqBTyXrV7CtkL7j/oe/HmCOTp2Tbr8SDSZoi6572TJHqGNWwI79S+pRd?=
+ =?us-ascii?Q?2jm4H6aWJ0bjIuAe0nA3lTvNmeb/eJLCNuhm0KBdWBbsGDkL2okNstgcLRHW?=
+ =?us-ascii?Q?N9cM24/42YRgiAzyPgHA9BVquyeZg9xIbR6Wd1zbA9s092JohPIXJVYr1OPt?=
+ =?us-ascii?Q?gxEfFIhwMqqYlr/vuCqpTCZeqFlkGxjSQ054A8aCDuvxAhF04kabWc3szD3g?=
+ =?us-ascii?Q?i/dxttdsSivgNhjc/eLmL/lxL3k3FsP9gVDsPFEbmLWWnUqNv3/8PgO9/D7W?=
+ =?us-ascii?Q?GgzOsPIvHT7X+L6oEI6kdi2uEZJ+pd/ZOdgXeRZwWcZkL87w0CrDf1rqYt7H?=
+ =?us-ascii?Q?fe5QQXH6c7cn9EuoFSqRPga4O9BF+vDyKokJ03UvAINxGXpyKQUK4aFH8XOU?=
+ =?us-ascii?Q?uVBG6ESEuzgaQgsybOsYJfrlxTzf8feQgqNxJtOc+meXMbyC/H8Fvw1UOrR4?=
+ =?us-ascii?Q?9M6IW2Gf8iliBmQZGWWLXX7KUy71s63qwnO4qWzgjIESiD/hdN0qdhI5DxzQ?=
+ =?us-ascii?Q?qnGtEaZrceotaYZD/qVyoJ9EjAHw9oVgktNIIEataZVYDPh7jrhQulNGNu3U?=
+ =?us-ascii?Q?UB4vHEDwpkYRkPzNkz14ZYUdYVlvr9/zJW8+qsc2v4aeb79gwYkiTQAyfrqG?=
+ =?us-ascii?Q?OIYHcHPKxDSlRahZFp1fUBEfIRJsIhOkquZrrWarK0Kf9+Rpz2Xk2XgvCqqE?=
+ =?us-ascii?Q?f7pG8M8cujsblnxmpMP7dIBmeyomGvjGq/8YjADvk6BRrywYa8rBXlcb3bNi?=
+ =?us-ascii?Q?7XkzkhcNzDDA5YHjPTqGUP7S0ZsuVDylOOIm6+TiXoWdBHWjKqflqZ8Bn0eW?=
+ =?us-ascii?Q?jbUyaxTWauMglsKCtGXOFXlzW2qgG2UpYLem4Ct8OT1DV6K8fjoOqee/mPZl?=
+ =?us-ascii?Q?Sh//3QRSyGGpqk4SYzb+SSUL8pEBe4+PFPFSrA57G6NLfG11Ju1Ja5een6r/?=
+ =?us-ascii?Q?J6BbCQiN2tn3jbgOOfi6g+EwWNG3C2fRNR6gE/74usvPX4sZgYEmvOje1yR5?=
+ =?us-ascii?Q?8Xwsg2+Kh8Iun69Qo8HjNXhFtSAc6ZufeeUf9CWh8BlRPfol/GitLsWIpIFr?=
+ =?us-ascii?Q?bLCzYX5DOUA9fb6mR7li7aw32ZlbtOiP9rit8rULoFMMqxog35W3iNUxrPNw?=
+ =?us-ascii?Q?SFznoUP1RMEyBxgFZfromUFXiDC2wXMC83J7yvp4a26BabJGW/KOljWv5Nmt?=
+ =?us-ascii?Q?v37dnqcz8ANDgQqRz4d4RNi4zI+iIUyp/MgXroqDjsV7G3aUCQJTgg=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jEsCnVMrp7D19LzBYViWqt4mQXPVBnIrZKv9iIPki4jHOOCpCuYWYgX6OeZd?=
- =?us-ascii?Q?ZrBJ0qxD1GdGbVhWGMHIE4CLJ7cWUvYQ2hIJ4mlCDXfD4a/QjoeR9N5ThOxv?=
- =?us-ascii?Q?ri/gWFFlzLJXDAnGfevUg7RYl9ghblwDo77OxSweb2MayVAJwN9lui7kzuwF?=
- =?us-ascii?Q?zXdaPcFnyrexFanrjek0S4lqODsiGx/WV8+1Om355Fr7rbFs4asriHhHFFl+?=
- =?us-ascii?Q?pKS26JzgC7YQ58l4pnF/buUaaFeDC/Sb7Q4NdIIt9aQvy0jJXgOoCetGKgtl?=
- =?us-ascii?Q?VApwv/ojjM0fIo5wnXuR8cDGz0IIESFThAEGEZSkGwTxQZCOj/jMQEPrMJID?=
- =?us-ascii?Q?wbTf02Dykbz6KSbENJ8rPux7hkNIBb4DEfLAhVSclbPKP8sLuSztHMYE/EDW?=
- =?us-ascii?Q?BuWpo+ughWolVQY9CmzuEScR60IuyXmMsFOeiqcsamIfXtj5dIld6hoFKQ4O?=
- =?us-ascii?Q?O+/KwfehHjcGHxzRMzPHiZFzxwJXZzaXbtH3LVAgkXlvIdUeL0X/VGqm4N5Y?=
- =?us-ascii?Q?NDYVN358IfMyoYk4TkTHYC0cZ8CWqaUW4sfWt/wCKS+9KvNA/SPQjLL44ne2?=
- =?us-ascii?Q?P2IJloJg6eFzP7UanC41BC+q5bpv5rmtV/NxZ4r3rSCJmcpfshLape6892BD?=
- =?us-ascii?Q?Uttiy6zqfhh4a1laPd1hTImN3fDpHqb9TFCUSOnnupbcO9cO0tohOp7o9yzX?=
- =?us-ascii?Q?P8TBWPj9RYbBb6X+CkNunZSyb91WyPkVmpumrkcTF0Cz1OMmRgXHd4nvMePJ?=
- =?us-ascii?Q?heX7inTVu2DcX5qia+YvmNr5YyxAnLuaxq/ODQhYMiZo/8aAgcTx1wKIbO2x?=
- =?us-ascii?Q?G+Gs7eAHku62D8gxUxxftRa/HNB6twRfVH7noTC1hJz0WNRUFQRQn4/YzZXp?=
- =?us-ascii?Q?w+0Mxo2Y8xEXGOeeoWkAmpk+wXkhq2kXvantIU5SLyaBZproUqPVEaybG7Wl?=
- =?us-ascii?Q?iqctmvHOoBoFfJ5MgWREai13qQGa16/UAgQBFioR5cyVR7gyKmQStPMYhCjC?=
- =?us-ascii?Q?CuaWL9aRUT41ri/Yc6xbaeKRuZYw3V6NP+Kn6erD6IJ6VtwUu4ce+bKLZ7rN?=
- =?us-ascii?Q?YSndSfh18S8c/3XO+zTgN0PfUuRii420E1J3vPp5auS0De0xDtopBDEbdkGT?=
- =?us-ascii?Q?bwE880ojWZ6FzvW1ML3Tl8OPOlKQSrftBdx7lntTQaYkXSImCNrUxSxwtXfX?=
- =?us-ascii?Q?uwRXoNy96wZ5JsjKpZqQnP7YRVp3D2z2nLYPuQXcQSfuB6M6fIW7/jhAI8vG?=
- =?us-ascii?Q?nCCc08P2d3ptXiFVBLRtoXoM+yApjox4xYyVW/9iKg3VgG/lWIkMpG02GQ2J?=
- =?us-ascii?Q?TBCrgPPdD04YA7lF6l68Y2kFG+89XinE1I3c4RNA4zfiJnhgjNh7+SuRCZoh?=
- =?us-ascii?Q?vGwgYJJuMENlC5Hb52VCBorj4QaWJ/t6NNxyst491f7XwkvvDA+xfM9rJe1R?=
- =?us-ascii?Q?Nuff8NbRRvL8vEA1yEiqHOKWPB4gncpawvx4j7BIyUQRtocW6eIX0xIaK+aK?=
- =?us-ascii?Q?xL7wb9IYMc/NYdiuXHQvGTVvQ3yfw+9U+sLDEiZWAl0c5a9T8A996NpT/biC?=
- =?us-ascii?Q?LoHndPpeR5wZammteH3sutFh+1hf4nfEHYnrKHWe?=
+	=?us-ascii?Q?S4VjBSifD8tcNiNhg+gHcLtElJxfS5v0Gpmq2PRdiXN7UTNXf3bQsBZvt1xu?=
+ =?us-ascii?Q?Keo6ognr+94qr8jRng+44+fOeKWL8+Kv+cDlrBI9I0kboOpXTH1roBTAVS/k?=
+ =?us-ascii?Q?T7S/IwcVjChWp17sLETrmnHG5PaV84RuSwweGJ4+vycZeIVWz+FVdY3FqyFz?=
+ =?us-ascii?Q?rotYdAIczqif41ox4VPUtNoBO5GoDaseXSggjPbXWAaJKvvbkI1zRXd9CKNs?=
+ =?us-ascii?Q?uKf4VfyX0iFjrs6fBhAd+l/tRC3JrLX+cHRv1WIDQADLG23II68tuTEe7Oq9?=
+ =?us-ascii?Q?6/F77TaGs9s/hE56aYjt1pJHiJz9oA4+GyhCKfMoixo6rz0w32zbvJ4ZeUV4?=
+ =?us-ascii?Q?uw3dlvaAuYqLIHUj2+4IJBdqPBfHEZZzffCVwoD6Wuf9b8fMMLa1aWZc+6mP?=
+ =?us-ascii?Q?RXe+gcN2EaplZk5YNhWq0KboR+U5EUGcFCLN4iHu+znUrfpdJOzvkGWCKzOE?=
+ =?us-ascii?Q?U6V7LjDLpiTb+nFOy3F0Xog3K3dBFqwajtCpWGPsTJ3o/jXBusieLncyBK8i?=
+ =?us-ascii?Q?WpeE1Lm4tCsOrNucF41FSIQadPyXSDqXXmHWQhN2DnhFhISxxYUzRLOKYejf?=
+ =?us-ascii?Q?6Bk7BOdXlQIVR09UVOsQD/LPqJ0X5UXwzo/fBgs5Q7gGjnKIWMntfJcP2sF7?=
+ =?us-ascii?Q?nIReQobiQ1u+um39YL6nhwVBGKVnLh0IE/shzxq4EkSgscr0t7CKuXlLjAx/?=
+ =?us-ascii?Q?5TLTaVXm4p5ETCT/TJAt0OS1qouGMbCtCnwHWlkOtw2HvMvYV9wZ48vFNUXt?=
+ =?us-ascii?Q?tzAQgH/2qiWyPNgqDAX0Ql3PgsCPtppUGpv+tAuG2rbjGzdiN4rIh4njccFj?=
+ =?us-ascii?Q?/jUQqqqUkJMgQFQ9egFRXElGEiial6Lbf5leubY383nCTyCI4L+dsbJu7Z2E?=
+ =?us-ascii?Q?nsLZuW2EHcuDmZpxdzFoomavLY1+wAP/+ifwosC74Tx8q3j+8/ojR9I5g43L?=
+ =?us-ascii?Q?S62PKezokxvDCJ0SVn/YwNCMHc9cqmLDvO17or4oyFO35LWWsBaQHzBIMlKJ?=
+ =?us-ascii?Q?+ywxwx9vhfHW4etgJn+uWLgm5T52o6/2JNk91MGZUDxA/oN3GLWKg07WsvCR?=
+ =?us-ascii?Q?nK5wNvoT2diRvMJ4lH/nEy/7CUQTED/PBVJ/ZYV9LG5z56Un7qU1I+C1bt3M?=
+ =?us-ascii?Q?8HkkahWfuM6hX3un9J7TvlpqLaBTxX/XdvDzKUflgKYfOI0w55eB/YQ3J3YO?=
+ =?us-ascii?Q?l2ndgZEoEenItqHSeEf7EJLuN531wkKdBQqkI0E8d9qeNHnNDI6YA0O5w8In?=
+ =?us-ascii?Q?cnY1beLVruRwCGjPXfIl65tE25a0dqU8Ku3S+eJmg6CXHTNTBXnFXgYd3eqW?=
+ =?us-ascii?Q?XQ2cdFjnVjxipD6Msk6Bj7GSqnJQ+SVNVaSDLDP3FClMw1cu1FiHY3WAp3WV?=
+ =?us-ascii?Q?vE2WCBJLjH6fuh7i/FivMbpPOemZgfHF3tMprB6K+xEL9HzdFZrMIM5ZR5eK?=
+ =?us-ascii?Q?7W5x2Pw/aS3ijp+J2IX6yXHy0sxbuJT3dNwJPZF/IdkglXs/PSKQmDyt+3Y8?=
+ =?us-ascii?Q?RwuT/FoToqBymCqKwq5trpxErUTUEq0JutVePEUR6TdJm8IT3dXDYhxXUTjY?=
+ =?us-ascii?Q?CT2CPrace0hu0gFnOUlPzPFfHZ7UyT1Rnjup/BED?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dbf1e4d4-47c7-445b-78b6-08dddf349e1c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14a9b5ba-bdc3-40a9-f131-08dddf352021
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 15:25:24.3532
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 15:29:02.5115
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lz4fGRuthiyelrONTQJrtrThewra4nNDzrM/6mMnBTtOd2NXv3TnDBb0FQXG9iMGlaYV+oOVmMCxzd3rl0uUIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10593
+X-MS-Exchange-CrossTenant-UserPrincipalName: eeA+2KDGBxFsI5pQsEpGARgxdXk+Qwvev2qPekTGR3ruMMgJ8rU9cJVgUtkzXvDLqHs63n+rv2crZhp4OFrHsA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB11492
 
-On Tue, Aug 19, 2025 at 08:36:10PM +0800, Wei Fang wrote:
-> The NETC Timer is capable of generating a PPS interrupt to the host. To
-> support this feature, a 64-bit alarm time (which is a integral second
-> of PHC in the future) is set to TMR_ALARM, and the period is set to
-> TMR_FIPER. The alarm time is compared to the current time on each update,
-> then the alarm trigger is used as an indication to the TMR_FIPER starts
-> down counting. After the period has passed, the PPS event is generated.
+On Tue, Aug 19, 2025 at 08:36:11PM +0800, Wei Fang wrote:
+> NETC Timer has three pulse channels, all of which support periodic pulse
+> output. Bind the channel to a ALARM register and then sets a future time
+> into the ALARM register. When the current time is greater than the ALARM
+> value, the FIPER register will be triggered to count down, and when the
+> count reaches 0, the pulse will be triggered. The PPS signal is also
+> implemented in this way.
 >
-> According to the NETC block guide, the Timer has three FIPERs, any of
-> which can be used to generate the PPS events, but in the current
-> implementation, we only need one of them to implement the PPS feature,
-> so FIPER 0 is used as the default PPS generator. Also, the Timer has
-> 2 ALARMs, currently, ALARM 0 is used as the default time comparator.
+> i.MX95 only has ALARM1 can be used as an indication to the FIPER start
+> down counting, but i.MX943 has ALARM1 and ALARM2 can be used. Therefore,
+> only one channel can work for i.MX95, two channels for i.MX943 as most.
 >
-> However, if the time is adjusted or the integer of period is changed when
-> PPS is enabled, the PPS event will not be generated at an integral second
-> of PHC. The suggested steps from IP team if time drift happens:
->
-> 1. Disable FIPER before adjusting the hardware time
-> 2. Rearm ALARM after the time adjustment to make the next PPS event be
-> generated at an integral second of PHC.
-> 3. Re-enable FIPER.
+> In addition, change the PPS channel to be dynamically selected from fixed
+> number (0) because add PTP_CLK_REQ_PEROUT support.
 >
 > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 >
 > ---
-> v2 changes:
-> 1. Refine the subject and the commit message
-> 2. Add a comment to netc_timer_enable_pps()
-> 3. Remove the "nxp,pps-channel" logic from the driver
+> v2: no changes
 > v3 changes:
-> 1. Use "2 * NSEC_PER_SEC" to instead of "2000000000U"
-> 2. Improve the commit message
-> 3. Add alarm related logic and the irq handler
-> 4. Add tmr_emask to struct netc_timer to save the irq masks instead of
->    reading TMR_EMASK register
-> 5. Remove pps_channel from struct netc_timer and remove
->    NETC_TMR_DEFAULT_PPS_CHANNEL
-> v4 changes:
-> 1. Improve the commit message, the PPS generation time will be inaccurate
->    if the time is adjusted or the integer of period is changed.
+> 1. Improve the commit message
+> 2. Add revision to struct netc_timer
+> 3. Use priv->tmr_emask to instead of reading TMR_EMASK register
+> 4. Add pps_channel to struct netc_timer and NETC_TMR_INVALID_CHANNEL
+> 5. Add some helper functions: netc_timer_enable/disable_periodic_pulse(),
+>    and netc_timer_select_pps_channel()
+> 6. Dynamically select PPS channel instead of fixed to channel 0.
+> v4:
+> 1. Simplify the commit message
+> 2. Fix dereference unassigned pointer "ps" in netc_timer_enable_pps().
 > ---
->  drivers/ptp/ptp_netc.c | 260 ++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 257 insertions(+), 3 deletions(-)
+>  drivers/ptp/ptp_netc.c | 356 +++++++++++++++++++++++++++++++++++------
+>  1 file changed, 306 insertions(+), 50 deletions(-)
 >
 > diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
-> index 477d922dfbb8..ded2509700b5 100644
+> index ded2509700b5..da9603c65dda 100644
 > --- a/drivers/ptp/ptp_netc.c
 > +++ b/drivers/ptp/ptp_netc.c
-> @@ -19,7 +19,14 @@
->  #define  TMR_CTRL_TE			BIT(2)
->  #define  TMR_COMP_MODE			BIT(15)
->  #define  TMR_CTRL_TCLK_PERIOD		GENMASK(25, 16)
-> +#define  TMR_CTRL_FS			BIT(28)
->
-> +#define NETC_TMR_TEVENT			0x0084
-> +#define  TMR_TEVNET_PPEN(i)		BIT(7 - (i))
-> +#define  TMR_TEVENT_PPEN_ALL		GENMASK(7, 5)
-> +#define  TMR_TEVENT_ALMEN(i)		BIT(16 + (i))
-> +
-> +#define NETC_TMR_TEMASK			0x0088
->  #define NETC_TMR_CNT_L			0x0098
->  #define NETC_TMR_CNT_H			0x009c
->  #define NETC_TMR_ADD			0x00a0
-> @@ -27,9 +34,19 @@
->  #define NETC_TMR_OFF_L			0x00b0
->  #define NETC_TMR_OFF_H			0x00b4
->
-> +/* i = 0, 1, i indicates the index of TMR_ALARM */
-> +#define NETC_TMR_ALARM_L(i)		(0x00b8 + (i) * 8)
-> +#define NETC_TMR_ALARM_H(i)		(0x00bc + (i) * 8)
-> +
-> +/* i = 0, 1, 2. i indicates the index of TMR_FIPER. */
-> +#define NETC_TMR_FIPER(i)		(0x00d0 + (i) * 4)
-> +
->  #define NETC_TMR_FIPER_CTRL		0x00dc
->  #define  FIPER_CTRL_DIS(i)		(BIT(7) << (i) * 8)
->  #define  FIPER_CTRL_PG(i)		(BIT(6) << (i) * 8)
-> +#define  FIPER_CTRL_FS_ALARM(i)		(BIT(5) << (i) * 8)
-> +#define  FIPER_CTRL_PW(i)		(GENMASK(4, 0) << (i) * 8)
-> +#define  FIPER_CTRL_SET_PW(i, v)	(((v) & GENMASK(4, 0)) << 8 * (i))
->
->  #define NETC_TMR_CUR_TIME_L		0x00f0
+> @@ -52,12 +52,18 @@
 >  #define NETC_TMR_CUR_TIME_H		0x00f4
-> @@ -38,6 +55,9 @@
+>
+>  #define NETC_TMR_REGS_BAR		0
+> +#define NETC_GLOBAL_OFFSET		0x10000
+> +#define NETC_GLOBAL_IPBRR0		0xbf8
+> +#define  IPBRR0_IP_REV			GENMASK(15, 0)
+> +#define NETC_REV_4_1			0x0401
 >
 >  #define NETC_TMR_FIPER_NUM		3
+> +#define NETC_TMR_INVALID_CHANNEL	NETC_TMR_FIPER_NUM
 >  #define NETC_TMR_DEFAULT_PRSC		2
-> +#define NETC_TMR_DEFAULT_ALARM		GENMASK_ULL(63, 0)
-> +#define NETC_TMR_DEFAULT_FIPER		GENMASK(31, 0)
-> +#define NETC_TMR_FIPER_MAX_PW		GENMASK(4, 0)
+>  #define NETC_TMR_DEFAULT_ALARM		GENMASK_ULL(63, 0)
+>  #define NETC_TMR_DEFAULT_FIPER		GENMASK(31, 0)
+>  #define NETC_TMR_FIPER_MAX_PW		GENMASK(4, 0)
+> +#define NETC_TMR_ALARM_NUM		2
 >
 >  /* 1588 timer reference clock source select */
 >  #define NETC_TMR_CCM_TIMER1		0 /* enet_timer1_clk_root, from CCM */
-> @@ -58,6 +78,10 @@ struct netc_timer {
->  	u32 oclk_prsc;
->  	/* High 32-bit is integer part, low 32-bit is fractional part */
->  	u64 period;
+> @@ -66,6 +72,19 @@
+>
+>  #define NETC_TMR_SYSCLK_333M		333333333U
+>
+> +enum netc_pp_type {
+> +	NETC_PP_PPS = 1,
+> +	NETC_PP_PEROUT,
+> +};
 > +
-> +	int irq;
-> +	u32 tmr_emask;
-> +	bool pps_enabled;
+> +struct netc_pp {
+> +	enum netc_pp_type type;
+> +	bool enabled;
+> +	int alarm_id;
+> +	u32 period; /* pulse period, ns */
+> +	u64 stime; /* start time, ns */
+> +};
+> +
+>  struct netc_timer {
+>  	void __iomem *base;
+>  	struct pci_dev *pdev;
+> @@ -80,8 +99,12 @@ struct netc_timer {
+>  	u64 period;
+>
+>  	int irq;
+> +	int revision;
+>  	u32 tmr_emask;
+> -	bool pps_enabled;
+> +	u8 pps_channel;
+> +	u8 fs_alarm_num;
+> +	u8 fs_alarm_bitmap;
+> +	struct netc_pp pp[NETC_TMR_FIPER_NUM]; /* periodic pulse */
 >  };
 >
 >  #define netc_timer_rd(p, o)		netc_read((p)->base + (o))
-> @@ -122,6 +146,155 @@ static u64 netc_timer_cur_time_read(struct netc_timer *priv)
->  	return ns;
->  }
+> @@ -190,6 +213,7 @@ static u32 netc_timer_calculate_fiper_pw(struct netc_timer *priv,
+>  static void netc_timer_set_pps_alarm(struct netc_timer *priv, int channel,
+>  				     u32 integral_period)
+>  {
+> +	struct netc_pp *pp = &priv->pp[channel];
+>  	u64 alarm;
 >
-> +static void netc_timer_alarm_write(struct netc_timer *priv,
-> +				   u64 alarm, int index)
-> +{
-> +	u32 alarm_h = upper_32_bits(alarm);
-> +	u32 alarm_l = lower_32_bits(alarm);
-> +
-> +	netc_timer_wr(priv, NETC_TMR_ALARM_L(index), alarm_l);
-> +	netc_timer_wr(priv, NETC_TMR_ALARM_H(index), alarm_h);
+>  	/* Get the alarm value */
+> @@ -197,7 +221,116 @@ static void netc_timer_set_pps_alarm(struct netc_timer *priv, int channel,
+>  	alarm = roundup_u64(alarm, NSEC_PER_SEC);
+>  	alarm = roundup_u64(alarm, integral_period);
+>
+> -	netc_timer_alarm_write(priv, alarm, 0);
+> +	netc_timer_alarm_write(priv, alarm, pp->alarm_id);
 > +}
 > +
-> +static u32 netc_timer_get_integral_period(struct netc_timer *priv)
+> +static void netc_timer_set_perout_alarm(struct netc_timer *priv, int channel,
+> +					u32 integral_period)
 > +{
-> +	u32 tmr_ctrl, integral_period;
+> +	u64 cur_time = netc_timer_cur_time_read(priv);
+> +	struct netc_pp *pp = &priv->pp[channel];
+> +	u64 alarm, delta, min_time;
+> +	u32 period = pp->period;
+> +	u64 stime = pp->stime;
 > +
-> +	tmr_ctrl = netc_timer_rd(priv, NETC_TMR_CTRL);
-> +	integral_period = FIELD_GET(TMR_CTRL_TCLK_PERIOD, tmr_ctrl);
-> +
-> +	return integral_period;
-> +}
-> +
-> +static u32 netc_timer_calculate_fiper_pw(struct netc_timer *priv,
-> +					 u32 fiper)
-> +{
-> +	u64 divisor, pulse_width;
-> +
-> +	/* Set the FIPER pulse width to half FIPER interval by default.
-> +	 * pulse_width = (fiper / 2) / TMR_GCLK_period,
-> +	 * TMR_GCLK_period = NSEC_PER_SEC / TMR_GCLK_freq,
-> +	 * TMR_GCLK_freq = (clk_freq / oclk_prsc) Hz,
-> +	 * so pulse_width = fiper * clk_freq / (2 * NSEC_PER_SEC * oclk_prsc).
-> +	 */
-> +	divisor = mul_u32_u32(2 * NSEC_PER_SEC, priv->oclk_prsc);
-> +	pulse_width = div64_u64(mul_u32_u32(fiper, priv->clk_freq), divisor);
-> +
-> +	/* The FIPER_PW field only has 5 bits, need to update oclk_prsc */
-> +	if (pulse_width > NETC_TMR_FIPER_MAX_PW)
-> +		pulse_width = NETC_TMR_FIPER_MAX_PW;
-> +
-> +	return pulse_width;
-> +}
-> +
-> +static void netc_timer_set_pps_alarm(struct netc_timer *priv, int channel,
-> +				     u32 integral_period)
-> +{
-> +	u64 alarm;
-> +
-> +	/* Get the alarm value */
-> +	alarm = netc_timer_cur_time_read(priv) +  NSEC_PER_MSEC;
-> +	alarm = roundup_u64(alarm, NSEC_PER_SEC);
-> +	alarm = roundup_u64(alarm, integral_period);
-> +
-> +	netc_timer_alarm_write(priv, alarm, 0);
-> +}
-> +
-> +/* Note that users should not use this API to output PPS signal on
-> + * external pins, because PTP_CLK_REQ_PPS trigger internal PPS event
-> + * for input into kernel PPS subsystem. See:
-> + * https://lore.kernel.org/r/20201117213826.18235-1-a.fatoum@pengutronix.de
-> + */
-> +static int netc_timer_enable_pps(struct netc_timer *priv,
-> +				 struct ptp_clock_request *rq, int on)
-> +{
-> +	u32 fiper, fiper_ctrl;
-> +	unsigned long flags;
-> +
-> +	spin_lock_irqsave(&priv->lock, flags);
-> +
-> +	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
-> +
-> +	if (on) {
-> +		u32 integral_period, fiper_pw;
-> +
-> +		if (priv->pps_enabled)
-> +			goto unlock_spinlock;
-> +
-> +		integral_period = netc_timer_get_integral_period(priv);
-> +		fiper = NSEC_PER_SEC - integral_period;
-> +		fiper_pw = netc_timer_calculate_fiper_pw(priv, fiper);
-> +		fiper_ctrl &= ~(FIPER_CTRL_DIS(0) | FIPER_CTRL_PW(0) |
-> +				FIPER_CTRL_FS_ALARM(0));
-> +		fiper_ctrl |= FIPER_CTRL_SET_PW(0, fiper_pw);
-> +		priv->tmr_emask |= TMR_TEVNET_PPEN(0) | TMR_TEVENT_ALMEN(0);
-> +		priv->pps_enabled = true;
-> +		netc_timer_set_pps_alarm(priv, 0, integral_period);
-> +	} else {
-> +		if (!priv->pps_enabled)
-> +			goto unlock_spinlock;
-> +
-> +		fiper = NETC_TMR_DEFAULT_FIPER;
-> +		priv->tmr_emask &= ~(TMR_TEVNET_PPEN(0) |
-> +				     TMR_TEVENT_ALMEN(0));
-> +		fiper_ctrl |= FIPER_CTRL_DIS(0);
-> +		priv->pps_enabled = false;
-> +		netc_timer_alarm_write(priv, NETC_TMR_DEFAULT_ALARM, 0);
+> +	min_time = cur_time + NSEC_PER_MSEC + period;
+> +	if (stime < min_time) {
+> +		delta = min_time - stime;
+> +		stime += roundup_u64(delta, period);
 > +	}
 > +
-> +	netc_timer_wr(priv, NETC_TMR_TEMASK, priv->tmr_emask);
-> +	netc_timer_wr(priv, NETC_TMR_FIPER(0), fiper);
-> +	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
+> +	alarm = roundup_u64(stime - period, integral_period);
+> +	netc_timer_alarm_write(priv, alarm, pp->alarm_id);
+> +}
 > +
+> +static int netc_timer_get_alarm_id(struct netc_timer *priv)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < priv->fs_alarm_num; i++) {
+> +		if (!(priv->fs_alarm_bitmap & BIT(i))) {
+> +			priv->fs_alarm_bitmap |= BIT(i);
+> +			break;
+> +		}
+> +	}
+> +
+> +	return i;
+> +}
+> +
+> +static u64 netc_timer_get_gclk_period(struct netc_timer *priv)
+> +{
+> +	/* TMR_GCLK_freq = (clk_freq / oclk_prsc) Hz.
+> +	 * TMR_GCLK_period = NSEC_PER_SEC / TMR_GCLK_freq.
+> +	 * TMR_GCLK_period = (NSEC_PER_SEC * oclk_prsc) / clk_freq
+> +	 */
+> +
+> +	return div_u64(mul_u32_u32(NSEC_PER_SEC, priv->oclk_prsc),
+> +		       priv->clk_freq);
+> +}
+> +
+> +static void netc_timer_enable_periodic_pulse(struct netc_timer *priv,
+> +					     u8 channel)
+> +{
+> +	u32 fiper_pw, fiper, fiper_ctrl, integral_period;
+> +	struct netc_pp *pp = &priv->pp[channel];
+> +	int alarm_id = pp->alarm_id;
+> +
+> +	integral_period = netc_timer_get_integral_period(priv);
+> +	/* Set to desired FIPER interval in ns - TCLK_PERIOD */
+> +	fiper = pp->period - integral_period;
+> +	fiper_pw = netc_timer_calculate_fiper_pw(priv, fiper);
+> +
+> +	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> +	fiper_ctrl &= ~(FIPER_CTRL_DIS(channel) | FIPER_CTRL_PW(channel) |
+> +			FIPER_CTRL_FS_ALARM(channel));
+> +	fiper_ctrl |= FIPER_CTRL_SET_PW(channel, fiper_pw);
+> +	fiper_ctrl |= alarm_id ? FIPER_CTRL_FS_ALARM(channel) : 0;
+> +
+> +	priv->tmr_emask |= TMR_TEVNET_PPEN(channel) |
+> +			   TMR_TEVENT_ALMEN(alarm_id);
+> +
+> +	if (pp->type == NETC_PP_PPS)
+> +		netc_timer_set_pps_alarm(priv, channel, integral_period);
+> +	else
+> +		netc_timer_set_perout_alarm(priv, channel, integral_period);
+> +
+> +	netc_timer_wr(priv, NETC_TMR_TEMASK, priv->tmr_emask);
+> +	netc_timer_wr(priv, NETC_TMR_FIPER(channel), fiper);
+> +	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
+> +}
+> +
+> +static void netc_timer_disable_periodic_pulse(struct netc_timer *priv,
+> +					      u8 channel)
+> +{
+> +	struct netc_pp *pp = &priv->pp[channel];
+> +	int alarm_id = pp->alarm_id;
+> +	u32 fiper_ctrl;
+> +
+> +	if (!pp->enabled)
+> +		return;
+> +
+> +	priv->tmr_emask &= ~(TMR_TEVNET_PPEN(channel) |
+> +			     TMR_TEVENT_ALMEN(alarm_id));
+> +
+> +	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> +	fiper_ctrl |= FIPER_CTRL_DIS(channel);
+> +
+> +	netc_timer_alarm_write(priv, NETC_TMR_DEFAULT_ALARM, alarm_id);
+> +	netc_timer_wr(priv, NETC_TMR_TEMASK, priv->tmr_emask);
+> +	netc_timer_wr(priv, NETC_TMR_FIPER(channel), NETC_TMR_DEFAULT_FIPER);
+> +	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
+> +}
+> +
+> +static u8 netc_timer_select_pps_channel(struct netc_timer *priv)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < NETC_TMR_FIPER_NUM; i++) {
+> +		if (!priv->pp[i].enabled)
+> +			return i;
+> +	}
+> +
+> +	return NETC_TMR_INVALID_CHANNEL;
+>  }
+>
+>  /* Note that users should not use this API to output PPS signal on
+> @@ -208,77 +341,178 @@ static void netc_timer_set_pps_alarm(struct netc_timer *priv, int channel,
+>  static int netc_timer_enable_pps(struct netc_timer *priv,
+>  				 struct ptp_clock_request *rq, int on)
+>  {
+> -	u32 fiper, fiper_ctrl;
+> +	struct device *dev = &priv->pdev->dev;
+>  	unsigned long flags;
+> +	struct netc_pp *pp;
+> +	int err = 0;
+>
+>  	spin_lock_irqsave(&priv->lock, flags);
+>
+> -	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> -
+>  	if (on) {
+> -		u32 integral_period, fiper_pw;
+> +		int alarm_id;
+> +		u8 channel;
+> +
+> +		if (priv->pps_channel < NETC_TMR_FIPER_NUM) {
+> +			channel = priv->pps_channel;
+> +		} else {
+> +			channel = netc_timer_select_pps_channel(priv);
+> +			if (channel == NETC_TMR_INVALID_CHANNEL) {
+> +				dev_err(dev, "No available FIPERs\n");
+> +				err = -EBUSY;
+> +				goto unlock_spinlock;
+> +			}
+> +		}
+>
+> -		if (priv->pps_enabled)
+> +		pp = &priv->pp[channel];
+> +		if (pp->enabled)
+>  			goto unlock_spinlock;
+>
+> -		integral_period = netc_timer_get_integral_period(priv);
+> -		fiper = NSEC_PER_SEC - integral_period;
+> -		fiper_pw = netc_timer_calculate_fiper_pw(priv, fiper);
+> -		fiper_ctrl &= ~(FIPER_CTRL_DIS(0) | FIPER_CTRL_PW(0) |
+> -				FIPER_CTRL_FS_ALARM(0));
+> -		fiper_ctrl |= FIPER_CTRL_SET_PW(0, fiper_pw);
+> -		priv->tmr_emask |= TMR_TEVNET_PPEN(0) | TMR_TEVENT_ALMEN(0);
+> -		priv->pps_enabled = true;
+> -		netc_timer_set_pps_alarm(priv, 0, integral_period);
+> +		alarm_id = netc_timer_get_alarm_id(priv);
+> +		if (alarm_id == priv->fs_alarm_num) {
+> +			dev_err(dev, "No available ALARMs\n");
+> +			err = -EBUSY;
+> +			goto unlock_spinlock;
+> +		}
+> +
+> +		pp->enabled = true;
+> +		pp->type = NETC_PP_PPS;
+> +		pp->alarm_id = alarm_id;
+> +		pp->period = NSEC_PER_SEC;
+> +		priv->pps_channel = channel;
+> +
+> +		netc_timer_enable_periodic_pulse(priv, channel);
+>  	} else {
+> -		if (!priv->pps_enabled)
+> +		/* pps_channel is invalid if PPS is not enabled, so no
+> +		 * processing is needed.
+> +		 */
+> +		if (priv->pps_channel >= NETC_TMR_FIPER_NUM)
+>  			goto unlock_spinlock;
+>
+> -		fiper = NETC_TMR_DEFAULT_FIPER;
+> -		priv->tmr_emask &= ~(TMR_TEVNET_PPEN(0) |
+> -				     TMR_TEVENT_ALMEN(0));
+> -		fiper_ctrl |= FIPER_CTRL_DIS(0);
+> -		priv->pps_enabled = false;
+> -		netc_timer_alarm_write(priv, NETC_TMR_DEFAULT_ALARM, 0);
+> +		netc_timer_disable_periodic_pulse(priv, priv->pps_channel);
+> +		pp = &priv->pp[priv->pps_channel];
+> +		priv->fs_alarm_bitmap &= ~BIT(pp->alarm_id);
+> +		memset(pp, 0, sizeof(*pp));
+> +		priv->pps_channel = NETC_TMR_INVALID_CHANNEL;
+>  	}
+>
+> -	netc_timer_wr(priv, NETC_TMR_TEMASK, priv->tmr_emask);
+> -	netc_timer_wr(priv, NETC_TMR_FIPER(0), fiper);
+> -	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
 > +unlock_spinlock:
 > +	spin_unlock_irqrestore(&priv->lock, flags);
 > +
-> +	return 0;
+> +	return err;
 > +}
 > +
-> +static void netc_timer_disable_pps_fiper(struct netc_timer *priv)
+> +static int net_timer_enable_perout(struct netc_timer *priv,
+> +				   struct ptp_clock_request *rq, int on)
 > +{
-> +	u32 fiper_ctrl;
+> +	struct device *dev = &priv->pdev->dev;
+> +	u32 channel = rq->perout.index;
+> +	unsigned long flags;
+> +	struct netc_pp *pp;
+> +	int err = 0;
 > +
-> +	if (!priv->pps_enabled)
-> +		return;
+> +	spin_lock_irqsave(&priv->lock, flags);
 > +
-> +	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
-> +	fiper_ctrl |= FIPER_CTRL_DIS(0);
-> +	netc_timer_wr(priv, NETC_TMR_FIPER(0), NETC_TMR_DEFAULT_FIPER);
-> +	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
-> +}
-> +
-> +static void netc_timer_enable_pps_fiper(struct netc_timer *priv)
-> +{
-> +	u32 fiper_ctrl, integral_period, fiper;
-> +
-> +	if (!priv->pps_enabled)
-> +		return;
-> +
-> +	integral_period = netc_timer_get_integral_period(priv);
-> +	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
-> +	fiper_ctrl &= ~FIPER_CTRL_DIS(0);
-> +	fiper = NSEC_PER_SEC - integral_period;
-> +
-> +	netc_timer_set_pps_alarm(priv, 0, integral_period);
-> +	netc_timer_wr(priv, NETC_TMR_FIPER(0), fiper);
-> +	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
-> +}
-> +
-> +static int netc_timer_enable(struct ptp_clock_info *ptp,
-> +			     struct ptp_clock_request *rq, int on)
-> +{
-> +	struct netc_timer *priv = ptp_to_netc_timer(ptp);
-> +
-> +	switch (rq->type) {
-> +	case PTP_CLK_REQ_PPS:
-> +		return netc_timer_enable_pps(priv, rq, on);
-> +	default:
-> +		return -EOPNOTSUPP;
+> +	pp = &priv->pp[channel];
+> +	if (pp->type == NETC_PP_PPS) {
+> +		dev_err(dev, "FIPER%u is being used for PPS\n", channel);
+> +		err = -EBUSY;
+> +		goto unlock_spinlock;
 > +	}
-> +}
 > +
->  static void netc_timer_adjust_period(struct netc_timer *priv, u64 period)
+> +	if (on) {
+> +		u64 period_ns, gclk_period, max_period, min_period;
+> +		struct timespec64 period, stime;
+> +		u32 integral_period;
+> +		int alarm_id;
+> +
+> +		period.tv_sec = rq->perout.period.sec;
+> +		period.tv_nsec = rq->perout.period.nsec;
+> +		period_ns = timespec64_to_ns(&period);
+> +
+> +		integral_period = netc_timer_get_integral_period(priv);
+> +		max_period = (u64)NETC_TMR_DEFAULT_FIPER + integral_period;
+> +		gclk_period = netc_timer_get_gclk_period(priv);
+> +		min_period = gclk_period * 4 + integral_period;
+> +		if (period_ns > max_period || period_ns < min_period) {
+> +			dev_err(dev, "The period range is %llu ~ %llu\n",
+> +				min_period, max_period);
+> +			err = -EINVAL;
+> +			goto unlock_spinlock;
+> +		}
+> +
+> +		if (pp->enabled) {
+> +			alarm_id = pp->alarm_id;
+> +		} else {
+> +			alarm_id = netc_timer_get_alarm_id(priv);
+> +			if (alarm_id == priv->fs_alarm_num) {
+> +				dev_err(dev, "No available ALARMs\n");
+> +				err = -EBUSY;
+> +				goto unlock_spinlock;
+> +			}
+> +
+> +			pp->type = NETC_PP_PEROUT;
+> +			pp->enabled = true;
+> +			pp->alarm_id = alarm_id;
+> +		}
+> +
+> +		stime.tv_sec = rq->perout.start.sec;
+> +		stime.tv_nsec = rq->perout.start.nsec;
+> +		pp->stime = timespec64_to_ns(&stime);
+> +		pp->period = period_ns;
+> +
+> +		netc_timer_enable_periodic_pulse(priv, channel);
+> +	} else {
+> +		netc_timer_disable_periodic_pulse(priv, channel);
+> +		priv->fs_alarm_bitmap &= ~BIT(pp->alarm_id);
+> +		memset(pp, 0, sizeof(*pp));
+> +	}
+>
+>  unlock_spinlock:
+>  	spin_unlock_irqrestore(&priv->lock, flags);
+>
+> -	return 0;
+> +	return err;
+>  }
+>
+> -static void netc_timer_disable_pps_fiper(struct netc_timer *priv)
+> +static void netc_timer_disable_fiper(struct netc_timer *priv)
 >  {
->  	u32 fractional_period = lower_32_bits(period);
-> @@ -134,8 +307,11 @@ static void netc_timer_adjust_period(struct netc_timer *priv, u64 period)
->  	old_tmr_ctrl = netc_timer_rd(priv, NETC_TMR_CTRL);
+> -	u32 fiper_ctrl;
+> +	u32 fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> +	int i;
+>
+> -	if (!priv->pps_enabled)
+> -		return;
+> +	for (i = 0; i < NETC_TMR_FIPER_NUM; i++) {
+> +		if (!priv->pp[i].enabled)
+> +			continue;
+> +
+> +		fiper_ctrl |= FIPER_CTRL_DIS(i);
+> +		netc_timer_wr(priv, NETC_TMR_FIPER(i), NETC_TMR_DEFAULT_FIPER);
+> +	}
+>
+> -	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> -	fiper_ctrl |= FIPER_CTRL_DIS(0);
+> -	netc_timer_wr(priv, NETC_TMR_FIPER(0), NETC_TMR_DEFAULT_FIPER);
+>  	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
+>  }
+>
+> -static void netc_timer_enable_pps_fiper(struct netc_timer *priv)
+> +static void netc_timer_enable_fiper(struct netc_timer *priv)
+>  {
+> -	u32 fiper_ctrl, integral_period, fiper;
+> +	u32 integral_period = netc_timer_get_integral_period(priv);
+> +	u32 fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> +	int i;
+>
+> -	if (!priv->pps_enabled)
+> -		return;
+> +	for (i = 0; i < NETC_TMR_FIPER_NUM; i++) {
+> +		struct netc_pp *pp = &priv->pp[i];
+> +		u32 fiper;
+>
+> -	integral_period = netc_timer_get_integral_period(priv);
+> -	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> -	fiper_ctrl &= ~FIPER_CTRL_DIS(0);
+> -	fiper = NSEC_PER_SEC - integral_period;
+> +		if (!pp->enabled)
+> +			continue;
+> +
+> +		fiper_ctrl &= ~FIPER_CTRL_DIS(i);
+> +
+> +		if (pp->type == NETC_PP_PPS)
+> +			netc_timer_set_pps_alarm(priv, i, integral_period);
+> +		else if (pp->type == NETC_PP_PEROUT)
+> +			netc_timer_set_perout_alarm(priv, i, integral_period);
+> +
+> +		fiper = pp->period - integral_period;
+> +		netc_timer_wr(priv, NETC_TMR_FIPER(i), fiper);
+> +	}
+>
+> -	netc_timer_set_pps_alarm(priv, 0, integral_period);
+> -	netc_timer_wr(priv, NETC_TMR_FIPER(0), fiper);
+>  	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
+>  }
+>
+> @@ -290,6 +524,8 @@ static int netc_timer_enable(struct ptp_clock_info *ptp,
+>  	switch (rq->type) {
+>  	case PTP_CLK_REQ_PPS:
+>  		return netc_timer_enable_pps(priv, rq, on);
+> +	case PTP_CLK_REQ_PEROUT:
+> +		return net_timer_enable_perout(priv, rq, on);
+>  	default:
+>  		return -EOPNOTSUPP;
+>  	}
+> @@ -308,9 +544,9 @@ static void netc_timer_adjust_period(struct netc_timer *priv, u64 period)
 >  	tmr_ctrl = u32_replace_bits(old_tmr_ctrl, integral_period,
 >  				    TMR_CTRL_TCLK_PERIOD);
-> -	if (tmr_ctrl != old_tmr_ctrl)
-> +	if (tmr_ctrl != old_tmr_ctrl) {
-> +		netc_timer_disable_pps_fiper(priv);
+>  	if (tmr_ctrl != old_tmr_ctrl) {
+> -		netc_timer_disable_pps_fiper(priv);
+> +		netc_timer_disable_fiper(priv);
 >  		netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
-> +		netc_timer_enable_pps_fiper(priv);
-> +	}
+> -		netc_timer_enable_pps_fiper(priv);
+> +		netc_timer_enable_fiper(priv);
+>  	}
 >
 >  	netc_timer_wr(priv, NETC_TMR_ADD, fractional_period);
->
-> @@ -161,6 +337,8 @@ static int netc_timer_adjtime(struct ptp_clock_info *ptp, s64 delta)
+> @@ -337,7 +573,7 @@ static int netc_timer_adjtime(struct ptp_clock_info *ptp, s64 delta)
 >
 >  	spin_lock_irqsave(&priv->lock, flags);
 >
-> +	netc_timer_disable_pps_fiper(priv);
-> +
+> -	netc_timer_disable_pps_fiper(priv);
+> +	netc_timer_disable_fiper(priv);
+>
 >  	/* Adjusting TMROFF instead of TMR_CNT is that the timer
 >  	 * counter keeps increasing during reading and writing
->  	 * TMR_CNT, which will cause latency.
-> @@ -169,6 +347,8 @@ static int netc_timer_adjtime(struct ptp_clock_info *ptp, s64 delta)
+> @@ -347,7 +583,7 @@ static int netc_timer_adjtime(struct ptp_clock_info *ptp, s64 delta)
 >  	tmr_off += delta;
 >  	netc_timer_offset_write(priv, tmr_off);
 >
-> +	netc_timer_enable_pps_fiper(priv);
-> +
+> -	netc_timer_enable_pps_fiper(priv);
+> +	netc_timer_enable_fiper(priv);
+>
 >  	spin_unlock_irqrestore(&priv->lock, flags);
 >
->  	return 0;
-> @@ -203,8 +383,12 @@ static int netc_timer_settime64(struct ptp_clock_info *ptp,
->  	unsigned long flags;
+> @@ -384,10 +620,10 @@ static int netc_timer_settime64(struct ptp_clock_info *ptp,
 >
 >  	spin_lock_irqsave(&priv->lock, flags);
-> +
-> +	netc_timer_disable_pps_fiper(priv);
+>
+> -	netc_timer_disable_pps_fiper(priv);
+> +	netc_timer_disable_fiper(priv);
 >  	netc_timer_offset_write(priv, 0);
 >  	netc_timer_cnt_write(priv, ns);
-> +	netc_timer_enable_pps_fiper(priv);
-> +
+> -	netc_timer_enable_pps_fiper(priv);
+> +	netc_timer_enable_fiper(priv);
+>
 >  	spin_unlock_irqrestore(&priv->lock, flags);
 >
->  	return 0;
-> @@ -215,10 +399,13 @@ static const struct ptp_clock_info netc_timer_ptp_caps = {
->  	.name		= "NETC Timer PTP clock",
->  	.max_adj	= 500000000,
+> @@ -401,6 +637,7 @@ static const struct ptp_clock_info netc_timer_ptp_caps = {
 >  	.n_pins		= 0,
-> +	.n_alarm	= 2,
-> +	.pps		= 1,
+>  	.n_alarm	= 2,
+>  	.pps		= 1,
+> +	.n_per_out	= 3,
 >  	.adjfine	= netc_timer_adjfine,
 >  	.adjtime	= netc_timer_adjtime,
 >  	.gettimex64	= netc_timer_gettimex64,
->  	.settime64	= netc_timer_settime64,
-> +	.enable		= netc_timer_enable,
->  };
+> @@ -558,6 +795,9 @@ static irqreturn_t netc_timer_isr(int irq, void *data)
+>  	if (tmr_event & TMR_TEVENT_ALMEN(0))
+>  		netc_timer_alarm_write(priv, NETC_TMR_DEFAULT_ALARM, 0);
 >
->  static void netc_timer_init(struct netc_timer *priv)
-> @@ -235,7 +422,7 @@ static void netc_timer_init(struct netc_timer *priv)
->  	 * domain are not accessible.
->  	 */
->  	tmr_ctrl = FIELD_PREP(TMR_CTRL_CK_SEL, priv->clk_select) |
-> -		   TMR_CTRL_TE;
-> +		   TMR_CTRL_TE | TMR_CTRL_FS;
->  	netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
->  	netc_timer_wr(priv, NETC_TMR_PRSC, priv->oclk_prsc);
->
-> @@ -355,6 +542,66 @@ static int netc_timer_parse_dt(struct netc_timer *priv)
->  	return netc_timer_get_reference_clk_source(priv);
+> +	if (tmr_event & TMR_TEVENT_ALMEN(1))
+> +		netc_timer_alarm_write(priv, NETC_TMR_DEFAULT_ALARM, 1);
+> +
+>  	if (tmr_event & TMR_TEVENT_PPEN_ALL) {
+>  		event.type = PTP_CLOCK_PPS;
+>  		ptp_clock_event(priv->clock, &event);
+> @@ -602,6 +842,15 @@ static void netc_timer_free_msix_irq(struct netc_timer *priv)
+>  	pci_free_irq_vectors(pdev);
 >  }
 >
-> +static irqreturn_t netc_timer_isr(int irq, void *data)
+> +static int netc_timer_get_global_ip_rev(struct netc_timer *priv)
 > +{
-> +	struct netc_timer *priv = data;
-> +	struct ptp_clock_event event;
-> +	u32 tmr_event;
+> +	u32 val;
 > +
-> +	spin_lock(&priv->lock);
+> +	val = netc_timer_rd(priv, NETC_GLOBAL_OFFSET + NETC_GLOBAL_IPBRR0);
 > +
-> +	tmr_event = netc_timer_rd(priv, NETC_TMR_TEVENT);
-> +	tmr_event &= priv->tmr_emask;
-> +	/* Clear interrupts status */
-> +	netc_timer_wr(priv, NETC_TMR_TEVENT, tmr_event);
-> +
-> +	if (tmr_event & TMR_TEVENT_ALMEN(0))
-> +		netc_timer_alarm_write(priv, NETC_TMR_DEFAULT_ALARM, 0);
-> +
-> +	if (tmr_event & TMR_TEVENT_PPEN_ALL) {
-> +		event.type = PTP_CLOCK_PPS;
-> +		ptp_clock_event(priv->clock, &event);
-> +	}
-> +
-> +	spin_unlock(&priv->lock);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int netc_timer_init_msix_irq(struct netc_timer *priv)
-> +{
-> +	struct pci_dev *pdev = priv->pdev;
-> +	char irq_name[64];
-> +	int err, n;
-> +
-> +	n = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_MSIX);
-> +	if (n != 1) {
-> +		err = (n < 0) ? n : -EPERM;
-> +		dev_err(&pdev->dev, "pci_alloc_irq_vectors() failed\n");
-> +		return err;
-> +	}
-> +
-> +	priv->irq = pci_irq_vector(pdev, 0);
-> +	snprintf(irq_name, sizeof(irq_name), "ptp-netc %s", pci_name(pdev));
-> +	err = request_irq(priv->irq, netc_timer_isr, 0, irq_name, priv);
-
-https://elixir.bootlin.com/linux/v6.11.7/source/kernel/irq/manage.c#L2109
-
-request_irq can't copy irq_name, so irq_name is out of scope after
-netc_timer_init_msix_irq() return.
-
-cat /proc/interrupt will show garbage string for ptp timer.
-
-use devm_kasprintf().
-
-Frank
-
-> +	if (err) {
-> +		dev_err(&pdev->dev, "request_irq() failed\n");
-> +		pci_free_irq_vectors(pdev);
-> +		return err;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void netc_timer_free_msix_irq(struct netc_timer *priv)
-> +{
-> +	struct pci_dev *pdev = priv->pdev;
-> +
-> +	disable_irq(priv->irq);
-> +	free_irq(priv->irq, priv);
-> +	pci_free_irq_vectors(pdev);
+> +	return val & IPBRR0_IP_REV;
 > +}
 > +
 >  static int netc_timer_probe(struct pci_dev *pdev,
 >  			    const struct pci_device_id *id)
 >  {
-> @@ -375,15 +622,21 @@ static int netc_timer_probe(struct pci_dev *pdev,
+> @@ -614,12 +863,19 @@ static int netc_timer_probe(struct pci_dev *pdev,
+>  		return err;
+>
+>  	priv = pci_get_drvdata(pdev);
+> +	priv->revision = netc_timer_get_global_ip_rev(priv);
+> +	if (priv->revision == NETC_REV_4_1)
+> +		priv->fs_alarm_num = 1;
+> +	else
+> +		priv->fs_alarm_num = NETC_TMR_ALARM_NUM;
+> +
+>  	err = netc_timer_parse_dt(priv);
+>  	if (err)
+>  		goto timer_pci_remove;
+>
+>  	priv->caps = netc_timer_ptp_caps;
 >  	priv->oclk_prsc = NETC_TMR_DEFAULT_PRSC;
+> +	priv->pps_channel = NETC_TMR_INVALID_CHANNEL;
 >  	spin_lock_init(&priv->lock);
 >
-> +	err = netc_timer_init_msix_irq(priv);
-> +	if (err)
-> +		goto timer_pci_remove;
-> +
->  	netc_timer_init(priv);
->  	priv->clock = ptp_clock_register(&priv->caps, dev);
->  	if (IS_ERR(priv->clock)) {
->  		err = PTR_ERR(priv->clock);
-> -		goto timer_pci_remove;
-> +		goto free_msix_irq;
->  	}
->
->  	return 0;
->
-> +free_msix_irq:
-> +	netc_timer_free_msix_irq(priv);
->  timer_pci_remove:
->  	netc_timer_pci_remove(pdev);
->
-> @@ -395,6 +648,7 @@ static void netc_timer_remove(struct pci_dev *pdev)
->  	struct netc_timer *priv = pci_get_drvdata(pdev);
->
->  	ptp_clock_unregister(priv->clock);
-> +	netc_timer_free_msix_irq(priv);
->  	netc_timer_pci_remove(pdev);
->  }
->
+>  	err = netc_timer_init_msix_irq(priv);
 > --
 > 2.34.1
 >
