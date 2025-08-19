@@ -1,197 +1,140 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BF92C2363;
-	Tue, 19 Aug 2025 04:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDCB25634
+	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 05:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755578316; cv=none; b=iX+btgmZ+6bP6SfKqowgUKczmPV1jSAP/AkZq2+OT+LZQOjJno0OBn8+U5ER8MvUft2Rqx9QjhA/zoYFXF4zouzJi+50Pu0vmHJsWSE8hbSq5l/n+E5+CCQH82Lwf+luViRTWwW192WVOuLhhIEbjsnQX1cSDQCcKU+jeM4Uyfo=
+	t=1755582348; cv=none; b=qRpeHhMRmF/RINdTAKIareUuHtrB6okiLDYeLPyYfm9Fn6FkV3kpJ425aN6Ak0ix9/WJYMDmkCCWCmGuhvdCEd7FsIrnZVgkvMFTEIsKoXzD7Njs89WuzwE/lnIExE8VSTdKm6cNcbR/uejsyk+e9cIXiHEJS8jodyNZ5VLAr3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755578316; c=relaxed/simple;
-	bh=fX1fDtkJlgXe21ThnDLJ12QhRuLIMPpV4e+3sPurSW0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WkluJx1csFyIwI32QO0aYSu4Nn3tOj+onXap/AtVA6M0d9YRaOV0XlSZ5ayWJvbLVeOtrLG/C/zF5g3hyzVrcUfCYPPFO8BYQ8NIrbyk5sXs0BEqgdxEZkMWVZVTM6Q0NQ6V0Gu5Gy5jIo8FEPl7d8p2s5Wx43so0v+jTPgjWdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UxwsOZ1u; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1755582348; c=relaxed/simple;
+	bh=yKXEHt3a6AvjoI8aEePyaFocSTjZismbWvZ2xxaGB6c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nGh8gTy05LTb0QLKbmrh2OWDW9rQaCIwQNK6hz7nTkEgp9UqafPs50ehcP5ZZGV09bb300fUXd54csC230iDz3Ofl01/qD+HLwTpuZUjskWDApgWUUx4yOL2NKG0smOfeysFhg3Il0GtPwrXZ3iESucfRr7eGZ/8yCOHNHq3RMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=bFJkWlin; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Hj+nbwMM reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UxwsOZ1u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755578314; x=1787114314;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fX1fDtkJlgXe21ThnDLJ12QhRuLIMPpV4e+3sPurSW0=;
-  b=UxwsOZ1ulEZYVQIiVzewu33WAQcTwICFFB9AIRLG/YjXQDXUlLqRGFzC
-   Ie1ADYwBltMu2Nhr5WXpxhFSiUSG0/ph77cS8I524/5XK6VcnKKreHoDS
-   yvRtg0F9KxzQH1U3jlaD9GVZLy2DgS/mGcoWZ6vUdtAesYCxCtGKvna/d
-   DaUpiy86JDdcfsl2vEG0Xrsr6iwNG3V5fUPRNIMi01gIYrVlDTNoP06Q9
-   EdKL660xpWOgJhjyE97URmsqTVa/aiv/2+QvNvhXcqzD3d6Lcb60imyVv
-   QL+Yx3MLsU78U3XpMhTvpUXWYgIFYV3pwgXzTWzfLsjyeTOe7/WkOTHof
-   g==;
-X-CSE-ConnectionGUID: ggwf9MdqTfiOmfHq4iyzUg==
-X-CSE-MsgGUID: Hn+OKs5UTSOQKu17pmz95Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="57882456"
-X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
-   d="scan'208";a="57882456"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 21:38:33 -0700
-X-CSE-ConnectionGUID: xr1bnbrgSICKne4JN1ZibA==
-X-CSE-MsgGUID: Zwnm0lBgRl6z9KTr/9UVMw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
-   d="scan'208";a="166981588"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 18 Aug 2025 21:38:29 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uoE78-000GVn-2D;
-	Tue, 19 Aug 2025 04:38:26 +0000
-Date: Tue, 19 Aug 2025 12:38:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jacky Bai <ping.bai@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Jacky Bai <ping.bai@nxp.com>
-Subject: Re: [PATCH v3 3/4] thermal: qoriq: workaround unexpected temperature
- readings from tmu
-Message-ID: <202508191258.tYXB63eu-lkp@intel.com>
-References: <20250818-imx93_tmu-v3-3-35f79a86c072@nxp.com>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="bFJkWlin";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Hj+nbwMM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1755582346; x=1787118346;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=WsYp5szV0xyNktXKyNpHlGjtRi7D/yzfr9+tShTScEo=;
+  b=bFJkWlinTzfPzsn+cgkH0BcWA0msiywkFN1cOxtYb9xciDWE+xwjQVW3
+   UgNmYp3VYaGkk/uOR/py9nHofcuzpmjpTNBwyOpI05k0ECAtxD9YRikY5
+   /OlJ5XN8kFzF16I7rD1TeeSwvJeqbTw2u7PV2klHZxfFFh/E2rYMUQq6f
+   Bgfsde/TG6YBOSAN0UAplNX7p8DCcmvfJ2NF7clB5ocXLj2hlNVbTVk4K
+   pYh2adid9AaV9QkX2TdjCqNiDRi+K5jfuXMZce3rAt1t9HjybDha+gHfq
+   6ewrqLIOrZWayWftsw/ePCEmEYfrQEBlr0CMGoyCuua3NgVSEnsMEyS+U
+   w==;
+X-CSE-ConnectionGUID: pIE3H7EkSU2KpnRbqdg2tw==
+X-CSE-MsgGUID: gemojgD+SnG0Uwlr5Nqd3g==
+X-IronPort-AV: E=Sophos;i="6.17,300,1747692000"; 
+   d="scan'208";a="45794411"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 19 Aug 2025 07:45:33 +0200
+X-CheckPoint: {68A40F7C-3A-9821D066-F5C64F68}
+X-MAIL-CPID: FA256BEDB6305F126D1DB31ADA1A04C9_2
+X-Control-Analysis: str=0001.0A002115.68A40F37.0061,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 07F281632DA;
+	Tue, 19 Aug 2025 07:45:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1755582328;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=WsYp5szV0xyNktXKyNpHlGjtRi7D/yzfr9+tShTScEo=;
+	b=Hj+nbwMMZTxOWhrFndQYU6J6dMbz9J1u6gZvEnOsZDeCrIb+B1baPv04ofFHNq/N7Mu3QE
+	2Bwf0kq5lUEfkNNWZ6HAaU9pro+LVN0e4uHZHFl11iRTUYV7XVs8No3AqkyYNy1KmwIjDq
+	0ubTNQiWSi+0RTc3rpZVp6fbrSBJAe5wqu918FhSsb6UeIitZBq9r5gbEeUOaUCCx6ktYc
+	+FatrOfHiLglLTztecpGNemEPGJ3W4VRR2lobspHaWq2QxJeprw0Y+M/bitj29ybf/LnIT
+	W9lmSFHQCqS2dYizdttwa14Txx/yuIFOG560yt2A390b1lcXzhaxjcYFWC0lFg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ Frank Li <Frank.Li@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 00/15] ARM: dts: clean up most ls1021a CHECK_DTB warning
+Date: Tue, 19 Aug 2025 07:45:26 +0200
+Message-ID: <2800197.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250818-ls1021a_dts_warning-v1-0-7a79b6b4a0e2@nxp.com>
+References: <20250818-ls1021a_dts_warning-v1-0-7a79b6b4a0e2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250818-imx93_tmu-v3-3-35f79a86c072@nxp.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Jacky,
+Hi Frank,
 
-kernel test robot noticed the following build errors:
+thanks for the series.
+I've already sent a similar one at [1]. But I haven't check which are
+duplicates and which are not.
 
-[auto build test ERROR on b9ddaa95fd283bce7041550ddbbe7e764c477110]
+Best regards
+Alexander
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jacky-Bai/dt-bindings-thermal-qoriq-Add-compatible-string-for-imx93/20250818-173822
-base:   b9ddaa95fd283bce7041550ddbbe7e764c477110
-patch link:    https://lore.kernel.org/r/20250818-imx93_tmu-v3-3-35f79a86c072%40nxp.com
-patch subject: [PATCH v3 3/4] thermal: qoriq: workaround unexpected temperature readings from tmu
-config: riscv-randconfig-001-20250819 (https://download.01.org/0day-ci/archive/20250819/202508191258.tYXB63eu-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 93d24b6b7b148c47a2fa228a4ef31524fa1d9f3f)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250819/202508191258.tYXB63eu-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508191258.tYXB63eu-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from drivers/thermal/qoriq_thermal.c:8:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:804:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     804 |         insb(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:104:53: note: expanded from macro 'insb'
-     104 | #define insb(addr, buffer, count) __insb(PCI_IOBASE + (addr), buffer, count)
-         |                                          ~~~~~~~~~~ ^
-   In file included from drivers/thermal/qoriq_thermal.c:8:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:812:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     812 |         insw(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:105:53: note: expanded from macro 'insw'
-     105 | #define insw(addr, buffer, count) __insw(PCI_IOBASE + (addr), buffer, count)
-         |                                          ~~~~~~~~~~ ^
-   In file included from drivers/thermal/qoriq_thermal.c:8:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:820:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     820 |         insl(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:106:53: note: expanded from macro 'insl'
-     106 | #define insl(addr, buffer, count) __insl(PCI_IOBASE + (addr), buffer, count)
-         |                                          ~~~~~~~~~~ ^
-   In file included from drivers/thermal/qoriq_thermal.c:8:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:829:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     829 |         outsb(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:118:55: note: expanded from macro 'outsb'
-     118 | #define outsb(addr, buffer, count) __outsb(PCI_IOBASE + (addr), buffer, count)
-         |                                            ~~~~~~~~~~ ^
-   In file included from drivers/thermal/qoriq_thermal.c:8:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:838:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     838 |         outsw(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:119:55: note: expanded from macro 'outsw'
-     119 | #define outsw(addr, buffer, count) __outsw(PCI_IOBASE + (addr), buffer, count)
-         |                                            ~~~~~~~~~~ ^
-   In file included from drivers/thermal/qoriq_thermal.c:8:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:847:2: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     847 |         outsl(addr, buffer, count);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/io.h:120:55: note: expanded from macro 'outsl'
-     120 | #define outsl(addr, buffer, count) __outsl(PCI_IOBASE + (addr), buffer, count)
-         |                                            ~~~~~~~~~~ ^
-   In file included from drivers/thermal/qoriq_thermal.c:8:
-   In file included from include/linux/io.h:12:
-   In file included from arch/riscv/include/asm/io.h:136:
-   include/asm-generic/io.h:1175:55: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-    1175 |         return (port > MMIO_UPPER_LIMIT) ? NULL : PCI_IOBASE + port;
-         |                                                   ~~~~~~~~~~ ^
->> drivers/thermal/qoriq_thermal.c:281:9: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     281 |                              FIELD_PREP(TMRTRCTR_TEMP_MASK, 0x7));
-         |                              ^
-   7 warnings and 1 error generated.
+Am Montag, 18. August 2025, 22:48:11 CEST schrieb Frank Li:
+> clean up most ls1021a CHECK_DTB warning.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Frank Li (15):
+>       ARM: dts: ls1021a: swap dma tx/rx channel to fix DTB_CHECK warning
+>       ARM: dts: ls1021a: correct node name "timer0" to 'rtc' and remove r=
+eg-names
+>       ARM: dts: ls1021a: remove redundant snps,host-vbus-glitches
+>       ARM: dts: ls1021a: remove big-endian for memory-controller node
+>       ARM: dts: ls1021a: Rename node name nor to flash
+>       ARM: dts: ls1021a: Remove redundant #address-cells for queue-group@=
+* of fsl,etsec2
+>       ARM: dts: ls1021a: Rename esdhc@1560000 to mmc@1560000
+>       ARM: dts: ls1021a: Rename node name power-controler to wakeup-contr=
+oller
+>       ARM: dts: ls1021a-qds: Rename node name at45db021d@0 to flash@0
+>       ARM: dts: ls1021a: remove big-endian for mmc modes
+>       ARM: dts: ls1021a: add fsl,ls1021a-wdt for watchdog node
+>       ARM: dts: ls1021a-tsn: Remove redundant #address-cells for ethernet=
+=2Dswitch@1
+>       ARM: dts: ls1021a-tqmls1021a-mbls1021a-rgb-cdtech: Remove fallback =
+compatible string edt,edt-ft5x06
+>       ARM: dts: ls1021a-qads: Add fallback compatible string mdio-mux
+>       ARM: dts: ls1021a-qds: rename 'nor' to 'flash' and 'mdio-mux-emi1' =
+to 'mdio-mux@54'
+>=20
+>  arch/arm/boot/dts/nxp/ls/ls1021a-qds.dts           |  8 ++---
+>  ...1021a-tqmls1021a-mbls1021a-rgb-cdtech-dc44.dtso |  2 +-
+>  ...1021a-tqmls1021a-mbls1021a-rgb-cdtech-fc21.dtso |  2 +-
+>  arch/arm/boot/dts/nxp/ls/ls1021a-tsn.dts           |  2 --
+>  arch/arm/boot/dts/nxp/ls/ls1021a-twr.dts           |  2 +-
+>  arch/arm/boot/dts/nxp/ls/ls1021a.dtsi              | 38 ++++++----------=
+=2D-----
+>  6 files changed, 17 insertions(+), 37 deletions(-)
+> ---
+> base-commit: 3ede6e44fad31f1c80dd01188683f0caa0f19247
+> change-id: 20250818-ls1021a_dts_warning-fff933bd83da
+>=20
+> Best regards,
+> --
+> Frank Li <Frank.Li@nxp.com>
+>=20
+>=20
+>=20
 
 
-vim +/FIELD_PREP +281 drivers/thermal/qoriq_thermal.c
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-   264	
-   265	static void qoriq_tmu_init_device(struct qoriq_tmu_data *data)
-   266	{
-   267		/* Disable interrupt, using polling instead */
-   268		regmap_write(data->regmap, REGS_TIER, TIER_DISABLE);
-   269	
-   270		/* Set update_interval */
-   271		if (data->ver == TMU_VER1) {
-   272			regmap_write(data->regmap, REGS_TMTMIR, TMTMIR_DEFAULT);
-   273		} else {
-   274			regmap_write(data->regmap, REGS_V2_TMTMIR, TMTMIR_DEFAULT);
-   275			regmap_write(data->regmap, REGS_V2_TEUMR(0), GET_TEUMR0(data->drvdata));
-   276		}
-   277	
-   278		/* ERR052243: Set the raising & falling edge monitor */
-   279		if (CHECK_ERRATA_FLAG(data->drvdata, TMU_ERR052243)) {
-   280			regmap_write(data->regmap, TMRTRCTR, TMRTRCTR_EN |
- > 281				     FIELD_PREP(TMRTRCTR_TEMP_MASK, 0x7));
-   282			regmap_write(data->regmap, TMFTRCTR, TMFTRCTR_EN |
-   283				     FIELD_PREP(TMFTRCTR_TEMP_MASK, 0x7));
-   284	
-   285		}
-   286		/* Disable monitoring */
-   287		regmap_write(data->regmap, REGS_TMR, TMR_DISABLE);
-   288	}
-   289	
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
