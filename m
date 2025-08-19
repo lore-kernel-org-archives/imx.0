@@ -1,267 +1,699 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010013.outbound.protection.outlook.com [52.101.84.13])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013031.outbound.protection.outlook.com [40.107.159.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F6127EFE3
-	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 15:10:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC1E28136B
+	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 15:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.31
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755616247; cv=fail; b=S99br9XRiYjiX2o6iZQIIfu32tSUGGbACtTCN8gZk5Yl7LeRxfE06XFxhBUO6M3cuwcA+ynnkm7WXe/BnwVMMPP9/zDK/G6BH8d07GieOWw2y94SCHKaIFNKrglCxDMCCWJuK7CPM4qt5vFeC11WaylbVeB8oBZr3Qh9/88UvMA=
+	t=1755616477; cv=fail; b=Xui9O8P7yu4fCE2Nyth9Vd9Ndh8PGXk49gkaO8tKltrhPAsHNCSvi1KWo8vxZdlu9+gpEuvnycyD9yCwitFD5JiDcQi4pSy5cNRtpo4++iVxukBZM4Iy0pDCOJHUWKrJw8xrIVOoqgnrLP5n4xNr2K8mHOagbTC/KjduC6d2V1M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755616247; c=relaxed/simple;
-	bh=vDHbzgTeY7ir11uxiACvRgdesrOhksBXjHqrAhapGGQ=;
+	s=arc-20240116; t=1755616477; c=relaxed/simple;
+	bh=qeXAGysmfGcrW79W3aRvGxa88oahDFLpcHTz+aZfh6w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ip5+jR9RsEWCpQh9O3mwal0sbygzYOO4WF/Q+oL3lGgkPHk6H/ceHghpnfOEPRfWVkQiOKkXWOTZ32vkw+1J4Fj0Js2tNyJECESlE0JDOhF4cr3AInNavouVMPDqL8HpDbjeOcmD3BTWL+cnY0Zgrgv0M540u5QKKUvRmBw5/cw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=kPYlxDI1; arc=fail smtp.client-ip=52.101.84.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=SlD2ycqRgu1yS0R4WUN6nrwiyrYr30FDytNabQ3/cXIcmdnxEklMiwe4s51DzGyE3toM/sIjK/03u9UxdES+uXM7UUCSjP5paEW3AMDLSWJqHTmznqQmku06rhPRTTwJBo/BbMKlrrSP9P9QtIFmfTenuRmfbEQyQ+PX1WRuWaU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RuUwtBxm; arc=fail smtp.client-ip=40.107.159.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="kPYlxDI1"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RuUwtBxm"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LKgMAe9Y25sojeNDUqHmtJ7rIQX4G8dusI31ZnR2dEcVvXsTg/KkoAR0Tgvr6dBSxwEEymjAuqzd/0XCUDIdmcp2hW1VJG9BEXPii0X93L/0oMY2sxgqLiUW+EzGuNtwyg2gkSRhy+buKSfVGJxw7OnPtrMzTHc147uHpOLmADswzq5sfw2KD1QUsTkQD9Izv/0fk7WTA65HcQya2HCp8wi9OrP4rti3/qeLBZ8obRbbKX+q4RgwbvSyGCrGnC0s94bFgCGAA9TXMBp7HSp/83HUE4H7TzEHKSjJnnxyD03TCYPDyp3L/eLcqTYoc3ZU2la+A0KTAL9PBajxepPv5g==
+ b=A19gsMbe+FC5uYaiX3PBNv2Fq9GSwex7eB5z7X33vUfpM/tTt8tn7geO/SFU1+keUVEqr1kS6+dTtTL6DeeUPCaZnIFTtUk8GY1dJHGvW2UAQz8Rqd+mz9yCZda4eMr1ylKOR+Sz9VdywSKbKZLDQj8c35JlVEshMnf49cSS3Rv/AWU34dR2sdBGn6m1vx27x1LTH5YvGLt/Jr6qGfuzAOVoolpR1obfM8tGUPlt3w4vUg5EKpnYQEwNYFgCFCcyJOWLaP/1nScwcfrV35w+dq4iNUULwBNq4ptyJhHFnrGz/I7baIf3M5iICjwj961DmUIyaTloruiJFa7rYL3gOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8DWzGELDm7HvUm9Ig0Kdx7q95mGb0NTyT4FofnD0iLI=;
- b=XXhUF1PEW1D9z4Se0GrCHnAG/NKJ+Fr8hSOAHQRxbXlDqg4+O7pOa2PD0W4JWI1yNgP1Uvt+1jZpm0nps8xeNV1tINILdNkNdk4rDQnFRuGBIqdv1fUfeaOuoqM0fGB427de1zzCM309MJzv1HZDTRDdAVLTsn8gaaAxgY/4x9LZMAQc5f9clOJ7Sg87jqXKkKU7lulex7mGAh/0vabcRfcpdsqwIwNrfNPWuBF8wdI5NzaAOVskc4agG27whptJBNbS7D2tgxm9AnNMya0Qkv7zbmi9lFvScwo7zrMywZEetAHZFQARNMlwVdsSNtKhoY2fo62yRlKhFRJ+JFrnWQ==
+ bh=nU7AMpk0KslOS5iEQUT1Ivb8e5lwvt5WXHrRt6fZ7PM=;
+ b=GrlwImr6nA7xzpui3lG7j1xMp0e556hks//v40DKTueD18S+5jzk7lCOtSYMFHstRp04YWYvnOjSuUVJKFIv4LqGj6r2eht1EVjVjfzMBlhWpR3Ju4Dfxx6iw+jc4zgJ9FOeRD58MzMDX2w5FDOerGvOhnR//t/D6Ybk9QnCMDqqKtvNGjwCcuL4y7x8sJTrBGc89idxuYbYQZkE3RNk+ZBjoQjVjqHJ/HrWMe6dAjzaQXUkOW5ak1svg0+zUTFd59fG10Pv7xJDcwj2px4z6pLXgJJ4K92fHya/WlxC8YloLs2W/RpGOPeiRqOh9iEgCfvQHJiCqHziFD9rEYchBw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8DWzGELDm7HvUm9Ig0Kdx7q95mGb0NTyT4FofnD0iLI=;
- b=kPYlxDI1xNEhQlHcyGCebZeQZ5WX82e4ZxmP8HPVIDS2LxPqtFo3NoksEsFxTt42iXQU8ERhYJ+5NUAcPpfEjbB+Mfe2KY6OKOkrlfaUJ5I1kHwu+KCsWayONT1UBFCIUID0kSF6bQ0mk9pjxFPfNO6XXcshm6NBN9EQVuk5MgngXmpQEnS8tkYlJ4xLuHucAWz/Ioa7ZZppHBDUd8loT66F+/3c8ZXkcqpQZbuULXWngMNpoVMNFJph/D5ygZo/OvDIvDYo9FH7X5UnJ17XNa3kr2ZQrjaIgjOW94T/DHt+qGhzVZcAU0ARyVrEt51VMD4TTnrCaspux1O/F0k9MQ==
+ bh=nU7AMpk0KslOS5iEQUT1Ivb8e5lwvt5WXHrRt6fZ7PM=;
+ b=RuUwtBxm6/kS+UPmDroN52ifQDh/YAiIJ3LZY4Ai9dmZgFYmig9PSVUbJwoSJNL5RQKm0IhKWVsTwCzcCWOZQ2+0dXrBQsWIzb8hK5DV05R4phEK1pHS6lHdAP4jAQS4i+UOkDJrQW1KXXT01B11x89drB4/8iqRLzoRE0pE3SO/r0K8CWwJEtPdNL4r5tZfFgqhRbbLejwMS2KhRG02uqNXqJbxJ4SQ8oslyxYnt5D1ccatZwjorhxlIQ0zGGdQEKr61jwRAkZl7au5/jq9y1RODldFFIK99Yk+CL65B/TmChViO5ZpP2Er/KYm+4oXK71cd3HL361qVDFgsLB1lA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AM0PR04MB7154.eurprd04.prod.outlook.com (2603:10a6:208:19f::9) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB8827.eurprd04.prod.outlook.com (2603:10a6:20b:40a::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.13; Tue, 19 Aug
- 2025 15:10:42 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.9052.011; Tue, 19 Aug 2025
- 15:10:40 +0000
-Date: Wed, 20 Aug 2025 00:21:33 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>, jun.li@nxp.com,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 2/3] usb: chipidea: ci_hdrc_imx: Set out of band
- wakeup for i.MX95
-Message-ID: <20250819162133.GA18601@nxa18884-linux.ap.freescale.net>
-References: <20250801-pm-v2-0-97c8fb2a433c@nxp.com>
- <20250801-pm-v2-2-97c8fb2a433c@nxp.com>
- <zdzpddjjdj2ezkkfh5jjnnjvkvu4gb6vqmhkdlnnc2ioamvcuk@ftmezbyxrhfb>
+ 2025 15:14:31 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.9052.011; Tue, 19 Aug 2025
+ 15:14:30 +0000
+Date: Tue, 19 Aug 2025 11:14:20 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	richardcochran@gmail.com, claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	fushi.peng@nxp.com, devicetree@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, kernel@pengutronix.de
+Subject: Re: [PATCH v4 net-next 04/15] ptp: netc: add NETC V4 Timer PTP
+ driver support
+Message-ID: <aKSUzDpO9Yh58XoC@lizhi-Precision-Tower-5810>
+References: <20250819123620.916637-1-wei.fang@nxp.com>
+ <20250819123620.916637-5-wei.fang@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <zdzpddjjdj2ezkkfh5jjnnjvkvu4gb6vqmhkdlnnc2ioamvcuk@ftmezbyxrhfb>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SG2P153CA0016.APCP153.PROD.OUTLOOK.COM (2603:1096::26) To
- PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+In-Reply-To: <20250819123620.916637-5-wei.fang@nxp.com>
+X-ClientProxiedBy: BYAPR02CA0014.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::27) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|AM0PR04MB7154:EE_
-X-MS-Office365-Filtering-Correlation-Id: c542f1a8-d7ab-408b-0901-08dddf328f56
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8827:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6474baa9-2ddf-4d37-d58e-08dddf3318a5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|19092799006|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?rNZGVwpy5Mrx5VofjAQOHRzs31kJmoCwyq6RRHt8120NgbqxWNJpVb0awysf?=
- =?us-ascii?Q?BTgFLxD048Dx0aqnM6kUO2kPY53EcMJAYyHhW1/4/4JTd0GPr+eBS3IxW/qX?=
- =?us-ascii?Q?raQsAgq+eKBJWdZCc2rYvwLIHoxmy9HzOVV0c30nD4FSGukbt0z7cALB6Q/G?=
- =?us-ascii?Q?S/mGU4FeSbBaKWtjbnw63cKKKFiMQdeSjdSpIzEI/TdpI11uzqp498zGL3DM?=
- =?us-ascii?Q?SaZSs1+w/2SLm2Chb1ZQFPnqMaL8C62b99//GDkdM0IX62XT21kUUaqNqE21?=
- =?us-ascii?Q?2ZAtc62Si2ZuLt9iwZHoF188ym0jLuerosrT589GNx9wjzmgPHze3+S5p10/?=
- =?us-ascii?Q?wBdEyGRZEe+Xl7+97JWomxfr6GGo+k+xVZzZa1yOzHitKJAVy/+npb4KM6YV?=
- =?us-ascii?Q?xKQ0VNxEgf8miYh28QH++GSjBE6dkneM0KDu1NMN1l8uOUZ1y784cFV8sQJy?=
- =?us-ascii?Q?Q1q+SS2gr+IaUcvNTOErb3vSBn49WImSZ3qzoVqAZfWod67Ue9CSK8fdZpbW?=
- =?us-ascii?Q?ksy7nPIDE4MpYN5PpfyQE8s6JMw3UlT08mRZA+AjFhv5slyp+g94dQkKicjE?=
- =?us-ascii?Q?PMNf/y/LiJmIz/e6P6/MqAFHDhFLC6BJhBAeVRyQWZZV6imNK/9AojnaJA2j?=
- =?us-ascii?Q?HiSpSX7PQbiHsmE6fcmb2hEw784NJ97NUV5yLK3htW5k0RmzWnoUIr5i5bEh?=
- =?us-ascii?Q?id55sVvGmz1e1L7NmZ1IvNXkwk3RhpYCgsyi1pBrDPvrO/cQKwl/xy9jpXtP?=
- =?us-ascii?Q?xlvofCkeXuNnZ1zezUEWQriIvICBPhmIHb2EGgCP9gCSFS+1EtoFyu87+280?=
- =?us-ascii?Q?eWElPv9aOS1XBPVN5w69rmrDINWrp2aZSEKNFW3mIz3g40rgHv0PyQKRWYdT?=
- =?us-ascii?Q?brNcFhVctul9db/t2KDeMhfLZi4HyRqVWLvTzfGNf9Ckhl2DuUo3RwsMWhGn?=
- =?us-ascii?Q?TYMyOJNMnZKZkIt7T7n/Pz2UqU3GHLeX1lCmAMVeVvAFU6fkPiTOMZB5j2Mc?=
- =?us-ascii?Q?OlLCL49+dHzR3mvzmYRqmBnHdnTyxlc3/oKyytd0VsEilM2b/s4ygD3kOx6S?=
- =?us-ascii?Q?SNoMNHBJ0XOi8RAEboJPVrBXcER/P56P9Cw1iVbH7hEXxn9mMvTaQudFHehh?=
- =?us-ascii?Q?e9/5I2AzNnQ0It/B4aaGsAF0ueQmmWnwP2kZvxcr6yNsxcp6IOn5+D8fbyZX?=
- =?us-ascii?Q?b2Af64MhNs+R9IORO5NpGtrDLxwtYoM22x8C/KVeFGrud8jtueijH76nq0im?=
- =?us-ascii?Q?bDwSmiN/K/SLOUJz8N03+BIxyyVMvS8N4dVrIxdvBZLNTUz3dr+X4aVRLZHo?=
- =?us-ascii?Q?PUCx3Y8liXOWlNKaHJWkZy2PTKfHaCulU//DInvX7AhtaCBwQ98UycCNiHMz?=
- =?us-ascii?Q?MHeBEVPOUFPM7M5Lh3VFYwMFZ61NgPZTzsrnMmtHaXumU5HqE4Jtfd5ne+rz?=
- =?us-ascii?Q?ZxAs3IRlIVQ55gkbpPa17HGGn27aZfWmB7sl0tZVur1cdd3Hdg3bgA=3D=3D?=
+	=?us-ascii?Q?ZBKCWvc1ffoHf/qvaXnK6kCBjeR00Ztwp2iwG41Thij1GmUe5VKUEfp2hexB?=
+ =?us-ascii?Q?kaMCZ6Sff+k6DhpEYJ8t5cjp6fw6TX3arzKgI2tnXX+oVmPTjAbHVogvhONw?=
+ =?us-ascii?Q?CDlIy99Yplk3fYCCmP8KKE+PnF9eQBmnFL/vehZDmT3zKK0kWCAeZ9CBCfLK?=
+ =?us-ascii?Q?nu6z8PIfUiX25O551Oh0ZhdKX/MvdekV+GIMvd8nxvnRu7wvUGbmHnOwL5bO?=
+ =?us-ascii?Q?J5kL748+oAdXnwOBkMB9hkep03NFm+XXw9tmqoqM3yc9QxgNTE95ZHue6Zgf?=
+ =?us-ascii?Q?VYESyvZtaANX67k6gvkufgghoHPX7cPZDgIKQgJx6s43AzYLLs4W0oHPEXcw?=
+ =?us-ascii?Q?dSJLELK37QRa3IslgOxpoTq4uHEIvIqkJ05VmkuBMNlvAQxz1Ft0daCww7Fl?=
+ =?us-ascii?Q?k/VxOiyadHTYfdNIY70j8vU+muKYCiKTIfwGfriKiJQhF/60JMCAy5dlOT+v?=
+ =?us-ascii?Q?Pc8GiCcD9ZAwP9zXxzYboI8ZrvaLb6gJDGwya558Dulj7OKQTgT+PZrI6p1w?=
+ =?us-ascii?Q?jIfSh2c3GIhRbkLARI+HnGH3lQlBrb5FBWEOXA/aHiuGHiAGac825ckp0P49?=
+ =?us-ascii?Q?noAEMWfOeWnAUyxbwHRWLzlBAx3xqnYhXu4l+YwiKZlXk33nl79j59ABSy1G?=
+ =?us-ascii?Q?o7o0/5wXXGnnD9+EKRad2uWDLRLMYfajy/tk9ZZY3U3ruR3xRiDcNnRddV0z?=
+ =?us-ascii?Q?fqZzkO2/Tijg5J7qpNW6q5UfsWMp4jTXx+bEs1dmV6C+Xw44z/8FellA2tKJ?=
+ =?us-ascii?Q?cjdBJyuPxyyzRMlWxpl0u2REdm/RUSEK06g5Z4zPyOcM6EecyFddpfZCe68H?=
+ =?us-ascii?Q?RPm5uezzH+r0fFSh9nP2uklPopA+Yvj6rJLmhEhz3NOJoTwko4uHkHw/tc7g?=
+ =?us-ascii?Q?qbwYuVbBvpG0J2mVY4UsOWH3LE70HdZsiUk9pK6sOboLAxZzWU4ACDZsYBUN?=
+ =?us-ascii?Q?PMyPc5TM2R+E46Ov4biNPrHCH+lmOEtfQeWzO5WwIk5xyrdsfY9bzec6cHOG?=
+ =?us-ascii?Q?XJu9w4mZcuMs8YACjHvzK6UqaHPBbA6QpNlBWigJ7UT0Dv2sLeolzKOUHiVz?=
+ =?us-ascii?Q?wiplhpewwfSbFb+QBNluN1tgjbpDEYSr97tAfOlhJvx4zBpqjwmCLM0HQ1Qf?=
+ =?us-ascii?Q?ishfitIjYxruwvICl22oUQQlzaYQLFIVN4P5lbKxmqR4a6dsVJewe1/K+ozc?=
+ =?us-ascii?Q?yZOsfdOPRSsGqTIZ56ij4kGHeeuRLM5ewiDeSVuFMxL/XaSKQutcdLr5AJfC?=
+ =?us-ascii?Q?oiPS4E/NJGPoypEL4EKvtK8og8Z1giex4Jc7RPgSu2az+xT0FrfBYZxLImdB?=
+ =?us-ascii?Q?D3iW0/sodgxIYNL/IlIcdJy4qWeMnyp8tQJ3oVolJP710h9zEOHXiFxTk8Ze?=
+ =?us-ascii?Q?Z5WzWuw6Bi/1PXkPT9kF28dOAx5ygJrHZtEeA39uD3OD9Mp+T3b9gDydpTyO?=
+ =?us-ascii?Q?d/ldbI0JY3jKtBZiDknmbVKhRjDZdxgvWRR1Fmfdgj/i9kZBSMOF8g=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?l9NGuaC0/rueOmdk/dQasoJGq4tsGP3drofFAdGo6A7wgJboRcEjdfMwoDZU?=
- =?us-ascii?Q?0ZLjwKxvFQTtJGXEp/1gzs4H06zFIiutXYZyTkWYbefyRNUkTyWYsEJa7hlV?=
- =?us-ascii?Q?gLo1x5nZ+H8ayfNMR4ClqEz1XvildtJaTrosmRdX3HU4THBMFVFPMYtFGSCs?=
- =?us-ascii?Q?/HTFsAhlhlRlMoh0viHoWbf8cstw7pyujXAGF0oxHqsILIHgjo1vAjyGV71e?=
- =?us-ascii?Q?B4VJ78nRrVNsDbxL1H7nNbKZ81TJd+YT5ZE2ppBt6YLrNjGG42nUdd0nnOoD?=
- =?us-ascii?Q?tRf4hvVaucdz+FAEkXVefimftzU92ly04c1Ezdr1crehXUbB2+xMhImzNTwI?=
- =?us-ascii?Q?6btZwTC/6RSY1pnmRlbkbyzLzcIeT0Bl6gyXbr69RM9oaAm8d2FTyAMVCoEb?=
- =?us-ascii?Q?KbwppApaMT7g6gmHduEuCWOFLiNBx277EV2TKaWOWEan1gyQe063CEMTHX0R?=
- =?us-ascii?Q?E3i/DnaeALXwrgskTsIfM3griShz0gnEs1S0Qx555XqF0jbzroxLtcbP6yg2?=
- =?us-ascii?Q?/9Xn/r4hEUykmnPQwNjvz/xgrCwcgn5+yKaSmF8uglzXkPMJEIPlk2kS4MYf?=
- =?us-ascii?Q?m/ihEGTwjQMK7EqsJjdxeYWgCj8z2oWYhxw9RjzZniJpPJ/yQYZw6LUGMngR?=
- =?us-ascii?Q?VHPLr2mb1/g5CGsjbFSn59eX9HyO3OO6ZzizHjIoG1bS0BrZghSQxzDolYXY?=
- =?us-ascii?Q?eTc8M7SBgJBsj2Q5JwftsuKEq7EHAnhXFF6xu1WTmGsIciDzNIZJXThYJtNH?=
- =?us-ascii?Q?kAF12upwWdLS8GDDHpAxDIECBJOEJXg/ek2pNktW6YHfv5DZBIaZbVXzCt7y?=
- =?us-ascii?Q?vXFs9/+vCfS5L9X5zU0A4lvHry4fwXShBth8kiog8DoALO6eXXAp3kYbOLiT?=
- =?us-ascii?Q?YuZMz+qZAfD74kkf2gOlWiJ6w9ikBz/fyOka6kqTjiJHXnYyu9cJ+guKusPe?=
- =?us-ascii?Q?lpBpOQqlHsQFS2J1/qR9aIsWMDjPmgVfmLlpvZH9pKz67PgBXmWcmxcFM3a3?=
- =?us-ascii?Q?IPJLKW9SucZUXLWo5IW8jB+IOvXTm6jwiw0CYEw7O0yhidzt0h5vOwksX9vq?=
- =?us-ascii?Q?9nCocO1noSc3j5pMWfqBZMQVNsagqFHhxNNLeXt1ko4CTjjLGQAcRo6owrA8?=
- =?us-ascii?Q?pc2V1zMbpufm1S+ML2ToRbPRabXw8BNxAT6oKqKpzmTUbhWTSYgkexEghUzt?=
- =?us-ascii?Q?jd/ubejRiWMnMUa7KHK+eLn2dHglt16qhse8e94IbkNMxZp+QOqG0nmzhvCm?=
- =?us-ascii?Q?CyFymyNPJCxqzKwC8RSxKz0maqrexXyUFDqhWc0WuheC0ZA6jwIk8dg59O/x?=
- =?us-ascii?Q?GVy4wiVFU0O3ylxZzWQwU7vpsXdEr7UxyUAbjKt8rRBJ6Cr7JKpucQa2BcGD?=
- =?us-ascii?Q?iJt3jQPkcSpCMOVcjzChq6n6ZJ8E+e/rhTkvFhhHsccc++UTlQvm46B4DmF2?=
- =?us-ascii?Q?OaqDcJBnW+QYn4VzRwaKjKxiSD2exqZyGxdLA6cHdTB1Abyp7LIQPcoxLnld?=
- =?us-ascii?Q?GIxXjL7LT+Gm6BN5/KXq6dLlr1efFt8MUFaW4G/j1iSbAy8iYWYjfQPlg+Oh?=
- =?us-ascii?Q?50fpOPRoh1FlE3kjQHTmP8Br6wJmteimHuDAxV+M?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c542f1a8-d7ab-408b-0901-08dddf328f56
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+	=?us-ascii?Q?LhnGphNoWMtcf8XsJPBUcMR02k2SQQ7bbFFMqgVGLhSdLeVNpJGkyqowj4fx?=
+ =?us-ascii?Q?+OAIktR9d7egV6q9PKdP9r2HMhjbjgISC1ULphKfswzcuUwnA/gyDC3gTg5E?=
+ =?us-ascii?Q?m4uiSLCw5LK68bttaK0ASEndDG/DoWFQU0Iazk/cuPeAHjH31VuRXIOoP+n2?=
+ =?us-ascii?Q?h8BjjIMeC11HYqL3Xq46/8m7E5MkRf8RLSD0BBYw3ikIdQy7QFbh7O7gypWY?=
+ =?us-ascii?Q?58eboZikT3YysXsVNp7dA6HvitRSaENgDgmOvwXBrZUEnm3rZo1OvjB3PRUa?=
+ =?us-ascii?Q?uOayeMIbEMMhofhTnDjXp/Y+OwWTXRlKRiXliEKnyQ5ieyhS3zKygt4yt0kk?=
+ =?us-ascii?Q?o8n1nC89KvhfTtNzokGL0WfIUUnY22qwSNj89W3V7OAwShCwUeGDtA8kPBk+?=
+ =?us-ascii?Q?4914pUuanqNSMlSsUdpjB/olulbQ9pEZ56Ih2wwx8MlXZBEqqbv58VNsVwmF?=
+ =?us-ascii?Q?s0CFpU7opUkCN/j3FfUXQYmiCLx0qFkiQi5oAMrp+VlTalq3iPZgJqdX5L9t?=
+ =?us-ascii?Q?BqIH3tgKwXQH3G8O6nBJt90uIayfliun8U1KXcPC0s8PbP9QUWa7EWIoHv0q?=
+ =?us-ascii?Q?NFbLiJwvAHopTRtEpv8fAqW3fjxMlaWbrAuWSLGUPHtUNSZORXmkJU2d22rj?=
+ =?us-ascii?Q?ka8iiNmiPGqrqttGMBqTxu4bISg5Hgnmt8azzB1UWxRhQBh8j1S36S5HlQRl?=
+ =?us-ascii?Q?Vtucxc43tfsUGekPe5wtqaZXd1r/FTX5lqndBME6uvMttC1cpjLS03aVydmf?=
+ =?us-ascii?Q?lkHxK1TtpjDL4SYXNDtOzpHQrX1Qd2LUSZMm8W4AKxPD5FB4R2iiXAjTWKBv?=
+ =?us-ascii?Q?SQQz30meCo0uOQvMKOPBeBqsGtH4hcrQnXnvw+sJjfqs8vV9AUClpY3Rp4b5?=
+ =?us-ascii?Q?DCC/5e9NDvuwXRiZB0QuXIUUVI229O6XWqQt274W08porEDD+2W9iwpnisNG?=
+ =?us-ascii?Q?+g9PCLu0teKcui6whBc4YAixZ38u50so5hYGBp6buYT4UreFDQjfudA3dsjm?=
+ =?us-ascii?Q?KK27WPGWwGgpfyCYm7dn7B8gHTKteDnChWSFwFjbOWLuBFmt3ahbQ0g/ofF/?=
+ =?us-ascii?Q?9HngEnuL1Pu9B0ncsh9BtvoagdIAx00xmGK7PBuJOk8994QFchzBRDNredGg?=
+ =?us-ascii?Q?7t4hc0YtpWCb7OdUAMckoGDlHmheg+8QVn0ZcryM8jCRK5jRBuZtDr4fdjs1?=
+ =?us-ascii?Q?LJKlrFfyZhQWM4nkSfa4lKwzYUSKSM5xb8Ss4pzCa52MMRYZ88kmg1+rRUwe?=
+ =?us-ascii?Q?8aVNMRXCvY/hwrFfewTt/Pt2tznuOP+yaLRFIcQn4Ws0edG6KYSs7zHwvQ+D?=
+ =?us-ascii?Q?HqrZixJKRN2rd+mYqvob83TIXI+9/o+ipcqzjec6Qz7kO5Ybjgs9Sjg1iYRR?=
+ =?us-ascii?Q?6P1qiA73whKxfNZbYU/K4O2TgzMyiAwroWKsyDMwwfb2sNczQtTAatmcAvV4?=
+ =?us-ascii?Q?7+pxjC9PqUAVoKlYfQsm4mXtt36iG472mSVE6kRt+myZy7e1VIeqwTal7fnx?=
+ =?us-ascii?Q?KoGBsj+ASbxT7doIKex7MD5V+FdkhhK/QofNNV+tf8OooJ4CKsxQvJkAnLY3?=
+ =?us-ascii?Q?9j63jGGUChOcliztN2OjcGGwokpDSgbQwXG4j13f?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6474baa9-2ddf-4d37-d58e-08dddf3318a5
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 15:10:40.6623
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 15:14:30.8136
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bBmMAzu5hthG3ETeUzuTLcDVanhUgoGLb2MfKYx1cwIVUflhxW2lNIMrfgr63Vw2Ay6kYCvYqKBfvkYIUWND3Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7154
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ts0ARpspCSuz1MaKgGH3YJwPwS/xZVqzUHiuuxXWWpG1jgzASiAxD4mWAVtaa+1pdFhGkRDREn9qBJC+HTHovg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8827
 
-On Wed, Aug 06, 2025 at 05:28:08PM +0800, Xu Yang wrote:
->Hi Peng,
+On Tue, Aug 19, 2025 at 08:36:09PM +0800, Wei Fang wrote:
+> NETC V4 Timer provides current time with nanosecond resolution, precise
+> periodic pulse, pulse on timeout (alarm), and time capture on external
+> pulse support. And it supports time synchronization as required for
+> IEEE 1588 and IEEE 802.1AS-2020.
 >
->On Fri, Aug 01, 2025 at 12:34:23PM +0800, Peng Fan wrote:
->> i.MX95 USB2 inside HSIOMIX could still wakeup Linux, even if HSIOMIX
->> power domain(Digital logic) is off. There is still always on logic
->> have the wakeup capability which is out band wakeup capbility.
->> 
->> So use device_set_out_band_wakeup for i.MX95 to make sure usb2 could
->> wakeup system even if HSIOMIX power domain is in off state.
->> 
->> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->> ---
->>  drivers/usb/chipidea/ci_hdrc_imx.c | 8 ++++++++
->>  include/linux/usb/chipidea.h       | 1 +
->>  2 files changed, 9 insertions(+)
->> 
->> diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
->> index e1ec9b38f5b9ba0568101b51fbf16b99461b6ee2..7a3360d8a0fd065394393de829108a12c27c85b9 100644
->> --- a/drivers/usb/chipidea/ci_hdrc_imx.c
->> +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
->> @@ -79,6 +79,10 @@ static const struct ci_hdrc_imx_platform_flag imx8ulp_usb_data = {
->>  		CI_HDRC_HAS_PORTSC_PEC_MISSED,
->>  };
->>  
->> +static const struct ci_hdrc_imx_platform_flag imx95_usb_data = {
->> +	.flags = CI_HDRC_SUPPORTS_RUNTIME_PM | CI_HDRC_OUT_BAND_WAKEUP,
->> +};
->> +
->>  static const struct ci_hdrc_imx_platform_flag s32g_usb_data = {
->>  	.flags = CI_HDRC_DISABLE_HOST_STREAMING,
->>  };
->> @@ -94,6 +98,7 @@ static const struct of_device_id ci_hdrc_imx_dt_ids[] = {
->>  	{ .compatible = "fsl,imx7d-usb", .data = &imx7d_usb_data},
->>  	{ .compatible = "fsl,imx7ulp-usb", .data = &imx7ulp_usb_data},
->>  	{ .compatible = "fsl,imx8ulp-usb", .data = &imx8ulp_usb_data},
->> +	{ .compatible = "fsl,imx95-usb", .data = &imx95_usb_data},
->>  	{ .compatible = "nxp,s32g2-usb", .data = &s32g_usb_data},
->>  	{ /* sentinel */ }
->>  };
->> @@ -569,6 +574,9 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->>  
->>  	device_set_wakeup_capable(dev, true);
->>  
->> +	if (pdata.flags & CI_HDRC_OUT_BAND_WAKEUP)
->> +		device_set_out_band_wakeup(dev, true);
->> +
+> Inside NETC, ENETC can capture the timestamp of the sent/received packet
+> through the PHC provided by the Timer and record it on the Tx/Rx BD. And
+> through the relevant PHC interfaces provided by the driver, the enetc V4
+> driver can support PTP time synchronization.
 >
->In current design, ci_hdrc_imx_probe() will create another platform
->device B which will be a child of current device A. Furthermore, device
->A and device B will attached to a same power domain. In this case, some
->conflict setting may happen. For example, if the user wants to enable
->wakeup for this USB port, they may echo "enabled" to wakeup file for
->both device A and device B as before. As a result, device A is out
->band wakeup so it doesn't depend on power domain on, but device B has
->also enabled wakeup so the power domain will keep on finally. Actually,
->the power domain needs to be off for imx95.
+> In addition, NETC V4 Timer is similar to the QorIQ 1588 timer, but it is
+> not exactly the same. The current ptp-qoriq driver is not compatible with
+> NETC V4 Timer, most of the code cannot be reused, see below reasons.
 >
->So I think only letting the parent device A itself attach to power domain
->should be enough. If it's the right way, then below change needs to be
->included to avoid potential misbehavior.
+> 1. The architecture of ptp-qoriq driver makes the register offset fixed,
+> however, the offsets of all the high registers and low registers of V4
+> are swapped, and V4 also adds some new registers. so extending ptp-qoriq
+> to make it compatible with V4 Timer is tantamount to completely rewriting
+> ptp-qoriq driver.
+>
+> 2. The usage of some functions is somewhat different from QorIQ timer,
+> such as the setting of TCLK_PERIOD and TMR_ADD, the logic of configuring
+> PPS, etc., so making the driver compatible with V4 Timer will undoubtedly
+> increase the complexity of the code and reduce readability.
+>
+> 3. QorIQ is an expired brand. It is difficult for us to verify whether
+> it works stably on the QorIQ platforms if we refactor the driver, and
+> this will make maintenance difficult, so refactoring the driver obviously
+> does not bring any benefits.
+>
+> Therefore, add this new driver for NETC V4 Timer. Note that the missing
+> features like PEROUT, PPS and EXTTS will be added in subsequent patches.
+>
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+>
+> ---
+what's change in v4?
 
-Thanks for looking into this.
-Just detaching the power domain may break others. I think the better one
-should be:
-
-if (device_get_out_band_wakeup(dev))
-	device_set_out_band_wakeup(&pdev->dev);
-
-Regards,
-Peng
+> v2 changes:
+> 1. Rename netc_timer_get_source_clk() to
+>    netc_timer_get_reference_clk_source() and refactor it
+> 2. Remove the scaled_ppm check in netc_timer_adjfine()
+> 3. Add a comment in netc_timer_cur_time_read()
+> 4. Add linux/bitfield.h to fix the build errors
+> v3 changes:
+> 1. Refactor netc_timer_adjtime() and remove netc_timer_cnt_read()
+> 2. Remove the check of dma_set_mask_and_coherent()
+> 3. Use devm_kzalloc() and pci_ioremap_bar()
+> 4. Move alarm related logic including irq handler to the next patch
+> 5. Improve the commit message
+> 6. Refactor netc_timer_get_reference_clk_source() and remove
+>    clk_prepare_enable()
+> 7. Use FIELD_PREP() helper
+> 8. Rename PTP_1588_CLOCK_NETC to PTP_NETC_V4_TIMER and improve the
+>    help text.
+> 9. Refine netc_timer_adjtime(), change tmr_off to s64 type as we
+>    confirmed TMR_OFF is a signed register.
+> v4 changes:
+> 1. Remove NETC_TMR_PCI_DEVID
+> 2. Fix build warning: "NSEC_PER_SEC << 32" --> "(u64)NSEC_PER_SEC << 32"
+> 3. Remove netc_timer_get_phc_index()
+> 4. Remove phc_index from struct netc_timer
+> 5. Change PTP_NETC_V4_TIMER from bool to tristate
+> 6. Move devm_kzalloc() at the begining of netc_timer_pci_probe()
+> 7. Remove the err log when netc_timer_parse_dt() returns error, instead,
+>    add the err log to netc_timer_get_reference_clk_source()
+> ---
+>  drivers/ptp/Kconfig             |  11 +
+>  drivers/ptp/Makefile            |   1 +
+>  drivers/ptp/ptp_netc.c          | 416 ++++++++++++++++++++++++++++++++
+>  include/linux/fsl/netc_global.h |   3 +-
+>  4 files changed, 430 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/ptp/ptp_netc.c
 >
->diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
->index 694b4a8e4e1d..c2ca81fe5e09 100644
->--- a/drivers/usb/chipidea/core.c
->+++ b/drivers/usb/chipidea/core.c
->@@ -915,6 +915,8 @@ struct platform_device *ci_hdrc_add_device(struct device *dev,
->        if (ret)
->                goto err;
->
->+       dev_pm_domain_detach(&pdev->dev, false);
+> diff --git a/drivers/ptp/Kconfig b/drivers/ptp/Kconfig
+> index 204278eb215e..9256bf2e8ad4 100644
+> --- a/drivers/ptp/Kconfig
+> +++ b/drivers/ptp/Kconfig
+> @@ -252,4 +252,15 @@ config PTP_S390
+>  	  driver provides the raw clock value without the delta to
+>  	  userspace. That way userspace programs like chrony could steer
+>  	  the kernel clock.
+> +
+> +config PTP_NETC_V4_TIMER
+> +	tristate "NXP NETC V4 Timer PTP Driver"
+> +	depends on PTP_1588_CLOCK
+> +	depends on PCI_MSI
+> +	help
+> +	  This driver adds support for using the NXP NETC V4 Timer as a PTP
+> +	  clock, the clock is used by ENETC V4 or NETC V4 Switch for PTP time
+> +	  synchronization. It also supports periodic output signal (e.g. PPS)
+> +	  and external trigger timestamping.
+> +
+>  endmenu
+> diff --git a/drivers/ptp/Makefile b/drivers/ptp/Makefile
+> index 25f846fe48c9..8985d723d29c 100644
+> --- a/drivers/ptp/Makefile
+> +++ b/drivers/ptp/Makefile
+> @@ -23,3 +23,4 @@ obj-$(CONFIG_PTP_1588_CLOCK_VMW)	+= ptp_vmw.o
+>  obj-$(CONFIG_PTP_1588_CLOCK_OCP)	+= ptp_ocp.o
+>  obj-$(CONFIG_PTP_DFL_TOD)		+= ptp_dfl_tod.o
+>  obj-$(CONFIG_PTP_S390)			+= ptp_s390.o
+> +obj-$(CONFIG_PTP_NETC_V4_TIMER)		+= ptp_netc.o
+> diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
+> new file mode 100644
+> index 000000000000..477d922dfbb8
+> --- /dev/null
+> +++ b/drivers/ptp/ptp_netc.c
+> @@ -0,0 +1,416 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+> +/*
+> + * NXP NETC V4 Timer driver
+> + * Copyright 2025 NXP
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/clk.h>
+> +#include <linux/fsl/netc_global.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/ptp_clock_kernel.h>
+> +
+> +#define NETC_TMR_PCI_VENDOR_NXP		0x1131
+> +
+> +#define NETC_TMR_CTRL			0x0080
+> +#define  TMR_CTRL_CK_SEL		GENMASK(1, 0)
+> +#define  TMR_CTRL_TE			BIT(2)
+> +#define  TMR_COMP_MODE			BIT(15)
+> +#define  TMR_CTRL_TCLK_PERIOD		GENMASK(25, 16)
+> +
+> +#define NETC_TMR_CNT_L			0x0098
+> +#define NETC_TMR_CNT_H			0x009c
+> +#define NETC_TMR_ADD			0x00a0
+> +#define NETC_TMR_PRSC			0x00a8
+> +#define NETC_TMR_OFF_L			0x00b0
+> +#define NETC_TMR_OFF_H			0x00b4
+> +
+> +#define NETC_TMR_FIPER_CTRL		0x00dc
+> +#define  FIPER_CTRL_DIS(i)		(BIT(7) << (i) * 8)
+> +#define  FIPER_CTRL_PG(i)		(BIT(6) << (i) * 8)
+> +
+> +#define NETC_TMR_CUR_TIME_L		0x00f0
+> +#define NETC_TMR_CUR_TIME_H		0x00f4
+> +
+> +#define NETC_TMR_REGS_BAR		0
+> +
+> +#define NETC_TMR_FIPER_NUM		3
+> +#define NETC_TMR_DEFAULT_PRSC		2
+> +
+> +/* 1588 timer reference clock source select */
+> +#define NETC_TMR_CCM_TIMER1		0 /* enet_timer1_clk_root, from CCM */
+> +#define NETC_TMR_SYSTEM_CLK		1 /* enet_clk_root/2, from CCM */
+> +#define NETC_TMR_EXT_OSC		2 /* tmr_1588_clk, from IO pins */
+> +
+> +#define NETC_TMR_SYSCLK_333M		333333333U
+> +
+> +struct netc_timer {
+> +	void __iomem *base;
+> +	struct pci_dev *pdev;
+> +	spinlock_t lock; /* Prevent concurrent access to registers */
+> +
+> +	struct ptp_clock *clock;
+> +	struct ptp_clock_info caps;
+> +	u32 clk_select;
+> +	u32 clk_freq;
+> +	u32 oclk_prsc;
+> +	/* High 32-bit is integer part, low 32-bit is fractional part */
+> +	u64 period;
+> +};
+> +
+> +#define netc_timer_rd(p, o)		netc_read((p)->base + (o))
+> +#define netc_timer_wr(p, o, v)		netc_write((p)->base + (o), v)
+> +#define ptp_to_netc_timer(ptp)		container_of((ptp), struct netc_timer, caps)
+> +
+> +static const char *const timer_clk_src[] = {
+> +	"ccm_timer",
+> +	"ext_1588"
+> +};
+> +
+> +static void netc_timer_cnt_write(struct netc_timer *priv, u64 ns)
+> +{
+> +	u32 tmr_cnt_h = upper_32_bits(ns);
+> +	u32 tmr_cnt_l = lower_32_bits(ns);
+> +
+> +	/* Writes to the TMR_CNT_L register copies the written value
+> +	 * into the shadow TMR_CNT_L register. Writes to the TMR_CNT_H
+> +	 * register copies the values written into the shadow TMR_CNT_H
+> +	 * register. Contents of the shadow registers are copied into
+> +	 * the TMR_CNT_L and TMR_CNT_H registers following a write into
+> +	 * the TMR_CNT_H register. So the user must writes to TMR_CNT_L
+> +	 * register first.
 
-I think the 
+You have not answer my question, does other _L _H have the same behavior,
+like below OFF_L and OFF_H?
 
->+
->        return pdev;
+Frank
+> +	 */
+> +	netc_timer_wr(priv, NETC_TMR_CNT_L, tmr_cnt_l);
+> +	netc_timer_wr(priv, NETC_TMR_CNT_H, tmr_cnt_h);
+> +}
+> +
+> +static u64 netc_timer_offset_read(struct netc_timer *priv)
+> +{
+> +	u32 tmr_off_l, tmr_off_h;
+> +	u64 offset;
+> +
+> +	tmr_off_l = netc_timer_rd(priv, NETC_TMR_OFF_L);
+> +	tmr_off_h = netc_timer_rd(priv, NETC_TMR_OFF_H);
+> +	offset = (((u64)tmr_off_h) << 32) | tmr_off_l;
+> +
+> +	return offset;
+> +}
+> +
+> +static void netc_timer_offset_write(struct netc_timer *priv, u64 offset)
+> +{
+> +	u32 tmr_off_h = upper_32_bits(offset);
+> +	u32 tmr_off_l = lower_32_bits(offset);
+> +
+> +	netc_timer_wr(priv, NETC_TMR_OFF_L, tmr_off_l);
+> +	netc_timer_wr(priv, NETC_TMR_OFF_H, tmr_off_h);
+> +}
+> +
+> +static u64 netc_timer_cur_time_read(struct netc_timer *priv)
+> +{
+> +	u32 time_h, time_l;
+> +	u64 ns;
+> +
+> +	/* The user should read NETC_TMR_CUR_TIME_L first to
+> +	 * get correct current time.
+> +	 */
+> +	time_l = netc_timer_rd(priv, NETC_TMR_CUR_TIME_L);
+> +	time_h = netc_timer_rd(priv, NETC_TMR_CUR_TIME_H);
+> +	ns = (u64)time_h << 32 | time_l;
+> +
+> +	return ns;
+> +}
+> +
+> +static void netc_timer_adjust_period(struct netc_timer *priv, u64 period)
+> +{
+> +	u32 fractional_period = lower_32_bits(period);
+> +	u32 integral_period = upper_32_bits(period);
+> +	u32 tmr_ctrl, old_tmr_ctrl;
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&priv->lock, flags);
+> +
+> +	old_tmr_ctrl = netc_timer_rd(priv, NETC_TMR_CTRL);
+> +	tmr_ctrl = u32_replace_bits(old_tmr_ctrl, integral_period,
+> +				    TMR_CTRL_TCLK_PERIOD);
+> +	if (tmr_ctrl != old_tmr_ctrl)
+> +		netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
+> +
+> +	netc_timer_wr(priv, NETC_TMR_ADD, fractional_period);
+> +
+> +	spin_unlock_irqrestore(&priv->lock, flags);
+> +}
+> +
+> +static int netc_timer_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+> +{
+> +	struct netc_timer *priv = ptp_to_netc_timer(ptp);
+> +	u64 new_period;
+> +
+> +	new_period = adjust_by_scaled_ppm(priv->period, scaled_ppm);
+> +	netc_timer_adjust_period(priv, new_period);
+> +
+> +	return 0;
+> +}
+> +
+> +static int netc_timer_adjtime(struct ptp_clock_info *ptp, s64 delta)
+> +{
+> +	struct netc_timer *priv = ptp_to_netc_timer(ptp);
+> +	unsigned long flags;
+> +	s64 tmr_off;
+> +
+> +	spin_lock_irqsave(&priv->lock, flags);
+> +
+> +	/* Adjusting TMROFF instead of TMR_CNT is that the timer
+> +	 * counter keeps increasing during reading and writing
+> +	 * TMR_CNT, which will cause latency.
+> +	 */
+> +	tmr_off = netc_timer_offset_read(priv);
+> +	tmr_off += delta;
+> +	netc_timer_offset_write(priv, tmr_off);
+> +
+> +	spin_unlock_irqrestore(&priv->lock, flags);
+> +
+> +	return 0;
+> +}
+> +
+> +static int netc_timer_gettimex64(struct ptp_clock_info *ptp,
+> +				 struct timespec64 *ts,
+> +				 struct ptp_system_timestamp *sts)
+> +{
+> +	struct netc_timer *priv = ptp_to_netc_timer(ptp);
+> +	unsigned long flags;
+> +	u64 ns;
+> +
+> +	spin_lock_irqsave(&priv->lock, flags);
+> +
+> +	ptp_read_system_prets(sts);
+> +	ns = netc_timer_cur_time_read(priv);
+> +	ptp_read_system_postts(sts);
+> +
+> +	spin_unlock_irqrestore(&priv->lock, flags);
+> +
+> +	*ts = ns_to_timespec64(ns);
+> +
+> +	return 0;
+> +}
+> +
+> +static int netc_timer_settime64(struct ptp_clock_info *ptp,
+> +				const struct timespec64 *ts)
+> +{
+> +	struct netc_timer *priv = ptp_to_netc_timer(ptp);
+> +	u64 ns = timespec64_to_ns(ts);
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&priv->lock, flags);
+> +	netc_timer_offset_write(priv, 0);
+> +	netc_timer_cnt_write(priv, ns);
+> +	spin_unlock_irqrestore(&priv->lock, flags);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct ptp_clock_info netc_timer_ptp_caps = {
+> +	.owner		= THIS_MODULE,
+> +	.name		= "NETC Timer PTP clock",
+> +	.max_adj	= 500000000,
+> +	.n_pins		= 0,
+> +	.adjfine	= netc_timer_adjfine,
+> +	.adjtime	= netc_timer_adjtime,
+> +	.gettimex64	= netc_timer_gettimex64,
+> +	.settime64	= netc_timer_settime64,
+> +};
+> +
+> +static void netc_timer_init(struct netc_timer *priv)
+> +{
+> +	u32 fractional_period = lower_32_bits(priv->period);
+> +	u32 integral_period = upper_32_bits(priv->period);
+> +	u32 tmr_ctrl, fiper_ctrl;
+> +	struct timespec64 now;
+> +	u64 ns;
+> +	int i;
+> +
+> +	/* Software must enable timer first and the clock selected must be
+> +	 * active, otherwise, the registers which are in the timer clock
+> +	 * domain are not accessible.
+> +	 */
+> +	tmr_ctrl = FIELD_PREP(TMR_CTRL_CK_SEL, priv->clk_select) |
+> +		   TMR_CTRL_TE;
+> +	netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
+> +	netc_timer_wr(priv, NETC_TMR_PRSC, priv->oclk_prsc);
+> +
+> +	/* Disable FIPER by default */
+> +	fiper_ctrl = netc_timer_rd(priv, NETC_TMR_FIPER_CTRL);
+> +	for (i = 0; i < NETC_TMR_FIPER_NUM; i++) {
+> +		fiper_ctrl |= FIPER_CTRL_DIS(i);
+> +		fiper_ctrl &= ~FIPER_CTRL_PG(i);
+> +	}
+> +	netc_timer_wr(priv, NETC_TMR_FIPER_CTRL, fiper_ctrl);
+> +
+> +	ktime_get_real_ts64(&now);
+> +	ns = timespec64_to_ns(&now);
+> +	netc_timer_cnt_write(priv, ns);
+> +
+> +	/* Allow atomic writes to TCLK_PERIOD and TMR_ADD, An update to
+> +	 * TCLK_PERIOD does not take effect until TMR_ADD is written.
+> +	 */
+> +	tmr_ctrl |= FIELD_PREP(TMR_CTRL_TCLK_PERIOD, integral_period) |
+> +		    TMR_COMP_MODE;
+> +	netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
+> +	netc_timer_wr(priv, NETC_TMR_ADD, fractional_period);
+> +}
+> +
+> +static int netc_timer_pci_probe(struct pci_dev *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct netc_timer *priv;
+> +	int err;
+> +
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	pcie_flr(pdev);
+> +	err = pci_enable_device_mem(pdev);
+> +	if (err)
+> +		return dev_err_probe(dev, err, "Failed to enable device\n");
+> +
+> +	dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
+> +	err = pci_request_mem_regions(pdev, KBUILD_MODNAME);
+> +	if (err) {
+> +		dev_err(dev, "pci_request_regions() failed, err:%pe\n",
+> +			ERR_PTR(err));
+> +		goto disable_dev;
+> +	}
+> +
+> +	pci_set_master(pdev);
+> +
+> +	priv->pdev = pdev;
+> +	priv->base = pci_ioremap_bar(pdev, NETC_TMR_REGS_BAR);
+> +	if (!priv->base) {
+> +		err = -ENOMEM;
+> +		goto release_mem_regions;
+> +	}
+> +
+> +	pci_set_drvdata(pdev, priv);
+> +
+> +	return 0;
+> +
+> +release_mem_regions:
+> +	pci_release_mem_regions(pdev);
+> +disable_dev:
+> +	pci_disable_device(pdev);
+> +
+> +	return err;
+> +}
+> +
+> +static void netc_timer_pci_remove(struct pci_dev *pdev)
+> +{
+> +	struct netc_timer *priv = pci_get_drvdata(pdev);
+> +
+> +	iounmap(priv->base);
+> +	pci_release_mem_regions(pdev);
+> +	pci_disable_device(pdev);
+> +}
+> +
+> +static int netc_timer_get_reference_clk_source(struct netc_timer *priv)
+> +{
+> +	struct device *dev = &priv->pdev->dev;
+> +	struct clk *clk;
+> +	int i;
+> +
+> +	/* Select NETC system clock as the reference clock by default */
+> +	priv->clk_select = NETC_TMR_SYSTEM_CLK;
+> +	priv->clk_freq = NETC_TMR_SYSCLK_333M;
+> +
+> +	/* Update the clock source of the reference clock if the clock
+> +	 * is specified in DT node.
+> +	 */
+> +	for (i = 0; i < ARRAY_SIZE(timer_clk_src); i++) {
+> +		clk = devm_clk_get_optional_enabled(dev, timer_clk_src[i]);
+> +		if (IS_ERR(clk))
+> +			return dev_err_probe(dev, PTR_ERR(clk),
+> +					     "Failed to enable clock\n");
+> +
+> +		if (clk) {
+> +			priv->clk_freq = clk_get_rate(clk);
+> +			priv->clk_select = i ? NETC_TMR_EXT_OSC :
+> +					       NETC_TMR_CCM_TIMER1;
+> +			break;
+> +		}
+> +	}
+> +
+> +	/* The period is a 64-bit number, the high 32-bit is the integer
+> +	 * part of the period, the low 32-bit is the fractional part of
+> +	 * the period. In order to get the desired 32-bit fixed-point
+> +	 * format, multiply the numerator of the fraction by 2^32.
+> +	 */
+> +	priv->period = div_u64((u64)NSEC_PER_SEC << 32, priv->clk_freq);
+> +
+> +	return 0;
+> +}
+> +
+> +static int netc_timer_parse_dt(struct netc_timer *priv)
+> +{
+> +	return netc_timer_get_reference_clk_source(priv);
+> +}
+> +
+> +static int netc_timer_probe(struct pci_dev *pdev,
+> +			    const struct pci_device_id *id)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct netc_timer *priv;
+> +	int err;
+> +
+> +	err = netc_timer_pci_probe(pdev);
+> +	if (err)
+> +		return err;
+> +
+> +	priv = pci_get_drvdata(pdev);
+> +	err = netc_timer_parse_dt(priv);
+> +	if (err)
+> +		goto timer_pci_remove;
+> +
+> +	priv->caps = netc_timer_ptp_caps;
+> +	priv->oclk_prsc = NETC_TMR_DEFAULT_PRSC;
+> +	spin_lock_init(&priv->lock);
+> +
+> +	netc_timer_init(priv);
+> +	priv->clock = ptp_clock_register(&priv->caps, dev);
+> +	if (IS_ERR(priv->clock)) {
+> +		err = PTR_ERR(priv->clock);
+> +		goto timer_pci_remove;
+> +	}
+> +
+> +	return 0;
+> +
+> +timer_pci_remove:
+> +	netc_timer_pci_remove(pdev);
+> +
+> +	return err;
+> +}
+> +
+> +static void netc_timer_remove(struct pci_dev *pdev)
+> +{
+> +	struct netc_timer *priv = pci_get_drvdata(pdev);
+> +
+> +	ptp_clock_unregister(priv->clock);
+> +	netc_timer_pci_remove(pdev);
+> +}
+> +
+> +static const struct pci_device_id netc_timer_id_table[] = {
+> +	{ PCI_DEVICE(NETC_TMR_PCI_VENDOR_NXP, 0xee02) },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(pci, netc_timer_id_table);
+> +
+> +static struct pci_driver netc_timer_driver = {
+> +	.name = KBUILD_MODNAME,
+> +	.id_table = netc_timer_id_table,
+> +	.probe = netc_timer_probe,
+> +	.remove = netc_timer_remove,
+> +};
+> +module_pci_driver(netc_timer_driver);
+> +
+> +MODULE_DESCRIPTION("NXP NETC Timer PTP Driver");
+> +MODULE_LICENSE("Dual BSD/GPL");
+> diff --git a/include/linux/fsl/netc_global.h b/include/linux/fsl/netc_global.h
+> index fdecca8c90f0..763b38e05d7d 100644
+> --- a/include/linux/fsl/netc_global.h
+> +++ b/include/linux/fsl/netc_global.h
+> @@ -1,10 +1,11 @@
+>  /* SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause) */
+> -/* Copyright 2024 NXP
+> +/* Copyright 2024-2025 NXP
+>   */
+>  #ifndef __NETC_GLOBAL_H
+>  #define __NETC_GLOBAL_H
 >
->Thanks,
->Xu Yang
+>  #include <linux/io.h>
+> +#include <linux/pci.h>
 >
->>  	return 0;
->>  
->>  disable_device:
->> diff --git a/include/linux/usb/chipidea.h b/include/linux/usb/chipidea.h
->> index e17ebeee24e3ecc4b1c2d153d9ea9b656b5a3d35..c6451191d2de68607a9380482701d11f949d0ff7 100644
->> --- a/include/linux/usb/chipidea.h
->> +++ b/include/linux/usb/chipidea.h
->> @@ -66,6 +66,7 @@ struct ci_hdrc_platform_data {
->>  #define CI_HDRC_HAS_PORTSC_PEC_MISSED	BIT(17)
->>  #define CI_HDRC_FORCE_VBUS_ACTIVE_ALWAYS	BIT(18)
->>  #define	CI_HDRC_HAS_SHORT_PKT_LIMIT	BIT(19)
->> +#define	CI_HDRC_OUT_BAND_WAKEUP		BIT(20)
->>  	enum usb_dr_mode	dr_mode;
->>  #define CI_HDRC_CONTROLLER_RESET_EVENT		0
->>  #define CI_HDRC_CONTROLLER_STOPPED_EVENT	1
->> 
->> -- 
->> 2.37.1
->> 
+>  static inline u32 netc_read(void __iomem *reg)
+>  {
+> --
+> 2.34.1
+>
