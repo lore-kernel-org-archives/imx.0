@@ -1,484 +1,147 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013007.outbound.protection.outlook.com [40.107.159.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9047726CE05
-	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 14:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755613742; cv=fail; b=bx5Ddj8u8B3afzNRs3Zc21axrfjJnp0L0PWBdP41Yv8AyYd7UqHr9cnOBm9U2+f6+PRcziB/3PQhXc/7jT55kqtm9/7p3eyyEgfxCfsSbN+xqf1pgugOIczvUUA19U/e8Jl1jHud4/mFMMwvFzoK4SrbWMYQSiXqhfQHip7llsg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755613742; c=relaxed/simple;
-	bh=jDTDmBoQVH3AixRyA5tipv67Z1W66Bz4C/wXvwg86Xw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jUaH4YHLUQJELJmKgN1X2wC1tyHxIKxaHLN9XhDgwFVm/vSG5iLYyI97pLsZk5qWx/juj+rU7Ux9+c5EX9mQ0XXFDXFqs+/3UYybY5HrtLYKxs7R+6hEDtJ/fZUjjZKi3lcQ6S6dHzeEVxnDaB/Qhlmxfq9j59Fr6jxGRI3wLeg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Nxe3PSd9; arc=fail smtp.client-ip=40.107.159.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EE21EC006
+	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 14:30:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755613821; cv=none; b=hcddjGHN1KS1MqRX1q/jcpx+st6gQ+D61t6aEWdnWbYHH8brMgBScfWJrH767pd9YC4MrQpSmiVn7E4oDPOZAnFvPg2WiJgBL3KxakfHKoWk0sM3jz3YIysuh98vxdelxaAWf+LNYLqgmoGGvI3h+0Ff46F/5dF9WVXhrjPUfl0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755613821; c=relaxed/simple;
+	bh=BHb5XD3m30dVa31U4JXmcUnl17RQxKxpugYlmcZkkgQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nsUxdQaUuMadwhJIlpgZBLJnavez4uMUS1A8eZc82vjIn57IFoDt1rAp21hnmK6RqV1Ze2OKRA0HxtAcm86ASnxJh4R0ci2BXHHTCwDd40JFa4NwN+TCu230OFKvz/UADI8DSfB3kON0vSespv9kcOQcCKiB7W7i4BwG/pgsh/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rnlECPix; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Nxe3PSd9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ORvgsebNf6a5Vapy8fCmrylVjuC9q4Fg6yjshLkMSvWj/eFqUCDw44QoYRPEm5quLDQvh88RFKGXkqsj8hmxHRFge8Us4h383xs/fbQ0sPgwhHie8+YH3/zWNiS0UZeBw0S4EIFOh7UzrmOWP1T8EhvpNfb1yMMNRXRBg8XQqsLCnmFlN6rh77tqvX8E/hR2cwmdzxrKlow/a9kVdGiweQK/cPNvGR/sPGZ/s3suqNGlSiRjMYaAq5DT8gXTOK+PWu2DgoeV18EOV5lj5rAE9zgoEX3zsc4UwlX7l0Wqv4NU4E/SZmHLNtbGvAR7kOr9U2z8lkhw2CAm9Ylx+GciDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P8gGtTZsq06Kf4Xdx85ZmhcrVksVXXczfC78+UGRS9M=;
- b=v/BIiXP8Kg6C0+YvUFxzFPWINgdcvp7GePPjmxzgRzbPw8CpTZU3J5qwou8bdRLcYowGHfs7KudlkWlyiBWCZRrG05+gfh90SeMZnEGO1Te+vn8ZSMVg/i+IuXmg2S4JMTC1VE1QvTltuti3TblO9V8phCyZ89TQx1iXbrwiLnU3jzaExEciYwqv2rXpD1k5t/yk2ACgTwsF4bRa+0RsBaV/V/TtY00qcf8OESxpJ43sE5Hpiwhwmc76ubRKIyyIx0fXxvhpqzJKbeoYuT9akDuntxA/4FwSgfSidWftB416ObUmi1FRiFML9dD6fcaQbzjPebA1U8d6CYRO9FCDUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P8gGtTZsq06Kf4Xdx85ZmhcrVksVXXczfC78+UGRS9M=;
- b=Nxe3PSd9P9JFD7bpfcAeoHyZO8QzVYopfqxAAV1bcEUHusJ2+pO6eSkkoPq4xO67nOgz74ZrhmcZ5j/WdIfkoyIJxa1B7f3akSJBAGxl237AVfGBdIIRlNNXWmBjsV9gb3v3Nf6dtVgJs7o4lnX8WTBUeFDPfx/WAznt4pYMLF3/LHeq3JAw82rhC2CPzSifYgaagGNA5Ha5YrQwCmxfDOXdpItSEh6REYuvXtHcyOudsgGHJMcPl9J5vA2etgv9ULGRQj+ajK4ImfHrNp2TuC5XpSIO2mkWXdUsaVa6YTgdAiKQB299LvrUrUXny02CLRfWOpv/DO3kHKhPInQUKQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB9326.eurprd04.prod.outlook.com (2603:10a6:102:2b8::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.12; Tue, 19 Aug
- 2025 14:28:57 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.9052.011; Tue, 19 Aug 2025
- 14:28:57 +0000
-Date: Tue, 19 Aug 2025 10:28:50 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] arm64: dts: freescale: Minor whitespace cleanup
-Message-ID: <aKSKIkUTyc391CYS@lizhi-Precision-Tower-5810>
-References: <20250819131800.86990-3-krzysztof.kozlowski@linaro.org>
- <20250819131800.86990-4-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250819131800.86990-4-krzysztof.kozlowski@linaro.org>
-X-ClientProxiedBy: PH8PR05CA0013.namprd05.prod.outlook.com
- (2603:10b6:510:2cc::13) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rnlECPix"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afcb7a01426so93510066b.2
+        for <imx@lists.linux.dev>; Tue, 19 Aug 2025 07:30:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755613818; x=1756218618; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=hybfEz1ih63ikoPDM1Ar1esaLuaGhNzZj34A72ctWSg=;
+        b=rnlECPix+ibwjGNlBPELjM/nWp/uXgD1KNdT/4xo6jlIYnOsWHCj01YcJ34uaYHJLI
+         psmw6QdYYz9cy/98SURO2Ab4P+Ut64x1tuRlmmSKPUQYPJ0yzkDu5lDJcrk/fLovVNbC
+         xz4V8BG66vGIqmYIFXcDtBRbL3x0wcGfAvhimpoLkX4iQaRjh3fL4ZRtWYQSODoOR+QI
+         AN/eql+0liMdFejUvs1Xu3ddCHGaxAVZW/ST0UIdxsEdkQ87MuvSrOScmBNsNA5tE2rh
+         IyfOcj3ntK9xbwwU+8/7uDHWpLD3TXO8nJPpCG85RF+NwaPikt4Bae/NyVeiC0YiFwZn
+         ZU7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755613818; x=1756218618;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hybfEz1ih63ikoPDM1Ar1esaLuaGhNzZj34A72ctWSg=;
+        b=o/1IgSMQ4Bv6mSi3jJCcpsS52d1BiqRFuOHj4l/YoQF3dy88OUx5xd9CX5dfv45ecm
+         pIGD/x2Ts17WdFUE+RlAlhd6OH8q4Yv8UJzaRXBIKJT4skYvJfEI+hAVWCRmr40is3i/
+         llnc+KlfaaCz7Kt1Dn60rNwxeyGGg1fifHmaH3UCecK7vNPeNWtI257rgo4Sy8HZsvze
+         ht54hTlMA+rQzq1JOAufSycKYSlNOdiPcmBNK2FnLGg3lVMIBApprXYXOEBmi3a2lNef
+         X7+3rftlOdxXyocEwjF56346ahpca+8ZYaMSL4wIqWZ5GkMu57BwIzmZ7AvgUyJdIRk7
+         8L3g==
+X-Forwarded-Encrypted: i=1; AJvYcCVIfQU4ypeN7zJu5ITFnkfvYXEVoFBm0lixWX45yGvUA0u++MGunCvNBxJrHknF3mVlBEc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzyJsgM5rGFFtq1L9VXTvjxeGovxp5x6Y+ahkjXkgrdekflAL76
+	aNJB1kFMK9Aumtr+51ymUiHjkb7XttWmQ4VVhi0K8d5MoaxV6jtWH1twtj5yo3C0Idk=
+X-Gm-Gg: ASbGncsJ18pREE7ur+Wn65kD0StWKfsZS2yupJSN3Y1PtWzOm63Hia8F+qqMhcyc0fl
+	Xyd1egLOIEEcfsTTzWM0lcSVs8/9lf5bANNBTat/Jxwk2Yyb7jIMLholM9mV3+xXZPM1XjKOApU
+	57c8JsRJHjDhGzpMKclHebAT/uE8GwZJNeVDSdLCLzj0NXdOfXOG5cI4jFCz5+wUfGCkLa6RAwr
+	xIHRTJ5jw79awH3vhtqy/YgyvOEPE4HxhqwUGiiD1Jiw0TbDsgrMMhm82P6TDBEMF035sx/Yb18
+	Rk+zLDZ64cJ3suyu7cy1Ksozdx/ZzxxySXYD3qDJJ5wYg1NKJhmYTx6MvbvP5oE3cUoIpC7Ytt2
+	esl7NGwQhuG6ZoU3btI0NzMwPDS4YizMr7yGclCTn8aM=
+X-Google-Smtp-Source: AGHT+IGKPmRaGgK8HMhsDrZZpgNZ2uaUF2T2I9/ycTbkOOLbzeT+kBHZXU5Q5tFNqRz/MeyRprIvDw==
+X-Received: by 2002:a17:907:3d03:b0:ae3:617a:c52 with SMTP id a640c23a62f3a-afddcb63ca0mr111993566b.2.1755613818281;
+        Tue, 19 Aug 2025 07:30:18 -0700 (PDT)
+Received: from [192.168.1.29] ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdce72cbbsm1031580566b.35.2025.08.19.07.30.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Aug 2025 07:30:17 -0700 (PDT)
+Message-ID: <b4d322d8-b55f-4345-8d9b-8efa4e9b76d7@linaro.org>
+Date: Tue, 19 Aug 2025 16:30:16 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB9326:EE_
-X-MS-Office365-Filtering-Correlation-Id: 752085d0-9b37-44bf-537e-08dddf2cbb7b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|7416014|19092799006|1800799024|366016|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?U8vLRI4NKPk2XMdeB5/LR+q8Xor35xbxlyf79qYWpWsdD2tH0E9AX5y/dYh8?=
- =?us-ascii?Q?vZqZ+kYLSZAjJi5RvvUGi2QpHs0ZijCgsvc3a+1w0kswWw15c/yehrUhMm6o?=
- =?us-ascii?Q?Cu0mOKB+JzAhjwLXQywL/Yd6VT6W2wImLWMJdn1U/Le134x/2FERVVJ4/dSg?=
- =?us-ascii?Q?f56zkvkM83OWYn5y5u2ie/7QkKr91i6Jvb42N0rSXtb0IKCVvVdI8UzWs9xa?=
- =?us-ascii?Q?JjuhBCRvnthwmpQrAg1BrDtyvFXvrpM+9Ih43j/HPExEWnoEnQNKLPqImjDb?=
- =?us-ascii?Q?zKOul1qO0RYAIDmhLEBzjgf8GYUlA+nZzAq+Ju4FKY2FlcqKiFXClVf/ZUWn?=
- =?us-ascii?Q?ie7jVpRI2ES9wxPiuxSU5YydCH1bj1yYzQcxVBqGTy6nnb9jEarBFQMMuoWa?=
- =?us-ascii?Q?VxCgiGcdN3lWfmfHHi3ANDPj3e8F1jCroNtwrH82UA4YiFmZI1rKEfQrxFkb?=
- =?us-ascii?Q?mR7o+OohZyrP6gLDTrnqbNh/1LuQvpJ58Ny3mcNeWyOvFtFHG+S1tUdo4iiu?=
- =?us-ascii?Q?hVEmWcbdDWu4Qi3QrHveQ8mS6bfsyrcdjhi8nosnGX4xQ1XR/69ZEZohwVBm?=
- =?us-ascii?Q?YFrk9CCb/ejzMYugZCwzIXTBqSjpdb1f/Gmk8VsLZL4Pe4Agaq/P/phbCbz1?=
- =?us-ascii?Q?wysXh8ys3NaHfqe+MYBL8hUK3JotjNOTjhjYMiFk7pqtGyoPxaXG7+2lsnEu?=
- =?us-ascii?Q?22b1P+5lCOYNZn/sP1ZLAoCRxD9X4pCnRuIsOwIiXalbV69Sd/fBHvAH2eoA?=
- =?us-ascii?Q?jW6FrVKtBAA3AvDWowGzyZHrVobjTWU4pMnlodsRtcr9YTPiPi+ZcaiLWZet?=
- =?us-ascii?Q?xUk85fcuUdyJlRJnU7HBzGEIa8Ki34tPl1qn8NB9772SlMkRaTzZN3aVdcbG?=
- =?us-ascii?Q?vbtZ8f1cwWJPAKgylVbhm9N8UiOtDKnzOZlZ4ityRtqewjaR0uU+QgLbkcoa?=
- =?us-ascii?Q?qn6+cq0SaILTbMBZjRtGA7xIAPlgZO2DRO2C6PggbRP01gHuMKo0/ufrJ2ny?=
- =?us-ascii?Q?E97Z431c6IhKCGa9ADg+625ELaGSo6QzjmiTlBmdo0W/O9+rh5V1ht4s1NdU?=
- =?us-ascii?Q?w8w13m9r3Dy+cgLC960rtdXUMahX3t1/3UwBbr3OMZ3S+zpkZoQUVa7nGnX/?=
- =?us-ascii?Q?zli7oRbXxqEoqML91KMxt9uznIjAMjIrePFBqjd31m6p+iG4idxf+I7z7OXE?=
- =?us-ascii?Q?I20m/ntcdX1GvjEyhXQpBT1kto9WR8Nw75GKXZmIDJgwtDnRDK7aW1MfTYbG?=
- =?us-ascii?Q?C58qwQrSt/aE3Cy7cgvyyiOgcp9a1Sexvax+99dtit9LHVY5kZ01eKd/vPok?=
- =?us-ascii?Q?ymILRq8xZmQkY+xIyZA1EbKCO1WmSmTKkFpmL3cMaR+nkvZvijhwSK6EDA1F?=
- =?us-ascii?Q?MAnKuI4+219c5FLbpzPQOIuTha0EEE0TaYriHDtnkfZTEugZPOU4qGmPPKEq?=
- =?us-ascii?Q?dz3l2l15Awna5zFT333b2V6hqpYnCTbZ7eTEgXyfbkY7ZkfGEm1Csw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(19092799006)(1800799024)(366016)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?R3FD+JTrrLEIN13GYZEYM7ICs698kKOHSoLul2uKoIRKNoKqJZkdU5FrYZ2P?=
- =?us-ascii?Q?kIz+ST+Y2tnyQ5EhHtviA56N/NAbdWLW31fnr34nl6f4gzZnlDPJo87F2uvk?=
- =?us-ascii?Q?b6k3uukiiVj+NYbnI3gSjfmn1MobVk1LSQELFhSL7NBXRt1D3rz0pxIrjrOh?=
- =?us-ascii?Q?vZSgzT4Fi5b96yxmNcOsrqURM+E71dtKZjZ0Q+C3o7IJKy5V7pyb9rR3ioL2?=
- =?us-ascii?Q?rCgH8hmwqiYfyY4VrCx/5o/15JZVZH27s9bTE84N2X6eD/DS5FevIia5aUmU?=
- =?us-ascii?Q?RiZHKDY59L5WFUV+oHFPbVSVAVRISDrPgXkgvWdpQ1ts937QscEVg1DPxsLE?=
- =?us-ascii?Q?RCWe038DW1kdBfWkNBHzk2QUObzOd5bu0T4js1LHNlK685k0BzNTeszFlJTp?=
- =?us-ascii?Q?LmxXrC9izOMGhVAyCt4ybF4CENlmglyg03HkkXJxXOh6GBZCAwfgLP3exv8R?=
- =?us-ascii?Q?7mKE8kQeMEAAIDpbAEiqD7bNjRrERTLuuENLPgBguKUk9gRzg772WB+Avrd+?=
- =?us-ascii?Q?/Zo9zCHIjwop/7l+qgumvxlFclcI4Hje/HtR1k2d/y3vQGyFax9XW1zmmhMa?=
- =?us-ascii?Q?a6kg4ZKMwkNO1k0Xesjym440bqbRgzCypd97CM0fFlolVSDTma52PvU4P3lW?=
- =?us-ascii?Q?Fae7AHbeoPd69f4lasGL7vZK3Bc/s5KOxUb6O/wt4KY6h/1oRd3SyQstomxe?=
- =?us-ascii?Q?B2zMnavFVvsTtO1WwhBZtJTJu8okiQ8kGyG2jkWOjlTcADNHuswOtvR8ANnO?=
- =?us-ascii?Q?zqRwyZ39L3mLAF5QLuEA/Iqdp3GzAmyjatSTlViiQuv2INYtZlJIKLQKUW5t?=
- =?us-ascii?Q?Vb2ya9DhDlelJc6zi2VmOLlOdaU5taxNy9n7yrinONH2Zm2L3kS5JXsTz0SE?=
- =?us-ascii?Q?gsRkLXtCIHR3jG5F9Q77Pz0JnZPD2tQ2rpW680SFBOjo6lIQWzjCRsEWBWwA?=
- =?us-ascii?Q?EmIsiej3auhpmnE8tP0OE1gx/91zqAeVliqUgmYjw+LFhZe1mc4i6GU8vhWW?=
- =?us-ascii?Q?LbOq6hETa0LDoMO+B8t/Aey0FAshmXjR9sfgvgtkwj3PwQ4K12Oira5+pFnr?=
- =?us-ascii?Q?93sBN+RC7n+gus8Bkh1ttqPtWErTwC1/1oZWHpdzrcjeH8cMVyhmGX94w7vG?=
- =?us-ascii?Q?mKift7VBwoea1rY9uBZrIkny5mV9To8H5J1M60LoZVzJm7s7G55idGg8SGMX?=
- =?us-ascii?Q?KY/8fcnn9q7GBBcsMAQc07ON8XdYS98+6Hcvji4QVl5vr9Htz9H3Y6kSPtU/?=
- =?us-ascii?Q?ZFwIZjd6TrdndJ9RiSP/huDh9aO/gqK41JmWHGA4gpGxjFPLJnvKb94a85AS?=
- =?us-ascii?Q?hzEpvyjyL8BdeJb+eXtiyAf/FpHP0zK7+jNKnss0e04YNBA3VOJ4SBmOabD6?=
- =?us-ascii?Q?eXuEh19necy3ON1CETWfHw+rZfIzkI3p+zMOGguZXR3p+gS59vcXY36WkNQ7?=
- =?us-ascii?Q?1q52zfmSToX1JFCQuwuDLuTl+N3UbrGF8A9M0hfLp4kcSb/fGbxYPGBGvwXR?=
- =?us-ascii?Q?Ae3EiSWZxWcP1EIoAq/5IcSny+HPdfAXCdSvY+iGlla8Sz31gldtHEVHCeJ0?=
- =?us-ascii?Q?BXz5n8OVD7YV19XTViY8G+4OrZSs8tPfud9KTRGg?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 752085d0-9b37-44bf-537e-08dddf2cbb7b
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 14:28:57.5363
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YSZObpkVwRiCFpkGn6em2zqCRgwMNdPu2SaB5chu3B7Ya9kdRIETIXum/d3NjCmIqPI4RvNM9tZZHx6k9ilmDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9326
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] arm64: dts: freescale: Minor whitespace cleanup
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20250819131800.86990-3-krzysztof.kozlowski@linaro.org>
+ <20250819131800.86990-4-krzysztof.kozlowski@linaro.org>
+ <aKSKIkUTyc391CYS@lizhi-Precision-Tower-5810>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ 2+47PN9NZAOyb771QoVr8A==
+In-Reply-To: <aKSKIkUTyc391CYS@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 19, 2025 at 03:18:02PM +0200, Krzysztof Kozlowski wrote:
-> The DTS code coding style expects exactly one space around '=' or '{'
-> characters.
->
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
+On 19/08/2025 16:28, Frank Li wrote:
+> On Tue, Aug 19, 2025 at 03:18:02PM +0200, Krzysztof Kozlowski wrote:
+>> The DTS code coding style expects exactly one space around '=' or '{'
+>> characters.
+>>
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> ---
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Please kindly trim the replies from unnecessary context. It makes it
+much easier to find new content.
 
->  .../boot/dts/freescale/imx8-apalis-v1.1.dtsi  |  2 +-
->  arch/arm64/boot/dts/freescale/imx8dxl-evk.dts |  2 +-
->  .../dts/freescale/imx8mm-emtop-baseboard.dts  |  2 +-
->  .../imx8mm-phyboard-polis-peb-av-10.dtso      |  2 +-
->  .../imx8mp-aristainetos3-proton2s.dts         |  2 +-
->  .../imx8mp-aristainetos3a-som-v1.dtsi         |  6 +--
->  arch/arm64/boot/dts/freescale/imx8mp-evk.dts  |  2 +-
->  .../dts/freescale/imx8mp-skov-revb-lt6.dts    |  2 +-
->  arch/arm64/boot/dts/freescale/imx8qm-mek.dts  |  2 +-
->  .../boot/dts/freescale/imx8x-colibri.dtsi     |  4 +-
->  .../boot/dts/freescale/imx93-14x14-evk.dts    |  4 +-
->  .../boot/dts/freescale/imx95-19x19-evk.dts    |  2 +-
->  arch/arm64/boot/dts/freescale/imx95.dtsi      | 40 +++++++++----------
->  13 files changed, 36 insertions(+), 36 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-> index 6f27a9cc2494..86d018f470c1 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-> @@ -256,7 +256,7 @@ touchscreen: touchscreen {
->  };
->
->  &asrc0 {
-> -	fsl,asrc-rate  = <48000>;
-> +	fsl,asrc-rate = <48000>;
->  };
->
->  &adc0 {
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> index b6d64d3906ea..25a77cac6f0b 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> @@ -652,7 +652,7 @@ &pcie0 {
->  	status = "okay";
->  };
->
-> -&pcie0_ep{
-> +&pcie0_ep {
->  	phys = <&hsio_phy 0 PHY_TYPE_PCIE 0>;
->  	phy-names = "pcie-phy";
->  	pinctrl-0 = <&pinctrl_pcieb>;
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts b/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts
-> index 90e638b8e92a..87fe3ebedb8d 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts
-> @@ -333,7 +333,7 @@ MX8MM_IOMUXC_SD1_DATA3_USDHC1_DATA3             0x1d0
->  		>;
->  	};
->
-> -	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp{
-> +	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
->  		fsl,pins = <
->  			MX8MM_IOMUXC_SD1_CLK_USDHC1_CLK         	0x194
->  			MX8MM_IOMUXC_SD1_CMD_USDHC1_CMD         	0x1d4
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
-> index e5ca5a664b61..79e4c3710ac3 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-peb-av-10.dtso
-> @@ -20,7 +20,7 @@ backlight: backlight {
->  		pwms = <&pwm4 0 50000 0>;
->  		power-supply = <&reg_vdd_3v3_s>;
->  		enable-gpios = <&gpio5 1 GPIO_ACTIVE_HIGH>;
-> -		brightness-levels= <0 4 8 16 32 64 128 255>;
-> +		brightness-levels = <0 4 8 16 32 64 128 255>;
->  	};
->
->  	panel {
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dts b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dts
-> index 2a736dbe96b4..58e36de7a2cd 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3-proton2s.dts
-> @@ -36,7 +36,7 @@ &eqos {
->  	max-speed = <100>;
->  };
->
-> -&ecspi1{
-> +&ecspi1 {
->  	pinctrl-0 = <&pinctrl_ecspi1>;
->  	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
->  };
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi
-> index 231e480acfd4..f654d866e58c 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi
-> @@ -167,7 +167,7 @@ &clk {
->  			  <&clk IMX8MP_VIDEO_PLL1>;
->  };
->
-> -&ecspi1{
-> +&ecspi1 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_ecspi1 &pinctrl_ecspi1_cs2>;
->  	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW &gpio1 6 GPIO_ACTIVE_LOW>;
-> @@ -565,7 +565,7 @@ &mipi_dsi {
->  	status = "disabled";
->  };
->
-> -&pcie{
-> +&pcie {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_pcie>;
->  	reset-gpio = <&gpio4 20 GPIO_ACTIVE_LOW>;
-> @@ -574,7 +574,7 @@ &pcie{
->  	status = "okay";
->  };
->
-> -&pcie_phy{
-> +&pcie_phy {
->  	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_INPUT>;
->  	clocks = <&pcie0_refclk>;
->  	clock-names = "ref";
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-> index c0cc5611048e..3730792daf50 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-> @@ -309,7 +309,7 @@ &dsp {
->  };
->
->  &easrc {
-> -	fsl,asrc-rate  = <48000>;
-> +	fsl,asrc-rate = <48000>;
->  	status = "okay";
->  };
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts b/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts
-> index baecf768a2ee..e602c1c96143 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revb-lt6.dts
-> @@ -83,7 +83,7 @@ adc_ts: adc@0 {
->  		compatible = "ti,tsc2046e-adc";
->  		reg = <0>;
->  		pinctrl-0 = <&pinctrl_touch>;
-> -		pinctrl-names ="default";
-> +		pinctrl-names = "default";
->  		spi-max-frequency = <1000000>;
->  		interrupts-extended = <&gpio4 25 IRQ_TYPE_LEVEL_LOW>;
->  		#io-channel-cells = <1>;
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-> index 95523c538135..de971af87f3f 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-> @@ -407,7 +407,7 @@ sound-wm8960 {
->  		audio-cpu = <&sai1>;
->  		audio-codec = <&wm8960>;
->  		hp-det-gpio = <&lsio_gpio0 31 GPIO_ACTIVE_HIGH>;
-> -		audio-routing =	"Headphone Jack", "HP_L",
-> +		audio-routing = "Headphone Jack", "HP_L",
->  				"Headphone Jack", "HP_R",
->  				"Ext Spk", "SPK_LP",
->  				"Ext Spk", "SPK_LN",
-> diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
-> index e602d147e39b..8e9e841cc828 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
-> @@ -462,11 +462,11 @@ &lsio_pwm2 {
->
->  /* VPU Mailboxes */
->  &mu_m0 {
-> -	status="okay";
-> +	status = "okay";
->  };
->
->  &mu1_m0 {
-> -	status="okay";
-> +	status = "okay";
->  };
->
->  /* TODO MIPI CSI */
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts b/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts
-> index c5d86b54ad33..8c5769f90746 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts
-> @@ -276,7 +276,7 @@ buck2: BUCK2 {
->  				regulator-ramp-delay = <3125>;
->  			};
->
-> -			buck4: BUCK4{
-> +			buck4: BUCK4 {
->  				regulator-name = "BUCK4";
->  				regulator-min-microvolt = <1620000>;
->  				regulator-max-microvolt = <3400000>;
-> @@ -284,7 +284,7 @@ buck4: BUCK4{
->  				regulator-always-on;
->  			};
->
-> -			buck5: BUCK5{
-> +			buck5: BUCK5 {
->  				regulator-name = "BUCK5";
->  				regulator-min-microvolt = <1620000>;
->  				regulator-max-microvolt = <3400000>;
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-> index 2f949a0d48d2..0bfa4a8799a5 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-> @@ -671,7 +671,7 @@ &wdog3 {
->  };
->
->  &scmi_iomuxc {
-> -	pinctrl_emdio: emdiogrp{
-> +	pinctrl_emdio: emdiogrp {
->  		fsl,pins = <
->  			IMX95_PAD_ENET1_MDC__NETCMIX_TOP_NETC_MDC		0x50e
->  			IMX95_PAD_ENET1_MDIO__NETCMIX_TOP_NETC_MDIO		0x90e
-> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> index 4ca6a7ea586e..3279a9b9c3c2 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> @@ -260,35 +260,35 @@ clk_ext1: clock-ext1 {
->  	sai1_mclk: clock-sai-mclk1 {
->  		compatible = "fixed-clock";
->  		#clock-cells = <0>;
-> -		clock-frequency= <0>;
-> +		clock-frequency = <0>;
->  		clock-output-names = "sai1_mclk";
->  	};
->
->  	sai2_mclk: clock-sai-mclk2 {
->  		compatible = "fixed-clock";
->  		#clock-cells = <0>;
-> -		clock-frequency= <0>;
-> +		clock-frequency = <0>;
->  		clock-output-names = "sai2_mclk";
->  	};
->
->  	sai3_mclk: clock-sai-mclk3 {
->  		compatible = "fixed-clock";
->  		#clock-cells = <0>;
-> -		clock-frequency= <0>;
-> +		clock-frequency = <0>;
->  		clock-output-names = "sai3_mclk";
->  	};
->
->  	sai4_mclk: clock-sai-mclk4 {
->  		compatible = "fixed-clock";
->  		#clock-cells = <0>;
-> -		clock-frequency= <0>;
-> +		clock-frequency = <0>;
->  		clock-output-names = "sai4_mclk";
->  	};
->
->  	sai5_mclk: clock-sai-mclk5 {
->  		compatible = "fixed-clock";
->  		#clock-cells = <0>;
-> -		clock-frequency= <0>;
-> +		clock-frequency = <0>;
->  		clock-output-names = "sai5_mclk";
->  	};
->
-> @@ -1100,7 +1100,7 @@ usdhc1: mmc@42850000 {
->  				assigned-clock-rates = <400000000>;
->  				bus-width = <8>;
->  				fsl,tuning-start-tap = <1>;
-> -				fsl,tuning-step= <2>;
-> +				fsl,tuning-step = <2>;
->  				status = "disabled";
->  			};
->
-> @@ -1117,7 +1117,7 @@ usdhc2: mmc@42860000 {
->  				assigned-clock-rates = <400000000>;
->  				bus-width = <4>;
->  				fsl,tuning-start-tap = <1>;
-> -				fsl,tuning-step= <2>;
-> +				fsl,tuning-step = <2>;
->  				status = "disabled";
->  			};
->
-> @@ -1134,7 +1134,7 @@ usdhc3: mmc@428b0000 {
->  				assigned-clock-rates = <400000000>;
->  				bus-width = <4>;
->  				fsl,tuning-start-tap = <1>;
-> -				fsl,tuning-step= <2>;
-> +				fsl,tuning-step = <2>;
->  				status = "disabled";
->  			};
->  		};
-> @@ -1685,9 +1685,9 @@ pcie0: pcie@4c300000 {
->  				 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
->  				 <&hsio_blk_ctl 0>;
->  			clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
-> -			assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
-> -					 <&scmi_clk IMX95_CLK_HSIOPLL>,
-> -					 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
-> +			assigned-clocks = <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
-> +					  <&scmi_clk IMX95_CLK_HSIOPLL>,
-> +					  <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
->  			assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
->  			assigned-clock-parents = <0>, <0>,
->  						 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
-> @@ -1719,9 +1719,9 @@ pcie0_ep: pcie-ep@4c300000 {
->  				 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
->  				 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
->  			clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
-> -			assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
-> -					 <&scmi_clk IMX95_CLK_HSIOPLL>,
-> -					 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
-> +			assigned-clocks = <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
-> +					  <&scmi_clk IMX95_CLK_HSIOPLL>,
-> +					  <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
->  			assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
->  			assigned-clock-parents = <0>, <0>,
->  						 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
-> @@ -1759,9 +1759,9 @@ pcie1: pcie@4c380000 {
->  				 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
->  				 <&hsio_blk_ctl 0>;
->  			clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
-> -			assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
-> -					 <&scmi_clk IMX95_CLK_HSIOPLL>,
-> -					 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
-> +			assigned-clocks = <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
-> +					  <&scmi_clk IMX95_CLK_HSIOPLL>,
-> +					  <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
->  			assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
->  			assigned-clock-parents = <0>, <0>,
->  						 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
-> @@ -1795,9 +1795,9 @@ pcie1_ep: pcie-ep@4c380000 {
->  				 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
->  				 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
->  			clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
-> -			assigned-clocks =<&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
-> -					 <&scmi_clk IMX95_CLK_HSIOPLL>,
-> -					 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
-> +			assigned-clocks = <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
-> +					  <&scmi_clk IMX95_CLK_HSIOPLL>,
-> +					  <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
->  			assigned-clock-rates = <3600000000>, <100000000>, <10000000>;
->  			assigned-clock-parents = <0>, <0>,
->  						 <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>;
-> --
-> 2.48.1
->
+Best regards,
+Krzysztof
