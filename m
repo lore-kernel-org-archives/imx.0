@@ -1,47 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429F82BDC2A;
-	Tue, 19 Aug 2025 20:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F232727FE;
+	Tue, 19 Aug 2025 21:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755636234; cv=none; b=Yl2fVogfGJW506w2TR3HxFOgR54b4iLVEY6sjI4xG4fxO+jJxwH7ftH4WzqJ2g0hZBBRkV+bp2TQP69WMkFaNucAWziGKQ1UE/ImwmQTUtWF+WmAfn1u+keNQDy/O+Ak6QUlsPobq9dw5je6SrQMSp0AntkGSaorutzyHF8Z/hI=
+	t=1755637569; cv=none; b=lwZwyYX+zkms09e9QFSgMXFK7lXo92GB3N3b/Wu7eUxgSvVtPsRPaVs6bam/qsjoVy31+jUEYYLxf3IaEWTMm/tKzVSLf0Je7duTjUerTMvucf+3Y4nme2eURjkuZCwhJvNj0OfZP+0awDbsVwqqx4A+drmeyzOk/ia9FcnFLIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755636234; c=relaxed/simple;
-	bh=fJayKz1iUIRUckBQ8dHMrsmPlqiqM0tYfP5QqS+HrQ4=;
+	s=arc-20240116; t=1755637569; c=relaxed/simple;
+	bh=JFybjif0PA4bThPHFS5Y8/tz+/sdsAZ8BMw48NI4TXg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mLwaut7OZ1KhtrJY3J4qzJsdDQCzEEsDKJTcz1mHCzF1MBmTOFyACBgJs73LCFjbAK4NikQC40WaBShfJtYplPjc2yVSSfRK/LsX0GCYgOV0Tc3L56AuI7hXJkT9b+a+DzDuZx5aQcNtXEQG8Z2XyCZ3vs+XW3k/mEzdGldLJu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dVYpq7zQ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=TW4onSCyWFtJ1vspb8aQKQlAzP2xBTeuD6P6FHzfcNh4rciveHRyWJO9UxvhLZol6alm0MnWj8RyywmoHxeId2lVwRZDswWIR5/SzeS+q8EFswIvFqmpDtZ7a2nFSh9dFpW/6TYlVNXAfgEXZm7mr3o+tAcrQsuDsNUa5MDrasc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jlq1Np7Y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dVYpq7zQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34C6C4CEF1;
-	Tue, 19 Aug 2025 20:43:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jlq1Np7Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAF0C4CEF1;
+	Tue, 19 Aug 2025 21:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755636233;
-	bh=fJayKz1iUIRUckBQ8dHMrsmPlqiqM0tYfP5QqS+HrQ4=;
+	s=k20201202; t=1755637568;
+	bh=JFybjif0PA4bThPHFS5Y8/tz+/sdsAZ8BMw48NI4TXg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dVYpq7zQCDzaP5Jey+pgSlIjoyYr1H3CePAcxHgYgeyBAKkcih6y269p9yC7oce1Q
-	 IliUTtK33jrdmwBihvAwLpo3Hr5MN2uTNKzMEwrV/k/L0AOZdONpA/5g6dqtK+S2Wv
-	 2Ur1c9LhbCmXJC6HUQ67Nzrn3lm0E1cxwsT++TBrvA3cM1ChGCCZtAzDgPxp+S8pYp
-	 v3aOkqhmAshLnLDxFsjqDPiN+IIA5W14SCbQyA0fHBaE1OfXiJ5g8s2DmGuG+4PyYC
-	 VgZNiAsEzSNlRY5jC9eVF01DyPT583rius/TToZxQ2sqmfGHk1/wNVCjwORHLVrrkl
-	 VXEiE61UQWYMw==
-Date: Tue, 19 Aug 2025 15:43:52 -0500
+	b=jlq1Np7Ye4pkVq+DvkC30NXf0evlSCoY07mDs0nXTxFZKxgu6ll6ry6C2tIS89ziF
+	 hGFXPz4yDKRzwO+rQz3NiKuhPMDqv7mwsXOIHst8SEqyAnIYhPw7M0wSBfpZOQEASV
+	 U6NXQbcbfXWUJL+pLy+QrC2pUeaLGWJaJA1rmMTu+gJm9tSNVETspHVxmkY4yRRA2n
+	 ICuq08mzgcUFeLzleLmusbO7kKv+eo7ryG+oKIuu/e+waow+7nLTG8LVrWEsgbKhY8
+	 sjx5apfhxFzP8e0K1+BX/mWOuFmYQMLV6gqbwsBcabW6DFBHAKqf83iukI+at43ICI
+	 jiVyp+B4fLPIg==
+Date: Tue, 19 Aug 2025 16:06:07 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: shawnguo@kernel.org, kernel@pengutronix.de, vadim.fedorenko@linux.dev,
-	linux-kernel@vger.kernel.org, richardcochran@gmail.com,
-	s.hauer@pengutronix.de, edumazet@google.com, conor+dt@kernel.org,
-	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
-	davem@davemloft.net, pabeni@redhat.com, andrew+netdev@lunn.ch,
-	festevam@gmail.com, fushi.peng@nxp.com, xiaoning.wang@nxp.com,
-	imx@lists.linux.dev, krzk+dt@kernel.org, Frank.Li@nxp.com,
-	devicetree@vger.kernel.org, netdev@vger.kernel.org, kuba@kernel.org
-Subject: Re: [PATCH v4 net-next 02/15] dt-bindings: net: move ptp-timer
- property to ethernet-controller.yaml
-Message-ID: <175563623228.1286028.14650660035550911275.robh@kernel.org>
-References: <20250819123620.916637-1-wei.fang@nxp.com>
- <20250819123620.916637-3-wei.fang@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org,
+	Christophe Leroy <christophe.leroy@csgroup.eu>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 1/1] dt-bindings: soc: add vf610 reboot syscon
+ controller
+Message-ID: <175563756689.1312101.13704825031197649543.robh@kernel.org>
+References: <20250819165317.3739366-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,40 +46,35 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250819123620.916637-3-wei.fang@nxp.com>
+In-Reply-To: <20250819165317.3739366-1-Frank.Li@nxp.com>
 
 
-On Tue, 19 Aug 2025 20:36:07 +0800, Wei Fang wrote:
-> For some Ethernet controllers, the PTP timer function is not integrated.
-> Instead, the PTP timer is a separate device and provides PTP Hardware
-> Clock (PHC) to the Ethernet controller to use, such as NXP FMan MAC,
-> ENETC, etc. Therefore, a property is needed to indicate this hardware
-> relationship between the Ethernet controller and the PTP timer.
+On Tue, 19 Aug 2025 12:53:16 -0400, Frank Li wrote:
+> Add vf610 reboot controller, which used to reboot whole system. Fix below
+> CHECK_DTB warnings:
 > 
-> Since this use case is also very common, it is better to add a generic
-> property to ethernet-controller.yaml. According to the existing binding
-> docs, there are two good candidates, one is the "ptp-timer" defined in
-> fsl,fman-dtsec.yaml, and the other is the "ptimer-handle" defined in
-> fsl,fman.yaml. From the perspective of the name, the former is more
-> straightforward, so move the "ptp-timer" from fsl,fman-dtsec.yaml to
-> ethernet-controller.yaml.
+> arch/arm/boot/dts/nxp/vf/vf610-bk4.dtb: /soc/bus@40000000/src@4006e000:
+>     failed to match any schema with compatible: ['fsl,vf610-src', 'syscon']
 > 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> IC reference manual calls it as system reset controller(SRC), but it is not
+> module as reset controller, which used to reset individual device. SRC
+> works as reboot controller, which reboots whole system. It provides a
+> syscon interface to syscon-reboot.
 > 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> v3 changes:
-> New patch, add a generic property instead of adding a property to
-> fsl,enetc.yaml
-> v4 changes:
-> 1. Change the title
-> 2. Remove "ptp-timer" from fsl,fman-dtsec.yaml
+> change in v3
+> - add missed 's' at description
+> - remove duplicate / at path
+> 
+> Change in v2
+> - change description to avoid confuse about reset controller.
+> - it is legacy device, more than 10 year. So try keep existed dts as it.
 > ---
->  .../devicetree/bindings/net/ethernet-controller.yaml         | 5 +++++
->  Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml    | 4 ----
->  2 files changed, 5 insertions(+), 4 deletions(-)
+>  .../bindings/soc/fsl/fsl,vf610-src.yaml       | 47 +++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
 > 
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Applied, thanks!
 
