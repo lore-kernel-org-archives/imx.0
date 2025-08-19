@@ -1,59 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD1320DD52;
-	Tue, 19 Aug 2025 14:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E992927D780
+	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 14:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755615226; cv=none; b=Po0DIV7YwsTosjA57HqcgKGhTvvE7hpQ2dN18d9EemJiA3eQVnjWqvZHu37AdeNiNKpIWU8+HhgsVcOOuI5USfNmYlQ7RNVnoAnUiKf06EFHgF3jnZz+OeV8FnPybmDoU1NgAuJfI79P074MbmKizNzwRZKbD3zRpNodD79gK2Q=
+	t=1755615396; cv=none; b=LR0oiNpdpVpA10ED5/gLeC+r4peCH7fuXGwkxZSY/hIoPfxK5OVLQ6ObG1ZfWIRF3a3mUy2eSMYprUHgjoTJgyVhgU9e13Aav6ulx5AiEOpfmSH2tl1RqLI9I5BV7NgXbZlxJ7hQht3sXy9PAXOOExs5lT9c1EWuqosZrizXmWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755615226; c=relaxed/simple;
-	bh=MM80ZxaqQsiGXQatvpSXHvICnwnjA2SwzAXBSeWGhak=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XWDn6MFVMCYObMAyEmLwGvrZR7tNcl8ScMnAI4G3EGwyVDMXaNpiY30urelEfGRzZ14a+u1jx5oplXvw5G+cOeT5eGfAHUY3+hd8VzVv+KyktFtvQKt+fvdnaGe61MBGMLPYwO4FcvzHEHv2oGbKJGB/m+w86GJB3wL0qdYDOA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8zW6+pZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755615396; c=relaxed/simple;
+	bh=SxK/8o8TYuy9PyLKW/7vylp/E9GnFz21EyXlXO2+pIQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DdC/Y/wsRwq9TKX5r/uyc0mb49emTCffblATOGI6VCwBmS6cteQqx23eMAC/JGfTKaNNePdNMIiOwkAGY8zaTOWf+uvvlWuS5ldnbB7LglRtNxCoOwsjcSPACHcA/vWeK6XIdjbENVbnIPuIGM8BVSVJFuR9nFA9kVnQXrM9Jis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PBe97cNI; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8zW6+pZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332ECC4CEF1;
-	Tue, 19 Aug 2025 14:53:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755615226;
-	bh=MM80ZxaqQsiGXQatvpSXHvICnwnjA2SwzAXBSeWGhak=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=U8zW6+pZz/YYcNUOGcvQMif5sUSRe2Em1pFZbDCOg8aZZZul8tSIq58+co2hHiTk6
-	 sC1gYAdF3RnXZ+6jjXyMxwSjTRutswjuLaLJA/IH96c6d5q2G2yiokN4IenFDiMCdT
-	 c8dqua2XHR6Qif9wRpj+kYQ8+82lfYGHAQvjkBY30TYCBFr52dcr0JS1Mewf/e0WXn
-	 a2E/VuhBtg8hf0w1Wunh2/eHpRCubzSqPWSJcP5/I0urSTddVJ/1tlti0XCUQCpjui
-	 axo3Rxsf965I+qggK4lBnjKyYtePX8GtCmMbAduj2QyiLvaHPShS2KSEYBCTj5qZmK
-	 n835AIg6v+bXQ==
-Date: Tue, 19 Aug 2025 07:53:44 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Wei Fang <wei.fang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, richardcochran@gmail.com, claudiu.manoil@nxp.com,
- vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- vadim.fedorenko@linux.dev, shawnguo@kernel.org, s.hauer@pengutronix.de,
- festevam@gmail.com, fushi.peng@nxp.com, devicetree@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- kernel@pengutronix.de
-Subject: Re: [PATCH v4 net-next 03/15] ptp: add helpers to get the phc_index
- by of_node or dev
-Message-ID: <20250819075344.05600b36@kernel.org>
-In-Reply-To: <aKSOCbuKcwRkBe82@lizhi-Precision-Tower-5810>
-References: <20250819123620.916637-1-wei.fang@nxp.com>
-	<20250819123620.916637-4-wei.fang@nxp.com>
-	<aKSOCbuKcwRkBe82@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PBe97cNI"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-323266d6f57so5373680a91.0
+        for <imx@lists.linux.dev>; Tue, 19 Aug 2025 07:56:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755615394; x=1756220194; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SxK/8o8TYuy9PyLKW/7vylp/E9GnFz21EyXlXO2+pIQ=;
+        b=PBe97cNI6rCQkesKwBsHQA+Fl6VyIHUjYFmSn+3JFKHTqvztNd3HUVEocLa6hODHHp
+         qgYFwtc6GYzUW/c+CbTFAIWYqgUE5MSurGhh5UJZvbGywF1WtN17zgpVxn0zaF+c+I0J
+         4tz8Xh8wQ8In44VbhaSxVsPHa0S3gCsqao9BigErm42w/2vZeBrQmBFidPOGVcKCELzS
+         LmWHF4/soV+ciG70LMvtp+C55SoUDX3nDJJv3etxkEh5dM29j5SF7y06Qnrc8aZGvCd2
+         y74fxMZaYPn0DdVW7CXNHsPGBY0pDZDjrtwQwjbmV+Qq9vqGP5s541rEZFMRI/Tdnexc
+         t/wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755615394; x=1756220194;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SxK/8o8TYuy9PyLKW/7vylp/E9GnFz21EyXlXO2+pIQ=;
+        b=fyiXqwQIJ7S6bfZuMJ5USfG9hTJnkaNB1zGJfzjQuCXNItzf1fEDryLc4v9YZ1DX3T
+         Ppre48Pd6RG98lHO9tm1qNFGVR9ygG8GgSr7dsfJC9TURYODE62RrdIjMmd8caYR/r+u
+         fdngQ7EKNUu9XJkCfcmUJrq4BY3QLrg9ElBA5T8dIL3ebyNs0X0wGskwKyB1EfNQVcvR
+         Bs80SLisbmuC2DJDFDAYWQ10a40JCXma+t8yMmVJV18BPe+M0zmoY/VtH91GncJIt3ck
+         9PB2EbHnwl1KMlJTPKpNdNIW8ZjBV9fPTwcN81J0Mnbieag2/J93h0Rqd0MiP5ehWv8n
+         RAQw==
+X-Forwarded-Encrypted: i=1; AJvYcCX2F33XIXcXiJfRW/h4S0RwcwGgkKDEDPkNrgLln/UvNXeDNq3HimvoUjSEjKKJT9H74rI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyySM3Nf9akZikbInyNEVR5BJUpCgSWfjXYuWon0r5OpV2Gi/eP
+	M18MlLioVPs+jiMMWjwtd4XRdJZcKixuJIvMlKfKUNHUaiZMvFH8wPQOYqjMTBiuhJ4dJjy5UrB
+	Ywo18cNCMMZgMJ0L0MC7WWbDqCD6wMFo=
+X-Gm-Gg: ASbGncuwwFsHrBeW0OrRZ7IKD+HmoumVskOkZOHKw3asmAwXUk6WbiYDdg4fy+jAQbm
+	fNtJ8uuJKulUlu+71MmikN6RW5LH5zcLq6caODTqBw+O0BF74ConngSTh6nXMBHwLGnLhC6MOg0
+	0umRHjiGseAyxvVDSlEBBm/wemitW47VihnGA0BkhgJUnmq0+BTSEMmQinYedzozJMTyI294o8W
+	uGVopJVV9XgH+s=
+X-Google-Smtp-Source: AGHT+IEpjmZ8XVkcuZKfCV290Wvmbyt6Tv4cR0Fg/t2sSiijLaZh9EFM7KMO1OHNGRVKT1fRGi1Jac5EIi6kT1CFbYs=
+X-Received: by 2002:a17:90b:37cf:b0:31f:3cfd:d334 with SMTP id
+ 98e67ed59e1d1-32476a1d6d0mr4123679a91.4.1755615394148; Tue, 19 Aug 2025
+ 07:56:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250819131800.86990-3-krzysztof.kozlowski@linaro.org> <20250819131800.86990-4-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250819131800.86990-4-krzysztof.kozlowski@linaro.org>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 19 Aug 2025 17:58:45 +0300
+X-Gm-Features: Ac12FXwVQ1C48dlhpVxnCgyHSgql8U6XY0RR1RKOzS1VLcKJpTIqytqaU50CpkI
+Message-ID: <CAEnQRZD-Ph+HUWp=X50YcaU1LRbz3KxJWopBRt7+3RQnG8oCGA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] arm64: dts: freescale: Minor whitespace cleanup
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 19 Aug 2025 10:45:29 -0400 Frank Li wrote:
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On Tue, Aug 19, 2025 at 4:25=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> The DTS code coding style expects exactly one space around '=3D' or '{'
+> characters.
 
-reminder: please trim your replies
+LGTM,
+
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+
+Do you have a script to find this kind of issues or just manual inspection?
