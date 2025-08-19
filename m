@@ -1,56 +1,56 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDCB25634
-	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 05:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB122036FA
+	for <imx@lists.linux.dev>; Tue, 19 Aug 2025 05:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755582348; cv=none; b=qRpeHhMRmF/RINdTAKIareUuHtrB6okiLDYeLPyYfm9Fn6FkV3kpJ425aN6Ak0ix9/WJYMDmkCCWCmGuhvdCEd7FsIrnZVgkvMFTEIsKoXzD7Njs89WuzwE/lnIExE8VSTdKm6cNcbR/uejsyk+e9cIXiHEJS8jodyNZ5VLAr3o=
+	t=1755582394; cv=none; b=euUzGTFFZJ8mjSiOd929kxdQawXMmu7RxX4GiM6waRNDF95jtU87NGkqc0seQE5hoJwJT0eOILCwfojX0FspNvu03fyjJaCs8oNv2bHr5h2zZMTdV6mrwsKEH9rWBhNBACrLe5hLgsRk9wirdRMRxiGwhRxZXK0jy2Sy+EufNCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755582348; c=relaxed/simple;
-	bh=yKXEHt3a6AvjoI8aEePyaFocSTjZismbWvZ2xxaGB6c=;
+	s=arc-20240116; t=1755582394; c=relaxed/simple;
+	bh=7SE/MWNUIpqD+lQT8z32lhaobqwEGn23lGpJ8NP/BJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nGh8gTy05LTb0QLKbmrh2OWDW9rQaCIwQNK6hz7nTkEgp9UqafPs50ehcP5ZZGV09bb300fUXd54csC230iDz3Ofl01/qD+HLwTpuZUjskWDApgWUUx4yOL2NKG0smOfeysFhg3Il0GtPwrXZ3iESucfRr7eGZ/8yCOHNHq3RMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=bFJkWlin; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Hj+nbwMM reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version:Content-Type; b=Z4nzBLG63DXNUuL2wTp3eBnshy8DWA4FzMmgzX7xRhGICqeThC7uxtNUsOorpjucPIW1Xw6mwiKMS0iPuLueASXdU6MI90XOP76mHyy0+wCYa3F9tQUSludMHsimEqJRTctgt/umTWM0xILMz5TSZmRTmF/YLsH/uDU4X6BNagU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=HiZLJDYb; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=GWS0n9tp reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="bFJkWlin";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Hj+nbwMM"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="HiZLJDYb";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="GWS0n9tp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1755582346; x=1787118346;
+  t=1755582392; x=1787118392;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WsYp5szV0xyNktXKyNpHlGjtRi7D/yzfr9+tShTScEo=;
-  b=bFJkWlinTzfPzsn+cgkH0BcWA0msiywkFN1cOxtYb9xciDWE+xwjQVW3
-   UgNmYp3VYaGkk/uOR/py9nHofcuzpmjpTNBwyOpI05k0ECAtxD9YRikY5
-   /OlJ5XN8kFzF16I7rD1TeeSwvJeqbTw2u7PV2klHZxfFFh/E2rYMUQq6f
-   Bgfsde/TG6YBOSAN0UAplNX7p8DCcmvfJ2NF7clB5ocXLj2hlNVbTVk4K
-   pYh2adid9AaV9QkX2TdjCqNiDRi+K5jfuXMZce3rAt1t9HjybDha+gHfq
-   6ewrqLIOrZWayWftsw/ePCEmEYfrQEBlr0CMGoyCuua3NgVSEnsMEyS+U
-   w==;
-X-CSE-ConnectionGUID: pIE3H7EkSU2KpnRbqdg2tw==
-X-CSE-MsgGUID: gemojgD+SnG0Uwlr5Nqd3g==
+  bh=9nCL3QwkJnOTRYEn9BtTPEX3wFqEJoR9A5wWGYPLvuo=;
+  b=HiZLJDYb4189tZPmLltH5TOIztS/Y55WvchSSRiyms1vSDp4LVLPXw4B
+   tujtoyEJnfnPlAyINgCzbXgCbaUCWosmXLTFjXjqSoJNLRlQdhn7AHWyD
+   1cdE1a+xX//xaxCmzlNkT7CP4Hsl4MO33iAIH4oXYWrO+ipeVW6GmqgMP
+   Wq1KGyIKGl9w3ArnGAl0cfDntdHoY9VGgdtXjWPW+lvI2a7V86BrIxVx7
+   MXbK7MEvGwu8tZa3DX5h+Jl0dutqrxkt1/P1ngQE57IY0H29rcgUrmNrG
+   g66I9wXK7+zDuWgO1Iz19627YZYjn6h00VxxhiNEhi7x9J9RAclsC/fMx
+   A==;
+X-CSE-ConnectionGUID: l/Kii1V6RmSQnbDfi2tSnw==
+X-CSE-MsgGUID: mrA2fpkWSOSZPhAPjUiBAg==
 X-IronPort-AV: E=Sophos;i="6.17,300,1747692000"; 
-   d="scan'208";a="45794411"
+   d="scan'208";a="45794423"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 19 Aug 2025 07:45:33 +0200
-X-CheckPoint: {68A40F7C-3A-9821D066-F5C64F68}
-X-MAIL-CPID: FA256BEDB6305F126D1DB31ADA1A04C9_2
-X-Control-Analysis: str=0001.0A002115.68A40F37.0061,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 07F281632DA;
-	Tue, 19 Aug 2025 07:45:26 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 19 Aug 2025 07:46:30 +0200
+X-CheckPoint: {68A40FB6-D-820F521C-C7779E56}
+X-MAIL-CPID: 8AD0AB6E002B742D345C793ABC4510B1_4
+X-Control-Analysis: str=0001.0A002121.68A40F50.002B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9A990169523;
+	Tue, 19 Aug 2025 07:46:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1755582328;
+	s=dkim; t=1755582385;
 	h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=WsYp5szV0xyNktXKyNpHlGjtRi7D/yzfr9+tShTScEo=;
-	b=Hj+nbwMMZTxOWhrFndQYU6J6dMbz9J1u6gZvEnOsZDeCrIb+B1baPv04ofFHNq/N7Mu3QE
-	2Bwf0kq5lUEfkNNWZ6HAaU9pro+LVN0e4uHZHFl11iRTUYV7XVs8No3AqkyYNy1KmwIjDq
-	0ubTNQiWSi+0RTc3rpZVp6fbrSBJAe5wqu918FhSsb6UeIitZBq9r5gbEeUOaUCCx6ktYc
-	+FatrOfHiLglLTztecpGNemEPGJ3W4VRR2lobspHaWq2QxJeprw0Y+M/bitj29ybf/LnIT
-	W9lmSFHQCqS2dYizdttwa14Txx/yuIFOG560yt2A390b1lcXzhaxjcYFWC0lFg==
+	bh=9nCL3QwkJnOTRYEn9BtTPEX3wFqEJoR9A5wWGYPLvuo=;
+	b=GWS0n9tpmRlEDConDS9JHV39aMOHYjdgWOzGkJgoeMcW8xxrqzl3Pt/FSfG5W2icrP6lxc
+	UDSLzIMuKukSs+CYSBKNXAznLslkfe4ViYTyLJSpbNzOiwkYUOGReTKokTpR1JSFLYGh6B
+	0meTvTDzw0S6x4aHbYeJ52XvVkoow+otUsjmfz/8qps27Ccjenwnzl57KyzYMxm5SlZC3Y
+	QpZKUOWnS9xLd8S1d/keAHb7bZXuLyqGCIwpH4pPunjwe86NK40u4nkNKeiGd/mYgW4Ufk
+	hDIc34aIhIBjnSW/aaor4/Qn2673WtOP30gDrQAI4trlRTOxSCL+wGjWJiANsw==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
@@ -58,12 +58,15 @@ To: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
 Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev,
  Frank Li <Frank.Li@nxp.com>, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 00/15] ARM: dts: clean up most ls1021a CHECK_DTB warning
-Date: Tue, 19 Aug 2025 07:45:26 +0200
-Message-ID: <2800197.mvXUDI8C0e@steina-w>
+Subject:
+ Re: [PATCH 07/15] ARM: dts: ls1021a: Rename esdhc@1560000 to mmc@1560000
+Date: Tue, 19 Aug 2025 07:46:25 +0200
+Message-ID: <5920180.DvuYhMxLoT@steina-w>
 Organization: TQ-Systems GmbH
-In-Reply-To: <20250818-ls1021a_dts_warning-v1-0-7a79b6b4a0e2@nxp.com>
-References: <20250818-ls1021a_dts_warning-v1-0-7a79b6b4a0e2@nxp.com>
+In-Reply-To: <20250818-ls1021a_dts_warning-v1-7-7a79b6b4a0e2@nxp.com>
+References:
+ <20250818-ls1021a_dts_warning-v1-0-7a79b6b4a0e2@nxp.com>
+ <20250818-ls1021a_dts_warning-v1-7-7a79b6b4a0e2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,57 +79,41 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 Hi Frank,
 
-thanks for the series.
-I've already sent a similar one at [1]. But I haven't check which are
-duplicates and which are not.
+Am Montag, 18. August 2025, 22:48:18 CEST schrieb Frank Li:
+> Rename node name esdhc@1560000 to mmc@1560000 to fix below CHECK_DTBS
+> warnings:
+>   arch/arm/boot/dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a-rgb-cdtech-fc21.d=
+tb: esdhc@1560000 (fsl,ls1021a-esdhc): $nodename:0: 'esdhc@1560000' does no=
+t match '^mmc(@.*)?$'
+> 	from schema $id: http://devicetree.org/schemas/mmc/fsl,esdhc.yaml#
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  arch/arm/boot/dts/nxp/ls/ls1021a.dtsi | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/arm/boot/dts/nxp/ls/ls1021a.dtsi b/arch/arm/boot/dts/nx=
+p/ls/ls1021a.dtsi
+> index d095c6107745d75b108a430a5eb15e4f2511e81f..3921d9c4912713064dec1e10a=
+c00cc0916d8974e 100644
+> --- a/arch/arm/boot/dts/nxp/ls/ls1021a.dtsi
+> +++ b/arch/arm/boot/dts/nxp/ls/ls1021a.dtsi
+> @@ -154,7 +154,7 @@ qspi: spi@1550000 {
+>  			status =3D "disabled";
+>  		};
+> =20
+> -		esdhc: esdhc@1560000 {
+> +		esdhc: mmc@1560000 {
+
+As mentioned in the cover letter to [1] this would break some version of
+u-boot because they explicitly reference '/soc/esdhc@1560000' node name.
 
 Best regards
 Alexander
 
-Am Montag, 18. August 2025, 22:48:11 CEST schrieb Frank Li:
-> clean up most ls1021a CHECK_DTB warning.
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Frank Li (15):
->       ARM: dts: ls1021a: swap dma tx/rx channel to fix DTB_CHECK warning
->       ARM: dts: ls1021a: correct node name "timer0" to 'rtc' and remove r=
-eg-names
->       ARM: dts: ls1021a: remove redundant snps,host-vbus-glitches
->       ARM: dts: ls1021a: remove big-endian for memory-controller node
->       ARM: dts: ls1021a: Rename node name nor to flash
->       ARM: dts: ls1021a: Remove redundant #address-cells for queue-group@=
-* of fsl,etsec2
->       ARM: dts: ls1021a: Rename esdhc@1560000 to mmc@1560000
->       ARM: dts: ls1021a: Rename node name power-controler to wakeup-contr=
-oller
->       ARM: dts: ls1021a-qds: Rename node name at45db021d@0 to flash@0
->       ARM: dts: ls1021a: remove big-endian for mmc modes
->       ARM: dts: ls1021a: add fsl,ls1021a-wdt for watchdog node
->       ARM: dts: ls1021a-tsn: Remove redundant #address-cells for ethernet=
-=2Dswitch@1
->       ARM: dts: ls1021a-tqmls1021a-mbls1021a-rgb-cdtech: Remove fallback =
-compatible string edt,edt-ft5x06
->       ARM: dts: ls1021a-qads: Add fallback compatible string mdio-mux
->       ARM: dts: ls1021a-qds: rename 'nor' to 'flash' and 'mdio-mux-emi1' =
-to 'mdio-mux@54'
->=20
->  arch/arm/boot/dts/nxp/ls/ls1021a-qds.dts           |  8 ++---
->  ...1021a-tqmls1021a-mbls1021a-rgb-cdtech-dc44.dtso |  2 +-
->  ...1021a-tqmls1021a-mbls1021a-rgb-cdtech-fc21.dtso |  2 +-
->  arch/arm/boot/dts/nxp/ls/ls1021a-tsn.dts           |  2 --
->  arch/arm/boot/dts/nxp/ls/ls1021a-twr.dts           |  2 +-
->  arch/arm/boot/dts/nxp/ls/ls1021a.dtsi              | 38 ++++++----------=
-=2D-----
->  6 files changed, 17 insertions(+), 37 deletions(-)
-> ---
-> base-commit: 3ede6e44fad31f1c80dd01188683f0caa0f19247
-> change-id: 20250818-ls1021a_dts_warning-fff933bd83da
->=20
-> Best regards,
-> --
-> Frank Li <Frank.Li@nxp.com>
->=20
+>  			compatible =3D "fsl,ls1021a-esdhc", "fsl,esdhc";
+>  			reg =3D <0x0 0x1560000 0x0 0x10000>;
+>  			interrupts =3D <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
 >=20
 >=20
 
