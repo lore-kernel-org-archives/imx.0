@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9745F25E814;
-	Tue, 19 Aug 2025 13:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BDE343215;
+	Tue, 19 Aug 2025 13:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755611911; cv=none; b=XZ0QyEyw1TeCju804kJyGni+nSU2z0UEZxyCZoSdfJneinpyRgQK+zZgAGVgfjZ6WAqN0yyZAWiWzybVaIJQnZ+/mPDvJZae+FFFj3ey3w6A4Tnc2S6R1IKTr2ptqFWnzuZa4pWtqvLaRvXuyQxbQt75oK7zwVqFE7eprLRMP2k=
+	t=1755611932; cv=none; b=Iu3rtEqOKAwO2WKVx+ASalO6JzCY5Y59BTKYv4PwW9ytDt5e3OKPBjaL1Dat9st7HI9s+eVXNUOpZdWMIne7Vohyk82AU3kwWjPEH/OFQ4kjw9gdXrpBVe3bzUiKkN4h97CwSnQ2gzlR0KSA4ZsvR77ms2P8HbcJQDJGZ7d9ovs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755611911; c=relaxed/simple;
-	bh=VfNREE1NRpLohbGRAU4pi3ndwFMWBBmz2ZzA0sg2qiY=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=m7luD7eXZHqe+12BiDjMLBLbemHcimwQ1BAtzVy3T0SfLuT9/ZI5J/TrWTvlyi6eW7izn2sB4jpwL6kLU66WggC2tWOB4P8o/LqRP6jI9GZ2SITkxC40lHy0cCNWSo5g5GCkMkQ0Vkthjo0l3aBLyhIavx0pZgXsg+OFy6vlhik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LbP2odHc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755611932; c=relaxed/simple;
+	bh=lGALG2x3T//Hs0NSa99qVBWekgVznZxRh9n5n0vE+ME=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=FtO6go3KvIyR12bE70Ju8IWZcPT31Z29DfVa+K/wkKip+HCtkgkhJHEVmBTCWdTWcN0cQ6xrLxlF8a4i7TryNRs7z7qSaaRBGICJmNwZO963oP99CCQ3V82QHzx8Hq9VcS9w9M6nmRaM4vNI5Xk4G3UQJdltr42Q+YYB8FXcQXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i3nxfmbW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LbP2odHc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9844C4CEF1;
-	Tue, 19 Aug 2025 13:58:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i3nxfmbW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4CAC4CEF1;
+	Tue, 19 Aug 2025 13:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755611911;
-	bh=VfNREE1NRpLohbGRAU4pi3ndwFMWBBmz2ZzA0sg2qiY=;
+	s=k20201202; t=1755611932;
+	bh=lGALG2x3T//Hs0NSa99qVBWekgVznZxRh9n5n0vE+ME=;
 	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=LbP2odHcaQtLA+mKrpqzrHaSnPgZ9K5DfdbCkbBIfuO+XH0YWQD6ef3Hmn78pyEiQ
-	 R1VSgY4WPySRI1pZLKRDF57zx17P5KaMUCqizWKDdSfmaCGF1/J2bSf1OQsXktaOzD
-	 gDlRnrD6HJ+QRfuVuQSFFG/OVB6vtIkVJmQw+GtgvZ9Vz+fh+WdOBp5SRVJJRXPJgB
-	 Z+CyqfFZEVVNzCRVMtgTl/n4vLewOYM0GKk5UhsHfwUf127ZMYHJK74cCsqah8/oBW
-	 AR9YG5VWp2BA4QL84FuP7ZeiQbqvN8+Oz9ipcx6pahQs8FDJKnz21iOfceHsbPvAnE
-	 k/gHjXwYFmcHQ==
-Message-ID: <1950cb116ce138970b79559c7b078c09@kernel.org>
-Date: Tue, 19 Aug 2025 13:58:28 +0000
+	b=i3nxfmbWhXRRp9ugYwK2TdPPUdQf1WlzVb4O/5XokxjtTbmAJADofa8z96YOVWwxD
+	 SYffRWoG7t6brh3eLfyZ+AGacdnSyolOLCvlE2dj60GHnbQMOfhg1pJp+Wsi1NAVDm
+	 WeaNzcJIQRbHGz5DAE6HQGPEFvPmA1tOlaAnrAEntx3Tuvg40MBXDr/xlglec8sfPF
+	 /XH80kCaKV7PNziV3N657nm6TldxWyjhjZh/xeoOAAI8ocjagPwi19/s+BLSVZzZa+
+	 +E29gJTNyCbIbpnxirGn10W3/7dhW6vYTygKtvbvuX7k7pjLo4Nex4h1SIHktERV9u
+	 ngB8pcTA0HvCg==
+Message-ID: <078a95b5a85cbf73bcbeb9e110b2bac2@kernel.org>
+Date: Tue, 19 Aug 2025 13:58:49 +0000
 From: "Maxime Ripard" <mripard@kernel.org>
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v2 8/9] drm/bridge: put the bridge returned by
- drm_bridge_get_next_bridge()
-In-Reply-To: <20250801-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v2-8-888912b0be13@bootlin.com>
-References: <20250801-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v2-8-888912b0be13@bootlin.com>
+Subject: Re: [PATCH v2 9/9] drm/imx: parallel-display: put the bridge
+ returned by drm_bridge_get_next_bridge()
+In-Reply-To: <20250801-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v2-9-888912b0be13@bootlin.com>
+References: <20250801-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v2-9-888912b0be13@bootlin.com>
 Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Andrzej
  Hajda" <andrzej.hajda@intel.com>, "David Airlie" <airlied@gmail.com>, "Fabio
  Estevam" <festevam@gmail.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Jernej
@@ -51,7 +51,7 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-On Fri, 1 Aug 2025 19:05:30 +0200, Luca Ceresoli wrote:
+On Fri, 1 Aug 2025 19:05:31 +0200, Luca Ceresoli wrote:
 > The bridge returned by drm_bridge_get_next_bridge() is refcounted. Put it
 > when done. We need to ensure it is not put before either next_bridge or
 > next_bridge_state is in use, thus for simplicity use a cleanup action.
