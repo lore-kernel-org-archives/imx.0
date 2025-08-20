@@ -1,178 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B29E334377;
-	Wed, 20 Aug 2025 21:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635E61DDA18;
+	Wed, 20 Aug 2025 22:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755726022; cv=none; b=lA9KfeFs6KrJuEFYEdMdTGlzYjQV6m91JD7gVdUh+Tcuf/luto5XOgRzPwKO63joZBSZtmZpdvqf/mPOvisx66Cbh8RJF3bHua4KaxDH+Ej95CzNDP8x2RvgfnQfQHkapGWTckMt3T3Ca5xvyN27FQgLmHa+cmMEV2lP+/gFvQc=
+	t=1755728260; cv=none; b=lenc5tJRsG+UlXp8cjKoDmw3i1uJd8tduBrV2QO3yPwNy3NS9RJjQ/jcvp0PAJNVttVtTAsgAYeUOXgikHU6G424ufB80LhqiHZDeIEc/L7QG5tpy6MEcHXPidjXYgLvh4mFxQxdLa9CSOa2M9b0Sa/FvQ2wczkRISk8yZDF+1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755726022; c=relaxed/simple;
-	bh=UlCRTwSLmwKQr0YwNHerwqMBRt2+8fBf8IqS9jRLz44=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Kg8h3QuFfbgv0TpZGuTMGpXtGwD8nnnfJMOqi5jfU8RZ7NgbnqO8TR4UIBwvgmTcfgSK8oOraKEC+/GbU83MC66itMg8y3pWPosHpF4eHpifjfo8jeF8NSadN5lUnqsFZG+cHxrNJXTFjXxArhPJZmUl/aZQYZyUZDuIDjmJ5po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xm9b3MOY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755728260; c=relaxed/simple;
+	bh=eDu8QR5kIr07udxsRmoFGBACAqMZM7dZomdO2wR2NFw=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=js8kGisaOEnKd8+jex+aFGfzoBrzvtpZW3tJCJnVEmmv3AzM8rix+Xw5/7EJNM8ee6gfr8ZSnGLC0bgICmhARpdxZC9xw8bP99oScy9CLGNlBN0vXtNP6YlKU6zgaNr++qkjkYhGIH1TkojKyzlsxv+qK+RvfCsqZYFCML5J1BI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=deFp5pNH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xm9b3MOY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1341C4CEE7;
-	Wed, 20 Aug 2025 21:40:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="deFp5pNH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F05CC4CEE7;
+	Wed, 20 Aug 2025 22:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755726022;
-	bh=UlCRTwSLmwKQr0YwNHerwqMBRt2+8fBf8IqS9jRLz44=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Xm9b3MOYmGZwfe/+T/RE9l64lloLOkoZx4nC3P5mVkGeAyouqtTe07TlLenc2grNH
-	 GAH3FQ72DqGjgf97K/XaK9xd5osInhycYx4/0A4F9syrFP/fqwjH1MVH97lglLbhbQ
-	 kirx7HmYDlQWU36UEMXE5NQ5KNCTVZWf7FFQC2S12ADoFnPIQtM0R6Wf8ov+nGAEUC
-	 jrexAPMNYPyOxPz0AMeXP/y7feS//+sKIiLIfP+ILO7RHefF89hr1RjuqNHNNNqpgt
-	 zUTOgSKRzPPIhaUD0OZHrPa3tPFkjh6wUNI8FBNAAWjvcNaEs+MwUeVUECAQuRRFSX
-	 pUbopEAiqGjQg==
-Date: Wed, 20 Aug 2025 16:40:20 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>, l.stach@pengutronix.de,
-	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
-	robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] PCI: imx6: Add a method to handle CLKREQ#
- override active low
-Message-ID: <20250820214020.GA641554@bhelgaas>
+	s=k20201202; t=1755728260;
+	bh=eDu8QR5kIr07udxsRmoFGBACAqMZM7dZomdO2wR2NFw=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=deFp5pNHdK9Cn8YK/W/UKn93sLyXcRafl7AIdHn4ca4HS+VyBIBvZhfkU3SqZkqOO
+	 Pd+zHaWlLPUw9NZEkK4FY+bWmjAHkgnjdA5JAvuXVx1pH5myfGRuY0j0skW6VlEXxI
+	 jxb/FIxaydITafislJLf9s9gY+BR4oKz8S2VhPZV0/4uuYIy34UFhnOYig6d7eXaZH
+	 7J92rop1Ic+bftYa4Dk3KrEIO30AfYuVx3el0WAoMB189W8Ie5xcPZTEvKfjUpOXnj
+	 MKTiK92pD2q/dfi1duF3KTjvCWSK8t3AJKSMHSwWvL76SzEIOE/fiyKLJ47YDlXWFL
+	 KansHdGD6Jxog==
+From: Mark Brown <broonie@kernel.org>
+To: Nick Li <nick.li@foursemi.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+ Andrew Davis <afd@ti.com>, Chen Ni <nichen@iscas.ac.cn>, 
+ Linus Walleij <linus.walleij@linaro.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, Qianfeng Rong <rongqianfeng@vivo.com>
+In-Reply-To: <20250820123423.470486-1-rongqianfeng@vivo.com>
+References: <20250820123423.470486-1-rongqianfeng@vivo.com>
+Subject: Re: [PATCH 0/3] ASoC: Use kcalloc() instead of kzalloc()
+Message-Id: <175572825608.300376.7595587079585456413.b4-ty@kernel.org>
+Date: Wed, 20 Aug 2025 23:17:36 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aKY35MOg7reH1Fhh@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
 
-On Wed, Aug 20, 2025 at 05:02:28PM -0400, Frank Li wrote:
-> On Wed, Aug 20, 2025 at 03:35:36PM -0500, Bjorn Helgaas wrote:
-> > On Wed, Aug 20, 2025 at 04:10:48PM +0800, Richard Zhu wrote:
-> > > The CLKREQ# is an open drain, active low signal that is driven low by
-> > > the card to request reference clock.
-> > >
-> > > Since the reference clock may be required by i.MX PCIe host too. To make
-> > > sure this clock is available even when the CLKREQ# isn't driven low by
-> > > the card(e.x no card connected), force CLKREQ# override active low for
-> > > i.MX PCIe host during initialization.
-
-What is the effect of refclk not being available when no card is
-connected?  I guess something is wrong with the i.MX PCIe host?  Maybe
-register accesses don't work?  Something else?
-
-How would a user know that something is wrong when the slot is empty?
-Presumably this patch fixes whatever is wrong in that case.
-
-> > > The CLKREQ# override can be cleared safely when supports-clkreq is
-> > > present and PCIe link is up later. Because the CLKREQ# would be driven
-> > > low by the card in this case.
-> > >
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-imx6.c | 35 +++++++++++++++++++++++++++
-> > >  1 file changed, 35 insertions(+)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> > > index 80e48746bbaf6..a73632b47e2d3 100644
-> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > @@ -52,6 +52,8 @@
-> > >  #define IMX95_PCIE_REF_CLKEN			BIT(23)
-> > >  #define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
-> > >  #define IMX95_PCIE_SS_RW_REG_1			0xf4
-> > > +#define IMX95_PCIE_CLKREQ_OVERRIDE_EN		BIT(8)
-> > > +#define IMX95_PCIE_CLKREQ_OVERRIDE_VAL		BIT(9)
-> > >  #define IMX95_PCIE_SYS_AUX_PWR_DET		BIT(31)
-> > >
-> > >  #define IMX95_PE0_GEN_CTRL_1			0x1050
-> > > @@ -136,6 +138,7 @@ struct imx_pcie_drvdata {
-> > >  	int (*enable_ref_clk)(struct imx_pcie *pcie, bool enable);
-> > >  	int (*core_reset)(struct imx_pcie *pcie, bool assert);
-> > >  	int (*wait_pll_lock)(struct imx_pcie *pcie);
-> > > +	void (*clr_clkreq_override)(struct imx_pcie *pcie);
-> > >  	const struct dw_pcie_host_ops *ops;
-> > >  };
-> > >
-> > > @@ -149,6 +152,7 @@ struct imx_pcie {
-> > >  	struct gpio_desc	*reset_gpiod;
-> > >  	struct clk_bulk_data	*clks;
-> > >  	int			num_clks;
-> > > +	bool			supports_clkreq;
-> > >  	struct regmap		*iomuxc_gpr;
-> > >  	u16			msi_ctrl;
-> > >  	u32			controller_id;
-> > > @@ -267,6 +271,13 @@ static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
-> > >  			   IMX95_PCIE_REF_CLKEN,
-> > >  			   IMX95_PCIE_REF_CLKEN);
-> > >
-> > > +	/* Force CLKREQ# low by override */
-> > > +	regmap_update_bits(imx_pcie->iomuxc_gpr,
-> > > +			   IMX95_PCIE_SS_RW_REG_1,
-> > > +			   IMX95_PCIE_CLKREQ_OVERRIDE_EN |
-> > > +			   IMX95_PCIE_CLKREQ_OVERRIDE_VAL,
-> > > +			   IMX95_PCIE_CLKREQ_OVERRIDE_EN |
-> > > +			   IMX95_PCIE_CLKREQ_OVERRIDE_VAL);
-> > >  	return 0;
-> > >  }
-> > >
-> > > @@ -1298,6 +1309,18 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
-> > >  		regulator_disable(imx_pcie->vpcie);
-> > >  }
-> > >
-> > > +static void imx8mm_pcie_clr_clkreq_override(struct imx_pcie *imx_pcie)
-> > > +{
-> > > +	imx8mm_pcie_enable_ref_clk(imx_pcie, false);
-> > > +}
-> > > +
-> > > +static void imx95_pcie_clr_clkreq_override(struct imx_pcie *imx_pcie)
-> > > +{
-> > > +	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
-> > > +			   IMX95_PCIE_CLKREQ_OVERRIDE_EN |
-> > > +			   IMX95_PCIE_CLKREQ_OVERRIDE_VAL, 0);
-> > > +}
-> > > +
-> > >  static void imx_pcie_host_post_init(struct dw_pcie_rp *pp)
-> > >  {
-> > >  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> > > @@ -1322,6 +1345,12 @@ static void imx_pcie_host_post_init(struct dw_pcie_rp *pp)
-> > >  		dw_pcie_writel_dbi(pci, GEN3_RELATED_OFF, val);
-> > >  		dw_pcie_dbi_ro_wr_dis(pci);
-> > >  	}
-> > > +
-> > > +	/* Clear CLKREQ# override if supports_clkreq is true and link is up */
-> > > +	if (dw_pcie_link_up(pci) && imx_pcie->supports_clkreq) {
-> > > +		if (imx_pcie->drvdata->clr_clkreq_override)
-> > > +			imx_pcie->drvdata->clr_clkreq_override(imx_pcie);
-> >
-> > It seems racy to clear the override when the link is up.
-> >
-> > Since it sounds like the i.MX host requires refclock all the time, why
-> > not keep the override permanently?
+On Wed, 20 Aug 2025 20:34:17 +0800, Qianfeng Rong wrote:
+> Replace devm_kzalloc() with devm_kcalloc() in sound/soc.  As noted in the
+> kernel documentation [1], open-coded multiplication in allocator arguments
+> is discouraged because it can lead to integer overflow.
 > 
-> It will Lost l1ss support if enable override permanetly. I think other
-> platform have similar issues (at least dwc controller). Most platform use
-> m.2 socket, which pull down clk_req by EP side devices.
+> Using devm_kcalloc() provides built-in overflow protection, making the
+> memory allocation safer when calculating the allocation size compared
+> to explicit multiplication.
 > 
-> Only standard PCIe slots,  which clkreq have not connect by EP devices
-> because stardard PCIe slots add #clkreq signal happen recent years (maybe
-> after miniPCIe slot spec). Some old PCIe devices have not connect it.
-> 
-> Even latest PCIe devices, I saw have jumper in PCIe card to controller
-> #clkreq.
-> 
-> > Obviously it must be ok to keep the override for a while, because
-> > there is some interval between the link coming up and the call of
-> > .clr_clkreq_override().
-> >
-> > Would something bad happen if we *never* called
-> > .clr_clkreq_override()?
-> 
-> clock will always running, lost L1SS power save feature.
+> [...]
 
-Thanks!  Let's include a little of this back story in the next rev of
-the commit log and the comment near the .clr_clkreq_override() call.
+Applied to
 
-Bjorn
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/3] ASoC: codecs: Use kcalloc() instead of kzalloc()
+      commit: 45441b933cdfb7a018674049f269d7a1bc1688df
+[2/3] ASoC: fsl: Use kcalloc() instead of kzalloc()
+      commit: 3b6f4bd6cda2797b0d999a129376c112d41604f4
+[3/3] ASoC: test-component: Use kcalloc() instead of kzalloc()
+      commit: 96bcb34df55f7fee99795127c796315950c94fed
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
