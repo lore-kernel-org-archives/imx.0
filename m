@@ -1,126 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461CF2820CB;
-	Wed, 20 Aug 2025 18:57:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E389F13D8B1;
+	Wed, 20 Aug 2025 19:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755716225; cv=none; b=G4KLkcVjNS5Wr/AvCCIz6jLyhPFRQTpfthkUuc5KOIpF+ehI6KIzfbjh/2u9+uI0JVa7C302n+2/wukBuxq3j8fmVqljWhG2CKvAZX1YlA/anIr5fhcQi7hxhTjjW1h3xpSobGV6asETjyIH8cT1pFDZLqy26YAo6rF/n7y6jlw=
+	t=1755717439; cv=none; b=rGTjTWrZj3xJWJu8geWjb9qoM+mFbF4x+8NYWDOYR4nuy8SEkiJ8GzpAToWBWcKbxJt73tPc68ZjO+eC1lyHt+Z7uxIMYRdNENOkodNHa5RgtAHaZR/Ee+Fm/WjhC0LPtGXesoezQETTFHGxpPcc9ZfqllkWazmfDcqyzEP6B4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755716225; c=relaxed/simple;
-	bh=xmH9ICu1+8c4k7z7aUw6QdF70bVyfaZxpW8X5Hd9OUE=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=ZK8ll2Akp2mlMIB8imvPmRlFbbx9NF9CNSYBOuv7TexMBA4FAJzytx8GnDxAQ2FTQaOE5hI0okBt2cy46vFhOx0kqj82+0vECzSxyddlYOHMbV/eHgE/c/ZxqRBwt8p0gXGCDQbI1uWnOveiBPcEo1VGdpcRf7BHfjRuSDOvFcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fmbgBOMB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755717439; c=relaxed/simple;
+	bh=0/A8H1icU7FHYjzi9o9I32XxVYe3rNCvwIhcn7eOUVA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cXjeLXSSUKooD9zm3axA5mSDfFUcX6Ge9mBvgBR8LK0cjlWFpJudyoGN1eTBcZmS8uZWcx3WJXxf8BBeM4yBGUm7RHr4Ky++rdEEJvjeqn6YFT4xYLoWovugPriIoPCtoBjYomJE96fMuZYVmxwonyRBDzInUOmHRepNtDZd4Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=lq6YGCZq; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fmbgBOMB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5408C4CEE7;
-	Wed, 20 Aug 2025 18:57:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755716224;
-	bh=xmH9ICu1+8c4k7z7aUw6QdF70bVyfaZxpW8X5Hd9OUE=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=fmbgBOMBWKy0U0kdm4mDpEMvbd+C/tGwAnJlGjtkDieL7UKWbPiedmQjJpuc8/Eab
-	 0VzrsTdTJ/GY8KDcXXT1rybQJgjrb9Grg+wpI8WORFyMVpB9t98nKMz8WVcr16nrL3
-	 VjjSTK+Wz8gxdcIC9fz9HHb6OsboihJk9HE4Gd36lDc1zRe9tHSZTW8UxaP1TFg/Xb
-	 ORjkHSvsThBPlPX4/ql1dvNhUfXe3FR+XqNpcb2Nuh1OBIRQxA2enGdGN58Kcb0r4+
-	 UyA2x8cG2Mzx7x8tPw4+vPDdlmhRQAmaQKRJIY7OsBIEIliTBDwKDBv0gXt1XaRR7l
-	 BVPYAFSEb43Tg==
-Date: Wed, 20 Aug 2025 13:57:03 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="lq6YGCZq"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 78A056A6;
+	Wed, 20 Aug 2025 21:16:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755717376;
+	bh=0/A8H1icU7FHYjzi9o9I32XxVYe3rNCvwIhcn7eOUVA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lq6YGCZqiJjWB+4roTs5N/By7nrBAZ5l0TnHKytw1JW6ZWhR9Vu5xdjZ3rqh9JNnm
+	 9K85WLCDazpXukhKoWkJ+oM0FgLiyi0iLEuR1Mw4GwlrCrRUMogeVMr7nDDHGaIYbM
+	 z4KdIfWJx0BtWK137W5ByY775Z0y6gM/41I0Ulmg=
+Date: Wed, 20 Aug 2025 22:16:51 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Alice Yuan <alice.yuan@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	linux-staging@lists.linux.dev
+Subject: Re: [PATCH v2 04/32] media: v4l2-common: Add helper function
+ media_bus_fmt_to_csi2_dt()
+Message-ID: <20250820191651.GB1722@pendragon.ideasonboard.com>
+References: <20250808-95_cam-v2-0-4b29fa6919a7@nxp.com>
+ <20250808-95_cam-v2-4-4b29fa6919a7@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-To: Frank Li <Frank.Li@nxp.com>
-In-Reply-To: <20250820-ls1021a_dts_warning-v2-0-2e39648a32b7@nxp.com>
-References: <20250820-ls1021a_dts_warning-v2-0-2e39648a32b7@nxp.com>
-Message-Id: <175571287545.265879.1160274338030207211.robh@kernel.org>
-Subject: Re: [PATCH v2 0/7] ARM: dts: clean up most ls1021a CHECK_DTB
- warning
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250808-95_cam-v2-4-4b29fa6919a7@nxp.com>
 
+Hi Frank,
 
-On Wed, 20 Aug 2025 12:36:50 -0400, Frank Li wrote:
-> clean up most ls1021a CHECK_DTB warning.
+Thank you for the patch.
+
+On Fri, Aug 08, 2025 at 06:39:07PM -0400, Frank Li wrote:
+> CSI2 data type is defined by MIPI Camera Serial Interface 2 Spec Ver4.1.
+> See section 9.4.
 > 
-> Old uboot check esdhc@1560000. The new uboot already switch to check both
-> esdhc@1560000 and mmc@1560000. So we can rename it now.
+> Add helper function media_bus_fmt_to_csi2_dt() to convert media bus fmt to
+> MIPI defined data type and avoid below duplicated static array in each CSI2
+> drivers.
+> 
+> 	{
+> 		.code = MEDIA_BUS_FMT_UYVY8_1X16,
+> 		.data_type = MIPI_CSI2_DT_YUV422_8B,
+> 	}
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> Changes in v2:
-> - squash rename to flash patches
-> - remove duplicate patches already post in
-> https://lore.kernel.org/linux-devicetree/20250725061339.266125-1-alexander.stein@ew.tq-group.com/
-> - Link to v1: https://lore.kernel.org/r/20250818-ls1021a_dts_warning-v1-0-7a79b6b4a0e2@nxp.com
+>  drivers/media/v4l2-core/v4l2-common.c | 44 +++++++++++++++++++++++++++++++++++
+>  include/media/mipi-csi2.h             |  3 +++
+>  2 files changed, 47 insertions(+)
 > 
-> ---
-> Frank Li (7):
->       ARM: dts: ls1021a: Rename node name nor to flash
->       ARM: dts: ls1021a: Rename 'mdio-mux-emi1' to 'mdio-mux@54'
->       ARM: dts: ls1021a: Rename esdhc@1560000 to mmc@1560000
->       ARM: dts: ls1021a: Rename node name power-controler to wakeup-controller
->       ARM: dts: ls1021a: remove big-endian for mmc modes
->       ARM: dts: ls1021a-tsn: Remove redundant #address-cells for ethernet-switch@1
->       ARM: dts: ls1021a-tqmls1021a-mbls1021a-rgb-cdtech: Remove fallback compatible string edt,edt-ft5x06
+> diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
+> index 3a48b6a55c6e322696b910dd519def4f0b4a58fb..fcc01030beb347499da2a3c8539793d20f6f512c 100644
+> --- a/drivers/media/v4l2-core/v4l2-common.c
+> +++ b/drivers/media/v4l2-core/v4l2-common.c
+> @@ -701,6 +701,50 @@ int v4l2_link_freq_to_bitmap(struct device *dev, const u64 *fw_link_freqs,
+>  }
+>  EXPORT_SYMBOL_GPL(v4l2_link_freq_to_bitmap);
+>  
+> +int media_bus_fmt_to_csi2_dt(int bus_fmt)
+> +{
+> +	switch (bus_fmt) {
+> +	case MEDIA_BUS_FMT_UYVY8_1X16:
+> +		return MIPI_CSI2_DT_YUV422_8B;
+> +	case MEDIA_BUS_FMT_RGB565_1X16:
+> +		return MIPI_CSI2_DT_RGB565;
+> +	case MEDIA_BUS_FMT_BGR888_1X24:
+> +		return MIPI_CSI2_DT_RGB888;
+> +	case MEDIA_BUS_FMT_SBGGR8_1X8:
+> +	case MEDIA_BUS_FMT_SGBRG8_1X8:
+> +	case MEDIA_BUS_FMT_SGRBG8_1X8:
+> +	case MEDIA_BUS_FMT_SRGGB8_1X8:
+> +	case MEDIA_BUS_FMT_Y8_1X8:
+> +		return MIPI_CSI2_DT_RAW8;
+> +	case MEDIA_BUS_FMT_SBGGR10_1X10:
+> +	case MEDIA_BUS_FMT_SGBRG10_1X10:
+> +	case MEDIA_BUS_FMT_SGRBG10_1X10:
+> +	case MEDIA_BUS_FMT_SRGGB10_1X10:
+> +	case MEDIA_BUS_FMT_Y10_1X10:
+> +		return MIPI_CSI2_DT_RAW10;
+> +	case MEDIA_BUS_FMT_SBGGR12_1X12:
+> +	case MEDIA_BUS_FMT_SGBRG12_1X12:
+> +	case MEDIA_BUS_FMT_SGRBG12_1X12:
+> +	case MEDIA_BUS_FMT_SRGGB12_1X12:
+> +	case MEDIA_BUS_FMT_Y12_1X12:
+> +		return MIPI_CSI2_DT_RAW12;
+> +	case MEDIA_BUS_FMT_SBGGR14_1X14:
+> +	case MEDIA_BUS_FMT_SGBRG14_1X14:
+> +	case MEDIA_BUS_FMT_SGRBG14_1X14:
+> +	case MEDIA_BUS_FMT_SRGGB14_1X14:
+> +		return MIPI_CSI2_DT_RAW14;
+> +	case MEDIA_BUS_FMT_SBGGR16_1X16:
+> +	case MEDIA_BUS_FMT_SGBRG16_1X16:
+> +	case MEDIA_BUS_FMT_SGRBG16_1X16:
+> +	case MEDIA_BUS_FMT_SRGGB16_1X16:
+> +		return MIPI_CSI2_DT_RAW16;
+> +
+> +	default:
+> +		return MIPI_CSI2_DT_NULL;
+
+I would use 0 here. MIPI_CSI2_DT_NULL is equal to 0x10, and I'm
+concerned about driver comparing the return value of the function to 0.
+
+> +	}
+> +}
+> +EXPORT_SYMBOL_GPL(media_bus_fmt_to_csi2_dt);
+> +
+
+We have something similar for pixel formats, with the v4l2_format_info
+structure and the v4l2_format_info() lookup function. Adding information
+about media bus formats to the V4L2 core seems to be a good idea.
+
+Regarding the implementation, I think you should mimick what we do for
+the pixel formats, and add the data to an info structure with a lookup
+function.
+
+>  int media_bus_fmt_to_csi2_bpp(int bus_fmt)
+>  {
+>  	switch (bus_fmt) {
+> diff --git a/include/media/mipi-csi2.h b/include/media/mipi-csi2.h
+> index c5b4e8e1ca93803568b1eee85f7f99c3a45a0b6e..35de536b9b65b49ad9e2914437d26d0e4240cf38 100644
+> --- a/include/media/mipi-csi2.h
+> +++ b/include/media/mipi-csi2.h
+> @@ -8,6 +8,8 @@
+>  #ifndef _MEDIA_MIPI_CSI2_H
+>  #define _MEDIA_MIPI_CSI2_H
+>  
+> +/* DT value ref to MIPI Camera Serial Interface 2 Spec Ver4.1 section 9.4 */
+> +
+>  /* Short packet data types */
+>  #define MIPI_CSI2_DT_FS			0x00
+>  #define MIPI_CSI2_DT_FE			0x01
+> @@ -44,6 +46,7 @@
+>  #define MIPI_CSI2_DT_RAW20		0x2f
+>  #define MIPI_CSI2_DT_USER_DEFINED(n)	(0x30 + (n))	/* 0..7 */
+>  
+> +int media_bus_fmt_to_csi2_dt(int buf_fmt);
+>  int media_bus_fmt_to_csi2_bpp(int bus_fmt);
+>  
+>  #endif /* _MEDIA_MIPI_CSI2_H */
 > 
->  arch/arm/boot/dts/nxp/ls/ls1021a-qds.dts                          | 8 ++++----
->  .../dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a-rgb-cdtech-dc44.dtso  | 2 +-
->  .../dts/nxp/ls/ls1021a-tqmls1021a-mbls1021a-rgb-cdtech-fc21.dtso  | 2 +-
->  arch/arm/boot/dts/nxp/ls/ls1021a-tsn.dts                          | 2 --
->  arch/arm/boot/dts/nxp/ls/ls1021a-twr.dts                          | 2 +-
->  arch/arm/boot/dts/nxp/ls/ls1021a.dtsi                             | 6 ++----
->  6 files changed, 9 insertions(+), 13 deletions(-)
-> ---
-> base-commit: 3ede6e44fad31f1c80dd01188683f0caa0f19247
-> change-id: 20250818-ls1021a_dts_warning-fff933bd83da
-> 
-> Best regards,
-> --
-> Frank Li <Frank.Li@nxp.com>
-> 
-> 
 > 
 
+-- 
+Regards,
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-This patch series was applied (using b4) to base:
- Base: base-commit 3ede6e44fad31f1c80dd01188683f0caa0f19247 not known, ignoring
- Base: attempting to guess base-commit...
- Base: tags/next-20250820 (exact match)
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm/boot/dts/nxp/' for 20250820-ls1021a_dts_warning-v2-0-2e39648a32b7@nxp.com:
-
-arch/arm/boot/dts/nxp/ls/ls1021a-qds.dtb: memory-controller@1530000 (fsl,ifc): board-control@3,0: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'bank-width', 'compatible', 'device-width', 'mdio-mux@54', 'ranges', 'reg' were unexpected)
-	from schema $id: http://devicetree.org/schemas/memory-controllers/fsl/fsl,ifc.yaml#
-arch/arm/boot/dts/nxp/ls/ls1021a-qds.dtb: flash@0 (atmel,at45db021d): Unevaluated properties are not allowed ('spi-cpha', 'spi-cpol' were unexpected)
-	from schema $id: http://devicetree.org/schemas/mtd/atmel,dataflash.yaml#
-
-
-
-
-
+Laurent Pinchart
