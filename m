@@ -1,136 +1,126 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816EB2745E
-	for <imx@lists.linux.dev>; Wed, 20 Aug 2025 19:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439E01F91C8
+	for <imx@lists.linux.dev>; Wed, 20 Aug 2025 19:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755717928; cv=none; b=FYWIcwGbq1aGLe+vuft83K2acOwff1+vAPnA/R4GyjVieV/XgyPG15aftIKMplzUaM7y31Do2aHTavbIrTzxS9mOsEyTXCX+0hijsjKNPJgUvMIWhEYi7jkjd60Q3eNANyOzNrjd8yDXQouvaEZUGF/vfZwjhmSOFBT+7368j3g=
+	t=1755718280; cv=none; b=PT5bviGdZdS7373Qd5ebgXc+9MBWsP2ZjC7cyPFEjLy0yYzfl6JtbFjawEbPjqirBK9+CLdKRdeK4ZUnYOsdiFb4/5evdELl3zTFj7/SGQ1arrzF97+LvGqgOJL89xP5u5jKFD1x3P8OP5saaUNCTciEDp3xxMYlFecEMhzcvsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755717928; c=relaxed/simple;
-	bh=OaJ+PXLz7ARjupcj+6znF62eHM/3YCK8NV41zxUE6W8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i6G06Sw9Obb8wC8xXh0c7UAPkp8gdkgm6yyg1PUaUTVegZ7+am/wf6pziBfeNNgSk5xTnFpTEPLEOucDDUJt9kjCKi8U9HXOjQFQ/SIYcUKs/HmvpwjJVlrXGp4Rqm6C5RIDPbrRmRG7lzIzKKQvQysG5UsSFOAH71ZRBIwaN8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=SSfd4Die; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1755718280; c=relaxed/simple;
+	bh=JdMnN/QvHNdC14uZpSWSeOLbLF7avgHXV6bfeFE314E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d8AFtRJh0WCv9geguixlNJMeQE51X8LXqMywsTFDUvFqM7GjARCusGp0d7E1IiQzP7wlM0FTnwxgyDsxvYB+6X3IIzaVLaIq4wq9iOjUB5cm+gkQVRijugdT3cu/DpBzyhASixnm+At6gowx1s/6NwILUnykOlsCOBjjsAgosc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RGhHMttE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="SSfd4Die"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 56B516A6;
-	Wed, 20 Aug 2025 21:24:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755717866;
-	bh=OaJ+PXLz7ARjupcj+6znF62eHM/3YCK8NV41zxUE6W8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SSfd4Dies8ZjERJ70j0zYiJkTuJWcgJ4+4tOoYIMR3JDT3tM/G5+JmzW9PPhE83V9
-	 p81pXRCwszjJMEx5wqZNtHlFKhgy/kgJD3kfQE9mF4FGjXez0Wb1sM7fFU2D/5mWVO
-	 1OE9anmLuBS0EGhipvcya/CSJDBARBBiIArpFDWQ=
-Date: Wed, 20 Aug 2025 22:25:01 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Martin Kepplinger-Novakovic <martink@posteo.de>
-Cc: mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] media: nxp: imx8-isi: check return value of
- media_pad_remote_pad_first()
-Message-ID: <20250820192501.GA10430@pendragon.ideasonboard.com>
-References: <20250205172957.182362-1-martink@posteo.de>
- <1f4b4e707762c0926c0acece18cb9cc3ecc242bc.camel@posteo.de>
- <20250820140135.GA6190@pendragon.ideasonboard.com>
- <af64e20ba242d4742f650057254029257a40ae79.camel@posteo.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RGhHMttE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBC5C4AF09
+	for <imx@lists.linux.dev>; Wed, 20 Aug 2025 19:31:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755718279;
+	bh=JdMnN/QvHNdC14uZpSWSeOLbLF7avgHXV6bfeFE314E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=RGhHMttEkXppx0xIcllcHsXLmLQQzOdjxYuV/xm82W+tSpLj5siXsGatCtlz88msg
+	 2kBwqKy5UBeiVfHuLZmptxFi73Zpxv/U9awFSIry45ieagzEsDibzMG1wAP3gxnkhW
+	 raADuSVol+35H9SGVkQgHnkq5ZvoxRqgzaJ5nqp8/IExM7a4xIdtlcK3QcBxNxqBtm
+	 KK/V1xpMYSVAS7R01YfN+CYcrvBHMjdmhrWPW+JZTdHhCYbshF/pY90CjAsTW4ka3t
+	 Rd/tFqZozHdiLnaXYd+is6lZXoeiYPHaynU5+quh2DQJRYYBKUUeAlmyR3mDi8VG5s
+	 b2OoQldEU+zEA==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-afcb61f6044so48951166b.0
+        for <imx@lists.linux.dev>; Wed, 20 Aug 2025 12:31:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUEWqFi59FLBgJfDQ4NnPZxSs8bGdvsceAugZ0rsLQywf4dEQAH51cDb0bUJ9Ms3OZwrCo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxDvEdUDqeBzoP2ajZDjQovWNc5wEpFu3+NPqdg2fM0mI610NC2
+	aPhJ/R6D647N9RTHUcx+EUgexAuDQ/BGU72sibY7Fyo0MNQ1lUegWStNz4L0e3NjiOkAOBzRGTY
+	Z2lVmdHek2xrBfvoHsv3gr7QxCw7wcw==
+X-Google-Smtp-Source: AGHT+IHMduLqupXwUu5+wGeCnTMcG3KEnZjSMqXY8A1R3KzTvJxS2yEXoVkoMeeJWEbKS/NfptZmMJOd2EyU0/q6v2E=
+X-Received: by 2002:a17:907:6e8b:b0:afc:aac3:6d2 with SMTP id
+ a640c23a62f3a-afe02b475a2mr72725966b.2.1755718278469; Wed, 20 Aug 2025
+ 12:31:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <af64e20ba242d4742f650057254029257a40ae79.camel@posteo.de>
+References: <20250819213831.1368296-1-robh@kernel.org> <CAEnQRZDga2cX=YPY5Z9NDyro94bxFjK9k5Xm5Vt2vVzf4ysKyA@mail.gmail.com>
+In-Reply-To: <CAEnQRZDga2cX=YPY5Z9NDyro94bxFjK9k5Xm5Vt2vVzf4ysKyA@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 20 Aug 2025 14:31:07 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJ1btLjZO_Z7H+qYZhWwTn0Wpq4Ji=deKdUxTwLHw-pTA@mail.gmail.com>
+X-Gm-Features: Ac12FXyzu14Kh1oSkN3MJaRVyez-SIK2NK1snFRbS1U4LOUdSfMmoXWd92DoGYw
+Message-ID: <CAL_JsqJ1btLjZO_Z7H+qYZhWwTn0Wpq4Ji=deKdUxTwLHw-pTA@mail.gmail.com>
+Subject: Re: [PATCH v5] remoteproc: Use of_reserved_mem_region_* functions for "memory-region"
+To: Daniel Baluta <daniel.baluta@gmail.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Peng Fan <peng.fan@nxp.com>, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	Iuliana Prodan <iuliana.prodan@nxp.com>, Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>, 
+	Aisheng Dong <aisheng.dong@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 20, 2025 at 02:54:35PM +0000, Martin Kepplinger-Novakovic wrote:
-> Am Mittwoch, dem 20.08.2025 um 17:01 +0300 schrieb Laurent Pinchart:
-> > On Thu, Feb 06, 2025 at 08:49:37AM +0000, Martin Kepplinger wrote:
-> > > Am Mittwoch, dem 05.02.2025 um 17:29 +0000 schrieb Martin Kepplinger-Novaković:
-> > > > media_pad_remote_pad_first() return NULL if "no enabled link has been found".
-> > > > Check for that.
-> > > > 
-> > > > backstory
-> > > > =========
-> > > > While trying to get a (Y10 grey) sensor working on imx8mp (v6.12.12 now and
-> > > > I know the hardware works on an ancient nxp-kernel),
-> > > > I tried to enable the sensor link, set formats and stream:
-> > > 
-> > > btw, that's roughly the
-> > > driver: 
-> > > https://github.com/VC-MIPI-modules/vc_mipi_nxp/tree/master/src
-> > > that might need additions to with recent mainline kernels. Will the
-> > > sensor be the reason for the link not being found here?
-> > 
-> > I've submitted
-> > https://lore.kernel.org/linux-media/20250820140021.8026-1-laurent.pinchart@ideasonboard.com,
-> > which should fix this issue in a more generic way.
-> 
-> Hi, thank you. As posted over there, this indeed fixes the crash
-> itself.
-> 
-> P.S.:
-> Not that you should care :) But as for my specific "vision components"
-> sensor I want to use here, where this rpi-driver exists:
-> https://github.com/VC-MIPI-modules/vc_mipi_raspi/blob/main/src/vc_mipi_camera/vc_mipi_camera.c
-> a script like
-> 
-> media-ctl -d 1 --links "'vc_mipi_camera 3-001a':0->'csis-
-> 32e50000.csi':0[1]"
-> 
-> # format settings for mipi rx and ISI
-> media-ctl -d "platform:32e00000.isi" --set-v4l2 '"vc_mipi_camera 3-001a":0[fmt:Y10_1X10/2592x1944 field:none]'
-> media-ctl -d "platform:32e00000.isi" --set-v4l2 '"csis-32e50000.csi":0[fmt:Y10_1X10/2592x1944 field:none colorspace:srgb]'
-> media-ctl -d "platform:32e00000.isi" --set-v4l2 '"crossbar":0[fmt:Y10_1X10/2592x1944 field:none colorspace:srgb]'
-> media-ctl -d "platform:32e00000.isi" --set-v4l2 '"mxc_isi.0":0[fmt:Y10_1X10/2592x1944 field:none colorspace:srgb]'
-> 
-> v4l2-ctl -d /dev/video2 --set-fmt-video=width=2592,height=1944,pixelformat='Y10 '
-> v4l2-ctl --verbose --device=/dev/video2 --stream-mmap --stream-count=10
-> 
-> 
-> still fails with
-> 
-> 
-> [   34.642252] vc_mipi_camera 3-001a: vc_core_set_format(): Set format: 0x200a (Y10_1X10)
-> [   34.650227] vc_mipi_camera 3-001a: vc_core_try_format(): Try format 0x200a (Y10_1X10, format: 0x2b)
-> [   34.659284] vc_mipi_camera 3-001a: vc_core_try_format(): Checking mode 0 (format: 0x2b)
-> [   34.667295] vc_mipi_camera 3-001a: vc_core_calculate_max_exposure(): period_1H_ns: 7407, vmax.max: 1048575, vmax.min: 9
-> [   34.678083] vc_mipi_camera 3-001a: vc_core_get_optimized_vmax(): vmax_def: 4500, v_factor: 0, height: 1944/1944
-> [   34.688178] vc_mipi_camera 3-001a: vc_core_calculate_max_frame_rate(): period_1H_ns: 7407, vmax: 4500/4500, max_frame_rate: 30002
-> [   34.699833] vc_mipi_camera 3-001a: vc_core_update_controls(): num_lanes: 2, format 43, exposure.max: 7766728 us, framerate.max: 30002 mHz
-> [   34.712184] vc_mipi_camera 3-001a: vc_core_set_frame(): Set frame (left: 0, top: 0, width: 2592, height: 1944)
-> [   34.722208] vc_mipi_camera 3-001a: vc_core_calculate_max_exposure(): period_1H_ns: 7407, vmax.max: 1048575, vmax.min: 9
-> [   34.733000] vc_mipi_camera 3-001a: vc_core_get_optimized_vmax(): vmax_def: 4500, v_factor: 0, height: 1944/1944
-> [   34.743112] vc_mipi_camera 3-001a: vc_core_calculate_max_frame_rate(): period_1H_ns: 7407, vmax: 4500/4500, max_frame_rate: 30002
-> [   34.754768] vc_mipi_camera 3-001a: vc_core_update_controls(): num_lanes: 2, format 43, exposure.max: 7766728 us, framerate.max: 30002 mHz
-> VIDIOC_QUERYCAP: ok
-> 		VIDIOC_REQBUFS returned 0 (Success)
-> 		VIDIOC_CREATE_BUFS returned 0 (Success)
-> 		VIDIOC_QUERYBUF returned 0 (Success)
-> 		VIDIOC_QUERYBUF returned 0 (Success)
-> 		VIDIOC_QUERYBUF returned 0 (Success)
-> 		VIDIOC_QUERYBUF returned 0 (Success)
-> 		VIDIOC_G_FMT returned 0 (Success)
-> 		VIDIOC_QBUF returned 0 (Success)
-> 		VIDIOC_QBUF returned 0 (Success)
-> 		VIDIOC_QBUF returned 0 (Success)
-> 		VIDIOC_QBUF returned 0 (Success)
-> 		VIDIOC_STREAMON returned -1 (Broken pipe)
+On Wed, Aug 20, 2025 at 3:19=E2=80=AFAM Daniel Baluta <daniel.baluta@gmail.=
+com> wrote:
+>
+> Hi Rob,
+>
+> This patch will break IMX RPROC support.
+> <snip>
+>
+> > --- a/drivers/remoteproc/imx_rproc.c
+> > +++ b/drivers/remoteproc/imx_rproc.c
+>
+> <snip>
+> >  static int imx_rproc_parse_fw(struct rproc *rproc, const struct firmwa=
+re *fw)
+> <snip>
+>
+> > -               priv->mem[b].cpu_addr =3D devm_ioremap_wc(&pdev->dev, r=
+es.start, resource_size(&res));
+> > +               priv->mem[b].cpu_addr =3D devm_ioremap_resource_wc(&pde=
+v->dev, &res);
+>
+> devm_ioremap_resource_wc works only for IORESOURCE_MEM resources:
+>
+> lib/devres.c:124
+> static void __iomem *
+> __devm_ioremap_resource(struct device *dev, const struct resource *res,
+>
+> =C2=BB       if (!res || resource_type(res) !=3D IORESOURCE_MEM) {
+> =C2=BB       =C2=BB       ret =3D dev_err_probe(dev, -EINVAL, "invalid re=
+source
+> %pR\n", res);
+> =C2=BB       =C2=BB       return IOMEM_ERR_PTR(ret);
+> =C2=BB       }
+>
+> while the devm_ioremap_wc doesn't care about this.
+>
+> So we cannot use devm_ioremap_resource_wc here unless you add
+> IORESOURCE_MEM flags
+> to  of_reserved_mem_region_to_resource as discussed here:
+>
+> https://lkml.org/lkml/2025/4/28/759
+>
+> The same issue we are already experiencing with Sound Open Firmware
+> where the change was already merged
+> and we have a bug already reported.
+>
+> How should we fix this:
+>
+> 1) Add  res->flags =3D IORESOURCE_MEM; in  of_reserved_mem_region_to_reso=
+urce
 
-The pipeline validation code at stream start time contains extensive
-debugging messages, in particular in v4l2_subdev_link_validate_default()
-and v4l2_subdev_link_validate_locked(). Enabling those should help you
-figure out why your pipeline fails.
+Sigh. I thought I rolled that change into it. I just sent a fix[1].
 
--- 
-Regards,
+Rob
 
-Laurent Pinchart
+[1] https://lore.kernel.org/all/20250820192805.565568-1-robh@kernel.org/
