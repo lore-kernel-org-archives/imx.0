@@ -1,100 +1,138 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997801AE844
-	for <imx@lists.linux.dev>; Wed, 20 Aug 2025 13:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF8C1E9B21
+	for <imx@lists.linux.dev>; Wed, 20 Aug 2025 13:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755698004; cv=none; b=i33wevxaeE2mrcIH789rtbAegEqb3Woam3Am9Hy70Bi8SzBtaO9S1RC/3eH2SLzUXEAuV07kSSjzvhpAqbbGo5D0wUlVXAd/Rjg2wUu9xdRAgRaPu1thW8R21OIkEmRyCdJ2V8PJxiqzXh/jJrLmY8XIRRQqeCM6/YCs5QmipGY=
+	t=1755698144; cv=none; b=P27WbSz6emRhTTc8f5FsdUVPL5lwSWN3HcWRzGHXpAUKLc+biBM3r+rgLbh/KAaXjeJXz8+NAEYiEXY5nN3m9X1MI7Z5at3gQE1LCdpPz95ENCkxNQ+llfeRL7T1vQDEHCLjZjR84RE9FnBv63HX3XgJHrs7SflUJDkKwPEvGqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755698004; c=relaxed/simple;
-	bh=k4GwsWLqDfFVA8BBIrdKPqII7sa00eXmkGduE3C7iQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FcHlorEGX4zApLDAzOqODWZvOy2yOWRfSGadcSUftRSpaR2Yu+xM+WMz4WNurmGh85lvuoOcwAXVGx1hxmioNQEZFqcImxN9o/FjrhsmztnV8FQ9HqqXI9ZM7DMgavUSogm1UTXvl3dECloKak/OV2Sea7as8w3oD+ajcO/YqNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CDC031D31;
-	Wed, 20 Aug 2025 06:53:14 -0700 (PDT)
-Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 040873F63F;
-	Wed, 20 Aug 2025 06:53:20 -0700 (PDT)
-Date: Wed, 20 Aug 2025 14:53:18 +0100
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] firmware: imx: Add stub functions for SCMI CPU API
-Message-ID: <aKXTTqoIBAMWbeCI@pluto>
-References: <20250807-imx9-sm-v1-0-3489e41a6fda@nxp.com>
- <20250807-imx9-sm-v1-3-3489e41a6fda@nxp.com>
+	s=arc-20240116; t=1755698144; c=relaxed/simple;
+	bh=rLBJ4js3PcrnHyZMZb2wko0u44OW6C3b/1LbOOIWi3Q=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=TXQRdzgnaU10ALWkJ0GmGnMpDzGB+xVcyGqzEW4upEYFgK52jau+bOkD/6NKWl1phSgdR2X4sdiNl3xGbot84x1bwVKFfdngCg3seNMtWn4ihQyFZQIupzwAWq0RcZXVEyP2974vCdL2DKbLllMSH4O0ElPSnhKzUBfNnv0XXbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=luK0T24I; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=RdJCO9FG; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="luK0T24I";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="RdJCO9FG"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id D62E714003B5;
+	Wed, 20 Aug 2025 09:55:41 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Wed, 20 Aug 2025 09:55:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1755698141;
+	 x=1755784541; bh=fuL07DRJO79zA2iBNSloCcbrQR7X9zT3dVlz/w8Hr0A=; b=
+	luK0T24IvqvWu4t0RgdNcMaVI4vQICLNzlHEqzGzR71KZDaSFf2eKG+/3zHHSSzl
+	IW0oTNCdyo+oAoM8v0F1QLs0Boyj2Cyd2ZInaMh/Rzw7No4AZcp3hEeaNc1n/tny
+	nnEkJMCNKKaKEARW6qUE+38UCODGXOmWr3s99LULlbTriPf+zDNqlndsbv6fpCBF
+	zCaCCDZA0Ftkm3iXuiLDkIatM1a9n0s1uwGpYaATuYEzd5hHfjPu3u17Yj1Nehzz
+	ZavT95XQBwtw1p5sM1WWkE0jpJXdwL5ihtvbXUEC2zLt21zUKMJwu5TZDkB+7NFq
+	ZFEzVC1A/qO+wYt5rMz5Fw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1755698141; x=
+	1755784541; bh=fuL07DRJO79zA2iBNSloCcbrQR7X9zT3dVlz/w8Hr0A=; b=R
+	dJCO9FGdE/G1X8z8Ffy6zaMhgDAbwWpVCLbIgc1QRVT/sCG4aQxQKHq2NkLa2F64
+	Hi/Xe01bDoTi2v0DAp1hezu5v510QE7VRl7APF9UhJFvsrDTJGUgyh1iZ8M9OuZ/
+	wbPv1CouOsXUZpGvZw7ja1RIWJ23gkrXey91M1VTtPYiCc+7TJ68pIX7u/yImIAm
+	qKgy36XINDSjsMgNQmulCznFKlGq0+KHDUc7pdutzPgLoa6jU99sjJqcrgwv+qnj
+	o2p/FTYEuO9F8BWcRaU63Bnkrz9wQLXy1nxhINQyb/QiDxCy4jwX2R3EHcnmkT/f
+	JSp9zjAGb+i8vN80mzHVg==
+X-ME-Sender: <xms:3dOlaC12QBmR8HOZbmnydAT7i3OzhAwDPz-DIbIDOI2rQJC_UrV-Dw>
+    <xme:3dOlaFHbEOq8RNK6O0eLthVhVepbV-UjAMxvWtSwdtySdiWV9dZ3s1q0QyEkG3dMK
+    _ki7ofR_qjByp67pBU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduheekheegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopegtrhhishhtihgrnhdrmhgrrhhushhsihesrghrmhdrtghomhdprh
+    gtphhtthhopehsuhguvggvphdrhhholhhlrgesrghrmhdrtghomhdprhgtphhtthhopehf
+    vghsthgvvhgrmhesghhmrghilhdrtghomhdprhgtphhtthhopehshhgrfihnghhuoheskh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehl
+    ihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepihhmgieslhhishhtsh
+    drlhhinhhugidruggvvhdprhgtphhtthhopehpvghnghdrfhgrnhesnhigphdrtghomhdp
+    rhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtoh
+    epshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggv
+X-ME-Proxy: <xmx:3dOlaMgm8Rx40rQo-fHuLR_nYeJRhd-Z074yzDQqUEJiqxXwq-HExQ>
+    <xmx:3dOlaEv1X7VS52qV4C7Qck3weUhbeXo4JOYwp0H8FH78-52p3dZ0iQ>
+    <xmx:3dOlaPtY2f3hhBovMMn94Vq0LQx22CJWQFa8eq2w8GDJspbgK7fJWw>
+    <xmx:3dOlaJGoLgRoyRePbEX6yKtRuxeH5adOa9bHNDp8ShHnNGL2l4yK5A>
+    <xmx:3dOlaP7lRSGUGWmvzpFeTgZvAUkILUMg5UPaiGKMsKqP4IUuQVFHKV-I>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 2F60F700068; Wed, 20 Aug 2025 09:55:41 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250807-imx9-sm-v1-3-3489e41a6fda@nxp.com>
+X-ThreadId: A6YapAphagno
+Date: Wed, 20 Aug 2025 15:55:20 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Peng Fan" <peng.fan@nxp.com>, "Shawn Guo" <shawnguo@kernel.org>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Fabio Estevam" <festevam@gmail.com>, "Sudeep Holla" <sudeep.holla@arm.com>,
+ "Cristian Marussi" <cristian.marussi@arm.com>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <2ff85fec-b571-4423-9161-674f88a32e18@app.fastmail.com>
+In-Reply-To: <20250807-imx9-sm-v1-1-3489e41a6fda@nxp.com>
+References: <20250807-imx9-sm-v1-0-3489e41a6fda@nxp.com>
+ <20250807-imx9-sm-v1-1-3489e41a6fda@nxp.com>
+Subject: Re: [PATCH 1/3] firmware: imx: Add stub functions for SCMI MISC API
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 07, 2025 at 09:47:44AM +0800, Peng Fan wrote:
-> To ensure successful builds when CONFIG_IMX_SCMI_CPU_DRV is not enabled,
+On Thu, Aug 7, 2025, at 03:47, Peng Fan wrote:
+> To ensure successful builds when CONFIG_IMX_SCMI_MISC_DRV is not enabled,
 > this patch adds static inline stub implementations for the following
 > functions:
-> 
->   - scmi_imx_cpu_start()
->   - scmi_imx_cpu_started()
->   - scmi_imx_cpu_reset_vector_set()
-> 
+>
+>   - scmi_imx_misc_ctrl_get()
+>   - scmi_imx_misc_ctrl_set()
+>
 > These stubs return -EOPNOTSUPP to indicate that the functionality is not
 > supported in the current configuration. This avoids potential build or
 > link errors in code that conditionally calls these functions based on
 > feature availability.
-> 
-> Fixes: 1055faa5d660 ("firmware: imx: Add i.MX95 SCMI CPU driver")
+>
+> Fixes: 540c830212ed ("firmware: imx: remove duplicate scmi_imx_misc_ctrl_get()")
+> Fixes: 0b4f8a68b292 ("firmware: imx: Add i.MX95 MISC driver")
 > Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  include/linux/firmware/imx/sm.h | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/include/linux/firmware/imx/sm.h b/include/linux/firmware/imx/sm.h
-> index f2a72177bb37c1d46145a60710e3809641e0f5a2..a33b45027356751f4b8ad9b9136f0dd302a82520 100644
-> --- a/include/linux/firmware/imx/sm.h
-> +++ b/include/linux/firmware/imx/sm.h
-> @@ -41,10 +41,28 @@ static inline int scmi_imx_misc_ctrl_set(u32 id, u32 val)
->  }
->  #endif
->  
-> +#if IS_ENABLED(CONFIG_IMX_SCMI_CPU_DRV)
->  int scmi_imx_cpu_start(u32 cpuid, bool start);
->  int scmi_imx_cpu_started(u32 cpuid, bool *started);
->  int scmi_imx_cpu_reset_vector_set(u32 cpuid, u64 vector, bool start, bool boot,
->  				  bool resume);
+
+I don't think this does what you describe, at least not reliably:
+ 
+> +#if IS_ENABLED(CONFIG_IMX_SCMI_MISC_DRV)
+>  int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val);
+>  int scmi_imx_misc_ctrl_set(u32 id, u32 val);
 > +#else
-> +static inline int scmi_imx_cpu_start(u32 cpuid, bool start)
+> +static inline int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val)
 > +{
 > +	return -EOPNOTSUPP;
 > +}
-> +
-> +static inline int scmi_imx_cpu_started(u32 cpuid, bool *started)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline int scmi_imx_cpu_reset_vector_set(u32 cpuid, u64 vector, bool start,
-> +						bool boot, bool resume)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +#endif
 
-LGTM.
+When a caller of this function is in a built-in driver but the
+IMX_SCMI_MISC_DRV code is in a loadable module, you still
+get a link failure, see 514b2262ade4 ("firmware: arm_scmi:
+Fix i.MX build dependency") for an example.
 
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+As you still need the correct Kconfig dependencies, I
+think your patch here is not helpful.
 
-Thanks,
-Cristian
+     Arnd
