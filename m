@@ -1,138 +1,80 @@
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF8C1E9B21
-	for <imx@lists.linux.dev>; Wed, 20 Aug 2025 13:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6BA25A2C7
+	for <imx@lists.linux.dev>; Wed, 20 Aug 2025 14:01:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755698144; cv=none; b=P27WbSz6emRhTTc8f5FsdUVPL5lwSWN3HcWRzGHXpAUKLc+biBM3r+rgLbh/KAaXjeJXz8+NAEYiEXY5nN3m9X1MI7Z5at3gQE1LCdpPz95ENCkxNQ+llfeRL7T1vQDEHCLjZjR84RE9FnBv63HX3XgJHrs7SflUJDkKwPEvGqg=
+	t=1755698520; cv=none; b=l3m5FW1gKGDvcBuBMC8DIlrJHfN4QEgFB5EMPm3JrF7rpe7tlfJfLkUk2Fu+BysUMgbVKs2mksD91Vhhqw451weAVBe6wn/JsE8XpPtfYV/TJIpWkk8nMso56l4qiOl7Vkj5JYWOZ+nbIxA0xlSjZ00PcLvFhAYUvKBjx0uh1MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755698144; c=relaxed/simple;
-	bh=rLBJ4js3PcrnHyZMZb2wko0u44OW6C3b/1LbOOIWi3Q=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=TXQRdzgnaU10ALWkJ0GmGnMpDzGB+xVcyGqzEW4upEYFgK52jau+bOkD/6NKWl1phSgdR2X4sdiNl3xGbot84x1bwVKFfdngCg3seNMtWn4ihQyFZQIupzwAWq0RcZXVEyP2974vCdL2DKbLllMSH4O0ElPSnhKzUBfNnv0XXbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=luK0T24I; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=RdJCO9FG; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1755698520; c=relaxed/simple;
+	bh=Z176GSQLSegavImp3En2033NP/ktqan4wx0wmAMGZXk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p+gyZ4BC7nzVAUlznmkOykoRNRU8rM3rptusn74UGQWWxLsdWNoqOIaRxGuWyOO4NV9yUcQhPKYg/BAP+aRlBROmB0tFhBPLUD4UwUu8B4agov//Niixv4axxZNwfXcZKmIbvU2w8dVh+OlylIKsMqz+Mfv2AAkyLxHjjiAb6QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=clcud02i; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="luK0T24I";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="RdJCO9FG"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id D62E714003B5;
-	Wed, 20 Aug 2025 09:55:41 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Wed, 20 Aug 2025 09:55:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1755698141;
-	 x=1755784541; bh=fuL07DRJO79zA2iBNSloCcbrQR7X9zT3dVlz/w8Hr0A=; b=
-	luK0T24IvqvWu4t0RgdNcMaVI4vQICLNzlHEqzGzR71KZDaSFf2eKG+/3zHHSSzl
-	IW0oTNCdyo+oAoM8v0F1QLs0Boyj2Cyd2ZInaMh/Rzw7No4AZcp3hEeaNc1n/tny
-	nnEkJMCNKKaKEARW6qUE+38UCODGXOmWr3s99LULlbTriPf+zDNqlndsbv6fpCBF
-	zCaCCDZA0Ftkm3iXuiLDkIatM1a9n0s1uwGpYaATuYEzd5hHfjPu3u17Yj1Nehzz
-	ZavT95XQBwtw1p5sM1WWkE0jpJXdwL5ihtvbXUEC2zLt21zUKMJwu5TZDkB+7NFq
-	ZFEzVC1A/qO+wYt5rMz5Fw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1755698141; x=
-	1755784541; bh=fuL07DRJO79zA2iBNSloCcbrQR7X9zT3dVlz/w8Hr0A=; b=R
-	dJCO9FGdE/G1X8z8Ffy6zaMhgDAbwWpVCLbIgc1QRVT/sCG4aQxQKHq2NkLa2F64
-	Hi/Xe01bDoTi2v0DAp1hezu5v510QE7VRl7APF9UhJFvsrDTJGUgyh1iZ8M9OuZ/
-	wbPv1CouOsXUZpGvZw7ja1RIWJ23gkrXey91M1VTtPYiCc+7TJ68pIX7u/yImIAm
-	qKgy36XINDSjsMgNQmulCznFKlGq0+KHDUc7pdutzPgLoa6jU99sjJqcrgwv+qnj
-	o2p/FTYEuO9F8BWcRaU63Bnkrz9wQLXy1nxhINQyb/QiDxCy4jwX2R3EHcnmkT/f
-	JSp9zjAGb+i8vN80mzHVg==
-X-ME-Sender: <xms:3dOlaC12QBmR8HOZbmnydAT7i3OzhAwDPz-DIbIDOI2rQJC_UrV-Dw>
-    <xme:3dOlaFHbEOq8RNK6O0eLthVhVepbV-UjAMxvWtSwdtySdiWV9dZ3s1q0QyEkG3dMK
-    _ki7ofR_qjByp67pBU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduheekheegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopegtrhhishhtihgrnhdrmhgrrhhushhsihesrghrmhdrtghomhdprh
-    gtphhtthhopehsuhguvggvphdrhhholhhlrgesrghrmhdrtghomhdprhgtphhtthhopehf
-    vghsthgvvhgrmhesghhmrghilhdrtghomhdprhgtphhtthhopehshhgrfihnghhuoheskh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehl
-    ihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepihhmgieslhhishhtsh
-    drlhhinhhugidruggvvhdprhgtphhtthhopehpvghnghdrfhgrnhesnhigphdrtghomhdp
-    rhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtoh
-    epshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggv
-X-ME-Proxy: <xmx:3dOlaMgm8Rx40rQo-fHuLR_nYeJRhd-Z074yzDQqUEJiqxXwq-HExQ>
-    <xmx:3dOlaEv1X7VS52qV4C7Qck3weUhbeXo4JOYwp0H8FH78-52p3dZ0iQ>
-    <xmx:3dOlaPtY2f3hhBovMMn94Vq0LQx22CJWQFa8eq2w8GDJspbgK7fJWw>
-    <xmx:3dOlaJGoLgRoyRePbEX6yKtRuxeH5adOa9bHNDp8ShHnNGL2l4yK5A>
-    <xmx:3dOlaP7lRSGUGWmvzpFeTgZvAUkILUMg5UPaiGKMsKqP4IUuQVFHKV-I>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 2F60F700068; Wed, 20 Aug 2025 09:55:41 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="clcud02i"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 1D7016AF;
+	Wed, 20 Aug 2025 16:00:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755698459;
+	bh=Z176GSQLSegavImp3En2033NP/ktqan4wx0wmAMGZXk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=clcud02inuNkyRl4ngZzWp5wKICyIAFK6bn5DZCZxqzkyQRTM/i6Lshq9oICXC8xF
+	 I01mZ5IQpT7NVy4HJuy8eeAICMdXUey/XXnXONZ+ARfSpnctHclxYeddS4OA02+3NL
+	 UzN0JESW/9NEQTxUqClkUklyGcuMZns50ga3NGxo=
+Date: Wed, 20 Aug 2025 17:01:35 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Martin Kepplinger <martink@posteo.de>
+Cc: mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] media: nxp: imx8-isi: check return value of
+ media_pad_remote_pad_first()
+Message-ID: <20250820140135.GA6190@pendragon.ideasonboard.com>
+References: <20250205172957.182362-1-martink@posteo.de>
+ <1f4b4e707762c0926c0acece18cb9cc3ecc242bc.camel@posteo.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: A6YapAphagno
-Date: Wed, 20 Aug 2025 15:55:20 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Peng Fan" <peng.fan@nxp.com>, "Shawn Guo" <shawnguo@kernel.org>,
- "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Fabio Estevam" <festevam@gmail.com>, "Sudeep Holla" <sudeep.holla@arm.com>,
- "Cristian Marussi" <cristian.marussi@arm.com>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Message-Id: <2ff85fec-b571-4423-9161-674f88a32e18@app.fastmail.com>
-In-Reply-To: <20250807-imx9-sm-v1-1-3489e41a6fda@nxp.com>
-References: <20250807-imx9-sm-v1-0-3489e41a6fda@nxp.com>
- <20250807-imx9-sm-v1-1-3489e41a6fda@nxp.com>
-Subject: Re: [PATCH 1/3] firmware: imx: Add stub functions for SCMI MISC API
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1f4b4e707762c0926c0acece18cb9cc3ecc242bc.camel@posteo.de>
 
-On Thu, Aug 7, 2025, at 03:47, Peng Fan wrote:
-> To ensure successful builds when CONFIG_IMX_SCMI_MISC_DRV is not enabled,
-> this patch adds static inline stub implementations for the following
-> functions:
->
->   - scmi_imx_misc_ctrl_get()
->   - scmi_imx_misc_ctrl_set()
->
-> These stubs return -EOPNOTSUPP to indicate that the functionality is not
-> supported in the current configuration. This avoids potential build or
-> link errors in code that conditionally calls these functions based on
-> feature availability.
->
-> Fixes: 540c830212ed ("firmware: imx: remove duplicate scmi_imx_misc_ctrl_get()")
-> Fixes: 0b4f8a68b292 ("firmware: imx: Add i.MX95 MISC driver")
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
+Hi Martin,
 
-I don't think this does what you describe, at least not reliably:
- 
-> +#if IS_ENABLED(CONFIG_IMX_SCMI_MISC_DRV)
->  int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val);
->  int scmi_imx_misc_ctrl_set(u32 id, u32 val);
-> +#else
-> +static inline int scmi_imx_misc_ctrl_get(u32 id, u32 *num, u32 *val)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
+On Thu, Feb 06, 2025 at 08:49:37AM +0000, Martin Kepplinger wrote:
+> Am Mittwoch, dem 05.02.2025 um 17:29 +0000 schrieb Martin Kepplinger-
+> Novaković:
+> > media_pad_remote_pad_first() return NULL if "no enabled link has been
+> > found".
+> > Check for that.
+> > 
+> > backstory
+> > =========
+> > While trying to get a (Y10 grey) sensor working on imx8mp (v6.12.12
+> > now and
+> > I know the hardware works on an ancient nxp-kernel),
+> > I tried to enable the sensor link, set formats and stream:
+> 
+> btw, that's roughly the
+> driver: https://github.com/VC-MIPI-modules/vc_mipi_nxp/tree/master/src
+> that might need additions to with recent mainline kernels. Will the
+> sensor be the reason for the link not being found here?
 
-When a caller of this function is in a built-in driver but the
-IMX_SCMI_MISC_DRV code is in a loadable module, you still
-get a link failure, see 514b2262ade4 ("firmware: arm_scmi:
-Fix i.MX build dependency") for an example.
+I've submitted
+https://lore.kernel.org/linux-media/20250820140021.8026-1-laurent.pinchart@ideasonboard.com,
+which should fix this issue in a more generic way.
 
-As you still need the correct Kconfig dependencies, I
-think your patch here is not helpful.
+-- 
+Regards,
 
-     Arnd
+Laurent Pinchart
