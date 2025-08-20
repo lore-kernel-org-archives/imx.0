@@ -1,140 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41FF221F2F;
-	Wed, 20 Aug 2025 17:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D2E23BD1B;
+	Wed, 20 Aug 2025 17:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755709380; cv=none; b=I76Kx4ye36sfgAxHK6r4H42NVC0LQIRlQbOnTawxGVEsh713QYk8nj2vkEGoz16tOtOvVIRjyjViunSklbRJryLfRjTXExhTAgvpGLUyuGSh7yUlmdLtKxhdgjtE0PE1mifwp/cO/wXiTuroQzQ04ohSdL5B1kQqFAz9SR5vGN0=
+	t=1755710795; cv=none; b=uzoG3EY0kCtFeTORsdrpMRlMuzpXbXhHUjMHDVVgzQyxieMw0kE5fXmOSJK2y29XBVQgIPWYuOy3TOqDVdlzHINxj5GdmXztl6y0u+vjbXTzKWLChaVvEB6iodcrScRVbn7w33TZJYJHQsxni0tw3wZ4vn5CNnE0qwo0ohUAfmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755709380; c=relaxed/simple;
-	bh=Zv4ujPO3KQCQ/S/zZ+87yMEeTHGtDtwjmsw35eFBLPg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=GJeKu3gn/6repjJ2Tilsx8ObkFzt3ZlNB8lv0AdCbKsv3nJDGWP6bkp8t5bVVAacMd/DPFGlnZEQgz9CoeLBGJ3w+qUhW+e4gwleM8BlFaSX4VU+tc4tQS1wiR7PRw4YAqwHkYNsp3abWm86rAQt+Q3szir5y4AiBa5c8JjHUW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dr1d03/z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755710795; c=relaxed/simple;
+	bh=2HxiUW8t0HrEjsYL4FGL1eWcypffGvojSNkMNHG2UK0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=He+AG6aR/i87YbfnozxbGJ64kM12B5XDPjM9sHeN7C/q4IScfZW7c5Tn2Yrc7f1MTbyTlV15t9/F18+epjkMovPK++ZAIO0RuaAf2tLFGhhWdRve9U9u+UFjTDDS0NE/CA9KZzC9/JCKMfkjyzNPrWTFK5wnXX+Jq1x5Inq4qww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNsJnbz3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dr1d03/z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A73AC113CF;
-	Wed, 20 Aug 2025 17:02:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNsJnbz3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC8AC4CEE7;
+	Wed, 20 Aug 2025 17:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755709379;
-	bh=Zv4ujPO3KQCQ/S/zZ+87yMEeTHGtDtwjmsw35eFBLPg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Dr1d03/ztQZzehnuA3pVpw7eG2apfzSIzXWZn4V8PSF/oxOnzaMyj6VZxDgQ3XY0C
-	 nca+A2IJDoLbxKo30R/YmbItPPf92i6LVVRW7LTdmYn+yLP3bLCTrV977h9BaHEtKx
-	 NXa2PCl2PJ+9sKMlIBp1C0l2xmBSHRNp1Ot+Slf6644+zsAzHmD5BYUvfwKZ1SqBPg
-	 b3bNilTK6GPtQRkA2c0x0ltTwqwessPnwFUwQuinpUV1sWYrBj8/SGJJQ8Wlda48Mw
-	 vcZIdxxAkqbQkwlZ9DlQZ/Zs8lvh3SMTfcqlJlRdXT5KDCZbCRFgNoX/rafdY4my5h
-	 Ujim+Xbb9lOhA==
-From: Vinod Koul <vkoul@kernel.org>
-To: linux-kernel@vger.kernel.org, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Mark Brown <broonie@kernel.org>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Alim Akhtar <alim.akhtar@samsung.com>, 
- Andrea della Porta <andrea.porta@suse.com>, 
- =?utf-8?q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, Andy Shevchenko <andy@kernel.org>, 
- Andy Yan <andy.yan@rock-chips.com>, Avi Fishman <avifishman70@gmail.com>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, 
- Benjamin Fair <benjaminfair@google.com>, 
- Bjorn Andersson <andersson@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, 
- David Airlie <airlied@gmail.com>, David Lechner <dlechner@baylibre.com>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Drew Fustini <fustini@kernel.org>, dri-devel@lists.freedesktop.org, 
- Fabio Estevam <festevam@gmail.com>, 
- Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Fu Wei <wefu@redhat.com>, 
- Guo Ren <guoren@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
- =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, imx@lists.linux.dev, 
- Iwona Winiarska <iwona.winiarska@intel.com>, 
- Jaroslav Kysela <perex@perex.cz>, Jassi Brar <jassisinghbrar@gmail.com>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Jerome Brunet <jbrunet@baylibre.com>, Jonas Karlman <jonas@kwiboo.se>, 
- Jonathan Cameron <jic23@kernel.org>, Kevin Hilman <khilman@baylibre.com>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Lee Jones <lee@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
- Linus Walleij <linus.walleij@linaro.org>, linux-actions@lists.infradead.org, 
- linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, 
- linux-input@vger.kernel.org, linux-media@vger.kernel.org, 
- linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org, 
- linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org, 
- linux-rockchip@lists.infradead.org, linux-rtc@vger.kernel.org, 
- linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org, 
- linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-sunxi@lists.linux.dev, Liu Ying <victor.liu@nxp.com>, 
- Lukasz Luba <lukasz.luba@arm.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Manivannan Sadhasivam <mani@kernel.org>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Maxime Ripard <mripard@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, Nancy Yuen <yuenn@google.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Nicolin Chen <nicoleotsuka@gmail.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, openbmc@lists.ozlabs.org, 
- Patrick Venture <venture@google.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Robert Foss <rfoss@kernel.org>, 
- Samuel Holland <samuel.holland@sifive.com>, 
- Samuel Holland <samuel@sholland.org>, Sandy Huang <hjc@rock-chips.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
- Shengjiu Wang <shengjiu.wang@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Stephen Boyd <sboyd@kernel.org>, Takashi Iwai <tiwai@suse.com>, 
- Tali Perry <tali.perry1@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Tomer Maimon <tmaimon77@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- Vasily Khoruzhick <anarsoul@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
- Xiubo Li <Xiubo.Lee@gmail.com>, Yangtao Li <tiny.windzz@gmail.com>, 
- Zhang Rui <rui.zhang@intel.com>
-In-Reply-To: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
-References: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
-Subject: Re: (subset) [PATCH 00/21] treewide: remove unneeded 'fast_io'
- parameter in regmap_config
-Message-Id: <175570934550.66459.15951444863822303407.b4-ty@kernel.org>
-Date: Wed, 20 Aug 2025 22:32:25 +0530
+	s=k20201202; t=1755710794;
+	bh=2HxiUW8t0HrEjsYL4FGL1eWcypffGvojSNkMNHG2UK0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PNsJnbz33XUs+f7DHFXusLggHbld5Oa0GZoDnO4LvmNDRSnXCnVnUrmIfwd3mRG0P
+	 VG95dyBr7nr2VJL3ZTRdmVcGu3/dTPFynZxUbJ106X75TKyipcDjz3wqCx2mC852jF
+	 Hc5iXC3U12EcrwMEc+CY4uH2JuxB1Jo4POHabhQSuYOPk37NZgVjW8KrfvHOHvHqIg
+	 syynHObGm3qYw79mEcxeRUnYwNWLvySnDTxctaaEMMPveotJUuj1Ft2vBO21+9mghM
+	 BA8Q28LXGfg8TPhyoVDCO3SlBQkXyGDUCh7NivYtNSMH76//dycDH+Z+srbsoaiWLQ
+	 1t8kv447fTfxQ==
+Date: Wed, 20 Aug 2025 18:26:28 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Daniel Baluta <daniel.baluta@gmail.com>,
+	Xichao Zhao <zhao.xichao@vivo.com>,
+	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>,
+	lgirdwood@gmail.com, peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com, ranjani.sridharan@linux.intel.com,
+	daniel.baluta@nxp.com, perex@perex.cz, tiwai@suse.com,
+	shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kai.vehmanen@linux.intel.com, pierre-louis.bossart@linux.dev,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-sound@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ASoC: SOF: imx: Remove the use of dev_err_probe()
+Message-ID: <a1fa8baa-3116-496c-8c33-bdbc1712c062@sirena.org.uk>
+References: <20250819112654.588527-1-zhao.xichao@vivo.com>
+ <CAEnQRZB=fq7=ahMkFWaQ58SR_yftSTYqZKFBh7YEXz2M7PyXsQ@mail.gmail.com>
+ <00984350-97d2-4aaf-96c3-091f15ec1254@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="THIbrnuRqt5F+FD8"
+Content-Disposition: inline
+In-Reply-To: <00984350-97d2-4aaf-96c3-091f15ec1254@gmail.com>
+X-Cookie: Whoever dies with the most toys wins.
 
 
-On Wed, 13 Aug 2025 18:14:46 +0200, Wolfram Sang wrote:
-> While working on a driver using regmap with MMIO, I wondered if I need
-> to set 'fast_io' in the config. Turned out I don't need to, so I added
-> documentation for it with commit ffc72771ff6e ("regmap: Annotate that
-> MMIO implies fast IO").
-> 
-> This series fixes the existing users in the tree which needlessly set
-> the flag. They have been found using this coccinelle script:
-> 
-> [...]
+--THIbrnuRqt5F+FD8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied, thanks!
+On Wed, Aug 20, 2025 at 12:24:40PM +0300, Laurentiu Mihalcea wrote:
+> On 8/20/2025 10:04 AM, Daniel Baluta wrote:
+> > On Tue, Aug 19, 2025 at 2:29=E2=80=AFPM Xichao Zhao <zhao.xichao@vivo.c=
+om> wrote:
 
-[12/21] phy: remove unneeded 'fast_io' parameter in regmap_config
-        commit: e1e1e77f7df7cbee959ba024e5475907fe561c98
+> >> The dev_err_probe() doesn't do anything when error is '-ENOMEM'.
+> >> Therefore, remove the useless call to dev_err_probe(), and just
+> >> return the value instead.
 
-Best regards,
--- 
-~Vinod
+> > NACK on this.
 
+> > Quote from dev_err_probe documentation:
+> >
+> > ```
+> >  Using this helper in your probe function is totally fine even if @err
 
+> AFAIK the kernel logs are verbose enough on OOM errors, which makes prints
+>=20
+> such as the ones removed by this series unneeded (have a look at [1]). No=
+rmally,
+>=20
+> you'd get a warning from checkpatch but I think these logs slipped throug=
+h the
+>=20
+> cracks because the error messages do not quite match the expected format?
+
+Indeed, there's generally no need for any additional logging on OOM and
+if the code is fixed there's no possibility of deferral.
+
+--THIbrnuRqt5F+FD8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmimBUMACgkQJNaLcl1U
+h9AyHQf/eILWRJD35lCaZ8JrEPC/MN/J2z9zjlYr+Ve8qCXP0UpMzm6yaDLLd8Ja
+0sjDidcN5FJxNMiCUj3H6Nn9YiyLuI5xJkms66XSrtC0l6Lge0PvjF3e3XHmHzne
+ip602hTKXEI2AbBls7skB8iwr8c2mXcBtsEXNVrwvVUpP3gh6jgk3AGQiMA9H9qg
+hYjihZQRdBx+67Y/sJFqBZaQqMagqVSB/q/4OrWMFBywBbuOim3RjCQAHfLn1Ts4
+la9PLUUD3BycKYRW4WFlTxxTEwivN0pG8bT5ywnksUe8Wx3b/aglJkCSe6Z9zG4y
+GkI7t5GpI3MOn2TlODzs8m/O8PEPGQ==
+=74Wd
+-----END PGP SIGNATURE-----
+
+--THIbrnuRqt5F+FD8--
