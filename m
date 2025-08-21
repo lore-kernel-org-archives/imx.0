@@ -1,75 +1,126 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4545427EFFF
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 16:01:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF6F29BDB8
+	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 16:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755792113; cv=none; b=Ch+jAM+rya6gRESEtAUiMhPjmr/+ZH7Ap2FMc3Cg07mH1xV0wxsjZEX4LQz1t/Jn0WEvD8KuvsHp8O+WNEiwhtRjoDaDrMVLOjStJv6XjzGTg/xbaWAZhiLRq/Z201d7X0GxAMsFmdgm9+AyO06b9/ToU/0/W9tdLsBzwUkk0uE=
+	t=1755792400; cv=none; b=ExdknVn0xyzCapjePmwbchXJHcrsAxV/11Ska7dWFKbpW80e4nIFzHsP297ekuH2ZJ+o9sqdunI1AQHQgqa4xgI78N6OC4kvbT8Joj41PGFNr5MMZniAqv4n6BS+ezeR/sRPIlZwo42sx2NJ19yNoEIB8tBvpa1AenY7BK9UtFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755792113; c=relaxed/simple;
-	bh=PEi8jUH7bpdq5/xLOUrl4lY2gtTLVOSF4SM7Vr3CbMQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BdeABRQowT+hyoRh3FAwwWUqJ3Cl8+i0GdHZ+zFGzlZy5EOm2S3VfVhUzDcQHTkNv7A0oL6qD7hktxzHdqaN76FsvE5DU3//brkEUif0LMiPpGaatT8AwmRE0h1h72nTxp49PxP+OZHUDtpopZBdcnsqVgjTs57qmfdUXN8A5/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1up7jR-0000Iw-4B; Thu, 21 Aug 2025 18:01:41 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] arm64: dts: imx8mp: add interconnect for lcdif-hdmi
-Date: Thu, 21 Aug 2025 18:01:37 +0200
-Message-Id: <20250821160137.108735-1-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1755792400; c=relaxed/simple;
+	bh=reNOgaI66JpG7BCmaKX/JcvTZ2uK0khXqFeK3NpfnDQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T1n7ou6PHTQhEW+oH4X6+VjY7HpnRssOSpXng1e3wOR8Pq/1GT6dUFYUGhvm0MDjnXI3z/w0xF+6IU6fDqtcpTgPBl7KR42FoCdi6CTscI4waLwpHMPTnmpAp1HkeDgAdB62xGJZUj2Pjzj9gT/ktXcGMlLU8Pq9Vk+e2hXmpBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=pFfDnDKm; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="pFfDnDKm"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id A6157C78;
+	Thu, 21 Aug 2025 18:05:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755792337;
+	bh=reNOgaI66JpG7BCmaKX/JcvTZ2uK0khXqFeK3NpfnDQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pFfDnDKmTxUVEqUGHNPN0kzSTpwjHEJtAD/4LerCKHwLoRSdRSlxa7oi0G8IOm3JK
+	 B4lPhsBNxAv0fzDABC79KW8xpRLeh0s+capxkmRedX0aqwDj1jy7mOOUmiD/vdoO1y
+	 3km2CpAPWVjOehJoS+ta2BSEXfVAC3+/4TZLHWe0=
+Date: Thu, 21 Aug 2025 19:06:13 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: linux-media@vger.kernel.org, Isaac Scott <isaac.scott@ideasonboard.com>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 05/12] media: imx-mipi-csis: Rename register macros to
+ match reference manual
+Message-ID: <20250821160613.GA29629@pendragon.ideasonboard.com>
+References: <20250821000944.27849-1-laurent.pinchart@ideasonboard.com>
+ <20250821000944.27849-6-laurent.pinchart@ideasonboard.com>
+ <aKc6gzH5nyAeusu3@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
-X-SA-Exim-Mail-From: m.felsch@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aKc6gzH5nyAeusu3@lizhi-Precision-Tower-5810>
 
-Add the missing interconnect for the lcdif-hdmi.
+Hi Frank,
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
-v2:
-- align the list with the dt-bindings list
+On Thu, Aug 21, 2025 at 11:25:55AM -0400, Frank Li wrote:
+> On Thu, Aug 21, 2025 at 03:09:37AM +0300, Laurent Pinchart wrote:
+> > The CSIS driver uses register macro names that do not match the
+> > reference manual of the i.MX7[DS] and i.MX8M[MNP] SoCs in which the CSIS
+> > is integrated. Rename them to match the documentation, making the code
+> > easier to read alongside the reference manuals.
+> >
+> > One of the misnamed register fields is MIPI_CSIS_INT_SRC_ERR_UNKNOWN,
+> > which led to the corresponding event being logged as "Unknown Error".
+> > The correct register field name is MIPI_CSIS_INT_SRC_ERR_ID, documented
+> > as "Unknown ID error". Update the event description accordingly.
+> >
+> > While at it, also replace a few *_OFFSET macros with parametric macros
+> > for consistency, and add the missing MIPI_CSIS_ISP_RESOL_VRESOL and
+> > MIPI_CSIS_ISP_RESOL_HRESOL register field macros.
+> >
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > ---
+> >  drivers/media/platform/nxp/imx-mipi-csis.c | 69 +++++++++++-----------
+> >  1 file changed, 36 insertions(+), 33 deletions(-)
+> >
+> > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > index 894d12fef519..1ca327e6be00 100644
+> > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > @@ -55,13 +55,13 @@
+> >  /* CSIS common control */
+> >  #define MIPI_CSIS_CMN_CTRL			0x04
+> >  #define MIPI_CSIS_CMN_CTRL_UPDATE_SHADOW	BIT(16)
+> > -#define MIPI_CSIS_CMN_CTRL_INTER_MODE		BIT(10)
+> > +#define MIPI_CSIS_CMN_CTRL_INTERLEAVE_MODE_NONE	(0 << 10)
+> > +#define MIPI_CSIS_CMN_CTRL_INTERLEAVE_MODE_DT	(1 << 10)
+> 
+> BIT(10)?
 
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+INTERLAVE_MODE is a 2-bit field. I'm working on a series that add
+support for the VC interleave mode, which has value 2. I'll however drop
+this change and keep BIT(10) for now, as the commit message doesn't
+explain why this has been modified.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index 948b88cf5e9d..ca7ec1bb4be5 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -2046,6 +2046,10 @@ hdmi_blk_ctrl: blk-ctrl@32fc0000 {
- 						     "pai", "pvi", "trng",
- 						     "hdmi-tx", "hdmi-tx-phy",
- 						     "hdcp", "hrv";
-+				interconnects = <&noc IMX8MP_ICM_HRV &noc IMX8MP_ICN_HDMI>,
-+						<&noc IMX8MP_ICM_LCDIF_HDMI &noc IMX8MP_ICN_HDMI>,
-+						<&noc IMX8MP_ICM_HDCP &noc IMX8MP_ICN_HDMI>;
-+				interconnect-names = "hrv", "lcdif-hdmi", "hdcp";
- 				#power-domain-cells = <1>;
- 			};
- 
+> > +#define MIPI_CSIS_CMN_CTRL_LANE_NUMBER(n)	((n) << 8)
+> > +#define MIPI_CSIS_CMN_CTRL_LANE_NUMBER_MASK	(3 << 8)
+> 
+> GEN_MASK() is better here, And below other registers.
+
+It is, but I wanted this patch to focus on the renames. I actually have
+a patch in my branch to switch to GENMASK for all masks, I will add it
+to the next version of this series.
+
+> >  #define MIPI_CSIS_CMN_CTRL_UPDATE_SHADOW_CTRL	BIT(2)
+> > -#define MIPI_CSIS_CMN_CTRL_RESET		BIT(1)
+> > -#define MIPI_CSIS_CMN_CTRL_ENABLE		BIT(0)
+> > -
+> > -#define MIPI_CSIS_CMN_CTRL_LANE_NR_OFFSET	8
+> > -#define MIPI_CSIS_CMN_CTRL_LANE_NR_MASK		(3 << 8)
+> > +#define MIPI_CSIS_CMN_CTRL_SW_RESET		BIT(1)
+> > +#define MIPI_CSIS_CMN_CTRL_CSI_EN		BIT(0)
+> >
+> >  /* CSIS clock control */
+> ...
+
 -- 
-2.39.5
+Regards,
 
+Laurent Pinchart
