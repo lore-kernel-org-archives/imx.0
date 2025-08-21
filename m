@@ -1,312 +1,116 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8396284B33
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 09:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2602C270572
+	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 09:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755766893; cv=none; b=diplfcvydg6JEZ9WD9qAdCmixi3XzWdoouCFWiiDcfTUwU8pJ7z1r5kPKajAlEKfUcQj4eoa8swDLHfHP9I0v3uMxvCD+cguaeVocJFrgivThJ0YZsGlZzhmvWV4IwOvHwDrz0V1fBldsg7pxn70Yj/4SAPP8m/Ewto/NFfvyIM=
+	t=1755766968; cv=none; b=L39b2YVahgRo5o+kO3D+r3PSPF4ZV6Gj8wp/mF5dZ02MtEz/VuWksWWohTzmR8JyJhRe3pFRwyxs4ZPUvBJao31eCd4HndApdSD+lBVrQ3P/EUs+6nQwg5JMpHaND+qwiGiYnemGvfgH2mOxZcDMtai+/seh7dDmojkvlGaLUa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755766893; c=relaxed/simple;
-	bh=43VjtKOxxXNDPkLZNHUOkeHBaoI742+CHnEyUgUavCo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rwl5QGBXOABoST6yjoegKeLLL/3V8zLjd6pfd8MIBS5sxEojWBc1nUkOGz+9iaSQiJpnOVlMn2A6CEjTCfxR3NaFHg6IuwMksseKY4k4QQntVdBaO07RtLP44vDAKPAfkN9AqvsbE4F7lTHbK0WLQln59cnUhrfjq1lu9+QXFDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OrtnXA92; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1755766968; c=relaxed/simple;
+	bh=iOER0SlM9iKv390OJzvBl4AQp6k4sk6gz7YFRbMoeRI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GtUDJDaiGOUxSDDi0miSXJV1P6OcSa+3/84OHo+T/WVSEfUoF9L/02M4qcDzGbqRjgsr0NzaSSZfGmXplyaExV4moHenEJMpDI8o3aEwWm8rZUa8gL4dJ7d5pxE+U0eg/2SJ/Tuxm1FHsiAZ/WNzOJuj9eMBi7dhCEmD8D0eupw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=fvbApd/r; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OrtnXA92"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55ce5097493so651804e87.0
-        for <imx@lists.linux.dev>; Thu, 21 Aug 2025 02:01:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755766890; x=1756371690; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HJiLgdHWROqB12Hg/2IJvH+nEqITMBBgtAb49NceKgg=;
-        b=OrtnXA92Whl0khEsm56GMjG1WcMiSsfK2vkH3ecHKHhyOzzICRcM5Yc0HjsHlfy5kf
-         BGO2q+DH2pup9u6gDk47ICSzArruM/JKPPdIlSc8ddF/gwHAL2N12V6LSShwE1wQEvqL
-         7uGwbQqVi5SBYFQXvQiHzCYSCQCYfzsUCNZmXkApIhzlKD0NdvwMCS79PT/lHtGZTMtj
-         DojBW7e9yMS3+f/iUdP5FpyNkTuqQ4l/+GHDdpBQEpOHVYhyksiaAbv7z8KnuKIVS1XD
-         Gak2dXeMGTwTqotbMiG+U6hWBl4giKsaZSp1cP60KX2IRIEKa2lzZ5CUoGVDgTJAmGX4
-         ZUAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755766890; x=1756371690;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HJiLgdHWROqB12Hg/2IJvH+nEqITMBBgtAb49NceKgg=;
-        b=UXDO1TDx4P1Ipq698KkWNn22b1bGehNMle3GK10txiENjo7IBdYTqcEF9i+zvwKh52
-         9ca53TcO5itaKd7we/8K2UQ4uKurAZsI12UYEjDyALHSf5238X6qjTVLPPBVHt11XZxL
-         5ZcQxqNW1Kl9C8aWDiptQMnMdkoS7l5bzJqhwPBYzKVpwu+ZVPl3VLFhL5t/OSmIZcec
-         AgnTb4H26jcjco7ofIsFX6krHH2FQxAJmDi6EnTgDxzYx5+CD7cGKNnaMG4hlr2aZT2S
-         x0f4M7s+xHTDZCuXwhHnxBmB97ULhwfcIXv5YJ16O14W3sxXlk2N0kEOyDxdvnzcxVBI
-         snng==
-X-Forwarded-Encrypted: i=1; AJvYcCXlK4xXfF5UTBBRskJ1+GghV37wgqrx7I8UWSz9TnWTZonL/hkA92YYDziVK9/5S/pdcAo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzKu2FNUTrQwRLCJX95WXs2V/8Pb3gnKpGhxgiAQgv+yY1grglX
-	ICJOouq7SnIpgJ7JNRayrzLnFks2VPMxalkFQ324ZteQ5UaOlx6oydC7KMnBofV33WJLvAX+dsY
-	eDt094u0gPRXO3UiOGQ3kRD1DgUIQsDAALrDTE++0eg==
-X-Gm-Gg: ASbGnct7ZEm3r7Tn5+g+hpuayPtU73yNGprTC8QXbXUwjZu0D2ufnKS0Nf2JJIEUfDl
-	LCbuyXtcrHtW4VPPQJsxwLJYbpE6z+jeqodXzB39f3LfOwydSM1KOtXb1vKzmrp6A5jdtRO9vjl
-	zqhe11x8BfGlBsydpAJVmSyNGffoGHgtPpodJp0yhyKIJLxUoHEbjSLef0zmE2Ryp/RG7m8pkva
-	x990Eg=
-X-Google-Smtp-Source: AGHT+IFbJnnVhn06jfVroEMIzVme3igeJ9POu+bHevjfLshjHAvocCiAi05+NyAeJQCwMuLXL3VFXUrBLqRgHDUA23A=
-X-Received: by 2002:a05:651c:23c8:20b0:333:b9db:f998 with SMTP id
- 38308e7fff4ca-33549e41ff2mr4529661fa.1.1755766889647; Thu, 21 Aug 2025
- 02:01:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="fvbApd/r"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4c6y5F0LMbz9tXv;
+	Thu, 21 Aug 2025 11:02:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1755766961;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n6BOkbyAGtdvgUiMh/kKj7ZRKD/HbLjntfFa+ezIW/E=;
+	b=fvbApd/r5kcBywhJ0vUs5fAoOSamigpM4ZP0fsASAtCE1VeCQ4zMvjQZSIx93J4LKUNom9
+	QpFK/0TP1VlYxEvj7APkLg/XUVSJsUOQxvztaTBFGdpjvmSAVERBFG3LhZl84sKssJ6WY/
+	jzwSl4A7R1q+R7c0HXPEXP9akoT7JS5bKMq4CSz9FJlN/W7DPzJcH9wYkAT0SheLcdWR54
+	48VfiHLaJVopokeN8GmNWw5t2ki/lmTETQGSa1FGzuB9R5t4URnqul3CTQKYSHKwMzw3p4
+	Do4PEWu1QZrbFjXp5zC5dVfNt9SjU3Z9OjOD1Ii09+696vuWSBBaR6XUpbj6Fw==
+Message-ID: <1a25c41e-1139-41da-b056-50be47016138@mailbox.org>
+Date: Thu, 21 Aug 2025 10:59:49 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250818204420.794554-1-shenwei.wang@nxp.com> <20250818204420.794554-4-shenwei.wang@nxp.com>
-In-Reply-To: <20250818204420.794554-4-shenwei.wang@nxp.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 21 Aug 2025 11:01:17 +0200
-X-Gm-Features: Ac12FXzKbO7sUD26Sno_8xmcOgjEihVR1BbLvXDJUasi5_vpoZ4AnY5gKSX69DE
-Message-ID: <CACRpkdZq25n4gZSesV8z8zrBs6kqU1a8=vwVkPBwM+hFb9JKwg@mail.gmail.com>
-Subject: Re: [PATCH 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
-To: Shenwei Wang <shenwei.wang@nxp.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-imx@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] media: imx-jpeg: Fix JPEG encoder ready race condition
+To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>, linux-media@vger.kernel.org
+Cc: Fabio Estevam <festevam@gmail.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Mirela Rabulea <mirela.rabulea@nxp.com>,
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250820162938.209892-1-marek.vasut@mailbox.org>
+ <4a8531f9-801b-4744-8821-923961211199@oss.nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <4a8531f9-801b-4744-8821-923961211199@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: 657304f80e464479387
+X-MBO-RS-META: kf8p9grk6m41y7e848e8q7d7ugzz8s6y
 
-Hi Shenwei,
+On 8/21/25 9:06 AM, Ming Qian(OSS) wrote:
+> Hi Marek,
 
-thanks for your patch!
+Hi,
 
-On Mon, Aug 18, 2025 at 10:45=E2=80=AFPM Shenwei Wang <shenwei.wang@nxp.com=
-> wrote:
+> On 8/21/2025 12:29 AM, Marek Vasut wrote:
+>> [You don't often get email from marek.vasut@mailbox.org. Learn why 
+>> this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>>
+>> The current mxc_jpeg_job_ready() implementation works for JPEG decode
+>> side of this IP, it does not work at all for the JPEG encode side. The
+>> JPEG encode side does not change ctx->source_change at all, therefore
+>> the mxc_jpeg_source_change() always returns right away and the encode
+>> side somehow works.
+>>
+>> However, this is susceptible to a race condition between 
+>> mxc_jpeg_dec_irq()
+>> and mxc_jpeg_start_streaming(), where mxc_jpeg_start_streaming() might
+>> start decoding another frame before mxc_jpeg_dec_irq() indicates 
+>> completion
+>> of encoding of current frame. Add new state, MXC_JPEG_ENC_DONE, which is
+>> set in three locations, first when streaming starts to indicate the 
+>> encoder
+>> is ready to start processing a frame, second in mxc_jpeg_dec_irq() 
+>> when the
+>> encoder finishes encoding current frame, and third in 
+>> mxc_jpeg_dec_irq() in
+>> case of an error so the encoder can proceed with encoding another frame.
+>>
+>> Update mxc_jpeg_job_ready() to check whether the encoder is in this new
+>> MXC_JPEG_ENC_DONE state before reporting the encoder is ready to encode
+>> new frame.
+>>
+> 
+> The jpeg encoder and jpeg decoder are 2 different devices, so they won't
+> compete with each other.
 
-> On i.MX SoCs, the system may include two processors:
->         - An MCU running an RTOS
->         - An MPU running Linux
->
-> These processors communicate via the RPMSG protocol.
-> The driver implements the standard GPIO interface, allowing
-> the Linux side to control GPIO controllers which reside in
-> the remote processor via RPMSG protocol.
->
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+I know.
 
-Since this is a first RPMSG GPIO driver, I'd like if Bj=C3=B6rn and/or
-Mathieu have a look at it so I'm sure it is RPMSG-proper!
+> For encoder, we always want mxc_jpeg_job_ready() to return true.
 
-> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> index a437fe652dbc..2ce4e9b5225e 100644
-> --- a/drivers/gpio/Kconfig
-> +++ b/drivers/gpio/Kconfig
-> @@ -402,6 +402,17 @@ config GPIO_ICH
->
->           If unsure, say N.
->
-> +config GPIO_IMX_RPMSG
-> +       tristate "NXP i.MX SoC RPMSG GPIO support"
-> +       depends on IMX_REMOTEPROC && RPMSG && GPIOLIB
-> +       default IMX_REMOTEPROC
-> +       help
-> +         Say yes here to support the RPMSG GPIO functions on i.MX SoC ba=
-sed
-> +         platform.  Currently supported devices: i.MX7ULP, i.MX8ULP, i.M=
-X8x,
-> +         and i.MX9x.
-> +
-> +         If unsure, say N.
+For encoder, mxc_jpeg_job_ready() currently returns !ctx->source_change 
+, which is only set by decoder side of the driver. This seems wrong.
 
-This is sorted under memory-mapped GPIO, but it isn't.
-
-Create a new submenu:
-
-menu "RPMSG GPIO drivers"
-        depends on RPMSG
-
-And put it here as the first such driver.
-
-No need to have a dependency on RPMSG in the GPIO_IMX_RPMSG
-Kconfig entry after this.
-
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/bitops.h>
-
-bitops.h or just bits.h? Check which one you actually use.
-
-> +#include <linux/err.h>
-> +#include <linux/gpio/driver.h>
-> +#include <linux/imx_rpmsg.h>
-> +#include <linux/init.h>
-> +#include <linux/irqdomain.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm_qos.h>
-
-Are you really using pm_qos?
-
-> +#include <linux/rpmsg.h>
-> +#include <linux/virtio.h>
-> +#include <linux/workqueue.h>
-
-(...)
-
-> +struct imx_rpmsg_gpio_port {
-> +       struct gpio_chip gc;
-> +       struct irq_chip chip;
-
-This irqchip doesn't look very immutable.
-
-Look at other patches rewriting irqchips to be immutable
-and break this out to a static const struct irq_chip with
-IRQCHIP_IMMUTABLE set instead.
-
-> +static int imx_rpmsg_gpio_get(struct gpio_chip *gc, unsigned int gpio)
-> +{
-> +       struct imx_rpmsg_gpio_port *port =3D gpiochip_get_data(gc);
-> +       struct gpio_rpmsg_data *msg =3D NULL;
-> +       int ret;
-> +
-> +       mutex_lock(&port->info.lock);
-
-Please use guards for all the mutexes:
-
-#include <linux/cleanup.h>
-
-guard(mutex)(&port->info.lock);
-
-and it will be released as you exit the function.
-
-> +static int imx_rpmsg_gpio_direction_input(struct gpio_chip *gc,
-> +                                         unsigned int gpio)
-> +{
-> +       struct imx_rpmsg_gpio_port *port =3D gpiochip_get_data(gc);
-> +       struct gpio_rpmsg_data *msg =3D NULL;
-> +       int ret;
-> +
-> +       mutex_lock(&port->info.lock);
-
-Dito for all these instances.
-(Saves you a bunch of lines!)
-
-> +static void imx_rpmsg_irq_bus_lock(struct irq_data *d)
-> +{
-> +       struct imx_rpmsg_gpio_port *port =3D irq_data_get_irq_chip_data(d=
-);
-> +
-> +       mutex_lock(&port->info.lock);
-> +}
-
-Here you need to keep the classic mutex_lock() though,
-because of the irqchip locking abstraction helper.
-
-> +static struct irq_chip imx_rpmsg_irq_chip =3D {
-
-const
-
-> +       .irq_mask =3D imx_rpmsg_mask_irq,
-> +       .irq_unmask =3D imx_rpmsg_unmask_irq,
-> +       .irq_set_wake =3D imx_rpmsg_irq_set_wake,
-> +       .irq_set_type =3D imx_rpmsg_irq_set_type,
-> +       .irq_shutdown =3D imx_rpmsg_irq_shutdown,
-> +       .irq_bus_lock =3D imx_rpmsg_irq_bus_lock,
-> +       .irq_bus_sync_unlock =3D imx_rpmsg_irq_bus_sync_unlock,
-
-        .flags =3D IRQCHIP_IMMUTABLE,
-
-probably also:
-
-         GPIOCHIP_IRQ_RESOURCE_HELPERS,
-
-?
-
-I think you want to properly mark GPIO lines as used for
-IRQs!
-
-> +static int imx_rpmsg_gpio_to_irq(struct gpio_chip *gc, unsigned int gpio=
-)
-> +{
-> +       struct imx_rpmsg_gpio_port *port =3D gpiochip_get_data(gc);
-> +       int irq;
-> +
-> +       irq =3D irq_find_mapping(port->domain, gpio);
-> +       if (irq > 0) {
-> +               irq_set_chip_data(irq, port);
-> +               irq_set_chip_and_handler(irq, &port->chip, handle_level_i=
-rq);
-> +       }
-> +
-> +       return irq;
-> +}
-
-Ugh we try to to use custom to_irq() if we can...
-
-Do you have to?
-
-Can't you use
-select GPIOLIB_IRQCHIP
-and be inspired by other chips using the irqchip
-helper library?
-
-We almost always use that these days.
-
-> +       /* create an irq domain */
-> +       port->chip =3D imx_rpmsg_irq_chip;
-> +       port->chip.name =3D devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s-gp=
-io%d",
-> +                                        pltdata->rproc_name, port->idx);
-> +       port->dev =3D &pdev->dev;
-> +
-> +       irq_base =3D devm_irq_alloc_descs(&pdev->dev, -1, 0, IMX_RPMSG_GP=
-IO_PER_PORT,
-> +                                  numa_node_id());
-> +       if (irq_base < 0) {
-> +               dev_err(&pdev->dev, "Failed to alloc irq_descs\n");
-> +               return irq_base;
-> +       }
-> +
-> +       port->domain =3D irq_domain_create_legacy(of_node_to_fwnode(np),
-> +                                               IMX_RPMSG_GPIO_PER_PORT,
-> +                                               irq_base, 0,
-> +                                               &irq_domain_simple_ops, p=
-ort);
-> +       if (!port->domain) {
-> +               dev_err(&pdev->dev, "Failed to allocate IRQ domain\n");
-> +               return -EINVAL;
-> +       }
-
-This also looks unnecessarily custom.
-
-Try to use GPIOLIB_IRQCHIP.
-
-
-> +static struct platform_driver imx_rpmsg_gpio_driver =3D {
-> +       .driver =3D {
-> +               .name =3D "gpio-imx-rpmsg",
-> +               .of_match_table =3D imx_rpmsg_gpio_dt_ids,
-> +       },
-> +       .probe =3D imx_rpmsg_gpio_probe,
-> +};
-> +
-> +static int __init gpio_imx_rpmsg_init(void)
-> +{
-> +       return platform_driver_register(&imx_rpmsg_gpio_driver);
-> +}
-> +
-> +device_initcall(gpio_imx_rpmsg_init);
-
-No please just do:
-
-module_platform_driver(imx_rpmsg_gpio_driver);
-
-Fix up  these things to begin with and then we can
-look at details!
-
-Yours,
-Linus Walleij
+> And v4l2_m2m has ensured that there will be no race condition between
+> mxc_jpeg_dec_irq() and mxc_jpeg_start_streaming().
+> 
+> After v4l2_m2m_job_finish() is called in the mxc_jpeg_dec_irq(),
+> then it is possible to start encoding the next frame.
+This part would be true if the IRQ function couldn't be called by 
+anything except end of configuration or end of encoding, but it can be 
+triggered by other things, like AXI READ error IRQ.
