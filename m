@@ -1,171 +1,392 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491ED32BF4D
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 13:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFCD2EC542
+	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 13:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755782503; cv=none; b=S7lGrYRkuS2CdPamcwZBfeZfGm2qO3z7/CecAHB7iD9YmhAEEADI/hlKT0L0y466nfcII3ajJEwGcosAG4/B57ZBwrunwp9410l2gMAgCDSSJ/uBrCvlTQi6jRLhlCnf63z4m4DBUpHbGcv+8Te511z3gsR2GzX6esmEAtmjmDk=
+	t=1755784312; cv=none; b=eMYNnhtsW9/XThHQG2h88vfUDF3FOnxe/FbL01o11ytBKkjeKNHCEZoH4d2rWXvxt51m7SV7C+FmEAzgJ6Wh+JGsHHQ0pAS0ewNBss8F3Jdot15minZhcneByW9WL+//0eT57rlxvUJshr1hXLWE4RxDCV/tr8tWc7uCd90UI1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755782503; c=relaxed/simple;
-	bh=W8oIlS2h1YPSW2RCaPjV5TA/bkt4+gglZE1HOsmlJjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H83gjLOufvP5NcdEfq0/JwBq09byg5qpN/vVYD6C3S91YtGN+Eg3SdjzQfbc9QhnLglhk/7/HGCziFEdqSLpQ3AXGfRSvCJpJzbpqf6gVhEEFVUvh1g4AQWS7c1higDHY/s3RUXgIn9MATZsGcvxO+jxoawp0RwnEyNUMRjSjFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1up5ER-0000UN-IZ; Thu, 21 Aug 2025 15:21:31 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1up5EP-001Q3r-0n;
-	Thu, 21 Aug 2025 15:21:29 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1up5EP-0082gA-0L;
-	Thu, 21 Aug 2025 15:21:29 +0200
-Date: Thu, 21 Aug 2025 15:21:29 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	s=arc-20240116; t=1755784312; c=relaxed/simple;
+	bh=zkqErrvv+wDH7BaphH3gZ0s60p5go2t61ZS8R7ytl4U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R0X/PYzb/KwxTudXtxrPBQZ1pzURNJRwzxBR52dLn7Q/RqhHiKlt4+rvNaQjv+8ffx3MKaNwjlL/dDVr/NWyVEpfFzqi9HLupO9UcecOAB/U8C5jDzhr2Ypgi+3HP2Hw2IS6rcJ0AriiLNQDwud5Qj774nb0E/539wapATD4csk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=DS5ITwgL; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="DS5ITwgL"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 3A175C7B;
+	Thu, 21 Aug 2025 15:50:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755784248;
+	bh=zkqErrvv+wDH7BaphH3gZ0s60p5go2t61ZS8R7ytl4U=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DS5ITwgLGz/sxvYg/cDap/s0iIDvU/MNzfzsTs00VB2ud5swQWHLGT3XlWQFhohl4
+	 8WhxVWHfyohFua6uazPnxN9y4cOb69AoUK2WLKRxgVkYmcZ9Qc9z8HpYGO30ypJcmG
+	 +vR21Ay1H488d4tGe0TYjVhnB9u1/62+BtvbiCrE=
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: linux-media@vger.kernel.org
+Cc: Guoniu Zhou <guoniu.zhou@nxp.com>,
+	Christian Hemp <c.hemp@phytec.de>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	Frank Li <frank.li@nxp.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Varun Sethi <V.Sethi@nxp.com>,
-	Sahil Malhotra <sahil.malhotra@nxp.com>
-Subject: Re: [EXT] Re: [PATCH v18 3/7] firmware: imx: add driver for NXP
- EdgeLock Enclave
-Message-ID: <20250821132129.hwnnqdagalvxw2uk@pengutronix.de>
-References: <AM9PR04MB8604611B8D91B5526C9704E69545A@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <20250627084653.6vgwnm3llf3zknlp@pengutronix.de>
- <b02055bb-0995-4fd8-99f3-4ca5146eedd4@kontron.de>
- <20250630121722.wviidlggt7hguyt7@pengutronix.de>
- <087b8689-7443-4720-a94c-160edd31a5da@kontron.de>
- <AM9PR04MB8604C05882605EDB4913DA089549A@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <20250714094124.e6fnkrocnqagbm22@pengutronix.de>
- <AM9PR04MB8604EFCC5400DEBB7DF0CF49952DA@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <20250806132701.fouikyuqtzdsxqwh@pengutronix.de>
- <AM9PR04MB8604A636762E81DF9EA9A9B89532A@AM9PR04MB8604.eurprd04.prod.outlook.com>
+	Frank Li <Frank.Li@nxp.com>,
+	Jacopo Mondi <jacopo@jmondi.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stefan Riedmueller <s.riedmueller@phytec.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	imx@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] media: nxp: imx8-isi: m2m: Fix streaming cleanup on release
+Date: Thu, 21 Aug 2025 16:51:22 +0300
+Message-ID: <20250821135123.29462-1-laurent.pinchart@ideasonboard.com>
+X-Mailer: git-send-email 2.49.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AM9PR04MB8604A636762E81DF9EA9A9B89532A@AM9PR04MB8604.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
 
-On 25-08-21, Pankaj Gupta wrote:
-> 
-> 
-> > On 25-08-06, Pankaj Gupta wrote:
-> > > > On 25-07-09, Pankaj Gupta wrote:
-> > > > > > Am 30.06.25 um 14:17 schrieb Marco Felsch:
-> > 
-> > ...
-> > 
-> > > > Lockdown: For a verified boot setup you need to burn an eFuse at
-> > > > some
-> > > point,
-> > > > to tell the bootROM to boot only correct verified firmware images.
-> > > >
-> > > > After this lockdown it's no longer possible to burn eFuses from the
-> > > > REE
-> > > albeit
-> > > > the production line setup still requires the support.
-> > > >
-> > > Understood. ELE access from both secure and non-secure world is fixed
-> > > in Q3 release.
-> > > User can be able to modify eFuses via OPTEE.
-> > 
-> > Splitting the read and write between two drivers is even worse.
-> 
-> This could be use-case dependent. Depends on how customer will deploy its
-> solution.
+From: Guoniu Zhou <guoniu.zhou@nxp.com>
 
-I don't get this. You introduce even more segmentation if the read-path
-uses another driver than the write-path and if this is optional.
+If streamon/streamoff calls are imbalanced, such as when exiting an
+application with Ctrl+C when streaming, the m2m usage_count will never
+reach zero and the ISI channel won't be freed. Besides from that, if the
+input line width is more than 2K, it will trigger a WARN_ON():
 
-> > Can you please point out why you can't just move the driver parts into the
-> > tee? I do see many advantages if only op-tee is used:
-> 
-> The ELE's KEY derivation function takes account of world from where, the
-> operations are requested.
-> - The key derived from secure world and from non-secure world will be
-> different.
+[ 59.222120] ------------[ cut here ]------------
+[ 59.226758] WARNING: drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c:631 at mxc_isi_channel_chain+0xa4/0x120, CPU#4: v4l2-ctl/654
+[ 59.238569] Modules linked in: ap1302
+[ 59.242231] CPU: 4 UID: 0 PID: 654 Comm: v4l2-ctl Not tainted 6.16.0-rc4-next-20250704-06511-gff0e002d480a-dirty #258 PREEMPT
+[ 59.253597] Hardware name: NXP i.MX95 15X15 board (DT)
+[ 59.258720] pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 59.265669] pc : mxc_isi_channel_chain+0xa4/0x120
+[ 59.270358] lr : mxc_isi_channel_chain+0x44/0x120
+[ 59.275047] sp : ffff8000848c3b40
+[ 59.278348] x29: ffff8000848c3b40 x28: ffff0000859b4c98 x27: ffff800081939f00
+[ 59.285472] x26: 000000000000000a x25: ffff0000859b4cb8 x24: 0000000000000001
+[ 59.292597] x23: ffff0000816f4760 x22: ffff0000816f4258 x21: ffff000084ceb780
+[ 59.299720] x20: ffff000084342ff8 x19: ffff000084340000 x18: 0000000000000000
+[ 59.306845] x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffffdb369e1c
+[ 59.313969] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[ 59.321093] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+[ 59.328217] x8 : ffff8000848c3d48 x7 : ffff800081930b30 x6 : ffff800081930b30
+[ 59.335340] x5 : ffff0000859b6000 x4 : ffff80008193ae80 x3 : ffff800081022420
+[ 59.342464] x2 : ffff0000852f6900 x1 : 0000000000000001 x0 : ffff000084341000
+[ 59.349590] Call trace:
+[ 59.352025]  mxc_isi_channel_chain+0xa4/0x120 (P)
+[ 59.356722]  mxc_isi_m2m_streamon+0x160/0x20c
+[ 59.361072]  v4l_streamon+0x24/0x30
+[ 59.364556]  __video_do_ioctl+0x40c/0x4a0
+[ 59.368560]  video_usercopy+0x2bc/0x690
+[ 59.372382]  video_ioctl2+0x18/0x24
+[ 59.375857]  v4l2_ioctl+0x40/0x60
+[ 59.379168]  __arm64_sys_ioctl+0xac/0x104
+[ 59.383172]  invoke_syscall+0x48/0x104
+[ 59.386916]  el0_svc_common.constprop.0+0xc0/0xe0
+[ 59.391613]  do_el0_svc+0x1c/0x28
+[ 59.394915]  el0_svc+0x34/0xf4
+[ 59.397966]  el0t_64_sync_handler+0xa0/0xe4
+[ 59.402143]  el0t_64_sync+0x198/0x19c
+[ 59.405801] ---[ end trace 0000000000000000 ]---
 
-Which is correct and no reason for not having an OP-TEE only solution.
+Address this issue by moving the streaming preparation and cleanup to
+the vb2 .prepare_streaming() and .unprepare_streaming() operations. This
+also simplifies the driver by allowing direct usage of the
+v4l2_m2m_ioctl_streamon() and v4l2_m2m_ioctl_streamoff() helpers.
 
-> There are different use-case for ELE accesses from both the worlds.
->
-> Using OPTEE ELE driver for Linux specific ELE-HSM requests, it will add
-> significant overhead.
->
-> Usecases like Transparent TLS offload while securing the secrets in HSM,
-> would incur additional overhead.
+Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+Co-developed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+---
+ .../platform/nxp/imx8-isi/imx8-isi-m2m.c      | 224 +++++++-----------
+ 1 file changed, 92 insertions(+), 132 deletions(-)
 
-Of course, the ELE communication itself will be faster if Linux
-communicates directly with the ELE instead of going through OP-TEE.
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+index 6bdd13b3048f..a8b10d944d69 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+@@ -43,7 +43,6 @@ struct mxc_isi_m2m_ctx_queue_data {
+ 	struct v4l2_pix_format_mplane format;
+ 	const struct mxc_isi_format_info *info;
+ 	u32 sequence;
+-	bool streaming;
+ };
+ 
+ struct mxc_isi_m2m_ctx {
+@@ -236,6 +235,65 @@ static void mxc_isi_m2m_vb2_buffer_queue(struct vb2_buffer *vb2)
+ 	v4l2_m2m_buf_queue(ctx->fh.m2m_ctx, vbuf);
+ }
+ 
++static int mxc_isi_m2m_vb2_prepare_streaming(struct vb2_queue *q)
++{
++	struct mxc_isi_m2m_ctx *ctx = vb2_get_drv_priv(q);
++	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
++	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
++	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
++	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
++	struct mxc_isi_m2m *m2m = ctx->m2m;
++	int ret;
++
++	guard(mutex)(&m2m->lock);
++
++	if (m2m->usage_count == INT_MAX)
++		return -EOVERFLOW;
++
++	/*
++	 * Acquire the pipe and initialize the channel with the first user of
++	 * the M2M device.
++	 */
++	if (m2m->usage_count == 0) {
++		bool bypass = cap_pix->width == out_pix->width &&
++			      cap_pix->height == out_pix->height &&
++			      cap_info->encoding == out_info->encoding;
++
++		ret = mxc_isi_channel_acquire(m2m->pipe,
++					      &mxc_isi_m2m_frame_write_done,
++					      bypass);
++		if (ret)
++			return ret;
++
++		mxc_isi_channel_get(m2m->pipe);
++	}
++
++	m2m->usage_count++;
++
++	/*
++	 * Allocate resources for the channel, counting how many users require
++	 * buffer chaining.
++	 */
++	if (!ctx->chained && out_pix->width > MXC_ISI_MAX_WIDTH_UNCHAINED) {
++		ret = mxc_isi_channel_chain(m2m->pipe);
++		if (ret)
++			goto err_deinit;
++
++		m2m->chained_count++;
++		ctx->chained = true;
++	}
++
++	return 0;
++
++err_deinit:
++	if (--m2m->usage_count == 0) {
++		mxc_isi_channel_put(m2m->pipe);
++		mxc_isi_channel_release(m2m->pipe);
++	}
++
++	return ret;
++}
++
+ static int mxc_isi_m2m_vb2_start_streaming(struct vb2_queue *q,
+ 					   unsigned int count)
+ {
+@@ -265,13 +323,44 @@ static void mxc_isi_m2m_vb2_stop_streaming(struct vb2_queue *q)
+ 	}
+ }
+ 
++static void mxc_isi_m2m_vb2_unprepare_streaming(struct vb2_queue *q)
++{
++	struct mxc_isi_m2m_ctx *ctx = vb2_get_drv_priv(q);
++	struct mxc_isi_m2m *m2m = ctx->m2m;
++
++	guard(mutex)(&m2m->lock);
++
++	/*
++	 * If the last context is this one, reset it to make sure the device
++	 * will be reconfigured when streaming is restarted.
++	 */
++	if (m2m->last_ctx == ctx)
++		m2m->last_ctx = NULL;
++
++	/* Free the channel resources if this is the last chained context. */
++	if (ctx->chained && --m2m->chained_count == 0)
++		mxc_isi_channel_unchain(m2m->pipe);
++	ctx->chained = false;
++
++	/* Turn off the light with the last user. */
++	if (--m2m->usage_count == 0) {
++		mxc_isi_channel_disable(m2m->pipe);
++		mxc_isi_channel_put(m2m->pipe);
++		mxc_isi_channel_release(m2m->pipe);
++	}
++
++	WARN_ON(m2m->usage_count < 0);
++}
++
+ static const struct vb2_ops mxc_isi_m2m_vb2_qops = {
+ 	.queue_setup		= mxc_isi_m2m_vb2_queue_setup,
+ 	.buf_init		= mxc_isi_m2m_vb2_buffer_init,
+ 	.buf_prepare		= mxc_isi_m2m_vb2_buffer_prepare,
+ 	.buf_queue		= mxc_isi_m2m_vb2_buffer_queue,
++	.prepare_streaming	= mxc_isi_m2m_vb2_prepare_streaming,
+ 	.start_streaming	= mxc_isi_m2m_vb2_start_streaming,
+ 	.stop_streaming		= mxc_isi_m2m_vb2_stop_streaming,
++	.unprepare_streaming	= mxc_isi_m2m_vb2_unprepare_streaming,
+ };
+ 
+ static int mxc_isi_m2m_queue_init(void *priv, struct vb2_queue *src_vq,
+@@ -481,135 +570,6 @@ static int mxc_isi_m2m_s_fmt_vid(struct file *file, void *fh,
+ 	return 0;
+ }
+ 
+-static int mxc_isi_m2m_streamon(struct file *file, void *fh,
+-				enum v4l2_buf_type type)
+-{
+-	struct mxc_isi_m2m_ctx *ctx = file_to_isi_m2m_ctx(file);
+-	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
+-	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
+-	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
+-	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
+-	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
+-	struct mxc_isi_m2m *m2m = ctx->m2m;
+-	int ret;
+-
+-	if (q->streaming)
+-		return 0;
+-
+-	mutex_lock(&m2m->lock);
+-
+-	if (m2m->usage_count == INT_MAX) {
+-		ret = -EOVERFLOW;
+-		goto unlock;
+-	}
+-
+-	/*
+-	 * Acquire the pipe and initialize the channel with the first user of
+-	 * the M2M device.
+-	 */
+-	if (m2m->usage_count == 0) {
+-		bool bypass = cap_pix->width == out_pix->width &&
+-			      cap_pix->height == out_pix->height &&
+-			      cap_info->encoding == out_info->encoding;
+-
+-		ret = mxc_isi_channel_acquire(m2m->pipe,
+-					      &mxc_isi_m2m_frame_write_done,
+-					      bypass);
+-		if (ret)
+-			goto unlock;
+-
+-		mxc_isi_channel_get(m2m->pipe);
+-	}
+-
+-	m2m->usage_count++;
+-
+-	/*
+-	 * Allocate resources for the channel, counting how many users require
+-	 * buffer chaining.
+-	 */
+-	if (!ctx->chained && out_pix->width > MXC_ISI_MAX_WIDTH_UNCHAINED) {
+-		ret = mxc_isi_channel_chain(m2m->pipe);
+-		if (ret)
+-			goto deinit;
+-
+-		m2m->chained_count++;
+-		ctx->chained = true;
+-	}
+-
+-	/*
+-	 * Drop the lock to start the stream, as the .device_run() operation
+-	 * needs to acquire it.
+-	 */
+-	mutex_unlock(&m2m->lock);
+-	ret = v4l2_m2m_ioctl_streamon(file, fh, type);
+-	if (ret) {
+-		/* Reacquire the lock for the cleanup path. */
+-		mutex_lock(&m2m->lock);
+-		goto unchain;
+-	}
+-
+-	q->streaming = true;
+-
+-	return 0;
+-
+-unchain:
+-	if (ctx->chained && --m2m->chained_count == 0)
+-		mxc_isi_channel_unchain(m2m->pipe);
+-	ctx->chained = false;
+-
+-deinit:
+-	if (--m2m->usage_count == 0) {
+-		mxc_isi_channel_put(m2m->pipe);
+-		mxc_isi_channel_release(m2m->pipe);
+-	}
+-
+-unlock:
+-	mutex_unlock(&m2m->lock);
+-	return ret;
+-}
+-
+-static int mxc_isi_m2m_streamoff(struct file *file, void *fh,
+-				 enum v4l2_buf_type type)
+-{
+-	struct mxc_isi_m2m_ctx *ctx = file_to_isi_m2m_ctx(file);
+-	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
+-	struct mxc_isi_m2m *m2m = ctx->m2m;
+-
+-	v4l2_m2m_ioctl_streamoff(file, fh, type);
+-
+-	if (!q->streaming)
+-		return 0;
+-
+-	mutex_lock(&m2m->lock);
+-
+-	/*
+-	 * If the last context is this one, reset it to make sure the device
+-	 * will be reconfigured when streaming is restarted.
+-	 */
+-	if (m2m->last_ctx == ctx)
+-		m2m->last_ctx = NULL;
+-
+-	/* Free the channel resources if this is the last chained context. */
+-	if (ctx->chained && --m2m->chained_count == 0)
+-		mxc_isi_channel_unchain(m2m->pipe);
+-	ctx->chained = false;
+-
+-	/* Turn off the light with the last user. */
+-	if (--m2m->usage_count == 0) {
+-		mxc_isi_channel_disable(m2m->pipe);
+-		mxc_isi_channel_put(m2m->pipe);
+-		mxc_isi_channel_release(m2m->pipe);
+-	}
+-
+-	WARN_ON(m2m->usage_count < 0);
+-
+-	mutex_unlock(&m2m->lock);
+-
+-	q->streaming = false;
+-
+-	return 0;
+-}
+-
+ static const struct v4l2_ioctl_ops mxc_isi_m2m_ioctl_ops = {
+ 	.vidioc_querycap		= mxc_isi_m2m_querycap,
+ 
+@@ -630,8 +590,8 @@ static const struct v4l2_ioctl_ops mxc_isi_m2m_ioctl_ops = {
+ 	.vidioc_prepare_buf		= v4l2_m2m_ioctl_prepare_buf,
+ 	.vidioc_create_bufs		= v4l2_m2m_ioctl_create_bufs,
+ 
+-	.vidioc_streamon		= mxc_isi_m2m_streamon,
+-	.vidioc_streamoff		= mxc_isi_m2m_streamoff,
++	.vidioc_streamon		= v4l2_m2m_ioctl_streamon,
++	.vidioc_streamoff		= v4l2_m2m_ioctl_streamoff,
+ 
+ 	.vidioc_subscribe_event		= v4l2_ctrl_subscribe_event,
+ 	.vidioc_unsubscribe_event	= v4l2_event_unsubscribe,
 
-But to be honest I don't think that the ELE usage itself is much faster
-than using OP-TEE and the ARMv8 Crypto-Extensions.
-
-For the ELE you need to:
- - setup the context (incl. the message and all mailbox mechanism)
- - wait for the ELE to be accessible (only one ELE, only one
-   normal-world MU).
- - transfered the messages to/from the ELE
- - the ELE processing should be equal to the CPU processing time
-
-(Side note: What is the ELE behavior if the secure-world stresses the
-ELE? Is there a MU priority so the normal-world MU may get blocked
-(never addressed) or are both MUs scheduled in round-robin?)
-
-For OP-TEE you need to:
- - setup the context
- - switch the CPU mode
- - make use of ARMv8 Crypte-Extensions
-
-On i.MX8M, which uses the CAAM (the ELE predecessor), we can verify that
-the ARMv8 crypto extensions are much faster than the crypto-engine
-itself. Therefore the CAAM is mostly unused.
-
-Are there measurements/application-notes that show that the usage of the
-ELE is more performant than using the crypto-extensions?
-
-> IOT-cases where real-time encrypted feed from sensors, will take latency
-> hit.
-
-Does the ELE support inline en-/decryption? If not, I don't think so.
-
-The data needs to be read from the CPU first, afterwards it needs to be
-prepared for the ELE and transfered to/from the ELE. Also there is just
-a single ELE with a single normal-world MU, so you need to handle
-concurrent access if there are multiple ELE-users
-(sensor+tls-offloading).
-
-If CPU is used, the data still needs to be read from the communication
-interface but afterwards doesn't need to be passed to another IP. Also
-there are multiple CPUs.
-
+base-commit: a75b8d198c55e9eb5feb6f6e155496305caba2dc
+prerequisite-patch-id: 9581e075a75aef4b16218280c8dd5788840fad41
+prerequisite-patch-id: 74bfb3e362032eae530395b10471ad86175fe592
+prerequisite-patch-id: 6c7220d0c283111ab3027086f6ce2d17447e5d07
+prerequisite-patch-id: ebefea609f3bd3aacb344701c9971afef5be48ad
+-- 
 Regards,
-  Marco
+
+Laurent Pinchart
+
