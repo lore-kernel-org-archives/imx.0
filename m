@@ -1,106 +1,124 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640691EB5FE
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 16:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAF0308F02;
+	Thu, 21 Aug 2025 17:19:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755794559; cv=none; b=cq9WSskJM9ZUQq9qv7B6rcgEqjEWzTImuqZp5y65ZqIyWxHtjpiV47iDCvZ1RebNicnb6vl03rdKB2j5b3uT16c3bucDxicjaOQt9ttgjixzoc3YU/KrpHqmWIyJXqc0lxDhsan53Jx0a0YJKCsjmvvI6v44IT/o4YUpL5s7BaU=
+	t=1755796786; cv=none; b=hAfJKYu52rce76YhhTCM3gyeamsxuhTbz/L7Sj6n0ScHBRmH+efpwTkC6ZqVZebeQaXXq1vuz7j+gtGe/644q5Wvutsh91PsY6KlE16VzAs2nPdEaS4TMZd9rFs3IPtgzWZ69PeJ3Jq36ulJfwA5JLbTWkkzaobSwLbLdgVsYeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755794559; c=relaxed/simple;
-	bh=mz/fzJfmTWZ3LEOoonwuE3DtZoZyUjRc0Upb01ff0/s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pkaW/vQw51xBBOmcYJ4bU4qLCWWEFXGBwcjaVXFQMWa747gN9TcTzXCCDFQu1BAIPn0NEPT+H4RpO4wsqra0fh5QxyjINeXJDFiZjETNaEfNz9CrlHyuVzefQg20/Cdy4K95xrKJ5xNCUzOhWu0sc5zAstTjcnBtTd3fzDugTxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=UkVD6LzP; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1755796786; c=relaxed/simple;
+	bh=IkEM90j9AB9fEVUaubBHggr7J8lF+yeDnZnqMajK8Pc=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=O+SA8dYAb3kEv8h4IcuEjI+re+qOymXHwA8vJ6EBzTegG+Oe1Ab5WGcvAvvR4mBJTEy7NY168TBygx6Co68z+bu+lkAPPC9Ys4nofQNTmDJje9hVNYvuyNISvVck3aWj/QvPYDa9+ZKJDfLtzc4TsDh+nWPLe3rS1cLYTuD+o7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XlLnFvpg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="UkVD6LzP"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 90996250;
-	Thu, 21 Aug 2025 18:41:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755794495;
-	bh=mz/fzJfmTWZ3LEOoonwuE3DtZoZyUjRc0Upb01ff0/s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UkVD6LzPl7FviU9HWcFXl+NqtHgD8s/cXbhJhTU0pUpl9UP78ZfzW6Z0AA/9CEj9S
-	 lrPPftwEJ2KHqe7VOKaJjxgmATDyX92cRxpcokCc6ic9cxPZ8zA4sUckubRjexP6LW
-	 LXI5VgowhlmEXMyFB2eGzm84WdvPUJ+LQ3tcOR54=
-Date: Thu, 21 Aug 2025 19:42:11 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: linux-media@vger.kernel.org, Isaac Scott <isaac.scott@ideasonboard.com>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 12/12] arm64: dts: imx8mp: Specify the number of
- channels for CSI-2 receivers
-Message-ID: <20250821164211.GC29629@pendragon.ideasonboard.com>
-References: <20250821000944.27849-1-laurent.pinchart@ideasonboard.com>
- <20250821000944.27849-13-laurent.pinchart@ideasonboard.com>
- <aKdCp9INuUeQVFbV@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XlLnFvpg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCE3C4CEF4;
+	Thu, 21 Aug 2025 17:19:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755796786;
+	bh=IkEM90j9AB9fEVUaubBHggr7J8lF+yeDnZnqMajK8Pc=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=XlLnFvpguszjxbVQMQmmvQr18rAXlaCwrmPQn1BBthnaf0Nii2oICZx8GgMZoyu7W
+	 R0IPqBkYfHW5JpotaqQ7fLDwbei2ttpwVs0fYw2pVoKfCV+PtUeXTyKEk6W+w1ydcn
+	 1MJXg7djUXA7jlGcIlRY0VNEoyP3bdPw+GLzaI7qGgqJKhtYdzU8N6JwFAJoLHKG9B
+	 +xq0M2ZhC2DypCTCExctIizJyiol05dA+8wzxrd4ShgWCtYb5InkldWB40j/4gBCws
+	 06G+PJcgTbD8TPYrBul2rWtYDNolXOQm8jAott4kr8FYeioXsNJqu3wI0TY6T10IGw
+	 3xmysks9SZIGw==
+Date: Thu, 21 Aug 2025 12:19:45 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aKdCp9INuUeQVFbV@lizhi-Precision-Tower-5810>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ linux-kernel@vger.kernel.org, Neil Armstrong <neil.armstrong@linaro.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
+ Thomas Zimmermann <tzimmermann@suse.de>, Shawn Guo <shawnguo@kernel.org>, 
+ imx@lists.linux.dev, David Airlie <airlied@gmail.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Maxime Ripard <mripard@kernel.org>, 
+ dri-devel@lists.freedesktop.org, Simona Vetter <simona@ffwll.ch>, 
+ Sam Ravnborg <sam@ravnborg.org>, linux-arm-kernel@lists.infradead.org, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
+ Fabio Estevam <festevam@gmail.com>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+In-Reply-To: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
+References: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
+Message-Id: <175579643516.37357.10852050615304641702.robh@kernel.org>
+Subject: Re: [PATCH 0/5] arm64: dts: imx8mp-skov: add new 10" variant
 
-On Thu, Aug 21, 2025 at 12:00:39PM -0400, Frank Li wrote:
-> On Thu, Aug 21, 2025 at 03:09:44AM +0300, Laurent Pinchart wrote:
-> > The CSI-2 receivers in the i.MX8MP have 3 output channels. Specify this
-> > in the device tree, to enable support for more than one channel in
-> > drivers.
+
+On Thu, 21 Aug 2025 09:55:27 +0200, Steffen Trumtrar wrote:
+> Add a new board variant for the Skov i.MX8MP based family of boards.
 > 
-> dt descript hardware, not driver
-
-Yes, but the whole point is to make use of the information in drivers
-:-)
-
-I'll just drop the "in drivers" part.
-
-> Specify this to reflect actual hardware feature.
+> This variant uses a different 10" panel than the existing ones.
 > 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+> Steffen Trumtrar (5):
+>       dt-bindings: vendor-prefixes: Add JuTouch Technology Co, Ltd
+>       dt-bindings: display: simple: Add JuTouch JT101TM023 panel
+>       drm/panel: simple: add JuTouch JT101TM023
+>       dt-bindings: arm: fsl: add compatible for Skov i.MX8MP variant
+>       arm64: dts: imx8mp-skov: support new 10" panel board
 > 
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > index bb24dba7338e..1e52840078df 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > @@ -1764,6 +1764,7 @@ mipi_csi_0: csi@32e40000 {
-> >  				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_250M>,
-> >  							 <&clk IMX8MP_CLK_24M>;
-> >  				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_1>;
-> > +				fsl,num-channels = <3>;
-> >  				status = "disabled";
-> >
-> >  				ports {
-> > @@ -1799,6 +1800,7 @@ mipi_csi_1: csi@32e50000 {
-> >  				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_250M>,
-> >  							 <&clk IMX8MP_CLK_24M>;
-> >  				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_2>;
-> > +				fsl,num-channels = <3>;
-> >  				status = "disabled";
-> >
-> >  				ports {
+>  Documentation/devicetree/bindings/arm/fsl.yaml     |  1 +
+>  .../bindings/display/panel/panel-simple.yaml       |  2 +
+>  .../devicetree/bindings/vendor-prefixes.yaml       |  2 +
+>  arch/arm64/boot/dts/freescale/Makefile             |  1 +
+>  .../imx8mp-skov-revc-jutouch-jt101tm023.dts        | 79 ++++++++++++++++++++++
+>  drivers/gpu/drm/panel/panel-simple.c               | 35 ++++++++++
+>  6 files changed, 120 insertions(+)
+> ---
+> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+> change-id: 20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-9ef9faa75514
+> 
+> Best regards,
+> --
+> Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> 
+> 
+> 
 
--- 
-Regards,
 
-Laurent Pinchart
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: using specified base-commit 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de:
+
+arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt101tm023.dtb: touchscreen@2a (eeti,exc81w32): compatible: 'oneOf' conditional failed, one must be fixed:
+	['eeti,exc81w32'] is too short
+	'eeti,exc3000' was expected
+	'eeti,exc80h60' was expected
+	'eeti,exc80h84' was expected
+	from schema $id: http://devicetree.org/schemas/input/touchscreen/eeti,exc3000.yaml#
+
+
+
+
+
