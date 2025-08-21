@@ -1,265 +1,206 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010041.outbound.protection.outlook.com [52.101.69.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2C422B5AC
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 19:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755803740; cv=none; b=EElpg7B5PTK398zOduzc6go+Qyli0WdXxzR/c3vjFOLJIIDfCk0un/TEApOGkVVlko+20qjSqMHuqGYDv0fhyqP5JFEHq4Q3mNyNuZxTsC7WJiEmY5Z5S5PneB5EekFw2gysvTM4An/66VjEf6gvq5aj+b9bv5im4F1tRHQLkz8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755803740; c=relaxed/simple;
-	bh=VbRXV/w+zRkp8CEoIZHH0UlrY++GLjFUmifVxgiB8H4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n6iLsbZWQGiAJPhFT+pN4Qx5ElhwI4EzjguE/8wlIwrzGwZOa1YVb9/NV69J4CEieuSwwkGhFJu4cF7YsZxrfBUQcfaV7aSiixRBrS5FXz+v0SVxtB70UXqN4YnRzxqUqz41FSz+V5FPPtCoE5L/6x1nFc23x/u4kxUBJA0NmiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=msUqaaYr; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA30772634
+	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 19:32:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755804723; cv=fail; b=Ihe4gD2rxD5X9r6+BRXLbX7V0EjN6yvuI/5LqDa3fN7SbsZwA13LeyIR/u9f5/mgUbEmQTW+k/OsEWpDhVMe6/OUFPPOSUE6dX5EfQ5WWAgYlTdk9GS7SeMXkegGPQ2IEVD2Yx8zJg6CVwdj5TE1C0W6Twe5XaStutscw/b92j0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755804723; c=relaxed/simple;
+	bh=D3jJARsWv5yDvntYfcCVR84dhrzoP2Os8AShTbzlPqE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rYVf7MvtGuuUO4AVu1rcaEl9skBsfD9cwsC5fxRw9V+LOKt7bHc1woRYNewt+CHryRzgUWWaKcxqNWxeDVw2pqGxEgnNnmOSJMQI/QvCfuMxFR2BVdww/+dbqIaX9ZNNxNdLfj19GA18cfvlOKJl9pEOlrbpKbIXD4eQi+DIHlE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hYSJNLyV; arc=fail smtp.client-ip=52.101.69.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="msUqaaYr"
-Received: from ideasonboard.com (mob-5-90-51-28.net.vodafone.it [5.90.51.28])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id CF5B86DE;
-	Thu, 21 Aug 2025 21:14:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755803677;
-	bh=VbRXV/w+zRkp8CEoIZHH0UlrY++GLjFUmifVxgiB8H4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=msUqaaYruEimE5D3n3EC10gz/h0QsCY49TWEhRAoSnjSxyQkJdgrnqQCRfw3GyoWN
-	 UymvRwE2TKkVKIc9RHxYo0sayd5Wg6+lcf/hfTTiSVkk3aCg+ukxIfHu12snuAktm6
-	 i/aB3dQWRb7r3EqYGfTjjQcFh77cPgUwQ2tjnAN0=
-Date: Thu, 21 Aug 2025 21:15:33 +0200
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
-	linux-media@vger.kernel.org, Stefan Klug <stefan.klug@ideasonboard.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, Dafna Hirschfeld <dafna@fastmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH 3/6] media: rkisp1: Refactor clocks initialization
-Message-ID: <ektjfg6hcotmz2k3j3qbibweetgdq5guqsh7p46zv44lsdx365@rjbic3m2magc>
-References: <20250616011115.19515-1-laurent.pinchart@ideasonboard.com>
- <20250616011115.19515-4-laurent.pinchart@ideasonboard.com>
- <lmv4bhe2xf55ogmvzqcv4hrqwlzsyxaycg3u45ein4kppbnqxa@rw6gnoxydosq>
- <20250821190259.GD25098@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hYSJNLyV"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dVNXzlgK8pR0zK/t7kIzMIieoV2hcpVfz/kV1F/rGRQiBKoRhjPP/FiMD5qV7YJmvaDur3HtiTEPBYDaSYVvIwMe4X9wMN8FTpaDOW8eLmuTfcgxNHE3FTr0tVjdhc9XniCCiV25l2eJcfsYZXBkKdKxA7riIp5bH2/QcahFETFO/VPgHblgfVXWNlrgpnViFrywtdW2s2zZSfxuQeVGu/Xb5+XDE/DCWJwtXyXxeB8nQAzMbeyO7ZJajXfGai/Qe6n7d/4BqLWyjST1atO8Fr7Fvp/ykNqjGYdpM8zATrIny+xMuzFrNBIN4Xm43ssEB7gKWt0HM5Y3xkaKyJs4Sw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=csRJa47nXpRn8x999GPPBP0wWdRnWmDFXQNIeS8IJRE=;
+ b=GyIyIFbrNOnXMHRPjQZZAXoNPlqdhP+g3Wf/dqQBO57TyrX2NdTIy8GPxmQhyrteXdyDGu8IqYT++ujJYNa9qSVTWlx6XKCgbJq91GB8sRFckiWAYlVVK6pPcZxaZLmQVSI0MFMORJzCE4pHo6Vssc5DJRbLPeam36nLbTJCfBvV+0aREhHAnacPrLLjoVeNAcCHRGf9lRdDuXIqZoAaXXGL9swezw9/f+GcRBdTeP31S6AjKzAQD352bCAcUwK+aB3Hdfmbuutqlxr6LztSNbEPS79TkhUNv5EIeSD6Lg7tuaRXKwpbUWKwFNIUcGIVnrTYfT4aQeC6rpkQB4qRAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=csRJa47nXpRn8x999GPPBP0wWdRnWmDFXQNIeS8IJRE=;
+ b=hYSJNLyVVY6GGEmHrZ5Aa31lebsZP5+AhKh+IEVQMxL3Tz4LdeuElvDPO08taoVkvCk1tHOTJipsfCNelRxupq2BRYiAYqtmrQ9vAwsHH2C2aJ+W0N7ZLij7SwMbvwO+3iUvS+pgTFkoNWG/+wqh0FqxDy96b+CkGFF09HMkcDrj+HU8yRnR+7JDlPck80AfHu9yxgkg/aIoJVsSlHRaQcdq+uF686z6+iX4S0WyO85GQhb6cjbJvnYoU0SijCImgLjCPlh6hxUCCHtIGXTetgkaHxRuU1sds16cslfwbtoNS6TGbJ8E0AG5Yc38/wqGO4bg/EgmxzNEacnAmr5gHA==
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by AM8PR04MB7348.eurprd04.prod.outlook.com (2603:10a6:20b:1db::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.15; Thu, 21 Aug
+ 2025 19:31:57 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612%7]) with mapi id 15.20.9052.011; Thu, 21 Aug 2025
+ 19:31:57 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Wei Fang <wei.fang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper
+ Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
+	Clark Wang <xiaoning.wang@nxp.com>, Stanislav Fomichev <sdf@fomichev.me>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
+Subject: Re: [PATCH v2 net-next 1/5] net: fec: use a member variable for
+ maximum buffer size
+Thread-Topic: [PATCH v2 net-next 1/5] net: fec: use a member variable for
+ maximum buffer size
+Thread-Index: AQHcEtJCJxYBf9CJDk2TgKvoSjcLCA==
+Date: Thu, 21 Aug 2025 19:31:57 +0000
+Message-ID:
+ <PAXPR04MB9185014A230A36245436F01B8932A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20250821183336.1063783-1-shenwei.wang@nxp.com>
+ <20250821183336.1063783-2-shenwei.wang@nxp.com>
+ <12144026-130a-422a-8280-9e0b25b22562@lunn.ch>
+In-Reply-To: <12144026-130a-422a-8280-9e0b25b22562@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|AM8PR04MB7348:EE_
+x-ms-office365-filtering-correlation-id: bd9dd3f0-4205-4097-b386-08dde0e9649e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?FQYt1YLYCc3XfLegHYjbA5Xss/S1xEvsmhUZVLX41DalgbuJlmS/dVubQFrZ?=
+ =?us-ascii?Q?T8biS4f5Z2sfYdJd6XTdry3l7r5klpL0/91d4MVyoDm9/lOpRGSGRrgohe7V?=
+ =?us-ascii?Q?/kF6ETrZsOUdFVp1GRYzW60bEbQy0RWPGRQMVgwu4shykOEUBWp+jmxc0PgR?=
+ =?us-ascii?Q?KvvMIojdDLoW/j8xucaJ/gF6hHxH/HNysdqEaCp3LFvbdbgMvpFecSlhSEtc?=
+ =?us-ascii?Q?NxX5uOyD57W575gDRd1QuAv30wKCD5LVTWUNGSUiXMIq+0GbVaWS66gcHRWx?=
+ =?us-ascii?Q?7oBtb+Z4DIn87AaSSanO/pl9CKd+2zB5OhGFdeAXOrKYeh6qkxxLzT8Ybdzr?=
+ =?us-ascii?Q?ns2hV+TXB89s7CsR1L13vGZwE1RDItQXTz1huxzXoiaZIzc1OpLakheojGri?=
+ =?us-ascii?Q?uAshp4UGb/O6cjf9TqIfYQ7xFFAE7fD5ogvMjeHdQFp2QJCCydq1naoH3Uzo?=
+ =?us-ascii?Q?egUYPCL0ISGG3vuG9xBq2w29lG+xtbRHpalhYXBEK4e3fblFRQpAIgERDEsN?=
+ =?us-ascii?Q?OHhYl4X0E0pf1WKGLmQVzUwZAStOUiWPVITynMIRP+BO3RpA/hRz82UYZOYF?=
+ =?us-ascii?Q?PY49Evy7fX0PlxTGYo18IYi2Df4NkD42isWT9z+/VkpTbyAJrMPpjEGcUggv?=
+ =?us-ascii?Q?8kRE97/wW1J3ovCOsdqST3jx3/cw7e0E6LYpkZ7f0L/sDXrOYJPW8a/wYTYA?=
+ =?us-ascii?Q?gLsonMqUbVCe0MtJY38EaX6FwFW7W63fzYP5bH0NqterfhFVu0wgdN++WCRl?=
+ =?us-ascii?Q?badO5E4UMToswqk0HNLfxOJahIMp2PiHZzwlbEUtPnd+uweKl2tFmPHc15LY?=
+ =?us-ascii?Q?fonRYPiMaEi7TOT3UjQNkjLAXYtw7KBAWWBT2kphdPMXDzStUTecGQQ2Flj5?=
+ =?us-ascii?Q?9tbcbtmEryRb9+HJOzv2PKYwtk5ykEFQSx8dsdUxLEaWOXCWLcSEbF8992fJ?=
+ =?us-ascii?Q?lQ1eRnvBkr7MggRjTQe7gNi2oJiyACbRq1bO+MpbydhDrYqnOWEkVZbA5jx7?=
+ =?us-ascii?Q?orHeDz2EfWfDcr5UzoSQF3iSHppu+QgWnl8I/9vB/pqmqXf64IaaPOcFI/bm?=
+ =?us-ascii?Q?4oYmYwpJrSSOqAjtoVdWk+jAbESrh3mc+9cGS7ALkRy5rqFi6p5ymHnURrhE?=
+ =?us-ascii?Q?7ix0XXcah7yPypKyDlnUf1WVpAsx8SAlndF/z3uuPpjLvLxYsexGnSWAGl8x?=
+ =?us-ascii?Q?k4Wa+l+iENR2vHXbxJVu1u0cvjcTlUCkODBR/8gJHRupiPBUSSIbLug+OcRr?=
+ =?us-ascii?Q?FxKyhn0iQqRsUDP65SQUFBzX/K8Ggge8Z8FijRQLAXL6XjdK4wB5JMbT0vdt?=
+ =?us-ascii?Q?bB1zhmSytes1uT1i5Ks9jcPtODadhgVlJLLp531/9PTLNKlP6Sb8HDVygO53?=
+ =?us-ascii?Q?mJm9pZiNeCyuw8iOgrlpfY7C0KYSYGQ9zl/YcODzJ6/Ji98djtU2SO7v1Sja?=
+ =?us-ascii?Q?aS8Pk/5tN+DYgjjCqUnp5leblgvNmV1WsfJJLzVARmwRbw4lECWC6g=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?92EXW7zaLo/gzFxaZeiQCav8tCMPlmEfSaXLsioI/iFe6wZmwg5VVz+MPi/1?=
+ =?us-ascii?Q?GhlvEo7hr1uzvNa6MbClWa5rAI+9YaqdrfK96t7WtXUln842xNEfnRu/xa2p?=
+ =?us-ascii?Q?1l8Ir8tUpuzV5I2DXD0r+9MHELFEn/oJW+u6DlQO7ZgI03K4iX7eIhgFOQM0?=
+ =?us-ascii?Q?uraluRyDDGFkecHTqWDj1absE04GRQ3/YGIVEhePvv9YknW0iFcQKBMxiND4?=
+ =?us-ascii?Q?5mu2D9R78u1m21u3xDF7sHOFZzcMGPy1dEKxQ97gC2PQp25UsKNT69uqQf4n?=
+ =?us-ascii?Q?j/YDGxQhc+tfdfjZ73NHHh+eC6pXDLuMKg5t8uHmPANhauIkwkhaakQ8gBNF?=
+ =?us-ascii?Q?KpJ432x73bdFPFqn5P14vdwoA8mh7e1Tzfh6wXSUJJiVrrD4Kh4ITZklcR6M?=
+ =?us-ascii?Q?82JGd8b+GQ93f+JBxgjrGkEIqEGZDdVpXZI6gl3WeQIjhLsfK64jj79z8a4l?=
+ =?us-ascii?Q?7lqvOFyWehroFg/uzXav0CMgngwOYVTOhUQ8Lg6o6PkCPJ9Zw8R3KL9stutS?=
+ =?us-ascii?Q?bdxn2rw1Nby5SErnBlk3RtALFtOYiACDW1xHYnuWcDu4Cm0jB2+4cCyoQD9q?=
+ =?us-ascii?Q?vEU3jsuAgth4U8IQ+XhLH0SU2gq5mtg2TRO4fo+EBun5UZF9ihVLTqARhQYZ?=
+ =?us-ascii?Q?QCFfEHBALAgSjnghAqAkBHZBod9Wo7DfpW2oW1eYqtPvAI6rt4r5i7X9wJ1K?=
+ =?us-ascii?Q?/TGJRBsz+GbaKqsNMmN5dMCJU+sAF8YqdcZcwKdSXB9q2uirg9A9siTvSSQq?=
+ =?us-ascii?Q?0iYDT685kkq3DO7guYSjUHCpegX5ZMpQ/aTXVj7RbPeYEltRfgI+/vZUrLKM?=
+ =?us-ascii?Q?durPWhlNkBMf+KZDujdkl+4ieucq5dYOyNC9oHg/bYZeOrp35yLo1s3DgZB7?=
+ =?us-ascii?Q?QnzgfWUbADrb2zDh0fumzRYDRMmA+n4UgkqE0Q3OXlRvXf3cgilbtsZ3ZKIP?=
+ =?us-ascii?Q?x+m5CJK+S6SNH4XZ9AhMhAbl3AIAjfejZjOzrthwCHeECsB71JC7e3RSk/3z?=
+ =?us-ascii?Q?cMhN2Y8l2WBCr0z1qKA/lt/S1KwHv5rtH9UPEhlEAiv3FHzjcmmvwrQidtwf?=
+ =?us-ascii?Q?sqk12X9xeyLXeBdXiCNR7FuOeTGeiAn7CJdwIc3jGPLZwZH1TXy3Y8sQ+1Hh?=
+ =?us-ascii?Q?hlS98jo91Ud2GzcdQx08gvVB7cBMM4J61gFHkbkhY1Lv5FBFVs3V1sDdkdcT?=
+ =?us-ascii?Q?+lYZkbKUQMFJWmsbij5s0z4gNXZWur54LHXuXG7Af32I842ccuW3JbHeO1SN?=
+ =?us-ascii?Q?071e0J77j65qHIW8fK2PqOVNV6Jto92Mq4fosYi+tSDwGr3IZtcfw6g41ym6?=
+ =?us-ascii?Q?m0gKQLjFkgx20b/9jfxwx6AbRfN528rFExsSLyjVZsneHLwIvze/I4xs10Uy?=
+ =?us-ascii?Q?BGVGq0PbzLJ/XM8Rb7cjdNaAJvAbJ7v54KHoTib6MJQRMPYiG3IdASarMyjb?=
+ =?us-ascii?Q?1y4227JqiYt+hqZ2IAyGEeu2lJF5voekIMG2IA6Hn0X3MipTb0kqaW6dur3X?=
+ =?us-ascii?Q?YYht+KzGvYECKQrk/gr//Bbl3j+58JaTHo6r0hKi96/ZfmISx67x94ekh4zm?=
+ =?us-ascii?Q?+WaLuy9wRj6ETlEecjs=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250821190259.GD25098@pendragon.ideasonboard.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bd9dd3f0-4205-4097-b386-08dde0e9649e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2025 19:31:57.6542
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Je5SH9zZMcAVvqcSC9gpKVaXqYZ3slkAn3tHtSvnkT+OfTKLjFXPznvjGz3U9VNEg23tJl2ux76j8eXaEksJQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7348
 
-Hi Laurent
 
-On Thu, Aug 21, 2025 at 10:02:59PM +0300, Laurent Pinchart wrote:
-> On Thu, Aug 21, 2025 at 08:48:23PM +0200, Jacopo Mondi wrote:
-> > On Mon, Jun 16, 2025 at 04:11:12AM +0300, Laurent Pinchart wrote:
-> > > ISP instances in different SoCs differ in the number of clocks they use,
-> > > but not in the clock names. Refactor clocks initialization to avoid
-> > > duplicating the clock names per platform, and lower the total number of
-> > > clocks from 8 to 4 as no platform uses more than 4 clocks. Use a static
-> > > assert to ensure at build time that the size of the arrays match.
-> > >
-> > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > ---
-> > >  .../platform/rockchip/rkisp1/rkisp1-common.h  |  8 +--
-> > >  .../platform/rockchip/rkisp1/rkisp1-dev.c     | 60 ++++++++++---------
-> > >  2 files changed, 34 insertions(+), 34 deletions(-)
-> > >
-> > > diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h b/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h
-> > > index ca952fd0829b..c4af1277fc6b 100644
-> > > --- a/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h
-> > > +++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h
-> > > @@ -55,7 +55,7 @@ struct regmap;
-> > >  #define RKISP1_BUS_INFO				"platform:" RKISP1_DRIVER_NAME
-> > >
-> > >  /* maximum number of clocks */
-> > > -#define RKISP1_MAX_BUS_CLK			8
-> > > +#define RKISP1_MAX_BUS_CLK			4
-> > >
-> > >  /* a bitmask of the ready stats */
-> > >  #define RKISP1_STATS_MEAS_MASK			(RKISP1_CIF_ISP_AWB_DONE |	\
-> > > @@ -139,8 +139,7 @@ enum rkisp1_feature {
-> > >  /*
-> > >   * struct rkisp1_info - Model-specific ISP Information
-> > >   *
-> > > - * @clks: array of ISP clock names
-> > > - * @clk_size: number of entries in the @clks array
-> > > + * @num_clocks: number of clocks
-> > >   * @isrs: array of ISP interrupt descriptors
-> > >   * @isr_size: number of entries in the @isrs array
-> > >   * @isp_ver: ISP version
-> > > @@ -152,8 +151,7 @@ enum rkisp1_feature {
-> > >   * ISP model, version, or integration in a particular SoC.
-> > >   */
-> > >  struct rkisp1_info {
-> > > -	const char * const *clks;
-> > > -	unsigned int clk_size;
-> > > +	unsigned int num_clocks;
-> > >  	const struct rkisp1_isr_data *isrs;
-> > >  	unsigned int isr_size;
-> > >  	enum rkisp1_cif_isp_version isp_ver;
-> > > diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-> > > index dc65a7924f8a..0788b7a64ae9 100644
-> > > --- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-> > > +++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-> > > @@ -8,6 +8,7 @@
-> > >   * Copyright (C) 2017 Rockchip Electronics Co., Ltd.
-> > >   */
-> > >
-> > > +#include <linux/build_bug.h>
-> > >  #include <linux/clk.h>
-> > >  #include <linux/interrupt.h>
-> > >  #include <linux/mfd/syscon.h>
-> > > @@ -491,13 +492,6 @@ static irqreturn_t rkisp1_isr(int irq, void *ctx)
-> > >  	return ret;
-> > >  }
-> > >
-> > > -static const char * const px30_isp_clks[] = {
-> > > -	"isp",
-> > > -	"aclk",
-> > > -	"hclk",
-> > > -	"pclk",
-> > > -};
-> > > -
-> > >  static const struct rkisp1_isr_data px30_isp_isrs[] = {
-> > >  	{ "isp", rkisp1_isp_isr, BIT(RKISP1_IRQ_ISP) },
-> > >  	{ "mi", rkisp1_capture_isr, BIT(RKISP1_IRQ_MI) },
-> > > @@ -505,8 +499,7 @@ static const struct rkisp1_isr_data px30_isp_isrs[] = {
-> > >  };
-> > >
-> > >  static const struct rkisp1_info px30_isp_info = {
-> > > -	.clks = px30_isp_clks,
-> > > -	.clk_size = ARRAY_SIZE(px30_isp_clks),
-> > > +	.num_clocks = 4,
-> > >  	.isrs = px30_isp_isrs,
-> > >  	.isr_size = ARRAY_SIZE(px30_isp_isrs),
-> > >  	.isp_ver = RKISP1_V12,
-> > > @@ -518,19 +511,12 @@ static const struct rkisp1_info px30_isp_info = {
-> > >  	.max_height = 2448,
-> > >  };
-> > >
-> > > -static const char * const rk3399_isp_clks[] = {
-> > > -	"isp",
-> > > -	"aclk",
-> > > -	"hclk",
-> > > -};
-> > > -
-> > >  static const struct rkisp1_isr_data rk3399_isp_isrs[] = {
-> > >  	{ NULL, rkisp1_isr, BIT(RKISP1_IRQ_ISP) | BIT(RKISP1_IRQ_MI) | BIT(RKISP1_IRQ_MIPI) },
-> > >  };
-> > >
-> > >  static const struct rkisp1_info rk3399_isp_info = {
-> > > -	.clks = rk3399_isp_clks,
-> > > -	.clk_size = ARRAY_SIZE(rk3399_isp_clks),
-> > > +	.num_clocks = 3,
-> > >  	.isrs = rk3399_isp_isrs,
-> > >  	.isr_size = ARRAY_SIZE(rk3399_isp_isrs),
-> > >  	.isp_ver = RKISP1_V10,
-> > > @@ -542,19 +528,12 @@ static const struct rkisp1_info rk3399_isp_info = {
-> > >  	.max_height = 3312,
-> > >  };
-> > >
-> > > -static const char * const imx8mp_isp_clks[] = {
-> > > -	"isp",
-> > > -	"hclk",
-> > > -	"aclk",
+
+> -----Original Message-----
+> From: Andrew Lunn <andrew@lunn.ch>
+> Sent: Thursday, August 21, 2025 1:56 PM
+> To: Shenwei Wang <shenwei.wang@nxp.com>
+> Cc: Wei Fang <wei.fang@nxp.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
+> David S. Miller <davem@davemloft.net>; Eric Dumazet
+> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> <pabeni@redhat.com>; Alexei Starovoitov <ast@kernel.org>; Daniel Borkmann
+> <daniel@iogearbox.net>; Jesper Dangaard Brouer <hawk@kernel.org>; John
+> Fastabend <john.fastabend@gmail.com>; Clark Wang
+> <xiaoning.wang@nxp.com>; Stanislav Fomichev <sdf@fomichev.me>;
+> imx@lists.linux.dev; netdev@vger.kernel.org; linux-kernel@vger.kernel.org=
+; dl-
+> linux-imx <linux-imx@nxp.com>
+> Subject: [EXT] Re: [PATCH v2 net-next 1/5] net: fec: use a member variabl=
+e for
+> maximum buffer size
+>=20
+> > @@ -1145,9 +1145,12 @@ static void
+> >  fec_restart(struct net_device *ndev)
+> >  {
+> >       struct fec_enet_private *fep =3D netdev_priv(ndev);
+> > -     u32 rcntl =3D OPT_FRAME_SIZE | FEC_RCR_MII;
+> > +     u32 rcntl =3D FEC_RCR_MII;
+> >       u32 ecntl =3D FEC_ECR_ETHEREN;
 > >
-> > it seems to me that clk_bulk_prepare_enable() guarantees ordering
-> > of the clock sources enablement (I know regulators do not, if
-> > I'm not mistaken).
-> >
-> > Is it a problem that imx8mp used to declare hclk before aclk as the
-> > other platforms do ?
->
-> No, I don't think the order matters.
->
-> > > -};
-> > > -
-> > >  static const struct rkisp1_isr_data imx8mp_isp_isrs[] = {
-> > >  	{ NULL, rkisp1_isr, BIT(RKISP1_IRQ_ISP) | BIT(RKISP1_IRQ_MI) },
-> > >  };
-> > >
-> > >  static const struct rkisp1_info imx8mp_isp_info = {
-> > > -	.clks = imx8mp_isp_clks,
-> > > -	.clk_size = ARRAY_SIZE(imx8mp_isp_clks),
-> > > +	.num_clocks = 3,
-> > >  	.isrs = imx8mp_isp_isrs,
-> > >  	.isr_size = ARRAY_SIZE(imx8mp_isp_isrs),
-> > >  	.isp_ver = RKISP1_V_IMX8MP,
-> > > @@ -582,6 +561,32 @@ static const struct of_device_id rkisp1_of_match[] = {
-> > >  };
-> > >  MODULE_DEVICE_TABLE(of, rkisp1_of_match);
-> > >
-> > > +static const char * const rkisp1_clk_names[] = {
-> >
-> > You could also presize the array with RKISP1_MAX_BUS_CLK so that you
-> > won't need an assertion ? It's true however that if RKISP1_MAX_BUS_CLK
-> >  > the number of declared elements you won't get a warning..
->
-> Yes, that's why I didn't do it.
->
-> > > +	"isp",
-> > > +	"aclk",
-> > > +	"hclk",
-> > > +	"pclk",
-> > > +};
-> > > +
-> > > +static int rkisp1_init_clocks(struct rkisp1_device *rkisp1)
-> > > +{
-> > > +	const struct rkisp1_info *info = rkisp1->info;
-> > > +	unsigned int i;
-> > > +	int ret;
-> > > +
-> > > +	static_assert(ARRAY_SIZE(rkisp1_clk_names) == ARRAY_SIZE(rkisp1->clks));
-> > > +
-> > > +	for (i = 0; i < info->num_clocks; i++)
-> > > +		rkisp1->clks[i].id = rkisp1_clk_names[i];
-> > > +
-> > > +	ret = devm_clk_bulk_get(rkisp1->dev, info->num_clocks, rkisp1->clks);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	rkisp1->clk_size = info->num_clocks;
-> >
-> > rkisp1->clk_size is now only used in rkisp1_runtime_suspend() which
-> > can easily access rkisp->info->num_clocks. Would it be better to not
-> > duplicate the information in your opinion ?
->
-> You've now found in 4/6 that we still need it :-)
->
+> > +     if (fep->max_buf_size =3D=3D OPT_FRAME_SIZE)
+> > +             rcntl |=3D (fep->max_buf_size << 16);
+>=20
+> I was expecting something like s/OPT_FRAME_SIZE/fep->max_buf_size/g
+>=20
 
-Yes I did, so I can now
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+We can't simply replace the value here because it needs to be left-shifted =
+by 16 bits. I intentionally=20
+preserved the original logic for consistency. In patch #3, the max_buf_size=
+ may become a different
+one for Jumbo frame mode and the condition is updated to:
++	if (OPT_FRAME_SIZE !=3D 0)
 
-Thanks
-  j
+Thanks,
+Shenwei
 
-> > > +	return 0;
-> > > +}
-> > > +
-> > >  static int rkisp1_probe(struct platform_device *pdev)
-> > >  {
-> > >  	const struct rkisp1_info *info;
-> > > @@ -639,12 +644,9 @@ static int rkisp1_probe(struct platform_device *pdev)
-> > >  		}
-> > >  	}
-> > >
-> > > -	for (i = 0; i < info->clk_size; i++)
-> > > -		rkisp1->clks[i].id = info->clks[i];
-> > > -	ret = devm_clk_bulk_get(dev, info->clk_size, rkisp1->clks);
-> > > +	ret = rkisp1_init_clocks(rkisp1);
-> > >  	if (ret)
-> > >  		return ret;
-> > > -	rkisp1->clk_size = info->clk_size;
-> > >
-> > >  	if (info->isp_ver == RKISP1_V_IMX8MP) {
-> > >  		unsigned int id;
->
-> --
-> Regards,
->
-> Laurent Pinchart
+> This is introducing extra logic. I think the if (...) belongs in another =
+patch. The
+> assignment is however what i expected.
+>=20
+>     Andrew
+>=20
+> ---
+> pw-bot: cr
