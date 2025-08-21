@@ -1,103 +1,171 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4156E311974
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 12:47:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491ED32BF4D
+	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 13:21:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755780470; cv=none; b=gm1hXN00KH9Pc4pGg24615gStfM/E8XNcPTYa4QnJLrl32lpH+NCMnVZyqwtwybNsqs8X9JF/16KTrxxmHISKzuKDACHvoilYWut7YAYFViGto4mFXYXGCdXQviA4+KfJU46YNkl5xjz80i+L62QsZAhrYEG7uh5xWsJivhQuIo=
+	t=1755782503; cv=none; b=S7lGrYRkuS2CdPamcwZBfeZfGm2qO3z7/CecAHB7iD9YmhAEEADI/hlKT0L0y466nfcII3ajJEwGcosAG4/B57ZBwrunwp9410l2gMAgCDSSJ/uBrCvlTQi6jRLhlCnf63z4m4DBUpHbGcv+8Te511z3gsR2GzX6esmEAtmjmDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755780470; c=relaxed/simple;
-	bh=Kww3Z8XQpKUqnrzv3IhCXTW3D/QqhIcasmUvK1+uYck=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lrFLIiC15LSTdjkSQtlI33Dy7wyc2WwgWre2kXAjLqMQo3L6cG0+UR+IhWHuG5vw6mThR1f/BV+JT2tAEoCjXoh5SnNhqbe4XB7+LrcGLEDi/WWD8WrDtoGhV5iXis2PlIMy/Vv3qMOKcay1i8ElUIk+9XeKM+oxPmNGcppHhBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eci/Br8h; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eci/Br8h"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6188b690517so1217353a12.1
-        for <imx@lists.linux.dev>; Thu, 21 Aug 2025 05:47:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755780467; x=1756385267; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kww3Z8XQpKUqnrzv3IhCXTW3D/QqhIcasmUvK1+uYck=;
-        b=Eci/Br8hYk6dj+Q4kxkBe3RHQJ66B2XbZl2jP2pYi9ziiTu57TPlG08OQxrsdguXxc
-         lcdb9RIp88tDswaXEz81DAhmzUix9BYR6C1UdIpkZfH8C7sD5tWYwoKpR2KDl0PMlhAD
-         fU9IWtR4Es+yy5lTKc8A1IZ9nWSTF0ThmR55+9MKts9Fwv8GM7zq++fuQOPlbNe0Qb3V
-         fk+Vid0hXqk9vC7zbe8JQqCNPOgvpwD66+5WVTykeHan4MPEk34yt5cgadzUx7BefOEt
-         z1+t2PDyophzqBz4NdmpO0i9DBU8CIQc6/4b5yxq+n3gfeh93W4BPP8H3zo8T2IeLnpr
-         AW7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755780467; x=1756385267;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kww3Z8XQpKUqnrzv3IhCXTW3D/QqhIcasmUvK1+uYck=;
-        b=p+urJjPU10fVDmPWGTRlsKS88k8waqg1Fk8UKQPDl/NE2Q+grKftvMTYCpMWk4tv2q
-         jawlDLAIhSGGlYWLshtAg6nIRjb8VhOIYTOSRdLyQM5qzWJjv7ku3xSm1JjjiW1C1pYX
-         iaQ9q4tM10EfTsh3PYq/pNUn8mCQJBIJn+aUknMdK8N4yNA1eaJAiv0/BjfMOazamznK
-         S0yGGY7siNbKirSfHUMskkr2Qpbp3BbuJI2c5J94OhdERHW4/osKKimzjuVZIsswGtwF
-         BhSNhgNtbhENrBxr5o2/hdRr6CnVm7rQ7KHUhZezSNnb0dzQOqIT4Qsae5tDAV5POSCU
-         MVlg==
-X-Forwarded-Encrypted: i=1; AJvYcCVBvh5lplZzAi3vrmclLU2mutjGBLTiQ/3yRkym/bF5+zhls3Cx8V1QKrzXMUzoYUcEVj0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxPxPjtVBVqhlfocn36CCupHMt8dmVM2mjN/ZdJdxIoqWXW839h
-	qD/OWf1T/7bhtS5+Ml7vq5qNkB8oz5LFJmm086CebQYuVCnpSuYHP1m2FeGx8qBg8lf9ZwxVLmc
-	E3gFXxQ0NKxlwtMMAJ8Itn+GMuHX3qU4=
-X-Gm-Gg: ASbGncs8hO/Y/MJEYQrvyVbxADfP3CyHCaeIg7iNoSWLjBssRuFUtOz4KsK1ovIfudH
-	2BJ3iR2qOsYZBfKSrag17i457YrUsbMp7eRNxpqkc5Evd1cAyRLz2LVR6JIoqaRtzKrgcn1HODP
-	y6ifSYlB76DZxU9eN/mjAAoDrgUWG3RR91SqKAJWVKbxOdWFYjMXj5SlUsCWx9+nNgC9Dytq99d
-	iDZg9RLTA==
-X-Google-Smtp-Source: AGHT+IEPEbjECYdBW0nd8xX8lWG/FeWz08nR/1JcSgRS+BCimYdArukTA+i3b9djOGPovIzmf+wskUZ5f9vMyM/jPZM=
-X-Received: by 2002:a17:907:9711:b0:ae3:5e27:8e66 with SMTP id
- a640c23a62f3a-afe07a7efc8mr229517766b.27.1755780467264; Thu, 21 Aug 2025
- 05:47:47 -0700 (PDT)
+	s=arc-20240116; t=1755782503; c=relaxed/simple;
+	bh=W8oIlS2h1YPSW2RCaPjV5TA/bkt4+gglZE1HOsmlJjQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H83gjLOufvP5NcdEfq0/JwBq09byg5qpN/vVYD6C3S91YtGN+Eg3SdjzQfbc9QhnLglhk/7/HGCziFEdqSLpQ3AXGfRSvCJpJzbpqf6gVhEEFVUvh1g4AQWS7c1higDHY/s3RUXgIn9MATZsGcvxO+jxoawp0RwnEyNUMRjSjFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1up5ER-0000UN-IZ; Thu, 21 Aug 2025 15:21:31 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1up5EP-001Q3r-0n;
+	Thu, 21 Aug 2025 15:21:29 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1up5EP-0082gA-0L;
+	Thu, 21 Aug 2025 15:21:29 +0200
+Date: Thu, 21 Aug 2025 15:21:29 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	Frank Li <frank.li@nxp.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	Varun Sethi <V.Sethi@nxp.com>,
+	Sahil Malhotra <sahil.malhotra@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v18 3/7] firmware: imx: add driver for NXP
+ EdgeLock Enclave
+Message-ID: <20250821132129.hwnnqdagalvxw2uk@pengutronix.de>
+References: <AM9PR04MB8604611B8D91B5526C9704E69545A@AM9PR04MB8604.eurprd04.prod.outlook.com>
+ <20250627084653.6vgwnm3llf3zknlp@pengutronix.de>
+ <b02055bb-0995-4fd8-99f3-4ca5146eedd4@kontron.de>
+ <20250630121722.wviidlggt7hguyt7@pengutronix.de>
+ <087b8689-7443-4720-a94c-160edd31a5da@kontron.de>
+ <AM9PR04MB8604C05882605EDB4913DA089549A@AM9PR04MB8604.eurprd04.prod.outlook.com>
+ <20250714094124.e6fnkrocnqagbm22@pengutronix.de>
+ <AM9PR04MB8604EFCC5400DEBB7DF0CF49952DA@AM9PR04MB8604.eurprd04.prod.outlook.com>
+ <20250806132701.fouikyuqtzdsxqwh@pengutronix.de>
+ <AM9PR04MB8604A636762E81DF9EA9A9B89532A@AM9PR04MB8604.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250821080723.525379-1-zhao.xichao@vivo.com> <CAHp75VeDvK8cOr=rVGj_hVX5YzXM-UqrWRBgUrhiA1wzYn7C_w@mail.gmail.com>
- <CAKv63uvfHYATd7ZFweZ0LMfTLt-idHVgYJqOV8PvzaNeigbt9w@mail.gmail.com>
-In-Reply-To: <CAKv63uvfHYATd7ZFweZ0LMfTLt-idHVgYJqOV8PvzaNeigbt9w@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 21 Aug 2025 15:47:10 +0300
-X-Gm-Features: Ac12FXyAa-NWG2kjb3jWIL5sg7tG4bcy5ylXKO82itEKrqXswF6DvDsUv85LdDQ
-Message-ID: <CAHp75VdL9kV2fyi63zqPZnW4CaeYPmJ74tmGEgU=M7FSYBv0ww@mail.gmail.com>
-Subject: Re: [PATCH 0/7] iio: Remove dev_err_probe() if error is -ENOMEM
-To: Crt Mori <cmo@melexis.com>
-Cc: Xichao Zhao <zhao.xichao@vivo.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Andreas Klinger <ak@it-klinger.de>, Haibo Chen <haibo.chen@nxp.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Marius Cristea <marius.cristea@microchip.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Francesco Dolcini <francesco@dolcini.it>, 
-	=?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Gustavo Silva <gustavograzs@gmail.com>, 
-	Tomasz Duszynski <tomasz.duszynski@octakon.com>, Jagath Jog J <jagathjog1996@gmail.com>, 
-	Per-Daniel Olsson <perdaniel.olsson@axis.com>, Waqar Hameed <waqar.hameed@axis.com>, 
-	Yasin Lee <yasin.lee.x@gmail.com>, Julien Stephan <jstephan@baylibre.com>, 
-	"open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	"open list:ARM/Amlogic Meson SoC support" <linux-amlogic@lists.infradead.org>, 
-	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM9PR04MB8604A636762E81DF9EA9A9B89532A@AM9PR04MB8604.eurprd04.prod.outlook.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Thu, Aug 21, 2025 at 2:50=E2=80=AFPM Crt Mori <cmo@melexis.com> wrote:
+On 25-08-21, Pankaj Gupta wrote:
+> 
+> 
+> > On 25-08-06, Pankaj Gupta wrote:
+> > > > On 25-07-09, Pankaj Gupta wrote:
+> > > > > > Am 30.06.25 um 14:17 schrieb Marco Felsch:
+> > 
+> > ...
+> > 
+> > > > Lockdown: For a verified boot setup you need to burn an eFuse at
+> > > > some
+> > > point,
+> > > > to tell the bootROM to boot only correct verified firmware images.
+> > > >
+> > > > After this lockdown it's no longer possible to burn eFuses from the
+> > > > REE
+> > > albeit
+> > > > the production line setup still requires the support.
+> > > >
+> > > Understood. ELE access from both secure and non-secure world is fixed
+> > > in Q3 release.
+> > > User can be able to modify eFuses via OPTEE.
+> > 
+> > Splitting the read and write between two drivers is even worse.
+> 
+> This could be use-case dependent. Depends on how customer will deploy its
+> solution.
+
+I don't get this. You introduce even more segmentation if the read-path
+uses another driver than the write-path and if this is optional.
+
+> > Can you please point out why you can't just move the driver parts into the
+> > tee? I do see many advantages if only op-tee is used:
+> 
+> The ELE's KEY derivation function takes account of world from where, the
+> operations are requested.
+> - The key derived from secure world and from non-secure world will be
+> different.
+
+Which is correct and no reason for not having an OP-TEE only solution.
+
+> There are different use-case for ELE accesses from both the worlds.
 >
-> Sorry duplicate - as I commented on driver.
+> Using OPTEE ELE driver for Linux specific ELE-HSM requests, it will add
+> significant overhead.
+>
+> Usecases like Transparent TLS offload while securing the secrets in HSM,
+> would incur additional overhead.
 
-Yep, answered there.
+Of course, the ELE communication itself will be faster if Linux
+communicates directly with the ELE instead of going through OP-TEE.
 
+But to be honest I don't think that the ELE usage itself is much faster
+than using OP-TEE and the ARMv8 Crypto-Extensions.
 
---=20
-With Best Regards,
-Andy Shevchenko
+For the ELE you need to:
+ - setup the context (incl. the message and all mailbox mechanism)
+ - wait for the ELE to be accessible (only one ELE, only one
+   normal-world MU).
+ - transfered the messages to/from the ELE
+ - the ELE processing should be equal to the CPU processing time
+
+(Side note: What is the ELE behavior if the secure-world stresses the
+ELE? Is there a MU priority so the normal-world MU may get blocked
+(never addressed) or are both MUs scheduled in round-robin?)
+
+For OP-TEE you need to:
+ - setup the context
+ - switch the CPU mode
+ - make use of ARMv8 Crypte-Extensions
+
+On i.MX8M, which uses the CAAM (the ELE predecessor), we can verify that
+the ARMv8 crypto extensions are much faster than the crypto-engine
+itself. Therefore the CAAM is mostly unused.
+
+Are there measurements/application-notes that show that the usage of the
+ELE is more performant than using the crypto-extensions?
+
+> IOT-cases where real-time encrypted feed from sensors, will take latency
+> hit.
+
+Does the ELE support inline en-/decryption? If not, I don't think so.
+
+The data needs to be read from the CPU first, afterwards it needs to be
+prepared for the ELE and transfered to/from the ELE. Also there is just
+a single ELE with a single normal-world MU, so you need to handle
+concurrent access if there are multiple ELE-users
+(sensor+tls-offloading).
+
+If CPU is used, the data still needs to be read from the communication
+interface but afterwards doesn't need to be passed to another IP. Also
+there are multiple CPUs.
+
+Regards,
+  Marco
