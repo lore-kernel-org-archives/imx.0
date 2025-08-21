@@ -1,26 +1,27 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3997D283C89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39912283695
 	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 07:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755762961; cv=none; b=LeJ3zSoi0p8tIyMGxbhEh7+A5cfiqb/E/Y/9qIKHdebkod4F9BaGypEyY1+yPpuKAJAJz1JOeH5Eu2Lw+QtPhSv3fQ74pd0Bi+Ni9nkfPFyRx6PUvmY034Eei0s+cowIoCsZ41TsGf09z2ElAjJiZ3JXG8hBwcmokqfEk8cZPx8=
+	t=1755762961; cv=none; b=dlhih7PJMW1F9c8xzDDOruQk//4BnFXr5OOCi83J/7EJ0ROp57OzkqPIUcOYCUQI9QX/Rk6hor3PMW8hjBKBbNqyYzuLLmgKIC3WowcFfKpqcLufZuBhvKq5MmvvK66+nYKIDqfCmn+ttkF3ExOW+qG1KR6JyVdcnSCUXoolBME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755762961; c=relaxed/simple;
-	bh=0x1mh1CUV2l+e+f/ZCeKWLagQRBONAQXNtZB1coOUYw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nIYBogCi4egb/EJRfXehYE9+lAIzyJsf5aNj851JMGhYHv4rQP419MhnBpTTfGoznXVPFf6VJfKpxrmYhFz70BGpe5R9u/3cG21+X24Lao9sry0UvsoPBuw2Kaz8KvFOQEQswyVOqKDs+hpK+P1u7csdE/dOHqYj/c7YVv8NJeY=
+	bh=gsyten1zTmdRLZG/miyOmU+qjPkqD3/N6UHUPzjkqIg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LQZ0zOGWDF295hTh/dXZILgTgdzIg26r94drJO2ZfVWldCWCYp9EHXHrLfaZs+Xt7LVh1je29rt74qCRhDhvRLm43pu4MJUYIK5QTQOQsy29KgBpziH19izm+UWKzowi0IK+3rqxURaPvf4yJMi02xf++Xv8j9nQbDtWcAr9vV4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1up096-00073K-Sg; Thu, 21 Aug 2025 09:55:40 +0200
+	id 1up099-00073K-08; Thu, 21 Aug 2025 09:55:43 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Subject: [PATCH 0/5] arm64: dts: imx8mp-skov: add new 10" variant
-Date: Thu, 21 Aug 2025 09:55:27 +0200
-Message-Id: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
+Date: Thu, 21 Aug 2025 09:55:29 +0200
+Subject: [PATCH 2/5] dt-bindings: display: simple: Add JuTouch JT101TM023
+ panel
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,10 +30,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAO/QpmgC/x2NywrDIBAAfyXsuQsqNY/+SslBzNpsS1TUSCDk3
- ys5DXOZOSFTYsrw6k5IVDlz8E3kowO7Gv8h5KU5KKG0GJXE2qMcsITIFnk7xi1i/oWKS8n43Uv
- Y7YpSsG+YyE3OmEFr+YQWjIkcH/fsPV/XH3upHv58AAAA
-X-Change-ID: 20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-9ef9faa75514
+Message-Id: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-2-b492ef807d12@pengutronix.de>
+References: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
+In-Reply-To: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
  Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -54,31 +54,27 @@ X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Add a new board variant for the Skov i.MX8MP based family of boards.
-
-This variant uses a different 10" panel than the existing ones.
+Add the JuTouch Technology Co. 10" JT101TM023 LVDS panel.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
-Steffen Trumtrar (5):
-      dt-bindings: vendor-prefixes: Add JuTouch Technology Co, Ltd
-      dt-bindings: display: simple: Add JuTouch JT101TM023 panel
-      drm/panel: simple: add JuTouch JT101TM023
-      dt-bindings: arm: fsl: add compatible for Skov i.MX8MP variant
-      arm64: dts: imx8mp-skov: support new 10" panel board
+ Documentation/devicetree/bindings/display/panel/panel-simple.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
- Documentation/devicetree/bindings/arm/fsl.yaml     |  1 +
- .../bindings/display/panel/panel-simple.yaml       |  2 +
- .../devicetree/bindings/vendor-prefixes.yaml       |  2 +
- arch/arm64/boot/dts/freescale/Makefile             |  1 +
- .../imx8mp-skov-revc-jutouch-jt101tm023.dts        | 79 ++++++++++++++++++++++
- drivers/gpu/drm/panel/panel-simple.c               | 35 ++++++++++
- 6 files changed, 120 insertions(+)
----
-base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-change-id: 20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-9ef9faa75514
+diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
+index 1ac1f02190790cbff00c9f977d5c1a4420ed9f27..8107dc60e19695d56cd7302e7af7c808575df491 100644
+--- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
++++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
+@@ -182,6 +182,8 @@ properties:
+       - innolux,n156bge-l21
+         # Innolux Corporation 7.0" WSVGA (1024x600) TFT LCD panel
+       - innolux,zj070na-01p
++        # JuTouch Technology Co.. 10" JT101TM023 WXGA (1280 x 800) LVDS panel
++      - jutouch,jt101tm023
+         # Kaohsiung Opto-Electronics Inc. 5.7" QVGA (320 x 240) TFT LCD panel
+       - koe,tx14d24vm1bpa
+         # Kaohsiung Opto-Electronics. TX31D200VM0BAA 12.3" HSXGA LVDS panel
 
-Best regards,
 -- 
-Steffen Trumtrar <s.trumtrar@pengutronix.de>
+2.49.0
 
