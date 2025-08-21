@@ -1,27 +1,27 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39912283695
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 07:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513342E8B9B
+	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 07:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755762961; cv=none; b=dlhih7PJMW1F9c8xzDDOruQk//4BnFXr5OOCi83J/7EJ0ROp57OzkqPIUcOYCUQI9QX/Rk6hor3PMW8hjBKBbNqyYzuLLmgKIC3WowcFfKpqcLufZuBhvKq5MmvvK66+nYKIDqfCmn+ttkF3ExOW+qG1KR6JyVdcnSCUXoolBME=
+	t=1755762962; cv=none; b=F4wNXGKY9t5Q/YE+6xX9Z6yXuMKUIMQKWiljz9Rmjshub0J2sBKPS7ECsRrqwXeWK4d5Z/BphBNMoZvzbUIAXMoW/hf49KnP6eeXCZr92C1KnM7UvYfnLgyu8MMT4oq7Z5nP2qFugO7iVrOVbPYQprNhEF51ZCTHj6HFciM9p0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755762961; c=relaxed/simple;
-	bh=gsyten1zTmdRLZG/miyOmU+qjPkqD3/N6UHUPzjkqIg=;
+	s=arc-20240116; t=1755762962; c=relaxed/simple;
+	bh=TwphvgFRn9I20xhvECiUAEzjB4QXWdH5Zi01h9MIO0k=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LQZ0zOGWDF295hTh/dXZILgTgdzIg26r94drJO2ZfVWldCWCYp9EHXHrLfaZs+Xt7LVh1je29rt74qCRhDhvRLm43pu4MJUYIK5QTQOQsy29KgBpziH19izm+UWKzowi0IK+3rqxURaPvf4yJMi02xf++Xv8j9nQbDtWcAr9vV4=
+	 In-Reply-To:To:Cc; b=JqvzJ2eihq2HLPrQUNI8Q5v/7Dy7Iz8IihozLDLwGP5yohUH1sciwEK4/3yc6f6qDe9Ly5s/SL5IggDq46iqk961p8qmLBlg7Er17x0dV8KhbbMnQETg/SoC7Jy1jSKcG7YoVLfHy0nm+PZHi+YWB0Ec6QxtQPC62hfvAV01/Ms=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1up099-00073K-08; Thu, 21 Aug 2025 09:55:43 +0200
+	id 1up097-00073K-Sf; Thu, 21 Aug 2025 09:55:41 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 21 Aug 2025 09:55:29 +0200
-Subject: [PATCH 2/5] dt-bindings: display: simple: Add JuTouch JT101TM023
- panel
+Date: Thu, 21 Aug 2025 09:55:28 +0200
+Subject: [PATCH 1/5] dt-bindings: vendor-prefixes: Add JuTouch Technology
+ Co, Ltd
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -30,7 +30,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-2-b492ef807d12@pengutronix.de>
+Message-Id: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-1-b492ef807d12@pengutronix.de>
 References: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
 In-Reply-To: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -54,26 +54,30 @@ X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Add the JuTouch Technology Co. 10" JT101TM023 LVDS panel.
+JuTouch is a chinese touch screen supplier dedicated to manufacturing
+high-end touch display products for the global industrial market.
+(www.jutouch.com)
+
+Add a vendor prefix for it.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- Documentation/devicetree/bindings/display/panel/panel-simple.yaml | 2 ++
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-index 1ac1f02190790cbff00c9f977d5c1a4420ed9f27..8107dc60e19695d56cd7302e7af7c808575df491 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-@@ -182,6 +182,8 @@ properties:
-       - innolux,n156bge-l21
-         # Innolux Corporation 7.0" WSVGA (1024x600) TFT LCD panel
-       - innolux,zj070na-01p
-+        # JuTouch Technology Co.. 10" JT101TM023 WXGA (1280 x 800) LVDS panel
-+      - jutouch,jt101tm023
-         # Kaohsiung Opto-Electronics Inc. 5.7" QVGA (320 x 240) TFT LCD panel
-       - koe,tx14d24vm1bpa
-         # Kaohsiung Opto-Electronics. TX31D200VM0BAA 12.3" HSXGA LVDS panel
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 77160cd47f54079a39f35b570d69f7c4c2274724..074e2ce9025dfa5ff76f7df3a743c2dd2f9ccd93 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -799,6 +799,8 @@ patternProperties:
+     description: JOZ BV
+   "^jty,.*":
+     description: JTY
++  "^jutouch,.*":
++    description: JuTouch Technology Co., Ltd.
+   "^kam,.*":
+     description: Kamstrup A/S
+   "^karo,.*":
 
 -- 
 2.49.0
