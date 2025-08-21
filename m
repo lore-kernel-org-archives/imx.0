@@ -1,48 +1,49 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2602C270572
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 09:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C732D24A5
+	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 09:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755766968; cv=none; b=L39b2YVahgRo5o+kO3D+r3PSPF4ZV6Gj8wp/mF5dZ02MtEz/VuWksWWohTzmR8JyJhRe3pFRwyxs4ZPUvBJao31eCd4HndApdSD+lBVrQ3P/EUs+6nQwg5JMpHaND+qwiGiYnemGvfgH2mOxZcDMtai+/seh7dDmojkvlGaLUa0=
+	t=1755767034; cv=none; b=t2Y3/doUn1RFQUJG808TrLZBA8uFrnj02UjMDLQxOXTpYZIi7DTF4q47kVlkzHOABOC3upAPAp64yY6UdNjuhGOqqZZuPQX/87fcahpPGbUiJtYAxOyXJBRCXCw7bJpjdi1skDcvJmZnJ5es5c4d8Rl4oCVYRbLRiBQX7fYsHLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755766968; c=relaxed/simple;
-	bh=iOER0SlM9iKv390OJzvBl4AQp6k4sk6gz7YFRbMoeRI=;
+	s=arc-20240116; t=1755767034; c=relaxed/simple;
+	bh=hKwooneBeXNXC9VHxFlTJTTYQNLjTKQkokn5Qgw+zSc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GtUDJDaiGOUxSDDi0miSXJV1P6OcSa+3/84OHo+T/WVSEfUoF9L/02M4qcDzGbqRjgsr0NzaSSZfGmXplyaExV4moHenEJMpDI8o3aEwWm8rZUa8gL4dJ7d5pxE+U0eg/2SJ/Tuxm1FHsiAZ/WNzOJuj9eMBi7dhCEmD8D0eupw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=fvbApd/r; arc=none smtp.client-ip=80.241.56.152
+	 In-Reply-To:Content-Type; b=tgKPN25uiAAXflM0mw0QeSwd5jOUgLJnFtFDmK+dVv3NYAgqOV4KZz2AZYxkcEnMU4+2car7xztqGCodniuyCDCmeSLemhntWyXO4g7H6ikWxJbrttQdgkzdNqEwTHlTonoGtTfgYWDk901sg+ih0CIYn/QZ7TZFvhV1Gsd0njA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=b2V6OGIK; arc=none smtp.client-ip=80.241.56.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="fvbApd/r"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="b2V6OGIK"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4c6y5F0LMbz9tXv;
-	Thu, 21 Aug 2025 11:02:41 +0200 (CEST)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4c6y6X3tZTz9tPJ;
+	Thu, 21 Aug 2025 11:03:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1755766961;
+	t=1755767028;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n6BOkbyAGtdvgUiMh/kKj7ZRKD/HbLjntfFa+ezIW/E=;
-	b=fvbApd/r5kcBywhJ0vUs5fAoOSamigpM4ZP0fsASAtCE1VeCQ4zMvjQZSIx93J4LKUNom9
-	QpFK/0TP1VlYxEvj7APkLg/XUVSJsUOQxvztaTBFGdpjvmSAVERBFG3LhZl84sKssJ6WY/
-	jzwSl4A7R1q+R7c0HXPEXP9akoT7JS5bKMq4CSz9FJlN/W7DPzJcH9wYkAT0SheLcdWR54
-	48VfiHLaJVopokeN8GmNWw5t2ki/lmTETQGSa1FGzuB9R5t4URnqul3CTQKYSHKwMzw3p4
-	Do4PEWu1QZrbFjXp5zC5dVfNt9SjU3Z9OjOD1Ii09+696vuWSBBaR6XUpbj6Fw==
-Message-ID: <1a25c41e-1139-41da-b056-50be47016138@mailbox.org>
-Date: Thu, 21 Aug 2025 10:59:49 +0200
+	bh=zbHVx0AjhuMt4y2W1PFPxfaxziXKltNhN58wsnEMP24=;
+	b=b2V6OGIK+9faRLgIyZYk6uRabl45mm0HCdGaL9s465n3dtJ3XMH35fcyk3NnBsqvmmxHAA
+	dMUMj+e2RqYo3JYdzZEnKijCAugtBUaSj9Z4qnUwjRykf//RRJWqPri69DY7v9wGIA4nM1
+	AB7FOUC4K3Z3gjYtotbnzv2wvvVvNO2kcjXZOqULnAMzCCbPJJeugtv+6rIUT7LBJMEqGT
+	KAaQ/bHhOB7ZsVLuZCvBA/F2cdvb64Uw52U45xMROpDI12jU8SbNzC4lNzUOScBcpwhkjW
+	n2XHjV9YzJxTIDjDsOyUNmNIj0FTdtMUqKayIsj6CZxCeLwwcuPPXm4t1j4XUA==
+Message-ID: <83a65b18-76e8-4ad4-9d4d-c1ef68d3d181@mailbox.org>
+Date: Thu, 21 Aug 2025 11:03:46 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH] media: imx-jpeg: Fix JPEG encoder ready race condition
+Subject: Re: [PATCH] media: imx-jpeg: Add support for descriptor allocation
+ from SRAM
 To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>, linux-media@vger.kernel.org
 Cc: Fabio Estevam <festevam@gmail.com>,
  Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
@@ -52,65 +53,42 @@ Cc: Fabio Estevam <festevam@gmail.com>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
  Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20250820162938.209892-1-marek.vasut@mailbox.org>
- <4a8531f9-801b-4744-8821-923961211199@oss.nxp.com>
+References: <20250820163046.209917-1-marek.vasut@mailbox.org>
+ <8d38e622-a743-41f9-81e6-d8608e3c60ec@oss.nxp.com>
 Content-Language: en-US
 From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <4a8531f9-801b-4744-8821-923961211199@oss.nxp.com>
+In-Reply-To: <8d38e622-a743-41f9-81e6-d8608e3c60ec@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: 657304f80e464479387
-X-MBO-RS-META: kf8p9grk6m41y7e848e8q7d7ugzz8s6y
+X-MBO-RS-ID: 79b755643f9efdfb172
+X-MBO-RS-META: 5w55qm7f67jhh9dnw5fsdc7xw59emh36
 
-On 8/21/25 9:06 AM, Ming Qian(OSS) wrote:
+On 8/21/25 8:28 AM, Ming Qian(OSS) wrote:
 > Hi Marek,
 
-Hi,
+Hello Ming,
 
 > On 8/21/2025 12:29 AM, Marek Vasut wrote:
 >> [You don't often get email from marek.vasut@mailbox.org. Learn why 
 >> this is important at https://aka.ms/LearnAboutSenderIdentification ]
 >>
->> The current mxc_jpeg_job_ready() implementation works for JPEG decode
->> side of this IP, it does not work at all for the JPEG encode side. The
->> JPEG encode side does not change ctx->source_change at all, therefore
->> the mxc_jpeg_source_change() always returns right away and the encode
->> side somehow works.
+>> Add support for optional allocation of bitstream descriptors from SRAM
+>> instead of DRAM. In case the encoder/decoder DT node contains 'sram'
+>> property which points to 'mmio-sram', the driver will attempt to use
+>> the SRAM instead of DRAM for descriptor allocation, which might improve
+>> performance.
 >>
->> However, this is susceptible to a race condition between 
->> mxc_jpeg_dec_irq()
->> and mxc_jpeg_start_streaming(), where mxc_jpeg_start_streaming() might
->> start decoding another frame before mxc_jpeg_dec_irq() indicates 
->> completion
->> of encoding of current frame. Add new state, MXC_JPEG_ENC_DONE, which is
->> set in three locations, first when streaming starts to indicate the 
->> encoder
->> is ready to start processing a frame, second in mxc_jpeg_dec_irq() 
->> when the
->> encoder finishes encoding current frame, and third in 
->> mxc_jpeg_dec_irq() in
->> case of an error so the encoder can proceed with encoding another frame.
->>
->> Update mxc_jpeg_job_ready() to check whether the encoder is in this new
->> MXC_JPEG_ENC_DONE state before reporting the encoder is ready to encode
->> new frame.
->>
+>> This however helps on i.MX95 with sporadic SLOTn_STATUS IMG_RD_ERR bit 11
+>> being triggered during JPEG encoding. The following pipeline triggers the
+>> problem when descriptors get allocated from DRAM, the pipeline often 
+>> hangs
+>> after a few seconds and the encoder driver indicates "timeout, cancel 
+>> it" :
 > 
-> The jpeg encoder and jpeg decoder are 2 different devices, so they won't
-> compete with each other.
+> It's a hardware bug in i.MX95 A0, and the i.MX95 B0 has fixed this issue.
 
-I know.
+Ahh, this helps, thank you.
 
-> For encoder, we always want mxc_jpeg_job_ready() to return true.
-
-For encoder, mxc_jpeg_job_ready() currently returns !ctx->source_change 
-, which is only set by decoder side of the driver. This seems wrong.
-
-> And v4l2_m2m has ensured that there will be no race condition between
-> mxc_jpeg_dec_irq() and mxc_jpeg_start_streaming().
-> 
-> After v4l2_m2m_job_finish() is called in the mxc_jpeg_dec_irq(),
-> then it is possible to start encoding the next frame.
-This part would be true if the IRQ function couldn't be called by 
-anything except end of configuration or end of encoding, but it can be 
-triggered by other things, like AXI READ error IRQ.
+> Using sram instead of dram only improves timing, but doesn't completely 
+> circumvent the hardware bug
+Does it make sense to upstream this patch anyway ?
