@@ -1,182 +1,108 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9B42F0C43
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 10:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38252F90DC
+	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 10:56:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755770724; cv=none; b=ndTv1dOkJOqcvQqnHv2n3tuBhLz49nH2QlXMnId6+Vhdh+SsU2BcRn/J1HCTGgFYpAsC9ZLr1F+/shqf2MCDOm7dsRCycZXUEiFR+9Q01KaNIPc13GkoF1BJkGcGvP31dd4/FiwDcLgODmkguKwmaowf111oZA6RO5K7YP2zClI=
+	t=1755773807; cv=none; b=n3TfqIXOm6/EzV+g6QkH+HJzdLcA0iHbWhi0OjtVnF+kWD5uFTOqQ5PBDHZDbJXiV//mF4gS/9SKlmMH9iY7tbMR8GUTVVRjUt+erv4EPOioUBvZi7HslvG29G2IUsxNg5wEX9mg2Tj551exaCtP2m57rV7BEd5Ah26lvnwnk1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755770724; c=relaxed/simple;
-	bh=Kuiy6M+c34XOWZ6h6vh9kbd23reNtEjtUaOCR7T8gLk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NH5SUtA+21PKWCLkjke3y9WDKTrokuhKVmXgz4Fz/rwuoaRcHFXtk+NnwJd26rae0LSzvk4TWhI1whjJE6wuXmVcf/13BGe0uhkNIlMa9fDwR0xuw1MbO7ZLRWVDaWnqx/+rZQayUqga4KK6DlVwsPbMQV4tGakEtYJUx7pFWNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1up2AP-0000TZ-AE; Thu, 21 Aug 2025 12:05:09 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1up2AO-001OXg-36;
-	Thu, 21 Aug 2025 12:05:08 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1up2AO-007znM-2e;
-	Thu, 21 Aug 2025 12:05:08 +0200
-Date: Thu, 21 Aug 2025 12:05:08 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Pankaj Gupta <pankaj.gupta@nxp.com>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	s=arc-20240116; t=1755773807; c=relaxed/simple;
+	bh=FoGQcz7DeqX74u0WtayvPR42rWrDI1OCq5th/Z+nfuw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NLm0FiAP8pkGY6xdfunVWIpdi4J5gLIpykS+sa793kJ5tpoOHMY8iZP2a3ysbv3yuQ0RbvifetoyXyjA9w5HMUzGMXw1/kDAxbw2VjkZ42Z+/UMNtLr0aHKPkdODfOaMOAVAOZY7qHl0TpI1KxmlObKd2z4QlYpnRffkkIm5pek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JRaPHZtn; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JRaPHZtn"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-afcb72d51dcso110672166b.0
+        for <imx@lists.linux.dev>; Thu, 21 Aug 2025 03:56:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755773804; x=1756378604; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sMyUEbLcanRX5H+fT/hbCuFWtgzsfYsMYARRkrN4bEM=;
+        b=JRaPHZtnlnfyrDO+woLko0Uar7tTg9psZf4ia6X4cMATE0Wc3j4cMz+jLp93JTSqDb
+         CKPu3K6O2fvhBdmkjKSRba4DawPOqLSgAQWsrANklI025wXXHIVFIK0z84zx+JD/Dr2z
+         KF/cZexK+V5xL7Pi6X0Kyv5TiTbLEf+YerSXp+dVOe9xyZxwHurdlURbz5E4wH/t0oT3
+         GLK3LfGae6rUtSMelmAORR7u2KGaB3fhlmKnBWIo4r44u31dzBot0bcNxckc1ZP2YPUH
+         eqF5qO7lphRoMKwuC+ms6kli4vZtIvsJQpnp20lakyBQf+kzwny42HUB13m9kBE39Gr8
+         xpwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755773804; x=1756378604;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sMyUEbLcanRX5H+fT/hbCuFWtgzsfYsMYARRkrN4bEM=;
+        b=xEtwlgbsmtefXbA6JO9llN9tpwrcS+KSNsrNkfxxxoL66/MVtWChxT9XO7BwkDIU+O
+         txPgMekTkwqfpYP5cWOP9R5laEPBNaHa6+uMMrSaXzfz8WXZKAqaVIaFS00Iql6d0ZQX
+         SgSQohUQkpeggEwy8uA0WnwhMS0qydNKaUXaxto21oMMB3nqVpZvoaGEKNw+DpjdOdZ7
+         OZ4qaSWbnTGd8Jfi5h4/3PwbdBXGQmclb7kJh7kXssB3TfbUW811joRfpoSbDdJNb5Lq
+         GkWUk9DRkxZvipkBV6LEnn/j5rj75PsZDiMwKoHV7EEPf66zdcQb4NEYtDt6XbdBiyId
+         xn2w==
+X-Forwarded-Encrypted: i=1; AJvYcCViYXgI7ZRBz/gMuahHEeUEljzQ5zyQp1yyhxoETBjOplTPAs93NzDOKKqKElaDq/LI+q0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx1WAmmYbcyWze3M/mGJ0WqNiAkM61oZCdbhM0JK2fCeJVdB7UY
+	ZgN7cCX19qXNPDZ8Q2aTcA9RmyDO8nbVAGY934EDjokprWTE7/QDqCNL
+X-Gm-Gg: ASbGncu0iP0vieWso6+LqjjMnE8nyRs+XEXt9xfjz/aqA7yhi6FFH5ruQfrYtkUe1bG
+	IlgLSeBw+IITFZM0vrNy6aShnVAeQhCnnxuHknS/Dnc6IEEschDyf6N8j0MpjUcYv5AJBZqJakY
+	oOHyCdKRmcx4l0F4lvXFGRKPi6keDU3m16z7HiS9uFyUVmnPsJC4HjAlQGlLGFI4LZKbXCe7xXO
+	P8ziypJYWNZdbwvt7tj+8xZJS6d5NCNXBDbTYU9b8gwOouEv9EfAFJdoLCN4iFHVbiyMmaaKiLt
+	cKcj5DCB2JaNKpNHHMP6jGfOZIPWWJCxEWlAyaR4zbSjoWJ6gJrEK18PSZZH0UHCJ6YEDm6GRUB
+	uXe+D/gp7yw/YIM55FOYc44WPxyjFPcj7C0m0zVDgpjqGnQ9CHcQP
+X-Google-Smtp-Source: AGHT+IHms9vlv4FD5+T1jUisxyplhUFRbxyMMUf0tERN5qe6K/kx17X13rQpCE7FAsb5xSQZMirW1g==
+X-Received: by 2002:a17:906:f583:b0:ae0:d9f3:9131 with SMTP id a640c23a62f3a-afe0781c6c1mr151935066b.6.1755773803670;
+        Thu, 21 Aug 2025 03:56:43 -0700 (PDT)
+Received: from DESKTOP-TTOGB9M.localdomain ([92.120.5.3])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-afded4790bbsm373602866b.56.2025.08.21.03.56.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Aug 2025 03:56:43 -0700 (PDT)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Frank Li <frank.li@nxp.com>
-Subject: Re: [PATCH v18 0/7] firmware: imx: driver for NXP secure-enclave
-Message-ID: <20250821100508.sh35kuosczdhadpa@pengutronix.de>
-References: <20250619-imx-se-if-v18-0-c98391ba446d@nxp.com>
- <41909d9a-0ee8-460b-8c0a-1ceee0cf8723@kontron.de>
- <20250821095032.5o2trkwf6mdmyx4w@pengutronix.de>
- <PAXPR04MB845980CB4C7EDB091495DC058832A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] Switch to using AIPSTZ5 on i.MX8MP
+Date: Thu, 21 Aug 2025 13:56:30 +0300
+Message-ID: <20250821105634.1893-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB845980CB4C7EDB091495DC058832A@PAXPR04MB8459.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
 
-Hi Peng,
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-On 25-08-21, Peng Fan wrote:
-> Hi Marco,
-> 
-> > Subject: Re: [PATCH v18 0/7] firmware: imx: driver for NXP secure-
-> > enclave
-> > 
-> > > Shawn mentioned for the v17, he wanted to test this [1]. Marco had
-> > > some concerns on the general approach [2]. How can we move on?
-> > >
-> > > FWIW I have tested the v15 of this series with the ELE OTP driver [3]
-> > > on
-> > > i.MX93 and we use this currently in our downstream kernel.
-> > 
-> > From my pov, this series causes more confusions till the ELE FW fix is
-> > available because you need to be really careful during the integration
-> > in case of a verified-boot setup which are the most common setups
-> > these days.
-> > 
-> > Not sure why NXP doesn't just add the OP-TEE support for the required
-> > features e.g. eFuses, watchdog, HWRNG. The whole Linux part is mostly
-> > in place.
-> 
-> You mean let OP-TEE handle eFuses, watchdog, HWRNG, then linux
-> relies on OP-TEE to use the features?
+This series is a combination of the previously dropped patches from [1]
+and the config-related patch from [2]. This enables the usage of AIPSTZ5
+on i.MX8MP-based platforms.
 
-Exactly, due to the FW issue only one MU can be used. OP-TEE could use
-the secure MU and Linux uses the features via OP-TEE because these
-features are not very timing critical and some features are _only_
-available through OP-TEE, e.g. writing eFuses after the device was
-locked-down.
+[1]: https://lore.kernel.org/lkml/20250610160152.1113930-1-laurentiumihalcea111@gmail.com/
+[2]: https://lore.kernel.org/lkml/20250707234628.164151-1-laurentiumihalcea111@gmail.com/
 
-Regards,
-  Marco
+Laurentiu Mihalcea (4):
+  arm64: defconfig: enable i.MX AIPSTZ driver
+  arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+  arm64: dts: imx8mp: add aipstz-related definitions
+  arm64: dts: imx8mp: make 'dsp' node depend on 'aips5'
 
+ arch/arm64/boot/dts/freescale/imx8mp-aipstz.h | 33 +++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi     | 16 ++++++---
+ arch/arm64/configs/defconfig                  |  1 +
+ 3 files changed, 46 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aipstz.h
 
-> 
-> Thanks,
-> Peng.
-> 
-> > 
-> > Regards,
-> >   Marco
-> > 
-> > >
-> > > [1]
-> > >
-> > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2F
-> > patc
-> > > hwork.kernel.org%2Fproject%2Flinux-
-> > mm%2Fpatch%2F20250424111632.103637-
-> > > 1-
-> > lorenzo.stoakes%40oracle.com%2F%2326356782&data=05%7C02%7C
-> > peng.fan%4
-> > >
-> > 0nxp.com%7C1ac2ac137e8a41d871c508dde098450d%7C686ea1d3bc
-> > 2b4c6fa92cd99c
-> > >
-> > 5c301635%7C0%7C0%7C638913666802700666%7CUnknown%7CTW
-> > FpbGZsb3d8eyJFbXB0
-> > >
-> > eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiT
-> > WFpbCIsIl
-> > >
-> > dUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=%2FSC9WU4CoKtPrVuhjL
-> > uLC7trQhAcbEkaCu
-> > > xohN%2FIuM0%3D&reserved=0
-> > > [2]
-> > >
-> > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2F
-> > patc
-> > > hwork.kernel.org%2Fproject%2Flinux-arm-
-> > kernel%2Fpatch%2F20250619-imx-s
-> > > e-if-v18-3-
-> > c98391ba446d%40nxp.com%2F%2326443037&data=05%7C02%7Cpe
-> > ng.fa
-> > >
-> > n%40nxp.com%7C1ac2ac137e8a41d871c508dde098450d%7C686ea1
-> > d3bc2b4c6fa92cd
-> > >
-> > 99c5c301635%7C0%7C0%7C638913666802714776%7CUnknown%7C
-> > TWFpbGZsb3d8eyJFb
-> > >
-> > XB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOI
-> > joiTWFpbCI
-> > >
-> > sIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=B%2BUZWN6OjkEu27C
-> > By1%2FFKte9Uw9NQ
-> > > DA%2Be9EdPZhtAUk%3D&reserved=0
-> > > [3]
-> > >
-> > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2F
-> > patc
-> > > hwork.kernel.org%2Fproject%2Flinux-arm-
-> > kernel%2Fpatch%2F20250416142715
-> > > .1042363-2-
-> > frieder%40fris.de%2F&data=05%7C02%7Cpeng.fan%40nxp.com%7C1a
-> > >
-> > c2ac137e8a41d871c508dde098450d%7C686ea1d3bc2b4c6fa92cd99c
-> > 5c301635%7C0%
-> > >
-> > 7C0%7C638913666802731697%7CUnknown%7CTWFpbGZsb3d8eyJFb
-> > XB0eU1hcGkiOnRyd
-> > >
-> > WUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoy
-> > fQ%3D%3
-> > >
-> > D%7C0%7C%7C%7C&sdata=RilSInf5N%2FfrF04qOubqT2yNjC%2FwAhy
-> > Oe6GIEfwtIGs%3
-> > > D&reserved=0
-> > >
-> 
-> 
+-- 
+2.34.1
+
