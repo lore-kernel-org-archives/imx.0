@@ -1,160 +1,112 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73192DBF48;
-	Thu, 21 Aug 2025 14:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D8515990C;
+	Thu, 21 Aug 2025 14:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755785661; cv=none; b=tiz4iUoKky5uK3S2HDiNqFsxBntVIeqXPkrYSo1Zxm8E8b7dmSByLxgZKTg65+BiKGQYVr9ICLWvEumQ29CFD5ozewKkgEKRdk7zixP/NR3hPIuq+o+L7PeU0WlB4oCEuUxUVbMTD4ttoOOyy0zz/dlv1SqqNcgcGiqWeOUm6j8=
+	t=1755787002; cv=none; b=asAlG0foKIH0tuF1k0ze1PdmTXTXSB6AD7aBZ1gV+RvhclcGRd2BhLOeaTXOUehPcO5nwjmU30ntBS2+UPxic7z9BVNqjqgUc6PtLrrUhFvUiMTmlIdtOQmgVkaWquj9Kpv8cPxIZonMB7I4nt7q33wVCUGtwnuh9BYpopdz7Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755785661; c=relaxed/simple;
-	bh=ixalp0w2CUYHQ5NQlNHwr+bj0kQmtH2DORccmekLrgk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gf95fQMKuv2Hpnv32AJ4p4UgWSyu1I05b3GmXKDk72Qk5a0r+LnGuk87TvpGwHBqRy2w+PvDcg8BZDyw8UXOpCSA6a2wfbWY/n1xt+FEeOnM/rjtV8u8jKr+0lD2ojKqF0l1EMElPZh17l/WZWLOXdLiIrSoRG8KdFb7z3EeRdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aOYb0Q0u; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1755787002; c=relaxed/simple;
+	bh=mslOxpgPXJUH1lPNo77g9hu/LctQ1v616V6U+vFUEuw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=os3HuXvjXyUQEVR4Svf1Cr5tzZuCelb6Utu6xdG7oZaWnpbF7Na7NXzUW6Q5sg1WqunMj9uuKbVnlwx6YdGX4sDV9K/1BboVBOVGr+2PYRRheECG2WzWhj6nKJkhFaRkZJjooF6r1nsoKGoaKVGPp8GY8OfAMP8pBdF3HaSIKI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A6iu2OSG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aOYb0Q0u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755785660; x=1787321660;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ixalp0w2CUYHQ5NQlNHwr+bj0kQmtH2DORccmekLrgk=;
-  b=aOYb0Q0unQvrqxc9gLyDQBtN2dcik+wNlTIwTw3U1J/cZcwAXhVDvnpE
-   0t/MpV0OZco4ySTtmlTnVp8OMFcPfrKaIapZGiK4g98rGrSOuPloSHNXz
-   My6YbJBGDbogG5wgbvR2sx/RYn0q770psNympa8JVQoXr0N3TyeBb/11z
-   +QMvXiJFSwORH2KCn0Pur6/YrNLj3efPw/MT0TXLvunXfqDcXhXoTsZrI
-   PX1kvVoLvm4Z7i/wleLtg0H8vNSaYJWtMJ54E9oLlvIve1yMiPH6DFmRI
-   qVoGxJfsfA5toGcsvw9/miEN9NyrGI69qL2UtEu7b//n9mcQ9uVPkrxCT
-   g==;
-X-CSE-ConnectionGUID: O46lA9BFTF2XtSrB4tQQBw==
-X-CSE-MsgGUID: QAwV3j/aQ3G3W5Nx/ogtUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69513879"
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="69513879"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 07:14:20 -0700
-X-CSE-ConnectionGUID: J5U2KbXiQ22QVCBBSZm3ww==
-X-CSE-MsgGUID: nNNaBNWlSaSC0tsi88AAcQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
-   d="scan'208";a="199401653"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 21 Aug 2025 07:14:14 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1up620-000KLP-2Z;
-	Thu, 21 Aug 2025 14:13:31 +0000
-Date: Thu, 21 Aug 2025 22:11:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-imx@nxp.com
-Subject: Re: [PATCH 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
-Message-ID: <202508212119.gamkDcXG-lkp@intel.com>
-References: <20250818204420.794554-4-shenwei.wang@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A6iu2OSG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555F0C4CEF4;
+	Thu, 21 Aug 2025 14:36:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755787002;
+	bh=mslOxpgPXJUH1lPNo77g9hu/LctQ1v616V6U+vFUEuw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=A6iu2OSGmM5F1jb5AqsqgYWlPZCfFqiYce5lrehvWxbBEyzLtTugwCQ4UGIpAtGeH
+	 mtXyP9+eEm+EFKT4gEUFyaIoCIDv5XNhwDCOa3jvLtDuDZYg33VdJX7b7Yl8kmLZ9u
+	 iLbs+755oUD1UrtOUrRlDUwrVxTj8IkR69l7289qRT5MJA0eBuREIH/L6CVrmsdp0T
+	 mLLjoVacNl46v5K1/5ChCpVyJucsu7GcEhhimHvKynGX/OCfZQkyq28l5Du8EYubRz
+	 p4BICIvF1YIdMPBefiXzoc/4IDuhp9H9xTmQUHegAg23odDaBn5/W1j5TSv2jquBSt
+	 et6DDYaC4EjkA==
+Date: Thu, 21 Aug 2025 09:36:41 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>,
+	"jingoohan1@gmail.com" <jingoohan1@gmail.com>,
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"mani@kernel.org" <mani@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RESEND v3 4/5] PCI: dwc: Skip PME_Turn_Off message if there is
+ no endpoint connected
+Message-ID: <20250821143641.GA672933@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250818204420.794554-4-shenwei.wang@nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AS8PR04MB88334A22726CF287D41775DC8C32A@AS8PR04MB8833.eurprd04.prod.outlook.com>
 
-Hi Shenwei,
+On Thu, Aug 21, 2025 at 05:44:00AM +0000, Hongxing Zhu wrote:
+> > -----Original Message-----
+> > From: Bjorn Helgaas <helgaas@kernel.org>
+> > Sent: 2025年8月20日 3:07
+> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > Cc: Frank Li <frank.li@nxp.com>; jingoohan1@gmail.com;
+> > l.stach@pengutronix.de; lpieralisi@kernel.org; kwilczynski@kernel.org;
+> > mani@kernel.org; robh@kernel.org; bhelgaas@google.com;
+> > shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
+> > festevam@gmail.com; linux-pci@vger.kernel.org;
+> > linux-arm-kernel@lists.infradead.org; imx@lists.linux.dev;
+> > linux-kernel@vger.kernel.org
+> > Subject: Re: [RESEND v3 4/5] PCI: dwc: Skip PME_Turn_Off message if there is
+> > no endpoint connected
+> >
+> > On Mon, Aug 18, 2025 at 03:32:04PM +0800, Richard Zhu wrote:
+> > > Skip PME_Turn_Off message if there is no endpoint connected.
+> >
+> > What's the value of doing this?  Is this to make something faster?  If so,
+> > what and by how much?
+> >
+> > Or does it fix something that's currently broken?
+> >
+> > Seems like the discussion at
+> > https://lore.kern/
+> > el.org%2Flinux-pci%2F20241107084455.3623576-1-hongxing.zhu%40nxp.com%
+> > 2Ft%2F%23u&data=05%7C02%7Chongxing.zhu%40nxp.com%7Ced46fe10aeb74
+> > 21c88a508dddf53a24f%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7
+> > C638912272493755203%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOn
+> > RydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%
+> > 3D%3D%7C0%7C%7C%7C&sdata=lIE7%2FlS5jiGxGPGVm5Hr5efpMbT19CLqrwu
+> > YNvAEdLY%3D&reserved=0
+> > might be relevant.
+> >
+> > This commit log only restates what the code does.  In my opinion we need
+> > actual justification for making this change.
+> Hi Bjorn:
+> Thanks for your comments.
+> This commit is mainly used to fix suspend/resume broken on i.MX7D PCIe.
+> A chip freeze is observed on i.MX7D when PCIe RC kicks off the PM_PME message
+> and no any devices are connected on the port.
+> 
+> Because i.MX7D is a very old design, and out of IP design technical support.
+>  I don't know what's going on inside the PCIe IP design when kick off the
+>  PM_PME message.
+> 
+> From SW perspective view, what I can do is to find out a quirk method to
+>  workaround this broken. Hope this can clear up your confusions.
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on remoteproc/rproc-next]
-[also build test WARNING on brgl/gpio/for-next shawnguo/for-next linus/master v6.17-rc2 next-20250820]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Shenwei-Wang/dt-bindings-remoteproc-imx_rproc-Add-rpmsg-subnode-support/20250819-044803
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/remoteproc/linux.git rproc-next
-patch link:    https://lore.kernel.org/r/20250818204420.794554-4-shenwei.wang%40nxp.com
-patch subject: [PATCH 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
-config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20250821/202508212119.gamkDcXG-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250821/202508212119.gamkDcXG-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508212119.gamkDcXG-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/gpio/gpio-imx-rpmsg.c:419:6: warning: variable 'port' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-     419 |         if (msg)
-         |             ^~~
-   drivers/gpio/gpio-imx-rpmsg.c:421:7: note: uninitialized use occurs here
-     421 |         if (!port)
-         |              ^~~~
-   drivers/gpio/gpio-imx-rpmsg.c:419:2: note: remove the 'if' if its condition is always true
-     419 |         if (msg)
-         |         ^~~~~~~~
-     420 |                 port = drvdata->channel_devices[msg->port_idx];
-   drivers/gpio/gpio-imx-rpmsg.c:415:34: note: initialize the variable 'port' to silence this warning
-     415 |         struct imx_rpmsg_gpio_port *port;
-         |                                         ^
-         |                                          = NULL
-   drivers/gpio/gpio-imx-rpmsg.c:503:10: error: incompatible function pointer types assigning to 'void (*)(struct gpio_chip *, unsigned int, int)' from 'int (struct gpio_chip *, unsigned int, int)' [-Wincompatible-function-pointer-types]
-     503 |         gc->set = imx_rpmsg_gpio_set;
-         |                 ^ ~~~~~~~~~~~~~~~~~~
-   1 warning and 1 error generated.
-
-
-vim +419 drivers/gpio/gpio-imx-rpmsg.c
-
-   409	
-   410	static int imx_rpmsg_gpio_callback(struct rpmsg_device *rpdev,
-   411		void *data, int len, void *priv, u32 src)
-   412	{
-   413		struct gpio_rpmsg_data *msg = (struct gpio_rpmsg_data *)data;
-   414		unsigned long flags;
-   415		struct imx_rpmsg_gpio_port *port;
-   416		struct imx_rpmsg_driver_data *drvdata;
-   417	
-   418		drvdata = dev_get_drvdata(&rpdev->dev);
- > 419		if (msg)
-   420			port = drvdata->channel_devices[msg->port_idx];
-   421		if (!port)
-   422			return -ENODEV;
-   423	
-   424		if (msg->header.type == GPIO_RPMSG_REPLY) {
-   425			port->info.reply_msg = msg;
-   426			complete(&port->info.cmd_complete);
-   427		} else if (msg->header.type == GPIO_RPMSG_NOTIFY) {
-   428			port->info.notify_msg = msg;
-   429			local_irq_save(flags);
-   430			generic_handle_domain_irq(port->domain, msg->pin_idx);
-   431			local_irq_restore(flags);
-   432		} else
-   433			dev_err(&rpdev->dev, "wrong command type!\n");
-   434	
-   435		return 0;
-   436	}
-   437	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+OK, will look for some of this background in the commit log of the
+next version.
