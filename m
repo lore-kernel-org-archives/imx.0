@@ -1,124 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAF0308F02;
-	Thu, 21 Aug 2025 17:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7A32E54BA;
+	Thu, 21 Aug 2025 18:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755796786; cv=none; b=hAfJKYu52rce76YhhTCM3gyeamsxuhTbz/L7Sj6n0ScHBRmH+efpwTkC6ZqVZebeQaXXq1vuz7j+gtGe/644q5Wvutsh91PsY6KlE16VzAs2nPdEaS4TMZd9rFs3IPtgzWZ69PeJ3Jq36ulJfwA5JLbTWkkzaobSwLbLdgVsYeM=
+	t=1755799386; cv=none; b=k4l8Zz1UcdHAKeEqvHGToHvpHESIMCZ3vLMdTB8tOid62UX78s/Ov08UymtVty7b6EBdm8s+djtgOl/AuO/Xdmeq2zSv8Jv4SGmGDPtr22R5Ea09ZbD0yNlI9rXU02f5ZdyBO3LwjWZiFryj3JFT50IxbURRZFqZDmm/6jLRhYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755796786; c=relaxed/simple;
-	bh=IkEM90j9AB9fEVUaubBHggr7J8lF+yeDnZnqMajK8Pc=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=O+SA8dYAb3kEv8h4IcuEjI+re+qOymXHwA8vJ6EBzTegG+Oe1Ab5WGcvAvvR4mBJTEy7NY168TBygx6Co68z+bu+lkAPPC9Ys4nofQNTmDJje9hVNYvuyNISvVck3aWj/QvPYDa9+ZKJDfLtzc4TsDh+nWPLe3rS1cLYTuD+o7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XlLnFvpg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755799386; c=relaxed/simple;
+	bh=+hDXx6EahSKYVsdXiGT3+Ns+DUu9UsAG4PZJGUJkP0g=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=eZ7iuj7mdkhG3rgozYZSF5XnWqsyRoC4i+NDkZ15gF4AIVpLpVMDYVWredqeVnO6wOAmxWjoJAFkD0bP9ls/sVv+soU5Bk6wyu+k53RKZ4zRPvNLu0XypYn3sPoM7R+SLJsVzD/DlCZi/uYiFabgRRTDipN+4ICHnE5f0QzDltc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t98mUctK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XlLnFvpg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCE3C4CEF4;
-	Thu, 21 Aug 2025 17:19:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t98mUctK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C69C4CEEB;
+	Thu, 21 Aug 2025 18:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755796786;
-	bh=IkEM90j9AB9fEVUaubBHggr7J8lF+yeDnZnqMajK8Pc=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=XlLnFvpguszjxbVQMQmmvQr18rAXlaCwrmPQn1BBthnaf0Nii2oICZx8GgMZoyu7W
-	 R0IPqBkYfHW5JpotaqQ7fLDwbei2ttpwVs0fYw2pVoKfCV+PtUeXTyKEk6W+w1ydcn
-	 1MJXg7djUXA7jlGcIlRY0VNEoyP3bdPw+GLzaI7qGgqJKhtYdzU8N6JwFAJoLHKG9B
-	 +xq0M2ZhC2DypCTCExctIizJyiol05dA+8wzxrd4ShgWCtYb5InkldWB40j/4gBCws
-	 06G+PJcgTbD8TPYrBul2rWtYDNolXOQm8jAott4kr8FYeioXsNJqu3wI0TY6T10IGw
-	 3xmysks9SZIGw==
-Date: Thu, 21 Aug 2025 12:19:45 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1755799385;
+	bh=+hDXx6EahSKYVsdXiGT3+Ns+DUu9UsAG4PZJGUJkP0g=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=t98mUctKHD1oOF0o5AWMTF9AQJoF4WI4IREfvuF3AQiB0ayUU6J4Pn9hDdCWX8boD
+	 GEouHkX4VCwM4OyHFomAj33UceHHnhgDt6WN0Tkl/BNyT0XDr98HrcHAHoWTGijh6W
+	 Qk1uyow4jPKJzIQWCNn66b6mqjwEqi8vfW0gtnIXIHSJkDZugdZLIm/Y+gk/UjBeWR
+	 mWLyQDngm600t4DXZtxIR9/WZTpg1TLbiMNBuCFif/VlfwSa/mvchEmljX0GQti8xC
+	 UUFoYi3carqbNFgZHOCN99yn+QlYlo4pJZkqGZeEqBKXTrcaM918c0Lsc9HqdacnE9
+	 rbeTHN4vnbwFA==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+ linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250821083100.46340-2-krzysztof.kozlowski@linaro.org>
+References: <20250821083100.46340-2-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH] ASoC: dt-bindings: Minor whitespace cleanup in example
+Message-Id: <175579938289.113971.15653749852299099860.b4-ty@kernel.org>
+Date: Thu, 21 Aug 2025 19:03:02 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- linux-kernel@vger.kernel.org, Neil Armstrong <neil.armstrong@linaro.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
- Thomas Zimmermann <tzimmermann@suse.de>, Shawn Guo <shawnguo@kernel.org>, 
- imx@lists.linux.dev, David Airlie <airlied@gmail.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Maxime Ripard <mripard@kernel.org>, 
- dri-devel@lists.freedesktop.org, Simona Vetter <simona@ffwll.ch>, 
- Sam Ravnborg <sam@ravnborg.org>, linux-arm-kernel@lists.infradead.org, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
- Fabio Estevam <festevam@gmail.com>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-In-Reply-To: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
-References: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
-Message-Id: <175579643516.37357.10852050615304641702.robh@kernel.org>
-Subject: Re: [PATCH 0/5] arm64: dts: imx8mp-skov: add new 10" variant
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
 
-
-On Thu, 21 Aug 2025 09:55:27 +0200, Steffen Trumtrar wrote:
-> Add a new board variant for the Skov i.MX8MP based family of boards.
-> 
-> This variant uses a different 10" panel than the existing ones.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
-> Steffen Trumtrar (5):
->       dt-bindings: vendor-prefixes: Add JuTouch Technology Co, Ltd
->       dt-bindings: display: simple: Add JuTouch JT101TM023 panel
->       drm/panel: simple: add JuTouch JT101TM023
->       dt-bindings: arm: fsl: add compatible for Skov i.MX8MP variant
->       arm64: dts: imx8mp-skov: support new 10" panel board
-> 
->  Documentation/devicetree/bindings/arm/fsl.yaml     |  1 +
->  .../bindings/display/panel/panel-simple.yaml       |  2 +
->  .../devicetree/bindings/vendor-prefixes.yaml       |  2 +
->  arch/arm64/boot/dts/freescale/Makefile             |  1 +
->  .../imx8mp-skov-revc-jutouch-jt101tm023.dts        | 79 ++++++++++++++++++++++
->  drivers/gpu/drm/panel/panel-simple.c               | 35 ++++++++++
->  6 files changed, 120 insertions(+)
-> ---
-> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-> change-id: 20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-9ef9faa75514
-> 
-> Best regards,
-> --
-> Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> 
+On Thu, 21 Aug 2025 10:31:01 +0200, Krzysztof Kozlowski wrote:
+> The DTS code coding style expects exactly one space around '='
+> character.
 > 
 > 
 
+Applied to
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+Thanks!
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+[1/1] ASoC: dt-bindings: Minor whitespace cleanup in example
+      commit: d78e48ebe04e9566f8ecbf51471e80da3adbceeb
 
-  pip3 install dtschema --upgrade
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-This patch series was applied (using b4) to base:
- Base: using specified base-commit 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de:
-
-arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt101tm023.dtb: touchscreen@2a (eeti,exc81w32): compatible: 'oneOf' conditional failed, one must be fixed:
-	['eeti,exc81w32'] is too short
-	'eeti,exc3000' was expected
-	'eeti,exc80h60' was expected
-	'eeti,exc80h84' was expected
-	from schema $id: http://devicetree.org/schemas/input/touchscreen/eeti,exc3000.yaml#
-
-
-
-
+Thanks,
+Mark
 
