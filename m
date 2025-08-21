@@ -1,26 +1,26 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512032E7F03
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 07:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C93283FCB
+	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 07:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755762963; cv=none; b=aFBWdY+OdphAGha1RRF64PlZAS9nr8ZBDo2MVnewm24XJjHYj1UoqmOYbhlIst3m3XfpKC6pfEGqfKVIX9EJNt9Li4wo+32ZJTxafuIv1zkrqRyhoW3vBKcElp9jKvOsonIgg+wDPwB7PgEwkpAN04DdaKsii5Yt6Jwxbsb6ZOA=
+	t=1755762963; cv=none; b=BsSXQudaqHKIeuFuC4c+ZLHiaSXckpZ9uSbMeYF2+L7B19Mu5otjs7luhsdmxbYjqnFhKsQw5QcEOrJBIPnylR2uga7DGWS0Nb8QDCeY5dy3Zvq2yVrlSEunkWWj7Mz7CnzfG8BqcNiugfzQsKbbq0GoXEtEecjq6VA1Z3KQT7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755762963; c=relaxed/simple;
-	bh=rpwUlEMPwxPhZhekXsff1un/+yfk/0BTwx620sDoCJo=;
+	bh=0uEM7bQq/eJ/YzvUxLVKwsfk0kvlU86FWPYCAlo26wE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=g/GYMe/iHAt2Wx9hqGPQ0vrQvcC3Fqup+ppq+QCVlILE95BYAeBOu/eT7aH7L20q0vU1BZ5Z2ogDnuK9C4GIFj0n+TPnlQEu/oy6YKaTYoVhuNs/1abF82GYVAa0fay/LkIqOHkiSS6A9MDa5Hfq1Z3tDCfeu3aONZZ5UzI/PQc=
+	 In-Reply-To:To:Cc; b=uysjZy/k2AZk7Hm8yfmgwbysSx5hJvKYoe6OPvFNq0IR392dtl/+CQpF7MMwcANyvC2alsJo3k9lRqJF+3Uq6kFWn08sMkkxnu9vX6ZfMFJblVOeFiab3dH51wMTPneh96AvJyj2pCBJgNUWN7CoiWM2HLQmuC+GsdswjXfaP5A=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1up09A-00073K-0D; Thu, 21 Aug 2025 09:55:44 +0200
+	id 1up09C-00073K-0N; Thu, 21 Aug 2025 09:55:46 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 21 Aug 2025 09:55:30 +0200
-Subject: [PATCH 3/5] drm/panel: simple: add JuTouch JT101TM023
+Date: Thu, 21 Aug 2025 09:55:32 +0200
+Subject: [PATCH 5/5] arm64: dts: imx8mp-skov: support new 10" panel board
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,7 +29,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-3-b492ef807d12@pengutronix.de>
+Message-Id: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-5-b492ef807d12@pengutronix.de>
 References: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
 In-Reply-To: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -53,66 +53,113 @@ X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Add JuTouch Technology JT101TM023 10" 1280x800 LVDS panel support.
+This board is similar to the already upstream
+imx8mp-skov-recv-tian-g07017.dts but uses a different 10" panel with a
+different touch controller.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ arch/arm64/boot/dts/freescale/Makefile             |  1 +
+ .../imx8mp-skov-revc-jutouch-jt101tm023.dts        | 79 ++++++++++++++++++++++
+ 2 files changed, 80 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 3333d4a0750468b058155bcdddc694a521d342d6..3bb52a557a193a3687bc5125ab055ad6ff065d49 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -2889,6 +2889,38 @@ static const struct panel_desc innolux_zj070na_01p = {
- 	},
- };
- 
-+static const struct display_timing jutouch_jt101tm023_timing = {
-+	.pixelclock = { 66300000, 72400000, 78900000 },
-+	.hactive = { 1280, 1280, 1280 },
-+	.hfront_porch = { 12, 72, 132 },
-+	.hback_porch = { 88, 88, 88 },
-+	.hsync_len = { 10, 10, 48 },
-+	.vactive = { 800, 800, 800 },
-+	.vfront_porch = { 1, 15, 49 },
-+	.vback_porch = { 23, 23, 23 },
-+	.vsync_len = { 5, 6, 13 },
-+	.flags = DISPLAY_FLAGS_HSYNC_LOW | DISPLAY_FLAGS_VSYNC_LOW |
-+		 DISPLAY_FLAGS_DE_HIGH,
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 23535ed47631ca8f9db65bec5c07b6a7a7e36525..b0f98d60553d968820db45c06418ac671753df4b 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -226,6 +226,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-lt6.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-mi1010ait-1cp1.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-bd500.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-tian-g07017.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-jutouch-jt101tm023.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-toradex-smarc-dev.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt101tm023.dts b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt101tm023.dts
+new file mode 100644
+index 0000000000000000000000000000000000000000..676c604fb4e5093af48f4de62a890700095ccf01
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-revc-jutouch-jt101tm023.dts
+@@ -0,0 +1,79 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++
++/dts-v1/;
++
++#include "imx8mp-skov-reva.dtsi"
++
++/ {
++	model = "SKOV IMX8MP CPU revC - JuTouch JT101TM023";
++	compatible = "skov,imx8mp-skov-revc-jutouch-jt101tm023", "fsl,imx8mp";
++
++	panel {
++		compatible = "jutouch,jt101tm023";
++		backlight = <&backlight>;
++		power-supply = <&reg_tft_vcom>;
++
++		port {
++			in_lvds0: endpoint {
++				remote-endpoint = <&ldb_lvds_ch0>;
++			};
++		};
++	};
 +};
 +
-+static const struct panel_desc jutouch_jt101tm023 = {
-+	.timings = &jutouch_jt101tm023_timing,
-+	.num_timings = 1,
-+	.bpc = 8,
-+	.size = {
-+		.width = 217,
-+		.height = 136,
-+	},
-+	.delay = {
-+		.enable = 50,
-+		.disable = 50,
-+	},
-+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++&backlight {
++	status = "okay";
 +};
 +
++&i2c2 {
++	clock-frequency = <100000>;
++	status = "okay";
 +
- static const struct display_timing koe_tx14d24vm1bpa_timing = {
- 	.pixelclock = { 5580000, 5850000, 6200000 },
- 	.hactive = { 320, 320, 320 },
-@@ -5185,6 +5217,9 @@ static const struct of_device_id platform_of_match[] = {
- 	}, {
- 		.compatible = "innolux,zj070na-01p",
- 		.data = &innolux_zj070na_01p,
-+	}, {
-+		.compatible = "jutouch,jt101tm023",
-+		.data = &jutouch_jt101tm023,
- 	}, {
- 		.compatible = "koe,tx14d24vm1bpa",
- 		.data = &koe_tx14d24vm1bpa,
++	touchscreen@2a {
++		compatible = "eeti,exc81w32";
++		reg = <0x2a>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_touchscreen>;
++		interrupts-extended = <&gpio4 28 IRQ_TYPE_LEVEL_LOW>;
++		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
++		touchscreen-size-x = <1280>;
++		touchscreen-size-y = <800>;
++		vdd-supply = <&reg_vdd_3v3>;
++	};
++};
++
++&lcdif2 {
++	status = "okay";
++};
++
++&lvds_bridge {
++	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>,
++				 <&clk IMX8MP_VIDEO_PLL1>;
++	assigned-clock-parents = <&clk IMX8MP_VIDEO_PLL1_OUT>;
++	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 7 */
++	assigned-clock-rates = <0>, <506800000>;
++	status = "okay";
++
++	ports {
++		port@1 {
++			ldb_lvds_ch0: endpoint {
++				remote-endpoint = <&in_lvds0>;
++			};
++		};
++	};
++};
++
++&pwm4 {
++	status = "okay";
++};
++
++&pwm1 {
++	status = "okay";
++};
++
++&reg_tft_vcom {
++	regulator-min-microvolt = <3160000>;
++	regulator-max-microvolt = <3160000>;
++	voltage-table = <3160000 73>;
++	status = "okay";
++};
 
 -- 
 2.49.0
