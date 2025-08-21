@@ -1,204 +1,138 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA44302CCB
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 08:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09974257821
+	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 08:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755764617; cv=none; b=kOYYkOE87V4/uPd+zhQagJOHekg4yvxS8SNVc5fbZKkBOIH3XMia1ZjjYUIDFLxduN/B7Fwy0yVb55noW8rY6X2BFJ8iby/vcH5z+6wowbNbFLtY+ie3m5Rsrk2GmbDbyzQd4o0h29aQqOQT89JvlRmcjD+yyblSTl5Ck6w2mnc=
+	t=1755765068; cv=none; b=pjps0IDZ2X/Haqs6xBo1K6L+OHi1h0ONNbvBXWcXv7/YCAzA49qWXUqH3vCEToOidl9p+ZsCmlRLD60qRgWVIrLfxmqHS+w0VcrCSUN26sm7YsUr/vsUjuxW1cx7W+dtab63rs2o9W5Rk63FLU/ypOOVVjzu87SeC5fkQpvWHJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755764617; c=relaxed/simple;
-	bh=e887uRDoxEpQCW1322GNYfBnc9kCE7+A3lBsrQIJdt0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HVi087hRZiEyDxfN99mb74Jv4oxPxno6o5POrTOgXhwQB0aqswtnOk3bbj99ZCnAuTqBqrheBmPpEGzfKpb7DfBo3hH8syA6jgrX1WBokVZB7pJ0RP9j3Zbsw91IPWM1221vVhXTgt7aNycYGcmhmYnZEhlElfmGrJEHh9ukN+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ybImOkpc; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=pD0tD8nN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=WuVYjXJ7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=fIo7TsGz; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1755765068; c=relaxed/simple;
+	bh=iqqc9H3kVGDEO4owcMh77Y6V/4jzKjChKYZ4/hBrnt4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hjElpQRhiWRtB8GTArHgOBc2hba29ReOWGwf27AB/vQoiNTLzmV1CaOggMGxtdqsGLmVP7kWuxnukN0rgpvLSZ3FkZj3vbYnwkRWZrgJ90GkX9d0GcobUV0qMr5+qlq9hezWcja1rnF3ZmA6VBZV3f/8h5/QNsRzKICG7vi4PyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QX4YUuj6; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ybImOkpc";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="pD0tD8nN";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="WuVYjXJ7";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="fIo7TsGz"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E92901F836;
-	Thu, 21 Aug 2025 08:22:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1755764546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hHo3GRIYvA9xU1xmUh5J3OGK8ZZKXekovTY6CDupMA0=;
-	b=ybImOkpcCpGMVxoLCfs7DwHB3NQdAM6I5GB2dIe6ycgAYybGRiSTDUQGrLPrf1H97wSjVA
-	jhAbOmccATonq4vNgnOBuUO59Ci4oJ5pRTUwaeRaB4io3FsQx+NHOad1Zcjr8yUUN8RYOZ
-	pg582KlEehqbsVla3Y2t9WJzQ3fZoPc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1755764546;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hHo3GRIYvA9xU1xmUh5J3OGK8ZZKXekovTY6CDupMA0=;
-	b=pD0tD8nN42FoPTaMyUjCINwzI0MpsU3LtNHox/MXc+Z0lucytTbAGyUPhlQvkL7ZXWFI+J
-	KtlEgL0+SWpNUxBw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=WuVYjXJ7;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=fIo7TsGz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1755764545; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hHo3GRIYvA9xU1xmUh5J3OGK8ZZKXekovTY6CDupMA0=;
-	b=WuVYjXJ71ED17c9hj+XQLHQqWo7JmkkpelMz+gFtRa2o6XsakpdrrpVoAcGNRxrW5NRkJl
-	E4ffL/nvf+Gr6ZqhnglArODgYcAQFgTH6DQUSKF81qzdvXsnXNIxOvxDcebwm+emQGVPgn
-	G0hjA2/yDtCBP+UN5eHogvMRDLMx+14=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1755764545;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hHo3GRIYvA9xU1xmUh5J3OGK8ZZKXekovTY6CDupMA0=;
-	b=fIo7TsGzjwqszL/iU4SWJUBO0+5gStXtbBBikqOldRND3ePvehIOlQtLSoVuimz0Kwy3yW
-	0tQm9znLDnDLgwAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4D34B13AB7;
-	Thu, 21 Aug 2025 08:22:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MG6qEUHXpmhzEwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 21 Aug 2025 08:22:25 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: simona@ffwll.ch,
-	airlied@gmail.com,
-	mripard@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	geert@linux-m68k.org,
-	tomi.valkeinen@ideasonboard.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	freedreno@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QX4YUuj6"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afcb7a01426so8301666b.2
+        for <imx@lists.linux.dev>; Thu, 21 Aug 2025 01:31:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755765065; x=1756369865; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hh/M2EwfSa9FwHQzHqRzfiw+17/lHcQFKbZckUyEnvs=;
+        b=QX4YUuj6EFufghV6IF/AFK6EuQMkHL7C8NP5J3ZkIDJtuyBV94NF4GziS7v8p5tTzd
+         TAyr3FGGW/db4y32gb/EqdpnoDc4gckI/Q5gG0lvetxczq9UgxV15YywEqWFqKm1TPDf
+         h9E+eaZD+Nk5X9VP9gSjFXEis7epYpAK1Ev5Ctqorjan42EeJnU3er+hWGdB8kV0ybdj
+         n4ZD+94BKeuCGh0eJ3MwMYg9SFdWRMnpHk1VvAAECV78hFrn+yAdc89Psz9TcBe9tw9O
+         gtGqRZ7LKPg+MYIAFcVhXk00g9PwNIu57poSWx55rHRT/55k6MSVRwqY6N2t3cwEQS9c
+         b//A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755765065; x=1756369865;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hh/M2EwfSa9FwHQzHqRzfiw+17/lHcQFKbZckUyEnvs=;
+        b=B+S1vGQOyngfOE91SAEpqkvziYGkg4rg211cr4TWxzsz8y5mdp/bl5M4w8m+1fzgEM
+         4LY5zrR6Y8ei69EdBW1xWmTxHhxinRT1aGVAoISky+k/j7xP20UL+epZXsVpOUxccQAm
+         Hmzb+F1QmnT/w0kHUNt19wXcer1OTdbIgDAzeagXnkFGG3rSwsQ5nu+vNN6uK0694wJo
+         boT5sJduqRFkMdw13JXUdtCCpAGQZaJPmXshicXNZ/m71U44sY420IxyAGHv6+0Gtjdp
+         JhMl6/G2jdKL8Qg3cQF7hdsSqdwkxkAJhvCr0rvpkWUTY3Tb80L4E8SeAS10KYg9ZUw0
+         lpHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVYmMRDuqD9GkHlbMuPKBCMq+FhsMCAkxGMsvRHhexyeQNobWOSpV3GtPr5XRHtW08QuMA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzFCRf6H2B3xaFcU24bJb+XFRJuLHlFSg0JEFOmynqrPWAF2HIB
+	SHZ+eh8MvecIQOvEHQNDobe9DSSOxpm4Mm4bqwIxbsoTfImFnFqoOxGaFAogSq/2Wlw=
+X-Gm-Gg: ASbGncutuU5yZ2YFPOGg80gCGvk3cdJMGoaeLBI8wwtCxxDfHGw1pAirozDykY4+bTR
+	wBA448GO3APUIIaUsmV4T+PefIrIGb4t5eqILxC7uY2F+FQikpMnE/JoOETf5e7f9I93lXIpIfb
+	TkA+QIfFSBChYDM5ux28D94VhZFP0qGSulIodnDIot6Lth/lWLzuOJC/rqVwHVXlWzhiqPSgggV
+	IKZrORuluQswYcwKqG5dO+XNP6i7gFwvV886Pss8A6VaFDNvuNrV6RFXLHeal7fRTIgBj2x5SR0
+	bnJfOXkJgHogUV6veyaz+I3Gmdc4j2RjXLI1tKzAp4/44xJnrZsLs8w+LHK8YuG6H3/iG2mV6zJ
+	tnkrEB/sRbQpbHnkLfqRAv+QhJxJMEmuVMw==
+X-Google-Smtp-Source: AGHT+IFNk/pJFnDs4lRHPJnbj+R0+UoDvHoNWBUQnniqvKfqWInUDOjeDP+OKC+piYhF74oUFSgD6Q==
+X-Received: by 2002:a17:907:972a:b0:ad8:8c0c:bb3d with SMTP id a640c23a62f3a-afe079e2116mr74283566b.3.1755765065406;
+        Thu, 21 Aug 2025 01:31:05 -0700 (PDT)
+Received: from kuoka.. ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded2fc568sm346436166b.38.2025.08.21.01.31.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Aug 2025 01:31:04 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-samsung-soc@vger.kernel.org,
-	nouveau@lists.freedesktop.org,
-	virtualization@lists.linux.dev,
-	spice-devel@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-tegra@vger.kernel.org,
-	intel-xe@lists.freedesktop.org,
-	xen-devel@lists.xenproject.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH v6 23/25] drm/xe: Compute dumb-buffer sizes with drm_mode_size_dumb()
-Date: Thu, 21 Aug 2025 10:17:30 +0200
-Message-ID: <20250821081918.79786-24-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250821081918.79786-1-tzimmermann@suse.de>
-References: <20250821081918.79786-1-tzimmermann@suse.de>
+	linux-arm-kernel@lists.infradead.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] ASoC: dt-bindings: Minor whitespace cleanup in example
+Date: Thu, 21 Aug 2025 10:31:01 +0200
+Message-ID: <20250821083100.46340-2-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1541; i=krzysztof.kozlowski@linaro.org;
+ h=from:subject; bh=iqqc9H3kVGDEO4owcMh77Y6V/4jzKjChKYZ4/hBrnt4=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoptlEzToO3Ku+DKnz2vaPiN1ssj2RVk8DjRQKc
+ Qtcz+MExfyJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaKbZRAAKCRDBN2bmhouD
+ 1/4tEACNYir9uMarV45GanTEgmnE4LFISWmgKJwbLjhiKVj51LWYivtWPj6mF04MOvmQ/0uO4oC
+ eZoanmeV9/UPVaCWfsvGdXfIwkF8G3ezVQSCFHL8s/VzedE9HUpJUqTU50rc9jZtZKhZ4ACtsr9
+ Ci2yCUbRSaoDyloZXA5YI0ImHjPi8QXHCa4TJQnoQPrIiTUw8QupgbCttoCDPzrcZWBpsjb7EIq
+ aKun5PQRfFRYgBN1V6bl6v+1XG8GLHEfxnvFMEF9Hd5ve561qriEMBuzC3tYaSmfaAr0KTMgJOc
+ YKJr6lmLHAPCZcbiIpVDFAx8/dtmHvuayFfFjuFmf321cHCUYfdAvLR66Fe8hfBpeI/xEOEBDCj
+ 7bB6b4sPJLZRCH9KSRHud0IaFOZGC6bukzBRVc95w0EqFIYgpcIDzA9mq/GIfUSnKSj4XWFqlBm
+ DRmXsOAnThbF2L5ZDfaux9b2woTITUBSKUwcSCEYiQqNJlyBkja4nfOJ1rQfvIC8WqEu69gV8Ku
+ +hCx1Dx6/lkn0FJwJs2hDLlRczw//7mZonnGXjdaEWslBwqK0bAGEspxUG9wwEDfMtYjJHRQzWy
+ ovcuxx5q9cnEdPmVYf89/0u7owD8QmBimSmPtg+UCWVkkDMeYcatGhMRTur/sdy4OZU/I9uri1D Q1A603HnLHhssWQ==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: E92901F836
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-2.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_TO(0.00)[ffwll.ch,gmail.com,kernel.org,linux.intel.com,linux-m68k.org,ideasonboard.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
-	R_RATELIMIT(0.00)[to(RLbwen1niosrcqbxsafh1),to_ip_from(RLqtkr6cif1ebgurukgmwdm7xc)];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,intel.com:email]
-X-Spam-Score: -2.01
 
-Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch
-and buffer size. Align the pitch to a multiple of 8. Align the
-buffer size according to hardware requirements.
+The DTS code coding style expects exactly one space around '='
+character.
 
-Xe's internal calculation allowed for 64-bit wide buffer sizes, but
-the ioctl's internal checks always verified against 32-bit wide limits.
-Hance, it is safe to limit the driver code to 32-bit calculations as
-well.
-
-v3:
-- mention 32-bit calculation in commit description (Matthew)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/sound/fsl,easrc.yaml    | 2 +-
+ Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index 6fea39842e1e..2be7a618165a 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -9,6 +9,7 @@
- #include <linux/nospec.h>
+diff --git a/Documentation/devicetree/bindings/sound/fsl,easrc.yaml b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+index 8f1108e7e14e..d5727f8bfb0b 100644
+--- a/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
++++ b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+@@ -104,6 +104,6 @@ examples:
+                     "ctx2_rx", "ctx2_tx",
+                     "ctx3_rx", "ctx3_tx";
+         firmware-name = "imx/easrc/easrc-imx8mn.bin";
+-        fsl,asrc-rate  = <8000>;
++        fsl,asrc-rate = <8000>;
+         fsl,asrc-format = <2>;
+     };
+diff --git a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml b/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
+index 85799f83e65f..c9152bac7421 100644
+--- a/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
++++ b/Documentation/devicetree/bindings/sound/fsl,imx-asrc.yaml
+@@ -176,7 +176,7 @@ examples:
+                <&sdma 20 23 1>, <&sdma 21 23 1>, <&sdma 22 23 1>;
+         dma-names = "rxa", "rxb", "rxc",
+                     "txa", "txb", "txc";
+-        fsl,asrc-rate  = <48000>;
++        fsl,asrc-rate = <48000>;
+         fsl,asrc-width = <16>;
  
- #include <drm/drm_drv.h>
-+#include <drm/drm_dumb_buffers.h>
- #include <drm/drm_gem_ttm_helper.h>
- #include <drm/drm_managed.h>
- #include <drm/ttm/ttm_backup.h>
-@@ -3130,14 +3131,13 @@ int xe_bo_dumb_create(struct drm_file *file_priv,
- 	struct xe_device *xe = to_xe_device(dev);
- 	struct xe_bo *bo;
- 	uint32_t handle;
--	int cpp = DIV_ROUND_UP(args->bpp, 8);
- 	int err;
- 	u32 page_size = max_t(u32, PAGE_SIZE,
- 		xe->info.vram_flags & XE_VRAM_FLAGS_NEED64K ? SZ_64K : SZ_4K);
- 
--	args->pitch = ALIGN(args->width * cpp, 64);
--	args->size = ALIGN(mul_u32_u32(args->pitch, args->height),
--			   page_size);
-+	err = drm_mode_size_dumb(dev, args, SZ_64, page_size);
-+	if (err)
-+		return err;
- 
- 	bo = xe_bo_create_user(xe, NULL, NULL, args->size,
- 			       DRM_XE_GEM_CPU_CACHING_WC,
+         port {
 -- 
-2.50.1
+2.48.1
 
