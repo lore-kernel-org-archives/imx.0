@@ -1,146 +1,160 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4812EC544
-	for <imx@lists.linux.dev>; Thu, 21 Aug 2025 13:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73192DBF48;
+	Thu, 21 Aug 2025 14:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755784312; cv=none; b=QW32CqtettbRycDaz1rBdWYTKapDC+7GcONXUpPrOtTfcYhFbb0UxYELZBa/DUqBIxjHO40s+5o7RWTUIno9OqGI+y2pw9heryflHwXevpQ4snVo9LMMdtKCJg0BNdIQFU8bAxtnO7rPScTYa3QrNq2VGXXhnYfU7mPPf6vG+M8=
+	t=1755785661; cv=none; b=tiz4iUoKky5uK3S2HDiNqFsxBntVIeqXPkrYSo1Zxm8E8b7dmSByLxgZKTg65+BiKGQYVr9ICLWvEumQ29CFD5ozewKkgEKRdk7zixP/NR3hPIuq+o+L7PeU0WlB4oCEuUxUVbMTD4ttoOOyy0zz/dlv1SqqNcgcGiqWeOUm6j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755784312; c=relaxed/simple;
-	bh=kWRCdqRmQiQ4nabOfCnhtHCvlV0R2Q4ArNp6iMOh/10=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NxWhj4wixBDOLLhjdFqTxNQ3nPLX76h2EqFnjwI25rr/tWp0P0ioKO6Esj4AcslzSeeE4Thl+nzs9XNWfn/FNwLEsvG/NBCSkCifStPyL0SlMwJmo3jyvj/5nIvi163DfsvckTsQHQrZatKDwzmiIPyQm8btFW9zeIRap2awKZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=J7mDs/oi; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1755785661; c=relaxed/simple;
+	bh=ixalp0w2CUYHQ5NQlNHwr+bj0kQmtH2DORccmekLrgk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gf95fQMKuv2Hpnv32AJ4p4UgWSyu1I05b3GmXKDk72Qk5a0r+LnGuk87TvpGwHBqRy2w+PvDcg8BZDyw8UXOpCSA6a2wfbWY/n1xt+FEeOnM/rjtV8u8jKr+0lD2ojKqF0l1EMElPZh17l/WZWLOXdLiIrSoRG8KdFb7z3EeRdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aOYb0Q0u; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="J7mDs/oi"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id C83FE1026;
-	Thu, 21 Aug 2025 15:50:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755784250;
-	bh=kWRCdqRmQiQ4nabOfCnhtHCvlV0R2Q4ArNp6iMOh/10=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7mDs/oi0AUEx4g25WSCJ4xDTu0CSz+vo7E3Fe0TKveR0EoifGpVB2VLEY2ubu1Y1
-	 HvrabUehpIWOnoYx247DZvEgTLvuu5hP26jAduYlIM368pYjyK5L1fWa8H8v0kZp8W
-	 IqoGa+hwmt1KyjXMUHgkfZvPS3JPfa3QAaqhhYfE=
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: linux-media@vger.kernel.org
-Cc: Christian Hemp <c.hemp@phytec.de>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Guoniu Zhou <guoniu.zhou@nxp.com>,
-	Jacopo Mondi <jacopo@jmondi.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aOYb0Q0u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755785660; x=1787321660;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ixalp0w2CUYHQ5NQlNHwr+bj0kQmtH2DORccmekLrgk=;
+  b=aOYb0Q0unQvrqxc9gLyDQBtN2dcik+wNlTIwTw3U1J/cZcwAXhVDvnpE
+   0t/MpV0OZco4ySTtmlTnVp8OMFcPfrKaIapZGiK4g98rGrSOuPloSHNXz
+   My6YbJBGDbogG5wgbvR2sx/RYn0q770psNympa8JVQoXr0N3TyeBb/11z
+   +QMvXiJFSwORH2KCn0Pur6/YrNLj3efPw/MT0TXLvunXfqDcXhXoTsZrI
+   PX1kvVoLvm4Z7i/wleLtg0H8vNSaYJWtMJ54E9oLlvIve1yMiPH6DFmRI
+   qVoGxJfsfA5toGcsvw9/miEN9NyrGI69qL2UtEu7b//n9mcQ9uVPkrxCT
+   g==;
+X-CSE-ConnectionGUID: O46lA9BFTF2XtSrB4tQQBw==
+X-CSE-MsgGUID: QAwV3j/aQ3G3W5Nx/ogtUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69513879"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="69513879"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 07:14:20 -0700
+X-CSE-ConnectionGUID: J5U2KbXiQ22QVCBBSZm3ww==
+X-CSE-MsgGUID: nNNaBNWlSaSC0tsi88AAcQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="199401653"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 21 Aug 2025 07:14:14 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1up620-000KLP-2Z;
+	Thu, 21 Aug 2025 14:13:31 +0000
+Date: Thu, 21 Aug 2025 22:11:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Stefan Riedmueller <s.riedmueller@phytec.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev
-Subject: [PATCH v2 2/2] media: nxp: imx8-isi: m2m: Delay power up until streamon
-Date: Thu, 21 Aug 2025 16:51:23 +0300
-Message-ID: <20250821135123.29462-2-laurent.pinchart@ideasonboard.com>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20250821135123.29462-1-laurent.pinchart@ideasonboard.com>
-References: <20250821135123.29462-1-laurent.pinchart@ideasonboard.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-imx@nxp.com
+Subject: Re: [PATCH 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
+Message-ID: <202508212119.gamkDcXG-lkp@intel.com>
+References: <20250818204420.794554-4-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250818204420.794554-4-shenwei.wang@nxp.com>
 
-There's no need to power up the device when userspace opens it. Delay
-the operation until streamon.
+Hi Shenwei,
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
----
- .../platform/nxp/imx8-isi/imx8-isi-m2m.c      | 20 +++++++++----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-index a8b10d944d69..00afcbfbdde4 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-@@ -250,6 +250,10 @@ static int mxc_isi_m2m_vb2_prepare_streaming(struct vb2_queue *q)
- 	if (m2m->usage_count == INT_MAX)
- 		return -EOVERFLOW;
- 
-+	ret = pm_runtime_resume_and_get(m2m->isi->dev);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * Acquire the pipe and initialize the channel with the first user of
- 	 * the M2M device.
-@@ -263,7 +267,7 @@ static int mxc_isi_m2m_vb2_prepare_streaming(struct vb2_queue *q)
- 					      &mxc_isi_m2m_frame_write_done,
- 					      bypass);
- 		if (ret)
--			return ret;
-+			goto err_pm;
- 
- 		mxc_isi_channel_get(m2m->pipe);
- 	}
-@@ -290,7 +294,8 @@ static int mxc_isi_m2m_vb2_prepare_streaming(struct vb2_queue *q)
- 		mxc_isi_channel_put(m2m->pipe);
- 		mxc_isi_channel_release(m2m->pipe);
- 	}
--
-+err_pm:
-+	pm_runtime_put(m2m->isi->dev);
- 	return ret;
- }
- 
-@@ -350,6 +355,8 @@ static void mxc_isi_m2m_vb2_unprepare_streaming(struct vb2_queue *q)
- 	}
- 
- 	WARN_ON(m2m->usage_count < 0);
-+
-+	pm_runtime_put(m2m->isi->dev);
- }
- 
- static const struct vb2_ops mxc_isi_m2m_vb2_qops = {
-@@ -643,16 +650,10 @@ static int mxc_isi_m2m_open(struct file *file)
- 	if (ret)
- 		goto err_ctx;
- 
--	ret = pm_runtime_resume_and_get(m2m->isi->dev);
--	if (ret)
--		goto err_ctrls;
--
- 	v4l2_fh_add(&ctx->fh, file);
- 
- 	return 0;
- 
--err_ctrls:
--	mxc_isi_m2m_ctx_ctrls_delete(ctx);
- err_ctx:
- 	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
- err_fh:
-@@ -664,7 +665,6 @@ static int mxc_isi_m2m_open(struct file *file)
- 
- static int mxc_isi_m2m_release(struct file *file)
- {
--	struct mxc_isi_m2m *m2m = video_drvdata(file);
- 	struct mxc_isi_m2m_ctx *ctx = file_to_isi_m2m_ctx(file);
- 
- 	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
-@@ -676,8 +676,6 @@ static int mxc_isi_m2m_release(struct file *file)
- 	mutex_destroy(&ctx->vb2_lock);
- 	kfree(ctx);
- 
--	pm_runtime_put(m2m->isi->dev);
--
- 	return 0;
- }
- 
+[auto build test WARNING on remoteproc/rproc-next]
+[also build test WARNING on brgl/gpio/for-next shawnguo/for-next linus/master v6.17-rc2 next-20250820]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Shenwei-Wang/dt-bindings-remoteproc-imx_rproc-Add-rpmsg-subnode-support/20250819-044803
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/remoteproc/linux.git rproc-next
+patch link:    https://lore.kernel.org/r/20250818204420.794554-4-shenwei.wang%40nxp.com
+patch subject: [PATCH 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
+config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20250821/202508212119.gamkDcXG-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250821/202508212119.gamkDcXG-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508212119.gamkDcXG-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/gpio/gpio-imx-rpmsg.c:419:6: warning: variable 'port' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+     419 |         if (msg)
+         |             ^~~
+   drivers/gpio/gpio-imx-rpmsg.c:421:7: note: uninitialized use occurs here
+     421 |         if (!port)
+         |              ^~~~
+   drivers/gpio/gpio-imx-rpmsg.c:419:2: note: remove the 'if' if its condition is always true
+     419 |         if (msg)
+         |         ^~~~~~~~
+     420 |                 port = drvdata->channel_devices[msg->port_idx];
+   drivers/gpio/gpio-imx-rpmsg.c:415:34: note: initialize the variable 'port' to silence this warning
+     415 |         struct imx_rpmsg_gpio_port *port;
+         |                                         ^
+         |                                          = NULL
+   drivers/gpio/gpio-imx-rpmsg.c:503:10: error: incompatible function pointer types assigning to 'void (*)(struct gpio_chip *, unsigned int, int)' from 'int (struct gpio_chip *, unsigned int, int)' [-Wincompatible-function-pointer-types]
+     503 |         gc->set = imx_rpmsg_gpio_set;
+         |                 ^ ~~~~~~~~~~~~~~~~~~
+   1 warning and 1 error generated.
+
+
+vim +419 drivers/gpio/gpio-imx-rpmsg.c
+
+   409	
+   410	static int imx_rpmsg_gpio_callback(struct rpmsg_device *rpdev,
+   411		void *data, int len, void *priv, u32 src)
+   412	{
+   413		struct gpio_rpmsg_data *msg = (struct gpio_rpmsg_data *)data;
+   414		unsigned long flags;
+   415		struct imx_rpmsg_gpio_port *port;
+   416		struct imx_rpmsg_driver_data *drvdata;
+   417	
+   418		drvdata = dev_get_drvdata(&rpdev->dev);
+ > 419		if (msg)
+   420			port = drvdata->channel_devices[msg->port_idx];
+   421		if (!port)
+   422			return -ENODEV;
+   423	
+   424		if (msg->header.type == GPIO_RPMSG_REPLY) {
+   425			port->info.reply_msg = msg;
+   426			complete(&port->info.cmd_complete);
+   427		} else if (msg->header.type == GPIO_RPMSG_NOTIFY) {
+   428			port->info.notify_msg = msg;
+   429			local_irq_save(flags);
+   430			generic_handle_domain_irq(port->domain, msg->pin_idx);
+   431			local_irq_restore(flags);
+   432		} else
+   433			dev_err(&rpdev->dev, "wrong command type!\n");
+   434	
+   435		return 0;
+   436	}
+   437	
+
 -- 
-Regards,
-
-Laurent Pinchart
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
