@@ -1,66 +1,66 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877ED301476
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 13:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05D526D4CE
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 13:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755869487; cv=none; b=X9JA7YJD3I3MOajlogJ87g6N+nt9p312Lqs3c2N4VURngrlYXXSZD27mh8wWyywVTmOIphOj/F8zrDSFhqUSl99DblTPlm36XPkq6LcwVF3y/xgFzcm0OfEpfLW+rpPiXFCqNKCS2OAEeRTcmCdwHvhqxDGKlTtpmBKn/KFN4hA=
+	t=1755869488; cv=none; b=pRfbc7NORxxibTAS4T6KQaue3wBKd5TQD2X6cDDH2raWspH6Y548VDXcQgRW8kwb+q5p3WmvdgGl89at+0GkWSisjSbkgglDsb3p84o4wOv22Cb/cggBUz1a1WIghx5/+DIjKBeILUMBPi5/cpgdpkVqZ1pz9saCq5wlV5hXt7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755869487; c=relaxed/simple;
-	bh=3SVpgon+i1YQeIuy3oRoxPKfUy9lcns76Zkt/Y4NV+k=;
+	s=arc-20240116; t=1755869488; c=relaxed/simple;
+	bh=qJdqhbannqpcNe/ZF5YUjLIXi50NcD/YKBgc5cMgrCM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KjWmHPM3QcJ2TZ4Lc/0gXHh8WzgANL4D6py0A060gRrl87fBfArK9aQ4hv5dhfzVEL7tLXwRskEh2Rv8RkkpBD07wBxKO6V44HbzMjpcZqYU0B6A627sB9HQegSJOM7kUPkaP0kWgYvxrfcBwaIDhWJ7+p52sPCkc0+Ye4fq5lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bakd+bqj; arc=none smtp.client-ip=209.85.218.44
+	 In-Reply-To:To:Cc; b=brPHGJEbONX9gSwy/hxM+DbgQBKmBJr86+7DDbScuoZZD7k8946V2Sc7BLdz/RR3YyL4T1hAZL0+oefIRmVFPOqxDQBU6AVyXZVN5BzXSGHZ/GA7wB1PoULA3CpSP9D0oqJ7hc2XQNx+VJBV2BKiczx2F//71FJ2R4ks225rV44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=h3qtqKEd; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bakd+bqj"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-afcb79fb221so27927866b.2
-        for <imx@lists.linux.dev>; Fri, 22 Aug 2025 06:31:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="h3qtqKEd"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-afdf4bb0e5cso31552466b.2
+        for <imx@lists.linux.dev>; Fri, 22 Aug 2025 06:31:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755869484; x=1756474284; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1755869485; x=1756474285; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lLPWBbvJzifuSCPGTnAy7x/NBrhVR2Sch+UbydDDTnc=;
-        b=bakd+bqjISsiInEBHBYMacEkiHlp9lL6jO6ZTHclApI1mMEGjN+FQlqKc0Q7p2SSmL
-         eoqRwXbyzyEQfdvY6tAkJYodqFhFBDO05rO3CqIPEz4tp6ZsNoTCqAuDN4kTILLFLOgi
-         88mk965PXnGnaGispZkuh8i/s/Rj6nsDgUe7PkRHzL9kZTtmct0n6wKK3rddArhNHLgB
-         iRvvYvc8VkBFcsUbvLTW8/iQnx+v/5+PZPLsz+sBnVeE+WF49tBkJ+eaGPIIlpOnYnV0
-         Z72Y3gi29QaJFEfnWZnFgRY7lbJO3R/4YTwBSBEeOSXTdk7oEWoa01tBI5JA4IfZkTwU
-         VgSg==
+        bh=UPjWI7EHXybjCjXrMdkmBIb5D7sVI/NhlSvf78izrHE=;
+        b=h3qtqKEdvXk3X/bs4n6MDOu4d4TS8mAOZUm8dk0AasaovmfFLSnW78WgkIJU+TVGNH
+         tTpVISrDpe1kPGAbngEBhSC8v1Gh+OaAFLV1Waj8WZFVCAhrr8Xax2NdBB8PysxZXjgq
+         4K3qRE2ubj0hRYl82Z0s+ZN4D2iQvEUFqle1DDwmsSmk4tmO7TaD33JMRokBMGNGJuyf
+         HCnYeJ8ok8a1GY5NS1KWrxAq0hOZ3QPcgyz3igra16xHFFK7dUTbfCTOZ96zRXbf6bVi
+         xa+Fd92bZ9a99KBndaVNVc2AEyR9mijA3/UbO8pLMdyhbU62qm0iioNw6e2xQUhen3xr
+         CFVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755869484; x=1756474284;
+        d=1e100.net; s=20230601; t=1755869485; x=1756474285;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lLPWBbvJzifuSCPGTnAy7x/NBrhVR2Sch+UbydDDTnc=;
-        b=cRnwBFshs7hilQ6ooxgyOZo8sY9rSpgR3ogHzpHy9wwehMRzVfMt9zmJI/pmadG/Wd
-         XVG99t668nn0uBYq7d8fk99OhUnPodkTowAskXtG87iVhGNd6pbDv+JjRcIRs7wlwXOQ
-         dV5EAUwJs/mvRD8fBn8fTmmlOf2YkmlIfTrWZEGk6KPYBeMXfgD4oX4X3XmVqjccg7FQ
-         Egl7PHBA3wZPv7YTXMzGdzz3Yyu1Kf2Ov/EvR7LDKHpEJZ+ZGmgfm0rQ3reyBo4/8MRP
-         3lRxG7E+vtfegxnCu7ehtxFG4hKhEhiJd1Nluv9aCauaKIRFAEhbBoJUUU4FIWNlnJ6Z
-         JBaw==
-X-Forwarded-Encrypted: i=1; AJvYcCW1iD+4AxQYX3A0Bqmi/zeKWxQQmO5NxVShpfCr2gscuo5U1/noa1/yq3rsNc0loua9Lvg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyehuLnTONAPOdA8DMPTmnNGAqt0zs7/LpRmpIeWBoQ/6qHJOdq
-	ac/vKMv/AOzXCrFlnvQH6poqvi1z19DM8egnLZi0lv2T95zi3B9rux1AJyciCcqs7ms=
-X-Gm-Gg: ASbGncvoruuIyhtttluz0lzHfj7MHI8vsgU/EscdOIKWrG8twphjV6Jcv3PRurEmnUq
-	WzL5XuzeFZUoPRtK0dogXaA3RAMaJnwe5Pe99XHUiDC15ncaWcFQgsDfPY49xWkevK4rICaAWiF
-	OHQdhlF6W1KxaGJo2wSB9ZPPZVNK/xvP1hpnTxfFQadpWObSPHVRg4Ibt5q6XHGOWD53+Vbhy0f
-	/D9N76aN5Ii095M5EO75uPwUf3t+IJFNluyRKjgvMvgQ0SooMelPqDqsu3WnRZx2BbZ3qn+QGDj
-	AmUr600hboc6117lS47wKpyBFYgK3BDSCUQO2C+BBnAAalEcC3d1yr2mmJIfEJmRJvAuBhu1wr5
-	kKSCPZJfoFAh3K878QMiJPwfR/LvqvV8D6Ws88FE=
-X-Google-Smtp-Source: AGHT+IGye/ypxcYwHYTg5+3IuOjm1+gEOjzMVOKls45nzJUtB1Xa9O00N+ETVyA5ZLC+lUcykguCIw==
-X-Received: by 2002:a17:907:7fa3:b0:ad8:9207:b436 with SMTP id a640c23a62f3a-afe29048212mr148055166b.5.1755869483728;
-        Fri, 22 Aug 2025 06:31:23 -0700 (PDT)
+        bh=UPjWI7EHXybjCjXrMdkmBIb5D7sVI/NhlSvf78izrHE=;
+        b=hGa/PlCgGHWLGbVoK0ZVSf+HREtQyLbg6mZGAUAXDoO4gvoTnRjOybu1n2tPLD+poq
+         fKmMIQa6C6dQ9e1Rz/+BIqBR/G4Mg0O9pQidqpqeV8etyJUggH9vyugI6N0XdwiRP4K3
+         ieyIeT64P+7XRq9inBIt7r8+TRqxXj3IMr7O88/+/tV96qWX7dMDgVw8iumaRrYoJAc6
+         gNuI/zu+Dkg4IarcjTbx+46hXV34RuCxRq2tjpMMT3WTGO4FrYO9iDnEcl3DrZ7MMx5J
+         fwI+bX8rZ3LUrQcPaxK/RFVIZYLbxQ2/8okDMOp3GK3burw8FwKL8lQHTKDTR1angPqx
+         i2DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWSV4hue+vfM3nt+idUK1wg6kkVOTG90MK4Er3DnakIanSdIV3pdmNBJrcDmRvG6BAat64=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyy40sPXUmoXtE9f1Nal1ZwX7/KSQiPTQVhC1prBqIC/ZRWTj07
+	cQCIeYJ4nkk8lAO6F2do1jD+zfbfamoKKNynhuG0s66A4qLhyZQZMPnVYvb7yTbdwxQ=
+X-Gm-Gg: ASbGnctcFzE9wKDYNCg40MUHtybcP0+9HGbh3ADBWnZBnzyNtQ74LFVxnAcCcJlNlB/
+	fWfCvvEC5kC8O1TyEd18lsGf921Q08qJ8IM8Vdfu8rNc9pzoz16Aw115GQeJXWuo4sr/Gq5E96K
+	Se1kMS4aHERPBw6CMWrqsm+leorxro/jgiBrMeQw35Pm7oNMJm+K7jfJdtnS6ab5A78C9PiW2u3
+	OHwighFt1VR7KCClXkeeP439iKsVkKAGD9K+usIoLzF7U0k2TWketG9dm/qdl1wScm1k+Rw5kKQ
+	eMM+/GVn41shedsYaku0j2pc68J4VCMGR71iUaA7tSrwF9JZGOjhzEtum/7touhESyme42LEDEo
+	IH1JtySLRNJQ6FjVsum8q44Vkh8r0vERVfTYxMD4=
+X-Google-Smtp-Source: AGHT+IFNlJzZkDjLydkUzPUYLlA2c9JWh9TESZKV4zpfAYn8jjKMtO3j/MHwJN4CO/OBrA5y4xzAzQ==
+X-Received: by 2002:a17:907:2da9:b0:af9:649c:d0ae with SMTP id a640c23a62f3a-afe294b454fmr144101566b.8.1755869485266;
+        Fri, 22 Aug 2025 06:31:25 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afdf24bc40dsm554863066b.109.2025.08.22.06.31.22
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afdf24bc40dsm554863066b.109.2025.08.22.06.31.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Aug 2025 06:31:23 -0700 (PDT)
+        Fri, 22 Aug 2025 06:31:24 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Fri, 22 Aug 2025 15:31:10 +0200
-Subject: [PATCH 01/10] arm64: dts: fsl-ls1012a: Add default GIC address
+Date: Fri, 22 Aug 2025 15:31:11 +0200
+Subject: [PATCH 02/10] arm64: dts: fsl-ls1043a: Add default GIC address
  cells
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250822-b4-dts-interrupt-address-cells-imx-v1-1-f1b479da9340@linaro.org>
+Message-Id: <20250822-b4-dts-interrupt-address-cells-imx-v1-2-f1b479da9340@linaro.org>
 References: <20250822-b4-dts-interrupt-address-cells-imx-v1-0-f1b479da9340@linaro.org>
 In-Reply-To: <20250822-b4-dts-interrupt-address-cells-imx-v1-0-f1b479da9340@linaro.org>
 To: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -82,28 +82,28 @@ Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1322;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1349;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=3SVpgon+i1YQeIuy3oRoxPKfUy9lcns76Zkt/Y4NV+k=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoqHEgiIiD6BglCYSYhzqb8B01pZD6xzH72ddRt
- SeeZP/7jl6JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaKhxIAAKCRDBN2bmhouD
- 16+GEACReaQu8HmfvIKNpHLlEbY6YYh0s0nof4k3fX9yB1JvLMmDUYQa2XucniT/Jjqxn/FpXnc
- 1Oc9F8wHgQ7A9tfonoMlLWbMY+n2dy4ZPKsQ7127kXGUnPs40RoNloVb5C+YJprflb4cPT4kFY1
- hD1mLDtmN39cN26PQSkK1cOChLCJ9MkuQ8oig7UmltQO0YU6azgpYcgfrmivxdt/mVD7fWiCddc
- 9b1/FkvhKrt0ftpy8WXriKE03cZMgKeFczZrMOB+Cn0NzzevCXi2c9AnTx+cfJsOF4QrGMAx/Kv
- 7PmwHYJZ7FWwLo3rx87JZ+NxFVJAuN0GhZl/eoWfXQR3FbnrZRo/XI5b6M/PKMoLLwoa2PmWElA
- Ss1Me+3WYH1tQXKprVqtvkdzlBrhPsDUAivEDiNSJQVPeMdocN2eMwj+qyrr1p4NICMUx6rnHTH
- VJKUFko2xx2xtgkxiEieJ8qhfDOaJTC/MgBquy33kn5/t44wFV8rJj/oPfggEGGgF3TcGoEb5PJ
- BfY8Uq10AX3UWhY+O1/yDV+/xblulpI6ckf40CL2GGeCsxatWkvHaSc2WuHvjFrQcEvQLxS8kkX
- Z2ju3N74J7IDTL+m8izQAEQCxEHMNXg3NWV+YuO4atriqT+vRBz88c0WTTe6qJGJfEij014Q+ns
- i5V0vR3VPO+IctQ==
+ bh=qJdqhbannqpcNe/ZF5YUjLIXi50NcD/YKBgc5cMgrCM=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoqHEgGG8Ahoy4wxm6xwMlRb9HztC+05u5oiGkT
+ kxjGtiUVeSJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaKhxIAAKCRDBN2bmhouD
+ 18B8D/9OaqPF1Mfs2Ufem0YAlsIQ5SlbHEwLAzxREncxYfZL8LpWvL5GA2B3aULGUmLI4k3HVBU
+ XYr16qUJN2hSlRM5e07nlfHYNM/IsvAgif+INe8YNODi+pBIOvo5FpsWFR6nCSGEMPyqHDA5732
+ bY+iUCrPIadFPGVQxHCuRvsovQFP2oDHuB5rzAPO6vlYABNqA9l+UC4n+MqEEa3S/sQCAhwO1dX
+ D/QSwxXAKw6xOzZkp8gwxvxuuxeQwnbGD87eUuMNW/JLQg549HY4jQlWaNKvix4UJgnhqfIK+p/
+ E02HY+5e/wOS4958yv2SFIjXt14YHFcCRlgvRWeeCQcy3Q9BSSIIP6NBa2GYeuYElQmnpgP6Ei0
+ WltvDg3oBZIkReUE1fZNCQsITc7R8vZw+i1+tX/Yk1IGzQgYAFvB4xMzPrBJK0WZcoTB4nH/GT1
+ +a0pidmbdqbT/MVM3PYYk+n+JmvvrpabaTXa72ubWo4vK0wicl1Gmx9Zukc7eXfrrNKGOC8OrmA
+ zWBNin+TdD9T8yH5rrVGH2A7HuJj47d7aPoGJD4EVNgfGex/Xi7nQuf2YCZbFchzQVsVFDTjpaQ
+ JOlfvddfcs2Pek3McvvhumLNXxH0VGtEQqOH1aO0QIsM8qkFThGIK80ReiXtGWPzLsX+zoRXG/r
+ d4IQ0px1to6syqw==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
 Add missing address-cells 0 to GIC interrupt node to silence W=1
 warning:
 
-  fsl-ls1012a.dtsi:548.4-551.32: Warning (interrupt_map): /soc/pcie@3400000:interrupt-map:
+  fsl-ls1043a.dtsi:330.5-342.26: Warning (interrupt_map): /soc/scfg@1570000/interrupt-controller@1ac:interrupt-map:
     Missing property '#address-cells' in node /interrupt-controller@1400000, using 0 as fallback
 
 Value '0' is correct because:
@@ -115,14 +115,14 @@ Value '0' is correct because:
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi | 1 +
+ arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-index dd479889658d452142e6d50b507147ba91c799af..fc3e138077b86cd5e3cf95c3d336cb3c6e1c45ef 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi
-@@ -87,6 +87,7 @@ pmu {
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
+index 26bea88cb967ccdb7b3cbae3191476f486c86288..73315c51703943d9ee5e1aa300c388ff6482423f 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
+@@ -289,6 +289,7 @@ pmu {
  
  	gic: interrupt-controller@1400000 {
  		compatible = "arm,gic-400";
