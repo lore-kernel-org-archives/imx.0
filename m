@@ -1,44 +1,52 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD07216E26
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 08:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B074821883E
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 08:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755851236; cv=none; b=VZs3YCMuAQDv8IBU7Rz4zFdqQbnX/WoowJCI0AdAA4gu11pJLn0a7gPFNdip1zf5hcNLTa43P5T1MSVeipQ74b1gf0ktqwzqhi1NJaeHrfaV5CTYi9Muh4/ex2rHSZzasmD5CodJmU/yf7L2w3c5EeqGCxnf2faZF02e0MwMgL4=
+	t=1755852105; cv=none; b=HYajO+D3PjZMLKx4HxAZdZ28eNUlPqQuRP651ZypyHIjmcjtebxICHWMfmr/AvmPjkLUqXqcAKa4pETG5Ke7Lt8qXQ7mcoqFO8qPfU8c4l2Gell3uU0Ly2sD2Y5ME072JGmjXr/wdsJD7MD42UQrzb5ug0sLVTYocME/mq10Gmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755851236; c=relaxed/simple;
-	bh=thenpvWiSLNDmB4c+x2qmtcODgkESbbw9ot/N9LrtU4=;
+	s=arc-20240116; t=1755852105; c=relaxed/simple;
+	bh=WHCfEIYrpZ9r/ypC/WgaKQSC3GIDtKB9TvHLS/cyANQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uyoxc8njyOZZ/Ftajqu1RknIj/CXNXukDzQ3I2rkAfz/mMFJLgMwyiD+hQ5myUwtYwHAmw/Z3f5mCps2saNX3pt05SqFkZnZjRSeIzF0wkJTfxQX9/KwmDAdC0Agz2a5MaMzO4RL+xPFAoMrL6OUEqcagZQEHV4Eunmt4do9klI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=AnWz0oyJ; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=BMDCBiQbnx8GLlY1gqDjPX6XOZwxjSeqO8bp+H5uQQnFxYh2TGZ2PFQdyYJPdET4r+ilYpa6/huYKrNYdVkCaSxFObZNMKazyTBQrAxY4j8TSnKOnpLaozOkeMH3bdmx6yYbjv/11tjBVdNbjUwwu8Av1M42jb07Gj9ywhibrSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=je0N7Nlk; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="AnWz0oyJ"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="je0N7Nlk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=xnNoai/6WE+/YlaBeq11xGUrY7PQToHaLx/C4M43Y8c=;
-	b=AnWz0oyJz8V/4sZx9Iaz7D0/y3nOogBQQJdsf0NZtHCIHCQjvhHFLHlGeeePh6
-	owD6fhuEK+5uCgRf3JXUn+wtHRgi8D4D20Er0tyH02+421ETvx5fHyeWi2dJh5Ae
-	0IroioHDWG0gcmTOv1ICe7kRNAB9+rEkKaNxsEuoohghM=
+	Content-Type; bh=XrMbvNKRSNnSF17wBBbmWQ82eEPNaqSlEuR4cZ/H4CM=;
+	b=je0N7NlkWm2hwsblw0RIflKegRq7k3Te40Q5yJVH9a/Z3td9XRc3Z8mqLIrYIL
+	ydY7X5rlP6z80W6dVxUbz3XYMZvx7Z6yq0KsBoV/uw0gXOjbKB4Kha1iDMPNUQ6K
+	mTxe+NMwbIJRIv2WOA6wHHIgySXcZFOJYchR871XRCztI=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgDnBYvDKahoGlEVAw--.10154S3;
-	Fri, 22 Aug 2025 16:26:45 +0800 (CST)
-Date: Fri, 22 Aug 2025 16:26:43 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgBXpG3mLKho6HQVAw--.9849S3;
+	Fri, 22 Aug 2025 16:40:08 +0800 (CST)
+Date: Fri, 22 Aug 2025 16:40:05 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: mbrugger@suse.com, chester62515@gmail.com,
-	ghennadi.procopciuc@oss.nxp.com, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, s32@nxp.com, kernel@pengutronix.de,
-	festevam@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/8] Add the STM and the SWT nodes for the s32g2 and
- s32g3
-Message-ID: <aKgpwzqlmK71Guio@dragon>
-References: <20250731140146.62960-1-daniel.lezcano@linaro.org>
+To: Joy Zou <joy.zou@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, peng.fan@nxp.com, richardcochran@gmail.com,
+	catalin.marinas@arm.com, will@kernel.org, ulf.hansson@linaro.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, frieder.schrempf@kontron.de,
+	primoz.fiser@norik.com, othacehe@gnu.org,
+	Markus.Niebel@ew.tq-group.com, alexander.stein@ew.tq-group.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com, netdev@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	Frank.Li@nxp.com
+Subject: Re: [PATCH v8 01/11] dt-bindings: arm: fsl: add i.MX91 11x11 evk
+ board
+Message-ID: <aKgs5TylbGJ2GBiQ@dragon>
+References: <20250806114119.1948624-1-joy.zou@nxp.com>
+ <20250806114119.1948624-2-joy.zou@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,22 +55,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250731140146.62960-1-daniel.lezcano@linaro.org>
-X-CM-TRANSID:M88vCgDnBYvDKahoGlEVAw--.10154S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUwg4SUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNAW-JWioKcXcnAAA3H
+In-Reply-To: <20250806114119.1948624-2-joy.zou@nxp.com>
+X-CM-TRANSID:M88vCgBXpG3mLKho6HQVAw--.9849S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU5qXdUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhuxZWioJsERLQAAsG
 
-On Thu, Jul 31, 2025 at 04:01:33PM +0200, Daniel Lezcano wrote:
-> Daniel Lezcano (8):
->   arm64: dts: s32g2: Add the System Timer Module nodes
->   arm64: dts: s32g274-rd2: Enable the STM timers
->   arm64: dts: s32g3: Add the System Timer Module nodes
->   arm64: dts: s32g399a-rdb3: Enable the STM timers
->   arm64: dts: s32g2: Add the Software Timer Watchdog (SWT) nodes
->   arm64: dts: s32g274-rd2: Enable the SWT watchdog
->   arm64: dts: s32g3: Add the Software Timer Watchdog (SWT) nodes
->   arm64: dts: s32g399a-rdb3: Enable the SWT watchdog
+On Wed, Aug 06, 2025 at 07:41:09PM +0800, Joy Zou wrote:
+> From: Pengfei Li <pengfei.li_1@nxp.com>
+> 
+> Add the board imx91-11x11-evk in the binding document.
+> 
+> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-Applied all, thanks!
+Applied, thanks!
 
