@@ -1,109 +1,191 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013056.outbound.protection.outlook.com [52.101.72.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCA930AAC5
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 14:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755873643; cv=none; b=tf6g5xbGaeQzuQuN9K7OtXTd7NpdP+kyKb+GkTZRI/LPTkaQP7XD/h0d+xRQgRGPzyRLeR8Rnv0iHIEaU/78gSxyv4ckLiy3aDesgLi61uY8OqZKup+v6ySo4VZ2Fwv3StwE3PSijgvNBZMR+FE6Bm3jhbfP9ZEJ+OypDq8VBNs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755873643; c=relaxed/simple;
-	bh=zj1rzy6SxpiP5UVa3GXGQh4rqI+RlENYyvwupRYye2w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eyz9otFc/JTx0U0S5URr4UPgoHZt114XE8u/vf8PRYiXGllPXad68AO8srP0j9We3WAy5XmPtxQomteNy0JwXLufUWRe/TGnckwS0HmFQIV/DiPcR3mI9AE+k4PcHLMP6HvhzpQWm+TcYV5Ng7hRy3XNC9Oxu+/iCo4amhLL014=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=a96PCwbn; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718D930AAC2
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 14:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755873837; cv=fail; b=GCOtN9uOGukg6p+K115W6z3kZFYk65QQkwb9UcF9EHcjv/NuyhkRCI943xxUu8PeTUjLIIYAQj22bfxzTZYPnxyxihZFKt10v33Os5LBCs+3A5CTAcLM765sxtTxu7FgKNJ+popgAPlsXDfhHOYl9fAamx/psiHJMeuGL5Q+ACE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755873837; c=relaxed/simple;
+	bh=ZjH8u5BVIQRTCOh4H5w+dKLKAI3WrRCgytUL3mx/C1E=;
+	h=Date:From:To:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=T3GscvJT3eWUR0nh7SxTH+rVBoWywyqwp+/DfScJKd3HSrxCE2ECAsg6FqAYRz2mqxbChV2LYIgHjbrDb5v9lfgQ0xuX0ti2IFcYFLkkavJF5QbpRUICLx4jWdxEi3wwGdxkJR1/bs5I8ap61eizh8FnpK5cjWkjNb5mMt72sU4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=X5fe7XD6; arc=fail smtp.client-ip=52.101.72.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="a96PCwbn"
-Received: from pendragon.ideasonboard.com (unknown [205.220.129.245])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 9890A446;
-	Fri, 22 Aug 2025 16:39:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755873579;
-	bh=zj1rzy6SxpiP5UVa3GXGQh4rqI+RlENYyvwupRYye2w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a96PCwbnYqWy9NzgoA0H+Hu4BubTkJXJ9AEyZpFPhWugKANdrz9tW2LJoNkQZpo9S
-	 EdJ/TSUDS5dk+nV22AwEfaEtaY5DYyNCM53HtsoB+x77heo5/KQGJ/b4qav2yw/vDi
-	 YnenV043is+sSKtBZSEXYgdcFQ/YD9Rmw4PtpLcM=
-Date: Fri, 22 Aug 2025 17:40:00 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: linux-media@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Inbaraj E <inbaraj.e@samsung.com>,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Martin Kepplinger <martink@posteo.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>, Rui Miguel Silva <rmfrfs@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Purism Kernel Team <kernel@puri.sm>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 06/13] media: imx-mipi-csis: Use GENMASK for all
- register field masks
-Message-ID: <20250822144000.GA22572@pendragon.ideasonboard.com>
-References: <20250822002734.23516-1-laurent.pinchart@ideasonboard.com>
- <20250822002734.23516-7-laurent.pinchart@ideasonboard.com>
- <aKh7DmnEB2KChVol@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="X5fe7XD6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ORESvRNmoVYBVnM+gSSt6me1jF1S3CLGMrimParHJRwXwEw0QBD/ekO69uTH8+DUj9ZlQPq577h64YdHOWmfgvF5BSQQx/k/+T4ZsiDowHDue3UGfIA3DhqeS6Rvjq58I9jG9gTB3p1yz4PjjZuAHDGOH9wMqKuY59gGrPLoMQxioeH6KZQMnZBHWMYxwjrg7KwkBybZNPX7fQxRh4AQgYHrk9UZ42nC0AUp+oGPGUNRqnjVd2mpQCJ3pgW810GVTOF2S7Wo26B3ihMZiihIINbRMBojXlrTDXvMacEGVmOTAyWJWScrFxAI0FMOUKS3GFRm0DdUAfY78jilIZ+rzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fwrR/T3hJ0k4Yy4mDwBSBvC8MzVLkNsX3p2twa7fO3Q=;
+ b=mrm+Jf+CwDCgHgeeKFQBOOcgSsTLwadEFnVKbzyVQ6XKYznq8EuyC13mTiN01KI0z+q2X9f8chRy3PtL/hvSWvkFknv25+3zTz4HNCCeO6AM/3j6k9DNqSpb+A5sXBP3C2crFZ7goLIMH5qQINg7GgvF8U79IZNmHTCWJb2m3MKmfsFtM2GZqL76IsLzcsGOMsY0dReKtOTlT1gizFgEZqHZd6ZDRjxBOBQdRaAzfDrIfUifqHpnJsEUuG2JkHAwQZLcY5/fdozrxbwy3t3741gK0XIjIDpxUGHHgS7KHZCHfskBC6m3wHpuiRL1szhzhvQIolAHyK4yn1g+rK/UfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fwrR/T3hJ0k4Yy4mDwBSBvC8MzVLkNsX3p2twa7fO3Q=;
+ b=X5fe7XD6ZZgWJqVRIMoevshzAAV0U1tbwY4wGAlJCNmVvMASjq897IgfE+xqZ91toePr4+feE/8DQm4Tn3xOSoZ5JZMaLvBfJjwXSuj3CxX/WVR+jQ5qngIc7giCH5Jxa/LH6dRxSG88zvF9/x17QnPgvFBq8NwSj1iO/h7o8o/RvrvfN6ZrAIAYSgB6hu/aj7btF2jm600/U7iCh6e3pGNX9KEvAEVkVajt6HA1iPlTLeSYa/t11+k/xKzltZKr1bZwyK14pI7ZPyZVwlKieF0KgdkYn3lSdcCsa9zhF7PlR3/wpEjLWG/puTGaUmxoCXVUuebEggAjrcPRhR8Smw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by VI1PR04MB7055.eurprd04.prod.outlook.com (2603:10a6:800:123::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.16; Fri, 22 Aug
+ 2025 14:43:51 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%5]) with mapi id 15.20.9052.012; Fri, 22 Aug 2025
+ 14:43:51 +0000
+Date: Fri, 22 Aug 2025 10:43:45 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Vladimir Zapolskiy <vz@mleia.com>, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH 00/11] ARM: dts: nxp: clean lpc18xx DTB check warning
+Message-ID: <aKiCIZf0eG2F0nvr@lizhi-Precision-Tower-5810>
+References: <20250706-lpc18xxx_dts-v1-0-7ae8cdfe8d7d@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250706-lpc18xxx_dts-v1-0-7ae8cdfe8d7d@nxp.com>
+X-ClientProxiedBy: PH7PR13CA0010.namprd13.prod.outlook.com
+ (2603:10b6:510:174::20) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aKh7DmnEB2KChVol@lizhi-Precision-Tower-5810>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|VI1PR04MB7055:EE_
+X-MS-Office365-Filtering-Correlation-Id: 963e6e83-cf86-475e-69a8-08dde18a4f97
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|1800799024|366016|7416014|376014|19092799006|38350700014|921020|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?HtfLdwchwrmS5B0vIoG1ZQXft9n6R1Bw1y16dcJt1uFuTRJCo/zlCh4+RGLe?=
+ =?us-ascii?Q?S5Q/EYgFyb/nzkrb3UPwSndAL+oP65mR3raLrQhdnuk1tfe8M7qE273Di3Vl?=
+ =?us-ascii?Q?nZDWM1DxOVE1YdO3c77MalGeeIcGRd/eJ8fizGiSdR3DMfHssF1M1dqDIu+U?=
+ =?us-ascii?Q?anLxY23s9PUpLx5qJuEEr5Fbhi7SOBwWO8XhD9VBo4RkUYtmu/leOx4CB1RH?=
+ =?us-ascii?Q?88QJcMIg/TJL+IhkYheUORqEoeH5+9CxbcqGJn1ZOtC3PeMQzXDF+bCIlV2g?=
+ =?us-ascii?Q?m4WJeN0VATT1x5BQsLT6HC5OYR4FjZfC0S72Kd36iH4kRQUg0hfxBddeqOXl?=
+ =?us-ascii?Q?IlYG+zXD0G+73nZ3cV7p4ssV4eEQn70hCXMTIFlB220GbrBdyi1ODDrOjHAl?=
+ =?us-ascii?Q?1H0Q7XMWLnnK3C8a3txHaBgcATx1zb/gPE+646ioIH38ZXm1xuhzZwDOyH2x?=
+ =?us-ascii?Q?B0zfjYReSsaJrArOtKR0FyN7UeJ+syOiXBZotz0MVpqwwc5/WwRPcsEqIRzB?=
+ =?us-ascii?Q?mwxMJN07xTCe3Jnrd/Nm11liPSz0dtOvS2cAqHnH0k4DHMfS+ezfC4zdeZuo?=
+ =?us-ascii?Q?qf5ouHly1Ly2x7RMAneQC4OMtysNT7+blfFjl59O5IHTNUlsmBjLcM0xx5kl?=
+ =?us-ascii?Q?ibZl3CZnLLUuhuRhEBxvH74bAVVggbivLd4GLdsnIw30pAwHl6SYA3w35mJb?=
+ =?us-ascii?Q?AeC+BVDy1Um+S3gXlcwBNzTcKNBGYHoIGtjVXYvwLBrCgNhPpaZsSQIRS5DA?=
+ =?us-ascii?Q?85aNnCXONBNSeuWj+1m+NFTJcvxsh8mdn8dQpTK+rFvHR5Zwj+9YzRlNoRM3?=
+ =?us-ascii?Q?mw3o4SNgMwRDaWGa3eUPiD1NQ0NSgk3cCZsOuyZc8yMQy9erFU/tvDTcCQjV?=
+ =?us-ascii?Q?zwRRVeWOTby3ERN9tlPn59pKPvOHz/y+8N6k1GIKrw0iyQwaviAs3z1qpb9o?=
+ =?us-ascii?Q?Q3AqgCFpcx1S6lQWSwW/X9AxdQIHCYZnThAx23S0nQUNxT5Op6UulYWSvXZc?=
+ =?us-ascii?Q?aWbSAPs54yjGgnBrpHN3selx7tUdpgBQhqDnE1HLL9ASrNkS8TWYyx3pV2Vd?=
+ =?us-ascii?Q?jGUbThQuSEgOlmfi7tVSF3aUPd40bkioU+YEi02okkk+/KGIcTAbDR+2Vdci?=
+ =?us-ascii?Q?V9It0kmgFkDULbvcyGbhBNfO/orxYHrmSUCmXNNUtaMbS3O1h3A0/OWted+f?=
+ =?us-ascii?Q?k4b2VCGLhTmwPqY1LI9g9EdHRoLWSgb88zkTAgFIf+43MlnERgQPphG9tqx/?=
+ =?us-ascii?Q?ky8i4kdTQOHzbWcy18q1zSmyg/Hs1xjP4hIv2ZajWxgjLfAHeOtRFGrjgaV/?=
+ =?us-ascii?Q?XFuyIdTO0ZepHxU62vRiPn8nwsM8Cgcj8O2sNQ+yPPXSGNYf4Bd8m6uTihVC?=
+ =?us-ascii?Q?QJmOlUqcoBIh7bC0JAOx8RQzjIF4eNm60IbF1y7xCU62hkMNaXuZ9w5wrbUp?=
+ =?us-ascii?Q?NofL8odjZ7yYTTJ6xd4Zlrr03AfV+TYwbyf3l2Bqvpb+kHMTfsYenFILZxf7?=
+ =?us-ascii?Q?FLw3ZgKT37frh7rgq1/pchr2vQFouTqTgRDE?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(366016)(7416014)(376014)(19092799006)(38350700014)(921020)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?k3KRiRIiiWt4GBsGg1PdDlQ3/Z5Ge9PQaKIwzTrj6xON/8a7rtOfNjSXe4C7?=
+ =?us-ascii?Q?VhZ6q2nsiRiJziUuAXtD4HH6K7B2TzVNnino0nObZQlleMzGDvSjfEzzPCXm?=
+ =?us-ascii?Q?MgK52E5S/rbcSyn0KRty8qdMawrSJ3ArdyVIkrLRlX/4qJQFRdc5Xnz6SOfK?=
+ =?us-ascii?Q?2Mo9T4noUfz9xOnN0pnJAiYZALh8bSeKpFNSo+kdMydjckMbIA2NbVVLp05b?=
+ =?us-ascii?Q?KvtbdGakvtnlZ/JvrMcYRzuf45K1O73lDDoYbg0HwihZHCFPYbbKM1kF/rFi?=
+ =?us-ascii?Q?txfrgHiGQlx6Pwc2SZ0jH+OZhyfdhyscm7tcy/6gGn3Qau4puBlIu6V11OCj?=
+ =?us-ascii?Q?SJ8YzM+NQwIp85FyMAr+oxyboandWIqAVIBIOArDz2aQKpRhiieYfMjAvvag?=
+ =?us-ascii?Q?xvGUkwEK7mFGmdFo6TtSpepENl3GoWq+0eawDk7LPG0pJDlfh+mdf5qYVeog?=
+ =?us-ascii?Q?w4miRagghPjia9tGgvujKmWr5xU88/dlFL51daDFVSayAFmbghbSTVa7i/wT?=
+ =?us-ascii?Q?9f8EGMCENZNF8re064nYUjwzPuf8YOkQq3+Kzz1tkJvx/M+ZvMwScrU+KFj5?=
+ =?us-ascii?Q?VbYijGb+MFJclvgxTemg1wzXz9RflLauL5G7YaEsnVCZXVZcuqg/Yc9xn1Dc?=
+ =?us-ascii?Q?5bgkHRFtosRxZLuWAHtCKdfiHVDfzITbmp7vWTVokKl0OkzjsDn5m13mwUtd?=
+ =?us-ascii?Q?kZXAn4HbHi3rf0OCHYUGXXwcVxtROD3plaYEad5pGHd0vRpQsfYC+h7mUXJy?=
+ =?us-ascii?Q?1cVhqw5JNqQ4D3CTeNBlhaD12WOpGpyuJo4nocrO5/iXY62SviwVbdvERqFl?=
+ =?us-ascii?Q?dKe0sSEuujQrYsvbpO+EjgepD0R55bDMP9Ti8Te6vLtLklmJb6Rfc9++FjfM?=
+ =?us-ascii?Q?+Unlhypek/NFEZFydki00nYrPVzLO4q2OfyCMhy/KJDHy3BhdDdu0qoiT2fr?=
+ =?us-ascii?Q?Z7PpTm/JRS0V1ZnBv+LyswP6i30NEqRPOp/mLcrCRwB2AI6ORwn4iAihk5NE?=
+ =?us-ascii?Q?Mv2FfjwMdgidi35HdbEVG2dzptfrCsWxSefE9+jlur14nDXy4Ow+65jg4PcW?=
+ =?us-ascii?Q?fwAiY2h4Z6mUIx/netBPHHAGADjn1oPyMHbxdwEVMpVMkycxV6QsH3pGxkhT?=
+ =?us-ascii?Q?tIfW73oDpL3X+L+SMCO1ea2bp9ibsSbuKCjibCrGOHgOcxZXRBBTlHazcvvA?=
+ =?us-ascii?Q?Kw90Q6zBjWZjG3Z+FJaakLjXF1q2wvKOGTf1JhjoElymqV9XUUJHcfL09LhK?=
+ =?us-ascii?Q?cwi2HGQT1F5yOMyqjRehluLo824ixpS1rLYQoDjBm98XtCrSAIqFdDBsilb7?=
+ =?us-ascii?Q?ehDxE6xuX0l3LTvspcW/+Q5vlnkymnE095fNgoZRjyIGslnh5C33Q45Y5op8?=
+ =?us-ascii?Q?GEZ2A5lNP9Iua7RuA/zWf09X2bb8gmwErl8+Eb+IJf57fci0Ju7VEvisWjjA?=
+ =?us-ascii?Q?FdXs3wy4E4c0VxZDZZEAg0XE9cccufXlr/0pIU8D/ChyknyIT6q2FhjTB9x6?=
+ =?us-ascii?Q?ejYcbRJPpuV2hrcLB5yIsm5oxEOnIdcrtMIRrGWV9XUS5vTDx1XnRa3fqDES?=
+ =?us-ascii?Q?QKtjyAiI3Gezm8ekmOJOXuUTjqjKcQWewd0rKr+M?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 963e6e83-cf86-475e-69a8-08dde18a4f97
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 14:43:51.5425
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kATZf28QiH9ZsTKriOam1N00Tk56a/eDFHna4l4IgJBts+4IuLbyx8lLEC54vWabyA3AvDuRiAFLT1AIlB3ZSg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7055
 
-Hi Frank,
+On Sun, Jul 06, 2025 at 02:46:56PM -0400, Frank Li via B4 Relay wrote:
+> There are 3 dt-binding patch wait for pick.
+> [1] https://lore.kernel.org/imx/20250617-hound-of-improbable-intensity-e7c3c9@kuoka/
+> [2] https://lore.kernel.org/imx/174916907717.3619367.3745642154654809311.robh@kernel.org/
+> [3] https://lore.kernel.org/imx/175087864578.2055525.4510390315154712025.robh@kernel.org/
+>
+> lpc18xx related DTB warnings reduce to 0.
 
-On Fri, Aug 22, 2025 at 10:13:34AM -0400, Frank Li wrote:
-> On Fri, Aug 22, 2025 at 03:27:26AM +0300, Laurent Pinchart wrote:
-> > Multiple register field mask macros use GENMASK, while other define the
-> > mask value manually. Standardize on GENMASK everywhere, as well as on
-> > the _MASK suffix to name the macros. This improves consistency and helps
-> > with readability.
-> >
-> > No functional change is intended.
-> >
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > ---
-> >  drivers/media/platform/nxp/imx-mipi-csis.c | 12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > index ce889c436cb1..50f6f4468f7b 100644
-> > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > @@ -57,7 +57,7 @@
-> 
-> ...
-> >
-> >  /* ISP Image Resolution register */
-> >  #define MIPI_CSIS_ISP_RESOL_CH(n)		(0x44 + (n) * 0x10)
-> > @@ -655,7 +655,7 @@ static void mipi_csis_set_params(struct mipi_csis_device *csis,
-> >  	val = mipi_csis_read(csis, MIPI_CSIS_CLK_CTRL);
-> >  	val |= MIPI_CSIS_CLK_CTRL_WCLK_SRC;
-> >  	val |= MIPI_CSIS_CLK_CTRL_CLKGATE_TRAIL_CH0(15);
-> > -	val &= ~MIPI_CSIS_CLK_CTRL_CLKGATE_EN_MSK;
-> > +	val &= ~MIPI_CSIS_CLK_CTRL_CLKGATE_EN_MASK;
-> 
-> nit: if need create new verison, I suggest add "change MSK to MASK"
-> informaiton at commit message.
+Vladimir Zapolskiy and arnd:
 
-The information is there already, the commit message already states
-"Standardize [...] on the _MASK suffix to name the macros".
+	I asked shawn, these are not owned by him.
 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> 
-> >  	mipi_csis_write(csis, MIPI_CSIS_CLK_CTRL, val);
-> >
-> >  	mipi_csis_write(csis, MIPI_CSIS_DPHY_BCTRL_L,
+	who will pickup these patches?
 
--- 
-Regards,
+Frank Li
 
-Laurent Pinchart
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Frank Li (11):
+>       ARM: dts: lpc18xx: rename node name flash-controller to spi
+>       ARM: dts: lpc18xx: rename node name mmcsd to mmc
+>       ARM: dts: lpc4350-hitex-eval: change node name flash to flash@0
+>       ARM: dts: lpc18xx: swap clock-names bic and cui
+>       ARM: dts: lpc: add #address-cells and #size-cells for sram node
+>       ARM: dts: lpc: add cfg surfix in pinctrl child node
+>       ARM: dts: lpc4357-myd-lpc4357: add power-supply for innolux,at070tn92
+>       ARM: dts: lpc: change node name 'button[0-9]' to button-[0-9]'
+>       ARM: dts: lpc4357-myd-lpc4357: change node name mdio0 to mdio
+>       ARM: dts: lpc18xx: add #address-cell and #szie-cell for spi flash controller
+>       ARM: dts: lpc18xx: add missed arm,num-irq-priority-bits
+>
+>  arch/arm/boot/dts/nxp/lpc/lpc18xx.dtsi             | 14 ++++++++++----
+>  arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dts         |  6 +++---
+>  arch/arm/boot/dts/nxp/lpc/lpc4350-hitex-eval.dts   | 22 +++++++++++++---------
+>  arch/arm/boot/dts/nxp/lpc/lpc4350.dtsi             |  9 +++++++++
+>  .../arm/boot/dts/nxp/lpc/lpc4357-ea4357-devkit.dts | 21 +++++++++++----------
+>  arch/arm/boot/dts/nxp/lpc/lpc4357-myd-lpc4357.dts  |  6 ++++--
+>  arch/arm/boot/dts/nxp/lpc/lpc4357.dtsi             |  9 +++++++++
+>  7 files changed, 59 insertions(+), 28 deletions(-)
+> ---
+> base-commit: bb0fde92b56b76f7a0c90a6e9d9f050919fa835e
+> change-id: 20250706-lpc18xxx_dts-b2137216e6c0
+>
+> Best regards,
+> --
+> Frank Li <Frank.Li@nxp.com>
+>
+>
