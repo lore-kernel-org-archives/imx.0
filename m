@@ -1,159 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452492459CD;
-	Fri, 22 Aug 2025 06:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B051E260D
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 07:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755844289; cv=none; b=POzZdhvfQPbBsqxD2G1naVgNKmvb/fYlOY8dgtqJR8VqOAVjYGOecalrG1DKPwGbYR/DM7LNr90guBV5QGNutUFTQgU0eHRDDZRqMK9cxr+tnIGfytzCuv0aee1wDFmKdAIdcZfj1dVh5bT9Sw5FXcjVxXxOF79rRZ1aS0d/cZY=
+	t=1755847111; cv=none; b=Tn669Ur8l/RrCzyle4MPwwI8jb6kw3b9F+8Rf0xeAytzMx4XmU9ygqIQqEqFf2DGtIzPhTVSrwJ212vyBjj1FXS8N04xvyMu0tTQTVkjElhF9MUOuqkRgxydkZLwW5+DOyw8CWHXjrKE4wGSgDhq0xRSp+Kgs1GNDarGT1+djLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755844289; c=relaxed/simple;
-	bh=S0EtvDojJcb9ng9oKlg7nM6uF6tX+Gcl/Vg/yItF0B0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MmQ81nFx4coxk/nYZVdethyYyNr2266xA7dK2o49R6LBimaieYJXCHV0I9kCTEtwNxxbLJuBV3UYWpoXr9zAjx20a8PduJuwm57yAdvPHuhc8RXDBenfIhkcK1v0iy/tOuIGZ1M3mPy58BfOH1OSDDrujizPXT+UG/9IxCluvpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=smudoD37; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755847111; c=relaxed/simple;
+	bh=JOIcA35LYZ+cFAmjq/RJg21EiGT23nqMt5mZXJ7p/YQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UQ/n9l3D1X6/kZc4DiF0+wTNAHPl7ANjhZQNPp+O9C5d2FBbJtrC5gnQyuCUekUQScxcxRhvHbDWz5kUtjNvrhz6UcQb0YKdcLqGf7TrRZFRyXtUl87mI6DShMrc1iO/F4F3IvTolbN8zku8HugyuBVM6eQv3RSvxW1KE45wk0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Hfgjd+BY; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=bflPl7O1 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="smudoD37"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349D5C4CEF1;
-	Fri, 22 Aug 2025 06:31:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755844288;
-	bh=S0EtvDojJcb9ng9oKlg7nM6uF6tX+Gcl/Vg/yItF0B0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=smudoD37JbeCgskOA4dELZ7jIo+NtDFWQPjLhJYLKNuXZvB0UiCuc61R5hdoVsLmM
-	 ybo+TWt+wVJ2Rs4cZ75R9sLl2P3KleD0hQR9dONOUY2fdfE6xduX1tT8UNoVXdkuuF
-	 OEVLxOGXuBIHC//tRFStTH8sJOKjTi0BH7nKAvGeHJ++81afMtsRBHl34d+Rp6NP4Y
-	 F+RPOKtNtL/I0b5HBPExCKAh/CHtE+JXeRHe9NwYrf4TZz4s74ac8vhGZWFo+tT7f8
-	 bCXGXF48GrCtFYG/mDIZrimPojIXIrrldiIsne70iQlCF2SMoy+M7y1tAied6EfjvO
-	 P2TFMkTz/iohQ==
-Message-ID: <1907e1c7-2b15-4729-8497-a7e6f0526366@kernel.org>
-Date: Fri, 22 Aug 2025 08:31:08 +0200
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Hfgjd+BY";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="bflPl7O1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1755847108; x=1787383108;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=PFtRRdSk6EXHxiRkGSoXab9HwZbgtylqXqkki/BPNC0=;
+  b=Hfgjd+BYSVgNxX5v6b006PUwFAfmaAQSX/IlLZTQ0HUlAR7Ababq114r
+   3sS1DxO0d/ijcBZzOxisBZYhoFb5Cjv0jJyejuaUSM8rwDX9BoCPSuaNw
+   OY3sQamNnYsjuS54yzFAGR+asmDx8RlYWAufwpFrCHjnVcm/6sO9iVopE
+   KP/K4eLc6nBW/7P//BvYL3oCmtNUSPBZkTWb74XbTMBUOqA+1wAURTF7c
+   uHYKfDhGbs1D8meYZn5PrAbDu8sJmfxVh2b3COhaZFwyB4J05WJ8Ihy/3
+   EQxGI3dvffqB3nX50lH6Yx0KeFq0kXMNfanDWErrytgMcb9yqrNI/qv53
+   w==;
+X-CSE-ConnectionGUID: jdtU2+6TTs+ljT2Y7Oo4iA==
+X-CSE-MsgGUID: 66aOcjvFQSqa2upgXwJG5Q==
+X-IronPort-AV: E=Sophos;i="6.17,309,1747692000"; 
+   d="scan'208";a="45860505"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 22 Aug 2025 09:18:19 +0200
+X-CheckPoint: {68A819BB-10-AD8F5F64-F0EACAA5}
+X-MAIL-CPID: F8CEB0701F16A335037C7670FF115625_1
+X-Control-Analysis: str=0001.0A002118.68A81968.004B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 63873164EDC;
+	Fri, 22 Aug 2025 09:18:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1755847094;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=PFtRRdSk6EXHxiRkGSoXab9HwZbgtylqXqkki/BPNC0=;
+	b=bflPl7O1lmdOWGFy1KCkTbLUjNvN3q0QihZmaWQnsB1oondb/nt7RRFoshqeyI7X5qPzfw
+	qnylA7HzM40ttwRwy/UEbh0LvxaHdCeBSyuxGn8KRjVEFgvJXKpApQIxSq36DjoHUKxGkj
+	T+X+sxy6yIFMa6JseA8+DW7D7yyYI7+f9Z1gvfddrLZJWDQQOmmoEydhPNwADgx4b88o9y
+	GPYvtFvddBqC+iclHNmp7jCT5/CqAozX7aTg1nvis0Sc7op8raV104hMSr/8BByrk2mUxP
+	rD267CXeLNhameyaAcnaguDd2CHsofZY5AT1skCb/dlP38XqaIaAf3NLLnnrCA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: linux-media@vger.kernel.org,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Isaac Scott <isaac.scott@ideasonboard.com>,
+ Rui Miguel Silva <rmfrfs@gmail.com>, Martin Kepplinger <martink@posteo.de>,
+ Purism Kernel Team <kernel@puri.sm>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject:
+ Re: [PATCH v2 04/12] media: imx-mipi-csis: Shorten name of subdev state
+ variables
+Date: Fri, 22 Aug 2025 09:18:10 +0200
+Message-ID: <5040209.31r3eYUQgx@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250821000944.27849-5-laurent.pinchart@ideasonboard.com>
+References:
+ <20250821000944.27849-1-laurent.pinchart@ideasonboard.com>
+ <20250821000944.27849-5-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 000/114] clk: convert drivers from deprecated round_rate()
- to determine_rate()
-To: bmasney@redhat.com, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>,
- Cristian Marussi <cristian.marussi@arm.com>,
- Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Paul Cercueil <paul@crapouillou.net>, Keguang Zhang
- <keguang.zhang@gmail.com>, Taichi Sugaya <sugaya.taichi@socionext.com>,
- Takao Orito <orito.takao@socionext.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Jacky Huang <ychuang3@nuvoton.com>,
- Shan-Chun Hung <schung@nuvoton.com>, Vladimir Zapolskiy <vz@mleia.com>,
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Samuel Holland <samuel.holland@sifive.com>, Yixun Lan <dlan@gentoo.org>,
- Steen Hegelund <Steen.Hegelund@microchip.com>,
- Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com,
- Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Michal Simek <michal.simek@amd.com>, Maxime Ripard <mripard@kernel.org>,
- =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
- Manivannan Sadhasivam <mani@kernel.org>, Sven Peter <sven@kernel.org>,
- Janne Grunau <j@jannau.net>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Neal Gompa <neal@gompa.dev>, Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Daniel Palmer <daniel@thingy.jp>, Romain Perier <romain.perier@gmail.com>,
- Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Heiko Stuebner <heiko@sntech.de>, Andrea della Porta
- <andrea.porta@suse.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>,
- Qin Jian <qinjian@cqplus1.com>, Viresh Kumar <vireshk@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Alex Helms <alexander.helms.jy@renesas.com>,
- Linus Walleij <linus.walleij@linaro.org>, Liviu Dudau <liviu.dudau@arm.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
- arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- sophgo@lists.linux.dev, linux-mips@vger.kernel.org, imx@lists.linux.dev,
- linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com, patches@opensource.cirrus.com,
- linux-actions@lists.infradead.org, asahi@lists.linux.dev,
- linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev
-References: <20250811-clk-for-stephen-round-rate-v1-0-b3bf97b038dc@redhat.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250811-clk-for-stephen-round-rate-v1-0-b3bf97b038dc@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 11/08/2025 17:17, Brian Masney via B4 Relay wrote:
-> The round_rate() clk ops is deprecated in the clk framework in favor
-> of the determine_rate() clk ops, so let's go ahead and convert the
-> various clk drivers using the Coccinelle semantic patch posted below.
-> I did a few minor cosmetic cleanups of the code in a few cases.
+Hi Laurent,
 
-This is going to create huge conflicts and I did not find here any
-merging strategy.
+thanks for the patch.
 
-What do you expect from us here?
+Am Donnerstag, 21. August 2025, 02:09:36 CEST schrieb Laurent Pinchart:
+> Rename subdev state parameters passed to subdev operations from sd_state
+> to state. This standardizes the naming of the subdev state variables
+> through the driver, and helps shortening lines.
+>=20
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-Best regards,
-Krzysztof
+Maybe add a 'No functionality change', it's just rename. Either way:
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+> ---
+>  drivers/media/platform/nxp/imx-mipi-csis.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+>=20
+> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/p=
+latform/nxp/imx-mipi-csis.c
+> index 0f0863011230..894d12fef519 100644
+> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> @@ -996,7 +996,7 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd,=
+ int enable)
+>  }
+> =20
+>  static int mipi_csis_enum_mbus_code(struct v4l2_subdev *sd,
+> -				    struct v4l2_subdev_state *sd_state,
+> +				    struct v4l2_subdev_state *state,
+>  				    struct v4l2_subdev_mbus_code_enum *code)
+>  {
+>  	/*
+> @@ -1009,7 +1009,7 @@ static int mipi_csis_enum_mbus_code(struct v4l2_sub=
+dev *sd,
+>  		if (code->index > 0)
+>  			return -EINVAL;
+> =20
+> -		fmt =3D v4l2_subdev_state_get_format(sd_state, code->pad);
+> +		fmt =3D v4l2_subdev_state_get_format(state, code->pad);
+>  		code->code =3D fmt->code;
+>  		return 0;
+>  	}
+> @@ -1026,7 +1026,7 @@ static int mipi_csis_enum_mbus_code(struct v4l2_sub=
+dev *sd,
+>  }
+> =20
+>  static int mipi_csis_set_fmt(struct v4l2_subdev *sd,
+> -			     struct v4l2_subdev_state *sd_state,
+> +			     struct v4l2_subdev_state *state,
+>  			     struct v4l2_subdev_format *sdformat)
+>  {
+>  	const struct csis_pix_format *csis_fmt;
+> @@ -1038,7 +1038,7 @@ static int mipi_csis_set_fmt(struct v4l2_subdev *sd,
+>  	 * modified.
+>  	 */
+>  	if (sdformat->pad =3D=3D CSIS_PAD_SOURCE)
+> -		return v4l2_subdev_get_fmt(sd, sd_state, sdformat);
+> +		return v4l2_subdev_get_fmt(sd, state, sdformat);
+> =20
+>  	if (sdformat->pad !=3D CSIS_PAD_SINK)
+>  		return -EINVAL;
+> @@ -1076,7 +1076,7 @@ static int mipi_csis_set_fmt(struct v4l2_subdev *sd,
+>  			      &sdformat->format.height, 1,
+>  			      CSIS_MAX_PIX_HEIGHT, 0, 0);
+> =20
+> -	fmt =3D v4l2_subdev_state_get_format(sd_state, sdformat->pad);
+> +	fmt =3D v4l2_subdev_state_get_format(state, sdformat->pad);
+> =20
+>  	fmt->code =3D csis_fmt->code;
+>  	fmt->width =3D sdformat->format.width;
+> @@ -1090,7 +1090,7 @@ static int mipi_csis_set_fmt(struct v4l2_subdev *sd,
+>  	sdformat->format =3D *fmt;
+> =20
+>  	/* Propagate the format from sink to source. */
+> -	fmt =3D v4l2_subdev_state_get_format(sd_state, CSIS_PAD_SOURCE);
+> +	fmt =3D v4l2_subdev_state_get_format(state, CSIS_PAD_SOURCE);
+>  	*fmt =3D sdformat->format;
+> =20
+>  	/* The format on the source pad might change due to unpacking. */
+> @@ -1130,7 +1130,7 @@ static int mipi_csis_get_frame_desc(struct v4l2_sub=
+dev *sd, unsigned int pad,
+>  }
+> =20
+>  static int mipi_csis_init_state(struct v4l2_subdev *sd,
+> -				struct v4l2_subdev_state *sd_state)
+> +				struct v4l2_subdev_state *state)
+>  {
+>  	struct v4l2_subdev_format fmt =3D {
+>  		.pad =3D CSIS_PAD_SINK,
+> @@ -1147,7 +1147,7 @@ static int mipi_csis_init_state(struct v4l2_subdev =
+*sd,
+>  		V4L2_MAP_QUANTIZATION_DEFAULT(false, fmt.format.colorspace,
+>  					      fmt.format.ycbcr_enc);
+> =20
+> -	return mipi_csis_set_fmt(sd, sd_state, &fmt);
+> +	return mipi_csis_set_fmt(sd, state, &fmt);
+>  }
+> =20
+>  static int mipi_csis_log_status(struct v4l2_subdev *sd)
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
