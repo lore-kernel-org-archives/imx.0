@@ -1,201 +1,199 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013065.outbound.protection.outlook.com [52.101.72.65])
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CE42FFDED
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 13:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755869597; cv=fail; b=gRHcWLlTgV4v+QV2mRQjm+Eptr1YFlTS6FNV9m0kr4WSFQzN8AYf0qEuVIjfuuMRvvzNblzTwyBM4kQ++zcgYQ3g0ROZXt5uPkMAVOqEHuIL/KlolBA1mK6/U0qQsowW88hLhwW870qqGchmziM0FGmZJiW9o6qj85mMX/bZg3A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755869597; c=relaxed/simple;
-	bh=BpDvkdPAYu6JdbOzt7+ZTFSw4m9VT9KDvlHJQbUr66g=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NjMSXtmv1uQ3uMGnSOlaWSebZgCk/7w5VCLL50Z3eY4hBtT8HjlkAqJx1zbpj4apJxCMnMJrOkLTzD09QZinhK8nKCVhAvXJVVFrmERVtkC9GufYVwrCxG/7bW4+0seWB26GSISUkd2+3ibIbi/CMpqAiCyZVc43NCP7Wv5diu0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ujquw01f; arc=fail smtp.client-ip=52.101.72.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4371C5D7B
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 13:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755869990; cv=none; b=DpY0h6DMnzJXdhv/o1ZycJtGQRqpqGxvCPPgtG2CmOYAMhipsUCeC/Sfza3gd2B54D8u2OJfGL6w8kSxSQS8n+EaNUs+0FQ8udlnu9L4tx4gnY+yCMV8g7FB4/csJoH4by3ViwOjkvCAaK7bMThaalaC2rg1ln5Ui4wPd61G9p8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755869990; c=relaxed/simple;
+	bh=CA66BcBYt8100hRqu+e6ER5OVlN6pGDYn+4HZgMWABA=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Type:References; b=GCeR3qOm8vPUhTCUhgpHM08+pmrj4bv8xCY5p2e7ty6edmWFQ1DpHPuCk2LlmS82vthDCSv7Ub1dtTaoTOchaLHwcr6jkydCrZpwoBtYxoSgif9fRwOFgcBPSTBwUb0mohHyuLu6DYbIU2DbVPa1ELMI5nrd2GL1LSzBC31UlRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=YpMiv/9z; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ujquw01f"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ABrlGYIZ7BjXLPbogDz3IFZOF/6VwU3GN/j2NhnQvt1KwcVgWvEkvrqBdd86drTWl0wxrO+JYGVTK+Dm2JIOVt1GGY0qBuRVCm1F95nA5Zq0FK1UWF7Qs08vs0Y+3z3aHo7pBfbyTXwYcH+hq74EWbv8NT1jtDNugQhyaBD8ZBMZtfBkYd+fbHHBjrVneL47Cz8Xe60h7mv1+xAV+nILRhfS5httC3PlGZoPxL4YkyEaH6mF5L0gHaDiXzH7NCwwjUo6B5MZiOX2e8V7LLOEzauqijzR18dBEf2x0b3DsWQr4QnhcCGPIel6BGb+ztJLE01udnQ0b6r9GLxa7bSZgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0XDerur7CHXoy8KzumcFntGsFQSHU2yDaBQM6zdwzeM=;
- b=xQdWcoiTJ1cnYFBo8X6wQBxd3Xs3T13d08pxRBL4HhcVHv4hERTcm8JjLorZri7YB/9bhbpDpU8PgkFeie8lFsf9OFdc/gU+ZzSQ582puhtMVUzxCo68FGw+3SwCXllD+5TP4PeboC9PTAvb3VhhvKlHD24sYw4nmMiW1Du1FCvv75KuwDrRK3TEYDfu2Cqz3L3n2X5b5JLvvvqjiymVwevfrqchaeIrq9wmfJQ1tie5P+N0S7qylqlEdyibLWQ/Be4esisIJSBXPmWOyK2Zwj3JRUWey08IVZ0oFLQO9uHRs6MmfCs4tkQdZArotmLAA1obpwj/GrBkZDynOAOqUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0XDerur7CHXoy8KzumcFntGsFQSHU2yDaBQM6zdwzeM=;
- b=Ujquw01f007AuJ4Xc8E7XgmrbdIqUcD+0IpDPDrAL0KJilF+n+EqfHqhE24AOK8VCYOIFAYoD7zAXkN+QUBRut5WJ+T53HwHZphBcwwXjUdjQFDFR58xIacsumUrF/hZyZQvVhPfdBuv+o3nyKvlm9rAeoUoCTlIBcdQxj1quZGcMFeEvdkdycYx7Btjcr2e2aXfLzLxGkHtCtPpkDnZUEZ8sTfIL6weKahnMIiNW5zBjX0Z86nbRUGfNO1Jhjry7e+MrC/oa2gNmawHbiCTcLxMjd70JBSfOap9Re8FMqkbco1EEEw78PSNwnyGrTE+MiQ5/t6D4lCa/Cya41Uv2A==
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by GV4PR04MB11305.eurprd04.prod.outlook.com (2603:10a6:150:297::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.17; Fri, 22 Aug
- 2025 13:33:09 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612%7]) with mapi id 15.20.9052.011; Fri, 22 Aug 2025
- 13:33:09 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-CC: Clark Wang <xiaoning.wang@nxp.com>, Stanislav Fomichev <sdf@fomichev.me>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>
-Subject: RE: [PATCH v2 net-next 3/5] et: fec: add rx_frame_size to support
- configurable RX length
-Thread-Topic: [PATCH v2 net-next 3/5] et: fec: add rx_frame_size to support
- configurable RX length
-Thread-Index: AQHcEsoxXGKzYnBdLUK9f8noPKEV4bRudCcAgAA2o3A=
-Date: Fri, 22 Aug 2025 13:33:09 +0000
-Message-ID:
- <PAXPR04MB918588241A96C60E7E7E4FE2893DA@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20250821183336.1063783-1-shenwei.wang@nxp.com>
- <20250821183336.1063783-4-shenwei.wang@nxp.com>
- <PAXPR04MB85106B9BAA426968D0C08678883DA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-In-Reply-To:
- <PAXPR04MB85106B9BAA426968D0C08678883DA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|GV4PR04MB11305:EE_
-x-ms-office365-filtering-correlation-id: e116a605-99c5-4c85-ad79-08dde1806f51
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|19092799006|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?p+5pjaMxX9ERF7vT4Y5ZX7YL590UYHh5UCubfPMaTmvHYRbsd9IfKWNWkFGV?=
- =?us-ascii?Q?lc1qKMAc4AFupdefRXboQ/bjGM0xv7qzoVGqTuVNBTbF+eaQ8cMqjy0atb9z?=
- =?us-ascii?Q?4+1KOTiMZqZNjGYS+1WXDQfDogeopI89rX6j7nLjjCj2t54jNRxkSQdkZl4E?=
- =?us-ascii?Q?ro9C61VC0e677/tAQ5nXpNiNeLj+YRuPmzEbr4/zJW6+HHFaBsk3Nb6ORrqP?=
- =?us-ascii?Q?gbiVYNvF5LULMtudXxv7DwJyopCcWj9ml0zIp9W1RIsnwSNAIm+9+E9lgrZI?=
- =?us-ascii?Q?iyJPcRhuS+yOU7XU7hnUX8nIEFemgDKcC5myrUb1HMSt34Sppo2I1fs+oAC2?=
- =?us-ascii?Q?JKSAT9Ib2kAKig13fODxTCkMSdydyFoJzmhhlWpPNsQ4XiWYgDLgJCeo97of?=
- =?us-ascii?Q?mEEd7+vJPdQYfDHep35ytaep56tDj1JaEIxIrOrYczGgRu1X3jRBHD/w22mZ?=
- =?us-ascii?Q?TogzFJXrpnHj1d2Edu3bYDuZrNAWAm2E08qDr42yChPRKJwEa+cALO/IwHmr?=
- =?us-ascii?Q?iwMlkolLDXesqDoIYV13CljMEEPqHQ3BnJ4nvSlN+qOWPsmhaOKP5uS0nYXs?=
- =?us-ascii?Q?kO5UluyBvfJ7hXk4wjWUxsOa4hN3mL+1nNN8O3T+k/gasFzF6dOuB4Lohfqz?=
- =?us-ascii?Q?+HjFlKS0VMlHogKgSLk0VD2gwEqEvQLe1X2BV10ixiuDrKDFBftVXBNe42GR?=
- =?us-ascii?Q?/nXpeadAAdHbmYMtm9p70I22u/o3zuIaA0zEqyKaven/YBj8mN4qb0UipcLi?=
- =?us-ascii?Q?qiqTb+r3uJNEnf+XlSyPWWP8X/A2q6qyP6wudt7SIYAOHrmJNn4oAvbFfb2P?=
- =?us-ascii?Q?HcjF0Q+OK67enXK26vBw7UU55c2cU+/a6BxtJ5tMSQ8TemtJzwzfjsojBpIQ?=
- =?us-ascii?Q?xzemBKL1DVXSYC9npVWWcgKrJRpxiQlAVGhFGFu34UvWoRzGvkS1hZGzEeNa?=
- =?us-ascii?Q?4PPg4Nj7U8DglLVbARvTX3dl2RQP1dyoVEHyVeTEJldkc3KWBZXDo2Xkb02X?=
- =?us-ascii?Q?y3+fpDsSroOYTHKJHyQRvECfLyoj1XRqtNeeZOnm9B2oQ3/QSVV+jcEnz01y?=
- =?us-ascii?Q?+wCx/A0+D2M920vfyBV9QpzGxsLa1M1FamWlkseHo/glwnjVvwtMtTeTY1mY?=
- =?us-ascii?Q?N0F/VPxd0crKsRv4HWpEAZHVFoYuzOuQbdv9jOcWovwHC1ple6ClxD+Ckfk5?=
- =?us-ascii?Q?oQv/D3xDLB6s3rYD3NmMaAHQNjx7WgcvkIKODB+BY6/UbKNVtbljjIYy68O2?=
- =?us-ascii?Q?CmrKYyfXZRTJUea1GaFQly/VXQvLj6gvUR7XnBOr2QJ/dx8u1tWmWmkqG6IE?=
- =?us-ascii?Q?cRco6DNNyXw8boa88EaxevC3TyhUIEG058dLrpweyZckZ2eoIILrFeAgztin?=
- =?us-ascii?Q?KQCuGx8KLwABhwWZdgUzuuPXfJVgNELZWEZod5fQlJ2q/UlNnwHKSG9Eonyp?=
- =?us-ascii?Q?McU0uVOtJuEWxTS8nuwbuKB1wg6iFF8VAHZzbB4ouiEowr136OeewQ=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(19092799006)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?arh4aGUXkzyFXBD/TLfBfPlfcfHpew6j1vBjml72eo17x7eUDAZ2iuCTHJHD?=
- =?us-ascii?Q?BgZE2GBYM/A0gksWez1yYN3d7HluC841+A2ph2wTm9TIIcVMvMXNoN+e4Zo9?=
- =?us-ascii?Q?88mBn/CAIw+NrDKBIuiQAg2tKJl6iy9Ybj/AJBRbl0h7zLtiF0xC+MuZnMKM?=
- =?us-ascii?Q?j5ojif2pcaTuZK04fLwU5Vy4GPoWSQqUr9zlYGnKUKdJjgMi+ndB3F/Ga2EJ?=
- =?us-ascii?Q?ulK3K7Bs+pDuG6b27qppWyJ5+JbMrw7ONE3oDZK+6/kbOxl8qemuKQ/UpCQ7?=
- =?us-ascii?Q?tsUWrBFGpXZCq1AlecEAY0Ao1IhqrjrVGc644cQEmA+oy7vGJ+1iCb4Q97ZQ?=
- =?us-ascii?Q?msjIOZ1L0++EKESUljkHZc5QMx+ZOg6XfvurI9NUJK6ywmLTtzzptA4k8LB8?=
- =?us-ascii?Q?SmqwSnz9mTIz+1Dn2zE3Oai3UJNpG2aNq1bEUEQu3NWlodKv1yesmLyejA2Q?=
- =?us-ascii?Q?7wxIZqYEbK8+dn/Jm52vFE4CIGeYHhzWa1cjBQ8O/6PWZnKL1VaEBWhQI+Gn?=
- =?us-ascii?Q?azL/qyVGz+cgHBYmnp4J5nir6lNgt9SyU+o0ZyVdo/4Ez8FoXqmQmCuCT+JA?=
- =?us-ascii?Q?qSpbRWgxKVCRMgDGsL/naSYrbX02t8NpcycbW0QSXtGjMl1kaykdrZitiQ+P?=
- =?us-ascii?Q?7INWt4IbnVFhvTAVn4PKMOF5+3QNM0leoHnxYkStF5ObyfeQOB8i9vQQDJwU?=
- =?us-ascii?Q?dcbgD1SALE9OduTLrjSj8gEnMcaEvzJyOubBuQLpg21pSefruSDYIGJPyAiE?=
- =?us-ascii?Q?Jg9r3S/bZtQYLwAY2gCLxfK2Fli4rABsbAM8Vuvm6dttpltsH2GOopCqwY1N?=
- =?us-ascii?Q?AQlMXy1A05RZKcRFVQQlRsXg2yejP0oaHt2nWNEoX2MNdFNE9+JYjN3PVkFe?=
- =?us-ascii?Q?ET3lJOJbHpeqkamc3ON8qmbFJIq282MHMpl8HYuum9NgHPJR0NPxPkcdvfXi?=
- =?us-ascii?Q?JVyxsVsnWWvYSRF+6YtD2x7t751JSvFB3hPg37VX9U2k4LT7DzLMqf+H5COi?=
- =?us-ascii?Q?xT6C3Cg0rxYCTv/cA05CHuwG3bp9PkQI30xhz3og4vqzVSX0vPAw8ShXX78i?=
- =?us-ascii?Q?Wt+bDHDU94lhbKZI4koEX5kTvhDx7l+DP+nH0tx/hhPBCQeiBvK5U/J7GFV1?=
- =?us-ascii?Q?pFxQ/KDoS5PdTDza08+ap0HA4q3bXZSjf2z7PeaLzG/Gx/ojeaVSj94Jr8Pi?=
- =?us-ascii?Q?SQcKzmiHwU0owC+akdiQ48jv6WCe8yy+I+4lXgNxaQyxFyt1PZVreDgLfsWu?=
- =?us-ascii?Q?NWc1W7vtwy4H3L+sIT8YCPmWciWvv4vJOI8l6NSbYLKSm6ajxp5gAIo8FC0p?=
- =?us-ascii?Q?EBSBZwmlvS3XqMrWSmjRp50xQMGTtHQh3gxARnefS9TksI8jFJtJ5jJtN+sZ?=
- =?us-ascii?Q?EjIq/aiIYckeplE193Z6KqtbX5xFZQinxY9+2pgV6w3NbCBjLQp1nZ1v01Qy?=
- =?us-ascii?Q?TlK+pxVvGbHB967HwA8iFUEpc4QxBYJhZFmQxE1WLPnjYWVeMZiIsBzIavUM?=
- =?us-ascii?Q?tOl3WLNcaDIyAC8jHg+1X3dssPsmyetPDv59YhQDvE3YXnZBraRFbYDrw59C?=
- =?us-ascii?Q?s+an/yRTeXn4p780Rds=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="YpMiv/9z"
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20250822133945epoutp01db9c9ceee012f7463f37bcc6b1c8ad37~eGnLJlYFC0234502345epoutp01f
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 13:39:45 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20250822133945epoutp01db9c9ceee012f7463f37bcc6b1c8ad37~eGnLJlYFC0234502345epoutp01f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1755869985;
+	bh=u1nIEzQAHzexEwe1eBw6VP9QOhuA5DOvKet0k5mUpZU=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+	b=YpMiv/9zvNnJVVTqDCQFz8ApOBDdjhGp5prNSGmskCpeGTCMbkWiyn3wFR5uZuKXD
+	 J8bh6I+edk0r0H1aJ8MTy2GLsjoE3hQcgepGQ+L9bfurpJbtGDWb1soIpc0GV/w/lc
+	 dKW1V/MRwVJlxcj/SO9oZASAAVnPikD0WB2KRNNg=
+Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
+	20250822133943epcas5p3db3194b4f778165c369f994cc9fb349f~eGnKIRpRe2325823258epcas5p3h;
+	Fri, 22 Aug 2025 13:39:43 +0000 (GMT)
+Received: from epcas5p2.samsung.com (unknown [182.195.38.92]) by
+	epsnrtp01.localdomain (Postfix) with ESMTP id 4c7hBR05d6z6B9m4; Fri, 22 Aug
+	2025 13:39:43 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20250822133942epcas5p37a9e03d4cefed84c9f458f47b648d929~eGnIVLNXg2325823258epcas5p3c;
+	Fri, 22 Aug 2025 13:39:42 +0000 (GMT)
+Received: from FDSFTE196 (unknown [107.116.189.214]) by epsmtip1.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20250822133937epsmtip1fcccb1ff7946a18f9bda033b67ce9139~eGnEmK2i82772327723epsmtip1D;
+	Fri, 22 Aug 2025 13:39:37 +0000 (GMT)
+From: "Inbaraj E" <inbaraj.e@samsung.com>
+To: "'Krzysztof Kozlowski'" <krzk@kernel.org>, <mturquette@baylibre.com>,
+	<sboyd@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <s.nawrocki@samsung.com>, <s.hauer@pengutronix.de>,
+	<shawnguo@kernel.org>, <cw00.choi@samsung.com>, <rmfrfs@gmail.com>,
+	<laurent.pinchart@ideasonboard.com>, <martink@posteo.de>,
+	<mchehab@kernel.org>, <linux-fsd@tesla.com>, <will@kernel.org>,
+	<catalin.marinas@arm.com>, <pankaj.dubey@samsung.com>,
+	<shradha.t@samsung.com>, <ravi.patel@samsung.com>
+Cc: <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <alim.akhtar@samsung.com>,
+	<linux-samsung-soc@vger.kernel.org>, <kernel@puri.sm>,
+	<kernel@pengutronix.de>, <festevam@gmail.com>,
+	<linux-media@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>
+In-Reply-To: <ac9769af-9ab6-4b48-9890-ec3bcda3b180@kernel.org>
+Subject: RE: [PATCH v2 03/12] dt-bindings: media: nxp: Add support for FSD
+ SoC
+Date: Fri, 22 Aug 2025 19:09:36 +0530
+Message-ID: <00d001dc136a$36ad7230$a4085690$@samsung.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e116a605-99c5-4c85-ad79-08dde1806f51
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Aug 2025 13:33:09.5730
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OL2PXrBsT0VLOw3BQNNx4XU6Q4wjX+zIHUDXhATdKJDynWLwLQ1cYLHEv1kT5rShllAxmaNShGCQmAgXhTLq/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11305
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQK5oFMD+tt4mLQU5V9KgVyIDaUIUQF6bLd9AsRKNAMBJ/ZVhLKIV+Nw
+Content-Language: en-in
+X-CMS-MailID: 20250822133942epcas5p37a9e03d4cefed84c9f458f47b648d929
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-541,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250814141014epcas5p410d41ede7e8ae4f3cf8db6d041d03946
+References: <20250814140943.22531-1-inbaraj.e@samsung.com>
+	<CGME20250814141014epcas5p410d41ede7e8ae4f3cf8db6d041d03946@epcas5p4.samsung.com>
+	<20250814140943.22531-4-inbaraj.e@samsung.com>
+	<ac9769af-9ab6-4b48-9890-ec3bcda3b180@kernel.org>
 
 
+Hi Krzysztof,
 
-> -----Original Message-----
-> From: Wei Fang <wei.fang@nxp.com>
-> Sent: Friday, August 22, 2025 5:10 AM
-> To: Shenwei Wang <shenwei.wang@nxp.com>
-> Cc: Clark Wang <xiaoning.wang@nxp.com>; Stanislav Fomichev
-> <sdf@fomichev.me>; imx@lists.linux.dev; netdev@vger.kernel.org; linux-
-> kernel@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>; Andrew Lunn
-> <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric
-> Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
-> Abeni <pabeni@redhat.com>; Alexei Starovoitov <ast@kernel.org>; Daniel
-> Borkmann <daniel@iogearbox.net>; Jesper Dangaard Brouer
-> <hawk@kernel.org>; John Fastabend <john.fastabend@gmail.com>
-> Subject: RE: [PATCH v2 net-next 3/5] et: fec: add rx_frame_size to suppor=
-t
-> configurable RX length
+Thanks for the review.
+
 >=20
-> > @@ -4563,6 +4563,7 @@ fec_probe(struct platform_device *pdev)
-> >  	pinctrl_pm_select_sleep_state(&pdev->dev);
+> Explain the hardware.
+
+I'll explain in the next patchset.
+
+>=20
 > >
-> >  	fep->pagepool_order =3D 0;
-> > +	fep->rx_frame_size =3D FEC_ENET_RX_FRSIZE;
+> > Signed-off-by: Inbaraj E <inbaraj.e=40samsung.com>
+> > ---
+> >  .../bindings/media/nxp,imx-mipi-csi2.yaml     =7C 88 ++++++++++++++---=
+--
+> >  1 file changed, 68 insertions(+), 20 deletions(-)
+> >
+> > diff --git
+> > a/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
+> > b/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
+> > index 03a23a26c4f3..802fb1bd150d 100644
+> > --- a/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
+> > +++ b/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
+> > =40=40 -14,7 +14,7 =40=40 description: =7C-
+> >    The NXP i.MX7 and i.MX8 families contain SoCs that include a MIPI CS=
+I-2
+> >    receiver IP core named CSIS. The IP core originates from Samsung, an=
+d
+> may be
+> >    compatible with some of the Exynos4 and S5P SoCs. i.MX7 SoCs use
+> > CSIS version
+> > -  3.3, and i.MX8 SoCs use CSIS version 3.6.3.
+> > +  3.3, i.MX8 SoCs use CSIS version 3.6.3 and FSD SoC uses CSIS version=
+ 4.3.
+> >
+> >    While the CSI-2 receiver is separate from the MIPI D-PHY IP core, th=
+e PHY
+> is
+> >    completely wrapped by the CSIS and doesn't expose a control
+> > interface of its =40=40 -26,6 +26,7 =40=40 properties:
+> >        - enum:
+> >            - fsl,imx7-mipi-csi2
+> >            - fsl,imx8mm-mipi-csi2
+> > +          - tesla,fsd-mipi-csi2
 >=20
-> According to the RM, to allow one maximum size frame per buffer,
-> FEC_R_BUFF_SIZE must be set to FEC_R_CNTRL [MAX_FL] or larger.
-> FEC_ENET_RX_FRSIZE is greater than PKT_MAXBUF_SIZE, I'm not sure whether =
-it
-> will cause some unknown issues.
+>=20
+> Isn't this Samsung CSI IP?=20
 
-MAX_FL defines the maximum allowable frame length, while TRUNC_FL specifies=
- the threshold beyond=20
-which frames are truncated. Based on this logic, the documentation appears =
-to be incorrect-TRUNC_FL=20
-should never exceed MAX_FL, as doing so would make the truncation mechanism=
- ineffective.=20
+Yes, it is Samsung CSI IP.
 
-This has been confirmed through testing data.
+Why are you adding it to NXP?
+
+Samsung CSIS IP core present in Exynos(samsung/exynos4-is/mipi-csis.c) seri=
+es is
+completely different from the one in the Tesla FSD SoC. However, it is comp=
+atible
+with the samsung CSIS IP used in the NXP SoC. For better code reusability, =
+I am
+integrating it with the NXP imx-mipi-csis driver.
+
+=20
+> Nothing in commit, msg helps me to understand that.
+
+I'll explain the same in commit description as well.
+
+>=20
+
+> >        - items:
+> >            - enum:
+> >                - fsl,imx8mp-mipi-csi2
+> > =40=40 -38,24 +39,21 =40=40 properties:
+> >      maxItems: 1
+> >
+> >    clocks:
+> > -    minItems: 3
+> > -    items:
+> > -      - description: The peripheral clock (a.k.a. APB clock)
+> > -      - description: The external clock (optionally used as the pixel =
+clock)
+> > -      - description: The MIPI D-PHY clock
+> > -      - description: The AXI clock
+> > +    minItems: 2
+> > +    maxItems: 4
+> >
+> >    clock-names:
+> > -    minItems: 3
+> > -    items:
+> > -      - const: pclk
+> > -      - const: wrap
+> > -      - const: phy
+> > -      - const: axi
+> > +    minItems: 2
+> > +    maxItems: 4
+> >
+> >    power-domains:
+> >      maxItems: 1
+> >
+> > +  samsung,syscon-csis:
+>=20
+> samsung, so not nxp. Even more confusing.
+>=20
+
+I used samsung,syscon-csis because the system controller on Tesla FSD
+follows Samsung's sysreg design.
+
+>=20
+> Best regards,
+> Krzysztof
 
 Regards,
-Shenwei
-
->=20
-> >  	fep->max_buf_size =3D PKT_MAXBUF_SIZE;
-> >  	ndev->max_mtu =3D fep->max_buf_size - ETH_HLEN - ETH_FCS_LEN;
+Inbaraj E
 
