@@ -1,135 +1,146 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C939719DF62
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 18:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2D328726F
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 20:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755887537; cv=none; b=seXBAXcXL9Yl3LWW/K96r9p8M0q3iI1bept2dA2lDv6CLttlgsi9F4kzVbTipIXvuk4Du20VWzq00KwI6UU1IvSiHfmxM3s4dmq0wV9AM3799VlghI73zNa4ddEiuOKsswX3jCHmEwqp6aTey1cgetJp3oUFi+MiMtaXa5zEYKQ=
+	t=1755893293; cv=none; b=sYkjIb7rUmLB+6YEnn4TkLbASepQ0ta+6fnt/RuNiYVDcCsd1/HuH984YCZyu1QeUu/HcM6LLVqh3nJ33UIZ1ck6gUOkopjy1QYrGo3uQZT1MfwhebLb+Xwx/O7GtlUyFi2NhztNwBt1mADpUS4nGtqTPlzAIvSwSiX0hqaVhVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755887537; c=relaxed/simple;
-	bh=t2Ssh7nG32987+a8+QxEIMoJj2YqMDm4ueKdOaDDhf4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hGAuDPro2sio3NzZWKL63ZXfvHnAqaOMAtQPirAJWD1n+xNK537NOzoEarwZCPe9fTsILm9130tlKcXbAtYi5gJazI+dqLzL1pCJpEN47VJyzJcGumr5AfaltOSyGeNxp8QAe1hGa19XT+NLEE7Rh4CNd02p2P+vYv0dQeRDDRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HKw7bP4S; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1755893293; c=relaxed/simple;
+	bh=30d6keUHKkdihh0y9ecvMo3ZMS55MF6bU2ikUKPPpHc=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=noqXn+7HPsAcWhyZTx8qtHMjWcfepWZYhaToRgDGXCXWSGk+p+hmfnOBt0Y/whPqJZaHfXPsRzY8Bet+DhlYyajpu+V08/ysC9DxKKrtek81iR4xbawMbwAdl60iIZQXKZLcrQXHozZcaMn7ZdN/SGKTWViKt68f5473TCaqniU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=SkgJhKiy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=crzqBWzn; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HKw7bP4S"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57MHZxba005096
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 18:32:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=2kF+UHt3RQZ9sKwYUnht3JJb
-	3AN4kfQFQklzuuzACdw=; b=HKw7bP4SgHZje4mEEpfk1z3YhOK/4j7A8Fbaw8Tz
-	6kTekaTVK50xtp+mTMkKWGprk7V4i8P0sQf5OjbCSXWdLGDPBye6e4Hh6fBp1dMz
-	ewG1ZZXU9izkXM7D9Pp2cI3SzrodO0rSr3TMaXkT/pycqmbaN/9VSohd6q+keLQ/
-	9CPEiWVBInMyX6j47qsl/ihYz6zP67lWJS+NqpmawHwpJsoIHlFWRBwroJbZ3COy
-	YsuXRwXtV7QhvgROmphYmH1redEOuP4Al6568+u7qq1a4BOCOZZv5L43i+4fPTWG
-	i7pzLbLOaeezuvqMUh48mTxmpkRSG7SgJ9WdfwlsdBUVog==
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48pw3dr56n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 18:32:15 +0000 (GMT)
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-70d7c7e972eso56248326d6.3
-        for <imx@lists.linux.dev>; Fri, 22 Aug 2025 11:32:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755887534; x=1756492334;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2kF+UHt3RQZ9sKwYUnht3JJb3AN4kfQFQklzuuzACdw=;
-        b=BsS93Q2pCo4TB0r77kac8xjDE9BMA552TOM6d7UfYbUKPfBdaDAN9qGsoAFYP7tUhV
-         +QaNWaqOcbv3yptYviHnqMjKUKMROoDrexrBqGati+v42eIrR4oAKEoW4gCfuqNjG0wX
-         gdAip+q1Q76MK7O1lcnZIQdh/17MdmnFOsc4I2womIDhF0hYO8t8oO4E6ot4eD4ZrE2f
-         j5en6kQFgTGUt8ZoY/6oYJcBwCndbOrfqAV4HUwdSt6IqQKGjpLPv5PQn4CfJENhFmZm
-         BKDBYghBlpI48xtr19zJVDBVqxMUlhu3JzCXCsg40veqz2hOTTUmYA+5VjyJtGH5zR7V
-         jkJg==
-X-Forwarded-Encrypted: i=1; AJvYcCUVEYBXCYg5q/hXJqV/OtMVUrT6//sxLmg/FaOMxsHgG2h5PscU5r0zLcr/qVxeU/pAboE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yya3IA6WWI2RdbfPMC1bJivhplgZG1t2ZwKv84eVC7MSRsMah17
-	3rsz7/kNozaaqM5QcztZSNN7Wq0beZAasA4vmFVD43Dv8ck723Sxpyyxyy1aEVs50BDg3fY/brg
-	KLgGF5qSvv94IKDoaEp8fygm/LnPEESGw1wsaICoyZIk02hoLxqjTNhw=
-X-Gm-Gg: ASbGnctZyT/P1A9IfcmhTtAARb8ECngW9K69YIkmiid9QOO88PFkw9Z8UonYvBYqJb0
-	CkrJV/Nrig8s0o33yzZhrjzF8eUuc5jDxm+ZJejFdKOt0O+d357+SuH3mJs5Mg1b8FVRjVKh0ol
-	HIAJNB/RNg6ysFpgIe07r2dxVhNYDfFnZO5/QCH08A6wrVQmRLltBoCqK6Hm7tZSnKf5BMDxA6+
-	AeDC9zdkHHrZL4YnhdfPl/bfSFHvWQSijb5iqYY7SkWHFfv5Z0b97cttrky6Vh3lzNkQaZd+EJN
-	5uVPRB+KAZ9Z9eb7C2xKy4Mj7+yP4mduubevLTtUG22NoC2I6VMw+kDxF3fNtflcBouWjrqcFNZ
-	XfzdUk3yZhihlrT2Nuxr1biwQdKEotSsDsUiY05tJJQdzyzhdfSy9
-X-Received: by 2002:a05:6214:2463:b0:70d:8549:a9dc with SMTP id 6a1803df08f44-70d971ecba5mr45207956d6.46.1755887533704;
-        Fri, 22 Aug 2025 11:32:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEGUwecfBarwnXQpcnjnUt1xcMPQBcCSeakWpQc5KmvE+AdTu302f3u+QjNzhIWHgctycCfdw==
-X-Received: by 2002:a05:6214:2463:b0:70d:8549:a9dc with SMTP id 6a1803df08f44-70d971ecba5mr45207446d6.46.1755887533192;
-        Fri, 22 Aug 2025 11:32:13 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f35bfcb27sm96296e87.19.2025.08.22.11.32.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Aug 2025 11:32:12 -0700 (PDT)
-Date: Fri, 22 Aug 2025 21:32:10 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/5] drm/panel: simple: add JuTouch JT101TM023
-Message-ID: <4gyzjoshra7mwkagkhbk2uzxsfeb57ufkr2qilppunka4cem7n@zf7rm75hdd2n>
-References: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de>
- <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-3-b492ef807d12@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="SkgJhKiy";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="crzqBWzn"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 5ADD5EC0104;
+	Fri, 22 Aug 2025 16:08:11 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Fri, 22 Aug 2025 16:08:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1755893291;
+	 x=1755979691; bh=L91uMsaDKpRtyBiHE1yTuatucq2YwRavIJ94jAbMyGY=; b=
+	SkgJhKiyB4B+PsjDhyiNsq9e2/kRVFTYMvskDKhqURhrtb+fNImZGkYluEepaZzU
+	DyN5VeFSw2YiT+zxxeGoBGs3tok9H7V/N6y2CmmdzQbITGjXoeK/t5Rsp4bWK8BA
+	iv18L1OvfQHnywx5klQ/0kAzCN6AITZUxB9giKozkaCb696mzSaErUORwdwbfOHM
+	8rZJytcZRPhzF5KBqClzu8eVDOcA2eQyiSKziTl/CBh85/U1wNormV5qD6xQiIRy
+	r/I1IOB3jW/NIAoSA2GoAAoA80u2T5RhqEaCIHAjstd1T3waklFRUQXU01CA8Wyp
+	g78jooM1Hnjj9TnLqVgGBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1755893291; x=
+	1755979691; bh=L91uMsaDKpRtyBiHE1yTuatucq2YwRavIJ94jAbMyGY=; b=c
+	rzqBWznctbZJ8SzELo6p5saEysjzsruFE79Mhb3QsnN5AeFK5vBPCBeqA+50vl6O
+	UUC9H4s8o329fIhAnv1/WC6FHDVYOY0SeJsJNHoHXFEb6+XBVGyK5f8sqvEetXzd
+	dJ3w2d62MwrSMczpezAN/+Sf58zYpJ0yFiuJXzSWzYl3k/iKCmkQBDcHYn1vqjqb
+	tXaVd6LoaYNGlWjj3So5RYlfpt1bV8CQiLUllAI5rmXQJ42aXGgONZ19Wx0RpLqF
+	Xe5QXewyRItvPR904h2JJHwpxTUT1J5VRKqRx2/Bqx/ln83ylQMfQnpybPyOp1Tl
+	fQJEJ7TzmKsk94o+NYlkQ==
+X-ME-Sender: <xms:Ks6oaJYFWmWnsyxZtBlHCzjpBJUGymeMYS7p0qL-o_WMU6AEbYAemQ>
+    <xme:Ks6oaAZBl4pIaQu5iApEvtx3n0FeWfGpFCF5pTnuJz5lPoNAb1nhBrOpsnQt0MEc2
+    U5frmoAGbgv-GAXiGM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduieegieejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhepfefhheetffduvdfgieeghfejtedvkeetkeejfeekkeelffejteevvdeghffhiefh
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgt
+    phhtthhopeduuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghrihhsthhirg
+    hnrdhmrghruhhsshhisegrrhhmrdgtohhmpdhrtghpthhtohepshhuuggvvghprdhhohhl
+    lhgrsegrrhhmrdgtohhmpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtoh
+    hmpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdroh
+    hrghdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthht
+    ohepphgvnhhgrdhfrghnsehngihprdgtohhmpdhrtghpthhtohepphgvnhhgrdhfrghnse
+    hoshhsrdhngihprdgtohhmpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhn
+    ihigrdguvg
+X-ME-Proxy: <xmx:Ks6oaAdvRXZSEL-H9_b97a3LRI-xs6S0VVB7g5nLNlxjgLIhScOC7g>
+    <xmx:Ks6oaHsmT3AWaEkJTmuBv-5S4OXzc4GiJEk2KykIK6a7j43ruJr40w>
+    <xmx:Ks6oaAm2qDzAptP9dHuEzlOoOLr0NqMLdtoFLNx8tN47WdzurD8Mbg>
+    <xmx:Ks6oaKSlRs_g60_O4_dE_WBaLed1i1Zuq8KIf6AMnJwGtkjmjAQekA>
+    <xmx:K86oaEBNwxtQ3SuUcK5hLmKcLkgu1sfUZWmGcByX5g6Yp_daFUl4SRMY>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 7A339700068; Fri, 22 Aug 2025 16:08:10 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-3-b492ef807d12@pengutronix.de>
-X-Proofpoint-GUID: akLwmXMpr12Z0W7UexMBj5G6bc0g9-VE
-X-Proofpoint-ORIG-GUID: akLwmXMpr12Z0W7UexMBj5G6bc0g9-VE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIyMDE2MSBTYWx0ZWRfX9cArIgPop3lj
- JVRJJMP7Zc3fQmCZvRUsJVM+TqL6zMi1oDOxPvWXpI0Z1RD3bLFi939z2kUzf40R8COKRdag2X6
- I84iMz6UPEbRsyyfYKlo+++zZSEPG1TL2TeOZK+UgGUlGUhJ6EC5alpckxYDn2kyyUI8oBPqYQU
- JOReUKw3PmCf26wkPieBR/Pm6Y0v2+ZwTiEGowV0YNCFkjTSmw4LIE9Y84jGc3Tuw0CK0zN1VSC
- uDMHzWx1MXOo0ppbzjiJyYQKFMMm5y8AuTDP+V+K3u9YLh7jCGNEVrq2LcHTG7xuZL5fRUDTQSB
- xeWgIZNtDUK5+QnWcPa3V0MX2XfKVdjUeZSjH4Qi2rfM0rrfSFArJ336ug2dCoADKKVALa+du+4
- 4y8fV9Lr
-X-Authority-Analysis: v=2.4 cv=WId/XmsR c=1 sm=1 tr=0 ts=68a8b7af cx=c_pps
- a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=Acj4BH8ZA6BBt8B7gSkA:9 a=CjuIK1q_8ugA:10
- a=pJ04lnu7RYOZP9TFuWaZ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-22_04,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 clxscore=1015 adultscore=0 phishscore=0
- bulkscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508220161
+X-ThreadId: A6YapAphagno
+Date: Fri, 22 Aug 2025 22:07:40 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Peng Fan" <peng.fan@nxp.com>, "Peng Fan" <peng.fan@oss.nxp.com>
+Cc: "Shawn Guo" <shawnguo@kernel.org>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Fabio Estevam" <festevam@gmail.com>, "Sudeep Holla" <sudeep.holla@arm.com>,
+ "Cristian Marussi" <cristian.marussi@arm.com>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Message-Id: <a93b2235-2a6d-4cb7-9054-10f878805002@app.fastmail.com>
+In-Reply-To: 
+ <PAXPR04MB8459FAD02E2530FAA21A568A883DA@PAXPR04MB8459.eurprd04.prod.outlook.com>
+References: <20250807-imx9-sm-v1-0-3489e41a6fda@nxp.com>
+ <20250807-imx9-sm-v1-1-3489e41a6fda@nxp.com>
+ <2ff85fec-b571-4423-9161-674f88a32e18@app.fastmail.com>
+ <20250821095657.GB19763@nxa18884-linux.ap.freescale.net>
+ <b92218a6-e30c-4163-b441-1187d2e429d0@app.fastmail.com>
+ <PAXPR04MB8459FAD02E2530FAA21A568A883DA@PAXPR04MB8459.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH 1/3] firmware: imx: Add stub functions for SCMI MISC API
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 21, 2025 at 09:55:30AM +0200, Steffen Trumtrar wrote:
-> Add JuTouch Technology JT101TM023 10" 1280x800 LVDS panel support.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  drivers/gpu/drm/panel/panel-simple.c | 35 +++++++++++++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
-> 
+On Fri, Aug 22, 2025, at 04:35, Peng Fan wrote:
+>> Subject: Re: [PATCH 1/3] firmware: imx: Add stub functions for SCMI
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+>> The logic is the same here in the end, but the link failure is easier to
+>> trigger and repair if someone gets it wrong.
+>> 
+>> Also, for drivers that actually need the exported interface, the
+>> dependency becomes the simpler 'depends on IMX_SCMI_MISC_DRV'.
+>
+> Yeah, but since consumer drivers supports multiple platforms,
+> if platform A not requires the real API in IMX_SCMI_MISC_DRV,
+> no need to link the real API.
+>
+>> 
+>> Which driver using this symbol are you actually looking at? I see you
+>> have three similar patches for a couple of interfaces, and want to make
+>> sure the added complexity is really needed here. I do a lot of
+>> randconfig build tests, so quite often I end up being the one that runs
+>> into the subtle link failures from these.
+>
+> The patch is here
+> https://lore.kernel.org/linux-remoteproc/20250821-imx95-rproc-1-v5-0-e93191dfac51@nxp.com/T/#macc660f61873742de447ac8c20d34f2d494ff712
+>
+> Please help give a look.
 
+Thanks for the pointer. Yes, I agree this makes sense then,
+and seems harmless since there are only a few drivers that
+use the interfaces. I still think that the use conditional
+stubs for optional features is problematic when the definition
+is in a loadable module, and want to make sure this
+is not just done out of habit, but because of a specific
+documented requirement.
 
--- 
-With best wishes
-Dmitry
+Please clarify the changelog then, changing the 'Fixes' tags
+to a description that explains why you choose to revert my
+earlier patches.
+
+      Arnd
