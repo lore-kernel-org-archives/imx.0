@@ -1,127 +1,66 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58E12F1FE5
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 09:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9056E2857D2
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 09:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755855462; cv=none; b=OBPf8fbed6Yc9mpxuF9gqpBhn2koxE8EbEFF9l3b6KwZRabISEnV8CCYxT1hLNIxKhKZnwsvVGlYcZf1Ez6A3z6spvLbFMR5jyDZPMxDBKi0pXdq+lzZKt1B/d5rqDHUyKmqvq9Q9VPt5PT/ovQWVR3O4BY2fGZvQ3dRm9FdKME=
+	t=1755855556; cv=none; b=QxjCNRT6Mb+GAM/fNLJvEGNQHskKQ/VyIQHXU4PJHc0abAt3nhVvc6mR3h8HIIyBh5Yz+Ql8A6ZKaL54wwU9y/K9mRXKZFb3liX8r19eIv3GAFiNwrPR2okuhaAfDbBqoPBGNxi3HcIcwkuiQK1yX1tL47x96hSJp6vSCQdhwX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755855462; c=relaxed/simple;
-	bh=QgkFZGSFeP9Tyb5OkVgiydGAskriNxja1kg0ydQsDXg=;
+	s=arc-20240116; t=1755855556; c=relaxed/simple;
+	bh=escQ0eYemKQ36vqXovrhDFWhLwxwMiVnwgqPn+khWlg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OzWN+lOqbFDVyLQtqe3ypG9e30uf54WstoYKBfFpPtpdIbXHNWgF4YRgqVD5DhvlmyvnzVAScqpykSQTjPyfc0foY22OnJYPRSvGTHF00vWmq/vUAKX8DEz4UQJUcy+Yirm8HBdjqSKrPqMT3GISepYEzFkSZs8zp/caJeTiMmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UYnN6/Mb; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=cByK6LwMosMqM8uB1J2CbRaEDn5UaUZ7WD9WJcQf+8Kgr8qP+jaCrQyOsiyNP9KtKXR590wUTvbMROOrwYE2b8C4xl2cmoHj3LkWm0I5FFZaoD1BvqMQ3qsSw/orfr3dXAjHdVoYofMIChH2QUfC/v1DSN1sfYze39WJ8391f9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=UhkiRzGN; arc=none smtp.client-ip=1.95.21.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UYnN6/Mb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755855461; x=1787391461;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=QgkFZGSFeP9Tyb5OkVgiydGAskriNxja1kg0ydQsDXg=;
-  b=UYnN6/MbCdgsHwtSN0d8FYWCUrMJ+N6pqOUOo5YtUNHmOmbCU81xoQTb
-   w2NJbiPvsBkEafWC91aLFoD3qXFTijfvBTm/Ea2jwkgpuhNwVisv7CBPO
-   Z2w6pyL3+PMNi2IxTVJBf+dbzOJFs96ve6noCkqNQz4J2ITVYt6XcU/zb
-   NNbu0U8NYY3n3LTLiS4MpGh8DtMD4zMlVKc3KZdZZ3+QzHwA8XVyVHD7B
-   8DOkVpJQy9JThQmzdI+klKyZjuZBDreT9+0r3rYgOLDRrQJFWeINHp5pk
-   TDG/B3pPBWo/SCTyxPZPPj2ebgorgvgT/iLku91rk8x7rHK87K1ndSkSI
-   Q==;
-X-CSE-ConnectionGUID: wgzSguxqQOu510GAr7XRfA==
-X-CSE-MsgGUID: HsoBW+lcR3GYEm1KsExjYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69599517"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="69599517"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 02:37:40 -0700
-X-CSE-ConnectionGUID: a6JIz9UlT9KH8DjMxcDzxA==
-X-CSE-MsgGUID: EEY/MKcBRMWw+7H5MhgVDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="167907690"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 02:37:33 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1upODB-00000007TlT-0od7;
-	Fri, 22 Aug 2025 12:37:29 +0300
-Date: Fri, 22 Aug 2025 12:37:28 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Dixit Parmar <dixitparmar19@gmail.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Support Opensource <support.opensource@diasemi.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Haibo Chen <haibo.chen@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="UhkiRzGN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=l0H7eWI6XbSubtchLLYle5o/qTdCGwy3vl8S3tVMSUQ=;
+	b=UhkiRzGNmJIrB+P3HlxAvrgqc0kGw8nszom35do73cxuOA1dcPOL/afy2fJC10
+	sis+r5O1wIRuwhAp0Kd0jKPmU8Q7xdObn8FlI9+RgDO/OB1aQXXpfRiPAg1d6w+f
+	a374bxAQpt78c4ccAH6kkdf/4s6gSkSwtdFEgXQFk2a9k=
+Received: from dragon (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgD3tG6lOqhoRwwWAw--.12680S3;
+	Fri, 22 Aug 2025 17:38:47 +0800 (CST)
+Date: Fri, 22 Aug 2025 17:38:45 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Cai Huoqing <cai.huoqing@linux.dev>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andreas Klinger <ak@it-klinger.de>, Crt Mori <cmo@melexis.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 00/10] iio: Drop unnecessary -ENOMEM messages
-Message-ID: <aKg6WP361s6gcUTD@smile.fi.intel.com>
-References: <20250822-enomam_logs-v1-0-db87f2974552@gmail.com>
- <CAHp75VeTD5Y1bi-jYyfRnCPDfB4=WO+QF1uK5MSaSq=oUUMFdQ@mail.gmail.com>
- <CAFmh=S3x+SsuW79MdN6gE66CSK7smvbBy=22j=c9jGVOns6PiA@mail.gmail.com>
+	Stefan Agner <stefan@agner.ch>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH 1/4] ARM: dts: vfxxx: rename nodename iomux to pinctrl
+Message-ID: <aKg6pYNjxZvjkJq6@dragon>
+References: <20250819-vfxxx_warning-v1-0-080930d8e1ea@nxp.com>
+ <20250819-vfxxx_warning-v1-1-080930d8e1ea@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFmh=S3x+SsuW79MdN6gE66CSK7smvbBy=22j=c9jGVOns6PiA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20250819-vfxxx_warning-v1-1-080930d8e1ea@nxp.com>
+X-CM-TRANSID:M88vCgD3tG6lOqhoRwwWAw--.12680S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUzOzVUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNAn8YmioOqkPXAAA3j
 
-On Fri, Aug 22, 2025 at 02:58:34PM +0530, Dixit Parmar wrote:
-> On Fri, Aug 22, 2025 at 11:49 AM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > I don't understand. Don't you have a subscription to linux-iio@ ML?
-> > https://lore.kernel.org/linux-iio/CAHp75VdL9kV2fyi63zqPZnW4CaeYPmJ74tmGEgU=M7FSYBv0ww@mail.gmail.com/T/#t
-> > If you found something new, please base it on that series as it was
-> > already sent and reviewed.
+On Tue, Aug 19, 2025 at 03:44:06PM -0400, Frank Li wrote:
+> Rename nodename iomux to pinctrl to fix below warnings:
+>   arch/arm/boot/dts/nxp/vf/vf610-zii-scu4-aib.dtb: iomuxc@40048000 (fsl,vf610-iomuxc): $nodename:0: 'iomuxc@40048000' does not match '^(pinctrl|pinmux)(@[0-9a-f]+)?$'
+> 	from schema $id: http://devicetree.org/schemas/pinctrl/fsl,vf610-iomuxc.yaml#
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-> Thanks. I do have subscription to linux-iio@ML and did check the patch
-> series you mentioned.
-> That patch series by Xichao Zhao removes dev_err_probe() for -ENOMEM
-> cases whereas
-> this series is targeting slightly different cleanup of removing the
-> plain dev_err() log messages
-> that are there for -ENOMEM.
+Fabio beat you to this one ;)
 
-I see, makes sense.
-
-> As far as I can see, both the series are modifying completely
-> different driver files without overlapping changes.
-> Since the objectives are related but independent and addressing
-> different type of change, I thought to keep
-> these patches in different patch series and have clear differentiation.
-> Although to establish similarity it would have made more sense If I
-> would have added the link to that patch series here.
-
-With this clarification it indeed may be applied independently.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Shawn
 
