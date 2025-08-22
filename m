@@ -1,31 +1,31 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA7D2EC56F
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 08:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AC5223DD1
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 08:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755852219; cv=none; b=f97+paFjKBZ0jQC1uT1XZDewFIo7A7GTVMkPOjtzDWa3unaPNg2kZF9/LHcHYm6R0Yv4RYUbCSHnikVmXEFWie6CKmpNpVcW8qORaiSk1dTF0RC16ffn8XCtZUtmxoZU1ZWblo94e9Gy2EqWYy1VuYKGlcJh8KMItV9tmyljVbs=
+	t=1755852246; cv=none; b=EIsllQ5V4tncrcrQYipbndt1fZ6LcQwLZZhKcGPirbjSLDB/Sdb0vNIzX/VXhzA+No9hrJREzbMXB3JXcbdQclwKVsW1XBgISYqQQraC01q/QMjHW4qSqFB3ZKChc+99mtLmWnzEdzCUvyRr9/xVd5fJGqnnff8yfGYU8iUHozE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755852219; c=relaxed/simple;
-	bh=i5MGaGPZFXaGix0CeJMOQeq3AS/r/2cOZSfHKXkBdqk=;
+	s=arc-20240116; t=1755852246; c=relaxed/simple;
+	bh=WIbTbcYWzk0LwWnpPaIMHccPvGBc9pWxBYx0XcS0yUw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XP8srmdrCdLQzPL0aUD9sFinVyDXQyg960zFSpHPHCbdDW9cLAylg/gCe+XnNhqHGNmp/rYLxS7ABSgiWwt1UF9DbV7hgIWSVOad4jzOXOrwJtE0hl3mR3KGe7gzSgB77BlbSQd3kZfGte8g04WfxvegH6wDwTgWn+rvRj+6Z90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Mrr/ECZ1; arc=none smtp.client-ip=220.197.32.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=D69/dsvZX0lHjrlLvHWn9X6uGV6ag07whC47G+TwCG2AOoTZZfiRDhwAs3L8jG6LZMb+eX1ciL+/zgH5FzQsjyew7fZJOWDuPm3wpIzyVkSbRAOgpFcRoNDuDzaYr2qxHFSutD/Fmnh/3HMJuyXjdgZoOPvV0pz1X4wGZAyLcCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=CDohxI7/; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Mrr/ECZ1"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="CDohxI7/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=YcyCpXC//LwKFU9yjAyJNXfcojjXsbo2azge4YgyYVc=;
-	b=Mrr/ECZ13cJlTtArHixXMkiu25wJJaamvKcsqFEDchBndXLXXtYkoq3en9d4SI
-	Ai7V6QkKTRYiNwm/SIhGD9mCkpNJOqGJlhody5pzkemMje/TdILct0kEEwQcH4CN
-	9S1FzV2e314/87B9dGhuPfnVdRH362k4EdTMeE9QxzQMk=
+	Content-Type; bh=UISHobrNh95ObNFh3tYCD32MPVeq0eeo9WH+Sn/Lp0Y=;
+	b=CDohxI7/RTmNtk8Lq7gKdoNqYdZtzyyReCeYNx73wEYD8wMw167gSXfwt5tQd/
+	JDlfrLT9jjz5H6kFKQFyaeizeUAoQyh6GfZah4uYeVwr33C21BrE2r+9I1lkehM2
+	Zm1nrpgc14EhL3vqRhZtb2rw8EoMmo67Gu+Km438xHpJI=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgCnZW9sLahoW3sVAw--.14819S3;
-	Fri, 22 Aug 2025 16:42:23 +0800 (CST)
-Date: Fri, 22 Aug 2025 16:42:20 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCHJdqPLahoTvcnAw--.15193S3;
+	Fri, 22 Aug 2025 16:42:57 +0800 (CST)
+Date: Fri, 22 Aug 2025 16:42:55 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
 To: Joy Zou <joy.zou@nxp.com>
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
@@ -42,11 +42,10 @@ Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
 	linux@ew.tq-group.com, netdev@vger.kernel.org,
 	linux-pm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
 	Frank.Li@nxp.com
-Subject: Re: [PATCH v8 03/11] arm64: dts: freescale: move aliases from
- imx93.dtsi to board dts
-Message-ID: <aKgtbDHjU6Ldku5T@dragon>
+Subject: Re: [PATCH v8 08/11] arm64: defconfig: enable i.MX91 pinctrl
+Message-ID: <aKgtj9UVLnuoJzrj@dragon>
 References: <20250806114119.1948624-1-joy.zou@nxp.com>
- <20250806114119.1948624-4-joy.zou@nxp.com>
+ <20250806114119.1948624-9-joy.zou@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,23 +54,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250806114119.1948624-4-joy.zou@nxp.com>
-X-CM-TRANSID:M88vCgCnZW9sLahoW3sVAw--.14819S3
+In-Reply-To: <20250806114119.1948624-9-joy.zou@nxp.com>
+X-CM-TRANSID:Ms8vCgCHJdqPLahoTvcnAw--.15193S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUorcfUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAQSxZWioHpAnjAAAs0
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU1a0PUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNBKzGWioLZLpOwAA3h
 
-On Wed, Aug 06, 2025 at 07:41:11PM +0800, Joy Zou wrote:
-> The aliases is board level property rather than soc property, so move
-> these to each boards.
+On Wed, Aug 06, 2025 at 07:41:16PM +0800, Joy Zou wrote:
+> Enable i.MX91 pinctrl driver for booting the system.
 > 
 > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
 > Signed-off-by: Joy Zou <joy.zou@nxp.com>
 
-Joy,
-
-Could you resend those DTS patches with a rebase, as they do not apply
-any more?
-
-Shawn 
+Applied, thanks!
 
