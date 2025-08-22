@@ -1,66 +1,66 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90D21FECBA
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 03:50:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9E521D3F5
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 03:50:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755834636; cv=none; b=TrRCEOGPgQnCYSzGirFO5kS6rRxCncQAC0yXRuD1pgQh5FgsieyoYEG7O1cQEbxHWVQf1Zajt9XWoNtt9KIcAnLsEBS594UNuOyL3Hm+L/8zlsiH2EocUrlvOCmxFydEZo92f5YtJVMWQGyTnofg2ymcDfeo0p3x/lV+CeZnpng=
+	t=1755834646; cv=none; b=N8SjPr58mDS1Mc4p2LDq4WroDLsjmpeRrATldIitIcD0KxA7PrQ3Kt6cr58VRYeUQhFYtLsqueoWGi/xLEC1ZR85unWudiSNt9vOIS2uODCPmxqevQcJDMjTJeVxvTxlRoJifvgEpNTFw/fj8Bsxc4p03b7XvoqpOoXUBfDAS3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755834636; c=relaxed/simple;
-	bh=AGu9ZkRHfhF6t137X8zXcHpvsGhVHMDMV1L9x/K150I=;
+	s=arc-20240116; t=1755834646; c=relaxed/simple;
+	bh=1K93tVeoPiLj/0fP86BU3YSmIy3OX+Xeg+DZkIsbkCY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qts8zHQtDS57G/kHMghKSUSKnRyj97Cw6206FAOYvELLB9de79t0dPgRsV/E0cDOOURpxqTc5nGN3B6sbJY3SzE7+28t16x95+82G1mtQDPxgTMDXDLYH6Tm5SFHCeRQvpc839HQmBZNcCgPw8A3ylduUnrX1htzNWxbs5gm66Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FDu0f84V; arc=none smtp.client-ip=209.85.210.178
+	 In-Reply-To:To:Cc; b=rs8a0UXhajkLVHPCEKcXP7FSkLxRgUxS0rDQBPBUMSaD+0sOIky06S/ngyKdhKN9qALV2VkaVAi8ZFLrYgzPeUPLEAxngKWet5RJslA/FlEiO8dILwfRtrMYHsiaAz+PCm5YzXddzNmhZhnBrKMtk/jCskBpQfZEZM9c4YIoVCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fdm1aAWT; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDu0f84V"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76e434a0118so2220197b3a.0
-        for <imx@lists.linux.dev>; Thu, 21 Aug 2025 20:50:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fdm1aAWT"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so1657816b3a.1
+        for <imx@lists.linux.dev>; Thu, 21 Aug 2025 20:50:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755834633; x=1756439433; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1755834645; x=1756439445; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qqTeTmuPyRyJ3pkNoYGDtSBuc00zqnBTdwwG/CzasEM=;
-        b=FDu0f84Vj08JcEDrxe7+qHqzfIB9oYmJMJ8v+SfwVsOk5S8Ux00qEXndlEbqylcbFm
-         ryjHeK+wTWXWK6VqQfxzkoyIBlUUqDxROl2xTOUIaVkbutBBrGikI0TKP2LxVxDWDWf/
-         EGPXRahE34mxc87iqLKbj+xqD+xnEHtNwtK0cNor8uf9R2G+J0WyqrJwy2Uou+p1mtu8
-         UxuI5NhBqqsYocgvgFnIKonaswPv46Sxw0JC4tWcclN5NfYkw4rHuHWgF+uqO5EKjxEI
-         glWKMWI2Aqi0IDPSAJlYfqpBhbWyCDk+0urpHMQZKzGUJlNQS8zJn+SGZ8QRi/N8AuAe
-         Iy/g==
+        bh=SWhZhPrOG/QAlgX04rUzc0hrbfIiVcVzkp3PRYw6Qbs=;
+        b=Fdm1aAWTH/osOXBfjuDzTCR0nnshCb+UCWvPDFThmnDoqwDh+pMzQH5ssKxPbEF8vj
+         2s/7hCc2mrptfXOE8HSR+26W4iZ/Zeze3oCIH5qIjZRGfTlvAPwoSFJj7E+S0Aw5So/U
+         Lt2yFYoCqydd2Suit8BfKYAIaTPoyyOZq0h6m7O0+27h3EHRJCsCPXoMj2Avf0hl1jt8
+         ozQQaNHTxB9LIxVo0OaVJm9klOwUgxM342vMDS5FX8HWcw9VMRSlghAUuFBtlVycO1tl
+         wMyqWlWHUI3j24A5/tOxkiF+WxdITQYO3Dw+opDS9c8a2tXK00f5nBobvFytC5DIA0Lj
+         5SCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755834633; x=1756439433;
+        d=1e100.net; s=20230601; t=1755834645; x=1756439445;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qqTeTmuPyRyJ3pkNoYGDtSBuc00zqnBTdwwG/CzasEM=;
-        b=O3zaia3vZUoNciARh5uX83vCgggw1KkA9s4Uu9BqTRolPZ1+26ylahYpv4PrewLGTP
-         JHA4ISHes/Q9crns6lznpPHCSsV1mTL6ddaOr5/KL7b2sB9AhhNZLeMkd66olynu/cyX
-         y4Kr4ohp1ejS3PAKOtBa5SmMCqZhJx5LgSth0NNRSQEQ2uOnqwgqXYrjACrllgdi0Mjr
-         612HMGRA6uQbdL7pZjE1dRm/a0Uuh119js2envrwy1e9Cdy/TjBQsiT1aNldSv+OUECW
-         DLPUtmZa+aNDxhcDR6YR1OXGI+8ybYa5whT5n7vMg8jupjy/z75o0SZQNAU67nDycxez
-         TdjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWfah23S/0CNBrNfpwueGQcl8EabXOvHcGYLkK9uFcX66trPnqsDJ1aNl89vOXDKRna1s=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz2JfZrMPFTHR0NYc5PkX7hG7tI/kxpe4vibTteztzf5Od9Uh57
-	qUiGM8GhomBKYRgxMWX/jZOGP/2ptFCHpk0wAnrwuK1i8YI/Y+DVZMIO
-X-Gm-Gg: ASbGncs+qBGEbfOxuhThC6SN797OwjzYHAwjxcbxnpytFYmKw4nmmOCZ0e/s4m5sIbG
-	BQCmKPkiKFTfferrd+XG/WLQNrC8vpI6o2GX+E/MIVBnf4n58znlZIktWqDTIgHJeOy0sPyqSDO
-	Z52u+mVSRRC+H9rdkbWJPypIXPP/mnQSUNwA63K0YdZJGH4DHN4qKk5m+y875hytLqjKlVRlFk9
-	WfotVaLpbF6BBGYa3//4jQIKQ/n0ebl03pQq5sRLSwCcjuipHR8HA+t4RnVvMfvLPIC5/Be5I7G
-	5chk48OMWaSiVa4UCKdcKDTAUo7YTlfOEPfyikTw1ML3QKf9GdlmRJ5oRZdfvHqi3NkCYIPFV+9
-	oSNrUqUtbMsz5Wb6aTM3nx0H4iw8+
-X-Google-Smtp-Source: AGHT+IERxoDtaVf+dbrrvbv5pjZ4KSfLrglqW2Pvw+HdC3IHQrRaPUrXlowMN+IZs1D9wMCBHplfUg==
-X-Received: by 2002:a05:6a00:bd12:b0:748:2ff7:5e22 with SMTP id d2e1a72fcca58-7702fa057b7mr1767050b3a.10.1755834633167;
-        Thu, 21 Aug 2025 20:50:33 -0700 (PDT)
+        bh=SWhZhPrOG/QAlgX04rUzc0hrbfIiVcVzkp3PRYw6Qbs=;
+        b=vKgX6iZfJJiWEN0NKnxdDDDUkIzffdjakb+lTIdfLTVFRXgoqKK2ggPhhabOQj8pk0
+         PhsMN5rsaBfJQ936KB5BVHeSr1M+VFBrUUEc+erG0cyWD8RLep/NC3QfX8Ll2pkuBNf2
+         R2Z70phWI3w+RA+Joc8VFOEjSH9KxfuPSsdxX2WkQTb9UZsjmoaXvyZiqjyRM3WxS5tw
+         4ETX6q9gbPEWikd8Y54Ij38mcZ9mbLK840JyckgXqBmU72CXzxUYQRhWtuicGIy6J99S
+         DFJ4GU87S6i5I2vSNyVBzBOZZvMj7g7Ko004CfYHn5K7Zcm44YmTj3BQNqhSnSb1kmwk
+         LsVg==
+X-Forwarded-Encrypted: i=1; AJvYcCWCV5yEJc8tkRVsI7nIvn6MSGHp2Q0f/fNxxx0qNiVolYC4Ka/SWt+3gnCBaI6fSAXfiGU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw+6NevcFO7p3ifBNd3VUc1ZO46bt1JQTQPWfAuzACtROWaLnsk
+	Gx8UeY0UueRBeNeSropphMD3SDBZu7b5uiTiyXxAaQ6Jhr03NMsU6fcv
+X-Gm-Gg: ASbGncsf45gdnxZS+8678jRAU+nSHDrGO52bZ7w/LaKxq/CXhGL0v7B2U5USSKqzsiq
+	Iar3ZLgZGDquDCshBVPAD8KnFsgKb5np56y5/y2uAqF3JE2PN+sDn/GMyDDn3IkCB0R+9Xw1fND
+	6xvN7iMkOOeOkrnZ1rpDCoPOfXZWmwFO82f5tYODubYhsm4sLkVnN6I6Ztr/zOYu40DUktvREig
+	LDge+YybS5BREw6856x2tD2SAaFnQQlsC0qI1vqQF6QAL/4sIUlO7p52O85pFGvqWeqQ4Le4wqW
+	au15Are+Ma4BgPnarxeHyWkcY6Hm/gS4+JpJZa8L5TEsPzGwrlTBpEw1200BpIEHF+9FFgO02sG
+	ZTwrtTFXn9bmy8Q3dJiAEv0aHGRAe
+X-Google-Smtp-Source: AGHT+IHkP7IcI6b0w4x7HvhyRCGL8lDQ0eb2HC3aGo0CeMkwIFIX7qo+gbx+sa5/Xre12VY1dmNs5g==
+X-Received: by 2002:a05:6a00:8ccb:b0:76f:73be:5c40 with SMTP id d2e1a72fcca58-76f73be5d38mr3282271b3a.0.1755834644500;
+        Thu, 21 Aug 2025 20:50:44 -0700 (PDT)
 Received: from [127.0.1.1] ([2401:4900:1c7e:807:34f9:502:b902:b409])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7d10fdb1sm9449656b3a.27.2025.08.21.20.50.22
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7d10fdb1sm9449656b3a.27.2025.08.21.20.50.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 20:50:32 -0700 (PDT)
+        Thu, 21 Aug 2025 20:50:44 -0700 (PDT)
 From: Dixit Parmar <dixitparmar19@gmail.com>
-Date: Fri, 22 Aug 2025 09:19:50 +0530
-Subject: [PATCH 02/10] iio: adc: Drop unnecessary -ENOMEM messages
+Date: Fri, 22 Aug 2025 09:19:51 +0530
+Subject: [PATCH 03/10] iio: dac: Drop unnecessary -ENOMEM messages
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250822-enomam_logs-v1-2-db87f2974552@gmail.com>
+Message-Id: <20250822-enomam_logs-v1-3-db87f2974552@gmail.com>
 References: <20250822-enomam_logs-v1-0-db87f2974552@gmail.com>
 In-Reply-To: <20250822-enomam_logs-v1-0-db87f2974552@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -93,11 +93,11 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
  Dixit Parmar <dixitparmar19@gmail.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755834598; l=11663;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755834598; l=3064;
  i=dixitparmar19@gmail.com; s=20250726; h=from:subject:message-id;
- bh=AGu9ZkRHfhF6t137X8zXcHpvsGhVHMDMV1L9x/K150I=;
- b=hqMnjGHFYKykrgn5xbxcJprX4HQtBsNcj5+80fgC7kDWczGc3DTikdedYtP4NDO6fK1WjM8Zu
- VyzP4w7grMLBiK5eg6NuTBqN9ITKDUplHn5PYIrJsgtmxIdUR2wy7HO
+ bh=1K93tVeoPiLj/0fP86BU3YSmIy3OX+Xeg+DZkIsbkCY=;
+ b=JROXYfDq1SqDL2ylheHeUCGY4etunQkZ/BgczFT/HiSsDjSgLfD+vVQv/PUGbpM0DntA8c+rO
+ /vK5LfYFZBAAFXCYy4qQHdS9WRP7YF9lw/jPh6v3LyPjytsGbwnqVdv
 X-Developer-Key: i=dixitparmar19@gmail.com; a=ed25519;
  pk=TI6k8pjTuLFcYiHazsate3W8rZGU2lbOrSJ4IWNoQhI=
 
@@ -107,146 +107,85 @@ messages from the probe().
 
 Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
 ---
- drivers/iio/adc/ad7949.c          | 4 +---
- drivers/iio/adc/bcm_iproc_adc.c   | 4 +---
- drivers/iio/adc/cpcap-adc.c       | 6 ++----
- drivers/iio/adc/da9150-gpadc.c    | 5 ++---
- drivers/iio/adc/dln2-adc.c        | 9 +++------
- drivers/iio/adc/exynos_adc.c      | 4 +---
- drivers/iio/adc/imx7d_adc.c       | 4 +---
- drivers/iio/adc/imx8qxp-adc.c     | 4 +---
- drivers/iio/adc/mxs-lradc-adc.c   | 4 +---
- drivers/iio/adc/palmas_gpadc.c    | 4 +---
- drivers/iio/adc/rn5t618-adc.c     | 4 +---
- drivers/iio/adc/stm32-dfsdm-adc.c | 4 +---
- drivers/iio/adc/stmpe-adc.c       | 4 +---
- drivers/iio/adc/ti-adc084s021.c   | 4 +---
- drivers/iio/adc/ti-ads131e08.c    | 8 ++------
- drivers/iio/adc/ti_am335x_adc.c   | 5 ++---
- drivers/iio/adc/twl4030-madc.c    | 4 +---
- drivers/iio/adc/viperboard_adc.c  | 4 +---
- 18 files changed, 24 insertions(+), 61 deletions(-)
+ drivers/iio/dac/ad5380.c     | 4 +---
+ drivers/iio/dac/ad5764.c     | 4 +---
+ drivers/iio/dac/ds4424.c     | 4 +---
+ drivers/iio/dac/ti-dac7311.c | 4 +---
+ drivers/iio/dac/vf610_dac.c  | 4 +---
+ 5 files changed, 5 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
-index edd0c3a35ab7..4407828b4fc5 100644
---- a/drivers/iio/adc/ad7949.c
-+++ b/drivers/iio/adc/ad7949.c
-@@ -317,10 +317,8 @@ static int ad7949_spi_probe(struct spi_device *spi)
+diff --git a/drivers/iio/dac/ad5380.c b/drivers/iio/dac/ad5380.c
+index f63af704b77e..ffb8c676c7a8 100644
+--- a/drivers/iio/dac/ad5380.c
++++ b/drivers/iio/dac/ad5380.c
+@@ -371,10 +371,8 @@ static int ad5380_probe(struct device *dev, struct regmap *regmap,
  	int ret;
  
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*ad7949_adc));
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+-	if (indio_dev == NULL) {
+-		dev_err(dev, "Failed to allocate iio device\n");
++	if (indio_dev == NULL)
+ 		return -ENOMEM;
+-	}
+ 
+ 	st = iio_priv(indio_dev);
+ 
+diff --git a/drivers/iio/dac/ad5764.c b/drivers/iio/dac/ad5764.c
+index 26c049d5b73a..fbbd7105a80c 100644
+--- a/drivers/iio/dac/ad5764.c
++++ b/drivers/iio/dac/ad5764.c
+@@ -278,10 +278,8 @@ static int ad5764_probe(struct spi_device *spi)
+ 	int ret;
+ 
+ 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+-	if (indio_dev == NULL) {
+-		dev_err(&spi->dev, "Failed to allocate iio device\n");
++	if (indio_dev == NULL)
+ 		return -ENOMEM;
+-	}
+ 
+ 	st = iio_priv(indio_dev);
+ 	spi_set_drvdata(spi, indio_dev);
+diff --git a/drivers/iio/dac/ds4424.c b/drivers/iio/dac/ds4424.c
+index a26a99753418..a8198ba4f98a 100644
+--- a/drivers/iio/dac/ds4424.c
++++ b/drivers/iio/dac/ds4424.c
+@@ -221,10 +221,8 @@ static int ds4424_probe(struct i2c_client *client)
+ 	int ret;
+ 
+ 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+-	if (!indio_dev) {
+-		dev_err(&client->dev, "iio dev alloc failed.\n");
++	if (!indio_dev)
+ 		return -ENOMEM;
+-	}
+ 
+ 	data = iio_priv(indio_dev);
+ 	i2c_set_clientdata(client, indio_dev);
+diff --git a/drivers/iio/dac/ti-dac7311.c b/drivers/iio/dac/ti-dac7311.c
+index 3d2ce61f0db6..5c1c5213962f 100644
+--- a/drivers/iio/dac/ti-dac7311.c
++++ b/drivers/iio/dac/ti-dac7311.c
+@@ -242,10 +242,8 @@ static int ti_dac_probe(struct spi_device *spi)
+ 	int ret;
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*ti_dac));
 -	if (!indio_dev) {
 -		dev_err(dev, "can not allocate iio device\n");
 +	if (!indio_dev)
  		return -ENOMEM;
 -	}
  
- 	indio_dev->info = &ad7949_spi_info;
- 	indio_dev->name = spi_get_device_id(spi)->name;
-diff --git a/drivers/iio/adc/bcm_iproc_adc.c b/drivers/iio/adc/bcm_iproc_adc.c
-index f258668b0dc7..6426c9e6ccc9 100644
---- a/drivers/iio/adc/bcm_iproc_adc.c
-+++ b/drivers/iio/adc/bcm_iproc_adc.c
-@@ -511,10 +511,8 @@ static int iproc_adc_probe(struct platform_device *pdev)
+ 	spi->mode = SPI_MODE_1;
+ 	spi->bits_per_word = 16;
+diff --git a/drivers/iio/dac/vf610_dac.c b/drivers/iio/dac/vf610_dac.c
+index b30ff7bb4400..b7ee16ab4edd 100644
+--- a/drivers/iio/dac/vf610_dac.c
++++ b/drivers/iio/dac/vf610_dac.c
+@@ -178,10 +178,8 @@ static int vf610_dac_probe(struct platform_device *pdev)
  
  	indio_dev = devm_iio_device_alloc(&pdev->dev,
- 					sizeof(*adc_priv));
--	if (!indio_dev) {
--		dev_err(&pdev->dev, "failed to allocate iio device\n");
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
- 
- 	adc_priv = iio_priv(indio_dev);
- 	platform_set_drvdata(pdev, indio_dev);
-diff --git a/drivers/iio/adc/cpcap-adc.c b/drivers/iio/adc/cpcap-adc.c
-index ba7cbd3b4822..d9ee2ea116a7 100644
---- a/drivers/iio/adc/cpcap-adc.c
-+++ b/drivers/iio/adc/cpcap-adc.c
-@@ -953,11 +953,9 @@ static int cpcap_adc_probe(struct platform_device *pdev)
- 	int error;
- 
- 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*ddata));
--	if (!indio_dev) {
--		dev_err(&pdev->dev, "failed to allocate iio device\n");
--
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
-+
- 	ddata = iio_priv(indio_dev);
- 	ddata->ato = device_get_match_data(&pdev->dev);
- 	if (!ddata->ato)
-diff --git a/drivers/iio/adc/da9150-gpadc.c b/drivers/iio/adc/da9150-gpadc.c
-index b99291ce2a45..625e3a8e4d03 100644
---- a/drivers/iio/adc/da9150-gpadc.c
-+++ b/drivers/iio/adc/da9150-gpadc.c
-@@ -308,10 +308,9 @@ static int da9150_gpadc_probe(struct platform_device *pdev)
- 	int irq, ret;
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*gpadc));
--	if (!indio_dev) {
--		dev_err(&pdev->dev, "Failed to allocate IIO device\n");
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
-+
- 	gpadc = iio_priv(indio_dev);
- 
- 	gpadc->da9150 = da9150;
-diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
-index 9dbd2c87938c..a6f3746b6f13 100644
---- a/drivers/iio/adc/dln2-adc.c
-+++ b/drivers/iio/adc/dln2-adc.c
-@@ -586,10 +586,8 @@ static int dln2_adc_probe(struct platform_device *pdev)
- 	int i, ret, chans;
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*dln2));
--	if (!indio_dev) {
--		dev_err(dev, "failed allocating iio device\n");
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
- 
- 	dln2 = iio_priv(indio_dev);
- 	dln2->pdev = pdev;
-@@ -630,10 +628,9 @@ static int dln2_adc_probe(struct platform_device *pdev)
- 	dln2->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
- 					    indio_dev->name,
- 					    iio_device_id(indio_dev));
--	if (!dln2->trig) {
--		dev_err(dev, "failed to allocate trigger\n");
-+	if (!dln2->trig)
- 		return -ENOMEM;
--	}
-+
- 	iio_trigger_set_drvdata(dln2->trig, dln2);
- 	ret = devm_iio_trigger_register(dev, dln2->trig);
- 	if (ret) {
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index 4614cf848535..32cfc4002b1b 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -798,10 +798,8 @@ static int exynos_adc_probe(struct platform_device *pdev)
- 	int irq;
- 
- 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct exynos_adc));
--	if (!indio_dev) {
--		dev_err(&pdev->dev, "failed allocating iio device\n");
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
- 
- 	info = iio_priv(indio_dev);
- 
-diff --git a/drivers/iio/adc/imx7d_adc.c b/drivers/iio/adc/imx7d_adc.c
-index 09ce71f6e941..039c0387da23 100644
---- a/drivers/iio/adc/imx7d_adc.c
-+++ b/drivers/iio/adc/imx7d_adc.c
-@@ -482,10 +482,8 @@ static int imx7d_adc_probe(struct platform_device *pdev)
- 	int ret;
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*info));
+ 					sizeof(struct vf610_dac));
 -	if (!indio_dev) {
 -		dev_err(&pdev->dev, "Failed allocating iio device\n");
 +	if (!indio_dev)
@@ -254,196 +193,7 @@ index 09ce71f6e941..039c0387da23 100644
 -	}
  
  	info = iio_priv(indio_dev);
- 	info->dev = dev;
-diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-adc.c
-index be13a6ed7e00..427ee9f24408 100644
---- a/drivers/iio/adc/imx8qxp-adc.c
-+++ b/drivers/iio/adc/imx8qxp-adc.c
-@@ -315,10 +315,8 @@ static int imx8qxp_adc_probe(struct platform_device *pdev)
- 	int ret;
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
--	if (!indio_dev) {
--		dev_err(dev, "Failed allocating iio device\n");
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
- 
- 	adc = iio_priv(indio_dev);
- 	adc->dev = dev;
-diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
-index 92baf3f5f560..dda5182a5076 100644
---- a/drivers/iio/adc/mxs-lradc-adc.c
-+++ b/drivers/iio/adc/mxs-lradc-adc.c
-@@ -697,10 +697,8 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
- 
- 	/* Allocate the IIO device. */
- 	iio = devm_iio_device_alloc(dev, sizeof(*adc));
--	if (!iio) {
--		dev_err(dev, "Failed to allocate IIO device\n");
-+	if (!iio)
- 		return -ENOMEM;
--	}
- 
- 	adc = iio_priv(iio);
- 	adc->lradc = lradc;
-diff --git a/drivers/iio/adc/palmas_gpadc.c b/drivers/iio/adc/palmas_gpadc.c
-index 7c01e33be04c..3f433064618e 100644
---- a/drivers/iio/adc/palmas_gpadc.c
-+++ b/drivers/iio/adc/palmas_gpadc.c
-@@ -885,10 +885,8 @@ static int palmas_gpadc_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 
- 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc));
--	if (!indio_dev) {
--		dev_err(&pdev->dev, "iio_device_alloc failed\n");
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
- 
- 	adc = iio_priv(indio_dev);
- 	adc->dev = &pdev->dev;
-diff --git a/drivers/iio/adc/rn5t618-adc.c b/drivers/iio/adc/rn5t618-adc.c
-index d6f6b351f2af..f78fc795b69a 100644
---- a/drivers/iio/adc/rn5t618-adc.c
-+++ b/drivers/iio/adc/rn5t618-adc.c
-@@ -199,10 +199,8 @@ static int rn5t618_adc_probe(struct platform_device *pdev)
- 	struct rn5t618 *rn5t618 = dev_get_drvdata(pdev->dev.parent);
- 
- 	iio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc));
--	if (!iio_dev) {
--		dev_err(&pdev->dev, "failed allocating iio device\n");
-+	if (!iio_dev)
- 		return -ENOMEM;
--	}
- 
- 	adc = iio_priv(iio_dev);
- 	adc->dev = &pdev->dev;
-diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-index f583924eb16b..92e5159793eb 100644
---- a/drivers/iio/adc/stm32-dfsdm-adc.c
-+++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-@@ -1763,10 +1763,8 @@ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
- 
- 	dev_data = of_device_get_match_data(dev);
- 	iio = devm_iio_device_alloc(dev, sizeof(*adc));
--	if (!iio) {
--		dev_err(dev, "%s: Failed to allocate IIO\n", __func__);
-+	if (!iio)
- 		return -ENOMEM;
--	}
- 
- 	adc = iio_priv(iio);
- 	adc->dfsdm = dev_get_drvdata(dev->parent);
-diff --git a/drivers/iio/adc/stmpe-adc.c b/drivers/iio/adc/stmpe-adc.c
-index b0add5a2eab5..8e26c47edc08 100644
---- a/drivers/iio/adc/stmpe-adc.c
-+++ b/drivers/iio/adc/stmpe-adc.c
-@@ -267,10 +267,8 @@ static int stmpe_adc_probe(struct platform_device *pdev)
- 		return irq_adc;
- 
- 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct stmpe_adc));
--	if (!indio_dev) {
--		dev_err(&pdev->dev, "failed allocating iio device\n");
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
- 
- 	info = iio_priv(indio_dev);
- 	mutex_init(&info->lock);
-diff --git a/drivers/iio/adc/ti-adc084s021.c b/drivers/iio/adc/ti-adc084s021.c
-index 50a474f4d9f5..a100f770fa1c 100644
---- a/drivers/iio/adc/ti-adc084s021.c
-+++ b/drivers/iio/adc/ti-adc084s021.c
-@@ -200,10 +200,8 @@ static int adc084s021_probe(struct spi_device *spi)
- 	int ret;
- 
- 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*adc));
--	if (!indio_dev) {
--		dev_err(&spi->dev, "Failed to allocate IIO device\n");
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
- 
- 	adc = iio_priv(indio_dev);
- 	adc->spi = spi;
-diff --git a/drivers/iio/adc/ti-ads131e08.c b/drivers/iio/adc/ti-ads131e08.c
-index 085f0d6fb39e..c3bf0ed46690 100644
---- a/drivers/iio/adc/ti-ads131e08.c
-+++ b/drivers/iio/adc/ti-ads131e08.c
-@@ -807,10 +807,8 @@ static int ads131e08_probe(struct spi_device *spi)
- 	}
- 
- 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
--	if (!indio_dev) {
--		dev_err(&spi->dev, "failed to allocate IIO device\n");
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
- 
- 	st = iio_priv(indio_dev);
- 	st->info = info;
-@@ -841,10 +839,8 @@ static int ads131e08_probe(struct spi_device *spi)
- 
- 	st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-dev%d",
- 		indio_dev->name, iio_device_id(indio_dev));
--	if (!st->trig) {
--		dev_err(&spi->dev, "failed to allocate IIO trigger\n");
-+	if (!st->trig)
- 		return -ENOMEM;
--	}
- 
- 	st->trig->ops = &ads131e08_trigger_ops;
- 	st->trig->dev.parent = &spi->dev;
-diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-index fe1509d3b1e7..99f274adc870 100644
---- a/drivers/iio/adc/ti_am335x_adc.c
-+++ b/drivers/iio/adc/ti_am335x_adc.c
-@@ -631,10 +631,9 @@ static int tiadc_probe(struct platform_device *pdev)
- 	}
- 
- 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc_dev));
--	if (!indio_dev) {
--		dev_err(&pdev->dev, "failed to allocate iio device\n");
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
-+
- 	adc_dev = iio_priv(indio_dev);
- 
- 	adc_dev->mfd_tscadc = ti_tscadc_dev_get(pdev);
-diff --git a/drivers/iio/adc/twl4030-madc.c b/drivers/iio/adc/twl4030-madc.c
-index 0ea51ddeaa0a..fe3b31ec976e 100644
---- a/drivers/iio/adc/twl4030-madc.c
-+++ b/drivers/iio/adc/twl4030-madc.c
-@@ -758,10 +758,8 @@ static int twl4030_madc_probe(struct platform_device *pdev)
- 	}
- 
- 	iio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*madc));
--	if (!iio_dev) {
--		dev_err(&pdev->dev, "failed allocating iio device\n");
-+	if (!iio_dev)
- 		return -ENOMEM;
--	}
- 
- 	madc = iio_priv(iio_dev);
- 	madc->dev = &pdev->dev;
-diff --git a/drivers/iio/adc/viperboard_adc.c b/drivers/iio/adc/viperboard_adc.c
-index 1028b101cf56..9bb0b83c8f67 100644
---- a/drivers/iio/adc/viperboard_adc.c
-+++ b/drivers/iio/adc/viperboard_adc.c
-@@ -113,10 +113,8 @@ static int vprbrd_adc_probe(struct platform_device *pdev)
- 
- 	/* registering iio */
- 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc));
--	if (!indio_dev) {
--		dev_err(&pdev->dev, "failed allocating iio device\n");
-+	if (!indio_dev)
- 		return -ENOMEM;
--	}
- 
- 	adc = iio_priv(indio_dev);
- 	adc->vb = vb;
+ 	info->dev = &pdev->dev;
 
 -- 
 2.43.0
