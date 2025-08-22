@@ -1,107 +1,109 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230E53093CE
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 13:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552F030AAAE
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 14:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755871054; cv=none; b=QVcBJ3VgoJvVOzu1Tx1qNq6RAjSwbIokVhhZnBox1Utp+2LdSsM/i8NqUgJmY1bx7Tx6pYZbVe+EjtgRMMF82GUzqSElv2eXexwubfX4EF4mlvS1UTPRIt7LKjZ9/4fd7IZDU+nrNQmg9dcwdDSEpYanXYwUhUIDnsLASuyW/Qo=
+	t=1755871239; cv=none; b=F4ObWTQp+oFls8tazgB40YyL6d2UId315rQCMsLrFJi6RKwLEFZvj7IGWlr3I7kwrG8XiEMitwkRADes+GZmpKgFiAeg5ef6PuOfWhbzH4C68viDhUoJZ4oBe/6raEJm9tnqdOIzniDT0YLPV/beVMpN93KR/CS7oJnRcGelR6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755871054; c=relaxed/simple;
-	bh=zCCSy0o35JvAI7QafSxpydH2hzoK0y79MPd+2j4OwW0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qEAYHf6jvCiLNTYMMXigR7qafw3lukNegzFNzuJ29BmqekHphE394enXNPN+nXq28EsgqgR/B6HYjfpWWz8qQFhVyI6Es75tpOuiZFWUyIatfaJzy57T2dsnlF6BNVmpwws/LD3MzvO6TI1Sa5IFB1FDgHnEtbIa8Arx7Ir+oNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=c7Cjx71j; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=coZaT6+1 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1755871239; c=relaxed/simple;
+	bh=U5vB3jTLB/0YtaPU98NKvAcBNxrZMtOdgUeBiXaL9ro=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Type:References; b=CLC2CkxHV+EP5/+NhkcHCeHEAaq8VFudSUI9ZraM0C/P/A3GVe7EpcHJFOv7BefEA83S2FdAubGOSk/sbxuvb6zWss1WjBJeMe1kkop7hdIlQrOpEE/TdNFNroWLXWLJ7v2Jbj2+5lbLOMuuro6qviSj2hqdtZrM1PWQJtfkpeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=LmWYTT7G; arc=none smtp.client-ip=203.254.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="c7Cjx71j";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="coZaT6+1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1755871051; x=1787407051;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=9n/naAKcBCNNY+t9a5vJJ7PI9f1fYi7nwTRgic5hZFg=;
-  b=c7Cjx71jAcmaqDyqxP25MEIcXnW4EKKxSsO07Ax+IDH5J2bm58n25ztx
-   eTlegmZ96jlUTSAPQ93z5bG4eRt6+RJFvttI/jDCrRR1/i+b2IURNpBDL
-   C8SZFI+4OuRoRQwxJCn+ei5JhA+rQdFjHh/M76yp8oqhBHiaXSxqmA8eq
-   uILa2I2KCvitIlBRpdMSRSIPaMEh0Uw3IXU9bDfpbj0/SfylkBVGTIp3m
-   ix5fV40HiN3z31cy4CL9nZLrikHPXpYAXx0Q/tQYzTb/s9Ew3bj75WjPC
-   S7aejuonxc7wNJpOPi5PjeonZMKZ5NQ6IESp9Hql69oxz/F1UYYYfqISh
-   w==;
-X-CSE-ConnectionGUID: JKVv52hjTCGPr31HoOYi9A==
-X-CSE-MsgGUID: 0Ixf0lb7QBKCT3RAt1aU2Q==
-X-IronPort-AV: E=Sophos;i="6.17,309,1747692000"; 
-   d="scan'208";a="45868445"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 22 Aug 2025 15:57:27 +0200
-X-CheckPoint: {68A87747-0-820F521C-C7779E56}
-X-MAIL-CPID: E1AE969BEAE425E55620FADF3E35DF18_4
-X-Control-Analysis: str=0001.0A00210E.68A8769F.000E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 79A8416462D;
-	Fri, 22 Aug 2025 15:57:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1755871042; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=9n/naAKcBCNNY+t9a5vJJ7PI9f1fYi7nwTRgic5hZFg=;
-	b=coZaT6+1llALA9Baw1AWaB0ssP8Dg1+xnD1pjqaOsGmdomdMEnc2PJGDmx8osO3fjR8/YQ
-	e30NfqHz4kkrY1azSk9x0khEctHIFZT4K378dzK9HtVrFPROdqqAFyMh/8CIvBlQQQf46e
-	uXD5WPawv1HMDHvUpE1aoMNIsInSaa/+cq++fk3G0nl9GKAc9kW9v14NpnGfD2Cv+HVw5V
-	z2f6AJbb8OzsXa8v1D0ZslArziwum4jUmL/hznldevKy5TvEH4RU4uD/ymyGx4uAx0sNxl
-	dDgrrny5Y6UPsxFXtk/jUxVaWyuA2vGlxMsItyOnycFLxp9IgrIYSZvIqzxs2g==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH v3 1/1] arm64: defconfig: Enable Marvell WiFi-Ex USB driver
-Date: Fri, 22 Aug 2025 15:57:14 +0200
-Message-ID: <20250822135715.3335023-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="LmWYTT7G"
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250822140035epoutp041894e4a4a9ad9efb8b1f2fc096b8574e~eG5XrcJVj1698616986epoutp04T
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 14:00:35 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250822140035epoutp041894e4a4a9ad9efb8b1f2fc096b8574e~eG5XrcJVj1698616986epoutp04T
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1755871235;
+	bh=I3q54JPaEsRJCyuS492x1saEps2lZA8otnLyPxGwJho=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+	b=LmWYTT7GwhV60aof6ADr7N8Qd+vuTM1Yx6Yz4T4eUYslzQhwlZ2vY/87kkEaoEP4m
+	 27Y3Tc1gAAsTnHRJdKQYUdsCibPG5AmIXryNyn4tZ60K7UQzpbflukgVZ0TmOr92+n
+	 0pPd767wl1aL9sOR8ckwStNPa1OG9Y/yg3cm/lJc=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
+	20250822140033epcas5p3fa5e592a3ee6654a259180b9d8f4a8de~eG5WT2gdF1315513155epcas5p3f;
+	Fri, 22 Aug 2025 14:00:33 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.38.92]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4c7hfT0FH1z2SSKY; Fri, 22 Aug
+	2025 14:00:33 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250822140032epcas5p23047c7ce5a1f89ab6a7c5a564c2529db~eG5Ur29Ct0779907799epcas5p23;
+	Fri, 22 Aug 2025 14:00:32 +0000 (GMT)
+Received: from FDSFTE196 (unknown [107.116.189.214]) by epsmtip2.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20250822140028epsmtip251a4acc1d4fb38f8f1054d3e0d6c3567~eG5Q_y8uc3153031530epsmtip25;
+	Fri, 22 Aug 2025 14:00:28 +0000 (GMT)
+From: "Inbaraj E" <inbaraj.e@samsung.com>
+To: "'Krzysztof Kozlowski'" <krzk@kernel.org>, <mturquette@baylibre.com>,
+	<sboyd@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <s.nawrocki@samsung.com>, <s.hauer@pengutronix.de>,
+	<shawnguo@kernel.org>, <cw00.choi@samsung.com>, <rmfrfs@gmail.com>,
+	<laurent.pinchart@ideasonboard.com>, <martink@posteo.de>,
+	<mchehab@kernel.org>, <linux-fsd@tesla.com>, <will@kernel.org>,
+	<catalin.marinas@arm.com>, <pankaj.dubey@samsung.com>,
+	<shradha.t@samsung.com>, <ravi.patel@samsung.com>
+Cc: <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <alim.akhtar@samsung.com>,
+	<linux-samsung-soc@vger.kernel.org>, <kernel@puri.sm>,
+	<kernel@pengutronix.de>, <festevam@gmail.com>,
+	<linux-media@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>
+In-Reply-To: <7b7f6958-3178-4c6f-8be3-f52ef77464f7@kernel.org>
+Subject: RE: [PATCH v2 03/12] dt-bindings: media: nxp: Add support for FSD
+ SoC
+Date: Fri, 22 Aug 2025 19:30:27 +0530
+Message-ID: <00d201dc136d$1fdd6bc0$5f984340$@samsung.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQK5oFMD+tt4mLQU5V9KgVyIDaUIUQF6bLd9AsRKNAMBJ/ZVhAEp+FCyAvdCX9qyZ1l58A==
+Content-Language: en-in
+X-CMS-MailID: 20250822140032epcas5p23047c7ce5a1f89ab6a7c5a564c2529db
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-541,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250814141014epcas5p410d41ede7e8ae4f3cf8db6d041d03946
+References: <20250814140943.22531-1-inbaraj.e@samsung.com>
+	<CGME20250814141014epcas5p410d41ede7e8ae4f3cf8db6d041d03946@epcas5p4.samsung.com>
+	<20250814140943.22531-4-inbaraj.e@samsung.com>
+	<ac9769af-9ab6-4b48-9890-ec3bcda3b180@kernel.org>
+	<00d001dc136a$36ad7230$a4085690$@samsung.com>
+	<7b7f6958-3178-4c6f-8be3-f52ef77464f7@kernel.org>
 
-MBa91xxCA (imx93-tqma9352-mba91xxca.dts) features a USB attached WiFi
-module. lsusb says:
- ID 1286:204e Marvell Semiconductor, Inc. Bluetooth and Wireless LAN Composite Device
-Enable the corresponding driver.
+> On 22/08/2025 15:39, Inbaraj E wrote:
+> >>>
+> >>>    power-domains:
+> >>>      maxItems: 1
+> >>>
+> >>> +  samsung,syscon-csis:
+> >>
+> >> samsung, so not nxp. Even more confusing.
+> >>
+> >
+> > I used samsung,syscon-csis because the system controller on Tesla FSD
+> > follows Samsung's sysreg design.
+>=20
+> OK, this is property for Tesla though, so please use tesla prefix.
 
-To: Shawn Guo <shawnguo@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: imx@lists.linux.dev
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Changes in v3:
-* Improved commit message
+Using tesla,syscon-csis results in a =22prefix not found=22 issue when runn=
+ing dtbs_check
 
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 603c9528c778d..4535a3e5a7560 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -441,6 +441,7 @@ CONFIG_IWLMVM=m
- CONFIG_MWIFIEX=m
- CONFIG_MWIFIEX_SDIO=m
- CONFIG_MWIFIEX_PCIE=m
-+CONFIG_MWIFIEX_USB=m
- CONFIG_MT7921E=m
- CONFIG_RSI_91X=m
- CONFIG_WL18XX=m
--- 
-2.43.0
+Regards,
+Inbaraj E
 
