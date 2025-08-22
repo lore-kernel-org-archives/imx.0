@@ -1,66 +1,66 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CFF30748B
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 13:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1093074AC
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 13:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755869499; cv=none; b=ALfKgieCZ/EwXSTsmA9/05emmXrfBqd3F2ImZMMO9xhKNJ+dExNHR2FT4uJpNryjQceXJTAz7bCK16KKEzcX+Jsl+8Osc8i+eg3ZorQrHMHXOzaOL7rk6eXJwAGrsqYEeFUGZaX4SEwoE0QuZHhE3fOR3Y6ihB7ypZT6+/U41cM=
+	t=1755869499; cv=none; b=j6eSRXpQKSGL+CI/2/1LgYPI6iJp+cR5AX0+0ed9SDj0oSaCP7wHPQIqPFYZnKwPnbIiPQ1Kb37vcqO2TRnGaBf6mLlv2zm47zShzTXVKunAGk4Gw2WKor3pv9R/f3JvTKr5/Qtlj/CZP9fd+i9M7uU5e4Tu+eAPktgMFvz2f7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755869499; c=relaxed/simple;
-	bh=kHSR3OBfxE0kL9LgZuy6tb09v4e6Fk2998ktGFCNaNE=;
+	bh=7H+O5W6Cx7TFYYHg0yIa4CMl+T5Jth/7El/WrcKoQQs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fZiw0eGuKxEwcCpffflHw9NpeOrYzJc+LtItmhaju+PHCRW2vgbip64G8hBZI+YKvgSyOQqpkLGy/92eVz9KlTV7U1PxiO4WZrxbvKAMa+pYWHx3/FOOHVXkui5r+RIK50GNkJGnLmyuEOTq0r7AED1AOu2yKbAIzIUsyqqWnG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ebk8MCcT; arc=none smtp.client-ip=209.85.218.43
+	 In-Reply-To:To:Cc; b=e22rMmQ/A9o2e8AddmEjBMJQ+5oRZohba789ZRj0NEQZzjcbbS5SnIl6jD62E4EZ299bWoBi/+8sLsoZZimDCSFyonuo0Fn0dCV8Uqp2gDHBaZ7wrK9yIwOZtsvQf2bu8TE79dRG0BUYkAMqMAf1DPv9En/o3pzodFpsHowfQxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JFW8SWDg; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ebk8MCcT"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afdefc9b005so33616266b.0
-        for <imx@lists.linux.dev>; Fri, 22 Aug 2025 06:31:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JFW8SWDg"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-afdf393978eso31565766b.1
+        for <imx@lists.linux.dev>; Fri, 22 Aug 2025 06:31:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755869495; x=1756474295; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1755869496; x=1756474296; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qHSlakyKxrjNUT7S6VUafjxhT54zInLD1iFLeYFLDh8=;
-        b=ebk8MCcTA6LYmMPQ2uTWgs+WuDigeZYdrwSc/gBKrXMBL78+f3leglFO1mQFd6r5l+
-         I6F8V7BzEdw2YSAT14EEBJZoDMp8uT28+di0HVIz4me5/6ytUrBI+DRaJnUQa/nEiy7q
-         vuvo665fWEsGsjayhjrUz3cBm84/DYWT2MOGW8Tm6dPUzxT8pzxFSINp66fboKGj4wuL
-         zgv1EuE0vuQkh3PIPKeX1/QOQyNtpPbt/A6j9Wx77ciX0JLCaHdhS3P5jHEZadyRpq5Y
-         O1KWdPun4367ztis5iZYTsIgp6iAgikBbc8vEmyiIDy0LklSBZxlqptYCw7/Xr1a5NEt
-         LepQ==
+        bh=x1oPHSZs3u7U8KvICqkGflwd8yraABLSs55oPMk26ew=;
+        b=JFW8SWDgigrh1Geq0P/jek3yi5XVSGcCrqLmDNQwLePJ5o0QERXsI1oYxQVmXcMw60
+         LrnFh4hK0/lIS032QtUwN1Cts4wqk7FN83Q8H8N+qsvGS0/ASoKhoW5A7OpoqLu7lr7S
+         CCl4zW5sbw9wH/AQHULHEHMh+OPFAJjlTpvg9WqhZ6eNW5p1gCbQu+YzrZnTYUYqfquo
+         kIN76RzENvNK7xCBn3gybNHfBx5eDtND8MvhsYs7CIhitzVUtFhaZgFg/t2bqih7rbUh
+         oQbu7mwzNdlrK0yxCL3O+TPXHcU+4hr8CT9Ji7A23cNF+NelYFvpfmULNM6QBo4wFMfN
+         kKJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755869495; x=1756474295;
+        d=1e100.net; s=20230601; t=1755869496; x=1756474296;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qHSlakyKxrjNUT7S6VUafjxhT54zInLD1iFLeYFLDh8=;
-        b=YBueOT53siFYFACbOCf4L9+/h1sneO60bqkkeem7E1xUezl9bcFdLqaG1/X9taIYXm
-         hKBq81eX2WNYeNR4R+zIRqB8AwuyxN6jYy29Ts/cBeztmvk+qajF/BJgyJvnDQJ7gZdt
-         XZtWqrpGNNLeRsuQLTqELi6hvEAv3Usic+YnaevrhiQpjRTuejHDboeDIt6ZQS0vWtaE
-         yZdZOMEvpQCCCCUKFcszLWJZZmVc/DpDDyUjUEAYIR1wuApMSrPGH/j5LgHkCujDPF2z
-         gCQXvUlb2C+JR6Hq+oGQT1CShXVNfxJ14w1BqvUCY6+8jnLCZxIYdVLvI9zoLbQGF14M
-         WhPA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvjK5xTAq0Pt8CFtTGDk3sPTVf7ao3UDmCp5Ok6Pi9pzYghpKxbGxMPW7ezd+w4bGImC0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzXw3K0TKwyGMZ+qfjncVn9kDO+XJ5oJ9r6IuzhPNVXlpuE/fgz
-	vIYpYw1KvlvMoJJac3ftUsnw3hyq/7SWcM8yciT1OPhxvPtsGX8VH/62RRUYGZACfIw=
-X-Gm-Gg: ASbGncuWSx3YGK14ZG+7Cs9AGfRmyPCqVn2E3xyr9ayQX77PZmhkIsA7Hg3l6C39FtT
-	nWjlK2br1/QWtlghAdesQycS14ZUiDsAetZEib223seImzdtPldofMzJRAnVLahsKNS/ympJdnI
-	yD/wFqBe1kG68y69Mx6dHnry3TWidDNUGtoIKttDadhen8HEf7wSd7Kx5uT12Qg4x1fLhipL923
-	A0/uhbfPP0lgzvsli1az+Bded9fVYfEb3s3fHAzsVx0jUxIG7Xet9zPSSmR7GaYdvWL1HHW9pND
-	k1uz0onRHBrKZA6z9AXncNzKJMYvr6zOW25ep0stDEeT7Adn5HzP85qAuEXpvsfhD48u2kcoZ++
-	2igvsBKWdq6JvU9r+TRdGXVtOJ98HGQOQNLociYw=
-X-Google-Smtp-Source: AGHT+IFH99GO8Rglk9z1kVj4gHZfOeJnVrjz3zilZUHOkV9zKxf8NlcHsbBnTMmSCOB1kQdl0LkccA==
-X-Received: by 2002:a17:907:7b8c:b0:ae0:ba0e:ae59 with SMTP id a640c23a62f3a-afe2943ebfemr132325066b.7.1755869494660;
-        Fri, 22 Aug 2025 06:31:34 -0700 (PDT)
+        bh=x1oPHSZs3u7U8KvICqkGflwd8yraABLSs55oPMk26ew=;
+        b=s8F8D2ut1RlS44e68JWZHbXHKz5wnm+n3FOCRiUZBvCcKs/9/mLfUD09Y/xv62cxTT
+         BCjV1RxbygunxL/HDRt0QvgAuAOwmZWeDpVIoJ23sbrd1IugwTnHuctVkyWt1JiLjBGi
+         Nvn9gpry15FuDcgHANKqRlKKSUGo8bK5aB6nmJ8gRbKTUjCn3HR0zzUU4Q+NOClanVks
+         2D2e5no4jc1JVhfbFZ8+77Q/AHzr+7zdjR0uDPl66dhO9iydRcY7bN5hlA0md4cDwHqQ
+         xTwXSt3a6mGfPdM9KDIXo8GhnN5SOgtDIt/doA0X89fWbsiMqbRSQFx5rjrkGyMVowRP
+         chyg==
+X-Forwarded-Encrypted: i=1; AJvYcCUrRXoMTI4j96MllFkSVpF9K0rH7oyNQy5ITgH3pWUVFy6Q5QCza+238pDY2G5FdX4hACc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwmxADGRde69Yamq5r/9o74885e4LGQYESN0mpA0SN78zjE5E4B
+	7ixto7CYUaFfB+BP7BWfteTJeNngQzfCDDxIpBRZVoEE5GZn0oYX1521dQiOWgjWxQs=
+X-Gm-Gg: ASbGncuIuNyxS4rZ7mepMLwhT/Ab3eMA7y+OeUhItSnCdqxCkt6SpzR863ebgivhEuF
+	LkRSMzDW+MI/kSSvJf90JbE3ScvmXbUGEQEHrbW/W5uFhFlDT3V1knAyNPpwisJsoHa77kUdx6v
+	1ZH5UltpSSFG7zH5XciX+vOjmBm84hVBfxwg1vyEZZ4SKYAJ8chNvIE6FPpWTjtWS6rojBhP4BO
+	c8s9eYkxm7CZVp3slbRq8lYEGzJtSpLbA3S2Big3ohzZMhrYRvoODPs6sWCBEMpyUOLE43AEC9O
+	oTD3IIUw1F1DzvM6b5MjOuzTfK104fKej+raOq5fG/FkqFKaIYSvJostJcoLYDmyABb99QvLalU
+	puuAEVI4GrXhdIlzLkbdhrDXFeoGxVyg6XfGyddq4wv5bh6UqPw==
+X-Google-Smtp-Source: AGHT+IHGf4gD2l54dPuZnRQTNE5elyH8zGFJB2EjqQyxv9TE0M0n+7dSm4Zf9PSmnmp/pw/J1tGJgw==
+X-Received: by 2002:a17:907:728c:b0:ae3:63fd:c3b4 with SMTP id a640c23a62f3a-afe2904d606mr159430166b.5.1755869496058;
+        Fri, 22 Aug 2025 06:31:36 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afdf24bc40dsm554863066b.109.2025.08.22.06.31.33
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afdf24bc40dsm554863066b.109.2025.08.22.06.31.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Aug 2025 06:31:33 -0700 (PDT)
+        Fri, 22 Aug 2025 06:31:35 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Fri, 22 Aug 2025 15:31:17 +0200
-Subject: [PATCH 08/10] arm64: dts: imx8qm: Add default GIC address cells
+Date: Fri, 22 Aug 2025 15:31:18 +0200
+Subject: [PATCH 09/10] arm64: dts: imx8qxp: Add default GIC address cells
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250822-b4-dts-interrupt-address-cells-imx-v1-8-f1b479da9340@linaro.org>
+Message-Id: <20250822-b4-dts-interrupt-address-cells-imx-v1-9-f1b479da9340@linaro.org>
 References: <20250822-b4-dts-interrupt-address-cells-imx-v1-0-f1b479da9340@linaro.org>
 In-Reply-To: <20250822-b4-dts-interrupt-address-cells-imx-v1-0-f1b479da9340@linaro.org>
 To: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -81,28 +81,28 @@ Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1418;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1428;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=kHSR3OBfxE0kL9LgZuy6tb09v4e6Fk2998ktGFCNaNE=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoqHEmpXOBhphAMxpNv9K4iWFobvh3z5y2FOtCm
- oc8Bat2eRuJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaKhxJgAKCRDBN2bmhouD
- 1zvTD/0cT8GVrN4h/fVwVC9D8PivWS1iPCVzB1oOviTi/ZPILeFCCt2UiG8SZTY5AHKpyFrCKBr
- y7r5VnQ9k7POV0GkdF6cr6Rx0kudWl4Auhxq7ljxJ3SgQ6q/sbyiIWaqbsIa4vVS8Ul65R5mgSn
- HWrLun9VAVRgCyRoR8fvkqyuk6rOP7THvuAOtiudMDyRHEBWl0xw4dD04mXY0TROWpHwlmQykoo
- SnrfYpXxDmunvQ3EddTUce+v9o7lb09/PkaC/4BkqJF9WofBhpx+A5WWC0xPdtiOdO3RKThEIvc
- KIFPBTEM9nOVfqHIOZ1EG80xO+cweeADF0tPU/lHMhXbhr4XgrUXnmi0mum8ifop7YeqBgGNiDG
- eV9uoWroZ4Uvg6FN8LDXCgmfUmhlRlR1A3I1v9maOZhV2ojio1j2dx83Xk+TZeFeLyfb7h7U0oe
- 7XtohEOhkEdeR9Y8NresyjZWLoyXYWhV3JAvVIll5sFWqWimk8PqAPRAn9Z6x5YkWHUvIiHyHyc
- bjZfi3NJhcS/uXvZE+qMaAfQAG960emuj0Tfj/MVQLRPmX1gA0Y+Rmqv0o0qbtJdgsk02i0Xwfb
- 8b+uMpM2Ur591EvypbdpzjlyzSbnriMvUMYgHhv8/Kyvt1geFiEIh3+3S8Y2lZzxjNUjEkqROCI
- EsXQufp2TZc5omg==
+ bh=7H+O5W6Cx7TFYYHg0yIa4CMl+T5Jth/7El/WrcKoQQs=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoqHEneKEpVbA628wFgsw9V2z3aggP1pLeaWTvt
+ DKf8bFCN6CJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaKhxJwAKCRDBN2bmhouD
+ 12XrD/91UKSwZcFLucZM7856sWnxIKl00ZUOGNPinv9qCyfjYCiszDUpqIuPvf636lvjnr6iTLD
+ swRjLqBQvVrHKb9eZNHvNuvojmT/yHRRkUUe2o0kvr6dEJ6Z7ytdDpUFtvka5zIqi8kMk5Qq6Xg
+ sz2uyWs71KBSPGwNGy6umMAMuIm3HzHRifN6mClsn0V0F8mVsfDyiSy8UejVpYvcw7i+fpRoX3f
+ +MeM8Zv/QUoOnWGJXssrjOAPyN9l43eEvBXv1JaChihfwuao3gwjyMxuc2+KbtgBHEGDH9iLwLX
+ sqq+cKMcqXWIDkMM5g+UW5TiYrV4KYhjWsw4GsX/ptj7fXwpkxdQNbzxbf7KaBaUmknrJcvvOlz
+ jDAHL58ZqIebI0iTcO+wqMG9WFl/lNtFTALjDqSh5HhjrYqmy2RdRoy/X4xE4aAQwJYPB09Pzsp
+ DiYd1b6O27dht2Z5CFA87Wanr/crWfUlAYKueeYQOc9cP+hSZJis8nS4EZzGf1t5qM7XfVBZHRj
+ 6ipvyaq/k8qC1SpD2AcDZdsc/86cgIcDno2ylCkHxr3pfUj2vuTz/qv+jBWHSW1RBXy2ttilZOc
+ 9R862LdCsnKXsa11wUa1rs5qgiOEot++kWuFs2iIrk80gMk1GeAHv6yL4ERreH4cmAMbMdBoyS7
+ jrSf2RWVT3tJsPA==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
 Add missing address-cells 0 to GIC interrupt node to silence W=1
 warning:
 
-  imx8qm-ss-hsio.dtsi:83.3-86.28: Warning (interrupt_map): /bus@5f000000/pcie@5f010000:interrupt-map:
+  imx8-ss-hsio.dtsi:71.3-74.28: Warning (interrupt_map): /bus@5f000000/pcie@5f010000:interrupt-map:
     Missing property '#address-cells' in node /interrupt-controller@51a00000, using 0 as fallback
 
 Value '0' is correct because:
@@ -114,17 +114,17 @@ Value '0' is correct because:
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm64/boot/dts/freescale/imx8qm.dtsi | 1 +
+ arch/arm64/boot/dts/freescale/imx8qxp.dtsi | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qm.dtsi b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-index 827e1365b5dae438d4628852ed6884aa846eb89b..5206ca82eaf642a32299147e9c1b45704075e2b2 100644
---- a/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-@@ -245,6 +245,7 @@ gic: interrupt-controller@51a00000 {
- 		      <0x0 0x52000000 0 0x2000>,  /* GICC */
- 		      <0x0 0x52010000 0 0x1000>,  /* GICH */
- 		      <0x0 0x52020000 0 0x20000>; /* GICV */
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+index 9e46e16a8dc06448c6eb1796a3ffe70acb09374a..95edab058276bcfc87b9bd85426b999d1ab32360 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+@@ -159,6 +159,7 @@ gic: interrupt-controller@51a00000 {
+ 		compatible = "arm,gic-v3";
+ 		reg = <0x0 0x51a00000 0 0x10000>, /* GIC Dist */
+ 		      <0x0 0x51b00000 0 0xc0000>; /* GICR (RD_base + SGI_base) */
 +		#address-cells = <0>;
  		#interrupt-cells = <3>;
  		interrupt-controller;
