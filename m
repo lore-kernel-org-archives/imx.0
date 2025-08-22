@@ -1,66 +1,66 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5AB2253FD
-	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 03:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF0E221739
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 03:51:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755834658; cv=none; b=mGXs58p/LIZ4jaF2IUmFKTTT3b+ohDOmemxCbct2muT/QLaNf67BwfuSeQF4EyIt57Fu5d+hKaI4twefrloSKZfobYQ6383MUSDFiN5mZEuj+/FhGm7fnoltvHM6f2XZ7tNfoxWdPRtkejGj0o3MqW6e39w0MvkRewFIYOrB+RU=
+	t=1755834671; cv=none; b=b+yA5l8+a62cK7R2aAbU9E3xJ5pOCRe5xRPyvha3TjagGgKTbcuQFUJasWfV20dPi1MRts5bw+IEeNlElTazPf9lhxNRXkeqj5ktgZXzIqjoxMX5HmcotUSgZdy6OE/aaAxeXAisAbxkR/L86+oYVibiDY1rzlWEkx2Tn5UV4M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755834658; c=relaxed/simple;
-	bh=rO9VuR/oVVGoakCjeEjj+XT6+ebILUa0tyZFOkIL2Qo=;
+	s=arc-20240116; t=1755834671; c=relaxed/simple;
+	bh=c8hX9rvl6rr2dhjjNLkJgB0+zkmehac1mQEbRhCM7pU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GqedCNB4vmckezgEabqO//nf6aBnnjbRM0gf6IyvrJUEM3KZjS07B8Vhisv8qhau+NpOCJB/oP91P1LdSeOUXLbLp8ULIY9w1a93DRthmTNsQB4nNYKrZed+axxIksmx5FOjpTL5ww8UtZTNvIZDBPvNBUv3Sp6kqn8qSxgaMTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m9USOuRh; arc=none smtp.client-ip=209.85.210.169
+	 In-Reply-To:To:Cc; b=Ofx+4s5lsh1Eo9rhm1BPjjOZXz/FPv4CZL0PD8G3gw78JKoIkqFQB0kNuU2nGsLNa7CAuXpngx6oQCSu1kBLta14lWBAGT4H81qJ7GSVQVt9pyEXv+PZ2WMOTziRv5ErsjhMTmMPUFQNZZMSPa9dsmhkJQRdFpBhU2y5cjiJjbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kHYwnrNd; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m9USOuRh"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-76e563b25c4so1233998b3a.0
-        for <imx@lists.linux.dev>; Thu, 21 Aug 2025 20:50:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kHYwnrNd"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-32326e5f0bfso1390587a91.3
+        for <imx@lists.linux.dev>; Thu, 21 Aug 2025 20:51:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755834657; x=1756439457; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1755834669; x=1756439469; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SPzGBFBfr9XUbrPfoGwRs/BjXqUrZ2N1GqqaLsSssIw=;
-        b=m9USOuRhMc5wGzRAb22DMzPzzwZuGm9U+Z630/mYaNy9dx4GTvf56Lx8FrqZ8dvHm+
-         bJme85deNP0tB/N0LcosLCsvgT/AGV7MqGoWzgTmrXH/zCMyKT05WbsRuEaWr8eLc8xq
-         fMWT+n2cF5xeAZiNdaOQNdmbyGSygcfAglZQBtiDhC8YmTLUeJqrZlt631gfHIk0tAnW
-         1KW3c7AkiGeiBcxl1E0a5Hm8FWowWSktuzf/QG7x6sjiQSXvJdus3O0VPF/sMQi/Ld6g
-         k6gtiayIoQJqmq51ytOctlFDJRvRxj65DsL4Fng/NMGF0FHVxR744z/Vdp64Xla0gZjc
-         Bcsw==
+        bh=hqrtxAz9cctGN9u8jlxCJdnxps3sEfbBI35+GThZJ5o=;
+        b=kHYwnrNdGvQnhlWSJY1Fe40z0E0xT+wc0FtcXTStMldKW80bsh8yLuFGKdqJ/yrCZp
+         tt8zSfkD6VgH7BRi1gwHvGuV1jwrTvrA83hY8V+rDpeudfl0lSL0Zr+ZaCq+37Y/SvPL
+         rjTECAaFFx1b01lkYpcLrXqPyFgcG3vzC+krrsmAPV+res2RqCAFK/LbCCxWEdumiOuc
+         8eYi8t7/vRGh6077gI5XUeljFCRxqzRF5s+jFd2xaMNYRkjpISXnYfEUNIcWKOSFMI41
+         8if7od6lO/mH7KqVjxTl+anrPNKhs252qOj5zdsFTy4Fgwhal9YukRb9PKRL2dsFVZBM
+         EXmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755834657; x=1756439457;
+        d=1e100.net; s=20230601; t=1755834669; x=1756439469;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SPzGBFBfr9XUbrPfoGwRs/BjXqUrZ2N1GqqaLsSssIw=;
-        b=sWy/mWvxXETHNZghzjJ3yQ7hmphPoR8HVOX2CM5Fg5Tr/U/EdiwGejJI1qDry3/nCJ
-         BHlzKKNj7sJhh+U+3nY7D/tazKaFFI8OGTerB0wvxXvkQlAVRGalGuPM04HuhchOyJ7c
-         rtwVOrysxFE8K97ia7Jb0mMrXQhc8ZLkzNXIG0Z8zZNmu0PAhWHkTOdqwgXKKiisA/un
-         Zt8CFiM0CcCLwKIlw4qFoYqpKrlMZDGdgiEz3zXJC4DHTkb3Mbme9Ho/Sfl3gR5Hm31n
-         mBg9yXiJccBzKyCfTASoQOiy7rkTEyZE/IgpMC8Kz1/DYxunPn7nB2/Nh/RjkCd/qWvX
-         Yfyw==
-X-Forwarded-Encrypted: i=1; AJvYcCU724i0QFmuGQ8GaIFNyMz7KlksOjEqjWV54GWteiix21izYF0EX0tR+Gg7bNTp9VMpGBI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz2Mguv4RXPYWwfZoQ0YbrZgAH/Q0oRzuffO84ajPjnZ2zvuOu5
-	c081d+isvAW6nSKJFnI6OAY+BgU332bVpjcLw0bkkMAvLY3Q7SoC4cHP
-X-Gm-Gg: ASbGncuLk4mTT/dfRKm/0xBLkgCkYitbe9AcfGAm6/wO+Z6TOrfPltkb9E2ihwqtliG
-	rb1qHbTp5pSUex+iCcfcwU/stvlj/No6ciI22RJyZnctF/XCaoAH/r0lK+JmQkmfjGSVWJDi9CS
-	qDTK1fC7S8N5jjwFDc8dp49WY78/VrOStV5eYwrSWKD5HF2SWDg2dYaAvCq6Yt5Qvb9fjhcrmgM
-	kLS90u8u5FjfLdr6w10zAhbgIQps+0NWlQf4BENwFibBf/dYuqQ9NsQzqZ4xM1jbWtQZl91snkf
-	AjB54M9SOZwdk4r10PzF3VLZdmNK3gzBP2Qod9H0KStw2ogyNbLRFnQfPllu/Geki3NxDcHCdQB
-	bQLdHwTZT/agliBVkLHMLFcYJbiox
-X-Google-Smtp-Source: AGHT+IEDplbG/6XF12lPxx9itIgjz12WwucZKRq9+cOsqGQDlvGhf+WNacIYrhLVVvaG53XeD5NjCg==
-X-Received: by 2002:a05:6a00:8d4:b0:76e:7aee:35f3 with SMTP id d2e1a72fcca58-7702fc182a8mr2167240b3a.31.1755834656645;
-        Thu, 21 Aug 2025 20:50:56 -0700 (PDT)
+        bh=hqrtxAz9cctGN9u8jlxCJdnxps3sEfbBI35+GThZJ5o=;
+        b=dccfF2RHxozujbcSqADnFQPYTpMOuZiXIji9zQCDBZlh3ZKsyb3BdLeJ2rzAoQsgap
+         IkI7v2u/cGRthPF8lqVTuHR51Q+ngchgxBw1LNHrd7b6v6ihsDw/UgtE8It6mWWBMwgH
+         drnvpCblrYwsS1wNgmtXo/Af6ARnw2sLUYUbXPiKTFXE6ylpDrlp8ON//MLp5JW3kMQf
+         7DXUmaLwqAn/9EtfI4lD0rDbtyANo6pAGGZ1S1Sl+6hsKQQkgFdHhchH4mpzGaWlKk98
+         hafmhj1QSsrBurfcqVIbh6eswzlJuarqr1BO6XH3/MPLR28E1c81dTKxf8vdnDHLh5av
+         +3pQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXAqJHVMCL+Aaj1IRVYn0OhsnJKRvTejS52bRo59zjLe+znLG+leOc0Fs0Tngn0In31+v0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YypGqxpprp7MbycvkgFyQ1XbpnE3g+lhJcVjQ/zs3P+dJrUZ2mk
+	J7M0dvYpPA+woJkfD+jSC8HCbXLXY7b5IN/b1oSeFyjXy2JE6QxL1x58
+X-Gm-Gg: ASbGncsLLt4z4LIVnaRnElzYOopCaGwVv2WKuAoA9We1FJgT9h23YaAr0QLxuZoIrD0
+	cFmt9bLCvT31vtYKN9z9Q6ECKkAUdlqYXexqOAiflIR2aWlYwvFtVRR38G/Td4UJsssxj2UoTxd
+	a1i+mjm1/42ASv27rtXrfmtIdp1VzkssPzOADiSTbqZYJw1u966anClYmde8PEuZCI9J4CBQbqH
+	Pnahbq137iF3EG0F/9Z4QLbOpX0QRJ450fKleNm6sDmUINX8YUl3l1O6CN5T2opppakYVv6e6fA
+	lVUY3QLtNj0mLSg6q1Xebkf4KX+QOUhvhSQ/PDvJZv3lZ8pQb99OGVG/R+r9NLoYug5nvxrlvZm
+	f3rsR7sFCVMZ4hDYIFrrB0+g+D7TW
+X-Google-Smtp-Source: AGHT+IFlyHvge1r2eEDywa691vO3EH8Zw57rYlejYo//N9dseDi4JFrUwk2dU+AEjPu1HGJfNaSDAg==
+X-Received: by 2002:a17:90b:278b:b0:323:7e7f:b8f4 with SMTP id 98e67ed59e1d1-32518b80cfamr2288523a91.37.1755834669027;
+        Thu, 21 Aug 2025 20:51:09 -0700 (PDT)
 Received: from [127.0.1.1] ([2401:4900:1c7e:807:34f9:502:b902:b409])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7d10fdb1sm9449656b3a.27.2025.08.21.20.50.44
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7d10fdb1sm9449656b3a.27.2025.08.21.20.50.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 20:50:56 -0700 (PDT)
+        Thu, 21 Aug 2025 20:51:08 -0700 (PDT)
 From: Dixit Parmar <dixitparmar19@gmail.com>
-Date: Fri, 22 Aug 2025 09:19:52 +0530
-Subject: [PATCH 04/10] iio: health: Drop unnecessary -ENOMEM messages
+Date: Fri, 22 Aug 2025 09:19:53 +0530
+Subject: [PATCH 05/10] iio: humidity: Drop unnecessary -ENOMEM messages
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250822-enomam_logs-v1-4-db87f2974552@gmail.com>
+Message-Id: <20250822-enomam_logs-v1-5-db87f2974552@gmail.com>
 References: <20250822-enomam_logs-v1-0-db87f2974552@gmail.com>
 In-Reply-To: <20250822-enomam_logs-v1-0-db87f2974552@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -93,11 +93,11 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
  Dixit Parmar <dixitparmar19@gmail.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755834598; l=1430;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755834598; l=1404;
  i=dixitparmar19@gmail.com; s=20250726; h=from:subject:message-id;
- bh=rO9VuR/oVVGoakCjeEjj+XT6+ebILUa0tyZFOkIL2Qo=;
- b=4b2jPbSe8j92/XCjL6XXtT4A9XSafT+S4e6mVe2Kd2YIm/HD9yFiVI1p7o9NlKstS6ok8mzyx
- C9ICz5YdiGjAlatKIORLRTH1V1wdnZKz0xgwurThCEbeEno2qe589S6
+ bh=c8hX9rvl6rr2dhjjNLkJgB0+zkmehac1mQEbRhCM7pU=;
+ b=ZgaeM24zC7IN3+he8TY2T9s8YSEkwL7SoNKuSaTSjAtLL/67LBM7qENhJcDRsU+1mIQixXTl8
+ Ul2eMZUGNU4CG0gfDDCnLldXt5ixt1iTh4jFKaiKgitF507++7QKEdv
 X-Developer-Key: i=dixitparmar19@gmail.com; a=ed25519;
  pk=TI6k8pjTuLFcYiHazsate3W8rZGU2lbOrSJ4IWNoQhI=
 
@@ -107,42 +107,42 @@ messages from the probe().
 
 Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
 ---
- drivers/iio/health/afe4403.c | 4 +---
- drivers/iio/health/afe4404.c | 4 +---
+ drivers/iio/humidity/am2315.c | 4 +---
+ drivers/iio/humidity/dht11.c  | 4 +---
  2 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/health/afe4403.c b/drivers/iio/health/afe4403.c
-index 1582cfc03579..8e5db2235de0 100644
---- a/drivers/iio/health/afe4403.c
-+++ b/drivers/iio/health/afe4403.c
-@@ -531,10 +531,8 @@ static int afe4403_probe(struct spi_device *spi)
- 						   "%s-dev%d",
- 						   indio_dev->name,
- 						   iio_device_id(indio_dev));
--		if (!afe->trig) {
--			dev_err(afe->dev, "Unable to allocate IIO trigger\n");
-+		if (!afe->trig)
- 			return -ENOMEM;
--		}
+diff --git a/drivers/iio/humidity/am2315.c b/drivers/iio/humidity/am2315.c
+index f021c3e6d886..02ca23eb8991 100644
+--- a/drivers/iio/humidity/am2315.c
++++ b/drivers/iio/humidity/am2315.c
+@@ -224,10 +224,8 @@ static int am2315_probe(struct i2c_client *client)
+ 	struct am2315_data *data;
  
- 		iio_trigger_set_drvdata(afe->trig, indio_dev);
+ 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+-	if (!indio_dev) {
+-		dev_err(&client->dev, "iio allocation failed!\n");
++	if (!indio_dev)
+ 		return -ENOMEM;
+-	}
  
-diff --git a/drivers/iio/health/afe4404.c b/drivers/iio/health/afe4404.c
-index 99ff68aed27c..11a0f465fd68 100644
---- a/drivers/iio/health/afe4404.c
-+++ b/drivers/iio/health/afe4404.c
-@@ -538,10 +538,8 @@ static int afe4404_probe(struct i2c_client *client)
- 						   "%s-dev%d",
- 						   indio_dev->name,
- 						   iio_device_id(indio_dev));
--		if (!afe->trig) {
--			dev_err(afe->dev, "Unable to allocate IIO trigger\n");
-+		if (!afe->trig)
- 			return -ENOMEM;
--		}
+ 	data = iio_priv(indio_dev);
+ 	data->client = client;
+diff --git a/drivers/iio/humidity/dht11.c b/drivers/iio/humidity/dht11.c
+index 48c59d09eea7..cc8f02f3b763 100644
+--- a/drivers/iio/humidity/dht11.c
++++ b/drivers/iio/humidity/dht11.c
+@@ -296,10 +296,8 @@ static int dht11_probe(struct platform_device *pdev)
+ 	struct iio_dev *iio;
  
- 		iio_trigger_set_drvdata(afe->trig, indio_dev);
+ 	iio = devm_iio_device_alloc(dev, sizeof(*dht11));
+-	if (!iio) {
+-		dev_err(dev, "Failed to allocate IIO device\n");
++	if (!iio)
+ 		return -ENOMEM;
+-	}
  
+ 	dht11 = iio_priv(iio);
+ 	dht11->dev = dev;
 
 -- 
 2.43.0
