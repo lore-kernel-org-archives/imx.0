@@ -1,163 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDF227FD4A;
-	Fri, 22 Aug 2025 16:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D9D214A6A
+	for <imx@lists.linux.dev>; Fri, 22 Aug 2025 17:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755881729; cv=none; b=Qdqs9eIEOnQyuw9Wg524mwkn+aAsKYOKBtzOhsbxVIfIldjemJSZGr7eNq8H6eQTUIQ2s1yzBRmbb1vrp4yhxCusWld48vfGG2UpgfpBGFhFh0Q9QLc9rYsZyA/2/krnEGVPldp6iw/nvs8XCOHe2WirPpQLcd5WWGv0+dI+ipI=
+	t=1755884413; cv=none; b=EbvnrfJfpXCG74sJnAtqtDrtxftzOxmAStsnDi5gCniboT69QYIWVfvUJtwYgLZFGtyhm0ynGC+fhtiu5aAmLgqcGySX94apAI4cs5hNe9vDdLF9N+QTITdpjFTYTKW4J3CovmwdnUtIH2vXzaeAOJzGjC97m/ULBKRGNc9WXjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755881729; c=relaxed/simple;
-	bh=7g181+bcvmLk/IDiMD7z/zBWKVLYMZ0k6iVC20G+ROU=;
+	s=arc-20240116; t=1755884413; c=relaxed/simple;
+	bh=wOYlUElulsIPCYoWODQpF+Pjb0jgLY3gHhL6O/KuWuE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bLer9vAtuaTn8Qy8cvmF/cnp4TQI9NQykoY7EfimIXssZ3SVl661M4AymXZ46JD1HB1X6bTFZlGuuMnomCUTRr/ZACAvlivJybOuadHwi+4+ClmfWZ3NO7lRdtoOsUeho3tVjit/BwxewNzSm6sL6HYk9Ps9z9ZAUae4oIbPFvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ImHNmKrY; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=lFImfy1txKHKrI+KQzJrEyOs0FtIKYiu49UrzsYVpcQlkzFjApH+aXA0Jw76vWBmZWEBcZkD59iXfdSjySevRbvStoZgADIJNkoDRbdM61XAzJpYSqbfBgGZlCy/z9LW7DVU/xU3BbNQ4q1p6tFgLmZAzTVGKsEwesDx64TvL/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=OPKj+SHV; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ImHNmKrY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B93C4CEED;
-	Fri, 22 Aug 2025 16:55:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755881728;
-	bh=7g181+bcvmLk/IDiMD7z/zBWKVLYMZ0k6iVC20G+ROU=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="OPKj+SHV"
+Received: from pendragon.ideasonboard.com (unknown [185.22.192.49])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 46CB08CB;
+	Fri, 22 Aug 2025 19:39:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755884348;
+	bh=wOYlUElulsIPCYoWODQpF+Pjb0jgLY3gHhL6O/KuWuE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ImHNmKrYF8feUzVfNj1IWZo1oWQKNNbn3adjTQoB1nDREjxrrJUwJELiMyBlaqIL/
-	 v6zubrgaab66AjgCvKChDKdkLevu7F63S9hi/fn/5N4SW4kw97wMMIfnzTss/54dmD
-	 xjJADDAz6ldRqQdkK9w39f6HrEhYsnfZpy6SuUkFSiYDibUg5w9/uy5EV4GQeoYx6y
-	 vDTphXQuMOR0x/TeuO5EmSio6vWckZDaZUieXz4d8Zxq93S/BXdGjHW800HeyDCcZv
-	 XY4iacRP9+leHrAcB0ZqwWEmQAPMvAr65AjNjx48yTytmQpfuX7uMBJuC7RcFKMzzH
-	 5PSKGfZAW8Bvw==
-Date: Fri, 22 Aug 2025 17:55:22 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Rob Herring <robh@kernel.org>,
+	b=OPKj+SHVRjF13GMdYN7YsHuLVasJf20VQTKuEF6V9MpKhYPgpfPaHBeaTznU49STX
+	 i0rnH0/sSfuQgJ99DC8ifD0aPGI21Ik/oYpbj0Q9XcsDCt+YgqXnrsAgtgT6Wt8Wh2
+	 XizvmeVhxRs0374t1Raxw0pXM2vHda1QX/ikCTsY=
+Date: Fri, 22 Aug 2025 19:39:44 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: linux-media@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Inbaraj E <inbaraj.e@samsung.com>,
+	Isaac Scott <isaac.scott@ideasonboard.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Aswath Govindraju <a-govindraju@ti.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Martin Kepplinger <martink@posteo.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>, Rui Miguel Silva <rmfrfs@gmail.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>, linux-can@vger.kernel.org,
-	linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/6] dt-bindings: phy: ti,tcan104x-can: Document NXP
- TJA1051/1048
-Message-ID: <20250822-crop-ungreased-6494d68e388e@spud>
-References: <20250822-can-v1-0-c075f702adea@nxp.com>
- <20250822-can-v1-1-c075f702adea@nxp.com>
+	Purism Kernel Team <kernel@puri.sm>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 12/13] media: imx-mipi-csis: Initial support for
+ multiple output channels
+Message-ID: <20250822144341.GB22572@pendragon.ideasonboard.com>
+References: <20250822002734.23516-1-laurent.pinchart@ideasonboard.com>
+ <20250822002734.23516-13-laurent.pinchart@ideasonboard.com>
+ <aKh8NG1lHKyAEoct@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="LL4e6z1aL4fxQ/Er"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250822-can-v1-1-c075f702adea@nxp.com>
+In-Reply-To: <aKh8NG1lHKyAEoct@lizhi-Precision-Tower-5810>
 
+Hi Frank,
 
---LL4e6z1aL4fxQ/Er
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Fri, Aug 22, 2025 at 10:18:28AM -0400, Frank Li wrote:
+> On Fri, Aug 22, 2025 at 03:27:32AM +0300, Laurent Pinchart wrote:
+> > Some CSIS instances feature more than one output channel. Update
+> > register macros accordingly, parse the number of channels from the
+> > device tree, and update register dumps and event counters to log
+> > per-channel data.
+> >
+> > Support for routing virtual channels and data types to output channels
+> > through the subdev internal routing API will come later.
+> >
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > ---
+> > Changes since v1:
+> >
+> > - Update more per-channel registers
+> > - Update commit message
+> > ---
+> >  drivers/media/platform/nxp/imx-mipi-csis.c | 239 +++++++++++++--------
+> >  1 file changed, 152 insertions(+), 87 deletions(-)
+> ...
+> > +		return dev_err_probe(csis->dev, -EINVAL,
+> > +				     "Invalid fsl,num-channels value\n");
+> > +
+> >  	return 0;
+> >  }
+> >
+> > @@ -1444,10 +1511,8 @@ static int mipi_csis_probe(struct platform_device *pdev)
+> >
+> >  	/* Parse DT properties. */
+> >  	ret = mipi_csis_parse_dt(csis);
+> > -	if (ret < 0) {
+> > -		dev_err(dev, "Failed to parse device tree: %d\n", ret);
+> > +	if (ret < 0)
+> >  		return ret;
+> > -	}
+> 
+> I think this change is not belong to this patch.
 
-On Fri, Aug 22, 2025 at 12:05:28PM +0800, Peng Fan wrote:
-> The TJA1051 is a high-speed CAN transceiver which is a pin-compatible
-> alternative for TI TCAN1043 with Sleep mode supported, and has a compatib=
-le
-> programming model, therefore use ti,tcan1043 as fallback compatible.
->=20
-> The TJA1048 is a dual high-speed CAN transceiver with Sleep mode supporte=
-d.
->=20
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  .../devicetree/bindings/phy/ti,tcan104x-can.yaml   | 29 ++++++++++++++++=
-+++---
->  1 file changed, 26 insertions(+), 3 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml b=
-/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-> index 4a8c3829d85d3c4a4963750d03567c1c345beb91..de4ab204ec86f91e84eba8f1a=
-6343ed137e5cd71 100644
-> --- a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-> +++ b/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
-> @@ -19,18 +19,21 @@ properties:
->            - enum:
->                - microchip,ata6561
->            - const: ti,tcan1042
-> +      - items:
-> +          - enum:
-> +              - nxp,tja1051
-> +          - const: ti,tcan1043
->        - enum:
->            - ti,tcan1042
->            - ti,tcan1043
-> +          - nxp,tja1048
->            - nxp,tjr1443
-> =20
-> -  '#phy-cells':
-> -    const: 0
-> +  '#phy-cells': true
-> =20
->    standby-gpios:
->      description:
->        gpio node to toggle standby signal on transceiver
-> -    maxItems: 1
+The reason why this message is removed is because the
+mipi_csis_parse_dt() function now prints error messages internally, so
+this would be a duplicate.
 
-Please put the outtermost constraints here and narrow it down in the
-else.
+> >
+> >  	/* Acquire resources. */
+> >  	csis->regs = devm_platform_ioremap_resource(pdev, 0);
 
-> =20
->    enable-gpios:
->      description:
-> @@ -53,6 +56,26 @@ required:
->    - compatible
->    - '#phy-cells'
-> =20
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: nxp,tja1048
-> +
-> +    then:
-> +      properties:
-> +        '#phy-cells':
-> +          const: 1
-> +        standby-gpios:
-> +          maxItems: 2
-> +    else:
-> +      properties:
-> +        '#phy-cells':
-> +          const: 0
-> +        standby-gpios:
-> +          maxItems: 1
-> +
->  additionalProperties: false
-> =20
->  examples:
->=20
-> --=20
-> 2.37.1
->=20
+-- 
+Regards,
 
---LL4e6z1aL4fxQ/Er
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaKig+gAKCRB4tDGHoIJi
-0sReAP4445tmzdmWf3M79UC6PC+yh6cXgLj78yyz/06rdvDc2AEA1jcyL7+qJdVg
-IM3RILZrUyw345YkF5EtQPKxBWu8dQM=
-=tBaH
------END PGP SIGNATURE-----
-
---LL4e6z1aL4fxQ/Er--
+Laurent Pinchart
