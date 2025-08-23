@@ -1,157 +1,259 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010009.outbound.protection.outlook.com [52.101.69.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4418F2E7BCD
-	for <imx@lists.linux.dev>; Sat, 23 Aug 2025 16:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755967855; cv=none; b=mC8P6Tk2lwkSNrPR8LXNYS60rRdOO3G3Dhz4L/AzWl7RAQKJQymQvhdkFopWVTCWl0B+xYnNlPakpMMZx+1QWiSXjywo3/LM3US4gGc02unR8gUCsy0o49t/dC9ii5LYK2Jhe/7rowexuL1F9M1QA3gGuLYr4GOR1GZY2ZpKGCo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755967855; c=relaxed/simple;
-	bh=ll4kgop1oU/2MiH1wKMG9HwPL4Ffv5IU0KbLcPeRX0w=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=gVfkPDVCSMYh4Y7Akx5AqZhvVVq80VNSp8F1sYYwCgsSYHKyjI3htu9mtin/drfE8pA9+80HWgafLmi1ZqavqXnE7uv7CLqU5lwCQ4VBWaaOPRv/0J2TaL8yQBTfVv3hPZ/2pTp8f7w5KchKO439HINVLbU7vLz4p1jp3crifhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=c0XYz4Vj; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AF123AE9B
+	for <imx@lists.linux.dev>; Sat, 23 Aug 2025 17:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755971850; cv=fail; b=MBkoftmTReVB2oKuamUph/8aKwtBr64w7Zz7ia1I4vo9jjPgwiZRQjhbV6fbJ3LEzasPIKDJ3fXT0knjkoDDN2URTgv4x0022JKuLNfjADywTMtcaEyxZyOUwySq21awEinpR+JjWohyDdQMQQbKADh3zDe+VR1KyVFnh6f/ceg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755971850; c=relaxed/simple;
+	bh=cRvpuU6zbklGRJkPA6rcEWZdXjmXfXJ66Rywup5f+4M=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=dUjvWegswuCsMt1cv2m3R8+BCHTSsyiNH5g4Veu7HddNmjiJHjBmGTAE07bblPQ1LUYN5PxW79cTo7naueywW9bkcu7gBvaj8FmvC7BMO2BoAfFneYMfaF4idbMkCDTpzGKgj8kDsjQchj9bmHiYCMG7eesSRkZH2Ps0ftXwEZE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=d0RBMFZw; arc=fail smtp.client-ip=52.101.69.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c0XYz4Vj"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6188b7895e9so473156a12.3
-        for <imx@lists.linux.dev>; Sat, 23 Aug 2025 09:50:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755967850; x=1756572650; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rswAVyuJvRa6TX9BXHZuTzZwEBPSMziKik/9EoWIi4w=;
-        b=c0XYz4VjyziGJ0iPowNAuPsyr8znyFpcmaef/nVXyJFlJmS4+a4pkX0Ag/A9BBeV1o
-         Mt9Esiwjn2TbcaKSrq8AZ+P+rVu7m8HRjnugTUElku+3fwEC7PBeFqk9YftrWI3ePXef
-         gQ9FxXIVEOakCaUPV41tL7mWhtE7+hpbPfnXCTvx6sf9gtCfxoXf8LD5dQ/BAvY/VX/L
-         EyvVKIexNYYjq0ARs3yT3qvg20TGKMyBvVByYIGXND5l3bOiw+oux7MtibOKfeJ4DByv
-         CZiEhWNV0tC7X1lOnvxdrkb5oukYESFrulIOYTZaZ2Xahl0QFxzXC4dqjmlF1dXU2vvC
-         yftA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755967850; x=1756572650;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rswAVyuJvRa6TX9BXHZuTzZwEBPSMziKik/9EoWIi4w=;
-        b=qYXbipIqgbrOn41vHBgAGG1T4F4ibdDyCzo11k7/sfaYvqV0tefnZbpFRg5/A+EbTu
-         SNm+x9JkfvZT0ioM+jXYQTtM4nWaE4N/UjpBpPviuhbuGhEMakVR4799LmIi9kXdj5uS
-         Mca5CDJyawUwWkKogwO77Q7ZxyF0PhuFy6rw8Pi8smuUa5FnQPO/Xxdw3dfozzRYBt9l
-         VQc7XWf2mRgvgLubBu0NsU9oE37JWcWoIx7tixOrnXMVfJThlO6BNJgA65+upHEkCtxT
-         YHFoMRzhtcQ+831FutfdzFe9/Z2MrgluHPKPx3h+yK5Vbes9TM/rz+eR7By20C8vqEOU
-         vNZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWoH33tVjgaXRFxdaEOqWq0FmZpRLb758hzKnrzO+u+WKJmuEgb0I2eXZEZlg1PHNnNC3s=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwhG11Oqib1qmxVHkbOae1jKTZ89skX6Pt2wZ3kQz1+7iBM6oIH
-	7A5gOFBfZ0iJ7O6hMd9kKrox2V8Wwh808DER8jgpJwQ1k4GYI/Dq/oYoi3hQygNdOVU=
-X-Gm-Gg: ASbGnctrLkEPW2Rr+lj1xhl/rEBrl17F9LxtDQCxEdCwFYxt05e39AZb2i3zvAo/WUX
-	vMHzc/3B98Ri6gbLYvWZkYoWUeTjFP+2sJYklM61nm/HYjpjtXazec2VHcD2mg/nKwUmifx7t6a
-	m+CPIPo2ilqYM6ToHiNhGNyo2MB6I1F2rGegfmI566UcMyltO4MK7XGR3NIIcPU9szUU74j1beQ
-	aduQ0DdXssnemIsHsMflZLmU1Zf5rF2ugiAoVANEHRR+rbns5CdaG+QqTF9Lbl2Iw+3bgvn2VJn
-	VH9cM06iGPUrcZ2RewaCxZ4kXbMd3xPbl8ZCngze3CwIl2Ov+uC1sVjtVDuuZxLBBVUEiGSLA7r
-	Y0oCHOn5A+dlIA81fIToS+qyqxFpHZ0CzTtVaGsY=
-X-Google-Smtp-Source: AGHT+IHjBstjuzxQsJVLkeGYHgOE3wWdKaHmumAPQvcdN50PYZzwBsMeGzXzhJUjnQCkGBQZZA30xg==
-X-Received: by 2002:a05:6402:274e:b0:61a:927b:a79c with SMTP id 4fb4d7f45d1cf-61c1b703ddfmr2766014a12.8.1755967850448;
-        Sat, 23 Aug 2025 09:50:50 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61c312c4cdesm1797880a12.23.2025.08.23.09.50.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Aug 2025 09:50:49 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, 
- Cristian Marussi <cristian.marussi@arm.com>, 
- Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Paul Cercueil <paul@crapouillou.net>, 
- Keguang Zhang <keguang.zhang@gmail.com>, 
- Taichi Sugaya <sugaya.taichi@socionext.com>, 
- Takao Orito <orito.takao@socionext.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Jacky Huang <ychuang3@nuvoton.com>, 
- Shan-Chun Hung <schung@nuvoton.com>, Vladimir Zapolskiy <vz@mleia.com>, 
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Samuel Holland <samuel.holland@sifive.com>, Yixun Lan <dlan@gentoo.org>, 
- Steen Hegelund <Steen.Hegelund@microchip.com>, 
- Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com, 
- Orson Zhai <orsonzhai@gmail.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Chunyan Zhang <zhang.lyra@gmail.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Michal Simek <michal.simek@amd.com>, Maxime Ripard <mripard@kernel.org>, 
- =?utf-8?q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, 
- Manivannan Sadhasivam <mani@kernel.org>, Sven Peter <sven@kernel.org>, 
- Janne Grunau <j@jannau.net>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
- Neal Gompa <neal@gompa.dev>, Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, 
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Max Filippov <jcmvbkbc@gmail.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Daniel Palmer <daniel@thingy.jp>, Romain Perier <romain.perier@gmail.com>, 
- Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, 
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Heiko Stuebner <heiko@sntech.de>, 
- Andrea della Porta <andrea.porta@suse.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
- Qin Jian <qinjian@cqplus1.com>, Viresh Kumar <vireshk@kernel.org>, 
- Ulf Hansson <ulf.hansson@linaro.org>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, 
- Alex Helms <alexander.helms.jy@renesas.com>, 
- Linus Walleij <linus.walleij@linaro.org>, Liviu Dudau <liviu.dudau@arm.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>, 
- Brian Masney <bmasney@redhat.com>
-Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
- arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- sophgo@lists.linux.dev, linux-mips@vger.kernel.org, imx@lists.linux.dev, 
- linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
- linux-stm32@st-md-mailman.stormreply.com, patches@opensource.cirrus.com, 
- linux-actions@lists.infradead.org, asahi@lists.linux.dev, 
- linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
- linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev
-In-Reply-To: <20250811-clk-for-stephen-round-rate-v1-99-b3bf97b038dc@redhat.com>
-References: <20250811-clk-for-stephen-round-rate-v1-0-b3bf97b038dc@redhat.com>
- <20250811-clk-for-stephen-round-rate-v1-99-b3bf97b038dc@redhat.com>
-Subject: Re: (subset) [PATCH 099/114] clk: samsung: pll: convert from
- round_rate() to determine_rate()
-Message-Id: <175596784601.52468.3851559862193091574.b4-ty@linaro.org>
-Date: Sat, 23 Aug 2025 18:50:46 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="d0RBMFZw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=m9pQ8LhJEWvESdsmbhmFCOUfBY0CIfdjIk1SqIgQMeS7Y5Ui7FYnCRMKfqRuumOoDir5iw2KIe8qSwnMYCMIDApsu3azwOCcVpMuZMhkpaJ6h6+yuUa7JwEVkAQeW0BJ2rW6MlhzbRLzP7v/h6/VOMb1alPOxRNITt1j1czMytAEGHJ/rrlIV2qMrmD/ZspRp6U1qWFe5IdS08J0hRkKDQtpn0mr/BLXEZwPUOVORk0d1tJTBn/yY0M0NeePy6J4lvTXnPMy11bNKPIPkE3i8h2Eobfo9U2jfVVDh/p1YJRPzhYrVXRDAKbqt/u1iVU5jDa6b49gVPB/uXxwGuqwMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JvrkDjBqQZYO7eybhgac7vsBqXIcBAzxEwliXX0exNQ=;
+ b=b8pUBOnB+cN5gYBIGnhp4s5zCuw+aFfNa3Cp5dhDwvd3VezfrNjbgLeLcsUrUaNTvvL1cDm/r4hbGIoL5GIa3zdC5BaCzOpDcPPH7IoU36/kei+LR+xqcQUesOEZgLdeN6l4gMhxuFkKi/LLL3fJLXXOvyIQR4pEB9nS4T2/uN/Z7RtTo/YiQ8/h+c2mDD4LANETjCg7okp0Zmz+CKUxzdJTnj+0bmYpuYE4e0P98iapijG23pcuC3lkfLKrH6EB5Cab604gYP8fc6VNZOoX+oEOEzqeflhNpJnM76HcxmXqIEsbmAMDD72XxH82ezxPWyM7RCo/9rsln0jC4GK5VA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JvrkDjBqQZYO7eybhgac7vsBqXIcBAzxEwliXX0exNQ=;
+ b=d0RBMFZw1bC4eBUTeJd6ffC90RhUa7K1rgHghjTKKHfFkawDVgCNO0G/e3+YikDP42ERnZwWZZ0qoRFlrdBRgdB9lqw4m7s4t/haS4MawDDkHlU+SgG7EKHEWmtiu3PzlXgwo74pTWjCJJMDRzKVG7xma347BXfRln1NR9m159M4ABj0krrci2zb3v+jN+fRf/VTtS5AXxTIpyfMupgoNUS0fUXn0bzVOnGT+tJoN5qS78H9UZujNeBHxgTNCqkOr6kvcchTI6wtiqHVyZJbBIDfpZbnv/GSU+cSFOaDhVyX3KrTFvG70qUt3/Pf5U+bJRY0lELmXa4bN8MLemoZrg==
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by PA1PR04MB11358.eurprd04.prod.outlook.com (2603:10a6:102:4ef::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.10; Sat, 23 Aug
+ 2025 17:57:24 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612%7]) with mapi id 15.20.9073.009; Sat, 23 Aug 2025
+ 17:57:24 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+CC: Clark Wang <xiaoning.wang@nxp.com>, Stanislav Fomichev <sdf@fomichev.me>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>
+Subject: RE: [PATCH v2 net-next 4/5] net: fec: add change_mtu to support
+ dynamic buffer allocation
+Thread-Topic: [PATCH v2 net-next 4/5] net: fec: add change_mtu to support
+ dynamic buffer allocation
+Thread-Index: AQHcEso09J4T5pZDZES+itLWSHrcIrRuXGoAgAIseYA=
+Date: Sat, 23 Aug 2025 17:57:24 +0000
+Message-ID:
+ <PAXPR04MB9185F42CDE16107E3A29FF0B893CA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20250821183336.1063783-1-shenwei.wang@nxp.com>
+ <20250821183336.1063783-5-shenwei.wang@nxp.com>
+ <PAXPR04MB85108182AB184083B5F32D3B883DA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <PAXPR04MB85108182AB184083B5F32D3B883DA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PA1PR04MB11358:EE_
+x-ms-office365-filtering-correlation-id: 8b9e57e4-5acc-42a6-fffe-08dde26e83e2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|366016|19092799006|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?BOaRRkG3UJ5KkpPbuDwmfweMioS/ebXJEHngNsOXs60LsU+KEWN1wddZoNaw?=
+ =?us-ascii?Q?+4XZQUfVPTaWuZbxPpeaREZvQv1qSB9/spTiEer9p2jK/OVO/spGl/Kf4I8U?=
+ =?us-ascii?Q?jpCdybAe6Lo8jsJDSnC1cVOmZFGbdpfD7D6gpeWGCZ4b7XHswje82Ho7+1oM?=
+ =?us-ascii?Q?kkQ1ciKcHy83SQ1BWQx3myPY/SwPn77kFR8xvCOeYH4LCFd/S+kJAtdev9jV?=
+ =?us-ascii?Q?m1TYR+LMw0UHUGXwCD2PayF0qq2tAKCzneF6YEMByjJ1ccWCzwqUhkfNmWvT?=
+ =?us-ascii?Q?rrQ32kkDmXg+odC20+QBoU2sciy8eSYx4Oh3N/mzt04vuZ7poq+/XEiPkZvH?=
+ =?us-ascii?Q?MdTYYYO8WMR+AX2rx4Gh4PRbwnoXusrrgeTJfvM8+xBsjpTtmYm99Ukvp2U/?=
+ =?us-ascii?Q?pnjWN4gHSF7OjbOC1HtB0okrvLTS5rmryfR9hHzsjQ58OGVyQSoYKN/KGkiF?=
+ =?us-ascii?Q?+hm1lTvfregK77zSf00N4+w/Kmak/xyj7OpSrec97SYN8eTdkjSIWmKrlLti?=
+ =?us-ascii?Q?MjLDBUeFUU6+6iBEpOehAeAHBRY83+PGJIbmgMyCICIc1lPtTZM3La8cl5Nf?=
+ =?us-ascii?Q?Miy4ms5H5pHxngc/LpyjjCJMKC46TRmtfO0NKVsqph7s/YzzQxc7a3FMwvr+?=
+ =?us-ascii?Q?7MEHACTCejmd7hknwH6WKBmhxgzGPVXZHdNpu7zXr0y+QUAfY/0CUaq7iEGV?=
+ =?us-ascii?Q?oTizkfq2/kHepGHoO1hUNCUZ2W+NcwfGrWCkRm/07OqsIeZu2eGkv7mHZADM?=
+ =?us-ascii?Q?qf1TtsiKuqKGmVbPa2h4WmTDGyk6e2BLnoSAQMvjPtGXWyDLU0Ukfym0OcU6?=
+ =?us-ascii?Q?PX/q6HP2NLHnU5S2GGME1SuaU6a0Y9JoRjJ2VhAp6ewICIc4ImAYq01lsnWt?=
+ =?us-ascii?Q?JrAXzkj2DGszDekQDz5FD/rxigHh5oaWGVVc+2WR+BIRoMmjlRKysHj3tfiO?=
+ =?us-ascii?Q?bcPkuKA8LSwA4rTviAAbYoRDEuDCO6R59Nuvh2a3FPysSS6vJxJiNr0RaSmz?=
+ =?us-ascii?Q?9u4sr0pm/KpoZcxUYpqknTyuQhSn7cNylw49rFGQxU77UXsraGm1t83eltJM?=
+ =?us-ascii?Q?uku5X/twliMlr7PM2s1JTGUVWfM9S7j57mqQZGkhw/G01bM7usJ5Pk0PToA/?=
+ =?us-ascii?Q?xzsWy+VSwNK+znkIK4KH/jEaSoLx3QHobaElIASSNHBx5AYDx0atqE5YXMmN?=
+ =?us-ascii?Q?Ab6jRc2C3zCgKD1G5Ze5ixttn8c2351nRpcsrn3+MHetn6qa+HzNba/+NCrh?=
+ =?us-ascii?Q?pjb8zGXs9YPnpTaIoxyJlwdIVdwKpb4JBtBTTC7XyP25yH3SVbqvteeghDLT?=
+ =?us-ascii?Q?UPeutUoAV3nhyA9a/Fk2zGE8AclJ959IwItzL6mgB03vFU2v3mP1pv84F4wz?=
+ =?us-ascii?Q?P64B3z1kN/j8wa+OnvkJnfjqO+FY9C71y0ibh7e14hgb1O55DCzforXXHkUQ?=
+ =?us-ascii?Q?4Um5ANUZ3SuDw4EEIv8gzFsDcHbVC2xU0JXgQar6zcRjUdqgLzS9Yg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(19092799006)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?G2IEVkuEO7tM+J7TCt2h5vGZu0c1m6kxbezqBMZa9TY/4CgpsDHc6tDYxRP4?=
+ =?us-ascii?Q?8m4btsK/x1UPOjbZ7K7T35Kn8ODe2m89PSvGppnf9/HQZ8BwWj9xrLYOOMoF?=
+ =?us-ascii?Q?GivZz5qxSbRuUd90EsiQ0gBf/u3xYOn2rAye4mwQ6wqQOKBoH9zPvvxv5HAv?=
+ =?us-ascii?Q?Ob3m6E9pkVr6QkHv3sF2xGOwm+9180gBk5QwwmhAyj4OB6hggZeKmCW3XXgy?=
+ =?us-ascii?Q?Geee26ZYj/m626KaBzaPEgchPCtCd20UD4OIiVHqxheLW2QsWfNEb4x30XYY?=
+ =?us-ascii?Q?865Jga6ak7lU+UfIt6gL1IvjVMeRXVU0Mah+0N4UykJD6ndxAR9IA3ErJeRc?=
+ =?us-ascii?Q?XwMfSW14R8shMunv4rRcAFb/lBIh6yEqOM0ixzgj9OqGWO7mvbpgZUjgVzZ9?=
+ =?us-ascii?Q?/MnchBn/xkcogoBU3vYHi/8CIqTzlb7l6NpoHcYrxw2DI5u/v0fP74UeQCg5?=
+ =?us-ascii?Q?U42IdtsLY4eXUdetIGFXY+QfDaClv+5KWXVqQX7/KugCaDqNDYJtf5BX7PZL?=
+ =?us-ascii?Q?At3fQaY7vrARd2CgxqYFA3WO8f34RPfQATkISULlkAtEXBzeTfIMqFf0jqxq?=
+ =?us-ascii?Q?dtQv2YBvFmPx4DnDkluqDkwJ0H6GueQGSAU7YiPlwyEYJeGaw2uJDuiS+/FT?=
+ =?us-ascii?Q?y5XvFy+hLswNpX8EmqFAyViAb1GTBUq3PVmWl6YtBH0Zl1eZbtYjZnwcg9lc?=
+ =?us-ascii?Q?uPyjs+14KhKMfSeM4XhJUrQg8EBd/3MHzM7h6rzfD+9c7UaeZtIwW0jVjoIO?=
+ =?us-ascii?Q?TqV0+NUn9B+c4MIUGdt1+1rWMd/L+QPIo0NkxlA9CzYTOZK1Bh6BStdiqGXn?=
+ =?us-ascii?Q?yXBlkt7w54KPtBjI/xpn8Wl5pwBd+mJ3iBER+W+vsox6FoEe1E/Px+cZtoYN?=
+ =?us-ascii?Q?zMYKMXYPY9tm00DATI39NxW2s4X3pX43rJYweDXWCrA0WL7rxBHSVxkw645y?=
+ =?us-ascii?Q?2Pv+/kqLkgSa6vcOlcwuoiHzJlrLaL+wAAacbzhfXtTW3jOHORB/sPtVQmzb?=
+ =?us-ascii?Q?mYcEt+8qifneZSEQMhE9nPTXtR1YmUPx5aw2ZRUqLF5IlkBwDTbvmZmqSqw9?=
+ =?us-ascii?Q?HD+A4kvFbFBf787OcLwxG2S8UratDtIFkA0GVCDW//OFh+4DYd6UQy70ThXA?=
+ =?us-ascii?Q?hEKLtfoSWphfngMNPGUQAjk3y+DXkTnKL49Mce01NlNGSN5JfrDaTp+p0Bm3?=
+ =?us-ascii?Q?w5fK8SQeORuHBCjXDmroPJ/0dIk5Jbl6kWP+Alh0TUvJYhjiHCHg6U1Xs2Dr?=
+ =?us-ascii?Q?BBgaGeDwZpoSO4SoCdKJTg/E1CzbrcVY3fFMcNmibJPajmFBIkgQG2CvnNmS?=
+ =?us-ascii?Q?H4+TEAyWC/+uOvmdsUoWO4BhbcZcXRksT544LLrF4upZLi4enyIHUpgJtjZ9?=
+ =?us-ascii?Q?CVaDr7LCeQKJeaz02nie+xKPTBXF1kvRD4NPOk4i3c20yIHUVgvyPfiTB8GJ?=
+ =?us-ascii?Q?adap7XY2oEw6I+DG/efLBHus1Kc6JpRb3bfGrRqyE4NPQEOftAHcr5zXUfzv?=
+ =?us-ascii?Q?+FXZUsUd7BzkaLczBOGPBaQZQSvc13LX6TDfNeSAQQu/04yeltqkuvkQKuOr?=
+ =?us-ascii?Q?aPQII2+cqJ5YGcPui2Y=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b9e57e4-5acc-42a6-fffe-08dde26e83e2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Aug 2025 17:57:24.3382
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: XyauQrNrQrbkHhA8LewgSlwV2MRJ6hXKvQqAzKyLKni4NdNOC8xTozCzy7bQHgxnFaxMDw42mBvoEFcIrzzkFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11358
 
 
-On Mon, 11 Aug 2025 11:19:31 -0400, Brian Masney wrote:
-> The round_rate() clk ops is deprecated, so migrate this driver from
-> round_rate() to determine_rate() using the Coccinelle semantic patch
-> on the cover letter of this series.
-> 
-> 
 
-Applied, thanks!
+> -----Original Message-----
+> From: Wei Fang <wei.fang@nxp.com>
+> Sent: Friday, August 22, 2025 3:45 AM
+> To: Shenwei Wang <shenwei.wang@nxp.com>
+> Cc: Clark Wang <xiaoning.wang@nxp.com>; Stanislav Fomichev
+> <sdf@fomichev.me>; imx@lists.linux.dev; netdev@vger.kernel.org; linux-
+> kernel@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>; Andrew Lunn
+> <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric
+> Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
+> Abeni <pabeni@redhat.com>; Alexei Starovoitov <ast@kernel.org>; Daniel
+> Borkmann <daniel@iogearbox.net>; Jesper Dangaard Brouer
+> <hawk@kernel.org>; John Fastabend <john.fastabend@gmail.com>
+> Subject: RE: [PATCH v2 net-next 4/5] net: fec: add change_mtu to support
+> dynamic buffer allocation
+>=20
+> > +static int fec_change_mtu(struct net_device *ndev, int new_mtu) {
+> > +	struct fec_enet_private *fep =3D netdev_priv(ndev);
+> > +	int order, done;
+> > +	bool running;
+> > +
+> > +	order =3D get_order(new_mtu + ETH_HLEN + ETH_FCS_LEN);
+> > +	if (fep->pagepool_order =3D=3D order) {
+> > +		WRITE_ONCE(ndev->mtu, new_mtu);
+>=20
+> No need to write ndev->mtu, same below, because __netif_set_mtu() will he=
+lp
+> update it.
 
-[099/114] clk: samsung: pll: convert from round_rate() to determine_rate()
-          https://git.kernel.org/krzk/linux/c/e278e39b014d789fb670695d422ff33c3ef56040
+It will only update the ndev->mtu if the driver doesn't have its own chang_=
+mtu handler.
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+int __netif_set_mtu(struct net_device *dev, int new_mtu)
+{
+	const struct net_device_ops *ops =3D dev->netdev_ops;
+
+	if (ops->ndo_change_mtu)
+		return ops->ndo_change_mtu(dev, new_mtu);
+
+	/* Pairs with all the lockless reads of dev->mtu in the stack */
+	WRITE_ONCE(dev->mtu, new_mtu);
+	return 0;
+}
+
+Regards,
+Shenwei
+
+>=20
+> > +		return 0;
+> > +	}
+> > +
+> > +	fep->pagepool_order =3D order;
+> > +	fep->rx_frame_size =3D (PAGE_SIZE << order) -
+> FEC_ENET_XDP_HEADROOM
+> > +			     - SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+> > +
+> > +	running =3D netif_running(ndev);
+> > +	if (!running) {
+>=20
+> running is only used once, so we can use netif_running(ndev) directly to =
+simplify
+> the code.
+>=20
+> > +		WRITE_ONCE(ndev->mtu, new_mtu);
+> > +		return 0;
+> > +	}
+> > +
+> > +	/* Stop TX/RX and free the buffers */
+> > +	napi_disable(&fep->napi);
+> > +	netif_tx_disable(ndev);
+> > +	read_poll_timeout(fec_enet_rx_napi, done, (done =3D=3D 0),
+> > +			  10, 1000, false, &fep->napi, 10);
+>=20
+> I'm not sure whether read_poll_timeout() is necessary, because I get the =
+info
+> from the kernel doc of napi_disable()
+>=20
+> /**
+>  * napi_disable() - prevent NAPI from scheduling
+>  * @n: NAPI context
+>  *
+>  * Stop NAPI from being scheduled on this context.
+>  * Waits till any outstanding processing completes.
+>  * Takes netdev_lock() for associated net_device.
+>  */
+>=20
+> > +	fec_stop(ndev);
+> > +	fec_enet_free_buffers(ndev);
+> > +
+> > +	WRITE_ONCE(ndev->mtu, new_mtu);
+> > +
+> > +	/* Create the pagepool according the new mtu */
+> > +	if (fec_enet_alloc_buffers(ndev) < 0)
+> > +		return -ENOMEM;
+> > +
+> > +	fec_restart(ndev);
+> > +	napi_enable(&fep->napi);
+> > +	netif_tx_start_all_queues(ndev);
+> > +
+> > +	return 0;
+> > +}
+> > +
 
