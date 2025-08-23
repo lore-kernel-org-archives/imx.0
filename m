@@ -1,41 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98161AA782;
-	Sat, 23 Aug 2025 13:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91441B4248;
+	Sat, 23 Aug 2025 14:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755957338; cv=none; b=F3m5illEwci4xeYI8x9yukaMrjH/7IVKMOMzdsT+GbuZC1YF48hWR7wfNyAcKxHQA44eW69kY3inRaZMDW1EkzlGTffhVmtWGCnmKaYsyGY2WeyJlbp20QGiWtBtIPvRlb8c77LbGPzYnZYQUrJponMW59LlEDHfFio0Pl1sxGM=
+	t=1755957779; cv=none; b=b436i0tQtJyNfWall9quWqKXoFZFQq/rkWf02D9MhzYxVTv+bQMiNGC3oVY9bqyEhPm7kuB88gFic3HCLGRIbHOI6FRfdxNN55qPUyW+xOkxhXbaZX23cehEHHjbNHQqgJkNUynt8IYt2TCg9LWXUAbNydA/iCpDNeOPQ0OyD94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755957338; c=relaxed/simple;
-	bh=1T0fJy4TvGOpZexytt/epjie/nm9x21/rlLayQXvLO0=;
+	s=arc-20240116; t=1755957779; c=relaxed/simple;
+	bh=caleFy4kbE+uvk+Sc3e36cq0k2w5/jsAIKa0fhdNasQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pZGherTIphxmO3CnqFhYZmFRURFULwT/aG2saBPPo3OozzZaOaQphYmOlULQfdjf8yIT8+looektJsHnhhcvotcwga1v03DYw1agm6dSvGmVvUZCTG0rG9nB90TqjQ0RHy/SLAFiefUWWBy2td1hOTQIj+lshozJZlw+q68yTm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJVeEXuY; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=t2NyxmigHoxp8otkpnwPgJEoxkfBXlkEsMjJuELqQ3/3ND4SKPubWD7kjOetinTmpmY5/2e3LX1NVxe35yJTbOgdmYRBDkzTT2yY6NbEXV2dIiX1U6CITJYoezwK+zO35mVn0j2CG+FCoY9K1CM0CxoEsHqiltXy/YU/lhQ5Pew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2dJWl3O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJVeEXuY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55B4C4CEE7;
-	Sat, 23 Aug 2025 13:55:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2dJWl3O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EA3C4CEF4;
+	Sat, 23 Aug 2025 14:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755957337;
-	bh=1T0fJy4TvGOpZexytt/epjie/nm9x21/rlLayQXvLO0=;
+	s=k20201202; t=1755957778;
+	bh=caleFy4kbE+uvk+Sc3e36cq0k2w5/jsAIKa0fhdNasQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dJVeEXuYP0RfDdZ8I11xlhEpOnFEBYrCOWS6zmC4Izeh5y8KFnokFMDIAAjg453/S
-	 2mcISd/JW3UAmI1hgJe84KNkCW4A+u2+yH9EoXzovnfN5o0zUsfv1YtMl2shH/eYj/
-	 SwmvSvZArkZRG60+37z5Qf4XvYA33PkvXEwpLlaAultwxObX5EzvwhQZTNd7KHcQYv
-	 VAdj4zIajmyfIA2z8tSQy9H9/D7OYuQWjI6W04W9l2GuMJiGzVDoXNZcpzA5rml/LH
-	 qguo2+hXtHn6fbiWg53/Hv+QklOgeZhFJqr+9CxeGw61+yO6/NgGHtkd1I+OsXOkBs
-	 tb2Ab70qz2rcg==
-Date: Sat, 23 Aug 2025 14:55:33 +0100
+	b=Q2dJWl3OewBdvZspyrkXJtc/pEAkGEL4Kp6j+9pW5g+tFVxg3KGCcs5TcDAWs+niW
+	 fn2auyv+V4wuRNYNz0NNeMuHm+aZwfjkeH93f+g06aMy5fgL5SoOwNcCcVYSGCZdoC
+	 pS4IjgdDGFQa9BkbOihvhiadlsHHRxPGJRSv3t/sRhA2SA0fpPWkyNkCCf2wOcM8uY
+	 VvIr4xh00jrqwAhjYTNmBjZgpk57DUNF0/z/8CCHlHa0036LNAGD/oTgddYGD1KE8d
+	 h6Hc2446PDOBlGTW6w4apuFUSAQwuQIJehVWm7n1ENp2W7Yr3n5iKVg++lDjVuZlbx
+	 Rf6mKqLS7qOzQ==
+Date: Sat, 23 Aug 2025 15:02:54 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Fabio Estevam <festevam@gmail.com>
-Cc: cassel@kernel.org, dlemoal@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, linux-ide@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH] dt-bindings: ata: imx: Add a reference to
- ahci-common.yaml
-Message-ID: <20250823-altitude-scone-fe104905ff48@spud>
-References: <20250822175830.91682-1-festevam@gmail.com>
+Cc: shawnguo@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] dt-bindings: soc: fsl,imx-iomuxc-gpr: Document i.MX53
+Message-ID: <20250823-shimmer-conceded-35d10a7b5264@spud>
+References: <20250822120241.26419-1-festevam@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,69 +42,28 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="YLXhgs2GKkKicSJM"
+	protocol="application/pgp-signature"; boundary="C1ZqRzwRJhwxXUSo"
 Content-Disposition: inline
-In-Reply-To: <20250822175830.91682-1-festevam@gmail.com>
+In-Reply-To: <20250822120241.26419-1-festevam@gmail.com>
 
 
---YLXhgs2GKkKicSJM
+--C1ZqRzwRJhwxXUSo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 22, 2025 at 02:58:30PM -0300, Fabio Estevam wrote:
-> The 'target-supply' property is documented in ahci-common.yaml.
->=20
-> Add a reference to ahci-common.yaml to fix the following dt-schema
-> warning:=20
 
-Same here I guess, you're allowing a bunch of other properties now, what
-of those are actually permitted ones for this device?
 
->=20
-> 'target-supply' does not match any of the regexes: '^pinctrl-[0-9]+$'
->=20
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
-> ---
->  Documentation/devicetree/bindings/ata/imx-sata.yaml | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/ata/imx-sata.yaml b/Docume=
-ntation/devicetree/bindings/ata/imx-sata.yaml
-> index f4eb3550a096..c60866544a53 100644
-> --- a/Documentation/devicetree/bindings/ata/imx-sata.yaml
-> +++ b/Documentation/devicetree/bindings/ata/imx-sata.yaml
-> @@ -88,6 +88,8 @@ required:
->    - clock-names
-> =20
->  allOf:
-> +  - $ref: ahci-common.yaml#
-> +
->    - if:
->        properties:
->          compatible:
-> @@ -112,7 +114,7 @@ allOf:
->          clock-names:
->            minItems: 2
-> =20
-> -additionalProperties: false
-> +unevaluatedProperties: false
-> =20
->  examples:
->    - |
-> --=20
-> 2.34.1
->=20
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
---YLXhgs2GKkKicSJM
+--C1ZqRzwRJhwxXUSo
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaKnIVQAKCRB4tDGHoIJi
-0iBGAQDReLY3tpmUuqLBQMcKz7vUM1f8lnHUeNMEF3oRrAbavAEAwcUgyKhkYkBR
-dJvbf3GpZ2x1GJh+9ETApiZdzccG7w0=
-=6rlV
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaKnKDgAKCRB4tDGHoIJi
+0twtAQDhBDDAYhVJmau4HmLAEuC6wDq0to3phN8IMEFZVeNB+QEA1cljqSj4WxWU
+ONvIfhtDTCppLOw2os+kUlIBdwNkcg8=
+=4Euf
 -----END PGP SIGNATURE-----
 
---YLXhgs2GKkKicSJM--
+--C1ZqRzwRJhwxXUSo--
