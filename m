@@ -1,118 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1782D5A14;
-	Sun, 24 Aug 2025 11:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2E22D542B;
+	Sun, 24 Aug 2025 16:13:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756035000; cv=none; b=NnD2Lew9DA2fjUadGDuXsUA8SuBj2AzUri6pDXAdGpxVatVCwLKpZIvmrGWNQpjK2ToDfKNLGTqMavDTyx4bYNRsAeY5t/Z2hfXDRfDZCVz1D5k2k/H7Y67NcnKXbWBf6QEvl+17YSJYSS0bMPHR/p5WhvcZcj6iWDrhr9LFeIA=
+	t=1756052005; cv=none; b=VqXrB00MNx+7w4hSf4zccJHzQdFXN1lOMJ9g6jAGQfYrEXCn3//daWIQHKeCRa4EzQfcrsLh3oVtjGSorgegGvXDWfsYj2xC0fpIJmcda36MtnhU4WFww5+zDkWBMU23z64//rPSAjIuPOD+neovRCR2JGUutUijeClBuwCeY9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756035000; c=relaxed/simple;
-	bh=uAuzrEaFAqZocxfJJj59TJTpm00inOxyjcf7OH/wdAA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KAHmrhmxYZUesMOLyGUu2SvwOqWWsjnlIRplUicR8+YfnFvleG2/TQRYquPsdcq/N5ECPTp1RX/jwZe6C35L6MdVmFxoyyllVNEfK1YbHZ+9VxwwlloidbAhFpk4JyLpF6J9jy7QlRkQn1/RF1+Cgem+pdDR/oMvkaTpdaob9mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iHpqFjst; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756052005; c=relaxed/simple;
+	bh=p5qKT2vPMKAC/6fg2dW3jbJT0fyJ6j956HAFp2rmzXY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YasBu/RjcHmRzhdzWdwXLXJyHZV5tvMnKjA9nJRDrcUPEqEe8RsRQ7JzLlsMUh/pmYhPYii05+I+hTDePiHhu7OQpS8V4lmLSbKneVMQ9gXYUx9/mudsOft6jTpDcY0or203ByNLcBubawx9KqamLkX93xLJeCKOgvrcqy3NDGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=aLJS7e6g; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iHpqFjst"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFC7C4CEEB;
-	Sun, 24 Aug 2025 11:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756034999;
-	bh=uAuzrEaFAqZocxfJJj59TJTpm00inOxyjcf7OH/wdAA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iHpqFjstEx3UfPRTB5O5tHvHxdvkVz5MVXhROt1sPwZO+WxxFnKBj88B7TRP8KXZa
-	 nRxINcps3xkskiiX5YRMhyDpihXPdz1Zla6m7v1KyM95kuLntTwtrWJpXlN4FBkWl2
-	 hNojPNW+IVRFEvadN6zshuX2tVX5Ju9eEWz4moJvqYQZoKDpq1h2VfJQ1fy+jb5Ik0
-	 4MYvQ4HzJmosxkXhfa3hWDbg8CyZDBa5IGN02ENqJWZoam+OeFQt2bSKKsVhA6bp+U
-	 GeCCsiVbkTO0R2lRjtTo4lVBklodm5RP/4orlsy3dHq8aUJ+OFQcijXgv5lrQLdmdA
-	 gTFjcKxBDDEGw==
-Message-ID: <cc465cae-a1b2-4116-82fa-ae42ad0706d3@kernel.org>
-Date: Sun, 24 Aug 2025 13:29:54 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="aLJS7e6g"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=tbcujWjLVSPoIfoPR7/pBE11nNuK/PjdZ78HbRdzlgs=; b=aLJS7e6gxU25xcxKBtH303q+Dp
+	bd4ZzXVDfItQ3bPMBNiBWMclK3C7iyXoCpkIBTM3oj+rm/2ZEEtD5pLg8RslW6JTLj+/vx395m38/
+	MTyIBW+fat7WvvY/GnLiQ1Ramaiii2ytZnhIu7GqweYbz6XcERBp+ffs4V6/7icmdEZ8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uqDLF-005qQi-GM; Sun, 24 Aug 2025 18:13:13 +0200
+Date: Sun, 24 Aug 2025 18:13:13 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	dl-linux-imx <linux-imx@nxp.com>
+Subject: Re: [PATCH v3 net-next 3/5] net: fec: add rx_frame_size to support
+ configurable RX length
+Message-ID: <a360fadc-0cfc-4d4a-9028-f63e2105634d@lunn.ch>
+References: <20250823190110.1186960-1-shenwei.wang@nxp.com>
+ <20250823190110.1186960-4-shenwei.wang@nxp.com>
+ <0abb2c91-3786-4926-b0e3-30b9e222424d@lunn.ch>
+ <PAXPR04MB918577F27FD6521B23601219893CA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <6b1f5bcd-e4d7-4309-becc-de4a12bdf363@lunn.ch>
+ <PAXPR04MB91851EC6E79D76E8220C5251893CA@PAXPR04MB9185.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] arm64: dts: imx8mp: add aipstz-related definitions
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250821105634.1893-1-laurentiumihalcea111@gmail.com>
- <20250821105634.1893-4-laurentiumihalcea111@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250821105634.1893-4-laurentiumihalcea111@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB91851EC6E79D76E8220C5251893CA@PAXPR04MB9185.eurprd04.prod.outlook.com>
 
-On 21/08/2025 12:56, Laurentiu Mihalcea wrote:
-> +#endif /* __IMX8MP_AIPSTZ_H */
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> index b62bb821cf61..afcd8c785cfd 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -13,6 +13,7 @@
->  #include <dt-bindings/interrupt-controller/arm-gic.h>
->  #include <dt-bindings/thermal/thermal.h>
->  
-> +#include "imx8mp-aipstz.h"
+> After further consideration, I think we can simply keep MAX_FL set to max_buf_size and 
+> only update TRUNC_FL as needed. This approach is also sufficient, so the logic introduced 
+> in patch v2 has been removed. Let me know if you want to add back the above logic.
 
-Completely unused define. Your patchset is not organized in logical chunks.
+For me, higher priority is you review all the commit messages and
+comments. A lot of the discussion here has been because the comments
+don't fit the code, and the commit messages don't give enough details
+to explain the changes. They are just as important as the code.
 
->  #include "imx8mp-pinfunc.h"
->  
->  / {
-
-
-Best regards,
-Krzysztof
+	Andrew
