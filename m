@@ -1,53 +1,53 @@
 Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7739D2D739B
-	for <imx@lists.linux.dev>; Sun, 24 Aug 2025 22:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709AC2DE6F6
+	for <imx@lists.linux.dev>; Sun, 24 Aug 2025 22:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756073301; cv=none; b=tYoBiJklLbWe7R5/P8V2j23CYZLK5X3RNOmcHWWuGJu/9vT2IGbjz9/SiXAWE5QeS2xGcuVkcTsAG6ZAUvfC93VExtn9Th3A+tU618VN4idmvKp5LYI0u6aiqQgeNbGZS9TNMptFUDAlVIltcJU+k2S4VYjw3KNcsAP7Bwp1T3g=
+	t=1756073306; cv=none; b=iWdE10JGl0Tw+t8c18Zg0+hV/Z9wJbDXyfg95B+stwBMWA3A5/7ZQx2lHng+rdfKqZolyHuRTVf1cWZHwthGqb/rTncPbldoALZXX1kIvBvttYoPpTamk1EG8T+vCOHEM+a3hS5xhUHA8luobfQX+BaO2rP7DIYIdH4xyVsVOYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756073301; c=relaxed/simple;
-	bh=dp1+oyecjrvZXoUhcfljxuGXUjYuQPIUyYKPquZZUx8=;
+	s=arc-20240116; t=1756073306; c=relaxed/simple;
+	bh=FvZupTuO6x7s/PQ/yXHr9g+NjqpujXy97dizpdoCjHo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RUeEqkOWW0B+vzBllrp7WJSlrDPoIqlcQ6HBZqJgPpPhG2sYHx33T42jxMyb8zyiJfqiADEsfCyKlmmhRs2r2Ry/Ypz2DgnPQWCGZLS18dmTc0anvd7iqXQn9nRUfhMAS+btJsVGxQj83Q/xvMFcLQZDqlWjqV8ty2FjfEoBKfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=U3jJj9+l; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=gFH5W9Vc; arc=none smtp.client-ip=80.241.56.171
+	 MIME-Version; b=oBSMfHI2Gq019T0TPVSlqZyfLYxlEMV95AU37rRB+C1ToiuR+l8cPias3AzNKXuEo4QmPnkyZZJbEOFsBgtVCE4iAaLuvPRgjsbFwv1uL+YCQw55i26ZbBt6r3uoPM4IbRmOqVr42al0PxiAB7l0Ol2SsoPTwUhyoCZjY+WatOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Tg/poiUf; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=mPBIHW1V; arc=none smtp.client-ip=80.241.56.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="U3jJj9+l";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="gFH5W9Vc"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Tg/poiUf";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="mPBIHW1V"
 Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4c97NC225Gz9sbl;
-	Mon, 25 Aug 2025 00:08:11 +0200 (CEST)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4c97NQ5l6hz9tLf;
+	Mon, 25 Aug 2025 00:08:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1756073291;
+	t=1756073302;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WZBezixw7X2X3S/CeQTQEH5TnKdhiw7RRZGCbcwVTNY=;
-	b=U3jJj9+l4DanWmk7XBUZgZ/jbezjj/FfILfPfHIKUAfdDFI7EcIg/lbcvI1ePhCXGTcD6U
-	whtH+IhQDM+xZfer986BAonvCTByPNsdNR2hQsaELk1RIrM87qBqZ2UvzPbWj1e3gE7nz+
-	KKoIz1DboMeUvtMiNWhLgXrmAduoMkdl7Nc/LEKQ1eAfdDfMpWGvvjSB7nSQbVStGXbod4
-	6BxDMEIEEYQxlpISnaQgNrEIJocUq2QML97dskVs6Eaf2Q1D6JcIAlWygj1PSzxzRbV6i+
-	l19Y4pT7uv51XXCq4jgcINHMZypwjPGnRy2obKTR4CMB9ug1CUVibqAKhsCqpQ==
+	bh=fEvyWStDeJ+HilUl6+7YO/y8iXiLY2S+w+uZRc+jxQo=;
+	b=Tg/poiUf6BkVjowvB5vVXTR9LQMZ+Mv4O3YKPCu739SB0eMHYpFGwDKWnoiB4kjA3TbRih
+	aa2gPOdgzsiQZflU/FMT4XL0wb1wdVZYel99nqayFpmi2vNPazs8S/lS8WfWYhReEBxsv8
+	WO8J7YYrH+YPcuQMkBRsMy/Gys9/ytJ9pgjrRZgWaSeZ/dUD3ZbqE4dhNPuMgvxqN2QORI
+	Fp85zJXD6LY3BZwjE7kKzmI4kjl9z5d4RR+XkXcGxz+qu8l9HbfJKje5IgJ93QoQg+X+y1
+	0eDOouYW1CPBkgWw4KJ6anaFwlVyH7ywlgBBILdZ34Ikm6o8nPMPtS+BdNvq2A==
 From: Lukasz Majewski <lukasz.majewski@mailbox.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1756073289;
+	t=1756073300;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WZBezixw7X2X3S/CeQTQEH5TnKdhiw7RRZGCbcwVTNY=;
-	b=gFH5W9VcclSjfeITNnKZAx4np7FuT4rx882oMSmveCFHn9i9EqnGvsmuv8Jgk0HQt2QQgB
-	o7iYVVgGBoDmmaIDmsaHlzO5p5ptJ0zZ3qt9wbfYUiPumC6av5NzFe3FTFOdvvDJGwj0GI
-	VCj9OhFn6R+4ZJVBVma+ylc0iyr6U6b+/b6aywzrJyKRXsmdFiSjx54RUjjfdY+mr3hwzY
-	BK9ZzYP7LNSEzdsFPdqrjA8G7vnyiNglE4XjnmHcfAzY4dgRxWehkjSRne5gC+YT34rx1T
-	MLOhiuarTZICa1gna7DNYX69q47xwsyM1ocOIluLLZUTlzsHnPkJVw4sZX+tsg==
+	bh=fEvyWStDeJ+HilUl6+7YO/y8iXiLY2S+w+uZRc+jxQo=;
+	b=mPBIHW1VJD4F5ewZ4ZNMGNXy6WdUmKX0WJm3m4LjCNMFvubKNFhdiILFqrmqUefGEvh3bI
+	DgPhvLmQeD9fnZXwRJ+b7nwLm4L+vAKE4EW4QKCypPFA0QNMp5tb4flWzW7C/jFtcRs23U
+	mS7Ujz1CAqoAHaEGSwkBsz0Z8n4QuVYfDjSg0YNuPzlFpk4h4NE2X2rsE89sXHIeZC9lvb
+	/5XL0T321IJ/3ktobpy1EtSQAihKFNIJb0Ou9Umlcydfm2f2qACCAsF5aq0R6Di7Dwu1QL
+	H9aK+rBHNjK7Bgnu6iCNeWd+yuInG+IpxBFwS4g5+Stgq5yUWx9QP9GfOFwyAw==
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	davem@davemloft.net,
 	Eric Dumazet <edumazet@google.com>,
@@ -69,9 +69,9 @@ Cc: Sascha Hauer <s.hauer@pengutronix.de>,
 	Stefan Wahren <wahrenst@gmx.net>,
 	Simon Horman <horms@kernel.org>,
 	Lukasz Majewski <lukasz.majewski@mailbox.org>
-Subject: [net-next v19 1/7] dt-bindings: net: Add MTIP L2 switch description
-Date: Mon, 25 Aug 2025 00:07:30 +0200
-Message-Id: <20250824220736.1760482-2-lukasz.majewski@mailbox.org>
+Subject: [net-next v19 4/7] net: mtip: Add net_device_ops functions to the L2 switch driver
+Date: Mon, 25 Aug 2025 00:07:33 +0200
+Message-Id: <20250824220736.1760482-5-lukasz.majewski@mailbox.org>
 In-Reply-To: <20250824220736.1760482-1-lukasz.majewski@mailbox.org>
 References: <20250824220736.1760482-1-lukasz.majewski@mailbox.org>
 Precedence: bulk
@@ -81,230 +81,382 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 5018cb105d8cf6fe2d1
-X-MBO-RS-META: r3jgcqkq9wmk5onmxkwcyn718fyp68hb
+X-MBO-RS-ID: a344f24a2c23e0e232d
+X-MBO-RS-META: d9amweos6wg6icacbae5rc95p7jgnfax
 
-This patch provides description of the MTIP L2 switch available in some
-NXP's SOCs - e.g. imx287.
+This patch provides callbacks for struct net_device_ops for MTIP
+L2 switch.
 
 Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
 ---
-Changes for v2:
-- Rename the file to match exactly the compatible
-  (nxp,imx287-mtip-switch)
+Changes for v13:
+- New patch - created by excluding some code from large (i.e. v12 and
+  earlier) MTIP driver
 
-Changes for v3:
-- Remove '-' from const:'nxp,imx287-mtip-switch'
-- Use '^port@[12]+$' for port patternProperties
-- Drop status = "okay";
-- Provide proper indentation for 'example' binding (replace 8
-  spaces with 4 spaces)
-- Remove smsc,disable-energy-detect; property
-- Remove interrupt-parent and interrupts properties as not required
-- Remove #address-cells and #size-cells from required properties check
-- remove description from reg:
-- Add $ref: ethernet-switch.yaml#
+Changes for v14:
+- Add read memory barier (rmb) before reading current descriptor
+- Use proper locking primitives
 
-Changes for v4:
-- Use $ref: ethernet-switch.yaml#/$defs/ethernet-ports and remove already
-  referenced properties
-- Rename file to nxp,imx28-mtip-switch.yaml
-
-Changes for v5:
-- Provide proper description for 'ethernet-port' node
-
-Changes for v6:
-- Proper usage of
-  $ref: ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties
-  when specifying the 'ethernet-ports' property
-- Add description and check for interrupt-names property
-
-Changes for v7:
-- Change switch interrupt name from 'mtipl2sw' to 'enet_switch'
-
-Changes for v8:
+Changes for v15 - v15:
 - None
 
-Changes for v9:
-- Add GPIO_ACTIVE_LOW to reset-gpios mdio phandle
+Changes for v16:
+- Enable MTIP ports to support bridge offloading
+- Use dev_err_ratelimited() instead of plain dev_err()
+- Move skb storage and tx ring buffer modifications after
+  dma mapping code.
+- Do not increase tx_errors when frames are dropped after
+  failed dma_mapping.
+- Refactor the code for better readability
+- Remove legacy call to netif_trans_update()
+- Remove not needed rmb() - synchronized data read already assured by
+  coherent DMA allocation
+- Replace spin_{un}lock() with _bh variant
 
-Changes for v10:
-- None
+Changes for v17:
+- Add missing _bh() variant of spin_unlock
+- Avoid reverse christmas tree in swap_buffer()
+- Print error message after unlock
+- Add DO_ONCE() and a separate function to print state of switch HW
+- Remove dev->stats.tx_errors++
 
-Changes for v11:
-- None
-
-Changes for v12:
-- Remove 'label' from required properties
-- Move the reference to $ref: ethernet-switch.yaml#/$defs/ethernet-ports
-  the proper place (under 'allOf:')
-
-Changes for v13 - v19:
+Changes for v18 - v19:
 - None
 ---
- .../bindings/net/nxp,imx28-mtip-switch.yaml   | 150 ++++++++++++++++++
- 1 file changed, 150 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 284 ++++++++++++++++++
+ 1 file changed, 284 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-new file mode 100644
-index 000000000000..6a07dcd119ea
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-@@ -0,0 +1,150 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+index 61380f09e2f1..70c624339cc9 100644
+--- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
++++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+@@ -43,6 +43,15 @@
+ 
+ #include "mtipl2sw.h"
+ 
++static void swap_buffer(void *bufaddr, int len)
++{
++	unsigned int *buf = bufaddr;
++	int i;
 +
-+title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP switch)
++	for (i = 0; i < len; i += 4, buf++)
++		swab32s(buf);
++}
 +
-+maintainers:
-+  - Lukasz Majewski <lukma@denx.de>
+ /* Set the last buffer to wrap */
+ static void mtip_set_last_buf_to_wrap(struct cbd_t *bdp)
+ {
+@@ -436,6 +445,124 @@ static void mtip_config_switch(struct switch_enet_private *fep)
+ 	       fep->hwp + ESW_IMR);
+ }
+ 
++static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
++					struct net_device *dev, int port)
++{
++	struct mtip_ndev_priv *priv = netdev_priv(dev);
++	struct switch_enet_private *fep = priv->fep;
++	unsigned short status;
++	struct cbd_t *bdp;
++	void *bufaddr;
 +
-+description:
-+  The 2-port switch ethernet subsystem provides ethernet packet (L2)
-+  communication and can be configured as an ethernet switch. It provides the
-+  reduced media independent interface (RMII), the management data input
-+  output (MDIO) for physical layer device (PHY) management.
++	spin_lock_bh(&fep->hw_lock);
 +
-+allOf:
-+  - $ref: ethernet-switch.yaml#/$defs/ethernet-ports
++	if (!fep->link[0] && !fep->link[1]) {
++		/* Link is down or autonegotiation is in progress. */
++		netif_stop_queue(dev);
++		spin_unlock_bh(&fep->hw_lock);
++		return NETDEV_TX_BUSY;
++	}
 +
-+properties:
-+  compatible:
-+    const: nxp,imx28-mtip-switch
++	/* Fill in a Tx ring entry */
++	bdp = fep->cur_tx;
++	status = bdp->cbd_sc;
 +
-+  reg:
-+    maxItems: 1
++	if (status & BD_ENET_TX_READY) {
++		/* All transmit buffers are full. Bail out.
++		 * This should not happen, since dev->tbusy should be set.
++		 */
++		netif_stop_queue(dev);
++		spin_unlock_bh(&fep->hw_lock);
++		dev_err_ratelimited(&fep->pdev->dev, "%s: tx queue full!.\n",
++				    dev->name);
++		return NETDEV_TX_BUSY;
++	}
 +
-+  phy-supply:
-+    description:
-+      Regulator that powers Ethernet PHYs.
++	/* Clear all of the status flags */
++	status &= ~BD_ENET_TX_STATS;
 +
-+  clocks:
-+    items:
-+      - description: Register accessing clock
-+      - description: Bus access clock
-+      - description: Output clock for external device - e.g. PHY source clock
-+      - description: IEEE1588 timer clock
++	/* Set buffer length and buffer pointer */
++	bufaddr = skb->data;
++	bdp->cbd_datlen = skb->len;
 +
-+  clock-names:
-+    items:
-+      - const: ipg
-+      - const: ahb
-+      - const: enet_out
-+      - const: ptp
++	/* On some FEC implementations data must be aligned on
++	 * 4-byte boundaries. Use bounce buffers to copy data
++	 * and get it aligned.spin
++	 */
++	if ((unsigned long)bufaddr & MTIP_ALIGNMENT) {
++		unsigned int index;
 +
-+  interrupts:
-+    items:
-+      - description: Switch interrupt
-+      - description: ENET0 interrupt
-+      - description: ENET1 interrupt
++		index = bdp - fep->tx_bd_base;
++		memcpy(fep->tx_bounce[index], skb->data, skb->len);
++		bufaddr = fep->tx_bounce[index];
++	}
 +
-+  interrupt-names:
-+    items:
-+      - const: enet_switch
-+      - const: enet0
-+      - const: enet1
++	if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
++		swap_buffer(bufaddr, skb->len);
 +
-+  pinctrl-names: true
++	/* Push the data cache so the CPM does not get stale memory
++	 * data.
++	 */
++	bdp->cbd_bufaddr = dma_map_single(&fep->pdev->dev, bufaddr,
++					  MTIP_SWITCH_TX_FRSIZE,
++					  DMA_TO_DEVICE);
++	if (unlikely(dma_mapping_error(&fep->pdev->dev, bdp->cbd_bufaddr))) {
++		dev_err(&fep->pdev->dev,
++			"Failed to map descriptor tx buffer\n");
++		dev->stats.tx_dropped++;
++		dev_kfree_skb_any(skb);
++		goto err;
++	}
 +
-+  ethernet-ports:
-+    type: object
-+    additionalProperties: true
++	/* Save skb pointer. */
++	fep->tx_skbuff[fep->skb_cur] = skb;
++	fep->skb_cur = (fep->skb_cur + 1) & TX_RING_MOD_MASK;
 +
-+    patternProperties:
-+      '^ethernet-port@[12]$':
-+        type: object
-+        additionalProperties: true
-+        properties:
-+          reg:
-+            items:
-+              - enum: [1, 2]
-+            description: MTIP L2 switch port number
++	/* Send it on its way.  Tell FEC it's ready, interrupt when done,
++	 * it's the last BD of the frame, and to put the CRC on the end.
++	 */
 +
-+        required:
-+          - reg
-+          - phy-mode
-+          - phy-handle
++	status |= (BD_ENET_TX_READY | BD_ENET_TX_INTR | BD_ENET_TX_LAST |
++		   BD_ENET_TX_TC);
 +
-+  mdio:
-+    type: object
-+    $ref: mdio.yaml#
-+    unevaluatedProperties: false
-+    description:
-+      Specifies the mdio bus in the switch, used as a container for phy nodes.
++	/* Synchronize all descriptor writes */
++	wmb();
++	bdp->cbd_sc = status;
 +
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+  - interrupts
-+  - interrupt-names
-+  - mdio
-+  - ethernet-ports
++	skb_tx_timestamp(skb);
 +
-+unevaluatedProperties: false
++	/* Trigger transmission start */
++	writel(MCF_ESW_TDAR_X_DES_ACTIVE, fep->hwp + ESW_TDAR);
 +
-+examples:
-+  - |
-+    #include<dt-bindings/interrupt-controller/irq.h>
-+    #include<dt-bindings/gpio/gpio.h>
-+    switch@800f0000 {
-+        compatible = "nxp,imx28-mtip-switch";
-+        reg = <0x800f0000 0x20000>;
-+        pinctrl-names = "default";
-+        pinctrl-0 = <&mac0_pins_a>, <&mac1_pins_a>;
-+        phy-supply = <&reg_fec_3v3>;
-+        interrupts = <100>, <101>, <102>;
-+        interrupt-names = "enet_switch", "enet0", "enet1";
-+        clocks = <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
-+        clock-names = "ipg", "ahb", "enet_out", "ptp";
++	dev->stats.tx_bytes += skb->len;
++	/* If this was the last BD in the ring,
++	 * start at the beginning again.
++	 */
++	if (status & BD_ENET_TX_WRAP)
++		bdp = fep->tx_bd_base;
++	else
++		bdp++;
 +
-+        ethernet-ports {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
++	if (bdp == fep->dirty_tx) {
++		fep->tx_full = 1;
++		netif_stop_queue(dev);
++	}
 +
-+            mtip_port1: ethernet-port@1 {
-+                reg = <1>;
-+                label = "lan0";
-+                local-mac-address = [ 00 00 00 00 00 00 ];
-+                phy-mode = "rmii";
-+                phy-handle = <&ethphy0>;
-+            };
++	fep->cur_tx = bdp;
++ err:
++	spin_unlock_bh(&fep->hw_lock);
 +
-+            mtip_port2: ethernet-port@2 {
-+                reg = <2>;
-+                label = "lan1";
-+                local-mac-address = [ 00 00 00 00 00 00 ];
-+                phy-mode = "rmii";
-+                phy-handle = <&ethphy1>;
-+            };
-+        };
++	return NETDEV_TX_OK;
++}
 +
-+        mdio_sw: mdio {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
++static netdev_tx_t mtip_start_xmit(struct sk_buff *skb,
++				   struct net_device *dev)
++{
++	struct mtip_ndev_priv *priv = netdev_priv(dev);
 +
-+            reset-gpios = <&gpio2 13 GPIO_ACTIVE_LOW>;
-+            reset-delay-us = <25000>;
-+            reset-post-delay-us = <10000>;
++	return mtip_start_xmit_port(skb, dev, priv->portnum);
++}
 +
-+            ethphy0: ethernet-phy@0 {
-+                reg = <0>;
-+            };
+ static void mtip_configure_enet_mii(struct switch_enet_private *fep, int port)
+ {
+ 	struct phy_device *phydev = fep->phy_dev[port - 1];
+@@ -593,6 +720,70 @@ static void mtip_switch_restart(struct net_device *dev, int duplex0,
+ 	mtip_config_switch(fep);
+ }
+ 
++static void mtip_print_hw_state(struct net_device *dev)
++{
++	struct mtip_ndev_priv *priv = netdev_priv(dev);
++	struct switch_enet_private *fep = priv->fep;
++	struct cbd_t *bdp;
++	int i;
 +
-+            ethphy1: ethernet-phy@1 {
-+                reg = <1>;
-+            };
-+        };
-+    };
++	spin_lock_bh(&fep->hw_lock);
++	dev_info(&dev->dev, "%s: transmit timed out.\n", dev->name);
++	dev_info(&dev->dev,
++		 "Ring data: cur_tx 0x%p%s, dirty_tx 0x%p cur_rx: 0x%p\n",
++		 fep->cur_tx, fep->tx_full ? " (full)" : "", fep->dirty_tx,
++		 fep->cur_rx);
++
++	bdp = fep->tx_bd_base;
++	dev_info(&dev->dev, " tx: %u buffers\n", TX_RING_SIZE);
++	for (i = 0; i < TX_RING_SIZE; i++) {
++		dev_info(&dev->dev, "  0x%p: %04x %04x %08x\n",
++			 bdp, bdp->cbd_sc, bdp->cbd_datlen,
++			 (int)bdp->cbd_bufaddr);
++		bdp++;
++	}
++
++	bdp = fep->rx_bd_base;
++	dev_info(&dev->dev, " rx: %lu buffers\n", RX_RING_SIZE);
++	for (i = 0 ; i < RX_RING_SIZE; i++) {
++		dev_info(&dev->dev, "  0x%p: %04x %04x %08x\n",
++			 bdp, bdp->cbd_sc, bdp->cbd_datlen,
++			 (int)bdp->cbd_bufaddr);
++		bdp++;
++	}
++	spin_unlock_bh(&fep->hw_lock);
++}
++
++static void mtip_timeout(struct net_device *dev, unsigned int txqueue)
++{
++	struct mtip_ndev_priv *priv = netdev_priv(dev);
++
++	dev->stats.tx_errors++;
++	DO_ONCE(mtip_print_hw_state, dev);
++
++	schedule_work(&priv->tx_timeout_work);
++}
++
++static void mtip_timeout_work(struct work_struct *work)
++{
++	struct mtip_ndev_priv *priv =
++		container_of(work, struct mtip_ndev_priv, tx_timeout_work);
++	struct switch_enet_private *fep = priv->fep;
++	struct net_device *dev = priv->dev;
++
++	rtnl_lock();
++	if (netif_device_present(dev) || netif_running(dev)) {
++		napi_disable(&fep->napi);
++		netif_tx_lock_bh(dev);
++		mtip_switch_restart(dev, fep->full_duplex[0],
++				    fep->full_duplex[1]);
++		netif_tx_wake_all_queues(dev);
++		netif_tx_unlock_bh(dev);
++		napi_enable(&fep->napi);
++	}
++	rtnl_unlock();
++}
++
+ static irqreturn_t mtip_interrupt(int irq, void *ptr_fep)
+ {
+ 	struct switch_enet_private *fep = ptr_fep;
+@@ -1071,6 +1262,92 @@ static int mtip_close(struct net_device *dev)
+ 	return 0;
+ }
+ 
++#define FEC_HASH_BITS	6		/* #bits in hash */
++static void mtip_set_multicast_list(struct net_device *dev)
++{
++	struct mtip_ndev_priv *priv = netdev_priv(dev);
++	unsigned int hash_high = 0, hash_low = 0, crc;
++	struct switch_enet_private *fep = priv->fep;
++	void __iomem *enet_addr = fep->enet_addr;
++	struct netdev_hw_addr *ha;
++	unsigned char hash;
++
++	if (priv->portnum == 2)
++		enet_addr += MCF_ESW_ENET_PORT_OFFSET;
++
++	if (dev->flags & IFF_PROMISC) {
++		/* Promisc mode is required for switch - it is
++		 * already enabled during driver's probe.
++		 */
++		dev_dbg(&dev->dev, "%s: IFF_PROMISC\n", __func__);
++		return;
++	}
++
++	if (dev->flags & IFF_ALLMULTI) {
++		dev_dbg(&dev->dev, "%s: IFF_ALLMULTI\n", __func__);
++
++		/* Allow all multicast addresses */
++		writel(0xFFFFFFFF, enet_addr + MCF_FEC_GRP_HASH_TABLE_HIGH);
++		writel(0xFFFFFFFF, enet_addr + MCF_FEC_GRP_HASH_TABLE_LOW);
++
++		return;
++	}
++
++	netdev_for_each_mc_addr(ha, dev) {
++		/* Calculate crc32 value of mac address */
++		crc = ether_crc_le(dev->addr_len, ha->addr);
++
++		/* Only upper 6 bits (FEC_HASH_BITS) are used
++		 * which point to specific bit in the hash registers
++		 */
++		hash = (crc >> (32 - FEC_HASH_BITS)) & 0x3F;
++
++		if (hash > 31)
++			hash_high |= 1 << (hash - 32);
++		else
++			hash_low |= 1 << hash;
++	}
++
++	writel(hash_high, enet_addr + MCF_FEC_GRP_HASH_TABLE_HIGH);
++	writel(hash_low, enet_addr + MCF_FEC_GRP_HASH_TABLE_LOW);
++}
++
++static int mtip_set_mac_address(struct net_device *dev, void *p)
++{
++	struct mtip_ndev_priv *priv = netdev_priv(dev);
++	struct switch_enet_private *fep = priv->fep;
++	void __iomem *enet_addr = fep->enet_addr;
++	struct sockaddr *addr = p;
++
++	if (!is_valid_ether_addr(addr->sa_data))
++		return -EADDRNOTAVAIL;
++	eth_hw_addr_set(dev, addr->sa_data);
++
++	if (priv->portnum == 2)
++		enet_addr += MCF_ESW_ENET_PORT_OFFSET;
++
++	writel(dev->dev_addr[3] | (dev->dev_addr[2] << 8) |
++	       (dev->dev_addr[1] << 16) | (dev->dev_addr[0] << 24),
++	       enet_addr + MCF_FEC_PALR);
++	writel((dev->dev_addr[5] << 16) | (dev->dev_addr[4] << 24),
++	       enet_addr + MCF_FEC_PAUR);
++
++	return mtip_update_atable_static((unsigned char *)dev->dev_addr,
++					 7, 7, fep);
++}
++
++static int mtip_get_port_parent_id(struct net_device *ndev,
++				   struct netdev_phys_item_id *ppid)
++{
++	struct mtip_ndev_priv *priv = netdev_priv(ndev);
++	struct switch_enet_private *fep = priv->fep;
++
++	ppid->id_len = sizeof(fep->mac[0]);
++	memcpy(&ppid->id, &fep->mac[0], ppid->id_len);
++
++	return 0;
++}
++
+ static const struct ethtool_ops mtip_ethtool_ops = {
+ 	.get_link_ksettings     = phy_ethtool_get_link_ksettings,
+ 	.set_link_ksettings     = phy_ethtool_set_link_ksettings,
+@@ -1082,6 +1359,11 @@ static const struct ethtool_ops mtip_ethtool_ops = {
+ static const struct net_device_ops mtip_netdev_ops = {
+ 	.ndo_open		= mtip_open,
+ 	.ndo_stop		= mtip_close,
++	.ndo_start_xmit	= mtip_start_xmit,
++	.ndo_set_rx_mode	= mtip_set_multicast_list,
++	.ndo_tx_timeout	= mtip_timeout,
++	.ndo_set_mac_address	= mtip_set_mac_address,
++	.ndo_get_port_parent_id	= mtip_get_port_parent_id,
+ };
+ 
+ bool mtip_is_switch_netdev_port(const struct net_device *ndev)
+@@ -1186,6 +1468,8 @@ static int mtip_ndev_init(struct switch_enet_private *fep,
+ 			goto cleanup_created_ndev;
+ 		}
+ 
++		INIT_WORK(&priv->tx_timeout_work, mtip_timeout_work);
++
+ 		dev_dbg(&fep->ndev[i]->dev, "%s: MTIP eth L2 switch %pM\n",
+ 			fep->ndev[i]->name, fep->ndev[i]->dev_addr);
+ 	}
 -- 
 2.39.5
 
