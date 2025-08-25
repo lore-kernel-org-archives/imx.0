@@ -1,133 +1,215 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010012.outbound.protection.outlook.com [52.101.84.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D41286898
-	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 06:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756104326; cv=none; b=KvSBPlAfTRtTPXhEWMN830gTr2tjUXU2iNzz6RM8u2nVs+G80NWy3FCTn6Ql82WFEB6F4rYmoU9hy/X9ZDznSkTw5RyiFN5ekje6RngFcXgVKM7BHAahPG3cKxKooHQovr1W1jJ/HXcxzNVu04yJx28wucpuCDxegL4TPiGL0xk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756104326; c=relaxed/simple;
-	bh=T9KbhVUMm7vITeaOhRDl559ePidfU3o3Tixib6ZNBrg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iFfxSF5AwRpYK8RINxE5bKE4i0jHI0R4kMuQkU9DIIWPhz5eyrqzDoJm5CqaRW+51pGUBQ8bnEC4H2LU28jts7O59R8foyh6yy4H4rFUJPXuGkD+seoeSkgwsMXThXsU5Tg3D/SnM6ba0Wjq6nXVV3phawKIkQjPr8ARbKD9V6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=By0bgJe0; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=sfw4f0GH reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE4E28751B
+	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 07:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756105256; cv=fail; b=fwNjM3fHX2eVXj7geb8zUchmHCZWqzY+ftAM+T5ljfws5xmKLKJWzt3zdLItDnXXRZfbhg36gGs5v3lWpoZR4rv8POaFr5LcfcxdHQZxbpq5VLte3rVwHfQ5ocX2vestBCGCOh77rPk0xS8z5ihxIv9/2Ge56M2Fcaemb+ztnrE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756105256; c=relaxed/simple;
+	bh=B9DUXmPMcF/CQaLAI0NXEFCN8Krsy8Rqx9Y85110q/8=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=MS73r/2itCN9EHpGlyRM4lbLi+xI9jyQ9QMTwF82YI8xtL6dGICdY6Un8dSq466QSHkPMHRg3Opv3NwLQ7+hUz3Pi+jRmuYstqqBcqdNPQx+OGT4E0XwNmYin+HEq+8076nAi4x1yM2XjpHsO8ap98tpwCAl6Y3ya9W+gUhQJPk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FFlDOqL6; arc=fail smtp.client-ip=52.101.84.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="By0bgJe0";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="sfw4f0GH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1756104321; x=1787640321;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=w14T58dmJuNVXMguB61ithau+MDzr8NmKFE7YbjkVFI=;
-  b=By0bgJe0Gd1J+8YsZRtuHDKoKzrXUkuoLZ5PImwkS65LLgBPKu71AN4x
-   BAXfJAW4xuTfQDSC8u3B5VQz2mdKiby/aY9nA8kiFEm6w0zVej0n/LnU+
-   h4BN7qb6dbydPYnGjcBwfFGNc/AKT2JvYvjCOFuSFdoAvliWnGg9y4hlH
-   ezfyKX35gYRNwo3cnY8Oh7lNQ439DmRXZAnciCjRm6kIrpavmMjfT7zCq
-   SrOuY4IJ6iaN6onURtr0yFdwt0WgzoThyJJZx1yZ7mpKU1fM36b8xib+5
-   u0CYWKl6AXsTuu9/qf71tezF4BvjWDRGVytYXAiLmPJ+9xzKNmuONmlsE
-   Q==;
-X-CSE-ConnectionGUID: zPl1VvF3QbWDnEldToc0KA==
-X-CSE-MsgGUID: jSGX+Ye9RsO8KI0LyWrw/Q==
-X-IronPort-AV: E=Sophos;i="6.17,312,1747692000"; 
-   d="scan'208";a="45885019"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 25 Aug 2025 08:45:17 +0200
-X-CheckPoint: {68AC067D-37-AD8F5F64-F0EACAA5}
-X-MAIL-CPID: FDCF9C2444F205DBF823452246599193_1
-X-Control-Analysis: str=0001.0A002105.68AC067F.0078,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 99E4D16626E;
-	Mon, 25 Aug 2025 08:45:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1756104313;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=w14T58dmJuNVXMguB61ithau+MDzr8NmKFE7YbjkVFI=;
-	b=sfw4f0GHkf4ifl0CpAfePvYuDpaoLhFTxn+RsEkSR6dxDx5HOqkibvhaQLjEGXOr/hxFXH
-	A5zAt9AQav3vJW/auJThCKjj2mAxQPrK+V081dnTI0uTfdc5Ca8u8FMkbhlT5dNpvR9n8b
-	wAZGOTYCZEEUAGF9B7Okrsw9vYNQeBKGOX9b+s1d0GYWXvsOrsj8hPr75AuPngv1bF7cAi
-	r1Rs66xneE2oJlqdQ0oLJDLVV6G8h93Ny0W+QxnVX28Vc9E2DGXpdOXYxBS8XyG0FwoHLU
-	k3/UJSmMvPq98AnNnC8raKpGaw2/bxUQ5TcYj20edpGwfiXOyWNe0wXnPRn9pA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] drm: lcdif: Use dev_err_probe()
-Date: Mon, 25 Aug 2025 08:45:10 +0200
-Message-ID: <4679558.LvFx2qVVIh@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250429100919.1180404-1-alexander.stein@ew.tq-group.com>
-References: <20250429100919.1180404-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FFlDOqL6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BFHc5PJqzOpWzvOHgGlgf2p7eCKDMG7hF69va0JLrcqiZKL+NGLOPelzGOGZwSHq02g2ihWVGkNzljPMaIYZqCgavBLFrtkwokPEOqn5KNOiUwWrh3KylWyrQsrnlfG0lup6xXkSF3BlURXhCc1EREPyCabDxMtN+nEC0NRaIQYXqGp695Ekal8suFO2fmsIgZudePt7rP7syQMgXJHmhrRy2bAguxoHkUzC8ueway2SF0CENBTG23/YeyjJhPJBwzsNVbyY17d3TXHHDxa095IfwEPdq4alUUR5iGVNWFnF1POXKM7KdSm6LthRK7BNVmVwBOZ0n3n4fblZeXAcGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vZ2dhOLCDV1rrcyGFbMxTgnNu5iTuar9+IFGz48itGI=;
+ b=R01yKxFn/klLEiHynoVJOIHbcyihAySSrHYv13Sk8lD+Mf70+ySootf2bhThDcqklyj5ZedFcfN7U22otqGlEPM2wkzc9AtnvJjk7i3Rf62bUEv30ZFACYtS7pz9ZACXhdhs1zqI/GhPqbaM0T7X1kdwvafyEAw2SbtsrTqfii/LmooHdtInB11pQduO7GqecfWvB3uIo+GRxN99+yhlPxJqGvyUyTtdhTBtM3mkLTu7SCOtXvBfa+jd8fbeJZ2latqyifhwgi2YvGmo5o0WDTnSVZ7JrZKXuwSuFUz9ytyO7mGbfosyaxK3/5jq7AToGfaVmKlg982DvQ0gZwTyDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vZ2dhOLCDV1rrcyGFbMxTgnNu5iTuar9+IFGz48itGI=;
+ b=FFlDOqL6bHUnJEgp7uh28Pgvd6Y5RlbfnxM0ycFVzEsvFUdBAknwhwuFv2g6ga4ULcUoWxl2GoJ6SieXz/STAMbksNa/NyTD0jqolCum9chB/K5rDAGWI2tsgpq3fw+O7esIjBgYfRU794RXNxru3MV9xJfi28WmHhjAisVFFbgwTSJrRhJA4M3KI+jbxGMo2Ggy1HLj1PXUtlQBudfGEZf9LdaiVYrqr+09Qy9XtWQG+a7ATuZaSzrGfiRB9M+cb0L0hTBST7K/zcE/yYThudQM4dJ1atnOOtmyCrrwjtE6SwC62iz+Nqti88JfjEBmFPwlXN6lzKgrGXcoTtUVPQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by GVXPR04MB10325.eurprd04.prod.outlook.com (2603:10a6:150:1e6::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.11; Mon, 25 Aug
+ 2025 07:00:48 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.9073.009; Mon, 25 Aug 2025
+ 07:00:47 +0000
+From: Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH v2 0/3] firmware: imx: Add stub functions for MISC/CPU/LMM
+ APIs
+Date: Mon, 25 Aug 2025 15:00:29 +0800
+Message-Id: <20250825-imx9-sm-v2-0-0bae0265e66a@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA0KrGgC/2XMQQ7CIBCF4as0sxYzIFbalfcwXWA72FnQNmAIp
+ uHuYrcu/5eXb4dIgSlC3+wQKHHkdamhTg2Ms11eJHiqDQrVFQ3eBPvciejFkyxK47BFraC+t0C
+ O8yE9htozx/caPgec5G/9N5IUKC7adKSlbd1k70vezuPqYSilfAG58duWnAAAAA==
+X-Change-ID: 20250807-imx9-sm-bea018f06042
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Sudeep Holla <sudeep.holla@arm.com>, 
+ Cristian Marussi <cristian.marussi@arm.com>
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756105242; l=1670;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=B9DUXmPMcF/CQaLAI0NXEFCN8Krsy8Rqx9Y85110q/8=;
+ b=EpqSQl+ab0cPmCqPRgg/To++XI/REjehOpsIdyc0ihRH596i/v+snxz3qoNbkwxBazw98HdBZ
+ 5ZWDGM2CAZQCGmWe5xekKt/m23QsiulVlptVUVBrGuLppsBzKDUpea7
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: SI2P153CA0006.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:140::22) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|GVXPR04MB10325:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f04f3a2-9fd8-4b5d-721f-08dde3a51e1f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|19092799006|7416014|52116014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TzRINHB0UHNESGhPUkNSZ05KTHgvV29GU2xOL3M2NDJCM1NGTjVQSGsxZitt?=
+ =?utf-8?B?azgyMng2UmhSUjRxRDBaSHd1MGJodEJGdUpKTkVHR3BUV1paczdMcmw1bkJs?=
+ =?utf-8?B?dHhDcHVUZzhFS1JwaWh4ejZ3LzJOZUJHSVJrUUpaaTdtNzZBd1Yzc0F4b3Zm?=
+ =?utf-8?B?RHRoMEZyc043eFB1V3R2Mk1NN2hXWFJoaXNsT1kvRjNpdnVHckRjYXorZlFu?=
+ =?utf-8?B?dFBpMjR1bkdpdnhhUmM5VUgydExncm1mQS9OY282amRXV0x1N3ZrWWhJQmZL?=
+ =?utf-8?B?WHRPZ2xKMWpsSTIzN2NYeGRSZE01Ymdld01VZ2o0c3M2dEl6OGFMZjJPcnNq?=
+ =?utf-8?B?clBEc3ErV1NUZFlCNzV2Z0EwMUpZNWNheGxPWFNNajM5SEt6aHRpcG5Uc1dD?=
+ =?utf-8?B?OFJhZGwvM2RZa25iSXpHYXZzNG5zWDhxbElEd1pZVFhzR1I2ZkU1T2UxNEpt?=
+ =?utf-8?B?MjVGT1diVlRWdWVKSXV4aGNJaWczcUJ0U0RkbTRvTnBNWVVRSzREQk9IUmlh?=
+ =?utf-8?B?cWhhMUhOYUlHN0RPL0lFQ0toam5nZlMzWmNDTWJuVEhjd2xrUFRoNG9kdVJF?=
+ =?utf-8?B?cWlrUWQ5L0dUQW9JaUQyUXU0bjdyUTc5eUp6S3piby8rTTlxV3p1SzJXc09t?=
+ =?utf-8?B?QVRxTXIyNzh5MnZlclo2eThYUjFDMXVRWWNVbnpCdUdqVzZLdE9FVi9CUm9M?=
+ =?utf-8?B?NGs4K3Z2cGtxMGxTOEcyd1pWNnhNN3Y3NGM1eFhPSGxoUVAzMVdzbFpEZzkz?=
+ =?utf-8?B?RFcxQmpKL3hWdTNja0xoTjFiSzAwUUd6bFFXTU45S2hnc1BDdXEwSWdUV0V6?=
+ =?utf-8?B?d0JUSWJHZTQ1bnZ3MTBHZW5jUVRyNlRvTTM3R3FVNzAvM3dpS2pjRHhsQUFt?=
+ =?utf-8?B?OExHcVZNYStnMlhxOGJkYlpScm04aks1eWhZejVxcm9ldm9TZ2dxekROcTZ2?=
+ =?utf-8?B?ZnpWQXIrSTN5QVJrQ2hYc1FheTRxSk9EbTdSMm9GSVIvbUgzL0dUSmhLZ0ZP?=
+ =?utf-8?B?UVdJaGZpTlRmbWwrcnRqRmRCRmF2NXVYRzlIM3dIU2c1VnBCNVJzQS9DNXl0?=
+ =?utf-8?B?Wm1nY2d3Tjh0OUdHTnFhbXlkMnJwSUk1WE1aUCtzOFpsdFZwQnFPRnZ0S3ZU?=
+ =?utf-8?B?UUI0WHhZQVkrVSswYzd0a1dQOUwxQjMzUXo3Q0lUMGo0MzhTNmhMVTJGMC9X?=
+ =?utf-8?B?dGNuZzdVT2dKdlpyQ1Bja1pXdG9GTVl5WndNTTRiSnQrRVVFRTNCVFJzOWRK?=
+ =?utf-8?B?QmFnOUlCWnN1TllKNzhaMHdZTGpiVTRjaSszbEEvM2pFR2NGY1VjbFhPV1FM?=
+ =?utf-8?B?MVd3Z0lHQlNIQmFpd3hHN1Y5K2NINmFacTI2ZHdYeE1yV0gvVGR1YUVoWGRJ?=
+ =?utf-8?B?cFVXRkxRNmMzSlRTWXVpcjVmaE5ZSktGdGlNTGpmK3ZQSUhTemErTU5GeU52?=
+ =?utf-8?B?RUdteUdWZVp2eHJ1RTh2dEpiUGljOTh1QkpIbHFxN3hoRUpINER4UmkyQkIx?=
+ =?utf-8?B?ME93MkFibUJuWTFzNWx5aEJsOW1IRmN2M2JHOUs3ZUhCd0VpMUxrMmN3T09V?=
+ =?utf-8?B?MjZnSTY2dlVOQ0gwL082NVNUdUNrdDhjZXFwMlRMN1BhSkUramYxcUFmOEZm?=
+ =?utf-8?B?My9jd2dUZ0svS1QvcmYrOFhvaVZjN3creWZCN1VRTjdFcVYzS05uY3NPTkVv?=
+ =?utf-8?B?M0M2Y0lCSTgzNklpMW1DdFRqT254byszRFplUFY2TUNOa2k4RTF6ekpxWkc0?=
+ =?utf-8?B?UjNST2ZKNDgrRXk5YlZPeXcvZGlrejFXVytCWGVhRUdEektLT2YvRWlYMzVs?=
+ =?utf-8?B?bVFXVG8yZGpYamF2N1BTdDhDOFNXM3gxT2JlZlp4VVh0elorTVdKaUlZdk9z?=
+ =?utf-8?B?Z2RrN2hwZ3l4V0s2ZVcrL1FYcWYwMG9CN0doWXI5NW1NNjhqOC9DeThzdnFq?=
+ =?utf-8?B?TFN3dE1PNThQakhPOGlnV0xJMVBnV2R1YXVicXoza1p4OGRTaEJxUnJGVlFv?=
+ =?utf-8?Q?T4l2sqY7N3XQvZnxAnwOwxnwQo9PC8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(7416014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UkYvWnJ3ZVBjZlZrSzNDc3BTK1F4ajZOcC96VDF5YzZWeUc2cldqMlpjWWZB?=
+ =?utf-8?B?Vjh5dm45My9XWEFabGRwYk1TcFlzRjVrcTNJeWtHQS9aUHBubzVzRzJzc2FB?=
+ =?utf-8?B?VzE3dGJzZVB2c1czRXRTTjFvVEpKdkc4VWVKZjQyY3RZVTM0eFdKWit4d2wy?=
+ =?utf-8?B?M0V2a3AycXJaYS9CLy93Yk5HRXdaVkwyUDAwTFg5YUI0T085c3FERUxiczFw?=
+ =?utf-8?B?VE9vUlFwNHNTSi9ESUNtSmtvbHY1QXdzeGtzWE5SNENBcmxpZk5McVBvNGt6?=
+ =?utf-8?B?TCtncTVHUGFvNkRma2xnWGZ2cWNnNXlpdnpwdC96dHZPamZ2Z1A2d0lGL1lv?=
+ =?utf-8?B?K1pqWHJGVXl5anRrdno0enJkUEVNVEQwZ2hlSHd4ZG8yYURZekFVcHBlV0lE?=
+ =?utf-8?B?cUJORzZFUmpIL2VUU1kyRWdrN1VvNXFsd3IvMW9JcnFLazFtMG1KbjVPY3VI?=
+ =?utf-8?B?bzZFYjJ4OU9HbWdEQUFYNlkrMVZ4SXN2UTFFVGVieVlQZ04wMm56dkN4Y3VS?=
+ =?utf-8?B?aUovQk56Qld3UFdDR2VoV2Q5R3N5b0haZDdhN2Zvd1Z2QmZPOUpzYXg5dVpB?=
+ =?utf-8?B?R21VWlgrTVJKdWgwZlY2WHRycWNRR2tXNHorSWNRZmUwVmlDKzRoRU9Fb3dv?=
+ =?utf-8?B?amJhY1ZBeHpkSVFFWFkzNnhCbXJyMWNKd2VSZzYzWHljckIwcmVSZzZxZHhC?=
+ =?utf-8?B?dS96NmlhSnoxSjJWcWpRSzVlUGc5M2szZEFWbFp5UVJXWGVaSkduUkRnejZ0?=
+ =?utf-8?B?NGpSUHZIdERxTjNkVnNjNFNub2MwTWgyTWpTNlR5NTNuVU5US2Rta3JHRUxC?=
+ =?utf-8?B?cXZlcGhRcUFmYkFrNm9nQWdYY3JiWlF3OHRna24xZDkwM0VTTUNCMDNsN09u?=
+ =?utf-8?B?eW1ob1dHL0tEZ2p4K3pGLzB6RGhCSS9FTVRJTm9mckljK2F1WUxqUWFrL0J0?=
+ =?utf-8?B?UDNkZERrS2ptbXF3NVNTVjV1Y29LZU1XL29QK01pZGNCUnI3bkdWZlMvMFIz?=
+ =?utf-8?B?Umxib0FSNUlGdmNiZ1JrN0l1cDFWdnFST2dud2tIbHB3Z3hSekdpS1l1WGda?=
+ =?utf-8?B?RnJ2cjNpRTZGdTlweFRoalJyRGhVOWZWaWlwWGVRUFVFU2pLamxXOGN2R1hO?=
+ =?utf-8?B?M1dsS2JOWnB3RXA1Vi8wTmt0bUhKb0hicUxhZ2ZJVnBaZVNLbXNzOWEydFZG?=
+ =?utf-8?B?RDhjL25pTGJ2OVRoc1JBWHJEa082RWlVc0M0ZnBsOG9wQzVka2F1ZU5TNkZp?=
+ =?utf-8?B?T24vV0xWWW00dlgrL3pIekRGaDNTQ0JQTXc3aXZ4T0EyS2d3cDIxMVBkektX?=
+ =?utf-8?B?V0FHVEh6endSL2NUeWFWc2JWc1YzQjNDQUJXVHRDMkNPTkh6WXE2azlOU2Ji?=
+ =?utf-8?B?eG9oVXdOM3dNeFVpcUN0OVZhcXV5bEE4akFubXhTVHZ3QjhRNVJ6bTcwVWNi?=
+ =?utf-8?B?c2Fxb21BMGJrbVhYK2cwYmo1OTVkb2w5bWxyczNKdGJ6TkxlN2JqVjIxSDBx?=
+ =?utf-8?B?TDlDWFZaSUdVRjNWaElackt6SGlvaWpYYXhKbEhma1pVRko5RFRiaUFGQ1N2?=
+ =?utf-8?B?dlNTQmdqQ0t2M2QrWTZIWC9jL0JBc0VkYmdNVEwzUWlJSU9SSlZubU5wQjdq?=
+ =?utf-8?B?MW8rQUIvZmI0eGRhLzY1RVoxb1BDWEFJcUtZNFRrYlcveGQ3aFFtR200Vjlu?=
+ =?utf-8?B?RmRiWWw1UU5JZXN2NzdWd2ZlNzI1KzVRWTYwSGZybnd6ZXREN0N3ZDRVTTBl?=
+ =?utf-8?B?OUNrV3E5RFM4ZEc3SWZxc3VKQnFxVEQ1ZUtQRlZKWXhkUHVSNnR6cFFtRVRu?=
+ =?utf-8?B?TkxtUFlQb29DemU0NEFIMjRuUXphTjZ3ajA4anV1TmxoVVBjNUQzM0h4c000?=
+ =?utf-8?B?d3FYaUdpbUtLSmV5OVdaQ1FrNzBHRGE4THR2QzJKVFJNcU84bUFLczVwSGpM?=
+ =?utf-8?B?R1ZtSlBqZlowRGNYdnhiY3BFU1NzeXBrU0c1bVhudldad0hQbms3V3gxNGxa?=
+ =?utf-8?B?YnhzM0VKRUpVSWIxK28ra20vZFlxRGxpRTJ0NE12ZThlajIxTC9pdEJWeGV0?=
+ =?utf-8?B?VmR6dWwyV0t6dmFDMVE1OC85aEtLRU5aSVloV3NWR2tPVTZaaDVOKzBIQTE0?=
+ =?utf-8?Q?UJBMNB9lq/Lr8kBWnb0Lmr8v2?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f04f3a2-9fd8-4b5d-721f-08dde3a51e1f
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 07:00:47.3419
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2ow0lBNQ6Y/2VxD2o7DHs/nMDx9zTpL/fsLKXLT6gAOgsljd9+f2zak38UE2nzncxLRB6zqgGHF/dkyWIGEb7g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10325
 
-Hi,
+To ensure successful builds when CONFIG_IMX_SCMI_[MISC,CPU,LMM]_DRV are not
+enabled, this patchset adds static inline stub implementations:
 
-Am Dienstag, 29. April 2025, 12:09:18 CEST schrieb Alexander Stein:
-> Use dev_err_probe() to add a reason for deferred probe. This can
-> especially happen on lcdif3 which uses hdmi_tx_phy for 'pix' clock
->=20
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+These stubs return -EOPNOTSUPP to indicate that the functionality is not
+supported in the current configuration. This avoids potential build or
+link errors in code that conditionally calls these functions based on
+feature availability.
 
-Gentle ping? Anyone picking this up? Or is there any other feedback?
+The initial support for SCMI MISC API was to use CONFIG_IMX_SCMI_MISC_EXT
+to guard the API. But this is wrong. There was an commit [1] that tried to
+address build issue for MISC API, but the better fix should use
+CONFIG_IMX_SCMI_MISC_DRV to guard the APIs. Because when user driver
+reference the APIs, but CONFIG_IMX_SCMI_MISC_DRV is not defined, there
+will be link error.
 
-Thanks and best regards
-Alexander
+This patchset is to fix the issues for all the three drivers.
 
-> ---
->  drivers/gpu/drm/mxsfb/lcdif_drv.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lc=
-dif_drv.c
-> index d5996efaf34bb..99e632d4a0e9b 100644
-> --- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-> +++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-> @@ -164,15 +164,17 @@ static int lcdif_load(struct drm_device *drm)
-> =20
->  	lcdif->clk =3D devm_clk_get(drm->dev, "pix");
->  	if (IS_ERR(lcdif->clk))
-> -		return PTR_ERR(lcdif->clk);
-> +		return dev_err_probe(drm->dev, PTR_ERR(lcdif->clk), "Failed to get pix=
- clock\n");
-> =20
->  	lcdif->clk_axi =3D devm_clk_get(drm->dev, "axi");
->  	if (IS_ERR(lcdif->clk_axi))
-> -		return PTR_ERR(lcdif->clk_axi);
-> +		return dev_err_probe(drm->dev, PTR_ERR(lcdif->clk_axi),
-> +				     "Failed to get axi clock\n");
-> =20
->  	lcdif->clk_disp_axi =3D devm_clk_get(drm->dev, "disp_axi");
->  	if (IS_ERR(lcdif->clk_disp_axi))
-> -		return PTR_ERR(lcdif->clk_disp_axi);
-> +		return dev_err_probe(drm->dev, PTR_ERR(lcdif->clk_disp_axi),
-> +				     "Failed to get disp_axi clock\n");
-> =20
->  	platform_set_drvdata(pdev, drm);
-> =20
->=20
+I add Fixes tag to the patchset, so I not delay the sending until RC1.
 
+[1] 540c830212ed ("firmware: imx: remove duplicate scmi_imx_misc_ctrl_get()")
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Changes in v2:
+- Add R-b from Cristian
+- Update commit log in patch 1 per Arnd
+- Link to v1: https://lore.kernel.org/r/20250807-imx9-sm-v1-0-3489e41a6fda@nxp.com
 
+---
+Peng Fan (3):
+      firmware: imx: Add stub functions for SCMI MISC API
+      firmware: imx: Add stub functions for SCMI LMM API
+      firmware: imx: Add stub functions for SCMI CPU API
+
+ include/linux/firmware/imx/sm.h | 47 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+---
+base-commit: 706168a6b4c3560b7930a2b00899f4e6e8520b22
+change-id: 20250807-imx9-sm-bea018f06042
+
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
 
