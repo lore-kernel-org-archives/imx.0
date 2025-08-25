@@ -1,119 +1,137 @@
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA772045B6
-	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 12:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B634374C4
+	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 13:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756126257; cv=none; b=g//PuglxbuhMDlpxbFLWMvaNxWZRvMuT2VCrVzkui7Xzg0axQl3Ilormh192FaSl/G6+5QmRiKiJNoSO5qeooH1eF2occ3z0s1SeYIhmAadE/vO2JxGYzX0IjjYENQG8SXLws6j1QFwuGfQ4EgxHrpcIqm7BVxqjBcPZQfbtThY=
+	t=1756126885; cv=none; b=FnT3YoRcVIat+d5tqWhm2v3vTe4GdnUQCcsnn7FWlOOs3FRbyjVHm4LsmHOytojRD9eoc+qbBlQ+tYsp0xoXMC+I5g9txzlZ4Qx4+znDC9gutT7Upak+IhYbqS3lPGle8W/+rl4Jmyr2YzUrU/whbOl6kovCEJd/+EO15MJ6D1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756126257; c=relaxed/simple;
-	bh=PrWQKYuTQBEonO1XwozKv/FyqCzSqcNDCkgOqZLybHY=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:References; b=SFfX0ZrIRbR1cokWL5DBVw9SHYk20wpr9TvrbhfOVYaE/jAx4BXh+/hUYQFC4AI4gaZS1q15lFicffi9Zky09DpbMJusgAq6X7/PdbtZQbJZPIw2qC8GFTSpn4b318WRxE6jKlz/82rJFNnAZY5TS0trJyKsOLGhRko0VkHzW8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=AMh285rd; arc=none smtp.client-ip=203.254.224.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1756126885; c=relaxed/simple;
+	bh=3mg8H5raVBKkDe/TXL7in7wasHK55tIcmkgCouAAdu4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=sJyFupzcozHSOT144LrYO0A/1EKxpPVMqa4zJZc5SQUBom8jn/7AEDdHSvzWMDMSHaiLDBceR2Iyn3u5nC4GmvSrpRCzM/2tiwLrLDeCsjO6E7vVuCB7ThflstLxkK7SLSryA6FgNx5hqfwG2j9/ooM/3fmpjQ65Is9cRfAYu/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=grD7m/Xe; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="AMh285rd"
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20250825125054epoutp029d68205297f81f73f3c4a1fe97ab5859~fA4YVPL4h2082020820epoutp024
-	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 12:50:54 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20250825125054epoutp029d68205297f81f73f3c4a1fe97ab5859~fA4YVPL4h2082020820epoutp024
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1756126254;
-	bh=IyZaAnO05abMqFNQPoye38pNw/RRf81HOUABNDFs+ow=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-	b=AMh285rdmU623jHntaAR4Uc/mjZOaKCdNV28Ulz6Y8YFW4MLqPqU9eQrLry+2PA5e
-	 ful1ZrE3jAecQhBtGRFTOPZ3iCsxrDZjsbVrnFoa/JIQ4nGUsxCSoecAGP75ts7x/3
-	 3eXVslFmwYW4edJjEgHeDXPOGDpotI/AG6N10jFc=
-Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPS id
-	20250825125053epcas5p294541daa3b844dd44558dd8ff6676e60~fA4XffRJ20205802058epcas5p2S;
-	Mon, 25 Aug 2025 12:50:53 +0000 (GMT)
-Received: from epcas5p1.samsung.com (unknown [182.195.38.88]) by
-	epsnrtp02.localdomain (Postfix) with ESMTP id 4c9Vyh1bXbz2SSKY; Mon, 25 Aug
-	2025 12:50:52 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
-	20250825125051epcas5p4f1fd9b26b26e388fdeef403aa802c252~fA4V6hK7A1505115051epcas5p4O;
-	Mon, 25 Aug 2025 12:50:51 +0000 (GMT)
-Received: from FDSFTE196 (unknown [107.116.189.214]) by epsmtip1.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20250825125047epsmtip11752ab6f3c0ad6db5a0093669b0fc3db~fA4SKmAoD3254932549epsmtip1I;
-	Mon, 25 Aug 2025 12:50:47 +0000 (GMT)
-From: "Inbaraj E" <inbaraj.e@samsung.com>
-To: "'Krzysztof Kozlowski'" <krzk@kernel.org>, <mturquette@baylibre.com>,
-	<sboyd@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <s.nawrocki@samsung.com>, <s.hauer@pengutronix.de>,
-	<shawnguo@kernel.org>, <cw00.choi@samsung.com>, <rmfrfs@gmail.com>,
-	<laurent.pinchart@ideasonboard.com>, <martink@posteo.de>,
-	<mchehab@kernel.org>, <linux-fsd@tesla.com>, <will@kernel.org>,
-	<catalin.marinas@arm.com>, <pankaj.dubey@samsung.com>,
-	<shradha.t@samsung.com>, <ravi.patel@samsung.com>
-Cc: <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <alim.akhtar@samsung.com>,
-	<linux-samsung-soc@vger.kernel.org>, <kernel@puri.sm>,
-	<kernel@pengutronix.de>, <festevam@gmail.com>,
-	<linux-media@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>
-In-Reply-To: <926e9bb2-cdde-4048-9ae2-159d088aa935@kernel.org>
-Subject: RE: [PATCH v2 03/12] dt-bindings: media: nxp: Add support for FSD
- SoC
-Date: Mon, 25 Aug 2025 18:20:46 +0530
-Message-ID: <016301dc15be$e3256300$a9702900$@samsung.com>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="grD7m/Xe"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 1D8F1A05C6;
+	Mon, 25 Aug 2025 14:52:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=4EQUO9uZ0iCJ6TiGfFUQMxCSBU7gkSepVVETsOcLgjg=; b=
+	grD7m/XeXhE5qIjaVKYgSduEHqXmqCL/nrRWDyhlz798QOa3ZmLrRujq4xvKMluh
+	uimv1LzdaPwqe77Rh2htX9RcXI5/rRJbMlMS7qwV4awdZ/LOoY5QrJ9rsZW7o1+I
+	KaEEiWXrfedJX2XjN11J1U3ysy3USshL7EggKf4/QfLLrUimIK+pLfdjI7xKtmU1
+	rJh2Urhw5qzpns5bKGSSo3pVTP1kWpEoALMuwjYnnR0mA8FR48huWhSfB3yvMUl+
+	IevPNA1QZiaOR8+D0GSgez44T6oNa9UeT1RAHhbU4Us6aYlq3EfQP8gZte2kNBud
+	afiYEINbh5qjJNhUNSKFrpYsl9HAiVZ+sv+tuQlqrc5vtAB1nU4Hn6Nge9NsurP1
+	Wr0gID6LObwDS6n5oigR/TsP0RJxlSN0P/mJnMudCwchlsRcP5oU/Ill19sZ9sWU
+	Uud66ELIy5i7W9HScqF6995lx/eprTgPRnQlw2zRlEH2kNDILsYA2N+G9oqywGvZ
+	qMa9iAqsgIYbbO4dR3gNAl8mvsf7CnsQdNTy8ReemfUZsS0SnB5nqErCyxnugsTA
+	sn6I6H5/9BUbvJpgjlJ8ydr6UzgH7GsLjiecCF4iqC9o1fKazGcf4YiPB7gVLjH6
+	vlhlbVAgjshKtzLQgN1mqxXXnfozEZpLUqZEKD5To7w=
+From: =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
+Date: Mon, 25 Aug 2025 14:52:09 +0200
+Subject: [PATCH v2] ARM: dts: imx6ul-tx6ul: Switch away from deprecated
+ `phy-reset-gpios`
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQK5oFMD+tt4mLQU5V9KgVyIDaUIUQF6bLd9AsRKNAMBJ/ZVhAEp+FCyAvdCX9oBWhQiOgImNHTdsk/6UEA=
-Content-Language: en-in
-X-CMS-MailID: 20250825125051epcas5p4f1fd9b26b26e388fdeef403aa802c252
-X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-541,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250814141014epcas5p410d41ede7e8ae4f3cf8db6d041d03946
-References: <20250814140943.22531-1-inbaraj.e@samsung.com>
-	<CGME20250814141014epcas5p410d41ede7e8ae4f3cf8db6d041d03946@epcas5p4.samsung.com>
-	<20250814140943.22531-4-inbaraj.e@samsung.com>
-	<ac9769af-9ab6-4b48-9890-ec3bcda3b180@kernel.org>
-	<00d001dc136a$36ad7230$a4085690$@samsung.com>
-	<7b7f6958-3178-4c6f-8be3-f52ef77464f7@kernel.org>
-	<00d201dc136d$1fdd6bc0$5f984340$@samsung.com>
-	<926e9bb2-cdde-4048-9ae2-159d088aa935@kernel.org>
+Content-Transfer-Encoding: 8bit
+Message-ID: <20250825-b4-tx6ul-dt-phy-rst-v2-1-0d3ba9736b0e@prolan.hu>
+X-B4-Tracking: v=1; b=H4sIAHhcrGgC/32OQQ6DIBREr9Kw7m9Bi5aueo/GBQgKiQXzQaMx3
+ r3oAbp8ycyb2Ug06Ewkr8tG0MwuuuAzFNcLaa30vQGnM5OCFpw+GQf1gLRU0wA6wWhXwJigll3
+ LBJWVoDXJzRFN55bT+mkyKxkNKJS+tYcroOudv39lTAaPvHUxBVzPEzM7Wv/3ZgYMhKq4KRnXQ
+ pfvEcMg/c1OpNn3/Qf2ChcS1gAAAA==
+X-Change-ID: 20250815-b4-tx6ul-dt-phy-rst-7afc190a6907
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	"Csaba Buday" <buday.csaba@prolan.hu>, =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?=
+	<csokas.bence@prolan.hu>
+X-Mailer: b4 0.14.2
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1756126334;VERSION=7996;MC=126871935;ID=493941;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A296767155E607067
 
-Hi Krzysztof,
+The Ethernet PHY's reset GPIO should be specified in the node of the PHY
+itself, instead of the MAC (`fec`). The latter is deprecated, and was an
+i.MX-specific extension, incompatible with the new reset controller
+subsystem.
 
-> >
-> > Using tesla,syscon-csis results in a =22prefix not found=22 issue when
-> > running dtbs_check
-> Because you develop on ancient, 10 year old downstream kernel?
->=20
-> You really do not try enough and this is just wasting our time.
->=20
-> Please think and really carefully check your replies. What prefix do you =
-have
-> in compatible? This command:
-> git grep tesla, =7C wc -l
->=20
-> gives '99' results including obviously vendor prefix.
->=20
-> So your warning is basically impossible or your code is just broken.
-> Don't just ask maintainers on every little trouble you have. You must deb=
-ug
-> it. Not we.
->=20
+Co-developed-by: Csaba Buday <buday.csaba@prolan.hu>
+Signed-off-by: Csaba Buday <buday.csaba@prolan.hu>
+Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+---
+Changes in v2:
+- Remove `reset-names` that was generating warnings
+  - This is how it is already in `polytouch`
+- Also move `etnphy1`'s reset
+- Link to v1: https://lore.kernel.org/r/20250815-b4-tx6ul-dt-phy-rst-v1-1-9b65e315d9d3@prolan.hu
+---
+ arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Sorry, I made a mistake while  running dtbs_check. I'll use the tesla prefi=
-x in the next
-patchset
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+index f053358bc9317f8447d65013a18670cb470106b2..5c7e9556b5ce823b339798ec8f1bd351afa07185 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+@@ -246,7 +246,6 @@ &fec1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_enet1 &pinctrl_enet1_mdio &pinctrl_etnphy0_rst>;
+ 	phy-mode = "rmii";
+-	phy-reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
+ 	phy-supply = <&reg_3v3_etn>;
+ 	phy-handle = <&etnphy0>;
+ 	status = "okay";
+@@ -262,6 +261,11 @@ etnphy0: ethernet-phy@0 {
+ 			pinctrl-0 = <&pinctrl_etnphy0_int>;
+ 			interrupt-parent = <&gpio5>;
+ 			interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
++			reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <100>;
++			reset-deassert-us = <25000>;
++			/* Energy detect sometimes causes link failures */
++			smsc,disable-energy-detect;
+ 			status = "okay";
+ 		};
+ 
+@@ -272,6 +276,9 @@ etnphy1: ethernet-phy@2 {
+ 			pinctrl-0 = <&pinctrl_etnphy1_int>;
+ 			interrupt-parent = <&gpio4>;
+ 			interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
++			reset-gpios = <&gpio4 28 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <100>;
++			reset-deassert-us = <25000>;
+ 			status = "okay";
+ 		};
+ 	};
+@@ -281,7 +288,6 @@ &fec2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_enet2 &pinctrl_etnphy1_rst>;
+ 	phy-mode = "rmii";
+-	phy-reset-gpios = <&gpio4 28 GPIO_ACTIVE_LOW>;
+ 	phy-supply = <&reg_3v3_etn>;
+ 	phy-handle = <&etnphy1>;
+ 	status = "disabled";
 
-Regards,
-Inbaraj E
+---
+base-commit: 0cc53520e68bea7fb80fdc6bdf8d226d1b6a98d9
+change-id: 20250815-b4-tx6ul-dt-phy-rst-7afc190a6907
+
+Best regards,
+-- 
+Bence Csókás <csokas.bence@prolan.hu>
+
 
