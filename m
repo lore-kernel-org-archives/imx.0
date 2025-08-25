@@ -1,276 +1,412 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011022.outbound.protection.outlook.com [52.101.65.22])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30922D9EC5
-	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 10:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756116660; cv=fail; b=E/a0WoB3y5AjleLmuuVDTHa+JSYjHG0+9R5xWJ3W+WVddR9ZqSPuq6VQupvHKUXlVo3FTlLMMOdm6KMq+X6s5ZZ0mTL19i54pAG4jV/kT7+D7N+huB75SpDbrAVXevdmiLXtBVEsThmV4KF1E0dtt2woNopJ8RyawhppY88UQMk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756116660; c=relaxed/simple;
-	bh=KPZroa8mPbLzd7xdoDW6vBPNQ2XU+HsknrVWdyaaKb0=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=QBls6cdzXTqSXIXYpXKDaVXkDKN1BqpQYUHCZD9onWd0A26Rb/zYiNJspY1nJMYY9T5S9lY71BJTV7g0Z6Q/wj9AnI/r7QAZ3y9D8uR0KvPTpxg6edZtPA8jHQxtqNUPA7Wval+yQ3JSCHmy1Y4gL1Klf4NOFQYC7CPYW0+KjAQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Hykch/K+; arc=fail smtp.client-ip=52.101.65.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D81D28C2BF
+	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 11:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756121399; cv=none; b=cL/NM57B7TMjJsSWS8tvX8429vSvq5D7rJnW7N5CrjDeOAsRTpGQjvhdv2+T0sOqTRRYnvqZnInx/v0DxUnC8vrMK9PlT6L7+pzR7a4Y48beoVdXZ0nuaYGNmiuv8ZWJlf044Z+TpFD7PiTJKa/BKZKa6jdzCGWiJXI3dgjlHEk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756121399; c=relaxed/simple;
+	bh=G6t0vi9alebHFBK5rvhbgaNL3riXc5sqA04gp+fkOnA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NxWXqaW8eu8BQ1RkTXZ/kRefosV7nxRzk6SPUyHgmbrzrX41cidgvLml3exxEuKFbQRKVUqznc//W+teqo6owusHuyEGWDpxOYiyg/9O8OXJ7DuDei1UfAdeEpMXTX2UReePt2AbRToqu+xnC8uoEaSIM4dlDVyv42OlM8nTvJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WFeXTt5t; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Hykch/K+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g3GUNbyJvpe8QDXxcEyk4AD/yhAf/6A9+gdMwW6oXmZg4jfwkd8/1aRHwXnRlvfz3XvrdQ5ky+ZXJ93UwjTVZxUfFQDg75rBdkf3RrmqrF1Lo+YMgi0diDQlreBeJ7J7UUbC65/qdq/G9EDRC9+GuKntcJd0BzNmTx3aFk3rlUctR0mY0qi+z/MYrTtC0LqawCyt9prVzR3Dmrm5+0CYSWyN7U1mfl9bZ9q8XcvDlJCcT1sEdavMrDpgjbUwCLM+klDowP3cgoT6xlQJOUGrFTSse6CBCwTMGt+/tdydXrnSr3P7+qH0Ir8hYApIkWoi1kIR7AB8ve/mpj9kphBWSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j1aKYt3jxcgrtV3hTQV7I5rW4j4ImWPcmEemjIo/zDI=;
- b=JSoQgB3pmqwoqtmTA2pGORExDjC2dlRlMa/CEtdy/qN/EW35uM+8ZK17r2q9zhZMHtE13e1xZjPp60CUFZRqa81UpjDO6oAw9B6a4NJgokgQ5O5kzwFqRdaqSdqlCKJx1CZ8Oi4KDWgpDVOPaM/XtdsCX/S27z8w+m1mfE0YzhPMIppQpVvoZplGb6s4n+uhLyFnroWJjpuXht319e4mmEjJoI6LDjleR+lYxeI11sUIFOh/n0+ivO5xdKkvn+FDpVez8x8HY0dLMihcjn22g16nbrjBIgSQEEvir2yejsgLSl5EljeDwGvKYpQ3IePkI8L1iJmGoTfI6rfi/2O3dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j1aKYt3jxcgrtV3hTQV7I5rW4j4ImWPcmEemjIo/zDI=;
- b=Hykch/K+yBkQ8qFCk/wa9BccD1lDFtpO0auQWpxO/4Nc2RBF2NvF4JxVAkXT9dbCfDpMFiAoBXKoH1604h4uIU/5lPIpiW0BPi813xWim7zadqMWb4VgqYgA/kOTbIto+zUIVp9V1j473mRloLy593mH8vcb+C0eAtYz6j5Z3XqMm9nW8eLjVNJdic/80CNWUOrA71ysdQdiA1aZ7enWJK2CFopBEwwUp71rbpkjKw3cs/xHTrSIw7UhErCrZ0hUoQq3alwJOC8BynudpWyQ9P/SZIF4M56hbs41aK4a0KVDV7v6M6lUkdnAyRtNBq8Xm6ou/OgVu8Gssi+yVzx6lA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
- by VI0PR04MB10639.eurprd04.prod.outlook.com (2603:10a6:800:261::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.11; Mon, 25 Aug
- 2025 10:10:55 +0000
-Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
- ([fe80::93bd:316b:682f:5e59]) by AS8PR04MB9080.eurprd04.prod.outlook.com
- ([fe80::93bd:316b:682f:5e59%6]) with mapi id 15.20.9073.009; Mon, 25 Aug 2025
- 10:10:55 +0000
-From: Guoniu Zhou <guoniu.zhou@nxp.com>
-Date: Mon, 25 Aug 2025 18:10:13 +0800
-Subject: [PATCH v3 4/4] arm64: dts: imx8ulp: Add CSI and ISI Nodes
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250825-csi2_imx8ulp-v3-4-35885aba62bc@nxp.com>
-References: <20250825-csi2_imx8ulp-v3-0-35885aba62bc@nxp.com>
-In-Reply-To: <20250825-csi2_imx8ulp-v3-0-35885aba62bc@nxp.com>
-To: Rui Miguel Silva <rmfrfs@gmail.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
- Frank Li <Frank.Li@nxp.com>
-Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756116629; l=3032;
- i=guoniu.zhou@nxp.com; s=20250815; h=from:subject:message-id;
- bh=KPZroa8mPbLzd7xdoDW6vBPNQ2XU+HsknrVWdyaaKb0=;
- b=ra3imm+DhCwFaZj85ZmYgsRzoJPgDkBPCAK8/v6GOeZ7FEbqwE6rCqVSlGiIR96QX6gEzipN4
- 82H69m5z/xlCCboZOEhLXWuacSdUKD7bymeVlyQEJ83tl6eWA3OS4Oc
-X-Developer-Key: i=guoniu.zhou@nxp.com; a=ed25519;
- pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
-X-ClientProxiedBy: SG2PR02CA0105.apcprd02.prod.outlook.com
- (2603:1096:4:92::21) To AS8PR04MB9080.eurprd04.prod.outlook.com
- (2603:10a6:20b:447::16)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WFeXTt5t"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57PAuFQ1016927;
+	Mon, 25 Aug 2025 11:29:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=pZVH01D2Gd/ZuxBDWHvMdhmbI57qiN
+	XppeatopYJClM=; b=WFeXTt5tlq7bvmFwDwurN2gxIAJS4Sbtzub9xJRMuUUCWG
+	dnN+VgZwrU+C7OAoBOS7dQLtS9avFToeFD88Xjc+lW70Zit8RLPH2JZHPbK7MHxb
+	v0D+pVyzXtrwYQl3kI+QLZ7QQLNBqOFnM1k0uGpSZ1+CyNFOS702oVm2UXUhr26g
+	QqYmWP5K4me05w/KlbcV8jlyClHMpN0GwiL9exsIxxhhvb59HKuryvQ6LoqGJJOX
+	azP5+JccDMK8pigXUHrrcngDK4tPx7KmxBkljdhf7EI3Ims4+KAlu4PkVvsOtnHJ
+	SJYiHaa74A1UrHZh5hhabVWUJ/85+yELHuGX+z6g==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5av8jkr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 11:29:07 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57PBJCuS013823;
+	Mon, 25 Aug 2025 11:29:06 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5av8jkq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 11:29:06 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57PB3VZR002512;
+	Mon, 25 Aug 2025 11:29:05 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qt6m5am6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 11:29:05 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57PBT3gH52166968
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 25 Aug 2025 11:29:03 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 971AE20043;
+	Mon, 25 Aug 2025 11:29:03 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C97EF20040;
+	Mon, 25 Aug 2025 11:28:50 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.98.110.17])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 25 Aug 2025 11:28:50 +0000 (GMT)
+Date: Mon, 25 Aug 2025 16:58:48 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Daniel Lezcano <daniel.lezcano@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+        Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        zhenglifeng <zhenglifeng1@huawei.com>,
+        "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>,
+        Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Beata Michalska <beata.michalska@arm.com>,
+        Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+        Sumit Gupta <sumitg@nvidia.com>,
+        Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
+        x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        imx@lists.linux.dev, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] cpufreq: use __free() for all cpufreq_cpu_get()
+ references
+Message-ID: <aKxI8D5mgLRyydb3@li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com>
+References: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB9080:EE_|VI0PR04MB10639:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51d84176-8fdf-4e2e-5e1d-08dde3bfad9a
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|19092799006|52116014|7416014|376014|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?dGtGYTBNRldXcll3RXBDMTNQVTBkV2RqbU9pSTdyN2VSNlAraTJBb3dsS2JF?=
- =?utf-8?B?cmtsaFA4TGZySFo1RlVLS1RHZU9zVmw4aUtITm53UXp4alM0VytQUUNUdTAy?=
- =?utf-8?B?WmZuQzNUMXpoWkh5ZE5PblNzN0hxbHVWQUVZdWM0SXlYNnpwajlEck1zNzZo?=
- =?utf-8?B?STE5YVZOeDZyWC84RWR3TDJPNGFSeWlTa1BIbUZCeEhUU3c3Ty9wU1ZNZ2xk?=
- =?utf-8?B?TkpTaGVHT0ZzTTVvNlEzY2JXQ0hXV25sT3cvcXp0dXJaMGRjWjNSQVBTU29Q?=
- =?utf-8?B?ZFhuRWNSRG0yYTVlNi9hdTJBOStBZUdKU2tSVGUycFkzYnZKT3hDWStGWVRV?=
- =?utf-8?B?eXFGVytZVzgyUDljbkM4L05JZFA1VGhVQ3RlVEFMZHd6ZSs0cDR2RmtBeFFk?=
- =?utf-8?B?S0tHWm80cFU2OURET3lnaDRxWFNnRHNoWGpwUS9CSDNDMlllZVZkdnNhUlBS?=
- =?utf-8?B?a0pxZXM3TDRFN0hQbjZCU2cweVpaK2pkVVo3L3RueFdVeWtNei9hZVJTK3ls?=
- =?utf-8?B?TG9GeW44ZGl0VGJFWHd6QWNGWU9RV04yQm1NOUhacmdZUmNjaTd2SVh2Tm9I?=
- =?utf-8?B?ZTArNGU1SXlQUDZiRDJtWTdnUE85bllMWDBTZG92TXlEenAycXE3eXJoMXhh?=
- =?utf-8?B?c3pMSXpzdVpJZURyaDFmUkJLcm45VE5Ob0pYcWtGbHYrTFIydmFVL1Zma1Nj?=
- =?utf-8?B?RjgzRk5OSmdPYlFNV2EybVp6c0RkSGhwaGVEamlFSjBGazlGSldyVlovSElZ?=
- =?utf-8?B?SlBZbmg1VHh4WkwzeURCdHdSRHRtbFhOWStkY2xheXVqdkgwS2VIOGgreXo3?=
- =?utf-8?B?dFh6V1ZGNHFGVkdUeEpjVmY2emxKekpCS25NZ2dvZFg5RUZBU21wWVVKNXdP?=
- =?utf-8?B?Y3dsa0l1V1JFZHQ1aDZCSDVLY2U5YkludWlyaUo2dWFyUlUwQTA5azQ1V09Z?=
- =?utf-8?B?OGtTL3IrV2Z2SWJlVmtiamFYU2NhbGVNS1N3Wmc4V085MS96VW9HcmZtTXlK?=
- =?utf-8?B?Ynp6WWQ1TnlvTDdQVXcrbFczMDNiSlR1cTZlQU84MXAza1VGcTFaTjVvK3pW?=
- =?utf-8?B?NGNORlVhRXlYSmhaTXRYZHYzQTQ1RmkxMHVJWW53UXJjSmNnZklpKzJ4K1lR?=
- =?utf-8?B?YTI5Y2hIRVdwK2pibldGNnlFTFcxRW5YTGNlRDVGSnNGWCtlZDFuaUNYYklB?=
- =?utf-8?B?QXRlQkRQOVRNTTlydlQvb2loY1pTakR2aFB1emVld2pWa2ZWaGV4UG13Yjlz?=
- =?utf-8?B?bEJEdjZlMW9rbHpLYVRuVW1nYTJLZnk1d3JrTkd2TzNrOEhoYXU1Q1FwZ3l3?=
- =?utf-8?B?QStTbG13K2dGQmFHK3lkc3REenUyaXp5K29pb2w3Y25iVTFZK1FweGJSVnJG?=
- =?utf-8?B?czFHeG1tS3BYWTZvRzNMc1JCYlliMThmeGhwcGN2ZjNhZG1DQmkvWUlVNW5M?=
- =?utf-8?B?dGN3UUo5eUFMSkFScS9ZRnR3ekVaMlROeUU0dFJpdTRma0pCR2NJNklIME5r?=
- =?utf-8?B?RWIvUnh4Q1NxWlZJbmJTTEZpa0FHYTcwMW9XakVGQTFNT0NFenh4QmdmT1Zy?=
- =?utf-8?B?cFNSSFZPRDFSZisrWDBRMjlNamZZWlBrREM5eE1XbElCZHJ1QmtRSWh6cVQ3?=
- =?utf-8?B?Um42ell6UGwzNFBnWkNQN0lPYkduMVNWL0lkRk9ZWXp5VDIzZ2FJbjBpN3Ru?=
- =?utf-8?B?TWNlTjA5cEZvdC8ybzZzUzUxZzl1SmkzaFBrcjdPbW9ZcHpob3UwMlRsZDRv?=
- =?utf-8?B?enNmVVp6WVcxRERoR29uakFlWkdjeXdLQS9NaUFCelRqT2p6aU95VHR6T2tz?=
- =?utf-8?B?cGhRZTZ3aVFaUVc2dmt2WWtleVpqKzBKeUMxSXdKeG4vSjZDbzlqSnVaVFE3?=
- =?utf-8?B?OG5hWUwxektxWk12RzVLaGlveXIrdTF0UkpBWmVtL3lVVUMzSmI4WVExL3cv?=
- =?utf-8?B?ZlBFTi9IUlRZeDdROG43SEdtK3dMRWNwdEtuWkQ4ZS9UWi9mNzdNUXpwRTRK?=
- =?utf-8?Q?y4yq8pBvSahTuIbwN90TOUJuG9flS4=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(52116014)(7416014)(376014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?SGVxRFo0MXU2U0RnVTdpanBRYVZjQWFLNmR4V1FqSk8vR2F2R1I2aThaTkpE?=
- =?utf-8?B?TEdXeWFvTkxtRUd0S1BkbGZZTnMyK3lKS0MzQ1A0a2MxTUxiUDVHZUVlQmFE?=
- =?utf-8?B?cm9PQlBXWU9aaWd2bU5oVnVSc2hpWUFVcVlURUdIR2FaRkgxNnAxamdMMUZs?=
- =?utf-8?B?SDVxbEd2UlZpNUtOSTVWNlZuZ1R3MDMyKzBJNGFiRWdhZHBma0Rqd3M2TzU2?=
- =?utf-8?B?SmE3b2hDb2FiSWNidk10UVAzcjlBbE1MRUpsa0x3bGZJQlpGTmhPSnBiQjNS?=
- =?utf-8?B?OHFOb3R0TzlYMG9MeHRLSHFrQjBDekljTHpkaXdpWm5Hb2FJRElrRTJEVDNB?=
- =?utf-8?B?aUlWQnhrZCt1c2VncytxRGNzNkFJSHRrL0NrTVVjQ09SSU9kV3pJVmdLaXMv?=
- =?utf-8?B?UWdCRmh4QnVScVBjd2ovSTk3RmxzOUJOb080U2hzSlBEY3BPaEt0b0lTMFNu?=
- =?utf-8?B?dHg0ODREZDN1aExhd3NrWTJFa2hRTTM3T2EvbHliWmJkZUM2M25DWU5DUWJp?=
- =?utf-8?B?VklIcWgxbTl3NkV2am05bll4WTVFUFlmQU5qNVk0UklrZjQxenRUNGRQWXZs?=
- =?utf-8?B?NnFQU0dBWVk2TTBBUzdJcUVkSVA1bExiQzROUXd5Znh2OXhNTlc3a3FyOUFH?=
- =?utf-8?B?TzBkY0tLYUxNOEJEQTlwM29BZVU2U0xWaTFlZGNYOVYzTCtiUmhUT1hlUTF1?=
- =?utf-8?B?N1hQb2hUUHo3M2RPTE1HbmRyTDFldzd6aUgrTm1rSm92MmVpQ29WaVcyUG1p?=
- =?utf-8?B?YmVOZWI3em83N3RzYmk0RXlkK1M1TWNyVkQwdHZ6MlZqdzNONENzMmJOTHV4?=
- =?utf-8?B?Q1NxK2ZoYVIvblk1MEJpdSsxUklZallNb1p6YlpmQWc1U1FTWTMzWU5MVHRB?=
- =?utf-8?B?Vm5sdHhLblNBNVBBdGNsOFhaUVN4QzNOYjh5aUZlVFlCOWVKcnFQdEZPZmtO?=
- =?utf-8?B?cnlLVTZUSlIxUlduMDVWNzhPL0lrRFY4RTNDVi9Ca0UzdndXSi9nbytVNjRF?=
- =?utf-8?B?TTFUbTI0YjNGMXhMcnNCeVN6Sk9IN0tsTVlYbWtGRUxOSnFkMWRKbElpbkh2?=
- =?utf-8?B?RUhCaDFIL3UrZDhjanpmM2NZZTB3RzNjc01xN0xVNXhiTlZjSlpqalRZOWlL?=
- =?utf-8?B?Q0lUODlpbHoxZC9EWGxMbVdCTzM3dnBkZFY5VjVGdjN1QkgyRC9iWTRzODcw?=
- =?utf-8?B?OXpCTy9TcVI5MzlLQTRBMFJQbnIyWTBXNmxlN0xWcm1wNEVHLzBXSGhCRHI5?=
- =?utf-8?B?L0pFRDFaY1NrdHdzOU9QWkFDUzAwSnNxTXpDRGNOL25zUmZlK2dDWm9obXdK?=
- =?utf-8?B?aUFaQUttNEs5VHk5WlhMOHNXQlhmdzBjNHR3a0ppSk5FbDlkTHBBckhIRkYr?=
- =?utf-8?B?cVlxaXpyOStJRW9SS1Fia0ZKUzRUT0Q1bGw4dU9UVHNpdjhhL2hYZEQ3RWJQ?=
- =?utf-8?B?ZDVLZ2tjQ2pyRFpVMHgvMUhxRUpSRTArMjBpNEE3TWZvbVBldkJNYlFXYUdx?=
- =?utf-8?B?MlYweXJqR3dSVHErRDQ3L2k1aDltNHNCbU5WZ1hYZm5oVXp3NWNtVUd4dFFt?=
- =?utf-8?B?Vk44R3hsclFBQjFtMVZuTDQ4dG9mdWF4OTJrY3FrSkYrcjBRTUhKRlpnbC9x?=
- =?utf-8?B?Ylo3WmwvYUIzc2lra2FKamtMZHlNaWNjQkZQN1Y1dU0vdHkwbGxkSno2U3R3?=
- =?utf-8?B?WXdrYVVnUDBOQVFWT3RVamU0VGR4WXkvUXc5Z2hTUXFOSDduYzJGdzVSRHlV?=
- =?utf-8?B?anNTTzd3ZGhLNndZV3pPV21QYXAybXdiN3A1Y1ZkYTdDc2JGR3dLOHJPdlZT?=
- =?utf-8?B?WWt1VFEyWTFaV1NaVFgrdFV2a0EvYkJjUDNJZDRyeDI3V2Q4bjYyNEVENUtW?=
- =?utf-8?B?a28yRWFYUzhOdktWZnpZUUJKbkpFR2Q2REFuRXFhaEg1VUg2bFAvb01YSzYw?=
- =?utf-8?B?WXFhVmFDV1ZXMEZQZEFJMGwyZThVOVZ4Z1JXRXNSOGxFVjZWeXp1SGZLMWhU?=
- =?utf-8?B?RnVMb0FPWkpzYU1GNjFLSWRyblpFQllZcmprbXlPdDBtMHlqYnV1d0crSHRF?=
- =?utf-8?B?VGZPblE0clVDVnNWTmp3RGRwL0RIQnQwSitSdDNCUmZHNDFwNk1xeW5KaS84?=
- =?utf-8?Q?Pyi3E93Sc1KhFVHf1ptc9Xw+g?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51d84176-8fdf-4e2e-5e1d-08dde3bfad9a
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 10:10:54.9575
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O9vM6EBQfnnXTLN4kAPDl9/VwKNQ1ihlB+gUak/t6a8pT4BPxPK+TVoKTeEKxV7uzwsWz3FzCTpe9Tc2AuT48A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10639
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0HsQaFGcKHYEMjGxfTSlUJWF6XneJCL9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfX/4+yCBHiZkyj
+ BezOHO0JD1p7OO2PV8xmQ1v5shFYKr21Uw1c2F4fW4uXyPCsxOE6ILKOy08exTWUNA73a36dDQc
+ c4y6wbPoU5LvDYQlXlcAhPLqk3LFWCLZ3dICMLqR2WHDlet2Ldgi5be5Hduqsg6kr8/WbswzYXj
+ eL+wfLc/Jeqecx6jg74QDQFlvafBQN6LUG8LrX8tqwzhzd9GgzIeu7kk/N0P/CWyJHwlrc5PIUz
+ Z4q/fYjm6PpSFTkG5SI7ARvGOK+wODTfBZnnKDnPI4C3Bn1Qhf3Y6EvQDrYoSo6dxKELAUhByqt
+ uCcp7lr/HsMOwiulBYsJ81MWSKnZa8+YC9DKTxtqevYNdz87q6XWFXB9AUbfcQ36nGSAmLoiq7W
+ P4ME2Djp
+X-Proofpoint-ORIG-GUID: gtLwqruV6tGzAQkR_fGqnCUDyXx-v5l-
+X-Authority-Analysis: v=2.4 cv=SNNCVPvH c=1 sm=1 tr=0 ts=68ac4903 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=2OwXVqhp2XgA:10 a=I94fdbTdu9Vpa8W20_wA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-25_05,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 bulkscore=0 phishscore=0 clxscore=1011
+ impostorscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230021
 
-The CSI-2 in the i.MX8ULP is almost identical to the version present
-in the i.MX8QXP/QM and is routed to the ISI. Add both the ISI and CSI
-nodes and mark them as disabled by default since capture is dependent
-on an attached camera.
+On Mon, Aug 25, 2025 at 05:28:33PM +0800, Zihuan Zhang wrote:
+> This patch replaces all remaining uses of cpufreq_cpu_get() with
+> the __free(cpufreq_cpu_put) annotation.
+> 
+> Motivation:
+> - Ensures automatic cleanup of policy references when they go out of scope,
+>   reducing the risk of forgetting to call cpufreq_cpu_put() on early return
+>   or error paths.
+> - Brings the code in line with the latest kernel coding style and best
+>   practices for managing reference-counted objects.
+> - No functional changes are introduced; behavior remains the same,
+>   but reference counting is now safer and easier to maintain.
+> 
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  arch/arm64/kernel/topology.c                  |  9 +++----
+>  arch/x86/kvm/x86.c                            | 10 ++++----
+>  drivers/acpi/processor_thermal.c              | 13 ++++------
+>  drivers/cpufreq/brcmstb-avs-cpufreq.c         |  4 +---
+>  drivers/cpufreq/cppc_cpufreq.c                |  4 +---
+>  drivers/cpufreq/intel_pstate.c                |  3 +--
+>  drivers/cpufreq/longhaul.c                    |  3 +--
+>  drivers/cpufreq/mediatek-cpufreq.c            |  6 ++---
+>  drivers/cpufreq/powernv-cpufreq.c             |  6 ++---
+>  drivers/cpufreq/s5pv210-cpufreq.c             |  3 +--
+>  drivers/cpufreq/tegra186-cpufreq.c            |  3 +--
+>  drivers/devfreq/governor_passive.c            | 19 ++++-----------
+>  drivers/gpu/drm/i915/gt/intel_llc.c           |  3 +--
+>  drivers/macintosh/windfarm_cpufreq_clamp.c    |  4 +---
+>  drivers/powercap/dtpm_cpu.c                   | 24 ++++++-------------
+>  drivers/thermal/imx_thermal.c                 |  7 ++----
+>  .../ti-soc-thermal/ti-thermal-common.c        |  5 +---
+>  kernel/power/energy_model.c                   |  7 ++----
+>  18 files changed, 40 insertions(+), 93 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+> index 5d07ee85bdae..e3cb6d54f35b 100644
+> --- a/arch/arm64/kernel/topology.c
+> +++ b/arch/arm64/kernel/topology.c
+> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
+>  		 */
+>  		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
+>  		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAMPLE_EXP_MS))) {
+> -			struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  			int ref_cpu;
+>  
+> +			policy = cpufreq_cpu_get(cpu);
+>  			if (!policy)
+>  				return -EINVAL;
+>  
+>  			if (!cpumask_intersects(policy->related_cpus,
+> -						housekeeping_cpumask(HK_TYPE_TICK))) {
+> -				cpufreq_cpu_put(policy);
+> +						housekeeping_cpumask(HK_TYPE_TICK)))
+>  				return -EOPNOTSUPP;
+> -			}
+>  
+>  			for_each_cpu_wrap(ref_cpu, policy->cpus, cpu + 1) {
+>  				if (ref_cpu == start_cpu) {
+> @@ -329,8 +328,6 @@ int arch_freq_get_on_cpu(int cpu)
+>  					break;
+>  			}
+>  
+> -			cpufreq_cpu_put(policy);
+> -
+>  			if (ref_cpu >= nr_cpu_ids)
+>  				/* No alternative to pull info from */
+>  				return -EAGAIN;
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index a1c49bc681c4..2a825f4ec701 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -9492,16 +9492,14 @@ static void kvm_timer_init(void)
+>  		max_tsc_khz = tsc_khz;
+>  
+>  		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
+> -			struct cpufreq_policy *policy;
+> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  			int cpu;
+>  
+>  			cpu = get_cpu();
+>  			policy = cpufreq_cpu_get(cpu);
+> -			if (policy) {
+> -				if (policy->cpuinfo.max_freq)
+> -					max_tsc_khz = policy->cpuinfo.max_freq;
+> -				cpufreq_cpu_put(policy);
+> -			}
+> +			if (policy && policy->cpuinfo.max_freq)
+> +				max_tsc_khz = policy->cpuinfo.max_freq;
+> +
+>  			put_cpu();
+>  		}
+>  		cpufreq_register_notifier(&kvmclock_cpufreq_notifier_block,
+> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
+> index 1219adb11ab9..8367a81c4842 100644
+> --- a/drivers/acpi/processor_thermal.c
+> +++ b/drivers/acpi/processor_thermal.c
+> @@ -64,17 +64,14 @@ static int phys_package_first_cpu(int cpu)
+>  
+>  static int cpu_has_cpufreq(unsigned int cpu)
+>  {
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  
+>  	if (!acpi_processor_cpufreq_init)
+>  		return 0;
+>  
+>  	policy = cpufreq_cpu_get(cpu);
+> -	if (policy) {
+> -		cpufreq_cpu_put(policy);
+> -		return 1;
+> -	}
+> -	return 0;
+> +
+> +	return !!policy;
+>  }
+>  
+>  static int cpufreq_get_max_state(unsigned int cpu)
+> @@ -95,7 +92,7 @@ static int cpufreq_get_cur_state(unsigned int cpu)
+>  
+>  static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>  {
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	struct acpi_processor *pr;
+>  	unsigned long max_freq;
+>  	int i, ret;
+> @@ -127,8 +124,6 @@ static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>  		max_freq = (policy->cpuinfo.max_freq *
+>  			    (100 - reduction_step(i) * cpufreq_thermal_reduction_pctg)) / 100;
+>  
+> -		cpufreq_cpu_put(policy);
+> -
+>  		ret = freq_qos_update_request(&pr->thermal_req, max_freq);
+>  		if (ret < 0) {
+>  			pr_warn("Failed to update thermal freq constraint: CPU%d (%d)\n",
+> diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> index 5940d262374f..71450cca8e9f 100644
+> --- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> +++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> @@ -480,7 +480,7 @@ static bool brcm_avs_is_firmware_loaded(struct private_data *priv)
+>  
+>  static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
+>  {
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+>  	struct private_data *priv;
+>  
+>  	if (!policy)
+> @@ -488,8 +488,6 @@ static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
+>  
+>  	priv = policy->driver_data;
+>  
+> -	cpufreq_cpu_put(policy);
+> -
+>  	return brcm_avs_get_frequency(priv->base);
+>  }
+>  
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> index 4a17162a392d..7183754b1f31 100644
+> --- a/drivers/cpufreq/cppc_cpufreq.c
+> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> @@ -726,7 +726,7 @@ static int cppc_get_perf_ctrs_sample(int cpu,
+>  static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+>  {
+>  	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+>  	struct cppc_cpudata *cpu_data;
+>  	u64 delivered_perf;
+>  	int ret;
+> @@ -736,8 +736,6 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+>  
+>  	cpu_data = policy->driver_data;
+>  
+> -	cpufreq_cpu_put(policy);
+> -
+>  	ret = cppc_get_perf_ctrs_sample(cpu, &fb_ctrs_t0, &fb_ctrs_t1);
+>  	if (ret) {
+>  		if (ret == -EFAULT)
+> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+> index f366d35c5840..fb962140af56 100644
+> --- a/drivers/cpufreq/intel_pstate.c
+> +++ b/drivers/cpufreq/intel_pstate.c
+> @@ -1698,7 +1698,7 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
+>  static void update_qos_request(enum freq_qos_req_type type)
+>  {
+>  	struct freq_qos_request *req;
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	int i;
+>  
+>  	for_each_possible_cpu(i) {
+> @@ -1710,7 +1710,6 @@ static void update_qos_request(enum freq_qos_req_type type)
+>  			continue;
+>  
+>  		req = policy->driver_data;
+> -		cpufreq_cpu_put(policy);
+>  
+>  		if (!req)
+>  			continue;
+> diff --git a/drivers/cpufreq/longhaul.c b/drivers/cpufreq/longhaul.c
+> index ba0e08c8486a..ae5596919671 100644
+> --- a/drivers/cpufreq/longhaul.c
+> +++ b/drivers/cpufreq/longhaul.c
+> @@ -950,7 +950,7 @@ static int __init longhaul_init(void)
+>  
+>  static void __exit longhaul_exit(void)
+>  {
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
+>  	int i;
+>  
+>  	for (i = 0; i < numscales; i++) {
+> @@ -968,7 +968,6 @@ static void __exit longhaul_exit(void)
+>  		}
+>  	}
+>  
+> -	cpufreq_cpu_put(policy);
+>  	cpufreq_unregister_driver(&longhaul_driver);
+>  	kfree(longhaul_table);
+>  }
+> diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
+> index f3f02c4b6888..1fae060e16d9 100644
+> --- a/drivers/cpufreq/mediatek-cpufreq.c
+> +++ b/drivers/cpufreq/mediatek-cpufreq.c
+> @@ -320,7 +320,7 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
+>  	struct dev_pm_opp *new_opp;
+>  	struct mtk_cpu_dvfs_info *info;
+>  	unsigned long freq, volt;
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	int ret = 0;
+>  
+>  	info = container_of(nb, struct mtk_cpu_dvfs_info, opp_nb);
+> @@ -354,11 +354,9 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
+>  
+>  			dev_pm_opp_put(new_opp);
+>  			policy = cpufreq_cpu_get(info->opp_cpu);
+> -			if (policy) {
+> +			if (policy)
+>  				cpufreq_driver_target(policy, freq / 1000,
+>  						      CPUFREQ_RELATION_L);
+> -				cpufreq_cpu_put(policy);
+> -			}
+>  		}
+>  	}
+>  
+> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+> index 7d9a5f656de8..ea9d78bbeb38 100644
+> --- a/drivers/cpufreq/powernv-cpufreq.c
+> +++ b/drivers/cpufreq/powernv-cpufreq.c
+> @@ -892,7 +892,7 @@ static int powernv_cpufreq_reboot_notifier(struct notifier_block *nb,
+>  				unsigned long action, void *unused)
+>  {
+>  	int cpu;
+> -	struct cpufreq_policy *cpu_policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8ulp.dtsi | 67 ++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+There's a typo here. I got a compile error because of wrong variable name.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-index 13b01f3aa2a4950c37e72e04f6bfb5995dc19178..fa7f75bec107fcb451a25da3f6e78c70bce7064c 100644
---- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-@@ -7,6 +7,7 @@
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/interrupt-controller/arm-gic.h>
- #include <dt-bindings/power/imx8ulp-power.h>
-+#include <dt-bindings/reset/imx8ulp-pcc-reset.h>
- #include <dt-bindings/thermal/thermal.h>
- 
- #include "imx8ulp-pinfunc.h"
-@@ -842,6 +843,72 @@ spdif: spdif@2dab0000 {
- 				dma-names = "rx", "tx";
- 				status = "disabled";
- 			};
-+
-+			isi: isi@2dac0000 {
-+				compatible = "fsl,imx8ulp-isi";
-+				reg = <0x2dac0000 0x10000>;
-+				interrupts = <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&pcc5 IMX8ULP_CLK_ISI>,
-+					 <&cgc2 IMX8ULP_CLK_LPAV_AXI_DIV>;
-+				clock-names = "axi", "apb";
-+				power-domains = <&scmi_devpd IMX8ULP_PD_ISI>;
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+						isi_in: endpoint {
-+							remote-endpoint = <&mipi_csi_out>;
-+						};
-+					};
-+				};
-+			};
-+
-+			mipi_csi: csi@2daf0000 {
-+				compatible = "fsl,imx8ulp-mipi-csi2", "fsl,imx8qxp-mipi-csi2";
-+				reg = <0x2daf0000 0x10000>,
-+				      <0x2dad0000 0x10000>;
-+				clocks = <&pcc5 IMX8ULP_CLK_CSI>,
-+					 <&pcc5 IMX8ULP_CLK_CSI_CLK_ESC>,
-+					 <&pcc5 IMX8ULP_CLK_CSI_CLK_UI>,
-+					 <&pcc5 IMX8ULP_CLK_CSI_REGS>;
-+				clock-names = "core", "esc", "ui", "csr";
-+				assigned-clocks = <&pcc5 IMX8ULP_CLK_CSI>,
-+						  <&pcc5 IMX8ULP_CLK_CSI_CLK_ESC>,
-+						  <&pcc5 IMX8ULP_CLK_CSI_CLK_UI>,
-+						  <&pcc5 IMX8ULP_CLK_CSI_REGS>;
-+				assigned-clock-parents = <&cgc2 IMX8ULP_CLK_PLL4_PFD1_DIV1>,
-+							 <&cgc2 IMX8ULP_CLK_PLL4_PFD1_DIV2>,
-+							 <&cgc2 IMX8ULP_CLK_PLL4_PFD0_DIV1>;
-+				assigned-clock-rates = <200000000>,
-+						       <80000000>,
-+						       <100000000>,
-+						       <79200000>;
-+				power-domains = <&scmi_devpd IMX8ULP_PD_MIPI_CSI>;
-+				resets = <&pcc5 PCC5_CSI_SWRST>,
-+					 <&pcc5 PCC5_CSI_REGS_SWRST>;
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+					};
-+
-+					port@1 {
-+						reg = <1>;
-+
-+						mipi_csi_out: endpoint {
-+							remote-endpoint = <&isi_in>;
-+						};
-+					};
-+				};
-+			};
- 		};
- 
- 		gpiod: gpio@2e200000 {
-
--- 
-2.34.1
-
+Thanks,
+Gautam
