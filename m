@@ -1,203 +1,257 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010029.outbound.protection.outlook.com [52.101.84.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D002FB99E
-	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 15:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756134587; cv=fail; b=KviIvm6HatIg/lcOOE/dPqKYyfmbXptwaIhjo1z/7QroKiCBky+UyH1zJr0nnLgfX//JmIv180qGYlWyupORhEur/6Sn8Q8BBo1jpettwacr3OCPrKdop5LDAJ1T8wftnBLIiXAEHkeOZbjjqSVip0P19Z4t2Xj4RNa2pPYzk18=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756134587; c=relaxed/simple;
-	bh=pM6alg2R1Oa0GhgphNe9lq/xvK/ckye1b1BzGi/elfg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=M1i3bVGTI0kD/keAZIAdFnp4gyWhAM2txd9S8L/WDFNnq3MjUOx6vJy3ey/eoqrH7iiK17tcy4n7PDvX/QtVeSfxXSJ7MSIkH9bTXtjX4+3X3S1tqo8snSC4R806ruNym7McrbhD121NaLmetV1d+31oh8kFklOb3hjLsDnwOLg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hHU01I/z; arc=fail smtp.client-ip=52.101.84.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DCA227E82;
+	Mon, 25 Aug 2025 15:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756134812; cv=none; b=huTrlUYGRtaYNO2jwCOGnxUxgFQemFkZ2OaZClVUIFtER3os6C159Wor0GJucMggEz4oh8cZKelnAiTLITIFg9EufsYZftmxvT20Se3jyoFH4nrlQzk1/O1AKDTcRJ9M2eWPfhEBwwtAl5i0UyCUGCSPHzs7ppkFXsDeZgWeCJQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756134812; c=relaxed/simple;
+	bh=qVVGVCmEX81q9uESMpI7TyxhGRS5UoJ7gvEO8EB+yKg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gOh8z7JYV97LHLMScfcE3eanNbsNFW6WLWqo0zq1YDs2lNVTAyNF6PxgG0NWjJ1Wna2WWpgfTH0mFOBh4P0PJe33tsXHo+E70Tj3gwbqnB+vnODw/eIATHfJTBHGSRdNy0F+Xh9r9tuPN+Rdfi7mpk7Iefz92bNpIMBR7mN9f1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jlcjShzr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hHU01I/z"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tSVbRHPpDQPGcoxqodd6j0BJmSe9wh86ykw8Z2KTNok6+FJ6tQPsCXwzNQbcJ666U4U1KzEjZxNQE/BjAlUJp3MtooJE9nOw/HFZvqdbP/kjW+Lu7/7NF9UO3N/kTXYg2D2TVh2ZIP191U/XLMIUNEZ1ufCNlR1N88G5UWZ3MPFBXa9pkJLK/4lqG2xYkNMA787GbMwbxOcSN9AES0ezXFPw3Scxml6oTcLBs213PHnp+g3vSqXAEhJ56HwTht4/GT5uHG4Ef1UxXjQfrki4sJFs+Fw81V94Xuvpj9GjvZjHT07auUbY4ZwIOFMytQVC8J351Gko/4vVHLZrB8+QOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M04R0y0IJISt3ICndXXU3gHvyQ4GkjGQsNzOfb4v/pI=;
- b=WuCpj+tmKpFw231z6sMCkqqyANkEw3x++gL/cJqtgU114ItrABYogkO5g6FWEY72uCLl9+wO2c5pS42Y0dM+ZCGqUWjPkOjSqETK3YCzrLYHKzh8osOjWQ8TIGpjSQZfyX6Ri/2Xh5g2LDujFN9droexDkhkc6k1GDimAbwHhOS3azOJSkSVunmtxPlkgKIwLB7nnn01eiP240x+HbV0dv6g9mjuN7z7wACN9lT1Byo0MI5MFBZNi7BJQT0U7wEJCqZNrKq8njfyCCiMjcJyZBPGKk/ANBlIwY6ucffeas8c6T6j2yfrQ1XR16UqDkEA1t3882m/twovhDUQ2kIrQA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M04R0y0IJISt3ICndXXU3gHvyQ4GkjGQsNzOfb4v/pI=;
- b=hHU01I/zMT3sgy9yZwwb1+SXkqZ0vv0/ZmWBQDUSJiWSEsvKfAkHtIALRebixdPFu7CSwvulF/rwRfapAktiGVob8QPDt71GZ9zh0bj5x91pKlyNM6Rri72zjYqaflFaNVeobA7UdQ2hmNWuYnjA7jwbviVIXXIKQGOmSmMdqyuzXQ4gGuxOupKGCVI6IVC5T1XFhjH7RReHfOAIyBKeWvBCLOCbaiVWg5asz3culFkNeL1f+hZZfbBYE+ghLX2KGL/fq/NLeHQT+EJGEqiElbeQ2JvsxQK+PAMzuM4fQqoPlrX/BcmpVyEv9Kwk8nPO9zUYi2bWB530JsdwLecYqg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by VI0PR04MB11022.eurprd04.prod.outlook.com (2603:10a6:800:25e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.10; Mon, 25 Aug
- 2025 15:09:42 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d%5]) with mapi id 15.20.9073.009; Mon, 25 Aug 2025
- 15:09:42 +0000
-Date: Mon, 25 Aug 2025 11:09:32 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	richardcochran@gmail.com, claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-	fushi.peng@nxp.com, devicetree@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, kernel@pengutronix.de
-Subject: Re: [PATCH v5 net-next 05/15] ptp: netc: add PTP_CLK_REQ_PPS support
-Message-ID: <aKx8rPX0uvRaP0KB@lizhi-Precision-Tower-5810>
-References: <20250825041532.1067315-1-wei.fang@nxp.com>
- <20250825041532.1067315-6-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250825041532.1067315-6-wei.fang@nxp.com>
-X-ClientProxiedBy: BY3PR10CA0018.namprd10.prod.outlook.com
- (2603:10b6:a03:255::23) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jlcjShzr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6642C4CEED;
+	Mon, 25 Aug 2025 15:13:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756134812;
+	bh=qVVGVCmEX81q9uESMpI7TyxhGRS5UoJ7gvEO8EB+yKg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=jlcjShzrpC72PpmqNkeR39/m61HIsV3DNjisBUSZiC/W8SqEEV4YFNHCO8Qa8xIuD
+	 NiC06ZgFtIH0OE1APL1wBlFbg9bsrDazQlbFXLYKOfSq3YOCS3Hxj8gtAqoTSeAqAk
+	 xHy10Uy3I4bcpojyqbaQH+nB/Ye700rvMaz/1ZlTspjO+ohq4z7m56aL23NM7F4Xqi
+	 0lMU+z786eKA46L4NwBMDPlm9TaAjm1wxkkXAyRqRioOdLBvbR815CnAaHTxl9rWWJ
+	 APuE0BKQqqW0QwTbV/9a4f0QgiUVgpxD5vh5EGyKs9tAWbYEDUwflKsKVyDeRDMPRe
+	 ZBOgUeKDLA8kA==
+Date: Mon, 25 Aug 2025 16:13:05 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Linus Walleij
+ <linus.walleij@linaro.org>, Eugen Hristev <eugen.hristev@linaro.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Cai Huoqing <cai.huoqing@linux.dev>, Haibo Chen <haibo.chen@nxp.com>, Shawn
+ Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, Marek Vasut <marek.vasut@gmail.com>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Magnus Damm
+ <magnus.damm@gmail.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Chen-Yu Tsai <wens@csie.org>, Jernej
+ Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>,
+ Francesco Dolcini <francesco@dolcini.it>, =?UTF-8?B?Sm/Do28=?= Paulo
+ =?UTF-8?B?R29uw6dhbHZlcw==?= <jpaulo.silvagoncalves@gmail.com>, Rui Miguel
+ Silva <rmfrfs@gmail.com>, Jean-Baptiste Maneyrol
+ <jean-baptiste.maneyrol@tdk.com>, Subhajit Ghosh
+ <subhajit.ghosh@tweaklogic.com>, Gerald Loacker
+ <gerald.loacker@wolfvision.net>, Andreas Klinger <ak@it-klinger.de>, Crt
+ Mori <cmo@melexis.com>, Waqar Hameed <waqar.hameed@axis.com>, Julien
+ Stephan <jstephan@baylibre.com>, Peter Zijlstra <peterz@infradead.org>,
+ Greg KH <gregkh@linuxfoundation.org>, Bo Liu <liubo03@inspur.com>, Al Viro
+ <viro@zeniv.linux.org.uk>, Sean Nyekjaer <sean@geanix.com>, Frank Li
+ <Frank.Li@nxp.com>, Han Xu <han.xu@nxp.com>, Rayyan Ansari
+ <rayyan@ansari.sh>, Gustavo Vaz <gustavo.vaz@usp.br>, Matti Vaittinen
+ <mazziesaccount@gmail.com>, Alexandru Ardelean <aardelean@baylibre.com>,
+ "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, "Rob Herring (Arm)"
+ <robh@kernel.org>, Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>, Olivier
+ Moysan <olivier.moysan@foss.st.com>, Christophe JAILLET
+ <christophe.jaillet@wanadoo.fr>, Marcelo Schmitt
+ <marcelo.schmitt1@gmail.com>, Vasileios Amoiridis <vassilisamir@gmail.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Hans de Goede
+ <hansg@kernel.org>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Abhash Jha <abhashkumarjha123@gmail.com>, chuguangqing
+ <chuguangqing@inspur.com>, Shreeya Patel <shreeya.patel@collabora.com>,
+ Per-Daniel Olsson <perdaniel.olsson@axis.com>, =?UTF-8?B?QmFybmFiw6FzIEN6?=
+ =?UTF-8?B?w6ltw6Fu?= <barnabas.czeman@mainlining.org>, Neil Armstrong
+ <neil.armstrong@linaro.org>, David Laight <david.laight@aculab.com>, Jakob
+ Hauser <jahau@rocketmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v3 08/12] iio: light: Remove redundant
+ pm_runtime_mark_last_busy() calls
+Message-ID: <20250825161305.611ecb75@jic23-huawei>
+In-Reply-To: <20250825135401.1765847-9-sakari.ailus@linux.intel.com>
+References: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
+	<20250825135401.1765847-9-sakari.ailus@linux.intel.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|VI0PR04MB11022:EE_
-X-MS-Office365-Filtering-Correlation-Id: f0579427-31a0-4798-8d1d-08dde3e96b6f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|19092799006|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qHAb83VuDOc0rfc93Ts4LqiwDa39i6H7TwMqocNDY5rR1nTSNnwhU+G5yX66?=
- =?us-ascii?Q?/P8y1m3TBtjGW/quIWx3QO7miLBArGvkYfGRedX0Gg19QVUxqmCa2hLbvDkz?=
- =?us-ascii?Q?qvF75/6w7VoxCdhnWqMh7mJ6DqJBw9FvkyqVAx3A6ZOdiV3c3tYAqHSuJN7i?=
- =?us-ascii?Q?hVzQb/0hm9tW2oigTzyZ4eT9JOLhGv9bNw96kBBTflpy9/KR9tCa4OF/aSEz?=
- =?us-ascii?Q?v1EtzM529uumwK3u24li8xbVV32erbFvBSOqiAZGVfCxgUU7Me5mm/oVTopW?=
- =?us-ascii?Q?EX1Q3gLVahlrm9CbGeKbgHNHDljj84vZlMMQaf1j2p2PBzFjttB7/d0b3uOu?=
- =?us-ascii?Q?aSz6YHy2Vz8y7qf00ZE0aQpcwk+fKn3e32PQzETk7InNAbGQQM66KVivqONV?=
- =?us-ascii?Q?FOurSsRRivzX85CnrDOD4iWjaHNYXJXk2wzhh4mF6VnMtO9vaCGrQ1oY+gzi?=
- =?us-ascii?Q?hXM+8VGOcJr6EacFelBX6WIWA35MYq/PJN4F4F3TbvltYV27hpEaKn4EBF7p?=
- =?us-ascii?Q?80eHRNh+dKeERkOmYqx0pGJxEkaRCjvVHYxTb9861+2F7GwLxpuLHvam7Vry?=
- =?us-ascii?Q?kmTcxAug5Q5D1Ec3UpPXYddTYuCiFhvTKxzgmiK9GdQN69MRvxbh0QSL57aj?=
- =?us-ascii?Q?uXpEDppeEqNREfD5sXCpXNYKasZNp7ayKU02b8PxHGz2J3JonipJ8VInC3pE?=
- =?us-ascii?Q?YmsRSP3BL7DtZoj9dyC4hS+T/lOOukFjlSl87K/6VrTiyRreARVf0djzE2yH?=
- =?us-ascii?Q?1eKF57wiiNXqDuF628rtZvGiPTmbcg3nIqtJxdm+sF5rOKulsHAEVzjIpCuv?=
- =?us-ascii?Q?OPOdH1SooB8u8AqpMvZrd/u6BoPOmcsLT1HIm8P5hglJgGytSys8RCDmPd+v?=
- =?us-ascii?Q?5a3qnX9cxSrgk76GmefJ0a+J/Uppta2Kj0SSisIyrE2x4KQ53gZRLrRWHIUG?=
- =?us-ascii?Q?2L3nAghnWRYRm1OwAVl5GIOsj6/a3unQcoVc/ByjA8S7uE2bgPEYSn28evwA?=
- =?us-ascii?Q?ygU9SlZmeZvQbccawoe2oCAnNFU5JbrwKbVHJEgFVbizRpRp47XRD6eCbtcg?=
- =?us-ascii?Q?3yQu2MMga+S9zA3TwyNOYd6cNKM8nUFXZthfylug0eJTi8eIGI1amfWxK34T?=
- =?us-ascii?Q?M+m+1YQ9cgFBhTZvO7I9DkpUITOZNuFtrs/cZbjtmakwk5KBTcyxy5Gkk0Fk?=
- =?us-ascii?Q?XyFoPuifskL7xKj/vJsBmurwFKnckh2+UddIIiiEfa+yRp2a1UiixMXJWcT7?=
- =?us-ascii?Q?OGpYybxDICdeM9yILbNUS2p4795GuvYQ6RGkFsLedmv6Qrdx2aEx7U1GA8vW?=
- =?us-ascii?Q?0SBkSvLvne+3K6asAOozPVQFGDINFG+aYLNpent90HfJ1IVolBZiwxVVSFx/?=
- =?us-ascii?Q?qesKjQoNnhD2PYmQUtn0h0n3RpMiWzdgyCP8kBBFMN6uOkErUgiBqCZMKEgk?=
- =?us-ascii?Q?v6bFRVfI0FMxEnf9BButonmWrU2xiwmGVG1YBb3PbevibNvZlZZkmQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(19092799006)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KZ2WQ17ZNmFkEI+hT2+5klsg+fDED5dVrQDdptIbm/uzZx+JZ3iIH3wns1qh?=
- =?us-ascii?Q?n8IQmn+77gJFGaFJieQZSbhlxpby0q9XJzpFkUdW0Vm8f4AEnW2eWH+vArQX?=
- =?us-ascii?Q?DgtoTNSsMnvKgVfbtP1eM07iN1VJRAIKE98WAty02yZof6RpIocz2Ix79Dog?=
- =?us-ascii?Q?S0c+SN5xQJbYhAuQicaCyKN7L3QZ3BvR0pHr7DJ3iY2uaQWNMbuooOAd6aDU?=
- =?us-ascii?Q?K9Pv+F4exmW2+V2AV68raENqFEIXu5T5DWBTTXXfjWBxA/Oz09yo3hQ7NdHR?=
- =?us-ascii?Q?Z5ODqM4vTQWx5ipS/GhQSV++ihThaTndEngOTyCLqlodRnCTYIWbiC0rOu8Y?=
- =?us-ascii?Q?sZx+8BXKXaDWP9srkuneMsyJTVOZtU6y4ggy8AcTZOH7EfLiif9jMYMN3hsf?=
- =?us-ascii?Q?fZ1hWU6+E92ZakEhfPQxyXXnN1y4wAaSt9QY204dI96DwxR4WdnloRlc/hZu?=
- =?us-ascii?Q?jujHstuyu/sxyyt/W2w7drEecFOaTsKLHw/jKsuYV1Qjt8j9RnJaRrWbrzT9?=
- =?us-ascii?Q?WdgOVDCYJbPWssPccC9N1st7jRAJakZ4czXI9scLkYyxxHqAlRZeUTLGRtpo?=
- =?us-ascii?Q?6cFCY4UAQNfblI9f9/7PKfz53C3nI0uTyGa/g6f0eOXUVgslV5yQe2wnbgup?=
- =?us-ascii?Q?mhr2OuYQ8EtdBx5MjJtlZyoJadgR5sDHXgSOcEuvkU+4hO5UVB9TNpJxPt8V?=
- =?us-ascii?Q?+iBwlbvJBXCn6CyWm/44HNiFYoRmIVMDzjfcX0YhPpDTrxqYYxAlBwTPjTFg?=
- =?us-ascii?Q?OXH2AoIx1uC4L23mJJatdibbyRs4ib9aO98vHbjQOMvyBEV0u6ynuqa1plD5?=
- =?us-ascii?Q?tlDvM9meJiC564EPuMIqRlDFg2BQXdtj7cABpaXVPsUIKslF7fPAQ8dLce2P?=
- =?us-ascii?Q?ul/w3FOLCMEXo5Dnk0h+54ZOw1qdJgoxSaXBTca9YR6CnvELM9U+yizG//PA?=
- =?us-ascii?Q?loW/BRN4s7uNXRWWx0b7QiP5JDiLVXt/B9lhUm2JtIh3pbE/ZU7s3AIumFA6?=
- =?us-ascii?Q?EefFEkTqkaTF+mibSTB0jm8vbawpxPrQtfbmexVtRsRfNreLAGTphjA9FKbf?=
- =?us-ascii?Q?o8sCEbZ6r0Yx+hJU5safcfX7szseWDt9Ybk8yC/PPPrOZmp3hqk8muO3EY4E?=
- =?us-ascii?Q?Jw6LFnwjGUJ03VYAehWLq6MQYecZU+z3PbEJXGiO/QmtBsF67OCsRCg4oPH9?=
- =?us-ascii?Q?+gblKK+1JaHn8r37usFj2Ir4BfRDugslv0tVxwLF+twyTzefyak1C0VQXVYp?=
- =?us-ascii?Q?03C34MqAS3dxvFx42yTrYmzc+j0mDcZypbxpKSKniZSxNTIiljXv8qyXSzRS?=
- =?us-ascii?Q?SOtxNtkREfmdX0iJRyqME9troQcl1VJUbDqgsIybA95pHawH7h+7KkZN+Qu/?=
- =?us-ascii?Q?wg/fFDm+EvF6nQ7ZqgiAeRMdOaU8KUR/tU/aOV69JdmaCsciEECsbgnLr+go?=
- =?us-ascii?Q?k0T20ObKFKgWLanwn4tG7Y+yPNp/3SaiK3UtD6SATForfuikzpNfx7gKuT/1?=
- =?us-ascii?Q?7RfZBN5JXq/awXAJUCEdHP6hfsU3+7RXXQ5acZhpg8j3BJrCQaQcDvHfred+?=
- =?us-ascii?Q?EezfabIERfnBmRMqPfk=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f0579427-31a0-4798-8d1d-08dde3e96b6f
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 15:09:42.7356
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uT9cZnKICA1S/CHmbhvcd9ZhqdGJPWpTnmWah3E5GdOidb6zghrVEjiwuLCCmeLVlW8uSKZGQIqzZ8ryff1AlQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11022
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 25, 2025 at 12:15:22PM +0800, Wei Fang wrote:
-> The NETC Timer is capable of generating a PPS interrupt to the host. To
-> support this feature, a 64-bit alarm time (which is a integral second
-> of PHC in the future) is set to TMR_ALARM, and the period is set to
-> TMR_FIPER. The alarm time is compared to the current time on each update,
-> then the alarm trigger is used as an indication to the TMR_FIPER starts
-> down counting. After the period has passed, the PPS event is generated.
->
-> According to the NETC block guide, the Timer has three FIPERs, any of
-> which can be used to generate the PPS events, but in the current
-> implementation, we only need one of them to implement the PPS feature,
-> so FIPER 0 is used as the default PPS generator. Also, the Timer has
-> 2 ALARMs, currently, ALARM 0 is used as the default time comparator.
->
-> However, if the time is adjusted or the integer of period is changed when
-> PPS is enabled, the PPS event will not be generated at an integral second
-> of PHC. The suggested steps from IP team if time drift happens:
->
-> 1. Disable FIPER before adjusting the hardware time
-> 2. Rearm ALARM after the time adjustment to make the next PPS event be
-> generated at an integral second of PHC.
-> 3. Re-enable FIPER.
->
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+On Mon, 25 Aug 2025 16:53:57 +0300
+Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+> pm_runtime_mark_last_busy().
+> 
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Hi Sakari,
 
->
-> ---
-> v5 changes:
-> 1. Fix irq name issue, since request_irq() does not copy the name from
->    irq_name.
-> v4 changes:
-> 1. Improve the commit message, the PPS generation time will be inaccurate
->    if the time is adjusted or the integer of period is changed.
-> v3 changes:
-> 1. Use "2 * NSEC_PER_SEC" to instead of "2000000000U"
-> 2. Improve the commit message
-> 3. Add alarm related logic and the irq handler
-> 4. Add tmr_emask to struct netc_timer to save the irq masks instead of
->    reading TMR_EMASK register
-> 5. Remove pps_channel from struct netc_timer and remove
->    NETC_TMR_DEFAULT_PPS_CHANNEL
-> v2 changes:
-> 1. Refine the subject and the commit message
-> 2. Add a comment to netc_timer_enable_pps()
-> 3. Remove the "nxp,pps-channel" logic from the driver
-> ---
->  drivers/ptp/ptp_netc.c | 262 ++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 259 insertions(+), 3 deletions(-)
->
-...
->
-> --
-> 2.34.1
->
+I'm going to apply this as it stands, but there has been a lot
+of cut and paste in these drivers, so a common pattern is to have
+a no entirely pointless power(bool enable) function.  
+Previously it at least wrapped up 2 calls, now it is doing a choice
+between two single line calls so makes no sense.
+
+Anyhow, if anyone wants to clean these up that would be great.
+In meantime I'd rather not leave cases of the pm_runtime_mark_last_busy()
+around to get pasted into more drivers.
+
+So applied,
+
+Jonathan
+
+> diff --git a/drivers/iio/light/isl29028.c b/drivers/iio/light/isl29028.c
+> index 0e4284823d44..374bccad9119 100644
+> --- a/drivers/iio/light/isl29028.c
+> +++ b/drivers/iio/light/isl29028.c
+> @@ -336,16 +336,11 @@ static int isl29028_ir_get(struct isl29028_chip *chip, int *ir_data)
+>  static int isl29028_set_pm_runtime_busy(struct isl29028_chip *chip, bool on)
+>  {
+>  	struct device *dev = regmap_get_device(chip->regmap);
+As below.
+
+> -	int ret;
+>  
+> -	if (on) {
+> -		ret = pm_runtime_resume_and_get(dev);
+> -	} else {
+> -		pm_runtime_mark_last_busy(dev);
+> -		ret = pm_runtime_put_autosuspend(dev);
+> -	}
+> +	if (on)
+> +		return pm_runtime_resume_and_get(dev);
+>  
+> -	return ret;
+> +	return pm_runtime_put_autosuspend(dev);
+>  }
+>  
+
+> diff --git a/drivers/iio/light/tsl2583.c b/drivers/iio/light/tsl2583.c
+> index fc3b0c4226be..8801a491de77 100644
+> --- a/drivers/iio/light/tsl2583.c
+> +++ b/drivers/iio/light/tsl2583.c
+> @@ -641,16 +641,10 @@ static const struct iio_chan_spec tsl2583_channels[] = {
+>  
+>  static int tsl2583_set_pm_runtime_busy(struct tsl2583_chip *chip, bool on)
+>  {
+
+As below.
+
+> -	int ret;
+> +	if (on)
+> +		return pm_runtime_resume_and_get(&chip->client->dev);
+>  
+> -	if (on) {
+> -		ret = pm_runtime_resume_and_get(&chip->client->dev);
+> -	} else {
+> -		pm_runtime_mark_last_busy(&chip->client->dev);
+> -		ret = pm_runtime_put_autosuspend(&chip->client->dev);
+> -	}
+> -
+> -	return ret;
+> +	return pm_runtime_put_autosuspend(&chip->client->dev);
+>  }
+
+> diff --git a/drivers/iio/light/us5182d.c b/drivers/iio/light/us5182d.c
+> index 61a0957317a1..d2f5a44892a8 100644
+> --- a/drivers/iio/light/us5182d.c
+> +++ b/drivers/iio/light/us5182d.c
+> @@ -361,19 +361,13 @@ static int us5182d_shutdown_en(struct us5182d_data *data, u8 state)
+>  
+>  static int us5182d_set_power_state(struct us5182d_data *data, bool on)
+
+As below.
+
+>  {
+> -	int ret;
+> -
+>  	if (data->power_mode == US5182D_ONESHOT)
+>  		return 0;
+>  
+> -	if (on) {
+> -		ret = pm_runtime_resume_and_get(&data->client->dev);
+> -	} else {
+> -		pm_runtime_mark_last_busy(&data->client->dev);
+> -		ret = pm_runtime_put_autosuspend(&data->client->dev);
+> -	}
+> +	if (on)
+> +		return pm_runtime_resume_and_get(&data->client->dev);
+>  
+> -	return ret;
+> +	return pm_runtime_put_autosuspend(&data->client->dev);
+>  }
+>  
+>  static int us5182d_read_value(struct us5182d_data *data,
+> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> index cc81a30b7c70..4dbb2294a843 100644
+> --- a/drivers/iio/light/vcnl4000.c
+> +++ b/drivers/iio/light/vcnl4000.c
+> @@ -576,16 +576,11 @@ static bool vcnl4010_is_in_periodic_mode(struct vcnl4000_data *data)
+>  static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data *data, bool on)
+
+As below.
+
+>  {
+>  	struct device *dev = &data->client->dev;
+> -	int ret;
+>  
+> -	if (on) {
+> -		ret = pm_runtime_resume_and_get(dev);
+> -	} else {
+> -		pm_runtime_mark_last_busy(dev);
+> -		ret = pm_runtime_put_autosuspend(dev);
+> -	}
+> +	if (on)
+> +		return pm_runtime_resume_and_get(dev);
+>  
+> -	return ret;
+> +	return pm_runtime_put_autosuspend(dev);
+>  }
+>  
+>  static int vcnl4040_read_als_it(struct vcnl4000_data *data, int *val, int *val2)
+> diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
+> index 01bc99564f98..963747927425 100644
+> --- a/drivers/iio/light/vcnl4035.c
+> +++ b/drivers/iio/light/vcnl4035.c
+> @@ -141,17 +141,12 @@ static const struct iio_trigger_ops vcnl4035_trigger_ops = {
+>  
+>  static int vcnl4035_set_pm_runtime_state(struct vcnl4035_data *data, bool on)
+
+I'd like to get rid of this function.  It was of marginal benefit before it got
+even simpler, not it is actively making the code worse to read.
+
+>  {
+> -	int ret;
+>  	struct device *dev = &data->client->dev;
+>  
+> -	if (on) {
+> -		ret = pm_runtime_resume_and_get(dev);
+> -	} else {
+> -		pm_runtime_mark_last_busy(dev);
+> -		ret = pm_runtime_put_autosuspend(dev);
+> -	}
+> +	if (on)
+> +		return pm_runtime_resume_and_get(dev);
+>  
+> -	return ret;
+> +	return pm_runtime_put_autosuspend(dev);
+>  }
+>  
+>  static int vcnl4035_read_info_raw(struct iio_dev *indio_dev,
+
