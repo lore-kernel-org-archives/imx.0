@@ -1,160 +1,92 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE94D293C44;
-	Mon, 25 Aug 2025 20:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B56F2836BD
+	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 20:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756153644; cv=none; b=Xlme6a/dHBLKnVc4WzEG0C8REmqZ1Wyo2pkSgaFiodrnbEebHLL8MsVznZRyWfWKQpgyCadi1r7uIXkNsSB9VeNK97/xbtJ3wfOPpGSL9KbWAl7ai0wPjbMJ9iwCdfWtBAGzI8w8oshE1IBV1/GZYcnjy0jAZcZKYuwkFhGtcS8=
+	t=1756155135; cv=none; b=hl35Gx1C2pBL5ItEiCESCDg+DcqMtSJfx32ygxOyekkqhv5pdebg1LQtQobd6jf1ktli/BX3kpgCA2DvvTrfWgpgGirJGzFd9naVoPPcr5i4wYkbONQ7FOSpHaPW4/JqnLniZusNAEvW3WIs5RUeQIWBXQ3AWSaex7Ya9tFUMwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756153644; c=relaxed/simple;
-	bh=FHQO1qIi2frWsYih6E50v+BhkfadCKotC8hnJWvlN0w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sGYd62AgFQY7o4EPi+D4xXTmayv70aDfMEjov4A58JWRTjmbkYJPTlrgpKE/H68ryyb1XXY69sllfzlGu9FXvwJtwXvjAg1gPcZ0oS018kivBap0+Qjj1n9ul5YZcStb2pECXm3QMGDBln9Q70l4msk2CQ1rBdKnlAhO6Bgk80M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YKXgdt4G; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1756155135; c=relaxed/simple;
+	bh=9DEL2Oo+Nr3m/HuNqtk5iDSfuOk2l+HqodByEWatvqY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=FcnEP+ke+A3iEk8dPDl6ryB8fZwjDndHpOA1IhcdqEpbhb8p6z7+wY6mirTnABIz4fXvo+wPzh2o/7biOuegeGUzEGfQqMadLKaEQ6AVYiblA1GpTefhWXDxWOp0ThOgrcCzOOLQB5uLpgTY+2fobjnA+jyl4k/rGmpHftwoMSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=KOTwHdFw; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YKXgdt4G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756153643; x=1787689643;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FHQO1qIi2frWsYih6E50v+BhkfadCKotC8hnJWvlN0w=;
-  b=YKXgdt4G0pRpd8TyM1A0DHQLaW8HdRWvxl2bOHLCbVr/d0xXJrRdX9b5
-   kUvKU4fbDXAwOZ7zujoqJPqcH8vI4qSc4bn3cWD0GkBzb7tWGduwxuG+u
-   96t4AMIm8wrQ/hw1dyeNwpvZGZAO4RvLsATHLAUi6fAY7zWs29RrNaJah
-   NJ0CMTM2UXozNzEUw9FkQfHO1+3fMrxhk7pNX8zGcu+MLqHang+KFuKp+
-   Uw+YOivxa6Ziu5va94NjYL+cc5r9mxiScADEVMVE8rsLmFZDSRcu+DueC
-   sFnzmzT3qE5Q26ABpsvBRmqXPDnk67JFeE5kw/PcH0k8/dBHrGvJ2Hl4q
-   g==;
-X-CSE-ConnectionGUID: TM3Ax8fVQ72pjilvrwNhvA==
-X-CSE-MsgGUID: 3q6CnvtVSiGW7dc4COzD1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="69091779"
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="69091779"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:27:22 -0700
-X-CSE-ConnectionGUID: YE42RwvDQ1q8EEEGZm/Fzg==
-X-CSE-MsgGUID: 4f0lYBFsQNCvAitTLdcEKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="200282208"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.157])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:27:11 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 2961711FB0F;
-	Mon, 25 Aug 2025 23:27:09 +0300 (EEST)
-Date: Mon, 25 Aug 2025 23:27:09 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Cai Huoqing <cai.huoqing@linux.dev>,
-	Haibo Chen <haibo.chen@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Marek Vasut <marek.vasut@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-	Gerald Loacker <gerald.loacker@wolfvision.net>,
-	Andreas Klinger <ak@it-klinger.de>, Crt Mori <cmo@melexis.com>,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Julien Stephan <jstephan@baylibre.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Greg KH <gregkh@linuxfoundation.org>, Bo Liu <liubo03@inspur.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, Sean Nyekjaer <sean@geanix.com>,
-	Frank Li <Frank.Li@nxp.com>, Han Xu <han.xu@nxp.com>,
-	Rayyan Ansari <rayyan@ansari.sh>, Gustavo Vaz <gustavo.vaz@usp.br>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Alexandru Ardelean <aardelean@baylibre.com>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Abhash Jha <abhashkumarjha123@gmail.com>,
-	chuguangqing <chuguangqing@inspur.com>,
-	Shreeya Patel <shreeya.patel@collabora.com>,
-	Per-Daniel Olsson <perdaniel.olsson@axis.com>,
-	=?iso-8859-1?B?QmFybmFi4XMgQ3rpbeFu?= <barnabas.czeman@mainlining.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	David Laight <david.laight@aculab.com>,
-	Jakob Hauser <jahau@rocketmail.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v3 05/12] iio: dac: Remove redundant
- pm_runtime_mark_last_busy() calls
-Message-ID: <aKzHHZ4y-lA-b5YW@kekkonen.localdomain>
-References: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
- <20250825135401.1765847-6-sakari.ailus@linux.intel.com>
- <20250825160023.4070bbc1@jic23-huawei>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="KOTwHdFw"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id C277FA0D0C;
+	Mon, 25 Aug 2025 22:52:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=Qx/nBrJgEy4ACj8BLrfZ
+	hPmHWNsIJJlIdSPVY29XGDo=; b=KOTwHdFwrlssuKhGmYQi1pNHWmLpcDzUjzuD
+	5aSkfx5fPlX5pUFG2CmstfASRrQ63+dQM5mTlVid5T6muXMYB1NQQUAAIcxcfrzy
+	wHUURmxj/lFJZAf9AZ1E5GPMpW8r0RLdLBSOwLv/moIdG/Q3qaT908u6u1oIgu9b
+	PskeO6wLgT32xzj9mL/h7ao0HKZxhnR/sjaTDQ2sG3vLM4aOncH4LGfBi7Jx7DV3
+	LKXZRwYxi9Q5XbgRNzrXFTTkRSG1Y5FAbUa1UB7b+nUTSwWc1gTqNOsr364oQfPL
+	bctg3oo0ldAphuHR+xxR6pWRCdWendzWdkuHtkXYvmZdnkyoZUElOPHQgszzQzeo
+	CrN51MHMVNPoIq5z/1oRqDhsoVFxFXAcYLVnYeE7H4GvXVtuMemZhTqD+BA/6NwT
+	SqTUsy33vVPmSFJjmn/tvfSVIgrlhtwm6JkSpb07cPbNQMeKU/GxTB2LFnXGrdr/
+	wAwHDZztY0tpsDvixH8M6s2lGM/0u1DDmCxHziFGkzW/J6/LevhVXjR4FN7XRU0w
+	IxboxRGK2GlTkinQ2lm+ZQT8pormbrRNl14AqXHt6qooU9worejDL6dKUzG5O3S3
+	+0g/e1RMg1vpECBPGfocTU2K7/5W0JRByN/Hk/LW6RsMP3DFBCW8B589f4RdeBzx
+	KjxnBXU=
+Message-ID: <8d951db9-80a5-4209-ada5-6bba854e994d@prolan.hu>
+Date: Mon, 25 Aug 2025 22:52:06 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250825160023.4070bbc1@jic23-huawei>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ARM: dts: imx6-hummingboard: Replace license text
+ comment with SPDX identifier
+To: Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>
+CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	Rabeeh Khoury <rabeeh@solid-run.com>
+References: <20250709-hb-dts-lic-v2-1-a168bd9d24bd@prolan.hu>
+Content-Language: en-US
+From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
+In-Reply-To: <20250709-hb-dts-lic-v2-1-a168bd9d24bd@prolan.hu>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: sinope.intranet.prolan.hu (10.254.0.237) To
+ ATLAS.intranet.prolan.hu (10.254.0.229)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A296767155E60706B
 
-Hi Jonathan,
+Hi,
 
-On Mon, Aug 25, 2025 at 04:00:23PM +0100, Jonathan Cameron wrote:
-> > @@ -95,18 +95,8 @@ static int stm32_dac_set_enable_state(struct iio_dev *indio_dev, int ch,
-> >  	if (en && dac->common->hfsel)
-> >  		udelay(1);
-> >  
-> > -	if (!enable) {
-> > -		pm_runtime_mark_last_busy(dev);
-> > -		pm_runtime_put_autosuspend(dev);
-> > -	}
-> > -
-> > -	return 0;
-> > -
-> > -err_put_pm:
-> > -	if (enable) {
-> > -		pm_runtime_mark_last_busy(dev);
-> > -		pm_runtime_put_autosuspend(dev);
-> > -	}
-> > +err_pm_put:
-> > +	pm_runtime_put_autosuspend(dev);
+On 2025. 07. 09. 9:28, Bence Csókás wrote:
+> Replace verbatim license text with a `SPDX-License-Identifier`
 > 
-> now the put is here, whether or not there was ever a get as the get is
-> gated on enable()
+> The comment header mis-attributes this license to be "X11", but the
+> license text does not include the last line "Except as contained in this
+> notice, the name of the X Consortium shall not be used in advertising or
+> otherwise to promote the sale, use or other dealings in this Software
+> without prior written authorization from the X Consortium.". Therefore,
+> this license is actually equivalent to the SPDX "MIT" license (confirmed
+> by text diffing).
+> 
+> On top, half of the files have the fragment "either version 2 of the
+> License" for some reason, and not follow up with "or any later version".
+> So the resulting SPDX license is still "GPL-2.0-only".
+> 
+> Cc: Rabeeh Khoury <rabeeh@solid-run.com>
+> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
 
-Oops. I'll fix this in v4, with just this patch as the rest are merged.
+So, Rabeeh, Russell, what do you think? Is there something else I need 
+to change?
 
--- 
-Regards,
+Bence
 
-Sakari Ailus
