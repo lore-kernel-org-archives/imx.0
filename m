@@ -1,232 +1,184 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011002.outbound.protection.outlook.com [52.101.65.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671302C21D4
-	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 08:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756111054; cv=fail; b=m1m+2IWjWm/wNqwxd2z6jbDRn5ZPjSOdUoVAbH/wB6MtHB+XkYz3JO0/HdZzsHRv3pCQV95/RDYsyPgZbMz8ltPHIupsrVZrQ0QSd8BLR1F8Cjc0M0ibLq8KyFKL7aAHcrRuDhyNb2bEridZGy/Pckh5iIwdRqpKfz4qqiqjDA0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756111054; c=relaxed/simple;
-	bh=gMUta7OF9+vcGkZ0qjR43jol+NUTS9NEegva8yuQRb8=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=qmpGcMIPHoNFqyAx+cV0rfH3uLDD9x4Xoyd5Nhr8umcZiS30eqTEtvtd/YGh6SYxTqYg68gmRDWnZz919qmXOz88DQphz14PEnloMZOq4sHfOuf0Taf/WPBFAwELOsaRNCVJk0emEmNfVLY7Qt29+G1qHuQBJSKXlN3U0lf0xv4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UeueZgB5; arc=fail smtp.client-ip=52.101.65.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460C7242D96;
+	Mon, 25 Aug 2025 08:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756111246; cv=none; b=XPwwMh2UtelS2wdDAQLkbplqkKzvIrU7MGKZc547SRvCR/f6bw48sB0WreSmoBfBFxUmhFhKH49BI4cqk5d0VqVaCdh3PvA6LOsGH6WgO74rWdjhDcthUsTcyMY0fuM1D6OOfX2AsUQePtQ06NDfETSwXChor0u1JqdRp6SWJrw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756111246; c=relaxed/simple;
+	bh=aL0MAVPP+baLaUpSwr0jfz0k4rjTubYNQV6vSJB6OP8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QumvMAJyCeQvjT3ebz/RN5jOtAa3tW0NOm+MmPCbZS50TTSujzJ4hKx7dtb8jKs9ehrlr8BOGHYFAnkyyV1sCCFUixylZ2LHsDfRyPHHLFxMf50hkQzPhVwUIZ76/ShhwLxzpdFkwH4Z3N1UVmp3/VhvhAyS6peHGEVKanXFEzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FhTSsXLt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UeueZgB5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L/UN3bnoePYe3phue385GfQodQC+5XfyDaJT4SdWndFIQ6W3t8ZKmrBQCyktehecacHH602EUVWNNCML7BSvfjFb72sq74Fo04LAv4DLc42H/CntI00fip+rL6wDX/cG/OjPsM9ZtAqjf44lvraZPYAFYT5IBT86okvopYSYEFUtLj+kz/7IrHV98ON/98WQKruv8fjYw6joMnet9tUsvF39sZJXUxwPpz8w7Oas2jqTFd4DWH7zV78MR0fVh5VLdfmx0++pechXPVO8b9E1NX6z3WCMQhkc0XVUJD7x4pmmVbkiWVn7F4xUKdPndbkLAvuobb3uVBWQLwyxjRR3CA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lsilJbE3npko+8A73/ssMw/LppOOKFMizWtS+zP1vVE=;
- b=t8GGM99K2f8ohRj+CNxpxFY7sYJcJakYgqkP0y0AfVm8tmzAaon329e2cMmfhUiz28hOgXfiFDDhtBFairy54Rzu82cwpsbVnEZrRyuJjhsngQWcHYl6nzzf8jV0EipoEmHTkic+N9WBuxrcYBsofberxaOnvMpbJGHazvfyCoKWTMJ3KoaaTImPwDpurUyqv73H+9KoJnaLKPkgD5ot74J7FgnpNsSC0qIUaYlDKtdTlhB69ZV4pyKwhAnjoBrMv70P97mvofn/fXkZTULmFtVr65/ltgl5jnx3ca91Gqok2a14g1y2CJ+jlN0zqWEy411WdjGUr/VCg13IdyKsHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lsilJbE3npko+8A73/ssMw/LppOOKFMizWtS+zP1vVE=;
- b=UeueZgB5lJHmOrKmviCD6LdiOlJzlEGUjPwy2eb8o/LldFmGkj0CPVzHvn0oh7hn9K1FcGZqi5D4WtpZfSc2fIkpRKm0wTWe52+P2KWidIUMmcNkSSDU3OsNLDAI8FFSUfCk2fYoMA6xxkjcjPcjIDVPs8mPNBgnF+nzh3D2rNEEP8tVHGPP2BEmHaIwnjd+F2vg2tJvsS6kA7WzHmfz+kXbGR09tkM2ZjneT6pt6Xsznur+G/8+rKI0DbYEbAKaMdfez8RlRKyhxpcr8yW9yGNPdgpkTO1t2kFdFtmTtVT7LHBcZJDqHQ0TIqKlQQpR9RUx5L1z6KlMOeq+t/O9WQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PAXPR04MB8240.eurprd04.prod.outlook.com (2603:10a6:102:1c5::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.12; Mon, 25 Aug
- 2025 08:37:29 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.9073.009; Mon, 25 Aug 2025
- 08:37:29 +0000
-From: Peng Fan <peng.fan@nxp.com>
-Date: Mon, 25 Aug 2025 16:36:46 +0800
-Subject: [PATCH v2 5/5] arm64: dts: imx93-11x11-evk: Use phys to replace
- xceiver-supply
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250825-can-v2-5-c461e9fcbc14@nxp.com>
-References: <20250825-can-v2-0-c461e9fcbc14@nxp.com>
-In-Reply-To: <20250825-can-v2-0-c461e9fcbc14@nxp.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>, 
- Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Aswath Govindraju <a-govindraju@ti.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
- Haibo Chen <haibo.chen@nxp.com>
-Cc: linux-can@vger.kernel.org, linux-phy@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756111013; l=1751;
- i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
- bh=gMUta7OF9+vcGkZ0qjR43jol+NUTS9NEegva8yuQRb8=;
- b=/IP1hJ8i/mv0NTXvl2BORte/KHtuybDaEECT5MxXXEftXZQzzr5pBORXMKeJK/OG6nrV3GgHV
- sc6q54NkSE3CZwgdG60L4W9EWB8GLY0oG6Y3JO1xqBFwemabIrqFWaM
-X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
- pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
-X-ClientProxiedBy: SGBP274CA0014.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::26)
- To PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FhTSsXLt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A433C4CEED;
+	Mon, 25 Aug 2025 08:40:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756111245;
+	bh=aL0MAVPP+baLaUpSwr0jfz0k4rjTubYNQV6vSJB6OP8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FhTSsXLtwO6EYA8rIZFKJgEf1O0j/6AFVpaIb7+0szOlxeqEkxITba+wS9KfZ+kjH
+	 dJ4D0usUwHPH2GWzU3dXYRelvBK6F/Z+h883XsJq3lJG4gwBDPoq7M/8L4HEjQ78Vz
+	 uw/bRo0VNtHxfdkgkl90Rnhxn0zOB4RalzhxYxbJGexY8w9QaG1wwgcVo4YigkvXdQ
+	 HQavQb3MOaV1ehg5AV6v7VNw85VJa0JTCzNxPuL1pTIJOwcfLGwF2EeUKXrxIt0vRt
+	 UCzCy8PTNnoYCOQUG/lUyh80qq0nQtE3jstm5jDssnnjYRZ8hsuFayTUr3+h+B+cyD
+	 ob0l8lzfNS6fA==
+Date: Mon, 25 Aug 2025 16:40:43 +0800
+From: Yixun Lan <dlan@kernel.org>
+To: bmasney@redhat.com
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Taichi Sugaya <sugaya.taichi@socionext.com>,
+	Takao Orito <orito.takao@socionext.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Yixun Lan <dlan@gentoo.org>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	UNGLinuxDriver@microchip.com, Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Neal Gompa <neal@gompa.dev>,
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daniel Palmer <daniel@thingy.jp>,
+	Romain Perier <romain.perier@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Andrea della Porta <andrea.porta@suse.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Qin Jian <qinjian@cqplus1.com>, Viresh Kumar <vireshk@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Alex Helms <alexander.helms.jy@renesas.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	sophgo@lists.linux.dev, linux-mips@vger.kernel.org,
+	imx@lists.linux.dev, linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com,
+	patches@opensource.cirrus.com, linux-actions@lists.infradead.org,
+	asahi@lists.linux.dev, linux-mediatek@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev
+Subject: Re: [PATCH 049/114] clk: spacemit: ccu_ddn: convert from
+ round_rate() to determine_rate()
+Message-ID: <20250825084043-GYA1096417@kernel.org>
+References: <20250811-clk-for-stephen-round-rate-v1-0-b3bf97b038dc@redhat.com>
+ <20250811-clk-for-stephen-round-rate-v1-49-b3bf97b038dc@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PAXPR04MB8240:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51b47c0e-cdde-4b8b-5a0b-08dde3b2a0a9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|19092799006|7416014|52116014|1800799024|366016|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WVM4ZDUrL25pY0k2RlZkN0VNM0prZnI1WGpqSVIzTUh4UUY4bnpUU1ZvL3lm?=
- =?utf-8?B?MU5XNnhZRTJlcXpySTJ1RWl2bXp5RFRKVGs0dW9HaktXaE9JaXV6UVpyRmR4?=
- =?utf-8?B?c3hYNE5CYnV4NXcwb2JwdlFTK0JxdFZkMjRWUnNUTUtuaWJFa1NGSEJybStr?=
- =?utf-8?B?TFRGRC9TSkEwRjdGOUlRUkExb2lxYTJKQ1VYa1ZMYmlETEVuNCtyYUFYZFRr?=
- =?utf-8?B?TWZkb2ZJdTBwNmF3RGJLSFV5UVViQVA1dW5iS1E4d21XVjZ6ditxTVo5Nlpo?=
- =?utf-8?B?ZlFobGhpMnc1TG9ua2pMT05hUmd4VWZ0Y0x2bnBOWDBJU1FYT2ZndjhjRjBK?=
- =?utf-8?B?YVByNEw5SWlHMzU1Y1ZGQzBhaGhKWGNjMFQ2T0Z0Z1FWaTAxWjNQL3Y0YWtM?=
- =?utf-8?B?Qlo0UlFaeHErUHl0NkZmd0s1Ky9MRU9ZWjhDUVE5ZDJWVk1TaERkWkF1b3Jt?=
- =?utf-8?B?K0dtRUhMaGlNRkhMdzF5VC9MNFVGVTg5cGNIOXBmbFNzUWRPVWJGL3ZSV1VQ?=
- =?utf-8?B?NFpuRGRGZUdZeXJlZWNTZklHTGlJS1N1OG12UUZsNUpvU2RvOGdudmdNYnpv?=
- =?utf-8?B?SVVIMUVvTGdOU0htbjk4ZzR1bmNFakF6OUJMaUVZVzU2TzNYZVhQMXk2RVh0?=
- =?utf-8?B?WEdwdG1hc28xT3BhMVZqRk52Mkp0SWxnOVhsRXl6VVlCbW1sdmYwblRnOHpp?=
- =?utf-8?B?OXphYjVoMjBUS1dreDFkZTF5Y0UxZ2U4NHpzMC9DSXhGMjN6TGFTekJYY2Vy?=
- =?utf-8?B?QnJqaDhjK2hvTnN4SHE2Mkh6QzRSVUpFMS9aa2ZWUXozV3RWNjV0ZXV3bmdD?=
- =?utf-8?B?STlsSlNqZE9TUk5FbmNnd25GN0xmeDNUUXUwczNvNVlFMzhicFgvT2M2RmU2?=
- =?utf-8?B?UktUOXJuVDcyS3VzSUpyd3VvS1pJUElXazg1c3BFL0o3QkhpVXBQU2lmWkZa?=
- =?utf-8?B?b2RZUi9mK2IyQS94T1J5R29CSmdhU1FhSkpsOHdBRjlZQVQ1dzU4YlVRdmg5?=
- =?utf-8?B?U0phMWU4ZEUrbm1NenpTMDZ1cVllemZqTS9jQWhwNzBiblU5cE5pYWlnTGxT?=
- =?utf-8?B?NnhLVG02UWs2VzBpY2pEWHduZ0lHVnFVbWhxWGxyc0NDcnVTanZzSnV3WUdh?=
- =?utf-8?B?K3A1dWxTcXlOSzhBMXVrMkpvd016WHo5V1BaWHlSZzY0L0JlVG1tUTR0ekJh?=
- =?utf-8?B?QmN0cGxySGJYdUI4MXVUbGFHODR6Syt0YWxEbVh3ZmpQSU8yUklaQW5GbDE5?=
- =?utf-8?B?V1hPWlhDemdTVHZnWkpuTUtjU2p6VThGc0ZoRVdlNlhaVEJDQ3JwNUFEbkZX?=
- =?utf-8?B?bFBCWDk5d3huaWp3OENPdDZvd2d6N3p0YjMxb2ZOYnBSTWhzeXVSL3A5SlJ3?=
- =?utf-8?B?TUQ0a3pjS3lnT3ZuYm00L2ZiWWpqVmVIcWhtN3kzZ0M0ckpXTXY4UEZXZHVL?=
- =?utf-8?B?ZFVCL21rNzN2WG1WUUlDSWV0ZTNnUThCQlEwUTVrdW5wTGx4Kys5KysyekRu?=
- =?utf-8?B?MkgxKzhKSE5LWTd0ZWRNNVdGVlg3YnhhWVRUcmUzWFd5SnFJQURLUkJVOXV5?=
- =?utf-8?B?ZS9HMHJEYTdRc3R5TGFYaGIyUjQ0SWRicTEvSkVDcStna1VsR0FMbDRzdkhY?=
- =?utf-8?B?aUw0L2JmZVRxdlJkUTd6c3VFWVl0ZThJVXlOb1ltWE1aV0VlelRqbUdheE0v?=
- =?utf-8?B?aTVUVE5ZOG10QTFSRUUwVmZDdTZ4U052QTlBT3VTOWJKVHo2RHJPaVVqdDcy?=
- =?utf-8?B?aWxvazNUUC9SUzZtU3Jwa1JURktOcS9LRjVud1BRcVEwclhaVFlHRTZ5Z3p5?=
- =?utf-8?B?R1JuZU5nKzZ3c3BveEVvMHFlck9nM2hNVU1FR0laWXROeU5TV0FtMEhmbzNs?=
- =?utf-8?B?WnZrTTVyN1NMSkl6L085ejJ4NXZGY0VnRFU3cENzbFVHazhwR2ttQm1qUklX?=
- =?utf-8?B?M0prbzQ1blBSRHFyTUg2YlBnVVZTQzdDUjdlckpMbHdLbXZFMm5SZTlway9l?=
- =?utf-8?Q?HTQjhaXsIe6I57ZH3mAZ33hN7x2p10=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(7416014)(52116014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MGg5WTB5eFBmWGdURUtJYWVEUS9lVlYyd3krYVpLbUR3dHNBQkdiZ21PVW9r?=
- =?utf-8?B?cmM1SHVEdVNCMjc1L3psYkxlaHVqdHE3SDhlaUhnWDNpcGNPa0xCMVFFaTBy?=
- =?utf-8?B?MC9ab1lzU2szbXIwT3YxdFJxSVp4R2tWYkpVNzgyREkyQ0lQZGVqaWw2ckli?=
- =?utf-8?B?SW5VS1ZPWU8wR1RvZGJmejJhL2ZPOFkxdC8rQ3RGbXhxNVVOSjVlSk13V1Vz?=
- =?utf-8?B?NVhIVHg1RXBsZk9vb0xGWTZib09kQlNhckJDNTlrSVh3RXFSc0g2REVOeGF4?=
- =?utf-8?B?YndTSTU2eWRhOGF0eHJYbkZWK01aYnU3bHV3YTZCNW1RVFU4dzljS1JKc0U4?=
- =?utf-8?B?Wng2dlJpU2ZMdUc1Z05mQ1ZWTW9uRHAzNWJSV0xES0ZLejY3T1haK0dKeWxx?=
- =?utf-8?B?QjZTSWhYTjkwM3drUmNGVkh6cTFjdEkyVkZkcmZTTk1QSmxLVnoyd05JVmY1?=
- =?utf-8?B?c2hXNENrbGJxY0hEakQveHZJUTVCZFV2aUI2SFZoTnRXNi9ZV2Rqb1lUZlRH?=
- =?utf-8?B?Ykx5R0kzWDdFVzlqdFVrOFl6cGcxL3RoQVRHc2J0SXVTUnFFaFFOZ2FMQ1hH?=
- =?utf-8?B?MklRKzFnTGNUdDFSOCtpVnJFenQ4UFNnc0NObEdkK3JGTHZrYk9YVm9GLzNs?=
- =?utf-8?B?V09OL1hBaUZ5NExmK2NMMVk3d2RrbDFRNzQ0eWhYVkFYeFUzampidFNuR3pu?=
- =?utf-8?B?aHNCTFpyMTFCZXZzazhkcmtMWis2MmppdWMwVWZZcmJKdlJHUVBScGhPOUxr?=
- =?utf-8?B?T0FSTUN3UmtDdzYzWG9Kc2JCL3MyYTkrY3hoRGhIeXRmTnBCVkpCZTBGUDRr?=
- =?utf-8?B?bDdjUmR6WGdpVkZ5cEpsVWtrMCtuZkloT3g5OFRwckY4QXJ6cktRa1AyK0dh?=
- =?utf-8?B?cE9YV2tvelVJNDhjdTRMNEtOcC9nVEk2anZNNUt4TXhnR0pOcU13KzI5TFJW?=
- =?utf-8?B?cVEzcG14elFEUFN0NzRBOSs0bTNHc3Q1WmpNNk91VFg2bFV0bmVxbC9YYURI?=
- =?utf-8?B?cnI2L3pyclNka1dwR2JGUmw2UW1tTTYwY1FEVEVUMVpFT3plb0xieFAzSU1W?=
- =?utf-8?B?aGtQenZQQW5rYlo3WGJrcFhhS09JUGxRZkpFY0NQUXArZFJ2OVRIUDNpUVhS?=
- =?utf-8?B?aVZKaWpEYXhJRi95Ui82a0pCWVh3cWR5MXFPbzlFNDBnVHA3VUFidSthakRL?=
- =?utf-8?B?YlhJY2ErNkFpSTZ5ZTJPVVN0TnFjRGI0Q0l1VmZuSGJTYTBBb1FIU0FNQkdR?=
- =?utf-8?B?akMvc3E1Znk4dGt2Z2U0SmpPcGRVQmxRcVhhWFVHdS9aWk1Kbi9QWEs1VnFI?=
- =?utf-8?B?ZEFtMlozanRwTS8wVXR5WXRhdlJ4eEpHTit5Z0tVYVd4TVExbmprQ3dGWVZ3?=
- =?utf-8?B?REI4ekJuZFluNy9iTlBHR3ZxdmFpczBXcVMxUXByUFgwSDE3S2NGY3dUR2pI?=
- =?utf-8?B?a3NUUWlHSEpTWS9yaXYzU21rYUkzMHpkYy9CMmp5eVd3cVNBd3dVVlZqNCtv?=
- =?utf-8?B?WnYvYnZlR2xJcVNobUFBU01OaWJPVzVSRFhhbW5VMTNhOUQyZ3JKNFlJMTQv?=
- =?utf-8?B?Q2lDUEM3WHBzSUM5K1pPVWt3VjQrV1VRQ0NHVjJZbEs3TllHbk9LTjdDblZs?=
- =?utf-8?B?WFZybEVTYU9QK1dXMUNIYTlGTzNxSVo3dDRpM2Y2RW4wWnMzTU55REl0c3k0?=
- =?utf-8?B?L3FxYjR1RzdjUkU1YWFnSVVzVUNqTFMvY2hiTU1xY0RTNUNKc256ZUd0RTVq?=
- =?utf-8?B?RXRMcU85Z25MMEVpQ0pYZkVSOEovVDU3aDJvOXJqbjQyOEZ0d3FKTzhKZHBx?=
- =?utf-8?B?d1ZiWFlzL0l1S0RieWI2bWozTDFwOXhydGdkRGFLYTdlQXc0TE1ZSmtwbG9B?=
- =?utf-8?B?S0JzVUd5UnE0VlhsWUxFN0ExQUxNN0NhUWZlTFN2NjJmWmxqQlBpTFphYnAx?=
- =?utf-8?B?RWk1dm45WFFxLzY2b0c3cVhXTmVJL1FUSWsrT3BUR2YwbHBOYXdvd2NZTTRH?=
- =?utf-8?B?dFd5ODBsZHpQREltN3VXNjFkRzBsUkFJU0xRYnJlblZTVjc3RE9WSitPR083?=
- =?utf-8?B?SitTbnZPQzBSR3hnU0ZZVERsdWtGVHY0RUJ2M0dvSGlzSnFFa0oxYmwzUGtQ?=
- =?utf-8?Q?3CJeHuMcOiFL9v6aL9DKTMf2r?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51b47c0e-cdde-4b8b-5a0b-08dde3b2a0a9
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 08:37:29.7526
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z3TQgkFUQOk6+Dd1/2LbI8Y7J8qn6jsooYvmpb1EfRd7CC3umHWlkMi3d0yOQL7fTlu8ABtUCheFsSdErtc1Tg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8240
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250811-clk-for-stephen-round-rate-v1-49-b3bf97b038dc@redhat.com>
 
-The TJA1057 used on i.MX93 EVK is actually high-speed CAN
-transceiver, not a regulator supply. So use phys to reflect the truth.
+Hi Brian,
 
-And TJA1057 is compatible with TJA1051, so use nxp,tja1051 compatible
-string.
+  Thanks for doing this
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+  I will give my rb to 49-51 for SpacemiT, and here we face same
+issue as Krzysztof did for samsung, to avoid potential conflicts
+we will route the clk patches through SpacemiT SoC tree..
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-index e24e12f04526c3a08c0bdc6134297fb010e6e926..94be59771cd05c93a6569ee08fff71bc11da21c1 100644
---- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-@@ -62,6 +62,13 @@ vdevbuffer: vdevbuffer@a4020000 {
- 
- 	};
- 
-+	flexcan_phy: can-phy {
-+		compatible = "nxp,tja1051", "ti,tcan1043";
-+		#phy-cells = <0>;
-+		max-bitrate = <5000000>;
-+		standby-gpios = <&adp5585 6 GPIO_ACTIVE_HIGH>;
-+	};
-+
- 	reg_vdd_12v: regulator-vdd-12v {
- 		compatible = "regulator-fixed";
- 		regulator-name = "VDD_12V";
-@@ -87,14 +94,6 @@ reg_audio_pwr: regulator-audio-pwr {
- 		enable-active-high;
- 	};
- 
--	reg_can2_standby: regulator-can2-standby {
--		compatible = "regulator-fixed";
--		regulator-name = "can2-stby";
--		regulator-min-microvolt = <3300000>;
--		regulator-max-microvolt = <3300000>;
--		gpio = <&adp5585 6 GPIO_ACTIVE_LOW>;
--	};
--
- 	reg_m2_pwr: regulator-m2-pwr {
- 		compatible = "regulator-fixed";
- 		regulator-name = "M.2-power";
-@@ -284,7 +283,7 @@ ethphy2: ethernet-phy@2 {
- &flexcan2 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_flexcan2>;
--	xceiver-supply = <&reg_can2_standby>;
-+	phys = <&flexcan_phy>;
- 	status = "okay";
- };
- 
+On 11:18 Mon 11 Aug     , Brian Masney via B4 Relay wrote:
+> From: Brian Masney <bmasney@redhat.com>
+> 
+> The round_rate() clk ops is deprecated, so migrate this driver from
+> round_rate() to determine_rate() using the Coccinelle semantic patch
+> on the cover letter of this series.
+> 
+> Signed-off-by: Brian Masney <bmasney@redhat.com>
+
+Reviewed-by: Yixun Lan <dlan@kernel.org>
+
+> ---
+>  drivers/clk/spacemit/ccu_ddn.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/clk/spacemit/ccu_ddn.c b/drivers/clk/spacemit/ccu_ddn.c
+> index be311b045698e95a688a35858a8ac1bcfbffd2c7..02b68ea84db9bd3ecdde41f8013c48263edbd917 100644
+> --- a/drivers/clk/spacemit/ccu_ddn.c
+> +++ b/drivers/clk/spacemit/ccu_ddn.c
+> @@ -39,13 +39,16 @@ static unsigned long ccu_ddn_calc_best_rate(struct ccu_ddn *ddn,
+>  	return ccu_ddn_calc_rate(prate, *num, *den);
+>  }
+>  
+> -static long ccu_ddn_round_rate(struct clk_hw *hw, unsigned long rate,
+> -			       unsigned long *prate)
+> +static int ccu_ddn_determine_rate(struct clk_hw *hw,
+> +				  struct clk_rate_request *req)
+>  {
+>  	struct ccu_ddn *ddn = hw_to_ccu_ddn(hw);
+>  	unsigned long num, den;
+>  
+> -	return ccu_ddn_calc_best_rate(ddn, rate, *prate, &num, &den);
+> +	req->rate = ccu_ddn_calc_best_rate(ddn, req->rate,
+> +					   req->best_parent_rate, &num, &den);
+> +
+> +	return 0;
+>  }
+>  
+>  static unsigned long ccu_ddn_recalc_rate(struct clk_hw *hw, unsigned long prate)
+> @@ -78,6 +81,6 @@ static int ccu_ddn_set_rate(struct clk_hw *hw, unsigned long rate,
+>  
+>  const struct clk_ops spacemit_ccu_ddn_ops = {
+>  	.recalc_rate	= ccu_ddn_recalc_rate,
+> -	.round_rate	= ccu_ddn_round_rate,
+> +	.determine_rate = ccu_ddn_determine_rate,
+>  	.set_rate	= ccu_ddn_set_rate,
+>  };
+> 
+> -- 
+> 2.50.1
+> 
+> 
 
 -- 
-2.37.1
-
+Yixun Lan (dlan)
