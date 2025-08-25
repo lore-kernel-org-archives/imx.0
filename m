@@ -1,54 +1,54 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514A42F5313;
-	Mon, 25 Aug 2025 13:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF6E2F60B6;
+	Mon, 25 Aug 2025 13:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756130067; cv=none; b=SPYyCsHTR/02xS+PRhUTKOfldGgfS7wMWti/TFoFZnL426qHFgt5d4Opoib0Rd+owOLPGURV2XZukatR5v+ghjyNd3Cw194XUqsxWHcYvrH+oD+5MrD6O396u7+yNcLoMMoGP+2nr2/11zeM/fuapBgse5xR2I9uzmKNPQU7Hi8=
+	t=1756130073; cv=none; b=ehS/1CoKY2aBl4MSDkiOfpTfRma194Sfesao9JR+gVkwilCuGPPpY+IHbXPtQ+Ye3w62iNIqAvJl4Og2qVSIPNXuypXw58tPNXcxnUbRhWkMtWJFr+ZLL5dszpUvPUJWSBfzZE3GHGX6qTzp4vGM2MGYdLMWtKdb+YjVagumXZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756130067; c=relaxed/simple;
-	bh=6Bf2gaUoJ/rpJT+iVrhH/BM4lvVMfQGSdzg8t4vEdKo=;
+	s=arc-20240116; t=1756130073; c=relaxed/simple;
+	bh=U48tPbCIJ9NQaklJSLuRIMf1KS5ihY1cbv332984crM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a78BIhEhaDOrKSc2TfMVq+DfTaLU+j8go6C+CdWsXPGeqOmXyea/7mvsFQhnUWTVjPzz0hVp4U0rQEO5GpQX44dKXrNCOz+Yf5FXznZ0DhtLI33ZeLdeoouylYfhplH9dSuxCj0ZhETKI64fKE5jTat2YO1TPo34CZ9+GM219bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S05fpzUL; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=SXkttxynJD1y+MHeTOQQi8B8QJLd+XyFxZ95QvoqDKAoH7+7VQY/UaYJTG0W5I2JC/zvlpfUr2WtmrWbINKJMDmQ1gYtKwJjHBYJAVhoK2NVIKSpn9fWLehc5EmpXPN6oA1pLX7m4hhWgzdYTCN7llA9UugVj2NDZFNUhGITnFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nyg3f3DQ; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S05fpzUL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nyg3f3DQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756130063; x=1787666063;
+  t=1756130069; x=1787666069;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6Bf2gaUoJ/rpJT+iVrhH/BM4lvVMfQGSdzg8t4vEdKo=;
-  b=S05fpzULMQTBk+6PNCZ2nZ9Ppp7mGgKR0onMILZnNK/pr+/g4xCjcST4
-   Fy+qO5FX/+/sX5fK+fzr9D1pBvqo60oby2+RGZoTolva69cEUW77B66kX
-   rdX2rUBiDVmVgkazJ/APHb3phpcmUljOAnOinkacNUXEu4OrQT3BGWfKg
-   prO9ioO/xwWp1y7K/WblTgioCYkg2DXnSABeVn06kfkxGW5maTZ3UwsBH
-   d18DBLGP8x5I2Vq4doZI02+YD43X792In/d34yvNBh9WR+DijLRmjs0tv
-   TDfKJ7lNGdEfsIYUxTFVyUw3zO7Xo29J3FcW/E50N4A04iqQOvS66RAnG
-   w==;
-X-CSE-ConnectionGUID: +oEQm/PaRqugs2DchbIGMA==
-X-CSE-MsgGUID: 1Wb3y1nRSmewf0hHEP386A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68936601"
+  bh=U48tPbCIJ9NQaklJSLuRIMf1KS5ihY1cbv332984crM=;
+  b=nyg3f3DQNr8cCFhc1JisJGyJSAlblt6ZYkMGH9UPAObfLKyigSD9gKQ1
+   etYwhp9YJabRM6UlIifEd7XNcYhkyrhYwU8sIdCIvp2dTb9NzFgUF2CeL
+   ZX8R53dzwylAzZOa/HGkRqe7vyy3Bd0JcEh9ausx4Dv3Qm/ji3mP94cS4
+   gni3ZirsfqDjSX4izabadJEOu+Xj/0AANYtn2qmF6m6yJ5qKarsqUy257
+   ds15L6p9QRaUbh65D9Ba7Kr5LpZEijMaZuNO8pC21W9YTt3f0QUQGKXUo
+   4hfwg8W9lcaZzoXjVWCT0yFE2Jrv2PW1jGS+BLXiPrbXw0U7HeE7jhkWK
+   A==;
+X-CSE-ConnectionGUID: VhF4F+xRQ9yX73wTtoUQEw==
+X-CSE-MsgGUID: 3IT9UVuuTZ6vv1yfL8dVWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68936733"
 X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
-   d="scan'208";a="68936601"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:21 -0700
-X-CSE-ConnectionGUID: +vFyAZ6jRtyGQ0x7pYL4XQ==
-X-CSE-MsgGUID: FpML6g6XTFOoa7EH4J0I1w==
+   d="scan'208";a="68936733"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:28 -0700
+X-CSE-ConnectionGUID: fY3rZIlhQMyAC1aUzZmJ1A==
+X-CSE-MsgGUID: umrDrq2ITBumSCTHklaW2w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
-   d="scan'208";a="174583467"
+   d="scan'208";a="168547677"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.7])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:11 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:18 -0700
 Received: from punajuuri.localdomain (unknown [192.168.240.130])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id C250F121F6E;
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id B892E121F65;
 	Mon, 25 Aug 2025 16:54:01 +0300 (EEST)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.98.2)
 	(envelope-from <sakari.ailus@linux.intel.com>)
-	id 1uqXe5-00000007POI-3BxM;
+	id 1uqXe5-00000007PO2-2rZ4;
 	Mon, 25 Aug 2025 16:54:01 +0300
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
@@ -124,9 +124,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-sunxi@lists.linux.dev
-Subject: [PATCH v3 05/12] iio: dac: Remove redundant pm_runtime_mark_last_busy() calls
-Date: Mon, 25 Aug 2025 16:53:54 +0300
-Message-ID: <20250825135401.1765847-6-sakari.ailus@linux.intel.com>
+Subject: [PATCH v3 01/12] iio: accel: Remove redundant pm_runtime_mark_last_busy() calls
+Date: Mon, 25 Aug 2025 16:53:50 +0300
+Message-ID: <20250825135401.1765847-2-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
 References: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
@@ -143,58 +143,211 @@ pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
 to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
 pm_runtime_mark_last_busy().
 
-Also clean up error handling in stm32_dac_set_enable_state().
-
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
- drivers/iio/dac/stm32-dac.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ drivers/iio/accel/bmc150-accel-core.c | 7 ++-----
+ drivers/iio/accel/bmi088-accel-core.c | 3 ---
+ drivers/iio/accel/fxls8962af-core.c   | 1 -
+ drivers/iio/accel/kxcjk-1013.c        | 4 +---
+ drivers/iio/accel/kxsd9.c             | 3 ---
+ drivers/iio/accel/mma8452.c           | 7 ++-----
+ drivers/iio/accel/mma9551_core.c      | 5 +----
+ drivers/iio/accel/msa311.c            | 6 ------
+ 8 files changed, 6 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/iio/dac/stm32-dac.c b/drivers/iio/dac/stm32-dac.c
-index 344388338d9b..e8688f9d6df7 100644
---- a/drivers/iio/dac/stm32-dac.c
-+++ b/drivers/iio/dac/stm32-dac.c
-@@ -82,9 +82,9 @@ static int stm32_dac_set_enable_state(struct iio_dev *indio_dev, int ch,
+diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+index be5fbb0c5d29..3c5d1560b163 100644
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -332,13 +332,10 @@ static int bmc150_accel_set_power_state(struct bmc150_accel_data *data, bool on)
+ 	struct device *dev = regmap_get_device(data->regmap);
+ 	int ret;
  
- 	ret = regmap_update_bits(dac->common->regmap, STM32_DAC_CR, msk, en);
- 	mutex_unlock(&dac->lock);
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(&indio_dev->dev, "%s failed\n", str_enable_disable(en));
--		goto err_put_pm;
-+		goto err_pm_put;
- 	}
- 
- 	/*
-@@ -95,18 +95,8 @@ static int stm32_dac_set_enable_state(struct iio_dev *indio_dev, int ch,
- 	if (en && dac->common->hfsel)
- 		udelay(1);
- 
--	if (!enable) {
+-	if (on) {
++	if (on)
+ 		ret = pm_runtime_resume_and_get(dev);
+-	} else {
 -		pm_runtime_mark_last_busy(dev);
--		pm_runtime_put_autosuspend(dev);
++	else
+ 		ret = pm_runtime_put_autosuspend(dev);
 -	}
 -
--	return 0;
--
--err_put_pm:
--	if (enable) {
--		pm_runtime_mark_last_busy(dev);
--		pm_runtime_put_autosuspend(dev);
--	}
-+err_pm_put:
-+	pm_runtime_put_autosuspend(dev);
+ 	if (ret < 0) {
+ 		dev_err(dev,
+ 			"Failed: %s for %d\n", __func__, on);
+diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
+index dea126f993c1..c7da90af0d2d 100644
+--- a/drivers/iio/accel/bmi088-accel-core.c
++++ b/drivers/iio/accel/bmi088-accel-core.c
+@@ -375,7 +375,6 @@ static int bmi088_accel_read_raw(struct iio_dev *indio_dev,
+ 	return -EINVAL;
+ 
+ out_read_raw_pm_put:
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
  
  	return ret;
- }
-@@ -349,7 +339,6 @@ static int stm32_dac_probe(struct platform_device *pdev)
+@@ -419,7 +418,6 @@ static int bmi088_accel_write_raw(struct iio_dev *indio_dev,
+ 			return ret;
+ 
+ 		ret = bmi088_accel_set_scale(data, val, val2);
+-		pm_runtime_mark_last_busy(dev);
+ 		pm_runtime_put_autosuspend(dev);
+ 		return ret;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+@@ -428,7 +426,6 @@ static int bmi088_accel_write_raw(struct iio_dev *indio_dev,
+ 			return ret;
+ 
+ 		ret = bmi088_accel_set_sample_freq(data, val);
+-		pm_runtime_mark_last_busy(dev);
+ 		pm_runtime_put_autosuspend(dev);
+ 		return ret;
+ 	default:
+diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+index b10a30960e1e..8763e91c63d2 100644
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -222,7 +222,6 @@ static int fxls8962af_power_off(struct fxls8962af_data *data)
+ 	struct device *dev = regmap_get_device(data->regmap);
+ 	int ret;
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	ret = pm_runtime_put_autosuspend(dev);
  	if (ret)
- 		goto err_pm_put;
+ 		dev_err(dev, "failed to power off\n");
+diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+index 6aefe8221296..2823ddde4bf2 100644
+--- a/drivers/iio/accel/kxcjk-1013.c
++++ b/drivers/iio/accel/kxcjk-1013.c
+@@ -636,10 +636,8 @@ static int kxcjk1013_set_power_state(struct kxcjk1013_data *data, bool on)
+ 
+ 	if (on)
+ 		ret = pm_runtime_resume_and_get(&data->client->dev);
+-	else {
+-		pm_runtime_mark_last_busy(&data->client->dev);
++	else
+ 		ret = pm_runtime_put_autosuspend(&data->client->dev);
+-	}
+ 	if (ret < 0) {
+ 		dev_err(&data->client->dev,
+ 			"Failed: %s for %d\n", __func__, on);
+diff --git a/drivers/iio/accel/kxsd9.c b/drivers/iio/accel/kxsd9.c
+index cfc31265cdd0..4717d80fc24a 100644
+--- a/drivers/iio/accel/kxsd9.c
++++ b/drivers/iio/accel/kxsd9.c
+@@ -151,7 +151,6 @@ static int kxsd9_write_raw(struct iio_dev *indio_dev,
+ 		ret = kxsd9_write_scale(indio_dev, val2);
+ 	}
+ 
+-	pm_runtime_mark_last_busy(st->dev);
+ 	pm_runtime_put_autosuspend(st->dev);
+ 
+ 	return ret;
+@@ -199,7 +198,6 @@ static int kxsd9_read_raw(struct iio_dev *indio_dev,
+ 	}
+ 
+ error_ret:
+-	pm_runtime_mark_last_busy(st->dev);
+ 	pm_runtime_put_autosuspend(st->dev);
+ 
+ 	return ret;
+@@ -250,7 +248,6 @@ static int kxsd9_buffer_postdisable(struct iio_dev *indio_dev)
+ {
+ 	struct kxsd9_state *st = iio_priv(indio_dev);
+ 
+-	pm_runtime_mark_last_busy(st->dev);
+ 	pm_runtime_put_autosuspend(st->dev);
+ 
+ 	return 0;
+diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+index aba444a980d9..15172ba2972c 100644
+--- a/drivers/iio/accel/mma8452.c
++++ b/drivers/iio/accel/mma8452.c
+@@ -224,13 +224,10 @@ static int mma8452_set_runtime_pm_state(struct i2c_client *client, bool on)
+ #ifdef CONFIG_PM
+ 	int ret;
+ 
+-	if (on) {
++	if (on)
+ 		ret = pm_runtime_resume_and_get(&client->dev);
+-	} else {
+-		pm_runtime_mark_last_busy(&client->dev);
++	else
+ 		ret = pm_runtime_put_autosuspend(&client->dev);
+-	}
+-
+ 	if (ret < 0) {
+ 		dev_err(&client->dev,
+ 			"failed to change power state to %d\n", on);
+diff --git a/drivers/iio/accel/mma9551_core.c b/drivers/iio/accel/mma9551_core.c
+index 3e7d9b79ed0e..2ccb1fb19b96 100644
+--- a/drivers/iio/accel/mma9551_core.c
++++ b/drivers/iio/accel/mma9551_core.c
+@@ -671,11 +671,8 @@ int mma9551_set_power_state(struct i2c_client *client, bool on)
+ 
+ 	if (on)
+ 		ret = pm_runtime_resume_and_get(&client->dev);
+-	else {
+-		pm_runtime_mark_last_busy(&client->dev);
++	else
+ 		ret = pm_runtime_put_autosuspend(&client->dev);
+-	}
+-
+ 	if (ret < 0) {
+ 		dev_err(&client->dev,
+ 			"failed to change power state to %d\n", on);
+diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
+index 2ccb22317bdc..83dc2b97f630 100644
+--- a/drivers/iio/accel/msa311.c
++++ b/drivers/iio/accel/msa311.c
+@@ -607,7 +607,6 @@ static int msa311_read_raw_data(struct iio_dev *indio_dev,
+ 	err = msa311_get_axis(msa311, chan, &axis);
+ 	mutex_unlock(&msa311->lock);
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	iio_device_release_direct(indio_dev);
+@@ -741,7 +740,6 @@ static int msa311_write_scale(struct iio_dev *indio_dev, int val, int val2)
+ 			break;
+ 		}
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	if (err)
+@@ -781,7 +779,6 @@ static int msa311_write_samp_freq(struct iio_dev *indio_dev, int val, int val2)
+ 			break;
+ 		}
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	iio_device_release_direct(indio_dev);
+@@ -832,7 +829,6 @@ static int msa311_debugfs_reg_access(struct iio_dev *indio_dev,
+ 
+ 	mutex_unlock(&msa311->lock);
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	if (err)
+@@ -855,7 +851,6 @@ static int msa311_buffer_postdisable(struct iio_dev *indio_dev)
+ 	struct msa311_priv *msa311 = iio_priv(indio_dev);
+ 	struct device *dev = msa311->dev;
  
 -	pm_runtime_mark_last_busy(dev);
  	pm_runtime_put_autosuspend(dev);
  
  	return 0;
+@@ -1231,7 +1226,6 @@ static int msa311_probe(struct i2c_client *i2c)
+ 	if (err)
+ 		return err;
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	err = devm_iio_device_register(dev, indio_dev);
 -- 
 2.47.2
 
