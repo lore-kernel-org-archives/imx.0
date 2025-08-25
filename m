@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D992A22A4E5;
-	Mon, 25 Aug 2025 07:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F78296BB9;
+	Mon, 25 Aug 2025 07:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756107189; cv=none; b=KaSHdljZ51X0ZvJp6yCgbDhcfldyW4+hdouaaV+OsqoIfPeUUVLO4IV7r6ZYULZyZef9RxzlwtAx3pC8OgD3jx2AaObpZ5rwT6moDKHzsntjpSNF1g7JOOihetsJDjUCnXageq/SP3mxZHmpaHyU7MIaeJ2bj312P5x0mp+k0ts=
+	t=1756107306; cv=none; b=ZQFfoika0a0Fsr3eUPbwWj8XQ+/vU2B2e0UxIh7s+EGStfR3pcsN+0BEpM8Eu/wkui0vv+rLzcfENXg+A+1kec6ohvh9wZi/XekENOA94V0yiyzufSTS2MmU4NpXXF9KtmCoo30BrjJg6vISYuTQzq7tPJIlDAq9QrYoVtHPhjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756107189; c=relaxed/simple;
-	bh=9/TBYORLfxODfzMBYG3cg/3Ags9DoW+lvt+FsEDPCUY=;
+	s=arc-20240116; t=1756107306; c=relaxed/simple;
+	bh=BQgg4s8ZelqTBQ8X8cIjpfniAbGXYuy7MuR+MQT5Bpc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hefsUZZB8NitaNFueTll1pKJ1fMT9HwTfwEpkxY0MIandUdxURKVN9xCGHyMpwJ3kjF6hU5JPrCxQ75kDRea1loCONs0Q3FgYYhxJYHyKm6tWIMBxic5Q12qjWaPd8zOyDEtGY/3WJJAF8IpPeCVmicOUONOdKxmV5qzqdh4fiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q7q1PnRG; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=gQqse+XdbAwujDIZbs5ti7VquWBQj3lJ2Yl57kg0khleeoRiVbIQ/vDujY/rXAWQtZX1hsCt/T1uzfuggB5KK/kPjZ7KjmbHM16l5F8Zg1LjQ7tNH6/gYzb0oh9GSiFmRDJy8BL9WyeUtCFCVaMbh/Q9fYFJtHaA30bQmTXESfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tfoY60M+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q7q1PnRG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A27C116B1;
-	Mon, 25 Aug 2025 07:33:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tfoY60M+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DEFC4CEED;
+	Mon, 25 Aug 2025 07:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756107188;
-	bh=9/TBYORLfxODfzMBYG3cg/3Ags9DoW+lvt+FsEDPCUY=;
+	s=k20201202; t=1756107306;
+	bh=BQgg4s8ZelqTBQ8X8cIjpfniAbGXYuy7MuR+MQT5Bpc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q7q1PnRG7mybEwP/iaA8fxd+bVdPYpK16Tb6GJ+B199KISRpka5MMYEWH+3HwbZ0x
-	 ZYTCJNOjXJpyQztCFyf++C1hszoCEhpSeFfeo7SqSzBvAcV85AfIKVK6Lpv8C1YEhJ
-	 YnMS5qB9djDL6co0tHJuGPvq0dKTQ4Jb/XpKDDDDvI7z/VsDbLWpEP2J9xTGYe6SkM
-	 PkYd9KaWFBiTOiQL/znft7Rx4Oy6mCDIJEPooFOAcVBhl3AvmO082orlWXhLY3MIWC
-	 uE6IHqN60nicD5CAtSCH+EhNlmCA05dMQE5NfEn5sRYxa/Ab9mkp2BO4LfoZ1/NWg4
-	 3+1lH/sDDR8bw==
-Message-ID: <5d43578b-53a9-4f7f-a27e-7183dc05bd2e@kernel.org>
-Date: Mon, 25 Aug 2025 09:33:04 +0200
+	b=tfoY60M+LEEyB/DjpGghuDetWg9i1sWkZDL6PdbflytmYRZs0z2fyuW4Zu6vQ7Gfg
+	 lSuDRk4ntJ9RFgcD44oqJi8Xon5evU7oVSHQGJ+hoxqhLRRGAi+14nRlBqs0mIEY17
+	 KYnL0HhMwT/5OfenqZ15WPqQ8kb3LxKD+HagZ6a4JFdXoXoYMZ5sLuGLJLuGKym0xm
+	 O49651h/oGNn8XDuXf0j/4nq0hZ81mM4gFi03jf5XSRNdy1jbx/a9jBXbDeLWoLi/g
+	 ckIlSK+96nbbDgVgNfitgAdf+eI4m5H6SnMDFBTjkb8Fx6nOuyrBM5hBZsYCyXgLEm
+	 VUUAIxmqn0sQw==
+Message-ID: <609e4ec2-a7a2-4252-9b4b-4560d220068b@kernel.org>
+Date: Mon, 25 Aug 2025 09:34:59 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,17 +35,25 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] arm64: defconfig: Enable Marvell WiFi-Ex USB
- driver
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20250822135715.3335023-1-alexander.stein@ew.tq-group.com>
- <dc6af2fc-5e7f-4ec8-a7aa-6bde6518a83b@kernel.org>
- <2800962.mvXUDI8C0e@steina-w>
+Subject: Re: [PATCH v2 10/12] dt-bindings: media: fsd: Document CSIS DMA
+ controller
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Inbaraj E <inbaraj.e@samsung.com>, mturquette@baylibre.com,
+ sboyd@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ s.nawrocki@samsung.com, s.hauer@pengutronix.de, shawnguo@kernel.org,
+ cw00.choi@samsung.com, rmfrfs@gmail.com, martink@posteo.de,
+ mchehab@kernel.org, linux-fsd@tesla.com, will@kernel.org,
+ catalin.marinas@arm.com, pankaj.dubey@samsung.com, shradha.t@samsung.com,
+ ravi.patel@samsung.com, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alim.akhtar@samsung.com, linux-samsung-soc@vger.kernel.org, kernel@puri.sm,
+ kernel@pengutronix.de, festevam@gmail.com, linux-media@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250814140943.22531-1-inbaraj.e@samsung.com>
+ <CGME20250814141051epcas5p14dccee388087372973988aeebcb872cf@epcas5p1.samsung.com>
+ <20250814140943.22531-11-inbaraj.e@samsung.com>
+ <c46c6f66-dee6-4efa-a624-de62aa705206@kernel.org>
+ <20250824211513.GA30196@pendragon.ideasonboard.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -91,28 +99,32 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <2800962.mvXUDI8C0e@steina-w>
+In-Reply-To: <20250824211513.GA30196@pendragon.ideasonboard.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 25/08/2025 08:03, Alexander Stein wrote:
-> Hi,
+On 24/08/2025 23:15, Laurent Pinchart wrote:
+> Hi Krzysztof,
 > 
-> Am Sonntag, 24. August 2025, 13:26:43 CEST schrieb Krzysztof Kozlowski:
->> On 22/08/2025 15:57, Alexander Stein wrote:
->>> MBa91xxCA (imx93-tqma9352-mba91xxca.dts) features a USB attached WiFi
->>> module. lsusb says:
->>>  ID 1286:204e Marvell Semiconductor, Inc. Bluetooth and Wireless LAN Composite Device
->>> Enable the corresponding driver.
+> On Mon, Aug 18, 2025 at 10:45:17AM +0200, Krzysztof Kozlowski wrote:
+>> On 14/08/2025 16:09, Inbaraj E wrote:
+>>> +
+>>> +required:
+>>> +  - compatible
+>>> +  - reg
+>>> +  - interrupts
+>>> +  - clocks
+>>> +  - clock-names
+>>> +  - iommus
+>>> +  - port
 >>
->> This does not answer my questions. You can plug there something else...
+>> Also, you miss here supplies (as required).
 > 
-> It's not pluggable, it's soldered on the mainboard.
+> Did you perhaps mean power-domains ? As far as I understand this is an
+> IP core internal to an SoC, so *-supply would be quite uncommon.
 
-Would be worth to say it in the commit msg, because USB usually is used
-via connectors.
+Yes, power domains.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
