@@ -1,54 +1,54 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17484215F7C;
-	Mon, 25 Aug 2025 13:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72642F3C10;
+	Mon, 25 Aug 2025 13:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756130060; cv=none; b=FXfKJ6gkmE+Mp529g+nozp9cuGOGctwuDSQJfVwp11LOdlW8Rm5ALYG3xEOcJ4SiigIhLSn6Vj20OmJlMbv6eFP35FRKvJYqfKO7GVt9MFdZRklxQzhB3LPQLkTv9mTV6kaZBp5O4AwWoGu6XfTjl6yArko8G2/oNkxVgH2u/6k=
+	t=1756130063; cv=none; b=SC07bsa2wmL9gilK5HRFWjVh15jLNO2G+cKY5ja3Oh+Y+E97nfjf6ZMilidd3nFEww2dNb6HzkkW2xTAp0Wfft2bdZR52lUUV3hNMxqzf/kMbiPYRVRDvdSWaq1yNdaskzNwkvOzn3g7qcSkO1xPhzy89R4SUJRIW/efyeXjE3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756130060; c=relaxed/simple;
-	bh=WPJkKfMwVuXEVBnLHkO4qLYMFRXDiPVnU8VJknYRFM8=;
+	s=arc-20240116; t=1756130063; c=relaxed/simple;
+	bh=Poxq3pf5n0M16Zm0BiiPSRu8KAzqYayAWP4LcxCn2c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s7vokJ3DIKgglhLOYmuPzNt753AzPQ0/6VTIeh85nV/zcVQs4SUXpM2B+J0rRv6rMJwyb4OR/Vt/EDwpXDmZDtNPjIQ/6jcBsEg7PDekbzh3n8G/T7ABJNm1io33O9M/qhBILTC6BYt11spSDTKYdaBA7l/bWXpSxc0BKvp1zHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Topa7Ki8; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=MlVljnpajtSLj8gEt0rSL56oIcyN+zR5WNVEsJ2LJjJfdFpXzf1413R4+Yh6OTZzzPkq5XYNgfADTEb27tg/uVpoxNxq2BvDhnQz1kJmke/0t1z14p5vw/4Tbfn2OgLtqdtEbYwd7TZy8Zhx3KGU3uTvG/GuV+4e9L49B5gS11g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dk31wcbi; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Topa7Ki8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dk31wcbi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756130058; x=1787666058;
+  t=1756130060; x=1787666060;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WPJkKfMwVuXEVBnLHkO4qLYMFRXDiPVnU8VJknYRFM8=;
-  b=Topa7Ki89tPhSMEP0/bz93l2TsCpMboDv1UKNDo1qnRF5CMIrQ7ar1OB
-   NdbYov8duSKKShQ1LfX6FgPKGM8VzWn5XgNE36q5TW72X1qA82gEk6Jpq
-   e7x2lSDWD0x/OUPi8pg/5rUsJWSFsasPNqkeMbBWO5uX8TbgvGfhpq8pW
-   miz6zIgT1GgP53tPfw8HR4ugQxTGYaiB59RBwTtW4jrBYbANuefVRCanv
-   9e+8Vf8jfN0guyfLP2I4x+GaRg0is7m5oxEPAWiF13J4C8Hzxut2Fnr/6
-   M6EO1U/UWARRoeiJRp1iPNU4LsblwUcB3U+BSrpi18RSrVcEP76wsOJ34
-   g==;
-X-CSE-ConnectionGUID: KxeQrriNQQWqeQp5hI6VZQ==
-X-CSE-MsgGUID: 7nwgDvdnS2G1L42++c33pw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68936496"
+  bh=Poxq3pf5n0M16Zm0BiiPSRu8KAzqYayAWP4LcxCn2c4=;
+  b=dk31wcbiP2MO7U1eiLFpCKc9mYAx4rcG/Awms9zyavV9oYZScse35fp7
+   OUPdP593vEZcDDC1+D59VWxcQgW/n+1JM/p8WHbrCCrNCnz2v/EYLbfRr
+   Iqv6kHfUOREkc3i/bjGBGeq9jQY9xaVoYXzvaOgKL6V8MfgbTo0p/Uw8H
+   smKJlzOr4c24BmfUFPWyck01OGZXd1a8gbbWbVOBtx7tFyScyN4jnUq5i
+   IsK3Frz4Om/opL1SrMU0fZ5T+YsBWTQdtjCEXP/sNk8kKnRe9KA+Ptr5l
+   Hhxu5nSne1WFzljx07JRXp83qefZfBBlw9+2Ve3lOzKn8hZxACeHlGZv/
+   Q==;
+X-CSE-ConnectionGUID: 14FZRAgvR2qc6Pjs8lvuFg==
+X-CSE-MsgGUID: UeUcH+JwRAW07n+gB/fPpg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68936468"
 X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
-   d="scan'208";a="68936496"
+   d="scan'208";a="68936468"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
   by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:15 -0700
-X-CSE-ConnectionGUID: w4d1oVUKQ1uP6AMaEWzq0A==
-X-CSE-MsgGUID: iy9AL3HMRXS190/ILjMT0w==
+X-CSE-ConnectionGUID: 1+lP5i9mTZmDwd2peoCW8g==
+X-CSE-MsgGUID: ddMlQS5ZQAutekk/RDyuhA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
-   d="scan'208";a="174583455"
+   d="scan'208";a="174583454"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.7])
   by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:04 -0700
 Received: from punajuuri.localdomain (unknown [192.168.240.130])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id BA272121F6C;
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id BF92B121F6D;
 	Mon, 25 Aug 2025 16:54:01 +0300 (EEST)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.98.2)
 	(envelope-from <sakari.ailus@linux.intel.com>)
-	id 1uqXe5-00000007POA-31io;
+	id 1uqXe5-00000007POE-37IH;
 	Mon, 25 Aug 2025 16:54:01 +0300
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
@@ -124,9 +124,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-sunxi@lists.linux.dev
-Subject: [PATCH v3 03/12] iio: chemical: Remove redundant pm_runtime_mark_last_busy() calls
-Date: Mon, 25 Aug 2025 16:53:52 +0300
-Message-ID: <20250825135401.1765847-4-sakari.ailus@linux.intel.com>
+Subject: [PATCH v3 04/12] iio: common: Remove redundant pm_runtime_mark_last_busy() calls
+Date: Mon, 25 Aug 2025 16:53:53 +0300
+Message-ID: <20250825135401.1765847-5-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
 References: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
@@ -145,58 +145,21 @@ pm_runtime_mark_last_busy().
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
- drivers/iio/chemical/atlas-sensor.c | 2 --
- drivers/iio/chemical/bme680_core.c  | 3 ---
- 2 files changed, 5 deletions(-)
+ drivers/iio/common/hid-sensors/hid-sensor-trigger.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
-index 1daaa36f87a9..8bbba85af699 100644
---- a/drivers/iio/chemical/atlas-sensor.c
-+++ b/drivers/iio/chemical/atlas-sensor.c
-@@ -425,7 +425,6 @@ static int atlas_buffer_predisable(struct iio_dev *indio_dev)
- 	if (ret)
- 		return ret;
- 
--	pm_runtime_mark_last_busy(&data->client->dev);
- 	ret = pm_runtime_put_autosuspend(&data->client->dev);
- 	if (ret)
- 		return ret;
-@@ -491,7 +490,6 @@ static int atlas_read_measurement(struct atlas_data *data, int reg, __be32 *val)
- 
- 	ret = regmap_bulk_read(data->regmap, reg, val, sizeof(*val));
- 
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index 61d446fd456c..70f81c4a96ba 100644
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -950,7 +950,6 @@ static int bme680_read_raw(struct iio_dev *indio_dev,
- 		return ret;
- 
- 	ret = __bme680_read_raw(indio_dev, chan, val, val2, mask);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-@@ -1021,7 +1020,6 @@ static int bme680_write_raw(struct iio_dev *indio_dev,
- 		return ret;
- 
- 	ret = __bme680_write_raw(indio_dev, chan, val, val2, mask);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-@@ -1140,7 +1138,6 @@ static int bme680_buffer_postdisable(struct iio_dev *indio_dev)
- 	struct bme680_data *data = iio_priv(indio_dev);
- 	struct device *dev = regmap_get_device(data->regmap);
- 
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 	return 0;
- }
+diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+index 48193937275b..5540e2d28f4a 100644
+--- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
++++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
+@@ -163,7 +163,6 @@ int hid_sensor_power_state(struct hid_sensor_common *st, bool state)
+ 		ret = pm_runtime_resume_and_get(&st->pdev->dev);
+ 	} else {
+ 		atomic_dec(&st->user_requested_state);
+-		pm_runtime_mark_last_busy(&st->pdev->dev);
+ 		pm_runtime_use_autosuspend(&st->pdev->dev);
+ 		ret = pm_runtime_put_autosuspend(&st->pdev->dev);
+ 	}
 -- 
 2.47.2
 
