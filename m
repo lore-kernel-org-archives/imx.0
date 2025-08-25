@@ -1,137 +1,106 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B634374C4
-	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 13:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEC01FF60A
+	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 13:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756126885; cv=none; b=FnT3YoRcVIat+d5tqWhm2v3vTe4GdnUQCcsnn7FWlOOs3FRbyjVHm4LsmHOytojRD9eoc+qbBlQ+tYsp0xoXMC+I5g9txzlZ4Qx4+znDC9gutT7Upak+IhYbqS3lPGle8W/+rl4Jmyr2YzUrU/whbOl6kovCEJd/+EO15MJ6D1k=
+	t=1756127158; cv=none; b=IEFOP0GiZrWAzHyylOdT8vPN4SvRWsq1VNnc+JYIzGl/zyKYQxVTIHxoGWPXnlMqdU/sGm+hulOLcYPGktAaqZBBGUCdECEGtOIWU5EQ4fDmove14QVqqxi4+YZqOsPQOQBFXqDQTrIPJydrfKnyjQugy+F8kjujaFdfetVvFNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756126885; c=relaxed/simple;
-	bh=3mg8H5raVBKkDe/TXL7in7wasHK55tIcmkgCouAAdu4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=sJyFupzcozHSOT144LrYO0A/1EKxpPVMqa4zJZc5SQUBom8jn/7AEDdHSvzWMDMSHaiLDBceR2Iyn3u5nC4GmvSrpRCzM/2tiwLrLDeCsjO6E7vVuCB7ThflstLxkK7SLSryA6FgNx5hqfwG2j9/ooM/3fmpjQ65Is9cRfAYu/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=grD7m/Xe; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1756127158; c=relaxed/simple;
+	bh=0995YYnJAnTIjeYpCGOJk4eW/chxUHWP1YLO7EuU3ls=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Type:References; b=cvoi2uWFZA1yl9fN1Vw+w/CRTe17scDfqD6FVE079bfNDUYBbTJvq8HNNNwO6+bA3Yeoq8oWcI8TgiPPLIwxXXu+9/Ggao68VZJqStfjx3DT093Nhy98PX9xhSQ3qRMpAiqbaZpi9nCc1rO7MMgiGK6sPyYa9lJbrru3ZfYsa1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=pNXzyJlm; arc=none smtp.client-ip=203.254.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="grD7m/Xe"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 1D8F1A05C6;
-	Mon, 25 Aug 2025 14:52:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=4EQUO9uZ0iCJ6TiGfFUQMxCSBU7gkSepVVETsOcLgjg=; b=
-	grD7m/XeXhE5qIjaVKYgSduEHqXmqCL/nrRWDyhlz798QOa3ZmLrRujq4xvKMluh
-	uimv1LzdaPwqe77Rh2htX9RcXI5/rRJbMlMS7qwV4awdZ/LOoY5QrJ9rsZW7o1+I
-	KaEEiWXrfedJX2XjN11J1U3ysy3USshL7EggKf4/QfLLrUimIK+pLfdjI7xKtmU1
-	rJh2Urhw5qzpns5bKGSSo3pVTP1kWpEoALMuwjYnnR0mA8FR48huWhSfB3yvMUl+
-	IevPNA1QZiaOR8+D0GSgez44T6oNa9UeT1RAHhbU4Us6aYlq3EfQP8gZte2kNBud
-	afiYEINbh5qjJNhUNSKFrpYsl9HAiVZ+sv+tuQlqrc5vtAB1nU4Hn6Nge9NsurP1
-	Wr0gID6LObwDS6n5oigR/TsP0RJxlSN0P/mJnMudCwchlsRcP5oU/Ill19sZ9sWU
-	Uud66ELIy5i7W9HScqF6995lx/eprTgPRnQlw2zRlEH2kNDILsYA2N+G9oqywGvZ
-	qMa9iAqsgIYbbO4dR3gNAl8mvsf7CnsQdNTy8ReemfUZsS0SnB5nqErCyxnugsTA
-	sn6I6H5/9BUbvJpgjlJ8ydr6UzgH7GsLjiecCF4iqC9o1fKazGcf4YiPB7gVLjH6
-	vlhlbVAgjshKtzLQgN1mqxXXnfozEZpLUqZEKD5To7w=
-From: =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-Date: Mon, 25 Aug 2025 14:52:09 +0200
-Subject: [PATCH v2] ARM: dts: imx6ul-tx6ul: Switch away from deprecated
- `phy-reset-gpios`
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="pNXzyJlm"
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250825130554epoutp041cc115abd88f732e85ccd9c97a533461~fBFfAEosb2600126001epoutp04b
+	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 13:05:54 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250825130554epoutp041cc115abd88f732e85ccd9c97a533461~fBFfAEosb2600126001epoutp04b
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1756127154;
+	bh=0995YYnJAnTIjeYpCGOJk4eW/chxUHWP1YLO7EuU3ls=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+	b=pNXzyJlmiBU0DKc3lKjNxALMNiodJJDOgD3UbtdopGEJf6bzcmeQWgNNz1Lk9eXNO
+	 Wt9rlxB7IBa4VIR0mrcc5qNUBCpf83wThWFZbDjlYBqWWTEodrNVPYaRzwpMoMO4Xp
+	 fTbuVl9VgcepLUshqo7rV6iNe3urRYxtQB/WtgEc=
+Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20250825130553epcas5p10e031531d1ea200953db9b7c4a02085b~fBFeQTGPi0198901989epcas5p10;
+	Mon, 25 Aug 2025 13:05:53 +0000 (GMT)
+Received: from epcas5p4.samsung.com (unknown [182.195.38.88]) by
+	epsnrtp04.localdomain (Postfix) with ESMTP id 4c9WJ06HqZz6B9m6; Mon, 25 Aug
+	2025 13:05:52 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250825130552epcas5p2bae9faf360067377690b741b0b5ed53c~fBFc1uXMc2846128461epcas5p2b;
+	Mon, 25 Aug 2025 13:05:52 +0000 (GMT)
+Received: from FDSFTE196 (unknown [107.116.189.214]) by epsmtip1.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20250825130548epsmtip1d0a172254122ea7684cf0024cd158ef4~fBFZDiPSG1232912329epsmtip1B;
+	Mon, 25 Aug 2025 13:05:48 +0000 (GMT)
+From: "Inbaraj E" <inbaraj.e@samsung.com>
+To: "'Krzysztof Kozlowski'" <krzk@kernel.org>, <mturquette@baylibre.com>,
+	<sboyd@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <s.nawrocki@samsung.com>, <s.hauer@pengutronix.de>,
+	<shawnguo@kernel.org>, <cw00.choi@samsung.com>, <rmfrfs@gmail.com>,
+	<laurent.pinchart@ideasonboard.com>, <martink@posteo.de>,
+	<mchehab@kernel.org>, <linux-fsd@tesla.com>, <will@kernel.org>,
+	<catalin.marinas@arm.com>, <pankaj.dubey@samsung.com>,
+	<shradha.t@samsung.com>, <ravi.patel@samsung.com>
+Cc: <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <alim.akhtar@samsung.com>,
+	<linux-samsung-soc@vger.kernel.org>, <kernel@puri.sm>,
+	<kernel@pengutronix.de>, <festevam@gmail.com>,
+	<linux-media@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>
+In-Reply-To: <41434afa-fecd-4507-bcca-735d358ac925@kernel.org>
+Subject: RE: [PATCH v2 04/12] arm64: dts: fsd: Add CSI nodes
+Date: Mon, 25 Aug 2025 18:35:46 +0530
+Message-ID: <016401dc15c0$fc0dcfe0$f4296fa0$@samsung.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQK5oFMD+tt4mLQU5V9KgVyIDaUIUQE9OnCOAxwEstACXXiXxwGMECOMAYbqfFmyafJvQA==
+Content-Language: en-in
+X-CMS-MailID: 20250825130552epcas5p2bae9faf360067377690b741b0b5ed53c
+X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20250825-b4-tx6ul-dt-phy-rst-v2-1-0d3ba9736b0e@prolan.hu>
-X-B4-Tracking: v=1; b=H4sIAHhcrGgC/32OQQ6DIBREr9Kw7m9Bi5aueo/GBQgKiQXzQaMx3
- r3oAbp8ycyb2Ug06Ewkr8tG0MwuuuAzFNcLaa30vQGnM5OCFpw+GQf1gLRU0wA6wWhXwJigll3
- LBJWVoDXJzRFN55bT+mkyKxkNKJS+tYcroOudv39lTAaPvHUxBVzPEzM7Wv/3ZgYMhKq4KRnXQ
- pfvEcMg/c1OpNn3/Qf2ChcS1gAAAA==
-X-Change-ID: 20250815-b4-tx6ul-dt-phy-rst-7afc190a6907
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	"Csaba Buday" <buday.csaba@prolan.hu>, =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?=
-	<csokas.bence@prolan.hu>
-X-Mailer: b4 0.14.2
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1756126334;VERSION=7996;MC=126871935;ID=493941;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A296767155E607067
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-541,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250814141019epcas5p2f957b934d5b60d4649cf9c6abd6969d5
+References: <20250814140943.22531-1-inbaraj.e@samsung.com>
+	<CGME20250814141019epcas5p2f957b934d5b60d4649cf9c6abd6969d5@epcas5p2.samsung.com>
+	<20250814140943.22531-5-inbaraj.e@samsung.com>
+	<1919de68-99ea-47f7-b3d2-cae4611f9c52@kernel.org>
+	<00d101dc136c$aa037020$fe0a5060$@samsung.com>
+	<41434afa-fecd-4507-bcca-735d358ac925@kernel.org>
 
-The Ethernet PHY's reset GPIO should be specified in the node of the PHY
-itself, instead of the MAC (`fec`). The latter is deprecated, and was an
-i.MX-specific extension, incompatible with the new reset controller
-subsystem.
+Hi Krzysztof,
 
-Co-developed-by: Csaba Buday <buday.csaba@prolan.hu>
-Signed-off-by: Csaba Buday <buday.csaba@prolan.hu>
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
----
-Changes in v2:
-- Remove `reset-names` that was generating warnings
-  - This is how it is already in `polytouch`
-- Also move `etnphy1`'s reset
-- Link to v1: https://lore.kernel.org/r/20250815-b4-tx6ul-dt-phy-rst-v1-1-9b65e315d9d3@prolan.hu
----
- arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+> >
+> > CSIS stands for Camera Serial Interface Slave.
+>=20
+> Googling for =22MIPI CSIS=22 gives me 0 results, so I still claim this is=
+ not a generic
+> name.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
-index f053358bc9317f8447d65013a18670cb470106b2..5c7e9556b5ce823b339798ec8f1bd351afa07185 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
-@@ -246,7 +246,6 @@ &fec1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_enet1 &pinctrl_enet1_mdio &pinctrl_etnphy0_rst>;
- 	phy-mode = "rmii";
--	phy-reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
- 	phy-supply = <&reg_3v3_etn>;
- 	phy-handle = <&etnphy0>;
- 	status = "okay";
-@@ -262,6 +261,11 @@ etnphy0: ethernet-phy@0 {
- 			pinctrl-0 = <&pinctrl_etnphy0_int>;
- 			interrupt-parent = <&gpio5>;
- 			interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
-+			reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <100>;
-+			reset-deassert-us = <25000>;
-+			/* Energy detect sometimes causes link failures */
-+			smsc,disable-energy-detect;
- 			status = "okay";
- 		};
- 
-@@ -272,6 +276,9 @@ etnphy1: ethernet-phy@2 {
- 			pinctrl-0 = <&pinctrl_etnphy1_int>;
- 			interrupt-parent = <&gpio4>;
- 			interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
-+			reset-gpios = <&gpio4 28 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <100>;
-+			reset-deassert-us = <25000>;
- 			status = "okay";
- 		};
- 	};
-@@ -281,7 +288,6 @@ &fec2 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_enet2 &pinctrl_etnphy1_rst>;
- 	phy-mode = "rmii";
--	phy-reset-gpios = <&gpio4 28 GPIO_ACTIVE_LOW>;
- 	phy-supply = <&reg_3v3_etn>;
- 	phy-handle = <&etnphy1>;
- 	status = "disabled";
+I checked other vendors (e.g: freescale), and they are using mipi-csi. I'll=
+ adopt for the
+same.
 
----
-base-commit: 0cc53520e68bea7fb80fdc6bdf8d226d1b6a98d9
-change-id: 20250815-b4-tx6ul-dt-phy-rst-7afc190a6907
+>=20
+> >
 
-Best regards,
--- 
-Bence Csókás <csokas.bence@prolan.hu>
-
+Regards,
+Inbaraj E
 
