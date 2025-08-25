@@ -1,190 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF312C3745;
-	Mon, 25 Aug 2025 11:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F18A22A4E5
+	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 12:02:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756123058; cv=none; b=gbmYv8b4ICpXZTd/N+4AkbmGUJNcHgghInieBaZoAjZGPag+FXQm7K7X3O2U5VJehO9lx+ymG2IzCRWZHmxYw4Sx5CRuRHstQDhb25LsqNuwCl06MSWjT23fQJwtxzX5y+X44c8wTZy7nIHbX5csimqJVu0tbfB5jWLO/XFSgfI=
+	t=1756123328; cv=none; b=kYDyg4w4G7iQEeRU7Acs07K3jm6gdJqMpif1sFSE5cGJjFn0i5d7WesA6bvvhF4BoKEQ8I4xgLRvud25THCcuOSmZGzFWukUqHccc2kgEIwtMgfQaj1fg1rbjeof9Ka/wArOCXw/DiFUNn8wzxP5aMmfzrsdA5V5n5HRmnEEl6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756123058; c=relaxed/simple;
-	bh=u2aZrMHjp5VNoFtmPYT/Q13ILrdcSo4FSZG4TtJl/mU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dRJAk7bb8xYpgUzBGpov6r6bsyMaF/BBIsBDALdeZqh/iJbdgUoaKC0daXAOFkNBkqlmKId5TF3iD/QHART/3hngbHnavM4XWOcCtSdtypOZF7PFmqbDOhbOkcEbT0/qr7QnMlBdScpdt7z1PrJ0RWaPJoFl4f9hAuzLDuQ4fp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GCuoi/2x; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1756123328; c=relaxed/simple;
+	bh=+FzwHF8KuNzlOWaaKrrdM7RTgM5W1jyxUgMxJOzJj4g=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Type:References; b=b9ck3TBdKO2q/zuG5eH1urUgtn9Ie021SS2nqwmuM4vvIJWYSMFQ7hiCIpOdmFtokwoKfEutMeiuGnvg2hRGOnq5qIqhGhFZOLbhXbJvhKM4RgSfqxj9js1RGCYa2vF51PlgfJaK6oBKxEKIm+ph8X7o4KmcblFgzbnea4UOgGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=cYziQjLJ; arc=none smtp.client-ip=203.254.224.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GCuoi/2x"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756123057; x=1787659057;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=u2aZrMHjp5VNoFtmPYT/Q13ILrdcSo4FSZG4TtJl/mU=;
-  b=GCuoi/2xqcWJNHEWuT365QuUw1DYy8VlxyTdgrhea24GfHgILpwlYt9s
-   4IKqI5PHbkwxL4ZRdPbfsVtfbmsyYoCiIcACr/vFfMY+OIjPolwZocOw+
-   qa5jx4y9s2sYlAqJ1SGYkWybMN2E+EuCBaJP+SSrUdLpt/V9B7+nV3uWk
-   Irs+FushW+V4f/Zh0wFdK+8folHlPqVgMsrhAcik5oAyekevS6tRmLMhf
-   Hu7DXQmVqbySG6rto/dTtFT947Zt73IMOC50gZp5TiL3v9albIvjfiqKa
-   gUi9gHHR4fGtaMnTz2D41U041YwKb2Qc8xroaIw26LsJRTC9+Ug8+Eix3
-   A==;
-X-CSE-ConnectionGUID: Z6YNC1pGQJysy12M745u6w==
-X-CSE-MsgGUID: T/DQk7HJSJCdSYcI+fDOOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11532"; a="58479712"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="58479712"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 04:57:36 -0700
-X-CSE-ConnectionGUID: hdTgoxMQSJ63eWNqPKthrA==
-X-CSE-MsgGUID: +r8EtaYQTHi9Cnk+LVEvvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="169178170"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.7])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 04:57:27 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id F1E361203CE;
-	Mon, 25 Aug 2025 14:57:23 +0300 (EEST)
-Date: Mon, 25 Aug 2025 14:57:23 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Cai Huoqing <cai.huoqing@linux.dev>,
-	Haibo Chen <haibo.chen@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Marek Vasut <marek.vasut@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Julien Stephan <jstephan@baylibre.com>,
-	linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v2 02/12] iio: adc: Remove redundant
- pm_runtime_mark_last_busy() calls
-Message-ID: <aKxPo3Kg0ppOcczG@kekkonen.localdomain>
-References: <20250708231144.971170-1-sakari.ailus@linux.intel.com>
- <20250708231152.971398-1-sakari.ailus@linux.intel.com>
- <20250709163756.32b0e1d1@jic23-huawei>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="cYziQjLJ"
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20250825120204epoutp035e83c3120be95cd7c9b269096197d9f1~fANwKRT7s0118901189epoutp03N
+	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 12:02:04 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20250825120204epoutp035e83c3120be95cd7c9b269096197d9f1~fANwKRT7s0118901189epoutp03N
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1756123324;
+	bh=+FzwHF8KuNzlOWaaKrrdM7RTgM5W1jyxUgMxJOzJj4g=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+	b=cYziQjLJ2pZX+j8U/8EwOGgqhIx2xStM1PACDs79uontzUR5RP99yKw+VKgpYFIST
+	 iZiZ7kYFjO3EFHpwE5NUXlIsjM+DfLCjU4O2fYUXWXFK9eaBufESztX40L1fmjqTQl
+	 Kh8kEUycYsqxnrLTktroB9vGuydDz0PqduPadSbo=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20250825120203epcas5p1c6378c60ea36aa87f171b0477956f62a~fANuuWErA2818828188epcas5p1x;
+	Mon, 25 Aug 2025 12:02:03 +0000 (GMT)
+Received: from epcas5p3.samsung.com (unknown [182.195.38.95]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4c9TtL13lDz2SSKZ; Mon, 25 Aug
+	2025 12:02:02 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250825120201epcas5p2d4daa5629b3552586363349fb30e94e0~fANs7W8Nk0034600346epcas5p2Z;
+	Mon, 25 Aug 2025 12:02:01 +0000 (GMT)
+Received: from FDSFTE196 (unknown [107.116.189.214]) by epsmtip2.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20250825120157epsmtip265a67df65657294b364f9f90edabfe52~fANpJa82N2901829018epsmtip2W;
+	Mon, 25 Aug 2025 12:01:57 +0000 (GMT)
+From: "Inbaraj E" <inbaraj.e@samsung.com>
+To: "'Krzysztof Kozlowski'" <krzk@kernel.org>, <mturquette@baylibre.com>,
+	<sboyd@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <s.nawrocki@samsung.com>, <s.hauer@pengutronix.de>,
+	<shawnguo@kernel.org>, <cw00.choi@samsung.com>, <rmfrfs@gmail.com>,
+	<laurent.pinchart@ideasonboard.com>, <martink@posteo.de>,
+	<mchehab@kernel.org>, <linux-fsd@tesla.com>, <will@kernel.org>,
+	<catalin.marinas@arm.com>, <pankaj.dubey@samsung.com>,
+	<shradha.t@samsung.com>, <ravi.patel@samsung.com>
+Cc: <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <alim.akhtar@samsung.com>,
+	<linux-samsung-soc@vger.kernel.org>, <kernel@puri.sm>,
+	<kernel@pengutronix.de>, <festevam@gmail.com>,
+	<linux-media@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>
+In-Reply-To: <2eaa1303-79e6-431e-9902-356862357c9f@kernel.org>
+Subject: RE: [PATCH v2 10/12] dt-bindings: media: fsd: Document CSIS DMA
+ controller
+Date: Mon, 25 Aug 2025 17:31:56 +0530
+Message-ID: <015a01dc15b8$1095f0e0$31c1d2a0$@samsung.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250709163756.32b0e1d1@jic23-huawei>
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQK5oFMD+tt4mLQU5V9KgVyIDaUIUQIMxZSZAiExi2YA0x2iDwJfHwx3AsbuavuyZvR80A==
+Content-Language: en-in
+X-CMS-MailID: 20250825120201epcas5p2d4daa5629b3552586363349fb30e94e0
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-541,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250814141051epcas5p14dccee388087372973988aeebcb872cf
+References: <20250814140943.22531-1-inbaraj.e@samsung.com>
+	<CGME20250814141051epcas5p14dccee388087372973988aeebcb872cf@epcas5p1.samsung.com>
+	<20250814140943.22531-11-inbaraj.e@samsung.com>
+	<c46c6f66-dee6-4efa-a624-de62aa705206@kernel.org>
+	<00e201dc13d7$17d2a750$4777f5f0$@samsung.com>
+	<2eaa1303-79e6-431e-9902-356862357c9f@kernel.org>
 
-Hi Jonathan,
+Hi Krzysztof,
 
-Thanks for the review.
+> > According to the HW design of FSD SoC, the control to manage CSIS
+> > power is given to a separate CPU where custom firmware runs.
+> > Therefore. The Linux side does not control the CSIS power supplies dire=
+ctly
+> and are hence not included in the device tree.
+>=20
+> Usually this still means you vote for enabling these resources, at least =
+for
+> other vendors it is like that. Unless you want to say these are essential=
+ly
+> always on and CANNOT be disabled ever.
 
-On Wed, Jul 09, 2025 at 04:37:56PM +0100, Jonathan Cameron wrote:
-> On Wed,  9 Jul 2025 02:11:52 +0300
-> Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
-> 
-> > pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-> > pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-> > to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-> > pm_runtime_mark_last_busy().
-> > 
-> > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> 
-> Some comments for the future as more about what can be improved on the back
-> of this than what you have here.
-> 
-> >
-> > diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
-> > index cc326f21d398..3a17b3898bf6 100644
-> > --- a/drivers/iio/adc/rcar-gyroadc.c
-> > +++ b/drivers/iio/adc/rcar-gyroadc.c
-> > @@ -163,12 +163,10 @@ static int rcar_gyroadc_set_power(struct rcar_gyroadc *priv, bool on)
-> >  {
-> >  	struct device *dev = priv->dev;
-> >  
-> This is a very clear example of where the *_set_power() pattern is a bad idea.
-> There are two calls of this function, one with it hard coded as on and one with it
-> hard coded as off.  We can just push the pm_runtime_resume_and_get()
-> to the on case etc.
-> 
-> I don't mind that much if we do so as a follow up patch so this one can
-> be the mechanical change and then we follow up with the enabled simplification.
+Yes, we want IP to remain enabled permanently, So we are not adding power s=
+upply
+control in linux.
 
-Ack. I presume this pattern is due to one driver having used it first and
-then other drivers copying that. I haven't seen it elsewhere, or at least
-not being used as widely.
-
-> 
-> > -	if (on) {
-> > +	if (on)
-> >  		return pm_runtime_resume_and_get(dev);
-> > -	} else {
-> > -		pm_runtime_mark_last_busy(dev);
-> > -		return pm_runtime_put_autosuspend(dev);
-> > -	}
-> > +
-> > +	return pm_runtime_put_autosuspend(dev);
-> >  }
-> >  
-> >  static int rcar_gyroadc_read_raw(struct iio_dev *indio_dev,
-> >> diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-> > index 48549d617e5f..f2a93c63ca14 100644
-> > --- a/drivers/iio/adc/ti-ads1015.c
-> > +++ b/drivers/iio/adc/ti-ads1015.c
-> > @@ -374,12 +374,10 @@ static int ads1015_set_power_state(struct ads1015_data *data, bool on)
-> >  	int ret;
-> >  	struct device *dev = regmap_get_device(data->regmap);
-> >  
-> > -	if (on) {
-> > +	if (on)
-> >  		ret = pm_runtime_resume_and_get(dev);
-> > -	} else {
-> > -		pm_runtime_mark_last_busy(dev);
-> > +	else
-> >  		ret = pm_runtime_put_autosuspend(dev);
-> > -	}
-> >  
-> >  	return ret < 0 ? ret : 0;
-> So this one has a stub version which only brings benefits because
-> we have checks on the pm_runtime_put_autosuspend() path failing
-> (which it does if we have !CONFIG_PM).
-> 
-> I think the right option there is check the return value is < 0
-> for the resume_and_get() and don't check the _put_autosuspend()
-> return value at all.  Then we can just push this down to the
-> call sites as all of them hard code the bool value.
-
-Ack.
-
--- 
 Regards,
+Inbaraj E
 
-Sakari Ailus
