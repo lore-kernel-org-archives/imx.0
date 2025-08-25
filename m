@@ -1,314 +1,185 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013040.outbound.protection.outlook.com [40.107.159.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0422DF714
-	for <imx@lists.linux.dev>; Sun, 24 Aug 2025 22:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756073322; cv=none; b=f+HODXtKUTvLnZ8PD8W4yfqTIQ9jclDTDsI1fHSYYmEMsXOPvxS7huo7GuOIroDHVZRNNFNVnLPCKLlixew583PRT140mtTzFcYMLjQqsa5bpzUSZlPb/2+iLfbOZb1M9pGHFvWJjewdYoQVNwStdpk6PRHHl3Mw9EboouqLsDg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756073322; c=relaxed/simple;
-	bh=VfNJnaeHjOJ+zOLNhVNmTlGrdJKYrshfbXc8WKYPmNE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=frdcCx/ZdgNCMcvFdvY1WRKwYYVPUhX6vLX39zNHX7uzy2I4ivfz83qq7oyQH33Afa4d8y2hhpzbPXVKPCCLtmgpFkZ+nJsoe+pUaCWPNUOogCoHYvYl4xWWylVt2avPV6t2CnkV+IqOeGwi2Fb/vAi7xpVvBb82Twlz3itZ23A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=qVW/hoUp; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=QDjHPVEl; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD2F1DF73A
+	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 01:36:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756085778; cv=fail; b=Ab2L7Q9jYxKqjtpn5JJNPmqODY5rWDOAhO4rmEE/r4ljPfjICuB0RGSa46/lhHjBFz4IeNmSlp8WlZyPsgHADIzHQerYJOeeFzTOQ3zlIWY+ulM6iCxZIAttWk5yM18HvdzFxP9HOxyRjg6WU9vl+XdOI9ouTr9jwaXSniSdAHY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756085778; c=relaxed/simple;
+	bh=fEh7pVWyOc7TFg+0Fvn+qQtVQ0fq2tN5mxVSh5OF5Sw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=V6d3ah0WNj5yRoA1IGhO3k2CcgD8vOU2nAcJOJBIBMAVMJS0lAwdlDiqpVXZGfaZ1mw7BW4WfhCUrKsGNooIkqm0gef6IoJhzkC73drApDTGcU518wdQ03XyfqMSG9+0NtQt9qeUuZa34e38r+6T2LUKcVT/tvy5YJCAleOhIzQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DXa56wYt; arc=fail smtp.client-ip=40.107.159.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="qVW/hoUp";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="QDjHPVEl"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4c97Nd3Ckqz9t8j;
-	Mon, 25 Aug 2025 00:08:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1756073313;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iXXQQhi57E18XKJXhdLvJ9x9rh8p7ZWT0ifno4MM58M=;
-	b=qVW/hoUpE2LMp9953ylWGGjvnVLr2IFb1scvp5kkL6MExbbFyo7fZ2mrIt1zpkrpmTZ/+Q
-	ilJKRiYyw7psff9PYUqkSlOSwYRhdshYG+nMhJ4NzmeUQRIQUMKq8W2NSSp9jN6Gbgnokp
-	DaZdgxnxvdxVmKxwyvhI9mAHTEb8DD3niHK7R9jLyhAOscMyRYQY6dUWNkVw4PGuObRDRL
-	6jC13zhD+PAZ8/1Dqx3wZ9DhjWH8C1+fAqM54n+aagesEPmOld8E3NCrbveeoKDXy2EXMq
-	drB3xqMwqN+4CSQSSejlYmdKubc05sdDK7E5H5BHWL+bFDaB5XLCOSFKcNeHZA==
-From: Lukasz Majewski <lukasz.majewski@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1756073311;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iXXQQhi57E18XKJXhdLvJ9x9rh8p7ZWT0ifno4MM58M=;
-	b=QDjHPVElN9J74ai5r4zkI6oAH/XsdKOz2pbwftXwRHPURuUdfDyeBwtOopzRs/E+6tlEE5
-	UShy4deNERMYBii7QqCTpNbeOp6kDgSpVz5swb53ECfZ7WRNBKy4TEKMpYxg/lrvQ7gAYH
-	EWjbG2NkBh75+0MQPdu3rv8HWYRoWAeSnhaDyXdgXbNw5PprfCRwZ2uht4WlXBKL4H6ejm
-	lZRih4mo1pg2NaKkxmEkF4bgaAyMMZzCM/90PKEYxtUJgMybITgDGdvHJ/EjRB5p20ePrm
-	jbDGTenA0vTFLHOgfDlkKZ+I0AH7kZUUTSmI3uBTZfnwJoreZpObzmCjXT5MWQ==
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Lukasz Majewski <lukasz.majewski@mailbox.org>
-Subject: [net-next v19 7/7] net: mtip: Extend the L2 switch driver for imx287 with bridge operations
-Date: Mon, 25 Aug 2025 00:07:36 +0200
-Message-Id: <20250824220736.1760482-8-lukasz.majewski@mailbox.org>
-In-Reply-To: <20250824220736.1760482-1-lukasz.majewski@mailbox.org>
-References: <20250824220736.1760482-1-lukasz.majewski@mailbox.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DXa56wYt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VXSX4ymK21X0GApf7jd52fD5gEjwxN6nqsN95sSSchaKD1BzzY/SJfSWmx4zHbgpTaxQkd/s4SgrZ6wHlHL8JYmx5GG7pAzRiz+p3/QvQ/UTIa/oDqekSH5PzU9eLghcKovGvz1k98jhCbqk47M5QRGWrC40W3aapE1xvgRXe+96cqc/ySyMNdDBVjWSUNDatD9RVwhPU4aFWJV7YUzZdNUtZ8UKVqgqXRjzam7+DMJ5AtW+9+M5pFb7w97g+hcSKXM/mNNStvIoxuGpkFn48JxBo48Duc1tz9HCyKtNVc5xGqm9LHOHHNdYNh0t0HQ852ng0w5/uFWXwS++4Hudtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3uaKrhXlWcufKkyU+Jr84iy7Y6JnYTJNoRKkfdhIoMs=;
+ b=QzLRSWocAEE+eQCJPvh/TDj/HNgtBRnDyoPz6knMBM7y9W0nffK//lgCkbu92MHCwqve0TwmNp2p44k3uYWpeDoU74QBaEfKOWuAAwavONqYVDcKFCTnIV87SBzQ4/7S6bxjGPZYMWRMLFX8SithnpZL6ZzXigBZ9aBHsha0AIcp49sMPSIDTFDGIKbvFBAeEn1AJ1xmZkXYyE8PzUkzyjR9dxqsCacgpi/Og8LDt0QaFC/f3Sc7s7VRAB/t7+iDx104xf8BHP+MeLUUvEC6Fc1F34BvVoPqTb57OEv3hZzeKF0qW4ASCGrl9UbnV6m3DgGktnZou37izqp0FqNXxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3uaKrhXlWcufKkyU+Jr84iy7Y6JnYTJNoRKkfdhIoMs=;
+ b=DXa56wYtohNMVNr4Uryazq6tEAuD/RXsvZEQwkF3hQpRg2Rc9+nHTSOBdHAKHoHJifobmXV/h8CPeXoqxz8Jfr4EYJfavceCzxrHrlVHMdwxQTmesVBVEFdDzgUDBGDYPKsZPM20gU8XIZT4KNH1FM3wSttXfrrFhPesy0BGrODBD0r5tTERqPuHJHQ9ssJ7lBmq3xUqsxTUfNIN9ZFMWqKWfLm6IUk5UtZ4YC9bvbrsc0bCFCXZnOeNqBbd5IV6oB42iKiva/F/+JJVCqhURM9/zQeFoBaFWcgxjorTS6GZkl41jrVJgwfvBg4mzANTjiCUxNjwPB4HdN3d7BLmVA==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AM9PR04MB8259.eurprd04.prod.outlook.com (2603:10a6:20b:3e4::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.17; Mon, 25 Aug
+ 2025 01:36:13 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.9031.012; Mon, 25 Aug 2025
+ 01:36:13 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+CC: Clark Wang <xiaoning.wang@nxp.com>, Stanislav Fomichev <sdf@fomichev.me>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>
+Subject: RE: [PATCH v2 net-next 4/5] net: fec: add change_mtu to support
+ dynamic buffer allocation
+Thread-Topic: [PATCH v2 net-next 4/5] net: fec: add change_mtu to support
+ dynamic buffer allocation
+Thread-Index: AQHcEso1Ue9PAAZZWkmtSe1X7IJrlLRuVqwwgAIyggCAAhIy8A==
+Date: Mon, 25 Aug 2025 01:36:13 +0000
+Message-ID:
+ <PAXPR04MB851036E98561133AF4945FA1883EA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250821183336.1063783-1-shenwei.wang@nxp.com>
+ <20250821183336.1063783-5-shenwei.wang@nxp.com>
+ <PAXPR04MB85108182AB184083B5F32D3B883DA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <PAXPR04MB9185F42CDE16107E3A29FF0B893CA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <PAXPR04MB9185F42CDE16107E3A29FF0B893CA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AM9PR04MB8259:EE_
+x-ms-office365-filtering-correlation-id: 37ed8f22-d419-4a47-667b-08dde377c6cb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|19092799006|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?VOWQLB2AiR+nonKs+tvxatCUTLONfqsDGjlI1/wJ9+nCGuyDb2icBkfPteTz?=
+ =?us-ascii?Q?gOgPZLhXEt7qZt5Pyuv/KwdCuGqPnXkySvG4aG7loYeUhbsOG7lYUf6OxGvo?=
+ =?us-ascii?Q?37KmsRLsj8dN48D5YpHweumqJV6kI5oclnuZepjU4Qy3kkufUMpJjhg2OSvJ?=
+ =?us-ascii?Q?XdgNvEqZcCAzDitfQ4M9b86IHmCtM/COh3Rbr7ZIZcn9OWpZsGzOJZQOm+Od?=
+ =?us-ascii?Q?0cADr1saxmxWJNEwMaUpGKREK26253w+RLlHXtjYY3pkGKPDDmlKQ/skuKGt?=
+ =?us-ascii?Q?bZGgoUFHpJ2M/pNNkde/XCmtMwEUCvMEqmtUqxscS7kaeFCHF4iNX/fauB49?=
+ =?us-ascii?Q?BFshh/JU7DBH8+OGDw91jx0C6BI0uyCwBIDTOdki0aFhw/HZzPvZXIcYf0wB?=
+ =?us-ascii?Q?KK0YF4xug0F2oKoWxJ00IX+0ryt/077wmYFKXqi76MmnUJRa+E+5YSx2GUbx?=
+ =?us-ascii?Q?cYpBxxd4tie7i7rd1YMN6dU3TWnY5ZZ0bOzhJaRQOMelfHS4ypm1Uslc0lU+?=
+ =?us-ascii?Q?ddECJp303ttvHm15P/iFskN1DGz4uxA7LqfJ9FDeQTkPh7+/9PQW9YOMSnot?=
+ =?us-ascii?Q?VagPKoBkho3qbysv2yB4IxIokieEpC+HNTK6boEWeGaPYPMSkKt5xR533nfL?=
+ =?us-ascii?Q?4zI+uGVyJvkHMYuW/0S5JA6ey002URmysKMX2WrwiGbS4AxvrApmGerddStf?=
+ =?us-ascii?Q?5buRrASL0AnRHQyGTlfpSVoziCAzUODvUlX9uvHz2/J3CwjOgWz39qjNq+K7?=
+ =?us-ascii?Q?umTdLc7PBeVmPwY+5gAZu+UXh3BbyzfRyVlCzN/wjrd0hhKdNlb/w/iaqd/I?=
+ =?us-ascii?Q?/csz3USYaqE9TvQSD9OM10IF1hcE9bbZWizhJm40WPmzhGPMxjdcTpMjor30?=
+ =?us-ascii?Q?cF7ZfA5WKM4v1emvOXMBDTtM3Jph92CWsrVgRWYqp7NJj+/5vOlVRyr+cp5Z?=
+ =?us-ascii?Q?B2JUfjyysXLBwZAIE/afcBsjYJ7g4o4YT+W2G2H0dnXbCDK7Djw/G8QPhQvu?=
+ =?us-ascii?Q?HVA1Izb3OYgQlIsZkqd5g40aWcW1g3FMFBMJNHVfiQKV67fdum5/e6fC7D9w?=
+ =?us-ascii?Q?Fo2ygUWk33d98ovu81H4pHCSfaCKkPQ8vePHXcfBsfSYnrBjcuI9IvVikmgU?=
+ =?us-ascii?Q?OFeS8JhEq3VrmH5kmqwm+/vFNiKMZhIFh4rB2jwSR7EkSLl9aaDEgUvA8Q9a?=
+ =?us-ascii?Q?W5BsJKPw0cQdRa0a4s4qg6U2gAaxV6dDlMKI3GT1leZZgSrfk5KZ59P6at/W?=
+ =?us-ascii?Q?yuqsqGetMlgEr7e4a409e/ZtCvCPeADTk2lhxfIjoiDMYnJvNt94Om1afwcE?=
+ =?us-ascii?Q?EzMxLAOi8D/h17K9rG9AoOIWY5/hj0VMEj67vf5XY5jQPEOeHWHPUNwrN0f8?=
+ =?us-ascii?Q?HVsS83etQ7I/JKi6YyA4nFBsbnwuhl7RqKGuUznf1aKmil0yMxMzwfzmDgZF?=
+ =?us-ascii?Q?vvA/EjgfFNr8p88d+67/YE4cBGU4GBdkv/ki9L8n2REydK8kMtfElg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(19092799006)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?UZymOqi/QCGOMRysm1YH/w5XQVvZ/pnDfSNYiyDKYdxs+fHZf1HA4k8xfOVi?=
+ =?us-ascii?Q?TQOgU1arDywDaB6UF/9K1tvsTsl27SWk2f12FwoEiY6cNDm6FcVCJAY1xJ+T?=
+ =?us-ascii?Q?3nmPHV5InPy3c+RC6amZHPl0WlVs6BIe2mdNRRVhMv7uWOlCq0BoSvqH+3YB?=
+ =?us-ascii?Q?1R4hrOxDbWDECz2hYdkW8xEQ1FGrPKh8vPcqER5L8VKgT2kPkq6PM7RdQaGC?=
+ =?us-ascii?Q?1o/WWZsbi/jxXaJmmmzO/7GZK31NyPikRSjGvk+WCaJ2/3oRINPuk+7HDpN6?=
+ =?us-ascii?Q?dfoNj/RDgXpNAldBCekYGywRVcUxfcL7eq4R4YWGrybAM1GlaTfLm4FEAYEG?=
+ =?us-ascii?Q?J/Lz+j7HmtetnlKrEuA2v4ULI24b3fPjfC+Y2+YZpwblun5da0uY8ND3MQiC?=
+ =?us-ascii?Q?c6aeP3gng8JDYt9CFdnAQ4DqznylfDaeRi89FpOTMUxPyLxcVwF0RHipUBFp?=
+ =?us-ascii?Q?lIFJGYJz1x8bmBBs40o1Z0pRNIaONCtu5bRYQd6UG92pqo2AVj9OY5j3yYsg?=
+ =?us-ascii?Q?8hz9oiRWkLNjHh6uURB11ta5lG3Z91bjZFGR70V1tmDyy9CKNQp9/SEQi8Qt?=
+ =?us-ascii?Q?wf85pvpwiMRcAsl+hTSEAach3TRO4WyNC5UuNrVeWgus98QZ6/sq4w3lx/b3?=
+ =?us-ascii?Q?acpknU8VIjpjLTdeKluBmOjiR9qNK34TCr3se6cWz7YiShfPDy+ofu+mV8tG?=
+ =?us-ascii?Q?pnzt6rxBp7LnNWzMBuV5cuqXukqthK5Y8KUziAtGic8soUMbrg+szVkkpbM4?=
+ =?us-ascii?Q?CIMsR0k6coINTixUOT7GjT/G2H8nWzaCyC6luQZdu0K5/d5XoButHxz4LhwQ?=
+ =?us-ascii?Q?vD1BS74XhRio3jA2Rz4a4LA0+Z9OZRSCKFzQh8v/Hz4rTxdLtl/GLCdX4AUN?=
+ =?us-ascii?Q?dZsWBM6W00GQXUonF7sTCJFjfcCn0PUUTz/qN/6Ftm+zmbpfm8a1NKrmsGd2?=
+ =?us-ascii?Q?XMJvnG890xupC2PBpnAT2fiLJqKdSkXZcb7yQmImkEqUHknwsNvR9SgT3BYi?=
+ =?us-ascii?Q?feFcRaKvNNLdVnnEgoFB97QzmbrskRfNCpD1FcN4yasdmOwxksujpkAcpzc+?=
+ =?us-ascii?Q?JdlCLw6I+Kf/E8bNpxRDBiKV8tOJOq39ng2TfMXQGKZVhRgzUb7JQ0ETDKIX?=
+ =?us-ascii?Q?vps3T12hMTqso293sabMyN7qr6qe6kwllyQX1HA6qquewx99QZFXwdoRuXu3?=
+ =?us-ascii?Q?lDckuUdGlc+lbCKVXUc9y/cv1ykz4AWmh5AFZUdOmetqBn0OI/z4GAQKkGlK?=
+ =?us-ascii?Q?GxGAOgHp1YTBrzCeyH7runiR0OZPpyNA3czGhsc1imDSuJ8jirGRfjjLBaAA?=
+ =?us-ascii?Q?MYaB7NgV9fDnfaQqgEO88I3FKDFB3rw8OgyIGzzfGMsepH7XORSn6j5yabLa?=
+ =?us-ascii?Q?PQSjgYz6Kw8RYGquk0v1tbTYG//wYUByor4NU7wxFbMbWywwt8+TY5QsaSpa?=
+ =?us-ascii?Q?u35968QMjOywc1AYVQ8a+jLJ3hEnuwHVbEmYIJa2xhNUlWbBUCC+T6SaVnrk?=
+ =?us-ascii?Q?m2B2HasIrsA6J/83x/OaXNkShyQaFGjBxbYfi9GdqEYU6lboPm5DvYchUgMb?=
+ =?us-ascii?Q?Zk0PPgx19YEDyfkwz7M=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 9f996be681df97c8ef1
-X-MBO-RS-META: j9axtoou5fmme5zdjq6cfettsg3rt136
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37ed8f22-d419-4a47-667b-08dde377c6cb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Aug 2025 01:36:13.1888
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gKDwJ+zSXUax8tmK16kFQXIS51anaIcid4aNbBaptCsJ/fplphE+F/osqTNyhcmlL468W3yvHKWdAE8fIfDYgw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8259
 
-After this change the MTIP L2 switch can be configured as offloading
-device for packet switching when bridge on their interfaces is created.
+> > > +static int fec_change_mtu(struct net_device *ndev, int new_mtu) {
+> > > +	struct fec_enet_private *fep =3D netdev_priv(ndev);
+> > > +	int order, done;
+> > > +	bool running;
+> > > +
+> > > +	order =3D get_order(new_mtu + ETH_HLEN + ETH_FCS_LEN);
+> > > +	if (fep->pagepool_order =3D=3D order) {
+> > > +		WRITE_ONCE(ndev->mtu, new_mtu);
+> >
+> > No need to write ndev->mtu, same below, because __netif_set_mtu() will
+> > help update it.
+>=20
+> It will only update the ndev->mtu if the driver doesn't have its own chan=
+g_mtu
+> handler.
+>=20
+> int __netif_set_mtu(struct net_device *dev, int new_mtu) {
+> 	const struct net_device_ops *ops =3D dev->netdev_ops;
+>=20
+> 	if (ops->ndo_change_mtu)
+> 		return ops->ndo_change_mtu(dev, new_mtu);
+>=20
+> 	/* Pairs with all the lockless reads of dev->mtu in the stack */
+> 	WRITE_ONCE(dev->mtu, new_mtu);
+> 	return 0;
+> }
 
-Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
----
-
-Changes for v13:
-- New patch - created by excluding some code from large (i.e. v12 and
-  earlier) MTIP driver
-
-Changes for v14 - v15:
-- None
-
-Changes for v16:
-- Enable MTIP ports to support bridge offloading
-
-Changes for v17 - v19:
-- None
----
- .../net/ethernet/freescale/mtipsw/Makefile    |   2 +-
- .../net/ethernet/freescale/mtipsw/mtipl2sw.c  |   9 +-
- .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |   2 +
- .../ethernet/freescale/mtipsw/mtipl2sw_br.c   | 132 ++++++++++++++++++
- 4 files changed, 143 insertions(+), 2 deletions(-)
- create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
-
-diff --git a/drivers/net/ethernet/freescale/mtipsw/Makefile b/drivers/net/ethernet/freescale/mtipsw/Makefile
-index a99aaf6ddfb2..81e2b0e03e6c 100644
---- a/drivers/net/ethernet/freescale/mtipsw/Makefile
-+++ b/drivers/net/ethernet/freescale/mtipsw/Makefile
-@@ -1,4 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- obj-$(CONFIG_FEC_MTIP_L2SW) += nxp-mtipl2sw.o
--nxp-mtipl2sw-objs := mtipl2sw.o mtipl2sw_mgnt.o
-+nxp-mtipl2sw-objs := mtipl2sw.o mtipl2sw_mgnt.o mtipl2sw_br.o
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-index fe694d5b6863..4d37320c8cd9 100644
---- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-@@ -1909,11 +1909,15 @@ static int mtip_sw_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret, "Could not alloc IRQ\n");
- 
-+	ret = mtip_register_notifiers(fep);
-+	if (ret)
-+		return ret;
-+
- 	ret = mtip_switch_dma_init(fep);
- 	if (ret) {
- 		dev_err(&pdev->dev, "%s: ethernet switch init fail (%d)!\n",
- 			__func__, ret);
--		return ret;
-+		goto unregister_notifiers;
- 	}
- 
- 	ret = mtip_mii_init(fep, pdev);
-@@ -1944,6 +1948,8 @@ static int mtip_sw_probe(struct platform_device *pdev)
- 			  fep->bd_dma);
- 	fep->rx_bd_base = NULL;
- 	fep->tx_bd_base = NULL;
-+ unregister_notifiers:
-+	mtip_unregister_notifiers(fep);
- 
- 	return ret;
- }
-@@ -1952,6 +1958,7 @@ static void mtip_sw_remove(struct platform_device *pdev)
- {
- 	struct switch_enet_private *fep = platform_get_drvdata(pdev);
- 
-+	mtip_unregister_notifiers(fep);
- 	mtip_ndev_cleanup(fep);
- 
- 	mtip_mii_remove(fep);
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-index 7e5373823d43..3dae94048917 100644
---- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-@@ -643,6 +643,8 @@ int mtip_port_learning_config(struct switch_enet_private *fep, int port,
- int mtip_port_blocking_config(struct switch_enet_private *fep, int port,
- 			      bool enable);
- bool mtip_is_switch_netdev_port(const struct net_device *ndev);
-+int mtip_register_notifiers(struct switch_enet_private *fep);
-+void mtip_unregister_notifiers(struct switch_enet_private *fep);
- int mtip_port_enable_config(struct switch_enet_private *fep, int port,
- 			    bool tx_en, bool rx_en);
- void mtip_clear_atable(struct switch_enet_private *fep);
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
-new file mode 100644
-index 000000000000..f961b9cc4e6a
---- /dev/null
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
-@@ -0,0 +1,132 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ *  L2 switch Controller driver for MTIP block - bridge network interface
-+ *
-+ *  Copyright (C) 2025 DENX Software Engineering GmbH
-+ *  Lukasz Majewski <lukma@denx.de>
-+ */
-+
-+#include <linux/etherdevice.h>
-+#include <linux/netdevice.h>
-+#include <linux/platform_device.h>
-+#include <net/switchdev.h>
-+
-+#include "mtipl2sw.h"
-+
-+static int mtip_ndev_port_link(struct net_device *ndev,
-+			       struct net_device *br_ndev,
-+			       struct netlink_ext_ack *extack)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(ndev), *other_priv;
-+	struct switch_enet_private *fep = priv->fep;
-+	struct net_device *other_ndev;
-+	int err;
-+
-+	/* Check if one port of MTIP switch is already bridged */
-+	if (fep->br_members && !fep->br_offload) {
-+		/* Get the second bridge ndev */
-+		other_ndev = fep->ndev[fep->br_members - 1];
-+		other_priv = netdev_priv(other_ndev);
-+		if (other_priv->master_dev != br_ndev) {
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "L2 offloading only possible for the same bridge!");
-+			return notifier_from_errno(-EOPNOTSUPP);
-+		}
-+
-+		fep->br_offload = 1;
-+		mtip_switch_dis_port_separation(fep);
-+		mtip_clear_atable(fep);
-+	}
-+
-+	if (!priv->master_dev)
-+		priv->master_dev = br_ndev;
-+
-+	fep->br_members |= BIT(priv->portnum - 1);
-+
-+	err = switchdev_bridge_port_offload(ndev, ndev, NULL, NULL, NULL,
-+					    false, extack);
-+	if (err) {
-+		dev_err(&ndev->dev, "can't offload bridge port %s [err: %d]\n",
-+			ndev->name, err);
-+		return err;
-+	}
-+
-+	dev_dbg(&ndev->dev,
-+		"%s: ndev: %s br: %s fep: %p members: 0x%x offload: %d\n",
-+		__func__, ndev->name,  br_ndev->name, fep, fep->br_members,
-+		fep->br_offload);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static void mtip_netdevice_port_unlink(struct net_device *ndev)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(ndev);
-+	struct switch_enet_private *fep = priv->fep;
-+
-+	dev_dbg(&ndev->dev, "%s: ndev: %s members: 0x%x\n", __func__,
-+		ndev->name, fep->br_members);
-+
-+	switchdev_bridge_port_unoffload(ndev, NULL, NULL, NULL);
-+
-+	fep->br_members &= ~BIT(priv->portnum - 1);
-+	priv->master_dev = NULL;
-+
-+	if (fep->br_members && fep->br_offload) {
-+		fep->br_offload = 0;
-+		mtip_switch_en_port_separation(fep);
-+		mtip_clear_atable(fep);
-+	}
-+}
-+
-+/* netdev notifier */
-+static int mtip_netdevice_event(struct notifier_block *unused,
-+				unsigned long event, void *ptr)
-+{
-+	struct net_device *ndev = netdev_notifier_info_to_dev(ptr);
-+	struct netdev_notifier_changeupper_info *info = ptr;
-+	struct netlink_ext_ack *extack;
-+	int ret = NOTIFY_DONE;
-+
-+	if (!mtip_is_switch_netdev_port(ndev))
-+		return NOTIFY_DONE;
-+
-+	extack = netdev_notifier_info_to_extack(&info->info);
-+
-+	switch (event) {
-+	case NETDEV_CHANGEUPPER:
-+		if (!netif_is_bridge_master(info->upper_dev))
-+			break;
-+
-+		if (info->linking)
-+			ret = mtip_ndev_port_link(ndev, info->upper_dev,
-+						  extack);
-+		else
-+			mtip_netdevice_port_unlink(ndev);
-+
-+		break;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+
-+	return notifier_from_errno(ret);
-+}
-+
-+static struct notifier_block mtip_netdevice_nb __read_mostly = {
-+	.notifier_call = mtip_netdevice_event,
-+};
-+
-+int mtip_register_notifiers(struct switch_enet_private *fep)
-+{
-+	int ret = register_netdevice_notifier(&mtip_netdevice_nb);
-+
-+	if (ret)
-+		dev_err(&fep->pdev->dev, "can't register netdevice notifier\n");
-+
-+	return ret;
-+}
-+
-+void mtip_unregister_notifiers(struct switch_enet_private *fep)
-+{
-+	unregister_netdevice_notifier(&mtip_netdevice_nb);
-+}
--- 
-2.39.5
+Oh, I misread the code, so sorry.
 
