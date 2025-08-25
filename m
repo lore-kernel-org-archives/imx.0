@@ -1,192 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21202F8BCA;
-	Mon, 25 Aug 2025 13:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5872F363B
+	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 14:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756130087; cv=none; b=azMxHZWoarVuJwc9+zJbX1MAqB60cJCE88ZEqa5mvpknLVb6yYgFKL1TOiDcPvjm8H6wG/31TVhJj78wAazVXvDDsa41zJ3qaJEYB6zaeQvH1l67KLyddunSyYv0PmGuiY+LVRt0DG3B8VZEAxzfxI2Qnc/03Mjws+O9GKlQ6Rw=
+	t=1756131221; cv=none; b=NNk+1anGQIofIy5PACe5JbqUCEwM0Od38Dla8r6wpPFSlkef7yWVdavu3S9m7XtL4TgP8VfRZ+jGmSpg52Avaqqz29xGdHZePZOrIiMGkXMjMlS3HUnz4iwexP2EcMV9q+/byHp1nqLXIac1qGBbVz2EClyOpycISVWSG1MZI2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756130087; c=relaxed/simple;
-	bh=QuDzdgEbhe01RGcDa58j/iJHR5TXAvIxXXDXJUBmrxo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ArHcXcOxONxIsQ6KcnFiGjAuBKXwCYbi6GUqYwILMV0uiRvi4O/ALopKtNG/ZZhXhoohH0UYVmvN7dsEk01I+HtqsfbYecoZeRApxsoA6pMs3usHSzT1fplTmXy4H46FlFbDnNESsnL2N3PBUa0UlhxjokRPnTbRytw19jwZwMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cKiulXCj; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1756131221; c=relaxed/simple;
+	bh=3RLeKCKpDIk2eBgGx5sPwZfoBKyVmeEo49RWhYh8Kh8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f84xgHSdfyNNE/Bm/aiaY0aKOiU3nglhqiaHAbeg601Q5XQa1zOjtWM/2NrStYDa0Wam0HgIoGjmKoY3XjWYea6GkppFNDhLdvhEUBJD3sGKvA0cbxvV9UgQtjgotC193nh9LjZoyDIGPAwO7gC8PFJr60QmlNqvoNljY9OL+uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4fvRADW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cKiulXCj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756130081; x=1787666081;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=QuDzdgEbhe01RGcDa58j/iJHR5TXAvIxXXDXJUBmrxo=;
-  b=cKiulXCjVJgz8VTlNPmjy33oXJxb4zqPhfXemnj87Fma1CIENExhYiki
-   AcUL0iSglxmM684qfZWgy5jPyFKtng6HWMpm7yGh0C/e+/Fs2l1k7bfs1
-   IKpXFjy8PmG/X2EGA4/8LK385c4xT8t4v9xewAmO9uzLqi9wY5jKgz4HD
-   EjH/vTbeP5A/a6n2pvbeONGxE+dkSS1QLRIcj+Nb2AYVrcocdDgWh8GH4
-   mXCibHdLQMdyVFvavn6MFJbH+7FyOzMVh1jd2KRSRtOEfaf1oHOebnG5V
-   qxZ6RvZJZWIJACTg4Ijsd0f7NxDQWoqjhtpszD5I47d5gdavXDJWf7fk/
-   Q==;
-X-CSE-ConnectionGUID: Mq6cGU8WT5S2SBcqNCt+2g==
-X-CSE-MsgGUID: 8svqkK4HQQOuueZlB8a8LQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68937000"
-X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
-   d="scan'208";a="68937000"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:35 -0700
-X-CSE-ConnectionGUID: ZLTzST0nT7yY9hsTNN1JvQ==
-X-CSE-MsgGUID: E4N/eTAKTtS1CFStH4ICug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
-   d="scan'208";a="168547700"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.7])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:25 -0700
-Received: from punajuuri.localdomain (unknown [192.168.240.130])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id E44C5121F83;
-	Mon, 25 Aug 2025 16:54:01 +0300 (EEST)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.98.2)
-	(envelope-from <sakari.ailus@linux.intel.com>)
-	id 1uqXe5-00000007POs-3m4x;
-	Mon, 25 Aug 2025 16:54:01 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Cai Huoqing <cai.huoqing@linux.dev>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Marek Vasut <marek.vasut@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-	Gerald Loacker <gerald.loacker@wolfvision.net>,
-	Andreas Klinger <ak@it-klinger.de>,
-	Crt Mori <cmo@melexis.com>,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Julien Stephan <jstephan@baylibre.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Bo Liu <liubo03@inspur.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Han Xu <han.xu@nxp.com>,
-	Rayyan Ansari <rayyan@ansari.sh>,
-	Gustavo Vaz <gustavo.vaz@usp.br>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Alexandru Ardelean <aardelean@baylibre.com>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Abhash Jha <abhashkumarjha123@gmail.com>,
-	chuguangqing <chuguangqing@inspur.com>,
-	Shreeya Patel <shreeya.patel@collabora.com>,
-	Per-Daniel Olsson <perdaniel.olsson@axis.com>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	David Laight <david.laight@aculab.com>,
-	Jakob Hauser <jahau@rocketmail.com>
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev
-Subject: [PATCH v3 12/12] iio: temperature: Remove redundant pm_runtime_mark_last_busy() calls
-Date: Mon, 25 Aug 2025 16:54:01 +0300
-Message-ID: <20250825135401.1765847-13-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
-References: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4fvRADW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50749C2BC86
+	for <imx@lists.linux.dev>; Mon, 25 Aug 2025 14:13:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756131220;
+	bh=3RLeKCKpDIk2eBgGx5sPwZfoBKyVmeEo49RWhYh8Kh8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=e4fvRADWc2SiGyvairwMKdDw1zm1wGOXThGQeER0f4MYqsGYBRhD4UrfH+q2kimaE
+	 978Vxb2gnRrcxwK29zKxBr5sDuyaM7DyuM68nemBfDcJoWAJvdefCrMf4ky3tm3mTR
+	 ZEf5XaC0Deu8RHdTatQRuIX1UHKAPHYmvItTm0G3jHrBoDa0LYl7qMs/ZPY2JpgApc
+	 lQtDHIn1yKhsLsiU+tvHyxR+ZutYlrHGoRZcd4IzOHtkeInzrDGgR65atrSWLdNsYt
+	 TaeLwZDvBl70cfWDcKc3Px3Inhk2GTRE0IlvBDIzWF32uT29HeibPtjI2oz6UM54HE
+	 cW6lqbzTmXm7Q==
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-74381df387fso1148733a34.0
+        for <imx@lists.linux.dev>; Mon, 25 Aug 2025 07:13:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWRHzZadQz+xgTDbjqajZNP/Zhu3TZTxAVA8GeHuCEfHHQPiHx9tIbWyhuU6De01FHallY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxTQ104oXfxl+dObXAXXs/4O3XQXaaxXJy3xGfjSAVGd1acevvi
+	utSdBoqNDeIwMTsSERRe+Xag4YXKGMlKbb+jXgH97U0jynapfFqtiJqszZ0DF22GaJdQoM06y1n
+	pVEbRV2hOQNVTyH3Fdl5jPhsdxFRMxyI=
+X-Google-Smtp-Source: AGHT+IGEnV+1YshDCmjAscdFjkSNQru4o/XG/DWYuObgbMiwP57k9JdqOZlPe3YdSW0fnLXsvsMiCF3QToEZVDUm+Q8=
+X-Received: by 2002:a05:6830:d18:b0:742:fd7f:e105 with SMTP id
+ 46e09a7af769-74500aafdb9mr6734918a34.19.1756131219164; Mon, 25 Aug 2025
+ 07:13:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 25 Aug 2025 16:13:27 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g7rJn=z5p4DuJJoPpZrR5ismYftpDWp5X=z74DqaGYBQ@mail.gmail.com>
+X-Gm-Features: Ac12FXwCyvYKc8Ipwt4NeaLRZNsWY9t1kMBiUFhDRbkfLg-XPnoGM5Pxq1PIQzg
+Message-ID: <CAJZ5v0g7rJn=z5p4DuJJoPpZrR5ismYftpDWp5X=z74DqaGYBQ@mail.gmail.com>
+Subject: Re: [PATCH v1] cpufreq: use __free() for all cpufreq_cpu_get() references
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer <mmayer@broadcom.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Chanwoo Choi <cw00.choi@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, x86@kernel.org, 
+	kvm@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-pm_runtime_mark_last_busy().
+On Mon, Aug 25, 2025 at 11:29=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylinos.=
+cn> wrote:
+>
+> This patch replaces all remaining uses of cpufreq_cpu_get() with
+> the __free(cpufreq_cpu_put) annotation.
+>
+> Motivation:
+> - Ensures automatic cleanup of policy references when they go out of scop=
+e,
+>   reducing the risk of forgetting to call cpufreq_cpu_put() on early retu=
+rn
+>   or error paths.
+> - Brings the code in line with the latest kernel coding style and best
+>   practices for managing reference-counted objects.
+> - No functional changes are introduced; behavior remains the same,
+>   but reference counting is now safer and easier to maintain.
+>
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  arch/arm64/kernel/topology.c                  |  9 +++----
+>  arch/x86/kvm/x86.c                            | 10 ++++----
+>  drivers/acpi/processor_thermal.c              | 13 ++++------
+>  drivers/cpufreq/brcmstb-avs-cpufreq.c         |  4 +---
+>  drivers/cpufreq/cppc_cpufreq.c                |  4 +---
+>  drivers/cpufreq/intel_pstate.c                |  3 +--
+>  drivers/cpufreq/longhaul.c                    |  3 +--
+>  drivers/cpufreq/mediatek-cpufreq.c            |  6 ++---
+>  drivers/cpufreq/powernv-cpufreq.c             |  6 ++---
+>  drivers/cpufreq/s5pv210-cpufreq.c             |  3 +--
+>  drivers/cpufreq/tegra186-cpufreq.c            |  3 +--
+>  drivers/devfreq/governor_passive.c            | 19 ++++-----------
+>  drivers/gpu/drm/i915/gt/intel_llc.c           |  3 +--
+>  drivers/macintosh/windfarm_cpufreq_clamp.c    |  4 +---
+>  drivers/powercap/dtpm_cpu.c                   | 24 ++++++-------------
+>  drivers/thermal/imx_thermal.c                 |  7 ++----
+>  .../ti-soc-thermal/ti-thermal-common.c        |  5 +---
+>  kernel/power/energy_model.c                   |  7 ++----
+>  18 files changed, 40 insertions(+), 93 deletions(-)
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Acked-by: Crt Mori <cmo@melexis.com>
----
- drivers/iio/temperature/mlx90614.c | 1 -
- drivers/iio/temperature/mlx90632.c | 1 -
- drivers/iio/temperature/mlx90635.c | 1 -
- 3 files changed, 3 deletions(-)
+This changes different pieces of code maintained by different people
+and the changes are not interdependent AFAICS, so better send it as a
+series of separate patches.
 
-diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature/mlx90614.c
-index 740018d4b3df..8a44a00bfd5e 100644
---- a/drivers/iio/temperature/mlx90614.c
-+++ b/drivers/iio/temperature/mlx90614.c
-@@ -225,7 +225,6 @@ static void mlx90614_power_put(struct mlx90614_data *data)
- 	if (!data->wakeup_gpio)
- 		return;
- 
--	pm_runtime_mark_last_busy(&data->client->dev);
- 	pm_runtime_put_autosuspend(&data->client->dev);
- }
- #else
-diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
-index ae4ea587e7f9..bf689f6143f3 100644
---- a/drivers/iio/temperature/mlx90632.c
-+++ b/drivers/iio/temperature/mlx90632.c
-@@ -1043,7 +1043,6 @@ static int mlx90632_read_raw(struct iio_dev *indio_dev,
- 	}
- 
- mlx90632_read_raw_pm:
--	pm_runtime_mark_last_busy(&data->client->dev);
- 	pm_runtime_put_autosuspend(&data->client->dev);
- 	return ret;
- }
-diff --git a/drivers/iio/temperature/mlx90635.c b/drivers/iio/temperature/mlx90635.c
-index 1175c7887ae1..d7d16a56f90b 100644
---- a/drivers/iio/temperature/mlx90635.c
-+++ b/drivers/iio/temperature/mlx90635.c
-@@ -749,7 +749,6 @@ static int mlx90635_read_raw(struct iio_dev *indio_dev,
- 	}
- 
- mlx90635_read_raw_pm:
--	pm_runtime_mark_last_busy(&data->client->dev);
- 	pm_runtime_put_autosuspend(&data->client->dev);
- 	return ret;
- }
--- 
-2.47.2
-
+Thanks!
