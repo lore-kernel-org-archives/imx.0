@@ -1,121 +1,133 @@
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8962F619C
-	for <imx@lists.linux.dev>; Tue, 26 Aug 2025 10:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004932405E1;
+	Tue, 26 Aug 2025 10:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756202918; cv=none; b=S/+ABm84WzHf2g28jutVALAJfOaUQtD7lb5NN6JC/DU8lkYV4Q04YdgtQBHpVAZm0IfA8V3j3BOYqL13rmet9bDNrA8QZJS4dEJ8hbLl0n/Ie2PofzoxGzTp2+gUCVjuXLh/FHf9LN9lNs5WVV+vz9Kj35+qexmwQKqJRI3dax8=
+	t=1756205186; cv=none; b=r/NIMxaaXHdfaS6cJe8mD0qcxsnylRiSA/CnCAloga8Y6Tui2xtkTBc3y3sGUu8aXo4eCML1HsZ6/MZkRw/ps0JQpXDOSqwAbYdk/Ds1jqMuBx74lxDvheSSLmpj8F2V8A2zkt93rd6J3GVKsDULDwLYDchNP81Rfq3cttJR1u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756202918; c=relaxed/simple;
-	bh=gygMN3gMSxZ6Evr4Nrnpma342Igh7n4myrgw/1fPWg4=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:References; b=W9NpuSk6OBSt2WkHDztfIUWddqD9XlvWW0MzC4mlL1yjaQbGKVFgSV3iTWKQlX7QubC9BDHfpfW6lVk04gMuDr3BDhT6JQyax4VZEhIN3KcvQGH4H9VXxWDqEoEd+mDmlYOMtdyUp5OUOTC/EdNp1x9GLKThPjP2r7r0TGDbMJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=r7NlZ/4t; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="r7NlZ/4t"
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20250826100829epoutp0166247fed1dee0d351ae99d3d7fe0c2ba~fST2xo0aG1237512375epoutp019
-	for <imx@lists.linux.dev>; Tue, 26 Aug 2025 10:08:29 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20250826100829epoutp0166247fed1dee0d351ae99d3d7fe0c2ba~fST2xo0aG1237512375epoutp019
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1756202909;
-	bh=gygMN3gMSxZ6Evr4Nrnpma342Igh7n4myrgw/1fPWg4=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-	b=r7NlZ/4tAu+9H/3P7ZWUKTeFXtGPrnNGXPVGjg+FnDizdhhY2CcucA6jZY56cem/W
-	 +67efryuTeLX78KEo8RXX7wyJn+cGCSiHzt5hSkaHeJF9GbnTAncXUgfih65s/Ru86
-	 AnYJnsVxc+pynbElLONt0wHfZZL3yl6125+xZmlE=
-Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
-	20250826100827epcas5p1193525accefc68efcd36c224d01ca9fc~fST10omlf3119231192epcas5p1b;
-	Tue, 26 Aug 2025 10:08:27 +0000 (GMT)
-Received: from epcas5p2.samsung.com (unknown [182.195.38.91]) by
-	epsnrtp04.localdomain (Postfix) with ESMTP id 4cB3Jq08MPz6B9mF; Tue, 26 Aug
-	2025 10:08:27 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250826100826epcas5p24abdd08b355b1a7c1064b086bb9c11ac~fST0MRrip0241602416epcas5p2f;
-	Tue, 26 Aug 2025 10:08:26 +0000 (GMT)
-Received: from FDSFTE196 (unknown [107.116.189.214]) by epsmtip1.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20250826100822epsmtip1d21b4e23ad85bcf46748f0d59cda39b5~fSTwTkU862841628416epsmtip1X;
-	Tue, 26 Aug 2025 10:08:21 +0000 (GMT)
-From: "Inbaraj E" <inbaraj.e@samsung.com>
-To: "'Krzysztof Kozlowski'" <krzk@kernel.org>, <mturquette@baylibre.com>,
-	<sboyd@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <s.nawrocki@samsung.com>, <s.hauer@pengutronix.de>,
-	<shawnguo@kernel.org>, <cw00.choi@samsung.com>, <rmfrfs@gmail.com>,
-	<laurent.pinchart@ideasonboard.com>, <martink@posteo.de>,
-	<mchehab@kernel.org>, <linux-fsd@tesla.com>, <will@kernel.org>,
-	<catalin.marinas@arm.com>, <pankaj.dubey@samsung.com>,
-	<shradha.t@samsung.com>, <ravi.patel@samsung.com>
-Cc: <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <alim.akhtar@samsung.com>,
-	<linux-samsung-soc@vger.kernel.org>, <kernel@puri.sm>,
-	<kernel@pengutronix.de>, <festevam@gmail.com>,
-	<linux-media@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>
-In-Reply-To: <1dfaedc8-88e6-4749-8726-e8f66878e57e@kernel.org>
-Subject: RE: [PATCH v2 04/12] arm64: dts: fsd: Add CSI nodes
-Date: Tue, 26 Aug 2025 15:38:19 +0530
-Message-ID: <019c01dc1671$5c8f6850$15ae38f0$@samsung.com>
+	s=arc-20240116; t=1756205186; c=relaxed/simple;
+	bh=H3tVdYrDOxdRlNSFXF/jMCHZ3FgH+2UV7laTh6NYYEI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nFJYUOq5A6E9j+0qXg+Ldef6aZCGnKbnc0SsGAghEhfr2vzghjTVd9eRrciyq0/tY21xWTWZv5zWZQhY5nDMAvhPBHf4DlFMdkMxP4hsf9bNMfq18S3KUnlKfIgGej+7CwrG9+6vbewCThidWYRN4MqkSfKiHcAqqkLUqdPwbAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A06821A25;
+	Tue, 26 Aug 2025 03:46:15 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8000D3F694;
+	Tue, 26 Aug 2025 03:46:14 -0700 (PDT)
+Date: Tue, 26 Aug 2025 11:46:10 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: peterz@infradead.org, mingo@redhat.com, will@kernel.org,
+	acme@kernel.org, namhyung@kernel.org,
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+	irogers@google.com, adrian.hunter@intel.com,
+	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, coresight@lists.linaro.org,
+	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org,
+	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 01/19] perf/arm-cmn: Fix event validation
+Message-ID: <aK2QclH4jlHJ28EJ@J2N7QTR9R3>
+References: <cover.1755096883.git.robin.murphy@arm.com>
+ <0716da3e77065f005ef6ea0d10ddf67fc53e76cb.1755096883.git.robin.murphy@arm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQK5oFMD+tt4mLQU5V9KgVyIDaUIUQE9OnCOAxwEstACXXiXxwGMECOMAYbqfFkCHlK3ygEZONEMslGN25A=
-Content-Language: en-in
-X-CMS-MailID: 20250826100826epcas5p24abdd08b355b1a7c1064b086bb9c11ac
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-541,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250814141019epcas5p2f957b934d5b60d4649cf9c6abd6969d5
-References: <20250814140943.22531-1-inbaraj.e@samsung.com>
-	<CGME20250814141019epcas5p2f957b934d5b60d4649cf9c6abd6969d5@epcas5p2.samsung.com>
-	<20250814140943.22531-5-inbaraj.e@samsung.com>
-	<1919de68-99ea-47f7-b3d2-cae4611f9c52@kernel.org>
-	<00d101dc136c$aa037020$fe0a5060$@samsung.com>
-	<41434afa-fecd-4507-bcca-735d358ac925@kernel.org>
-	<016401dc15c0$fc0dcfe0$f4296fa0$@samsung.com>
-	<1dfaedc8-88e6-4749-8726-e8f66878e57e@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0716da3e77065f005ef6ea0d10ddf67fc53e76cb.1755096883.git.robin.murphy@arm.com>
 
-Hi Krzysztof,
+Hi Robin,
 
+On Wed, Aug 13, 2025 at 06:00:53PM +0100, Robin Murphy wrote:
+> In the hypothetical case where a CMN event is opened with a software
+> group leader that already has some other hardware sibling, currently
+> arm_cmn_val_add_event() could try to interpret the other event's data
+> as an arm_cmn_hw_event, which is not great since we dereference a
+> pointer from there... Thankfully the way to be more robust is to be
+> less clever - stop trying to special-case software events and simply
+> skip any event that isn't for our PMU.
 
- >> Googling for =22MIPI CSIS=22 gives me 0 results, so I still claim this =
-is
-> >> not a generic name.
-> >
-> > I checked other vendors (e.g: freescale), and they are using mipi-csi.
-> > I'll adopt for the same.
-> >
-> >
->=20
-> Then it is just =22csi=22?=20
+I think this is missing some important context w.r.t. how the core perf
+code behaves (and hence why this change doesn't cause other problems).
+I'd suggest that we give the first few patches a common preamble:
 
-For the CSIS MIPI CSI-2 Rx handled by imx-mipi-csis driver, I'll keep node =
-name as =22csi=22
+| When opening a new perf event, the core perf code calls
+| pmu::event_init() before checking whether the new event would cause an
+| event group to span multiple hardware PMUs. Considering this:
+| 
+| (1) Any pmu::event_init() callback needs to be robust to cases where
+|     a non-software group_leader or sibling event targets a distinct
+|     PMU.
+| 
+| (2) Any pmu::event_init() callback doesn't need to explicitly reject
+|     groups that span multiple hardware PMUs, as the core code will
+|     reject this later.
 
->Except that you have some other different nodes called
-> =22csi=22 as well, so two different devices are =22csi=22?
+... and then spell out the specific issues in the driver, e.g.
 
-For CSIS video capture interface which is handled by fsd-csis driver I'll k=
-eep node
-name as =22csis=22.
- If =22csis =22 and =22csi=22 is kind of confusing in the same dt, then I'l=
-l keep
-as =22video=22.
+| The logic in arm_cmn_validate_group() doesn't account for cases where
+| a non-software sibling event targets a distinct PMU. In such cases,
+| arm_cmn_val_add_event() will erroneously interpret the sibling's
+| event::hw as as struct arm_cmn_hw_event, including dereferencing
+| pointers from potentially user-controlled fields.
+|
+| Fix this by skipping any events for distinct PMUs, and leaving it to
+| the core code to reject event groups that span multiple hardware PMUs.
 
-is it fine?
+With that context, the patch itself looks good to me.
 
-Regards,
-Inbaraj E
+This will need a Cc stable. I'm not sure what Fixes tag is necessary;
+has this been broken since its introduction?
 
+Mark.
+
+> 
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> ---
+>  drivers/perf/arm-cmn.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+> index 11fb2234b10f..f8c9be9fa6c0 100644
+> --- a/drivers/perf/arm-cmn.c
+> +++ b/drivers/perf/arm-cmn.c
+> @@ -1652,7 +1652,7 @@ static void arm_cmn_val_add_event(struct arm_cmn *cmn, struct arm_cmn_val *val,
+>  	enum cmn_node_type type;
+>  	int i;
+>  
+> -	if (is_software_event(event))
+> +	if (event->pmu != &cmn->pmu)
+>  		return;
+>  
+>  	type = CMN_EVENT_TYPE(event);
+> @@ -1693,9 +1693,6 @@ static int arm_cmn_validate_group(struct arm_cmn *cmn, struct perf_event *event)
+>  	if (leader == event)
+>  		return 0;
+>  
+> -	if (event->pmu != leader->pmu && !is_software_event(leader))
+> -		return -EINVAL;
+> -
+>  	val = kzalloc(sizeof(*val), GFP_KERNEL);
+>  	if (!val)
+>  		return -ENOMEM;
+> -- 
+> 2.39.2.101.g768bb238c484.dirty
+> 
