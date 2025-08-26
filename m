@@ -1,66 +1,66 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2A830F55C
-	for <imx@lists.linux.dev>; Tue, 26 Aug 2025 09:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FF443ABC
+	for <imx@lists.linux.dev>; Tue, 26 Aug 2025 09:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756200917; cv=none; b=DwYga3xCjp0JUEfZOssJN3PuK8tTnIWRdxzmNETlUL9aQVtpyZC1oudRCuVv5xVLpzEZrT/ugJ7iJwUKWsLAPtdNfzkui58rQSfaRZVNrT3/WfLLHjwY1zs/K8g4ysfRSianbyy3J50uDY/IvZub/LB2PNtTOl8YW+dqB5700ZE=
+	t=1756200917; cv=none; b=E0ss0FdDOp1am5gCwPmofopWg/w+A0mORro3g1UmqbAgnfEZr9MExURrdWpZ9OdH/WYoUm5Z9073WZ2lK7mXOFr90F+riqGk1PZXtg0/GnS39XWBK79vJLijI9+iFXDUzXvJXKqHMUk4nUCRRUxFM2Q005+0wCufOvrn0+eiHYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756200917; c=relaxed/simple;
-	bh=iMU0rNgXbMpWcmAeYjzIqLI52qcL5///qyanpfM4ZAg=;
+	bh=ANodkn/JBi/nD3cyNS1lTtKkoOSFk1GkBDbJ17B8p/Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fmxh/6lK/2KskWScW+qZ+4GLnIzfSzPdXqncSzON8TiEklJRfpbzcaZ+VbIZgy3HX3Qt9xDrT5tpcoWB62m3eRzcbGLKVFi9yoe34JuOVZTN0+SX7+EqzGEkqCKKcqiYYZV8lCCr0UPwmjDcpGtmxWy68VVkQ14CoQJhouMQVWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=E0By+MSs; arc=none smtp.client-ip=209.85.128.44
+	 In-Reply-To:To:Cc; b=rAZ9uH/qTWWF/CkcTw0Ny5kO4JZB7Yj32L90iGPUitQGWjPIBqBAihWhviuYU+qlfyXUlu+iTp00nkvomRx1O14Ly99fFMP1PJHtQSnzV4cmZjWof+IgW8KgWaScGScgmuzDPUYg9BohERKByQVbjahj3UEUe0bWpls6T8T31BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=dlm7i/gd; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="E0By+MSs"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45a1b05ac1eso29258005e9.1
-        for <imx@lists.linux.dev>; Tue, 26 Aug 2025 02:35:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="dlm7i/gd"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45a1b066b5eso28420955e9.1
+        for <imx@lists.linux.dev>; Tue, 26 Aug 2025 02:35:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756200914; x=1756805714; darn=lists.linux.dev;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756200913; x=1756805713; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sGtfsW0w1WiZlRd5nd/Re/Px8c+YGmOHA/Ir0hFEdro=;
-        b=E0By+MSsVoXe37n2UX667sB/gPykhawUOvCYeVE73cM1J8MY19HP0mfit/ifrQdH4a
-         7Isxf8uZ0RQ4rQQz6XtrCQoDNByQ9hBuSpnjd725zZkD/WKbu25wsiyNlOt6KSe4f7gp
-         tRLWpVnPEp5PbyE/x0+UOrqsCfqcziCa146yscYKtYxMt4bWxKRBJEylf4suQ8mRJmNr
-         J+jrqsbD8NbcrNNd1KXxOWukfeFoYEJiF0YbRwwSkid7DbYRiT5GiGIchMNlOfxZWbR4
-         Z2nK9elj8vvf4nQjmLxNijlXzUK63SK6Jo8nNQ8T5zCSS7U7DUlGHQOQjD/Jx0tRH7El
-         DexQ==
+        bh=lATIPSy5e6EtCT9cnYgcUD2Ds0mi2iLMFvh/wI5iKp0=;
+        b=dlm7i/gd3hhzHX+/6RceBzfTDRfXW+lW7/pyqVfOWETz7XlL4x4wukMnntT4JvdLE5
+         iBsoErkXE3uYcWYFVlbnPv4PJB6+ATaqSftkqDZv3WMCpU2DtbLM8U1k5iSCpT1kWQnJ
+         XA3mS/rP4R9x8ujoEA2Zm7z4wWDwQZdIv7GjMwK2nRiBx7aFUGF0ePRDPlhCF23pAFK+
+         4uADP+46lAdolnADxtho9kJkuR0TvnM3jRfNtlc94E+WYE/r2XDCVzZRBgNXY0iNg/gd
+         gP6MEZlK8RRh8yGuD75+rUM2rzEoVTYXQANAriUTNSyW8F9emxSPwpIH0j+EmkQgvz7t
+         qD2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756200914; x=1756805714;
+        d=1e100.net; s=20230601; t=1756200913; x=1756805713;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sGtfsW0w1WiZlRd5nd/Re/Px8c+YGmOHA/Ir0hFEdro=;
-        b=T2s213rq29PbXvMMlDvga5AjzfTCQbLFKrlVYVRM1zpwfnnWAvymN3iHm43ZRocBkw
-         lr8GR//9bnRIvpU5LuOsx2d+BUO8z8ZumkpiFGX+8JxdqwBChN/oqVfFlRQo2QwpbfQK
-         IMzET9FtDiiQ+m1p4x4itdPzPcOuRvJym46EbzI23HeK4Vb8oG4bdX4UfdC0Jj7nngX/
-         BIrmetxGb+CrcjlwMj4CV3l5lA4PLUmEZAkfXiGgnJO+s0MteL0d7ownXrvzqxo3Q3bl
-         A7q9VSvMEXwO4FjC3+tfA0c9xv9YzAj0lp4MApYXWrAOem21kvq8XT8cruJdq5nFyOZ0
-         4v1A==
-X-Forwarded-Encrypted: i=1; AJvYcCUNx2SkP5pOLDjwVhQxAc1/n/AOoqVG0tNQzZw846juxj49nAt90LXMhtzmh6IXgTRzId4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy12UdoTtNwN1UelVuhQmwFGfNdYKrd2kZUOZgoG5xHy6Aw94FS
-	X/eHVM4q5/O2TBtqPsp7jc7hUqPMK7Dnjj9S1z/rG47jCqqZmKqFeYrVkKM+7f2sGW4=
-X-Gm-Gg: ASbGncv/wpRipyLnnxj2CoVKdK8hfiaXWvrzP1NuJJtj37pCSSlQJMY25+NYotHIeLb
-	7j82MIa5VO++74V0IIsm++J+c77bvNy/9J1OI1i2MtNzQwIkXg6HYhTha0HjO9TqxW0kmamXiYj
-	cAYyrNr/TFx6x65aya1hCBE6bhg/oWGzPI1qJQ0dQQgX414IgfsnwG8GcKRz/IdjM2McBxd7s8z
-	TPGz0EYgOUJSTwrf+lc4/1CztYDFJHPO6ursTvDCiI7Jlldkq10qsmHOFKJ+zUrt+cUrtUOWrdg
-	WLGvPtGUC6KhZZm1Vjx4qyPCjcItoCE/M6OlcxE+UlMUI0LkOfaoO4RTCPE9R7zwjYMvFU6CkhY
-	EY+LChSmc8tr+ffoa
-X-Google-Smtp-Source: AGHT+IFCT8K43FmYf5m1ztIgvX2Fjw+GEW6Ck53Etdpp26KgnKp00bfzhvxPN07C+xOfaCd/tjuJQA==
-X-Received: by 2002:a05:6000:43cc:20b0:3c6:aa87:d959 with SMTP id ffacd0b85a97d-3c6aa87dab1mr8425016f8f.26.1756200913910;
-        Tue, 26 Aug 2025 02:35:13 -0700 (PDT)
+        bh=lATIPSy5e6EtCT9cnYgcUD2Ds0mi2iLMFvh/wI5iKp0=;
+        b=S+cTsg5MgGIYzlXZrxSAlbQG48q6hyKtRD/PYGNuhI5r7iqTpFwsvT+anQd+cSkvV4
+         qGtWiUuOTheG/OFU+gvrd3MUOLGFfUEFFEH0Z06/0PJh5/cueFUFSL6za7idaGeHzbNK
+         U/Qrg5gGXmJBRUZbCFHWO5kxr+guRNxiQqLNLpiODI8BKRIMsTXiyv1lyDb5FBhe6MBE
+         xc85YitrCgx3ZPlbikxGueMVoDSeTzVr53q7FTN0Nvqqt2m5iOrK/7DMNvdveMMqfsDt
+         DwBTDyyQxL330EYZS70SC/8l9N9FQEMdPGttZGtq3bwcs7WesnR+tLR5lMpg3m8zFWkZ
+         Z0Rg==
+X-Forwarded-Encrypted: i=1; AJvYcCXTJz+zgqbf+mrBEtwoEM7Xc1QMTXzIChNJPHnGeGbTv8zfsY5dFcusyOVCdWaXuTYRymk=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz8RUe49Vuk2w/6f+Fcf9uxFkCAM6Mk1ZKQBflKUnRvAN0HwX8N
+	EFDHdva4x8qovu7+d9ySyl6FGMj+ikbhNfg2GCXleI3bLQes3932KZb/vQA4egVNkfg=
+X-Gm-Gg: ASbGncuUrxci6z4NDh3s5qwX2TVUN92nyS06zulPe7ge0aCleEqSM+hkVsy6pRPQRtr
+	eiOQtlFwITl4WF/yl8rzKa7uxNotdAWBwE7leKKQXYFwkr9b1wsRrPkbCIN28X3rSYbX0unhZT3
+	mlGuFsWrYaONcbEUhS00erGmmLBW8gnmKaOiTy9bAIqX4f0rSJK4NpM6kUss9G68ScEYuLgamqm
+	Jfj+J4toqB+r97H4wzH8qKckT9AXegQ4H7C2p4l2CseybZv6h568CM84By1jGGUrNbR0L9ae2Es
+	v6j5vsk2b9bSxuNbfMBdlIsM7xPExxCkwlgQX0N2TlvMzg38KXmOGM6YF/zkKJGXUNWNR9AiY5q
+	dS0E9cVaDUrs4x0iWOI/VAemwIARkTKQi5jbmig==
+X-Google-Smtp-Source: AGHT+IG4AZWGUoJwLuc2ootBVti7BUMsrtAyRnTnepKJgcUpTo6Dd5cIJq7uF1V4qZbMDI/zddDMAA==
+X-Received: by 2002:a5d:5f50:0:b0:3c8:7303:8fa1 with SMTP id ffacd0b85a97d-3c87303915fmr5611467f8f.32.1756200912864;
+        Tue, 26 Aug 2025 02:35:12 -0700 (PDT)
 Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:fed4:79fc:9440:6629])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c7117d5b10sm15308255f8f.47.2025.08.26.02.35.12
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c7117d5b10sm15308255f8f.47.2025.08.26.02.35.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 02:35:13 -0700 (PDT)
+        Tue, 26 Aug 2025 02:35:12 -0700 (PDT)
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 26 Aug 2025 11:35:03 +0200
-Subject: [PATCH 02/12] gpio: mxs: order includes alphabetically
+Date: Tue, 26 Aug 2025 11:35:02 +0200
+Subject: [PATCH 01/12] gpio: xgene-sb: use new generic GPIO chip API
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250826-gpio-mmio-gpio-conv-part2-v1-2-f67603e4b27e@linaro.org>
+Message-Id: <20250826-gpio-mmio-gpio-conv-part2-v1-1-f67603e4b27e@linaro.org>
 References: <20250826-gpio-mmio-gpio-conv-part2-v1-0-f67603e4b27e@linaro.org>
 In-Reply-To: <20250826-gpio-mmio-gpio-conv-part2-v1-0-f67603e4b27e@linaro.org>
 To: Linus Walleij <linus.walleij@linaro.org>, 
@@ -85,57 +85,202 @@ Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
  Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1016;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5979;
  i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=/ZPycHZAJYq+cwPqjcUCTodGjlR5/fbPuBgY495SbXQ=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBorX/MPuJ13oy7EJTZgd9B5mOUZ3BPJXtY/Ws7Y
- pBLB3iReFSJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaK1/zAAKCRARpy6gFHHX
- cn8jEADiVhvactMnyVz0TLK/1lSYmKBQ0xCRvjBYVtCD5N/B1mqD/GKrYpGqbIw3KQrvl3LKs8A
- 27a7sIyKR6tBNLoCkoHvIY3HtaZKYOs0wPuc5DMAtpCdJef3YJXOVijtKqzvIFxhcjOutGehOEv
- 4hwpFsovmfK8YTOTUCr0blyP7zatckLDZsbIHo7WHlvlzAr1Pt53ZvH8Tq1HgiOmL7gVeJ/5UYN
- 0GiilKgYrait3IrZKIRDqSfSpCcTOt7IYT3cEpWeKDVFfAm2pjkSpFa4/56RfzakYQ5uTbKT3xa
- jusqrQnLH5sdbPQ3DfbJizcsiy7j7bfQu+n49ak5dE3t1G4wX+BeUmUnI+d8PPm+YRdbhoXEllx
- BW1WnatXpWTjs9wUZ4ykXy6bPYjq1rXiqkoK2Rt8EEZFWcVO2TWSW7vxX0FNpJqPiLkbPX1ab/B
- dL6SxuxnPr462roWGxmp8yHz2Je8M20fwveLsi4Kth9CYuPQLdm3Wx7DLqlbwabVn4av+xuU+ip
- NPM0fLfjeUB41nXy+JOA+JXeoXkBSoJiourNZKsKLtWjKTKuW2nKHLGfGxnZo8+aqYGDXF3C346
- 7yUTWG5BrVSV/lJqO7w0fretAVTMEcSorYpsFpSz2wQlii1NbmTe2MnyUgns+uG7Ja+/9ehF912
- y/G7Vqn+VCST8tA==
+ bh=9jFh2D6ttrCYJYtJTOU/wJErxn3PlPPm9jnKQyT1lBE=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBorX/M/YFESIOoQ5SAnEVMCLG3mCi3FKtS5BecE
+ Qi6HSZxDFWJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaK1/zAAKCRARpy6gFHHX
+ cjKHEACkTe3hmggUqlQY+tCcGrk7zCxmF559kPKX0+oo9gCa6z7tc5vKsTIU/1ownJEORH/T9mt
+ GueVzDiLUBD4kPeXUyeqMWEnmCCl5jYH0SnUdjp6VSifD915KGXTUybakeQW80q1LQGa339ZMGg
+ wnTPR7gowN9vKdEqGjNFWFR+6i7dCComPP+GBX82+IaWhSBOCEnYReWLPx9HtwUGVahmAb4eNjH
+ ilvp6kzIToZETYcW/JcUU80rLgpJLdVVWQdFDOpg9ePgYAubD4f1cWNgicweX+00tUoGK0FJDvW
+ AqxRkdLJRCdsdu80o70yks5XZnXgijc8H7JuuLclA3OuKrKjkicmdHM9DX//gLZpHZrueo46eIK
+ J4FsFxhx7hoe/iZkWCHnoXYWJ2EwGToeFoxUzOqApHWjkOt/ONKPnkybTNn8IbGKSJbthG+MAK+
+ +YFKujGW+bW28V+fUWkt4CDAh5qTE2iTMv2JioiYmrA0SuqYcX/IePGW+jAdpJIT1elVOELvnmU
+ TQYdoMBNaxwacnDr4kW4pFdYSkbNCTWQ6Ql08eIejPWc6ULocXQzg+YwyqBfgb9aDD2CBD99M3Q
+ laSEjjOylEmwpCLUe2+Orh8PuzbE8T5/vRyzXSiBI0Y/TDyY0FWqlSeqIdYdiCs7oiONEOhnhmM
+ K9HtaDPmq2JRATQ==
 X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
  fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
 
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-For easier maintenance: put includes in alphabetical order.
+Convert the driver to using the new generic GPIO chip interfaces from
+linux/gpio/generic.h.
 
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- drivers/gpio/gpio-mxs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-xgene-sb.c | 53 +++++++++++++++++++++++++-------------------
+ 1 file changed, 30 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/gpio/gpio-mxs.c b/drivers/gpio/gpio-mxs.c
-index 0ea46f3d04e128bc8e70941e26c618c0378ab9ae..bf0c97f589c96a5dce37dc140babda5998d5e365 100644
---- a/drivers/gpio/gpio-mxs.c
-+++ b/drivers/gpio/gpio-mxs.c
-@@ -7,17 +7,17 @@
- // Copyright (C) 2004-2010 Freescale Semiconductor, Inc. All Rights Reserved.
+diff --git a/drivers/gpio/gpio-xgene-sb.c b/drivers/gpio/gpio-xgene-sb.c
+index b51b1fa726bb5ac6fce21f93e98035b5f684ee88..c559a89aadf7a77bd9cce7e5a7d4a2b241307812 100644
+--- a/drivers/gpio/gpio-xgene-sb.c
++++ b/drivers/gpio/gpio-xgene-sb.c
+@@ -21,6 +21,7 @@
+ #include <linux/types.h>
  
- #include <linux/err.h>
-+#include <linux/gpio/driver.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/irq.h>
- #include <linux/irqdomain.h>
-+#include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
--#include <linux/gpio/driver.h>
--#include <linux/module.h>
+ #include <linux/gpio/driver.h>
++#include <linux/gpio/generic.h>
  
- #define MXS_SET		0x4
- #define MXS_CLR		0x8
+ #include "gpiolib-acpi.h"
+ 
+@@ -40,7 +41,7 @@
+ 
+ /**
+  * struct xgene_gpio_sb - GPIO-Standby private data structure.
+- * @gc:				memory-mapped GPIO controllers.
++ * @chip:			Generic GPIO chip data
+  * @regs:			GPIO register base offset
+  * @irq_domain:			GPIO interrupt domain
+  * @irq_start:			GPIO pin that start support interrupt
+@@ -48,7 +49,7 @@
+  * @parent_irq_base:		Start parent HWIRQ
+  */
+ struct xgene_gpio_sb {
+-	struct gpio_chip	gc;
++	struct gpio_generic_chip chip;
+ 	void __iomem		*regs;
+ 	struct irq_domain	*irq_domain;
+ 	u16			irq_start;
+@@ -91,9 +92,9 @@ static int xgene_gpio_sb_irq_set_type(struct irq_data *d, unsigned int type)
+ 		break;
+ 	}
+ 
+-	xgene_gpio_set_bit(&priv->gc, priv->regs + MPA_GPIO_SEL_LO,
++	xgene_gpio_set_bit(&priv->chip.gc, priv->regs + MPA_GPIO_SEL_LO,
+ 			gpio * 2, 1);
+-	xgene_gpio_set_bit(&priv->gc, priv->regs + MPA_GPIO_INT_LVL,
++	xgene_gpio_set_bit(&priv->chip.gc, priv->regs + MPA_GPIO_INT_LVL,
+ 			d->hwirq, lvl_type);
+ 
+ 	/* Propagate IRQ type setting to parent */
+@@ -109,14 +110,14 @@ static void xgene_gpio_sb_irq_mask(struct irq_data *d)
+ 
+ 	irq_chip_mask_parent(d);
+ 
+-	gpiochip_disable_irq(&priv->gc, d->hwirq);
++	gpiochip_disable_irq(&priv->chip.gc, d->hwirq);
+ }
+ 
+ static void xgene_gpio_sb_irq_unmask(struct irq_data *d)
+ {
+ 	struct xgene_gpio_sb *priv = irq_data_get_irq_chip_data(d);
+ 
+-	gpiochip_enable_irq(&priv->gc, d->hwirq);
++	gpiochip_enable_irq(&priv->chip.gc, d->hwirq);
+ 
+ 	irq_chip_unmask_parent(d);
+ }
+@@ -155,15 +156,15 @@ static int xgene_gpio_sb_domain_activate(struct irq_domain *d,
+ 	u32 gpio = HWIRQ_TO_GPIO(priv, irq_data->hwirq);
+ 	int ret;
+ 
+-	ret = gpiochip_lock_as_irq(&priv->gc, gpio);
++	ret = gpiochip_lock_as_irq(&priv->chip.gc, gpio);
+ 	if (ret) {
+-		dev_err(priv->gc.parent,
++		dev_err(priv->chip.gc.parent,
+ 		"Unable to configure XGene GPIO standby pin %d as IRQ\n",
+ 				gpio);
+ 		return ret;
+ 	}
+ 
+-	xgene_gpio_set_bit(&priv->gc, priv->regs + MPA_GPIO_SEL_LO,
++	xgene_gpio_set_bit(&priv->chip.gc, priv->regs + MPA_GPIO_SEL_LO,
+ 			gpio * 2, 1);
+ 	return 0;
+ }
+@@ -174,8 +175,8 @@ static void xgene_gpio_sb_domain_deactivate(struct irq_domain *d,
+ 	struct xgene_gpio_sb *priv = d->host_data;
+ 	u32 gpio = HWIRQ_TO_GPIO(priv, irq_data->hwirq);
+ 
+-	gpiochip_unlock_as_irq(&priv->gc, gpio);
+-	xgene_gpio_set_bit(&priv->gc, priv->regs + MPA_GPIO_SEL_LO,
++	gpiochip_unlock_as_irq(&priv->chip.gc, gpio);
++	xgene_gpio_set_bit(&priv->chip.gc, priv->regs + MPA_GPIO_SEL_LO,
+ 			gpio * 2, 0);
+ }
+ 
+@@ -237,6 +238,7 @@ static const struct irq_domain_ops xgene_gpio_sb_domain_ops = {
+ 
+ static int xgene_gpio_sb_probe(struct platform_device *pdev)
+ {
++	struct gpio_generic_chip_config config;
+ 	struct xgene_gpio_sb *priv;
+ 	int ret;
+ 	void __iomem *regs;
+@@ -263,14 +265,19 @@ static int xgene_gpio_sb_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
+ 
+-	ret = bgpio_init(&priv->gc, &pdev->dev, 4,
+-			regs + MPA_GPIO_IN_ADDR,
+-			regs + MPA_GPIO_OUT_ADDR, NULL,
+-			regs + MPA_GPIO_OE_ADDR, NULL, 0);
++	config = (typeof(config)){
++		.dev = &pdev->dev,
++		.sz = 4,
++		.dat = regs + MPA_GPIO_IN_ADDR,
++		.set = regs + MPA_GPIO_OUT_ADDR,
++		.dirout = regs + MPA_GPIO_OE_ADDR,
++	};
++
++	ret = gpio_generic_chip_init(&priv->chip, &config);
+         if (ret)
+                 return ret;
+ 
+-	priv->gc.to_irq = xgene_gpio_sb_to_irq;
++	priv->chip.gc.to_irq = xgene_gpio_sb_to_irq;
+ 
+ 	/* Retrieve start irq pin, use default if property not found */
+ 	priv->irq_start = XGENE_DFLT_IRQ_START_PIN;
+@@ -283,12 +290,12 @@ static int xgene_gpio_sb_probe(struct platform_device *pdev)
+ 		priv->nirq = val32;
+ 
+ 	/* Retrieve number gpio, use default if property not found */
+-	priv->gc.ngpio = XGENE_DFLT_MAX_NGPIO;
++	priv->chip.gc.ngpio = XGENE_DFLT_MAX_NGPIO;
+ 	if (!device_property_read_u32(&pdev->dev, "apm,nr-gpios", &val32))
+-		priv->gc.ngpio = val32;
++		priv->chip.gc.ngpio = val32;
+ 
+ 	dev_info(&pdev->dev, "Support %d gpios, %d irqs start from pin %d\n",
+-			priv->gc.ngpio, priv->nirq, priv->irq_start);
++			priv->chip.gc.ngpio, priv->nirq, priv->irq_start);
+ 
+ 	platform_set_drvdata(pdev, priv);
+ 
+@@ -298,9 +305,9 @@ static int xgene_gpio_sb_probe(struct platform_device *pdev)
+ 	if (!priv->irq_domain)
+ 		return -ENODEV;
+ 
+-	priv->gc.irq.domain = priv->irq_domain;
++	priv->chip.gc.irq.domain = priv->irq_domain;
+ 
+-	ret = devm_gpiochip_add_data(&pdev->dev, &priv->gc, priv);
++	ret = devm_gpiochip_add_data(&pdev->dev, &priv->chip.gc, priv);
+ 	if (ret) {
+ 		dev_err(&pdev->dev,
+ 			"failed to register X-Gene GPIO Standby driver\n");
+@@ -311,7 +318,7 @@ static int xgene_gpio_sb_probe(struct platform_device *pdev)
+ 	dev_info(&pdev->dev, "X-Gene GPIO Standby driver registered\n");
+ 
+ 	/* Register interrupt handlers for GPIO signaled ACPI Events */
+-	acpi_gpiochip_request_interrupts(&priv->gc);
++	acpi_gpiochip_request_interrupts(&priv->chip.gc);
+ 
+ 	return ret;
+ }
+@@ -320,7 +327,7 @@ static void xgene_gpio_sb_remove(struct platform_device *pdev)
+ {
+ 	struct xgene_gpio_sb *priv = platform_get_drvdata(pdev);
+ 
+-	acpi_gpiochip_free_interrupts(&priv->gc);
++	acpi_gpiochip_free_interrupts(&priv->chip.gc);
+ 
+ 	irq_domain_remove(priv->irq_domain);
+ }
 
 -- 
 2.48.1
