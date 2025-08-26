@@ -1,158 +1,226 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D9F371E94
-	for <imx@lists.linux.dev>; Tue, 26 Aug 2025 18:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729C5211C;
+	Tue, 26 Aug 2025 20:09:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756234144; cv=none; b=tUgUr2irWtGfcI56gmC60gH/17BzUPak/HYAzd0Ya62scb/4XJpFV5/BevU/W3O/JOKLvXdZlxsnLAajz28Ig1/ZkeY6/QAgPf6dLmUmfuSAXu7r32iApYpihgLF6YdjKLoHsGzF2ndAxxIlI567KfF5cHgbkffMoI8zgZBIIeE=
+	t=1756238946; cv=none; b=Xw7IMkmTwz0zrGPyv7s5ng1ksxudCCbwySX98qp8u7kQX8icK0gTroZ2D5clff26dvNH4ZpdFekJT2rstwfIgYIepR2UgqUOH/uHYsYeYtmKWz+1/CCtIMQd2qZo+W6A4hPCgub9Uw+XnmrzouWo2gopHBQZfIl/pmOHjoatETE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756234144; c=relaxed/simple;
-	bh=E/Ye7/SL7tqTx9oBx/tviBmGnvw5YMp+2zk7nWejWf0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XpFvyq2HCTNn9KhCS7EI94lrXV6vdODYruHiIqrLwI2yivyKcKHvXTCJNe83wi2FRk3FoUJMGdR6ltQx4U4C5PguGr9kBX1MhfQ+0SFYPVBuBREIJISlX9iWIIZAJBfwkb0g3VMoeMShOw3dITZUp0v4IQUXRxhd1LZCdTawlaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TV5Fg5nV; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1756238946; c=relaxed/simple;
+	bh=De6tXlh/83GdnOt9bMTPx+Vmn3L3ISZ/uryMZcIrB5w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WBEGLMRc1N/IptR+Hfq9kvKb+0KvAIRGhH49Ti338nsavxok8tmPJ6yjhdLLhgEUe9VtBDJz4QLMG39lv/BpsJw56dCQkewjH414Hh1iCHsdG+yHmWfuXs2nWHYzcS20oum1XbdcJEN/vVP0pgjLohsg8qG5YVFaJCrLyKg/hDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rsze/N9t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TV5Fg5nV"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-24611734e50so26085ad.1
-        for <imx@lists.linux.dev>; Tue, 26 Aug 2025 11:49:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756234141; x=1756838941; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E/Ye7/SL7tqTx9oBx/tviBmGnvw5YMp+2zk7nWejWf0=;
-        b=TV5Fg5nVrcQDPq0DSXpAWiJ3DPBc6PyEI1YENgFhWDYdrVAaQ5Kg+IYQUHU8Gtpdsx
-         GxooIG7TYX0GzVONn3EO5NpBFA38Mo3YtsfzVgFCIEyA+GlUbJK0+KicL5losh3TFh2d
-         9z+SqFNnZ+3z0lTv/x2erwDH0cMpP/Ky6KbHq/22qCUxRajlZYOJaKMFn/rumoGdEjoE
-         kdS+kQdkDbcX5tdie7guOZYOcxPeZ0QtMv+NjEh20lDaPJzV9GnZZmnE9C1xXzuO0Rr1
-         G67GDFpyzEitc5ZdfEZb3mvtYKgn0RZnrMN8L0Gq5OmI6fP152dLMXunp84fbobtn3KO
-         zXkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756234141; x=1756838941;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E/Ye7/SL7tqTx9oBx/tviBmGnvw5YMp+2zk7nWejWf0=;
-        b=N4MERDKP5HjQ9LxvyfUQ+hsKU64gjl9+evqgtodgZttgForjLrpHPP2sdJKIukHDcQ
-         RYH5fNI3XSE5Q0e/OA4/qQP3Mj44OJdp1+1SLZog48UcZS0yKUEmWshQTKkGlq3PvmrP
-         i71t10ooyZsB2VJFG73h3fZ3Tpf4VuvbBawlC0kkDvVBIajFnMOz2E64NWbOkFBU0biR
-         d3IBaB9p6nqOC8b3adW3jFMGjI6VywsYqGbi76QIOqP9oY5o3gZtZ2rpLrnRVgiyOMLO
-         di1yLBw4ety7I7X5wTErZ0k04jtCRPSIfsmqNhH5msmHQbY4CLmdwatQEBZuzfKh+GV1
-         7VTA==
-X-Forwarded-Encrypted: i=1; AJvYcCXRmHaUCXfMg2Zdq8/O9TC0wQ4viw6osu4yOFKXXT/GkdiftFBscLwaD3Q6LnVGh1HbBC0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx4SYp5K/fdvsrKEAWr+iiu+upH0hRBwo4ASuswqOdJHs5r2xlC
-	6/ly96bok3hPb5up1n64G4ryvf/GUyDvAx46wS/ajZJdHJ2+SpSnzNZ/P6qNJdFrpFkkEJggjpH
-	XJepq0dXGHJ49CI9MzVfPFm/5gBXADFc/e/I9z2Xa
-X-Gm-Gg: ASbGncsEtayiYbYQuvvknf8FX55M95vUnc6wK427j2SyXJuxmkBFrWKxavtww1RblvM
-	SgxvGAbf2OXduGN5jwi2BZIbsORYmJY8ViBh58+a57nWM0D7TCoo0mNUP9TUOUAqn7WRRECQ71r
-	ZrF+xdTxLzomKghkpBiTWB6QaqMu/MCpULVKtcMGyxNNtx9JuEd9ZUcLJD5TSGUmSRp/Vw/8leM
-	eqmLg0lN8owf0Dh3nFUT8zRY9/5wsJ9mepzOt0BtN0oQQvGrX1wSqMKOMEpwG25
-X-Google-Smtp-Source: AGHT+IG+ollMBmiaOYcyGD4fK0EXbH34IwD2F+IqBBnZbD5S5EK8GUe1Cco16tj20beWZxJ5YP1hQInru/5q0vhDcUY=
-X-Received: by 2002:a17:903:228c:b0:243:afef:cd88 with SMTP id
- d9443c01a7336-2486395f193mr4627105ad.11.1756234140425; Tue, 26 Aug 2025
- 11:49:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rsze/N9t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA1AC4CEF1;
+	Tue, 26 Aug 2025 20:09:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756238945;
+	bh=De6tXlh/83GdnOt9bMTPx+Vmn3L3ISZ/uryMZcIrB5w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rsze/N9tQPzXjNLqiKo/xJtWAqCNAVk3sr4XHPf755WUo82wNXx9PTkEMrWRq1uBI
+	 8UNuaJdpCWxB/fpnvFIJW5YM2VVLdH7nXkRSXRHTeyRhCGRQAlFfrP0684iNyWY3pz
+	 zK+RDB3Q6k1xR3nyG37s5imD22axHTdFaqAdpoXrtQaugje8iVFo1lFp4nAEAOs9cT
+	 2egbEcuTbBBU6WfsKkFhBlLL130t/V3VqFEnCqhNWhnG8WrTkuqoYCK5YbN7WsD60b
+	 jxS/3iDWzefeMq6U4Fr/AdEmLEeEruKsW2AGRbPzMsIY2WKvEY4F/xqoTAOAplHEIp
+	 dXBKIEF0FCieg==
+Date: Tue, 26 Aug 2025 15:09:04 -0500
+From: Rob Herring <robh@kernel.org>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-imx@nxp.com
+Subject: Re: [PATCH 1/4] dt-bindings: remoteproc: imx_rproc: Add "rpmsg"
+ subnode support
+Message-ID: <20250826200904.GA375876-robh@kernel.org>
+References: <20250818204420.794554-1-shenwei.wang@nxp.com>
+ <20250818204420.794554-2-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1755096883.git.robin.murphy@arm.com> <d6cda4e2999aba5794c8178f043c91068fa8080c.1755096883.git.robin.murphy@arm.com>
- <20250826130329.GX4067720@noisy.programming.kicks-ass.net> <6080e45d-032e-48c2-8efc-3d7e5734d705@arm.com>
-In-Reply-To: <6080e45d-032e-48c2-8efc-3d7e5734d705@arm.com>
-From: Ian Rogers <irogers@google.com>
-Date: Tue, 26 Aug 2025 11:48:48 -0700
-X-Gm-Features: Ac12FXxL0fQGFTk6-3SCJz15Qd8Ums9V_bcQA6gIxaEwQacWk3scYfeQZZ7cYZQ
-Message-ID: <CAP-5=fXF2x3hW4Sk+A362T-50cBbw6HVd7KY+QEUjFwT+JL37Q@mail.gmail.com>
-Subject: Re: [PATCH 12/19] perf: Ignore event state for group validation
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com, will@kernel.org, 
-	mark.rutland@arm.com, acme@kernel.org, namhyung@kernel.org, 
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org, adrian.hunter@intel.com, 
-	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org, 
-	linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, coresight@lists.linaro.org, 
-	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250818204420.794554-2-shenwei.wang@nxp.com>
 
-On Tue, Aug 26, 2025 at 8:32=E2=80=AFAM Robin Murphy <robin.murphy@arm.com>=
- wrote:
->
-> On 2025-08-26 2:03 pm, Peter Zijlstra wrote:
-> > On Wed, Aug 13, 2025 at 06:01:04PM +0100, Robin Murphy wrote:
-> >> It may have been different long ago, but today it seems wrong for thes=
-e
-> >> drivers to skip counting disabled sibling events in group validation,
-> >> given that perf_event_enable() could make them schedulable again, and
-> >> thus increase the effective size of the group later. Conversely, if a
-> >> sibling event is truly dead then it stands to reason that the whole
-> >> group is dead, so it's not worth going to any special effort to try to
-> >> squeeze in a new event that's never going to run anyway. Thus, we can
-> >> simply remove all these checks.
-> >
-> > So currently you can do sort of a manual event rotation inside an
-> > over-sized group and have it work.
-> >
-> > I'm not sure if anybody actually does this, but its possible.
-> >
-> > Eg. on a PMU that supports only 4 counters, create a group of 5 and
-> > periodically cycle which of the 5 events is off.
+On Mon, Aug 18, 2025 at 03:44:17PM -0500, Shenwei Wang wrote:
+> Remote processors may announce multiple devices (e.g., I2C, GPIO) over
+> an RPMSG channel. These devices may require corresponding device tree
+> nodes, especially when acting as providers, to supply phandles for their
+> consumers.
+> 
+> Define an RPMSG node to work as a container for a group of RPMSG channels
+> under the imx_rproc node.
+> 
+> Each subnode within "rpmsg" represents an individual RPMSG channel. The
+> name of each subnode corresponds to the channel name as defined by the
+> remote processor.
+> 
+> All remote devices associated with a given channel are defined as child
+> nodes under the corresponding channel node.
 
-I'm not sure this is true, I thought this would fail in the
-perf_event_open when adding the 5th event and there being insufficient
-counters for the group. Not all PMUs validate a group will fit on the
-counters, but I thought at least Intel's core PMU would validate and
-not allow this. Fwiw, the metric code is reliant on this behavior as
-by default all events are placed into a weak group:
-https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
-t/tree/tools/perf/util/metricgroup.c?h=3Dperf-tools-next#n631
-Weak groups are really just groups that when the perf_event_open fails
-retry with the grouping removed. PMUs that don't fail the
-perf_event_open are problematic as the reads just report "not counted"
-and the metric doesn't work. Sometimes the PMU can't help it due to
-errata. There are a bunch of workarounds for those cases carried in
-the perf tool, but in general weak groups working is relied upon:
-https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
-t/tree/tools/perf/pmu-events/pmu-events.h?h=3Dperf-tools-next#n16
+How is each channel addressed? Are they really grouped by type first 
+(i2c, gpio, etc.) then an address within the group? Or is there some 
+flat channel numbering? If the latter, then the addresses in the DT 
+shoulc match the channel number.
 
-Thanks,
-Ian
+> 
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> ---
+>  .../bindings/remoteproc/fsl,imx-rproc.yaml    | 117 ++++++++++++++++++
+>  1 file changed, 117 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> index 57d75acb0b5e..a105aac798d0 100644
+> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
+> @@ -84,6 +84,86 @@ properties:
+>        This property is to specify the resource id of the remote processor in SoC
+>        which supports SCFW
+>  
+> +  rpmsg:
+> +    type: object
+> +    additionalProperties: false
+> +    description:
+> +      Present a group of RPMSG channel devices.
+> +
+> +    properties:
+> +      '#address-cells':
+> +        const: 1
+> +
+> +      '#size-cells':
+> +        const: 0
+> +
+> +      rpmsg-io-channel:
+> +        type: object
+> +        unevaluatedProperties: false
+> +        properties:
+> +          '#address-cells':
+> +            const: 1
+> +
+> +          '#size-cells':
+> +            const: 0
+> +
+> +        patternProperties:
+> +          "gpio@[0-9a-f]+$":
+> +            type: object
+> +            unevaluatedProperties: false
+> +            properties:
+> +              compatible:
+> +                enum:
+> +                  - fsl,imx-rpmsg-gpio
+> +
+> +              reg:
+> +                maxItems: 1
+> +
+> +            required:
+> +              - compatible
+> +              - reg
+> +
+> +            allOf:
+> +              - $ref: /schemas/gpio/gpio.yaml#
+> +              - $ref: /schemas/interrupt-controller.yaml#
 
-> > So I'm not against changing this, but changing stuff like this always
-> > makes me a little fearful -- it wouldn't be the first time that when it
-> > finally trickles down to some 'enterprise' user in 5 years someone come=
-s
-> > and finally says, oh hey, you broke my shit :-(
->
-> Eww, I see what you mean... and I guess that's probably lower-overhead
-> than actually deleting and recreating the sibling event(s) each time,
-> and potentially less bother then wrangling multiple groups for different
-> combinations of subsets when one simply must still approximate a complex
-> metric that requires more counters than the hardware offers.
->
-> I'm also not keen to break anything that wasn't already somewhat broken,
-> especially since this patch is only intended as cleanup, so either we
-> could just drop it altogether, or perhaps I can wrap the existing
-> behaviour in a helper that can at least document this assumption and
-> discourage new drivers from copying it. Am I right that only
-> PERF_EVENT_STATE_{OFF,ERROR} would matter for this, though, and my
-> reasoning for state <=3D PERF_EVENT_STATE_EXIT should still stand? As for
-> the fiddly discrepancy with enable_on_exec between arm_pmu and others
-> I'm not really sure what to think...
->
-> Thanks,
-> Robin.
+This is not needed nor sufficient. You need to define the cell sizes for 
+gpio and interrupt cells.
+
+> +
+> +        required:
+> +          - '#address-cells'
+> +          - '#size-cells'
+> +
+> +      rpmsg-i2c-channel:
+> +        type: object
+> +        unevaluatedProperties: false
+> +        properties:
+> +          '#address-cells':
+> +            const: 1
+> +
+> +          '#size-cells':
+> +            const: 0
+> +
+> +        patternProperties:
+> +          "i2c@[0-9a-f]+$":
+> +            type: object
+> +            unevaluatedProperties: false
+> +            properties:
+> +              compatible:
+> +                enum:
+> +                  - fsl,imx-rpmsg-i2c
+> +
+> +              reg:
+> +                maxItems: 1
+> +
+> +            required:
+> +              - compatible
+> +              - reg
+> +
+> +            allOf:
+> +              - $ref: /schemas/i2c/i2c-controller.yaml#
+> +
+> +        required:
+> +          - '#address-cells'
+> +          - '#size-cells'
+> +
+>  required:
+>    - compatible
+>  
+> @@ -146,5 +226,42 @@ examples:
+>                  &mu 3 1>;
+>        memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>, <&rsc_table>;
+>        syscon = <&src>;
+> +
+> +      rpmsg {
+> +        rpmsg-io-channel {
+> +          #address-cells = <1>;
+> +          #size-cells = <0>;
+> +
+> +          gpio@0 {
+> +            compatible = "fsl,imx-rpmsg-gpio";
+> +            reg = <0>;
+> +            gpio-controller;
+> +            #gpio-cells = <2>;
+> +            #interrupt-cells = <2>;
+> +            interrupt-controller;
+> +            interrupt-parent = <&rpmsg_gpioa>;
+> +          };
+> +
+> +          gpio@1 {
+> +            compatible = "fsl,imx-rpmsg-gpio";
+> +            reg = <1>;
+> +            gpio-controller;
+> +            #gpio-cells = <2>;
+> +            #interrupt-cells = <2>;
+> +            interrupt-controller;
+> +            interrupt-parent = <&rpmsg_gpiob>;
+> +          };
+> +        };
+> +
+> +        rpmsg-i2c-channel {
+> +          #address-cells = <1>;
+> +          #size-cells = <0>;
+> +
+> +          i2c@0 {
+> +            compatible = "fsl,imx-rpmsg-i2c";
+> +            reg = <0>;
+> +          };
+> +        };
+> +      };
+>      };
+>  ...
+> -- 
+> 2.43.0
+> 
