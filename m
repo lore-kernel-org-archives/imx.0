@@ -1,116 +1,158 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8722BF016
-	for <imx@lists.linux.dev>; Tue, 26 Aug 2025 18:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D9F371E94
+	for <imx@lists.linux.dev>; Tue, 26 Aug 2025 18:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756232391; cv=none; b=lwyYnAMOIBJ13pDbZPMSSCGR8ncwvYW4iF8qCPtGCXEsgKRO+mucShVllRgqfKTs6oyYiO3nT8WGiw6yY4giwg8aJ3FK9B3eESNkqLjvkIpnzbFhbVL/8w2uROMtZ74IIe1HyKlVDncsIc06rlmehlpeooTW4q2jKJ4rDufb1kw=
+	t=1756234144; cv=none; b=tUgUr2irWtGfcI56gmC60gH/17BzUPak/HYAzd0Ya62scb/4XJpFV5/BevU/W3O/JOKLvXdZlxsnLAajz28Ig1/ZkeY6/QAgPf6dLmUmfuSAXu7r32iApYpihgLF6YdjKLoHsGzF2ndAxxIlI567KfF5cHgbkffMoI8zgZBIIeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756232391; c=relaxed/simple;
-	bh=XQz/VrYK3cwCtAlJzmwCDIZSeNenI6Rm8ZKZbd4vuEk=;
+	s=arc-20240116; t=1756234144; c=relaxed/simple;
+	bh=E/Ye7/SL7tqTx9oBx/tviBmGnvw5YMp+2zk7nWejWf0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GX2AUmGtVrNSUEJWXy7qRQtmPdr/y/7UOrG6aWiz9rYQ20szC88z3+LdKUowXRLWyTEPydIbhvuMwmZJaog7lzEHQ29VDgGQRyE74ZEbC87yYiQ2cicvwhdnsHNDNLQG2aslzRS3dqS4QqocYTjWEeIpZd99Fmh9IjVKqKgvupM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=PBwbqgvF; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	 To:Cc:Content-Type; b=XpFvyq2HCTNn9KhCS7EI94lrXV6vdODYruHiIqrLwI2yivyKcKHvXTCJNe83wi2FRk3FoUJMGdR6ltQx4U4C5PguGr9kBX1MhfQ+0SFYPVBuBREIJISlX9iWIIZAJBfwkb0g3VMoeMShOw3dITZUp0v4IQUXRxhd1LZCdTawlaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TV5Fg5nV; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="PBwbqgvF"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-55f4969c95aso2161951e87.0
-        for <imx@lists.linux.dev>; Tue, 26 Aug 2025 11:19:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TV5Fg5nV"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-24611734e50so26085ad.1
+        for <imx@lists.linux.dev>; Tue, 26 Aug 2025 11:49:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756232388; x=1756837188; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1756234141; x=1756838941; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XQz/VrYK3cwCtAlJzmwCDIZSeNenI6Rm8ZKZbd4vuEk=;
-        b=PBwbqgvFYyax+ZCGLwLt4sYs63gJbF9GMoso76A1nYDORF1sc9R5gnSl1b3L8zZUcw
-         /E/NymnA+MpiBMlSVOqN9jauuxoQ3BTgSs16kAr8JkGm313+1xAatQ1HwYvo6Q3x88Sr
-         r3oOv2oNdkQcqMkxc1qGDdco0loG+rAxhO4vU8KiCclIlOniKMjuGcgTSmYu3tBy/jP1
-         4AZLvxnoW6HWbRd7b3aofZmANHJQrYK+ux7/xOwftgtDbV1PxyGC9pEuVBgxZOfYQTf2
-         TnlJxMBUhEajIwJMJeJ/vfYm2+2VNrzDnTOk8OGAbVA6GREmaPhDL5awA2F5PANgBHw5
-         MT5A==
+        bh=E/Ye7/SL7tqTx9oBx/tviBmGnvw5YMp+2zk7nWejWf0=;
+        b=TV5Fg5nVrcQDPq0DSXpAWiJ3DPBc6PyEI1YENgFhWDYdrVAaQ5Kg+IYQUHU8Gtpdsx
+         GxooIG7TYX0GzVONn3EO5NpBFA38Mo3YtsfzVgFCIEyA+GlUbJK0+KicL5losh3TFh2d
+         9z+SqFNnZ+3z0lTv/x2erwDH0cMpP/Ky6KbHq/22qCUxRajlZYOJaKMFn/rumoGdEjoE
+         kdS+kQdkDbcX5tdie7guOZYOcxPeZ0QtMv+NjEh20lDaPJzV9GnZZmnE9C1xXzuO0Rr1
+         G67GDFpyzEitc5ZdfEZb3mvtYKgn0RZnrMN8L0Gq5OmI6fP152dLMXunp84fbobtn3KO
+         zXkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756232388; x=1756837188;
+        d=1e100.net; s=20230601; t=1756234141; x=1756838941;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XQz/VrYK3cwCtAlJzmwCDIZSeNenI6Rm8ZKZbd4vuEk=;
-        b=v+6H5XjFHuP1lMLUMp0KBgbg2Q7hacxR/KLKHQzXXgKI4QVs6mevkoYE00Pif+APn9
-         ya5pjQtaFowbd3hFbxILJuL6uJvQrFgF1/Ro2zz2KLNv5Y/hJXmy7RZZYIJqIGveViiE
-         CkNnA32OhsqexTpTtWBIXggnPG48b+olHH/mGeRu8vavUcIYkwwgrU7dhs4ifnzkRlr+
-         LT/a5QlU8dsvZWhXbJHijsy3/yqjPB71hYB3lEKtIixACyKpDRUb69dlxrSDPmfiW6+W
-         v6pwvGvHTjD3sJ8f6tbeEP/HG2ib3E8ft1lAQa4jOrs4pzUJhjfdPkcfWurpTRTsUgfT
-         seAA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSMN68ATihrU9WudPBfHXg1cjjDfB1/zAHyr/Ba/uP6Tl8jyV/iadVQ+XOBSyAHhYNbCU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzzwPbnsY93aWpajv+0l07qhbEVJTEpAoeGBG6zTkEPCZBI1MDW
-	Ln7GvzjFJs96lZW+qt8YXGQi7PfIp9XOCU1etHMWGiFYPeVRHlSTKu7L12+b52s2iSpn7RhYvaQ
-	zJcWE/+a1T/MBgHHyDLrz/kugpSDXoZT05tykPLM3nw==
-X-Gm-Gg: ASbGncsphkO5sYkuhcQaYmybydQKPwC+fLFiLMrackLWZm6HuJXR8/V8lSEcs32YVbD
-	ekqJSFCxBtWeN+IgQJo/Ri6DODgLSEJVGV0ETYuOXGgEB8j+xrqcxfpEZsZwasSYbaW7yE9mk8l
-	E0fcZNMLT0FKVqGDGfNPVWEL6E8vWjSjM7wuVCOjlhEWAx1swhJ8o1lAY9JTOpR434LlW9qoY22
-	IGCfUvVAKt0ZMAbOc7MzbRyNbGn7hyMET9OJwX51yaD84o2M9FCnSzXaPyU
-X-Google-Smtp-Source: AGHT+IH9/wDD1C5c1pzIo5M6703fhe2Ju79J3Cg57MCbuHB+kMzD9Ry2MpuHtwyxY9EgNTzhw0WfnDm8emGE0JQOveU=
-X-Received: by 2002:a05:6512:3d87:b0:55f:3d7c:387b with SMTP id
- 2adb3069b0e04-55f3d7c3badmr3365498e87.12.1756232388100; Tue, 26 Aug 2025
- 11:19:48 -0700 (PDT)
+        bh=E/Ye7/SL7tqTx9oBx/tviBmGnvw5YMp+2zk7nWejWf0=;
+        b=N4MERDKP5HjQ9LxvyfUQ+hsKU64gjl9+evqgtodgZttgForjLrpHPP2sdJKIukHDcQ
+         RYH5fNI3XSE5Q0e/OA4/qQP3Mj44OJdp1+1SLZog48UcZS0yKUEmWshQTKkGlq3PvmrP
+         i71t10ooyZsB2VJFG73h3fZ3Tpf4VuvbBawlC0kkDvVBIajFnMOz2E64NWbOkFBU0biR
+         d3IBaB9p6nqOC8b3adW3jFMGjI6VywsYqGbi76QIOqP9oY5o3gZtZ2rpLrnRVgiyOMLO
+         di1yLBw4ety7I7X5wTErZ0k04jtCRPSIfsmqNhH5msmHQbY4CLmdwatQEBZuzfKh+GV1
+         7VTA==
+X-Forwarded-Encrypted: i=1; AJvYcCXRmHaUCXfMg2Zdq8/O9TC0wQ4viw6osu4yOFKXXT/GkdiftFBscLwaD3Q6LnVGh1HbBC0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx4SYp5K/fdvsrKEAWr+iiu+upH0hRBwo4ASuswqOdJHs5r2xlC
+	6/ly96bok3hPb5up1n64G4ryvf/GUyDvAx46wS/ajZJdHJ2+SpSnzNZ/P6qNJdFrpFkkEJggjpH
+	XJepq0dXGHJ49CI9MzVfPFm/5gBXADFc/e/I9z2Xa
+X-Gm-Gg: ASbGncsEtayiYbYQuvvknf8FX55M95vUnc6wK427j2SyXJuxmkBFrWKxavtww1RblvM
+	SgxvGAbf2OXduGN5jwi2BZIbsORYmJY8ViBh58+a57nWM0D7TCoo0mNUP9TUOUAqn7WRRECQ71r
+	ZrF+xdTxLzomKghkpBiTWB6QaqMu/MCpULVKtcMGyxNNtx9JuEd9ZUcLJD5TSGUmSRp/Vw/8leM
+	eqmLg0lN8owf0Dh3nFUT8zRY9/5wsJ9mepzOt0BtN0oQQvGrX1wSqMKOMEpwG25
+X-Google-Smtp-Source: AGHT+IG+ollMBmiaOYcyGD4fK0EXbH34IwD2F+IqBBnZbD5S5EK8GUe1Cco16tj20beWZxJ5YP1hQInru/5q0vhDcUY=
+X-Received: by 2002:a17:903:228c:b0:243:afef:cd88 with SMTP id
+ d9443c01a7336-2486395f193mr4627105ad.11.1756234140425; Tue, 26 Aug 2025
+ 11:49:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
- <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
- <CAHp75VephepLq61HrVy=PX2oKUQd5NK2qS-vOC5h_NR65td3Uw@mail.gmail.com>
- <CACRpkda4soRCLF5=W=6R4wnwT3pjk743j022XfJxjTTQzuarAA@mail.gmail.com> <534ad082-08fa-42c0-9c24-f0c11af7d5b2@sirena.org.uk>
-In-Reply-To: <534ad082-08fa-42c0-9c24-f0c11af7d5b2@sirena.org.uk>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 26 Aug 2025 20:19:37 +0200
-X-Gm-Features: Ac12FXxAYIw0w_2T1YaN-IyY2JYcpKwwddZS_ZNL3wGJGwAsl60-M2w6oLQOL30
-Message-ID: <CAMRc=Mdn0_yPXyYq4sbvH4P9-h71vEc4arLPBfSk1PiEFaB7jQ@mail.gmail.com>
-Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
- function category
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+References: <cover.1755096883.git.robin.murphy@arm.com> <d6cda4e2999aba5794c8178f043c91068fa8080c.1755096883.git.robin.murphy@arm.com>
+ <20250826130329.GX4067720@noisy.programming.kicks-ass.net> <6080e45d-032e-48c2-8efc-3d7e5734d705@arm.com>
+In-Reply-To: <6080e45d-032e-48c2-8efc-3d7e5734d705@arm.com>
+From: Ian Rogers <irogers@google.com>
+Date: Tue, 26 Aug 2025 11:48:48 -0700
+X-Gm-Features: Ac12FXxL0fQGFTk6-3SCJz15Qd8Ums9V_bcQA6gIxaEwQacWk3scYfeQZZ7cYZQ
+Message-ID: <CAP-5=fXF2x3hW4Sk+A362T-50cBbw6HVd7KY+QEUjFwT+JL37Q@mail.gmail.com>
+Subject: Re: [PATCH 12/19] perf: Ignore event state for group validation
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com, will@kernel.org, 
+	mark.rutland@arm.com, acme@kernel.org, namhyung@kernel.org, 
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org, adrian.hunter@intel.com, 
+	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org, 
+	linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, coresight@lists.linaro.org, 
+	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 20, 2025 at 8:41=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
-te:
+On Tue, Aug 26, 2025 at 8:32=E2=80=AFAM Robin Murphy <robin.murphy@arm.com>=
+ wrote:
 >
-> On Wed, Aug 20, 2025 at 09:12:49AM +0200, Linus Walleij wrote:
->
-> > The qualcomm 32bit platforms fail in next anyway so I dropped the patch=
-es
-> > for now.
->
-> FWIW the i.MX8MP also seems to have been broken by this:
->
+> On 2025-08-26 2:03 pm, Peter Zijlstra wrote:
+> > On Wed, Aug 13, 2025 at 06:01:04PM +0100, Robin Murphy wrote:
+> >> It may have been different long ago, but today it seems wrong for thes=
+e
+> >> drivers to skip counting disabled sibling events in group validation,
+> >> given that perf_event_enable() could make them schedulable again, and
+> >> thus increase the effective size of the group later. Conversely, if a
+> >> sibling event is truly dead then it stands to reason that the whole
+> >> group is dead, so it's not worth going to any special effort to try to
+> >> squeeze in a new event that's never going to run anyway. Thus, we can
+> >> simply remove all these checks.
+> >
+> > So currently you can do sort of a manual event rotation inside an
+> > over-sized group and have it work.
+> >
+> > I'm not sure if anybody actually does this, but its possible.
+> >
+> > Eg. on a PMU that supports only 4 counters, create a group of 5 and
+> > periodically cycle which of the 5 events is off.
 
-I can't test it unfortunately - would you mind sharing some info on
-what's failing exactly?
+I'm not sure this is true, I thought this would fail in the
+perf_event_open when adding the 5th event and there being insufficient
+counters for the group. Not all PMUs validate a group will fit on the
+counters, but I thought at least Intel's core PMU would validate and
+not allow this. Fwiw, the metric code is reliant on this behavior as
+by default all events are placed into a weak group:
+https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
+t/tree/tools/perf/util/metricgroup.c?h=3Dperf-tools-next#n631
+Weak groups are really just groups that when the perf_event_open fails
+retry with the grouping removed. PMUs that don't fail the
+perf_event_open are problematic as the reads just report "not counted"
+and the metric doesn't work. Sometimes the PMU can't help it due to
+errata. There are a bunch of workarounds for those cases carried in
+the perf tool, but in general weak groups working is relied upon:
+https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
+t/tree/tools/perf/pmu-events/pmu-events.h?h=3Dperf-tools-next#n16
 
-Bartosz
+Thanks,
+Ian
+
+> > So I'm not against changing this, but changing stuff like this always
+> > makes me a little fearful -- it wouldn't be the first time that when it
+> > finally trickles down to some 'enterprise' user in 5 years someone come=
+s
+> > and finally says, oh hey, you broke my shit :-(
+>
+> Eww, I see what you mean... and I guess that's probably lower-overhead
+> than actually deleting and recreating the sibling event(s) each time,
+> and potentially less bother then wrangling multiple groups for different
+> combinations of subsets when one simply must still approximate a complex
+> metric that requires more counters than the hardware offers.
+>
+> I'm also not keen to break anything that wasn't already somewhat broken,
+> especially since this patch is only intended as cleanup, so either we
+> could just drop it altogether, or perhaps I can wrap the existing
+> behaviour in a helper that can at least document this assumption and
+> discourage new drivers from copying it. Am I right that only
+> PERF_EVENT_STATE_{OFF,ERROR} would matter for this, though, and my
+> reasoning for state <=3D PERF_EVENT_STATE_EXIT should still stand? As for
+> the fiddly discrepancy with enable_on_exec between arm_pmu and others
+> I'm not really sure what to think...
+>
+> Thanks,
+> Robin.
