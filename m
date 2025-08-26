@@ -1,90 +1,93 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12A12FD7C8
-	for <imx@lists.linux.dev>; Tue, 26 Aug 2025 11:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6B522A4EE;
+	Tue, 26 Aug 2025 13:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208663; cv=none; b=NpiNh6QpdH31SF8xOwdHoQo6yhlxymTNVqBYYXEynBMoo450k89bxa2TtGHjNkoxtkWuyYeuPxERfJXxRDWQ0gZoTymTP3jsYxWqtKps93uGea61aL5wx2m68p5B3aI/FOA4WQM4CTnL5lP5GQ4BZjeSCE5gTihg/DIpZAqubFw=
+	t=1756213422; cv=none; b=UPNlmMLaJeEZQeg3++4mH1sFExavwuKhCQWINJjrNLCAtMwErxXnyTrOba9dGiI5omeOC/DqLaRt0jKa55qNcue3nMslRS4C+LyRGqMD2qwSEU+Gl9zBnLP8tDsiLNR7PTPdolrLm07GiLRCB17RWrYTgAl4AGrVyVsUIIWy734=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208663; c=relaxed/simple;
-	bh=gPWFtOfDlGNjTh65kxpE4jTt4VsFGsZ3a+MU5+Da/3E=;
+	s=arc-20240116; t=1756213422; c=relaxed/simple;
+	bh=pe5SE8cLTPPyLKyF6S5l44TjxJSycuwoPwH53Hc4MBc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LnJehypMazDor0+9idRL55d/2BVrAHcgbMtBAFLun89lcLRkc4gzGcW7Ts9IjrwTyfxBrl3TNCyqa0xm+qUb3tpztAEvfdd6Zg1h6HWVGo62kqnlbGxvHbGPnMYmHguZIojFmF/5ARBOmjk/PtJkWqOWBgFsEi7QnvbhIO3LtaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Diz3q8F8; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=R/IhJQReJM/y5yPxstRXY4glIAPG+irhAYQ1Dl/tu+dTBZVHBslYt6eXuUZCHaswxY0AN5C7u5H7XJ+16uaRbaIi/6A2RrMmnEvveP4c5LLWke2z0v58DmzAPLcHdciYpRjRjIYJUZsT5NybQCho4uWpFzRg1MjJkiILdzlpoWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=s5T3h8Qu; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Diz3q8F8"
-Received: from pendragon.ideasonboard.com (unknown [213.244.170.152])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 8EAF75782;
-	Tue, 26 Aug 2025 13:43:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1756208596;
-	bh=gPWFtOfDlGNjTh65kxpE4jTt4VsFGsZ3a+MU5+Da/3E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Diz3q8F8cGUQ/w/QjuhsxnJTf81qtzTaJfBzTLgJwvZfh8WTBjfEMKeNoKOn39uU4
-	 L9aWe1xxOxGgpDRPD/1RExd1TjzLRbSpizQz7XJKYI3+w+Er7M5hym4AEoM5PcSM0L
-	 ycbiNMe17DrMJ3bNbgmuyuY2tRbTEJBvyNPch3KI=
-Date: Tue, 26 Aug 2025 13:43:57 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Inbaraj E <inbaraj.e@samsung.com>, mturquette@baylibre.com,
-	sboyd@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, s.nawrocki@samsung.com, s.hauer@pengutronix.de,
-	shawnguo@kernel.org, cw00.choi@samsung.com, rmfrfs@gmail.com,
-	martink@posteo.de, mchehab@kernel.org, linux-fsd@tesla.com,
-	will@kernel.org, catalin.marinas@arm.com, pankaj.dubey@samsung.com,
-	shradha.t@samsung.com, ravi.patel@samsung.com,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, alim.akhtar@samsung.com,
-	linux-samsung-soc@vger.kernel.org, kernel@puri.sm,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 04/12] arm64: dts: fsd: Add CSI nodes
-Message-ID: <20250826114357.GA607@pendragon.ideasonboard.com>
-References: <20250814140943.22531-1-inbaraj.e@samsung.com>
- <CGME20250814141019epcas5p2f957b934d5b60d4649cf9c6abd6969d5@epcas5p2.samsung.com>
- <20250814140943.22531-5-inbaraj.e@samsung.com>
- <1919de68-99ea-47f7-b3d2-cae4611f9c52@kernel.org>
- <00d101dc136c$aa037020$fe0a5060$@samsung.com>
- <41434afa-fecd-4507-bcca-735d358ac925@kernel.org>
- <016401dc15c0$fc0dcfe0$f4296fa0$@samsung.com>
- <1dfaedc8-88e6-4749-8726-e8f66878e57e@kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="s5T3h8Qu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=pe5SE8cLTPPyLKyF6S5l44TjxJSycuwoPwH53Hc4MBc=; b=s5T3h8QunORHMVi1lJq+TueBjc
+	cEFljtvjN5QJ03jRIuUbqZT2dzYWLCkq7EIgZ1HjiZepKSvKZUS4jhIftbJpUomzAxLkXpo4MhYIl
+	ZCvpLQBdWeqllwk2L5LEakNCj50aVxzY1I5n8BnO+qCbmyfysUZaBrevf4ZwX/NHQuj2PrtwGK3Is
+	jhSt6FlQLnGrrRwVWOG3VEhB1mGDJu+1EhbkwSGhAG25rhQM5DyWklhsvsXQh2tW5FYLoYbc8dttl
+	tsa9sX+EEmcEbn/jBCdJY0wOlh7GZntWiVjKPlxT8hw9CmspDWHiAZfhSZSTIR8f/mKGoVnI/OKYV
+	DfymEZ2w==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uqtKk-00000002CWx-1CxP;
+	Tue, 26 Aug 2025 13:03:31 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id E7FAC3002C5; Tue, 26 Aug 2025 15:03:29 +0200 (CEST)
+Date: Tue, 26 Aug 2025 15:03:29 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: mingo@redhat.com, will@kernel.org, mark.rutland@arm.com,
+	acme@kernel.org, namhyung@kernel.org,
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+	irogers@google.com, adrian.hunter@intel.com,
+	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, coresight@lists.linaro.org,
+	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org,
+	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 12/19] perf: Ignore event state for group validation
+Message-ID: <20250826130329.GX4067720@noisy.programming.kicks-ass.net>
+References: <cover.1755096883.git.robin.murphy@arm.com>
+ <d6cda4e2999aba5794c8178f043c91068fa8080c.1755096883.git.robin.murphy@arm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1dfaedc8-88e6-4749-8726-e8f66878e57e@kernel.org>
+In-Reply-To: <d6cda4e2999aba5794c8178f043c91068fa8080c.1755096883.git.robin.murphy@arm.com>
 
-On Tue, Aug 26, 2025 at 10:36:50AM +0200, Krzysztof Kozlowski wrote:
-> On 25/08/2025 15:05, Inbaraj E wrote:
-> > Hi Krzysztof,
-> > 
-> >>> CSIS stands for Camera Serial Interface Slave.
-> >>
-> >> Googling for "MIPI CSIS" gives me 0 results, so I still claim this is not a generic
-> >> name.
-> > 
-> > I checked other vendors (e.g: freescale), and they are using mipi-csi. I'll adopt for the
-> > same.
-> 
-> Then it is just "csi"? Except that you have some other different nodes
-> called "csi" as well, so two different devices are "csi"?
+On Wed, Aug 13, 2025 at 06:01:04PM +0100, Robin Murphy wrote:
+> It may have been different long ago, but today it seems wrong for these
+> drivers to skip counting disabled sibling events in group validation,
+> given that perf_event_enable() could make them schedulable again, and
+> thus increase the effective size of the group later. Conversely, if a
+> sibling event is truly dead then it stands to reason that the whole
+> group is dead, so it's not worth going to any special effort to try to
+> squeeze in a new event that's never going to run anyway. Thus, we can
+> simply remove all these checks.
 
-This one is high on my list of unfortunate name clashes. Many NXP SoCs
-(among others, I've seen that in other vendors too) have IP cores named
-"Camera Sensor Interface" that they abbreviate to "CSI". They are
-unrelated to the MIPI Camera Serial Interface. I won't blame NXP, as I
-think they may have started using the acronym before MIPI CSI became a
-big thing.
+So currently you can do sort of a manual event rotation inside an
+over-sized group and have it work.
 
--- 
-Regards,
+I'm not sure if anybody actually does this, but its possible.
 
-Laurent Pinchart
+Eg. on a PMU that supports only 4 counters, create a group of 5 and
+periodically cycle which of the 5 events is off.
+
+So I'm not against changing this, but changing stuff like this always
+makes me a little fearful -- it wouldn't be the first time that when it
+finally trickles down to some 'enterprise' user in 5 years someone comes
+and finally says, oh hey, you broke my shit :-(
+
