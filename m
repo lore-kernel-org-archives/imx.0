@@ -1,116 +1,121 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1C92F3C1E
-	for <imx@lists.linux.dev>; Tue, 26 Aug 2025 09:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8962F619C
+	for <imx@lists.linux.dev>; Tue, 26 Aug 2025 10:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756202353; cv=none; b=hTqOMVI6pMuY2z2cGD93cv0LrIMf7QCfbwnIARomTMnFjDm6dz7AoMZf/1sUflug/UQqLGCl23+I/imCfM1XLbABIJBZNs//r/fgPQUhzaMNiNaCR/PmHURRlKmTJPMJMma1jAI2qAyZLwta2SFXTPYZdhfIDw4PHjTl5wjMLQo=
+	t=1756202918; cv=none; b=S/+ABm84WzHf2g28jutVALAJfOaUQtD7lb5NN6JC/DU8lkYV4Q04YdgtQBHpVAZm0IfA8V3j3BOYqL13rmet9bDNrA8QZJS4dEJ8hbLl0n/Ie2PofzoxGzTp2+gUCVjuXLh/FHf9LN9lNs5WVV+vz9Kj35+qexmwQKqJRI3dax8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756202353; c=relaxed/simple;
-	bh=TLQe8HKqVprzOWSS+QrcEEJ6qsTop6HAIBHPmWLduOw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=quqRPWsAG2MdRqmE3ZGUFc2S0jncVBfr2KepYOnEQZzdQxr5fIBJfNxmVto51hgaoXoaNzBRQfIdq2PkvuRzK5+cVdCMshdx9pQQz1TeN0c1flzKfHaXjILs1EaBrDa+rjm6G+BXmEF3+13RxHQYWpXD+EPDI+/8wmofwTX6OOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=E/vP1PIb; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	s=arc-20240116; t=1756202918; c=relaxed/simple;
+	bh=gygMN3gMSxZ6Evr4Nrnpma342Igh7n4myrgw/1fPWg4=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Type:References; b=W9NpuSk6OBSt2WkHDztfIUWddqD9XlvWW0MzC4mlL1yjaQbGKVFgSV3iTWKQlX7QubC9BDHfpfW6lVk04gMuDr3BDhT6JQyax4VZEhIN3KcvQGH4H9VXxWDqEoEd+mDmlYOMtdyUp5OUOTC/EdNp1x9GLKThPjP2r7r0TGDbMJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=r7NlZ/4t; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="E/vP1PIb"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45a1b0d224dso27723515e9.3
-        for <imx@lists.linux.dev>; Tue, 26 Aug 2025 02:59:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756202348; x=1756807148; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l+Y0JVb+zyxoD2ZTloOvpkOul6QpmpNVbYqGaduRqGk=;
-        b=E/vP1PIbhV9342tmeXvGxiZNwps5PGriEmuuWtNF7t3Sfb9rXcBozK+iUTMB+yI2V8
-         sBhCvS/4MnZOD7GFKn/50aCLgMv2DphvskNfuJTPaG0bpy6VjOh7z3ypgznqYt9Rgaia
-         E+WlZiM5becHoVfwkxt8Iv0l2PygJaXE8asSOYkJ2Y1EQTqpJWwxVBPomvP0trq+PM3n
-         1h368e8bZiK4YFOZMgw6u9NLQU+HFnOcxDYoB2e8e7W0KflJviWdOZdqguEuugk44c7O
-         G7XsG+zqS3a/JKj3UuHCdvSpXQHApT/iJFOYrEZdPKV7//sAn3b6+Re7c1C9kpWEuAA2
-         Dj1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756202348; x=1756807148;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l+Y0JVb+zyxoD2ZTloOvpkOul6QpmpNVbYqGaduRqGk=;
-        b=m31Af2sm5g7qjsgkrd2UrrW4MYIaMt2f/AJVK+vVM8ntMwNJriZn3D1VIaL9X5OX9S
-         ggq6ra2roSi9sgbd4SIcl6sPPHKoiLsC7lhnoIPUaeJgWDtjkEg5C8mM3VRsrlz0jgbC
-         fRYcrgE1oN4c9xKAfCXlvQk2Fx7SfN+A6BV6TrjIHmGjtS5jL/Gz2uxBisWmW+FJesGm
-         zuENH/emI2i6Am7xqjjMkHkoGBWxWqn8qdiERCe6s9v0ABMRciiiPoGDLwWfWDPGWxZ5
-         fteaZGVvwR+M/hsBYtBMeABeNGKw+IR720dj1Ga6Nj0cnyYjOyeZhyq5qJhCuYpAazEA
-         rn2A==
-X-Forwarded-Encrypted: i=1; AJvYcCUNVuMoJey4F4ZEWLI4M8KDGt1qJio0FmgUUF2VqT4uwQwPfZQx4FbCdZf5MPLMiykEuTk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwuKXhA763k1Nc+o/nh+LQjW2D3WFccjnyfQ4nhLP5QyGTooDAq
-	y2qzZTqfk4iF1MS3bvp1/aBDzZ9126LndT5Uumo5IKUuHuW/RNXRrpJSWfCByWrii80=
-X-Gm-Gg: ASbGnctwJP9Zk8Bs13AAvRGR3IaAC/B+NuDEq31ZaxywTzK2/3CmbJphJ9iFGl6m8Hk
-	ci3M94wPfNgjKGAYwc1ybp+9z0pc+Iflf/10HR5A4e1FAA8ff2xlvtskngg+noFltQ1AjXhvJAe
-	CquOgUuhjmix1qQ8RpN8F/8My7them2cRkqLEJwqvBdEB0YqxF3cNNMbY0a17jymuXDo3mVD/Ll
-	QWzNgKBT1viLF8+skLOyLWTFeo+V02OKdensLbOpHq6wVdpQtR30ZHmMVKfQWQ8SjtIGiMtWhPf
-	TuTHPaA3pZhi18b3aXKEhF8wE0usjX58hR2UxiP3k1ObuSPIejW6/4PLQvFr54xWyfOGz5OBrw/
-	PcYnYyZIpG+fjot5vf8p139qUwq+OJyH4xiCch3t3t9faCA==
-X-Google-Smtp-Source: AGHT+IHBhKg7IjKrhhcVMyL/r57y1ugEvw4mEz2iVwUNncB45EjnSI4PTdqiXHRrUmtm1gPJ4N/MCQ==
-X-Received: by 2002:a05:600c:1548:b0:459:d709:e5b0 with SMTP id 5b1f17b1804b1-45b5178e893mr140193745e9.5.1756202348058;
-        Tue, 26 Aug 2025 02:59:08 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:fed4:79fc:9440:6629])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6300da81sm60418635e9.23.2025.08.26.02.59.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 02:59:07 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v2 1/1] dt-bindings: gpio: Move fsl,mxs-pinctrl.txt into gpio-mxs.yaml
-Date: Tue, 26 Aug 2025 11:59:05 +0200
-Message-ID: <175620234226.21143.1718612785479357856.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250820164946.3782702-1-Frank.Li@nxp.com>
-References: <20250820164946.3782702-1-Frank.Li@nxp.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="r7NlZ/4t"
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20250826100829epoutp0166247fed1dee0d351ae99d3d7fe0c2ba~fST2xo0aG1237512375epoutp019
+	for <imx@lists.linux.dev>; Tue, 26 Aug 2025 10:08:29 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20250826100829epoutp0166247fed1dee0d351ae99d3d7fe0c2ba~fST2xo0aG1237512375epoutp019
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1756202909;
+	bh=gygMN3gMSxZ6Evr4Nrnpma342Igh7n4myrgw/1fPWg4=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+	b=r7NlZ/4tAu+9H/3P7ZWUKTeFXtGPrnNGXPVGjg+FnDizdhhY2CcucA6jZY56cem/W
+	 +67efryuTeLX78KEo8RXX7wyJn+cGCSiHzt5hSkaHeJF9GbnTAncXUgfih65s/Ru86
+	 AnYJnsVxc+pynbElLONt0wHfZZL3yl6125+xZmlE=
+Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20250826100827epcas5p1193525accefc68efcd36c224d01ca9fc~fST10omlf3119231192epcas5p1b;
+	Tue, 26 Aug 2025 10:08:27 +0000 (GMT)
+Received: from epcas5p2.samsung.com (unknown [182.195.38.91]) by
+	epsnrtp04.localdomain (Postfix) with ESMTP id 4cB3Jq08MPz6B9mF; Tue, 26 Aug
+	2025 10:08:27 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250826100826epcas5p24abdd08b355b1a7c1064b086bb9c11ac~fST0MRrip0241602416epcas5p2f;
+	Tue, 26 Aug 2025 10:08:26 +0000 (GMT)
+Received: from FDSFTE196 (unknown [107.116.189.214]) by epsmtip1.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20250826100822epsmtip1d21b4e23ad85bcf46748f0d59cda39b5~fSTwTkU862841628416epsmtip1X;
+	Tue, 26 Aug 2025 10:08:21 +0000 (GMT)
+From: "Inbaraj E" <inbaraj.e@samsung.com>
+To: "'Krzysztof Kozlowski'" <krzk@kernel.org>, <mturquette@baylibre.com>,
+	<sboyd@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <s.nawrocki@samsung.com>, <s.hauer@pengutronix.de>,
+	<shawnguo@kernel.org>, <cw00.choi@samsung.com>, <rmfrfs@gmail.com>,
+	<laurent.pinchart@ideasonboard.com>, <martink@posteo.de>,
+	<mchehab@kernel.org>, <linux-fsd@tesla.com>, <will@kernel.org>,
+	<catalin.marinas@arm.com>, <pankaj.dubey@samsung.com>,
+	<shradha.t@samsung.com>, <ravi.patel@samsung.com>
+Cc: <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <alim.akhtar@samsung.com>,
+	<linux-samsung-soc@vger.kernel.org>, <kernel@puri.sm>,
+	<kernel@pengutronix.de>, <festevam@gmail.com>,
+	<linux-media@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>
+In-Reply-To: <1dfaedc8-88e6-4749-8726-e8f66878e57e@kernel.org>
+Subject: RE: [PATCH v2 04/12] arm64: dts: fsd: Add CSI nodes
+Date: Tue, 26 Aug 2025 15:38:19 +0530
+Message-ID: <019c01dc1671$5c8f6850$15ae38f0$@samsung.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQK5oFMD+tt4mLQU5V9KgVyIDaUIUQE9OnCOAxwEstACXXiXxwGMECOMAYbqfFkCHlK3ygEZONEMslGN25A=
+Content-Language: en-in
+X-CMS-MailID: 20250826100826epcas5p24abdd08b355b1a7c1064b086bb9c11ac
+X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-541,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250814141019epcas5p2f957b934d5b60d4649cf9c6abd6969d5
+References: <20250814140943.22531-1-inbaraj.e@samsung.com>
+	<CGME20250814141019epcas5p2f957b934d5b60d4649cf9c6abd6969d5@epcas5p2.samsung.com>
+	<20250814140943.22531-5-inbaraj.e@samsung.com>
+	<1919de68-99ea-47f7-b3d2-cae4611f9c52@kernel.org>
+	<00d101dc136c$aa037020$fe0a5060$@samsung.com>
+	<41434afa-fecd-4507-bcca-735d358ac925@kernel.org>
+	<016401dc15c0$fc0dcfe0$f4296fa0$@samsung.com>
+	<1dfaedc8-88e6-4749-8726-e8f66878e57e@kernel.org>
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Hi Krzysztof,
 
 
-On Wed, 20 Aug 2025 12:49:45 -0400, Frank Li wrote:
-> Move mxs-pinctrl part into gpio-mxs.yaml and add pinctrl examples to fix
-> below CHECK_DTB warning:
-> 
-> arch/arm/boot/dts/nxp/mxs/imx28-xea.dtb: pinctrl@80018000 (fsl,imx28-pinctrl):
->    'auart0-2pins@0', 'auart0@0',  ... 'usb1@1' do not match any of the regexes: 'gpio@[0-9]+$', 'pinctrl-[0-9]+'
-> 
-> 
-> [...]
+ >> Googling for =22MIPI CSIS=22 gives me 0 results, so I still claim this =
+is
+> >> not a generic name.
+> >
+> > I checked other vendors (e.g: freescale), and they are using mipi-csi.
+> > I'll adopt for the same.
+> >
+> >
+>=20
+> Then it is just =22csi=22?=20
 
-Applied, thanks!
+For the CSIS MIPI CSI-2 Rx handled by imx-mipi-csis driver, I'll keep node =
+name as =22csi=22
 
-[1/1] dt-bindings: gpio: Move fsl,mxs-pinctrl.txt into gpio-mxs.yaml
-      https://git.kernel.org/brgl/linux/c/66edbb1e32eede16b261a90014451d67119fc875
+>Except that you have some other different nodes called
+> =22csi=22 as well, so two different devices are =22csi=22?
 
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+For CSIS video capture interface which is handled by fsd-csis driver I'll k=
+eep node
+name as =22csis=22.
+ If =22csis =22 and =22csi=22 is kind of confusing in the same dt, then I'l=
+l keep
+as =22video=22.
+
+is it fine?
+
+Regards,
+Inbaraj E
+
