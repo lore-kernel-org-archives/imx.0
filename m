@@ -1,231 +1,64 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7535229B8D9
-	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 17:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71DD2798FB;
+	Wed, 27 Aug 2025 18:16:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756316458; cv=none; b=nc0Qppj5J++opc3f+D/uu0CjxgItCihlzXsM2T5nCq5dCYXeP1lZtosQmwk9+tAaJlc7nM+8iUuF1PNSPoLyg+Xaw0dKU8NdIhvicy40/lX/G6vzVJMSuEfq52vCMj5InDvgaP58jTyDcUAMnlCBJqGhkfkPp6SF3qDSyaUWzlo=
+	t=1756318613; cv=none; b=gjZuLnYfFSwggCowk0XpGFH/sWpWVqTARzn29qC2i4EKOeG5xVJYKIrZybru6n9NOFA4I5jB6hKlwTdr0aDtWOndY9eqirozHuSByoHwPIOWV//J9lmCza5r/NSvamGBAh/4K5yIB31zhfUjfVVliZONp2oIO7HUh8AV029laiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756316458; c=relaxed/simple;
-	bh=8mZSXa5tllwYg7Vri8XTHsFCezJ/LPItoC8qISf/FQg=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=u8X7dsJdRtCRazXHmSo5739yweOcGkC/ZG8Wf72iIzyGY9vaeMd4V2hRK/96mWvs2N9DZ9xwSt98AH8ELOL3mKd94HUsaMd29Q3IkJqWasF49U8oPOBqp3V+a6hwjbDbDMNIE/+BNbjERR8Ch+WQ3y4sNuwhFdnrMH/KsoeuInU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aYQoa5Tq; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1756318613; c=relaxed/simple;
+	bh=tZYQGAhNSp8+YB6v2kG/8xFnCfWMXDbO7lN7RYNrlm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h3aBo4HDc+ql7m1QqPaMjI6jO14KFllczp+14ukG8f3MBIXD3OxLDvn545kPoaiLvkdlAYe126RatVklwlwiJVvfVpenkyiiOvSGurR0qXAEnC9Vfs7SvMPuGtsmxWzNC/iBIKK4p6HnYn+5vgfqnQIQf5nNIs/BVgqkF5ODAhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j999Rflx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aYQoa5Tq"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57RCReDC021398
-	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 17:40:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	9pryiKbesf4KLCmykOzJgOnqNMnr4CU7A7f1EXmgKk4=; b=aYQoa5Tqtc2tN8AL
-	iq3IQTavdCc6+N80wDp9/1ryQ6rtURE8hJYJ1JEf8GeMDt8Z57Ye+hrSjWGiS71g
-	dhTRly7ADDiCbZ+3yuhupKzFgyym6AZwAcOPdPXs4ELX8pirZMJET9j7BYqPdz6F
-	ZDY3xCJRWorp+AKCGAuCK09e4laJy4I4REdEF1KxFyiaKUObIG+jnZSoOJ8hsS/P
-	20/Lf4vNVU0EKTh1RpsR1NuG7UbcbDM0y4LlPFN3ItahZrHzGcEe80H5Dqu1duk/
-	fYwIxae0xwk6pCPszhHTrzdgVA9KKBlKZFlMQ3qfiDI1b8OwiDD7D9G8+1hGmZRi
-	jBWi7Q==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5we57j2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 17:40:55 +0000 (GMT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-70a9f562165so4113976d6.2
-        for <imx@lists.linux.dev>; Wed, 27 Aug 2025 10:40:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756316454; x=1756921254;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9pryiKbesf4KLCmykOzJgOnqNMnr4CU7A7f1EXmgKk4=;
-        b=tYl81QQVHetA6pb9Y2gkiMpcM9+dRczdk2F5YMiBrDjTtxtlXTu6VVZaw/8E0IiuZM
-         oADrtKHJ/4od4Sbk27xHcV9pPYyAJV07HcC9/hw8C6ZSYX1CpHRdYfddb3c4zMXZHvig
-         nqCpQAygf3Q12NpZOE3VxSi8fde7AyOtuT/K0u7An5DZ45wykYYVv9kTvb+rFnCOEPIl
-         6Ptsdbed4Nh/lQYaR8MTK4/CkrJu1dCuMp+B+R3abijZnaGll7tSWg6LX6yp9VkazN/4
-         WADylsZ1LgnarTc+jphJEM8j04hixcJXT4CQ/HirXckzxHe32DRjJ+JEqH3JYCLNKdIS
-         B2/g==
-X-Forwarded-Encrypted: i=1; AJvYcCX7zs03M0cVsNMphNngAqp9+vEyTA8mvIJrenHSW7V5QoppNJ4QHTAFg5ZG0A4e5WgmpBY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzF4ZDE8GX77Hobd6lP1XLWM2iNDUsfgNT+abWlzF0+UpfWOkRQ
-	NlNU+P7jSovNWIA1Ho4S37GbBMKdF8STBgq6G2Alyn8uicfuhjPWypUQgB4plF28utiZkRx0mrH
-	X/4SBhHyRvJ4ZhFI9dgwhM70iHXH6kxkZNR0+YtFS9TZjOcXccx3wU1s=
-X-Gm-Gg: ASbGnctDD3eFQQGgmqPVHAqcIknleXDjaxfifkpI2m41e1AVPCs3+cU1wpFJdP5LPBM
-	PTgZ7qHmHW2vQjwcrn0bPRfNd6bnr93lvUhdyRYzYo2PSbwdHSpYjDwcGTLBcZFkzr7txKIUZq0
-	FUQ2NR0lOs3gepegHl9g8rxdkHHm9JqP4PN0iqsx9kICgP3B0f+ig8EOKphzY5sWJTBNMZq2VIz
-	wls2QBswfUf2Eph1AxOsvWLixeyGxiflCZXFEiOLAT3dwAccqgfv/pN8g0AblBGjhzHd2prcxRP
-	xT8e/0daXMGN7mOZHtPrFbpfdM6gQPL3tBQK7B7QrUdq4GEVY9fBidZjiylw1HtI8QWTvyPC8Yr
-	HzHsoZI1+IMhbrVp37LOHOg==
-X-Received: by 2002:a05:6214:27c1:b0:70b:5320:d416 with SMTP id 6a1803df08f44-70d970cd29fmr238272166d6.14.1756316453995;
-        Wed, 27 Aug 2025 10:40:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGhCi0u3Z5H0bwldj3p8+1IvfpKHSh571vUpFu3K1OKrspl//SOwGcmP4Yk4ANptZX5dCndsg==
-X-Received: by 2002:a05:6214:27c1:b0:70b:5320:d416 with SMTP id 6a1803df08f44-70d970cd29fmr238270536d6.14.1756316452731;
-        Wed, 27 Aug 2025 10:40:52 -0700 (PDT)
-Received: from ehlo.thunderbird.net (85-76-46-56-nat.elisa-mobile.fi. [85.76.46.56])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3365e5aa917sm28124531fa.41.2025.08.27.10.40.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Aug 2025 10:40:50 -0700 (PDT)
-Date: Wed, 27 Aug 2025 20:40:47 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Maxime Ripard <mripard@kernel.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Louis Chauvet <louis.chauvet@bootlin.com>,
-        Haneen Mohammed <hamohammed.sa@gmail.com>,
-        Melissa Wen <melissa.srw@gmail.com>, Jyri Sarha <jyri.sarha@iki.fi>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Manikandan Muralidharan <manikandan.m@microchip.com>,
-        Dharma Balasubiramani <dharma.b@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Inki Dae <inki.dae@samsung.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>, Liu Ying <victor.liu@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
-        Edmund Dea <edmund.j.dea@intel.com>,
-        Paul Kocialkowski <paulk@sys-base.io>,
-        Sui Jingfeng <suijingfeng@loongson.cn>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        Rob Clark <robin.clark@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-        Sean Paul <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Sandy Huang <hjc@rock-chips.com>,
-        =?ISO-8859-1?Q?Heiko_St=FCbner?= <heiko@sntech.de>,
-        Andy Yan <andy.yan@rock-chips.com>, Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Hans de Goede <hansg@kernel.org>,
-        Dave Stevenson <dave.stevenson@raspberrypi.com>,
-        =?ISO-8859-1?Q?Ma=EDra_Canal?= <mcanal@igalia.com>,
-        Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>
-CC: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev,
-        linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-        freedreno@lists.freedesktop.org, linux-rockchip@lists.infradead.org,
-        linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_01/39=5D_drm/atomic=3A_Make_drm=5Fatomic?=
- =?US-ASCII?Q?=5Fget=5Fconnector=5Fstate=28=29_early_return_consistent?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20250825-drm-no-more-existing-state-v1-1-f08ccd9f85c9@kernel.org>
-References: <20250825-drm-no-more-existing-state-v1-0-f08ccd9f85c9@kernel.org> <20250825-drm-no-more-existing-state-v1-1-f08ccd9f85c9@kernel.org>
-Message-ID: <BBD9E72B-B1B6-4072-A465-68204879684C@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j999Rflx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9B6C4CEEB;
+	Wed, 27 Aug 2025 18:16:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756318613;
+	bh=tZYQGAhNSp8+YB6v2kG/8xFnCfWMXDbO7lN7RYNrlm8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=j999Rflxi7w5R7tVzCQHs4bPSgFvUnumbiY6DTM/jWC/T17eF4KC1wdJNsrOTNr/H
+	 KZIyYiOFtw8xiQzAVBOhGAE5NOIBEolrpV3vlddbZT7jUSy7646Wd9bW9ei9ZXcOXE
+	 dAoxlC3yo3sb60t7DBbJcCLiInMv136DCt7RBLX9PWDavGNSzFNbZkUw+svZ/lrOMT
+	 bKqSDVcVMIa5zAldh9d8QkO2IXCrEhgrYLbbBmlEHV5Z8+XH04QKU4ryOVmkvfhGgF
+	 dHMO7P0Tzhtj+XT9cj6g7uE3YOSfqXy7Wj1W5Z5X6cTtmvPsFn4EBBf6kvo6/rtDaW
+	 aOBZkZ8RJdGlg==
+Date: Wed, 27 Aug 2025 11:16:51 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Lukasz Majewski <lukasz.majewski@mailbox.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
+Subject: Re: [net-next v19 4/7] net: mtip: Add net_device_ops functions to
+ the L2 switch driver
+Message-ID: <20250827111651.022305f9@kernel.org>
+In-Reply-To: <20250824220736.1760482-5-lukasz.majewski@mailbox.org>
+References: <20250824220736.1760482-1-lukasz.majewski@mailbox.org>
+	<20250824220736.1760482-5-lukasz.majewski@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: hKWAQGVO8-_JHvSQiXUOcBaeXgIGPHot
-X-Proofpoint-ORIG-GUID: hKWAQGVO8-_JHvSQiXUOcBaeXgIGPHot
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMyBTYWx0ZWRfX/c8efl9+Hlv/
- 2ABZ7vh/opVnG4+C0b8blixZ+aOiIrOhdA54plCZY8pm8dsV7n1t8rpIJ+xB0H0xu0PrzkHShiq
- Tq9/ifrQWFQMiBEel4Rb4F1arSPXSlRMS+RYH+shw21SEWV63/6fjK5qUQG2Wh2yq40HMmnkWSS
- yuuuPTY2dX16Tn+0X5njjGMIR/pieMp29U9X7+3/mcZrt1fvMf5L3WXIr/uCBUShENS129nIPWQ
- vE5/YICZHagmNzqRUAut/AMX7HfdTSMFVJy5qzgwRtJWvKxpjnn1xMr+2VIgvfZ5/vUGbui2Ly5
- iEKmWF/wxgbXlPRcdAEOcvmzEY62/3ueTTtiR8LH6rY2Y7pTux1OL7X4ZT0M0wynnchTCRvN9yS
- TflAIFQh
-X-Authority-Analysis: v=2.4 cv=BJazrEQG c=1 sm=1 tr=0 ts=68af4327 cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=ntis2/2Y3p1p47GkerkPQg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=puQWGBksFvoA:10 a=VwQbUJbxAAAA:8
- a=V78A4Cvkybgf4icwE48A:9 a=QEXdDO2ut3YA:10 a=1HOtulTD9v-eNWfpl4qZ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-27_04,2025-08-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 priorityscore=1501 clxscore=1015 impostorscore=0
- bulkscore=0 phishscore=0 suspectscore=0 spamscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508230033
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 25 August 2025 16=2E43=2E06 EEST, Maxime Ripard <mripard@kernel=2Eorg> w=
-rote:
->The drm_atomic_get_connector_state() tries to lookup if a connector
->state was already allocated in the global state to return early if it
->was the case=2E drm_atomic_get_plane_state() and
->drm_atomic_get_crtc_state() behave similarly=2E
->
->However, and unlike the other two, drm_atomic_get_connector_state() will
->do that lookup after having called drm_modeset_lock(), when the others
->will do it before=2E
->
->Let's move the early return before the lock to make it consistent=2E
->
->Signed-off-by: Maxime Ripard <mripard@kernel=2Eorg>
->---
-> drivers/gpu/drm/drm_atomic=2Ec | 6 +++---
-> 1 file changed, 3 insertions(+), 3 deletions(-)
->
->diff --git a/drivers/gpu/drm/drm_atomic=2Ec b/drivers/gpu/drm/drm_atomic=
-=2Ec
->index cd15cf52f0c9144711da5879da57884674aea9e4=2E=2Efe21f154e0fa030f85fb3=
-d6d35e2684adcf36e26 100644
->--- a/drivers/gpu/drm/drm_atomic=2Ec
->+++ b/drivers/gpu/drm/drm_atomic=2Ec
->@@ -1128,10 +1128,13 @@ drm_atomic_get_connector_state(struct drm_atomic_=
-state *state,
-> 	struct drm_mode_config *config =3D &connector->dev->mode_config;
-> 	struct drm_connector_state *connector_state;
->=20
-> 	WARN_ON(!state->acquire_ctx);
->=20
->+	if (state->connectors[index]=2Estate)
->+		return state->connectors[index]=2Estate;
+On Mon, 25 Aug 2025 00:07:33 +0200 Lukasz Majewski wrote:
+> +
+> +	/* On some FEC implementations data must be aligned on
+> +	 * 4-byte boundaries. Use bounce buffers to copy data
+> +	 * and get it aligned.spin
+> +	 */
 
-Unlike other DRM objects, connectors are dynamic=2E There is no guarantee =
-that at this point this array entry exists and it's valid=2E You might be t=
-ampering with the unallocated memory=2E
-
->+
-> 	ret =3D drm_modeset_lock(&config->connection_mutex, state->acquire_ctx)=
-;
-> 	if (ret)
-> 		return ERR_PTR(ret);
->=20
-> 	index =3D drm_connector_index(connector);
->@@ -1150,13 +1153,10 @@ drm_atomic_get_connector_state(struct drm_atomic_=
-state *state,
-> 		       sizeof(*state->connectors) * (alloc - state->num_connector));
->=20
-> 		state->num_connector =3D alloc;
-> 	}
->=20
->-	if (state->connectors[index]=2Estate)
->-		return state->connectors[index]=2Estate;
->-
-> 	connector_state =3D connector->funcs->atomic_duplicate_state(connector)=
-;
-> 	if (!connector_state)
-> 		return ERR_PTR(-ENOMEM);
->=20
-> 	drm_connector_get(connector);
->
-
-
-With best wishes=20
-Dmitry
+Almost forgot, the word "spin" appears here rather out of place.
