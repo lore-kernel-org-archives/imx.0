@@ -1,71 +1,71 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AA12D97AF
-	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 22:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879B72E9EDF
+	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 22:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756333648; cv=none; b=hUw3yWPzygb3Ed2ei6ri2mPvs0PEUHkg9fpmaCVLUnKqdzbyGCJp0Ua7rRf/kB6NApZS1nkvt0TZKRgqNs2c4dU6iGmhvcO/72VOH42OnUo20yf+S5/Wi7nDYb+cQDpzwuZWaVm46icRKbQlO678bEPPIJ3ZQIfdUkcRzc62E1E=
+	t=1756333717; cv=none; b=evucCasI/QWCnKGTj7SqFtYU/i0IcOOJPN3b14/4tKH9WFfMxSL33fGlkVISpldZ+K7TWbIMl7k312Cu1cbr2tD9NSBvypGcXKg645bnIXiA9WLJhh46RL0D4fo6DBIiQ/PjWdGM26193OjeR4+TMwBkUVCOfwA08ORwdv9DHi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756333648; c=relaxed/simple;
-	bh=39TfirOm0CvaijkhQPEcSMxZAXyiBUqSqGTWwYkVIEs=;
+	s=arc-20240116; t=1756333717; c=relaxed/simple;
+	bh=Enfpdt0lrNqevhutRfiz1sNVpTDatf+D/XBiia59tWs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ISBkeWAdFO/FGdQk//UUFUeBE9fxIIAsaXRSZ0WxnDOtLv+/HN3wth6GihwscyypfPX7lmHrWyHupZdjohWztTS72zl7XlyyQasyM1wLdRL0kKFCY0oYf/IyxPHVKSwdGgnu+6NqErrFTimokdaIF+FKXubE8GmJzqwU5gv/2o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=N3nSP7Gc; arc=none smtp.client-ip=205.220.168.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=cLZTVxwxuB3XB0aQmGr2Hp9P5IudCtJP95fT0fEwjwoHhqjmJ2eqNGnL54DG0GHRmfGtrYJ6FMpe4kkrsCpgf9xmQj1EfvKLnaX+jinfs71/yBTdvftLB8ZYF+FHFvJEJJrW6K0ibQJe7x2kvqyLLD+pP/nUcfXJ58jfxjD0pug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ksBOx0Fa; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="N3nSP7Gc"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57RGQ8Na029193
-	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 22:27:25 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ksBOx0Fa"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57RGGNHe016089
+	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 22:28:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=coI2WbZxINU7lzeYxnfoWTr2
-	sAMMNa2PgUU+5RmzHvA=; b=N3nSP7Gc5TMt+IIn+qZ9uGuYzVafaBp1ac2JStUp
-	K7rRbNrItFfkrE4pn3NSwfK3EJKU+G54f3mtlHj6FVmTiyk34UhAcW763bLSlDn6
-	lE8nZPvaSrrbDD1z8NV8GMsE+EejI9+PUuTSSHiKEagz9bQN6sfvpB5/sPOKcU3B
-	hixfH4Wr/PN3um5++i/3CX9NXOAeLZ9SXBULzqfYPbTbm7cJ0YT0lWqwC5hM7lYu
-	l1sOWd/H9mcZguQFv0ANnTeWef+C8qNF9wb0KmfE+GAKuhHp+eDVTrDi1PKjuj3Y
-	LyVxJjOjvzkfxEw8ajNN66YMc9YGBbuSSUh3zv0iLcgaEQ==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5w2x93y-1
+	:references:subject:to; s=qcppdkim1; bh=LcrLZoaMuieBwoDNhdy1YKKE
+	PmtaqIZQcasiCx3hw8M=; b=ksBOx0FaLwkdk0t38aj7T0xGmpchr04zFiJSkZgZ
+	Ba64KDw1scqklvR5h9sPhUMIU5Lm2ULbS+dB0sk27byD5zxz1LdT8vRZaUw1mIEL
+	xh0i2qoc9SiowpsxDWLGj59eU9BUKYNTd+Lt+SZ/9us8XpkdePkPbROX9L0c1Nis
+	xuzdRsy97JbgBGv09uGR8V2gtRSajQOd+AstxEjUOr+Q/Lp78EBk7+sbA+6J7rxg
+	ssnXa5MEdmfrn2nI2mdVDxwzLzHHqhlfufrgyew42L4gAJrqTf9p2WsvRy8xNAKa
+	HZ7JFU2mS/Vczvql0G9Re9yqBmoUE7SgnNjvTTRqpyeYxg==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48rtpf0dsc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 22:27:25 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4b2f9e8dca6so8235421cf.3
-        for <imx@lists.linux.dev>; Wed, 27 Aug 2025 15:27:25 -0700 (PDT)
+	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 22:28:33 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4b109ad4998so12028971cf.1
+        for <imx@lists.linux.dev>; Wed, 27 Aug 2025 15:28:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756333644; x=1756938444;
+        d=1e100.net; s=20230601; t=1756333713; x=1756938513;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=coI2WbZxINU7lzeYxnfoWTr2sAMMNa2PgUU+5RmzHvA=;
-        b=WyejAc50+dGkoHW2njkfC/jtHBdJ31v5RoaEm5tLU02hz5RBQSZJn2UlPVzV0G/U+T
-         b2E1y4UlXieaQ0CIb1GoxoD0+BeFV6OVUuJfSpeErbMGmvD2lxez9mtkt4cwu+b9/XUp
-         +NcNlnzXd84jrVtXi4YVKsEEl61aJoR9CcNd9nKZc3AGKVepAJAxiUL4SM5QSBYJhqkF
-         DUQPhrPE/OodtR/UCNuNNZiwba2h2bbqQKwqsCZ4w63AWLpScMDbA7cU+l02hZ63w+Fm
-         IHGLK+oTFC1PKF80WYacnOrDy4Ui7Qka3UZ72I0bJku4k5v1rUQpictIejVN1gMhB4Xf
-         iqbg==
-X-Forwarded-Encrypted: i=1; AJvYcCUlapAgsiyzudE7m2zqC4VSj4Q4/gTMKCtH2hdgcbqshhSm5kcOzEYfRcdin+wZi1bUY+M=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwnHQddu4SoMeBRVheBEPjaD42bxIGUVOdQnq89zAtA+b42grsl
-	KZXanHYjG7HYPt16qNW1rEF98CfR/K32H6R89sVtnoxPHNrS58hH+7FZWZUw7sNJ8GFTQF4nCZW
-	66g9GCBcE7+zHE6hOwKLLXhmG0KCscnCIKVVpojglsBGP9lZK1L/aZe0=
-X-Gm-Gg: ASbGncuNaVEsCyoIDhYBtixz9oTQ3CQ3R1LVSU9vbbpD8EEPa1JoaLdAeRd4fc1/5pb
-	q+L/I4Xro9ce7oN/i6A5DjWgZgR//nuAFjpR4lYM/jMPkCHVV7kAdJBrxHUTR2hNLswJhcTYcpb
-	skCC97d4BgVBHKqE9l3oCqDyU1f4GtjVOTqS89XdB+z/pXJoz15gzBHXqzBuQHQNp3UmPFhBYJZ
-	Am2jdDJGbMQe7CTPSNPF759RS8fFPLBQqKO1KHY+DqDhhqurllQHscjgCt6psDQelG5Z0upMcwg
-	lSGAdN9Iwzrc4CbJNfyze5h3BogNRBDTM0M15GJe18aQVFr/+SgYFNaPhBiH3H71+w9BhJaX9cB
-	befyZtQ8guM0mLTLPbsmRm6Wwar0WTQRi2E6xdk8IP+jwcdzvFqO9
-X-Received: by 2002:a05:622a:4c8e:b0:4b0:8f6e:d70a with SMTP id d75a77b69052e-4b2de073d4amr102607421cf.22.1756333644081;
-        Wed, 27 Aug 2025 15:27:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGfGaJaSCsOEz0+c7R0GpHgMKXCo1cAu/f4pCkJRC2KgnMVotYeSkSM/eNVsc6qfr/OnO8xNw==
-X-Received: by 2002:a05:622a:4c8e:b0:4b0:8f6e:d70a with SMTP id d75a77b69052e-4b2de073d4amr102606571cf.22.1756333643552;
-        Wed, 27 Aug 2025 15:27:23 -0700 (PDT)
+        bh=LcrLZoaMuieBwoDNhdy1YKKEPmtaqIZQcasiCx3hw8M=;
+        b=qIyLljy2jeTrMf6T4gjSWgHGgReG2L7z+kwfMiPtAEbii4Gj6z4K1YZK7A7AlbpmmH
+         rojy6BqVDMm76kjweqEceVMn1/1k54nE1FTDkQenlRnyZ01yYQq9RVbwL2I4foaey95W
+         GA316s4Npj+Inki+75sWNYk7OCPQJXcGIEQGDogNKB3A3yw9P3j5s5KwZI8HrhNRcGxB
+         pTP83WgQ+oeVeGMHs4rukktQPwNH/axSS0rmOB7PTLLs40azUzIv+Zhf5r1TZMmg8B0n
+         26B7HQEi3OC8LJepRBli4DMme9PuAdchMHV3/GWNpRrqXmJKZviLzAksQnkCkUOaQ2Xu
+         dObg==
+X-Forwarded-Encrypted: i=1; AJvYcCXqWDbkFw2bKcihhEL8CeueUYouBzaSmOF6i9t/LHSQ+DbUIlRsCfsLQ8TTXg3EXaxsYGg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YypsqYZCdn9jQHYnTooGcKEjzvXbZe2zvhy+tUPvmGCAZ9NzW6A
+	PygWzyYqgDd5/fT4l2yOBygpZnMZep7UDqBg6aWYWwxPUD+yU9+XG20NU6yCH/awip2hrSj/oAx
+	4xGvxnMBjtzwkEUWNclqThvPsdVkE+756FjQWYS7phG6t8cpkW0DoXP0=
+X-Gm-Gg: ASbGncta3Ao4d+I4E2YD+5NNaS+uSB615rSdIOQf0SiJXYm4os2LSQZYrfwHTBnd3/f
+	yirkA+Otf8KJytQgvNI56SI3jC6KseAJiJDqkHSeUZsBqnAX8Wh8e+L/eoJtguaBcwg5czXHXZB
+	5EQhx75q+d4d26BVKMfZVP6NvjrO3n4BN1bPE5BRVlKIlGxj28+U9VkfC45LGYC++24d6e7lZBo
+	gofUxWgO8+zWEQ4zsDHYGFe78kZ1h5U9/EiaQ0yc0RoEkNGJjbvGyu08fQ1OzG9HBs1mHckAuyT
+	4d8SCqWfHRCZDku4ytIg5ooFQQGxwZFl7ii6mOp+FzvflPdVlJ4RwU0P9Oaz4Tu5jHYi40e4HCY
+	4rsF1xSpwZOZstSQAJ0moUq6/7Qsnv+KHUYdXV+JOHqNVhKx5qGhn
+X-Received: by 2002:a05:622a:cd:b0:4b2:dfc5:fbee with SMTP id d75a77b69052e-4b2dfc5fdb1mr105542001cf.32.1756333712557;
+        Wed, 27 Aug 2025 15:28:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5nmdIbVBTqmW1BSWH9OY/lezBX2PorYOAsLp+HwXKOdiRgVyGEp2e8fxZ/9eVS1zmC9A+GQ==
+X-Received: by 2002:a05:622a:cd:b0:4b2:dfc5:fbee with SMTP id d75a77b69052e-4b2dfc5fdb1mr105541351cf.32.1756333712052;
+        Wed, 27 Aug 2025 15:28:32 -0700 (PDT)
 Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-336818f1d41sm14139131fa.51.2025.08.27.15.27.20
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f35c13debsm2882288e87.57.2025.08.27.15.28.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Aug 2025 15:27:21 -0700 (PDT)
-Date: Thu, 28 Aug 2025 01:27:19 +0300
+        Wed, 27 Aug 2025 15:28:31 -0700 (PDT)
+Date: Thu, 28 Aug 2025 01:28:27 +0300
 From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 To: Maxime Ripard <mripard@kernel.org>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -125,11 +125,11 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org,
         freedreno@lists.freedesktop.org, linux-rockchip@lists.infradead.org,
         linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH 03/39] drm/atomic: Convert
- drm_atomic_get_connector_state() to use new connector state
-Message-ID: <hab6s4wyauqiej5ankh3gppdqkm2ymlevhrnklfe76kqjmmjqy@fptmzxpqv5av>
+Subject: Re: [PATCH 04/39] drm/atomic: Remove unused
+ drm_atomic_get_existing_connector_state()
+Message-ID: <a3hwkno4nemddbmaz6dayd24rmqcr3zxujrvsspnulrivntxjz@o3tm6o4mc6nt>
 References: <20250825-drm-no-more-existing-state-v1-0-f08ccd9f85c9@kernel.org>
- <20250825-drm-no-more-existing-state-v1-3-f08ccd9f85c9@kernel.org>
+ <20250825-drm-no-more-existing-state-v1-4-f08ccd9f85c9@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -138,69 +138,41 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250825-drm-no-more-existing-state-v1-3-f08ccd9f85c9@kernel.org>
-X-Authority-Analysis: v=2.4 cv=Z/vsHGRA c=1 sm=1 tr=0 ts=68af864d cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=wpE8WlYdICmIRzy2dDcA:9 a=CjuIK1q_8ugA:10
- a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMyBTYWx0ZWRfX3XxPiSphAwwp
- kLE3MueT0s7StjwKFbloqT4YqYPAks3kn7rAVwm/qBXHs3flJ5ehDoxqPMqz9nNb5BvXNFGLlCx
- GiGRDJ4c/m5DLmEBHOaCaBV/xi/7dngdkJ6l09Fg5xmrP883Mq6mi9Tke5AMQeS3AepJipX+JtX
- 7ThUtwRL5bzEChSRUPCOgIoPTfmzfppkFjtvp+PzGfst+RkSodIqdH/lvajP76Zge9vTVel+MNa
- 8BNI9Wl9n36GCsudYxa9vK1J8wT1aTECDndoeb03Ky6ReMaZhEKwEuwmrUyaNEcA+8I7ZjMeui6
- Z1y0McbbVPrB/0oyXotvBNTr5dSHYAKaT9qvwqL8Prbg3aVxWSTgrhl/11FvxOc9vkJ3LmTP8K6
- MJlfsW2G
-X-Proofpoint-GUID: pYP7Uj0aF8e69p4CMEtkIQgjX26cE-Bf
-X-Proofpoint-ORIG-GUID: pYP7Uj0aF8e69p4CMEtkIQgjX26cE-Bf
+In-Reply-To: <20250825-drm-no-more-existing-state-v1-4-f08ccd9f85c9@kernel.org>
+X-Proofpoint-GUID: pJd0eEggSX4AZNDYUYJRsVeAsdXMFEEs
+X-Proofpoint-ORIG-GUID: pJd0eEggSX4AZNDYUYJRsVeAsdXMFEEs
+X-Authority-Analysis: v=2.4 cv=Hd8UTjE8 c=1 sm=1 tr=0 ts=68af8691 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=ROUmOPvenB7E6LXmrzQA:9
+ a=CjuIK1q_8ugA:10 a=dawVfQjAaf238kedN5IG:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI1MDE0MiBTYWx0ZWRfX3l72GmFjDiZg
+ 4po6HEDUAAmMJ85BsbGVGS+/qIkWC6SKpJsXemtU0Sy5I+WEPJF0jN9OX9PUPOsAh37+Dt3HL29
+ wgCeY8Q5XEex3GrgmcaWC9W7BbSSM50eX3nfju7AGlxg3iQ9O1+GS5GxyLCMzSTuWYlJlcTJKc3
+ +zNyddIg83wO0YDIuctV8XFoqirALymS+Pz0S9VPzIfudb1W3A+5SNid74UOWB9pewutYaIB2/v
+ dJN88UNZZRAtRM2jQikNBDVy1dGWMo9CKPtANG8xBEBJA1x8fmOta0rP6Ienxsv1IOja+0YCnwx
+ 52sNIQo6gU7xcilNU+Mi/mW10HMS8mnIXjqLshQKk6+yh+PHq1lc16QQ7c2/ytFGb3f3+u1szby
+ dQ3y+Hhy
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-27_04,2025-08-26_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 malwarescore=0 phishscore=0 clxscore=1015
- suspectscore=0 impostorscore=0 adultscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230033
+ priorityscore=1501 malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0
+ adultscore=0 clxscore=1015 impostorscore=0 spamscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508250142
 
-On Mon, Aug 25, 2025 at 03:43:08PM +0200, Maxime Ripard wrote:
-> The drm_atomic_get_connector_state() function calls the deprecated
-> drm_atomic_get_existing_connector_state() helper to get find if a
-> connector state had already been allocated and was part of the given
-> drm_atomic_state.
-> 
-> At the point in time where drm_atomic_get_connector_state() can be
-> called (ie, during atomic_check), the existing state is the new state
-> and drm_atomic_get_existing_connector_state() can thus be replaced by
-> drm_atomic_get_new_connector_state().
+On Mon, Aug 25, 2025 at 03:43:09PM +0200, Maxime Ripard wrote:
+> The drm_atomic_get_existing_connector_state() function is deprecated and
+> isn't used anymore, so let's remove it.
 > 
 > Signed-off-by: Maxime Ripard <mripard@kernel.org>
 > ---
->  drivers/gpu/drm/drm_atomic.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  include/drm/drm_atomic.h | 23 -----------------------
+>  1 file changed, 23 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/drm_atomic.c b/drivers/gpu/drm/drm_atomic.c
-> index 660b081ff5d8c39061cebfb5ea122ac1e51677ad..30b7ec05a1af07075e40cd2822ecfd67df004ba2 100644
-> --- a/drivers/gpu/drm/drm_atomic.c
-> +++ b/drivers/gpu/drm/drm_atomic.c
-> @@ -1128,11 +1128,11 @@ drm_atomic_get_connector_state(struct drm_atomic_state *state,
->  	struct drm_mode_config *config = &connector->dev->mode_config;
->  	struct drm_connector_state *connector_state;
->  
->  	WARN_ON(!state->acquire_ctx);
->  
-> -	connector_state = drm_atomic_get_existing_connector_state(state, connector);
-> +	connector_state = drm_atomic_get_new_connector_state(state, connector);
 
-I'd say, drop patches 1-2 and use this function directly as is now.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
->  	if (connector_state)
->  		return connector_state;
->  
->  	ret = drm_modeset_lock(&config->connection_mutex, state->acquire_ctx);
->  	if (ret)
-> 
-> -- 
-> 2.50.1
-> 
 
 -- 
 With best wishes
