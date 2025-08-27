@@ -1,43 +1,43 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3131276046
-	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 02:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24232773E0
+	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 02:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756262049; cv=none; b=epzE/zrBDQpuckem4kVQPxVLawd54DDeohWQZuycjj2jJWTgF2tRLLY2WCMkFLD+7DoinhU6dVzz+6qTddQ0MKl2x6Vx7cRtUiI64/T1F3PeT0wNf2AGYpMQMuIEUSR5nftvAGTLcItFGlY5Bxm2YtXa9NbGb7zdaoHNtMX8AKo=
+	t=1756262054; cv=none; b=EK3JIZ+LR2anF+0MLqfQoAh+5AJTkWWQ0NcE1Oq1X/B/lRPMfvkJtWQ2B48uvcPse8Z926LF1tlYnLLScTHKJuCl/wXJwqUjszOub1sGkkfUoFPhhlTiPqhLku/qfShxfCQ8AhYAQyNVGJzXN8aGIiq/dle9f5PFVgSa8IRC47M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756262049; c=relaxed/simple;
-	bh=rkwb4IeMY1GAAMkcKNNGOUfz988DBM38McQun8BvQ2w=;
+	s=arc-20240116; t=1756262054; c=relaxed/simple;
+	bh=QVeFRI/dyD3binc6t5bphA+vmew2cEPhw3+uE2T7PbM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oYZLfE6UizXbUMcJxaX4FIm1fDiY+V+f+dupfQ4iWvCcWRxYGfUOPquoBo3+Rlj2AUpdak7bzp43LlroRg24lHMBL7auW1wl7OSjPA+H5kpmxVugX3EpzWBsw0jqjFTDK9IU4XteXK4QqxKdnRbOEFXYWGHUDp4+yLIY159BKPg=
+	 MIME-Version; b=b7EukqOJTNcpdZODRKvKeCKo1LmIe3denUsjyKepR30c0sMOTWa/PBYBkEwbPd678vmKFtiDoK23FbFU3rh1H13f2qIi1jHs/bwIWdZvyvylHE+O7fV+wucGPML5LYS3OQMAaFZJp+UPk+CzCVnLb98QrXAeZzAAva/j95AJnzk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 494816fe82ee11f0b29709d653e92f7d-20250827
+X-UUID: 4cba262482ee11f0b29709d653e92f7d-20250827
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:17f27ccf-aa3b-47ba-9229-8fb68e226aa1,IP:0,U
+X-CID-O-INFO: VERSION:1.1.45,REQID:8c4a9b0a-7fa5-4323-a2fa-f8947f898138,IP:0,U
 	RL:0,TC:0,Content:26,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
 	:release,TS:26
-X-CID-META: VersionHash:6493067,CLOUDID:f2398c8c5a1aca92091435c050f04d6d,BulkI
+X-CID-META: VersionHash:6493067,CLOUDID:da8ba8d81ee2ef9aab28dbb7c0b96569,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:4|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 494816fe82ee11f0b29709d653e92f7d-20250827
+X-UUID: 4cba262482ee11f0b29709d653e92f7d-20250827
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 586798460; Wed, 27 Aug 2025 10:33:59 +0800
+	with ESMTP id 1623617400; Wed, 27 Aug 2025 10:34:04 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id B78F2E008FAB;
-	Wed, 27 Aug 2025 10:33:58 +0800 (CST)
-X-ns-mid: postfix-68AE6E96-41491213
+	by mail.kylinos.cn (NSMail) with SMTP id 75C21E008FAB;
+	Wed, 27 Aug 2025 10:34:04 +0800 (CST)
+X-ns-mid: postfix-68AE6E9C-117426214
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id C4296E008FAC;
-	Wed, 27 Aug 2025 10:33:52 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id BFF27E008FAE;
+	Wed, 27 Aug 2025 10:33:58 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -104,9 +104,9 @@ Cc: zhenglifeng <zhenglifeng1@huawei.com>,
 	linux-mediatek@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v2 07/18] cpufreq: longhaul: Use __free(put_cpufreq_policy) for policy reference
-Date: Wed, 27 Aug 2025 10:31:51 +0800
-Message-Id: <20250827023202.10310-8-zhangzihuan@kylinos.cn>
+Subject: [PATCH v2 08/18] cpufreq: mediatek: Use __free(put_cpufreq_policy) for policy reference
+Date: Wed, 27 Aug 2025 10:31:52 +0800
+Message-Id: <20250827023202.10310-9-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
 References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
@@ -126,31 +126,38 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/cpufreq/longhaul.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/cpufreq/mediatek-cpufreq.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cpufreq/longhaul.c b/drivers/cpufreq/longhaul.c
-index ba0e08c8486a..ae5596919671 100644
---- a/drivers/cpufreq/longhaul.c
-+++ b/drivers/cpufreq/longhaul.c
-@@ -950,7 +950,7 @@ static int __init longhaul_init(void)
+diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediate=
+k-cpufreq.c
+index f3f02c4b6888..1fae060e16d9 100644
+--- a/drivers/cpufreq/mediatek-cpufreq.c
++++ b/drivers/cpufreq/mediatek-cpufreq.c
+@@ -320,7 +320,7 @@ static int mtk_cpufreq_opp_notifier(struct notifier_b=
+lock *nb,
+ 	struct dev_pm_opp *new_opp;
+ 	struct mtk_cpu_dvfs_info *info;
+ 	unsigned long freq, volt;
+-	struct cpufreq_policy *policy;
++	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+ 	int ret =3D 0;
 =20
- static void __exit longhaul_exit(void)
- {
--	struct cpufreq_policy *policy =3D cpufreq_cpu_get(0);
-+	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
-u_get(0);
- 	int i;
+ 	info =3D container_of(nb, struct mtk_cpu_dvfs_info, opp_nb);
+@@ -354,11 +354,9 @@ static int mtk_cpufreq_opp_notifier(struct notifier_=
+block *nb,
 =20
- 	for (i =3D 0; i < numscales; i++) {
-@@ -968,7 +968,6 @@ static void __exit longhaul_exit(void)
+ 			dev_pm_opp_put(new_opp);
+ 			policy =3D cpufreq_cpu_get(info->opp_cpu);
+-			if (policy) {
++			if (policy)
+ 				cpufreq_driver_target(policy, freq / 1000,
+ 						      CPUFREQ_RELATION_L);
+-				cpufreq_cpu_put(policy);
+-			}
  		}
  	}
 =20
--	cpufreq_cpu_put(policy);
- 	cpufreq_unregister_driver(&longhaul_driver);
- 	kfree(longhaul_table);
- }
 --=20
 2.25.1
 
