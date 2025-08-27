@@ -1,209 +1,178 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011062.outbound.protection.outlook.com [52.101.70.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DE030CDA9
-	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 15:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756307748; cv=none; b=N6G5iiuk9E2j6QWRCawFc7h3NeqC9J+2nk0BP21FO+ESVIIXjXQVvv0KV81wEHfOZSGM1qt31eGqKpZOI3L3BwEg7Bu/+5p9ZTCsNGVL8MXYjrT+Brw0GMnZfj368ksBD2iXoV8u8k+MgZHwTJ1ntRq5WkzKZ0WP/QXreK/P0o4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756307748; c=relaxed/simple;
-	bh=PgEPxKHnOwEJrisDshuEuJU9SWQbfG1NSTYMYsAtWZE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JlFvxRviVMtBxzpRZrkLqKV6nTx/2i20gCAvkol1Uh/wShKShB0H8dDgegyF5PsxGxx/eitKFWpLUd47It/kvN1NyJyxqfWtoMkUzo5VCJSDWvRif3eellJ1mrqVZiiiAzVzaRIbG+OZSu3jTVg4NAZ1FQn/91tljuJbkD0ySBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0ffDFH+a; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0197D27700A
+	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 15:23:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756308192; cv=fail; b=u/CPjDpzJj0eukN4z6F00trdUMEq4a1zBCqUMK0cCRbV9RmV1j8T72R5Hs9GIKvZ6DjqKIaGNVK7VMlHoGD1uiYhivYXSAWAm24rhEiqgQJLYj4dUjlTOiY0Zc2pno0JmygWPiqXrpqVSFcY5EIdY4Hgux5Hijl0bJ1ZkRtZcmU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756308192; c=relaxed/simple;
+	bh=dKwxoP1MoO9g2bNaus+hwR7iU0os4VIeO1At9eQ87f0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RN6MAi9N+YQ033KturD2p/5HCbb1z41GBQVrkQgDS8IK4qxTqRk7KXh8Dy/x5B/a78NRpPV3Bys5DbNYMkHkH8HwUq8WuWQ3ZlJH8/ZU8nVWKrk9ce5Z/LomELUVnhDC65xctEV/r/9xHwtGEzw40aJxstrlmMB8sMBxP4oxVks=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Kq9hQPnb; arc=fail smtp.client-ip=52.101.70.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0ffDFH+a"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-24611734e50so164765ad.1
-        for <imx@lists.linux.dev>; Wed, 27 Aug 2025 08:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756307744; x=1756912544; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aGPhYDWt388RttmicU0o24RVsxY/twdNMb4O/vzImCs=;
-        b=0ffDFH+a/cBfaTGBIjzf7wnpVLwbTq87QbtXAVpfgEaIGYWsQZZVGiIPtHOclrPLN7
-         r6VlNF7HCGfA2XceuH5ArrCxLUIKt7Hdz37xSjwubRGMaHGWYuQDx8Q56LsgQob7MIRj
-         TtTzFDAuvwdPeD+hHaB03x5HGHQkb72KTsHAAe2k6qgVLwJClk6eW8LWpoQ6/f4dgx27
-         ++Sf1HBWqC/pe+5wlPjSAm0XuyqRLWJ4Sc3D8i1ceoYUa0Uuxx9dMjbZq7fmI+0NsdB9
-         tdKdc+TnstfLtbhywQSY3vDGOPGKiZP6qlcsYrntlgLStRHDdLi1p0wwjAyDV4k/zKMS
-         n1cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756307744; x=1756912544;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aGPhYDWt388RttmicU0o24RVsxY/twdNMb4O/vzImCs=;
-        b=OOf0IX2IqB64HdUmSP+DjXC3pUQDWQ08oNQ7yl1s5TnOiO4j3us9s6iSrmaY8qssY3
-         k3LEnVKWCGAQEwWydyqE1IWOphodAzr/Pa51Rk8/YiosE+S4zNOhZYDN4VomXYLrzrYh
-         WX3ER98/0+DMeH77II/LFBLrCJMcCLcIf3fnP7q2OUFN1qY2aXFywjeMJSpCpDqJWkj9
-         aRzOwo0oU2tIha1G07YLlqbtWvz6SI8eQOzvnzNRhEW1un1lo/NrIe07knMpWz+xfGQJ
-         L3ukVApwZulzXmfKN/8IoSNzWe8lNsIbqWEBVAWoDEur69QYaaJ2e5Lv+wBnqbF/7+KD
-         h/kw==
-X-Forwarded-Encrypted: i=1; AJvYcCV+eb6BVnyJ+o6RDX8ik1GphRc9nXGd6Oep2GIybAWiEywQlLBp4ELDbdhbAHYw6HJ/hDQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzPTBkpstVi5C9fmd5xq0J8B5oQ3CIeYqysKQwnmyU3OhZhvxEC
-	YzDerEUTUJjJktx/vGqaKLHpiW2RBgrzqjmYRlY7IAQ6NvoPQ0NortEpMUsxjmSo4wIbhqoplnc
-	Xuy+wjskdIFoH90R89vaUkbUil76n2geLiiUQI/eh
-X-Gm-Gg: ASbGnct5E3ZOotNF7EvLe+cvmww4QOB/9GpZgToLx8d0TVh+xPkXrkwpOp3Lbzkbwvl
-	3/yO0CJaIiEeshNyRlyOTJgwFywGr/3/qDOhlRS14lZUc+On4uQEqe0KOVt767ULaNnACxwEBMV
-	v4E7ZgszB21+ZFBPYGYITEK7LG+2nYOJ6Hsq6+Tyku+xw7N5EfZLn6pM59Mxpm7oj0Jak5IYAzh
-	qHs/x87EH51yllmT6bFSfAmiLfhmWm1qXjTD4mkHqg=
-X-Google-Smtp-Source: AGHT+IExi0QgPJP/5AblrVahQdACSVklatzIIhzDoM8PROF9H/mRXxhxpv9GhjknP28Wz6ljzGsei6gbP7f3oTXJLVM=
-X-Received: by 2002:a17:902:ec87:b0:246:a8ac:1a36 with SMTP id
- d9443c01a7336-2485ba5311amr9397575ad.2.1756307741849; Wed, 27 Aug 2025
- 08:15:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Kq9hQPnb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LVMsM2CNHYu/H04LDu9cVYwoMZIOQ531nzSuqrMinT130olfB8oGng5tnflB5w2klr72akfK3gKEfZY9E3RX6VIPJSgHyD2ftRw2P0vnGQ1UHPos6wEcM2ybmQo/Ws5Z4/o+99miP+FAeEzNLN904m0YV5M0v30EEeLhbco/IBt/wAeKfGqaxfvV+EudVt1QjA5QMgRp//6N/M0gSVBY6q9fVHId10laxa8AJc+fCWeN22AEstKHXYAzny1nr5/BtSVb0OtdFhzkMiY/SxPgYetqYs6qi4k3vf4Jf0R7izhK8Obd7hDvcIj261iRjJ8tAR8Q2jRRjGlgOAVJnvB52w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XwAqq1oA5qOwVI/PwkGSzgYkn7prlu/cTE0RWlQU7/c=;
+ b=E6u6eLmItGPyiZLt177Ksj7tdIWG7yLI8b5QvSEP68v2eMAft2purYLwMtBtDYjmvR2yZY76SyIG61rElnhP00FQtDo8L7LR7SKrLkZ25pIfqT1rPayjxVpLdRFwjILMgquA/JR4wRhXmG+FDavvld3veGTXcyrCpLXvCNAsiPpTKUML8hf+G9qWIy7lZ8GyGFmotwbzqB/E951RHrT1Eb2Jk/hYR0e1Qm4KRU5Bqgdo92OAbmspDxG/t1GEezFxLySOg6T/fqWcIYaY8Uj6l9iqiVOYwL8zw6j7d2xMb+M2nxGAYnmKn11dY3J37FRtt3Mc6nNoWvZYUWXXqQY5Og==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XwAqq1oA5qOwVI/PwkGSzgYkn7prlu/cTE0RWlQU7/c=;
+ b=Kq9hQPnb4qBeoJhYCY2CnERnajbnuazM7HJXTxLGDKQfvPpUothaD9u7oxH8UcB3vRaEx+zHcUHjA6BVObBXrr2sJlA3Rc2oFc4Ww1NcejaCbQqS1rVC90HO+EA6jrO9AKIPWuCP8vfM9fh6GfS+zsQNfXtYUd0/aX2CMw7rx+deKoji6DUw7t+ne6uniW8xoz2avGjC4vLynd08pkUv+oL7LbCH9+fCMhhmVtJCfk+RiuH0tGs8FoJxrJ1epGR5JBJfF2iv3g2rTUym/08jrcUfF56PFfjuV/E2k6JoAZZ9qdjoEyttoCdFYefPmZj4HsoxgViYK105V3mLGCqTaQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by AS1PR04MB9430.eurprd04.prod.outlook.com (2603:10a6:20b:4da::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.11; Wed, 27 Aug
+ 2025 15:23:08 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%5]) with mapi id 15.20.9073.009; Wed, 27 Aug 2025
+ 15:23:08 +0000
+Date: Wed, 27 Aug 2025 11:23:00 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] docs: dt: writing-bindings: Add exception for
+ clock-names
+Message-ID: <aK8i1GTp2vPI8g2C@lizhi-Precision-Tower-5810>
+References: <20250826151650.9396-1-Frank.Li@nxp.com>
+ <20250826235519.GA766501-robh@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250826235519.GA766501-robh@kernel.org>
+X-ClientProxiedBy: SJ0PR13CA0193.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::18) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1755096883.git.robin.murphy@arm.com> <d6cda4e2999aba5794c8178f043c91068fa8080c.1755096883.git.robin.murphy@arm.com>
- <20250826130329.GX4067720@noisy.programming.kicks-ass.net>
- <6080e45d-032e-48c2-8efc-3d7e5734d705@arm.com> <CAP-5=fXF2x3hW4Sk+A362T-50cBbw6HVd7KY+QEUjFwT+JL37Q@mail.gmail.com>
- <aK6_XrA_OaLnoFkr@J2N7QTR9R3>
-In-Reply-To: <aK6_XrA_OaLnoFkr@J2N7QTR9R3>
-From: Ian Rogers <irogers@google.com>
-Date: Wed, 27 Aug 2025 08:15:29 -0700
-X-Gm-Features: Ac12FXwUZ4TrRSXyzgr8XTQRkesJ87wwMtoKHvx086ZRlV4GbvgOq2WSyedNfZ4
-Message-ID: <CAP-5=fU0-QDMP-VG3O1qBvJ8uzHHYCQ8j1Vrzy9a0YUk=UMvHw@mail.gmail.com>
-Subject: Re: [PATCH 12/19] perf: Ignore event state for group validation
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Robin Murphy <robin.murphy@arm.com>, Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com, 
-	will@kernel.org, acme@kernel.org, namhyung@kernel.org, 
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org, adrian.hunter@intel.com, 
-	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org, 
-	linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, coresight@lists.linaro.org, 
-	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AS1PR04MB9430:EE_
+X-MS-Office365-Filtering-Correlation-Id: 079723d3-8ea1-4414-e927-08dde57da030
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|19092799006|52116014|366016|1800799024|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?nnrNaa2yTqowYJviXySwP7Km4ak6NhFNOvgXBHUtAe3JyfR6oprgDhDPkfLr?=
+ =?us-ascii?Q?9WIG/aO7O0CiJ1UoL3Hn15tZLH9aUGIH8FuLvO2mw1rN2nIISGCMVnfora8r?=
+ =?us-ascii?Q?FC11X6vtFIyiWwnGzQDqEdhQKAgQkTWRrngBm7S0UijQJ6u0g4uJaZEt/LWt?=
+ =?us-ascii?Q?LiVIqgUxp5DU9hCQQhu1/Xm4Guq4DNuu/Wz+kCP1eHaKpeV0YJgDDhve+Hi5?=
+ =?us-ascii?Q?/2yFhFcvsgi6V7ZOlz6IKWlPqbGvqHVzKbBag4UF7qCovoW3cRP3HVEOZ1ol?=
+ =?us-ascii?Q?U+JUyvtuhwFoNTyzI+CVcO6TMdNUqubR1ZwNbCMNuyVNmnLe7SS/pQJkxUrc?=
+ =?us-ascii?Q?d9IczDH+5dkV6qDuOxxlTuKk2ugk70j2rkhF4O0wjbQ1flwv0cZFZ5mT5N1y?=
+ =?us-ascii?Q?CjGz6MNsfqJbsu9sjXAMcPqT1dYnymtw3ks+jwd7kwiFy1euBzHqOSZRNmi1?=
+ =?us-ascii?Q?uoO9ZIDZnZS1XqqgJFFlbHldlxNNmIiHp6cfjAx7lOKCuEOA7bktc1jD1ZXR?=
+ =?us-ascii?Q?TUs4TyKAv8bbrtp8kzP9BacG+kjeEDZfvLJL8vnNYx9O/qi3gz0nhHD00wfr?=
+ =?us-ascii?Q?wr6xyrb89zerRBNNB+csQPiaiN+kjM9hnj4gTLrZfTpfSujlrHXB9dNOzTO0?=
+ =?us-ascii?Q?gEkN60XRTJnhLCXo67b2lRloW+nisIoHS6Q8yqGeVp+Pajg1k177qEbLdZFW?=
+ =?us-ascii?Q?A/fnQrA6fVpQOX7dfC2lB1w10fqJSXLblyBgCnWpbCNSZp1OxeM8aFCQjI1y?=
+ =?us-ascii?Q?FNEtiUpqhljKF1+wkDOmu7QjIwr43Wnl3p8D6VlEpsCnrYkqVzK92YT1w+ne?=
+ =?us-ascii?Q?BpBItylmzKfhIEWs28ztZh8lV1LNASZCNImUw2WSa06VIbs75eOuTgGJ3I3x?=
+ =?us-ascii?Q?W0ZwktAf+/KuhE6s8DAl62wzEqLJOPvUoK60+UwdQfU+s7Qxejf5cQgVyh88?=
+ =?us-ascii?Q?v6wc0OHgxuKoSypOh1DDUjuiNfwUCr4bJ3rrk61gNoUQdwFPtmLDozhHrxa8?=
+ =?us-ascii?Q?zGVhgY/hEnmPOxt3T4oU2mqg5rx9bmhPRTVV8wykyG+TNXrc9NrKyTh1bfYp?=
+ =?us-ascii?Q?nQNDBFQWBqlV+fmWxyiaL+wJzG2QHfH8s4njWQ8+hcA2EbqBUZEvxl1VQVIr?=
+ =?us-ascii?Q?fOIP0KuwBej+0ol7MVlw/bhG8je7zpiR5aWAK5mIJFk1mGBnMVmToe4814qX?=
+ =?us-ascii?Q?PHPftO2YgMe1q2VtinLhuAjW8fBjwQ4Tw6W4xH/zz/asQVsYDNdTKF9QWwLt?=
+ =?us-ascii?Q?g6mQ3GLzbbvTBqaIxwZDu9RAF8Hyr4SAo61F9vM1SXLWfo0E4zTG+sKknDcE?=
+ =?us-ascii?Q?aXXHo7HJxwMZFNqAfkXQMzP/8fo3O6jbW+xBEV8cMH5sKx+MCpfnZLljWe+y?=
+ =?us-ascii?Q?v9Y+k7ey/9ODsqQ5IPgsZ9QNpqgidBsq9XC/kkfLG97q23fM+vK+LjqOelgb?=
+ =?us-ascii?Q?UT22wH2nlDISvbO/NBm8KmvZRclzNrNSyjYScQQ4J4CnLmdYInro4A=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(52116014)(366016)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?DsTODw6KGC7xMBLW3mfODZLlgGMZXPZ5nu6cDu7Pp3JOOHHsAf35/0BST+6j?=
+ =?us-ascii?Q?ZGWR4FEBkLsq7k+5mu2RpHTetk7pVCqrutuJGBR3iE8q9ivZSSKYqoZZ7sYK?=
+ =?us-ascii?Q?GlnVC48TuQQCOZOKYLguDflSkf8MUG2QQJLoBskB7h1o5WhrgprCGCu4ZiDd?=
+ =?us-ascii?Q?/PJn093tSpHOfDbcRunnHbTxUCRXqms3Gzi6YoKkvzVUIVXiZLu/Wkwg6f74?=
+ =?us-ascii?Q?Ci2whh3TWFJdiBYGJZ4rs2EaDH4Nm4ZBrR+RP7l1xankW6wbXEau9CRcY6vS?=
+ =?us-ascii?Q?Fm+YHkHsUx6MdSGF+dsdMUXlcoifdevhWZr3AerRqWdutoA44ZHNzMvAR9e6?=
+ =?us-ascii?Q?kAjZlY3Omuxaeiy+pqYEl40H6vig3MMsXAH/FRByl+/2zSpNh7WvnhgWc9rY?=
+ =?us-ascii?Q?fKCDq0eZmcDfTSWXGGkjKsrYDay7o6pgKx334msm78pz244nGtIsKD6cQbMj?=
+ =?us-ascii?Q?w5n1JeQuGXBWPlPMNicPEMp6h8n0gi2AfdJ0w3veVPERGQeQG6u8VKxUm4Ih?=
+ =?us-ascii?Q?NxkC9Nz4ECN5dmtC38qkdjIHtmA5L3Dn6E0CeL7VAo/bIj5fAjnZ1g73lQH1?=
+ =?us-ascii?Q?OF9J/idqT+J7H2zNxmMnEX6jqPG9wUKaVxhcH5rJXiXqOnnREE8uPo5+Setq?=
+ =?us-ascii?Q?9a2iS5h2rqYduyjjoVpbpGlRLLWERYx13WROIZu4hXurFo+dwk+rkYI5HSqk?=
+ =?us-ascii?Q?m1CQkH1CwruUbBVTq96uYNNpKBoD7IMPugIQMc/XhRFUZbgiVfxbc9/GSjYW?=
+ =?us-ascii?Q?WIQT/IuTmg1ZkzzA8wagT2/DuVGPhU8pQoK8zqmDxQig7kbmZpAWOdJxIQIh?=
+ =?us-ascii?Q?tKhaZT5fFUPjLybexEcMT9TJeEoyP+iDNPDot/qlTTYyOVdcCqu88EvMldFr?=
+ =?us-ascii?Q?VQH8y3+VGjYLLoqsprhXUHfaIJXa3M0i7KNC3OmvWmLUs2eJNsHgYTupaWwD?=
+ =?us-ascii?Q?FByA1pTL3QYla4zF1rEZUn3tXQA3Dz6uT+LeTv0yRnhURu8y1oo6LKBD9dHs?=
+ =?us-ascii?Q?Hkg96zilWnwxMIu+elnyGLOOXD4ppqNjbW0A7p9C+1W8uC9xEkPU1IPKMPSQ?=
+ =?us-ascii?Q?3RM09phXiJ0FMxPZF0T/cINNvd7gkAVSDt44YO8ppTOZhuHsmxlk8O2r0PKr?=
+ =?us-ascii?Q?QLkLBtB2z7Lu+nLimT3Ce1DykpOarSRxACTHPyAMSC7Sh28cGB5Q/pLZrSP+?=
+ =?us-ascii?Q?980SP1U7UIzoUu7JHhPH9qaGw6L/gwK7cxJObE5QXMUqaayg8YGxKOupkAx6?=
+ =?us-ascii?Q?Gf5fjV18j1jo2mEhz00/GOLwsg/BB5H+QiLymSvcCLNdRSY5XEmk8Xz05M2J?=
+ =?us-ascii?Q?0ELoD0SoRh2oh21K050s8g7HHf/hboTXNu4SbmWRpRSg7/NbDnCoI0jg9lzH?=
+ =?us-ascii?Q?zon6SX5IcEKs28MlZ37Za+PzTDuux+cxRuGv+eljt9DebPsI7G7fVVHNex1H?=
+ =?us-ascii?Q?wfXdtdFpgwA3omTHuouVc2+ZG/OF69T2HtaJDqRkeo8gJwKZoDlRDkIxlYlS?=
+ =?us-ascii?Q?Y9NGftfQygQ0p3xVk2PGG0Ri6dHD6LH5fWxCgEkgAPDZ8QmdE4BRwb5bfwrT?=
+ =?us-ascii?Q?CTOB/rUpDoX+rQl0xm/1BUsZSJ848amvKsU7TReU?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 079723d3-8ea1-4414-e927-08dde57da030
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 15:23:08.0889
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IfLisikSObLT53RSPJvvdRG5dx0Jsxq5AaxW6bZ3nj5RVtb5fKt7u9mQw6/yvk9WAfaaTxXWp/4gRHcm1hPXeg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9430
 
-On Wed, Aug 27, 2025 at 1:18=E2=80=AFAM Mark Rutland <mark.rutland@arm.com>=
- wrote:
->
-> On Tue, Aug 26, 2025 at 11:48:48AM -0700, Ian Rogers wrote:
-> > On Tue, Aug 26, 2025 at 8:32=E2=80=AFAM Robin Murphy <robin.murphy@arm.=
-com> wrote:
-> > >
-> > > On 2025-08-26 2:03 pm, Peter Zijlstra wrote:
-> > > > On Wed, Aug 13, 2025 at 06:01:04PM +0100, Robin Murphy wrote:
-> > > >> It may have been different long ago, but today it seems wrong for =
-these
-> > > >> drivers to skip counting disabled sibling events in group validati=
-on,
-> > > >> given that perf_event_enable() could make them schedulable again, =
-and
-> > > >> thus increase the effective size of the group later. Conversely, i=
-f a
-> > > >> sibling event is truly dead then it stands to reason that the whol=
-e
-> > > >> group is dead, so it's not worth going to any special effort to tr=
-y to
-> > > >> squeeze in a new event that's never going to run anyway. Thus, we =
-can
-> > > >> simply remove all these checks.
-> > > >
-> > > > So currently you can do sort of a manual event rotation inside an
-> > > > over-sized group and have it work.
-> > > >
-> > > > I'm not sure if anybody actually does this, but its possible.
-> > > >
-> > > > Eg. on a PMU that supports only 4 counters, create a group of 5 and
-> > > > periodically cycle which of the 5 events is off.
+On Tue, Aug 26, 2025 at 06:55:19PM -0500, Rob Herring wrote:
+> On Tue, Aug 26, 2025 at 11:16:49AM -0400, Frank Li wrote:
+> > Allow pattern like "pclk" and "hclk" as clock-names.
 > >
-> > I'm not sure this is true, I thought this would fail in the
-> > perf_event_open when adding the 5th event and there being insufficient
-> > counters for the group.
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > https://lore.kernel.org/linux-i3c/20250625200451.GA2117971-robh@kernel.org/
+> > ---
+> >  Documentation/devicetree/bindings/writing-bindings.rst | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/writing-bindings.rst b/Documentation/devicetree/bindings/writing-bindings.rst
+> > index 667816dd7d504..81f76ca57a394 100644
+> > --- a/Documentation/devicetree/bindings/writing-bindings.rst
+> > +++ b/Documentation/devicetree/bindings/writing-bindings.rst
+> > @@ -97,7 +97,8 @@ Typical cases and caveats
+> >    constraints (e.g. list of items).
+> >
+> >  - For names used in {clock,dma,interrupt,reset}-names, do not add any suffix,
+> > -  e.g.: "tx" instead of "txirq" (for interrupt).
+> > +  e.g.: "tx" instead of "txirq" (for interrupt). Except when only single letter
+> > +  remains after removing the suffix, e.g., 'pclk', 'hclk'.
 >
-> We're talking specifically about cases where the logic in a pmu's
-> pmu::event_init() callback doesn't count events in specific states, and
-> hence the 5th even doesn't get rejected when it is initialised.
->
-> For example, in arch/x86/events/core.c, validate_group() uses
-> collect_events(), which has:
->
->         for_each_sibling_event(event, leader) {
->                 if (!is_x86_event(event) || event->state <=3D PERF_EVENT_=
-STATE_OFF)
->                         continue;
->
->                 if (collect_event(cpuc, event, max_count, n))
->                         return -EINVAL;
->
->                 n++;
->         }
->
-> ... and so where an event's state is <=3D PERF_EVENT_STATE_OFF at init
-> time, that event is not counted to see if it fits into HW counters.
+> It's more that the examples are the hardware names for the clocks than
+> a single letter is too terse.
 
-Hmm.. Thinking out loud. So it looked like perf with weak groups could
-be broken then:
-```
-$ sudo perf stat -vv -e '{instructions,cycles}:W' true
-...
-perf_event_attr:
- type                             0 (PERF_TYPE_HARDWARE)
- size                             136
- config                           0x400000001
-(cpu_core/PERF_COUNT_HW_INSTRUCTIONS/)
- sample_type                      IDENTIFIER
- read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING|ID|=
-GROUP
- disabled                         1
- inherit                          1
- enable_on_exec                   1
-------------------------------------------------------------
-sys_perf_event_open: pid 3337764  cpu -1  group_fd -1  flags 0x8 =3D 5
-------------------------------------------------------------
-perf_event_attr:
- type                             0 (PERF_TYPE_HARDWARE)
- size                             136
- config                           0x400000000
-(cpu_core/PERF_COUNT_HW_CPU_CYCLES/)
- sample_type                      IDENTIFIER
- read_format                      TOTAL_TIME_ENABLED|TOTAL_TIME_RUNNING|ID|=
-GROUP
- inherit                          1
-------------------------------------------------------------
-sys_perf_event_open: pid 3337764  cpu -1  group_fd 5  flags 0x8 =3D 7
-...
-```
-Note, the group leader (instructions) is disabled because of:
-https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
-t/tree/tools/perf/util/stat.c?h=3Dperf-tools-next#n761
-```
-/*
-* Disabling all counters initially, they will be enabled
-* either manually by us or by kernel via enable_on_exec
-* set later.
-*/
-if (evsel__is_group_leader(evsel)) {
-        attr->disabled =3D 1;
-```
-but the checking of being disabled (PERF_EVENT_STATE_OFF) is only done
-on siblings in the code you show above. So yes, you can disable the
-group events to allow the perf_event_open to succeed but not on the
-leader which is always checked (no PERF_EVENT_STATE_OFF check):
-https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
-t/tree/arch/x86/events/core.c?h=3Dperf-tools-next#n1204
-```
-if (is_x86_event(leader)) {
-        if (collect_event(cpuc, leader, max_count, n))
-                return -EINVAL;
-```
+Yes, some hardware signal use name pclk, look like [X]clk name also from
+hardware. How to document it here? It breaks "do not add any suffix" and
+this name is allowed.
 
-Thanks,
-Ian
+Some hardware use quite long name like ipg-clk. just need ipg in binding.
+
+Frank
+>
+> Rob
