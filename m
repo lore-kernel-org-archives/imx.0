@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA08A30148B;
-	Wed, 27 Aug 2025 12:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07392212D83;
+	Wed, 27 Aug 2025 12:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756296913; cv=none; b=Y+fNxVHBIAvr64VmfhKYWgwrvhbsCnRUDem8fWM83SoQjeTdyRxXCWtp3hhJMlpqu0uhK1LxgYtbzwFTzYScCdI7eqAZZzNXor5mGBDtTj8QHkm717GvzUrxk5sPjkR3XVeJV74ExSyGFRxmlLXsgqs1A90DJydkC0bWgibH7+Y=
+	t=1756299519; cv=none; b=QcdNRSAqakRsFtVyyIn1GboDZqE8MMYuNokXRsq7Izbwy0k6bFwtjq29F9/TsXhXuQxRCc+yH5aFBmozlF4DEqd98t/bOZMjaz6+b4Vt0zko7ngg0/4AqrO1uBrC2iYuTvmnfrOBTHgWdZ0t7lLqZAzixzmdNUIIqPqWEgB2W9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756296913; c=relaxed/simple;
-	bh=wfXoXL5+6RvtzsS44U4ROrFIi3xhYqdCHou9CgNKLPk=;
+	s=arc-20240116; t=1756299519; c=relaxed/simple;
+	bh=5aNA4WNVqmvubIU0HkdqgATcqIRcv19aYOgpzwLUezM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z8AEQJNujXxfQ7EgAKkLcyrl6Pwq08vJH2aYq1aD+MoZxi4GgsOOT0GHwFiNSpW9br/kmWsJHuGMv047oI0XOQqw/7B2SxeU+FN6jdtHK9XAHmC1ejJp68XLrHzrOmubtQGESbuYxFSli40jyOqR5JnjiOXL/R42VUKiYvAZkHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DWsTd4ot; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=VcfmMCo17DBbao9/vD2OexuRbS0uiVlN4pQY9BUCal6dNtCpDhNydzWpUFuREbR2JA7ORB7souqaMzRYO5SnqBqq/vhZlO08bMDu3mTJPp2KP58pH5kqNIx+DV+BIMjL/o6WCMkyHEkzZx75M8YrMM6jba9Byg7V2/rlB5KsSu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iYzgc7Tz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DWsTd4ot"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7A7C4CEEB;
-	Wed, 27 Aug 2025 12:15:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iYzgc7Tz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDB8C4CEEB;
+	Wed, 27 Aug 2025 12:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756296912;
-	bh=wfXoXL5+6RvtzsS44U4ROrFIi3xhYqdCHou9CgNKLPk=;
+	s=k20201202; t=1756299518;
+	bh=5aNA4WNVqmvubIU0HkdqgATcqIRcv19aYOgpzwLUezM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DWsTd4ot/diDWeq1kI63vl+swUFhj+SCnzRDKy4qv9+ir0r0ERZTR/2yGrJHDg4B9
-	 ISnkWSU2YJM4ezW9dlwNOc7tw0IQsxNZ8OcYzoSCCHp5NAsstkUQ6tUmWdAkwsf+1t
-	 bn6GfoBqd2jsZltIDOyxL+xpsid5jeAwoEfcD5I1cm/F4hxHLM+4MKUAEMdGVstQ9d
-	 9mKI3qVhIfi3yshqjYlU70HDX5Pf91ZRaqo/AUTJ29TrpHETi+EV/9Ky3GNEK3nV68
-	 t+bTxCQDIG2f4Z6Q05ynQghhE7a+XQZfWT1BdWmp7BvdVztAUIcWNsvEGHD55VrU3B
-	 ayiZ+bLw4SXbg==
-Message-ID: <cc6e3f7c-1a64-4a9d-8389-0b3e58120481@kernel.org>
-Date: Wed, 27 Aug 2025 14:15:05 +0200
+	b=iYzgc7TzSMHIIAfWTOZ3hkvCC9eRsFQyXxtv+YtjoorVv+q1XZf/ILrCo/J94WvcW
+	 vlWJ2EKdo1G8TmbX+VAFXBa6L/KpfCnPKYJPGdhjXf6Xt0wsqe+AuL8bIxxbyq+PZ+
+	 kjwKUHnowGBSA3ArdI01L9IhD/g1UVmQf9yc7QooVyYKwjpjc82sGWHnvGTH3mr5U4
+	 rG7Ejj0g4b0nzbr/n+egPZM8LTQd/p44ozaPDv+e1YgqgXaMhAy+3BhU8AgztRLYin
+	 cE9f5zlKq3D+yS4/7abQIGJIjTPbknmqit3AnC8vfzUxCxuHbldQU0gCEys9D2+O6K
+	 zS/1fnsOyUFMA==
+Message-ID: <e01271e4-392b-4ab2-9608-a8e6ebecee91@kernel.org>
+Date: Wed, 27 Aug 2025 14:58:33 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,18 +35,21 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 net-next 01/17] dt-bindings: ptp: add NETC Timer PTP
- clock
-To: Wei Fang <wei.fang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, richardcochran@gmail.com, claudiu.manoil@nxp.com,
- vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, vadim.fedorenko@linux.dev, Frank.Li@nxp.com,
- shawnguo@kernel.org
-Cc: fushi.peng@nxp.com, devicetree@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-References: <20250827063332.1217664-1-wei.fang@nxp.com>
- <20250827063332.1217664-2-wei.fang@nxp.com>
+Subject: Re: [PATCH 1/5] media: dt-bindings: nxp,imx8-isi: Add i.MX91 ISI
+ compatible string
+To: Guoniu Zhou <guoniu.zhou@nxp.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Alice Yuan <alice.yuan@nxp.com>
+References: <20250827-isi_imx93-v1-0-83e6b4b50c4d@nxp.com>
+ <20250827-isi_imx93-v1-1-83e6b4b50c4d@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,28 +95,19 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250827063332.1217664-2-wei.fang@nxp.com>
+In-Reply-To: <20250827-isi_imx93-v1-1-83e6b4b50c4d@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 27/08/2025 08:33, Wei Fang wrote:
-> NXP NETC (Ethernet Controller) is a multi-function PCIe Root Complex
-> Integrated Endpoint (RCiEP), the Timer is one of its functions which
-> provides current time with nanosecond resolution, precise periodic
-> pulse, pulse on timeout (alarm), and time capture on external pulse
-> support. And also supports time synchronization as required for IEEE
-> 1588 and IEEE 802.1AS-2020. So add device tree binding doc for the PTP
-> clock based on NETC Timer.
+On 27/08/2025 11:53, Guoniu Zhou wrote:
+> From: Alice Yuan <alice.yuan@nxp.com>
 > 
-> NETC Timer has three reference clock sources, but the clock mux is inside
-> the IP. Therefore, the driver will parse the clock name to select the
-> desired clock source. If the clocks property is not present, NETC Timer
-> will use the system clock of NETC IP as its reference clock. Because the
-> Timer is a PCIe function of NETC IP, the system clock of NETC is always
-> available to the Timer.
+> The ISI module on i.MX91 is reused from i.MX93 and implements one channel
+> and one camera input which only can be connected to parallel camera input.
+> So needn't to select camera source like i.MX93 in gasket ops.
 > 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Alice Yuan <alice.yuan@nxp.com>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
