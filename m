@@ -1,80 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D60F2798EA;
-	Wed, 27 Aug 2025 15:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5EC269AE9;
+	Wed, 27 Aug 2025 16:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756308319; cv=none; b=BCvBEdSNiSyouJLOtvdf8V7UXgVZFkehvWtWE/G5uiDxh6M46//NCnDWJGpACVJ/xO8fl19OuWPUEmWdDtLNwkiQFRNVluSOIAAeoxvEoLE+Yin7pFnRhsKOjGvG3xCG/C3GCTgzOwrfOL6Z6zsCn64ATeC90kFuQWOzsX4twIk=
+	t=1756312387; cv=none; b=hqRiIISgZ9c+0TOvCkAZzDtLdnidZpknHBqGgefQu7tzYQNz6gJf4vrsw1b/VynPao1D/LPZLFz1cF9duCUYEQ3sH08/4JlgCLeFTD5I5yu+fTSBAwWGgm3FSskge9cBQjfla9rEaN3o1jTpQU2HM/QeQbGu4LCtARHN/uKQ9Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756308319; c=relaxed/simple;
-	bh=14L8M25SaW2aPUTqSHRR4gzXBnSAFwq0n1Xg8omLQ0o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NvZds+2tTAIt43+mpH3yJQuasvI1eXsIe63qRFlz4TZpnv5e+s+EQI6BJXiPEy5NkyQZBzo+sKV5gZgjJfIN2cfsoU65uyx7uesCXKZzUfRhqbfXSlvYUbtOvytA9rWuXz9T1e6qLkZk77UogKEEmz4ZiYF7StFlgJFxrE9Z7kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJD9ReNm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756312387; c=relaxed/simple;
+	bh=tnTA/PNxi7uOQgEmoAZ2b1rNPAWX95IlTIWABbktj2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JbSli23GtQ6Fp/mRt7HCxZvQBT7805CuIOBmn5oa0J0hWMqlbTvnpcTbajWM5Y8IOhcDCevA4dew9hF/XnDqg55dXxEu6pNkklNZEINnwtlx8WGC7y0W3UFM4iURitho300NVhDIpp4+ABW+IWDFg9SEWmEfdAXtBDSmb8KPTng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=apQS+cdA; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJD9ReNm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE64C4CEF6;
-	Wed, 27 Aug 2025 15:25:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756308318;
-	bh=14L8M25SaW2aPUTqSHRR4gzXBnSAFwq0n1Xg8omLQ0o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FJD9ReNmvkx/PjHuiCSIMgnDPw7AGDLXsNC+aNtZfFJOsJNOUGGLs3s+DHjWewFjn
-	 MMVjmTgtzZNNIJZ3EOnprAq2nm6161YzsevTliap9sts5eCoUFn7fQdDBtOA+Sz2XT
-	 kGBhfYVl7bXOD9jSttCOfNeBOLHe4mktsKiqfQ/onHaiL2owSYFSEhPlAUegNnmrfO
-	 /4nJFIwZO9RaLHtz/wkZu6jP8D+0vaDyMWVtzGZ/Vk5JacR6jFaOzay9/MA1Lyfr49
-	 YoAIzMVUTjj6eEv+e5bAMvgDa1Dsx+TH2nl0RuhMZI0Qi+7a4qurZSM4ja04MzW8MB
-	 OY9ZhtdAjXS9w==
-Date: Wed, 27 Aug 2025 08:25:17 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Lukasz Majewski <lukasz.majewski@mailbox.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v19 5/7] net: mtip: Add mtip_switch_{rx|tx} functions
- to the L2 switch driver
-Message-ID: <20250827082517.01a3bdfa@kernel.org>
-In-Reply-To: <20250824220736.1760482-6-lukasz.majewski@mailbox.org>
-References: <20250824220736.1760482-1-lukasz.majewski@mailbox.org>
-	<20250824220736.1760482-6-lukasz.majewski@mailbox.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="apQS+cdA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756312383; x=1787848383;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tnTA/PNxi7uOQgEmoAZ2b1rNPAWX95IlTIWABbktj2E=;
+  b=apQS+cdA3jx7PHRUjRPblci18MuG+w+WIrlPnBiyqLx4iZkMElIIq9ho
+   ldabFk1G7CuUsXuzyp1uhR4iOQYeAMDpK/a6zHEz4zWwogoPoszgqkHV+
+   jwNJ7jsxsX0+10KnxDy3yEiOpeNSMzNe7YE+nUcfJy1BL7bm9QZuZKTlQ
+   rtMWXcqrJzr6dNThNOUyJWE58bv4M8sGVCXzxRYtdUwmrOJ14tuONXEen
+   1vJz+Y9ollBrVc/Cp3otYiAYpPGxbMMNVqnRuxpiCOYMkuqy0GwBkvFkf
+   NWc0LAjgcCiO4nnXKNsgVz3Bqxq7JJjU+HotdVZvFbhhnct31ZUG3GISi
+   w==;
+X-CSE-ConnectionGUID: bBPWyrDlQI6mXMWfsxLawA==
+X-CSE-MsgGUID: ssXlODGVQwi+PLV/vbMexA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="69939969"
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
+   d="scan'208";a="69939969"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 09:33:01 -0700
+X-CSE-ConnectionGUID: rsYzn5mVRVy6Xw1pxl621w==
+X-CSE-MsgGUID: LXp69DIGTUqK7FFQVmGRRw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
+   d="scan'208";a="170708925"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa010.fm.intel.com with ESMTP; 27 Aug 2025 09:32:51 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1urJ4T-000T4N-1n;
+	Wed, 27 Aug 2025 16:32:49 +0000
+Date: Thu, 28 Aug 2025 00:29:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Guoniu Zhou <guoniu.zhou@nxp.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH 2/5] media: nxp: imx8-isi: Simplify code by using helper
+ macro
+Message-ID: <202508280040.QKK6nZ3x-lkp@intel.com>
+References: <20250827-isi_imx93-v1-2-83e6b4b50c4d@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827-isi_imx93-v1-2-83e6b4b50c4d@nxp.com>
 
-On Mon, 25 Aug 2025 00:07:34 +0200 Lukasz Majewski wrote:
->  static void mtip_switch_tx(struct net_device *dev)
->  {
-> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
-> +	struct switch_enet_private *fep = priv->fep;
-> +	unsigned short status;
-> +	struct sk_buff *skb;
-> +	struct cbd_t *bdp;
+Hi Guoniu,
 
-> +		} else {
-> +			dev->stats.tx_packets++;
-> +		}
-> +
-> +		if (status & BD_ENET_TX_READY)
-> +			dev_err(&fep->pdev->dev,
-> +				"Enet xmit interrupt and TX_READY.\n");
+kernel test robot noticed the following build errors:
 
-per-pkt print, needs rl
+[auto build test ERROR on a75b8d198c55e9eb5feb6f6e155496305caba2dc]
 
-> +		/* Free the sk buffer associated with this last transmit */
-> +		dev_consume_skb_irq(skb);
+url:    https://github.com/intel-lab-lkp/linux/commits/Guoniu-Zhou/media-dt-bindings-nxp-imx8-isi-Add-i-MX91-ISI-compatible-string/20250827-175809
+base:   a75b8d198c55e9eb5feb6f6e155496305caba2dc
+patch link:    https://lore.kernel.org/r/20250827-isi_imx93-v1-2-83e6b4b50c4d%40nxp.com
+patch subject: [PATCH 2/5] media: nxp: imx8-isi: Simplify code by using helper macro
+config: riscv-randconfig-002-20250827 (https://download.01.org/0day-ci/archive/20250828/202508280040.QKK6nZ3x-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project d26ea02060b1c9db751d188b2edb0059a9eb273d)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250828/202508280040.QKK6nZ3x-lkp@intel.com/reproduce)
 
-why _irq()? this now runs from NAPI, so it's in BH. Just stick 
-to dev_comsume_skb_any(), it's the safest choice..
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508280040.QKK6nZ3x-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/media/platform/nxp/imx8-isi/imx8-isi-gasket.c:36:8: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+      36 |         val = GASKET_CTRL_DATA_TYPE(fd->entry[0].bus.csi2.dt);
+         |               ^
+   drivers/media/platform/nxp/imx8-isi/imx8-isi-gasket.c:19:36: note: expanded from macro 'GASKET_CTRL_DATA_TYPE'
+      19 | #define GASKET_CTRL_DATA_TYPE(dt)               FIELD_PREP(GENMASK(13, 8), (dt))
+         |                                                 ^
+   drivers/media/platform/nxp/imx8-isi/imx8-isi-gasket.c:70:8: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+      70 |         val = DISP_MIX_CAMERA_MUX_DATA_TYPE(fd->entry[0].bus.csi2.dt);
+         |               ^
+   drivers/media/platform/nxp/imx8-isi/imx8-isi-gasket.c:60:49: note: expanded from macro 'DISP_MIX_CAMERA_MUX_DATA_TYPE'
+      60 | #define DISP_MIX_CAMERA_MUX_DATA_TYPE(x)        FIELD_PREP(GENMASK(8, 3), (x))
+         |                                                 ^
+   2 errors generated.
+
+
+vim +/FIELD_PREP +36 drivers/media/platform/nxp/imx8-isi/imx8-isi-gasket.c
+
+f48498ad0a4106e Guoniu.zhou 2023-06-29  25  
+f48498ad0a4106e Guoniu.zhou 2023-06-29  26  static void mxc_imx8_gasket_enable(struct mxc_isi_dev *isi,
+f48498ad0a4106e Guoniu.zhou 2023-06-29  27  				   const struct v4l2_mbus_frame_desc *fd,
+f48498ad0a4106e Guoniu.zhou 2023-06-29  28  				   const struct v4l2_mbus_framefmt *fmt,
+f48498ad0a4106e Guoniu.zhou 2023-06-29  29  				   const unsigned int port)
+f48498ad0a4106e Guoniu.zhou 2023-06-29  30  {
+f48498ad0a4106e Guoniu.zhou 2023-06-29  31  	u32 val;
+f48498ad0a4106e Guoniu.zhou 2023-06-29  32  
+f48498ad0a4106e Guoniu.zhou 2023-06-29  33  	regmap_write(isi->gasket, GASKET_BASE(port) + GASKET_HSIZE, fmt->width);
+f48498ad0a4106e Guoniu.zhou 2023-06-29  34  	regmap_write(isi->gasket, GASKET_BASE(port) + GASKET_VSIZE, fmt->height);
+f48498ad0a4106e Guoniu.zhou 2023-06-29  35  
+f48498ad0a4106e Guoniu.zhou 2023-06-29 @36  	val = GASKET_CTRL_DATA_TYPE(fd->entry[0].bus.csi2.dt);
+f48498ad0a4106e Guoniu.zhou 2023-06-29  37  	if (fd->entry[0].bus.csi2.dt == MIPI_CSI2_DT_YUV422_8B)
+f48498ad0a4106e Guoniu.zhou 2023-06-29  38  		val |= GASKET_CTRL_DUAL_COMP_ENABLE;
+f48498ad0a4106e Guoniu.zhou 2023-06-29  39  
+f48498ad0a4106e Guoniu.zhou 2023-06-29  40  	val |= GASKET_CTRL_ENABLE;
+f48498ad0a4106e Guoniu.zhou 2023-06-29  41  	regmap_write(isi->gasket, GASKET_BASE(port) + GASKET_CTRL, val);
+f48498ad0a4106e Guoniu.zhou 2023-06-29  42  }
+f48498ad0a4106e Guoniu.zhou 2023-06-29  43  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
