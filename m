@@ -1,190 +1,93 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013053.outbound.protection.outlook.com [52.101.83.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDBC3164A0
-	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 06:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756277807; cv=fail; b=D1DyN+mzuWCa93TRq6UAkjBPKcNp9vzdrLcE1rS50Ja+GOWo12usQS/g/yBmXYk+5TmcMJTUhY9vinfaP+ZV5nHzT7BCDqXeD9uBCLfZp1ndhBCNkvElRyYxsCHbGle0YhOPXfQFBkWCzi9+a4dDbgtGbPvLbq5d3RQNFLAZRTI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756277807; c=relaxed/simple;
-	bh=cYS0HXE3B4wJQStICvzXd5lCHjpfNL+pjnnjmMYPBQU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YmNG6nCOL+zJSW+VgV3eNbBNuPDdAEcBaCDBDg5pC92w/ut1SOZbacQdhx3GohOeg4yGMr1LngaBNA8rTvWkTSo54RFNlf2R/nylAq+z9HmCxC4p3f0+aHaFBmMBpRUmbX/vVoMWeWgaeuFCQjbc/hforehW0ZJWZLHMNSuNxOY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KAjg+rtr; arc=fail smtp.client-ip=52.101.83.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KAjg+rtr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lJOqbBMSGVDhr8+2wjvUg3lUYbPKR3FeTk9yM0XdIw+yoncgebh66RLiHgV/kHAAzJSfApCc1mVlw2ICeeWOi4QnRgM0cDmsueDbSk1mIxsU6o99fHbCXB38IfJVM0ZNfnx2z2oKjPevT72aGZbBbTJPAZEOvFjWB4ljb8f+w4qPlKSCkEuRx7pOofMkGhsZtWSGgXuWDOdAK6YTKLJjNfemnnpurjPyIBMu8ctzYIGFat1DZTs0MzRiLfkzCDHKeV3sM7ls0vxgfjFprFI4JPKvwaN8BhKWwKev/gwaLJs2A2pF7DXK+FA6d/EWwOup+ZPGvqP8aHb0rzdvhQU6aQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OUbNOOoRgkXrJ9IQbAo5aU7HeAXkeG4yXtSm9rmzo7I=;
- b=qHC9idxKsgQBwvu67xqcvU8FzD1Fijq8Dan6/zHLyPHlQ0yYT1NqndCtGJggxU/4XGTuu6fAdWFu2vION5s5gR610I/7Y7sVvJE8GIa1iMNSQt41m59ra5hG5uBFAd7t9Z4jSJPWeItWKrK//RoRVRjM61UEVOJSZzOOM8FIoo5KTNyxSSnbL08f/dCAVWe0ZtnPBDWLlf29enIaqgjUmBDKpodk+0suhjGH4eX/wxOgvFlBwW/XpiXJSHXcjkJ1Vl7gKgr4cTxVDf2gqJlfoJCfXNYDynbGbwdCGdN0b9pC38IDClXksrDwacU4xw1cKH2ECYtwXW0UqJgIdt2LoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OUbNOOoRgkXrJ9IQbAo5aU7HeAXkeG4yXtSm9rmzo7I=;
- b=KAjg+rtr2E1TXqM0PjgfJcrUyD4nXxtsYhlu4kCHz5znIyFYnlnVgQq8rL/vEGGBXDJZuj2yWZv7eZx04vnS7VUIWIVTvhb9usrSWecdfMUJcAFgtD1VT+JrD/ZNZ9m79/r2VnQ3mdN6bCYnt7cE+6gYiNRLnV0sDBY6Njl6kRc3xmfLkzGPQnQ9mFOsDiIe9mXHlRhJ0bchI4H4ZOvG4NT3tkm0LVGAgSyZcWXm5Y4gRfYz14i4k3Mx84/Z7dcye5dQMPkc35AqE/+EHuGVEJOJwGQIJFwRIgfqSLV1BXIsUZeMMstw8PtnFqAYmpeqJH3xdbygyj+fo2hLM9UxUw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AS8PR04MB8481.eurprd04.prod.outlook.com (2603:10a6:20b:349::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.12; Wed, 27 Aug
- 2025 06:56:39 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.9073.010; Wed, 27 Aug 2025
- 06:56:39 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	richardcochran@gmail.com,
-	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev,
-	Frank.Li@nxp.com,
-	shawnguo@kernel.org
-Cc: fushi.peng@nxp.com,
-	devicetree@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v6 17/17] arm64: dts: imx95: add standard PCI device compatible string to NETC Timer
-Date: Wed, 27 Aug 2025 14:33:32 +0800
-Message-Id: <20250827063332.1217664-18-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250827063332.1217664-1-wei.fang@nxp.com>
-References: <20250827063332.1217664-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR02CA0111.apcprd02.prod.outlook.com
- (2603:1096:4:92::27) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AF132254D;
+	Wed, 27 Aug 2025 08:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756281995; cv=none; b=b9OPfqL6d4HtEvtbvELGOVN2CINzaRbMh9kioG4BM96BhKBmEfgSoShAEl/karsaIAKBsMkw1GhqoMDRvQESsKuM124rz9YUU9d+tF0+gsyTrJNTwBfetZG4RALGyYe7H1CUI70uszn42Ia8ohKS2rDevgBWl27TOTBfmeLXjuM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756281995; c=relaxed/simple;
+	bh=mnqpdBh8LH7F6O6rDf98eADOJtLStOn4BOPmUubZFMA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=djfqTvZbL9u0OlMsDQqACLVzFfkIFG0qLd1pmm6HW3ql7qlDiCw7sNvvCbZudKe9oY16XOLd8ovtb04jNpCh9KqseUzcVf839bMV+hsxB1PK8rFFDFMpnBtvAkJVI+HhzkRuLPZ9ndOVqWvGQL6dis9pzLSerUJ3jTFLi1UdEj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 35FE122FC;
+	Wed, 27 Aug 2025 01:06:24 -0700 (PDT)
+Received: from localhost (e132581.arm.com [10.1.196.87])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B8693F694;
+	Wed, 27 Aug 2025 01:06:32 -0700 (PDT)
+Date: Wed, 27 Aug 2025 09:06:30 +0100
+From: Leo Yan <leo.yan@arm.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: peterz@infradead.org, mingo@redhat.com, will@kernel.org,
+	mark.rutland@arm.com, acme@kernel.org, namhyung@kernel.org,
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+	irogers@google.com, adrian.hunter@intel.com,
+	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, coresight@lists.linaro.org,
+	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org,
+	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 16/19] perf: Introduce positive capability for sampling
+Message-ID: <20250827080630.GC745921@e132581.arm.com>
+References: <cover.1755096883.git.robin.murphy@arm.com>
+ <ae81cb65b38555c628e395cce67ac6c7eaafdd23.1755096883.git.robin.murphy@arm.com>
+ <20250826131124.GB745921@e132581.arm.com>
+ <983df32a-ba74-421d-bc20-06e778b4d2c9@arm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|AS8PR04MB8481:EE_
-X-MS-Office365-Filtering-Correlation-Id: 00313ca3-ceff-411c-08bb-08dde536debe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|7416014|366016|19092799006|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hf2OPzbpAX8ZGPjdtI0UpMATDMT7gED/UcdXlQTlxZqX5vcGOvLy1HiJdKlO?=
- =?us-ascii?Q?x4vAnGGqrzyjJ6j/5/Lw1lKjnJmLeVIyr/F3S1kUGUoDGT2ZGLWLVF9tLPab?=
- =?us-ascii?Q?4u1kt82sHX5OKYJOVv7MFLh0ZspvJrLRsarncHkpn4t4sQCaAOlHGs2LEO61?=
- =?us-ascii?Q?XrMI45QTZb94Cn0Z8tiCzxMW6qWGvpmliOo5zgT61gCMeLIKH2LzHBHrptq+?=
- =?us-ascii?Q?ZXXppwtMi6p/oO/m1jFPmQt6BWkDaANB8WdATUZ3TgD7sIHoVWHTCQbChr13?=
- =?us-ascii?Q?cBmySWkVB04fR7+vWexHxlHEgc0TzzpcoTsFBOt8g19OQxMVGMtdTjboN7s+?=
- =?us-ascii?Q?SvOQ4c2w7Sv6MiCSdyAPi1moTGmVwSF4GUtJhMNrjDBMOPi0ChfV5/yvfTwx?=
- =?us-ascii?Q?obvG+7hFZT4X2mh3yMFNTWGdhwkm5wxLaAV7ioGw8WLu/0zKvk+U95QphZNh?=
- =?us-ascii?Q?/h+kxvWymCTaofSQBCZshj0Obp1rJgUhCqx8jQPVNw2iEXEhxDhsUcs/OLSU?=
- =?us-ascii?Q?O6uBnYXTozoCaMiivgC659wvd/NzalYRYNnUJ9KoB/w4kNx6485pFEoCAkE1?=
- =?us-ascii?Q?e7bGKCOvVMF4YSeG/U0zISVlRp+yF0wYglAXkoRgN8A6z8htC6K9zj7kjUO6?=
- =?us-ascii?Q?wtm+tleq/QUvReUpoAfa+2Wj9d3heX7oRj8li/zhi4DhtPeNb9P5sKHh0Q31?=
- =?us-ascii?Q?lpXcxJWr9Xnhz36jQD+PYoPEbW5A90K3G98uTqchP1QWFU5pfB2XvOrR8N2c?=
- =?us-ascii?Q?kHqMaHgcRznzj6rlKYIKO9cF5yXmEuLafwLaK8EUjSloBDrryzSjFlF8BECU?=
- =?us-ascii?Q?2hD/GlNhNBuYwaOkqLC0Td9Rdn7ezmModBkXjAfur5wz0L29PBf0XR2Ko2v9?=
- =?us-ascii?Q?9TOwz2ZE7W82P+voveVxX9I5rCBRVU/HyvtY1nAQFnzrVpbNATC/B9GL8TX5?=
- =?us-ascii?Q?uf3x9dFD+bAh901DZ3MdHZ83KSXqRbNLJxg5HywrwRF21ZMbmJf1ndEJdvm8?=
- =?us-ascii?Q?2puqNotjNiqrD0cmPpyYCury10uo6sdn3NB6txsYDJZvrxONZph+0ao+Tz63?=
- =?us-ascii?Q?khaGca89KGeNaOYrVvmbX0+ZZycC691M56OEErKIGll3WfyfYbPRkC5enkWv?=
- =?us-ascii?Q?JH1gwed1LoKnQpKsp6JlQhyxJykgxxYssJhms7XhDi15w+lvE7r7Cr3s3vIV?=
- =?us-ascii?Q?N5QC9mTFwT0V0SHfTBq/QNBasmzeAlIYD0TdawpRKlfsw8qs4ylGb7jgw8d/?=
- =?us-ascii?Q?Kl6Qfh/CwSBnegXFw6n5aUs/3KjGAajVxsHugrN+UyyW0nti1f9KlA8PlZDp?=
- =?us-ascii?Q?KKVtfsm3C/Pg333otQU5QeNP8EpkQHYPGuc1XiAM5FtjRcn8RXG5B9kK5CGD?=
- =?us-ascii?Q?4K9U6rBipCfy7MW2auFrQfcQQQQol1yzqOroFxV9e5a7lp2DHZLDOwd7sQ2c?=
- =?us-ascii?Q?TyV5br7pkOTnzZKwr7IOuGf0R8yhlk1vyAiIgdhszxdTKJq0ug3u85Tr066T?=
- =?us-ascii?Q?00Wz1OozNMY/ilY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(7416014)(366016)(19092799006)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?BwoyJqpnrahNrqCh+F+X8XQa7NSpHdoAJKQ1mNJup5X0IvogpShbACQsDFSS?=
- =?us-ascii?Q?LpYG7o44pFKEAteCccziodU+HTee12rrpHHPtYijNSuu/J+LG02IGOEgzxUh?=
- =?us-ascii?Q?J2l/FXcdyPzvzKV1QHPsM8qrYvW2T6HM/5cG63aot4+m+h0VuuHtGLWSgO0r?=
- =?us-ascii?Q?bFbjie/K6ppKgBGLAhqazLI9EMPaqYdKcgnNZJj3kvPL/b3z0Xxg3k6YB/s2?=
- =?us-ascii?Q?MzLduw6SFIb/nAinvuJ6rmPs4+XOoU1IQ6pkkNMfolPEfyxARbvozNqHICBt?=
- =?us-ascii?Q?tgqE73HQljyR3lbZOjODfhwXJMAwjSsSgwZ7pIy5zFSN5RrwvtCz5IYM9sGr?=
- =?us-ascii?Q?LCHn4vy0yRTmzX/H6WV+LxgHLm5AkUTJzzzKR09MZWAo9Ik3wjoeoUTZ1m5c?=
- =?us-ascii?Q?bTCD30026Aii2/UTM3zUtHBSUMRAKv5np2LCjDdg2vg8lV2ZR5WgIOb+7Ows?=
- =?us-ascii?Q?Ic2AyZpGx81ZkuX3MpUlPZ2L7wXS8eeu9s0a5N0iKY8Caf1UmgIjo29+OH79?=
- =?us-ascii?Q?Kp83D/T7/JSFV6esye5fZ1ut0aqZBC4Qpu6Dcjx6+/831JwItFjgwJDxAC+f?=
- =?us-ascii?Q?jVqma1oFAQN5C2UANrErEGEApQTshsOJvT2zm/ibJwULuqdwv++owEDO8aKE?=
- =?us-ascii?Q?PNYhKu+4g+YiKtwMjcgdfbbr2Z5pF76DGZ/LbcO/tZJeDwIBygQ7gveR6wpi?=
- =?us-ascii?Q?SSx3R5/1nvLpucpn9eB+c9zyIMXK8S0r4Vw38UY+siPTk8OCsErtaJdIf8Dj?=
- =?us-ascii?Q?RxpVW3J5/uHILG3XwberSRB/qgwtogjVjV/R03yQNqkaHIr9k2xIfrzA4J2c?=
- =?us-ascii?Q?z6Vp9cMtKhoR/C9+1/YWVeeLdBgZycSKYUuH32342ZgmCYix3fsqAZDzHCO3?=
- =?us-ascii?Q?hViFbr38HrdWDDnWTc5NAGHcC44PodkvPts6bkL6uvs0Z1QZO5gTh8k5EpV8?=
- =?us-ascii?Q?2nnyJHkM73/WxfGqGK1swoC/EPd/Ra0NBb/9AcTFm/leGfC0EyNsAYToT1AK?=
- =?us-ascii?Q?7s+vsthlI/7/IfrhNjz5WfmYTjuvrsDvjLLaTa7/Q7xo2Tv2K5LXSwDrrWUg?=
- =?us-ascii?Q?+f+DJQcBSonBRzUd1ZsmijksKkDVBbDTCieKMV80OCqcFuYn6xqUftTBBGPP?=
- =?us-ascii?Q?yLAOjVRkpLZuj2cpvDnp8hebH9KLCGN8DiKPvz4qRAJrOo5p0E0cvmVUbuBs?=
- =?us-ascii?Q?0qf4t/W1V5Hyr93woSUa2PYiRnTdCbnKY8bfKJEPgMXUrSfjHd0me/zbGBBW?=
- =?us-ascii?Q?pCJSAEsa+1C7FGrQebQ1l/mqXOzZg51eCeb3oPK3TqW6BN862VcbzE4iY562?=
- =?us-ascii?Q?VenZc5xBb3KlF7h1da3eiDhwGOoQ9W7lnMA9h9y9JtIXXqU83ph6YdC2uuYM?=
- =?us-ascii?Q?DrfTYUn40V4Qkjj2uBpbxg7mbwAglWKMPIrh1kRObTg741huIvyOwvFwerc6?=
- =?us-ascii?Q?QUblKcBocYWFaY5wtCfdqU60B8nWWG+SQaWyecjdYD2co8mivXZgD4eFDVTd?=
- =?us-ascii?Q?bA61T6sU6G32t8zg9wx+7bqZ/t0iRuXpe/ve7WqLvDU/MPZX/cpEU/6AGPTN?=
- =?us-ascii?Q?1/SiAKeh+asMy8LnMgDIhBv3hCW9ZNPMm/9lBmIP?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 00313ca3-ceff-411c-08bb-08dde536debe
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 06:56:39.1142
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CXGYd6H30BEHSPtZ72NuVBV8Zi11V3YG82A39kDlJLrJMdbeRI2X4zEf7RSc0JySCT3+hNu47vJ7WV6Lm6/i8Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8481
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <983df32a-ba74-421d-bc20-06e778b4d2c9@arm.com>
 
-PCI devices should have a compatible string based on the vendor and
-device IDs. So add this compatible string to NETC Timer.
+On Tue, Aug 26, 2025 at 04:53:51PM +0100, Robin Murphy wrote:
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+[...]
 
----
-v2 changes:
-new patch
-v3 changes:
-Since the commit 02b7adb791e1 ("arm64: dts: imx95-19x19-evk: add adc0
-flexcan[1,2] i2c[2,3] uart5 spi3 and tpm3") has enabled NETC Timer, so
-rebase this patch and change the title and commit message.
----
- arch/arm64/boot/dts/freescale/imx95.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+> > Genearlly, AUX events generate interrupts based on AUX ring buffer
+> > watermark but not the period. Seems to me, it is correct to set the
+> > PERF_PMU_CAP_SAMPLING flag for them.
+> 
+> This cap is given to drivers which handle event->attr.sample_period and call
+> perf_event_overflow() - or in a few rare cases, perf_output_sample()
+> directly - to do something meaningful with it, since the intent is to convey
+> "I properly handle events for which is_sampling_event() is true". My
+> understanding is that aux events are something else entirely, but I'm happy
+> to be corrected.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index 4ca6a7ea586e..605f14d8fa25 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -1948,6 +1948,7 @@ enetc_port2: ethernet@10,0 {
- 				};
- 
- 				netc_timer: ethernet@18,0 {
-+					compatible = "pci1131,ee02";
- 					reg = <0x00c000 0 0 0 0>;
- 					status = "disabled";
- 				};
--- 
-2.34.1
+If the discussion is based only on this patch, my understanding is
+that the PERF_PMU_CAP_SAMPLING flag replaces the
+PERF_PMU_CAP_NO_INTERRUPT flag for checking whether a PMU event needs
+to be re-enabled in perf_adjust_freq_unthr_context().
 
+AUX events can trigger a large number of interrupts under certain
+conditions (e.g., if we set a very small watermark). This is why I
+conclude that we need to set the PERF_PMU_CAP_SAMPLING flag to ensure
+that AUX events are re-enabled properly after throttling (see
+perf_adjust_freq_unthr_events()).
+
+> Otherwise, perhaps this suggests it deserves to be named a little more
+> specifically for clarity, maybe PERF_CAP_SAMPLING_EVENTS?
+
+Seems to me, the naming is not critical. If without setting the
+PERF_PMU_CAP_SAMPLING flag, AUX events might lose chance to be
+re-enabled after throttling.
+
+Thanks,
+Leo
