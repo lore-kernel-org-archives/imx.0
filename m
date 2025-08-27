@@ -1,43 +1,43 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CF21D90C8
-	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 05:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDE5263C8E
+	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 05:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756270922; cv=none; b=stzmiPmBrSXyw5fY/MYTqJWkFnT4HGcolc84YuXYNzcRw7/IPT2TXdY1QS2/37e4fLMzVJw+KEXQ+PC6e2mKe1MHznr14diEitJv+ZIuuxveXDCrcz7XIzEazvnUHtQO4FS6GLqkGD6gxQsmMB5MmIivZF5F9w2l0PYTP2dPL8I=
+	t=1756270923; cv=none; b=hHXyYGTpaHJWVaY0hnetVwVxdJPrnLLd67tldV5n91hgUdV8gsNdelu60UyAwqGusg3VoM3InhqW97j+APW2UCMtTX4XWea6OhUOeZaW/tz7KMJjTM+q+P9XW3ppX/81l95ugUSllh7hs7PJOQScPPuUfk28IguzleMIio9B8hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756270922; c=relaxed/simple;
-	bh=JI7aOfvbtpkrYD3QrqSIAxy6G2P6kcd830fbhdrC4vM=;
+	s=arc-20240116; t=1756270923; c=relaxed/simple;
+	bh=FE0eo5Ga2qkimmk9oNH2NxpHXXg2SOZVHj8Um2Vo+f4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=N2QBlGitt9o3Zl104Day0U3WeQzvnC0WoQjUmZRbWe0zNjTKpsSlP3p4q+H/NujE9TDGnNYveOKqz54b938dXTvpCltAwjYlETxQz2D83uk/IGmX+p7MtrzbFHCbkLFw46g6q9GO1M92/rQwcI1thTVl89zTtFHU3EoBmjnqXj0=
+	 MIME-Version; b=rjD2VWfIl74pk4BdS66FgSHDiTHjOeFsxvwHSeoAsw+OeGv3Yg2E2v0glfmfNijLYKMzL3xdEPSoP726EUpIWWro6mnxS6Mc7ptezuu/pihuqNqSr922ocvG1x6T2tZiRFkFwEWuL0PkiVet3XXBrN4sXP1q3z45ZeAj7plBgcA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: f37f2f18830211f0b29709d653e92f7d-20250827
+X-UUID: f377f4c8830211f0b29709d653e92f7d-20250827
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:1c415ba0-fb13-418e-8a8d-f939331ccbe2,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:6493067,CLOUDID:7871a2c7ca51f2bc02737c897857e02d,BulkI
+X-CID-O-INFO: VERSION:1.1.45,REQID:8d2871f9-503a-4a8b-9516-be2d9fa83402,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:595e82fc7a31806bd42030698e9453e5,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: f37f2f18830211f0b29709d653e92f7d-20250827
+X-UUID: f377f4c8830211f0b29709d653e92f7d-20250827
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 208371796; Wed, 27 Aug 2025 13:01:54 +0800
+	with ESMTP id 753935936; Wed, 27 Aug 2025 13:01:54 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id C320CE008FAB;
-	Wed, 27 Aug 2025 10:34:49 +0800 (CST)
-X-ns-mid: postfix-68AE6EC9-204746223
+	by mail.kylinos.cn (NSMail) with SMTP id 9B898E008FB3;
+	Wed, 27 Aug 2025 10:35:06 +0800 (CST)
+X-ns-mid: postfix-68AE6EDA-170480226
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id ECEDDE008FAC;
-	Wed, 27 Aug 2025 10:34:43 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id F2CB3E008FB2;
+	Wed, 27 Aug 2025 10:35:00 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -104,9 +104,9 @@ Cc: zhenglifeng <zhenglifeng1@huawei.com>,
 	linux-mediatek@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v2 15/18] powercap: dtpm_cpu: Use __free(put_cpufreq_policy) for policy reference
-Date: Wed, 27 Aug 2025 10:31:59 +0800
-Message-Id: <20250827023202.10310-16-zhangzihuan@kylinos.cn>
+Subject: [PATCH v2 18/18] PM: EM: Use __free(put_cpufreq_policy) for policy reference
+Date: Wed, 27 Aug 2025 10:32:02 +0800
+Message-Id: <20250827023202.10310-19-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
 References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
@@ -126,85 +126,50 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/powercap/dtpm_cpu.c | 24 +++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+ kernel/power/energy_model.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-index 99390ec1481f..65117569d0f3 100644
---- a/drivers/powercap/dtpm_cpu.c
-+++ b/drivers/powercap/dtpm_cpu.c
-@@ -144,19 +144,16 @@ static int update_pd_power_uw(struct dtpm *dtpm)
- static void pd_release(struct dtpm *dtpm)
+diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+index ea7995a25780..4f91112c10bd 100644
+--- a/kernel/power/energy_model.c
++++ b/kernel/power/energy_model.c
+@@ -451,7 +451,7 @@ static void
+ em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state =
+*table)
  {
- 	struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
+ 	struct em_perf_domain *pd =3D dev->em_pd;
 -	struct cpufreq_policy *policy;
 +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+ 	int found =3D 0;
+ 	int i, cpu;
 =20
- 	if (freq_qos_request_active(&dtpm_cpu->qos_req))
- 		freq_qos_remove_request(&dtpm_cpu->qos_req);
+@@ -479,8 +479,6 @@ em_cpufreq_update_efficiencies(struct device *dev, st=
+ruct em_perf_state *table)
+ 			found++;
+ 	}
 =20
- 	policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
--	if (policy) {
-+	if (policy)
- 		for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
- 			per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL;
-=20
--		cpufreq_cpu_put(policy);
--	}
+-	cpufreq_cpu_put(policy);
 -
- 	kfree(dtpm_cpu);
- }
+ 	if (!found)
+ 		return;
 =20
-@@ -192,7 +189,7 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
- static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
- {
- 	struct dtpm_cpu *dtpm_cpu;
--	struct cpufreq_policy *policy;
-+	struct cpufreq_policy *policy __free(put_cpufreq_policy);
- 	struct em_perf_state *table;
- 	struct em_perf_domain *pd;
- 	char name[CPUFREQ_NAME_LEN];
-@@ -207,16 +204,12 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *p=
-arent)
- 		return 0;
+@@ -787,7 +785,7 @@ static void em_check_capacity_update(void)
 =20
- 	pd =3D em_cpu_get(cpu);
--	if (!pd || em_is_artificial(pd)) {
--		ret =3D -EINVAL;
--		goto release_policy;
--	}
-+	if (!pd || em_is_artificial(pd))
-+		return -EINVAL;
+ 	/* Check if CPUs capacity has changed than update EM */
+ 	for_each_possible_cpu(cpu) {
+-		struct cpufreq_policy *policy;
++		struct cpufreq_policy *policy __free(put_cpufreq_policy);
+ 		struct em_perf_domain *pd;
+ 		struct device *dev;
 =20
- 	dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
--	if (!dtpm_cpu) {
--		ret =3D -ENOMEM;
--		goto release_policy;
--	}
-+	if (!dtpm_cpu)
-+		return -ENOMEM;
+@@ -801,7 +799,6 @@ static void em_check_capacity_update(void)
+ 					      msecs_to_jiffies(1000));
+ 			break;
+ 		}
+-		cpufreq_cpu_put(policy);
 =20
- 	dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
- 	dtpm_cpu->cpu =3D cpu;
-@@ -239,7 +232,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
- 	if (ret < 0)
- 		goto out_dtpm_unregister;
-=20
--	cpufreq_cpu_put(policy);
- 	return 0;
-=20
- out_dtpm_unregister:
-@@ -251,8 +243,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
- 		per_cpu(dtpm_per_cpu, cpu) =3D NULL;
- 	kfree(dtpm_cpu);
-=20
--release_policy:
--	cpufreq_cpu_put(policy);
- 	return ret;
- }
-=20
+ 		dev =3D get_cpu_device(cpu);
+ 		pd =3D em_pd_get(dev);
 --=20
 2.25.1
 
