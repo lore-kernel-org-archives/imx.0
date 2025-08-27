@@ -1,122 +1,227 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E4A352072;
-	Wed, 27 Aug 2025 13:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8171A350835
+	for <imx@lists.linux.dev>; Wed, 27 Aug 2025 13:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756299649; cv=none; b=DvW2VjOQMcsckReucdbIw912qlHnLBkZQBVmOZ+vBjoIYP0rSiTHKZ3PNOft65RKkcCGUnm8kRnbOsd968mqSRnQSc0bIwDBTehp/JHX8ei2SZFE/Yf2iJxBMwIAZyKOqga+PGLJUCLIbvY/M3nVjw/IdKxE5tfes36yzY/SWPA=
+	t=1756300419; cv=none; b=IOa0SH4SL6VDFoeCbBVhk5hB97ouWhlRDEpcmzkud9XRUi41rrLzbK3WNs6uz9YcHlFU+yqFB6H1iZwdWvWvoT1uulTGtLAk2Dddz1UZAwElOnuk/97jw4M5gb00aSx79VFkCPiPh+ufo/x4Ay+fMvBMuZBtndNWmfWPjqmTIUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756299649; c=relaxed/simple;
-	bh=on6wS0kpW2VKeRtxYhjS3E3L/SKqbk+ViXX0fMeOI0c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PnRLvG33NOsvvbpVgfczhN6xv5hOtLzsXRARCfy/fjYad9u4M+Mq0pDs+8LOW+TVZKR0gtkczrq2pSixmlwC1ePpv31X4cQjMGdMn33PRSeTAQaxXwBD3KE05rsDODfACzFQiEsEOkGh+Rgz29kltheC6j5nClioXx8oY6GF7/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPRwJEcW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756300419; c=relaxed/simple;
+	bh=eRhLjVe67iKErrxJ74pmlvZqDh8RQqKX7+TmAocxpuc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=FzvEHDIjJdpW34rCwwsFLfD3U1fmo0A01ZFKfHW/M3FrYvcM6shl2fiGddsu9b7iqcstlCHL6xdesJM3tOACe9gH1JDbS7ceoRdUMrsL2D9kmrlW1seNg3ZdkQIRZoitjkIkNezSZ6N3GJpPCj+1AfKU1cwEXG5BTfnVk8Whc2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b6sfeUg1; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPRwJEcW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5D1C4CEEB;
-	Wed, 27 Aug 2025 13:00:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756299647;
-	bh=on6wS0kpW2VKeRtxYhjS3E3L/SKqbk+ViXX0fMeOI0c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WPRwJEcW6HozCvqAO+Vo3auxKyvBuyeh2y9RwGFYzHXXzwbXQeXIn16u0UXs/g3o9
-	 rjo5oZV7VpnWuQfVKEZUsPIOi5iQdXJuwWgL6u0k/PwwgDoXOI+Hu3XAlNPVh41FgT
-	 NX4Uj4U0nkcR2Nwa5Et+zsOowKEEbzU2yxufDdhGwqm52PlifvBytPrRppu4+9lAsx
-	 aEXdVdYB/9sxoGGVyuzWILw0Bm0eEdMOOwdYUxR5uM1y/1f3IyAvZowEAewXMJR3E8
-	 kbtKO+FvMiqbZdGyAHvWh4s97hlS5m8oQtAwyWy0Vx/huHWMHF/MPBehT4Z8yriZbe
-	 9MNvENSG3586w==
-Message-ID: <8cd5ec7f-7e57-476e-b683-e7cbe3531ab7@kernel.org>
-Date: Wed, 27 Aug 2025 15:00:41 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b6sfeUg1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756300416;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=13LJOrVZbt5/bZNb1010AyPGLHEYUJgw1i+wJLdf1Rs=;
+	b=b6sfeUg1k3h/K+rZmCBUqdC1FVC3pux6Pf71g5GAHVPKij43CoMeWsKftGJGlQ2rVh/VIU
+	GNhyysNGbqz463uou7EP4x7eermxMXYMWOpw1FeWeae0EoMlEWddLDqD5f62BMOvA8VYnW
+	1qLigQxwP30H/zuiYKHCE2PNHwA7ggc=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-588-s0Leq3ipO1aAU4CR-bDjiQ-1; Wed, 27 Aug 2025 09:13:35 -0400
+X-MC-Unique: s0Leq3ipO1aAU4CR-bDjiQ-1
+X-Mimecast-MFC-AGG-ID: s0Leq3ipO1aAU4CR-bDjiQ_1756300415
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7f2942a1aa1so237815385a.0
+        for <imx@lists.linux.dev>; Wed, 27 Aug 2025 06:13:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756300405; x=1756905205;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=13LJOrVZbt5/bZNb1010AyPGLHEYUJgw1i+wJLdf1Rs=;
+        b=b1Ba2+Kg8N6eK2YnBSqzSPO+RwUOv+FmuZqE8pE8wUcZK9RXeay0BxcCpoXQkOU3t6
+         2O1GC1f138+vo2tiLMQnDN9ZY5hAbs/EmgDXmApYibn8nfV/sv0PtNGN0DIlNxeYfzAU
+         udjJDSy7xbYJ9Dkfu9xcjfzyXx0HnfV/PJ2SsLfAabH5U0Qw3L8fcWvy2xqWY3KxWw0V
+         knhWWbVUlQTpDkBsgV5q1yL7KN9vQrRrcYEct2VQAaMxRvyPbS2V94POJW6eVzlYuj6k
+         T6M41+/5hcPgK/xJkbmWiuMCHXkxQZGXX+GE+5dd/6vhG2+afurqG3kpItAgHU9PZC3S
+         F74g==
+X-Forwarded-Encrypted: i=1; AJvYcCVWPOVOi8eYXNKAAveGV491Hs8bYY6wdoNujDvYZwX3o6kcTE33N+2W8J/bqjdxwpT/WL8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwMQtNShHFXIyzWw9ULLXbxWk6aav+OScUkm0yK6+YJfnVNX2HY
+	jueiqtv0YgjBevRdrIAFkXLumj4UQLtJOx3n3afLPcrumITOyqFGkBzUtHJzROTt0Frn9t9S0re
+	ukVInzq1sOx5gv7lAH6kmFy3k9sKUhw2n8N9wLFQYo04Dsq6oasNm2A==
+X-Gm-Gg: ASbGncs0YqEaKbJEqe2J1xjOK+YjpRLVBdwYFcmqYoZvJC5y9HBmextZOS6BeDL4+Mg
+	bXaEzk7r+ooqPCH09MgoRvG1fMUaaAZrKlreaRYHzGhpnxTcQx/1NcfY+z42QO0m4LdnV5kDuxY
+	g9AhMijfBz44G6uxNhEKXPUUmIw3+yrkVrr0joAe2gxKrh0oen1xEh2Vp/0ehWmD2UoVbTsQfUJ
+	3g1w8yIRxkW53hKSCnVSGKjRkFTqbV8q7NeSjFpmESKInUrkZwcMSpDkHaZrREzS5Dhu1ZhxThE
+	r71w6n8QwLR4tZEih3tNHOSUfSqm9ysk2H1WzhRsg4WPvBLIFI91QG8DmiAJP/4ZY+pYnr6smUw
+	bBiEQ5zZqrhTluro6Oo4=
+X-Received: by 2002:a05:620a:7101:b0:7ed:92c8:7d16 with SMTP id af79cd13be357-7f58d941f59mr592255485a.31.1756300405045;
+        Wed, 27 Aug 2025 06:13:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG//kDH7SoWg5eCSBiMLHP3nCnmfnmaReGS2V45T15TfIErjBPeekutHDc1uHZhw0fUtcQytQ==
+X-Received: by 2002:a05:620a:7101:b0:7ed:92c8:7d16 with SMTP id af79cd13be357-7f58d941f59mr592238785a.31.1756300403878;
+        Wed, 27 Aug 2025 06:13:23 -0700 (PDT)
+Received: from x1 (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ebeca23e10sm885475785a.6.2025.08.27.06.13.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Aug 2025 06:13:22 -0700 (PDT)
+Date: Wed, 27 Aug 2025 09:13:17 -0400
+From: Brian Masney <bmasney@redhat.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Taichi Sugaya <sugaya.taichi@socionext.com>,
+	Takao Orito <orito.takao@socionext.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Yixun Lan <dlan@gentoo.org>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	UNGLinuxDriver@microchip.com, Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Neal Gompa <neal@gompa.dev>,
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daniel Palmer <daniel@thingy.jp>,
+	Romain Perier <romain.perier@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Andrea della Porta <andrea.porta@suse.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Qin Jian <qinjian@cqplus1.com>, Viresh Kumar <vireshk@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Alex Helms <alexander.helms.jy@renesas.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	sophgo@lists.linux.dev, linux-mips@vger.kernel.org,
+	imx@lists.linux.dev, linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com,
+	patches@opensource.cirrus.com, linux-actions@lists.infradead.org,
+	asahi@lists.linux.dev, linux-mediatek@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev
+Subject: Re: [PATCH 112/114] clk: scmi: remove round_rate() in favor of
+ determine_rate()
+Message-ID: <aK8EbcEHz3Yzpa1W@x1>
+References: <20250811-clk-for-stephen-round-rate-v1-0-b3bf97b038dc@redhat.com>
+ <20250811-clk-for-stephen-round-rate-v1-112-b3bf97b038dc@redhat.com>
+ <20250827070933.GB18994@nxa18884-linux.ap.freescale.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] media: imx91: Add ISI support
-To: Guoniu Zhou <guoniu.zhou@nxp.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>
-Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Alice Yuan <alice.yuan@nxp.com>
-References: <20250827-isi_imx93-v1-0-83e6b4b50c4d@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250827-isi_imx93-v1-0-83e6b4b50c4d@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20250827070933.GB18994@nxa18884-linux.ap.freescale.net>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: _OdK9shLSVkqWqaHqcwzzaAqGmFrUgZyh8ZhmyouBRc_1756300415
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 27/08/2025 11:53, Guoniu Zhou wrote:
-> Add ISI support for i.MX91 chip.
+On Wed, Aug 27, 2025 at 03:09:33PM +0800, Peng Fan wrote:
+> Hi Brian, Sudeep, Cristian
 > 
-> The bellow patch refine code, no functions changed.
->    media: nxp: imx8-isi: Simplify code by using helper macro
->    media: nxp: imx8-isi: Reorder the platform data
+> On Mon, Aug 11, 2025 at 11:19:44AM -0400, Brian Masney via B4 Relay wrote:
+> >From: Brian Masney <bmasney@redhat.com>
+> >
+> >This driver implements both the determine_rate() and round_rate() clk
+> >ops, and the round_rate() clk ops is deprecated. When both are defined,
+> >clk_core_determine_round_nolock() from the clk core will only use the
+> >determine_rate() clk ops, so let's remove the round_rate() clk ops since
+> >it's unused.
+> >
+> >Signed-off-by: Brian Masney <bmasney@redhat.com>
+> >---
+> > drivers/clk/clk-scmi.c | 30 ------------------------------
+> > 1 file changed, 30 deletions(-)
+> >
+> >diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
+> >index d2408403283fc72f0cf902e65f4c08bcbc7b4b0b..6c6ddb92e7cf6a0cfac2c7e19c0f15f777bb8c51 100644
+> >--- a/drivers/clk/clk-scmi.c
+> >+++ b/drivers/clk/clk-scmi.c
+> >@@ -54,35 +54,6 @@ static unsigned long scmi_clk_recalc_rate(struct clk_hw *hw,
+> > 	return rate;
+> > }
+> > 
+> >-static long scmi_clk_round_rate(struct clk_hw *hw, unsigned long rate,
+> >-				unsigned long *parent_rate)
+> >-{
 > 
-> The bindings and driver patch for i.MX91 ISI.
->    media: dt-bindings: nxp,imx8-isi: Add i.MX91 ISI compatible string
->    media: nxp: imx8-isi: Add ISI support for i.MX91
+> I see the point of round_rate is not used if determine_rate is there.
+> But reading the code of round_rate, It might be better to rename
+> scmi_clk_round_rate to scmi_clk_determine_rate.
 > 
-> Add parallel camera input for i.MX93 ISI.
->    media: nxp: imx8-isi: Add parallel camera input support
-> 
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> Anyway, need Sudeep and Cristian to comment.
 
-Nice work. I have impression that since some time NXP patchsets improved
-noticeably (not only media, in general).
+In this case, yes the round_rate implementation is filled out, whereas
+the determine_rate lets the firmware handle it, and
+scmi_clk_recalc_rate() will later populate the rate the clock is running
+at.
 
-Good job folks! I really appreciate it.
+I can convert round_rate over to determine_rate in this case, however it
+would be a change to what's there now, and risks a regression. Here's
+the relevant code from drivers/clk/clk.c where the determine_rate and
+round_rate ops are called:
 
-Best regards,
-Krzysztof
+    static int clk_core_determine_round_nolock(struct clk_core *core,
+                                               struct clk_rate_request *req)
+    {
+    	...
+            if (clk_core_rate_is_protected(core)) {
+                    req->rate = core->rate;
+            } else if (core->ops->determine_rate) {
+                    return core->ops->determine_rate(core->hw, req);
+            } else if (core->ops->round_rate) {
+                    rate = core->ops->round_rate(core->hw, req->rate,
+                                                 &req->best_parent_rate);
+    	...
+
+If Sudeep / Cristian want the round rate converted to determine rate in
+this driver, then I can do that in a v2.
+
+Brian
+
