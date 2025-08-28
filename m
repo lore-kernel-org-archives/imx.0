@@ -1,101 +1,135 @@
-Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C281DA3D
-	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 13:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FC118FC92
+	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 14:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756389524; cv=none; b=qxl2QAvdo6byaLfNHjcg5HhMGpjRd6HEh6LIPNVA+Zm6cJ7Ldn/FGBqtWPIWh7z+D6mtAmC5Nuuk18HN93UlImqUEF9wpxkKDmvpdKMZgUu5ufDDKqZpqKerwQOBe7e9sq4Ixb6ocbySDfafpK/RBCeUyLNdmkW17oC3FWmNcb0=
+	t=1756390057; cv=none; b=gXWwOwr4t962wZuSeGxL40z5CST3hswCqSSElRGbVPHqwVzod10iJ4by0DF9uporuOJTH73IGxwFTnC1Ga8JcA+O/SYQTZKYj8u2/chEYUWaWKJPi33kfH21v73YHvKFqC9RwblXkmNgwVH6biu4mxcrF1Ql40ZtPG0YlP2gIHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756389524; c=relaxed/simple;
-	bh=h0pnYiLpVOm9ScPXci3LHPTFEOcR0Th23+I4oCnDGo8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CsG4AKQrtTtvm32EYCYZLYZSohHfBx/TXawrdDfNwLhyHmnRl0smFhp9N6if/osoZXaZEJNQlmGWuoee2bUqssn87Tigmrd/ru8kEQkneiFI3kXjaCjYVouiPL4MACWMiVmUptSGx3IB5eaiH5/UOa+ICExyNe8N07Um1JY5OAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
-Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id 96DED1F00047
-	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 13:58:39 +0000 (UTC)
-Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id DEECCB02233; Thu, 28 Aug 2025 13:58:38 +0000 (UTC)
-X-Spam-Level: *
-Received: from shepard (unknown [192.168.1.65])
-	by laika.paulk.fr (Postfix) with ESMTP id 1B81BB02226;
-	Thu, 28 Aug 2025 13:58:21 +0000 (UTC)
-From: Paul Kocialkowski <paulk@sys-base.io>
-To: linux-media@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Paul Kocialkowski <paulk@sys-base.io>
-Subject: [PATCH] media: verisilicon: imx8m: Use the default Hantro G1 irq handler
-Date: Thu, 28 Aug 2025 15:58:20 +0200
-Message-ID: <20250828135820.1859316-1-paulk@sys-base.io>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1756390057; c=relaxed/simple;
+	bh=0TLMJRiI/UBNgFNnLAwEExo5cJU9wBAQPRJq7dbl3Rc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=laRwaqCXlNNFiEnIrjQ9hxvCG/5PWc4g0D6saFhWBYChd0DxTtqy4hDw/MUd/F3iukT15os8xjuu2tVBZIhzOoCGHbehCHUvsk+WOU5rSttSoOafkx9Jy9ZRZxEse6EKWd8WUW+i5AM+gqeMHytNiZVOEtQ64QmrsYS0eQkXx9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=mbPJ1Yx+; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=PBc8L4n2 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="mbPJ1Yx+";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="PBc8L4n2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1756390054; x=1787926054;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=1V2dgEATYXD7sLHkpBfeFtMXcoUFuQpVI/5dmTO6fOI=;
+  b=mbPJ1Yx++nAwWLWtwwGo6FprX0O0n72ANLWIS8FRBInzYM4he2Jb9+Nh
+   V+CY+gzL9u9gvUN8SARsmBspjDMztUFHbDstKtZVBHlu/wfhQhEnIQOya
+   Nxjv6ApacQyenkUUaDWKGjDV43nxMwlKALxBDNGSzF2Ok+VCAT7jD0pgk
+   Ma3iZvAabWSGeMxkpoVqNlCN6quE2jf1+a+0sEG7b43eXqGcxd3yz7Ibr
+   LfSrOeOjYnKJgeER/eIqtNO4xSZfdmr1fCjO9rHmHC3z435rXCcscK56p
+   /OAcgoQmWAu84BMzPOzI5EeSAvpm1khjDRwnEAzkmjE/cI3t4Va3DaiYx
+   Q==;
+X-CSE-ConnectionGUID: pHIbrKnbSsKPwmnNNZy+LA==
+X-CSE-MsgGUID: +kq5miZWSmG0hV68Kjnfvw==
+X-IronPort-AV: E=Sophos;i="6.18,217,1751234400"; 
+   d="scan'208";a="45959276"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 28 Aug 2025 16:07:27 +0200
+X-CheckPoint: {68B0629F-1-299FBAB0-EF52EDE7}
+X-MAIL-CPID: D8BC9AACF274DEF507CE904D865E66A7_5
+X-Control-Analysis: str=0001.0A002112.68B0629F.0093,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 239DA16140B;
+	Thu, 28 Aug 2025 16:07:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1756390042;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=1V2dgEATYXD7sLHkpBfeFtMXcoUFuQpVI/5dmTO6fOI=;
+	b=PBc8L4n2+UqzRt0GCBaXASsqPkdRKWAw1BS9bjZHK8maHprA+naG8rD4liFKZN3LoVQ8e4
+	2W9JkWdY3ebNt5VCFFAoS/MhKYNwlRnWe8nd+0UkmP1AI+XAJEIqYb+XCVLXgfNkOFQpV6
+	dIBulO6lUgH0LT1kDMr2cSzBvPnW9KHr6N9F5fB1vR9kUuzaS9lY/hj3pnFKm7AxV/GYWG
+	YAcdNWEzdz/WZPYn9xdqCnOAXdmeDcZAxKqU+TDFZ/p7w/xjmQN5wPL6HohuTziKIUnWS1
+	83AHlTctXZMjB1UbDSYo/mZTxPgDZTQ3DIOT2wrozk8JL9Awfeh7+dRxKSAQ4A==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ Frank Li <Frank.Li@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 0/4] ARM: dts: clean up most ls1021a CHECK_DTB warning
+Date: Thu, 28 Aug 2025 16:07:20 +0200
+Message-ID: <3571725.QJadu78ljV@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250822-ls1021a_dts_warning-v3-0-6b611a2f23a4@nxp.com>
+References: <20250822-ls1021a_dts_warning-v3-0-6b611a2f23a4@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-The existing imx8m_vpu_g1_irq implementation is an exact copy of the
-default hantro_g1_irq one. Switch over to it instead of keeping a
-duplicated implementation.
+Hi,
 
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
----
- .../media/platform/verisilicon/imx8m_vpu_hw.c | 20 +------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+Am Freitag, 22. August 2025, 16:49:57 CEST schrieb Frank Li:
+> clean up most ls1021a CHECK_DTB warning.
+>=20
+> Old uboot check esdhc@1560000. The new uboot already switch to check both
+> esdhc@1560000 and mmc@1560000. So we can rename it now.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-index 35799da534ed..f9f276385c11 100644
---- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-+++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-@@ -234,24 +234,6 @@ static const struct hantro_fmt imx8m_vpu_g2_dec_fmts[] = {
- 	},
- };
- 
--static irqreturn_t imx8m_vpu_g1_irq(int irq, void *dev_id)
--{
--	struct hantro_dev *vpu = dev_id;
--	enum vb2_buffer_state state;
--	u32 status;
--
--	status = vdpu_read(vpu, G1_REG_INTERRUPT);
--	state = (status & G1_REG_INTERRUPT_DEC_RDY_INT) ?
--		 VB2_BUF_STATE_DONE : VB2_BUF_STATE_ERROR;
--
--	vdpu_write(vpu, 0, G1_REG_INTERRUPT);
--	vdpu_write(vpu, G1_REG_CONFIG_DEC_CLK_GATE_E, G1_REG_CONFIG);
--
--	hantro_irq_done(vpu, state);
--
--	return IRQ_HANDLED;
--}
--
- static int imx8mq_vpu_hw_init(struct hantro_dev *vpu)
- {
- 	vpu->ctrl_base = vpu->reg_bases[vpu->variant->num_regs - 1];
-@@ -328,7 +310,7 @@ static const struct hantro_codec_ops imx8mq_vpu_g2_codec_ops[] = {
-  */
- 
- static const struct hantro_irq imx8mq_irqs[] = {
--	{ "g1", imx8m_vpu_g1_irq },
-+	{ "g1", hantro_g1_irq },
- };
- 
- static const struct hantro_irq imx8mq_g2_irqs[] = {
--- 
-2.50.1
+=46or the whole series:
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+> ---
+> Changes in v3:
+> - rebase guoshawn/imx/dt tree. Remove patches that were already merged.
+> - Link to v2: https://lore.kernel.org/r/20250820-ls1021a_dts_warning-v2-0=
+=2D2e39648a32b7@nxp.com
+>=20
+> Changes in v2:
+> - squash rename to flash patches
+> - remove duplicate patches already post in
+> https://lore.kernel.org/linux-devicetree/20250725061339.266125-1-alexande=
+r.stein@ew.tq-group.com/
+> - Link to v1: https://lore.kernel.org/r/20250818-ls1021a_dts_warning-v1-0=
+=2D7a79b6b4a0e2@nxp.com
+>=20
+> ---
+> Frank Li (4):
+>       ARM: dts: ls1021a: Rename node name nor to flash
+>       ARM: dts: ls1021a: Rename 'mdio-mux-emi1' to 'mdio-mux@54'
+>       ARM: dts: ls1021a: Rename esdhc@1560000 to mmc@1560000
+>       ARM: dts: ls1021a-tsn: Remove redundant #address-cells for ethernet=
+=2Dswitch@1
+>=20
+>  arch/arm/boot/dts/nxp/ls/ls1021a-qds.dts | 8 ++++----
+>  arch/arm/boot/dts/nxp/ls/ls1021a-tsn.dts | 2 --
+>  arch/arm/boot/dts/nxp/ls/ls1021a-twr.dts | 2 +-
+>  arch/arm/boot/dts/nxp/ls/ls1021a.dtsi    | 2 +-
+>  4 files changed, 6 insertions(+), 8 deletions(-)
+> ---
+> base-commit: 75ad5f47c58aee30248d294a58c8ee52e079a8e3
+> change-id: 20250818-ls1021a_dts_warning-fff933bd83da
+>=20
+> Best regards,
+> --
+> Frank Li <Frank.Li@nxp.com>
+>=20
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
