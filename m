@@ -1,131 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C0430CD89;
-	Thu, 28 Aug 2025 08:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C0027F754
+	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 08:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756371111; cv=none; b=CF1a4N1/A0WlYKH4O2WfhYeLjcOvy57cx8ISulJJBeeVnq/Rkb3GLRm+WDdTv3DOwLPbULPRtszQ6GVRpBPdbgSQwUNvQ7RGYwKeO1FU1o99t/dRoM5hUXYDWE32xRTHOQF2WTma24uSlpn5EiKad2fJu1a4ytT2LaC9Dm7AoHQ=
+	t=1756371568; cv=none; b=bCnhL6X3F0EdWRaI70651MZKoAf3D6xqnRT9WzN7yOX5Syx8nFDgb3U7NbVbOeHDQVlDp5xpZUCnF+QU6aToNmjqLviTIa4oh99KeXYz8Kt2nK3pl/uoqyTfS1xuDra48V4xw0o1lqx9JDZwXblev7B5AjPCYl6X7kphDS/v9CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756371111; c=relaxed/simple;
-	bh=3YzdMt4Qw41h9On9I6WWC7I2bIUYtljay6e0dtrlQB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N9NnpuXbBnwSXIcIu2u23R/XRyrjdiogzPrL5rpKpTYtdQEDM30Bn123ZmbgZuqNh8tDZSivVJmd2ZwAPi1D036B5qDEUApKX9GHCydqvzIuBQ5/4SdWp73OGbFp/aqwrb9LJ6WjQIAbm+3B/m2CEeUlCgwAmL0Ye8bc9TCUm0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxUz4OE7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756371568; c=relaxed/simple;
+	bh=Rv6CyOoBS0W6yMgI9XY7ZWoTbg3KKhO83xxoSL9tWoI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 References; b=oPTiIMZo44Tr+K3oEbXDzjvgVi0Bfy5x5psi3KanHiIVZ4PRH4gv0jm9p9L2ZsHXiRV0NqLaQapfpYszHIcf1h0zl0lyI9iGTjhEUQxcoYJubMAIb6dY3jjBXODcB95Q7TFisy0sZivcIR7ufTLfKCvPbjnYVdkt4YEs9JFJGwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=pTvI62XZ; arc=none smtp.client-ip=203.254.224.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxUz4OE7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA74C4CEEB;
-	Thu, 28 Aug 2025 08:51:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756371110;
-	bh=3YzdMt4Qw41h9On9I6WWC7I2bIUYtljay6e0dtrlQB0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CxUz4OE7D1NGKWLHEwzYtKgtTZECCDgFwxLLFeEJiE5hR7TF/HdMp0veLk2o6qfDv
-	 KrmFmQeAKMvmoCGTsN2QEpErm2Z/n46G4CUgdan/vOqQ9+XQ8CHs5YjX+RarjPGWNt
-	 4fgJOJt8RG0sXbgl0kwnayykHV1vIbocYp6VitOqSIqH+RSsoJuBA8wtGEelQ3uPo5
-	 xCNZZZqIFBHNQnmi6rQHhugNHWi8N0tBMVwx+A651+DQ29n0lH/uQg909DvdKUppWS
-	 TcZgiGOplL37u0h/PshdhvyJVU8d5z8Os53O2PwwUjdkj2x+Ik0u8cPM+8bvR7rx0x
-	 zclGiA7ZwYXog==
-Date: Thu, 28 Aug 2025 10:51:44 +0200
-From: Mark Brown <broonie@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
- function category
-Message-ID: <aLAYoDyz8Xie4Dhb@finisterre.sirena.org.uk>
-References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
- <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
- <CAHp75VephepLq61HrVy=PX2oKUQd5NK2qS-vOC5h_NR65td3Uw@mail.gmail.com>
- <CACRpkda4soRCLF5=W=6R4wnwT3pjk743j022XfJxjTTQzuarAA@mail.gmail.com>
- <534ad082-08fa-42c0-9c24-f0c11af7d5b2@sirena.org.uk>
- <CAMRc=Mdn0_yPXyYq4sbvH4P9-h71vEc4arLPBfSk1PiEFaB7jQ@mail.gmail.com>
- <1804d9dc-8814-47d4-af88-c819c3f17bc0@sirena.org.uk>
- <CAMRc=MdKgqa+vjhHvD2+Tjw5NwBtFv-0aUivi5UuEQd+n4KxmA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="pTvI62XZ"
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20250828085924epoutp0242b2eb33046dd1490027cf1bdea12cc5~f4qHLkyy30621506215epoutp02M
+	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 08:59:24 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20250828085924epoutp0242b2eb33046dd1490027cf1bdea12cc5~f4qHLkyy30621506215epoutp02M
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1756371564;
+	bh=YaV1VCJbwEKqNvJ8DCaGfJQT4gOTln3mHx4bL14ILXs=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=pTvI62XZb1VR5uxk4RXbccIKcAbv1L3jmADiyjJSi9EOaOiXRVk7xwK4jzRp2wDMM
+	 ayMp1ltLEK7a6ho4Rl80ZbHDeXP6th3LjapPgPZ+fNHqXcnylVGtpwU1tHpOtwv0vD
+	 dr5oHULb4FNswNaRo2/pR46QZg1DrbvWhkIKt6eM=
+Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
+	20250828085923epcas5p4276b477fa880021927a43b3304ee9b26~f4qGgLVUj1772417724epcas5p4y;
+	Thu, 28 Aug 2025 08:59:23 +0000 (GMT)
+Received: from epcas5p3.samsung.com (unknown [182.195.38.90]) by
+	epsnrtp01.localdomain (Postfix) with ESMTP id 4cCFhB3Nj9z6B9m6; Thu, 28 Aug
+	2025 08:59:22 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20250828085921epcas5p44f9371fb004fe0aa8bf68d1230e01861~f4qE65rNv1995619956epcas5p40;
+	Thu, 28 Aug 2025 08:59:21 +0000 (GMT)
+Received: from cheetah.samsungds.net (unknown [107.109.115.53]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250828085918epsmtip246c42f8ece911f2a426316d886ff3883~f4qCR2X9_0306303063epsmtip2U;
+	Thu, 28 Aug 2025 08:59:18 +0000 (GMT)
+From: Inbaraj E <inbaraj.e@samsung.com>
+To: rmfrfs@gmail.com, laurent.pinchart@ideasonboard.com, martink@posteo.de,
+	kernel@puri.sm, mchehab@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de, festevam@gmail.com, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org, pankaj.dubey@samsung.com,
+	ravi.patel@samsung.com, shradha.t@samsung.com, Inbaraj E
+	<inbaraj.e@samsung.com>
+Subject: [PATCH v3 0/7] Add FSD CSIS support
+Date: Thu, 28 Aug 2025 14:29:04 +0530
+Message-ID: <20250828085911.81266-1-inbaraj.e@samsung.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CMe5mpL7NfxBkMEj"
-Content-Disposition: inline
-In-Reply-To: <CAMRc=MdKgqa+vjhHvD2+Tjw5NwBtFv-0aUivi5UuEQd+n4KxmA@mail.gmail.com>
-X-Cookie: Filmed before a live audience.
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250828085921epcas5p44f9371fb004fe0aa8bf68d1230e01861
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-541,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250828085921epcas5p44f9371fb004fe0aa8bf68d1230e01861
+References: <CGME20250828085921epcas5p44f9371fb004fe0aa8bf68d1230e01861@epcas5p4.samsung.com>
 
+The Tesla FSD SoC includes a MIPI CSI-2 receiver IP core named CSIS
+(Camera Serial Interface Slave) IP, which is compatible with the CSIS
+IP present in NXP i.MX7 and i.MX8 SoC.
 
---CMe5mpL7NfxBkMEj
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The Tesla FSD SoC CSIS IP version is 4.3. This version of the CSIS IP
+bundles MIPI CSI-2 link controller and video capture interface. The MIPI
+CSI-2 link operation are integrated into the imx-mipi-csis driver, while 
+the video capture interface is implemented in the fsd-csis driver.
 
-On Wed, Aug 27, 2025 at 06:46:28PM +0200, Bartosz Golaszewski wrote:
-> On Wed, Aug 27, 2025 at 12:22=E2=80=AFPM Mark Brown <broonie@kernel.org> =
-wrote:
+The Tesla FSD SoC contains 12 instances of CSIS IP and 3 D-PHYs, with 4
+CSIS instances sharing a single D-PHY.
 
-> > I've just got the log I linked above.
+The D-PHY interface exposes only the reset through Samsung SYSREG
+controller.
 
-> So, I've been looking at this bisect email and clicking the links to
-> LAVA jobs and I can't find anything. Does it fail to build? Fail at
-> run-time? I'm not sure how to read this.
+This patch series does the following:
+1) Add the necessary DT-binding documents.
+2) Refactor the imx-mipi-csis driver to support platform specific
+clock names and interrupt handlers through device specific data
+(struct mipi_csis_info).
+3) Add support to dynamically select the VC from the subdevice.
+4) Add Telsa FSD CSIS link controller support in imx-mipi-csis driver.
+5) Introduce a new media driver(fsd-csis) for the Telsa FSD video
+capture interface to capture frames.
 
-It's failing prior to putting any output on the console.  I was also
-seeing an issue on i.MX6 so it might be all i.MX boards, same issue:
+These patches were tested on the FSD platform using the
+capture_raw_frames application.
 
-   https://lava.sirena.org.uk/scheduler/job/1697667
+Changes since v1:
+1. Addressed review comments from Laurent Pinchart to integrate the
+with imx-mipi-csis.c to handle the CSIS and expose it as a subdev.
 
-so it's possibly all the i.MX platforms failing.
+Here is the link to v1 patch for reference:
+https://lore.kernel.org/linux-media/7e7832c16925386b771ddb7e00e08661115aa0ea.1668963790.git.sathya@samsung.com/ 
 
---CMe5mpL7NfxBkMEj
-Content-Type: application/pgp-signature; name="signature.asc"
+Changes since v2:
+1. Improved commit description across all the patches.
+2. Changed syscon prefix from samsung to tesla.
+3. Changed config from VIDEO_FSD_CSIS to VIDEO_TESLA_FSD_CSIS.
+4. Fixed pll clock leak in probe.
+5. Rebased the patches on top of laurent pinchart patchset.
 
------BEGIN PGP SIGNATURE-----
+Here is the link to v2 patch for reference.
+https://lore.kernel.org/linux-media/20250814140943.22531-1-inbaraj.e@samsung.com/
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmiwGJ8ACgkQJNaLcl1U
-h9Dgwgf/cCYgHVux4WcIOpHZVKvbhmDSDtzns435zt8WkkHs0HTefX6c8qkduloE
-AKCQvlOXq4w9mLYUJB73eu5lR2UZ9F/crY4Skm4QKJSl7xbmcTrUKkDh4anAgPCr
-TzCuAz0wBXpZDV6rbgGsv50bHpga2TkeYe4ILfO9i5WsXq884j6qH3q37x3LK9nk
-lbgltpZaBfzXdFk8ofMDg7QZQI/JDl0cR+6rsMZ60fSoehdmCHlO3Yk1ce8K2PMt
-jeC24eNQXFrAPZojnEdcSiHf7+AGirU7we0+4EPcomJRcfJDrf5lr4Mj/c5ofgNV
-ElALxe39ERW5FGeRn5q9m5nQ+3/dMQ==
-=cP5U
------END PGP SIGNATURE-----
+This patchset is dependent on following laurent pinchart patchset.
+https://lore.kernel.org/linux-media/20250822002734.23516-1-laurent.pinchart@ideasonboard.com/
 
---CMe5mpL7NfxBkMEj--
+Inbaraj E (7):
+  dt-bindings: media: nxp: Add support for FSD SoC
+  dt-bindings: media: fsd: Add CSIS video capture interface
+  media: imx-mipi-csis: Move clk to mipi_csis_info structure
+  media: imx-mipi-csis: Move irq flag and handler to mipi_csis_info
+    structure
+  media: imx-mipi-csis: Add support for dynamic VC selection
+  media: imx-mipi-csis: Add support for Telsa FSD CSIS.
+  media: fsd-csis: Add FSD CSIS video capture interface support
+
+ .../bindings/media/nxp,imx-mipi-csi2.yaml     |   91 +-
+ .../bindings/media/tesla,fsd-csis-media.yaml  |   76 +
+ MAINTAINERS                                   |    8 +
+ drivers/media/platform/nxp/imx-mipi-csis.c    |  330 +++-
+ drivers/media/platform/samsung/Kconfig        |    1 +
+ drivers/media/platform/samsung/Makefile       |    1 +
+ .../media/platform/samsung/fsd-csis/Kconfig   |   18 +
+ .../media/platform/samsung/fsd-csis/Makefile  |    3 +
+ .../platform/samsung/fsd-csis/fsd-csis.c      | 1693 +++++++++++++++++
+ 9 files changed, 2161 insertions(+), 60 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/media/tesla,fsd-csis-media.yaml
+ create mode 100644 drivers/media/platform/samsung/fsd-csis/Kconfig
+ create mode 100644 drivers/media/platform/samsung/fsd-csis/Makefile
+ create mode 100644 drivers/media/platform/samsung/fsd-csis/fsd-csis.c
+-- 
+2.49.0
+
