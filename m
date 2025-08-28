@@ -1,167 +1,159 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011027.outbound.protection.outlook.com [40.107.130.27])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336C22417FB
-	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 02:10:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756347025; cv=fail; b=fwGgiCyPhrLhfs5PrffRqEvdevlRme998Po3t8MpakXDbjsWolvpvzGzgxyBZvayStQNcJr/oBp3A++P6AZNcVNDfp49oBjeq4OCcvTNaW2rwe6O2qyEIaLOWIiIAQ9IOwyxMc7Xiz4uXPpZgaZNKXpnqkRZXUaCfFW4DHBJ7ho=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756347025; c=relaxed/simple;
-	bh=KM6tNTO/2nSQWtVdTV592vi9UIAK1LYO2s8P5gyN5Kc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=SJHFEAfo+vy64cGSLFEHavyLMKPjfXAv3T9rS0C1aA5MIFx+v4MnsPUDtSBtR2lvJIhi+z0mY0vYqBjQz1LaUX7SJkz1D+9w7oaYWdvDzOf/uri9LWQ5xnf8SVc5DxreRbsw3tFWWS1SRkqan7vnfW1A6Ju2cCIzQ6pU954ryXU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=c297iUeJ; arc=fail smtp.client-ip=40.107.130.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="c297iUeJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dGrNKxOwvF4UHlpEiXOSi2n+S9V41emaJcBao7wgCL9MTXkJIjy0yQbKBQWnXK9AwLFB4govN2KkVrepdXHBGq6JsnDAmHyJEZMMLeRR6TB6t58twziPBgtx+cQ3HAmG3aN93g0jkjaP5nMQLC7SLzUNYNZkbLnFq2iHgLYg1dsNzQqd86wSNhjUsa5bd8cGmFUgwr0vX1VbkS/7K9sW9IYLfEq4J/yTgoMhz5M3Ej7QXyf6scDknWIPiKowjignMZ+MUG8X/jkby3R+dU3R1QxTPqlAPK79VH6I5088E5ofQKo5qqBPQWWQ2sgnJX2ov/Vka20KkT+cAH4E6YCcxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KM6tNTO/2nSQWtVdTV592vi9UIAK1LYO2s8P5gyN5Kc=;
- b=eM0JpobdW1Ue2S4n2dMWxmQ7zRfYG9fovqhXc/VwBrnCVrVC97wu3fUCTzQ68ACf8Vd0G9HuXZ94ZFNbtKy8TgohjgLNFt0lRHi7biIN4gasX0fjNT6hBIxJMjvTG+WN5f+PKbPRecRY8XTqBCcTt1jpirK5ObxafbfkJDYNk0E3XC41Hi5WllGYaQBT9QBTXTxAvvlihRHIUMPNauVVL3FPtB22b5YUA2IsMOJrwd3ilAToHjPYIkeaPV4dZVGyNhVooulmRujS+h8wQu2n50P904PuE0JgpWd/B5d3HMuYvjqoR8xvxDgcTjnSTfyXX3Y0xneL+pX/RS42/+0JZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KM6tNTO/2nSQWtVdTV592vi9UIAK1LYO2s8P5gyN5Kc=;
- b=c297iUeJAWqhdh72XV+W8yCk1QkOumXUaToACweeT4zSHAW9p+8wzulXmLdYC/k4TL0iEliPIB1XKm4O+CybzynMdpUunoCWjnUlRCxbfg/9talyZv35wS8Ishdi2exzwHYJHnMZf4qK38gNMQT0wzykDS4eIwZE2r7zUfXif2/THuX2YHzcfvfQhO3eX2ingWpEHTpLlJPjoOP8EXRKLTox+bSvysCLfvOpnb9RR/pt9SmhXAlWFzBgmuqlTBU9KmhJM/fTsJSvoUk/xhpADZUC5GYd4xYtddGE1hb01uXQrL7o5W1Njdo11vUjwyQYKsbd2aYh8oofAela4NluAw==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DUZPR04MB9781.eurprd04.prod.outlook.com (2603:10a6:10:4e1::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.11; Thu, 28 Aug
- 2025 02:10:20 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.9073.010; Thu, 28 Aug 2025
- 02:10:19 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
-	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, Claudiu Manoil
-	<claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Clark
- Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "pabeni@redhat.com"
-	<pabeni@redhat.com>, "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
-	Frank Li <frank.li@nxp.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"F.S. Peng" <fushi.peng@nxp.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH v6 net-next 04/17] ptp: add debugfs interfaces to loop
- back the periodic output signal
-Thread-Topic: [PATCH v6 net-next 04/17] ptp: add debugfs interfaces to loop
- back the periodic output signal
-Thread-Index: AQHcFx+Knn/pg3+vN02ZJpsUqQe/U7R3LzqAgAAi8JA=
-Date: Thu, 28 Aug 2025 02:10:19 +0000
-Message-ID:
- <PAXPR04MB8510C81A25673E40A1C2CBFC883BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250827063332.1217664-1-wei.fang@nxp.com>
-	<20250827063332.1217664-5-wei.fang@nxp.com>
- <20250827170017.455aa59f@kernel.org>
-In-Reply-To: <20250827170017.455aa59f@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DUZPR04MB9781:EE_
-x-ms-office365-filtering-correlation-id: ebd207a1-5398-4a37-df3e-08dde5d809ee
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|1800799024|376014|19092799006|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?oow7LmK1I+zEhbO0tcBL2y6Ecxk+1xdvjqKtBMjPVDzDXR9sn+W7JKQNGr9J?=
- =?us-ascii?Q?Hi4DnYd3V/G0IZwwTihaFhEg3VPL7/XIXITYU5PXOYrxkNyPsRqZ7DUYVLuM?=
- =?us-ascii?Q?X5U9/AZcKVWpiIDWa+UdJTXjpmSA3BPtOYc5rmLTSu9WfXSg+QF2ea7LeRIy?=
- =?us-ascii?Q?1Qo1fOLZWfadnbXbmp8Bphvr21g098ZajMmvkiQPQC5lR8ycxJcZvn7HoJaj?=
- =?us-ascii?Q?zFuMRCvxdVBv1oh7ahlBGnyINOo+Cohli4gL48/wqJpAkOPBkLfKKAD3+XIu?=
- =?us-ascii?Q?80HhbMZK2WjGdlrvhq6EBZ36f5kAYZIKv+mKoqO0SjZSmu+OAs4oLEhlD1Rm?=
- =?us-ascii?Q?UK0GoAdhi9uxeK99hxyDM752WUzOJ+F5RDt+XmBel+X0uOW/IxqPMBHJc9MB?=
- =?us-ascii?Q?uRlFALETPOOGdurlk2dgGizRf8aB33cEOKlCXbFkjKaLDo650Wea/1GHCL/4?=
- =?us-ascii?Q?fQgBseoUDMyA2CUd9tdZcKxPT4QxagyLt6qJDjpG1Vc/mRjN/W4k4Xv9wDGE?=
- =?us-ascii?Q?an72G3grToiWkxg+uH8rQnY3sedldXWn1/5nrCkPIVA9N/wEL1HzuMKycvyx?=
- =?us-ascii?Q?mGr8tp7VVyeN2OTKzQrOS6NBaYOq3ZbnwGR/i4dmGXjhZs6+sCuq5jxFVa/a?=
- =?us-ascii?Q?U+zAwdg9UXifvitjEgfb2ILBnfWjf8kNBz6lNuusl4wlY5R61ehGxSYll66H?=
- =?us-ascii?Q?bjwetBxcP3vuf1WDUdh8m96NYYY+L14WdIsel0y9aHi59/iwC9LnQroYgsWt?=
- =?us-ascii?Q?AXnjJWerVpKly4SPtjNNXsNvAvc432C4ZngzYUK6D1SCeZ3IY1vnYBO4MNGY?=
- =?us-ascii?Q?58BBhIF65hMIkSDA3hh8TOlpw3x1TZ3AhxXVGBNnUPB5bSSsaFFAMKf7rg53?=
- =?us-ascii?Q?dgF1iI5n0aLOGnnMhNv4AM64wngJjFpfDLrpTc4xUpWlBEmAcSnREEw0SoQF?=
- =?us-ascii?Q?0BOousPLdYLsW5mR5lY2fYNApYapqku5qud35t59GNUDK2w9KqkX8wfAhx4b?=
- =?us-ascii?Q?s/mFs/72jOtQDgcbsJp2Nmp5yqZp7Zt9LTM1TwdG3P37NFSNCYG802apP5lx?=
- =?us-ascii?Q?/cznyXvCCXilBVJBMRDPnlIGlWczlzScDPzL0ia5yVNygU4SaKeQUkK4s8Q3?=
- =?us-ascii?Q?7vAUgxNmeBbHzyaUo2Wn7KnAjdfJMdWCV+P3sZGDJqbrolwv63oI/tAFI9Ub?=
- =?us-ascii?Q?KRFh0DFOh8cz9IW0/ilFX13l4lR0aJZ2LxGVP2r+2jPAzcVc6WlU7j3W6wPr?=
- =?us-ascii?Q?s/0c6qisQRlqNBRUCR2Zx7EWpJHEyok976ejEiwLHh74fpHY6PGSsNJdF48u?=
- =?us-ascii?Q?Btc1Xfua7lb8w6v/0A+YOhXEva7a8s2yBM9vAZ+lF1UdFi6WLja7G8q3oyWU?=
- =?us-ascii?Q?R0vtVFbGmIa9aAouFN2BLQlSyPMgfvKLET3aoi9ZvS+leQaT/GIONcDaTGHN?=
- =?us-ascii?Q?ejMmLjNJZXXsAYWfd5/yrRIyACkDFTaUqLmn/m49WSz8gkMXUH63vg=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(19092799006)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?y4gvNZaF9aTv/P1LKKUqIeVQGYsGKvF8jr2jc7S2JojnN9V1nWshIeeHQ/Sc?=
- =?us-ascii?Q?NE4pHo0DM1uXkPrrnzqe6T8ftKBYHVVXkgv6v2CbhPvxKAtTP918K8133nY1?=
- =?us-ascii?Q?rp2RQEzGHCO21DDJJ8nJzppcK3QqvL8EBPzjuSQnzqg0tJrFNZ4NVwK4Qaq+?=
- =?us-ascii?Q?wqoxlqqAbld2Q+sE1/BQ9zBKatrOntsPwbWKBl6MtU2/VprjIAEI9ffBOuds?=
- =?us-ascii?Q?M9n8btxJ2XrRr2gUs2yvCtR/nXciOvrMS1+MGH1AhVo4jvbeZNvwFP0sFn/9?=
- =?us-ascii?Q?IvgltLzxdflYDe/R84TQoHYsuH0a9yH/dOsX37a0IgxJ+cxMEUKp8ctLPTpU?=
- =?us-ascii?Q?a9CpSYo03XmTa5d57F1K2RvwASInpuON3kMGzkXpU+mzYlFBOU7nnDBvDPxb?=
- =?us-ascii?Q?kfP4rCVLP35LSsw3T+anUszjqIjb1rWYNkq5YOTltTCSEjHMcjCuNuOCELWF?=
- =?us-ascii?Q?z0oB79EmB8N6Rd4qjkCAlRu77sP0FP56dJgc2veWetUbkkQuNuIZ4uXlyaLc?=
- =?us-ascii?Q?JWTBDpgMhCTvp5vIy/lRp4Np1/WMkma4/OzgfBkZR95g6ccBJC9K/KFLSv9Z?=
- =?us-ascii?Q?EADerWAr1NeIXgHqgPeKN5VD3IL75ptLD1yi0lGdHaAlvA0zmS2u/oWiuF0o?=
- =?us-ascii?Q?VxTahmBQztxKS2FFp8q7UBBhXOWd0qMDcyWRe9/1aKuy24OgZEx589f84Jsa?=
- =?us-ascii?Q?zMcufYDRD8X19vx7RnZdqKVdTELbt+D13/xbDev4Zq0TzVWn4uevTN/N9pF+?=
- =?us-ascii?Q?Ar6gm8w7ne2upRTrNf8Ao7V1s1uUxck4MFi6QxiDOwwmNBYsx/QeCfNOCXuW?=
- =?us-ascii?Q?uwjzFGAlMGDfGaZpLCoT715bbUHkQZXOiFqF5SlO58KF4eTE+WTThJhTg1GG?=
- =?us-ascii?Q?MeSZrmsymmBzaSGJXN6fYlJJY6qZWxkXt2VUXqDTCC8CPIWqdYX3atOZGTN0?=
- =?us-ascii?Q?+uB9eWUfCUc1mUJ15rJguUTmoja8+dBq1YwInKUuRSn+em7TjLf5beYT3Ozd?=
- =?us-ascii?Q?BurSC9+RuT1O4xR6+e37qiEDnDMZEC+kdQHbWBgKqY9j8yLvjQ4IFuvuiMzn?=
- =?us-ascii?Q?3ryKF7bsK7TekPJXBB3HVqpuZ9rjM7YixV414x28/3f5OP2CHXEQWPsRfeLB?=
- =?us-ascii?Q?G4jjkUxt1o+WJlRqZxdQTeqmk9UipdXEjvXLgab6+dJutDs2aC9peEfFuBs+?=
- =?us-ascii?Q?77ucwgSE358N8i2qESwWkX51cNX4DRtKnahG60n4jTlQWW+4rQQ2+M/zLPMQ?=
- =?us-ascii?Q?fOf6YKwPPh0al+ks5q4Pt6z1ByViV/nYnBI6btKOB5KdgD4nIyvwcV84C6ge?=
- =?us-ascii?Q?9h5jKftQEATt+27Q2zq5TEBsyUEwu8DlKsfOWYklvVmLpw/J+Qs4b/rUIdq9?=
- =?us-ascii?Q?Lw1S8Dkigekd5C27roipGSGWV7GN+EtO+t2RJGJfcuwIqMZd3x5q74eRUe/N?=
- =?us-ascii?Q?aO+2TjWmmyPa2yFpwQ/CFMgpW+rkMaZdwN2A62JuCMNWU15eYg1d1lvztXhS?=
- =?us-ascii?Q?uWKp33honeYTnWzZ4YjfAL2lj0Y/Kjc76rTNYiJsW5IhWFFhgxqR0i/3j4Cr?=
- =?us-ascii?Q?AYudmwIQILhppuTmfYQ=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D2630CD8E
+	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 02:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756348392; cv=none; b=PbiHfDMJ/mfD3aMQrv5OYHYxqfIDj/ywofgwyn1CbvyqsWEPbVodBNF6XbLlUOuCTmLcCocKI4Jcl7bgVRLyMrXdCR1IgJznoMrRAmwcV4Nt6HnGr/gX34q5O2j1Hi41WsVqbMtxLC0KbID4EcaM+ftlftmMjKtS9njBPU7mSN0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756348392; c=relaxed/simple;
+	bh=a96c67ue2iadTZlK8+Yj568Jo90zgVFy17g6x/9BkaU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IIwkuW9stAZXdyXVa6GDc5jCnxBq5qSstm2dnf3t6E/7yD03/oE853wNtP6RoYpNFbSIWXBfVYSdVYvbV/VzycYX9xZwXQ7xZ7GCIL75qeRZng9A7eM88pFFS/TYLlBvaXSb7RUwQeenuUZ/QCFfD6mKyehbEvqnvZiKIH2G9KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 5053b84483b711f0b29709d653e92f7d-20250828
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:9e7721f3-4def-4494-ae6b-e8e5dd0438e3,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:ab9379ea25ec926fdd1c492817d92794,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-UUID: 5053b84483b711f0b29709d653e92f7d-20250828
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1305374640; Thu, 28 Aug 2025 10:32:59 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 5ABE6E008FAE;
+	Thu, 28 Aug 2025 10:32:59 +0800 (CST)
+X-ns-mid: postfix-68AFBFDB-172902359
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id ADF7BE008FAB;
+	Thu, 28 Aug 2025 10:32:47 +0800 (CST)
+Message-ID: <6f6c1e35-101d-4ef1-ac6e-5db337ccdd84@kylinos.cn>
+Date: Thu, 28 Aug 2025 10:32:46 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ebd207a1-5398-4a37-df3e-08dde5d809ee
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2025 02:10:19.8565
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +GVEHYefR9ptl4w1sfq2hyJwuv6ufT+ybiQUJdUephcw3zRTt8wuHqtzZNrqT9g1GZqMH1fNlXux/G0Qg7Bfkg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9781
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/18] arm64: topology: Use __free(put_cpufreq_policy)
+ for policy reference
+To: Sudeep Holla <sudeep.holla@arm.com>, Ben Horgan <ben.horgan@arm.com>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
+ <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
+ x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
+ <20250827023202.10310-2-zhangzihuan@kylinos.cn>
+ <70f4c2ce-1dbd-4596-af78-bca1cdbbb581@arm.com>
+ <1756341899099493.57.seg@mailgw.kylinos.cn>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <1756341899099493.57.seg@mailgw.kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-> Please drop this patch and patch 17 from the series.
-> This one because it's controversial, and 17 because it's not for
-> net-next. This way you'll be under the limit of 15, per:
 
-Okay, I will drop this patch, patch 9 and patch 17. Will resend them
-in a new thread after this patch set is applied.
+=E5=9C=A8 2025/8/27 17:17, Sudeep Holla =E5=86=99=E9=81=93:
+> On Wed, Aug 27, 2025 at 09:30:13AM +0100, Ben Horgan wrote:
+>> Hi Zihuan,
+>>
+>> On 8/27/25 03:31, Zihuan Zhang wrote:
+>>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>>> annotation for policy references. This reduces the risk of reference
+>>> counting mistakes and aligns the code with the latest kernel style.
+>>>
+>>> No functional change intended.
+>>>
+>>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>>> ---
+>>>   arch/arm64/kernel/topology.c | 9 +++------
+>>>   1 file changed, 3 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topolog=
+y.c
+>>> index 5d07ee85bdae..e3cb6d54f35b 100644
+>>> --- a/arch/arm64/kernel/topology.c
+>>> +++ b/arch/arm64/kernel/topology.c
+>>> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
+>>>   		 */
+>>>   		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
+>>>   		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAM=
+PLE_EXP_MS))) {
+>>> -			struct cpufreq_policy *policy =3D cpufreq_cpu_get(cpu);
+>>> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>> Based on the guidance, in include/linux/cleanup.h, I would expect the
+>> assignment to be done on this line.
+>>
+>> "...the recommendation is to always define and assign variables in one
+>>   * statement and not group variable definitions at the top of the
+>>   * function when __free() is used."
+>>
+> Agreed. I did something similar recently and there was a code path wher=
+e
+> variable wasn't initialised and ended up with freeing unassigned pointe=
+r.
+> So it is more than just a recommendation sometimes.
+>
+Thanks a lot for your suggestions.
 
-> --
-> pw-bot: cr
+We are also considering introducing a WITH_CPUFREQ_POLICY wrapper to=20
+encapsulate the cpufreq_cpu_get/put usage, so that the release order=20
+won=E2=80=99t be accidentally changed.
+
+Link:=20
+https://lore.kernel.org/all/874d821e-8ea3-40ac-921b-c19bb380a456@kylinos.=
+cn/
+
+Do you have any suggestions or preferences on this direction?
+
+
