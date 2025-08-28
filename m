@@ -1,119 +1,131 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BC930F556
-	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 14:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DC025A34D
+	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 15:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756392820; cv=none; b=qXWZ+7NekXRvXi7hK3/yD6pANLY68kp/j389vXr7L5JHv4CLoYfMsdmEWpx1gF8G0wSfuhmx+QTLx04xm0Zn2+IUk6EJ2mgXeiX/vbmKpkR9ul9kMKkaYxr0wOPuRvwB4hLCFsD/1kiHfR7dd95FYmxV4rFuZ1nk5TN7lCvgHEA=
+	t=1756393571; cv=none; b=dtJ8w4OXnuUnsAEI/qvOF4w32GNmAZ2uc4z/CnQzQgmc1nz3oJrrqXb9x5woy6tfAWo6o6Bw4quJdzFaZhMEj+QQbycJjtflBrDJR0dRlyNdD5faz/E585C58zLHVDtz56aWL83RVlzzvB/yBgnotap1wQwdbaJEHehztIWsc6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756392820; c=relaxed/simple;
-	bh=/DJCTdY3b1P2Or2NvSx10h8mL8R7PGDv7zdfJNYKi88=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FmlroGqqNf5GmRmljOwyjN6SX2xFrWVbZSufFcvKxlS5oAM2Zi4/vUGnJrPDJQEklubxPWgkBAnxZuJPrqppohbIJYBnhZyKERrNxk6R5Iro9CfV0KjwQNn6MacEp6AerFtoMAJjelBaKARk/HAwo7WcbqIiijS6M1BeQVzU6O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RDjPz8Sv; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1756393571; c=relaxed/simple;
+	bh=Ef83d0YHCFyXZ9JYCFn6uu+wEcqauHSJmdcfvFUnW4Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iYWK5LKwvNai7uojGJ2nKE69zp5t+EMW8ZpS3ex/HJLucOdUVtrFjsfPwi1D8doWoSBXVIYyFdMirCSeUYJI09RMME1z68v7v4eMdpkrReYGVhFqZfwaQMrkxtOmVV26Y+pvGOE8xOy6IpmcdjUMzOGeKNtwtJIXLWR2S7oMGzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=cdXhymSy; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RDjPz8Sv"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55f34d792c4so183378e87.3
-        for <imx@lists.linux.dev>; Thu, 28 Aug 2025 07:53:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="cdXhymSy"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-55f49b42180so1160171e87.3
+        for <imx@lists.linux.dev>; Thu, 28 Aug 2025 08:06:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756392816; x=1756997616; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756393567; x=1756998367; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RgRsIq6h9IQubkV0Zd6BIst1A8E0nIWsW8u9giQ2ZLk=;
-        b=RDjPz8SvyVw7FW3mS9w4SkelEPg8fN6B7HSbiZdZW0NuGzcuAZz10A3awF0mokIXJP
-         ErgC1PLcxLCXnbiSp1DwlFOc+1izcENZcv+TO/XSc4oQMCZ94QXxIcRbMnpfXj2fRzUK
-         6tZa4Sq91kcEX81T2kTOOHow5Zz/gxX3UancaY8bQscT8bYSCtmxEYq+ndezieEe+eEA
-         9ol+kU99+Ram/ZGWX+6la+ffHH73lT4RC+Plu+futGLWcECApdYPbbNlx6zPAvBTT3q8
-         gZ+XD6Vawm1EBWCXAIe3XJD+Uo+kZOaQ9Dqm1z824PEo4xIBKDW3oERZaqRNkDxCGSZD
-         ygLw==
+        bh=RmZzYFeRtHhCTqoukOzpWHGqKe1b+6GRRn1Jw/JtbH8=;
+        b=cdXhymSyYHFreRqdEiO9zZn694ntTHS872mXU8+bYfBa/VOVFkNdxa6SsTLTmUmSXd
+         CexFCa16m3D3Sgq9FQWdFkgS3m1vgLVlNdr9oHh/UPaqXn1r1HhnyQx4OQRmAhFUHSlV
+         vFGVEfpjZbM7O5E1knm9ePqVrRog6ruso+W4io+4nfxY91mcUbarJE75KsNRd3VyLmga
+         +gDIz0PGCyKVNLxNtYgl82haiPonLsnIU97GppVOaDlrcDODL4G5tI160yNOkaSi8CDZ
+         uobkXvqTlQbfTXj9b4rYFs5oqsPGdyGjhTWl47lAJw7AMH+wZTf7svKllukWNMmJhoXO
+         bqhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756392816; x=1756997616;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RgRsIq6h9IQubkV0Zd6BIst1A8E0nIWsW8u9giQ2ZLk=;
-        b=HUlSTgJk5EVF7JXw0JZEaxr+hV121F5jXIeWOBwrc36a4yriMIn20qrh5cODzS+xaK
-         8v+ztb3Xjx+2U0Wd9bUe5V6ibQouWfZpqm+ZPMTmKjHbMmiGtiMUVmnYeBiTbOVEwvBK
-         U/pYrUNl7QoC1M17ixqBotH9o6xnkr/8uLR7jVhX+x0WO54+EPekl49kDVEGtbh7W7EO
-         XTJFEoGwc7f7Rymq5XxOa7x0/2nmFJjaZVxVRFxGQw3JVjOxu0ys61ggVcI+46Q6XWUh
-         WtbGHqsvjS5IAFDzoj04GibKz5G+NiSUNDS6JIZ9Z3g3+fYvrBxjRfhY/uf65J8yzViB
-         i3Xw==
-X-Gm-Message-State: AOJu0Yxj7U+ibzbp/IpiF0ENHYrtHdXDpn92unCzEJvPhkybFbLi68O+
-	vTOmKvAaankLl3iLIFvbLGc8EPv/mzolDUwzwoi+9G2oX6NpWLtsZVUx9CmVlQ1BL4c=
-X-Gm-Gg: ASbGncvaNB/1HZpBKEHLk6VZ1/UcmvwtSVLhHTQstelxmEda5qmMj6llGWevA4CFiIi
-	2rp+hW6Y4QmtXpmk2itOWT8LZ/eypKvJn+ou0LWpqwn1akKMumnvCSMmV3iQe40bHHcCSDQv+UV
-	KypQHpHjcKT2HSRMYwgvYbOgWncadnTh0PHiOV5OqmJGmMAPcIvd8hxKds5Pju62UZT//MhwiKF
-	yqSNdckZa0ZWZn/NV7kNAGP5HxaU8bkuEs9LFmHlIuIq6sW++HQO2FqNT4iT2zG57/F5oeviGIQ
-	jf2zFvCJUQHAtc9bu9bIzHyIlikhlkgkKi6nv+Z6XyEAre+L53f5xH2aCPSG8y5gWAWaVF3IbZu
-	xJAiphsOzB6QC5g0stGZIIumhxpDsGqNvXKXeLhuD/JHU7wBOLbQN7yupIKTyBQNtQxWgftanlX
-	jOENKAQ7gnZcA=
-X-Google-Smtp-Source: AGHT+IGSuI6V+Kke1CGBKIzaGvPw1P+D1NcZ65uMuJ+zPiHBgCmf2jcWw97duRvN9bxsU4rWcf1vCg==
-X-Received: by 2002:a05:6512:12d1:b0:55f:4e46:8979 with SMTP id 2adb3069b0e04-55f4e468ad1mr1956400e87.8.1756392816152;
-        Thu, 28 Aug 2025 07:53:36 -0700 (PDT)
-Received: from [192.168.1.100] (88-112-128-43.elisa-laajakaista.fi. [88.112.128.43])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f63098450sm227908e87.60.2025.08.28.07.53.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Aug 2025 07:53:35 -0700 (PDT)
-Message-ID: <17cd27d4-c881-4b88-9a28-555527546bbe@linaro.org>
-Date: Thu, 28 Aug 2025 17:53:27 +0300
+        d=1e100.net; s=20230601; t=1756393567; x=1756998367;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RmZzYFeRtHhCTqoukOzpWHGqKe1b+6GRRn1Jw/JtbH8=;
+        b=vvu9/nUH3gN/I4s+nGlOOp+UaZsX2t7dpwtxRR9zPPJAH6jm+catkpFqRncAyhLzEU
+         XTJ9Z4evfDMcERh80B7Qd5H9td9q9Z16nLdGV6pmKZzk6cbxcmxDVg6DU++9f1P9MptA
+         phtchK1gxUPwNZgIRtWzZFNu9m/o28F4EKnbYGVlAd4atL6eCg7jYe+xd+Alom8WIJsZ
+         gBsxpiAsv5mnqwxlLcaGalBAw/tOXfQ89ISD1luH28tIsRKKHKZhZuwMiwne9GLPG2e6
+         B3adh4l21UpEgGeBzVlew2utmYftBTqXvaVBwr8ZNpN+m7qxEdX2XyfVNg9KE2rxqqAE
+         UKyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9qybSdPXs5SrDVPghl4BFMF15Lf6NNBUAG9bTbfLZ+2kgLqz6IytMJ/18TzXP7PyAzEI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzUFoygNd0wFu0LfTb/xyliFQ6rkukFcqPTDT50aOp+FVVXyVyI
+	s4Vm0Q/UiHoV7FNt52p9JUD5nmm4OA0JtrZwLLA2cgczUUrMWo/E1TIRo/axWKUC/y11iLKZ1nP
+	k9ETzicmOiWVH6/C/HCoVmHlgqY7sx7TZCrDye2rU/w==
+X-Gm-Gg: ASbGncseSqTgu9zXEwn+1to7JumdP2ZGNk+U84eebdRe6IKAXkD6eFFei3HD+Cgf3GT
+	eoGp9d0Gw+x4pts0dk+XwG3eeUwoRtL65b+6LuCd5HBewnPAciWHKEwor1q3zcL5xB9lLyT15Ol
+	jYx2S5s4TAYsA+FAoIuqEr5B4dk3WBMvEvXZdcvfDnZtheT6xB7XjZtRvTbE353z1kHeTgPRthQ
+	R/+peF9hrfCnzelpiVcN+Y3lOa33MA0OIsVwfTbPqkrZZj4pQ==
+X-Google-Smtp-Source: AGHT+IE3iToga29hoCNxE0T8DagXuUfkGuMta1TYBW4jpnncy+JoEDrvVPvrustOmHcaLq8T48+IshbcHhnVTj991MY=
+X-Received: by 2002:a05:6512:a94:b0:55f:5704:806d with SMTP id
+ 2adb3069b0e04-55f570486bdmr2169702e87.21.1756393566910; Thu, 28 Aug 2025
+ 08:06:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] media: dt-bindings: ovti,ov2680: Use
- unevaluatedProperties for endpoint
-To: Frank Li <Frank.Li@nxp.com>, Rui Miguel Silva <rmfrfs@gmail.com>,
- Hans de Goede <hansg@kernel.org>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>,
- "open list:OMNIVISION OV2680 SENSOR DRIVER" <linux-media@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20250827194919.82725-1-Frank.Li@nxp.com>
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-In-Reply-To: <20250827194919.82725-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
+ <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
+ <CAHp75VephepLq61HrVy=PX2oKUQd5NK2qS-vOC5h_NR65td3Uw@mail.gmail.com>
+ <CACRpkda4soRCLF5=W=6R4wnwT3pjk743j022XfJxjTTQzuarAA@mail.gmail.com>
+ <534ad082-08fa-42c0-9c24-f0c11af7d5b2@sirena.org.uk> <CAMRc=Mdn0_yPXyYq4sbvH4P9-h71vEc4arLPBfSk1PiEFaB7jQ@mail.gmail.com>
+ <1804d9dc-8814-47d4-af88-c819c3f17bc0@sirena.org.uk> <CAMRc=MdKgqa+vjhHvD2+Tjw5NwBtFv-0aUivi5UuEQd+n4KxmA@mail.gmail.com>
+ <aLAYoDyz8Xie4Dhb@finisterre.sirena.org.uk> <CAMRc=Mdd3fmKjFAfbUB-AAhx-5_CR+c7f36pePkF1k_2LDoORw@mail.gmail.com>
+ <aLBggd4rGHV_5zQ7@finisterre.sirena.org.uk>
+In-Reply-To: <aLBggd4rGHV_5zQ7@finisterre.sirena.org.uk>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Thu, 28 Aug 2025 17:05:55 +0200
+X-Gm-Features: Ac12FXx5n8TdDo5k-Gc9YU8HcEZiyD1aufJb5T8PdE3CuzVh_XFc9j0GLQlkpOM
+Message-ID: <CAMRc=MdgorsPpkkRF9amVhqPgzb5QBwFY87K-fZ04gONAkGCTQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
+ function category
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/27/25 22:49, Frank Li wrote:
-> The endpoint ref to /schemas/media/video-interfaces.yaml#, so replace
-> additionalProperties with unevaluatedProperties to allow use common
-> properties.
-> 
-> Fix below CHECK_DTBS warnings:
->    arch/arm/boot/dts/nxp/imx/imx7s-warp.dtb: camera@36 (ovti,ov2680): port:endpoint: 'clock-lanes', 'data-lanes' do not match any of the regexes: '^pinctrl-[0-9]+$'
-> 	from schema $id: http://devicetree.org/schemas/media/i2c/ovti,ov2680.yaml
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->   Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-> index 634d3b821b8c7..ec5c40684b6bd 100644
-> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-> @@ -58,7 +58,7 @@ properties:
->       properties:
->         endpoint:
->           $ref: /schemas/media/video-interfaces.yaml#
-> -        additionalProperties: false
-> +        unevaluatedProperties: false
->   
->           properties:
->             link-frequencies: true
+On Thu, Aug 28, 2025 at 3:58=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
+te:
+>
+> On Thu, Aug 28, 2025 at 03:36:43PM +0200, Bartosz Golaszewski wrote:
+> > On Thu, Aug 28, 2025 at 10:51=E2=80=AFAM Mark Brown <broonie@kernel.org=
+> wrote:
+>
+> > > It's failing prior to putting any output on the console.  I was also
+> > > seeing an issue on i.MX6 so it might be all i.MX boards, same issue:
+>
+> > >    https://lava.sirena.org.uk/scheduler/job/1697667
+>
+> > > so it's possibly all the i.MX platforms failing.
+>
+> > Not even with earlycon? That's weird. There are no smatch warnings on
+> > this patch and I can't see anything obviously wrong upon visual
+> > inspection. I fixed all other issues but this one I can't test. :(
+>
+> This looks like it has something:
+>
+>    https://lava.sirena.org.uk/scheduler/job/1747304
 
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Ah, now I see it, I confused two radix trees used in pinctrl with this
+change. Cooking up a fix.
 
--- 
-Best wishes,
-Vladimir
+Thanks!
+Bart
