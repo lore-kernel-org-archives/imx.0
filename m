@@ -1,159 +1,119 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D2630CD8E
-	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 02:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD882765F8
+	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 05:46:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756348392; cv=none; b=PbiHfDMJ/mfD3aMQrv5OYHYxqfIDj/ywofgwyn1CbvyqsWEPbVodBNF6XbLlUOuCTmLcCocKI4Jcl7bgVRLyMrXdCR1IgJznoMrRAmwcV4Nt6HnGr/gX34q5O2j1Hi41WsVqbMtxLC0KbID4EcaM+ftlftmMjKtS9njBPU7mSN0=
+	t=1756359986; cv=none; b=RoNOkBP/rLuoky0N2vl6uxuB0hDcYBQ92/idWsutRmRMKthkw2ORY87J78PKjaS85kAeMiiW6+ZD1flGwVw8jdhSKyWSaNiXZYrembSRkSRoafbpM3b2xEHA6DCgo4SxdhCTyHrpzmyPhiA2qnPmJd5+ARn7gz6DT3Ely6mpT/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756348392; c=relaxed/simple;
-	bh=a96c67ue2iadTZlK8+Yj568Jo90zgVFy17g6x/9BkaU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IIwkuW9stAZXdyXVa6GDc5jCnxBq5qSstm2dnf3t6E/7yD03/oE853wNtP6RoYpNFbSIWXBfVYSdVYvbV/VzycYX9xZwXQ7xZ7GCIL75qeRZng9A7eM88pFFS/TYLlBvaXSb7RUwQeenuUZ/QCFfD6mKyehbEvqnvZiKIH2G9KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 5053b84483b711f0b29709d653e92f7d-20250828
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:9e7721f3-4def-4494-ae6b-e8e5dd0438e3,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:ab9379ea25ec926fdd1c492817d92794,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-UUID: 5053b84483b711f0b29709d653e92f7d-20250828
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1305374640; Thu, 28 Aug 2025 10:32:59 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 5ABE6E008FAE;
-	Thu, 28 Aug 2025 10:32:59 +0800 (CST)
-X-ns-mid: postfix-68AFBFDB-172902359
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id ADF7BE008FAB;
-	Thu, 28 Aug 2025 10:32:47 +0800 (CST)
-Message-ID: <6f6c1e35-101d-4ef1-ac6e-5db337ccdd84@kylinos.cn>
-Date: Thu, 28 Aug 2025 10:32:46 +0800
+	s=arc-20240116; t=1756359986; c=relaxed/simple;
+	bh=i6L+f3exnFOVhxuWsM4teMlEODpI+rzw0Jw85ZTvtIA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=opHgTyqlwtUhdDvEIuqblgVl2X1Sto+YC+ktKXW66eGvo+sOqB6MPyxop0DmmKzplquixo3yRpBY1aPKaveQjTXt5X/yu8LtaqtzQTlJ32Jv5P/UPui9kfgNWeexE3IY88HXKOqWB6pdlp64H8r31g4Evt4u/nMRRpeQfFKYI9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Jp41eMvA; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Jp41eMvA"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-77201f3d389so662692b3a.2
+        for <imx@lists.linux.dev>; Wed, 27 Aug 2025 22:46:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756359983; x=1756964783; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JrIDBpuM+wIKseLTnowhk8eTE9B0XZjCQe+CxB8rd+o=;
+        b=Jp41eMvAekXcPpTvfGgVU5Ve2WPmdJmhiGVUscRjMgDYV6hqalganIdU3LM2Er9Obq
+         bSEBMMVlrBWrSKIqsMc0Bd3zY4QIGEclOJRoX94BseBtL6sTJaN3Pyr5iVQyh2WOOZQ7
+         VUydSI3WS8CrVnV1tfq8H7j0ga9nbx3IpntY2NjYu/aO4DR8UpbHF174adk6i6IDOFq1
+         bZ20cQbVOFKydMenHYmdRclbJRlZLT04btsh55W1svsC3YNd83h6Ttu91KipaCdkv6k6
+         QMpM5voBZlTis7Y5awv6IWuun2WnT0ykIEFh0VjLEKK6uAOVAsZ1vS3e7s+oc5H/WGTJ
+         l4dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756359983; x=1756964783;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JrIDBpuM+wIKseLTnowhk8eTE9B0XZjCQe+CxB8rd+o=;
+        b=e2lMe7s/WoEDBEIgUtFSXeu7RfjFhL/e0OquZp+imD4juIvq/nrjO3M7BEwOqm79I4
+         27EJa4cW6fehTqizjmNStRiaAzSh7ch4f6ybi1HWuVEkCSbN7BQOs8FlfIZXEEz2NeCQ
+         GSW4iFRZJP9JbsYUQF5m9Uj+KnPuD97nNZZslqDXb1RayYpm3ALD5k41CjdeTA63w6sE
+         qp2Mb3fRuJwj93OQUX4TpE9wz5ZEdCLhk4HCx113gQRQI+MRmjZyYi0YKOtajaPEaGmS
+         //cNPJVCZOCpDDTYApOqWL2Yz14HKA+5lVBbO/jK/U4YrRmITtB9/pHro5sUC7/qASU7
+         2/4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXHvr7tVOcYLXwteghAEB3LrYNpLl2wrhtlaDC5cCHFtC/pEM/jNcfuRHbNrXpzmKfgTtU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyJU7ZcrCXw4uT3VoXPaZX0zjBttDkejGS0rw25qSobxZGS3yfu
+	o0EXriLZfrVMbigEB3yGSIHX1nAOYTUo9X8I69zzWB61gr2liiupKbJXoGzQp1mJzHk=
+X-Gm-Gg: ASbGncs73JPlglDJ8JIYd5fR7DVa4T1W3unCebJBFAsSCrkWTEBEvw4ZQuiHiKr59mf
+	G+h5+ES4i5I/v/OL2BR4TMFzEHEoTBKhX4RE69xYiOAoaJqIH9CX+jMoxd4xYkXw9bNfRfkNeUg
+	BiofOvE2ifVZDIIdVED9LaC0LjyCNBkcRhK2GjUiiGs6ds+o1y5MT4EjoUFPM873Wou2//f48sg
+	FY9UzYpEHEzS1eWpbtTYflA10QaLSE35KwNn3TWSf9UguLS3Y6i/rSh/+pEUezcMZpvBauLLKqQ
+	mOzKXNAMb0AZRFnm0/KCJ9zGo6ulYYp4EfOvNCgGXYPx6wsBcWIkCOWBo/JKK6OjKw9dDxOolr0
+	FveveReiB8tEPjaNUM+0jSxHM
+X-Google-Smtp-Source: AGHT+IFfuu4OZWLK4Ect5V8qcKWdtQ9AvKTAwNSmE5IY/JmFZqua6II8FJDl1UVaUxNnVGH1wfuJAA==
+X-Received: by 2002:a05:6a20:2448:b0:240:2421:b912 with SMTP id adf61e73a8af0-24340d17030mr33915391637.37.1756359982962;
+        Wed, 27 Aug 2025 22:46:22 -0700 (PDT)
+Received: from localhost ([122.172.87.165])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4c1b2f5a3csm8873232a12.4.2025.08.27.22.46.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Aug 2025 22:46:22 -0700 (PDT)
+Date: Thu, 28 Aug 2025 11:16:20 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:CPU FREQUENCY SCALING FRAMEWORK" <linux-pm@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: cpufreq-dt: Remove redundant
+ cpufreq-dt.txt
+Message-ID: <20250828054620.u6gbjevidlnv32cl@vireshk-i7>
+References: <20250827204401.87942-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/18] arm64: topology: Use __free(put_cpufreq_policy)
- for policy reference
-To: Sudeep Holla <sudeep.holla@arm.com>, Ben Horgan <ben.horgan@arm.com>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
- <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
- <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
- x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-omap@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
- <20250827023202.10310-2-zhangzihuan@kylinos.cn>
- <70f4c2ce-1dbd-4596-af78-bca1cdbbb581@arm.com>
- <1756341899099493.57.seg@mailgw.kylinos.cn>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <1756341899099493.57.seg@mailgw.kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827204401.87942-1-Frank.Li@nxp.com>
 
+On 27-08-25, 16:44, Frank Li wrote:
+> The information is already documented in
+> Documentation/devicetree/bindings/arm/cpus.yaml.
+> Documentation/devicetree/bindings/opp/opp-v1.yaml
 
-=E5=9C=A8 2025/8/27 17:17, Sudeep Holla =E5=86=99=E9=81=93:
-> On Wed, Aug 27, 2025 at 09:30:13AM +0100, Ben Horgan wrote:
->> Hi Zihuan,
->>
->> On 8/27/25 03:31, Zihuan Zhang wrote:
->>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
->>> annotation for policy references. This reduces the risk of reference
->>> counting mistakes and aligns the code with the latest kernel style.
->>>
->>> No functional change intended.
->>>
->>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
->>> ---
->>>   arch/arm64/kernel/topology.c | 9 +++------
->>>   1 file changed, 3 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topolog=
-y.c
->>> index 5d07ee85bdae..e3cb6d54f35b 100644
->>> --- a/arch/arm64/kernel/topology.c
->>> +++ b/arch/arm64/kernel/topology.c
->>> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
->>>   		 */
->>>   		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
->>>   		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAM=
-PLE_EXP_MS))) {
->>> -			struct cpufreq_policy *policy =3D cpufreq_cpu_get(cpu);
->>> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
->> Based on the guidance, in include/linux/cleanup.h, I would expect the
->> assignment to be done on this line.
->>
->> "...the recommendation is to always define and assign variables in one
->>   * statement and not group variable definitions at the top of the
->>   * function when __free() is used."
->>
-> Agreed. I did something similar recently and there was a code path wher=
-e
-> variable wasn't initialised and ended up with freeing unassigned pointe=
-r.
-> So it is more than just a recommendation sometimes.
->
-Thanks a lot for your suggestions.
+Even then, we can document what driver expects. So duplication isn't
+an issue I think.
 
-We are also considering introducing a WITH_CPUFREQ_POLICY wrapper to=20
-encapsulate the cpufreq_cpu_get/put usage, so that the release order=20
-won=E2=80=99t be accidentally changed.
+But this file is outdated and hasn't received an update in years.
 
-Link:=20
-https://lore.kernel.org/all/874d821e-8ea3-40ac-921b-c19bb380a456@kylinos.=
-cn/
+> Remove the redundant file.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/cpufreq/cpufreq-dt.txt           | 61 -------------------
+>  1 file changed, 61 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/cpufreq/cpufreq-dt.txt
 
-Do you have any suggestions or preferences on this direction?
+Merged with this commit log instead.
 
+commit b238cd833e3d62a76c53d540ed663b314ad179f0 (HEAD -> opp/linux-next)
+Author: Frank Li <Frank.Li@nxp.com>
+Date:   Wed Aug 27 16:44:01 2025 -0400
 
+    dt-bindings: Remove outdated cpufreq-dt.txt
+
+    The information present in this file is outdated and doesn't serve any
+    purpose with the current design of the driver.
+
+    Remove the outdated file.
+
+    Signed-off-by: Frank Li <Frank.Li@nxp.com>
+    [ Viresh: Rewrite commit log ]
+    Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+
+-- 
+viresh
