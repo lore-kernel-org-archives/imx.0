@@ -1,135 +1,119 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FC118FC92
-	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 14:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BC930F556
+	for <imx@lists.linux.dev>; Thu, 28 Aug 2025 14:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756390057; cv=none; b=gXWwOwr4t962wZuSeGxL40z5CST3hswCqSSElRGbVPHqwVzod10iJ4by0DF9uporuOJTH73IGxwFTnC1Ga8JcA+O/SYQTZKYj8u2/chEYUWaWKJPi33kfH21v73YHvKFqC9RwblXkmNgwVH6biu4mxcrF1Ql40ZtPG0YlP2gIHo=
+	t=1756392820; cv=none; b=qXWZ+7NekXRvXi7hK3/yD6pANLY68kp/j389vXr7L5JHv4CLoYfMsdmEWpx1gF8G0wSfuhmx+QTLx04xm0Zn2+IUk6EJ2mgXeiX/vbmKpkR9ul9kMKkaYxr0wOPuRvwB4hLCFsD/1kiHfR7dd95FYmxV4rFuZ1nk5TN7lCvgHEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756390057; c=relaxed/simple;
-	bh=0TLMJRiI/UBNgFNnLAwEExo5cJU9wBAQPRJq7dbl3Rc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=laRwaqCXlNNFiEnIrjQ9hxvCG/5PWc4g0D6saFhWBYChd0DxTtqy4hDw/MUd/F3iukT15os8xjuu2tVBZIhzOoCGHbehCHUvsk+WOU5rSttSoOafkx9Jy9ZRZxEse6EKWd8WUW+i5AM+gqeMHytNiZVOEtQ64QmrsYS0eQkXx9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=mbPJ1Yx+; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=PBc8L4n2 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1756392820; c=relaxed/simple;
+	bh=/DJCTdY3b1P2Or2NvSx10h8mL8R7PGDv7zdfJNYKi88=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FmlroGqqNf5GmRmljOwyjN6SX2xFrWVbZSufFcvKxlS5oAM2Zi4/vUGnJrPDJQEklubxPWgkBAnxZuJPrqppohbIJYBnhZyKERrNxk6R5Iro9CfV0KjwQNn6MacEp6AerFtoMAJjelBaKARk/HAwo7WcbqIiijS6M1BeQVzU6O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RDjPz8Sv; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="mbPJ1Yx+";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="PBc8L4n2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RDjPz8Sv"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55f34d792c4so183378e87.3
+        for <imx@lists.linux.dev>; Thu, 28 Aug 2025 07:53:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1756390054; x=1787926054;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=1V2dgEATYXD7sLHkpBfeFtMXcoUFuQpVI/5dmTO6fOI=;
-  b=mbPJ1Yx++nAwWLWtwwGo6FprX0O0n72ANLWIS8FRBInzYM4he2Jb9+Nh
-   V+CY+gzL9u9gvUN8SARsmBspjDMztUFHbDstKtZVBHlu/wfhQhEnIQOya
-   Nxjv6ApacQyenkUUaDWKGjDV43nxMwlKALxBDNGSzF2Ok+VCAT7jD0pgk
-   Ma3iZvAabWSGeMxkpoVqNlCN6quE2jf1+a+0sEG7b43eXqGcxd3yz7Ibr
-   LfSrOeOjYnKJgeER/eIqtNO4xSZfdmr1fCjO9rHmHC3z435rXCcscK56p
-   /OAcgoQmWAu84BMzPOzI5EeSAvpm1khjDRwnEAzkmjE/cI3t4Va3DaiYx
-   Q==;
-X-CSE-ConnectionGUID: pHIbrKnbSsKPwmnNNZy+LA==
-X-CSE-MsgGUID: +kq5miZWSmG0hV68Kjnfvw==
-X-IronPort-AV: E=Sophos;i="6.18,217,1751234400"; 
-   d="scan'208";a="45959276"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 28 Aug 2025 16:07:27 +0200
-X-CheckPoint: {68B0629F-1-299FBAB0-EF52EDE7}
-X-MAIL-CPID: D8BC9AACF274DEF507CE904D865E66A7_5
-X-Control-Analysis: str=0001.0A002112.68B0629F.0093,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 239DA16140B;
-	Thu, 28 Aug 2025 16:07:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1756390042;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=1V2dgEATYXD7sLHkpBfeFtMXcoUFuQpVI/5dmTO6fOI=;
-	b=PBc8L4n2+UqzRt0GCBaXASsqPkdRKWAw1BS9bjZHK8maHprA+naG8rD4liFKZN3LoVQ8e4
-	2W9JkWdY3ebNt5VCFFAoS/MhKYNwlRnWe8nd+0UkmP1AI+XAJEIqYb+XCVLXgfNkOFQpV6
-	dIBulO6lUgH0LT1kDMr2cSzBvPnW9KHr6N9F5fB1vR9kUuzaS9lY/hj3pnFKm7AxV/GYWG
-	YAcdNWEzdz/WZPYn9xdqCnOAXdmeDcZAxKqU+TDFZ/p7w/xjmQN5wPL6HohuTziKIUnWS1
-	83AHlTctXZMjB1UbDSYo/mZTxPgDZTQ3DIOT2wrozk8JL9Awfeh7+dRxKSAQ4A==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Shawn Guo <shawnguo@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- linux-arm-kernel@lists.infradead.org
-Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- Frank Li <Frank.Li@nxp.com>, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 0/4] ARM: dts: clean up most ls1021a CHECK_DTB warning
-Date: Thu, 28 Aug 2025 16:07:20 +0200
-Message-ID: <3571725.QJadu78ljV@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250822-ls1021a_dts_warning-v3-0-6b611a2f23a4@nxp.com>
-References: <20250822-ls1021a_dts_warning-v3-0-6b611a2f23a4@nxp.com>
+        d=linaro.org; s=google; t=1756392816; x=1756997616; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RgRsIq6h9IQubkV0Zd6BIst1A8E0nIWsW8u9giQ2ZLk=;
+        b=RDjPz8SvyVw7FW3mS9w4SkelEPg8fN6B7HSbiZdZW0NuGzcuAZz10A3awF0mokIXJP
+         ErgC1PLcxLCXnbiSp1DwlFOc+1izcENZcv+TO/XSc4oQMCZ94QXxIcRbMnpfXj2fRzUK
+         6tZa4Sq91kcEX81T2kTOOHow5Zz/gxX3UancaY8bQscT8bYSCtmxEYq+ndezieEe+eEA
+         9ol+kU99+Ram/ZGWX+6la+ffHH73lT4RC+Plu+futGLWcECApdYPbbNlx6zPAvBTT3q8
+         gZ+XD6Vawm1EBWCXAIe3XJD+Uo+kZOaQ9Dqm1z824PEo4xIBKDW3oERZaqRNkDxCGSZD
+         ygLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756392816; x=1756997616;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=RgRsIq6h9IQubkV0Zd6BIst1A8E0nIWsW8u9giQ2ZLk=;
+        b=HUlSTgJk5EVF7JXw0JZEaxr+hV121F5jXIeWOBwrc36a4yriMIn20qrh5cODzS+xaK
+         8v+ztb3Xjx+2U0Wd9bUe5V6ibQouWfZpqm+ZPMTmKjHbMmiGtiMUVmnYeBiTbOVEwvBK
+         U/pYrUNl7QoC1M17ixqBotH9o6xnkr/8uLR7jVhX+x0WO54+EPekl49kDVEGtbh7W7EO
+         XTJFEoGwc7f7Rymq5XxOa7x0/2nmFJjaZVxVRFxGQw3JVjOxu0ys61ggVcI+46Q6XWUh
+         WtbGHqsvjS5IAFDzoj04GibKz5G+NiSUNDS6JIZ9Z3g3+fYvrBxjRfhY/uf65J8yzViB
+         i3Xw==
+X-Gm-Message-State: AOJu0Yxj7U+ibzbp/IpiF0ENHYrtHdXDpn92unCzEJvPhkybFbLi68O+
+	vTOmKvAaankLl3iLIFvbLGc8EPv/mzolDUwzwoi+9G2oX6NpWLtsZVUx9CmVlQ1BL4c=
+X-Gm-Gg: ASbGncvaNB/1HZpBKEHLk6VZ1/UcmvwtSVLhHTQstelxmEda5qmMj6llGWevA4CFiIi
+	2rp+hW6Y4QmtXpmk2itOWT8LZ/eypKvJn+ou0LWpqwn1akKMumnvCSMmV3iQe40bHHcCSDQv+UV
+	KypQHpHjcKT2HSRMYwgvYbOgWncadnTh0PHiOV5OqmJGmMAPcIvd8hxKds5Pju62UZT//MhwiKF
+	yqSNdckZa0ZWZn/NV7kNAGP5HxaU8bkuEs9LFmHlIuIq6sW++HQO2FqNT4iT2zG57/F5oeviGIQ
+	jf2zFvCJUQHAtc9bu9bIzHyIlikhlkgkKi6nv+Z6XyEAre+L53f5xH2aCPSG8y5gWAWaVF3IbZu
+	xJAiphsOzB6QC5g0stGZIIumhxpDsGqNvXKXeLhuD/JHU7wBOLbQN7yupIKTyBQNtQxWgftanlX
+	jOENKAQ7gnZcA=
+X-Google-Smtp-Source: AGHT+IGSuI6V+Kke1CGBKIzaGvPw1P+D1NcZ65uMuJ+zPiHBgCmf2jcWw97duRvN9bxsU4rWcf1vCg==
+X-Received: by 2002:a05:6512:12d1:b0:55f:4e46:8979 with SMTP id 2adb3069b0e04-55f4e468ad1mr1956400e87.8.1756392816152;
+        Thu, 28 Aug 2025 07:53:36 -0700 (PDT)
+Received: from [192.168.1.100] (88-112-128-43.elisa-laajakaista.fi. [88.112.128.43])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f63098450sm227908e87.60.2025.08.28.07.53.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Aug 2025 07:53:35 -0700 (PDT)
+Message-ID: <17cd27d4-c881-4b88-9a28-555527546bbe@linaro.org>
+Date: Thu, 28 Aug 2025 17:53:27 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] media: dt-bindings: ovti,ov2680: Use
+ unevaluatedProperties for endpoint
+To: Frank Li <Frank.Li@nxp.com>, Rui Miguel Silva <rmfrfs@gmail.com>,
+ Hans de Goede <hansg@kernel.org>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>,
+ "open list:OMNIVISION OV2680 SENSOR DRIVER" <linux-media@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20250827194919.82725-1-Frank.Li@nxp.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <20250827194919.82725-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
-
-Am Freitag, 22. August 2025, 16:49:57 CEST schrieb Frank Li:
-> clean up most ls1021a CHECK_DTB warning.
->=20
-> Old uboot check esdhc@1560000. The new uboot already switch to check both
-> esdhc@1560000 and mmc@1560000. So we can rename it now.
->=20
+On 8/27/25 22:49, Frank Li wrote:
+> The endpoint ref to /schemas/media/video-interfaces.yaml#, so replace
+> additionalProperties with unevaluatedProperties to allow use common
+> properties.
+> 
+> Fix below CHECK_DTBS warnings:
+>    arch/arm/boot/dts/nxp/imx/imx7s-warp.dtb: camera@36 (ovti,ov2680): port:endpoint: 'clock-lanes', 'data-lanes' do not match any of the regexes: '^pinctrl-[0-9]+$'
+> 	from schema $id: http://devicetree.org/schemas/media/i2c/ovti,ov2680.yaml
+> 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-=46or the whole series:
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-
 > ---
-> Changes in v3:
-> - rebase guoshawn/imx/dt tree. Remove patches that were already merged.
-> - Link to v2: https://lore.kernel.org/r/20250820-ls1021a_dts_warning-v2-0=
-=2D2e39648a32b7@nxp.com
->=20
-> Changes in v2:
-> - squash rename to flash patches
-> - remove duplicate patches already post in
-> https://lore.kernel.org/linux-devicetree/20250725061339.266125-1-alexande=
-r.stein@ew.tq-group.com/
-> - Link to v1: https://lore.kernel.org/r/20250818-ls1021a_dts_warning-v1-0=
-=2D7a79b6b4a0e2@nxp.com
->=20
-> ---
-> Frank Li (4):
->       ARM: dts: ls1021a: Rename node name nor to flash
->       ARM: dts: ls1021a: Rename 'mdio-mux-emi1' to 'mdio-mux@54'
->       ARM: dts: ls1021a: Rename esdhc@1560000 to mmc@1560000
->       ARM: dts: ls1021a-tsn: Remove redundant #address-cells for ethernet=
-=2Dswitch@1
->=20
->  arch/arm/boot/dts/nxp/ls/ls1021a-qds.dts | 8 ++++----
->  arch/arm/boot/dts/nxp/ls/ls1021a-tsn.dts | 2 --
->  arch/arm/boot/dts/nxp/ls/ls1021a-twr.dts | 2 +-
->  arch/arm/boot/dts/nxp/ls/ls1021a.dtsi    | 2 +-
->  4 files changed, 6 insertions(+), 8 deletions(-)
-> ---
-> base-commit: 75ad5f47c58aee30248d294a58c8ee52e079a8e3
-> change-id: 20250818-ls1021a_dts_warning-fff933bd83da
->=20
-> Best regards,
-> --
-> Frank Li <Frank.Li@nxp.com>
->=20
->=20
->=20
+>   Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
+> index 634d3b821b8c7..ec5c40684b6bd 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
+> @@ -58,7 +58,7 @@ properties:
+>       properties:
+>         endpoint:
+>           $ref: /schemas/media/video-interfaces.yaml#
+> -        additionalProperties: false
+> +        unevaluatedProperties: false
+>   
+>           properties:
+>             link-frequencies: true
 
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+-- 
+Best wishes,
+Vladimir
