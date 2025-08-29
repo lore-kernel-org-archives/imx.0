@@ -1,192 +1,196 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C24238D49
-	for <imx@lists.linux.dev>; Fri, 29 Aug 2025 06:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7307404E
+	for <imx@lists.linux.dev>; Fri, 29 Aug 2025 06:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756448297; cv=none; b=ChQ/yA6Pvpi3sVIEnvwtKmw/aNwv6ySkTZ0kbov9qqHa4/grg6MlA3FnQ/e+gJMI03H5tbC4UD9fwXomJwPP2rIgv3IwmApUTN8ZpFUIdCYfjwRVfvmvRvJy7MfYqQiDBqW0WnjRigH6lBjo1dfL3e7xi06GTCkvFQ3USWz7sx4=
+	t=1756448751; cv=none; b=cA/D6spY+5P6RlSGG56W8oGQtuB84w+iy5dt5pJkQGhBIvnNqNmarm8RV0Kdix8rIuXYHnOQ46ZCNwD6j4Ab6XkRg9o+8uQzq0GSX62K6IuV4lFghzT8N3SEZlb+q2L5CJpmWC+QiffZAWm8wTj6vX7H9ECFgRVcFB6yT6He9wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756448297; c=relaxed/simple;
-	bh=qOf1M8CpxrREh2y0SwRzJRtBpqJMEe4p6G3QfMpjhkU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f1GIoCONL/qbOPYk8yarLH+U4Ytu4D8rWpAQEGqCFR8nFPSuSQXCM5KdVkxTYBvWQRKriH6BKQRW8CWv9wrm5zFi9I5DecTC3DPy6dYIqRW82l00zeMwY83/rvaqJQTx14CEvbYfpgqtxWdU2gqrtBL3nNSCdLwQ5ymLSGqHk6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=O7Dxi3fA; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1756448751; c=relaxed/simple;
+	bh=4mASaNuyNpZq/uuuFH6EIKTUa8jjSy7U+2TegnBniOM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QTsOpvaGMQrBQ/8LG0HxL6fB+0EbD1SF/cxa53KqykZ2+hR5cYld/MKgtlqvY8sL1AkInhq8ajCnIdI3tFskXiyOoS/JafLQVUM0U/2U0yub0AeYVpVyGpdyJcrbbR2HfwVmWHJYoC8N03OORF8MH6J3Wyhe4qxEhqgFPc+Zwow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=UHU7S+XG; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=DHgMwMjT reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="O7Dxi3fA"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7720b23a49fso1980928b3a.0
-        for <imx@lists.linux.dev>; Thu, 28 Aug 2025 23:18:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="UHU7S+XG";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="DHgMwMjT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756448295; x=1757053095; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fyIWN60k8dYCbXXXMxmihVbQlVwII/BvZdY4wtkRha8=;
-        b=O7Dxi3fACxmXzHDxZ4ylgg64yMLQUKxsgi2QtM3u0PyPyp0+oNz3BfldQQqVXZVn5n
-         Pwsp+BldI/4UYylcKhrueBDsNIMLzTuQ4HHumgxq4skdvNuP+nM3lz/joV5eC45J2Bxm
-         8C0WtPx7o8um2pQroEhL/d19z4SfdHTMZKu4vtp2KKMbgswFqc3E1qRCeaXhEgs7hocp
-         1UD2oJMcnisUb05sr5JWxh0B3vxWwz+SFreOMgsl0lcrdnTiK9V9lhB3kamieF0f7KdH
-         MbouR3t3kBhFs4vHi9VE+jzMQ2mrTUXE3Mbos5uJYQGOaUSDTnCUyaF4HOFUo83CG8JL
-         AoTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756448295; x=1757053095;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fyIWN60k8dYCbXXXMxmihVbQlVwII/BvZdY4wtkRha8=;
-        b=KZcyfnjJSv9lbkJqjeKDEOENm0jM9D3BLyR1jTSgwsUdCF6fYSLxitwMgjBbL8QXyz
-         +fM7Kr25w/C1BETN83KoWaFSRxBBOj9nA+8qkKURIV/UVyn2vetoUNBgQg6+GgdVxsw3
-         Sq/DxV9BbmvOq+sE+Jenm4hbwPPpyDqa7Ebl9hANTPOhjvvsiRjslbSGgpCc0bEurezu
-         tloA3wTrW9zL7IvXIxs44kjx/zoKW/elY45ko0f1yiSQm3/yGR2Ge5DOLzMRtRYvIW22
-         2YMdeVM53xUliUWZNTxcapB/DJX7qmu74atZ0cS/zgEP6A20NosqFv+S7jPlg7r4DGLG
-         bpCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMPuqNQGEMlN1U1BUJGalKNGNPJQoWMrDo3PWUAMfu9/pxq1le7XdYoIr4pSAekyEUk7I=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxTsp0cjOBfHZBnBicBz/UT+qlJ9qhll61WwTSuBSW/vE1yg6zw
-	pTyP9dFdm7d/VIB42A97b/Cks8q7Z737Ed62IxbogrXb5lT5NRNI9Dzs77EHzqOjSWk=
-X-Gm-Gg: ASbGnctKG5WJX2IrPj0+jJho3wIT4tKbhj6u+Y9cwKI03XYfEJOOxXY9Vogh2b6XbC2
-	4cOS4fTRyA7WhoJmQR+QSS0Ro8H7qXxEyTJVucvXLM01Y3znpJ173qMg2OqYpT5htABbHzghl7P
-	wjrOod0Law9rasl3bbRRfpbjQkjCSrC7XQhhyq3+Vp9ckYNiTJ4ybJdM3bvP8hMgUYMJ7Lpnl3A
-	1OviOkZHmt8CBR9sMW0dusZAlABx58fFpDLKN4POBI4EGBz4VBX8bcmZrzrqFS+oKiv+pij3TDV
-	9VYEbSNcqXkS0MKaTwYP3EH4wYXoL3XGt3LJO3fi2jP29UjOvJHq/jTSlmrY3zOxalXf93ZCNAi
-	AHmS5b1xnF9CKtTh6e0e2moqdaVSOsJVgowU=
-X-Google-Smtp-Source: AGHT+IEdwrBA8fEPouruiBjmjO1y+VLHrsJ6SO97Twxy5LbO1fb87iKCtpWKSDsewOGX8ikCQhJ2gQ==
-X-Received: by 2002:a05:6a00:3907:b0:749:472:d3a7 with SMTP id d2e1a72fcca58-7702faaf2acmr35042659b3a.18.1756448295215;
-        Thu, 28 Aug 2025 23:18:15 -0700 (PDT)
-Received: from localhost ([122.172.87.165])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a4e1b21sm1307488b3a.69.2025.08.28.23.18.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 23:18:14 -0700 (PDT)
-Date: Fri, 29 Aug 2025 11:48:12 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Markus Mayer <mmayer@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	zhenglifeng <zhenglifeng1@huawei.com>,
-	"H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>,
-	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Beata Michalska <beata.michalska@arm.com>,
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
-	x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 08/18] cpufreq: mediatek: Use
- __free(put_cpufreq_policy) for policy reference
-Message-ID: <20250829061812.fziokvashujzbtth@vireshk-i7>
-References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
- <20250827023202.10310-9-zhangzihuan@kylinos.cn>
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1756448748; x=1787984748;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=vujtl7k0J0xfsx/gk2sVAPp2kmuOquUNaPtzb/ZzXTI=;
+  b=UHU7S+XGr9PiA9l01GZmkp2Z9Hc/VDjEHX1czUQqEh7yTpMzVe948c+9
+   4tS647FnMNnS1CdHt63B7IS6c50wrOiAdAe+inxLQorHfF8PRsY1ZNHOe
+   L7bHxoetn3MA3LDiHz+ua9/G0x3ZcUrl9I/Hf3UDKvwUVANIhmM+1O4H7
+   laavDd/+pyswbcE//ZLIYhTQx2RN9xVV7Yc8f+pfHWGtQrbb4hujvSWbR
+   tLDvr2VcNwvL1SikSB6eUAZGOioKPwVdGiDUNVJvhSudJq+jpfN7qobfm
+   Rnu7Vt3HYQmojis+l5aGODwmtkaOzEMfjFJwvajOKJiZyWFMrD5k/9nMx
+   Q==;
+X-CSE-ConnectionGUID: 7Mte/+MUQ0aCJWgneVcnew==
+X-CSE-MsgGUID: 4hhVDECaQGuUhjDia+aJiA==
+X-IronPort-AV: E=Sophos;i="6.18,221,1751234400"; 
+   d="scan'208";a="45969392"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 29 Aug 2025 08:25:45 +0200
+X-CheckPoint: {68B147E9-A-299FBAB0-EF52EDE7}
+X-MAIL-CPID: 0EBBB9024D966849B3550DCC2AF26C29_5
+X-Control-Analysis: str=0001.0A002103.68B14809.0018,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 19848169E37;
+	Fri, 29 Aug 2025 08:25:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1756448740;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=vujtl7k0J0xfsx/gk2sVAPp2kmuOquUNaPtzb/ZzXTI=;
+	b=DHgMwMjT3u7GRd6pIPJTSqLjyMt9OAO/Mk+hxfrNQAVZiv5jarK923RhXkfJ5GGeL2iBUJ
+	2HkTAOlITvBZLYiM6nVl6tYrSLgxvNBOumVP4cGr36EL16JVSbwWCN3Y8GOKqIBFrjRRtW
+	/9O9pTId20lCaATJGvyUmI0GeswDLGyvUYEStiaRc1OQ3R6yMWHWZEajSBoHCxGTLPr6z2
+	GZWMON+INNJoT6NwOrk01aj5wJlltsdGoY1bQbWWecHpt/Lf8H3o6+BiOXf+JngENFTLmX
+	+mynaiaeGNm97EZmPi1gk+uDp9WQLIr5/ryMNKMNEwJhYvfUDnmZJE6C/r5vZw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+Subject:
+ Re: [PATCH 2/2] arm64: dts: freescale: add initial device tree for
+ TQMa91xxCA/MBa91xxCA
+Date: Fri, 29 Aug 2025 08:25:37 +0200
+Message-ID: <2674392.Lt9SDvczpP@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <aLCfTswvqXDLtAhm@lizhi-Precision-Tower-5810>
+References:
+ <20250828094745.3733533-1-alexander.stein@ew.tq-group.com>
+ <20250828094745.3733533-3-alexander.stein@ew.tq-group.com>
+ <aLCfTswvqXDLtAhm@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250827023202.10310-9-zhangzihuan@kylinos.cn>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 27-08-25, 10:31, Zihuan Zhang wrote:
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  drivers/cpufreq/mediatek-cpufreq.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
-> index f3f02c4b6888..1fae060e16d9 100644
-> --- a/drivers/cpufreq/mediatek-cpufreq.c
-> +++ b/drivers/cpufreq/mediatek-cpufreq.c
-> @@ -320,7 +320,7 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
->  	struct dev_pm_opp *new_opp;
->  	struct mtk_cpu_dvfs_info *info;
->  	unsigned long freq, volt;
-> -	struct cpufreq_policy *policy;
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
->  	int ret = 0;
->  
->  	info = container_of(nb, struct mtk_cpu_dvfs_info, opp_nb);
-> @@ -354,11 +354,9 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
->  
->  			dev_pm_opp_put(new_opp);
->  			policy = cpufreq_cpu_get(info->opp_cpu);
-> -			if (policy) {
-> +			if (policy)
->  				cpufreq_driver_target(policy, freq / 1000,
->  						      CPUFREQ_RELATION_L);
-> -				cpufreq_cpu_put(policy);
-> -			}
->  		}
->  	}
+Hi Frank,
 
-Merged with:
+Am Donnerstag, 28. August 2025, 20:26:22 CEST schrieb Frank Li:
+> On Thu, Aug 28, 2025 at 11:47:43AM +0200, Alexander Stein wrote:
+> > This adds support for TQMa91xxCA module attached to MBa91xxCA board.
+> > TQMa91xx is a SOM using i.MX91 SOC. The SOM features PMIC, RAM, e-MMC a=
+nd
+> > some optional peripherals like SPI-NOR, RTC, EEPROM, gyroscope and
+> > secure element.
+> >
+> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+> >  .../freescale/imx91-tqma9131-mba91xxca.dts    | 737 ++++++++++++++++++
+> >  .../boot/dts/freescale/imx91-tqma9131.dtsi    | 295 +++++++
+> >  3 files changed, 1033 insertions(+)
+> >  create mode 100644 arch/arm64/boot/dts/freescale/imx91-tqma9131-mba91x=
+xca.dts
+> >  create mode 100644 arch/arm64/boot/dts/freescale/imx91-tqma9131.dtsi
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/d=
+ts/freescale/Makefile
+> > index 947de7f125caf..3a937232d6f29 100644
+> > --- a/arch/arm64/boot/dts/freescale/Makefile
+> > +++ b/arch/arm64/boot/dts/freescale/Makefile
+> > @@ -338,6 +338,7 @@ dtb-$(CONFIG_ARCH_MXC) +=3D imx8qxp-tqma8xqps-mb-sm=
+arc-2.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx8ulp-9x9-evk.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx8ulp-evk.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx91-11x11-evk.dtb
+> > +dtb-$(CONFIG_ARCH_MXC) +=3D imx91-tqma9131-mba91xxca.dtb
+> >  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-9x9-qsb.dtb
+> >
+> ...
+> > +
+> > +	pinctrl_jtag: jtaggrp {
+> > +		fsl,pins =3D <MX91_PAD_DAP_TCLK_SWCLK__JTAG_MUX_TCK	0x051e>,
+> > +			   <MX91_PAD_DAP_TDI__JTAG_MUX_TDI		0x1200>,
+> > +			   <MX91_PAD_DAP_TDO_TRACESWO__JTAG_MUX_TDO	0x031e>,
+> > +			   <MX91_PAD_DAP_TMS_SWDIO__JTAG_MUX_TMS	0x1200>;
+> > +	};
+>=20
+> Any one use it?
 
-diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
-index 1fae060e16d9..fae062a6431f 100644
---- a/drivers/cpufreq/mediatek-cpufreq.c
-+++ b/drivers/cpufreq/mediatek-cpufreq.c
-@@ -320,7 +320,6 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
-        struct dev_pm_opp *new_opp;
-        struct mtk_cpu_dvfs_info *info;
-        unsigned long freq, volt;
--       struct cpufreq_policy *policy __free(put_cpufreq_policy);
-        int ret = 0;
+You are right. There is no direct user in DT, but their connection is fixed
+to JTAG. I'll hook it up to gpio3, as the GPIOs on these pads belong
+to this controller.=20
 
-        info = container_of(nb, struct mtk_cpu_dvfs_info, opp_nb);
-@@ -353,7 +352,9 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
-                        }
+>=20
+> > +
+> > +	pinctrl_lpi2c3: lpi2c3grp {
+> > +		fsl,pins =3D /* SION | HYS | OD | FSEL_3 | DSE X4 */
+> > +			   <MX91_PAD_GPIO_IO28__LPI2C3_SDA		0x4000199e>,
+> > +			   <MX91_PAD_GPIO_IO29__LPI2C3_SCL		0x4000199e>;
+> > +	};
+> > +
+> ...
+> > +
+> > +	/* protectable identification memory (part of M24C64-D @57) */
+> > +	eeprom@5f {
+> > +		compatible =3D "atmel,24c64d-wl";
+> > +		reg =3D <0x5f>;
+> > +		vcc-supply =3D <&buck4>;
+> > +	};
+> > +
+> > +	imu@6a {
+>=20
+> I am not if "imu" is common node name.
 
-                        dev_pm_opp_put(new_opp);
--                       policy = cpufreq_cpu_get(info->opp_cpu);
-+
-+                       struct cpufreq_policy *policy __free(put_cpufreq_policy)
-+                               = cpufreq_cpu_get(info->opp_cpu);
-                        if (policy)
-                                cpufreq_driver_target(policy, freq / 1000,
-                                                      CPUFREQ_RELATION_L);
+Device tree spec name recommendation only mentions gyrometer, but this is a
+gyroscope, so I will go with the latter one.
 
--- 
-viresh
+Best regards
+Alexander
+
+>=20
+> Frank
+> > +		compatible =3D "st,ism330dhcx";
+> > +		reg =3D <0x6a>;
+> > +		vdd-supply =3D <&buck4>;
+> > +		vddio-supply =3D <&buck4>;
+> > +	};
+> > +};
+> > +
+> > +&usdhc1 {
+> > +	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+> > +	pinctrl-0 =3D <&pinctrl_usdhc1>;
+> > +	pinctrl-1 =3D <&pinctrl_usdhc1>;
+> > +	pinctrl-2 =3D <&pinctrl_usdhc1>;
+> > +	vmmc-supply =3D <&buck4>;
+> > +	vqmmc-supply =3D <&buck5>;
+> > +	bus-width =3D <8>;
+> > +	non-removable;
+> > +	no-sdio;
+> > +	no-sd;
+> > +	status =3D "okay";
+> > +};
+> > +
+> ...
+> > +};
+> > --
+> > 2.43.0
+> >
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
