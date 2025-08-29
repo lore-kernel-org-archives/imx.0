@@ -1,50 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0C21E3769;
-	Fri, 29 Aug 2025 16:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3838A30ACE0;
+	Fri, 29 Aug 2025 17:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756486701; cv=none; b=IhIYq7djOzKnSbyLuqT7IBNkiZciRDLvywmKTjof5DjO9iPg90sZLDVuoLG6eV+mofpuR2tEzsl5y3K8LfmHoA4xNpxnalUj8/pjUGwgsZhJp9iDOkvzrYKbd6rxUNkQlkaf7N4AglcjqBf2z1zFJfa0TRc1+/nODJjJFCciYzU=
+	t=1756486994; cv=none; b=hlCHqQsVaFZi4ST+aTWy8vQUJ2tLosicBcUEW07cSz3A6gH4pJ8c4NORQNhEFxQXBXVdIXc27v4sv+pZ+qRjR8EQyaZIVUdF8jrko2gIQo6UjAGc59qUivd5eI2AyZjjD9rYiK5qlZX7dIqd6+08NElgZ5hIwg3dZKIQAYA47Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756486701; c=relaxed/simple;
-	bh=JYmJwogPycI2eDwU4MCvRxDzTmigXC0hffGa0/ENy8Y=;
+	s=arc-20240116; t=1756486994; c=relaxed/simple;
+	bh=mg00hAcdTEKrZbDjJvlMNVxsmu4kekuMMAOA3bFgL+g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VvDkUleyDqhvcDdOLag+l1i16OGLlUGpzpr/4IhxZVd33yXJ095+NfgSzqt35whS7UVuh0M762Wenhm6nRzAWhlbXlGTwKOFC8qWkKirysVF4oKOQQyeiFRa2fYisL073pFwMczDzo5MHSFx9ilg1Yej3h4IYryOshngwK0ujvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvsn2Qco; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=bVWrQgxRQW446LD7KtlTajAp0jNNPgRHmrAWIO87KnqgDxWgDmXYwO3ZGFJeAz+3xLW5KSOZZOVO8UAdZVK1kRnr1caL6tPQAwKu1p2dRdXeZZ+4+JwaJfO7jFePNNBww5XCL+gKmxn9S8VrKNi0Z55SUM9y8k+oDqzJ/DylCBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LTLItRsl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvsn2Qco"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0AD6C4CEF5;
-	Fri, 29 Aug 2025 16:58:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LTLItRsl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58EAC4CEF0;
+	Fri, 29 Aug 2025 17:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756486701;
-	bh=JYmJwogPycI2eDwU4MCvRxDzTmigXC0hffGa0/ENy8Y=;
+	s=k20201202; t=1756486993;
+	bh=mg00hAcdTEKrZbDjJvlMNVxsmu4kekuMMAOA3bFgL+g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pvsn2Qcoc7kwgqLRJlNWUmvBN2LvpmHHbaYum4F5uGTWjgPLPWCfBplbljBc3H3GM
-	 uZGZmPhEvtoFdW2nFrGoq9oTHREPLVAw4v3ul4AOc5G2ZeaiDShxsdekfmYiYt6Djz
-	 HHMK7CLBI5nU+TFjwS351AoCW7biWv8EfWaD/E/Ss1EAfSyn66TV484mTA1r/JSgxX
-	 bMpZ6A98B4f4+nDmyt2W5kGdMYVIdhy7pf1WdO/QHCumXKVPvwcmW4tMNFSTrX77pz
-	 Uu4YrLD1SINkwNCPnypVuln08OEEOJSXL7dN7tEGNBBM4lNoF+OUD+NkpXAf3tu8jf
-	 yhUMeSOXGk6yA==
-Date: Fri, 29 Aug 2025 11:58:18 -0500
-From: Rob Herring <robh@kernel.org>
+	b=LTLItRslDoL24OhCDEqAdoRxD2ix+zqQ7YEiFTOKmfu6YZT8f0P4X2bkM80DnA2U5
+	 egq7/J0XFJhqNegZH+GBlCa39LTyegzI22SA+cJSJpRc7reYQmgmM1CXAyCZwh3W4s
+	 WRs+K9sL4ub/kWZSRjZfAefUvbHgW14v6G9duzjKL2YEbX8++spoaifZuPb6FvvKgo
+	 PgXvM8C4paWUf8Wa5P7gO7ZnTelCsoJixU+yRu72Cq3SPGqkPYfRhkP0QgpGwSFPEg
+	 uAy3Wg0KHn+iW9mrNsYZ6X8V3QABHKovLLrW2eFdJTYHd8xgEleZwt9aXTkwoYJO5X
+	 plDIVPWjpoPRA==
+Date: Fri, 29 Aug 2025 12:03:12 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Danila Tikhonov <danila@jiaxyga.com>,
-	Igor Belwon <igor.belwon@mentallysanemainliners.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: arm: cpus: Allow
- fsl,soc-operating-points for i.MX6
-Message-ID: <20250829165818.GA1009731-robh@kernel.org>
-References: <20250827210912.92029-1-Frank.Li@nxp.com>
+Cc: devicetree@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+	linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	"A.s. Dong" <aisheng.dong@nxp.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: fsl: fsl,imx7ulp-smc1: Allow clocks and
+ clock-names
+Message-ID: <175648699220.1015931.794754455912475003.robh@kernel.org>
+References: <20250827212446.94571-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,23 +49,24 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250827210912.92029-1-Frank.Li@nxp.com>
+In-Reply-To: <20250827212446.94571-1-Frank.Li@nxp.com>
 
-On Wed, Aug 27, 2025 at 05:09:11PM -0400, Frank Li wrote:
-> The old i.MX6 (over 10 years) chip use fsl,soc-operating-points to get
-> SoC's voltage and frequency information when cpu change frequency.
+
+On Wed, 27 Aug 2025 17:24:45 -0400, Frank Li wrote:
+> Allow clocks and clock-names to match existed dts file.
 > 
-> Set fsl,soc-operating-points deprecated.
+> 'hsrun_divcore' should be 'hsrun-divcore'. But use '_' to keep old dts back
+> compatible.
 > 
-> Allow soc-supply property and set it deprecated.
-> 
-> Fix bunch of CHECK_DTBS warnings:
->   arch/arm/boot/dts/nxp/imx/imx6ul-prti6g.dtb: cpu@0 (arm,cortex-a7): Unevaluated properties are not allowed ('fsl,soc-operating-points', 'soc-supply' were unexpected)
-> 	from schema $id: http://devicetree.org/schemas/arm/cpus.yaml#
+> Fix below CHECK_DTBS warnings:
+>   arch/arm/boot/dts/nxp/imx/imx7ulp-com.dtb: clock-controller@40410000 (fsl,imx7ulp-smc1): '#clock-cells', 'clock-names', 'clocks' do not match any of the regexes: '^pinctrl-[0-9]+$'
+> 	from schema $id: http://devicetree.org/schemas/arm/freescale/fsl,imx7ulp-pm.yaml#
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  Documentation/devicetree/bindings/arm/cpus.yaml | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  .../devicetree/bindings/arm/freescale/fsl,imx7ulp-pm.yaml | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
 
-Applied, thanks.
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+
