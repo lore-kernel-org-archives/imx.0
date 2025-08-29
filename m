@@ -1,236 +1,142 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010065.outbound.protection.outlook.com [52.101.69.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77EE21CC6A
-	for <imx@lists.linux.dev>; Fri, 29 Aug 2025 05:28:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756445316; cv=fail; b=gQhieM3db0GOC2NuSkGIHN1mlYK2/ooY55b/1s5Ek3meDQlvMloXqzyOWM9Mh1xiVCuMQN3PVXVsHC43RKKg83AHojYlLdRwYfG4XITCjAepZTiY8J7TxzrNhlT4xttDkUKxnGXRVL2vUOmYnPonvqYe6aIjYWStcSJBzRQrfPY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756445316; c=relaxed/simple;
-	bh=XKim+Apovg3ClzFH9GZkEj197hgDaqrgI4nW5tEW1BQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=czyFNphFsAukSytVR8S5yWKUmpONGj9zpZg5RicWfXLuxdQE39AAK6cKFMwuh2y9/76cpL+CqZTMCLTR8hW6KSi0OaPoGg0xxNSLFZUXzcNaEwUhZipApoI03EuJT2fzNmStv0JLYnYHd1MxiTRCxHffUUqn2GFbf6UZPRfPXes=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OJBlh/LK; arc=fail smtp.client-ip=52.101.69.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE05221859A
+	for <imx@lists.linux.dev>; Fri, 29 Aug 2025 05:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756447190; cv=none; b=X4NBLZzmhveMeI0hqhnmcImi8JP9NFjuJZizRLXFXE3loDbmK15wMgUZwyItB695n6W1ePgZMtRGV6n1Ouvo+ecVE+KOzgDab7zTY/01NAbeZ05tghr9a5svSzsmk1dDZIfgY537czoYZQob51eG9oeq0j9Ufq+1nuSxczgm5WY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756447190; c=relaxed/simple;
+	bh=3Us6gLaZK2VccDGA6IMnqvs0nFzgbS6I49Q/8l1+6ks=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BjJj/y72cyuez4dkU/yWpJr3vnrGPyrdHROaN5mIRiGHUQDWV70qnvjusJRf73KRmxrtUsp9qQjQ7TvXdjetX6U8CAr6i4WCltu86ID7v2+nP7Q42YDO4fhFhDAKqyeQIWpFT7NaaeiDbmS/vt2u76IG8Mfu8s8mEPvQqheD5zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZwbPA7Hr; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OJBlh/LK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pQtBR0nQVr21bV60ZIRv7teloPGjZA+YyQ9XVKmOTaZM+Unh6M8QeWrBKPvuC8w8gnt7NXA4DaDKKxDcXNorahUDFQJ8jOws14CcEEwYGEtqhhfG7y7MpBbjAi27iUA5N++voRQ3OcXrX3gx6hHuCanADppfK49wz44ncaJGxhoF8+6ru+bX6A8QHZGrHKD7gUyBeuCKUaw2k6gfi8PYpRseq6V0+moOPR+i+4S1a4i4PI85dPqtke6sJFf1ZlBs83KMhu68nkY4C6uGcIZyCNgz/S75LsCEUwWxJLySdzpJCx0nPXJZx/yCDe92IDnJYQH7QV1CDlRCIDCRYN9l2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fns7vHhTNw0Yois9nPhia4cGOxAlxUkAeByIM4Ln0oE=;
- b=qelQDoo8/WbSv86/yOUFDLoK9QCt53wqKEl1/jTZmXo1F8enjBCgGfRTf/rfdIm6Af3oByZbaYOO58yOm5cFsVbNA1T1mOTTF4dJwXM9wBRZKXfkC/xBSmMV1EPovPDUp9DqNyVtUqzwVhGOqSiOHW6TMVSUN0fEj4rqxiM7ZElXEHZxyivjc47b7wLPh7/ArafeSKndR1a/8hoe1Mdx3j/Qw2Pd2cSClUpoHfDoNH1TruX2IiYEInwREOAKAc4Uil87tLpOYMC+3Fp2pNtq+1g5Ib2DeyK03JEAlOfGKozcOzL+5udBSk28LlU7Fayj471crUbUOYM6AJCguV71Cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fns7vHhTNw0Yois9nPhia4cGOxAlxUkAeByIM4Ln0oE=;
- b=OJBlh/LKrAA8O3n3c6AHBEjQxqaGV/mngwyW8/9krurHApbLTm150UN///QVrDJsNiuJb9fFJL0rOwE1p/iys9LJJOdI53P50zY9/1MBoAqAhoN7Bog5ZWcKD9LVhrA/rWy1LPGb1iA/d36jImlW1uURIvQONw1h4ka37tTr4/3/rsZl7V2xMsOQz2hQ4AG0IFgrcqMql3S81spSnbWu2QnuReNlK7QE3SkWEnCFyjQcvKxOXxqwlC163ROhPLg0ShDPJIJeMeSNM+sLd/AahUW67Lsw+O+01BRSIBsu/BztovxGU6IEmQcFFZs4pDBUTKeat4Vh0poTXG9EC+9RXA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DB8PR04MB6828.eurprd04.prod.outlook.com (2603:10a6:10:113::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.10; Fri, 29 Aug
- 2025 05:28:32 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.9073.010; Fri, 29 Aug 2025
- 05:28:32 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	richardcochran@gmail.com,
-	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev,
-	Frank.Li@nxp.com,
-	shawnguo@kernel.org
-Cc: fushi.peng@nxp.com,
-	devicetree@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v7 net-next 14/14] net: enetc: don't update sync packet checksum if checksum offload is used
-Date: Fri, 29 Aug 2025 13:06:15 +0800
-Message-Id: <20250829050615.1247468-15-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250829050615.1247468-1-wei.fang@nxp.com>
-References: <20250829050615.1247468-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0037.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::13) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZwbPA7Hr"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7722f8cf9adso210269b3a.0
+        for <imx@lists.linux.dev>; Thu, 28 Aug 2025 22:59:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756447188; x=1757051988; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Csp0y2UiuYBIoSGq3QglK9zewj1/hbg1F372AFvl94U=;
+        b=ZwbPA7Hr5TuucVORvbF/w2DjawSpTIz1Z0wQGbFkaZ8P3oBTPjjsPj62lp3UtRGybS
+         ZVrTOx+uZzANALLXUhg+PmBEtMF6LCXfheWVWRcubMaVXg44w5RXW1uMvcscKe7xPnGl
+         Xe+3C9RfQps4xzw/IwcYjbho9u+Q8XtH5jsyPi4J8cez/tPCWQX+ZHOrnGZROEKyiIgD
+         5PhJzdhIxp7C8bfC/JV3rJOusHbwhKX3jBApdJ0ekNCPcG9oYI/vXHM8Xqb1YmPeVbCz
+         AcqMoZenqxV0uyAaWiUwaOdKEE8TrHrAw/H0TOFKu2YluJhC+PM2I2rrPTQftwMxgev4
+         pbug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756447188; x=1757051988;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Csp0y2UiuYBIoSGq3QglK9zewj1/hbg1F372AFvl94U=;
+        b=HhOc9NUM+WavN3PlkNGnuBFaDkyVnJda2yB/iVPgADEblgsPHyEaB+V/yIJnr/HEOW
+         qni1iJ1jkVTt67E4jK5ZwtV9REuZAuii4WZydYlgI6Gu452H+1zegJ2bCdGgQzpPLFbl
+         5vwCpKRbELWWdKFu/99I9UI0D/280bxSuWnxy2w/8PzBjjw9+iu0obKsLeh8oJEBox6y
+         pys5q+VTyoylGY1251xOsdJDLAwBTgzB14JmZ8DDiYeXCYWbdX+17dyDCR5DEE/KAfeM
+         5NrS9SYpT8QdgW7xu5H0D54xkxBgWohwNrax+I9WurZmi4jM+5d+TKKAhJizV6s4bbqE
+         DMvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWqxLDGRTX70MZ1BPmbWqFHG4j67Y+KAbSp7tOKnBGn13pRkoVr7061MdG3l2UwD6rEjcA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwtC/ROgbXTEoQr7VDyKLBJYSMhST5w72o6pmk8lAsPUt6AAXlt
+	K828yWhs9AvwxAoC6WuzBXCJxldPcFGg8mj3Lng75ZweYHFKwxJp9AzxvbW6I0pNG8g=
+X-Gm-Gg: ASbGncuqTVEsuBKe8Mso5jjcTT0XzwCjyR0XNKrfKXG5IMpoS/sjQCiYgZ7aaxYJorV
+	Q2TX5xM9y2WZodvwsVHi8sgK2atJ7TLYz8OipCK9b9glm+IDugmBnXuNoGI3yzpU8RPmC8zMi1f
+	jH1dsr7cqcgxLDW0442uVRyHIx0eEvjaxlsLupIb6PX0Bzy2WaDpGkJR/cPW/SfMnTn6Riw5f2n
+	WeX6XGUagFmyj9D1/LymjpQiRvtfJvEQiPPC25huxS2dCtKiVPY7yjZDX/l+qvKXc+LqKrtGjkS
+	cUNkWL5jLL6qtdMEqqyFJK7Q1PeLynDxX7nArw5k2OmbyROIRbSIh/13uCAQseEjjxaUQifv7pq
+	VXeau12zT79KKTHRmRyL2t28GPXjSbvCkDj8=
+X-Google-Smtp-Source: AGHT+IFsar3WOaSA9RKNM7TPFf9gG0iXTxdUF2CW8raU1SyelgEQswrlDbapLb2rA7PUFkb3M17NCQ==
+X-Received: by 2002:a05:6a00:10d5:b0:772:2850:783d with SMTP id d2e1a72fcca58-772285079c4mr3285667b3a.22.1756447188084;
+        Thu, 28 Aug 2025 22:59:48 -0700 (PDT)
+Received: from localhost ([122.172.87.165])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a2b14c1sm1263485b3a.31.2025.08.28.22.59.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Aug 2025 22:59:47 -0700 (PDT)
+Date: Fri, 29 Aug 2025 11:29:44 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	zhenglifeng <zhenglifeng1@huawei.com>,
+	"H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Beata Michalska <beata.michalska@arm.com>,
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 04/18] cpufreq: brcmstb-avs-cpufreq: Use
+ __free(put_cpufreq_policy) for policy reference
+Message-ID: <20250829055944.ragfnh62q2cuew3e@vireshk-i7>
+References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
+ <20250827023202.10310-5-zhangzihuan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DB8PR04MB6828:EE_
-X-MS-Office365-Filtering-Correlation-Id: f31c42c3-3768-461e-768d-08dde6bce480
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|366016|376014|7416014|52116014|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?n5tSp+2jfYJjZ5sizs259Wp9pRKksYmv9Ni+VCRFEDF1l9cpzvowM5pfLaFN?=
- =?us-ascii?Q?u9kBC7SEnvpF1X5moMnUE8cNjqlKlBN2LyPSkKLkh+tB0wIhDynoN7zJyUzo?=
- =?us-ascii?Q?VSSqZheH52r0M4y2UibwaeLyRm9bhejdJrmKg4QIucWjJ3cbv9lty20sZ9G1?=
- =?us-ascii?Q?wICyrWS0xGbDpFODjH82zsrFzd/xZwkeYklqRBaMv9OpNDUsON/fJiGvUWdf?=
- =?us-ascii?Q?IznF1zbvsuv6PcMdzR6gW+sO00zXnoudanYRMO8ruHhQBpHcpSBgF3qEuhgG?=
- =?us-ascii?Q?z5IwPUNhvSgisccbscBiguRudEvwCbglIiaMdD818wFU2JSBulExa2HV0YaD?=
- =?us-ascii?Q?ISMXlENSAKQV4BNs98oJE3QSK4ff3kHy781jtPajAovp3atIpxGFauml7F6O?=
- =?us-ascii?Q?AXfBExk25+QePTQoNQOF7G1Z/E4Bq+HJJ1qcbtSgmfmWge3Wk2WzsB3rUSKu?=
- =?us-ascii?Q?NXYSS+BgOGSRw2+RFhx8lY185JzlGFUR5uXPf81JsqPyT4jzNGnzKn6Ff1QJ?=
- =?us-ascii?Q?lXLkFg7FErBtd/TpyAv6mKtyrHYTFRienPdH+De2Sgby81AygVO1b4I9WJD1?=
- =?us-ascii?Q?8NTC6VbfHHttic9albvOSOXaxbiT/Trw/StcWwl/iqig5SXpUOCxtqEKXyo/?=
- =?us-ascii?Q?wylVpZXFRsRa+3B7jglBWtOKANQ6gR01RNQhSqX+zZ5YkAiaRXvIBN2ntm8i?=
- =?us-ascii?Q?X3pKI08U7+VEh/ZKrkzD6OqrSMXaJflc7vbWlGToMdPm4tC2e0eXW5PCGpHF?=
- =?us-ascii?Q?mviWaYquY6j/yJNoQgYAAqlh802q1orp/C/v9Fhvt+xBy1pVdZcmi/zaomMT?=
- =?us-ascii?Q?U1dzyQ6ZuMN1TjyM/4y0/QIBgaXAtIzxyIG+8ZA4yljRoJWWhFQop2EOz8BJ?=
- =?us-ascii?Q?7MZlFSCqxBXjmJxjRQoh/PeM4auCT+gw7x4i5g9wy9kdVyU2svgbFPyLa0tY?=
- =?us-ascii?Q?M6bYbIXCilbEi7qNtBCN9T2EhkTQtzJjv/XvF3x3zzW7c9JuZYYdTuQQXmWB?=
- =?us-ascii?Q?s411giBushkTvAVXSpSkQTsqil5qJ+T0hmXjC6Q0HPySsap0OfSyq5ujjN/J?=
- =?us-ascii?Q?cm8WhKJVHJmXEJYtvOe/74AqpFbje73sg53UyaiUFTxOyiQ4mKcAycd2n1GI?=
- =?us-ascii?Q?XySJqnuu1X5JsESFwnOWXsv6FWktKfsk6I7npBsXne9eGahMAxU8dZ7QZJ1c?=
- =?us-ascii?Q?DzJZxwcXrIsaKav4MavhNOSk1KKigGuNFp5V2yZ5zGUDKHujXgFG43ryp2Tr?=
- =?us-ascii?Q?OTT8jJkLlJo7KKlmvI1ip6rzCUPhkqdqGMxeo1PJ1z9ceGr5ezNMksFK9iTX?=
- =?us-ascii?Q?9y507CjUQ+W8673tna8GpRhveHui+rewH3IgdiKtv/KVY3hsnDLDOYLBZ74L?=
- =?us-ascii?Q?WVXggzxODSr6PKn6w5Tl86fcLa7bZQA47HLC01qtweYYBTamMBkUhAokU4TN?=
- =?us-ascii?Q?fWKi6lCcEq5OBDOzq8P8kkX7QpGNRZWaKekZy1kdRZ7GZjyt6XSwSwGV+6zG?=
- =?us-ascii?Q?AIqa4RO9sxKbFfE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(376014)(7416014)(52116014)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+VuwXEFLvZbOwuxCepJgTwytGaK+brLxH7mVtZbgLCy/KQ6xRESSB941RyWb?=
- =?us-ascii?Q?hJHt46f23i7WwikS3gIYVshWACHFPUP8rYmj+6q9CcJ8lFfZ3tiYXHPceWSb?=
- =?us-ascii?Q?+N7c6IRdy/C7WXa1WPmfDPUsK4oCIzjNw34SAkogeIUVl3XNmMuzZn+LboA7?=
- =?us-ascii?Q?1GCQ22Luj3TjBwTiTpIrUp9eN/SCHeUMd1ltwIUd8Wz+/WlAPUEEaAeYFxVF?=
- =?us-ascii?Q?AjSsp8keP65wUMXP3tNeSzk09d2soTYrCmwRJmBKMfHkUvWjfSnMq3T7tc5p?=
- =?us-ascii?Q?SEbnax8yMb3YTN+F2BSw3uJUObgrY+5vWGneyZZfCvE6Yj/JvfDA9cOwubbj?=
- =?us-ascii?Q?jRKHKaroFFcV3jZOdMaFSYGHlbngL6YZaFpQunECWkNSDyAqeybf5EQuYIHi?=
- =?us-ascii?Q?n4BHle2Dmuufe2M69XGF1JHwlXbXR1hPHsTKYpC7r/h9Z0vsCQBFxo9VoP5v?=
- =?us-ascii?Q?ftGwi3rZIE9AlTkxahzcd5uzaPwWBifq5vH4JLT0I1ju46vkp3brwAYpMqoJ?=
- =?us-ascii?Q?O0BPfiJOOIf2sqgpzacb25Y5lUZJP4hpEO+s7IB1h1tiZUyxi/gCWDIVn09P?=
- =?us-ascii?Q?P4P6Lp7cwa4JCkq7G409Gf3hJnrWgaL0lSrGNXMWWjfsed11hU/x2L4ZwqoY?=
- =?us-ascii?Q?iF4jidlgp7PWhr27VQb/KZoi3ezq9aOTMTnS5bTqRdsiWyhe+FZ4NagalXok?=
- =?us-ascii?Q?dXdyIlx9yjtyHycH6g2GZ1eHmDZspYQGQjyymeGAbf2ui/GC4DogXpo5kHSG?=
- =?us-ascii?Q?EFzKk3hI1JtUVW19WtKNLqwdxe4lvtmeVw6v72FfiMvvcjzQD+fLSxsjLh4G?=
- =?us-ascii?Q?54FsdUodGGwiKqkhrPU/srtmZCwfQiwzH6NQPli9dkvVN6LJDHawNaGKJieO?=
- =?us-ascii?Q?mEj+xHF2qUUatNVBRLOpadQqeNLdMPNoezrN7BoP33iqF70faGDGPYhn8/Nv?=
- =?us-ascii?Q?emFFZzUI+S1lw0kj0wy3XuimrrGMoHKL2/nw1Go1WJMlnfC+9/Sv+aNvg/IL?=
- =?us-ascii?Q?4lhLXhy8OwcIUk6l5Y3na6MDGsLX4AiApK8/yJu/Sj5i+EiZ50pyuMxficrx?=
- =?us-ascii?Q?SgL0hZa4CKsjy+1kv+DxBV75/57/QoeVLNwnPw7SXHY84YAwYdmzUSevK1d7?=
- =?us-ascii?Q?fL4n/R6YK59YedrvrSLHDIPxxD2SvWE19EgKmC+/BkLfpFhKQ77JTxL6ebR/?=
- =?us-ascii?Q?3ap9y63XId4jGspm1lpPtD3mC4BqgP0WASqHvGPKkVauqp3q/8q2Uz4MBhZ6?=
- =?us-ascii?Q?YKwWqJm1wzdWHoddq89IZIRagmmiEJJ1lMhhNzPljWKSd0w7grfXNNdtXa3O?=
- =?us-ascii?Q?I0hWn6EXq8zkKABDwvYpt0iYIcQBFEBU3SWIPaKGxtFAddUZUh0/3nUkhYDO?=
- =?us-ascii?Q?TDKPIrO3ETnd5+j0SM5cdmeWGkvB993Ja6m0SIGgcYSk7otWGVMb+AHtmRPY?=
- =?us-ascii?Q?zzbWCMTxqV7PAROhhGQ8v1JKy+F/JSQmfoZNU0ZM/uGYoGqMvIf9D+q7pIoc?=
- =?us-ascii?Q?LtJL7qKhD/t2ISPxbFg2cabuTRiDDG/w9fP5PnhKqZ+glKsA9Ev1zw6+f5jO?=
- =?us-ascii?Q?x/tTt4nW53rfM+Ar4IVl44ebCn8cvMe2hFUHbAuw?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f31c42c3-3768-461e-768d-08dde6bce480
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2025 05:28:32.3045
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x8X7EWNn7Bkk2ymMY2JXW+P5vuS+lIOwLaooUGJb0jerbKb0eb+vKsOspNFxwXZ1nsV0R8d0uEo4KRIvgoDurw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6828
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827023202.10310-5-zhangzihuan@kylinos.cn>
 
-For ENETC v4, the hardware has the capability to support Tx checksum
-offload. so the enetc driver does not need to update the UDP checksum
-of PTP sync packets if Tx checksum offload is enabled.
+On 27-08-25, 10:31, Zihuan Zhang wrote:
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  drivers/cpufreq/brcmstb-avs-cpufreq.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Applied. Thanks.
 
----
-v3: no changes, just collect Reviewed-by tag
----
- drivers/net/ethernet/freescale/enetc/enetc.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 6dbc9cc811a0..aae462a0cf5a 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -247,7 +247,7 @@ static void enetc4_set_one_step_ts(struct enetc_si *si, bool udp, int offset)
- }
- 
- static u32 enetc_update_ptp_sync_msg(struct enetc_ndev_priv *priv,
--				     struct sk_buff *skb)
-+				     struct sk_buff *skb, bool csum_offload)
- {
- 	struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
- 	u16 tstamp_off = enetc_cb->origin_tstamp_off;
-@@ -269,18 +269,17 @@ static u32 enetc_update_ptp_sync_msg(struct enetc_ndev_priv *priv,
- 	 * - 48 bits seconds field
- 	 * - 32 bits nanseconds field
- 	 *
--	 * In addition, the UDP checksum needs to be updated
--	 * by software after updating originTimestamp field,
--	 * otherwise the hardware will calculate the wrong
--	 * checksum when updating the correction field and
--	 * update it to the packet.
-+	 * In addition, if csum_offload is false, the UDP checksum needs
-+	 * to be updated by software after updating originTimestamp field,
-+	 * otherwise the hardware will calculate the wrong checksum when
-+	 * updating the correction field and update it to the packet.
- 	 */
- 
- 	data = skb_mac_header(skb);
- 	new_sec_h = htons((sec >> 32) & 0xffff);
- 	new_sec_l = htonl(sec & 0xffffffff);
- 	new_nsec = htonl(nsec);
--	if (enetc_cb->udp) {
-+	if (enetc_cb->udp && !csum_offload) {
- 		struct udphdr *uh = udp_hdr(skb);
- 		__be32 old_sec_l, old_nsec;
- 		__be16 old_sec_h;
-@@ -319,6 +318,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
- 	struct enetc_tx_swbd *tx_swbd;
- 	int len = skb_headlen(skb);
- 	union enetc_tx_bd temp_bd;
-+	bool csum_offload = false;
- 	union enetc_tx_bd *txbd;
- 	int i, count = 0;
- 	skb_frag_t *frag;
-@@ -345,6 +345,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
- 				temp_bd.l4_aux = FIELD_PREP(ENETC_TX_BD_L4T,
- 							    ENETC_TXBD_L4T_UDP);
- 			flags |= ENETC_TXBD_FLAGS_CSUM_LSO | ENETC_TXBD_FLAGS_L4CS;
-+			csum_offload = true;
- 		} else if (skb_checksum_help(skb)) {
- 			return 0;
- 		}
-@@ -352,7 +353,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
- 
- 	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
- 		do_onestep_tstamp = true;
--		tstamp = enetc_update_ptp_sync_msg(priv, skb);
-+		tstamp = enetc_update_ptp_sync_msg(priv, skb, csum_offload);
- 	} else if (enetc_cb->flag & ENETC_F_TX_TSTAMP) {
- 		do_twostep_tstamp = true;
- 	}
 -- 
-2.34.1
-
+viresh
