@@ -1,139 +1,181 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D9277111
-	for <imx@lists.linux.dev>; Fri, 29 Aug 2025 06:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B58220F3E
+	for <imx@lists.linux.dev>; Fri, 29 Aug 2025 06:13:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756447612; cv=none; b=IFxdkogWgfC/xsHh5Jiyr/Uc+qFeL7PzJnCpMsW7kpydwKdbWqvOZ8UKrWXWPo9a0RSB0/Gziebvn1pGn6MVn+cOKuS+wf1wZaq8KVCE08Uod+fO/KGFLmWHX1oUBUpdJr1I7DX5OSkQRUCEkUnsdzrwvu3zYZYf1f6Wn7jey7c=
+	t=1756448000; cv=none; b=hQbPLd/GwjGbvc59ggC1u7pcStkOT+adORfcwDX2mAyQkQ/8qDyYmyrjAeFaTZYBglrz2BVY0l4l4g0UB7j/A0Q3kKZo0Fzu2Gc61LfnqLORx8cFCnXW31i0grFoWGbJH8n0uGS7k94y0w311KkpJ0D/iJFdrUfNRG5Hoi6eoTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756447612; c=relaxed/simple;
-	bh=TapCIJzSpA5xsrH/nOaLl1kb+dAxgoIgKv6bTlhCBH0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hf/4DTdPAS9L/9dSA6UGJuUfne9DwHCSbYTduXYNNykRzOUTAPsxTHnmb0zzRqy34jo9XOhttlTF6c1zH6UWIQdvnCe421vELDuv+fVSmb0CAF19S6Y0lcnrLTQjWGGEle+b+YBNSfrV+gPjrzo7oIfTdt94sBxWeZmBP3A9t3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=L84ZwrlF; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=BnAmXJvT reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1756448000; c=relaxed/simple;
+	bh=ME3U1EvqRDpeRv8iU5ieehT4bOumrWu/AM01apJTyWY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tGNrw1qEVcbFgWoKRJ+TMkDXI8zWEGH8THP5aMGXOujQG5RfSRKfa3eeaY0B5yvK5I5c6XHI9BwJHzlq+LpkhL7KCLHCxf/5Ho0OtMktlemRcnwcVsbULhq6Z8FACXAeoKOj5rfRlFEl6Wq2Aktfnh9S6gc4YWXO9/KGgexsxhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GxUeVcFZ; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="L84ZwrlF";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="BnAmXJvT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GxUeVcFZ"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b4d4881897cso122445a12.0
+        for <imx@lists.linux.dev>; Thu, 28 Aug 2025 23:13:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1756447608; x=1787983608;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=yhSoS2gcwCfK6pxd7ltatSsRlXZ3B4ZnEmWhPcw3nIA=;
-  b=L84ZwrlFqnqSUTctfOtqHxla4LVmjYcSVsfbO5e9utn73wLR2fsTX1qV
-   NYbg5CXOgk3B9Bw36ZsW5aR1YhBUCvu4XonXxHqjoC2+SQJyL7ZkGPe3S
-   9ZhNGSNoTqE7CRS2HdRTypj67bdAT2mV3AyvWxHUOXzO6eoc9crtKEmhY
-   XSCzaCkpUViqFtGxqrpEp+nyams9hJD/cUe5UVJGmDSIFTVdGWGTVfajD
-   X2BtAiqJ6iNTELghvZS5EZTSEGqKawI0hBDJPbcYK80abiXeVkUeKYgBw
-   ePz6TA5pwFUkoACXzH/uHyT4f4xdzerOC6JVmsh9kGSleVIjYy9dAmhMA
-   g==;
-X-CSE-ConnectionGUID: Vx6WPkHrTJSNijI9O2t94w==
-X-CSE-MsgGUID: sWq7ec2xRmqgqmY0djflPg==
-X-IronPort-AV: E=Sophos;i="6.18,221,1751234400"; 
-   d="scan'208";a="45969065"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 29 Aug 2025 08:06:44 +0200
-X-CheckPoint: {68B14373-29-299FBAB0-EF52EDE7}
-X-MAIL-CPID: 9E8933FFEF0FDFBC4AA31CA6DAD71FDA_5
-X-Control-Analysis: str=0001.0A002121.68B14308.005F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D34CC169B29;
-	Fri, 29 Aug 2025 08:06:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1756447599;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=yhSoS2gcwCfK6pxd7ltatSsRlXZ3B4ZnEmWhPcw3nIA=;
-	b=BnAmXJvT6pIpazDfP4tZLf4m0fzPhp0SQXYsg1a3Pl2D8tdLNl1AMcHdJtUiXpGzgha7Ih
-	in1Cc5Y3Yy2h1rhRffhLOTn9mIsAxuqcUTaSD3fxLXfN6bQivBzNWILv8ANGvXHaYwx2Lx
-	BkeRS48++WZ7DqDHKUJJDWZcadWauIJudHWhhOYkFNbULhnChu/DHVXKclXbrLSo41AHXi
-	+eLeLA4EOWEf4o/37km2aKDJWG46f5FFzwQmLFfdFbb+4I1NuekKxDJGWuERlj4NTy5ETb
-	5cSfHD47omfor0Vx1BRsrbS4G4LpnP9Miq67c1wv1EOm5u4eCnQT2AalSw9Rpg==
-Message-ID: <47a8152b-85cf-44d9-b94e-29e3f462d507@ew.tq-group.com>
-Date: Fri, 29 Aug 2025 08:05:29 +0200
+        d=linaro.org; s=google; t=1756447997; x=1757052797; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=V3x6b/e3MpUD14LIMocrPRNaCjXydrgPTujas71bYH8=;
+        b=GxUeVcFZtm598FO67cREIOv9RpI65mPhM7/bYs0jpfNc6y3aqen6r1+xMlnKhw2KGf
+         A2FfkxjpsZwrCED4/tbpFeQwe6ZJvRCPniUVGVj/29mNX5rv6xSjyoG9EuVT0KfPgd8C
+         SnfwnTz/tNdfhbGBGU4k0xk39G3RloXygXSmkjIk/GFYVkF4fZEc2jTHXYh0RGw/on0Y
+         LAGXfCvhogTnbc1r5Glbq0191L+cgdGOwizlLuUbW33WBz2ApqBsJn8iZvZIStfM/jF0
+         7BSTRZG6dMMpulalL4JFfGmFqsjThV4SCHvDNAc9V936YhSC8V89tOAKao5+kgTi5SRs
+         cI2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756447997; x=1757052797;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V3x6b/e3MpUD14LIMocrPRNaCjXydrgPTujas71bYH8=;
+        b=A71yEWzUOwgDq97ZdBAWwZVGM0II+pRvmQAZsibwrTfy/sd9xtAfvMKBfPzEj95GHK
+         a29+CzcvCj4hyJTP4gvKqFjJqvVXV6GGdP9d/CRwIhLbRnVsqhOmk3uG1cBqjXmN0tv4
+         km6ivmfvT/gHGcGhqVtih03gav3RqsUV1WJpqQdYIjyZNj3xxhXBK1dNH0/ogdwKxq4Z
+         ptBEros7oZ53lLSMa+TfESYa3aL/+eioSnmPUgog5w9etb+0s0coFErDcUZAhC6TMhux
+         dc0ppiDKfoS2owU9Yxg/BpPjIsa7O6hZmVt6mAwnJLy1/9zGvcrm5tIlKHTOb9hwQj38
+         BwUw==
+X-Forwarded-Encrypted: i=1; AJvYcCXoT+bUtyt18wyiZ+jJIyxVqF4JVz7zRgBXx1DjejiYCvyHv1nvbrUBCaUBTjcOy6LKy+k=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwL/0KZs5jSR/a66QotDw8xu3rjxBx0l0tcWl5gaM5T+ycDAo6l
+	CAD4CntImp1fkEe3fxVLaQI7Q+KADdaFQGhtE6muyKAHNRNNDf9I7h8bizsukqxDSiA=
+X-Gm-Gg: ASbGnctwJOWz7rXb8nA+4tQuhxdSqCXGvmbPmeymwsdTEIn8AA5frn5rg55H3j1hNFP
+	qmW08dFw4vRJj+mlyy3ztcg5yoFvU7a5JD4fyXUI/P+oTAUzEhtr1k/wwZIXY/bunOoOEHX/0Ue
+	Qu6n99iSHT1+NxQB201Ju3R977WSUg9tLTuwRqs6HOKL3IYVMVK5XPNvgaCN1ZOmrLUXuYjU6ED
+	kLAallWo8lASHEIy+GZSEyNtRYAlr32jhZAP/SWdNGjendwn/0UZOXGUbDEnUcITj0Rfad53BGw
+	i07rloq8e9Uxp+oi9NaEDHcrckMy2GhZOXZWsNPiaATzVT0U3UHVBhcEgPOC1TvWCqDYeBg2pkU
+	fKFWvuReOTTGJdrypuqO7jlIvOR7Bjv5v0Nw=
+X-Google-Smtp-Source: AGHT+IFWh4jzpCyQazo33Du3vwJOQK6BMtgUKuJSYiyNvSKeAM+9t6q52OKXzZUwBWVIjDVwh5LnnA==
+X-Received: by 2002:a17:903:248:b0:248:7018:c739 with SMTP id d9443c01a7336-2487018c906mr177164055ad.28.1756447996693;
+        Thu, 28 Aug 2025 23:13:16 -0700 (PDT)
+Received: from localhost ([122.172.87.165])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2490658999fsm13362715ad.112.2025.08.28.23.13.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Aug 2025 23:13:16 -0700 (PDT)
+Date: Fri, 29 Aug 2025 11:43:13 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	zhenglifeng <zhenglifeng1@huawei.com>,
+	"H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Beata Michalska <beata.michalska@arm.com>,
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 10/18] cpufreq: s5pv210: Use
+ __free(put_cpufreq_policy) for policy reference
+Message-ID: <20250829061313.bloyct5htjym6b3j@vireshk-i7>
+References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
+ <20250827023202.10310-11-zhangzihuan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: add TQMa91xxLA SOM
-To: Alexander Stein <alexander.stein@ew.tq-group.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux@ew.tq-group.com
-References: <20250828094745.3733533-1-alexander.stein@ew.tq-group.com>
- <20250828094745.3733533-2-alexander.stein@ew.tq-group.com>
-Content-Language: en-US
-From: Max Merchel <max.merchel@ew.tq-group.com>
-In-Reply-To: <20250828094745.3733533-2-alexander.stein@ew.tq-group.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827023202.10310-11-zhangzihuan@kylinos.cn>
 
-Hello Alexander,
-
-Am 28.08.25 um 11:47 schrieb Alexander Stein:
-> TQMa91xxLA is a SOM variant in the TQ-Systems GmbH TQMa91xx series using
-> NXP i.MX91 CPU on an LGA type board.
-> MBa91xxCA is a starterkit base board for TQMa91xxLA on an adapter board.
+On 27-08-25, 10:31, Zihuan Zhang wrote:
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
 > 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> No functional change intended.
+> 
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 > ---
-
-
-Your commit is for TQMa91xxCA and TQMa91xxLA.
-However, the commit message only specifies TQMa91xxLA.
-The TQMa91xxCA is missing from the commit subject and message.
-
-
->   Documentation/devicetree/bindings/arm/fsl.yaml | 18 ++++++++++++++++++
->   1 file changed, 18 insertions(+)
+>  drivers/cpufreq/s5pv210-cpufreq.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-> index ebafa6ecbcb64..0843c5e9275be 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -1433,6 +1433,24 @@ properties:
->                 - fsl,imxrt1170-evk         # i.MXRT1170 EVK Board
->             - const: fsl,imxrt1170
->   
-> +      - description:
-> +          TQMa91xxLA and TQMa91xxCA are two series of feature compatible SOM
-> +          using NXP i.MX91 SOC in 11x11 mm package.
-> +          TQMa91xxLA is designed to be soldered on different carrier boards.
-> +          TQMa91xxCA is a compatible variant using board to board connectors.
-> +          All SOM and CPU variants use the same device tree hence only one
-> +          compatible is needed. Bootloader disables all features not present
-> +          in the assembled SOC.
-> +          MBa91xxCA mainboard can be used as starterkit for the SOM
-> +          soldered on an adapter board or for the connector variant
-> +          MBa91xxLA mainboard is a single board computer using the solderable
-> +          SOM variant
-> +        items:
-> +          - enum:
-> +              - tq,imx91-tqma9131-mba91xxca # TQ-Systems GmbH i.MX91 TQMa91xxCA/LA SOM on MBa91xxCA
-> +          - const: tq,imx91-tqma9131        # TQ-Systems GmbH i.MX91 TQMa91xxCA/LA SOM
-> +          - const: fsl,imx91
-> +
->         - description:
->             TQMa93xxLA and TQMa93xxCA are two series of feature compatible SOM
->             using NXP i.MX93 SOC in 11x11 mm package.
+> diff --git a/drivers/cpufreq/s5pv210-cpufreq.c b/drivers/cpufreq/s5pv210-cpufreq.c
+> index 76c888ed8d16..95f1568e9530 100644
+> --- a/drivers/cpufreq/s5pv210-cpufreq.c
+> +++ b/drivers/cpufreq/s5pv210-cpufreq.c
+> @@ -555,7 +555,7 @@ static int s5pv210_cpufreq_reboot_notifier_event(struct notifier_block *this,
+>  						 unsigned long event, void *ptr)
+>  {
+>  	int ret;
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  
+>  	policy = cpufreq_cpu_get(0);
+>  	if (!policy) {
+> @@ -564,7 +564,6 @@ static int s5pv210_cpufreq_reboot_notifier_event(struct notifier_block *this,
+>  	}
+>  
+>  	ret = cpufreq_driver_target(policy, SLEEP_FREQ, 0);
+> -	cpufreq_cpu_put(policy);
+>  
+>  	if (ret < 0)
+>  		return NOTIFY_BAD;
 
-Best regards,
-Max
+Merged with minor change:
+
+diff --git a/drivers/cpufreq/s5pv210-cpufreq.c b/drivers/cpufreq/s5pv210-cpufreq.c
+index 95f1568e9530..4215621deb3f 100644
+--- a/drivers/cpufreq/s5pv210-cpufreq.c
++++ b/drivers/cpufreq/s5pv210-cpufreq.c
+@@ -554,10 +554,9 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
+ static int s5pv210_cpufreq_reboot_notifier_event(struct notifier_block *this,
+                                                 unsigned long event, void *ptr)
+ {
++       struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
+        int ret;
+-       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+
+-       policy = cpufreq_cpu_get(0);
+        if (!policy) {
+                pr_debug("cpufreq: get no policy for cpu0\n");
+                return NOTIFY_BAD;
 
 -- 
-TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht München, HRB 105018
-Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+viresh
