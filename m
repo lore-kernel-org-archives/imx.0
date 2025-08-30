@@ -1,72 +1,73 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB997239E97
-	for <imx@lists.linux.dev>; Sat, 30 Aug 2025 08:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C39C5BAF0
+	for <imx@lists.linux.dev>; Sat, 30 Aug 2025 08:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756541117; cv=none; b=paJPNAVq64RkT9DGWKRXGUQLv/2UI/gl5lk6S2s1Dn+ruHLgr/Xj6XVIOQaT/BAwouuFBlM+23mnT//BkVMkoaa8rk7X6tw3JIjPvYgJM5G92WNjv8JjggB2gMc21taIbB9tI8Pjrydo03dvVr6irzfrcmQhrpJx+9MJXeRt7Xw=
+	t=1756541998; cv=none; b=hPWBSqFudmvq9coNHlI8fGX9MRWI5cmkOUfiYvdzncaVDzhFBby6KAEG1U5jntXCUZMJWCazDvVOg6mwnXi7j27NrfrPLlIuJQbAElRqpypyLsRFTIy7/HWkWh0K4NNfdiESIABg47L0wp5eEOl1654dnjVTPh8VB2WXAcCjnhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756541117; c=relaxed/simple;
-	bh=E+3FytFWpN13QNaZlIP9PT23YkoDdof1b13hg+sNa10=;
+	s=arc-20240116; t=1756541998; c=relaxed/simple;
+	bh=VJVktYbtJWttedpN2IBIAHp9NC8Jjxgesn2RhZArsks=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KXg9bYg2G4O+N7Si7/3SCG4M2xFcY0/qDX/Goahhb0fG9vvJkl+bFoqYZ7AkGnG3QxWiYxj6LyavefyNbZ96W+x+WOv/+dMXHmoVVIAhR/arJSZ5kUw6jqB4yV9nljm85LRb9yWt6sFiyrvcWgC1U3amD2ovTl8HwzboZixd79I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BHpKM+WN; arc=none smtp.client-ip=209.85.218.53
+	 To:Cc:Content-Type; b=nuQ2MluADFZROrkAG/6iPEoeLvOwCKCZ6KgEx5Odx5+BFuYL9SFqkr0sC6iUb4oXdKmIMWTRnsYsOLXFSX1MqxDLbHr9qteEZoQXaPNwfBUc6XNh61gC2PC8JWflfyXuYXqatgkt3muDbhEudDqSMhRcm0oz8nhryTbkUF4JGK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EeQaF9XP; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BHpKM+WN"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-afeceee8bb1so421739366b.3
-        for <imx@lists.linux.dev>; Sat, 30 Aug 2025 01:05:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EeQaF9XP"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afefc7be9d4so253245366b.1
+        for <imx@lists.linux.dev>; Sat, 30 Aug 2025 01:19:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756541114; x=1757145914; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1756541995; x=1757146795; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E+3FytFWpN13QNaZlIP9PT23YkoDdof1b13hg+sNa10=;
-        b=BHpKM+WNxAlZXNg2MmM33pmyWFj4VzgcRUYLR/tYpv9PjwrlT4myvWlVldZIRmmprc
-         1SZBLLsXEz/MJ7HLfy3oCJeMhy3+KbNoDwf/GdRZHOSTrYrrDI/CKHF5WZVZwr/m0VMM
-         plLrnLZcU7ku8zWNsbd2/zBx1KyYCL5EL68VIqnlfXBmVsgr7leaMlRyVhp/Bn5rrvFW
-         rowp4mU4lsrU35P+wLDjWYjGZKhZt0mdj5Fx22NTxrEQSCrac8KvZ5sEOr66NpEqe3zf
-         WlE3QOtD6j6xcBoI3vrQ7ys9eQuokspw7m4io0C429TAvC1aKhUa3p2g7ilsccmnyHVw
-         hbxA==
+        bh=4yz+gNr9wnP1FuUv8NASxp4fC8wPUaxLjhsHiXAOzrk=;
+        b=EeQaF9XPYPJpFfT1UIfm+aUo1pdA6NbGTBO3JTMu97FWL1IfFHv8LODhIxHy7ZGBw1
+         6tl/B7O7LIvpvt6umvQ/U5vQhBDgePY1f7hxs5iA6BsoRgt7/OS2pNC1t0eWedlfivAW
+         2vAfKt6SB506MdRnp0wOnaGLpDsdIB05pz1O/yuh07VS3KKA5Kxxnmu+sl/RlZC66pcK
+         PwWtovWsJAlNtsOuDa3Cvr8bEJl8eAvvY4vFbxAqxPdVXio/yeUUsjdx/y+Ycea8fsYy
+         uQJFoAdDNv55x7KrCixhuqZGcgSqqn1Mbdi0xj2vtrbHQVZoedNwMXPR3hrHDA6nYSqh
+         7UBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756541114; x=1757145914;
+        d=1e100.net; s=20230601; t=1756541995; x=1757146795;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=E+3FytFWpN13QNaZlIP9PT23YkoDdof1b13hg+sNa10=;
-        b=MDez5ow3f7HYt95tcjCRrXXghMlAAHRBtTNpZ95rtDFakHetmGkzjLjbMi+Ug+Cbk3
-         C/mZDtGE6NjOErtyNOs7WjObwBLinpJRtaCm0gX9PKbXbPz8ZqlvzRGVNdvwuHWKRnxi
-         LekZ9e1YxO/uTHlP5UUQtvgOux72KQCiVlq2YILC1/8GIZn91BfNtMZ47peydu8vxr/d
-         55dqdWakX8iAXlQQHCVVrMQY0msB8FPKff8g5mrwC7HIFXqsVS9h9d9Mb4BcSrkwDt8J
-         AnP1fljRash+rOCBRU1FQJuMKnxvGC/lr/0QUDV/JoCZBwlPTJ8evhyaYQqsk0YtPqyf
-         +azw==
-X-Forwarded-Encrypted: i=1; AJvYcCXN+rnTBqpF645/1sz1UdyCi8sGHijkSFrVz7SsJ/puZe7aRqUPBsXkyGjRA/uszPJSlJc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx1pOkcbxqW2Pio070yy6RVUN+IkiY/bCzVT8lDhWCU46NfSprW
-	mh7Au6cKI59aoknw28W7Z2+WKW0ftDG13z7Uk8gg5kjl0JA9E4pzHDhFGCujDlXB6qjh2hdlnBQ
-	l5pFRZInLNcL2zQwvdWL0fAd1TSwyo4k=
-X-Gm-Gg: ASbGncsGAxe39GH2SHkG2FCbd73jMvZlZuWBbOB2iMBqDL0NlmycQvg7pO2H/FbEQ8Q
-	zKhzhRr8lLFLqf+pXwMZngixy7RLc6a7sebi14efN/HIgJh8RtUh0DTaECpROnZ4DcdnTclDier
-	G+T1UsGW+mg9w5wi1IqlPSquGF9yMECdz0LCQJqsu5BC+e+JWZucSiQggpGNkJz1HXFclq2tYUD
-	rMGGbI=
-X-Google-Smtp-Source: AGHT+IGzflFMFHhQCk11BPmcxfewbn8R9ACv8Yo0SSn9TtnTW1JgawjqxVwsmdBQr0ZCbodUJMXZIPy39a0Dt37TD0k=
-X-Received: by 2002:a17:907:7244:b0:af9:6e2b:f30c with SMTP id
- a640c23a62f3a-b01d972f530mr112838566b.34.1756541113922; Sat, 30 Aug 2025
- 01:05:13 -0700 (PDT)
+        bh=4yz+gNr9wnP1FuUv8NASxp4fC8wPUaxLjhsHiXAOzrk=;
+        b=Xp7VURIg7RmoRYpA5QKkHmicuZmEjsn4jmQ+6w2Fm4wpfRRCF936hDT4U3EX15DYA+
+         DU5ULkjSF8DdOTou7Hlje3bLXLEuuy/x+yU9o702Bl8AJ+aSAdMt33dHiWK63w02oLNy
+         Ywx7JQScVjSLyLXDIhVTi0VrRNDuA3hbZ+y0vEGcEEU8+GFYchzqW96M5PU/Na6eNHr0
+         oxBhCpDQwZYdhAVXbLcXOHz4Ktd/JK0uK/Qdg6oIRGsbd8V9O1hcHz75O6GFtmsK/EWg
+         25CPBonHTSurMrNbkm7Ap+AA0uDXSH8GTqV6acLuGoy5ZwufhMd8XQxQUnYxgwUE8b+r
+         Z91Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUnZu02RT2iSuVy6P/I7ySuz1M41xPOqjg7XyQMRwwY7HljEdK9nQWnJZEuhJQZShBAVT8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzqcpOJWg5htJ5/lXt+YxwbK9NrzfGjXr7G/JZTMMVlvGDwK6yF
+	b1L/6hYiH8FxH1868ETVR7/UukvcEyLKf+tcEewrjJ2zcrsGeL/LByEe23z9w7SQK9pjar+saQ/
+	ktdQK6bBy+h2dhxtezM4CiWSHb1I0LEo=
+X-Gm-Gg: ASbGncuPc7nxYvFiMyyPVZ2MmDToOpUYbB3JLiSXsETVIVvblqZ0bsS07QkPOQ6V7lN
+	9MNCz1B/L6eHXKwpJsvkb4tU234Xf2eTTDKAu935eDOPubqHCYa6XEEfsNY5LS5tpzEAe6Cthbe
+	E6ULQzlcyv0W+WzEeDKizLb9WTWRIvhXo3sUvIvfAzUTEO6g0a/CmaKNWhU0AyuDsPQpBnNXP4c
+	yqiyBugcfzcu+Hp6A==
+X-Google-Smtp-Source: AGHT+IFZ0wex4nlRzxOc5BG8ARrUjGz7n83ilxsIj2vkPtuKrq3/+IPw3T+K7YRUGhLq8JMm7BCY/eJH8jBRTGRUUSA=
+X-Received: by 2002:a17:907:d88:b0:afe:764d:6b24 with SMTP id
+ a640c23a62f3a-b01d8a6a72cmr138313266b.14.1756541994858; Sat, 30 Aug 2025
+ 01:19:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org> <20250828-pinctrl-gpio-pinfuncs-v6-4-c9abb6bdb689@linaro.org>
-In-Reply-To: <20250828-pinctrl-gpio-pinfuncs-v6-4-c9abb6bdb689@linaro.org>
+References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
+In-Reply-To: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 30 Aug 2025 11:04:37 +0300
-X-Gm-Features: Ac12FXzW7SA_uUOkcPEFLfZfGLYsYzzZVOKlWfYhU6akvDLYnA0W6YgK2rZDIDs
-Message-ID: <CAHp75Vci1uAcA9ahofn95hxufa+Yi1Fjt4w74HSObQq-Rz5zMQ@mail.gmail.com>
-Subject: Re: [PATCH v6 04/15] pinctrl: mediatek: mt7988: use PINCTRL_PIN_FUNCTION()
+Date: Sat, 30 Aug 2025 11:19:18 +0300
+X-Gm-Features: Ac12FXwW6CW7deBsm3Aef2wv7I2Olg4IsebLLUGVz2bUvR7gVeqwu6XUXgRk6VE
+Message-ID: <CAHp75Vd+q5NZ=4YSouU-EdbR4TZf7S8PGqR0B0HJG8DkVKKtAg@mail.gmail.com>
+Subject: Re: [PATCH v6 00/15] pinctrl: introduce the concept of a GPIO pin
+ function category
 To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
 	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
@@ -91,19 +92,59 @@ Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.
 	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
 	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
 	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Thu, Aug 28, 2025 at 7:00=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
  wrote:
 >
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Problem: when pinctrl core binds pins to a consumer device and the
+> pinmux ops of the underlying driver are marked as strict, the pin in
+> question can no longer be requested as a GPIO using the GPIO descriptor
+> API. It will result in the following error:
 >
-> We have a dedicated initializer macro for defining pin functions for
-> mediatek drivers so use it here.
+> [    5.095688] sc8280xp-tlmm f100000.pinctrl: pin GPIO_25 already request=
+ed by regulator-edp-3p3; cannot claim for f100000.pinctrl:570
+> [    5.107822] sc8280xp-tlmm f100000.pinctrl: error -EINVAL: pin-25 (f100=
+000.pinctrl:570)
+>
+> This typically makes sense except when the pins are muxed to a function
+> that actually says "GPIO". Of course, the function name is just a string
+> so it has no meaning to the pinctrl subsystem.
+>
+> We have many Qualcomm SoCs (and I can imagine it's a common pattern in
+> other platforms as well) where we mux a pin to "gpio" function using the
+> `pinctrl-X` property in order to configure bias or drive-strength and
+> then access it using the gpiod API. This makes it impossible to mark the
+> pin controller module as "strict".
+>
+> This series proposes to introduce a concept of a sub-category of
+> pinfunctions: GPIO functions where the above is not true and the pin
+> muxed as a GPIO can still be accessed via the GPIO consumer API even for
+> strict pinmuxers.
+>
+> To that end: we first clean up the drivers that use struct function_desc
+> and make them use the smaller struct pinfunction instead - which is the
+> correct structure for drivers to describe their pin functions with. We
+> also rework pinmux core to not duplicate memory used to store the
+> pinfunctions unless they're allocated dynamically.
+>
+> First: provide the kmemdup_const() helper which only duplicates memory
+> if it's not in the .rodata section. Then rework all pinctrl drivers that
+> instantiate objects of type struct function_desc as they should only be
+> created by pinmux core. Next constify the return value of the accessor
+> used to expose these structures to users and finally convert the
+> pinfunction object within struct function_desc to a pointer and use
+> kmemdup_const() to assign it. With this done proceed to add
+> infrastructure for the GPIO pin function category and use it in Qualcomm
+> drivers. At the very end: make the Qualcomm pinmuxer strict.
 
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Note mainly for Linus and Bart:
+I agree with the patches 1..11, but starting from 12 needs more
+discussion. That said, I hope Linus can apply the first 11 ones to
+make it easier to continue with the rest.
 
 --=20
 With Best Regards,
