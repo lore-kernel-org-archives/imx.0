@@ -1,54 +1,68 @@
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E43E21771B
-	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 07:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4632EFD8F
+	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 08:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756711801; cv=none; b=EBYDAQd7w2ka/ao35+OrlSvAcocTAUGKOzQwoa0p7b6Ou6lDOcUDI90hRA7reUh+x+wTRZSFAen1DuU/TzctrmgFci6vWXWJJ/6k/K4+drK8J4mflORnzuo33WGDQxVTNXENM7AQsS3AeJo0kTStVUbZiVx89ds/7yEHUV05Re8=
+	t=1756714831; cv=none; b=kRaFbMMj9lq+AMX+ugyaOO9sNINkBABzda8v4zzqLyED/H3wLtCyCWUEeF9abXzoAataG9X83vkYYQ6q06j6CmhkUrhgwa2A67o1SckkEZUqCPEbSjcQpUcbuPNhWrDU+AVW1MT7n7noKHtmBb7nTGcMEJvK6v0RHOMz2mbeiS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756711801; c=relaxed/simple;
-	bh=l5hg6tKn6cNTnfxFJdm4QIGr4gu+sUNQYbPArd048Xo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=l8y/zGowl/+pcm1w/AjLD1k95Wenl7ndJHEGUHUG5gGxEpkaeKfxcYajES3pivNmTxDI18PaxFccipzdJw3tBmJz00OTx+aLJf2ATA+uXkuIwW2Eu3cd/IOX8F+7atKiTuziKY4ZnsAvObg//gbaXYUzCkmNF8X6k3NCzCGgd00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=cqC5cciI; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	s=arc-20240116; t=1756714831; c=relaxed/simple;
+	bh=aZzb5Dnjpt87o6rinPuQ4mDWJUz0l4tbIBjHhqUstH8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=rrv5AJeAMpH/Io8OJiDILcq4Xk3oZuYS/XDbDwbarKFeAP4kLhyljsdge0DrXuJThBmaXcqsQPJC42fRSgJPvugqd+xjnb/Ex4pA3Toi0m0eCmta+P8coJRkagOBbVjFZyy83K8f815K9QoH1n/aD7bHWUh13CmgrUgz3t7TpOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BLE4vqoh; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="cqC5cciI"
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5817Dhfm031463;
-	Mon, 1 Sep 2025 09:29:34 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	aSUaE3wqTSGIzPy5TH46KyeqW0I91kINvSo2g7sJPRM=; b=cqC5cciIE8yW98ch
-	cXidC4lmHnUy9aikCnX0CBQCkIMDZyeY3uiNpFyWAdve1b/Re/Cq0zVV0YcDPdM/
-	7MbBvawblaDQ3DYA4b1OMRQTmy1XRXxRt4EFz7xK59FrGSPHWlr0IxUdmCz8t4o/
-	/QBelY4CA7N61dkIlW/ynGQSah+LWsqQwziwB8WSWGe75UkkBmpOVptt9q2SQnRW
-	HydaMmMP3MkMBScgrTNpu2Q7JIJPqq4X65TEKVqWbFrr6QDxQKXoaN875QzuS5aO
-	MhfnmTs2OhlZsNpq/fCu7bfnd/H4ppUzu4xAeIJ62njEjf/PxFTLrTAOzaU5+6IS
-	hUs89g==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 48ur6fdbgg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Sep 2025 09:29:34 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 9B4EF40044;
-	Mon,  1 Sep 2025 09:28:04 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfcas1node1.st.com [10.75.129.72])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8ED8E754B3C;
-	Mon,  1 Sep 2025 09:26:49 +0200 (CEST)
-Received: from SAFDAG1NODE1.st.com (10.75.90.17) by SHFCAS1NODE1.st.com
- (10.75.129.72) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Mon, 1 Sep
- 2025 09:26:49 +0200
-Received: from [10.48.87.127] (10.48.87.127) by SAFDAG1NODE1.st.com
- (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Mon, 1 Sep
- 2025 09:26:48 +0200
-Message-ID: <bb5cb154-0f7a-4e21-afe3-453ff5ee9373@foss.st.com>
-Date: Mon, 1 Sep 2025 09:26:47 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BLE4vqoh"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3ce772ce0dbso2642982f8f.0
+        for <imx@lists.linux.dev>; Mon, 01 Sep 2025 01:20:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756714827; x=1757319627; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vIDbvw0dQVZGx06wUE3YhwCSQsoehVltdwHmuGJe+Vo=;
+        b=BLE4vqoh5hjLi7pyE2nPmvaWkT+5S1g+E8NytTV/UwdBpfyeuo8vWph3YwxuHPD9f9
+         9tvfq7T2dtB1gVEPZSykc4hbTEg9FQiuZb5rRbL33szTWcDS4Jap3GZ/WCWn3X1KOvIz
+         riykUgPzZ26NeNRcPRTm/ndSUvN5+34aOrhNIUGs/48uYwd3HT0U1S5sa79AQwQcPl9A
+         Y4jUO3IsYlSaGrh3tA4LrrzKb2PRHwSyPhRgIRXqv3tLjrc7LENKpOqAx1v4c0RZE3cC
+         4Fqglabm5M5CfMpXnVXoOHGyfANzfyw68q9wpxjyKQU0rTCrmp25DEd+xq8C0840XNLM
+         PusA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756714828; x=1757319628;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vIDbvw0dQVZGx06wUE3YhwCSQsoehVltdwHmuGJe+Vo=;
+        b=WflKZUvsVcI1QzSY74l7XA4Hfs9AYVWziF42tIHsIY10kGFkD9+GlEV6ADZsvsQMY5
+         L+M0FCdMt4TSnipKOukobOJyGiQRDjk3jkhRbZdvaDU8ybtPzgPAfqV99mW7mFDkTedG
+         isYu6aS/Vk1oyBAmDJa5q4kQK6eHOOPgyjpBGmmKDleZIVvFs/P4G4i2onJFRFfknW+z
+         Jfwo1aSwiucENU2pb6naHZMRzc6wMPrvxjyCTFWghzpzZ9ISprBevqgjoo662mLxkfPG
+         I7l3fDA9AjB+uZ8a+H9ashrdvkf0d4LcTP2zB9FyfmncpKpo/CTELLcYIpIU986swmV8
+         Vk5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVXBMFingOVvdLBDNPLTWXBalJKB+YOQw7G0lW+NK6WLpZT5SH2FZJxcDwJzY7pP213bAk=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw68PNoJVRMOntDaaod43CkXLxsBP+twWR6cN1VpbKZIigxoFqK
+	GNG92oLYjAL5G7GXSM6IEWU07ExUooDbJpHt6xe5euEB9fDOSfh+C6SmfdLdnTaX0uc=
+X-Gm-Gg: ASbGncuMon84uAUa/RtP5sGFhgJ63ZRWl0yawPVkEDfY+CG1XQd+sC8a1ntuT3RFvn0
+	/tkIRcT0zeE8eWCX2A0WL3VKDcejZetdFKp+eat/CkO8WC6MKSBp1UZUrflDHPfrBy1K85ZmNyo
+	RQpVKLQYq9/tqtmgbE0eWJ1DZws87vdNPwDO3UBS6nmWoVTTT8pzff3kOOcXE7Ze+OnHYJbezZi
+	Pow69Kz2qeJsd9Kd6WNcYWAZtpNthm1JnKQ81Ta9yIQ/rXqiFHxZk4oSgbAOavX8XbNorfpDQ1z
+	B35ba5fVPR1BV1wfUuh4Ju3DcvVOa91+AyTZiitjDm/MhbCTeERYOdz/NP/TlqcE23hRNHpK94R
+	x+DhIewk1evwQGc1gD5AtYRWOe4sixI9SAmM/9TYJEfr5zmcDPQeW+ml87ZSnAKYRBWc4NEwlTb
+	NtK1sIeGM=
+X-Google-Smtp-Source: AGHT+IGJECIIAmi+nv+q6Nvy1Sm8F6AtGZk4avjvD5iwXIfWzvYFQu4NlHq9yjXiW+lQZxu/bSQpRg==
+X-Received: by 2002:a05:6000:200b:b0:3ca:4b59:2715 with SMTP id ffacd0b85a97d-3d1dcf56456mr5038229f8f.20.1756714827333;
+        Mon, 01 Sep 2025 01:20:27 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:3d9:2080:881c:7d0e:ad0a:d9a? ([2a01:e0a:3d9:2080:881c:7d0e:ad0a:d9a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e68c83asm154115295e9.20.2025.09.01.01.20.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Sep 2025 01:20:26 -0700 (PDT)
+Message-ID: <fcd4161d-45ad-4915-a6a4-5819eeaff98d@linaro.org>
+Date: Mon, 1 Sep 2025 10:20:25 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -56,258 +70,274 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
-To: Linus Walleij <linus.walleij@linaro.org>,
-        Shenwei Wang
-	<shenwei.wang@nxp.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        "Mathieu
- Poirier" <mathieu.poirier@linaro.org>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        "Sascha
- Hauer" <s.hauer@pengutronix.de>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam
-	<festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-        <linux-remoteproc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-imx@nxp.com>
-References: <20250818204420.794554-1-shenwei.wang@nxp.com>
- <20250818204420.794554-4-shenwei.wang@nxp.com>
- <CACRpkdZq25n4gZSesV8z8zrBs6kqU1a8=vwVkPBwM+hFb9JKwg@mail.gmail.com>
-Content-Language: en-US
-From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
-In-Reply-To: <CACRpkdZq25n4gZSesV8z8zrBs6kqU1a8=vwVkPBwM+hFb9JKwg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SAFDAG1NODE1.st.com
- (10.75.90.17)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-01_03,2025-08-28_01,2025-03-28_01
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v6 00/15] pinctrl: introduce the concept of a GPIO pin
+ function category
+To: Bartosz Golaszewski <brgl@bgdev.pl>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Alexey Klimov <alexey.klimov@linaro.org>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+ Andy Shevchenko <andy@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+ Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ NXP S32 Linux Team <s32@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Tony Lindgren <tony@atomide.com>, Haojian Zhuang
+ <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Mark Brown <broonie@kernel.org>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ Chen-Yu Tsai <wenst@chromium.org>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On 28/08/2025 18:00, Bartosz Golaszewski wrote:
+> Problem: when pinctrl core binds pins to a consumer device and the
+> pinmux ops of the underlying driver are marked as strict, the pin in
+> question can no longer be requested as a GPIO using the GPIO descriptor
+> API. It will result in the following error:
+> 
+> [    5.095688] sc8280xp-tlmm f100000.pinctrl: pin GPIO_25 already requested by regulator-edp-3p3; cannot claim for f100000.pinctrl:570
+> [    5.107822] sc8280xp-tlmm f100000.pinctrl: error -EINVAL: pin-25 (f100000.pinctrl:570)
+> 
+> This typically makes sense except when the pins are muxed to a function
+> that actually says "GPIO". Of course, the function name is just a string
+> so it has no meaning to the pinctrl subsystem.
+> 
+> We have many Qualcomm SoCs (and I can imagine it's a common pattern in
+> other platforms as well) where we mux a pin to "gpio" function using the
+> `pinctrl-X` property in order to configure bias or drive-strength and
+> then access it using the gpiod API. This makes it impossible to mark the
+> pin controller module as "strict".
+> 
+> This series proposes to introduce a concept of a sub-category of
+> pinfunctions: GPIO functions where the above is not true and the pin
+> muxed as a GPIO can still be accessed via the GPIO consumer API even for
+> strict pinmuxers.
+> 
+> To that end: we first clean up the drivers that use struct function_desc
+> and make them use the smaller struct pinfunction instead - which is the
+> correct structure for drivers to describe their pin functions with. We
+> also rework pinmux core to not duplicate memory used to store the
+> pinfunctions unless they're allocated dynamically.
+> 
+> First: provide the kmemdup_const() helper which only duplicates memory
+> if it's not in the .rodata section. Then rework all pinctrl drivers that
+> instantiate objects of type struct function_desc as they should only be
+> created by pinmux core. Next constify the return value of the accessor
+> used to expose these structures to users and finally convert the
+> pinfunction object within struct function_desc to a pointer and use
+> kmemdup_const() to assign it. With this done proceed to add
+> infrastructure for the GPIO pin function category and use it in Qualcomm
+> drivers. At the very end: make the Qualcomm pinmuxer strict.
+> 
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> ---
+> Changes in v6:
+> - Select GENERIC_PINMUX_FUNCTIONS when using generic pinmux helpers in
+>    qcom pinctrl drivers to fix build on ARM 32-bit platforms
+> - Assume that a pin can be requested in pin_request() if it has no
+>    mux_setting assigned
+> - Also check if a function is a GPIO for pins within GPIO ranges
+> - Fix an issue with the imx pinctrl driver where the conversion patch
+>    confused the function and pin group radix trees
+> - Add a FIXME to the imx driver mentioning the need to switch to the
+>    provided helpers for accessing the group radix tree
+> - Link to v5: https://lore.kernel.org/r/20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org
+> 
+> Changes in v5:
+> - Fix a potential NULL-pointer dereference in
+>    pinmux_can_be_used_for_gpio()
+> - Use PINCTRL_PINFUNCTION() in pinctrl-airoha
+> - Link to v4: https://lore.kernel.org/r/20250812-pinctrl-gpio-pinfuncs-v4-0-bb3906c55e64@linaro.org
+> 
+> Changes in v4:
+> - Update the GPIO pin function definitions to include the new qcom
+>    driver (milos)
+> - Provide devm_kmemdup_const() instead of a non-managed kmemdup_const()
+>    as a way to avoid casting out the 'const' modifier when passing the
+>    const pointer to devm_add_action_or_reset()
+> - Use devm_krealloc_array() where applicable instead of devm_krealloc()
+> - Fix typos
+> - Fix kerneldocs
+> - Improve commit messages
+> - Small tweaks as pointed out by Andy
+> - Rebased on top of v6.17-rc1
+> - Link to v3: https://lore.kernel.org/r/20250724-pinctrl-gpio-pinfuncs-v3-0-af4db9302de4@linaro.org
+> 
+> Changes in v3:
+> - Add more patches in front: convert pinctrl drivers to stop defining
+>    their own struct function_desc objects and make pinmux core not
+>    duplicate .rodata memory in which struct pinfunction objects are
+>    stored.
+> - Add a patch constifying pinmux_generic_get_function().
+> - Drop patches that were applied upstream.
+> - Link to v2: https://lore.kernel.org/r/20250709-pinctrl-gpio-pinfuncs-v2-0-b6135149c0d9@linaro.org
+> 
+> Changes in v2:
+> - Extend the series with providing pinmux_generic_add_pinfunction(),
+>    using it in several drivers and converting pinctrl-msm to using
+>    generic pinmux helpers
+> - Add a generic function_is_gpio() callback for pinmux_ops
+> - Convert all qualcomm drivers to using the new GPIO pin category so
+>    that we can actually enable the strict flag
+> - Link to v1: https://lore.kernel.org/r/20250702-pinctrl-gpio-pinfuncs-v1-0-ed2bd0f9468d@linaro.org
+> 
+> ---
+> Bartosz Golaszewski (15):
+>        devres: provide devm_kmemdup_const()
+>        pinctrl: ingenic: use struct pinfunction instead of struct function_desc
+>        pinctrl: airoha: replace struct function_desc with struct pinfunction
+>        pinctrl: mediatek: mt7988: use PINCTRL_PIN_FUNCTION()
+>        pinctrl: mediatek: moore: replace struct function_desc with struct pinfunction
+>        pinctrl: imx: don't access the pin function radix tree directly
+>        pinctrl: keembay: release allocated memory in detach path
+>        pinctrl: keembay: use a dedicated structure for the pinfunction description
+>        pinctrl: constify pinmux_generic_get_function()
+>        pinctrl: make struct pinfunction a pointer in struct function_desc
+>        pinctrl: qcom: use generic pin function helpers
+>        pinctrl: allow to mark pin functions as requestable GPIOs
+>        pinctrl: qcom: add infrastructure for marking pin functions as GPIOs
+>        pinctrl: qcom: mark the `gpio` and `egpio` pins function as non-strict functions
+>        pinctrl: qcom: make the pinmuxing strict
+> 
+>   drivers/base/devres.c                            | 21 ++++++++
+>   drivers/pinctrl/freescale/pinctrl-imx.c          | 43 +++++++--------
+>   drivers/pinctrl/mediatek/pinctrl-airoha.c        | 19 +++----
+>   drivers/pinctrl/mediatek/pinctrl-moore.c         | 10 ++--
+>   drivers/pinctrl/mediatek/pinctrl-moore.h         |  7 +--
+>   drivers/pinctrl/mediatek/pinctrl-mt7622.c        |  2 +-
+>   drivers/pinctrl/mediatek/pinctrl-mt7623.c        |  2 +-
+>   drivers/pinctrl/mediatek/pinctrl-mt7629.c        |  2 +-
+>   drivers/pinctrl/mediatek/pinctrl-mt7981.c        |  2 +-
+>   drivers/pinctrl/mediatek/pinctrl-mt7986.c        |  2 +-
+>   drivers/pinctrl/mediatek/pinctrl-mt7988.c        | 44 ++++++---------
+>   drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h |  2 +-
+>   drivers/pinctrl/pinctrl-equilibrium.c            |  2 +-
+>   drivers/pinctrl/pinctrl-ingenic.c                | 49 ++++++++---------
+>   drivers/pinctrl/pinctrl-keembay.c                | 26 +++++----
+>   drivers/pinctrl/pinctrl-single.c                 |  4 +-
+>   drivers/pinctrl/pinmux.c                         | 68 ++++++++++++++++++++----
+>   drivers/pinctrl/pinmux.h                         |  9 ++--
+>   drivers/pinctrl/qcom/Kconfig                     |  1 +
+>   drivers/pinctrl/qcom/pinctrl-ipq5018.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-ipq5332.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-ipq5424.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-ipq6018.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-ipq8074.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-ipq9574.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-mdm9607.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-mdm9615.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-milos.c             |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm.c               | 45 ++++++----------
+>   drivers/pinctrl/qcom/pinctrl-msm.h               |  5 ++
+>   drivers/pinctrl/qcom/pinctrl-msm8226.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm8660.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm8909.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm8916.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm8917.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm8953.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm8960.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm8976.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm8994.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm8996.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm8998.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-msm8x74.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-qcm2290.c           |  4 +-
+>   drivers/pinctrl/qcom/pinctrl-qcs404.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-qcs615.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-qcs8300.c           |  4 +-
+>   drivers/pinctrl/qcom/pinctrl-qdu1000.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sa8775p.c           |  4 +-
+>   drivers/pinctrl/qcom/pinctrl-sar2130p.c          |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sc7180.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sc7280.c            |  4 +-
+>   drivers/pinctrl/qcom/pinctrl-sc8180x.c           |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sc8280xp.c          |  4 +-
+>   drivers/pinctrl/qcom/pinctrl-sdm660.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sdm670.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sdm845.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sdx55.c             |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sdx65.c             |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sdx75.c             |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sm4450.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sm6115.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sm6125.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sm6350.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sm6375.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sm7150.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sm8150.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sm8250.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sm8350.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sm8450.c            |  4 +-
+>   drivers/pinctrl/qcom/pinctrl-sm8550.c            |  2 +-
+>   drivers/pinctrl/qcom/pinctrl-sm8650.c            |  4 +-
+>   drivers/pinctrl/qcom/pinctrl-sm8750.c            |  4 +-
+>   drivers/pinctrl/qcom/pinctrl-x1e80100.c          |  2 +-
+>   drivers/pinctrl/renesas/pinctrl-rza1.c           |  2 +-
+>   drivers/pinctrl/renesas/pinctrl-rza2.c           |  2 +-
+>   drivers/pinctrl/renesas/pinctrl-rzg2l.c          |  2 +-
+>   drivers/pinctrl/renesas/pinctrl-rzv2m.c          |  2 +-
+>   include/linux/device/devres.h                    |  2 +
+>   include/linux/pinctrl/pinctrl.h                  | 14 +++++
+>   include/linux/pinctrl/pinmux.h                   |  2 +
+>   80 files changed, 287 insertions(+), 224 deletions(-)
+> ---
+> base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
+> change-id: 20250701-pinctrl-gpio-pinfuncs-de82bd9aac43
+> 
+> Best regards,
 
-On 8/21/25 11:01, Linus Walleij wrote:
-> Hi Shenwei,
->
-> thanks for your patch!
->
-> On Mon, Aug 18, 2025 at 10:45 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
->
->> On i.MX SoCs, the system may include two processors:
->>          - An MCU running an RTOS
->>          - An MPU running Linux
->>
->> These processors communicate via the RPMSG protocol.
->> The driver implements the standard GPIO interface, allowing
->> the Linux side to control GPIO controllers which reside in
->> the remote processor via RPMSG protocol.
->>
->> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> Since this is a first RPMSG GPIO driver, I'd like if Björn and/or
-> Mathieu have a look at it so I'm sure it is RPMSG-proper!
+Tested on a bunch on qcom boards, no issues observed, regression of v5 no longers appears.
 
-Could this driver be generic (platform independent) ?
-Perhaps i missed something, but it seems to me that there is no IMX
-specific code.
-Making it generic would allow other platforms to reuse it instead of
-duplicating it.
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-Thanks,
-Arnaud
+Probably only applies on patches 1, 9, 10, 11, 12, 13, 14, & 15
 
->
->> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
->> index a437fe652dbc..2ce4e9b5225e 100644
->> --- a/drivers/gpio/Kconfig
->> +++ b/drivers/gpio/Kconfig
->> @@ -402,6 +402,17 @@ config GPIO_ICH
->>
->>            If unsure, say N.
->>
->> +config GPIO_IMX_RPMSG
->> +       tristate "NXP i.MX SoC RPMSG GPIO support"
->> +       depends on IMX_REMOTEPROC && RPMSG && GPIOLIB
->> +       default IMX_REMOTEPROC
->> +       help
->> +         Say yes here to support the RPMSG GPIO functions on i.MX SoC based
->> +         platform.  Currently supported devices: i.MX7ULP, i.MX8ULP, i.MX8x,
->> +         and i.MX9x.
->> +
->> +         If unsure, say N.
-> This is sorted under memory-mapped GPIO, but it isn't.
->
-> Create a new submenu:
->
-> menu "RPMSG GPIO drivers"
->          depends on RPMSG
->
-> And put it here as the first such driver.
->
-> No need to have a dependency on RPMSG in the GPIO_IMX_RPMSG
-> Kconfig entry after this.
->
->> +#include <linux/kernel.h>
->> +#include <linux/module.h>
->> +#include <linux/bitops.h>
-> bitops.h or just bits.h? Check which one you actually use.
->
->> +#include <linux/err.h>
->> +#include <linux/gpio/driver.h>
->> +#include <linux/imx_rpmsg.h>
->> +#include <linux/init.h>
->> +#include <linux/irqdomain.h>
->> +#include <linux/of.h>
->> +#include <linux/of_device.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/pm_qos.h>
-> Are you really using pm_qos?
->
->> +#include <linux/rpmsg.h>
->> +#include <linux/virtio.h>
->> +#include <linux/workqueue.h>
-> (...)
->
->> +struct imx_rpmsg_gpio_port {
->> +       struct gpio_chip gc;
->> +       struct irq_chip chip;
-> This irqchip doesn't look very immutable.
->
-> Look at other patches rewriting irqchips to be immutable
-> and break this out to a static const struct irq_chip with
-> IRQCHIP_IMMUTABLE set instead.
->
->> +static int imx_rpmsg_gpio_get(struct gpio_chip *gc, unsigned int gpio)
->> +{
->> +       struct imx_rpmsg_gpio_port *port = gpiochip_get_data(gc);
->> +       struct gpio_rpmsg_data *msg = NULL;
->> +       int ret;
->> +
->> +       mutex_lock(&port->info.lock);
-> Please use guards for all the mutexes:
->
-> #include <linux/cleanup.h>
->
-> guard(mutex)(&port->info.lock);
->
-> and it will be released as you exit the function.
->
->> +static int imx_rpmsg_gpio_direction_input(struct gpio_chip *gc,
->> +                                         unsigned int gpio)
->> +{
->> +       struct imx_rpmsg_gpio_port *port = gpiochip_get_data(gc);
->> +       struct gpio_rpmsg_data *msg = NULL;
->> +       int ret;
->> +
->> +       mutex_lock(&port->info.lock);
-> Dito for all these instances.
-> (Saves you a bunch of lines!)
->
->> +static void imx_rpmsg_irq_bus_lock(struct irq_data *d)
->> +{
->> +       struct imx_rpmsg_gpio_port *port = irq_data_get_irq_chip_data(d);
->> +
->> +       mutex_lock(&port->info.lock);
->> +}
-> Here you need to keep the classic mutex_lock() though,
-> because of the irqchip locking abstraction helper.
->
->> +static struct irq_chip imx_rpmsg_irq_chip = {
-> const
->
->> +       .irq_mask = imx_rpmsg_mask_irq,
->> +       .irq_unmask = imx_rpmsg_unmask_irq,
->> +       .irq_set_wake = imx_rpmsg_irq_set_wake,
->> +       .irq_set_type = imx_rpmsg_irq_set_type,
->> +       .irq_shutdown = imx_rpmsg_irq_shutdown,
->> +       .irq_bus_lock = imx_rpmsg_irq_bus_lock,
->> +       .irq_bus_sync_unlock = imx_rpmsg_irq_bus_sync_unlock,
->          .flags = IRQCHIP_IMMUTABLE,
->
-> probably also:
->
->           GPIOCHIP_IRQ_RESOURCE_HELPERS,
->
-> ?
->
-> I think you want to properly mark GPIO lines as used for
-> IRQs!
->
->> +static int imx_rpmsg_gpio_to_irq(struct gpio_chip *gc, unsigned int gpio)
->> +{
->> +       struct imx_rpmsg_gpio_port *port = gpiochip_get_data(gc);
->> +       int irq;
->> +
->> +       irq = irq_find_mapping(port->domain, gpio);
->> +       if (irq > 0) {
->> +               irq_set_chip_data(irq, port);
->> +               irq_set_chip_and_handler(irq, &port->chip, handle_level_irq);
->> +       }
->> +
->> +       return irq;
->> +}
-> Ugh we try to to use custom to_irq() if we can...
->
-> Do you have to?
->
-> Can't you use
-> select GPIOLIB_IRQCHIP
-> and be inspired by other chips using the irqchip
-> helper library?
->
-> We almost always use that these days.
->
->> +       /* create an irq domain */
->> +       port->chip = imx_rpmsg_irq_chip;
->> +       port->chip.name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s-gpio%d",
->> +                                        pltdata->rproc_name, port->idx);
->> +       port->dev = &pdev->dev;
->> +
->> +       irq_base = devm_irq_alloc_descs(&pdev->dev, -1, 0, IMX_RPMSG_GPIO_PER_PORT,
->> +                                  numa_node_id());
->> +       if (irq_base < 0) {
->> +               dev_err(&pdev->dev, "Failed to alloc irq_descs\n");
->> +               return irq_base;
->> +       }
->> +
->> +       port->domain = irq_domain_create_legacy(of_node_to_fwnode(np),
->> +                                               IMX_RPMSG_GPIO_PER_PORT,
->> +                                               irq_base, 0,
->> +                                               &irq_domain_simple_ops, port);
->> +       if (!port->domain) {
->> +               dev_err(&pdev->dev, "Failed to allocate IRQ domain\n");
->> +               return -EINVAL;
->> +       }
-> This also looks unnecessarily custom.
->
-> Try to use GPIOLIB_IRQCHIP.
->
->
->> +static struct platform_driver imx_rpmsg_gpio_driver = {
->> +       .driver = {
->> +               .name = "gpio-imx-rpmsg",
->> +               .of_match_table = imx_rpmsg_gpio_dt_ids,
->> +       },
->> +       .probe = imx_rpmsg_gpio_probe,
->> +};
->> +
->> +static int __init gpio_imx_rpmsg_init(void)
->> +{
->> +       return platform_driver_register(&imx_rpmsg_gpio_driver);
->> +}
->> +
->> +device_initcall(gpio_imx_rpmsg_init);
-> No please just do:
->
-> module_platform_driver(imx_rpmsg_gpio_driver);
->
-> Fix up  these things to begin with and then we can
-> look at details!
->
-> Yours,
-> Linus Walleij
->
-
+Neil
