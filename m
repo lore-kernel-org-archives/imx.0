@@ -1,89 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3AF32F74E;
-	Mon,  1 Sep 2025 15:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AC432F770
+	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 15:36:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756740921; cv=none; b=A4uAgYLqfc3II7vSQ+DT7OYQcbgMJCrVe2vtEDB6uDbt7eTGqdY3cyy0pgCVxuJv4+u6zd40UjgF30GwUOyVZx+DaVc515RWNcHnBQLIoDMkdy7koxCyBl4FMYYryoiNAFacHM0BhBC1Cb9VMmIYy/R6H33kpSVaIpY3YKLfZxw=
+	t=1756741016; cv=none; b=UORdILAgciL0tvN3v0WLDCdOaVkOfVYsIUiEXBnOYaQvC3bFjEdiNrgZZ5w+bxgzFJJCXRw8VCIXPbSkcH/BlXjX8Le9FZsiz6OzzPsXRPk1uNYI5PtUU5KB14OdDMOACJf+4yeyDWGKPysRhHErV0KX9/nsch1lEVE3WixVpH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756740921; c=relaxed/simple;
-	bh=+CogIW7N/kGFGPHIRY3AgeAaREaVS0NUPIvxlKDMBms=;
+	s=arc-20240116; t=1756741016; c=relaxed/simple;
+	bh=JG/FmgDIqDX7Pla+FvRtTebcB0C0aiOljtqjKTBfLkI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=prcFtawDlhMkhb9NtqD7y8NU2/mC/vydgDmwMBLJZuMWwHWCuUVBxdqlmsMrwh+u+ns/K2EpZXYPLCVsP0fPDtUbn8kBS8ZvmlhX1KjEionM0tJl6CuFzAKBuF2nWjsh+z1SN1ngn5aG1RnKPirNYNFogzwJ0EQHBNrr4wSAsI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OW8rqc5k; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=FQiFPL7Vctyeczfh/9rOjqArYDgOV9+Ym9vSk7c5R4Cm+RU465ewqSV9v4J3deBCuEiC26DU99viCQ2e37IP0qEZdjmsEc+aoAC5qdbFZhInmQ/TqOuRtigPkNyPpqwUcWD0DOAjw2TaazZaCcdUNypLrehpg+9cq9InyQbRzvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=EKiXZZw+; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OW8rqc5k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 833F9C4CEF0;
-	Mon,  1 Sep 2025 15:35:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756740919;
-	bh=+CogIW7N/kGFGPHIRY3AgeAaREaVS0NUPIvxlKDMBms=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="EKiXZZw+"
+Received: from pendragon.ideasonboard.com (230.215-178-91.adsl-dyn.isp.belgacom.be [91.178.215.230])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 4DAADB63;
+	Mon,  1 Sep 2025 17:35:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1756740945;
+	bh=JG/FmgDIqDX7Pla+FvRtTebcB0C0aiOljtqjKTBfLkI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OW8rqc5k6ae1VO35gF/zJNWvCDAYFe5S62nKZq8qKMe6DHx+oRGXDqKK+2rija4y5
-	 z9Rj1bAsI1g9KoFFcjoBHED89KTO31N+TrUfAzRnwAGajlwWjl7kCpyCOrpxzVRShS
-	 aMIRzGM1F2FvCWw8GNjQOl13GIk9EjPawWuJ9cK/Cn17KAat7Fwl4LiWhuNrqNW3ZR
-	 5EXQsmK6NJmOYJOeoJyKurTC8z6aYxs5mC9FmFcYwUQsByNZ3qO+c0/OwxyL+dzOyk
-	 NGXCAD/uxaN+PDHDg9rDZgCE7Azai2gxKof7tuH07NUrSSgH7Uwy52urPEOI1Lkt8U
-	 xN3qrou1uViJQ==
-Date: Mon, 1 Sep 2025 16:35:13 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Daniel Baluta <daniel.baluta@nxp.com>
-Cc: linux-sound@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Frank.Li@nxp.com, robh@kernel.org,
-	laurentiu.mihalcea@nxp.com, dan.carpenter@linaro.org,
-	waqar.hameed@axis.com, festevam@gmail.com, kernel@pengutronix.de,
-	lgirdwood@gmail.com, peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com, ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com
-Subject: Re: [PATCH] ASoC: SOF: imx: Fix devm_ioremap_resource check
-Message-ID: <a36b4c70-2ed0-4292-afca-7ecfe0207260@sirena.org.uk>
-References: <20250901151513.286454-1-daniel.baluta@nxp.com>
+	b=EKiXZZw+1L6xfHznEGef9KgZOxr+v2EfyaEghsc+nhd3PwhWKlq+dfiA9Z/qY9w5j
+	 uFUEQ3zSgaQAGjEGOIaQx0RGoQO2LE1kQZBl3JhHsYwhbaWvOz6HmNQnQy8aaqoP51
+	 w3N3wDxa0jrMGM/kPZ6JX3/ozGtYUUHBC4/lLFNY=
+Date: Mon, 1 Sep 2025 17:36:32 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Guoniu Zhou <guoniu.zhou@nxp.com>
+Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/4] media: imx8mq-mipi-csi2: Explicitly release reset
+Message-ID: <20250901153632.GA13448@pendragon.ideasonboard.com>
+References: <20250901-csi2_imx8ulp-v5-0-67964d1471f3@nxp.com>
+ <20250901-csi2_imx8ulp-v5-3-67964d1471f3@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qrFBNcE+OVCzYW36"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250901151513.286454-1-daniel.baluta@nxp.com>
-X-Cookie: Auction:
+In-Reply-To: <20250901-csi2_imx8ulp-v5-3-67964d1471f3@nxp.com>
 
+Hi Guoniu,
 
---qrFBNcE+OVCzYW36
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thank you for the patch.
 
-On Mon, Sep 01, 2025 at 06:15:13PM +0300, Daniel Baluta wrote:
-> devm_ioremap_resource does not return NULL on error
-> but an error pointer so we need to use IS_ERR to check
-> the return code.
+On Mon, Sep 01, 2025 at 02:25:31PM +0800, Guoniu Zhou wrote:
+> Call reset_control_deassert() to explicitly release reset to make sure
+> reset bits are cleared since platform like i.MX8ULP can't clear reset
+> bits automatically.
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> ---
+>  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> index 2bf11984690af2e687a3217e465697333d9d995d..6b83aa85af42e1dac25cf29056863680c1f89402 100644
+> --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> @@ -337,18 +337,14 @@ static int imx8mq_mipi_csi_sw_reset(struct csi_state *state)
+>  {
+>  	int ret;
+>  
+> -	/*
+> -	 * these are most likely self-clearing reset bits. to make it
+> -	 * more clear, the reset-imx7 driver should implement the
+> -	 * .reset() operation.
 
->  		sdev->bar[blk_type] = devm_ioremap_resource(sdev->dev, res);
-> -		if (!sdev->bar[blk_type])
-> +		if (IS_ERR(sdev->bar[blk_type]))
->  			return dev_err_probe(sdev->dev,
->  					     -ENOMEM,
->  					     "failed to ioremap %s region\n",
+What happened to this plan, would it be feasible to implement the
+.reset() operation in the relevant drivers to be able to use
+reset_control_reset() here ?
 
-If it's returning an error code we should feed that into dev_err_probe()
-rather than hard coding to -ENOMEM.
+> -	 */
+>  	ret = reset_control_assert(state->rst);
+>  	if (ret < 0) {
+>  		dev_err(state->dev, "Failed to assert resets: %d\n", ret);
+>  		return ret;
+>  	}
+>  
+> -	return 0;
+> +	/* Explicitly release reset to make sure reset bits are cleared. */
+> +	return reset_control_deassert(state->rst);
+>  }
+>  
+>  static void imx8mq_mipi_csi_set_params(struct csi_state *state)
 
---qrFBNcE+OVCzYW36
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+Regards,
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmi1vTAACgkQJNaLcl1U
-h9C0KQgAgW+y0EOT+Ls10dstZ5k6n0b9ak84jHbCy+yNu2eyaJF/2DmH9aytU8wZ
-Ga17ta/qMV+DswgW0/W7kwCYtHVpvCGIgBGrU6cm4sUGGt5nb9mgtxuqXZ5zXQ1f
-JoQJpHpgyg+hb7KjGe98hh2m2WhX1gt4UHzt2jMWWwoHpPNILtm6NgomT2iCntR7
-RA2iQC8SgoCO/ScdXDeJzWmF5Kd9B+jpYk38lW+w7sCfUEaRCaFA+SHsmb5hu8eb
-wWs3vg9i9bpuhyClvauwsbd4u4PVPRh1z+GcVonOH/UtWe39CCN9VioykTCOwbva
-NtBge9of+5p71lUkhFAmBjYZFkg9cA==
-=kkcA
------END PGP SIGNATURE-----
-
---qrFBNcE+OVCzYW36--
+Laurent Pinchart
