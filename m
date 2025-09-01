@@ -1,121 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D691D86D6;
-	Mon,  1 Sep 2025 03:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5BF212572
+	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 04:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756697645; cv=none; b=KCb6RL+jQQL3+yIlbXmkesGg5b5OPHeyw/2s9rSgc0VJ5iPUjnf3nMtdJoS5zfIrKmWgT8pClFh3b/ep+PtONv3ksNUqrFvvS0Qt/KPtJfNywJU7KOSFbvbuqcugfxMfJSLgYp61conzYI8pPQOWTfejLgJ4uEOlspdiuUnhPoE=
+	t=1756701585; cv=none; b=KFkL/lChTZ+dtuzuKxCao6VzK4hEv48ZbW63sg8LDLQlvUjLHJ27Ajb8f4lN9TjNBOcACfffzAG/fzv0rlDvmP9WLVPTgW/6dYNAW5pE/hLVS7h03j6EvJsvpSs+H7IPO1+zSfHFQ3EMF4jbUpNHEXT+00bXgJPax13e4/Iy8w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756697645; c=relaxed/simple;
-	bh=3IMxmQrY05RHnLpjanoo61eVTxFix1to4caUCV0hfOY=;
+	s=arc-20240116; t=1756701585; c=relaxed/simple;
+	bh=qt+dCKV6519As6mQx+5oZLy5Y7d4TQ2O1wkM7GyzqXY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hv0XibRwtRVVkBylEDLM2hQ2A8HXswiykJGjzUx7GZHjDlWo45YkquVcALQrsU1umUKHJTVpxOYbgnt/66uJL4YS6MGrQQXmC8S26g65ZriCzBVWoSC0UmmW0pUPr/wq7pwZ4+w8bmB733zalbaqS+TRxdGJsSYqC/4yAxEhJSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GlCPiZZP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=EKn8SttmKZH4rAMRMp7h8l9qv6MoTfcmTi2EYnToc9Y2sqGMaKSZ53+92ZxazTCxaWrSlrVebpdfOZDp04p5ZbXzCm02H59NV/lI3urdvzZiZjhdYm4qXV2BZCPhxjgUa6jMAzxSBCad3fzqSXqSm+30oHJh284BgwX+VmbZmZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=bzJQgNFo; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GlCPiZZP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9BEC4CEF0;
-	Mon,  1 Sep 2025 03:34:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756697645;
-	bh=3IMxmQrY05RHnLpjanoo61eVTxFix1to4caUCV0hfOY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GlCPiZZP7edJWIneHpeMhTT3Sd+vngEEMLNO8Py0P39Wn/HMRKt7AbbTDm8hmlEOT
-	 JttDPwtEQ1c+8nzra99vy/KFo0SgaMJnge0pshJcDmSRJZ7HDEnW100FH3ZQWj3Cg4
-	 FqSRGanicMqsty6hBFGlX6UN+AWuQuuPbH6EZUgiMb9/A9k7O3m7FVFncnJ5xwkyfL
-	 rDJ4U6sJjCmQeYyDuTuLGJD3m2CpWYg3ssVX761x0EeOucM0Z6pqYafrS4Rcp7LD2+
-	 IQj5iWzXDymbRzv6/Bct7t6sAotOZH/on2R63gYLradTs562AllsZ+AFqQH0n5nKK4
-	 mAeUpyAxTUJng==
-Message-ID: <05f7d69a-9c05-4b47-ab04-594c37e975eb@kernel.org>
-Date: Mon, 1 Sep 2025 05:33:58 +0200
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="bzJQgNFo"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9D664105A26;
+	Mon,  1 Sep 2025 06:30:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1756701057;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=quDK9J6zNIvpJEID6bs9zR7wT+kKDFkKNW3zLnLB/YI=;
+	b=bzJQgNFof6zUwcL4ZoVzZy16oEN20bmKOjJL889sBGUDlqXpyG8YmN6+e6f+OgBkc5GMKO
+	lU0nfn6opw9N1+MTB+e5hFhNPBAzSorQkqU8xCq7IAp7rfmG2bfzePfCN32aUnHtAnJYTG
+	kh6x5LPQQ4TsgFdovW5QBeMce7qXlBczosh2fn+pKmiJRDCxS1CKzxgp1FDGRgXqPoA8kB
+	UiDqo/3LyMB/PX8Aj/i5po8dq4pgfE/ZBB6r60W+d1McQgHiOujtxY4LLfMH6S4v7nHRXK
+	lrx0yhj4pCVQxzzn3FEfaqqSBryAFrHjp6GSjzi6if0QMb91PesWLOs//s30+g==
+Message-ID: <ddab6133-076c-53b0-b425-c65a5447f666@nabladev.com>
+Date: Mon, 1 Sep 2025 06:31:25 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] dts: arm64: freescale: move imx9*-clock.h
- imx9*-power.h into dt-bindings
-To: Marek Vasut <marek.vasut@mailbox.org>, Peng Fan <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2] ARM: dts: imx6-aristainetos2: Replace license text
+ comment with SPDX identifier
+Content-Language: en-US
+To: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>,
+ Heiko Schocher <hs@denx.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Marek Vasut <marek.vasut+renesas@mailbox.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
- E Shattow <e@freeshell.de>
-References: <20250831200516.522179-1-e@freeshell.de>
- <20250901032203.GA393@nxa18884-linux.ap.freescale.net>
- <3a165d77-3e36-4c0d-a193-aa9b27e0d523@mailbox.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <3a165d77-3e36-4c0d-a193-aa9b27e0d523@mailbox.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Erika Unter <e.unter@denx.de>
+References: <20250709-abb-dts-lic-v2-1-adc5e4781f65@prolan.hu>
+ <58709258-9154-4ec1-b64c-5be161b061e8@prolan.hu>
+From: Heiko Schocher <hs@nabladev.com>
+In-Reply-To: <58709258-9154-4ec1-b64c-5be161b061e8@prolan.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 01/09/2025 04:22, Marek Vasut wrote:
-> On 9/1/25 5:22 AM, Peng Fan wrote:
->> On Sun, Aug 31, 2025 at 01:04:45PM -0700, E Shattow wrote:
->>> Move imx9*-{clock,power}.h headers into
->>> include/dt-bindings/{clock,power}/ and fix up the DTs
+Hello Bence,
+
+Sorry was in vacation...
+
+On 13.08.25 17:11, Csókás Bence wrote:
+> Hi Heiko,
+> 
+> On 2025. 07. 09. 9:28, Bence Csókás wrote:
+>> Replace verbatim license text with a `SPDX-License-Identifier`.
 >>
->> No. The files should be under arch/arm64/boot/dts/freescale/
-> Why ? Linux already has include/dt-bindings/clock/ and 
-> include/dt-bindings/power directories for exactly those headers , why 
-> did iMX9 suddenly start conflating them into arch/arm64/boot/dts/freescale ?
+>> The comment header mis-attributes this license to be "X11", but the
+>> license text does not include the last line "Except as contained in this
+>> notice, the name of the X Consortium shall not be used in advertising or
+>> otherwise to promote the sale, use or other dealings in this Software
+>> without prior written authorization from the X Consortium.". Therefore,
+>> this license is actually equivalent to the SPDX "MIT" license (confirmed
+>> by text diffing).
+>>
+>> Cc: Heiko Schocher <hs@denx.de>
+>> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+> 
+> Do you agree with this change?
 
+Reviewed-by: Heiko Schocher <hs@nabladev.com>
 
-Because maybe these are not bindings? Regardless whether you agree or
-not, the commit should clearly explain the reason behind.
-
-
-Best regards,
-Krzysztof
+bye,
+Heiko
+-- 
+Nabla Software Engineering
+HRB 40522 Augsburg
+Phone: +49 821 45592596
+E-Mail: office@nabladev.com
+Geschäftsführer : Stefano Babic
