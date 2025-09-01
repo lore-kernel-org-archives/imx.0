@@ -1,140 +1,132 @@
-Received: from freeshell.de (freeshell.de [116.202.128.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F88030F81F
-	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 11:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.128.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283F2254B09;
+	Mon,  1 Sep 2025 12:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756724859; cv=none; b=eGt0T0GcK2SsM/Ik3vBR03vqM65UTwBlfbKDeBcAAubsL306o1Y/8ooLYoq2O2NrWYzA7mV9OJDz/7W7jIz4tc3g0tPLV0y8waUQ/bDvcC+Svi9tdWZ6LIXib5md3Vi33/Wxx6KiSAMOdrOQobiw9bvetADjVRjqPl9Zcxb4lMA=
+	t=1756728420; cv=none; b=IE2cMFZjf1UQQvMZeiGckhKoTftTKt8VJ5tVebrpgle7EyPDy8eRGY6Wds25tYMzjg3vs7gJ01oYxdyvpdVJW9HHd7id9sEwUlfSzXU+eCHlta5Mj4sRJb7wKe8si8gw5RiaUfjlaCfuvN49lQF6N/Gcmp+mrSd9fGAn4ZKeMiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756724859; c=relaxed/simple;
-	bh=JK7rLeY8FRK0Hyge6EiISVYQmSlKYuTMhKkZ8B6nZJs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mzx8DknACUqOFJ0k6EciutDFosX8r/hSH6V/SDE/jGPUg2IkU4agaVjCkLP7lJkE4TUYKC4fbpFpOUv0ntOk7Rj1QHTrQMckcOOrnrcpQ5y1lLZFw/bPmFESPu1FwpMaWVsZ2SAP5izDMoBhvWrwx/VPcq5aL4EU4XML4/lmfCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=freeshell.de; spf=pass smtp.mailfrom=freeshell.de; arc=none smtp.client-ip=116.202.128.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=freeshell.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freeshell.de
-Received: from [192.168.2.54] (unknown [216.234.200.243])
-	(Authenticated sender: e)
-	by freeshell.de (Postfix) with ESMTPSA id 7297BB2202BC;
-	Mon,  1 Sep 2025 13:07:31 +0200 (CEST)
-Message-ID: <ef9dab99-f14a-4b1e-883f-d2086435b8d5@freeshell.de>
-Date: Mon, 1 Sep 2025 04:07:29 -0700
+	s=arc-20240116; t=1756728420; c=relaxed/simple;
+	bh=KLozvW2/PZEE4MLEPg7Ckr+Jd7gWELOn6bfbOk7IAwQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EUT9oqMqyXpIFydXbq+pD/vAqZKgIdnTH2LYCUxuaUvSH4IMe5wSgvMBolr3zwCxzlse/xGP18jXnAld2zc57zRmQAyfvQwjJ9a6+G3wkfQEAYVegFvGVFbX4+FVGtYBhOMmF+6jBsEG4q+u92kX2H+UEmpVOUCZONt7rO5LF+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=subnAYt3; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="subnAYt3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750A4C4CEF0;
+	Mon,  1 Sep 2025 12:06:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756728419;
+	bh=KLozvW2/PZEE4MLEPg7Ckr+Jd7gWELOn6bfbOk7IAwQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=subnAYt3W6iRYWiLe4R1hyk02hHWugF12CkdwNtfWO6oweESVzkr4HHQSgrGdK/hQ
+	 8F1KuLkxbirhX9eTa+UlHzROt6oVHRMDVtFWN5s14w38M5Is6TmFeJ5JJ8je4krspg
+	 pBRIf5eDDzE+sPD131SIUvsN9YtFG8xjdavT9OTqqYxDYZRUulC8RH0fZzQh+efv6M
+	 zm0xO5wdKFGcsgmWDEVbNVw84C2PinGI3Z8RXMoIob2mUpV8kkm7QMdnJyTfUcaJ1e
+	 cCDoP5GnBM8z+lPd7plFSP8PsGAkGVMDl6cqmwfcIkGDifWC/YBbKkp9x6hig/ZOBh
+	 elTOdLAEWl7eQ==
+Date: Mon, 1 Sep 2025 13:06:48 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v6 06/15] pinctrl: imx: don't access the pin function
+ radix tree directly
+Message-ID: <61bad868-d976-4f49-805c-8d14d4d8b3e4@sirena.org.uk>
+References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
+ <20250828-pinctrl-gpio-pinfuncs-v6-6-c9abb6bdb689@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] dts: arm64: freescale: move imx9*-clock.h
- imx9*-power.h into dt-bindings
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Marek Vasut <marek.vasut@mailbox.org>, Peng Fan <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
-References: <20250831200516.522179-1-e@freeshell.de>
- <20250901032203.GA393@nxa18884-linux.ap.freescale.net>
- <3a165d77-3e36-4c0d-a193-aa9b27e0d523@mailbox.org>
- <05f7d69a-9c05-4b47-ab04-594c37e975eb@kernel.org>
- <51daddc4-1b86-4688-98cb-ef0f041d4126@mailbox.org>
- <8920d24b-e796-4b02-b43b-8a5deed3e8fb@kernel.org>
-Content-Language: en-US
-From: E Shattow <e@freeshell.de>
-In-Reply-To: <8920d24b-e796-4b02-b43b-8a5deed3e8fb@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ck2hWlO4+9LtMqEh"
+Content-Disposition: inline
+In-Reply-To: <20250828-pinctrl-gpio-pinfuncs-v6-6-c9abb6bdb689@linaro.org>
+X-Cookie: Auction:
 
 
+--ck2hWlO4+9LtMqEh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 9/1/25 03:54, Krzysztof Kozlowski wrote:
-> On 01/09/2025 12:30, Marek Vasut wrote:
->> On 9/1/25 5:33 AM, Krzysztof Kozlowski wrote:
->>> On 01/09/2025 04:22, Marek Vasut wrote:
->>>> On 9/1/25 5:22 AM, Peng Fan wrote:
->>>>> On Sun, Aug 31, 2025 at 01:04:45PM -0700, E Shattow wrote:
->>>>>> Move imx9*-{clock,power}.h headers into
->>>>>> include/dt-bindings/{clock,power}/ and fix up the DTs
->>>>>
->>>>> No. The files should be under arch/arm64/boot/dts/freescale/
->>>> Why ? Linux already has include/dt-bindings/clock/ and
->>>> include/dt-bindings/power directories for exactly those headers , why
->>>> did iMX9 suddenly start conflating them into arch/arm64/boot/dts/freescale ?
->>>
->>>
->>> Because maybe these are not bindings?
->>
->> Please compare arch/arm64/boot/dts/freescale/imx95-clock.h and 
->> include/dt-bindings/clock/imx8mp-clock.h and clarify to me, why the 
->> imx95-clock.h is not bindings and the imx8mp-clock.h is bindings.
-> 
-> That's uno reverse card. I do not have to prove why these are different.
-> You need to prove why imx95 are bindings.
-> 
->>
->> Both files list clock IDs for the clock nodes, one clock one is SCMI 
->> clock (iMX95), the other clock node is CCM clock (iMX8MP), and they are 
-> 
-> Yeah, entirely different things. Like comparing apples and oranges.
-> 
->> both (SCMI and CCM) clock nodes in DT. Both header files may have to be 
->> included in drivers, the iMX8MP headers already are, the iMX95 headers 
-> 
-> No, the SCMI cannot be used in the drivers, because these are not
-> abstract IDs mapping between driver and DTS.
-> 
->> currently are included only in U-Boot drivers.
->>
->> I really don't see the difference here, sorry.
-> 
-> You just pointed out difference - no usage in drivers, no ABI!
-> 
-> Instead of playing this "I found this code somewhere, so I can do
-> whatever the same" answer the first implied question - why these are
-> bindings? Provide arguments what do they bind.
-> 
->>
->>> Regardless whether you agree or
->>> not, the commit should clearly explain the reason behind.
->> Which commit ?
-> 
-> This patch.
-> 
-> 
-> Best regards,
-> Krzysztof
+On Thu, Aug 28, 2025 at 06:00:14PM +0200, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>=20
+> The radix tree containing pin function descriptors should not be
+> accessed directly by drivers. There are dedicated functions for it. I
+> suppose this driver does it so that the memory containing the function
+> description is not duplicated but we're going to address that shortly so
+> convert it to using generic pinctrl APIs.
 
-Providing some clarification, the user of this (in U-Boot) via
-devicetree-rebasing leads to some path gymnastics:
+This is still failing for me:
 
-(U-Boot code base) arch/arm/mach-imx/imx9/scmi/clock.c:9:#include
-"../../../../../dts/upstream/src/arm64/freescale/imx95-clock.h"
+[    0.628221] Unable to handle kernel NULL pointer dereference at virtual =
+address 0000000000000000
+[    0.636506] Mem abort info:
 
-Compared to the patterns of what else is going on I would guess this
-should instead be:
+=2E..
 
-#include <dt-bindings/clock/imx95-clock.h>
+[    0.801855]  __pi_strcmp+0x20/0x140 (P)
+[    0.805704]  pinmux_generic_add_pinfunction+0x28/0xe0
+[    0.810777]  imx_pinctrl_parse_functions.isra.0+0xf8/0x4a0
+[    0.816289]  imx_pinctrl_probe+0x404/0x520
 
-which agrees with how it is done for all the other closely similar build
-targets and is less fragile in that build context (although you may not
-be interested in this since it's not Linux kernel code base). Ideally
-I'm trying to make U-Boot flexible to build against different locations
-of devicetree-rebasing or perhaps Linux kernel source tree. This is a
-"one thing is not like the others" moment and it was suggested I send a
-patch.
+Full log:
 
-Whatever is best I'm open to improve the commit message, or take what
-you think ought to be fixed in U-Boot there to improve.
+   https://lava.sirena.org.uk/scheduler/job/1758025#L704
 
-What do we expect users of devicetree-rebasing to do, then?
+--ck2hWlO4+9LtMqEh
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
+-----BEGIN PGP SIGNATURE-----
 
-E Shattow
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmi1jFcACgkQJNaLcl1U
+h9BGhwf/dS46HMJilXSgdHmEKJbp5ioFAwW8a4pof2TF7vY7Jpo/qiFqnKkvqhYC
+tZO4exJFROsDCUKlVPp+Qawyyhy3CCU2p+vHcuz8p07gmzIEOw9QkjMf8IMlPGyA
+UKEr+nQae21YF/iNRFDQGH9hqHAT76YwExslci+ilyDzaJeWu6ACPhVMFMNO9a/q
+BjCieo2alJTBGdLUFgFDoMmVmqebVqIBYO0m966vo/efy8UG1BTlGE++FYa1OVnt
+bVDlzyyNsdl94L6s8pxhABsajGCsOXj0inSK7SXdnJ4XusoEfuSIKKSieCGsjMEG
+qkdS6DTMFfXrzPQZI5S3dgsmyVchug==
+=JXXf
+-----END PGP SIGNATURE-----
+
+--ck2hWlO4+9LtMqEh--
