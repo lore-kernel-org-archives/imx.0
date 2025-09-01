@@ -1,120 +1,134 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E4A320A1A
-	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 19:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB78134AC
+	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 23:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756754558; cv=none; b=PUvox0acXKrXmGC3eIzrmmIArYTPDyvoJLzJqVNdt1gM/G5J/16EaIrVGi7V7rDlrV8E576qAFTWl8BeHlPeb2LPmc8iGR0iD+DCesdgBbBaLMKephN29UAd5d2FpZUMKhUWvEihhrtE488qsNKp+A9LkAVIb2OSLLa9MZogc1k=
+	t=1756769567; cv=none; b=iJ+Sy0hw4Syz7QzTFSIxstubhzFUwjUDPnyh/ooX/wHoB067Df2xwCia2njj/3PHQivRC8qMJ94zClMmH5hLMkXibTbgFiDqe5DByJntymGrP2/bq8C42wYWO62IN0iAQmeoiJYmO4z8JOgGRpbbnsG3g2FONuDJAK0pAYySFvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756754558; c=relaxed/simple;
-	bh=bEgP0yvmX9KvAOyKB8kFlw77eqxGqe3qY7fzx2tEl08=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FxBUSkclh65wnrA++W2TS2RV516z6p7pW+mmk+45KsBSMLDncMtjM2wtHT8IDeZCgk/GB7oJqAX58cXCGR1xjFBRcNH5ugSaW38gkaMz9FM0aOV7Amm0RTKzJ9/BPqhK5MMxnMmTF7cDo8YwjFX2+VQX56jnrL7HAD/qgI+sANA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=IlWltOmk; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	s=arc-20240116; t=1756769567; c=relaxed/simple;
+	bh=sZjP5amXMPrxZMOpY/Vcag7mrN4zZ3huedD5PnZqACg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rkInPgYBkBd2wR7S1YZQr+g/lP2UY3mJWJ19COIrlFrFFkdk8J+B7KNcKJYrtwTNUxRRDNW4vGLXT/BsxGmOHWprkvk1m+CrzkQpbt06Mo9vAa/WRuSDtnCS0MNiKTCDaHsX7WYAiOANfbkYB17sBYQLsBlWpi2BCRsJNIXn4iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=rBH0tXnH; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="IlWltOmk"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-55f6f434c96so2476952e87.2
-        for <imx@lists.linux.dev>; Mon, 01 Sep 2025 12:22:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756754555; x=1757359355; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i7ewcbrPHINPUvrYPT4zyhNXGIzXoRLTJHpyb8YY7mI=;
-        b=IlWltOmkaEjd+53OqCmPSbCWWiqvCgDy+8BmLeb8kaw2aemNTuu1Ab55XMUwwgguqD
-         ot4DBQA/iOsMK073L2aBcCRSRfpGm8DTecsEnHKfjVyRO3v41ow27JF4GSaUQiv5PiBM
-         xALbNUFbnHg+r6IGAEOG0/6U9EtMq3aRVorOfi95U9naXz9NqMoy54MD8NlQd6cwtve9
-         YVoqQjM5aDmD+NinSh5nC+AWzwsoHh+Ams4NJ71VSznCMMqjp2K+2SZGSG2epQ3ruP2I
-         Azjjy4YGag2MhnFmkR69uSLsNrq7Ev5XH5jnBC4zaKd9ltw4GPi+y5mpfTd5sXt3BtBY
-         C8rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756754555; x=1757359355;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i7ewcbrPHINPUvrYPT4zyhNXGIzXoRLTJHpyb8YY7mI=;
-        b=iDcgH2p8FTihxAUY35aZlWPs3cHycf5rbt2b9Ty818E18RYuMpKVCSJlLZrv9rJ7+K
-         7sfHcQS36Gij8+rdUZZULWmMWMpMD6FtaC0vmzC1gfoujvlj5vSyZKAorV7h+c7Qyr9W
-         2u7ea8qaDG6pBcBZdg1FHItFWCRCzJ/KS9dkzpQ5R/k7oy9/H3/l7UyOiug9CkpmFDBM
-         oN4qn/zRszpzDe39RxQ0QM0yuhuv6souWvCfoEXAN+Vwlu3sCrRHczaS1bZDPLBG7D/F
-         U40mfCmNgJrucyn8jT/IhTeZ0zVsJs3SHhhVxwAWLoqTxGPhGOXLnw9KZ/6mIhDpwORE
-         MVKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLo6zSL9xbzBF4jyNE2ek61hiIIlLH6X1uKVkaCNqiUWpfPlQ3vybQAuHtUn6GQ9djUE0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyHLTR2hSF8K56TOBa85vaI43CoxIIjpAgwJRXvyt555LUyECix
-	UofgKf+zMFA8Z1pM2Rb3AYistv3oN0jC2N6JnCT9W/O5S/LwurNNNn6LuggN2j/Wzi2kSZBMBdk
-	SGZXD/wk81aRPZ2u1OfMc66EpqlBY5nCxPYr/7Gow8w==
-X-Gm-Gg: ASbGnctRQLymUOwnFiOZUj/y7v66sf7t5wIboXArc2kywpwQfcQoKb6K7cnTzv0VF0F
-	gK5C9nxqxG7Yp8yLAeeaLz/TWVeOCAss7NfjtnNfa20Y4JZ7kUBiDaPg1ZTNek/4bHvVGErNpXP
-	rANoH05OHX07JClv9iv1dWrkQvbSGgEcBt+yy45UGnjylsYUeFKVtqRK/LJWpkPdUyVSLEZMuDy
-	wgb6AYfiO6/DxVQdkQMIog3iozmKUD6YOClQjXOF6aZ09CR9A==
-X-Google-Smtp-Source: AGHT+IFcWj/MxjmrVdPmxch8QritOIaLTRMlhZkDbys4s6fntW4mvCl/nwD9FPfF52jhBYUT32dL+MvS1Koz6TeQoRU=
-X-Received: by 2002:a05:6512:1051:b0:55f:4f46:9f2a with SMTP id
- 2adb3069b0e04-55f708b5e26mr2212325e87.19.1756754554484; Mon, 01 Sep 2025
- 12:22:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="rBH0tXnH"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cG4t24TCTz9t5M;
+	Tue,  2 Sep 2025 01:32:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1756769562;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=21cy0heJjmP9Ld43G50zc2SVhk5aa4VJAaf/J1BjNx0=;
+	b=rBH0tXnHVrXPb8dCrZ4CQ2TwrIYBKhZISkYa24/yPyJPUnQKlR1HjpfVrlj5PgXzukKbeO
+	LpRxIQOHXSVkIsMPVAYM1fvnNMq3dvQ/WrD/0ZytPMR1OCBqt62u9M60C/s4GjEm1cx5iR
+	6mCBkvLWbFFGsZOYRq/sYA/oSJzgemPsE1OImBKLwzlY7KUvfgtdWPcNNOebPdx3XaU9u2
+	rq+fNX2VNdwsNJik/KXQZJeaCUqzN5RdoSYEo5TDwdDc5Da7OYIzJE198jIM0gVZMLiU8J
+	OWaeNVWQoF+8Z3Rut0e8G9R1Mci/Yi6/EDhVGJR52e1gjjJq9INC5E/sb7ztoQ==
+Message-ID: <be2fc937-b7a6-49a7-b57d-6e3f16f4ccc3@mailbox.org>
+Date: Tue, 2 Sep 2025 01:32:38 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
- <20250828-pinctrl-gpio-pinfuncs-v6-6-c9abb6bdb689@linaro.org>
- <61bad868-d976-4f49-805c-8d14d4d8b3e4@sirena.org.uk> <CAMRc=MfB_3e0sjCpV+XaKcKvit7Opk5LczH2wsxO=RftrAabjg@mail.gmail.com>
- <4a633387-08a9-43c8-81d7-488e7222aeda@sirena.org.uk>
-In-Reply-To: <4a633387-08a9-43c8-81d7-488e7222aeda@sirena.org.uk>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 1 Sep 2025 21:22:23 +0200
-X-Gm-Features: Ac12FXzmS2jWw7xFpjYhhy0Ln3t9KFQZe_l3JIooPobPNCmkv86DLX_8q8OSWPk
-Message-ID: <CAMRc=Mf0dOvwsWb6uraCQXeauLYP0TqY6xsQnV3fM0w=wROW+Q@mail.gmail.com>
-Subject: Re: [PATCH v6 06/15] pinctrl: imx: don't access the pin function
- radix tree directly
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1] dts: arm64: freescale: move imx9*-clock.h
+ imx9*-power.h into dt-bindings
+To: Krzysztof Kozlowski <krzk@kernel.org>, Peng Fan <peng.fan@oss.nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
+ Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+ E Shattow <e@freeshell.de>
+References: <20250831200516.522179-1-e@freeshell.de>
+ <20250901032203.GA393@nxa18884-linux.ap.freescale.net>
+ <3a165d77-3e36-4c0d-a193-aa9b27e0d523@mailbox.org>
+ <05f7d69a-9c05-4b47-ab04-594c37e975eb@kernel.org>
+ <51daddc4-1b86-4688-98cb-ef0f041d4126@mailbox.org>
+ <8920d24b-e796-4b02-b43b-8a5deed3e8fb@kernel.org>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <8920d24b-e796-4b02-b43b-8a5deed3e8fb@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: 7953aab8df04900d273
+X-MBO-RS-META: ox39hmicyjhub973d6jzuxm3y1aktfrc
 
-On Mon, Sep 1, 2025 at 4:37=E2=80=AFPM Mark Brown <broonie@kernel.org> wrot=
-e:
->
-> On Mon, Sep 01, 2025 at 03:20:44PM +0200, Bartosz Golaszewski wrote:
->
-> > That's not a lot of info but it fails in strcmp() which - I suppose -
-> > is the one in pinmux_func_name_to_selector(). Any chance you could
-> > check what the value of np->name is in imx_pinctrl_parse_functions()?
-> > Is it NULL for some reason?
->
-> [    0.628245] imx8mp-pinctrl 30330000.pinctrl: np->name pinctrl
->
-> https://lava.sirena.org.uk/scheduler/job/1758947#L705
+On 9/1/25 12:54 PM, Krzysztof Kozlowski wrote:
+> On 01/09/2025 12:30, Marek Vasut wrote:
+>> On 9/1/25 5:33 AM, Krzysztof Kozlowski wrote:
+>>> On 01/09/2025 04:22, Marek Vasut wrote:
+>>>> On 9/1/25 5:22 AM, Peng Fan wrote:
+>>>>> On Sun, Aug 31, 2025 at 01:04:45PM -0700, E Shattow wrote:
+>>>>>> Move imx9*-{clock,power}.h headers into
+>>>>>> include/dt-bindings/{clock,power}/ and fix up the DTs
+>>>>>
+>>>>> No. The files should be under arch/arm64/boot/dts/freescale/
+>>>> Why ? Linux already has include/dt-bindings/clock/ and
+>>>> include/dt-bindings/power directories for exactly those headers , why
+>>>> did iMX9 suddenly start conflating them into arch/arm64/boot/dts/freescale ?
+>>>
+>>>
+>>> Because maybe these are not bindings?
+>>
+>> Please compare arch/arm64/boot/dts/freescale/imx95-clock.h and
+>> include/dt-bindings/clock/imx8mp-clock.h and clarify to me, why the
+>> imx95-clock.h is not bindings and the imx8mp-clock.h is bindings.
+> 
+> That's uno reverse card. I do not have to prove why these are different.
+> You need to prove why imx95 are bindings.
+> 
+>>
+>> Both files list clock IDs for the clock nodes, one clock one is SCMI
+>> clock (iMX95), the other clock node is CCM clock (iMX8MP), and they are
+> 
+> Yeah, entirely different things. Like comparing apples and oranges.
+> 
+>> both (SCMI and CCM) clock nodes in DT. Both header files may have to be
+>> included in drivers, the iMX8MP headers already are, the iMX95 headers
+> 
+> No, the SCMI cannot be used in the drivers, because these are not
+> abstract IDs mapping between driver and DTS.
 
-Linus,
+The SCMI clock protocol on iMX9 uses fixed clock IDs (the ones in 
+imx95-clock.h), just like the iMX CCM clock driver uses fixed clock IDs 
+(the ones in imx8mp-clock.h).
 
-FYI: I reproduced the bug on qemu with an older ARMv7 IMX SoC. Should
-be able to debug it and figure it out shortly.
+Where does the "SCMI cannot be used in the drivers" come from ? Can you 
+elaborate on this part ?
 
-Bart
+>> currently are included only in U-Boot drivers.
+>>
+>> I really don't see the difference here, sorry.
+> 
+> You just pointed out difference - no usage in drivers, no ABI!
+
+Surely at least the SCMI clock protocol clock driver does use those SCMI 
+clock IDs , so that is "yes usage in drivers" ?
+
+Also, the SCMI clock protocol clock IDs are being used in U-Boot 
+drivers, which does make those IDs an ABI .
+
+> Instead of playing this "I found this code somewhere, so I can do
+> whatever the same" answer the first implied question - why these are
+> bindings? Provide arguments what do they bind.
+
+I am not sure how to answer this, but what I can write is, that if I 
+scramble these IDs in either the DT or the firmware (which provides the 
+SCMI clock service), then the system cannot work. I am not sure if this 
+is the answer you are looking for.
