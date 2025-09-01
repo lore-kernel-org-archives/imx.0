@@ -1,102 +1,288 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013025.outbound.protection.outlook.com [52.101.72.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9A62FFDD2
-	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 09:10:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756717824; cv=none; b=dbXw4ayXvwzcFVqKtURpHvgcQ+3K9nBSFbvzOTBqCk3e+n9e1v0LSqknrh6q7/nOQv3FjStLxCn2iyBuqFnykZIMdq5xZ9d/UjSB9KbDreRYvu/81cF3xLHbxH27BBujPNVTWZSaAfqyHIZ+m9knEcP4tnnK3hNwlzDGuwMSpG8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756717824; c=relaxed/simple;
-	bh=wHuP9vzcf0uxMcxpVzhAD7blzq8KbpGGUt0A4O2FaOY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dxFyn2PM9ELg6OtVcd7qVlAdfFG3sz5BSLmO0kfxKXxPNYR+OyJFvEjWW/bNy7HgDxccsIJJGSLMvNUVgoTMWye1cNh0aLmbYFCBvqqSlq4tbVjK2nUSv/5ZhBH6LVYbnpkWJJtM4q7DJ95X4jvVWvwPaJijyQtPemNKlbVbsLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=j9HB4397; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077E130BF7D
+	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 09:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756719722; cv=fail; b=Kgvm284Aohn/epKQxzNAk6lYrC7Hr6YHz/OSKCPSK+Sg5/k81OqnD2eb59P1QYiwGedEzz0USE1uljiaVKaK6FFCMGIIyg4EbA3fIjym27pmOhMKDnK+TpM6xu+PU1XToLnmOi7inZehsZ6+Uei6rzC7ztmZGB/4IU+8Cvl+Pec=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756719722; c=relaxed/simple;
+	bh=Y9Wtiv7TVcL7OzxPsUvAMKYTCPDK1RaAR2z9ytw+Vrg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=VyDo2ECHx2dcYaeS9JaKIGiY7IGW1UtmOCcTJelgSgJ2szZBlfAbjzY5aEQOlUXiDkF+pGKyjSpQvY6ToDD3r1XmPZHzyInvqf1J3PtdTb9TsbL8zye+n8xEVnNYW4FC6t0+AZKzCaNmwx8DeR0IQbMyYpc6F5yVsRQPsmltIUI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dbQ9Xika; arc=fail smtp.client-ip=52.101.72.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j9HB4397"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3ce4ed7a73fso2010677f8f.1
-        for <imx@lists.linux.dev>; Mon, 01 Sep 2025 02:10:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756717821; x=1757322621; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=meHf9Dzi9Udu3DdPaq0IFaV1tFMGI7amWp2ppks2KVU=;
-        b=j9HB43978E7Fk6fC4oqWK//WlkSxhxv5IKDkJ1w46IHWX4czzAiOFPDw7dzBRAX4cW
-         VbfM0ybxBNQ4pura/Yty1dRIMxjV3+KGQ6qdH27pWrLKPT4HYCP/1z5O6sVDv6jO3tq8
-         oaa/tXT9DaiykGz5Ev3tcIayZpBpxxrtd+1HvdBVdOmoh/GrY2AowPuY5Ul2qq9kppHY
-         LLAqpbd5Y9uhhPmy3B7XU8Ikk/h1Q/mNu8xzeSuqICJ7FCEvU/izciq8jbGLhUDnRn4s
-         NAQX3/Hm38fMfSb7mtSio0KiiLFNCIAbVy1PqCScOMKtXWUbWiolhBa7UwdIAKYYiwm0
-         dltQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756717821; x=1757322621;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=meHf9Dzi9Udu3DdPaq0IFaV1tFMGI7amWp2ppks2KVU=;
-        b=DJmFhlsQ38L84BWng8+tBn8hvWPvSvooytMNrgyx8fFHl0soaQKI0zy3efIh+2O6K4
-         7EaQpZu/Y/UzJk1anGbS/uosYE0qcXA1WMpiI/FYti3BxiLB0DhamilhfwE2suEmmc8o
-         6DEEF6LZU/eXrkylZB0+ldEO/WZ9AHxTdzYHGELSIVUxxXHL8KC7NpgL0PY1Ghrf6d3D
-         KkWmd9ny0gTrlrtGHP53yB4yAOYEFhS2yDQa3Q8CQoYY5G+47xp4zodR5PDIWDdTpWyK
-         go+fP6E/REdB4XeE5dJTA/UHofFQ0vcPPIWjguDSspk1RT+d3w6smyWeBwJMSjqNmCKG
-         6dnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfSuDB0nQUHnAS4mirH4X6U0bK9hXOCvEP9WPLkdnuyeq4BlRcOqmsd2Td9SeGYw8LC3M=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxfAugvz1dk91IJzgFihcy6Ht/NOcFs7QEUuJKffjsQ2d4T/UMq
-	3L6geb6QDH4I7MCD5/b/66ERGFjfj+mdtnExFyBQDCLdusIJgvMcUxJwbBcCq0k3zVY=
-X-Gm-Gg: ASbGnctIXHgbiMJzlCpADtxby3HNu15n6ubfLnLbuzuVivXcjQQh6eYtHEr0NDGryis
-	ew1m+iZwnc6r1OdTeV1Fu4rHiIYd2kWQqwIwS5IlMEO7Z3Y+RrqwhIX0UQt/4gw5vO86HkkDFW4
-	iu9HegR7pW+JYlLw5f8NlBiMktfx5bCThEqsuyAHN/+0zIQlHacIPpWNLetyyQ7PQvgU5SVXN9Y
-	1GLHtl6RlP0ggKWLZgh6XLOrn6zUP6wLsNrtz39yCZGdCOh9nMtrV4Hu7gkVY8OQuNEyXBV9Z1G
-	hrDIAhgDbbsexVa+opaIaCX10m2j6B1h5sxbndXUP2DIEmybN72qS1lhjvtG1Q9O6cev7gpufXy
-	cOEd86vkF7h62QxvTMID5H9Wxz39POCW9ihTZhA==
-X-Google-Smtp-Source: AGHT+IHwD9wQkYnnHFPyCoE+oRse9cNjidrfIe1Wag1mwkgXlb86FEc301H4rWNpqC3pM6+30woB+Q==
-X-Received: by 2002:a05:6000:2011:b0:3cd:1cc2:f411 with SMTP id ffacd0b85a97d-3d1e0a986c8mr5227063f8f.61.1756717820994;
-        Mon, 01 Sep 2025 02:10:20 -0700 (PDT)
-Received: from [192.168.1.3] ([185.48.76.109])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d85f80d8casm1010533f8f.54.2025.09.01.02.10.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 02:10:20 -0700 (PDT)
-Message-ID: <7a40573a-1868-4697-bca5-fb22aac0402e@linaro.org>
-Date: Mon, 1 Sep 2025 10:10:19 +0100
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dbQ9Xika"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YheV2tHkX8v3hwJP+ccFAwtCGvY6e+eCJfMByAAtqgLRNVbsQ0IHwV+GCGDQqNdSFDy+JXQrHTWKbKjRy1dMTZkOHuU7s0wDTkvXvt6dc8xhjhz4D+WQRjNbG70K915GXdaCD1nqDaXK4iFB1tEJt6I4XSeYZ8CcJ+bI/CPZd/e+UTN2hSNkYe0+s7pCfkB7MAGxTXlvsKV6oAJH1tZ38/lE6XhxPmCOS3RiYoFFASyboJ5aMapotw70kpDsz929nA/UkVbVc+H279dXIHlwDlQxxSONAafkk0PSWfNPweXEERC7746qvOp3Mv+AfTymNPVk4KOLE14NoOocVAIhIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YdxW7zsu20PxLBZdFOMUyqE+O0xNHRSDiCBz3MfinlQ=;
+ b=PoRVEvFzwCqXnX7BuhVEJYugbTf4CJOsW83+qmlhV6aPJG/zkwsvjo3WKzsr6PFYtOkmUrfxeKCAsd1PO149icj6BWQonmxoHN4uQQ5ILu0rimX23lzw/AMBG0w/XVW1Bk25pLZaMSCIxxcavqzOEXD7HIuzANUpPeWYj0w1XUqBvahNT52Rs31hrUWeiv2XewcJMYkgKR9MXLZM+JiILRjw9yIECdvu1UVafpvpQUUBf53BaphIYj6AReK/OXimrrNUnhnsgGVLHfNd39ocNA81/3xdVy8wgi5957Bz3ifhLpt5UHGjt3QNqV9ZAXJ6jbEG02UuRGsdMLLVTaRQBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YdxW7zsu20PxLBZdFOMUyqE+O0xNHRSDiCBz3MfinlQ=;
+ b=dbQ9Xika9otfS1lR1rxMCbg08ASSaBMgpZerCN/EJioqveefnfRZ+TTSLrI2zI750carwbcOrJklRlClRkrF2Ftu8fAfLJgiBmGythKIPhpqHnlPN5XQ5lD4WK2mcHXtPNGgs3NPi6guw5rRQ35f0vnRthTvgvPrC1K+TiLCwSNBPduhcFz5BNoWHbcZbIDFXJaU+aDPYZMGbRdU0bMNb/vNLT9Zn4QRWrITFjoTvXbIWLvq0/E9QFusij0t1wQ0BAg0KcpZhDkX/9UGAn5jlAEUaUh0ixFw114pgNNcYZmmKfSdlI90GQQpLiRBXzo/wjNR9o8zChuVvd+zttv1fg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by PAXPR04MB8576.eurprd04.prod.outlook.com (2603:10a6:102:217::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.16; Mon, 1 Sep
+ 2025 09:41:54 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87%4]) with mapi id 15.20.9073.021; Mon, 1 Sep 2025
+ 09:41:54 +0000
+Message-ID: <dbd7ec6c-9837-4bf3-a363-e287d075b677@oss.nxp.com>
+Date: Mon, 1 Sep 2025 17:41:40 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: amphion: Drop the sequence header after seek for
+ VC1L
+To: Nicolas Dufresne <nicolas@ndufresne.ca>, mchehab@kernel.org,
+ hverkuil-cisco@xs4all.nl
+Cc: sebastian.fricke@collabora.com, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ linux-imx@nxp.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
+ imx@lists.linux.dev, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20250725080712.1705-1-ming.qian@oss.nxp.com>
+ <ede4226a80e27c8b047b0eb25fe8f5ba90214d12.camel@ndufresne.ca>
+From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
+In-Reply-To: <ede4226a80e27c8b047b0eb25fe8f5ba90214d12.camel@ndufresne.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI2PR02CA0043.apcprd02.prod.outlook.com
+ (2603:1096:4:196::12) To PAXPR04MB8254.eurprd04.prod.outlook.com
+ (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/7] spi: fsl-dspi: Avoid using -EINPROGRESS error code
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Larisa Grigore <larisa.grigore@nxp.com>,
- Frank Li <Frank.li@nxp.com>, Christoph Hellwig <hch@lst.de>,
- linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20250829-james-nxp-spi-dma-v5-0-3246957a6ea9@linaro.org>
- <20250829-james-nxp-spi-dma-v5-1-3246957a6ea9@linaro.org>
- <20250829125440.fuxwiekll53myiui@skbuf>
-Content-Language: en-US
-From: James Clark <james.clark@linaro.org>
-In-Reply-To: <20250829125440.fuxwiekll53myiui@skbuf>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|PAXPR04MB8576:EE_
+X-MS-Office365-Filtering-Correlation-Id: 13ceb0fd-d081-46d5-0f7d-08dde93bc638
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|19092799006;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M0xMb2dmTEk0REFoZ1BkY3lGeXE5QWhGOWZ6Nk5NcmpSVkQrNlVJUFR2REtx?=
+ =?utf-8?B?N1YwNkc2RG0vZzVlTUE5QitVWXd2TmpQOEJzUmpsRGlNRFg1TWtiNUZyTVJY?=
+ =?utf-8?B?UGt3U01xNGl2aFl0aXNNVHozYXgxcThGRktpSWJsTWJuV1pPb2xONnhjSjdv?=
+ =?utf-8?B?STc4UGpCSUF6bDFDTWw0emlacGU0M1E1YlN6VCtMa0R6TXJicVljNEVaazQr?=
+ =?utf-8?B?SC9pdUJNSkhQQjlZNUw4dkNMUU9hQXJ2T2FlWDloSFVhaWZtaFRoR1VkQUZr?=
+ =?utf-8?B?bWEwcWxaUWlGSm5oVXBRN3VGays3dXpoWjNWVXZFTTZldmh2d2hHc3d2N1NM?=
+ =?utf-8?B?YXVVd2xYSWdWUW43TlR5d1dTQ3VvZ1J3dWxFVHdXVldBcGhSV28rYzZrR0pP?=
+ =?utf-8?B?NVpYNVFxUDNqaXBTU1JGZ0p3MVE3b2V2eXpkcVYweGN2ZjdKWVlpRit6Q1E1?=
+ =?utf-8?B?dGtLZmpxQzRHQ3J5d3UzWFJ6ZVRMSUpTcmtiS09HKzY5NWZyblpFRkdQTXdG?=
+ =?utf-8?B?ZExWWnNjQWIrb3pqMmY4aWNVVVdJL1NZZWlwblJjOUZ5Mk14dUNyM1ovbmFa?=
+ =?utf-8?B?SDZyeGZPenFmbU14Tm5WV25ZVFdReVVwb3NrV1ljS2VxeWdCdmFVd2FwaXYw?=
+ =?utf-8?B?QmtUNFM2QWg0WWN0bmlxaElBdWlOcXpoU2VIdUNUQkRmTW5neTdvb3dMVTZa?=
+ =?utf-8?B?UHhCYXZzbjBXaDJOSC9KOU15ajIzZHFIcWtxa0w3R3VSdWlTNzBTKzZQUTIx?=
+ =?utf-8?B?bFBDT1ZTRXBFNkFwakpVeDNCWDl6TFF4QWxpcUVGTjR2a0xyMU1veGtudUgy?=
+ =?utf-8?B?dm1jSGNRcG5LMFBwcm0rR0dCbTAxdzVYMDByYVlYNTFFVnZ3WWdwV1RmcTlx?=
+ =?utf-8?B?OUdNMDVlT3BsMWhTWW05d3FuSjFwSlBGejZUMG8rRDZHR0VEUmFPNGJxbmo4?=
+ =?utf-8?B?bmN5a0V4MFNYL1BMZWk4Qk1ha1o0VkNjNW1XL2xKL2hZNFZ6T1Rsa2JXN1hH?=
+ =?utf-8?B?MXJYVTQ3dUMvb2owUWhxdEFzT0hSbUFuZE94OEtsTzBUamw1aENPUGZyNUtB?=
+ =?utf-8?B?ZitMZjRZZkRiNk9Ea0xjWWpXeW05OWkreUhCWDFIaTdiTEliZ1c4RXJxTlRy?=
+ =?utf-8?B?K0ZIaGJqTDRRUXhxWE53Z0xUakh4QUExaDJsZGVzbFk5RFB2dU13R3YydEU5?=
+ =?utf-8?B?bGRIOFFQRmhRa3Vhc0k5QTJ4R3Q5cVNhV1Q2eldVOWRpYnVoaFdjUW9KWkpE?=
+ =?utf-8?B?TzVvdy9CdXd6YzlhN3hlWmFZelhja3FlOUR6NG1HOUdxTHRGZEVYeHVmVWZG?=
+ =?utf-8?B?ZjFIQ1VaWEtuYTM2NCthdHhmRlJzTHp6NDE5ckhNSFJJbTA4MmQ3eDZsQ3ZG?=
+ =?utf-8?B?MTVFMUgvNjBpWjBVY2Q5NlFNQS9iSkRSQUxxV3QwcHJTVFNEbHNRQzUvby9w?=
+ =?utf-8?B?MVVVMzFYQWRwTFVua3Q2VHI3MGNCcER4cmRrUHlXOUcxT0NjSVM3aFp6Yks1?=
+ =?utf-8?B?L2IxNkhtVVdoL3FHQ0N3eURzYkl4Rkh4N2gva3Ywbm44d29HNGhGbGtWRmky?=
+ =?utf-8?B?MUVrYWZ0TjVHbEk1blhkRXcxZzU0VTJKRmRBTSt0Ni9SMElMVENZL3VKTXhS?=
+ =?utf-8?B?S29ka2R2SnBTdEVOd21yUlpNNDFTam9mWFpkL1UzZ0ZTa2tvOGtpQ0VoOWJz?=
+ =?utf-8?B?TDl6TzZSdlBCdEVBblFYL3U2RnlOcmZTUzF4cGxiYXhsM2FRaHo3dit1YXgz?=
+ =?utf-8?B?c0tRU2FVSG9RcnZlcnliamVYLzlNOVBLYktrUTZKUE8rREtCc3lLMkhQUXNu?=
+ =?utf-8?B?ZlNTWnFNeVdNc2EwaXdCaTN3ZjZGRlRneUM4amlwYjBseDlFelNldUJiOGZk?=
+ =?utf-8?B?VnJTTWZVbzgzaU9EOG0yZllFWWtJcUNvVWxRSFgxaVlYT1NDYkcxdnJWeVhi?=
+ =?utf-8?Q?xZibhIcAJ/k=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(19092799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YWpONWRIVXJadHFVQVJuWExSVi9LQnpoK3Z1NGozV1BOdDZHNmo3UmQ2bWNo?=
+ =?utf-8?B?QTRiS2Q2dUIyaGFmQlR6bGc0Z2FCN1JhSDdMM0FwUHNwbklvVVo4b1pMd0lK?=
+ =?utf-8?B?amlFWVAyVWtVZzZBeFM3WktHNkVsa0VTcUVwaFJoeVpMUHJLcEhYRWlicS9k?=
+ =?utf-8?B?ZnBvTnAvNE1aYk9zbDh3S1Z1SHNxVTFQTUU2QS9DYXNBcHJGVjNKMExxOHpN?=
+ =?utf-8?B?ODd2UklTTW9EWDJFRzJheG1RUnhnUWtSZFFPL2pLUTUyZnhNR0QydDVaTnpJ?=
+ =?utf-8?B?bWZENWJMbnc3R2N1WjZiNWxLZDdTNks1anJVcXhkYXlBTHVaUmszbnRKaTR5?=
+ =?utf-8?B?T0YrMFlZRGN0Tm9ETmZFSXJIN1hsMFYwMXVqMnNSMjJrSDlwczBPd1JZcmtK?=
+ =?utf-8?B?b1ZqVEljYnNEY0dIbXVHNmFINUlDUWl3bVdYRFd0QmlLTmwxTGVBU2JwanVB?=
+ =?utf-8?B?WmorY0I0RW9pZ0R2OTNXdG5FUU1oVlB0OFpldkdRQUtBR2dzTDhiTVBIOU9O?=
+ =?utf-8?B?UHdiczRIYnlaL2ZxWFJXMTAvaGFNUDE0ZnBkRDlyRWVPV2ZqNlF6WHVCTTdL?=
+ =?utf-8?B?aVV3NVNLVHhwL0NkY25hTi9SME5HNDRFNWY2N291NkFzYUlRaERya09ueTVY?=
+ =?utf-8?B?TTNzZnY2dHNsaVI4MkVRVzFpbnNROHkyRjBPWGRIQ29lcDdPdlpDcGVaYmlV?=
+ =?utf-8?B?bnFsaURYWEoxdWNMUEV2OUpxZkhJbW0zQVRsdkZoc2NxSDNtNld5NXphTlpZ?=
+ =?utf-8?B?dkZIaFRHN3V5QWNFcENEU1dKRVRlTFZ1a2diY0ZtREwvSHRiQ2x6L0tFbC9P?=
+ =?utf-8?B?TUpzSFpudnFIZldZbFRGckhJTTI2cXNvNXM1ZzZuYk02UWZHcy95cDNaUzdZ?=
+ =?utf-8?B?YWptNmsxWTBBVU9adi9EVFBqT25RWHM1TDVVVWpEb09RR0svTjliSVhXamg4?=
+ =?utf-8?B?WFNyUDVzNUZWeFRoTDBENmhkOWhxaHNtc3E3bDY5YW9BWXI3dFI2WEF4UjBY?=
+ =?utf-8?B?MmVLQko3V2JVY2F4UnF4N09WMVYzcXl0M1g4RzRiVy83bkp4SEFodVZPckk5?=
+ =?utf-8?B?Z3ZZK084ODFuUnJ4SGY1QytkT1NVdzBSTy85aFp3b1Y5cGZ0RFh2cjJpNXYr?=
+ =?utf-8?B?OXg3bUFjQXJLSkRVaFM3Wk11SkpRNmFJYkgxRGhxbkE3UDg5U2prQ2NaaUpl?=
+ =?utf-8?B?cFZEUXJXcjBGSEQybDBlZ2dRY0htVDJ2ei9ZQ3NKVzVoMDZwaHN2aUpZNWFv?=
+ =?utf-8?B?dnFCNC9BeVVoM0ttMEUxckJaQ0haTVpzVFVBVjlVNm9yRmh4Qnc0bEZOb0pY?=
+ =?utf-8?B?NnkxOUczVHJKcTJBTzBON0w3NUdBMTF6dWNpQUoyQ05COEI2QkpYNG5iNER0?=
+ =?utf-8?B?NWUxZXd1MU4raTgzeWtxTjlOaXd6bURheEJaWml5a2VnZzZ2L1JFVVNBY0M2?=
+ =?utf-8?B?eE0vNndoWk0vVm8zWHNRVVp2d3YrdE9KSUx1WGVIT2hObGNnV1pWcE9haWx3?=
+ =?utf-8?B?K1ZadUY1YVhVaFNSUzY4REpybmRwRG42bFE1a0tSaHU1a2NMYzhZdXVnQ0ZP?=
+ =?utf-8?B?RkMzQzZ0WXJNS3lFMUdoQVpEOUFBMnpNdGZBenZRV0ZMaGV2U0wwdjhUY21v?=
+ =?utf-8?B?MUVCMFFzQmUzeUloempTelgzazVTNDRrOUUyWEdPQ2o0RDFIWkUvM2lWVFZq?=
+ =?utf-8?B?b3FtYVZwaEhoUzlGaVhpQ1d4THcxaHM4cTJyRy9oelYvczJFdWk0VEY2R0Z3?=
+ =?utf-8?B?Wi84UVBSUEZSc3BnMjI1TVY2QXkxV1VzcU5aUlYvSmxlMG9CQ0xqQ0dmQmM1?=
+ =?utf-8?B?ZW9McUh5cCtBRHlUbGV1dWNPYnVIbHl0a0dJdHdTWFZXUmRlVXdtcXRyWWVT?=
+ =?utf-8?B?NUFHREMzaTVOUzhDN3IyeUhHNEZYQ3lmeHphUnRucUZ6T0ltODF6RXFNWVhN?=
+ =?utf-8?B?VXhLSmdBU3phMEJhN1lGdlZKODYzZWdHY29kRlNuN3NQOUZUdTFwc2hDeUlx?=
+ =?utf-8?B?UUkrUjVkbm0wWHY1ZGZ3TFZvNDFMY2VtclV5T3pTeEllUkFrQ0xwY2d4eUV2?=
+ =?utf-8?B?NkJLZmpDdkpBRWRRbUdmZVByNjlrdWc3aTNmaUpXdnFEWnMrQnJHM3hVZkF1?=
+ =?utf-8?Q?GhJ3D77wK7d2uAPvjSgC1+Ujl?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 13ceb0fd-d081-46d5-0f7d-08dde93bc638
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 09:41:53.8145
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: chxSgwJH6K889WLTnrSG2MLH9/+mDJ2GN59IpKhMQCuFgCbFpBUKAXP/R2HTm+mBL4BYHId181LF7CQirLS53A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8576
 
 
+Hi Nicolas,
 
-On 29/08/2025 1:54 pm, Vladimir Oltean wrote:
-> On Fri, Aug 29, 2025 at 12:46:43PM +0100, James Clark wrote:
->> Signed-off-by: James Clark <james.clark@linaro.org>
->> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Hi,
 > 
-> The way I'm understanding these tags is: you wrote the patch, I submitted it
-> (which is not what is happening).
+> Le vendredi 25 juillet 2025 à 16:07 +0800, ming.qian@oss.nxp.com a écrit :
+>> From: Ming Qian <ming.qian@oss.nxp.com>
+>>
+>> For Simple and Main Profiles of VC-1 format stream, the amphion vpu
+>> requires driver to discard the sequence header, but insert a custom
+>> sequence start code at the beginning.
+>> The first buffer after a seek always contains only the sequence header.
+>> But vpu_vb_is_codecconfig() always return false as there is currently no
+>> flag indicating that the buffer contains only sequence header data and
+>> not frame data.
+>> So driver needs to drop the first buffer after seek, otherwise the driver
+>> will treat the sequence header as a frame, which will cause the image to
+>> be corrupted after the vpu decodes.
+>>
+>> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+>> ---
+>>   drivers/media/platform/amphion/vpu_malone.c | 4 +---
+>>   1 file changed, 1 insertion(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
+>> index ba688566dffd..a4c423600d70 100644
+>> --- a/drivers/media/platform/amphion/vpu_malone.c
+>> +++ b/drivers/media/platform/amphion/vpu_malone.c
+>> @@ -1373,11 +1373,9 @@ static int vpu_malone_insert_scode_vc1_l_seq(struct malone_scode_t *scode)
+>>   	int size = 0;
+>>   	u8 rcv_seqhdr[MALONE_VC1_RCV_SEQ_HEADER_LEN];
+>>   
+>> -	if (vpu_vb_is_codecconfig(to_vb2_v4l2_buffer(scode->vb)))
 > 
-> I think the conventional way of describing it is:
+> Please remove vpu_vb_is_codecconfig() entirely, it always returns false, so its
+> miss-leading.
 > 
-> Co-developed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> Signed-off-by: James Clark <james.clark@linaro.org>
 
-Yes I agree, I took your patch a bit too literally and didn't modify it.
+We have tried to define V4L2_BUF_FLAG_HEADERS_ONLY to to distinguish
+whether it only contains codec data.
 
+https://lore.kernel.org/lkml/20221125020741.28239-1-ming.qian@nxp.com/
+
+Although it was not accepted, we applied this flag in our Android
+project. Then in the Android platform, vpu_vb_is_codecconfig() doesn't
+always return false.
+
+I know that's not enough reason to keep it. I just want to say that this
+vpu need to know if the buffer only contains codec header in some cases.
+And if we remove this, I need to add some comments to remind users that
+they need to pay attention here.
+
+So I tend to keep it.
+
+
+>> -		scode->need_data = 0;
+>> +	scode->need_data = 0;
+>>   	if (scode->inst->total_input_count)
+>>   		return 0;
+>> -	scode->need_data = 0;
+> 
+> I only remember testing this once quickly on Exynos 4 and I had no clue what
+> Annex G vs J was and most likley the MFC firmware was detecting it. Checking
+> quickly, I'm not sure GStreamer actually support both, despite the v4l2 wrapper
+> pretending. I would expect one to be used in ASF/ISOMP4/AVI, and the other used
+> in MPEG Transport Stream. GStreamer does not support VC1 in MPEG TS.
+> 
+> Have you tested this with FFMPEG ? It only maps annex G.
+> 
+> In general, I don't mind the the change if this is correct userspace behavior.
+> If ffmpeg and gstreamer don't agree though, we'll have to rethink. GStreamer
+> code back in the days was design in a way that it should not matter if the
+> header is split or not. This limitation came with lower latency decoder later,
+> but none had VC1.
+> 
+> Please test both userspace, and lets see if this solution is acceptable. ffmpeg
+> have ffplay and you can seek with your keyboard arrows.
+> 
+> Nicolas
+
+I tested this with gstreaer, not FFMPEG,
+And I checked the gstreamer code in our repository, Then I found the
+following related code:
+
+   } else if (g_str_equal (mimetype, "video/x-wmv")) {
+     const gchar *format = gst_structure_get_string (structure, "format");
+     if (format) {
+       if (!g_ascii_strcasecmp (format, "WVC1"))
+         fourcc = V4L2_PIX_FMT_VC1_ANNEX_G;
+       else if (!g_ascii_strcasecmp (format, "WMV3"))
+         fourcc = V4L2_PIX_FMT_VC1_ANNEX_L;
+     }
+
+Basically it processes WMV3 into VC1_ANNEX_L, and WVC1 to VC1_ANNEX_G.
+I didn't found them in the upstream gstreamer repository.
+Now I'm not sure if it is correct userspace behavior.
+
+And the reason of this issue is the below code in gstreamer, that the
+v4l2decoder may only send codec data after seek.
+
+     codec_data = self->input_state->codec_data;
+
+     /* We are running in byte-stream mode, so we don't know the 
+headers, but
+      * we need to send something, otherwise the decoder will refuse to
+      * initialize.
+      */
+     if (codec_data) {
+       gst_buffer_ref (codec_data);
+     } else {
+       codec_data = gst_buffer_ref (frame->input_buffer);
+       processed = TRUE;
+     }
+
+Regards,
+Ming
+
+
+> 
+>>   
+>>   	ret = vpu_malone_insert_scode_seq(scode, MALONE_CODEC_ID_VC1_SIMPLE, sizeof(rcv_seqhdr));
+>>   	if (ret < 0)
