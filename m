@@ -1,32 +1,32 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AC432F770
-	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 15:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929CF199BC
+	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 15:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756741016; cv=none; b=UORdILAgciL0tvN3v0WLDCdOaVkOfVYsIUiEXBnOYaQvC3bFjEdiNrgZZ5w+bxgzFJJCXRw8VCIXPbSkcH/BlXjX8Le9FZsiz6OzzPsXRPk1uNYI5PtUU5KB14OdDMOACJf+4yeyDWGKPysRhHErV0KX9/nsch1lEVE3WixVpH4=
+	t=1756741595; cv=none; b=gxI2jbzBSzxTzsKZ+t3E99GnSuc/uoqLaH/UsOrKIK0LBI9FRFDaLYhCSM5oQ9+JRVyOEMnaMAwGCCLRn/eAvL03nROPMVfNASt/yKnTRAv3sF6zw0u+tpqgATv/R5R4PHopTQ5RZBskXAgwfQ7vpfUnUdmPSu0D4vQNmV71lEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756741016; c=relaxed/simple;
-	bh=JG/FmgDIqDX7Pla+FvRtTebcB0C0aiOljtqjKTBfLkI=;
+	s=arc-20240116; t=1756741595; c=relaxed/simple;
+	bh=Rtorms0Y8xcxRezMkXYYQWv9ZH000JtLph0sJAKDMHc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FQiFPL7Vctyeczfh/9rOjqArYDgOV9+Ym9vSk7c5R4Cm+RU465ewqSV9v4J3deBCuEiC26DU99viCQ2e37IP0qEZdjmsEc+aoAC5qdbFZhInmQ/TqOuRtigPkNyPpqwUcWD0DOAjw2TaazZaCcdUNypLrehpg+9cq9InyQbRzvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=EKiXZZw+; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=OMWwI2V0QVsIGA7j1Pvln4MdWrByrGawDo/H8dI4CQyqzlb+r+hF9jji66mji/ARoA7YOymI4lTaXFNAlGO+0L0U9buXh/41goW7AVJFaEhkhur2z71+KyroV+7btskZwZUmWTyp513/ghEFNqoiuhWej3fwgnFlDuNOl1L/Wbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ZD5WCl6g; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="EKiXZZw+"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ZD5WCl6g"
 Received: from pendragon.ideasonboard.com (230.215-178-91.adsl-dyn.isp.belgacom.be [91.178.215.230])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 4DAADB63;
-	Mon,  1 Sep 2025 17:35:45 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id BA526E8A;
+	Mon,  1 Sep 2025 17:45:23 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1756740945;
-	bh=JG/FmgDIqDX7Pla+FvRtTebcB0C0aiOljtqjKTBfLkI=;
+	s=mail; t=1756741523;
+	bh=Rtorms0Y8xcxRezMkXYYQWv9ZH000JtLph0sJAKDMHc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EKiXZZw+1L6xfHznEGef9KgZOxr+v2EfyaEghsc+nhd3PwhWKlq+dfiA9Z/qY9w5j
-	 uFUEQ3zSgaQAGjEGOIaQx0RGoQO2LE1kQZBl3JhHsYwhbaWvOz6HmNQnQy8aaqoP51
-	 w3N3wDxa0jrMGM/kPZ6JX3/ozGtYUUHBC4/lLFNY=
-Date: Mon, 1 Sep 2025 17:36:32 +0200
+	b=ZD5WCl6gznFYbvwUnNzz6vwIBq/2t0l0g6ae24Zq9w7aovOcQIf7uMu1roOSB85Ro
+	 fTUq+4fYoQJxfzny+jG68ZsmAx1HW42143vtbIYZaqbItIZ3Ri5O2RHSXrGq6xy77p
+	 kygdRmzqc9FYVNA0XjwoOPHqTJNG6bhtSV6U9LLA=
+Date: Mon, 1 Sep 2025 17:46:10 +0200
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To: Guoniu Zhou <guoniu.zhou@nxp.com>
 Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
@@ -43,10 +43,11 @@ Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
 	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/4] media: imx8mq-mipi-csi2: Explicitly release reset
-Message-ID: <20250901153632.GA13448@pendragon.ideasonboard.com>
+Subject: Re: [PATCH v5 1/4] media: dt-bindings: nxp,imx8mq-mipi-csi2: Add
+ i.MX8ULP compatible string
+Message-ID: <20250901154610.GB13448@pendragon.ideasonboard.com>
 References: <20250901-csi2_imx8ulp-v5-0-67964d1471f3@nxp.com>
- <20250901-csi2_imx8ulp-v5-3-67964d1471f3@nxp.com>
+ <20250901-csi2_imx8ulp-v5-1-67964d1471f3@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,53 +56,130 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250901-csi2_imx8ulp-v5-3-67964d1471f3@nxp.com>
+In-Reply-To: <20250901-csi2_imx8ulp-v5-1-67964d1471f3@nxp.com>
 
 Hi Guoniu,
 
 Thank you for the patch.
 
-On Mon, Sep 01, 2025 at 02:25:31PM +0800, Guoniu Zhou wrote:
-> Call reset_control_deassert() to explicitly release reset to make sure
-> reset bits are cleared since platform like i.MX8ULP can't clear reset
-> bits automatically.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On Mon, Sep 01, 2025 at 02:25:29PM +0800, Guoniu Zhou wrote:
+> The CSI-2 receiver in the i.MX8ULP is almost identical to the version
+> present in the i.MX8QXP/QM, but i.MX8ULP CSI-2 controller needs pclk
+> clock as the input clock for its APB interface of Control and Status
+> register(CSR). So add compatible string fsl,imx8ulp-mipi-csi2 and
+> increase maxItems of Clocks (clock-names) to 4 from 3.  And keep the
+> same restriction for existed compatible.
+
+s/existed/existing/
+
 > Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
 > ---
->  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
+>  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml       | 46 ++++++++++++++++++++--
+>  1 file changed, 43 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> index 2bf11984690af2e687a3217e465697333d9d995d..6b83aa85af42e1dac25cf29056863680c1f89402 100644
-> --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> @@ -337,18 +337,14 @@ static int imx8mq_mipi_csi_sw_reset(struct csi_state *state)
->  {
->  	int ret;
->  
-> -	/*
-> -	 * these are most likely self-clearing reset bits. to make it
-> -	 * more clear, the reset-imx7 driver should implement the
-> -	 * .reset() operation.
+> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> index 3389bab266a9adbda313c8ad795b998641df12f3..412cedddb0efee1a49d1b90b02baa7a625c797ec 100644
+> --- a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> @@ -21,7 +21,9 @@ properties:
+>            - fsl,imx8mq-mipi-csi2
+>            - fsl,imx8qxp-mipi-csi2
+>        - items:
+> -          - const: fsl,imx8qm-mipi-csi2
+> +          - enum:
+> +              - fsl,imx8qm-mipi-csi2
+> +              - fsl,imx8ulp-mipi-csi2
+>            - const: fsl,imx8qxp-mipi-csi2
 
-What happened to this plan, would it be feasible to implement the
-.reset() operation in the relevant drivers to be able to use
-reset_control_reset() here ?
+According to this, the ULP version is compatible with the QXP version.
 
-> -	 */
->  	ret = reset_control_assert(state->rst);
->  	if (ret < 0) {
->  		dev_err(state->dev, "Failed to assert resets: %d\n", ret);
->  		return ret;
->  	}
 >  
-> -	return 0;
-> +	/* Explicitly release reset to make sure reset bits are cleared. */
-> +	return reset_control_deassert(state->rst);
->  }
+>    reg:
+> @@ -39,12 +41,16 @@ properties:
+>                       clock that the RX DPHY receives.
+>        - description: ui is the pixel clock (phy_ref up to 333Mhz).
+>                       See the reference manual for details.
+> +      - description: pclk is clock for csr APB interface.
+> +    minItems: 3
 >  
->  static void imx8mq_mipi_csi_set_params(struct csi_state *state)
+>    clock-names:
+>      items:
+>        - const: core
+>        - const: esc
+>        - const: ui
+> +      - const: pclk
+> +    minItems: 3
+>  
+>    power-domains:
+>      maxItems: 1
+> @@ -130,19 +136,53 @@ allOf:
+>          compatible:
+>            contains:
+>              enum:
+> -              - fsl,imx8qxp-mipi-csi2
+> +              - fsl,imx8ulp-mipi-csi2
+> +    then:
+> +      properties:
+> +        reg:
+> +          minItems: 2
+> +        resets:
+> +          minItems: 2
+> +          maxItems: 2
+> +        clocks:
+> +          minItems: 4
+> +        clock-names:
+> +          minItems: 4
+
+But according to this, the ULP version requires more clocks than the QXP
+version.
+
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8qm-mipi-csi2
+
+QM is compatible with the QXP, so you don't need to list it here.
+
+          contains:
+            const: fsl,imx8qxp-mipi-csi2
+
+is enough to cover both.
+
+> +            const: fsl,imx8qxp-mipi-csi2
+>      then:
+>        properties:
+>          reg:
+>            minItems: 2
+>          resets:
+>            maxItems: 1
+> -    else:
+> +        clocks:
+> +          maxItems: 3
+> +        clock-names:
+> +          maxItems: 3
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8mq-mipi-csi2
+> +    then:
+>        properties:
+>          reg:
+>            maxItems: 1
+>          resets:
+>            minItems: 3
+> +        clocks:
+> +          maxItems: 3
+> +        clock-names:
+> +          maxItems: 3
+>        required:
+>          - fsl,mipi-phy-gpr
+>  
 
 -- 
 Regards,
