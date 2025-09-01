@@ -1,216 +1,313 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010013.outbound.protection.outlook.com [52.101.84.13])
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E3D21FF44
-	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 06:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756709558; cv=fail; b=TQHDHBLS1Y+F92izVoRI9uhkfFC/kb1RIELfpXSOuM6yLUb0xpM1Q3NMSxD1mQ2l4hsIcDx+dmlxeuhRZ+iM34Ppxpa7P+3sFpO6mwWfKbNHFNiT359B+9klen+LvOrlJdAPILSl1/QoLvNGs1ADM73c57SiyjEPZhGQvoPbzdA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756709558; c=relaxed/simple;
-	bh=QetNiMAtg9q1l057AiteiLCJPY/5al+Ly3fPIWDCAOo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=SoEHUvlsj4e4ucLMxSc13V1Kyp1FYTfUMuyLjobfUyUW6FykbvBwxkcPEPxmCz1x4IQ7Zp9LtGeLQE3cZZepVJw2vBbf4nnCGsIn99+0MxHS7Rqc6ii7/S7W311zg2XPxIyX0Y5OZYoULNQOp6EKQdRJxe+1jmFLq5bEAfap0t4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LefTvYEP; arc=fail smtp.client-ip=52.101.84.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E43E21771B
+	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 07:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756711801; cv=none; b=EBYDAQd7w2ka/ao35+OrlSvAcocTAUGKOzQwoa0p7b6Ou6lDOcUDI90hRA7reUh+x+wTRZSFAen1DuU/TzctrmgFci6vWXWJJ/6k/K4+drK8J4mflORnzuo33WGDQxVTNXENM7AQsS3AeJo0kTStVUbZiVx89ds/7yEHUV05Re8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756711801; c=relaxed/simple;
+	bh=l5hg6tKn6cNTnfxFJdm4QIGr4gu+sUNQYbPArd048Xo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=l8y/zGowl/+pcm1w/AjLD1k95Wenl7ndJHEGUHUG5gGxEpkaeKfxcYajES3pivNmTxDI18PaxFccipzdJw3tBmJz00OTx+aLJf2ATA+uXkuIwW2Eu3cd/IOX8F+7atKiTuziKY4ZnsAvObg//gbaXYUzCkmNF8X6k3NCzCGgd00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=cqC5cciI; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LefTvYEP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v/iPWeihjl4VaAooUKhin/olXL0cx6p3CKSZ0HE15QWiWIerH3ISqvJbTYmEl0KO0rm51no74UPS1DbSHKUrWNg/pNIcV0HTfzF8eLAlSSMbKSa0f4nyjwr1X3yMgLnjnbzR3OEupIreuaOYL5he4bKsUkyNkCcr1/7s8xZ3aPS/kMjIsKiAFTzVZFq6QurPc3fA8GboNnpQAK7RCHDa0cicP6pmgzT0tCt+jWIwh/9t/NBERnLKEKXsByEAaLEJLnlIMj06sqG/pOtSH7K1qgA9E+WwIFAC2nI4x3d8/y86Xvtbgt+DdmwCL1nzbzfBv61eokruHeeVTcRVuEH55Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oFpS1m69EZ1TYV43OBH3ZZrXc5fZn0963VQDVK6DvYQ=;
- b=k1so3BZ9uoNBId9cBERKPpo2PKMSLamidAzoxq2Dph+kE37+/yXfFTczNw58Mm+Po88owWoa2ee+V4Dz2o3AGr30HAVeQsDW+nPx4mytkWcC5WS5tmOBzt1naTXRXaSix2fPAUQvmv/n+SsTfHuN6iVetf3GHFldKZa5SwW+I+XeBkFDi178QGfHnNcMpivqDILNfwVrB0DrzMab+EIz1/e5Lplz/70FYQ0P9Jt8YlDX10blWeRMlTPtM2CENii6v8TztG5RLGIIBh7765lHK80OMXQref8VnxNmqSnYUdBZnrz4aRTAvcHPq54RTqp0EHug5WE5knfesourfTg9+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oFpS1m69EZ1TYV43OBH3ZZrXc5fZn0963VQDVK6DvYQ=;
- b=LefTvYEPgE4H7BbasXyLEHYT7eHDY21DAnU/h7ctZ6AJJ90rLTv2Lh/UHgxP6F70pE/h0quyRcU7t8WmziFHWwLIPJqHbG/4ChaJcFdaLUHpUQqpeFJmwha+KK241k+ZJhFz/sZ+e0YLiW9cwCeh0fk71E+oFGW8e0u63BGysduL1q7hmPQG0UgxVoRBtDHnHYlsZpB1vmeybOQwRfBF4ONe4fPPbyOX31BvYsoaYYH3l6DuheYM8XO/XF2tglx4ZnC1RbADIY9bXnMTOyrOL8AjyziwJt/jVcpdIWLlAKvijIpZ2680e7itu9094QiEUqcXSkyN2rJEb1i7PcS/RQ==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PAXPR04MB8491.eurprd04.prod.outlook.com (2603:10a6:102:1df::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.16; Mon, 1 Sep
- 2025 06:52:33 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.9094.011; Mon, 1 Sep 2025
- 06:52:32 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-CC: Clark Wang <xiaoning.wang@nxp.com>, Stanislav Fomichev <sdf@fomichev.me>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>
-Subject: RE: [PATCH v4 net-next 4/5] net: fec: add change_mtu to support
- dynamic buffer allocation
-Thread-Topic: [PATCH v4 net-next 4/5] net: fec: add change_mtu to support
- dynamic buffer allocation
-Thread-Index: AQHcGryO+DVqxyerjU+TUjsu8Hl/y7R9k3vw
-Date: Mon, 1 Sep 2025 06:52:32 +0000
-Message-ID:
- <PAXPR04MB8510EA7CD915DE9340303B0F8807A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250831211557.190141-1-shenwei.wang@nxp.com>
- <20250831211557.190141-5-shenwei.wang@nxp.com>
-In-Reply-To: <20250831211557.190141-5-shenwei.wang@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PAXPR04MB8491:EE_
-x-ms-office365-filtering-correlation-id: bcd1c15d-84ae-48d2-b16f-08dde9242070
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|19092799006|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Q5EzMFZLISGDuQJ8nlp52c+e/IS7f59enrocbBZdplVOtUXRmHqEIA44+gp9?=
- =?us-ascii?Q?AjFKF815P6qYqyn8Vs7HFm3MezlQvpcFptv/z/TQZGYGmJfE5xIkSwQzeqLZ?=
- =?us-ascii?Q?Ahb86HwShG8pArMj4u1lCdCCs6/pPbz3u2Kuf8Tc+fz9fBZ0IyaZZ/r8V1/f?=
- =?us-ascii?Q?XYtZsdusQXdIRbpuUH0SRk6U3//yGO2GXtNzh3Brg0XlccDOmumCtkbsUOOj?=
- =?us-ascii?Q?kRJgkMKtHJsEXVUfTyDCX2LPxcF0KBDUpqG+UuwmTlAtPMK2/JTvcf+Pu9CO?=
- =?us-ascii?Q?cXQad12Jzji7BuHBO5HNaOC9AZPFs8qw205BSxPa/kzt9J/TqxCdrop0TzlD?=
- =?us-ascii?Q?RaJLy4KYpotUZOcvP/vSPnzOAwqFza7/27XsMCCb/zo4+B45zp2xRGqbn0FY?=
- =?us-ascii?Q?+4UFa8Ew27snukSbB1EQ8h0bAHBpBTz/iSnVicEUysg7sxhU41dKZNLUUXCR?=
- =?us-ascii?Q?VS2aJXupdKDakvPakUe73URajx5jm84i9IOgHCq82SbAGbpmYbH7dT9xjdXF?=
- =?us-ascii?Q?SVPcq67waodRnffrz4c/g+bO/aGS3mgrogQi2svNEAqX8UQ4Wm1tg80AFMAd?=
- =?us-ascii?Q?s3ffRxmWT3m1pFz7sjrak+km3KxBOrQY2WgTDlnvWVELnAy7VLhGlYGkG0ou?=
- =?us-ascii?Q?0SP8AyYxuwxLVIuCVTUMDrrCY/argAqjxu/bdPbaU1DuCORhOqE7S+7J50Sw?=
- =?us-ascii?Q?NuQA3aCAJnx1faJ/owgnRm7PHBAyk4MDjcks4hqXTJh5N2yHD0vVseZ0h+MR?=
- =?us-ascii?Q?2XoS45okqPrli44PegHqcxyt1+cqBfq9ijuu7nlcJQjUhsj+Hjs7PtInfMhg?=
- =?us-ascii?Q?yDzDvzvPWq9fmuYy/2KiJsqaPBifc4mdafMfwXusw3LYgS4ioxDMIxkAjM7C?=
- =?us-ascii?Q?Com7VxU07dk+Q1AFCKrZ8t7s4261fTZ3PP0LczS0KGoZjC3vO43vai05rYV5?=
- =?us-ascii?Q?n4MSnFZeIfI1e76e1HieV7ffLItiI/1ibyD5JHjq+6Pp4+lzJEQi9ToShtpR?=
- =?us-ascii?Q?pCpl4e5f67DL/6tMA5sDy5dZeVqt3z2HsDl4KfJqqUuLKhMqyr0E0m1zZkXg?=
- =?us-ascii?Q?QdeM/i8vU49YPr1D7qcV1OjCfeDdK/t2Xnccqq12xet/kDK5BOeQCivNr3nd?=
- =?us-ascii?Q?GdSKFy4KKsJXtJnXeA9phTnSsDla0YvpjcmF8ZJ7GFI5j23xSSIdrMLjkZge?=
- =?us-ascii?Q?TEySuL/d5Qf9pcEWYjo10twkt4yC1YirMyLihr86zcW01+GhbAxiFjdedrVq?=
- =?us-ascii?Q?x+wNHvCmyLva6yHl7MIrr7KF4cfZRjTLcXfNnS9MtqlSi0Vbk3gEo1rphF5L?=
- =?us-ascii?Q?6fHWYgy6LxO4o5vcjTTjRC+BM/AKexzVRjZoIiFO3Z1gnR7e9d3yC/rfzrDG?=
- =?us-ascii?Q?ZvF4WC76lVRxfkad2mHAjz9vScxovUBibx7mE253k21wcuD+y8OL5A+d73ql?=
- =?us-ascii?Q?IKBk1vI6QyP79UQ0tW0XwFtEXzM5WbAxnKNYOICeziV23oGHMKfxOg=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(19092799006)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?+knZdiGoiD+Ksw1nDTYaZMcdUAgYslRzoBKSEGrq8TwXJkucG9UArsECm0py?=
- =?us-ascii?Q?Iuyl4QtKDMDMc2Hm47rqQjEppnZeC372xjy7YV0dflSV1VAFPPjR8UZPtNPA?=
- =?us-ascii?Q?XdlInsHTq+3OkHk6U0FliFeA36B4yJO+9C5aPUBBtv8DRdmcRcVa8eqK8hV8?=
- =?us-ascii?Q?KBu8FwidDoK+jTN8fBvyCqJ3LzIHE+WCUX/4QN/ev9TJpJgvwON8nR23Zoin?=
- =?us-ascii?Q?Ys/zLCANoc2VKjLrsmoAkmgv60x4W8Bur5S/YhJjdi/mkfhsriflKKGXGy6A?=
- =?us-ascii?Q?nYgBS3PL44NjKRyhiO1YTpxlfrCgu3CuTEIOGTGzfr40+/Y1PCIxQD/FXmYG?=
- =?us-ascii?Q?ubnlSHu1Rkg6JxE/rDLWouCkUsP9msu9aVWue9LSkcFLiJvgVbx3WDwl9rd6?=
- =?us-ascii?Q?JyjAIUr1dm0XUPWaBALrkGP1iVFC68+q5ItkanLvCjq3ScnnzYV0AtJ1yPz9?=
- =?us-ascii?Q?3KN4umc011SgoCAZsGU8MWaHlFZ9CdAn9kO3IJ9krw3mqiIm5Z7Sfwn3mcVu?=
- =?us-ascii?Q?RVbAZlGpvXk8CleDAwSEn+M+A8LeryUvS4A4lCLp8CyfFmaMcItOXPpS3SBm?=
- =?us-ascii?Q?URb3JBb3Caky6FpgT0+S5L4mz/4Cd95UuhWvJBcJLeFmU4ZB2Sbx9kHYpNdj?=
- =?us-ascii?Q?+AHcHZH0afy1VZfpDg4V1bVVLfq9bGawnO0/MUHo+7X133fabYgrrybkHxUY?=
- =?us-ascii?Q?ebyCUKaHKoyn0Hzu/RsShStBLpWlqqv6RVfAE3Wbnbsjb++n62+XNLnQ7n03?=
- =?us-ascii?Q?cW0N9cpSE5MFZZg5S99vRzbe6u2hpc4oyNM2W8l6yv5nU3uttJAwa+klIlxh?=
- =?us-ascii?Q?Dg9KpE12z7EWbd6MOrUbWRIC+O6a286KEbxqLkZnIy4U3jkaVtYMU4bbFvpV?=
- =?us-ascii?Q?Vx6QBFz0MJiMkJBZeXRLZd6UhN/roqz0Q8hHJ/2qyt5asXR1YHcsyblH0fyN?=
- =?us-ascii?Q?AuuQTLmX/3RTrXGhoc1+Qr6jhKMEsAXfbqIP+m45+jZ+vXz4sg5v9zaaJSjc?=
- =?us-ascii?Q?zbbt+CfYpnFTyERDgZhalcR3RSiTyBNlunFuisZjhBg7tsBjxof9MtI+JUtJ?=
- =?us-ascii?Q?gwpxN3ke9oPdHmZ3s1FzD5RO3uSI2D9JILJWCsYnhj/w7Gu1OlL7nFqsKdo5?=
- =?us-ascii?Q?wOsExx30jpj1bnQHCBaGgxnKmPmPHptUpzDmUm0ocpUNG7l1Tqb+rLT+vhLm?=
- =?us-ascii?Q?FZwgnjJws1rZFecFVMtKAbUPrvfD7uTh35+//ytNdI46TyJMjTijgfwl+Srh?=
- =?us-ascii?Q?Jc6Ir53dA6rKDWP18+r+A8C3RrBiBsqvMslYjPV9CpK4EROHOsupBQ0sJXmt?=
- =?us-ascii?Q?1nRojrxTeNFkNqQVObtt5KwuIBSrIbOZKlzAzzUX23wBPZ9rhSXiPCRgvMvP?=
- =?us-ascii?Q?FwlXqbRlnVaEB82l2JvUEsSZkZtY3WwOE+7yfWdYYyoX0LOCSDOprgsyrMJ/?=
- =?us-ascii?Q?57WoxZnxgNDZoxt0D6+tp03/kHljkocODAkOf6dUqeHvZT/fa0JkF48DIcvA?=
- =?us-ascii?Q?3lGAw6EgIqQmqTRiQ899dzTO9uM6vleTxj4lv779lkyuPFPDgcrXEEVdTAnD?=
- =?us-ascii?Q?ucJDqPorPQYXw2VZCWA=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="cqC5cciI"
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5817Dhfm031463;
+	Mon, 1 Sep 2025 09:29:34 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	aSUaE3wqTSGIzPy5TH46KyeqW0I91kINvSo2g7sJPRM=; b=cqC5cciIE8yW98ch
+	cXidC4lmHnUy9aikCnX0CBQCkIMDZyeY3uiNpFyWAdve1b/Re/Cq0zVV0YcDPdM/
+	7MbBvawblaDQ3DYA4b1OMRQTmy1XRXxRt4EFz7xK59FrGSPHWlr0IxUdmCz8t4o/
+	/QBelY4CA7N61dkIlW/ynGQSah+LWsqQwziwB8WSWGe75UkkBmpOVptt9q2SQnRW
+	HydaMmMP3MkMBScgrTNpu2Q7JIJPqq4X65TEKVqWbFrr6QDxQKXoaN875QzuS5aO
+	MhfnmTs2OhlZsNpq/fCu7bfnd/H4ppUzu4xAeIJ62njEjf/PxFTLrTAOzaU5+6IS
+	hUs89g==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 48ur6fdbgg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Sep 2025 09:29:34 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 9B4EF40044;
+	Mon,  1 Sep 2025 09:28:04 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfcas1node1.st.com [10.75.129.72])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8ED8E754B3C;
+	Mon,  1 Sep 2025 09:26:49 +0200 (CEST)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by SHFCAS1NODE1.st.com
+ (10.75.129.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Mon, 1 Sep
+ 2025 09:26:49 +0200
+Received: from [10.48.87.127] (10.48.87.127) by SAFDAG1NODE1.st.com
+ (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Mon, 1 Sep
+ 2025 09:26:48 +0200
+Message-ID: <bb5cb154-0f7a-4e21-afe3-453ff5ee9373@foss.st.com>
+Date: Mon, 1 Sep 2025 09:26:47 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bcd1c15d-84ae-48d2-b16f-08dde9242070
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Sep 2025 06:52:32.8486
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OT4iQdBgrchb6vUgRwRfQGHCSA70veuAUm8OZw+uH4NeS+jMysa8aS5QbDLr2R5usWoQv6pCz9aroHM48BgEXw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8491
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
+To: Linus Walleij <linus.walleij@linaro.org>,
+        Shenwei Wang
+	<shenwei.wang@nxp.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        "Mathieu
+ Poirier" <mathieu.poirier@linaro.org>
+CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        "Sascha
+ Hauer" <s.hauer@pengutronix.de>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam
+	<festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+        <linux-remoteproc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-imx@nxp.com>
+References: <20250818204420.794554-1-shenwei.wang@nxp.com>
+ <20250818204420.794554-4-shenwei.wang@nxp.com>
+ <CACRpkdZq25n4gZSesV8z8zrBs6kqU1a8=vwVkPBwM+hFb9JKwg@mail.gmail.com>
+Content-Language: en-US
+From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+In-Reply-To: <CACRpkdZq25n4gZSesV8z8zrBs6kqU1a8=vwVkPBwM+hFb9JKwg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-01_03,2025-08-28_01,2025-03-28_01
 
->   * 2048 byte skbufs are allocated. However, alignment requirements
->   * varies between FEC variants. Worst case is 64, so round down by 64.
->   */
-> +#define FEC_DRV_RESERVE_SPACE \
-> +	(XDP_PACKET_HEADROOM + \
-> +	 SKB_DATA_ALIGN((unsigned int)sizeof(struct skb_shared_info)))
+Hello,
 
-"unsigned int" can be removed. And please move FEC_DRV_RESERVE_SPACE
-to fec.h, FEC_ENET_RX_FRSIZE can be updated to
-(PAGE_SIZE - FEC_DRV_RESERVE_SPACE).
+On 8/21/25 11:01, Linus Walleij wrote:
+> Hi Shenwei,
+>
+> thanks for your patch!
+>
+> On Mon, Aug 18, 2025 at 10:45 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
+>
+>> On i.MX SoCs, the system may include two processors:
+>>          - An MCU running an RTOS
+>>          - An MPU running Linux
+>>
+>> These processors communicate via the RPMSG protocol.
+>> The driver implements the standard GPIO interface, allowing
+>> the Linux side to control GPIO controllers which reside in
+>> the remote processor via RPMSG protocol.
+>>
+>> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> Since this is a first RPMSG GPIO driver, I'd like if Björn and/or
+> Mathieu have a look at it so I'm sure it is RPMSG-proper!
 
-> +static int fec_change_mtu(struct net_device *ndev, int new_mtu)
-> +{
-> +	struct fec_enet_private *fep =3D netdev_priv(ndev);
-> +	int old_mtu, old_order, old_size, order, done;
-> +	int ret =3D 0;
-> +
-> +	order =3D get_order(new_mtu + ETH_HLEN + ETH_FCS_LEN +
-> FEC_DRV_RESERVE_SPACE);
-> +	old_order =3D fep->pagepool_order;
-> +	old_size =3D fep->rx_frame_size;
-> +	old_mtu =3D READ_ONCE(ndev->mtu);
-> +	fep->pagepool_order =3D order;
-> +	fep->rx_frame_size =3D (PAGE_SIZE << order) - FEC_DRV_RESERVE_SPACE;
-> +
-> +	if (!netif_running(ndev)) {
-> +		WRITE_ONCE(ndev->mtu, new_mtu);
-> +		return 0;
-> +	}
-> +
-> +	/* Stop TX/RX and free the buffers */
-> +	napi_disable(&fep->napi);
-> +	netif_tx_disable(ndev);
-> +	read_poll_timeout(fec_enet_rx_napi, done, (done =3D=3D 0),
-> +			  10, 1000, false, &fep->napi, 10);
-> +	fec_stop(ndev);
-> +
-> +	WRITE_ONCE(ndev->mtu, new_mtu);
-> +
-> +	if (fep->pagepool_order !=3D old_order) {
+Could this driver be generic (platform independent) ?
+Perhaps i missed something, but it seems to me that there is no IMX
+specific code.
+Making it generic would allow other platforms to reuse it instead of
+duplicating it.
 
-If fep->pagepool_order is not changed, why need to stop TX/RX?
+Thanks,
+Arnaud
 
-> +		fec_enet_free_buffers(ndev);
-> +
-> +		/* Create the pagepool based on the new mtu.
-> +		 * Revert to the original settings if buffer
-> +		 * allocation fails.
-> +		 */
-> +		if (fec_enet_alloc_buffers(ndev) < 0) {
-> +			fep->pagepool_order =3D old_order;
-> +			fep->rx_frame_size =3D old_size;
-> +			WRITE_ONCE(ndev->mtu, old_mtu);
-> +			fec_enet_alloc_buffers(ndev);
-
-fec_enet_alloc_buffers() may still fail here, the best approach is to add a=
- helper
-function that allocates new buffers before freeing the old ones. However, t=
-his is
-a complex change, so I think returning an error is sufficient for now, and =
-we can
-consider improving it later.
+>
+>> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+>> index a437fe652dbc..2ce4e9b5225e 100644
+>> --- a/drivers/gpio/Kconfig
+>> +++ b/drivers/gpio/Kconfig
+>> @@ -402,6 +402,17 @@ config GPIO_ICH
+>>
+>>            If unsure, say N.
+>>
+>> +config GPIO_IMX_RPMSG
+>> +       tristate "NXP i.MX SoC RPMSG GPIO support"
+>> +       depends on IMX_REMOTEPROC && RPMSG && GPIOLIB
+>> +       default IMX_REMOTEPROC
+>> +       help
+>> +         Say yes here to support the RPMSG GPIO functions on i.MX SoC based
+>> +         platform.  Currently supported devices: i.MX7ULP, i.MX8ULP, i.MX8x,
+>> +         and i.MX9x.
+>> +
+>> +         If unsure, say N.
+> This is sorted under memory-mapped GPIO, but it isn't.
+>
+> Create a new submenu:
+>
+> menu "RPMSG GPIO drivers"
+>          depends on RPMSG
+>
+> And put it here as the first such driver.
+>
+> No need to have a dependency on RPMSG in the GPIO_IMX_RPMSG
+> Kconfig entry after this.
+>
+>> +#include <linux/kernel.h>
+>> +#include <linux/module.h>
+>> +#include <linux/bitops.h>
+> bitops.h or just bits.h? Check which one you actually use.
+>
+>> +#include <linux/err.h>
+>> +#include <linux/gpio/driver.h>
+>> +#include <linux/imx_rpmsg.h>
+>> +#include <linux/init.h>
+>> +#include <linux/irqdomain.h>
+>> +#include <linux/of.h>
+>> +#include <linux/of_device.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/pm_qos.h>
+> Are you really using pm_qos?
+>
+>> +#include <linux/rpmsg.h>
+>> +#include <linux/virtio.h>
+>> +#include <linux/workqueue.h>
+> (...)
+>
+>> +struct imx_rpmsg_gpio_port {
+>> +       struct gpio_chip gc;
+>> +       struct irq_chip chip;
+> This irqchip doesn't look very immutable.
+>
+> Look at other patches rewriting irqchips to be immutable
+> and break this out to a static const struct irq_chip with
+> IRQCHIP_IMMUTABLE set instead.
+>
+>> +static int imx_rpmsg_gpio_get(struct gpio_chip *gc, unsigned int gpio)
+>> +{
+>> +       struct imx_rpmsg_gpio_port *port = gpiochip_get_data(gc);
+>> +       struct gpio_rpmsg_data *msg = NULL;
+>> +       int ret;
+>> +
+>> +       mutex_lock(&port->info.lock);
+> Please use guards for all the mutexes:
+>
+> #include <linux/cleanup.h>
+>
+> guard(mutex)(&port->info.lock);
+>
+> and it will be released as you exit the function.
+>
+>> +static int imx_rpmsg_gpio_direction_input(struct gpio_chip *gc,
+>> +                                         unsigned int gpio)
+>> +{
+>> +       struct imx_rpmsg_gpio_port *port = gpiochip_get_data(gc);
+>> +       struct gpio_rpmsg_data *msg = NULL;
+>> +       int ret;
+>> +
+>> +       mutex_lock(&port->info.lock);
+> Dito for all these instances.
+> (Saves you a bunch of lines!)
+>
+>> +static void imx_rpmsg_irq_bus_lock(struct irq_data *d)
+>> +{
+>> +       struct imx_rpmsg_gpio_port *port = irq_data_get_irq_chip_data(d);
+>> +
+>> +       mutex_lock(&port->info.lock);
+>> +}
+> Here you need to keep the classic mutex_lock() though,
+> because of the irqchip locking abstraction helper.
+>
+>> +static struct irq_chip imx_rpmsg_irq_chip = {
+> const
+>
+>> +       .irq_mask = imx_rpmsg_mask_irq,
+>> +       .irq_unmask = imx_rpmsg_unmask_irq,
+>> +       .irq_set_wake = imx_rpmsg_irq_set_wake,
+>> +       .irq_set_type = imx_rpmsg_irq_set_type,
+>> +       .irq_shutdown = imx_rpmsg_irq_shutdown,
+>> +       .irq_bus_lock = imx_rpmsg_irq_bus_lock,
+>> +       .irq_bus_sync_unlock = imx_rpmsg_irq_bus_sync_unlock,
+>          .flags = IRQCHIP_IMMUTABLE,
+>
+> probably also:
+>
+>           GPIOCHIP_IRQ_RESOURCE_HELPERS,
+>
+> ?
+>
+> I think you want to properly mark GPIO lines as used for
+> IRQs!
+>
+>> +static int imx_rpmsg_gpio_to_irq(struct gpio_chip *gc, unsigned int gpio)
+>> +{
+>> +       struct imx_rpmsg_gpio_port *port = gpiochip_get_data(gc);
+>> +       int irq;
+>> +
+>> +       irq = irq_find_mapping(port->domain, gpio);
+>> +       if (irq > 0) {
+>> +               irq_set_chip_data(irq, port);
+>> +               irq_set_chip_and_handler(irq, &port->chip, handle_level_irq);
+>> +       }
+>> +
+>> +       return irq;
+>> +}
+> Ugh we try to to use custom to_irq() if we can...
+>
+> Do you have to?
+>
+> Can't you use
+> select GPIOLIB_IRQCHIP
+> and be inspired by other chips using the irqchip
+> helper library?
+>
+> We almost always use that these days.
+>
+>> +       /* create an irq domain */
+>> +       port->chip = imx_rpmsg_irq_chip;
+>> +       port->chip.name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s-gpio%d",
+>> +                                        pltdata->rproc_name, port->idx);
+>> +       port->dev = &pdev->dev;
+>> +
+>> +       irq_base = devm_irq_alloc_descs(&pdev->dev, -1, 0, IMX_RPMSG_GPIO_PER_PORT,
+>> +                                  numa_node_id());
+>> +       if (irq_base < 0) {
+>> +               dev_err(&pdev->dev, "Failed to alloc irq_descs\n");
+>> +               return irq_base;
+>> +       }
+>> +
+>> +       port->domain = irq_domain_create_legacy(of_node_to_fwnode(np),
+>> +                                               IMX_RPMSG_GPIO_PER_PORT,
+>> +                                               irq_base, 0,
+>> +                                               &irq_domain_simple_ops, port);
+>> +       if (!port->domain) {
+>> +               dev_err(&pdev->dev, "Failed to allocate IRQ domain\n");
+>> +               return -EINVAL;
+>> +       }
+> This also looks unnecessarily custom.
+>
+> Try to use GPIOLIB_IRQCHIP.
+>
+>
+>> +static struct platform_driver imx_rpmsg_gpio_driver = {
+>> +       .driver = {
+>> +               .name = "gpio-imx-rpmsg",
+>> +               .of_match_table = imx_rpmsg_gpio_dt_ids,
+>> +       },
+>> +       .probe = imx_rpmsg_gpio_probe,
+>> +};
+>> +
+>> +static int __init gpio_imx_rpmsg_init(void)
+>> +{
+>> +       return platform_driver_register(&imx_rpmsg_gpio_driver);
+>> +}
+>> +
+>> +device_initcall(gpio_imx_rpmsg_init);
+> No please just do:
+>
+> module_platform_driver(imx_rpmsg_gpio_driver);
+>
+> Fix up  these things to begin with and then we can
+> look at details!
+>
+> Yours,
+> Linus Walleij
+>
 
