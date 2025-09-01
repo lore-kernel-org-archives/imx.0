@@ -1,43 +1,43 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3B82FF15D
-	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 08:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815432FFDC7
+	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 08:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756717122; cv=none; b=ipxFqq3pU9+Zt1dHK6mkqKIVYJiBzmIag1ekyrv7AWuj11zr+be2XKm7WUkH3nTCUbwjb51IEPQH/RhLBYNzXCGOuWCauZpV23xla9nbZZdI5ce2cmw4iJpkkgLajxeJIQPpJOn4AD5yrFVG6JR97OVyBPrUkecNPNFvtjnZ2o8=
+	t=1756717125; cv=none; b=ATtivGsVfgLnzT+5w2pD830O0Hrz5pM+fA717OfIZAu/nUIGGHMQPWfDXAm1BEGXQFjB0eP7FE+7POqhDIgaJON+qgTQXXw3IBxgoWyDQaZC2G86G07ZRM6Yu7K8A71QFB3mefyh+k3b4HJYZSTi3FC6lR/4LXcS3iDWxZmG+U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756717122; c=relaxed/simple;
-	bh=nL9uXlexQDC6CbrMTnH0B+Ysx+pDvLQ1rB8sOE0bEcY=;
+	s=arc-20240116; t=1756717125; c=relaxed/simple;
+	bh=QppcMyPWSg0d5SpnAN0GyeWKrCIaeNfu4Ty8CaOZibc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QoPo8n6Xyn0ZNKDm7ys5GjpQeHocbbALTQrvC3VkpM0Dzi6FBjL4qCBEeuGyxf6kPna61rjPKiUhcq0z0SviBNyNteIj4EkW+3ifCL2x8RsJJB2El/2quzGG17+gse1CgpGVmD10aQKDsFPwfxvYfhNKjTZ5JkdNWQFMxHrpGGc=
+	 MIME-Version; b=ocS7/icj+KzTpyEG5k4ZujdS2TU0QSy3Faxd8JaMOrzkPOqmuAsvhlc8/kbnOa61Yxpsy+Dm0RQcvvyR85NXQ7QbbNBOvdDIlVfadC2sD9YcxBk4/nFJX3QYpFVX9MeH0TgevR+fKHmQ5Ke8BY52CvSmIikHZkXrOrU6UTu/joI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: d644f14a871111f0b29709d653e92f7d-20250901
+X-UUID: d88a416c871111f0b29709d653e92f7d-20250901
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:bd3b8266-8573-448a-b72f-1ec5d0220522,IP:0,U
+X-CID-O-INFO: VERSION:1.1.45,REQID:f0312209-cc58-49da-b2fe-bd1490843f15,IP:0,U
 	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:c9315f1ffc089d33de71e119d1e21f59,BulkI
+X-CID-META: VersionHash:6493067,CLOUDID:cb619b8137095f381006df9a56b13c38,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: d644f14a871111f0b29709d653e92f7d-20250901
+X-UUID: d88a416c871111f0b29709d653e92f7d-20250901
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 640016447; Mon, 01 Sep 2025 16:58:32 +0800
+	with ESMTP id 155411594; Mon, 01 Sep 2025 16:58:36 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 28B95E008FA7;
-	Mon,  1 Sep 2025 16:58:32 +0800 (CST)
-X-ns-mid: postfix-68B56037-986048743
+	by mail.kylinos.cn (NSMail) with SMTP id EEA53E008FAB;
+	Mon,  1 Sep 2025 16:58:35 +0800 (CST)
+X-ns-mid: postfix-68B5603B-776156745
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 6E0E2E008FAA;
-	Mon,  1 Sep 2025 16:58:28 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id 344EFE008FA8;
+	Mon,  1 Sep 2025 16:58:32 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -86,9 +86,9 @@ Cc: Ben Horgan <ben.horgan@arm.com>,
 	linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v3 07/12] drm/i915: Use scope-based cleanup helper
-Date: Mon,  1 Sep 2025 16:57:43 +0800
-Message-Id: <20250901085748.36795-8-zhangzihuan@kylinos.cn>
+Subject: [PATCH v3 08/12] cpufreq: powerpc: macintosh: Use scope-based cleanup helper
+Date: Mon,  1 Sep 2025 16:57:44 +0800
+Message-Id: <20250901085748.36795-9-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
 References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
@@ -108,31 +108,39 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/gpu/drm/i915/gt/intel_llc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/macintosh/windfarm_cpufreq_clamp.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_llc.c b/drivers/gpu/drm/i915/g=
-t/intel_llc.c
-index 1d19c073ba2e..f15e4c0fa54b 100644
---- a/drivers/gpu/drm/i915/gt/intel_llc.c
-+++ b/drivers/gpu/drm/i915/gt/intel_llc.c
-@@ -29,13 +29,11 @@ static struct intel_gt *llc_to_gt(struct intel_llc *l=
-lc)
+diff --git a/drivers/macintosh/windfarm_cpufreq_clamp.c b/drivers/macinto=
+sh/windfarm_cpufreq_clamp.c
+index 28d18ef22bbb..08558756990b 100644
+--- a/drivers/macintosh/windfarm_cpufreq_clamp.c
++++ b/drivers/macintosh/windfarm_cpufreq_clamp.c
+@@ -62,12 +62,11 @@ static const struct wf_control_ops clamp_ops =3D {
 =20
- static unsigned int cpu_max_MHz(void)
+ static int __init wf_cpufreq_clamp_init(void)
  {
 -	struct cpufreq_policy *policy;
 +	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
 u_get(0);
- 	unsigned int max_khz;
+ 	struct wf_control *clamp;
+ 	struct device *dev;
+ 	int ret;
 =20
 -	policy =3D cpufreq_cpu_get(0);
- 	if (policy) {
- 		max_khz =3D policy->cpuinfo.max_freq;
--		cpufreq_cpu_put(policy);
- 	} else {
- 		/*
- 		 * Default to measured freq if none found, PCU will ensure we
+ 	if (!policy) {
+ 		pr_warn("%s: cpufreq policy not found cpu0\n", __func__);
+ 		return -EPROBE_DEFER;
+@@ -79,8 +78,6 @@ static int __init wf_cpufreq_clamp_init(void)
+ 	ret =3D freq_qos_add_request(&policy->constraints, &qos_req, FREQ_QOS_M=
+AX,
+ 				   max_freq);
+=20
+-	cpufreq_cpu_put(policy);
+-
+ 	if (ret < 0) {
+ 		pr_err("%s: Failed to add freq constraint (%d)\n", __func__,
+ 		       ret);
 --=20
 2.25.1
 
