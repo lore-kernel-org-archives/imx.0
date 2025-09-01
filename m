@@ -1,103 +1,76 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16822DF150
-	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 16:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC48340DB5;
+	Mon,  1 Sep 2025 17:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756745861; cv=none; b=hEc8EcZRMIYuXoup9J1c1yIJja2pXtllzBBXnM67OTpYGdd6Sw7y3FTxqkvL7w86Dj5aEj98Cq7FiWRvyyZm2+YsTyPEAXR/evLBvY55kLdSa7Dbj39BmVP13Z+P1BFaBT1MNDQmTk8wpKIVf1KktqrlT231Gf6j8E2OYt3tGbY=
+	t=1756746505; cv=none; b=Nj58ImEDhhYGyQWEdh1zmbtUn5QO1e5FBAsE8y39GEVW0vACytx2nb8LrM4eCw2m4W3ivhhShsA1PFRJddValNx3ddhSK4a9wl5krxrIuXzvWQKfYOO7yW9rrH75qcsiQHBAwssZDQ60tFbTJVn2+ou+xHfUePvyAPTXm9iJHdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756745861; c=relaxed/simple;
-	bh=I86Vxz+FML6UJiiQQ07pUXa+Ht68ArmntE1FKGPSEkw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U1t9lHfWe/uxnqv65qhvHSBLIqLGmP/OSKrDRqNvL4N01CW77GZep/MtlSIMrBovq9Lc20YXjzaCy9MgBrWup6uhKjD1DcHexqVsnXJMtNxnvlBiQx9hL6kWw+t3BV5NRxv9azLpgSkblXUEXziH9dsVACQPJ+rvjCPQM4Df2F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mlahX8tV; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1756746505; c=relaxed/simple;
+	bh=PDPOiTEuTdicTffGYLtYpS4v2Fg8U7SX/u9tZo9cYOw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=OLZ7idokjbUAXgnIAOtP4R3IuvqaZUwkNh1DGlPE/O+ewueoiTKIfHOScadMglT0Mjy+5RaUozXggWwkRtwF64M+1vcmf9XWWDAKI985fuH7qDOY27urtlTzqjJpIQFs5/mAH7O95mBVgSHtAhwDCuekgtMxGzbxDFZx3Y+LbQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FuUQboUP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mlahX8tV"
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 8CF175819C7
-	for <imx@lists.linux.dev>; Mon,  1 Sep 2025 16:52:21 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BE0E0439A1;
-	Mon,  1 Sep 2025 16:52:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1756745534;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QCTr3085Xa6hBKg6QXgP66qPB7i84eR07oEHAnEHSXQ=;
-	b=mlahX8tV7/LXhSxxVsp63cubPC3xzgt2qkiUyKjidpy+LUSv8iuoYPjbQO+o2rNtS986m2
-	IvBWBpDn1xt4Fimz8IMvijR7avZ5oImvLc2bECeC7rE4tw01mwzsvWWG4aEfP6XNW2YJZ0
-	SYRrn+w/1Bry0X6s8aMlrbz5H/WRv8fndqC85XWibkQ42Hmq1Xm6G9PjMCRbBrp1hn9IIt
-	dNQX3RGdOmQ1hPLmDpWf6q3xXaUFH2t3tQnPCzmtn2XfOD4IYLZORJwoWsPs+wI39bltyb
-	yoIIbgF9sZMfr/gl8J96KFvetpa0TxBglLyNPSol2Q00y9cq592wzSIq0WlfJw==
-Date: Mon, 1 Sep 2025 18:52:08 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
- simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org,
- cristian.ciocaltea@collabora.com, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, victor.liu@nxp.com, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de,
- devicetree@vger.kernel.org, l.stach@pengutronix.de,
- shengjiu.wang@gmail.com, perex@perex.cz, tiwai@suse.com,
- linux-sound@vger.kernel.org
-Subject: Re: [PATCH v5 4/7] drm/bridge: dw-hdmi: Add API
- dw_hdmi_set_sample_iec958() for iec958 format
-Message-ID: <20250901185208.394cd162@booty>
-In-Reply-To: <20250821073131.2550798-5-shengjiu.wang@nxp.com>
-References: <20250821073131.2550798-1-shengjiu.wang@nxp.com>
-	<20250821073131.2550798-5-shengjiu.wang@nxp.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FuUQboUP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FEEC4CEFC;
+	Mon,  1 Sep 2025 17:08:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756746505;
+	bh=PDPOiTEuTdicTffGYLtYpS4v2Fg8U7SX/u9tZo9cYOw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=FuUQboUPwa7jfW0jY8/itorT30MmAKHf7aVOgoxVfFiOHAnKMV7l+4iTrNXNtzDWI
+	 0LANj8JpANoNPSwDABsViyTRwQIHO2PqkFHdrZqEWTJe58xFct3qksB4U7AD7bHtrU
+	 F3Iv4DNS7Fse11nOjZfq51PXnXSvzR9vhjMgU9/bDipD/LKDIiddAjqvYGMACvkXLf
+	 V1IlzSpx4kUxB/wgxEM6O9E2eWtbcAEAiHFfC7HfL+uKc8w+Wgiveji3aFXtaSWGPC
+	 ooxNUo3Eep18sYX2rhoOONXgDjJYLy6q++AeAioMiH3adtnEjx/yKuZbF+FTwh7J3E
+	 LOm3Wxy+YdCZw==
+From: Vinod Koul <vkoul@kernel.org>
+To: Marc Kleine-Budde <mkl@pengutronix.de>, 
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Aswath Govindraju <a-govindraju@ti.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Maud Spierings <maudspierings@gocontroll.com>
+Cc: linux-can@vger.kernel.org, linux-phy@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20250822-can_phy3-v1-0-73b3ba1690ee@gocontroll.com>
+References: <20250822-can_phy3-v1-0-73b3ba1690ee@gocontroll.com>
+Subject: Re: (subset) [PATCH 0/2] dt-bindings: phy: ti,tcan104x-can:
+ Document TI TCAN1051
+Message-Id: <175674649899.186496.9689107932921189012.b4-ty@kernel.org>
+Date: Mon, 01 Sep 2025 22:38:18 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduledvieekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeelffefgfehhfdtvdefueefieevkefggfelkeeiudetkeektedvhedukefgvddvnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfeegpdhrtghpthhtohepshhhvghnghhjihhurdifrghnghesnhigphdrtghomhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehli
- hhnrghrohdrohhrghdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopefnrghurhgvnhhtrdhpihhntghhrghrthesihguvggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohepjhhonhgrsheskhifihgsohhordhsvgdprhgtphhtthhopehjvghrnhgvjhdrshhkrhgrsggvtgesghhmrghilhdrtghomhdprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhm
-X-GND-Sasl: luca.ceresoli@bootlin.com
+X-Mailer: b4 0.13.0
 
-Hello Shengjiu,
 
-On Thu, 21 Aug 2025 15:31:28 +0800
-Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
-
-> Add API dw_hdmi_set_sample_iec958() for IEC958 format because audio device
-> driver needs IEC958 information to configure this specific setting.
+On Fri, 22 Aug 2025 11:20:04 +0200, Maud Spierings wrote:
+> The Moduline Display mainboard contains 2 TI TCAN1051 CAN transceivers,
+> properly document these and add them to the devicetree.
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Acked-by: Liu Ying <victor.liu@nxp.com>
+> Thank Peng Fan for inspiring this patch series.
+> 
+> 
 
-[...]
+Applied, thanks!
 
-> +void dw_hdmi_set_sample_iec958(struct dw_hdmi *hdmi, unsigned int iec958)
-> +{
-> +	mutex_lock(&hdmi->audio_mutex);
-> +	hdmi->sample_iec958 = iec958;
-> +	mutex_unlock(&hdmi->audio_mutex);
-> +}
+[1/2] dt-bindings: phy: ti,tcan104x-can: Document TI TCAN1051
+      commit: 3d13e378d465e8ae0be1697005342055b07eaf11
 
-Apologies for jumping in the discussion as late as in v5, but I noticed
-this patch and I was wondering whether this mutex_lock/unlock() is
-really needed, as you're copying an int.
-
-Luca
-
+Best regards,
 -- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+~Vinod
+
+
