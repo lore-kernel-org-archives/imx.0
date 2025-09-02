@@ -1,96 +1,175 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA71E298CA3
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 12:44:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23392C21C9
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 12:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756817047; cv=none; b=ksWWAKWFkzD/P4P7qs2bgWWY8aaEOwUHEYwNL63ANhqEAArpQeJYAw+ylW4OCakYBoUaWZU8A2m1l/7uJ5GO9Oc2SOs9g+sPE4QveTTAHKtu0ql2otyr55ToGsEt7fT/mcRPPZEkW0JpZs/yUDXkARhwT1JiuIc3Puud/CLdy+o=
+	t=1756817169; cv=none; b=EZ4T3BX4erzh+xRR6CVZ4UOe3qH5dGhaxsd7ugpmcyXbFXojzC30fP3lCr4ts4B0SYpduMmy22f01vHpi6heU0liqistuDDGmRVhpgZ8uj6uyZ3kOQTPS2h+BoZHJVdf+RTWiKUpuVukpiSjlFRqB70i3ghYxzJ+0ffJh85HpOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756817047; c=relaxed/simple;
-	bh=rxONkSw+u8dslVY1B0mzmOY/vdK/Blvlepq4yW8E0O4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lJxVZN7ERT56XPsCR8JdBdECI++25ki1wYLxFRrBoqaGMnyg/dntIynVlaVXbyf8PUFQo4wS8tcl8TbnAKz26AEymexZLzXUgiNtH7DeGnWdDVhw1vY+xQ5fQw9McX/PKNrj6cMt9euH0rgWo2Swtp8dgxwKAyVOw0Y6fRiJxQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iQJQwna3; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756817169; c=relaxed/simple;
+	bh=POJObNFh7AVhgNTruVq+Xi5sLajVg1vzZFxS5kzJHC8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nvCOwNZPSKn5kd9Bkea9+jVs68AEIzCr9oIVSRUXyhXIzqkYdET4BSP0d/vZTdt0RNcYuphBVWGTWunPTrlc7rx1pTqdsSBV69PzV25IRdeEpGrVgJUgWd1xxQgYVQB+oYngiHVZTzv5cr7fbJm/68GlbCWMzSPCCJZqcwQKmrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RNg9DzaS; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iQJQwna3"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-327ceef65afso5314618a91.0
-        for <imx@lists.linux.dev>; Tue, 02 Sep 2025 05:44:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RNg9DzaS"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3dae49b117bso504162f8f.1
+        for <imx@lists.linux.dev>; Tue, 02 Sep 2025 05:46:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756817045; x=1757421845; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yb8drcEYLJ/G3KDmSU2SdIBlSH9YRBB2QB4119jTYcY=;
-        b=iQJQwna3YYGHnhzEZAtO53FmqqxLMobw5eJDuaqcFnTNVo1wPDzY2n04BTeq/PyFMv
-         DYWJemrKJcB8r7Asg7fAydrkg8eYzr722FQXa/m4glkCQUeiArop/apM2zkq41ZX9xII
-         94pejY/qB8pBSBcgvp13gtH2tQHv9lirMlHNjFEMjrCKh7/k8C9BAUyA/k/fthJw+LB6
-         djC4awADClvYB2H8bBKr4xd/jY9txtWoTNdosqC0W1tZiktBpfH+TpDgcETi6Ijr1+79
-         hwOEpXgjZZT110rkUcJ36ZIJtl6vnRjABl0YawPvsfBh4lvPPk4H5S7720cqYeBPsza9
-         b8SA==
+        d=linaro.org; s=google; t=1756817166; x=1757421966; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tkz/GzVRYoiCISZtLFw3scA7aE12YSWSrXnltzuGjsE=;
+        b=RNg9DzaSs5/juwiE31Hyon434IFD7XT+ibq1WSCN7TUBStgk/E4XjPd0/3SAY8lT1a
+         HYgkoavuKrCqOI+9sq50z8M9aRRvSDd8pVWuCMPNK31pH/Ge5SKsJmJp5Lp/MQvGv3hC
+         XcX1aH4f0m+IUaTz6tJBZtpgmQ/SalXMyeAK+Cpm7n0RY5maaXP7UK/anQXBfEf1HS4p
+         qPKPlUxsuM3aSyi/DX7H0oHn19OGUKGV+S6FncyGtXYhLVs+2sGZaxIBM3Ugc3WRP7ye
+         Xpp0C7s4kSZp7drR7jgNporG1S4EjMxRRN3+MPAcNZC58u6byu2WNq6385xNW+9U7uZB
+         zXXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756817045; x=1757421845;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yb8drcEYLJ/G3KDmSU2SdIBlSH9YRBB2QB4119jTYcY=;
-        b=LWDff6wowwj43iwmedrVFtGKbCL36w0POC21vrvHEO2cDXmnRioVfn7Cgmvlpv+CD3
-         XN293oUr2GRepKyWvEIDkC2g3JBSCS4+OfEaz2hvUuQQuo214oCVoG1aNaxU7mZ/AnBi
-         PSU0Uy0ooEl4Dsh2nCKIj/NqIfx0GmZYC0c+d58H9eXs/4rYE/jEWX5tZkB/v3tqCCxP
-         QTejPYhrIdwhF76uDBTSRBnwGMYKs5xqMacVJICwi5TFXhuHDsJHeEzrlJ+Nu/eugPz3
-         MzBkdDD/UE6r/6D8viw/jKWgRxVW8Yc1OqCNVMVrJAFP2s7O3VIxgK514CfdBKdXVi33
-         vsgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXXtvioqZXFyGvZ3PtU8Zgs462Vn5eScQhebWlIWjEOsM0/GM5W/HtRYz/XJeTVxkJc4oI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyToVa3YxPOPRFRCSdBsuoEOewFxJmLJwVGBFTkNfgz3JJjJlfn
-	7JSmKbbuxjUs6rL6bFqduxN8xv0xH+pprbfj625udhCdkeYJjkdcNEgF6Au+OapBDQg=
-X-Gm-Gg: ASbGncvYKBLRKeOIBi9cLiyoPAGcl3sv0fFGZ7cgJVVQZkgNWPJ3gWe+xcp/X38CTc8
-	+T6geh+Ro+KXI0QoU8JxIcKKQpYt4h2HVdeaKn7eWOOgPA5X+iR/s8FnpER0mmklyP9L098MHi3
-	zQ4B2cl1rGraP1uMynqjOvP0ziZ911OpM1u8QHOgB3wd+vUV2TXeijaThejmqTJrZ0ZstUYgEop
-	Bz7YJv7HgDwv6Wl2pd22r4/7wzX586nSbRBGM911af+ZX2dOFalZh0q11eM4QHR6TlUrNtKaFLS
-	U0g/Z2Z0Y9XvIZu6DpVHheu1mW/X5N4E2dKO8uenuqzBObPj9AP9JJS2CqX3bGhZs3vSgDjUq+F
-	F5wzTUOGLblLUPRRWcLgl4R5U+yJhKWZ31n76+u8B4IZqG5iVzTZZY3c+
-X-Google-Smtp-Source: AGHT+IFwr5iuZl/eVovKQjBPYZk6f1WWpY9r1gCyPrcBGzObywlB7xLEKKnGCZPK9BZMiD8MPZYjCg==
-X-Received: by 2002:a17:90b:2ecc:b0:329:e3dc:db6c with SMTP id 98e67ed59e1d1-329e3dcdc0bmr2843860a91.23.1756817045065;
-        Tue, 02 Sep 2025 05:44:05 -0700 (PDT)
-Received: from dragon (104.245.102.166.16clouds.com. [104.245.102.166])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327cf042f97sm6380318a91.8.2025.09.02.05.43.58
+        d=1e100.net; s=20230601; t=1756817166; x=1757421966;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tkz/GzVRYoiCISZtLFw3scA7aE12YSWSrXnltzuGjsE=;
+        b=jtbTUTnJhTPISt9R7UnFiMrpjs9wcRiLeq5D/TPw56NVwlejdhIEOQ+nh3LU1vdO0g
+         gmdFIi8EfWhIXNQ0h8Mxyyrkzmiomoc5eI5a9N8AA1/BGnNb6EO4NzBa5/1ZAKISm6XV
+         3BZdSrsquDZcxkvwj2BtCN7nNB44ZJbyNwjUSDbThVGSPpZGU0cq6RAFZxtUeW0v4UTw
+         IJ3/pvKZ4qgTwJOLxZOrqKDlFZbwfFRlfRVI2slp4aaNoIrNXbmbmcZKuBNFhaaqdhHa
+         okWKSkFuWkkV9i0/B93LIejw5SRSdlmXox0In1eq/C2wdRXqj/giaP2iqzrbEh30l9pM
+         PaAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ3VqY3rsAUwRSOlywbzM0rN7VHq9zGmEaz3Z57YnpomgipxyfgCu+Br1Yovkcv2VOK+0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxV5OrtQCqZKgKbGTgXSIBd95th4dXXFt2uXdXueHABVzEhuY5N
+	J91dgQecX73pagxkqazr6ajnmqWDDXYFcYib2l9XZfE3MttRUtm79vuhCzKT1rL8uX8=
+X-Gm-Gg: ASbGncvTj8oxd2NI+UBHj9YMHiqD8ezj/KsHs5YDfmdSDmwtt4Sn7gs3DbCJtTJdU5F
+	966iP8RiihK6Pv618YIicmRoE41uNTMBahekwp+4WNYufI/1H6wFt7bBrK+k/rAgPEn0rgzVaNL
+	aDKtn3rrpz2yt+hr0ce2tZ1jedR+oBXyj+UgfofLQqX0RQltm0sak9bSN6fHIiOVsMTHY3eHdxq
+	XQ8VOiIFCO3o7qCFhh9D+OsK03bXT0OG/AlrKna9jXyeAGoi9zqmg/gCTFok/i10eqPV9dJDdZQ
+	XOtSV2e6NGijtXdU3fg82JZ2VHR1HaMJDnXcuL2efv5xTOJ8xbqWKO2gSMVWTFsJmdcMZ+yJ4Ky
+	BHD/IDmkULtyd9AP/+ZEqbUM8O/v8XOUmBuJK3HY3rg==
+X-Google-Smtp-Source: AGHT+IFbaVWYXWBR1Cmns9iojh+9vfIJYMcqyLcen3CRJyhHB0CL5CDu1EmE0O0yWjMqeK7PEOyKpg==
+X-Received: by 2002:a5d:5f4b:0:b0:3ce:663a:c92d with SMTP id ffacd0b85a97d-3d1df53baf5mr8258978f8f.56.1756817166199;
+        Tue, 02 Sep 2025 05:46:06 -0700 (PDT)
+Received: from ho-tower-lan.lan ([185.48.76.109])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf275d2717sm19589896f8f.15.2025.09.02.05.46.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 05:44:04 -0700 (PDT)
-Date: Tue, 2 Sep 2025 20:43:54 +0800
-From: Shawn Guo <shawn.gsc@gmail.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, Stefan Klug <stefan.klug@ideasonboard.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Dafna Hirschfeld <dafna@fastmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 6/6] arm64: dts: imx8mp: Add pclk clock and second power
- domain for the ISP
-Message-ID: <aLbmijMP2f7HXRGV@dragon>
-References: <20250616011115.19515-1-laurent.pinchart@ideasonboard.com>
- <20250616011115.19515-7-laurent.pinchart@ideasonboard.com>
+        Tue, 02 Sep 2025 05:46:05 -0700 (PDT)
+From: James Clark <james.clark@linaro.org>
+Subject: [PATCH v6 0/7] spi: spi-fsl-dspi: Target mode improvements
+Date: Tue, 02 Sep 2025 13:44:52 +0100
+Message-Id: <20250902-james-nxp-spi-dma-v6-0-f7aa2c5e56e2@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250616011115.19515-7-laurent.pinchart@ideasonboard.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMXmtmgC/3XQTWrDMBAF4KsErasijX7dVe9RupDkUaLS2EYqJ
+ iX47pUNJS5Wl2/gfTPMnRTMCQt5Od1JxjmVNA416KcTCRc3nJGmvmYCDBRTAPTDXbHQ4TbRMiX
+ aXx11XWfQo49ee1J7U8aYbpv59l7zJZWvMX9vK2a+Tn8129BmThnlTFsEgSxE/fqZBpfH5zGfV
+ 32ratb9VwVvBUfDpUfYV9dLZnhs11y0CKgE4wYxRJDO+QMhdgTIFiEqgaZXRkYVNYQDIfeEaRF
+ y/YGxvXfAAgd2INSDsND8haqEAKk7ZZxG1/0hlmX5Ab2BQsH6AQAA
+To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Larisa Grigore <larisa.grigore@nxp.com>, Frank Li <Frank.li@nxp.com>, 
+ Christoph Hellwig <hch@lst.de>
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, James Clark <james.clark@linaro.org>, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.14.0
 
-On Mon, Jun 16, 2025 at 04:11:15AM +0300, Laurent Pinchart wrote:
-> The ISP HDR stitching registers are clocked by the pixel clock, which is
-> gated by the MIPI_CSI2 power domain. Attempting to access those
-> registers with the clock off locks up the system. Fix this by adding the
-> pclk clock and the MIPI_CSI2 secondary power domain.
-> 
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Improve usability of target mode by reporting FIFO errors and increasing
+the buffer size when DMA is used. While we're touching DMA stuff also
+switch to non-coherent memory, although this is unrelated to target
+mode.
 
-Applied, thanks!
+With the combination of the commit to increase the DMA buffer size and
+the commit to use non-coherent memory, the host mode performance figures
+are as follows on S32G3:
+
+  # spidev_test --device /dev/spidev1.0 --bpw 8 --size <test_size> --cpha --iter 10000000 --speed 10000000
+
+  Coherent (4096 byte transfers): 6534 kbps
+  Non-coherent:                   7347 kbps
+
+  Coherent (16 byte transfers):    447 kbps
+  Non-coherent:                    448 kbps
+
+Just for comparison running the same test in XSPI mode:
+
+  4096 byte transfers:            2143 kbps
+  16 byte transfers:               637 kbps
+
+These tests required hacking S32G3 to use DMA in host mode, although
+the figures should be representative of target mode too where DMA is
+used. And the other devices that use DMA in host mode should see similar
+improvements.
+
+Signed-off-by: James Clark <james.clark@linaro.org>
+---
+Changes in v6:
+- Indentation fix
+- Fix trailers in first commit
+- Explain reasoning for "spi: spi-fsl-dspi: Stub out DMA functions"
+- Link to v5: https://lore.kernel.org/r/20250829-james-nxp-spi-dma-v5-0-3246957a6ea9@linaro.org
+
+Changes in v5:
+- Change some ints to size_t for consistency
+- Separate change for making buffer size a page and making target mode
+  buffer larger
+- Explain reasoning for target mode buffer size change in commit message
+- Replace an if with a min()
+- Drop applied fixes: commit
+- Take Vladimir's change to separate -EINPROGRESS and cur_msg->status
+  changes and fix the bug
+- Get max segment size from dmaengine rather than hardcoding it and
+  store the size in struct fsl_dspi_dma
+- Link to v4: https://lore.kernel.org/r/20250627-james-nxp-spi-dma-v4-0-178dba20c120@linaro.org
+
+Changes in v4:
+- Fix !CONFIG_DMA_ENGINE build (and actually test it this time)
+- Reword completion counter comment
+- Reword some commit messages
+- Reset tries in dspi_poll() for each transfer
+- Check for fifo errors in dspi_poll() before checking for completion
+- Link to v3: https://lore.kernel.org/r/20250624-james-nxp-spi-dma-v3-0-e7d574f5f62c@linaro.org
+
+Changes in v3:
+- Stub out DMA functions in the driver so no-DMA builds work
+- Link to v2: https://lore.kernel.org/r/20250613-james-nxp-spi-dma-v2-0-017eecf24aab@linaro.org
+
+Changes in v2:
+- Store status in cur_msg->status rather than adding xfer_status
+- Show exact underflow/overflow flags in error message
+- Rate limit error messages
+- Add a comment about resetting the completion counter prior to transfer
+- Rename dspi_is_fifo_overflow() -> dspi_fifo_error()
+- Add performance figures to cover letter
+- Rebase onto https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git/for-next
+  to avoid some conflicts
+- Link to v1: https://lore.kernel.org/r/20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org
+
+---
+James Clark (7):
+      spi: fsl-dspi: Avoid using -EINPROGRESS error code
+      spi: fsl-dspi: Store status directly in cur_msg->status
+      spi: spi-fsl-dspi: Stub out DMA functions
+      spi: spi-fsl-dspi: Use non-coherent memory for DMA
+      spi: spi-fsl-dspi: Use whole page for DMA buffers
+      spi: spi-fsl-dspi: Increase target mode DMA buffer size
+      spi: spi-fsl-dspi: Report FIFO overflows as errors
+
+ drivers/spi/spi-fsl-dspi.c | 232 +++++++++++++++++++++++++++++++--------------
+ 1 file changed, 162 insertions(+), 70 deletions(-)
+---
+base-commit: b320789d6883cc00ac78ce83bccbfe7ed58afcf0
+change-id: 20250522-james-nxp-spi-dma-a997ebebfb6b
+
+Best regards,
+-- 
+James Clark <james.clark@linaro.org>
+
