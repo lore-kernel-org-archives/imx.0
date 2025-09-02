@@ -1,159 +1,214 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913F5341662
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 17:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8641865FA;
+	Tue,  2 Sep 2025 19:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756835415; cv=none; b=dQPFEJnf44N37eWVsD8QmnEPhQKqAOVn6UrHGToWAfoK2IafwmtB7FB4ux7lva4+ERy6zHCo2HsoxW/CL5K8+rbKpMmkwk8KgdRUp8NuWm64ayDMl/EfZvCacI65x7lypTpk5mh8PwZrKN1MhJLA1LQ8ERPdrz5vA4hq/XHawWw=
+	t=1756841494; cv=none; b=EZeVEqsTZ4o2500gtb6lrIzj7Bj2LIZ6VSfXodvSwPoY/u1PG2kbnXupqFv0tOP3LHCC9Cfr/ym6DDishrXNIFqElua8BjPPsLMR5sL7OC6x0MRThNvGZ5Baip9afBb3rzh7pfLhMroF5TwwiO8bi+TGt1ZuVEqUJD5n1/SOd5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756835415; c=relaxed/simple;
-	bh=Qq79ok73NgzUNSPN3ElH84ehBnROIulXyA0yyA4cddE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fq9cOjirY6G8SNSrJoRmFtaxWAjzw5LCJC0GO16Y1Q6dXME7iJoWQQ8EiUpQR9pIyr2ax37Bq0XwJLzHMKTKqbhekXyLzIzxqLUrWNGJl7s2hX3L276yvRSrVcWlTbW7m/33rIMwvLlkhncP+GlyEch2M4vmlx6UptjYs62hjFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=krU/Kc5Y; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	s=arc-20240116; t=1756841494; c=relaxed/simple;
+	bh=F14nPORs8JdgFQl33HfGRKc+FkO94g/5nNmkQ7R1MBg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z3Zv4HJnURnuUe1m6jkGrGyxX3Jf5HQbnhzcJbsy/aPRNiIlQyamjDCW7K9Gg3TueUD8Y4B0/D1knqRsv8rqw4REK0Xs9iuHiVBqSXSAMbBKNGWiYolSrEP98uAO4c9CkDMcDRHETDJRoAeunnrId2ZMvi0O2HtzTh6ditOPi8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iFs/A14m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="krU/Kc5Y"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55f74c6d316so3100838e87.0
-        for <imx@lists.linux.dev>; Tue, 02 Sep 2025 10:50:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756835412; x=1757440212; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qq79ok73NgzUNSPN3ElH84ehBnROIulXyA0yyA4cddE=;
-        b=krU/Kc5YHegNP72pvf3zzsZPqpmvFvsXgAycBpUA2gXPEj8d5GEgwZzBBYEgSgkstf
-         YkALUTK7bXSCdGEbHq9/hfg1k7JTaqe8gUFzpiJJB51AdRXkWcu69HDnhOVHm8tkLeQ5
-         dtFCxZdbmkYSnFZyN3aveFyDnp+xk+ibZvnZS3dnZlJgZ2PG+Rud/ONbAj57yfRNlBg8
-         yUDVQd5UPZC9DHhWm1aogigPfy7FaOyCzuTUVF7cypzRCF1kyq+jhIL1fSXT5IHWOZmv
-         E8wH2UpJqeOr9oCsg2jMx5BAsmkIxevdpa1hE72XnrtTCvnWBJ6apW8WudWJ3/koIcOE
-         pRHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756835412; x=1757440212;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Qq79ok73NgzUNSPN3ElH84ehBnROIulXyA0yyA4cddE=;
-        b=RuwseSng9TvWB5DMnfWkuddYDpU3+cu7xQEpGHsjGSL0M8glsYkg/VQNRIHoD8nr4b
-         NCT0YpfrPXW2Qx3wVnsNF04Atg0okdfp5l2Xu3ZzDyJpjY8s1HA28e92bVVBrfKNpE6k
-         +VjWjg2xXy9KjDRb89qS9Sd65AsQlSsY6c7uW7HMsMP0/YJmBEGWmUI259rM7ZYBQKvA
-         JbnfkFUZ0PxGikWF1sq63RZfWFKWc11lgD5NpI/MFAg/90uLG8edsTjNutd8eQxsFv6y
-         c5jyDsRpSy1gF4+36UoLnfbuGh8ZWd+6l/RG1fJpuwuUI+vzeMmhnygeabpVJyZbxtnZ
-         rDcw==
-X-Forwarded-Encrypted: i=1; AJvYcCUfXw0+iWvHCIiBGaaic/bgfaBvP5zwZohX4DzrrhKgWWZWUkaYxY3OpTr8ZE+Yr37kTA4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxyQfT8p+I8rZfv02sOnYgd78fC1mOFAjfh4mjes0RZK+ug7pVW
-	L6VULLPYdeD0alIWZ70rGQdkhI9M1e76xT53snsAG9hQj5OV2hi0gLRbVHmdNbfoosz7g2PX9j9
-	ov+7T67wien8msyxkIu8FmKafXh8xyOPMXljYj5GDjg==
-X-Gm-Gg: ASbGncvdSHfs7vAb7D3EN9f+wZecqu6tGzkdfMdheuNzcGG1hCXdXpDEavNIc8NUetf
-	OiETgiO7PVLw7I+1jLtNyLGgwFadk18y2utAjBYhtTu77U4yjgEyCHGz+7lMaImcja/EvI1XJLu
-	iYgNYgJ5Byp4M+zurKxVfYlgShgUO3zU16TmgeaTABrl2MyrYN9Jd0qlCYHTTQQB8ZV0noalgAQ
-	eGdaD9GAN7MYe86aaiO+vh6AjQfUl5LmkkT/Rf1eIfiwYlI4A==
-X-Google-Smtp-Source: AGHT+IHWxMY/UX5pahdxyPomER2R5wCG7WJNOYIC76WLDnRgZXryLWeY1Ce628zgGwqGftmJqN1QawcJ1KuqTk6lVI8=
-X-Received: by 2002:a05:6512:3b12:b0:55f:4f99:f3c9 with SMTP id
- 2adb3069b0e04-55f708ec830mr4334057e87.32.1756835411674; Tue, 02 Sep 2025
- 10:50:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iFs/A14m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDCDC4CEED;
+	Tue,  2 Sep 2025 19:31:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756841494;
+	bh=F14nPORs8JdgFQl33HfGRKc+FkO94g/5nNmkQ7R1MBg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iFs/A14ma2YVWf6Xfo5kNA4paBdeW7hQYYdbujdC/+mCv7+Q5Se86rzNwGS6MwaiD
+	 UVG3Q0qBHF38bpOg7jcYZRztAC2ZopUFHOVbZGmU0KSC8UUGldGv+XC0rsyc1UmsQ9
+	 p8/0tlsdKvL4rMgNass/Y3Sdo9/tIzN2+43azvH4Yl/1XqWOsrYbDRENCmAd5sl2ap
+	 1ERo9tzWZJzYwNgOpMfrlVq4zxtSNL6g6HGu7qv0L4+9/Sq/IpQ2c/tDAnBEF2hbtt
+	 9SsLq0fQZD/Yec0fwRiovHKo4WJhrIMhBVnwvLJ4ipIyndd7jV3lyFXDR2gRrCbdj2
+	 VTUYFM+98bPRA==
+Date: Tue, 2 Sep 2025 20:31:28 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Aswath Govindraju <a-govindraju@ti.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
+	Bough Chen <haibo.chen@nxp.com>,
+	"linux-can@vger.kernel.org" <linux-can@vger.kernel.org>,
+	"linux-phy@lists.infradead.org" <linux-phy@lists.infradead.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v4 1/6] dt-bindings: phy: ti,tcan104x-can: Document NXP
+ TJA105X/1048
+Message-ID: <20250902-dastardly-truth-fb2be9f68e4a@spud>
+References: <20250901-can-v4-0-e42b5fe2cf9e@nxp.com>
+ <20250901-can-v4-1-e42b5fe2cf9e@nxp.com>
+ <20250901-diligent-dreaded-59b9ad5c3976@spud>
+ <20250901-uproar-shrill-07d51ea21a29@spud>
+ <PAXPR04MB845991442136C0BEF0540D6A8806A@PAXPR04MB8459.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-13-bb091daedc52@linaro.org> <aLb_pOG-yc-CHoiY@smile.fi.intel.com>
-In-Reply-To: <aLb_pOG-yc-CHoiY@smile.fi.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 2 Sep 2025 19:50:00 +0200
-X-Gm-Features: Ac12FXzmJRg8_mGsvbk9kTYEAk6i5wfrx-8rp8gdl4L5LHxLn-6rA1BsDeyDmdo
-Message-ID: <CAMRc=Mc-NEFawz11Lr5JGStoe=PU7b91E-MVB3xkdBr_JoiStQ@mail.gmail.com>
-Subject: Re: [PATCH v7 13/16] pinctrl: allow to mark pin functions as
- requestable GPIOs
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="emYz2NOh8U/FtcyF"
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB845991442136C0BEF0540D6A8806A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+
+
+--emYz2NOh8U/FtcyF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 2, 2025 at 4:31=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@intel.com> wrote:
->
-> On Tue, Sep 02, 2025 at 01:59:22PM +0200, Bartosz Golaszewski wrote:
-> >
-> > The name of the pin function has no real meaning to pinctrl core and is
-> > there only for human readability of device properties. Some pins are
-> > muxed as GPIOs but for "strict" pinmuxers it's impossible to request
-> > them as GPIOs if they're bound to a devide - even if their function nam=
-e
-> > explicitly says "gpio". Add a new field to struct pinfunction that
-> > allows to pass additional flags to pinctrl core.
->
-> Which I disagree with. The pin control _knows_ about itself. If one needs
-> to request a pin as GPIO it can be done differently (perhaps with a new,
-> special callback or with the existing ones, I need to dive to this).
+On Tue, Sep 02, 2025 at 02:24:49AM +0000, Peng Fan wrote:
+> Hi Conor,
+>=20
+> > Subject: Re: [PATCH v4 1/6] dt-bindings: phy: ti,tcan104x-can:
+> > Document NXP TJA105X/1048
+> >=20
+> > On Mon, Sep 01, 2025 at 07:54:01PM +0100, Conor Dooley wrote:
+> > > On Mon, Sep 01, 2025 at 11:18:11AM +0800, Peng Fan wrote:
+> > > > The TJA105[1,7] is a high-speed CAN transceiver which is a
+> > > > pin-compatible alternative for TI TCAN1043 with sleep mode
+> > > > supported, and has a compatible programming model, therefore
+> > use ti,tcan1043 as fallback compatible.
+> > > >
+> > > > The TJA1048 is a dual high-speed CAN transceiver with sleep mode
+> > supported.
+> > > >
+> > > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > > > ---
+> > > >  .../devicetree/bindings/phy/ti,tcan104x-can.yaml   | 30
+> > ++++++++++++++++++++--
+> > > >  1 file changed, 28 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git
+> > > > a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
+> > > > b/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
+> > > > index
+> > > >
+> > 4a8c3829d85d3c4a4963750d03567c1c345beb91..f8e0c24856a2ba83
+> > b5c988b246
+> > > > 464f47e11a032f 100644
+> > > > --- a/Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
+> > > > +++ b/Documentation/devicetree/bindings/phy/ti,tcan104x-
+> > can.yaml
+> > > > @@ -19,18 +19,25 @@ properties:
+> > > >            - enum:
+> > > >                - microchip,ata6561
+> > > >            - const: ti,tcan1042
+> > > > +      - items:
+> > > > +          - enum:
+> > > > +              - nxp,tja1051
+> > > > +              - nxp,tja1057
+> > > > +          - const: ti,tcan1043
+> > > >        - enum:
+> > > >            - ti,tcan1042
+> > > >            - ti,tcan1043
+> > > > +          - nxp,tja1048
+> > > >            - nxp,tjr1443
+> > > >
+> > > >    '#phy-cells':
+> > > > -    const: 0
+> > > > +    enum: [0, 1]
+> > > >
+> > > >    standby-gpios:
+> > > >      description:
+> > > >        gpio node to toggle standby signal on transceiver
+> > > > -    maxItems: 1
+> > > > +    minItems: 1
+> > > > +    maxItems: 2
+> > >
+> > > You're adding a second standby gpio, which one is which?
+> > > I assume you mean that item 1 is stbn1 and item 2 is stbn 2 for
+> > tja1048.
+>=20
+> Yes. There are two standby pins.
+>=20
+> > > Might be kinda obvious, but I think it should be mentioned.
+>=20
+> I could update description as below.
+> "
+> description:
+>   gpio node to toggle standby signal on transceiver. For two Items,
+>   item 1 is for stbn1, item 2 is for stbn2.
 
-What? Why? Makes no sense, there already is a function for requesting
-a pin as GPIO, it's called pinctrl_gpio_request(). And it's affected
-by this series because otherwise we fail as explained in the cover
-letter.
+Sure.
 
-> On a brief view this can be done in the same way as valid_mask in GPIO,
-> actually this is exactly what should be (re-)used in my opinion here.
->
+>=20
+> > >
+> > > tja105{1,7} don't have a standby gpio, but they do have a silent
+> > mode.
+>=20
+> Right. Tja105{1,7} has a pin S for silent mode.
+>=20
+> > > silent mode seems fundamentally different to standby, since the
+> > > receiver still works. Seems like that should be handled differently, =
+no?
+> >=20
+> > The docs for standby mode for the tcan1043 don't match with the
+> > tja1051, "Standby mode is a low power mode where the driver and
+> > receiver are disabled," so does the fallback compatible even make
+> > sense? Seems like a combination of enable and standby gpios are used
+> > to put the tcan device into silent mode but the tja1051 has a pin for
+> > that alone and seemingly does not support standby at all?
+>=20
+> Thanks for looking into the details. I also read more into the datasheet.
+>=20
+> Tcan1043:
+> EN   nSTB
+> H       H    ---> normal mode
+> L        H   ---> slient mode
+> H       L    ---> standby mode
+> L        X    --->off mode
+>=20
+> TJA1051
+> EN   S
+> H     L   --> normal mode
+> H     H  --> slient mode
+> L      X  --> off mode
+>=20
+> Your analysis is correct. silent is different with standby,
+> but we only wanna to use normal and off mode
 
-Except that the valid_mask is very unclear and IMO it's much cleaner
-to have a flag for that.
+In addition, it looks like there are some tja1051 devices that don't
+even have the enable pin? Of the 4 SKUs, there are 2 that use pin5 as
+Vio and 1 that has it n/c. Only the T/E device has an enable there.
 
-> > While we could go with
-> > a boolean "is_gpio" field, a flags field is more future-proof.
->
-> This sentence is probably extra in the commit message and can be omitted.
->
-> > If the PINFUNCTION_FLAG_GPIO is set for a given function, the pin muxed
-> > to it can be requested as GPIO even on strict pin controllers.
->
-> So. this changes the contract between pin control (mux) core and drivers.
+> If we need to handle differently, I need
+> to add a new optional property
+>=20
+> silent-gpios:
+>   description:
+>     gpio node to toggle silent signal on transceiver
+>   minItems: 1
 
-Yes, that's allowed in the kernel. The current contract is wrong and
-the reason why we can for instance confuse debug UARTs by requesting
-its pins as GPIOs from user-space whereas a strict pinmuxer will not
-allow it. But to convert pinmuxers to "strict" we need to change the
-behavior.
+Ye, I think so. And probably add some if/then to use it instead of
+standby on the relevant chips.
 
-> Why? How is it supposed to work on the really strict controllers, please?
->
+--emYz2NOh8U/FtcyF
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Like what I explained several times? You have pins used by a device.
-User-space comes around and requests them and fiddles with them and
-now the state of your device is undefined/broken. With a strict
-pinmuxer user-space will fail to request the pins muxed to a non-GPIO
-function.
+-----BEGIN PGP SIGNATURE-----
 
-> > Add a new callback to struct pinmux_ops - function_is_gpio() - that all=
-ows
-> > pinmux core to inspect a function and see if it's a GPIO one. Provide a
-> > generic implementation of this callback.
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaLdGEAAKCRB4tDGHoIJi
+0mVdAQDC4R/uDobfYX0MlIc7P3VN7g19AM8wzxvWSJ27EwGhBgEA12JCMoHxPor9
+peA9L92m9adGEyaiB2fIMSJnYILwrQM=
+=7Ezu
+-----END PGP SIGNATURE-----
 
-Bartosz
+--emYz2NOh8U/FtcyF--
