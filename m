@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BB825EFBF;
-	Tue,  2 Sep 2025 15:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3E632ED58;
+	Tue,  2 Sep 2025 15:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756827518; cv=none; b=daAJtnJvr5z/X7bllSGTeDcE24DPdHUJ71brlnWJaYzsDrv+j8+/xpeHmXrmpQ1nHM3C9x6ZGcOul7YYVy5fXxRcnnJrKoW701RH27+5OjvkdCgf69XgkGWVKXHpZVpjOQEuevBbkAxiEy9jWQZK1AyKbRTdOEVVKAlMINTe6qw=
+	t=1756828427; cv=none; b=Hk0b+dWYXx99F2yO02koiP6AXfrgUZfgZk3CFQwi8yaTvyOiqb2OUaLRIw4HncJqwHqIfaXHUybiJ1b5EUnlA8qDBhk87C5JfMPX85Ld2Vmz0oz8U9CmbfJGNvzg0fFCKy4/jS9t6KUB/isCCVuwDaLMsKi9QRemqItcGX+Tj8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756827518; c=relaxed/simple;
-	bh=v+DuYfBUiGbE23dCrrZocBSYiEeU9i6PmQBrfDGbt+c=;
+	s=arc-20240116; t=1756828427; c=relaxed/simple;
+	bh=DW2NCRd3COiQkXgoinnb8VcsKpxfxA3J84LepgCIijY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ou0TzRA4lX6dB1qFaYy02kTJO24tBLrVfdgoSpztcPVtaiAmofWb50ubIHxDCZhJM7LnFFSeHUgPpQrPVcYHInY4Gws3eB7uoFxn9bKnF60IWzeO8vhGFZlfSpAMywAAg2rcEChgMwYG4mlzRkQCMMMzb/YStALLr1mX18rBFq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zh70MZgO; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=YGn+ymuln0hpK5anIIGKXys6Sknse7Md+VY9qqmI4WkXN7JI4VXip8knadhpYpByqPGjdVwhKgCcUsubjhkRi/CBeE5m5rKOKsyIh1Hkw29OLCuUsm/OO8tEGsvFIcA6IkAra/TXA+puWFK56tAdwrzbz+n+DMv/UGgCSHT6UeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SLFkjIu0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zh70MZgO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DD3C4CEED;
-	Tue,  2 Sep 2025 15:38:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SLFkjIu0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24AEC4CEF5;
+	Tue,  2 Sep 2025 15:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756827517;
-	bh=v+DuYfBUiGbE23dCrrZocBSYiEeU9i6PmQBrfDGbt+c=;
+	s=k20201202; t=1756828426;
+	bh=DW2NCRd3COiQkXgoinnb8VcsKpxfxA3J84LepgCIijY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Zh70MZgOxvxIxj6UMkzT706dj4grAuw+KArw+LrHivUyAmevwHRbmzsy8tdhtqckQ
-	 ctnQW14LrxH7lpGTWRcPysIxgPyheRuMy9Tnoya1qMd019iqz8ogyz/ZzskmCsRTY4
-	 F6vO7VOs9YxEPQ4KZXd48LQZlpVHk12uvjES7uMNnLSDH8kOAWc5bmmaMvxzgl8PYT
-	 QFuBANh8pcFrndFTx8KlSmz3GDHmSM2T49B2D/EK+RnKYtzD4IBBt8MHQCCaSTZdMa
-	 hyyllZ2BaEg7ss7qp0XMJFqiosZEUGgYOmQQXbvtOguQ5wDzIV/4TdwKF//sOzHuI/
-	 Cne8GehwJZyYw==
-Message-ID: <5c9f8c2e-6785-4464-b2cf-f8a6aeec42ea@kernel.org>
-Date: Tue, 2 Sep 2025 17:38:24 +0200
+	b=SLFkjIu0nlkv+0E5ucgkX15UP6BPezykAJeQSiMzD6O97KFko/gtX9bBDjlQdlBnG
+	 7u7p4QjheiFDis7/nEGxsx2CfxdA28EoXnBcH6/puhT+B/Zdw9/z+rJskX5QFjGnYr
+	 fwBosSzL6rnPg/AtiW9r3JbhKzW+7eiwg3Lro+VRdRXefriE90ztbLWtaVbyc3y3Yk
+	 gpcoFelC7L9L9fEdY2byQSfW8rnYohisDzMBAcM2qvTbTGgtXbHBjSiIz87cWwobNz
+	 WN1IUFXK4sLkqeKhW/N4wgb3dzffck/X5yaqKjd9jLuWGIw3/X8R57nfhWCuzzIC8Q
+	 hBKBmZyClnR6Q==
+Message-ID: <647fdf8a-835b-44d1-b0b8-a3d253a14787@kernel.org>
+Date: Tue, 2 Sep 2025 17:53:39 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,44 +35,28 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 12/16] pinctrl: qcom: use generic pin function helpers
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
- Linus Walleij <linus.walleij@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Alexey Klimov <alexey.klimov@linaro.org>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
- Andy Shevchenko <andy@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
- Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>,
+Subject: Re: [PATCH v5 1/4] media: dt-bindings: nxp,imx8mq-mipi-csi2: Add
+ i.MX8ULP compatible string
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Frank Li <Frank.li@nxp.com>, Guoniu Zhou <guoniu.zhou@nxp.com>,
+ Rui Miguel Silva <rmfrfs@gmail.com>, Martin Kepplinger <martink@posteo.de>,
+ Purism Kernel Team <kernel@puri.sm>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- NXP S32 Linux Team <s32@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Tony Lindgren <tony@atomide.com>, Haojian Zhuang
- <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>, Mark Brown <broonie@kernel.org>,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
- linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-12-bb091daedc52@linaro.org>
- <aLbt2euqYQM5xXuZ@smile.fi.intel.com>
- <1034c70a-da67-4914-b23c-8d006b7611bf@kernel.org>
- <aLcM58IEH8hGYLnx@smile.fi.intel.com>
+ Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20250901-csi2_imx8ulp-v5-0-67964d1471f3@nxp.com>
+ <20250901-csi2_imx8ulp-v5-1-67964d1471f3@nxp.com>
+ <20250901154610.GB13448@pendragon.ideasonboard.com>
+ <aLZMQ7c8qr5XO88d@lizhi-Precision-Tower-5810>
+ <20250902083554.GD13448@pendragon.ideasonboard.com>
+ <7c461931-3b04-4354-a892-52f469511c5a@kernel.org>
+ <20250902123524.GK13448@pendragon.ideasonboard.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -118,43 +102,98 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <aLcM58IEH8hGYLnx@smile.fi.intel.com>
+In-Reply-To: <20250902123524.GK13448@pendragon.ideasonboard.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 02/09/2025 17:27, Andy Shevchenko wrote:
-> On Tue, Sep 02, 2025 at 05:12:24PM +0200, Krzysztof Kozlowski wrote:
->> On 02/09/2025 15:15, Andy Shevchenko wrote:
->>> On Tue, Sep 02, 2025 at 01:59:21PM +0200, Bartosz Golaszewski wrote:
-> 
-> ...
-> 
->>>> +	for (i = 0; i < soc_data->nfunctions; i++) {
->>>> +		func = &soc_data->functions[i];
->>>> +
->>>> +		ret = pinmux_generic_add_pinfunction(pctrl->pctrl, func, NULL);
->>>> +		if (ret < 0)
+On 02/09/2025 14:35, Laurent Pinchart wrote:
+> On Tue, Sep 02, 2025 at 02:26:53PM +0200, Krzysztof Kozlowski wrote:
+>> On 02/09/2025 10:35, Laurent Pinchart wrote:
+>>>>>>          compatible:
+>>>>>>            contains:
+>>>>>>              enum:
+>>>>>> -              - fsl,imx8qxp-mipi-csi2
+>>>>>> +              - fsl,imx8ulp-mipi-csi2
+>>>>>> +    then:
+>>>>>> +      properties:
+>>>>>> +        reg:
+>>>>>> +          minItems: 2
+>>>>>> +        resets:
+>>>>>> +          minItems: 2
+>>>>>> +          maxItems: 2
+>>>>>> +        clocks:
+>>>>>> +          minItems: 4
+>>>>>> +        clock-names:
+>>>>>> +          minItems: 4
+>>>>>
+>>>>> But according to this, the ULP version requires more clocks than the QXP
+>>>>> version.
+>>>>
+>>>> If only clock number difference, generally, it is still compatible and can
+>>>> be fallback, especialy driver use devm_bulk_clk_get_all().
 >>>
->>> Why not simply
->>>
->>> 		if (ret)
+>>> That's a driver-specific implementation decision, so I don't think it
+>>> should be taken into account to decide on compatibility.
 >>
->> Because existing code is as readable?
+>> The clock inputs do not restrict compatibility. If Linux can use
+>> fallback to bind and operate properly, then it's a strong indication
+>> devices are compatible.
+>>
+>> Imagine exactly the same registers, so same programming interface, but
+>> one device takes one more clock which just needs to be enabled through
+>> its lifetime. Such devices are fully compatible, even though clock
+>> inputs differ.
 > 
-> I don't agree on this. And Bart explained why. So, it's an API requirement
-> after all.
+> That's only the case if someone enables the clock, isn't it ? From a DT
+> binding point of view, how can we know that the extra clock will be
 
-If pinmux_generic_add_pinfunction() was returning 0 or error code, which
-I assume you thought this function is doing, then your suggestion was
-nitpicking and existing code would be readable. Requesting (ret) for
-such case is really not helping.
+We talk about software using the binding in this particular case. Can
+the software use fallback? Yes, it can.
 
-If, as it turns out if you looked at the code,
-pinmux_generic_add_pinfunction() returns non-error for success, your
-comment was even wrong.
+> enabled by a component separate from the driver (in this case by the
+> fact that the devm_bulk_clk_get_all() function gets all clocks) ?
 
-So either you are nitpicking which is not helpful or you are finding
-fake issues which is counter productive.
+If you go that way, only 100% identical devices are compatible.
+
+> 
+>> I also wanted to express exactly that case on my slides from OSSE -
+>> slide 28:
+>> https://osseu2025.sched.com/event/25Vsl/dts-101-from-roots-to-trees-aka-devicetree-for-beginners-krzysztof-kozlowski-linaro
+> 
+> Quoting that slide, you wrote
+> 
+> "Two devices are compatible when the new device works with Linux drivers
+> bound via fallback (old) compatible".
+> 
+> That is clearly the case here for the existing *Linux* driver. But what
+> if the driver called devm_bulkd_clk_get() with a device-specific list of
+> clocks ? Or what if the same DT bindings are used on an OS that has no
+> clk_get_all() equivalent ? This is my concern with declaring those two
+> devices as compatible: they may be from the point of view of the current
+> implementation of the corresponding Linux kernel driver, but DT bindings
+> are not Linux-specific.
+
+It seems you think of compatibility as new device is compatible with old
+kernel, e.g. one not requesting that clock. We don't talk about such case.
+
+> 
+> Or do DT bindings assume that drivers have to always enable all clocks
+> declared in DT, even if they don't know what those clocks are ? That
+> seems error-prone, in quite a few cases drivers need to handle separate
+> clocks in a device-specific way, with for instance a particular
+> ordering, preventing them from using devm_bulk_clk_get_all(). If all
+> drivers are required to manage all clocks declared in DT, this would get
+> messy quite quickly.
+> 
+I don't really want to dive into such specifics, because it is
+impossible to create a generic rule of out. We decide here about
+programming interface mostly. Can Linux use the one from fallback-device
+to properly operate the new one? Can the same driver bind to fallback
+and operate the new device?
+
+If you enable clock by clock for whatever reason, e.g. very specific
+programming power up sequence, then answer would be: no, Linux cannot
+use fallback because handling clocks differ.
 
 Best regards,
 Krzysztof
