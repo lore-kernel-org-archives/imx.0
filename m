@@ -1,74 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226583054E7;
-	Tue,  2 Sep 2025 13:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAE130E82B
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 13:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819985; cv=none; b=kNE/1eSiHGErI0MzCbksaIaB504rKpaCj5nxXgcASA0jMY0qeVHhls3YMMWmNhpxBESFRRLJo1DftxM3shF8d7ZGPTvbUJI277zk8KYB8l1y8OvNx5Lg/vmLFojPaxswG9kQySc3nOnJwRE/nZhGJjLh7TpcVtBz+H1u8emVg5w=
+	t=1756820186; cv=none; b=HH6bhOiYWnuaEs7jxqgzH7Va7pg+LACa7XTpzC0C4CF0kSA27meecsKqcyuAdMBOdmorT9PRkuroUF5qsZvaUaLAbWRq4EUVvwSgAflCoS7XpmVVGZ4kAdj2mfPkgEnK3gXlQIiXl2rrXwLZ79xCqYL3NYmmui7AaRFkJxNITBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819985; c=relaxed/simple;
-	bh=sBkfvtV88WJvhk99waVh61fGOEuvu+CGCXjjjDwFWgk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=dGM+UM6e8k68R50XMFjfg/bcn2ZpaLGMLyKdWkpCZrprEIFkRCRPzCDKoEZCkzjt3oCTnkTSZKIQBgkzJQqhax1OCkuG8JG0cAqKubI2sDNjRjhzSvvJDJf73WMmudsPnbWVi1KHAYMoAVavLUBx/8OrOcHrUCcbZROdVg6FE4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YR8flJhN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756820186; c=relaxed/simple;
+	bh=5kh4RdydMloHqXpOzLIJ8/F9sjrPwT/BXAZgo2vDDDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GKE+nUC0yr6Lp0ecn4gfG06W7jDRpHvUBnDAFUm62gtKEGM7t3ylrvscxdLIViQZHHzUtzL7PbFCJTBlfqwOtdqmXAwr94mvZTWq7Immu7KDsDo+xBsw0XVM1QKb9VxISfXjzh9K7NMx1Rgosyhd2nE351cv56waxlpwmI16Q7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=h6s1d/LT; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YR8flJhN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3C5C4CEED;
-	Tue,  2 Sep 2025 13:33:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756819985;
-	bh=sBkfvtV88WJvhk99waVh61fGOEuvu+CGCXjjjDwFWgk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=YR8flJhNtGVFxi4yKyTwDq+mLCufp8faONJNipdW7vSjbwjD5FUbZycT4DKFuNyE+
-	 Bes9NXoM/9CB0B4gA+/dPGb86ZNXZyJtMUL9vZG/ULM1401w7jjHqUP4wlM/JY3IFO
-	 RCjP091qHL6sOu/acZEFenbKuLb4CpzZNTS/gnAb9KHMuUAxhbNSvvwroNvygTbxr4
-	 qfUqXfQWh6CUMTvmfio/DVMcVeE03p1HxWJn9OLRJVC5h6lsyUDPJTAFM7tafV06hS
-	 7WpZoQ0U0EjkOQ8xOa/4fBqRxjPdvYmRvXn75UDFrlHf6Chuw20rSTwwjybHEevXB6
-	 8AULmPhMRqE/A==
-From: Lee Jones <lee@kernel.org>
-To: linux-kernel@vger.kernel.org, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Mark Brown <broonie@kernel.org>, Lee Jones <lee@kernel.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, linux-arm-kernel@lists.infradead.org, 
- linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev
-In-Reply-To: <20250813161517.4746-10-wsa+renesas@sang-engineering.com>
-References: <20250813161517.4746-10-wsa+renesas@sang-engineering.com>
-Subject: Re: (subset) [PATCH 09/21] mfd: remove unneeded 'fast_io'
- parameter in regmap_config
-Message-Id: <175681998119.2360872.14819773585148263316.b4-ty@kernel.org>
-Date: Tue, 02 Sep 2025 14:33:01 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="h6s1d/LT"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E8E75438F0;
+	Tue,  2 Sep 2025 13:36:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1756820175;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uLjfaudOM/Z4hQZ1Z9XTBxBOKuUuoiRa4NDAnwksWAE=;
+	b=h6s1d/LT5cqdR81Q7+8Jv3zd2ZMMoC6ZSEZIwk/SsdtQOkDVpvYzmywAoB5FIFLFlZN1+n
+	XfMdrThfzGaIVqdZSYhBJf/yVrkEnaeDxDTSbdiUy1+T0GvWFzE2Op8aEhqaCyQ8Qa9p/m
+	ZexzVarENAuVlOa1gFYR6qtbJ20T1aeGsaTDWWTnNx16nnQEXLEwTcEDwW800epN6zXtlT
+	IfcfH0UW9r2J7S/mlKr3GZW+vT1DeFSHNwDO75e/swGcAmz9q6L17zW/Z9b7l2lpd2v4pA
+	kjcQj2u3KLMjEA8PlGkqdrqK3/p2HDHTZBtDVCC2RenrSJda0En+HylLz+eAIQ==
+Date: Tue, 2 Sep 2025 15:36:11 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Andrzej Hajda
+ <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Robert Foss <rfoss@kernel.org>, Laurent Pinchart
+ <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Liu Ying <victor.liu@nxp.com>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Philipp Zabel
+ <p.zabel@pengutronix.de>, Hui Pu <Hui.Pu@gehealthcare.com>, Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Andrew Morton
+ <akpm@linux-foundation.org>, Zijun Hu <quic_zijuhu@quicinc.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v2 1/9] list: add list_last_entry_or_null()
+Message-ID: <20250902153611.4fc7f84f@booty>
+In-Reply-To: <2f156cf6c57d0054c20b10f931ceef9a575d533f@intel.com>
+References: <20250801-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v2-0-888912b0be13@bootlin.com>
+	<20250801-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v2-1-888912b0be13@bootlin.com>
+	<aJJ9ttmL7wiw41fY@smile.fi.intel.com>
+	<20250814183609.3788a6df@booty>
+	<aKXRHAyfPHPpZmMs@smile.fi.intel.com>
+	<20250902135709.19e1ef54@booty>
+	<2f156cf6c57d0054c20b10f931ceef9a575d533f@intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-c81fc
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeflecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeglefffefghefhtddvfeeufeeiveekgffgleekieduteekkeetvdehudekgfdvvdenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghlohepsghoohhthidpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvledprhgtphhtthhopehjrghnihdrnhhikhhulhgrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheprghnughrihihrdhshhgvvhgthhgvnhhkoheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegrnhgur
+ hiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrghdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopefnrghurhgvnhhtrdhpihhntghhrghrthesihguvggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohepjhhonhgrsheskhifihgsohhordhsvgdprhgtphhtthhopehjvghrnhgvjhdrshhkrhgrsggvtgesghhmrghilhdrtghomh
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-On Wed, 13 Aug 2025 18:14:55 +0200, Wolfram Sang wrote:
-> When using MMIO with regmap, fast_io is implied. No need to set it
-> again.
+Hello Jani,
+
+On Tue, 02 Sep 2025 15:10:14 +0300
+Jani Nikula <jani.nikula@linux.intel.com> wrote:
+
+> > While applying this patch with dim on drm-misc-next, dim push-branch
+> > failed because:
+> >
+> >   dim: ERROR: cb86408b1fc2 ("list: add list_last_entry_or_null()"): Mandatory Maintainer Acked-by missing., aborting
+> >
+> > Looking at the dim code, it is looking for a Reviewed- or Acked-by from
+> > people listed by `scripts/get_maintainer.pl --no-git-fallback -m --nol
+> > --norolestats`. but that command returns an empty string, so it will
+> > never allow me to push.
+> >
+> > How can I get that commit pushed to drm-misc-next?
+> >
+> > I think `dim push-branch -f` would work: am I supposed to use it?  
 > 
-> 
+> Try 'dim -f push-branch'. The parameters after push-branch go to git,
+> and you don't want that.
 
-Applied, thanks!
+Done, thanks for the quick reply!
 
-[09/21] mfd: remove unneeded 'fast_io' parameter in regmap_config
-        commit: 8a7d550ceea258220e31982903b8a017351526ec
+Luca
 
---
-Lee Jones [李琼斯]
-
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
