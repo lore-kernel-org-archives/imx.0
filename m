@@ -1,59 +1,59 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A53A31987D
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 13:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EA6322DD4
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 13:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819788; cv=none; b=nByxRRuGkII/XZ3uZegh8zjlsI1sTfUm1gjW/mtURH06LFb75XNVnQKQLmlBVTkmJ35FJy35bBsVihrp9J1V7jfeZ9kXM2UoYi3jkQytQH3uPwvHOhw+y2KC/y748JV9HNWT/HZXrqbWgg/EGwYChc3uNvr2ofLkYxtXjl7Egno=
+	t=1756819855; cv=none; b=sk9xBaL4SS1iUJC42+sgNqiPiBitsN41rirQwhijaENkmRP8W9mMexM30CKuOuIkqME9hNMqL6T3Yt8isrmdHmBJZOPrHjvFkyCYx+H8z9/Pfy2aYBvwVQNscgoW0Ia2nssjPcTBf/i+ff3yzh4C0MaHx7hecciCXt42UGruN/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819788; c=relaxed/simple;
-	bh=3QlkS9Ed9gmuv+futXyyIrRTd0WcKtKmub0+uBCFWn8=;
+	s=arc-20240116; t=1756819855; c=relaxed/simple;
+	bh=OnwD5QXlkWRXkwweSWm2YbRhyhJnp/UrnZINov1baPY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rwHmqcvecZ1+f2HOVJxZ9MYSilS4Bwuu9dbMhmXc7wcQs79uQAxXpNyUbdIOt2tByjQR6JUe0mKHVltGX3jSBaVM1h8mpQE+ZJPagDKrgvjUnBiZaS6wHuPFYmk93OwB16FWQAwUT5eqcj251b67mBgjVHL8aOVjhQ/UAb6RB+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=EaWPHhbE; arc=none smtp.client-ip=209.85.167.53
+	 To:Cc:Content-Type; b=lw/bjlKYX5W+1Ez1KWjovi6vYbT1A68uEvM1vBOOEe8Z/aKO5wh46t9651yDQk6aVLQAzMJ0YVNSqkmL5kNcehwqbow1XiJGWZrTb/DMdUIglEGw/gEboR8C6xjbf6gLoAS07aLuebhaMJuoJ1DbvYJWBGpffJMvxjoEGi888W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=IVqKRItj; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="EaWPHhbE"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-56088927dcbso59626e87.3
-        for <imx@lists.linux.dev>; Tue, 02 Sep 2025 06:29:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="IVqKRItj"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-55f6f7edf45so3014077e87.2
+        for <imx@lists.linux.dev>; Tue, 02 Sep 2025 06:30:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756819784; x=1757424584; darn=lists.linux.dev;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756819851; x=1757424651; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jZCKJv4aYcw+dSdOw+40akoqTFv6AX+SyMdRpV8+ksQ=;
-        b=EaWPHhbEuIwNielBMSY9Rk+zMxG4AJvtZ3Ddv2RIc0VDssqF4KYF04DBqvEPvOjlO+
-         34Vg83fsQgNNfJTNbjOTmiV9UNapQ5Hs4EmcvkJ8Mt6KiMQotfyc/ipzhGZXoJsSiX06
-         ie5qUbfU04bZZALis5Y/H//KgXtdevB0O9dcZ1WmCFJa3FoRhnUD7YRCbk7UOu/3ITri
-         HBx32kiXLJxpAKQPLn0ej4T1WJ+srJEpFSktsVez57z+Ssk6bi8cImiOCTSMvNxc7IbQ
-         X48SvC+RXcvLdeCP9ipbphv40mCR9gP7Sctwu9J4ScVSGoAfl+VZj/girvuV40+sDljt
-         1d6A==
+        bh=XZhR5vC+b5jGByrsGl+I17mSTr+5gAmJbDumtIuc2ZA=;
+        b=IVqKRItjpWxnrLrirnHvzD7xF1HZqEezJ366Nb9MQ0qDGlSYiFiK91GubFY6nfCgNc
+         GJEPrSFe6ZwsBPJgQfqLgkV/zlfr/qIE9OEu8LgBfo5Au+P5YCEdOaK1ePlD3bbywP12
+         1DbVN5ySUyZIXX18zIB4KaO/T4Oy4t/icVMhQ5Ec4FE8lc02zpU8Kl0nDU8Fx4qJDVGZ
+         ZyWuurGY69t0nch3TJstitDw9xzAn9lKUlbFPW61GZU/bvEB2gKZMxVIvNcvs70qbzOD
+         NBBLMwxpgumnPseYMZuR5K3SoKgjUfw7iiCuTUSQMIyo3MgYmZhxZD8hOPGvp4GAeW+l
+         ssnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756819784; x=1757424584;
+        d=1e100.net; s=20230601; t=1756819851; x=1757424651;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jZCKJv4aYcw+dSdOw+40akoqTFv6AX+SyMdRpV8+ksQ=;
-        b=CuqO3PKqUjVD/6R3OITmzLtErovVRHvgYttbNzIPFNs5bBLxO8BKNtRVdYuUa5MSdX
-         copFo0LXz44oUG8Jqrv+jIy2Sd0Oi3M1/FbeFBzNvjskyDzbKh1bYvs5GmHrmBgMSXG9
-         orh9AEQWOIua8fWXtQGsDpSVZ7g5NVBlbsjTz3YGYcOUyR4FYrCp3JQmwFJDLfhBA6BX
-         Sdkt8/y6UmFlIPs8ikiXUCouELnEk6f0E99L8dW1UPJWUp9pAE2/NRDiJ0ygyHKBnitt
-         QbBMSLQUTcEWzNXVT7KUZY1sEFN8lU97/SDhyjrD9yCwaO5alWfK4C7eoyQkycjNuiIt
-         hsJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWPJUuP3XND5+I4s2bmm2cloROu+ic/LzK/cx0VfkVKMkhKKdCP5tHFKSs6bih12py305k=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwJ7VjwtCaCcz5lki0+lH5nM7mNSo0XEuv9jFzSn/vlwAWRlGNW
-	gKzkUIYLtO9mahIlH0YwYnAMNK48vs3OK5OubLzgEt/7Uh+7mW64F6nX49kP/m2aOg50itY9/6V
-	LuIbCBQ/3sssqdwflS+t2Jn+dWzRpsg7ibsf/hdATrA==
-X-Gm-Gg: ASbGnct1OZn2PEgncp+y6e/RGgN5kooMKDYp7zCWQBA5Eig23zrn7mJPN+FC7ZksTNq
-	9/NSaQMfSe576nDsk+K5hPXCJ6kpcIlhrt1iXy1oz4vP0RJUyIaQJ+OoBsrqXJzol4Jz/GKXSCq
-	xFz+Rp5k5Z+PjhJCTf/6Srfuj/tbSP7cjbw1JUaLAnhAlDI4AhGkFc8aJ9pAZiISzWmSPr+H/Qx
-	fMyFW2ZEOvzoIYB9n1mANCP3uHEEanFBkrL2HaLdIGzgJfDOg==
-X-Google-Smtp-Source: AGHT+IEokI8/QdZgrQf6Khw+qmZIKYKiiUgjGe2BsWGspCY5PLtcBEV9VcspomwVXiAZN5jhrLGIGNRfYpYegqH5QMI=
-X-Received: by 2002:a05:6512:6512:b0:55f:4760:ffc4 with SMTP id
- 2adb3069b0e04-55f709953admr2780344e87.29.1756819782757; Tue, 02 Sep 2025
- 06:29:42 -0700 (PDT)
+        bh=XZhR5vC+b5jGByrsGl+I17mSTr+5gAmJbDumtIuc2ZA=;
+        b=Sux9bOyfhXvFAB8ajCGvZUcLgBQXMrl05WsAtayksgHJ11MLNKSZcjRUeErm33dArP
+         APp5iJeVBMK+GyIaYwh1usxWuDt99hOciPjp6tBDft1eM6yRW8t+zqqG/nA1GHIRQn+j
+         GYmU5QT/DcFXka9thJ4/TUpBUAnpx1ajt6fReiyHTiVNFFI6rykrFqqePw1IAXn1qr9/
+         fyFXRsVEroM2jtMmsGJcWs1IiWxlmff/btLIsDTan+JtKLvkGbCPBkveiTXnqfjqcLP4
+         2AKsNLHGSqCrUbSEpalEDi8XapDgpTu0e/5NPPQKGX/NaX+8piXFTzmnFg76AepXs2zV
+         trCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVNfLIVtW8aTkd43sMaEhZv25NbLxuhEv9LoIIH4fOlHVvpS8gAW35JOmHLFBUTtPuQBoI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyFd1alL31RpTNg7F3TZCLSsE31RGGXxx7jxnIqGIjfMfMiDwQc
+	hZQ0HTezVCrywMeenSrbfq0hJb7byeCUHImgNnIM0+6fdjP6TVXiVWatsn+GNTBvE0AkHVRZbjn
+	URxv30/YEgojEjV0zXIq+Ro3BJmH5Zj/dr9rG6Ze1Nw==
+X-Gm-Gg: ASbGncvp7pJrvumfZZATd8vDAZeKSZ0XBiyL5pJHUxcH5MoN7MEyoLg5bqEqCbDF5vr
+	ysIXnE3YI/oirqFhBTKeGo93qga22805UCnulSqpO1vqnfEqSXgtpUrCk+0cGQmprqGuiD4uLIp
+	utbj92be6/KRicDxP+eLZTqTLfNBbeYJsn36jaNbu26lkdYwaKROv+uxjwunbIZmU3czdUrndVO
+	h1ZasYx/uIgk8tmT3UJlPtOQ78TV081WewpErY=
+X-Google-Smtp-Source: AGHT+IETXrXrPtCI9kHaUsOk3PiYBtzLQDyO5BpniBUPpd4tNEA5zWWpm33Zl8pshGOfywjYNp9sGHw+kB/41Th8Wwg=
+X-Received: by 2002:a05:6512:2522:b0:55f:4429:15a6 with SMTP id
+ 2adb3069b0e04-55f70967db8mr4302395e87.48.1756819849325; Tue, 02 Sep 2025
+ 06:30:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,13 +61,14 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-1-bb091daedc52@linaro.org> <aLbrz5DYS5Yxx_UE@smile.fi.intel.com>
-In-Reply-To: <aLbrz5DYS5Yxx_UE@smile.fi.intel.com>
+ <20250902-pinctrl-gpio-pinfuncs-v7-8-bb091daedc52@linaro.org> <aLbsr4s7nfvCKLnd@smile.fi.intel.com>
+In-Reply-To: <aLbsr4s7nfvCKLnd@smile.fi.intel.com>
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 2 Sep 2025 15:29:31 +0200
-X-Gm-Features: Ac12FXxptM2x0FIw3VzAD9gZWlHPceo9WcRvgcocpGcthnkDE6yjXmv7vVmpP9U
-Message-ID: <CAMRc=Mfx5czDM=vfEYhFtVO3MviYaW4wKBYjGZ9ZnMbr-+T4mg@mail.gmail.com>
-Subject: Re: [PATCH v7 01/16] pinctrl: check the return value of pinmux_ops::get_function_name()
+Date: Tue, 2 Sep 2025 15:30:38 +0200
+X-Gm-Features: Ac12FXwa7a499RP9JirYFVy7SbY2WfOVu2ugSGxCUkawbutvsj6hahPNBLiFvFg
+Message-ID: <CAMRc=MfgXac4kRgeiw+SkNUZS_ThoX5qcXeRX5bPWm-t3JQ9Xg@mail.gmail.com>
+Subject: Re: [PATCH v7 08/16] pinctrl: keembay: release allocated memory in
+ detach path
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
 	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
@@ -92,69 +93,58 @@ Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.
 	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
 	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
 	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 2, 2025 at 3:06=E2=80=AFPM Andy Shevchenko
+On Tue, Sep 2, 2025 at 3:10=E2=80=AFPM Andy Shevchenko
 <andriy.shevchenko@intel.com> wrote:
 >
-> On Tue, Sep 02, 2025 at 01:59:10PM +0200, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> On Tue, Sep 02, 2025 at 01:59:17PM +0200, Bartosz Golaszewski wrote:
 > >
-> > While the API contract in docs doesn't specify it explicitly,
+> > Unlike all the other allocations in this driver, the memory for storing
+> > the pin function descriptions allocated with kcalloc() and later resize=
+d
+> > with krealloc() is never freed. Use devres like elsewhere to handle
+> > that. While at it - replace krealloc() with more suitable
+> > devm_krealloc_array().
 >
-> So, why not to amend the doc at the same time?
+> With that in mind...
 >
-
-Because this series is already big as is. That would be another commit
-that can be separate.
-
-> > the generic implementation of the get_function_name() callback from str=
-uct
-> > pinmux_ops - pinmux_generic_get_function_name() - can fail and return
-> > NULL. This is already checked in pinmux_check_ops() so add a similar
-> > check in pinmux_func_name_to_selector() instead of passing the returned
-> > pointer right down to strcmp() where the NULL can get dereferenced. Thi=
-s
-> > is normal operation when adding new pinfunctions.
->
-> Fixes?
-
-This has always been like that.
-
-> Reported?
-
-I mean, technically Mark Brown reported my previous patch failing but
-I don't think we do this if we're still within the same series just
-another iteration?
-
-> Closes?
-
-Ditto.
-
+> > Note: the logic in this module is pretty convoluted and could probably
+> > use some revisiting, we should probably be able to calculate the exact
+> > amount of memory needed in advance or even skip the allocation
+> > altogether and just add each function to the radix tree separately.
 >
 > ...
 >
-> >       while (selector < nfuncs) {
-> >               const char *fname =3D ops->get_function_name(pctldev, sel=
-ector);
-> >
-> > -             if (!strcmp(function, fname))
-> > +             if (fname && !strcmp(function, fname))
-> >                       return selector;
->
-> I would slightly refactor this:
->
->                 const char *fname;
->
->                 fname =3D ops->get_function_name(pctldev, selector);
->                 if (fname && !strcmp(function, fname))
->                         return selector;
->
-> >               selector++;
+> > Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
 >
 
-You can do this in a subsequent patch, I prefer a smaller diff personally.
+Ah, I just ran b4 trailers -u and didn't check the result. :(
 
-Bartosz
+> This tag is not applicable to all patches, I do not believe this has been
+> tested.
+>
+> ...
+>
+> > -     keembay_funcs =3D kcalloc(kpc->npins * 8, sizeof(*keembay_funcs),=
+ GFP_KERNEL);
+> > +     keembay_funcs =3D devm_kcalloc(kpc->dev, kpc->npins * 8,
+>
+> ...switching to size_mul() also adds more robustness against too big npin=
+s
+> values.
+>
+
+Eh... ok, if there'll be a v8.
+
+Bart
+
+> > +                                  sizeof(*keembay_funcs), GFP_KERNEL);
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
