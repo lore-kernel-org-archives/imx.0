@@ -1,192 +1,137 @@
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AE213635C
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 12:37:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AD528CF6A
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 12:38:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756816656; cv=none; b=P+5IfOVxT/3mUA7AeYrNdhmU/Wb1PsbMICxb4rFhzEJE02zl70f8RNFEFy8gIPyUhPDsiWgRMQ/bXN39Y985Ny/l27F5gzHHc9GstTPcC7UfvjSC9D8xplHNH3wLF09nXHKYmudvG2nAKGz4pYTQMBGa7nPYIjG0tIcJpLXNxGk=
+	t=1756816709; cv=none; b=c24xv+MCJoAZQ6pAlZOII/sjixD61zDuGxKc5gWe2YwtloaDNZMJzAMho7UafpCbLZ4lDGpkF0uheNTc58PzAw6e43PkRk3JZFx+3geZnRXFTCW2M7ErLMpLXk7O4jqTIQcz9RfEuojoCKF2GDffPmsIh0dO6QX2R4UPJ9Ow43s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756816656; c=relaxed/simple;
-	bh=zrwsApuUuDkrPpYq2G0KGa4cIKPy0wKf5vnpWxFs5QE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=d7DKNkT3NHqS0coc6H66wcdPSS+2bEzq7hsrx9EfJNHmIgX5R6/SPsLM24xSp65F8iq5rd+gIV1HPT+JrL4mbB/v+mgpIERorF9MMLodKsWJw8piNDQpeSoThyK8u2/fQ0UNQ9BFU+5d6BYgUgqg1BaL0KMvnOFyBe4jFmBhOWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=sxUBENY9; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	s=arc-20240116; t=1756816709; c=relaxed/simple;
+	bh=E7533lX6MAykX99kEXEDHRaSmvwJZBHmZuyZ+hSEuDY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bycc9vdGS5XoAZsG9FHx+ZjP9oY6yrrq6L75WY0QOxCTkfD3DX0qY4K44/RFCmwneVZw/tsDQdqS0ITZCtOniBNCUmisDiPWWqD9qSLsBLV/ZTbFnc+IrhkF/mJhGAEHrelPqqzxrwpXBbXEhy3NzhNXxROfX4FOfAql025rFxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=p7IjiLZJ; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="sxUBENY9"
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 582CXPwC010299;
-	Tue, 2 Sep 2025 14:37:22 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	xWK5LjYNDXJb1VRRWLnTGxLcmQ0F3SifvZSboP4ZaLo=; b=sxUBENY9z1oeaQHw
-	M1iHcy8NoLBIUzDfpqy3OpvGE+eNMD7FZpT0IsisQBl+ReuUChLMC4vUw49jN23p
-	W9anD+Jrv5Su7COecZmfw3tfv2fDl7D4jTHsEInThvvu52PbalpdF4X49GB1uSyy
-	mEUq84xvFgp7NXQ2/9/Sum7DATQczFGChM5Z+01DvU+drc4q3a97IEfCvvP/U9fv
-	DYathoeSLQYz9VVq5qzqTePnvq5yWv+jBSVpXXXveKL4CzDe5vaZh+otaU+rF13d
-	s1utOxI3xBGCTI/GpXhlI5JAZptYIrTcFoWanY/v+k9h6Pk3dLe5rHT8Bo+DEB7/
-	AEL1rQ==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 48upe7bxyy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Sep 2025 14:37:21 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 37E9D40046;
-	Tue,  2 Sep 2025 14:35:53 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfcas1node2.st.com [10.75.129.73])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8BE9B39EDA7;
-	Tue,  2 Sep 2025 14:34:39 +0200 (CEST)
-Received: from SAFDAG1NODE1.st.com (10.75.90.17) by SHFCAS1NODE2.st.com
- (10.75.129.73) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Tue, 2 Sep
- 2025 14:34:39 +0200
-Received: from [10.48.87.127] (10.48.87.127) by SAFDAG1NODE1.st.com
- (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Tue, 2 Sep
- 2025 14:34:38 +0200
-Message-ID: <f335dfa3-be7e-4321-8625-d6862bb4d574@foss.st.com>
-Date: Tue, 2 Sep 2025 14:34:37 +0200
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="p7IjiLZJ"
+Received: from pendragon.ideasonboard.com (230.215-178-91.adsl-dyn.isp.belgacom.be [91.178.215.230])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 8408DC77;
+	Tue,  2 Sep 2025 14:37:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1756816637;
+	bh=E7533lX6MAykX99kEXEDHRaSmvwJZBHmZuyZ+hSEuDY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p7IjiLZJrdTo7odl3ewl6xeftk66e0FJE5SY4uQ5HzNOgIhoXDJm/XjCq2Zg1OB6q
+	 KN+RSD0GQiPZHE8i/VhO7eE94s6ELIMfxzEy9wwZTHVHpLdaIajy1M5A2r4FdTMSPi
+	 3m9WHxqZcQaFE7dQGw2oVw3Swfdvuca/Lj0OxX8Q=
+Date: Tue, 2 Sep 2025 14:38:05 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Isaac Scott <isaac.scott@ideasonboard.com>
+Cc: Sakari Ailus <sakari.ailus@iki.fi>, linux-media@vger.kernel.org,
+	rmfrfs@gmail.com, martink@posteo.de, kernel@puri.sm,
+	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] imx-mipi-csis: Get the number of active lanes from
+ mbus_config
+Message-ID: <20250902123805.GL13448@pendragon.ideasonboard.com>
+References: <20250814113701.165644-1-isaac.scott@ideasonboard.com>
+ <aJ77VTtZy96JJCHE@valkosipuli.retiisi.eu>
+ <20250815103205.GJ6201@pendragon.ideasonboard.com>
+ <aJ8ZJFSn5Wxhj2Aj@valkosipuli.retiisi.eu>
+ <20250815113633.GM6201@pendragon.ideasonboard.com>
+ <aJ8pKs_6YpAiPjlq@valkosipuli.retiisi.eu>
+ <20250819024413.GJ5862@pendragon.ideasonboard.com>
+ <175681611736.1349241.9877873145029586025@isaac-ThinkPad-T16-Gen-2>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
-To: Shenwei Wang <shenwei.wang@nxp.com>,
-        Linus Walleij
-	<linus.walleij@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        "Mathieu
- Poirier" <mathieu.poirier@linaro.org>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        "Sascha
- Hauer" <s.hauer@pengutronix.de>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam
-	<festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-        "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "imx@lists.linux.dev" <imx@lists.linux.dev>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>
-References: <20250818204420.794554-1-shenwei.wang@nxp.com>
- <20250818204420.794554-4-shenwei.wang@nxp.com>
- <CACRpkdZq25n4gZSesV8z8zrBs6kqU1a8=vwVkPBwM+hFb9JKwg@mail.gmail.com>
- <bb5cb154-0f7a-4e21-afe3-453ff5ee9373@foss.st.com>
- <PAXPR04MB91859E0AACFBC1FC913019848907A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
-In-Reply-To: <PAXPR04MB91859E0AACFBC1FC913019848907A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SAFDAG1NODE1.st.com
- (10.75.90.17)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-02_04,2025-08-28_01,2025-03-28_01
+In-Reply-To: <175681611736.1349241.9877873145029586025@isaac-ThinkPad-T16-Gen-2>
 
+On Tue, Sep 02, 2025 at 01:28:37PM +0100, Isaac Scott wrote:
+> Quoting Laurent Pinchart (2025-08-19 03:44:13)
+> <snip>
+> > > > > > That would need to parse the endpoint every time we start streaming, it
+> > > > > > doesn't sound ideal.
+> > > > > 
+> > > > > Perhaps not, but does that matter in practice? Parsing the endpoint is,
+> > > > > after all, fairly trivial. The advantage would be simplifying drivers.
+> > > > 
+> > > > It's trivial from a code point of view, but it's not a cheap operation.
+> > > > I'd like to avoid making starting streaming more expensive.
+> > > 
+> > > How cheap is "not cheap"? I'd be surprised if parsing an endpoint took more
+> > > time than e.g. an I²C register write. Of course it depends on the CPU...
+> > 
+> > Still, it's not cheap, and I think it can easily be avoided.
+> > 
+> > > > > Alternatively we could think of caching this information somewhere but I
+> > > > > don't think it's worth it.
+> > > > 
+> > > > Drivers likely need to parse endpoints for other reasons. I'd cache the
+> > > > value in drivers, like done today, and pass it to a get_active_lanes
+> > > > helper.
+> > > 
+> > > Then drivers presumably would also validate this against the endpoint
+> > > configuration, wouldn't they? That's extra code in every CSI-2 receiver
+> > > driver.
+> > 
+> > Why so ? The number of connected lanes can be passed to the helper
+> > function, which can use it to validate the number of lanes reported by
+> > the source subdev.
+> 
+> Apologies if I'm interpreting this wrong, but it seems that the main
+> thing I'm reading is that this is not the correct place to implement
+> this, and it should be implemented at a higher level (e.g. in v4l2) that
+> lets all MIPI CSI reciever drivers use it?
+> 
+> I have noticed that similar functionality has been implemented as part
+> of __v4l2_get_link_freq_pad. Are you suggesting that I take a similar
+> approach and resubmit as a new series?
 
+As far as iI understand, Sakari would like a helper function that will
+query the remote subdev for the number of data lanes it uses, and
+validates that against the number of connected data lanes as described
+by DT. I don't like the idea of parsing the endpoint properties every
+time we do so, so I think the number of connected data lanes should be
+passed by the driver to the helper instead. The helper would still query
+the remote subdev, and validate the value.
 
-On 9/1/25 19:22, Shenwei Wang wrote:
->
->> -----Original Message-----
->> From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
->> Sent: Monday, September 1, 2025 2:27 AM
->> To: Linus Walleij <linus.walleij@linaro.org>; Shenwei Wang
->> <shenwei.wang@nxp.com>; Bjorn Andersson <andersson@kernel.org>; Mathieu
->> Poirier <mathieu.poirier@linaro.org>
->> Cc: Rob Herring <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>;
->> Conor Dooley <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>;
->> Sascha Hauer <s.hauer@pengutronix.de>; Bartosz Golaszewski <brgl@bgdev.pl>;
->> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
->> <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>; linux-
->> remoteproc@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.dev;
->> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; dl-linux-imx
->> <linux-imx@nxp.com>
->> Subject: [EXT] Re: [PATCH 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
->>
->>
->> Hello,
->>
->> On 8/21/25 11:01, Linus Walleij wrote:
->>> Hi Shenwei,
->>>
->>> thanks for your patch!
->>>
->>> On Mon, Aug 18, 2025 at 10:45 PM Shenwei Wang <shenwei.wang@nxp.com>
->> wrote:
->>>> On i.MX SoCs, the system may include two processors:
->>>>           - An MCU running an RTOS
->>>>           - An MPU running Linux
->>>>
->>>> These processors communicate via the RPMSG protocol.
->>>> The driver implements the standard GPIO interface, allowing the Linux
->>>> side to control GPIO controllers which reside in the remote processor
->>>> via RPMSG protocol.
->>>>
->>>> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
->>> Since this is a first RPMSG GPIO driver, I'd like if Björn and/or
->>> Mathieu have a look at it so I'm sure it is RPMSG-proper!
->> Could this driver be generic (platform independent) ?
->> Perhaps i missed something, but it seems to me that there is no IMX specific
->> code.
->> Making it generic would allow other platforms to reuse it instead of duplicating it.
->>
-> The driver uses the RPMSG channel just as a transport layer, so the implementation is actually
-> platform-independent. However, it requires the remote side to implement the same communication
-> protocol and behavior for the GPIO controller.
->
+> > > > > > > The function could take struct media_pad pointer as an argument, or struct
+> > > > > > > v4l2_subdev pointer and the pad number.
+> > > > > > > 
+> > > > > > > I wonder if any other parameters could change dynamically but I can't think
+> > > > > > > of that now, so perhaps just the number of lanes is what the function
+> > > > > > > should indeed return.
+> > > > > > > 
+> > > > > > > > +
+> > > > > > > > +   return 0;
+> > > > > > > > +}
+> > > > > > > > +
+> > > > > > > >  static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
+> > > > > > > >  {
+> > > > > > > >     struct mipi_csis_device *csis = sd_to_mipi_csis_device(sd);
+> > > > > > > > @@ -965,6 +1002,10 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
+> > > > > > > >     format = v4l2_subdev_state_get_format(state, CSIS_PAD_SINK);
+> > > > > > > >     csis_fmt = find_csis_format(format->code);
+> > > > > > > >  
+> > > > > > > > +   ret = mipi_csis_get_active_lanes(sd);
+> > > > > > > > +   if (ret < 0)
+> > > > > > > > +           dev_dbg(csis->dev, "Failed to get active lanes: %d", ret);
+> > > > > > > > +
+> > > > > > > >     ret = mipi_csis_calculate_params(csis, csis_fmt);
+> > > > > > > >     if (ret < 0)
+> > > > > > > >             goto err_unlock;
 
-Yes, pending implementation is needed on the remote processor, as is 
-already the case for the rpmsg_char and
-rpmsg_tty Linux drivers. If a generic remote implementation is needed 
-for this series, then it could be
-implemented in  the OpenAMP project as done for the rpmsg_tty and 
-rpmsg_char [1].
+-- 
+Regards,
 
-The idea here would be to have an equivalent of the virtio-gpio driver 
-but based on the RPMsg protocol instead of the
-virtio one.
-
-[1] 
-https://github.com/OpenAMP/openamp-system-reference/tree/main/examples/zephyr/rpmsg_multi_services
-
-Thanks,
-Arnaud
-
->
-> Thanks,
-> Shenwei
->
->> Thanks,
->> Arnaud
->>
->>>> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig index
->>>> a437fe652dbc..2ce4e9b5225e 100644
->>>> --- a/drivers/gpio/Kconfig
->>>> +++ b/drivers/gpio/Kconfig
->>>> @@ -402,6 +402,17 @@ config GPIO_ICH
->>>>
->>>>             If unsure, say N.
->>>>
->>>> +config GPIO_IMX_RPMSG
->>>> +       tristate "NXP i.MX SoC RPMSG GPIO support"
->>>> +       depends on IMX_REMOTEPROC && RPMSG && GPIOLIB
->>>> +       default IMX_REMOTEPROC
->>>> +       help
->>>> +         Say yes here to support the RPMSG GPIO functions on i.MX SoC based
->>>> +         platform.  Currently supported devices: i.MX7ULP, i.MX8ULP, i.MX8x,
->>>> +         and i.MX9x.
->>>> +
->>>> +         If unsure, say N.
-
+Laurent Pinchart
