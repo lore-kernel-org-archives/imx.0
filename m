@@ -1,89 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B4C2848A1;
-	Tue,  2 Sep 2025 13:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFAD2D4B4E;
+	Tue,  2 Sep 2025 13:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820238; cv=none; b=diW1vXCwUDGSesfpoVcGubBwWbmz3RqXjYO9rTReuaqv4r63pAExl8sMVnkglCXf6nsTQkj959paUyTHkbMy4CRrzHTJegpVL7Hg1I4KoW4fPt3qPV4EJNjzKdM4w5diQAgn/+X4UcI3MLAflWMy4l2IP2aTxTIS2V5g0J5njYE=
+	t=1756820485; cv=none; b=PAroHw0YlzwWQwkKiyyEu6wL2y444E6oI+cLFKQe8CW1s4pw5S30GXjFXUfp132yFKh0OpvCWn/XIKPpnHQ/JLwCoZCyJB7lvkYvZSDrHiz9ImJVkBwAyWqg2sYWWy54Pj6ZT42sMHFmUGjGajE1UMeG9FGxNryUbbdxJDxeRbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820238; c=relaxed/simple;
-	bh=Te5CzzpMDl9FuNFcIn3BKuG3FhHEU09OQccy0nOcUCg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=oGdySdhaCEfZWdb506VaIgBxYDbet4HxRNHgcCngaaCoaLYCNf14a2wVYt2NESoIrf8yhwKz6PpxvmSAJRSUGviMG/pclWyysJXoUO1iOFGLuw/b4EE36ofuJQBLPLfSnLRK9AwhYAjpo9UVjez9p9z1X/dbGJtfgepEvXzYJlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OCfrnnuV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756820485; c=relaxed/simple;
+	bh=ZVVlpLZtW001ia11Gv9DKuA1Yfy1spmGwT9D/HHzZoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BZMi56pzJjlG7bkR0IYpS5DsbrI2q+VdnQ3kdtAp3axnEuuYEGN5kY+j8qe/geZl8S7xx7hQbb0BYcGyCXdP1up67ADewuEvOXFvOcMEMVbt1MnqPFkG3gsy/AH0IbUjv9JQQTeabDF3AWj2C3m2rc18/1BFq6tv6chrvyCNeCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZwWBlnAw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OCfrnnuV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEE4C4CEF4;
-	Tue,  2 Sep 2025 13:37:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZwWBlnAw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD18C4CEFB;
+	Tue,  2 Sep 2025 13:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756820238;
-	bh=Te5CzzpMDl9FuNFcIn3BKuG3FhHEU09OQccy0nOcUCg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=OCfrnnuVO6Hqtk3HsgT5RqYeJdejCqT1KSw3xGO8sYcRtd9rOSWqtpmkFHwYD+lue
-	 oERs3Tq8oX2VIh0EAQdLfF85GWRbNPMXqu3zQ4344EfEVtk57adySD+e+4ZhhznpqA
-	 j9t3+LB05FwIuTaEpEu/bmwV5zwaThP0MHoaz9BTGgaR/11N4J6rxIyZviOG2fkN+e
-	 RrsfD0qH4TVAQdou0KU5KAhvKjGXv1vQEeNcPRjQvLSv9lBaw6peVESh0FzA/H+wmU
-	 Ne7DEBARMdATGDm5DGBsvQXSartHRZrSdALI3TO70ynDHgId8Ge1W3a0AFi4b+EKyW
-	 DVQLipU/nOF7Q==
-From: Mark Brown <broonie@kernel.org>
-To: Daniel Baluta <daniel.baluta@nxp.com>
-Cc: linux-sound@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Frank.Li@nxp.com, robh@kernel.org, 
- laurentiu.mihalcea@nxp.com, dan.carpenter@linaro.org, waqar.hameed@axis.com, 
- festevam@gmail.com, kernel@pengutronix.de, lgirdwood@gmail.com, 
- peter.ujfalusi@linux.intel.com, yung-chuan.liao@linux.intel.com, 
- ranjani.sridharan@linux.intel.com, kai.vehmanen@linux.intel.com
-In-Reply-To: <20250902102101.378809-1-daniel.baluta@nxp.com>
-References: <20250902102101.378809-1-daniel.baluta@nxp.com>
-Subject: Re: [PATCH v2] ASoC: SOF: imx: Fix devm_ioremap_resource check
-Message-Id: <175682023505.513793.6818545507364756748.b4-ty@kernel.org>
-Date: Tue, 02 Sep 2025 14:37:15 +0100
+	s=k20201202; t=1756820485;
+	bh=ZVVlpLZtW001ia11Gv9DKuA1Yfy1spmGwT9D/HHzZoQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZwWBlnAwxUOSjTlgMlo3w+hpjeXp789p38pxg3MIVv/SyyuAuKaCsP2HtTYFPQbsw
+	 ipI91tkwRXxx5v0GyencRIJ6MkFv5P19K+B3LE0Vm4Hg5FuK/63AVmU86O/ExS7rI2
+	 MJJeyRBvBDhbvqH+XHEbxDOo3MWE2FCu8PpuinsrqurB/LmexmeYwCKa5oqVKpR1pv
+	 sb4pvmADBKBbuEsmhW7C758YcnSXtO8cWz5qGDFyTb2cc/hH1cjcLUbRX2sONdxr8d
+	 eLgLq30LcHJb7jUHQR/7f3+HJst8lWyDKdB5cWtbDiGeupGHw3ntvh6czNTJYy6JDI
+	 14ROImnYnTqLw==
+Date: Tue, 2 Sep 2025 14:41:18 +0100
+From: Lee Jones <lee@kernel.org>
+To: samuel.kayode@savoirfairelinux.com
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>,
+	Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>,
+	Robin Gong <yibin.gong@nxp.com>,
+	Enric Balletbo i Serra <eballetbo@gmail.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH v10 5/6] power: supply: pf1550: add battery charger
+ support
+Message-ID: <20250902134118.GP2163762@google.com>
+References: <20250820-pf1550-v10-0-4c0b6e4445e3@savoirfairelinux.com>
+ <20250820-pf1550-v10-5-4c0b6e4445e3@savoirfairelinux.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-cff91
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250820-pf1550-v10-5-4c0b6e4445e3@savoirfairelinux.com>
 
-On Tue, 02 Sep 2025 13:21:00 +0300, Daniel Baluta wrote:
-> devm_ioremap_resource does not return NULL on error
-> but an error pointer so we need to use IS_ERR to check
-> the return code.
+Power:
+
+> From: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
 > 
-> While at it also pass the error code to dev_err_probe
-> to improve logging.
+> Add support for the battery charger for pf1550 PMIC.
 > 
-> [...]
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Tested-by: Sean Nyekjaer <sean@geanix.com>
+> Signed-off-by: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+> ---
+> v9:
+> - Fix thermal regulation temperature ranges
+> - Fix default thermal regulation temperature
+> - Drop unused `data` variable in reg_init
+> - Select charger operation mode based on application - suggested by Sean
+> v8:
+> - Drop PF1550_CHARGER_NAME
+> - Drop unnecessary POWER_SUPPLY_STATUS_CHARGING s
+> - Replace POWER_SUPPLY_HEALTH_DEAD with POWER_SUPPLY_HEALTH_NO_BATTERY
+> - Drop check for charger in delayed_work s
+> - Use dev_warn when battery is over-voltage
+> - Define two power supplies: charger and battery
+> - Use devm_delayed_work_autocancel to automate cleanup and fix race
+>   condition
+> v7:
+> - Use reverse christmas tree order
+> - Drop unecessary 0 in id table's driver data field
+> - Store virqs to avoid reinvoking platform_get_irq in the interrupt
+>   service routine
+> - Drop manufacturer and model global variables
+> v6:
+> - Drop lock entirely
+> - Reverse christmas tree order for variables defined in probe as
+>   suggested by Frank
+> - return pf1550_reg_init
+> v5:
+> - Drop lock for battery and charger delayed_work
+> - More conservative locking in vbus delayed_work
+> - Apply lock when setting power supply type during register initialization
+> v4:
+> - Finish handling of some interrupts in threaded irq handler
+> - Use platform_get_irq
+> v3:
+> - Use struct power_supply_get_battery_info to get constant charge
+>   voltage if specified
+> - Use virqs mapped in MFD driver
+> v2:
+> - Address feedback from Enric Balletbo Serra
+> ---
+>  drivers/power/supply/Kconfig          |  11 +
+>  drivers/power/supply/Makefile         |   1 +
+>  drivers/power/supply/pf1550-charger.c | 636 ++++++++++++++++++++++++++++++++++
+>  3 files changed, 648 insertions(+)
 
-Applied to
+Once Sebastian takes this, I'll merge the set.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: SOF: imx: Fix devm_ioremap_resource check
-      commit: 0c28431f6fe13f3a3be0978f79c1a7ae8a93d028
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+-- 
+Lee Jones [李琼斯]
