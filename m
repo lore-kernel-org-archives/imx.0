@@ -1,195 +1,195 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013005.outbound.protection.outlook.com [52.101.72.5])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70AF2E8E19
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 08:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756800193; cv=fail; b=FN7X1sSEFdnHBZU4IFaDypSrKMtODqrODjbb0N2p/0Z//kA4ArApAWBWun9MRS11c0Ba15dd1z4tRKvWY9RfaH2eBH4iP/TakdUdXED1lgwHd+0IHX7GeNF8yNi8SlCdYul6sMCIbm128LZJ2AVD7pllWCA4ECORkRTlFLtbNrE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756800193; c=relaxed/simple;
-	bh=acCelFb2tf3AUTxLDqa//aA0kgZctIn57T/AClq20sw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=a22vVhvOt4xgko+7FBT4WfiO/fhNk5qbJYzK7qNZhNTgQsb1DM1m3+FeKh+kEk7Jdv+3dI3g/pHqaNJJQTvAuGx4/wfgw49Ha/I0FohpjvZMN8tuEOZ+AjbrB0LqMFtNZi9CQLDgNHKxIQSb3mpIJ7A4W8n5MrJy7CXTlErg6i4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OxoGM2Lj; arc=fail smtp.client-ip=52.101.72.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79B32EACF3
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 08:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756802187; cv=none; b=aVj1150cLSL98Hffg0cuxk3pAdQ42WDdNwnhPunm33dSz+JMN57lEMvj/pPZ1WlCcjAexmq2W92koUi+LEU2pO5rLC0956wV9F7WF34c7GemGJhjoHnqFwADfzUGi9tMiJn/thLpYmj8pfdCj/LdKw3j0hS3XH5djmaZITSnaSU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756802187; c=relaxed/simple;
+	bh=9b9oj9NtnjkgCqLHI/easGtUlL/TclnyNvdB1pRPJ10=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UqpE4vKoQ3NVWOjvwa1vvtuQRjGBhlbwoxXKZBcc+vA0E/lu68VdkABf8/aKIauhagpvMRHzSpNxaI/Rz/18QnS585kdG29/3HfjNIoLiz3a2ES5aMxnEvUJ+qT3Hq154RHjwoeBCIG5GfZts6AleDZRY0YcZHbUMpkGa3N12ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=BGOySrfR; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OxoGM2Lj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AF10RJCXhJno5AQaLZtk/7Q3BO2uDsbk6gUZUYkSw9jzKNelnkuqTvO4OgXB/FBW5rQuW8siCt7/YQ6sAdCKzVmuvoyDbU+keknOAMWsDDbvzhGvS+4tio8Qge+ZspyMPA4X4fJY6YEv2mVynJZAEtZGh2TOUCSiRyVCnCdio6C2MpkAFGOBxyqKqniB9mZkSYNYcTS049dTmSiUpOZwrKDsha1fEDBNuSycJgNgv3loTN+qZXIFtljmFn+tSDvBWNvHwOtZhyMWEbNmpTU5r9a9G/oEobDxbUV1zk622NVQRQViUzAuuQCoDZasidXZdcKQGtlgMfWU8DruzjA+DQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5TEveY2keKMel3uEDO41NRqO21YKgEQFKeKNu+ATs2w=;
- b=V8i+9Xo8fxtcg/cTK7pvQqs0sZZACvknz6oSBBjJWIm6SdYavxV7DcieUeRuNljq3TrbixDtKKE1Jkl9RkP87E9EzLWTymbTsYiayBmTgLsO6/i+ytMfx6SaOPkJYy56pMZqoPmGMwAfnGKvMBf+iOszhNLgopIpDJ5V4zB0xWOgO8EIz4VRMOP5UwkeUyYgGeEGLi8D0FaWgpkvbwJmfENliw/8XzrcTqlC/7/rGQtKiJXAlAqvN4LJytDF6jH2fUl7WDT603MtVgq8Txu+X9b5Ld13+ziB/uWPVGKgKX3www+uPcopiY7IEMXMhZ8P1u2dX2iBL86xkGt7//DzEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5TEveY2keKMel3uEDO41NRqO21YKgEQFKeKNu+ATs2w=;
- b=OxoGM2LjkB0tCJZ+gClAPEKv2aTuWYXBBekKgZDP0k4yOs1XJ6TS1UQSrCUECw1AQPK6M+v/IDE+zY1GSfvOgPZgNLfn0b0rLYLTDb/Fh1WivwS8fcHbt9tzu2ogwQMR8iFm+LUU3lSNnC6Rep6zAszEQuwdRQutH6XseRhJI5h/mRJugaFmSg/jwIZEGOebgJYG9udJ4C4bC2JjUAJ6Z1FrTXAMFM1+dlgYTI4Lp9od3vrxquJY49TZWtVQKAHeOWTJxCJYvRz2p9q7AA6wtveCDpr+trVviqgKhiuvm1jvLoRSDjyY0ODOe4xUnPAXaHR2n1GSDc5dESunSGYGHA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8833.eurprd04.prod.outlook.com (2603:10a6:20b:42c::19)
- by DB9PR04MB8265.eurprd04.prod.outlook.com (2603:10a6:10:24f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.14; Tue, 2 Sep
- 2025 08:03:05 +0000
-Received: from AS8PR04MB8833.eurprd04.prod.outlook.com
- ([fe80::209c:44e4:a205:8e86]) by AS8PR04MB8833.eurprd04.prod.outlook.com
- ([fe80::209c:44e4:a205:8e86%4]) with mapi id 15.20.9094.015; Tue, 2 Sep 2025
- 08:03:05 +0000
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: frank.li@nxp.com,
-	jingoohan1@gmail.com,
-	l.stach@pengutronix.de,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	robh@kernel.org,
-	bhelgaas@google.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH v5 6/6] PCI: dwc: Don't return error when wait for link up in dw_pcie_resume_noirq()
-Date: Tue,  2 Sep 2025 16:01:51 +0800
-Message-Id: <20250902080151.3748965-7-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20250902080151.3748965-1-hongxing.zhu@nxp.com>
-References: <20250902080151.3748965-1-hongxing.zhu@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR03CA0087.apcprd03.prod.outlook.com
- (2603:1096:4:7c::15) To AS8PR04MB8833.eurprd04.prod.outlook.com
- (2603:10a6:20b:42c::19)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="BGOySrfR"
+Received: from pendragon.ideasonboard.com (230.215-178-91.adsl-dyn.isp.belgacom.be [91.178.215.230])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id ACD1BC75;
+	Tue,  2 Sep 2025 10:35:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1756802107;
+	bh=9b9oj9NtnjkgCqLHI/easGtUlL/TclnyNvdB1pRPJ10=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BGOySrfRK7wpIrVW8pam0Ry99/B6YUY4pxhePRpqXmQ4bRXZFruERAo3LeGWgimon
+	 o/2Wg5FRxVjaaLNOYl/+zymSodr6I2YJhJRDo+jpP6ffXxCw07kDAMnlXmAGxUC1O+
+	 wIoZkgmSqEVDBzhib+eXd4wHBTQaA32pg7lKmLTk=
+Date: Tue, 2 Sep 2025 10:35:54 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Guoniu Zhou <guoniu.zhou@nxp.com>, Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/4] media: dt-bindings: nxp,imx8mq-mipi-csi2: Add
+ i.MX8ULP compatible string
+Message-ID: <20250902083554.GD13448@pendragon.ideasonboard.com>
+References: <20250901-csi2_imx8ulp-v5-0-67964d1471f3@nxp.com>
+ <20250901-csi2_imx8ulp-v5-1-67964d1471f3@nxp.com>
+ <20250901154610.GB13448@pendragon.ideasonboard.com>
+ <aLZMQ7c8qr5XO88d@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8833:EE_|DB9PR04MB8265:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3694f74b-f3fe-4a98-445e-08dde9f725a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|19092799006|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?e3EXTBHAkn0WNvy2dKZ3GOwtCiGAJ10sq1/dOWxS2L54TGk9eWRzO2xOh7WW?=
- =?us-ascii?Q?a8/Bn0oWdzdJe1IqDoaB+w28CteWzCIMZHYN8S/YxpszEZj/tP8F7A+aVGsz?=
- =?us-ascii?Q?I4InofDaXHtHaiGyw9wBseKSweaQfPFAyKfZ/LaCOE1J18j0+L9KS0c5vYAw?=
- =?us-ascii?Q?fOPSpj/4VrBEEByIqU2GSq4xGDPK4V5T5k56aIsvAEFeMaO1URN3rhFA+Ck6?=
- =?us-ascii?Q?XHT5FtISF4WwUD5tP3nAvGeP67NIJM2Yctw8q+DO4PBM9F7ATYaB4RxeC/lP?=
- =?us-ascii?Q?Jr1jcOB0hBc65bNVGai9vsGRu4dZmua5FgO+SVfMwyqK/U3C20Zaz08tuquE?=
- =?us-ascii?Q?DYovvNVtwoY0IIP+66AqJBZrJagZRV3yjsCUc4knw3Wc8JS3QKWiw/7gLtqk?=
- =?us-ascii?Q?HQofOmRACv1Lu02AEFE0HGl+SeOcVHLtHfLh+jMlBkXNuPekRCEysP88alJV?=
- =?us-ascii?Q?0w+pNUB93dJU6kNmm/YQj/oineCIunDS5tuWhtbCfGVdts8UAHk/MikCf27f?=
- =?us-ascii?Q?VGkhPNcjjAJaZo1AEwOhBro8xFESfJ2h04RKnRBKEKHRjeoRmKgUB+UsAlbF?=
- =?us-ascii?Q?3bAGFgxx29vju/BPsygCiwZGVqsTIQ16i9hy9qrkiFF+lTSOG6zE6Utyx5cl?=
- =?us-ascii?Q?BSQ3c0MfrPha3yjzLcVeClAiuxlOFD889jmOMowR2HW2PhoiYPoVXAzvWnb/?=
- =?us-ascii?Q?gmqGobUMMYHmBFzQn3JuzZWsmWrVteKTbYoGiR6t1SLIGvPUKFxEcf71QvPX?=
- =?us-ascii?Q?GtNq8+frVFPMfy6XDn0MII3qTsRVITL+1t8MFia3rVK1Ezlx2SQ4tSDkYUy1?=
- =?us-ascii?Q?kd2po5q9yJr4Bs7wBVY0Saa0EIBA9A181EtypPnKi5MBO9xHzMh4mVUZKvdr?=
- =?us-ascii?Q?Vw0+6eoYgcO9V8caftmJBo8v9+o2TiEVFpuKpQ0qEwZPKPzgePQKZfSfpEjN?=
- =?us-ascii?Q?AOQprhN7PGV5iZZiAnPakPuq0ZL52AmGE277ZAtsJlaGn1trTjVVfGp0RLmd?=
- =?us-ascii?Q?YYZ5eQvz+o9SGyjhbB4ARok45yQBVkH1j+kWnUS9qSibXu0bpCk10J6hSXvW?=
- =?us-ascii?Q?rW4oBxSWINSHLx9TaXnRS0Nk+y3sSz3n/JHlUZfFr3NeTu2jM3bH/zH+JX2Y?=
- =?us-ascii?Q?riXCFoNZMfnHNZWbLG7FADp3CtZVJzA/cjKxlojAFOrkZ1BSrE3wj1phMOuM?=
- =?us-ascii?Q?2tAVc+mTh6jP/G2L8XPfvPFjbZbJqAdeyqqun+IixfJdr9ZtEaZWUXGlXBbw?=
- =?us-ascii?Q?z08l07Wr32bUTKxHTzg4j7F4+xaNW5mvKQuN9eCfvc78Af7Ft1PkwsnYpg6s?=
- =?us-ascii?Q?W5bWsejYozdKdilPbWOcxgMkI9rnWAltN6nQ82ksKpbJC2Xr3Dp5nCPql1lz?=
- =?us-ascii?Q?Mf0/uXVjAB2WhsyT+WNDG7dyWfQblLbpHmhT1q2K8m2tP4kPN+Zrxx9UiLVJ?=
- =?us-ascii?Q?xWDHJT+KRlpRnWDMDVjTacCZkvPtig7cM9uDgBjXZGkRIgR2xUm4n9wRIJMQ?=
- =?us-ascii?Q?S6EvTmdcBMQYCt4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8833.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(19092799006)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?FOfiznsvuxo7oYwzGJ/cgzWgcrz1YwVp2FSkZZdczQst2+zg1RIzz8gKhvsx?=
- =?us-ascii?Q?ELgwyFugXuPuy3CitELQTKoCfcJY/EU/U9Tvgi1lWCoO2Tia2jMMONbFXKNd?=
- =?us-ascii?Q?YP25W8jBIxyRomzfL0Mgxzkr6M9NgRq/jYmYNR0eTB3sF+kE2gqtykZCOgEi?=
- =?us-ascii?Q?o9AsuNMSsOjmvmT0jDmGoFE7MlakNAxsmtVOYC72RbcNVjtfcqSA/d/tjjOc?=
- =?us-ascii?Q?ZMQjz/q7fwoMV4uxilDwrvYQC7yGVZ49stKBw+7SUppz64SWusWGb7d5GOKF?=
- =?us-ascii?Q?ukzBn1UyEW95cDdI39hQkkZhZjFi3MTF3PlQungXL7RRyXcG00+KrJRXouhC?=
- =?us-ascii?Q?SE2j1nLBuWaFCLNLZyXoPF+IsrxVBsWdV0S6JT5umP4Cr5t5hjqDlbi7yOHy?=
- =?us-ascii?Q?TJxbCHyxO4lHW6io106BXb0he49tZzvIEJojkZzi2Ac1Is9UQWeFctMmZlPD?=
- =?us-ascii?Q?nyMWDFWOoNIMdmGHS+tB+IBsB8kjY2v2P/Y9eUAkmMXuX17J5YY8elu6DFCt?=
- =?us-ascii?Q?vOrwXptAoXdI5Ofd8kjxDTftiuZyuWCRSWS5yi9NSJ9L/lq18uWmZJUIyH99?=
- =?us-ascii?Q?evFwGlUsikODjzI/3DOsgVZiBnIWm8WUDI8MLB6vZx585Fj+J51Ut5l43c7n?=
- =?us-ascii?Q?C29QHKnjC/Z/b+YcsclFHgQo5oXpfFwnCxkqIAJ8Oi1mftCodvOHJ5VrBRBG?=
- =?us-ascii?Q?AxemJ2If4YyeWUyzkt3o9pzKOew7SyJWCJdWDoJ/duMsC31gELJcwjUciae5?=
- =?us-ascii?Q?9PDm91vL7qC16tho3vCH42MuQZ5OqLBVQnwPkbhjktz7ZwBaJ6vVyMGW+2sV?=
- =?us-ascii?Q?ecF1sdL6uizOVDGFNJ5iOsXKIFQWEmLgs6KpJj4QJY5wNu2thZykvPjocT1g?=
- =?us-ascii?Q?Hi7jS54B7/vXwbuZzQPFUXuv/tHs+d2sunT6yBSrSGzesNuEvvNcC1D55JiY?=
- =?us-ascii?Q?mp7KkHuSdZnrCcYH8Pelg526uACmsmrqQBrtGtqy9J+wZ46yGZA6Xn8tKd/8?=
- =?us-ascii?Q?pwo06KEhBArTo7iB5Txd4GVe/H7l7P8UzIoKjcSn8A8SLVwSsqv/duqeColI?=
- =?us-ascii?Q?EmArwgxqv5Xmy3fHnhhNi3Uflg3URqLzAuekKUKdGoSRpKDMB8b+R9e8Ooe0?=
- =?us-ascii?Q?7kKsceG6hEsF3bo3YTdtg5D1kOyrArqDq9GWdQgDE+1yH9ZTNEthyXWs/S9b?=
- =?us-ascii?Q?vPg3H6hZCU1CHBaPqV6tknt1qKykWn3SGk52KhEp6vbpdjlC0DfPBhBehCyy?=
- =?us-ascii?Q?jA/G2M8/NrN7pmdepfozrezlqRgf7Pe+6EpPFBbZq8tJoVBscGlDe+GPsKKe?=
- =?us-ascii?Q?jOVeSC/9nedOgF5wpn/aqNdASrZt/OpuU3W7YEPwZu8R9Ruzwu6BHHvouwy9?=
- =?us-ascii?Q?zAXtOmuOoY/LTcstk5GpjboKZGQWqjhs95eVJwyYfrVmbDvv85AEipzAo3OQ?=
- =?us-ascii?Q?BZxdc4KQWndcAVSxbY/lemjVrErZ+Qgqm5bEuiC4tY4iIub7I+Q4zbpuCOcS?=
- =?us-ascii?Q?ufujfVylAlZu0eIhn3YrkfJgqmv33QFzwui9f0mDDK+lFhSOKMuEsxqBAQU3?=
- =?us-ascii?Q?SUgxsrBrYXfPXNGeCvQRWB3N9t2jdkyj/bnmvtNc?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3694f74b-f3fe-4a98-445e-08dde9f725a4
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8833.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 08:03:05.8116
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: brx3MCapRPYGHogr6w98vA+tZ9cTp+iOAXhGXj07iMkMfMoxT/b3jL3cM8P0yyqPq/fZ3WQjL+mz82aNqVRKuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8265
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aLZMQ7c8qr5XO88d@lizhi-Precision-Tower-5810>
 
-When waiting for the PCIe link to come up, both link up and link down
-are valid results depending on the device state.
+On Mon, Sep 01, 2025 at 09:45:39PM -0400, Frank Li wrote:
+> On Mon, Sep 01, 2025 at 05:46:10PM +0200, Laurent Pinchart wrote:
+> > On Mon, Sep 01, 2025 at 02:25:29PM +0800, Guoniu Zhou wrote:
+> > > The CSI-2 receiver in the i.MX8ULP is almost identical to the version
+> > > present in the i.MX8QXP/QM, but i.MX8ULP CSI-2 controller needs pclk
+> > > clock as the input clock for its APB interface of Control and Status
+> > > register(CSR). So add compatible string fsl,imx8ulp-mipi-csi2 and
+> > > increase maxItems of Clocks (clock-names) to 4 from 3.  And keep the
+> > > same restriction for existed compatible.
+> >
+> > s/existed/existing/
+> >
+> > > Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> > > ---
+> > >  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml       | 46 ++++++++++++++++++++--
+> > >  1 file changed, 43 insertions(+), 3 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> > > index 3389bab266a9adbda313c8ad795b998641df12f3..412cedddb0efee1a49d1b90b02baa7a625c797ec 100644
+> > > --- a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> > > +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> > > @@ -21,7 +21,9 @@ properties:
+> > >            - fsl,imx8mq-mipi-csi2
+> > >            - fsl,imx8qxp-mipi-csi2
+> > >        - items:
+> > > -          - const: fsl,imx8qm-mipi-csi2
+> > > +          - enum:
+> > > +              - fsl,imx8qm-mipi-csi2
+> > > +              - fsl,imx8ulp-mipi-csi2
+> > >            - const: fsl,imx8qxp-mipi-csi2
+> >
+> > According to this, the ULP version is compatible with the QXP version.
+> >
+> > >
+> > >    reg:
+> > > @@ -39,12 +41,16 @@ properties:
+> > >                       clock that the RX DPHY receives.
+> > >        - description: ui is the pixel clock (phy_ref up to 333Mhz).
+> > >                       See the reference manual for details.
+> > > +      - description: pclk is clock for csr APB interface.
+> > > +    minItems: 3
+> > >
+> > >    clock-names:
+> > >      items:
+> > >        - const: core
+> > >        - const: esc
+> > >        - const: ui
+> > > +      - const: pclk
+> > > +    minItems: 3
+> > >
+> > >    power-domains:
+> > >      maxItems: 1
+> > > @@ -130,19 +136,53 @@ allOf:
+> > >          compatible:
+> > >            contains:
+> > >              enum:
+> > > -              - fsl,imx8qxp-mipi-csi2
+> > > +              - fsl,imx8ulp-mipi-csi2
+> > > +    then:
+> > > +      properties:
+> > > +        reg:
+> > > +          minItems: 2
+> > > +        resets:
+> > > +          minItems: 2
+> > > +          maxItems: 2
+> > > +        clocks:
+> > > +          minItems: 4
+> > > +        clock-names:
+> > > +          minItems: 4
+> >
+> > But according to this, the ULP version requires more clocks than the QXP
+> > version.
+> 
+> If only clock number difference, generally, it is still compatible and can
+> be fallback, especialy driver use devm_bulk_clk_get_all().
 
-Since the link may come up later and to get rid of the following
-mis-reported PM errors. Do not return an -ETIMEDOUT error, as the
-outcome has already been reported in dw_pcie_wait_for_link().
+That's a driver-specific implementation decision, so I don't think it
+should be taken into account to decide on compatibility.
 
-PM error logs introduced by the -ETIMEDOUT error return.
-imx6q-pcie 33800000.pcie: Phy link never came up
-imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq returns -110
-imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
+> If driver have not sperated drvdata for it, we can fallback to it. It is
+> quite common.
+> 
+> > > +
+> > > +  - if:
+> > > +      properties:
+> > > +        compatible:
+> > > +          contains:
+> > > +            enum:
+> > > +              - fsl,imx8qm-mipi-csi2
+> >
+> > QM is compatible with the QXP, so you don't need to list it here.
+> >
+> >           contains:
+> >             const: fsl,imx8qxp-mipi-csi2
+> >
+> > is enough to cover both.
+> >
+> > > +            const: fsl,imx8qxp-mipi-csi2
+> > >      then:
+> > >        properties:
+> > >          reg:
+> > >            minItems: 2
+> > >          resets:
+> > >            maxItems: 1
+> > > -    else:
+> > > +        clocks:
+> > > +          maxItems: 3
+> > > +        clock-names:
+> > > +          maxItems: 3
+> > > +
+> > > +  - if:
+> > > +      properties:
+> > > +        compatible:
+> > > +          contains:
+> > > +            enum:
+> > > +              - fsl,imx8mq-mipi-csi2
+> > > +    then:
+> > >        properties:
+> > >          reg:
+> > >            maxItems: 1
+> > >          resets:
+> > >            minItems: 3
+> > > +        clocks:
+> > > +          maxItems: 3
+> > > +        clock-names:
+> > > +          maxItems: 3
+> > >        required:
+> > >          - fsl,mipi-phy-gpr
+> > >
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/pci/controller/dwc/pcie-designware-host.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index b303a74b0fd7..c4386be38a07 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -1084,10 +1084,9 @@ int dw_pcie_resume_noirq(struct dw_pcie *pci)
- 	if (ret)
- 		return ret;
- 
--	ret = dw_pcie_wait_for_link(pci);
--	if (ret)
--		return ret;
-+	/* Ignore errors, the link may come up later */
-+	dw_pcie_wait_for_link(pci);
- 
--	return ret;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(dw_pcie_resume_noirq);
 -- 
-2.37.1
+Regards,
 
+Laurent Pinchart
