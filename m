@@ -1,53 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFAD2D4B4E;
-	Tue,  2 Sep 2025 13:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2F21F61C
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 13:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820485; cv=none; b=PAroHw0YlzwWQwkKiyyEu6wL2y444E6oI+cLFKQe8CW1s4pw5S30GXjFXUfp132yFKh0OpvCWn/XIKPpnHQ/JLwCoZCyJB7lvkYvZSDrHiz9ImJVkBwAyWqg2sYWWy54Pj6ZT42sMHFmUGjGajE1UMeG9FGxNryUbbdxJDxeRbk=
+	t=1756821039; cv=none; b=te4DCOmHMEySbFXDYCM05gGZF3uzUf/ZQvv0PsBUNsl1Y6Cx5RGQlooqg031I73/skt0KD6Ggp6xf7GCb8IRvE6p23FIEui+lOWO8UiWybm0lindKZDAId68xtt+RmfNT/DvZoW4BENbzqgCGWIkmD1sNu7eJAmpyFasbBtZ+RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820485; c=relaxed/simple;
-	bh=ZVVlpLZtW001ia11Gv9DKuA1Yfy1spmGwT9D/HHzZoQ=;
+	s=arc-20240116; t=1756821039; c=relaxed/simple;
+	bh=pxx41/VBJwEQCpU5u+vMOlc6AdRXauTq/XBO/2b9BuM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BZMi56pzJjlG7bkR0IYpS5DsbrI2q+VdnQ3kdtAp3axnEuuYEGN5kY+j8qe/geZl8S7xx7hQbb0BYcGyCXdP1up67ADewuEvOXFvOcMEMVbt1MnqPFkG3gsy/AH0IbUjv9JQQTeabDF3AWj2C3m2rc18/1BFq6tv6chrvyCNeCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZwWBlnAw; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=leGMOxLdK48Mvg48LLwHFnZM0figRKf4P68RRMQlMcPYzPUEJYBbaEhJi4fUZ0Dj//2HJVr2khUFTqCT3l6T0xuM+YIi52rmkFBslcnVxW1wrzfmEYBJDuue5O3XDa65imx6ZWDzS69tC6SpF2jrDcoPZQqEy7aSP4osexAVulg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A8MSM3zk; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZwWBlnAw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD18C4CEFB;
-	Tue,  2 Sep 2025 13:41:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756820485;
-	bh=ZVVlpLZtW001ia11Gv9DKuA1Yfy1spmGwT9D/HHzZoQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZwWBlnAwxUOSjTlgMlo3w+hpjeXp789p38pxg3MIVv/SyyuAuKaCsP2HtTYFPQbsw
-	 ipI91tkwRXxx5v0GyencRIJ6MkFv5P19K+B3LE0Vm4Hg5FuK/63AVmU86O/ExS7rI2
-	 MJJeyRBvBDhbvqH+XHEbxDOo3MWE2FCu8PpuinsrqurB/LmexmeYwCKa5oqVKpR1pv
-	 sb4pvmADBKBbuEsmhW7C758YcnSXtO8cWz5qGDFyTb2cc/hH1cjcLUbRX2sONdxr8d
-	 eLgLq30LcHJb7jUHQR/7f3+HJst8lWyDKdB5cWtbDiGeupGHw3ntvh6czNTJYy6JDI
-	 14ROImnYnTqLw==
-Date: Tue, 2 Sep 2025 14:41:18 +0100
-From: Lee Jones <lee@kernel.org>
-To: samuel.kayode@savoirfairelinux.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>,
-	Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>,
-	Robin Gong <yibin.gong@nxp.com>,
-	Enric Balletbo i Serra <eballetbo@gmail.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH v10 5/6] power: supply: pf1550: add battery charger
- support
-Message-ID: <20250902134118.GP2163762@google.com>
-References: <20250820-pf1550-v10-0-4c0b6e4445e3@savoirfairelinux.com>
- <20250820-pf1550-v10-5-4c0b6e4445e3@savoirfairelinux.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A8MSM3zk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756821037; x=1788357037;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=pxx41/VBJwEQCpU5u+vMOlc6AdRXauTq/XBO/2b9BuM=;
+  b=A8MSM3zko1l90dWbdTL5yeeYBsP0E0tovi964SFSc9mL22+FV/Ub9kJp
+   IigKKeTXXVwzwDUZoecUrqOgZ20CsRpnAUdWFAkBrfpl/z81y8Zgmr6cj
+   bnAGNQJZvz+usEHPTKbw6r7AgzpP+yIB0clSDxTm9oEJjLKDnIMFjcoai
+   xJlngDiOMbbkeQyM4+VFXT4jUaeVXF4b4XOsCojp40teo0PSwM5sofIBV
+   QHJI+U/e+WmjLdZOom5v3RN80X5nlLKSKDHNvIeFmPN1l3MN4Vfhp2yt9
+   lvsdEaov6f9518WJuLlHM+UTZEPnOSn3kFPml1Ldew37nBxdYU2OQthgD
+   w==;
+X-CSE-ConnectionGUID: YVigBfPeTpu72C7wz+F9Gw==
+X-CSE-MsgGUID: nL8uF5+7RIuoslRnZo6ppQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="62738142"
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="62738142"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:50:37 -0700
+X-CSE-ConnectionGUID: ZHIE/dHOSB+FAZRCRRCs4Q==
+X-CSE-MsgGUID: 2IiLBKTERdG7VU87j86+iA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="176590815"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:50:25 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1utROu-0000000AhyY-2NM3;
+	Tue, 02 Sep 2025 16:50:20 +0300
+Date: Tue, 2 Sep 2025 16:50:20 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v7 01/16] pinctrl: check the return value of
+ pinmux_ops::get_function_name()
+Message-ID: <aLb2HH5zgxdbDiPo@smile.fi.intel.com>
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+ <20250902-pinctrl-gpio-pinfuncs-v7-1-bb091daedc52@linaro.org>
+ <aLbrz5DYS5Yxx_UE@smile.fi.intel.com>
+ <CAMRc=Mfx5czDM=vfEYhFtVO3MviYaW4wKBYjGZ9ZnMbr-+T4mg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,63 +104,73 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250820-pf1550-v10-5-4c0b6e4445e3@savoirfairelinux.com>
+In-Reply-To: <CAMRc=Mfx5czDM=vfEYhFtVO3MviYaW4wKBYjGZ9ZnMbr-+T4mg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Power:
-
-> From: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+On Tue, Sep 02, 2025 at 03:29:31PM +0200, Bartosz Golaszewski wrote:
+> On Tue, Sep 2, 2025 at 3:06 PM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+> > On Tue, Sep 02, 2025 at 01:59:10PM +0200, Bartosz Golaszewski wrote:
+> > >
+> > > While the API contract in docs doesn't specify it explicitly,
+> >
+> > So, why not to amend the doc at the same time?
 > 
-> Add support for the battery charger for pf1550 PMIC.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Tested-by: Sean Nyekjaer <sean@geanix.com>
-> Signed-off-by: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-> ---
-> v9:
-> - Fix thermal regulation temperature ranges
-> - Fix default thermal regulation temperature
-> - Drop unused `data` variable in reg_init
-> - Select charger operation mode based on application - suggested by Sean
-> v8:
-> - Drop PF1550_CHARGER_NAME
-> - Drop unnecessary POWER_SUPPLY_STATUS_CHARGING s
-> - Replace POWER_SUPPLY_HEALTH_DEAD with POWER_SUPPLY_HEALTH_NO_BATTERY
-> - Drop check for charger in delayed_work s
-> - Use dev_warn when battery is over-voltage
-> - Define two power supplies: charger and battery
-> - Use devm_delayed_work_autocancel to automate cleanup and fix race
->   condition
-> v7:
-> - Use reverse christmas tree order
-> - Drop unecessary 0 in id table's driver data field
-> - Store virqs to avoid reinvoking platform_get_irq in the interrupt
->   service routine
-> - Drop manufacturer and model global variables
-> v6:
-> - Drop lock entirely
-> - Reverse christmas tree order for variables defined in probe as
->   suggested by Frank
-> - return pf1550_reg_init
-> v5:
-> - Drop lock for battery and charger delayed_work
-> - More conservative locking in vbus delayed_work
-> - Apply lock when setting power supply type during register initialization
-> v4:
-> - Finish handling of some interrupts in threaded irq handler
-> - Use platform_get_irq
-> v3:
-> - Use struct power_supply_get_battery_info to get constant charge
->   voltage if specified
-> - Use virqs mapped in MFD driver
-> v2:
-> - Address feedback from Enric Balletbo Serra
-> ---
->  drivers/power/supply/Kconfig          |  11 +
->  drivers/power/supply/Makefile         |   1 +
->  drivers/power/supply/pf1550-charger.c | 636 ++++++++++++++++++++++++++++++++++
->  3 files changed, 648 insertions(+)
+> Because this series is already big as is. That would be another commit
+> that can be separate.
 
-Once Sebastian takes this, I'll merge the set.
+I meant _in the same_ patch.
+
+> > > the generic implementation of the get_function_name() callback from struct
+> > > pinmux_ops - pinmux_generic_get_function_name() - can fail and return
+> > > NULL. This is already checked in pinmux_check_ops() so add a similar
+> > > check in pinmux_func_name_to_selector() instead of passing the returned
+> > > pointer right down to strcmp() where the NULL can get dereferenced. This
+> > > is normal operation when adding new pinfunctions.
+
+> > Fixes?
+> 
+> This has always been like that.
+> 
+> > Reported?
+> 
+> I mean, technically Mark Brown reported my previous patch failing but
+> I don't think we do this if we're still within the same series just
+> another iteration?
+> 
+> > Closes?
+> 
+> Ditto.
+
+I meant that this fixes a potential issue disregard to your series, right?
+
+...
+
+> > >       while (selector < nfuncs) {
+> > >               const char *fname = ops->get_function_name(pctldev, selector);
+> > >
+> > > -             if (!strcmp(function, fname))
+> > > +             if (fname && !strcmp(function, fname))
+> > >                       return selector;
+> >
+> > I would slightly refactor this:
+> >
+> >                 const char *fname;
+> >
+> >                 fname = ops->get_function_name(pctldev, selector);
+> >                 if (fname && !strcmp(function, fname))
+> >                         return selector;
+> >
+> > >               selector++;
+> >
+> 
+> You can do this in a subsequent patch, I prefer a smaller diff personally.
+
+Sure.
 
 -- 
-Lee Jones [李琼斯]
+With Best Regards,
+Andy Shevchenko
+
+
