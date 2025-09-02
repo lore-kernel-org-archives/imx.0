@@ -1,200 +1,113 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC1828489B
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 12:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756817319; cv=pass; b=JmvJcCd/GP0xjVcNJsQSjjZFy26QKDQEOoP/BO2ioM7T9lFO4rnn532aPszm3H6MXvplsg02Fftgc5sC/6uryNsg8Xq6xwxQrpdI1n4o37aHXV1qQOeLUaHHGwXmCat0r4W6YdmctHgekGLDP4ELKvRfuCu0CjRPtx6HiK44o0M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756817319; c=relaxed/simple;
-	bh=wU7qWEPyst9Ftq4pRRZe+bFJYDPPTs9iuZXC5uioKWo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jH4BxxbPfoiUtH+1LQRuntcoCz9v7OxBe4sjVZLxUsvoOAXHi3BCUVD1u568lzdvL/s316lMXkGbSQvWyUzfoRfzZVY/cG2fnijmLBeVDxcucy8/DvEa3v7vruG9dNEkpfRyD7C4WsErbQ4BePxpP1AqMiDfaS61v2eHc/p6xAg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=epj6UPXK; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=oD7/YPfr; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282F92D24A6;
+	Tue,  2 Sep 2025 12:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756817426; cv=none; b=grLW5w5I/iBYoNcPOL/hPQ+c7KtBYgq5RgYblcO7YxvSafHJnet7abxj1Xg/ULtDsNcNwJJX8EMD8of4m9Tnrz85OtCaQQnrM+RPYUwIdTHdQwY0m4Ceockwvl0o2s52DWJh06EfBgkmDJFjCfnaZ4bTMAKg2LDFuEk/v1XK3ks=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756817426; c=relaxed/simple;
+	bh=wqZtObeKB/uSkLt+mF3iBRFMdkEOwyqC6/cdbGY1IWo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=NGFicr/haEhWmpZKbzmBxB/4357vBmLpTpytSNs0xXpZBOF9jMU5T6t8c/k990ADqcpF1rFWtn8fNr4DyHNG6W1QN4Fyfss6Q9PJm7VWT1FBW5k9yS5eqJbNQwcTVkR3k1O4hMtDCxg6IV6vgqgjvZn3BNX1OiOf5RajdKjbt2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXj0AARH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="epj6UPXK";
-	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="oD7/YPfr"
-Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPS id 4cGQX92JHJz49PvN
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 15:48:25 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1756817305;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2m0AdmzVx62ppePfQnYhxMw6RCz/hoGAXew6yRRziDg=;
-	b=epj6UPXKkvHVikHqclwf/x1VwxUQe4BcLSg8BTYN4QDvgYnY7FXijn3AESULDsnc02KCgg
-	9hrma22GPbk1ezurFBnxYtszE4H5gycpN7oEcv5OElgYOWztJeP+cGT0uK1eYiDzd4LBm1
-	YxOhdyvv8ZuwmWgxqByFUap2DduMdHpUo2a9CVCoScv171PCTPMoEJyU4DrMRBv6euCLAr
-	VkgBR8MEQHBk5PF6SAcfKu2AUr+b0KEuifOB1yY04vvhGDlCNyjpX53G1Fu12kxpK2SC0o
-	Dx3BPDIJ+7m+kcgX70N1KG2twyVTFOR2rs4XJbQnAoO4lYhDZHsoxD6oanqCww==
-Received: from hillosipuli.retiisi.eu (91-158-51-183.elisa-laajakaista.fi [91.158.51.183])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sailus)
-	by meesny.iki.fi (Postfix) with ESMTPSA id 4cGQWx2kLbzyRp;
-	Tue,  2 Sep 2025 15:48:13 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-	t=1756817296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2m0AdmzVx62ppePfQnYhxMw6RCz/hoGAXew6yRRziDg=;
-	b=oD7/YPfrsYF7PqocSEKmT0mRJYjbdf0f+hJIpls01m/zB7brfUZRxI3iZ6H6juIFF9vR5b
-	I5ij7AQaKok6tXEhHwoUOjVy3MZXQ+bm4T/rcJWYyK92+81ZhrvNr/F3C/W1ARspXTYsbt
-	7EE5UnkBi/bV2iOMHKREoS+JUv9j5Ss=
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1756817296; a=rsa-sha256; cv=none;
-	b=inniAaeJ3cVCOuLXCrrmGOkUPS8+/0QrPFZyvGS7PBqY5RdBqdOvoW+fgPRqFDwDaozrNk
-	bcWaq7Jrq28xHUaeYry4EduTtrMNoFRtd+JL3rzPyCObHiJCdoDv3+l/+k1ZQLIRskOMTW
-	cBjV10vQK05w1wWvX8dK1U8KRoROsD4=
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=meesny; t=1756817296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2m0AdmzVx62ppePfQnYhxMw6RCz/hoGAXew6yRRziDg=;
-	b=TVokqAm9YtsAIJtOLvtXvL6q0rWppmcxEl99Jjp/YiRh+BBysDbQUpd7zcxuO5WEpfO3Dh
-	FFT1A6u11PRC4KxaDmLVGBJXY0TXVplpyfQutYI1JWuV1sHcrFSb9ftx/eoctgdeGDAwLS
-	Z6wsX1x19hjcQxJ5NF9ES2tSJ1y6now=
-Received: from valkosipuli.retiisi.eu (valkosipuli.local [192.168.4.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 9C9C8634C93;
-	Tue,  2 Sep 2025 15:48:12 +0300 (EEST)
-Date: Tue, 2 Sep 2025 15:48:12 +0300
-From: Sakari Ailus <sakari.ailus@iki.fi>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Isaac Scott <isaac.scott@ideasonboard.com>, linux-media@vger.kernel.org,
-	rmfrfs@gmail.com, martink@posteo.de, kernel@puri.sm,
-	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] imx-mipi-csis: Get the number of active lanes from
- mbus_config
-Message-ID: <aLbnjLapJXlCe67R@valkosipuli.retiisi.eu>
-References: <20250814113701.165644-1-isaac.scott@ideasonboard.com>
- <aJ77VTtZy96JJCHE@valkosipuli.retiisi.eu>
- <20250815103205.GJ6201@pendragon.ideasonboard.com>
- <aJ8ZJFSn5Wxhj2Aj@valkosipuli.retiisi.eu>
- <20250815113633.GM6201@pendragon.ideasonboard.com>
- <aJ8pKs_6YpAiPjlq@valkosipuli.retiisi.eu>
- <20250819024413.GJ5862@pendragon.ideasonboard.com>
- <175681611736.1349241.9877873145029586025@isaac-ThinkPad-T16-Gen-2>
- <20250902123805.GL13448@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXj0AARH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB03C4CEF5;
+	Tue,  2 Sep 2025 12:50:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756817425;
+	bh=wqZtObeKB/uSkLt+mF3iBRFMdkEOwyqC6/cdbGY1IWo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=eXj0AARHucUDamcZbQBrrKeFjwRMPqpU1NDGNuCig/YAhVuN+P3NX9bBc/1fF+c6f
+	 qrxoPM4Xm2lnLBC3EnGWTf4/gaFkBKpDLzXFql0FIN7AJFleia6rn9kkHrQR5QkKDS
+	 pja1klGraGAcqoP5A5rlU29rM4hQKmZrEAkoMrO2n01x+hH2yQFmEoZAVFttlJEyZ+
+	 igy0HSkBQipUeYpHRAhWiSehdlL9JRZZPrtUzMmUb0Lw1jItAUAdN08jwtbStJI8C5
+	 +Dm9T+98pajHustw7L7Xsbf5s0Upz6KcXqMWxYloVQVV2+fbD/5oDgneK14AB+snJS
+	 tz+FLonB+2FNA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71854383BF75;
+	Tue,  2 Sep 2025 12:50:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250902123805.GL13448@pendragon.ideasonboard.com>
+Subject: Re: [PATCH v7 net-next 00/14] Add NETC Timer PTP driver and add PTP
+ support for i.MX95
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175681743106.280373.4120937080041780119.git-patchwork-notify@kernel.org>
+Date: Tue, 02 Sep 2025 12:50:31 +0000
+References: <20250829050615.1247468-1-wei.fang@nxp.com>
+In-Reply-To: <20250829050615.1247468-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ richardcochran@gmail.com, claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+ xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ vadim.fedorenko@linux.dev, Frank.Li@nxp.com, shawnguo@kernel.org,
+ fushi.peng@nxp.com, devicetree@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
 
-Hi Laurent, Isaac,
+Hello:
 
-On Tue, Sep 02, 2025 at 02:38:05PM +0200, Laurent Pinchart wrote:
-> On Tue, Sep 02, 2025 at 01:28:37PM +0100, Isaac Scott wrote:
-> > Quoting Laurent Pinchart (2025-08-19 03:44:13)
-> > <snip>
-> > > > > > > That would need to parse the endpoint every time we start streaming, it
-> > > > > > > doesn't sound ideal.
-> > > > > > 
-> > > > > > Perhaps not, but does that matter in practice? Parsing the endpoint is,
-> > > > > > after all, fairly trivial. The advantage would be simplifying drivers.
-> > > > > 
-> > > > > It's trivial from a code point of view, but it's not a cheap operation.
-> > > > > I'd like to avoid making starting streaming more expensive.
-> > > > 
-> > > > How cheap is "not cheap"? I'd be surprised if parsing an endpoint took more
-> > > > time than e.g. an I²C register write. Of course it depends on the CPU...
-> > > 
-> > > Still, it's not cheap, and I think it can easily be avoided.
-> > > 
-> > > > > > Alternatively we could think of caching this information somewhere but I
-> > > > > > don't think it's worth it.
-> > > > > 
-> > > > > Drivers likely need to parse endpoints for other reasons. I'd cache the
-> > > > > value in drivers, like done today, and pass it to a get_active_lanes
-> > > > > helper.
-> > > > 
-> > > > Then drivers presumably would also validate this against the endpoint
-> > > > configuration, wouldn't they? That's extra code in every CSI-2 receiver
-> > > > driver.
-> > > 
-> > > Why so ? The number of connected lanes can be passed to the helper
-> > > function, which can use it to validate the number of lanes reported by
-> > > the source subdev.
-> > 
-> > Apologies if I'm interpreting this wrong, but it seems that the main
-> > thing I'm reading is that this is not the correct place to implement
-> > this, and it should be implemented at a higher level (e.g. in v4l2) that
-> > lets all MIPI CSI reciever drivers use it?
-> > 
-> > I have noticed that similar functionality has been implemented as part
-> > of __v4l2_get_link_freq_pad. Are you suggesting that I take a similar
-> > approach and resubmit as a new series?
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Fri, 29 Aug 2025 13:06:01 +0800 you wrote:
+> This series adds NETC Timer PTP clock driver, which supports precise
+> periodic pulse, time capture on external pulse and PTP synchronization.
+> It also adds PTP support to the enetc v4 driver for i.MX95 and optimizes
+> the PTP-related code in the enetc driver.
 > 
-> As far as iI understand, Sakari would like a helper function that will
-> query the remote subdev for the number of data lanes it uses, and
-> validates that against the number of connected data lanes as described
-> by DT. I don't like the idea of parsing the endpoint properties every
-> time we do so, so I think the number of connected data lanes should be
-> passed by the driver to the helper instead. The helper would still query
-> the remote subdev, and validate the value.
-
-As long as the bulk of the work is done by the helper, I'm fine. This is a
-fairly specific need but still in principle every CSI-2 receiver driver
-needs it, so ease of use does count.
-
-The helper could e.g. take the number of lanes in the endpoint as an
-additional argument and just return the value if the sub-device doesn't
-implement get_mbus_config() pad op. That'd be fairly trivial to use in a
-driver.
-
+> ---
+> v1 link: https://lore.kernel.org/imx/20250711065748.250159-1-wei.fang@nxp.com/
+> v2 link: https://lore.kernel.org/imx/20250716073111.367382-1-wei.fang@nxp.com/
+> v3 link: https://lore.kernel.org/imx/20250812094634.489901-1-wei.fang@nxp.com/
+> v4 link: https://lore.kernel.org/imx/20250819123620.916637-1-wei.fang@nxp.com/
+> v5 link: https://lore.kernel.org/imx/20250825041532.1067315-1-wei.fang@nxp.com/
+> v6 link: https://lore.kernel.org/imx/20250827063332.1217664-1-wei.fang@nxp.com/
 > 
-> > > > > > > > The function could take struct media_pad pointer as an argument, or struct
-> > > > > > > > v4l2_subdev pointer and the pad number.
-> > > > > > > > 
-> > > > > > > > I wonder if any other parameters could change dynamically but I can't think
-> > > > > > > > of that now, so perhaps just the number of lanes is what the function
-> > > > > > > > should indeed return.
-> > > > > > > > 
-> > > > > > > > > +
-> > > > > > > > > +   return 0;
-> > > > > > > > > +}
-> > > > > > > > > +
-> > > > > > > > >  static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
-> > > > > > > > >  {
-> > > > > > > > >     struct mipi_csis_device *csis = sd_to_mipi_csis_device(sd);
-> > > > > > > > > @@ -965,6 +1002,10 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
-> > > > > > > > >     format = v4l2_subdev_state_get_format(state, CSIS_PAD_SINK);
-> > > > > > > > >     csis_fmt = find_csis_format(format->code);
-> > > > > > > > >  
-> > > > > > > > > +   ret = mipi_csis_get_active_lanes(sd);
-> > > > > > > > > +   if (ret < 0)
-> > > > > > > > > +           dev_dbg(csis->dev, "Failed to get active lanes: %d", ret);
-> > > > > > > > > +
-> > > > > > > > >     ret = mipi_csis_calculate_params(csis, csis_fmt);
-> > > > > > > > >     if (ret < 0)
-> > > > > > > > >             goto err_unlock;
+> [...]
 
+Here is the summary with links:
+  - [v7,net-next,01/14] dt-bindings: ptp: add NETC Timer PTP clock
+    https://git.kernel.org/netdev/net-next/c/d6900b8bd362
+  - [v7,net-next,02/14] dt-bindings: net: move ptp-timer property to ethernet-controller.yaml
+    https://git.kernel.org/netdev/net-next/c/db2d2de1c2a8
+  - [v7,net-next,03/14] ptp: add helpers to get the phc_index by of_node or dev
+    https://git.kernel.org/netdev/net-next/c/61f132ca8c46
+  - [v7,net-next,04/14] ptp: netc: add NETC V4 Timer PTP driver support
+    https://git.kernel.org/netdev/net-next/c/87a201d59963
+  - [v7,net-next,05/14] ptp: netc: add PTP_CLK_REQ_PPS support
+    https://git.kernel.org/netdev/net-next/c/91596332ff5d
+  - [v7,net-next,06/14] ptp: netc: add periodic pulse output support
+    https://git.kernel.org/netdev/net-next/c/671e266835b8
+  - [v7,net-next,07/14] ptp: netc: add external trigger stamp support
+    https://git.kernel.org/netdev/net-next/c/b1d37b27036a
+  - [v7,net-next,08/14] MAINTAINERS: add NETC Timer PTP clock driver section
+    https://git.kernel.org/netdev/net-next/c/dc331726469d
+  - [v7,net-next,09/14] net: enetc: save the parsed information of PTP packet to skb->cb
+    https://git.kernel.org/netdev/net-next/c/19669a57d7a0
+  - [v7,net-next,10/14] net: enetc: extract enetc_update_ptp_sync_msg() to handle PTP Sync packets
+    https://git.kernel.org/netdev/net-next/c/27dd0eca9347
+  - [v7,net-next,11/14] net: enetc: remove unnecessary CONFIG_FSL_ENETC_PTP_CLOCK check
+    https://git.kernel.org/netdev/net-next/c/d889abaac299
+  - [v7,net-next,12/14] net: enetc: move sync packet modification before dma_map_single()
+    https://git.kernel.org/netdev/net-next/c/7776d5e6e349
+  - [v7,net-next,13/14] net: enetc: add PTP synchronization support for ENETC v4
+    https://git.kernel.org/netdev/net-next/c/f5b9a1cde0a2
+  - [v7,net-next,14/14] net: enetc: don't update sync packet checksum if checksum offload is used
+    https://git.kernel.org/netdev/net-next/c/93081d4ed54e
+
+You are awesome, thank you!
 -- 
-Kind regards,
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Sakari Ailus
+
