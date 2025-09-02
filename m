@@ -1,51 +1,53 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBBD3126BC
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 14:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D18D31CA5F
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 14:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756823592; cv=none; b=rPExQ5MX4vu1TE5NgEea2FFo9ZnUMqobeKVBXWYfjP2zmRxKEonJdmOSLiKgJKiiz+5Ry5DD4KudtJ3ypEy73L1yAMtpM9GenW2Hs6t4TaBVHWR4qDtTNxGHRX1+XXp+M7qoz3kjqQPRoRWqndborEWXl0iqWNbaOsm63hwpeDo=
+	t=1756823941; cv=none; b=GxMLnRzJsapzHa+RvPN7MH/13IE+x0aVs8e5tq1zQtIFmMz33NKLHtENbg9FWl3gXvFKWhdkOsuq+v9trI0gMlIyfU2pTfsY2hjPxLEnNP/2UKPg+ft4DTLavpWj4ghtgrv0yIkaQjML7C1bzjz0lymW4BeCn3wwyZUW/N9WBks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756823592; c=relaxed/simple;
-	bh=CqeygO38G2UqLYwyJWypxYe4AznIXuR38IzQgfyWO78=;
+	s=arc-20240116; t=1756823941; c=relaxed/simple;
+	bh=ZYIXrBHD4yIy6w4Vca2iFtAhmSRGyH8KSR03FUXVhpM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dWLLUi1pzLV0M6xbYj7HZly4iC5TLzYbWVSHZoJsFwX1o5ZM/ewL/2OH2dJtAZ0jTer2TFsJpt/e1z5XOjP1NyWzEPON1GQRVLfCdjGGyE6wKKeJeP7rHXjv+ezauWfnIk4ZiiR5m8VI2YsWUBJNaXcjlJPA8+aMHWn/w74xF8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R+NOi+nJ; arc=none smtp.client-ip=198.175.65.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=GTgMh5MPKJern+0aIRdYSMUqbgY4J63COAKYW+vovjgwd4fSsZId8P1vfXUj6J53UFAkoRGBIk+RY7K0bUjZ758k5BdOjVsKxmKPOtMs1YjO1ASnmgs8CKjy7p+Gz5JiNLGZiK32MFfY+ZBeoDwjzDycdtHsHKd1vS3xd56Zm0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AKVXNIDw; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R+NOi+nJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AKVXNIDw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756823591; x=1788359591;
+  t=1756823940; x=1788359940;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CqeygO38G2UqLYwyJWypxYe4AznIXuR38IzQgfyWO78=;
-  b=R+NOi+nJrarhs80YhsVfWzBjLjNOh1LR+BDIiUxqfFYOimx7IRISA52F
-   e1tpSpQcfj7/pR/gk6PzacsO2gLM7J5vM4kcwcZzRFRWOCpXX/YOxBJCe
-   IagZlfxytlGfste3qJOvso0JPtFNFMnX5kW6tJOgxGo5k5FfpU/uAIP1p
-   y32SUjuI5fkNZhbKKwPBr88owZIhURVJnijlUyc3soXbz8++L7SvMpYyv
-   d4wFxdequ/Mh+vF3+uCgRowN4z6lLGiRQivs74MyPB8npz4N+UPFq01W9
-   DfnlZIP9wRWFbvBOGYrEVtR3tX029JZHAcwQcA4dKgwmozC0nshns5ft0
-   w==;
-X-CSE-ConnectionGUID: 2cufVkbPT2iY1SKjC2sxgQ==
-X-CSE-MsgGUID: H8fyFK5hRiK1wM1OzNjtOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="70529012"
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="70529012"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:33:10 -0700
-X-CSE-ConnectionGUID: t6YdkPslS0eCpPn1gsG2vA==
-X-CSE-MsgGUID: 2hQHF1LATnKCD8YNAvpqBg==
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ZYIXrBHD4yIy6w4Vca2iFtAhmSRGyH8KSR03FUXVhpM=;
+  b=AKVXNIDwKCqJviLCHzs8HtMKcwW9oTk35gr5iDTt4z/byyaPwGd1ZgFb
+   yNFG61gRo7gEZmMAGtZjhlKFmJZSvm6ePmh6cRyOnkPeUNqYEWI1sUUPW
+   45p1wSl26bXy6LDNP+CZwJj/bl+VQL/gQuZRIuhjALryZPlN4ECD++Vge
+   Ss4HyQfA5eavDEORWK6OMB/lTYm3RcWQ7FxG1YNyCXBvlqCM60WHlELgM
+   4A1A/Scp7yUd4mF5lF+O6NP48arRrS0ZWwghh63tiwA3K8K7nFY0KsYad
+   f05OYJv+SvCdt614cb6FuiRg/NUCFvBP4bLZlYTIfpXwp8m5ZkYUVCly8
+   Q==;
+X-CSE-ConnectionGUID: 8xENXCTPSVWN+PK99qzbGw==
+X-CSE-MsgGUID: wtuMxo/3SeaTckJOdjLEgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="81685656"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="81685656"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:38:57 -0700
+X-CSE-ConnectionGUID: kELmzdc/Ro+s1d7reAqBKA==
+X-CSE-MsgGUID: V+D0bl4QSJiRO98p+FkBCw==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="175657994"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:33:01 -0700
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:38:47 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utS49-0000000AiVG-092e;
-	Tue, 02 Sep 2025 17:32:57 +0300
-Date: Tue, 2 Sep 2025 17:32:56 +0300
+	id 1utS9j-0000000AiZa-008W;
+	Tue, 02 Sep 2025 17:38:43 +0300
+Date: Tue, 2 Sep 2025 17:38:42 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: Linus Walleij <linus.walleij@linaro.org>,
@@ -86,30 +88,33 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
 	linux-renesas-soc@vger.kernel.org,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v7 15/16] pinctrl: qcom: mark the `gpio` and `egpio` pins
- function as non-strict functions
-Message-ID: <aLcAGKnrh-GeR-NL@smile.fi.intel.com>
+Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
+Message-ID: <aLcBcjvMbrxoDYoC@smile.fi.intel.com>
 References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-15-bb091daedc52@linaro.org>
+ <20250902-pinctrl-gpio-pinfuncs-v7-16-bb091daedc52@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-15-bb091daedc52@linaro.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-16-bb091daedc52@linaro.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Sep 02, 2025 at 01:59:24PM +0200, Bartosz Golaszewski wrote:
+On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golaszewski wrote:
 > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> Allow pins muxed to the "gpio" or "egpio" function to be requested as
-> GPIOs even if pinmux_ops say the controller should be strict.
+> The strict flag in struct pinmux_ops disallows the usage of the same pin
+> as a GPIO and for another function. Without it, a rouge user-space
+> process with enough privileges (or even a buggy driver) can request a
+> used pin as GPIO and drive it, potentially confusing devices or even
+> crashing the system. Set it globally for all pinctrl-msm users.
 
-Why?
+How does this keep (or allow) I²C generic recovery mechanism to work?
 
 -- 
 With Best Regards,
