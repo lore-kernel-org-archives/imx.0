@@ -1,71 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B8927FD6E;
-	Tue,  2 Sep 2025 10:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F8E2ECD2A
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 10:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756808974; cv=none; b=KocddOi9tfU3t2EzpBm8blj6CWK6mvnuXNrpfkF4fzr0sj3n4QO2ii4EtO2RgtTykI+G/awzDrzjoXmuz2UJmXCm8PV7rvt62rqeyQBiIm7ZKgnqh5GhAvAIVExVCpaVOn0H4PD7AvaeZlhVoDQpnles9QK+3ubSTRoLCySjFMs=
+	t=1756809190; cv=none; b=dfHHfdQ3hoh3LSRxxLZKZ4TWVjDDWJJ/aiH3H2HN+lKJaCvk2CsXrrgMZuDzn/Rp2h67h888fIhX2PhVmEcIgkpzu5TFpnK+h43UrT0zfze0rD8M64oiMWEo2VsP/5TAhfeD2860XOREhbod1BbZGNfggNNEQYJqYZJj4uFNh5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756808974; c=relaxed/simple;
-	bh=uRsZ+C5WCQAcFKlUzOAFgpNtRdJuRvUB18EfocZmZW0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=AdFLPtEVYTnTGgUtJyGidSnY2ON8v3yvfIPNX2Bm1YtA1CzfsucEMfBeZJsC2wQpmsjxT02SbEkpa6yX2XNehnkmgSsPp3Wvvp4zVShBtCtWV1x5G56FmYUFOQIvTAlDCHbngNLChNsM+a5v74AdiW317PzXKbplokJjryE8SYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hGKCytNI; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hGKCytNI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2EBEC4CEED;
-	Tue,  2 Sep 2025 10:29:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756808973;
-	bh=uRsZ+C5WCQAcFKlUzOAFgpNtRdJuRvUB18EfocZmZW0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=hGKCytNIfhcxhmIeNUO4HsvI1Ws8sTNPVBiyj1780+x60m3iu7txa8L56s5KQgoyZ
-	 Etl6s0WgN0LwdNEOBGmvkEzRPFnqNg+iDz9m3zQc5GyXibcbPDiU9tk8EZpz0VKlRM
-	 abiMa5b3P0b6/fGWk8yjTzQz7CTQQ8IyFHBMpV8rokJs0e4kJGdAqh0WwPaM6vvnl2
-	 InXfJx3A29klQJJgHD663mqouyweF/xPPRATt9QsEe0vqBBfLGHFCWCq+l6jeKWjwO
-	 vyfZAT+ccE0mCcOJFz5pYc1+xikB2JubBGIKUvbPWd44pKGm/S56o2Dx9dYznuUpVE
-	 W5xk0nQB2TGxg==
-From: Lee Jones <lee@kernel.org>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Vincent Knecht <vincent.knecht@mailoo.org>, Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Li Jun <jun.li@nxp.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20250811-dt-bindings-db-v1-1-457301523bb5@linaro.org>
-References: <20250811-dt-bindings-db-v1-1-457301523bb5@linaro.org>
-Subject: Re: (subset) [PATCH RESEND 1/2] dt-bindings: leds:
- issi,is31fl319x: Drop 'db' suffix duplicating dtschema
-Message-Id: <175680896973.2257460.6755059243558136636.b4-ty@kernel.org>
-Date: Tue, 02 Sep 2025 11:29:29 +0100
+	s=arc-20240116; t=1756809190; c=relaxed/simple;
+	bh=L8JaUs3SOhVHk302t291gHlKh5NKD5qAHGAnGijZbM4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=azXb57iSNxQajeST1qYtisZ3/3TIw215OeN1HolMp7qM+G+mSjXWrOn9KWpf9/zQgxVXA2aUUD+dybgk03VeZ3k10jX6TqJDHSyB035OI7r4p2BXiuXbPAmkIxBXMxzIX0lIcjqbpZQHnpSPAueAD857K1tLQps5KoDiBSRPnv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 3107081c87e811f0b29709d653e92f7d-20250902
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:3fbf43f8-ebc9-4b27-884e-79c619713230,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:7ac0a2afc203774c376dc034898cbd81,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 3107081c87e811f0b29709d653e92f7d-20250902
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1546738643; Tue, 02 Sep 2025 18:32:57 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id A718FE008FA3;
+	Tue,  2 Sep 2025 18:32:56 +0800 (CST)
+X-ns-mid: postfix-68B6C7D8-5510786
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 589C2E008FA2;
+	Tue,  2 Sep 2025 18:32:48 +0800 (CST)
+Message-ID: <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
+Date: Tue, 2 Sep 2025 18:32:47 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-c81fc
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/12] cpufreq: intel_pstate: Use scope-based cleanup
+ helper
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
+ <20250901085748.36795-4-zhangzihuan@kylinos.cn>
+ <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 11 Aug 2025 15:54:03 +0200, Krzysztof Kozlowski wrote:
-> A common property unit suffix '-db' was added to dtschema, thus
-> in-kernel bindings should not reference the type.
-> 
-> 
 
-Applied, thanks!
+=E5=9C=A8 2025/9/1 23:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylin=
+os.cn> wrote:
+>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>> annotation for policy references. This reduces the risk of reference
+>> counting mistakes and aligns the code with the latest kernel style.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>> ---
+>>   drivers/cpufreq/intel_pstate.c | 8 +++-----
+>>   1 file changed, 3 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_ps=
+tate.c
+>> index f366d35c5840..4abc1ef2d2b0 100644
+>> --- a/drivers/cpufreq/intel_pstate.c
+>> +++ b/drivers/cpufreq/intel_pstate.c
+>> @@ -1502,9 +1502,8 @@ static void __intel_pstate_update_max_freq(struc=
+t cpufreq_policy *policy,
+>>
+>>   static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
+>>   {
+>> -       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D c=
+pufreq_cpu_get(cpudata->cpu);
+>>
+>> -       policy =3D cpufreq_cpu_get(cpudata->cpu);
+>>          if (!policy)
+>>                  return false;
+> The structure of the code is intentional here and there's no reason to
+> change it.
 
-[1/2] dt-bindings: leds: issi,is31fl319x: Drop 'db' suffix duplicating dtschema
-      commit: 19c5010e8ae23faf7b98fd738ff9970bb9066b78
 
---
-Lee Jones [李琼斯]
+Got it. Thanks for clarifying.
+
+So for this case the current structure is intentional -
+
+should I also avoid similar changes in other drivers?
 
