@@ -1,216 +1,117 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B80A20766E
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 06:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6999202F93
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 06:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756794298; cv=none; b=DvWE4XRuBboJUUovjBkrevMAVPYSyKveD8ebmjRCwGF/ZVuwRsKFG0amve+uAqq5Rr1awL4uGRiI+C1TqzbcUUvjBlvg18MUUhcUBve8GOCBhokcrjVI3blGIk0s+HCQBDBoXkNpAiCZ1ALLFKWMvjFBuQxadOFDhFvThS1L7XQ=
+	t=1756794812; cv=none; b=US8yvaeOaHapNo8graSkvpmolyWajQxYVkgDpGqnFFt4DNM6Gx0cOUbr2jr7W4XdiiQK7t/OSMuUSdlvB4uu1SStODQ4CPkufPdBVS/9LHJFibqPHvNU3w3sGoouKjWPSHsEwKhtjDzQfSfHaJOdxQRc9QFsE20TNo02gl4huP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756794298; c=relaxed/simple;
-	bh=/X5tvcuJAxWn3JDYkNwSrjpsesfg6FURaUkJpV2ccGw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kgnmct3yXYMPll7SJ7yul6TWGuuKgknuqmpuhKzh7HJMdeA/ZF1m6zEuqb9De5Ez1Eb8ufny9l4BY0ENbuaCJg4m8ehFp2S3xIyT5CznYsbiWslC0t/O1g79oyIKM0LLK4Wdo64QnRd1jZzEMqCr3oMQWQNhn4ytx/qzV+6ZP9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=KWHR2cD3; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1756794812; c=relaxed/simple;
+	bh=OmgqGRS9lpyTrEFn41VfN0D8+8Pt7MBlL94ZsnDQY2I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UUiP0BmaSFLAd3LxkDl6cepv7if24cowMtnKwpmao4y95Gp7kkvReDoHGJTJfL3nzIHKkUsQSHk8NV3EgFsXL5atPqrdgV14ji7KP8p2KHhrHU1LtV2KN+Q5lyCm4kIJeWIkgJJa4xEwOYkkBZietboimbqgmT7pOpN0vYWfto4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sa9KXAKR; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="KWHR2cD3"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e931c71a1baso6862494276.0
-        for <imx@lists.linux.dev>; Mon, 01 Sep 2025 23:24:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sa9KXAKR"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3d19699240dso1952782f8f.1
+        for <imx@lists.linux.dev>; Mon, 01 Sep 2025 23:33:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1756794295; x=1757399095; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T7vWWxNzseg54QZAjivUxxK0pnJ4DlOhxfw0ykDICyI=;
-        b=KWHR2cD35yx4U/e8vlpzEcLlDlucJ81qnxZe2Ce0WV/3bEL+IJLdWi/5HgUO5lJq7J
-         cVCVW2NI9fbj2yxIwOOWY2WLmHxhIjmssz7UhNExz0WiCNB/RXFl9X6lCb1NxWNHvDE6
-         nvbhNxEchj3z2SdPxxaM2GTN4roozbtmYAPnA=
+        d=linaro.org; s=google; t=1756794809; x=1757399609; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pZyWSfEXmR6en5hSqVkcdSusIQHGptuPDvKtOGXyj7g=;
+        b=sa9KXAKRxx+7PhQ4UYqg/g5zV6d6CYMFaFBrx/sO9NJLb0+N7+pjdMbuvHCuIeAw0l
+         ESZekHmj6GekeOg50IFXtZFJl1OdX62Rg47C9blgyCpqyJqSg3ondys0SjLLlDr6GIbz
+         TS0HwusFjiv0WTvewxRDp8g22ct8nLhhbrdB0bbS2rFNShmXWRMsX0s45PfcVKvdeW5D
+         PTMo8Z/ctbWbv9yLcxLcLklmCy5IDse1qs06WApjJgF6wTtPaV2m0ykUalTsOIApp0cV
+         WTGA+a1g4FqZ753y1oDr/q1dikDmHPFqstUO6VyQCMGckOf1YzN+0ZccDfYGnFaaUdjy
+         2U+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756794295; x=1757399095;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T7vWWxNzseg54QZAjivUxxK0pnJ4DlOhxfw0ykDICyI=;
-        b=KWozLQ4xwIi1PH99zpQoKDL7XONNlWI6G/Fe4o97VnTo8Awx+T0oa69wXWeHQhnniU
-         T7zITq2IQVP4SxMrjU9wk+CQju+yyU9p9qSbpNyZ3i0B7SkWy0z5+rbJTB9I/Nk4gTwN
-         wE9NYLEM3hx7AYsZSsqdsUI+A7ogLBdzRdbM0L47LNt3fj+/pByPdMJEmCtrmfM0gQbs
-         +A5s76pJS9LsItTOzc5GVtuJJV1lANrRjSikAcm1U9EIeoE/4MHU2gPOSUsqET1gkr8z
-         QAq7BlKeQNF8z6r0OeGC6GZm7Z0nkvjj6uZIFn7upPhWdpMjYBM4uvMWeAbXMCJxI2b/
-         S0+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWF4S0faP39lg+01ZKt/znjz3aDTjBsWlesBkOIcBHNaMEHQfGWXUxKOrQHS4pxazAh4F4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxvEJ9KBGEv66iUVFN6CVMAuQXiQtYOcdgEy/JMPWBxWQZNFxg
-	XGHP6j9SQ+PGvdXnu5DFRkOpJm0hgklgvdG9s/Tvuf1M/9ciVfkEh+Cs5FDQgBa7TisgqiWTOnd
-	O5831g79XEAXruJWEBsE4Srm3ofiSdVh80YUvaAQxFA==
-X-Gm-Gg: ASbGnctT8lOWPKYggAp/gHboCxrbBtNADi2tpYWzFXh1ZqH4SyT+LDfh0ci6kw59Ctd
-	AIkwLq8qgo98pacPdsT937S67ceHYCSXkxh77na7SS3hj1PtbJLEwInN9vwd+/PG2eYXLPzJz7u
-	45zZdQk/oi2s5ZhI1RwHEZFcASBHBVdZYVhduxRso0s0SnOVWVj2aqIfgGaodq0xxFbtfTZmQ44
-	kgv5/gMQsBHn4Zb
-X-Google-Smtp-Source: AGHT+IEC+bhwfIsYKYd4OXHEYbsF24ESl19VnrU0Lm+wzyoJZpbOTOeMhCWWexm/yC9IvNQdZvyYLuGaB9Amv1jSkRs=
-X-Received: by 2002:a05:6902:e03:b0:e96:ec6a:26c7 with SMTP id
- 3f1490d57ef6-e98a567eea7mr11493602276.0.1756794295489; Mon, 01 Sep 2025
- 23:24:55 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756794809; x=1757399609;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pZyWSfEXmR6en5hSqVkcdSusIQHGptuPDvKtOGXyj7g=;
+        b=WTzXwUG5Ol5PTKWZQ3FeIaxOU3tOAmV5vkLHCsLBPBMvk62Sg6bxw08DTuBD2lWQwF
+         dIeWUwjaphLhRzreo0zY6wIBRYS5UsmYS+d+e8QGJsfITOYpK9KGscIArBx8x25cfILp
+         uHjml4CUgImgB0NExof8cZc8ADbsL6ls0jyAe2ucWMsR9OL0GR9pJ2g2omE1LDE4363d
+         ocwS+jSoNG2F0JYJCtoHV6FmrUO87qoz4lfWpCDy9wobN6DrZRlLRG5LOR8iI82Tsdv+
+         84Two7Gz+7BQN6sCDgNd8vIwqPFPLlKJB6k5UHHDQM1O4nSu0hzvDgVwDsNziUAlihvN
+         MweA==
+X-Forwarded-Encrypted: i=1; AJvYcCUveWCqRZB8dmvyGVNAGW7oEUOoHtcEaTx6xAH7kGtaFY5MfBR81mRYBgm7ojjXiJ3Kfaw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzT+PIfqEY6ypZ/Ffzk/PSv40FWmDSYLAyZ5abLLN6ueQSlzHLk
+	/IPxirXXzYN2dmgRGT8PRPAhi8k4u8Je4jp4rRnf6Ojix322t1J75HS2vqZZtJmZBCl8JKEwFTc
+	esP+M
+X-Gm-Gg: ASbGncsLMbrVxSDjnFsXnYC4NzS6B2c2gC4dOyBIHvQz8Xzf2NCdc3pyZV4OuObooNi
+	2alLiixwFgSNi3C8cgVuJT7urWJ/w4seSl3St7Qqp5N9TXVYKplnUumGYUZcTRp7FUlauuKivts
+	DQZly3I3YiDbsbnBNMytAdIhfv9IodfOLbM9JPr4fj/HmOtA2RxuC1Qg79y72m53ALhzdxhzk4+
+	PoB8uEiNL+p7WBxZUcKuqs7OYAB/SBo8EQVbWYK8hfa4h6llGYs/EPaSU3D/L2MqvDfX+hcu48p
+	HFbpXebafliebxhasLS5KKh/M/dhQbP+CxMD0HZGHUhNL8dl+nO5ficI4Xf2MLV09o3kSuHIxcz
+	qY+c+v9KcHxIwXRyMH/d9p/PbkqI=
+X-Google-Smtp-Source: AGHT+IHKIWGa/m0pamORceoT/ghQw4RmChJ+ED2prLmd/mL7KJlk1waSR7kGX/s+IgenapL9sr29cg==
+X-Received: by 2002:a05:6000:18af:b0:3d9:c661:88ec with SMTP id ffacd0b85a97d-3d9c661934emr1225669f8f.13.1756794808924;
+        Mon, 01 Sep 2025 23:33:28 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3cf33fba9fbsm18284186f8f.50.2025.09.01.23.33.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Sep 2025 23:33:28 -0700 (PDT)
+Date: Tue, 2 Sep 2025 09:33:25 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: broonie@kernel.org, linux-sound@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Frank.Li@nxp.com, robh@kernel.org,
+	laurentiu.mihalcea@nxp.com, waqar.hameed@axis.com,
+	festevam@gmail.com, kernel@pengutronix.de, lgirdwood@gmail.com,
+	peter.ujfalusi@linux.intel.com, yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com, kai.vehmanen@linux.intel.com
+Subject: Re: [PATCH] ASoC: SOF: imx: Fix devm_ioremap_resource check
+Message-ID: <aLaPtf-eZ6sM47yV@stanley.mountain>
+References: <20250901151513.286454-1-daniel.baluta@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250722103706.3440777-1-dario.binacchi@amarulasolutions.com>
- <20250722103706.3440777-3-dario.binacchi@amarulasolutions.com>
- <20250723050319.GA1239529-robh@kernel.org> <CABGWkvpWPXz8bFPC3OgqY+C6cgu6hHGh6muCQkoCOEVK048fSA@mail.gmail.com>
-In-Reply-To: <CABGWkvpWPXz8bFPC3OgqY+C6cgu6hHGh6muCQkoCOEVK048fSA@mail.gmail.com>
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date: Tue, 2 Sep 2025 08:24:44 +0200
-X-Gm-Features: Ac12FXxEccgAI8M5f9oOb9ii1ya7raF_SCejPp9-Hl3t92BIFWLzJIdX2D6ZhXo
-Message-ID: <CABGWkvqazpyra=n5Jswon576pGG7yEOQg=_qdpTM+X6WmHP43g@mail.gmail.com>
-Subject: Re: [PATCH 2/4] dt-bindings: input: touchscreen: fsl,imx6ul-tsc: add fsl,glitch-threshold
-To: Rob Herring <robh@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
-	Conor Dooley <conor+dt@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-input@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250901151513.286454-1-daniel.baluta@nxp.com>
 
-Hello Rob,
+On Mon, Sep 01, 2025 at 06:15:13PM +0300, Daniel Baluta wrote:
+> devm_ioremap_resource does not return NULL on error
+> but an error pointer so we need to use IS_ERR to check
+> the return code.
+> 
+> Fixes: bc163baef570 ("ASoC: Use of_reserved_mem_region_to_resource() for "memory-region"")
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+>  sound/soc/sof/imx/imx-common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/sound/soc/sof/imx/imx-common.c b/sound/soc/sof/imx/imx-common.c
+> index 40debc541bf9..b3248c65215d 100644
+> --- a/sound/soc/sof/imx/imx-common.c
+> +++ b/sound/soc/sof/imx/imx-common.c
+> @@ -316,7 +316,7 @@ static int imx_parse_ioremap_memory(struct snd_sof_dev *sdev)
+>  		}
+>  
+>  		sdev->bar[blk_type] = devm_ioremap_resource(sdev->dev, res);
+> -		if (!sdev->bar[blk_type])
+> +		if (IS_ERR(sdev->bar[blk_type]))
+>  			return dev_err_probe(sdev->dev,
+>  					     -ENOMEM,
 
-just a gentle ping =E2=80=94 I=E2=80=99ve replied to your comments on this =
-patch, but
-I haven=E2=80=99t seen any further feedback.
+It's annoying that I didn't catch this bug.  It's because the error
+pointer was stored in an array instead of a a "simple" variable.
+Smatch does actually have a lower quality warning for this but I
+wasn't reviewing them since that check had too many false positives.
 
-Thanks and regards,
-Dario
+I've done a little hack around, so this bug will be caught in the
+future and it found a few other similar bugs which I've fixed as well.
 
-On Wed, Jul 23, 2025 at 8:25=E2=80=AFAM Dario Binacchi
-<dario.binacchi@amarulasolutions.com> wrote:
->
-> On Wed, Jul 23, 2025 at 7:03=E2=80=AFAM Rob Herring <robh@kernel.org> wro=
-te:
-> >
-> > On Tue, Jul 22, 2025 at 12:36:16PM +0200, Dario Binacchi wrote:
-> > > Add support for glitch threshold configuration. A detected signal is =
-valid
-> > > only if it lasts longer than the set threshold; otherwise, it is rega=
-rded
-> > > as a glitch.
-> > >
-> > > Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> > > ---
-> > >
-> > >  .../input/touchscreen/fsl,imx6ul-tsc.yaml      | 18 ++++++++++++++++=
-++
-> > >  1 file changed, 18 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/input/touchscreen/fsl,=
-imx6ul-tsc.yaml b/Documentation/devicetree/bindings/input/touchscreen/fsl,i=
-mx6ul-tsc.yaml
-> > > index 678756ad0f92..2fee2940213f 100644
-> > > --- a/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-=
-tsc.yaml
-> > > +++ b/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-=
-tsc.yaml
-> > > @@ -62,6 +62,23 @@ properties:
-> > >      description: Number of data samples which are averaged for each =
-read.
-> > >      enum: [ 1, 4, 8, 16, 32 ]
-> > >
-> > > +  fsl,glitch-threshold:
-> > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > +    default: 0
-> > > +    enum: [ 0, 1, 2, 3 ]
-> > > +    description: |
-> > > +      Indicates the glitch threshold. The threshold is defined by nu=
-mber
-> > > +      of clock cycles. A detect signal is only valid if it is exist =
-longer
-> > > +      than threshold; otherwise, it is regarded as a glitch.
-> > > +      0: Normal function: 8191 clock cycles
-> > > +         Low power mode: 9 clock cycles
-> > > +      1: Normal function: 4095 clock cycles
-> > > +         Low power mode: 7 clock cycles
-> > > +      2: Normal function: 2047 clock cycles
-> > > +         Low power mode: 5 clock cycles
-> > > +      3: Normal function: 1023 clock cycles
-> > > +         Low power mode: 3 clock cycles
-> >
-> > Don't we have common properties for this expressed in time? Debounce
-> > time IIRC.
->
-> I tried checking in
-> Documentation/devicetree/bindings/input/touchscreen/touchscreen.yaml,
-> but I didn't find anything about it.
->
-> It exists in some specific touchscreen bindings:
-> - azoteq,iqs7211.yaml
-> - brcm,iproc-touchscreen.txt
-> - fsl-mx25-tcq.txt,
-> - ti,ads7843.yaml.
->
-> Only fsl-mx25-tcq.txt expresses it in terms of time (ns).
->
-> Thanks and regards,
-> Dario
->
-> >
-> > > +
-> > >  required:
-> > >    - compatible
-> > >    - reg
-> > > @@ -94,4 +111,5 @@ examples:
-> > >          measure-delay-time =3D <0xfff>;
-> > >          pre-charge-time =3D <0xffff>;
-> > >          touchscreen-average-samples =3D <32>;
-> > > +        fsl,glitch-threshold =3D <2>;
-> > >      };
-> > > --
-> > > 2.43.0
-> > >
->
->
->
-> --
->
-> Dario Binacchi
->
-> Senior Embedded Linux Developer
->
-> dario.binacchi@amarulasolutions.com
->
-> __________________________________
->
->
-> Amarula Solutions SRL
->
-> Via Le Canevare 30, 31100 Treviso, Veneto, IT
->
-> T. +39 042 243 5310
-> info@amarulasolutions.com
->
-> www.amarulasolutions.com
+regards,
+dan carpenter
 
-
-
---=20
-
-Dario Binacchi
-
-Senior Embedded Linux Developer
-
-dario.binacchi@amarulasolutions.com
-
-__________________________________
-
-
-Amarula Solutions SRL
-
-Via Le Canevare 30, 31100 Treviso, Veneto, IT
-
-T. +39 042 243 5310
-info@amarulasolutions.com
-
-www.amarulasolutions.com
