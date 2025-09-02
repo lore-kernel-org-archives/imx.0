@@ -1,113 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011037.outbound.protection.outlook.com [40.107.130.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282F92D24A6;
-	Tue,  2 Sep 2025 12:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756817426; cv=none; b=grLW5w5I/iBYoNcPOL/hPQ+c7KtBYgq5RgYblcO7YxvSafHJnet7abxj1Xg/ULtDsNcNwJJX8EMD8of4m9Tnrz85OtCaQQnrM+RPYUwIdTHdQwY0m4Ceockwvl0o2s52DWJh06EfBgkmDJFjCfnaZ4bTMAKg2LDFuEk/v1XK3ks=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756817426; c=relaxed/simple;
-	bh=wqZtObeKB/uSkLt+mF3iBRFMdkEOwyqC6/cdbGY1IWo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NGFicr/haEhWmpZKbzmBxB/4357vBmLpTpytSNs0xXpZBOF9jMU5T6t8c/k990ADqcpF1rFWtn8fNr4DyHNG6W1QN4Fyfss6Q9PJm7VWT1FBW5k9yS5eqJbNQwcTVkR3k1O4hMtDCxg6IV6vgqgjvZn3BNX1OiOf5RajdKjbt2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXj0AARH; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BBF2D47F9
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 13:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756818104; cv=fail; b=DRW8s8nNem1+bOddP49IRFAiBFrJOkED3fMncFyk9qhZNPu2lBQf+KPVdLT3qvee1Jt5nASSndF4wHeqDmhUOv+o6gpUV5YxKSpRi/we+swTZNBU0QlidC00CIX3pe6111QLLbqemGCUax8VVUz2uf+V5H0nSovPLHWxoU4/MeM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756818104; c=relaxed/simple;
+	bh=x7cDelXlhSiiYiYvHuutrAKjXkosimBtsJ8K198UDbo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=PBrwXgFh6SyM02Ds/q5W6N+KLiG0lycIU6NAqW/ekuGPXvODze+X3ELqcArqg3Tg8jszlutNQfPICIDNiu4RpYkek0Q4N9y2XdqBPBLKGyK+5joI8VgMT7fgj9iGzZD9MCKsha1fAlDmfYnboTkeWxOkUyo9fCK+oxVX/MFr7qs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=AEkVv/jw; arc=fail smtp.client-ip=40.107.130.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXj0AARH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB03C4CEF5;
-	Tue,  2 Sep 2025 12:50:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756817425;
-	bh=wqZtObeKB/uSkLt+mF3iBRFMdkEOwyqC6/cdbGY1IWo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=eXj0AARHucUDamcZbQBrrKeFjwRMPqpU1NDGNuCig/YAhVuN+P3NX9bBc/1fF+c6f
-	 qrxoPM4Xm2lnLBC3EnGWTf4/gaFkBKpDLzXFql0FIN7AJFleia6rn9kkHrQR5QkKDS
-	 pja1klGraGAcqoP5A5rlU29rM4hQKmZrEAkoMrO2n01x+hH2yQFmEoZAVFttlJEyZ+
-	 igy0HSkBQipUeYpHRAhWiSehdlL9JRZZPrtUzMmUb0Lw1jItAUAdN08jwtbStJI8C5
-	 +Dm9T+98pajHustw7L7Xsbf5s0Upz6KcXqMWxYloVQVV2+fbD/5oDgneK14AB+snJS
-	 tz+FLonB+2FNA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71854383BF75;
-	Tue,  2 Sep 2025 12:50:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="AEkVv/jw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YgM5rnCJalqqeqPl9/AVPcciMVtjUf1zAyYjfqtaUNclgNO4zXwRhzeBRUgM5yLOEL8YHpGnK7VWcwaG/rAT26DOy9+SasU1VPeeSXLt1vPOmcm8yzIeQHlTpRfIaVTMzQ7tj/qLwW2eSS3/KbJCChYSPn4vlYU+II4Xct6ecKE/5KO8dmwarwq6TtTmE6a9sgI2TckY3Ux3LQLhGVFHgYcvL253JxQ/eiFdYQ/WbydBc/Ob3LvY6CJWQ1zaOcSJIPnFtrLK8axw9y5yUEnmCm0AHvqMLQ1cGH5YzLG1yDVoxiEl02z32XHDiAM4+xSXNO57YPeumkA9a6Uh4YlbJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x7cDelXlhSiiYiYvHuutrAKjXkosimBtsJ8K198UDbo=;
+ b=bydzW6CYEKUO82yFwd/W5tXI0soqPL9Se0BVdHgW7g468qtuMEPvMtscBHBIgRMu9EFFH2fZPzCP/U/mHGVPljXb8bWpu16RTzwU66BfiU/C9c+vFfXFOWhtyGE4RZvwhDWiBdG4r+T8HRuQv8O5M2LXMIrcHgUMn2+UcjuRyfndL4pJM08C0JFBAB79yPlbNRts7ahIEYwmdE5JnJZ3CZiWlnT57x5HWgPObRuBMrG/ea5YSTlLjKoIDly9Dwefxdrb3o23SX096Cs+q+9EvtocBSFoxpwala/UuM/y7S1zjzJxUXA82of0jzJ7Xqnuxlta+7h8sxjyKydwnhDBaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x7cDelXlhSiiYiYvHuutrAKjXkosimBtsJ8K198UDbo=;
+ b=AEkVv/jwU0XEavpvcXsoTpcRvZTnRLW0SBHPr5f73XBhnJvBnafod/Vk11N0JuKOntrrAB+p4toJuwbnHPLeJRV/sONNcW+7XSNIzItXfkjP/tF8E7qCYwy8po7zlL23+qFIjvW9v79APrybCrPDDMSJx7wExoIxJDvYnY7acaSJtZiTMDBM+KtaNsyuWLNnqwoXHn6AwDkHJXbOZ85he+9ergszX35CFefUDaPyYkIyOpkaliOWhOko0TRIucPSMjnJo36olKAuLhU8hsyNRJQOV7sHzyyKmIQrkJ+orVz5jnskDL1UYb4MS3Qg2zSSGZ9KlXjWhSkmGSv2vLVdbQ==
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by AS5PR04MB11393.eurprd04.prod.outlook.com (2603:10a6:20b:6c8::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.16; Tue, 2 Sep
+ 2025 13:01:39 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.9094.015; Tue, 2 Sep 2025
+ 13:01:39 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Sudeep Holla
+	<sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 0/3] firmware: imx: Add stub functions for MISC/CPU/LMM
+ APIs
+Thread-Topic: [PATCH v2 0/3] firmware: imx: Add stub functions for
+ MISC/CPU/LMM APIs
+Thread-Index: AQHcFY3715Y6RKM3aEivvywWZpe6MrR/58Ng
+Date: Tue, 2 Sep 2025 13:01:39 +0000
+Message-ID:
+ <PAXPR04MB845910056A522BC1DD5D0F168806A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+References: <20250825-imx9-sm-v2-0-0bae0265e66a@nxp.com>
+In-Reply-To: <20250825-imx9-sm-v2-0-0bae0265e66a@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|AS5PR04MB11393:EE_
+x-ms-office365-filtering-correlation-id: a216206b-fa72-4622-1fc2-08ddea20db06
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|7416014|376014|1800799024|19092799006|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?SFRENTkwcjdsemhaQW9QZ3IzTllobE5OMnUzdjFrWFhKeC85ek1BMVBHUjlC?=
+ =?utf-8?B?VDBkejZDVVVDRkczRmtua3h5dXI1ZWl3YnU4clV1d1RGK2tIMnFpc08wNDJS?=
+ =?utf-8?B?OGRsNmt2blpodWJaUStHNEhYUUVqa0x4WUFiR2tpVGdneGkxTEs4ZXJNOVp1?=
+ =?utf-8?B?UHlGbFJhbzFYMTE1bTVkUmxWMUQyMHY0TiswRXRvd21paERYMzVOTzJtclhz?=
+ =?utf-8?B?KzBGNGYzWjA0OFJaMElqMzZDaWNhZWpLYktaOXArVW10MXpnSHViQ0VIS0FF?=
+ =?utf-8?B?UGx6ZGN0VXZTZzZVOHdxNXJSbHR4QWtQdzFreG1XU0dIMzBqSDl0TWp1bHls?=
+ =?utf-8?B?dGlUdDNsZHNhRFllMEl6QndFSit2ZytYN3dTZjJFVUtURXVkQzdRSU9MSzd5?=
+ =?utf-8?B?YXhaT01PMG16ZHYydDN5U0tkWFJSQlEwNGtGamN0RmlDLzltcCtuczNIVGh3?=
+ =?utf-8?B?c05yVWNZUmhUMGxhLzBkeVJvcS9zMjdDbktuQXNrVjlJUXV3L0hPYytYV0dk?=
+ =?utf-8?B?eFdieXJnYTdMSXpySWJLZDh0eUZVdi80SXlORDFHMUlHQlkvRFlUMys4emhX?=
+ =?utf-8?B?Mk5yelNkVUVqWUlSVjVmM3RwUWNJTDhqZFd6aEFESllHQ1QxbU1tNUVSWFJP?=
+ =?utf-8?B?eFgwVE55NDYrVStWeTJLZHpaSGZGNDh0Y1RoMFN4YjBUb0dUbWRaUVFoR2Zx?=
+ =?utf-8?B?R0FCbEFEakNCMUJpeTdWZjhSclA4bENqNXBkcHZ3c0gyaVF4NmhVTTlJY1Y1?=
+ =?utf-8?B?VmlwTXR1cmhZL3puVGxkaE91OWhDcWMvN2sxUDdMc1BsNDc2NEVpVEM3ZTJy?=
+ =?utf-8?B?MVJFZyswSm1oeWtDQkNucUFlZS9PbHBWc3hoK3ZmN0lSS1g4L1FORHU3ZWNx?=
+ =?utf-8?B?UEE0cWdZYUhXQmFMTW5qR3pJWkRKRjREanIzNHBtRjg4VFZBRy9XTkJMOU51?=
+ =?utf-8?B?TDZRYmxOZGgvUm9GM2ZHUmJBelBVSExDSE01anBMT3hTMDZRS1ZNd1crakRS?=
+ =?utf-8?B?a25DZ05iZ05oV1BuZGF5R0RicW9GWEVKS29hbDlHcDhRaHl3ZUQ5OWFERlpE?=
+ =?utf-8?B?R1FkY0lNcjRjZ1U3ODhTaEJoeVRadWg4aHdCT0VmcE9JR055Mkl3NUNkdmp0?=
+ =?utf-8?B?QUFaRWN6TlRHVGlrejBWN3VzaGVBT2VpYnB6MjFpaHZwcVh5N3dHRkRRK0hO?=
+ =?utf-8?B?emQwL0J5ay9XQ04zZ0wvb1NaREhSM2d2eTFGVGpQakE4eEdOd3ZBeWZCeTFO?=
+ =?utf-8?B?Ri9KaXh6elEzdVNsOXFqSmw0NkVzYllsVitJbmd5TW45aTArTjdzUmNnakdJ?=
+ =?utf-8?B?MnFrREJBZnRFa21PM2h4Q29DQXFnVlhhL1o4c21UN05PL0ZOdEYwVG13aU5V?=
+ =?utf-8?B?VGVqcmtlT3RZeWRDV2dYaVREbWo0NjMrZ0pUYXZORkxNeVI0YVRBbytBRGJI?=
+ =?utf-8?B?bWRtRUl2NkR2a3hBWVlQa00zVHMrQVdlQXpqbzU2WURXajZpN08wN0xrc0JY?=
+ =?utf-8?B?N3h3UnoyZWlCRHVLN1k2czhUdzhjemo3WVo4Y05GSnVDaXB6aVR2NXE2ZVds?=
+ =?utf-8?B?OHZNUnNlemN6azVOUEdkbkRLZkRBMmkyMlM3SVcyVGhvSXBOK2tzS0h5cXU0?=
+ =?utf-8?B?VFBHUmkrNnpRdTV1Z0FhU1RvQzJ5ZmN0VDVFbGNDK0NBNXlYR0pFby9sZFZZ?=
+ =?utf-8?B?d1NkZExWU1RoNFZLMTZWUlF6dUJGMkJTTE5ocE9GekRkZzl3SGZScDk0V1RB?=
+ =?utf-8?B?WXVndTM4dHF1alBpaEFVcTJXRVlRa2M1RG1kbWJDMEVob1kzZDJsL3lyQ1cw?=
+ =?utf-8?B?bjN6N1lVZnA4eGZYVGhoQ2lWQmt1N0FlckxzcU5HTWFTa2YwNE5oWHFJdDFa?=
+ =?utf-8?B?VXhBRWpFTWZUVnBmbnlUK3VYcHBqV2YwdUpxQzVkdnEvQzBSMFNicWZVbEpH?=
+ =?utf-8?B?SHJ1RnllMFozOTZEN3hadVZDR1ZEUVJtdXN2QUNBUFVnaDZyMFJ0YXlSbk9h?=
+ =?utf-8?B?SFIyY01JNnZRPT0=?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(19092799006)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?SENUUU1JZ28zVDBXdGJ3Yk92aWpXcktYYUVENVcxYVRzTkVzaXFMN3Exb09W?=
+ =?utf-8?B?NGlWRS95anI5VHRlVnZPeVJKR0psbVIxMmxSTHVvTVprSEoxaSt3MDBER0Y4?=
+ =?utf-8?B?UG4zWnNSdlRTZnd4UFBtZ0lMTWZqUGd4QnRHZGhtd3hQV3lodkZmRHlGd1JI?=
+ =?utf-8?B?V3FRM3RrcmZmREJudXhGV3Y4YzltMHhQVmdXaTlsZXZXQXFwd1NSc2lKZCtQ?=
+ =?utf-8?B?cjdjb3NkbVZDNVFFRjdla2g5dHJRdzZkQkFRZDlFSnM4ZjFUaFR5czYxTmlO?=
+ =?utf-8?B?SEpJTzNmaUZMUFRRbDhrVXAxTjI4OHV1cG1kSHBhb1ZkRU41ZVpjbFJlNWZm?=
+ =?utf-8?B?a0dqN0NRMlQxSXMwaWRQY0hndVBNZW5YSDhzamp3WXFIR1QwVjJQNXpjUU9P?=
+ =?utf-8?B?VGVhd3NQdmZFeVFUNVRmNEVHdHhBMmo0b1o5TWc3NzMxNDdNTnl2ckt3N2Vi?=
+ =?utf-8?B?amNUS1JHNmZ2K2VTbTBRNENwQWpSY01CbEVZcWpjVWw3RUgwb3IvRzFQMi9o?=
+ =?utf-8?B?TmY0RGVLTU5hWDRxUzVUcUF0T1UwUUJrT1Nwekl4UGYxS2UrYTVuRmx0OGZS?=
+ =?utf-8?B?bk5XcG11d3Y1blJJRU9oL2N5SmFzdWxFa3o2V2hqRFVma0xBeXhRM3BuUjRT?=
+ =?utf-8?B?QUExVERXUEx3TlZZZ0RCRUYzdGdHd3I1NE85MVpXQU40Rk9OVUJhcStmOEFl?=
+ =?utf-8?B?M1pGWnZLLzNObVJkRFV6UFlwaEhqNXdQc1JTeDV0T2xOeHBMSzk0YjJPbHp4?=
+ =?utf-8?B?S3NhcUk1YW1jR0dIa016VFZSL3Z5V0dnTjV2aGdOS3lYd2x2L1piOW5nQ2ds?=
+ =?utf-8?B?b1pTb3dqZDhnTWtjeGowNk5HZDQza3RDeCtoU1Z5SDFSTGNtalpMSndxU1k5?=
+ =?utf-8?B?ZGhWNHd2Z1N4RkhFemJXSlF0YXRDeHBEbStOZlVHcXQxL1d5SDNHNW1iQldk?=
+ =?utf-8?B?RzlHci9tRHhDdE05SWV5R3dZdzRpSzdiR2c5bitCNVlYZDdOcFZVVkJESTNM?=
+ =?utf-8?B?aUNFZzV0VEcvdVNxU2w3QlIzZ3ZaUmNtYWk2MzdLN3RtRUVNcmhhUmx2Uzgy?=
+ =?utf-8?B?K1RkUFlOaEl6czVGRnNRQzBtaHlaeFJKZnZUMkJjQU9rUUpMZXF3S0d5RE5D?=
+ =?utf-8?B?dWhmN1YwL3RmNTVwVFdJbVZHRW9xNlFFQVdEMCtET3dTZDlsc1ZTc1NuK0lp?=
+ =?utf-8?B?UzF0dXJpc2htYWNZaEtKdjl0a09UVEF4MmE0RXc3U2lPell6RFlCU0VibUV0?=
+ =?utf-8?B?ZmQwSVRJVkc4SWJ0RisvbkRKcUIrbnVxTERFMGUySEkzNFJ1QVZxMnhGcXZy?=
+ =?utf-8?B?MTBkWlhqb2NnYTc1VHBWWVZPTGgyNVQ0d1FjQ2lzMjVGc2JJYU9Gcy95VWoz?=
+ =?utf-8?B?MHBnRWt2WVhrT2IxNU1rYldseVdxcWc0OTN1YjBvanh5Ty9SUUIyVGsyMmZ2?=
+ =?utf-8?B?SmZRdnhMSWdWOUVDbWYzOGdhUWJVdEtsVEtWdWdyNG4xdFZhSDVBSW1jdk1I?=
+ =?utf-8?B?Q2wvK0VyZHhLYWVEWUE4N1JaZnN0OGNtL3N6YmRXSUNqcXF5alkybVZJQlMw?=
+ =?utf-8?B?R0w2bGcycU1RQnB5a2YwZDVCbzFCUWFORC9vWmRNL2VQazNSZFc0cklEc1Ev?=
+ =?utf-8?B?eVBRU1FnMDdsZ09XU0l1dEk2M2wyclhYNHhSQ3hpRi94VGxkUUZkUHlEdmp1?=
+ =?utf-8?B?ekkrTnNySzJZVWxtRWE3cFY2OW85ekpNVzRkMUJYc3Q4U2ljWGJrQk5MM1Zn?=
+ =?utf-8?B?RnNaVFkycUdOVG1QbC8vbXZoOGZIeXBCdXg5WGdIY0VEbnE3WnVKU1lsZDlQ?=
+ =?utf-8?B?YmdSTFFHSStuVTR4VWp3aXIvc0JXeGdOakZqWVV5dVg5VER2cko1MTRzTnVj?=
+ =?utf-8?B?R1FBcnU0TTV4UVluVGZDYVdaZ2p4RkVPMkI4ajVNUlM2cnFOT3RQcFgreCtN?=
+ =?utf-8?B?L2FQZFhUeFhOYzgyUjJTYWUxRlRXdFZmdFFFbFExS0xNaWtoeGl3MHBTM3Rr?=
+ =?utf-8?B?WHlGV3JVZHNLTWdQTWsvTkhicVV0OG9BdFhNL0diWjBkTElqbG11RWVRTytI?=
+ =?utf-8?B?OFJENitTblNDYjJ4MHBQcVpFVVZwUzlwajA3S0ZkSWJqcTFPdUpWcWU1VjY2?=
+ =?utf-8?Q?gNcY=3D?=
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v7 net-next 00/14] Add NETC Timer PTP driver and add PTP
- support for i.MX95
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175681743106.280373.4120937080041780119.git-patchwork-notify@kernel.org>
-Date: Tue, 02 Sep 2025 12:50:31 +0000
-References: <20250829050615.1247468-1-wei.fang@nxp.com>
-In-Reply-To: <20250829050615.1247468-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- richardcochran@gmail.com, claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
- xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- vadim.fedorenko@linux.dev, Frank.Li@nxp.com, shawnguo@kernel.org,
- fushi.peng@nxp.com, devicetree@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a216206b-fa72-4622-1fc2-08ddea20db06
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2025 13:01:39.0812
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7EPMf2u1IUZtkcsXTHno4j+NyBR4DsrAMmJGb87/TeuNNXFFK/4uLeZEO41k77MMQGHSZrpR89oic6RrVF2wNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB11393
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri, 29 Aug 2025 13:06:01 +0800 you wrote:
-> This series adds NETC Timer PTP clock driver, which supports precise
-> periodic pulse, time capture on external pulse and PTP synchronization.
-> It also adds PTP support to the enetc v4 driver for i.MX95 and optimizes
-> the PTP-related code in the enetc driver.
-> 
-> ---
-> v1 link: https://lore.kernel.org/imx/20250711065748.250159-1-wei.fang@nxp.com/
-> v2 link: https://lore.kernel.org/imx/20250716073111.367382-1-wei.fang@nxp.com/
-> v3 link: https://lore.kernel.org/imx/20250812094634.489901-1-wei.fang@nxp.com/
-> v4 link: https://lore.kernel.org/imx/20250819123620.916637-1-wei.fang@nxp.com/
-> v5 link: https://lore.kernel.org/imx/20250825041532.1067315-1-wei.fang@nxp.com/
-> v6 link: https://lore.kernel.org/imx/20250827063332.1217664-1-wei.fang@nxp.com/
-> 
-> [...]
-
-Here is the summary with links:
-  - [v7,net-next,01/14] dt-bindings: ptp: add NETC Timer PTP clock
-    https://git.kernel.org/netdev/net-next/c/d6900b8bd362
-  - [v7,net-next,02/14] dt-bindings: net: move ptp-timer property to ethernet-controller.yaml
-    https://git.kernel.org/netdev/net-next/c/db2d2de1c2a8
-  - [v7,net-next,03/14] ptp: add helpers to get the phc_index by of_node or dev
-    https://git.kernel.org/netdev/net-next/c/61f132ca8c46
-  - [v7,net-next,04/14] ptp: netc: add NETC V4 Timer PTP driver support
-    https://git.kernel.org/netdev/net-next/c/87a201d59963
-  - [v7,net-next,05/14] ptp: netc: add PTP_CLK_REQ_PPS support
-    https://git.kernel.org/netdev/net-next/c/91596332ff5d
-  - [v7,net-next,06/14] ptp: netc: add periodic pulse output support
-    https://git.kernel.org/netdev/net-next/c/671e266835b8
-  - [v7,net-next,07/14] ptp: netc: add external trigger stamp support
-    https://git.kernel.org/netdev/net-next/c/b1d37b27036a
-  - [v7,net-next,08/14] MAINTAINERS: add NETC Timer PTP clock driver section
-    https://git.kernel.org/netdev/net-next/c/dc331726469d
-  - [v7,net-next,09/14] net: enetc: save the parsed information of PTP packet to skb->cb
-    https://git.kernel.org/netdev/net-next/c/19669a57d7a0
-  - [v7,net-next,10/14] net: enetc: extract enetc_update_ptp_sync_msg() to handle PTP Sync packets
-    https://git.kernel.org/netdev/net-next/c/27dd0eca9347
-  - [v7,net-next,11/14] net: enetc: remove unnecessary CONFIG_FSL_ENETC_PTP_CLOCK check
-    https://git.kernel.org/netdev/net-next/c/d889abaac299
-  - [v7,net-next,12/14] net: enetc: move sync packet modification before dma_map_single()
-    https://git.kernel.org/netdev/net-next/c/7776d5e6e349
-  - [v7,net-next,13/14] net: enetc: add PTP synchronization support for ENETC v4
-    https://git.kernel.org/netdev/net-next/c/f5b9a1cde0a2
-  - [v7,net-next,14/14] net: enetc: don't update sync packet checksum if checksum offload is used
-    https://git.kernel.org/netdev/net-next/c/93081d4ed54e
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+SGkgU2hhd24sDQoNCj4gU3ViamVjdDogW1BBVENIIHYyIDAvM10gZmlybXdhcmU6IGlteDogQWRk
+IHN0dWIgZnVuY3Rpb25zIGZvcg0KPiBNSVNDL0NQVS9MTU0gQVBJcw0KDQpJcyB0aGlzIHBhdGNo
+c2V0IGdvb2QgZm9yIHlvdSB0byBwaWNrIHVwPw0KDQpUaGFua3MsDQpQZW5nLg0KDQo=
