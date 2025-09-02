@@ -1,133 +1,105 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA573043B8
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 13:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E65630F542
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 13:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756818924; cv=none; b=ZRvfDDpO3c0LPpuUP+E3IBgd0xhOH+rAye1kCIOzW7TCFTaL6G7sdxTgN/q6q/l2KnndrjcQMrtx3w8QBKeWaVsWu8xdL6lVs3tdM8e+pJWt2RdaqduLtMo4854gAY/cOcjipGYdlux79z4j1Hy2DeV/axRZtae10pKG32HDIoo=
+	t=1756819562; cv=none; b=QKDZx8Ucg/nAAeOcw5BjFuBNifeauTIiro9H2wbJfeSeHQ79D+afKPffo/fgtCbbwydBVZOWTX+TCtmyAP72X9z0wVERDZQIc0gjFY55Vvl9cvoqCTdXO0CoGb7cuZNPvntDLNvsfC/jb9cKAazYu6mGWJ88h13Ua9MIzbWE41o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756818924; c=relaxed/simple;
-	bh=cIei6RTUCtT55QsspDgWfZe1lPcqVs/yM9oKakcEt4M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BY4KEb+1pc7Wr2wkhjmSW0/ETazmbEo5jD8V+QEw/dQ3FTTzmTNsZWgNC9HpoRyV40UDtpDTni97G4EWGvqw2o/nGXj86DngdSzBMR2v3D2tjFUzJpgRVy8luv/Af9GLYrVD+iyX/6BdcEkiV0IOnairJ4UBrd3fpTvzWEWE4jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oKGFMLKU; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1756819562; c=relaxed/simple;
+	bh=LQjKOCEZCm4JrIHLl25Vv5vI+T6vTsGFOZPILiJ/W80=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=LABBSfyahPBhSe0ZaGv7Tp7bKJBHJrUDjlxNJpZiRV0aaou8QUtljGM7QRnXd97k3/f9i1GrWzVxjfOAHyo6iZfusrXRwzJqHwrJVwd+W6vwtuvR8AwsUjDMTiQFP5j5fkMkJM42YBQIjx4uUEnoFEC8TTs/pinwAS2bKswBHf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=p4oO/dYZ; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oKGFMLKU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756818923; x=1788354923;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cIei6RTUCtT55QsspDgWfZe1lPcqVs/yM9oKakcEt4M=;
-  b=oKGFMLKUNQ0B/dMU3S1Kb7CnRS3KVjoch9CJ8jutteyq3cgz52GKgAKE
-   9NQ0LBE+E1TqlJlCp8Rf4UqxtOVe2531Yn0ZhkCnoWIMjxY8j0/TMyLv4
-   jPldXR26eFTNSFGvEEdimgqeY7+dygE1+q1RbiWiB+e8WKJj22RSuWAOj
-   5hFCbv2dlAy/WnkakF+rVV/yllBj4x83o9O4choAGMNvE+mSoFA1Qnm8B
-   zLfNRVNBb45wGdpL2cHdSgEXl0W5Lnz1EOuOEJA/N59KMdUj1G2m306vI
-   ukrpDJguq0+JYgARF7MAr21+p+r9DPEH19hwKyh+ih8Y06BqBgM5l/gK/
-   Q==;
-X-CSE-ConnectionGUID: N4qy6I3xTEGX6eyZ3T1GMA==
-X-CSE-MsgGUID: ia6cIU8ERvaa6c0yQfFaeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59041800"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="59041800"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:15:20 -0700
-X-CSE-ConnectionGUID: QF8sMWo2SGOcClSTfRIdKw==
-X-CSE-MsgGUID: FLZgbnm/Swu9LSfjg8Kdhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="170530232"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:15:09 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utQqn-0000000AhVQ-1jBt;
-	Tue, 02 Sep 2025 16:15:05 +0300
-Date: Tue, 2 Sep 2025 16:15:05 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v7 12/16] pinctrl: qcom: use generic pin function helpers
-Message-ID: <aLbt2euqYQM5xXuZ@smile.fi.intel.com>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-12-bb091daedc52@linaro.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="p4oO/dYZ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 6E4EE4E40C5C;
+	Tue,  2 Sep 2025 13:25:58 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3DFDD60695;
+	Tue,  2 Sep 2025 13:25:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B57261C22DE7E;
+	Tue,  2 Sep 2025 15:25:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1756819557; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=XIirHbmhMXtXJvBragEAoA34vDbeRH+sFU2CxhY0avI=;
+	b=p4oO/dYZqsjHaBWF2R21vdndofK8Rwq2ahC4NHgNBN6Na34iwePjcKiBJwIUyHrNgRN+jZ
+	1/B9jHrL65yqpQ/iP6EkjTGV/X41XIZsFeLBAaLFx5RNpIFrysU+q8fYB6V7pZGgPrVheY
+	8dsnqTVDZbE9WWVK070d8TJQ1C7t5msZwr4cK3f7GP4m5ruaNVvbepKHzW1+aGJ4u73Ds9
+	rwaCTOnmgd+upmN8gFf+BZrb1xdC+UCYzMtJRiJm3QkrsiHVHs3H4UlSV/Ruykes0wEIJf
+	Pa9eNBLaJSw7zNfTU2C+gQPjfR+vh7f7icL1DrcbR+E4LAk2cO0Ujjp3WLW+Tw==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Zijun Hu <zijun.hu@oss.qualcomm.com>
+In-Reply-To: <20250801-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v2-0-888912b0be13@bootlin.com>
+References: <20250801-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v2-0-888912b0be13@bootlin.com>
+Subject: Re: (subset) [PATCH v2 0/9] drm/bridge: get/put the bridge
+ returned by drm_bridge_get_next_bridge()
+Message-Id: <175681953112.353165.466531296795467773.b4-ty@bootlin.com>
+Date: Tue, 02 Sep 2025 15:25:31 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-12-bb091daedc52@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Sep 02, 2025 at 01:59:21PM +0200, Bartosz Golaszewski wrote:
+
+On Fri, 01 Aug 2025 19:05:22 +0200, Luca Ceresoli wrote:
+> Note: the cover in v1 was mentioning by mistake
+> drm_bridge_get_last_bridge() instead of drm_bridge_get_next_bridge().
+>                ^^^^
 > 
-> With the pinmux core no longer duplicating memory used to store the
-> struct pinfunction objects in .rodata, we can now use the existing
-> infrastructure for storing and looking up pin functions in qualcomm
-> drivers. Remove hand-crafted callbacks.
+> This series adds drm_bridge_get/put() calls for DRM bridges returned by
+> drm_bridge_get_next_bridge().
+> 
+> [...]
 
-...
+Applied, thanks!
 
-> +	for (i = 0; i < soc_data->nfunctions; i++) {
-> +		func = &soc_data->functions[i];
-> +
-> +		ret = pinmux_generic_add_pinfunction(pctrl->pctrl, func, NULL);
-> +		if (ret < 0)
+[1/9] list: add list_last_entry_or_null()
+      commit: cb86408b1fc2e3f6fe45ebe8509a5404060e01e0
+[2/9] drm/bridge: add drm_bridge_chain_get_last_bridge()
+      commit: d77ad5178e90f5aa4ce6085510b3b2f742abc5f0
+[3/9] drm/bridge: imx93-mipi-dsi: use drm_bridge_chain_get_last_bridge()
+      commit: 5849eff7f06709c98baa7989806165fe30bd0cbe
+[4/9] drm/omapdrm: use drm_bridge_chain_get_last_bridge()
+      commit: c3183f71c3f1f004a0ca0b84c45c40d8b84dce3d
+[5/9] drm/bridge: add drm_bridge_is_last()
+      commit: e4cedfd4f0fc839bb3c783d7e827e9755e1af5cf
+[6/9] drm/display: bridge_connector: use drm_bridge_is_last()
+      commit: 306734a1c76ce35fa613ea823a31ddbcdbf1eef5
 
-Why not simply
-
-		if (ret)
-
-> +			return ret;
-> +	}
-
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
