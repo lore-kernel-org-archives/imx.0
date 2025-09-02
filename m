@@ -1,397 +1,321 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9472E33EB01
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 16:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C91E18DB02
+	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 17:01:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756831135; cv=none; b=u49rnGecrkzLQjkyApWGO/qbLOdw08QsrSMxHScvnB/LNeYConP7imJ2ZK60hJrFKkTbLahQU2j4jm3jVGLiPpY4wB0hJrRMJBw6KVTI2KDH7O9jtILIDOxf4NDcW0J8V4j2bCYYgMH3OOK4fMcw1Pp/dqJSJBpxrEfO4xr/2ug=
+	t=1756832501; cv=none; b=u0XbGjzxEQgz83wV2eQKqIidShLv2BcEG5uGUWFxJ1Sq8V7bPBl2OQYtpoO37Lcbsge2ufhMItx94DTONpbWjNLvLwk1MoOYWOPHLUkLxBxQCQAgm9+jqu3PV9Jt5vrEe2ChM2AcbcH0HFel+rLcGn8a94lt3VQoUKKat+AJeNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756831135; c=relaxed/simple;
-	bh=2hiLXTYOUv7ZT+8Xe0OHkx15c5hqbSE6YBNNLMdNdyM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SQgEmkYf637fZ38mj6ABn4hUmeqXJSvUS1W+KBz+E8u6Iyn6Sbm5R9wSTfYR4dzZFmiy6mTIK37+07VpGr8sJ69GqV2uj6IVaqSitdWiPicrdTNLMVOu65Kao3kGfqRQnRMrlU46RT3WmFfIEhbGUYhuU9DyRmjpa00L/VZ4WkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bKBmcM70; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1756832501; c=relaxed/simple;
+	bh=FqpDknNYFndtUDX29+pMZ09mq27Tcb/fur1fuHT9Pcg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=g2xJzkgSqLNnkRn6qdHq1QdlX6jGpU0g43HFUGmoIjazkqbv2N4uksJHHpVlP7IOIIwGZjtLfL53pQsjwuPZuBxAPXUq79oVdI4uki6EyX1QVjZZrVPu6+5y234mRwp3hLlNA6aZ4GDxpxOo052WzA2nW1uPlzluRcp32gj+8ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=BDjAtE7M; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bKBmcM70"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-76e1fc69f86so61849b3a.0
-        for <imx@lists.linux.dev>; Tue, 02 Sep 2025 09:38:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="BDjAtE7M"
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7f7a6baf794so711223685a.0
+        for <imx@lists.linux.dev>; Tue, 02 Sep 2025 10:01:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756831133; x=1757435933; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DXBUwB6riv6anGuWowZRcLSzUYer/ZJs0DMzJRXqBAA=;
-        b=bKBmcM70osY7CKf6VYrlDbmB19ZOyQPWWyMMTR//SglqCuSHdbl7Yk94PNAJa34PhL
-         gd9CuZcJIkj5UFycKMHRb0j1NLJwLgH6Q5bcRW8KmPYfPYxjowzjVWA5Y0/p29IPedib
-         RVh+pMzW1Jjrm1zAcppWcegja1jOgkSYrCyW6LVkacJEmJW75zfCVUPAMZ/EMj1/XENF
-         aJBRrfKspMHtCMT0/je5RDZkQc6u7l5AfazIflE3dWJ63u9ltU/AWjvY9y3bj60h9GR3
-         fKA7MU+bKRTya5mLW5VPwwvzrHG5ZSbSAUdc1jtDnMMZLz4sqj7GinDrdfk+X4CfO3qw
-         eUvw==
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1756832497; x=1757437297; darn=lists.linux.dev;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=gjQPzp3OKlw/zzV2Y8hLeLQ+4i7hSjApzF/xf3zvApg=;
+        b=BDjAtE7MWevfe7bueoP8V99+fqiWfRy/Vtx8nqnzxoJ4fVi2PxtygtuxK2RLMlgnfN
+         +uYMrSalpMd/ouBoLCGWE1xulaiSiqijn2oINcd0VD2YUzyqTHq0eSbNCs2xiKYK93eP
+         L9mnnwDyfLQ2Vds/jFi8oZUxSOMD1Meh3Dzj8wDZ1pxpuICq/VPPodqrQKAePB2Cu/Wz
+         TxTe0wUyBVtgzQnhdBkHiT+4AkuZF+Ox+cf7qnfq8sXiQlZvTQEOF6mk98hTZX+6I8RP
+         rJKcSGp9fzzyS8GYz7DkteX9ksdcKBiJ274hidaBtdeC+pFrvWt74GtgesTVILL7hEcT
+         egvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756831133; x=1757435933;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1756832497; x=1757437297;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DXBUwB6riv6anGuWowZRcLSzUYer/ZJs0DMzJRXqBAA=;
-        b=Hs7rrv4XoBrLCt4iB31uKH2mbELG0DzJ6BbC/8cIKSwPv2fnqWNHVKWxSMhSjY+LHT
-         jD/wPRSq0+bhzvFgTyECbAb6IiEG6wU5gYox7AWCf2vN4Py0bNiswsZ4SNnvhDftMt4y
-         qYA8uFrZp+5bw54MOgCzdXdgSF65nqIyShX+tfH3Q3xQsECDbtlrmO4hpuiJicp9+WUy
-         lZRpirARdOdp15ZVRa5c430NHuzL2NQVGA2dq72tJzqbQyUGWqAIcOGF3L0cOJb+vrrk
-         1OUgAm3LeLGfIxmx3Veodgv9VzjsEi/y8MNtzznrCPfaU2YOeTBk7CS/vnw2oPSOipz/
-         qJBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVa0Wtj5gJ8ZbbqVItYfABYLThoCUMxjCiQByyTDPdZuWwZyJmKy2ijkV+Tp/0aN35KZK4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyc4vCCMXO6W2wDwzUqLV2yZOCG7nAmLU/WYA13iL7jyRuqhnup
-	MJDPVHM4OWZmmC0Pxl6kk89ISqufasNWnY64G6QAxh4H1Sq7p0jBL6yWs2sDMplT890=
-X-Gm-Gg: ASbGncuNALA34WyZ856g0nFQQeHCCFId8SbgrrVKdi4g4R9P2X+SXzVHtxOS3LwCE9C
-	8ncnt9uWCZuS0ZS7FIUjsbKKPDUHKWMwgVM17c2CUaaiwaZf3MSvEydTSUrFNHtjsn8CX1KlBmZ
-	eoILaLcF6hSg8fBCu+pgeobmE0u14m2FT0cepeF0M3BbaWL+EszPQ/HzBHpGGFdsMsM8eqhZcg9
-	MlioPwlhtpF33DuxPR0LBiwpw9rd0xLq7GZwr6KoKkvSy8viFGqsab6GvxSHLPLbMM7osrMrCZE
-	TfIESE2O613AKNGk2eMtKfD32hTfU2V8p1DuECPzzEl8TAZBp+deABsFOvxaCbf7INPbGwFIbpd
-	Z1tcKpMaYZvJ7JtzC312m64j/4N4nOO1PRJc49dDX7DF1fE9tFveY6eAeFeXGtRVRxFodAqx7wf
-	pj7DOdPxwZLQpPf+VlN41TEWLwq/c0mzSRopQ=
-X-Google-Smtp-Source: AGHT+IEeDLgFOBjXxbJ/YLJ/SF9khStqJW4YrZ8PIFvkVTEmJPvZRH8PlrIDW8LLNusvSklsV66ErA==
-X-Received: by 2002:a05:6a20:244c:b0:243:6f68:a2f6 with SMTP id adf61e73a8af0-243d51b0c03mr14553396637.20.1756831132641;
-        Tue, 02 Sep 2025 09:38:52 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:9b21:5c26:1409:23e9])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4cd28aecd0sm12394758a12.30.2025.09.02.09.38.50
+        bh=gjQPzp3OKlw/zzV2Y8hLeLQ+4i7hSjApzF/xf3zvApg=;
+        b=LqEhw4z2qcfBzJLjKfWho4SF1JyvKQeKTMXKu8ANUrOTYj3suw859HUDfG/ucKDb7m
+         2zFac6GeiftSC6vzbps0el6IHNNbtR5nv4GMyY19pf/fkMLjaffX/qFlgzN+bWwFb5Ym
+         rblIG295aREhMqGDM0pdQ+SV+UcXwjvDD/SsZ+bW/PzF5e7LyUaC/oiGab+rseNPHuTI
+         zJljSfK9N4Zh7Oh0+Rg5vstpoKg+khAZ8qMSyFoCpHHUF8CTJFPvkOmylsv2gnTUGvRF
+         NLvYFrTGYhIYiVr6aQulTCTvkrITW0tPVfJ9d7/VlCowKMeeK3gCk4dFcig00fSx+M8t
+         2quA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQFC3D057T9hrladR6RfRdynQdGknbgGWfWwy+KaiKGrSguPcoefuXH2Rqp4lZtMM00zQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwDq+H1jVyVAj0rr4Y2Ka/wLCWqpNKLMBI5keOzLQbMpjnxcyKA
+	Mq4LFWRKSNGTS9UrHZ8P8SIKWA3LSNW9PbK0/y62vMbO0iT9DGS5A5Y0ivR5dhN92Pc=
+X-Gm-Gg: ASbGncu+T4/TCPeeelGEAGuh2QaLIjA6CK80LUr+uBrpFVRbxyd7nxWr0sofxa7hvCd
+	1vtr9mEdxaOzB6BjtO/y+nBKzj6hV8K2az9PGaa9gvBYh4qfwP43wUte0mqrwOVJv9USuNv1C9q
+	frGVw+OOeeVZtEd+zfAmxibDv1TsiwMgMr6GLy71lPu9zBUOAv8Ftguh+R5RAqq00LL6jwOCDPK
+	RqhO9Jas3XUFp8dC10jjasY1TbTMxBDM1DkxwUeZeEAgvGlnSaw9MnqJfhoGouJ0nv2rpsdO6pd
+	uDoyLRP/wf4bR65ZcoXkB4HoXtSpg4XlUSFRI3ZWKkkr/Xd/ocSRggojGafdg+/H1kiMMfeECqh
+	AgibeWz/MSg1sH7DptzzHraSv45z4c+QcN38CgFnMst+BaZao
+X-Google-Smtp-Source: AGHT+IGkFaL10RYKipHUpI0kj9FEjJXmVz6qoux7i4ASKOHv4yzHf32aHVHY76E+7bItd5+j6zSurg==
+X-Received: by 2002:a05:620a:1a01:b0:7e8:579d:11c6 with SMTP id af79cd13be357-7ff26eab218mr1387636485a.3.1756832496958;
+        Tue, 02 Sep 2025 10:01:36 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:11:5a76::5ac? ([2606:6d00:11:5a76::5ac])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8069d5b9614sm163429785a.60.2025.09.02.10.01.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 09:38:51 -0700 (PDT)
-Date: Tue, 2 Sep 2025 10:38:49 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>, Bjorn Andersson <andersson@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] remoteproc: imx_rproc: Add support for System
- Manager API
-Message-ID: <aLcdmY-gqd5cFOYc@p14s>
-References: <20250821-imx95-rproc-1-v5-0-e93191dfac51@nxp.com>
- <20250821-imx95-rproc-1-v5-2-e93191dfac51@nxp.com>
- <aLHOhKpAQbVCC76-@p14s>
- <20250830125208.GA22718@nxa18884-linux.ap.freescale.net>
+        Tue, 02 Sep 2025 10:01:36 -0700 (PDT)
+Message-ID: <d0102df15412fc827dca3b330b10904f97a1a240.camel@ndufresne.ca>
+Subject: Re: [PATCH] media: amphion: Drop the sequence header after seek for
+ VC1L
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>, mchehab@kernel.org, 
+	hverkuil-cisco@xs4all.nl
+Cc: sebastian.fricke@collabora.com, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, 	kernel@pengutronix.de, festevam@gmail.com,
+ linux-imx@nxp.com, xiahong.bao@nxp.com, 	eagle.zhou@nxp.com,
+ imx@lists.linux.dev, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Date: Tue, 02 Sep 2025 13:01:32 -0400
+In-Reply-To: <dbd7ec6c-9837-4bf3-a363-e287d075b677@oss.nxp.com>
+References: <20250725080712.1705-1-ming.qian@oss.nxp.com>
+	 <ede4226a80e27c8b047b0eb25fe8f5ba90214d12.camel@ndufresne.ca>
+	 <dbd7ec6c-9837-4bf3-a363-e287d075b677@oss.nxp.com>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-bV38p/TGIUCsdGFxL5ya"
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250830125208.GA22718@nxa18884-linux.ap.freescale.net>
 
-On Sat, Aug 30, 2025 at 08:52:09PM +0800, Peng Fan wrote:
-> On Fri, Aug 29, 2025 at 10:00:04AM -0600, Mathieu Poirier wrote:
-> >Good day,
-> >
-> >On Thu, Aug 21, 2025 at 05:05:05PM +0800, Peng Fan wrote:
-> >> i.MX95 features a Cortex-M33 core, six Cortex-A55 cores, and
-> >> one Cortex-M7 core. The System Control Management Interface(SCMI)
-> >> firmware runs on the M33 core. The i.MX95 SCMI firmware named System
-> >> Manager(SM) includes vendor extension protocols, Logical Machine
-> >> Management(LMM) protocol and CPU protocol and etc.
-> >> 
-> >> There are three cases for M7:
-> >>  (1) M7 in a separate Logical Machine(LM) that Linux can't control it.
-> >>  (2) M7 in a separate Logical Machine that Linux can control it using
-> >>      LMM protocol
-> >>  (3) M7 runs in same Logical Machine as A55, so Linux can control it
-> >>      using CPU protocol
-> >> 
-> >> So extend the driver to using LMM and CPU protocol to manage the M7 core.
-> >>  - Add IMX_RPROC_SM to indicate the remote core runs on a SoC that
-> >>    has System Manager.
-> >>  - Compare linux LM ID(got using scmi_imx_lmm_info) and M7 LM ID(the ID
-> >>    is fixed as 1 in SM firmware if M7 is in a seprate LM),
-> >>    if Linux LM ID equals M7 LM ID(linux and M7 in same LM), use CPU
-> >>    protocol to start/stop. Otherwise, use LMM protocol to start/stop.
-> >>    Whether using CPU or LMM protocol to start/stop, the M7 status
-> >>    detection could use CPU protocol to detect started or not. So
-> >>    in imx_rproc_detect_mode, use scmi_imx_cpu_started to check the
-> >>    status of M7.
-> >>  - For above case 1 and 2, Use SCMI_IMX_LMM_POWER_ON to detect whether
-> >>    the M7 LM is under control of A55 LM.
-> >> 
-> >> Current setup relies on pre-Linux software(U-Boot) to do
-> >> M7 TCM ECC initialization. In future, we could add the support in Linux
-> >> to decouple U-Boot and Linux.
-> >> 
-> >> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-> >> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> >> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> >> ---
-> >>  drivers/remoteproc/Kconfig     |   2 +
-> >>  drivers/remoteproc/imx_rproc.c | 123 ++++++++++++++++++++++++++++++++++++++++-
-> >>  drivers/remoteproc/imx_rproc.h |   5 ++
-> >>  3 files changed, 127 insertions(+), 3 deletions(-)
-> >> 
-> >> diff --git a/drivers/remoteproc/Kconfig b/drivers/remoteproc/Kconfig
-> >> index 48a0d3a69ed08057716f1e7ea950899f60bbe0cf..ee54436fea5ad08a9c198ce74d44ce7a9aa206de 100644
-> >> --- a/drivers/remoteproc/Kconfig
-> >> +++ b/drivers/remoteproc/Kconfig
-> >> @@ -27,6 +27,8 @@ config IMX_REMOTEPROC
-> >>  	tristate "i.MX remoteproc support"
-> >>  	depends on ARCH_MXC
-> >>  	depends on HAVE_ARM_SMCCC
-> >> +	depends on IMX_SCMI_CPU_DRV || !IMX_SCMI_CPU_DRV
-> >> +	depends on IMX_SCMI_LMM_DRV || !IMX_SCMI_LMM_DRV
-> >>  	select MAILBOX
-> >>  	help
-> >>  	  Say y here to support iMX's remote processors via the remote
-> >> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> >> index a6eef0080ca9e46efe60dcb3878b9efdbdc0f08e..151b9ca34bac2dac9df0ed873f493791f2d1466e 100644
-> >> --- a/drivers/remoteproc/imx_rproc.c
-> >> +++ b/drivers/remoteproc/imx_rproc.c
-> >> @@ -8,6 +8,7 @@
-> >>  #include <linux/clk.h>
-> >>  #include <linux/err.h>
-> >>  #include <linux/firmware/imx/sci.h>
-> >> +#include <linux/firmware/imx/sm.h>
-> >>  #include <linux/interrupt.h>
-> >>  #include <linux/kernel.h>
-> >>  #include <linux/mailbox_client.h>
-> >> @@ -22,6 +23,7 @@
-> >>  #include <linux/reboot.h>
-> >>  #include <linux/regmap.h>
-> >>  #include <linux/remoteproc.h>
-> >> +#include <linux/scmi_imx_protocol.h>
-> >>  #include <linux/workqueue.h>
-> >>  
-> >>  #include "imx_rproc.h"
-> >> @@ -92,6 +94,11 @@ struct imx_rproc_mem {
-> >>  #define ATT_CORE_MASK   0xffff
-> >>  #define ATT_CORE(I)     BIT((I))
-> >>  
-> >> +/* Logical Machine Operation */
-> >> +#define IMX_RPROC_FLAGS_SM_LMM_OP	BIT(0)
-> >> +/* Linux has permission to handle the Logical Machine of remote cores */
-> >> +#define IMX_RPROC_FLAGS_SM_LMM_AVAIL	BIT(1)
-> >> +
-> >>  static int imx_rproc_xtr_mbox_init(struct rproc *rproc, bool tx_block);
-> >>  static void imx_rproc_free_mbox(struct rproc *rproc);
-> >>  
-> >> @@ -116,6 +123,8 @@ struct imx_rproc {
-> >>  	u32				entry;		/* cpu start address */
-> >>  	u32				core_index;
-> >>  	struct dev_pm_domain_list	*pd_list;
-> >> +	/* For i.MX System Manager based systems */
-> >> +	u32				flags;
-> >>  };
-> >>  
-> >>  static const struct imx_rproc_att imx_rproc_att_imx93[] = {
-> >> @@ -394,6 +403,30 @@ static int imx_rproc_start(struct rproc *rproc)
-> >>  	case IMX_RPROC_SCU_API:
-> >>  		ret = imx_sc_pm_cpu_start(priv->ipc_handle, priv->rsrc_id, true, priv->entry);
-> >>  		break;
-> >> +	case IMX_RPROC_SM:
-> >> +		if (priv->flags & IMX_RPROC_FLAGS_SM_LMM_OP) {
-> >> +			if (!(priv->flags & IMX_RPROC_FLAGS_SM_LMM_AVAIL))
-> >> +				return -EACCES;
-> >> +
-> >> +			ret = scmi_imx_lmm_reset_vector_set(dcfg->lmid, dcfg->cpuid, 0, 0);
-> >> +			if (ret) {
-> >> +				dev_err(dev, "Failed to set reset vector lmid(%u), cpuid(%u): %d\n",
-> >> +					dcfg->lmid, dcfg->cpuid, ret);
-> >> +			}
-> >> +
-> >> +			ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_BOOT, 0);
-> >> +			if (ret)
-> >> +				dev_err(dev, "Failed to boot lmm(%d): %d\n", ret, dcfg->lmid);
-> >> +		} else {
-> >> +			ret = scmi_imx_cpu_reset_vector_set(dcfg->cpuid, 0, true, false, false);
-> >> +			if (ret) {
-> >> +				dev_err(dev, "Failed to set reset vector cpuid(%u): %d\n",
-> >> +					dcfg->cpuid, ret);
-> >> +			}
-> >> +
-> >> +			ret = scmi_imx_cpu_start(dcfg->cpuid, true);
-> >> +		}
-> >> +		break;
-> >>  	default:
-> >>  		return -EOPNOTSUPP;
-> >>  	}
-> >> @@ -436,6 +469,16 @@ static int imx_rproc_stop(struct rproc *rproc)
-> >>  	case IMX_RPROC_SCU_API:
-> >>  		ret = imx_sc_pm_cpu_start(priv->ipc_handle, priv->rsrc_id, false, priv->entry);
-> >>  		break;
-> >> +	case IMX_RPROC_SM:
-> >> +		if (priv->flags & IMX_RPROC_FLAGS_SM_LMM_OP) {
-> >> +			if (priv->flags & IMX_RPROC_FLAGS_SM_LMM_AVAIL)
-> >> +				ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_SHUTDOWN, 0);
-> >> +			else
-> >> +				ret = -EACCES;
-> >> +		} else {
-> >> +			ret = scmi_imx_cpu_start(dcfg->cpuid, false);
-> >> +		}
-> >> +		break;
-> >>  	default:
-> >>  		return -EOPNOTSUPP;
-> >>  	}
-> >> @@ -546,10 +589,48 @@ static int imx_rproc_mem_release(struct rproc *rproc,
-> >>  	return 0;
-> >>  }
-> >>  
-> >> +static int imx_rproc_sm_lmm_prepare(struct rproc *rproc)
-> >> +{
-> >> +	struct imx_rproc *priv = rproc->priv;
-> >> +	const struct imx_rproc_dcfg *dcfg = priv->dcfg;
-> >> +	int ret;
-> >> +
-> >> +	if (!(priv->flags & IMX_RPROC_FLAGS_SM_LMM_OP))
-> >> +		return 0;
-> >> +
-> >> +	/*
-> >> +	 * Power on the Logical Machine to make sure TCM is available.
-> >> +	 * Also serve as permission check. If in different Logical
-> >> +	 * Machine, and linux has permission to handle the Logical
-> >> +	 * Machine, set IMX_RPROC_FLAGS_SM_LMM_AVAIL.
-> >> +	 */
-> >> +	ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_POWER_ON, 0);
-> >> +	if (ret == 0) {
-> >> +		dev_info(priv->dev, "lmm(%d) powered on\n", dcfg->lmid);
-> >> +		priv->flags |= IMX_RPROC_FLAGS_SM_LMM_AVAIL;
-> >
-> >Why is setting this flag needed?  The check that is done on it in
-> >imx_rproc_{start|stop} should be done here.  If there is an error then we don't
-> >move forward.
-> 
-> The flag is to indicate M7 LM could be controlled by Linux LM(to save SCMI
-> calls. without this flag, heavy SCMI calls will be runs into). The reason
-> on why set it here:
-> The prepare function will be invoked in two path: rproc_attach and rproc_fw_boot.
-> When M7 LM works in detached state and not under control of Linux LM, rproc_stop
-> could still be invoked, so we need to avoid Linux runs into scmi calls to
-> stop M7 LM(even if scmi firmware will return -EACCESS, but with a flag, we could
-> save a SCMI call), so there is a check in imx_rproc_stop and this is why
-> we need a flag there.
-> 
-> The flag check in start might be redundant, but to keep safe, I still keep
-> it there.
 
-One of the (many) problem I see with this patch is that there is no
-IMX_RPROC_FLAGS_SM_CPU_OP to complement IMX_RPROC_FLAGS_SM_LMM_OP in
-imx_rproc_detect_mode(), leading to if/else statements that are hard to follow.
+--=-bV38p/TGIUCsdGFxL5ya
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In imx_rproc_sm_lmm_prepare(), if scmi_imx_lmm_operation() is successful, return
-0 immediately.  If -EACCESS the LMM method is unavailable in both normal and
-detached mode, so priv->flags &= ~IMX_RPROC_FLAGS_SM_LMM_OP.
+Le lundi 01 septembre 2025 =C3=A0 17:41 +0800, Ming Qian(OSS) a =C3=A9crit=
+=C2=A0:
+>=20
+> Hi Nicolas,
+>=20
+> > Hi,
+> >=20
+> > Le vendredi 25 juillet 2025 =C3=A0 16:07 +0800, ming.qian@oss.nxp.com=
+=C2=A0a =C3=A9crit :
+> > > From: Ming Qian <ming.qian@oss.nxp.com>
+> > >=20
+> > > For Simple and Main Profiles of VC-1 format stream, the amphion vpu
+> > > requires driver to discard the sequence header, but insert a custom
+> > > sequence start code at the beginning.
+> > > The first buffer after a seek always contains only the sequence heade=
+r.
+> > > But vpu_vb_is_codecconfig() always return false as there is currently=
+ no
+> > > flag indicating that the buffer contains only sequence header data an=
+d
+> > > not frame data.
+> > > So driver needs to drop the first buffer after seek, otherwise the dr=
+iver
+> > > will treat the sequence header as a frame, which will cause the image=
+ to
+> > > be corrupted after the vpu decodes.
+> > >=20
+> > > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> > > ---
+> > > =C2=A0 drivers/media/platform/amphion/vpu_malone.c | 4 +---
+> > > =C2=A0 1 file changed, 1 insertion(+), 3 deletions(-)
+> > >=20
+> > > diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/me=
+dia/platform/amphion/vpu_malone.c
+> > > index ba688566dffd..a4c423600d70 100644
+> > > --- a/drivers/media/platform/amphion/vpu_malone.c
+> > > +++ b/drivers/media/platform/amphion/vpu_malone.c
+> > > @@ -1373,11 +1373,9 @@ static int vpu_malone_insert_scode_vc1_l_seq(s=
+truct malone_scode_t *scode)
+> > > =C2=A0=C2=A0	int size =3D 0;
+> > > =C2=A0=C2=A0	u8 rcv_seqhdr[MALONE_VC1_RCV_SEQ_HEADER_LEN];
+> > > =C2=A0=20
+> > > -	if (vpu_vb_is_codecconfig(to_vb2_v4l2_buffer(scode->vb)))
+> >=20
+> > Please remove vpu_vb_is_codecconfig() entirely, it always returns false=
+, so its
+> > miss-leading.
+> >=20
+>=20
+> We have tried to define V4L2_BUF_FLAG_HEADERS_ONLY to to distinguish
+> whether it only contains codec data.
+>=20
+> https://lore.kernel.org/lkml/20221125020741.28239-1-ming.qian@nxp.com/
+>=20
+> Although it was not accepted, we applied this flag in our Android
+> project. Then in the Android platform, vpu_vb_is_codecconfig() doesn't
+> always return false.
+>=20
+> I know that's not enough reason to keep it. I just want to say that this
+> vpu need to know if the buffer only contains codec header in some cases.
+> And if we remove this, I need to add some comments to remind users that
+> they need to pay attention here.
 
-The main takeaway here is that the code introduced by this patch is difficult to
-understand and maintain.  I suggest you find a way to make things simpler.
+In all cases, this dead code have to go away, if we had noticed earlier it =
+would
+have been rejected.
 
-> 
-> >
-> >> +	} else if (ret == -EACCES) {
-> >> +		dev_info(priv->dev, "lmm(%d) not under Linux Control\n", dcfg->lmid);
-> >> +		/*
-> >> +		 * If remote cores boots up in detached mode, continue;
-> >> +		 * else linux has no permission, return -EACCES.
-> >> +		 */
-> >> +		if (priv->rproc->state != RPROC_DETACHED)
-> >> +			return -EACCES;
-> >
-> >The comment above scmi_imx_lmm_operation() mentions that calling
-> >scmi_imx_lmm_operation() is done to make sure TCMs are available.  Is there a
-> >point in calling scmi_imx_lmm_operation() if ->state == RPROC_DETACHED?  If not,
-> >can't that check be move to the beginning of imx_rproc_sm_lmm_prepare()?  
-> 
-> scmi_imx_lmm_operation also serves as permission check.
-> 
-> If ->state is RPROC_DETACHED, we still need to know M7 LM is or is not
-> under control of Linux LM.
-> 
-> 
-> >
-> >> +
-> >> +		/* work in state RPROC_DETACHED */
-> >> +		ret = 0;
-> >> +	} else if (ret) {
-> >> +		dev_err(priv->dev, "Failed to power on lmm(%d): %d\n", ret, dcfg->lmid);
-> >> +	}
-> >> +
-> >> +	return ret;
-> >> +}
-> >> +
-> >>  static int imx_rproc_prepare(struct rproc *rproc)
-> >>  {
-> >>  	struct imx_rproc *priv = rproc->priv;
-> >>  	struct device_node *np = priv->dev->of_node;
-> >> +	const struct imx_rproc_dcfg *dcfg = priv->dcfg;
-> >>  	struct of_phandle_iterator it;
-> >>  	struct rproc_mem_entry *mem;
-> >>  	struct reserved_mem *rmem;
-> >> @@ -593,7 +674,10 @@ static int imx_rproc_prepare(struct rproc *rproc)
-> >>  		rproc_add_carveout(rproc, mem);
-> >>  	}
-> >>  
-> >> -	return  0;
-> >> +	if (dcfg->method == IMX_RPROC_SM)
-> >> +		return imx_rproc_sm_lmm_prepare(rproc);
-> >> +
-> >> +	return 0;
-> >>  }
-> >>  
-> >>  static int imx_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
-> >> @@ -927,13 +1011,41 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
-> >>  	struct regmap_config config = { .name = "imx-rproc" };
-> >>  	const struct imx_rproc_dcfg *dcfg = priv->dcfg;
-> >>  	struct device *dev = priv->dev;
-> >> +	struct scmi_imx_lmm_info info;
-> >>  	struct regmap *regmap;
-> >>  	struct arm_smccc_res res;
-> >> +	bool started = false;
-> >>  	int ret;
-> >>  	u32 val;
-> >>  	u8 pt;
-> >>  
-> >>  	switch (dcfg->method) {
-> >> +	case IMX_RPROC_SM:
-> >> +		/* Get current Linux Logical Machine ID */
-> >> +		ret = scmi_imx_lmm_info(LMM_ID_DISCOVER, &info);
-> >> +		if (ret) {
-> >> +			dev_err(dev, "Failed to get current LMM ID err: %d\n", ret);
-> >> +			return ret;
-> >> +		}
-> >> +
-> >> +		/*
-> >> +		 * Check whether remote processor is in same Logical Machine as Linux.
-> >> +		 * If no, need use Logical Machine API to manage remote processor, and
-> >> +		 * set IMX_RPROC_FLAGS_SM_LMM_OP.
-> >> +		 * If yes, use CPU protocol API to manage remote processor.
-> >> +		 */
-> >> +		if (dcfg->lmid != info.lmid) {
-> >> +			priv->flags |= IMX_RPROC_FLAGS_SM_LMM_OP;
-> >> +			dev_info(dev, "Using LMM Protocol OPS\n");
-> >> +		} else {
-> >> +			dev_info(dev, "Using CPU Protocol OPS\n");
-> >> +		}
-> >> +
-> >> +		ret = scmi_imx_cpu_started(dcfg->cpuid, &started);
-> >> +		if (ret || started)
-> >> +			priv->rproc->state = RPROC_DETACHED;
-> >
-> >An error should be reported and the initialization process aborted if an error
-> >occurs rather than defaulting to the default mode.  This will lead to additional
-> >error conditions that will have to be handled elsewhere.
-> 
-> ok. I could update to
-> if (ret)
-> 	return ret;
-> if (started)
-> 	priv->rproc->state = RPROC_DETACHED;
-> 
-> 
-> 
-> Thanks,
-> Peng
-> 
+Either the format document strictly requires codec data as first buffer (al=
+one),
+or you create a new format for you IP. As said, legacy codecs are ill-defin=
+ed
+and we need to gather information from other maintainers of IP that support=
+s it
+to fill in the doc. Perhaps this is the behavior that should have been
+documented, and if this is the case, the fix is simply to put that in the
+documentation.
+
+>=20
+> So I tend to keep it.
+>=20
+>=20
+> > > -		scode->need_data =3D 0;
+> > > +	scode->need_data =3D 0;
+> > > =C2=A0=C2=A0	if (scode->inst->total_input_count)
+> > > =C2=A0=C2=A0		return 0;
+> > > -	scode->need_data =3D 0;
+> >=20
+> > I only remember testing this once quickly on Exynos 4 and I had no clue=
+ what
+> > Annex G vs J was and most likley the MFC firmware was detecting it. Che=
+cking
+> > quickly, I'm not sure GStreamer actually support both, despite the v4l2=
+ wrapper
+> > pretending. I would expect one to be used in ASF/ISOMP4/AVI, and the ot=
+her used
+> > in MPEG Transport Stream. GStreamer does not support VC1 in MPEG TS.
+> >=20
+> > Have you tested this with FFMPEG ? It only maps annex G.
+> >=20
+> > In general, I don't mind the the change if this is correct userspace be=
+havior.
+> > If ffmpeg and gstreamer don't agree though, we'll have to rethink. GStr=
+eamer
+> > code back in the days was design in a way that it should not matter if =
+the
+> > header is split or not. This limitation came with lower latency decoder=
+ later,
+> > but none had VC1.
+> >=20
+> > Please test both userspace, and lets see if this solution is acceptable=
+. ffmpeg
+> > have ffplay and you can seek with your keyboard arrows.
+> >=20
+> > Nicolas
+>=20
+> I tested this with gstreaer, not FFMPEG,
+> And I checked the gstreamer code in our repository, Then I found the
+> following related code:
+>=20
+> =C2=A0=C2=A0 } else if (g_str_equal (mimetype, "video/x-wmv")) {
+> =C2=A0=C2=A0=C2=A0=C2=A0 const gchar *format =3D gst_structure_get_string=
+ (structure, "format");
+> =C2=A0=C2=A0=C2=A0=C2=A0 if (format) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!g_ascii_strcasecmp (format, "WV=
+C1"))
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fourcc =3D V4L2_PIX_FMT_=
+VC1_ANNEX_G;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 else if (!g_ascii_strcasecmp (format=
+, "WMV3"))
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fourcc =3D V4L2_PIX_FMT_=
+VC1_ANNEX_L;
+> =C2=A0=C2=A0=C2=A0=C2=A0 }
+>=20
+> Basically it processes WMV3 into VC1_ANNEX_L, and WVC1 to VC1_ANNEX_G.
+> I didn't found them in the upstream gstreamer repository.
+> Now I'm not sure if it is correct userspace behavior.
+
+Its a little concerning, since we are in the largely untested territory. Wi=
+thout
+proper documentation and with all the downstream changes done to userspace,=
+ we
+can easily endup with NXP considering this is the right mapping and let's s=
+ay
+Qualcomm or Samsung thinking differently. Since this is for upstream, we ne=
+ed to
+ensure this is concistant. Have you reached to other driver maintainers alr=
+eady
+to discuss and resolve the subject in a way it works for everyone ?
+
+>=20
+> And the reason of this issue is the below code in gstreamer, that the
+> v4l2decoder may only send codec data after seek.
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0 codec_data =3D self->input_state->codec_data;
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0 /* We are running in byte-stream mode, so we don=
+'t know the=20
+> headers, but
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * we need to send something, otherwise the=
+ decoder will refuse to
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * initialize.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> =C2=A0=C2=A0=C2=A0=C2=A0 if (codec_data) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gst_buffer_ref (codec_data);
+> =C2=A0=C2=A0=C2=A0=C2=A0 } else {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 codec_data =3D gst_buffer_ref (frame=
+->input_buffer);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 processed =3D TRUE;
+> =C2=A0=C2=A0=C2=A0=C2=A0 }
+
+That is truncating a bit too much of the context. The "processed" boolean i=
+s set
+when the codec data and frame is combined. In the case the codec data is on=
+ly to
+be found in caps, it will queue the codec data and immediately queue the fr=
+ame
+data. This is perfectly valid with the way the stateful decoder specificati=
+on is
+written.
+
+In practice, GStreamer stateful decoder is multi-threaded, so it will fill =
+the
+OUTPUT queue with following frames too. What you can do to make your driver=
+ more
+flexible is whenever you didn't find a frame in a buffer, merge this buffer=
+ with
+the next one, and do that until there is no more space in one buffer. This =
+way
+you don't copy all the time like ring buffers do, but you can survive abitr=
+ary
+splits of byte-stream.
+
+Nicolas
+
+>=20
+> Regards,
+> Ming
+>=20
+>=20
+> >=20
+> > > =C2=A0=20
+> > > =C2=A0=C2=A0	ret =3D vpu_malone_insert_scode_seq(scode, MALONE_CODEC_=
+ID_VC1_SIMPLE, sizeof(rcv_seqhdr));
+> > > =C2=A0=C2=A0	if (ret < 0)
+
+--=-bV38p/TGIUCsdGFxL5ya
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaLci7QAKCRDZQZRRKWBy
+9EucAQCDpDQ23PEiLbvrPVu582nT4syH1ECoqvI5lbtG2IxCpQD/Wi1AX61MNSaV
+RP5P644O8Od9w+f8beizyYC77y9jewY=
+=SB3Z
+-----END PGP SIGNATURE-----
+
+--=-bV38p/TGIUCsdGFxL5ya--
