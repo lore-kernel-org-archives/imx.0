@@ -1,151 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDBB2E1742
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 10:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6FE2ED865
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 10:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756895925; cv=none; b=kT8Kj4j0iVJf2C43Sp5iDwdPsTDLSdXl5mJH25KbfZgcyi4fQt7/zy7BNxYJ8kKZi82+7uznt96e31DVCjVpqAaSiLWG4NYssPfqOdLvw7MQzK8mCNcz32lloC8y8gJi1uNekllnVftjNgR3oxv/hLhhSNXk8QOt3nvBNfIOCfs=
+	t=1756896081; cv=none; b=Wyul4nvJRycGUDt6Eq1GI1WXfWtEZu5OvUzs4upUKPLzijghmrCs8vC9+8BppR/G2pDNTWde44PsnRUD/rSXFIY17DnuG+KBpA3ykbnRUD2VcrE2+z3/v/je+0mgkRdx4wh4ZgSil5EL5tWWRlPX+Ih/p3ILTPnFWTSv+dYo5Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756895925; c=relaxed/simple;
-	bh=GCTF1UYtOSCeRAlhubdQAJ7qhlBqyZpfpnhA1MMIZJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aaoY5na9iFzoHZdcee8m4+gcXKSxfw7blnozHd5xOdMOup+l2xG0jYqX6AGiVzRmYu5Ec016KxU2PnKakMVo7C2RVi1U/LzHOWogqFAAECDdW7YSgkqY0OfuAkKrIoo6GE8XDLbIhDZEqNDAqq2/ZgyMMSVUUma414L0QUupmpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aoIeSVfg; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1756896081; c=relaxed/simple;
+	bh=cQ5AxTNObd/Ros3LgbI1d2H9KbaWvkEuSSK99ckKyZU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=di2BFh681IjW7tqvQatHWlmizsxErX1ZsK1GgBrHYS6OxFtKxOnHh+adne22kuhDxiE9gvQ4bGzc4QMCoTggnU7+buhSRIbHi/corX5Hy2XgnPJAXYg8XmH8+6aOMrQkcDc66hBONM67GhaUFMEt1NHBVjp/u9z/R4tq3gJyXrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KMisxtxe; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aoIeSVfg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756895924; x=1788431924;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=GCTF1UYtOSCeRAlhubdQAJ7qhlBqyZpfpnhA1MMIZJE=;
-  b=aoIeSVfgjxBHaBK/rH7eeDtjQn6Q93RiB9ABmLVlCPmjCKXUIIPqN/nV
-   KM0cssTP95HMkBWKzLY0/l3d8NRTnpcK4PWYron/+JrhboKVkBl4U3S13
-   Bh5pybcx0vaY35wVOE8ZSR9zcTmuu0lWla6FXzgj2yW3A871RzNYklG+s
-   H6Wx/gRMJ2u06zDiAGYIDycA0GJ4+I49tlpOw8m68CWbTRw1S4FJDiAl1
-   WR4uza9hQ6vvJnArbqe30TMsnQqJIvR1ViQWKsDWHtb2oW+AsD9Qwz3C+
-   F8G8jGU51Sa5bgwGByzQnnOOdHZt4KSMXnrBor9D/06I8fGrJSaACIqMA
-   w==;
-X-CSE-ConnectionGUID: FJzHd9koS76uo/J+Zv0ltA==
-X-CSE-MsgGUID: K9GYnJmMSvGHDL0HydzcAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="70632587"
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
-   d="scan'208";a="70632587"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 03:38:43 -0700
-X-CSE-ConnectionGUID: gcUgIZtvSDO2dFM95UNdfw==
-X-CSE-MsgGUID: hQkiLlfsRpSs+9G/ykDw9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
-   d="scan'208";a="202430131"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 03:38:33 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utksl-0000000AxU5-0dpr;
-	Wed, 03 Sep 2025 13:38:27 +0300
-Date: Wed, 3 Sep 2025 13:38:26 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
-Message-ID: <aLgaoivmBUgoeO6B@smile.fi.intel.com>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-16-bb091daedc52@linaro.org>
- <aLcBcjvMbrxoDYoC@smile.fi.intel.com>
- <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
- <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
- <CAMRc=MfhhX2NJ0fhhX8u+7=sdyUy0G27n7caGf9=TpHxUDJVxg@mail.gmail.com>
- <aLgW7J-j4nn0u8uo@smile.fi.intel.com>
- <CAMRc=MdA21fwnamymG6YhqBjKDso_nJs_4xefPNONQNfEcPHXA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KMisxtxe"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-24c8ef94e5dso4225845ad.1
+        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 03:41:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756896079; x=1757500879; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M0EPRZe8YJObgeqfHix/soVRNAxr+rVxG0fDuUG583s=;
+        b=KMisxtxeIT+1QGmAJdbvstFRGFmWAlNTac71NgjIRT0Iv3AZiUR3Sh1oUKU3y6QE5n
+         5qoZFRlRhC/tn4P5nqOOTxZRQk0cw7lU+dsmt1CceaOTRLY9PgaxpuU9Lq6kJm0p6MUH
+         LlEuBh9+aWth4Wmqc7PZSB6T0uEzYM6Po8oI/H9vwmUPKQ3VEdM4hyldoz3K0ppqHdc3
+         rfPa6LrjHFUm+M8aDjkpFL4lgz2kvYSQAmF1vqqz9r/HtUIHOexaY5jQKyx6C29X0feI
+         v+zEPJ5Qo43uV3u529S95DI3IkIE4RmHlm2X2clRCqEhDy1IvxiCjsmlQYSUnH83XHNm
+         sk/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756896079; x=1757500879;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M0EPRZe8YJObgeqfHix/soVRNAxr+rVxG0fDuUG583s=;
+        b=Ql8AdH+NI2QTus6l4EnMj5dH+lPn5wlOldXHJJBFZPd7Dl6WQaC5MIV9/CFJP6FKuP
+         lQLOZ5vtTpMixGVtbVzEtaX9uu5YBbMmZAnwiuxnvpV/eLoVkY7Dpaa9PPytW6X+g+CD
+         86fPiyjp2ZTbdYZKRTvqcfy3OIoC37Ax96lAWDEY7JRuLYgeDLN8/hv3EZm/OYdbXCkI
+         B2Upmu5NLT1YgDVIxk5zwSuh5zlefQOddIg8vpBocSIdAyl8WrJZy17oIoI8a29QcrsY
+         YScssgzOj1l1jaBCXf5YW2zO2pCFahOMKmaIR/GkfebvpUg9/1+QIrldI1SlUvcItnk6
+         MJ1w==
+X-Forwarded-Encrypted: i=1; AJvYcCUogUEVDJATD1qGbvdyXps88EwBAAmU8KT+GaRN0DBc0Raq2hQp7hAYXqpmr+bwrjpYDog=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwVpYSpd7GHLg+OYgCOB00qYenkDlrB7ZH+ER6wcPVm8Fd6N5M8
+	dKPnISZvwjul7w6WfWaJFmRE6mwxXz/a3YayVzNpa09s2LiT2yrLIcdzuEgkyrejqGX8vUqXxAT
+	swddGzuj5flK49WYkoeEEkMStZ+MY6ZI=
+X-Gm-Gg: ASbGncuCm/Z163HwxSAyNlOQ0Y5duGvMkj1wueNTCVtM2FS2PXkJq2bTEnjyBLNw9mK
+	IAKYyhz/b6H8LBfj+DyTveOVUtjB5nr7FYBB2TpKRejmApkK7d3lQC2rFFwYyWZtk9Yp5Dy/H2Y
+	n2Sx9fhIlyn0qprgWEg2o3M1GFIfLayrw46BAm8q1sbc2nyCQjVro6RrZCrC8DIn1IuJTElmqJj
+	yTcYxE=
+X-Google-Smtp-Source: AGHT+IFBlgHU9/9J/ynH5B/Y0lYKvN7CIRjLzFRFLjCUSdV7/phYhX05by3bq36srAY3SNogU76UhQZ1T1/Qk7whF0E=
+X-Received: by 2002:a17:902:e891:b0:246:2da9:73a2 with SMTP id
+ d9443c01a7336-2493eff73d7mr197893025ad.27.1756896079484; Wed, 03 Sep 2025
+ 03:41:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MdA21fwnamymG6YhqBjKDso_nJs_4xefPNONQNfEcPHXA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20250821073131.2550798-1-shengjiu.wang@nxp.com>
+ <20250821073131.2550798-5-shengjiu.wang@nxp.com> <20250901185208.394cd162@booty>
+In-Reply-To: <20250901185208.394cd162@booty>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Wed, 3 Sep 2025 18:41:05 +0800
+X-Gm-Features: Ac12FXx8o6RDyP5im-Wa5RK1y5nzjHR2o5AyrKxsM3tEIkvqqNNrZcDYhIoBDY8
+Message-ID: <CAA+D8AOCTqb5jLeRapYk4wRGZrsrPiuAR=ow3OA1B0+M9X4k7w@mail.gmail.com>
+Subject: Re: [PATCH v5 4/7] drm/bridge: dw-hdmi: Add API dw_hdmi_set_sample_iec958()
+ for iec958 format
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com, 
+	neil.armstrong@linaro.org, rfoss@kernel.org, 
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
+	airlied@gmail.com, simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org, 
+	cristian.ciocaltea@collabora.com, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, victor.liu@nxp.com, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de, 
+	devicetree@vger.kernel.org, l.stach@pengutronix.de, perex@perex.cz, 
+	tiwai@suse.com, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 03, 2025 at 12:34:00PM +0200, Bartosz Golaszewski wrote:
-> On Wed, Sep 3, 2025 at 12:22 PM Andy Shevchenko
-> <andriy.shevchenko@intel.com> wrote:
-> > On Wed, Sep 03, 2025 at 09:33:34AM +0200, Bartosz Golaszewski wrote:
-> > > On Tue, Sep 2, 2025 at 10:46 PM Andy Shevchenko
-> > > <andy.shevchenko@gmail.com> wrote:
-> > > > On Tue, Sep 2, 2025 at 8:42 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > > > > On Tue, Sep 2, 2025 at 4:38 PM Andy Shevchenko
-> > > > > <andriy.shevchenko@intel.com> wrote:
-> > > > > > On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golaszewski wrote:
-
-...
-
-> > > > > > > The strict flag in struct pinmux_ops disallows the usage of the same pin
-> > > > > > > as a GPIO and for another function. Without it, a rouge user-space
-> > > > > > > process with enough privileges (or even a buggy driver) can request a
-> > > > > > > used pin as GPIO and drive it, potentially confusing devices or even
-> > > > > > > crashing the system. Set it globally for all pinctrl-msm users.
-> > > > > >
-> > > > > > How does this keep (or allow) I²C generic recovery mechanism to work?
-> > >
-> > > Anyway, what is your point? I don't think it has any impact on this.
+On Tue, Sep 2, 2025 at 12:52=E2=80=AFAM Luca Ceresoli <luca.ceresoli@bootli=
+n.com> wrote:
+>
+> Hello Shengjiu,
+>
+> On Thu, 21 Aug 2025 15:31:28 +0800
+> Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+>
+> > Add API dw_hdmi_set_sample_iec958() for IEC958 format because audio dev=
+ice
+> > driver needs IEC958 information to configure this specific setting.
 > >
-> > If we have a group of pins that are marked as I²C, and we want to use recovery
-> > via GPIOs, would it be still possible to request as GPIO when controller driver
-> > is in the strict mode?
-> 
-> Yes, if you mark that function as a "GPIO" function in the pin
-> controller driver.
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > Acked-by: Liu Ying <victor.liu@nxp.com>
+>
+> [...]
+>
+> > +void dw_hdmi_set_sample_iec958(struct dw_hdmi *hdmi, unsigned int iec9=
+58)
+> > +{
+> > +     mutex_lock(&hdmi->audio_mutex);
+> > +     hdmi->sample_iec958 =3D iec958;
+> > +     mutex_unlock(&hdmi->audio_mutex);
+> > +}
+>
+> Apologies for jumping in the discussion as late as in v5, but I noticed
+> this patch and I was wondering whether this mutex_lock/unlock() is
+> really needed, as you're copying an int.
 
-How would it prevent from requesting from user space?
+Thanks for your comments.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Seems it is not necessary to add mutex here. I just follow the code as
+other similar functions.  I will send a new version to update it.
 
+Best regards
+Shengjiu Wang
 
+Shengjiu Wang
+>
+> Luca
+>
+> --
+> Luca Ceresoli, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
