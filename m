@@ -1,84 +1,75 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D963009D6
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8816727B34C
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756905935; cv=none; b=CNlA1LCxa5qgzVnC0sPwfu76mtSCip28SV3SK6OAUR+oLbqSJmwHEngc505K7RpdTrJHAEbTxnAtUUYG3HfEeBsmzGy/Idz3tJMwKFcgLYXl1ORvFXaSZ2RYlycNQS8EGyEArdMCCJx4e7x+z10PsdzVXvtnUyeJoerZPMSBQRE=
+	t=1756906896; cv=none; b=DrmudbN49rtu5A14qIYGiMG48SYmpjEB6SXih1Ebw6FHFAlmqEBdWoWFss7/PnvcjrXQbvzoOTlao9Bjzn3vJXIePecUnNFdTCDgj3S0F3miD4oyKCkfbHnzU5bN1hUatVu2Vo0pgjJsYVQ3bQB73IxMDsL4zzHRo3AvxTy1qc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756905935; c=relaxed/simple;
-	bh=LahPxxsFg6l59qbeOzrTE1d/6xGMndEUs1/iv+M2mpA=;
+	s=arc-20240116; t=1756906896; c=relaxed/simple;
+	bh=LtSHdTfd+/QVVScrEVKfgAJRnBoREvz6o6zvp2ZWROY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ah52bq6w3IJygIbuLq51yI7ejX9plqr9+y2qkDVW5PFt8khBQIc3LWceNPIeagpZmpfZbu1uAGWQPR+6yKdoKDJtTCD+pxWqVArze76vQRcmWgl5998/Tb1ZfliJzDQMCooQrqrllZePOFjy910aDE8WtH6MSArggRLuLmljPW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fppeuxr2; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=tPKUbq6ParmxzxelUABVJ4S/vsyFzj2ws8A6lZ615xek2gBggrvwKVbYgka+A7rKPouTEsVgzivOQgUqV69LLzj7hQL7PBVh3DH6Oio1FWjr+QUgGaDBsCeyYSSUcAXEpY+qGUoUun1EEbvXLS8p9mccw61b1IfueFs5rROcIt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iaa0lf3Q; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fppeuxr2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756905934; x=1788441934;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LahPxxsFg6l59qbeOzrTE1d/6xGMndEUs1/iv+M2mpA=;
-  b=Fppeuxr25Ur/Z86f2B3WugWG/a9vqhM6uvfRHXNCVETvWuj2c1PrxP/X
-   FhRQZNigdx/JacuH5W0C1ScU2k7yDDjUwATX49Xv1S+kA8xT+GuDhqaMW
-   h5iiHc3Vfwna6EmsDZ3UZQKUuGD+A0nZGi+j+bEZ8mnbcyga/New4VrPd
-   yVqtFBY9xQ8yrerEfzXkl/RJ/37NNucRVBT0VCQJeImoveyiw7HIE8Znw
-   Y87BM+BsLOMkUe/FbnijKWIgZx9ETFZV2K8HMMlriPqtkTv9ZtQx3nqyQ
-   wwu6H7LOeiCE/kGnVDythBzTV4tMw66Vxx3n2stJ8V5eGgGsidkPGi/Oo
-   g==;
-X-CSE-ConnectionGUID: /fSOkJf6RTKgBl/1UMMXKw==
-X-CSE-MsgGUID: zTbeI2BGSy23D3CPdXg5qQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="70647388"
-X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
-   d="scan'208";a="70647388"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 06:25:33 -0700
-X-CSE-ConnectionGUID: Ma4BX8/rSESlgghxFULMkw==
-X-CSE-MsgGUID: QBju9m/qQcWUy7qJM1NEGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
-   d="scan'208";a="195226899"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO mdjait-mobl) ([10.245.244.22])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 06:25:20 -0700
-Date: Wed, 3 Sep 2025 15:25:12 +0200
-From: Mehdi Djait <mehdi.djait@linux.intel.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Andi Shyti <andi.shyti@kernel.org>, =?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Arec Kao <arec.kao@intel.com>, Benjamin Mugnier <benjamin.mugnier@foss.st.com>, 
-	Bingbu Cao <bingbu.cao@intel.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Bryan O'Donoghue <bod@kernel.org>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>, devicetree@vger.kernel.org, 
-	Dongcheng Yan <dongcheng.yan@intel.com>, Dongchun Zhu <dongchun.zhu@mediatek.com>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Hans de Goede <hansg@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
-	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>, imx@lists.linux.dev, Jacopo Mondi <jacopo@jmondi.org>, 
-	Jason Chen <jason.z.chen@intel.com>, Jimmy Su <jimmy.su@intel.com>, 
-	Jingjing Xiong <jingjing.xiong@intel.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Leon Luo <leonl@leopardimaging.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
-	Loic Poulain <loic.poulain@oss.qualcomm.com>, Magnus Damm <magnus.damm@gmail.com>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Mark Brown <broonie@kernel.org>, Matthew Majewski <mattwmajewski@gmail.com>, 
-	Mikhail Rudenko <mike.rudenko@gmail.com>, Nicolas Dufresne <nicolas.dufresne@collabora.com>, 
-	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, Pavel Machek <pavel@kernel.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Robert Foss <rfoss@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Shunqian Zheng <zhengsq@rock-chips.com>, 
-	Sylvain Petinot <sylvain.petinot@foss.st.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>, 
-	Tarang Raval <tarang.raval@siliconsignals.io>, Tianshu Qiu <tian.shu.qiu@intel.com>, 
-	Todor Tomov <todor.too@gmail.com>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Tony Lindgren <tony@atomide.com>, Zhi Mao <zhi.mao@mediatek.com>
-Subject: Re: [PATCH v2 00/72] media: i2c: Reduce cargo-cult
-Message-ID: <64alk4uwvdw6cejheukim7pfz7pabccuaqxlerr7mul6mqi5lf@feuimtlm4vxe>
-References: <20250812214620.30425-1-laurent.pinchart@ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iaa0lf3Q"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-723960ded6bso27330937b3.3
+        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 06:41:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756906893; x=1757511693; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LtSHdTfd+/QVVScrEVKfgAJRnBoREvz6o6zvp2ZWROY=;
+        b=iaa0lf3QiYzX0SAeTzyX4ieZK0m/MjAomjzjT4T27lstyXGHe3LpATrrFKN9wAVexB
+         Ky0IuMaq/6kwIHC5R7XRIz+Cv7K/BZvm1fagxSwaBXBtsNupjQ7QeNh2C5LgSA1VTVsf
+         N8OEwj9mm6hBhzqjkYDDwzd5q0LxzV/VB9LGpUIUFILUUmp6DlTXp/x7bg0i2yLEDO4x
+         Vguv5h/QqfhahgJRsv4oXtqZDw35lBnoQG5rmPgBCNdV5wA7MMjXqlIj+iwnKrZvBDx7
+         m8eRw2L3cRbXcA/jafme3fW2danVqaPr4HJ/o3CqfTAzcHNS9ZWq5MY1Xe2tQPg7Wtgt
+         v+bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756906893; x=1757511693;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LtSHdTfd+/QVVScrEVKfgAJRnBoREvz6o6zvp2ZWROY=;
+        b=vpmU+sVkbxSA7bMsS1n7zk/fwKzv1LxZT135XechpLdICL9Btea60ZqIu+U7i8+9+v
+         ReLb/7/KUGOruks+eaZ/Khy1QaFJCk0kKOR8o5LrvzUfjCG9KAOXLmVFlEm4CzAtWTtE
+         IB31Qx6UeoK2GsKeVhFHITSlJ+N1Lxh+kAbt9deX0neyoZFcWU+PShOx4pS7TFII6yp5
+         xGctpWw8EITusvhPpN9RXIazbY4zEgOnCxaVT0bCMa8DYCTArx5kWGiw3tgnfpUEp8vR
+         bKz1ENLXrgCOOMchS4A8ap8YOhLhjED5A+TnSms0bh47MOEXM4jNoa917D2X83/Jz/gJ
+         xuWg==
+X-Forwarded-Encrypted: i=1; AJvYcCWbyvfAjzlrjBDIo+Oq/NgLyRtQkHNv82CCJG4aNIS4P/vIfYIWZnXSMO5iLm2kD32aONA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwVR2OkDy2pHCtOdD4Sb2DAMKZXXtdm2R72ByUi3wGlc2KChATj
+	5e64N2t9WEfAemRSZrp9kOeKqbwjGwOAik0CcQ8gkdD6ohZG8UbhAgFL
+X-Gm-Gg: ASbGncud7b17hMUw0h/uPGSUO6VY5oYgbyhsQz+wOTSbeYW3zv5nXr8HqBM/xKnzKVi
+	AMMr6Eo4QpfBi5AuuA3j8Dfmy87+0lEZPAbbHseVZcWiDtGE8c1p2hQ/3aRvJ/NSsInnI0xXlFA
+	UO0lS0UcMulw7XRTVc7Tjg13RJu60TIBqeMvvJF3u3HTbDJHdjeRDhFfy60Mqw7ptSp4yPBSAg3
+	fbwUw5OpTZzqexe3GGzv7KAkSD8u6rwdt4qrafZj//FBZGl7hxRSL3cjx4/z+wGs9vOsMnxm67o
+	n8c9kUu+0IlIUbpMBCVHomoOAAy6vZheNPJ/ZDW3QvlIfBCubywlXNmHJiV+LUi9H5L/irmDfeY
+	SnEPyDv/nvK7/OYqnQ9hv0TWy8aGTRxqe81fiCYs4yuveEFchxCOR
+X-Google-Smtp-Source: AGHT+IGnjHsAyQljYLZz2UQHy207mYMU6/HFTBywuxhNBv3nxCgO5MpvlVh0qFbK1/Zdh77rKiaXnQ==
+X-Received: by 2002:a05:690c:4911:b0:71f:e430:666b with SMTP id 00721157ae682-722764acba5mr157076777b3.32.1756906893562;
+        Wed, 03 Sep 2025 06:41:33 -0700 (PDT)
+Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6f:e2d5:5eff:fea5:802f])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-723a8329a4dsm13556527b3.22.2025.09.03.06.41.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 06:41:33 -0700 (PDT)
+Date: Wed, 3 Sep 2025 06:41:30 -0700
+From: Richard Cochran <richardcochran@gmail.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com, Frank.Li@nxp.com, yangbo.lu@nxp.com,
+	christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH net-next 0/3] ptp: add pulse signal loopback support for
+ debugging
+Message-ID: <aLhFiqHoUnsBAVR7@hoboy.vegasvil.org>
+References: <20250903083749.1388583-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -87,102 +78,15 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250812214620.30425-1-laurent.pinchart@ideasonboard.com>
+In-Reply-To: <20250903083749.1388583-1-wei.fang@nxp.com>
 
-Hello Laurent,
+On Wed, Sep 03, 2025 at 04:37:46PM +0800, Wei Fang wrote:
+> Some PTP devices support looping back the periodic pulse signal for
+> debugging,
 
-Thank you for the patches!
+What kinds of debugs can be resolved by this loopback feature?
 
-On Wed, Aug 13, 2025 at 12:45:08AM +0300, Laurent Pinchart wrote:
+It seems pointless to me...
 
-[..]
-
-> Laurent Pinchart (72):
->   dt-bindings: media: Deprecate clock-frequency property for camera
->     sensors
->   dt-bindings: media: et8ek8: Deprecate clock-frequency property
->   dt-bindings: media: imx258: Make clocks property required
->   dt-bindings: media: imx274: Make clocks property required
->   media: i2c: mt9v022: Drop unused mt9v022.h header
->   media: i2c: mt9v032: Replace client->dev usage
->   media: i2c: mt9v032: Drop support for platform data
->   media: i2c: mt9v111: Do not set clock rate manually
->   media: i2c: ov6650: Drop unused driver
->   media: i2c: hi556: Replace client->dev usage
->   media: i2c: hi556: Use V4L2 sensor clock helper
->   media: i2c: hi847: Replace client->dev usage
->   media: i2c: hi847: Use V4L2 sensor clock helper
->   media: i2c: imx208: Replace client->dev usage
->   media: i2c: imx208: Use V4L2 sensor clock helper
->   media: i2c: imx319: Replace client->dev usage
->   media: i2c: imx319: Use V4L2 sensor clock helper
->   media: i2c: imx355: Replace client->dev usage
->   media: i2c: imx335: Use V4L2 sensor clock helper
->   media: i2c: og01a1b: Replace client->dev usage
->   media: i2c: og01a1b: Use V4L2 sensor clock helper
->   media: i2c: ov02c10: Replace client->dev usage
->   media: i2c: ov02c10: Use V4L2 sensor clock helper
->   media: i2c: ov02e10: Replace client->dev usage
->   media: i2c: ov02e10: Use V4L2 sensor clock helper
->   media: i2c: ov08d10: Replace client->dev usage
->   media: i2c: ov08d10: Use V4L2 sensor clock helper
->   media: i2c: ov08x40: Replace client->dev usage
->   media: i2c: ov08x40: Use V4L2 sensor clock helper
->   media: i2c: ov13858: Replace client->dev usage
->   media: i2c: ov13858: Use V4L2 sensor clock helper
->   media: i2c: ov13b10: Replace client->dev usage
->   media: i2c: ov13b10: Use V4L2 sensor clock helper
->   media: i2c: ov2740: Replace client->dev usage
->   media: i2c: ov2740: Use V4L2 sensor clock helper
->   media: i2c: ov4689: Use V4L2 sensor clock helper
->   media: i2c: ov5670: Replace client->dev usage
->   media: i2c: ov5670: Use V4L2 sensor clock helper
->   media: i2c: ov5675: Replace client->dev usage
->   media: i2c: ov5675: Use V4L2 sensor clock helper
->   media: i2c: ov5693: Use V4L2 sensor clock helper
->   media: i2c: ov7251: Use V4L2 sensor clock helper
->   media: i2c: ov9734: Replace client->dev usage
->   media: i2c: ov9734: Use V4L2 sensor clock helper
->   media: v4l2-common: Add legacy camera sensor clock helper
->   media: i2c: et8ek8: Drop support for per-mode external clock frequency
->   media: i2c: et8ek8: Use V4L2 legacy sensor clock helper
->   media: i2c: gc05a2: Use V4L2 legacy sensor clock helper
->   media: i2c: gc08a3: Use V4L2 legacy sensor clock helper
->   media: i2c: imx258: Replace client->dev usage
->   media: i2c: imx258: Use V4L2 legacy sensor clock helper
->   media: i2c: imx290: Use V4L2 legacy sensor clock helper
->   media: i2c: ov02a10: Replace client->dev usage
->   media: i2c: ov02a10: Use V4L2 legacy sensor clock helper
->   media: i2c: ov2685: Use V4L2 legacy sensor clock helper
->   media: i2c: ov5645: Use V4L2 legacy sensor clock helper
->   media: i2c: ov5695: Use V4L2 legacy sensor clock helper
->   media: i2c: ov8856: Replace client->dev usage
->   media: i2c: ov8856: Use V4L2 legacy sensor clock helper
->   media: i2c: s5c73m3: Use V4L2 legacy sensor clock helper
->   media: i2c: s5k5baf: Use V4L2 legacy sensor clock helper
->   media: i2c: s5k6a3: Use V4L2 legacy sensor clock helper
->   ARM: dts: samsung: exynos4210-i9100: Replace clock-frequency in camera
->     sensor node
->   ARM: dts: samsung: exynos4412-midas: Replace clock-frequency in camera
->     sensor node
->   ARM: dts: ti: omap3-n950: Replace clock-frequency in camera sensor
->     node
->   ARM: dts: ti: omap3-n9: Replace clock-frequency in camera sensor node
->   ARM: dts: ti: omap3-n900: Replace clock-frequency in camera sensor
->     node
->   ARM: dts: nxp: imx6qdl-pico: Replace clock-frequency in camera sensor
->     node
->   ARM: dts: nxp: imx6qdl-wandboard: Replace clock-frequency in camera
->     sensor node
->   arm64: dts: qcom: sdm845-db845c-navigation-mezzanine: Replace
->     clock-frequency in camera sensor node
->   arm64: dts: renesas: aistarvision-mipi-adapter-2.1: Drop
->     clock-frequency from camera sensor node
->   arm64: dts: renesas: rzg2l-smarc: Drop clock-frequency from camera
->     sensor node
-
-Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-
---
-Kind Regards
-Mehdi Djait
+Thanks,
+Richard
