@@ -1,189 +1,243 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011042.outbound.protection.outlook.com [52.101.70.42])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2381E260C
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 18:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756924302; cv=fail; b=hwneuaZDtW3pQ3eIlvQe3J/Mn+MQcAeVXlnL83EAPDPWEsUPNdrbGAOujXU664Xg3fwxGILbu8Hs1PNWLeuoDhDtbrmEYZdnnGEyArRHYeo+bs/OwBS8RAnKwlss9R0TZzW4+sE1RRY2xLr13Qo3AtbQCcLLMlJbtCAvAulPryM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756924302; c=relaxed/simple;
-	bh=G0HxHAPP1zXoYal6KxRqaeCq6TY8QcoEt6NN/dWGHi8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=l8Qv+rcXn0ap9Fmp2AwIoRdx7agRzSxgB67GJyh5uO01y8sHf1YBnDATY/Ocx+2NEsaBoXiLdePVZC7RE7LLWJxTNVV8VOKdO4bQJEHR7dDnXCZehms3DYODV4lJL7xKxzSK8T3Dk6gz8hnyjtcPqPjasBxePVZQl4ZD8xAOpE4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MtdJRe3+; arc=fail smtp.client-ip=52.101.70.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FC020EB;
+	Wed,  3 Sep 2025 19:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756926607; cv=none; b=c6bXzkq9KywuFFLI55pyGifQrjpgUE7m5O/tRNCOhn/7NCSU90ShKXzaWcgPII0evL2BVeiP9SMa0xCZ/Owa+R9JtEPWY8zcvKHayVQYBj752u0uYeS2M/pQqPvSalbuB2ZeXtZaLboH1D3DWB/kwedCYY/83sOMac2SgUa+u7E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756926607; c=relaxed/simple;
+	bh=nqS3UzHQKIkIb/Rkk4XlaX9LsWxMZrg1+PMmz+JaHDI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IT/kmF4uVZndOjOXtSFm6jWeJ4NpPTS5Bu+J7opHoolIe2yNLh57c+LDNA7UXzKSTM46LjTlgQ+KB/PP6TeWk7gmjFmN2hjGRqLK/w809dp804Ar0HnqWOeV+o59lxtVXvbFwfJecEwyIrlXZq7HnUTcygq3gIJ2O5d8Voc7wKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I/QPmRRm; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MtdJRe3+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jYTTmf9UNeEZ38hLg9STgidhPUWv5qPo5tgeSsTa0n1Ns/fSDV1VKPq5c/sarbU/v2eluDxpPVPeBDE3nlCTdhKB5aPDPGx8u+Fty2Z6vioN3DtU/ZT4l/HnKWnZr4orvLOxuICS9Oawmfs5sZN/rIiZ5VxRsmzGQRR1rlYHKg89mNgNUsz5ls6JyTKIUSP4FNW9Lt1K0HoXLdkhPluf/Qqlj2SDKWuU/0qD0cxCeIewDilg7mUNs2r7CMw/l6tTwgAe7qxv7KfSs5qFnKa2vO1AsfxcGePpb2/xwnhjxXrJ99jGsO5CoPFnNS3rDFaAk8A6xjGVBl+2lk9BxbF2Cg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Jwr7eoG/Z2UGil+5oMGXcxKfDXIAymD5E5RPIShPM1o=;
- b=X6rhQTL9VZyMMg7mcDXFdHV1ls+602sQwQkylKokHRDV+/gLvEm9CZDBgzQjvALxR61dq7rrGH5mMvKFqppZyoMc6eBOi0588XYno6sj4nqI2JXlGT+IOcmFf0eaLc1enWoIyHrms3o0HyGMp1xRJZSqe4ecQMhkUHNO1Xl28olBa1UIylOwrtwkiDABtFY2ghlTNwBlXi7Rh06uhaoKfL5Zt5hkZw3ErzypdQl1lNdkJXcwe8d04ZrvpAyl865dcTgef3aSJuAIh4pOgzoRZDzI3YbBwcSlUwLApOnRjxfkrchzRHSOe3OvBEyUBkvHq1HPUlpWAPb9SipmuT831w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Jwr7eoG/Z2UGil+5oMGXcxKfDXIAymD5E5RPIShPM1o=;
- b=MtdJRe3+mfY2hFdqok1JCWdSSDiBA39R40E3U+RE2ioLFKOl/OAlerCev9FOe6QM/eYpWppZutPsnNhqjTS3FcQIRysPEsmADNv6B9QtCfDTmI7u3g/pYtJRWe7dLPg2snqwcy6KDitYMkGIeD2p4q1nmwH4xIUmofYvacBRjJAM46/am+RSmMYQNlFIz5MbCuS6xXmsIthA9e/gJKurDvzndbP/r0YjqRzYsfHvojHIP4WUa3caNnJRmrIrFivhZqoD2/jkh2/SS45wnc66Lu2vhaQW9n/akKp4JZNcC4S17ISmFIrrKEfQVQ7mxDDagIBdDIMBstrprKo2zJtMvA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by DB8PR04MB7081.eurprd04.prod.outlook.com (2603:10a6:10:fe::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.10; Wed, 3 Sep
- 2025 18:31:37 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%7]) with mapi id 15.20.9094.015; Wed, 3 Sep 2025
- 18:31:37 +0000
-Date: Wed, 3 Sep 2025 14:31:28 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I/QPmRRm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756926605; x=1788462605;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=nqS3UzHQKIkIb/Rkk4XlaX9LsWxMZrg1+PMmz+JaHDI=;
+  b=I/QPmRRmhNz4uV8yNiNKD1aE7PuMzTh4ZYJD0S2e7XSZ+muIP3NXlCi9
+   dGLs0nlkGDPCW/bA/DsfK2BbKhMsuqyMXOVVekLwKmEdGRE2GqpJg5SXB
+   c65ZOJCvEsNYSOmDHMH/EL8pOUlyff1JakSRaHYovBtcZ4z44EXdV0lcF
+   8BEjxc3HpuZC5S8Ko4kNSPhHCY7EKZMBjFJVDYcPmgBYk4YmaXWrABaiL
+   tWIEeznqN1urvuURFCf/rtdPitFBDd7CnJ4QNIuDtd4LY+CgDm+cgegLC
+   Zjzw8PuAYoNN9ZqYb/+82wSx4OEweHsz83LmTnybvGcEIklRGibDlIZj4
+   A==;
+X-CSE-ConnectionGUID: clYvbbk2ThKycLjE5cSEAg==
+X-CSE-MsgGUID: TAHhzYWkSTWT3Lgzrq+bPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="69513730"
+X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; 
+   d="scan'208";a="69513730"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 12:10:01 -0700
+X-CSE-ConnectionGUID: nGwL7IPyTYW/wuPoo+6uVg==
+X-CSE-MsgGUID: AsgfiIXISiG9KRkXNJLYfg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; 
+   d="scan'208";a="171814105"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.11])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 12:09:45 -0700
+Date: Wed, 3 Sep 2025 22:09:41 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Haneen Mohammed <hamohammed.sa@gmail.com>,
+	Melissa Wen <melissa.srw@gmail.com>, Jyri Sarha <jyri.sarha@iki.fi>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Paul Cercueil <paul@crapouillou.net>, linux-mips@vger.kernel.org,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Manikandan Muralidharan <manikandan.m@microchip.com>,
+	Dharma Balasubiramani <dharma.b@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	linux-arm-kernel@lists.infradead.org,
+	Inki Dae <inki.dae@samsung.com>,
+	Seung-Woo Kim <sw0312.kim@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	linux-samsung-soc@vger.kernel.org, Liu Ying <victor.liu@nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Trent Piepho <tpiepho@impinj.com>, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: imx: fix device node reference leak in
- imx_pcie_probe
-Message-ID: <aLiJgMXB0wIjadrd@lizhi-Precision-Tower-5810>
-References: <20250903135150.2527259-1-linmq006@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250903135150.2527259-1-linmq006@gmail.com>
-X-ClientProxiedBy: PH8PR02CA0021.namprd02.prod.outlook.com
- (2603:10b6:510:2d0::28) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+	Edmund Dea <edmund.j.dea@intel.com>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Sui Jingfeng <suijingfeng@loongson.cn>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+	Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+	Sandy Huang <hjc@rock-chips.com>,
+	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	linux-rockchip@lists.infradead.org, Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>, linux-sunxi@lists.linux.dev,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>, linux-tegra@vger.kernel.org,
+	Hans de Goede <hansg@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>
+Subject: Re: [PATCH v2 00/37] drm/atomic: Get rid of existing states (not
+ really)
+Message-ID: <aLiSdWgOl15jb8Ga@intel.com>
+References: <20250902-drm-no-more-existing-state-v2-0-de98fc5f6d66@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DB8PR04MB7081:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ab789dc-9792-4062-380e-08ddeb181e0d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|19092799006|52116014|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?iIqut9O14cuF5nKtPASJ38qRCQXmVU1fl/o7SohWbO7Mb6pzDRY31+ZfPnjW?=
- =?us-ascii?Q?SQJrZ/7rhLL1Tt8VZ3hb+0MpwcPqK4QoXC4TSQx6EkKBXnLSz0eopJI3wOJI?=
- =?us-ascii?Q?r4ZID2uq54qZOHaDt3Uz2vAw25VrW9QZljUIo50IPpY00fCZ5Ert6DFEoho3?=
- =?us-ascii?Q?zu+SX09xqQbYw0sChkARG6/H/EgulZE3fSG8eNvtldVC2YnCU6Le1t3LdK4w?=
- =?us-ascii?Q?Jqby84tm9wYAOQyDDWZdLoBcHg1SNP/Tlp4JchVwPE7ey7XxKQXtyxGuSJMP?=
- =?us-ascii?Q?DlKzg54EFDEvY2L8T+a5k6F6tBMU6pulkTsK4lKkttBCrgYzvrbe/rUROAuS?=
- =?us-ascii?Q?/SmRe7HPuVVKAPXBJyeZS7W1ptCk1iYzRExBTazkdILVv7pzCkAfLmUfHs9+?=
- =?us-ascii?Q?BX5UaoWSvFkK7KDesCOLuz3XXepr1ladb/af1HQiegawNnk8uvHdzwK2g0jP?=
- =?us-ascii?Q?ALUtyBaJEaoEL6YW4YPUB5VLczPOc3qfCpggndNzGjNr4otY8Fy2IRybIm3S?=
- =?us-ascii?Q?276guluMeAtJf3ITcPXILj0+0h0XpfuE9aU4FtMBKm4rKUjrACnY13+WISQE?=
- =?us-ascii?Q?XAKGIP3BgqZBC2qn0sTyEt8Sns79trFr9MG1IpPN/9sjQ9jwwys84HUJvVmi?=
- =?us-ascii?Q?n/I9OrVfBAfbLR5z7PaFwOhQOCuhz2IZcQNKp+2LL0hAhSp5TN1ZV19lzpgc?=
- =?us-ascii?Q?09KqkQXVHRw0pptFdTkG1y4O6Nhhb3cpaayPyusfWnL4vLkj969KRi6ZDfPm?=
- =?us-ascii?Q?JQ1r4lGeX+gLqrZVgIEwFg9soqmS6mmgPc60U93UG0R9cSS5Tsh2xxEEf5lT?=
- =?us-ascii?Q?OemmqV2cjSdl1vb2U0YigSAkeqny34RQECqd+WZT3aToWsD28WOKwi7/mLLw?=
- =?us-ascii?Q?38XzHsgj6Y8FuIxl678ZcZLsBGEWD+5mHcph7VDPDVkAJHmEsmcWylGZGqAY?=
- =?us-ascii?Q?/synESUFq/uo1UVVO4kz9AGKcS3oklAgG6z8epKL/ewiScBj+TZDi0zr8gxk?=
- =?us-ascii?Q?lH9UCPz6VKgC79MxSfv7DlJW65g9O4foOiXUFXzKcvpHTkFov5MdHFdIzU3Z?=
- =?us-ascii?Q?iNAQ/7f+XCYNqWxxbd/lmksFLLyxh5T0Aou+rBgjMBP8Noy1qG1wHn/5R9fL?=
- =?us-ascii?Q?F5zHVD0w2Ka9TwLqI6LpeSooohV5ffoT2495UdkDG33xcQUTAPZNry0wEsPT?=
- =?us-ascii?Q?W1O79aathQNYbLIPVWhVYvck/H4IXJcXQ9SAvzsWKJAHMbc/Fv6WH6wIbvl8?=
- =?us-ascii?Q?ffPMHs9ZiftFD9ukUuoVHRNfEm78p0yffzafdpVZABPIY8g2oMdEHzQsKBq9?=
- =?us-ascii?Q?jQZUHWyhe/f2Cvasgm9zddjF1hq3QgkuKz2ykWLGBjR1QW/RHhh9dq7MvXUz?=
- =?us-ascii?Q?7nLXOsRPgEXetlrxuhlrlEIURsbp7r7vLOcI0X119y5RKVHKEckuTjawEUop?=
- =?us-ascii?Q?SQgUQmN2wfI5QZjdAJxkXftTo0o1FxykLyJb3MYqHGB52hyETAE1HQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(19092799006)(52116014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WokjJl0mCDMi9qfvb/x2hVyz2fPOC8sUDVn41yPzQwur1Z7qVVdS7PVCyylt?=
- =?us-ascii?Q?h0oc+iSA0VpV+ndxNFlC3MKc1XpQBLUAL0BTTAvNYizVyOu76Ghl7/e0OXoR?=
- =?us-ascii?Q?c2ZKtW7pDOr9AxgorqV7NkllnsWbWttdgBTsk31/cFEjUvJVMPjUPS3N+9It?=
- =?us-ascii?Q?6jQXtIGQickRQ6mHaZmUzuVdBDJP8/xGhu8O2coAhV1lXLDjC/H09PqoXg/c?=
- =?us-ascii?Q?M/7/ziEaISv7jXMVF9GqLK1XgTWWouWhzGl8zCNzdw3olrZozHS6aGd9hv6Q?=
- =?us-ascii?Q?ICz2N0GYphC1zlVDNwQ2D1FWv7adOlghdgfGjW8QGoNUcdF7Zpl2+wsRtqki?=
- =?us-ascii?Q?2PcAze8PcFN25Mk/wO/Sizl9Ql1cSjIWr6eIjcLLdJC57wNSVu8chISUX4nw?=
- =?us-ascii?Q?4G2kb5QpysuT0/bga/ZrXfUxFiWVFlErq0Y/n6b0MB8G0ZKzCx4mqG2kKB7+?=
- =?us-ascii?Q?36W2rWez/k+oeaMxOdHgFMlCunW8sQn08I0faizCbOaUUO0c9kZN0cTqA7qg?=
- =?us-ascii?Q?xPih/1oS7YfdPCl8S58AHrlOmnePpFUybnhs6x53rxcVUHIf3piKSdj448x6?=
- =?us-ascii?Q?2S4GiUA1MkPuzC7EJY9h+vECtfRBmi/XOmoK2z2b26uw9q/8YUpufZqeW5Nw?=
- =?us-ascii?Q?O0iKDQakUsASItz1Lg8MJ70lOTSAWvFq5QHZWAvvp1zQFCTCnQ7DQVQEzcuQ?=
- =?us-ascii?Q?VaR0N9vdaAqw4t9pOrpSW3GPNDgBNcunSa/Ao5gdrglO6Va1KmGQtG7L8gAr?=
- =?us-ascii?Q?FMvnlyBzEbOj7gHv8qOND1lDIzbC1MgctpzvgleinLcZN+KJ5uqOMie0WJ0i?=
- =?us-ascii?Q?K8Q1XIQWCQpsL8xIiRY+kx9uzx1vTUTmM/TFW7tNm5cyJIkMZrQsKGdz8gvX?=
- =?us-ascii?Q?qiAd18ze5bsRwGcuiG08nfke0x5kU+Lcv0maDTXrWSbF1YdmeBqtI9n2+i01?=
- =?us-ascii?Q?aglym1U1kgXJ5E3xJ9qK2oyybMtflZzh0qOcaZdsDYak1xWZtfy9mmkUDZNS?=
- =?us-ascii?Q?L7ofyBkBwZb8/3ex9nXtBbCyUTb7LMpEf53ziirnWlMm7tsBX22w2r2svoxg?=
- =?us-ascii?Q?456YABYyXaWjgJkXFaUqDGGBixaO6ILhKKVVL8cwoKoVMGzlLIq0oybilvir?=
- =?us-ascii?Q?6+HDSKnApN8N9wAFAhZPEL2QigkmxQ5Hnno02sh7dW5fPCelvUdNkZ3P+O07?=
- =?us-ascii?Q?Qd1vTAPF68h+mCuKpbQDPNJ5rNEQtlk9aEHrnU4t1Rdm2lqoVbMaeAAxOgwr?=
- =?us-ascii?Q?p9HBXOufCxOmC+LD3ETF1nCkcvqxB1i4UIlIQ2nTWCn8PRdY8FUM80ooMG8Z?=
- =?us-ascii?Q?Ph1Mnsgy3c1FHn8SAx38oqsTbcyH8YxreNwT96xVU79g08aapIU6sQ3gGkl3?=
- =?us-ascii?Q?CdC96jFEuWCpCtsOv1X3k+eiYpCoE5+EZZsAtuHbE/9JqZxMKZCNBOMzXrbb?=
- =?us-ascii?Q?3Xvs/bhYh41Wea/b5fxP0FU0hv2HGBwsldGlUiRzgCa9PtFfqI3lza9Ntxyo?=
- =?us-ascii?Q?o7jxIM1lLDFe0FPdNAkt1myvIfr0IoyhssVdwTwwwoxBjOBLHm6drgtvPDCU?=
- =?us-ascii?Q?cvYbxU/X5NOaepXOBzfkD2WZax/7oapugRezgZ00?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ab789dc-9792-4062-380e-08ddeb181e0d
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 18:31:37.3890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /MG+qK76r0cB1eQAMlJWFPHMVkopSmn+vzarB2/uiv3/I3bQkrQ0FkjVpR6WTyJfTnSumhQlD5PfU/SfNzcVLA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7081
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250902-drm-no-more-existing-state-v2-0-de98fc5f6d66@kernel.org>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Sep 03, 2025 at 09:51:50PM +0800, Miaoqian Lin wrote:
+On Tue, Sep 02, 2025 at 11:34:59AM +0200, Maxime Ripard wrote:
+> Hi,
+> 
+> Here's a series to get rid of the drm_atomic_helper_get_existing_*_state
+> accessors.
+> 
+> The initial intent was to remove the __drm_*_state->state pointer to
+> only rely on old and new states, but we still need it now to know which
+> of the two we need to free: if a state has not been committed (either
+> dropped or checked only), then we need to free the new one, if it has
+> been committed we need to free the old state. 
+> 
+> Thus, the state pointer is kept (and documented) only to point to the
+> state we should free eventually.
+> 
+> All users have been converted to the relevant old or new state
+> accessors.  
+> 
+> This was tested on tidss.
+> 
+> Let me know what you think,
+> Maxime
+> 
+> Signed-off-by: Maxime Ripard <mripard@kernel.org>
 
-Subject: PCI: imx: Add missing of_node_put() to fix device node reference leak
+<replying again to see if my smtp issues are now solved...>
 
-> As the doc of of_parse_phandle() states:
-> "The device_node pointer with refcount incremented.  Use
->  * of_node_put() on it when done."
+Other than the pre-existing ingenic private state issue that
+Dmitry spotted I didn't see anything obviously wrong.
 
-Needn't this paragaph
+So apart from that the series is
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Frank
-> Add missing of_node_put() after of_parse_phandle() call to properly
-> release the device node reference.
->
-> Found via static analysis.
->
-> Fixes: 1df82ec46600 ("PCI: imx: Add workaround for e10728, IMX7d PCIe PLL failure")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 80e48746bbaf..618bc4b08a8b 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1636,6 +1636,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  		struct resource res;
->
->  		ret = of_address_to_resource(np, 0, &res);
-> +		of_node_put(np);
->  		if (ret) {
->  			dev_err(dev, "Unable to map PCIe PHY\n");
->  			return ret;
-> --
-> 2.35.1
->
+> Changes in v2:
+> - Dropped the first and second patches
+> - Reworked the recipient list to be nicer with SMTPs
+> - Link to v1: https://lore.kernel.org/r/20250825-drm-no-more-existing-state-v1-0-f08ccd9f85c9@kernel.org
+> 
+> ---
+> Maxime Ripard (37):
+>       drm/atomic: Convert drm_atomic_get_connector_state() to use new connector state
+>       drm/atomic: Remove unused drm_atomic_get_existing_connector_state()
+>       drm/atomic: Document __drm_connectors_state state pointer
+>       drm/atomic: Convert __drm_atomic_get_current_plane_state() to modern accessor
+>       drm/atomic: Convert drm_atomic_get_plane_state() to use new plane state
+>       drm/vkms: Convert vkms_crtc_atomic_check() to use new plane state
+>       drm/tilcdc: crtc: Use drm_atomic_helper_check_crtc_primary_plane()
+>       drm/atomic: Remove unused drm_atomic_get_existing_plane_state()
+>       drm/atomic: Document __drm_planes_state state pointer
+>       drm/atomic: Convert drm_atomic_get_crtc_state() to use new connector state
+>       drm/ingenic: ipu: Switch to drm_atomic_get_new_crtc_state()
+>       drm/arm/malidp: Switch to drm_atomic_get_new_crtc_state()
+>       drm/armada: Switch to drm_atomic_get_new_crtc_state()
+>       drm/atmel-hlcdc: Switch to drm_atomic_get_new_crtc_state()
+>       drm/exynos: Switch to drm_atomic_get_new_crtc_state()
+>       drm/imx-dc: Switch to drm_atomic_get_new_crtc_state()
+>       drm/imx-dcss: Switch to drm_atomic_get_new_crtc_state()
+>       drm/imx-ipuv3: Switch to drm_atomic_get_new_crtc_state()
+>       drm/ingenic: Switch to drm_atomic_get_new_crtc_state()
+>       drm/kmb: Switch to drm_atomic_get_new_crtc_state()
+>       drm/logicvc: Switch to drm_atomic_get_new_crtc_state()
+>       drm/loongson: Switch to drm_atomic_get_new_crtc_state()
+>       drm/mediatek: Switch to drm_atomic_get_new_crtc_state()
+>       drm/msm/mdp5: Switch to drm_atomic_get_new_crtc_state()
+>       drm/omap: Switch to drm_atomic_get_new_crtc_state()
+>       drm/rockchip: Switch to drm_atomic_get_new_crtc_state()
+>       drm/sun4i: Switch to drm_atomic_get_new_crtc_state()
+>       drm/tegra: Switch to drm_atomic_get_new_crtc_state()
+>       drm/tilcdc: Switch to drm_atomic_get_new_crtc_state()
+>       drm/vboxvideo: Switch to drm_atomic_get_new_crtc_state()
+>       drm/vc4: Switch to drm_atomic_get_new_crtc_state()
+>       drm/atomic: Switch to drm_atomic_get_new_crtc_state()
+>       drm/framebuffer: Switch to drm_atomic_get_new_crtc_state()
+>       drm/atomic: Remove unused drm_atomic_get_existing_crtc_state()
+>       drm/atomic: Document __drm_crtcs_state state pointer
+>       drm/atomic: Convert drm_atomic_get_private_obj_state() to use new plane state
+>       drm/atomic: Document __drm_private_objs_state state pointer
+> 
+>  drivers/gpu/drm/arm/malidp_planes.c             |   2 +-
+>  drivers/gpu/drm/armada/armada_plane.c           |   3 +-
+>  drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c |   2 +-
+>  drivers/gpu/drm/drm_atomic.c                    |  21 ++--
+>  drivers/gpu/drm/drm_framebuffer.c               |   2 +-
+>  drivers/gpu/drm/exynos/exynos_drm_plane.c       |   2 +-
+>  drivers/gpu/drm/imx/dc/dc-plane.c               |   2 +-
+>  drivers/gpu/drm/imx/dcss/dcss-plane.c           |   4 +-
+>  drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c         |   3 +-
+>  drivers/gpu/drm/ingenic/ingenic-drm-drv.c       |   3 +-
+>  drivers/gpu/drm/ingenic/ingenic-ipu.c           |   4 +-
+>  drivers/gpu/drm/kmb/kmb_plane.c                 |   3 +-
+>  drivers/gpu/drm/logicvc/logicvc_layer.c         |   4 +-
+>  drivers/gpu/drm/loongson/lsdc_plane.c           |   2 +-
+>  drivers/gpu/drm/mediatek/mtk_plane.c            |   3 +-
+>  drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c      |   7 +-
+>  drivers/gpu/drm/omapdrm/omap_plane.c            |   2 +-
+>  drivers/gpu/drm/rockchip/rockchip_drm_vop.c     |   6 +-
+>  drivers/gpu/drm/rockchip/rockchip_drm_vop2.c    |   2 +-
+>  drivers/gpu/drm/sun4i/sun8i_ui_layer.c          |   3 +-
+>  drivers/gpu/drm/sun4i/sun8i_vi_layer.c          |   3 +-
+>  drivers/gpu/drm/tegra/dc.c                      |   2 +-
+>  drivers/gpu/drm/tilcdc/tilcdc_crtc.c            |   9 +-
+>  drivers/gpu/drm/tilcdc/tilcdc_plane.c           |   3 +-
+>  drivers/gpu/drm/vboxvideo/vbox_mode.c           |   8 +-
+>  drivers/gpu/drm/vc4/vc4_plane.c                 |   6 +-
+>  drivers/gpu/drm/vkms/vkms_crtc.c                |   4 +-
+>  include/drm/drm_atomic.h                        | 144 ++++++++++++------------
+>  28 files changed, 124 insertions(+), 135 deletions(-)
+> ---
+> base-commit: 7fa4d8dc380fbd81a9d702a855c50690c9c6442c
+> change-id: 20250825-drm-no-more-existing-state-9b3252c1a33b
+> 
+> Best regards,
+> -- 
+> Maxime Ripard <mripard@kernel.org>
+
+-- 
+Ville Syrjälä
+Intel
