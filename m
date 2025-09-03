@@ -1,196 +1,102 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C31A2D9EC2
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 21:45:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3E832F744
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 23:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756935910; cv=none; b=RZ6glU+znq/nOJhfFQiMusLHHLLOA8/QkSN21oFjyFpSw+MMNpNrphqcBAs0CHtBtX4o0miHWFDlFOB1bQcX7RNz88YF6uoFzIF+73gAPRSW/bWAZLUTWgzHT5EUbF4BPun6u+eoDOJuj5y2G60T0mRXAdFbkcYnymuzI64Uiqg=
+	t=1756942674; cv=none; b=SAgpEz2xbbSihUorsE1dT9gE9JSDYCJSf8tpU4cpLrmwLogsUVNh4FQl8vRjCLj0Yep8PQnErRX5X0LCM8OOlzmwM1AQ1r1C7RdwdMJrnCWIwVoORBCSVPI1HOIHSVLLa7yc08zNs1vgU9tcPXGUaWNQa9qqEwsShyDBNN+YPto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756935910; c=relaxed/simple;
-	bh=Rk/81HoYs1XcBUonvHKeYrsIYcl6a8/NFUPshCQPazE=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=H0zmZF6Quxmu4AUhGPrqs6Z1v25WO+xVadYXK01wHi9QczqmTQxkoBQHUEJNepIgwVKQWUm+US/sHFD+s98WsbPuFU1SpxrLuIVsXJxPO4JqxndaBagzMTrwUatFzbtu5JSCqyOjCtgwfXLp2yrunQn0naPE65cnChMbidbM1mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=vkFm4xmi; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1756942674; c=relaxed/simple;
+	bh=stw58zCoGvddooZhq93UKDXlgwE9hSJd7dCfuvUXu1I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G48uO3Nukxs7vTylb+uXUwK9Z/kMAOUzoYRtwUV7QCUtm08jvo82TPj+KGMd8t8w0Q/UQ3pJxj8nkTXGuWWwcf4ZPt1dLOokGeda3mnp8cI0JgyW09UM4NBUhz7sVSiOTbJyb5FXIy79HDb28QKbRznY/DcCvNOvzVHmgaSAZaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I/tvalnr; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="vkFm4xmi"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4cHGNw69gDz9tGC;
-	Wed,  3 Sep 2025 23:45:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1756935904;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZHjmanIcUbDp1eBa3yuGWLKN46L05l3A9F8rJ1gjMeE=;
-	b=vkFm4xmiSkJrIIWfI+hF9v56JXlaziTisVgB/GlTG9jFBC7oXYCdea4poqo1uIryj3BT74
-	U79gyfG7hok/ac/eq/BRraZ8UeKuV/XMKMORJSJL+g0NLYQH8yldjSscUF9QkETfU9MJa9
-	bFSa0PiHK6+g5MXCF0Hsp9VITi2V3HQBOnGiUTvXc/rEnuG8F2WF/3Gc4MyN0QQo3PncKO
-	Ajgt9o3MwWJFKwiTUz199kCI7h4mErrlSXaF9GmzsvjQaasZ7hMrVLiZBXZ8VUhjcozNp5
-	H1zLA24J/zJewbbYpVxkRVv/n0b50Ar+yiHcSl9VEb45aX9LZWuIc35VlLIbEA==
-Content-Type: multipart/mixed; boundary="------------RUV3G7hQJYDoa7JET1paPDuU"
-Message-ID: <838a0c6b-845b-428d-86b3-1480e5b8080f@mailbox.org>
-Date: Wed, 3 Sep 2025 23:44:59 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I/tvalnr"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-336b071e7e5so3540471fa.1
+        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 16:37:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756942671; x=1757547471; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Tv/e5+QmWiSB8PrnuSDhZ46U1TqYFEGl3buUo+cKFiE=;
+        b=I/tvalnrcQTwsBACj4JxyeKKDzkK9deJNQyIALJ1QWo2p8XFN7urA/ihnbg/uhdqSE
+         +UmFUCZde21MUh/yCKeOPVBmNtzo0Pwv4pZmR8uc/CVlTjiif1DaO7xVzyOoGsmk4C4b
+         kIkE5CldlBmj6D5S3JPwXwa9e1aQI5rfkHsZFCi+z0Plle/ZVsBGr8OG0ZsDld3uij56
+         ScvLDLhjxBxD7hAwHlLB2hrZ9uIxpaaA6IprWPlDOz6B7I5HmMv8I4HCtTHMCco0KrUc
+         ZOaOp/1QM0r7KoZy6QhyDJ7NqyfG3uC49UF5Y19rKn+AljcVpTSUOpYj//fPECwyFjDE
+         TLaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756942671; x=1757547471;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Tv/e5+QmWiSB8PrnuSDhZ46U1TqYFEGl3buUo+cKFiE=;
+        b=m+DTtTGp91FAe8iwtUiPQ/6YgbwC3Nl9Jyxm2939DcDB58T+eWO+lh1ahA2i1ddara
+         Z/H6n6H/j5gHUBhyruyq46b16PCW81eVYlpeLfu1cB22zBtkt1PFEetQT1Q/eoQ/Jb2D
+         B2M5wqC0qsd0KTyXwPx7G2z6QRy6DL86kqpio1ay+jlYyYAuE5e571OO4J5Fv754GWvj
+         iRRMYO1zkzFXqipoz6cAV9SJKDm5tp77DQDFZm+mdE6pdEM20qrnil+ZKW4EOBYo2Jhy
+         /MGTRJVGZRrsIhTMApTJqnUX2iODjGZ5cIkNID0caP/1qd5pWRCtvxDihHyzObmLreuR
+         IX8g==
+X-Forwarded-Encrypted: i=1; AJvYcCXYwu3QPaBQoGWOzqDKfLBLwSp/iqASzqq9DoIxiyJ7LruqhLOxvq4AjawSko2Uj3D8GA4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxwsugRAgAkTm77uEk8zM5HC1ZWv8LaTLYKKBKoQB3r0Az+W4qB
+	2Hc/csgLldi5yuGn17US4566pVlQOPfyR7LnQiwEB9mrEJ7gvFRkogS0ClZS/hCcqM4k996LTXq
+	0kcUWx+CPUffikvXWV4g2buIdArjlzRo=
+X-Gm-Gg: ASbGncsKHSObjoSLnlJkQIpkjhdRRpjQYZTqShbqDyd2vNTj8WbrdfcM+6+8uUEJW1L
+	6UcqXorvjKBJKU6gdzuOrBx0dnJDyWM9WRaqhZUhTZiI0/Y9HJ9g0KyXE2/9jW8l3ydFrP4U2Ox
+	8AaR2z/0wBWLXX4lOXaw+UV5Hrq4HFasU0qF4UsHq3GtQnYONLTdEt4lrOC3rs7cM7Vjvl7rPSt
+	OTNA1yIN2gF1eM7yCKVZgjuX3dGeDNtBzjmE69UTSkG7AdCqQ==
+X-Google-Smtp-Source: AGHT+IFYFXtX+tu/KEl7pQSY71FNh6F7y1XpLJcTeG502OgoDXb/vUP+HRDx37HC/Vxfaeu0jNJZux+/9gdjOo9o0+E=
+X-Received: by 2002:a05:651c:221a:b0:338:164:905c with SMTP id
+ 38308e7fff4ca-3380164ae7bmr15568211fa.40.1756942671236; Wed, 03 Sep 2025
+ 16:37:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
- David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
- Steven Price <steven.price@arm.com>, Thomas Zimmermann
- <tzimmermann@suse.de>, devicetree@vger.kernel.org,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev
-References: <20250321200625.132494-1-marex@denx.de>
- <20250321200625.132494-5-marex@denx.de>
- <20250324094333.7afb17a1@collabora.com>
- <c1de2afb-3559-4fbb-b13b-2373175b420b@denx.de>
- <20250325084349.344a0f11@collabora.com>
- <7aadf355-edf0-46fc-b969-65c3789375ca@denx.de>
- <20250325153507.61d82e39@collabora.com>
- <4c06aef3-a254-437c-aa15-8e3eb7bf5951@denx.de>
- <20250325155231.0d1b1000@collabora.com>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <20250325155231.0d1b1000@collabora.com>
-X-MBO-RS-ID: d51b669d6529346a39c
-X-MBO-RS-META: u4q78zyf4fuepdgig3d9tbpa5hm16r61
+References: <20250903-imx6_dts_warning-v1-0-1e883d72e790@nxp.com> <20250903-imx6_dts_warning-v1-5-1e883d72e790@nxp.com>
+In-Reply-To: <20250903-imx6_dts_warning-v1-5-1e883d72e790@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 3 Sep 2025 20:37:39 -0300
+X-Gm-Features: Ac12FXyZOBrMIjlst-APzm8-fpvaAVU9IDxp1yLvwRyOjk9Sn4UouD6F8_4boGQ
+Message-ID: <CAOMZO5AGv2ykKmL631A6O2yas-1ffmFaZdHFGMxrFx93G9t8XA@mail.gmail.com>
+Subject: Re: [PATCH 05/16] ARM: dts: imx6qdl-aristainetos2: rename
+ ethernet-phy to ethernet-phy@0
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	hs@nabladev.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is a multi-part message in MIME format.
---------------RUV3G7hQJYDoa7JET1paPDuU
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi Frank,
 
-On 3/25/25 3:52 PM, Boris Brezillon wrote:
+Thanks for working on this series.
 
-Hello Boris,
+On Wed, Sep 3, 2025 at 5:20=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+>
+> Rename ethernet-phy to ethernet-phy@0 to fix below CHECK_DTB warnings:
+>   arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos2_4.dtb: ethernet@2188000 =
+(fsl,imx6q-fec): mdio: Unevaluated properties are not allowed ('ethernet-ph=
+y' was unexpected)
+....
 
-sorry for the late reply.
+> -               ethphy: ethernet-phy {
+> +               ethphy: ethernet-phy@0 {
+>                         compatible =3D "ethernet-phy-ieee802.3-c22";
+> +                       reg =3D <0>;
 
->>>>>>> Hm, that might be the cause of the fast reset issue (which is a fast
->>>>>>> resume more than a fast reset BTW): if you re-assert the reset line on
->>>>>>> runtime suspend, I guess this causes a full GPU reset, and the MCU ends
->>>>>>> up in a state where it needs a slow reset (all data sections reset to
->>>>>>> their initial state). Can you try to move the reset_control_[de]assert
->>>>>>> to the unplug/init functions?
->>>>>> Is it correct to assume , that if I remove all reset_control_assert()
->>>>>> calls (and keep only the _deassert() calls), the slow resume problem
->>>>>> should go away too ?
->>>>>
->>>>> Yeah, dropping the _assert()s should do the trick.
->>>> Hmmm, no, that does not help. I was hoping maybe NXP can chime in and
->>>> suggest something too ?
->>>
->>> Can you try keep all the clks/regulators/power-domains/... on after
->>> init, and see if the fast resume works with that. If it does,
->>> re-introduce one resource at a time to find out which one causes the
->>> MCU to lose its state.
->>
->> I already tried that too . I spent quite a while until I reached that L2
->> workaround in fact.
-> 
-> So, with your RPM suspend/resume being NOPs, it still doesn't work?
-> Unless the FW is doing something behind our back, I don't really see
-> why this would fail on your platform, but not on the rk3588. Are you
-> sure the power domains are kept on at all times. I'm asking, because if
-> you linked all the PDs, the on/off sequence is automatically handled by
-> the RPM core at suspend/resume time.
+Are you sure the Ethernet PHY is actually at address 0?
 
-I revisited this now.
+The board schematics are often needed to get this information.
 
-Can you please test the following patch (also attached) on one of your 
-devices, and tell me what the status is at the end . The diff sets the 
-GLB_HALT bit and then clears it again, which I suspect should first halt 
-the GPU and (this is what I am unsure about) then again un-halt/resume 
-the GPU ?
-
-"
-diff --git a/drivers/gpu/drm/panthor/panthor_fw.c 
-b/drivers/gpu/drm/panthor/panthor_fw.c
-index 9bf06e55eaeea..57c0d4fd29aa2 100644
---- a/drivers/gpu/drm/panthor/panthor_fw.c
-+++ b/drivers/gpu/drm/panthor/panthor_fw.c
-@@ -1087,8 +1087,16 @@ void panthor_fw_pre_reset(struct panthor_device 
-*ptdev, bool on_hang)
-  		struct panthor_fw_global_iface *glb_iface = 
-panthor_fw_get_glb_iface(ptdev);
-  		u32 status;
-
-+pr_err("%s[%d] pre-halt status=%x\n", __func__, __LINE__, 
-gpu_read(ptdev, MCU_STATUS));
-+
-  		panthor_fw_update_reqs(glb_iface, req, GLB_HALT, GLB_HALT);
-  		gpu_write(ptdev, CSF_DOORBELL(CSF_GLB_DOORBELL_ID), 1);
-+mdelay(100);
-+pr_err("%s[%d] likely-halted status=%x\n", __func__, __LINE__, 
-gpu_read(ptdev, MCU_STATUS));
-+		panthor_fw_update_reqs(glb_iface, req, 0, GLB_HALT);
-+mdelay(100);
-+pr_err("%s[%d] likely-running ? status=%x\n", __func__, __LINE__, 
-gpu_read(ptdev, MCU_STATUS));
-+
-  		if (!gpu_read_poll_timeout(ptdev, MCU_STATUS, status,
-  					   status == MCU_STATUS_HALT, 10,
-  					   100000)) {
-"
-
-In my case, the relevant output looks like this:
-
-"
-[    3.326805] panthor_fw_pre_reset[1090] pre-halt status=1
-[    3.432151] panthor_fw_pre_reset[1095] likely-halted status=2
-[    3.542179] panthor_fw_pre_reset[1098] likely-running ? status=2
-"
-
-That means, the GPU remains halted at the end, even if the "GLB_HALT" 
-bit is cleared before the last print. The clearing of GLB_HALT is also 
-what panthor_fw_post_reset() does.
-
-I suspect the extra soft reset I did before "un-halted" the GPU and 
-allowed it to proceed.
-
-I wonder if there is some way to un-halt the GPU using some gpu_write() 
-direct register access, is there ? Maybe the GPU remains halted because 
-setting the GLB_HALT stops command stream processing, and the GPU never 
-samples the clearing of GLB_HALT and therefore remains halted forever ?
---------------RUV3G7hQJYDoa7JET1paPDuU
-Content-Type: text/x-patch; charset=UTF-8; name="pan.diff"
-Content-Disposition: attachment; filename="pan.diff"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9wYW50aG9yL3BhbnRob3JfZncuYyBiL2Ry
-aXZlcnMvZ3B1L2RybS9wYW50aG9yL3BhbnRob3JfZncuYwppbmRleCA5YmYwNmU1NWVhZWVh
-Li41N2MwZDRmZDI5YWEyIDEwMDY0NAotLS0gYS9kcml2ZXJzL2dwdS9kcm0vcGFudGhvci9w
-YW50aG9yX2Z3LmMKKysrIGIvZHJpdmVycy9ncHUvZHJtL3BhbnRob3IvcGFudGhvcl9mdy5j
-CkBAIC0xMDg3LDggKzEwODcsMTYgQEAgdm9pZCBwYW50aG9yX2Z3X3ByZV9yZXNldChzdHJ1
-Y3QgcGFudGhvcl9kZXZpY2UgKnB0ZGV2LCBib29sIG9uX2hhbmcpCiAJCXN0cnVjdCBwYW50
-aG9yX2Z3X2dsb2JhbF9pZmFjZSAqZ2xiX2lmYWNlID0gcGFudGhvcl9md19nZXRfZ2xiX2lm
-YWNlKHB0ZGV2KTsKIAkJdTMyIHN0YXR1czsKIAorcHJfZXJyKCIlc1slZF0gcHJlLWhhbHQg
-c3RhdHVzPSV4XG4iLCBfX2Z1bmNfXywgX19MSU5FX18sIGdwdV9yZWFkKHB0ZGV2LCBNQ1Vf
-U1RBVFVTKSk7CisKIAkJcGFudGhvcl9md191cGRhdGVfcmVxcyhnbGJfaWZhY2UsIHJlcSwg
-R0xCX0hBTFQsIEdMQl9IQUxUKTsKIAkJZ3B1X3dyaXRlKHB0ZGV2LCBDU0ZfRE9PUkJFTEwo
-Q1NGX0dMQl9ET09SQkVMTF9JRCksIDEpOworbWRlbGF5KDEwMCk7Citwcl9lcnIoIiVzWyVk
-XSBsaWtlbHktaGFsdGVkIHN0YXR1cz0leFxuIiwgX19mdW5jX18sIF9fTElORV9fLCBncHVf
-cmVhZChwdGRldiwgTUNVX1NUQVRVUykpOworCQlwYW50aG9yX2Z3X3VwZGF0ZV9yZXFzKGds
-Yl9pZmFjZSwgcmVxLCAwLCBHTEJfSEFMVCk7CittZGVsYXkoMTAwKTsKK3ByX2VycigiJXNb
-JWRdIGxpa2VseS1ydW5uaW5nID8gc3RhdHVzPSV4XG4iLCBfX2Z1bmNfXywgX19MSU5FX18s
-IGdwdV9yZWFkKHB0ZGV2LCBNQ1VfU1RBVFVTKSk7CisKIAkJaWYgKCFncHVfcmVhZF9wb2xs
-X3RpbWVvdXQocHRkZXYsIE1DVV9TVEFUVVMsIHN0YXR1cywKIAkJCQkJICAgc3RhdHVzID09
-IE1DVV9TVEFUVVNfSEFMVCwgMTAsCiAJCQkJCSAgIDEwMDAwMCkpIHsK
-
---------------RUV3G7hQJYDoa7JET1paPDuU--
+I'm adding Heiko on CC in case he can confirm.
