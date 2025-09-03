@@ -1,77 +1,65 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011014.outbound.protection.outlook.com [40.107.130.14])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013058.outbound.protection.outlook.com [52.101.72.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972C63009DE
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75223288D6
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 14:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756907806; cv=fail; b=jYm4IBklN0EIUgCGksIQ9YPEKA7RJ7zf57HJ3Gu5vilkeIX156TfBmqIsprr+9PCxrccW1mjRfmCH/kzEpYXNoBRw3FDO8JmaVySxCeyrcOVVCffHAZ0c29D9wQEVwXs3sbpeOhXPco+1oALog8ojs06yEs8LMzdorlpna5BJT4=
+	t=1756910798; cv=fail; b=g43Bmk5iPdYRIu7U7K9bjMPgXkHj6GgS8rv9/r+0FIEACiI5kYAZ5Dt0fZnn/XbIt9FcEDRFLDuhzK9SNK1KHECmD29YOY/G8ptDUutncXq4beUycD08UJ7mz8pFHxtx7WRye9dMtY/AMxNsHPFEcmRnkirNpyP3W0kbfrclSXk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756907806; c=relaxed/simple;
-	bh=9xqR1JO0Cj3akvUJHhD3bki46hhlRKFvku91NLOMFHA=;
+	s=arc-20240116; t=1756910798; c=relaxed/simple;
+	bh=Idd5s18wsJ5MHPmteoVsPW49EDjYrmt8XuKTpQog8wg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Gmg4dI3h/UB3orQRg4Q+4vpopEFwjW1xdylsgqmiIpwTIh9x6TgscYDonoJ8jOsCZWf6lifCEPPFDf9iUx6IdFoM6PliLK7Of5wRZHKzQMX8SvXGA5rRUoY389kedL8lIN79J3wJG1Z8nDtFvmLlvEjQ0SWPS/Q06Lc6u9m45ro=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TDW52rYP; arc=fail smtp.client-ip=40.107.130.14
+	 Content-Disposition:In-Reply-To:MIME-Version; b=aJhhDUN9sVbM4QAgvOsdHG62jq2zofGuefVniv7JvsKQEZN9gPr9MW3KLpa83BBB9YbGa25feJCg/tbousdk/7ZRuIobdprt7iAhAW9170+Tnt3gDdMRi6Ef+Yy95KvGJsnjBMPA/g3H03wVYhI88dclapdW49CZp8/q6ZConyk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jX3KITND; arc=fail smtp.client-ip=52.101.72.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TDW52rYP"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jX3KITND"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jFzEp1WLbrtZUWbOlDsgN3BpJNStZy2h7rbDp+6+EQknN9vLRYR/reg8lZwdTbhlf8rmkmJFO5d7DNuJxjQcG+0tPy2131ijW+WwlidTeCWxZWexE2DMkGBvC4QpRMG6L2cM9y9281f6hF+/TCh+kOXYBSUdu323b1bjEGAz8KxIi/2wCKCrlppD+1fvtPqV2t+F3RpVgBLEn2Yid0wrzDKUgeOIqLlzJCdE5oFyRHRlY8yp4dZ6C4diyE/zRtBmMJPW4i/BnI4TB4P/Z1+JRbe6J8toDf4FpeN/wZMxUz4/IqofPqbMwRGHvfwV7hSBJgiP0Flc5qHA6JpoO7a9xg==
+ b=CA2Lnc0i5TXN51i/E4mMsho+QJLX9aJzNe3bHlklZwIpnpr42lGl0zINoCap0qtVABl6IqBiOAdhg6yNs/GwVyZHjwOJH1UKsixK9/gi7t0XA6Tanb8NYIG/FGF1cMLy3UER2Hbm2R5tBq0xmd/IuzoPysNPbUG/D6B9K4NzyV4gLXCTszzULKhuD3LMpxgRjsRxOiOA3r5oB2IsNoMln0nbCvfSi5Ep/+eb9Z6nuESscPlT2DSixV0+GbBxlEoTehpL71HVdIaOXyg3A93n3yZMuWjMEBuza1903ajq6VQvGR0KSfnOl5kTlYfKGYrCOlUI1VUZsLJvgxqnUjsdMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sNSwCTSE7ZJmDSnP0F1lFjJxCwM0PTlvzf5gVPH3t6w=;
- b=JT/nR//D/wG+3mp5KTZWSc7Gp7y92ZOyIA9eDWpHoNheYOS6Gstx6MGcaf84dmzUk1MCLHwrR4k8kXDC0Dkzd+u9CE5ntEubftdkeOaRGmMHhdycOYmObg1ZAQQBzrEJ3Z/axuxaw3rZfWTWllUyLG+jyTZHFxT2vrOWQxu78tUCV0fbBDaTtl7/pUhNjXgny+4rNgitgQVJ9lWu3BjxmnbI7KveW6KBIX81ZXOG+tGKEDE+a4cNuJ+3h3gAwsNZ6kpvlJARgX6ueXTF471DRcH6cZ45pvAHQDTGiWbkguTliyL0G/D1TSONt63kigQm985ysMRUHDdajsEukc3PIw==
+ bh=poq9ZQ05B1ue/HKKmitvqsBg+yynD+ZMPKISQz2JGzU=;
+ b=BrW5bz6X4s6LKNaxyOGe/K6yAR626Zjvwvr27TxFRTficooOqGjS+uVk3sI8N9rfeGMKOIRHy0wNoZC79mbxZkxjszaEa8YYBvi+G622Wb29iw0ADGFj8Jb/2GYRwfO+Udrd+Xr1l75VaRxsdlVbOCtMpG+ALUGbzQq/RmOAhjloinqJLclhUUUTxlNNw0hxafEsNq/S/JJg86H+YBA/eXjlcnJzfMxr2DV2Odwa1+sYs+9OyAmE1rh90lZXCvGyq2Z/Nf3B+NSuUqGApyPD2O0+gZhSDZffOGh0f6P5JDmhHybQ0mCdlQ0/Z8NXi7NPXUjnc0f+ASDBlVtHhXgZqw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sNSwCTSE7ZJmDSnP0F1lFjJxCwM0PTlvzf5gVPH3t6w=;
- b=TDW52rYPyEapf64KTucpD9Sse2GuRP/um0qwMaY/r8Bgi1teftbboiWesTP2JzijgDvzv7wlwGA2iMXTV408ZzPt/W02O07yD6wOqsSsnz/KHQt1DblZkKP21ZozrfigdB8z17r7zuqYPZvd610dmveJlFZ5JOEV59e+gg6fcC9hY4aozKRgFXx7WG+weTJ8IG6db4MNsN7Mj0CvAEMf0Zh6waNxCdVax1FHBdEvmqOTN06k2LZ/VcTDJDQ3A3fTXCVuSo+v8qy2xbVw/+bGawGnGWrKqXrntmVPYcXydzLJ1HKIn/Bdswl32w9WFnU2ntdij9X9MmxC16RSsRAdwA==
+ bh=poq9ZQ05B1ue/HKKmitvqsBg+yynD+ZMPKISQz2JGzU=;
+ b=jX3KITNDWQ72P3SJS5KK8gxdiBchBPTy3+cq/24wO2QU3LSFRoJs9XDL+UYs6EdtCllGtPFQs2znvcrWpJBVsyRjW1T3TO9sEyLtZpvRs70BMueoYcl673+csfBauedtOcFfVRgoAt7/W/rixIarP9l9dfwJWNgQxkUBeZ+ouIxJmBiW8UKLvNISueKl746PNhIP7QwW87sO+Jkc6PMY7ff+BT5pGOmEnabpvOYBkZU7mDrj3KX6s7rxgMMc+zgzNumEHSvdp8zgj+6dNT6vgqItwDWJ6oO4YJ/tnpPeuI0Sx1aX9Dk4GFv1HTWwSm+ZaaLxi7p3Xqrs5lzdC2aFRw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by PA1PR04MB10914.eurprd04.prod.outlook.com (2603:10a6:102:480::19) with
+ by AS8PR04MB8963.eurprd04.prod.outlook.com (2603:10a6:20b:42e::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.29; Wed, 3 Sep
- 2025 13:56:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.15; Wed, 3 Sep
+ 2025 14:46:33 +0000
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15%7]) with mapi id 15.20.9094.015; Wed, 3 Sep 2025
- 13:56:41 +0000
-Date: Wed, 3 Sep 2025 09:56:29 -0400
+ 14:46:32 +0000
+Date: Wed, 3 Sep 2025 10:46:23 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-media@vger.kernel.org,
+	Jiada Wang <jiada_wang@mentor.com>, dmaengine@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	Alice Yuan <alice.yuan@nxp.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Robert Chiras <robert.chiras@nxp.com>,
-	Zhipeng Wang <zhipeng.wang_1@nxp.com>
-Subject: Re: [PATCH v4 0/5] media: imx8qxp: add parallel camera support
-Message-ID: <aLhJDXnz9HPGrWcp@lizhi-Precision-Tower-5810>
-References: <20250729-imx8qxp_pcam-v4-0-4dfca4ed2f87@nxp.com>
- <20250805010822.GC24627@pendragon.ideasonboard.com>
- <aLbcpEZXm5G1Onq7@lizhi-Precision-Tower-5810>
- <20250902123920.GM13448@pendragon.ideasonboard.com>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/11] dmaengine: add support for device_link
+Message-ID: <aLhUv+mtr1uZTCth@lizhi-Precision-Tower-5810>
+References: <20250903-v6-16-topic-sdma-v1-0-ac7bab629e8b@pengutronix.de>
+ <20250903-v6-16-topic-sdma-v1-9-ac7bab629e8b@pengutronix.de>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250902123920.GM13448@pendragon.ideasonboard.com>
-X-ClientProxiedBy: BYAPR07CA0008.namprd07.prod.outlook.com
- (2603:10b6:a02:bc::21) To PAXSPRMB0053.eurprd04.prod.outlook.com
+In-Reply-To: <20250903-v6-16-topic-sdma-v1-9-ac7bab629e8b@pengutronix.de>
+X-ClientProxiedBy: PH8PR07CA0020.namprd07.prod.outlook.com
+ (2603:10b6:510:2cd::12) To PAXSPRMB0053.eurprd04.prod.outlook.com
  (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -80,180 +68,188 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|PA1PR04MB10914:EE_
-X-MS-Office365-Filtering-Correlation-Id: 285dd11f-dd27-476e-0d47-08ddeaf1b569
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS8PR04MB8963:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8d9fcdb8-4678-43a4-0937-08ddeaf8ac2e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|52116014|366016|19092799006|38350700014;
+	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|7416014|19092799006|7053199007|38350700014;
 X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?MjlVgE1fozt6yuMDBU61NHU2pWshbqQTkHXsthT8xQVv5D5nEyWrUj42uaQX?=
- =?us-ascii?Q?nl+M5TRzv8UvE0UFP/2cIBOCPTmMoYhVj/T1UvLI+r/knXXt4agcVxinVQWV?=
- =?us-ascii?Q?FclB2J3uvNNzSMt8JXW4Ek7HMgXgt34kvds6Xefh5la5otoNB4Sf9yV/TwHw?=
- =?us-ascii?Q?kBrV9qg0OFW2EIglgt+JkLTTn1Rz6y7N57IeID4D3FMvC1YdCp86LMJED1Ky?=
- =?us-ascii?Q?zLmPqae38nKFqoqcIXS5Z0Qyuq/NUBzWP9zrV14hKVcv5xumvciy7e2HX020?=
- =?us-ascii?Q?2qPknN0g7a2WGh1k3ZGTykSvW6yEjilWvRU2M3EGWnALXw5FPNjnP5aCM6ni?=
- =?us-ascii?Q?KH9wea2vqj8vBixjGzVPz8vBQzaldkGGPMJ9B3FhSlZjRkGf4AjQj7d9XHUw?=
- =?us-ascii?Q?hEj98aUFFS8fZKLN0bH+uQExKwZpVIzPi7tCqzWWDzd5JBeCpbYQl0eE4Syp?=
- =?us-ascii?Q?fJ2ijeSp66PY6vD7HQpW7lrxnaBEg8MW6pM7Lq4NWvoiivI6ggnO3QesreaP?=
- =?us-ascii?Q?iKe+7nUpXazxQtp+yapXrDUvwYM/lkOsKFnyZzS5ZIlggZgv1DeIdx2G7Dmy?=
- =?us-ascii?Q?s2QK+uj+Pmd1f+MTk8zD+fs+vAY4GCa76YNqBK7YEB7acTd9ETQ1kclvFtYb?=
- =?us-ascii?Q?mHWdOnvxNmoMOetzu6W8fc0r/oMnO5EI8C1Wv41IkQd+VsyoXP4lq/ZjUnAA?=
- =?us-ascii?Q?6yR0zcKDYqWKsV52of0Mp06JJdxT2SBA1Zj79+cg5FCYdOwxCa2yQ3nV4dJg?=
- =?us-ascii?Q?6r3Orh2norAWPm0Lbh7pzM4KOz2ewMJN2rVx99grFIG9FshSLX1Xq2PphrkT?=
- =?us-ascii?Q?Z5Jv0zTObOI+4450ry5z9T+iUtCg+bpWTdF79CObIXxFrCvwLGtTXOaFuCSy?=
- =?us-ascii?Q?AsVqQJ7hZrXxHSu7YzSCfAkmUZJzsZ0P0CeH5fzFZ6tUdfn1PzNVkAij/DDb?=
- =?us-ascii?Q?vouqnr7/zCn0HV9rGWnSB3vAG03s09PTdY+wtwVla9yEGJbli7x96QBr0J40?=
- =?us-ascii?Q?xqwuG0+x8ujLQbGykUI9C2igUmm3gdYtM6L/Splyq4D7YFSC8k9dwaSv5TvA?=
- =?us-ascii?Q?CcYT6hBBJFcAMqznLJB/xZAoDCAn+JOBPexw0v9g5smJuRObWeUNbleeiIda?=
- =?us-ascii?Q?ZWDp1CgZireeGVF7TDB0Mb+YN6s3ilwDGSzImCNYQRZsUBofImXgVm1pBDeM?=
- =?us-ascii?Q?0j7Y/xkbQFXaxYJ55Mu3ylMgdnIDZCqlZwy1lzacj/Hz1CHAMRJb5M29ANcL?=
- =?us-ascii?Q?xpAhqzZEJ6vuYsVx2Yqn3CCgNVK+9SIMBKqHYx8DApKeNqvp26Pi0Pl8pUkk?=
- =?us-ascii?Q?UrFVW/P06x7VTQmhqzGgbr8345eGYc1y6j/F5eTRVhUzV+MEP6hKEhtNnQze?=
- =?us-ascii?Q?1OPnADQUmddFCiPbF/9wkGlHMUvAJagLD9hJvvVK1gjg7af5jE+dmw0QkPyh?=
- =?us-ascii?Q?rNlw81Gn1xta8fP8/W1jw3q8+emd8N0ESS3xNWJ+cTUCYJ9+CJhbRN/Wdaww?=
- =?us-ascii?Q?w6I/5UO6YK5yYbM=3D?=
+	=?us-ascii?Q?siX3A6EKMNNTFXyMuTk+AUW+DaEQgfQFyXkSa/tw9OKhLOeoVoX7y+VjgJxg?=
+ =?us-ascii?Q?kZpjA0wF9HZXmC17fVWcjftzAi9owdOGni5UEBeNHXkgTtjI5ydxlN/fSe5r?=
+ =?us-ascii?Q?+ZoDJ+yZT54gEYym/sx1+/tfkMV9TYebU28fCj2tqFHZJX9eIxI9ChORcm4K?=
+ =?us-ascii?Q?61P35lZpjr5cavoGPln5bBqK+vgE2jz60eDhNX3JWaz3fZ2LlxF6au2Pf8Nq?=
+ =?us-ascii?Q?it30Lt0h1p9cjw5bKUXBg/KLqfze/JAU1be8Y7dB0xNZ2oHBUOc9wj5nIeXO?=
+ =?us-ascii?Q?V3otyKc6fZ2OUll5cDCciPaBe/lVkdM2di/zqpdanTE1k0XLo+Tpe1FKlHD7?=
+ =?us-ascii?Q?iaM1l4OAnvvdsh+4cIgG9a1XZDbe7fN0dACRG6Pkq+dNImfrO1qokRSiB/z0?=
+ =?us-ascii?Q?W3Je0eNON4+VZ3VtYe60KwNrBpcZ2TNM/oJBq5f3Nca/1CExRY67ih3jyfjR?=
+ =?us-ascii?Q?WLP3j8gqkNpGteQOa1eDj/KQSPr3PFY2G86PT9D8m3g150xWIDUZIqPpbTpo?=
+ =?us-ascii?Q?D1tDu2RzNTM/1d+RpVGDhC4DOEvozqMfvOahcA92p1flLqZ1aR5fEQYWn8GS?=
+ =?us-ascii?Q?kj0vYtuGBC/pKzZtEkFn0D78ilSzD21fvG9g+zO23gm7Mhpyy+no6g3csHtX?=
+ =?us-ascii?Q?9xaGV3UcAiLXxfu9n1MejmufWviiq9RG/uy2C6YxccYThqT7p/6r3NpigoUz?=
+ =?us-ascii?Q?O1Aw7iof9+B1DbLm1w643j6aqzsscaNwAn9nOMy4GSTvVDbAJhf64wtzz35m?=
+ =?us-ascii?Q?+qGgQV9uaFEqbdqzg1nB56mdB9j9uNeynl4h1HlDhULsI5QABEIU5RSVyvdS?=
+ =?us-ascii?Q?4jxWugNsyNJ6r7Gw7IYCZ8rX/Xu3I2tSQSpQtevPddkXFTIlB9S/i7z+3yRh?=
+ =?us-ascii?Q?zWYGDvkMNxaT0L762zqsKtYf3c903trSSHfy5U0YteqE56y1pcjxtrVTLQlD?=
+ =?us-ascii?Q?oEzOeaNUbbNpvvCJJ09H1uocLU/uYMOOX3lU92/q2apYDt2KKgQSMlmnQNPT?=
+ =?us-ascii?Q?H1+Uy6k7SxKIKMrQrIwF56XWy8ZQwKtfudFXz+9+TGhgs4BaMUmMDzwyCsG8?=
+ =?us-ascii?Q?VgVSncYni56WDF3HSL2dsY4s2BVYOaBiRQb+s8MP16o+V3hXFE3BMjNezz/w?=
+ =?us-ascii?Q?pTgOMycSruQhvPoJ7f3SZYhq/Yg8pj7aEzqCrlx9EVWVlecr/5GxHB/kDdMS?=
+ =?us-ascii?Q?9fRMImN7fXrygTDj3snGOCYKueFK1uMJ2ycWrLR3Nszd48EMruquIeYMIhLc?=
+ =?us-ascii?Q?C3TaC1YfYyRrhJZDFwYq+ZypV5Fblic+0RqFudmVFOAzrgHwN7f2dRBeR4kT?=
+ =?us-ascii?Q?PHTrpUmRZaulpBqA385DiFjBEMFKR1Ty/LzKtgy1Xq305WIdyA/7sMUhhF/d?=
+ =?us-ascii?Q?p75R12l6VGGbl7pO3yLcbUbh3vPYBMydOKVgq8wkQrJPfEoqtxdwJRaoWhvn?=
+ =?us-ascii?Q?euiOV0oewq0nM3B3MNRehis1JZQPH7YCwP5JB73yMf6vwyYuQkSaqg=3D=3D?=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(52116014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(7416014)(19092799006)(7053199007)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?DmRqAn/FdNhSzHQGqaSlnXic32zTRSyG9+BXE5NWg81IM/ryzcXcXkUErbg8?=
- =?us-ascii?Q?brbP7tvuIcJlA/qaDdnjC3BljkwxmM8ESHSNBKcAITS70g/mu7uQtTg6gNO/?=
- =?us-ascii?Q?c8PYRBrKuxbuMuxPw91pLOQVk6YCE7ETmmmzeWyx0t1DQAzZQeUHvQWETrwd?=
- =?us-ascii?Q?/D/TgROZ8xDtqZNBwLqUNw+OESjDnBDWk2QmIz+5q1LnLD93psYWQTo8tmLu?=
- =?us-ascii?Q?1x52+14a5jjD59umomdmP5oamCI7bL9nyTObKnpE6YNxAGfjzfmoclhUdjNr?=
- =?us-ascii?Q?d9Gqz/zieqEUVtL4bO5j5nrvr6KcJJ+5lK2u5hKTR+N+An/AwOgQsy+S99JZ?=
- =?us-ascii?Q?P4ELhqk27VqxXKnTDXjVF63UfNJT+9OPUuC7B5YYCinqMK0HyPLLxm4KoaN2?=
- =?us-ascii?Q?UQE4a2hNJRXftl5L+Iidqmo6WTRn3ys8Ao3J2Vt5Ju6Dudl73bhCzQpvRfxW?=
- =?us-ascii?Q?q4EjUccbjuNagNE+LfFTCL/e7W4qXmZ6LtQHPiGN8R98AljTSKABqfX9qaA5?=
- =?us-ascii?Q?NJ6k7snHH4fjUhv8ETk15TU0/co4G9cvOyuKqwf3z15bBZ++tMC39M/Ve+hx?=
- =?us-ascii?Q?9Lw7Kk/Y2B32dmaGuhgzXy4/IubAf4IVw5IMi+XTIFFkeV5MvOqiJQlwGMfF?=
- =?us-ascii?Q?lYa5U0JzrsZFW8Tt/hSSDl5RiOA5oBClMkO9ji7bqB1zp5jWzCKDpr3GBQLt?=
- =?us-ascii?Q?ZXCYq+1/MlmxfJmSLSfpiCpoCMrVF1Mahk301j6VfhQQg8MNLBTEC/IUucaf?=
- =?us-ascii?Q?Hu1sGdQhykTn/EXQSjNKouw9l4xLVdcN2RsLS0gUcTPeu6cJX7TPFc9JCXpf?=
- =?us-ascii?Q?vDXBDcgnSyT0aQexVfr2RkPjWBqL3mr9YAGaEer/V2SdwRFTRc1RYy6z+Acj?=
- =?us-ascii?Q?U86Y6P9HsZgQ2/hJI0av8Gk19YKeTlPfJjkxUPO9mStbJlUZ9BRPzAavKNKy?=
- =?us-ascii?Q?iiQOX3NPu3iBRhFHvjTEWswdFAUwYFaUFj8D6xG4y/0O+DDDQQzSm9pKpY33?=
- =?us-ascii?Q?caZXRrMBLIwSgLbGQYvacy2JJdoa8+vHxeRSW2drM0wfdutzgZNFPpL7GAtA?=
- =?us-ascii?Q?m84LeOoIcjH/hDaZQqahUoqi43AdqsBq4Rl0Dfx3uHfHF6jC54s21DvuOw5x?=
- =?us-ascii?Q?mpTqPHHpXeE4K+nT7AdeyErR6r6QGJMNTG5OaRX5zvVnis3m1VROPfwled7m?=
- =?us-ascii?Q?onfpdOqsTWOlTg0cIRjAVZ1pXCLLTSIjBJKbyc5aViTU+Kxqq5hAB2cAPBtN?=
- =?us-ascii?Q?Cow5HDiCwQzr3JKP5fEgfYlSVqzz1Z/hrtQJguvaklpfMW6iTrI5d/adK8Ep?=
- =?us-ascii?Q?Qyupzx7CPKTOdjauvw2icPc8BTJQ9LZca3AxPOXKxT33aDpLiEYYppE555u1?=
- =?us-ascii?Q?hXkfS963yB2Mj5rn8ksggD/ouSeCMJ3/HIuRkg+k8ZQp5sloepuIsX8rx7fi?=
- =?us-ascii?Q?zZkCg3uUZyUG8xytSRe/VDwu+D2cmF3YdbPTNfFFZbJIpRJVFRA/2fDFRL3s?=
- =?us-ascii?Q?5Mrgt+9VW3iVNrlhKcHNhacaDTX5K3L7XHq667L8xK/PkqfVagBxFHpXCUbe?=
- =?us-ascii?Q?tZ4x6KK1vedDf0iLsh0=3D?=
+	=?us-ascii?Q?j6zf8LvyzlZmlQb/LoeRByAzIViPcA4x0Z1nTvEiiq/LwWPNsk4AS0UIWuxe?=
+ =?us-ascii?Q?0TPcfSxn69ewMnkS//9J7aKFIZJDakmLarYSmOdMXtBCb4uADspaaO5Pqlsq?=
+ =?us-ascii?Q?D+M0jMy4G2TYW9Pu8I7TQjPgTAs4Ce3x6OfrXGYfNR6qQ+Oot0kBBKpVeeBD?=
+ =?us-ascii?Q?9BO5dmWMG0iBxbhsWYAbd3UyXhBEJ4v+8VBKKxRe2mmyAcP+r0r5w4bQPdRB?=
+ =?us-ascii?Q?MZoPffAYeHgb0oLbytSakpKOlP4x+kwMwo0e2h/s5HMNG9ZPT9IyEsefNipk?=
+ =?us-ascii?Q?u7u0aYjA3IM7fuXI8AkH88smTxScW1e+Qmtfw0iiZy59v5QmmNCP10xBHfZe?=
+ =?us-ascii?Q?m8SK+/zV2yXHsnjcZII7sSRpdxqYy4KE/X5Z/AjmdFOObpKS14jux8FzzQ2f?=
+ =?us-ascii?Q?0WluQADVNqp1I4y5t8Od9rV7qg4yi/yIkMrmeXUs6iJ2uXb3urE3MLtrq7bp?=
+ =?us-ascii?Q?6BLvISpgdrmxNbihLE7MEwXUoXeeUi8nrHRZ62Wcxvu7NPLBTv2J+qKvFaKc?=
+ =?us-ascii?Q?jX2ov0ZlpryAozabdDoJD2EQdFCZjR+Rwe5iLc+Kti1fFY/X8GtCP/miKoVp?=
+ =?us-ascii?Q?XXM3xcMz9j4gzB+v/E0yXEC1oMICurVxClB/fLBmlfURZk5tqnBn9jkQaji9?=
+ =?us-ascii?Q?+IpQwyZ8rq1OxoTaD0ifhdEz4/DXLWRhRdKTzX41lrgkS894fzTMN41edAZE?=
+ =?us-ascii?Q?QfwPdj24ahQpIl2v72KbpnIxEfmssLhIthuoeST9dimGbvLdgCPsQ5uS5Fec?=
+ =?us-ascii?Q?mR+RWHYLpcysyD5mfGPL8HapchwyWQjtv5Ej0A47wl3tQtKoDfHD6qGgJNar?=
+ =?us-ascii?Q?AQL4GdEU0+QKWz9sTOPuFO5q2eg4r8u71DT182nNT2LYYSbKUppsD+kTLpPc?=
+ =?us-ascii?Q?fJWzhIy8s/ZOXVTglzZPus49ModcXAkTPneHDkXD3zkbczO/AygYD+l67lQb?=
+ =?us-ascii?Q?9o6Z2GVpo7MHgf9ByB1XH/bQ2dATtoj2ytyjif/eEjzAsfaly/ummy69lHnt?=
+ =?us-ascii?Q?ZxlUwRliOAZoNhLZmEfXHHShxdKldX/RcGuDk239XhaZ2gQphdrRR4XSLULw?=
+ =?us-ascii?Q?ZTx6q+ID+D4JmB2WdLGNranbdFcQjS0cLtqi4hzouhSKGP+bfPrYVLd9rHIh?=
+ =?us-ascii?Q?jnIkWTMkIOQV8U6W4Sx+EMggjrQTDwbhYIGvwpWRzvQF8qHwO2R4LgCcVWjz?=
+ =?us-ascii?Q?Jxj7h9aoivA+ZydVG+agcpyZLMKk6L/BiszRulNzrYuMvmYVKC0wgWrr5WvK?=
+ =?us-ascii?Q?2S3qfUg/VBeVpEDqN6JGQmFi0V6wony7vVp5rKMIwBEkzBIPXMDQSh1PyiDe?=
+ =?us-ascii?Q?7zgHfofAjOzt6KW+8DsdU2pmQEAG+GY9YdwJXzar6gSgwsnELzOgLK7XCcB8?=
+ =?us-ascii?Q?cuCLDxnK6mGJTj6kpk1xMqeFlRL+FBMtSD4LzkK2rq27KKVLZxGCrJ2+8f5i?=
+ =?us-ascii?Q?9dnhYltYGy1Ipgf3kWRuaSq95blRa8WmQLA6HKhi3YeEW6jzgS+fI0/9Un4y?=
+ =?us-ascii?Q?joR9G2X37ay5s7Kdh27g3dCAeiJMkY06PRqxcXU4QZ/F0VBYOoEB/fvYpagi?=
+ =?us-ascii?Q?sj6n+B7EukwHonB3UzQ=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 285dd11f-dd27-476e-0d47-08ddeaf1b569
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d9fcdb8-4678-43a4-0937-08ddeaf8ac2e
 X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 13:56:41.1959
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 14:46:32.0680
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JU/kf0EaeZOY1QW3t+stlt9oauGq/+7VD5LFiIUGuKtjrcn0NKDTUxJqDXsRYhXTMvWYGbazGn2NaCnqqu2wIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10914
+X-MS-Exchange-CrossTenant-UserPrincipalName: gs9H7wbdPQrgRN4EAqfLcFf0FXgtdzOZgk4jRc/3yWIMBr9tg86Up/cT3N5c6XoRTlpocDfiSEfrsNPfBXumrw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8963
 
-On Tue, Sep 02, 2025 at 02:39:20PM +0200, Laurent Pinchart wrote:
-> Hi Frank,
+On Wed, Sep 03, 2025 at 03:06:17PM +0200, Marco Felsch wrote:
+> Add support to create device_links between dmaengine suppliers and the
+> dma consumers. This shifts the device dep-chain teardown/bringup logic
+> to the driver core.
 >
-> On Tue, Sep 02, 2025 at 08:01:40AM -0400, Frank Li wrote:
-> > On Tue, Aug 05, 2025 at 04:08:22AM +0300, Laurent Pinchart wrote:
-> > > Hi Frank,
-> > >
-> > > Thank you for the patches.
-> > >
-> > > I've quite busy these days, and I don't believe I will have time to
-> > > review this series before coming back from OSS Europe at the beginning
-> > > of September. Let's see if anyone on CC could volunteer.
-> >
-> > Laurent Pincha
-> > 	I hope you have good time at OSS.
-> >
-> > 	Do you have chance to review this patch?
+> Moving this to the core allows the dmaengine drivers to simplify the
+> .remove() hooks and also to ensure that no dmaengine driver is ever
+> removed before the consumer is removed.
 >
-> I'm going through my mail backlog, which is really big at the moment.
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
 
-Understand.
+Thank you work for devlink between dmaengine and devices. I have similar
+idea.
 
-> I'd like someone else to volunteer to review this series. It won't scale
-> if I have to review all NXP media patches in my spare time :-/
+This patch should be first patch.
 
-Yes, but none volunteer review this in passed months. Expecially key
-reviewer. I am reviewing i3c patches. but Not familiar v4l system yet. It
-need scalable solution. I can help filter some common and simple problem
-from beginning.
+The below what planned commit message in my local tree.
+
+Implementing runtime PM for DMA channels is challenging. If a channel
+resumes at allocation and suspends at free, the DMA engine often remains on
+because most drivers request a channel at probe.
+
+Tracking the number of pending DMA descriptors is also problematic, as some
+consumers append new descriptors in atomic contexts, such as IRQ handlers,
+where runtime resume cannot be called.
+
+Using a device link simplifies this issue. If a consumer requires data
+transfer, it must be in a runtime-resumed state, ensuring that the DMA
+channel is also active by device link. This allows safe operations, like
+appending new descriptors. Conversely, when the consumer no longer requires
+data transfer, both it and the supplier (DMA channel) can enter a suspended
+state if no other consumer is using it.
+
+Introduce the `create_link` flag to enable this feature.
+
+also suggest add create_link flag to enable this feature in case some
+side impact to other dma-engine. After some time test, we can enable it
+default.
+
+>  drivers/dma/dmaengine.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+> index 758fcd0546d8bde8e8dddc6039848feeb1e24475..a50652bc70b8ce9d4edabfaa781b3432ee47d31e 100644
+> --- a/drivers/dma/dmaengine.c
+> +++ b/drivers/dma/dmaengine.c
+> @@ -817,6 +817,7 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+>  	struct fwnode_handle *fwnode = dev_fwnode(dev);
+>  	struct dma_device *d, *_d;
+>  	struct dma_chan *chan = NULL;
+> +	struct device_link *dl;
+>
+>  	if (is_of_node(fwnode))
+>  		chan = of_dma_request_slave_channel(to_of_node(fwnode), name);
+> @@ -858,6 +859,13 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+>  	/* No functional issue if it fails, users are supposed to test before use */
+>  #endif
+>
+> +	dl = device_link_add(dev, chan->device->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
+
+chan->device->dev is dmaengine devices. But some dmaengine's each channel
+have device, consumer should link to chan's device, not dmaengine device
+because some dmaengine support per channel clock\power management.
+
+chan's device's parent devices is dmaengine devices. it should also work
+for sdma case
+
+
+        if (chan->device->create_devlink) {
+                u32 flags = DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_CONSUMER;
+
+                if (pm_runtime_active(dev))
+                        flags |= DL_FLAG_RPM_ACTIVE;
+
+When create device link (apply channel), consume may active.
+
+
+                dl = device_link_add(chan->slave, &chan->dev->device, flags);
+        }
+
+Need update kernel doc
+
+diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+index bb146c5ac3e4c..ffb3a8f0070ba 100644
+--- a/include/linux/dmaengine.h
++++ b/include/linux/dmaengine.h
+@@ -323,7 +323,8 @@ struct dma_router {
+  * @cookie: last cookie value returned to client
+  * @completed_cookie: last completed cookie for this channel
+  * @chan_id: channel ID for sysfs
+- * @dev: class device for sysfs
++ * @dev: class device for sysfs, also use for pre channel runtime pm and
++ *       use custom/different dma-mapping
 
 Frank
 
->
-> > > On Tue, Jul 29, 2025 at 12:06:21PM -0400, Frank Li wrote:
-> > > > Add parallel camera support for i.MX8 chips.
-> > > >
-> > > > The below patch to add new format support to test ov5640 sensor
-> > > >    media: nxp: isi: add support for UYVY8_2X8 and YUYV8_2X8 bus codes
-> > > >
-> > > > The bindings and driver for parallel CSI
-> > > >    dt-bindings: media: add i.MX parallel csi support
-> > > >    media: nxp: add V4L2 subdev driver for parallel CSI
-> > > >
-> > > > DTS part need depend on previous MIPI CSI patches.
-> > > >   https://lore.kernel.org/imx/20250522-8qxp_camera-v5-13-d4be869fdb7e@nxp.com/
-> > > >
-> > > >   arm64: dts: imx8: add parellel csi nodes
-> > > >   arm64: dts: imx8qxp-mek: add parallel ov5640 camera support
-> > > >
-> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > ---
-> > > > Changes in v4:
-> > > > - remove imx93 driver support since have not camera sensor module to do test now.
-> > > >   Add it later
-> > > > - Add new patch
-> > > >   media: v4l2-common: Add helper function v4l_get_required_align_by_bpp()
-> > > > - See each patche's change log for detail.
-> > > > - Link to v3: https://lore.kernel.org/r/20250708-imx8qxp_pcam-v3-0-c8533e405df1@nxp.com
-> > > >
-> > > > Changes in v3:
-> > > > - replace CSI with CPI.
-> > > > - detail change see each patch's change logs
-> > > > - Link to v2: https://lore.kernel.org/r/20250703-imx8qxp_pcam-v2-0-188be85f06f1@nxp.com
-> > > >
-> > > > Changes in v2:
-> > > > - remove patch media: nxp: isi: add support for UYVY8_2X8 and YUYV8_2X8 bus codes
-> > > >   because pcif controller convert 2x8 to 1x16 to match isi's input
-> > > > - rename comaptible string to fsl,imx8qxp-pcif
-> > > > - See each patches's change log for detail
-> > > > - Link to v1: https://lore.kernel.org/r/20250630-imx8qxp_pcam-v1-0-eccd38d99201@nxp.com
-> > > >
-> > > > ---
-> > > > Alice Yuan (2):
-> > > >       dt-bindings: media: add i.MX parallel CPI support
-> > > >       media: nxp: add V4L2 subdev driver for camera parallel interface (CPI)
-> > > >
-> > > > Frank Li (3):
-> > > >       media: v4l2-common: Add helper function v4l_get_required_align_by_bpp()
-> > > >       arm64: dts: imx8: add camera parallel interface (CPI) node
-> > > >       arm64: dts: imx8qxp-mek: add parallel ov5640 camera support
-> > > >
-> > > >  .../devicetree/bindings/media/fsl,imx93-pcif.yaml  | 126 ++++
-> > > >  MAINTAINERS                                        |   2 +
-> > > >  arch/arm64/boot/dts/freescale/Makefile             |   3 +
-> > > >  arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi     |  13 +
-> > > >  .../boot/dts/freescale/imx8qxp-mek-ov5640-cpi.dtso |  83 +++
-> > > >  arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi  |  27 +
-> > > >  drivers/media/platform/nxp/Kconfig                 |  11 +
-> > > >  drivers/media/platform/nxp/Makefile                |   1 +
-> > > >  drivers/media/platform/nxp/imx-parallel-cpi.c      | 728 +++++++++++++++++++++
-> > > >  include/media/v4l2-common.h                        |  30 +
-> > > >  10 files changed, 1024 insertions(+)
-> > > > ---
-> > > > base-commit: 37a294c6211bea9deb14bedd2dcce498935cbd4e
-> > > > change-id: 20250626-imx8qxp_pcam-d851238343c3
+
+> +	if (!dl) {
+> +		dev_err(dev, "failed to create device link to %s\n",
+> +			dev_name(chan->device->dev));
+> +		return ERR_PTR(-EINVAL);
+> +	}
+>  	chan->name = kasprintf(GFP_KERNEL, "dma:%s", name);
+>  	if (!chan->name)
+>  		return chan;
 >
 > --
-> Regards,
+> 2.47.2
 >
-> Laurent Pinchart
