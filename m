@@ -1,122 +1,140 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDDA2D9EF4
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 07:29:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4132C2AA5
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 07:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756884582; cv=none; b=WdG58dqvSdP9WZnKlaGct/fpgVM0kk5/tUxwUBImBF4c9m5sBoht6pwptyicBt4KpRKqNsb5DIvYVziUQfzoeXrAA7kobxGCdjOa+T0Ga8TxZnGM1sJDOMKjozWWrSF8NoB+9mztaqGGvK1ZAVee48iHPK7eWs6gI9U/niH4WHk=
+	t=1756884830; cv=none; b=usIl3ug07oy+8ydJckhWjaxNtQLeSCCJvLa3+B2zEVVpEO4Qwi776s7POYS6z1CV2RB8OmSwxqBrvPaz3zkeJTYwwI8oUYuIFhiGFBruV621qJQLFMIQbBaUxEX2GKSrywZeYOKhzy4j5KiC21bG7tnvl6kJ+xTueJ5ZbOXxEh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756884582; c=relaxed/simple;
-	bh=1c7VonY6uj74XYLIJ7kALBLOnJcPEHxjT3fVSi4gc/8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mFFDQX9yGGAmR/aRyx3juhd5EdzSfQxLJin/+ERlheC+uJj1HHeYtW1cY6KqzAEYhBBOj/KnX6Gib8zsDrbpD47fI81U+MbUBBh8eWEqnJWBHIwIWVYCpvZKkMOeSLOAGYlLHqhAEq+oAHcSTS/M+ys1Xb9xW5ejvpQTeoAMLgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uthvA-0003pQ-KJ; Wed, 03 Sep 2025 09:28:44 +0200
-Message-ID: <fa7e2cef-5242-4f3b-84ea-d77b959f6bdb@pengutronix.de>
-Date: Wed, 3 Sep 2025 09:28:42 +0200
+	s=arc-20240116; t=1756884830; c=relaxed/simple;
+	bh=YNYvzh/kc3+s5XJiH2jNySFaGPSj6mlg48FZqtmCTZw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ulj+FndezMFygK+VG8+DX5KmYKmUj9nRgRuBJ7hQfW19xW3re6obE/z64OffuEiJwOb3NOqwP7GEU4RfMo/wJeQIofXv/E/Ku5ETgCldDFOYadlaVkH8YJmbiZIQGJJN6KQE9XBG0+rB24c+9ojiY4I6GH+fkcJbO1fxAse+r/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=HP1XekZl; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="HP1XekZl"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-336e16f4729so23691811fa.1
+        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 00:33:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756884826; x=1757489626; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YNYvzh/kc3+s5XJiH2jNySFaGPSj6mlg48FZqtmCTZw=;
+        b=HP1XekZlIkBIdAuvDAyug03Ltx5oEIE3MNDt6LGQzfExtbL8pGwxzAc59OKqtJu+Y0
+         BraYOV6WdaqqENRci3kqRf8oeJ3Uqs+ZbcnOgyyqbnf0eJ9L8/JBcpCgk7kNW33y69/u
+         xllnGbJAj23oThzSn6dOW/yKxEi4ELN/BMY2kcUP7cMZMUDM9JUojIHiukJDTonH0OG7
+         bYGVor0da4D283WpsF6w14BrKp1+6oUGqv7juOb8Q+iLsSSqu3AqJfgzeYHjxWnxgPdG
+         rUMQBL/ke4zKwwpwDZLU7v4lCIGmkYmqdcsLLEDXBnqQQABK2PB+p+cXMqsD22Pcu86+
+         FQ/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756884826; x=1757489626;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YNYvzh/kc3+s5XJiH2jNySFaGPSj6mlg48FZqtmCTZw=;
+        b=imPhS2MQrPLfShiAW09mXuKQSXZdgpa8CWi3Ug37LYGj9tVXcY24uy8/VY7Txbh3vA
+         r/7A/af85U/Xy1sNQdRjvEZu5VF8XJ66bvst/Gf3p99c8g1v9ayHHpkgeMrbTab3N0xM
+         mJ1j8MIUQR4LFn64rtophTxe2Z9jD7/Re1Gu+R+FjscZg+RxuiM2Fxm6pw3lLCQBuPCL
+         DjRBO/1KAoTZX6+a8ViE7ETXULrcnP8CDdTZwxReKM+/oYLAl407ZElx03jCrSfdXLNZ
+         6riHqay+s52etL4o3b7FgJUygHKXeRtBsdlGU2nEekk0e9k6bpm6zgGKppWgPCsR0LIz
+         5xUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXnFKXw6s+D6tN7mLmMADvtHKeaR2KHL9EjQTrndE6sL/dbMDUDKc1YxE7GMTO7tBJ74K4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxMYB7dHpfYXC3UZWD8lh7QW8aaowL60JHpUMwhKYTDmgePNFde
+	hsARfpcn5YSSYuSIcItL/OisJYfIYchsTNctzfgj6YOKAHPGbTJDpRThAZCvyhTLU1IXddPmtjE
+	LSujWk0y1UFkVZxCzyXMOre/4rrQkuEXAtcmfQ39OSg==
+X-Gm-Gg: ASbGncs26GTmRe0vW3+mLSMlm+aTONzFjR8hcaL9C9+kLBfMf93Qs8a2Xs7Mc/sc0OC
+	RsiVo1yk3nwsRXXmuF32ououZ65cdUtnEmXPJpMEIbnNOpwyNhXMNZ+YxCuW3hUUJEBJBt+mYFG
+	KM8tKmNLT06PnZZYoEyIlxttbH6k3Pkgb+ODsWkSQpcp4eN+zLHI+TYu0kQzdYQFACGfHO6BP99
+	3HlQLNAuHIfOlQ8Cv1a1KdkqiyiTlzUe8AqB5URNvEF5lqOHQ==
+X-Google-Smtp-Source: AGHT+IHQMDojBvXdcYFr83Du1enPEHK0Ti//rRC94x6rK+6MbJgsPNbFLU1zOeSW5BOM5GJv9hHYWvwxYnse2nh/rU8=
+X-Received: by 2002:a2e:a58a:0:b0:337:9e3b:895f with SMTP id
+ 38308e7fff4ca-3379e3b9b47mr24730131fa.0.1756884826262; Wed, 03 Sep 2025
+ 00:33:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ARM: dts: imx6ul-tx6ul: Switch away from deprecated
- `phy-reset-gpios`
-To: =?UTF-8?B?QmVuY2UgQ3PDs2vDoXM=?= <csokas.bence@prolan.hu>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- Csaba Buday <buday.csaba@prolan.hu>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-References: <20250815-b4-tx6ul-dt-phy-rst-v1-1-9b65e315d9d3@prolan.hu>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250815-b4-tx6ul-dt-phy-rst-v1-1-9b65e315d9d3@prolan.hu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+ <20250902-pinctrl-gpio-pinfuncs-v7-16-bb091daedc52@linaro.org>
+ <aLcBcjvMbrxoDYoC@smile.fi.intel.com> <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
+ <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
+In-Reply-To: <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 3 Sep 2025 09:33:34 +0200
+X-Gm-Features: Ac12FXwfTFesdkv2AsVGJLh1I6xBKdxxPYffotwRnf3CookQp3k-WXkxYMLzaTo
+Message-ID: <CAMRc=MfhhX2NJ0fhhX8u+7=sdyUy0G27n7caGf9=TpHxUDJVxg@mail.gmail.com>
+Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Tue, Sep 2, 2025 at 10:46=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Tue, Sep 2, 2025 at 8:42=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
+> >
+> > On Tue, Sep 2, 2025 at 4:38=E2=80=AFPM Andy Shevchenko
+> > <andriy.shevchenko@intel.com> wrote:
+> > >
+> > > On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golaszewski wrote:
+> > > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > > >
+> > > > The strict flag in struct pinmux_ops disallows the usage of the sam=
+e pin
+> > > > as a GPIO and for another function. Without it, a rouge user-space
+> > > > process with enough privileges (or even a buggy driver) can request=
+ a
+> > > > used pin as GPIO and drive it, potentially confusing devices or eve=
+n
+> > > > crashing the system. Set it globally for all pinctrl-msm users.
+> > >
+> > > How does this keep (or allow) I=E6=B6=8E generic recovery mechanism t=
+o work?
+> >
+> > What even is the "generic recovery mechanism"? That's the first time
+> > I'm hearing this name.
+>
+> "I=C2=B2C generic recovery mechanism" (I dunno why you put away the I=C2=
+=B2C keyword).
+>
 
-On 15.08.25 17:17, Bence Csókás wrote:
-> The Ethernet PHY's reset GPIO should be specified in the node of the PHY
-> itself, instead of the MAC (`fec`). The latter is deprecated, and was an
-> i.MX-specific extension, incompatible with the new reset controller
-> subsystem.
+For some reason it was displayed like that[1] in my client. I see it's
+correct in lore though.
 
-One reason to do it this way is that the PHY is in reset when the OS starts
-and the external phy-reset-gpios allows MAC probe to get the PHY out of
-reset, so it can be probed after reading its vendor/device IDs.
+Anyway, what is your point? I don't think it has any impact on this.
 
-Does switching to this new binding address this scenario? If so, it should
-be noted in the commit message.
+Bartosz
 
-> 
-> Co-developed-by: Csaba Buday <buday.csaba@prolan.hu>
-> Signed-off-by: Csaba Buday <buday.csaba@prolan.hu>
-> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-> ---
->  arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
-> index f053358bc9317f8447d65013a18670cb470106b2..0a5e90704ea481b0716d6ff6bc6d2110914d4f31 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
-> @@ -246,7 +246,6 @@ &fec1 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_enet1 &pinctrl_enet1_mdio &pinctrl_etnphy0_rst>;
->  	phy-mode = "rmii";
-> -	phy-reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
->  	phy-supply = <&reg_3v3_etn>;
->  	phy-handle = <&etnphy0>;
->  	status = "okay";
-> @@ -262,6 +261,13 @@ etnphy0: ethernet-phy@0 {
->  			pinctrl-0 = <&pinctrl_etnphy0_int>;
->  			interrupt-parent = <&gpio5>;
->  			interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
-> +			/* Reset SHOULD be a PHY property */
-
-Comment belongs into commit message.
-
-> +			reset-names = "phy";
-> +			reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us = <100>;
-> +			reset-deassert-us = <25000>;
-> +			/* Energy detect sometimes causes link failures */
-> +			smsc,disable-energy-detect;
-
-Unrelated change not described in the commit message.
-
-Cheers,
-Ahmad
-
->  			status = "okay";
->  		};
->  
-> 
-> ---
-> base-commit: 0cc53520e68bea7fb80fdc6bdf8d226d1b6a98d9
-> change-id: 20250815-b4-tx6ul-dt-phy-rst-7afc190a6907
-> 
-> Best regards,
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+[1] https://postimg.cc/7GFtxzzR
