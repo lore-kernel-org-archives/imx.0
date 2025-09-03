@@ -1,93 +1,154 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD3130ACEC
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 16:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0DC30DED9
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 17:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756918721; cv=none; b=gMh8Lf3OTrtDzHy3AioEeCp8r+HRYzLY1C+XDGTgWKFgIJXIO1mzP9wkxjy1yyuvjfbG2cpEMa7HxjsWaFqunl1O/ks49vOea1WII6Fj2CjG4OSowlwd4qP50QBuSd8Yfq6bEkSt2GBtXOJNtpTYU0eTlo4npiEQmOJ1j8P4PSI=
+	t=1756919469; cv=none; b=XRN7FH42s3O5WkEGNBc7rEnAGSPRTb9iXyFU1FzefGKnLWlMTzT690XwJ4BrD3G0wbsoilfBC1cGmZnDGtOowADhIBBc1jKZYnb5Uyqap//4Ov+Of83SduIMkQR7flFd/InRgAdtJhAjtOheJmWk4FnqX6CsqHf5jYFQGz/y5L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756918721; c=relaxed/simple;
-	bh=TkGs/Q16BHI7DXoTIkX+6RznNkMj6Sb+IRZ1Ac9kGLg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rTmR6MTTFuFlCKzPEERxBsS0JkTu+sn552mrqd/WcJ0KyVrXexrwnSZVkEeYAi600Z/tdmNux62u0LFVXSi+rP++JDWBztfu8MoDWAeBz95UrOYp+pPld40tBdgdxvqpjZ9scXhiQ5EVGbCLFPCIl9knkO/649RKn49Y3c3OB0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Z6X8RKVj; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1756919469; c=relaxed/simple;
+	bh=fLuqSAPV5wSjtTIGF/DwaJYWgJhPU9kjtRiI0sYj4qA=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=epTpyoIHTdl1dd5pLSdn68Cx9RsX8VVm2rlHdxxlesUZv+ue1iLGF/EMa3UhnHafnWIcw+DMBRVhob+c5g+v8sdcvDfsNoETiNuEE/BHlOChMwTaUhflcRX8SgGPXiDm2AkTrBWmn2Pq6VnbBbuyATmQ2ArwgBVLJmqq51fofds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=vIhii5/4; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Z6X8RKVj"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id DE6C5C8EC77;
-	Wed,  3 Sep 2025 16:58:20 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D04EC606C3;
-	Wed,  3 Sep 2025 16:58:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 45EB81C22C5D3;
-	Wed,  3 Sep 2025 18:58:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1756918715; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=X8JKXxFGLFr1lg34extIQMyHHx91XLEaQpJaFFUz6L8=;
-	b=Z6X8RKVjWC+125qn1KtGHRMQS1AgU+NL9bIKmwjGCm+oN5U+isOyk5qopp2gn2htYY14Cq
-	7mWo3hrwN6UnEEH0+e9bnaUuiUQBtPid5QepXe2/aR55dubqvZLPNKprg1+8+1XYFwjN5C
-	rOqde+3Ic04NkjBbATS7KG3YSN6orEfhNuYqvt8xWuhn2rFxP8vr44SK1YOCkXpn3Hojrn
-	hCMMyofyqKjClO7rSEsB+6maSb4JNdtivsY7SFZ9kE6iKTMEQH0JzgHGeoke9quMEC8xa2
-	WC4y0E+olAYx9RkSaFt4WpQZUsZ+Lx2YN3Nm2hFMOrr+ph96SZTaT9oc3IKg1A==
-Date: Wed, 3 Sep 2025 18:58:29 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:REAL TIME CLOCK (RTC) SUBSYSTEM" <linux-rtc@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: rtc: pcf2127: add compatible string
- nxp,rtc-pcf2123
-Message-ID: <202509031658298690ab12@mail.local>
-References: <20250903165536.431586-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="vIhii5/4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1756919445; x=1757524245; i=markus.elfring@web.de;
+	bh=fLuqSAPV5wSjtTIGF/DwaJYWgJhPU9kjtRiI0sYj4qA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=vIhii5/48wKnO7kk+EdTsvr0h7gM6WBi0u8ZNthQ2V7hJpe8Xb/UGc9wONZ+Znaf
+	 7Pkgd2pj8wBjABmxZLyBdB7XyTILnLnulobFG2Xgr+GdVa344ok4HMZnZaNk7HDAJ
+	 u6rVoDFi65C+LC/f+YANqbsLjBM8dLxsKfWje1t9yO4Q90h1bzSvOMKYLwhTjUQGZ
+	 t3Hjey+a06NDLymStucaTUUyQ8lrLDJ3tLu4Tvu/fISr2YcK5HgvnWDVZEj24fEv8
+	 viPZRnoe4GUEyxrxLCPlCrJfpGgil7jjRivjQOe/+HJ3whQ7LMEbSZpBa2ZOJSwZl
+	 ygWfdbUWI4qegE4fXA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.92.225]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N9cLR-1uQRcm0FqX-00xN5X; Wed, 03
+ Sep 2025 19:10:45 +0200
+Message-ID: <14f774db-2f44-49f3-bb02-7d4033675b04@web.de>
+Date: Wed, 3 Sep 2025 19:10:43 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250903165536.431586-1-Frank.Li@nxp.com>
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+To: Miaoqian Lin <linmq006@gmail.com>, imx@lists.linux.dev,
+ linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kernel@pengutronix.de
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Fabio Estevam <festevam@gmail.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Lucas Stach <l.stach@pengutronix.de>, Manivannan Sadhasivam
+ <mani@kernel.org>, Rob Herring <robh@kernel.org>,
+ Richard Zhu <hongxing.zhu@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Trent Piepho <tpiepho@impinj.com>
+References: <20250903135150.2527259-1-linmq006@gmail.com>
+Subject: Re: [PATCH] PCI: imx: fix device node reference leak in
+ imx_pcie_probe
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250903135150.2527259-1-linmq006@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:jogpiOwnRJCCSx9ze+nNG+5f9IS3la51icG7IOx8k1elYl1/Q36
+ tbh4XXjVbwMkhTlGHlLodny7Rp+bpEL4ehP1xCR6Qz3G2bXKMzoxbm3sEgJUksnJJ1C7KHl
+ Heov7yDl/uuoGD67Os9DqAEg64REeokQUq4/P89E50lXArsJ+i7Af+KyNPd7Mhz0NqBvVGs
+ m9jfntakm461kj4FnSGgQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:JwLOkV3kG50=;lxX1e4gktR2E3a+91vB57R/y3O4
+ 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
 
-On 03/09/2025 12:55:36-0400, Frank Li wrote:
-> Add compatible string nxp,rtc-pcf2123, which style is not consistent with
-> existed compatible string because existed driver and dts use
-> nxp,rtc-pcf2123.
-> 
-> Fix below CHECK_DTBS warning:
-> arch/arm/boot/dts/nxp/imx/imx6q-evi.dtb: /soc/bus@2000000/spba-bus@2000000/spi@2018000/rtc@3: failed to match any schema with compatible: ['nxp,rtc-pcf2123']
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/rtc/nxp,pcf2127.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/rtc/nxp,pcf2127.yaml b/Documentation/devicetree/bindings/rtc/nxp,pcf2127.yaml
-> index 11fcf0ca1ae07..595c20df6a411 100644
-> --- a/Documentation/devicetree/bindings/rtc/nxp,pcf2127.yaml
-> +++ b/Documentation/devicetree/bindings/rtc/nxp,pcf2127.yaml
-> @@ -20,6 +20,7 @@ properties:
->        - nxp,pcf2127
->        - nxp,pcf2129
->        - nxp,pcf2131
-> +      - nxp,rtc-pcf2123
+> Add missing of_node_put() after of_parse_phandle() call to properly
+> release the device node reference.
 
-Nope, you need to fix the devicetree.
+How do you think about to increase the application of scope-based resource management?
+https://elixir.bootlin.com/linux/v6.17-rc4/source/include/linux/of.h#L138
 
->  
->    reg:
->      maxItems: 1
-> -- 
-> 2.34.1
-> 
 
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> Found via static analysis.
+
+Which concrete software tools would be involved for this purpose?
+
+
+How do you think about to append parentheses to the function name
+in the summary phrase?
+
+Regards,
+Markus
