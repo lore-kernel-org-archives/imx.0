@@ -1,179 +1,173 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013014.outbound.protection.outlook.com [40.107.159.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from aposti.net (aposti.net [185.119.170.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B3E2D3756
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 19:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756926709; cv=fail; b=JbPfPKaOcH4KBa1Q+qkUwZ8REo3ifSTzae4wUSKMSO6HcCFdiY2ZHlVfrL2au8M0xLiAG6OWsmEfFVhAGcVcxu8fQqpF2clOBF4GvsIr/8a+gqQkmvTif0pYb5lQF9XbieOr3d3VMZdk9t4dV1RMkcUJlveVhe+nxOhb1vmXw20=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756926709; c=relaxed/simple;
-	bh=PD+DynnjJAKFT3s0vGnUhvCTO/9Tc9iL9lqOUtXvmos=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=W/IPK1U00FuMYFm3UdvAyICEfl0hgC55KniSJ9lBH7tg+I8avxabnB+9cQ/I83S+b/7sQo47kjMyzHmib4z6t3nXbnQZUBlX+hf6nVNC91XNJoapELmD68EUge0dFVv2LYHNpmRrMoqu/NpRW1l02EsXug7LcXj3I32mbK8IKQI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=O236yNS5; arc=fail smtp.client-ip=40.107.159.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6103B2D374A;
+	Wed,  3 Sep 2025 19:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.119.170.32
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756927099; cv=none; b=IqHyQiV/pJjlKUvIuBcNiRcu3jJYlkilGiue0r7a8rU381yxi13qrwXzFYSjraPAJXBuUk1hwfWcEhcpHgaXhUc8Pd4+8RdYaWQgeduIj3I/l1UhJ1qblQVM7iFnXDtojfbbnGmjoiDlmBSijGELUf3iOkn3lo77jRNeaGF2tVA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756927099; c=relaxed/simple;
+	bh=83cV/7EoxlRdQz7wlI4WnGn5t/IKXeIv5jWCwnuB+14=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aocHHxX/hMc1Zj01hIw721pZ6iQCwG3iNVFSsI/nbKCW2kxz4+vpyzRUHgSCnf48l+py0dMJ+HmjlNmoqPCaIcoB3ySVRoB9m/Lqo67YwA+FeUXQSuPF0uipeiR63zgK8Qc5X7nP6Y++bm6JsjNER//MNyvn3Mf1bouzD577BBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net; spf=pass smtp.mailfrom=crapouillou.net; dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b=M013U4Ma; arc=none smtp.client-ip=185.119.170.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crapouillou.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="O236yNS5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OcGjgKQHo6wkp2NsHs6bE3i34dQNW1oEpMc2szxH0itGZNjfefGwHPbHY2Ku3rp1BomULhiCGbqzEv6+CsxvFe2hakm+Aup3q7BaEN8hmm4tGSyeWpI2i/3/8zuEAP8aSJmo5RWEZOBbTMAQNOi9DikcRgFjXUgvXTsPKitSi8U5IXIIwxDOuA5H7FM8IkQwzs7arlaTgMg7/W72TccKQes40k2DZTsh43um3K/kOmhHO6FbWEwDeWN3QTgEyEoqqdhvxQQz2ss20XJ6z2JjO0wQyLepZMngFFcQDaOJgAmconXF2ELD4c5+/U7nHwKY68wrN6WpbnxRefOqmWqkOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AXiIjtb2gH+rQzHXqpk7978iyFOwTi97bHEKQib1EOg=;
- b=CB6bA1x9HZyyyQCaCwuz0y01DOd2YHKzxjKtYjXuiHXor31+kEfIKoGEIXImQlio6n/O8yqPMu4q9l6xH7HC5nNESkibzZsoLWMFY5ZRh0sBCjwvUxmhe/c66N2jkst2Ln6wicepqCFLBG4FGIxy3FQiFQRRQb7hIn4ohqbxBo75YOuZiKNGZx3ULazPpvk+KTOUakY+ehURY8E1gWGPEGX8Y86sq2VrHoaR6TtxJ5bYeu3zm4a2KnMhtNTnRtfNj7LUYc0UajghworAzbbgVYSuf7Suvf7NOpEV+gEm8PJlLXsiiSZm4jxY4NkFbIjoYeziizIROD7pOgsenxu9gQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AXiIjtb2gH+rQzHXqpk7978iyFOwTi97bHEKQib1EOg=;
- b=O236yNS5cYF3+wH2ZLTDzqt4APj7/1VzYMVAkWAmQaQjrD4Zp8jaJeYVN6MsrO/xuujhXFG3xFIkbCpC6yIuBZdCUB4U0BCg4EkyrrWmyKMKnWVCCzVaY8egp3FszQ+ZT74PdUZ2V2nC5Rpgv9Suw1L9ElcrGKU6Ck+wZnvrEyuILhJPksiZm/qnq2yBrpyHPRMNQWEIfcg2aBntKh4T/weAZyZkocZuvwVDpxk6IpsmT+aLkOW7tPFW+Y6Ryrl7z3XNnfkyscnfEh1g5P7Zsb/n2xd9QTS4XpqfgSD0TzZDFL4zhbmSaj+JxQpobiHxh/myx3ApnFm/cWeXil8suQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by AS8PR04MB7541.eurprd04.prod.outlook.com (2603:10a6:20b:29a::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Wed, 3 Sep
- 2025 19:11:43 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%7]) with mapi id 15.20.9094.015; Wed, 3 Sep 2025
- 19:11:43 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux-rtc@vger.kernel.org (open list:REAL TIME CLOCK (RTC) SUBSYSTEM),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: rtc: pcf85063: remove quartz-load-femtofarads restriction for nxp,pcf85063
-Date: Wed,  3 Sep 2025 15:11:27 -0400
-Message-Id: <20250903191128.439164-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0076.namprd13.prod.outlook.com
- (2603:10b6:a03:2c4::21) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="M013U4Ma"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+	s=mail; t=1756927095;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=zUd3hbPutfTlDAjUwHIkED1FOMMH63fasP77ATNMKWI=;
+	b=M013U4MaToItOZxUrRJlNgf3goruACFm3i1msJg9jS7+HrTxirIsbgBywDk0B5jKoJZNHe
+	5GoEutO36JaVJOooUiUSeVBruDzW1fnbZkbLEJf2t0JycvE4miuhDdGhJAyVfZ57ChqOga
+	N/tyTnB51UGdvYdyVgUUSZcxz127gLI=
+Message-ID: <9387ed0a6d4e4c77ffd0f7aee55eaa1ff6ecd22e.camel@crapouillou.net>
+Subject: Re: [PATCH 022/114] clk: ingenic: cgu: convert from round_rate() to
+ determine_rate()
+From: Paul Cercueil <paul@crapouillou.net>
+To: bmasney@redhat.com, Michael Turquette <mturquette@baylibre.com>, Stephen
+ Boyd <sboyd@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, Cristian
+ Marussi	 <cristian.marussi@arm.com>, Chen Wang <unicorn_wang@outlook.com>,
+ Inochi Amaoto	 <inochiama@gmail.com>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>,  Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Keguang Zhang	 <keguang.zhang@gmail.com>, Taichi Sugaya
+ <sugaya.taichi@socionext.com>,  Takao Orito <orito.takao@socionext.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer	 <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
+ <festevam@gmail.com>, Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung
+ <schung@nuvoton.com>,  Vladimir Zapolskiy	 <vz@mleia.com>, Piotr
+ Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Samuel Holland <samuel.holland@sifive.com>,
+ Yixun Lan	 <dlan@gentoo.org>, Steen Hegelund
+ <Steen.Hegelund@microchip.com>, Daniel Machon	
+ <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com, Orson Zhai	
+ <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan
+ Zhang <zhang.lyra@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue	 <alexandre.torgue@foss.st.com>, Michal Simek
+ <michal.simek@amd.com>, Maxime Ripard <mripard@kernel.org>, Andreas
+ =?ISO-8859-1?Q?F=E4rber?= <afaerber@suse.de>,  Manivannan Sadhasivam	
+ <mani@kernel.org>, Sven Peter <sven@kernel.org>, Janne Grunau
+ <j@jannau.net>,  Alyssa Rosenzweig <alyssa@rosenzweig.io>, Neal Gompa
+ <neal@gompa.dev>, Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,  Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Max
+ Filippov <jcmvbkbc@gmail.com>, Matthias Brugger	 <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno	 <angelogioacchino.delregno@collabora.com>,
+ Daniel Palmer <daniel@thingy.jp>,  Romain Perier <romain.perier@gmail.com>,
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement	
+ <gregory.clement@bootlin.com>, Sebastian Hesselbarth	
+ <sebastian.hesselbarth@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, Heiko Stuebner
+ <heiko@sntech.de>, Andrea della Porta <andrea.porta@suse.com>,  Krzysztof
+ Kozlowski	 <krzk@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>,
+ Chanwoo Choi	 <cw00.choi@samsung.com>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Qin Jian	 <qinjian@cqplus1.com>, Viresh Kumar
+ <vireshk@kernel.org>, Ulf Hansson	 <ulf.hansson@linaro.org>, Luca Ceresoli
+ <luca.ceresoli@bootlin.com>, Alex Helms	 <alexander.helms.jy@renesas.com>,
+ Linus Walleij <linus.walleij@linaro.org>,  Liviu Dudau
+ <liviu.dudau@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Nobuhiro
+ Iwamatsu	 <nobuhiro1.iwamatsu@toshiba.co.jp>
+Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	sophgo@lists.linux.dev, linux-mips@vger.kernel.org, imx@lists.linux.dev, 
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, patches@opensource.cirrus.com, 
+	linux-actions@lists.infradead.org, asahi@lists.linux.dev, 
+	linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, soc@lists.linux.dev
+Date: Wed, 03 Sep 2025 21:18:09 +0200
+In-Reply-To: <20250811-clk-for-stephen-round-rate-v1-22-b3bf97b038dc@redhat.com>
+References: 
+	<20250811-clk-for-stephen-round-rate-v1-0-b3bf97b038dc@redhat.com>
+	 <20250811-clk-for-stephen-round-rate-v1-22-b3bf97b038dc@redhat.com>
+Autocrypt: addr=paul@crapouillou.net; prefer-encrypt=mutual;
+ keydata=mQENBF0KhcEBCADkfmrzdTOp/gFOMQX0QwKE2WgeCJiHPWkpEuPH81/HB2dpjPZNW03ZM
+ LQfECbbaEkdbN4YnPfXgcc1uBe5mwOAPV1MBlaZcEt4M67iYQwSNrP7maPS3IaQJ18ES8JJ5Uf5Uz
+ FZaUawgH+oipYGW+v31cX6L3k+dGsPRM0Pyo0sQt52fsopNPZ9iag0iY7dGNuKenaEqkYNjwEgTtN
+ z8dt6s3hMpHIKZFL3OhAGi88wF/21isv0zkF4J0wlf9gYUTEEY3Eulx80PTVqGIcHZzfavlWIdzhe
+ +rxHTDGVwseR2Y1WjgFGQ2F+vXetAB8NEeygXee+i9nY5qt9c07m8mzjABEBAAG0JFBhdWwgQ2VyY
+ 3VlaWwgPHBhdWxAY3JhcG91aWxsb3UubmV0PokBTgQTAQoAOBYhBNdHYd8OeCBwpMuVxnPua9InSr
+ 1BBQJdCoXBAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHPua9InSr1BgvIH/0kLyrI3V0f
+ 33a6D3BJwc1grbygPVYGuC5l5eMnAI+rDmLR19E2yvibRpgUc87NmPEQPpbbtAZt8On/2WZoE5OIP
+ dlId/AHNpdgAtGXo0ZX4LGeVPjxjdkbrKVHxbcdcnY+zzaFglpbVSvp76pxqgVg8PgxkAAeeJV+ET
+ 4t0823Gz2HzCL/6JZhvKAEtHVulOWoBh368SYdolp1TSfORWmHzvQiCCCA+j0cMkYVGzIQzEQhX7U
+ rf9N/nhU5/SGLFEi9DcBfXoGzhyQyLXflhJtKm3XGB1K/pPulbKaPcKAl6rIDWPuFpHkSbmZ9r4KF
+ lBwgAhlGy6nqP7O3u7q23hRU=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS8PR04MB7541:EE_
-X-MS-Office365-Filtering-Correlation-Id: 451e8e8e-e66f-419b-f34b-08ddeb1db82e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|376014|1800799024|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?grQFavzqKa8r8WgDa2V2vp98hnzzV+yuxYEDwewp2DC8ujvqR8YH3vpQjQMV?=
- =?us-ascii?Q?uYYLCpAv30tJErPTwhM23H1tnmrnFQl2W3IXgdDQgilVZKXG+dX02U77k+zb?=
- =?us-ascii?Q?bTz/7Z30ao0DVmIsYYL++SyovVBFTV9DOI5KdRp1XgD34SOJbIPKPkixOuSl?=
- =?us-ascii?Q?dQImCY5v7dvCtGBOebOVCU8GXkpLKXYC7QMuX7vPtIKEw7szFfoEhN1vjeOc?=
- =?us-ascii?Q?1P9CjV7oYJ8blFhFwqetBGqSCz/6F+WnTPXh3SvgkDv29PMwZ+CWZNVLYcXp?=
- =?us-ascii?Q?1ZD6vbRvK/UKzldco03vwx/xhcVv5vMKSygD2puN93GgR+NS+MyzF1P2OQwE?=
- =?us-ascii?Q?CZRtmQQyzjKxdRNpRRpYdRO6vbvinVDKMiYBB2Zxku2wLosnTAVjxpiBuZst?=
- =?us-ascii?Q?CPkJRPbF+WF3YuQ7qQf3KIFAz1J2Gs2elYhfQF+tg7i+31jDT1V1kg7swVdS?=
- =?us-ascii?Q?TC9/vWp1DpJo4dQDKvCyGCOYefKsuLItPUHSi9Cdsm2RRg+vA7zEbne8xjTb?=
- =?us-ascii?Q?8Oq0WezKoDbyLOM86dy+D9OkV4WAfOBP0m92D/ktJAMlnNvQLE9W9hbkw2kE?=
- =?us-ascii?Q?9XrgB8GJCxDgGGnVWeytnbx8occZ0bDbll0u7s9YYkwL/EkHqzybwD2NiX5e?=
- =?us-ascii?Q?PYBOxxXULMSardf/OHitpCzIgrzxfsN3T3n97FKYVEQLvmi+INAz9s2DFQF6?=
- =?us-ascii?Q?qWnDYp7dtbVYZki02I80uyYrqshzrbJbTyYPq7PN/PPnqALfVewH+Z86nAza?=
- =?us-ascii?Q?LvhtDovT31ZGoagZ3BBD743QYG3Uoy9SMw+CNcXCtNZj1GhAeWnvVJ4vwfO5?=
- =?us-ascii?Q?oN98xDTlO82et9OobispUpG4A7xSwRQLNaYmbljN/AmODBEAkIlqyAuISaWQ?=
- =?us-ascii?Q?uR9zHWeGKCOR5xLLQDMZLkKS9ZHDT8/Y5qOsjHsgZlRizf8uGfKOgJkuryV/?=
- =?us-ascii?Q?dufPzEJntleMaDKd+CNi4J9huXRk2YNtQzQZHAuj4mkm7jiuQgFzB1k5hta8?=
- =?us-ascii?Q?HeJk5CZoR34MJQ1DzARLYqWivXKHa5aiIAG6d6M11vE+IGuO+dYOJsp70WmV?=
- =?us-ascii?Q?mHYdiUx1w4GHJzWODxefveRnmF21HJ+bhAhz8dCM2NNmeRYApBIvkqowv3Mw?=
- =?us-ascii?Q?P7EHxPFGDk2JVTe6epYPm8IVh0pGs7HUVX7IzbGhwyOK6ZmRxnZNv3KbW1zz?=
- =?us-ascii?Q?+q2Zp2J3k6iTZt53FciosFoj4rDh20bvxAWE2BdFgAmglNoOWDUbZ3SEV+X8?=
- =?us-ascii?Q?ugnpWZspt4/2sPGABhahcAMJwZBrq8+Ei4F8yZ1zis11TBh/7r/Dvr+gLtyI?=
- =?us-ascii?Q?s1Gz+XSHdKaN2CXNH+TwVSstUfIaC3d0eM3OSJeEmpYlynajJ6WLWuZGDqEC?=
- =?us-ascii?Q?M2aJh30er7eFk1Si1ulxTYNi55l4do0+CfgB9izrUyBGHv7G4P9B60E0F77T?=
- =?us-ascii?Q?x3d9CKTjeEc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?osaH6xj9bICWS0EWc23u2s3msmhr9MrAaPsNS7bcv0PyM4f+FHKZ0ll9lFhD?=
- =?us-ascii?Q?K0Gg/kFfWuEv3Yra3N561Q7s2KQ/SbkPYxfdi79XyikzReFmvFxwFPXA2HpS?=
- =?us-ascii?Q?nr0FaP/+/okwIjKXEZD5qrXY+hTs06T0nKm6DE+pZr1cfHamRh2nrsaIAdm/?=
- =?us-ascii?Q?mwINc/mrHwr80GH4EwZqXr5gKZJI2OX2RZ4uY+T2ZQIhi1e5DiPHJIFCYb9C?=
- =?us-ascii?Q?saaq6updXlCL3Do5Z5UfXe1azdDse8j5ZNVxoRcLEhCkqBLWFOvT//H4pU9d?=
- =?us-ascii?Q?9aoAvthF0fUnXQrasAcr6YR5CIr5Q4swSLjUiKKsKIyIWKOgiFKXVy6T1Xta?=
- =?us-ascii?Q?6kSr0GoH+hrwteUVNmmC5fpHFzsF+iTeVCAofRUnT281UIrTa/RhXV8p7pu0?=
- =?us-ascii?Q?Anf8Gn1NmcRj761eVcrH8cywo6nKMzPNJLvTrnUXUN1GNnxLvdq8gt1WMmzi?=
- =?us-ascii?Q?0fOqM2Envvv5f+FEPexAJrokpIgIqigzeMT4nW3+9xd6zJWUYBWQPq4AiNfd?=
- =?us-ascii?Q?W8TAZ0KQLJ1UBzgXRIYG3sDGnAEkhyV79oHX+o3KAnFm6kDR6gwOd3dZ4xnH?=
- =?us-ascii?Q?biKQJhubf3PzUc6h0e801NrE5EeLyWFYtL/85kCNBS0DtVV1ZgRoDShD0B4o?=
- =?us-ascii?Q?OnIVnldjVGveCF6K6bnzZOZSsi8Ni0zPMLIHuDsSB1/YdbOiDrBevdvr38NS?=
- =?us-ascii?Q?a3rxzPUHJq8ZnogEkk27nxZy27h+plTJ4QghTRuNnS7MhrFodgDThOckyyXz?=
- =?us-ascii?Q?33f6LFYu0HBvlG/BzQ7kzbz1bHbNvwnOEAvJxKRGk7o8vfYtRd4vMoEgj43+?=
- =?us-ascii?Q?NGrfkfCgd4e0q2lsQc3dvuWsRZRuXuav4QbC6UkrlqLVWfdCmkl3Z6DOA+Vk?=
- =?us-ascii?Q?nW/o9rcXuOY0TpqO+SEloFHhtjoalLaNVrBvWd4NwDRhBqbrhke6DIvw9QXk?=
- =?us-ascii?Q?oZJeBXoaXEZZfVTdaszcss7qj6F5RY+gAy4ULzOS+b0l8/zsk0SiOCzpfT1A?=
- =?us-ascii?Q?Ilxf8Rx0ELyEHJNy89uqGc3JSBgL/YQP1omMBOQKWoX4uh0msQvwq+4f4AT7?=
- =?us-ascii?Q?wji6+wD/2wC4Z0zp9JdE308TsBf+8NdoluyHMXj9MuD/KGmXgv+vz6meY+MS?=
- =?us-ascii?Q?Zaq0L/K4grkxfXK4pq33QNjxx6zCmKV1BSQrGJoYvC78/UqOxGDWga58AmLI?=
- =?us-ascii?Q?JR/z5uOSDXsirHkRVFTqplcjYKnd4Vbfe816LG/HheXyuYDY7hvR/XcnqNfT?=
- =?us-ascii?Q?Mc/SQLiyNz+ysY1lC2EOElvozEwndbtcsYR5hedbAcZJpMIpdlqYe82EtA1o?=
- =?us-ascii?Q?2Un+tXUklGT5BufjBBQruM42zYMpJCMsvZKSg9xNtkZL9aDQAJV5Ru03c/yc?=
- =?us-ascii?Q?wEWV0bnvUXlqSNWIZShTshQF9Wxj3g5pWHk4w7YAQMzIxUx9WoDq0xxNXyD/?=
- =?us-ascii?Q?BrfG22zsCKpujbf5wVS1j7b+hkAIe7gybeFoHe+E+/47YY1V9PhM7VM4bQ2x?=
- =?us-ascii?Q?5debEXPTyy63UOoXsvWYqsPCmJahjLW5cc2xkVRJyt15KLxn0JOAX3g2AM8P?=
- =?us-ascii?Q?djLWZL4//HRq/x9Gw1CFzT3oRQlKkoxXUwli4aTa?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 451e8e8e-e66f-419b-f34b-08ddeb1db82e
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 19:11:43.7042
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9gLGZGZYZkci0IXHXnjV17a8IZswq0KD1jRT+gsXm731PCnQ/R6MvDTr1DbGOngiALDx0XofiUYeZK+NcBRlgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7541
 
-Original TXT binding doc have not limitition about quartz-load-femtofarads,
-which only allow 7000 for nxp,pcf85063.
+Hi Brian,
 
-So remove it to fix below CHECK_DTBS warnings:
-arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt2.dtb: rtc@51 (nxp,pcf85063): quartz-load-femtofarads:0: 7000 was expected
-        from schema $id: http://devicetree.org/schemas/rtc/nxp,pcf85063.yaml#
+Le lundi 11 ao=C3=BBt 2025 =C3=A0 11:18 -0400, Brian Masney via B4 Relay a
+=C3=A9crit=C2=A0:
+> From: Brian Masney <bmasney@redhat.com>
+>=20
+> The round_rate() clk ops is deprecated, so migrate this driver from
+> round_rate() to determine_rate() using the Coccinelle semantic patch
+> on the cover letter of this series.
+>=20
+> Signed-off-by: Brian Masney <bmasney@redhat.com>
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- .../devicetree/bindings/rtc/nxp,pcf85063.yaml          | 10 ----------
- 1 file changed, 10 deletions(-)
+Reviewed-by: Paul Cercueil <paul@crapouillou.net>
 
-diff --git a/Documentation/devicetree/bindings/rtc/nxp,pcf85063.yaml b/Documentation/devicetree/bindings/rtc/nxp,pcf85063.yaml
-index 1e6277e524c27..f7013cd8fc20b 100644
---- a/Documentation/devicetree/bindings/rtc/nxp,pcf85063.yaml
-+++ b/Documentation/devicetree/bindings/rtc/nxp,pcf85063.yaml
-@@ -62,16 +62,6 @@ allOf:
-     then:
-       properties:
-         quartz-load-femtofarads: false
--  - if:
--      properties:
--        compatible:
--          contains:
--            enum:
--              - nxp,pcf85063
--    then:
--      properties:
--        quartz-load-femtofarads:
--          const: 7000
-   - if:
-       properties:
-         compatible:
--- 
-2.34.1
+Cheers,
+-Paul
 
+> ---
+> =C2=A0drivers/clk/ingenic/cgu.c | 12 +++++++-----
+> =C2=A01 file changed, 7 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/clk/ingenic/cgu.c b/drivers/clk/ingenic/cgu.c
+> index
+> 0c9c8344ad1103b13337a26e14b0d5d5c340d705..91e7ac0cc3342e3552acb9d2ec0
+> 0865a5234ad4f 100644
+> --- a/drivers/clk/ingenic/cgu.c
+> +++ b/drivers/clk/ingenic/cgu.c
+> @@ -174,14 +174,16 @@ ingenic_pll_calc(const struct
+> ingenic_cgu_clk_info *clk_info,
+> =C2=A0		n * od);
+> =C2=A0}
+> =C2=A0
+> -static long
+> -ingenic_pll_round_rate(struct clk_hw *hw, unsigned long req_rate,
+> -		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long *prate)
+> +static int ingenic_pll_determine_rate(struct clk_hw *hw,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct clk_rate_request *req)
+> =C2=A0{
+> =C2=A0	struct ingenic_clk *ingenic_clk =3D to_ingenic_clk(hw);
+> =C2=A0	const struct ingenic_cgu_clk_info *clk_info =3D
+> to_clk_info(ingenic_clk);
+> =C2=A0
+> -	return ingenic_pll_calc(clk_info, req_rate, *prate, NULL,
+> NULL, NULL);
+> +	req->rate =3D ingenic_pll_calc(clk_info, req->rate, req-
+> >best_parent_rate,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 NULL, NULL, NULL);
+> +
+> +	return 0;
+> =C2=A0}
+> =C2=A0
+> =C2=A0static inline int ingenic_pll_check_stable(struct ingenic_cgu *cgu,
+> @@ -317,7 +319,7 @@ static int ingenic_pll_is_enabled(struct clk_hw
+> *hw)
+> =C2=A0
+> =C2=A0static const struct clk_ops ingenic_pll_ops =3D {
+> =C2=A0	.recalc_rate =3D ingenic_pll_recalc_rate,
+> -	.round_rate =3D ingenic_pll_round_rate,
+> +	.determine_rate =3D ingenic_pll_determine_rate,
+> =C2=A0	.set_rate =3D ingenic_pll_set_rate,
+> =C2=A0
+> =C2=A0	.enable =3D ingenic_pll_enable,
