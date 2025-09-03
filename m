@@ -1,110 +1,163 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBEB303CB7
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D3B3FB31
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756904781; cv=none; b=L+cf7I8RL8LAJau8hDxKmBc4XQ+pvcnVaWCKCLo9shC2qDyEx0IxooAEWHl6iEbiDRHHYIwHTwCQLQv/VwvsHMXiMmPkCBxwB9Mmy2A5ho+pC+VqVN6RnAMs71lGlZf5U6Z/qryYjQhfV1ZACLCpqOtQy/WtkC3t+/Qc6ozDo3Q=
+	t=1756905491; cv=none; b=EvboWKa9vRCUMf385MYxScfeQWjw7W8J305yVvZ1nSyLsGDYPqbejmBJrMVeoeQakkmqiMJGpIls17EFNoeotGZeIC3kTU8d5/c4We/sFFJTOzA7x/55BeJ6b1bI7r3Z3elJtuOOxatDGXvQTpxJtpA7Cezz0YopFPOqh87SedM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756904781; c=relaxed/simple;
-	bh=XDKPHV75wgIjXXUhw4V5YtDkPybmhaqtXj422XNlmpk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=G1amYXtn8otJC/Is1vg0sYQ+4HAQmypviPt9jIM3kShX/q7Ksv4D0qiprTA1lC1kUnWWePtf51SYhDKm9em9KmoKoNlf5Qj54GDEI1qlA4DCpUGeywod7y1wr8QvULWiC/hKD2SQ5jcuCnZoyxwfkCirTORZyf5bTN5+RId+O2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1utnBm-00006Z-1K; Wed, 03 Sep 2025 15:06:14 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 03 Sep 2025 15:06:18 +0200
-Subject: [PATCH 10/11] dmaengine: imx-sdma: drop remove callback
+	s=arc-20240116; t=1756905491; c=relaxed/simple;
+	bh=aUpHyIkA6IRKScoX6aepW5QYg+CYo5eKLwuIId41vTs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PsimevseshJ1KV/sIibs79EjK3EcMZV+9kzKEHCxnMMjYULprk0V9fsqVdX3LajTG7gLwj1ioHMetxIzgq5WqWccrQl7mpbUWj23oMsBwV2eYQPXVrPdVk0MLJGz321xBGeiR/IjVuJAoXxff0Ua+vnGJJLvY4G40mhfBE15cM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 6680d70888c811f0b29709d653e92f7d-20250903
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:d056df0d-9490-46b5-b02b-45f4d6409240,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:b3d8cc48d38f17ba8c0258a26b8c30c8,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 6680d70888c811f0b29709d653e92f7d-20250903
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 431355095; Wed, 03 Sep 2025 21:17:54 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id DD192E008FA4;
+	Wed,  3 Sep 2025 21:17:53 +0800 (CST)
+X-ns-mid: postfix-68B84000-2111002
+Received: from localhost.localdomain (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 86984E008FA2;
+	Wed,  3 Sep 2025 21:17:43 +0800 (CST)
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+To: "Rafael J . wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Eduardo Valentin <edubezval@gmail.com>,
+	Keerthy <j-keerthy@ti.com>
+Cc: Ben Horgan <ben.horgan@arm.com>,
+	zhenglifeng <zhenglifeng1@huawei.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Beata Michalska <beata.michalska@arm.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pavel Machek <pavel@kernel.org>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	linux-pm@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zihuan Zhang <zhangzihuan@kylinos.cn>
+Subject: [PATCH v4 00/10] cpufreq: use __free() for all cpufreq_cpu_get() references
+Date: Wed,  3 Sep 2025 21:17:23 +0800
+Message-Id: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250903-v6-16-topic-sdma-v1-10-ac7bab629e8b@pengutronix.de>
-References: <20250903-v6-16-topic-sdma-v1-0-ac7bab629e8b@pengutronix.de>
-In-Reply-To: <20250903-v6-16-topic-sdma-v1-0-ac7bab629e8b@pengutronix.de>
-To: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Jiada Wang <jiada_wang@mentor.com>
-Cc: dmaengine@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Marco Felsch <m.felsch@pengutronix.de>
-X-Mailer: b4 0.14.2
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
-X-SA-Exim-Mail-From: m.felsch@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
 
-The whole driver was converted to the devm APIs except for this last
-for-loop. This loop is buggy due to three reasons:
- 1) It removes the channels without removing the users first. This can
-    lead to very bad situations.
- 2) The loop starts at 0 and which is channel0 which is a special
-    control channel not registered via vchan_init(). Therefore the
-    remove() always Oops because of NULL pointer exception.
- 3) sdma_free_chan_resources() disable the clks unconditional without
-    checking if the clks are enabled. This is done for all
-    MAX_DMA_CHANNELS which hang the system if there is at least one unused
-    channel.
+This patchset converts all remaining cpufreq users to rely on the
+__free(put_cpufreq_policy) annotation for policy references, instead of
+calling cpufreq_cpu_put() manually.
 
-Since the dmaengine core supports devlinks we already addressed the
-first issue.
+Motivation:
+- Reduce the chance of reference counting mistakes
+- Make the code more consistent with the latest kernel style
+- behavior remains the same, but reference counting is now safer=20
+  and easier to maintain.
 
-The devlink support also addresses the third issue because during the
-consumer teardown phase each requested channel is dropped accordingly so
-the dmaengine driver doesn't need to this.
+The changes are split into 12 patches as they touch different subsystems
+and are maintained by different people. There is no functional change.
 
-The second issue is fixed by not doing anything on channel0.
+V4:
+ - Fix compile error in topology.c
+ - drop 2 patches
+ - Move code into a function in processor_thermal.c
+ - Move code into a function in intel_pstate.c
+ - Move policy declare in dtpm_cpu.c
+ - Fix compile error in imx_thermal.c
+ - Fix compile error in ti-thermal-common.c
+ - Fix compile error in energy_model.c
 
-To sum-up, all issues are fixed by dropping the .remove() callback and
-let the frameworks do their job.
+V3:
+ - drop patch 'KVM: x86: Use __free(put_cpufreq_policy) for policy refere=
+nce'
+ - removed 5 patches which has been applied
+ - Consolidate CPUFreq policy assignments and allocations into one line,
+   suggested by Ben Horgan
+ - Change cpu_has_cpufreq() return type to bool, following Rafael's sugge=
+stion
+ - Change the title to 'Use scope-based cleanup helper'
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- drivers/dma/imx-sdma.c | 14 --------------
- 1 file changed, 14 deletions(-)
+V2:
+ - Fix compile error in powernv-cpufreq.c
+ - Split patch to separate logical changes
 
-diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-index 6c6d38b202dd2deffc36b1bd27bc7c60de3d7403..c31785977351163d6fddf4d8b2f90dfebb508400 100644
---- a/drivers/dma/imx-sdma.c
-+++ b/drivers/dma/imx-sdma.c
-@@ -2405,25 +2405,11 @@ static int sdma_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
--static void sdma_remove(struct platform_device *pdev)
--{
--	struct sdma_engine *sdma = platform_get_drvdata(pdev);
--	int i;
--
--	/* Kill the tasklet */
--	for (i = 0; i < MAX_DMA_CHANNELS; i++) {
--		struct sdma_channel *sdmac = &sdma->channel[i];
--
--		sdma_free_chan_resources(&sdmac->vc.chan);
--	}
--}
--
- static struct platform_driver sdma_driver = {
- 	.driver		= {
- 		.name	= "imx-sdma",
- 		.of_match_table = sdma_dt_ids,
- 	},
--	.remove		= sdma_remove,
- 	.probe		= sdma_probe,
- };
- 
+Zihuan Zhang (10):
+  arm64: topology: Use scope-based cleanup helper
+  ACPI: processor: thermal: Use scope-based cleanup helper
+  cpufreq: intel_pstate: Use scope-based cleanup helper
+  cpufreq: powernv: Use scope-based cleanup helper
+  PM / devfreq: Use scope-based cleanup helper
+  drm/i915: Use scope-based cleanup helper
+  powercap: dtpm_cpu: Use scope-based cleanup helper
+  thermal: imx: Use scope-based cleanup helper
+  thermal/drivers/ti-soc-thermal: Use scope-based cleanup helper
+  PM: EM: Use scope-based cleanup helper
 
--- 
-2.47.2
+ arch/arm64/kernel/topology.c                  |  9 ++---
+ drivers/acpi/processor_thermal.c              | 37 +++++++++++--------
+ drivers/cpufreq/intel_pstate.c                | 19 ++++++----
+ drivers/cpufreq/powernv-cpufreq.c             | 11 +++---
+ drivers/devfreq/governor_passive.c            | 25 +++++-------
+ drivers/gpu/drm/i915/gt/intel_llc.c           |  4 +-
+ drivers/powercap/dtpm_cpu.c                   | 30 ++++++---------
+ drivers/thermal/imx_thermal.c                 | 14 +++----
+ .../ti-soc-thermal/ti-thermal-common.c        | 13 ++-----
+ kernel/power/energy_model.c                   |  7 +---
+ 10 files changed, 73 insertions(+), 96 deletions(-)
+
+--=20
+2.25.1
 
