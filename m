@@ -1,144 +1,121 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FB22FCBF4
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 11:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BCF2FD7D8
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 12:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756900339; cv=none; b=dgSn4QTA17qKAgNK6Ff9WBcJe151gkhGSrp7AJTU9YUymjMID7HvDzpPHpiwVV+kBdwiyPzdkzvE4gwFSZze88lglXzB1hcuCTG5Ozr1PeeE8e9XizrT+RtxZf+8n7WwyFQwOxvEgvN7c1m32gADL3XUKZRNVH4knt3iDg1P9aM=
+	t=1756900805; cv=none; b=chAN+KQ0bhv7xziCEtD7l62i5npcaOxDqPLSFMuN7PAQ/6OI6o2RVibUssiclKmiRBtu8c/ZGBQLZeYvXOwTqSAHWP8AUxmPlA1BE+0KNDQ4gh6YGiB2SK5eUIseM3WFmrTyyH6/xNLh4Bi6BfFMTR0TmEr0g4RIdcTMY8Nn978=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756900339; c=relaxed/simple;
-	bh=rCkMsvnUjuBn7HONdhIgvsPhXdCF7ZF1EijdEX8RKxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VuIVgkZAZYV30zfzqoWI62EY7I0e95zcUCOsyYphIxhdNJ9Cv8OKMu2cTCeVLtTNSkQgmhpQ3jXpI4r6wf7Rocks9bNw15QHy14Imo+d1U327HIiZpkdT4xLEdD40kVsW4jhx+huTUtbnAQ2mHFDBe26yF1OUj16tooIaImaEyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kKny0KDG; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1756900805; c=relaxed/simple;
+	bh=Rb+PgskYzX9hALGvKjDvYwWW2Nn2Nrp6mSa/cLLO1GM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=antboCLr2CQfbMQylwPEQFCmZ6krG1n8VG2hqTKKlM49ueTlB8ezdOWCO5Ur+1WWp4vSbkx3pNq2CFL25wk8rb53UeLTFDGcds5HE4m8iAsCTk2TpQ1eQ1VAmNQMeSzZMSNnWDm4+TZP3J7dRv5oznxK7Z430lSBO/PZPMF2O4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=o2ZMvI9B; arc=none smtp.client-ip=46.19.12.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kKny0KDG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756900338; x=1788436338;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=rCkMsvnUjuBn7HONdhIgvsPhXdCF7ZF1EijdEX8RKxc=;
-  b=kKny0KDGjeWU6AUNiIgDwk82a849XrXLFERs7ASz2e3leJApksTDR90g
-   WwUNd2l5X5wj/LPeYwqG23/tmTmLJZ0dc40Sx78F5TvUQRFS0fDK8fGhH
-   r48wWp8UqXymF4xEnUkgneo2wXvhbfVEozq+l5zfCxVNJAYZpq/43FEM1
-   aUD1AEDPRzBTXsDCwo6A7QDFR1eYUK0Yrtu25eQqfpTvAmgrwsEac6JIW
-   uo1x4I1SBcNSnjw0WAZMEVhChLkVfdKHyapK6Jvv931o6ETC6pZupB0In
-   QzWiE+cy+LScvIKKamERBPVwLAuzpn108fw2ngEBCbPIwAqkYPnCWxBnf
-   A==;
-X-CSE-ConnectionGUID: hxt7JY1/TmakagU2p5/mqw==
-X-CSE-MsgGUID: PVUVDWzCTpqSpO0llmmGdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63043867"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="63043867"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:52:17 -0700
-X-CSE-ConnectionGUID: LSXzFaryTGiV559A8n4EkQ==
-X-CSE-MsgGUID: vvcyrhQPS3KYbuchLY9f0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
-   d="scan'208";a="176849676"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:52:06 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utm1v-0000000AyQf-39cY;
-	Wed, 03 Sep 2025 14:51:59 +0300
-Date: Wed, 3 Sep 2025 14:51:59 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="o2ZMvI9B"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=coCvg9toaaZHalzdq7we7HoqSKMDL7gNaulcB9obD/s=; b=o2ZMvI9BejTF4cXzOojjDzjoMq
+	V3qzoWK+kJHDNUFa3Q7jBydchZ2zA+NAQIfaUaCOV4pyhDwJFSbBL5B9xxEhZ0haczUkxYQPiEeDI
+	ttEqiXVlDmjMWZPSLrRHrPtbQGYcotpXC49FZhU4Z51wiOERsjSReZ+E/j+7mAJrBu6+PiRc4c4+d
+	8NIaK3TJYFxRM7LdTPFo6QAPWpT5WKcrkSOer5cZDZBe7f4sxZ9kyjOQ8hNglHzSG7B9wbxYU5K2Y
+	0xQfc21VTxvndLbilf+pfJ0IKNY/4OJdFYVcW8Zio6HkmtX1XwYbZo4rgTMYQ1qTUIhk0fi9T/4dh
+	B8TOZt+A==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:52410 helo=localhost.localdomain)
+	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1utlnU-000000034mQ-1Rh5;
+	Wed, 03 Sep 2025 13:37:02 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Peter Rosin <peda@axentia.se>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	stable@vger.kernel.org, Chen-Yu Tsai <wenst@chromium.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v7 00/16] pinctrl: introduce the concept of a GPIO pin
- function category
-Message-ID: <aLgr30rvGBCcsOWa@smile.fi.intel.com>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	upstream@lists.phytec.de
+Subject: [PATCH 1/2] dt-bindings: iio: afe: current-sense-amplifier: Add io-channel-cells
+Date: Wed,  3 Sep 2025 13:36:59 +0200
+Message-Id: <20250903113700.3079626-1-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp2.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Wed, Sep 03, 2025 at 12:18:18AM +0200, Linus Walleij wrote:
-> On Tue, Sep 2, 2025 at 1:59 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> 
-> > We have many Qualcomm SoCs (and I can imagine it's a common pattern in
-> > other platforms as well) where we mux a pin to "gpio" function using the
-> > `pinctrl-X` property in order to configure bias or drive-strength and
-> > then access it using the gpiod API. This makes it impossible to mark the
-> > pin controller module as "strict".
-> >
-> > This series proposes to introduce a concept of a sub-category of
-> > pinfunctions: GPIO functions where the above is not true and the pin
-> > muxed as a GPIO can still be accessed via the GPIO consumer API even for
-> > strict pinmuxers.
-> 
-> This is what I want for pin control, and fixes an ages old issue
-> that pin control has no intrinsic awareness of if a pin is muxed
-> to a function providing GPIO.
-> So patches applied!
+The current-sense-amplifier is an IIO provider thus can be referenced by
+IIO consumers (via "io-channels" property in consumer device node). Such
+provider is required to describe number of cells used in phandle lookup
+with "io-channel-cells" property, otherwise the following kernel error
+is present:
 
-No objections, let's move on.
+  OF: /iio-hwmon: could not get #io-channel-cells for /current-sense
 
-> Any remaining code nitpicks can be fixed in-tree, I need this
-> to be able to apply the much desired Broadcom STB driver,
-> so this needs to go into -next now for cooking.
-> 
-> I also want to strictify some drivers using this, bringing GPIO
-> function awareness into them, which is a good thing!
+Also fixes the following dtbs_check warning:
 
-Well said!
+  current-sense: '#io-channel-cells' does not match any of the regexes:
+  'pinctrl-[0-9]+' from schema $id:
+  http://devicetree.org/schemas/iio/afe/current-sense-amplifier.yaml#
 
+Fixes: fbac26b9ad21 ("dt-bindings:iio:afe:current-sense-amplifier: txt to yaml conversion.")
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ .../devicetree/bindings/iio/afe/current-sense-amplifier.yaml  | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml b/Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
+index 527501c1d695..bcf4ddcfd13b 100644
+--- a/Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
++++ b/Documentation/devicetree/bindings/iio/afe/current-sense-amplifier.yaml
+@@ -24,6 +24,9 @@ properties:
+     description: |
+       Channel node of a voltage io-channel.
+ 
++  "#io-channel-cells":
++    const: 0
++
+   sense-resistor-micro-ohms:
+     description: The sense resistance.
+ 
+@@ -46,6 +49,7 @@ examples:
+   - |
+     sysi {
+         compatible = "current-sense-amplifier";
++        #io-channel-cells = <0>;
+         io-channels = <&tiadc 0>;
+ 
+         sense-resistor-micro-ohms = <20000>;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
