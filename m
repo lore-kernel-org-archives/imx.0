@@ -1,126 +1,148 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E194C258CF1
-	for <imx@lists.linux.dev>; Tue,  2 Sep 2025 22:18:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB1E12C544
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 00:51:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756851513; cv=none; b=MxnGoxR2qhIYaEsPZHs9v0eakerpPe54UJ9IOrmUaZp06i1agqQ8fOKz+htewIrON5LrqelRBHiZ0tXqKXK2EUe0lfsB+KqfFzRjzwFV5cXvkVA9zVBOuDZtnWaSMt/GtAvG1SKkXwKnyS1KghNQDOic1S1nz6o2JTanS/GNSSY=
+	t=1756860687; cv=none; b=KRfkaQQgIqgLKy/BIxP+Yjtn2nEv0ixc82UZ6073aZOc7Pbb80kPvMaSo9simBN1Nr6x4uIQ0ieLTJXMiOX4pqrkBHHy7jMD48Ea9Q2EUn48mu0Kf0cueKUOVJbBVfcodlj5tcH4AMDLjPzFIzPuuUWjCZlfGWt7JgsJkImitOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756851513; c=relaxed/simple;
-	bh=li67uZ6xqKQCADV810jgcapd5oaTXRr3DZZuD3FIP0o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eU/MWUxLG0sf5u4Ja4B6jK90fd3wAqkOu/vm8uR1IghnfPS485qPwXIgClO/wZQu+cuPCGAikVjLHHyZosfbzw8BTIZsE87NGK2rjVIHo4ETknU8Iyyzemvv1LYaVIUQAKnrKLEtqCqIic9RsmU6TNnO2cVPLU3mFG7VAQ6A3Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FHd5z7LF; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FHd5z7LF"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-55f76277413so3342740e87.3
-        for <imx@lists.linux.dev>; Tue, 02 Sep 2025 15:18:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756851510; x=1757456310; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=li67uZ6xqKQCADV810jgcapd5oaTXRr3DZZuD3FIP0o=;
-        b=FHd5z7LFynJjwSWpowesC1Xb9w33JT2YgDOzjKtlykUvY26NXAQK1rFMjlJhHGPG8L
-         LDfvTBmR0SVss1+JBYpzDnaz6MruFzBX//vj+CHk/qb/+iZBOIkkjxRrw3COa8Debw4M
-         Ic41n+n45SatmVFCnzX3YzDw5j5cuHWJPoyK8bNNscXQU/gX61mScdWTB7K1ocDkhT7G
-         HuU48glL+1m05e4EhUFageQr7W47RBF0nFfKQSGeVpvKLBCdVOZET3forNxoPjJwXyqM
-         JRocs4WDqEM92HdtI5Tt6SErz1bpV973m2Dh1kfQBB5/rDAH2sqV48E6+R+9jleyxtvW
-         d+nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756851510; x=1757456310;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=li67uZ6xqKQCADV810jgcapd5oaTXRr3DZZuD3FIP0o=;
-        b=TAn1+eH7OXKzpSKRc3f6KmXKrIVQlEkdotvZmOXYbn5a8LYXcLMK1FMiTtkBrlryy9
-         9LkjAUp/HojJR/vcuN9Sukpw6ITxDlTnqe20nFYeoLgemZJhE+7VrG5SFGEY+YSJOITV
-         O7Qu8HugjijKQb/oo54d3kSN1X+ARRmfn5BlqGHJBntWJ3zPkxWLkdssx9JZS0Vry/TT
-         paRGZp2+LBxaySjOK6g0ATUMl5U5cEQD9I4q7dto4raJPMgrpstnYZfj/f2iVaaT7d3I
-         waZrw7q1Z069Ar6g/eeojH0n5c3qo6t4+3jE+8cssgHqX0AZVFRLpdII5NXcDfWnNhnI
-         vIkA==
-X-Forwarded-Encrypted: i=1; AJvYcCWspgYZ+XVqdSRbz0aP7QkJAnna4QoDPlEjKW4JyHZ2H8NcfFVYZdqeegf8zzkeh82NxuQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwgTgcP/ZKEkSLaoG3/gSRUH7Jluor3qTw9TNbkRIHNlFVEaQr5
-	DAr8gCHHaBsb8wqWRQRvH2/edaBJ1J+tediHFJRDlw0jcNjBmAS2XonZtkILBq51oEUqF1D/Ri4
-	J9o05j2+X+RaQ0R4DXyev4mH3V87aO8b/jSx24YQakw==
-X-Gm-Gg: ASbGnctXw+zFnox4g4fyFkCW3hMqSPVJlPLmw13SmXzmExvviSV5M/ZHrN4GNm22Yjq
-	jNmz6rg6HfP9Vn09MlKM46/BVN2oHYjp/S4C2gOgu/Sv6w3liTv59uhqKUO88rl07zW7G3XQZfk
-	x7wuvdLfEqoT5y95wgWOXbOeZGGdf37Q6aumxvBxMBuqnSKB+LRBLJxYlYkfZ4YWAhDgQVlzumi
-	DBoqqCNnQ81/0vhXg==
-X-Google-Smtp-Source: AGHT+IFb5FJ4SVuaW/MZYjqlxiCtjVdy/Gs9hCmULK5gWsYMbnHTDsvg0XfXKbqBDAFJs9xAYF0giEeS6uNYA+ao+FQ=
-X-Received: by 2002:a05:6512:3d11:b0:55f:65fc:8db5 with SMTP id
- 2adb3069b0e04-55f708b9c56mr3711945e87.23.1756851510074; Tue, 02 Sep 2025
- 15:18:30 -0700 (PDT)
+	s=arc-20240116; t=1756860687; c=relaxed/simple;
+	bh=SWn2YoMWlNMEPB8MPyZq3aGVAkzLGIwvqZCBCqopq50=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jO8mGu06j/hSSvT3Ip6gW3CSttyPZez3L/h+tJfRVhKH1UWSSBrvaYs3x6R8LSgJn2jbEBT+WUVsdI7c48EngdYRMXQTHhzSstp/s9a+R1ylAI7x2IHfYp9X8L4qxfIpOu1ZgWXqFvffv7kzz+fI1RFW+QmZMF8yJ7H31klVqKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 1864b9c6886011f0b29709d653e92f7d-20250903
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:149e317a-1aff-43d6-90c9-1a5d04dd57b0,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:461f970947de3929c2a541614ce8e229,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 1864b9c6886011f0b29709d653e92f7d-20250903
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1164660955; Wed, 03 Sep 2025 08:51:15 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 22D4BE008FA3;
+	Wed,  3 Sep 2025 08:51:15 +0800 (CST)
+X-ns-mid: postfix-68B79102-9412696
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 28EDFE008FA2;
+	Wed,  3 Sep 2025 08:51:07 +0800 (CST)
+Message-ID: <40706b1f-e23c-417b-b3e1-2dc839828588@kylinos.cn>
+Date: Wed, 3 Sep 2025 08:51:06 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
-In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 3 Sep 2025 00:18:18 +0200
-X-Gm-Features: Ac12FXw-1tPuaZxU9kVS8RfwbL5AeZ_YF1A5IdRwoR4crjvnC6JAL_oHeKPOKoA
-Message-ID: <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
-Subject: Re: [PATCH v7 00/16] pinctrl: introduce the concept of a GPIO pin
- function category
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org, 
-	Chen-Yu Tsai <wenst@chromium.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/12] cpufreq: intel_pstate: Use scope-based cleanup
+ helper
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
+ <20250901085748.36795-4-zhangzihuan@kylinos.cn>
+ <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
+ <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
+ <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 2, 2025 at 1:59=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl> =
-wrote:
 
-> We have many Qualcomm SoCs (and I can imagine it's a common pattern in
-> other platforms as well) where we mux a pin to "gpio" function using the
-> `pinctrl-X` property in order to configure bias or drive-strength and
-> then access it using the gpiod API. This makes it impossible to mark the
-> pin controller module as "strict".
+=E5=9C=A8 2025/9/2 19:47, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> On Tue, Sep 2, 2025 at 12:33=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylin=
+os.cn> wrote:
+>>
+>> =E5=9C=A8 2025/9/1 23:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
+>>> On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kyl=
+inos.cn> wrote:
+>>>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>>>> annotation for policy references. This reduces the risk of reference
+>>>> counting mistakes and aligns the code with the latest kernel style.
+>>>>
+>>>> No functional change intended.
+>>>>
+>>>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>>>> ---
+>>>>    drivers/cpufreq/intel_pstate.c | 8 +++-----
+>>>>    1 file changed, 3 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_=
+pstate.c
+>>>> index f366d35c5840..4abc1ef2d2b0 100644
+>>>> --- a/drivers/cpufreq/intel_pstate.c
+>>>> +++ b/drivers/cpufreq/intel_pstate.c
+>>>> @@ -1502,9 +1502,8 @@ static void __intel_pstate_update_max_freq(str=
+uct cpufreq_policy *policy,
+>>>>
+>>>>    static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
+>>>>    {
+>>>> -       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>>>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D=
+ cpufreq_cpu_get(cpudata->cpu);
+>>>>
+>>>> -       policy =3D cpufreq_cpu_get(cpudata->cpu);
+>>>>           if (!policy)
+>>>>                   return false;
+>>> The structure of the code is intentional here and there's no reason t=
+o
+>>> change it.
+>>
+>> Got it. Thanks for clarifying.
+>>
+>> So for this case the current structure is intentional -
+> Note that I'm talking about this particular change only.  The other
+> change in the $subject patch is fine.
 >
-> This series proposes to introduce a concept of a sub-category of
-> pinfunctions: GPIO functions where the above is not true and the pin
-> muxed as a GPIO can still be accessed via the GPIO consumer API even for
-> strict pinmuxers.
+>> should I also avoid similar changes in other drivers?
+> That depends on who maintains them, which is why I wanted you to split
+> the patch into smaller changes in the first place.
+>
+> My personal view is that code formatting changes, which effectively is
+> what this particular one is, are pointless unless they make the code
+> much easier to follow.
 
-This is what I want for pin control, and fixes an ages old issue
-that pin control has no intrinsic awareness of if a pin is muxed
-to a function providing GPIO.
-So patches applied!
 
-Any remaining code nitpicks can be fixed in-tree, I need this
-to be able to apply the much desired Broadcom STB driver,
-so this needs to go into -next now for cooking.
+UnderStood, Thanks!
 
-I also want to strictify some drivers using this, bringing GPIO
-function awareness into them, which is a good thing!
-
-Yours,
-Linus Walleij
