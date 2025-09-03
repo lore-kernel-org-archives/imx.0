@@ -1,25 +1,25 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38F026CE03
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 08:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D900A26A1D8
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 08:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756889039; cv=none; b=dE0s6jAVIllTs0jbFYTdfMXB1krB1OUY5LNwp1D9FbKSRb2vLrAVl2V6cx7445lCu6tBUZ7QWHWdwulPEmAnwrusKAsjs/mDCVptzRerbdoxuQZONo4pwphZWswDugsEsGvXRLum5T8HgByaoJ8cAxide8lX5IbvJyRPNeftijM=
+	t=1756889195; cv=none; b=Re4BcpcBHflUzMp8/YZS4mtPSyF8DJqX85u6HzgINE3UWLk8KFqFoeU8637I1eiX8X9QIfwVFEx0wj4sOKj7kE6t0m2ZBYX5swKwwjgxTnl3k1BRMEcghFeFCz8Zen2T2AGMchZWUI5wX+BGoddKExpaT7RLEAsc2cEwh/PbONQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756889039; c=relaxed/simple;
-	bh=hV80WKl/9UyJkVR2XuCyrywdEymnMo0ILh9DWhfk+Qc=;
+	s=arc-20240116; t=1756889195; c=relaxed/simple;
+	bh=yTFJjzqMU9ZzFUybZd6hkNW7zE/eIZgW+25kCR/mtpo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pXvNjsyu3OpdPGDrbR9q5H/K87+IQpWJNmlPr+vFjSqhxCUVWvaE4KcHiJtCLgEKpCtnSelSo6MyYFoxAb9iRqd2i64NYZiTNAYYJ8G9RGNPI126/pqEbnSaWz3ALY20fRlv8a5rgGQYejdzf6Egy4zK+uRf7kse/nGcpR7257k=
+	 In-Reply-To:Content-Type; b=et5eglCdvNVKyWC/CqGoNuSehxVmFnRn8FH3NMujEIz5uyhBnw8Zj9VlwbHxha0DTmz7VfOGqBQlh1baVlUn9uIaMUkqlmOMmR0+QLSQKg7/kEmFxPt7tYSxzJ2unY9AsmFZ3+LCmLXSDZO0Nnyhx9y0kMAU2UAo/DIhQ3PjYug=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1utj5n-00047A-Ka; Wed, 03 Sep 2025 10:43:47 +0200
-Message-ID: <e3966efb-9f81-4c01-86f3-c89864a89173@pengutronix.de>
-Date: Wed, 3 Sep 2025 10:43:46 +0200
+	id 1utj8M-0004jB-AR; Wed, 03 Sep 2025 10:46:26 +0200
+Message-ID: <5e993e2a-a0bf-45cc-8d95-75cfc1575a41@pengutronix.de>
+Date: Wed, 3 Sep 2025 10:46:25 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,23 +29,23 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] ARM: dts: imx6ul-tx6ul: Switch away from deprecated
  `phy-reset-gpios`
-To: Buday Csaba <buday.csaba@prolan.hu>
-Cc: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>,
+To: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ Csaba Buday <buday.csaba@prolan.hu>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org
 References: <20250815-b4-tx6ul-dt-phy-rst-v1-1-9b65e315d9d3@prolan.hu>
  <fa7e2cef-5242-4f3b-84ea-d77b959f6bdb@pengutronix.de>
  <c85a94ee-59e1-47d6-8200-813bb434caf2@prolan.hu>
  <1bf75411-4a51-4103-b314-a8a7253bafca@pengutronix.de>
- <aLf162kc8_VB163Z@debianbuilder>
-Content-Language: en-US, de-DE, de-BE
+ <57518c46-2e92-4689-80a3-ae4c99b9fc32@prolan.hu>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <aLf162kc8_VB163Z@debianbuilder>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <57518c46-2e92-4689-80a3-ae4c99b9fc32@prolan.hu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
@@ -55,135 +55,28 @@ X-PTX-Original-Recipient: imx@lists.linux.dev
 
 Hi,
 
-On 9/3/25 10:01 AM, Buday Csaba wrote:
-> On Wed, Sep 03, 2025 at 09:50:08AM +0200, Ahmad Fatoum wrote:
->>> [1] https://lore.kernel.org/lkml/20250709133222.48802-4-buday.csaba@prolan.hu/
+On 9/3/25 9:57 AM, Csókás Bence wrote:
+> On 2025. 09. 03. 9:50, Ahmad Fatoum wrote:
+>> On 03.09.25 09:43, Csókás Bence wrote:
+>>> [1] https://lore.kernel.org/lkml/20250709133222.48802-4-
+>>> buday.csaba@prolan.hu/
 >>
 >> Is this mainline yet?
->>
 > 
-> No, it is not. It was never the most beautiful piece of code, so I understand
-> that.
-> 
-> But if you could give us some guidance, that would help a lot.
-> 
-> Specifically:
-> 
-> 1)  If `phy-reset-gpios` is deprecated, than we should start treating it as
->     such, and not rely on it in future releases. Perhaps we should also add a
->     warning message, when it is found in the device tree.
+> Unfortunately, no. It apparently still needs some polish.
 
-Disagreed. Deprecated properties should be removed only about clarifying
-the impact of the removal on users. Replacing a deprecated property with
-an expectation that bootloader board code has deasserted reset is not
-acceptable IMO.
+So you are trading one breakage for another here. This needs to be spelt
+out along with rationale.
 
-> 2)  On the other hand, if it is here to stay for a long time, it should be
->     fixed. Now the gpio is claimed during fec_reset_phy(), and never released.
->     It can not be used by the driver later, like in fec_init(), because the
->     gpio reference is only stored in a local variable of fec_reset_phy().
->     Previous patches that would have stored the reference in the driver were
->     rejected on the grounds that it is deprecated. But if it is not, then we
->     can create a patch that would make it work properly.
-
-Ye, this needs to be solved differently.
-
-> 3)  Andrew pointed out, that resetting a PHY before probing it may cause
->     regressions. That is certainly a valid concern, but for most of the 
->     devices resetting it means starting from a known state, and should be the
->     default. But we could create a device tree property, that controls this
->     behaviour.
-
-Marco had a more involved series to address this:
-https://lore.kernel.org/all/20230405-net-next-topic-net-phy-reset-v1-0-7e5329f08002@pengutronix.de/
-
-But it went no where. I don't recall the details.
-
-I think the best you can do with existing bindings is to give your PHY a
-compatible that spells out vendor/device ID, e.g. ethernet-phy-id0141.0dd4.
-
-Then Linux can probe the device even while it's in reset.
-
-The downside is that it hardcodes a specific PHY ID, but this may be
-acceptable here.
+Alternatively, see my suggestion in the reply to Csaba.
 
 Cheers,
 Ahmad
 
+
+
 > 
-> Regards,
-> Csaba
-> 
->> Cheers,
->> Ahmad
->>
->>>
->>>>>
->>>>> Co-developed-by: Csaba Buday <buday.csaba@prolan.hu>
->>>>> Signed-off-by: Csaba Buday <buday.csaba@prolan.hu>lan8710 reset
->>>>> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
->>>>> ---
->>>>>   arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi | 8 +++++++-
->>>>>   1 file changed, 7 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
->>>>> index f053358bc9317f8447d65013a18670cb470106b2..0a5e90704ea481b0716d6ff6bc6d2110914d4f31 100644
->>>>> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
->>>>> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
->>>>> @@ -246,7 +246,6 @@ &fec1 {
->>>>>       pinctrl-names = "default";
->>>>>       pinctrl-0 = <&pinctrl_enet1 &pinctrl_enet1_mdio &pinctrl_etnphy0_rst>;
->>>>>       phy-mode = "rmii";
->>>>> -    phy-reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
->>>>>       phy-supply = <&reg_3v3_etn>;
->>>>>       phy-handle = <&etnphy0>;
->>>>>       status = "okay";
->>>>> @@ -262,6 +261,13 @@ etnphy0: ethernet-phy@0 {
->>>>>               pinctrl-0 = <&pinctrl_etnphy0_int>;
->>>>>               interrupt-parent = <&gpio5>;
->>>>>               interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
->>>>> +            /* Reset SHOULD be a PHY property */
->>>>
->>>> Comment belongs into commit message.
->>>
->>> Agreed.
->>>
->>>>> +            reset-names = "phy";
->>>>> +            reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
->>>>> +            reset-assert-us = <100>;
->>>>> +            reset-deassert-us = <25000>;
->>>>> +            /* Energy detect sometimes causes link failures */
->>>>> +            smsc,disable-energy-detect;
->>>>
->>>> Unrelated change not described in the commit message.
->>>
->>> Oh, this has accidentally made it into here from our DT. Thanks for spotting it!
->>>
->>>> Cheers,
->>>> Ahmad
->>>>
->>>>>               status = "okay";
->>>>>           };
->>>>>  
->>>>> ---
->>>>> base-commit: 0cc53520e68bea7fb80fdc6bdf8d226d1b6a98d9
->>>>> change-id: 20250815-b4-tx6ul-dt-phy-rst-7afc190a6907
->>>>>
->>>>> Best regards,
->>>>
->>>>
->>>
->>> Bence
->>>
->>>
->>
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
+> Bence
 > 
 > 
 
