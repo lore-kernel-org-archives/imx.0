@@ -1,189 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B25C1B983F
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9705830C35F
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756907130; cv=none; b=dXU1Uq/RGcUSaPC/RSE4b/uNd/YgKjV40lv/5nd50GHCGF4ursOkLw2dYR10JmGH9ELS/9aQoFVQVxOvkmL2QF/SVbUIfWBLNtZDuQB9MFZnf3abunhLyrRL1BDaw1B05Fzji+2CVyhgkQFmo8zyjB79QHKVKiLBmCtfbdyLUy8=
+	t=1756907523; cv=none; b=Jg0RSLncKX3twDDkbtl4EL1s5FRI3cnUsgr+zEeWM2U5zXRBjeXccVUKlROwsC7FGOgn4iFBdN+VxICa/NtkZscc4Tv739REkURhjDAjBx63txT5qBEMWilo6nmqCL9Xd+3dDXxeucRwEkjldOqMGLp/j52b6V4qsH+fpdDZVX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756907130; c=relaxed/simple;
-	bh=6Bp49XvIiL/gpcZUSJHbjfPDkjkxFuVv8aVM1mwkppM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ncAJg4mfq0B75xF6ONlw6yYpPHFicpTUwi5+8AUqGNztUzbLLIzi1c6+pYc2XDCwNG3X0DghGma7SFpKdj6GOemgMfd5eHGxcyDfhXyXk010qvfe1FeBHi/i4I3GIW78b1XGex6QSNEYjF5dW31UpT47ByoCVuLH3vml7iO4g4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EtV1vxk9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756907523; c=relaxed/simple;
+	bh=T/KSTrSwcf413M6648OAvY3x0y9kavIDZn2ShtBOwsk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LjasHx301ScyBt9JzkKWydKlCwEUPslicQ39houftBN12ifcmKbmVbAqWj81AJoMZZMFd3DDGDJAE6ACKhezqehgt5U6nBP0Jm9jJkQG0hmGRjyGwLTifwLdLWzzlMDCm/c1xMQwD21pgwRwqNYF6rVc8Ojp5uWX0LEHAY1pLOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PgVYFGXV; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EtV1vxk9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DE4C4CEF5
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:45:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756907129;
-	bh=6Bp49XvIiL/gpcZUSJHbjfPDkjkxFuVv8aVM1mwkppM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=EtV1vxk9Knh7vuhM8x4HkCnMMQg77LBHWAZjfHt0hykdAtk0J7zkljpn1dRo8ALRy
-	 nJBjQbGoGlt335lc6Yejbwt37hjTv6p8SfDTunaRiW2oQzHQJq0rlhZtQ1LRmN6+mL
-	 IGnwxZAwUAyqQhCdqcZjg6unlXq+oHZaIHgAwNaLEtGxgemHO0ZOaXw9RabH2oRHjO
-	 1NAsUX1pvy8xvLLbjRFOhcQ7OcGTcv3rYRTxHcZtSDX9/AS365g+6AYkmZe7Gug6n+
-	 egQHkiSWI1KySu6kre/fm/A9KyjZ9fyn2Wecsk4AkYcdc4XAKirge13OlUIx7BdFSr
-	 JLHu0DYRXsxWw==
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-74382048b8cso4085415a34.3
-        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 06:45:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXZaAWk6YGXDarEfl4VYNH7ZqCoAP4Ii6at41Hpw7KDbE+jLmsStcW/uwOhrD8DlFt29i0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzEexbUbP4k10t7tVUiOKrnhv7J1rHPwZdu7xfN+mVcuhphhNG8
-	AeSMoKECP3t/sx50ymAfk2RlfPYTP0pquvGkGLYEDsJ8U1b+7DpgBdTX096La/t5eZOJOqD+ora
-	fjIRLmF/1jvmNgF0yGR/u4DRU9/gBgXE=
-X-Google-Smtp-Source: AGHT+IFj7tJ0lfFEWygwFa+BeDrtHlIidd3MSLvzw4pQoHyU3fN8psDlEaELWcEJ9+cmnisQYq8U5lt0bInRpr2lJAs=
-X-Received: by 2002:a05:6830:6682:b0:745:9ba6:d32c with SMTP id
- 46e09a7af769-7459ba6d61bmr1062886a34.2.1756907128976; Wed, 03 Sep 2025
- 06:45:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PgVYFGXV"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-248ff4403b9so50119725ad.0
+        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 06:52:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756907520; x=1757512320; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=31pvuPyzmxy7Nu/xNQn3+yYnNi6oTH3Hxdcf+kkmhtw=;
+        b=PgVYFGXVbMvgQDB936/pNFNn0E6egqbRP4oeSEY7ohvH5RSg8uM7h8H74xWBhVhBrx
+         yvJ9ZJOd5su0KJrMjWefdeSa103ocLK4f2jHBxNl3yum80RwE7E/uRtDjkGpnliLoSIa
+         9/bnaTe08js9HdA0z0eAd7P4q0RRfPuoMTTjTiDUEDSxjaQ0h+FdP/3JZXB2h1Ej3OsF
+         suiLMN4I/lx0LUDGTUU5lK3F21oqrup0SiRhgq+mQ0JXhj+gGlhXr7PwA4raQvVj1AvM
+         HMfprxXu+8yhXBvAS15nsV0EajULQoIlbXHYog0GyJfYCmkh+CzUaS4jdFv9x7bT7uzx
+         twJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756907520; x=1757512320;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=31pvuPyzmxy7Nu/xNQn3+yYnNi6oTH3Hxdcf+kkmhtw=;
+        b=Wxfa/MXL2gVNyMVu7nN1mPdg8M5FBV7PrGGv//cMEXpP0IZaAPTzbGPKB5y8sRGAxW
+         GrTquEiYHw2frv9yuJWhZHnS3ZKMtCgA+kaJl4pglmQc0+YB8IfQTlTp3lKb+Wf1Akw/
+         KWMJFRvUTbWCIzduhtlyC/p6J2xNMhY1MG8pJ+s+MH7PVHBykQdm6xrHAthG2B+EH6CB
+         +NhIdt53GsuNSIgjvd0/dNI7yRRoOMn8S3pfabyK3n/GtMQGZAE4NtiIq+e4EHwoznom
+         2zvhNsP1+b9RmqKPpjSRX4T6XIsps+vOcsp+qNnsZD7FUSS/Ez3kv/4z+NQRzwJZ5f7M
+         dQFA==
+X-Forwarded-Encrypted: i=1; AJvYcCWb5kBUdWaPWqiwLKTtIOz4l5DRdiVVswj71cm5XRSjkGhrTPiw4jvTPuKw4Zm1OHCf/Io=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzui6lM9S3z/HGbITAaKAx472REoK4z6Gp5oRvDlZaeRKdJTNIE
+	+0SLknhwzWYhQrqXNikg7LA/6nsOVFn0ssbKJCvIrBsi2fNN63dMImJk
+X-Gm-Gg: ASbGncsCNnlQNZGJUSQMlH/RaZ88QwpxeiqYMRoafbWtMyXDTZBDiIdV5Xy/o9jehGm
+	gN9zjipMQP93IeF5Wi+e9r6+YxsMEc83w/NDQ+LliUH7bm8f6vTQGY8Ax2c8iCyXjRWwDCm0af6
+	f8U+1FHXv2JXflexSoqlS+uenOETDCSbaS4e4zoLJ7HRVd+YJy0QpUF0XT7ZZr3cEyMvHGaKY9e
+	6m8G63GUnFUr9abII5Xh/neOnrqRRpUJK6V9CR4rvd/2ra8FtK7o736Se+XcFdY9rWiTGReF1G9
+	4Nd8hlerIPIdo6LpiThBLC2QigJCZOH7h3Qs5DOCbJsJwbjUBp8DkfJfn/bu6XLSHfqZEBXMcXk
+	rDiAfnjkcnm5DZ7OucCvLKmcT0sVuxJcrE7XDEA0WkA/i7JFtYLPBudBJRpnK8YqZ/v1XkBi67T
+	TapOfXmJn0Uu+tfOnfO0oBQKhvd0Q25Ky0x0fxePuv4WBlfK4kf8FjnLw=
+X-Google-Smtp-Source: AGHT+IGPXxKq1vceqgwEfnjmmFK1BX/HaS7d7j+fXNMkyGVFiTc/r6Px77JsUZgpTvhRMqRYHCDxOg==
+X-Received: by 2002:a17:903:350d:b0:24b:299a:a8c8 with SMTP id d9443c01a7336-24b299aab5fmr68322845ad.20.1756907519733;
+        Wed, 03 Sep 2025 06:51:59 -0700 (PDT)
+Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.22.11.163])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24b2a5852a9sm40585005ad.150.2025.09.03.06.51.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 06:51:59 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Trent Piepho <tpiepho@impinj.com>,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] PCI: imx: fix device node reference leak in imx_pcie_probe
+Date: Wed,  3 Sep 2025 21:51:50 +0800
+Message-Id: <20250903135150.2527259-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.35.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn> <20250903131733.57637-8-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250903131733.57637-8-zhangzihuan@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 3 Sep 2025 15:45:17 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
-X-Gm-Features: Ac12FXwBQmIxy8zPXuaWqJJ1Bp0qaxbUEME_ozpvMpdmoYPanY06xkhRVAoy8ys
-Message-ID: <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
-Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
-> wrote:
->
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
->
-> No functional change intended.
->
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
->  1 file changed, 11 insertions(+), 19 deletions(-)
->
-> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-> index 99390ec1481f..f76594185fa2 100644
-> --- a/drivers/powercap/dtpm_cpu.c
-> +++ b/drivers/powercap/dtpm_cpu.c
-> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtpm)
->  static void pd_release(struct dtpm *dtpm)
->  {
->         struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
-> -       struct cpufreq_policy *policy;
->
->         if (freq_qos_request_active(&dtpm_cpu->qos_req))
->                 freq_qos_remove_request(&dtpm_cpu->qos_req);
->
-> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
-> -       if (policy) {
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-> +               cpufreq_cpu_get(dtpm_cpu->cpu);
-> +
-> +       if (policy)
->                 for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
->                         per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL;
->
-> -               cpufreq_cpu_put(policy);
-> -       }
-> -
->         kfree(dtpm_cpu);
->  }
->
-> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
->  static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
->  {
->         struct dtpm_cpu *dtpm_cpu;
-> -       struct cpufreq_policy *policy;
->         struct em_perf_state *table;
->         struct em_perf_domain *pd;
->         char name[CPUFREQ_NAME_LEN];
-> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *p=
-arent)
->         if (dtpm_cpu)
->                 return 0;
->
-> -       policy =3D cpufreq_cpu_get(cpu);
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-> +               cpufreq_cpu_get(cpu);
-> +
->         if (!policy)
->                 return 0;
->
->         pd =3D em_cpu_get(cpu);
-> -       if (!pd || em_is_artificial(pd)) {
-> -               ret =3D -EINVAL;
-> -               goto release_policy;
-> -       }
-> +       if (!pd || em_is_artificial(pd))
-> +               return -EINVAL;
->
->         dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
-> -       if (!dtpm_cpu) {
-> -               ret =3D -ENOMEM;
-> -               goto release_policy;
-> -       }
-> +       if (!dtpm_cpu)
-> +               return -ENOMEM;
->
->         dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
->         dtpm_cpu->cpu =3D cpu;
-> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
->         if (ret < 0)
->                 goto out_dtpm_unregister;
+As the doc of of_parse_phandle() states:
+"The device_node pointer with refcount incremented.  Use
+ * of_node_put() on it when done."
+Add missing of_node_put() after of_parse_phandle() call to properly
+release the device node reference.
 
-So this change kind of goes against another recommendation given in cleanup=
-.h:
+Found via static analysis.
 
- * Lastly, given that the benefit of cleanup helpers is removal of
- * "goto", and that the "goto" statement can jump between scopes, the
- * expectation is that usage of "goto" and cleanup helpers is never
- * mixed in the same function. I.e. for a given routine, convert all
- * resources that need a "goto" cleanup to scope-based cleanup, or
- * convert none of them.
+Fixes: 1df82ec46600 ("PCI: imx: Add workaround for e10728, IMX7d PCIe PLL failure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/pci/controller/dwc/pci-imx6.c | 1 +
+ 1 file changed, 1 insertion(+)
 
->
-> -       cpufreq_cpu_put(policy);
->         return 0;
->
->  out_dtpm_unregister:
-> @@ -251,8 +245,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
->                 per_cpu(dtpm_per_cpu, cpu) =3D NULL;
->         kfree(dtpm_cpu);
->
-> -release_policy:
-> -       cpufreq_cpu_put(policy);
->         return ret;
->  }
->
-> --
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 80e48746bbaf..618bc4b08a8b 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1636,6 +1636,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 		struct resource res;
+ 
+ 		ret = of_address_to_resource(np, 0, &res);
++		of_node_put(np);
+ 		if (ret) {
+ 			dev_err(dev, "Unable to map PCIe PHY\n");
+ 			return ret;
+-- 
+2.35.1
+
