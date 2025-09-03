@@ -1,92 +1,120 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8816727B34C
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C6730BF6B
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756906896; cv=none; b=DrmudbN49rtu5A14qIYGiMG48SYmpjEB6SXih1Ebw6FHFAlmqEBdWoWFss7/PnvcjrXQbvzoOTlao9Bjzn3vJXIePecUnNFdTCDgj3S0F3miD4oyKCkfbHnzU5bN1hUatVu2Vo0pgjJsYVQ3bQB73IxMDsL4zzHRo3AvxTy1qc0=
+	t=1756906899; cv=none; b=SFVLLA1CNLMmc0IIt1E3XCjQM5Ic0bOJBOKonqiyi3+Cp3TUwXYPiShhpiwvgOjPWctbA+NyG6a2WgTuejcmfoXKASrQ0P8RxNzLD5A8rDaAEgnd2CfEsclApNeEQS6wMDg9SkpmiqggH95foAztDy8QfeteXEk1uoAUY+/Tt1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756906896; c=relaxed/simple;
-	bh=LtSHdTfd+/QVVScrEVKfgAJRnBoREvz6o6zvp2ZWROY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tPKUbq6ParmxzxelUABVJ4S/vsyFzj2ws8A6lZ615xek2gBggrvwKVbYgka+A7rKPouTEsVgzivOQgUqV69LLzj7hQL7PBVh3DH6Oio1FWjr+QUgGaDBsCeyYSSUcAXEpY+qGUoUun1EEbvXLS8p9mccw61b1IfueFs5rROcIt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iaa0lf3Q; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756906899; c=relaxed/simple;
+	bh=GdyS+4iaGJbGIJ9ctC+uFtQbJ57ANyqF8rmhb7Dc65Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qFbJ0Le3PUFkOrJqEengX1MF4dIUeITZjfS2KHRpKUSSBtNYfGzVlUfN858Rfs+iJXw/vmTuKBjYMk6rp06aigOX6FtzoKiQ2140HwYHTTC5iplO/OkNQzCN8gPtd5BHf2RyLHeeDnX24cCFN41qfmbSQiIRhBTQLrm1QsifT9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gREu3S3c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iaa0lf3Q"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-723960ded6bso27330937b3.3
-        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 06:41:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756906893; x=1757511693; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LtSHdTfd+/QVVScrEVKfgAJRnBoREvz6o6zvp2ZWROY=;
-        b=iaa0lf3QiYzX0SAeTzyX4ieZK0m/MjAomjzjT4T27lstyXGHe3LpATrrFKN9wAVexB
-         Ky0IuMaq/6kwIHC5R7XRIz+Cv7K/BZvm1fagxSwaBXBtsNupjQ7QeNh2C5LgSA1VTVsf
-         N8OEwj9mm6hBhzqjkYDDwzd5q0LxzV/VB9LGpUIUFILUUmp6DlTXp/x7bg0i2yLEDO4x
-         Vguv5h/QqfhahgJRsv4oXtqZDw35lBnoQG5rmPgBCNdV5wA7MMjXqlIj+iwnKrZvBDx7
-         m8eRw2L3cRbXcA/jafme3fW2danVqaPr4HJ/o3CqfTAzcHNS9ZWq5MY1Xe2tQPg7Wtgt
-         v+bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756906893; x=1757511693;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LtSHdTfd+/QVVScrEVKfgAJRnBoREvz6o6zvp2ZWROY=;
-        b=vpmU+sVkbxSA7bMsS1n7zk/fwKzv1LxZT135XechpLdICL9Btea60ZqIu+U7i8+9+v
-         ReLb/7/KUGOruks+eaZ/Khy1QaFJCk0kKOR8o5LrvzUfjCG9KAOXLmVFlEm4CzAtWTtE
-         IB31Qx6UeoK2GsKeVhFHITSlJ+N1Lxh+kAbt9deX0neyoZFcWU+PShOx4pS7TFII6yp5
-         xGctpWw8EITusvhPpN9RXIazbY4zEgOnCxaVT0bCMa8DYCTArx5kWGiw3tgnfpUEp8vR
-         bKz1ENLXrgCOOMchS4A8ap8YOhLhjED5A+TnSms0bh47MOEXM4jNoa917D2X83/Jz/gJ
-         xuWg==
-X-Forwarded-Encrypted: i=1; AJvYcCWbyvfAjzlrjBDIo+Oq/NgLyRtQkHNv82CCJG4aNIS4P/vIfYIWZnXSMO5iLm2kD32aONA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwVR2OkDy2pHCtOdD4Sb2DAMKZXXtdm2R72ByUi3wGlc2KChATj
-	5e64N2t9WEfAemRSZrp9kOeKqbwjGwOAik0CcQ8gkdD6ohZG8UbhAgFL
-X-Gm-Gg: ASbGncud7b17hMUw0h/uPGSUO6VY5oYgbyhsQz+wOTSbeYW3zv5nXr8HqBM/xKnzKVi
-	AMMr6Eo4QpfBi5AuuA3j8Dfmy87+0lEZPAbbHseVZcWiDtGE8c1p2hQ/3aRvJ/NSsInnI0xXlFA
-	UO0lS0UcMulw7XRTVc7Tjg13RJu60TIBqeMvvJF3u3HTbDJHdjeRDhFfy60Mqw7ptSp4yPBSAg3
-	fbwUw5OpTZzqexe3GGzv7KAkSD8u6rwdt4qrafZj//FBZGl7hxRSL3cjx4/z+wGs9vOsMnxm67o
-	n8c9kUu+0IlIUbpMBCVHomoOAAy6vZheNPJ/ZDW3QvlIfBCubywlXNmHJiV+LUi9H5L/irmDfeY
-	SnEPyDv/nvK7/OYqnQ9hv0TWy8aGTRxqe81fiCYs4yuveEFchxCOR
-X-Google-Smtp-Source: AGHT+IGnjHsAyQljYLZz2UQHy207mYMU6/HFTBywuxhNBv3nxCgO5MpvlVh0qFbK1/Zdh77rKiaXnQ==
-X-Received: by 2002:a05:690c:4911:b0:71f:e430:666b with SMTP id 00721157ae682-722764acba5mr157076777b3.32.1756906893562;
-        Wed, 03 Sep 2025 06:41:33 -0700 (PDT)
-Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6f:e2d5:5eff:fea5:802f])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-723a8329a4dsm13556527b3.22.2025.09.03.06.41.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 06:41:33 -0700 (PDT)
-Date: Wed, 3 Sep 2025 06:41:30 -0700
-From: Richard Cochran <richardcochran@gmail.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com, Frank.Li@nxp.com, yangbo.lu@nxp.com,
-	christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH net-next 0/3] ptp: add pulse signal loopback support for
- debugging
-Message-ID: <aLhFiqHoUnsBAVR7@hoboy.vegasvil.org>
-References: <20250903083749.1388583-1-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gREu3S3c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34004C4CEF5
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:41:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756906899;
+	bh=GdyS+4iaGJbGIJ9ctC+uFtQbJ57ANyqF8rmhb7Dc65Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gREu3S3cIIExxWuJPsc+munhlGaJtSwRMnS15DA4v0a6bQz6CWCrmik3TzYj/QUJj
+	 3ZloY/8FCzhwS85PBka4CYNFeEOJbr7uVgfvXPdZeoAikj7Uo0dnGkAxWxGkG+5qsO
+	 Ubyh/2IuzT8yKsZ/kPtNv09e6T7qhzcGrsaH6Y8fwLeZyjglfWVXXhr2JNPe5wC7Yw
+	 F1Qxtcff4RNjFLRfNMG69ZKoOHxIslevyytvdomIhf8ZQZp2ywnG4IJCrefXprlYQy
+	 PWeQU1n7TY41TrGtpOURB7CSxfyFAU/wyFf1li3R+PGyBGvuiJDKyH0k8eoNUsZlzO
+	 OT60wNUwudvhQ==
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-74526ca7a46so2280709a34.2
+        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 06:41:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWlZKurqpkMSonNBJ/b2hQYfPZLXIjoMobeKhiG4uZh1bonqJj5c8UWlreQNkJ/F/yDsQ0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwyGggjBwj6jBGYuOuOBg82T83YUuQ406s8EfL584RkoCAXbJ50
+	BEnwqgXIa0ss75VcJaCRbarKCYaS84b/RPYvfVZho/GfC/aHdf/2TjzM+qJCx5ogR2ZULTmFoMA
+	FW6YwJ8n4C53DZLmV3/sztLhLZ9TxODs=
+X-Google-Smtp-Source: AGHT+IE8CKY9R9M90mIkT56C6rGxrcA7dBv19VhPe7gEVCnw2r6FCP2pLXabMt9+rlKIM6nRFLb5/otuT90mPVIOHdY=
+X-Received: by 2002:a05:6808:8219:b0:434:97b:5eb9 with SMTP id
+ 5614622812f47-437f7d74afbmr6249755b6e.28.1756906898553; Wed, 03 Sep 2025
+ 06:41:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250903083749.1388583-1-wei.fang@nxp.com>
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+ <20250903131733.57637-11-zhangzihuan@kylinos.cn> <34b5e01e-2f4a-4d57-93ca-ab4549681b17@kernel.org>
+In-Reply-To: <34b5e01e-2f4a-4d57-93ca-ab4549681b17@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 3 Sep 2025 15:41:26 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hisM6vfdNXaY7qCGtcMb1FENGxiBb=E=tkqDbRyjs=bA@mail.gmail.com>
+X-Gm-Features: Ac12FXyg097RI81OLcVmXs8LtZCLVL9SQzq0jRH5EJZq7nDwUhDORw8eege7vFE
+Message-ID: <CAJZ5v0hisM6vfdNXaY7qCGtcMb1FENGxiBb=E=tkqDbRyjs=bA@mail.gmail.com>
+Subject: Re: [PATCH v4 10/10] PM: EM: Use scope-based cleanup helper
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Zihuan Zhang <zhangzihuan@kylinos.cn>, "Rafael J . wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>, 
+	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Chanwoo Choi <cw00.choi@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, 
+	Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>, 
+	Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 03, 2025 at 04:37:46PM +0800, Wei Fang wrote:
-> Some PTP devices support looping back the periodic pulse signal for
-> debugging,
+On Wed, Sep 3, 2025 at 3:22=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.org=
+> wrote:
+>
+> On 03/09/2025 15:17, Zihuan Zhang wrote:
+> > Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> > annotation for policy references. This reduces the risk of reference
+> > counting mistakes and aligns the code with the latest kernel style.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> > ---
+> >  kernel/power/energy_model.c | 7 ++-----
+> >  1 file changed, 2 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+> > index ea7995a25780..99401678e809 100644
+> > --- a/kernel/power/energy_model.c
+> > +++ b/kernel/power/energy_model.c
+> > @@ -451,7 +451,7 @@ static void
+> >  em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_stat=
+e *table)
+> >  {
+> >       struct em_perf_domain *pd =3D dev->em_pd;
+> > -     struct cpufreq_policy *policy;
+> > +     struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D NULL=
+;
+>
+> This is not really correct coding style. Please read how to use
+> cleanup.h expressed in that header. You should have here proper
+> constructor or this should be moved. Or this should not be __free()...
 
-What kinds of debugs can be resolved by this loopback feature?
+I gather that this is what you mean (quoted verbatim from cleanup.h)
 
-It seems pointless to me...
+ * Given that the "__free(...) =3D NULL" pattern for variables defined at
+ * the top of the function poses this potential interdependency problem
+ * the recommendation is to always define and assign variables in one
+ * statement and not group variable definitions at the top of the
+ * function when __free() is used.
 
-Thanks,
-Richard
+and thanks for pointing this out!
