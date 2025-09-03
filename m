@@ -1,197 +1,196 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013057.outbound.protection.outlook.com [40.107.159.57])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A2637427A
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 20:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756930856; cv=fail; b=OjKjDnYzw9HpFJRKL+RQzQZ3v79np0npJTZNT7LPygZX/aIRJSCnsgcA30iYZjEQDBbhu9nUnj1jROR7V5a3L99ECQCZJcvBarJoi5S27egEEvbkeOvEAUOg7H/jz9wpLKDchV+FgWfRLTDBjf1483//QQdRJ8EygpPZAFsygxg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756930856; c=relaxed/simple;
-	bh=zhojdG2N8zF71tQqHZPxamhl+5m5/SdswMsqcVWwOkQ=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=QnsGRmmgeslFxR+PDrw44x1PZNPwbJMuxxbUjx/Of+NJA9YODsOB2dflZdMSeRFFXoUueEVmZNw1juNL+8lpaLKbR3UxOicWETohB5z6iUVVJZ0FQLyy2nj3pbZq7Np8vRBH2BL5nvznLr25Grd06ZlnjOehpqMuHK0Ew3qTQeQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lrsQ/w3z; arc=fail smtp.client-ip=40.107.159.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C31A2D9EC2
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 21:45:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756935910; cv=none; b=RZ6glU+znq/nOJhfFQiMusLHHLLOA8/QkSN21oFjyFpSw+MMNpNrphqcBAs0CHtBtX4o0miHWFDlFOB1bQcX7RNz88YF6uoFzIF+73gAPRSW/bWAZLUTWgzHT5EUbF4BPun6u+eoDOJuj5y2G60T0mRXAdFbkcYnymuzI64Uiqg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756935910; c=relaxed/simple;
+	bh=Rk/81HoYs1XcBUonvHKeYrsIYcl6a8/NFUPshCQPazE=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=H0zmZF6Quxmu4AUhGPrqs6Z1v25WO+xVadYXK01wHi9QczqmTQxkoBQHUEJNepIgwVKQWUm+US/sHFD+s98WsbPuFU1SpxrLuIVsXJxPO4JqxndaBagzMTrwUatFzbtu5JSCqyOjCtgwfXLp2yrunQn0naPE65cnChMbidbM1mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=vkFm4xmi; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lrsQ/w3z"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rsQ/dsoNnkIAHgY19ljkvG7jsNVkIETmnTuooF1wwotbbmFBvHuDlOFjwE9tXXLh3XLNR4Pl85ZoNdGN08l+z2Mlb0pi6s5BEU/iZdLSQXo/3w6y/F/DKaHhSt8qnUzqJ8iFArJjfUNHPPwhwQGkCdAwvUI9lKsHPJD/wA096U5oPSBLwMte0gaxkcJGkOzOzftv50yKX6LJ9OCdCZcmdVauiGqkg79VRIIEnwEidSBaemy1xM6h3YUpn7FMjOm5IDMTtp4lQnIFVNNXDfrhcXQkO3fssgbH/Fx3RwTUTL5TXfNjdruY944omHLovrtH0wju1dFo73Ffp4hHVsUiEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xcEw6Jp0AA3cE304a8Mp+CntP9nFzF85ffWaOzlPwuE=;
- b=S5mQ/koNJl9Qmy1mAuCOBXRZp3wUZbjcFhHzqX0L5hBA3aVijJtMNdnlXoNGJnsPYb+3BrKJftbk+iKIbAM3/8FI4P/2oD445wRhWVsjIdHqsJkpouf5f9/anWVa7eeqI4hb3GqBZNxnsXYujhyhll+PjPaVTVfzZGrAgU4TEfxFuusukaqv9+eK16xbTeF2aIf3tXIeVKM8WvSZzEju+ogafR0Hiyw6OmMiIa/C1iDBPKotLDaqz6KNfXwOc0lWEMAuPiJVZiekWVu4GDQNonz9Ljcze+jJLMXoZpjfgxSc7gLkDAj4byOiU4KikKYBrKadlWgKO8Mn7ApvT9gLZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xcEw6Jp0AA3cE304a8Mp+CntP9nFzF85ffWaOzlPwuE=;
- b=lrsQ/w3z+etyE3TgGkPT/UuoIB7WUoHM3ckiOG2nmYXrNHU7FmV5xp3pIj2FVL4Y9asPoAnaNwOme1LqzaU662RgYW2tUlFIWk6TJWpuvaPrT9n7QBiCK7bk9LLDkH+Pxe6m1JNRhxzXHlPohhAAaXz9XPGzPVFhN2l7m3qjPLE88/fagQyGd+hGBdi0SZRTFyuT8CsnSm0xmJM8rTBYRbPHpZVsNMo6g8XTm1QFnZ26u7a+EOI3qy6NM51PZJn63uA1fwB8j5d9hYs0zfH7fvbrc0RowdnjzivawluM0gZtCBAT3CSe7pD59YbRWILvaS+SDr64xkxrd8uTFWo8pw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by DB8PR04MB6890.eurprd04.prod.outlook.com (2603:10a6:10:117::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.16; Wed, 3 Sep
- 2025 20:20:49 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%7]) with mapi id 15.20.9094.015; Wed, 3 Sep 2025
- 20:20:49 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Wed, 03 Sep 2025 16:20:09 -0400
-Subject: [PATCH 16/16] ARM: dts: imx6: change rtc compatible string to
- st,m41t00 from m41t00
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250903-imx6_dts_warning-v1-16-1e883d72e790@nxp.com>
-References: <20250903-imx6_dts_warning-v1-0-1e883d72e790@nxp.com>
-In-Reply-To: <20250903-imx6_dts_warning-v1-0-1e883d72e790@nxp.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Russell King <linux@armlinux.org.uk>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756930807; l=871;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=zhojdG2N8zF71tQqHZPxamhl+5m5/SdswMsqcVWwOkQ=;
- b=9ngSL95ehf3qKLKdtI1T5d0bLstjaY0GF011rZ4IC/dN/Pol1SnwDVZtUWTAsQ7xBZT5/D+0a
- XrUvuoEoRaECNfD78NEZoIJ0X8b7XIXuYmS6VsHzpo7xuHNhnJgwu7/
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: AM4PR0302CA0016.eurprd03.prod.outlook.com
- (2603:10a6:205:2::29) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="vkFm4xmi"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4cHGNw69gDz9tGC;
+	Wed,  3 Sep 2025 23:45:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1756935904;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZHjmanIcUbDp1eBa3yuGWLKN46L05l3A9F8rJ1gjMeE=;
+	b=vkFm4xmiSkJrIIWfI+hF9v56JXlaziTisVgB/GlTG9jFBC7oXYCdea4poqo1uIryj3BT74
+	U79gyfG7hok/ac/eq/BRraZ8UeKuV/XMKMORJSJL+g0NLYQH8yldjSscUF9QkETfU9MJa9
+	bFSa0PiHK6+g5MXCF0Hsp9VITi2V3HQBOnGiUTvXc/rEnuG8F2WF/3Gc4MyN0QQo3PncKO
+	Ajgt9o3MwWJFKwiTUz199kCI7h4mErrlSXaF9GmzsvjQaasZ7hMrVLiZBXZ8VUhjcozNp5
+	H1zLA24J/zJewbbYpVxkRVv/n0b50Ar+yiHcSl9VEb45aX9LZWuIc35VlLIbEA==
+Content-Type: multipart/mixed; boundary="------------RUV3G7hQJYDoa7JET1paPDuU"
+Message-ID: <838a0c6b-845b-428d-86b3-1480e5b8080f@mailbox.org>
+Date: Wed, 3 Sep 2025 23:44:59 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DB8PR04MB6890:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6822a27b-ae17-4aa7-387e-08ddeb275f49
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZlErT1FWd1ZnUUgvNFIvaXNhL0hHRnEyakZ1SWZBTWZGSjVxdm0xRGppVWdT?=
- =?utf-8?B?R3dIdzB3UEFuSjYrVi9HeVlRdnQwZHhTMnk2dEUvc2tCdzllanpmdHB4WEIv?=
- =?utf-8?B?MmpoeXpRN2xyT3YvVjd2V3MxUFVTTWxZYm00ZHhZVFUxQlozUmcxSFpOYUFJ?=
- =?utf-8?B?NjgyTkpoT3NPelV0L2xvQXFTMHNiVDdwN3JIYyswdnF4Z0NkVldDM0JZRm5y?=
- =?utf-8?B?OXpLOURsTmRMc0ZnOTFNZ2c0NG5xdmpvT3puZHBVeHJUaUI3bkhEem9hUGYy?=
- =?utf-8?B?a0VldlpBRjliaWMrWTUxdVBLb0lnRlVXKzAwNldUai93U3VmaWJ6WE1xQzdp?=
- =?utf-8?B?Zy9sYm5rOTdock9XeVN0d1dBNG1kRnptNko5OFFxNmFBYXV0V1h3WFU2MU9T?=
- =?utf-8?B?SnRnZlg2UW1QbXoweDc1YWo2bEt1OUhmT1hBa1ZOblRacDZwejAxS2hpOW1v?=
- =?utf-8?B?b2krNlFGV3RkaHFjK21WVUQvMjJvTGNHYjM2SVVxcUs0N0RwWjVZRklMWVhS?=
- =?utf-8?B?cTNkZkRFTmpIQUFYNVpjRjFVaWtlYlVvKzBxeHVFVnRlWTB2VmtBcmpXY3VO?=
- =?utf-8?B?VjNDa2V6bnRyUHlQREhrL2ZIQUtOR2g2RFIvbHNvSmMyb0dXMnNJczJwakJF?=
- =?utf-8?B?T01nTnEwRjVyMXQzODl5U2tmOHVaSXBDZEZ4M1Z5Skw4d1BuN3VNV2RRUVd5?=
- =?utf-8?B?SUlUL3BYL2tzSWFIZWp5N2lwSUFwdnNzZWI1WitiOGE2dzlHR3ZtSlJjV0sy?=
- =?utf-8?B?UVg4K0Z5aE01N2V4QVRrTmdIYlhXWGRoM1l2UmZXL1k1VnhiM2ZhRHg4VjRM?=
- =?utf-8?B?amhhYThMNGh5eWpBUEorM2x3MVpRTi9rdUwvdHFEUzdWTGpTbXJZbGZBRlM0?=
- =?utf-8?B?ckVNV2pnTUFpMXNPRTZXSk1zcW1yOE1rbytIeitOVFliN2lhTkU3NFdUZFc2?=
- =?utf-8?B?VjhKZm9BTWw1cFdPd2xROVdhTW4reDM1cDVycUJMWC9KMmNWYTFneGVrQ0ZQ?=
- =?utf-8?B?cUN3NlFGL1V2eXVqY2NDeG1RZTRsenFPcGgvNlBvV1hEZXRVWDhuQjE5aWNT?=
- =?utf-8?B?SW5JQU1UUUtrOTZpRnA2ZFczZzF4YjQyNElGdlc0UUdnOTJBdmo0ek5NZWxi?=
- =?utf-8?B?VEFIVE5yWjJHbDJvSTdtQi9kT2puN1BKR1VIUm5Uek5vTHUwR0J6YVRvdUJv?=
- =?utf-8?B?aFZqM0FLZjVrd25NejBlWk5XVzhPWk1QK3I0aE4yTDAvZEVqdTgxaHZVQW5w?=
- =?utf-8?B?WnB6aW9LS05TK0xYa3ozY0Rab2JhcWdyRVYxZXlXdXdzOFpmMnp3U0J3ZlBr?=
- =?utf-8?B?M2ZvZ2pxVml4WHNkWVZNcE9TWTZhNitjb2QzdWxlcExmVXIvM3J5enJlcFFt?=
- =?utf-8?B?ZzFRQWY3RFA0YUxXcGJzK1Y1SVA5RnBLcXpZVDJGbi9YbnplSitqcU9kM3FC?=
- =?utf-8?B?cE1KaVVvRHVrU0JQUW9LTGlZYjRseWdNSFhMTWNmeGw4NWZHUG1HT0JoS1p2?=
- =?utf-8?B?ZlMyYnhpSWxsWDlFNzZOWDdCMWp6NWo2UDFadm03WGJ4aVUyVWF2aXBkemkz?=
- =?utf-8?B?aXlQVHBURm1GRXN0cU1lejQwc3BXNnpnOWhDbGdjelpnQmwvWnlYbzlreC9q?=
- =?utf-8?B?c2xJdUovYzllRXF1dEVReW1NZXk0ZW1NbXRBVDN3YXBMUU01MG01RVZ6c2F6?=
- =?utf-8?B?VEF1VkJOOVZOZTkrWlRjQ3dnc1pnU3M2Q1cwYUpDbS9qODU5SGNDSE5JRDFy?=
- =?utf-8?B?VWozVHI4TVYza0hNZGs5bzhJeE9DM1pzb0ZncW80ZUo4cGozbkdoODFlaUdI?=
- =?utf-8?B?bFhmN0p1TEkyVEhmaFU5OEpBOGN4QS95N0JLK083RDhxcG1OZE5BdUJ3QVF0?=
- =?utf-8?B?aUFGUkVNWG1XYko4Z05QTW4rUU5CbGVpcWczOTR2MnBRc1pndVlpWk9TVm5X?=
- =?utf-8?B?K2RVYmlMMTM0bDJVRTkwU05LbktrbElEc1VZOHJ2bVFNRHEvZ2c4QTlmSHU2?=
- =?utf-8?B?TjU0OHhLY2Z3PT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SWFzTm52bzBsUFMySTlaaEFvY3IwVE9zdnR6eGllaGxubWJVbjg0bTZlR1Vu?=
- =?utf-8?B?ZjNDMnRHTzNiNlpUK29ZNWJQOWFkbzVaUXJqQ3RRY1YyaU5rbVdjUk5UaGx0?=
- =?utf-8?B?TG1DRXNkVFo4WG5Yb1p3WEpBN1Rvd2ZjQjBHYlYvTkZOY1I0MmJINXVnMUIx?=
- =?utf-8?B?ZldJUjBRZTZUQlFVN2Yrc001aHdsVHQzWjNnMDh6UW9OMjlYSkJiNVptLzJ3?=
- =?utf-8?B?bHhFaHVhQU00eTRiTjMwWWtzYkUxaHdxdStBc0FESzBvV0M4L2I3dGZxZGdO?=
- =?utf-8?B?cHZVRmd2KytYVjk2MkVuT1B2N0VId2pwVjZjRjlKM3ZEYW9nUTRSRk1XL0VL?=
- =?utf-8?B?SU5Ka0hwU21TcVZyd0ZzS1JtemN6KytIM2tldGs3VU9jQ005QnJ2RnhwZ0pY?=
- =?utf-8?B?cjEyMTdpVC80d3J0QU9MNXlLMHRVc3FCaXBteDVPUlovaDFnZGRwL2duelFk?=
- =?utf-8?B?alEwcFFRZE8vZzhUUXR2c2o2dUJxOFJhc3pxK2tEVVd3NzhtMEQzMG0rS1gv?=
- =?utf-8?B?d2NnODdoMEFqSG01MHZOUE0xaTdOSFI3dHpZaXRnWURUcFhDRGhBT1VyTGRx?=
- =?utf-8?B?RG5ZL3R2SERxQStHcEE5RHZnWldITlZpeG81ZXQzeU53SjlqT2xsTFVlWkdT?=
- =?utf-8?B?RkF4V0dFcnFtcXdJRDNWRWVRUHI4dUU4M2pPcCttVGhuTk9CbWhQdGFOU0RC?=
- =?utf-8?B?bTFXZnBRZEFSSmc2RmkyOXp0ME9hZSt2aWM0bDRwRk8yTmVVQ1VzNWx4NFFo?=
- =?utf-8?B?TjBEaWJPUjc1U08xdjlaaklmNHgzMUZsUm9CUVJobmxxSDM5WlZ2Mk9JcDNr?=
- =?utf-8?B?MTBKZWxYdnlTMG9iMzBtZTlrZTVkZGpqamJZUG9ab3BIdC95RjFidmVkeDhs?=
- =?utf-8?B?K3JMcFBEb0hoRThUc2s4MVJObXE4NllkZWhlbkhqL2hJQ2tuMXVpcWxGSmtF?=
- =?utf-8?B?V1Vacis5RlhnSmRhM2Z3NlpCUGJHS0pOR0VvV0NobktrRDdYZ1YzamVsSnIy?=
- =?utf-8?B?eEEvVTRSN3JZSWQxRWIwcWgrL21rRE1kQ09pdzJMNFVKVU5GTStyWk0wMytt?=
- =?utf-8?B?a3ViZjd5NlRCYmRQL0pNQVRaOUViZUNkN2NISWVBQ2tpWHVka0ZkV21aTUJz?=
- =?utf-8?B?R2VKTVlsVmNiNUdoU0J3Snl4YXYzd3J4dUpyanJsdXdTeXpZZ3ViQmRueDVO?=
- =?utf-8?B?QXh2WFhGUXAvM01RUWhzQjczeUIxRWtsLzRsSUsyS3RvcHJndUNkUFQ3Sk5W?=
- =?utf-8?B?Tk5IcFhRL3oxcGJVWDFoU2tWLzJUUmx3WDhiVUs1OVZkdFhtVmNFdE10em1J?=
- =?utf-8?B?bzNyczNrUDZrMHpzVHZjNEl2SG9hVW16aDgrTnJpWlhmNTlidW5sNDZRcXUv?=
- =?utf-8?B?TG1MOTdReFJlRmFIL29ONmliTjBmbGJjQi9ROFBNTWFDZUFqaHlZcVNKdlFG?=
- =?utf-8?B?Rm1iVE9vSHlNVVJjVTlhVWxxYXFMWkJVaXV6NkVQRmVCQmxnaktmMWdVcXRh?=
- =?utf-8?B?QU5HSUZtWWMyVmR5ci9EWHVQNHZGbjNNQTB2elRBcTlzdzhxZFBvSW9LcTIz?=
- =?utf-8?B?eC9lYTh3MVJsdnVmdlc1eHR3cW1MZDVvcGdaTzJJOVR3azhnazc4Q3lkcklq?=
- =?utf-8?B?eE14QXgvZVBFdEdiS3hGK0p2Qkl4M2psUkxjRWl3SG1PZEJMdUkvcDFRMUNt?=
- =?utf-8?B?SVdqK3l0NTRId2tvTmhoK05pV3c2UTNYVi9oZDBzRDdka0orRHFDdTdGb2dO?=
- =?utf-8?B?dUpLdHMwczdFdUNsckIxNk91Z2JGS3dDL0gyVVhGMllxWDNpUVU2cm84NE1z?=
- =?utf-8?B?ekNGWG90cU9DTHZUV1VTWHZaZUFHelpHTFF0MUZaTVUwcmZoTlpsM3h1d3pX?=
- =?utf-8?B?SC9QU24yWWdsd29Zb1phN0RDVW1YUEdhWnRzSzNlNVR2U1ErTFJycSsxVTds?=
- =?utf-8?B?aWtSVnhmUG4rWXc1Mit1S2Y5eHp2M0dWQ2prZm1iQ3ZId2JRU3BvREpzaHRG?=
- =?utf-8?B?Y0VEYmcycisvMTF0NmtqRkdRTHhtSGt2TDZqcWpOdWoxajRBL3JtTndKYlhy?=
- =?utf-8?B?ZzR2SEFianJBVmJxb2I1MkxNMVZERGlyTEs4SWlXVmpZRG9mQnFCL0hqZjl2?=
- =?utf-8?Q?Qt17W4UErIYyZzdtnwUjO7V17?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6822a27b-ae17-4aa7-387e-08ddeb275f49
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 20:20:49.3394
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FAjYCWJBAde2yjJ/ows94l1yoa99uw7/vVDZsqLdnlY0VIsJV6BeNseG83aUPC4AAb7RAXZofS9u6g8rPXREBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6890
+Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
+ David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Steven Price <steven.price@arm.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, devicetree@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev
+References: <20250321200625.132494-1-marex@denx.de>
+ <20250321200625.132494-5-marex@denx.de>
+ <20250324094333.7afb17a1@collabora.com>
+ <c1de2afb-3559-4fbb-b13b-2373175b420b@denx.de>
+ <20250325084349.344a0f11@collabora.com>
+ <7aadf355-edf0-46fc-b969-65c3789375ca@denx.de>
+ <20250325153507.61d82e39@collabora.com>
+ <4c06aef3-a254-437c-aa15-8e3eb7bf5951@denx.de>
+ <20250325155231.0d1b1000@collabora.com>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <20250325155231.0d1b1000@collabora.com>
+X-MBO-RS-ID: d51b669d6529346a39c
+X-MBO-RS-META: u4q78zyf4fuepdgig3d9tbpa5hm16r61
 
-m41t00 compatible is not existing. Change it to st,m41t00 to fix below
-CHECK_DTBS warnings:
-arch/arm/boot/dts/nxp/imx/imx6dl-ts7970.dtb: /soc/bus@2100000/i2c@21a0000/rtc@68: failed to match any schema with compatible: ['m41t00']
+This is a multi-part message in MIME format.
+--------------RUV3G7hQJYDoa7JET1paPDuU
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm/boot/dts/nxp/imx/imx6qdl-ts7970.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 3/25/25 3:52 PM, Boris Brezillon wrote:
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-ts7970.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-ts7970.dtsi
-index 2e8573dac39e86f408a45da3c013e67e96c02fc9..17f6a568f0e8cfc8e71aeafb34eaee12d67a29aa 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-ts7970.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-ts7970.dtsi
-@@ -213,7 +213,7 @@ &i2c1 {
- 	status = "okay";
- 
- 	m41t00s: rtc@68 {
--		compatible = "m41t00";
-+		compatible = "st,m41t00";
- 		reg = <0x68>;
- 	};
- 
+Hello Boris,
 
--- 
-2.34.1
+sorry for the late reply.
 
+>>>>>>> Hm, that might be the cause of the fast reset issue (which is a fast
+>>>>>>> resume more than a fast reset BTW): if you re-assert the reset line on
+>>>>>>> runtime suspend, I guess this causes a full GPU reset, and the MCU ends
+>>>>>>> up in a state where it needs a slow reset (all data sections reset to
+>>>>>>> their initial state). Can you try to move the reset_control_[de]assert
+>>>>>>> to the unplug/init functions?
+>>>>>> Is it correct to assume , that if I remove all reset_control_assert()
+>>>>>> calls (and keep only the _deassert() calls), the slow resume problem
+>>>>>> should go away too ?
+>>>>>
+>>>>> Yeah, dropping the _assert()s should do the trick.
+>>>> Hmmm, no, that does not help. I was hoping maybe NXP can chime in and
+>>>> suggest something too ?
+>>>
+>>> Can you try keep all the clks/regulators/power-domains/... on after
+>>> init, and see if the fast resume works with that. If it does,
+>>> re-introduce one resource at a time to find out which one causes the
+>>> MCU to lose its state.
+>>
+>> I already tried that too . I spent quite a while until I reached that L2
+>> workaround in fact.
+> 
+> So, with your RPM suspend/resume being NOPs, it still doesn't work?
+> Unless the FW is doing something behind our back, I don't really see
+> why this would fail on your platform, but not on the rk3588. Are you
+> sure the power domains are kept on at all times. I'm asking, because if
+> you linked all the PDs, the on/off sequence is automatically handled by
+> the RPM core at suspend/resume time.
+
+I revisited this now.
+
+Can you please test the following patch (also attached) on one of your 
+devices, and tell me what the status is at the end . The diff sets the 
+GLB_HALT bit and then clears it again, which I suspect should first halt 
+the GPU and (this is what I am unsure about) then again un-halt/resume 
+the GPU ?
+
+"
+diff --git a/drivers/gpu/drm/panthor/panthor_fw.c 
+b/drivers/gpu/drm/panthor/panthor_fw.c
+index 9bf06e55eaeea..57c0d4fd29aa2 100644
+--- a/drivers/gpu/drm/panthor/panthor_fw.c
++++ b/drivers/gpu/drm/panthor/panthor_fw.c
+@@ -1087,8 +1087,16 @@ void panthor_fw_pre_reset(struct panthor_device 
+*ptdev, bool on_hang)
+  		struct panthor_fw_global_iface *glb_iface = 
+panthor_fw_get_glb_iface(ptdev);
+  		u32 status;
+
++pr_err("%s[%d] pre-halt status=%x\n", __func__, __LINE__, 
+gpu_read(ptdev, MCU_STATUS));
++
+  		panthor_fw_update_reqs(glb_iface, req, GLB_HALT, GLB_HALT);
+  		gpu_write(ptdev, CSF_DOORBELL(CSF_GLB_DOORBELL_ID), 1);
++mdelay(100);
++pr_err("%s[%d] likely-halted status=%x\n", __func__, __LINE__, 
+gpu_read(ptdev, MCU_STATUS));
++		panthor_fw_update_reqs(glb_iface, req, 0, GLB_HALT);
++mdelay(100);
++pr_err("%s[%d] likely-running ? status=%x\n", __func__, __LINE__, 
+gpu_read(ptdev, MCU_STATUS));
++
+  		if (!gpu_read_poll_timeout(ptdev, MCU_STATUS, status,
+  					   status == MCU_STATUS_HALT, 10,
+  					   100000)) {
+"
+
+In my case, the relevant output looks like this:
+
+"
+[    3.326805] panthor_fw_pre_reset[1090] pre-halt status=1
+[    3.432151] panthor_fw_pre_reset[1095] likely-halted status=2
+[    3.542179] panthor_fw_pre_reset[1098] likely-running ? status=2
+"
+
+That means, the GPU remains halted at the end, even if the "GLB_HALT" 
+bit is cleared before the last print. The clearing of GLB_HALT is also 
+what panthor_fw_post_reset() does.
+
+I suspect the extra soft reset I did before "un-halted" the GPU and 
+allowed it to proceed.
+
+I wonder if there is some way to un-halt the GPU using some gpu_write() 
+direct register access, is there ? Maybe the GPU remains halted because 
+setting the GLB_HALT stops command stream processing, and the GPU never 
+samples the clearing of GLB_HALT and therefore remains halted forever ?
+--------------RUV3G7hQJYDoa7JET1paPDuU
+Content-Type: text/x-patch; charset=UTF-8; name="pan.diff"
+Content-Disposition: attachment; filename="pan.diff"
+Content-Transfer-Encoding: base64
+
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9wYW50aG9yL3BhbnRob3JfZncuYyBiL2Ry
+aXZlcnMvZ3B1L2RybS9wYW50aG9yL3BhbnRob3JfZncuYwppbmRleCA5YmYwNmU1NWVhZWVh
+Li41N2MwZDRmZDI5YWEyIDEwMDY0NAotLS0gYS9kcml2ZXJzL2dwdS9kcm0vcGFudGhvci9w
+YW50aG9yX2Z3LmMKKysrIGIvZHJpdmVycy9ncHUvZHJtL3BhbnRob3IvcGFudGhvcl9mdy5j
+CkBAIC0xMDg3LDggKzEwODcsMTYgQEAgdm9pZCBwYW50aG9yX2Z3X3ByZV9yZXNldChzdHJ1
+Y3QgcGFudGhvcl9kZXZpY2UgKnB0ZGV2LCBib29sIG9uX2hhbmcpCiAJCXN0cnVjdCBwYW50
+aG9yX2Z3X2dsb2JhbF9pZmFjZSAqZ2xiX2lmYWNlID0gcGFudGhvcl9md19nZXRfZ2xiX2lm
+YWNlKHB0ZGV2KTsKIAkJdTMyIHN0YXR1czsKIAorcHJfZXJyKCIlc1slZF0gcHJlLWhhbHQg
+c3RhdHVzPSV4XG4iLCBfX2Z1bmNfXywgX19MSU5FX18sIGdwdV9yZWFkKHB0ZGV2LCBNQ1Vf
+U1RBVFVTKSk7CisKIAkJcGFudGhvcl9md191cGRhdGVfcmVxcyhnbGJfaWZhY2UsIHJlcSwg
+R0xCX0hBTFQsIEdMQl9IQUxUKTsKIAkJZ3B1X3dyaXRlKHB0ZGV2LCBDU0ZfRE9PUkJFTEwo
+Q1NGX0dMQl9ET09SQkVMTF9JRCksIDEpOworbWRlbGF5KDEwMCk7Citwcl9lcnIoIiVzWyVk
+XSBsaWtlbHktaGFsdGVkIHN0YXR1cz0leFxuIiwgX19mdW5jX18sIF9fTElORV9fLCBncHVf
+cmVhZChwdGRldiwgTUNVX1NUQVRVUykpOworCQlwYW50aG9yX2Z3X3VwZGF0ZV9yZXFzKGds
+Yl9pZmFjZSwgcmVxLCAwLCBHTEJfSEFMVCk7CittZGVsYXkoMTAwKTsKK3ByX2VycigiJXNb
+JWRdIGxpa2VseS1ydW5uaW5nID8gc3RhdHVzPSV4XG4iLCBfX2Z1bmNfXywgX19MSU5FX18s
+IGdwdV9yZWFkKHB0ZGV2LCBNQ1VfU1RBVFVTKSk7CisKIAkJaWYgKCFncHVfcmVhZF9wb2xs
+X3RpbWVvdXQocHRkZXYsIE1DVV9TVEFUVVMsIHN0YXR1cywKIAkJCQkJICAgc3RhdHVzID09
+IE1DVV9TVEFUVVNfSEFMVCwgMTAsCiAJCQkJCSAgIDEwMDAwMCkpIHsK
+
+--------------RUV3G7hQJYDoa7JET1paPDuU--
