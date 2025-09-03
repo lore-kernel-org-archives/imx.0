@@ -1,117 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013054.outbound.protection.outlook.com [40.107.159.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F042FCC19;
-	Wed,  3 Sep 2025 12:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756901265; cv=none; b=SoEPM6qinUKV3y0K14LI0mvlcgBtfwr/UW4fsWyezhqCKLOf0pUmR9R8GuwkdKvrtUJcYGyJIgqH0W9SgJBR4PyZkisZCr/v8EZnnd3Jfzushlb5cahjCPXEFkEHKNfJXJzczwoXs1yNa/fLwsTipHaMdMfnSOTxTTbiGUZmIkc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756901265; c=relaxed/simple;
-	bh=m1Ang/Ev5msbe29qUOK0afUPlJKTCWi4jjZ05SuuqY8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tkz5RMO6xnxhaYAQ+dijHgeEGIKYmizdfSPIttTsgo0clz4aA0F1aT5o2LWkx/IPkgMYh/lNPdTLEZaBNc/76cLoC+cSlhLmInij2XyVu9jXuP+tGg0V3jSDHrlSbn8Scc2IxInk/WuU62TXXhpaVCXpKD/xr137/9uPWwYNCK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixEbLi2A; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBD82FC876
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 12:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756902840; cv=fail; b=rzZPBYQKtgrpPZG+ozOR20SRtHE+8WQomnebAEJgiMj6xcAtRwmzH7yXXX+gd6GMBGrCiIkEtvZQ7h9G/h8Eb9KFl+uSwaaUxJ61CC8mMRIXSONORaKzljnACCe9FHJGUWRVqeE5r4AEIFJdgWrzVeZ+8otjUiBv0R+dWBWUpiw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756902840; c=relaxed/simple;
+	bh=PNRiy1KPWirxPD/XLJ3her2qxpjBl0q/Rr/kp7EJ1/c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=smFFzeSBWAf6MpdOrEzc2AbtQekpc3UukacDOe+/o+kQsbz0YI5zOSo6NVsppx+NppKiGa4AgNLwxnF9eY+EYUZF+ZJWIksmjWjw44IDsOj9s0woOc9+3QZFp6fsA8fOpaj+54Sj2FtQSE/2QM209dbLQgBI51tF7GzHtRaeRos=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=B12gxrBP; arc=fail smtp.client-ip=40.107.159.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixEbLi2A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5248CC4CEF0;
-	Wed,  3 Sep 2025 12:07:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756901264;
-	bh=m1Ang/Ev5msbe29qUOK0afUPlJKTCWi4jjZ05SuuqY8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ixEbLi2A6jjg3LDOMR+jiLI0kr10I8xn9VvAhh0P7/z4DH0i1kyknq5gSkeU0VCh5
-	 i7tl5kkxInZ+7hYu+tRelEpYAuP8FN2uFIlm5P42FO3SelGzylxnLKF/pNSR2m1aFw
-	 RE/5Os5QrL3UByY4KoMftxBxXI8nABa43VeNvttCKTwJnSRMLLSkAAqu3VLPfLy7vD
-	 AeMa8NriBmA/D6erdbbe4fr51rNUQY9oaQtg+HQjcR31u8e8fIRtxBTyJgVpc39MZw
-	 KS0+rKXi8YwhnPg5XMTY+J7MPSqIPKFVJNPfLuAXIVPCyL2HDJsMj/a8wFJkAKiMQ+
-	 b2BQwIrvDUtwA==
-Date: Wed, 3 Sep 2025 13:07:33 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="B12gxrBP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DhagCQLwiUJ3AkY69SUlbN4naRk7ltSgl8GPB51qHmpHkyB35WIj0saajA1f5AbK1JzmBtnGSxgNSQOAew6lwe6kKmyVWv/10dXW7LMMp14P6IN9OIqruFj6GzG3v59Kt4w3rxp32jfV8s+Okuqs2McVq4+F34nTbe+dXD04DWS2FQM5fnyVTRaQpfzWL4Sj/x4LnTVWR9eT/9Exm4g08krQxHOLvkXtXKlcYAtIt12xcf04eGgRxUAfk12ZTV1HRhwAjnqU8Y5e92nCiQbyJ9dy9MaUNga8jXKvJH2tdXoV+GPrXbrFP8aNX6JyZpS1glYDr3I1Zrcn64/xFwY1yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pPt4MLYCAEQPYANek9L1QQlfFcs2JxPa21INawyIleQ=;
+ b=WqRq3MOSxKFWR/ZDGo6HgEpkjBnkY3hhhhVfiR+Qbx4wCfqJ3RwBRx6nWx6sgX8c6XT8MMFQMzZ1rGvl2Gum3YbhjNRK4W2uGhwQnTinQP3wQmJ3+nNrHR+b+O3uil2IzqshOfTKd//BbbV05mXK5FoKGmAjerhStjiKA9Mkd+k7DgqHUl4fpLIpLZIJcZVeGmqJrfjyJX6eWOvD30loV2l6L9eOksnKCjaKrRqKw5+3dVdzvXgEQZaEvzUiyTQJjClnMMMCqQS26fRVzpePVdf6EmmwxIGUrpLnUFBg1KZC5xMedrdfMM6zvYFh5/8Sx79sjyLUH9M5R3JHcbnwFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pPt4MLYCAEQPYANek9L1QQlfFcs2JxPa21INawyIleQ=;
+ b=B12gxrBPcgLxgjQRDKzGaAt3IDiVHpShlvHCvdhlnOlpF5Javfw1jpC7POUjzEJy6ujK12h7Dt8rbbFDNqjXkK8ZqyBCjEEqmgb2rw80TWdANwuoJUq6M9VBQt3zzklsVNQNZkHZWIDQSntTsVP0AAyCLcN1RCgdvLz47f/s1e/eKADiA3ULLNBo5kGsUrgWIt4xc+//rTm7tVsteOazCXhj49PhWY/1aJxZufmT1nh63zOOpIYDjI3FFNj44WUIkkSG4SGWLWrGCaHnV541Z1EDtnfv79Dx2drAF8LNC6h6ZL7hW+9O+Nqvt9/O+Fxy28n7QYp5+tNUD/7YZlVluA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV1PR04MB9135.eurprd04.prod.outlook.com (2603:10a6:150:26::19)
+ by DB9PR04MB8233.eurprd04.prod.outlook.com (2603:10a6:10:24b::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Wed, 3 Sep
+ 2025 12:33:55 +0000
+Received: from GV1PR04MB9135.eurprd04.prod.outlook.com
+ ([fe80::b1f6:475e:de5d:8442]) by GV1PR04MB9135.eurprd04.prod.outlook.com
+ ([fe80::b1f6:475e:de5d:8442%5]) with mapi id 15.20.9094.015; Wed, 3 Sep 2025
+ 12:33:55 +0000
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: imx@lists.linux.dev,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v7 07/16] pinctrl: imx: don't access the pin function
- radix tree directly
-Message-ID: <bfb9a2f0-92b4-4f68-ba54-2c01e93eee97@sirena.org.uk>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-7-bb091daedc52@linaro.org>
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marek Vasut <marex@denx.de>
+Cc: Frank Li <frank.li@nxp.com>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/9] dt-bindings: display: fsl,ldb: Add i.MX94 LDB
+Date: Wed,  3 Sep 2025 15:33:19 +0300
+Message-Id: <20250903123332.2569241-2-laurentiu.palcu@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250903123332.2569241-1-laurentiu.palcu@oss.nxp.com>
+References: <20250903123332.2569241-1-laurentiu.palcu@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P191CA0022.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d9::13) To GV1PR04MB9135.eurprd04.prod.outlook.com
+ (2603:10a6:150:26::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="LMkJw+F2UT+cDaFZ"
-Content-Disposition: inline
-In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-7-bb091daedc52@linaro.org>
-X-Cookie: You were s'posed to laugh!
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV1PR04MB9135:EE_|DB9PR04MB8233:EE_
+X-MS-Office365-Filtering-Correlation-Id: 23706a6e-029a-4c0f-ac5b-08ddeae62561
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|7416014|19092799006|376014|1800799024|921020;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?pDQi4zFs/CLGS3oXIx1xNqrRkhhVH1tSQ44HSYBq7LhNq+XJSiF7f+pLpi2C?=
+ =?us-ascii?Q?uHTW4IALVxOd91Rs0DILmEgRsI4nmanRx+eko5rjspPv0Q6f6bihFis4Um2Y?=
+ =?us-ascii?Q?aY7isnvAbQFdl4Gg4eAUFKDq1poTZ3yntG3CL8BoQJc7aYepBI1Lrm822fuU?=
+ =?us-ascii?Q?kG6/5pFzPFpXrrsW/mlGb7X21Khwqrucs1IX2riwCBZVeDiaaVBxiJtYkGHn?=
+ =?us-ascii?Q?upyO2dnvMDcQziF6ArLqeGHpmBYP/5eGCb473QeePaaXdcMdHnTWypg4BxXz?=
+ =?us-ascii?Q?He8OFBS+dZU/xkMvBjtx4q6X98yEQS+BpHAXVn8XtnURrM8R4o1NMVYd3U2A?=
+ =?us-ascii?Q?Wxd2gJozY12nSLPSUzm/n/KSsI55DcqIEIdFXKrwlbgnnR8qOn0ECgu89BNn?=
+ =?us-ascii?Q?BOHlnCD8pIofkL2WTWSJLSafKoFvpfJS4URRHHb4G+zuru/1BJv3Fq9Yd7bP?=
+ =?us-ascii?Q?byILHP4OU0WqoluDU6HvZCmNZYnw6v6YlFUJURdDbh0BD1RIWzyaxKghe7ZE?=
+ =?us-ascii?Q?nFXuSCC5bN5q7T/bww9rJCSW5ZKWlkyDx6E3RC0P69E6yWcnIiSnlchwaKu9?=
+ =?us-ascii?Q?32EsTj4UsCGgkixBgAIQlhjXNl78/i1YoT5luTlLppTk9xPpKhLz1Lw7h7fO?=
+ =?us-ascii?Q?nDDc7FLOFYPtqX1IRbe2/gJ9Em/l67QfeLL8UTe5t3TXsudkGpew9xto1/pv?=
+ =?us-ascii?Q?bb4hWdB3CcjseYvubOgcIc1YS+M1m/Ith3MQI12LX6dyfTk0Xr5TbT0uOfM3?=
+ =?us-ascii?Q?FkPlP8FZ+5wczbxI80VVxahHeMYs0hPsiwlhuhp5iDtUeORqw3MgSTE98pK2?=
+ =?us-ascii?Q?/LZzY1VbJZCYiggj7j1KPW1jPB5JjHMFrMaLcJEciXMIDhBglYmumbUH+TUB?=
+ =?us-ascii?Q?l2HxU6ypNEkVx93cdTNbniTNt+69tOzPHA+weaU4eDUSqzaMXbEMIARlfeqi?=
+ =?us-ascii?Q?mSpcfGS7rPs+lb5iPRVsMMdfPvbQPwdvjBWws7b8uaX/PIJlgnMa7FYbZnAg?=
+ =?us-ascii?Q?niokaSgD1uBV4DZixl21pEuvtmwjrWuDgiWGgqEatlgwYoz7ViblhzjPIU1/?=
+ =?us-ascii?Q?ISnd5+8cl563YGDtAOBecXPciQrw2qsNNt++4d3gX1wYxTwP5N5xtMdIgewr?=
+ =?us-ascii?Q?So402HOzfhQNwgTQ1iNfOVytxvPLUgDLyUSWCR20dQgsTW2q5P4Ew3bB7YWc?=
+ =?us-ascii?Q?KWF2Mi8Bv9j83X3UI78XWeKMMsIg+dkFydCateIEuvEbM4WqoQdrFYWYZY1d?=
+ =?us-ascii?Q?GRkBsaSh0DU1cyEJC+jEZ4lpDLkzY6TnJ/C8iGDPzURdb+V39iuNGORYSxyT?=
+ =?us-ascii?Q?JFJkn6302kQAJPUyZecJnEpMGEHBMBMWujjyV4pcy0DELfYGJnJMDXTV5MTz?=
+ =?us-ascii?Q?NNNh+yENNfgPZTNBP7S3c3BInrPAq7SA+vVJDIvzRnintG3Q9UUt5Uo/ADHx?=
+ =?us-ascii?Q?x+SKwmMn6bHRUZhHGfWLYkroLDQVAl23D/IAmDLBSwE68DpHrvzf4A=3D=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9135.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(19092799006)(376014)(1800799024)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?KoRcyIZwE0+bZ/071zH7QaVP/Smfa7oosik5Wpn+IMrpqkEjfsGYZp5RbjQC?=
+ =?us-ascii?Q?80xVKCW+v6do+GZvoiPM10z/EHZeEIaDnIkHoRp3haA/gxhpn0LjD2QG0Txm?=
+ =?us-ascii?Q?FEXlpkTcaVBAkI2UQYAZM69GumWmdc6gFiNEV6l4KMx7UWdLfckaeM3GgHBd?=
+ =?us-ascii?Q?CQL0JK9RSbJmRqfIHIWU1l5+CEDfnmAUIa/L68B2DHfZbtpPq8r2VTwNIdRj?=
+ =?us-ascii?Q?UwlOB1lZYmjU6Z8vOhvpGm+TtTXXEQXke92hstzXJUK5wspYATs7BXatm1U1?=
+ =?us-ascii?Q?9/vvUt47pQapjsyB6knHMplhTeaS+qDB4NSXsGI8Q/emSAbhv14mURJ02Zq/?=
+ =?us-ascii?Q?6Sa/l3T59i7oXtWb/yk01ZSkjBTH1MrSSjtGKq6UA9E+Qh3glzzJVLM8oygU?=
+ =?us-ascii?Q?qFOkiSknud4C6fbGIhbsOOj+FR2S/lH9bPN34WBWcGfDKUjiz5+lSFdOBSCz?=
+ =?us-ascii?Q?VWetx2oWV5rC5/LhcwfXHSlWWyim3W6AWTI4nxL1WVu8oIj0ijr1yfVpEedX?=
+ =?us-ascii?Q?NT1uITWaMDxim2HQYJn1oZp7RpHPIN40+pIS9yMaqZCVbfLTtf98z3DZTR0i?=
+ =?us-ascii?Q?gRGmzeikIOXxV85yWQ4NFvfMiVQRQMnqweoLCInuO6uQcLoTKIE7wB22mqrO?=
+ =?us-ascii?Q?Mpw7AlGrnKshZAU+GrzZYymSycprA7SLEKmusNEe5awDW0ryJeGA8QVQ93OJ?=
+ =?us-ascii?Q?1bzNGfuFOipG56aXpprXuv5tV4QGkwhuanxqNnetVGZjTziiyyhSM7UvLr+X?=
+ =?us-ascii?Q?pPSdPzufYZm1rnnGvsbps91Jj5MbWqyXqeum/mQ9ShqG40mODboX/xHR78kw?=
+ =?us-ascii?Q?0SlDHKuUzkl/T6xHFXjOpW2I3QE4qor9WCvvSj1d8c1GKwyOfemWKN24W/qB?=
+ =?us-ascii?Q?sFV6wwNp1bH53ENw3TRiXYibd7JGJMR5hSa3TfmkVVm4sn395kaLy8PWsZu/?=
+ =?us-ascii?Q?EDIs/Oail+mJNiqr0tBRf0PUbUNrVOivRfIFsIXnV/TpuosTbxDIjUwIM+zW?=
+ =?us-ascii?Q?h93WZDen64NnLyCTd6x8brzvdqKWfLpGzkptG1HHLK14rIH1iXDUPJpfJlvr?=
+ =?us-ascii?Q?THMqMoMWPrPGa7ZMbipixGDRLp3NWVA6KzmssZEgXiw7o3flCkmTZCG+GJgS?=
+ =?us-ascii?Q?viKCvnzPauBdJvTkwETKskQHdWDORi8AZMMdTibwv2LfYOrhADr8bXp5MO1U?=
+ =?us-ascii?Q?882DbN6Lrorny+7yAXsAf5OfVqMq5+9AJahHi7kCrUdVz5koX1koePPv6/Sv?=
+ =?us-ascii?Q?MiAc4qAHtfLvBWA6GrVO90AJQHBZNNB5r40AmbGB6DDeQ+1jNUTApocuSJcz?=
+ =?us-ascii?Q?a4F3a4ALrwgZSiZK+G+Q7NRr1eSIhzxUtZaW9Q865LoNNWBwzuoRLH+qgm+O?=
+ =?us-ascii?Q?wqNxwore3hnP0w16p4KTk3WIdB0Zhs6LtF3/RL/1pUBK2A67Sn9ErDLrpzHh?=
+ =?us-ascii?Q?H7AML1XLxv7Q8JrMvr6L+Mt06vykWog8eW8QLse1VRZtxwVFtyDZKHrQNpmx?=
+ =?us-ascii?Q?xiwpd6oieJ8JpkeZiQyn0He1kz1MCuzwSrbOLwK38pQUpPUmiLZw4TwuyvPQ?=
+ =?us-ascii?Q?4XKLnzEQ9tCCgVSlbJQet7mjPLER7NksOVerGPr/f/Dy5yQxNxHF6FIntq7N?=
+ =?us-ascii?Q?Lw=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 23706a6e-029a-4c0f-ac5b-08ddeae62561
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB9135.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 12:33:54.9444
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wyxvd4MqvlV+hmKe5yrDzbz4bwdNaArvoAcwNzXnGWNS8eMeG8GrQAHprMQ8Hwy66E1iOU+B0k3+C7EujbLeLQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8233
 
+i.MX94 has a single LVDS port and share similar LDB and LVDS control
+registers as i.MX8MP and i.MX93.
 
---LMkJw+F2UT+cDaFZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-On Tue, Sep 02, 2025 at 01:59:16PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->=20
-> The radix tree containing pin function descriptors should not be
-> accessed directly by drivers. There are dedicated functions for it. I
-> suppose this driver does it so that the memory containing the function
-> description is not duplicated but we're going to address that shortly so
-> convert it to using generic pinctrl APIs.
+diff --git a/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml b/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
+index 07388bf2b90df..a54b8f1478049 100644
+--- a/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
++++ b/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
+@@ -20,6 +20,7 @@ properties:
+       - fsl,imx6sx-ldb
+       - fsl,imx8mp-ldb
+       - fsl,imx93-ldb
++      - fsl,imx94-ldb
+ 
+   clocks:
+     maxItems: 1
+@@ -68,6 +69,7 @@ allOf:
+             enum:
+               - fsl,imx6sx-ldb
+               - fsl,imx93-ldb
++              - fsl,imx94-ldb
+     then:
+       properties:
+         ports:
+-- 
+2.49.0
 
-Tested-by: Mark Brown <broonie@kernel.org>
-
---LMkJw+F2UT+cDaFZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmi4L4QACgkQJNaLcl1U
-h9Cofgf+Nx2+OT+tp4D5FUxhtTOmhW7sSoV0qG4ncMEPM9CqTpXL04wbbzyJxjJi
-x44Lzl7dhYejlq1ljZcrLRtyyOEx2GJmVq+XHynLGl0+WRR2yx5BIF/VZUKrpjdp
-Rd7Wd/4PDIWu+9AdKJ05UjqdXCojpVhxUDMFoha24910w0dlC3/GOS+5CLd3t5nP
-o8DekdJ0fH6kx1PD4bw8qgA54bkwX/A1xWWTNxpAg/4zlmNuqFrT48Nuyz9AxY7W
-KRh+JFWffC6f3gBQeYYoJOJsaSojIuYpDVDTTwkkrtr0ZmxbYGan3Gfw+uDC2O8W
-SI38WHTPgNA+BpMaBE3K/SB/spudUA==
-=Wljw
------END PGP SIGNATURE-----
-
---LMkJw+F2UT+cDaFZ--
