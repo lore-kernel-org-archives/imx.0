@@ -1,131 +1,159 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46432DAFDB
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 07:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E472D4818
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 07:50:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756885138; cv=none; b=sCDh90TBUgy1h5t4atDoGxKUCrwSthZ26EoIWHmVeHSJP3+yTMdR9ik9bkEBMSQmb1naGP2Wkd6y3r8dedMevFlDOQ90HjA8o6uBZfPNMQ0tiZmS8JO2OWI4VVfWEWb4fNSgvYb39GVeDSJkjsTboFfmPT0V9MV2uu65Yqh9V9E=
+	t=1756885820; cv=none; b=UXaoIEi8/SedcLGV4xv/NTyCzU3vfUc5c3noh5DEndKTD846fMwJkMbhcwSbMxnASU/dF/NxW7TJHBNCrDwiaOgrSeMAx6hQ+MO8iQjemmJI39fzqtHmmftCvafiNHHnk1J/eawJbacmSe0bE1gV7IPmBt+wcVlB7y/faFntdTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756885138; c=relaxed/simple;
-	bh=5R1W8LWzThf0lefJvjX7dgtNUQ87EdiwGUIQXxLzwL0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RP3GKjZt6VrpKMtnGpSPnP89hdGXsdMfZkJjvJGIWMcq+KiGRdXBJQROOqsWheAXckwegwGOCGT02ZP9UXXURMwnY2ITfKEAG+Ng1/mYhRp+rW73/ydQpKx6IHW7X9gRBA2kh/cAik6PEprMEbW8DCyWuH2CaFkCEXONVodp4Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ofZ8ORYW; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ofZ8ORYW"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3d1bf79d758so3251558f8f.1
-        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 00:38:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756885135; x=1757489935; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Mp5T71lPvUAjJD5COGIsnq0220IphycqvLkiYGEuO38=;
-        b=ofZ8ORYWy1vYS6nZQYHEUSmihJb3SE9vGvzh2Div0pR9FNJ23gxx6pjTIWg2QqgtB6
-         64yyRE3ksCwk+nagdiEnWLblpUfcUYXB6/puieTzp+1kiNJztNyJqteNY7xm3ktQUx7m
-         kY6LMfrLIn8epEDPY3jVCD3gbpfVNDidw/POTx3yDShz9Zm7WdO26t2HS5Hg3kPgpkof
-         wMZPvQ46Q5MqDn+ni2J95gH/QN7bLQLidM5k7Fl7ByWp1SQhAOgm/NqNUHMCghfFo2Ms
-         dH0RaR/UsodFT08a8+5BoW+vFeQ8i6s01NIi+GquLrYC1z8bc6VYUFk2sPhDiq5mvy/V
-         9Upg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756885135; x=1757489935;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mp5T71lPvUAjJD5COGIsnq0220IphycqvLkiYGEuO38=;
-        b=H2mZdhY+NVsXuoT/e2lOMhK9mDNc13H9dH5qXaXPTquBLi+UjUMbLAEnsoxYIy9l7L
-         nc4fO2NnkCpwT7jQOWrYe9aCO5hbJXzqU49Aa/IDJ8EGYmy8m+gaQDYTjZm3tRWcxJJS
-         hYpqRH1MSmQx9l9NKVwN0bqf96G4gAIgt1PWiS0ucBij+LyUNuZ7U2ZflLkOrZqm17Mh
-         AyofF4bc8WIXPci1p8c1Cl729JYQjzq74KOf9zqeekFJzukQuxKiBshSaxo8eqQqoqOA
-         qxULw5Jf1Ax7OutxH/xfL5AmiNsLq/cfDl2hgblwlne4axogxAuRd2ilUy0Z/50bGv2u
-         RIag==
-X-Forwarded-Encrypted: i=1; AJvYcCXVjs9EeJhm4QdzTsxku2XDiioJdP42BMsrMC9adeENZ1vWFXfcEx+mk/f070hFsgllfSE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yynv5IXKStw144oFVZEteAKFr6VhRc3u+vfhjSj4eVYdvIbfwsF
-	kkrwQwqSf0oH6kJZ8v2CMwPsxkPKyoWfpOzXdnKHePSOMzYMyL+Y0H221nAp1Hv+wu0=
-X-Gm-Gg: ASbGncuku+QD9bGWeyEdEUMkghfrtNvoyLBX+i/4XNiJgT5oToLQOeS38hxVJ9eUPZG
-	pvWPxQgIPZWYUCcV6lPy0PPz0axf/b8Kg3UBFMzuMfKSt5KydnTLUo3EF7/a2LwLYWqB6KFZJl5
-	xbK9XC07wO4WvQ19idVjeGxzLaew8fPLi+iRTTK0vnonrua9eBTMTYpW0tSqF3Yf2ZpciwAolU1
-	Zd9IEGLKKjxT+X/JoBgnp9hB+2ZTdCBiR2Znq8uMouTrsNpeE4v+u4IxCDCFRCBMShKUr3wQgkM
-	Mn4fy3EDz6ePY75/2QR4ABKpHNiX8UMDWTvzvzvj08a1kguYiNEFsBWs/QKPrHl2Y5yuvgBNLPU
-	8O3WD8yIKHPHL0K2CQUxhLIY=
-X-Google-Smtp-Source: AGHT+IFkZYEPWWCkKse2PQo7g1HVYHPWt9iUadycuLD1iYe9gFsnwRwmTjB2wHvwzo04UWlct/Y1jQ==
-X-Received: by 2002:a05:6000:64f:b0:3d3:1ad0:e8b7 with SMTP id ffacd0b85a97d-3d31b2c7c54mr11268847f8f.12.1756885135098;
-        Wed, 03 Sep 2025 00:38:55 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:2f8b:4799:6bd6:35df])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d53fda847dsm13417216f8f.0.2025.09.03.00.38.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 00:38:54 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Ray Jui <rjui@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Yang Shen <shenyang39@huawei.com>,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 00/12] gpio: replace legacy bgpio_init() with its modernized alternative - part 2
-Date: Wed,  3 Sep 2025 09:38:51 +0200
-Message-ID: <175688512868.10115.1073812305846607850.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250826-gpio-mmio-gpio-conv-part2-v1-0-f67603e4b27e@linaro.org>
-References: <20250826-gpio-mmio-gpio-conv-part2-v1-0-f67603e4b27e@linaro.org>
+	s=arc-20240116; t=1756885820; c=relaxed/simple;
+	bh=TuBgFCVN80P4zt0j6ecpb8b24JTC+uS9IYg1hpSa7Uc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=up4cX45cSp8Fu28MCVZ5NIeMZ+Q9GjSW/Q96g9JcGYPvQYVsYSe8WmvkrPr1oOPZTZtA+A5yUpuAItZ2w5jGuBXDcVUAwNIESahM5NXCTYJFi1M6qcU+TaMdhAfQIFo/mdREXBAae1XwdnW2U1i0sYJCKsEszhy7c4ieOsR2lAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1utiFt-0008Ru-6M; Wed, 03 Sep 2025 09:50:09 +0200
+Message-ID: <1bf75411-4a51-4103-b314-a8a7253bafca@pengutronix.de>
+Date: Wed, 3 Sep 2025 09:50:08 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: dts: imx6ul-tx6ul: Switch away from deprecated
+ `phy-reset-gpios`
+To: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ Csaba Buday <buday.csaba@prolan.hu>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20250815-b4-tx6ul-dt-phy-rst-v1-1-9b65e315d9d3@prolan.hu>
+ <fa7e2cef-5242-4f3b-84ea-d77b959f6bdb@pengutronix.de>
+ <c85a94ee-59e1-47d6-8200-813bb434caf2@prolan.hu>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <c85a94ee-59e1-47d6-8200-813bb434caf2@prolan.hu>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Hi,
 
+On 03.09.25 09:43, Csókás Bence wrote:
+> Hi,
+> 
+> On 2025. 09. 03. 9:28, Ahmad Fatoum wrote:
+>> Hello,
+>>
+>> On 15.08.25 17:17, Bence Csókás wrote:
+>>> The Ethernet PHY's reset GPIO should be specified in the node of the PHY
+>>> itself, instead of the MAC (`fec`). The latter is deprecated, and was an
+>>> i.MX-specific extension, incompatible with the new reset controller
+>>> subsystem.
+>>
+>> One reason to do it this way is that the PHY is in reset when the OS starts
+>> and the external phy-reset-gpios allows MAC probe to get the PHY out of
+>> reset, so it can be probed after reading its vendor/device IDs.
+>>
+>> Does switching to this new binding address this scenario? If so, it should
+>> be noted in the commit message.
+> 
+> Yes, but after it has been reset, if the platform supports Power Management, the PHY's clock will be turned off, which some PHYs (in our case the LAN8710) don't tolerate. This has been reported many times, just search LKML for "lan8710 reset".
+> 
+> So we want a more general solution [1] where the PHY subsystem resets them before enumerating. However, if the MAC driver claims the GPIO, then it can't be used by the PHY.
 
-On Tue, 26 Aug 2025 11:35:01 +0200, Bartosz Golaszewski wrote:
-> Here's another round of patches converting GPIO drivers to the
-> modernized generic GPIO chip API.
+I agree that it makes sense for a PHY reset to be associated with the PHY
+device and controlled by the PHY driver. I am wary of regressions though,
+which is why I wanted the commit message to clearly spell out the implications.
+
+> I will clarify the commit msg with this in mind.
+
+Thanks.
+
+> [1] https://lore.kernel.org/lkml/20250709133222.48802-4-buday.csaba@prolan.hu/
+
+Is this mainline yet?
+
+Cheers,
+Ahmad
+
+> 
+>>>
+>>> Co-developed-by: Csaba Buday <buday.csaba@prolan.hu>
+>>> Signed-off-by: Csaba Buday <buday.csaba@prolan.hu>lan8710 reset
+>>> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+>>> ---
+>>>   arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi | 8 +++++++-
+>>>   1 file changed, 7 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+>>> index f053358bc9317f8447d65013a18670cb470106b2..0a5e90704ea481b0716d6ff6bc6d2110914d4f31 100644
+>>> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+>>> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+>>> @@ -246,7 +246,6 @@ &fec1 {
+>>>       pinctrl-names = "default";
+>>>       pinctrl-0 = <&pinctrl_enet1 &pinctrl_enet1_mdio &pinctrl_etnphy0_rst>;
+>>>       phy-mode = "rmii";
+>>> -    phy-reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
+>>>       phy-supply = <&reg_3v3_etn>;
+>>>       phy-handle = <&etnphy0>;
+>>>       status = "okay";
+>>> @@ -262,6 +261,13 @@ etnphy0: ethernet-phy@0 {
+>>>               pinctrl-0 = <&pinctrl_etnphy0_int>;
+>>>               interrupt-parent = <&gpio5>;
+>>>               interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
+>>> +            /* Reset SHOULD be a PHY property */
+>>
+>> Comment belongs into commit message.
+> 
+> Agreed.
+> 
+>>> +            reset-names = "phy";
+>>> +            reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
+>>> +            reset-assert-us = <100>;
+>>> +            reset-deassert-us = <25000>;
+>>> +            /* Energy detect sometimes causes link failures */
+>>> +            smsc,disable-energy-detect;
+>>
+>> Unrelated change not described in the commit message.
+> 
+> Oh, this has accidentally made it into here from our DT. Thanks for spotting it!
+> 
+>> Cheers,
+>> Ahmad
+>>
+>>>               status = "okay";
+>>>           };
+>>>  
+>>> ---
+>>> base-commit: 0cc53520e68bea7fb80fdc6bdf8d226d1b6a98d9
+>>> change-id: 20250815-b4-tx6ul-dt-phy-rst-7afc190a6907
+>>>
+>>> Best regards,
+>>
+>>
+> 
+> Bence
 > 
 > 
 
-Applied, thanks!
 
-[01/12] gpio: xgene-sb: use new generic GPIO chip API
-        https://git.kernel.org/brgl/linux/c/38d98a822c143a4a7337d08f50968cbd7b701ca2
-[02/12] gpio: mxs: order includes alphabetically
-        https://git.kernel.org/brgl/linux/c/d3332dd1f6e2cf82744dbab37d05857e2d028fa0
-[03/12] gpio: mxs: use new generic GPIO chip API
-        https://git.kernel.org/brgl/linux/c/c7357c8b6703d4bc0db6198782fcbf0cf3033844
-[04/12] gpio: mlxbf2: use dev_err_probe() where applicable
-        https://git.kernel.org/brgl/linux/c/7cb9086790a0de526ee40508a4deaebfd82a5bca
-[05/12] gpio: mlxbf2: use new generic GPIO chip API
-        https://git.kernel.org/brgl/linux/c/72fdbf35ec7273bb1c885696680e611c47b261b4
-[06/12] gpio: xgs-iproc: use new generic GPIO chip API
-        https://git.kernel.org/brgl/linux/c/6821e5d5877ca80b6989dfba2648a7ecbe3d9a64
-[07/12] gpio: ftgpio010: order includes alphabetically
-        https://git.kernel.org/brgl/linux/c/cf0257d3ce05259a74265fe0a0bd7de063cc6793
-[08/12] gpio: ftgpio010: use new generic GPIO chip API
-        https://git.kernel.org/brgl/linux/c/3ff7ab070b4804aad5b1d3e3d82a793710ef1f27
-[09/12] gpio: realtek-otto: use new generic GPIO chip API
-        https://git.kernel.org/brgl/linux/c/b9dac8251e7e6aa433f54a7da45cb05c66627695
-[10/12] gpio: hisi: use new generic GPIO chip API
-        https://git.kernel.org/brgl/linux/c/c0378e59a6af2efa470a384b69fd24d3f3f3dd97
-[11/12] gpio: vf610: use new generic GPIO chip API
-        https://git.kernel.org/brgl/linux/c/656dc0c6f725a29c9e48657ae3db78f9016f518c
-[12/12] gpio: visconti: use new generic GPIO chip API
-        https://git.kernel.org/brgl/linux/c/a6f03347debb7c2c6d04cd4be67ed766e19633ba
-
-Best regards,
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
