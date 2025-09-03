@@ -1,59 +1,56 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4132C2AA5
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 07:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2041C2D94BE
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 07:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756884830; cv=none; b=usIl3ug07oy+8ydJckhWjaxNtQLeSCCJvLa3+B2zEVVpEO4Qwi776s7POYS6z1CV2RB8OmSwxqBrvPaz3zkeJTYwwI8oUYuIFhiGFBruV621qJQLFMIQbBaUxEX2GKSrywZeYOKhzy4j5KiC21bG7tnvl6kJ+xTueJ5ZbOXxEh0=
+	t=1756884899; cv=none; b=SDVdekpXHoU+VfTUKlbILnFCisQLZut0PMQtUhqpVK7gU8L1djILog4q3IANpesiOekeMrBw/+UKBgK9r0EWeBV/n9HCb0vZ/1obrIZsLy0GLup7p04SyERI02Uxethuax/qq06iLJH/6NLkWlqijm52PxzRHQ//xCqF/I9JxN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756884830; c=relaxed/simple;
-	bh=YNYvzh/kc3+s5XJiH2jNySFaGPSj6mlg48FZqtmCTZw=;
+	s=arc-20240116; t=1756884899; c=relaxed/simple;
+	bh=KVlTZD38YWzAz5smcQFmlr3HoJ9kXtqQrAAT9RQglt0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ulj+FndezMFygK+VG8+DX5KmYKmUj9nRgRuBJ7hQfW19xW3re6obE/z64OffuEiJwOb3NOqwP7GEU4RfMo/wJeQIofXv/E/Ku5ETgCldDFOYadlaVkH8YJmbiZIQGJJN6KQE9XBG0+rB24c+9ojiY4I6GH+fkcJbO1fxAse+r/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=HP1XekZl; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="HP1XekZl"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-336e16f4729so23691811fa.1
-        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 00:33:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756884826; x=1757489626; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YNYvzh/kc3+s5XJiH2jNySFaGPSj6mlg48FZqtmCTZw=;
-        b=HP1XekZlIkBIdAuvDAyug03Ltx5oEIE3MNDt6LGQzfExtbL8pGwxzAc59OKqtJu+Y0
-         BraYOV6WdaqqENRci3kqRf8oeJ3Uqs+ZbcnOgyyqbnf0eJ9L8/JBcpCgk7kNW33y69/u
-         xllnGbJAj23oThzSn6dOW/yKxEi4ELN/BMY2kcUP7cMZMUDM9JUojIHiukJDTonH0OG7
-         bYGVor0da4D283WpsF6w14BrKp1+6oUGqv7juOb8Q+iLsSSqu3AqJfgzeYHjxWnxgPdG
-         rUMQBL/ke4zKwwpwDZLU7v4lCIGmkYmqdcsLLEDXBnqQQABK2PB+p+cXMqsD22Pcu86+
-         FQ/g==
+	 To:Cc:Content-Type; b=IDrzDG1nMBMUryjRmeSkJLn9L1T7Xz9Yq08ogFGyYW8xJuF0x7o+uwa8wrWX/tLPR05Or7sQ1ZTY1fcsmAlLqBBpGU/tEDB6c2CnnI4RfUfSKcFlWgQ7m92l0tMLDGLiR0y17tZAClq1qUDU9BSxEo2fi/Jz+Zc3hCBhDJ97aQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-531fe8d4619so589239137.2
+        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 00:34:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756884826; x=1757489626;
+        d=1e100.net; s=20230601; t=1756884896; x=1757489696;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YNYvzh/kc3+s5XJiH2jNySFaGPSj6mlg48FZqtmCTZw=;
-        b=imPhS2MQrPLfShiAW09mXuKQSXZdgpa8CWi3Ug37LYGj9tVXcY24uy8/VY7Txbh3vA
-         r/7A/af85U/Xy1sNQdRjvEZu5VF8XJ66bvst/Gf3p99c8g1v9ayHHpkgeMrbTab3N0xM
-         mJ1j8MIUQR4LFn64rtophTxe2Z9jD7/Re1Gu+R+FjscZg+RxuiM2Fxm6pw3lLCQBuPCL
-         DjRBO/1KAoTZX6+a8ViE7ETXULrcnP8CDdTZwxReKM+/oYLAl407ZElx03jCrSfdXLNZ
-         6riHqay+s52etL4o3b7FgJUygHKXeRtBsdlGU2nEekk0e9k6bpm6zgGKppWgPCsR0LIz
-         5xUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXnFKXw6s+D6tN7mLmMADvtHKeaR2KHL9EjQTrndE6sL/dbMDUDKc1YxE7GMTO7tBJ74K4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxMYB7dHpfYXC3UZWD8lh7QW8aaowL60JHpUMwhKYTDmgePNFde
-	hsARfpcn5YSSYuSIcItL/OisJYfIYchsTNctzfgj6YOKAHPGbTJDpRThAZCvyhTLU1IXddPmtjE
-	LSujWk0y1UFkVZxCzyXMOre/4rrQkuEXAtcmfQ39OSg==
-X-Gm-Gg: ASbGncs26GTmRe0vW3+mLSMlm+aTONzFjR8hcaL9C9+kLBfMf93Qs8a2Xs7Mc/sc0OC
-	RsiVo1yk3nwsRXXmuF32ououZ65cdUtnEmXPJpMEIbnNOpwyNhXMNZ+YxCuW3hUUJEBJBt+mYFG
-	KM8tKmNLT06PnZZYoEyIlxttbH6k3Pkgb+ODsWkSQpcp4eN+zLHI+TYu0kQzdYQFACGfHO6BP99
-	3HlQLNAuHIfOlQ8Cv1a1KdkqiyiTlzUe8AqB5URNvEF5lqOHQ==
-X-Google-Smtp-Source: AGHT+IHQMDojBvXdcYFr83Du1enPEHK0Ti//rRC94x6rK+6MbJgsPNbFLU1zOeSW5BOM5GJv9hHYWvwxYnse2nh/rU8=
-X-Received: by 2002:a2e:a58a:0:b0:337:9e3b:895f with SMTP id
- 38308e7fff4ca-3379e3b9b47mr24730131fa.0.1756884826262; Wed, 03 Sep 2025
- 00:33:46 -0700 (PDT)
+        bh=x+a63vXZQbYfBRMYForQk38b20jSe1QhqlF3QJeCGYE=;
+        b=ucNDNe/H8XjRpwiWDEWBi/t/4t+Z39uDqFCB+Z0tiEcDEVxrAYHvHtMelTL1GO00QA
+         wLIXYUy7VhNBgh5y+I/c8rZzYg+Yvze8bzMLd1zOQzR8xQPxg0Jh+Hq7mqQR7iszTWOx
+         IenIrgOxkZXZvG0sFpcjOxCXlBbYXQz77CQ1v07idpLmF2+tnpjprAKZtLH6nmftz3sT
+         omRX71nPjT0R1P/fUFVSzoXpoSLJK2UCFoWHVyRhWHidausjguZaGkbN9q9mIAgYkdZ+
+         EFYDOvIiIotCsHyt0th42hpgiX5HwyOXT8m8XV70cZh9FcSmDAraInYVqCKjTCJJBKhf
+         IiaA==
+X-Forwarded-Encrypted: i=1; AJvYcCWcshwT5bQeqenKc9jwzQuEEXupyMi1J5YbB/p7dZb/Bt79XzjswgQP9wBJs/ydpMJjoaU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywxpy+m0sFE9CkAeeC1dD1Yl6EuixPJ1FHoC5xFti4HR0am7d7N
+	h33zT78UP+jPYZSvIqL3Jy5NfbJq69HC9l5aQ8X4RVUdj4V9MoCElRvVyZsjcXmO
+X-Gm-Gg: ASbGncuAe4qleMxxWWS/A2gFA0azIGspH6QVo85HUwoo4fv5hpqikCUYSP+POivM6Yc
+	D3vqISaqEjCGkVNk/+jczdDIxtJ/Bk3gZRSJ5T8DJL5FY3DAhHzC6PJR/eDz1eZhOAVYuK0k0MT
+	uOuH7ai7MetBfeQTyYiANTHOTTM6lhaSevMu7NN6VyRNtAy0nYYvK7FLkQyH9ysQV+zg2stCabu
+	8ZJ2d5t7223foc56K1/asCUbx55OciyXbWxMnbrgZI62hLJHjsE+VBP6mEtH0ejWOCMai/Iuuse
+	Jsy4xqHDwk020qmS1kpzQYNEAOQodnkGV/xbij/LcuqBLsGYSw+AUaSY6G3VnRtlqwMcXRHsFMw
+	3XOXYiBsWww7nYxoAASNc+1iSSSl6kBdFGHyi/eG4TJjxs2jrImpMRnym07HWGb4QHl2AA8s=
+X-Google-Smtp-Source: AGHT+IFZjx845EACspN14aKor+BtmxxciNT6JA2OSCFsiwIVL0QIH48b1k93LXIynNL3tspo/s2HTA==
+X-Received: by 2002:a05:6102:6050:b0:534:cfe0:f87b with SMTP id ada2fe7eead31-534cff05210mr165378137.4.1756884895822;
+        Wed, 03 Sep 2025 00:34:55 -0700 (PDT)
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com. [209.85.222.46])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-52aef458d62sm5115686137.3.2025.09.03.00.34.54
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Sep 2025 00:34:55 -0700 (PDT)
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-895fc1c8f05so2246074241.3
+        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 00:34:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXEoRspvIh1hinZUBK+hagwmZhCqZCyoPKveiBXiKS8z44iFbKAQdfOcHn1YeBJ2pNkcEc=@lists.linux.dev
+X-Received: by 2002:a05:6102:3581:b0:524:5266:f74c with SMTP id
+ ada2fe7eead31-52b1c8811fdmr4486002137.31.1756884894118; Wed, 03 Sep 2025
+ 00:34:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -65,16 +62,18 @@ References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
  <aLcBcjvMbrxoDYoC@smile.fi.intel.com> <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
  <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
 In-Reply-To: <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 3 Sep 2025 09:33:34 +0200
-X-Gm-Features: Ac12FXwfTFesdkv2AsVGJLh1I6xBKdxxPYffotwRnf3CookQp3k-WXkxYMLzaTo
-Message-ID: <CAMRc=MfhhX2NJ0fhhX8u+7=sdyUy0G27n7caGf9=TpHxUDJVxg@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 3 Sep 2025 09:34:42 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUd1PeUbdkmrhaFstknwP2x=03m24gacJBJgEeCDf7toQ@mail.gmail.com>
+X-Gm-Features: Ac12FXyh8sb0bID330gK0HQPUvNSBJ0mn18x9ggidNhkopon3DqspiWAPKYplC8
+Message-ID: <CAMuHMdUd1PeUbdkmrhaFstknwP2x=03m24gacJBJgEeCDf7toQ@mail.gmail.com>
 Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
 To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andriy.shevchenko@intel.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
 	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
 	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -99,27 +98,14 @@ Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Linus Walleij <linus.walleij@
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 2, 2025 at 10:46=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
+Hi Andy,
+
+On Tue, 2 Sept 2025 at 22:46, Andy Shevchenko <andy.shevchenko@gmail.com> w=
+rote:
 > On Tue, Sep 2, 2025 at 8:42=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl=
 > wrote:
-> >
 > > On Tue, Sep 2, 2025 at 4:38=E2=80=AFPM Andy Shevchenko
 > > <andriy.shevchenko@intel.com> wrote:
-> > >
-> > > On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golaszewski wrote:
-> > > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > > >
-> > > > The strict flag in struct pinmux_ops disallows the usage of the sam=
-e pin
-> > > > as a GPIO and for another function. Without it, a rouge user-space
-> > > > process with enough privileges (or even a buggy driver) can request=
- a
-> > > > used pin as GPIO and drive it, potentially confusing devices or eve=
-n
-> > > > crashing the system. Set it globally for all pinctrl-msm users.
-> > >
 > > > How does this keep (or allow) I=E6=B6=8E generic recovery mechanism t=
 o work?
 > >
@@ -128,13 +114,28 @@ o work?
 >
 > "I=C2=B2C generic recovery mechanism" (I dunno why you put away the I=C2=
 =B2C keyword).
->
 
-For some reason it was displayed like that[1] in my client. I see it's
-correct in lore though.
+Your original email had:
 
-Anyway, what is your point? I don't think it has any impact on this.
+    Content-Type: text/plain; charset=3Diso-8859-1
 
-Bartosz
+Bartosz' has:
 
-[1] https://postimg.cc/7GFtxzzR
+    Content-Type: text/plain; charset=3D"UTF-8"
+
+Note that the Gmail web interface does show me the Kanji character
+instead of the intended "=C2=B2C".
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
