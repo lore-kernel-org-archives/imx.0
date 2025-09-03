@@ -1,114 +1,122 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1299914A4CC
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 07:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDDA2D9EF4
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 07:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756884002; cv=none; b=PkLARdqCKZ56XBVhi3l6SUpsBIIVbdknVSTsby4x/0q0ZoZ3iecKtCH+iX1JWEOhDfNBy+XSwJrKUptwnrtI8VS5F+buKWscGIbifwKkx7d3Tcwv9fgCZEscBsFchvK98oikumy5++LG9E6guV2wcjgjGmDgIH1KBV6yz/Ix8jo=
+	t=1756884582; cv=none; b=WdG58dqvSdP9WZnKlaGct/fpgVM0kk5/tUxwUBImBF4c9m5sBoht6pwptyicBt4KpRKqNsb5DIvYVziUQfzoeXrAA7kobxGCdjOa+T0Ga8TxZnGM1sJDOMKjozWWrSF8NoB+9mztaqGGvK1ZAVee48iHPK7eWs6gI9U/niH4WHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756884002; c=relaxed/simple;
-	bh=En2W+hPUiVIc0l1BQLH8vAPb/+q7zcp7yOavO//Np4Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J53mxx17ZCr/fubP31d8X29wc+8Z27QqalVcLt7BmVdAn/Ku+dWMvxnAJdtlojSvlvqdOUB/6DrekTnI96Ew2clHPzcdIhj3hj7b1YgHtmd9zVMeJFcAFlfF7qd+OKD0t40o1+6UGA2m84MPRLsIlUft/J5aS87YW++H/147cE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jUbBgwx3; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jUbBgwx3"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b4c6fee41c9so4764926a12.1
-        for <imx@lists.linux.dev>; Wed, 03 Sep 2025 00:20:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756884000; x=1757488800; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=En2W+hPUiVIc0l1BQLH8vAPb/+q7zcp7yOavO//Np4Q=;
-        b=jUbBgwx3ZHMje693Xe66RrW+Vfr29hsmPUfGj677YLsXmQtaOexnAzG1CxNa4Je2iZ
-         aMJrJaycwuz5gzoHOLHOgb3Bs2YzoiTjUXoNUV/XlwvicROJuej9s8Bdz1o4FkuPquM4
-         /j1qHAClSpifwSSExbC+5/UAsLSxnDpu4e9RAGGPFxKlQYZ/mmUobgWcZxPTubl6WzLO
-         OHFTbSATBXElw5FDMn9+MMKuNklb0RX5/tczg2hmtPRy2TmmCNZrYlmoevidaIgjpAh5
-         OLPjlknARCaxDRmPJ5uG+RNYOB0AflmMnUE9bFsR1wRQgP/8bBJgzNBBOq70Yy0BBgW2
-         IQ5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756884000; x=1757488800;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=En2W+hPUiVIc0l1BQLH8vAPb/+q7zcp7yOavO//Np4Q=;
-        b=T/EeY8e2h/cis8AxcXxxMyRKJ95Tqd9qFIG/KgjyPSQZOCBzVV6wC0ndmk0KmbebNl
-         BGFHPtHcN+0s1/DLxXSD+d5lCfgzyRi2Vsn2iMb0LjaMwDds1mBCDKojqo5H0YvowTu2
-         FYoDoZWnEF4eLYaKIKEbBKQNOMfKSxJSHo1RGqN1tpz3HIwIkG3yPmfBrnc5wTYwcM+j
-         n/dEMdDa/ZmN5k6UKxIG9anU21RE1UnxilAbJ3w8NApKcM5ZHXqMpVSD9OM1M5pEW/et
-         I6BfanyRAfjxE/KcTeEVkDnnKKlF5k1eDNF6vL4beU1HoVBUJwWdl8Bd5HsUXNCpHVEB
-         LkwA==
-X-Forwarded-Encrypted: i=1; AJvYcCXbA/xMxRt5hdPw09sx/Cy377AzRCP+cQqxPjw07mKa64Ju3lztay6SrR6H1daOOf1AHUA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxkqAQ8Ip/ZWJveT7MB3jPosGCHMAaXqURcVpBaly1d0ZAbM9xT
-	8ScmSA3gZwo9ECjTNkuGdTOvS4zkQMMvkKUMBF65rYd2bFQM6qBh6pGEFK1W5p/urB9Lfrzp5i0
-	OkWMWdFBdluhSMjx/URE3xMpoEPSRl0q3rpUV
-X-Gm-Gg: ASbGnctl5nFNxkPc17oyekeO6G8wTB3IV1CZZfoLStoMfBjqyfb5fW2NZW1rOr7hnOU
-	YkGliCTUhiTuuwJ9fY57HFaONLnUWhcikJfBVT3Y2kQiD8/di3WBKtE6DDfjBw27GBpHiEENHBS
-	N7C/qEi+8eEdwMaMwjy1Lo4S0xgtD4qmuaf30glW+zNYi4CFjXdzzvfyiOYvrlqgxxQtL6ltmjg
-	+4doj3I4ucPKvDb7WZav8Bl5Q/6R+qVm5DP
-X-Google-Smtp-Source: AGHT+IFgXEs9NteFHdZr1OCmOw5SCukuxyKq+mxKrX1PC589u8zK1b13OsCdHiT3Ob0jVHFeDF/+Ra11+ZAP+EwLTBM=
-X-Received: by 2002:a17:90b:5190:b0:324:ece9:6afb with SMTP id
- 98e67ed59e1d1-3281541225emr18498018a91.3.1756884000281; Wed, 03 Sep 2025
- 00:20:00 -0700 (PDT)
+	s=arc-20240116; t=1756884582; c=relaxed/simple;
+	bh=1c7VonY6uj74XYLIJ7kALBLOnJcPEHxjT3fVSi4gc/8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mFFDQX9yGGAmR/aRyx3juhd5EdzSfQxLJin/+ERlheC+uJj1HHeYtW1cY6KqzAEYhBBOj/KnX6Gib8zsDrbpD47fI81U+MbUBBh8eWEqnJWBHIwIWVYCpvZKkMOeSLOAGYlLHqhAEq+oAHcSTS/M+ys1Xb9xW5ejvpQTeoAMLgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uthvA-0003pQ-KJ; Wed, 03 Sep 2025 09:28:44 +0200
+Message-ID: <fa7e2cef-5242-4f3b-84ea-d77b959f6bdb@pengutronix.de>
+Date: Wed, 3 Sep 2025 09:28:42 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250821-imx95-rproc-1-v5-0-e93191dfac51@nxp.com>
- <20250821-imx95-rproc-1-v5-2-e93191dfac51@nxp.com> <aLHOhKpAQbVCC76-@p14s>
- <20250830125208.GA22718@nxa18884-linux.ap.freescale.net> <aLcdmY-gqd5cFOYc@p14s>
- <20250903045611.GA8860@nxa18884-linux.ap.freescale.net> <20250903063915.GA18615@nxa18884-linux.ap.freescale.net>
-In-Reply-To: <20250903063915.GA18615@nxa18884-linux.ap.freescale.net>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Wed, 3 Sep 2025 10:22:14 +0300
-X-Gm-Features: Ac12FXxuv1frbjT6JpqFVSJ0lAsIa-N1aZl19LOvbbQz194JtJV08sWoT5Y27zE
-Message-ID: <CAEnQRZBCxp4rT=es3fDh2w1Ut=i4u3GCnyoOFjqJEMj3CLWPWA@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] remoteproc: imx_rproc: Add support for System
- Manager API
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, Peng Fan <peng.fan@nxp.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
-	Daniel Baluta <daniel.baluta@nxp.com>, Iuliana Prodan <iuliana.prodan@nxp.com>, 
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: dts: imx6ul-tx6ul: Switch away from deprecated
+ `phy-reset-gpios`
+To: =?UTF-8?B?QmVuY2UgQ3PDs2vDoXM=?= <csokas.bence@prolan.hu>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ Csaba Buday <buday.csaba@prolan.hu>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20250815-b4-tx6ul-dt-phy-rst-v1-1-9b65e315d9d3@prolan.hu>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250815-b4-tx6ul-dt-phy-rst-v1-1-9b65e315d9d3@prolan.hu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-<snip>
+Hello,
 
-> >Please give detailed suggestions, but not a general comment.
->
->
-> @Daniel, @Frank =E2=80=94 since you've reviewed and R-b'd this patchset, =
-do you
-> have thoughts on the latest feedback from Mathieu? Would you agree that
-> further simplification is needed, or is the current structure acceptable?=
-=E2=80=9D
+On 15.08.25 17:17, Bence Csókás wrote:
+> The Ethernet PHY's reset GPIO should be specified in the node of the PHY
+> itself, instead of the MAC (`fec`). The latter is deprecated, and was an
+> i.MX-specific extension, incompatible with the new reset controller
+> subsystem.
 
-Peng, please trim the message when replying so that you keep only
-relevant part of the text.
+One reason to do it this way is that the PHY is in reset when the OS starts
+and the external phy-reset-gpios allows MAC probe to get the PHY out of
+reset, so it can be probed after reading its vendor/device IDs.
 
-I think you are both right here. I understand your frustration :)
-but also Mathieu's point of view is reasonable.
+Does switching to this new binding address this scenario? If so, it should
+be noted in the commit message.
 
-For a person who doesn't know the internals of IMX remoteproc the code
-is a little
-bit hard to understand. Peng I've given you my R-b because even if the
-feels like
-it is getting complicated it is still manageable and you are the
-maintainer for it.
+> 
+> Co-developed-by: Csaba Buday <buday.csaba@prolan.hu>
+> Signed-off-by: Csaba Buday <buday.csaba@prolan.hu>
+> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+> ---
+>  arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+> index f053358bc9317f8447d65013a18670cb470106b2..0a5e90704ea481b0716d6ff6bc6d2110914d4f31 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi
+> @@ -246,7 +246,6 @@ &fec1 {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_enet1 &pinctrl_enet1_mdio &pinctrl_etnphy0_rst>;
+>  	phy-mode = "rmii";
+> -	phy-reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
+>  	phy-supply = <&reg_3v3_etn>;
+>  	phy-handle = <&etnphy0>;
+>  	status = "okay";
+> @@ -262,6 +261,13 @@ etnphy0: ethernet-phy@0 {
+>  			pinctrl-0 = <&pinctrl_etnphy0_int>;
+>  			interrupt-parent = <&gpio5>;
+>  			interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
+> +			/* Reset SHOULD be a PHY property */
 
-Allow me a few days to see if we can simplify the logic.
+Comment belongs into commit message.
 
-thanks,
-Daniel.
+> +			reset-names = "phy";
+> +			reset-gpios = <&gpio5 6 GPIO_ACTIVE_LOW>;
+> +			reset-assert-us = <100>;
+> +			reset-deassert-us = <25000>;
+> +			/* Energy detect sometimes causes link failures */
+> +			smsc,disable-energy-detect;
+
+Unrelated change not described in the commit message.
+
+Cheers,
+Ahmad
+
+>  			status = "okay";
+>  		};
+>  
+> 
+> ---
+> base-commit: 0cc53520e68bea7fb80fdc6bdf8d226d1b6a98d9
+> change-id: 20250815-b4-tx6ul-dt-phy-rst-7afc190a6907
+> 
+> Best regards,
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
