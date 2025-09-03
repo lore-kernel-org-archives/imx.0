@@ -1,184 +1,190 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013036.outbound.protection.outlook.com [52.101.72.36])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6123002DF
-	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756905495; cv=fail; b=gL11DCG4QGbtx3Zfk4xmAPdDwaEOmjTZ991MmJrJ5P02K03MPnUtbUeOu6ihBodnzDQFq5xT5motHKO+d1Ee1GMiPy9uWgdUEgNlQ+scWr+DQZdMQi+B6mGg1gmGO3wVPdRtDKIuxmxyOVocSgJSqg3gKe/DvQVKcQBL+y+MWso=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756905495; c=relaxed/simple;
-	bh=8VD6j4T7khWoi7FgxPLZumgNg+DlUnRoKt2J7DTSJyk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=AAGoRtN/MFyrJacZjaj3Hq7v0GCwIrANdz8KgT9NyaNlgqmFJlCfrlce2ui2UhsywjU/MIAQ2gqYcHR4Y+Xq4AuGfwuPvauM98TptFbAcFis0xowsXX/JwfOlTFYZbS5J9BnKj7DbOpWDoex4F/DJ40peU84QSYTCiwh1w4Lp8U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eEa5MPx9; arc=fail smtp.client-ip=52.101.72.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eEa5MPx9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RluKRzFeACmYcHrPAE+1KrgfSsGsIz5LdQGg20nghS5SvwDNfebgFFJqTRP60mzFiszdEBvamB88FIMdnIzHJzDCYSroLwu1EJsq9Cfhqxu2Cxpzh40aeOsnYXlIUHdnfX3DqbBUFMmznwQacTTw9QJ58IyIihxIW4/FFCoIgPtOzPhgeBMaXDMEt8EE3g55Cx/3FaQMs3/iwwwr91h6Vvtf1uEVs7pQ9egrO9mQgfQTf8ek94YWpdtXfQ1Xhv+xv6s9JK0NLqanqhF6N2wvNPYYZTXVsUX+F8GzdhVXpWdvBBoGCzunJ9SBE/gY60kpp7KY9X68TQqkiEgTqyl24g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z0UcQVLV/+ZpMicp0TeK/Mqy4t1CcsZvUq/FzFB5vYI=;
- b=v2ysaX1pdPWicDHPv7jVQyfPkrNHKa2cfYwtFlHhnD3b5qajk67nmKB6pteSEqF3D3VwwYlpWyOMx0CZ4c+Qu34g5o74K7DpjGZq1KZELHnswpH98QZOTdlRpwCoBIblJjDIVXhpUshkmdxr6QmbdHLTQaMLGqEzZqDzbzbSLrX0E6lBWSzCO1RsqF1BpxjTLJazCaO98PigH2/RLHC+jrMVI2HmMQw4gNtQt52wXds3lQ82jmyA28pV0ZPeRAWLFh66/cIl1iqtEzmuN3/a6d9BOm7m1qZ11oisnxeiL0gGylxLOyscRvt6RzDyzichgAZBMTse2TRIevKzxSw+tg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z0UcQVLV/+ZpMicp0TeK/Mqy4t1CcsZvUq/FzFB5vYI=;
- b=eEa5MPx9b2VSIR+LmV1IR8zC2rjYb6KU7v0Na92J4KJvTAHc40envohg2fLfJWSA8YvjxGTsuLQU5KHgYZ/Jv1b/44W5lDUZrB5j8h6baVb+1Y6ci7s3SPB68DDAGqecRuUNfuH2sJfBsHdaPuvy8bWow/V/fHSCMm8eHEPK9Q7MLDQUQYAx+QRmQQHVybeWZ8h5zlQHHUSwCi3A3RUK9YRocSh2ooozFWdJ8g0ADJbrOJmk1zgmML/4RNUp414ozFX6/LP+gdngo5c25uQB6iycy9RfT3srlT3cvECQfh4o0YDBGYGqgJ3jwKh9hJZukgjOgKAhd2MQaKDwVAZCYw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by DU2PR04MB8871.eurprd04.prod.outlook.com (2603:10a6:10:2e2::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Wed, 3 Sep
- 2025 13:18:10 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%7]) with mapi id 15.20.9094.015; Wed, 3 Sep 2025
- 13:18:10 +0000
-Date: Wed, 3 Sep 2025 16:18:07 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: James Clark <james.clark@linaro.org>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Frank Li <Frank.li@nxp.com>, Christoph Hellwig <hch@lst.de>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/7] spi: spi-fsl-dspi: Target mode improvements
-Message-ID: <20250903131807.cou3u7wa3e266yn7@skbuf>
-References: <20250902-james-nxp-spi-dma-v6-0-f7aa2c5e56e2@linaro.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250902-james-nxp-spi-dma-v6-0-f7aa2c5e56e2@linaro.org>
-X-ClientProxiedBy: BE1P281CA0198.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:89::6) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09962FB63C
+	for <imx@lists.linux.dev>; Wed,  3 Sep 2025 13:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756905496; cv=none; b=QLuMlBtWV2Ik67GFzB8thL+AnK9MCmhZf/vlyf90e4bXBUK7xtYprSYYGycao5oi9zWqyJVk787wpbcuR9pXtpItJ6TZHGSMo+FvH+1LS8KUwAaQZ+o01WQYlIulp1AXb2oAqdeoL8+ifLSn0IRcQHVMD4IfC9wVRqdPz0pmoz8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756905496; c=relaxed/simple;
+	bh=MaEpS/kQ0iq8I+mSuZFPEXaBH8HV11drax5+pE3OzRU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nUtjml5OuHPfpUFW+zzEvg3nLb6UPl2zbhYiT3FYqVR1gDKB2YbQEZzlG/1GeD4MCtY3eZ53ukKpNNm8G6ca4GJotue7e0jyOsvSH2Sv6r5S61odyFL+x2X97NZZ2KQgA7CIRp4JayfJEAofrmD/QYDZtiM04C8n/ARzSTPXm0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 6b6c578888c811f0b29709d653e92f7d-20250903
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:cc21363a-8291-4a3e-bd39-a186506d2f70,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6493067,CLOUDID:63c205d422a11131bd200bea55a50c60,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
+	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 6b6c578888c811f0b29709d653e92f7d-20250903
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 487574624; Wed, 03 Sep 2025 21:18:02 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 1A8C2E008FA2;
+	Wed,  3 Sep 2025 21:18:02 +0800 (CST)
+X-ns-mid: postfix-68B84009-9033994
+Received: from localhost.localdomain (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 57859E008FA4;
+	Wed,  3 Sep 2025 21:17:58 +0800 (CST)
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+To: "Rafael J . wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Eduardo Valentin <edubezval@gmail.com>,
+	Keerthy <j-keerthy@ti.com>
+Cc: Ben Horgan <ben.horgan@arm.com>,
+	zhenglifeng <zhenglifeng1@huawei.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Beata Michalska <beata.michalska@arm.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pavel Machek <pavel@kernel.org>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	linux-pm@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zihuan Zhang <zhangzihuan@kylinos.cn>
+Subject: [PATCH v4 02/10] ACPI: processor: thermal: Use scope-based cleanup helper
+Date: Wed,  3 Sep 2025 21:17:25 +0800
+Message-Id: <20250903131733.57637-3-zhangzihuan@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|DU2PR04MB8871:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4131018a-a990-475b-c543-08ddeaec5407
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|19092799006|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BSzjjlp3kHTokaFfle0eEQE748f2GuL7Tn84UkfblNQiOIvRNMEn10HQPTeo?=
- =?us-ascii?Q?OMtMWLE21lToNC/PsHn/yodbvndfdx4/QW4j7+TVErMqvRF5oUribUcULrQq?=
- =?us-ascii?Q?WIBALtDnRhYGItC5q3nvId5Bl+uV50NY5adsiZu4vrPCYG5XejjIzROdC4G2?=
- =?us-ascii?Q?kpuXPVI8FwwypyS5Hh7fqoQxw13ILWDHV8WZPDWE5qmsF+6zEkWs717KYGBu?=
- =?us-ascii?Q?+3c7UaeJrOWKtC5Wp7HJFq9GiXeyiF87yO6kJYOszgvvwC3ArLXqpTO/9Jh+?=
- =?us-ascii?Q?pGQfXAgAArGaakyjzP2xvGai2g1jRZTKLt6ZyJyprI/rGGJTmEUAoZerIc/B?=
- =?us-ascii?Q?5zL/7ALlS/lGLnHTlveqrWO27GqIScPa2PV+VZyZMJ2qBTCRtKTSMHBdYtx2?=
- =?us-ascii?Q?26Q4ctFndF0uvD6t0WPkEzlFEOy1n+tC8DtJqabbB7FuiKshX19fN+ukb9qn?=
- =?us-ascii?Q?YLMCjLjwIdhih4C2/0b5PM5UFosmCc6isJbbmc/Imd1rpAUaZNEdbBAdRYAI?=
- =?us-ascii?Q?Vc9e6JHpB9bBXv5mw1eZxbwbOkmLRxvaRKdXYyD85Mb1Jh/8pInaQ5t7hqMS?=
- =?us-ascii?Q?TUVQ4YIMZEH3YOiZLw9U6V2VDPmSuwwrdGD5EMRdQ31uJxBMfVlzBtrBj1yZ?=
- =?us-ascii?Q?0N1egHXb59MJUg4ZUwor/ROj2shJdwZxozO4IGsagFKD+w2FIukRA08XGTPh?=
- =?us-ascii?Q?wNmLdT3K98zed7Zl4vd9+AiLgisY1cDjUGMnODGoHRB7zZZKmROEa4VNFeIJ?=
- =?us-ascii?Q?kSTQqDnPzMpKAFrC6msJ7wqnlSPZ9p6dGutkeNpizJTPtAxtQFIwfRiiZhr5?=
- =?us-ascii?Q?Y+ldWNMa1g8H04MdYD+eT7j4V2eLXadTKDSTciE154n6xW84GvzZVWYXO6JE?=
- =?us-ascii?Q?SCikx+ZDxYe2H/F+/FL6pXSbVuupiPi6JIYYhvQW52ErYtTFETcVsg1FUFtW?=
- =?us-ascii?Q?9Oft40uDKXBQQEIx0DfJ5xa0X2zq7ucXGTjkp7SplHHWkXVpXbFj5vN5Xp6r?=
- =?us-ascii?Q?Qt/nsWTcmBlu7RQVHAOlPu2JdMtvnGws2rjsyoeucZPE2hF/67PRlMHbZSXU?=
- =?us-ascii?Q?Pmo0uRPscq1vZSm5hF90kNxcpzkzEuOSkT20sGrgo4skXVc7Ay02xZzSQtIE?=
- =?us-ascii?Q?DMuFkP2Gsje/FT550YkmpInmK5wSWGrbt1+bZnC0Da777WcSCrN5rhiKrwS/?=
- =?us-ascii?Q?j/4VbX6jgheuO60uvzyGTGmC3LHLEDhEjkh7BK3X0ZOGOUzhTkWNWTjc48Yq?=
- =?us-ascii?Q?VCcLDpgmCwE1m3ca6IThPbNb8UVE/DHKZNG/iPmexnKFIz0Ez6CRLmNoeJlg?=
- =?us-ascii?Q?XTaGBD9IaLX6W84TjxBL7C7EF3Mqz43sb4QTVyi9TQjPZid7osHkEoHathoo?=
- =?us-ascii?Q?d/+V8iGeQS5KBZsbwhOIiV3IudZGtHOI/1BnG0bu+n2cg7wUWizBtl363Gna?=
- =?us-ascii?Q?0rWuUtcbNT0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(19092799006)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?66wP/i3Dgdz9jgTIBJO89hm7beE9jtjfu0Xtytl+xdm7ERRaGqvfoSl4zpfM?=
- =?us-ascii?Q?ac/qNuq1B/30+6CTXyjXRtN1aSjeg0lpPtrsRBSulXw5CEs7dYq9ZZdWB3WH?=
- =?us-ascii?Q?s1uINlDan2WBx1hz+0xRtxq8C+EuKA6XQ3oHniJEJsrC4c7nwg4ke5i+4FAZ?=
- =?us-ascii?Q?utBp3wEOVHayCb3yUL/NRWOWUdBYF5v+q+EfG19mr1y7gCXR5SiWc4wFh39+?=
- =?us-ascii?Q?iCxVNmu/tIiOLxd7tuB73rdvBz+P42Ou9rk6Gwa+DPJejukzirGcU0lzgXhY?=
- =?us-ascii?Q?Wfjpmi6Pg7KlYFpEdbdwxJHQOw95CwnM2bsobtERcdtBm47SUy2oJ1xM5Dbt?=
- =?us-ascii?Q?knT3ucXgDUZVWOCe3HHeuIG+TAgQs8S5KWiIwop2UtMWLGlVCL622abEMSkk?=
- =?us-ascii?Q?xSIm2qi9foNzFrxbJD0/zwaTlA7xLb1sn+P+yE3v23lx95GCkv6JucwDcGog?=
- =?us-ascii?Q?O4RoGcwnDjG9vaxw3E0oHLB+ku4Yf65xVF2FYwMa3DuwA537nJYRIffjJHbw?=
- =?us-ascii?Q?eQExVjFmSSlNyLsOoSxxnzlFXY6eyILpNioTHeMWgxBkvttyBLKV7cS8/pLk?=
- =?us-ascii?Q?c5QcSUpTJBD8OkIXdpQEaStzT0mjxsoc9+4F2p4B21tydObUwdONAF2iihwC?=
- =?us-ascii?Q?tEx8u4pw/mDIW5zSve4He687Er17kP7NM6Xa1+Rf0lE2XJ5Id522SfPWjb9I?=
- =?us-ascii?Q?hulMZAAYnCAnKKcT6Wg+zn5eNzzqNexwXIbYuaf7baeR6C1Ihdwdi5LopJTZ?=
- =?us-ascii?Q?l4W6qMdVb/SlXFf9An4S/MIQYAK50H7AUyjHTTFY2G5PlC0DpvS6PaO3fhls?=
- =?us-ascii?Q?NYjZ2Ie1+3nOZHb/BowHQdAnADrcCvrKlzIFEfY7aNNI/79Cq52vhs3+V49L?=
- =?us-ascii?Q?cVIS5BEXlw2x7dTcpl8kEZchwyqGiFYPqoERUqIGVxVJFBVnnhvXEoR6yqVi?=
- =?us-ascii?Q?sKqxzBY23vYFT0s7sJS1gSIFvfHrPy3KGxHnQfjOxheIHyWsSavtOSm7AKZi?=
- =?us-ascii?Q?B6/luSBUWIaE0bFwhP+p0K9+kr/yjBhezA2heBkuHZfNLUs9btFviWERfAjy?=
- =?us-ascii?Q?QhTvM9jFatzoCY24T/o2Z62pQAy2QRGYg3Lx8joDz61qzepFJQBHxku7+YxX?=
- =?us-ascii?Q?4KbaE06+0oyDkbSl0yxzEnH9QgkZBi6yTtA3kpyVDPErj2Vq6Vax+VqBLRSW?=
- =?us-ascii?Q?6e22nZdy0vKik81oZ1epXMS7kmwePqyrLvJjEzCUF7SO5Iuveylu1Nur+eG2?=
- =?us-ascii?Q?0rHfS57pG/zwJMlkbrAe+EhhGiaHVWYEa7lQq2JqRvVmY8AlNeTYCH2ttexY?=
- =?us-ascii?Q?cr7ygUueoPT/Yq/ICIavHZOYSo0UKCh6IzxJsOZXY9Pql7A5H3yzNG5fLrFF?=
- =?us-ascii?Q?2Tx+CGNSkWjmaFhbC5kromceVtK3uX3K7P2PQt0JjIMf1Q7b9sIGnyuoa221?=
- =?us-ascii?Q?aVF4bFN0KFFbM12pUp6NNMbP1g/9wMgy8Q0sdmnfFvkOlFd2uQOD0Zvjs5E2?=
- =?us-ascii?Q?kBTN32+bwm/6HsbGW/tUQZO59nGLdPGDpLiH645eEW+j0/em34K+cRk3N2fX?=
- =?us-ascii?Q?T2wvaNdPKy9v1SWUsKCFzksGFq8JWL+4GPUQ4196RgbuNwRiK4LqglV2qtMG?=
- =?us-ascii?Q?T0pnzhMdasjRHtybpRFj3I/opGnDg3dSRqLtijKNMZtTRFW2YGR6D3HF/BYk?=
- =?us-ascii?Q?U51GHQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4131018a-a990-475b-c543-08ddeaec5407
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 13:18:10.1569
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: muw0dClIor9RyGzimgcKwXP5UBSgOO23lU3UTyeVYxUkIlag7IcKm51GiUA0JFeridxKirUeIxQ3NnudG+cidA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8871
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 02, 2025 at 01:44:52PM +0100, James Clark wrote:
-> Improve usability of target mode by reporting FIFO errors and increasing
-> the buffer size when DMA is used. While we're touching DMA stuff also
-> switch to non-coherent memory, although this is unrelated to target
-> mode.
-> 
-> With the combination of the commit to increase the DMA buffer size and
-> the commit to use non-coherent memory, the host mode performance figures
-> are as follows on S32G3:
-> 
->   # spidev_test --device /dev/spidev1.0 --bpw 8 --size <test_size> --cpha --iter 10000000 --speed 10000000
-> 
->   Coherent (4096 byte transfers): 6534 kbps
->   Non-coherent:                   7347 kbps
-> 
->   Coherent (16 byte transfers):    447 kbps
->   Non-coherent:                    448 kbps
-> 
-> Just for comparison running the same test in XSPI mode:
-> 
->   4096 byte transfers:            2143 kbps
->   16 byte transfers:               637 kbps
-> 
-> These tests required hacking S32G3 to use DMA in host mode, although
-> the figures should be representative of target mode too where DMA is
-> used. And the other devices that use DMA in host mode should see similar
-> improvements.
-> 
-> Signed-off-by: James Clark <james.clark@linaro.org>
-> ---
-> Changes in v6:
-> - Indentation fix
-> - Fix trailers in first commit
-> - Explain reasoning for "spi: spi-fsl-dspi: Stub out DMA functions"
-> - Link to v5: https://lore.kernel.org/r/20250829-james-nxp-spi-dma-v5-0-3246957a6ea9@linaro.org
+Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+annotation for policy references. This reduces the risk of reference
+counting mistakes and aligns the code with the latest kernel style.
 
-For the entire set:
+No functional change intended.
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+---
+ drivers/acpi/processor_thermal.c | 37 ++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_th=
+ermal.c
+index 1219adb11ab9..5043f17d27b7 100644
+--- a/drivers/acpi/processor_thermal.c
++++ b/drivers/acpi/processor_thermal.c
+@@ -62,19 +62,14 @@ static int phys_package_first_cpu(int cpu)
+ 	return 0;
+ }
+=20
+-static int cpu_has_cpufreq(unsigned int cpu)
++static bool cpu_has_cpufreq(unsigned int cpu)
+ {
+-	struct cpufreq_policy *policy;
++	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
+u_get(cpu);
+=20
+ 	if (!acpi_processor_cpufreq_init)
+ 		return 0;
+=20
+-	policy =3D cpufreq_cpu_get(cpu);
+-	if (policy) {
+-		cpufreq_cpu_put(policy);
+-		return 1;
+-	}
+-	return 0;
++	return !!policy;
+ }
+=20
+ static int cpufreq_get_max_state(unsigned int cpu)
+@@ -93,9 +88,23 @@ static int cpufreq_get_cur_state(unsigned int cpu)
+ 	return reduction_step(cpu);
+ }
+=20
++static long long cpufreq_get_max_freq(unsigned int cpu)
++{
++	long long max_freq;
++	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
++		cpufreq_cpu_get(cpu);
++
++	if (!policy)
++		return -EINVAL;
++
++	max_freq =3D (policy->cpuinfo.max_freq *
++		(100 - reduction_step(cpu) * cpufreq_thermal_reduction_pctg)) / 100;
++
++	return max_freq;
++}
++
+ static int cpufreq_set_cur_state(unsigned int cpu, int state)
+ {
+-	struct cpufreq_policy *policy;
+ 	struct acpi_processor *pr;
+ 	unsigned long max_freq;
+ 	int i, ret;
+@@ -120,14 +129,10 @@ static int cpufreq_set_cur_state(unsigned int cpu, =
+int state)
+ 		if (unlikely(!freq_qos_request_active(&pr->thermal_req)))
+ 			continue;
+=20
+-		policy =3D cpufreq_cpu_get(i);
+-		if (!policy)
+-			return -EINVAL;
+-
+-		max_freq =3D (policy->cpuinfo.max_freq *
+-			    (100 - reduction_step(i) * cpufreq_thermal_reduction_pctg)) / 100=
+;
++		max_freq =3D cpufreq_get_max_freq(cpu);
+=20
+-		cpufreq_cpu_put(policy);
++		if (max_freq =3D=3D -EINVAL)
++			return -EINVAL;
+=20
+ 		ret =3D freq_qos_update_request(&pr->thermal_req, max_freq);
+ 		if (ret < 0) {
+--=20
+2.25.1
+
