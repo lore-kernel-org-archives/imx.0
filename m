@@ -1,102 +1,207 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E37C26D4DF;
-	Thu,  4 Sep 2025 04:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06284262D0B
+	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 06:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756960359; cv=none; b=grbrQ4mCJSSVd/UTpGxvAT0nhx7NcmmL8RqvuYEDsP1EUmV1Wmu6unBtE7/E64FFdUTPypfpV8SdPVldEQnz9ttMC83RsVL2sBZHUm57QdzksCNLHHCVw5ZmYXI0Igv/MlB0eru339C3POALqIlMVp/ePuNheCx9AO8PTOnmH7A=
+	t=1756966953; cv=none; b=dJsbVbWsFpafiXH6F2kUaHEnYET2V2kIyI/zgsEKtY4gEUrGbTL1jaLJfc1L3CqpRvaqtl/x26W2+95lKXheO9nmvN4OTHP4MUACeR/ffJGhvvt7lInOc47IsUHTfZGBF1K3J3Mzn4MbIBDrpBvBwy5WTyBfsqd+LDmphrJ2Jxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756960359; c=relaxed/simple;
-	bh=M5TwpNr55usP9Sz8MApwPf1Fs9RyfM3185mpZDbrJyc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iT7PsY40vwekI4tzMeo7OD8lIm3Y8HrOl9biqssLg3Ih9YaMsfWM5eNYOdwCO74K78qHNFcte9LBQPtO86/yFbHSVEG2MK8nF2ZOlwhcQITVFVrLUafpTLqienxH+ohNmUawcpSXhyFHmE0bs84gvxY7Me4BcjNdE15kXKNqOqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mqcJTkuX; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1756966953; c=relaxed/simple;
+	bh=S8ROu2J0tBFyJUj+u0MwT+L1Qg7X6nZn7GKODwuxqfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZWY010g+0WUOVyK7un3/PO1pqIx5zytYt6UI1h0N2rJesoHjxSknIPkYlCgfFnqIo0BfqwKpw5tZQw07zEERvJL+CYp676DDs8xYQnF10Qn4tf2dQAcLvUm4sZNXSivIFic93EaKgReTuvwkg7E/+KPtRb/ntvVHIHMhubzDA/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=i+vYkBze; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mqcJTkuX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756960357; x=1788496357;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=M5TwpNr55usP9Sz8MApwPf1Fs9RyfM3185mpZDbrJyc=;
-  b=mqcJTkuXkG6TAKpsUZQp7ZNebQXjjMWqXHRebLew2nFfPyQJiXKFoAAz
-   4peVl4egnB+/mVrfgM+y8jSR4lsc3fPwlt0n2dCPoHXJ8BNOEZ8ID2e7V
-   5z6ohE3luqmE3jAIpc+0yDcWmL4bAyyKJDn9ygmkuo17MZSuX2YuSvD8v
-   8ztz4/eHE+DxIf8JZY8A9WIHzMqOSS46O5UiEHLa5ak4XV5Df34L7RdXA
-   63Facm6hs+wSsADhDN/YZBwD5b+ygCeIHPifZi4jKMp+6OrBdknBI+I1B
-   2nI0tQJDlAuLllFFr82Az24m3R7fzlw9dK2R4eOPiRbBs1DnGs1amnNlk
-   A==;
-X-CSE-ConnectionGUID: +6Uaro6cRfmHS08un59E6g==
-X-CSE-MsgGUID: IvEDHY/TSb+YoG4JuxT3Gw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59204241"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="59204241"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 21:32:36 -0700
-X-CSE-ConnectionGUID: AbAUldJwTX65zWZ58P+kng==
-X-CSE-MsgGUID: asiFdFQmTLGNLDtAmDZW5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
-   d="scan'208";a="202625452"
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 03 Sep 2025 21:32:34 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uu1eA-0004kZ-2S;
-	Thu, 04 Sep 2025 04:32:30 +0000
-Date: Thu, 4 Sep 2025 12:31:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marco Felsch <m.felsch@pengutronix.de>, Vinod Koul <vkoul@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jiada Wang <jiada_wang@mentor.com>
-Cc: oe-kbuild-all@lists.linux.dev, dmaengine@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Marco Felsch <m.felsch@pengutronix.de>
-Subject: Re: [PATCH 11/11] dmaengine: imx-sdma: fix spba-bus handling for
- i.MX8M
-Message-ID: <202509041238.qCKW7MeD-lkp@intel.com>
-References: <20250903-v6-16-topic-sdma-v1-11-ac7bab629e8b@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="i+vYkBze"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1756966949;
+	bh=S8ROu2J0tBFyJUj+u0MwT+L1Qg7X6nZn7GKODwuxqfs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=i+vYkBzebjdSyNw74Y+YTYAgyCMoIqAGVF9uFeCqKrKTa9kGbNg9ySSbEAOe0tUYx
+	 8spcEe+TjCfwJ23nXnUH8V3w1Y1n+hUIPC7HJOr22MrRQEp5o6QidZrvsfxZN0reld
+	 48kSTHm8GD51Nv/qu/DcDkuKMeNybEZauPh8aL+BRc8i8PpTYZqVuo2bF5wGYwwwHH
+	 OjPZy1XVHhdvtSYI3vijmYYccLLENy1/lfO+QwB0XVGMbPHiGC6Wt6EjfEAb4t/Gsz
+	 btzt+yM+BqueuLl6ThUnstTp77oo9Xn0US+JJ3ca1R8fC2gMX36KNnnFbug03AqNQv
+	 mUDkpjMJ2D6og==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 5FE8317E0B85;
+	Thu,  4 Sep 2025 08:22:28 +0200 (CEST)
+Date: Thu, 4 Sep 2025 08:22:24 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Marek Vasut <marek.vasut@mailbox.org>
+Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley
+ <conor+dt@kernel.org>, David Airlie <airlied@gmail.com>, Fabio Estevam
+ <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Liviu Dudau
+ <liviu.dudau@arm.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Philipp Zabel
+ <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>, Steven Price
+ <steven.price@arm.com>, Thomas Zimmermann <tzimmermann@suse.de>,
+ devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev
+Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
+Message-ID: <20250904082224.113d0cd1@fedora>
+In-Reply-To: <838a0c6b-845b-428d-86b3-1480e5b8080f@mailbox.org>
+References: <20250321200625.132494-1-marex@denx.de>
+	<20250321200625.132494-5-marex@denx.de>
+	<20250324094333.7afb17a1@collabora.com>
+	<c1de2afb-3559-4fbb-b13b-2373175b420b@denx.de>
+	<20250325084349.344a0f11@collabora.com>
+	<7aadf355-edf0-46fc-b969-65c3789375ca@denx.de>
+	<20250325153507.61d82e39@collabora.com>
+	<4c06aef3-a254-437c-aa15-8e3eb7bf5951@denx.de>
+	<20250325155231.0d1b1000@collabora.com>
+	<838a0c6b-845b-428d-86b3-1480e5b8080f@mailbox.org>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250903-v6-16-topic-sdma-v1-11-ac7bab629e8b@pengutronix.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Marco,
+Hello Marek,
 
-kernel test robot noticed the following build warnings:
+On Wed, 3 Sep 2025 23:44:59 +0200
+Marek Vasut <marek.vasut@mailbox.org> wrote:
 
-[auto build test WARNING on 038d61fd642278bab63ee8ef722c50d10ab01e8f]
+> On 3/25/25 3:52 PM, Boris Brezillon wrote:
+> 
+> Hello Boris,
+> 
+> sorry for the late reply.
+> 
+> >>>>>>> Hm, that might be the cause of the fast reset issue (which is a fast
+> >>>>>>> resume more than a fast reset BTW): if you re-assert the reset line on
+> >>>>>>> runtime suspend, I guess this causes a full GPU reset, and the MCU ends
+> >>>>>>> up in a state where it needs a slow reset (all data sections reset to
+> >>>>>>> their initial state). Can you try to move the reset_control_[de]assert
+> >>>>>>> to the unplug/init functions?  
+> >>>>>> Is it correct to assume , that if I remove all reset_control_assert()
+> >>>>>> calls (and keep only the _deassert() calls), the slow resume problem
+> >>>>>> should go away too ?  
+> >>>>>
+> >>>>> Yeah, dropping the _assert()s should do the trick.  
+> >>>> Hmmm, no, that does not help. I was hoping maybe NXP can chime in and
+> >>>> suggest something too ?  
+> >>>
+> >>> Can you try keep all the clks/regulators/power-domains/... on after
+> >>> init, and see if the fast resume works with that. If it does,
+> >>> re-introduce one resource at a time to find out which one causes the
+> >>> MCU to lose its state.  
+> >>
+> >> I already tried that too . I spent quite a while until I reached that L2
+> >> workaround in fact.  
+> > 
+> > So, with your RPM suspend/resume being NOPs, it still doesn't work?
+> > Unless the FW is doing something behind our back, I don't really see
+> > why this would fail on your platform, but not on the rk3588. Are you
+> > sure the power domains are kept on at all times. I'm asking, because if
+> > you linked all the PDs, the on/off sequence is automatically handled by
+> > the RPM core at suspend/resume time.  
+> 
+> I revisited this now.
+> 
+> Can you please test the following patch (also attached) on one of your 
+> devices, and tell me what the status is at the end . The diff sets the 
+> GLB_HALT bit and then clears it again, which I suspect should first halt 
+> the GPU and (this is what I am unsure about) then again un-halt/resume 
+> the GPU ?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marco-Felsch/dmaengine-imx-sdma-drop-legacy-device_node-np-check/20250903-212133
-base:   038d61fd642278bab63ee8ef722c50d10ab01e8f
-patch link:    https://lore.kernel.org/r/20250903-v6-16-topic-sdma-v1-11-ac7bab629e8b%40pengutronix.de
-patch subject: [PATCH 11/11] dmaengine: imx-sdma: fix spba-bus handling for i.MX8M
-config: arm-randconfig-002-20250904 (https://download.01.org/0day-ci/archive/20250904/202509041238.qCKW7MeD-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 13.4.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250904/202509041238.qCKW7MeD-lkp@intel.com/reproduce)
+It doesn't work like that. What you're describing is like executing
+"shutdown" on your terminal and then typing "boot" on the keyboard
+after your computer has been shut down.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509041238.qCKW7MeD-lkp@intel.com/
+> 
+> "
+> diff --git a/drivers/gpu/drm/panthor/panthor_fw.c 
+> b/drivers/gpu/drm/panthor/panthor_fw.c
+> index 9bf06e55eaeea..57c0d4fd29aa2 100644
+> --- a/drivers/gpu/drm/panthor/panthor_fw.c
+> +++ b/drivers/gpu/drm/panthor/panthor_fw.c
+> @@ -1087,8 +1087,16 @@ void panthor_fw_pre_reset(struct panthor_device 
+> *ptdev, bool on_hang)
+>   		struct panthor_fw_global_iface *glb_iface = 
+> panthor_fw_get_glb_iface(ptdev);
+>   		u32 status;
+> 
+> +pr_err("%s[%d] pre-halt status=%x\n", __func__, __LINE__, 
+> gpu_read(ptdev, MCU_STATUS));
+> +
+>   		panthor_fw_update_reqs(glb_iface, req, GLB_HALT, GLB_HALT);
+>   		gpu_write(ptdev, CSF_DOORBELL(CSF_GLB_DOORBELL_ID), 1);
+> +mdelay(100);
+> +pr_err("%s[%d] likely-halted status=%x\n", __func__, __LINE__, 
+> gpu_read(ptdev, MCU_STATUS));
+> +		panthor_fw_update_reqs(glb_iface, req, 0, GLB_HALT);
+> +mdelay(100);
+> +pr_err("%s[%d] likely-running ? status=%x\n", __func__, __LINE__, 
+> gpu_read(ptdev, MCU_STATUS));
+> +
+>   		if (!gpu_read_poll_timeout(ptdev, MCU_STATUS, status,
+>   					   status == MCU_STATUS_HALT, 10,
+>   					   100000)) {
+> "
+> 
+> In my case, the relevant output looks like this:
+> 
+> "
+> [    3.326805] panthor_fw_pre_reset[1090] pre-halt status=1
+> [    3.432151] panthor_fw_pre_reset[1095] likely-halted status=2
+> [    3.542179] panthor_fw_pre_reset[1098] likely-running ? status=2
+> "
+> 
+> That means, the GPU remains halted at the end, even if the "GLB_HALT" 
+> bit is cleared before the last print. The clearing of GLB_HALT is also 
+> what panthor_fw_post_reset() does.
 
-All warnings (new ones prefixed by >>):
+After the halt has been processed by the FW, the memory region where
+you check the halt status again is inert, since the micro-controller
+(MCU) supposed to update those bits is off at this point. The FW
+interface is really just a shared memory region between the CPU and
+MCU, nothing more.
 
->> Warning: drivers/dma/imx-sdma.c:477 struct member 'spba_start_addr' not described in 'sdma_channel'
->> Warning: drivers/dma/imx-sdma.c:477 struct member 'spba_end_addr' not described in 'sdma_channel'
+> 
+> I suspect the extra soft reset I did before "un-halted" the GPU and 
+> allowed it to proceed.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Hm, not quite. I mean, you still need to explicitly boot the MCU after
+a reset, which is what the write to MCU_CONTROL [1] does. What the
+soft-reset does though, is reset all GPU blocks, including the MCU.
+This means the MCU starts from a fresh state when you reach [1].
+
+If I had to guess, I'd say something is messed up when the GPU is
+halted, and you need a soft-reset to recover from that. Unfortunately,
+I don't know enough about what your FW is doing to help. Maybe
+Arm/Freescale could...
+
+> 
+> I wonder if there is some way to un-halt the GPU using some gpu_write() 
+> direct register access, is there ?
+
+That's MCU_CONTROL, yes. And it's done here [1] already.
+
+> Maybe the GPU remains halted because 
+> setting the GLB_HALT stops command stream processing, and the GPU never 
+> samples the clearing of GLB_HALT and therefore remains halted forever ?
+
+Exactly that, and that's expected.
+
+Regards,
+
+Boris
+
+
+[1]https://elixir.bootlin.com/linux/v6.16.4/source/drivers/gpu/drm/panthor/panthor_fw.c#L1034
