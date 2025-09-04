@@ -1,263 +1,163 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013027.outbound.protection.outlook.com [52.101.72.27])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A97830CD9A
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 17:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757006165; cv=fail; b=Amj0BqtTB1Ulio3yMP2DIMJ4oWzVKIEEaNdJuFtuNM78l/5erk9UpzOjrs2LAURkMQYegNomn9oUGSORfpO57QKGRgt96Z95yLd3m5HmEOGJqnk2cs4hzCV3DkbY6zHsi6MPvHjA+KQpMQtlxfCHeESUsEuB6jbmBnj5t/Rl+L0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757006165; c=relaxed/simple;
-	bh=Svx703Ww5dERgSoCb25wrICQdd8Sf6n42+SJItGU8Rk=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=fjefb0Tz69lc5XtLdwOtJR5ljTl4gO2n3YSbf1arT15Yy3LtjcHFfMpaFm2KzJXC5hSKR5IogeEinn9BSXU2wgyUumtLarpqjCX0oQmU1aqCMJYLTUqPBsowuw6HBCMxcoTWY4bSPBc/kjfdl+WpfRZPGB3i9UQjaZ4hWCo1AHk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mo9FLJWp; arc=fail smtp.client-ip=52.101.72.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B533126D1
+	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 18:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757008928; cv=none; b=DUTY74P0UgeZzpDdLwydE+gnqQqiLkwHPITpAfpKzPPxJiX5H8fPrqEQX6v/fTQBPn3+fqN8pch5a739ok9xABxnhyKKBcFScckG5CPKJh0qdS35bx+P3ZW7nzBbRmwcl8T/o7pJv3ujNoKUqS+rb73Ou2V8TPd1CIb2hVdioVo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757008928; c=relaxed/simple;
+	bh=hvzoltZOaVGiVcZvsR/TaiLtetdo1Pq5nrgn7tZnD/Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pjqiD17/WKOtiyWQyoUiktbgKDPWcmgd49HD6KUg+LO0LzXj6uvzRmzmZjgY8m9lZreoGC/g9VW14HdtFdzw6hzjCbJ4Ap+TQQtiEqC+ROt6ieWfALQYzZGKTsitusav++lLI7hlko9XxtaIvug6twOn80wJRSuB7H9gG6tC9rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=kmv05GTW; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mo9FLJWp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gOzfpQugOEl4/bjhjdRQHvcylMmXwKQSby9SrGdGpFrsNI7NIIkU6nL6DKc9LlVDficR+Qnm7b40YUcqr70oCcwv0i9vZC79M92znknRdse9QPOZqa8lYRoIjMyfwtt04U90HEpyy86QJwVbvkpMmh+byO+DaoeHsbAn5rUDskPnovT+CxYu5DEPSoOj9/lVzpxKp9OUm9bwkq05NznrWu+zP5vxV/FRiBzvKSC5ht7mKJySI2XNp0ewyLcaTU7Mdp/W7deX626rbFAuOYe53bYPHRFNY40ZzMALVAOHyRGQtwAxQxioNegi0WjunS2Il9fadzA9iyzPOljw5WQxOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CKF741Fzo+bqI80C4IhJ14QPzQyIkx51jb2lJxqNHiA=;
- b=lBfTAxcz5hV3QzRM/8iudOFM7Mg6axFTmo56dJDu0bBwVWJoHKpL9QhG5J+KuS1o2wYWllIxOaYtWjGP1hrg99ZTYxAHLuui4Waru6sXU+N1E/JMY6Pksis2qUWmyBArhmVraacqt/YWCRiVoFHSvX4gKO9YvSzwA+WtT2XcvdMgw/V3pATVR1BrpV7PynEU00Y826/VA5K9V5K/NfBm6Ya1ciKCoUC7djByDJ0XKAE4s/hkWF26OVyJ82nvcF9dX+yddyG/NGBDOaDtrq92dV3wK1oppJvO6WnaFZi8nmvf/OsASoVnX9g5pAi2Hq+45FWFzzns+ihnfMM3n+XxkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CKF741Fzo+bqI80C4IhJ14QPzQyIkx51jb2lJxqNHiA=;
- b=mo9FLJWptntUXhVFbvLcNXsSRJkV3+E+DO5J97TuZnU1aXt/2ksCmXQ/ZaHP6AXKk11hCe48g99BjTum4+MwZ8prjsi6xZPBQmxl3Srrbj3fcNGqggeUo650PnzJ3LnfdsD4RcbQ8KrmHDIqqUb4BE4PDS9Sl+3PlP3MhOxQv5Rrzy3AadYV2JJPz6Fx4z7xHTsIgup/3n4WR+5OWg57soMM2JMgcM65GcmBeJluggbOKDByrCcVyE9kZBXiZosNXgzpOfadSelnabcmgy8W3gXis0ENJXvd2PZEQVV4zv1emPaUf7NKJOqpHN+hnwZxM2ru/hAn2VDBGgCjVUZ7UA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by MRWPR04MB11492.eurprd04.prod.outlook.com (2603:10a6:501:75::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Thu, 4 Sep
- 2025 17:16:00 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd%5]) with mapi id 15.20.9094.015; Thu, 4 Sep 2025
- 17:16:00 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: input: exc3000: move eeti,egalax_ts from egalax-ts.txt to eeti,exc3000.yaml
-Date: Thu,  4 Sep 2025 13:15:41 -0400
-Message-Id: <20250904171543.517650-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0357.namprd03.prod.outlook.com
- (2603:10b6:a03:39c::32) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="kmv05GTW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1757008904; x=1757613704; i=wahrenst@gmx.net;
+	bh=qlAbyoyjGgLUTV0kGYydzoxSqdR6vVMn5w3CbFC8mXI=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=kmv05GTW1fbuw7IslAoyJHwb4JExdyB5ka6hpKGOvf2LlcPkz9xg5Z1K/AG7tF50
+	 u9GJsF+x0Ph/xecEc/ItwEdupvojM+ww1B6FJy7uMNt70n1oVtun8Vq+upJSf3AIO
+	 LViX5TYhFM+gIfAPyTb5ltoh1soSF0ScY1Z9cyG1MaDtrgyZumtomwulxs8PT86pP
+	 KV8AeKRQ7uoBBFNGq3ZXFoYJHEOcepaCUTsWA2iKnX5bKQVuuMipe02ijbE3FIHPU
+	 nH++AX5heHXNWsSlMG3Iqu5xafhORpDpSq4xZw0yNlphC+8HXCMME9L4Fk7XP/HvJ
+	 oEV0oPaDWmZQnFd7Cg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.105] ([79.235.128.112]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MZktj-1uzx4Z2Gwx-00Z32N; Thu, 04
+ Sep 2025 20:01:44 +0200
+Message-ID: <0ae16ef0-45d7-4775-a825-87a352fc03e0@gmx.net>
+Date: Thu, 4 Sep 2025 20:01:42 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|MRWPR04MB11492:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1916285a-47eb-4417-6fc6-08ddebd6b779
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|52116014|38350700014|921020|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?eYTADqF4C1NOidYT8oFvqhjnZhfaiFlrK0e8MQx/EEK6WfpUJBL6yZ0rKyjX?=
- =?us-ascii?Q?3Uyp8QkHR65e7XLY38Nrnc4mPXIeSdXui2U1VdYDXMa8AhT8aRwcVEWIjMpd?=
- =?us-ascii?Q?z94vuM/C+sno8gHB4ZGdyX2/9grpB/fIOP65+nYGKw9lcWT+JdXe2pdTTM8q?=
- =?us-ascii?Q?QEgqdTxM8pg3FInKUL1biw9V5nh8oVT8Bp7LInRTcwMWjS0qkzHMbjaeT889?=
- =?us-ascii?Q?X9qnYyoyI39sdwbd0CZNJ3IfiVUDpo8q0bBmHV5O9SAtDDPcD5EsBJHI41o1?=
- =?us-ascii?Q?9uZnyTxAO3LKohQDdG8/0fMtPY0UzaPyxVR7IaCcD/lvmcH11fngJVk/svMx?=
- =?us-ascii?Q?6QVr+eqXQfdHeMx9JXRrkE0o9m4MQvdO3mrwaT6KAAhHtXztJDlV2Tj64g5m?=
- =?us-ascii?Q?eivcl0ahhzuw/T/vfo9nGUAd7F9wo+CqGo3xuqFD4mGwAyLaFnNo3FLWX8uk?=
- =?us-ascii?Q?HzT7agkxuUXOnCqNM/PnIAk5UlGP8eM8OuNYpCug2Y2iuc9y7ydwFkenTxh4?=
- =?us-ascii?Q?YNd+V5PG/hH+2VChF2aHvPITlNcQBGF7rvPI7g2IwcpyXzFVMZN1uLCKg47b?=
- =?us-ascii?Q?WMfCUkZu41w2N22ZRPmBOf+kwLG1kzpr41fWg+DkEhPwzvvLgdqGQFw5vXDs?=
- =?us-ascii?Q?hwuatQMnDv4rxUtPeYSwifqhGu3RW1gnF+0m4TpA/hgh8e/f97F5im2FMoru?=
- =?us-ascii?Q?RbfPQi8384C7AUVaSKbSSALcZTlnHMhgUa8Dcuzfkx+KdQLoyX1mAvhhfTMK?=
- =?us-ascii?Q?JQki6i4GQApn5Ffa/uj61dJ3vu/UaEzPJuuUZ0MIxr/rqjLrv4Ap7q8Ubyaf?=
- =?us-ascii?Q?ALBA47Xze0P1nFGb7eI508YKEIM14+CBC9gEC/ULThUK/KqhU2wjDLnJUcBE?=
- =?us-ascii?Q?3tVAMGi8BYwafLmHmH+lQbnXZzP+Y/ixbAawRrljAM8qwrVn108nPEpK3ZMc?=
- =?us-ascii?Q?mG/qHAMZtUJhrvIKBCaDIWPr1imswgqrDVGfoQoRVuUjJGYXCaKSJJbd1N7p?=
- =?us-ascii?Q?qErRikRD33kl7E6qX6saq4Uh+IV+Qdhyp4JD0s8BUAWFNfM9bZAzNsJakPoi?=
- =?us-ascii?Q?+eNdhTxmrQbhNKDYA9VdfUvrySWPXADmunab18ZkJj9UXHRkuycMKWjrUhNU?=
- =?us-ascii?Q?PaIdeWsQK23HhkfaAVzeb+KelfK63q9MDnomh+07wdcK4H3lIsnkL4r1ULPp?=
- =?us-ascii?Q?FRuLORC85JB3aw9jmG1khoWwU+j0TcKJX3HE7PVq9qBvFBdlC05wtImEc88A?=
- =?us-ascii?Q?93Is9nDFpiKxNoO/5M591z+iDahbut735sCtnlSGPaQL41PNSF8uHU02kg7x?=
- =?us-ascii?Q?u5Iwn3mJyhuUG5keQlyhS3j5a7YQsYQ7tUAKt+G2POFgIeTw8iPx3DMOFvqw?=
- =?us-ascii?Q?8Fr2Bt9eikHJl2xngEkEZA4Ygrxw9A2xwuVrNeKxqdoIz0qI8Vp6hhWiku34?=
- =?us-ascii?Q?zFuLKlMKxrZNi0DEa+IgXueAUriIMqemv9zNOiptmcbYghIAJ3ACRxqfQ8yC?=
- =?us-ascii?Q?DA+B6biBeIOVxKA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(52116014)(38350700014)(921020)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MfsNHYYCPLjqALJcWMoXGdhu1/u1OL47HTpscHyOYxYRYOfb9VfgBK7YZ3on?=
- =?us-ascii?Q?6j5+s7ZfyEHdy1lxkmWcuoqz78G4U1ZOds7rIQwFARN8P6D+4oJ1lmFyhhuv?=
- =?us-ascii?Q?iNIc2FyMmBX0TzhS9XmUcb/pwzQ6XF3vU2UAdaxoDc+S6lv7ugPDQh2lXSW4?=
- =?us-ascii?Q?pv3sZ5uwfMVHrv7azjW4DCzhQuj1GtwagcQz4Fqo9KzAPBogToqy0vvQQXy+?=
- =?us-ascii?Q?PWsJHDZZCTandrf2mWU0iftZShXe4NcEDYC6JKYZPwjQvrAzNNH6GZW998fV?=
- =?us-ascii?Q?npgv8WJdBMVv0jg7UWVmAzhIOTnYmPSaYGWee19/4J0EVBYHCtlmjmPHqu35?=
- =?us-ascii?Q?uo33jqBZFiJgp2cRL/X+QSzE8ZO+XxgXEh73y2OTMH101YDcDpAAwHzT6j14?=
- =?us-ascii?Q?b/iIv0rQEtxr2WNMKiUvj4X7RudYSahVRZ+2Uq9/DBHnjRaAjlMvmL1QCvta?=
- =?us-ascii?Q?8yKGzUeUer2jsk47s6CcaKHghfPGnxZPKS1P61bvnY+CIRWJIuEvEY9N/dJb?=
- =?us-ascii?Q?G8p60qc1zhyIskvGH9uVp3U0Np/e7JHCHm26tUceIpiIAS53YYwqJmR4KTgl?=
- =?us-ascii?Q?uBY6Eo9i31A8U0KXuZBy8YAs/QzDd3Ae8IVPIFN4F+3usB3FEmedoBCDILqS?=
- =?us-ascii?Q?GCzM8sogIu5QvUXTpG31wZo1cmy2cXQYCs3ZfLxvVVCDjUxTsYSEdDrdZVRf?=
- =?us-ascii?Q?pedCPp4hv0O9reLdZSftkSGs4gvp5+gOrlyQzodqaxiDmjtMBpW4OrHbQluD?=
- =?us-ascii?Q?eRxbhMvp6gi9Jz9UylMjsYov9AnTlDfC5SzuRrwHHwuGewuwtFDtbS6zuL6W?=
- =?us-ascii?Q?AlQHDljPcdxwnnn+Bl0pFGnFcVRt/j0u1vpLpkWd5G1CTt9dWiFlC6A7clfX?=
- =?us-ascii?Q?n7ZL2Spk7ufYDoXaI6Ap6sdNYNBvGhZgLTsvBPUSClGECmPYpsdJmtNocBV+?=
- =?us-ascii?Q?Pek/e2q+HShX+ZzzECL0CPnS2DllmRb+PBlqmQ08OxLbxBIkN4nWXEjjYtR9?=
- =?us-ascii?Q?rsdDTgt24nDDuLD7VD2f1uaqsImVFsLRPVsKYcRMXagjb+keRJOR61rSha3J?=
- =?us-ascii?Q?sKqVVcCZua095pDbkPUmwjIcCqsnCd/pTUVET2wMtZOJy83amkI0q2DFO+2i?=
- =?us-ascii?Q?8NbNjXbwqlYgMykeCDvNjUOtGpkT31Z41A+f2TnF7EJ3m2T1KN0SjP6AMa/+?=
- =?us-ascii?Q?mU33w71wtfW6FbPKG6t7ljhjFAGeRbol7ETx7cLYw3qcTlYqbdB4GS3jSgS4?=
- =?us-ascii?Q?1iowx8QlA3Id1YMSuxueuvhq2eXUZJ9A98BdF8/VUWT5PpPlPF4BfcjObOXF?=
- =?us-ascii?Q?f5P2jfRH1/LInZWtStvhCv0xFsya6nEWg/crKVUrAvUujU6Etw0w/oMuOp/+?=
- =?us-ascii?Q?Zem7Anszj8QynQARTJ0S1KYHRvzOwjEft7I088zukLyNlZjw2A+gFcKZNa4Q?=
- =?us-ascii?Q?0rw33T5uP20osZeRxehRTffXNrM/uFgHu+1MjlqZafTPq230DypCjrc81GTI?=
- =?us-ascii?Q?6bRbCZuJgHAhqNUmXOg6ekCY8fDWhGIomBqnIzXpc8gx77ixjN9d7G0V3LqX?=
- =?us-ascii?Q?2sGU08Tas2n7NPVfl62lNOhLprgBjLgLSv7fhrK7?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1916285a-47eb-4417-6fc6-08ddebd6b779
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 17:15:59.9843
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D387jblXrIBlEonat2wrNrPyk93lX1913beKc6npFDIZRks/9w8myU3r8CAqXVap8jl7VDtRFFeMB9iPjqCQOA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB11492
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: fec: Fix possible NPD in
+ fec_enet_phy_reset_after_clk_enable()
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, imx@lists.linux.dev,
+ netdev@vger.kernel.org,
+ Christoph Niedermaier <cniedermaier@dh-electronics.com>
+References: <20250904091334.53965-1-wahrenst@gmx.net>
+ <20250904065836.5d0f4486@kernel.org>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <20250904065836.5d0f4486@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:pnUMh0C2vBwTT6CzYjtYcDCM8qG3Xb0LE4CZtMgRS7uTEJ7aCiv
+ zBj98roRmie9w6CluWowYE0r9Ez6RJWoTOe/fBlA7QJkYHiZsEOiuPEHKW6W04st4m9iimD
+ +MOjODNV4nq54fc2EzEzOeSXmK+VVb98vT9wien9Xpr39GD2EwyCoeHDfUQiAjfL59JUM68
+ OrxO2Ns3KhVHe4FzMuU/w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:FiPGjVJP6Cc=;T9UrLn0ipMLiiTUCECyVqRXdCnH
+ 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
 
-Remove legacy binding egalax-ts.txt file. And add compatible string
-eeti,egalax_ts and wakeup-gpios to eeti,exc3000.yaml. "eeti,egalax_ts" is
-general compatible string, which is not preferred. But it is compatible
-with old devices (older than 10 years) and existing driver in
-drivers/input/touchscreen/egalax_ts.c.
+Hi Jakub,
 
-Allow address 0x4 for eeti,egalax_ts.
+[drop bouncing address]
 
-Don't require touchscreen-size-x(y) for eeti,egalax_ts.
+Am 04.09.25 um 15:58 schrieb Jakub Kicinski:
+> On Thu,  4 Sep 2025 11:13:34 +0200 Stefan Wahren wrote:
+>>   		phy_dev =3D of_phy_find_device(fep->phy_node);
+>>   		phy_reset_after_clk_enable(phy_dev);
+>> -		put_device(&phy_dev->mdio.dev);
+>> +		if (phy_dev)
+>> +			put_device(&phy_dev->mdio.dev);
+> Looks correct, but isn't it better to also wrap
+> phy_reset_after_clk_enable() with the if()?
+since phy_reset_after_clk_enable() have an internal check, i thought it=20
+won't be necessary. So this variant has fewer lines.
 
-Keep the same restriction for existing compatible string.
-
-Fix below DTB_CHECKS warnings:
-arch/arm/boot/dts/nxp/imx/imx6dl-gw52xx.dtb: /soc/bus@2100000/i2c@21a8000/egalax_ts@4: failed to match any schema with compatible: ['eeti,egalax_ts']
-
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v2
-- sorry missed one local change at v1
-- allow address 0x4 for eeti,egalax_ts.
-- move out touchscreen-size-x(y) from required.
----
- .../input/touchscreen/eeti,exc3000.yaml       | 30 +++++++++++++++----
- .../bindings/input/touchscreen/egalax-ts.txt  | 18 -----------
- 2 files changed, 24 insertions(+), 24 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/egalax-ts.txt
-
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/eeti,exc3000.yaml b/Documentation/devicetree/bindings/input/touchscreen/eeti,exc3000.yaml
-index 1c7ae05a8c15e..d19b07d4cfd4a 100644
---- a/Documentation/devicetree/bindings/input/touchscreen/eeti,exc3000.yaml
-+++ b/Documentation/devicetree/bindings/input/touchscreen/eeti,exc3000.yaml
-@@ -9,25 +9,25 @@ title: EETI EXC3000 series touchscreen controller
- maintainers:
-   - Dmitry Torokhov <dmitry.torokhov@gmail.com>
- 
--allOf:
--  - $ref: touchscreen.yaml#
--
- properties:
-   compatible:
-     oneOf:
-       - const: eeti,exc3000
-       - const: eeti,exc80h60
-       - const: eeti,exc80h84
-+      - const: eeti,egalax_ts # Do NOT use for new binding
-       - items:
-           - enum:
-               - eeti,exc81w32
-           - const: eeti,exc80h84
-   reg:
--    const: 0x2a
-+    enum: [0x4, 0x2a]
-   interrupts:
-     maxItems: 1
-   reset-gpios:
-     maxItems: 1
-+  wakeup-gpios:
-+    maxItems: 1
-   vdd-supply:
-     description: Power supply regulator for the chip
-   touchscreen-size-x: true
-@@ -40,11 +40,29 @@ required:
-   - compatible
-   - reg
-   - interrupts
--  - touchscreen-size-x
--  - touchscreen-size-y
- 
- additionalProperties: false
- 
-+allOf:
-+  - $ref: touchscreen.yaml#
-+
-+  - if:
-+      properties:
-+        compatible:
-+          not:
-+            contains:
-+              const: eeti,egalax_ts
-+    then:
-+      properties:
-+        reg:
-+          const: 0x2a
-+
-+        wakeup-gpios: false
-+
-+      required:
-+        - touchscreen-size-x
-+        - touchscreen-size-y
-+
- examples:
-   - |
-     #include "dt-bindings/interrupt-controller/irq.h"
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/egalax-ts.txt b/Documentation/devicetree/bindings/input/touchscreen/egalax-ts.txt
-deleted file mode 100644
-index ebbe938105745..0000000000000
---- a/Documentation/devicetree/bindings/input/touchscreen/egalax-ts.txt
-+++ /dev/null
-@@ -1,18 +0,0 @@
--* EETI eGalax Multiple Touch Controller
--
--Required properties:
--- compatible: must be "eeti,egalax_ts"
--- reg: i2c slave address
--- interrupts: touch controller interrupt
--- wakeup-gpios: the gpio pin to be used for waking up the controller
--  and also used as irq pin
--
--Example:
--
--	touchscreen@4 {
--		compatible = "eeti,egalax_ts";
--		reg = <0x04>;
--		interrupt-parent = <&gpio1>;
--		interrupts = <9 IRQ_TYPE_LEVEL_LOW>;
--		wakeup-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
--	};
--- 
-2.34.1
+Best regards
+> Up to you..
 
