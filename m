@@ -1,209 +1,230 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011026.outbound.protection.outlook.com [52.101.65.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6CA2ECEB4
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 10:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756982296; cv=none; b=QsPF9tYokEemUGTPPTwZFxKKur8Y8Wn7LoQ3+bKj4X2Hl+S8dFgjGLo2sFQ4VLOBiQdkGBzdfOX/4lzxE66dkft8L5GizMWE6iwtsp5Ysn+fE8agCZZzR8Js8lOVBPy8m4PUs7Vk0zHtZCUXCz772fAnBqF+MHjfZeGIu8pn1nA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756982296; c=relaxed/simple;
-	bh=ix2eo8p54Z5LDsEgINjDis0MKy5IFDdJCHvTNdJdftw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oWxiF3YjJLfjNDPg0S9OFrNcYi0VTlQ/4FVLIviXr1a5yWS4+08Uv3wnPI0YRnacZMpm7FCueOah4TcXQcOyJNBNc9Dk8nFw+6V8H1UEGRAH14KB7zb9XDvtxAcbRQ3CWpszTSkiMN5zrEBAzZ82JR2T+Kqo8jm2nfxBZifch/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 3d5fbc1e897b11f0b29709d653e92f7d-20250904
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:300f2fa7-17a5-4d38-96a3-11fd4189ac0a,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:8818228a5c537eaf9504e99b0c50a8d8,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 3d5fbc1e897b11f0b29709d653e92f7d-20250904
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1160067433; Thu, 04 Sep 2025 18:38:05 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 93A19E008FA5;
-	Thu,  4 Sep 2025 18:38:04 +0800 (CST)
-X-ns-mid: postfix-68B96C0C-3265371312
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 0174FE008FA2;
-	Thu,  4 Sep 2025 18:37:54 +0800 (CST)
-Message-ID: <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
-Date: Thu, 4 Sep 2025 18:37:54 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B683823C51C
+	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 10:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756982502; cv=fail; b=J3rX+e5YjbfeN1KZGmEG/OqgT6coEdcFTaeJ2FtOJcC4+iGjjELScLYzS10LbY9GtY2Djk99/IDqOKI9eRtH05NJpG4cLIQkXKuF/GNMCufMAXoGMfi2seztfAOlbXiW21+MsU7xpPE3WJT6IotedOEx/WtZdWMeyawialspD84=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756982502; c=relaxed/simple;
+	bh=01nUeA3pWR+A+945v3rhqC7aNThGBJtQFlHcVEqE+o4=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=AUSnL0siWxNVnfsDRZnsUmFrEOURYXjXkfkZv59N4n9Sa0hvaap+cOAxJLqQEEZ2s3EvqYw9/ShHABX2ib/6T5V2B208BxYWjFY+FZqfqfQLGiMCnRHSGhn3Ct6FmgkIR0BO6JBeBUgaKwB6vlW+61bvO0DpZhMid4sUT3O8r5w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RrY9LU/2; arc=fail smtp.client-ip=52.101.65.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RrY9LU/2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=X5VodwsRS2udhR4CWqQSGiG1h2w5byHq9IFVqYB0Jcdvff6Lf81P8dbU8UKQ0q3txcGrEKx7XFf34VRx4fAFcj1tuPfUtptiEyeuROPvxsr1tEgG90klwCqWLmx8QU4qvoeXJIC9ZqSQbrlrECypuT0rkJ7BPusoVkbO5TJlEl63TNuZxA3cgWJDsE54KzPxcmt4nEzZV4DBm6euOL+OYB4CA5G5PYVNAIcM859QtZUbJMDJIzlkpWzBTwO874bnvgvfvmHNzcAMKIwzWcv7v/S/0Wbr8RxNG8eoDHpbS5F+tKgj/etEjJIQfSkTfmIKAFDZcHmLAKxiCuDSs+mgqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QCcWtpdlJKSefXOKkeGMqI6Ln8NCOXsGs2mWaTlWTfo=;
+ b=L8U9Ga/0u8zhguoY4wizbnQYUhg6LNbzVKRDGgexRK2V39nnzNsExBPymYgdLaCGaegEKr9pj2fW8Ut6SezY9fdDUBsFjAaaPws+JWgVPZrkFjyF+OE3VC1o6ZMO5r5lp2KqzSIQaLo9qMQyVKeAA2kJb9pSi6U6fvL8yg2MPJHIedjzvFhuuubfue3p1VIhoxzR87OFYwzrzKUmMJcaIg3vmgraWX1ZHBGvju9REZD/OE0tXwgg3genTnIExnDEuJZECGI2ZM85GEC5O5z8LbR0ht4lKLAzjB5dE8gkLNlTq8K1jbjDMbNcKc8lLGcZVlxb81O1V7A0OLHFsYkvjA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QCcWtpdlJKSefXOKkeGMqI6Ln8NCOXsGs2mWaTlWTfo=;
+ b=RrY9LU/2JiegRqg7kM3QJ56tIV3vvknoq3V35uhWHMXdy5Ibb/wb1geMJCzP6loWH9b5FF+rsJ9bGLoGPt0FwGwg1A+LLJvV4bFh3MQy0Qf2y/0dw7EBqz7pICTpbENlRv/ifQe+12oIFJL7pEE2PJagt9MMSTS+wtgmeoL2iz7ylIGUh7zkc4i/NZL5zwj+oVsZrZ+F1gH0dvtIBFHbwVN3KJX9s1rYjnqN120zlbQUGoMxEbcWKd86xRTunJ1xE2qBGr6HuCUFfVIB95ohz0/9OtfCrKA0mctQW8QmS5mIU2Zdkk7Tb/57IMVjWYx6KBjuplcww4+5eADstXvjpA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by AS8PR04MB7653.eurprd04.prod.outlook.com (2603:10a6:20b:299::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Thu, 4 Sep
+ 2025 10:41:37 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.9094.016; Thu, 4 Sep 2025
+ 10:41:37 +0000
+From: Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH v4 0/6] firmware: arm_scmi: imx: Dump syslog and
+ system_info
+Date: Thu, 04 Sep 2025 18:40:41 +0800
+Message-Id: <20250904-sm-misc-api-v1-v4-0-0bf10eaabdf1@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKlsuWgC/3XNzw6CMAwG8FchOzuzdQyGJ9/DeIBZtAf+ZDMLh
+ vDuFi7EqEl7+Jr8vs4iYiCM4pTNImCiSEPPIT9kwj/q/o6SbpwFKLCqgFLGTnYUvaxHkklLZ70
+ yyhclr2A0Bmxp2govV84Pis8hvLb+pNfr3yoeJaGpqtzpFh3Ycz+NRz90Yi1KsONSqy8MjL3By
+ ho0eYPFJzY7dj8+G8YOfMWrnbb1jpdleQNH3UE8JAEAAA==
+X-Change-ID: 20250627-sm-misc-api-v1-85c030c670c6
+To: Sudeep Holla <sudeep.holla@arm.com>, 
+ Cristian Marussi <cristian.marussi@arm.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: arm-scmi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756982492; l=2707;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=01nUeA3pWR+A+945v3rhqC7aNThGBJtQFlHcVEqE+o4=;
+ b=nkCuygOp6ugb14isSwolhMugluTEZF28mjq0xdKfxaHtncVreZsfXnJLc0vnmWvuYtSkrjRCy
+ Y3YDonTr4eUAXTwNw8V7330EqBT0ktspv9VzC7G4OjxQ2KzOORoYNIh
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: SGAP274CA0003.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::15)
+ To PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup
- helper
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
- <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
- <20250903131733.57637-8-zhangzihuan@kylinos.cn>
- <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|AS8PR04MB7653:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1717620-4605-44a5-b39a-08ddeb9f9fcd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|1800799024|52116014|7416014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RDJwQWtUR2xwWWxmcFNUbU5POWFpTlBKd1dLcEdJdVAzdDZsdFlqdEgvSjJI?=
+ =?utf-8?B?WlIwRlB6YVRwak1qUEJoSVdJSU14T29LQTdrcHNCemJPa2EzSWxkYTlKL0Fi?=
+ =?utf-8?B?dzJBOWRZN2RiQXpXRzVSYXU2c2dlOWpQeVc0S0xmNDY5MkwxbDRPVXVwSnRv?=
+ =?utf-8?B?QU5LVmYzQTRoL1FPYThFSWR6Y1NXNEgvTnJnSjF4a0RLbGhSYkh3TTFpRHNt?=
+ =?utf-8?B?dncvT01sWWNsYjZvU2VzdEJvUmlDakMxQ1ltQllOQmhVa1ZocWRTajNYWjdq?=
+ =?utf-8?B?ckh0WEY2TGVXdzJDUGlYUUduUXFjQjhaMlI0K1hWQWJBWDNiTTQvQ3BlM1pN?=
+ =?utf-8?B?M2YwZzY5aVBjQUhKV0JxY0xTQ3hWeXlOS2sxOUNsc1o3V0p6Y0hOVVZWL2lN?=
+ =?utf-8?B?VHJ5MFg4RFo4R0lxU3FWSGNjVjl2Yy93aWU3NHZvS1MrKzRmMG51dlR1UEVL?=
+ =?utf-8?B?U2tyeE9kaGxNWU1vWERLRHVFS0tlTUdBbnBBUE1zbENESFR6djEzbXA3c1lv?=
+ =?utf-8?B?ekc1MjFoN3ZORnpRdEZDWk1Wbzl1ajBjLys3WGl2NFBLOUJYaEdWcFh6S0ls?=
+ =?utf-8?B?WlZuYmZEU1VocXRPSXcrVnNQZWFwRjk3ait4bHdLMEVMRHBIMklLSlFGZzlp?=
+ =?utf-8?B?N2EvU0VrMGtNcitsWm0rVFJkcnNhcmdxOHB0UHErTjltditLcHBCMHVvR0lR?=
+ =?utf-8?B?NkRQMkVCR2FweWlaZmRZcmtoTUM0ZmpLWWMza3BsVlF4WGlFNTlXbHhwUmlt?=
+ =?utf-8?B?QkRXUHlNaDlSbFd0VkFja2V0VVhwZ0EzbjZ1Rk5LNlJneldSZ0pNQUJuZVNS?=
+ =?utf-8?B?cWxTUzRFSCtFRnc5cXhsbzRERElLQmw1YjBHV1J5Ukk3YmMrUnBRRDZaQWRh?=
+ =?utf-8?B?TlRianZVRFVsTE45cDhaWmJxTlljQ1ltWk5VVkduaTQweURPcFFGWjhNMUFW?=
+ =?utf-8?B?SDhubDlaYkJzT2V3VTI4aktZQkJ3RGl1enJpWDVmWDQ1cEdkL081N3dzUU0r?=
+ =?utf-8?B?QmVhTkJlMHZqRlpKUFMxUXN2elRiMlpUYzZIamgwTlZhai9Tb3FwOGFhNnVq?=
+ =?utf-8?B?ZnJGalpsUWJoc0tSdGI0bjgxYU5ENUNiOFhWU25ndGcweFAwdnFqSW9CbmYy?=
+ =?utf-8?B?RXdVRytwYWg5V0pQckxFbTc1NFpwS3R2cHNIb1VYY0ZiZEJ6UmxiKzdFT3Nv?=
+ =?utf-8?B?dFN3cFZyZXJsdm1kbnhIZFd2SXg2UGZ6QTRRM0hKeFh4WENCYTZSbzc0Y2RJ?=
+ =?utf-8?B?bmI5em9WRitzSVU0ckdpaEswaG5ZbU1uWG9sTDVNd21BTmQwNTJlQ0h1bUtP?=
+ =?utf-8?B?d1F3Rkg1VUtYUEhwZm1zTUVoOS9ydFlQdC9mZ0h4RXd3NCtiY1Y1Ynk0WUp0?=
+ =?utf-8?B?TmJ3QXpwdzZ3QTdNc2dmUHVZV25IYWVYN0ovV1g2RHAwOEpnSWh3OWlOT0xt?=
+ =?utf-8?B?UjdPOVNpcmtGNWJ2MGhoOEFCaThtL0RjaVRDakY4TVRoSE1idE50N0ZyMTNh?=
+ =?utf-8?B?UWNGUi9aeVgwVEVBOGs4MS9tbkZoYXErbGVhZFFnWWFGb283RC9tdkxjTXVw?=
+ =?utf-8?B?OUxUSmN0cW5CV08yM3RNd0cyZm9zUXZGbVQrYVFhdXFmL0RrcUpSRmxVR3l3?=
+ =?utf-8?B?SXVHYVZZYkhiT3E4bEs4a0g2dko2WjBZRUl3WXVmWmpGdnI3Qkh4a3hNaFF6?=
+ =?utf-8?B?NUJRYUU4UEtWWlovcUdaYUNXamgrVmphbC9lRy9KVFlqeXFaeFdqZnUzNTVN?=
+ =?utf-8?B?QjJGa1RMRlkxQndMTDJFRTM5REh5YUtMc2VYUVFZSWV0TGtCVWcvaU1lZUNl?=
+ =?utf-8?B?UmpZTzE2WG1pOXlKNFh2U1hFY2s5SjREVHNkMzhCZTZRUnFBallib0tTZnc5?=
+ =?utf-8?B?SnM1YXdTQ1pCQWNKa2pnanhKSGhmY0hXY2xuNmRobUZGNHVWWE8zS2Z2a0ZC?=
+ =?utf-8?Q?8JxzprPsQB9sdOUs8X/wRHs7SimlY2W2?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WjNHNFN4Z3FRMEZ3ejhLZW04YkU0RVVEMHorS2w1N2dRekgxOWdlQk9ZOHVK?=
+ =?utf-8?B?emNObWJhL21PeFI4SDB6c3R2NzNMS2VOYmo5M1lLd1ZyZmhiSlA1TDNUeC9K?=
+ =?utf-8?B?amF0dEJVL1NKYW9oSUlsNTQ0ZmRVUm52NnMrdEdOVFNBMDd2TFd3a0ZhaldG?=
+ =?utf-8?B?VlVBQVNLU3lmV016SmJHUHc4T0RkbU1UMHZ6ei9vNFMrOWxla0hXSjI5dW42?=
+ =?utf-8?B?cGdHZjNUM2Z5aVRNRDQ4SGFMM1EvRVgxcjF1NWpXc2xKQXF3OVlUeDhSNnBi?=
+ =?utf-8?B?azcxREFOeWdEK1FQQUUrdC80SDhlSStEN0wvNEcrdlhaL2hoM0NEL3JjQUlr?=
+ =?utf-8?B?dXRFcGRRbFVTRElsNFkvZ3o1U0hpRGpqcUVUL3NHVHFQYzR6ZDBXQWRlem96?=
+ =?utf-8?B?Rzl4UG5GUDNsS0lQY1piRTJkTDBHaVY0dTd0Y2N4L1paK1pUcXhBRUUvK3p1?=
+ =?utf-8?B?WmYyUmR0djZ4MXlORmVSU0VUSzJ4U2N6RUYvbjYwWFVCWkFnYy9NdzNETlRu?=
+ =?utf-8?B?QlhySUljSUtobW44UEdHZE9KMENGL2F0aDdHNWpqeG04Qkw1T2JYcWViTHRP?=
+ =?utf-8?B?TnlEUFZyU282N3l2S3pMeCsycW5FeExvM3BSUVE5VU94alhNMnFEU2R3NGlw?=
+ =?utf-8?B?cmZGYkNvdGNhNGliMUc5RFpJWU5hbnB3dGNxTVhOQ0UwSUhvdldtN2p6bzRn?=
+ =?utf-8?B?NzU0WE84ZWg4ZEVaQ0ZJY050bm90TXZJWENPSEpxV2RUL3VsaCs3RGZJTVdk?=
+ =?utf-8?B?Tk56UnRzN0kwSG5ONHhCbWhtUnpHQ2R4Q0hSeUpyNFgrVXBCQ3habzhzNDF2?=
+ =?utf-8?B?QkhtNEFaRDg1Z1drcUZ6NG5oOEJtdU5JMkIzeFlpek9Ub1BDNjhrNk5qU2xv?=
+ =?utf-8?B?bXRJdms5STB4MDFVbHJLZHBnWjZ1dDR0SFYvU24xWFBJRkt5YS9SeU1haElD?=
+ =?utf-8?B?VmwzZkoyMHkva1E5a2lBaFB3MUNkcGJacHZYZTI4WDl4dTBmalgycWFwU0d0?=
+ =?utf-8?B?bnlkeGlhb0NST0YxQmwreTRCZ3FXSXlNUER1WXRyemRMT1ZGVjNic3NJQUFr?=
+ =?utf-8?B?cncyNlplOThBTmdScnpHcjNta1RqTWpyYzIvenlqQTdCYXB6NDlxQzA5YmJi?=
+ =?utf-8?B?Ylp1U0ZrV1N3M2FpSGVtQ053QzdkWkNreVZndTFubFZDaWdubHdPZVBGYk5m?=
+ =?utf-8?B?cXhoZStKcGhudHd0RTR1Ukg4MG45OEJUUjFhN1llSzUzQ3AzZTJWcTQ3YUZv?=
+ =?utf-8?B?NjhXVE1mZjlSNDVpQUZBNkV0VW9lQVIrQm50a3VqdW5Xb3NnbkM1aFNTYkhp?=
+ =?utf-8?B?TjZyMXZ6aER6b2JjQy9hWlJCMVRVeVl0L094dXdPck1JSkU2TmFrL3dtOWw3?=
+ =?utf-8?B?Rkxsdy9HME5nMmp2NnZvMFhzYkpiTDRDU21pWjhhQ1Z6dTNRY3NacE5yTUww?=
+ =?utf-8?B?SUhLNHRPZlRHZnVwZ1pZcUd4ZmNKMWJGVmZaOFZQckIwSzQ3eHRLZWQ2OHkr?=
+ =?utf-8?B?RG1QVkE4UEMwV0NVY1NVMjhRVU9pYzVwNExwdjM3czd2S0JmeWhzY2grcnh1?=
+ =?utf-8?B?ODZ5VkFMT2ppek9EN0FKQ3ozcmxIS0o5ZktFeE96ODdjdm1QYjdzVTJGUHAw?=
+ =?utf-8?B?bG9STnpxYVJWeTVBeWhxYnZuK2JWRjVEVlorbTc5SnJRMWFuQ0I3anFuZ1Q3?=
+ =?utf-8?B?Z2VadDE0Z2R3RERuVUgvSkdwaXUvOEhQUVN1bWlhQVBFSHpBRTZCOWFCU0ZQ?=
+ =?utf-8?B?RnNZZGhVZVZKaUtYTEFjVzAzVWkxVXFWYnlrQ1F5Tlc3VmZQNnhTeGFKaEY2?=
+ =?utf-8?B?bkhOL3ZoTGR6dTI0NVpHNHdBZnFuREUrM003SkJrNUdoc1laZmIycU1UVFFi?=
+ =?utf-8?B?V1FXVU5uQXVpWXIvVkZDMVJqdlZhMHYyZ0IwVGlUbEFWd2txbU51cm9RMXZ2?=
+ =?utf-8?B?UnBLa2FPYnlkYlRFZkVqN25iMmlTQUI5VFZNUTF6NHp5d0tlQzI4Y1duNVhw?=
+ =?utf-8?B?NG1pdk9tRU40S05XT0wwVUN2QnVUT3UxeUdoYXpVejR4anN0WWMvNWwvNDRl?=
+ =?utf-8?B?SXNNZzN2a1p5Wlh0UVkrK3VFTjVDaWtUM0NXc0hMN2xzbVZaZUE4V2orVmo0?=
+ =?utf-8?Q?PW0rCxj2Wx/B3NQF6ySyweG9D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1717620-4605-44a5-b39a-08ddeb9f9fcd
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 10:41:37.1193
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ey07NEyxkle7L9pN85onUzisqFU8pAlp5qdEU3Y05mO3rwePZ0hMO0FZ/vfqTujGrZRZZRKk0BtBOxdWkv4NNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7653
 
+System Manager firmware provides API to dump board, silicon, firmware
+information. It also provides API to dump system sleep, wakeup
+information. So add the interface for Linux to retrieve the information:
 
-=E5=9C=A8 2025/9/3 21:45, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylino=
-s.cn> wrote:
->> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
->> annotation for policy references. This reduces the risk of reference
->> counting mistakes and aligns the code with the latest kernel style.
->>
->> No functional change intended.
->>
->> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
->> ---
->>   drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
->>   1 file changed, 11 insertions(+), 19 deletions(-)
->>
->> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
->> index 99390ec1481f..f76594185fa2 100644
->> --- a/drivers/powercap/dtpm_cpu.c
->> +++ b/drivers/powercap/dtpm_cpu.c
->> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtpm)
->>   static void pd_release(struct dtpm *dtpm)
->>   {
->>          struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
->> -       struct cpufreq_policy *policy;
->>
->>          if (freq_qos_request_active(&dtpm_cpu->qos_req))
->>                  freq_qos_remove_request(&dtpm_cpu->qos_req);
->>
->> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
->> -       if (policy) {
->> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
->> +               cpufreq_cpu_get(dtpm_cpu->cpu);
->> +
->> +       if (policy)
->>                  for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
->>                          per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL=
-;
->>
->> -               cpufreq_cpu_put(policy);
->> -       }
->> -
->>          kfree(dtpm_cpu);
->>   }
->>
->> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
->>   static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
->>   {
->>          struct dtpm_cpu *dtpm_cpu;
->> -       struct cpufreq_policy *policy;
->>          struct em_perf_state *table;
->>          struct em_perf_domain *pd;
->>          char name[CPUFREQ_NAME_LEN];
->> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm=
- *parent)
->>          if (dtpm_cpu)
->>                  return 0;
->>
->> -       policy =3D cpufreq_cpu_get(cpu);
->> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
->> +               cpufreq_cpu_get(cpu);
->> +
->>          if (!policy)
->>                  return 0;
->>
->>          pd =3D em_cpu_get(cpu);
->> -       if (!pd || em_is_artificial(pd)) {
->> -               ret =3D -EINVAL;
->> -               goto release_policy;
->> -       }
->> +       if (!pd || em_is_artificial(pd))
->> +               return -EINVAL;
->>
->>          dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
->> -       if (!dtpm_cpu) {
->> -               ret =3D -ENOMEM;
->> -               goto release_policy;
->> -       }
->> +       if (!dtpm_cpu)
->> +               return -ENOMEM;
->>
->>          dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
->>          dtpm_cpu->cpu =3D cpu;
->> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
-parent)
->>          if (ret < 0)
->>                  goto out_dtpm_unregister;
-> So this change kind of goes against another recommendation given in cle=
-anup.h:
->
->   * Lastly, given that the benefit of cleanup helpers is removal of
->   * "goto", and that the "goto" statement can jump between scopes, the
->   * expectation is that usage of "goto" and cleanup helpers is never
->   * mixed in the same function. I.e. for a given routine, convert all
->   * resources that need a "goto" cleanup to scope-based cleanup, or
->   * convert none of them.
+patch 1 is to add doc for board information which was missed before.
 
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Changes in v4:
+- Patch 1: Typo in commit log, state the attribute is set to 0 by firmware
+           add NOT SUPPORTED return value for syslog
+- Patch 2: rename to scmi_imx_misc_build_info_discover, add -EOPNOTSUPP check
+- Patch 3: rename to scmi_imx_misc_cfg_info_get, correct command order,
+           add -EOPNOTSUPP check.
+- Patch 4: correct command order, add -EOPNOTSUPP check.
+- Patch 5: correct command order, align command name in doc and driver,
+           Use u32 for consistency, add comment for sleep record.
+	   Add a comment for iterator run "saying propagate -EOPNOTSUPP
+	   to caller".
+- Link to v3: https://lore.kernel.org/r/20250827-sm-misc-api-v1-v3-0-82c982c1815a@nxp.com
 
-Should I replace all the memory allocation cleanups here with `__free`?
-That would allow us to drop all the `goto`s, but since this function has
-quite a few of them, I=E2=80=99m concerned it might introduce new issues.=
- What=E2=80=99s
-your recommendation?
+Changes in v3:
+- Add R-b from Cristian
+- Store size, per Cristian's comments in patch 5: "*(ipriv->size) =
+st->num_returned + st->num_remaining"
+- Minor change in patch 6 to add size check
+- Rebased to next-20250826
+- Link to v2: https://lore.kernel.org/r/20250710-sm-misc-api-v1-v2-0-c3e953e34be6@nxp.com
 
-Thanks!
+Changes in v2:
+- Add more info in patch 1 for documentation(attribute is reserved for
+  future use, boardname may not align with the board name in device tree)
+- Drop dump silicon revision API
+- Update discover build info, cfg info, board info API to be only used in probe phase
+- Update to use single sysfs single value for syslog.
+- Link to v1: https://lore.kernel.org/r/20250627-sm-misc-api-v1-v1-0-2b99481fe825@nxp.com
 
->> -       cpufreq_cpu_put(policy);
->>          return 0;
->>
->>   out_dtpm_unregister:
->> @@ -251,8 +245,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
-parent)
->>                  per_cpu(dtpm_per_cpu, cpu) =3D NULL;
->>          kfree(dtpm_cpu);
->>
->> -release_policy:
->> -       cpufreq_cpu_put(policy);
->>          return ret;
->>   }
->>
->> --
+---
+Peng Fan (6):
+      firmware: arm_scmi: imx: Add documentation for MISC_BOARD_INFO
+      firmware: arm_scmi: imx: Support discovering buildinfo of MISC protocol
+      firmware: arm_scmi: imx: Support getting cfg info of MISC protocol
+      firmware: arm_scmi: imx: Support getting board info of MISC protocol
+      firmware: arm_scmi: imx: Support getting syslog of MISC protocol
+      firmware: imx: sm-misc: Dump syslog info
+
+ .../firmware/arm_scmi/vendors/imx/imx-sm-misc.c    | 194 +++++++++++++++++
+ drivers/firmware/arm_scmi/vendors/imx/imx95.rst    |  24 +++
+ drivers/firmware/imx/sm-misc.c                     | 232 +++++++++++++++++++++
+ include/linux/scmi_imx_protocol.h                  |  23 ++
+ 4 files changed, 473 insertions(+)
+---
+base-commit: 8e5b06f3b616530c57cd765b769c5ce54aaa6da7
+change-id: 20250627-sm-misc-api-v1-85c030c670c6
+
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
+
