@@ -1,41 +1,45 @@
-Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21542FC86D
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 10:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6CA2ECEB4
+	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 10:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756980957; cv=none; b=e7ZnTP3LATvg/0ly23IG7YhZNRz/Ff6RZBP29XEZTplnik2280ayIl18Gn7ftyEADqxdDk/iBdgbIny1IrYWl5QIRMxIbXmIpzPYVgj1sEkWB/SyqWBaR+kK0Y3GwJb1PWdzDGwMfbXVrmejP2qP3fWPS6sk+1I/Sj/cDCXAoTg=
+	t=1756982296; cv=none; b=QsPF9tYokEemUGTPPTwZFxKKur8Y8Wn7LoQ3+bKj4X2Hl+S8dFgjGLo2sFQ4VLOBiQdkGBzdfOX/4lzxE66dkft8L5GizMWE6iwtsp5Ysn+fE8agCZZzR8Js8lOVBPy8m4PUs7Vk0zHtZCUXCz772fAnBqF+MHjfZeGIu8pn1nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756980957; c=relaxed/simple;
-	bh=i5H35eDXCV3vFUPSZuAi1bMKrqV72OP84pRCebp9HIw=;
+	s=arc-20240116; t=1756982296; c=relaxed/simple;
+	bh=ix2eo8p54Z5LDsEgINjDis0MKy5IFDdJCHvTNdJdftw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sy4m1kioukRF+9BMf5xNHcV9nrUtUke+NDMCI3qAo60G6PjbL74V1L6YdH2Mmv4h6Dw+4MYUBT+9jznaN8zGk+lskSxd2L6ho5WL84LJKy4p4AaSG41/7cYMkpyKGMnHs++H80gcL9vBnlZanSzfyWRXbS8003IQ+9jVGbRxAqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=nn3+1Rxo; arc=none smtp.client-ip=46.19.12.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="nn3+1Rxo"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=xgdsR49irpJByzJ96bcwBmhSCv4K4cXZahydPuILDco=; b=nn3+1Rxo+sb6gVBkjg5wdrMG1Z
-	Xj9upXEyacqW45zeWBQy490E0jg4I3Gfck8A+K6G9un9jo7OGf2bmovU/zwCNRSRzYoI95P5nqkSs
-	R3QPMkWHZM/wTe7HTef84vL0G+oI2H4fhtfRAlEws7uYJxQ8+lsIWwG1Fy4gWk7g40NtoNRMi+4En
-	OHWTuxlNGVXq36Iecb7GlMsH8Zz9SG8UQJFfB+ahlMc54+9vX0kGBWPdrOLbDww6SjKNWwBKAugMW
-	XxXrSVbKQXhd8wDX7cAftW8u0Wkm3pjgMPM/Bwkt9k3EJ1gU4xkU3P6pXsr1rST++njyBvzg7u5c1
-	GhZVa7Mg==;
-Received: from 86-58-118-213.dynamic.telemach.net ([86.58.118.213]:54824 helo=[192.168.0.129])
-	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1uu70U-00000003pfn-053I;
-	Thu, 04 Sep 2025 12:15:54 +0200
-Message-ID: <b6006a1b-0b46-4e0d-9d49-6cc0dbe84814@norik.com>
-Date: Thu, 4 Sep 2025 12:15:52 +0200
+	 In-Reply-To:Content-Type; b=oWxiF3YjJLfjNDPg0S9OFrNcYi0VTlQ/4FVLIviXr1a5yWS4+08Uv3wnPI0YRnacZMpm7FCueOah4TcXQcOyJNBNc9Dk8nFw+6V8H1UEGRAH14KB7zb9XDvtxAcbRQ3CWpszTSkiMN5zrEBAzZ82JR2T+Kqo8jm2nfxBZifch/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 3d5fbc1e897b11f0b29709d653e92f7d-20250904
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:300f2fa7-17a5-4d38-96a3-11fd4189ac0a,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:8818228a5c537eaf9504e99b0c50a8d8,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 3d5fbc1e897b11f0b29709d653e92f7d-20250904
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1160067433; Thu, 04 Sep 2025 18:38:05 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 93A19E008FA5;
+	Thu,  4 Sep 2025 18:38:04 +0800 (CST)
+X-ns-mid: postfix-68B96C0C-3265371312
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 0174FE008FA2;
+	Thu,  4 Sep 2025 18:37:54 +0800 (CST)
+Message-ID: <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
+Date: Thu, 4 Sep 2025 18:37:54 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,73 +47,163 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: afe: current-sense-amplifier: Add
- io-channel-cells
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
- David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
+Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup
+ helper
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- upstream@lists.phytec.de
-References: <20250903113700.3079626-1-primoz.fiser@norik.com>
- <20250904-tangible-practical-partridge-a1b0e4@kuoka>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-In-Reply-To: <20250904-tangible-practical-partridge-a1b0e4@kuoka>
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+ <20250903131733.57637-8-zhangzihuan@kylinos.cn>
+ <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cp2.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: quoted-printable
 
-Hi Krzysztof,
 
-On 4. 09. 25 11:17, Krzysztof Kozlowski wrote:
-> On Wed, Sep 03, 2025 at 01:36:59PM +0200, Primoz Fiser wrote:
->> The current-sense-amplifier is an IIO provider thus can be referenced by
->> IIO consumers (via "io-channels" property in consumer device node). Such
->> provider is required to describe number of cells used in phandle lookup
->> with "io-channel-cells" property, otherwise the following kernel error
->> is present:
+=E5=9C=A8 2025/9/3 21:45, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylino=
+s.cn> wrote:
+>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>> annotation for policy references. This reduces the risk of reference
+>> counting mistakes and aligns the code with the latest kernel style.
 >>
->>    OF: /iio-hwmon: could not get #io-channel-cells for /current-sense
-> 
-> Also, how can I reproduce this error? Do you paste here real errors or
-> just some invented ones from some out of tree code (hint: such would not
-> be relevant).
-
-I get this error if I apply patch #2 without patch #1. See [1] for more 
-details.
-
-BR,
-Primoz
-
-
-[1] 
-https://lore.kernel.org/all/20250903113700.3079626-1-primoz.fiser@norik.com/
-
-> 
+>> No functional change intended.
 >>
->> Also fixes the following dtbs_check warning:
+>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>> ---
+>>   drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
+>>   1 file changed, 11 insertions(+), 19 deletions(-)
 >>
->>    current-sense: '#io-channel-cells' does not match any of the regexes:
->>    'pinctrl-[0-9]+' from schema $id:
->>    http://devicetree.org/schemas/iio/afe/current-sense-amplifier.yaml#
-> 
-> Best regards,
-> Krzysztof
-> 
+>> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+>> index 99390ec1481f..f76594185fa2 100644
+>> --- a/drivers/powercap/dtpm_cpu.c
+>> +++ b/drivers/powercap/dtpm_cpu.c
+>> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtpm)
+>>   static void pd_release(struct dtpm *dtpm)
+>>   {
+>>          struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
+>> -       struct cpufreq_policy *policy;
+>>
+>>          if (freq_qos_request_active(&dtpm_cpu->qos_req))
+>>                  freq_qos_remove_request(&dtpm_cpu->qos_req);
+>>
+>> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
+>> -       if (policy) {
+>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
+>> +               cpufreq_cpu_get(dtpm_cpu->cpu);
+>> +
+>> +       if (policy)
+>>                  for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
+>>                          per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL=
+;
+>>
+>> -               cpufreq_cpu_put(policy);
+>> -       }
+>> -
+>>          kfree(dtpm_cpu);
+>>   }
+>>
+>> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
+>>   static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
+>>   {
+>>          struct dtpm_cpu *dtpm_cpu;
+>> -       struct cpufreq_policy *policy;
+>>          struct em_perf_state *table;
+>>          struct em_perf_domain *pd;
+>>          char name[CPUFREQ_NAME_LEN];
+>> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm=
+ *parent)
+>>          if (dtpm_cpu)
+>>                  return 0;
+>>
+>> -       policy =3D cpufreq_cpu_get(cpu);
+>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
+>> +               cpufreq_cpu_get(cpu);
+>> +
+>>          if (!policy)
+>>                  return 0;
+>>
+>>          pd =3D em_cpu_get(cpu);
+>> -       if (!pd || em_is_artificial(pd)) {
+>> -               ret =3D -EINVAL;
+>> -               goto release_policy;
+>> -       }
+>> +       if (!pd || em_is_artificial(pd))
+>> +               return -EINVAL;
+>>
+>>          dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
+>> -       if (!dtpm_cpu) {
+>> -               ret =3D -ENOMEM;
+>> -               goto release_policy;
+>> -       }
+>> +       if (!dtpm_cpu)
+>> +               return -ENOMEM;
+>>
+>>          dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
+>>          dtpm_cpu->cpu =3D cpu;
+>> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
+parent)
+>>          if (ret < 0)
+>>                  goto out_dtpm_unregister;
+> So this change kind of goes against another recommendation given in cle=
+anup.h:
+>
+>   * Lastly, given that the benefit of cleanup helpers is removal of
+>   * "goto", and that the "goto" statement can jump between scopes, the
+>   * expectation is that usage of "goto" and cleanup helpers is never
+>   * mixed in the same function. I.e. for a given routine, convert all
+>   * resources that need a "goto" cleanup to scope-based cleanup, or
+>   * convert none of them.
 
+
+Should I replace all the memory allocation cleanups here with `__free`?
+That would allow us to drop all the `goto`s, but since this function has
+quite a few of them, I=E2=80=99m concerned it might introduce new issues.=
+ What=E2=80=99s
+your recommendation?
+
+Thanks!
+
+>> -       cpufreq_cpu_put(policy);
+>>          return 0;
+>>
+>>   out_dtpm_unregister:
+>> @@ -251,8 +245,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
+parent)
+>>                  per_cpu(dtpm_per_cpu, cpu) =3D NULL;
+>>          kfree(dtpm_cpu);
+>>
+>> -release_policy:
+>> -       cpufreq_cpu_put(policy);
+>>          return ret;
+>>   }
+>>
+>> --
