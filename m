@@ -1,449 +1,133 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011006.outbound.protection.outlook.com [40.107.130.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED9B2FCBF0
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 10:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756982522; cv=fail; b=c83vOrYY1YYhE81s8z0OVhrmkfapM6LJzSBp+p9cCGK/0/f1jZoGklKGsRCOVHZMT9mqohInYUea8NEwIIR3lZdm04y758s9UnMNXk1qfXr/qJuNkxM2a34NSX4Tzb5vp00WdiF9ZLDAzcNB0cA/ruQOXbhhQTSYdsw9RhbtmcU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756982522; c=relaxed/simple;
-	bh=smAOw2LLys6Ccvgu3BgWXtBA5tydyCv6WOl3MxNr6AM=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=hGjKpi1yePrv3Nya2Y1xhXo8TkDEwO4Q8d3/pXV1mpVfkwf5TyL1QU5XgLqj9TRFqPImzMs1ihjGLVmDtxTmewEaJ3uWS/ibKv/08nJlh+kmkTv0B93JrGSPTdW7iksKAcjTgCN/Na+tTnpXP9QJ78xdT1u9pNMan8442UA9s18=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=C4+MAcCv; arc=fail smtp.client-ip=40.107.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B105661;
+	Thu,  4 Sep 2025 10:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756982676; cv=none; b=nCGp7V7K9YjKM1X4lSVWpzWE4SRgU8bYlm69TTIYuPPMxm3P6Vbm7CuEM/Eeb0QeS+9UQLEWUnX2XZUu5NVIBr0C0opBorajBE39rpzkDKaEJDlGANgByd1QmZN6FLwt2Wx3lxyS+OGEf4S/hr1dKAUM1kHkU0IZoQ8F1XCHISI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756982676; c=relaxed/simple;
+	bh=pKXQ2BOe5S23ZZX1t20m3mUlrnVNSp1CdRdrgqIRj78=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VpWQtqHZhoqvwvY0TUABNUQIJYs/Ik+rSxiSLCgbzgP5DbggH7wZvoSZeNb9v/Uh/L5LaRkpfUCO1eCzJNQPsymi/PLHcO96rgxq+Azf43NUUkwaV6KlZMwlX/WWMeFKRDsJKf6XDKuh2o6phDnylsAeFOj0zcSOc99WRd/jYPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DThHZmd4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="C4+MAcCv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zFDk0j0+NI+OIXqFiByIDR2C8u4UE4xmuOtS4ftYeLXkYa7vo+krkMZ8PMdw/teLtxjg5sajmNRTKIl7XJ+Sc41+kNZcyjYrlm8dIQF2U3kSngyuSAxkjSYu8oY0QHTyyKt+qNUN1TJBnKlg8wF5vl9fZgpWDrLkzznBA3h7lUv8tkYkvklBtuIRoPp7OEHD2BtvoZdm6ZjSY8puknYJ2zYdT5t8i9sWmxuC28e4u1XShoNhCaIc/9ALKsH9TuJ3Wz90bKcPGLPYMlqBOm3IWqDubzHfIAQ0mVUdRxND8HEWVu7cgu/hQQbjAZ3qpJKc5ojgDxhL7DiwcEst9zF6Xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eBBeiKTrAoJrc6ov3CW0ga8L4TPQoHo3OhY6qTTHfNY=;
- b=cM308oCPlZWaUrygN61sV7lz4hXEnp+SM+wrGEpkt6V5mBTKOZTfVjOC3SDGTZEgs6F8IKLe3lqHBPOYlYlTFqNSxjSBIusIUCxWLILeBhp99g8RAFT5wQvt5T4+Xu7c1yc1mqC+/XytSjed/389aAjSOizAvdaBt0EkkmOJIdTlfN9abCFYNEwOUzx3EvAjYq6VYWhVwEbz99vXebynnllpYTbaCAi+jruBJwElStGMXwERxRkxJRGwCN/1+3iVrdVu4EK5BmgCDgPaXfnHjTqxssDeGDDGFV4y/lp2KzWKB442ZyJajwmQS7jK2I5CKndofdRDtJmh9DrVUBOSkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eBBeiKTrAoJrc6ov3CW0ga8L4TPQoHo3OhY6qTTHfNY=;
- b=C4+MAcCvLfH+1oQAubP5KkKI4TkMmYO45xy2me3AhDbV5kL9orBzwQGuuq8ZevlEuVBmY7s9+SMU3ei30ygWYX6sxrld5RtNm0ZgX79V3RzmOnJuTyRTs2D/44glP9DaJ6UdIuIDR7S2l0kpw3hxkUGlF0w3++fix905AHCdhjDEii7YBGs1m0E3EElbOccUl8qxoH8gUwz5bi4NzTJDAWHcKdRe7bWIEXEX/a+9EQQ0pIX9aWrfHb31RFgKulA8qkczn6BOM7TPgyKhPVj3wvbDZifFwXNqLQrYlWH8cqaM0Mhs7tNtFuVxj+UHhJhkgrOKF8QhbJtCIEcQjCdwVg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by DB8PR04MB6937.eurprd04.prod.outlook.com (2603:10a6:10:113::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Thu, 4 Sep
- 2025 10:41:57 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.9094.016; Thu, 4 Sep 2025
- 10:41:57 +0000
-From: Peng Fan <peng.fan@nxp.com>
-Date: Thu, 04 Sep 2025 18:40:47 +0800
-Subject: [PATCH v4 6/6] firmware: imx: sm-misc: Dump syslog info
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250904-sm-misc-api-v1-v4-6-0bf10eaabdf1@nxp.com>
-References: <20250904-sm-misc-api-v1-v4-0-0bf10eaabdf1@nxp.com>
-In-Reply-To: <20250904-sm-misc-api-v1-v4-0-0bf10eaabdf1@nxp.com>
-To: Sudeep Holla <sudeep.holla@arm.com>, 
- Cristian Marussi <cristian.marussi@arm.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: arm-scmi@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756982492; l=7930;
- i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
- bh=smAOw2LLys6Ccvgu3BgWXtBA5tydyCv6WOl3MxNr6AM=;
- b=A/GyhVUwHMtJDW4C+jnEmW/mLirY7B2UfaAfbVFfqfZwO1qNj7DnRJ06LHTWaO9+tfF5ODjr0
- D3yXf2xXSE2BhEpv9dcU9jv6z+jC5Ea95ulFY5XAdPu6WUlgB5iMY5L
-X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
- pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
-X-ClientProxiedBy: SGAP274CA0003.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::15)
- To PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DThHZmd4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006FEC4CEF0;
+	Thu,  4 Sep 2025 10:44:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756982675;
+	bh=pKXQ2BOe5S23ZZX1t20m3mUlrnVNSp1CdRdrgqIRj78=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DThHZmd4O/0IYMRQaqdxjRE2eu376zOP7YfVWGpo0EwQkbrz9P9zY5LXSD6VOGW5C
+	 q+KD/X0jVRp3Z6bCZWOpy+Ewu7t/55PiILUftovaYRUJvfcL/HSt4QD/9oZFjcwmuN
+	 GyEiXSs/gBx40h8KsUH0o8d/mJim8vsTdjB7FygOnzUfbkz03UytfMiP+xr1osA5Pn
+	 bWtfVI3NDl8wRbYfRRqy1RLFdQYYVwMBLXjHZnwKN28xFAZSbLjhzdCC1xuvPauqBR
+	 si3nzbuk75JDcNsezQiTVnic0sEEYYBadv9kxsdp5ydiolmedJw36nDTrbA+su4YL3
+	 EYjLoR76Aw1MQ==
+Message-ID: <90aa7f8a-9ce1-425d-a988-3c1f9990ec4d@kernel.org>
+Date: Thu, 4 Sep 2025 12:44:28 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB8PR04MB6937:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c591bef-a806-4321-1743-08ddeb9fabeb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|52116014|376014|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cWJFNU1GNkNXS2tncEYzajlVSVpybVk5eHprSDJTVzU3alJIc2ZNYlpIOFI0?=
- =?utf-8?B?YlJBUFJZNW93ME9hbHEyejN0NDAxUjRkT0s3ZzdpOGhWa3YvOSsxMWVTeUl4?=
- =?utf-8?B?UEQrYlRwbngyY05nRmdTZjVVMlNoZXl2R1VMTHQ3UEJ0Z2FOaWc0SFBWODVY?=
- =?utf-8?B?UjdVZ0V5YTF3SzlhY2JsTXZpajllZGZkTCsvUVFZNithTDdZZCtUbStJSSsz?=
- =?utf-8?B?RkNIU2RzaXBHRGx6VG84RURPTjQrUVE0SHBrYTc0bU52VUM3Kzl1V0RxS2lq?=
- =?utf-8?B?MFErb3hEWUhrckZKeXVsY0J6WHVBWGJZOWZaRVJwci9wUXB3MG5aNVJuUklv?=
- =?utf-8?B?T2YwWVhDMkRoTjk3ditaY29xQnRTZG5vZ1daQytWbXY4U1JsZ2F5a0dqM0J1?=
- =?utf-8?B?cGJQZnFSNDl6UlJOdG55ZmNJSXV6RDRpVW5CUU52dXBYZEZPNTFCRU1id0kx?=
- =?utf-8?B?TXBJSUNQWE9ORlVOR0dQcUVCNHNWNDZGTCt2K0F2NDUyWXoxeGZHTnh4d0lq?=
- =?utf-8?B?WGN3SmJ1YlVwS2J4ZU1ab3F5TTczSE9LWVA3cEZxd1NacTRqVmxwczRzSGVI?=
- =?utf-8?B?dUVBdEEyQVVJRWQzQTh5Sm1xOGFLc0hTd0ttZjcrMFJGLzd4OEpBcTZTdVlK?=
- =?utf-8?B?dDlZQVVkVDNhbjFaYkZmeUhsOTNHM3puK0M0TEN1MVEra0dicnFqY3hsRWli?=
- =?utf-8?B?ZGcyZFNydG9lK1NEaDlOM2Vpc0twd3k1dHk1ajBLdWdMbGxnL3l1d1p2Njh4?=
- =?utf-8?B?UUJybjlyQkdvMnNKQTZTdkt2SWhpek5aeXVtZjI2bzducmgrOERlcUN5T2tS?=
- =?utf-8?B?OVFGaGVHSDFaNkp1SmNaRUs4RG51aEdSZ3piWlR4dG95aThRbWkrOXVJRVA4?=
- =?utf-8?B?aGpCMDlqOE8wU3E5WkluZjNLc1QzQzFYbDI1OWdDMzJDM3BJaSt6L2FDdDJw?=
- =?utf-8?B?emZObk42dWpWS21QenBhYTFERWp6ZmlodkwvU3VWUEdsK003VGJuLzBxQU9E?=
- =?utf-8?B?TWZCY2p2RE5NVjhvbWZWVndQZmNiZUpUaks2ekdBWHF5aXBCemU2V1RUZzU2?=
- =?utf-8?B?c2VKdUdWZHh5THVubjRaWUtpdGhkOTFSelMzaFd5dzBxYnJSK01sUUVNajhh?=
- =?utf-8?B?Q25uVlBjN2wycXNGUjNmOFVHVVQwejIxM1JPWE5KMlhaRUJlQk1zWld3blc4?=
- =?utf-8?B?UjY5UWlTVSt4UVdLTkdqUmhRSUxUQzJQd2RIVGNHMWloeDV1aHF2VU1RSDV1?=
- =?utf-8?B?TEFpWVdkUFVNYUZ1LzNiZi93Yzd6ekpVaG56RC9rZEFjcWMyaDBoc0gyK0lG?=
- =?utf-8?B?WUd1dlV5S2ZDY3pPS0N0UWNNMk9XVElMMGk0WTc5ckFRa3hLanNqbUtQcjhI?=
- =?utf-8?B?WUlQaFdhMVp5R25BTG9ZTDJYWGFQMXQvbnViek9mZ3lqeWE4WXdEcElBS2RU?=
- =?utf-8?B?WlIzTmxOTG4zWnQ1OWdQU1ZlR1lmTzJpOWs2YThSdWUzczRvT0I3YjhDK0d0?=
- =?utf-8?B?MjBCNUNlNTd0dnpEekx1eUtpYTBIZEpKbnJvMzdWNjg5LzV3RHdhaDN6TVZx?=
- =?utf-8?B?Tmc4T0JFWmR3NHZiOHp3M0Z6SUl6SUNUZW5Cb3BLOE1DTmxsRm42NXZzUkdz?=
- =?utf-8?B?d1lmTUFnZ1V0MWZPMHFGWldUUVhFTzl3eWh0ZnFOK0hrT0F4NHQwb0ZaRTFw?=
- =?utf-8?B?eUt6WmxaV1pqNm9uNnJXZERjai9tNmErM0ZLU2tJNlk2Zys0dDJkMjdkbmpE?=
- =?utf-8?B?NkhBQ0EzQlpzcDBwRWtPTGVtVkM1OTRES1N2ckdQTDFXR0drQzZEbERwdkNQ?=
- =?utf-8?B?bHpDUTVzM3gyK0ZlNWI4YmNRQVNYQkc4cmgyTWZOZGJkMHlLZ0JwVUl6OTk5?=
- =?utf-8?B?MU5jZjRnZGVTMHM1RjRlb2U4Q1pxNTlvZmVtektWRGFBY3R5N0tpVXEzT1lG?=
- =?utf-8?B?QmMzRDM3ODlxcEwwUkFXVHZ0cDlMUW8rSnU2ZzVKMERYckxPZVFyeXFRZ1Mz?=
- =?utf-8?B?S05xdi81WUxnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(52116014)(376014)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aXdEdGxWU2JXbzZKc3NzRmhEVFhITjNKWjJnQXZVQW1jS0JGNm9YeWxxenpa?=
- =?utf-8?B?R01pWXNadis0THUwN1djckFGVllxRlY2STVnTFZ3QUpWa0hjRld5cEZ4MEtF?=
- =?utf-8?B?MTRJRm55OXJFcWUvWUpOQVZ1RVJnYWJQM041VGRnRzBzNjNIaWlEOU44T3J2?=
- =?utf-8?B?bHhtUXJ2NXljK296c2dPWDZSRE9BQzlVOGpmeEpZZlA4eThGZkkydjlRZjRZ?=
- =?utf-8?B?azZFTkt2Tk5XSk4yWnU3MElkVEVrV1hKaURhZDk1YWxiY2dndWxrRjg0QlFB?=
- =?utf-8?B?T1NHNGlCcUt4ZUc1d3Zad3Q5b09aN29hVnN5aE9FMjJ1ZFRJVWc3NktFN1A5?=
- =?utf-8?B?S2J5T2xWL0dqd01JRkQzdVRDd1VDcTRJOGkwbkF1d1JGbXFyTGJIREVKRkhx?=
- =?utf-8?B?RlBWVjVZMnVKcnp1bm0rYVRuTHZzWnNOMjhCN1JqZ0V0dmxFMU8zQU44dlho?=
- =?utf-8?B?QUNoTGpsZ3h3bVhXSHd2S2tKaDQya3VTY1VWdUFPbjRJeHFSOVU1RFdGZi9Y?=
- =?utf-8?B?ZEIwbEdxSWwyTXVNdTcrUWlxcVBTNlBEbXhTSXI3clN3VFIyT3hIeFhtdGtG?=
- =?utf-8?B?bUxGM1FXcDJlbmJobHplSjNMMS9tanh4dG81K1ppQVBjaFVaYlhuUUp3V2NR?=
- =?utf-8?B?WWdGbVBJWmRjSHF0VEY4d0tpdE9EMm9oR25nQnBMcDh0NHRuY0xOTm52Tndr?=
- =?utf-8?B?UVBMNkRYTElsNUprOXY5N1ZadjlreGdNaGpvNnVQNXFxcVF6ditLRlhOZmcz?=
- =?utf-8?B?L1V0UHR0azRkdmxoNzVOaUlzQ005akZnS0RqVDJaWVh4U0tnVW1DendNSy9C?=
- =?utf-8?B?L0QyVVovdG95VmZkUVg0UEdZcmRSdlBRR1IrRXBzdGF4RFhLWGdIcCtUU0Vj?=
- =?utf-8?B?MDBTSFVTbVptTi9taEQ4N3F6QzhNVjB3U1UxSmZ4NExHNmFBVWlGRlFKaVpW?=
- =?utf-8?B?KzQ3QnA4TjIwaEVpTHIvTEFGekYzREFQNktaNllTR2ROOWVNUFhFcyszMXJj?=
- =?utf-8?B?dWZ6aEthd29tTkN5VVprNnhpLy96dzl6am1uMm8zd2NUQXBjRkg2T2djV1Ns?=
- =?utf-8?B?dEVNTnVtb2lwd3pEajFPT01SVUU1d0wxdWtscFNTb1dJSFF5UEpNZUhYNlI2?=
- =?utf-8?B?cmxGVWc3YUlCU284Ym9qQ25CTHd5QVVlWVM4cVRLdnlZdWpGRFNRYmdaUHY5?=
- =?utf-8?B?VlAzWXlwKzZKcVhwRHJ1VVhNSFl2bHdJR3ZOM1p5RHZ2NGF2MEkrenN1ZHZx?=
- =?utf-8?B?bXlrMjd1R21hSk0wZW5jUy9VZ0ZZTUdGZHpXM29oVkxycGJ2TUFFRFhjcm90?=
- =?utf-8?B?U2FxS0pEbldxemR5b1A5cGlQMzhjQ1ZkQkJIZEhsYmRyeHhnd0MxOGtvcXVL?=
- =?utf-8?B?K1RJYXR4YjRrMFdaUHlnNTNQSFpLS1lkakJTM3VFRGV3Y014M3Z3QTNkUWJI?=
- =?utf-8?B?NHJuWnRWOVNnTGpJUjh5Qnl5VG9aY2tjVzVacHUxR0F1Vk0rZXhRWVA5UzBD?=
- =?utf-8?B?TkFmdFJmelJlaGk2ajZaa0ZmbHNUb3JzRlVqSkExT2lEd29aaWU1c25jNnc3?=
- =?utf-8?B?bFdJT3NNQTlaeGlmS3g0TjVDY2VTaWczYTRlaS9KR1lIYzFRaWMvRmtkR05z?=
- =?utf-8?B?ejIxczZEeTN3d0lPaW1UTVRnS3Uyb0orVk9JUU1YUndBWXRkTVZ1MlFybVpX?=
- =?utf-8?B?M3Zxcjh6TmVKaWRUL055TkZTU0gxWEJ2bS9rRDh5bm9aUThVcWIrN09zUlFN?=
- =?utf-8?B?clY1NDB0YUZ6bDhOS2xUTXN5ZVNVbnJkUHluU2NxQzV5V2t2Ry9oM1hSUTNi?=
- =?utf-8?B?eGxVQi9XeGh0MEpYL281c3FQL0wyYjZIRnAwSVI0UHpqcTJON3p3NW41VjNP?=
- =?utf-8?B?MFpNQ01uVG5GMWpyRldrWndTRDZ6WmtuaU9aQmlmQ3l3KzJ0OWI5aFJiV2pV?=
- =?utf-8?B?ZWN4NEk0elgyU2Riem9rajRiSWgwY0NsdlNDRHZ1TzlvbGpWOS80Y1ZyWnFV?=
- =?utf-8?B?TGgwaFJiWUVZK0VVbG5lY1UwUTVYRUtCMnJPanY5NExma0o1bloyNGxkUXE1?=
- =?utf-8?B?Z1E0LzE5ZHZTaWNwMEptRUFNRnNyYUIyLy9Ga3B3V2U2dk1JVWQ2WjNRZ0lr?=
- =?utf-8?Q?bdDblHv23DIrw2VeICheZAES9?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c591bef-a806-4321-1743-08ddeb9fabeb
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 10:41:57.4939
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UQ694CMCBK2Lw3tiIKdiQw9HnzHGSABRJCk9oA3ZphwHvzOLchTz5dlknZTY+L7NvQ+TUUI16Bq9Mo5AVY9kqw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6937
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: afe: current-sense-amplifier: Add
+ io-channel-cells
+To: Primoz Fiser <primoz.fiser@norik.com>
+Cc: Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ upstream@lists.phytec.de
+References: <20250903113700.3079626-1-primoz.fiser@norik.com>
+ <20250904-tangible-practical-partridge-a1b0e4@kuoka>
+ <b6006a1b-0b46-4e0d-9d49-6cc0dbe84814@norik.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <b6006a1b-0b46-4e0d-9d49-6cc0dbe84814@norik.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add sysfs interface to read System Manager syslog info
+On 04/09/2025 12:15, Primoz Fiser wrote:
+> Hi Krzysztof,
+> 
+> On 4. 09. 25 11:17, Krzysztof Kozlowski wrote:
+>> On Wed, Sep 03, 2025 at 01:36:59PM +0200, Primoz Fiser wrote:
+>>> The current-sense-amplifier is an IIO provider thus can be referenced by
+>>> IIO consumers (via "io-channels" property in consumer device node). Such
+>>> provider is required to describe number of cells used in phandle lookup
+>>> with "io-channel-cells" property, otherwise the following kernel error
+>>> is present:
+>>>
+>>>    OF: /iio-hwmon: could not get #io-channel-cells for /current-sense
+>>
+>> Also, how can I reproduce this error? Do you paste here real errors or
+>> just some invented ones from some out of tree code (hint: such would not
+>> be relevant).
+> 
+> I get this error if I apply patch #2 without patch #1. See [1] for more 
+> details.
+Then your warning is not relevant here.
 
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/firmware/imx/sm-misc.c | 232 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 232 insertions(+)
+You said in your commit there is a bug, expressed with that warning, so
+you make this commit. Turns out there is no bug, so all the reasons for
+this commit are gone.
 
-diff --git a/drivers/firmware/imx/sm-misc.c b/drivers/firmware/imx/sm-misc.c
-index fc3ee12c2be878e0285183e3381c9514a63d5142..e742a2fff06b44ab7f07e9f97f723ef7ca1ff259 100644
---- a/drivers/firmware/imx/sm-misc.c
-+++ b/drivers/firmware/imx/sm-misc.c
-@@ -3,6 +3,7 @@
-  * Copyright 2024 NXP
-  */
- 
-+#include <linux/device/devres.h>
- #include <linux/firmware/imx/sm.h>
- #include <linux/module.h>
- #include <linux/of.h>
-@@ -44,10 +45,232 @@ static int scmi_imx_misc_ctrl_notifier(struct notifier_block *nb,
- 	return 0;
- }
- 
-+static ssize_t
-+wakevector_show(struct device *device, struct device_attribute *attr, char *buf)
-+{
-+	struct scmi_imx_misc_syslog *syslog = dev_get_drvdata(device);
-+	u16 size = sizeof(*syslog) / 4;
-+	int ret;
-+
-+	if (!ph)
-+		return 0;
-+
-+	ret = imx_misc_ctrl_ops->misc_syslog(ph, &size, syslog);
-+	if (ret)
-+		return ret;
-+
-+	if (size * 4 < offsetofend(struct scmi_imx_misc_sys_sleep_rec, wakesource)) {
-+		dev_err(device, "%s: returned truncated data\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	return sysfs_emit(buf, "%u\n", syslog->syssleeprecord.wakesource);
-+}
-+static DEVICE_ATTR_RO(wakevector);
-+
-+static ssize_t
-+syssleepmode_show(struct device *device, struct device_attribute *attr, char *buf)
-+{
-+	struct scmi_imx_misc_syslog *syslog = dev_get_drvdata(device);
-+	u16 size = sizeof(*syslog) / 4;
-+	int ret;
-+
-+	if (!ph)
-+		return 0;
-+
-+	ret = imx_misc_ctrl_ops->misc_syslog(ph, &size, syslog);
-+	if (ret)
-+		return ret;
-+
-+	if (size * 4 < offsetofend(struct scmi_imx_misc_sys_sleep_rec, syssleepmode)) {
-+		dev_err(device, "%s: returned truncated data\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	return sysfs_emit(buf, "%u\n", syslog->syssleeprecord.syssleepmode);
-+}
-+static DEVICE_ATTR_RO(syssleepmode);
-+
-+static ssize_t
-+syssleepflags_show(struct device *device, struct device_attribute *attr, char *buf)
-+{
-+	struct scmi_imx_misc_syslog *syslog = dev_get_drvdata(device);
-+	u16 size = sizeof(*syslog) / 4;
-+	int ret;
-+
-+	if (!ph)
-+		return 0;
-+
-+	ret = imx_misc_ctrl_ops->misc_syslog(ph, &size, syslog);
-+	if (ret)
-+		return ret;
-+
-+	if (size * 4 < offsetofend(struct scmi_imx_misc_sys_sleep_rec, syssleepflags)) {
-+		dev_err(device, "%s: returned truncated data\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	return sysfs_emit(buf, "0x%08x\n", syslog->syssleeprecord.syssleepflags);
-+}
-+static DEVICE_ATTR_RO(syssleepflags);
-+
-+static ssize_t
-+mixpwrstat_show(struct device *device, struct device_attribute *attr, char *buf)
-+{
-+	struct scmi_imx_misc_syslog *syslog = dev_get_drvdata(device);
-+	u16 size = sizeof(*syslog) / 4;
-+	int ret;
-+
-+	if (!ph)
-+		return 0;
-+
-+	ret = imx_misc_ctrl_ops->misc_syslog(ph, &size, syslog);
-+	if (ret)
-+		return ret;
-+
-+	if (size * 4 < offsetofend(struct scmi_imx_misc_sys_sleep_rec, mixpwrstat)) {
-+		dev_err(device, "%s: returned truncated data\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	return sysfs_emit(buf, "0x%08x\n", syslog->syssleeprecord.mixpwrstat);
-+}
-+static DEVICE_ATTR_RO(mixpwrstat);
-+
-+static ssize_t
-+mempwrstat_show(struct device *device, struct device_attribute *attr, char *buf)
-+{
-+	struct scmi_imx_misc_syslog *syslog = dev_get_drvdata(device);
-+	u16 size = sizeof(*syslog) / 4;
-+	int ret;
-+
-+	if (!ph)
-+		return 0;
-+
-+	ret = imx_misc_ctrl_ops->misc_syslog(ph, &size, syslog);
-+	if (ret)
-+		return ret;
-+
-+	if (size * 4 < offsetofend(struct scmi_imx_misc_sys_sleep_rec, mempwrstat)) {
-+		dev_err(device, "%s: returned truncated data\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	return sysfs_emit(buf, "0x%08x\n", syslog->syssleeprecord.mempwrstat);
-+}
-+static DEVICE_ATTR_RO(mempwrstat);
-+
-+static ssize_t
-+pllpwrstat_show(struct device *device, struct device_attribute *attr, char *buf)
-+{
-+	struct scmi_imx_misc_syslog *syslog = dev_get_drvdata(device);
-+	u16 size = sizeof(*syslog) / 4;
-+	int ret;
-+
-+	if (!ph)
-+		return 0;
-+
-+	ret = imx_misc_ctrl_ops->misc_syslog(ph, &size, syslog);
-+	if (ret)
-+		return ret;
-+
-+	if (size * 4 < offsetofend(struct scmi_imx_misc_sys_sleep_rec, pllpwrstat)) {
-+		dev_err(device, "%s: returned truncated data\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	return sysfs_emit(buf, "0x%08x\n", syslog->syssleeprecord.pllpwrstat);
-+}
-+static DEVICE_ATTR_RO(pllpwrstat);
-+
-+static ssize_t
-+sleepentryusec_show(struct device *device, struct device_attribute *attr, char *buf)
-+{
-+	struct scmi_imx_misc_syslog *syslog = dev_get_drvdata(device);
-+	u16 size = sizeof(*syslog) / 4;
-+	int ret;
-+
-+	if (!ph)
-+		return 0;
-+
-+	ret = imx_misc_ctrl_ops->misc_syslog(ph, &size, syslog);
-+	if (ret)
-+		return ret;
-+
-+	if (size * 4 < offsetofend(struct scmi_imx_misc_sys_sleep_rec, sleepentryusec)) {
-+		dev_err(device, "%s: returned truncated data\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	return sysfs_emit(buf, "%u\n", syslog->syssleeprecord.sleepentryusec);
-+}
-+static DEVICE_ATTR_RO(sleepentryusec);
-+
-+static ssize_t
-+sleepexitusec_show(struct device *device, struct device_attribute *attr, char *buf)
-+{
-+	struct scmi_imx_misc_syslog *syslog = dev_get_drvdata(device);
-+	u16 size = sizeof(*syslog) / 4;
-+	int ret;
-+
-+	if (!ph)
-+		return 0;
-+
-+	ret = imx_misc_ctrl_ops->misc_syslog(ph, &size, syslog);
-+	if (ret)
-+		return ret;
-+
-+	if (size * 4 < offsetofend(struct scmi_imx_misc_sys_sleep_rec, sleepexitusec)) {
-+		dev_err(device, "%s: returned truncated data\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	return sysfs_emit(buf, "%u\n", syslog->syssleeprecord.sleepexitusec);
-+}
-+static DEVICE_ATTR_RO(sleepexitusec);
-+
-+static ssize_t
-+sleepcnt_show(struct device *device, struct device_attribute *attr, char *buf)
-+{
-+	struct scmi_imx_misc_syslog *syslog = dev_get_drvdata(device);
-+	u16 size = sizeof(*syslog) / 4;
-+	int ret;
-+
-+	if (!ph)
-+		return 0;
-+
-+	ret = imx_misc_ctrl_ops->misc_syslog(ph, &size, syslog);
-+	if (ret)
-+		return ret;
-+
-+	if (size * 4 < offsetofend(struct scmi_imx_misc_sys_sleep_rec, sleepcnt)) {
-+		dev_err(device, "%s: returned truncated data\n", __func__);
-+		return -EINVAL;
-+	}
-+
-+	return sysfs_emit(buf, "%u\n", syslog->syssleeprecord.sleepcnt);
-+}
-+static DEVICE_ATTR_RO(sleepcnt);
-+
-+static struct attribute *sm_misc_attrs[] = {
-+	&dev_attr_wakevector.attr,
-+	&dev_attr_syssleepmode.attr,
-+	&dev_attr_syssleepflags.attr,
-+	&dev_attr_mixpwrstat.attr,
-+	&dev_attr_mempwrstat.attr,
-+	&dev_attr_pllpwrstat.attr,
-+	&dev_attr_sleepentryusec.attr,
-+	&dev_attr_sleepexitusec.attr,
-+	&dev_attr_sleepcnt.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(sm_misc);
-+
- static int scmi_imx_misc_ctrl_probe(struct scmi_device *sdev)
- {
- 	const struct scmi_handle *handle = sdev->handle;
- 	struct device_node *np = sdev->dev.of_node;
-+	struct scmi_imx_misc_syslog *syslog;
- 	u32 src_id, flags;
- 	int ret, i, num;
- 
-@@ -63,6 +286,12 @@ static int scmi_imx_misc_ctrl_probe(struct scmi_device *sdev)
- 	if (IS_ERR(imx_misc_ctrl_ops))
- 		return PTR_ERR(imx_misc_ctrl_ops);
- 
-+	syslog = devm_kzalloc(&sdev->dev, sizeof(*syslog), GFP_KERNEL);
-+	if (!syslog)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(&sdev->dev, syslog);
-+
- 	num = of_property_count_u32_elems(np, "nxp,ctrl-ids");
- 	if (num % 2) {
- 		dev_err(&sdev->dev, "Invalid wakeup-sources\n");
-@@ -108,6 +337,9 @@ static const struct scmi_device_id scmi_id_table[] = {
- MODULE_DEVICE_TABLE(scmi, scmi_id_table);
- 
- static struct scmi_driver scmi_imx_misc_ctrl_driver = {
-+	.driver = {
-+		.dev_groups = sm_misc_groups,
-+	},
- 	.name = "scmi-imx-misc-ctrl",
- 	.probe = scmi_imx_misc_ctrl_probe,
- 	.id_table = scmi_id_table,
-
--- 
-2.37.1
-
+Rephrase the commit msg to describe accurate reasons WHY you are doing
+this. Drop non-existing warnings and any misleading fixes tag, since
+there is no bug being fixed.
+Best regards,
+Krzysztof
