@@ -1,48 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C082857F2;
-	Thu,  4 Sep 2025 07:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118CA29ACC2;
+	Thu,  4 Sep 2025 07:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756970700; cv=none; b=QGRsgPygdqVvcM6JdGPc5lzwhdQzqNgk+7FeMeWmALgFb4iyHW94qRuPWuND3eYADZeLpGHR9QwX/NofwLvj1ct+51zrn1aiXAcku8zDTPQnbofhDdI7CI+fm1JUOUzndwX+72Z+Rx4pikwQ9L2/RD2A4SIsXL0fry2xh1t3jf8=
+	t=1756970854; cv=none; b=diEyN/+PA2AGSzH/Nn7lrdSFtelUbAvu+k9cBPfAjFJHSLd3jTp8MbpgTM/7KpNPA5q65WwVgluY5WV9f8+rq8WY+XY9gCrRXDrh/0dNrNfKaj+fs8T1n30owL/kZa4uq2sUfbkfPP5DqVJRfF1sinSuS1U8IEdIK99uCzT7p/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756970700; c=relaxed/simple;
-	bh=g0FuMImBTb4zXFyvNIW7Qc6+EhCzoXvGszP1fCb2DTQ=;
+	s=arc-20240116; t=1756970854; c=relaxed/simple;
+	bh=Z8XSQTvtPUkxAQ9BXix6/Yhokfu8nsR+89vawyheIsE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TF2eGHfgnfwi2S8xGv49AzXEXmY4tmalah28s+gSCVDWuwtV/ssgbtik69ZLSZTLJu1Sqfns5yTj0JksH/qYvRrtETrqKHFEvEKEmsMpHF9qSzUqF2+Mjzxfzx8ohoYAHhybxWsKY6LNFpUZ8zJQYsRm7uMehY6yBR6f0GRxDWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I3CSQtaW; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=IWqODVMN+4oR6uzSjlHqkeZPQc285k4KH+HULURJqneJz9/2RiRx58oj2HyEFoZcTjjHAn87d9j5jkNLR+E9tMHRhN7XeZSMZJWIRHiIbHRdwjQIN+tOApn0bYp2FYJzYd80KyY46QeIyopdnO0ILWRqYVVfK1QigEdJK3zMlIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRT50ZUh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I3CSQtaW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB03AC4CEF0;
-	Thu,  4 Sep 2025 07:24:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRT50ZUh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4589AC4CEF0;
+	Thu,  4 Sep 2025 07:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756970700;
-	bh=g0FuMImBTb4zXFyvNIW7Qc6+EhCzoXvGszP1fCb2DTQ=;
+	s=k20201202; t=1756970853;
+	bh=Z8XSQTvtPUkxAQ9BXix6/Yhokfu8nsR+89vawyheIsE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I3CSQtaWLoUBZ85Cvb1X1zBhfnr9t+Mlx6sTaW7ep3CIC2futjzePPUqmfPk6v9Q3
-	 7hyDBFdOohOGBjOSv7NYmUiz/q01m8EecwxOGilSwsSSK4cdgjx6DOOJTUoLnnrkXD
-	 e0WgFviKLo69ikPOJ/vBYz0JPxcHfpMMiemJiGbKXu/ws4+yt3LOW0Qx2DCS3gv+8L
-	 CxYzje0TKoCaNijozuS+Uhu+deDHwFjdVbb9hAzF7QZqxYFYFRvhZQC058vyGhZvSk
-	 NRCTbMu7MA6lGlr0YbKBbumnI2POEyid1a7vxYb2Ef2XdgEgttGQjaZqBOzsrPN5qh
-	 SsKhLz9eDCnXg==
-Date: Thu, 4 Sep 2025 09:24:57 +0200
+	b=GRT50ZUhGaiA9XuQgRPkzuI+B/6okbH+qUPwIurIe99vYFu8u3r7UVXtK1fXYfue3
+	 Tct/kxZsTf047c3Q4Xw5jRmOGoEwB2CQYuadcmL4NKKRsuhK0krkwqDd7CKrRZdZyA
+	 Jl7w7prXAnR/VYEi4qarJDsN5UgokGCtLY3SwZicKhnp/Bn/M3w26Yzkpo9zyP+xZc
+	 yY0p+KiSnrKQ/v0H+Hc6Z3+meX1Hy8obFSgfJWvt41GUkH5hbjr2aKJrQoWuRSIfeC
+	 VVn8p9MnyRgrJ6kd16q039oE8lvlHbuZYl1zouYM7MqI3j2qRdKokXcOILRYQGmxKp
+	 WhXOd9rsF1oXA==
+Date: Thu, 4 Sep 2025 09:27:31 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: imx@lists.linux.dev, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Rob Herring <robh@kernel.org>, 
+Cc: imx@lists.linux.dev, Abel Vesa <abelvesa@kernel.org>, 
+	Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
 	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 4/9] dt-bindings: display: imx: Add bindings for
- i.MX94 DCIF
-Message-ID: <20250904-attentive-seagull-of-fantasy-adea9f@kuoka>
+Subject: Re: [PATCH v4 6/9] dt-bindings: clock: nxp,imx95-blk-ctl: Add ldb
+ child node
+Message-ID: <20250904-misty-mini-buzzard-af2aec@kuoka>
 References: <20250903123332.2569241-1-laurentiu.palcu@oss.nxp.com>
- <20250903123332.2569241-5-laurentiu.palcu@oss.nxp.com>
+ <20250903123332.2569241-7-laurentiu.palcu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,139 +50,69 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250903123332.2569241-5-laurentiu.palcu@oss.nxp.com>
+In-Reply-To: <20250903123332.2569241-7-laurentiu.palcu@oss.nxp.com>
 
-On Wed, Sep 03, 2025 at 03:33:22PM +0300, Laurentiu Palcu wrote:
-> DCIF is the i.MX94 Display Controller Interface which is used to
-> drive a TFT LCD panel or connects to a display interface depending
-> on the chip configuration.
-
-It looks like you are going to send v5, so:
-
-A nit, subject: drop second/last, redundant "bindings for". The
-"dt-bindings" prefix is already stating that these are bindings.
-See also:
-https://elixir.bootlin.com/linux/v6.17-rc3/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
-
-Anyway, nothing in the changelog explains dropping tags.
-
-I am not going to do the work twice. Write proper changelogs.
-
-<form letter>
-This is a friendly reminder during the review process.
-
-It looks like you received a tag and forgot to add it.
-
-If you do not know the process, here is a short explanation:
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions of patchset, under or above your Signed-off-by tag, unless
-patch changed significantly (e.g. new properties added to the DT
-bindings). Tag is "received", when provided in a message replied to you
-on the mailing list. Tools like b4 can help here. However, there's no
-need to repost patches *only* to add the tags. The upstream maintainer
-will do that for tags received on the version they apply.
-
-Please read:
-https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
-
-If a tag was not added on purpose, please state why and what changed.
-</form letter>
-
+On Wed, Sep 03, 2025 at 03:33:24PM +0300, Laurentiu Palcu wrote:
+> Since the BLK CTL registers, like the LVDS CSR, can be used to control the
+> LVDS Display Bridge controllers, add 'ldb' child node to handle
+> these use cases.
 > 
 > Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 > ---
->  .../bindings/display/imx/nxp,imx94-dcif.yaml  | 82 +++++++++++++++++++
->  1 file changed, 82 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
+>  .../bindings/clock/nxp,imx95-blk-ctl.yaml     | 24 ++++++++++++++++++-
+>  1 file changed, 23 insertions(+), 1 deletion(-)
+
+Nothing in the changelog explains this patch.
+
+What happened with entire previous review?
+
 > 
-> diff --git a/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml b/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
-> new file mode 100644
-> index 0000000000000..54419c589ef74
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
-> @@ -0,0 +1,82 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2025 NXP
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/imx/nxp,imx94-dcif.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> index 27403b4c52d62..f83d96701bb04 100644
+> --- a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
+> @@ -39,6 +39,28 @@ properties:
+>        ID in its "clocks" phandle cell. See
+>        include/dt-bindings/clock/nxp,imx95-clock.h
+>  
+> +if:
+> +  properties:
+> +    compatible:
+> +      contains:
+> +        const: nxp,imx94-lvds-csr
+> +then:
+> +  properties:
+> +    "#address-cells":
+> +      const: 1
 > +
-> +title: i.MX94 Display Control Interface (DCIF)
+> +    "#size-cells":
+> +      const: 1
 > +
-> +maintainers:
-> +  - Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> +  patternProperties:
+> +    "^ldb@[0-9a-f]+$":
+
+No, don't define nodes in if:then:. Where did you get this syntax from?
+
+> +      type: object
+> +      $ref: /schemas/display/bridge/fsl,ldb.yaml#
 > +
-> +description:
-> +  The Display Control Interface(DCIF) is a system master that fetches graphics
-> +  stored in memory and displays them on a TFT LCD panel or connects to a
-> +  display interface depending on the chip configuration.
+> +  required:
+> +    - '#address-cells'
+> +    - '#size-cells'
 > +
-> +properties:
-> +  compatible:
-> +    const: nxp,imx94-dcif
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    items:
-> +      - description: CPU domain 0 (controlled by common registers group).
-> +      - description: CPU domain 1 (controlled by background layer registers group).
-> +      - description: CPU domain 2 (controlled by foreground layer registers group).
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: common
-> +      - const: bg_layer
-> +      - const: fg_layer
-> +
-> +  clocks:
-> +    maxItems: 3
-> +
-> +  clock-names:
-> +    items:
-> +      - const: apb
-> +      - const: axi
-> +      - const: pix
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  port:
-> +    $ref: /schemas/graph.yaml#/properties/port
-> +    description: Display Pixel Interface(DPI) output port
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +    soc {
-> +        #address-cells = <2>;
-> +        #size-cells = <2>;
-> +
-> +        display-controller@4b120000 {
-> +            compatible = "nxp,imx94-dcif";
-> +            reg = <0x0 0x4b120000 0x0 0x300000>;
-> +            interrupts = <GIC_SPI 377 IRQ_TYPE_LEVEL_HIGH>,
-> +                         <GIC_SPI 378 IRQ_TYPE_LEVEL_HIGH>,
-> +                         <GIC_SPI 379 IRQ_TYPE_LEVEL_HIGH>;
-> +            interrupt-names = "common", "bg_layer", "fg_layer";
-> +            clocks = <&scmi_clk 69>, <&scmi_clk 70>, <&dispmix_csr 0>;
-> +            clock-names = "apb", "axi", "pix";
-> +            assigned-clocks = <&dispmix_csr 0>;
-> +            assigned-clock-parents = <&ldb_pll_pixel>;
-> +            power-domains = <&scmi_devpd 11>;
-> +
-> +            port {
-> +                dcif_out: endpoint {
-> +                    remote-endpoint = <&ldb_in>;
-> +                };
-> +            };
-> +        };
-> +    };
-> -- 
-> 2.49.0
-> 
+>  required:
+>    - compatible
+>    - reg
+> @@ -46,7 +68,7 @@ required:
+>    - power-domains
+>    - clocks
+>  
+> -additionalProperties: false
+> +unevaluatedProperties: false
+
+NAK, so schema warned you above syntax is wrong and you decided to
+silence the warning with this hack, right?
+
+Best regards,
+Krzysztof
+
