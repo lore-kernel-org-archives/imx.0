@@ -1,76 +1,78 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0799A30AAB8
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 14:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805513093B5
+	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 14:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756996424; cv=none; b=aXR72SJ9UoT7sgEpI/I7Wes1d6Bf87y29RJRmi331khgrAONWntl+W3WsZSjQVd+0JuuMqB+HqcB6v7WLUK/gunY/f4U7NKDfFBlNMgQAolRzYx4XOscSihDTHh+IIdFMBdwHsudG1qRb5JwJz8264MdjRRBwG+gHNvFiK1d520=
+	t=1756996767; cv=none; b=BrepYSXtLPauFK/TOjfuBMbwGNaXOX7VlydTjMgM37BS1aRtiBhcqy7JmswofblSaqORGpcZy3lMr4JGfqNPqtpnlvndOsYLX7OPKkFNaEJKsL+VfAmlo1uGboW6xik1+Rytn3UfeeSgQcWY5gbYElKuPjmVFiHEm8ApAIIBZqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756996424; c=relaxed/simple;
-	bh=1gFHQqTMswUOPeaCIGVasFV7ShuHaCbNqXR8xB/ipcI=;
+	s=arc-20240116; t=1756996767; c=relaxed/simple;
+	bh=TJ7TQhfYc75xBrmO1tirZXVGdyaL4zn23lNh4FRkiK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YOgXZwwg4WRA9q3ArpPV7k32I+2X4eCGweQIR13UPfADqLF9NCBPFushLVTA7gpQeOazzidtf9CxhWGbDbP9N0FbhKEMAg1KmrWgALY3jbYUCRfzIaRd9Eclm4nzsoL4TOHVejbW+HEWqiaWi/aONEs9rtFqUUhDCwhugOVKluI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Bn/RFu73; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=FBd4BEaS reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version:Content-Type; b=nexq3rziCKHdMkwafr6mshRNGxMuzyzdORtWWuqzQK8c4A03od6FsMV1jzVzqovPyvh08Sm1Omex6fSpg/G8MQMHi57H5UAlGGJdhizY83qtOSMG2EPAMZ1QFZ1wkJwQb2ExLd5uoHVMFrVHYgcDqre+KqnIVBli2jeiqImyI3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=fmq/Uo/6; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=MXowUIlr reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Bn/RFu73";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="FBd4BEaS"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="fmq/Uo/6";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="MXowUIlr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1756996420; x=1788532420;
+  t=1756996764; x=1788532764;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=zlqqrNZEiY7IvtFC2IBEJxofiBdzO+GTzrOpSqcb4w8=;
-  b=Bn/RFu73bDM2kX2FmBZqkC8twlM42RsNZd1j1kC+N3eAWES9txQBmvPR
-   iMpDRNMPfjZBP/Q+pOZmiSQniHLCyN3LrJC2PYlwjLp6WN/Zth4KnkyG4
-   Kwmp4RKzAL1o0oWoTxEaqRUK+cgP18oop/v/0XNSGuJTtycDffEvCKJhm
-   uZhVpWwBBEazBs2sqcF/rLcrU6863raFNRQH9upvlsefz2Ih4xAwMxRek
-   qSkXhv1obC/AbNxYi6HCAnvqff3MtSb2SceXNARQfwuoKjuulTCMWibub
-   W2yJAQOnJ8JpYVc2KaiBPTdQ1rnK9lnu3AbexDy6bLLpXyAT7hgY22wuQ
-   g==;
-X-CSE-ConnectionGUID: G8Hed7ClSl6WgvwutzZBuA==
-X-CSE-MsgGUID: 8y9w8OLiQMyZ87BDufx9nQ==
+  bh=ps0O7+4QAd8ZPsjC+XlmtSAuEwLSI/hp1jScWS1y0uQ=;
+  b=fmq/Uo/69V9d3rQuwJHbXdG5DX7hMAuuDUA8KdxbDjo1+H4m7R48izC7
+   me0oL4VxGd2iT6sz88pIU/3wvLS/AN8NPKXdrjNLSIkM5HzCgMFXdpj34
+   uUY6UCWvu3cyYDseZKqi133qL9SvPUbfEakfXZXiQD/wUo1CXLijndVN8
+   E0MhK6VmN3P0LTNW8vAeFjqStVvmHSoWy72AG7FVQDwVMovbt4h3vyDKR
+   Led0AFK27j6fGrBq+nlIUtIBwQ4gRE+ksFeN+8twR2PeLishM2BePFwvn
+   vLz7nQqVNWolAaEpZMiHj4eYcOCoN5i0FMYWOPJLWdMyxNBCIYQcoXeQz
+   w==;
+X-CSE-ConnectionGUID: ZUNtD6joRBO5U+tPGeVMdg==
+X-CSE-MsgGUID: fz5wvPgRRIWdooSDi1AZkw==
 X-IronPort-AV: E=Sophos;i="6.18,238,1751234400"; 
-   d="scan'208";a="46080653"
+   d="scan'208";a="46080766"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 04 Sep 2025 16:33:31 +0200
-X-CheckPoint: {68B9A339-15-20CAA7DA-EC9DC758}
-X-MAIL-CPID: 54915AE65B26EEED12B979108A0F4215_0
-X-Control-Analysis: str=0001.0A2D034A.68B9A341.0064,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8A97E161458;
-	Thu,  4 Sep 2025 16:33:22 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 04 Sep 2025 16:39:21 +0200
+X-CheckPoint: {68B9A499-11-AD8F5F64-F0EACAA5}
+X-MAIL-CPID: E3008ABF7ED2178689814A7AA6E161E5_1
+X-Control-Analysis: str=0001.0A2D031C.68B9A49A.0051,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EBC21161344;
+	Thu,  4 Sep 2025 16:39:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1756996405;
+	s=dkim; t=1756996757;
 	h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=zlqqrNZEiY7IvtFC2IBEJxofiBdzO+GTzrOpSqcb4w8=;
-	b=FBd4BEaS14MCTqQhaMKyPetyi2HMKe+mCbXS7zgCsuJzNmwMtXYZwLQ4jrwpSLA+PzN2up
-	McSGUADKYjEVrHOUtG+izV5tWNXLmvK4mzPVM20q66XHPPqS907HHAzLPXVRhqPXytUvIK
-	JuF4tG9AJStDVT/fXSdMFIQqbFTM5JFH7/yW643XqVg2eQDSMjcOSas61VgDFzfUBIFLBS
-	o8RilpJVvxV3cxnYihXyXVbTDuF3DDjDLq7QHUzfxBUDTJ4K5VTOx3fAfoKNzVfrlQRQ7a
-	FkKux87MuC0Amd7kiIzibz+1yYt/lN5FOFyuEDVMsHr/J5Yz2oHJ5FsT32C6Bw==
+	bh=ps0O7+4QAd8ZPsjC+XlmtSAuEwLSI/hp1jScWS1y0uQ=;
+	b=MXowUIlr1cezGYBd7yCnJDooczCfeW/6PrA8HFwKnJU2o8ZgQ0wQCAoFlyUoGw1iDkxHsj
+	1oBEHJWR5OFCPQ+UetaAZBDjcYB45m+oAcT74o5pOvIaYQTwAHlO/CKIqR+39UEcuKH6dW
+	SIZt0pebReDu0nFmUM5/qf+plrzLN44amwR+3Q1/Oe+RtmQ0MCfWUglXz0WRtNQwHMYil7
+	kFAbEjCeKQaY63Y2I2ZxpyfQmNwf3drdxgs2n4XGuvvrRvbKIlNDtB0UQvZ08Ad3iLXo+p
+	ik7MRMPEaTovGMmBM+zu/FzWM5luEpgUBxhbK5/oIK2KAkFhH1qeboTDLU6/nw==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.com, simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org,
- cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- victor.liu@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, p.zabel@pengutronix.de, devicetree@vger.kernel.org,
- l.stach@pengutronix.de, shengjiu.wang@gmail.com, perex@perex.cz,
- tiwai@suse.com, linux-sound@vger.kernel.org
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v6 0/7] drm/bridge: imx: Add HDMI PAI driver on i.MX8MP
-Date: Thu, 04 Sep 2025 16:33:21 +0200
-Message-ID: <13565586.O9o76ZdvQC@steina-w>
+To: dri-devel@lists.freedesktop.org, Marek Vasut <marek.vasut@mailbox.org>
+Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
+ David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Steven Price <steven.price@arm.com>, Thomas Zimmermann <tzimmermann@suse.de>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ Boris Brezillon <boris.brezillon@collabora.com>
+Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
+Date: Thu, 04 Sep 2025 16:39:06 +0200
+Message-ID: <7020337.lOV4Wx5bFT@steina-w>
 Organization: TQ-Systems GmbH
-In-Reply-To: <20250904070600.1361165-1-shengjiu.wang@nxp.com>
-References: <20250904070600.1361165-1-shengjiu.wang@nxp.com>
+In-Reply-To: <52e3c5dd-6952-43b5-94f9-43f30734680e@mailbox.org>
+References:
+ <20250321200625.132494-1-marex@denx.de> <3372501.aeNJFYEL58@steina-w>
+ <52e3c5dd-6952-43b5-94f9-43f30734680e@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,71 +85,62 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 Hi,
 
-Am Donnerstag, 4. September 2025, 09:05:53 CEST schrieb Shengjiu Wang:
-> The HDMI TX Parallel Audio Interface (HTX_PAI) is a digital module that
-> acts as the bridge between the Audio Subsystem to the HDMI TX Controller.
+Am Donnerstag, 4. September 2025, 15:52:38 CEST schrieb Marek Vasut:
+> On 9/4/25 8:36 AM, Alexander Stein wrote:
 >=20
-> Add HDMI PAI driver on i.MX8MP to make HDMI audio function fully work.
+> Hello Alexander,
+>=20
+> >>> Maybe the GPU remains halted because
+> >>> setting the GLB_HALT stops command stream processing, and the GPU nev=
+er
+> >>> samples the clearing of GLB_HALT and therefore remains halted forever=
+ ?
+> >>
+> >> Exactly that, and that's expected.
+> >=20
+> > FYI: in a new release of system manager software (starting from lf-6.12=
+=2E3-1.0.0),
+> > the GPU reset is reasserted in SM software already [1] and access to GPU
+> > block control has been removed from Cortex-A [2]. Starting from B0 step=
+ this
+> > version is required AFAIK.
+>=20
+> I don't think the SM is involved in this, because if I do the following=20
+> test, the MCU also fails to boot unless I do a reset:
 
-On TQMa8MPxL + MBa8MPxL:
-Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Is this some other reset than BLK_CTRL_GPUMIX? If so, it might be required.
+Don't know much about internal details though.
 
+Best regards
+Alexander
+
+> "
+> diff --git a/drivers/gpu/drm/panthor/panthor_device.c=20
+> b/drivers/gpu/drm/panthor/panthor_device.c
+> index d4d73eebca49d..fd81cd2654111 100644
+> --- a/drivers/gpu/drm/panthor/panthor_device.c
+> +++ b/drivers/gpu/drm/panthor/panthor_device.c
+> @@ -642,6 +642,18 @@ int panthor_device_suspend(struct device *dev)
+>   		panthor_fw_suspend(ptdev);
+>   		panthor_mmu_suspend(ptdev);
+>   		panthor_gpu_suspend(ptdev);
+> +
+> +
+> +panthor_gpu_soft_reset(ptdev); // needed, else panthor_fw_resume()=20
+> below fails
+> +
+> +		panthor_gpu_resume(ptdev);
+> +		panthor_mmu_resume(ptdev);
+> +
+> +		ret =3D panthor_fw_resume(ptdev);
+> +		if (!ret)
+> +			return 0;
+> +
+> +
+>   		drm_dev_exit(cookie);
+>   	}
 >=20
-> changes in v6:
-> - remove mutex in dw_hdmi_set_sample_iec958()
->=20
-> changes in v5:
-> - add empty line commit message for patch 7
-> - remove blank line in dts node
-> - add component_unbind_all when dw_hdmi_probe return error
->=20
-> changes in v4:
-> - separate dts for soc and board
-> - bind hdmi_pai with hdmi_tx by moving some code to .bind() and .unbind()
-> - add "select DRM_DW_HDMI" to fix build error reported by test robot
-> - remove unnecessary code/definition in pai driver
->=20
-> changes in v3:
-> - add space and 'U' in asoundef.h
-> - add more commit message for binding doc commit
-> - add bitfield.h header for fixing build error
->=20
-> changes in v2:
-> - address some comments on commit messages
-> - add two more commits:
->   add definitions for the bits in IEC958 subframe
->   add API dw_hdmi_set_sample_iec958() for iec958 format
-> - use component helper in hdmi_pai and hdmi_tx driver
-> - use regmap in hdmi_pai driver.
-> - add clocks in binding doc
->=20
-> Shengjiu Wang (7):
->   dt-bindings: display: imx: add HDMI PAI for i.MX8MP
->   ALSA: Add definitions for the bits in IEC958 subframe
->   drm/bridge: dw-hdmi: Add API dw_hdmi_to_plat_data() to get plat_data
->   drm/bridge: dw-hdmi: Add API dw_hdmi_set_sample_iec958() for iec958
->     format
->   drm/bridge: imx: add driver for HDMI TX Parallel Audio Interface
->   arm64: dts: imx8mp: Add hdmi parallel audio interface node
->   arm64: dts: imx8mp-evk: enable hdmi_pai device
->=20
->  .../display/bridge/fsl,imx8mp-hdmi-tx.yaml    |  12 ++
->  .../display/imx/fsl,imx8mp-hdmi-pai.yaml      |  69 ++++++++
->  arch/arm64/boot/dts/freescale/imx8mp-evk.dts  |   4 +
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi     |  27 ++-
->  drivers/gpu/drm/bridge/imx/Kconfig            |  11 ++
->  drivers/gpu/drm/bridge/imx/Makefile           |   1 +
->  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c  | 158 ++++++++++++++++++
->  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c   |  65 ++++++-
->  .../drm/bridge/synopsys/dw-hdmi-gp-audio.c    |   5 +
->  drivers/gpu/drm/bridge/synopsys/dw-hdmi.c     |  16 +-
->  include/drm/bridge/dw_hdmi.h                  |  11 +-
->  include/sound/asoundef.h                      |   9 +
->  12 files changed, 380 insertions(+), 8 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx=
-8mp-hdmi-pai.yaml
->  create mode 100644 drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c
->=20
+> "
 >=20
 
 
