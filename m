@@ -1,147 +1,115 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5672F3C30
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 15:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A74123D7EE
+	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 15:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756998468; cv=none; b=TVIt9GbeGE8pjVpXwpv10abkbHccT/c3/32ggwTsa5QHdL/HwCcoqulIWPdsdO9SQQYAXjmrUq/axgYw4WTN8HFu6+N+LdTmNMb3zUBpBZYtBG9jSiS0GPI6Vw5oUAVL3UWRXIekDHWa9uiv3OZu2OSFDGcXbtfa2DOEOQTCV94=
+	t=1756999229; cv=none; b=E+fhkiSBiyAGGFuHs8WwC7gPXyl28Ln6Mmeuu08hz6BUBAQ/QCWFcqqUTKr4dFHPxfUYlJvFXHA5crd8FuVUdJFXuZ/6piwtkp24vbLaVXwE3a/WqoceDDB/XJAGA0Rz4kTs4QDKGcwOGPP1J8z1TdZrleOlSTUaB+FjoajWti4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756998468; c=relaxed/simple;
-	bh=fS0p2XvoEODSzfsL/y2SRg6kik4BTTH3iloa52I6Zwg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rD4/C21Xz7HzZAikSNIXf2wK7l2K2GtfxrCOcQwp8y0V/t7VLUHZE/KxE+9ZNObmqQ1prlAy1cTKYnfqCQUEV2QmO68EiSwSRltoHaVmPHOnSfQxmMy1ETYQ3dnLMc9gC8mGfsYS+nNEsvdILlEyYHG+UaZyv++UHq9/whFfJxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WkUjzkda; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1756999229; c=relaxed/simple;
+	bh=lVG6RUOs/vuQiBSENy+Q+/Zs0wuP4CpZcsQ73d+Pss8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KpBXoX9gttF3jBuLIen7KOur50nf8ennD0om4xpl4vXRJGIsUfauK3/qksA+HfvPcjbC5252rx/GqiWbZxTFeIkxZETfXIeihe5I2W6AzDWcC15EDFtZBVXiLZli1/T+i+ItGGkUHMxLOmC6uKQBle3I5wxv6gltqZeZzlI4N2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=U7Y5JcbY; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WkUjzkda"
-Received: from pendragon.ideasonboard.com (230.215-178-91.adsl-dyn.isp.belgacom.be [91.178.215.230])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 659D6F09;
-	Thu,  4 Sep 2025 17:06:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1756998395;
-	bh=fS0p2XvoEODSzfsL/y2SRg6kik4BTTH3iloa52I6Zwg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WkUjzkdazSd/Ab/viLMONgDttbk+IxhhaO8VT3lz6l273uWHfZ2k4lX1AywQrsQ7I
-	 T6O6MDjd2YlzTTZzuXizAuJ11xcf/4fpl4UVbAZQ6p51dRYPMQcIDf+cc5DbSKu2Uv
-	 PvRGlGgjqW55TCQynCJ43FPkqb9AXkY00JcMFEbw=
-Date: Thu, 4 Sep 2025 17:07:23 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Isaac Scott <isaac.scott@ideasonboard.com>, rmfrfs@gmail.com,
-	martink@posteo.de, kernel@puri.sm, mchehab@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, hverkuil@kernel.org,
-	nicolas.dufresne@collabora.com, tomi.valkeinen@ideasonboard.com,
-	jonas@kwiboo.se, dan.scally+renesas@ideasonboard.com,
-	m.szyprowski@samsung.com, mehdi.djait@linux.intel.com,
-	niklas.soderlund+renesas@ragnatech.se
-Subject: Re: [PATCH v2 1/3] media: v4l: Add helper to get number of active
- lanes via a pad
-Message-ID: <20250904150723.GC6174@pendragon.ideasonboard.com>
-References: <20250903102243.1563527-1-isaac.scott@ideasonboard.com>
- <20250903102243.1563527-2-isaac.scott@ideasonboard.com>
- <aLlRgRBztMEicEgM@kekkonen.localdomain>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="U7Y5JcbY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1756999225;
+	bh=lVG6RUOs/vuQiBSENy+Q+/Zs0wuP4CpZcsQ73d+Pss8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=U7Y5JcbY2K+IP0RMcFoAhMxwWToXwsmZAUBPqSUOj9V997aSIGUmbeK0y6imQs3Mq
+	 /yPGz/VKDcqdAlxxChCXdUDccQSCCrYO4CdLPYL4kBDnGqqnjlpchyf4QFdGbXfcpA
+	 s2cd5lGAV2Um5SV545DCTXRIJJPXvwOKFonzwsvH+mZSWKpDK5FZOkP+2ew0Rs5nHg
+	 wBtisdLnWdyT4UFDT1tBM9hQcvR5sfg7iZ7U/DEdUKx0NHagcfrDeXuT8Q/itWCbBc
+	 QjAgvmjtx5TS18EhBtX3mi52zUojjACKwpZnC5uobBoTUFImGh4oXZDLVVJa6ZGyBI
+	 cv54/J3WQod/w==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id A057617E04D6;
+	Thu,  4 Sep 2025 17:20:24 +0200 (CEST)
+Date: Thu, 4 Sep 2025 17:20:19 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Marek Vasut <marek.vasut@mailbox.org>
+Cc: Peng Fan <peng.fan@nxp.com>, linux-arm-kernel@lists.infradead.org, Conor
+ Dooley <conor+dt@kernel.org>, David Airlie <airlied@gmail.com>, Fabio
+ Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Liviu Dudau <liviu.dudau@arm.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Philipp Zabel
+ <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>, Steven Price
+ <steven.price@arm.com>, Thomas Zimmermann <tzimmermann@suse.de>,
+ devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev
+Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
+Message-ID: <20250904172019.58e5f589@fedora>
+In-Reply-To: <36298ed9-05e4-4871-8e99-dfe814342c29@mailbox.org>
+References: <20250321200625.132494-1-marex@denx.de>
+	<20250321200625.132494-5-marex@denx.de>
+	<20250324094333.7afb17a1@collabora.com>
+	<c1de2afb-3559-4fbb-b13b-2373175b420b@denx.de>
+	<20250325084349.344a0f11@collabora.com>
+	<7aadf355-edf0-46fc-b969-65c3789375ca@denx.de>
+	<20250325153507.61d82e39@collabora.com>
+	<4c06aef3-a254-437c-aa15-8e3eb7bf5951@denx.de>
+	<20250325155231.0d1b1000@collabora.com>
+	<838a0c6b-845b-428d-86b3-1480e5b8080f@mailbox.org>
+	<20250904082224.113d0cd1@fedora>
+	<7d4e773b-64ac-49ce-8d8b-7a39c353d18f@mailbox.org>
+	<20250904160445.1671f140@fedora>
+	<36298ed9-05e4-4871-8e99-dfe814342c29@mailbox.org>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aLlRgRBztMEicEgM@kekkonen.localdomain>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 04, 2025 at 11:44:49AM +0300, Sakari Ailus wrote:
-> On Wed, Sep 03, 2025 at 11:22:40AM +0100, Isaac Scott wrote:
-> > Sometimes, users will not use all of the MIPI CSI 2 lanes available when
-> > connecting to the MIPI CSI receiver of their device. Add a helper
-> > function that checks the mbus_config for the device driver to allow
-> > users to define the number of active data lanes through the
-> > get_mbus_config op.
+On Thu, 4 Sep 2025 16:54:38 +0200
+Marek Vasut <marek.vasut@mailbox.org> wrote:
+
+> On 9/4/25 4:04 PM, Boris Brezillon wrote:
+> 
+> Hello Boris,
+> 
+> >>>> I suspect the extra soft reset I did before "un-halted" the GPU and
+> >>>> allowed it to proceed.  
+> >>>
+> >>> Hm, not quite. I mean, you still need to explicitly boot the MCU after
+> >>> a reset, which is what the write to MCU_CONTROL [1] does. What the
+> >>> soft-reset does though, is reset all GPU blocks, including the MCU.
+> >>> This means the MCU starts from a fresh state when you reach [1].  
+> >>
+> >> I have a feeling the write to MCU_CONTROL does nothing in my case.  
 > > 
-> > If the driver does not implement this op, fall back to using the number
-> > of data lanes specified in device tree.
+> > I believe it does, otherwise you wouldn't be able to kick the MCU
+> > and get things working until the first runtime suspend happens. I gut
+> > feeling is that there's something fishy in the FW or SoC integration
+> > that causes the FW HALT request to put the MCU/GPU in a bad state
+> > preventing further MCU_CONTROL(AUTO_START) from functioning correctly
+> > after that point.  
+> 
+> I wonder who at NXP could chime in ... Peng, do you know ?
+> 
+> >> Is there some way to probe the MCU state before/after setting GLB_HALT,
+> >> and also before/after the MCU_CONTROL write, using
+> >> gpu_read()/gpu_write() register operations, to find out what is going on
+> >> with the MCU at each point ?  
 > > 
-> > Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-> > ---
-> >  drivers/media/v4l2-core/v4l2-common.c | 25 +++++++++++++++++++++++++
-> >  include/media/v4l2-common.h           |  1 +
-> >  2 files changed, 26 insertions(+)
-> > 
-> > diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
-> > index 6e585bc76367..8683107b3704 100644
-> > --- a/drivers/media/v4l2-core/v4l2-common.c
-> > +++ b/drivers/media/v4l2-core/v4l2-common.c
-> > @@ -571,6 +571,31 @@ s64 __v4l2_get_link_freq_pad(struct media_pad *pad, unsigned int mul,
-> >  	return __v4l2_get_link_freq_ctrl(sd->ctrl_handler, mul, div);
-> >  }
-> >  EXPORT_SYMBOL_GPL(__v4l2_get_link_freq_pad);
-> > +
-> > +unsigned int v4l2_get_active_data_lanes(const struct media_pad *pad, unsigned int dt_lanes)
-> 
-> This line would benefit from being wrapped.
+> > Yes, there's an MCU_STATUS register [1].  
+> Is that the only register I can use , or is there something more 
+> detailed ? This register only returns values 0..3 which is not very 
+> informative.
 
-I'd also rename the dt_lanes parameter to max_data_lanes. "dt" sounds
-like data type.
-
-> > +{
-> > +	struct v4l2_mbus_config mbus_config = {};
-> > +	struct v4l2_subdev *sd;
-> > +	unsigned int lanes;
-> > +	int ret;
-> > +
-> > +	sd = media_entity_to_v4l2_subdev(pad->entity);
-> > +	ret = v4l2_subdev_call(sd, pad, get_mbus_config, pad->index,
-> > +			       &mbus_config);
-> > +	if (ret < 0 && ret != -ENOIOCTLCMD)
-> > +		return ret;
-> > +
-> > +	if (!mbus_config.bus.mipi_csi2.num_data_lanes)
-> > +		return dt_lanes;
-> > +
-> > +	lanes = mbus_config.bus.mipi_csi2.num_data_lanes;
-> > +
-> > +	if (lanes < 0 || lanes > dt_lanes)
-> 
-> lanes is unsigned int so no need to check for less than 0.
-> 
-> I might just not use a local variable for this, up to you.
-> 
-
-A debug message would also be nice.
-
-> > +		return -EINVAL;
-> > +
-> > +	return lanes;
-> > +}
-> > +EXPORT_SYMBOL_GPL(v4l2_get_active_data_lanes);
-> >  #endif /* CONFIG_MEDIA_CONTROLLER */
-> >  
-> >  /*
-> > diff --git a/include/media/v4l2-common.h b/include/media/v4l2-common.h
-> > index 0a43f56578bc..3f8937260c76 100644
-> > --- a/include/media/v4l2-common.h
-> > +++ b/include/media/v4l2-common.h
-> > @@ -584,6 +584,7 @@ int v4l2_fill_pixfmt_mp(struct v4l2_pix_format_mplane *pixfmt, u32 pixelformat,
-> >  	(pad, mul, div)
-> >  s64 __v4l2_get_link_freq_pad(struct media_pad *pad, unsigned int mul,
-> >  			     unsigned int div);
-> 
-> Some kernel-doc documentation would be nice.
-> 
-> > +unsigned int v4l2_get_active_data_lanes(const struct media_pad *pad, unsigned int dt_lanes);
-> 
-> Please wrap this, too.
-> 
-> >  #else
-> >  #define v4l2_get_link_freq(handler, mul, div)		\
-> >  	__v4l2_get_link_freq_ctrl(handler, mul, div)
-
--- 
-Regards,
-
-Laurent Pinchart
+Not that I'm aware.
