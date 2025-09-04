@@ -1,98 +1,102 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BB123C4FD
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 04:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E37C26D4DF;
+	Thu,  4 Sep 2025 04:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756959073; cv=none; b=s/iCkZsmBnIkLpxEnin/q0InrnMx5FZre7ZpbtDissu1pcUO9yoeO3RMASBBhuG3dZZa7o5UShqtCoZ+3SZSMZndSk03n/WrKoCVdylZDFkVOctSpM6Ajbffhpu/4HTxkN5oRWv5gNQR6kyJfP80F0AlRkb6rIeozlwKXN0yFgk=
+	t=1756960359; cv=none; b=grbrQ4mCJSSVd/UTpGxvAT0nhx7NcmmL8RqvuYEDsP1EUmV1Wmu6unBtE7/E64FFdUTPypfpV8SdPVldEQnz9ttMC83RsVL2sBZHUm57QdzksCNLHHCVw5ZmYXI0Igv/MlB0eru339C3POALqIlMVp/ePuNheCx9AO8PTOnmH7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756959073; c=relaxed/simple;
-	bh=MC5EokR8vqP0hQaPL2ptdiADa44yU0cE3N8XJ9LEkXg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nIJajHhu4lO7KQth06tnyoIay5Rv3aUar6agz1ha0zfEaRj8k3fHdX9YMUGi7SJWiF4K4PV4qqx2qtM08/yd0Df7ZVnloEsAaZCvoq9Al9zUoPSTosH3gp/vLM9ev7Q20+55xLq3u94m/jzp6wZlW357bD7v6VI1OMlJErMilpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=HiqyRxhO; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1756960359; c=relaxed/simple;
+	bh=M5TwpNr55usP9Sz8MApwPf1Fs9RyfM3185mpZDbrJyc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iT7PsY40vwekI4tzMeo7OD8lIm3Y8HrOl9biqssLg3Ih9YaMsfWM5eNYOdwCO74K78qHNFcte9LBQPtO86/yFbHSVEG2MK8nF2ZOlwhcQITVFVrLUafpTLqienxH+ohNmUawcpSXhyFHmE0bs84gvxY7Me4BcjNdE15kXKNqOqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mqcJTkuX; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="HiqyRxhO"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 144D3101BCF;
-	Thu,  4 Sep 2025 06:10:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1756959063;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=r6c256qQf2+lPChQleNTabNgjDZ9HCjDllbpACt/4yQ=;
-	b=HiqyRxhOZSloSKrX3V2oCouTXLKNM9m8vCwl+6zFdCKeAnk+4lP4fAyHCdMZ5i7Ijb07K6
-	hS01N3VoLh8XMft6KSEJ8zkPTX2afsGtRmcrfUQaCl2f4HOFEsIpnWLL53uM4nazS2E//n
-	oLzPhzCY5/h6h4zzwDwyejealvEkIBqtOs1NQ9C44ALAtajWB2YYXhlGHTAAtdjfcdq1YW
-	eAEy6c55Qf6guCZtrIz5ph81l9higMj5woX4bk+hg4qCNvYL71M5AcMDUfN5gdX1jstU86
-	HVPu8ZC5/Qk1blAkjPEIiKnHg6tI13scsYivM/QYwwFk0j9wKUVluvLzqX5hVA==
-Message-ID: <9b32b7f6-637e-000a-63ab-642022ad5b8d@nabladev.com>
-Date: Thu, 4 Sep 2025 06:11:21 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mqcJTkuX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756960357; x=1788496357;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=M5TwpNr55usP9Sz8MApwPf1Fs9RyfM3185mpZDbrJyc=;
+  b=mqcJTkuXkG6TAKpsUZQp7ZNebQXjjMWqXHRebLew2nFfPyQJiXKFoAAz
+   4peVl4egnB+/mVrfgM+y8jSR4lsc3fPwlt0n2dCPoHXJ8BNOEZ8ID2e7V
+   5z6ohE3luqmE3jAIpc+0yDcWmL4bAyyKJDn9ygmkuo17MZSuX2YuSvD8v
+   8ztz4/eHE+DxIf8JZY8A9WIHzMqOSS46O5UiEHLa5ak4XV5Df34L7RdXA
+   63Facm6hs+wSsADhDN/YZBwD5b+ygCeIHPifZi4jKMp+6OrBdknBI+I1B
+   2nI0tQJDlAuLllFFr82Az24m3R7fzlw9dK2R4eOPiRbBs1DnGs1amnNlk
+   A==;
+X-CSE-ConnectionGUID: +6Uaro6cRfmHS08un59E6g==
+X-CSE-MsgGUID: IvEDHY/TSb+YoG4JuxT3Gw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59204241"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="59204241"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 21:32:36 -0700
+X-CSE-ConnectionGUID: AbAUldJwTX65zWZ58P+kng==
+X-CSE-MsgGUID: asiFdFQmTLGNLDtAmDZW5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
+   d="scan'208";a="202625452"
+Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 03 Sep 2025 21:32:34 -0700
+Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uu1eA-0004kZ-2S;
+	Thu, 04 Sep 2025 04:32:30 +0000
+Date: Thu, 4 Sep 2025 12:31:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Marco Felsch <m.felsch@pengutronix.de>, Vinod Koul <vkoul@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jiada Wang <jiada_wang@mentor.com>
+Cc: oe-kbuild-all@lists.linux.dev, dmaengine@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Marco Felsch <m.felsch@pengutronix.de>
+Subject: Re: [PATCH 11/11] dmaengine: imx-sdma: fix spba-bus handling for
+ i.MX8M
+Message-ID: <202509041238.qCKW7MeD-lkp@intel.com>
+References: <20250903-v6-16-topic-sdma-v1-11-ac7bab629e8b@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 05/16] ARM: dts: imx6qdl-aristainetos2: rename
- ethernet-phy to ethernet-phy@0
-Content-Language: en-US
-To: Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20250903-imx6_dts_warning-v1-0-1e883d72e790@nxp.com>
- <20250903-imx6_dts_warning-v1-5-1e883d72e790@nxp.com>
- <CAOMZO5AGv2ykKmL631A6O2yas-1ffmFaZdHFGMxrFx93G9t8XA@mail.gmail.com>
-From: Heiko Schocher <hs@nabladev.com>
-In-Reply-To: <CAOMZO5AGv2ykKmL631A6O2yas-1ffmFaZdHFGMxrFx93G9t8XA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250903-v6-16-topic-sdma-v1-11-ac7bab629e8b@pengutronix.de>
 
-Hello Fabio, Frank,
+Hi Marco,
 
-On 04.09.25 01:37, Fabio Estevam wrote:
-> Hi Frank,
-> 
-> Thanks for working on this series.
+kernel test robot noticed the following build warnings:
 
-+1
+[auto build test WARNING on 038d61fd642278bab63ee8ef722c50d10ab01e8f]
 
-> On Wed, Sep 3, 2025 at 5:20 PM Frank Li <Frank.Li@nxp.com> wrote:
->>
->> Rename ethernet-phy to ethernet-phy@0 to fix below CHECK_DTB warnings:
->>    arch/arm/boot/dts/nxp/imx/imx6dl-aristainetos2_4.dtb: ethernet@2188000 (fsl,imx6q-fec): mdio: Unevaluated properties are not allowed ('ethernet-phy' was unexpected)
-> ....
-> 
->> -               ethphy: ethernet-phy {
->> +               ethphy: ethernet-phy@0 {
->>                          compatible = "ethernet-phy-ieee802.3-c22";
->> +                       reg = <0>;
-> 
-> Are you sure the Ethernet PHY is actually at address 0?
-> 
-> The board schematics are often needed to get this information.
-> 
-> I'm adding Heiko on CC in case he can confirm.
+url:    https://github.com/intel-lab-lkp/linux/commits/Marco-Felsch/dmaengine-imx-sdma-drop-legacy-device_node-np-check/20250903-212133
+base:   038d61fd642278bab63ee8ef722c50d10ab01e8f
+patch link:    https://lore.kernel.org/r/20250903-v6-16-topic-sdma-v1-11-ac7bab629e8b%40pengutronix.de
+patch subject: [PATCH 11/11] dmaengine: imx-sdma: fix spba-bus handling for i.MX8M
+config: arm-randconfig-002-20250904 (https://download.01.org/0day-ci/archive/20250904/202509041238.qCKW7MeD-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 13.4.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250904/202509041238.qCKW7MeD-lkp@intel.com/reproduce)
 
-Yep, Frank was lucky, phy is @0
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509041238.qCKW7MeD-lkp@intel.com/
 
-So, I am fine with that change.
+All warnings (new ones prefixed by >>):
 
-bye,
-Heiko
+>> Warning: drivers/dma/imx-sdma.c:477 struct member 'spba_start_addr' not described in 'sdma_channel'
+>> Warning: drivers/dma/imx-sdma.c:477 struct member 'spba_end_addr' not described in 'sdma_channel'
+
 -- 
-Nabla Software Engineering
-HRB 40522 Augsburg
-Phone: +49 821 45592596
-E-Mail: office@nabladev.com
-Geschäftsführer : Stefano Babic
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
