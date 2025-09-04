@@ -1,90 +1,124 @@
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8312B2FF15B
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 13:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD12F3054CA
+	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 13:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756993361; cv=none; b=hkvEb4DIIRLxUIfrGCqLaJYMfDHJI/w2GjYCatWBCXBFXQeWX4t1iNardBbCKAS32ZQReYqo59wsEdK+fNXY2/J067CBc4/PEuj9SwUm6KxqSe6/LhY3f+fUGJLRIEdTZv6Bdh5kYA0TWhh0sHLMM0si5MIT4+BlDtxwQf6j3yM=
+	t=1756993783; cv=none; b=dquj756DE2fcywy/lAxp40F4ycUnr81ce7yTh8lMSJR/E2NcPt5PfDCrJfVaJsY8dZdrN5wusJOzm/eoPGq5oV8mma+sDHpYFFEgNUi2X3bIsIdtvi/RFJQIuAE9JXBgQMNUi61mRwRk1mFdyiUPXhK9iFBKTqoLXyosf6gTrAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756993361; c=relaxed/simple;
-	bh=B9a9wo6oepcTyW30agfxF4Sjx593rtVckWJYfpXHpeM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=J+asyRJN+Los+MLi8Zi7cfir2/Rn3hDHd1FS0zLfksQu1Pq2v+5BdsMmrLq4j6fh99WqkTgLzqy0f80WChGwwoOaY6GYHCGKKvs9XimhsQ9YW/9AOweGKZrHkhHz5Nu2H4acFN5PR4wTydqG+UiTvR738SQRB5YE2uNzAqFktI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=CNiHXeS1; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=CNiHXeS1; arc=none smtp.client-ip=178.79.152.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+	s=arc-20240116; t=1756993783; c=relaxed/simple;
+	bh=0A6d2OfdcQaf6fvM7d144gsJwiSxigjXsdQkyq1yPrc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nm1oskg8+6V1XqcPXVYMl+o+1/61diEyPjwY0g9yfSP/+o9cPVsOdqj0yNCnzvD/zoc/e9AgmUmlvUwdvH5MpjjpWVRUWGDiLZFza8IQXgqiO7BSuBY//I32MKZI4IrVFahz0VlRfdMgFfimD+qa1tAm5UzBEF8SfqltUL1bAVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Z8oGhy3B; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="CNiHXeS1";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="CNiHXeS1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1756992944; bh=B9a9wo6oepcTyW30agfxF4Sjx593rtVckWJYfpXHpeM=;
-	h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
-	b=CNiHXeS1qxRRhlrs8yZoC91F4n7vsZoBpZ+lnsIqhOFY9EQk9moNVZdk54TeX0ykK
-	 bTLWTailgirVuzqNrjb8tudlxHEiS2OHREugW1qu404UZLuUWeX+ihjwMPIIV82WiC
-	 QMAL/OUkVUtox08lYutlio7Hy72yr6Hf4eebMp11Lw1GJTSpAUlQWt0Gp6vYxhmHav
-	 GpB8uzBX+TPocpviT24cdXfIzFAheeUS9f2bF+F13d/5mSYtr9jM5IWEJ/KqFRvQKw
-	 J+XamfD/EypOtNGQqydP06oS1judL9LGGZumOyUX64h7XjK0Pi/xG3db7Wc9i8XHhr
-	 /eWGHfgphSEeg==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id 974D23D1F86;
-	Thu,  4 Sep 2025 13:35:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1756992944; bh=B9a9wo6oepcTyW30agfxF4Sjx593rtVckWJYfpXHpeM=;
-	h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
-	b=CNiHXeS1qxRRhlrs8yZoC91F4n7vsZoBpZ+lnsIqhOFY9EQk9moNVZdk54TeX0ykK
-	 bTLWTailgirVuzqNrjb8tudlxHEiS2OHREugW1qu404UZLuUWeX+ihjwMPIIV82WiC
-	 QMAL/OUkVUtox08lYutlio7Hy72yr6Hf4eebMp11Lw1GJTSpAUlQWt0Gp6vYxhmHav
-	 GpB8uzBX+TPocpviT24cdXfIzFAheeUS9f2bF+F13d/5mSYtr9jM5IWEJ/KqFRvQKw
-	 J+XamfD/EypOtNGQqydP06oS1judL9LGGZumOyUX64h7XjK0Pi/xG3db7Wc9i8XHhr
-	 /eWGHfgphSEeg==
-Message-ID: <147ba109-684e-4490-887a-54f7efae1d03@mleia.com>
-Date: Thu, 4 Sep 2025 16:35:43 +0300
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Z8oGhy3B"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cHgnt1KWHz9srp;
+	Thu,  4 Sep 2025 15:49:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1756993778;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7Eyv4JfVwk6E7rSyv4qxxGsrvnR26XQTwFmzC798VcA=;
+	b=Z8oGhy3BizEHytmaH8F6sq9GpUXO8WVDZYaX3DqqpQ5FOZLnpCLgY5+KwRcHe/2Bymwo53
+	pWeX0VVqcbLJTlM/79SHzKAKZTPcxMe+OFOu+vlajVrtgz2pcbha11l+uViNnaak+dE5tC
+	kdIvb4wYEbp0Cr8BIdD6BsZyQeTGT3pMmZUS19RKcBlSNN8ty8CCZXCjYiMVOANSdqXdSx
+	1iKFM0oZB10Ks2J6ktdRWIVDBHng1p6JLsrJN+onB7MYAv6LiRMZ3P7h6ImasnOfyQH5cX
+	ZaWy/mNKr9TO6yOdfJUnjtbuk5NeSbBsHtIrAqNZJm7WotSMIBOIZtAEdl4WWw==
+Message-ID: <7d4e773b-64ac-49ce-8d8b-7a39c353d18f@mailbox.org>
+Date: Thu, 4 Sep 2025 15:49:31 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/11] ARM: dts: nxp: clean lpc18xx DTB check warning
-To: Frank Li <Frank.li@nxp.com>, Arnd Bergmann <arnd@arndb.de>
-References: <20250706-lpc18xxx_dts-v1-0-7ae8cdfe8d7d@nxp.com>
- <aKiCIZf0eG2F0nvr@lizhi-Precision-Tower-5810>
-Cc: Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <aKiCIZf0eG2F0nvr@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
+ David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Steven Price <steven.price@arm.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, devicetree@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev
+References: <20250321200625.132494-1-marex@denx.de>
+ <20250321200625.132494-5-marex@denx.de>
+ <20250324094333.7afb17a1@collabora.com>
+ <c1de2afb-3559-4fbb-b13b-2373175b420b@denx.de>
+ <20250325084349.344a0f11@collabora.com>
+ <7aadf355-edf0-46fc-b969-65c3789375ca@denx.de>
+ <20250325153507.61d82e39@collabora.com>
+ <4c06aef3-a254-437c-aa15-8e3eb7bf5951@denx.de>
+ <20250325155231.0d1b1000@collabora.com>
+ <838a0c6b-845b-428d-86b3-1480e5b8080f@mailbox.org>
+ <20250904082224.113d0cd1@fedora>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <20250904082224.113d0cd1@fedora>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20250904_133544_638941_E41EFE75 
-X-CRM114-Status: UNSURE (   8.42  )
-X-CRM114-Notice: Please train this message. 
+X-MBO-RS-ID: 74f787c64e361a067a0
+X-MBO-RS-META: 4dihidnqffe48jkhfqpgw3ysi95xrxr6
 
-Hi Frank,
+On 9/4/25 8:22 AM, Boris Brezillon wrote:
+> Hello Marek,
 
-On 8/22/25 17:43, Frank Li wrote:
-> On Sun, Jul 06, 2025 at 02:46:56PM -0400, Frank Li via B4 Relay wrote:
->> There are 3 dt-binding patch wait for pick.
->> [1] https://lore.kernel.org/imx/20250617-hound-of-improbable-intensity-e7c3c9@kuoka/
->> [2] https://lore.kernel.org/imx/174916907717.3619367.3745642154654809311.robh@kernel.org/
->> [3] https://lore.kernel.org/imx/175087864578.2055525.4510390315154712025.robh@kernel.org/
->>
->> lpc18xx related DTB warnings reduce to 0.
+Hello Boris,
+
+>> Can you please test the following patch (also attached) on one of your
+>> devices, and tell me what the status is at the end . The diff sets the
+>> GLB_HALT bit and then clears it again, which I suspect should first halt
+>> the GPU and (this is what I am unsure about) then again un-halt/resume
+>> the GPU ?
 > 
-> Vladimir Zapolskiy and arnd:
+> It doesn't work like that. What you're describing is like executing
+> "shutdown" on your terminal and then typing "boot" on the keyboard
+> after your computer has been shut down.
+
+That is what I thought , yes .
+
+I think what I am looking for is the "power key" .
+
+[...]
+
+>> That means, the GPU remains halted at the end, even if the "GLB_HALT"
+>> bit is cleared before the last print. The clearing of GLB_HALT is also
+>> what panthor_fw_post_reset() does.
 > 
-> 	I asked shawn, these are not owned by him.
+> After the halt has been processed by the FW, the memory region where
+> you check the halt status again is inert, since the micro-controller
+> (MCU) supposed to update those bits is off at this point. The FW
+> interface is really just a shared memory region between the CPU and
+> MCU, nothing more.
+
+Right.
+
+>> I suspect the extra soft reset I did before "un-halted" the GPU and
+>> allowed it to proceed.
 > 
-> 	who will pickup these patches?
+> Hm, not quite. I mean, you still need to explicitly boot the MCU after
+> a reset, which is what the write to MCU_CONTROL [1] does. What the
+> soft-reset does though, is reset all GPU blocks, including the MCU.
+> This means the MCU starts from a fresh state when you reach [1].
 
-I'll do it.
+I have a feeling the write to MCU_CONTROL does nothing in my case.
 
-I'm preparing a few more changes for LPC32xx also, and I will send a PR for v6.18.
-
--- 
-Best wishes,
-Vladimir
+Is there some way to probe the MCU state before/after setting GLB_HALT, 
+and also before/after the MCU_CONTROL write, using 
+gpu_read()/gpu_write() register operations, to find out what is going on 
+with the MCU at each point ?
