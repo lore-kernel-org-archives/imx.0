@@ -1,201 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DED15A85A
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 13:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12082E175C
+	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 13:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756991858; cv=none; b=Iv1qbOxyOp8Y1BuzR7j+xREmHLUagBjU+20lrfAEhmTrJ+o5kb7SP7KV0Ppny9aKox1PrQKdB1j+kiAEInZ2R1VY8q5aq4imsgDmho4WOrXzhVUFBh78h2GbCayUqfflA6r1xZAM9vRZ2HCmzhlzH3Rvjl9tQ+h2VGUMOA+Lv/o=
+	t=1756992079; cv=none; b=JOX2R8uvVETk1cX+ncMxxUhPpVZuUqLz2J9mz7AKh1/+025GyhtsGPYKtNf6OCVCCHVkVqhGdjuGEBHN7yhv0TPDXJMKjSiCTaLqV8ku79b1J+04KloyyiycU0cj5zEgt22BgomLIapqtkxza6Wmh3wXgM5looOG59V/yyAk3Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756991858; c=relaxed/simple;
-	bh=J37h8zaAlmHnvnALjyhUgHlYpkvFqaV8s8bqNB0XjFQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UMbjhuMhaMMuRyxNuNrATaJFQRGcySWC6azi+O8eE7CnNZiYoAnUwsN6T+Z//OgPeZgsgZZuymlLYKlc1PXpbj22zvAYsY1GR6f/qvQchpnVdvelN54OLUexh5/tRiKUYjFpWZ5Z9jTmUi80wlf1seIzxdED+DPuvEsxvqI4AUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ON9fgXII; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756992079; c=relaxed/simple;
+	bh=/0B3jovSesp/hxR08tvuxjzy1mvl0Jv+lkX17ZO+zUo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GxT5D1Z6RPxxp1cmx2N51EdyuGB13fvH2/eC5A0rY416kQx4Fz7fDyjtFNfZ1vQs4jyr61OHjbx5RH7qzmHW5nHWrwGkjJD/3PjSCungxPsA+8ASSQYb8LxIpvQ49NK+wt5Uxe9s7BjZezfsTDUPuBwc4roYSr1kOgP0y7r+VDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SAwwruh0; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ON9fgXII"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF44BC4CEF5
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 13:17:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756991857;
-	bh=J37h8zaAlmHnvnALjyhUgHlYpkvFqaV8s8bqNB0XjFQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ON9fgXIIUDGpfHyEAQoP5P4Jq00ScKvJReOGB5ZPzmOUnk0uc2qS8ijYb73VQdkN7
-	 W5FB0ytPjAf8vf1xn6JP8Vopnjo/LegXwda84le3U/RqFWKjU/k7JkpRRWN2IoMrZs
-	 TW7Y2Z7Vqn1M2XKvfEt6S6JsHiE3ofLj9rOWJuwyKafuaMKAiuB+PtDbr//FJwrysu
-	 RxlVQGexG18Vbn67iGjEJUCibTi7XU1p9jgeWdKzpkxuev8In240il4XzR46F4ux6p
-	 QdxTqFMp0UGydXoKwFU66YvzdZffRiLxfSHJKckO/TORAUgl4iU+RBNPKuTF30aIX9
-	 ruyJxAXJRIv0w==
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-74381e207a0so830739a34.0
-        for <imx@lists.linux.dev>; Thu, 04 Sep 2025 06:17:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV/BkRcbWFH4eLq/G5byO6vPXRMD8N4xk5SxChAMAS+oNb/UNd5nTUVM2I6l/NsYtyTQbA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxiFjrbM5nLfGUFTRPTZhmU2OKPL1dFACVai4lGr32MDw3gR3NQ
-	8pH2D9Bbz8hoK9SikmE7mLF15kcHXu+PnA0XDxT2EfitKD0LKsWbi6dW5rJ2MAcJvNMIX8ZNq0n
-	622/RzC0k+uOqcKAX6G3MvUxUNEdR420=
-X-Google-Smtp-Source: AGHT+IEjDfW+3hJPUPYu26F2xz+pxJ+KiqPGjYP79H7T0/I1zIoWql1eDpgpdg2oH+VBSzMp/G1t2kU5l5bZBE+Bi2g=
-X-Received: by 2002:a05:6830:4901:b0:73e:8c8b:749 with SMTP id
- 46e09a7af769-74569c6739fmr14127345a34.0.1756991857138; Thu, 04 Sep 2025
- 06:17:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SAwwruh0"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-71d60110772so11171987b3.0
+        for <imx@lists.linux.dev>; Thu, 04 Sep 2025 06:21:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756992077; x=1757596877; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UW3lWz1gWateAvfJ4OmLaSxYKXnyj9z9mVCRV3AJ32A=;
+        b=SAwwruh0Vyjft5YRWMpsvGcuXfLT1gu8z3ZFPwwM+mocnlzSDEGTjbXd1errxiRzFu
+         maH1X3jWQK/f+i2RICaDh25lQLJBFh5ZIZTH4yhzHv91/AK25WWiYXX8pzbYoWKjmiIQ
+         pUgtmqxGr3dRep96NKurRpSKP3FOYr9ojXpfiBqaJUxMd7UjmfrTrhmOI2C0gq3fv3Dm
+         Tfc69t5F4qAbfp0TgmmlAKnlGxN1eSn1naS+ERlaoDndVd3cpZbeg0J8zLcP+Fld6BPY
+         N678xmvl8kTUJaGqT33vv5mgv+4ELUH0Vfp1z5c7Lda4XGTlUs3eCJJA8/zM2c4B52ru
+         cccA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756992077; x=1757596877;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UW3lWz1gWateAvfJ4OmLaSxYKXnyj9z9mVCRV3AJ32A=;
+        b=pICoURn5O95y2gmpblUtHUOLRdHWjuOzi5qaO/EoNh7ni+n1ggNo/PwAXdGkonfMIk
+         SEtItEegBrDsSmWAZZ0hzEjXR0aVy+WeO68jK7W7GJ5bzDpUF+aXLxpfIwgQrg84bXl9
+         PQnu2tDb/nTlei1Gq/1dc0l6oM59k1rK0D9bUeZ4FJH7AlXzD/J0jNKeRoPK8RAGBsx0
+         WuqVVqRPloTKSc9BT8foK4h1cz72UPrOtwZHH6KIvrWY4h61cMkTC3QL5NpPc6FGx3qV
+         DHc1GFldjnsRJfCI+O+cIru/4GfSLTdNJsiR/goWo4/NqNTZUxeADrBFjW+xgATKyxDC
+         D/8w==
+X-Forwarded-Encrypted: i=1; AJvYcCXTBFg3sRqRYomb4gx9f1Y5QB3tbzVgwd4/Qi++JQld9eobuECVOlJwuUWV49/DAoBrn7M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzXlb+WD7cdplSBiAMzTWXe3Ar9kcaMiXpvGA2BiZlvXS4Ye8am
+	TtdmMtEgXHE/u4g42SDLkuONGe4Y66ZAURZLK72mgVG5AzZuN+afuDqE
+X-Gm-Gg: ASbGncsidIoSYkTp/oYHt1wk4TqGT490czNbZe9mezCwZKCsIHmaRjtQlwfP3i3qSVv
+	DjvoSeQ1GJHjj2rwTPSIoQ9gClObe6z9PH3zNZ7VrIWd0u2BJ1oLP0ZqZhpr2eNPMkP6uHyazSr
+	Rw0BHANJ32VCuC5MMAldkoRaRzH7cWss2z/GbfQZuATSxIIJ8Xu/0FwU12t26nGZnbr+E8y64Oh
+	JxjQGIeD4Wkd1u51cgdAZhmKC9CRgTyLpD5iynNkmNGhj92EI15907+Lp13jlJBC16MSRhwlE87
+	anDgDsCZ/MYVsdpwGJthQjt4fK4Jl+qPk4ydHrUrvONnr0O2AXLrXhfoo8Uk8ypDT1awLVZFAj6
+	/xC1Q1ITdYDSzBwDZcslrFcHEr0+1L6Ac/l3RpHxSTYjzqTq+dtLA
+X-Google-Smtp-Source: AGHT+IF9+DoFzLHOQRcPIJ7cBivUYyoDwWq+J13ybXKomD3r4/KZ33bHYn/W4QL4kQIHtZodp5+7Tg==
+X-Received: by 2002:a05:690c:4c11:b0:719:4cff:16db with SMTP id 00721157ae682-722764f3cd0mr60887077b3.25.1756992076451;
+        Thu, 04 Sep 2025 06:21:16 -0700 (PDT)
+Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6f:e2d5:5eff:fea5:802f])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-723a8503a46sm21340297b3.46.2025.09.04.06.21.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 06:21:15 -0700 (PDT)
+Date: Thu, 4 Sep 2025 06:21:12 -0700
+From: Richard Cochran <richardcochran@gmail.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	vadim.fedorenko@linux.dev, Frank.Li@nxp.com, shawnguo@kernel.org,
+	fushi.peng@nxp.com, devicetree@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v6 net-next 03/17] ptp: add helpers to get the phc_index
+ by of_node or dev
+Message-ID: <aLmSSC90dWDfhGkL@hoboy.vegasvil.org>
+References: <20250827063332.1217664-1-wei.fang@nxp.com>
+ <20250827063332.1217664-4-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
- <20250903131733.57637-8-zhangzihuan@kylinos.cn> <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
- <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
-In-Reply-To: <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 4 Sep 2025 15:17:26 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g__9g_dfA3=4GVi351f4CKBegKkW9nU81j+Qu=2Hfg1Q@mail.gmail.com>
-X-Gm-Features: Ac12FXwmEGaidQr8PE8Gnv5hzk4SwGXFsXwEgV1BR4I0F2oh9v2_Dsc7pRXgYnA
-Message-ID: <CAJZ5v0g__9g_dfA3=4GVi351f4CKBegKkW9nU81j+Qu=2Hfg1Q@mail.gmail.com>
-Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827063332.1217664-4-wei.fang@nxp.com>
 
-On Thu, Sep 4, 2025 at 12:38=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.c=
-n> wrote:
->
->
-> =E5=9C=A8 2025/9/3 21:45, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> > On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylino=
-s.cn> wrote:
-> >> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> >> annotation for policy references. This reduces the risk of reference
-> >> counting mistakes and aligns the code with the latest kernel style.
-> >>
-> >> No functional change intended.
-> >>
-> >> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> >> ---
-> >>   drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
-> >>   1 file changed, 11 insertions(+), 19 deletions(-)
-> >>
-> >> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-> >> index 99390ec1481f..f76594185fa2 100644
-> >> --- a/drivers/powercap/dtpm_cpu.c
-> >> +++ b/drivers/powercap/dtpm_cpu.c
-> >> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtpm)
-> >>   static void pd_release(struct dtpm *dtpm)
-> >>   {
-> >>          struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
-> >> -       struct cpufreq_policy *policy;
-> >>
-> >>          if (freq_qos_request_active(&dtpm_cpu->qos_req))
-> >>                  freq_qos_remove_request(&dtpm_cpu->qos_req);
-> >>
-> >> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
-> >> -       if (policy) {
-> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-> >> +               cpufreq_cpu_get(dtpm_cpu->cpu);
-> >> +
-> >> +       if (policy)
-> >>                  for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
-> >>                          per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL=
-;
-> >>
-> >> -               cpufreq_cpu_put(policy);
-> >> -       }
-> >> -
-> >>          kfree(dtpm_cpu);
-> >>   }
-> >>
-> >> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
-> >>   static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
-> >>   {
-> >>          struct dtpm_cpu *dtpm_cpu;
-> >> -       struct cpufreq_policy *policy;
-> >>          struct em_perf_state *table;
-> >>          struct em_perf_domain *pd;
-> >>          char name[CPUFREQ_NAME_LEN];
-> >> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm=
- *parent)
-> >>          if (dtpm_cpu)
-> >>                  return 0;
-> >>
-> >> -       policy =3D cpufreq_cpu_get(cpu);
-> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-> >> +               cpufreq_cpu_get(cpu);
-> >> +
-> >>          if (!policy)
-> >>                  return 0;
-> >>
-> >>          pd =3D em_cpu_get(cpu);
-> >> -       if (!pd || em_is_artificial(pd)) {
-> >> -               ret =3D -EINVAL;
-> >> -               goto release_policy;
-> >> -       }
-> >> +       if (!pd || em_is_artificial(pd))
-> >> +               return -EINVAL;
-> >>
-> >>          dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
-> >> -       if (!dtpm_cpu) {
-> >> -               ret =3D -ENOMEM;
-> >> -               goto release_policy;
-> >> -       }
-> >> +       if (!dtpm_cpu)
-> >> +               return -ENOMEM;
-> >>
-> >>          dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
-> >>          dtpm_cpu->cpu =3D cpu;
-> >> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
-parent)
-> >>          if (ret < 0)
-> >>                  goto out_dtpm_unregister;
-> > So this change kind of goes against another recommendation given in cle=
-anup.h:
-> >
-> >   * Lastly, given that the benefit of cleanup helpers is removal of
-> >   * "goto", and that the "goto" statement can jump between scopes, the
-> >   * expectation is that usage of "goto" and cleanup helpers is never
-> >   * mixed in the same function. I.e. for a given routine, convert all
-> >   * resources that need a "goto" cleanup to scope-based cleanup, or
-> >   * convert none of them.
->
->
-> Should I replace all the memory allocation cleanups here with `__free`?
-> That would allow us to drop all the `goto`s, but since this function has
-> quite a few of them, I=E2=80=99m concerned it might introduce new issues.=
- What=E2=80=99s
-> your recommendation?
+On Wed, Aug 27, 2025 at 02:33:18PM +0800, Wei Fang wrote:
+> Some Ethernet controllers do not have an integrated PTP timer function.
+> Instead, the PTP timer is a separated device and provides PTP hardware
+> clock to the Ethernet controller to use. Therefore, the Ethernet
+> controller driver needs to obtain the PTP clock's phc_index in its
+> ethtool_ops::get_ts_info(). Currently, most drivers implement this in
+> the following ways.
+> 
+> 1. The PTP device driver adds a custom API and exports it to the Ethernet
+> controller driver.
+> 2. The PTP device driver adds private data to its device structure. So
+> the private data structure needs to be exposed to the Ethernet controller
+> driver.
+> 
+> When registering the ptp clock, ptp_clock_register() always saves the
+> ptp_clock pointer to the private data of ptp_clock::dev. Therefore, as
+> long as ptp_clock::dev is obtained, the phc_index can be obtained. So
+> the following generic APIs can be added to the ptp driver to obtain the
+> phc_index.
+> 
+> 1. ptp_clock_index_by_dev(): Obtain the phc_index by the device pointer
+> of the PTP device.
+> 2.ptp_clock_index_by_of_node(): Obtain the phc_index by the of_node
+> pointer of the PTP device.
+> 
+> Also, we can add another API like ptp_clock_index_by_fwnode() to get the
+> phc_index by fwnode of PTP device. However, this API is not used in this
+> patch set, so it is better to add it when needed.
+> 
+> Suggested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Frankly, don't use __free() in this code at all, at least for the time bein=
-g.
-
-There is a problem with dropping the reference to policy at the end of
-__dtpm_cpu_setup() because that policy may be subsequently indirectly
-used in set_pd_power_limit() which calls
-freq_qos_update_request(&dtpm_cpu->qos_req, freq) and
-dtpm_cpu->qos_req->qos is policy->constraints, so using it will cause
-policy->constraints to be dereferenced in freq_qos_apply() which will
-crash and burn if the policy goes away in the meantime.  So AFAICS
-__dtpm_cpu_setup() shouldn't call cpufreq_cpu_put() at all and the
-policy should be released in pd_release() without acquiring a new
-reference to it.
-
-You may as well try to fix this if you have free cycles.
+Acked-by: Richard Cochran <richardcochran@gmail.com>
