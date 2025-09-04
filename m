@@ -1,105 +1,263 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013027.outbound.protection.outlook.com [52.101.72.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AD7319866;
-	Thu,  4 Sep 2025 17:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757005786; cv=none; b=QOEoznD5XlvvLBFGW+qi/UGvDoHPfYdZb75N0zBE4aOp8dZGkMQpKsa31WZn/hNSCkVIhJCWJye7TJwTR19LR/mOxOqY0+sua/y0+h/Z48FRieV+0wCBwXu+nTCSIfhCv8gLBHNJ1kBhODIu6aWPRCW1cFm4CMhmLBTIQiAHWMo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757005786; c=relaxed/simple;
-	bh=Kb5OEk6CH681dR8WwdpshUf8PEmUll6MbXBONva8auo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IW3Vlf9U2HdaU4Xt8PUiFxJ6uqawztnZ+R9yqXmigK7yGrJ43OYJ3qgdyv3V+Ai0ftn1k47rmP0176EIuzfRBjf1Uy5Pm6SkI/Wj/SJeRdkI5FG5NN+S2AGTvlOfgQjZ8WavDCU55cxvEfqqfCQf+3qlaKPYHnXc+BQ6KSHFo30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gPSwdcJP; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A97830CD9A
+	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 17:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757006165; cv=fail; b=Amj0BqtTB1Ulio3yMP2DIMJ4oWzVKIEEaNdJuFtuNM78l/5erk9UpzOjrs2LAURkMQYegNomn9oUGSORfpO57QKGRgt96Z95yLd3m5HmEOGJqnk2cs4hzCV3DkbY6zHsi6MPvHjA+KQpMQtlxfCHeESUsEuB6jbmBnj5t/Rl+L0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757006165; c=relaxed/simple;
+	bh=Svx703Ww5dERgSoCb25wrICQdd8Sf6n42+SJItGU8Rk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=fjefb0Tz69lc5XtLdwOtJR5ljTl4gO2n3YSbf1arT15Yy3LtjcHFfMpaFm2KzJXC5hSKR5IogeEinn9BSXU2wgyUumtLarpqjCX0oQmU1aqCMJYLTUqPBsowuw6HBCMxcoTWY4bSPBc/kjfdl+WpfRZPGB3i9UQjaZ4hWCo1AHk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mo9FLJWp; arc=fail smtp.client-ip=52.101.72.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gPSwdcJP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9297BC4CEF0;
-	Thu,  4 Sep 2025 17:09:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757005786;
-	bh=Kb5OEk6CH681dR8WwdpshUf8PEmUll6MbXBONva8auo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gPSwdcJP4MCiJ8QOfsVD77rIQdkXbfYiHaf4DPc/qOL1RGsR7t1mB26BNa/wvie6/
-	 ts8MIC5y8oLbQYvx0SMK33g32n5jSPH56QYrTHBu58/OwGaH4ZukJobGqMjoJfrDIL
-	 eIi1ufaEBTSeaoJQ1Ob4zLrTGy+/35sR7cL2JoNSPhdlU8Lrll1PsE86mPd9dxw1X1
-	 VsUcDNGjRIGA7Ti6yC45ONK39KNjqcXDi71D4bz33iTtNq6s/A+P/Kcuf5z57Ds/QV
-	 afQ/Sn8+EkWLyvj5vV81lEF2v2UuedyRrmT89OraQjWTmYe2ZW5/pFcMeANV7zKhPt
-	 aQ1vSw3Vn+lCg==
-Date: Thu, 4 Sep 2025 22:39:34 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] PCI: imx6: Enable the vpcie3v3aux regulator when
- fetch it
-Message-ID: <piirka3qlna6k33r2eutg26s2iepnvubzbdps6rh5b2tzhxxmg@c7nv3jgkwxpw>
-References: <20250820022328.2143374-1-hongxing.zhu@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mo9FLJWp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gOzfpQugOEl4/bjhjdRQHvcylMmXwKQSby9SrGdGpFrsNI7NIIkU6nL6DKc9LlVDficR+Qnm7b40YUcqr70oCcwv0i9vZC79M92znknRdse9QPOZqa8lYRoIjMyfwtt04U90HEpyy86QJwVbvkpMmh+byO+DaoeHsbAn5rUDskPnovT+CxYu5DEPSoOj9/lVzpxKp9OUm9bwkq05NznrWu+zP5vxV/FRiBzvKSC5ht7mKJySI2XNp0ewyLcaTU7Mdp/W7deX626rbFAuOYe53bYPHRFNY40ZzMALVAOHyRGQtwAxQxioNegi0WjunS2Il9fadzA9iyzPOljw5WQxOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CKF741Fzo+bqI80C4IhJ14QPzQyIkx51jb2lJxqNHiA=;
+ b=lBfTAxcz5hV3QzRM/8iudOFM7Mg6axFTmo56dJDu0bBwVWJoHKpL9QhG5J+KuS1o2wYWllIxOaYtWjGP1hrg99ZTYxAHLuui4Waru6sXU+N1E/JMY6Pksis2qUWmyBArhmVraacqt/YWCRiVoFHSvX4gKO9YvSzwA+WtT2XcvdMgw/V3pATVR1BrpV7PynEU00Y826/VA5K9V5K/NfBm6Ya1ciKCoUC7djByDJ0XKAE4s/hkWF26OVyJ82nvcF9dX+yddyG/NGBDOaDtrq92dV3wK1oppJvO6WnaFZi8nmvf/OsASoVnX9g5pAi2Hq+45FWFzzns+ihnfMM3n+XxkA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CKF741Fzo+bqI80C4IhJ14QPzQyIkx51jb2lJxqNHiA=;
+ b=mo9FLJWptntUXhVFbvLcNXsSRJkV3+E+DO5J97TuZnU1aXt/2ksCmXQ/ZaHP6AXKk11hCe48g99BjTum4+MwZ8prjsi6xZPBQmxl3Srrbj3fcNGqggeUo650PnzJ3LnfdsD4RcbQ8KrmHDIqqUb4BE4PDS9Sl+3PlP3MhOxQv5Rrzy3AadYV2JJPz6Fx4z7xHTsIgup/3n4WR+5OWg57soMM2JMgcM65GcmBeJluggbOKDByrCcVyE9kZBXiZosNXgzpOfadSelnabcmgy8W3gXis0ENJXvd2PZEQVV4zv1emPaUf7NKJOqpHN+hnwZxM2ru/hAn2VDBGgCjVUZ7UA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by MRWPR04MB11492.eurprd04.prod.outlook.com (2603:10a6:501:75::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Thu, 4 Sep
+ 2025 17:16:00 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::55ef:fa41:b021:b5dd%5]) with mapi id 15.20.9094.015; Thu, 4 Sep 2025
+ 17:16:00 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v2 1/1] dt-bindings: input: exc3000: move eeti,egalax_ts from egalax-ts.txt to eeti,exc3000.yaml
+Date: Thu,  4 Sep 2025 13:15:41 -0400
+Message-Id: <20250904171543.517650-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0357.namprd03.prod.outlook.com
+ (2603:10b6:a03:39c::32) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250820022328.2143374-1-hongxing.zhu@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|MRWPR04MB11492:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1916285a-47eb-4417-6fc6-08ddebd6b779
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|52116014|38350700014|921020|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?eYTADqF4C1NOidYT8oFvqhjnZhfaiFlrK0e8MQx/EEK6WfpUJBL6yZ0rKyjX?=
+ =?us-ascii?Q?3Uyp8QkHR65e7XLY38Nrnc4mPXIeSdXui2U1VdYDXMa8AhT8aRwcVEWIjMpd?=
+ =?us-ascii?Q?z94vuM/C+sno8gHB4ZGdyX2/9grpB/fIOP65+nYGKw9lcWT+JdXe2pdTTM8q?=
+ =?us-ascii?Q?QEgqdTxM8pg3FInKUL1biw9V5nh8oVT8Bp7LInRTcwMWjS0qkzHMbjaeT889?=
+ =?us-ascii?Q?X9qnYyoyI39sdwbd0CZNJ3IfiVUDpo8q0bBmHV5O9SAtDDPcD5EsBJHI41o1?=
+ =?us-ascii?Q?9uZnyTxAO3LKohQDdG8/0fMtPY0UzaPyxVR7IaCcD/lvmcH11fngJVk/svMx?=
+ =?us-ascii?Q?6QVr+eqXQfdHeMx9JXRrkE0o9m4MQvdO3mrwaT6KAAhHtXztJDlV2Tj64g5m?=
+ =?us-ascii?Q?eivcl0ahhzuw/T/vfo9nGUAd7F9wo+CqGo3xuqFD4mGwAyLaFnNo3FLWX8uk?=
+ =?us-ascii?Q?HzT7agkxuUXOnCqNM/PnIAk5UlGP8eM8OuNYpCug2Y2iuc9y7ydwFkenTxh4?=
+ =?us-ascii?Q?YNd+V5PG/hH+2VChF2aHvPITlNcQBGF7rvPI7g2IwcpyXzFVMZN1uLCKg47b?=
+ =?us-ascii?Q?WMfCUkZu41w2N22ZRPmBOf+kwLG1kzpr41fWg+DkEhPwzvvLgdqGQFw5vXDs?=
+ =?us-ascii?Q?hwuatQMnDv4rxUtPeYSwifqhGu3RW1gnF+0m4TpA/hgh8e/f97F5im2FMoru?=
+ =?us-ascii?Q?RbfPQi8384C7AUVaSKbSSALcZTlnHMhgUa8Dcuzfkx+KdQLoyX1mAvhhfTMK?=
+ =?us-ascii?Q?JQki6i4GQApn5Ffa/uj61dJ3vu/UaEzPJuuUZ0MIxr/rqjLrv4Ap7q8Ubyaf?=
+ =?us-ascii?Q?ALBA47Xze0P1nFGb7eI508YKEIM14+CBC9gEC/ULThUK/KqhU2wjDLnJUcBE?=
+ =?us-ascii?Q?3tVAMGi8BYwafLmHmH+lQbnXZzP+Y/ixbAawRrljAM8qwrVn108nPEpK3ZMc?=
+ =?us-ascii?Q?mG/qHAMZtUJhrvIKBCaDIWPr1imswgqrDVGfoQoRVuUjJGYXCaKSJJbd1N7p?=
+ =?us-ascii?Q?qErRikRD33kl7E6qX6saq4Uh+IV+Qdhyp4JD0s8BUAWFNfM9bZAzNsJakPoi?=
+ =?us-ascii?Q?+eNdhTxmrQbhNKDYA9VdfUvrySWPXADmunab18ZkJj9UXHRkuycMKWjrUhNU?=
+ =?us-ascii?Q?PaIdeWsQK23HhkfaAVzeb+KelfK63q9MDnomh+07wdcK4H3lIsnkL4r1ULPp?=
+ =?us-ascii?Q?FRuLORC85JB3aw9jmG1khoWwU+j0TcKJX3HE7PVq9qBvFBdlC05wtImEc88A?=
+ =?us-ascii?Q?93Is9nDFpiKxNoO/5M591z+iDahbut735sCtnlSGPaQL41PNSF8uHU02kg7x?=
+ =?us-ascii?Q?u5Iwn3mJyhuUG5keQlyhS3j5a7YQsYQ7tUAKt+G2POFgIeTw8iPx3DMOFvqw?=
+ =?us-ascii?Q?8Fr2Bt9eikHJl2xngEkEZA4Ygrxw9A2xwuVrNeKxqdoIz0qI8Vp6hhWiku34?=
+ =?us-ascii?Q?zFuLKlMKxrZNi0DEa+IgXueAUriIMqemv9zNOiptmcbYghIAJ3ACRxqfQ8yC?=
+ =?us-ascii?Q?DA+B6biBeIOVxKA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(52116014)(38350700014)(921020)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MfsNHYYCPLjqALJcWMoXGdhu1/u1OL47HTpscHyOYxYRYOfb9VfgBK7YZ3on?=
+ =?us-ascii?Q?6j5+s7ZfyEHdy1lxkmWcuoqz78G4U1ZOds7rIQwFARN8P6D+4oJ1lmFyhhuv?=
+ =?us-ascii?Q?iNIc2FyMmBX0TzhS9XmUcb/pwzQ6XF3vU2UAdaxoDc+S6lv7ugPDQh2lXSW4?=
+ =?us-ascii?Q?pv3sZ5uwfMVHrv7azjW4DCzhQuj1GtwagcQz4Fqo9KzAPBogToqy0vvQQXy+?=
+ =?us-ascii?Q?PWsJHDZZCTandrf2mWU0iftZShXe4NcEDYC6JKYZPwjQvrAzNNH6GZW998fV?=
+ =?us-ascii?Q?npgv8WJdBMVv0jg7UWVmAzhIOTnYmPSaYGWee19/4J0EVBYHCtlmjmPHqu35?=
+ =?us-ascii?Q?uo33jqBZFiJgp2cRL/X+QSzE8ZO+XxgXEh73y2OTMH101YDcDpAAwHzT6j14?=
+ =?us-ascii?Q?b/iIv0rQEtxr2WNMKiUvj4X7RudYSahVRZ+2Uq9/DBHnjRaAjlMvmL1QCvta?=
+ =?us-ascii?Q?8yKGzUeUer2jsk47s6CcaKHghfPGnxZPKS1P61bvnY+CIRWJIuEvEY9N/dJb?=
+ =?us-ascii?Q?G8p60qc1zhyIskvGH9uVp3U0Np/e7JHCHm26tUceIpiIAS53YYwqJmR4KTgl?=
+ =?us-ascii?Q?uBY6Eo9i31A8U0KXuZBy8YAs/QzDd3Ae8IVPIFN4F+3usB3FEmedoBCDILqS?=
+ =?us-ascii?Q?GCzM8sogIu5QvUXTpG31wZo1cmy2cXQYCs3ZfLxvVVCDjUxTsYSEdDrdZVRf?=
+ =?us-ascii?Q?pedCPp4hv0O9reLdZSftkSGs4gvp5+gOrlyQzodqaxiDmjtMBpW4OrHbQluD?=
+ =?us-ascii?Q?eRxbhMvp6gi9Jz9UylMjsYov9AnTlDfC5SzuRrwHHwuGewuwtFDtbS6zuL6W?=
+ =?us-ascii?Q?AlQHDljPcdxwnnn+Bl0pFGnFcVRt/j0u1vpLpkWd5G1CTt9dWiFlC6A7clfX?=
+ =?us-ascii?Q?n7ZL2Spk7ufYDoXaI6Ap6sdNYNBvGhZgLTsvBPUSClGECmPYpsdJmtNocBV+?=
+ =?us-ascii?Q?Pek/e2q+HShX+ZzzECL0CPnS2DllmRb+PBlqmQ08OxLbxBIkN4nWXEjjYtR9?=
+ =?us-ascii?Q?rsdDTgt24nDDuLD7VD2f1uaqsImVFsLRPVsKYcRMXagjb+keRJOR61rSha3J?=
+ =?us-ascii?Q?sKqVVcCZua095pDbkPUmwjIcCqsnCd/pTUVET2wMtZOJy83amkI0q2DFO+2i?=
+ =?us-ascii?Q?8NbNjXbwqlYgMykeCDvNjUOtGpkT31Z41A+f2TnF7EJ3m2T1KN0SjP6AMa/+?=
+ =?us-ascii?Q?mU33w71wtfW6FbPKG6t7ljhjFAGeRbol7ETx7cLYw3qcTlYqbdB4GS3jSgS4?=
+ =?us-ascii?Q?1iowx8QlA3Id1YMSuxueuvhq2eXUZJ9A98BdF8/VUWT5PpPlPF4BfcjObOXF?=
+ =?us-ascii?Q?f5P2jfRH1/LInZWtStvhCv0xFsya6nEWg/crKVUrAvUujU6Etw0w/oMuOp/+?=
+ =?us-ascii?Q?Zem7Anszj8QynQARTJ0S1KYHRvzOwjEft7I088zukLyNlZjw2A+gFcKZNa4Q?=
+ =?us-ascii?Q?0rw33T5uP20osZeRxehRTffXNrM/uFgHu+1MjlqZafTPq230DypCjrc81GTI?=
+ =?us-ascii?Q?6bRbCZuJgHAhqNUmXOg6ekCY8fDWhGIomBqnIzXpc8gx77ixjN9d7G0V3LqX?=
+ =?us-ascii?Q?2sGU08Tas2n7NPVfl62lNOhLprgBjLgLSv7fhrK7?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1916285a-47eb-4417-6fc6-08ddebd6b779
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 17:15:59.9843
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: D387jblXrIBlEonat2wrNrPyk93lX1913beKc6npFDIZRks/9w8myU3r8CAqXVap8jl7VDtRFFeMB9iPjqCQOA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB11492
 
-On Wed, Aug 20, 2025 at 10:23:28AM GMT, Richard Zhu wrote:
-> Refer to PCIe CEM r6.0, sec 2.3 WAKE# Signal, WAKE# signal is only
-> asserted by the Add-in Card when all its functions are in D3Cold state
-> and at least one of its functions is enabled for wakeup generation. The
-> 3.3V auxiliary power (+3.3Vaux) must be present and used for wakeup
-> process.
-> 
-> When the 3.3V auxiliary power is present, fetch this auxiliary regulator
-> at probe time and keep it enabled for the entire PCIe controller
-> lifecycle. This ensures support for outbound wake-up mechanism such as
-> WAKE# signaling.
-> 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
-> v5 changes:
-> - Use the vpcie3v3aux property instead of adding a duplicated one.
-> - Move the comments from the code changes into the description of
->   commit.
-> 
-> v4 changes:
-> Move the dt-binding to snps,dw-pcie-common.yaml.
-> 
-> v3 changes:
-> Add a new vaux power supply used to specify the regulator powered up the
-> WAKE# circuit on the connector when WAKE# is supported.
-> 
-> v2 changes:
-> Update the commit message, and add reviewed-by from Frank.
-> https://patchwork.kernel.org/project/linux-pci/patch/20250619072438.125921-1-hongxing.zhu@nxp.com/
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 5a38cfaf989b1..5067da14bc053 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1739,6 +1739,10 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  	pci->max_link_speed = 1;
->  	of_property_read_u32(node, "fsl,max-link-speed", &pci->max_link_speed);
->  
-> +	ret = devm_regulator_get_enable_optional(&pdev->dev, "vpcie3v3aux");
-> +	if (ret < 0 && ret != -ENODEV)
-> +		return dev_err_probe(dev, ret, "failed to enable pcie3v3vaux");
-> +
+Remove legacy binding egalax-ts.txt file. And add compatible string
+eeti,egalax_ts and wakeup-gpios to eeti,exc3000.yaml. "eeti,egalax_ts" is
+general compatible string, which is not preferred. But it is compatible
+with old devices (older than 10 years) and existing driver in
+drivers/input/touchscreen/egalax_ts.c.
 
-So if Vaux is available, do we still need the IMX95_PCIE_SYS_AUX_PWR_DET setting
-in imx95_pcie_init_phy()?
+Allow address 0x4 for eeti,egalax_ts.
 
-- Mani
+Don't require touchscreen-size-x(y) for eeti,egalax_ts.
 
+Keep the same restriction for existing compatible string.
+
+Fix below DTB_CHECKS warnings:
+arch/arm/boot/dts/nxp/imx/imx6dl-gw52xx.dtb: /soc/bus@2100000/i2c@21a8000/egalax_ts@4: failed to match any schema with compatible: ['eeti,egalax_ts']
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+change in v2
+- sorry missed one local change at v1
+- allow address 0x4 for eeti,egalax_ts.
+- move out touchscreen-size-x(y) from required.
+---
+ .../input/touchscreen/eeti,exc3000.yaml       | 30 +++++++++++++++----
+ .../bindings/input/touchscreen/egalax-ts.txt  | 18 -----------
+ 2 files changed, 24 insertions(+), 24 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/egalax-ts.txt
+
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/eeti,exc3000.yaml b/Documentation/devicetree/bindings/input/touchscreen/eeti,exc3000.yaml
+index 1c7ae05a8c15e..d19b07d4cfd4a 100644
+--- a/Documentation/devicetree/bindings/input/touchscreen/eeti,exc3000.yaml
++++ b/Documentation/devicetree/bindings/input/touchscreen/eeti,exc3000.yaml
+@@ -9,25 +9,25 @@ title: EETI EXC3000 series touchscreen controller
+ maintainers:
+   - Dmitry Torokhov <dmitry.torokhov@gmail.com>
+ 
+-allOf:
+-  - $ref: touchscreen.yaml#
+-
+ properties:
+   compatible:
+     oneOf:
+       - const: eeti,exc3000
+       - const: eeti,exc80h60
+       - const: eeti,exc80h84
++      - const: eeti,egalax_ts # Do NOT use for new binding
+       - items:
+           - enum:
+               - eeti,exc81w32
+           - const: eeti,exc80h84
+   reg:
+-    const: 0x2a
++    enum: [0x4, 0x2a]
+   interrupts:
+     maxItems: 1
+   reset-gpios:
+     maxItems: 1
++  wakeup-gpios:
++    maxItems: 1
+   vdd-supply:
+     description: Power supply regulator for the chip
+   touchscreen-size-x: true
+@@ -40,11 +40,29 @@ required:
+   - compatible
+   - reg
+   - interrupts
+-  - touchscreen-size-x
+-  - touchscreen-size-y
+ 
+ additionalProperties: false
+ 
++allOf:
++  - $ref: touchscreen.yaml#
++
++  - if:
++      properties:
++        compatible:
++          not:
++            contains:
++              const: eeti,egalax_ts
++    then:
++      properties:
++        reg:
++          const: 0x2a
++
++        wakeup-gpios: false
++
++      required:
++        - touchscreen-size-x
++        - touchscreen-size-y
++
+ examples:
+   - |
+     #include "dt-bindings/interrupt-controller/irq.h"
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/egalax-ts.txt b/Documentation/devicetree/bindings/input/touchscreen/egalax-ts.txt
+deleted file mode 100644
+index ebbe938105745..0000000000000
+--- a/Documentation/devicetree/bindings/input/touchscreen/egalax-ts.txt
++++ /dev/null
+@@ -1,18 +0,0 @@
+-* EETI eGalax Multiple Touch Controller
+-
+-Required properties:
+-- compatible: must be "eeti,egalax_ts"
+-- reg: i2c slave address
+-- interrupts: touch controller interrupt
+-- wakeup-gpios: the gpio pin to be used for waking up the controller
+-  and also used as irq pin
+-
+-Example:
+-
+-	touchscreen@4 {
+-		compatible = "eeti,egalax_ts";
+-		reg = <0x04>;
+-		interrupt-parent = <&gpio1>;
+-		interrupts = <9 IRQ_TYPE_LEVEL_LOW>;
+-		wakeup-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
+-	};
 -- 
-மணிவண்ணன் சதாசிவம்
+2.34.1
+
