@@ -1,254 +1,232 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010061.outbound.protection.outlook.com [52.101.84.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711112750E1
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 06:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756967838; cv=none; b=WiBTMAjkgVXvC22Wxo7tAd/XoEaba7MnjFfzUXBH1kzyuUnnsU5jm8V+auMw2mtvUZDq1a4devOZQLGTJObOnV9IROpHKpkx1Ar+kkJQKYOuStmTbaJe/L1PMiQsWtUKV1DEqRh1R0DTFj5fqwccRCN1/gI1KtTljtJvD7z69WI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756967838; c=relaxed/simple;
-	bh=Vwy0j5YzLjOUkAEbFgFU37WsHRlbewebumRB2qqKYAA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hLQzpe6cGUtB8qwBQsjDQLunj9Pl+TH9IaEnfgrHy6lv6I8KmWxc01iVH6Tg2iHI63xh6YHzn5juV1KTgv8DKUZ/yiv7rV2Sr4xJ0lZDVXuLMHUKgfBCKyS3H0Dz/YgCzl8d3uOYjoQc+WcBkN/BxNH7yHJFakbw9QHDBnmUgjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=CrA2ZP0V; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=DpOUZ/fT reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF872882D3
+	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 07:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756969596; cv=fail; b=KxL/OMKaBGZ+btGdzBKgG3G2WNfoM+teXLkbMb57vGZKGEzxoTvEzsKCBN4o3UEyyoiHRE2+hMQFDfV7N8dQ3nYHDLMh7Z80QYa7ELvDxX1rbBRJk0gBM32FO6TRN+NvhL6BG1XZm53iXm0/UYjEMCiaaRP6iyUZoTyTd9JcBg0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756969596; c=relaxed/simple;
+	bh=JD2ssr8dqHk8SPDu9WfzNKh9AWC0KTAm0bipY/00pig=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=ECkx8gyaOl0fP5bsv6HxV3qeOOOKv+5lIreeOvMsFqgMchP62ktamSbRGM+0Ym0mQA1EAmp8WXzEVS52OJ/pyyM6YXaTiw8584UfBXBShzICep2vIWTIpplYy6p9FWcfyvLN7tPGeb/Gj/NZ7DXCWUBT5xDsxeB/Tt3uD5Jpoug=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DFAwFoPi; arc=fail smtp.client-ip=52.101.84.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="CrA2ZP0V";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="DpOUZ/fT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1756967835; x=1788503835;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kkpN9KMDd74VuED4g9h4cMoXAQt3UR7LWE3gnTyIkZQ=;
-  b=CrA2ZP0VFrll8u5Ae0YS0cgLZW/CIfe//cP80CibwqciNH9hLpF8Qsfl
-   xgXaNzLsrgO+xXt90dCBk6ksjijAcOBY84RXvcR+0QrpkBTF73glTqmN5
-   UR/3LkwKTn+Ubtj6QEaD5SEmmxl+ICwrZ6qsJblj7xJyjd+REP1QiD7v9
-   nZYElos7mpojg8YomOMtUDO+/QTmvmip5cRAvw73tAyYd7X/WlBYeVcPI
-   HHpx64zQCXdL/DC/b7ENRpmaIvrgTtdidU93zAx62O6aOoEBsZAAK7yrN
-   1gVwd0c+LtmqK3ClNYtFhG33V03oDVMyn7MdsR9ANXeFkAHCJeHXxEGmk
-   A==;
-X-CSE-ConnectionGUID: 9p8QZnA8QQWNINsHY/Q+VQ==
-X-CSE-MsgGUID: biZXPoVjT3KkCsQH8tWQtQ==
-X-IronPort-AV: E=Sophos;i="6.18,237,1751234400"; 
-   d="scan'208";a="46067816"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 04 Sep 2025 08:37:05 +0200
-X-CheckPoint: {68B93391-1B-299FBAB0-EF52EDE7}
-X-MAIL-CPID: 52B18138E6B4DEB93BDE63A8203E6266_5
-X-Control-Analysis: str=0001.0A2D0328.68B93393.002F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E0794169FDB;
-	Thu,  4 Sep 2025 08:36:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1756967821;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=kkpN9KMDd74VuED4g9h4cMoXAQt3UR7LWE3gnTyIkZQ=;
-	b=DpOUZ/fT26CvO8fVeJgmIcJ4c5oQnWe9OOXeTeeswSRHFoh3tLJOXR8/fx1qGyLCPZ2hLZ
-	szKvg/xhil1zwPQfEMtIcik45sP/T1Ld2DrWiqqlyah5c8/JySSEMH3xrTKJf9GnlGzM2k
-	crfs0GtdUSf+8UjkJWF/CtwInJLPkQHha25k61L3qO3uGVPoJeDxHBkM/6qmH7Ktir2BOt
-	R3FmWdFOrPuKs8Qlywz72rfABpHU9LkfBDV8/EBwifItNKL5T7fyLYTivozlQj0N4Q8xMA
-	EHFw9m+7UVDXV/649G0nhvtdWs3XmOAdS7sBoXsHyPrIz1ZgSG2Dn2dHfIz+aA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Marek Vasut <marek.vasut@mailbox.org>, dri-devel@lists.freedesktop.org
-Cc: linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
- David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Sebastian Reichel <sre@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
- Steven Price <steven.price@arm.com>, Thomas Zimmermann <tzimmermann@suse.de>,
- devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, Boris Brezillon <boris.brezillon@collabora.com>
-Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
-Date: Thu, 04 Sep 2025 08:36:55 +0200
-Message-ID: <3372501.aeNJFYEL58@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250904082224.113d0cd1@fedora>
-References:
- <20250321200625.132494-1-marex@denx.de>
- <838a0c6b-845b-428d-86b3-1480e5b8080f@mailbox.org>
- <20250904082224.113d0cd1@fedora>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DFAwFoPi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yRr10+k6fHEfuyoMeHW01s/LYCVD+jjHjt/T/ngkFyk9DIIC5ffpubTGmeM64l1UazWn+BMTQPvoeO1RMf93CWQ1aJ/ArwmHYHkTSuZ3EFb8NetIsqGf1FkRd+zkKnbYJdxq5kcLMsnYokksb9vCPH0LF0M6B818mhWSQPQwWyB0u1bqfmPUQB/rtQ3tQK+7b3ohG22jikc1HqeGRATHqLQ8jyikraYex5Al/qv8bqvn2rXK6hQcnouJJgAr7ORk6Mp4tPtabFl8waaN1rAOfNdhwahwvW713miHyALXu1tkEv3JI5+NGajWXjXJ+iPOQe+uAD/WMkZZ4MiFd14gpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RG4ubNH7+DieWFZx7HpdIpc6Wtmn8ks6ugIT99hjjlw=;
+ b=gST/QBoyjPzudiZAfqe2TqMYU1xFew0IJpif5omZknnyW2WrX3npzhTCUjwmPF1UgKZGz66eCvs7xaZraxwqJNEl5XllfB70W8H3e+frwlaxYLnI/WLJRGyEo7KpNKooVaC6jzzgYT0s0dyrFz35iqOTISk7sXR9bgA+z6Uu67SpPp2uPhGnUVIKKJdgBqaqP6QqrrXVfBxQLHns2gYpdx8euQTjwCSeBeodZeZmY8HyuoZZnpUwDcHIR8UCdfEPu5NrKo1GhYs53oTdcveSCeddbk7JjlkBWNJgMD6ksmhjOsLZUJZJLoKJFDas2K1sbpnqlspQOLFJoun4siko8A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RG4ubNH7+DieWFZx7HpdIpc6Wtmn8ks6ugIT99hjjlw=;
+ b=DFAwFoPij1kOMKIx+HPNtrpEOtzDVAL50RiZOqBLZ0tGF8NAz84L9vBGzZseB5S/q8PippO+CA7fzf+JTSSHgbXGOzjIVY9GpPzrLdzxBtACEmcSssxnSJzHQs7xp081b0u37dtZtbH4TNcmpTtAkTayW0utf46QTs0Du30G9RHTWMyyjbWR9205I5VSnSfyPr+VG5dEkRq1gWe6YFUYk75eWNl2LUkYDO9CSZ2pTqXlhVRXpP2JV/az5mD57+qIW8Qi0L41MH/rjz91YL7rOo0pIq7kZI071x8lu/gP2ozaMteQK+Lv/zCLVHU5lDD3RhGi7DC8TFWMRnrmu1xMwg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
+ by DB8PR04MB7002.eurprd04.prod.outlook.com (2603:10a6:10:119::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Thu, 4 Sep
+ 2025 07:06:30 +0000
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::bab2:d15c:fcf8:ef2b]) by AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::bab2:d15c:fcf8:ef2b%6]) with mapi id 15.20.9094.016; Thu, 4 Sep 2025
+ 07:06:30 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	lumag@kernel.org,
+	dianders@chromium.org,
+	cristian.ciocaltea@collabora.com,
+	luca.ceresoli@bootlin.com,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	victor.liu@nxp.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	p.zabel@pengutronix.de,
+	devicetree@vger.kernel.org,
+	l.stach@pengutronix.de,
+	shengjiu.wang@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH v6 0/7] drm/bridge: imx: Add HDMI PAI driver on i.MX8MP
+Date: Thu,  4 Sep 2025 15:05:53 +0800
+Message-Id: <20250904070600.1361165-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR04CA0016.apcprd04.prod.outlook.com
+ (2603:1096:4:197::7) To AM0PR04MB7044.eurprd04.prod.outlook.com
+ (2603:10a6:208:191::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|DB8PR04MB7002:EE_
+X-MS-Office365-Filtering-Correlation-Id: b929a883-09d7-4a3c-8d83-08ddeb819273
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|1800799024|19092799006|7416014|376014|52116014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?1slpSYycDT75rTaogjLoGQIFPVg0foi6s4qXZV/UVESq5VjnUPcLlqVLp3Ho?=
+ =?us-ascii?Q?2tYAGFBn4LxPMf6ImjfylK93QnNyMX4hRivhj4deOPt8mTnjmukEfLiTj1uF?=
+ =?us-ascii?Q?dVnoh+qV3feoG3seLZfTeR+MYL7LpTPSMRyXDA0ZySLa68dWSuCOVD5C+LJG?=
+ =?us-ascii?Q?ltPT3k//YtzLXC+giiCibd5MWVZs9GR3CHQdzyE+STePxCW+IFkp+hO2+7kl?=
+ =?us-ascii?Q?nWBzGiukpRBKSwmJ90FyoDPlojZcT5YKngmTS+l8cSsMdq26AkZQR6wA5WrT?=
+ =?us-ascii?Q?jx/rKIXA9l+7cwKGwBr+sWAqSszNPKE1+YCUTRrsCkgUODtUiK14UfodUpYf?=
+ =?us-ascii?Q?WZdlub9MhT9d/4Ca1IGq9+slbGmH5if9w1UY70yuuV9tona8ihvdqImgHQo9?=
+ =?us-ascii?Q?OfOrV17Dz8/J//v/Itgk863K/wTlPBnqUXqJDG2z/L3nLnrQnqQW+wUC1yx3?=
+ =?us-ascii?Q?4QcXzZASFRjl7+1jQH0ebnVKqF589l2whushjy2sCCo7r77LVI1Bbjx1+bfa?=
+ =?us-ascii?Q?x3/1dyn/K8hNEvZ53CMx2e01KgobaXEDHBG0mllcsAM5vFB9ZJ8PGWhYBLAh?=
+ =?us-ascii?Q?c567NrKkkDe4YVG8K6DN3yXtvrqstHgAjLBQ2+oBTPPW9McALkDbieeencLF?=
+ =?us-ascii?Q?roNx6+A0UGpFoIfzm/55SPaPPJ3EihnIPoSEXK+xwhspOQAHeJSA92AEVtSi?=
+ =?us-ascii?Q?1Jg1EfKGEODvl9XWhSC8o56H1LqXdzTtljw0n1LuC7/Mehio99o4fNCkeOgk?=
+ =?us-ascii?Q?2u8PvN8zrUvW/WxSGsWgTzhsCkjiFhMsa38/KER1o7oQdk524W2isaNZEZVh?=
+ =?us-ascii?Q?QuXJabHa4CtrF1L/PHhnShq9iYlL4ipQzEhlJZ4vs2Z46DscN8qWZHOsStxl?=
+ =?us-ascii?Q?R70FKHeGl9IZrOixkMrmB8Mn5RqL8O+r2F+uuHrAa3E6+YmCWIa094lceM7Q?=
+ =?us-ascii?Q?L5w2BgF6t2CJEklDSR2Gxo3yUnPXvdPvvKbMQ3Ik21lzexoYUr14nJBm7izZ?=
+ =?us-ascii?Q?D6NmCCEZGmy3lAWvn0zlzeef0gvVL2j31m7jNYm2/1g1GgFeg/3vU+G0PaQz?=
+ =?us-ascii?Q?92yhBJCtfXaLYTgZ6nfS5BTi8Ha8IAsjB/amksN4h0Lwq9ceRLf7Noav+usO?=
+ =?us-ascii?Q?KrV8R7TjqWjA/JnPMuX8L58LuxCJbUsv58HboVY+OH5UhhQ8iJFCmmg17zeo?=
+ =?us-ascii?Q?gWI7QjyCMjAua8YLnsm7Ac5P/QrqLjFgBrt4iSxRtaLGdAgpWGRs3WzsZwvz?=
+ =?us-ascii?Q?o2LEdX5Xxn2SuzuBpY2xjsmMfVAVm+SUYNk1C4pWTWXhFx7DhDJLj9Mu/CPv?=
+ =?us-ascii?Q?cjbv9Rb2Wk8ao1b4l78xmja8VWcaF6DBXDp1xdIuGMDip0XSkBEPyZezCNSs?=
+ =?us-ascii?Q?ewFQqDHNc0VVPoYaii7fMLU8mRnaIOWjVULok5Jz3JV/0yGp4dNNO6UvHyoE?=
+ =?us-ascii?Q?bbrXdMqDzm4cvyqVqJ7kfhQL3q5/1VZVkufenvQS2NtTiWWGOIUWdJQe7qVK?=
+ =?us-ascii?Q?3vh2UWmOzbg3ZU0=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(7416014)(376014)(52116014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?2UQt5g5cFvtlUhY5c970A8k5KWN5q9eTZIJrh4UBnc3hMPM/R1DgzpKMUcfc?=
+ =?us-ascii?Q?v6zXbCmA+i4+x0UqGjzX4IDu5yT0Nv5sW0h49y79eUyCm9wvNpBscY7XyOwP?=
+ =?us-ascii?Q?rYPFj3norWWf3NbDuttwZk45VsHvZRolrEwwZzejCipYqx/DftrNgIOxvl5D?=
+ =?us-ascii?Q?eGJKgBVMjT0glIa/WQIPspXkbNqHAXZgLYVF976vQSaMkuvgcxNza5w0gZtw?=
+ =?us-ascii?Q?D99PQgQVq73nhGO4B07jLgQYhdPAtnzCDenGXkaWiGDH6F3WFozgt/BhWZvW?=
+ =?us-ascii?Q?Vp0R17EVNtDVIlvKrLpYpByqGBXb0Sd625hCBTjHWH9FDisqzcqasx1QL+S6?=
+ =?us-ascii?Q?nmYkxsChVG82IJGAvlhk7iJJymyZC75rMTDSYvYFqypWg+/tNvWPKakqJlWg?=
+ =?us-ascii?Q?Uuzl1be/C8ZUzODec1rgJNg/lWCsskVixxiJxQYKZ53rk5oMdtKDLyO/KqpP?=
+ =?us-ascii?Q?fr2MQtZLCr1aWcO/IEgIr7gFxY++ayNgq7BHqKtKGkTzN8Vhw3F3UiZbtYgO?=
+ =?us-ascii?Q?E8PiQ3oMVu4ApoaC+Fh/SRxSLXiJ7nefGzh1DUfSuXLiCtmyyUi7Xp7DBUhP?=
+ =?us-ascii?Q?NGO8lvc6H394BtxPoaVB5i6rxTv/875i5//IIY72eVd4oNi09gDgDfxAxdz4?=
+ =?us-ascii?Q?AhoueezTWn3Rd0vBwfuTdCMjjWlaSK5h6MiY8EzMXs4ASU0EATaFkuZTNmqS?=
+ =?us-ascii?Q?f3GewKW2SmvhCZ+h4tZLAn+d1LHdhP1lXaJGpmnknAEM0rGjvm2A/JDGOpdA?=
+ =?us-ascii?Q?xZ3iSbg0/Pok8qpKRF+aI0jRRFvq44gYn2LNmHBI0EfN5i5zGPqY5sVD4Tpz?=
+ =?us-ascii?Q?nCiT3BRpG+X/dXYALoT/4SOTDz4j0K9TmyTwnOtr5sfFNi9MQmSa4QDIp22k?=
+ =?us-ascii?Q?ca3HLFihzShjydfJ7CabNMhZ4vvcTkKKMkv93oYQgJcugexrf9vHjx4IxSgL?=
+ =?us-ascii?Q?9kffVWhMDvgppzOklIVzLVOf0UiaCgt8vHa7S6OcZx9i6JCIlBaa1woFBJtR?=
+ =?us-ascii?Q?r/8B+B/Hk5oKP5cnL4bMWCIlfuyyHgezt+vUtO4XyqoCNAuuigPTOECOv+aF?=
+ =?us-ascii?Q?i2peGaI+GK72cxz8GpJoG7ZgzOvxRIvkLTtSTrkmvSCAjgJvidt1h7KE650W?=
+ =?us-ascii?Q?R7oaI1GgyDiChgNYYgf2xF3xl1jT+pOxDNdEskVyhBK0Q3QfY58K0jyhRsxr?=
+ =?us-ascii?Q?GyYZcEfgyzI2BgzdpEbLxM5Sqw+7Egm9eVgdFSaEfQjfzN8RTdVFBggHtpV3?=
+ =?us-ascii?Q?f1WsWFMMTDFbuaaoH6VO+Hvuk8Gg0enb/cYGmAqC81IF1TQtaVJPz8+Pchc8?=
+ =?us-ascii?Q?JdbAd6i+y/DkSET05GPhIzrqULislY7bLucsdD0A1Y8QaWvnUp0XWZb4XGwu?=
+ =?us-ascii?Q?R0fZ5efU+GBF6941iUYcfC6JQKx9og4Tujj8kXFdQlbR1fxVUvJz06rzQEzx?=
+ =?us-ascii?Q?K+Q6TWhpsJmN46UdBPIPK9cnsxN8ZcesWfz0JbhiOXpFUdfSSATRnQsGNYjk?=
+ =?us-ascii?Q?5ZuFjW25kHImRfrW8dV8XxTu+45JZnuw+lUZYVpOEnMRpwGHf8MQ0UHFwMpB?=
+ =?us-ascii?Q?lr8UnfpxXYhkhyM7aQJbeau8t9TBlPnQ2SJJ5vye?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b929a883-09d7-4a3c-8d83-08ddeb819273
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 07:06:30.0250
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BwjKaqVQNLwSt93i8CLAt2iBMxi9kjyv3pTYKifNF4Se04GzPDcI+pyHFHOxllGMr+J8knshsYPplwq+ODiMTQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7002
 
-Hi,
+The HDMI TX Parallel Audio Interface (HTX_PAI) is a digital module that
+acts as the bridge between the Audio Subsystem to the HDMI TX Controller.
 
-Am Donnerstag, 4. September 2025, 08:22:24 CEST schrieb Boris Brezillon:
-> On Wed, 3 Sep 2025 23:44:59 +0200
-> Marek Vasut <marek.vasut@mailbox.org> wrote:
->=20
-> > On 3/25/25 3:52 PM, Boris Brezillon wrote:
-> >=20
-> > Hello Boris,
-> >=20
-> > sorry for the late reply.
-> >=20
-> > >>>>>>> Hm, that might be the cause of the fast reset issue (which is a=
- fast
-> > >>>>>>> resume more than a fast reset BTW): if you re-assert the reset =
-line on
-> > >>>>>>> runtime suspend, I guess this causes a full GPU reset, and the =
-MCU ends
-> > >>>>>>> up in a state where it needs a slow reset (all data sections re=
-set to
-> > >>>>>>> their initial state). Can you try to move the reset_control_[de=
-]assert
-> > >>>>>>> to the unplug/init functions? =20
-> > >>>>>> Is it correct to assume , that if I remove all reset_control_ass=
-ert()
-> > >>>>>> calls (and keep only the _deassert() calls), the slow resume pro=
-blem
-> > >>>>>> should go away too ? =20
-> > >>>>>
-> > >>>>> Yeah, dropping the _assert()s should do the trick. =20
-> > >>>> Hmmm, no, that does not help. I was hoping maybe NXP can chime in =
-and
-> > >>>> suggest something too ? =20
-> > >>>
-> > >>> Can you try keep all the clks/regulators/power-domains/... on after
-> > >>> init, and see if the fast resume works with that. If it does,
-> > >>> re-introduce one resource at a time to find out which one causes the
-> > >>> MCU to lose its state. =20
-> > >>
-> > >> I already tried that too . I spent quite a while until I reached tha=
-t L2
-> > >> workaround in fact. =20
-> > >=20
-> > > So, with your RPM suspend/resume being NOPs, it still doesn't work?
-> > > Unless the FW is doing something behind our back, I don't really see
-> > > why this would fail on your platform, but not on the rk3588. Are you
-> > > sure the power domains are kept on at all times. I'm asking, because =
-if
-> > > you linked all the PDs, the on/off sequence is automatically handled =
-by
-> > > the RPM core at suspend/resume time. =20
-> >=20
-> > I revisited this now.
-> >=20
-> > Can you please test the following patch (also attached) on one of your=
-=20
-> > devices, and tell me what the status is at the end . The diff sets the=
-=20
-> > GLB_HALT bit and then clears it again, which I suspect should first hal=
-t=20
-> > the GPU and (this is what I am unsure about) then again un-halt/resume=
-=20
-> > the GPU ?
->=20
-> It doesn't work like that. What you're describing is like executing
-> "shutdown" on your terminal and then typing "boot" on the keyboard
-> after your computer has been shut down.
->=20
-> >=20
-> > "
-> > diff --git a/drivers/gpu/drm/panthor/panthor_fw.c=20
-> > b/drivers/gpu/drm/panthor/panthor_fw.c
-> > index 9bf06e55eaeea..57c0d4fd29aa2 100644
-> > --- a/drivers/gpu/drm/panthor/panthor_fw.c
-> > +++ b/drivers/gpu/drm/panthor/panthor_fw.c
-> > @@ -1087,8 +1087,16 @@ void panthor_fw_pre_reset(struct panthor_device=
-=20
-> > *ptdev, bool on_hang)
-> >   		struct panthor_fw_global_iface *glb_iface =3D=20
-> > panthor_fw_get_glb_iface(ptdev);
-> >   		u32 status;
-> >=20
-> > +pr_err("%s[%d] pre-halt status=3D%x\n", __func__, __LINE__,=20
-> > gpu_read(ptdev, MCU_STATUS));
-> > +
-> >   		panthor_fw_update_reqs(glb_iface, req, GLB_HALT, GLB_HALT);
-> >   		gpu_write(ptdev, CSF_DOORBELL(CSF_GLB_DOORBELL_ID), 1);
-> > +mdelay(100);
-> > +pr_err("%s[%d] likely-halted status=3D%x\n", __func__, __LINE__,=20
-> > gpu_read(ptdev, MCU_STATUS));
-> > +		panthor_fw_update_reqs(glb_iface, req, 0, GLB_HALT);
-> > +mdelay(100);
-> > +pr_err("%s[%d] likely-running ? status=3D%x\n", __func__, __LINE__,=20
-> > gpu_read(ptdev, MCU_STATUS));
-> > +
-> >   		if (!gpu_read_poll_timeout(ptdev, MCU_STATUS, status,
-> >   					   status =3D=3D MCU_STATUS_HALT, 10,
-> >   					   100000)) {
-> > "
-> >=20
-> > In my case, the relevant output looks like this:
-> >=20
-> > "
-> > [    3.326805] panthor_fw_pre_reset[1090] pre-halt status=3D1
-> > [    3.432151] panthor_fw_pre_reset[1095] likely-halted status=3D2
-> > [    3.542179] panthor_fw_pre_reset[1098] likely-running ? status=3D2
-> > "
-> >=20
-> > That means, the GPU remains halted at the end, even if the "GLB_HALT"=20
-> > bit is cleared before the last print. The clearing of GLB_HALT is also=
-=20
-> > what panthor_fw_post_reset() does.
->=20
-> After the halt has been processed by the FW, the memory region where
-> you check the halt status again is inert, since the micro-controller
-> (MCU) supposed to update those bits is off at this point. The FW
-> interface is really just a shared memory region between the CPU and
-> MCU, nothing more.
->=20
-> >=20
-> > I suspect the extra soft reset I did before "un-halted" the GPU and=20
-> > allowed it to proceed.
->=20
-> Hm, not quite. I mean, you still need to explicitly boot the MCU after
-> a reset, which is what the write to MCU_CONTROL [1] does. What the
-> soft-reset does though, is reset all GPU blocks, including the MCU.
-> This means the MCU starts from a fresh state when you reach [1].
->=20
-> If I had to guess, I'd say something is messed up when the GPU is
-> halted, and you need a soft-reset to recover from that. Unfortunately,
-> I don't know enough about what your FW is doing to help. Maybe
-> Arm/Freescale could...
->=20
-> >=20
-> > I wonder if there is some way to un-halt the GPU using some gpu_write()=
-=20
-> > direct register access, is there ?
->=20
-> That's MCU_CONTROL, yes. And it's done here [1] already.
->=20
-> > Maybe the GPU remains halted because=20
-> > setting the GLB_HALT stops command stream processing, and the GPU never=
-=20
-> > samples the clearing of GLB_HALT and therefore remains halted forever ?
->=20
-> Exactly that, and that's expected.
+Add HDMI PAI driver on i.MX8MP to make HDMI audio function fully work.
 
-=46YI: in a new release of system manager software (starting from lf-6.12.3=
-=2D1.0.0),
-the GPU reset is reasserted in SM software already [1] and access to GPU
-block control has been removed from Cortex-A [2]. Starting from B0 step this
-version is required AFAIK.
+changes in v6:
+- remove mutex in dw_hdmi_set_sample_iec958()
 
-Best regards
-Alexander
+changes in v5:
+- add empty line commit message for patch 7
+- remove blank line in dts node
+- add component_unbind_all when dw_hdmi_probe return error
 
-[1] https://github.com/nxp-imx/imx-sm/commit/2dcc0409ede82eef54857be50daa58=
-8b23b3ba7b
-[2] https://github.com/nxp-imx/imx-sm/commit/a3e5da9ea51144f513ac3909fa151f=
-a7df394100
+changes in v4:
+- separate dts for soc and board
+- bind hdmi_pai with hdmi_tx by moving some code to .bind() and .unbind()
+- add "select DRM_DW_HDMI" to fix build error reported by test robot
+- remove unnecessary code/definition in pai driver
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+changes in v3:
+- add space and 'U' in asoundef.h
+- add more commit message for binding doc commit
+- add bitfield.h header for fixing build error
 
+changes in v2:
+- address some comments on commit messages
+- add two more commits:
+  add definitions for the bits in IEC958 subframe
+  add API dw_hdmi_set_sample_iec958() for iec958 format
+- use component helper in hdmi_pai and hdmi_tx driver
+- use regmap in hdmi_pai driver.
+- add clocks in binding doc
+
+Shengjiu Wang (7):
+  dt-bindings: display: imx: add HDMI PAI for i.MX8MP
+  ALSA: Add definitions for the bits in IEC958 subframe
+  drm/bridge: dw-hdmi: Add API dw_hdmi_to_plat_data() to get plat_data
+  drm/bridge: dw-hdmi: Add API dw_hdmi_set_sample_iec958() for iec958
+    format
+  drm/bridge: imx: add driver for HDMI TX Parallel Audio Interface
+  arm64: dts: imx8mp: Add hdmi parallel audio interface node
+  arm64: dts: imx8mp-evk: enable hdmi_pai device
+
+ .../display/bridge/fsl,imx8mp-hdmi-tx.yaml    |  12 ++
+ .../display/imx/fsl,imx8mp-hdmi-pai.yaml      |  69 ++++++++
+ arch/arm64/boot/dts/freescale/imx8mp-evk.dts  |   4 +
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi     |  27 ++-
+ drivers/gpu/drm/bridge/imx/Kconfig            |  11 ++
+ drivers/gpu/drm/bridge/imx/Makefile           |   1 +
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c  | 158 ++++++++++++++++++
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-tx.c   |  65 ++++++-
+ .../drm/bridge/synopsys/dw-hdmi-gp-audio.c    |   5 +
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c     |  16 +-
+ include/drm/bridge/dw_hdmi.h                  |  11 +-
+ include/sound/asoundef.h                      |   9 +
+ 12 files changed, 380 insertions(+), 8 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdmi-pai.yaml
+ create mode 100644 drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c
+
+-- 
+2.34.1
 
