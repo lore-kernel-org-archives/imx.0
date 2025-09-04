@@ -1,163 +1,165 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421A82264B1
-	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 08:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D222E3391
+	for <imx@lists.linux.dev>; Thu,  4 Sep 2025 09:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756975501; cv=none; b=myVgD5zlpGCI5ZtUGf/yVYXuYEvqlQHukz2UwaJICZdJp0VorJ9n6FQbEaoNpFmy0ZfF7mtQ3BkhkQssae1P5FqlE8K+iehK04ji9GYlvl9X3nhlIIqs2F8P8noRumeLIyp+Nr5gEAsHOpQa5UiMfEO81TVr/eBjMg+0VP6Z4wA=
+	t=1756977249; cv=none; b=GrP350cKcnZjmkhgN5PwAYdpTfLPAzzYOdofZhfMQo0C1Smw7h9B8abDredK3/JGlm82/h/lp50O4IpySPbXjEXiuhDb2sr2gl/zCOErJHm96lmNNC5NmZaxRfAYIAl3N0hL85eFywB0KhOJ3JXvcNOBbFsRTmvcjL3UpCyLZSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756975501; c=relaxed/simple;
-	bh=gzetGRXPPEFaGfqJAQ6Chzwhs2gIrlbRduBmetQTYrY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nm3P3Ll2mB9dGQJJxjj62d5BAxegzT/8BtzMQr6DYZEZ+d65U2vC7wqMKibkK7oU5ir1yPZ9PYnFSCCeicTL7aU6wnHco9Tfjm/5YsuQMKxqEB7o523je6VhsLU9UH97Vd1cz4l1xQcFdaz7mGIB0w3tQO/Ye6rVieJ70o5SrAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m6bvvW3R; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1756977249; c=relaxed/simple;
+	bh=vDkM8EggsOOXVGOl30fMcL/k1YvAF/zoDxLrgle5M3k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LpE5p1y9WQsG7EFOWuvAEN4pE3gGjfyqYmM4fBoq1KhheWiMK/eUwwVbAHwtmxrEbegM6w4dDZ63BFwnwiT0JvSs0nqztg1DVOfihEZS8YUadWxsk62xCZYyJrC8vCDwwaGmvBDUopclFGgBeWlXTS0H4Y6XXUtq1Sw7cGkhV5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=rclSliyK; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m6bvvW3R"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756975499; x=1788511499;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gzetGRXPPEFaGfqJAQ6Chzwhs2gIrlbRduBmetQTYrY=;
-  b=m6bvvW3Rom+DeuhxAKuIGPrKc89UY7KAXA3I7vWy1nyug+yc5r4v78ZD
-   DPxZAYGVJr3bT2h1WN1DNGCySAFMrf8mHg+8Pg1jBvDoQlJ1213IXOq6M
-   00j3uUWMMxh5xA/QkNLmi+Laj2WquRC4GIidlCmG9UVtakPm4olsKhGxT
-   777dCUeIGpx8nkMMPLyChN3KuDLj1MgTAUUqtYw6nI6QOWe5xhNKbyJCg
-   EQIVQ7we70bB1bF1Nu6rMaE+nIKZgwzu8ePzNYMucGedCZrQMCwlCrAPV
-   bbbyBVmk+qIYkqcXf8cfhFrxX1T3i+ZTRKBYFFAP4qMF5RRb1U5gqLBT+
-   A==;
-X-CSE-ConnectionGUID: bSqmMpAmSL61gMjtRvdNtw==
-X-CSE-MsgGUID: ZS+4sq7WSxqcpTh8jHID4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="58520272"
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
-   d="scan'208";a="58520272"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 01:44:58 -0700
-X-CSE-ConnectionGUID: N3TxRB0xQP6c9RbJ1GcVrg==
-X-CSE-MsgGUID: aYx3EAAlQhmx5apJZHzVyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
-   d="scan'208";a="177096940"
-Received: from agladkov-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.92])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 01:44:53 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id EBE7611FCC7;
-	Thu, 04 Sep 2025 11:44:49 +0300 (EEST)
-Date: Thu, 4 Sep 2025 11:44:49 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Isaac Scott <isaac.scott@ideasonboard.com>
-Cc: laurent.pinchart@ideasonboard.com, rmfrfs@gmail.com, martink@posteo.de,
-	kernel@puri.sm, mchehab@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	hverkuil@kernel.org, nicolas.dufresne@collabora.com,
-	tomi.valkeinen@ideasonboard.com, jonas@kwiboo.se,
-	dan.scally+renesas@ideasonboard.com, m.szyprowski@samsung.com,
-	mehdi.djait@linux.intel.com, niklas.soderlund+renesas@ragnatech.se
-Subject: Re: [PATCH v2 1/3] media: v4l: Add helper to get number of active
- lanes via a pad
-Message-ID: <aLlRgRBztMEicEgM@kekkonen.localdomain>
-References: <20250903102243.1563527-1-isaac.scott@ideasonboard.com>
- <20250903102243.1563527-2-isaac.scott@ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="rclSliyK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1756977220; x=1757582020; i=wahrenst@gmx.net;
+	bh=eT6RqBWyNeJX4HP85LpnQuIKIs/+p/iHZyCHn709iBk=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=rclSliyKwhifZ9yUIX3RUGqzJD5ltga02t1Y6Sf1JIcjNOlFEYU6mYTKxFCUaTCS
+	 FGobKlQgJnsrOaIkif0oSzERdEZHpmvB5py5SPsLzUPS30iT6xMaIzGK7NXitapPM
+	 X9N5DA7m96wKw3KcWYx27JrJOjx2BXCpZRvMl+0xKXu+a/e4j46vPWFMcizBu60iX
+	 1yJSf1opxswpbh1vfm7h4R6tt2Mj7KYixPvFsfbkz99lA1V3imyDE1xUwLm+vTJyr
+	 14OE0v5o5H0VTOwktAdfvjsiiZs6xG0fC2sd4KucQHpG2nwKLxhymv2s1I9lAE8TI
+	 GFgAzod68Fo8z5CzjA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from stefanw-SCHENKER ([79.235.128.112]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N1fis-1uRapw0Hhw-00tJFp; Thu, 04
+ Sep 2025 11:13:40 +0200
+From: Stefan Wahren <wahrenst@gmx.net>
+To: Wei Fang <wei.fang@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Richard Leitner <richard.leitner@skidata.com>
+Subject: [PATCH net] net: fec: Fix possible NPD in fec_enet_phy_reset_after_clk_enable()
+Date: Thu,  4 Sep 2025 11:13:34 +0200
+Message-Id: <20250904091334.53965-1-wahrenst@gmx.net>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250903102243.1563527-2-isaac.scott@ideasonboard.com>
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:btI13UPWWEk7ztArlV/ss6uD0EXxbYm7I9NyGPnHl77SdL5JE6o
+ PpQPv+ZsaO5ojcdlW/3RQP2/xX8tR6h6UDMDyzORtiF2nzDU3yoIBrho7Glf6egcVx0g4GT
+ NviZVg0NR3XraXj6mnLlXY4iPmF3Soaelqs2e9Da1ZvF7/w4gOTlkslZxk5gsHOtnNCQGbw
+ ZAU6/JdLm5V2nUN6dKuJA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:OEaK1ffxXcE=;xW6dItEk+U1ckXpjckTmOEUPa8b
+ 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
+ cgNQlibdwQcMGo0vI5ET84jxWsJ5EGiQ==
 
-Hi Isaac,
+The function of_phy_find_device may return NULL, so we need to take
+care before dereferencing phy_dev.
 
-Thanks for the update.
+Fixes: 64a632da538a ("net: fec: Fix phy_device lookup for phy_reset_after_=
+clk_enable()")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Cc: Richard Leitner <richard.leitner@skidata.com>
+=2D--
+ drivers/net/ethernet/freescale/fec_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-On Wed, Sep 03, 2025 at 11:22:40AM +0100, Isaac Scott wrote:
-> Sometimes, users will not use all of the MIPI CSI 2 lanes available when
-> connecting to the MIPI CSI receiver of their device. Add a helper
-> function that checks the mbus_config for the device driver to allow
-> users to define the number of active data lanes through the
-> get_mbus_config op.
-> 
-> If the driver does not implement this op, fall back to using the number
-> of data lanes specified in device tree.
-> 
-> Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-> ---
->  drivers/media/v4l2-core/v4l2-common.c | 25 +++++++++++++++++++++++++
->  include/media/v4l2-common.h           |  1 +
->  2 files changed, 26 insertions(+)
-> 
-> diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
-> index 6e585bc76367..8683107b3704 100644
-> --- a/drivers/media/v4l2-core/v4l2-common.c
-> +++ b/drivers/media/v4l2-core/v4l2-common.c
-> @@ -571,6 +571,31 @@ s64 __v4l2_get_link_freq_pad(struct media_pad *pad, unsigned int mul,
->  	return __v4l2_get_link_freq_ctrl(sd->ctrl_handler, mul, div);
->  }
->  EXPORT_SYMBOL_GPL(__v4l2_get_link_freq_pad);
-> +
-> +unsigned int v4l2_get_active_data_lanes(const struct media_pad *pad, unsigned int dt_lanes)
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ether=
+net/freescale/fec_main.c
+index 1383918f8a3f..adf1f2bbcbb1 100644
+=2D-- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -2363,7 +2363,8 @@ static void fec_enet_phy_reset_after_clk_enable(stru=
+ct net_device *ndev)
+ 		 */
+ 		phy_dev =3D of_phy_find_device(fep->phy_node);
+ 		phy_reset_after_clk_enable(phy_dev);
+-		put_device(&phy_dev->mdio.dev);
++		if (phy_dev)
++			put_device(&phy_dev->mdio.dev);
+ 	}
+ }
+=20
+=2D-=20
+2.34.1
 
-This line would benefit from being wrapped.
-
-> +{
-> +	struct v4l2_mbus_config mbus_config = {};
-> +	struct v4l2_subdev *sd;
-> +	unsigned int lanes;
-> +	int ret;
-> +
-> +	sd = media_entity_to_v4l2_subdev(pad->entity);
-> +	ret = v4l2_subdev_call(sd, pad, get_mbus_config, pad->index,
-> +			       &mbus_config);
-> +	if (ret < 0 && ret != -ENOIOCTLCMD)
-> +		return ret;
-> +
-> +	if (!mbus_config.bus.mipi_csi2.num_data_lanes)
-> +		return dt_lanes;
-> +
-> +	lanes = mbus_config.bus.mipi_csi2.num_data_lanes;
-> +
-> +	if (lanes < 0 || lanes > dt_lanes)
-
-lanes is unsigned int so no need to check for less than 0.
-
-I might just not use a local variable for this, up to you.
-
-> +		return -EINVAL;
-> +
-> +	return lanes;
-> +}
-> +EXPORT_SYMBOL_GPL(v4l2_get_active_data_lanes);
->  #endif /* CONFIG_MEDIA_CONTROLLER */
->  
->  /*
-> diff --git a/include/media/v4l2-common.h b/include/media/v4l2-common.h
-> index 0a43f56578bc..3f8937260c76 100644
-> --- a/include/media/v4l2-common.h
-> +++ b/include/media/v4l2-common.h
-> @@ -584,6 +584,7 @@ int v4l2_fill_pixfmt_mp(struct v4l2_pix_format_mplane *pixfmt, u32 pixelformat,
->  	(pad, mul, div)
->  s64 __v4l2_get_link_freq_pad(struct media_pad *pad, unsigned int mul,
->  			     unsigned int div);
-
-Some kernel-doc documentation would be nice.
-
-> +unsigned int v4l2_get_active_data_lanes(const struct media_pad *pad, unsigned int dt_lanes);
-
-Please wrap this, too.
-
->  #else
->  #define v4l2_get_link_freq(handler, mul, div)		\
->  	__v4l2_get_link_freq_ctrl(handler, mul, div)
-
--- 
-Kind regards,
-
-Sakari Ailus
