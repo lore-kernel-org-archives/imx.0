@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B105661;
-	Thu,  4 Sep 2025 10:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDA02F6182;
+	Thu,  4 Sep 2025 10:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756982676; cv=none; b=nCGp7V7K9YjKM1X4lSVWpzWE4SRgU8bYlm69TTIYuPPMxm3P6Vbm7CuEM/Eeb0QeS+9UQLEWUnX2XZUu5NVIBr0C0opBorajBE39rpzkDKaEJDlGANgByd1QmZN6FLwt2Wx3lxyS+OGEf4S/hr1dKAUM1kHkU0IZoQ8F1XCHISI=
+	t=1756983335; cv=none; b=Dy0AAFU22+MB0zSP1RQl7y22zrGQyyVfHoDA8cKAuMxKoYcAO3ETsWhosrY8K/bVilQ/T82hPtdjeO9o/F8e9+k9j6V2hrsXSljyftaARA4WiVHT69YXDlrXgKXlHmD5HFd2SrYkxKjVpXpikK7VMRS34IAVePxOPjQKVMFqLs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756982676; c=relaxed/simple;
-	bh=pKXQ2BOe5S23ZZX1t20m3mUlrnVNSp1CdRdrgqIRj78=;
+	s=arc-20240116; t=1756983335; c=relaxed/simple;
+	bh=IsvPPeqV8POyoYunxkhkVNbHZma0NTrLqcfEJ8H1vOg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VpWQtqHZhoqvwvY0TUABNUQIJYs/Ik+rSxiSLCgbzgP5DbggH7wZvoSZeNb9v/Uh/L5LaRkpfUCO1eCzJNQPsymi/PLHcO96rgxq+Azf43NUUkwaV6KlZMwlX/WWMeFKRDsJKf6XDKuh2o6phDnylsAeFOj0zcSOc99WRd/jYPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DThHZmd4; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=be1fxuFiD54fqN74FXHx3tGk5fyN5y0gOA7jjrcfbDB5GiZKekOE3jh1KK6iqqiANrUB/V2w3mS9wCl9T6lkHRQZIuT5JglqbIzZFMSYQSTMXKVImtbp5KkoIpbdK8kUD5/ZGN0QzgbrdAGLKRCn3QSYErj0XZRHk5hDo7ZDR/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHD9Wfe9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DThHZmd4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006FEC4CEF0;
-	Thu,  4 Sep 2025 10:44:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHD9Wfe9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBC1C4CEF0;
+	Thu,  4 Sep 2025 10:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756982675;
-	bh=pKXQ2BOe5S23ZZX1t20m3mUlrnVNSp1CdRdrgqIRj78=;
+	s=k20201202; t=1756983335;
+	bh=IsvPPeqV8POyoYunxkhkVNbHZma0NTrLqcfEJ8H1vOg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DThHZmd4O/0IYMRQaqdxjRE2eu376zOP7YfVWGpo0EwQkbrz9P9zY5LXSD6VOGW5C
-	 q+KD/X0jVRp3Z6bCZWOpy+Ewu7t/55PiILUftovaYRUJvfcL/HSt4QD/9oZFjcwmuN
-	 GyEiXSs/gBx40h8KsUH0o8d/mJim8vsTdjB7FygOnzUfbkz03UytfMiP+xr1osA5Pn
-	 bWtfVI3NDl8wRbYfRRqy1RLFdQYYVwMBLXjHZnwKN28xFAZSbLjhzdCC1xuvPauqBR
-	 si3nzbuk75JDcNsezQiTVnic0sEEYYBadv9kxsdp5ydiolmedJw36nDTrbA+su4YL3
-	 EYjLoR76Aw1MQ==
-Message-ID: <90aa7f8a-9ce1-425d-a988-3c1f9990ec4d@kernel.org>
-Date: Thu, 4 Sep 2025 12:44:28 +0200
+	b=QHD9Wfe9pl81KaKyYx3q2f/4xdKdSE4GTZg14n1v3R0PxBM2ZlnaHOp2M9mEmpnQ5
+	 nUlqo58kaXVT5TT+pkv8cdyMVTGaoBvtxf38tWncUX2yB0f3CxtRqy561mgeJRWNQo
+	 Zhv/Z1n+OkYOqJfBS08e434/Ym6augQuxit6SOa8DpY9qyOg6llKU1Rh607HpYBBA2
+	 L7AwBCP5Q+3XlTax5HRY96wjwpovkEbeP+5SnEeWTzW84jrlXkStyQ4pBCLZHIU+w6
+	 JNDzKYYrJgjrAbpK3rgqdSGP9hdCr746owEOPUcBO2xvQnEcg93ncOsWSJTeG3AvsC
+	 pUyvVC5JHBs5w==
+Message-ID: <818b7848-1b34-49dc-87bd-0438a82f2ebf@kernel.org>
+Date: Thu, 4 Sep 2025 12:55:23 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,23 +35,42 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: afe: current-sense-amplifier: Add
- io-channel-cells
-To: Primoz Fiser <primoz.fiser@norik.com>
-Cc: Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
- David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
+Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup
+ helper
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- upstream@lists.phytec.de
-References: <20250903113700.3079626-1-primoz.fiser@norik.com>
- <20250904-tangible-practical-partridge-a1b0e4@kuoka>
- <b6006a1b-0b46-4e0d-9d49-6cc0dbe84814@norik.com>
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+ <20250903131733.57637-8-zhangzihuan@kylinos.cn>
+ <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
+ <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -97,37 +116,27 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <b6006a1b-0b46-4e0d-9d49-6cc0dbe84814@norik.com>
+In-Reply-To: <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 04/09/2025 12:15, Primoz Fiser wrote:
-> Hi Krzysztof,
+On 04/09/2025 12:37, Zihuan Zhang wrote:
+>>   * Lastly, given that the benefit of cleanup helpers is removal of
+>>   * "goto", and that the "goto" statement can jump between scopes, the
+>>   * expectation is that usage of "goto" and cleanup helpers is never
+>>   * mixed in the same function. I.e. for a given routine, convert all
+>>   * resources that need a "goto" cleanup to scope-based cleanup, or
+>>   * convert none of them.
 > 
-> On 4. 09. 25 11:17, Krzysztof Kozlowski wrote:
->> On Wed, Sep 03, 2025 at 01:36:59PM +0200, Primoz Fiser wrote:
->>> The current-sense-amplifier is an IIO provider thus can be referenced by
->>> IIO consumers (via "io-channels" property in consumer device node). Such
->>> provider is required to describe number of cells used in phandle lookup
->>> with "io-channel-cells" property, otherwise the following kernel error
->>> is present:
->>>
->>>    OF: /iio-hwmon: could not get #io-channel-cells for /current-sense
->>
->> Also, how can I reproduce this error? Do you paste here real errors or
->> just some invented ones from some out of tree code (hint: such would not
->> be relevant).
 > 
-> I get this error if I apply patch #2 without patch #1. See [1] for more 
-> details.
-Then your warning is not relevant here.
+> Should I replace all the memory allocation cleanups here with `__free`?
+> That would allow us to drop all the `goto`s, but since this function has
+> quite a few of them, I’m concerned it might introduce new issues. What’s
+> your recommendation?
 
-You said in your commit there is a bug, expressed with that warning, so
-you make this commit. Turns out there is no bug, so all the reasons for
-this commit are gone.
+If you keep asking this, I have doubts you really know how to use
+cleanup.h. Don't blindly convert code to cleanup.h. It's very odd syntax
+and it is not even welcomed everywhere.
 
-Rephrase the commit msg to describe accurate reasons WHY you are doing
-this. Drop non-existing warnings and any misleading fixes tag, since
-there is no bug being fixed.
 Best regards,
 Krzysztof
