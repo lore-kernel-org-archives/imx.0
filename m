@@ -1,187 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946EA32F76C;
-	Fri,  5 Sep 2025 07:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4EF2ED175
+	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 07:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757055742; cv=none; b=RzGaFS4xg7fHKskNhyOGD+GC0+Fhqd88zDfZFJlckkO1Ibs5ht3Xr20Klql85hCej3fae+89CsuZSFZyjWqsGHpwjKLnzuawz1eMP/1XWJXA0Ex+Y3FnCPsV3nUx0eA/b3PUiuBFZi87RNgQpeBC2zeKmH+HZekaPdrZo1kIq58=
+	t=1757056728; cv=none; b=HJOw87nj5+uS4xcvjvuDtkVYdMiCXOMYGafMRQGi5sijd4pNV1Y+rRf932nQnzj1wce0i/xu+WI6zf3D0v8NIX/bp7PB+nQnx5bOp3RJZCNCgYfzYLscnJpVXGeT6Vap40j8mEBkzOQXTYNFWKpFKnpCJjkQn68OOCnz9LNHY8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757055742; c=relaxed/simple;
-	bh=fTBkavZ91ssgIY3s9ptez3AviwpoecTcBhXYPHGbbbM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OA2LDr9nRdZidpSNzG9LBO7EDpCPuujglxELKuXFzoDRB6r2mfbS2n7OjAWWKLbUh0Rwqa7VSlv1sVVRXJ4zqIsRyyCly+ii5Q76LQgn6vSpoklnBU3j9D0FHCxpgV22NIbWAtzOua1DCXZElGai0oMKx+nb3HlCFMpRcmypC00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtM6XFxq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757056728; c=relaxed/simple;
+	bh=7mfEzOPQfq5K1ir/b9joCG8MYH/Ff/4lkv59IXYzy60=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ae/4J0116R8z1czAc5p6CKgrLuL6QqZBcQsLdnZJtmqUkamaYG0Oc97EtcQ7oKR32bKKF2JGWAiqlCvFMAsdz0OHsn6IVv5HtzqYR/coR3w23mYpPXg/pdhL8mvEaFkVJiqqUomuBWU+3golTpVy6s5y/e7S+d23vBdyA3w1/9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lPvne8zr; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TtM6XFxq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61182C4CEF1;
-	Fri,  5 Sep 2025 07:02:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757055741;
-	bh=fTBkavZ91ssgIY3s9ptez3AviwpoecTcBhXYPHGbbbM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TtM6XFxqtN3QeBsuHZlpZfezN9qmURrZfJfI5CCDT5eGvBRGhyX9PdD9MGup8yjnn
-	 0p9KCIiNdorRgLjz3L3MYT1Z5S78sCbEjPaYAd5TxYTGTYxlzNpe7dyP6ctX6eXSTt
-	 wmEFEgieMnkUhnyQscTQ323sCBTvrUj+AFt1Az5eyDJQY3Y7/v1/1MNoRdo0djg0Cg
-	 BGN7Js2b+GPfHh7BDZdtkTHST45y2B/DgwyGbWoz80F94Z0WMwrnI3fpho1XctpIDt
-	 7jr1TSxMsWIG+Ru4C3Lhao5f3LzrMHUw1awATjvXu0RsNrOievNIEjJhefvmsZ/tIM
-	 btioibLovSD7A==
-Message-ID: <a04f3aa8-e7e3-4d20-bc86-5496c7abe272@kernel.org>
-Date: Fri, 5 Sep 2025 09:02:09 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lPvne8zr"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id E5B0BC6B384;
+	Fri,  5 Sep 2025 07:18:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 130AA606C5;
+	Fri,  5 Sep 2025 07:18:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 735EC102F27E1;
+	Fri,  5 Sep 2025 09:18:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1757056722; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=GADct/AbiVj9XBTyxNr5n8ho8ytwvAJWcxRb1vyJkfg=;
+	b=lPvne8zrzIT8Lcj5JwF71RsOzlxRRp0Q1by6VTjEmRmEdCq7OOf9pry49alpxGlsKbuIa0
+	cavTMkz6lGDDyCw6lDgr/ONu/l/mLk8FcnXtKwkdWyrWp208+L8NBnQxSbXkZk9nyrO6kP
+	gXEoNRGfZLrY8sgd2mYt367LiFlmkGGvXCzFbc3ZIB676j7w3I/gEqfvD6F8qAEJZYE4qe
+	NM5N7lEb7/FC5q/omHg63t1wER6ZHASei71k3VYB5ZLOW+zmV0hixDF6fyagzPRFzb2Avz
+	A+rBQuTUIvIFi4spfRwEV4wIlaZAWwHWpFcajwdqsQy569Q4NTpv0J3iHCRIvg==
+Date: Fri, 5 Sep 2025 09:18:32 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	"open list:REAL TIME CLOCK (RTC) SUBSYSTEM" <linux-rtc@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: rtc: pcf85063: remove
+ quartz-load-femtofarads restriction for nxp,pcf85063
+Message-ID: <202509050718321ac264d6@mail.local>
+References: <20250903191128.439164-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/10] thermal/drivers/ti-soc-thermal: Use scope-based
- cleanup helper
-To: Andreas Kemnade <andreas@kemnade.info>,
- Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Alim Akhtar
- <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
- <20250903131733.57637-10-zhangzihuan@kylinos.cn>
- <20250905085726.2bc6fcb4@akair>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250905085726.2bc6fcb4@akair>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250903191128.439164-1-Frank.Li@nxp.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 05/09/2025 08:57, Andreas Kemnade wrote:
-> Am Wed,  3 Sep 2025 21:17:32 +0800
-> schrieb Zihuan Zhang <zhangzihuan@kylinos.cn>:
+On 03/09/2025 15:11:27-0400, Frank Li wrote:
+> Original TXT binding doc have not limitition about quartz-load-femtofarads,
+> which only allow 7000 for nxp,pcf85063.
+
+The only valid values are 7000 and 12500, wouldn't it be better to
+improve the limitation rather than removing it?
+
 > 
->> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
->> annotation for policy references. This reduces the risk of reference
->> counting mistakes and aligns the code with the latest kernel style.
->>
->> No functional change intended.
->>
->> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
->> ---
->>  drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 13 ++++---------
->>  1 file changed, 4 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
->> index 0cf0826b805a..37d06468913a 100644
->> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
->> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
->> @@ -27,7 +27,6 @@
->>  
->>  /* common data structures */
->>  struct ti_thermal_data {
->> -	struct cpufreq_policy *policy;
->>  	struct thermal_zone_device *ti_thermal;
->>  	struct thermal_zone_device *pcb_tz;
->>  	struct thermal_cooling_device *cool_dev;
->> @@ -218,6 +217,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
->>  {
->>  	struct ti_thermal_data *data;
->>  	struct device_node *np = bgp->dev->of_node;
->> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
->>  
-> this looks as it changes the lifecycle from the device lifetime to just
-> this function...
+> So remove it to fix below CHECK_DTBS warnings:
+> arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt2.dtb: rtc@51 (nxp,pcf85063): quartz-load-femtofarads:0: 7000 was expected
+>         from schema $id: http://devicetree.org/schemas/rtc/nxp,pcf85063.yaml#
 > 
->>  	/*
->>  	 * We are assuming here that if one deploys the zone
->> @@ -234,19 +234,17 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
->>  	if (!data)
->>  		return -EINVAL;
->>  
->> -	data->policy = cpufreq_cpu_get(0);
->> -	if (!data->policy) {
->> +	if (!policy) {
->>  		pr_debug("%s: CPUFreq policy not found\n", __func__);
->>  		return -EPROBE_DEFER;
->>  	}
->>  
->>  	/* Register cooling device */
->> -	data->cool_dev = cpufreq_cooling_register(data->policy);
->> +	data->cool_dev = cpufreq_cooling_register(policy);
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../devicetree/bindings/rtc/nxp,pcf85063.yaml          | 10 ----------
+>  1 file changed, 10 deletions(-)
 > 
-> and it is passed on to something living beyond this function. I see no
-> _get(policy) in cpufreq_cooling_register().
-> Am I missing something?
-Yeah, " No functional change intended." is clearly incorrect.
+> diff --git a/Documentation/devicetree/bindings/rtc/nxp,pcf85063.yaml b/Documentation/devicetree/bindings/rtc/nxp,pcf85063.yaml
+> index 1e6277e524c27..f7013cd8fc20b 100644
+> --- a/Documentation/devicetree/bindings/rtc/nxp,pcf85063.yaml
+> +++ b/Documentation/devicetree/bindings/rtc/nxp,pcf85063.yaml
+> @@ -62,16 +62,6 @@ allOf:
+>      then:
+>        properties:
+>          quartz-load-femtofarads: false
+> -  - if:
+> -      properties:
+> -        compatible:
+> -          contains:
+> -            enum:
+> -              - nxp,pcf85063
+> -    then:
+> -      properties:
+> -        quartz-load-femtofarads:
+> -          const: 7000
+>    - if:
+>        properties:
+>          compatible:
+> -- 
+> 2.34.1
+> 
 
-I already commented on this series that it is very bad and author should
-does not understand how cleanup.h works, and here is another example.
-
-IMO, entire patchset should be dropped.
-
-Best regards,
-Krzysztof
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
