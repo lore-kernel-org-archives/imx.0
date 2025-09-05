@@ -1,88 +1,255 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355B026F2B4
-	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 19:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D87281508
+	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 19:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757099867; cv=none; b=NAkcJwn/nU66W8/O16Tzn7NVRt0T9G0tt4u7t8cJRn5RxFp4LYNt9LelTTwLrCd6OEog6a+UK+oo1tTUtFCNhIivoRd/7bxo2OHoa9Y8oQ+WMlvG5CWTDK5DoftKv/u7NhuWyPSvji+agf6PoGMxzq7Iz/Nj8CCnXh9qVyVmmVQ=
+	t=1757101205; cv=none; b=cdcGVPT+7wiYPKXt1VEYwPvtCBEmn+RwII1O6DnwH4AknX+yKmyQurgaNpPHjzVX/70EBJRF6Fkug1Aj7k2x4HinhS9qsydWlcKwgTkB2gleQmPeU8DVQiRYzfIwMao520UQGywOQ7rYDl4cV4HbAKQqsRneEz1+wOy+aSmyTTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757099867; c=relaxed/simple;
-	bh=d9riUk8d4MeIl+PcvKeh50CTyzrEM8TlhBq2jX/imDQ=;
+	s=arc-20240116; t=1757101205; c=relaxed/simple;
+	bh=EW5E1DsoS/eP0Xpaway7kFwsFpD+pL719m9UghXWG4E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KDWdR9WOY8Zce9zSBpO9rvQ2lfSTBWoC77D1kkhLJ6iGNLajzTDo0TlTNuW85vaGhJOOuS0rrmHMTFZ03dX+o17/hFBN88y5aq2P8rngQF81E5JQl+8Cqjl573b7sRufyv0N7YPedopXdc3TebewUSozoyJOKwRZgsJj2W5CXt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mOG+v7Og; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=TscNEkHL7pdKMS3p7/rCIVFmlUAgu/hnQnCg9HynQax5XqGmneOGhqz1hOi/1n3tzjLeXl+o/xCWexj9rfos2EmSMMbo3UEwetub+ENf+PZsIr2CZ3Y0kk1tmlmiDfhQOB7Th4LCOVD/nvipB/09+Om1Vynv5Gs+GhHB6lMbMpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZqXRFlbg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mOG+v7Og"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-55f98e7782bso2991116e87.0
-        for <imx@lists.linux.dev>; Fri, 05 Sep 2025 12:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757099863; x=1757704663; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d9riUk8d4MeIl+PcvKeh50CTyzrEM8TlhBq2jX/imDQ=;
-        b=mOG+v7OgiB1NUNwTC+GsEQBaB2AlfOH33/3x5DxfYKWFawfg/wvH/ytyJREVgz/abx
-         y+dvy/04dJNx2zGakkm98PxNLb8Aw5OKMXOiCw6/nEw/1GFmxL9Ais/GbAgYeT5Yc12e
-         LvfnfoGQz4HzKf9QTjjrpj6oowPK4QgQTcU1j5Rbj+B4xmt2nN/6ppQhkUzHUVp5thVX
-         cQ6WxA9ddVlOjG+C6LYxEeGz2XNPoNGMH1Rx8hM10dHYyceCQhsyVv51e189LoAhY2xs
-         +Hbd25IYnzfg6jCdMfxFWlIAVfwDGvDdtZ/smKAPSmBQ8lMvy9n1s3m8VwEBnMsycm4P
-         VIgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757099863; x=1757704663;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d9riUk8d4MeIl+PcvKeh50CTyzrEM8TlhBq2jX/imDQ=;
-        b=LqazD8b+6tmb9HXUvv5MKnrKtKRCAOj3S4lNOL+460e1MjUPN511mF42B3nvltm2zv
-         KwvjGomGNUTzgE+tfEXjKq5Nt5vJfuc4sllOqwPxjiqlEFYuogWTrJe5qHLQO4aTHL9m
-         9HbOA5tr17d1skoGMgS8jpVprgXwsw5kuXuqfRQ+/EYr0LvyFYV+p6+Lb8KP8O44Ia5w
-         vXaHycGlSfkWg84Z28i82qV0HnD/Bi469MWOwGZpc2wRntv+/Aw0km78gvkRqlDmHX/b
-         kMcEVRizeROI/J5EGYBTtqRJxISLUnsxYwfUm+zng90W2pukoXXOsR6GT4pqX3ozUxWR
-         LE4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVAIk8FSnRsqKSdKhYAexC/GF4637s3GucrBS7hqh2Lwxcljmx2l9NOQPT6apA44zg9ODs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyjohMqPZf8Too9ow3Q3EZ0PE67vf3sJmYE30rAwFtydkHDoAPW
-	e4UBrpUqVdcYeSXcuJVfgk2VVxuJxPEfsNuAJOb/v7Cbieqyn0gOB0EnT1iXkVciYThTaKhQgsq
-	RjXnBeYpPB6mT073c8/Vg9v5haEGTGyY=
-X-Gm-Gg: ASbGnctzoIvtUGB7lYAdlR7lXMz39zoMFLizUcyy2RSKCuqvCpl6TiBiL1zFwYdc6B/
-	P7qdOvjNf75twGjB21i5JeVW27+oDJj4BYyJk+rKKoKk3qCoj0NxYERevjX/7sQDyfFBMEZgVpl
-	ttZNbQX5xK4nO2Mu+wVksTBY1Mr6F/nR6g1ka2TM5sS8IEDZMi3DPSTbgM7GUDT5FkrXU62xUE5
-	zKb68+1aJ8TBA7Leno9G7VNXiyiaqry7HNIEhXqM/xx27bbAw==
-X-Google-Smtp-Source: AGHT+IExNr7E9rD7sUYs1T/yf3koGRYXu/DH4f4r9pUApNVPygT+m2pxQCLbRRRJxgQIeFsJGBe+CsQwzmlorjCUV5s=
-X-Received: by 2002:a05:6512:144e:10b0:560:a641:6499 with SMTP id
- 2adb3069b0e04-560a6416d00mr1270504e87.9.1757099862969; Fri, 05 Sep 2025
- 12:17:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZqXRFlbg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45518C16AAE
+	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 19:40:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757101204;
+	bh=EW5E1DsoS/eP0Xpaway7kFwsFpD+pL719m9UghXWG4E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZqXRFlbgP5QwPcBxU6eNLL/08iwuclbpMhHj5f112VJ0D0CRs+uAOZZt9/eSU+oYH
+	 FOKxLZNfYfeCUuY691CYi9oaDczKB9oJxUx3sRU+YTC0hMmU7aj7i6icx+GswFUP2R
+	 IFwTEwP7LFbGxUg/I7SAjo0DENXd43ZHbeobRhQywFakWAs9/enQGWBOfoAuIelFBb
+	 wogoGak56kUdv1oV5wP9PLMDQRhAVNRB8Qk4NYGffSXcIWD99Y+pR+l0VNOqodu/Yf
+	 429lN+Si30NngrGAeTbmA/uuc+3zujKhmh+809qGxXm2EsqsYlM68fd6X/hgvyGAM6
+	 l4P6r3BqgQXRw==
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-746d5474a53so739916a34.2
+        for <imx@lists.linux.dev>; Fri, 05 Sep 2025 12:40:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVmJWhED+KVsnI50T8v9Ucd86JkqyDWc6kx94o4giwFpyrlNQvWKNQOw1Eiki4c12mGpQQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx7q/Q8o8HWeU92+pXnn4TmSOFqHucdNSZJnkt7HbrM+jhegeKf
+	nbtU5JDJZMhOtCjeDatJAxV3uOA0g8tWZVZqsrF5JBociJ0K8T7CLfe6bC4mK6lph9YmizUx6iL
+	1LMc/abl1w7H1heraSkkeGYdL0fo1dTY=
+X-Google-Smtp-Source: AGHT+IEWhcvcPUmMTXw08ZtZH4mqK1uKC0R7GjcFC8PVlsyyD61c2ek06n5Ch8ecLJvX8w2zR6AjPrAE5CMEF+OJ57Q=
+X-Received: by 2002:a05:6830:700a:b0:74b:f9de:34dd with SMTP id
+ 46e09a7af769-74bf9de3edfmr235939a34.15.1757101203180; Fri, 05 Sep 2025
+ 12:40:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250905190645.609762-1-Frank.Li@nxp.com>
-In-Reply-To: <20250905190645.609762-1-Frank.Li@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Fri, 5 Sep 2025 16:17:31 -0300
-X-Gm-Features: Ac12FXz9svkM5bN90I8Wbp08WUFjnKgc2W1OxAbDeHh4SU05q4l2K1Kn6ku9BL4
-Message-ID: <CAOMZO5AKcNHvRpjhmGpGfPRaonU+quT=dDJQwLpDjBxTCXkTXQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] dt-bindings: input: convert tca8418_keypad.txt to
- yaml format
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	imx@lists.linux.dev
+References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn> <20250905132413.1376220-5-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250905132413.1376220-5-zhangzihuan@kylinos.cn>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 5 Sep 2025 21:39:52 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jvskvxgUhxKJLN89A+s7Mruz1_tewHZfKgC7sUGLi9cw@mail.gmail.com>
+X-Gm-Features: Ac12FXws29Av_URAHgjbe1keBVsNp0-87UjpP4EeoBVUVvSgtWfWbkUI32D7vRk
+Message-ID: <CAJZ5v0jvskvxgUhxKJLN89A+s7Mruz1_tewHZfKgC7sUGLi9cw@mail.gmail.com>
+Subject: Re: [PATCH v5 4/6] PM / devfreq: Use scope-based cleanup helper
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
+	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
+	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 5, 2025 at 4:08=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+On Fri, Sep 5, 2025 at 3:25=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
+> wrote:
+>
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
+>
+> No functional change intended.
+>
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  drivers/devfreq/governor_passive.c | 60 +++++++++++-------------------
+>  1 file changed, 22 insertions(+), 38 deletions(-)
+>
+> diff --git a/drivers/devfreq/governor_passive.c b/drivers/devfreq/governo=
+r_passive.c
+> index 953cf9a1e9f7..5afaea39377e 100644
+> --- a/drivers/devfreq/governor_passive.c
+> +++ b/drivers/devfreq/governor_passive.c
+> @@ -80,24 +80,23 @@ static int get_target_freq_with_cpufreq(struct devfre=
+q *devfreq,
+>         struct devfreq_passive_data *p_data =3D
+>                                 (struct devfreq_passive_data *)devfreq->d=
+ata;
+>         struct devfreq_cpu_data *parent_cpu_data;
+> -       struct cpufreq_policy *policy;
+>         unsigned long cpu, cpu_cur, cpu_min, cpu_max, cpu_percent;
+>         unsigned long dev_min, dev_max;
+>         unsigned long freq =3D 0;
+>         int ret =3D 0;
+>
+>         for_each_online_cpu(cpu) {
 
-> +title: I2C/SMBus keypad scanner
+I'd rather move the code in this loop to a separate function in the
+first place and then do a __free()-based simplification of it.  I'd
+suggest doing each step in a separate patch to avoid mistakes.
 
-This title is too generic.
+> -               policy =3D cpufreq_cpu_get(cpu);
+> +               struct cpufreq_policy *policy __free(put_cpufreq_policy) =
+=3D
+> +                       cpufreq_cpu_get(cpu);
+> +
+>                 if (!policy) {
+>                         ret =3D -EINVAL;
+>                         continue;
+>                 }
+>
+>                 parent_cpu_data =3D get_parent_cpu_data(p_data, policy);
+> -               if (!parent_cpu_data) {
+> -                       cpufreq_cpu_put(policy);
+> +               if (!parent_cpu_data)
+>                         continue;
+> -               }
+>
+>                 /* Get target freq via required opps */
+>                 cpu_cur =3D parent_cpu_data->cur_freq * HZ_PER_KHZ;
+> @@ -106,7 +105,6 @@ static int get_target_freq_with_cpufreq(struct devfre=
+q *devfreq,
+>                                         devfreq->opp_table, &cpu_cur);
+>                 if (freq) {
+>                         *target_freq =3D max(freq, *target_freq);
+> -                       cpufreq_cpu_put(policy);
+>                         continue;
+>                 }
+>
+> @@ -121,7 +119,6 @@ static int get_target_freq_with_cpufreq(struct devfre=
+q *devfreq,
+>                 freq =3D dev_min + mult_frac(dev_max - dev_min, cpu_perce=
+nt, 100);
+>
+>                 *target_freq =3D max(freq, *target_freq);
+> -               cpufreq_cpu_put(policy);
+>         }
+>
+>         return ret;
+> @@ -255,8 +252,6 @@ static int cpufreq_passive_register_notifier(struct d=
+evfreq *devfreq)
+>                         =3D (struct devfreq_passive_data *)devfreq->data;
+>         struct device *dev =3D devfreq->dev.parent;
+>         struct opp_table *opp_table =3D NULL;
+> -       struct devfreq_cpu_data *parent_cpu_data;
+> -       struct cpufreq_policy *policy;
+>         struct device *cpu_dev;
+>         unsigned int cpu;
+>         int ret;
+> @@ -273,37 +268,34 @@ static int cpufreq_passive_register_notifier(struct=
+ devfreq *devfreq)
+>         }
+>
+>         for_each_possible_cpu(cpu) {
 
-You should include the part number:
+And analogously here.  I'd use separate two patches for updating this code.
 
-title: TCA8418 I2C/SMBus keypad scanner
+> -               policy =3D cpufreq_cpu_get(cpu);
+> -               if (!policy) {
+> -                       ret =3D -EPROBE_DEFER;
+> -                       goto err;
+> -               }
+> +               struct cpufreq_policy *policy __free(put_cpufreq_policy) =
+=3D
+> +                       cpufreq_cpu_get(cpu);
+>
+> -               parent_cpu_data =3D get_parent_cpu_data(p_data, policy);
+> -               if (parent_cpu_data) {
+> -                       cpufreq_cpu_put(policy);
+> +               if (!policy)
+> +                       return -EPROBE_DEFER;
+> +
+> +               struct devfreq_cpu_data *initial_parent_cpu_data =3D
+> +                       get_parent_cpu_data(p_data, policy);
+> +
+> +               if (initial_parent_cpu_data)
+>                         continue;
+> -               }
+>
+> -               parent_cpu_data =3D kzalloc(sizeof(*parent_cpu_data),
+> -                                               GFP_KERNEL);
+> -               if (!parent_cpu_data) {
+> -                       ret =3D -ENOMEM;
+> -                       goto err_put_policy;
+> -               }
+> +               struct devfreq_cpu_data *parent_cpu_data __free(kfree) =
+=3D
+> +                       kzalloc(sizeof(*parent_cpu_data), GFP_KERNEL);
+> +
+> +               if (!parent_cpu_data)
+> +                       return -ENOMEM;
+>
+>                 cpu_dev =3D get_cpu_device(cpu);
+>                 if (!cpu_dev) {
+>                         dev_err(dev, "failed to get cpu device\n");
+> -                       ret =3D -ENODEV;
+> -                       goto err_free_cpu_data;
+> +                       return -ENODEV;
+>                 }
+>
+>                 opp_table =3D dev_pm_opp_get_opp_table(cpu_dev);
+>                 if (IS_ERR(opp_table)) {
+>                         dev_err(dev, "failed to get opp_table of cpu%d\n"=
+, cpu);
+> -                       ret =3D PTR_ERR(opp_table);
+> -                       goto err_free_cpu_data;
+> +                       return PTR_ERR(opp_table);
+>                 }
+>
+>                 parent_cpu_data->dev =3D cpu_dev;
+> @@ -313,8 +305,8 @@ static int cpufreq_passive_register_notifier(struct d=
+evfreq *devfreq)
+>                 parent_cpu_data->min_freq =3D policy->cpuinfo.min_freq;
+>                 parent_cpu_data->max_freq =3D policy->cpuinfo.max_freq;
+>
+> -               list_add_tail(&parent_cpu_data->node, &p_data->cpu_data_l=
+ist);
+> -               cpufreq_cpu_put(policy);
+> +               list_add_tail(&(no_free_ptr(parent_cpu_data)->node,
+> +                       &p_data->cpu_data_list);
+>         }
+>
+>         mutex_lock(&devfreq->lock);
+> @@ -324,14 +316,6 @@ static int cpufreq_passive_register_notifier(struct =
+devfreq *devfreq)
+>                 dev_err(dev, "failed to update the frequency\n");
+>
+>         return ret;
+> -
+> -err_free_cpu_data:
+> -       kfree(parent_cpu_data);
+> -err_put_policy:
+> -       cpufreq_cpu_put(policy);
+> -err:
+> -
+> -       return ret;
+>  }
+>
+>  static int devfreq_passive_notifier_call(struct notifier_block *nb,
+> --
