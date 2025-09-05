@@ -1,276 +1,165 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010041.outbound.protection.outlook.com [52.101.84.41])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91D827A123
-	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 12:00:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757073639; cv=fail; b=dorPMhGhZ8mWfh+TgHm9otcGi8lGkzfxfslKZ0BNXbeD4E24cMWJNR0i6h9IbPrVyy2Ncx34hD00U7viCFELTe6/I5gKi4Ntux9wT0cZJHAswG8sKjHMgmi1HqIS2pq4K5zk3J+2wEMPhS75Vay8ekpN4SJZZ2rj9XLqjqf8uWg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757073639; c=relaxed/simple;
-	bh=al/il823YLK8n/5rekzHaPlwIIFSIoo/oKGXeNohj24=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=p/OlBCPiWXIaRlFF54N/cRJj3JhQ0UQzunkiJhp7dI0hB+qRS+7Mn2UFNcaohJ8NjW2JWfDgHTp1qsdtuA2F/Ja30InF4SoGUFlc7zZoVncJiAuHsDM6Sr7B2yYKLyT04gYMZbAG3ht0s1M3NjGHt3h5q0wb/RRx1wQMCYX4fis=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=FVJKBGbE; arc=fail smtp.client-ip=52.101.84.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="FVJKBGbE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wUDO5DAGWSTivAxA3bp9/IrFNEe7Pqwjef3bC1v/WPyIByGmMMWd1y7HcBkQ3LgmUWu2gDnxmWKE5d2ulZKpXZykRj2pM0VlNpRw2gs/d26DgrA9lixcXsqnjBtFOSXsGV2Sf4sz74XetgSCKc3w/OqZxBvZSsEmc8qkHGpL5t8BzQ09B1lpOlo+FkoDWniV+gEZ03n39oB1gEQZw6+s7h1EJ920qPn2tM1c4ThC/jO9fYKgS5gLSICFY5/Kii/ZEbfp7VsPXPqACldx95ZFSz9+7c6x66FII6kJzwdjD3yXaWEme29PPo0/4Ckz8Ft9CJhcJFnRrm8VlZKS5nDIKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MA2wHjaUiY1ZjNuNXaX0xG/UCNsIcp3FyP3ke3zSsHI=;
- b=qPxfWI9rN3vGTBSSnPNv9K6XVhiooQcyHlBLabml0OtvIL/6RBD6iZSmmyl0Kc0VtswP+M9XpUYY2ppfWS0178wpk5mcEvTRZAb45RMlgH4yg49w3F9EL09hoLsU/TeX0u0u86xHl6n8lOFTFx9WPo9RYgJvq/wvtwknu2wHbkm1dRC7KC1YPPE0eYn5zfJjFZfuShro+4xtXvNxHcgP0gw2um1cdezezHjVpWLNPcL1jsxJnlw886CTqa++BPL/Kdhrwl3dGPwGGkEz/yuO1qUhNk/deQ2yB2XkE0KrlzAWP6wlC4pKdC+0Bz3crArxBPLv5gYAhUEHIJQCujXmHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MA2wHjaUiY1ZjNuNXaX0xG/UCNsIcp3FyP3ke3zSsHI=;
- b=FVJKBGbE4ZUK6PFJ6yQj465Iev1byfcgXADuKl1hw8PJEGvuWVh9cGDUY8kyBoM3HtCHjwv78YGaonbCqrHyn6rsjXudv5rvD+sivTxMc/QTiPdpoZC8nuhu22GKDyvR+AnYz00glCtgRgyDfhyjUFVLRH0jHnORWwQO/IV6GsnVF6ceIeUSpIPIOCnSU64JcuUaWOryJlnGrW3elc8qoDFiLj5VESWwCUuf6yOIV08Si6UHqmHmf7BwyavoI92kwSH0SoAxho4MEOX5ABnrq3mliIZq8z5NzLQIHUrDLC4aYuEt7MPaZe9H/9SNRwvR7qTVXGex5AsMOcSqJG6fUg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by DU7PR04MB11162.eurprd04.prod.outlook.com (2603:10a6:10:5b3::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Fri, 5 Sep
- 2025 12:00:30 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.9094.018; Fri, 5 Sep 2025
- 12:00:30 +0000
-Date: Fri, 5 Sep 2025 21:11:48 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Peng Fan <peng.fan@nxp.com>, Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Aswath Govindraju <a-govindraju@ti.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A42011713
+	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 13:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757078680; cv=none; b=iEES4u6wTHABuFcPjgUKo+2vDsODNwtH9ngSS949jlbcx0d4G74QZkonGRq+ty3DXIurMvdUX0QHld5qGQPIrP2GNVrgSDVjDXetqXcS/uOAUiCCyWeNI0pFNO5EwKp2uR+hIuUhOw98ERA6dBPjtcE77bTmQezCQP3UBQ2M9fE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757078680; c=relaxed/simple;
+	bh=fgg0w7E0F42rqEVvGzUPcQeGcZf2Yl3sxB4hyWOH4dM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aGpfA0gqQlXG5D14bijSXo2ZprRENVfshREVX97Uax3dPuYd6yR2ry/PTTlEwqjRcJBBEbE5X7cpymV3AXFxD0s27CGIIGSUxqaDWvIJajI2sqdMH9eQ1kYSLeLiPGgJ5c0M+pu+W+Xcu2M/tngi3b5Ub6Bl8DJEiJUNJYvRgZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: a6e6a2d48a5b11f0b29709d653e92f7d-20250905
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:8422d8b4-b443-4d71-a0b2-cf6de6c4675e,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:eb53ebb2a39f7b4fc4886caf3fac51b3,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: a6e6a2d48a5b11f0b29709d653e92f7d-20250905
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 560139086; Fri, 05 Sep 2025 21:24:29 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 20FEEE008FA7;
+	Fri,  5 Sep 2025 21:24:29 +0800 (CST)
+X-ns-mid: postfix-68BAE48C-8949761
+Received: from localhost.localdomain (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 3F132E008FA3;
+	Fri,  5 Sep 2025 21:24:17 +0800 (CST)
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+To: "Rafael J . wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Eduardo Valentin <edubezval@gmail.com>,
+	Keerthy <j-keerthy@ti.com>
+Cc: Ben Horgan <ben.horgan@arm.com>,
+	zhenglifeng <zhenglifeng1@huawei.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Lukasz Luba <lukasz.luba@arm.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>, linux-can@vger.kernel.org,
-	linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v5 1/9] dt-bindings: phy: ti,tcan104x-can: Document NXP
- TJA105X/1048
-Message-ID: <20250905131148.GA19427@nxa18884-linux.ap.freescale.net>
-References: <20250904-can-v5-0-23d8129b5e5d@nxp.com>
- <20250904-can-v5-1-23d8129b5e5d@nxp.com>
- <20250905-elite-enthusiastic-zebu-fec55c@kuoka>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250905-elite-enthusiastic-zebu-fec55c@kuoka>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI2PR01CA0044.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::8) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	Beata Michalska <beata.michalska@arm.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pavel Machek <pavel@kernel.org>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	linux-pm@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zihuan Zhang <zhangzihuan@kylinos.cn>
+Subject: [PATCH v5 0/6] cpufreq: use __free() for all cpufreq_cpu_get() references
+Date: Fri,  5 Sep 2025 21:24:07 +0800
+Message-Id: <20250905132413.1376220-1-zhangzihuan@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DU7PR04MB11162:EE_
-X-MS-Office365-Filtering-Correlation-Id: 698ab3ae-572e-411e-7f06-08ddec73cf7d
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|7416014|366016|1800799024|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?aJTS3AOjUFIaV+HXvONtC+VQCjjx9noETYkknF5baLEaW0eI5nSRN/9mooIo?=
- =?us-ascii?Q?9qON2zZ1ydKc+d9NZr9Lqq7/dWeSIyG1iBqucP5YuRIves88ntChrSIndc1p?=
- =?us-ascii?Q?wFwuKvDLhW/bfaFdo03WGk569fL7r6SINxbbmxr1qScypModIP6hxj6de07L?=
- =?us-ascii?Q?hEysFurR70uv7p7SMqGsR3whm7l4v1r5V0MW3x6E8mhCzY+ETCCcycpO02Bx?=
- =?us-ascii?Q?8U02fdkap7qbnT9DVirAbWuqxfaZWr2GF5abzC56fCqX2PbCMj0fUtAhDCED?=
- =?us-ascii?Q?BnFPC74agx92su7TGs97Is5dRMu9zP5kCzDRzi9z6xXpUOPEA1utJqvTOck/?=
- =?us-ascii?Q?f9mP6EyLSoxEZxxka1F/6v8tEfzCUJDb/BWRmf1BpL1R7fwm5BoTU580Exh/?=
- =?us-ascii?Q?GL+w+EXaS3Hhawv30dyXhfwsQTA9RDoQARXf4j0QmWutFi+MTEq41hjQ35IM?=
- =?us-ascii?Q?+0CtphgJEvkKHxgnCZCGmKboffM/eaIo0wURaiEwfrfQ7PXnfBZzWJN4z0Pl?=
- =?us-ascii?Q?bQ11dDswgv4r4k+GHl9NmKs3DkqIj12FrdYKtCkFtC4bR8iVJfQY0dbcmryH?=
- =?us-ascii?Q?c99QwMI59DluKjD5EQxH95MMd/jO09Kv6sw0d6zz3wlJEBsaJme07jC+u0cl?=
- =?us-ascii?Q?MtAmF0YdYoHrxPaSv5DMYY8Ducw6xtmxue2F0sQRXJjyaGsSlj1NuFJ/QS2/?=
- =?us-ascii?Q?ftgjzurNmMuahgnxwikVWEAT1Zq9oqnhjtQCATaBa8U5mxs4vW/Nfe5TS65u?=
- =?us-ascii?Q?2ZOxbcdTleg7JjJzMG7OVpOQJ4E5Mp3ZX8DmLt60OrrEH/SCKTHaAwLcZYx4?=
- =?us-ascii?Q?XMRfEFKY4w95viXX/QeYKcavr/66vzHqnahLknNo638ZEs4yi3cfLSaIm0JJ?=
- =?us-ascii?Q?6COB+ISBTqhS6A0ddnN/m2Cw/LISwB0k/gukihZ7bjPetxyL12Gb2xv78Siz?=
- =?us-ascii?Q?DcObO2I9bGND/t4Ys9hmxA5VRBYaSfoPtR4DiEOnFFA8UQJ3NOM0k5zBx0jS?=
- =?us-ascii?Q?adF+o/w9H+F/14ma6iZc3uEbjseC+yKRB+KzQtouWCTJkgdVIBGS6+FY8qNL?=
- =?us-ascii?Q?pfsNZQjkrlI8YpOWGXwPVWnreudEg4X7E0HEaAF6BYBbbz6S3a79RGn9qFFj?=
- =?us-ascii?Q?YVMhv3cnkqmTrnK8GCxd05j1U3VEfEBpo/1letVQ8CAvdZOhMWoDagYqd3LS?=
- =?us-ascii?Q?0HHV7NZ/H9N7rugZxJIp7xL6+mUaXT1BhOdrXBx/Ia3ZHCB34WD63AL0FtBx?=
- =?us-ascii?Q?6IliPQzLGgMYxfZNwpTe9MhHVPYbKIBe/5O4BNfMhcbpldREAhCO+Cr1SOHp?=
- =?us-ascii?Q?atX5IflFDzgH9mDmWuaLpmtPHBqY3RMS99jGnrRnsALtkffpi/b1zqXv8fYA?=
- =?us-ascii?Q?OBa7aA/TfGzkBSYy2+C6rg7zqh/3efY2/IYMP0iWL67TbZ3TidQLkPetYy8j?=
- =?us-ascii?Q?5jQtIjaX476feHMk/iSIDN8OEUImME2ZaeYgoDYmdkXte2zBe90R0Q=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(366016)(1800799024)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qdpfxItIG/J6/u0IxJMU+mgcg9XPk5uJo+FdsQlSVs9/NpPfuWxSpO83m1Vt?=
- =?us-ascii?Q?l0SQ9pclDH+IHvlDBY1WF9Kw523zsmdCQw0MIGrHCfXrK+NUHtaLmbVirvV8?=
- =?us-ascii?Q?AadXdhk9tW6S7jFopqZ/WLMoKrC7Pa8kk2+BUr7n5scdv1F4xkdCetLcNN+U?=
- =?us-ascii?Q?fhE7DYVR2MUePVgkiOMpfmuH26eweKONkMBP7EX78Df/KQrgTHc21g3EThlL?=
- =?us-ascii?Q?8dcWMWeTDlHIMsVpW8ZHFe425dwLH5mmdrtdPRiLG2eFPf9/onBE2up5wqlp?=
- =?us-ascii?Q?KyWSLYS+8TobFduM0EpXxitCc15qScRwnj+omZZJ6w5u85m9zsptB9eRg+vn?=
- =?us-ascii?Q?iFipNuBnf33jY8WGu2BFGq1zT58cOzdMp2Ir0RJebGYOfSrTW6bMFL1nj1MS?=
- =?us-ascii?Q?NuTa2vkaIyfkH23vwCfGzW9Bye4GPo1eAwgSUN+/v6HK53s9Ee/sD3CIkCLI?=
- =?us-ascii?Q?XouTJ55mKnCo9eAbNCaPyRgTXi6Y3+jzdEa5cCfLKX3vnhdtnq0BRiNMZ8Je?=
- =?us-ascii?Q?loYlXIfAf+mfRx6mSGRdlskpZ14VO4WxsLasf5DEkhZmouKG9fGLzycYXUOs?=
- =?us-ascii?Q?hVe1ic9F2C4DjYuqlWk/evpFny/Z/4/3lpEPGOLECPg/m9F5O8hyTHnavuJ2?=
- =?us-ascii?Q?Sz+3CAuQ1gp2M0Jl3iseF7oazRA2kfxpoQM31OEyw3M+yQJZiXv9KC/G9BEV?=
- =?us-ascii?Q?OCIuibn6ZsI39lIi+Y3rEy4aJl5CA2nX5t+ophoXBcLXy54QGBgnAHlcYwaJ?=
- =?us-ascii?Q?Qu0Y1RXS7MNXz2SSGQ5luEgB8OB0/j6Tjo7LnmNSmdf/ebrzpjMEzcPgwlrD?=
- =?us-ascii?Q?5d/YfIzJdQZjx7SOGycLcWKyLpP5GkjhgTPjtOhwOivPL9HK2uvCI03Fnofo?=
- =?us-ascii?Q?uh85kP8+PIftrGMVlLJh1ytG7oFfF9KXccG0DFJKRMVk01vj5AnxOtwwYnFM?=
- =?us-ascii?Q?XxL8uXOO47fefTSqq9b1lpA5ecU9wAKp8b0p6wbLS8CIKUv8GTZF6SSfG6v+?=
- =?us-ascii?Q?55Nuvc30pE/H5zjJRTnMdoGCqXJsNwqiuAM6/yd/Hba7zOCY2mL77J96+7V1?=
- =?us-ascii?Q?do4luZDGi+bfSbE8rWm7GmK9ewqJzWCnE8S8CK8wI23p9m7bckkRkevUgYTq?=
- =?us-ascii?Q?c/42v0QLC7GQ8Q8CxeAywNpTYShhUg2Em605c8q6HwunVhXWjPR0EvEP+JrI?=
- =?us-ascii?Q?X5IyEZyAVkNhg0egbrtu0Vc3rBvswinLov+gumECG6JCF5I6y6zqL+ueyE4i?=
- =?us-ascii?Q?x9B+bZC/RZSOTh4xqhVh13sevE19vGukvcDskVIhzmk9zMpavWFzCpteuURM?=
- =?us-ascii?Q?Lr800lezBda+IbPlf/y1XR8o3f1vqONRh22XFbWYGSmim14/IA5z5TW/wiTD?=
- =?us-ascii?Q?ItDUUS84nXlU3wWwd+0Lj7hx2YfNZE+mficmzGAwasBUgL5wDIFNO6HEJiEO?=
- =?us-ascii?Q?NYf21iHuVFg5c8MGS5A8r8/mirhI36JJnsC+IrLV/ACpkozeS3ouNDiHlA5/?=
- =?us-ascii?Q?PHcV4SEpJGXHPdtOlwt4tZeU+CTsac5K7z70rhI7AY+GOMYA2ohBrcJhvXy5?=
- =?us-ascii?Q?cdahOFHqjqpkXR/b3AqwnUZuz85Q0HIXirTiC/fa?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 698ab3ae-572e-411e-7f06-08ddec73cf7d
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2025 12:00:30.6311
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Lm4yHzRramhMFJEhpAHfHB3A+WmLKvmzRJedXb08ZC15FdGWMAzXoINbggm6LjfJp+6uemvboXBdsbAMWqgryg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PR04MB11162
+Content-Transfer-Encoding: quoted-printable
 
-Hi Krzysztof,
+This patchset converts all remaining cpufreq users to rely on the
+__free(put_cpufreq_policy) annotation for policy references, instead of
+calling cpufreq_cpu_put() manually.
 
-On Fri, Sep 05, 2025 at 09:52:19AM +0200, Krzysztof Kozlowski wrote:
->On Thu, Sep 04, 2025 at 04:36:44PM +0800, Peng Fan wrote:
->> The TJA1048 is a dual high-speed CAN transceiver with sleep mode supported
->> and no EN pin.
->> 
-[snip]
->>  
->> +allOf:
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            const: nxp,tja1048
->> +    then:
->> +      properties:
->> +        '#phy-cells':
->> +          const: 1
->> +        enable-gpios: false
->> +        silent-gpios: false
->> +        standby-gpios:
->> +          minItems: 2
->> +    else:
->> +      properties:
->> +        '#phy-cells':
->> +          const: 0
->> +        standby-gpios:
->> +          maxItems: 1
->> +
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          enum:
->> +            - nxp,tja1051
->> +            - nxp,tja1057
->> +    then:
->> +      properties:
->> +        silent-gpios: true
->> +    else:
->> +      properties:
->> +        silent-gpios: false
->> +
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            const: nxp,tja1051
->
->This is here and in if earlier. Just keep in only one place. Also
->earlier else also touches standby-gpios, so you basically have it in
->multiple places.
->
->Just define if:then:, without any else:, for each variant.
+Motivation:
+- Reduce the chance of reference counting mistakes
+- Make the code more consistent with the latest kernel style
+- behavior remains the same, but reference counting is now safer=20
+  and easier to maintain.
 
-Thanks for your suggestions. This is cleaner and easier to read.
+The changes are split into 6 patches as they touch different subsystems
+and are maintained by different people. There is no functional change.
 
-Does something as below looks good to you?
+V5:
+ - drop 4 patches
+ - change return value int topology.c suggested by Jonathan Cameron
+ - fix code in processor_thermal.c suggested by Rafael and Jonathan Camer=
+on
+ - fix code in intel_pstate.c suggested by Rafael
+ - fix code in governor_passive.c suggested Jonathan Cameron
+ - fix code in energy_model.c suggested by Rafael and Krzysztof Kozlowski
 
-allOf:
-  - if:
-      properties:
-        compatible:
-          enum:
-            - nxp,tjr1443
-            - ti,tcan1042
-            - ti,tcan1043
-    then:
-      properties:
-        '#phy-cells':
-          const: 0
-        silent-gpios: false
-        standby-gpios:
-          maxItems: 1
+V4:
+ - Fix compile error in topology.c
+ - drop 2 patches
+ - Move code into a function in processor_thermal.c
+ - Move code into a function in intel_pstate.c
+ - Move policy declare in dtpm_cpu.c
+ - Fix compile error in imx_thermal.c
+ - Fix compile error in ti-thermal-common.c
+ - Fix compile error in energy_model.c
 
-  - if:
-      properties:
-        compatible:
-          contains:
-            const: nxp,tja1048
-    then:
-      properties:
-        '#phy-cells':
-          const: 1
-        enable-gpios: false
-        silent-gpios: false
-        standby-gpios:
-          minItems: 2
+V3:
+ - drop patch 'KVM: x86: Use __free(put_cpufreq_policy) for policy refere=
+nce'
+ - removed 5 patches which has been applied
+ - Consolidate CPUFreq policy assignments and allocations into one line,
+   suggested by Ben Horgan
+ - Change cpu_has_cpufreq() return type to bool, following Rafael's sugge=
+stion
+ - Change the title to 'Use scope-based cleanup helper'
 
-  - if:
-      properties:
-        compatible:
-          contains:
-            const: nxp,tja1051
-    then:
-      properties:
-        silent-gpios: true
-        standby-gpios: false
-        '#phy-cells':
-          const: 0
+V2:
+ - Fix compile error in powernv-cpufreq.c
+ - Split patch to separate logical changes
 
-  - if:
-      properties:
-        compatible:
-          contains:
-            const: nxp,tja1057
-    then:
-      properties:
-        enable-gpios: false
-        silent-gpios: true
-        standby-gpios: false
-        '#phy-cells':
-          const: 0
+Zihuan Zhang (6):
+  arm64: topology: Use scope-based cleanup helper
+  ACPI: processor: thermal: Use scope-based cleanup helper
+  cpufreq: intel_pstate: Use scope-based cleanup helper
+  PM / devfreq: Use scope-based cleanup helper
+  drm/i915: Use scope-based cleanup helper
+  PM: EM: Use scope-based cleanup helper
 
-Thanks,
-Peng
+ arch/arm64/kernel/topology.c        | 11 ++----
+ drivers/acpi/processor_thermal.c    | 52 +++++++++++++------------
+ drivers/cpufreq/intel_pstate.c      | 59 +++++++++++++++-------------
+ drivers/devfreq/governor_passive.c  | 60 +++++++++++------------------
+ drivers/gpu/drm/i915/gt/intel_llc.c |  4 +-
+ kernel/power/energy_model.c         |  9 +----
+ 6 files changed, 89 insertions(+), 106 deletions(-)
+
+--=20
+2.25.1
+
