@@ -1,198 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0204F246799
-	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 20:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD6C1F4262;
+	Fri,  5 Sep 2025 20:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757103459; cv=none; b=P0zEBIuNjCWsawEENSMocYkyKtd98NLTalO7IR6kSLABZrhlI90QmCeKbYGNBPjos7t8ad3q7BDvA2iWGLPzcFpJtgG1vxjteGejUh1VEyozYZVJDDoTl7pMEqCESCDhAwaSyfq5TsXbG8lkljo5NRF0F+UPU9BWl++aVaKx4f8=
+	t=1757104387; cv=none; b=RMFmL4RPux+NSX4xLZMY8UO4aALihe5rRxjnZKsvHO64UMsM+2a3saTslbrDvKW9dg4+nMJcKNpMYbwFulxBmzpLknaKfCUykMsfuYyk5dRuN3fKlcGg/U+07t2vw0Q8uVyWuIuVwTieaVJyJLbifqgSAvGIboDOXLFGoTeLGRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757103459; c=relaxed/simple;
-	bh=VCWnUGzPf6mLuDmms/YZCG2llaFLvKJwA1gnXCCbRdk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KOUO0m7vCBcbqM44yiOHQESKRCp4tdJ6id8+gMrinGrE1+hrgCXSodgzPqQb3VLz6ZLM0iSNerlbQcTzq9WRyKJRf0N861lhjc7rrjJTmRC3Bsa2E4Uw9209d/tnBaD+mCw8LzfqZw+5FKMQqt1J+EkIdRfd74XPX3HyxPdFU+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uIKc5zt2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757104387; c=relaxed/simple;
+	bh=7+4tc2DX6Np4dUdLk0Zy6oOY1gQEUFikJpLNx0nxG+k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=buseqwcpY8+SMzNZYJTam6wNwvRe7RMY9DO4/nfEGsU/HMQ011mYzeD/5Gn11mf/lPNfJAtDV0MzSKp8iCFhVAbDaDi08Wx0n7PWY/FTJgIL0vHpcjkMb3kiPmd1OkBPDKp9KXLuyoG54j5pVfM4OhmKyMfXmK2pgaC5F9IhJac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qci4YWjO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uIKc5zt2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3632C116B1
-	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 20:17:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qci4YWjO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C53C4CEF1;
+	Fri,  5 Sep 2025 20:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757103458;
-	bh=VCWnUGzPf6mLuDmms/YZCG2llaFLvKJwA1gnXCCbRdk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uIKc5zt24/XZwP7JYEqTfBfFRmX6Wk9YHD8HxEi0IvUGCXmYhq0zMpSm8supQ0Fb5
-	 iJGS/xoCTwpWx6B21zvCyX58JiG6wKZeHnfKV9PrzdFD8g77UCWMhwV/+VxR8kAvlQ
-	 yPVyT4akXZx6QFmh+sC2ZrMWYx9v4XhPjX4ZqEzVtRypqr58ssUWkgaJb/JjbHDIS4
-	 Q06psN5PW+ZumYVyodesqKh7Uj5j1bR2yhf3Z/vTbdtMhbmMxPQZsd1C7tcDa8a8kX
-	 RxRMOqOPKJoPYzcqOhn1uU/Cd9d8rzzAEwXshP6QHtlDLuGvIqnZfJzgThdRl7C/Wq
-	 nxK2iLAKYjwYQ==
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-61bd4ad64c7so801130eaf.0
-        for <imx@lists.linux.dev>; Fri, 05 Sep 2025 13:17:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUcHYAs93vw/we32PznVy7pddl7Dk0gLn4hLM7vCLKlnkXigUxjPOhcMKcG2en+XxLsizU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzcuve9Cq4oft4kwWVCI9GPyolzw6S8O1m2kMuXDAU4TK7xo4Tv
-	bYXmLOFWUvvEHXJvAqmE4sg/Gh+2R7yomoheeM0Kr9k5TzOptQaNitMf+C+2VS+cIMDIEcYLf7V
-	VPLqwgxsO/fQx/WCZoAKvAoIW0lJES2s=
-X-Google-Smtp-Source: AGHT+IEfq1HNckIyyDDXquy0XLtyGZg1XWmotG9HdXFUDIR4D+v0h/9IrUo3g6diO4+f6WOXTRuaooZELa2e+VnSV5o=
-X-Received: by 2002:a05:6820:809:b0:61f:f932:8d64 with SMTP id
- 006d021491bc7-61ff9329264mr2455383eaf.1.1757103457768; Fri, 05 Sep 2025
- 13:17:37 -0700 (PDT)
+	s=k20201202; t=1757104386;
+	bh=7+4tc2DX6Np4dUdLk0Zy6oOY1gQEUFikJpLNx0nxG+k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qci4YWjOMckkPUqMCSj7Rfz/vQiLgNDyppbevOF5WgsBSYYOLOAqz/o/ypyWP57/q
+	 TvqgWRIOzxzA6B0PO16ZN6+9+EWHdK8vFLFkhJKiAbxo2ZCZT3fFMVZtm/GgG1e1Mf
+	 QLFuUM+JSIEvDeWWqc3XDO0g8iilrs+FOpqST+y7tyFknTmouW2uavqXrKgZJp9FMm
+	 sEpmT7NKe0CKqznLDessUxTNIgJHtEd5Cc1zHD1TUB16qknqnLmhCa9T6y9+CqZ6B8
+	 N0655fL7n8j8WqD7UR2wzhu0HlQdNj0uaa6xKU0vXMrzHtDPr0Yex+CUfvIDbgE3x2
+	 de1WpZvoxXpAQ==
+Date: Fri, 5 Sep 2025 15:33:05 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-input@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] dt-bindings: input: convert max11801-ts to yaml
+ format
+Message-ID: <175710438523.1268822.1694465252230993147.robh@kernel.org>
+References: <20250904200641.531897-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn> <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 5 Sep 2025 22:17:26 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iTdgM5BBi2ysiJxfA2c=MQ0fjLsEvVct9stxomvEe=4Q@mail.gmail.com>
-X-Gm-Features: Ac12FXw3PBjsIjj4AtBsEfmKTR7PfZEmevzc6Jwe0zbtA2TuWwqukJr66Nf1sL8
-Message-ID: <CAJZ5v0iTdgM5BBi2ysiJxfA2c=MQ0fjLsEvVct9stxomvEe=4Q@mail.gmail.com>
-Subject: Re: [PATCH v5 2/6] ACPI: processor: thermal: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250904200641.531897-1-Frank.Li@nxp.com>
 
-On Fri, Sep 5, 2025 at 3:24=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
-> wrote:
->
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
->
-> No functional change intended.
->
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+
+On Thu, 04 Sep 2025 16:06:37 -0400, Frank Li wrote:
+> Convert max11801-ts to yaml format.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/acpi/processor_thermal.c | 52 +++++++++++++++++---------------
->  1 file changed, 27 insertions(+), 25 deletions(-)
->
-> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_th=
-ermal.c
-> index 1219adb11ab9..460713d1414a 100644
-> --- a/drivers/acpi/processor_thermal.c
-> +++ b/drivers/acpi/processor_thermal.c
-> @@ -62,19 +62,14 @@ static int phys_package_first_cpu(int cpu)
->         return 0;
->  }
->
-> -static int cpu_has_cpufreq(unsigned int cpu)
-> +static bool cpu_has_cpufreq(unsigned int cpu)
->  {
-> -       struct cpufreq_policy *policy;
-> -
->         if (!acpi_processor_cpufreq_init)
->                 return 0;
->
-> -       policy =3D cpufreq_cpu_get(cpu);
-> -       if (policy) {
-> -               cpufreq_cpu_put(policy);
-> -               return 1;
-> -       }
-> -       return 0;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpu);
-> +
-> +       return policy !=3D NULL;
->  }
->
->  static int cpufreq_get_max_state(unsigned int cpu)
+>  .../input/touchscreen/max11801-ts.txt         | 17 -------
+>  .../input/touchscreen/maxim,max11801.yaml     | 46 +++++++++++++++++++
+>  2 files changed, 46 insertions(+), 17 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/max11801-ts.txt
+>  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/maxim,max11801.yaml
+> 
 
-The changes above are fine and can be sent as a separate patch.
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-> @@ -93,12 +88,31 @@ static int cpufreq_get_cur_state(unsigned int cpu)
->         return reduction_step(cpu);
->  }
->
-> +static bool cpufreq_update_thermal_limit(unsigned int cpu, struct acpi_p=
-rocessor *pr)
-> +{
-> +       unsigned long max_freq;
-> +       int ret;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpu);
-> +
-> +       if (!policy)
-> +               return false;
-> +
-> +       max_freq =3D (policy->cpuinfo.max_freq *
-> +               (100 - reduction_step(cpu) * cpufreq_thermal_reduction_pc=
-tg)) / 100;
-> +
-> +       ret =3D freq_qos_update_request(&pr->thermal_req, max_freq);
-> +       if (ret < 0) {
-> +               pr_warn("Failed to update thermal freq constraint: CPU%d =
-(%d)\n",
-> +         pr->id, ret);
-> +       }
-
-But this silently fixes a bug in the original code which needs to be
-documented with a Fixes: tag (and it would be better to fix the bug
-separately before the using the __free()-based cleanup TBH) and
-introduces some whitespace breakage.
-
-> +
-> +       return true;
-> +}
-> +
->  static int cpufreq_set_cur_state(unsigned int cpu, int state)
->  {
-> -       struct cpufreq_policy *policy;
->         struct acpi_processor *pr;
-> -       unsigned long max_freq;
-> -       int i, ret;
-> +       int i;
->
->         if (!cpu_has_cpufreq(cpu))
->                 return 0;
-> @@ -120,20 +134,8 @@ static int cpufreq_set_cur_state(unsigned int cpu, i=
-nt state)
->                 if (unlikely(!freq_qos_request_active(&pr->thermal_req)))
->                         continue;
->
-> -               policy =3D cpufreq_cpu_get(i);
-> -               if (!policy)
-> +               if (!cpufreq_update_thermal_limit(i, pr))
->                         return -EINVAL;
-> -
-> -               max_freq =3D (policy->cpuinfo.max_freq *
-> -                           (100 - reduction_step(i) * cpufreq_thermal_re=
-duction_pctg)) / 100;
-> -
-> -               cpufreq_cpu_put(policy);
-> -
-> -               ret =3D freq_qos_update_request(&pr->thermal_req, max_fre=
-q);
-> -               if (ret < 0) {
-> -                       pr_warn("Failed to update thermal freq constraint=
-: CPU%d (%d)\n",
-> -                               pr->id, ret);
-> -               }
->         }
->         return 0;
->  }
-> --
