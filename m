@@ -1,59 +1,59 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9562132F743;
-	Fri,  5 Sep 2025 09:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C0D1F4613;
+	Fri,  5 Sep 2025 09:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757064873; cv=none; b=PhuapJ8S9qnaUQ7+jevrHb/S5wxmXKAv9oZHB6CFAHJ9lRcn3mbfZDagDtqT5F0eQJkJ4W9lQbeAMID7T3VNc41pjwBz7ytYRLAE/UY9dEnfnIuUKF8iTl9KCu8TpfgUmw8cABDt9sLIbSyR1bSXjdGTOW5zbTwy5KG447fPEcE=
+	t=1757064973; cv=none; b=MjRlPGLV/YJXDed45asPJFK4pnuxzk231xZKu3TwDwMhzKi0i4/cR94N+sdcjyOimTHNPX0bBGYjNZhwmOLgdiZbHOEqbs+/Qw3qSwd2AnAiVt8tkHxEmCJEd1L990U7nBjJauLOEca3QHBJzyxfTGiYhDqi2GT6hhwZ1LT1P3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757064873; c=relaxed/simple;
-	bh=fxW6po38fpa+VnoP8FiDQdHk6gPNDw4WKNm1oy92zAc=;
+	s=arc-20240116; t=1757064973; c=relaxed/simple;
+	bh=KmBSaHkbj+xeQP4PQxDtYAKPe6uOtfo1+bk6LyYR/PI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CBK0rMxCbzHnt5xIMXO92xWHVVkQ+pOS1wOdifkNeh/QaCEmYbEalc7MLUA0QudFh8Ci0/OZ1IOZluFOontlzXXJp6pIDhKfCBo9ddkEcriacxiAUQgyD2wREVsCJBHp4KwDmchq2lBGUw0F5TvS589UI7UhCCpZ57Wcjcw6caw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KScCQNCv; arc=none smtp.client-ip=209.85.218.41
+	 To:Cc:Content-Type; b=efSwO4As4bTXW7j0ehZ5Bt6RuqLbbzzIrgc5iXy/SWt2A6o90HuMSUjOZM4WnDpMgqofYBDCva9rsfTQWfBKHYoV2VnI71a/ZnUyzVvodsCfFZqORaDxOn5oiK0XFfl00PzHExqyXd8wu51KoXccDNvqDEtAGyVJ/JFPLOGi8fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BYWGQV5f; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KScCQNCv"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b04770a25f2so286709966b.2;
-        Fri, 05 Sep 2025 02:34:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BYWGQV5f"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b047f28a83dso283976266b.2;
+        Fri, 05 Sep 2025 02:36:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757064870; x=1757669670; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1757064970; x=1757669770; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5ZXKC69S7By8Ya1ZMREMZuen7JwS2/FHlmhonyDWpnQ=;
-        b=KScCQNCvinTalCTmPHNU/XVa1yVd8L7P64XDLNGY8F0FvkeLJ+YUsaIuxlpmCS2nrC
-         nvQ7TUK5TtPONF4C/op/0GN8shJX9grPRC4rT9yeqlSjKHMlFp60iMgAl+idkU0BHZKd
-         /mfwcjUZQx7SlnBYs6Rrltk8DuGPcjwI8HUJGHhUcUgdOlhGyCvnOMKck7+GCYOdY5VB
-         NTy1tIzNf68hjAPC0M0JEXi/fcHuxkyCgqn2l0xwYUtLi3qxQh2dUuNIcbSebMK0QEdm
-         g9neP7PF1RS8E/0YwcROzZBBFdfbBgxQDjlp8hYYRJmeDxPlzle3ggXJuvy75/SWJ4tp
-         Xw1Q==
+        bh=nqf6D6Y//+lOVA7z+yQJwo2jJaSIwyijSnsvcGjMTK4=;
+        b=BYWGQV5f7biPpGtjHa9910vxxhXT7HAZYVU+m97bBI2pnbBt7j91x/hlYkGe8Dz+G6
+         fm7/bpW7PF1bcNcI1wOrJwtI4KUTAgBHBBLETUniDyzLN7bElQdrHdqRkY0a8WvaoJFP
+         dDuSAe1sGMLfIgDlx3pDtkRGVI9Sqy/205ySY8woaNLB1gtalWghuCg9mkVLiu09ijKf
+         lf25836qTlfnzcN/UUqJXpsI4TE3eS4QksRgUesSvZp3gi9rebbA88Wck+zm4vvARjAc
+         KsvpKR2QHUyJKrXEtPSwfILtpZ08cTrU2iqpapJyxZDix9nZ7lxFOW5lk4h6M7NWFvZT
+         prMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757064870; x=1757669670;
+        d=1e100.net; s=20230601; t=1757064970; x=1757669770;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5ZXKC69S7By8Ya1ZMREMZuen7JwS2/FHlmhonyDWpnQ=;
-        b=nCxtz8EdgMcyWTD5h2zzgzKwgIfQ589fW0ySd1IBzIXZewDfeQVyRZ3iqJ9ja5b1Fl
-         YMZ12iXiHsEqfMXwEmYfbq5yynR1/ksV+ENaK6oMVXocr7wAOAeUSLGkNfbPkIY3vr7l
-         Hy6+1dBRWDRUh40TyrD7w/P/sBJ0ayAXPkQpCIrlTh1VQKrQosyLt/qY9OXYuA0mxp7A
-         t2dX6Bi/Gs3ZYWoxn4rQVRzR3kRg8tGkGbqVRMgPGlnp65tK43GM1/Wmo2hbRPFdsBur
-         +Eeu0Sf3SKIdy4bLdURiO1eZpxCJnJHooGaEx6FwY7ZZYcki0e8RcbrN7XfT3Aa48tue
-         9Lww==
-X-Forwarded-Encrypted: i=1; AJvYcCUgVbNnjTv+tknzk4iZANDR3ievZFH5ITznxOh4/5+JJlxkeLjPjISE35I5R6cr33oZ7Rk=@lists.linux.dev, AJvYcCVLMizurkaazoFslnhSs3qJYLfbk8cwNQH07621uSvWWGkEF7xQ7u2DRb65Tci8+PXOHa3WQNHyPLEb6HE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8rQRahDUpnxnRlJbeN3UjF/vwkzvXL7NkDEuZfNCIbZ7+yRF2
-	W7JldFdEzOjXuHWVVbtifbUSkM+cJgytYZR3g3d5xXN68fKUtsPYUVx5fcBb0bSu9i1P4UQYxJG
-	meNPHmro5rrBLQ64snXrtufT3xaVSito=
-X-Gm-Gg: ASbGncv93+wgsSNrQoGAfqFGsgL/z7XcQZCYuZZqS003isOmX7uiH8VJZwIc04jSTtt
-	6GFJY6uOyrtI5A/DrrZ/7N+Zt1FiC5TVkUqQTTN4qFJY1cz4KeHDnGLQmrb/NTlqXu3J2v9QaLW
-	vCLcTYiOIQ8Gp1yCPtnaDbdYw12kt70d0lOhFgaqs5Q6Hz05McaGah8LbkdC8NSNjAXjUVuU+CS
-	PuDNIU7deX6XgQrbB+j
-X-Google-Smtp-Source: AGHT+IFNrkynh+/Ymp/HCHyA5XGYRylr5jF6GjIL2qDKGYyZpbM+uW2yDfuf4gc8lpHjzkwCg5YwNrLoynQjYkyhMFI=
-X-Received: by 2002:a17:907:928a:b0:b04:5b3d:c31f with SMTP id
- a640c23a62f3a-b045b3dc692mr1195506366b.49.1757064869658; Fri, 05 Sep 2025
- 02:34:29 -0700 (PDT)
+        bh=nqf6D6Y//+lOVA7z+yQJwo2jJaSIwyijSnsvcGjMTK4=;
+        b=pah7cmEWIDNQ6orr3BM/bsYYUIn8T19O4K62VPx+jYLseQC48WTs9H4ZW/IflFM0Ni
+         SHrVSi0/s+vZGJL0aCl3arhlGUUAWC3RSueSqk5OQBscAKaXZxOoUVQypb7U5JfUrymY
+         fJUGhjjadvmm49z93QQP9YaxBKsUQ0D1zZpIn4oh6/6GW2bgjBqo/uIUJCEkWyML0JJK
+         cobHubq0iN98Wk4zajBDqvndBqh7AgPZxrKP1aerY5NX3Fk5/64k78Sb6VfVv5iiiXLq
+         TR+3/R1Vmq3riA+SXZdSbZFy8lVw6sAGbQ5c6pHyi/w0mayxsOdYHEIfe8SbR/aVvwt9
+         +Czg==
+X-Forwarded-Encrypted: i=1; AJvYcCUaW/ehXWLnFEsyDIuBDEBENgEWQ55tHrqphXx8tZN2/oAd0hVhbAM6IYQAYU0yRsIKUss=@lists.linux.dev, AJvYcCWt5PpcKaLiMBu7ZSJ2+Zbbfq4YXea78mnyKLydCrappt0NZHnskckMVFBFrQ7h019iWUaD8NA+wqOBF9M=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz7DE9HEVIHe4kLq5AlovU6Ep+zZAjSA5tPuL3rkBHI2+c7LMex
+	/bfC0jIBU9nhefGXUTVbWJOUvumS7zekqLK9UxoHTCSeRiOQ7qAQYlqY1nOmKzXeiqZ1AE3OC7i
+	Ett+h2BtNWHwN3ki6eM7g7WMpXCpP4hI=
+X-Gm-Gg: ASbGncv7QWRol7aAxLdrPeL59hGypg4/+JdT366yoxJtCdzBxFLgYBRLTltgc5CjMrJ
+	ZW4TqbaOqGAhJq3+DPf22moomrjHSIAyIaUziSZ9U57opryBHcmg1f03AMGXm5t04a30fXbcqUt
+	n5yTdGIbm7nDXm/156k596acQXNc8hqHuHEoOrECklPah253Z+LPchh7Y2Re5YXRAL/tSzQ1xOR
+	0JRcsfQbcf5zTlAsRDx
+X-Google-Smtp-Source: AGHT+IH7OMu1dd1ZlYosPz3SPqptVrWuN6c3SeVJCBYbCfoyYDh6z1nFqhk/368zJOb4WYqLr166BLEihh9LvFYDNYs=
+X-Received: by 2002:a17:906:48c9:b0:b04:10d9:48d4 with SMTP id
+ a640c23a62f3a-b0410d9523dmr1630508566b.35.1757064970102; Fri, 05 Sep 2025
+ 02:36:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,11 +61,12 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20250905072423.368123-1-zhao.xichao@vivo.com> <20250905072423.368123-2-zhao.xichao@vivo.com>
-In-Reply-To: <20250905072423.368123-2-zhao.xichao@vivo.com>
+ <CAHp75VforxjsHWzxrxfD_YOshvg0Y=KwrpmAPWwhyarNm2wNjQ@mail.gmail.com>
+In-Reply-To: <CAHp75VforxjsHWzxrxfD_YOshvg0Y=KwrpmAPWwhyarNm2wNjQ@mail.gmail.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 5 Sep 2025 12:33:53 +0300
-X-Gm-Features: Ac12FXxbms9z4N7jI4jHPwNjVwlV8d4OiE5hmfmL25yynmREhxdRP_mz9jzg-_c
-Message-ID: <CAHp75VforxjsHWzxrxfD_YOshvg0Y=KwrpmAPWwhyarNm2wNjQ@mail.gmail.com>
+Date: Fri, 5 Sep 2025 12:35:33 +0300
+X-Gm-Features: Ac12FXxkIEGZA5-qHqK-CmbOa_oJh7A8t90OuTImqynr4N5GOyYLVDsnRsxsyg0
+Message-ID: <CAHp75VdRn1qnoiCr7aeZfHF9GEyQshOA5awTjiJ9oJiY6Q+Gsw@mail.gmail.com>
 Subject: Re: [PATCH 01/12] thermal: of: Add error handling in devm_thermal_*_register()
 To: Xichao Zhao <zhao.xichao@vivo.com>
 Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
@@ -112,60 +113,54 @@ Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 5, 2025 at 10:25=E2=80=AFAM Xichao Zhao <zhao.xichao@vivo.com> =
-wrote:
->
-> devm_thermal_of_zone_register() does not print any error message
-> when registering a thermal zone with a device node sensor fails
-> and allocating device resource data fails.
->
-> This forces each driver to implement redundant error logging.
-> Additionally, when upper-layer functions propagate these errors
-> without logging, critical debugging information is lost.
->
-> Add dev_err_probe() in devm_thermal_of_zone_register() to unify
-> error reporting.
+On Fri, Sep 5, 2025 at 12:33=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Fri, Sep 5, 2025 at 10:25=E2=80=AFAM Xichao Zhao <zhao.xichao@vivo.com=
+> wrote:
 
 ...
 
->         ptr =3D devres_alloc(devm_thermal_of_zone_release, sizeof(*ptr),
->                            GFP_KERNEL);
-> -       if (!ptr)
-> +       if (!ptr) {
-
-> +               dev_err(dev, "Failed to allocate device resource data\n")=
-;
-
-We do not add error messages for ENOMEM.
-
->                 return ERR_PTR(-ENOMEM);
-
-Even if you want so eagerly to do that, it should be
-
-   return dev_err_probe();
-
-But, it will ignore the ENOMEM error code for printing.
-
-> +       }
-
-So, the bottom line, no need to add this message here.
+> >         ptr =3D devres_alloc(devm_thermal_of_zone_release, sizeof(*ptr)=
+,
+> >                            GFP_KERNEL);
+> > -       if (!ptr)
+> > +       if (!ptr) {
+>
+> > +               dev_err(dev, "Failed to allocate device resource data\n=
+");
+>
+> We do not add error messages for ENOMEM.
+>
+> >                 return ERR_PTR(-ENOMEM);
+>
+> Even if you want so eagerly to do that, it should be
+>
+>    return dev_err_probe();
+>
+> But, it will ignore the ENOMEM error code for printing.
+>
+> > +       }
+>
+> So, the bottom line, no need to add this message here.
 
 ...
 
->         tzd =3D thermal_of_zone_register(dev->of_node, sensor_id, data, o=
-ps);
->         if (IS_ERR(tzd)) {
-> +               dev_err_probe(dev, PTR_ERR(tzd),
-> +                             "Failed to register thermal zone sensor[%d]=
-\n", sensor_id);
->                 devres_free(ptr);
->                 return tzd;
+> >         tzd =3D thermal_of_zone_register(dev->of_node, sensor_id, data,=
+ ops);
+> >         if (IS_ERR(tzd)) {
+> > +               dev_err_probe(dev, PTR_ERR(tzd),
+> > +                             "Failed to register thermal zone sensor[%=
+d]\n", sensor_id);
+> >                 devres_free(ptr);
+> >                 return tzd;
+>
+> I don't see how ptr is related to the message. Can't we use
+>
+>   return dev_err_probe(dev, PTR_ERR(...), ...);
+>
+> instead?
 
-I don't see how ptr is related to the mesasge. Can't we use
-
-  return dev_err_probe(dev, PTR_ERR(...), ...);
-
-instead?
+On top of that can we actually use devm_add_action_or_reset()?
 
 --=20
 With Best Regards,
