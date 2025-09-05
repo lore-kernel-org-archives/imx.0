@@ -1,224 +1,198 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013030.outbound.protection.outlook.com [52.101.72.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6B427A46F
-	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 20:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757103295; cv=fail; b=M9TaollXp57623DiZWHEAGCrka/Lc/s0Ud5xZv7onqxWY6SOez7c0TlZf8RNLl4V7x1VbFvZLkNLCM/MATXYOo7LBIRunGxkwpCA52TIaL2W/pRvlIVZlfbmS6KkQiG1dwgO37pjVDMfOosALEJxkQoCjrqtg5soRpSvVGwV7Fk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757103295; c=relaxed/simple;
-	bh=GFcfSzGMn8lL1FJ7tE93N81RTSnQN18F60qwvPnjeJQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=cjx0OrtfKN5xiMaAWXTMr/+pAV5GUdBdNqdLcg4cZ6oe8k/5gSUGc2ybOIK3cV31/jPH5SzPGN+CGdn9lk5t0EEspqH75+4IFHpel5Cm+UbzQdgiXUU7ZHsW4WlCpbv9ZIGu1j3B07Z3Km0E6PhPGw7zseS+M5bUyY0Ncldfv0o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bFXe4QaK; arc=fail smtp.client-ip=52.101.72.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0204F246799
+	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 20:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757103459; cv=none; b=P0zEBIuNjCWsawEENSMocYkyKtd98NLTalO7IR6kSLABZrhlI90QmCeKbYGNBPjos7t8ad3q7BDvA2iWGLPzcFpJtgG1vxjteGejUh1VEyozYZVJDDoTl7pMEqCESCDhAwaSyfq5TsXbG8lkljo5NRF0F+UPU9BWl++aVaKx4f8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757103459; c=relaxed/simple;
+	bh=VCWnUGzPf6mLuDmms/YZCG2llaFLvKJwA1gnXCCbRdk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KOUO0m7vCBcbqM44yiOHQESKRCp4tdJ6id8+gMrinGrE1+hrgCXSodgzPqQb3VLz6ZLM0iSNerlbQcTzq9WRyKJRf0N861lhjc7rrjJTmRC3Bsa2E4Uw9209d/tnBaD+mCw8LzfqZw+5FKMQqt1J+EkIdRfd74XPX3HyxPdFU+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uIKc5zt2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bFXe4QaK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NsqlFmeoATjvxR4xnRI3T0xAytAM+Eow9XbZUtDeCdDx69sAZTcco1AdfcFnt11n1Nzfj2StiE7H1AZNmFajbbhmcZL/9ks6PrhV2Ox+XkXVDkRiJUqhDAm56wZUYcyTRkT5lrQEQ6mTOVOzEj10JJ9rsVHNjiCjukSaM3XCpqEP5TdhbwPSojWe/OnHrjN3+v545dwsGZ94vcg7Jv6veyZNYDsS9izUpiLwm32u8RRWCzU/E5qzf5W4DAn7iL8CRzk/XW+HjgO8SCxyvHQ6d8W4Ea+FEzR977bhSx0UJcaS2znLnKH2qaQyoQxnmYU7STTjwDsUYYS/DW+k9bxMkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zGmitsqXdOAQxiJTstjSb2Xeacj9lBISBbXO3PrjZvY=;
- b=AntTt2ZxWCr6AtPHi9HdAY7InTE58xLt1cre8YEgdV9eVhGFHaqpv8mYx6YMt6nhAm9XnhdbkSk49bjkKKCrqXQ1LIIb4cwYeCHgD4yIT7g1nXIsJnTb2oTyOGbJDknpr1aGtITig4adbaWInS3o0Py+I1iQf/WrsZ7yNMr1Qf1reGry/WKRVitemy0tMreOol7CgrdzZ/3Bxy454riY3Q7jlZRGXlxCLLYjTAURCP0w+PHhBJ1EiSOn9URh4dzXhmhR25I3tq6OWz1tQa4elvU55Yh7k3uh+1Lh2Iq1bYAVfzdJbKodik2X3yy443YMCZv3IW6YXhUU5l/99AN++g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zGmitsqXdOAQxiJTstjSb2Xeacj9lBISBbXO3PrjZvY=;
- b=bFXe4QaKIQdTYUQX6N1Dcrt/2lu/nFYnPD4lxD84DvUB171dlizHjXIIctHlO8VbnYFfJoncrAs8cJUCEh5ZYBcXZoaTdy0XmZwulYlj9By3QW0qLWuYaSFcq5fsMSzMrucj7PZUNN/nB/5EL8wlVCWbKTz2r1TaykfdkYFyjDt2FROp43WJ36ASLVSSq0xte3jRygn8ZBthc/QqCCTsTbQjX01EasMQ9tWwcrAQxoDFxpO/zabVsHlRU5KatowUBMtzGrK+e2++jQOlktnc0w8ZBSF3SKR8Q1EVgpH/JpeuOZeFu7WCPRrVq0Vqb3jDYZHxbfHYj9FRMEz/3Y3JJg==
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by PA1PR04MB10097.eurprd04.prod.outlook.com (2603:10a6:102:459::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.16; Fri, 5 Sep
- 2025 20:14:49 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612%7]) with mapi id 15.20.9094.015; Fri, 5 Sep 2025
- 20:14:49 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-CC: Wei Fang <wei.fang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper
- Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
-	Clark Wang <xiaoning.wang@nxp.com>, Stanislav Fomichev <sdf@fomichev.me>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
-Subject: RE: [PATCH v5 net-next 5/5] net: fec: enable the Jumbo frame support
- for i.MX8QM
-Thread-Topic: [PATCH v5 net-next 5/5] net: fec: enable the Jumbo frame support
- for i.MX8QM
-Thread-Index: AQHcHduHeAsiJ4NpoECvXNvY8BSjBbSDjUGAgAF5FjA=
-Date: Fri, 5 Sep 2025 20:14:49 +0000
-Message-ID:
- <PAXPR04MB91857813EFDD0DB08A36B6DE8903A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20250904203502.403058-1-shenwei.wang@nxp.com>
- <20250904203502.403058-6-shenwei.wang@nxp.com>
- <aLoHOfNTCtVEFj6q@lizhi-Precision-Tower-5810>
-In-Reply-To: <aLoHOfNTCtVEFj6q@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PA1PR04MB10097:EE_
-x-ms-office365-filtering-correlation-id: c94fe002-8d32-4d60-c73f-08ddecb8dda3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|1800799024|376014|7416014|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?h2hOuSSuFuFfcKPcXtZsgKcah6THiO1cUW2R2dAOgQriAFr0PBI8WQUL8bcq?=
- =?us-ascii?Q?niR1UBM4j5AOUqB+H05OOqVL5SsveOFcPWAfZCzvCHkQVCb/bmnXVmzEbE30?=
- =?us-ascii?Q?/niJYYIlUynjozyy/iCJ4+v5nbpSUTzo99lU9H7vUhphd1vl4aOueK+pgdrD?=
- =?us-ascii?Q?8d2mymhyzEp8iMqY6ueVAWe3Avr6jP8ZlWoRt5KJW9xMudSk3QwldbuIr7Hp?=
- =?us-ascii?Q?H0h5wX8TQja0yMKzhhKt1PINpXbtXSdhX9+bRRylBFjC8kiM+cwoP0LhUKCA?=
- =?us-ascii?Q?1KOVyQAVQDUUFLMziftUfwEiA3ws3UgJlwGHKH4gYGjaLxJDlY17hy7FS+dK?=
- =?us-ascii?Q?j7UE4nheGosdzJL510PP3vWWKbPseX6WWBI77k6VaqmCQ7tpcT1MfoZvqAY7?=
- =?us-ascii?Q?PoiqFQetPNLmEzHjvWbtEcA15T0bwB1JQ+JIicRiSthObY43elUaQDCf+fiy?=
- =?us-ascii?Q?HE17WaHG3BlVuGTplKfyqP/uBR+G8NrVGoczmCEP5+0oi6og2eWKqZPDtCgN?=
- =?us-ascii?Q?fNlZQt/VSR+rDzhJVke9YLEhuTk3bW2tCwtKgGvWs1kH+XQcfOpz3MbLdJCu?=
- =?us-ascii?Q?4XCJmdTIL839qCKxpwXfKrayAviMLbgeEFnDxVzDZurCnykTV+JzIO448pXl?=
- =?us-ascii?Q?0H1bhpdYDaFA45oJaF0JuzdWYuL9sYy6HIrzEUfzUVdBugDVjB/+dtgRx3Kd?=
- =?us-ascii?Q?ycT5xnPZpuLHgAK6tX8e8XMWbm9wlT0I44R/7CwbgdLw8urwUYUiE3NaQDMb?=
- =?us-ascii?Q?BPQdscZsRRVSH9PlxOa27JyLrogU1B/clHix1mRU8/Iz3JcZ5G/IDGM6ag7D?=
- =?us-ascii?Q?xOqXxY7cPAw7ImDcVl6dIEy3jsw1i6eRhXLbv50SC8wojb0K32VcCpYkDIBv?=
- =?us-ascii?Q?GLKlP/9Xmfi5hKAVviQpQZYebuXSzWrXVcBWUb8n7Tq97pV5csKdQfBd2DaW?=
- =?us-ascii?Q?Tsdcvms6aZMgBxgOk4LgxjYtXzfMH0fJHbG36aRirkQI9zaJxA/MQwP7NY6k?=
- =?us-ascii?Q?lRFV6XqoQwcPyh2TXLjLsu8aBZqlAXo5ceClBSHABzrmq61lroA8VL7OR72c?=
- =?us-ascii?Q?6ZrPii0saWB3q4elkCHjXY1UmSFsPqUyTw2Sa/udKSibZugpY6DDfS34wkvr?=
- =?us-ascii?Q?dRW+D7YKixZlI6Yjzn4UmUo0xsLgG/LyV9ztQU2sTdXmkVmlEJfdhfmu7X8n?=
- =?us-ascii?Q?wEtdP/E/484vsQF+zNMVz8dIOE1u/F0CmaYcGuVh1fpmGKc/LlnRuxPGK1fq?=
- =?us-ascii?Q?4EQkivrUF1NHa7E47sncQ8fZoIPRDGnyfnieq4YcCb9kay1ZJf2t8UQU1Vmb?=
- =?us-ascii?Q?aS/grMi3jU7vqL4gw0oiZXMkxSUq3MRkl0s7JunkNu/OmiRJWSf6kBmtS9oe?=
- =?us-ascii?Q?0RX+eKGnJ3NE41nA/DYMH0VHYpNZOYIqq2JyhUZ4/2EZCW2ESayK9X8XmSFJ?=
- =?us-ascii?Q?sJaByIahzmnLHaR3oAVg+le5VpkerYfssRrJjobcJObOhgRuvqKuUA=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(7416014)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?gbGRSp2o6ajStis1AlEWU9yHR/slmE5LPmEipmd3aPLKVSpcENQROhPTmR4F?=
- =?us-ascii?Q?WZH1h9iJQojC/h46+6r8hMshx/S4EN1Wdv6fkr4agkePk/GbBcrgbRw+hXFQ?=
- =?us-ascii?Q?B/RupuSfPlK5OBSc9gMwq0M4GJttezh+S/DAjsqwSCAZFbUbQRcXqaK/5bl2?=
- =?us-ascii?Q?enNsVR2TClYeBnLigR/gpEDLbjzZH66HIOJyhlLd0KDujcSGvCkURD44VMk+?=
- =?us-ascii?Q?ndNiP2/Cp6HFnd7rnuntPQ370LLAHJK+wfH55HN7Zv9ZWF8dgahOzqfY4tPO?=
- =?us-ascii?Q?1IXEOrtade3Tzu+XhyKNfxGuK7LtWxtC5M+xsGuEcFFtHS+kET0m277ZMHqY?=
- =?us-ascii?Q?uUcBiC1Nei9ErdwW/NEnH7C3Z9cUVwWRHZwpQpGbvrk7DqR+KDcT+k6po7ke?=
- =?us-ascii?Q?j57PEq0Tg24d/bu/OOa0QOwlA6roakmZ8735YBs/nCi0J/KbcRjfFH6RPnWV?=
- =?us-ascii?Q?Bi2zJsKGQE/u54h5eldZLf9LxVmV35MEF64kyQWJ1vANF/HbVYduHxAA7v+u?=
- =?us-ascii?Q?jdn4/aqYpCjnoVMEWcMJbhWU4GoBmID0jp1RwBnI4jmHVXahKdHqOibQvL3v?=
- =?us-ascii?Q?KuFZM4An6YZwqWrfkU519Zjob/c6D/tZwbVlxMexgv+NGVzZyrZKw1tuXRhh?=
- =?us-ascii?Q?hZXVxGMKytR5S9l3XiCz2TVdRu4Hn0HcrK7sDrRajmQxrL3aBCLCEkt8Slqx?=
- =?us-ascii?Q?sKhIaAtLSav98kiMmt8nCSD/qBQUBG4Qw53uJNqGShuBUIgMz0qhclqQBNkZ?=
- =?us-ascii?Q?BN3YL0mqp9UddTI8I1fbFMm4HTNknFoFtrQ5Ubi6jvvyOIr6mxUK5DVRhlp4?=
- =?us-ascii?Q?8AS055HTXDEYIXPf8+wcVMe8dff/VbmKJWCNXIe6OgquDefSTKl00toD1GvC?=
- =?us-ascii?Q?XxjZarKe5Or3ff5yMBuwlCdY1Fdfp0eacZmxz/MFff2ela6MB/n2Rd8zgR4+?=
- =?us-ascii?Q?YzktpJGYVhpgsjezoc41W6ktW2uWTXxwjP62OWVWtP8o39qO72G5oIL29zCe?=
- =?us-ascii?Q?AUslorvpTKZW06pagkTQtaJuizz2D12khAM/z19twwU77ZK6wZfHmZ1YPpNA?=
- =?us-ascii?Q?PQ830GrxnnyG/8VynDmhOV4Pr0SQiX/PGp+zdfjanAeYdUF69XFN0uPLYZvb?=
- =?us-ascii?Q?EtIZhhmDXMOQkBfkydo91LC0csLxQKtZwwH32uBbyejDRHXqhRItPO5wD0dY?=
- =?us-ascii?Q?xFKd1ugCiwcIi4UGN2m3pUFWkrGnbo62pXFDPe0dRyKOLiTx6GfdB5MWvhex?=
- =?us-ascii?Q?ScsCSxke6tzNst7B6NetRuDipip/JdvH3KTlncn24ArXlLjwD4x2/p1lWi8O?=
- =?us-ascii?Q?4H66nt0pVl5I7ldCdHzlSJRBtlkJ9kyJmpMA+yt82Uxd+eMOtI8oZmZHf7g0?=
- =?us-ascii?Q?uf8bG6583chcr6KuBOk9exjyNjZ9fSFNYxFdOejrdmMK1YJmWmPC5SiKI5eU?=
- =?us-ascii?Q?evrfCUn/xqZ8qSJAd2fKldc9C8zOj1K/melvBUD2dyo9uOrFDNN+cIn1LtYx?=
- =?us-ascii?Q?oo4bpayITAf5K/rdDuh8iuvC7xna3vZeNWfdLS4DHW6NDR2Wx+7kkDLTd053?=
- =?us-ascii?Q?Uv5Zk9nllZ0DXwPVQBw=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uIKc5zt2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3632C116B1
+	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 20:17:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757103458;
+	bh=VCWnUGzPf6mLuDmms/YZCG2llaFLvKJwA1gnXCCbRdk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=uIKc5zt24/XZwP7JYEqTfBfFRmX6Wk9YHD8HxEi0IvUGCXmYhq0zMpSm8supQ0Fb5
+	 iJGS/xoCTwpWx6B21zvCyX58JiG6wKZeHnfKV9PrzdFD8g77UCWMhwV/+VxR8kAvlQ
+	 yPVyT4akXZx6QFmh+sC2ZrMWYx9v4XhPjX4ZqEzVtRypqr58ssUWkgaJb/JjbHDIS4
+	 Q06psN5PW+ZumYVyodesqKh7Uj5j1bR2yhf3Z/vTbdtMhbmMxPQZsd1C7tcDa8a8kX
+	 RxRMOqOPKJoPYzcqOhn1uU/Cd9d8rzzAEwXshP6QHtlDLuGvIqnZfJzgThdRl7C/Wq
+	 nxK2iLAKYjwYQ==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-61bd4ad64c7so801130eaf.0
+        for <imx@lists.linux.dev>; Fri, 05 Sep 2025 13:17:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUcHYAs93vw/we32PznVy7pddl7Dk0gLn4hLM7vCLKlnkXigUxjPOhcMKcG2en+XxLsizU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzcuve9Cq4oft4kwWVCI9GPyolzw6S8O1m2kMuXDAU4TK7xo4Tv
+	bYXmLOFWUvvEHXJvAqmE4sg/Gh+2R7yomoheeM0Kr9k5TzOptQaNitMf+C+2VS+cIMDIEcYLf7V
+	VPLqwgxsO/fQx/WCZoAKvAoIW0lJES2s=
+X-Google-Smtp-Source: AGHT+IEfq1HNckIyyDDXquy0XLtyGZg1XWmotG9HdXFUDIR4D+v0h/9IrUo3g6diO4+f6WOXTRuaooZELa2e+VnSV5o=
+X-Received: by 2002:a05:6820:809:b0:61f:f932:8d64 with SMTP id
+ 006d021491bc7-61ff9329264mr2455383eaf.1.1757103457768; Fri, 05 Sep 2025
+ 13:17:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c94fe002-8d32-4d60-c73f-08ddecb8dda3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Sep 2025 20:14:49.2746
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hr+tUjp9M3ODbv2uOBcQ7szHyBv2pyWUuBnkG/9aKK1GqwD3pwuuBmXgPs98syna74sxAhYG4QZpOdhG85iDFw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10097
+References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn> <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 5 Sep 2025 22:17:26 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iTdgM5BBi2ysiJxfA2c=MQ0fjLsEvVct9stxomvEe=4Q@mail.gmail.com>
+X-Gm-Features: Ac12FXw3PBjsIjj4AtBsEfmKTR7PfZEmevzc6Jwe0zbtA2TuWwqukJr66Nf1sL8
+Message-ID: <CAJZ5v0iTdgM5BBi2ysiJxfA2c=MQ0fjLsEvVct9stxomvEe=4Q@mail.gmail.com>
+Subject: Re: [PATCH v5 2/6] ACPI: processor: thermal: Use scope-based cleanup helper
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
+	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
+	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Sep 5, 2025 at 3:24=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
+> wrote:
+>
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
+>
+> No functional change intended.
+>
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  drivers/acpi/processor_thermal.c | 52 +++++++++++++++++---------------
+>  1 file changed, 27 insertions(+), 25 deletions(-)
+>
+> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_th=
+ermal.c
+> index 1219adb11ab9..460713d1414a 100644
+> --- a/drivers/acpi/processor_thermal.c
+> +++ b/drivers/acpi/processor_thermal.c
+> @@ -62,19 +62,14 @@ static int phys_package_first_cpu(int cpu)
+>         return 0;
+>  }
+>
+> -static int cpu_has_cpufreq(unsigned int cpu)
+> +static bool cpu_has_cpufreq(unsigned int cpu)
+>  {
+> -       struct cpufreq_policy *policy;
+> -
+>         if (!acpi_processor_cpufreq_init)
+>                 return 0;
+>
+> -       policy =3D cpufreq_cpu_get(cpu);
+> -       if (policy) {
+> -               cpufreq_cpu_put(policy);
+> -               return 1;
+> -       }
+> -       return 0;
+> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
+req_cpu_get(cpu);
+> +
+> +       return policy !=3D NULL;
+>  }
+>
+>  static int cpufreq_get_max_state(unsigned int cpu)
 
+The changes above are fine and can be sent as a separate patch.
 
-> -----Original Message-----
-> From: Frank Li <frank.li@nxp.com>
-> Sent: Thursday, September 4, 2025 4:40 PM
-> To: Shenwei Wang <shenwei.wang@nxp.com>
-> Cc: Wei Fang <wei.fang@nxp.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
-> David S. Miller <davem@davemloft.net>; Eric Dumazet
-> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> <pabeni@redhat.com>; Alexei Starovoitov <ast@kernel.org>; Daniel Borkmann
-> <daniel@iogearbox.net>; Jesper Dangaard Brouer <hawk@kernel.org>; John
-> Fastabend <john.fastabend@gmail.com>; Clark Wang
-> <xiaoning.wang@nxp.com>; Stanislav Fomichev <sdf@fomichev.me>;
-> imx@lists.linux.dev; netdev@vger.kernel.org; linux-kernel@vger.kernel.org=
-; dl-
-> linux-imx <linux-imx@nxp.com>
-> Subject: Re: [PATCH v5 net-next 5/5] net: fec: enable the Jumbo frame sup=
-port
-> for i.MX8QM
->=20
-> On Thu, Sep 04, 2025 at 03:35:02PM -0500, Shenwei Wang wrote:
-> > Certain i.MX SoCs, such as i.MX8QM and i.MX8QXP, feature enhanced FEC
-> > hardware that supports Ethernet Jumbo frames with packet sizes up to
-> > 16K bytes.
-> >
-> > When Jumbo frames are supported, the TX FIFO may not be large enough
-> > to hold an entire frame. To handle this, the FIFO is configured to
-> > operate in cut-through mode when the frame size exceeds
-> > (PKT_MAXBUF_SIZE - ETH_HLEN - ETH_FCS_LEN), which allows transmission
-> > to begin once the FIFO reaches a certain threshold.
-> >
-> > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> > ---
-> >  drivers/net/ethernet/freescale/fec.h      |  3 +++
-> >  drivers/net/ethernet/freescale/fec_main.c | 25
-> > +++++++++++++++++++----
-> >  2 files changed, 24 insertions(+), 4 deletions(-)
-> >
-> ...
-> >
-> >  	if (fep->bufdesc_ex)
-> > @@ -4614,7 +4626,12 @@ fec_probe(struct platform_device *pdev)
-> >
-> >  	fep->pagepool_order =3D 0;
-> >  	fep->rx_frame_size =3D FEC_ENET_RX_FRSIZE;
-> > -	fep->max_buf_size =3D PKT_MAXBUF_SIZE;
-> > +
-> > +	if (fep->quirks & FEC_QUIRK_JUMBO_FRAME)
-> > +		fep->max_buf_size =3D MAX_JUMBO_BUF_SIZE;
->=20
-> If only use once, needn't define macro.
->=20
+> @@ -93,12 +88,31 @@ static int cpufreq_get_cur_state(unsigned int cpu)
+>         return reduction_step(cpu);
+>  }
+>
+> +static bool cpufreq_update_thermal_limit(unsigned int cpu, struct acpi_p=
+rocessor *pr)
+> +{
+> +       unsigned long max_freq;
+> +       int ret;
+> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
+req_cpu_get(cpu);
+> +
+> +       if (!policy)
+> +               return false;
+> +
+> +       max_freq =3D (policy->cpuinfo.max_freq *
+> +               (100 - reduction_step(cpu) * cpufreq_thermal_reduction_pc=
+tg)) / 100;
+> +
+> +       ret =3D freq_qos_update_request(&pr->thermal_req, max_freq);
+> +       if (ret < 0) {
+> +               pr_warn("Failed to update thermal freq constraint: CPU%d =
+(%d)\n",
+> +         pr->id, ret);
+> +       }
 
-Using a macro here keeps consistency with the original coding style, while =
-also=20
-making the code cleaner and easier to read.
+But this silently fixes a bug in the original code which needs to be
+documented with a Fixes: tag (and it would be better to fix the bug
+separately before the using the __free()-based cleanup TBH) and
+introduces some whitespace breakage.
 
-Thanks,
-Shenwei
-
-> Frank
-> > +	else
-> > +		fep->max_buf_size =3D PKT_MAXBUF_SIZE;
-> > +
-> >  	ndev->max_mtu =3D fep->max_buf_size - ETH_HLEN - ETH_FCS_LEN;
-> >
-> >  	ret =3D register_netdev(ndev);
-> > --
-> > 2.43.0
-> >
+> +
+> +       return true;
+> +}
+> +
+>  static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>  {
+> -       struct cpufreq_policy *policy;
+>         struct acpi_processor *pr;
+> -       unsigned long max_freq;
+> -       int i, ret;
+> +       int i;
+>
+>         if (!cpu_has_cpufreq(cpu))
+>                 return 0;
+> @@ -120,20 +134,8 @@ static int cpufreq_set_cur_state(unsigned int cpu, i=
+nt state)
+>                 if (unlikely(!freq_qos_request_active(&pr->thermal_req)))
+>                         continue;
+>
+> -               policy =3D cpufreq_cpu_get(i);
+> -               if (!policy)
+> +               if (!cpufreq_update_thermal_limit(i, pr))
+>                         return -EINVAL;
+> -
+> -               max_freq =3D (policy->cpuinfo.max_freq *
+> -                           (100 - reduction_step(i) * cpufreq_thermal_re=
+duction_pctg)) / 100;
+> -
+> -               cpufreq_cpu_put(policy);
+> -
+> -               ret =3D freq_qos_update_request(&pr->thermal_req, max_fre=
+q);
+> -               if (ret < 0) {
+> -                       pr_warn("Failed to update thermal freq constraint=
+: CPU%d (%d)\n",
+> -                               pr->id, ret);
+> -               }
+>         }
+>         return 0;
+>  }
+> --
