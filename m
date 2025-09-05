@@ -1,68 +1,133 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E914C31B809
-	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 15:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F55283FD7
+	for <imx@lists.linux.dev>; Fri,  5 Sep 2025 16:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757085112; cv=none; b=f0duHex7C0AFdVKI/KltaijzCWgPUqRIz70YIQuC8Px43L0hB4Xc9O7pc+tKubkERof6l1RTeqFRXxqi+SuCtUFuXtBihFLtGOGolhAhcZDYen/SFfFZ+qNxNhVMwOkFjCc/Ptx0+Op3u1Nqac6GxvaW6heJmwCWmUY01Ee9Xqo=
+	t=1757088324; cv=none; b=r8F8teeFmZYS3MxemRxWHuDQOBGPa0hdTBGngCzXN9oXb+RqgfupOyCukADh8Kn3eeuKFFIkTeiAZ/nFpm79989pHyaYXr1EtUK2U4rpEcfCuXqAWgsDPE4f8AN6JBApU/IIZL0A4RxR2aWNhtvjmfQo2zdsPub/YaXhsf6AsIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757085112; c=relaxed/simple;
-	bh=KV7JC/qJFBJYr5ksw6moyOYvDCmV8x0dgy5Oa2ziLqM=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BIUW3DK+Nw4sVyLt6/57TwS1eb9BJFg/EtH6G5lYOZhHWVQ2dsqHzPJJlJE9SWv2OPzd0iaC2MXo3zi4Gqjnqwgk77Z49oIzpeKvMrbrBF6EaGbzpc63XcV7rrzjwU/EWK643zh3f/EtZRbhyqbB7VDPaXI5GnCJqGMs8GxNR6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1uuY6L-0005sF-3o; Fri, 05 Sep 2025 17:11:45 +0200
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1uuY6J-004ORu-1J;
-	Fri, 05 Sep 2025 17:11:43 +0200
-Received: from pza by lupine with local (Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1uuY6J-000XUc-14;
-	Fri, 05 Sep 2025 17:11:43 +0200
-Message-ID: <83a8a8a8258eb08d8ef0988dc43e3c9101f6532d.camel@pengutronix.de>
+	s=arc-20240116; t=1757088324; c=relaxed/simple;
+	bh=Q3cOUcU+++24jA63p/u073+a/HiaPqsJU8CA5zLc19I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V3b6lUZHRfoqdGZPWtkrTrekCrL4HLq7Cw0VBhjXesu8CoegLOWGkiC3T52+57HhSHH2nscjCDR1aYUHlrZjYOPtQHY0j8XUovW+uDxm2OanMt3EfuXMjZOdR/g2h8CsEPJCPN5hQ3IWh1hoEBZ+pkbDzgnY4iAyZqZKzhlhEu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=t5znLdDO; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="t5znLdDO"
+Received: from pendragon.ideasonboard.com (230.215-178-91.adsl-dyn.isp.belgacom.be [91.178.215.230])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 25D5FF09;
+	Fri,  5 Sep 2025 18:04:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1757088244;
+	bh=Q3cOUcU+++24jA63p/u073+a/HiaPqsJU8CA5zLc19I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t5znLdDOCBJ8UUSR2W8IzUrPaj+ebAQEhnZW7pJe4F7WnPuKYQ8QLBx5PxvVu1GrY
+	 IJAk3fi8RlnJos9o1hI7u3WG1PZB8rOc4WQkWE3y++RuOQoL4bkDz+8FexzOeu/MkM
+	 4PR6XMBTMeJ18TtkowpJC/NEry+nO5BADDiCae8s=
+Date: Fri, 5 Sep 2025 18:04:53 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: slongerbeam@gmail.com, p.zabel@pengutronix.de, rmfrfs@gmail.com,
+	martin.kepplinger@puri.sm, kernel@puri.sm,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, mchehab@kernel.org
 Subject: Re: [PATCH 1/1] MAINTAINERS: media: nxp: Add Frank Li as reviewer
  for nxp SoC
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Frank Li <Frank.Li@nxp.com>, slongerbeam@gmail.com, rmfrfs@gmail.com, 
- laurent.pinchart@ideasonboard.com, martin.kepplinger@puri.sm,
- kernel@puri.sm,  linux-media@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org,  mchehab@kernel.org
-Date: Fri, 05 Sep 2025 17:11:43 +0200
-In-Reply-To: <20250904161720.514889-1-Frank.Li@nxp.com>
+Message-ID: <20250905160453.GA21773@pendragon.ideasonboard.com>
 References: <20250904161720.514889-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250904161720.514889-1-Frank.Li@nxp.com>
 
-On Do, 2025-09-04 at 12:17 -0400, Frank Li wrote:
+Hi Frank,
+
+On Thu, Sep 04, 2025 at 12:17:20PM -0400, Frank Li wrote:
 > Add Frank Li as reviewer for nxp SoC.
->=20
+
+Great idea, and thank you for volunteering ! I really appreciate your
+help with reviews so far, and I have already mentioned it in a
+conversation with another SoC vendor as a model they should follow.
+
+I'd mention media drivers here though, unless you want to volunteer to
+review patches for the whole SoC :-) Maybe something along the lines of
+
+----
+MAINTAINERS: Add Frank Li as reviewer for NXP media drivers
+
+Frank has been reviewing NXP media drivers for a while, and is
+volunteering to continue. Add him as a reviewer for the IMX media
+drivers.
+
+Also add the NXP i.MX platform mailing list (imx@lists.linux.dev).
+----
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
 > Add nxp open source mail list imx@lists.linux.dev.
->=20
+> 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> I am work on kernel community for the while. And upstreamed/reviewed:
+> cee06ca7a6748 media: imx8mq-mipi-csi2: Fix error code in imx8mq_mipi_csi_parse_dt()
+> 51ad3b570ea7b media: imx-jpeg: Account for data_offset when getting image address
+> 642b70d526ab8 media: imx8mq-mipi-csi2: Add support for i.MX8QXP
+> 382d53e9cefb3 media: imx8mq-mipi-csi2: Add imx8mq_plat_data for different compatible strings
+> 859278460faa4 media: imx8-isi: Add support for i.MX8QM and i.MX8QXP
+> dee8521f69874 media: nxp: imx8-isi: Use dev_err_probe() to simplify code
+> 73a40554f979e media: nxp: imx8-isi: Remove redundant check for dma_set_mask_and_coherent()
+> 60b8de2b9b4be media: nxp: imx8-isi: Use devm_clk_bulk_get_all() to fetch clocks
+> 66ede6d71d4e8 media: nxp: imx8-isi: Remove unused offset in mxc_isi_reg and use BIT() macro for mask
+> 2021b8d51cdb5 media: nxp: imx8-isi: Allow num_sources to be greater than num_sink
+> 038d27acf987c media: imx-mipi-csis: Use CSI-2 data type macros from mipi-csi2.h
+> fd5b6cd730676 media: imx-jpeg: Check decoding is ongoing for motion-jpeg
+> f65fbf8c3d671 media: imx-jpeg: Change the pattern size to 128x64
+> 7500bb9cf164e media: imx-jpeg: Cleanup after an allocation error
+> faa8051b128f4 media: imx-jpeg: Reset slot data pointers when freed
+> 46e9c092f850b media: imx-jpeg: Move mxc_jpeg_free_slot_data() ahea
+> 
+> On going thread:
+> 5 patches, https://lore.kernel.org/imx/20250729-imx8qxp_pcam-v4-1-4dfca4ed2f87@nxp.com/
+> 32 patches, https://lore.kernel.org/imx/20250808-95_cam-v2-0-4b29fa6919a7@nxp.com/
+> 2 patches, https://lore.kernel.org/imx/aLbdRdS3TmLHjW+Q@lizhi-Precision-Tower-5810/
+> 
+> I am volunteer to review media related patches so add myself to MAINTIANER
+> so I can get notified when related patches post.
+> ---
+>  MAINTAINERS | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b3ca0ba848879..2884a5216b427 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -15327,6 +15327,8 @@ F:	drivers/media/pci/ddbridge/*
+>  MEDIA DRIVERS FOR FREESCALE IMX
+>  M:	Steve Longerbeam <slongerbeam@gmail.com>
+>  M:	Philipp Zabel <p.zabel@pengutronix.de>
+> +R:	Frank Li <Frank.Li@nxp.com>
+> +L:	imx@lists.linux.dev
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+>  T:	git git://linuxtv.org/media.git
+> @@ -15341,6 +15343,8 @@ M:	Rui Miguel Silva <rmfrfs@gmail.com>
+>  M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+>  M:	Martin Kepplinger <martin.kepplinger@puri.sm>
+>  R:	Purism Kernel Team <kernel@puri.sm>
+> +R:	Frank Li <Frank.Li@nxp.com>
+> +L:	imx@lists.linux.dev
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+>  T:	git git://linuxtv.org/media.git
 
-Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
+-- 
+Regards,
 
-
-regards
-Philipp
+Laurent Pinchart
