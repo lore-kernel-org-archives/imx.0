@@ -1,232 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22A92989B0;
-	Sat,  6 Sep 2025 09:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467D7BA4A;
+	Sat,  6 Sep 2025 12:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757149810; cv=none; b=hwpbom2dMVBSPMm+iA/xVmg7u3p/Sh8QaYp6troUNUWb5x6SolDhrI3c5hdfBvgqk/airbMMmTgle8kvSA775tPWJlBQFsPpw0bzgAzpbTNwliIzx1zYTzXTbLP+uD8zRDrqEp2ODg8IWe5d+SlxYlcQ9uB1q4ZUicM87qcG0SA=
+	t=1757160091; cv=none; b=tqK2eyURAxE0G4MmLdliKsnVZ58P1RFf/s/IDH+RENDh2wQgqyiSTSy9X4e6zV1tFWkSzs9iFdOw18nvqpU4IkCrDbbB/0WkC8R9QXA1U2gKVjkWepA0y42gY2Ef+4tyEuhcLZMaaxeYkH8p1TECaHtu3kUWwloVe04thy9/rfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757149810; c=relaxed/simple;
-	bh=n7BaLx5oCoMZmaq4FFR+ACT0mdO1lnO5qbl1jAWEp2Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EotYBZ54KrpgDNHpojpscRMhptzvQHoGtfWnq3cgZMKg+SKKaMs1PUa7+3rC5k4BxSsl/ayQ9GM4kU2v/LVl8FHyrPpE729xIMjCMq23dPXmj0nBWRDsBU4Zh3OvOotDb48yb05M0EEpmygNQiHzdomWKBCBKLI+2qkWGjbTnAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a9tJUrFA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757160091; c=relaxed/simple;
+	bh=H+js8WLuHfcNY6HqZd4U4ex2F4rnKaf6udYX1HgmcR8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o9CQLyBYnSSeV3nr8tZDbk/wOR5w4nYVp48HClPEMIs8ZHgfnrDl6gvz8Aio0mL4a/O6bRfxjEVfO3JgtHGHYO4nAjrjmNxI7+FXmA4nd16snFOATkX4lKlt1UZ4R9SXgRa/s4TVXixMdayw3ogCTVv7o+0dyDpWhaAKjxsPVsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/nh5H6c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a9tJUrFA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED41C4CEF4;
-	Sat,  6 Sep 2025 09:10:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/nh5H6c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398BAC4CEE7;
+	Sat,  6 Sep 2025 12:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757149810;
-	bh=n7BaLx5oCoMZmaq4FFR+ACT0mdO1lnO5qbl1jAWEp2Q=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=a9tJUrFAagBKbyPjXV3/d0t7wE/INc6tjYGqLwaErDO7RyA0or12RCNquhWJQNMu5
-	 aDCj9uq4lFaLQ2TPqkPu7nrcNINxuuqn+7eTqPycG5mS07dc8u5yo7oTq0R0fqNCR9
-	 LfKOirgyJEhD9vBcZThVsZVmMee3ohCUnyMQFNi1yzvgsAU8LGVDa/XeXHnHXhG4zs
-	 +9khMFURFcJrKao8oz/49o2t92XVEc/mn80eSw916Qvke5dYGiMdXrSYshJsiiUat7
-	 Zog31XG0fO7LcJRYkP/CDxwu7QGoQUTvA7CrvxrVRCJuiWTvSGe0gNBpuE7qUWAPLU
-	 BNE1IpKOe+0dw==
-From: Andreas Kemnade <akemnade@kernel.org>
-Date: Sat, 06 Sep 2025 11:09:15 +0200
-Subject: [PATCH 4/4] ARM: dts: imx: e70k02: add sy7636
+	s=k20201202; t=1757160090;
+	bh=H+js8WLuHfcNY6HqZd4U4ex2F4rnKaf6udYX1HgmcR8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=B/nh5H6cH553rNiW29Irs3iF8FIzSwYwUTFzChtrFU844vMa4Blyo4p8yAY+paCSB
+	 mITb5bEq0L8PfbgltOq3dh/BvXfv9dNhtijWRKYn7VinqIQaEldSiHoTX2ndPwCOgj
+	 Xmlr5rkkt1sYRsIqYvnQU307H4qsYN5IjbIX6JbEwktOAhKtf88kQYpajVy4JdogAQ
+	 8v6gZF5lMKcedaoQw3lZtrpQLixX2P7vFgoUFCsw0Bckdw4kmiZJy1NF8hGxKLjVfq
+	 xRA1BPB9eZqVhAE77HqgscgvMr03L2qypXF+rWYvwf42bQj3TXBHDpxvfaf8WB7pb/
+	 SlRVgUQOplGFQ==
+Message-ID: <288f0cf1-1ee4-4eba-b059-641120bb93f3@kernel.org>
+Date: Sat, 6 Sep 2025 14:01:25 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250906-sy7636-rsrc-v1-4-e2886a9763a7@kernel.org>
-References: <20250906-sy7636-rsrc-v1-0-e2886a9763a7@kernel.org>
-In-Reply-To: <20250906-sy7636-rsrc-v1-0-e2886a9763a7@kernel.org>
-To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Alistair Francis <alistair@alistair23.me>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] dt-bindings: mfd: sy7636a: Add missing gpio pins and
+ supply
+To: Andreas Kemnade <akemnade@kernel.org>, Lee Jones <lee@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Alistair Francis
+ <alistair@alistair23.me>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
  Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Andreas Kemnade <akemnade@kernel.org>
-X-Mailer: b4 0.15-dev-50721
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4828; i=akemnade@kernel.org;
- h=from:subject:message-id; bh=n7BaLx5oCoMZmaq4FFR+ACT0mdO1lnO5qbl1jAWEp2Q=;
- b=owGbwMvMwCEm/rzkS6lq2x3G02pJDBm7fyXICnhyTshu6ZCy+OtrE1nseop3kkeQQVHVk6fa+
- y/fti7qKGVhEONgkBVTZPllreD2SeVZbvDUCHuYOaxMIEMYuDgFYCInsxgZjok4yEzkD5Ir5pz0
- aJfoifSEr6aL/Pb2H++Mfl+7SGptMMP/TM4MY8O7Vz+3qhWbtvJyH/pZ6Rxx+cSV1uBDd3Iez+F
- gBAA=
-X-Developer-Key: i=akemnade@kernel.org; a=openpgp;
- fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250906-sy7636-rsrc-v1-0-e2886a9763a7@kernel.org>
+ <20250906-sy7636-rsrc-v1-1-e2886a9763a7@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250906-sy7636-rsrc-v1-1-e2886a9763a7@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add the EPD PMIC for the e70k02 based devices as a step towards full EPD
-support.
+On 06/09/2025 11:09, Andreas Kemnade wrote:
+> To be able to fully describe how the SY7636A is connected to the system,
+> add properties for the EN and VCOM_EN pins. To squeeze out every bit
+> of unused current, in many devices it is possible to power off the
+> complete chip. Add an input regulator to allow that.
+> 
+> Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
+> ---
+>  .../devicetree/bindings/mfd/silergy,sy7636a.yaml         | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml b/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
+> index ee0be32ac0204..08ad593e237f1 100644
+> --- a/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
+> @@ -32,6 +32,22 @@ properties:
+>        Specifying the power good GPIOs.
+>      maxItems: 1
+>  
+> +  en-gpios:
 
-Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
----
- arch/arm/boot/dts/nxp/imx/e70k02.dtsi              | 25 +++++++++++++++++++++-
- .../arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts | 24 +++++++++++++++++++++
- .../arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts | 24 +++++++++++++++++++++
- 3 files changed, 72 insertions(+), 1 deletion(-)
+enable-gpios, unless it is something else, but then please explain in
+the description.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-index dcc3c9d488a88..5f6b7545a0c0c 100644
---- a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-@@ -69,6 +69,14 @@ memory@80000000 {
- 		reg = <0x80000000 0x20000000>;
- 	};
- 
-+	epd_pmic_supply: regulator-epd-pmic-in {
-+		compatible = "regulator-fixed";
-+		regulator-name = "epd_pmic_supply";
-+		gpio = <&gpio2 14 GPIO_ACTIVE_HIGH>;
-+		startup-delay-us = <20000>;
-+		enable-active-high;
-+	};
-+
- 	reg_wifi: regulator-wifi {
- 		compatible = "regulator-fixed";
- 		regulator-name = "SD3_SPWR";
-@@ -133,7 +141,22 @@ touchscreen@24 {
- 		vdd-supply = <&ldo5_reg>;
- 	};
- 
--	/* TODO: SY7636 PMIC for E Ink at 0x62 */
-+	sy7636: pmic@62 {
-+		compatible = "silergy,sy7636a";
-+		reg = <0x62>;
-+		en-gpios = <&gpio2 8 GPIO_ACTIVE_HIGH>;
-+		vcom-en-gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
-+		epd-pwr-good-gpios = <&gpio2 13 GPIO_ACTIVE_HIGH>;
-+		vin-supply = <&epd_pmic_supply>;
-+
-+		#thermal-sensor-cells = <0>;
-+
-+		regulators {
-+			reg_epdpmic: vcom {
-+				regulator-name = "vcom";
-+			};
-+		};
-+	};
- 
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
-index a2534c422a522..f8709a9524093 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
-@@ -26,6 +26,11 @@ / {
- 	compatible = "kobo,tolino-vision5", "fsl,imx6sl";
- };
- 
-+&epd_pmic_supply {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_epd_pmic_supply>;
-+};
-+
- &gpio_keys {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_gpio_keys>;
-@@ -59,6 +64,12 @@ MX6SL_PAD_FEC_RXD1__GPIO4_IO18          0x10059 /* TP_RST */
- 		>;
- 	};
- 
-+	pinctrl_epd_pmic_supply: epd-pmic-supplygrp {
-+		fsl,pins = <
-+			MX6SL_PAD_EPDC_PWRWAKEUP__GPIO2_IO14    0x40010059
-+		>;
-+	};
-+
- 	pinctrl_gpio_keys: gpio-keysgrp {
- 		fsl,pins = <
- 			MX6SL_PAD_FEC_CRS_DV__GPIO4_IO25	0x17059	/* PWR_SW */
-@@ -159,6 +170,14 @@ MX6SL_PAD_KEY_COL2__GPIO3_IO28		0x1b8b1 /* ricoh619 bat_low_int */
- 		>;
- 	};
- 
-+	pinctrl_sy7636_gpio: sy7636-gpiogrp {
-+		fsl,pins = <
-+			MX6SL_PAD_EPDC_VCOM0__GPIO2_IO03        0x40010059 /* VCOM_CTRL */
-+			MX6SL_PAD_EPDC_PWRCTRL1__GPIO2_IO08     0x40010059 /* EN */
-+			MX6SL_PAD_EPDC_PWRSTAT__GPIO2_IO13      0x17059 /* PWR_GOOD */
-+		>;
-+	};
-+
- 	pinctrl_uart1: uart1grp {
- 		fsl,pins = <
- 			MX6SL_PAD_UART1_TXD__UART1_TX_DATA 0x1b0b1
-@@ -329,6 +348,11 @@ &ricoh619 {
- 	pinctrl-0 = <&pinctrl_ricoh_gpio>;
- };
- 
-+&sy7636 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sy7636_gpio>;
-+};
-+
- &uart1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart1>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
-index 660620d226f71..19bbe60331b36 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
-@@ -36,6 +36,11 @@ &cpu0 {
- 	soc-supply = <&dcdc1_reg>;
- };
- 
-+&epd_pmic_supply {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_epd_pmic_supply>;
-+};
-+
- &gpio_keys {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_gpio_keys>;
-@@ -69,6 +74,12 @@ MX6SLL_PAD_GPIO4_IO18__GPIO4_IO18	0x10059 /* TP_RST */
- 		>;
- 	};
- 
-+	pinctrl_epd_pmic_supply: epd-pmic-supplygrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_EPDC_PWR_WAKE__GPIO2_IO14    0x40010059
-+		>;
-+	};
-+
- 	pinctrl_gpio_keys: gpio-keysgrp {
- 		fsl,pins = <
- 			MX6SLL_PAD_GPIO4_IO25__GPIO4_IO25	0x17059	/* PWR_SW */
-@@ -169,6 +180,14 @@ MX6SLL_PAD_KEY_COL2__GPIO3_IO28		0x1b8b1 /* ricoh619 bat_low_int */
- 		>;
- 	};
- 
-+	pinctrl_sy7636_gpio: sy7636-gpiogrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_EPDC_VCOM0__GPIO2_IO03       0x40010059 /* VCOM_CTRL */
-+			MX6SLL_PAD_EPDC_PWR_CTRL1__GPIO2_IO08   0x40010059 /* EN */
-+			MX6SLL_PAD_EPDC_PWR_STAT__GPIO2_IO13    0x17059 /* PWR_GOOD */
-+		>;
-+	};
-+
- 	pinctrl_uart1: uart1grp {
- 		fsl,pins = <
- 			MX6SLL_PAD_UART1_TXD__UART1_DCE_TX 0x1b0b1
-@@ -319,6 +338,11 @@ &ricoh619 {
- 	pinctrl-0 = <&pinctrl_ricoh_gpio>;
- };
- 
-+&sy7636 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sy7636_gpio>;
-+};
-+
- &uart1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart1>;
+> +    description:
+> +      If EN pin is not hardwired, specify it here to have it set up.
+> +    maxItems: 1
 
--- 
-2.39.5
 
+Best regards,
+Krzysztof
