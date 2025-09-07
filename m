@@ -1,86 +1,202 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33F32472B6;
-	Sun,  7 Sep 2025 11:44:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3895223
+	for <imx@lists.linux.dev>; Sun,  7 Sep 2025 16:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757245481; cv=none; b=NG+vmz17v3C+BYXRk5eTmmHzna+dVnfF44lo/1ES9MJlQvHME/eRgAwk6R00HDNH9NIv5UtCcd4LluMnGoPD0FKvcCkkq5BnAdv/Rd5nJbVrl7+M8ba+kY41pzCalSXHwTKdK4ZSGz9e6WRnUNico3X3HdqtfDzI/msBUxyl4WI=
+	t=1757263150; cv=none; b=eCMP2aUbTEwyuOidgXIzrDrXZ66JD0ahHhf7z1dzEFYHcabdtfDDITQ3ozg0uGLU3s4Mj8anGzeWeQrMnPGAioxOE3wgVGIYdHePsdbW/cat+18+N4XrVp18yQAL0cOMY7soLNidaAFDbWdyxd620bXlpyqB9nPEICWHPotsE+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757245481; c=relaxed/simple;
-	bh=McQxKcQ3IgA09DQIhZhbUBr9hl4vWs7RU541oD5jjDY=;
+	s=arc-20240116; t=1757263150; c=relaxed/simple;
+	bh=8aA2Jg9FKRiiJXXWfgpSGXzvfMnNtxLXU3QJRppjAKo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nsTWYOhX3IRm6hej5Vc8+kgfI9X6HCoPtvXOPvKSFzOmF+M34caqA2SW+yQ8TSnxCGZ6IUe0yAOqdOADouiRVr5t5rdobcmRSYckHwcWYemJ/q9shHRzCeZGEOHD28O8eu1vbNGJQVNwd41MGh5jtVSLH8LK500Sj4h44J1uRWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+96NWKb; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=RRYcekPHfmvp2FyUqWFiTCJBPB/EwHAEAstNYWH+CoWeYVBcYza0BIJxwonMxkqMvsvzJQC9yqvMBS2+YZP9Yd+0Q1PerPuzXOq6JlfDaLQvjM++0l6xyDIOgWi44I4hEn656XJtpAF4/EI0dG0sHbXOvNKV7MY+bYIbcrRqvn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=XDpWLxFn; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+96NWKb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A260C4CEF0;
-	Sun,  7 Sep 2025 11:44:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757245481;
-	bh=McQxKcQ3IgA09DQIhZhbUBr9hl4vWs7RU541oD5jjDY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=D+96NWKbhuU0P1mzI9gATdG0diAEJ2UX2AESQDRxNBft4tKXn1MtAIJYmXU+w1Roy
-	 A1fGsYgsvancq1wpB7z9YJVTK0GwZR+mWoqh/GUMzVhRDUUGPMc69Vwiv2+QeEtZ0a
-	 AHw/kIw1qeQBfK3Mb9SuFm1fFPz6ZEsBtOwRHFaORMpoxBJc71V4WbO5s1wUZi9lsT
-	 yqlwd8RALYwf+Md02si0js2n+GgeOMbHKhms+UNsSHdWsBHYyGRrN0EI4xdhDTo2G+
-	 d+FU6DFShwptnOL2/IgdZIKFEPxkFDYBes1F7vw1DSbJZ8Pgzx/ZIsNwXhWc8rzRvK
-	 IYZ9007bVbbIg==
-Date: Sun, 7 Sep 2025 12:44:29 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Primoz Fiser <primoz.fiser@norik.com>, Peter Rosin <peda@axentia.se>,
- David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn
- Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, linux-iio@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="XDpWLxFn"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4cKbQ05cM2z9skk;
+	Sun,  7 Sep 2025 18:39:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1757263144;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=40wP9f/YhEUIfCxR1Q1LmZDAxZVYGotLKQrasi7CHmQ=;
+	b=XDpWLxFn5y9us7+fiif9TulGafz/oIO6bKURlwX2wSWcE3tD1nXK5BjY9lbFE/gdwNVPi6
+	enaAK66H729Q2LQHOKzR9tJ11wdcC+Pbsdw+iVsxjcHSJacPvbC7p/lT2IWd26wjVRoVeP
+	zbOXfjSVqf8jz2cDqiCwVvkFDRFATIPQ9QdgF9UhM/u8Hcqqj9X6Z94fNQQH/7VJFOK+XA
+	J/1y52SJgpNQ6MYF8t1x8xqhfje4E0xbNoVydVX2v0WthJBK6ipf1UMpll78fA+5AzqcB7
+	M0w1DUP703mm1QQojuMD9DFtEw+sEGeGyWRSD7jipB8zwuuHmd4QxbpFByGXeA==
+Date: Sun, 7 Sep 2025 18:38:54 +0200
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- upstream@lists.phytec.de
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: afe: current-sense-amplifier:
- Add io-channel-cells
-Message-ID: <20250907124429.573edbc8@jic23-huawei>
-In-Reply-To: <20250905-dainty-liberal-monkey-ec28bb@kuoka>
-References: <20250905065503.3022107-1-primoz.fiser@norik.com>
-	<20250905-dainty-liberal-monkey-ec28bb@kuoka>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
+Subject: Re: [net-next v19 4/7] net: mtip: Add net_device_ops functions to
+ the L2 switch driver
+Message-ID: <20250907183854.06771a13@wsk>
+In-Reply-To: <20250827082512.438fd68a@kernel.org>
+References: <20250824220736.1760482-1-lukasz.majewski@mailbox.org>
+	<20250824220736.1760482-5-lukasz.majewski@mailbox.org>
+	<20250827082512.438fd68a@kernel.org>
+Organization: mailbox.org
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-ID: cb5fdf42c49e3c3911f
+X-MBO-RS-META: ae8q84kuxhxo8rx8jjccadeoch6emkey
 
-On Fri, 5 Sep 2025 10:20:37 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+Hi Jakub,
 
-> On Fri, Sep 05, 2025 at 08:55:02AM +0200, Primoz Fiser wrote:
-> > The current-sense-amplifier is an IIO provider thus can be referenced by
-> > IIO consumers (via "io-channels" property in consumer device node). Such
-> > provider is required to describe number of cells used in phandle lookup
-> > with "io-channel-cells" property.
-> > 
-> > Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-> > ---
-> > Changes in v2:
-> > - refactor commit msg drop warnings introduced by commit #2
-> > - drop Fixes: tag  
-> 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Applied this patch to the togreg branch of iio.git.
-I'll push that out as testing now because some other stuff on there
-will benefit from 0-day taking a first look at it.
+Sorry for late reply.
 
-Thanks,
+> On Mon, 25 Aug 2025 00:07:33 +0200 Lukasz Majewski wrote:
+> > +	/* Set buffer length and buffer pointer */
+> > +	bufaddr =3D skb->data; =20
+>=20
+> You can't write (swap) skb->data if the skb is a clone..
 
-Jonathan
+I do use skb =3D buld_skb() which, "builds" the SKB around the memory
+page (from pool).
 
-> 
-> Best regards,
-> Krzysztof
-> 
+Then, I "pass" this data (and swap it) to upper layer of the network
+stack.
 
+The same approach is used in the fec_main.c driver:
+https://elixir.bootlin.com/linux/v6.17-rc3/source/drivers/net/ethernet/free=
+scale/fec_main.c#L1853
+
+>=20
+> > +	bdp->cbd_datlen =3D skb->len;
+> > +
+> > +	/* On some FEC implementations data must be aligned on
+> > +	 * 4-byte boundaries. Use bounce buffers to copy data
+> > +	 * and get it aligned.spin
+> > +	 */
+> > +	if ((unsigned long)bufaddr & MTIP_ALIGNMENT) { =20
+>=20
+> add=20
+> 	.. ||
+> 	(fep->quirks & FEC_QUIRK_SWAP_FRAME && skb_cloned(skb))
+>=20
+> here to switch to the local buffer for clones ?
+
+Please see the above comment.
+
+>=20
+> > +		unsigned int index;
+> > +
+> > +		index =3D bdp - fep->tx_bd_base;
+> > +		memcpy(fep->tx_bounce[index], skb->data, skb->len);
+> > +		bufaddr =3D fep->tx_bounce[index];
+> > +	}
+> > +
+> > +	if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
+> > +		swap_buffer(bufaddr, skb->len); =20
+>=20
+> > +	if (unlikely(dma_mapping_error(&fep->pdev->dev,
+> > bdp->cbd_bufaddr))) {
+> > +		dev_err(&fep->pdev->dev,
+> > +			"Failed to map descriptor tx buffer\n"); =20
+>=20
+> All per-packet prints must be rate limited
+
+Ok. I will update it globally.
+
+>=20
+> > +		/* Since we have freed up a buffer, the ring is no
+> > longer
+> > +		 * full.
+> > +		 */
+> > +		if (fep->tx_full) {
+> > +			fep->tx_full =3D 0;
+> > +			if (netif_queue_stopped(dev))
+> > +				netif_wake_queue(dev);
+> > +		} =20
+>=20
+> I must say I'm still quite confused by the netdev management in this
+> driver. You seem to have 2 netdevs, one per port.
+
+Yes.
+
+> There's one
+> set of queues and one NAPI.
+
+Yes.
+
+> Whichever netdev gets up first gets the
+> NAPI.
+
+Yes.
+
+What I'm trying to do - is to model the HW which I do have...
+
+When switch is enabled I do have ONE uDMA0 which works for both eth
+ports (lan0 and lan1).
+
+That is why I do have only one NAPI queue.
+
+> What makes my head spin is that you seem to record which
+> netdev/port was doing Rx _last_ and then pass that netdev to
+> mtip_switch_tx(). Why?
+
+You may have port =3D=3D 1 || port =3D=3D 2 when you receive packet from in=
+gres
+ports.
+You may also have port =3D=3D 0xFF when you first time encounter the SA on
+the port and port =3D=3D 0 when you send/receive data from the "host"
+interface.
+
+When port 1/2 is "detected" then the net dev for this particular port
+is used. In other cases the one for NAPI is used (which is one of those
+two - please see comment above).
+
+This was the approach from original NXP (Freescale) driver. It in some
+way prevents from "starvation" from net devices when L2 switch is
+disabled and I need to provide port separation.
+
+(port separation in fact is achieved by programming L2 switch registers
+and is realized in HW).
+
+> Isn't the dev that we're completing Tx for is
+> best read from skb->dev packet by packet?
+
+It may be worth to try.... I think that the code, which we do have now,
+tries to reuse some kind of "locality".
+
+> Also this wake up logic
+> looks like it will wake up _one_ netdev's queue and then set tx_full
+> =3D 0, so presumably it will not wake the other port if both ports
+> queues were stopped. Why keep tx_full state in the first place? Just
+> check if the queues is stopped..?
+
+As I said - we do have only ONE queue, which corresponds to uDMA0 when
+the switch is enabled. This single queue is responsible for handling
+transmission for both ports (this is how the HW is designed).
+
+
+
+--=20
+Best regards,
+
+=C5=81ukasz Majewski
