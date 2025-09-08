@@ -1,214 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B911D5CD7;
-	Mon,  8 Sep 2025 06:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27051E5207
+	for <imx@lists.linux.dev>; Mon,  8 Sep 2025 08:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757311571; cv=none; b=KMaeT5cjqYtTFeSEVCPIebNge9cY+Ex8FEJW/WdX38qDKb6583aFb5GgjTIJ+cAoskeUWTHtvdXPRC4fZ8YxfNZyfqItMJ+YJika6Bf0JdE99CODSTnaygLXv6BBMaw61d92/EUgJunjvByCmPx+PCsgdhr4t1oxTCVjwfmGG/A=
+	t=1757318426; cv=none; b=nLg+Yyoqr3RZRCC6TuUtj+EiraMyLyYHci4C+3j9QE5MCaeD3DfUy/8uczxoqok5dPA6VEL2NGoT+rg7RU/O4tPb3KimIR7nsXEEl6fq5m4Yhj9zgd9EHA2sCLaQklGGBIH2Svxw5wEyUsQO35r0Fm3zOGpYtO9GT526Pi9buNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757311571; c=relaxed/simple;
-	bh=4A5Es5qiO5aqxXgStXXtaG5FSdU+XymwE0oZAPA6t9U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AG9uWd66dC9YNpG23rFbD0XYXCoY/q1YtARdvyjAQIvTUpQLmZgAIFcURacBuLZyL06AiMUN865M2OA5g+1FFYkyjwEFpkZxUcESSyn1t5osaAmppCZsrSxYcf0DcPgNhOhCTDoq05AeCMunmnwLoTy/sgERZQrRgXmm+O5L4AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sScEA+sA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757318426; c=relaxed/simple;
+	bh=DWbX7R/U1GsCtmfMf8n32EQDbuPB/n6EGBZBGmdCfng=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=t8eEOB37HW63Jmq0JQ0XYDVsagUIpCftDrMcZklQj0a6KEj+9UYiyiguHbPFFi2cJM3NDS3LbPn15fyz4uWe52zt2TUOd0WPYzrJLnqsJV5pAZ62BzXxG470P2fY9uhKJkHM45pV1dB/H6uTgPWFFbUgRHwo2ybhgsPb8dvxlm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me; spf=pass smtp.mailfrom=alistair23.me; dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b=arsNjnY2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NQDeZIXX; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alistair23.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sScEA+sA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E95C4CEF5;
-	Mon,  8 Sep 2025 06:06:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757311570;
-	bh=4A5Es5qiO5aqxXgStXXtaG5FSdU+XymwE0oZAPA6t9U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sScEA+sA2FKBBArmW0BBu8JxohX0FkHC+f/SBFY3YeWqUOyysMHCxb7/7iDt+0qoD
-	 TsDDdpD59sTlAPboK/rVjWhddPoh60Zx1CDViPXKrn6jIjwIKT2mSWE7hgQEneqsIL
-	 w5Im1LuSNaxaq6vY4DtByjrjiF4QYmI1ISKmTYFBzd+i4JStxYFPoEaQ38RISDvtnf
-	 AsoxLk3IWske/zTAK4Woe+7WX4AX200yGqkhe1/Ebgv9aa4tqEtJzbMmYEZ1gYmulU
-	 3mgXxvNNK0fvhzYLfcB+cDrwwIpvmYvb6lxEK7wH+QTufrLqN/IKyq9a2wLDyiB0SY
-	 RtwRLrLKVyZIw==
-Date: Mon, 8 Sep 2025 11:36:02 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] PCI: imx6: Add a method to handle CLKREQ#
- override active low
-Message-ID: <ryvt2k2blew5wisy7edkjqdcmulrwey7lkeriasrmvaigpe3ku@vdgkod2bf7ma>
-References: <20250820081048.2279057-1-hongxing.zhu@nxp.com>
- <20250820081048.2279057-3-hongxing.zhu@nxp.com>
+	dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b="arsNjnY2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NQDeZIXX"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 79ED07A011A;
+	Mon,  8 Sep 2025 04:00:20 -0400 (EDT)
+Received: from phl-imap-06 ([10.202.2.83])
+  by phl-compute-04.internal (MEProxy); Mon, 08 Sep 2025 04:00:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alistair23.me;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
+	 t=1757318420; x=1757404820; bh=DWNOzXKqqTp6Qc7ppmvAFSQTsEPQo8Ua
+	sak//JEG0g0=; b=arsNjnY2JA36AC4ZeTANdtihLjsizPq7R/rglX+ZsyZWya4G
+	ps+R+umdV8G5ZjlETptIgKD0fVNe9p0OxF7tph2A3VF3wYdhI6PSXX/uw/ziy/Kz
+	XRr+FimyYil34L4lPTH9Hv/7u/fRFtZ+ULOv/g5BMn+7pKIs6Lvkq0NwWd3AZlwN
+	+lQoS5LHokRIM9T/bp/u0Qg4L++tW5okC8vVZpVHfOcplgBGQEvHBQmJlI6b9TIb
+	c1pqANmeGypXs6HH6n9ZW8HPA2NiA325fxxf/Ky5pqj1AjQwa8pjQYMwYGRD2a2l
+	n456vl5+JxhJKCpD4ibgHsvNt68BsklElQKqEQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757318420; x=
+	1757404820; bh=DWNOzXKqqTp6Qc7ppmvAFSQTsEPQo8Uasak//JEG0g0=; b=N
+	QDeZIXXXVm87Ru38VuxsrudvAFO5JqEtImy23mfBBIfJe9QKqNqw6jhicie7cWgP
+	kmhQtiKIpqvk4MWos2CbbzTqP0at6KRMPT9ANci5hg8G9yCorLvHXs1m3jvaNlS+
+	9hOowVz/LNllM8QfWhRXyNNqJqSBYVAH5tAKXNYBDlyquPxcAg3Ykh3C9GcJd1u7
+	S8e6TuTHKukQXkjYyNMVLM+3B4XKmNCzvuw+lbtkVn41dDfTjF2jfOHpvJpwtWFE
+	s1P6b1Q7Y6W3qJCuI6lMxme+gLTZt9TsWaVpTR21YBkStuPZ1rpfpFuYj86sk30F
+	TAy9Vv937KRLxcVkZI03g==
+X-ME-Sender: <xms:FI2-aMNpHoOQEC_4gHBvE53DEZln5ddaztDCh09RSeA7wTj5IL-GPw>
+    <xme:FI2-aC9WsgiaJQPMYvb9knDiyc83DMHbh2v1PD_Ee_6pSd4n6tQAzWEdRUjiwnVNk
+    uwaUTCC8cgEtCQCSRw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduieellecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomheptehlihhsthgr
+    ihhruceorghlihhsthgrihhrsegrlhhishhtrghirhdvfedrmhgvqeenucggtffrrghtth
+    gvrhhnpeehjeffgeellefgfffhteehvedvhfekfeefleeuvdehudeitdduveeggfeigfeg
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlh
+    hishhtrghirhesrghlihhsthgrihhrvdefrdhmvgdpnhgspghrtghpthhtohepudehpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtg
+    homhdprhgtphhtthhopehlghhirhgufihoohgusehgmhgrihhlrdgtohhmpdhrtghpthht
+    oheprghkvghmnhgruggvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegsrhhoohhnih
+    gvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheplhgvvgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosghhsehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:FI2-aNUUs6jpFp7PuNe5HgreZHB8iyBpZuIf3kD-dJsa2WVhdsHR6A>
+    <xmx:FI2-aFdH_r3SH9hiec1SSl4QgKjsMDbmfeisYWpjiQupvMkuRxLS1Q>
+    <xmx:FI2-aIzpQ0OSfNLYC7pXY4jg1VsBRnByTeTuN8CSqigjO2AlTgsYMA>
+    <xmx:FI2-aIHAH3EFzPgzPhJj44teEUkjzxuaVq0d9--olVA3TJla_UA5vg>
+    <xmx:FI2-aPmE_wFXsGQhWXvSLevOZPmJdjPUB2FDDwXmqDU6HvUNg5sqbo_z>
+Feedback-ID: ifd214418:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id E1AD42400098; Mon,  8 Sep 2025 04:00:19 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250820081048.2279057-3-hongxing.zhu@nxp.com>
+X-ThreadId: AzjicS5Bt2W7
+Date: Mon, 08 Sep 2025 18:00:19 +1000
+From: Alistair <alistair@alistair23.me>
+To: "Andreas Kemnade" <akemnade@kernel.org>, "Lee Jones" <lee@kernel.org>,
+ "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Liam Girdwood" <lgirdwood@gmail.com>,
+ "Mark Brown" <broonie@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Fabio Estevam" <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
+ "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Message-Id: <199908b2-b003-4ba7-8a1e-5ff0472b4adf@app.fastmail.com>
+In-Reply-To: <20250906-sy7636-rsrc-v1-2-e2886a9763a7@kernel.org>
+References: <20250906-sy7636-rsrc-v1-0-e2886a9763a7@kernel.org>
+ <20250906-sy7636-rsrc-v1-2-e2886a9763a7@kernel.org>
+Subject: Re: [PATCH 2/4] regulator: sy7636a: fix lifecycle of power good gpio
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 20, 2025 at 04:10:48PM GMT, Richard Zhu wrote:
-> The CLKREQ# is an open drain, active low signal that is driven low by
-> the card to request reference clock.
+On Sat, 6 Sep 2025, at 7:09 PM, Andreas Kemnade wrote:
+> Attach the power good gpio to the regulator device devres instead of the
+> parent device to fix problems if probe is run multiple times
+> (rmmod/insmod or some deferral).
 > 
-> Since the reference clock may be required by i.MX PCIe host too.
+> Fixes: 8c485bedfb785 ("regulator: sy7636a: Initial commit")
+> Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
 
-Add some info on why the refclk is needed by the host.
+Reviewed-by: Alistair Francis <alistair@alistair23.me>
 
-> To make
-> sure this clock is available even when the CLKREQ# isn't driven low by
-> the card(e.x no card connected), force CLKREQ# override active low for
-> i.MX PCIe host during initialization.
-> 
+Alistair
 
-CLKREQ# override is not a spec defined feature. So you need to explain what it
-does first.
-
-> The CLKREQ# override can be cleared safely when supports-clkreq is
-> present and PCIe link is up later. Because the CLKREQ# would be driven
-> low by the card in this case.
-> 
-
-Why do you need to depend on 'supports-clkreq' property? Don't you already know
-if your platform supports CLKREQ# or not? None of the upstream DTS has the
-'supports-clkreq' property set and the NXP binding also doesn't enable this
-property.
-
-So I'm wondering how you are suddenly using this property. The property implies
-that when not set to true, CLKREQ# is not supported by the platform. So when the
-driver starts using this property, all the old DTS based platforms are not going
-to release CLKREQ# from driving low, so L1SS will not be entered for them. Do
-you really want it to happen?
-
-- Mani
-
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 35 +++++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
+> drivers/regulator/sy7636a-regulator.c | 7 ++++---
+> 1 file changed, 4 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 80e48746bbaf6..a73632b47e2d3 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -52,6 +52,8 @@
->  #define IMX95_PCIE_REF_CLKEN			BIT(23)
->  #define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
->  #define IMX95_PCIE_SS_RW_REG_1			0xf4
-> +#define IMX95_PCIE_CLKREQ_OVERRIDE_EN		BIT(8)
-> +#define IMX95_PCIE_CLKREQ_OVERRIDE_VAL		BIT(9)
->  #define IMX95_PCIE_SYS_AUX_PWR_DET		BIT(31)
+> diff --git a/drivers/regulator/sy7636a-regulator.c b/drivers/regulator/sy7636a-regulator.c
+> index d1e7ba1fb3e1a..27e3d939b7bb9 100644
+> --- a/drivers/regulator/sy7636a-regulator.c
+> +++ b/drivers/regulator/sy7636a-regulator.c
+> @@ -83,9 +83,11 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
+> if (!regmap)
+> return -EPROBE_DEFER;
 >  
->  #define IMX95_PE0_GEN_CTRL_1			0x1050
-> @@ -136,6 +138,7 @@ struct imx_pcie_drvdata {
->  	int (*enable_ref_clk)(struct imx_pcie *pcie, bool enable);
->  	int (*core_reset)(struct imx_pcie *pcie, bool assert);
->  	int (*wait_pll_lock)(struct imx_pcie *pcie);
-> +	void (*clr_clkreq_override)(struct imx_pcie *pcie);
->  	const struct dw_pcie_host_ops *ops;
->  };
->  
-> @@ -149,6 +152,7 @@ struct imx_pcie {
->  	struct gpio_desc	*reset_gpiod;
->  	struct clk_bulk_data	*clks;
->  	int			num_clks;
-> +	bool			supports_clkreq;
->  	struct regmap		*iomuxc_gpr;
->  	u16			msi_ctrl;
->  	u32			controller_id;
-> @@ -267,6 +271,13 @@ static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
->  			   IMX95_PCIE_REF_CLKEN,
->  			   IMX95_PCIE_REF_CLKEN);
->  
-> +	/* Force CLKREQ# low by override */
-> +	regmap_update_bits(imx_pcie->iomuxc_gpr,
-> +			   IMX95_PCIE_SS_RW_REG_1,
-> +			   IMX95_PCIE_CLKREQ_OVERRIDE_EN |
-> +			   IMX95_PCIE_CLKREQ_OVERRIDE_VAL,
-> +			   IMX95_PCIE_CLKREQ_OVERRIDE_EN |
-> +			   IMX95_PCIE_CLKREQ_OVERRIDE_VAL);
->  	return 0;
->  }
->  
-> @@ -1298,6 +1309,18 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
->  		regulator_disable(imx_pcie->vpcie);
->  }
->  
-> +static void imx8mm_pcie_clr_clkreq_override(struct imx_pcie *imx_pcie)
-> +{
-> +	imx8mm_pcie_enable_ref_clk(imx_pcie, false);
-> +}
+> - gdp = devm_gpiod_get(pdev->dev.parent, "epd-pwr-good", GPIOD_IN);
+> + device_set_of_node_from_dev(&pdev->dev, pdev->dev.parent);
 > +
-> +static void imx95_pcie_clr_clkreq_override(struct imx_pcie *imx_pcie)
-> +{
-> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
-> +			   IMX95_PCIE_CLKREQ_OVERRIDE_EN |
-> +			   IMX95_PCIE_CLKREQ_OVERRIDE_VAL, 0);
-> +}
-> +
->  static void imx_pcie_host_post_init(struct dw_pcie_rp *pp)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> @@ -1322,6 +1345,12 @@ static void imx_pcie_host_post_init(struct dw_pcie_rp *pp)
->  		dw_pcie_writel_dbi(pci, GEN3_RELATED_OFF, val);
->  		dw_pcie_dbi_ro_wr_dis(pci);
->  	}
-> +
-> +	/* Clear CLKREQ# override if supports_clkreq is true and link is up */
-> +	if (dw_pcie_link_up(pci) && imx_pcie->supports_clkreq) {
-> +		if (imx_pcie->drvdata->clr_clkreq_override)
-> +			imx_pcie->drvdata->clr_clkreq_override(imx_pcie);
-> +	}
->  }
+> + gdp = devm_gpiod_get(&pdev->dev, "epd-pwr-good", GPIOD_IN);
+> if (IS_ERR(gdp)) {
+> - dev_err(pdev->dev.parent, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
+> + dev_err(&pdev->dev, "Power good GPIO fault %ld\n", PTR_ERR(gdp));
+> return PTR_ERR(gdp);
+> }
 >  
->  /*
-> @@ -1745,6 +1774,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  	pci->max_link_speed = 1;
->  	of_property_read_u32(node, "fsl,max-link-speed", &pci->max_link_speed);
+> @@ -105,7 +107,6 @@ static int sy7636a_regulator_probe(struct platform_device *pdev)
+> }
 >  
-> +	imx_pcie->supports_clkreq =
-> +		of_property_read_bool(node, "supports-clkreq");
->  	imx_pcie->vpcie = devm_regulator_get_optional(&pdev->dev, "vpcie");
->  	if (IS_ERR(imx_pcie->vpcie)) {
->  		if (PTR_ERR(imx_pcie->vpcie) != -ENODEV)
-> @@ -1873,6 +1904,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
->  		.init_phy = imx8mq_pcie_init_phy,
->  		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
-> +		.clr_clkreq_override = imx8mm_pcie_clr_clkreq_override,
->  	},
->  	[IMX8MM] = {
->  		.variant = IMX8MM,
-> @@ -1883,6 +1915,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.mode_off[0] = IOMUXC_GPR12,
->  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
->  		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
-> +		.clr_clkreq_override = imx8mm_pcie_clr_clkreq_override,
->  	},
->  	[IMX8MP] = {
->  		.variant = IMX8MP,
-> @@ -1893,6 +1926,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.mode_off[0] = IOMUXC_GPR12,
->  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
->  		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
-> +		.clr_clkreq_override = imx8mm_pcie_clr_clkreq_override,
->  	},
->  	[IMX8Q] = {
->  		.variant = IMX8Q,
-> @@ -1913,6 +1947,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.core_reset = imx95_pcie_core_reset,
->  		.init_phy = imx95_pcie_init_phy,
->  		.wait_pll_lock = imx95_pcie_wait_for_phy_pll_lock,
-> +		.clr_clkreq_override = imx95_pcie_clr_clkreq_override,
->  	},
->  	[IMX8MQ_EP] = {
->  		.variant = IMX8MQ_EP,
+> config.dev = &pdev->dev;
+> - config.dev->of_node = pdev->dev.parent->of_node;
+> config.regmap = regmap;
+>  
+> rdev = devm_regulator_register(&pdev->dev, &desc, &config);
+> 
 > -- 
-> 2.37.1
+> 2.39.5
 > 
-
--- 
-மணிவண்ணன் சதாசிவம்
+> 
