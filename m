@@ -1,98 +1,99 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6777022256F
-	for <imx@lists.linux.dev>; Mon,  8 Sep 2025 10:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372331DB154
+	for <imx@lists.linux.dev>; Mon,  8 Sep 2025 11:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757328919; cv=none; b=OStQSfPwXL4EzGhgxn33EG70YRO46LDNgW0czgCv+tj2t1Qf3bTudwdzKEwsPjh1timIg9+Y0YZv7LWXA5JHYqh3L7MOWtrxPbQ4rsCaoPS0Yy/KapvsgXIwwrYyXITXtQLb2IDgn13Q7WK5lrBdfxqfOQblYoFHe/CMpD7JZaQ=
+	t=1757329458; cv=none; b=q41YcoJKPkhmpzY+ct1LIcr3KZTHFV54hPm6tbwjGqiQZkJDYSyAnXwDmGTujV+ho3EZTp7nB2T729UTGr46kpx7GdDNqMzcBbITAMZV48fKZ7pc2OXakFHsgpMALiwxWQq3wZRfzp7ZHi+loNPJ7PAfYpCVsgPUt4FAQPNTmXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757328919; c=relaxed/simple;
-	bh=EqlZsQks+WW7jmnsAvVdsxSQzUjOCLYnk3kijMEKaYU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WTkfrBuZp2y+zgEiF/CFdc/zfN/w92pCzweDe/gtYFm3jZyVRXdj1M2uSGz6zu/Zy/BvoY+V/HS51LoP8Si2dAP/n/PNfr6cliTT7BdnFnAADB5P9GwJ8LqEdTnfGp3FTowxjq5FDGCneQhkybDEhyjCDJcPAIndWxFjSKNBlEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=7X7U2Xu2; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="7X7U2Xu2"
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1uvZWd-00000001zVZ-28zt
-	for imx@lists.linux.dev;
-	Mon, 08 Sep 2025 12:55:07 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=0LgwfZ9wkEAtJ94bNBrquAEb0mXoUgSOBRfwjUSoLhY=; b=7X7U2Xu2eOqFWTYsVy6vs1y2oY
-	0qG6OglqIbcf2y9/F6qWOOyWDeRwMGACXkuOBkf0KyklP4boGFnIgTIZ0mXik2Wcg4H8Hc2jVRPCb
-	vcr+fihtypb3Byy6CV8pu7S0bsd2tdMXI5UHzHfnP7XsC9y80TqZZWqgIsJYRB5wlj3Sgy3SlBA/W
-	J0LYtlK+vNe/iS3RKltZRnMAlhsR6qA50w/ZNqiwgOTe0a7MFEfHOSjA68xamZxSrICNHnJSQU5Hl
-	BkqPRnD2CHRWGcQB51w5qo3D/jWYnlckF46g+bG2mEEUwhMR6gdfse9oiZJ+ysc3yvpY5NxePkYay
-	KVA4IT3g==;
-Date: Mon, 8 Sep 2025 12:54:49 +0200
-From: Andreas Kemnade <andreas@kemnade.info>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Andreas Kemnade <akemnade@kernel.org>, Lee Jones <lee@kernel.org>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Alistair Francis <alistair@alistair23.me>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Shawn
- Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/4] dt-bindings: mfd: sy7636a: Add missing gpio pins
- and supply
-Message-ID: <20250908125449.0b1443cf@akair>
-In-Reply-To: <288f0cf1-1ee4-4eba-b059-641120bb93f3@kernel.org>
-References: <20250906-sy7636-rsrc-v1-0-e2886a9763a7@kernel.org>
-	<20250906-sy7636-rsrc-v1-1-e2886a9763a7@kernel.org>
-	<288f0cf1-1ee4-4eba-b059-641120bb93f3@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1757329458; c=relaxed/simple;
+	bh=J/vln8uboDUVsLl7jq3AEOSou11kVGj68fFU0E2p23Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SmCbdBuUNBpw07/BE4kUooVy3BEOKk14CTE+6gIGRcaLZPeuaFK0fGDGRiUgZ+t/7cYk42MVLS9uX3juk553Wz3AE/K9RfLykGy4xDeXGDxuTBJsmVQGM3ZR9YX7NblM1v25K+L2bm8KGgEG1yDcHXyg7/r5Nfq+O5uAGREtw3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7B7961692;
+	Mon,  8 Sep 2025 04:04:08 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EA1C53F63F;
+	Mon,  8 Sep 2025 04:04:14 -0700 (PDT)
+Date: Mon, 8 Sep 2025 12:04:12 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Cristian Marussi <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, <arm-scmi@vger.kernel.org>,
+	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 5/6] firmware: arm_scmi: imx: Support getting syslog
+ of MISC protocol
+Message-ID: <20250908-sparkling-owl-of-judgment-f17eeb@sudeepholla>
+References: <20250904-sm-misc-api-v1-v4-0-0bf10eaabdf1@nxp.com>
+ <20250904-sm-misc-api-v1-v4-5-0bf10eaabdf1@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250904-sm-misc-api-v1-v4-5-0bf10eaabdf1@nxp.com>
 
-Am Sat, 6 Sep 2025 14:01:25 +0200
-schrieb Krzysztof Kozlowski <krzk@kernel.org>:
-
-> On 06/09/2025 11:09, Andreas Kemnade wrote:
-> > To be able to fully describe how the SY7636A is connected to the system,
-> > add properties for the EN and VCOM_EN pins. To squeeze out every bit
-> > of unused current, in many devices it is possible to power off the
-> > complete chip. Add an input regulator to allow that.
-> > 
-> > Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
-> > ---
-> >  .../devicetree/bindings/mfd/silergy,sy7636a.yaml         | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml b/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
-> > index ee0be32ac0204..08ad593e237f1 100644
-> > --- a/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
-> > +++ b/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
-> > @@ -32,6 +32,22 @@ properties:
-> >        Specifying the power good GPIOs.
-> >      maxItems: 1
-> >  
-> > +  en-gpios:  
+On Thu, Sep 04, 2025 at 06:40:46PM +0800, Peng Fan wrote:
+> MISC protocol supports getting system log regarding system sleep latency
+> ,wakeup interrupt and etc. Add the API for user to retrieve the
+> information from SM.
 > 
-> enable-gpios, unless it is something else, but then please explain in
-> the description.
->
-My idea here was to have it crystal clear which hw pin is meant since
-there are two pins which enable-like functions. But since you agree
-with the name for the other pin, I can live with enable-gpios here,
-as long as EN pin is mentioned in the description.
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  .../firmware/arm_scmi/vendors/imx/imx-sm-misc.c    | 83 ++++++++++++++++++++++
+>  include/linux/scmi_imx_protocol.h                  | 23 ++++++
+>  2 files changed, 106 insertions(+)
+> 
 
+[...]
+
+> diff --git a/include/linux/scmi_imx_protocol.h b/include/linux/scmi_imx_protocol.h
+> index 27bd372cbfb142b6acb0b1cf4b82f061529d0d45..ed78660d2f51c554e782b2f665e5bc5046678fd1 100644
+> --- a/include/linux/scmi_imx_protocol.h
+> +++ b/include/linux/scmi_imx_protocol.h
+> @@ -52,6 +52,27 @@ struct scmi_imx_misc_ctrl_notify_report {
+>  	unsigned int		flags;
+>  };
+>  
+> +/*
+> + * For more detailed information, need check i.MX SM firmware file:
+> + * devices/{SOC}/sm/dev_sm_system.h
+> + */
+> +struct scmi_imx_misc_sys_sleep_rec {
+> +	u32 sleepentryusec;	/* System sleep entry latency */
+> +	u32 sleepexitusec;	/* System sleep exit latency */
+> +	u32 sleepcnt;		/* System sleep counter */
+> +	u32 wakesource;		/* IRQ/exception causing system wake */
+> +	u32 mixpwrstat;		/* MIX power status */
+> +	u32 mempwrstat;		/* MEM power status */
+> +	u32 pllpwrstat;		/* PLL power status */
+> +	u32 syssleepmode;	/* System sleep mode */
+> +	u32 syssleepflags;	/* System sleep flags */
+> +};
+> +
+
+Much better now. But I am still thinking if this must go to the document to
+make sure it remains ABI and firmware can't reorder the as we might have no
+way to deal with that. That's the reason I was asking for raw dump so that
+you need not put all these details in the spec/document.
+
+> +struct scmi_imx_misc_syslog {
+> +	struct scmi_imx_misc_sys_sleep_rec syssleeprecord;
+> +	u32 deverrlog; /* device err log: timers, clocks, console and etc */
+
+This is open ended, please add this to the document and make it more precise.
+
+-- 
 Regards,
-Andreas
+Sudeep
