@@ -1,148 +1,98 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8B31E1E19
-	for <imx@lists.linux.dev>; Mon,  8 Sep 2025 09:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6777022256F
+	for <imx@lists.linux.dev>; Mon,  8 Sep 2025 10:55:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757323532; cv=none; b=J4xi/qPr142ckd4BnEb9U5uRxOVP9VGyt+AFUDUyexPzN5Sm6DJr2XPZUReFnDW8wL1rRYO3MHUBhz5WCKJAteTiTvY49YZIjJhdltFthTkxvMegGtbz3bGdqFXLBhXajL0rtp5AfKMdTFVgsD3nrySgTj7+KcR4eY1CAvXJ2Y4=
+	t=1757328919; cv=none; b=OStQSfPwXL4EzGhgxn33EG70YRO46LDNgW0czgCv+tj2t1Qf3bTudwdzKEwsPjh1timIg9+Y0YZv7LWXA5JHYqh3L7MOWtrxPbQ4rsCaoPS0Yy/KapvsgXIwwrYyXITXtQLb2IDgn13Q7WK5lrBdfxqfOQblYoFHe/CMpD7JZaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757323532; c=relaxed/simple;
-	bh=54WIjGXn+e12vG4j7roz9vOc3xWeWTD/9qMG6rU+YCg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=atZmWpwvPKcn4AaTfViU5Uf/5CXW+kdWtiPqTAaIQhCsllcyd+h+SBhD8rgtLYfOdGC211RNPPf9G+ZHfraEpao77BMEKCgJLZYRAVhqGIWlaZWPVGnkNss8HtvWCp4EiKyncluj1i85MFjUb+ItFe2QW4U5lSWYHhswfeUYKDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Z1nkeBvp reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1757328919; c=relaxed/simple;
+	bh=EqlZsQks+WW7jmnsAvVdsxSQzUjOCLYnk3kijMEKaYU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WTkfrBuZp2y+zgEiF/CFdc/zfN/w92pCzweDe/gtYFm3jZyVRXdj1M2uSGz6zu/Zy/BvoY+V/HS51LoP8Si2dAP/n/PNfr6cliTT7BdnFnAADB5P9GwJ8LqEdTnfGp3FTowxjq5FDGCneQhkybDEhyjCDJcPAIndWxFjSKNBlEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=7X7U2Xu2; arc=none smtp.client-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Z1nkeBvp"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5A4A540E01A5;
-	Mon,  8 Sep 2025 09:25:28 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 7s5Yx-duyol7; Mon,  8 Sep 2025 09:25:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1757323514; bh=u4qtBOrEcvr/i1pRga+z9xPfqiyhYrJPtEKHxUcFniQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z1nkeBvpkTu/gPHOzI97EwwiHRI7x3O51S+p47ynJaKa/2OfHrSM5QWYiW2UiVAIt
-	 wd/I/t7Wh1HKSVqq1gCC6DP0E9GzPK3sUY45wa9dYIEeydLxr+69khpMfelB2Dtaiz
-	 hayVfNfCmR36yqf3bFCdT9cqwEvt0tqnh8pqElC6k8buRuuLlsYWd3L/Vg/RRhZibs
-	 fvACbsKvnsrnG/nQHyQ6AT6YgVvv2eRhd2BM5efqUoe98v8j+k+JfC6eGToUEFh26m
-	 CC3oPbeXihbUlL94uWW64uf6AmahwU7tVVBMsFuElETGqadl3V0S7SlOfOBNKdVTem
-	 sYO7HTRFc5UE637PQOylo33PzUweaKlEyjFpspvqqN28cxVUbHk3Kj1qWIHjqiekVu
-	 oO+Kr0+RjtVcpJLM0K9136+LsA0njAwUueUvEuWDULVLo334z8BqmTwTNLzcTGLKJB
-	 3+qxsYjOtKUut0NL1dbW+e6HVSMGUgCQACDXeWflbQTMEVzrc2L+knWE/QA6U4TexK
-	 qpMeHMwbGxxuIOiL2QL7y31nAnoyA5HTNx6Ei2IQYVJAybBVhOdC4P2d/JfRNBSY2d
-	 R4NTEihlGI7QqgtMDXc4MPyrWVmvQruflOcWHSp4JrTZP03/f8MdouGoxRzw25AyVK
-	 VeW1t/QnT4N790FqN/m5Jg/M=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 4182740E01A3;
-	Mon,  8 Sep 2025 09:24:27 +0000 (UTC)
-Date: Mon, 8 Sep 2025 11:24:24 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
-	Ben Horgan <ben.horgan@arm.com>,
-	zhenglifeng <zhenglifeng1@huawei.com>,
-	Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Beata Michalska <beata.michalska@arm.com>,
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/6] cpufreq: use __free() for all cpufreq_cpu_get()
- references
-Message-ID: <20250908092424.GEaL6gyNdH8oa_oTyq@fat_crate.local>
-References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn>
- <20250905174928.GFaLsiqKV36JDowX94@fat_crate.local>
- <a968c6da-265a-405c-8f79-cf0474c80bc5@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="7X7U2Xu2"
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1uvZWd-00000001zVZ-28zt
+	for imx@lists.linux.dev;
+	Mon, 08 Sep 2025 12:55:07 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=0LgwfZ9wkEAtJ94bNBrquAEb0mXoUgSOBRfwjUSoLhY=; b=7X7U2Xu2eOqFWTYsVy6vs1y2oY
+	0qG6OglqIbcf2y9/F6qWOOyWDeRwMGACXkuOBkf0KyklP4boGFnIgTIZ0mXik2Wcg4H8Hc2jVRPCb
+	vcr+fihtypb3Byy6CV8pu7S0bsd2tdMXI5UHzHfnP7XsC9y80TqZZWqgIsJYRB5wlj3Sgy3SlBA/W
+	J0LYtlK+vNe/iS3RKltZRnMAlhsR6qA50w/ZNqiwgOTe0a7MFEfHOSjA68xamZxSrICNHnJSQU5Hl
+	BkqPRnD2CHRWGcQB51w5qo3D/jWYnlckF46g+bG2mEEUwhMR6gdfse9oiZJ+ysc3yvpY5NxePkYay
+	KVA4IT3g==;
+Date: Mon, 8 Sep 2025 12:54:49 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Andreas Kemnade <akemnade@kernel.org>, Lee Jones <lee@kernel.org>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Alistair Francis <alistair@alistair23.me>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Shawn
+ Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/4] dt-bindings: mfd: sy7636a: Add missing gpio pins
+ and supply
+Message-ID: <20250908125449.0b1443cf@akair>
+In-Reply-To: <288f0cf1-1ee4-4eba-b059-641120bb93f3@kernel.org>
+References: <20250906-sy7636-rsrc-v1-0-e2886a9763a7@kernel.org>
+	<20250906-sy7636-rsrc-v1-1-e2886a9763a7@kernel.org>
+	<288f0cf1-1ee4-4eba-b059-641120bb93f3@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a968c6da-265a-405c-8f79-cf0474c80bc5@kylinos.cn>
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 08, 2025 at 05:12:37PM +0800, Zihuan Zhang wrote:
-> > From: Documentation/process/submitting-patches.rst
-> >=20
-> > Don't get discouraged - or impatient
-> > ------------------------------------
-> >=20
-> > After you have submitted your change, be patient and wait.  Reviewers=
- are
-> > busy people and may not get to your patch right away.
-> >=20
-> > Once upon a time, patches used to disappear into the void without com=
-ment,
-> > but the development process works more smoothly than that now.  You s=
-hould
-> > receive comments within a week or so; if that does not happen, make s=
-ure
-> > that you have sent your patches to the right place.  Wait for a minim=
-um of
-> > one week before resubmitting or pinging reviewers - possibly longer d=
-uring
-> > busy times like merge windows.
-> Sorry for the noise. I=E2=80=99ll split the patchset and avoid CC=E2=80=
-=99ing unnecessary
-> people in the future.
+Am Sat, 6 Sep 2025 14:01:25 +0200
+schrieb Krzysztof Kozlowski <krzk@kernel.org>:
 
-I don't think you read what I sent you. Lemme spell it out: you're suppos=
-ed to
-*wait* to gather review feedback, at least a week. While waiting,
-*incorporate* or *address* all that feedback and *then* send a new set.
+> On 06/09/2025 11:09, Andreas Kemnade wrote:
+> > To be able to fully describe how the SY7636A is connected to the system,
+> > add properties for the EN and VCOM_EN pins. To squeeze out every bit
+> > of unused current, in many devices it is possible to power off the
+> > complete chip. Add an input regulator to allow that.
+> > 
+> > Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
+> > ---
+> >  .../devicetree/bindings/mfd/silergy,sy7636a.yaml         | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml b/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
+> > index ee0be32ac0204..08ad593e237f1 100644
+> > --- a/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
+> > +++ b/Documentation/devicetree/bindings/mfd/silergy,sy7636a.yaml
+> > @@ -32,6 +32,22 @@ properties:
+> >        Specifying the power good GPIOs.
+> >      maxItems: 1
+> >  
+> > +  en-gpios:  
+> 
+> enable-gpios, unless it is something else, but then please explain in
+> the description.
+>
+My idea here was to have it crystal clear which hw pin is meant since
+there are two pins which enable-like functions. But since you agree
+with the name for the other pin, I can live with enable-gpios here,
+as long as EN pin is mentioned in the description.
 
-If you keep spamming people like that, you'll accomplish the opposite of =
-what
-you're trying to do.
-
-And while waiting you can read our documentation on the community process=
- so
-that you know what to do in the future.
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Regards,
+Andreas
