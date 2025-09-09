@@ -1,224 +1,172 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012036.outbound.protection.outlook.com [52.101.66.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F0536124
-	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 16:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757434465; cv=fail; b=XaZT9x0+lkv5Hl7Ogaos3DMdqfFz6NL71G2/A8aMm1VypmpaMQ2lstgEkaKiv386iGW8FtwXev77gisLfVKPu+i5B8UG2GKYYyTuu2UoqFzyAn31VzDl6UPL9SE7gBXztg8Bu0A1XJxVkMhwtv6zakkEcjqqfGax5Lg59AYO86s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757434465; c=relaxed/simple;
-	bh=n96s7IhyMiQIXoWIBZ54HubHtalt48OQ+jmgmKrOXts=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sTVye8WvHaVrbxgkbieG5PL9v0YgzFck0jVO2/3airIP7BT3aX+vHtrq8ATP5p/7rHFfuoONtX3g6enTtJvo69rex2vOe+4I8R7KzUbAi82p8N8h+S6lK6zh8j1Jke/FrWhQjrNXG+GV/C4TcSB4q6YeetyIc1w35R4pVvUnd+4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jojeDFtz; arc=fail smtp.client-ip=52.101.66.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66FE33EB14
+	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 16:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757434558; cv=none; b=g81lpsjcY8kKbCzgNEZmInyO7yHLbcEa1ckIuBAWWyGBrj6KnU67+i11XsA4TpZrqXLAVzOdBZf2zOcX9P5E/bYdjCFnWvmiHNTW7+jE3cQgD9PZiAbPfRAcCJfF7YKkRE49iwR0RuImvERG2ya3HOeKksof3CFWShLFHIvyuF4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757434558; c=relaxed/simple;
+	bh=7Z15smc22BjF1dnNwqHWT4Q61K0HQySupMCHoRvenSs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dEpMWJJWK4CL9QsuaZxo10ZC+gV6Z7YqMpBbzQlPR/rcSxUhkd4nVk07zMdzR1GW47G7FJ7kSkh8Du75PPM5/jyqeIN/jgG16Xyo3jTjA1jHVbiqUF/0g6Iu58RsmUO5yRguYgx+giZUnoun6ZrsufDmVijSalRm0tmYZGbPuQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NFgw8GBu; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jojeDFtz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uBBh/7B1cCAbxJlCtRnRckGqfn348N+x+n5p2zdyR8xkBbkW/T1I22VnI1eAnfgS5cHfa/DsWEiqiGIZuxXnMCAkFpZ3/nD24SfJFJriz8UjBoTA/4Usut96vJ9blSfgFq7+qBX0sWXx2giYP2YVQ+7Ww3raC3t59eIGuOSZNQbybXdgp2ASC+6hxMVeFwus991yI3h8+Lp9hcgibXfSWHPmThGJnNbQ69LiGGQncLM+aCl/bdX7Zr3/bTjesCh5Q58UDmhgOuc0OkVQfywXSYqzoz1O1M2/kSTEApZkJVI5cEYURqLyViX8Kx6FXhN0tRor5yOep6UiORW7midraA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dMKB/bhu+SOqV+WL9b3m7p8FK16QIaCwQFZaS0aMxVA=;
- b=mKGcZje8DwrfiUHvGdH/tFKFABvaO/j1Wu+9bMjQ3hRk23yO/XzJhoG2NnmJVjkkiDAu4W81RAPZYlz2a7UnySYQ+STYHdyZPTDR1Ex4crHakCaks/xhXXi60Q3SoaGTwwfYXjjMwb3nWICoPYKdKlm1oy0beK1mMggWMfFQ79S7oofWkCNFAO6zGpzh2lguwWwW+MFXwZvYicirF5SZpiwUu2nmhyU2YyM2S+6V+3TpzVxC7Z4Zw8PixV0S4i+8ocDoHimScFVkYg3JTCvSpdPU1D3sc5dCieQ+whfhZxmR05kL3SrkmTCMbX6gSYQ5wWAIWIb5rqVRtgYY8mJISA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dMKB/bhu+SOqV+WL9b3m7p8FK16QIaCwQFZaS0aMxVA=;
- b=jojeDFtz2H0HmEPoVT+Ab8fVpo1QxbTWl/zb3+3YBFOyUefW2F8Rvk4lmX5H87DLiHbzPCX/xeUOTWRRtqhvchmvPARGhwukAY+RCL+DTPb1ETcgjcbU1uUL8SEZiMfSdPZHP+oTiJ71Oa+EKmBM0NGw5yQTMDUhgk4risrdJRYnAidPUWC+54JzzHUF0PAeyLM6mCTJCHa+ED2hKtlkYLzs4U3n9GQ4aeKU2PdCKkga3vehPKV1mBcHa5XTrPA2vjHCo+ppKknGgETKVaYK/eyaKT4N6GFbZ3XWSz40EXG/P97di/J+sCRjftl2iSjWnMYquQrXKUFDjfCuJlLhlQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by VI0PR04MB10784.eurprd04.prod.outlook.com (2603:10a6:800:266::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Tue, 9 Sep
- 2025 16:14:15 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd%5]) with mapi id 15.20.9115.010; Tue, 9 Sep 2025
- 16:14:15 +0000
-Date: Tue, 9 Sep 2025 12:14:08 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: badhri@google.com, heikki.krogerus@linux.intel.com,
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH] usb: typec: tcpci: add wakeup support
-Message-ID: <aMBSUFib937/hY/u@lizhi-Precision-Tower-5810>
-References: <20250909080733.567796-1-xu.yang_2@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250909080733.567796-1-xu.yang_2@nxp.com>
-X-ClientProxiedBy: PH7P220CA0042.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:32b::25) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NFgw8GBu"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7728815e639so3169083b3a.1
+        for <imx@lists.linux.dev>; Tue, 09 Sep 2025 09:15:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757434555; x=1758039355; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UEiPxhZen3QXZAobK2Ga2iD+ttNiESa3yuRWHgPHltc=;
+        b=NFgw8GBusxyvBCIDP+bSYP1i0uTyRyqNttxhuD/PPnkY730h5t4P4I0aoUW0pVxrr3
+         D60uw/8VLid3pOoMZ2IibqB5AFzVyJSxEnyn3M2BwHJqZOIQsCsowD3oDT4wuyJdNeJb
+         HEYfLn3WCb4odRcQpxmJS1W/vFf3dkzfahB3e34F2uU9huPnETmREy2D50DS5n9hAhZ8
+         TSvSCgQRo4um756OrWNHWd1M9lYE7Qoe+dDYjNWZLtfLjZi6hOA8yy5G9oVad5CS+H5D
+         H7sHt+h0O6RQds0ErDA6Qc1X7CSdUMRq1FZ2rTIzEEJObvIBq4W157BN3tM0amAizWmd
+         L0pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757434555; x=1758039355;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UEiPxhZen3QXZAobK2Ga2iD+ttNiESa3yuRWHgPHltc=;
+        b=eLFWi74bvucP07d6Fd/uGBAKTstv6ynfVUWuQoWp4ZHg8818H381LhrEYDdV4Urc4p
+         bdvJ40yYrJMBtNIT3X7asC2e8uptXB6qYmJm1ayW9UcB8N0/B6R1Pz7aYCHYvIgDwhPi
+         U8MfPnmxWtc3jfRwDoZPJTdsgDRiUAn84dxqhiD18QFuXtti/McBVMTfS4avU+qb4CX2
+         Z8u48yWdU4fosZqEg6TpJiLVujMNYOMBaT6XPO3UQ+hyGPoLTw8aKPp9mk0oFPE0CNcU
+         ypRDTQwd5Bk6I437OuNYW5/ToJ+BzjeOf9tkh/kp6YRArYs9fC2FC4vvb0lTgaUxJgY8
+         9wVw==
+X-Forwarded-Encrypted: i=1; AJvYcCW/u07Ml++6oer2WZPJW5TmhV3K/6MlZet6zX7HLhaImBNg9mGtOHg6je/WZj0QlQLLmnk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyVxgAKNcbiXhWNwP1HU2mTyN3yNqjtaLV1f6hhI71qxq2BJDQy
+	1s5E4t+AV/LRKM8q3XlhX2l7RBWiVxnw4kBMiWHbkLt59Yeo3dwyvW7ej4KuA+vK7o4=
+X-Gm-Gg: ASbGncuHR8M3p7IKKukvxJvbtMkFhHQx4B3YuKd/9yWh9RdEez17SwAU20sXA/lUF+y
+	T62rLDeY1TxYeycYKigNEKq6ppKI/ZZ+BoyZn7OnOaI+ku8oAue2PIPVSoigkpbpDd/EI75Ya+h
+	Wxv8O0W2yF2KBcPoGzuL+SRBt530izMO94Hm8ZvMppuoyBzyQcOz6GGP81zN84zcQZfeL99Ei2I
+	NVXNcJQE8gvpQ7dF3JW1ePMHsXNqICAnxcZzsr/PsDDpTG6rmU375Oi56Wg4UYoKBu4EVzIsLCB
+	EBxz/0Z7MYmC8QNXv/2S+XW0RJTLeRt/ROuI5qDLa9DIk9u9T1lqGbHsDAz0Q4GJ160hnf5SVqK
+	yEMhxvDBK7mXmaTJNe86fWdpRBJJnIF6cnYsV19eZ447J2z7Pb56lahNrtydx65ulvSYXlLQTQX
+	C3xX4PfFajtSQ1j3Ex4B2yAUrX2otV/1yUN0U=
+X-Google-Smtp-Source: AGHT+IH55jBXQuGrRFWB7QFDwp0aHH2LNHjhqhfqYbAFcay2HL31leHRvKu+CE2zXWHS10Yrl/LklQ==
+X-Received: by 2002:a17:902:e884:b0:248:811e:f873 with SMTP id d9443c01a7336-25170f37b15mr169800035ad.36.1757434554322;
+        Tue, 09 Sep 2025 09:15:54 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:e31e:18ea:d6c1:d90e])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25a27def96esm2062685ad.55.2025.09.09.09.15.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Sep 2025 09:15:53 -0700 (PDT)
+Date: Tue, 9 Sep 2025 10:15:50 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>, Frank Li <frank.li@nxp.com>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] remoteproc: imx_rproc: Clean up after ops
+ introduction
+Message-ID: <aMBStih6Wi_isn2N@p14s>
+References: <20250908-imx-rproc-cleanup-v1-0-e838cb14436c@nxp.com>
+ <20250908-imx-rproc-cleanup-v1-6-e838cb14436c@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|VI0PR04MB10784:EE_
-X-MS-Office365-Filtering-Correlation-Id: 824ad4bd-2921-4c16-7438-08ddefbbebfb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|366016|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UYfRX3F6SVNXDWnfaeFbVey416CTLeE2fMbji3/wxtALGIP0JpZyqo8FCXGj?=
- =?us-ascii?Q?0PkPmc/8U8g6AYaMDUz8DzpG2Zv8cp2xE1WPDvr5nbyhUPGF3XpochXK4Cj+?=
- =?us-ascii?Q?+c5n0WZXMTt4g7QqLgtMX3KZlIDjxCzpTr3jJscY+EYUjBDAGLv/CHrYHvw6?=
- =?us-ascii?Q?rDFFWCJQcsj8CKnlhKQ/Cd3PQC60VjA5pYeHhhXo+jWp/+nJoozSNKpTXga6?=
- =?us-ascii?Q?3eDbibG2tt4rGc1TeNFkeXVj2mWOEJcpUe0wOdaT40tI3I+oafg/MxcXukYY?=
- =?us-ascii?Q?i536o1Va3TYjpm1SJ4X99u61zlo1gVDG8iA5rf8wFyzTwPGdG/M0dm6x4dDO?=
- =?us-ascii?Q?FSTTfzPVnp+p+uh7HZHIoL1FCVZQPbAWQGYEx9iWT6p6pZeN6Yh1HKdXwpRT?=
- =?us-ascii?Q?Dd8CSI2OxQvt3v8Sacw9xrLVhOXQW6U0js/pFEBGwCHczcNs3u/of0rVeFnJ?=
- =?us-ascii?Q?eg6sApxQmq5FZCrQbf7Y/JaEiNBxiZfJXdLvalm+xjMDzWKf++Scs96djDdy?=
- =?us-ascii?Q?3rkfXd/iPmeADFQMBoxWbW/lt/W27Jk35gE0smb5v+nxutRcxOsq6kVu1Gnl?=
- =?us-ascii?Q?mbIVq3qCw34Ic+xh8Jy5h4cGSuHV5KoHD/spiWiXAj/N5/PzYSGPOdO0ilLr?=
- =?us-ascii?Q?ehIwSAExSlasTCD2l+Yx3AirjQ/uC0U9P7+6+1o0HCmF5VwEKtGyoKPsilqw?=
- =?us-ascii?Q?RSmw4SAm4Ikxu1EAQa5O2hNFNPTm+Lc2ufiEeWvKxbQZseGU5RLmEkekKI1+?=
- =?us-ascii?Q?0VuKvKTth1OqQSt1NUXQueram+WKDy4B5xq7oK25hBgNIYc/3/V6F/1qczW/?=
- =?us-ascii?Q?u3IVsSU3xw01gj8dcaVuqWyasm9ZZrFbLBhTye2gJwC5c33B7xTmZEatGy0O?=
- =?us-ascii?Q?4MaFusqLFImYWdasSMEapkSuIR1JdsS45XbV1+QkEHOp6Sv+LRTehZN669G+?=
- =?us-ascii?Q?i22feGvxDpSZIaDSQ8xgXPOaUYf9Y9eKvLdzPb7bJbWw3yx/gOXFEbfno0u3?=
- =?us-ascii?Q?yXLHTS0yUvYsLNgp0xAmZqkNWBPvvthzj7qnttslX2Cu89woY64kZL7Zs4vK?=
- =?us-ascii?Q?H9z/apo7MrZQamCo4qw33Tv9Y7+OYIK4PpP9yEIa2InuSaOW+qjxyluFwFTZ?=
- =?us-ascii?Q?4WZRu3hIV4A+Kv5pChJioEpZeFq70VWrBueJeuevzc1A7/WY9vRL2OxrrddV?=
- =?us-ascii?Q?c08kGDXB8mMcj0HTGuTctjc1wMbKUjWcf6EYjBAh9G56emZG/qVxarN/jdrT?=
- =?us-ascii?Q?uYAZ4u7eH2L5KIvfDsWF8A6YsceTIoghYb7eb+1qLHjm8UFfVUIYDF/A428Z?=
- =?us-ascii?Q?jfXNvHZUuwUq3JDsAg7BGE7dQEICs3PILZwhNjmkEt2NpoIf1rQ33lUB0LJy?=
- =?us-ascii?Q?PVGESNODmAsCiBtxRxugH6DKUr8OBjZPhnBfE/Vh3sNyVUcyuWdlO5umtIGu?=
- =?us-ascii?Q?cFOQQPK3YmI1tX77DljQVFcbMpgp447AtZLuQtVhIyHbzLZjA1c7WwafxaCp?=
- =?us-ascii?Q?wTQrLHvCkwymu/Q=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DML+SSL0yTgX2IT9twPD+tYnA3/8alcKJKhMJuGUyhnkx/PlhhuY5QaD4jMO?=
- =?us-ascii?Q?mIEEezZ7MZHNltcZ+f2nz+iHMibk00FFI6HJ6APuwCrYRFno86tf0xBRbHv0?=
- =?us-ascii?Q?CHG7oNDEYk+XQEQZm79197OT6uGOc0m2rA0T/RSslt0MwZXZ7o5AWs7+Lixn?=
- =?us-ascii?Q?0NUXIokx0e0SMiWum27q5YjPxVA6mAZUdExEzEN3e8Rgy4QChvKsvr9ZUiki?=
- =?us-ascii?Q?57aC85KVBD34WUd8CGYgdX2ezAcPgPP/x59leb8N1YO8mySUB87swcIDvFBD?=
- =?us-ascii?Q?V/fXzgLz7Bx6QFWMSbnCZP4886QGiQ7lXdRS9e8yDIdyrXHJxVU94eb8f5xe?=
- =?us-ascii?Q?tVYPU2zsCFip2Ka9J+kGLj7FU8ZMGP+BORqD8nuuMtjoqbH5wg1hX1M1jIzR?=
- =?us-ascii?Q?p4iA3/6kzJ5dOBSLNfxzbJPHSvd4FNazYdsJRbHgXn+1LlpoTrOIrVFj0RSA?=
- =?us-ascii?Q?PIpLgioOizAlMra4byQVHzXf/M7Ssy72KxD5otCkcfVCn3Yi6BNmn8gMP9kd?=
- =?us-ascii?Q?o8R58EF2jWv4BuCPrM9otvmuXox8ibOyQiAEu9WaX/p+QKk3FcgkBVzL4INq?=
- =?us-ascii?Q?R3HEssIa8Ip/uLy0AUP1nR7fLDsC5bMU/7XKU7g+4mFIAUuEpPa9mX2XI5zH?=
- =?us-ascii?Q?MRGYACitE+pn0n6eG4uK7Lng4LVZ4sIwZecUSUmP7KM8/xW7OzZ5CRBciEG3?=
- =?us-ascii?Q?76Swehzg3lUMnXRFgOpyclHP0plK+vND5pJvbCLCs3OPEb/WfZDy4eCt+JIb?=
- =?us-ascii?Q?eqjnQO1tkQ0DmVh2V6OKB4S8FUzfAC9414jVBPZqJ0JB769bwkIrLIciUTbA?=
- =?us-ascii?Q?56QghA68kP3FXKAE3Tk+oL0LfEd5WdcILWtSUjxyCzko4vxlO/NGcDF6qjUq?=
- =?us-ascii?Q?kQ7zU26zZqcfy8fWqalEf6ojOZW6bYvbILqKZ+4UdS9PBxqPCTJDSLT6AI9q?=
- =?us-ascii?Q?DbZ7aY3TRGu2ci4hyD4MA+1D4lhF3lLXuih6ntfASBc+vslKv6maJYUfjo4c?=
- =?us-ascii?Q?lY8lyR28NA647P2OZ0lEJONjyuEZgknTb1c4MEDtM1baqaTjWMnwdeHC+aXE?=
- =?us-ascii?Q?hFKg8u2Z5lNLw5Qks+UAeWKfaGEJDhljV9XmRzasjzbaavZgzWAhP9p7ALDP?=
- =?us-ascii?Q?LB2IEfDM9B+1wy0PAxpSenoW5JQltR1dxCZXBmTrrmj3Bo8c4VqNuZWDXtE0?=
- =?us-ascii?Q?6gj7UHSXpo7gqlNNMlAk/OHlCjVJZbopf8yakzZJIoY34t+AUMHKnkst+P/M?=
- =?us-ascii?Q?PEqSOA/MeDFACO/u6hTEhSzX7LK7ZghPD4xZRy0RM2bgOpee2+G4reFvYl0H?=
- =?us-ascii?Q?KGvqfO96/2SKXglJGTkm2vhvPqiJaXiSgt7Z6w+3hDj/vhtzXcWnGdIvBokt?=
- =?us-ascii?Q?0+LKWPsAh2Jqe6k5Tvqv3hoXXXBd93CmNJXsLv6jZp5jsrncP3TIfgiA/ZEc?=
- =?us-ascii?Q?vPXH6o0X0dEBAF8EuGcx8d1rm+dkcFTV0VE/Rk1rGKzeiSe0gecuFRWQG9EH?=
- =?us-ascii?Q?mDg2RP2epp/wQ7amAodfTzowqwiGAJtzuF+CgQw3tIuw62jUfoYbeosgJnVM?=
- =?us-ascii?Q?nx4h2NXH4kcFYp0Jpv8=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 824ad4bd-2921-4c16-7438-08ddefbbebfb
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2025 16:14:15.7550
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2FO/Oc6rHDtrStTf5lWTO30BpI1wNNd0nertk0+7g4FhwUGmIaStp8lxZBjQuvFNNrGaJbxtMxvDdDAfKRDBcg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10784
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250908-imx-rproc-cleanup-v1-6-e838cb14436c@nxp.com>
 
-On Tue, Sep 09, 2025 at 04:07:33PM +0800, Xu Yang wrote:
-> Add wakeup support for tcpci, so if the user has enabled wakeup file,
-> it will call enable_irq_wake() when do system suspend and call
-> disable_irq_wake() when do system resume. Due to this driver supports
-> shared interrupt, if the wakeup is disabled, it will mask the chip
-> interrupt by default to avoid affecting other IRQ users.
-
-Is below look better?
-
-Add wakeup support for tcpci. If the user enables the wakeup file, call
-enable_irq_wake() during system suspend and disable_irq_wake() during
-system resume. Since this driver supports shared interrupts, mask the
-chip interrupt by default when wakeup is disabled to avoid affecting
-other IRQ users.
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
->
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+On Mon, Sep 08, 2025 at 09:07:39PM +0800, Peng Fan wrote:
+> With the switch-case in imx_rproc_{start,stop}{} removed, simplify
+> the code logic by removing 'goto'. The last switch-case in
+> imx_rproc_detect_mode() are no longer needed and can be removed.
+> 
+> This cleanup improves code readability and aligns with the new ops-based
+> design.
+> 
+> No functional changes.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  drivers/usb/typec/tcpm/tcpci.c | 33 +++++++++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
->
-> diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-> index a56e31b20c21..2a951c585e92 100644
-> --- a/drivers/usb/typec/tcpm/tcpci.c
-> +++ b/drivers/usb/typec/tcpm/tcpci.c
-> @@ -949,6 +949,8 @@ static int tcpci_probe(struct i2c_client *client)
->  	if (err < 0)
->  		goto unregister_port;
->
-> +	device_set_wakeup_capable(chip->tcpci->dev, true);
-> +
+>  drivers/remoteproc/imx_rproc.c | 25 +++++++------------------
+>  1 file changed, 7 insertions(+), 18 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index 5fa729f4286f6ac939357c32fef41d7d97e5f860..ed8395b097d07d02e5323550ff497819f9b95ad6 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -323,14 +323,11 @@ static int imx_rproc_start(struct rproc *rproc)
+>  	if (ret)
+>  		return ret;
+>  
+> -	if (dcfg->ops && dcfg->ops->start) {
+> +	if (dcfg->ops && dcfg->ops->start)
+>  		ret = dcfg->ops->start(rproc);
+> -		goto start_ret;
+> -	}
+> -
+> -	return -EOPNOTSUPP;
+> +	else
+> +		return -EOPNOTSUPP;
+
+
+Here I would simply refactor this to:
+
+        if (!dcfg->ops || !dcfg->ops_start)
+                return -EONOTSUPP;
+
+Otherwise this patchset is going in the right direction.
+
+Thanks,
+Mathieu
+
+>  
+> -start_ret:
+>  	if (ret)
+>  		dev_err(dev, "Failed to enable remote core!\n");
+>  
+> @@ -380,14 +377,11 @@ static int imx_rproc_stop(struct rproc *rproc)
+>  	struct device *dev = priv->dev;
+>  	int ret;
+>  
+> -	if (dcfg->ops && dcfg->ops->stop) {
+> +	if (dcfg->ops && dcfg->ops->stop)
+>  		ret = dcfg->ops->stop(rproc);
+> -		goto stop_ret;
+> -	}
+> -
+> -	return -EOPNOTSUPP;
+> +	else
+> +		return -EOPNOTSUPP;
+>  
+> -stop_ret:
+>  	if (ret)
+>  		dev_err(dev, "Failed to stop remote core\n");
+>  	else
+> @@ -1000,13 +994,8 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
+>  	if (dcfg->ops && dcfg->ops->detect_mode)
+>  		return dcfg->ops->detect_mode(priv->rproc);
+>  
+> -	switch (dcfg->method) {
+> -	case IMX_RPROC_NONE:
+> +	if (dcfg->method == IMX_RPROC_NONE)
+>  		priv->rproc->state = RPROC_DETACHED;
+> -		return 0;
+> -	default:
+> -		break;
+> -	}
+>  
 >  	return 0;
->
->  unregister_port:
-> @@ -969,6 +971,36 @@ static void tcpci_remove(struct i2c_client *client)
->  	tcpci_unregister_port(chip->tcpci);
 >  }
->
-> +static int tcpci_suspend(struct device *dev)
-> +{
-> +	struct i2c_client *i2c = to_i2c_client(dev);
-> +	struct tcpci_chip *chip = i2c_get_clientdata(i2c);
-> +	int ret;
-> +
-> +	if (device_may_wakeup(dev))
-> +		ret = enable_irq_wake(i2c->irq);
-> +	else
-> +		ret = tcpci_write16(chip->tcpci, TCPC_ALERT_MASK, 0);
-> +
-> +	return ret;
-> +}
-> +
-> +static int tcpci_resume(struct device *dev)
-> +{
-> +	struct i2c_client *i2c = to_i2c_client(dev);
-> +	struct tcpci_chip *chip = i2c_get_clientdata(i2c);
-> +	int ret;
-> +
-> +	if (device_may_wakeup(dev))
-> +		ret = disable_irq_wake(i2c->irq);
-> +	else
-> +		ret = tcpci_write16(chip->tcpci, TCPC_ALERT_MASK, chip->tcpci->alert_mask);
-> +
-> +	return ret;
-> +}
-> +
-> +DEFINE_SIMPLE_DEV_PM_OPS(tcpci_pm_ops, tcpci_suspend, tcpci_resume);
-> +
->  static const struct i2c_device_id tcpci_id[] = {
->  	{ "tcpci" },
->  	{ }
-> @@ -987,6 +1019,7 @@ MODULE_DEVICE_TABLE(of, tcpci_of_match);
->  static struct i2c_driver tcpci_i2c_driver = {
->  	.driver = {
->  		.name = "tcpci",
-> +		.pm = pm_sleep_ptr(&tcpci_pm_ops),
->  		.of_match_table = of_match_ptr(tcpci_of_match),
->  	},
->  	.probe = tcpci_probe,
-> --
-> 2.34.1
->
+> 
+> -- 
+> 2.37.1
+> 
