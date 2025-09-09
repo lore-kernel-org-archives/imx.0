@@ -1,114 +1,101 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893BD31D398
-	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 22:31:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021B3199931;
+	Tue,  9 Sep 2025 22:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757457079; cv=none; b=Vvkx1qs1y3SmM6oepXNjxzbmwKfUPUzWp/nN16TDQdyM3l5xkvdyDF1NBOEChkYshZsK6H3sV1Rt0DsPD//2Yk+I8Fm08ONKfI7+RE1vdeGKB/SRVtmNsEcreA5DMCVhs118kVwSX0MKRzHer3FYhYHTDk2YJLnIwIiDyxg4GPY=
+	t=1757457580; cv=none; b=KxxeKZDGl8wf1boDYKqoaQJ4fLpBBbIrKvrLTkibvo53YMT33H8l8ufjxEaSS7yRj6EujuMsMMSI+gGPKzEHaF4REtmezwVPD4+T2Y/0DotHKNqBylmt7LpJxGKdKViw3g5MzG92M1baHqtoumiHWviK6jcls/jYSqZa1tc5LSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757457079; c=relaxed/simple;
-	bh=TC2JZtkw5BkMX3Igl25beU/iUsWSo7CWbRuDpStlv3M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WhYNAtlddxHU8T+qWQbN+nm9vrH7soXCPa7mshMGxk7WJEbgWHhG2m2evXBIDgArgzpC1etx8OQm1IVhDXxzVOIFl3Sk/XtgRT8Ikcs1Uaw4VHb5DxwRnl/RkZkjBS4ehK4NUqEFJNG5HYawh5qGVVVzseAz5ppO7bnxpBXPbc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OESgcnjq; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1757457580; c=relaxed/simple;
+	bh=dC8rz4BxW9SQ2JeI/WxcV0VECaDximE95TZAzqBomJM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=kchkUIgNK1Me/vSFF8i5Vbko26Dw9dsQR848pAF16upeskuKR1LwmqCAqrJdSZ1UAm8hKxfcCl5b/fzliXFsnYRNAtfpOZ/g6DR/3u6XINfZFlJZpX5VtSHA2T8ImBYazOhdjF39/5lPfTjZossoogGhYhXvTAwbn8jxDoGI6U4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=TvOUc/rv; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OESgcnjq"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b0415e03e25so820684566b.0
-        for <imx@lists.linux.dev>; Tue, 09 Sep 2025 15:31:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1757457076; x=1758061876; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fEQiOQ22rYAZhHJ5F5hChKykmBsdSQ9Mr5OeL3gCArg=;
-        b=OESgcnjqmhAU3tIxtN4DnlBS69GndcdUwiU8IK6j+aSzj0z/LhO9LNFfziunZOecIp
-         n2wOq94XvQYEZqmM7WUauCgOTXLGSSHvTQ5Bd3dDf5/tAK9hPZqXRaolBviz7ahp1lB7
-         UjTaFT30Nk8NctIeGP50pifEy0mOdyGYdZeKM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757457076; x=1758061876;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fEQiOQ22rYAZhHJ5F5hChKykmBsdSQ9Mr5OeL3gCArg=;
-        b=FiHFlhLn+tQWIRcHjB0Fy7gBViI82bM7sDYC/Ux6KGZIZXF3wissQ3WnsTcu9dshVG
-         Rp5qI73BW9x8fG7cPIBJPneVKliXwjuDhdT6LPfhrc0+pN2rcWLpJq7HC3pQdEHgNVyf
-         YgdkQ5pH2hH83kYmhWHQt91Y58z5hjiejiRQf08ZvGVe3TMIzVc9//m0cx+zDbD8gW0O
-         ZypGvNSIr9zoG00ebVz/H7LzovUOn6kUc3eEYHV2gh8qCJlBk7hSyWy5Tw99Rko+eS9+
-         vxqgJq2q8mGKCGE0s0kYSH2oe79knnyhfIER35gWJjTqx8Sl5Y3Dg/CfT6L3CZA/dnD4
-         QPTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWG6y5WObEya1wjkyFgqwrotrMBr9u0MTJ+DymNP18AqDyyIfJQuZm1Yom/hCfHU1he4FY=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzxb14Ny/zOb05DlHe/CBq1LKhGLGfG1+HQ/gnABLHEFYlQnEen
-	K8IbANnqTpvN65B1awNuX6Hl+wvxhNqlN+cH0zZt4FoUfMKORxaa1SqnWmvm0X48ALL0korRdMa
-	ioYIQTx+FTQ==
-X-Gm-Gg: ASbGnctzmFVueqQNR4c4Lx9VCODOBsn5CG2jrD/SRUrzReuXIAd8DFquSqECES5mXnl
-	00yz7W9nVKrMlRjKPxS9aM4Zc+hZX/W/PGfePn95cJB5HnnLrgQ9iQWQ2MCBKBswt+TzygyEVSg
-	c1u8IbcHK1jmdGneM8Bab7Afn1uRQ0TddGzMNqCT6xzhbGunm8zRBJa9c8kj5yLDzgEXpbTU72j
-	KBkAAvO7+wiweebOWds2LOU83iCjplKJv2SCoTdTjHbOZJTM9N5rhEwE+8sznYxKhdJfBGE4lVL
-	hASZZEf9r9LCuoME04sXwoxwLLqs2xHbK9y4e7qriy37Y282ceChe9XCSPZu6j5gngbDXQUTiFE
-	VK30Qowqm6l9MarUSx7RRH8LnzXgID4rJ4zsKXAnf5feNIbzss0s5EuFtO6h2uG1RPAXiG73u+l
-	AWuNK8w3U=
-X-Google-Smtp-Source: AGHT+IHmgHWc4fG09/I7fOSutWpIGRWnZ001fAr9A3Z/bg3gd8xyxEGYrwW1j2rbclCz0Njw+0/9sg==
-X-Received: by 2002:a17:907:7f0e:b0:ae0:cadc:e745 with SMTP id a640c23a62f3a-b04b1655e36mr1439125866b.40.1757457075578;
-        Tue, 09 Sep 2025 15:31:15 -0700 (PDT)
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com. [209.85.128.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07830acd07sm61516166b.32.2025.09.09.15.31.15
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Sep 2025 15:31:15 -0700 (PDT)
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45de6490e74so25913655e9.2
-        for <imx@lists.linux.dev>; Tue, 09 Sep 2025 15:31:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUhQ8PpatFdPQcz7LjFCwJbbAgTzDXz4VpOLjZRsbwZ8KYCWf30sdQ/qlDcMatIDjoOepQ=@lists.linux.dev
-X-Received: by 2002:a05:6402:4412:b0:61e:a13a:27b8 with SMTP id
- 4fb4d7f45d1cf-623729cb58cmr11071027a12.1.1757456686093; Tue, 09 Sep 2025
- 15:24:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="TvOUc/rv"
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 589Md5a71810392
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 9 Sep 2025 15:39:05 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 589Md5a71810392
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025082201; t=1757457547;
+	bh=o4pJzl4BWqncjRLwqdCVSmCaOJCq8m9Ifms3vJmzKBM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=TvOUc/rvPHuoAgZik4kP6Jrk/1+TPY9+I66slCEYRMAAVaJliSrzt+2sOFL7uxfep
+	 TkUyZI254fJRZ0lrODF9atINh0A8S4jLrAmCkJHU6JXLFZKZC0KSUVdi0tmre9KWKN
+	 XbKdciAhvqcaNOwc7fFmyUBOA5BxnpqIS4Eb0rGthQiBgS5HHj+CzVzQJOWVF0iflT
+	 tgpvUETHe9/40V2F6BCYuDmvwT7GfqNk48CbFXskPApkAJTXDi/C8HYPbnObeJPLQM
+	 4VGzdB3lbm4UCWwMufH5gTZgR2KMO3DzwNg9CgZkrpc9Dml+J/eRl9RSkkGtbvpN2l
+	 PQy3pTIde+vBg==
+Date: Tue, 09 Sep 2025 15:39:05 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+CC: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, imx@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Richard Weinberger <richard@nod.at>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Ankur Arora <ankur.a.arora@oracle.com>,
+        David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+        =?ISO-8859-1?Q?Heiko_St=FCbner?= <heiko@sntech.de>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        "Chester A. Unal" <chester.a.unal@arinc9.com>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Andreas Larsson <andreas@gaisler.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAHk-=wg0bp-_kqmfaDYQLRJO30LYxEsMu3EKi65sKoi83EUZ3Q@mail.gmail.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <C85C32F4-BD58-460B-ACCF-F0569ED0941A@zytor.com> <CAHk-=wg0bp-_kqmfaDYQLRJO30LYxEsMu3EKi65sKoi83EUZ3Q@mail.gmail.com>
+Message-ID: <F6A7C7F9-54F0-4E97-B21D-FD0EE023B986@zytor.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <C85C32F4-BD58-460B-ACCF-F0569ED0941A@zytor.com>
-In-Reply-To: <C85C32F4-BD58-460B-ACCF-F0569ED0941A@zytor.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 9 Sep 2025 15:24:29 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg0bp-_kqmfaDYQLRJO30LYxEsMu3EKi65sKoi83EUZ3Q@mail.gmail.com>
-X-Gm-Features: Ac12FXyoXbbHUJtrfKhAFeDlVJsB9IiUaRxuYQBQJQyqpHDKK1GQ8JtkX5zx-HA
-Message-ID: <CAHk-=wg0bp-_kqmfaDYQLRJO30LYxEsMu3EKi65sKoi83EUZ3Q@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, 
-	Lucas Stach <l.stach@pengutronix.de>, Linus Walleij <linus.walleij@linaro.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Ankur Arora <ankur.a.arora@oracle.com>, 
-	David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Nishanth Menon <nm@ti.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
-	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 9 Sept 2025 at 14:39, H. Peter Anvin <hpa@zytor.com> wrote:
+On September 9, 2025 3:24:29 PM PDT, Linus Torvalds <torvalds@linux-foundat=
+ion=2Eorg> wrote:
+>On Tue, 9 Sept 2025 at 14:39, H=2E Peter Anvin <hpa@zytor=2Ecom> wrote:
+>>
+>> 1 GB systems used highmem too, sadly=2E And 1 GB was the norm for a big=
+ chuck of the late 32-bit era=2E
 >
-> 1 GB systems used highmem too, sadly. And 1 GB was the norm for a big chuck of the late 32-bit era.
+>Well, while on x86 1GB systems did use highmem, they'd typically not
+>use very much of it=2E
+>
+>IOW, they'd have about 900MB as lowmem (ok, I think it was 896MB to be
+>exact), with something like 120MB highmem=2E
+>
+>So they'd either lose a bit of memory, or they'd use the 2G:2G split=2E
+>
+>Or - and I think this is the main point - they'd stay on old kernels
+>like the ancient museum pieces they are=2E
+>
+>I'm not convinced it makes sense to have a modern kernel on a museum piec=
+e=2E
+>
+>         Linus
+>
 
-Well, while on x86 1GB systems did use highmem, they'd typically not
-use very much of it.
-
-IOW, they'd have about 900MB as lowmem (ok, I think it was 896MB to be
-exact), with something like 120MB highmem.
-
-So they'd either lose a bit of memory, or they'd use the 2G:2G split.
-
-Or - and I think this is the main point - they'd stay on old kernels
-like the ancient museum pieces they are.
-
-I'm not convinced it makes sense to have a modern kernel on a museum piece.
-
-         Linus
+Certainly=2E And the 2:2 split is probably the right thing for the old mac=
+hines anyway=2E
