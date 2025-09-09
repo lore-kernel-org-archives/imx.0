@@ -1,137 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012062.outbound.protection.outlook.com [52.101.66.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8020F209F43;
-	Tue,  9 Sep 2025 01:05:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757379937; cv=none; b=axHL4MF/PhbfLnH8CRu9g289yxqLtkf9qv9Fg8H2vgY+t1DOuAxLeq51tmBrrzp6M/aX19PnpjaEFKD7PDzbJTLK5JrBzwPw74OWya2ejNh+43f8D3wRaPOUeIJc9LAdotulLZOP5svGVvylMmABTSOwkjphCwxla1cYOZfi1IE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757379937; c=relaxed/simple;
-	bh=lOMpq9HD8ZJq2w0ihl+zDHfmveKIJThydH7VNjKRaeo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F17gbTWAu0TROt2f7nxLcAmnxtiGHY9zrShBPFIPceUQMnCYpG1ol3aY6w+TWNPFl7aFNocNxc2XEMiF1dViaMb7cpI/Bh24JbuVTasp1KsEijXJWsSptsfGqZhqMVWVDdq9EaeR8H8UvWPAfNoZW49G4nLoR0swjJDenuKtCgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QQbBUUZO; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C6722D7B1
+	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 02:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757383932; cv=fail; b=VsWEEc7EmHpdeHLbN5zW5+f+hRdLx2IvdKs84amxZMO3+rTqSAuz2GcC41kCpAFmdfoUHLuhNBJ+HX73i1R4dsh9czG2aCJ89EUXj5E0SvzH1iiR+ohhqq6WLch4jROmzrAu0xBUyxI+Z5z+0kEbTjH0ydIhMMJxnmDeVDfGdrk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757383932; c=relaxed/simple;
+	bh=e4PADGzLBh5PAyBxUxr9C7A3EDJhg2uiZAhiUA9EA34=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=f7Aj+FA3Ut1QQEukiDCRTT5DHo1rQJFnaMnMi7+VEOU4gb0qR5KUDVzOMrkmADU0eaQzpP6OlTD7qx3hVGIzm6WR/sltUb8HRHWi/sVi3ywSBlE19O+B7UnQOptYkq1UfDAsjznfsVNAiMg6jQ9N7qAYiERSJYW3rezIBOY827s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OK8xxdUe; arc=fail smtp.client-ip=52.101.66.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QQbBUUZO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F907C4CEF1;
-	Tue,  9 Sep 2025 01:05:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757379936;
-	bh=lOMpq9HD8ZJq2w0ihl+zDHfmveKIJThydH7VNjKRaeo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QQbBUUZOEKmgcyR1PIp+AIKCcwn8fPT8bMELctKOeIciHM8ykBO4tFcJ3NYKG2ylm
-	 M1jxFnADvYk6FZIvi6lSOKzJL0YiuJkMMFKSXZshklN94Uy9IOvXD9dcPop+KGwwvm
-	 P1kzpVbIka7Cg/zuycgcpr91a3iXXncT16Iwd2YCsKS++LsFuOv6NhHNFxewmBt0t0
-	 C1fB1BHQ/z2a/UxdxfLOzMkR0gioVk5kfbUcD9q2/2DTFHImi8s0xncgbEDz6umetX
-	 0R+SgapDsxKYnG8EmRean8vT6oZfwIGm8el7SfSu17WZjVBR7Szo31squJU28nW0dl
-	 Se2KrausOUZkQ==
-Date: Mon, 8 Sep 2025 18:05:35 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v19 4/7] net: mtip: Add net_device_ops functions to
- the L2 switch driver
-Message-ID: <20250908180535.4a6490bf@kernel.org>
-In-Reply-To: <20250907183854.06771a13@wsk>
-References: <20250824220736.1760482-1-lukasz.majewski@mailbox.org>
-	<20250824220736.1760482-5-lukasz.majewski@mailbox.org>
-	<20250827082512.438fd68a@kernel.org>
-	<20250907183854.06771a13@wsk>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OK8xxdUe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pU+fLl2DHgxtMQR0P2lH0Fp6GsJCbeAruoI8BRgLbiZeHEp04h9NF51R/k5qSLOtRKC4KrQFJiRmaDTH4Gamhw+9Qq/sWHYvdyGOM9Kgs6NZV4sp+yQBhbaTIu+THKvU9Bb0EhvO9RlPE294q+0mHupZ6hI1kyKbNF0DMEyEYx1osNFvsxz+5WgfDqdrfO7sEvfgZXopr2t3rPwcM/jhjplHyHKsl5tfUXlTPOLOOKRA66rEkOxkwQwWQF0xDokweGzN0UxKrrrDtFONKT2MYwSC8g8UyCcvS/KQzHWrwSY0M/ELRSd1Gk+WfywbEPYv0ekhuNzcLsz5BQCmpE6GYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KMsErcfqslu4Yj8knXwFO5606J/wEWrqBWzfzpFgYWM=;
+ b=l6IOIeK8n9crPcjJ7xRhm58yFMmJrC/vbCKmwl6sryYUBkkgkXtcA838jWJdmsxGefGd991HXR6riaq4NK9gCSnfC5SN5XO2w4F0FX3R6fKbo+RfS2Sla+t98ws8p4pyGeoK6+KTaAL/8ccJ2ea/D02BW4L1jYjcRygJevQhcZ83hQshQ71U6+HIAHQkTibF1cGXWtgWse4DHQsG7UtAOJyYoIgiLUkcQPO7oc34AK77AUZ5vY4g4+AvtoB4Dh1S0yhti/MbcMoDp+k1aXcpcKmNJN2LXcp6Ds/RxRZIrDwO1iC+u7GBauIjc1gtfL1OwxcwMjhIrXJJowT3UQqZcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KMsErcfqslu4Yj8knXwFO5606J/wEWrqBWzfzpFgYWM=;
+ b=OK8xxdUeToiLqbUfI7yNjvv1YpAU1Qc8cCLAltcN6bLTZZ+08ywgEX3ri5d8CF6xLz2u858R1D0vYG/zQNCZVJV04ad9a33ciAM+ErQdzP2bJfabQ7g0FcyNIO37327/SrC8MdCI2lq1DQxppH2NZetLZjF552p5dPrtBPYOVmuXQOjYZFSjZYx1IRLYc6bEe54KcepjCwqzuS5oe+U4V/lk9Z0ccPGmKonqrlOLDzeXRnd8tRCD32Oj1dGrhtpOfQ3n58DZm+0m3coD/GfZPdhzFnnIpGm3kuqQQwBXaLcYnm1LSUz+UbXsSOQVEMD+CfTZuA748HZ5HvvE5y7gJw==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by FRWPR04MB11272.eurprd04.prod.outlook.com (2603:10a6:d10:19c::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.13; Tue, 9 Sep
+ 2025 02:12:07 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9115.010; Tue, 9 Sep 2025
+ 02:12:07 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+CC: Clark Wang <xiaoning.wang@nxp.com>, Stanislav Fomichev <sdf@fomichev.me>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>, Andrew Lunn
+	<andrew@lunn.ch>, Frank Li <frank.li@nxp.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>
+Subject: RE: [PATCH v6 net-next 1/6] net: fec: use a member variable for
+ maximum buffer size
+Thread-Topic: [PATCH v6 net-next 1/6] net: fec: use a member variable for
+ maximum buffer size
+Thread-Index: AQHcINw8WFVpNWz3XkGFt7EQK+FfVrSKGSmw
+Date: Tue, 9 Sep 2025 02:12:07 +0000
+Message-ID:
+ <PAXPR04MB851097411AD8CF1B4250517B880FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250908161755.608704-1-shenwei.wang@nxp.com>
+ <20250908161755.608704-2-shenwei.wang@nxp.com>
+In-Reply-To: <20250908161755.608704-2-shenwei.wang@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|FRWPR04MB11272:EE_
+x-ms-office365-filtering-correlation-id: 8d374d4f-c300-4702-8bcc-08ddef4646ca
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|19092799006|366016|376014|1800799024|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?p5U6XJZgQA4m4LSRO/T0dDyq9z8ASJRPYCgU2rbDcpvIt9mVK/Pryfvclph4?=
+ =?us-ascii?Q?EqBqb6c5q0VesYlmBZYLgr8zP6ItO1+qwMkBj86M/kqtuUIoFQhm+LIJ5/U7?=
+ =?us-ascii?Q?Uo67k7LrnGu47VcNbSoDjjUagf499BaA5tq7Eh32gITb0CiEy4qtpiEr6Duf?=
+ =?us-ascii?Q?pGjrDdJW55NAF9gEXUmHN2pk12BZIX9agj2SDc2GQ+oJeKmXDT7DsRgVZjGI?=
+ =?us-ascii?Q?A7xg8sdPNsDx+qiFsUpkxS4ggJUAAP9YkPa5S4KVGjy1ToL2+XUaOl1ESV82?=
+ =?us-ascii?Q?ci5pZlyDr7mvUNBJoJmbrJ3+bjQuZuCY8S1FZ61kCpKQ25oKZ8P+s2uwoCBA?=
+ =?us-ascii?Q?iLPZg7/WZQTeI7r3P4G68rgzvZ33o+/cES6HcNyHOj9CvvWYPyjjjbgpaSuP?=
+ =?us-ascii?Q?LRzV9BNfLXGit+YmyGFYKs2M/cAeSXw2LLm9cylfYYjOKR4T7iLjBrki+S6y?=
+ =?us-ascii?Q?G5eJ7TVbiSwdOk1kegx7S666sSwG1fBS6am64Ksx91ZMhuuiSWvJVERhil0I?=
+ =?us-ascii?Q?r+88X75Y7wAbMJSHJgDTI0Z1dxIb+Ho07VnV+57CZcUI4XTNMj3HfT3I0VRW?=
+ =?us-ascii?Q?4FvKuNvI16KvbtR4Os6zPt1jrjOAtMSuditRImsbmjt+RhspkSwFVoy0poI5?=
+ =?us-ascii?Q?FownE+7vCCms0h7qpCkPRMh0L3PKXn7chkgD7agDXqXvhlQInaknLq5Iskzf?=
+ =?us-ascii?Q?J/L2CgTkSjArXS0a/oElOJztHweuCQ2igdvskX9rNVTDZP9IYEhvCxbCxIiJ?=
+ =?us-ascii?Q?AlRrfsSWZkRAZXZxzXE9lQiXYL1bMENJEQIOQjK4Ku9P6ubXupjoTQLNPT9j?=
+ =?us-ascii?Q?ah4ulJOpSsmJI4BbD1zBV0cGuSSBZFYTjse0BVg9vxmPS/7eYUwr8lf+88cM?=
+ =?us-ascii?Q?vzG0mGxFLPw1IVZxWXjJviBhfjNHMnCK0S9WG0Qy9XiyYo/9hJzcNjFFZ1OD?=
+ =?us-ascii?Q?t4PRyALqXwZqsfTV6+fYBaYokV1igIAbrDXQdseBbjv+5aGSTqnIa3TvxZah?=
+ =?us-ascii?Q?mvpN3yRy0q0oHhLhJmHqgAclUjEqb4ISmdCp67t9p6N0lI806AhP65oWGX9j?=
+ =?us-ascii?Q?ACDYiWJaXoUCu9nQ5uPa1efQ8HMdiGaN0c0aoGsC0U1G735ZHm4zr9qCBmhp?=
+ =?us-ascii?Q?QjH22ctqQBhPMFFJQ38nvOsyYuWS0knJy5Ye4g2Kw8DX4Y66gheBaIwPopZG?=
+ =?us-ascii?Q?L8JjfMVJwYKiO6vFLhdBZJamJhLhht5JpoT1FtxVDpgqp06bw4GlyMdn+9cd?=
+ =?us-ascii?Q?qJ1Nry49R+azcXDhB0ewaTLS02wPHjonez5OWDkIbWWFRQ3Rs0CcATNNvlHq?=
+ =?us-ascii?Q?HlGUq9oE42dRELPZqEBRI+M5Z+IFmwbcIIF62FKNtBfAJpDRRgdJjTClfjJm?=
+ =?us-ascii?Q?Vk3YG+594/1Yr7ELw+QsIVMFgqhhTg9vRUNtGDA6k3KcOnzbe8hc5yKxZWgs?=
+ =?us-ascii?Q?PnLRo3O946WrXLAzzD+EV2gX5++4yXCgrJbN43PoV+q6UFlyz1u+N7SfnBaN?=
+ =?us-ascii?Q?vvLNyCmHs7S4fZA=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(19092799006)(366016)(376014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?yr0Uz1+T0sAfM6IVqbEeAqKPJ2E/17WjTklirSFPprgmN4VWMGB3fmYlXX5B?=
+ =?us-ascii?Q?4ceFp+0pa9Ddnv2Yk+TEAx7OVs35QwYNdLmU8dzU0a5ZLlGDHZNB/kdSFsAO?=
+ =?us-ascii?Q?hM9Sr3IOGT4d5tdQyg5hkelqcgq/xx1q86SXCyDpQbnkq/WbBJsp/rUGkuh9?=
+ =?us-ascii?Q?s/X/12joAlwh2fZpbSeWYUIjdVgFOLrF5KE+trmsynjWgrFAXcjH9Pkzzt/g?=
+ =?us-ascii?Q?+IDvWECz2LXS4tV9W+QT37u9ExKYWXNh36PtySGIVXdFtVzfvd5R5jrJbZhE?=
+ =?us-ascii?Q?//EtMAqlulpfc1gTEjzkNftbqHR2vBN+Eey5FmVoqNG446tXHUEMl5vWgjA/?=
+ =?us-ascii?Q?Fyc0cZxtTq2/+kZxcRPwwNVB4mqXADgZAcIiD4r76mE9ZyelLgzbcPNXKcfI?=
+ =?us-ascii?Q?my1nwcbRAsw+JiBz8F+QBe46YO/LyJToZlK4QBoL9b99mcmX6oV3PhYNvTCJ?=
+ =?us-ascii?Q?Vrvr80Fg7Zz6eCZNChZYDSnvWvUdl9RFDY6dUc8K36sOyeSHJ5RQG/TojPAQ?=
+ =?us-ascii?Q?esqe8V5zdaQKtex0quHqkhL4FUZZmsiDEUqn2khObrcVO1W5JRGTsS+0HfrB?=
+ =?us-ascii?Q?Nn4B2h78FOKc3INWj/Sqk3AImKbV1uRSSA4x/NuA2vDEcKbSpZrOX5suNnBG?=
+ =?us-ascii?Q?b8VoRTiTjzlR19Di6kosYe8FgqMMfHo0I2Vn74UE7DzyeJ9LnOcVfWJ3Ubq/?=
+ =?us-ascii?Q?BxVZLgm1trlkmDzhyGggdRUYjG2WqFZKZsEW114muNrWisag0QnyppLoqAgX?=
+ =?us-ascii?Q?NlIU4LED3p6dio7s+7tY3ZNy3in0XfBc9sz60ZENaDhUhHpB2DdIqtbbErXZ?=
+ =?us-ascii?Q?efh201cMzCLYc8VeuG8t5J6Iz3nla/LQcPaVedQjYrrgGQBHoaZVm1QKNtF/?=
+ =?us-ascii?Q?bF49y4UMu00oHT22PY511IMllOKqe2mDEGUUtySUYNzWhviSwGimcLLjF7+p?=
+ =?us-ascii?Q?qLYtMYUlwHyxAIgSqHqIuoLKPiC7lhsnS5AgeUMtssCV+TmGa4LuMDUsP7bA?=
+ =?us-ascii?Q?XoqFuSJvqfiTKdGCkWmBRpQQ3QGG0D4d3ARO7Zq+emdnsSmSB54WcDALZ0nl?=
+ =?us-ascii?Q?twlezRN4C3mfRkfHQFrswhnMnfwpP3LEGDlVXMr8XMdsPF2bBWHtSPCo8hWY?=
+ =?us-ascii?Q?3m5yFNxXJKfuafLwo7lxkoWfrgiJvo9QrwA5GquJyxRnyu1uQm0RDhpqXnyU?=
+ =?us-ascii?Q?OtncI5udDNvne8HXa1EHHekfSwTgbFFn4fjWzhDWBOaiWwTuBcyzATdVwYA3?=
+ =?us-ascii?Q?hC5HRdY2gkcaxqmpdCI26fw4AXvG08RNqIjQ1FQ1WEQVPMYNpaAH+B9U2w8T?=
+ =?us-ascii?Q?lmX+st53nGBwSyoDVuqiHNmJoLVAa9XpBBK9xLLnDAG6DxNCjST91uvRLmsD?=
+ =?us-ascii?Q?VzX19VkdPJ9AzuybxHi8JAZyXOq6mUnOj1wDo7UhZs1gu1kXFzZ48bgiHFH7?=
+ =?us-ascii?Q?JDqpW6d1HXUD7xzZYGyyP56cnCvQzIM6vn097Ky3ma9rfdYFpUgmzUw6EvdN?=
+ =?us-ascii?Q?BjB0ult91i5EZh9vvwm1mSQP6j3i5G4nM9nrug/BE6kJxdf9FqSyXHQM9Jwb?=
+ =?us-ascii?Q?EZsCOMZ/yai569YK+vo=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d374d4f-c300-4702-8bcc-08ddef4646ca
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Sep 2025 02:12:07.0566
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: L2eiN2gCQWzJyfCHrqVO5J0/oOFvoZU7P6Iu62eu0jRAlU55ISf2KwbPpz3ycf3wTaHuQkT+AbnzK2yR9PEdiw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRWPR04MB11272
 
-On Sun, 7 Sep 2025 18:38:54 +0200 =C5=81ukasz Majewski wrote:
-> > On Mon, 25 Aug 2025 00:07:33 +0200 Lukasz Majewski wrote: =20
-> > > +	/* Set buffer length and buffer pointer */
-> > > +	bufaddr =3D skb->data;   =20
-> >=20
-> > You can't write (swap) skb->data if the skb is a clone.. =20
->=20
-> I do use skb =3D buld_skb() which, "builds" the SKB around the memory
-> page (from pool).
->=20
-> Then, I "pass" this data (and swap it) to upper layer of the network
-> stack.
->=20
-> The same approach is used in the fec_main.c driver:
-> https://elixir.bootlin.com/linux/v6.17-rc3/source/drivers/net/ethernet/fr=
-eescale/fec_main.c#L1853
+> @@ -253,9 +253,7 @@ MODULE_PARM_DESC(macaddr, "FEC Ethernet MAC
+> address");  #if defined(CONFIG_M523x) || defined(CONFIG_M527x) ||
+> defined(CONFIG_M528x) || \
+>      defined(CONFIG_M520x) || defined(CONFIG_M532x) ||
+> defined(CONFIG_ARM) || \
+>      defined(CONFIG_ARM64)
+> -#define	OPT_FRAME_SIZE	(PKT_MAXBUF_SIZE << 16)
+> -#else
+> -#define	OPT_FRAME_SIZE	0
+> +#define	OPT_ARCH_HAS_MAX_FL
 
-I probably cut out too much context. I think I was quoting from Tx,
-indeed on Rx this is not an issue.
+In the fec driver, I noticed that the expression "#if defined (CONFIG_M523x=
+) ||
+defined(CONFIG_M527x) || ..." is used in four different places. I think we =
+could
+add a separate patch to define a new macro to replace these occurrences. Th=
+is
+new macro should be more generic than OPT_ARCH_HAS_MAX_FL.
 
-> What I'm trying to do - is to model the HW which I do have...
+>  #endif
 >=20
-> When switch is enabled I do have ONE uDMA0 which works for both eth
-> ports (lan0 and lan1).
+>  /* FEC MII MMFR bits definition */
+> @@ -1083,7 +1081,7 @@ static void fec_enet_enable_ring(struct net_device
+> *ndev)
+>  	for (i =3D 0; i < fep->num_rx_queues; i++) {
+>  		rxq =3D fep->rx_queue[i];
+>  		writel(rxq->bd.dma, fep->hwp + FEC_R_DES_START(i));
+> -		writel(PKT_MAXBUF_SIZE, fep->hwp + FEC_R_BUFF_SIZE(i));
+> +		writel(fep->max_buf_size, fep->hwp + FEC_R_BUFF_SIZE(i));
 >=20
-> That is why I do have only one NAPI queue.
->=20
-> > What makes my head spin is that you seem to record which
-> > netdev/port was doing Rx _last_ and then pass that netdev to
-> > mtip_switch_tx(). Why? =20
->=20
-> You may have port =3D=3D 1 || port =3D=3D 2 when you receive packet from =
-ingres
-> ports.
-> You may also have port =3D=3D 0xFF when you first time encounter the SA on
-> the port and port =3D=3D 0 when you send/receive data from the "host"
-> interface.
->=20
-> When port 1/2 is "detected" then the net dev for this particular port
-> is used. In other cases the one for NAPI is used (which is one of those
-> two - please see comment above).
->=20
-> This was the approach from original NXP (Freescale) driver. It in some
-> way prevents from "starvation" from net devices when L2 switch is
-> disabled and I need to provide port separation.
->=20
-> (port separation in fact is achieved by programming L2 switch registers
-> and is realized in HW).
+>  		/* enable DMA1/2 */
+>  		if (i)
+> @@ -1145,9 +1143,13 @@ static void
+>  fec_restart(struct net_device *ndev)
+>  {
+>  	struct fec_enet_private *fep =3D netdev_priv(ndev);
+> -	u32 rcntl =3D OPT_FRAME_SIZE | FEC_RCR_MII;
+> +	u32 rcntl =3D FEC_RCR_MII;
 
-But what if we have mixed traffic from port 1 and 2?
-Does the current code correctly Rx the packets from port 1 on the
-netdev from port 1 and packets from port 2 on the netdev from port 2?
+Nit: please follow reverse xmas tree rule, move this line under ecntl.
 
-> > Isn't the dev that we're completing Tx for is
-> > best read from skb->dev packet by packet? =20
->=20
-> It may be worth to try.... I think that the code, which we do have now,
-> tries to reuse some kind of "locality".
->=20
-> > Also this wake up logic
-> > looks like it will wake up _one_ netdev's queue and then set tx_full
-> > =3D 0, so presumably it will not wake the other port if both ports
-> > queues were stopped. Why keep tx_full state in the first place? Just
-> > check if the queues is stopped..? =20
->=20
-> As I said - we do have only ONE queue, which corresponds to uDMA0 when
-> the switch is enabled. This single queue is responsible for handling
-> transmission for both ports (this is how the HW is designed).
-
-Right but kernel has two SW queues. Which can be independently stopped.
-So my concerns is that for example port 1 is very busy so the queue is
-full of packets for port 1, port 1's netdev's queue gets stopped.
-Then port 2 tries to Tx, queue is shared, and is full, so netdev 2's
-SW queue is also stopped. Then we complete the packets, because packets
-were for port 1 we wake the queue for port 1. But port 2 also got
-stopped, even tho it never put a packet on the ring..
-
-Long story short I think you need to always stop and start queues from
-both netdevs.. There's just 2 so not too bad of a hack.
