@@ -1,107 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F3D3203A5
-	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 11:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346233148B7
+	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 12:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757417323; cv=none; b=mBdz4vOos9NDxYq8WU5E2UyVA9lQrAxmXOuoAp29GUGIS/2mlF4IiyrR+1qB/AFeOT21oOwpTqx+9JBM4XDcUAD4Rhfj4+atgjwHhTYaCjqpsG5v4xDcIwF6uXq4Tu5ONNRjZrPJ2NAXjpX6BIynN6Q0m040N+S9OVfvmoiVb84=
+	t=1757419397; cv=none; b=tUd0fFh8BxoGZtrPNpUNRdgZAFTNxAg+ThjWp65C3FWM2yeZwbo7x6FK33bBEijHuqt/9yeTsteSDQC4BeUvdBUCH8xNJR9Fho/nk2/EVezZw2QdahgivtEUet36rGOLQ8dsfI1Msz5DvM2eJ/e4G7Za5yT95IeZiOPQ2114xB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757417323; c=relaxed/simple;
-	bh=HLj2DGv7X+3GgN4bhH26Lcv2FafvzGSa38moFQKbr3M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XJA1QVBIT92GzxI+N/gl+924CNHZUJUBQ4reh3HXjPDaNlETBg2759ZI8JrgrbM/UCQ8OK5RIBRinHmA4FcD9k4C1fiJVIsDnnFPxg4Ift666T52ndAglf0SEj6QpTu4uRoxmfr8mUr/J7PFTAnXNjlTGIFf054qnoyqDW44+Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOYKXTYx; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOYKXTYx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250B5C4CEF5;
-	Tue,  9 Sep 2025 11:28:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757417323;
-	bh=HLj2DGv7X+3GgN4bhH26Lcv2FafvzGSa38moFQKbr3M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=HOYKXTYxBoRLePka7IR85rFUYegBWqtm7YsGOpIo2WqhzaodOalAmU8kq1Dtl4FFq
-	 4nfZgugX207142wbo07z2HPltZo5gXcnSyX+h83RfKeWSxs332pXy3GjDwCcHWyeE4
-	 uqjAGYfzjEujKshFYJx3HCE54noNr1f+f1jZCbIkwSKRzOJBoisQbtlaoH44FhdIp7
-	 R3qbfLuMPtf1gjD3592EKcyqBzAfgFSZDpDuiIXl8l+K+4UX6muJFXasHOM5WV68BH
-	 7QctP2mUof9tfdUyHSvKMNuBhMOkvQrdvm4r1WDQxCAUyboDeJ44VoMYfm4ldgwb6m
-	 fxE6hroZHEhQA==
-From: Maxime Ripard <mripard@kernel.org>
-Date: Tue, 09 Sep 2025 13:27:38 +0200
-Subject: [PATCH v3 19/39] drm/imx-ipuv3: Switch to
- drm_atomic_get_new_crtc_state()
+	s=arc-20240116; t=1757419397; c=relaxed/simple;
+	bh=lHQYFjYDhR0p/nDXRSfaLqH1lc163jMWGJ6PCp5IuFo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ClYGjlH0M6OXRzv2lpX/P+NYfCFhaSIKtNsm8YdSubMT7ATWeNiiIXJaFe2gxRjVWABBNxsb1hH2p3srEDFUizfqY95EhVWb22ahsV6VanVWkz10P1zPhYfXoTTcKkLOF9+F6CKDSPNaVgnhVNmxkRV/zkzGb5T7OaaZj6aVtYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uvx42-0007MX-6N; Tue, 09 Sep 2025 14:03:10 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uvx41-000Pf6-2a;
+	Tue, 09 Sep 2025 14:03:09 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uvx41-00E2PJ-25;
+	Tue, 09 Sep 2025 14:03:09 +0200
+Date: Tue, 9 Sep 2025 14:03:09 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jiada Wang <jiada_wang@mentor.com>, dmaengine@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/11] dmaengine: add support for device_link
+Message-ID: <20250909120309.5zgez5exbvxn5z3y@pengutronix.de>
+References: <20250903-v6-16-topic-sdma-v1-0-ac7bab629e8b@pengutronix.de>
+ <20250903-v6-16-topic-sdma-v1-9-ac7bab629e8b@pengutronix.de>
+ <aLhUv+mtr1uZTCth@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250909-drm-no-more-existing-state-v3-19-1c7a7d960c33@kernel.org>
-References: <20250909-drm-no-more-existing-state-v3-0-1c7a7d960c33@kernel.org>
-In-Reply-To: <20250909-drm-no-more-existing-state-v3-0-1c7a7d960c33@kernel.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
- =?utf-8?q?Ville_Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1604; i=mripard@kernel.org;
- h=from:subject:message-id; bh=HLj2DGv7X+3GgN4bhH26Lcv2FafvzGSa38moFQKbr3M=;
- b=owGbwMvMwCmsHn9OcpHtvjLG02pJDBkH+LUSzwpOqnp/0M3m7e1fsv++TlZasu+c+4eTs79Vt
- X/5NzFcsWMqC4MwJ4OsmCLLE5mw08vbF1c52K/8ATOHlQlkCAMXpwBMRPAKY8Miq6d5G638FvDf
- KNhitjy6wFAt9XcUy8KGOc9efxecXhrrE3+y5PnB9H6h/dn5cw7UrGGsM5hyO+DE2YTbXSu9fzW
- cbBUVPXn91aToK0bczy0vS682rpJ+6JGSbvbY9Fv7Uc5G8y9XAA==
-X-Developer-Key: i=mripard@kernel.org; a=openpgp;
- fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLhUv+mtr1uZTCth@lizhi-Precision-Tower-5810>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The imx-ipuv3 atomic_check implementation uses the deprecated
-drm_atomic_get_existing_crtc_state() helper.
+Hi Frank,
 
-This hook is called as part of the global atomic_check, thus before the
-states are swapped. The existing state thus points to the new state, and
-we can use drm_atomic_get_new_crtc_state() instead.
+On 25-09-03, Frank Li wrote:
+> On Wed, Sep 03, 2025 at 03:06:17PM +0200, Marco Felsch wrote:
+> > Add support to create device_links between dmaengine suppliers and the
+> > dma consumers. This shifts the device dep-chain teardown/bringup logic
+> > to the driver core.
+> >
+> > Moving this to the core allows the dmaengine drivers to simplify the
+> > .remove() hooks and also to ensure that no dmaengine driver is ever
+> > removed before the consumer is removed.
+> >
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > ---
+> 
+> Thank you work for devlink between dmaengine and devices. I have similar
+> idea.
+> 
+> This patch should be first patch.
 
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
----
-To: Philipp Zabel <p.zabel@pengutronix.de>
-To: Shawn Guo <shawnguo@kernel.org>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
----
- drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+I can shuffle it of course!
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-index 704c549750f950c3f0ce5d6c6f637d9d7b53fb69..df19560e41b4f5b0dce97ae03947abeaf99e0883 100644
---- a/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-+++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c
-@@ -384,12 +384,11 @@ static int ipu_plane_atomic_check(struct drm_plane *plane,
- 
- 	if (WARN_ON(!new_state->crtc))
- 		return -EINVAL;
- 
- 	crtc_state =
--		drm_atomic_get_existing_crtc_state(state,
--						   new_state->crtc);
-+		drm_atomic_get_new_crtc_state(state, new_state->crtc);
- 	if (WARN_ON(!crtc_state))
- 		return -EINVAL;
- 
- 	ret = drm_atomic_helper_check_plane_state(new_state, crtc_state,
- 						  DRM_PLANE_NO_SCALING,
+> The below what planned commit message in my local tree.
 
--- 
-2.50.1
+Okay, so you focused on runtime PM handling. Not quite sure if I can
+test this feature with the SDMA engine. I also have limited time for
+this feature.
 
+Is it okay for you and the DMA maintainers to add the runtime PM feature
+as separate patch (provided by NXP/Frank)?
+
+> Implementing runtime PM for DMA channels is challenging. If a channel
+> resumes at allocation and suspends at free, the DMA engine often remains on
+> because most drivers request a channel at probe.
+> 
+> Tracking the number of pending DMA descriptors is also problematic, as some
+> consumers append new descriptors in atomic contexts, such as IRQ handlers,
+> where runtime resume cannot be called.
+> 
+> Using a device link simplifies this issue. If a consumer requires data
+> transfer, it must be in a runtime-resumed state, ensuring that the DMA
+> channel is also active by device link. This allows safe operations, like
+> appending new descriptors. Conversely, when the consumer no longer requires
+> data transfer, both it and the supplier (DMA channel) can enter a suspended
+> state if no other consumer is using it.
+> 
+> Introduce the `create_link` flag to enable this feature.
+>
+> also suggest add create_link flag to enable this feature in case some
+> side impact to other dma-engine. After some time test, we can enable it
+> default.
+
+What regressions do you have in mind? I wouldn't hide the feature behind
+a flag because this may slow done the convert process, because no one is
+interessted in, or has no time for testing, ...
+
+> >  drivers/dma/dmaengine.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+> > index 758fcd0546d8bde8e8dddc6039848feeb1e24475..a50652bc70b8ce9d4edabfaa781b3432ee47d31e 100644
+> > --- a/drivers/dma/dmaengine.c
+> > +++ b/drivers/dma/dmaengine.c
+> > @@ -817,6 +817,7 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+> >  	struct fwnode_handle *fwnode = dev_fwnode(dev);
+> >  	struct dma_device *d, *_d;
+> >  	struct dma_chan *chan = NULL;
+> > +	struct device_link *dl;
+> >
+> >  	if (is_of_node(fwnode))
+> >  		chan = of_dma_request_slave_channel(to_of_node(fwnode), name);
+> > @@ -858,6 +859,13 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+> >  	/* No functional issue if it fails, users are supposed to test before use */
+> >  #endif
+> >
+> > +	dl = device_link_add(dev, chan->device->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
+> 
+> chan->device->dev is dmaengine devices. But some dmaengine's each channel
+> have device, consumer should link to chan's device, not dmaengine device
+> because some dmaengine support per channel clock\power management.
+
+I get your point. Can you give me some pointers please? To me it seems
+like the dma_chan_dev is only used for sysfs purpose according the
+dmaengine.h.
+
+> chan's device's parent devices is dmaengine devices. it should also work
+> for sdma case
+
+I see, this must be tested of course.
+
+>         if (chan->device->create_devlink) {
+>                 u32 flags = DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_CONSUMER;
+
+According device_link.rst: using DL_FLAG_STATELESS and
+DL_FLAG_AUTOREMOVE_CONSUMER is invalid.
+
+>                 if (pm_runtime_active(dev))
+>                         flags |= DL_FLAG_RPM_ACTIVE;
+
+This is of course interessting, thanks for the hint.
+
+> When create device link (apply channel), consume may active.
+
+I have read it as: "resue the supplier and ensure that the supplier
+follows the consumer runtime state".
+
+>                 dl = device_link_add(chan->slave, &chan->dev->device, flags);
+
+Huh.. you used the dmaengine device too?
+
+Regards,
+  Marco
+
+
+>         }
+> 
+> Need update kernel doc
+> 
+> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+> index bb146c5ac3e4c..ffb3a8f0070ba 100644
+> --- a/include/linux/dmaengine.h
+> +++ b/include/linux/dmaengine.h
+> @@ -323,7 +323,8 @@ struct dma_router {
+>   * @cookie: last cookie value returned to client
+>   * @completed_cookie: last completed cookie for this channel
+>   * @chan_id: channel ID for sysfs
+> - * @dev: class device for sysfs
+> + * @dev: class device for sysfs, also use for pre channel runtime pm and
+> + *       use custom/different dma-mapping
+> 
+> Frank
+> 
+> 
+> > +	if (!dl) {
+> > +		dev_err(dev, "failed to create device link to %s\n",
+> > +			dev_name(chan->device->dev));
+> > +		return ERR_PTR(-EINVAL);
+> > +	}
+> >  	chan->name = kasprintf(GFP_KERNEL, "dma:%s", name);
+> >  	if (!chan->name)
+> >  		return chan;
+> >
+> > --
+> > 2.47.2
+> >
+> 
