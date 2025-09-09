@@ -1,114 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16ECC35AAC0
-	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 15:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798721B87C0
+	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 15:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757432113; cv=none; b=nbK9T+wnkVf3soNXtPSqr7/93gsBkynARDi+4keyGwLwk91HysP+EVHA0NCwkFglniPaymb23YcRK/wHtprSqwcf0G6M9kkHEuriLRLl/XtlVTwXNz8nxVPQPn3HD1NvwhJQvCskkL5ulrpHfX53gS/hnaRzEDL5WlpNMy5fFKw=
+	t=1757432948; cv=none; b=g1ygH+diPJq/JYzV2QatA+HTFhoO5ZpfFqYLgUROLHoF22YkF6BMPUoei6WvzBRIbY79n2Ibu0o3zN6JXe0BiSaSLYV+FofQ2ykx6MiM/i2xVJXOkxzlJSxamwJwJwtFKL0YYBHN8diTOKNtUUN0cs4EajSpxKTsdd0MTrW6cZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757432113; c=relaxed/simple;
-	bh=r10iZ7zeg/sR/nZIwbyfdzbIVMfWHdFFer/db8R+TlY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RdZ0ounaGeBuFDegGT33njtZbq7GcOz209akfRZeP7rhAL7dCfmYRN5xJsVHII8M9nEmTK3e0Xa4O4glZXnkV3x9ZAWI2ZV8rq1cvEB7two1uzLITUMrX2BN+ieYosWVEb4U5rRAqKqOGkii6MO5cp2pXuLa+yZQPC58vtnU6UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nUBYwksb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757432948; c=relaxed/simple;
+	bh=dHDWslSUN5qjeF54dGcCHKAmPaXKcOdd8JVtArwQHwk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=RrwTCH3DIdzcy8qqH1RwXPpL1DT7NBJ/HvqznRXw8Z+wpMWr0N3XKwnmpOTUkL/m6ji48+NiQahrRkWGllfdDqmlKBOlkLbgZaoH6L0l5szK/gN7zvyphxPjbB47GdRITuc6+ikmgi/F+U9lYf2FmPIJQ6h6qY1y9zUH+d4qHLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=TCqAfMX7; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nUBYwksb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35B8C4CEFD
-	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 15:35:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757432112;
-	bh=r10iZ7zeg/sR/nZIwbyfdzbIVMfWHdFFer/db8R+TlY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nUBYwksbxZTX850YqvKjGd7Pdwnngqp+BqCfASPo3dfXxvAwOIyJrgHoIhC234V2A
-	 cJIzfqrlrDgeFbHX6SzkNsdccoAoehtMcavuuANykp1OSfYPUJjZ1oB2uVH0+I9NVT
-	 lx7I4qXxbo8boBXZfEQBz0TLQ2EHbVqXQ1ZTCirBgDfR9egR1YTYh0a3Ne2yR6PriF
-	 YD8oxCzl9At7UZyA7UN5QnpyOUqNEVwituxVHj3kFLIWloq4O/1tFy9bB4O5PDXF1M
-	 fw0QwgF/0XHCg6kfCoV96dHRVngQITRX33+JxRKdEL7YxaYVin0Ym1zy19WN/diHXr
-	 J6cYssdEUceRA==
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-74ee68bd763so600188a34.1
-        for <imx@lists.linux.dev>; Tue, 09 Sep 2025 08:35:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVaDm7IctCVFVxkW6YFn664FURDeZss3z/59UBsLzcqsTWCb1NmiH3pzXJaDk/HguAP/BM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzebmk2/qaQjlCmtMLhmFTiZU3CqKAToUsd/v0dwH5jMq0Of2EJ
-	LeSz5x8wEL29B0stt+579FTqpeCPfccoaqAW8NKQFvdjE+PfCVnDeBwCYq3wwLgStfD3XqGdjAz
-	Ca0kcHv6owPe6uH9v5D6KkOi0x2vFsx4=
-X-Google-Smtp-Source: AGHT+IFY52ypMIAoRlEjnBako5mUfNmKO1ctM4His3e3+VHyOFYstPxSUTPJe7B/elUpaHufT8qYmM79UMa2SAn9RL4=
-X-Received: by 2002:a05:6830:25d3:b0:741:a5f0:bc82 with SMTP id
- 46e09a7af769-74c74fb9225mr6102217a34.17.1757432112096; Tue, 09 Sep 2025
- 08:35:12 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="TCqAfMX7"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 29FD9A09D7;
+	Tue,  9 Sep 2025 17:48:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=mail; bh=kH++1lRd3b590KtsiJ2D
+	GXmZpkwvUsmHCqZRXED4GfU=; b=TCqAfMX7NO3TWA7vFyNOiUSla1GlfKUSPtYl
+	wdZ1JPQSS9MvP/QTzGcSyKx5FDr6B4yim9+RftMGuqx6UwkA1dIrKdEZOS5F6hPL
+	j44u9gRKE5TiDng3lY8jOy2yKXjJyEhoUjz8Vd8YHyy1Wtve1JZFVGRMM0LPrs4i
+	H6K45Z0WiVV0iXf5Vu82DWR/0Ic+BIRhRs//mCd1DgCi21DGLhpjOdfLZgKJp7H8
+	tElGF6gUYcFHQFeidp+GZWrHvca5RLG+3YBCXxBR66d0VZtpwT4GlThNLlLFLUDO
+	AmcfISk945iKEsVEhxhHTl54lSRGMhkxEzUFXd42MMrnpgsnAAu4HOq+DfzQT90e
+	q8FLU/owU0Vdg+BgWRTVz1NkT4+Mb3M9CJQ9BT7UrOKH5djtTDrOehSVwUkYEP64
+	LDtlSKJliHgY6rzunur9xFXINR5UOPN6aI4BRv8fwoHXeuNd8YaaMP7Y7uHRyIzW
+	jMs2abbwkYXHfQAAqwvyhDgknrb1YEblPDZpQJhOHGxThXaGiu6cNMS/F2erw3Er
+	QqIIJBWFHUaaCCBFq0iDvbS0wplWphEXyHA65mdnbLcpsYUNd9YQcXzZYeSBLdtT
+	Rxzs2iVkHQaot20y4TWUphcn/oYuiMJMi9YA4Vw6RIEetZfDdhWlntaampQP/EML
+	GvjVSdQ=
+Message-ID: <b48844bc-07f3-4fc1-8486-8968bf6d2362@prolan.hu>
+Date: Tue, 9 Sep 2025 17:48:41 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250908053335.36685-1-xu.yang_2@nxp.com> <20250908053335.36685-4-xu.yang_2@nxp.com>
-In-Reply-To: <20250908053335.36685-4-xu.yang_2@nxp.com>
-From: Chanwoo Choi <chanwoo@kernel.org>
-Date: Wed, 10 Sep 2025 00:34:35 +0900
-X-Gmail-Original-Message-ID: <CAGTfZH1Mt3cYenBSHG9Uz0j6pr0Na_E6aPfrn7pKV0ah22k+WA@mail.gmail.com>
-X-Gm-Features: Ac12FXyNrhC_JrxpQlWIyq0hZrbQBd7StcRc7qJeExZMgjdtwvNrB_wOUgpGcQM
-Message-ID: <CAGTfZH1Mt3cYenBSHG9Uz0j6pr0Na_E6aPfrn7pKV0ah22k+WA@mail.gmail.com>
-Subject: Re: [RESEND v4 4/4] extcon: ptn5150: Support USB role switch via
- connector fwnode
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: krzk@kernel.org, myungjoo.ham@samsung.com, cw00.choi@samsung.com, 
-	robh@kernel.org, conor+dt@kernel.org, gregkh@linuxfoundation.org, 
-	swboyd@chromium.org, heikki.krogerus@linux.intel.com, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	jun.li@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/8] ARM: dts: imx53-usbarmory: Replace license text
+ comment with SPDX identifier
+To: Andrej Rosano <andrej.rosano@reversec.com>, Andrej Rosano
+	<andrej@inversepath.com>, Andrea Barisani <andrea@inversepath.com>
+CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Conor Dooley
+	<conor+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Rob Herring
+	<robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+References: <20250814-imx-misc-dts-lic-v2-0-faff7db49a5f@prolan.hu>
+ <20250814-imx-misc-dts-lic-v2-2-faff7db49a5f@prolan.hu>
+Content-Language: en-US
+From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
+In-Reply-To: <20250814-imx-misc-dts-lic-v2-2-faff7db49a5f@prolan.hu>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: sinope.intranet.prolan.hu (10.254.0.237) To
+ ATLAS.intranet.prolan.hu (10.254.0.229)
+X-EsetResult: clean, is OK
+X-EsetId: 37303A296767155E627464
 
 Hi,
 
-Applied it. Thanks.
+On 2025. 08. 14. 9:47, Bence Csókás wrote:
+> Replace verbatim license text with a `SPDX-License-Identifier`.
+> 
+> The comment header mis-attributes this license to be "X11", but the
+> license text does not include the last line "Except as contained in this
+> notice, the name of the X Consortium shall not be used in advertising or
+> otherwise to promote the sale, use or other dealings in this Software
+> without prior written authorization from the X Consortium.". Therefore,
+> this license is actually equivalent to the SPDX "MIT" license (confirmed
+> by text diffing).
+> 
+> Cc: Andrej Rosano <andrej@inversepath.com>
+> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
 
-On Mon, Sep 8, 2025 at 2:34=E2=80=AFPM Xu Yang <xu.yang_2@nxp.com> wrote:
->
-> Since the PTN5150 is a Type-C chip, it's common to describe related
-> properties under the connector node. To align with this, the port
-> node will be located under the connector node in the future.
->
-> To support this layout, retrieve the USB role switch using the
-> connector's fwnode. For compatibility with existing device trees,
-> keep the usb_role_switch_get() function.
->
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
->
-> ---
-> Changes in v4:
->  - add Rb tag
-> Changes in v3:
->  - no changes
-> Changes in v2:
->  - improve commit message
-> ---
->  drivers/extcon/extcon-ptn5150.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/extcon/extcon-ptn5150.c b/drivers/extcon/extcon-ptn5=
-150.c
-> index 768428d306ce..f33f80e103c2 100644
-> --- a/drivers/extcon/extcon-ptn5150.c
-> +++ b/drivers/extcon/extcon-ptn5150.c
-> @@ -352,6 +352,8 @@ static int ptn5150_i2c_probe(struct i2c_client *i2c)
->         }
->
->         info->role_sw =3D usb_role_switch_get(info->dev);
-> +       if (!info->role_sw && connector)
-> +               info->role_sw =3D fwnode_usb_role_switch_get(connector);
->         if (IS_ERR(info->role_sw))
->                 return dev_err_probe(info->dev, PTR_ERR(info->role_sw),
->                                      "failed to get role switch\n");
-> --
-> 2.34.1
->
->
++To: Andrea Barisani <andrea@inversepath.com>
 
+Andrej, Andrea, do you agree with this?
 
---=20
-Best Regards,
-Chanwoo Choi
-Samsung Electronics
+Thanks,
+Bence
+
