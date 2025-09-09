@@ -1,172 +1,106 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66FE33EB14
-	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 16:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549C32FD1B6;
+	Tue,  9 Sep 2025 20:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757434558; cv=none; b=g81lpsjcY8kKbCzgNEZmInyO7yHLbcEa1ckIuBAWWyGBrj6KnU67+i11XsA4TpZrqXLAVzOdBZf2zOcX9P5E/bYdjCFnWvmiHNTW7+jE3cQgD9PZiAbPfRAcCJfF7YKkRE49iwR0RuImvERG2ya3HOeKksof3CFWShLFHIvyuF4=
+	t=1757450047; cv=none; b=SKTAsnS1xse1cDn5stVLnwFhuHiCMcbTiP5X0rq+uoVoRDarT7iIeNR5MMg+lv3DUMx6QtpQl34vs7Y0XoY1yjC2Sg7sfErNRShYaB2Lc2DSp0viqss/NGVAYuapSw5LquQIzub2KXpY4o88sDgx9mAxrAdWJe8pVFQnqpYr2lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757434558; c=relaxed/simple;
-	bh=7Z15smc22BjF1dnNwqHWT4Q61K0HQySupMCHoRvenSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dEpMWJJWK4CL9QsuaZxo10ZC+gV6Z7YqMpBbzQlPR/rcSxUhkd4nVk07zMdzR1GW47G7FJ7kSkh8Du75PPM5/jyqeIN/jgG16Xyo3jTjA1jHVbiqUF/0g6Iu58RsmUO5yRguYgx+giZUnoun6ZrsufDmVijSalRm0tmYZGbPuQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NFgw8GBu; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1757450047; c=relaxed/simple;
+	bh=IsCF+MUxVzd13pKkvlXlP/Ccmh25UQn/2DMZZUacACQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Q3hHPOBXgryf3u2wIJ3qjJCxSZOlcoKFYOwi+YIMn0lOgQsJVs/lu65y5a1xyd0wvRvJM5ab6leAeUlBISkJMdvoJL1eOnCwE6jr5k6qCWdYkEyUGO8V+HqTudyPp3xFddrCTLhI/J6fGevApzpI0fwjZeWUxdzo4CnKeIq4cdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pi/6Fm4a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NFgw8GBu"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7728815e639so3169083b3a.1
-        for <imx@lists.linux.dev>; Tue, 09 Sep 2025 09:15:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757434555; x=1758039355; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UEiPxhZen3QXZAobK2Ga2iD+ttNiESa3yuRWHgPHltc=;
-        b=NFgw8GBusxyvBCIDP+bSYP1i0uTyRyqNttxhuD/PPnkY730h5t4P4I0aoUW0pVxrr3
-         D60uw/8VLid3pOoMZ2IibqB5AFzVyJSxEnyn3M2BwHJqZOIQsCsowD3oDT4wuyJdNeJb
-         HEYfLn3WCb4odRcQpxmJS1W/vFf3dkzfahB3e34F2uU9huPnETmREy2D50DS5n9hAhZ8
-         TSvSCgQRo4um756OrWNHWd1M9lYE7Qoe+dDYjNWZLtfLjZi6hOA8yy5G9oVad5CS+H5D
-         H7sHt+h0O6RQds0ErDA6Qc1X7CSdUMRq1FZ2rTIzEEJObvIBq4W157BN3tM0amAizWmd
-         L0pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757434555; x=1758039355;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UEiPxhZen3QXZAobK2Ga2iD+ttNiESa3yuRWHgPHltc=;
-        b=eLFWi74bvucP07d6Fd/uGBAKTstv6ynfVUWuQoWp4ZHg8818H381LhrEYDdV4Urc4p
-         bdvJ40yYrJMBtNIT3X7asC2e8uptXB6qYmJm1ayW9UcB8N0/B6R1Pz7aYCHYvIgDwhPi
-         U8MfPnmxWtc3jfRwDoZPJTdsgDRiUAn84dxqhiD18QFuXtti/McBVMTfS4avU+qb4CX2
-         Z8u48yWdU4fosZqEg6TpJiLVujMNYOMBaT6XPO3UQ+hyGPoLTw8aKPp9mk0oFPE0CNcU
-         ypRDTQwd5Bk6I437OuNYW5/ToJ+BzjeOf9tkh/kp6YRArYs9fC2FC4vvb0lTgaUxJgY8
-         9wVw==
-X-Forwarded-Encrypted: i=1; AJvYcCW/u07Ml++6oer2WZPJW5TmhV3K/6MlZet6zX7HLhaImBNg9mGtOHg6je/WZj0QlQLLmnk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyVxgAKNcbiXhWNwP1HU2mTyN3yNqjtaLV1f6hhI71qxq2BJDQy
-	1s5E4t+AV/LRKM8q3XlhX2l7RBWiVxnw4kBMiWHbkLt59Yeo3dwyvW7ej4KuA+vK7o4=
-X-Gm-Gg: ASbGncuHR8M3p7IKKukvxJvbtMkFhHQx4B3YuKd/9yWh9RdEez17SwAU20sXA/lUF+y
-	T62rLDeY1TxYeycYKigNEKq6ppKI/ZZ+BoyZn7OnOaI+ku8oAue2PIPVSoigkpbpDd/EI75Ya+h
-	Wxv8O0W2yF2KBcPoGzuL+SRBt530izMO94Hm8ZvMppuoyBzyQcOz6GGP81zN84zcQZfeL99Ei2I
-	NVXNcJQE8gvpQ7dF3JW1ePMHsXNqICAnxcZzsr/PsDDpTG6rmU375Oi56Wg4UYoKBu4EVzIsLCB
-	EBxz/0Z7MYmC8QNXv/2S+XW0RJTLeRt/ROuI5qDLa9DIk9u9T1lqGbHsDAz0Q4GJ160hnf5SVqK
-	yEMhxvDBK7mXmaTJNe86fWdpRBJJnIF6cnYsV19eZ447J2z7Pb56lahNrtydx65ulvSYXlLQTQX
-	C3xX4PfFajtSQ1j3Ex4B2yAUrX2otV/1yUN0U=
-X-Google-Smtp-Source: AGHT+IH55jBXQuGrRFWB7QFDwp0aHH2LNHjhqhfqYbAFcay2HL31leHRvKu+CE2zXWHS10Yrl/LklQ==
-X-Received: by 2002:a17:902:e884:b0:248:811e:f873 with SMTP id d9443c01a7336-25170f37b15mr169800035ad.36.1757434554322;
-        Tue, 09 Sep 2025 09:15:54 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:e31e:18ea:d6c1:d90e])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25a27def96esm2062685ad.55.2025.09.09.09.15.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 09:15:53 -0700 (PDT)
-Date: Tue, 9 Sep 2025 10:15:50 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>, Frank Li <frank.li@nxp.com>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/6] remoteproc: imx_rproc: Clean up after ops
- introduction
-Message-ID: <aMBStih6Wi_isn2N@p14s>
-References: <20250908-imx-rproc-cleanup-v1-0-e838cb14436c@nxp.com>
- <20250908-imx-rproc-cleanup-v1-6-e838cb14436c@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pi/6Fm4a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CE8C4CEF4;
+	Tue,  9 Sep 2025 20:34:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757450046;
+	bh=IsCF+MUxVzd13pKkvlXlP/Ccmh25UQn/2DMZZUacACQ=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Pi/6Fm4aKrtyZmoD47MIk+2XEaNGEKSGvzDAEn7BW6R3SWBk1tfYPJQ207A+ukqIH
+	 efbIfEZ3JJAOkF/ySBMoMAyOBPQFM/rw1nm0DvlStfj5EYoCTMhbHLxssuOoiL7B5G
+	 fiPDeZjvxrgusL+VBIMP3ENfrl1tODwDB7ua0e4z5g99rsMjtSQdQwtzWoGVVgh7Gm
+	 G0jhyoEaZWrE+LXt+63xAYwWJQHD0uvVIBfcH+skb6uIJbFquHPWVV8/8PNVJXDBP2
+	 t7OikkrH0xFC+rS5B2rqNWT/aAw4lLZBptJbcly63rI2pE0XvJNNpFfE3gBSZP3SA4
+	 jR48JpShhwd4g==
+From: Andreas Kemnade <akemnade@kernel.org>
+Subject: [PATCH v2 0/3] regulator: sy7636a: define and init all resources
+ needed
+Date: Tue, 09 Sep 2025 22:33:01 +0200
+Message-Id: <20250909-sy7636-rsrc-v2-0-cfd9f44fd259@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250908-imx-rproc-cleanup-v1-6-e838cb14436c@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP6OwGgC/22MQQ6CMBAAv0L27JqyagFP/sNwWOsKjaYlW0Mkp
+ H+3cvY4k8yskES9JDhXK6jMPvkYCtCuAjdyGAT9vTCQoZPpjMW0NPZgUZM6dGSY7Y2Z3BFKMak
+ 8/Ge7XfvCo0/vqMs2n+uf/f+ZazQo1LaWu2K5uTxFg7z2UQfoc85fHj9F1qcAAAA=
+X-Change-ID: 20250906-sy7636-rsrc-c20aa6baa2c4
+To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Alistair Francis <alistair@alistair23.me>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Andreas Kemnade <akemnade@kernel.org>
+X-Mailer: b4 0.15-dev-50721
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1791; i=akemnade@kernel.org;
+ h=from:subject:message-id; bh=IsCF+MUxVzd13pKkvlXlP/Ccmh25UQn/2DMZZUacACQ=;
+ b=owGbwMvMwCEm/rzkS6lq2x3G02pJDBkH+vnPTTxzUXRhTfqE6mvGl+aE77f6I6JQGK0QmHhN4
+ Zf4rbc7O0pZGMQ4GGTFFFl+WSu4fVJ5lhs8NcIeZg4rE8gQBi5OAZjIl2aGf4pvBO/b9M6u6vkd
+ Y/8qc1GWt7Hm7ZkdLDMeCF62+vkkZwsjw8lGzbfLLI4ZO95qO3I0TEjZZo67WB4PU8qeOUsadJz
+ 3cQIA
+X-Developer-Key: i=akemnade@kernel.org; a=openpgp;
+ fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
 
-On Mon, Sep 08, 2025 at 09:07:39PM +0800, Peng Fan wrote:
-> With the switch-case in imx_rproc_{start,stop}{} removed, simplify
-> the code logic by removing 'goto'. The last switch-case in
-> imx_rproc_detect_mode() are no longer needed and can be removed.
-> 
-> This cleanup improves code readability and aligns with the new ops-based
-> design.
-> 
-> No functional changes.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/remoteproc/imx_rproc.c | 25 +++++++------------------
->  1 file changed, 7 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 5fa729f4286f6ac939357c32fef41d7d97e5f860..ed8395b097d07d02e5323550ff497819f9b95ad6 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -323,14 +323,11 @@ static int imx_rproc_start(struct rproc *rproc)
->  	if (ret)
->  		return ret;
->  
-> -	if (dcfg->ops && dcfg->ops->start) {
-> +	if (dcfg->ops && dcfg->ops->start)
->  		ret = dcfg->ops->start(rproc);
-> -		goto start_ret;
-> -	}
-> -
-> -	return -EOPNOTSUPP;
-> +	else
-> +		return -EOPNOTSUPP;
+The SY7636A has some pins which can be hardwired or used to have more
+more advanced power management available. As several devices containing
+this regulator have these pins not hardwired, but instead connected to some
+GPIO, enhance the driver to have them defined and initialized.
+Also add the ability to power off the chip completely by defining some
+input power supply.
 
+Actually implementing better power management is planned to be
+implemented as a second step. The regulators in the SY7636A should only
+be on for a short time during display refresh, but currently they are
+unconditionally forcefully enabled by the hwmon part of this chip.
 
-Here I would simply refactor this to:
+Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
+---
+Changes in v2:
+- en[-gpios] -> enable[-gpios] in yaml/dts/driver
+- fix en vs vcom_en in error handling
+- comment delay
+- drop applied commit (rebased to regulator/for-linus)
+- Link to v1: https://lore.kernel.org/r/20250906-sy7636-rsrc-v1-0-e2886a9763a7@kernel.org
 
-        if (!dcfg->ops || !dcfg->ops_start)
-                return -EONOTSUPP;
+---
+Andreas Kemnade (3):
+      dt-bindings: mfd: sy7636a: Add missing gpio pins and supply
+      regulator: sy7636a: add gpios and input regulator
+      ARM: dts: imx: e70k02: add sy7636
 
-Otherwise this patchset is going in the right direction.
+ .../devicetree/bindings/mfd/silergy,sy7636a.yaml   | 16 +++++++++++++
+ arch/arm/boot/dts/nxp/imx/e70k02.dtsi              | 25 +++++++++++++++++++-
+ .../arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts | 24 +++++++++++++++++++
+ .../arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts | 24 +++++++++++++++++++
+ drivers/regulator/sy7636a-regulator.c              | 27 ++++++++++++++++++++++
+ 5 files changed, 115 insertions(+), 1 deletion(-)
+---
+base-commit: c05d0b32eebadc8be6e53196e99c64cf2bed1d99
+change-id: 20250906-sy7636-rsrc-c20aa6baa2c4
 
-Thanks,
-Mathieu
+Best regards,
+--  
+Andreas Kemnade <akemnade@kernel.org>
 
->  
-> -start_ret:
->  	if (ret)
->  		dev_err(dev, "Failed to enable remote core!\n");
->  
-> @@ -380,14 +377,11 @@ static int imx_rproc_stop(struct rproc *rproc)
->  	struct device *dev = priv->dev;
->  	int ret;
->  
-> -	if (dcfg->ops && dcfg->ops->stop) {
-> +	if (dcfg->ops && dcfg->ops->stop)
->  		ret = dcfg->ops->stop(rproc);
-> -		goto stop_ret;
-> -	}
-> -
-> -	return -EOPNOTSUPP;
-> +	else
-> +		return -EOPNOTSUPP;
->  
-> -stop_ret:
->  	if (ret)
->  		dev_err(dev, "Failed to stop remote core\n");
->  	else
-> @@ -1000,13 +994,8 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
->  	if (dcfg->ops && dcfg->ops->detect_mode)
->  		return dcfg->ops->detect_mode(priv->rproc);
->  
-> -	switch (dcfg->method) {
-> -	case IMX_RPROC_NONE:
-> +	if (dcfg->method == IMX_RPROC_NONE)
->  		priv->rproc->state = RPROC_DETACHED;
-> -		return 0;
-> -	default:
-> -		break;
-> -	}
->  
->  	return 0;
->  }
-> 
-> -- 
-> 2.37.1
-> 
