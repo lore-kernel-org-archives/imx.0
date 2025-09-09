@@ -1,150 +1,82 @@
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B172E7651
-	for <imx@lists.linux.dev>; Mon,  8 Sep 2025 23:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C29A20102C;
+	Tue,  9 Sep 2025 00:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757375019; cv=none; b=bZmndOvEDvialomww9rZwQ/hnFCisS9488ZTcI//fzxfkRcLrLUUcJshikzEfakpi1Md5IMNfAY01hloEetdQYMhP3hR5TTLTtal+X7S+MzA6Wdl3XZ+NRen/SUFt4Y+7pqYO2RPgWBCx6XTBdLB0h665xTji9QsZsTD7ZfCE4w=
+	t=1757378699; cv=none; b=ACfGD5+l18J4+TVR8TRoSGrma3z6FR99HUQfk7GIrpznpW322/iii/TYNlpdZ7AO2Orb/RA1xyIC/+IFCMRTRbhQcPIronf3+4uk4TzTGOZZzeVl6z0oNlraGUU/tiJvTZc3QvXm7EY0IJ7UvBYmPdqShboDBMM9pL78/q1EzBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757375019; c=relaxed/simple;
-	bh=Xf+o5luAHatCq/dTDCApLoFgBaeG3YyqdSkFJuMacwE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HN5NsvngkO4/K8ZBJlFnb2yDFm9u48x9Hs/74yhArSM/7Ez0B+vLKfdBRsRNvUi8fDa1d3K3cgj7ICUWKQW904OodoRKpCFdDBRCcqxRDnhXS7cezs/iDX9oC/jviX/2066V6xecAuTsbQmOK7b5g9ys3m4Thds3Azc8AeGs3tM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=cS6h2waY; arc=none smtp.client-ip=209.85.210.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+	s=arc-20240116; t=1757378699; c=relaxed/simple;
+	bh=U5Udt4w7yPFZCT86OGl/Ot0b/JCIBL+lIFPb2Y9M3mg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dLiHDbbx+gnf0a+IXSo8ZNSJbW11p6WnLraSzbAaNSECz4j2G8VeIH5G3FbdYGTMeHshcpxap5nqT3tCSBZ2DjgPO7dDuCrxX0xIW7hw3YRF4j/FjEUxmjGuHqc4LZYLT3ud04zmYGtxPARJnN1UQ47rvX3qh7bY4StXoXmZDdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CFz8lzgq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="cS6h2waY"
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-746dae5ff93so3901595a34.0
-        for <imx@lists.linux.dev>; Mon, 08 Sep 2025 16:43:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gateworks.com; s=google; t=1757375016; x=1757979816; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TZ31nFbpBywr5LWV7R5R4cpzaC/84WhWlclxZ1iDl8w=;
-        b=cS6h2waY2PAKIG0XyKYP8ApOfG6f9FIg9QQHWz6vzcEngGVdyEGejL04c0msX0yTno
-         UwvE1yvvf+BaTy9aPd9y0djBeJjFPqCQYLOSCehsUY+SvvfflvdrKny0saeVjZiT6lNu
-         4io8kL0hILFsnfIwBvsXtHFFcWdgiO6cxsGnb8nRVJjzhvGg8E/r5MnD3y6eBpNEqCxW
-         O9klsPtdLN5QIuBwfcD4RN8y8cyu0AOyqoBeQCR/HkqhQL3JODRZpnkE0Z+2ioNwItZS
-         JvfKArsvr9SI2jtNULdz8Drm1OaE5VVctoMKLRk1denVSCFK/Yw5tK+K4iMlAAYFdiTT
-         L/gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757375016; x=1757979816;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TZ31nFbpBywr5LWV7R5R4cpzaC/84WhWlclxZ1iDl8w=;
-        b=KVmGFLMDPyr1IFV59aVf4aNUzqoCHyKUaHwQyLE1lCWsqeJ/bgVY3zju/num5HegZJ
-         yGKJNJXUWtDq0uLEpQys1pob2N+cP/+k7G/yFYlFwmT09ZlO1yhUi0k4HCdynKZ7rx96
-         n4XmlBJ7t8EMuXvA9oTQ6uZZ2LhNywdE+WzyCQNeQAXNQG/q64UX6GgMUT5xIQ0IqJFx
-         +UUxg8IIY9w5TCJRzIDPWzWuBYRXfrLaWgGMTDgyvOlFwdQ4b0U4B+2vMG1VcVbRYaSD
-         skCb7kXWEA79q0K8pzlLXl75Mo1nlpMqoqJWN/TxolHioOtTxp5Q7kIfg0yem2A1o22V
-         MN/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXoRTfstUWfEuEb9ZTkYDApJ54DqBPcvS2GhlLCW3GgNOctKywmBF0KhKMPPFsEstONdTM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxoBpbvGU0aq8n3kkjbBgqd/eI26uyh41wI5CkqUqmMa/NPgM/j
-	nOB0bUWeLDvpCeAIfJXzzx53xV9qKujaFQqUqnFOmOQDbIy95SPM3B7pzE6FpMkMXD2Xw2P7srp
-	dicyISKwrcyCP7DglvjPObiVmBTODTg3KXjYTxPDzXg==
-X-Gm-Gg: ASbGncuF9+ilI0D0CpZGUT1pnVvJb4sKoNktDU0lolcBmCU5vjaSSDX2mJJ14dlRSR4
-	ba7Mtwz/z0kNnipe4A9n1rAZN0u6B/qqmQx+q5Oi+qwfrQJ5RJJ9tgjkFJlrzsQIxufm+QNFHs0
-	e38rD8rkym9LRzE6uBvxv/el/OuWM7yYd7fYDlRfR/t/OzQa1qaanG41Glxo5WpoIIhYlJspYgM
-	sHsYvXslw3qrs0aoA==
-X-Google-Smtp-Source: AGHT+IFz9G3l1NgBkuI646j9EnzDEEYlshmM1HaRnKUWjXTHPYCEEDbgvsYhJH8t3TMOXGnJoUgXdZIdCebMwUfCQhE=
-X-Received: by 2002:a05:6830:4885:b0:745:52d3:947c with SMTP id
- 46e09a7af769-74c71eff9demr5731156a34.11.1757375016543; Mon, 08 Sep 2025
- 16:43:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CFz8lzgq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE810C4CEF1;
+	Tue,  9 Sep 2025 00:44:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757378698;
+	bh=U5Udt4w7yPFZCT86OGl/Ot0b/JCIBL+lIFPb2Y9M3mg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CFz8lzgqGVfGRr5nutYDK/3Kh8HMv+XMb5BfgLSQEu0yDv3DNZdB3+h8q5tctyFD9
+	 z5t4FOz4PRe4sjNaWr5XnKYHoqxUX6nJKqBEBrwTqe8EoDsG0N4wzFzeiIuBe9msM6
+	 ikBy20p3NPYTQLPUX6bbLH+q+nPxwY7JcSsz5wQwGFaaTrnIEeymaaKlcwMMEEBjs4
+	 cAEcqR/ULuIffRnK28Gq2lhmEz0gN11/ruIVWjopQKvvMfJfMYpBkKLUrSj942qso7
+	 /GYEyIkkoHMcFYjVtI0XLiDQBAWElJy1lR04j77LSlcwqX2gEIRG7rODy9cvbkvcWW
+	 emrAeX3JwQDwg==
+Date: Mon, 8 Sep 2025 19:44:58 -0500
+From: Rob Herring <robh@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Andreas Kemnade <akemnade@kernel.org>, Lee Jones <lee@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Alistair Francis <alistair@alistair23.me>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/4] dt-bindings: mfd: sy7636a: Add missing gpio pins and
+ supply
+Message-ID: <20250909004458.GA2311693-robh@kernel.org>
+References: <20250906-sy7636-rsrc-v1-0-e2886a9763a7@kernel.org>
+ <20250906-sy7636-rsrc-v1-1-e2886a9763a7@kernel.org>
+ <288f0cf1-1ee4-4eba-b059-641120bb93f3@kernel.org>
+ <c879f3e1-f64c-4cbd-97ec-646d06488d8e@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250815-imx9-dts-v1-0-e609eb4e3105@nxp.com> <20250815-imx9-dts-v1-8-e609eb4e3105@nxp.com>
-In-Reply-To: <20250815-imx9-dts-v1-8-e609eb4e3105@nxp.com>
-From: Tim Harvey <tharvey@gateworks.com>
-Date: Mon, 8 Sep 2025 16:43:25 -0700
-X-Gm-Features: Ac12FXzVP_2vJkdlY1v1O3gS6w0Yd5KqydILTTKyUiWG6S13pVl8pRj4kS7eaz0
-Message-ID: <CAJ+vNU2hro_ZoRvmQ9yowKsX25AnrgZdGMn2D-RCkyJA02CEhA@mail.gmail.com>
-Subject: Re: [PATCH 08/13] arm64: dts: imx95-19x19-evk: Add phy supply for netc
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c879f3e1-f64c-4cbd-97ec-646d06488d8e@sirena.org.uk>
 
-On Fri, Aug 15, 2025 at 4:50=E2=80=AFAM Peng Fan <peng.fan@nxp.com> wrote:
->
-> Add phy supply for netc emdio on board.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts | 20 +++++++++++++++++=
-+++
->  1 file changed, 20 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts b/arch/arm=
-64/boot/dts/freescale/imx95-19x19-evk.dts
-> index 39815b21d235d2f8cfa49720d3be49d056ea039a..feee6da65d37cae7413b09216=
-014d6fe2b76b032 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-> @@ -226,6 +226,25 @@ sound-wm8962 {
->                                 "IN3R", "AMIC",
->                                 "IN1R", "AMIC";
->         };
-> +
-> +       reg_aqr_stby: regulator-aqr-stby {
-> +               compatible =3D "regulator-fixed";
-> +               regulator-name =3D "aqr-stby";
-> +               regulator-min-microvolt =3D <3300000>;
-> +               regulator-max-microvolt =3D <3300000>;
-> +               gpio =3D <&i2c5_pcal6408 1 GPIO_ACTIVE_HIGH>;
-> +               enable-active-high;
-> +       };
-> +
-> +       reg_aqr_en: regulator-aqr-en {
-> +               compatible =3D "regulator-fixed";
-> +               regulator-name =3D "aqr-en";
-> +               regulator-min-microvolt =3D <3300000>;
-> +               regulator-max-microvolt =3D <3300000>;
-> +               vin-supply =3D <&reg_aqr_stby>;
-> +               gpio =3D <&i2c5_pcal6408 0 GPIO_ACTIVE_HIGH>;
-> +               enable-active-high;
-> +       };
->  };
->
->  &adc1 {
-> @@ -502,6 +521,7 @@ &netc_blk_ctrl {
->  &netc_emdio {
->         pinctrl-names =3D "default";
->         pinctrl-0 =3D <&pinctrl_emdio>;
-> +       phy-supply =3D <&reg_aqr_en>;
->         status =3D "okay";
->
->         ethphy0: ethernet-phy@1 {
->
-> --
-> 2.37.1
->
->
+On Mon, Sep 08, 2025 at 03:34:00PM +0100, Mark Brown wrote:
+> On Sat, Sep 06, 2025 at 02:01:25PM +0200, Krzysztof Kozlowski wrote:
+> > On 06/09/2025 11:09, Andreas Kemnade wrote:
+> 
+> > > +  en-gpios:
+> 
+> > enable-gpios, unless it is something else, but then please explain in
+> > the description.
+> 
+> > > +    description:
+> > > +      If EN pin is not hardwired, specify it here to have it set up.
+> > > +    maxItems: 1
+> 
+> It seems reasonable to name the property after the pin on the device?
 
-Hi Peng,
+Yes, but in general we've standardized on reset, enable, powerdown, etc. 
+rather than all the possible variations of those names. At least with 
+'reset', standardizing it has bought us the ability to handle it with 
+the reset framework rather than every driver implementing its own GPIO 
+twiddling.
 
-I'm not sure where you are with regards to this patch but it indicates
-to me that you may have the enetc_port2 10G port with the AQR113 PHY
-working on the imx95-19x19-evk with upstream Linux. If so I would be
-interested in knowing what other patches you have for that. I'm seeing
-the interface fail to register with:
-nxp_enetc4 0002:00:10.0 eth2: PHY has no common interfaces
-
-I'm wondering if there is some support missing from enetc or the
-aquantia phy required to work with 10gbase-r.
-
-Best Regards,
-
-Tim
+Rob
