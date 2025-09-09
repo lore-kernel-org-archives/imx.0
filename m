@@ -1,85 +1,70 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9C1482F2
-	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 08:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6275C1D6193
+	for <imx@lists.linux.dev>; Tue,  9 Sep 2025 10:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757408306; cv=none; b=ITG0ZhpdBEQdtOx54/fQtsqTCEg2xjH+5I9/WZD8jp9D2J3u+/k87kWqLi2WwRVLdKzCPCS8i7yi5xpFbbJj3K+/o6j3c5KBXleWWarpdsclTN5fCnXCJcr9ZPc2aLVoK1+AeaAvMl1wVu15Y0iJoWj1k7v1sCDNnKxGtihIiYo=
+	t=1757413967; cv=none; b=TPcb5fJFaIH1a+dz9rXxATohIfvZp5zDgr6xOY0eOg/zPWc+4v8ohvMo6+5ngGs8fKgHDx9YY3FvKFqr9ehspZG+xs/4fqsUikauVNHhZwtWytwncOMCzADPBe0SzEctyWMiKCI6Ks4BUhan/NW2/PlhdzniWqVY7MrQnMspuSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757408306; c=relaxed/simple;
-	bh=7l3LSyW/dszeN+8436Ru+Gt/JPA/DJ9sw5nh3KFAMvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HrUF3+5r2RBbOwQKCRjOI6eKnxhP8iita/MJkHBAYRCN6wX+8yZZXuOft5HHvwB5ZZmfN8hVu6uCTej4Ul8VUg8GJmKdZ/PmjdKKi+y3p/AMSwU0nVrFbmIhCv2DMcAZGWS7VBk4QBMxi+SAe1HpFXOu5Dgf8hrpI6H74tqhyGA=
+	s=arc-20240116; t=1757413967; c=relaxed/simple;
+	bh=ZsAPaSFb4QtZg1NreJIEvMKmWzUX2F/c308tqXb/1ZI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B+fzhwEUzWHEUACyc6Eg0sE37u8FEJqsFVyWKl1KgLUGKjYqefse/wx0c1+/TNNAZlzFFpPT6LJRR2m0TGYb0vi9N839icGaRCNGUpsyXtSXAB1ntPdBC0GAG/+FdrULIcwAEZOv9E93hB8LLkt9lMMxlDaybUNSBSNbR15FiQc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1C4CC15A1;
-	Tue,  9 Sep 2025 01:58:16 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C48493F63F;
-	Tue,  9 Sep 2025 01:58:20 -0700 (PDT)
-Date: Tue, 9 Sep 2025 09:58:13 +0100
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 72FCC113E;
+	Tue,  9 Sep 2025 03:32:37 -0700 (PDT)
+Received: from usa.arm.com (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E6C9B3F66E;
+	Tue,  9 Sep 2025 03:32:43 -0700 (PDT)
 From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>, Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
+To: Cristian Marussi <cristian.marussi@arm.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 5/6] firmware: arm_scmi: imx: Support getting syslog
- of MISC protocol
-Message-ID: <20250909-excellent-unbiased-seriema-8d619f@sudeepholla>
+	Peng Fan <peng.fan@nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	arm-scmi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH v4 0/6] firmware: arm_scmi: imx: Dump syslog and system_info
+Date: Tue,  9 Sep 2025 11:32:41 +0100
+Message-Id: <175741387444.137822.14283463881745824228.b4-ty@arm.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250904-sm-misc-api-v1-v4-0-0bf10eaabdf1@nxp.com>
 References: <20250904-sm-misc-api-v1-v4-0-0bf10eaabdf1@nxp.com>
- <20250904-sm-misc-api-v1-v4-5-0bf10eaabdf1@nxp.com>
- <20250908-sparkling-owl-of-judgment-f17eeb@sudeepholla>
- <PAXPR04MB845929E7106141E785A32387880CA@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <20250909040159.GC20475@nxa18884-linux.ap.freescale.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250909040159.GC20475@nxa18884-linux.ap.freescale.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 09, 2025 at 12:01:59PM +0800, Peng Fan wrote:
-> Hi Sudeep,
-> 
-> On Mon, Sep 08, 2025 at 11:51:02AM +0000, Peng Fan wrote:
-> >Hi Sudeep,
-> >
-> >> Subject: Re: [PATCH v4 5/6] firmware: arm_scmi: imx: Support getting
-> >> syslog of MISC protocol
-> >[...]
-> >> > +};
-> >> > +
-> >> 
-> >> Much better now. But I am still thinking if this must go to the
-> >> document to make sure it remains ABI and firmware can't reorder the
-> >> as we might have no way to deal with that. That's the reason I was
-> >> asking for raw dump so that you need not put all these details in the
-> >> spec/document.
-> >
-> >Let me check with firmware owner whether they would include this
-> >into i.MX SM spec or not. 
-> >If no, raw dump would be the choice.
-> 
-> I checked with firmware owner, this should be using raw dump.
-> The layout would be changed for new platforms.
-> 
-> Since this is raw dump, I think debugfs might be preferred.
+On Thu, 04 Sep 2025 18:40:41 +0800, Peng Fan wrote:
+> System Manager firmware provides API to dump board, silicon, firmware
+> information. It also provides API to dump system sleep, wakeup
+> information. So add the interface for Linux to retrieve the information:
 >
+> patch 1 is to add doc for board information which was missed before.
+>
+> [...]
 
-It can be sysfs, but it can be just one single 4K dump, no more details
-from the kernel than just raw bytes.
+Applied to sudeep.holla/linux (for-next/scmi/updates), thanks!
 
--- 
+[1/6] firmware: arm_scmi: imx: Add documentation for MISC_BOARD_INFO
+      https://git.kernel.org/sudeep.holla/c/646c0c9e06a6
+[2/6] firmware: arm_scmi: imx: Support discovering buildinfo of MISC protocol
+      https://git.kernel.org/sudeep.holla/c/cc798b105070
+[3/6] firmware: arm_scmi: imx: Support getting cfg info of MISC protocol
+      https://git.kernel.org/sudeep.holla/c/d3e25c244d53
+[4/6] firmware: arm_scmi: imx: Support getting board info of MISC protocol
+      https://git.kernel.org/sudeep.holla/c/88d3671baf41
+--
 Regards,
 Sudeep
+
