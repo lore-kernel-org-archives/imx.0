@@ -1,43 +1,44 @@
 Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B042D839F;
-	Wed, 10 Sep 2025 19:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A9818FDBE;
+	Wed, 10 Sep 2025 20:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.167.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757533063; cv=none; b=G5PHlblLW/36WGMXbZ7ChXNm0tfkzQ/YZAHm/maY+o696RMgzGFgHxfEgJ6jvidxnyGfZmi3NB38qP554d90iOK5CQItJo/0atGoxYPsjzrfYR6WLIUIpsijiN1gxdhzBCBb8YL0DuiydOOyAfBhFeLzPxOxjeZPxtxMirERQEU=
+	t=1757536397; cv=none; b=EIknayxSztkbtGhJ4j3ipGR8TF6irHcpmC2JPWj2qUtSWfogo4nmXgsm3W56gqyvcTCLa6gly+ao0Ci9/ShJl56FVlMNyvYjLiobuPxoIIBbXUl/vo9LrkO14Mxptjd23gSAGQUVMwAMMRdTmZySUQY9lFhLVYIfye5xjEKIdR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757533063; c=relaxed/simple;
-	bh=Kvy79l38OjgXam56LG4SBUALLkxIDxyLLpk0bImYB5k=;
+	s=arc-20240116; t=1757536397; c=relaxed/simple;
+	bh=Xn32CgfsCdcgiZc5xVsldvxbovwbLiKF6pDU6aeqlX8=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=ZQGKD8iMEiGgiIw5Z0Cepw+3ucV0RujC1KjQPqfnmk4lngmZ7rb8e9i6JJmYxPxaglM7r5zgOHMEHNyzYLqAaBAAtX+kS4W3Uhux42PhhOeIBQ1qY89bkBnwq9dBECP0K0GlmkAHo1yA6RXkCJu2YtJ2/VPsdu1WTcuJKT7uTaU=
+	 MIME-Version:Content-Type; b=SIx47eboTwhbXTcdGlaph7BITRcgGac3ROWI8oRR+9Cp+f/bhSF7nExkrXSjLWjate0eoWjek6w6NvYUVnK0WYZHzDmWs2SF2hAndqwRMYpxI3swLtEGDuBhuQGCb8s72tFGEPV9zRBJ24DakThdlIM15yc0lNhEJqQ14NuZWh4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=116.203.167.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
 Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id E33972C14AA;
-	Wed, 10 Sep 2025 21:37:38 +0200 (CEST)
+	by lithops.sigma-star.at (Postfix) with ESMTP id 511D5CE34D;
+	Wed, 10 Sep 2025 22:33:07 +0200 (CEST)
 Received: from lithops.sigma-star.at ([127.0.0.1])
 	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id mZ4QcxbfF_Ic; Wed, 10 Sep 2025 21:37:38 +0200 (CEST)
+	with ESMTP id aSKreuvdlGXI; Wed, 10 Sep 2025 22:33:06 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 274732BA98D;
-	Wed, 10 Sep 2025 21:37:38 +0200 (CEST)
+	by lithops.sigma-star.at (Postfix) with ESMTP id 4BFD3CE34E;
+	Wed, 10 Sep 2025 22:33:06 +0200 (CEST)
 Received: from lithops.sigma-star.at ([127.0.0.1])
 	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Q1j44iMB0ybE; Wed, 10 Sep 2025 21:37:38 +0200 (CEST)
+	with ESMTP id YO9RM-IU3T_L; Wed, 10 Sep 2025 22:33:06 +0200 (CEST)
 Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id D9D02CE340;
-	Wed, 10 Sep 2025 21:37:37 +0200 (CEST)
-Date: Wed, 10 Sep 2025 21:37:37 +0200 (CEST)
+	by lithops.sigma-star.at (Postfix) with ESMTP id 082B5CE34D;
+	Wed, 10 Sep 2025 22:33:06 +0200 (CEST)
+Date: Wed, 10 Sep 2025 22:33:05 +0200 (CEST)
 From: Richard Weinberger <richard@nod.at>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Dave Hansen <dave@sr71.net>
 Cc: Arnd Bergmann <arnd@arndb.de>, ksummit <ksummit@lists.linux.dev>, 
 	linux-kernel <linux-kernel@vger.kernel.org>, 
 	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
 	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
 	linux-mips <linux-mips@vger.kernel.org>, 
 	linux-mm <linux-mm@kvack.org>, imx <imx@lists.linux.dev>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, 
 	Lucas Stach <l.stach@pengutronix.de>, 
 	Linus Walleij <linus.walleij@linaro.org>, 
 	Geert Uytterhoeven <geert+renesas@glider.be>, 
@@ -55,9 +56,9 @@ Cc: Arnd Bergmann <arnd@arndb.de>, ksummit <ksummit@lists.linux.dev>,
 	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
 	Sergio Paracuellos <sergio.paracuellos@gmail.com>, 
 	Andreas Larsson <andreas@gaisler.com>
-Message-ID: <1586788245.22320.1757533057730.JavaMail.zimbra@nod.at>
-In-Reply-To: <d9caedb4-41c8-4ef7-99b9-51d891aee555@csgroup.eu>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <497308537.21756.1757513073548.JavaMail.zimbra@nod.at> <d9caedb4-41c8-4ef7-99b9-51d891aee555@csgroup.eu>
+Message-ID: <640041197.22387.1757536385810.JavaMail.zimbra@nod.at>
+In-Reply-To: <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <497308537.21756.1757513073548.JavaMail.zimbra@nod.at> <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net>
 Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -69,36 +70,26 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF141 (Linux)/8.8.12_GA_3809)
 Thread-Topic: Reaching consensus on CONFIG_HIGHMEM phaseout
-Thread-Index: BY4xIXfJeETYMNF0Cnq/68k1mYFqTg==
+Thread-Index: qX92QwLBi0un/69XQpQP6tb4aScRlQ==
 
-Christophe,
+Dave,
 
 ----- Urspr=C3=BCngliche Mail -----
-> Von: "Christophe Leroy" <christophe.leroy@csgroup.eu>
-> Can you tell which PPC32 model/family you are using ? Is it mpc85xx or
-> and/or other variants ? Maybe we can look at keeping CONFIG_HIGHMEM or
-> find alternatives for that subset of PPC32 only.
-
-Off the head, MPC8343 and QorIQ P1022.
-
+> Von: "Dave Hansen" <dave@sr71.net>
+>> Even with a new memory split, which could utilize most of the
+>> available memory, I expect there to be issues with various
+>> applications and FPGA device drivers.
+> I'd be really curious what the _actual_ issues would be with a
+> non-standard split. There are a lot of "maybe" problems and solutions
+> here, but it's hard to move forward without known practical problems to
+> tackle.
 >=20
-> Could you also elaborate a bit on the kind of issues you forsee or fear
-> with applications and FPGA device drivers.
+> Has anybody run into actual end user visible problems when using one of
+> weirdo PAGE_OFFSET configs?
 
-Unfortunately, applications in this area often make certain assumptions
-about the amount or layout of memory. This becomes a bigger problem when
-using FPGA device drivers of questionable quality, which share memory
-between the kernel, userspace, and the device itself.
-These are mostly out-of-tree drivers, so that's my horse to ride,=20
-I'm just mentally preparing myself for "interesting" bugs that will need
-to be sorted out.
-
-> FWIW I sent out today a patch that removes CONFIG_HIGHMEM complely on
-> powerpc in order to get a better view of the impacted areas and allow
-> people to test what it looks like on their system without
-> CONFIG_HIGHMEM. See [1].
-
-Oh, that was fast. :-)
+In the past I saw that programs such as the Java Runtime (JRE) ran into
+address space limitations due to a 2G/2G split on embedded systems.
+Reverting to a 3G/1G split fixed the problems.
 
 Thanks,
 //richard
