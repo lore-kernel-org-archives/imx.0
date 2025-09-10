@@ -1,132 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25DF1E8320;
-	Wed, 10 Sep 2025 15:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6982472B0;
+	Wed, 10 Sep 2025 15:14:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757516956; cv=none; b=N/Vx0PlWppFLjwW7AHqVSxO6fKyg4EOuynA72UU47bWf+BfUtfMXbtry0KEBEt04n/7EAtHnS/EmnOnpHn7c4pybekYRz+mi0AaGE7GePjc9bxRegx7b6JW67xWY7FjaNRm5mbnKchFFaKPvfQVFBHl+Y6RiS33HpWe5+vtR6O0=
+	t=1757517262; cv=none; b=kSYbA8noEur29S2LyODM54L140o4+u2uSvvPUz4kTUyKwK1xtlwAkrmk16XwKKGAQpL/Q+19+GFBHgBwcmw+KWFwfn30mcI8gI9qTz3ped+zrRsAGCCsDz/uaYq6kRftZUycf20OJ3SAZMxX6bJiPIiE1R5OnCgLKOsFab9+3pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757516956; c=relaxed/simple;
-	bh=ydn2xtFjAjaReC6GWq0B2HXB/HbN5g3KL/JJeEAI6Tw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ceXk+qiI241Ii3O3ZXcf01m7LgVyjno62DpIlXTHpHa/f9XAuR842iuTvtR3u4mYU0Po3/cf8uaQ117mI++HWlFc3ITDg5kC2qXms08rJ8AQL1jILym4Kqyt8u1PIJ6FAcQtDUkQsDbHNahTHrSe2SbRTFE6/Xhp1vRJ/OQfZQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qjg1XiVy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757517262; c=relaxed/simple;
+	bh=j0peFtksgP54xqAUc1oP7yZ9W8M7m/k54T6JnFegQgM=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=jOK3VazoGJmceXiRBI6jxbDtT1wswUrxXwfKd/RaV+25njBT2tvb+cE7MmK66k5Xo3eolDUHkISf+J5W4m6E8uZT2452347qUl3BP0L1P3xv07ry7CVYzzPy+3NKknW4ZapKvFM7J0hrxA393cWIU9TFfFQ8X3on6uOeR3/tR9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Wt3vFLdg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=H/gMzN7T; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qjg1XiVy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96D0C4CEEB;
-	Wed, 10 Sep 2025 15:09:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757516954;
-	bh=ydn2xtFjAjaReC6GWq0B2HXB/HbN5g3KL/JJeEAI6Tw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qjg1XiVygkBuHfd07CGmzSo/BBZXDsGklMV0teiRj9Z8OCLNdQBIS6DOn6KlS5iAF
-	 YrMK97cedrPJ+ls5/8RGkg+kMzekHGsJoZNal3m+g9MMIkxKeJCvlEuwD0AajJyVyT
-	 nVVgaq8HdtMZ+kaQYTmwo3o7W9/lsWczG/Jd/89uasTo+qK3R3qYNi0zjmm9+qfnp7
-	 HcznSK765Tg/LeGyQZKu/6bqp01nzTsg/hgsCaQGwpqGFES+HIlh/jP+1pUnvj7WM5
-	 m04NWxyYbHAfuG2S1vrxIHSpSmqrlq0m6PDAL10LSWZJdGlwSDWmjA5B2zlSh5ye+y
-	 90Ey/7zxBol8w==
-Date: Wed, 10 Sep 2025 16:09:05 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Marco Felsch <m.felsch@pengutronix.de>,
-	Jonas Rebmann <jre@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-sound@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 1/4] dt-bindings: net: dsa: nxp,sja1105: Add reset-gpios
- property
-Message-ID: <693c3d1e-a65b-47ea-9b21-ce1d4a772066@sirena.org.uk>
-References: <20250910-imx8mp-prt8ml-v1-0-fd04aed15670@pengutronix.de>
- <20250910-imx8mp-prt8ml-v1-1-fd04aed15670@pengutronix.de>
- <20250910125611.wmyw2b4jjtxlhsqw@skbuf>
- <20250910143044.jfq5fsv2rlsrr5ku@pengutronix.de>
- <20250910144328.do6t5ilfeclm2xa4@skbuf>
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Wt3vFLdg";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="H/gMzN7T"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id C49A01400375;
+	Wed, 10 Sep 2025 11:14:19 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Wed, 10 Sep 2025 11:14:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1757517259;
+	 x=1757603659; bh=lsUUzVSssKb2ZuGuZgzggTzESfnxgxP19f0NGhCBk2A=; b=
+	Wt3vFLdgaWOIw3mFFTO8HkI+FL3aLrAvk1XZkFPK029w4p9kIsmeNNXR2doMLfc2
+	NQaimD6tWSMhyd9vrBwpPql7GPen65eFUN6bOfqTcjaYKQTvFwR3Tilc07C6ExJ8
+	jmxdK+IoR3hnYmXzQTnYg/t2INRTwDKScAAC5Zh97EJg6FK42wOtjxbJQG0rbqtx
+	vb435sW48hCiGaDmkSb48ej0GWsn5+SI3ezoINWNC9Mi29MHlc2MYgDudDq3vQpI
+	E3JHV5FX9Je89nP69A4JyLOdFZEUPLOsF/5GLJ2vjV5NifsecRQsRhBZHOY5Wy9x
+	jt6rDjYilo0TVNJQvnJkTg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757517259; x=
+	1757603659; bh=lsUUzVSssKb2ZuGuZgzggTzESfnxgxP19f0NGhCBk2A=; b=H
+	/gMzN7TnwJd0vg/MTYVl/pyoe/hmyfwJF4mtR5JWM0w21EGmDqzYq1IsTdotAh60
+	Fmd1Vg+SdRbChBFHMrAKmV4sr5AgLPgZE/hNEG3iugSyvyKHaye+uflCyTVZE7eW
+	y5OXjXOMEmKkObNDMRZmLutp1NrnRb+HXmB/4TDEu05TLasJXe4OYpexHWqlypFG
+	f5UGmGv6/ug4tXqoJzn54aHwEZlvC1X/XhFICwEees+qOB1PMhCXSGFdzGOeVRCA
+	AmHdT3PYzk6ROQA/RcaMy/7tVU36ZMliytCzRpQYn6smIPsw/Gu6lhjsbjgbm1PQ
+	nnukP2hsdOVcW4iab733Q==
+X-ME-Sender: <xms:yZXBaDXOlmIombO1szwOlmpXbQqLOdZRNKdHj8DHhLwnjgybvVtD3Q>
+    <xme:yZXBaLmGS84fPQjmk21XEVQnEGpISmEP8_Uye0ca4ReQR3HPDWjwuZEIYxBFYNeqB
+    zTGP6WvYL_gjS6k-qc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvfeeivdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvkedpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
+    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
+    tghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvg
+    gvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghn
+    uggvrhdrshhvvghrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgih
+    hordhprghrrggtuhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgv
+    nhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrg
+    gurdhorhhgpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:yZXBaESgMqAfocAh5WwsNKvYXczfu7UTStKzoEZ_LOyYB88gFCsczQ>
+    <xmx:ypXBaMq8oJRxVm5-KPXU3p6LapKK9VSGtugiiL7OXrTltECusc88CQ>
+    <xmx:ypXBaCy-TVZZI6VvKyzbCn9-qbN6vjLZQvQ8eH7rWv4q8MqywpKQ7Q>
+    <xmx:ypXBaPDeWwsS_0RafF3IO58JfOjBv4WASYIgwgXNH9S2I7eVRXv1Nw>
+    <xmx:y5XBaNu8n69vsZmygvax3BlNn5O-QH6oHbeKtp693EevppGTS0Ykwx7j>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id D18B3700065; Wed, 10 Sep 2025 11:14:17 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7Lh4wxWc22jPqJvF"
-Content-Disposition: inline
-In-Reply-To: <20250910144328.do6t5ilfeclm2xa4@skbuf>
-X-Cookie: I think my career is ruined!
+X-ThreadId: AmcCJOTBQ5ho
+Date: Wed, 10 Sep 2025 17:13:57 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Matthew Wilcox" <willy@infradead.org>,
+ "Linus Walleij" <linus.walleij@linaro.org>
+Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>
+Message-Id: <55cbc329-4b14-4f62-90bb-1e1007cc1152@app.fastmail.com>
+In-Reply-To: <aMGFhuHyQwtwyF7B@casper.infradead.org>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <CACRpkdb=E-_6fZ+4mX5FJas9C5Njp3Gwrygs-cAfWNdbP594cw@mail.gmail.com>
+ <aMGFhuHyQwtwyF7B@casper.infradead.org>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
+On Wed, Sep 10, 2025, at 16:04, Matthew Wilcox wrote:
+> On Wed, Sep 10, 2025 at 03:10:05PM +0200, Linus Walleij wrote:
+>> 
+>> This in practice means the area 0xf1000000-0xffffffff
+>> which also includes the high exception vectors that must for
+>> natural reasons also be kept in the mapping.
+>> What we have mapped today (all of the time) is
+>> 0xc0000000-0xffffffff.
+>> 
+>> A minimal 256 MB mapping from 0xf0000000-0xffffffff
+>> should be able to cover this.
+>
+> Can I ask where the MMIO (PCI?) window lives?
 
---7Lh4wxWc22jPqJvF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+That 256MB area is shared by anything the kernel can access
+directly, other than the linear map: vmlinux, modules, vmalloc,
+ioremap, vmap-stack, etc.
 
-On Wed, Sep 10, 2025 at 05:43:28PM +0300, Vladimir Oltean wrote:
-> On Wed, Sep 10, 2025 at 04:30:44PM +0200, Marco Felsch wrote:
+This is mostly unchanged from the tradtitional layout on
+arm32 that has the same ~256MB limitation, though it does
+get a little tighter because .text/.data is now also
+mapped into this space instead of executed from the linear
+map.
 
-> > Can you please elaborate a bit more? I was curious and checked the
-> > AH1704, it says:
-
-> > "The RST_N signal must be kept low for at least 5 us after all power
-> > supplies and reference clock signals become stable."
-
-> > This is very common, so the driver only needs to ensure that the pin was
-> > pulled low for at least 5us but not exact 5us.
-
-> The statement says that during power-up, when the supply voltages and
-> clocks rise in order to become within spec, the reset signal must be
-> held low. This requirement lasts for up to 5 us more after the other
-> signals are in spec.
-
-...
-
-> I said that _while the supplies and clocks aren't in spec and 5 us after
-> they become in spec_, RST_N has to be kept low.
-
-> And if you plan to do that from the GPIO function of your SoC, the SoC
-> might be busy doing other stuff, like booting, and no one might be
-> driving the RST_N voltage to a defined state.
-
-I suspect you're reading too much into the datasheet there.  I suspect
-that what it's trying to say is that the reset signal only works with
-stable power and clocks, that it must be held low for the 5us while
-those conditions hold and that you have to do at least one cold reset
-after power on.  The above wording is pretty common in datasheets and I
-know in a bunch of cases it was carried forward kind of blindly rather
-than looking at the actual device requirements.
-
-> It really depends on a lot of factors including the reset timing and
-> supply voltage distribution of the PCB, but RST_N has essentially 2
-> purposes. One is ensuring proper POR sequencing, the other is cold
-> resetting at runtime. You can do the latter over SPI with identical
-> outcome, which leaves proper POR sequencing, which is not best served by
-> a GPIO in my experience.
-
-I'm not sure not including the signal in the DT bindings is going to
-influence board designers much either way TBH.
-
---7Lh4wxWc22jPqJvF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjBlJEACgkQJNaLcl1U
-h9DAVQf/bV9pJbE/mcsitFrWvPTWQA9z8+bhcyfQvq0Gkx7sHsDEmqtDTZwoRHt0
-l9vaWvTC9naNGIpZ12Qi03nJGcQlGzXAnoWmccXlXwBn6MvMPFBlMsgKNyz+gTNz
-catYyQNIJN6FIQm9deSbtUx8L7B7pe+4SAPw86OtEJZnnehm2O41+jzb4tEyUCKP
-WkmYb5kn9Lvn6zHZb/7b1B7s8wSq+6Ztn1Bveyiu+qdA82H6K+Arwau1Dx3eVffA
-JFfvrMeyRcB5Uw075C0YvBBtvaJycYewBMYMp4rIPrN6L8LzDXyvIxDo2bKOsy7m
-YY6fHqSe2ib/4su6ne2AZDPFBN2Qew==
-=Xxyx
------END PGP SIGNATURE-----
-
---7Lh4wxWc22jPqJvF--
+      ARnd
