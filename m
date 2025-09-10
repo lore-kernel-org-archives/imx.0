@@ -1,120 +1,244 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02E131A05E
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 12:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CE82C15AF
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 12:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757507311; cv=none; b=YKKtqhEOczvlxDaOrfDPIqKObrV5OXfHl5GQUbzEIsp38udDTTNQqM4ii1DDPrqXxpP0chkAwmvjFbZmfiIIZh9yyNPG88mNxRmY4RJCVcWu60U0Bsgftbx6c/L797CBLBdPnNRzyyDI/OaVS28mIRtAnoYFgNqocB9EDUBit4U=
+	t=1757507576; cv=none; b=spe2NajfZiJsk5eavB6j9wEqMyUFXY/84dyqaclSmV7Bl/rkxZuXF5A2E74BQSb3ninuFUFyYYTnlkE7Y8DM1lSt8tgz0+G/twrkmQ/jCsH8IUQiHt6Sx0kLGbKj6EHjWfyG3+rKjHb/Db++v0DyUy9+cBD4mMxxInkCSmFM/MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757507311; c=relaxed/simple;
-	bh=xr+pHWDpFhG101gZJW36qscUm47fFzwtzUnoWeWDmLY=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ib1wKAEvdnPc3EVXOFmF3pwPUfu6sR1vyAdh6fl7PNxVQGoZ8qz6SE34tK98vkQ1/t8ZuRfzhPxNNebepeE6HG9fDMyQCLQXqRZRU5NI83y5pwXe70AciXLLAphUMZCxyOQK0gXJaw+PPcwY8wCx7e11S6MFgy1yhhhmh2WGbvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=c780gDmB; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1757507576; c=relaxed/simple;
+	bh=n1DtndBK5g3HRGB5wLktmQuCwMaE4fiNt3Dq7k07L0I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kxZlYXQfb6Eab3RpiLi0TqFkrO6SHUH+WxoGF0IgnBvkQbW89Woxenlg9ctO50p4YKqIIeNp2Gj2qTqqOEekTB0e4bKxeKZFAo4MThAq+rgCj7vowEDy7Fs7wm/Mg9Y0Yczx8H+byU+/ERzXEIlW17aYMePZpvwklh/9QlLnbWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gkU91/lF; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c780gDmB"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-772843b6057so5575165b3a.3
-        for <imx@lists.linux.dev>; Wed, 10 Sep 2025 05:28:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757507309; x=1758112109; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=uKKz38rJoChd6hasvypIOinRdsvj7L3C/cH5A2UhAis=;
-        b=c780gDmBF1n7DRUWItnWjqi22D9M9bGnZ4BYnZYK5DEwX13DGK+BnuX3+++rZo8Up5
-         3mqgP7rlQZb+jCEmaJ4l5JL2Vbfi++BB4dfjw1nmxbRSLyFbUfiK1y6e/6CkG7yzvA/3
-         HVgSFb4A3gQlO8LRFnAs/ESNAifon11IYfXp9wI2hFl607hHiC29v3wuqAnQ+Po+WC85
-         wv3garWhZzBw00Ohc/XLh/FnQiJb+EuHB58u6gqa3ts5hiaAIth3t29J/3Rc6aD3z5MY
-         ZWC3z/QsrzpyHa4/5VIRBpSd5Dz7KI2Sh+CsTZ1+G2JRF+NU46YbIvzYzwjEhHcQOawG
-         +WIA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gkU91/lF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757507573;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=LViYUFGFqV7wdk7rT7+n+ckEpLRp2oc7FTXBWlnTc1s=;
+	b=gkU91/lFqFoIbG7MXi/zMQWf1G/KzQ1Kwf5VvIOH/u+LKOyFsPhZUem5QGYa5AiTBE/jGp
+	ROTwX6Z7adZfycOVJnr7h9ND7HDEf/TJ48b7PNVlKOv+ujbH96JXu/GlOa71baRAdkk79m
+	+1n0Qv20n5FqDtodgY613gw67GzcgvU=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-88-_APuXkMmPPSqDQ1vUIST0Q-1; Wed, 10 Sep 2025 08:32:52 -0400
+X-MC-Unique: _APuXkMmPPSqDQ1vUIST0Q-1
+X-Mimecast-MFC-AGG-ID: _APuXkMmPPSqDQ1vUIST0Q_1757507571
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45b990eb77cso3966425e9.0
+        for <imx@lists.linux.dev>; Wed, 10 Sep 2025 05:32:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757507309; x=1758112109;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uKKz38rJoChd6hasvypIOinRdsvj7L3C/cH5A2UhAis=;
-        b=gQimkSoJjIllyuhc95+xmhTuykr2QpZYjJ/opZvRx3odo/f4KuuH7l2Uypw7Ypn++x
-         QEKE/GKBOibaUXpJXE7yXDXXHbyiEfEpUzrbIhKnk6stLqN6NvHKaLEO3SvBe3z2ojVT
-         Btkx2ajdVf9WpCnLpS4/X78k99/UOiO0j87Yo8FjCqo9XuzcUiEc76wlDuJT1cTveADr
-         qL4iXwG0D+Uh3aDNup2N2kSy0xbxJyVYQnfGTh+badO3/VRZ7RyUmhmXxcFg5QO5DfRR
-         WQZN3JBPPw5/hTV+ziXSRcd4DZknvht3fVaOaOMhBaqgENY1wdffrvtxUdvYBQh0vv1q
-         ivIg==
-X-Forwarded-Encrypted: i=1; AJvYcCUBQuVeQsraBVN09EjmQUeqnXN9SVa6tF5VLS3B6sBf3Dkuc6d6H/Cn29ZMxrty0TlCv/Y=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxlprChcMYBy3tthSngKpSOYuchAkH+JNt5WjUT7NWbC+VRi5N+
-	jbTyWBekyeiZ6cFrHZSL6k3I51MLGViaPglkI6ofSDf/n+WJ/9buv90Z746Awkt/F47h/gmb+Lj
-	Ff+byKKQwYzUgyk45KvbDXe8culMrto1WjuC8woaPSg==
-X-Gm-Gg: ASbGncuulngvJ7jtHbigR1BeKARAc42yTRBdVpGCKfvgJsEBIY1h1/JFjhMbT74PaLn
-	IEG226fNGgLlF9VqGSz6JPtzyK7Z+uDlgTiZ200MFjV1/aaJiEOfSJitWntp1HQ1Sv1b2qUvY5Y
-	RwDOrAJgmRmoY7itznKMyfc8VoLW9/tIVcwHTi6nIYLmbXFZXLvSgWGQMmz0vz9QhBlYoIgt+mk
-	S6Z9Jk4WAIerBk3+mTu1nC18FQdRcXYpKyRHh9vxtMPssvJFLi3r0gz1msa1ewiPkCe6KoUgblO
-	4h+zZcK7vs71Huoa9Q==
-X-Google-Smtp-Source: AGHT+IG4qzDgYzLw61c20CouFv01sBXpB434aIve9D/nBM4iCZ8x3Y3u0nVvalLiKmVp0DIuV/6ujgGhDDoSGv7mFtM=
-X-Received: by 2002:a05:6a20:734a:b0:243:b38b:eba3 with SMTP id
- adf61e73a8af0-2533d225e5amr22112020637.20.1757507308800; Wed, 10 Sep 2025
- 05:28:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757507571; x=1758112371;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LViYUFGFqV7wdk7rT7+n+ckEpLRp2oc7FTXBWlnTc1s=;
+        b=QeuG9Xx3YhXSWHDPVPPY+SHoXThsS2tz/rSfgEP/eaAq5/hxWD/dYsyYvhKIDJ0GSE
+         4hH6dqaPLnqBqYB29Q80/lmpz/H9+w/DT1xGWjPZv+5Jp+ceedBvKLJ/tfm2RGxTTxlW
+         YgvEOnrXIP0kyFKc9NO8G9wPMvKHdItF+H7WVf3Y5j8F71PTFztCDCRsxQIgWGgtdojJ
+         bDb1g3EovY0Rvh0GKbSAwJjHVXh5AvvxSyE8xkA8c4o7K/LmF4TNozOb9ToKUsZV/IER
+         SrmXPbn95Nnw2YSzovE/PWYkzrlB3zgmVCwZnnBKedZcfbmfuNATjzPalufFV5vlTJ4I
+         EmCw==
+X-Forwarded-Encrypted: i=1; AJvYcCX5LLfA3UN6vkJagv/SYSt8kcMmdNpf/42EqaflV25XhkLnLlaNdtoJfOMkjXeBn4hxJrM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyw74ftO2JyhdvMkQESP8x5o8ousFSsBUWrvPiPrcTcGnNNyYUn
+	cJ+Q4BM8FUawsW1cmCwrNL8M+KRUl2Ajnm3pvegIf1vjcNVzA2QBm9nbm2X6g2Ywx2+SojHvcLS
+	Ot+EUu43BAi08FX62GRT5zDI1Xec8k9msZHFqIHQWhjrFeiEER3IeUg==
+X-Gm-Gg: ASbGncu5X53mMd6ekYDwXt9UVsE/v/NS3Vggzj9ZAKvIrT3ucbivwFjdVbG93OJ6M7Z
+	Rxj9Ip8DA8lhzJaRv1swJzmwtpnJrh8yTkjYGMA/KPmpTJtwphBQH6Kd+iEsdXeIrMX5cFATbMt
+	s0purWcpmL43Qd+ZBB0i+xJwldLJKjR7NZ8VrwP96IihCvRBNhiNRTNnWVXxwvNafpgGZQZpeJt
+	i90XYcjiprb9LT0/nnE0iHXIglc+Rnz2jCxRwXdUdeY9lJ9IwXY2kGlsRpTj4G9zkMKBJ1h/aOy
+	8VikBqUNVG06AhQIhC1/efVnFTRDJM20UQ3gslkUU/WuG4Vml8FRUPDYkfher9tzEO86Whdx6lL
+	km5UXqxX8fHf/gFhTop3+rIy1oTj4u0g+Ay/vouI9wRdRmMXq2GZnwc0JjqPqVQJU/aM=
+X-Received: by 2002:a05:600c:3b1d:b0:45b:8ac2:9761 with SMTP id 5b1f17b1804b1-45dde20e5c0mr148260705e9.13.1757507570796;
+        Wed, 10 Sep 2025 05:32:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/W9Mmo72Y7k0e/5lev9LwiyPK0j0L4lMPmSP/XxC16yAcbXhF14eU/SqL+2U67nqcP2mA5Q==
+X-Received: by 2002:a05:600c:3b1d:b0:45b:8ac2:9761 with SMTP id 5b1f17b1804b1-45dde20e5c0mr148260265e9.13.1757507570271;
+        Wed, 10 Sep 2025 05:32:50 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f17:9c00:d650:ab5f:74c2:2175? (p200300d82f179c00d650ab5f74c22175.dip0.t-ipconnect.de. [2003:d8:2f17:9c00:d650:ab5f:74c2:2175])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7521bfd08sm6588369f8f.4.2025.09.10.05.32.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Sep 2025 05:32:49 -0700 (PDT)
+Message-ID: <b908b8a9-8860-4464-b86c-467797f1fafd@redhat.com>
+Date: Wed, 10 Sep 2025 14:32:47 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 10 Sep 2025 17:58:17 +0530
-X-Gm-Features: AS18NWC_Ip5gUfztIBhg-V1fX8vYtT8uTSYaRWdst2tMKb6IDGdmP3wp0PVgMdM
-Message-ID: <CA+G9fYuW3VZHpAzoL5pRXu6_K9LMHynNzMO9ULrdsC4UKY-ELA@mail.gmail.com>
-Subject: next-20250910: ERROR: modpost: "typec_switch_set" [drivers/extcon/extcon-ptn5150.ko]
- undefined!
-To: open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, lkft-triage@lists.linaro.org, 
-	Linux Regressions <regressions@lists.linux.dev>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
-	Ben Copeland <benjamin.copeland@linaro.org>, Frank Li <Frank.Li@nxp.com>, 
-	Xu Yang <xu.yang_2@nxp.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Stephen Boyd <swboyd@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>, Matthew Wilcox <willy@infradead.org>
+Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Richard Weinberger <richard@nod.at>, Lucas Stach <l.stach@pengutronix.de>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Ankur Arora <ankur.a.arora@oracle.com>, Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+ Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+ Andreas Larsson <andreas@gaisler.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <aMDYdp3H-yOHU1Pm@casper.infradead.org>
+ <b60310f3-25d3-4f2b-88cb-ad65d5f55ec2@app.fastmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <b60310f3-25d3-4f2b-88cb-ad65d5f55ec2@app.fastmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ZurJqrHWhBiMSg38HU11HjR2cQk8cg8bhet9EfpxDqQ_1757507571
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The following build warnings / errors are noticed with arm64 defconfig+
-with gcc-12 and gcc-13 toolchains on the Linux next-20250910 tag.
+On 10.09.25 14:17, Arnd Bergmann wrote:
+> On Wed, Sep 10, 2025, at 03:46, Matthew Wilcox wrote:
+>> On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
+>>> While removing a feature that is actively used is clearly a regression
+>>> and not normally done, I expect removing highmem is going to happen
+>>> at some point anyway when there are few enough users, but the question
+>>> is when that time will be.
+>>
+>> I don't mind that the feature remains ... unless it causes us trouble.
+>> Which it currently does.  Perhaps we could start by removing HIGHPTE?
+>> There was a certain amount of complexity introduced into the page fault
+>> path when support for that was introduced.  x86 removed support for it,
+>> so it's just ARM left before we can remove the complexity again.
+>>
+>> Most of the other pain points are around storing metadata (directories,
+>> superblocks, etc) in page cache highmem.  I think we can get rid of that
+>> now too.
+> 
+> Agreed, this is roughly what I meant with the suggestion of removing
+> __GFP_HIGHMEM allocations from as many places as possible, while leaving
+> the pagecache and zram. I already brought up HIGHPTE earlier this year
+> since it already has an separate Kconfig symbol, but Russell was worried
+> about increasing the lowmem usage at all.
+> 
+> Maybe we could go back to the earlier idea of first categorizing
+> the important highmem users better, and make it possible to
+> use Kconfig symbols to enable highpte/highmem-anonymous/highmem-file/
+> highmem-metadata/highmem-zram/... individually as well as count the
+> actual usage for each of them. Having statistics in /proc/meminfo or
+> similar would allow more informed decision about no longer supporting
+> some of the categories later.
 
-Regression Analysis:
-- New regression? Yes
-- Reproducibility? yes
+That makes sense.
 
-Build regression: next-20250910: arm64: "typec_switch_set"
-[drivers/extcon/extcon-ptn5150.ko] undefined!
-Build regression: next-20250910: arm64: "fwnode_typec_switch_get"
-[drivers/extcon/extcon-ptn5150.ko] undefined!
+Essentially, let's move out as much of the 
+now-possibly-unnecessary-complexity while still leaving basic highmem 
+support in. To mean that implies removing highpte first.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> Not sure how many __GFP_ flags we could reasonably spend on categorizing,
+> as we are already up to 26 out of 32 (not counting CONFIG_ASAN_HW_TAGS,
+> which is 64-bit only and uses two more bits), or what alternative
+> would work.
+> 
+>> I don't see any particular need to gt rid of file data stored in highmem,
+>> nor anonymous memory stored in highmem.  And if we're only talking
+>> about hundreds of megabytes of memory, I think anon+ file pagecache is
+>> probably most of the memory in the system already unless you have some
+>> very weird workloads.
+> 
+> The main problem I see with the pagecache itself is that the fewer
+> highmem machines people test on, the harder it gets to spot regressions
+> where new code fails to kmap() the pages correctly.
 
-The suspected patch, (The git bisection is in progress)
-  0d6a9aca15c987b4774f7fdb34114ab0d483766a
-  extcon: ptn5150: Add Type-C orientation switch support
+Yes. Whenever I touch highmem I'm concerned I will silently break 
+something and nobody notices.
 
-## Build log
-ERROR: modpost: "typec_switch_set" [drivers/extcon/extcon-ptn5150.ko] undefined!
-ERROR: modpost: "fwnode_typec_switch_get"
-[drivers/extcon/extcon-ptn5150.ko] undefined!
+Then I find myself booting a x86-pat in a VM and wonder why we are still 
+supporting that and why it is so hard for me to get it tested. If we 
+manage to not have that testing part so annoying, it would already eb a 
+big win.
 
-## Source
-* Kernel version: 6.17.0-rc5
-* Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
-* Git describe: 6.17.0-rc5-next-20250910
-* Git commit: 5f540c4aade9f1d58fb7b9490b4b7d5214ec9746
-* Architectures: arm64
-* Toolchains: gcc-12 and gcc-13
-* Kconfigs: defconfig+lkftconfigs
+(did ever anybody look into simulating highmem on 64bit to make it 
+easier to test?)
 
-## Build
-* Build log: https://qa-reports.linaro.org/api/testruns/29839409/log_file/
-* Build details:
-https://regressions.linaro.org/lkft/linux-next-master/next-20250910/build/gcc-12-lkftconfig-graviton4/
-* Build plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/builds/32V3KFrDCJV0h7Mw72c5hdncTEL
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/32V3KFrDCJV0h7Mw72c5hdncTEL/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/32V3KFrDCJV0h7Mw72c5hdncTEL/config
+> 
+> Another concern is the number of memory zones, but it does not appear
+> that we would completely remove ZONE_HIGHMEM as long as ZRAM or pagecache
+> uses it.
+> 
+>> Where we may want to be a bit careful is some people have Plans to
+>> reuse the kmap infrastructure to support things like unmapping the
+>> pagecacheto protect against spectre-eqsue attacks.  I know Intel was
+>> working on this when 3dxp was going to be a Thing, but it's recently
+>> been brought back:
+>>
+>> https://lore.kernel.org/linux-mm/20250812173109.295750-1-jackmanb@google.com/
+> 
+> If that gets merged, it would at least address the concern about
+> testing, since presumably many bugs around missing kmap/kumap then
+> also show up on x86-64 kernels with ASI enabled.
 
---
-Linaro LKFT
+Right. Likely we should at some point cleanup the api to not talk about 
+map/unmap but rather something along the lines of "start access / end 
+access".
+
+-- 
+Cheers
+
+David / dhildenb
+
