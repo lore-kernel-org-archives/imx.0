@@ -1,26 +1,27 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E6131A055
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B5931A076
 	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 12:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757507760; cv=none; b=o9FQPnyPLHapruV+WfTfnSE5LIkW5PMfOEgSFt+k/is3hEAqrLGuYRDwCce2Cf03SS82stgv5JYFnJp9af/oo1IK9nGotD2jHzzXb5igiQBdJ2ewJQqqBECmmnIYNY76wyac4k8q3/oOoTd6AUicNdCQtX99derO5vHFxdT+8+A=
+	t=1757507761; cv=none; b=EIe3f8KSSmyyPQK4iOmaQrhx/Y681Qy/5nx/zfGR+3v0w7faCy2rhQpKYTSQ1aYR3VzaUlOrAMqb2D9Td30n4aK6rCj4dv1NlgpNWNMA0LT3lq6ZmwkJ/Rsqo/iZ0NaEsghklPxkzvijvOa2iunTPFsa8pw/ekPfiHqOiyqXo5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757507760; c=relaxed/simple;
-	bh=TBA+/Wtrrdw+qQXA6PajB1ycZl0ryR1E4WZlHtktBNs=;
+	s=arc-20240116; t=1757507761; c=relaxed/simple;
+	bh=cRnw/rMFKF5mNaHDp3VQz3lG8dTPu1HRaGTl0p0YzSc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rfwg+dqsXTKJBMkQVGL9AmuzDagKBBIl4cXI1stQZYR2l+KvvPs/Z4+JkvYfgV8Ck9jNwFwRAdB/0smgkanKyXaP6CdFE5p26EZ50cQuMSaY2UnWpQUgthdPi5rE/u5gYcGyCTyFTAcBrBXePNhUsKlVqqD+9TyaZkZlw33le6I=
+	 In-Reply-To:To:Cc; b=kxrEuqBDa7uxMdRdI88laaOoVExq2Zq50X1JtBdWxElmyz/MbfPIbn2XhX/sQHq/sIkMDTPR0icP6weEmulaNbQb5RFA1yju24ca5AAnJqABDfqDM8K83l8zUWyLiztshU9wMRwwmxv/3cRGjmSnaG+9rTlRetjWwJz6PMxKG4U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1uwK31-0002Rk-MB; Wed, 10 Sep 2025 14:35:39 +0200
+	id 1uwK31-0002Rk-Jq; Wed, 10 Sep 2025 14:35:39 +0200
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Wed, 10 Sep 2025 14:35:23 +0200
-Subject: [PATCH 3/4] dt-bindings: arm: fsl: Add Protonic PRT8ML
+Date: Wed, 10 Sep 2025 14:35:22 +0200
+Subject: [PATCH 2/4] ASoC: dt-bindings: asahi-kasei,ak4458: Reference
+ common DAI properties
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -28,8 +29,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250910-imx8mp-prt8ml-v1-3-fd04aed15670@pengutronix.de>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250910-imx8mp-prt8ml-v1-2-fd04aed15670@pengutronix.de>
 References: <20250910-imx8mp-prt8ml-v1-0-fd04aed15670@pengutronix.de>
 In-Reply-To: <20250910-imx8mp-prt8ml-v1-0-fd04aed15670@pengutronix.de>
 To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
@@ -46,12 +47,12 @@ Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
  linux-sound@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1080; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=TBA+/Wtrrdw+qQXA6PajB1ycZl0ryR1E4WZlHtktBNs=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsg4WDAzZgdj1FKGF9tPXMne/vXnoojj9xhqGrYne3Iyt
- JhesGxP6ShlYRDjYpAVU2SJVZNTEDL2v25WaRcLM4eVCWQIAxenAEwkUJfhD8cbgfy9fy663uxN
- sspY8Fukxy5T4EfysuNa7wT+txT+nMTwh+fLvVW7lP9orTh+KHdeX8qdHdWhc9Z5y3qdWnT1wwy
- 9rfwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=926; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=cRnw/rMFKF5mNaHDp3VQz3lG8dTPu1HRaGTl0p0YzSc=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsg4WDDzwZwXTCt9pM9wuIm3Mq1R0Xhkxr73R+7NZ1/kd
+ VcFpN6U7ShlYRDjYpAVU2SJVZNTEDL2v25WaRcLM4eVCWQIAxenAExE5jMjw5yD+ofcGv/Jvlnw
+ 8/w5Ta7Hhp+a1I7O6soz+uRz44l37HOGv5LqL1/57c36PjlH8fM6oY1VW+eu/NxZn/xhWfC8CEW
+ 9aEYA
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::ac
@@ -59,25 +60,36 @@ X-SA-Exim-Mail-From: jre@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Add DT compatible string for Protonic PRT8ML board.
+Reference the dai-common.yaml schema to allow '#sound-dai-cells' and
+"sound-name-prefix' to be used.
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/sound/asahi-kasei,ak4458.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index ebafa6ecbcb6..ce3e53b4513a 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -1106,6 +1106,7 @@ properties:
-               - gateworks,imx8mp-gw75xx-2x # i.MX8MP Gateworks Board
-               - gateworks,imx8mp-gw82xx-2x # i.MX8MP Gateworks Board
-               - gocontroll,moduline-display # GOcontroll Moduline Display controller
-+              - prt,prt8ml             # Protonic PRT8ML
-               - skov,imx8mp-skov-basic # SKOV i.MX8MP baseboard without frontplate
-               - skov,imx8mp-skov-revb-hdmi # SKOV i.MX8MP climate control without panel
-               - skov,imx8mp-skov-revb-lt6 # SKOV i.MX8MP climate control with 7” panel
+diff --git a/Documentation/devicetree/bindings/sound/asahi-kasei,ak4458.yaml b/Documentation/devicetree/bindings/sound/asahi-kasei,ak4458.yaml
+index 4477f84b7acc..1fdbeecc5eff 100644
+--- a/Documentation/devicetree/bindings/sound/asahi-kasei,ak4458.yaml
++++ b/Documentation/devicetree/bindings/sound/asahi-kasei,ak4458.yaml
+@@ -15,6 +15,9 @@ properties:
+       - asahi-kasei,ak4458
+       - asahi-kasei,ak4497
+ 
++  "#sound-dai-cells":
++    const: 0
++
+   reg:
+     maxItems: 1
+ 
+@@ -46,6 +49,7 @@ required:
+   - reg
+ 
+ allOf:
++  - $ref: dai-common.yaml#
+   - if:
+       properties:
+         compatible:
 
 -- 
 2.51.0.178.g2462961280
