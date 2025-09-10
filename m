@@ -1,211 +1,118 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012042.outbound.protection.outlook.com [52.101.66.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4475832BF40
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 15:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757519767; cv=fail; b=ksGws8hvkhGgLn7RrF8jd5xievsmpRndwgi0qFnlgE52cBios+oCcArk5f3JXH3weqe8tAlsZxgvM8cBeelPpBqoEmbssxD0YDmC0Q5o3nPqLceNGIy0TpPmAv72/g5KPwasxypH8yiw597mwmYXgAr3gEcDiO//BH9wN5JBMnQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757519767; c=relaxed/simple;
-	bh=rXDP8zcEdDIIPzt7N7mEYPgnu6NKikW1CMsOhYK6YOo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=enfE1v0ywcpOmcZKVAXB9GU1WH42uEAjNkR+G/0cwdDgkI7YtFA4zxcDb0Bx/uAXzHSszvkYH/MgL7IjE35uC8c15j3/k/i01o5DVyLgVZeaIaLip1pZXrFYnCUDMSOBddZ2VbfJOHE9q1WvzYif/tJlamrN22Vd8mzGGwgwims=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kMys61f0; arc=fail smtp.client-ip=52.101.66.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6061D337684
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 16:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757520613; cv=none; b=Q5yWuxsRIXuJGeyGlS91gSvTIQe6F9oZAbFhhkww+P712U1L9y9HDl5OcljZH37UJNZ5kceyv9lehbAv8BEFBSp/bv5epxpnC8y5C6U5ByvG8/0G7cdrFJT/yq53z/G1mvO0Bl52qKteUVyBtdX56LRYlgUNUesY9y1e6FUpZhY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757520613; c=relaxed/simple;
+	bh=4kjxrxyFEb4K37j83q9FN9IoA1DrIJqo7dm0VgzSVBI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JgtV4jzubxuC5jX3lUVPt4ggIBsPr6liZ9VpSwZ5HPD1hm6HvlIf6a1qfOLCOAOBl2V8ziTHAFECOfilhUnwtWDP/vkTyYeSvTIPdToVpofpHGHfXR6kjl6okERAnPgCqXaPg+7IUQlzryFROGGHx71UHBWVmjgHPLwDeLLx/Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eqXHI5Pd; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kMys61f0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M9pVmgSmc1b29DF2iijaRz7RgGBvW4gDtcswzOOaQ+Jt82pkAn+YHpDUF2JFwSYTxhXCj+Tu6Gmtwnlo+N9Bn8QY+4cCV7fYnQmtuIdH8aj4/Ej3rPAGHFPygnmwuHjx89WO5GxgAtlysF9ETTU9cgmQFKezCG5TiUaUYM0bGkfJtdzx47pEQoIi2atLuuynoMwraVzbe/Wj365tdotEejoxUPfWvyJ0I+WzCH/Ego1DnLCQtloLRNqcRekTYPVjk0owqrWXNqb4oR3iH88qByK9geJalHTj27atIzLz9K3yYK/Wz9kmvXFMko3NzQjdDq55gUGxEd06qASqiIADJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=El7madXrGMOTJh0ac8DV+uUUjgjqxtLTX1VRUxI4Ojg=;
- b=MHmEfn46NjgLtqIdrY4aOP8XlC4KchrvVCx++kl7C+aQYgvfNet06ZwMU9dFLBxLtoE4rjGkqulXSuhSK/HlEDP3gMNLHC6yNjrD0OndPBcSQ52dhOQgiF0+/S5/i+eZwWux+/+74g3pnE8qYi04N8xA/M5V3IjVmjtACmueK+cTB11XNQaMjB66QpViMS4lvVQh5PTTu50/2jqAnJ8d5FLffMqPUAPGpDEZa689hXcrzVCyOVk4GsiNNPAPujH5A5IxX6WRMUz+YfhHk9ORwXNat+mh25GU4dOTjdlWnx9EEpb/lNepZP50HVAdr7vcckrGorTXYSQ5/THhK2FYkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=El7madXrGMOTJh0ac8DV+uUUjgjqxtLTX1VRUxI4Ojg=;
- b=kMys61f0I8eqCnCw8UPmWaRtPDwFzHmVUyI0szUye9H8PdnwGHn5S4MdVbItOu4v3CEB3Iw2RmBPhCSzJBgHA2shhjwb9EdA7m4fWQPKlKbYqNyahZZQfpllH2TpJblim2+ZUF4aJD+FGwtA88nGfPETVVj92OxkKSg1IQHO6n7i+k9XOOEYZHlW1WHCOfnRMaUKjl18DoUACjIV9Wk+E4gmAKyqsCssDIY79uHGmgyJlkMdVnGY2aFaEPCuzxrjjPOby27J+cXYWL/PsRKFPhgKezmRFlskZIFPYsvqk5WKYpGZcQSk7KgDKzsGAHfhNr93NGsNOabF6B2VMPCjAg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by AM9PR04MB8860.eurprd04.prod.outlook.com (2603:10a6:20b:40b::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.15; Wed, 10 Sep
- 2025 15:56:01 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd%5]) with mapi id 15.20.9115.010; Wed, 10 Sep 2025
- 15:56:00 +0000
-Date: Wed, 10 Sep 2025 11:55:52 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: shawnguo@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, kernel@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: Re: [PATCH RESEND v4 2/3] dt-bindings: lcdif: Expand the
- imx6sl/imx6sll fallbacks
-Message-ID: <aMGfiOZrVaFIqA2R@lizhi-Precision-Tower-5810>
-References: <20250910020525.342590-1-festevam@gmail.com>
- <20250910020525.342590-2-festevam@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910020525.342590-2-festevam@gmail.com>
-X-ClientProxiedBy: SJ0PR03CA0272.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::7) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eqXHI5Pd"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3dad6252eacso3248709f8f.1
+        for <imx@lists.linux.dev>; Wed, 10 Sep 2025 09:10:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757520610; x=1758125410; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=I9LI6s40pwmOAvNzLobzMUKZOm00biMObXADSvvCng4=;
+        b=eqXHI5PdKw3WE+T1ubmEfzyczTv/sGa2FnqggeOJmr6hdGzBZjQW8TE6dRbhzjshRN
+         8VOqXkYwvQ/RvlIlGtMZlYr4NlHWtXpoDyoFRRuAkf0R7JE0TWcdWNAa+Szp4nL6sN+s
+         oeSZDqUWbK1EbNnJNrWTYyu6F2qeyonsmU6ZbjXtOVX7D1bdA47OWaYpbvROdVG7Jd5h
+         SnAuIBmCJHvQx0Pr+5/K6BxK3DwpmvM+VwH9VHdytyVcCXLQHGFpQEuPu+MVoPRmgij1
+         vpFF3+hl0X0uEHASAIMJfGfOrZkZIxFgItfA7baPHE2ypRYAbiERHkZXAAffhCiH0FlI
+         BBmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757520610; x=1758125410;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I9LI6s40pwmOAvNzLobzMUKZOm00biMObXADSvvCng4=;
+        b=G6/XSjqCOJ+bC0Iif/B84qZMs/6R4zlxT1eXFzNbNJcGZtBYFrmAnjpMy8wtCkumz6
+         At1lHoAOZBHo0mXzam6Af4JLP/Qga3fDmXFMkK+FM2FXS0OHvXqfUPsgB9xOsHhOuIWj
+         zD12JcyYTaTXNjPYaqtb3vE6kCOEtAi2B1oxw7n+1HAwTBCEYUVZPZVm4MEnoR9OrTmH
+         DWz1VRPDBtDHy4wMUkqS4lwfQkeGTYOOa2YdLRgodpS7Mfd6xXctur2LHg/EI1oLDg5w
+         6gwFAUVbTnNdktbRNVjYEkP/wn8M+efCirAwpXqJZggyNhgZAlmAcHWDj1hMEIQH5w0g
+         AFrA==
+X-Forwarded-Encrypted: i=1; AJvYcCVKG3D5rl9okGppVY3kLwmtU3cJ9VVgew8m5fME47bw7CwvHaZdiDh1E+q0jSsx7TfWeAc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwKHRigc2oq1uOat7KXVXlE4dGqtV7sb/8UW5JyCBgQZpcc++ey
+	mj2ox8LeOqix0dT50LZa5yds5wxTGBWtu2/O4jqCUICZhFkI9cr6fIP1Bruyko4UClU6jYQjHfk
+	Hoop6
+X-Gm-Gg: ASbGncsZJvyvNViaZkZHTG9R+psm9aHT6ycRgsXEN+JGPeU8Vpy1VbFvLXx+oTBwnbZ
+	d5I5KGW+2gIOIEn1whO6CVnyqQzGsLia7wkR1tntVqfdWAoBa2toDv8NTv1YQYROhwAsCW6ioKt
+	QdwJ4Tc0nkBpku9/80FqtSxOeh7yLYAmLmBeHgB4puFz1Cn6x8R9gkAXySqjFE185AaTL36yz/m
+	sIoyX0cBJd+QDs8eqmWBVEoxNBNbhQmEAyLOr3SA3ZNgK+bRy2/KpmRLukdGQeoPtmZ9rsWY/wU
+	njAsgs3aXdbsEt2EbDlXj0xRsx74aA84Z5HIHGGRDMBTleEfQuLx3z6T0NRUW/fiWzgGVD8fnl4
+	VpUYZ3+DVoKoLoBgXodSAsKZlVg4=
+X-Google-Smtp-Source: AGHT+IE9glpLlh0ZXr1YlFRw69nZiN7PdFZT9NC7CNgw6KEShDJ8T0VtMfBa/BEPa2F5bWBlMU4Tpw==
+X-Received: by 2002:a5d:5d82:0:b0:3df:a0f4:abc1 with SMTP id ffacd0b85a97d-3e6438373acmr12643107f8f.29.1757520609607;
+        Wed, 10 Sep 2025 09:10:09 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3e75223885csm7320979f8f.36.2025.09.10.09.10.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Sep 2025 09:10:08 -0700 (PDT)
+Date: Wed, 10 Sep 2025 19:10:05 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, arm-scmi@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] firmware: imx: sm-misc: Dump syslog info
+Message-ID: <aMGi3S2j_FHid3Sb@stanley.mountain>
+References: <20250910-sm-syslog-v1-0-5b36f8f21da6@nxp.com>
+ <20250910-sm-syslog-v1-2-5b36f8f21da6@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AM9PR04MB8860:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6e20568c-7dd1-4035-29dd-08ddf0828977
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|7416014|376014|52116014|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BZFSdjIrtkkfjhdyE/kTTKFPBtGGhC4aPZfSDim0n5ywo5A/KlbQg6Whyh+A?=
- =?us-ascii?Q?fI2ELcrZAyHM9EEf1OY+FBNZc9UwVORj7foE/3FvkVhgK77HGvxO1Q8SNhti?=
- =?us-ascii?Q?0wWDlvEro7XXtJBt9uUZmk6etrvuCCim9/SV4P7YhTKekGnDGU7XXgLW5h0+?=
- =?us-ascii?Q?Pok+8bCpn9zWCXSgubDy8LygQVLcwluFidMlGF29pwlWY5zPYk8gUF23e+mb?=
- =?us-ascii?Q?dZrnFAVY78cWM/Wc55dsY8jZGNEQ1/zkoNFJj2zyfl9mbg1n9t27geHYcd+u?=
- =?us-ascii?Q?9Vks/QrrkqCaQLloF82hK8Pq9gYzWtVMdOBSwmXx3xyapEo9aCIN3iAT6rE9?=
- =?us-ascii?Q?l0SdTb8lK7aDu6Mrkyxzckc67ozDGtcLtlRrZMvtoNxotFiQhmAFpZJPRXNv?=
- =?us-ascii?Q?1IouwM9ea89jvUIYfGpYlsyMKGGBbCVLy2cHS2GZaWJIO9/46qOBFpHfNxUu?=
- =?us-ascii?Q?VPoGEQK/88PrSpGvqxtBJs/KUxBerKV7ruucFOvUlUfzl+0AsqK8dXjNkgTH?=
- =?us-ascii?Q?Dtmh9ioxMVR8AQ3gGwUgsJlPEI1vFZOtFX/Wp6N4aGzTjqp1R1Ol2dHfeVnn?=
- =?us-ascii?Q?UE7KyuQEZornQikYpxxgyTos0lbo23aTckjxJbzMPqZDVJHTv13K9gYuvXYo?=
- =?us-ascii?Q?REMym0S+d0f/bX2OW4f06mduSM7cvcyQFstwDknLG8cCdypTqKpGdl2PUeGU?=
- =?us-ascii?Q?s5BMz2uKiAEFrWGV9m0x5wsNJWW1bCGy6pOCeSfRdyzNk/1aCk7ldkU3656O?=
- =?us-ascii?Q?7Cr6baYJy6rviUX+kef4bX8vaHi04kI0sYHzJT2qp87O7gYiRhCrRuAmZCcB?=
- =?us-ascii?Q?JyUd0wBJcxPEqB5x6DG95LkATvNFyVypMYF0kDtLvl5OWv0y0cBrMZvLnww5?=
- =?us-ascii?Q?PnXZYpwSQ0HPV8ewCdUfBDQt/2nJa7Yye0pY764GZW5xToyyR0wl2ao42zBk?=
- =?us-ascii?Q?ZsnG/8tE2zfTYjoRMoQe3D5vxZmkM+8UE+mEYVDMHLswzcHPavJlvtjOvYLw?=
- =?us-ascii?Q?wMk+2ti09IZl3bGB5KvIOslGfA7dsQW1rRO3tn4p4tt+UQ3jwyYp1dc56aGN?=
- =?us-ascii?Q?xgYS6O9KjCwFkt05wTCeYGcVvwE53cP05ec0f0uq9virsQZGq5+3CPZx0Obb?=
- =?us-ascii?Q?Rg3/YCAm4LREWo6nZhYuyHGl/3Rq5ifKBjAjhP+99hI1WbVplKQO7G92eipt?=
- =?us-ascii?Q?GG72MZEbeOHXtwGfCeqIwOvuryQ88fsldb7kI6NOvokVZFWo0ThKytB3/mJp?=
- =?us-ascii?Q?i/209kTYJB44yG2sHeqwpgeMjDsx2VO4enhcb9silRAXtjShaXGdeWVqJWaR?=
- =?us-ascii?Q?5CJsbEADfv9knr3frLI177y3o7NfefW18V9YVo6lZkAejbrBtL1sTVgbJ1f0?=
- =?us-ascii?Q?o9VYeEgmmFmcGsRQacFDhtTSo8LGeLBpM6/svnxQWHceY6QCR+tjnozazh70?=
- =?us-ascii?Q?n9k1AdwtToiIAuyAdnK/n/rD+AHwbrwRn5En6FplgDQDg/dEw2h9NzLLeF8W?=
- =?us-ascii?Q?nuHJalokxgrle4E=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(7416014)(376014)(52116014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DP9q60rUTtgYYGdIl7xEC5Jk7V5j/5Z3/uaTlB12ay47JPGrimRTpvjJ3vgE?=
- =?us-ascii?Q?ONf8gBC1VRcL9rCLJMaIo0WSnwDUEEJeNtdqkwbO6NOBa3RXbc4INZ9ADFR9?=
- =?us-ascii?Q?Iid3g1gqyYQcPrVs0BCGxHZ5XqM8RLlqknU8aqYtSQ0xRRojn+tTNyqqI2B9?=
- =?us-ascii?Q?Fr7ZWU+JULN9iZoKKnpZnJF1hbAsaYwn5FY5LWWvd6cy08A2V66eoWXurtO6?=
- =?us-ascii?Q?LCvWu5m85qXXsdo2HkDbZxPzt00BCmVDJecgn/P7Hb/HYVFkCsvQyu2tEPWN?=
- =?us-ascii?Q?JRCFybHpYOXHEIFwMkyIDUyt8GWVU4e2Q6DsPVJmv3YMQPTfjzzQ5/hKeeRK?=
- =?us-ascii?Q?KmNW/XOwW9/TlNqx/BK1mTw0o0NdiijvcOOwQPo3zX1pnLYZjAY8RG1iBKAO?=
- =?us-ascii?Q?bGaUsD8MjSQNLi9vhYlJ/NeFnB/+mq0JewaSCpVWr++I6bw5pJppg3ugMk/j?=
- =?us-ascii?Q?UFDdf+FeaZW/4SU7ztGvIfyn0ZmC75gQqQHnNYbeGY9fr04p5u+pV1naHEiY?=
- =?us-ascii?Q?oVgOFU9xY1PPFA4EUcwi3eoGTNKLFPFYXCa/clA8FUVR3h+kQ9E7FZKDAXHx?=
- =?us-ascii?Q?L1NV13Cb3pWP6jU7D7TmSv3bKtT+pNeLUPFZ0n/ZnECZGdzSYMFkbzuHQBTc?=
- =?us-ascii?Q?D9Crs7kKnQq1IYG2XGY46d31UDRWpLfS7pT/aT1Iv0rr+9oIqOE65P3ezqt6?=
- =?us-ascii?Q?AP/yH/wV1MrAohjKWNL1gpd6FDUD57q3YvGqM9U9gTnAXdHtZ0jP4wj7wIiv?=
- =?us-ascii?Q?FG2FTUHZPdxhuFS9ZQzA4voSvtF7B9IhVKSjp2+51Rtya0I09VNT52UxiSiw?=
- =?us-ascii?Q?0RW5ZZkf/Gis48xhHRFaSXaiWaGf06v8n+UfqSsg2fR53OISgYGHiwAaenS4?=
- =?us-ascii?Q?7Z6BFFartqTZ/Rj5yRCr3nQIAxvV9lV46YnyfApQZka4dZv8XMYzWl35lLnb?=
- =?us-ascii?Q?qL/V82NrqIp8gGbM+/ewFrnlrAkcHz0bPTEW23oplwTK0e8yue67GCwafi4k?=
- =?us-ascii?Q?dL2l/PIoml7n5bdnXIqE65+2ol8c5VEmVex/cc/0+CMbg5FWizdT/0/woAVv?=
- =?us-ascii?Q?tkdIzP680JeJFn0uMj3hp6xBARRCAxeLtRFJXBW4IMrQieMG1gzpV70ZiJtQ?=
- =?us-ascii?Q?lWl4/3yq4lw0CtsQIKBeCHHTz6sCQIpIhzXx40MCPuJvseG98Kg38672Esm+?=
- =?us-ascii?Q?JO4+jbMjCe0GCGtl/aWZy9rwPLNbqqDI0S5pZTrKJOrFewuFBiHl4iooKrQZ?=
- =?us-ascii?Q?cOofg4JrupdjA3m5eDT6FqOftyE7PQaFdG56vTAlBaG2mqljpUUHvDMBqkqH?=
- =?us-ascii?Q?zdEPqqQX509SURL0jRIB4pOKgHmAPvk0/t8jeROz7/a6khfRfqp2f4UOgiP0?=
- =?us-ascii?Q?k97q0H8Yxko+wvNIOgsdhii6f4wde8Z+DQmZa/v8tfRHDt+j8KGqCdira3d0?=
- =?us-ascii?Q?OSqd7uKpaqAUQx1Z1G8fnKqJO4+uoxuzXKpN0nFF0MiBu32xPlqDvYC5HZQh?=
- =?us-ascii?Q?tdoaVMk3S9LSb5aytgJnKxRoEX8iPaF/qY4xqLP37nQbctV+x/DngdIemSkt?=
- =?us-ascii?Q?ArVM6Th8joEY2UheWaahLcYfzF8oNIuNHaaJw/+b?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e20568c-7dd1-4035-29dd-08ddf0828977
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 15:56:00.1361
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vhfReMrivO6fntQYT/Qngh/H7jHnGMPTS0RJiJ0iLskNcJJb/PSVG+oqAatM5lP9Q2wNNtrVWyy62YeI5yqJrg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8860
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910-sm-syslog-v1-2-5b36f8f21da6@nxp.com>
 
-On Tue, Sep 09, 2025 at 11:05:24PM -0300, Fabio Estevam wrote:
-> mx6sl.dtsi and imx6sll.dtsi have the following lcdif entries:
->
-> compatible = "fsl,imx6sl-lcdif", "fsl,imx28-lcdif";
->
-> This causes dt-schema warnings as the current binding only
-> allow 'fsl,imx6sx-lcdif' as fallback.
->
-> ['fsl,imx6sl-lcdif', 'fsl,imx28-lcdif'] is too long
-> ['fsl,imx6sll-lcdif', 'fsl,imx28-lcdif'] is too long
->
-> The imx6sx-lcdif programming model has more advanced features, such
-> as overlay plane and the CRC32 support than the imx28-lcdif IP.
->
-> Expand the imx6sl/imx6sll lcdif fallbacks to accept a less specific
-> fsl,imx28-lcdif fallback:
->
-> compatible = "fsl,imx6sl-lcdif", "fsl,imx6sx-lcdif", "fsl,imx28-lcdif";
+On Wed, Sep 10, 2025 at 10:28:18PM +0800, Peng Fan wrote:
+>  static int scmi_imx_misc_ctrl_probe(struct scmi_device *sdev)
+>  {
+>  	const struct scmi_handle *handle = sdev->handle;
+>  	struct device_node *np = sdev->dev.of_node;
+> +	struct dentry *scmi_imx_dentry;
+>  	u32 src_id, flags;
+>  	int ret, i, num;
+>  
+> @@ -98,6 +134,12 @@ static int scmi_imx_misc_ctrl_probe(struct scmi_device *sdev)
+>  		}
+>  	}
+>  
+> +	scmi_imx_dentry = debugfs_create_dir("scmi_imx", NULL);
+> +	if (!IS_ERR(scmi_imx_dentry))
+> +		debugfs_create_file("syslog", 0444, scmi_imx_dentry, &sdev->dev, &syslog_fops);
 
-Anyway, you change dts. If you change dts as
+You don't need the IS_ERR() check.  If debugfs_create_dir() fails then
+just pass the error pointer to debugfs_create_file(), it's fine.
 
-compatible = "fsl,imx6sl-lcdif", "fsl,imx6sx-lcdif";
+regards,
+dan carpenter
 
-needn't update binding here.
-
-Frank
-
->
-> This helps keeping DT compatibility as well as using the more advanced
-> lcdif features found on imx6sl and imx6sll.
->
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
-> Acked-by: Rob Herring (Arm) <robh@kernel.org>
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  Documentation/devicetree/bindings/display/fsl,lcdif.yaml | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> index ce31b873fb95..d665f3241e97 100644
-> --- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> +++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
-> @@ -23,14 +23,18 @@ properties:
->            - fsl,imx93-lcdif
->        - items:
->            - enum:
-> -              - fsl,imx6sl-lcdif
-> -              - fsl,imx6sll-lcdif
->                - fsl,imx6ul-lcdif
->                - fsl,imx7d-lcdif
->                - fsl,imx8mm-lcdif
->                - fsl,imx8mn-lcdif
->                - fsl,imx8mq-lcdif
->            - const: fsl,imx6sx-lcdif
-> +      - items:
-> +          - enum:
-> +              - fsl,imx6sl-lcdif
-> +              - fsl,imx6sll-lcdif
-> +          - const: fsl,imx6sx-lcdif
-> +          - const: fsl,imx28-lcdif
->        - items:
->            - enum:
->                - fsl,imx6sx-lcdif
-> --
-> 2.34.1
->
+> +
+> +	devm_add_action_or_reset(&sdev->dev, scmi_imx_misc_put, scmi_imx_dentry);
+> +
+>  	return 0;
+>  }
+>  
+> 
+> -- 
+> 2.37.1
+> 
