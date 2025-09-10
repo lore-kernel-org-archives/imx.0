@@ -1,82 +1,103 @@
-Received: from blackbird.sr71.net (blackbird.sr71.net [198.145.64.142])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2062E1E520A;
-	Wed, 10 Sep 2025 16:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.145.64.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BD7270575
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 16:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757522575; cv=none; b=L1UnL2gEioC5hDPxhvaw2uhJ3e4KTS4QvJ36GpXpoGh0eei8BMoADOYYJ4fm4YLeBSj6twzUJq77+ZJENSgx4cTIwaKOpvWxUqm7giempYHwqyseuQO64IDeQN1cX4fJWWmXrJYAXIpLSMQQknf4Bjvp339CpYU75Remy9VdxsA=
+	t=1757523324; cv=none; b=i0guBI2k0tYVBKWOTK4ymONn+7bOKPXMZvLkle3x7tbR3K9myIeaOddk53FUF/CrCdyfvPBMj2bC7q1G6/CGwagTzEZbImaB6Wf1jhumBRLUoufcsrgxE19hdTmHBQmQ87FL+2tCS5UuUVmH4c4Zpt6MkVAuec0uwXpy1Lojbfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757522575; c=relaxed/simple;
-	bh=ioGpMBeXdAlS89t3hTLb2V4iRQeQROs5/oUBcEzBldg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sKb/SGIDdUYo0ZYnrqmuCsDnrYwmoYFPRbapSMyUaQF2+nZoYqTPCrJMli0mgc0hInxG5HFM3S1jGpYpQE/EPhigLFWvrj7ysiicvkGmr+KtPko/RAXiTuPflyHGHKeHDBO/sbHAyYS8JB5wUTaj2+SNztjkJY4AmofFv0fELnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sr71.net; spf=pass smtp.mailfrom=sr71.net; arc=none smtp.client-ip=198.145.64.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sr71.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sr71.net
-Received: from [0.0.0.0] (unknown [134.134.139.69])
-	(Authenticated sender: dave)
-	by blackbird.sr71.net (Postfix) with ESMTPSA id 4234E20193;
-	Wed, 10 Sep 2025 09:34:45 -0700 (PDT)
-Message-ID: <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net>
-Date: Wed, 10 Sep 2025 09:34:43 -0700
+	s=arc-20240116; t=1757523324; c=relaxed/simple;
+	bh=+MiE311kfFW//2eHcz0hVWh71Y6hSvVa+hpJe44h5QE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ut+TUQlhZB4YXyQvVfv3/PnZlKVPaPRwLAHSTnfTVyEIEfkfjcmtZU72bSrqLPaoXX8yhNe8YhC5u5LVU8MRFT/H1f3OM+RWrV9PEmH/pTOeJZlGnpNwMOLlMg2nvy+6Ux93LheqiF/IyQnodJBMeKEtWoqvE7wT8SzR5h+oNNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwO6K-00081C-BQ; Wed, 10 Sep 2025 18:55:20 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwO6J-000ceW-0G;
+	Wed, 10 Sep 2025 18:55:19 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwO6I-00GJtR-2w;
+	Wed, 10 Sep 2025 18:55:18 +0200
+Date: Wed, 10 Sep 2025 18:55:18 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>, Jonas Rebmann <jre@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-sound@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 1/4] dt-bindings: net: dsa: nxp,sja1105: Add reset-gpios
+ property
+Message-ID: <20250910165518.bzpz5to5dtwe2z6x@pengutronix.de>
+References: <20250910-imx8mp-prt8ml-v1-0-fd04aed15670@pengutronix.de>
+ <20250910-imx8mp-prt8ml-v1-1-fd04aed15670@pengutronix.de>
+ <20250910125611.wmyw2b4jjtxlhsqw@skbuf>
+ <20250910143044.jfq5fsv2rlsrr5ku@pengutronix.de>
+ <20250910144328.do6t5ilfeclm2xa4@skbuf>
+ <693c3d1e-a65b-47ea-9b21-ce1d4a772066@sirena.org.uk>
+ <20250910153454.ibh6w7ntxraqvftb@skbuf>
+ <20250910155359.tqole7726sapvgzr@pengutronix.de>
+ <20250910164231.cnrexx4ds3cdg6lu@skbuf>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-To: Richard Weinberger <richard@nod.at>, Arnd Bergmann <arnd@arndb.de>
-Cc: ksummit <ksummit@lists.linux.dev>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- linuxppc-dev@lists.ozlabs.org, linux-mips <linux-mips@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>, imx@lists.linux.dev,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Lucas Stach <l.stach@pengutronix.de>,
- Linus Walleij <linus.walleij@linaro.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand
- <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Matthew Wilcox <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, vbabka <vbabka@suse.cz>,
- Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Nishanth Menon <nm@ti.com>, heiko <heiko@sntech.de>,
- Alexander Sverdlin <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- Sergio Paracuellos <sergio.paracuellos@gmail.com>,
- Andreas Larsson <andreas@gaisler.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
-From: Dave Hansen <dave@sr71.net>
-Content-Language: en-US
-In-Reply-To: <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910164231.cnrexx4ds3cdg6lu@skbuf>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 9/10/25 07:04, Richard Weinberger wrote:
-> I am part of a team responsible for products based on various 32-bit
-> SoCs, so I'm alarmed. These products, which include ARMv7 and PPC32
-> architectures with up to 2 GiB of RAM, are communication systems
-> with five-figure deployments worldwide.
+On 25-09-10, Vladimir Oltean wrote:
+> On Wed, Sep 10, 2025 at 05:53:59PM +0200, Marco Felsch wrote:
+> > IMHO silently removing the support will break designs for sure and
+> > should never be done. As said, imagine that the firmware will handle the
+> > supplies and the driver only needs to release the reset. If you silently
+> > remove the support, the device will be kept in reset-state. In field
+> > firmware updates are seldom, so you break your device by updating to a
+> > new kernel.
+> > 
+> > One could argue that the driver supported it but there was no dt-binding
+> > yet, so it was a hidden/unstable feature but I don't know the policy.
 > 
-> Removing high memory will have an impact on these systems. The
-> oldest kernel version they run is 4.19 LTS, with upgrades to a more
-> recent LTS release currently in progress. We typically upgrade the
-> kernel every few years and will continue to support these systems
-> for at least the next 10 years.
+> Ok, I didn't think about, or meet, the case where Linux is required by
+> previous boot stages to deassert the reset. It is the first time you are
+> explicitly saying this, though.
 > 
-> Even with a new memory split, which could utilize most of the
-> available memory, I expect there to be issues with various
-> applications and FPGA device drivers.
-I'd be really curious what the _actual_ issues would be with a
-non-standard split. There are a lot of "maybe" problems and solutions
-here, but it's hard to move forward without known practical problems to
-tackle.
+> So we can keep and document the 'reset-gpios' support, but we need to
+> explicitly point out that if present, it does not supplant the need to
+> ensure the proper POR sequence as per AH1704.
 
-Has anybody run into actual end user visible problems when using one of
-weirdo PAGE_OFFSET configs?
+We could do that but I think that no one should assume that the driver
+ensures this due to the missing power-supply and clock support. But this
+goes to the DT maintainers. IMHO we shouldn't mention any document
+within the binding, maybe within the commit message, since those
+documents may get removed.
+
+Regards,
+  Marco
