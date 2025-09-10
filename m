@@ -1,171 +1,133 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011024.outbound.protection.outlook.com [52.101.70.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782F42FE569
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 22:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757544265; cv=fail; b=H6nrlmuJgynpuw7MRqF+ydUu8GHvsrN6mRZopOxtQfNxBbgNVF9QIJKoh/jTS6opqLhbYQTi/HwvT4HSSj8Tc+LQ727/uOo4dI11jAg2/wHIX3aY8FK22Ovxk5ulOG+59twMQFpOOBhpK6TJ9as5CTayjBN9uJJjJPAWnYp+iOA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757544265; c=relaxed/simple;
-	bh=lMy0D0L9/+4nht6+0EvtQCOo37Q+gd2/Mi/VFm4PNzA=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=W1S28sarUbKgwUyoAHCfeNfmnj6esgnJZ2UABnmxsO4Ge7IharafCKQe4u/A3P70XMGk1+WsrUpeRFPiAvuOSQV7rR1OA0PhlxVaELMmTjRd95TvwSHn6B/PHRmkxay8/SSIDWWeYzj6gF9L4YoKtaJ6xdjuOyFEZIz9Ybd47R0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Xd7YMG46; arc=fail smtp.client-ip=52.101.70.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EB7522F
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 23:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757547253; cv=none; b=rFYpQP1p2jbdlBc0DsJolOYEPxHyHzn0vKNNFU1q01NCII3U42YAEspF7EfJSrGA7QNCmTpyHW23ZU8F/X5V2jRCux7FokmCFPPACeV4goWu+U8rRzkH1Pob5kbp5N/wtjC6ar+JU7fo2rgD3wGqvyyzPmHnFVLecggQsCT4riA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757547253; c=relaxed/simple;
+	bh=i099labLySvdDdsbvUbHj5s+OPJb2qtVXH+y5SY+zFQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HnOpJW3AeXbOWvPYCS2O5/mdS81aBPShwrRMFAFV9yHZcxXL0y4/G1mex6Kf/WoobqTRyJwyLOgMzWxedxJ8Z7T2q7mQnPhesjNxrrMP48IpMxftXa6LAg1U9omyKbTwJYUZ+tRtIuGezlwNUGoycs0stouXqPg5f8iVN7+Zrfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RchY6ySx; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Xd7YMG46"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qyIzrHObj7QULp9/b2A+xrHP38ozBSEDJ/siUz+u/uxUlLJNKwusD18eRNsgnYOh3aomz3n0RCRBzkKJav6YlSbzVRyv2T7Ek3pY4L7095LyTGcqaeAwci5LuEXVn6nBo0yb/lpETHiHjxeoY9Nr0udNjXAT6mfPjflMJJu8ioVADFFdY07Qp4Qds0ZWXuqB1+azVpWKv1iXpGnFsYBxhVaopPwkv+wbxJcu4YcT87SEVPtcYlMawA7SgrMEJnVcrUPqSuAv4qZsDNgSBn4hnTN39nmdOh68n0k53tw4M07/9V17IO51nLbnWM4nSINwvlWrc1gtOgxhblVpB+6zuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gj/TRI7ttMglskvR21FTAU+XRrDwdYU6b9t8zluGflo=;
- b=IPTCxCqqN4N0cI4KxM2D8s3qhFlvg6Xdz4d+q/vE8lw2isMmCz5OysR/MXoPNpgzIyK5lVQW5qbpSY+NFN7reLAxUPOHl+1mhTv6ln6DcD6ggNMz+vj34f7OFJnTwTMcqa+RTnkOt5iHJSFRaeEH3geKf9lfmcZNDL+D6nOMYQhWvbBfeoRh7cZM3ypVQgqPSHeDmW66cdSftJSKMZSSCvfCjw7TyCXovHC0pslv+pERf8KphQIk8YrEdHtr1CB5NU8tQt7aE2psJKvrPf01YXByQIv+r+3GYKaGXoGQ1NrvQFg1cohEIgXoLlAX4QzgqArELrisatztecUYVaE5OQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gj/TRI7ttMglskvR21FTAU+XRrDwdYU6b9t8zluGflo=;
- b=Xd7YMG46UywVHgURK/G9izFSwmPSFbGLUrJLPBU5O2dcBFOGaxhahHNB7MzhlIvz3lG/9azDbEWQ9J62AeHQjGBZAxQpCevMUAjaRv5+Vatnm1jJIj8JOs4WiGy+mz0o1izbG8SaeH8lUqUjO9MJbuHLWzSdXd9XASZiE2AEjWYCz9gTtvOppvPwFdz40KRP0Tkf3zHOTI55aGSvLxp5n7gFmOmUdEuOg42XfuafiTMgslYHB91YoTp807CcSN55fiptAYK0SJ5w1TiZSkNbjV64hJ2K/BXWr/OcsUdGbXdAVUTrrxK+BLppb5IHVUOiXfCrAmsYHUoIwt4CNbmbFQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by DBAPR04MB7223.eurprd04.prod.outlook.com (2603:10a6:10:1a4::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.15; Wed, 10 Sep
- 2025 22:44:18 +0000
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9115.010; Wed, 10 Sep 2025
- 22:44:18 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: touchscreen: resistive-adc-touch: change to unevaluatedProperties
-Date: Wed, 10 Sep 2025 18:44:01 -0400
-Message-Id: <20250910224402.994046-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RchY6ySx"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-772481b2329so154471b3a.2
+        for <imx@lists.linux.dev>; Wed, 10 Sep 2025 16:34:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757547251; x=1758152051; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mg4r6tqzHUH80N6S4z7Ye3MQyAcaZEeUKqyv8uKPNHI=;
+        b=RchY6ySx1fDWJyGkMJuyml4SFa5SfsAzdBNLRdlRz6A+ZZ7fQaxdXd9bhxQU24M+9Y
+         l4w35Eq86KO95KLYQuNPMxm4LekW+o5IYwS3hrqJsAqa/+VxQejNPVt///9LjxgKPrib
+         X0csRSteBTHoB5VkZ/Til1qsP851w6AukQ/JTavkJbUmjxH+wDbhu61n38+Ip5tNTTZ5
+         hkr91onnhAr7vfCI/Ow6FN9jQJE0VnBF3iNdoCHW2oS3+onLP/6rn1etbjm/zDQpNCGh
+         OOy5DkyPA1ufQ8Q2LlqYTwFd4epKdzOto6TQ5I09y7k4pB046ee9K3DygyBc8CbN8MNu
+         wU8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757547251; x=1758152051;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Mg4r6tqzHUH80N6S4z7Ye3MQyAcaZEeUKqyv8uKPNHI=;
+        b=VPCNkB57Zo6uNaxIl0CaYtBYPr8YdeLfR+msWckcZupNpDi4DbSMDC5noYdQ61T1sH
+         SMvaHR6zgdvXlu5a+KFLpjOhJhv40+wSorNcdCzFIv/WiogybVY0dlzfeB+48VZ3cH6N
+         A2UQpMY9oY8xLMFV29tSNUiEMnLjyaBlXI/H1Ya98LzgA7+UuNtncSXHlFGAlvT23YxG
+         pJrX3JZuiuLkYwGqG5bz+7PjuyQuFkQo3vPxTwv2Wtz5c0v93I54RzhX9STtR1nAQqz2
+         euXZ1Gd7xhbyRH5+fvFVRaUdCvMHMMfiWe9uTvo8Jpvba2L/+hffzD5GTFMi2YAkf1PL
+         0QQg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHNpsnQimQa/HKQdzNrC2Jblegn6jBiImiuqnWDxlxbkl4nLLgqhHo3qyVj60sv6hPLyU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzBxKTJNc3PrDSNcsDk5ryDc/sh1nsJpSmZwLjJnToeUhEPXYiu
+	kDSaz+fFCVT5ELR3OTfn/L2SyNbxEK1YTMb83mYFQ/T6e2Jkn5rbNrVu
+X-Gm-Gg: ASbGnctucvqRFPXurDLQzGy8MURfkCJkDGXtxcpuiwR9VZuk74yKFTpl/0KglouoAst
+	GpTY7AN7ByBbIktcFN/FimQLSCQq6T9q82iiBcDtHUWD3gd9rF2zBodynjglUCdlNTWmaIAokT6
+	E216mClDrwTYWcD7oRRtLRcCuffrIQPYX8NSYyiIehKbSfNlpbRnWzoHoX9vum/bwwERRqVGq+U
+	GYjTEIKaj5+6RxUKkzZRwnOeAIqHz+VMhxKxf0QI2FumJySPL/Xj0jF7cWSbzDLGS4DjcZ10svJ
+	yL0+Hd05KUQXqpArYXSFb9kHpyIuThGNojsxyiNaTVXuoe4AFBbE5bTBZ6y9r2jcGTOb2PptopC
+	mmwDtf0J20IXwEkuBERZMbs+0l3ZSLxLPTA6ZkUY8MWbmUmk=
+X-Google-Smtp-Source: AGHT+IFyFjSxsyaF2RJnC90z3QvBijSexO6xHZxytRiU9jodFdMt2l4JVc9tzY8yfXcH4+xcKOaQMw==
+X-Received: by 2002:a05:6a00:7094:b0:776:2e3:a95b with SMTP id d2e1a72fcca58-77602e3ab24mr1427978b3a.1.1757547251235;
+        Wed, 10 Sep 2025 16:34:11 -0700 (PDT)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:d19c:8c03:e9d7:2ba6])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-774662d2395sm6299114b3a.88.2025.09.10.16.34.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Sep 2025 16:34:10 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+To: shawnguo@kernel.org
+Cc: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	frank.li@nxp.com,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH v2] dt-bindings: soc: imx-iomuxc-gpr: Document the CSI mux
+Date: Wed, 10 Sep 2025 20:34:02 -0300
+Message-Id: <20250910233402.567245-1-festevam@gmail.com>
 X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0062.namprd03.prod.outlook.com
- (2603:10b6:a03:331::7) To AS4PR04MB9621.eurprd04.prod.outlook.com
- (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|DBAPR04MB7223:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2fa21407-7a36-4121-bfa2-08ddf0bb9370
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|52116014|19092799006|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?O/al2oVf3V6vhtRVASrGtYjOtm5Os6N0S5AbohhSpd9fcI+L/gKtcWZjFAkP?=
- =?us-ascii?Q?LfWGUOBEmaC1d3VTQz9zUp419iyIdVOEJjm9UdWaVqH1T3ixmHWHCVVhkleL?=
- =?us-ascii?Q?UvCtuPfdyhAOWC3WPiLz65uHNPx92tEirdJpqNV0IsWAURrOj4sdxiiq0nLW?=
- =?us-ascii?Q?tYNfrGDi2z4TSrbs8X7WVBOOXrlLBD3+ih76F74hEfajcZs+pZO3JTVbR0FK?=
- =?us-ascii?Q?URbdhXBljVeIhemdRgJTR4qGIcEoCvehaNhq2MhFnOVhF62R+MMSuvwVBe5S?=
- =?us-ascii?Q?P55NB1/XsyqOjVbUAo57bvwZ99IE9QqeZAb/u5i4omgjvg5qVhbkUxqOM4n8?=
- =?us-ascii?Q?sBK2AnOuCwg1unbHZNi/cDbTihJVk97bqy0m8KuUznD+2gCfxb+wHLnD51U9?=
- =?us-ascii?Q?210abJtn45m81XAn2/HbsMvJK/zed4sc39mIuFpXbrnL8vz6/n5dJuyQJvug?=
- =?us-ascii?Q?eOX3YZWmddlerj0c+eG78ZgRVT67hR8LyCTSXKuCam7T7x+bF/zr3OetxFgp?=
- =?us-ascii?Q?3qz0kUeKJHwukix6OVp6NH/Rp+irGnaPsN7TuupoUJaC+mPwcTqgcP7OGJJS?=
- =?us-ascii?Q?beKWOzEJ9M/FSLST4k7GWWUKB/amJa0cdv3+kq8yVvjbQC0l9/nor3PGoPpJ?=
- =?us-ascii?Q?CT8gEOYS4ysmYbLFU0YWP13Mmj9/eiGWlLCSxr1SsjmZLzLzZkFXTIWiAIPG?=
- =?us-ascii?Q?SHbxTB3GmMcIvOWLZDYUljvzz0qtVe86FvlkIuE4Ygxd3rbmuLwVZDI6UxiN?=
- =?us-ascii?Q?wiMp81olCF8GPBQOKJM5dYxr+/7uT3LQI48w7AfeJUmLDoDauCW+XktTm/XY?=
- =?us-ascii?Q?8+1EN5HNTKwSWKCFUKRdNzOcYtLqoKVZbusXt8YI2nbL3Kb/C3S0zihUbEwM?=
- =?us-ascii?Q?+mBD6lLq28OXrba5BZsVEvWN2uidhzZHF7Fst+4rYdn0cdqZpb3l7kNmBUF3?=
- =?us-ascii?Q?Jtdnu+XmD16S701VT5JPmIiQ4j5PEUIw1cMWv9H5EPfwN6hTel95PBo3DQ9Y?=
- =?us-ascii?Q?WmQoqlhrcpuz5zOtwwOcvqhTib5V7ebl6vpDXH2zV5BxAbvSljm9j/roq5u3?=
- =?us-ascii?Q?mXSxkQg90luorJr8kPUCUXRpYwhLTnRLRcmNE0RdK69hUK+AL5r92wj4iudu?=
- =?us-ascii?Q?b06/iS9DR8IBp08zAqB2Kb+Q4k5omBk9K2pDR5EykKZWUfFeBndG6WvVFteu?=
- =?us-ascii?Q?N6V1y9ZkHu2wNsJq2L37z3RvL9gQeuM0B/DFXo7HjcFNjIq09U/r2KJL6jsQ?=
- =?us-ascii?Q?La9RCmjeizlqQFPT/lr5KHUUtx1ro9IzQ/oCU4Uoglo2Fu0Mmk9JVToCdS/p?=
- =?us-ascii?Q?5BTmZjLp9j8j1DHtQsxft3coNAU6c9bbMLJTITHJ7ui7D4nQWG/2uFXnJPWq?=
- =?us-ascii?Q?ifcePVzXdafq+yJC0MyJd+r4pdl0RKnd+YqxI8GRgQydr6YD9pGHoFUGDmq2?=
- =?us-ascii?Q?0tfxcy7XBvml4eKTyOVqupP79tNGnVEL?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(52116014)(19092799006)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/K+jJuzNzvWu2JkSWeJZBIG/DVoWJZvwEvYAWuhZTTuKa/+SuZOuBvY3dFJ5?=
- =?us-ascii?Q?ZXWOVKmwWwu0/P6NXJQvDghFHY1M083v/oIRzPNt03ylf5an19a4x9S+lJsz?=
- =?us-ascii?Q?dPoKhAX7nA07hIyBNyAE/pcBBxu+ORoLElmBfT9TB3uSZrtzN36tFsVwnS3j?=
- =?us-ascii?Q?S40t2pg9Ah+oBC+3pBjVFumBtS6LWIB0TA7rSOF7FpsUbd25CDKCWNs/zyqc?=
- =?us-ascii?Q?64l4wALfIlA/ZtnZuqzkXbnkhWvNqEcEaoihnjY2t4cmJY9IZcdm+k7MAKaA?=
- =?us-ascii?Q?WyVbJgPTtt7o/KDGNlu1nZKQ3cGQjf6wSvZ57eSPRxIU0qxx6qWJ2dg9ulLR?=
- =?us-ascii?Q?VAOl7UnjZFr0i0vJggxdqhWNo3DMu4uLgQXMyl1A7AQjN4Y7FpRZK/kesulL?=
- =?us-ascii?Q?kTxRa6zmRtORz7Ep9JxONMe0WRKkSg7bXMva4cj6iLbnae0caR0LFg98oAt7?=
- =?us-ascii?Q?yn2I7UsaKJPPEONytJt0l9F1YpVtPeGxWwNZ77Mo8tk5OcJNbnN8EAU0ISbJ?=
- =?us-ascii?Q?M0faE31yNdEPk/2n3NYcjQWnUHV9ZskowyZLN2kSuRFTTlBINQnvdSl0cmbw?=
- =?us-ascii?Q?9gfGlTeByjcUd+sCAEOSFrvhCaJTymlwBb72LjyumdMtEv8KNCRgSJ8JH2/N?=
- =?us-ascii?Q?+IcvXPZ63TjjgB4jhribekVNQGG7p48RlEz6RlW8I4x8K04gYwzYxPGtCvZC?=
- =?us-ascii?Q?8GAD+I+KQTY6Q1H7fKxecbhKCpR//Raudr2FE2Iw8DWvMdg1lmUpcvmP1/92?=
- =?us-ascii?Q?2tkNQpP9wp4hl85uLJK2Mv4Zn78dtgBhPgnLB4DNUTZ4pkxaQ/cHlZ9nOy7i?=
- =?us-ascii?Q?hJeJHEL22f2gkbKnamV/JZE5PwsP+/21oB87CuDld5bP0gDIkBBiqOYsETzL?=
- =?us-ascii?Q?D93+jMYr5y1Zq6NVYIk/4/jEQuQc4T71a1Pbhw0W82Wcv6hAByffffvJq7yg?=
- =?us-ascii?Q?2ytknv+elhw21Z7YibLlfQ6XAHtaG8ugZka+Qe084z6nKxvFFfU3ugQTb6yZ?=
- =?us-ascii?Q?+QnH8i7LVIIa7iDDkmrGOv3lqixfrvj8ORfAsvQHhUBM0Jfg3nP2eJoQQ2o+?=
- =?us-ascii?Q?LIAalbS4WhQHM5syTTXt3Ftk1XvElaFuiaBpG+PnKbYAsq7M0n20YNNvLtho?=
- =?us-ascii?Q?PEVbcYl9HR+EBG8VPkRl5+YB5EaTJmAH+wpLbOTOvNAeuLQT3KBE7EnXDAOQ?=
- =?us-ascii?Q?NbJgdg3IlGNcCXAXMiHYac7jH9ebpLaBaXtVFx7Bp7OztKbeTpDsGicf68/o?=
- =?us-ascii?Q?ud8hmeluRAwZqGs22u7x0ZjQl4lYOutQVFojJfMImw0m1dN/J4BQaJsAlDSz?=
- =?us-ascii?Q?9EW92a1DsiwDAgLcoJey/x5AnfY9+O6ECKUS53h8y3rbWDQ14WX1ANHXD3li?=
- =?us-ascii?Q?ixKxereHBasLg+rKO55p+YFlORkgiNOjm72ZNNJqdr+m3LsmGCEsVnWKWorN?=
- =?us-ascii?Q?T3ulr/gwgPRMncR4Np7JIUQW+20oD7BzcxxXAcQ8od2qctKKuVJHtqP1QM5m?=
- =?us-ascii?Q?+3sYdKZALEskUqukebxeNOHDkizuf6NRu8Dbvxdm+Pg3IbulDTe9Oz/GvRNi?=
- =?us-ascii?Q?Xlynwc5xjc0xOpFvyyT9oO1f7rFdqJtqQUi+vBX4?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2fa21407-7a36-4121-bfa2-08ddf0bb9370
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 22:44:18.3311
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mdN0JWIbYh819am5WxbhtrziX6i178S5mTi8lMdhxawArxbZrjv1mhGPDOOf420L1EV6r2mANbFVBuMB6cJUvw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7223
+Content-Transfer-Encoding: 8bit
 
-Change additionalProperties to unevaluatedProperties because it refs to
-touchscreen.yaml.
+On i.MX6Q/6DL the following subnodes exist to describe the CSI port muxing:
 
-Fix below CHECK_DTBS warnings:
-arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt6.dtb: touchscreen (resistive-adc-touch): 'touchscreen-y-plate-ohms' does not match any of the regexes: '^pinctrl-[0-9]+$'
-	from schema $id: http://devicetree.org/schemas/input/touchscreen/resistive-adc-touch.yaml#
+- ipu1_csi0_mux
+- ipu1_csi1_mux
+- ipu2_csi0_mux
+- ipu2_csi1_mux
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+As they were not documented, dt-schema emits warnings like:
+
+  'ipu1_csi0_mux', 'ipu1_csi1_mux' do not match any of the regexes:
+  '^pinctrl-[0-9]+$'
+
+Add a top-level patternProperties entry for these CSI mux subnodes
+and restrict it to i.MX6Q.
+
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
 ---
- .../bindings/input/touchscreen/resistive-adc-touch.yaml         | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes since v1:
+- Restrict it to i.MX6Q (Frank).
 
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.yaml b/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.yaml
-index 7fc22a403d485..059d419f6c1c6 100644
---- a/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.yaml
-+++ b/Documentation/devicetree/bindings/input/touchscreen/resistive-adc-touch.yaml
-@@ -55,7 +55,7 @@ properties:
-   touchscreen-min-pressure: true
-   touchscreen-x-plate-ohms: true
+ .../bindings/soc/imx/fsl,imx-iomuxc-gpr.yaml     | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx-iomuxc-gpr.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx-iomuxc-gpr.yaml
+index 8451cb4dd87c..719de0489002 100644
+--- a/Documentation/devicetree/bindings/soc/imx/fsl,imx-iomuxc-gpr.yaml
++++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx-iomuxc-gpr.yaml
+@@ -50,6 +50,22 @@ properties:
+     type: object
+     $ref: /schemas/mux/reg-mux.yaml
  
--additionalProperties: false
-+unevaluatedProperties: false
++patternProperties:
++  "^ipu[12]_csi[01]_mux$":
++    type: object
++    $ref: /schemas/media/video-mux.yaml
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          not:
++            contains:
++              const: fsl,imx6q-iomuxc-gpr
++    then:
++      patternProperties:
++        '^ipu[12]_csi[01]_mux$': false
++
+ additionalProperties: false
  
  required:
-   - compatible
 -- 
 2.34.1
 
