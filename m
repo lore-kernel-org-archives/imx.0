@@ -1,129 +1,138 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE447225791
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 02:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EFC235341
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 02:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757469952; cv=none; b=A0/vRp0p5Fp0CCYx3o27md50FDpUZXxNNbeTYp4f78ZcliIJZh2qoj/PFfzsIpXEu0oLoMtYetjLo1FWIF1wE8gCGgHFo+Eh8LA1t7SoCzSYTLwoNZmVKPF7IqIcVErBPJDBCQhn/T8T3OqnS3mx8nYdhjDZqRCVxaWWBGfsmt8=
+	t=1757470351; cv=none; b=I2QTSRyfdwXor60uZyJGg5Udd5ySxKdTtjrK990c3aCoPKRPOY3LS0/5zRGp56DQy6Bw6+ng+aDxM6CN9Uj6AfyI/XL/Isq4lLZk2c1ReCuQ2B0LN5ERa0iiAHlwqCmbFPTTOcFHe/HGkHH4CgRThOLDEzVjM17Nz260jsEeD7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757469952; c=relaxed/simple;
-	bh=K8Fv1uPBo1t52vTaFQURmxLqrjDhPhb9s/yoEQIvg2s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iE+bmc8deKZvyCxf7x1urpLqw+hVIqMglSXK5WrhJMq0yeHhHG2z0gx9KNRk7of8v3vHsUmD1LiZ4Lka4+12oAYGAgP4f/JNQ/mYzvG8ezBArscLJnbByqx/ZTIQCem/TK3hrUq71ibT48TNXFwPM0Dmot50oBswzBROuN3q1ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U27GvvVM; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757470351; c=relaxed/simple;
+	bh=i/ZrTEb1zaDJxW36CE3QTF6qXM0oKKYNei/9YnXXPso=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kllifz67jf0xJXI6CPUuAggedI2SxNWMncqdduGiDRDup8HYnnfqSdCAiNC8MVLOeHjt4n5bgnQ+7xwZtSOzmbMt4DeIfJRs8dYztYcvOEj7RvqMCX0L0APZ62aUVWuEtJ6JJUHmlrsELCM8SYBf6XveutMhGnCRRamwEe1eztI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=YA3P66zo; arc=none smtp.client-ip=209.85.161.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U27GvvVM"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b4d5886f825so5440219a12.0
-        for <imx@lists.linux.dev>; Tue, 09 Sep 2025 19:05:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="YA3P66zo"
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-61e783a1e00so4143573eaf.1
+        for <imx@lists.linux.dev>; Tue, 09 Sep 2025 19:12:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757469950; x=1758074750; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gateworks.com; s=google; t=1757470349; x=1758075149; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=P2Wv28uVFgIwY4UQs+1c5TBH2NyPkzg92eGQhJ0dgfI=;
-        b=U27GvvVMXDibg+P0+LNkbCImayEX7NZiiopCELfGKFQ6uPDImi2kVeE20mDbrwwJn6
-         Ei8pAMpgSIroZrEna3Omrpn/98NdND2Zwhwk9p14eVciFuL0C4DvIhlXRVvisjGug3tx
-         wO3KTY87AIvxDMPmNCnYFDu6lnrET0edvYxQDbKtlXTtQpZrzVJzzdxi5pd5WSrpPrpn
-         6e+isWwrHPkxt4di5g3mk1YMY2SVuk1MZ1/JYDnnpq5++WU9Vy0lhW4DZpN+iCjg8sdu
-         GKRLcVuRn+KbLMT1u1QHx4ZYJl/+3OT+CsKvyveThnAjNmKlUsVcoMyhfrmzSX+C3DdJ
-         Fjrw==
+        bh=i/ZrTEb1zaDJxW36CE3QTF6qXM0oKKYNei/9YnXXPso=;
+        b=YA3P66zo+ht4Db1YEWeKOWMtd4UBOHvn0ghWggowi5VZK1ZS8tdJMVh2OKPtZ7DQcb
+         5H2nryBe1kX81hbz/0l2dlkTfXVxirerzUvYSS+Y2c3OsZEMsJFS6V9NV8Xltbe3TK5Z
+         BFg1rXiSAjj4TIJA3/4MrTnp1WF43p9CrIEqmM0Xin4mMFOl6y8taH13biQxovw62fIK
+         xYZs/5NgJnmf7q4VbqZd6XnbiqIZyn/MZj3XJ8IkR66yu9iAFgdVfdpVsIXsliwMtbFF
+         uqwWVD6aQX6wRATH+hq0sShEJzXAB/qpvREuWa6oRX/QJxd+gn68NXllKauNIEuIx2pl
+         NcCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757469950; x=1758074750;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1757470349; x=1758075149;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=P2Wv28uVFgIwY4UQs+1c5TBH2NyPkzg92eGQhJ0dgfI=;
-        b=D3O1Ot/Nltwhx44MkrY3WPrcH//4O2CsL1fmfaOvlzAIPeGe/TeIi3tNEZc6RJXpGe
-         9rVvs57CcubOBAGsXzmj/WlzPg/gzWjxAFWaxt6DP+3ffSltk3o8HS/1HZqiSuosNHdL
-         omOhFiIagI0UxS8iQGnT0AQML9Q+cPmu7NlCun2AjTpA1wkJdYkuDHwb3SrVTL97AiV2
-         AlRr9py+2w8UIYaG68qtK69s35TRsrSr5RON7xSAjnb+b+pizuE9k4pOobZsmT5RzWPl
-         BTd/tpjcutE3clC1ZKJHHss7qzqJUscA+7y23gnoK2eMwK2leqNwfwPYW3THtqEowZRg
-         hYBw==
-X-Forwarded-Encrypted: i=1; AJvYcCXGwknBdYLwHrSNhBkn71y+4SDXdhyPip4aiz/IEyBDYpkCT4cMKUpLIEBpHgWFPWYqd0U=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwiJd6GUAd0iAnD6iKQe80/qt9J+CQknulTAoSlT8l5K6yrpaV5
-	jD2erOSydmfgBtTVGBG54ziM1sALvXHHxeIVfofHgaLiPc5G8xZ38KnP
-X-Gm-Gg: ASbGnctc20bO6quF0RMY/YXdazchffprzG/oM9Wxd3kcyOnUOnMr6HpVNS4s0SPVcjP
-	DbcAWHxg4gvRMyHVpinTWQpQK/jWblJt+oUq1V0hUplUevUkuvVL34hiZqbrfRJC1yKtPyEJ+qB
-	vDUdvD3kwSDFzWo8bmG189Yd0VODhlBf4mHgqoIQi014Z3YxvHUxXG9GF0jth2wjd35SyaMUs+D
-	750NMUaJChhdKZxChAq4St3ns9fFykE+2WHVci+G3D1jZprCwQ7+OUEM+Bp6mjvvk/NX9H+s44M
-	3kd8riPyJLFmvKEr3nAcD0NxFbhxJR9B4OwyPSWcc+2FJ/KUMVT5je2quQiL6NxgJwiPuUG7W/V
-	J7snRtWO0vUHM+kHfWAJ6gRgm1rkfY2XMlFy3rssHjcUnBVM=
-X-Google-Smtp-Source: AGHT+IEVBLAzfDT4V42Ob7mMhF4hEh69hyk11soKUt396GyM7UHe/sGizvdubIBtjiwfPR/vW1jErg==
-X-Received: by 2002:a17:903:b90:b0:24c:d6f7:2788 with SMTP id d9443c01a7336-251741866e3mr168780505ad.57.1757469949993;
-        Tue, 09 Sep 2025 19:05:49 -0700 (PDT)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:58b2:c9cb:20c8:e698])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25a27422bb7sm10607735ad.30.2025.09.09.19.05.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 19:05:49 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: shawnguo@kernel.org
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	kernel@pengutronix.de,
-	Fabio Estevam <festevam@gmail.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH RESEND v4 3/3] ARM: dts: imx6sl: Provide a more specific lcdif compatible
-Date: Tue,  9 Sep 2025 23:05:25 -0300
-Message-Id: <20250910020525.342590-3-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250910020525.342590-1-festevam@gmail.com>
-References: <20250910020525.342590-1-festevam@gmail.com>
+        bh=i/ZrTEb1zaDJxW36CE3QTF6qXM0oKKYNei/9YnXXPso=;
+        b=oIuBQr17510XrZxcPBcMkRBtibp9ZFltwmpTPnsPvQuQDeMwdLA9B/YbtWSq2g/dQE
+         /CAoZ5mI82m2V5Q6gZzdzAT63Tm5GAjVHIvpjx1ddk9CZk5HTalvTp2imcrDhymyGa/T
+         erG3crabuIXVDjhQoziMcL+KLJ5m5d75lMPVOwqy0WqLcEXISfM+HooW2gsRL9BEvWhI
+         tAaU5AAKWVNrVrkcCT7jwTorBHUqsJ67dhWjc4bq5LKFFp+EksAPZjprX73ZCRAVr4tQ
+         ziKdWipF7B7bxq6xt9BmLVbhS3kzCPVFf0q16EL43XfutfPemprkijPlFYn+liagI2df
+         he+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVl0Mg0yIrycmcXCBOeYFSa5xj4RK60BK1t4US4ZZvTussTKHmKvZ9x+c4qFKEyMhqFiwQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw8MDuGt2IZC9LRJv0gSP0VfLPFoUHyAXKIth9ywqu6PLoEPDn7
+	UPqFietFNWbqZ2VT8s2n/Lf7QbJY8tsV9JXxPyir6TODswaDzmpik0qGqXjXEU0laKlLGXq+KoD
+	Va84LzL91jGDGTyvpUZHJaqcfra1SnoDIHqkI0kGbug==
+X-Gm-Gg: ASbGnctF8mBoiaSyR22/tM/rWesBiGc+6WQhKuOtD2gIN6N5FJiFGKloL04ja49UIwk
+	j1JVY1NHperDMX/QIvy91+7leQ++B+TnzNjYgIc4ZVGbAgpo5VOH0KDJNKjh6y11XIRUizqRVon
+	I2yiTqasuQxIrPIDL2YQnSKoM8r7zB4LSlHNR20VKhg20OO2DI+DIJVbWoul8vkiguyjxk9GWdX
+	2pDWYg=
+X-Google-Smtp-Source: AGHT+IGYzcv+KGeo8D/B/3mzm8u727rEyHjHkqpXMnOV+fGyUvGB1T/ymTmP3km0I0jXSqieUCPPm6rwERicf/XL/fc=
+X-Received: by 2002:a05:6820:624:b0:621:72dc:3dee with SMTP id
+ 006d021491bc7-62178987debmr5886756eaf.0.1757470349286; Tue, 09 Sep 2025
+ 19:12:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250815-imx9-dts-v1-0-e609eb4e3105@nxp.com> <20250815-imx9-dts-v1-8-e609eb4e3105@nxp.com>
+ <CAJ+vNU2hro_ZoRvmQ9yowKsX25AnrgZdGMn2D-RCkyJA02CEhA@mail.gmail.com> <20250909043327.GD20475@nxa18884-linux.ap.freescale.net>
+In-Reply-To: <20250909043327.GD20475@nxa18884-linux.ap.freescale.net>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Tue, 9 Sep 2025 19:12:18 -0700
+X-Gm-Features: Ac12FXzv-yx0rHpHYzRFsf11y5WuQG_up-EtuFq-TzQXC2JvCVAePG_zRuL6PxU
+Message-ID: <CAJ+vNU3=mwZFBqQRNz4i28EjWXX6=Nf7iAsYPEBgpqkQw4wgtA@mail.gmail.com>
+Subject: Re: [PATCH 08/13] arm64: dts: imx95-19x19-evk: Add phy supply for netc
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Peng Fan <peng.fan@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The LCDIF IP on i.MX6SL and i.MX6SLL is compatible with i.MX6SX.
+On Mon, Sep 8, 2025 at 8:22=E2=80=AFPM Peng Fan <peng.fan@oss.nxp.com> wrot=
+e:
+>
+> Hi Tim,
+>
+> On Mon, Sep 08, 2025 at 04:43:25PM -0700, Tim Harvey wrote:
+> >On Fri, Aug 15, 2025 at 4:50=E2=80=AFAM Peng Fan <peng.fan@nxp.com> wrot=
+e:
+> >>
+> >> Add phy supply for netc emdio on board.
+> >>
+> >>
+> >
+> >Hi Peng,
+> >
+> >I'm not sure where you are with regards to this patch but it indicates
+> >to me that you may have the enetc_port2 10G port with the AQR113 PHY
+> >working on the imx95-19x19-evk with upstream Linux. If so I would be
+> >interested in knowing what other patches you have for that. I'm seeing
+> >the interface fail to register with:
+> >nxp_enetc4 0002:00:10.0 eth2: PHY has no common interfaces
+> >
+> >I'm wondering if there is some support missing from enetc or the
+> >aquantia phy required to work with 10gbase-r.
+>
+> Thanks for raising this.
+>
+> This is just to add the missing pieces of device tree.
+>
 
-Provide a more specific "fsl,imx6sx-lcdif" compatible and still keep
-"fsl,imx28-lcdif" for DT compatibility.
+Hi Peng,
 
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/boot/dts/nxp/imx/imx6sl.dtsi  | 3 ++-
- arch/arm/boot/dts/nxp/imx/imx6sll.dtsi | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+Ok, but phy-supply is not currently valid for netc_emdio
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
-index 7381fb7f8912..074c48b04519 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
-@@ -776,7 +776,8 @@ epdc: epdc@20f4000 {
- 			};
- 
- 			lcdif: lcdif@20f8000 {
--				compatible = "fsl,imx6sl-lcdif", "fsl,imx28-lcdif";
-+				compatible = "fsl,imx6sl-lcdif", "fsl,imx6sx-lcdif",
-+					     "fsl,imx28-lcdif";
- 				reg = <0x020f8000 0x4000>;
- 				interrupts = <0 39 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX6SL_CLK_LCDIF_PIX>,
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-index 8c5ca4f9b87f..745f3640e114 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-@@ -657,7 +657,8 @@ pxp: pxp@20f0000 {
- 			};
- 
- 			lcdif: lcd-controller@20f8000 {
--				compatible = "fsl,imx6sll-lcdif", "fsl,imx28-lcdif";
-+				compatible = "fsl,imx6sll-lcdif", "fsl,imx6sx-lcdif",
-+					     "fsl,imx28-lcdif";
- 				reg = <0x020f8000 0x4000>;
- 				interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX6SLL_CLK_LCDIF_PIX>,
--- 
-2.34.1
+> For 10g port, it is still not ready for upstream.
+>
 
+For 10G it looks like at least the XPCS support is missing. Do you
+know if anyone at NXP is working on this or if and when it is
+scheduled?
+
+Best Regards,
+
+Tim
+
+
+> For 10g port, it is still not ready for upstream.
+>
+> You could only use the rgmii-id port. This change itself does not break
+> the rgmii-id port.
+>
+> Thanks,
+> Peng
+>
+> >
+> >Best Regards,
+> >
+> >Tim
