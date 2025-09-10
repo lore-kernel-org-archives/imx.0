@@ -1,211 +1,296 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013017.outbound.protection.outlook.com [40.107.162.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA8922422A
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 21:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757538966; cv=none; b=CQPF3fBql4sg02eihsM+9bv9bVZ8m7aolFGVOEkg5OSsgf1Szbfnk0Y/uR8oPyPedQ6mI0bWC58gc3v7/DyiOQdh6ZeEpoYZn/eEsYRAMY3U3LzwPVKaVoxPHHgYgMEwZOj41gyghhAItgp5Vu7kXJcDCNRccqxSTWLn5LL4ZzM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757538966; c=relaxed/simple;
-	bh=DteYLG2IU3QFIJYBOZqy6gFCR5WWGud1kVCuMSquTLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gt8bNwQc1rH2WG8aI96YrDMxEXpQk06MMbAKzvA7lZ38K2eEYo41fTM1+jQZ3+ZX+mEDZ5xxZoE5IctmCuHTwXuHkAS3DmlzBIzzj/yfgRN2Q6N9wFwt10yzUgtE9CeEAJGzLzUPzTnYNfHlNbUbQnJbkiwWAGZQj7LreyFi+fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=HsWouMaD; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB365311C3A
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 21:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757540497; cv=fail; b=j/e4cg/tKK4AzOStcB0EV687NjtOgjy/gRG0NAojRugjWI4g1jsxrqAz8jCH/1Ox/R/nxEQcmDEa5rEeERLLU/jRcShHQFlSiuUZtwFgbev1Hm8J1BgW3Lbl6sgsZuxm93s7olzQfPj+1LPSqylWHG11Z4Q1uwZWiAiqfpIzhdU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757540497; c=relaxed/simple;
+	bh=WtP91hv8JcAURqNmg6VQlAP3x3myp8ZE6KuyDPI19zM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=BMiryg8Bcf+BEavdApUzj2L1RyXWtb5j6DyLiELprhmFVbybPuZYZn7a94AnMA6hCTEEsE+GFXsgQJLoL+3Q0/N4c3q3ZSZkEpJzrSvbxd7H8DwX9EqVPBWMMwgYvnS3B2h0tJyPwwjVXDMpLh01lCeC2NZqVk6rhcdM4E0V9uU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=I+oEKE2+; arc=fail smtp.client-ip=40.107.162.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="HsWouMaD"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cMYQ56kdcz9tjH;
-	Wed, 10 Sep 2025 23:15:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1757538958;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tjx6bzhgaZSThneUIBKarI3qmWFn4xvZnpdL5ylUG7w=;
-	b=HsWouMaDxvO5kZSfsHDYrlxHEDbSuO9Jg2YIiprzN+B7FWu+qeRwkjz058Vuh2GD8hDLWE
-	8ON3dD8kuS+pzxEY+OK2k8gKJWaPXghq+QZz7rKcreG9PmwDVpVUgAPVCIoNLt/6GgeGhN
-	EGj12jdg0GGFpGWM5pC38TaEDcUbA4bP66daNj0T79pyyFraG9ZJ2wtV65aiUGX1lYWcsc
-	s1GGiYW7tkuZRZXPeclek9eKazfmyHRszk8TXyxKZBIH8GQHjUKvWruNo6psv0Pi68hX66
-	+Vib/3ZaRUHASebP4WtDpYwbOFaeJVsZpXEmg54DVpzO+JU2/wUI57wIX35pQA==
-Date: Wed, 10 Sep 2025 23:15:52 +0200
-From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v19 4/7] net: mtip: Add net_device_ops functions to
- the L2 switch driver
-Message-ID: <20250910231552.13a5d963@wsk>
-In-Reply-To: <20250908180535.4a6490bf@kernel.org>
-References: <20250824220736.1760482-1-lukasz.majewski@mailbox.org>
-	<20250824220736.1760482-5-lukasz.majewski@mailbox.org>
-	<20250827082512.438fd68a@kernel.org>
-	<20250907183854.06771a13@wsk>
-	<20250908180535.4a6490bf@kernel.org>
-Organization: mailbox.org
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="I+oEKE2+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NaVLIgWUciN172NiLxi6/MPmEcYS78Sdsz8I0Z7gHJ0Sx7w9Xc03MA5xvUf4PjfV7b4No/zn31Bfvd/XiG8/NgbfvKKt2LFkHnwRbnZAQWKqDeBxMwixlog2OVtSciYgjTe7x/y1Z1FWTcRJROCRKOVBwQbKbjF/7e0jo9U+8zPYUNZ98nVDOyAJhUEJs7sdX/wqs8739QoX/2/xPrDNgamfV0tmADJ8P4WPzgq9N5WGiMncC/HAsX9urZuBzuPc9aqvh/Edrc6AaXTEVqAK/kYxtQ/2aDsqxbWoWVNn9ZE8vQ6KhQHll7TYplEgcDEG86ba9e8Fn1bwYSfqSGWFXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Af/+S34Rq9rvt6mkttHIDDUTIFa8qM8jHz201WxTzfA=;
+ b=Xh5kwnMpfnRtue5vy3qBlSD3Nfl2KLf5Abv+60CSScQSZQHVrviCaaHu6kVLVnCzpdRHT2ETU4wyeHt3yFGsPq5FwiXF+BOCNKWDNb+6aknL9KophiOazIt/VHgbQrmdqJScyhry3eQKxXnCwKYOMKQDGg6hQsBuHlK5n0pNLs7nvUrqe+p/IbWpCY8xGo9Eaz9IygGcjTrATNmqLRSDUZZgRZGkLosgZM38jx13BZedy7xaBfrVmxhWNBFMlxD4RonURsSwfB5t3RIU4aDnZFRNq5qLm8Hzwwy2bpQ7cmZVxvyu7AaMuSaldWocx9anwNT2/+NBj0qzPU0WJUNlAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Af/+S34Rq9rvt6mkttHIDDUTIFa8qM8jHz201WxTzfA=;
+ b=I+oEKE2+kEfGZ713ZB49BYS3LPJzr9uJpMA3TPWcLK3hprA7wKwGIQEV/I15S8I4wcphJZ8i/i8yX0GCrKNoa7Km3CduV4v6M8zKEkqWEPM43kKnKIRuNCtshyNivxs+faE4QWxwyiQGbQGCPpJmYy+W7f8YZLlfjF+cUMRIyd5VMlRYWd8Wn0x1eSq799yyHUXN7/plXG/xhdxFsc/Aa3FxPP8lSomaMA37LJYYgBgwlzCzxS1QYmEEVMIwfG1aTm+avadJEovdpHO76aKj5kQtHbBqwJzl6N4ASlpj4dOQT0OQnvTW3g7yXuL5f22xhDxKwnGeZH9TSP/te3NTgw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
+ by DU7PR04MB11091.eurprd04.prod.outlook.com (2603:10a6:10:5b4::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.15; Wed, 10 Sep
+ 2025 21:41:31 +0000
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9115.010; Wed, 10 Sep 2025
+ 21:41:31 +0000
+Date: Wed, 10 Sep 2025 17:41:02 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jiada Wang <jiada_wang@mentor.com>, dmaengine@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/11] dmaengine: add support for device_link
+Message-ID: <aMHwbogOA6QTc3Dm@lizhi-Precision-Tower-5810>
+References: <20250903-v6-16-topic-sdma-v1-0-ac7bab629e8b@pengutronix.de>
+ <20250903-v6-16-topic-sdma-v1-9-ac7bab629e8b@pengutronix.de>
+ <aLhUv+mtr1uZTCth@lizhi-Precision-Tower-5810>
+ <20250909120309.5zgez5exbvxn5z3y@pengutronix.de>
+ <aMA88W/rDxFesEx+@lizhi-Precision-Tower-5810>
+ <20250910193545.gx3qoyjamoxlncqd@pengutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910193545.gx3qoyjamoxlncqd@pengutronix.de>
+X-ClientProxiedBy: BYAPR01CA0056.prod.exchangelabs.com (2603:10b6:a03:94::33)
+ To DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-MBO-RS-ID: 1f4e2a91b7373f1fed9
-X-MBO-RS-META: mhcmdwkhfcjinncdtkghi8nuxi54qqe5
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|DU7PR04MB11091:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7bf72505-42bb-4a8a-0e8a-08ddf0b2c37d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|7416014|376014|366016|19092799006|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?iYIfiTtilTKwK3zGgX9QYLHu4po3bmxwefaOfKomtZOUZlRRd6E4xptSUtbJ?=
+ =?us-ascii?Q?YANz72gf1wfzo2fsfEN0Wa+Y3v00SqcKahb9guwyNGd35ymGiZs4TxOkkgP6?=
+ =?us-ascii?Q?llpRjHWcBqCwE4eRo/It/6iKVIgtogbYedIMXM+HBKdsAJokc20mZR6rQtoc?=
+ =?us-ascii?Q?G4/7Pd1/xJ5F562vnp3oaBht5Hhegfve4fggT6WLQGyyPde+tqt+04b4nidL?=
+ =?us-ascii?Q?j/lhUsdL2GYAvTjwVlhJW+lrtJXwu71mNk8uxR7IcH88Xpu374pJK34UgKrI?=
+ =?us-ascii?Q?8hDGqSDvPlCExzIYGaBfPAVAv5nOW86zWrs13QJe/WmhqS9dxs29NCOQ/qrx?=
+ =?us-ascii?Q?JiTrvHmCRKbPxzCeL3oQl+PLdQQ5IRBS0WqiIA68QN8Rftm1LskyNAxP62Um?=
+ =?us-ascii?Q?D9MSjBvCpFOdea1o9SsM/KQISXgNbneSVEQ4gN8vxXhr9aYytCEeLysbkNlR?=
+ =?us-ascii?Q?aJvLIaXIvRQ/vRUlQKZqFZhSorUNxQmD+FDxC2IRw8moJcUQPNc+YJP0oh1l?=
+ =?us-ascii?Q?OlprHLMPnWMjY/xneXYfMb4JdyUX2iCcZaMfUtotqyBsgQJGocc62yLshHlD?=
+ =?us-ascii?Q?28UxPAxwDi0dxARAM51RH/2M6SMyANtLay8q/DKVkMQ71MoQ/pZjFK1E8wJe?=
+ =?us-ascii?Q?uqydjmmlt4LIMk9kR8JS+csg3WQTQKRQQo06arrAAuy85pnUlKMlrOkvp8QU?=
+ =?us-ascii?Q?cL8AmULUfqq+hd8XSqDUOVOVL0LlD6zAlKkTZPR1KRFOjXzgV2SzcuaAOJmR?=
+ =?us-ascii?Q?BO935bagEtd/l0eRM1Sezpy2xDqamqESOBLuvM0EEcpq/MwaiUcpXSE5TDLJ?=
+ =?us-ascii?Q?RbOT3zk0zwTEpt1ZqOVrKCFo/yrNDYJrqJLdvtrmrDMOzdRWcN3yTBoh8GNp?=
+ =?us-ascii?Q?VK6ojFs3Qk2NQD006QPR+Pye+vnbsM84OrDkXO2wggGZB2/rVxIwtJn9fUmm?=
+ =?us-ascii?Q?0oz8IDY5cpexLVERsMy4Yv8SImRCNp1I9wFEPGEmaUc08BtW6XBX6ox+TDgU?=
+ =?us-ascii?Q?tmUIKhsYSf5vIyjMVEEm+eaubx5YQZujRFRDun9hkW/2yT2avzHJOJDrvbpA?=
+ =?us-ascii?Q?zcLywKfppf3HvjmXisPatioBqyVdqlW3kXO3V8o+rAlgePWId8w/yBcb2qEp?=
+ =?us-ascii?Q?mFylYg1gUgEyeBuZ4MOMuf5N36MWweFoO+s1uOD4ZTmm1ih6c75fsREhlpuG?=
+ =?us-ascii?Q?aXpPM3YmUDb8voWDfXcOyuhfahlBdQCFWV8Ly4ZPyNKC8qun1Qm01Wj2PKqQ?=
+ =?us-ascii?Q?vZ8XMduC/p4dRWvqrCnGMtwuXI7UAUsIfGhhzqkWQdNlCOlVsjy8Jql1/uHN?=
+ =?us-ascii?Q?BJkSlE084oHp33P82GgjJG12DWnZpHjTSYGOy/tAcg39DJ5JKn/6RtYqkz32?=
+ =?us-ascii?Q?q54m3C96sCjOE7WpDna3RAol/0EAmdnrtVsIsGKGMDeGddk1HwDOq3cIWqgQ?=
+ =?us-ascii?Q?4+ZmLehJk2Upkpum8f56ZEdXgGAtFqiDJ/j+cwq8S0zqEKfgsZQyW7aUtfMd?=
+ =?us-ascii?Q?NGLYSQzr6CTIoDA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(366016)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?msuGYIoDXhj9Dz3GuLGsTdYMFuMIfgBMek2HQXAfILtXzbtm/63le7UHZ1i0?=
+ =?us-ascii?Q?/N/Lwcw8bjah7Evdib5BU/+5cLIpNM4vsJqPFK9a7Aw+FHDdx24czYJFklKA?=
+ =?us-ascii?Q?JquPsvlAvh9mTXZgaBu4iKDEugMe+WtIkC3VmjBJW89uQM6x+Xg1S32F3L2b?=
+ =?us-ascii?Q?jKD9E8SgAdsgrr1z5sGVrjd9xcGDe8nu1ehQUTARS3M92CoccDQnvqazm2fu?=
+ =?us-ascii?Q?M4XLlErw787ce6dJKY3Mg4W8WKbLYFpNq2xrg/Wzg+KE2Bjrf3J45lsWHGgs?=
+ =?us-ascii?Q?1R/7T2wzRW8rEYRW/ObMGfm4FyELH0DfGTHy8MFl7ah841J5Lj61zHJ4MK68?=
+ =?us-ascii?Q?DV8kZjn2JXq5g/ckv4mlCr+XnJrtYHDKLZj8gugTto45MEcwRf2y1fCyb2Dg?=
+ =?us-ascii?Q?MuusY0AuGolcjNMAbmLpGWfkmpMDiZIYRNF3zdD+bcDePlFedj9qfZPwPOfp?=
+ =?us-ascii?Q?oJlxaBS0jwPElKxywGDRBCPgk0IPH+mEuPnbyw8FFSvATdr+OKd1PYBfgqxa?=
+ =?us-ascii?Q?pHo/nkMVIcLoenwz/M4EZUlKPHr6VejWkNZwZNqAcs2fg/5foAilwIkNoCcE?=
+ =?us-ascii?Q?0vOl3Z6XbDk7wV6n171HocNc7jhmNucc77QB36z0K4OGc7XVmimyiX7djWy/?=
+ =?us-ascii?Q?4jo+2Pk7m6iCJ9j/BaHUPjgDSnwsg58CkIGRQ0zK2Ju9pv69GnlZ4NtECtQZ?=
+ =?us-ascii?Q?8U4gNWsXJj9cpOKBptHnPtfN7p79g9+eVk/SaOdqwSxcssn7NcpPeDMmK8x6?=
+ =?us-ascii?Q?YH3eQiSbaSxiOc0knot4FXbhEwBStygfkcC8tZog2lbtY5TwLR8bF1OM9fGC?=
+ =?us-ascii?Q?ABJWfJnQlAvK3WKZ0SM1wdjCUBWehaaIZJ0bOvUS5bde/eTrdGmWNDFXVrQ8?=
+ =?us-ascii?Q?vjbJnkJvDp32iQ6o4U4kdYJuR0gjxewIx3QewdLYbaEZ/NIGxJhptvs67sqI?=
+ =?us-ascii?Q?RmdHUREt+G9pFs+z1I2S6ug5p4NWkaNd8W4+kddb8OTvGVtXUyojsT9QmLcd?=
+ =?us-ascii?Q?ecmAHKNsvkAM9SNupvDlFU4Qcehru5BzprsLJaUqck3tNwPFDuQbP6JW9Gg7?=
+ =?us-ascii?Q?BHCt+nRRwP5yYm9F5h8kcLR+Dk6uYD9XKkmB006CldVDZFz/wPIQdwQBlzgW?=
+ =?us-ascii?Q?9MEdLngYSQwBYWBFHva/XuGZw4aNs3v0AkHHGRQ3/Jcdx4d2qztppc0WukVp?=
+ =?us-ascii?Q?b6xKjm5GX6niMPTT9K3mkfvofI4DnUWBrwixlMzYx0YzzrELsxZxYTEEEtSz?=
+ =?us-ascii?Q?PLMVACvtXNrQjzY88dppmk1pMpl+z1nyrsPHGGGGtT+9pZVvDBjAYRS+VDbc?=
+ =?us-ascii?Q?lN2uyHZnwUccj/KeQz1rMIOX7mVPSPqjXG72CKehOIRt1/okczhZrFfSAWCu?=
+ =?us-ascii?Q?QBNhAiT66fF1GmSB3hqF9/eQzmgfkw1d4/0e6HbHjN7iwmWLAVkF3aV53O3d?=
+ =?us-ascii?Q?JdurO6uxsKRVce6EoWWRL/LtodyrqWG/ElMeMhthwVg7+oTsOAkjlr9kFKa6?=
+ =?us-ascii?Q?8iykJPuuITtldYu28DFCWQxRDq/g0HjFKlgwLESjaU3OL3pRp/IzVjQhYQb0?=
+ =?us-ascii?Q?rUSY7tkUybUWXdZ6vDcPvhTRsVP84iB530PpqSU2?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7bf72505-42bb-4a8a-0e8a-08ddf0b2c37d
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 21:41:31.7194
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vG3hnDOqrUuK8A7CG8wjFs0JnjWXpICIYfrCYKLizw4Y/V0KdLKyjCDbur7RrEh4UFwk7wbAQjagF/D5y3JSfw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PR04MB11091
 
-Hi Jakub,
+On Wed, Sep 10, 2025 at 09:35:45PM +0200, Marco Felsch wrote:
+> On 25-09-09, Frank Li wrote:
+>
+> ...
+>
+> > > > > diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+> > > > > index 758fcd0546d8bde8e8dddc6039848feeb1e24475..a50652bc70b8ce9d4edabfaa781b3432ee47d31e 100644
+> > > > > --- a/drivers/dma/dmaengine.c
+> > > > > +++ b/drivers/dma/dmaengine.c
+> > > > > @@ -817,6 +817,7 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+> > > > >  	struct fwnode_handle *fwnode = dev_fwnode(dev);
+> > > > >  	struct dma_device *d, *_d;
+> > > > >  	struct dma_chan *chan = NULL;
+> > > > > +	struct device_link *dl;
+> > > > >
+> > > > >  	if (is_of_node(fwnode))
+> > > > >  		chan = of_dma_request_slave_channel(to_of_node(fwnode), name);
+> > > > > @@ -858,6 +859,13 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+> > > > >  	/* No functional issue if it fails, users are supposed to test before use */
+> > > > >  #endif
+> > > > >
+> > > > > +	dl = device_link_add(dev, chan->device->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
+> > > >
+> > > > chan->device->dev is dmaengine devices. But some dmaengine's each channel
+> > > > have device, consumer should link to chan's device, not dmaengine device
+> > > > because some dmaengine support per channel clock\power management.
+> > >
+> > > I get your point. Can you give me some pointers please? To me it seems
+> > > like the dma_chan_dev is only used for sysfs purpose according the
+> > > dmaengine.h.
+> >
+> > Not really, there are other dma engineer already reuse it for other purpose.
+> > So It needs update kernel doc for dma_chan_dev.
+>
+> Can you please provide me some pointers? I checked the kernel code base
+> for the struct::dma_chan_dev. I didn't found any references within the
+> dmaengine drivers. The only usage I found was for the sysfs purpose.
 
-> On Sun, 7 Sep 2025 18:38:54 +0200 =C5=81ukasz Majewski wrote:
-> > > On Mon, 25 Aug 2025 00:07:33 +0200 Lukasz Majewski wrote:   =20
-> > > > +	/* Set buffer length and buffer pointer */
-> > > > +	bufaddr =3D skb->data;     =20
-> > >=20
-> > > You can't write (swap) skb->data if the skb is a clone..   =20
-> >=20
-> > I do use skb =3D buld_skb() which, "builds" the SKB around the memory
-> > page (from pool).
-> >=20
-> > Then, I "pass" this data (and swap it) to upper layer of the network
-> > stack.
-> >=20
-> > The same approach is used in the fec_main.c driver:
-> > https://elixir.bootlin.com/linux/v6.17-rc3/source/drivers/net/ethernet/=
-freescale/fec_main.c#L1853
-> > =20
->=20
-> I probably cut out too much context. I think I was quoting from Tx,
-> indeed on Rx this is not an issue.
+static void k3_configure_chan_coherency(struct dma_chan *chan, u32 asel)
+{
+	struct device *chan_dev = &chan->dev->device;
+	...
+}
 
-Ok. No adjustments needed then. Good :)
+>
+> > > > chan's device's parent devices is dmaengine devices. it should also work
+> > > > for sdma case
+> > >
+> > > I see, this must be tested of course.
+> > > > >         if (chan->device->create_devlink) {
+> > > >                 u32 flags = DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_CONSUMER;
+> > >
+> > > According device_link.rst: using DL_FLAG_STATELESS and
+> > > DL_FLAG_AUTOREMOVE_CONSUMER is invalid.
+> > >
+> > > >                 if (pm_runtime_active(dev))
+> > > >                         flags |= DL_FLAG_RPM_ACTIVE;
+> > >
+> > > This is of course interessting, thanks for the hint.
+> > >
+> > > > When create device link (apply channel), consume may active.
+> > >
+> > > I have read it as: "resue the supplier and ensure that the supplier
+> > > follows the consumer runtime state".
+> > >
+> > > >                 dl = device_link_add(chan->slave, &chan->dev->device, flags);
+> > >
+> > > Huh.. you used the dmaengine device too?
+> >
+> > /**
+> >  * struct dma_chan_dev - relate sysfs device node to backing channel device
+> >  * @chan: driver channel device
+> >  * @device: sysfs device
+> >  * @dev_id: parent dma_device dev_id
+> >  * @chan_dma_dev: The channel is using custom/different dma-mapping
+> >  * compared to the parent dma_device
+> >  */
+> > struct dma_chan_dev {
+> > 	struct dma_chan *chan;
+> > 	struct device device;
+> > 	int dev_id;
+> > 	bool chan_dma_dev;
+> > };
+> >
+> > struct dma_chan {
+> > 	struct dma_device *device; /// this one should be dmaengine
+> > 	struct dma_chan_dev *dev; /// this one is pre-chan device.
+> > }
+>
+> I've tested your approach but it turns out that teh dma_chan_dev has no
+> driver. Of course we could use the DL_FLAG_STATELESS flag but this is
+> described as:
+>
+> | When driver presence on the supplier is irrelevant and only correct
+> | suspend/resume and shutdown ordering is needed, the device link may
+> | simply be set up with the ``DL_FLAG_STATELESS`` flag.  In other words,
+> | enforcing driver presence on the supplier is optional.
+>
+> I want to enforce the driver presence, therefore I used the manged flags
+> which excludes the DL_FLAG_STATELESS, if I get it right.
+>
+> Please see the below the debug output:
+>
+> ** use the dmaengine device as supplier **
+>
+> device_link_init_status: supplier.dev:30bd0000.dma-controller supplier.drv:imx-sdma supplier.status:0x2 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
+> device_link_init_status: supplier.dev:30e10000.dma-controller supplier.drv:imx-sdma supplier.status:0x2 consumer:dev:30c20000.sai consumer.drv:fsl-sai consumer.status:0x1
+>
+>
+> ** use the dma channel device as supplier **
+>
+> device_link_init_status: supplier.dev:dma0chan0 supplier.drv:no-driver supplier.status:0x0 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
+> device_link_init_status: supplier.dev:dma0chan1 supplier.drv:no-driver supplier.status:0x0 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
 
->=20
-> > What I'm trying to do - is to model the HW which I do have...
-> >=20
-> > When switch is enabled I do have ONE uDMA0 which works for both eth
-> > ports (lan0 and lan1).
-> >=20
-> > That is why I do have only one NAPI queue.
-> >  =20
-> > > What makes my head spin is that you seem to record which
-> > > netdev/port was doing Rx _last_ and then pass that netdev to
-> > > mtip_switch_tx(). Why?   =20
-> >=20
-> > You may have port =3D=3D 1 || port =3D=3D 2 when you receive packet from
-> > ingres ports.
-> > You may also have port =3D=3D 0xFF when you first time encounter the SA
-> > on the port and port =3D=3D 0 when you send/receive data from the "host"
-> > interface.
-> >=20
-> > When port 1/2 is "detected" then the net dev for this particular
-> > port is used. In other cases the one for NAPI is used (which is one
-> > of those two - please see comment above).
-> >=20
-> > This was the approach from original NXP (Freescale) driver. It in
-> > some way prevents from "starvation" from net devices when L2 switch
-> > is disabled and I need to provide port separation.
-> >=20
-> > (port separation in fact is achieved by programming L2 switch
-> > registers and is realized in HW). =20
->=20
-> But what if we have mixed traffic from port 1 and 2?
-> Does the current code correctly Rx the packets from port 1 on the
-> netdev from port 1 and packets from port 2 on the netdev from port 2?
+It should be similar with phy drivers, which phy_create() create individual
+phy devices (like dma channel devices).
 
-Yes, it does.
+> ------------[ cut here ]------------
+> WARNING: CPU: 0 PID: 51 at /drivers/base/core.c:1387 device_links_driver_bound+0x170/0x3a0
+> ...
+> ---[ end trace 0000000000000000 ]---
+> ------------[ cut here ]------------
+>
+> As said, I get your point regarding the usage of the dma-channel device
+> but I didn't found any reference to a driver which used the dma-channel
+> device. Also since I want to have the supply driver to enforced by the
+> devlink I don't want to use the DL_FLAG_STATELESS flag.
 
-In the mtip_rx_napi() you have call to mtip_switch_rx() which accepts
-pointer to port variable.
+Maybe add DL_FLAG, link to parent's device driver. Need some time to
+investigate more. PHY driver should good example to refer to.
 
-It sets it according to the information provided by the switch IP block
-HW and also adjust the skb's ndev.
+>
+> Regarding your point, that some DMA controllers may have seperate clocks
+> for each channel: I think this can be handled by the dmaengine driver,
+> e.g. via the device_alloc_chan_resources() hook.
 
-I'm just wondering if the snippet from mtip_rx_napi():
--------8<--------
-if ((port =3D=3D 1 || port =3D=3D 2) && fep->ndev[port - 1]
-	mtip_switch_tx(fep->ndev[port - 1]);
-else
-	mtip_switch_tx(napi->dev);
-------->8--------
+device_alloc_chan_resources() is not efficient enough, most driver allocate
+channel at probe, so clk of this channel will be always on. ideally, only
+when consumer devices is runtime resume state,  turn on dma channel clock.
 
-could be replaced just with mtip_switch_tx(napi->dev);
-as TX via napi->dev shall be forward to both ports if required.
-
-I will check if this can be done in such a way.
-
->=20
-> > > Isn't the dev that we're completing Tx for is
-> > > best read from skb->dev packet by packet?   =20
-> >=20
-> > It may be worth to try.... I think that the code, which we do have
-> > now, tries to reuse some kind of "locality".
-> >  =20
-> > > Also this wake up logic
-> > > looks like it will wake up _one_ netdev's queue and then set
-> > > tx_full =3D 0, so presumably it will not wake the other port if
-> > > both ports queues were stopped. Why keep tx_full state in the
-> > > first place? Just check if the queues is stopped..?   =20
-> >=20
-> > As I said - we do have only ONE queue, which corresponds to uDMA0
-> > when the switch is enabled. This single queue is responsible for
-> > handling transmission for both ports (this is how the HW is
-> > designed). =20
->=20
-> Right but kernel has two SW queues.
-
-You mean a separate SW queues for each devices? This is not supported
-in the MTIP L2 switch driver. Maybe such high level SW queues
-management is available in the upper layers?
-
-> Which can be independently
-> stopped.
-
-It supports separate RX and TX HW queues (i.e. ring buffers for
-descriptors) for the uDMA0 when switch is enabled.
-
-When you want to send data (no matter from which lan[01] device) the
-same mtip_start_xmit() is called, the HW TX descriptor is setup and is
-passed via uDMA0 to L2 switch IP block.
-
-For next TX transmission (even from different port) we assign another
-descriptor from the ring buffer.
-
-> So my concerns is that for example port 1 is very busy so
-> the queue is full of packets for port 1, port 1's netdev's queue gets
-> stopped. Then port 2 tries to Tx, queue is shared, and is full, so
-> netdev 2's SW queue is also stopped. Then we complete the packets,
-> because packets were for port 1 we wake the queue for port 1. But
-> port 2 also got stopped, even tho it never put a packet on the ring..
->=20
-
-As fair as I can tell - both ports call mtip_start_xmit(), their data
-is serialized to the TX queue (via descriptors).
-
-Queued descriptors are sent always at some point (or overridden if
-critical error encountered).
-
-> Long story short I think you need to always stop and start queues from
-> both netdevs.. There's just 2 so not too bad of a hack.
-
-Maybe there are some peculiarities in for example bridge code (or upper
-network stack layers in general), but I think, that I don't need any
-extra "queue" management for TX code of MTIP L2 switch.
-
---=20
-Best regards,
-
-=C5=81ukasz Majewski
+Frank
+>
+> @all
+> I'm pleased about any input :)
+>
+> Regards,
+>   Marco
