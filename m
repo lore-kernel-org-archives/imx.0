@@ -1,258 +1,146 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013046.outbound.protection.outlook.com [40.107.162.46])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295B6326D60
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 14:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757514525; cv=fail; b=rDXdFWT8rCe5yxodNTdVroPGQPoxpQNMGKduP4dzql9q9Po2yFBaT5OM0JkckeFulq5fMorbJffVy5F+bl7FnG/PBPQ0eMgIL/QSDhyF7vMdPPPhBt1hScmlskK/3kPKLbcZ/Ii7l0LNzJe8y3wJt3VgbVsB8oNOhbZ6CntHuuo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757514525; c=relaxed/simple;
-	bh=BXvXDZX710LlHL3VhMdCOhHWftt+UpXXVRCAilK67Ks=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=qnTQO80TgvyPfLEk/xUpuPxEoDk39CM449KRwsErqAwf3wFfsY9hQZYLbEUqIjviB4SSoznu6IyjSaZdui5aVlDoB1r8iyuzydOskTRgBSvDT+mbH3//A2fTFTY+WgbqDDL+IhKwp1ud7jQbaq0l/TLgyRJ7wff9i9idti8IDvE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aEdbHdHp; arc=fail smtp.client-ip=40.107.162.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aEdbHdHp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AAkUY8WVNHtLiv6j/s0XIjAh8RhwLJdr7fiq4AxigoeX1Nefb9+ehMjSqGPL/DiUxHEWq19gRXfgSPjOFvNkoOR3M4QNsTN/hxaSCQASdMMKWnlwHeTJ2v4aaYdqOROT1fnO0OfU2+p+Jfxr042esfIq11bCrcliuvdBmTtej9PcpbR4iyJbhx+66+wTQYC0IEPj+zndL6Bdo3RxfG3RQq+l7zKRWDsiclBzv5qTBzA/aTSmmVOQRgjLmM5FuFrvZ3P2dWzmFF2Ads3nfgN+DCI0OjpwD1xRXPPw4yJzLCsMnc1C7MVnm1MTv9qsX0RTRsgVp88jOEXXLByQcsGb/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3nh1lxj9PCsSWVMkkIZBHi0r10FeHPkfqbANyAJuRWQ=;
- b=cbIOUn4vEU111BABgScyg5PJK2jWRD9EunGYLdOL/oI7BfeAIdpSCo8FBfUuYuAU3R5Y5Vs+VSDP9bzmQrTAdztZDNRUgrPnQxwLnomLI9ogLPJuVbkcZSmsiYML9Ol6YRa5G4rVFeNoHefoRmOtDmNqtB4YsCTvV61QsLD0oCYxk5/HlzRR4Lkb0k31wbYVZDEPoxDatUMG6bJZ5Wg/IBSQKy9hYuWG0Z3W1mXR5R/LAU7QSZg4pEq/RwlJiBmBGNsLixZ3dcAur2hFbWlfSVoJng8kTRK0ovPvNcZFI6UiGozNMCWObOClN4E2liyCKGglXhrm+P4S7oGRrtJxJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3nh1lxj9PCsSWVMkkIZBHi0r10FeHPkfqbANyAJuRWQ=;
- b=aEdbHdHpJolAKD6SBHvFJr7DZkY8OzKp8Z2iuxaQ+tStVzvKe4XW2D171PwfGEQsj7swBD4RcJDWMWgYU7eAbaYfGj3fb2g/YlIpg2a82b3dbfVI0bQcr0nphdU/+YdhdJR5otjU6U3OON0V2sLP+zoQao6wub5id70fKP3ITX7Z7sSnn5J1mU2J7zAit258vv4SsVLQcqzrY++7UzgkXMhH36p9YQ5uG4rUkldymrcrlHakWR1MugWhofFQcG7qDpu579ITR5hb2hvlotJdsIcFSW+NRQcWPVUepDy5wlWfKDj72vVowEhsPIqupfgfJqhHXBR07bjDO2vtDnhtsQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PA1PR04MB10441.eurprd04.prod.outlook.com (2603:10a6:102:447::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.15; Wed, 10 Sep
- 2025 14:28:41 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9115.010; Wed, 10 Sep 2025
- 14:28:41 +0000
-From: Peng Fan <peng.fan@nxp.com>
-Date: Wed, 10 Sep 2025 22:28:18 +0800
-Subject: [PATCH 2/2] firmware: imx: sm-misc: Dump syslog info
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250910-sm-syslog-v1-2-5b36f8f21da6@nxp.com>
-References: <20250910-sm-syslog-v1-0-5b36f8f21da6@nxp.com>
-In-Reply-To: <20250910-sm-syslog-v1-0-5b36f8f21da6@nxp.com>
-To: Sudeep Holla <sudeep.holla@arm.com>, 
- Cristian Marussi <cristian.marussi@arm.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: arm-scmi@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757514509; l=2471;
- i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
- bh=BXvXDZX710LlHL3VhMdCOhHWftt+UpXXVRCAilK67Ks=;
- b=9zDrD/AwqVUmmoJAclcKw+kOURqgrmFVFpWJgLl8jMeyB/8o88rRaUhn2MZ+CCmWHnje9ZtfS
- i08ZcMv4xtsCpdQf7M4u0s9eDgHce0MuMH9CqJ+nEgdxcry3rE3+tWc
-X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
- pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
-X-ClientProxiedBy: SG2PR06CA0224.apcprd06.prod.outlook.com
- (2603:1096:4:68::32) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2583320CCF
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 14:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757514650; cv=none; b=VaGC5jzXZatNIN5VH2quc/sWeYyCxwUbCDmJehbzYiYq8D2Pf82OcE47E45VtAYrJd2i7GaCKi6KvpL7R3bgBvV7S7kRWGwbIvqfoT/Ke2OU3Cj160p1zR2CfoKPn9DaiYAdKiP9HmHQTGMi6etk6JtF9AJFH8pkHS6rzNXYBlA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757514650; c=relaxed/simple;
+	bh=G1Aaivtu3qjtIaWwq2xO2UzCmo8ur1SlqjoB88xSAis=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=imtEIvV/lPgt7e2uZCiB9+Pld+NCzskbM2cvX/B/1QrafM0C5Zxjvh9EY0zjbz1hZnN82lGo2o3BkVcve0j8xV5SzMManxrWdpUo7bvyFdb4P1ne+gu9qRgXlE5/nwJUYIqxVeuQvMsPQigztLGLXpEi1ObBXLYZFv5ycGB9oNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwLqQ-00075Z-3V; Wed, 10 Sep 2025 16:30:46 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwLqO-000beC-2I;
+	Wed, 10 Sep 2025 16:30:44 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwLqO-00GHZB-1j;
+	Wed, 10 Sep 2025 16:30:44 +0200
+Date: Wed, 10 Sep 2025 16:30:44 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Jonas Rebmann <jre@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-sound@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 1/4] dt-bindings: net: dsa: nxp,sja1105: Add reset-gpios
+ property
+Message-ID: <20250910143044.jfq5fsv2rlsrr5ku@pengutronix.de>
+References: <20250910-imx8mp-prt8ml-v1-0-fd04aed15670@pengutronix.de>
+ <20250910-imx8mp-prt8ml-v1-1-fd04aed15670@pengutronix.de>
+ <20250910125611.wmyw2b4jjtxlhsqw@skbuf>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PA1PR04MB10441:EE_
-X-MS-Office365-Filtering-Correlation-Id: 602dfaa0-262c-47f6-c8c3-08ddf0765701
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|7416014|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?aU9Mc2RkT3NDbkRkeDR4ZWNvU1c5SW5vVFpmaENSL2V3RzFmanRvakp1WVU1?=
- =?utf-8?B?WmhpcUJFNlNSL3dGakVMbnl4QUhsdXU3NTFiVG5KSWk1SDIwR2VFblhXVG9t?=
- =?utf-8?B?WUJOR3RGWi9QV1ljNWdTa3dxaHowRHlocmdaOWRZajhTWXR0Q1FEZExYbzVD?=
- =?utf-8?B?WndpaHh5ZzVsY0I3cnhiSXZlbnA5NEpkOWpKS2dzUnRvSXRodTV4N2hSTGZn?=
- =?utf-8?B?UktCUS91dTNyNHA1T1NaNDljVXJlTWJERkhBVlV1ZDlPeXhRV0NML01IdVZN?=
- =?utf-8?B?WmxxazI0aWR6ZFArTVhua2F1R2FpMHdPa09VZ1h6eUZDUnhSZmlScDJ3bHFx?=
- =?utf-8?B?QjltNDJ6dDExU3lPV2lydVV5SXZKem0yN25jbnIxeXZkSzVzVDkxanBXSGZN?=
- =?utf-8?B?V01NaDZhUFQ4YnVFYXVObGtkVUZ5Nk9YcDZUWGNWcTkvUVYwMGJiYXQvOGZa?=
- =?utf-8?B?bzI4VEU2NUwwcWQ5c3F6TjFYY3BZSHJLSWRsaXJCZC9BRzUySnNab0RNZklI?=
- =?utf-8?B?dzQwbUNrNnBDWENvd3hQdVhEK2ZaM3YrQ0FhZjVYem5OYjg4NG5iYzBKdzc3?=
- =?utf-8?B?Tk9qaGh0UEplWCswb3lnOTMyS3ZrOGdOZTYwRENCeUNqTzJ2TFE0MXk5Tmpv?=
- =?utf-8?B?dXVhRkZLbDhHUHpkUTRNOVVhM081YmZLdDI2bk8rTG5pRDVjcVpGVFo2aTly?=
- =?utf-8?B?K3VUZ0cwS2R1SjVFcERQRUk2b1VXMEZoeUU2RXBPMmphU3pUM1pmMFRhWFJ3?=
- =?utf-8?B?ajZvem8raEJhVUJvdzR6cklKK21FMmpWdGR6eEk5V3NDV1pnU2UvcjJaaGRY?=
- =?utf-8?B?dkJibzFJOTFQeFVXRU5kWU44R1dRdjdRV1ZWQU94QjNnRnhjRm4wY1Zhdzlh?=
- =?utf-8?B?MVdKWVR1SWJpVmN4bTJzWFQrNEh6alpidUpLTjViV3MzSUZFK3hnL1YzaUUz?=
- =?utf-8?B?ZXZPV0tKN0xtRVROdG9hYm1WMERxbk1iVlJHS3B3T2Ezc0RmaTF1NVp5SGIw?=
- =?utf-8?B?SVBEK25pa2ZMNVpER2M1dXEzOW5Nd24xMFMyK1ZRdnFBM3ZQdm1FS0swWUVC?=
- =?utf-8?B?UHZiVkQwZ0ovYXQvVkJWYzYyL0FMMU4wNCs5UWs2NVhEQ2lLZ1NDcjQvZ0l0?=
- =?utf-8?B?c2VZQ2lIa0VjYkMvbzJIak94eUpQU1gva0txQmhjQnNRcUMzV3hqMWxoV0lT?=
- =?utf-8?B?OEtiS0dWN1l6WStnSkxZMkU0ejNCSCtQaXhXMTd5RzBocTNUWkF0SHNBVkFW?=
- =?utf-8?B?NWxtYTY3ZXBMNlBMR3BOTFB6aTd4YlduU3JaWVNnV2NqMTVsS0xSK3g5dEM5?=
- =?utf-8?B?L1Y2U3lFQ0ZYSzN1bXkvUEVVTW81OTJ0S2VJOXZ3TVNDT0dtMmFraUhqeTZa?=
- =?utf-8?B?S0pmVVFxbkZNNUc3bFd4MzhlOVB5UlNnUjhLQTBiZ3ZmVVk1QTFpVk0zRktS?=
- =?utf-8?B?SlZGYk5CMkJIR05Od2RwZG9xN3c2c0N3WmxHQzJWSWFxbG95L1ZvWW1vUm9U?=
- =?utf-8?B?RTE0RTcwZ3M0RFJvUHBIOWFiUGQwaGo3NGF5SXJQazZKS0tEcHhkZWtmNnFh?=
- =?utf-8?B?SnU4NWNUbUphcjVtTitUVUV1SE93VkNtQ2syTmo3V1VpRThISTdDK0lKYXlk?=
- =?utf-8?B?SWpaeFJKcng4azc3R0I3Z3RxaXh0K0NzSk14S0k3NXRJclBqZGx0Qit0Zjh4?=
- =?utf-8?B?djEzMGF4ZkdLVUZZeDU0Y3hZYVd2cEtIajNEL2hQRm1nUFE5TlhYUHVrRlRS?=
- =?utf-8?B?ZytmcG02MTNOc3lMKy90UTVQclVPeGhVNEl4WXRYODBDVEFocWR6YitsdVQz?=
- =?utf-8?B?ZW9pSlc3ZjY5cTlDdVNjbUtCVmhjSnZmMlpzNm1YUnlsR1VqODZaRGxmRVF6?=
- =?utf-8?B?Vk5Xcm5jaGUvSUlBU1kyQTdXZGRDcUJhVXp6a3AwWHhpMXFWZkZHelJSbS9z?=
- =?utf-8?B?OXRZeHYvQmErN3drTXVjWVBrM083N0hqKzVaaGpOWWNQQ3IvRDYwQWg0UDFV?=
- =?utf-8?Q?WnVoA42uBxT6J7h3bKM55QAe2RxofE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZzFVUEdZYTVsSHIvS29EL2dGdkFzeTFFMEdmT0hXWlRhejg1dThXeWI1d3o2?=
- =?utf-8?B?eENqRUp5ZTN6RDBVZ1owbFliczJYbS9hWGFha3NRcmZuelhVbU5HYTFtT010?=
- =?utf-8?B?djdkdXkzN1lTREM0WURGb3RtNTVmVEtYZG5oR3AwYWk3UXdRNHlPdTlmTGNj?=
- =?utf-8?B?cjhsYW5peE5YQ3paOVArYVpmL0NPSkoyMlhDbExiSmdDbnhvVE9SK1VpQlV2?=
- =?utf-8?B?V3d0MzAwRXc0N0xkNkNvV1BGZHlkYk0xNTRaNkZxSzdQK29qR0VtNzIvMDFt?=
- =?utf-8?B?aVpCcTJyQlJqOURvQ0JVcVcyVWJqNm9OVEIwSmZ5eWlCcVFBRSt2L2hwU1dE?=
- =?utf-8?B?LzNTb3QvVEpwcnEvRjVmWHZQZHExbkpYOWQrcHY0Y1E1aDBoS1ZkZ2JlSm12?=
- =?utf-8?B?TDVsd3V2ZTB4SGU4RzFEWkdIdkpUVVhRcCt3aWlRUmRPKy9ReVEySGFuMVhm?=
- =?utf-8?B?b2pQYlkwenhlaXMvMWdNTDN1T3pmdWZKbE1oUkpuNndwdXB4b1p2c0hlWXBw?=
- =?utf-8?B?cHFhcnorbGpvaWNOZkY3TVdIaVNqUlNzOUovdnhRZ0lIaEo4L3lhNkw0RDdy?=
- =?utf-8?B?aEJxSUVlWVUvTDg0d2tpSEFLYXZsZW8vVmZFczMrOEN4TXdNOFdaZ2dNMDkr?=
- =?utf-8?B?OVdxQkxTV1h3dzRmT0lkQW9WRFZZS21ibUl2WmdzSjZIWVdxc3ZsNjdSUStT?=
- =?utf-8?B?bEZDTnZrUmh4bjloNC96cG1LTjNJMlpvYlpPN0IvYjBhdmtJMTZFQ003OFZE?=
- =?utf-8?B?ZGQ4U2ErOEJCRnRHUWN4Mi9PbENpK0xXcmwxR09RTUdjd1FiMUY0SUFXOHA4?=
- =?utf-8?B?ZGZJb0Z3bjg5aVdWNUVPSjZpSzAzd2xzRzh2Mms4VTNvalRtRVdWK1F6NVhm?=
- =?utf-8?B?Mmx4NnlLQXNEbjhiSy8wSlI3TnlmOXJrc3J6RVBJcEIxd25QZEEyMDJlR3A1?=
- =?utf-8?B?djl6aHBOeEU4NnlIK1psYW5QRFEvVlMwVE1xUjVQZ0czY0NkNm5nSlZKUWNh?=
- =?utf-8?B?cUUzczFhUVg4Y0tlR0M0YUdrWVpCbVN4d1pHRWdLcEhVdDRja1ZWNWU2ajJD?=
- =?utf-8?B?MzhFNnJrS2ZPTTdrdDRtVEwzejNxemdZU0lGV3kvSThzcGZtenhzQ29ZMVQ2?=
- =?utf-8?B?elZzc1FDaUViUGsxeFZaeHRFTUVMZy9kOEF4R2wrelE5UlU0emtoTmM5Q1lY?=
- =?utf-8?B?cnF4QnViSzlNV0VkWW5wOW16ZTNKWVp5RlZXWDJESHN4OU8wazJjQjlxYUJK?=
- =?utf-8?B?Q0d2MmNtdWNWQ1lIcVpjaGpwMTVZVkVCZDZxUEJEVE92NEthb0JMd3gzWTVF?=
- =?utf-8?B?NTgxWnFZZ2E3dGpqYW01L3N3U1phRG5USHdhR1QvYzMvK1BUdmlHUmE1eWFa?=
- =?utf-8?B?a3VHMkdScHE0N3BSb0M3eWErSytDQ3h6aXZvcnhLM0E3dGhhTjhFUG5ITEIw?=
- =?utf-8?B?dkJocHVkMlNsRGFmekdJSHVkWFpOVEczd3ozREp3bWlMbllNREZydzc2OWlw?=
- =?utf-8?B?M2tCSTlTUjhPZ2xkcWFSc1lTUmdVT3U4YkI3cW5GbnFQSjJwLzFza01DN2Iv?=
- =?utf-8?B?WmJyU04yQ2tISUl4MjNQQ3M4LzEvNE9wT3paYzMxV0ZKTnp3NElTRTJnU2hD?=
- =?utf-8?B?QVlWcTlrbURtWlNudWw4eHhnb2pZaUxCUEVaMUZtR3pERTc0aFZTOGJzNUZL?=
- =?utf-8?B?azZQNGVpM25qaUZMYlFZRGEwTjBkNU9JWmVBa0M1Vk1ZQVBUZWJFQ3hkWTZS?=
- =?utf-8?B?YUgxMFRrVVBra09ON2xQSEk3L1g4MDNCNzhlL2hCQ2RWcW9BYlNkemxWNGxJ?=
- =?utf-8?B?emJBWVc0MUFTM28wZVlMTCtKeXBaSnIrT3NGQjRDUVdzREU4MTBnV2xvdjZV?=
- =?utf-8?B?aExJVTB0cldXQ1NYdmlkTnJZYTJCa0hSMXlIR2wrbHNyL2RCcUsxRllYRU1F?=
- =?utf-8?B?MjJCOVJnZXZUeWFzYnYwVi9jSXBrUjA0RTU5NkJoMGt1U0xiekJoZmFmRFdq?=
- =?utf-8?B?T2Y3QUIrbUw1Q0s1N3ozU1lFcTN4L05odzhjOFRpb2xoNzNoTzhRNTNmRjVF?=
- =?utf-8?B?TWV2bFp0eitkUnZsa0RCSTQ3Y1JwMW5jNUJ4Wkp1NEZMV3p6NkpjajgzNEln?=
- =?utf-8?Q?7U3NUnZxNJVwxe1xgvf5VWHKq?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 602dfaa0-262c-47f6-c8c3-08ddf0765701
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 14:28:41.4517
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 10u6vJoBR3ULZbXMACEdWe9xvbsL/QzLF2/XoaBYMgWmCOJexAT99FzQ8Yl2HrVS1KyQ0NMGePjqFt6RnGMi1A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10441
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910125611.wmyw2b4jjtxlhsqw@skbuf>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Add debugfs interface to read System Manager syslog info
+On 25-09-10, Vladimir Oltean wrote:
+> On Wed, Sep 10, 2025 at 02:35:21PM +0200, Jonas Rebmann wrote:
+> > Both the nxp,sja1105 and the nxp,sja1110 series feature an active-low
+> > reset pin, rendering reset-gpios a valid property for all of the
+> > nxp,sja1105 family.
+> > 
+> > Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+> > ---
+> >  Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml b/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
+> > index 9432565f4f5d..8f4ef9d64556 100644
+> > --- a/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
+> > +++ b/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
+> > @@ -32,6 +32,11 @@ properties:
+> >    reg:
+> >      maxItems: 1
+> > 
+> > +  reset-gpios:
+> > +    description:
+> > +      GPIO to be used to reset the whole device
+> > +    maxItems: 1
+> > +
+> >    spi-cpha: true
+> >    spi-cpol: true
+> > 
+> > 
+> > --
+> > 2.51.0.178.g2462961280
+> >
+> 
+> There are multiple issues with the reset line and I was considering
+> dropping driver support for it.
+> 
+> The most important issue is the fact that, according to NXP document
+> AH1704, the RST_N signal has to be kept asserted for 5 us after power-on
+> reset. That is hard to achieve if this pin is routed to an SoC GPIO.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/firmware/imx/sm-misc.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+Can you please elaborate a bit more? I was curious and checked the
+AH1704, it says:
 
-diff --git a/drivers/firmware/imx/sm-misc.c b/drivers/firmware/imx/sm-misc.c
-index fc3ee12c2be878e0285183e3381c9514a63d5142..4678d76b7dd6907533b5131c15ff0edcb66f43b2 100644
---- a/drivers/firmware/imx/sm-misc.c
-+++ b/drivers/firmware/imx/sm-misc.c
-@@ -3,12 +3,15 @@
-  * Copyright 2024 NXP
-  */
- 
-+#include <linux/debugfs.h>
-+#include <linux/device/devres.h>
- #include <linux/firmware/imx/sm.h>
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/scmi_protocol.h>
- #include <linux/scmi_imx_protocol.h>
-+#include <linux/seq_file.h>
- 
- static const struct scmi_imx_misc_proto_ops *imx_misc_ctrl_ops;
- static struct scmi_protocol_handle *ph;
-@@ -44,10 +47,43 @@ static int scmi_imx_misc_ctrl_notifier(struct notifier_block *nb,
- 	return 0;
- }
- 
-+static int syslog_show(struct seq_file *file, void *priv)
-+{
-+	struct device *dev = file->private;
-+	/* 4KB is large enough for syslog */
-+	void *syslog __free(kfree) = kmalloc(SZ_4K, GFP_KERNEL);
-+	/* syslog API use num words, not num bytes */
-+	u16 size = SZ_4K / 4;
-+	int ret;
-+
-+	if (!ph)
-+		return -ENODEV;
-+
-+	ret = imx_misc_ctrl_ops->misc_syslog(ph, &size, syslog);
-+	if (ret) {
-+		if (size > SZ_4K / 4) {
-+			dev_err(dev, "syslog size is larger than 4KB, please enlarge\n");
-+			return ret;
-+		}
-+	}
-+
-+	seq_hex_dump(file, " ", DUMP_PREFIX_NONE, 16, sizeof(u32), syslog, size * 4, false);
-+	seq_putc(file, '\n');
-+
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(syslog);
-+
-+static void scmi_imx_misc_put(void *p)
-+{
-+	debugfs_remove((struct dentry *)p);
-+}
-+
- static int scmi_imx_misc_ctrl_probe(struct scmi_device *sdev)
- {
- 	const struct scmi_handle *handle = sdev->handle;
- 	struct device_node *np = sdev->dev.of_node;
-+	struct dentry *scmi_imx_dentry;
- 	u32 src_id, flags;
- 	int ret, i, num;
- 
-@@ -98,6 +134,12 @@ static int scmi_imx_misc_ctrl_probe(struct scmi_device *sdev)
- 		}
- 	}
- 
-+	scmi_imx_dentry = debugfs_create_dir("scmi_imx", NULL);
-+	if (!IS_ERR(scmi_imx_dentry))
-+		debugfs_create_file("syslog", 0444, scmi_imx_dentry, &sdev->dev, &syslog_fops);
-+
-+	devm_add_action_or_reset(&sdev->dev, scmi_imx_misc_put, scmi_imx_dentry);
-+
- 	return 0;
- }
- 
+"The RST_N signal must be kept low for at least 5 us after all power
+supplies and reference clock signals become stable."
 
--- 
-2.37.1
+This is very common, so the driver only needs to ensure that the pin was
+pulled low for at least 5us but not exact 5us.
 
+> Additionally, routing the reset signal to a host SoC GPIO does not bring
+> any particular benefit, since the switch can be (and is) also reset by
+> the driver over SPI.
+
+I don't know the switch but it's also common that a so called
+software-reset may not reset all registers, state machines, etc.
+
+There it's common practice that the driver tries to pull the hw reset
+line and if not present falls back to a software reset.
+
+> So, at least for this particular switch, having a "reset-gpios" actively
+> points towards a potential violation of its POR timing requirements.
+
+Really? Please see my above comment.
+
+> That is, unless the power rails are also software-controlled. But they
+> aren't.
+
+AH1704 Fig.10 just illustrate a reset and power-on sequence. I highly
+doubt that the host can't pull the hw rest line if the supplies and the
+clock is already running.
+
+You're right about the fact that the driver is currently not able to do
+a proper power-on sequence, so the kernel relies on the prev. firmware
+or the hw-setup. But this is another problem.
+
+Regards,
+  Marco
