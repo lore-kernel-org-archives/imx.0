@@ -1,88 +1,96 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260C2311C20
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 08:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602E1311595
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 08:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757494524; cv=none; b=rZGGkU9S/98tbeWb/blQuDXlUKA8eRgsQkEyWrHWbnc03KGfVkAHgBnNolwXUWZBtDD5UEDjvLuaU+lzW4UP9qlBzkiO84JmtAQVJL7G49JonOGMzMN97vsndnXSK8tQ4NUeiKueCKtNXIv3Bq0kmspovkJW5o6+m/LJEVp4PYE=
+	t=1757494670; cv=none; b=gSGglytgX2kk3NQCQK/pjg00U8WbMIIPkQNIkQstiyVC1LHQoAIFvKvzo2/33FBek5kmCujDcUWNJryqlzN7ySo/95e8osN+hLQG8fyIiSqR/EuMSAlLjOwNkDi+QeULamQ0lISD++bJzfXuLxknGJ+sMKGUaLz61gDTt1AciYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757494524; c=relaxed/simple;
-	bh=hpz41grSZgUpOdZSDvGHF3rBgqGglK7gcLfkEeaB+OU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mAgBhtZ00be5lWwQ6d+5JabP9IVRtNZ4rUOk6aaEITllHDf+nQDlSC1vWozyTCx5AmCxz+V005319ow6se2hQ0yg3AsY7hKrKG7fdw4G1JMmr0Xl4LuiFQEAoLC6l3fpMb/Z2Zz7ZD/7dKGEWPOzGGRFnxpbPCkRo987psXBwkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=gEF7w8yg; arc=none smtp.client-ip=220.197.32.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1757494670; c=relaxed/simple;
+	bh=mUPUv1qyd97znqrQy6Xj6SNJzpr5XsHLjgPM2Gm4KWc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=BPEfJB5n0SPVbPZSEhJuPc3UdU1I1hq2+kDDUg7fP4wr7yCf+n8HbLoaTJUcB/b+25Y3vEl+RtKOO5vuEedO9wHo+jDG8QjrQ1LKgRF0fajQhnGRaEq/zA6TM/ZtDphakBkZMAS/Jluvngxwdnbkb1vTl5vdgFsp0koOGMQEe/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nF6f9aww; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="gEF7w8yg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=jupNrTs3JMwOvq+fnMPXFS8hLrrLD5lrJLhDJBoxSEs=;
-	b=gEF7w8yg+1iuLMmCraMdsagAWxzGsodzN3SjBWGYTGKuazSL3IiqlmafGSKxv2
-	U04fsQYvnREEFhAy67GKLLdbYWIAIKqTwYpMuNzO9sK8C/wpK7/DiNu7eRkl0OVh
-	Onuc4N9A7sHAluvCbYd4gNNnsgrIdrKZBvVoxugTjtQgI=
-Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3P987OsFoZf5EBA--.43160S3;
-	Wed, 10 Sep 2025 16:43:41 +0800 (CST)
-Date: Wed, 10 Sep 2025 16:43:39 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>,
-	mathieu.poirier@linaro.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:SYSTEM CONTROL MANAGEMENT INTERFACE (SCMI) i.MX..." <arm-scmi@vger.kernel.org>,
-	"open list:SYSTEM CONTROL MANAGEMENT INTERFACE (SCMI) i.MX..." <imx@lists.linux.dev>,
-	"moderated list:SYSTEM CONTROL MANAGEMENT INTERFACE (SCMI) i.MX..." <linux-arm-kernel@lists.infradead.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: Re: [PATCH V2 RESEND] dt-bindings: firmware: imx95-scmi: Allow
- linux,code for protocol@81
-Message-ID: <aME6O29QxvU_PcRx@dragon>
-References: <20250718094723.3680482-1-peng.fan@nxp.com>
- <20250825082154.GA26152@nxa18884-linux.ap.freescale.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nF6f9aww"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-55f7a34fb35so6410588e87.1
+        for <imx@lists.linux.dev>; Wed, 10 Sep 2025 01:57:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757494666; x=1758099466; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LK2XrNKkgd8rdfWEOo97HFUVmGk3ZSED1YaVjmkZkoA=;
+        b=nF6f9aww805sayy+G/q5kgIMvZbzT3ZmSTshfwCLsIsckLNj70HWIL2WqJgmFFFA5k
+         vkgWTTiubeBYBulovyeumb3138Q2lAvS0jDLqCSOViFlyalzpVY2SImUa77B0PlmdcA1
+         mhEDC8PFVMdX8CX6LYGKziwT/7Ks7CWHOkr4l8M52HsbcRPtVXZ7b+UntIyLdGvBR8Ok
+         b8LluxkUVznXq4Yaa9LVmddjPfvpib8wRv8LJLpOqBS7cgTca8Vn4uEwDYkhyb7eYI0u
+         mkw4opjhgZZO+LqUVX5Jc6tAqDobXANVivIhv2DkZ+3xPUlu0BagoM6HSG8jYUPWdA+s
+         I+TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757494666; x=1758099466;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LK2XrNKkgd8rdfWEOo97HFUVmGk3ZSED1YaVjmkZkoA=;
+        b=vGxcdXUbblHpIqTMtl90tezs3Fwmskad/tz33gHjwDXDCc1DGOZif+HLJJLcfJ5Xbx
+         CX2SWJXMFtp83iT15TJ7KDk8eO7ATV50CLWSlByVRDS1uQnGipgtuDsflFqsxqXzeOCY
+         hHuNheV5zJ3UU50I6+JkhAgTEVlvN7xNG27ZmpJlcn+4tPi45Vcwu+smG8/u7qBwGX6X
+         DZfz+ce0Ff+sag7ABMbKWZ7ZO9Y2gPW40Sz6NyDyq3TFNx9NpVNLC5iYRO45mhOpYiaD
+         oFzYB39HMKZNL14ExQc0MVhsEoqAAL1cfWVRGwVK34GHePAwfR0z/RbthsAxUllj6m70
+         +vmA==
+X-Forwarded-Encrypted: i=1; AJvYcCVsRN4Wpjn8A00y4Qs3oXUxaMRNCb2WYCmZv5kAJFj833jaDoLwhDlz4eMy88nHTdgvOcE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyqT9MF+d/qC2KVe0cX+rQfgEivrkTFvzoU7xu+zNzxHd/3HzAp
+	twN3W65VRUSzMTNDDCW5WM1kM6QQmrapaH9AtKUSjxlvQhcugUjzEb20isCgVAy3
+X-Gm-Gg: ASbGncuO0MG/2Yr9M3OxZCBmmkDnd7eVho2+BaCySX6CiNeYJotj+iaK75uzNKM4NMK
+	eaFureyjl4DsmDxvHx9+YajgEQBNplQw6atgOBgTZxDNdZV9aJPsfp7BMtK9vVZ6Uy0X+5DNmjU
+	5AXK/m9uyaM/BbFJGf9Hz3I5Kz+hxKwE2Yv00KuaoBlFqlMUFY4sMgQMQnDbfB+AD0ze5RuRPZ2
+	B4odaTIYxIeFT/EI7SlRbpfrsCK18Fu3jh71vFdFh3BTsHtsUErupLqCBRmK+70HmaXOwzKTvjv
+	a4vGbOQvH02UrThAmuyk2YC+dUNdCqz8yRqdWNqCUZolgDqtA0A6EJRQk+EFdwtRbmlPs/G4BL5
+	1CzRaOddaY47L4291va3dBI0yivq044y1PJSJ1b0vIFzPDglIOTSSwYflEOjPU5ss9U5hLAE3ws
+	d2IuRx
+X-Google-Smtp-Source: AGHT+IFOg+w8CQ1Pyd3vV9OuLbAyp2SxZMbbXebY3T+dS2xnuXxe7RzvBpWw7tcbqOAeggvctjmMGA==
+X-Received: by 2002:a05:6512:4017:b0:568:e61e:5c71 with SMTP id 2adb3069b0e04-568e61e5dddmr1844132e87.46.1757494666105;
+        Wed, 10 Sep 2025 01:57:46 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5680cbf2612sm1136121e87.45.2025.09.10.01.57.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Sep 2025 01:57:45 -0700 (PDT)
+Message-ID: <04dbf985-09c2-4221-b40e-55999641495c@gmail.com>
+Date: Wed, 10 Sep 2025 11:57:44 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250825082154.GA26152@nxa18884-linux.ap.freescale.net>
-X-CM-TRANSID:Mc8vCgD3P987OsFoZf5EBA--.43160S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKw45GF1UZrWrGr47CrykXwb_yoWfJrc_CF
-	WxJr9ruw4agw4Ik3WrtrW3urnrK3y8XF1DXr1Ygr1fXFnxArZ8Z3ZxA34rAw17ZaykXFZ7
-	W3Z0qF409FyDujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUUfMaUUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCwLEZWjBF1101wAAso
+User-Agent: Mozilla Thunderbird
+Subject: Re: Strange PMIC behaviour with rohm bd71847 on Ka-Ro tx8m-1610
+ (imx8mm)
+To: Maud Spierings <maudspierings@gocontroll.com>, imx@lists.linux.dev,
+ LW@KARO-electronics.de
+References: <56e7a430-79dc-4598-8e58-809759cf0711@gocontroll.com>
+ <f5736f7e-26ec-4a20-8f4d-82d45e719f3a@gmail.com>
+ <42b98b9b-5561-4a46-bab8-a5dc60b69669@gocontroll.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <42b98b9b-5561-4a46-bab8-a5dc60b69669@gocontroll.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 25, 2025 at 04:21:54PM +0800, Peng Fan wrote:
-> Hi Sudeep, Shawn
+On 10/09/2025 11:49, Maud Spierings wrote:
+> Hello Matti,
 > 
-> On Fri, Jul 18, 2025 at 05:47:22PM +0800, Peng Fan wrote:
-> >From: Alexander Stein <alexander.stein@ew.tq-group.com>
-> >
-> >BBM protocol supports a single power button, supported by driver
-> >imx-sm-bbm-key.c. By default this is KEY_POWER, but can also be overwritten
-> >using linux,code. Add a reference to this schema and add linux,code as a
-> >supported property.
-> >
-> >Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> >Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> >Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> >---
-> 
-> Not sure which tree this patch should be landed in. But would you please
-> pick it up?
+> On 9/10/25 08:25, Matti Vaittinen wrote:
+>> On 09/09/2025 18:16, Maud Spierings wrote:
 
-I do not see the patch in next-20250910, nor reply from Sudeep
-indicating it's been applied, so I just picked it up.
+> Again very sorry, a day of patience would've resolved this issue on its 
+> own it seems. And many thanks for the help.
 
-Shawn
+No problem! Glad it works for you now.
 
+Yours,
+	-- Matti
