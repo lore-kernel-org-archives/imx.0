@@ -1,103 +1,131 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BD7270575
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 16:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987A126D4F9;
+	Wed, 10 Sep 2025 17:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757523324; cv=none; b=i0guBI2k0tYVBKWOTK4ymONn+7bOKPXMZvLkle3x7tbR3K9myIeaOddk53FUF/CrCdyfvPBMj2bC7q1G6/CGwagTzEZbImaB6Wf1jhumBRLUoufcsrgxE19hdTmHBQmQ87FL+2tCS5UuUVmH4c4Zpt6MkVAuec0uwXpy1Lojbfs=
+	t=1757524837; cv=none; b=oahTLGcYYiAeovcoAvNx75aCeuvCmsKV2XYfuDIuymECNrFErOkkHk51yOU9os9qor23/6Q7y/91R044ZPv0x/ZU1x9HPptUwznVi+0+X0tOSJSF+QJKwRhUtQRDb62Ej2lnZqCY+KVRyOaiHK2U2BMLs/F855jkhbD2OVVY9UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757523324; c=relaxed/simple;
-	bh=+MiE311kfFW//2eHcz0hVWh71Y6hSvVa+hpJe44h5QE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ut+TUQlhZB4YXyQvVfv3/PnZlKVPaPRwLAHSTnfTVyEIEfkfjcmtZU72bSrqLPaoXX8yhNe8YhC5u5LVU8MRFT/H1f3OM+RWrV9PEmH/pTOeJZlGnpNwMOLlMg2nvy+6Ux93LheqiF/IyQnodJBMeKEtWoqvE7wT8SzR5h+oNNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uwO6K-00081C-BQ; Wed, 10 Sep 2025 18:55:20 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uwO6J-000ceW-0G;
-	Wed, 10 Sep 2025 18:55:19 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uwO6I-00GJtR-2w;
-	Wed, 10 Sep 2025 18:55:18 +0200
-Date: Wed, 10 Sep 2025 18:55:18 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Mark Brown <broonie@kernel.org>, Jonas Rebmann <jre@pengutronix.de>,
-	Andrew Lunn <andrew@lunn.ch>, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-sound@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 1/4] dt-bindings: net: dsa: nxp,sja1105: Add reset-gpios
- property
-Message-ID: <20250910165518.bzpz5to5dtwe2z6x@pengutronix.de>
-References: <20250910-imx8mp-prt8ml-v1-0-fd04aed15670@pengutronix.de>
- <20250910-imx8mp-prt8ml-v1-1-fd04aed15670@pengutronix.de>
- <20250910125611.wmyw2b4jjtxlhsqw@skbuf>
- <20250910143044.jfq5fsv2rlsrr5ku@pengutronix.de>
- <20250910144328.do6t5ilfeclm2xa4@skbuf>
- <693c3d1e-a65b-47ea-9b21-ce1d4a772066@sirena.org.uk>
- <20250910153454.ibh6w7ntxraqvftb@skbuf>
- <20250910155359.tqole7726sapvgzr@pengutronix.de>
- <20250910164231.cnrexx4ds3cdg6lu@skbuf>
+	s=arc-20240116; t=1757524837; c=relaxed/simple;
+	bh=Y0vM/C+i7FrhaWc22NPICuucZw/FXOkJVrmqKIyqWFw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k+1koEQOuKB3SxuZ5XT09qNtGyXU/LeTSbaU7geoHlqoCG9RB9rtKjnl2Yf/pX4E8XOstBrOoFbrsfOC/TddK1BllyxVqoEpoajn3nePpQk1LZuVcYRKMTqKCq5pUmKWcaM+ySLGn2hH4YXPW/8DC/+tBtzmIqBHXhGK5f6jdPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cMS006bWmz9sj9;
+	Wed, 10 Sep 2025 19:11:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id mnbxQRtTxTSD; Wed, 10 Sep 2025 19:11:28 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cMS005XY2z9sj8;
+	Wed, 10 Sep 2025 19:11:28 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8550B8B7A7;
+	Wed, 10 Sep 2025 19:11:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id tVGSEt2GMt0K; Wed, 10 Sep 2025 19:11:28 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C99E88B764;
+	Wed, 10 Sep 2025 19:11:26 +0200 (CEST)
+Message-ID: <d9caedb4-41c8-4ef7-99b9-51d891aee555@csgroup.eu>
+Date: Wed, 10 Sep 2025 19:11:26 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910164231.cnrexx4ds3cdg6lu@skbuf>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Richard Weinberger <richard@nod.at>, Arnd Bergmann <arnd@arndb.de>
+Cc: ksummit <ksummit@lists.linux.dev>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-mips <linux-mips@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>, imx@lists.linux.dev,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand
+ <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, vbabka <vbabka@suse.cz>,
+ Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>,
+ Nishanth Menon <nm@ti.com>, heiko <heiko@sntech.de>,
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+ Andreas Larsson <andreas@gaisler.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 25-09-10, Vladimir Oltean wrote:
-> On Wed, Sep 10, 2025 at 05:53:59PM +0200, Marco Felsch wrote:
-> > IMHO silently removing the support will break designs for sure and
-> > should never be done. As said, imagine that the firmware will handle the
-> > supplies and the driver only needs to release the reset. If you silently
-> > remove the support, the device will be kept in reset-state. In field
-> > firmware updates are seldom, so you break your device by updating to a
-> > new kernel.
-> > 
-> > One could argue that the driver supported it but there was no dt-binding
-> > yet, so it was a hidden/unstable feature but I don't know the policy.
+Hi Richard,
+
+Le 10/09/2025 à 16:04, Richard Weinberger a écrit :
+> Arnd,
 > 
-> Ok, I didn't think about, or meet, the case where Linux is required by
-> previous boot stages to deassert the reset. It is the first time you are
-> explicitly saying this, though.
+> ----- Ursprüngliche Mail -----
+>> Von: "Arnd Bergmann" <arnd@arndb.de>
+>> High memory is one of the least popular features of the Linux kernel.
+>> Added in 1999 for linux-2.3.16 to support large x86 machines, there
+>> are very few systems that still need it. I talked about about this
+>> recently at the Embedded Linux Conference on 32-bit systems [1][2][3]
+>> and there were a few older discussions before[4][5][6].
+>>
+>> While removing a feature that is actively used is clearly a regression
+>> and not normally done, I expect removing highmem is going to happen
+>> at some point anyway when there are few enough users, but the question
+>> is when that time will be.
+>>
+>> I'm still collecting information about which of the remaining highmem
+>> users plan to keep updating their kernels and for what reason. Some
+>> users obviously are alarmed about potentially losing this ability,
+>> so I hope to get a broad consensus on a specific timeline for how long
+>> we plan to support highmem in the page cache and to give every user
+>> sufficient time to migrate to a well-tested alternative setup if that
+>> is possible, or stay on a highmem-enabled LTS kernel for as long
+>> as necessary.
 > 
-> So we can keep and document the 'reset-gpios' support, but we need to
-> explicitly point out that if present, it does not supplant the need to
-> ensure the proper POR sequence as per AH1704.
+> I am part of a team responsible for products based on various 32-bit SoCs,
+> so I'm alarmed.
+> These products, which include ARMv7 and PPC32 architectures with up to 2 GiB of RAM,
+> are communication systems with five-figure deployments worldwide.
+> 
+> Removing high memory will have an impact on these systems.
+> The oldest kernel version they run is 4.19 LTS, with upgrades to a more recent
+> LTS release currently in progress.
+> We typically upgrade the kernel every few years and will continue to support
+> these systems for at least the next 10 years.
+> 
+> Even with a new memory split, which could utilize most of the available memory,
+> I expect there to be issues with various applications and FPGA device drivers.
 
-We could do that but I think that no one should assume that the driver
-ensures this due to the missing power-supply and clock support. But this
-goes to the DT maintainers. IMHO we shouldn't mention any document
-within the binding, maybe within the commit message, since those
-documents may get removed.
+Can you tell which PPC32 model/family you are using ? Is it mpc85xx or 
+and/or other variants ? Maybe we can look at keeping CONFIG_HIGHMEM or 
+find alternatives for that subset of PPC32 only.
 
-Regards,
-  Marco
+Could you also elaborate a bit on the kind of issues you forsee or fear 
+with applications and FPGA device drivers.
+
+FWIW I sent out today a patch that removes CONFIG_HIGHMEM complely on 
+powerpc in order to get a better view of the impacted areas and allow 
+people to test what it looks like on their system without 
+CONFIG_HIGHMEM. See [1].
+
+Christophe
+
+[1] 
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/28d908b95fe358129db18f69b30891788e15ada0.1757512010.git.christophe.leroy@csgroup.eu/
+
