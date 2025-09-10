@@ -1,121 +1,100 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01808311C32
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 09:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241D8259CB6
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 09:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757497521; cv=none; b=RbHTNeTd41c3+/+Gxlt6taRV1czzTdkGo9UpPNff2b2rj0M9yPcuyv+cbGmCGo5ypCQDWkqywS6jVG998klmgCgWTqpRoNHvjptYZinlxIq+HkYFCuuyS3p+UqB8FOZjopKO0wLMSToMb1ZdIORwqM8HGGeuwSQNkhZmPPRuPr0=
+	t=1757497811; cv=none; b=D3edmM0buy6jTP0P3Mvk+EmnImiL9kzP0wrgZM1BWvO2MtHm9cBtREanpsMwsgkhNyt6KFvcGSDymbJT3lnaQM/H204VPvpyNzSgfADfVknTBa160ZuF/AYyw88kRfYn+4pxy/7Fsu0SiVkU1blZIm0PYpr9snSFtvUB9zVCD/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757497521; c=relaxed/simple;
-	bh=3zQu35m1C6YPImywyjnt2q1c7Rr8khcAX2jfPUML1h0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fsgItSJe79rgGUFNuTgxPK0/D1TN5eXq6DNIrelOcvf/Ma9MNJESCh9oC/7yzDge0tPzb22L0A98e13K9V5JPe/lWtRHNz85o+tUl9bkw3Mpyxu6D7wCYdscUnoBrk/2elcx9BO7oETPzYRykOyAJ42QhoKgcjndXLb8tL5vG1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uwHO6-0000Ts-30; Wed, 10 Sep 2025 11:45:14 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uwHO5-000ZMU-2h;
-	Wed, 10 Sep 2025 11:45:13 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uwHO5-00GDN2-2E;
-	Wed, 10 Sep 2025 11:45:13 +0200
-Date: Wed, 10 Sep 2025 11:45:13 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jiada Wang <jiada_wang@mentor.com>, dmaengine@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 08/11] dmaengine: imx-sdma: fix missing
- of_dma_controller_free()
-Message-ID: <20250910094513.eawc5n6zbddtg5c5@pengutronix.de>
-References: <20250903-v6-16-topic-sdma-v1-0-ac7bab629e8b@pengutronix.de>
- <20250903-v6-16-topic-sdma-v1-8-ac7bab629e8b@pengutronix.de>
- <aLhZ2zfh5bnNoH8X@lizhi-Precision-Tower-5810>
+	s=arc-20240116; t=1757497811; c=relaxed/simple;
+	bh=Arofhyx1TEu7R6Dw3jah6c4cRa9rC5Al23ys0fj9/3g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=guY3CXlm1gi4zuAW0WcjhVy/DNw1GWapEKkLTRGo7vBUpBxO68pGEvZu4ARrdT376AeXXzjwtFsD8U7NW39Hld19OE2ZZeBY3dYavMkDToMc/nPE98ZHR7Qe7VPwAtDTKaaPBKwkPxs7HzkKneqtSRBVcyzt4pEGjyJyTmtJ6Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EzMuNGlD; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EzMuNGlD"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-33ca74c62acso30135691fa.1
+        for <imx@lists.linux.dev>; Wed, 10 Sep 2025 02:50:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757497808; x=1758102608; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Y7rG79FKOI2JeBB22WORiCW6ZRk/F6yyki8GX6i0OY=;
+        b=EzMuNGlDp/P+Y5Kd6h3C9R+o+zvr0qM1zzslWfzCFBQkLeb7AKZzXaspwzGMCTkXm+
+         vckx9UeI3VGvscHyoWgepbsaPFT4uGbAv9gpPLiejakUZk4+LnZ2T4OAcinmzpK9IGvq
+         22y8/jCGCa9PZtBELz/FbqFpkM7tFqTFbb5APWAqyf5bcEbKd/uh0zSEE+rpQyZoqEHm
+         WbHAtWmmC+Yu+hH/kovH+oKYTK//LevDRhfarQBwCYk2X6A5QPOaglTleBgmo70lAXpb
+         Q8cH8GuLJbGQfRKzQeUV0G8s4s34KWVdOSr3IDIkKqB0ZReWZpNVDnqs9evTu1Mqh3JW
+         KLaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757497808; x=1758102608;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8Y7rG79FKOI2JeBB22WORiCW6ZRk/F6yyki8GX6i0OY=;
+        b=bpmMZP62ODfs4FrZHohDoUDXYyK+8Neh92ozsZrBoSbPFMlrxgqCce7lDUHwCjYJQF
+         Cuor8t+dcMFTMv1IGreWGAXWYk4+ACxs+VHuG2ZjbxY/uwA6EhVA+8rS/rdATJNv5gVj
+         Inu+EkI8zyjsR1P8eUOCcngStva4qsZq4iRM2A9dNoX99W4F2Lw9cLzz6UXK12XzKMKz
+         Va5ySn/wdueUq3EMgGylKFZjegBjOZVVV/5zTnKuRlDRcXmuVpmgg1G+xsWQyod0r33w
+         MXgV237O3n2ycWoUMvNYizs9LoDx62TDr8i25A2u9WtUtN3zKxAy1F2AhwjaLOZPuSmo
+         7VNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUw9cfrecfEUA7griFWYeeQzV3iGgVNvOH9wVSN2NL8R0BQIEc5Mr4oDk8Mu4+3R8LObw0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxJo3Q9zQvbixQKU6qUBKoY7MrX9YyP3s/n21oW6uruWgmktUGD
+	Iof5d2f5M43wbk3SgvrXZOeeuRoeByinchZfsS6nNbJpi4gSUEgBEFJIqyJwRH9vfAuFMFNILjI
+	l3YM29iGPvJXKSOoKdmwqr1Gb+myFeVkmq5tPmo39Aw==
+X-Gm-Gg: ASbGncsNuF1I81oYY7M0nsV0lssrueBPocaiGAqyHPuZxGt43ohapKMuTsFehKeYhoj
+	nMdhIftD0N1H2q8+Ly+J+1iMOMaGKhYYNIu9TGm+e+xK21LK77fa9gOm1mDZtG5snA2claVjiEX
+	cg6RFZfPzcL/wvsfwFYx/8rpcjnxjHvWwk7B6iyUcH1uhtHSf+6ZYfzXDHmS8r9D1BEwHCTl92v
+	Q4FI68=
+X-Google-Smtp-Source: AGHT+IGq2x91wz7j8DANH/yJwpeO4d/hIy0ABq1WES66C1SeY2aK74/VWAJ5lsiz89NvTXBUTDFt595MC0reZwFBRxA=
+X-Received: by 2002:a2e:a009:0:20b0:336:5e1f:b1ec with SMTP id
+ 38308e7fff4ca-33b536f14b1mr41029971fa.31.1757497807337; Wed, 10 Sep 2025
+ 02:50:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLhZ2zfh5bnNoH8X@lizhi-Precision-Tower-5810>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <aMDYdp3H-yOHU1Pm@casper.infradead.org>
+In-Reply-To: <aMDYdp3H-yOHU1Pm@casper.infradead.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 10 Sep 2025 11:49:55 +0200
+X-Gm-Features: Ac12FXxu2Penmvb-ANhZIzZlxEacPcTMGZ42OzvKFfqr5PHU2ajbCjOLxBc-XSU
+Message-ID: <CACRpkdZZZNV5BdNhyXEK__=EJLjDtAEsc2Kv4Tv53+=Mv-8R=w@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Matthew Wilcox <willy@infradead.org>, Russell King <rmk+kernel@armlinux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, 
+	Lucas Stach <l.stach@pengutronix.de>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand <david@redhat.com>, 
+	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Nishanth Menon <nm@ti.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
+	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 25-09-03, Frank Li wrote:
-> On Wed, Sep 03, 2025 at 03:06:16PM +0200, Marco Felsch wrote:
-> > Add the missing of_dma_controller_free() to free the resources allocated
-> > via of_dma_controller_register(). The missing free was introduced long
-> > time ago  by commit 23e118113782 ("dma: imx-sdma: use
-> > module_platform_driver for SDMA driver") while adding a proper .remove()
-> > implementation.
-> >
-> > Fixes: 23e118113782 ("dma: imx-sdma: use module_platform_driver for SDMA driver")
-> 
-> Look it is hard to back port to old kernel.  Can move it to before cleanup?
+On Wed, Sep 10, 2025 at 3:46=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
+> wrote:
 
-I know that fixing commits should come first but this commit dates back
-to v3.18-rc1, therefore I thought that backporting this commit would
-cause more troubles than it's worth it.
+> I don't mind that the feature remains ... unless it causes us trouble.
+> Which it currently does.  Perhaps we could start by removing HIGHPTE?
+> There was a certain amount of complexity introduced into the page fault
+> path when support for that was introduced.  x86 removed support for it,
+> so it's just ARM left before we can remove the complexity again.
 
-Anyway, after checking the current LTS and stable kernels I think that
-the commit could be backported without troubles because the APIs used
-do exist on all these kernels.
+I sent an RFC patch so we can see what Russell has to say about this,
+it is currently only enabled by default on the VT8500 machine.
 
-Regards,
-  Marco
-
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  drivers/dma/imx-sdma.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> >
-> > diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-> > index e30dd46cf6522ee2aa4d3aca9868a01afbd29615..6c6d38b202dd2deffc36b1bd27bc7c60de3d7403 100644
-> > --- a/drivers/dma/imx-sdma.c
-> > +++ b/drivers/dma/imx-sdma.c
-> > @@ -2232,6 +2232,13 @@ static struct dma_chan *sdma_xlate(struct of_phandle_args *dma_spec,
-> >  				     ofdma->of_node);
-> >  }
-> >
-> > +static void sdma_dma_of_dma_controller_unregister_action(void *data)
-> > +{
-> > +	struct sdma_engine *sdma = data;
-> > +
-> > +	of_dma_controller_free(sdma->dev->of_node);
-> > +}
-> > +
-> >  static void sdma_dma_device_unregister_action(void *data)
-> >  {
-> >  	struct sdma_engine *sdma = data;
-> > @@ -2370,6 +2377,8 @@ static int sdma_probe(struct platform_device *pdev)
-> >  	if (ret)
-> >  		return dev_err_probe(dev, ret, "failed to register controller\n");
-> >
-> > +	devm_add_action_or_reset(dev, sdma_dma_of_dma_controller_unregister_action, sdma);
-> > +
-> >  	spba_bus = of_find_compatible_node(NULL, NULL, "fsl,spba-bus");
-> >  	ret = of_address_to_resource(spba_bus, 0, &spba_res);
-> >  	if (!ret) {
-> >
-> > --
-> > 2.47.2
-> >
-> 
+Yours,
+Linus Walleij
