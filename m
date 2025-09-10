@@ -1,147 +1,107 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BAA2877FE
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 13:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A4831C57E
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 13:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757509823; cv=none; b=SJp647dQSHGBkW3uYpKZXDb+jOifVdP96Qr1M1ywQ6ofYXSD6DNoZMY8pQDrEycSbvkVIsYYXjHxHNR1qARBm1/V3py1jaNBiZ+YSl/69l2xQeHL6uCyeVxbOqFdFd+ikdls2qhYxjm2ZnJ9iuAWVcMZh6qLm32u1B26AALh/xA=
+	t=1757511020; cv=none; b=Q1oELZdcm312qHCcu0UdQWJUOVt64HUVL9Q27DDORRSbnVdvwIbjFWTV+nwGJPQnumJ3CPFIPMgWs0Ea0szj9JbfhFcIP3sE8brr8j4eU4KyG22SR9JGYK+o4vmdNfjrgGcbhk3Ef2XdLoIuIm4cqbX6I55PkycpuZgDic2G5n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757509823; c=relaxed/simple;
-	bh=tARB5u1V/RXYwm+IlZJX6Sogx9fWVBBiWrlM/q73HGs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t8+0q5X05FUWtcS+1q5T+JSg6F8ekL8s5pPMN+bNU8rQSPXIElRmrqv2hfmg2ZXziFApudaZRHApdRapFGCGhijHlRubu4RBKb0MWNlpNqnnUQO2qNF9VjrzX7DogBJQGnr+fOeqgPzXCd8+tc/sIFkc2dE9FkfpHAONTPzdH4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tniTCycE; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1757511020; c=relaxed/simple;
+	bh=x7ddNJB4PbEZlaZxFw8Q4jEczKtBC3VpbHxRUgvDWr0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=slJ1p4AT5u27iOiAuEfR3F0cQy7soa3KufMOl0/AGGQ2jywT40iXZfw0G5tp9k9Ovz34w1h54zV98FLh2P4UYe9R0tZooZogUfc4F9088Mdjy9+hzIB4iyBqxW5T9GvprDZo1uCzd/0vAFWTPjdlsj+FMtbTwhw0MVbKV/qlpAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ZIAzvfhu; arc=none smtp.client-ip=1.95.21.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tniTCycE"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55f74c6d316so4222165e87.0
-        for <imx@lists.linux.dev>; Wed, 10 Sep 2025 06:10:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757509819; x=1758114619; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1LsnFE1xI0qQhVi+l6O9JAbITiONruUrWb3tpAPA1P4=;
-        b=tniTCycEYjPV+vGLQeFa4mgWykGzxW6oX1zc5MxqD9q8dW8j2YW5DCl6rfQKg7j/Wj
-         0wIjxX6J4DUEXj0+S61RUVvppchS8iOY4nGLoa54H6Vei3u00oDb7XU03vfYLMAWUPkE
-         RfpvXGy54Hm3s+aAvgOx5xatLC18I2kBrkviYbVs2ttRUEHetZxTMPArftZJXvbX72k6
-         MA8mCWeaVReYs8QpSFhMq3/WIGs+GEOa7FY0OhMFhDSUViCxriOYpWtKFh/Dch0ArLGb
-         thUIg53YPjhPXO5RJn8TsH+GI2OoHYub1qGU10veHxCCGyD2thURPZCcVpSs68hjBkYL
-         p1Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757509819; x=1758114619;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1LsnFE1xI0qQhVi+l6O9JAbITiONruUrWb3tpAPA1P4=;
-        b=CxVNjfvYnBCXbehehAHhB8UwlJIcpltL8VyLAUDHpABckRJ1fyxgwUNHNOvbPyR4ZS
-         0AFdLxz5jHdvLG5yetNm6apFioTX+RWpWKVSAghsaaBgZN4qWZEOZ6Rno5DtWeIcCXQm
-         tRtHLQAHVPeVABWq4DNMkBA4Vb5zROy1YrA07Vk8nYhWQBxmu/DsYc2VARgGQcknO/+z
-         zw8LeIvQWE2k8hdSBIV2csubyNbGQzsC7cQHvoTYbC5ZZNYXqa9+gnUJ3okSf9OxNJ8O
-         ksW2oAHDiNmZnMLj+gi6TmO4uzcEEjs0vC8pkCSs22ubMmdXEcqtg6NZgHBEXZBCz1RW
-         NH1A==
-X-Forwarded-Encrypted: i=1; AJvYcCUtOiNW45sbn37VSbSqEkXc2uy7MKmoc7GZBAQxhu0j108o7x1DadcTWfF6kuY4uv8SCvA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxFqWHzZx/6wwEYGYDRytugYUtEdPtW8IvGOB+vgCckDdBw9+gn
-	6bLQZ02S8KMe/Xzo6fDeXgFtu7eZbrGM9f5wxXZzTT+7F01QraILgnMnonxtovNFA50j8WpqPR1
-	v1O6Btahech9r+GMVrzwx2cVnlDzxND82ibZ+c0Mqvw==
-X-Gm-Gg: ASbGnctfoXGfj9wqMzcpYksnmQi4YU8dEjN1OAI8T6qlZyG1Qk58o50HdGz3IYWZNMX
-	5WEexBfHb8rcusarvLDis50dYIFK8knLCfL+jQRBmyRb3dfGCcIT4+pc6JAbq6TeKTgJZDRrP02
-	gs8pBP0/Q6LGI9x7kfXfDwlfcjWMGeVG3eyiK1KGj/V4oIaoS8tF7gsgxU1wkhdzG5Xk6ogU/2X
-	cyngrA=
-X-Google-Smtp-Source: AGHT+IGgInBj1Ic/f5mZf9DHaSimxT6oABg1gWpLpcYCM/ousRHHwwGjp7S7ZCbmXiMiFXeqAGANnBbsml0uYfwnmj8=
-X-Received: by 2002:a05:6512:39cc:b0:55f:47a9:7d33 with SMTP id
- 2adb3069b0e04-5626425ccd6mr5952206e87.44.1757509818943; Wed, 10 Sep 2025
- 06:10:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ZIAzvfhu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=gYMy2/LLnu2KAOtRSTu6UdjE6ow6Rx7TsQICVL6w6ak=;
+	b=ZIAzvfhuS9W0YBFZsT9WvS6RE8IPbvsze8s+ZRyqDugfH9xf7UFC8g+knCJUnG
+	aF/2I6Gzh/IJMhoVX9d5cY6KRJd4KSiVnvWgUIeuKTiPnuH/u3sLM6cZZtLUbZ8N
+	wmxbLczxBZoPFGR3ICF7zumWrkip+kq6psJO069//eR9w=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgBHddlIfcFo5a5YBA--.43536S3;
+	Wed, 10 Sep 2025 21:29:46 +0800 (CST)
+Date: Wed, 10 Sep 2025 21:29:44 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Andrej Rosano <andrej.rosano@reversec.com>
+Cc: =?iso-8859-1?B?Q3Pza+Fz?= Bence <csokas.bence@prolan.hu>,
+	Andrea Barisani <andrea@inversepath.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH v2 2/8] ARM: dts: imx53-usbarmory: Replace license text
+ comment with SPDX identifier
+Message-ID: <aMF9SKDEu4dlq_Xe@dragon>
+References: <20250814-imx-misc-dts-lic-v2-0-faff7db49a5f@prolan.hu>
+ <20250814-imx-misc-dts-lic-v2-2-faff7db49a5f@prolan.hu>
+ <b48844bc-07f3-4fc1-8486-8968bf6d2362@prolan.hu>
+ <aMFofaIczqElAsLY@stjenka.localdomain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 10 Sep 2025 15:10:05 +0200
-X-Gm-Features: Ac12FXx4fqtngzlb3aPI-q1c6xVbomqK3jaNECwBf_yyF7AQZ2ofNJeHmlxFUVw
-Message-ID: <CACRpkdb=E-_6fZ+4mX5FJas9C5Njp3Gwrygs-cAfWNdbP594cw@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, 
-	Lucas Stach <l.stach@pengutronix.de>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand <david@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>, 
-	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
-	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aMFofaIczqElAsLY@stjenka.localdomain>
+X-CM-TRANSID:Ms8vCgBHddlIfcFo5a5YBA--.43536S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tr13Kry5Zry8tF1rtrWfAFb_yoW8Gr4xpF
+	W8KF4YyF4UJ3yrGa1j9a1DZ3saqw4fKFy5AryDW347Zrn8Xr1FqF4xKry5KFy29r1DCF4j
+	ya1aqFWSqay5AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jYpBfUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIgz8YmjBfUyqYQAA3j
 
-On Tue, Sep 9, 2025 at 11:24=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
+On Wed, Sep 10, 2025 at 12:01:02PM +0000, Andrej Rosano wrote:
+> Hi Bence,
+> 
+> yes, we agree.
 
-> - ARMv7 machines with 4GB and more exist and keep getting
->   kernel upgrades, but to my knowledge are not in production any
->   more. These are mainly 2010-2015 era chips based on rare
->   out-of-order cores like A15, A17 or PJ4 that were designed for
->   low-end servers, chromebooks and network equipment but replaced
->   with 64-bit chips shortly after. We had planned to bring a
->   CONFIG_VMSPLIT_4G_4G option to ARMv7VE to keep supporting the full
->   memory at a performance penalty, but currently have no plan to
->   finish this (volunteers welcome).
+Andrej, could you give an explicit Acked-by tag for this patch?
 
-I'll fill in on the details on that, because I tried, to the best of my
-ability to prototype this but I failed, so far.
+Shawn
 
-Here is what I managed to do:
+> On 2025-09-09 Tue, Csókás Bence wrote:
+> > [You don't often get email from csokas.bence@prolan.hu. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> > 
+> > Hi,
+> > 
+> > On 2025. 08. 14. 9:47, Bence Csókás wrote:
+> > > Replace verbatim license text with a `SPDX-License-Identifier`.
+> > > 
+> > > The comment header mis-attributes this license to be "X11", but the
+> > > license text does not include the last line "Except as contained in this
+> > > notice, the name of the X Consortium shall not be used in advertising or
+> > > otherwise to promote the sale, use or other dealings in this Software
+> > > without prior written authorization from the X Consortium.". Therefore,
+> > > this license is actually equivalent to the SPDX "MIT" license (confirmed
+> > > by text diffing).
+> > > 
+> > > Cc: Andrej Rosano <andrej@inversepath.com>
+> > > Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+> > 
+> > +To: Andrea Barisani <andrea@inversepath.com>
+> > 
+> > Andrej, Andrea, do you agree with this?
+> > 
+> > Thanks,
+> > Bence
+> > 
+> 
+> -- 
+> Andrej Rosano | Hardware Security | Reversec Foundry
+> www.reversec.com/foundry
+> BDE1 62F4 7020 1588 8046 AE02 EA17 8C32 AB56 54CE
 
-1. Building on another rough prototype by Afzal Mohammed, I managed
-to compile the ARM32 kernel into the VMALLOC area, this works
-fine and here are the patches:
-https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-integrator.git=
-/log/?h=3Dkernel-in-vmalloc-v6.10-rc1
-
-This is is done so that we can unmap *most* of the kernel
-memory but *keep* the VMALLOC area, so that e.g. exceptions
-can still execute and save to stack when they occur, and we can
-call into the kernel to execute said exceptions.
-
-This in practice means the area 0xf1000000-0xffffffff
-which also includes the high exception vectors that must for
-natural reasons also be kept in the mapping.
-What we have mapped today (all of the time) is
-0xc0000000-0xffffffff.
-
-A minimal 256 MB mapping from 0xf0000000-0xffffffff
-should be able to cover this.
-
-So when we are talking about a 4G/4G split we are talking
-about (4G-256MB)/(4GB-256MB) split to be exact,
-we would keep the bottom 256 MB.
-
-2. On top of this I tried to decouple kernelspace and userspace
-allocations, in essence making anything outside vmalloc invisible to
-userspace by unmapping it using the fact that ARM32 (LPAE) has
-two separate translation table base registers: one for kernelspace
-and one for userspace.
-
-Step 2 makes sense because we know the reverse can work:
-PAN (privileged access never) makes userspace memory
-inaccessible from kernelspace unless explicitly requested and
-that works fine already, and we implemented it for LPAE
-with similar trickery, see commit 7af5b901e847.
-
-It's harder than it looks though and I never got it to fly, but
-maybe I will try again. My patches is a mess but I am a bit
-smarter now due to reoccurring MM-related work.
-
-Yours,
-Linus Walleij
