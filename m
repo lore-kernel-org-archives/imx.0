@@ -1,145 +1,228 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011020.outbound.protection.outlook.com [52.101.70.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BD12D480D
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 10:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757500167; cv=none; b=jaNNZgnoIq5Aez8g8jagTbiXAn/Dj8YdC7rgM/u7Qi3JYpR5/1sknfhY/L24zFdARVWkVZdkDWvKylN7tiv7UO4klUkEjCu3ZPRf4FkEcbzx1XhgkDt1cb1d1V+e0jSbgx/jCCbPLmZnTgraz2zUdZxF+5aVbvWOIiKzfRTcG2Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757500167; c=relaxed/simple;
-	bh=xqqWloOyj1O6e9rQgZLm+mhhJUMO7/mt6SeAPf0p2Go=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ipBeMgZ42lg4vLPF5ikG5nzFTAVu4pQgaPhMWbHM92y+ka2g2pmJEJntBLSIubIlBgktLMm4yML1otE7FA+XO6T1l5tS0YSdXJcQCeqTEQ03XoDYa5xXIhAXx3/jrXIu210/EjbzXX+pVQJa/htjgh4AG39boYdLyh0PljxC8UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SK6Hwtzx; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6952B316915
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 10:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757501286; cv=fail; b=ROqgacU3fr+kd5ihk/5Fx90AGRE5lix42vZFEirYohRIR/Uhu3eiBVbZsSpWKSZoEnbovBhuhLk7VmdfFGi9LjD8sxbn+c4TwTGgMQ0ku6x8wK0MQT/rm9hmSEPZaWy2uP7ySnBhkZlSHddvvvboLg67/DsTjkO9rOIgr9Q40MA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757501286; c=relaxed/simple;
+	bh=eAXJ79bRVtoFlV3/e8HAdWpzCbe4zbgDGven4N2Z5RM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=UKcCcH2mDheNA3UC7fvDi7f9n6MjV5BGh+YlKhvb5RFmdMMI0Xu0xNFhDjRmAlFBJSbDiYizJqWZbrW1dlTkT89XonGQ2RuWqbAxfj+2qqhfZybkW+jf904S72hAMp/Sg95hhHz04ZKCECIUC5unvxoOpR5dOuSPIU35uRhDSAE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=N6awD+PH; arc=fail smtp.client-ip=52.101.70.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SK6Hwtzx"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-625e1dfc43dso7016675a12.1
-        for <imx@lists.linux.dev>; Wed, 10 Sep 2025 03:29:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757500163; x=1758104963; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VFR8ZPpFEPCVYzLk5x4GOe0UcgUOQwtlh+HxpxWLLgo=;
-        b=SK6HwtzxhegePMIAC2aS72t/SgupuDO39WSrJYyGfie6v/GEzOiAGfgFxhvnJhAjIJ
-         so3WZzcXLHhuS7xuAPR1BEYldzuGhR6VocOv5BILMDNnMIrjmJY3/VYqdTQltKI7/Q4K
-         Jz8t0VDSrepfRU1VSsV0gsumSzwbEX+nOXwQADcAYttnj8brjxCsDfn+g5cBEHKd0AeU
-         vOoekG0cV/MMqtIfBOWA/FBssg7ccmGBc2s2vRKY1GrRDIW0GgnYgmJ9W8y9yOwQ9jhU
-         Q5F2CJQeJDU4bTezE4mKh4o1lx7XSvPwLMiAqXPLAo5dYS2lbydYmkTADAJww7kR41BV
-         fnHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757500163; x=1758104963;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VFR8ZPpFEPCVYzLk5x4GOe0UcgUOQwtlh+HxpxWLLgo=;
-        b=fv8lCmZLxSjeVxSxZ+WoOL9kZ3RL+m0sdLgGkgCiP6DX0Lz6oyVEIqyxIdxwJToSeO
-         CM8imwTcaefZnkXw/Wgo8jMENAIg7FzTiI+muyBvoKTn2ycMJ+YGeSDHZD3l+DTOA0tQ
-         9E78mYUszDoddyewndKMm4xqsA82SxKjCvRA3ae/OFZHGyU5XzqD1BOSumyLm7wYp8tz
-         DkYd93whor5UgURUkL6RiNXCrhooXhLAkeN8HKq9d2mUjETxgaf3MTRzvKCOB+LVnU9J
-         EgwX4Ur7SdN2br/Zb2EULoh85vxOAuANoxyCU4pOVR5u0CSI7t8JVFXVcfi1ew9GhdWI
-         z4tA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/PgVv4FS12byvxmtSEez8aCMn0aSmLHOwlg+w1okWYG32Xwqe1TNGt+PJEZdgXsQG1Qc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YynRidiHR50af0U3uDSCHbTrh6SM8DcOUZQjdi2vqe5R/+BpQvR
-	Vjv+diPWgkD8B06z6csdS6Fez6H4a02LRiwNfDzyIAxvGbeqwqFLQlewCwwQ36XwMTxQOaf43ka
-	Y/O47t9Q25GjIX1kaTByPtNAnBiNTpVU=
-X-Gm-Gg: ASbGncvVMalZRhAQVxyp37eBXjWD3qJjRQOjraSB7CS1eglNglXbwEtxrT9P2k2g5dw
-	214slqrbGSqd/6e0fxW3X8rz/ryrYcvTqVcLB6PI3jh4bPlndsFGM3L98jGHmUPRiTJU4SK4ZKL
-	n1C+/x3YHY3jcybnvOgWlmt4OGgMuSxtarpCxUTSQFWMlLvTuBebtHIcC90s3F3ZWP5nulJlgPX
-	8TOYs0=
-X-Google-Smtp-Source: AGHT+IECula9dQIHz1fdQAkXI9rWQDEmBppATKx+V8i0x7QFJ364KiBjVFFTrRLIeHCkEnfADY+kNhoLNela/4vT6zI=
-X-Received: by 2002:a05:6402:35c6:b0:62b:63f8:cdbb with SMTP id
- 4fb4d7f45d1cf-62b63f8d53fmr6060144a12.25.1757500163205; Wed, 10 Sep 2025
- 03:29:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="N6awD+PH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rq6PGM42FUsOFabfRBR+72QaOdToAql53ET1kVF+WgVKQTpS/PXsIkoi2dIX86g4C7F6zd0k/6uBYXBIU5S6M3Qw5TWjj8thggjHorWeKvbR/lY/mrKRCwr/3C2zz+KbZQTM7Gkqe4CAhr82Etg5XM7tf3YWrdn/XOp5T7AlFdc/4otG62zDI4ZWbNAJrHNv6GKgFbvrJp5cJVIHA6Bpb5ydNzo1Orr7h2C6xG6j5eOYFGvrwhlXEEANFB8xaZ3n6BU0buKv3HDZL0ggJOU+LVl9nbqU+Z7zbmY3mxSSo6n9QviPZwj7WzaVRvn4/K/Y9DRemwXNroNgelLHkaZJ/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0m+A9NDxERyZIRrdw9IFGmmShapRtVAFQi8VvHqL2hM=;
+ b=i4e7n47eNcsb8zdmWXF5J9ezjqZl0SoqHAyMoRqrOP6IIjPw4sLObnA2rTqy8Gtx11yk5a6zvXJ4g6tFVQ54QyOl5BSdeyooqZkhowZlaptlsg7prYysRSwy838TR9OXZTbX8rUuJYl1Ag7jxbqKM7yYtk2kF1JRIPVCQXWs+yLNUEIBpfnEyIToSqgxNWr0dE4DRZeYf2XyL7UM/ykaXGDWnuCHTjWZUwfj2B4wSQzEGhFfPDKiX4q/AOVkJfjEm/NZCC1/00I+t6LGJBWZAdnznyYVS/B6+g6SaP+7UABXtUO/hGvCbFrqkwjEEwavMIYfSZwiziBG43RO+P9Q+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0m+A9NDxERyZIRrdw9IFGmmShapRtVAFQi8VvHqL2hM=;
+ b=N6awD+PHKwTalFb9M2gIlizgkFw5JnBEroJ01fP+zesfAE4vX3R2BfGc3ZT4AAbZsGOt0Z8eFFmnbhtwYrVrFjftyPqvzv8aINOJU0R9eqDAS0Hhy4hf8HOA9kLGM8YdxGG+xI3o5WcUfexdc8tsfVm96wTO+HAtJMitTBNTVTcT09Pg2D1z4v1h19eaEPUYHkVSdD8BpTLjfGnkWKnL4bv6TdtLOrh3bXUUlLcHJJkykyQlUB/lGFlw0IyMGJ177P7j4KgnX7U/xV8lm9NXZoCEHlGW5VjFw35zrctREL0aYqIcl+U4FoL27iF6mrEoVQxE2EEXwxbI8yJZzUQFKQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by VI0PR04MB11698.eurprd04.prod.outlook.com (2603:10a6:800:2fa::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.15; Wed, 10 Sep
+ 2025 10:48:01 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce%4]) with mapi id 15.20.9115.010; Wed, 10 Sep 2025
+ 10:48:01 +0000
+Date: Wed, 10 Sep 2025 18:42:06 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: badhri@google.com, heikki.krogerus@linux.intel.com, 
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH] usb: typec: tcpci: add wakeup support
+Message-ID: <ffdfsz6fnrk4krseavszxmi2444vbcrtl467ctr3fzokf32g7z@vy6bud7cpmka>
+References: <20250909080733.567796-1-xu.yang_2@nxp.com>
+ <aMBSUFib937/hY/u@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aMBSUFib937/hY/u@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: SI2PR01CA0018.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::7) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250821073131.2550798-1-shengjiu.wang@nxp.com>
- <20250821073131.2550798-5-shengjiu.wang@nxp.com> <20250901185208.394cd162@booty>
- <CAA+D8AOCTqb5jLeRapYk4wRGZrsrPiuAR=ow3OA1B0+M9X4k7w@mail.gmail.com> <20250909-omniscient-honeybee-of-development-adca8a@houat>
-In-Reply-To: <20250909-omniscient-honeybee-of-development-adca8a@houat>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 10 Sep 2025 18:29:06 +0800
-X-Gm-Features: AS18NWDxCBzuENqe0ZeZa-sBoiFIIvg2ByB3rkyz5E1gppn1Dt3RitckbH6afXg
-Message-ID: <CAA+D8AM=aRU-0QcgtxZ+=YBZ2+kMrP2uzSE3e+NJs3Z3zkrSVg@mail.gmail.com>
-Subject: Re: [PATCH v5 4/7] drm/bridge: dw-hdmi: Add API dw_hdmi_set_sample_iec958()
- for iec958 format
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
-	andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
-	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
-	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, airlied@gmail.com, 
-	simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org, 
-	cristian.ciocaltea@collabora.com, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, victor.liu@nxp.com, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de, 
-	devicetree@vger.kernel.org, l.stach@pengutronix.de, perex@perex.cz, 
-	tiwai@suse.com, linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|VI0PR04MB11698:EE_
+X-MS-Office365-Filtering-Correlation-Id: 304a9a52-9a96-4453-ffba-08ddf057834d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|19092799006|52116014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?FyvOx7rNTAuGI98B3WCQiVpo8xSv4MSJbRJVRVkONmxGfOr6UqJXYt70eZ9R?=
+ =?us-ascii?Q?rm0ebJ9HLEPDEc0l3hqFxNApDVlz4q/OVPWF7mpmPJzLpHOQvZg+AZ+HFPSU?=
+ =?us-ascii?Q?nUnUcn1OgAGixfZmIm2v++CuglB1LzH5mGQtS0rIVI1D5aIg9A6U/Zhqh3u1?=
+ =?us-ascii?Q?ASOO/opLjIKVyvt0Gk7zvyC8EbvdAeLDgVrKyvdqKUTPK1OhZ1MAx0pYk6J7?=
+ =?us-ascii?Q?4oirykTd+5LdFJey7oHc+g4hCDuWxMRZH/QFBUmsGilJu24AaeEh/DnUh0db?=
+ =?us-ascii?Q?wctuitKE80ZV1nde69v5N73D66u/EX6qJqDxXuBlq2pfPb6kM0bRKWZp+ruQ?=
+ =?us-ascii?Q?z09z+4HeoDDVS4BCnBJjGwIZAHbWcadIeWbjpFJ2gf7uBSyekpNPguzA2u/t?=
+ =?us-ascii?Q?MAj2czeVfUXz7dbe2P4rn1FoPOzoU1VPVI1i5QO+1XqJPANK71Iu7Sm3hLav?=
+ =?us-ascii?Q?rgmPxBWdyFOItArFyFBj6Ev8ygOr0Hg8EmsruyguKnOwpsrFSBs2d8CivpHv?=
+ =?us-ascii?Q?3RvoOqFnISU08HusJgvraDTVFBJMy4PN/SNxmV/hNWLWriu4FpkfljEuOR5n?=
+ =?us-ascii?Q?wPq4xUpC8oqIYFzlWygAHPxKQuv+CJU9VCMbWsvQgfWwGuEoEIZwUHjv468y?=
+ =?us-ascii?Q?BG8bMw5q408SmZNKBafdSPMxG958BmDSoOqAiVtfMg2lycB6SlPYj/kjhtyy?=
+ =?us-ascii?Q?AROvdQJO88PvMhlDvCAC1UTrh/V1uyRcKGQeSp5ZRbEIyWS+/cXAgs0SX4zB?=
+ =?us-ascii?Q?ybhjkV9cplGPjQLY2Oe1WtlsobMy7AuZIXsQOT/a9EdCVOKgqHiekdQAf7xu?=
+ =?us-ascii?Q?VOa8rNGE2DWcVIcJPTv5Nc0NCKc4kEvGvUW3LivnQ+eFyCbHqDjwmrVQwk17?=
+ =?us-ascii?Q?qRmnbij6I/E6mK40gR65SDu5oAhCe/R70PGn6XujJZHJ6aLlsVuoPs56OQvF?=
+ =?us-ascii?Q?8UutiyAoPz/liCQ6L7PQHOl11bYcu6vIyc3jzHfyn+/95WOqLBYMHnagVxq7?=
+ =?us-ascii?Q?NmUNMwtBPM4lDAIM7Cf6mmqXGEzebzmNKHdD3NGINZm0RgLGVL33dJf3Gkk6?=
+ =?us-ascii?Q?JOPC400uRRauFkDHv6QgwLttjpuVTrY1rzvw7BWt3rYq/qDErSmSzI5SNf2T?=
+ =?us-ascii?Q?wxtr+dtrTLbVRRg/szJtbEg/SnBZGrZhvF+ZVPND6gyh3W5OdMaLpV9n2926?=
+ =?us-ascii?Q?TMnN6hb6O4qJCDTt67pTNpE5jL8FQ76oZXgnyqmhtqhv00exvfQMnrhdgph7?=
+ =?us-ascii?Q?nFqRpHLHnnJO43mg9lpBKBIGrGW4NXqlopQnztPClmlN7HUxjfe4mqzv24hF?=
+ =?us-ascii?Q?Q+UXbukM1UbEa1JNJnF0hBR5y7tORLUlLCflzRQkgyhigq1jy8TljTLta/iW?=
+ =?us-ascii?Q?bttIZ7yf5Ucw9XwhAC7wggn2MAnCaq/Qt1f8JvCR4Xqc9MMHBHS8Am59arIf?=
+ =?us-ascii?Q?FGBF+2pMRiVypQT9wc6Z8oTwUh7hAZjwEhdhg+jfAXzYLJOIseO/rIP1sTyp?=
+ =?us-ascii?Q?DCytRMacrvqo1AI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fTkkMBAkTF6u/WAHwSWafRIlhu5QnOTiQeWfFTU5lNEsZMWWrR0Q46QYd3jP?=
+ =?us-ascii?Q?EkmdOBeD1Wr1YLv4lgOd+qJq6Vw9nbY/2LsCyjeCvrSQS0XO7kOIRX02Ez0m?=
+ =?us-ascii?Q?+5K2huXcRLqvYnWQddmCRjOS018h9PTvEXRK3mLrCVjFs4gOf3SYleltxo4X?=
+ =?us-ascii?Q?agAzB0s+epfpS6c0o77cYgpUM4E22qWOEaCGF340X6wSV/Sn+H5qz+o0FHXU?=
+ =?us-ascii?Q?m5+bsov2nHVIq4cFBH1vKH456mJkhDce3zwBSJ4nkIci4Yp/t6a8OAiQkH0y?=
+ =?us-ascii?Q?gc/R0cgLRT6Mreh5CmZ5r+s3JA4Huz7D+P3YNIXIZ4gW1vKE1U1VNeMyAU0/?=
+ =?us-ascii?Q?6T9OuBf3dy3pQeCifYHHkINC2imX7mrNTvtzRuBLklox69Ebsluc/mFwTbXV?=
+ =?us-ascii?Q?wlH99KLA5lpzgCtNtUo2xcN+wIZV2OaxP1jy/OLy72j5XYeeyXHxSFJ3bEde?=
+ =?us-ascii?Q?349Eb/ZO70onCZzVJaQ6kIvMDdxpFN5q+7ss10tAv1hWZnPEgwh4lVteLRx6?=
+ =?us-ascii?Q?1vrvbSKjf4d/rLseTtJsb7CuX9meS0YAw1Lp9iPZQpYACvo/iFbKkhTGF3Ak?=
+ =?us-ascii?Q?0JE9JtiuFWGNLHS12fD3Cf/aVvCBuTarfi+3dXIhGPk7dTT9k4ueBzCYQzv8?=
+ =?us-ascii?Q?JkRNROIXvxHtME6eFrAyoI53D/cq0ciJQCw0LFgLh6Jc836HJQNqZpfQJ9sV?=
+ =?us-ascii?Q?9GxTzviOPt4lllEoEv5wNB9OeLLXAGGz6fWOLQ0mkP8aS0XGXWMRejAxnrq9?=
+ =?us-ascii?Q?xj/Vjrxx2U6jmVqeaioRE39D3lCoDGTl58GGhM8xFYm9jk2g0GPc7T7ujezX?=
+ =?us-ascii?Q?CDwt93Jqs20zm9BDLZnvg66L6iHuWc3JpCXh96AgTxp9HHpV9UC3DIXe8L28?=
+ =?us-ascii?Q?I/DpmpVxmS6ODkITRPtCHGYsoqQ1DYBVZHGkwVFT0YbLFavy6C4RdVBOohp2?=
+ =?us-ascii?Q?EgKXu/+ppgUwYZV/KturXMLAFDC1h2lyLzD1sCGETZIZv8GZfzNDk903wKW2?=
+ =?us-ascii?Q?1tvEZ58w8szWhqNs9K1Z7WA/EAkPjAickACQH8aq6Ljtpykfz1VcoVMlSc++?=
+ =?us-ascii?Q?ZYVJx3ZqhKY5WCbBaN0jJHj1SCl/UdN58oRxR+TcdX31IbcdMuKio8qVTSEM?=
+ =?us-ascii?Q?T8js/Mlq+X196ws81/FXgbckCcOnGrX8uNXE7NJCjRSigAAL8yU1cOkTiDmH?=
+ =?us-ascii?Q?MGDmZMQ/fwng6vp4NKEEVq2sQIbc7S0kEzZ6J1Id3qloF+8RQ9vYBlyxzO8v?=
+ =?us-ascii?Q?VwAHghxKO0Cf4EdK8W7XZ0Njh+bqjR+B4SJYnBr6r63ZFAgchpnzIZ0lKsif?=
+ =?us-ascii?Q?yPqMt46xCWH0X5ApuUkkhv0F8aYgson6ol0oYu4AAEODS4tLCVW9Mwn62wtE?=
+ =?us-ascii?Q?kMDyu0tgx5EWq0a/5n26LUmZKBPfZX8HExaT6FKiEjOzZkMzIm2N8N9bMd4i?=
+ =?us-ascii?Q?O08yR2RrSP0MgnqtcUcqC3odifkDG0Na1E4eVj3yqqNIpJSgls1tPOO0VuAM?=
+ =?us-ascii?Q?skEaE1aFyxDnxIaG49uHW3foWM45v78c7zTNxYIiy//VveFgwCD7B4yx40u5?=
+ =?us-ascii?Q?373p2qH5CkEhptPvz+vZWAezrKUZgwrQzy1+W+XY?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 304a9a52-9a96-4453-ffba-08ddf057834d
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 10:48:01.5998
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZMqzz/7pznSMkgCBG7H+OPJztSCu6YDgD4R+MFrKhR9PkYOqDG09BfTQXin9DnwLbGoV70GIOSWgoNrBMvCGig==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11698
 
-Hi
+On Tue, Sep 09, 2025 at 12:14:08PM -0400, Frank Li wrote:
+> On Tue, Sep 09, 2025 at 04:07:33PM +0800, Xu Yang wrote:
+> > Add wakeup support for tcpci, so if the user has enabled wakeup file,
+> > it will call enable_irq_wake() when do system suspend and call
+> > disable_irq_wake() when do system resume. Due to this driver supports
+> > shared interrupt, if the wakeup is disabled, it will mask the chip
+> > interrupt by default to avoid affecting other IRQ users.
+> 
+> Is below look better?
 
-On Tue, Sep 9, 2025 at 2:39=E2=80=AFPM Maxime Ripard <mripard@kernel.org> w=
-rote:
->
-> Hi,
->
-> On Wed, Sep 03, 2025 at 06:41:05PM +0800, Shengjiu Wang wrote:
-> > On Tue, Sep 2, 2025 at 12:52=E2=80=AFAM Luca Ceresoli <luca.ceresoli@bo=
-otlin.com> wrote:
-> > >
-> > > Hello Shengjiu,
-> > >
-> > > On Thu, 21 Aug 2025 15:31:28 +0800
-> > > Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
-> > >
-> > > > Add API dw_hdmi_set_sample_iec958() for IEC958 format because audio=
- device
-> > > > driver needs IEC958 information to configure this specific setting.
-> > > >
-> > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > > > Acked-by: Liu Ying <victor.liu@nxp.com>
-> > >
-> > > [...]
-> > >
-> > > > +void dw_hdmi_set_sample_iec958(struct dw_hdmi *hdmi, unsigned int =
-iec958)
-> > > > +{
-> > > > +     mutex_lock(&hdmi->audio_mutex);
-> > > > +     hdmi->sample_iec958 =3D iec958;
-> > > > +     mutex_unlock(&hdmi->audio_mutex);
-> > > > +}
-> > >
-> > > Apologies for jumping in the discussion as late as in v5, but I notic=
-ed
-> > > this patch and I was wondering whether this mutex_lock/unlock() is
-> > > really needed, as you're copying an int.
+Sure. Thank you! 
+
+> 
+> Add wakeup support for tcpci. If the user enables the wakeup file, call
+> enable_irq_wake() during system suspend and disable_irq_wake() during
+> system resume. Since this driver supports shared interrupts, mask the
+> chip interrupt by default when wakeup is disabled to avoid affecting
+> other IRQ users.
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > >
-> > Thanks for your comments.
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > ---
+> >  drivers/usb/typec/tcpm/tcpci.c | 33 +++++++++++++++++++++++++++++++++
+> >  1 file changed, 33 insertions(+)
 > >
-> > Seems it is not necessary to add mutex here. I just follow the code as
-> > other similar functions.  I will send a new version to update it.
->
-> Let's not be smart about it. Next thing you know, someone will add
-> another field in there that would absolutely require a mutex and now
-> you're not race free anymore.
->
-> Unless there's a real concern, the mutex must stay.
->
-
-Ok, thanks for comments.  Then Patch v6 need to be dropped.
-
-Is there any other comments for this Patch v5?
-If no, can this series be accepted?
-
-Best regards
-Shengjiu Wang
+> > diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
+> > index a56e31b20c21..2a951c585e92 100644
+> > --- a/drivers/usb/typec/tcpm/tcpci.c
+> > +++ b/drivers/usb/typec/tcpm/tcpci.c
+> > @@ -949,6 +949,8 @@ static int tcpci_probe(struct i2c_client *client)
+> >  	if (err < 0)
+> >  		goto unregister_port;
+> >
+> > +	device_set_wakeup_capable(chip->tcpci->dev, true);
+> > +
+> >  	return 0;
+> >
+> >  unregister_port:
+> > @@ -969,6 +971,36 @@ static void tcpci_remove(struct i2c_client *client)
+> >  	tcpci_unregister_port(chip->tcpci);
+> >  }
+> >
+> > +static int tcpci_suspend(struct device *dev)
+> > +{
+> > +	struct i2c_client *i2c = to_i2c_client(dev);
+> > +	struct tcpci_chip *chip = i2c_get_clientdata(i2c);
+> > +	int ret;
+> > +
+> > +	if (device_may_wakeup(dev))
+> > +		ret = enable_irq_wake(i2c->irq);
+> > +	else
+> > +		ret = tcpci_write16(chip->tcpci, TCPC_ALERT_MASK, 0);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int tcpci_resume(struct device *dev)
+> > +{
+> > +	struct i2c_client *i2c = to_i2c_client(dev);
+> > +	struct tcpci_chip *chip = i2c_get_clientdata(i2c);
+> > +	int ret;
+> > +
+> > +	if (device_may_wakeup(dev))
+> > +		ret = disable_irq_wake(i2c->irq);
+> > +	else
+> > +		ret = tcpci_write16(chip->tcpci, TCPC_ALERT_MASK, chip->tcpci->alert_mask);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +DEFINE_SIMPLE_DEV_PM_OPS(tcpci_pm_ops, tcpci_suspend, tcpci_resume);
+> > +
+> >  static const struct i2c_device_id tcpci_id[] = {
+> >  	{ "tcpci" },
+> >  	{ }
+> > @@ -987,6 +1019,7 @@ MODULE_DEVICE_TABLE(of, tcpci_of_match);
+> >  static struct i2c_driver tcpci_i2c_driver = {
+> >  	.driver = {
+> >  		.name = "tcpci",
+> > +		.pm = pm_sleep_ptr(&tcpci_pm_ops),
+> >  		.of_match_table = of_match_ptr(tcpci_of_match),
+> >  	},
+> >  	.probe = tcpci_probe,
+> > --
+> > 2.34.1
+> >
