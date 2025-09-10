@@ -1,96 +1,220 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602E1311595
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 08:57:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999EF313E3B
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 09:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757494670; cv=none; b=gSGglytgX2kk3NQCQK/pjg00U8WbMIIPkQNIkQstiyVC1LHQoAIFvKvzo2/33FBek5kmCujDcUWNJryqlzN7ySo/95e8osN+hLQG8fyIiSqR/EuMSAlLjOwNkDi+QeULamQ0lISD++bJzfXuLxknGJ+sMKGUaLz61gDTt1AciYE=
+	t=1757496879; cv=none; b=oBeDK9MSUNAgpyQNwleU90pA/V72u+c6f754/YabyCvpnObScDkHlBqsn5ejkpceqSL4HnorN18JLHOkd98Puffg+UtOKuQNkvnHzunWclM3Tzvs9q/1rW+905vY/Ebt0xYJIapWQ4KAes+yYtqm4+hET6fsOBcHeeasB06aNF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757494670; c=relaxed/simple;
-	bh=mUPUv1qyd97znqrQy6Xj6SNJzpr5XsHLjgPM2Gm4KWc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=BPEfJB5n0SPVbPZSEhJuPc3UdU1I1hq2+kDDUg7fP4wr7yCf+n8HbLoaTJUcB/b+25Y3vEl+RtKOO5vuEedO9wHo+jDG8QjrQ1LKgRF0fajQhnGRaEq/zA6TM/ZtDphakBkZMAS/Jluvngxwdnbkb1vTl5vdgFsp0koOGMQEe/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nF6f9aww; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nF6f9aww"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-55f7a34fb35so6410588e87.1
-        for <imx@lists.linux.dev>; Wed, 10 Sep 2025 01:57:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757494666; x=1758099466; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LK2XrNKkgd8rdfWEOo97HFUVmGk3ZSED1YaVjmkZkoA=;
-        b=nF6f9aww805sayy+G/q5kgIMvZbzT3ZmSTshfwCLsIsckLNj70HWIL2WqJgmFFFA5k
-         vkgWTTiubeBYBulovyeumb3138Q2lAvS0jDLqCSOViFlyalzpVY2SImUa77B0PlmdcA1
-         mhEDC8PFVMdX8CX6LYGKziwT/7Ks7CWHOkr4l8M52HsbcRPtVXZ7b+UntIyLdGvBR8Ok
-         b8LluxkUVznXq4Yaa9LVmddjPfvpib8wRv8LJLpOqBS7cgTca8Vn4uEwDYkhyb7eYI0u
-         mkw4opjhgZZO+LqUVX5Jc6tAqDobXANVivIhv2DkZ+3xPUlu0BagoM6HSG8jYUPWdA+s
-         I+TA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757494666; x=1758099466;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LK2XrNKkgd8rdfWEOo97HFUVmGk3ZSED1YaVjmkZkoA=;
-        b=vGxcdXUbblHpIqTMtl90tezs3Fwmskad/tz33gHjwDXDCc1DGOZif+HLJJLcfJ5Xbx
-         CX2SWJXMFtp83iT15TJ7KDk8eO7ATV50CLWSlByVRDS1uQnGipgtuDsflFqsxqXzeOCY
-         hHuNheV5zJ3UU50I6+JkhAgTEVlvN7xNG27ZmpJlcn+4tPi45Vcwu+smG8/u7qBwGX6X
-         DZfz+ce0Ff+sag7ABMbKWZ7ZO9Y2gPW40Sz6NyDyq3TFNx9NpVNLC5iYRO45mhOpYiaD
-         oFzYB39HMKZNL14ExQc0MVhsEoqAAL1cfWVRGwVK34GHePAwfR0z/RbthsAxUllj6m70
-         +vmA==
-X-Forwarded-Encrypted: i=1; AJvYcCVsRN4Wpjn8A00y4Qs3oXUxaMRNCb2WYCmZv5kAJFj833jaDoLwhDlz4eMy88nHTdgvOcE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyqT9MF+d/qC2KVe0cX+rQfgEivrkTFvzoU7xu+zNzxHd/3HzAp
-	twN3W65VRUSzMTNDDCW5WM1kM6QQmrapaH9AtKUSjxlvQhcugUjzEb20isCgVAy3
-X-Gm-Gg: ASbGncuO0MG/2Yr9M3OxZCBmmkDnd7eVho2+BaCySX6CiNeYJotj+iaK75uzNKM4NMK
-	eaFureyjl4DsmDxvHx9+YajgEQBNplQw6atgOBgTZxDNdZV9aJPsfp7BMtK9vVZ6Uy0X+5DNmjU
-	5AXK/m9uyaM/BbFJGf9Hz3I5Kz+hxKwE2Yv00KuaoBlFqlMUFY4sMgQMQnDbfB+AD0ze5RuRPZ2
-	B4odaTIYxIeFT/EI7SlRbpfrsCK18Fu3jh71vFdFh3BTsHtsUErupLqCBRmK+70HmaXOwzKTvjv
-	a4vGbOQvH02UrThAmuyk2YC+dUNdCqz8yRqdWNqCUZolgDqtA0A6EJRQk+EFdwtRbmlPs/G4BL5
-	1CzRaOddaY47L4291va3dBI0yivq044y1PJSJ1b0vIFzPDglIOTSSwYflEOjPU5ss9U5hLAE3ws
-	d2IuRx
-X-Google-Smtp-Source: AGHT+IFOg+w8CQ1Pyd3vV9OuLbAyp2SxZMbbXebY3T+dS2xnuXxe7RzvBpWw7tcbqOAeggvctjmMGA==
-X-Received: by 2002:a05:6512:4017:b0:568:e61e:5c71 with SMTP id 2adb3069b0e04-568e61e5dddmr1844132e87.46.1757494666105;
-        Wed, 10 Sep 2025 01:57:46 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5680cbf2612sm1136121e87.45.2025.09.10.01.57.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Sep 2025 01:57:45 -0700 (PDT)
-Message-ID: <04dbf985-09c2-4221-b40e-55999641495c@gmail.com>
-Date: Wed, 10 Sep 2025 11:57:44 +0300
+	s=arc-20240116; t=1757496879; c=relaxed/simple;
+	bh=ftDfmHApYEI/kLahMFO4fkdDsJP51o7c9whkaMg8jO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BI4tigUvcSmessLBdlQEa+7TkxjIo+C2LrOt+OEZ4N3qhZ52KGgauCyk3z7D41U7dcSsmcQuO6etaBVzLhSD/D8qbFWxTFVLIVw9SNs85rNQOtZuYcSq+gauLPiJdc1i7KTNL+qeUwNs7hXJiXiwG6MQ/V2uvYfDUIBXzcRlPuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwHDh-0007O8-2b; Wed, 10 Sep 2025 11:34:29 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwHDg-000ZLH-1S;
+	Wed, 10 Sep 2025 11:34:28 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwHDg-00GDJG-12;
+	Wed, 10 Sep 2025 11:34:28 +0200
+Date: Wed, 10 Sep 2025 11:34:28 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jiada Wang <jiada_wang@mentor.com>, dmaengine@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/11] dmaengine: add support for device_link
+Message-ID: <20250910093428.qq5vskqhvumgjsow@pengutronix.de>
+References: <20250903-v6-16-topic-sdma-v1-0-ac7bab629e8b@pengutronix.de>
+ <20250903-v6-16-topic-sdma-v1-9-ac7bab629e8b@pengutronix.de>
+ <aLhUv+mtr1uZTCth@lizhi-Precision-Tower-5810>
+ <20250909120309.5zgez5exbvxn5z3y@pengutronix.de>
+ <aMA88W/rDxFesEx+@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Strange PMIC behaviour with rohm bd71847 on Ka-Ro tx8m-1610
- (imx8mm)
-To: Maud Spierings <maudspierings@gocontroll.com>, imx@lists.linux.dev,
- LW@KARO-electronics.de
-References: <56e7a430-79dc-4598-8e58-809759cf0711@gocontroll.com>
- <f5736f7e-26ec-4a20-8f4d-82d45e719f3a@gmail.com>
- <42b98b9b-5561-4a46-bab8-a5dc60b69669@gocontroll.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <42b98b9b-5561-4a46-bab8-a5dc60b69669@gocontroll.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aMA88W/rDxFesEx+@lizhi-Precision-Tower-5810>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 10/09/2025 11:49, Maud Spierings wrote:
-> Hello Matti,
+On 25-09-09, Frank Li wrote:
+> On Tue, Sep 09, 2025 at 02:03:09PM +0200, Marco Felsch wrote:
+> > Hi Frank,
+> >
+> > On 25-09-03, Frank Li wrote:
+> > > On Wed, Sep 03, 2025 at 03:06:17PM +0200, Marco Felsch wrote:
+> > > > Add support to create device_links between dmaengine suppliers and the
+> > > > dma consumers. This shifts the device dep-chain teardown/bringup logic
+> > > > to the driver core.
+> > > >
+> > > > Moving this to the core allows the dmaengine drivers to simplify the
+> > > > .remove() hooks and also to ensure that no dmaengine driver is ever
+> > > > removed before the consumer is removed.
+> > > >
+> > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > > > ---
+> > >
+> > > Thank you work for devlink between dmaengine and devices. I have similar
+> > > idea.
+> > >
+> > > This patch should be first patch.
+> >
+> > I can shuffle it of course!
+> >
+> > > The below what planned commit message in my local tree.
+> >
+> > Okay, so you focused on runtime PM handling. Not quite sure if I can
+> > test this feature with the SDMA engine. I also have limited time for
+> > this feature.
+> >
+> > Is it okay for you and the DMA maintainers to add the runtime PM feature
+> > as separate patch (provided by NXP/Frank)?
 > 
-> On 9/10/25 08:25, Matti Vaittinen wrote:
->> On 09/09/2025 18:16, Maud Spierings wrote:
+> we can support runtime pm later.
+> 
+> >
+> > > Implementing runtime PM for DMA channels is challenging. If a channel
+> > > resumes at allocation and suspends at free, the DMA engine often remains on
+> > > because most drivers request a channel at probe.
+> > >
+> > > Tracking the number of pending DMA descriptors is also problematic, as some
+> > > consumers append new descriptors in atomic contexts, such as IRQ handlers,
+> > > where runtime resume cannot be called.
+> > >
+> > > Using a device link simplifies this issue. If a consumer requires data
+> > > transfer, it must be in a runtime-resumed state, ensuring that the DMA
+> > > channel is also active by device link. This allows safe operations, like
+> > > appending new descriptors. Conversely, when the consumer no longer requires
+> > > data transfer, both it and the supplier (DMA channel) can enter a suspended
+> > > state if no other consumer is using it.
+> > >
+> > > Introduce the `create_link` flag to enable this feature.
+> > >
+> > > also suggest add create_link flag to enable this feature in case some
+> > > side impact to other dma-engine. After some time test, we can enable it
+> > > default.
+> >
+> > What regressions do you have in mind? I wouldn't hide the feature behind
+> > a flag because this may slow done the convert process, because no one is
+> > interessted in, or has no time for testing, ...
+> 
+> Unlike other devices, like phys, regulator, mailbox..., which auto create
+> devlink at probe. I am not clear why dma skip this one. So I think there
+> should be some reason behind. Maybe other people, rob or Vinod Koul know
+> the reason.
+> 
+> static const struct supplier_bindings of_supplier_bindings[] = {
+>         ...
+> 	{ .parse_prop = parse_dmas, .optional = true, },
+> 
+> If remove "optional = true", devlink will auto create. I am not sure why
+> set true here.
 
-> Again very sorry, a day of patience would've resolved this issue on its 
-> own it seems. And many thanks for the help.
+I've seen this too. Could be because DMA controllers + users aren't OF
+related and therefore should be handled within the framework itself.
 
-No problem! Glad it works for you now.
+> > > >  drivers/dma/dmaengine.c | 8 ++++++++
+> > > >  1 file changed, 8 insertions(+)
+> > > >
+> > > > diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+> > > > index 758fcd0546d8bde8e8dddc6039848feeb1e24475..a50652bc70b8ce9d4edabfaa781b3432ee47d31e 100644
+> > > > --- a/drivers/dma/dmaengine.c
+> > > > +++ b/drivers/dma/dmaengine.c
+> > > > @@ -817,6 +817,7 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+> > > >  	struct fwnode_handle *fwnode = dev_fwnode(dev);
+> > > >  	struct dma_device *d, *_d;
+> > > >  	struct dma_chan *chan = NULL;
+> > > > +	struct device_link *dl;
+> > > >
+> > > >  	if (is_of_node(fwnode))
+> > > >  		chan = of_dma_request_slave_channel(to_of_node(fwnode), name);
+> > > > @@ -858,6 +859,13 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+> > > >  	/* No functional issue if it fails, users are supposed to test before use */
+> > > >  #endif
+> > > >
+> > > > +	dl = device_link_add(dev, chan->device->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
+> > >
+> > > chan->device->dev is dmaengine devices. But some dmaengine's each channel
+> > > have device, consumer should link to chan's device, not dmaengine device
+> > > because some dmaengine support per channel clock\power management.
+> >
+> > I get your point. Can you give me some pointers please? To me it seems
+> > like the dma_chan_dev is only used for sysfs purpose according the
+> > dmaengine.h.
+> 
+> Not really, there are other dma engineer already reuse it for other purpose.
+> So It needs update kernel doc for dma_chan_dev.
 
-Yours,
-	-- Matti
+Okay.
+
+> > > chan's device's parent devices is dmaengine devices. it should also work
+> > > for sdma case
+> >
+> > I see, this must be tested of course.
+> > > >         if (chan->device->create_devlink) {
+> > >                 u32 flags = DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_CONSUMER;
+> >
+> > According device_link.rst: using DL_FLAG_STATELESS and
+> > DL_FLAG_AUTOREMOVE_CONSUMER is invalid.
+> >
+> > >                 if (pm_runtime_active(dev))
+> > >                         flags |= DL_FLAG_RPM_ACTIVE;
+> >
+> > This is of course interessting, thanks for the hint.
+> >
+> > > When create device link (apply channel), consume may active.
+> >
+> > I have read it as: "resue the supplier and ensure that the supplier
+> > follows the consumer runtime state".
+> >
+> > >                 dl = device_link_add(chan->slave, &chan->dev->device, flags);
+> >
+> > Huh.. you used the dmaengine device too?
+> 
+> /**
+>  * struct dma_chan_dev - relate sysfs device node to backing channel device
+>  * @chan: driver channel device
+>  * @device: sysfs device
+>  * @dev_id: parent dma_device dev_id
+>  * @chan_dma_dev: The channel is using custom/different dma-mapping
+>  * compared to the parent dma_device
+>  */
+> struct dma_chan_dev {
+> 	struct dma_chan *chan;
+> 	struct device device;
+> 	int dev_id;
+> 	bool chan_dma_dev;
+> };
+> 
+> struct dma_chan {
+> 	struct dma_device *device; /// this one should be dmaengine
+> 	struct dma_chan_dev *dev; /// this one is pre-chan device.
+> }
+
+Argh.. mixed it within my head while writing the mail :/
+
+Regards,
+  Marco
