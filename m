@@ -1,80 +1,68 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012031.outbound.protection.outlook.com [52.101.66.31])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010046.outbound.protection.outlook.com [52.101.69.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633A9257858
-	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 15:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E1E327A15
+	for <imx@lists.linux.dev>; Wed, 10 Sep 2025 15:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757518506; cv=fail; b=cCd+f49nJjorvQrtfFkRqBX0aqkf53YYYU3AyADTqK3MXsO4lH0SEp1FsHYJLTenV3U++YTfOezQH4PDb/7UJ16K3U6Ruy2Y9vpuDLTyR26iZ4UKIsBmsOw9Y6zkn6zj3hXecc/F0Mqh3/LXKfHotthKkHxZ17H4LUwt1p2p70c=
+	t=1757518846; cv=fail; b=O5ns6v10jK84L1NjEgjUBNXmeYUIK133ICGx1dgh9rQsYuio4lSNRDIfFsHsByzsQbB+bK4eR2TfnIEt6QzeRiKqcbHjr8eLRy5sjHVyeJPUdGU301+ZFdFL0mIQYmQX5xTrJSBe4atF8UTSowxuU+X4aPj2HjFLdBEfj0rezEo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757518506; c=relaxed/simple;
-	bh=bLIzAftzffG8QaklKflQNCRRuoocmUWZjkkYjYFGwag=;
+	s=arc-20240116; t=1757518846; c=relaxed/simple;
+	bh=zoBf4bB0K5Sd1ZF+HtO4F8/+N85Q6qKT+ZNPgXwSSpk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HlLV5jq5dCxuuFuTxKpIUt/jOYTcAcPQNKLTN1Lo0xawpVeKaeZLwDrbxECd99rZqZbEa26LPK31RQy3DUbVrPDmDqIfhdzi/NK6czcFutFSOj6jT/nQ4bPV1NNmi/bbfFX9DoP8LpN0/sLSqlQqlDZ3SiYFre8/n0F+Moae8gY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OAOHKZgG; arc=fail smtp.client-ip=52.101.66.31
+	 Content-Disposition:In-Reply-To:MIME-Version; b=T6V5kBEd/SeizYLX0rBnYRHqqUqGm/JHYDehIGUitG+TpZ9qMntajJhENMtahayr6mkEwyRwn0NrLgH92YI/tEGLQjXmP0e3jLP/bkPlpwdfwSqYuw310FA4aNGkcWPJrEcRplfYaKhCNRDCelfcC78AQfv3GHP/MdAdFabPmjo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=byjgWwmq; arc=fail smtp.client-ip=52.101.69.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OAOHKZgG"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="byjgWwmq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gqbGTVZWoFw8VemABPomhLaS9+Z+KwAbVuuajEAQQ4Ax5YX66BK44U8GexGgZ2qrfF/sLclCaDp/r8NF9SodTqgFT6rwYTakHUlXphlVgt30oGN+os3gtQIiKfmH34t8c/QZNVIJZkAzSL44CUBz2ftcJ6nMAFjf8qWnICOIad/42gSgHwGvFpaq7LZ+vUqOpv4ts4fRxJD/yDP/KjBPDOdZLbWZtNEb1+L1bPm0iAFstXCeygzvulHFMTMuxeddvg4SuFjKcmJoVWvzV1xOArbs3yFhi3s1YV6glrE3d2WS8MvKJnZeRdHQ7rIE1wjCtUysd22/YzRTnMLjxesk9w==
+ b=ZyCjYcKoapicP8vDy9FZ5VU6+BfzmC/WQII0CW4hcAz+nStAe3wtR4UoLIMobg2g5GUQ5gvjzraDj98di18hKGKggW8xNm2eQ1vWwg/bfTpm/lFVnKZGobG70QycDk2z63K0Wz0pgxy9iddbyIMabuuRuFn267UoJMYBlVBUq9O8ha+1AOvzN1hdKZRfxLEg40gDC5u8ZRhr2t8836WE3K7Di9+iV9cBYNRM7fhlHGDnfZOHOGImgTqN3ZzG4/nWmquoXqEoIR5wQW680XOCGZqL8CUzqgpU8J9x3boMlxySDv0hY07AsZsSlFOx8PM6tAVGMYPwZNSTlC+bOnzsaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bf47KHb2FpqYb38LDynRNEzXv3n90MIPY1PJPVaq/WM=;
- b=TO35ku8zGyWz4K4sM94LpFu0UXXz4RvXxWc1gye4rrv7no9vdF5m0oOUpV0QslZxZgKQl+FmAbJtqm0GJK+hffa+yzRopCIjdCDAQxutIZgVwmlsR5oO2KBqR+QGiS06xdXuu1dL+4Xq4YMTYNhCFvY12JdQbFa26xBSSOkw+nV2DawHS2qJOJNyG5cyFfnUl3wTNjVMQ8ODmc3H1irsw+L/AVJzGWo+lqyiPd3FUN2KdbV60fuh7jvOfAtWgeo4DoCYgHWwZwoVMWe9P8ioiH/oQxn6Au9b9oOP0N1ZVF9KYhSD8s+jXiO0hYkbxD+ZOozJSoA1gQqwwalbYyCyuQ==
+ bh=K3zGRiD72zK0SuVCP+OsgF6wdtOQz7CD5ov3r498fPs=;
+ b=FvPmA3l5MX2xTw+RfvnfEzqmy1YsossIMMi7V8sGNqjUDtLb5oXMDHusiWCcxpas7Zfn/8LbGUn/UPWp188onzrkER2GnJzG8UffwFrzplh8VYeecASsN0KVupqgx4L3MFp7BqrQ+xdXRd9yPa2lEHROs5S9vEQjof6Lz8BCTKShKR9J+EfEARku02tdTeO8HFVGsBJcIIF4qh4bLRI7E974SmCPKA6B5WFsifoGzpDl637I9Rc1bZ8S7RlekAqNdJ48I180Oj3yzgdsVBRJZC0x6n7QnrT3Zw5VwTg3tp3VU5BH5KCLp667SQz5Ml24g8pdmAz/BH3HyfEDeUzTCA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bf47KHb2FpqYb38LDynRNEzXv3n90MIPY1PJPVaq/WM=;
- b=OAOHKZgGDMhM02o1qKyU3vGy4R7WLXX+8F1PBym33SgBRn4kNrwA0nvJke9sQi18ZK7rJgaY+1UhGhxj9FntzFezhLce/skOZ9rK0YKa/EdgVzkDWK1B7XeZU6EPzII53aJI0TY8PI9TeXU75Cv3K3etQs1j0Tr22rknsxtlkojWTYSeXqQNAEVunO/HLJnjXNGtAODzSBmhfPzKof10rbn5Gj9vHOh7th1GTY/kM9XL+iIT9IlwSyCxk36HfrqBjFNHlT0JKzXA9I29GW9B76kEXwZinYc5RBAzDBGCSdwAzl+GDTMu/m7n2EGP2mWjsIR12IgtDy1A29BCiwgwYQ==
+ bh=K3zGRiD72zK0SuVCP+OsgF6wdtOQz7CD5ov3r498fPs=;
+ b=byjgWwmqEeUuCk2jDMNHRO4p+zfoNdI0QMZJDOSbDXmX42lZomKwCBeJit7sWs40RxKXDTCX7bIOVZlQ0h0ySZczJ/G6XOOibZMK2UuYoJXFNQyc2k/6WFo+cZdBbFjnEU6XuapshbN1Uu2xvU479nEpy11gygNhHj6D+s6Q1hWQnYvmHxHjc5FSgsCvUdm8LkmNSP0TXUJikRrmPQr5lAlQkT2GDYdqMzafPIcC0V34fVBy5pVW3typMXmTyLxwdRb9HiyBv4CKCzC3sxpWBdMdg56XmdHFrSd5LbW4HUgzQ5R1XdzHwI6FQNpZPOn7NU+cchgZJKNQzpTSdPVuyg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by AM9PR04MB8507.eurprd04.prod.outlook.com (2603:10a6:20b:432::18) with
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by AS8PR04MB8135.eurprd04.prod.outlook.com (2603:10a6:20b:3b0::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.15; Wed, 10 Sep
- 2025 15:35:00 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::b067:7ceb:e3d7:6f93]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::b067:7ceb:e3d7:6f93%5]) with mapi id 15.20.9115.010; Wed, 10 Sep 2025
- 15:35:00 +0000
-Date: Wed, 10 Sep 2025 18:34:54 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Marco Felsch <m.felsch@pengutronix.de>,
-	Jonas Rebmann <jre@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-sound@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
+ 2025 15:40:40 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::55ef:fa41:b021:b5dd%5]) with mapi id 15.20.9115.010; Wed, 10 Sep 2025
+ 15:40:40 +0000
+Date: Wed, 10 Sep 2025 11:40:33 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 1/4] dt-bindings: net: dsa: nxp,sja1105: Add reset-gpios
- property
-Message-ID: <20250910153454.ibh6w7ntxraqvftb@skbuf>
-References: <20250910-imx8mp-prt8ml-v1-0-fd04aed15670@pengutronix.de>
- <20250910-imx8mp-prt8ml-v1-1-fd04aed15670@pengutronix.de>
- <20250910125611.wmyw2b4jjtxlhsqw@skbuf>
- <20250910143044.jfq5fsv2rlsrr5ku@pengutronix.de>
- <20250910144328.do6t5ilfeclm2xa4@skbuf>
- <693c3d1e-a65b-47ea-9b21-ce1d4a772066@sirena.org.uk>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org
+Subject: Re: [RESEND PATCH 4/4] Input: imx6ul_tsc - use BIT, FIELD_{GET,PREP}
+ and GENMASK macros
+Message-ID: <aMGb8RzMGMKf/0hH@lizhi-Precision-Tower-5810>
+References: <20250910135916.3939502-1-dario.binacchi@amarulasolutions.com>
+ <20250910135916.3939502-5-dario.binacchi@amarulasolutions.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <693c3d1e-a65b-47ea-9b21-ce1d4a772066@sirena.org.uk>
-X-ClientProxiedBy: VI1P195CA0094.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:802:59::47) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+In-Reply-To: <20250910135916.3939502-5-dario.binacchi@amarulasolutions.com>
+X-ClientProxiedBy: PH8P221CA0065.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:349::13) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,120 +70,265 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AM9PR04MB8507:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2cc87ba1-2fdc-4aab-bc0b-08ddf07f9a7a
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AS8PR04MB8135:EE_
+X-MS-Office365-Filtering-Correlation-Id: 251580d5-0a59-49e1-8f2b-08ddf080655c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|376014|7416014|366016|19092799006;
+	BCL:0;ARA:13230040|1800799024|7416014|52116014|19092799006|376014|366016|7053199007|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pBPvpWBk1F5D3yg5SHB8w4zc8kD1yBeWuNduSx63Y1iTisir3Dw6ADgO3ZW6?=
- =?us-ascii?Q?rC+seaMPnpFVWl5yL1Mhi0T4+x34atSlu6Hr8ri7THwJzY+l8Sj6ASPGawsi?=
- =?us-ascii?Q?+E6GuyXyS/Jfqkf69aOweMpcf4pSyD+Rpe9lGah2NHlXkRMSrW6KTOjOjgCq?=
- =?us-ascii?Q?ncvB2e67wlWBgAE/J3fZrfNQDnrUh9M8kEiG4Uy2p4GfZRNh77hCxvmvAuMj?=
- =?us-ascii?Q?GZIs8xlwFlkKFF7JpksWgQFqfZ95l+C2SsmvvNl04buJnDHq2hPkqNPi8vUP?=
- =?us-ascii?Q?jztXblryjQe/nOWoaBvTEXmbSJFniGFWX9CMGE2yrR0Q4Z+4NYk/GDC97dTB?=
- =?us-ascii?Q?+8BNKAPKIZqkKxtDcTZVtc3DtXwlycT+vntvacEXk8CYDyhAa3EloKXgJID/?=
- =?us-ascii?Q?0U+q25UpRn52w2rlsvhw2X7jSxyFHV8/DPTRziL2glUa9qCLK/ummVtENEcm?=
- =?us-ascii?Q?Be7oJE5+36NKI9BH1i0Sk91256/n/vuF32tfo1C7llVNY8HAAh3cc7C1hjO2?=
- =?us-ascii?Q?IbaK1DyrygDC4j7GLY0S68s5rrM8eeQ+M8BUIHOs0veG7svZfsqzz6X0Vy/8?=
- =?us-ascii?Q?i/YbahYTuBRVEfkphjZtoPQ4Sgm5MRMSH7JnOfjE/b8HMtROhNPegNSMZ7P7?=
- =?us-ascii?Q?oE9zMia9wHinkUlnVpxRtxKrQCxJgxtjHPt5gH/RQ9Xo/LZ53UZrC/sGiScY?=
- =?us-ascii?Q?ElUCEinICPSiLZHQMEvk4ujYLLgWaVd0gE4DUP251EBSQZ+UQVVc+HIe8LIS?=
- =?us-ascii?Q?kyK/aDwJ3id1Vhf5PwqyK1F9J3gyEoFPMaTz096ZPrJHtywIqD3b0Ij/shu1?=
- =?us-ascii?Q?qyD2OnM20UfSjq5LJ8dEl6UOd88rOERphlM9wjlD9KW/oTxNGxElRpl9o9ee?=
- =?us-ascii?Q?PhzBGgFTY4oyvpHNKriAMFL7cAm34ppZirst0yT89UUK+wRzil+a/n7pHzUd?=
- =?us-ascii?Q?YrB31BVt5IHLLTDWLNcZiqSmYBY+ycswETiPV4UvMQ0PB7090LOqxNrkCdwx?=
- =?us-ascii?Q?GR84Qky2LZmlUTiX5fPoOmCn2k56O8uJyH0enbF6taQl7I8txulg+F1KwZdY?=
- =?us-ascii?Q?FsnPVqdqJBeVl6ytwruKNiI7ZhJxjew4pP2yMIxlrbFMfqgzjOe9V06eDDfU?=
- =?us-ascii?Q?NSQpFvk21a0CvwJ7Kk3uHDlHyKiNnEORYMLDin24N932rzu/8uEElvYBlNLz?=
- =?us-ascii?Q?jLm4Ddy4aW6wZNIIGMHAMkww7iqzHCbUKlsRRPkz1SbWzRgkxuTwSwcjR5V1?=
- =?us-ascii?Q?K9AO+4m/JfZ9eqj2E9JMAO/18GCVqVOymFhF5G9Say2vjqkQQyGex+gCH/6Y?=
- =?us-ascii?Q?7SSXUtAsUm84daDibHMCReXngKcYIdO5FvyUCDTuM8cS0GBX2oRMFkfeSGba?=
- =?us-ascii?Q?cTxVdwePoSJxWGnypkRh29L3R1G7T0pUU4VsF7/9zSbo9rEOTI7pvhHEcuwX?=
- =?us-ascii?Q?iEaOKCzd3mU=3D?=
+	=?us-ascii?Q?A/PsdvXYCiCuaEuA1Aota3aETmZfn9IVuoYkwFzViamoZIEmS44ysxXJtvCy?=
+ =?us-ascii?Q?ewRRgQ60CH8ufJ/48mArGZjpL3nc6cfsJmsFB/9GVS8yqFUtGxTVlTuXf+pm?=
+ =?us-ascii?Q?3bJWmDdvn1nLK1rzxz0nLGH+8RTsoSx23FGC41y0ICC9ipGGdBHdWIl1/6WE?=
+ =?us-ascii?Q?S17JhROp725c0+Nr+OARFknu3o+2NjsgumZwYkg4pU6Eop4fHIThJPNO347v?=
+ =?us-ascii?Q?PCXTDOYkfHSXyk1p3/LRqyxBSKHHoc1eJc3wJrIGScl/2Yg/NFbOrw7KjpqQ?=
+ =?us-ascii?Q?DDl0mgDpE5LGM9aUBEt24NJXTZFZDR2QM681c4HIwbZIaRSlpbhdppqJz5m7?=
+ =?us-ascii?Q?/QHymjUoO6lUKskOyhN4087wsS8ItlzVo1jnHH3EkKukvv1SKqyK/ADMxsIY?=
+ =?us-ascii?Q?FIPI5UdI+p4uRrBSVQgOqsjnMc8+znZ/oMItA0CamI38BquRXpCxOJUs9tev?=
+ =?us-ascii?Q?l+SgOBg4M4PUSMm/pWAuUGyvY35OTEyr4a91S3FZBIMT2r6hdnqZVQ2r+FBA?=
+ =?us-ascii?Q?JYSFd4SMjlLWbtnxC6Ycix/BIn+eHgGfifCSQVeW9gKfHfn3CxN4saOVcWEq?=
+ =?us-ascii?Q?ePnAe9P9BKONe2OxDp8663y6abZi5ZuiSwZOv56j4YCbEq7/sTLphUp0eQwu?=
+ =?us-ascii?Q?UsSmWY32UoYRS+2xmz/AF40LlBLuDJPGGiKsXA+Mjv7kUqa4rw/IwDwbsfe1?=
+ =?us-ascii?Q?ovn4g2ETXgKeH61YwlPMpvKU3vi5OBZ5xMKfwmiRlFgcIM5CuOhPwtkFXs6u?=
+ =?us-ascii?Q?eKaftip4IZ4lb5K+rYXBzxtOMwYw5bzCoKXjM3qi/Y2Yi+QQyw+1wjc9yCQS?=
+ =?us-ascii?Q?0O2r07SXnAw6JqZP7+czw0f5+ydmbAzHzGvoWC/oRS3H1N7dSKbeDnp8uFzy?=
+ =?us-ascii?Q?QwKIvDFCvGDL6cbh7WB7SgFN9gFMB66za9AbTbTPipftUZt/e1VuQ/ti/iPa?=
+ =?us-ascii?Q?0JW7X7Lnj5kaFxGUEBue1z8HAWI80xThHsQKuZP8R1oREn/o8hRAVMV6xuMj?=
+ =?us-ascii?Q?Z2lhqQSxSZsSlpdjDJcOGC5Ok28DgxCTFfRIpy9iSKlEv31/mAx0ojqIhFqj?=
+ =?us-ascii?Q?oWuEewb9b/6rsc+74lqTS46F+BTeocGzo31qPJXLIoDR+dWsrF0TpZq+lMKP?=
+ =?us-ascii?Q?S5wnGmTen0yrtltgrSy8I2rOTRlf8eAaCx3u0ByJL2JVCF0tpq9l1jwRU79i?=
+ =?us-ascii?Q?9+3OcpRIJ0tHrqchYT+p5+y5ULYcltFHN/IUZJdGStCQKy/EgHFMJvoC4L2t?=
+ =?us-ascii?Q?sGHV0U4zQX2q0BfLDCp+TRhNSCryJsmMI3rzklcdpLlOh+akoj2P9w6eDv/i?=
+ =?us-ascii?Q?TmfkFg/yOzgg1irY6zhClo6V1alSoYBWsefsa6CGKa13qoPeSIJFkE5mzR36?=
+ =?us-ascii?Q?rrNNOXa14c4Ad5aEVOYiEkEFmk+i0Wi4afsJqocsNebRq2yQzOCWB1KMCPWQ?=
+ =?us-ascii?Q?g5XmdtJYrf+mCn0pSVWLHBY7XqJTwkL8an4F0dckAlK9pfjKg8g78KSWPTpl?=
+ =?us-ascii?Q?KL59CG47hSzOeWI=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(7416014)(366016)(19092799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(19092799006)(376014)(366016)(7053199007)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YxJrkdbZnSA7G2Tcqwb/wVAOli8JofjUb+oTwuuq9iDhZMZRlo5Q2grKBbbW?=
- =?us-ascii?Q?zuFFSgjJOtmGkSnOHTcaoB957TKCndwIZn9dNYw0TDwp0J7akqluraOnnAw3?=
- =?us-ascii?Q?jiODcSFoIj7tIlScyWUQ/dZtBj/od7UfrsW2pPQbHL1wpG5fFlri6q+a6MOa?=
- =?us-ascii?Q?vn7bIWOeM2SZaluV/xZjx53FYn38M1+7SMQ3v4+sdwmrzuMfku3ftpUPGgm9?=
- =?us-ascii?Q?10BemqNKvI/1TazgKlPx3TKbIw+b0jjpfpNyJiEOyU1LUNjvoTwv/n+3cw+v?=
- =?us-ascii?Q?POKMBFOwy+TzxvSVifnRn1VctegtzA9JPTJxmIRVQaZ6g8UyZ04Sy5HsM1KE?=
- =?us-ascii?Q?711KoXqLd7bUFaQ4/ssElTHqPotg6uAHhrrMWAgZucRKyTbpd/7jcJzeaDs9?=
- =?us-ascii?Q?dFkJiMrK6xfUjyIdupB5BG1Qdsrgs29874wfi/Bo8ssWfqDwkIXXCphQw66e?=
- =?us-ascii?Q?//0E0WIJLDVIeT0WawpQ7jhqqHp3SdDSSYe87HOmp/XTdk4/cbwrH8qS/4T5?=
- =?us-ascii?Q?/36rty5Xy1LZPXz8zp6fBuj2E0INpSoMI/TO7D354l2j4DWOFUS3ChNIl4G2?=
- =?us-ascii?Q?wf+Q/EOzUOto4cov8haBVVC3LkP1OJLlwsLbYmnqVJjpnqxq/iFAAXCRw69F?=
- =?us-ascii?Q?N0F+KWFb27Bgrf5yTd4exTcD9wKvHSMtiX+oUFZQ/Ublq6M06H1B6/Daee+a?=
- =?us-ascii?Q?XFQko4e5IazY9pgvPQ7X9DZ/kSHVqt6hxSJdhRURnw1U1GTdsuRk28QWrnN3?=
- =?us-ascii?Q?yo5u3AavskK9i/rQOPPKKr6vQizWzyxfYwbMB2HREFQsiUiEcfnMnXSivmGG?=
- =?us-ascii?Q?R+S6GAjZ1fi6Aux2I/qSsyqv/giSrfWHRaPVOSFisyb8sXvrZuthLd+LeQ0s?=
- =?us-ascii?Q?MSAYU9VSK3pwqY5mm8KPZ6rPVLk+cw5ahvW4hTKBYkIQRsa/PB4m95F+9xz3?=
- =?us-ascii?Q?5A6ZfNz1UFqPq8cJS4iXpP/GKwcoDJ1VmxhtuHBCQLCMsgg8nruBVNw6HlGd?=
- =?us-ascii?Q?9KR+9Sk4SegeC2TiOrwXbUqFujF08bPohdE+EdeyRa1nF58KEmjqI7yHVs+8?=
- =?us-ascii?Q?st4Y6g1umRujm/AoAkSLaxUbeDKPs6A5APkzCdol8i+EhJjEF5v+4p/L2u/7?=
- =?us-ascii?Q?8/BsJ5prZjgitETi0SvdLvMct0J5M5imN9/bXkdUHaWHrawUlO9FeSWamCr2?=
- =?us-ascii?Q?6bfd5oh3XdMJzTs24j6mTh6ID9fhS6ZwRqbl7dKCKLjpsbv3AQmZU4TD+ubm?=
- =?us-ascii?Q?bWza5AdnjNA1JjYurOGfIE4cowROvvTG9KOmiWhYrJnxtEFH5IMPZDQ647dj?=
- =?us-ascii?Q?n/pIOfYR1fmDsv3k5iVtSt5tspReA2L+8sj3qgWpu4CCv8iavt0Z1KaNgUZs?=
- =?us-ascii?Q?NZh1xx6qymWLBxptKS9Y7kLYQtwDGjHcqwWNlXbgjztXpmYUJZrobQwJ8omt?=
- =?us-ascii?Q?JK9WziL4sAlzsRxgHhmtsiwAy682lve09+qfoG4rQ2xPpLGp8qZ4i3ukOr9g?=
- =?us-ascii?Q?no2rs3AjkLOHb4sYmzc2sQP4KjXNUTIdiz9Ilu4VcQv3vOpCLm42Uxsw+HpQ?=
- =?us-ascii?Q?RSpudndPrOylhL+Q9j3thys1E5bWLEwvCceRQa56/+I9elwHRwJdmdiBY3UT?=
- =?us-ascii?Q?xzS6RH5fGXyJPZJ9C3OPJwSn7D8qY0m28WSWifnsK/zQemVVPkgE93jjWuqK?=
- =?us-ascii?Q?UhoTxA=3D=3D?=
+	=?us-ascii?Q?qF9M3Cfw4SCIHU5NIcJemrMTMFA74Qp2LKm6UCAKNFCW59KBQGh1P5j5+UNL?=
+ =?us-ascii?Q?Ch/cTIiC6VENL8fW/SAuDu/C/cFYRxy3xjhylpwBUmEjJgmWBOg/lp5cGDLl?=
+ =?us-ascii?Q?uYvJcqbh62A+XD71ck2OdQAwYFoSOfpZKVRaXq0U+JzVl81tz3CBurcOliyI?=
+ =?us-ascii?Q?+3YiPGc7/iNyT3bCWqaw+ah1LBpu5B4/eBloMzgsOS3t7/nq1nHej62QtcXp?=
+ =?us-ascii?Q?/yniaoImHhkqFYouyoXayfxN0tqkWNbCxP+N/cFi7zvN0yC4svwgnxKDttsQ?=
+ =?us-ascii?Q?UkclSHQjz7ERtaqQXbhQx8socn6PIopFQQa39pA0diOJX8TyLzO0OgPW2bUW?=
+ =?us-ascii?Q?/wXx0OpnM8mCh0fdW7sKr/xEt2lCNcTauINiOo1aHVnBXEwX2y3wLlXNYjfJ?=
+ =?us-ascii?Q?ZAGqXwYIdud+/QXZgP037CTxuEgjbSdTVO75uSABNdIv1uRZauSPoDqAztzu?=
+ =?us-ascii?Q?l2zbp5K8JJzZZ+RwxKk0EZ0XQ+uGTuMNaC9w/AYWbgiaf4Wh1SgR5FiCp8XO?=
+ =?us-ascii?Q?YHnhoQ/HTreYh9dHuzYLJOdwD0axHRyMzv67cLp7U8UpzxhtjAmJH5HZkD0F?=
+ =?us-ascii?Q?vk1oRn7ZOb+slkSd6uV8uq+eSv4mf7C8DIVz2IfWQS7rMfTy1W/3ydtLID5w?=
+ =?us-ascii?Q?8WngwH9FL3XSPygjixt51aNwinqH37VtW4HxA15DNTxxUtaz+2YYJ7qlupCw?=
+ =?us-ascii?Q?ASGX/adLVrREGdX7OkCKj9AT9ODJyIz84dljll6mtD9cySP17JIosV67xMTB?=
+ =?us-ascii?Q?tGif2nJRy0tWzmBX2qtiz+7FXwXicOnt2ExcHF///eqtxqWpEts1zDaNtTcg?=
+ =?us-ascii?Q?5aq6YLPtv7IXh0HGG/4+8kZ4KCZVZTzPbOA02rbErf/rmMWYygyEPQpCW4AJ?=
+ =?us-ascii?Q?E3xUzbaEngfZ0unQMMua0PzFIoJiE5vQJ3VXmS2WrvZvQRpvJdvv+30Zl43g?=
+ =?us-ascii?Q?9C/YRPQxNTeQUeQKob7JzCcMR/ck3fvJJkNeepZ8saV1aMrMBTO1/yLfrs3Z?=
+ =?us-ascii?Q?Z0wqiU0aJExr44ZM2t2y4MVvxHP8scWJ47nSTYSXCg1aJCorlf6sE/VKZ3eb?=
+ =?us-ascii?Q?LKqZU3iBT3OS363TqN9wDwHCX0EwKaTIX8xeC5Ua5HHASGkjCKMXcOmYu4l0?=
+ =?us-ascii?Q?hydfHDVnb7koK/h4d6daZTDVea0kXVlBsAbUmluqCMaW5mGwK0GQOcP7L39q?=
+ =?us-ascii?Q?InKFF6Z33BdqFmnh3f8isfmUSMi7BOt7wE9Cb1Jj0pPFqmtas4xAZruS8CT+?=
+ =?us-ascii?Q?Sn+NaIyzqeWd3gS6dnmlncEhJ1VjYn/xRx1ruGr2lwF2qkCTDOUGiCc8xTHG?=
+ =?us-ascii?Q?lhOG/t898PITECBmEQILUlYbn7kBwdm2BrQF1Md8ffk1pngCutTrpp5j7Fek?=
+ =?us-ascii?Q?E7q3+K5tJmGEKy6koFZ1DGB2yCiSa88FLORZULfNzkqTTD5g3BiARPZfPHRQ?=
+ =?us-ascii?Q?0dE8JVpzLr2ZhyA8Ss4qwwXFHcd/uYvoO8Y45EEc4XIqTlsClp+g4p7LEsBN?=
+ =?us-ascii?Q?WIzDzgyuu9o65xz6oBRhUVwNlNgVqv54zcyYsbTzuvlUXOvqIpPebFgQqtxk?=
+ =?us-ascii?Q?UCSIbQl7M2SR2bxwVfI9sC19PCgiIwhUU9EEnbo8?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2cc87ba1-2fdc-4aab-bc0b-08ddf07f9a7a
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 251580d5-0a59-49e1-8f2b-08ddf080655c
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 15:35:00.1299
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 15:40:40.6173
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FmbMjI1WJCGu70BHZv0S/sX+DVH2pOu6umNMcLLxF8y4nAUZ3AZr48ucyTjxMRBWNfTI8nYBkj+Ck+4dEHKc4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8507
+X-MS-Exchange-CrossTenant-UserPrincipalName: p+Kw+ffkQk7LzRq1NAaVvSyrBgwhJ+GFRq/wKMizxQZQXPnl8JM5oADDwswR98DQSkrJzooVQ7YMOrnr6q+2Lw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8135
 
-On Wed, Sep 10, 2025 at 04:09:05PM +0100, Mark Brown wrote:
-> > And if you plan to do that from the GPIO function of your SoC, the SoC
-> > might be busy doing other stuff, like booting, and no one might be
-> > driving the RST_N voltage to a defined state.
-> 
-> I suspect you're reading too much into the datasheet there.  I suspect
-> that what it's trying to say is that the reset signal only works with
-> stable power and clocks, that it must be held low for the 5us while
-> those conditions hold and that you have to do at least one cold reset
-> after power on.  The above wording is pretty common in datasheets and I
-> know in a bunch of cases it was carried forward kind of blindly rather
-> than looking at the actual device requirements.
+On Wed, Sep 10, 2025 at 03:58:38PM +0200, Dario Binacchi wrote:
+> Replace opencoded masking and shifting, with BIT(), GENMASK(),
+> FIELD_GET() and FIELD_PREP() macros.
 
-No, it doesn't say that, and I had discussions with the application
-engineering team for this chip about this :-/
+Add "No functional change." to help filter out if need bisect.
 
-I can't comment on anything extrapolated outside of the SJA1105/SJA1110.
+>
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+>
+> ---
 
-> > It really depends on a lot of factors including the reset timing and
-> > supply voltage distribution of the PCB, but RST_N has essentially 2
-> > purposes. One is ensuring proper POR sequencing, the other is cold
-> > resetting at runtime. You can do the latter over SPI with identical
-> > outcome, which leaves proper POR sequencing, which is not best served by
-> > a GPIO in my experience.
-> 
-> I'm not sure not including the signal in the DT bindings is going to
-> influence board designers much either way TBH.
+This cleanup patch should follow patch1, which is typo fix.
 
-Either way, something has to nudge at least the software developer
-towards finding and reading the vendor's relevant documentation.
-
-In that sense, 'reset-gpios' is misleading to say the least, because
-everyone sees a reset GPIO and has the human tendency to think there
-isn't anything more to be known about it (like I also did).
-
-To be clear, I'm saying that supporting 'reset-gpios' in this driver was
-a mistake, at least in the form where its supplies and clocks aren't
-also under control. I'm not sure it's a mistake that we need to document,
-and if we do, there need to be a lot more disclaimers. Also, I'm pretty
-sure nothing will break if driver support for it is simply removed.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>
+>  drivers/input/touchscreen/imx6ul_tsc.c | 88 ++++++++++++++------------
+>  1 file changed, 48 insertions(+), 40 deletions(-)
+>
+> diff --git a/drivers/input/touchscreen/imx6ul_tsc.c b/drivers/input/touchscreen/imx6ul_tsc.c
+> index a6066643bd48..e74999c5e22f 100644
+> --- a/drivers/input/touchscreen/imx6ul_tsc.c
+> +++ b/drivers/input/touchscreen/imx6ul_tsc.c
+> @@ -21,25 +21,23 @@
+>  #include <linux/log2.h>
+>
+>  /* ADC configuration registers field define */
+> -#define ADC_AIEN		(0x1 << 7)
+> +#define ADC_AIEN		BIT(7)
+> +#define ADC_ADCH_MASK		GENMASK(4, 0)
+>  #define ADC_CONV_DISABLE	0x1F
+> -#define ADC_AVGE		(0x1 << 5)
+> -#define ADC_CAL			(0x1 << 7)
+> -#define ADC_CALF		0x2
+> -#define ADC_12BIT_MODE		(0x2 << 2)
+> -#define ADC_CONV_MODE_MASK	(0x3 << 2)
+> +#define ADC_AVGE		BIT(5)
+> +#define ADC_CAL			BIT(7)
+> +#define ADC_CALF		BIT(1)
+> +#define ADC_CONV_MODE_MASK	GENMASK(3, 2)
+> +#define ADC_12BIT_MODE		0x2
+>  #define ADC_IPG_CLK		0x00
+> -#define ADC_INPUT_CLK_MASK	0x3
+> -#define ADC_CLK_DIV_8		(0x03 << 5)
+> -#define ADC_CLK_DIV_MASK	(0x3 << 5)
+> -#define ADC_SHORT_SAMPLE_MODE	(0x0 << 4)
+> -#define ADC_SAMPLE_MODE_MASK	(0x1 << 4)
+> -#define ADC_HARDWARE_TRIGGER	(0x1 << 13)
+> -#define ADC_AVGS_SHIFT		14
+> -#define ADC_AVGS_MASK		(0x3 << 14)
+> +#define ADC_INPUT_CLK_MASK	GENMASK(1, 0)
+> +#define ADC_CLK_DIV_8		0x03
+> +#define ADC_CLK_DIV_MASK	GENMASK(6, 5)
+> +#define ADC_SAMPLE_MODE		BIT(4)
+> +#define ADC_HARDWARE_TRIGGER	BIT(13)
+> +#define ADC_AVGS_MASK		GENMASK(15, 14)
+>  #define SELECT_CHANNEL_4	0x04
+>  #define SELECT_CHANNEL_1	0x01
+> -#define DISABLE_CONVERSION_INT	(0x0 << 7)
+>
+>  /* ADC registers */
+>  #define REG_ADC_HC0		0x00
+> @@ -66,20 +64,26 @@
+>  #define REG_TSC_DEBUG_MODE	0x70
+>  #define REG_TSC_DEBUG_MODE2	0x80
+>
+> +/* TSC_MEASURE_VALUE register field define */
+> +#define X_VALUE_MASK		GENMASK(27, 16)
+> +#define Y_VALUE_MASK		GENMASK(11, 0)
+> +
+>  /* TSC configuration registers field define */
+> -#define DETECT_4_WIRE_MODE	(0x0 << 4)
+> -#define AUTO_MEASURE		0x1
+> -#define MEASURE_SIGNAL		0x1
+> -#define DETECT_SIGNAL		(0x1 << 4)
+> -#define VALID_SIGNAL		(0x1 << 8)
+> -#define MEASURE_INT_EN		0x1
+> -#define MEASURE_SIG_EN		0x1
+> -#define VALID_SIG_EN		(0x1 << 8)
+> +#define MEASURE_DELAY_TIME_MASK	GENMASK(31, 8)
+> +#define DETECT_5_WIRE_MODE	BIT(4)
+> +#define AUTO_MEASURE		BIT(0)
+> +#define MEASURE_SIGNAL		BIT(0)
+> +#define DETECT_SIGNAL		BIT(4)
+> +#define VALID_SIGNAL		BIT(8)
+> +#define MEASURE_INT_EN		BIT(0)
+> +#define MEASURE_SIG_EN		BIT(0)
+> +#define VALID_SIG_EN		BIT(8)
+>  #define DE_GLITCH_MASK		GENMASK(30, 29)
+>  #define DE_GLITCH_DEF		0x02
+> -#define START_SENSE		(0x1 << 12)
+> -#define TSC_DISABLE		(0x1 << 16)
+> +#define START_SENSE		BIT(12)
+> +#define TSC_DISABLE		BIT(16)
+>  #define DETECT_MODE		0x2
+> +#define STATE_MACHINE_MASK	GENMASK(22, 20)
+>
+>  struct imx6ul_tsc {
+>  	struct device *dev;
+> @@ -115,19 +119,20 @@ static int imx6ul_adc_init(struct imx6ul_tsc *tsc)
+>
+>  	adc_cfg = readl(tsc->adc_regs + REG_ADC_CFG);
+>  	adc_cfg &= ~(ADC_CONV_MODE_MASK | ADC_INPUT_CLK_MASK);
+> -	adc_cfg |= ADC_12BIT_MODE | ADC_IPG_CLK;
+> -	adc_cfg &= ~(ADC_CLK_DIV_MASK | ADC_SAMPLE_MODE_MASK);
+> -	adc_cfg |= ADC_CLK_DIV_8 | ADC_SHORT_SAMPLE_MODE;
+> +	adc_cfg |= FIELD_PREP(ADC_CONV_MODE_MASK, ADC_12BIT_MODE) |
+> +		FIELD_PREP(ADC_INPUT_CLK_MASK, ADC_IPG_CLK);
+> +	adc_cfg &= ~(ADC_CLK_DIV_MASK | ADC_SAMPLE_MODE);
+> +	adc_cfg |= FIELD_PREP(ADC_CLK_DIV_MASK, ADC_CLK_DIV_8);
+>  	if (tsc->average_enable) {
+>  		adc_cfg &= ~ADC_AVGS_MASK;
+> -		adc_cfg |= (tsc->average_select) << ADC_AVGS_SHIFT;
+> +		adc_cfg |= FIELD_PREP(ADC_AVGS_MASK, tsc->average_select);
+>  	}
+>  	adc_cfg &= ~ADC_HARDWARE_TRIGGER;
+>  	writel(adc_cfg, tsc->adc_regs + REG_ADC_CFG);
+>
+>  	/* enable calibration interrupt */
+>  	adc_hc |= ADC_AIEN;
+> -	adc_hc |= ADC_CONV_DISABLE;
+> +	adc_hc |= FIELD_PREP(ADC_ADCH_MASK, ADC_CONV_DISABLE);
+>  	writel(adc_hc, tsc->adc_regs + REG_ADC_HC0);
+>
+>  	/* start ADC calibration */
+> @@ -167,19 +172,21 @@ static void imx6ul_tsc_channel_config(struct imx6ul_tsc *tsc)
+>  {
+>  	u32 adc_hc0, adc_hc1, adc_hc2, adc_hc3, adc_hc4;
+>
+> -	adc_hc0 = DISABLE_CONVERSION_INT;
+> +	adc_hc0 = FIELD_PREP(ADC_AIEN, 0);
+>  	writel(adc_hc0, tsc->adc_regs + REG_ADC_HC0);
+>
+> -	adc_hc1 = DISABLE_CONVERSION_INT | SELECT_CHANNEL_4;
+> +	adc_hc1 = FIELD_PREP(ADC_AIEN, 0) |
+> +		FIELD_PREP(ADC_ADCH_MASK, SELECT_CHANNEL_4);
+>  	writel(adc_hc1, tsc->adc_regs + REG_ADC_HC1);
+>
+> -	adc_hc2 = DISABLE_CONVERSION_INT;
+> +	adc_hc2 = FIELD_PREP(ADC_AIEN, 0);
+>  	writel(adc_hc2, tsc->adc_regs + REG_ADC_HC2);
+>
+> -	adc_hc3 = DISABLE_CONVERSION_INT | SELECT_CHANNEL_1;
+> +	adc_hc3 = FIELD_PREP(ADC_AIEN, 0) |
+> +		FIELD_PREP(ADC_ADCH_MASK, SELECT_CHANNEL_1);
+>  	writel(adc_hc3, tsc->adc_regs + REG_ADC_HC3);
+>
+> -	adc_hc4 = DISABLE_CONVERSION_INT;
+> +	adc_hc4 = FIELD_PREP(ADC_AIEN, 0);
+>  	writel(adc_hc4, tsc->adc_regs + REG_ADC_HC4);
+>  }
+>
+> @@ -194,8 +201,9 @@ static void imx6ul_tsc_set(struct imx6ul_tsc *tsc)
+>  	u32 debug_mode2;
+>  	u32 start;
+>
+> -	basic_setting |= tsc->measure_delay_time << 8;
+> -	basic_setting |= DETECT_4_WIRE_MODE | AUTO_MEASURE;
+> +	basic_setting |= FIELD_PREP(MEASURE_DELAY_TIME_MASK,
+> +				    tsc->measure_delay_time);
+> +	basic_setting |= AUTO_MEASURE;
+>  	writel(basic_setting, tsc->tsc_regs + REG_TSC_BASIC_SETTING);
+>
+>  	debug_mode2 = FIELD_PREP(DE_GLITCH_MASK, tsc->de_glitch);
+> @@ -255,7 +263,7 @@ static bool tsc_wait_detect_mode(struct imx6ul_tsc *tsc)
+>
+>  		usleep_range(200, 400);
+>  		debug_mode2 = readl(tsc->tsc_regs + REG_TSC_DEBUG_MODE2);
+> -		state_machine = (debug_mode2 >> 20) & 0x7;
+> +		state_machine = FIELD_GET(STATE_MACHINE_MASK, debug_mode2);
+>  	} while (state_machine != DETECT_MODE);
+>
+>  	usleep_range(200, 400);
+> @@ -283,8 +291,8 @@ static irqreturn_t tsc_irq_fn(int irq, void *dev_id)
+>
+>  	if (status & MEASURE_SIGNAL) {
+>  		value = readl(tsc->tsc_regs + REG_TSC_MEASURE_VALUE);
+> -		x = (value >> 16) & 0x0fff;
+> -		y = value & 0x0fff;
+> +		x = FIELD_GET(X_VALUE_MASK, value);
+> +		y = FIELD_GET(Y_VALUE_MASK, value);
+>
+>  		/*
+>  		 * In detect mode, we can get the xnur gpio value,
+> --
+> 2.43.0
+>
