@@ -1,83 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654103112D9;
-	Thu, 11 Sep 2025 13:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21132341AD0
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 14:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757597046; cv=none; b=loYPLPpnuNvREl+9gErmsUTS3whONwYxJB0Va6HvlPMglI0BKY4+uZDeuFpHb/buknACzX5yrick5TVjbladxrr5ILL/8q/iNtoo7ocp7x/3SPR2rVrG5wrigbHXaP63nQrsWigmtO0RNXjV5TdvUwWQffximr0VOF/P+sRRFUE=
+	t=1757601271; cv=none; b=rxL2nmx1C1F+qlHt6gpR8+Yu0OKpy0kHneYW4bXTaw56rNZAVHizU5QzAwZ73AV276+mqyl8W6a68uLxMvs8OXtHjyQIMcr1TwPAS1AsimsqB4/ER3Tb7a3M22JfMFuFb66tjrZLHSDpRxVKbR17AD5PAuLNOwjcTgu5DC/9kuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757597046; c=relaxed/simple;
-	bh=ReBPBkxXd+EypkUBHcKbC5D48dqv14ID4CKpjTXEUa4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qVG3GUuNgJ3qAl8Zb+HzCko0OaVI2hah5guCxCTNFzoPL9vNeapZuYGBTpD4kmXEM/60MeH44MKoCHaSfoIx9QKCKSDk9k8S//JxGkIPnCXQ4MFZucSi/cTeZ6L4WWiNZB1wKFOZbPtyF2st1SpOGaBr2XJvqrT4g4b7ECQfZAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaDSz7w6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757601271; c=relaxed/simple;
+	bh=GVD95ijtO5hBThBsC3JLfeORX1X1YC6KZcQ5Kx6daVM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EOQnbN0Es7nueIQK4GLdNJ1bjdcIifL7VZrh+fJh+j+yDsBVGCg3DAd114qq+WxVMxTHcnQeJaA3CO+8YbsdmNUSt9BAAghuDe6uwxTqEMXhUnlY5IaV6ZLqo4oRL47vKYhouVmI3HqBlepvyqNDk0ZfWYRDTp2/StMkGLkAm+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTvjr5C1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaDSz7w6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2804AC4CEF0;
-	Thu, 11 Sep 2025 13:24:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTvjr5C1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08E2C4CEF8
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 14:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757597046;
-	bh=ReBPBkxXd+EypkUBHcKbC5D48dqv14ID4CKpjTXEUa4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CaDSz7w62JVQ9qph9vkiqPWEkMdO9ksAVmIJj6NNKrNQhtpY77er7EdYsXNaC3Gw7
-	 Or7QidGxUnAo4jA+WYPKEG0esydorOwwWQZMNuyXSKReLFJbk9OUJjmMX1h8WrZaCC
-	 kdugKwZrxFmyMFGRCijvIsDKthcvmqU6FbjU7TfoPRV/fEKPknX6eThWyBYYYCmWGy
-	 NnptvyWq2o2frDJrRPJalmbwzPlpzkUokxPIWhCQK0WY4lfqfYh6AH5G/p/N9YIJYF
-	 TZ4WZwjrZBDTfKUguTN6o6JgjeEoNWh5YbaKNSRXQFbXRrQSUX+E1cGz+mssdgJDSF
-	 6ZLuO0WOJbW1Q==
-Date: Thu, 11 Sep 2025 06:24:04 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Shawn Guo <shawnguo2@yeah.net>, Frank Li <Frank.li@nxp.com>, Joy Zou
- <joy.zou@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, richardcochran@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- frieder.schrempf@kontron.de, primoz.fiser@norik.com, othacehe@gnu.org,
- Markus.Niebel@ew.tq-group.com, alexander.stein@ew.tq-group.com,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux@ew.tq-group.com, netdev@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v10 0/6] Add i.MX91 platform support
-Message-ID: <20250911062404.1d2c98f6@kernel.org>
-In-Reply-To: <aMI6HNACh3y1UWhW@dragon>
-References: <20250901103632.3409896-1-joy.zou@nxp.com>
-	<175694281723.1237656.10367505965534451710.git-patchwork-notify@kernel.org>
-	<aMI0PJtHJyPom68X@dragon>
-	<aMI1ljdUkC3qxGU9@lizhi-Precision-Tower-5810>
-	<aMI6HNACh3y1UWhW@dragon>
+	s=k20201202; t=1757601270;
+	bh=GVD95ijtO5hBThBsC3JLfeORX1X1YC6KZcQ5Kx6daVM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=QTvjr5C1NMP7zP8+KH0+BPH0rFKCQxXVbMjUoaBF4oPdlJL2QypN0f+0IiBGlJCt1
+	 Y8hnZww0Kq+vWbzZ87kq5UFk21gU2gtcGzLOBddxCdufRij7ZY2gVIhA39ABUeKAc+
+	 TmhwSSnOCXQc1hWIhP0SPk5hjEHpizA3OVwATbGUyF2kR3TtZm2uap301WLkZiNtd8
+	 4AVcV5BACiEicZ99gMRIkkxwiaN4C2zZ7SdNEqUKOGmPT+JcUBMzvEw5p3g0iZpv33
+	 /fTDQIsdrcY3DPx0GT6AO66I1pb7CKwLFfHLEFHtYdCxVlhf3LT0Bp/uvqGDVQMwk4
+	 rRXfs5ZkyyI8w==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-61bf9ef4cc0so516434eaf.0
+        for <imx@lists.linux.dev>; Thu, 11 Sep 2025 07:34:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWRikWE5DFCBvwAVbGKZ7cQpLwoVVXRzybRm80NmiCc/ZtYfnNszB+vSluT9ddJZ545F9g=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwhVaR6GYMjzyOJqFCQgSWXnYfOVEBqzdaVPu65Dnmu33TDRIgH
+	qa6QHL1zalzxcIeSP+dw59q5mzsH7vaYMaS87wlKCXafTR1H7+SsVxZxAkNwfRT/v0Rz2GvBIZ5
+	7DuUVRheF7P/ajC9y6zZnXjRkKXS2Rcw=
+X-Google-Smtp-Source: AGHT+IGbk00tPID8iN310y9ykGA0fFcFhibXN8gFrHCzfGMzacrtpqG/yxh3kJa93XH9ICzpfq8IQpP/IrgK0cJ8YRc=
+X-Received: by 2002:a05:6820:16ac:b0:621:aca5:9b78 with SMTP id
+ 006d021491bc7-621aca59c74mr2240898eaf.4.1757601270167; Thu, 11 Sep 2025
+ 07:34:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250908053335.36685-1-xu.yang_2@nxp.com> <20250908053335.36685-2-xu.yang_2@nxp.com>
+ <CAGTfZH1ts4_qO4L9X1ZoYtr0SGLW+3EBCqSybntQLGQztALKSA@mail.gmail.com>
+In-Reply-To: <CAGTfZH1ts4_qO4L9X1ZoYtr0SGLW+3EBCqSybntQLGQztALKSA@mail.gmail.com>
+From: Chanwoo Choi <chanwoo@kernel.org>
+Date: Thu, 11 Sep 2025 23:33:54 +0900
+X-Gmail-Original-Message-ID: <CAGTfZH28-jHuRdsw-b5jf13VS5iXnkZWdr_KNmR4vW_6t7Jj6A@mail.gmail.com>
+X-Gm-Features: Ac12FXzWgpPa04AEC1I_s9xTK8SvK7eQFkIrOGmr8qsySmEeFUzGiiF8cWA42ic
+Message-ID: <CAGTfZH28-jHuRdsw-b5jf13VS5iXnkZWdr_KNmR4vW_6t7Jj6A@mail.gmail.com>
+Subject: Re: [RESEND v4 2/4] dt-bindings: extcon: ptn5150: Allow "connector"
+ node to present
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: krzk@kernel.org, myungjoo.ham@samsung.com, cw00.choi@samsung.com, 
+	robh@kernel.org, conor+dt@kernel.org, gregkh@linuxfoundation.org, 
+	swboyd@chromium.org, heikki.krogerus@linux.intel.com, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	jun.li@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 11 Sep 2025 10:55:24 +0800 Shawn Guo wrote:
-> > > Can you stop applying DTS changes via net tree?  
-> > 
-> > shawn:
-> > 	Suppose Jaku only pick patch 6.
-> > 
-> >         - [v10,6/6] net: stmmac: imx: add i.MX91 support
-> >           https://git.kernel.org/netdev/net-next/c/59aec9138f30
-> > 
-> > other patches is "(no matching commit)"  
-> 
-> Ah, sorry for missing that!  Thanks for pointing it out, Frank!
+Hi,
 
-The output is a little confusing.
+Acked-by: Chanwoo Choi <cw00.choi@samsung.com>
 
-Konstantin, would it be possible to add (part) to the subject of the
-patchwork bot reply when only some patches were applied? I've seen
-other people's bots do this. Something like:
+In order to prevent build error, I dropped the patch from extcon.git
+and reply Ack for this patch.
 
- Re: (part) $subject
+Thanks.
 
-? Maybe there are other ideas how to express that just part of the
-series was applied, no real preference.
+On Wed, Sep 10, 2025 at 12:33=E2=80=AFAM Chanwoo Choi <chanwoo@kernel.org> =
+wrote:
+>
+> Hi,
+>
+> Applied it .Thanks.
+>
+> On Mon, Sep 8, 2025 at 2:34=E2=80=AFPM Xu Yang <xu.yang_2@nxp.com> wrote:
+> >
+> > PTN5150 is usually used with a Type-C connector, so allow a "connector"
+> > node to be defined under it.
+> >
+> > Acked-by: Rob Herring (Arm) <robh@kernel.org>
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> >
+> > ---
+> > Changes in v4:
+> >  - no changes
+> > Changes in v3:
+> >  - add Acked-by tag
+> > Changes in v2:
+> >  - improve commit message
+> > ---
+> >  Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/extcon/extcon-ptn5150.ya=
+ml b/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
+> > index 072b3c0c5fd0..79f88b5f4e5c 100644
+> > --- a/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
+> > +++ b/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
+> > @@ -42,6 +42,9 @@ properties:
+> >      description:
+> >        A port node to link the usb controller for the dual role switch.
+> >
+> > +  connector:
+> > +    $ref: /schemas/connector/usb-connector.yaml#
+> > +
+> >  required:
+> >    - compatible
+> >    - interrupts
+> > --
+> > 2.34.1
+> >
+> >
+>
+>
+> --
+> Best Regards,
+> Chanwoo Choi
+> Samsung Electronics
+
+
+
+--=20
+Best Regards,
+Chanwoo Choi
+Samsung Electronics
