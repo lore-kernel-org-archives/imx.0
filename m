@@ -1,50 +1,52 @@
 Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED5E74BE1
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 02:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C11233D8
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 02:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757558217; cv=none; b=k5am3/GHTEXSB7gCqMCMUdfhpIjjxUhsPWRncd650pFrbxcyLGeBzG6rr9tfno7ntyI9eaICinryEWrlJaGBa8283aGicFYVxaFkh+rzc7keSD8gCciT/akKBqy2o7V4r0dnerAzV5oca/5mixdj3x8P2rc7gI7mB77Y8CivwUc=
+	t=1757559388; cv=none; b=LdJrJFvIcznNo1uOzIoD4Ov3OY9fl2zU7n4xGE7o0roUr/ScWHSdb277yADlgI2dMm3C9uxNZJLuTzHjjFW4bJpncRInMnxz89O7B0X6gqXCW6M09RdVS67p4P2JOpB4DajqA122oL52aRW2JdLhkARG/xN7LkBdQx3kRGzREuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757558217; c=relaxed/simple;
-	bh=fZnQdAvO46ck0hoeOgRAeVwDLANdJVf4Jk/B6m+N1PU=;
+	s=arc-20240116; t=1757559388; c=relaxed/simple;
+	bh=IWC4gv/+MV4wQpmWIljhamgnPDMr1J6qUiVNr3movps=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B8xMBM8G80TJN8+WeR8YNFjtCxJ8L9ld+ArTPPZrJIQObpFzwjvIWHY8SuG+BXl1lMSX9wpS8FKw6L4+pGosfHDRbBSIOlR/IKj/WEkakfhSkB91Fhhr6c6+df2hqmRHs9/wnfKi0AeBXpZ3IAuNuHd9Oq02KRYd/ViLDK3WkZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=LNUxbfE6; arc=none smtp.client-ip=1.95.21.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=hHlALKK+fekMzwKQRON+A00nEcWC6EX2bSkelTwOobPt76tYtOHJp4VH50tQeyKfShga8QCfn22q96yjLE39Ps1SCAqzo2YXica/qH9TsDpwXmcyAzHjgwkLLECCIp33or1PZaIdiUAs0OMoCvISlhccOZ3uSKuVbZ0f8IuC8Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=WlYgDmVJ; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="LNUxbfE6"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="WlYgDmVJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=Zu/ILIakLLn37rYFw5PvXVXf22PCnsMSBiyyFDARzl8=;
-	b=LNUxbfE6VV4SLAXXaUc2enyKWX3CzNsQeTquFa24c/YqA3DtbIWaWxSlZL2QTY
-	j6r6RKdmhYJgOsiVLuvuKFbEgPyZaPGWzN61nCOmjZfyZ0X5u7dwNL1V0cjh+Lae
-	eI51un27bmcSFLxOLoGJoerqTZZUZrqziKt9H752u3gjk=
+	Content-Type; bh=Raijf0pxSNsl3FesVHkWVDpo58+B3Fa1eBdInzF1Pzo=;
+	b=WlYgDmVJKeOz2HCf2T+/k5D8y+gVK/8GI5wnA3CJUtFKLCw3FKtT0HQ+SMWNbN
+	r1wUJRj7/OCzAdF3qFfo7/QL143fSqZlCBNUoLAN0RUyGDl9hrO6ejStoJN9kwpN
+	2v5r3juk1e+SmN/7wYQu30AYMQ0qkRkmT26/xaXEquwfs=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDnX_mnNcJo1g9gBA--.44535S3;
-	Thu, 11 Sep 2025 10:36:25 +0800 (CST)
-Date: Thu, 11 Sep 2025 10:36:22 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgAHe3scOsJocw1PBA--.47548S3;
+	Thu, 11 Sep 2025 10:55:27 +0800 (CST)
+Date: Thu, 11 Sep 2025 10:55:24 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linaro-s32@linaro.org
-Subject: Re: [PATCH v3 3/3] arm64: dts: s32g: Add device tree information for
- the OCOTP driver
-Message-ID: <aMI1pidrSAIAwab9@dragon>
-References: <cover.1756800543.git.dan.carpenter@linaro.org>
- <7877e1958fa92df92b2b5229365c86493c620c8c.1756800543.git.dan.carpenter@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Joy Zou <joy.zou@nxp.com>,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, richardcochran@gmail.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	frieder.schrempf@kontron.de, primoz.fiser@norik.com,
+	othacehe@gnu.org, Markus.Niebel@ew.tq-group.com,
+	alexander.stein@ew.tq-group.com, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com,
+	netdev@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH v10 0/6] Add i.MX91 platform support
+Message-ID: <aMI6HNACh3y1UWhW@dragon>
+References: <20250901103632.3409896-1-joy.zou@nxp.com>
+ <175694281723.1237656.10367505965534451710.git-patchwork-notify@kernel.org>
+ <aMI0PJtHJyPom68X@dragon>
+ <aMI1ljdUkC3qxGU9@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,19 +55,35 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7877e1958fa92df92b2b5229365c86493c620c8c.1756800543.git.dan.carpenter@linaro.org>
-X-CM-TRANSID:Ms8vCgDnX_mnNcJo1g9gBA--.44535S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUzcTmUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNAlCp2jCNanx7wAA3w
+In-Reply-To: <aMI1ljdUkC3qxGU9@lizhi-Precision-Tower-5810>
+X-CM-TRANSID:Mc8vCgAHe3scOsJocw1PBA--.47548S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw1DAFWDKryUWw18Wr18uFg_yoWxAwbEvF
+	4UZw4kCws8GF4UK3Wktrn3AwnYya47Xa4xXr1UWw43Z3Z5ArWkXFWFgFWkJFn5KFWkJFna
+	yr9IqrWq9rWa9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8S1v3UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCwXFZWjCG0lVNgAAs1
 
-On Tue, Sep 02, 2025 at 12:47:57PM +0300, Dan Carpenter wrote:
-> Add the device tree information for the S32G On Chip One-Time
-> Programmable Controller (OCOTP) chip.
+On Wed, Sep 10, 2025 at 10:36:06PM -0400, Frank Li wrote:
+> On Thu, Sep 11, 2025 at 10:30:20AM +0800, Shawn Guo wrote:
+> > On Wed, Sep 03, 2025 at 11:40:17PM +0000, patchwork-bot+netdevbpf@kernel.org wrote:
+> > > Hello:
+> > >
+> > > This series was applied to netdev/net-next.git (main)
+> > > by Jakub Kicinski <kuba@kernel.org>:
+> >
+> > Jakub,
+> >
+> > Can you stop applying DTS changes via net tree?
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> shawn:
+> 	Suppose Jaku only pick patch 6.
+> 
+>         - [v10,6/6] net: stmmac: imx: add i.MX91 support
+>           https://git.kernel.org/netdev/net-next/c/59aec9138f30
+> 
+> other patches is "(no matching commit)"
 
-It doesn't apply to imx/dt64 branch.  Could you rebase?
+Ah, sorry for missing that!  Thanks for pointing it out, Frank!
 
 Shawn
 
