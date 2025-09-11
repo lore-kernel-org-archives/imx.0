@@ -1,70 +1,78 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013036.outbound.protection.outlook.com [52.101.72.36])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013044.outbound.protection.outlook.com [40.107.162.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B6B21C179
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 15:33:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCFC21C16A;
+	Thu, 11 Sep 2025 15:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757604800; cv=fail; b=Nj9ysQSU4kBqX2N/ReY2CCAYq7qSnxpieYi70g4+A/5wYf2B9IEaSo8GF6XncSye0ysNtt6ygxXvhD3hdngiTWIK+NgycIosG/FRHVxiHsra5YBvzqaTomE3/brcXHm9/aR8iCZGqBApnbi75EhSIVCQtuDzJgzxkGa2jKCM2do=
+	t=1757605786; cv=fail; b=Da7gsgTr+z7fd7/NDDmjv5Tm6KVR6swIlkNyPxmufCrnn5adfVZ4Ag5130c9wuJKQO5leCfXe+p4LuceNsXSb2O/aTW31pQbK0NY08yt0O+LUM3Ohrl+JqVLatWAVrK0pmPOFP8yFnjaAsPfpYSN2w1h64y3jZqckzadMTBUEk8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757604800; c=relaxed/simple;
-	bh=XJGUWCrEp+Dhlr0K0yQEdDOfNRZBObiDeGCtTqLobF4=;
+	s=arc-20240116; t=1757605786; c=relaxed/simple;
+	bh=kzjG/DnUnsJCwK+j4pZke3oJNPdcDmqObTnxBGL756E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VG6oniTa2MI5/emK1dIbjc5aCwoe9eC3joWlh6lInsyrZ6cMmcNMqA3Wjf9t1+Qm5K5WhT89APHP+TsCaCnAEfS6Xlx0Y4QOzFNueWeBT8BrykJFTN6iX6HZSNcg63x34A6w4HAZATPpayiLuMxhjTZ0U05DJo+92nOGYKwinxo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=grSNvzO9; arc=fail smtp.client-ip=52.101.72.36
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ARLOvR9MD+POTlKUKfXBoS9k92PuyJRyrv3iNRUJaTodl7yLXHsBFXZ3k8UVAZnyET7/DavSmrgt78HQJpIJSnHmszJt5XTGWIx5JRFu8uQFheSIrgIGRhGmktln5YP0LzHQev9e1qlXAuHzHqaDQVFrSA+c0p3toxLy70uQro8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=C6w8A73a; arc=fail smtp.client-ip=40.107.162.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="grSNvzO9"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="C6w8A73a"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dY1AMpHeer22VPlJLf9Z+NJH3X0mGzmy6Z8gMuHau7tf/DivX9lnHFVfzkkmJr1/XU6eHIfWvenWUjcR7BIxVs69V7i+g6KAp3/aUAXcrspVgQEi3b9gCQwmoj0OXWRkmeZDGMUdNrD463xJB7OBnCWzITs+nMy+Hbvx3y3O/Yzr7h7FqHDitBuHp6ck+hX5ndjbL/YMAUJSXy1FYW+kMHFY0VQayZ+5Sjz00MfYA5TYwqRr82xq2wLz/8tl8dcYHXB1PIVc/Y0kQuR/VawZiAXsPhrbADz9x0rNAwxPmXBtmRlI7wbUkXIVj5nQYxFMfP9iZ7ay4cI5C86a2cwfCg==
+ b=N+HR92Er4DeX5i/R3zR8LQoP+I56la6KGk1ozSPES4y23TQKaB6KDZ8zBni7UPvsjNRpS9VcvLtaCGYx5RFXfc+2/3CNZJ32P65xyZxFTDEGzjZ6ZI7AnFfnPkt/6DPEhske/YRPBWugO9euL9b3/WOzhuc5S9IThcWPkN/oo13l7UX44vFzCiGnsf0/N2XABVySQ0GDTj0HQiFIWUNZ9zOVDwlKQIrqi0IKciV4YXXRu3SAk+mqkwb+qTH+m/A+c0Wk2dLjYBj834BcyyNyw2aZIXCv91mdn4/1s8dhFTOLa2uGfzywMXWt9QSB7/YyLsldtBtGDGhXb8MjXozHrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9RgLBtN3sRfkPITUm64i+LaugDFtb9iMnZS2ZrSAQFc=;
- b=RoeNv8MgWFcLsyQI3vyq5N/NVi3l+Bfmo+Rfpux+f8xSJPzbUmEed5XqNx7/4PKpProkxgfQYc76VPcAmZu9Kq+kPdgFNtNW/b+N/Q4mo8tLK7g9NP+Gp/y+9XnBLVoyxz1Skn7HyQ3oDV71Sh+/a4NtoOtnhK8LCSdvgM0qVfCv6xTIYlExQpbCRFSmImRszDxhQHHEWvUHVSnCXp37y6Q2ZqnE2tM5wa0s2Szs2xT4Jsf9znyKWEGViLcA7Mff0GbSz9YI0Xb/Jns9oVDqh7kiVLxBLCxZIK294ve9B7ylk8fSLMxwDJM6Vpa+o3oZuWoyP5nSBz+7mIXfggfyLg==
+ bh=wRbndY2ppD2vdkWzYhggzXNrZclMmLOaLopyIpNVKSU=;
+ b=Sa3t4SkFXQyMSP1nUqwVemQSD+tqfgVSyYiUbNQntbLskStTeG7vBqVy8XaeSlYk92W6N0YQytVXSsSeDuGvGTfZ9t+4ziJXE901CYvFBwIyWZUdrriNL7gr/Nq85Asy+riYQIlMWPDthQlfPzndq3aN5N7aY+/wRFDwiK60cdXE5Fx6Zq0LQXAEEUXm95KEFrCWm9pZ+2YJrZi8XjVncAaO0Eri0Al+h/iqsBHKwQNl6gk7Wv9DglG6PrsG3t6ci5UUkbLn7M0qFJ1uMbwPC2SB0KJ0rgMOTF2lr6D91HMUQCo1exnsAz+tUoxxU1XdAfS5xNVvSZ0P7jf4K0tPcw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9RgLBtN3sRfkPITUm64i+LaugDFtb9iMnZS2ZrSAQFc=;
- b=grSNvzO9DfVHfdR9mjvrZpfFFaXt626r+DSx76tqBlDjUA7xXpZ5tqFUXxJsqUIzd0xL0bhkz9Zgmp7pyXaIz+3FUQyu0bmlRISR9da72zDiURYWzZhrXFmETdANBRWrIa76dGKGjAKejJq3aepigvFW9EjiVlfcqCuAFhiaAyJLromLIsMpqUWdkrT4qwhTbXmCru3G3oJzscyBeNXpRQTE52YuGyatAR/hxsbgbAH0M5DidCxZWGZA3+NGrP3OZ6N9ILznjwJ7qgji0eBUpPu3KP+bekWNx79cp5XHn7k1ZZacXLn9EmrdhZEg3GzKGk8jRvnEhexRpc7flh9RWA==
+ bh=wRbndY2ppD2vdkWzYhggzXNrZclMmLOaLopyIpNVKSU=;
+ b=C6w8A73aaHQWqROXwC6//qtO0Bs1nWcRHEsPug2t4z7jg1eEMdFj9LeUzCfxJqBl2yjk/2Eh9Bj9gjqwgB22FEiT3yskUGVw92int/r7QkR7i9p1hWTRMDPLKEIo0QGgrC7pr71uS3nfo/UNVzZNIChmDIcvVqvhlSmRI5b8jhHg8DnvPDT85/VJlK2njjWo2qv4GvdGCLg+wGGptzV2avg3d7Njz5w1E6HzQBDapSMzaf/7lzGxvY2xU/uI+GkKY5ERwRQRhnQyUmd2s9NnwxAFoTkmkWVRxEaBMHDN+72HxpqE9uplO9MkMzAWuMJV6zyYmqGzYgvzARyv7ipRjA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by AM9PR04MB7683.eurprd04.prod.outlook.com (2603:10a6:20b:2d7::9) with
+ by AS8PR04MB8248.eurprd04.prod.outlook.com (2603:10a6:20b:3fd::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.15; Thu, 11 Sep
- 2025 15:33:11 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.16; Thu, 11 Sep
+ 2025 15:49:36 +0000
 Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
  ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
  ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9115.015; Thu, 11 Sep 2025
- 15:33:11 +0000
-Date: Thu, 11 Sep 2025 11:33:01 -0400
+ 15:49:36 +0000
+Date: Thu, 11 Sep 2025 11:49:25 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: maudspierings@gocontroll.com
-Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>,
+To: Rui Miguel Silva <rmfrfs@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/4] dt-bindings: backlight: Add max25014 bindingsy
-Message-ID: <aMLrrcBZ2Kc4o84t@lizhi-Precision-Tower-5810>
-References: <20250911-max25014-v3-0-d03f4eba375e@gocontroll.com>
- <20250911-max25014-v3-1-d03f4eba375e@gocontroll.com>
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Alice Yuan <alice.yuan@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	linux-staging@lists.linux.dev, Luis Oliveira <lolivei@synopsys.com>
+Subject: Re: [PATCH v3 00/31] media: add imx93 mipi/controller csi support
+Message-ID: <aMLvhdJRGHM+8yIH@lizhi-Precision-Tower-5810>
+References: <20250821-95_cam-v3-0-c9286fbb34b9@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250911-max25014-v3-1-d03f4eba375e@gocontroll.com>
-X-ClientProxiedBy: BY5PR03CA0003.namprd03.prod.outlook.com
- (2603:10b6:a03:1e0::13) To AS4PR04MB9621.eurprd04.prod.outlook.com
+In-Reply-To: <20250821-95_cam-v3-0-c9286fbb34b9@nxp.com>
+X-ClientProxiedBy: PH0PR07CA0073.namprd07.prod.outlook.com
+ (2603:10b6:510:f::18) To AS4PR04MB9621.eurprd04.prod.outlook.com
  (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,208 +81,195 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|AM9PR04MB7683:EE_
-X-MS-Office365-Filtering-Correlation-Id: b57b0f05-acd4-4a4a-bdb1-08ddf14883ef
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|AS8PR04MB8248:EE_
+X-MS-Office365-Filtering-Correlation-Id: e3d63617-cc93-4a72-d7ba-08ddf14acf40
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|7416014|52116014|376014|366016|1800799024|7053199007|38350700014;
+ BCL:0;ARA:13230040|7416014|52116014|376014|366016|1800799024|19092799006|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KIs6+beJRD9HGC9ssqaUPnmkoisC2ZYnJeYrcwcyeyQQhb76fZWEULB7C450?=
- =?us-ascii?Q?5VALxjkYxhvpMHpjyogrPdWBLFuUQnSLy00LCmL1GdW0hiZlUp7+RDXXF7cv?=
- =?us-ascii?Q?XnCQcldHO+lGziXAmSCu92KgyvkY8A5/NYXwY5ffynR+45bqIJjPK/2Hm69B?=
- =?us-ascii?Q?7I86F4LPTN0cMs7pUMxvmcbcNQjyofVRJbNoU4S2P55g8BXAiJBSF9lZ9r4P?=
- =?us-ascii?Q?K82qwP7+WkfclBSF1YUHzPtHUSalSbMTSPnWOvMXabZDGQTm07bIS20aNflW?=
- =?us-ascii?Q?T9F8avieFd4PdqRaDVoMMDYKPd/+3qEo8ClBNo7ykhSxk850d+01faTCOqdI?=
- =?us-ascii?Q?rckADyu13+flRreqsC90vHGmSoR4qvLxFdsBUqBJTqGDftygOWgbEWzYTTOs?=
- =?us-ascii?Q?Axz/MlDUYVmh59owEHUFkeR7bP+cs9G2VJjjjVUZ+xEhFgdE9P9ghafJ0ACw?=
- =?us-ascii?Q?fikY+x4XJQHwCpSoq1Vb7agYAY5PjEfGyyL8+bICZ64458bmamDnAB3HScv1?=
- =?us-ascii?Q?J1h2n0xPupdZU+aR2dcDa6pGGTgqOVK4liDwoYyh20B8dKle5fhmy5f9Qxzf?=
- =?us-ascii?Q?LOOg3KjEQsFdDlanELFKhjALplIufgwTFAoWpMEtd35GIQ2eqa6qq/eGslrP?=
- =?us-ascii?Q?CxkOYUfCc0ZQUeH2YRM9juIWy2P+QQ4D2+uShZqq6IpDYKsO1qAN51otUMQ3?=
- =?us-ascii?Q?q3J7g8HVvBvTcJArp6HhuS+hVLatQ6ocej7ZmL4uc5ky6RC4e63lmqm48Jd4?=
- =?us-ascii?Q?kskHRfSPOOIO57Qbnju9spfnaTbNIOXKwW/8rfgDOPsxLFO6tCjrpynxMi1P?=
- =?us-ascii?Q?9YV2pfPISCjXBVXvWFvWFv+4iCAhZLQIWEL0Be9IEDQ5sGg+ILa7SedkhCVH?=
- =?us-ascii?Q?HL8ldWq+t/GJpmMxg8rXWvhLN/WCHGpVAX9umwlEnglwe24OpF9LoEmDEN4I?=
- =?us-ascii?Q?/U96Od+Lc+YE8xJrV5kesLliJbR6Wxl4oGIOTQRdM9H6lt3ZREh37F7jnC2R?=
- =?us-ascii?Q?gLpAZwa6ScuWTyItdTQh+dgZkjekBBnNnHQL24s1LMfbeUjWHj+mBB1GUQmG?=
- =?us-ascii?Q?QEECt7lp4DMEAJU8OylRudnt6QDYMSUdDfLC4NCfsUnvmkYDQk3uEPLeOs40?=
- =?us-ascii?Q?dMLycklB8+2u4iCqQ7gxgGuyHRVbtrtUa3b5LicnwNPimMBZO8QqL7UTWRm5?=
- =?us-ascii?Q?BEDHO/44eSMEOrKv5JQUmeD1JtTkQek5X2hISvrSkmaDd1IAqHMRbAEHEHWc?=
- =?us-ascii?Q?qjq7iFE26nj8/oE20OXeWgmxRQJecg+U3c1see3WaTPjaMZtI/wkBFkd558C?=
- =?us-ascii?Q?mxptlqFDZQercbDoE6jvOOUzGI9WIzhisXr3o8mdxk5PbIykTYU+QGmPOK+h?=
- =?us-ascii?Q?oeUY1gG7k3VsnFfJmTT5pzLhz6LglVOxL6dftK0Cp+EzROPzmf6OrDsD4lnM?=
- =?us-ascii?Q?f2ItyQL0a/jJzi0slE5fzgcOaPOEXfoz?=
+ =?us-ascii?Q?8cFjLdlRzbn9399XgyZlXk765g9K3oYJj2Y57jOxQnOoEVFwbrWV7e5Bm7gy?=
+ =?us-ascii?Q?lVKLA678IlUt++VXDPTkq8PGai7QMbiKNaVRKibff0Bb4ydIRJWfx7W/qp/e?=
+ =?us-ascii?Q?KfHRKRfVu3F0a9OhfE2T2f340a8qzG2yk79YOqAkE9IZ6bTpSaasEZoGp80q?=
+ =?us-ascii?Q?35xEu9rWpramsbFykaWxIP9DLQW+KVewlzV1qOU8tl6btx+2l9736pXyoteN?=
+ =?us-ascii?Q?RVEYkJVNoWI99HAU89O+RU9ct3o7aKsb0BSj5DhU+lRuTd1kKHfJWZQk+Gf3?=
+ =?us-ascii?Q?lKfJwQn88svLZfXUGecC7dybxPATS3f/UM2jD0aLDP/LurP1pTdNuPXwvbhy?=
+ =?us-ascii?Q?ue+mplnMwL2Dxjxg7NLMzQKPoVECBGmM92u1DmSMBLZdUgWpWhVKyZNlPigN?=
+ =?us-ascii?Q?ocXocnSUrG+3av6mu62V4UJmcRbd02K3ZkdiS1OlNbss3VArr+zb1u30/L67?=
+ =?us-ascii?Q?KOPalPyeJJ55T5svo1sUbRo+l6avSs8GNQsEsKn4Dna0K+5m+SkCUAyVRIQr?=
+ =?us-ascii?Q?qM/9BFmoBNct6L06lViftrwrenUM0JNFbNPtKKcvvYIncrklvCcL6F1upEib?=
+ =?us-ascii?Q?DO/Cty2QhhOF/dRbYOqyrmNCu/0vJj6rvMRQq6sVxfa8YtPFpIPLxfLAjDMd?=
+ =?us-ascii?Q?T18agfLPlfkKkEApEZubOk8DMLftuehbB77g1NaGFksRKH7VecrTDWb1rCw+?=
+ =?us-ascii?Q?0pvq2awznVFvp5azCADiM32f/cp2B5GFqpkjL0eWzmfaZbslNLiPTE3nufoG?=
+ =?us-ascii?Q?sDJDTAPQYDVc/uMhLnxq829hIYsN9kwF9b5J3D2cL9tmUhaGE1TIkuJbdO23?=
+ =?us-ascii?Q?prMExXq5mS/WpJhfQPW6bYyQunHzMDjJdLU+4wHAvA587npp/Jm3DhgjZcdU?=
+ =?us-ascii?Q?33VxNRDmoTEck4V46hUzjFPlUjJIRihB78Z5hOlDUlUlhmt3kvXhaQ4eVyLj?=
+ =?us-ascii?Q?wiSItGFVa1EdW09QVMnBEDg7cZIgwLrOpzNNtap3hDubrC5LDVFshFPmHRBk?=
+ =?us-ascii?Q?6Ng2dsRReVrP7OuJbmYiZbmA1e96/+Q2zVoUYn6QXicMvbU6xfRe2RAhjkYX?=
+ =?us-ascii?Q?ZAM73Luh0l1nbDR8BN1w10tVYGa5pzTynALwnr4/6r3Z585upIx4xq/D2gJk?=
+ =?us-ascii?Q?oQWMlmLBeEc/RcsUj/y9ejoogGM1pLgul6evlStoOjTvk8LbjmqFlKVDIBw3?=
+ =?us-ascii?Q?OcHB5SBL+3j0U8DVNibDhrr+DevQF2+ak17oZZdL9pv6UV9YG3lffyhnEHev?=
+ =?us-ascii?Q?f7Auka+fg1k+oF1xxvaf4y4DfxsPjww9xradHLGLWDAtkfm/ze+gkf2Kv0WP?=
+ =?us-ascii?Q?VpWNuztE6iidtK6AadH44q/YqXL4Mk2ttwniFUP9SHox/SQfnaskaNvSa9zL?=
+ =?us-ascii?Q?NhQxA5dNcK7CBPcicmYw6vkvg05B/vdow02MJflXtLBTb/H0giE2vILsJE1a?=
+ =?us-ascii?Q?Nn73/hCA3w0dQ1yM6Wb994kmNSTmeUjkavFvzasajCtP8e9R6TFT+vVFn4Yo?=
+ =?us-ascii?Q?5xHNG68+7L6yis0nF0wAkqbYLW9KZb1sjKUC?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(52116014)(376014)(366016)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(1800799024)(19092799006)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?aMMJrKWjImre4LXksBVuqs3VdRtdoFSyrScbOL6LcPmRCKmADBX9wsLNMpT1?=
- =?us-ascii?Q?UhfKJc6yho2rJJG9Uq4sWL6KpSwUZmdObZP+153XRS3v0dRh3OIVrySZ19jU?=
- =?us-ascii?Q?xQrRiTC/+i5e78Xs9BunA6oLWpOMeqX/HgnZuiRX61pFJHK+2fPCd/4hpxqj?=
- =?us-ascii?Q?jVvjitnh+SN2bObM495nLwl5Lgz6Hycb2OeDP9JPJsfQMecngzft/u/HbmYu?=
- =?us-ascii?Q?YmQOBcdSONZBqzPn4fWvFxPsHoKh+vK/7yhb3FIQlqNUHvv/rrkOKSJhAl8A?=
- =?us-ascii?Q?Ivs5AMxfyM/8hYPnMtM8YP7R7yopyOPAY6KPtlJG4rJbFQT0OlXOYFgpPkox?=
- =?us-ascii?Q?nyYzDnM5tIrko+Vj3s568JVi3NeKD0je5FTNnfp0FhZ75vyCG5ronvg0Bb8b?=
- =?us-ascii?Q?We1SLzSvcPNe5NgtHb2qtaVTMayC9MaiCok7H82xQF7A+j2udnE/WauS9gw5?=
- =?us-ascii?Q?2PinEpO+T3vCAWwpkwHQ3xgPNEdjUYe+doE50nfVyKzDcQ5xuD2GYTMVTMVN?=
- =?us-ascii?Q?GHMz/w/5nAmd+DTvedN3IYMyxmAmA5NngYUdPx19BIRAYhx8xktyJABOuCO5?=
- =?us-ascii?Q?TFe1G5l/9fCcSJ6NjhAGKeSoqNEp8nd+Pyq8eDtQvKth99xBRxsqLPh6xioA?=
- =?us-ascii?Q?kAppvnepUPq2nCbkcCCnM/G/iZyDVNHXY1VSyIoNat+C2BLI8FAK1exMAf2u?=
- =?us-ascii?Q?05uVpz4axa+H2qpVVQwlTy3kxGIQ5cBzQpFx0JZuMM8VE2c0X/iBPeIa+XB2?=
- =?us-ascii?Q?VGeaOVkC2/kH6gYLmUKFat4UEwb4g8OaUh0HG5uGTpqMuhkqVlkZVo1VpwJ7?=
- =?us-ascii?Q?KcIs6OVlZCWUmsa3heKWpm0tRD+vWxW6qbeNv9hCWnyPQDxnlIqzK7tcgWQw?=
- =?us-ascii?Q?82fKCXZY18lrF/KJfusd6E4gO00KcMjoAS4mA9iTCa6nDy+xGHCfif30zoiT?=
- =?us-ascii?Q?JE/xRqwnDbrrkMFW9NE0wXaJTdJwZYdD7vSeEIWDqsYS3w6PvPHFio2pn8O/?=
- =?us-ascii?Q?AwqIx0Uwn7pFB11xKAg4Saizk6oBqTlGB10aoqreRTLxGSizgnCulK64cdEW?=
- =?us-ascii?Q?CQbZs5yN4WqD7dRW7WvYJgn1MTXgflbSY4T8oiwPbj/9YzNkl4TVi8cIMSTi?=
- =?us-ascii?Q?cULUvw6M3Af9yf0f1nh0aV1d5hg2KgIZULfXyTbxohLt51Apy9LeMvIRPfAy?=
- =?us-ascii?Q?xfXwNFKYGMUMN8zixk1lNEh4oJjXeYql2+/LBWbdguPrxVKvKAsEqeaoTvJO?=
- =?us-ascii?Q?6E7c48m0uH+PsVMDDuzrdsLa+FVKUD1M3L6ffI66ULTijGJdEHJ78fqP4NNe?=
- =?us-ascii?Q?QIVRei1Fpq92e9535ES8odO7atVJIyHj2+mP7T98JoMuqmscU4R8BUFEWygz?=
- =?us-ascii?Q?2nLOjt0vkQuh0bRBDOSbPRZyrDNgp9ztOUzTPTAnG7gE4PYNtaxyOmlZhGP6?=
- =?us-ascii?Q?ky69asZuMYCpo3W+1rieeoOxVJlIh2k38snr/sk79s3Yy+opQ1aCJq6RDIw5?=
- =?us-ascii?Q?IVn5pQocHqo8x3tTU0PhE85XWwoaYx0er2+Hu/DiL2SdMz8ieLTnj0j8PItl?=
- =?us-ascii?Q?x6qvENjzI5j+bHavHH3gtMEBqUgeTumqYkFe5FVm?=
+ =?us-ascii?Q?5yxTW2n1R8J/oItIh9IMyFybLQ62j3TOz1tZ3EkEr3ZJhlBnAb/59QXRq9N0?=
+ =?us-ascii?Q?NbeB5sXUThdrVLnHRRJJUv5X+IOfZEZQGBdM5B6VeEfg3Xx8CQcya2kApi3u?=
+ =?us-ascii?Q?4Q4naH1KMVH0qYsglLxt9R52UBIfdjS5OkDNMV++Buh0oNSBoawTOmSMNfpL?=
+ =?us-ascii?Q?CthTPmivoZtqVe6W+dMnqeSF/cxL/3IbT/YmSeWweOiQ2vfYQC5mJVitwLAq?=
+ =?us-ascii?Q?w0wSkTGXdORWGp3FN4f2dCFXb7KW4xAVdwVW/agLGRghJAY0TpV4ivvdCeUl?=
+ =?us-ascii?Q?lkzu5rPRtK1oBYPrulnyVAbEi+TwCtxtWk2rdz3LY65k7rC4+DLxAIJSTqg/?=
+ =?us-ascii?Q?nXzFFcvD7nC/E/vTFC0PUD6xhkh8VEoUSpmUFY21oNMhtauRTXWPVGylnLtz?=
+ =?us-ascii?Q?jxJgY7oSjCZAbeu2w95G76HlRQw3AI6oeL4wc/JncwXUlXKcc3baCrYskmy5?=
+ =?us-ascii?Q?7mcqDgyJrIi5PUZ24X7NR9cFHb0ABptrJDoFLRMC+2twsMbc0T5tlhx8cus5?=
+ =?us-ascii?Q?vIidhJnnwZbWgbNij0WrgK2qfBt542XnhulbQL0o5KwnJJMtz6uHcsW3Lbz8?=
+ =?us-ascii?Q?9/4L+aMj0A/7hkPzmUEGDMwFZ0PhNbQNkPEo+Xzvackuybz7ujIkWfiS1FjG?=
+ =?us-ascii?Q?VaxigkmqaUodH5oV+/u+uu+SpMUbpvvx1fspu3Swk2GlSxMoBnETFqIPcNEx?=
+ =?us-ascii?Q?rOeVfSkYyncpLAQ7Nbs/t6s9rccPlj0GvZu759UCcpKK8uMQpWL3dDb9qWuW?=
+ =?us-ascii?Q?FGtBooAfaejmkzql0YK5PqtwsT5pslOnzUfBW9j7C7nQ4lP8evp/qhH7g2q2?=
+ =?us-ascii?Q?FxKipVGEQm0DOXx6dcBzMwAPwLs0K7JMyQNUkGgw60Q/OnU3h0WYf9OKcs1I?=
+ =?us-ascii?Q?kJpwxuCgf+wgg8+BHOkaXr+X1UJD2OfBavD57xO2GQTNzIABKcccOtGCWxW+?=
+ =?us-ascii?Q?qp2kAH19WrG/kAbUEr40RLh5IqKwNE6kyr10HVaIwB63bZZezKeeZaQ6tR4Q?=
+ =?us-ascii?Q?dC7fFAznqbzLh+ib4kNDnFdY9zlXFuW4Lu+CcVQfDlZjZbqybmdaH4+gBfQZ?=
+ =?us-ascii?Q?LINgpoe6zxeadAJxKteXC2gJfrkik6EXJkNbYn+9NjVTdEqpuNnnimQxyUee?=
+ =?us-ascii?Q?2nBvjwIbkxn63UxG6VLvY0HJPyzn82VhLj8G8H0JPGgYRcxdvQ5h2wIZ7zdv?=
+ =?us-ascii?Q?2kz/bjZfzpIxauPeqEzQ3/fmFJYZ70QJnTH7JpQjNSSYld0zuMGb8T1GN2qS?=
+ =?us-ascii?Q?QBQ16MQkOxM3RKUdotFkNBh7CvA6lYNlDWmKZJgtxqhJLXdcvmzOx/h06G90?=
+ =?us-ascii?Q?Z+P0qhyFjx71O6GVINS1+V7+8khaH+bs6dVZIlWa/JKopKg+7+q3A97PNb6J?=
+ =?us-ascii?Q?zRCkWEY3JnjE2+o1Aa9xiibgFQ5rWP1mgwroTNCPoBGPdNVGX19AIGKDd7Ai?=
+ =?us-ascii?Q?ZNLxJjYII6j/t8s+jqr8M75kBBWegpdQjrjY02d1dgYSc2kybLqzqaq7Yly/?=
+ =?us-ascii?Q?a82mWXe+VR2Sukut6LwJ2X6gLihihlhYFnkV5cygLiKb15j5OZztmhto5GCl?=
+ =?us-ascii?Q?DjJO/okqXnB+fvXwjdazm+M5ZmhxCPqh3x/aC/k8?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b57b0f05-acd4-4a4a-bdb1-08ddf14883ef
+X-MS-Exchange-CrossTenant-Network-Message-Id: e3d63617-cc93-4a72-d7ba-08ddf14acf40
 X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 15:33:11.1077
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 15:49:36.5703
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Rm757OXnCdk9J6E/IVVxVQVZIiWCCFDWEcFFlXQ2triXGdQa8sUJW4bh0wWUwIdbgBI1zmxlU/MZXmvXGciEpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7683
+X-MS-Exchange-CrossTenant-UserPrincipalName: RZyQf94by45J6Vy3HA9Xg3YPzvNZPPDyY8mU/1kdISaaxGVsylVOZrHGr4+bcw+6q23hJFTEQ9BLDDApjhxQSA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8248
 
-On Thu, Sep 11, 2025 at 09:53:18AM +0200, Maud Spierings via B4 Relay wrote:
-> From: Maud Spierings <maudspierings@gocontroll.com>
->
-> The Maxim MAX25014 is a 4-channel automotive grade backlight driver IC
-> with integrated boost controller.
->
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-> ---
->  .../bindings/leds/backlight/maxim,max25014.yaml    | 81 ++++++++++++++++++++++
->  MAINTAINERS                                        |  5 ++
->  2 files changed, 86 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..e113a2ad16aa74f982b9c2ea80578aed2d9424fe
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
-> @@ -0,0 +1,81 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/leds/backlight/maxim,max25014.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Maxim max25014 backlight controller
-> +
-> +maintainers:
-> +  - Maud Spierings <maudspierings@gocontroll.com>
-> +
-> +allOf:
-> +  - $ref: common.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - maxim,max25014
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  enable-gpios:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  power-supply:
-> +    description: Regulator which controls the boost converter input rail.
-> +
-> +  pwms:
-> +    maxItems: 1
-> +
-> +  maxim,iset:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    maximum: 15
-> +    default: 11
-> +    description:
-> +      Value of the ISET register field. This controls the current scale of the
-> +      outputs, a higher number means more current.
+On Thu, Aug 21, 2025 at 04:15:35PM -0400, Frank Li wrote:
+> Totally rewrite CSI part driver compared to V1.
 
-Use standard unit. Do not use register value directly.
+Laurent Pinchart:
 
-> +
-> +  maxim,strings:
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    description:
-> +      A 4-bit bitfield that describes which led strings to turn on.
-> +    minItems: 4
-> +    maxItems: 4
-> +    items:
-> +      maximum: 1
+	can you help review these patches? especial first two patches
 
-led should have standard interface.
+media: v4l2-common: Add helper function v4l_get_required_align_by_bpp()
+media: v4l2-common: Add helper function media_bus_fmt_to_csi2_(bpp|dt)()
 
-check  Documentation/devicetree/bindings/leds/common.yaml
+After that, I can start do more code clean up work.
+
+	all of "media: staging: media: imx6-mipi-csi2 *" are trivial cleanup
+patches.
 
 Frank
 
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - maxim,strings
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        backlight@6f {
-> +            compatible = "maxim,max25014";
-> +            reg = <0x6f>;
-> +            default-brightness = <50>;
-> +            enable-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
-> +            interrupt-parent = <&gpio1>;
-> +            interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
-> +            power-supply = <&reg_backlight>;
-> +            pwms = <&pwm1>;
-> +            maxim,iset = <7>;
-> +            maxim,strings = <1 1 1 1>;
-> +        };
-> +    };
-> +
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 7b7396ed28a700a2aab318553ce8ba1788312bff..5a592eefbe7562734aada05ab9e3aea8cee010e7 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -15069,6 +15069,11 @@ F:	Documentation/userspace-api/media/drivers/max2175.rst
->  F:	drivers/media/i2c/max2175*
->  F:	include/uapi/linux/max2175.h
 >
-> +MAX25014 BACKLIGHT DRIVER
-> +M:	Maud Spierings <maudspierings@gocontroll.com>
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
-> +
->  MAX31335 RTC DRIVER
->  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
->  L:	linux-rtc@vger.kernel.org
+> This only includes CSI related patches.
 >
+> DTS part: see https://lore.kernel.org/imx/20250701-95_cam-v1-6-c5172bab387b@nxp.com/
+> PHY part: see https://lore.kernel.org/imx/20250701-95_cam-v1-4-c5172bab387b@nxp.com/
+> AP1302 part: see https://lore.kernel.org/imx/20250701-95_cam-v1-7-c5172bab387b@nxp.com/
+> 	upstream: https://lore.kernel.org/imx/20250623-ap1302-v3-0-c9ca5b791494@nxp.com/
+>
+> First 3 patches add some common helper function to simple code and remove
+> duplicated code in difference CSI2 drivers.
+>
+> Clean up stage imx6 old version csi2 driver, and prepare create common
+> dw csi2 library for difference IP version.
+>
+> Move stage driver under driver/media/synosis.
+>
+> Create simple platform driver for common dw csi2 use case.
+>
+> TODO:
+> 	1. create bus, to probe phy driver under "test_if" interface for
+> specific phys under CSI2.
+> 	2. support to combine phy, (which connect to both dw CSI and DSI's
+> test_if). Need use DSI's test_if to config combo phy to switch to RX mode.
+> and also need config RX part's phy register by use CSI's testif.
+> 	3. move other vendor's csi driver to use this common DWC CSI
+> library.
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Changes in v3:
+> - update binding doc
+> - combine two add helper function's patch to one. and use media_bus_fmt_info
+> data structure.
+> - Link to v2: https://lore.kernel.org/r/20250808-95_cam-v2-0-4b29fa6919a7@nxp.com
+>
+> Changes in v2:
+> - totally rewrite, see above section
+> - Link to v1: https://lore.kernel.org/r/20250701-95_cam-v1-0-c5172bab387b@nxp.com
+>
+> ---
+> Eugen Hristev (1):
+>       dt-bindings: media: add DW MIPI CSI-2 Host support
+>
+> Frank Li (30):
+>       media: v4l2-common: Add helper function v4l_get_required_align_by_bpp()
+>       media: v4l2-common: Add helper function media_bus_fmt_to_csi2_(bpp|dt)()
+>       media: staging: media: imx6-mipi-csi2: replace space with tab for alignment
+>       media: staging: media: imx6-mipi-csi2: use devm_add_action_or_reset() to simplify code
+>       media: staging: media: imx6-mipi-csi2: use devm_clk_bulk_get_all() to fetch clocks
+>       media: staging: media: imx6-mipi-csi2: use devm_mutex_init() to simplify code
+>       media: staging: media: imx6-mipi-csi2: use guard() to simplify code
+>       media: staging: media: imx6-mipi-csi2: use register structure to match hardware
+>       media: staging: media: imx6-mipi-csi2: use devm_platform_ioremap_resource() simplify code
+>       media: staging: media: imx6-mipi-csi2: move probe part to imx6-csi2.c
+>       media: staging: media: imx6-mipi-csi2: move sd imx6's specific initialization into imx6-sci2.c
+>       media: staging: media: imx6-mipi-csi2: move csi2ipu_gasket_init() to imx6-csi2.c
+>       media: staging: media: imx6-mipi-csi2: move number pad macro define into imx6-csi2.c
+>       media: staging: media: imx6-mipi-csi2: move dphy init part to imx6-csi2.c
+>       media: staging: media: imx6-mipi-csi2: use runtime_pm frame to control clks
+>       media: synopsys: move imx6-mipi-csi2.c to synopsys/mipi-csi2.c
+>       media: synopsys: csi2: Remove deprecated s_stream and use v4l2_subdev_pad_ops
+>       media: synopsys: csi2: Add phy interface support
+>       media: synopsys: csi2: Add basic v150* version register
+>       media: synopsys: csi2: Add irq support to record error count
+>       media: synopsys: csi2: Handle alignment requirement for width
+>       media: synopsys: csi2: Add register prefix to register field definitions
+>       media: synopsys: csi2: Add need_dphy_reset in config
+>       media: synopsys: csi2: Add default simple dw_csi2_subdev_init_state
+>       media: synopsys: csi2: Add v150 lane stop state register bit define
+>       media: synopsys: csi2: use standard v4l2_subdev_get_fmt() function
+>       media: synopsys: csi2: Add customize get_frame_desc() callback
+>       media: synopsys: csi2: Add Image Pixel Interface (IPI) support for v150
+>       media: synopsys: csi2: Remove source pad connected check at dw_csi2_enable_streams()
+>       media: synopsys: csi2: Add simple synopsys platform driver
+>
+>  .../bindings/media/snps,dw-mipi-csi2-v150.yaml     |  151 +++
+>  MAINTAINERS                                        |    1 +
+>  drivers/media/platform/synopsys/Kconfig            |   20 +
+>  drivers/media/platform/synopsys/Makefile           |    3 +
+>  drivers/media/platform/synopsys/mipi-csi2-simple.c |   75 ++
+>  drivers/media/platform/synopsys/mipi-csi2.c        | 1260 ++++++++++++++++++++
+>  drivers/media/v4l2-core/v4l2-common.c              |  149 +++
+>  drivers/staging/media/imx/Kconfig                  |    1 +
+>  drivers/staging/media/imx/Makefile                 |    2 +-
+>  drivers/staging/media/imx/imx6-csi2.c              |  181 +++
+>  drivers/staging/media/imx/imx6-mipi-csi2.c         |  846 -------------
+>  include/media/dw-mipi-csi2.h                       |  120 ++
+>  include/media/mipi-csi2.h                          |   30 +
+>  include/media/v4l2-common.h                        |   30 +
+>  14 files changed, 2022 insertions(+), 847 deletions(-)
+> ---
+> base-commit: ad0a162e543964443feec3a6a9395a64fe6c35c9
+> change-id: 20250606-95_cam-b74c094ad1fb
+>
+> Best regards,
 > --
-> 2.51.0
->
+> Frank Li <Frank.Li@nxp.com>
 >
