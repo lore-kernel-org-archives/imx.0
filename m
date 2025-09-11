@@ -1,47 +1,50 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B764A3FF1
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 02:18:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21A642049
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 02:31:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757557123; cv=none; b=No1FPreezSRwlPJYEO4ZQGp6xtewqMdFJ0Y6dJCDslrpoIrvqRssQd1hZGMWlm0IkwCmsa9rMKLv4W+5eWWR9e4xVNBzeg5RArKUC299ImoCd/0PCWBuYucI3zwXMXECXteRdoALImHvbmcxxysfAKkBhkbMUnx4OyPw23YMaV4=
+	t=1757557904; cv=none; b=ivKM4VCwsmhWtrbSqCBzWYP15qyMxm40O/ThIWrD4F+DhIDtTL5PKEuMlaiMLlz0MEXa/oZrWNj0l2hQU7pRBKNlY/IE4Rm/5nEBUZwDcs5B/Jvx3YEt0bjmaPyvuVkDadtJBC7cxdjlMKDP5Tha7fJ/ukc7O7wYJE1Qm5cYs0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757557123; c=relaxed/simple;
-	bh=i92KFh/MlBRwAUuJTW7FDoIG9X1z05XchHeork5ON40=;
+	s=arc-20240116; t=1757557904; c=relaxed/simple;
+	bh=vQXW0bfixkagLDo6qr+VV4crA8TEWVY6XIU4DiTbuxs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gpm3vI/nqfmQYgrph8o3nVvWmE15s8OwonlnGO3f17H1bSL/jznh8v4NxxaZy6YP1eW7ROJ4kQfP1binDAnIpKnUQKFhLq0Hxp4DeHuEKyc5hgwWMwBAicz5Ky4STfmwXzMHuE74ohnwawdr3ON37IUMpFz5JAj6nMB+VluOJw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=KU++mzmB; arc=none smtp.client-ip=220.197.32.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=NZufhgQD4al0KJZ0g8VLz9znGD0/8WLZwl4Vo9Laz6KZwqVkPz7AZONBiMhnHJEHvNc2yyNKeyBK9AbahDJAeAh5BUHZxoEf1DbI77asBsLjjiQq9L9O50+MoBBpIgPU23zr9PqlEJbCSTN24+ZeFIJ4/D0jKTc2wrJ4d8iLhrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Rk/1L1ki; arc=none smtp.client-ip=1.95.21.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="KU++mzmB"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Rk/1L1ki"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=1sObv9PqypU8I4bvTZcjYI9PEpooVXChWMhFG7PYJt0=;
-	b=KU++mzmBdtxEIjEgUkMjy47CTM/a8w6iqjmwb65MHnOWgPQZ8H67yG7JiSCvc/
-	v+CgGCTuwTJk/FMfsRfWyLw8Af4k9VhrbEbe+Yz152jcsoTE0JLG21lhW0g/W0mY
-	fUNlo6NWrt4ZmqZ84JKpEvMFIb3UraHouj/qLrG9FAfUs=
+	Content-Type; bh=tbGufTgC4Ea0k5Wg/viciM/Ro45OFwFdqd/nvP2O0m4=;
+	b=Rk/1L1kidUFupjgqkvtTPvK8Rsu7o7N0+j9R+zXwCY13H464HodSXrC3UHQ1sF
+	goS/+VeSZuV1rDljT6JPeAvK0/ZbaHf1OqMXFbOBN0YDGuCJlp/2l0sDRgsyVkbh
+	4CwXlT6yacVHPgDSg4hQlQnARDecPnvTq8W7HYkLOlJm4=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD399huMcJoGapOBA--.47236S3;
-	Thu, 11 Sep 2025 10:18:24 +0800 (CST)
-Date: Thu, 11 Sep 2025 10:18:22 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgD3_548NMJosrZGBA--.64549S3;
+	Thu, 11 Sep 2025 10:30:23 +0800 (CST)
+Date: Thu, 11 Sep 2025 10:30:20 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"A.s. Dong" <aisheng.dong@nxp.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] dt-bindings: fsl: fsl,imx7ulp-smc1: Allow clocks and
- clock-names
-Message-ID: <aMIxbgrbF4HUy2_w@dragon>
-References: <20250827212446.94571-1-Frank.Li@nxp.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Joy Zou <joy.zou@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, richardcochran@gmail.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, frieder.schrempf@kontron.de,
+	primoz.fiser@norik.com, othacehe@gnu.org,
+	Markus.Niebel@ew.tq-group.com, alexander.stein@ew.tq-group.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com, netdev@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	Frank.Li@nxp.com
+Subject: Re: [PATCH v10 0/6] Add i.MX91 platform support
+Message-ID: <aMI0PJtHJyPom68X@dragon>
+References: <20250901103632.3409896-1-joy.zou@nxp.com>
+ <175694281723.1237656.10367505965534451710.git-patchwork-notify@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,23 +53,55 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250827212446.94571-1-Frank.Li@nxp.com>
-X-CM-TRANSID:Mc8vCgD399huMcJoGapOBA--.47236S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUOTmhUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCwvFZWjCG0k9lgAAsz
+In-Reply-To: <175694281723.1237656.10367505965534451710.git-patchwork-notify@kernel.org>
+X-CM-TRANSID:M88vCgD3_548NMJosrZGBA--.64549S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Ar4DJF1DWFWDWr1rtF47Jwb_yoW8GFyfpa
+	yUCrZ8CrykXr1kXwsFgry2ga4YgwsrJF4YgFyUXrZ7urW5uF18WF1S9ayF9ry7Xr1fZw1Y
+	y3W7t340va4ruaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jenQUUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEgfFZWjB-SqFCQAAsH
 
-On Wed, Aug 27, 2025 at 05:24:45PM -0400, Frank Li wrote:
-> Allow clocks and clock-names to match existed dts file.
+On Wed, Sep 03, 2025 at 11:40:17PM +0000, patchwork-bot+netdevbpf@kernel.org wrote:
+> Hello:
 > 
-> 'hsrun_divcore' should be 'hsrun-divcore'. But use '_' to keep old dts back
-> compatible.
-> 
-> Fix below CHECK_DTBS warnings:
->   arch/arm/boot/dts/nxp/imx/imx7ulp-com.dtb: clock-controller@40410000 (fsl,imx7ulp-smc1): '#clock-cells', 'clock-names', 'clocks' do not match any of the regexes: '^pinctrl-[0-9]+$'
-> 	from schema $id: http://devicetree.org/schemas/arm/freescale/fsl,imx7ulp-pm.yaml#
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> This series was applied to netdev/net-next.git (main)
+> by Jakub Kicinski <kuba@kernel.org>:
 
-Applied, thanks!
+Jakub,
+
+Can you stop applying DTS changes via net tree?
+
+Shawn
+
+> On Mon,  1 Sep 2025 18:36:26 +0800 you wrote:
+> > The design of i.MX91 platform is very similar to i.MX93.
+> > Extracts the common parts in order to reuse code.
+> > 
+> > The mainly difference between i.MX91 and i.MX93 is as follows:
+> > - i.MX91 removed some clocks and modified the names of some clocks.
+> > - i.MX91 only has one A core.
+> > - i.MX91 has different pinmux.
+> > 
+> > [...]
+> 
+> Here is the summary with links:
+>   - [v10,1/6] arm64: dts: freescale: move aliases from imx93.dtsi to board dts
+>     (no matching commit)
+>   - [v10,2/6] arm64: dts: freescale: rename imx93.dtsi to imx91_93_common.dtsi and modify them
+>     (no matching commit)
+>   - [v10,3/6] arm64: dts: imx91: add i.MX91 dtsi support
+>     (no matching commit)
+>   - [v10,4/6] arm64: dts: freescale: add i.MX91 11x11 EVK basic support
+>     (no matching commit)
+>   - [v10,5/6] arm64: dts: imx93-11x11-evk: remove fec property eee-broken-1000t
+>     (no matching commit)
+>   - [v10,6/6] net: stmmac: imx: add i.MX91 support
+>     https://git.kernel.org/netdev/net-next/c/59aec9138f30
+> 
+> You are awesome, thank you!
+> -- 
+> Deet-doot-dot, I am a bot.
+> https://korg.docs.kernel.org/patchwork/pwbot.html
+> 
+> 
 
