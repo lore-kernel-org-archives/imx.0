@@ -1,46 +1,47 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB233FF1
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 02:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B764A3FF1
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 02:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757556926; cv=none; b=SRJwxHrvNy/emJ5dVpbWcSJZUbjEFPuz3Gh3DZDdn1IfOSf9uXaxDn4MMnehxLl+jpWJHw7OoVCNMW4gwAhMlvhE32OmcK2dcXR1/XhlD916dZH5r1P4N82R0XNL6gv64F9gIX4Dup8tLVHFQ6cM1irpu1UoUVEdpN2UQvsYsIQ=
+	t=1757557123; cv=none; b=No1FPreezSRwlPJYEO4ZQGp6xtewqMdFJ0Y6dJCDslrpoIrvqRssQd1hZGMWlm0IkwCmsa9rMKLv4W+5eWWR9e4xVNBzeg5RArKUC299ImoCd/0PCWBuYucI3zwXMXECXteRdoALImHvbmcxxysfAKkBhkbMUnx4OyPw23YMaV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757556926; c=relaxed/simple;
-	bh=SSiRaucCHQ4Dx8FmSHAjTYaMbAoODYXC3mIVmJLuKN4=;
+	s=arc-20240116; t=1757557123; c=relaxed/simple;
+	bh=i92KFh/MlBRwAUuJTW7FDoIG9X1z05XchHeork5ON40=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SsI/OGoesv5rAfp2Dolfb6KAANAo2CEB3psdQYzHqFVRxgT/+ARg+1ttw0I4Kp8UiIQBqVigI00h63ucnkX56wwMQpHIF/bn0aizkQc3igJPho7EHDY+yegk9HYHR6gTd5GCls+625k5mbjf2YcRiwfv6SQcHGx3QSnS0PknTUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Z319Chid; arc=none smtp.client-ip=220.197.32.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gpm3vI/nqfmQYgrph8o3nVvWmE15s8OwonlnGO3f17H1bSL/jznh8v4NxxaZy6YP1eW7ROJ4kQfP1binDAnIpKnUQKFhLq0Hxp4DeHuEKyc5hgwWMwBAicz5Ky4STfmwXzMHuE74ohnwawdr3ON37IUMpFz5JAj6nMB+VluOJw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=KU++mzmB; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Z319Chid"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="KU++mzmB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=+ANbRHVMw0mnGda34bSjs+M0HowPfnWkfMAWAlf5L/M=;
-	b=Z319Chid69hmJgJlrAx+DlYiT5BzkPwCEtdfJrSJDh72JGa4WYTUI2tImqxJkU
-	88FJzcvPtm+TslP9pH3WTlSYxo2OWJsLNUag4HAKvp+jqiSqt/0941BS4VXSDMJm
-	IfawxAty7uDNu6gMAhmgUmDnLvJI+xZI9Vgc1ancmvPK8=
+	Content-Type; bh=1sObv9PqypU8I4bvTZcjYI9PEpooVXChWMhFG7PYJt0=;
+	b=KU++mzmBdtxEIjEgUkMjy47CTM/a8w6iqjmwb65MHnOWgPQZ8H67yG7JiSCvc/
+	v+CgGCTuwTJk/FMfsRfWyLw8Af4k9VhrbEbe+Yz152jcsoTE0JLG21lhW0g/W0mY
+	fUNlo6NWrt4ZmqZ84JKpEvMFIb3UraHouj/qLrG9FAfUs=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgAn5W6RMMJoJIhGBA--.44820S3;
-	Thu, 11 Sep 2025 10:14:43 +0800 (CST)
-Date: Thu, 11 Sep 2025 10:14:41 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD399huMcJoGapOBA--.47236S3;
+	Thu, 11 Sep 2025 10:18:24 +0800 (CST)
+Date: Thu, 11 Sep 2025 10:18:22 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Lukas Bulwahn <lbulwahn@redhat.com>
-Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Subject: Re: [PATCH] ARM: imx: Kconfig: Adjust select after renamed config
- option
-Message-ID: <aMIwkWRY5c7tLIxV@dragon>
-References: <20250826092901.43141-1-lukas.bulwahn@redhat.com>
+	"A.s. Dong" <aisheng.dong@nxp.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: fsl: fsl,imx7ulp-smc1: Allow clocks and
+ clock-names
+Message-ID: <aMIxbgrbF4HUy2_w@dragon>
+References: <20250827212446.94571-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,23 +50,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250826092901.43141-1-lukas.bulwahn@redhat.com>
-X-CM-TRANSID:M88vCgAn5W6RMMJoJIhGBA--.44820S3
+In-Reply-To: <20250827212446.94571-1-Frank.Li@nxp.com>
+X-CM-TRANSID:Mc8vCgD399huMcJoGapOBA--.47236S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
 	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUOTmhUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIhP6YGjCMJOieQAA35
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCwvFZWjCG0k9lgAAsz
 
-On Tue, Aug 26, 2025 at 11:29:01AM +0200, Lukas Bulwahn wrote:
-> From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+On Wed, Aug 27, 2025 at 05:24:45PM -0400, Frank Li wrote:
+> Allow clocks and clock-names to match existed dts file.
 > 
-> Commit 3f490a74a8a1 ("clocksource/drivers/vf-pit: Rename the VF PIT to NXP
-> PIT") renames the config VF_PIT_TIMER to NXP_PIT_TIMER, but it misses
-> adjusting a reference to VF_PIT_TIMER in arch/arm/mach-imx/Kconfig.
+> 'hsrun_divcore' should be 'hsrun-divcore'. But use '_' to keep old dts back
+> compatible.
 > 
-> Adjust the config reference to the new name.
+> Fix below CHECK_DTBS warnings:
+>   arch/arm/boot/dts/nxp/imx/imx7ulp-com.dtb: clock-controller@40410000 (fsl,imx7ulp-smc1): '#clock-cells', 'clock-names', 'clocks' do not match any of the regexes: '^pinctrl-[0-9]+$'
+> 	from schema $id: http://devicetree.org/schemas/arm/freescale/fsl,imx7ulp-pm.yaml#
 > 
-> Fixes: 3f490a74a8a1 ("clocksource/drivers/vf-pit: Rename the VF PIT to NXP PIT")
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
 Applied, thanks!
 
