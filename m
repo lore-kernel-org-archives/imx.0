@@ -1,119 +1,189 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120D329BD80
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 07:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CC122F74A;
+	Thu, 11 Sep 2025 07:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757577034; cv=none; b=fbDw3ZLCkEVmr7W8g10QW7ra4aIFl5cXKsGYlFynd0m9vWS5l7kAwe6dMvCcmFMspxJh8n97O97HR6o0ek9wKwOQ88to/ZmzdGowYuRHHaxumukuB44XtaxOnyJbBe5hZ+Rg5tubB64HvBabp9OQ9Ga6hDKDXWBwJQJlIAgOOgo=
+	t=1757577208; cv=none; b=hfiwzq4PZEeeMqbp50cfGtY9639D6GvJEloxR4tbRE8Zy6Y9Hz6lk3dkW/Nasf7fGqkcis8nAWwujo9z1Jxrq9BfiU/W+DLCvsVuMrmJT9CcL/0W7yPUE7rTD3//uMfh81yyLz9BaBqODa1whHK+ZtESzNxjCoQ+SaLXV/7ci1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757577034; c=relaxed/simple;
-	bh=m30L7S1WvoRggLHv6LreiIlctXHF+XJ1XKVdT0+e9qo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cx1i5Aus6eO3UnCtDVA+OpXxpr6hC9l/RRHJv2x2PyzAPC3JMUn0CvdIIklcNHT68wJYD3OAgfwZSkEmrfSP0iFgPFDd10IJZaMdZxhSHpA3cL9veWDL7VrH9peOwUabEAjOeSWZuQegfEjziuPxPBrHLFyHwd7qT/Hh6S9ADlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cYTD3Z+j; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1757577208; c=relaxed/simple;
+	bh=dMNYBL2O6f4/igyNj4rxu6fdmJ5X6xhc9PGg4Vp5DT0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=UzyjhACSLly4F49XMe8CwPt6zFnXfDiaJbNzGMDD3Pm1pGoPAHDB/ilfng/1+OjLr0Ns0eQXAylv0V3prdWIyjF7pE6QgyE0bCWEaK6QiNTGslwAsBhwWrQcCLAv8mFi9MEXYVqnwIUB6Wg6kS6akgVRz4j84HWsufQbtyu4qFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tvxbs4FZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cYTD3Z+j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757577033; x=1789113033;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=m30L7S1WvoRggLHv6LreiIlctXHF+XJ1XKVdT0+e9qo=;
-  b=cYTD3Z+jVrnTnd+ax8CniyL9wCCIrU39kQ2kCsqPB86fHwq/dodoLqsM
-   7wvrTYNaLhLZkp7uiB66+DN5wRqDWIACq7ROnFZilW9nBqbmePNYsRagU
-   zIe26nDcheavVzEE15kBP0lXFJXLtUcs8/RNgigp2akp5dF1OHRj9a7Wq
-   gwE+RkP75WeEhjgNhTTzhp6SIFWbK/muwPdgCr7ABAKI8/HT6n5he//Pv
-   U1mwujWx5zTG8J5jh9ldzFFxdgCt1AVGyvVY05jGr1EQjUVsrgICxk6nb
-   buF//Ceghj+IR0xkN9PIHSrMwc0+q1kddeGvQvqzJwS9JYmapuDvwCRyf
-   Q==;
-X-CSE-ConnectionGUID: G2LmoFt5QEWiS2TXeR72mA==
-X-CSE-MsgGUID: 5y680M6+TeqfAtKsMYBGNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="58941629"
-X-IronPort-AV: E=Sophos;i="6.18,256,1751266800"; 
-   d="scan'208";a="58941629"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 00:50:32 -0700
-X-CSE-ConnectionGUID: /rkAzoZPQPW19fuKTvUXuA==
-X-CSE-MsgGUID: uzsJIT7GTJKG20+iNoc2mA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,256,1751266800"; 
-   d="scan'208";a="178821912"
-Received: from smile.fi.intel.com ([10.237.72.51])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 00:50:23 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uwc4R-000000022QJ-0Efr;
-	Thu, 11 Sep 2025 10:50:19 +0300
-Date: Thu, 11 Sep 2025 10:50:18 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Lee Jones <lee@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>,
-	Benjamin Fair <benjaminfair@google.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-	=?iso-8859-1?Q?Cl=E9ment?= Le Goffic <legoffic.clement@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	James Cowgill <james.cowgill@blaize.com>,
-	Matt Redfearn <matt.redfearn@blaize.com>,
-	Neil Jones <neil.jones@blaize.com>,
-	Nikolaos Pasaloukos <nikolaos.pasaloukos@blaize.com>,
-	Hoan Tran <hoan@os.amperecomputing.com>,
-	Yang Shen <shenyang39@huawei.com>, Imre Kaloz <kaloz@openwrt.org>,
-	Yinbo Zhu <zhuyinbo@loongson.cn>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, imx@lists.linux.dev,
-	linux-unisoc@lists.infradead.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 0/3] gpio/pinctrl/mfd: use more common syntax for
- compound literals
-Message-ID: <aMJ_Ohp5YtYNFnYV@smile.fi.intel.com>
-References: <20250910-make-compound-literals-normal-again-v1-0-076ee7738a0b@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tvxbs4FZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 370C9C4CEF7;
+	Thu, 11 Sep 2025 07:53:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757577208;
+	bh=dMNYBL2O6f4/igyNj4rxu6fdmJ5X6xhc9PGg4Vp5DT0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=tvxbs4FZsWYVO8hw/0sDZCBSQMU4p6YLR0SgXrYWFQe/1P+cZRu6q41Jj9OZtd5nv
+	 ndgDO8ZiT3kXpaIKMj4ElajFXH+k+Nbf62hqdYo2gLVR1WrafmMR5XnrOKd7tB0Qka
+	 UJD1L4VedcSiEym1tEuHgdHt6akwNkof3x7osr223lgcTer2MRbPV4L3Dg2VvMX+oz
+	 nD40DDf6f5x0jFKrvLTf0UqoyDAbNITQHiJa9nlrNhVB7cP2cXRYf8tFGu6kB56lqR
+	 AABrLo+T42dINbmHsLQVeGnWypPLe3HUjnXYEZS7Mt84TQYGQgt7nhJKH4o6G+h4um
+	 /hvR+/J05iUFg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2563ACA1016;
+	Thu, 11 Sep 2025 07:53:28 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Date: Thu, 11 Sep 2025 09:53:18 +0200
+Subject: [PATCH v3 1/4] dt-bindings: backlight: Add max25014 bindings
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910-make-compound-literals-normal-again-v1-0-076ee7738a0b@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250911-max25014-v3-1-d03f4eba375e@gocontroll.com>
+References: <20250911-max25014-v3-0-d03f4eba375e@gocontroll.com>
+In-Reply-To: <20250911-max25014-v3-0-d03f4eba375e@gocontroll.com>
+To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
+ Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-fbdev@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Maud Spierings <maudspierings@gocontroll.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757577207; l=3271;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=5g4P1Wahkw5JoS3mX7/6i/sx/W0CFQwRY6rNR38SJig=;
+ b=l0RYJ1FzMcXSI4IFv4c60sFbpautxCOLa2QrSLHkl3pIPbI7i+ExXyxrkfg7D58y9Us3zN3Oi
+ s/XtYiRRe3vCbM3UmML90iyhGPMBMXsydB98oYmt1xcPAiWOUiRWjBj
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-On Wed, Sep 10, 2025 at 09:25:44AM +0200, Bartosz Golaszewski wrote:
-> As discussed[1] with Andy: it's probably better to use a more common
-> syntax for compound literals so fix the commits that converted GPIO
-> chips to using the new generic GPIO chip API and make them explicitly
-> spell out the type they're initializing.
-> 
-> Each commit in this series can go directly into its respective tree:
-> MFD, pinctrl and GPIO.
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-Thank you! All look good to me,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+The Maxim MAX25014 is a 4-channel automotive grade backlight driver IC
+with integrated boost controller.
 
-> [1] https://lore.kernel.org/all/20250909-gpio-mmio-gpio-conv-part4-v1-13-9f723dc3524a@linaro.org/
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+---
+ .../bindings/leds/backlight/maxim,max25014.yaml    | 81 ++++++++++++++++++++++
+ MAINTAINERS                                        |  5 ++
+ 2 files changed, 86 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..e113a2ad16aa74f982b9c2ea80578aed2d9424fe
+--- /dev/null
++++ b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
+@@ -0,0 +1,81 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/leds/backlight/maxim,max25014.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Maxim max25014 backlight controller
++
++maintainers:
++  - Maud Spierings <maudspierings@gocontroll.com>
++
++allOf:
++  - $ref: common.yaml#
++
++properties:
++  compatible:
++    enum:
++      - maxim,max25014
++
++  reg:
++    maxItems: 1
++
++  enable-gpios:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  power-supply:
++    description: Regulator which controls the boost converter input rail.
++
++  pwms:
++    maxItems: 1
++
++  maxim,iset:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    maximum: 15
++    default: 11
++    description:
++      Value of the ISET register field. This controls the current scale of the
++      outputs, a higher number means more current.
++
++  maxim,strings:
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    description:
++      A 4-bit bitfield that describes which led strings to turn on.
++    minItems: 4
++    maxItems: 4
++    items:
++      maximum: 1
++
++required:
++  - compatible
++  - reg
++  - maxim,strings
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        backlight@6f {
++            compatible = "maxim,max25014";
++            reg = <0x6f>;
++            default-brightness = <50>;
++            enable-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
++            interrupt-parent = <&gpio1>;
++            interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
++            power-supply = <&reg_backlight>;
++            pwms = <&pwm1>;
++            maxim,iset = <7>;
++            maxim,strings = <1 1 1 1>;
++        };
++    };
++
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7b7396ed28a700a2aab318553ce8ba1788312bff..5a592eefbe7562734aada05ab9e3aea8cee010e7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15069,6 +15069,11 @@ F:	Documentation/userspace-api/media/drivers/max2175.rst
+ F:	drivers/media/i2c/max2175*
+ F:	include/uapi/linux/max2175.h
+ 
++MAX25014 BACKLIGHT DRIVER
++M:	Maud Spierings <maudspierings@gocontroll.com>
++S:	Maintained
++F:	Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
++
+ MAX31335 RTC DRIVER
+ M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+ L:	linux-rtc@vger.kernel.org
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.51.0
 
 
