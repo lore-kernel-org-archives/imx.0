@@ -1,48 +1,46 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4964205ABA
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 01:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB81163CB
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 02:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757555516; cv=none; b=inDTd4GhO9hoN7H3SSpKbX9C/JLwiqjDT1lXlNtpHt7RSV2D4hW5Ku3VnVtnAlBJLtNauXfWJdE11ZYYrVbrjFrCaM4Rx3NLeq7uVeNSA3bUcZi/vSnoYd1QxQnDm3f09cz2JPWmfbqKOasA6IRYtGxwr+2cYrRECxnjmyjWTzU=
+	t=1757556083; cv=none; b=PlUsd6KIOY1OrugRy3tdok7wipvB2/eneuucvK3BVa+PqSig3KvlZjmdaBIwXD5m5GrvYE535ss5sd3t8QI2bVhUUyf/TUjXMDoXG/+FixkRTteJJMOyJTwNiWNJJ2nSNGSEkBh6z67FdWFonmp26zj2mmJfSOpNqWFTGBvhDPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757555516; c=relaxed/simple;
-	bh=bCPB1xnoe2/GO/7enylpCb+FDL8XOg3ocnPOQMjuVIY=;
+	s=arc-20240116; t=1757556083; c=relaxed/simple;
+	bh=SjQ0VuRrX/wj/9VRm7fBxQNQb2Vk6Qm0wEkiK82lHHk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JqqTwFvRdXHVHVPchLR1whqg+MLMIenQ0XqzqKMwuosOIzhPgd/zB2aHJ8+l0rrHAojknXlp2FCWfcNCn0fkaEpJVvk0HapDvlcedJA3PxnQn6TAc5adfUp5ogcwwYbprXhfe7Qoaly8NTmhkbMzwjUAZARcIM4Cy1Nnr+RsScY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=PvVI6CX7; arc=none smtp.client-ip=1.95.21.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=l6Vyr6xYStagzaaXT0Ip1wjDxd0mE+oO/K36rYzgeNtycV7mI5sMvyh0DE/UenzpeE0LjNUQ2YAEha3LmomUJKzwJ+GndWIWlccMfqsOSOeUGcVkKiwVHaYt4aqw3xa5kheR7S9emHE3bTH7W+YqJ3VnPKDxQKzVoWaO7qSqAro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=fGALOccq; arc=none smtp.client-ip=1.95.21.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="PvVI6CX7"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="fGALOccq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=A3gOQobAEWqrV+LkJ+Gu41Zy/G5CF74YMZ/R1K637H0=;
-	b=PvVI6CX7zrc6SmuiytFNyZtN1EFexELhvMIVXIHPCtvcNn9yWNnn5a6pVrYEdh
-	bAAi6JiVPKnaV8XXcUUeG5VR3BjB9rA4uUxzXicUC6/YPU4sGUBX0ALnJAJRPRBn
-	gYifKf+PHc09NEyHsE1VuPZKjXiVXbgUKDwT5x2wahdns=
+	Content-Type; bh=MJkHWNhg96u/bWwhWBm9dtQDm3fe+lYmlVB+NnrOYTw=;
+	b=fGALOccqq3/HB3aYedK7mhGWYXFRFcdVOtp+ZXVnxng+uZtQ9lkUnW2zJL3vr7
+	ruXARSF/uRxQSVqXlXYKRRvjrsqimVa+QAWhA3jb0fLInqUyGVj3xMtaunG8FWjE
+	ECxl9GnpqSVUMpHOUI0/wPF5HqfRZp9G7TD3BO+aAedQQ=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3n94pK8JoLltOBA--.48607S3;
-	Thu, 11 Sep 2025 09:51:39 +0800 (CST)
-Date: Thu, 11 Sep 2025 09:51:37 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDHNdtTLcJoC6dfBA--.50379S3;
+	Thu, 11 Sep 2025 10:00:52 +0800 (CST)
+Date: Thu, 11 Sep 2025 10:00:50 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Yazan Shhady <yazan.shhady@solid-run.com>,
-	Mikhail Anikin <mikhail.anikin@solid-run.com>,
-	Jon Nettleton <jon@solid-run.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 3/3] arm64: dts: add description for solidrun imx8mp
- hummingboard variants
-Message-ID: <aMIrKYBPF2kMctIE@dragon>
-References: <20250823-imx8mp-sr-som-v3-0-a18a21fbebf0@solid-run.com>
- <20250823-imx8mp-sr-som-v3-3-a18a21fbebf0@solid-run.com>
+	Fabio Estevam <festevam@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 0/3] firmware: imx: Add stub functions for
+ MISC/CPU/LMM APIs
+Message-ID: <aMItUoCIhGpF7tIK@dragon>
+References: <20250825-imx9-sm-v2-0-0bae0265e66a@nxp.com>
+ <PAXPR04MB845910056A522BC1DD5D0F168806A@PAXPR04MB8459.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,38 +49,19 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250823-imx8mp-sr-som-v3-3-a18a21fbebf0@solid-run.com>
-X-CM-TRANSID:Mc8vCgD3n94pK8JoLltOBA--.48607S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWruFy7tw4rKw1fuF4kGF1fCrg_yoWfurX_Xw
-	n5Wa1UX3y8KryfXw4rAw45CFyI9w1DWr18Wr1rtryxX3yS9wnIvrZFq34F9F15XrW7JFn2
-	gw13KFyIkryxujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUb9NVDUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIAufBWjCKyt+bgAA3L
+In-Reply-To: <PAXPR04MB845910056A522BC1DD5D0F168806A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+X-CM-TRANSID:Ms8vCgDHNdtTLcJoC6dfBA--.50379S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU7jg4UUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNBUrkGjCLVXWFQAA3L
 
-On Sat, Aug 23, 2025 at 05:28:23PM +0300, Josua Mayer wrote:
-> Add descriptions for the SolidRun i.MX8M Plus System on Module based
-> HummingBoard product-line. They share a common designed based on the
-> "Pulse" version, defined by various assembly options.
+On Tue, Sep 02, 2025 at 01:01:39PM +0000, Peng Fan wrote:
+> Hi Shawn,
 > 
-> The HummingBoard Pulse features:
-> - 2x RJ45 Ethernet
-> - 2x USB-3.0 Type A
-> - HDMI connector
-> - mini-HDMI connector
-> - microSD connector
-> - mini-PCI-E connector with SIM slot supporting USB-2.0/3.0 interfaces
-> - M.2 connector with SIM slot supporting USB-2.0/3.0 interfaces
-> - MIPI-CSI Camera Connector (not described without specific camera)
-> - 3.5mm Analog Stereo Out / Microphone In Headphone Jack
-> - RTC with backup battery
+> > Subject: [PATCH v2 0/3] firmware: imx: Add stub functions for
+> > MISC/CPU/LMM APIs
 > 
-> The variants Mate and Ripple are reduced versions of Pulse.
-> 
-> The HummingBoard Pro extends Pulse with PCI-E on M.2 connector.
-> 
-> Signed-off-by: Josua Mayer <josua@solid-run.com>
+> Is this patchset good for you to pick up?
 
-It doesn't apply to imx/dt64 branch.
-
-Shawn
+Ok, picked it up, thanks!
 
