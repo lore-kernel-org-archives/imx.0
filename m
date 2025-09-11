@@ -1,27 +1,26 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207972D6E71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04F02C2357
 	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 21:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757627814; cv=none; b=UesBCUMX/RF7hNMH6V1cdRuwkUxA88dm9wM2IKFAA1Bd/EpGEry5CcmIZ+eClv3dMAirBtK/XH0u+zPNmFsFFICE9ovps//sWeiUFc84GSRGRPfZZ+S2WTjIa2zJ1g6RiGR4GHQ46RLDUhAlTlJVH4cOCuyjVeeuATJCeyaRIoY=
+	t=1757627814; cv=none; b=PLqM4L8I5xavWzvil7PUyedLVoNT1YtCgqo9r3jnMyA5UJl8tjqNGXvKDw85I4cz5Yova2gSqfM6qwJC+IePk8YA8X1zd6SDBJAhSUzdHGk0xkLty+FsmO0guthsZ2muz6qI70tlD2YhR4UFVckgNyjtFIkXH1ymizxIWN97bF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757627814; c=relaxed/simple;
-	bh=CsgSMovVoDnzJjuEAN8azFQLgpLqXfWaErM5h/J1l1Q=;
+	bh=Zifnmig/mmN0xCIOodUFIJ/i4rpbpjL4rBicSOwNiOw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JaY9EhnmFzw8jfUWUyoASpkiUBqL4lrCNIVM5lp3JuN4fchkdE80IbqUB1i2QVMOZoiXgvTKVd4wUkbuUlfbuXvcSRRhrBBPnFL4X5U0KrlKvV8MSda0bRIn6Ah3Y+okfk7x0FT4dH2tRP2gzHprZp7ajKczWjEdGn0jjQ18GpQ=
+	 In-Reply-To:To:Cc; b=ZpnlicXuQ+82ZcbBLJRBKPz6JpUYKCSwEEh1NEjD0mm5H3j65+vJzD5AQBDvWTrcy7HXZDdqXJDCC2xDeoqmNQRSHK+X9gqrVTS8PhPLhef+EFtg7DevilIn+bl8lp33iya78+cKRVNpQhO6BEz/s6wUHqeonf3PeJYdb9FVHT4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1uwpHe-0004g5-3h; Thu, 11 Sep 2025 23:56:50 +0200
+	id 1uwpHe-0004g5-7I; Thu, 11 Sep 2025 23:56:50 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Thu, 11 Sep 2025 23:56:44 +0200
-Subject: [PATCH v2 03/10] dmaengine: imx-sdma: drop legacy device_node np
- check
+Date: Thu, 11 Sep 2025 23:56:46 +0200
+Subject: [PATCH v2 05/10] dmaengine: imx-sdma: cosmetic cleanup
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -30,7 +29,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250911-v6-16-topic-sdma-v2-3-d315f56343b5@pengutronix.de>
+Message-Id: <20250911-v6-16-topic-sdma-v2-5-d315f56343b5@pengutronix.de>
 References: <20250911-v6-16-topic-sdma-v2-0-d315f56343b5@pengutronix.de>
 In-Reply-To: <20250911-v6-16-topic-sdma-v2-0-d315f56343b5@pengutronix.de>
 To: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
@@ -46,53 +45,125 @@ X-SA-Exim-Mail-From: m.felsch@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The legacy 'if (np)' was required in past where we had pdata and dt.
-Nowadays the driver binds only to dt platforms. So using a new kernel
-but still use pdata is not possible, therefore we can drop the legacy
-'if' code path.
+Make use of local struct device pointer to not dereference the
+platform_device pointer everytime.
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/dma/imx-sdma.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ drivers/dma/imx-sdma.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-index 56daaeb7df03986850c9c74273d0816700581dc0..dab3589e1c8d9efe06e16925c53554f8e22ce679 100644
+index 44411c15029c9b09f307c4b9e3f7b1ab77fa5093..b0def2bde77fe53b0805bddc0c5d6116c9cefcbe 100644
 --- a/drivers/dma/imx-sdma.c
 +++ b/drivers/dma/imx-sdma.c
-@@ -2355,11 +2355,9 @@ static int sdma_probe(struct platform_device *pdev)
- 			vchan_init(&sdmac->vc, &sdma->dma_device);
- 	}
+@@ -2266,7 +2266,8 @@ static struct dma_chan *sdma_xlate(struct of_phandle_args *dma_spec,
  
--	if (np) {
--		sdma->iram_pool = of_gen_pool_get(np, "iram", 0);
--		if (sdma->iram_pool)
--			dev_info(&pdev->dev, "alloc bd from iram.\n");
--	}
-+	sdma->iram_pool = of_gen_pool_get(np, "iram", 0);
-+	if (sdma->iram_pool)
-+		dev_info(&pdev->dev, "alloc bd from iram.\n");
+ static int sdma_probe(struct platform_device *pdev)
+ {
+-	struct device_node *np = pdev->dev.of_node;
++	struct device *dev = &pdev->dev;
++	struct device_node *np = dev->of_node;
+ 	const char *fw_name;
+ 	int ret;
+ 	int irq;
+@@ -2274,18 +2275,18 @@ static int sdma_probe(struct platform_device *pdev)
+ 	struct sdma_engine *sdma;
+ 	s32 *saddr_arr;
+ 
+-	ret = dma_coerce_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
++	ret = dma_coerce_mask_and_coherent(dev, DMA_BIT_MASK(32));
+ 	if (ret)
+ 		return ret;
+ 
+-	sdma = devm_kzalloc(&pdev->dev, sizeof(*sdma), GFP_KERNEL);
++	sdma = devm_kzalloc(dev, sizeof(*sdma), GFP_KERNEL);
+ 	if (!sdma)
+ 		return -ENOMEM;
+ 
+ 	spin_lock_init(&sdma->channel_0_lock);
+ 
+-	sdma->dev = &pdev->dev;
+-	sdma->drvdata = of_device_get_match_data(sdma->dev);
++	sdma->dev = dev;
++	sdma->drvdata = of_device_get_match_data(dev);
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+@@ -2295,11 +2296,11 @@ static int sdma_probe(struct platform_device *pdev)
+ 	if (IS_ERR(sdma->regs))
+ 		return PTR_ERR(sdma->regs);
+ 
+-	sdma->clk_ipg = devm_clk_get(&pdev->dev, "ipg");
++	sdma->clk_ipg = devm_clk_get(dev, "ipg");
+ 	if (IS_ERR(sdma->clk_ipg))
+ 		return PTR_ERR(sdma->clk_ipg);
+ 
+-	sdma->clk_ahb = devm_clk_get(&pdev->dev, "ahb");
++	sdma->clk_ahb = devm_clk_get(dev, "ahb");
+ 	if (IS_ERR(sdma->clk_ahb))
+ 		return PTR_ERR(sdma->clk_ahb);
+ 
+@@ -2311,8 +2312,8 @@ static int sdma_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_clk;
+ 
+-	ret = devm_request_irq(&pdev->dev, irq, sdma_int_handler, 0,
+-				dev_name(&pdev->dev), sdma);
++	ret = devm_request_irq(dev, irq, sdma_int_handler, 0,
++			       dev_name(dev), sdma);
+ 	if (ret)
+ 		goto err_irq;
+ 
+@@ -2357,7 +2358,7 @@ static int sdma_probe(struct platform_device *pdev)
+ 
+ 	sdma->iram_pool = of_gen_pool_get(np, "iram", 0);
+ 	if (sdma->iram_pool)
+-		dev_info(&pdev->dev, "alloc bd from iram.\n");
++		dev_info(dev, "alloc bd from iram.\n");
  
  	ret = sdma_init(sdma);
  	if (ret)
-@@ -2399,12 +2397,10 @@ static int sdma_probe(struct platform_device *pdev)
+@@ -2370,7 +2371,7 @@ static int sdma_probe(struct platform_device *pdev)
+ 	if (sdma->drvdata->script_addrs)
+ 		sdma_add_scripts(sdma, sdma->drvdata->script_addrs);
+ 
+-	sdma->dma_device.dev = &pdev->dev;
++	sdma->dma_device.dev = dev;
+ 
+ 	sdma->dma_device.device_alloc_chan_resources = sdma_alloc_chan_resources;
+ 	sdma->dma_device.device_free_chan_resources = sdma_free_chan_resources;
+@@ -2393,13 +2394,13 @@ static int sdma_probe(struct platform_device *pdev)
+ 
+ 	ret = dma_async_device_register(&sdma->dma_device);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "unable to register\n");
++		dev_err(dev, "unable to register\n");
  		goto err_init;
  	}
  
--	if (np) {
--		ret = of_dma_controller_register(np, sdma_xlate, sdma);
--		if (ret) {
--			dev_err(&pdev->dev, "failed to register controller\n");
--			goto err_register;
--		}
-+	ret = of_dma_controller_register(np, sdma_xlate, sdma);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to register controller\n");
-+		goto err_register;
+ 	ret = of_dma_controller_register(np, sdma_xlate, sdma);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "failed to register controller\n");
++		dev_err(dev, "failed to register controller\n");
+ 		goto err_register;
  	}
  
- 	/*
+@@ -2411,11 +2412,11 @@ static int sdma_probe(struct platform_device *pdev)
+ 	ret = of_property_read_string(np, "fsl,sdma-ram-script-name",
+ 				      &fw_name);
+ 	if (ret) {
+-		dev_warn(&pdev->dev, "failed to get firmware name\n");
++		dev_warn(dev, "failed to get firmware name\n");
+ 	} else {
+ 		ret = sdma_get_firmware(sdma, fw_name);
+ 		if (ret)
+-			dev_warn(&pdev->dev, "failed to get firmware from device tree\n");
++			dev_warn(dev, "failed to get firmware from device tree\n");
+ 	}
+ 
+ 	return 0;
 
 -- 
 2.47.3
