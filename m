@@ -1,231 +1,245 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC562DC77B
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 19:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFFE257829
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 21:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757619607; cv=none; b=IonEQPq2kfxLkqEaKtW2BTz+9c5uGXrjqbwGKeS9ExG6B+kAX90SNjfV5Qs4fyJTmMUx5CKOZ3gamGAz5QOZ5XY4zbF12glclAkzSBTTqszbztSIl+/+HGIQkM9sEoT+TEiila68DMfyS1wHope9NmXOVG07vpJJH8Cf5ruLdqg=
+	t=1757627768; cv=none; b=t9GRT+iwHZQuhLS9Wl4wT7AX5jejPEaPMD7dzkeY4PZkQYuoihaMdRTme2UHy1IYNFXc10U8FIW5FglhTCFTJlFnvIFs30PoZ1bCGUdyd3xPT5nrrAzqoeQ+C03TYW7ZtTVAvY+HlyyJLsu7wbqu2mWV5zWuie87m98sW3f7CDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757619607; c=relaxed/simple;
-	bh=+w5RPLl837CWWEAg8skGwQFsfyd6q7WmyVIeTbLxr/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JlMagpaU0bcqXroFBor2IO59cB+/UXMB3ed6PG01YGO8HK2+6V0KQhUSt0RDTO/+XUaRG1+pC0lyxPTQBIRK46mI1KZMWwL/Pmg69TPBxiXlWG8bFwWz424Meyxsz1XpV404tRywU2r/Y2Kl5YZE9+PucCT6PI01dyixt7n8weU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uwmtj-0000G2-U2; Thu, 11 Sep 2025 21:23:59 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uwmtj-000oOk-0l;
-	Thu, 11 Sep 2025 21:23:59 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uwmtj-000w1H-0I;
-	Thu, 11 Sep 2025 21:23:59 +0200
-Date: Thu, 11 Sep 2025 21:23:59 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jiada Wang <jiada_wang@mentor.com>, dmaengine@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 09/11] dmaengine: add support for device_link
-Message-ID: <20250911192359.mpgoeyiafnunnohn@pengutronix.de>
-References: <20250903-v6-16-topic-sdma-v1-0-ac7bab629e8b@pengutronix.de>
- <20250903-v6-16-topic-sdma-v1-9-ac7bab629e8b@pengutronix.de>
- <aLhUv+mtr1uZTCth@lizhi-Precision-Tower-5810>
- <20250909120309.5zgez5exbvxn5z3y@pengutronix.de>
- <aMA88W/rDxFesEx+@lizhi-Precision-Tower-5810>
- <20250910193545.gx3qoyjamoxlncqd@pengutronix.de>
- <aMHwbogOA6QTc3Dm@lizhi-Precision-Tower-5810>
- <20250911115056.5iufhnjdhsbiwugw@pengutronix.de>
- <aMLoP1/Wmay2v37G@lizhi-Precision-Tower-5810>
+	s=arc-20240116; t=1757627768; c=relaxed/simple;
+	bh=n9wAHM5lPDOPUmR7VKGS6+mcXMpPy0ZPrz0jS//RKBI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M1EqsDurn0kfV4PDCQtwVxgUf6wgPcVJkkbNxTnaLGS9lPTg4/W4xD/HWIq10zR6khHzTODXlfvcI9oZIBWc2jzmpLobqOGlQz5FDkMfkaqT9fIa9hGn3ulb+hEzB0ktVbPs/tXIgmOEziMj53U9WGTSKH/EpvtfT1+GNYuvbxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=WgXaX624; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="WgXaX624"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4cNBFm4pRxz9tNF;
+	Thu, 11 Sep 2025 23:55:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1757627756;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OYxotd5wxGpHXgDa/b3MTB+aIwsC4SQo134x/Z4fbgc=;
+	b=WgXaX624JAxBLgd6VZnAzr8kfZvrMtM3OricE3FD7BtH9w1kz4yRWvEJMDTvaH2w3z6Vei
+	de4n3QjJrLtF/NUYX+fU26RXy7n1qebR7rWB0/hNBq7W3HrIxwWhKyw7hTWJmKsnKJj/lH
+	81ZdtljeZ+nYychNBbHs6P4EGh7UMp+LRhtloCF63waSjhfSpfXVLwvqxPzDnR++NI9BM7
+	kRyr11gNVFuHxY+PbJ5YG9EgeYytOyoLw5gx0cuaa5QnXGKCItD9G7ZDprxi6dn0PcdV8l
+	Y/C/gMUkOQr5AEUX25JTl7fzE7bH5+URNAJAMkyI34oAQYYXcIJU0mhAVdxI7Q==
+Date: Thu, 11 Sep 2025 23:55:47 +0200
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
+To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>
+Subject: Re: [net-next v19 4/7] net: mtip: Add net_device_ops functions to
+ the L2 switch driver
+Message-ID: <20250911235547.477460e4@wsk>
+In-Reply-To: <20250910172251.072a8d36@kernel.org>
+References: <20250824220736.1760482-1-lukasz.majewski@mailbox.org>
+	<20250824220736.1760482-5-lukasz.majewski@mailbox.org>
+	<20250827082512.438fd68a@kernel.org>
+	<20250907183854.06771a13@wsk>
+	<20250908180535.4a6490bf@kernel.org>
+	<20250910231552.13a5d963@wsk>
+	<20250910172251.072a8d36@kernel.org>
+Organization: mailbox.org
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aMLoP1/Wmay2v37G@lizhi-Precision-Tower-5810>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-META: m5n6r7w5b9m9aofnwhgwpk1hacaixifp
+X-MBO-RS-ID: 4a733e75a4d374f700e
 
-On 25-09-11, Frank Li wrote:
-> On Thu, Sep 11, 2025 at 01:50:56PM +0200, Marco Felsch wrote:
-> > On 25-09-10, Frank Li wrote:
-> > > On Wed, Sep 10, 2025 at 09:35:45PM +0200, Marco Felsch wrote:
-> > > > On 25-09-09, Frank Li wrote:
-> > > >
-> > > > ...
-> > > >
-> > > > > > > > diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-> > > > > > > > index 758fcd0546d8bde8e8dddc6039848feeb1e24475..a50652bc70b8ce9d4edabfaa781b3432ee47d31e 100644
-> > > > > > > > --- a/drivers/dma/dmaengine.c
-> > > > > > > > +++ b/drivers/dma/dmaengine.c
-> > > > > > > > @@ -817,6 +817,7 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
-> > > > > > > >  	struct fwnode_handle *fwnode = dev_fwnode(dev);
-> > > > > > > >  	struct dma_device *d, *_d;
-> > > > > > > >  	struct dma_chan *chan = NULL;
-> > > > > > > > +	struct device_link *dl;
-> > > > > > > >
-> > > > > > > >  	if (is_of_node(fwnode))
-> > > > > > > >  		chan = of_dma_request_slave_channel(to_of_node(fwnode), name);
-> > > > > > > > @@ -858,6 +859,13 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
-> > > > > > > >  	/* No functional issue if it fails, users are supposed to test before use */
-> > > > > > > >  #endif
-> > > > > > > >
-> > > > > > > > +	dl = device_link_add(dev, chan->device->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
-> > > > > > >
-> > > > > > > chan->device->dev is dmaengine devices. But some dmaengine's each channel
-> > > > > > > have device, consumer should link to chan's device, not dmaengine device
-> > > > > > > because some dmaengine support per channel clock\power management.
-> > > > > >
-> > > > > > I get your point. Can you give me some pointers please? To me it seems
-> > > > > > like the dma_chan_dev is only used for sysfs purpose according the
-> > > > > > dmaengine.h.
-> > > > >
-> > > > > Not really, there are other dma engineer already reuse it for other purpose.
-> > > > > So It needs update kernel doc for dma_chan_dev.
-> > > >
-> > > > Can you please provide me some pointers? I checked the kernel code base
-> > > > for the struct::dma_chan_dev. I didn't found any references within the
-> > > > dmaengine drivers. The only usage I found was for the sysfs purpose.
-> > >
-> > > static void k3_configure_chan_coherency(struct dma_chan *chan, u32 asel)
-> > > {
-> > > 	struct device *chan_dev = &chan->dev->device;
-> > > 	...
-> > > }
-> > >
-> > > >
-> > > > > > > chan's device's parent devices is dmaengine devices. it should also work
-> > > > > > > for sdma case
-> > > > > >
-> > > > > > I see, this must be tested of course.
-> > > > > > > >         if (chan->device->create_devlink) {
-> > > > > > >                 u32 flags = DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_CONSUMER;
-> > > > > >
-> > > > > > According device_link.rst: using DL_FLAG_STATELESS and
-> > > > > > DL_FLAG_AUTOREMOVE_CONSUMER is invalid.
-> > > > > >
-> > > > > > >                 if (pm_runtime_active(dev))
-> > > > > > >                         flags |= DL_FLAG_RPM_ACTIVE;
-> > > > > >
-> > > > > > This is of course interessting, thanks for the hint.
-> > > > > >
-> > > > > > > When create device link (apply channel), consume may active.
-> > > > > >
-> > > > > > I have read it as: "resue the supplier and ensure that the supplier
-> > > > > > follows the consumer runtime state".
-> > > > > >
-> > > > > > >                 dl = device_link_add(chan->slave, &chan->dev->device, flags);
-> > > > > >
-> > > > > > Huh.. you used the dmaengine device too?
-> > > > >
-> > > > > /**
-> > > > >  * struct dma_chan_dev - relate sysfs device node to backing channel device
-> > > > >  * @chan: driver channel device
-> > > > >  * @device: sysfs device
-> > > > >  * @dev_id: parent dma_device dev_id
-> > > > >  * @chan_dma_dev: The channel is using custom/different dma-mapping
-> > > > >  * compared to the parent dma_device
-> > > > >  */
-> > > > > struct dma_chan_dev {
-> > > > > 	struct dma_chan *chan;
-> > > > > 	struct device device;
-> > > > > 	int dev_id;
-> > > > > 	bool chan_dma_dev;
-> > > > > };
-> > > > >
-> > > > > struct dma_chan {
-> > > > > 	struct dma_device *device; /// this one should be dmaengine
-> > > > > 	struct dma_chan_dev *dev; /// this one is pre-chan device.
-> > > > > }
-> > > >
-> > > > I've tested your approach but it turns out that teh dma_chan_dev has no
-> > > > driver. Of course we could use the DL_FLAG_STATELESS flag but this is
-> > > > described as:
-> > > >
-> > > > | When driver presence on the supplier is irrelevant and only correct
-> > > > | suspend/resume and shutdown ordering is needed, the device link may
-> > > > | simply be set up with the ``DL_FLAG_STATELESS`` flag.  In other words,
-> > > > | enforcing driver presence on the supplier is optional.
-> > > >
-> > > > I want to enforce the driver presence, therefore I used the manged flags
-> > > > which excludes the DL_FLAG_STATELESS, if I get it right.
-> > > >
-> > > > Please see the below the debug output:
-> > > >
-> > > > ** use the dmaengine device as supplier **
-> > > >
-> > > > device_link_init_status: supplier.dev:30bd0000.dma-controller supplier.drv:imx-sdma supplier.status:0x2 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
-> > > > device_link_init_status: supplier.dev:30e10000.dma-controller supplier.drv:imx-sdma supplier.status:0x2 consumer:dev:30c20000.sai consumer.drv:fsl-sai consumer.status:0x1
-> > > >
-> > > >
-> > > > ** use the dma channel device as supplier **
-> > > >
-> > > > device_link_init_status: supplier.dev:dma0chan0 supplier.drv:no-driver supplier.status:0x0 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
-> > > > device_link_init_status: supplier.dev:dma0chan1 supplier.drv:no-driver supplier.status:0x0 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
-> > >
-> > > It should be similar with phy drivers, which phy_create() create individual
-> > > phy devices (like dma channel devices).
-> >
-> > Unfortunately phy drivers do use the DL_FLAG_STATELESS mechanism. My
-> > main goal was to have managed links to overcome the current situation:
-> > dmaengine drivers can be removed without removing the consumer drivers
-> > first.
-> >
-> > You have a valid point by making use dma-channel devices ( dma<X>cha<Y>)
-> > to manage suspend/resume, as well as runtime-PM for each channel.
-> >
-> > But I see this rather as an addition to my solution because these links
-> > must be stateless and stateless/unmanaged links don't guarantee the
-> > correct remove order (my main goal).
-> 
-> If that, phy should have simiar problems. It should be resolved at higher
-> layer to avoid fix this kinds of problem one by one.
+Hi Jakub,
 
-I'm not sure because the devlink API is more or less clear about STATELESS
-links. So phy should rather consider using managed links if they want to
-ensure this.
+> On Wed, 10 Sep 2025 23:15:52 +0200 =C5=81ukasz Majewski wrote:
+> > > > I do use skb =3D buld_skb() which, "builds" the SKB around the
+> > > > memory page (from pool).
+> > > >=20
+> > > > Then, I "pass" this data (and swap it) to upper layer of the
+> > > > network stack.
+> > > >=20
+> > > > The same approach is used in the fec_main.c driver:
+> > > > https://elixir.bootlin.com/linux/v6.17-rc3/source/drivers/net/ether=
+net/freescale/fec_main.c#L1853
+> > > >     =20
+> > >=20
+> > > I probably cut out too much context. I think I was quoting from
+> > > Tx, indeed on Rx this is not an issue.   =20
+> >=20
+> > Ok. No adjustments needed then. Good :) =20
+>=20
+> No, you were talking about build_skb() which is Rx.
+> This is the patch that adds Tx. Tx is wrong.
 
-> > That beeing said, I'm not sure how you want to handle the clock/power
-> > enablement per channel-device. This would require additional work on the
-> > dma_devclass to add a proper .pm hook else the PM and runtime-PM calls
-> > are only forwarded to the parent dmaengine driver. On this level the
-> > dmaengine driver has no knowledge which channel is going to be
-> > enabled/disabled.
-> 
-> I have draft runtime pm patch for eDMA.
-> 
-> >
-> > In conclusion, I see my approach as valid to ensure the correct remove
-> > order. Your suggestion is valid and can be added later on too since this
-> > needs more work to have a proper per-channel runtime-PM.
-> 
-> We need pave a good road. This part is common dma-engine, which is worth to
-> do good solution.
+The same approach is taken in fec_main.c (@ fec_enet_txq_submit_skb()
+function).
 
-+1
+> You can't modify the skb unless you call skb_cow().
+> Or just copy the data out to your local buffer.
 
-I will send a new v2 which split the devlink patches (common part and
-the imx-sdma part) from the rest of this series. This decouples most of
-the the imx-sdma cleanup from the devlink discussion and we can continue
-there.
+In the mtip_start_xmit_port() I do assign the address to skb->data to
+bufaddr pointer.
 
-Regards,
-  Marco
+If alignment is wrong the we copy it to bounce buffer.
+Then we do swap the buffer if needed.
+
+Last step is to dma map this memory and assign the pointer to the
+descriptor for L2 switch transmission.
+
+>=20
+> > > > You may have port =3D=3D 1 || port =3D=3D 2 when you receive packet=
+ from
+> > > > ingres ports.
+> > > > You may also have port =3D=3D 0xFF when you first time encounter
+> > > > the SA on the port and port =3D=3D 0 when you send/receive data
+> > > > from the "host" interface.
+> > > >=20
+> > > > When port 1/2 is "detected" then the net dev for this particular
+> > > > port is used. In other cases the one for NAPI is used (which is
+> > > > one of those two - please see comment above).
+> > > >=20
+> > > > This was the approach from original NXP (Freescale) driver. It
+> > > > in some way prevents from "starvation" from net devices when L2
+> > > > switch is disabled and I need to provide port separation.
+> > > >=20
+> > > > (port separation in fact is achieved by programming L2 switch
+> > > > registers and is realized in HW).     =20
+> > >=20
+> > > But what if we have mixed traffic from port 1 and 2?
+> > > Does the current code correctly Rx the packets from port 1 on the
+> > > netdev from port 1 and packets from port 2 on the netdev from
+> > > port 2?   =20
+> >=20
+> > Yes, it does.
+> >=20
+> > In the mtip_rx_napi() you have call to mtip_switch_rx() which
+> > accepts pointer to port variable.
+> >=20
+> > It sets it according to the information provided by the switch IP
+> > block HW and also adjust the skb's ndev.
+> >=20
+> > I'm just wondering if the snippet from mtip_rx_napi():
+> > -------8<--------
+> > if ((port =3D=3D 1 || port =3D=3D 2) && fep->ndev[port - 1]
+> > 	mtip_switch_tx(fep->ndev[port - 1]);
+> > else
+> > 	mtip_switch_tx(napi->dev); =20
+> > ------->8--------   =20
+> >=20
+> > could be replaced just with mtip_switch_tx(napi->dev);
+> > as TX via napi->dev shall be forward to both ports if required.
+> >=20
+> > I will check if this can be done in such a way. =20
+>=20
+> Not napi->dev. You have to attribute sent packets to the right netdev.
+
+And then we do have some issue to solve. To be more specific -
+fec_main.c to avoid starvation just from fec_enet_rx_napi() calls
+fec_enet_tx() with only one net device (which it supports).
+
+I wanted to mimic such behaviour with L2 switch driver (at
+mtip_rx_napi()), but then the question - which network device (from
+available two) shall be assigned?
+
+The net device passed to mtip_switch_tx() is only relevant for
+"housekeeping/statistical data" as in fact we just provide another
+descriptor to the HW to be sent.
+
+Maybe I shall extract the net device pointer from the skb structure?
+
+>=20
+> > > > As I said - we do have only ONE queue, which corresponds to
+> > > > uDMA0 when the switch is enabled. This single queue is
+> > > > responsible for handling transmission for both ports (this is
+> > > > how the HW is designed).     =20
+> > >=20
+> > > Right but kernel has two SW queues.   =20
+> >=20
+> > You mean a separate SW queues for each devices? This is not
+> > supported in the MTIP L2 switch driver. Maybe such high level SW
+> > queues management is available in the upper layers? =20
+>=20
+> Not possible, each netdev has it's own private qdisc tree.
+
+Please correct me if I'm wrong, but aren't packets from those queues
+end up with calling ->ndo_start_xmit() function?
+
+>=20
+> > > Which can be independently
+> > > stopped.   =20
+> >=20
+> > It supports separate RX and TX HW queues (i.e. ring buffers for
+> > descriptors) for the uDMA0 when switch is enabled.
+> >=20
+> > When you want to send data (no matter from which lan[01] device) the
+> > same mtip_start_xmit() is called, the HW TX descriptor is setup and
+> > is passed via uDMA0 to L2 switch IP block.
+> >=20
+> > For next TX transmission (even from different port) we assign
+> > another descriptor from the ring buffer.
+> >  =20
+> > > So my concerns is that for example port 1 is very busy so
+> > > the queue is full of packets for port 1, port 1's netdev's queue
+> > > gets stopped. Then port 2 tries to Tx, queue is shared, and is
+> > > full, so netdev 2's SW queue is also stopped. Then we complete
+> > > the packets, because packets were for port 1 we wake the queue
+> > > for port 1. But port 2 also got stopped, even tho it never put a
+> > > packet on the ring..=20
+> >=20
+> > As fair as I can tell - both ports call mtip_start_xmit(), their
+> > data is serialized to the TX queue (via descriptors).
+> >=20
+> > Queued descriptors are sent always at some point (or overridden if
+> > critical error encountered).
+> >  =20
+> > > Long story short I think you need to always stop and start queues
+> > > from both netdevs.. There's just 2 so not too bad of a hack.   =20
+> >=20
+> > Maybe there are some peculiarities in for example bridge code (or
+> > upper network stack layers in general), but I think, that I don't
+> > need any extra "queue" management for TX code of MTIP L2 switch. =20
+>=20
+> I think I explained this enough times. Next version is v20.
+> If it's not significantly better than this one, I'm going to have=20
+> to ask you to stop posting this driver.
+
+I don't know how to reply to this comment, really.=20
+
+I've spent many hours of my spare time to upstream this driver.
+I'm just disappointed (and maybe I will not say more because of high
+level of my frustration).
+
+
+
+
+Could you point me to the driver example which provides such queues
+management for switchdev driver? Just to show what you expect from me.
+
+One example.
+
+
+--=20
+Best regards,
+
+=C5=81ukasz Majewski
