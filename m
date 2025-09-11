@@ -1,68 +1,71 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829E222DA1F
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 02:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB233FF1
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 02:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757556249; cv=none; b=OLVzGNBi80Li0lE0sWq7lame22n5VwAElqLcXZGnLynt4I4/1FM3PJn0Ah68OoqJ+PGJyemVMKhFQDBc6voegQXWzeZH2yzAH5Ig9zsSxD2vN4qgzWJ5TSRmRAuZ19T/xNSLWOYfgkcOwthyHPDNuUkm6ZJejdH1V6HIc82Twec=
+	t=1757556926; cv=none; b=SRJwxHrvNy/emJ5dVpbWcSJZUbjEFPuz3Gh3DZDdn1IfOSf9uXaxDn4MMnehxLl+jpWJHw7OoVCNMW4gwAhMlvhE32OmcK2dcXR1/XhlD916dZH5r1P4N82R0XNL6gv64F9gIX4Dup8tLVHFQ6cM1irpu1UoUVEdpN2UQvsYsIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757556249; c=relaxed/simple;
-	bh=ormrv/kurQQ3uyKZks3x990bi2mrbiWK19RpJlCssQg=;
+	s=arc-20240116; t=1757556926; c=relaxed/simple;
+	bh=SSiRaucCHQ4Dx8FmSHAjTYaMbAoODYXC3mIVmJLuKN4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gJDJvGKhVEV6ZAXKiGSGmtT5G/KVKP9aZUKeZAweJH/PqiXjcKYdKdg3kdSykX6PqYgAEsQCcFaMaX42R46hetA8t6qqsQit7ZFlKhIjvEpeZuLIrDp0CJVgvQnBJBawPoUaJylLORyUOd2jt/8v03Dia7kkjDKiYrRk7vu5W0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=TgXMS//u; arc=none smtp.client-ip=220.197.32.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=SsI/OGoesv5rAfp2Dolfb6KAANAo2CEB3psdQYzHqFVRxgT/+ARg+1ttw0I4Kp8UiIQBqVigI00h63ucnkX56wwMQpHIF/bn0aizkQc3igJPho7EHDY+yegk9HYHR6gTd5GCls+625k5mbjf2YcRiwfv6SQcHGx3QSnS0PknTUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Z319Chid; arc=none smtp.client-ip=220.197.32.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="TgXMS//u"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Z319Chid"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=/ovddB11c5XSfbN+IkHJ3Pb74oXCQSIbUsT6dab88c8=;
-	b=TgXMS//u0UN4LXuhEDFiSmVTQVOmuO9rWuV914TrFeefb9eLpMKvnY4/aI/7Qr
-	KkM5Cmy5sy7+4z8djApZG7eCUIn28DQPP68UnJgbyAX8pFSk9hFdIbBS2otTcpjO
-	8Qdh3H+CjydhZRQ/igAFVOzpFTyezJoGCT7TfgHzZI/R4=
+	Content-Type; bh=+ANbRHVMw0mnGda34bSjs+M0HowPfnWkfMAWAlf5L/M=;
+	b=Z319Chid69hmJgJlrAx+DlYiT5BzkPwCEtdfJrSJDh72JGa4WYTUI2tImqxJkU
+	88FJzcvPtm+TslP9pH3WTlSYxo2OWJsLNUag4HAKvp+jqiSqt/0941BS4VXSDMJm
+	IfawxAty7uDNu6gMAhmgUmDnLvJI+xZI9Vgc1ancmvPK8=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD399gHLsJo9n5OBA--.47148S3;
-	Thu, 11 Sep 2025 10:03:53 +0800 (CST)
-Date: Thu, 11 Sep 2025 10:03:51 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgAn5W6RMMJoJIhGBA--.44820S3;
+	Thu, 11 Sep 2025 10:14:43 +0800 (CST)
+Date: Thu, 11 Sep 2025 10:14:41 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Bence =?iso-8859-1?B?Q3Pza+Fz?= <csokas.bence@prolan.hu>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Lukas Bulwahn <lbulwahn@redhat.com>
+Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Csaba Buday <buday.csaba@prolan.hu>
-Subject: Re: [PATCH v2] ARM: dts: imx6ul-tx6ul: Switch away from deprecated
- `phy-reset-gpios`
-Message-ID: <aMIuBwgtrWDe-5Fk@dragon>
-References: <20250825-b4-tx6ul-dt-phy-rst-v2-1-0d3ba9736b0e@prolan.hu>
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Subject: Re: [PATCH] ARM: imx: Kconfig: Adjust select after renamed config
+ option
+Message-ID: <aMIwkWRY5c7tLIxV@dragon>
+References: <20250826092901.43141-1-lukas.bulwahn@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250825-b4-tx6ul-dt-phy-rst-v2-1-0d3ba9736b0e@prolan.hu>
-X-CM-TRANSID:Mc8vCgD399gHLsJo9n5OBA--.47148S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUc1xRDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBLFZWjCB7lcQQAAs-
+In-Reply-To: <20250826092901.43141-1-lukas.bulwahn@redhat.com>
+X-CM-TRANSID:M88vCgAn5W6RMMJoJIhGBA--.44820S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUOTmhUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIhP6YGjCMJOieQAA35
 
-On Mon, Aug 25, 2025 at 02:52:09PM +0200, Bence Csókás wrote:
-> The Ethernet PHY's reset GPIO should be specified in the node of the PHY
-> itself, instead of the MAC (`fec`). The latter is deprecated, and was an
-> i.MX-specific extension, incompatible with the new reset controller
-> subsystem.
+On Tue, Aug 26, 2025 at 11:29:01AM +0200, Lukas Bulwahn wrote:
+> From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 > 
-> Co-developed-by: Csaba Buday <buday.csaba@prolan.hu>
-> Signed-off-by: Csaba Buday <buday.csaba@prolan.hu>
-> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+> Commit 3f490a74a8a1 ("clocksource/drivers/vf-pit: Rename the VF PIT to NXP
+> PIT") renames the config VF_PIT_TIMER to NXP_PIT_TIMER, but it misses
+> adjusting a reference to VF_PIT_TIMER in arch/arm/mach-imx/Kconfig.
+> 
+> Adjust the config reference to the new name.
+> 
+> Fixes: 3f490a74a8a1 ("clocksource/drivers/vf-pit: Rename the VF PIT to NXP PIT")
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
 Applied, thanks!
 
