@@ -1,44 +1,42 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A557521B9E0
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 03:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38F31DED5B
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 03:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757560910; cv=none; b=I4ziMhHGwcKWiLbQODT6FUdfP6ImG1MOPuwPZ4X+ERcSjJVCw/PDgqh+LimxNaB9d0Cnn5Uvo4lrNj57fdnAEJwppWtbH2UMnJjNMfj2cG2mf2PLdEu4KrahdWcih5igT5njsLc2S08vFieuY4j4bVZo+oTtAMv5dLpIrZkCODw=
+	t=1757560978; cv=none; b=ntU72+OprEXCc3Iu92LD2hXH92Q2FkQCFGbjjPhOjG0oFwz4BEk2ZXFdgHbjcm1xvIUMHBv/jBnBeNxTeOJJxQyu6bluGl/S1ed4+SVfHQTQ7eTBQdCB5Caxxmjdnr3dKRwclUun99/g36ObHzAt11Iu+Iz7Aw1klgCyNcIjTCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757560910; c=relaxed/simple;
-	bh=5+trMH77q83uEF1WKVmk+BogVGEkoTEwb0o1fDY/+p8=;
+	s=arc-20240116; t=1757560978; c=relaxed/simple;
+	bh=1G77BigPRMZi5VbYGFj3vPc+tY7bX4tVaDZbtyle2Kc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HfVAqUoztDvH4hvsnG6BEf0yALMhGsb4guMwHbvCJDYGR82s3AK9ELDH+GiC4D9RjnimxPuQfjkfPJSSyW3mJNN+1AFPT8ymZ2A9Wk6unb+nWdNhEs8Spqf+uzpnbZ5GvyHZ9JWA/s4fhVZjsEG3HX29QLRW40sVStyq32gw/U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=TEm9BVS6; arc=none smtp.client-ip=220.197.32.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=FSXwTOiNPXYzAuvPy++6NPc50Vm2O6KMarDbCi5fgsG+YO3rWXs1r3yjdbBoyEqBvDNOR1G5gobqGX/6YtdjgPj75Nlb00z2o0qWwCzqNfai/5l+R0+BX4vhc72i1m5rAlpYJe6Ndy6QZip24SL9LG3KlhF5Df2bS2GTlJzCh2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=frCjEGxs; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="TEm9BVS6"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="frCjEGxs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ZafrnNnDKJ160LOPQFJ9xF6eobBS3Hu2Wi+AoCGeUIc=;
-	b=TEm9BVS6kxFJ1+fIAzNB6mb0OUFFX6gvB8pZqZ2MKL3mXTDiDoyWCUJScCH+/u
-	RN9TinW1LIKg5bxEMtGIo187hpczUT+A2T3mf3PZJb0gLDnQTqO9FoSMFBPDcx4B
-	5gD4jxBVFlCr30Sd+4AlONq0VeJHRKXziwJ50DH/4lZSw=
+	Content-Type; bh=THlvFbB78RIDz28+vysH0ce88JgTgR3a3bl/ZMN0Ldg=;
+	b=frCjEGxsW1ezgKWmLhsN0TmHjLL2JoC5L+raMBoyUyvnOAOSNStaIaJQGHF9u3
+	zurLhWJVjJIDL19H+plKT5YNLLNmV3Zu9IwdertN/JX3hHRrbUpnOg4xPwGS9Fg9
+	kkbbhEEmSiIpiv3TQ115gyE+1rAtcDiKciz7UAZ8EhWU8=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3Fx4yQMJohYVgBA--.16969S3;
-	Thu, 11 Sep 2025 11:21:24 +0800 (CST)
-Date: Thu, 11 Sep 2025 11:21:22 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDn3wx_QMJoV4hgBA--.15626S3;
+	Thu, 11 Sep 2025 11:22:41 +0800 (CST)
+Date: Thu, 11 Sep 2025 11:22:39 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+To: Wei Fang <wei.fang@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, Frank.Li@nxp.com, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/16] ARM: dts: imx6: clean up some dtb check warnings
-Message-ID: <aMJAMimvJ_eIzr9F@dragon>
-References: <20250903-imx6_dts_warning-v1-0-1e883d72e790@nxp.com>
+Subject: Re: [PATCH] arm64: dts: imx95: add standard PCI device compatible
+ string to NETC Timer
+Message-ID: <aMJAf_L0AbVfat5m@dragon>
+References: <20250904020049.1397308-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,32 +45,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250903-imx6_dts_warning-v1-0-1e883d72e790@nxp.com>
-X-CM-TRANSID:Ms8vCgD3Fx4yQMJohYVgBA--.16969S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZryDuF18Aw4ruw1fZry5Arb_yoWDZrX_Xw
-	13Ga12ya13Gr47Aw1aqr1q9F98Kr1Utr48Wry0gr1Yq3ZxC3ZxGFWrta4UWr17CrW3tw1q
-	gr47XwnrX34xCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU1sNVDUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIhTnTWjCQDTSswAA3j
+In-Reply-To: <20250904020049.1397308-1-wei.fang@nxp.com>
+X-CM-TRANSID:Ms8vCgDn3wx_QMJoV4hgBA--.15626S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU7jg4UUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIQL6YGjCQIJmVwAA3g
 
-On Wed, Sep 03, 2025 at 04:19:53PM -0400, Frank Li wrote:
-> Frank Li (16):
->       ARM: dts: imx6: add #address-cells for gsc@20
->       ARM: dts: imx6: add key- prefix for gpio-keys
->       ARM: dts: imx6: align rtc chip node name to 'rtc'
->       ARM: dts: imx6: add interrupt-cells for dlg,da9063 pmic
->       ARM: dts: imx6qdl-aristainetos2: rename ethernet-phy to ethernet-phy@0
->       ARM: dts: imx6: remove redundant pinctrl-names
->       ARM: dts: imx6: rename touch screen's node name to touchscreen
->       ARM: dts: imx6: rename node i2c-gpio to i2c.
->       ARM: dts: imx6: rename node name flash to eeprom
->       ARM: dts: imx6: rename i2c<n>mux i2c-mux-<n>
->       ARM: dts: imx6: replace gpio-key with gpio-keys compatible string
->       ARM: dts: imx6: replace isl,isl12022 with isil,isl12022 for RTC
->       ARM: dts: imx6ul-14x14-evk: add regulator for ov5640
->       ARM: dts: imx6ul-pico: add power-supply for vxt,vl050-8048nt-c01
->       ARM: dts: imx6: remove undefined linux,default-trigger source
->       ARM: dts: imx6: change rtc compatible string to st,m41t00 from m41t00
+On Thu, Sep 04, 2025 at 10:00:49AM +0800, Wei Fang wrote:
+> PCI devices should have a compatible string based on the vendor and
+> device IDs. So add this compatible string to NETC Timer.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Applied all, thanks!
+Applied, thanks!
 
