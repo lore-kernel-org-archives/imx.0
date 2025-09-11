@@ -1,66 +1,103 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FF919F111
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 03:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F5224290D;
+	Thu, 11 Sep 2025 05:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757561644; cv=none; b=JbOIYrMD9BOFZOTSXRXACUDmLfUFRaIgRER2d/RZHyzhXQJwrLCxVczn9Zygati+CLAgqPg/5wyTBpww4WmJCkkDVBGeYBQFFJbB4eRrp4U+j/KfODutx8LdPrcXXwmWdY/JpP3eP2aO7sZxsg1AxKVUZ8YwXfK5wIVBqjGWTVo=
+	t=1757569113; cv=none; b=u1DIdvl4dPpLIU5wLQd60iH3/R9AMMq96/zWygl4ceJt5VgAOKySKNo+EGYgcMqdGdsxYyOUzKo1VYcBvn2Ks7qN4ten0xWAdBgfxst/Y7lCMh9M/HUvZTEN56Rs16L2c7GjgyrwgHlqUAxvKRsR0z6EkCNoD0kkT892v559tG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757561644; c=relaxed/simple;
-	bh=5K+fzwbWX432QtirHOzxhrMZ6T8493VGbop9fUkROb4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ny4UUiyRcecqdW2UrnoWbWxm9Zk7EuMOpB7fEtkdWLKdT9PG00F9UnngWNQ05z+9/9T0aBOqYb1kYXsvIr42d4pz76wAGQzMT68K4P22VvLU5UvINlJZ0oqncuJ8wMq00BxJmbUpC7+mxdjiHHdt/D+dBXJERbRToEHf0J1Y7g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=BgHRdRcg; arc=none smtp.client-ip=1.95.21.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1757569113; c=relaxed/simple;
+	bh=zslq5NZ9GBE+NFMFpUXQKdQwmGpJdU16zodzEZ5lWJ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=amjmZjD/VqyCfyUaPsiybHxCKnJ6r+099qVDEe+S9L5okhWZoBiwOgsbyIjNy8Mvw+npb30PztVdVA8sDONAE40P7Lx03z/RgV6chsFn+jI2CzfSGDAG6nklNWJLogLuNCTnMv146jJPf/ci0GYVn1UHhZ8lqpgAjV1msJButn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=Hs7ZfSyD reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="BgHRdRcg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=9lfbb59Z653T2kjJpk8QzXlXjSD55hbRo8AmzH45kE8=;
-	b=BgHRdRcgS4ePFTe3iK+gqw0Bx/wuh6tIqL+9EY5lyDoskjqNv3S9ifbHaXqkJX
-	ETu66++yDjNGbkm5UmOqL9YfRuo7V0DnnwdIKzrufBEN/YRWnaA6J/S09HOSpe7S
-	ARMo73gN7biOrc+xBtZfiVZGcVSs/ZU3W19jzz9trzhfY=
-Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgAXhtsaQ8JoCKRgBA--.51790S3;
-	Thu, 11 Sep 2025 11:33:48 +0800 (CST)
-Date: Thu, 11 Sep 2025 11:33:46 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Primoz Fiser <primoz.fiser@norik.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, upstream@lists.phytec.de
-Subject: Re: [PATCH] arm64: dts: freescale: imx93-phycore-som: Remove
- "fsl,magic-packet"
-Message-ID: <aMJDGigkz986YC0M@dragon>
-References: <20250908111705.2956825-1-primoz.fiser@norik.com>
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="Hs7ZfSyD"
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4cMmYn6jWzz1FQVw;
+	Thu, 11 Sep 2025 07:38:21 +0200 (CEST)
+Received: from [192.168.0.25] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4cMmYn1PXCz1FQVP;
+	Thu, 11 Sep 2025 07:38:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1757569101;
+	bh=J4SmUX7P+kpNB7OaZvmmYUNeRGLdLLWkUbpUICDS3qY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Hs7ZfSyDOM7aPRu33LOA+3yef+fVto4kU9xa+4YpClIxfuXs1fUOvHNHSbYzTsH95
+	 ys3zgWHJHS23RTioc6nK1rRkrbxCam9D5ptr5a/DgIz7xpPRDCQ6Etyd5bStpWc73w
+	 7yOC/+8Ounc2FdB1AGu5KYNtNxw+XWF0Y0vJdIXiwXVxxPzwE6FGqoMLKjGAvRTDu6
+	 0tRpQ6v9KDjievFY3f8w6p8LSH1LMGdoj0SQczd00LYltcWoPmKILRmn5F8FOypXFd
+	 6Zp6gO/YqFuyTXHhSNlsS6DU3Zk+NRltjlY23ffJsltCzkH4eal4Sp3ahPCc/wsqRM
+	 gmrx1Brnia8oQ==
+Message-ID: <5d2fec2b-8e59-417e-b9e6-12c6e27dd5f0@gaisler.com>
+Date: Thu, 11 Sep 2025 07:38:15 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250908111705.2956825-1-primoz.fiser@norik.com>
-X-CM-TRANSID:Ms8vCgAXhtsaQ8JoCKRgBA--.51790S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUzSoGUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIhyiCGjCQxzcSQAA30
+User-Agent: Mozilla Thunderbird
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Richard Weinberger <richard@nod.at>, Lucas Stach <l.stach@pengutronix.de>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand
+ <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+ Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ Sergio Paracuellos <sergio.paracuellos@gmail.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 08, 2025 at 01:17:05PM +0200, Primoz Fiser wrote:
-> FEC WoL (Wake-on-Lan) functionality depends on using Ethernet PHY in IRQ
-> mode. However, on phyCORE-i.MX93 SoM, polling mode is used instead for
-> the FEC Ethernet PHY. Consequently, WoL is non-functional. Thus disable
-> it by removing "fsl,magic-packet" property. This allows us to save some
-> power during device suspend as PHY is not kept awake.
+On 2025-09-09 23:23, Arnd Bergmann wrote:
+> High memory is one of the least popular features of the Linux kernel.
+> Added in 1999 for linux-2.3.16 to support large x86 machines, there
+> are very few systems that still need it. I talked about about this
+> recently at the Embedded Linux Conference on 32-bit systems [1][2][3]
+> and there were a few older discussions before[4][5][6].
 > 
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+> While removing a feature that is actively used is clearly a regression
+> and not normally done, I expect removing highmem is going to happen
+> at some point anyway when there are few enough users, but the question
+> is when that time will be.
+> 
+> I'm still collecting information about which of the remaining highmem
+> users plan to keep updating their kernels and for what reason. Some
+> users obviously are alarmed about potentially losing this ability,
+> so I hope to get a broad consensus on a specific timeline for how long
+> we plan to support highmem in the page cache and to give every user
+> sufficient time to migrate to a well-tested alternative setup if that
+> is possible, or stay on a highmem-enabled LTS kernel for as long
+> as necessary.
 
-Applied, thanks!
+We have a upcoming SoC with support for up to 16 GiB of DRAM. When that is
+used in LEON sparc32 configuration (using 36-bit physical addressing), a
+removed CONFIG_HIGHMEM would be a considerable limitation, even after an
+introduction of different CONFIG_VMSPLIT_* options for sparc32.
+
+Regards,
+Andreas
 
