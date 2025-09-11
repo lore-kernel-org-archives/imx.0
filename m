@@ -1,171 +1,231 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013015.outbound.protection.outlook.com [40.107.162.15])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5196924290D
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 18:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757614025; cv=fail; b=tbUviXj0JEfs1Rx+n5GZoYNITDvHtKQtjcciQyDXq3MMp437fTwGvftdxUjaPCvf29GZrpN41ka2E80aNGQNaRJ/b4pDVTIWWiS+9Uu0iz3pwVejtAD9tvRkHrLAcyLOeylfqkK4Qq06IJMz2sqsMH0iUvNsgl+oR/E7hpRw4xM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757614025; c=relaxed/simple;
-	bh=euDh0uipkJxbkuCmH/tPIhS5D9G6q7UVK2OXuvdkoBI=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iP2y9GLvsUchBex/WiH4zEPtCPqOdC35AD2jHfZ6JDVpMkvx3SEsuCOlNL7DJt91H5r8elE9yHt3isMcqR+Hawkb88a/o2/9+geCuhhnpco8ZaI+QC363VVC81zvHAmsr5zAnLk1ghnDVBuCXVlUTXnuX9K7Sn3lMKUqfyYl8XI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SOiFgN7w; arc=fail smtp.client-ip=40.107.162.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SOiFgN7w"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Vp8OmXMuSxUzAg0pT/T9p2W2DbjRsAerNMTlErsLmx5B7Bvjyqk03FFcubJ5fEm2E90p0hjru/39pCqvYULsfSl29L2dPFfdFXJvQlSfONw2SDCudGUX3lCHVeyBsCClNYuArjDNvGCcwsNsFgd7g10KE25gmDMZ6WtoYcKA4wzEeaWmhA5haFBMfpIB1Uc+kTbV6KdT0co2Cg1VQGb4f9uJpSOYdcQqP2+jYtzRX7ku8mCBaXfb6H5rxpPl1Bv3IJlmSwyjqLTVXCIBQd5aMp/jMlH+NoaAYvLrJB6tub6qkp5SKWt+OeXmxXdvrsVRVO/g8H/5swpxqn09mDL4iw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s3nF0Qm6W30bWSyPciiZ0ew94eZSaRnd966EmIWEoto=;
- b=PAJNipEGr296GaWum4yVAIWhqWXhgv8J/5gEl26Cj0cDxr+XIogZLV4waT8IKEJOua7UEm8vXNROMkn9rVpvlfSSzKQbXBNq5jojCOJH6xxeA8/tN12sD3B2ay2MZBBRjXDq6qkaD00IDY4LiHIoHAyNzVLTLPu6GC+VHz3FV6sB/1rwAASg8407se2AVoAkPWghTyORkEjncHEppryfDf7oKuSMybD8agtG6SrLbhEreRzmbUVtlVZtM3gY4leqA/BtCoecbbgUzVC5Np7BJChYWtY6GMHigzv5JWqgrp/jamSq+o0UdyjS7K6VdVEVpOODEAK7yBUUyVN7//kUiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s3nF0Qm6W30bWSyPciiZ0ew94eZSaRnd966EmIWEoto=;
- b=SOiFgN7wlelc3tCtsM1cHKJpSwI+D+LTjvQc7KLP7MijlbDKmAH/NkMOYGBodJbnygX0X9RYf5RlDvgw6nFiNVkdYuG3nY2q6SPFzGD6yAkhSF+dNYypzV3mtKXK7FI6Bba9U920XdzrzP8Q5fJ3mISEiD3YwGcQnZ2UTWHn/S2HbbqIbk2SpXybQN9LaN2peM66pj5PjMf0NOqkBe3wNxRDrD2+DQ3b2rype0R4R9X55ruZZWoAeBHElvk8eqUO9CDK3Gp7qJN+W1ldxxEVzQV3GGeji3ZkvqQ0lg3p9ZsSlOQKsBMZDKpkcbySaujR2+6MOzqvUE6fU+YeAE5W0g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by AM0PR04MB7076.eurprd04.prod.outlook.com (2603:10a6:208:19a::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.15; Thu, 11 Sep
- 2025 18:06:56 +0000
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9115.015; Thu, 11 Sep 2025
- 18:06:56 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Robin van der Gracht <robin@protonic.nl>,
-	Andy Shevchenko <andy@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: auxdisplay: change to unevaluatedProperties
-Date: Thu, 11 Sep 2025 14:06:41 -0400
-Message-Id: <20250911180641.1031346-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH5P222CA0012.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:510:34b::8) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC562DC77B
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 19:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757619607; cv=none; b=IonEQPq2kfxLkqEaKtW2BTz+9c5uGXrjqbwGKeS9ExG6B+kAX90SNjfV5Qs4fyJTmMUx5CKOZ3gamGAz5QOZ5XY4zbF12glclAkzSBTTqszbztSIl+/+HGIQkM9sEoT+TEiila68DMfyS1wHope9NmXOVG07vpJJH8Cf5ruLdqg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757619607; c=relaxed/simple;
+	bh=+w5RPLl837CWWEAg8skGwQFsfyd6q7WmyVIeTbLxr/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JlMagpaU0bcqXroFBor2IO59cB+/UXMB3ed6PG01YGO8HK2+6V0KQhUSt0RDTO/+XUaRG1+pC0lyxPTQBIRK46mI1KZMWwL/Pmg69TPBxiXlWG8bFwWz424Meyxsz1XpV404tRywU2r/Y2Kl5YZE9+PucCT6PI01dyixt7n8weU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwmtj-0000G2-U2; Thu, 11 Sep 2025 21:23:59 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwmtj-000oOk-0l;
+	Thu, 11 Sep 2025 21:23:59 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uwmtj-000w1H-0I;
+	Thu, 11 Sep 2025 21:23:59 +0200
+Date: Thu, 11 Sep 2025 21:23:59 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jiada Wang <jiada_wang@mentor.com>, dmaengine@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/11] dmaengine: add support for device_link
+Message-ID: <20250911192359.mpgoeyiafnunnohn@pengutronix.de>
+References: <20250903-v6-16-topic-sdma-v1-0-ac7bab629e8b@pengutronix.de>
+ <20250903-v6-16-topic-sdma-v1-9-ac7bab629e8b@pengutronix.de>
+ <aLhUv+mtr1uZTCth@lizhi-Precision-Tower-5810>
+ <20250909120309.5zgez5exbvxn5z3y@pengutronix.de>
+ <aMA88W/rDxFesEx+@lizhi-Precision-Tower-5810>
+ <20250910193545.gx3qoyjamoxlncqd@pengutronix.de>
+ <aMHwbogOA6QTc3Dm@lizhi-Precision-Tower-5810>
+ <20250911115056.5iufhnjdhsbiwugw@pengutronix.de>
+ <aMLoP1/Wmay2v37G@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|AM0PR04MB7076:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8a6c4a2e-d1dc-4c21-7ab8-08ddf15dfe1c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?K4eJRxABz0CDBBCE/JdyX7GS8+XmHu3QQ4S0osrLTj8bEAvrmi0n3wB0BQvZ?=
- =?us-ascii?Q?aAV3SFGd8qFrM42BP/WU4Qg3v8Cyz2oQNI6AcfY4VzZ9BeIr9sFxGjTORQsr?=
- =?us-ascii?Q?1oJcm4hlXAcdxU7k3/t49RtvDZVhg90d3u19/yjybetMdawiJ2hDdR1QqYmE?=
- =?us-ascii?Q?hmB05wIKTIyRUjD4DlCcZH5NPPHmrw1QOJg3WnnmdjWpDyVA7NNUGfdL1hb9?=
- =?us-ascii?Q?MxND58QGIzBTegoI9fBvUgZ1jnjti65fxYQLSjZlC/90kHKzx15jUC56QEFt?=
- =?us-ascii?Q?JvAHHt/JL8D+tc/PLAwfpEpzh+6qJ3yFmbrP7lB1dgonYl6nId2lR2RUuQrn?=
- =?us-ascii?Q?UC6RV3fjd0lEtX57fIqjAP2+fYfRdBkvPuJTmwPNOV1Tj9JxTdIGHkMScoi2?=
- =?us-ascii?Q?eyCyz2TMvqqnnQ5kLhiHdePbHa381DrX6decAfnlLK26I4JNx1shWgUs8/5I?=
- =?us-ascii?Q?pEYdJB9SNa9Lc2C1u8n/ig4TKGt6YtG83zZ4JlwdP9w8mR5KKAI5oPXm7v1I?=
- =?us-ascii?Q?zfiFF2TFsC0gnxPSx0SQbGvGkq3XKEcOf/3ZMuNE9p0UbtT4TV1VL3WI6d5r?=
- =?us-ascii?Q?r1UnzV+phY5ESTwmzAsoIH0VYhz5QoeBhks74tIj5N/y336hDVGrDnqyAThA?=
- =?us-ascii?Q?4uRZMPIxHNcDAzRGNBw2IRgGfF1DxjtrCIEjXvh1ZroDNLkRIc0UY2v82zXa?=
- =?us-ascii?Q?spDMbIWs9uirBJ8w7MC3UAkN5lErSe9ydTvZ05hkDtSfkn4uKMpT3q1sjnHR?=
- =?us-ascii?Q?mpgq21BCBoT3VNiPb9/6U39GO92f7w18CZsvH15/jFzGsORb0z/r/l5me5Wr?=
- =?us-ascii?Q?TdGMHaS54YVTF9fD6rUb+sLwwPH2siiYUy3M2ChFR9jS8tTqxCv66ydj7smF?=
- =?us-ascii?Q?2tZR/siKTcg6EAjjAXte2FEDMEqdqe8QWLpc3/cIKJmzjYRdMudcy5okBaBK?=
- =?us-ascii?Q?WwCfOPShSmFaCVE3VFrhBx8ZQ2sMFHipkEOeo+SK8SXRyvstmHrf2vJA7lRQ?=
- =?us-ascii?Q?6FFvArIdC0tFFG9jddK7qF9cff6Mb4H3yrN29qM//9bQMcQNzAgSkqxLle0y?=
- =?us-ascii?Q?2qXlFg5VrZDc/L2bVams7yCwwDaHUOqdqSpKsWtTXSWGjwHHtVwH0BvdelKb?=
- =?us-ascii?Q?BrE07XWKLBy5vy+4pvoVTDHi0V+4s+yXLx9+UtdPebmomKRTr9Cy6Rs+xD77?=
- =?us-ascii?Q?nGLi+YL75ILg6FOa+4MCv4ko8j5DZB9QU9Z8L29xCVGE9cEC/qI8rHGnJUYg?=
- =?us-ascii?Q?OGSUtc0JeClcgYMCwz4QMVi7EX15hAsZsfjHYbVVR8+1TzLF5pkD+Q3NPMx2?=
- =?us-ascii?Q?Oyg6FShzaVHRvP9j3yunPQ11dfhSmh214ESYz/op7EW2pHNwM6u9ldcyO/ks?=
- =?us-ascii?Q?fzRnZ4VRJfRDvtGRjEhqrWULdfqpKRRaZZULY9f06GN9z0O49Oaqi3C88hR5?=
- =?us-ascii?Q?yfAmldR7qq8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+2nDd19I9NIbtBoX3jMKTwXRDBAKc6H6mvEhZdZtla4Af0DUFSOyGgrI2ZwV?=
- =?us-ascii?Q?ziwJlM7KV9jDFXxWdx/j8o+uu8o7CCzsOZrFi2SslUmaKgmPTiDl+H5Y6lop?=
- =?us-ascii?Q?pblycOWk8zzTNp1Kp3Kixn2jTTTyIR2KK3GJbulmOcZmV8aGlphGCRQtRbo0?=
- =?us-ascii?Q?/XPOz0cOfMeXOLBhS/GtrlPanQA8tc4J0sthRdN1YQRQVJacHe558lFennoY?=
- =?us-ascii?Q?e3NcZQtDM7o+KZ0v1FnjcSFpIO8GgphpxlNyIH91GzsQYYUGuqcIzaCsGPWD?=
- =?us-ascii?Q?Kp3lmQN6SgVom6Lk+SrK4sF77AdODJAzJ1TY87WgJ+LtVLN4AzyZDU1O8mx/?=
- =?us-ascii?Q?SsNw/MIP2c8MP0LRD9/KN1nsZ9KQk6CzCjFZ/O7poeWbMai/hCPj26LZ/RfC?=
- =?us-ascii?Q?wFfJDfyZLDMUSBZjl2xwedaC3Xet4WNqJZPIpCzNXX5ZYdabVKA3JvEqNDG1?=
- =?us-ascii?Q?HVh4JJuMjGQsvBTJyknowh17SxatNQw4YJlLar3xJQcSW2S2HJTUpf+cTEZc?=
- =?us-ascii?Q?5XDxIqaaGpWJrDbJck5v4wTwt110kWonP3SzqjEc6TMy6h4PNQNJcU+N1JVA?=
- =?us-ascii?Q?qlyinPBp7kvMUJCm7bdPjp8/cLQ19tfYPKGl+EH3mwwZQe4Llaycy0WEYfmV?=
- =?us-ascii?Q?BFArKkDYI3E9Atg+rukqEuUnUt4hHrvglbw1BT6CVwq6UpuETNYz3vdy+/QP?=
- =?us-ascii?Q?MmUfHwgZqnDUgKw1bkqcrYxPjkjtNqVt3PfuJtrCiM6Mjp4gw5GSL9mnMU6v?=
- =?us-ascii?Q?dZJikzoeS9aiyZq/QnsY2699bOHjh7mUvH1wCm1ZuBExn1cjWjqzDoco5bv7?=
- =?us-ascii?Q?R6cMM7q5+WsuStt6G14bEm6OjXIRE2gqGLg6JELsoy3z6JvaI/kJw44PYhar?=
- =?us-ascii?Q?b5YTRTjbYZhSmcShnMhudRvIaH2whR7TOFO2FxP+nab1PWZcb8jaVCi86d6l?=
- =?us-ascii?Q?O9aewFIqZPF3ASTs0z1rbpu+imSByIe/waMjxfxTtUl70UN6F3K/PyTraF/K?=
- =?us-ascii?Q?thWjjV3klZwqDkXxIp0hASwCgm+mc97aM7AK4z4/+BW34D28NKwZFlfaG/66?=
- =?us-ascii?Q?pOASSFOGTOnipwpyMHO36+arlcOOsKADaeFVn2LelKaRRC9Ci/NV8MftsZkc?=
- =?us-ascii?Q?AVBtXKauXioRRXacrKASGufGOsw+/snFXTvUbyQFt5NjlDMbmkaurGTrBNMm?=
- =?us-ascii?Q?M4v5tf2vJeHGbDTGNiP59dGM4Yk2k3YVp0WNtDisXoFr25EvuHBx59bl6DtQ?=
- =?us-ascii?Q?hItaZ5ssg4tuY62wAWcn1WbQEa5ECP3y/RpE7cwT99Osauyevdhp40Xem7IZ?=
- =?us-ascii?Q?0hHVL0CSpUp3mSnUe8j0gUQDmnEDqnTBYv9o/7M9/9G/dHYO2K7A1ebxHhta?=
- =?us-ascii?Q?I0zmBbWX93X5oA+W6UVXaCS6XRaQr7UIm/d14VrH7eBkvFGhR250/CN4yBj1?=
- =?us-ascii?Q?GrY+IAcDBEy0OSbQMy2inclFI20UomfGAT42X6p6KZFap3RoLDHoDrXGMqYo?=
- =?us-ascii?Q?dP2qJusZD0vwCdfZF8XY3DnCahmO64wO5Mv4Dx8iXCDWf6ttixhOZ/xmeA8/?=
- =?us-ascii?Q?wvQ1/OrgyXrw6MUGZBo=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a6c4a2e-d1dc-4c21-7ab8-08ddf15dfe1c
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 18:06:56.1736
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Hes9ViocbYo7hEGeUL/nKI7X6BlXgNCOt0Nv0ABe8G2KoR7e8JhErYlZYpxLwPmH6RkPtawAEYD8rIIbRzqp7Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7076
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aMLoP1/Wmay2v37G@lizhi-Precision-Tower-5810>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Change additionalProperties to unevaluatedProperties because it refs to
-/schemas/input/matrix-keymap.yaml.
+On 25-09-11, Frank Li wrote:
+> On Thu, Sep 11, 2025 at 01:50:56PM +0200, Marco Felsch wrote:
+> > On 25-09-10, Frank Li wrote:
+> > > On Wed, Sep 10, 2025 at 09:35:45PM +0200, Marco Felsch wrote:
+> > > > On 25-09-09, Frank Li wrote:
+> > > >
+> > > > ...
+> > > >
+> > > > > > > > diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+> > > > > > > > index 758fcd0546d8bde8e8dddc6039848feeb1e24475..a50652bc70b8ce9d4edabfaa781b3432ee47d31e 100644
+> > > > > > > > --- a/drivers/dma/dmaengine.c
+> > > > > > > > +++ b/drivers/dma/dmaengine.c
+> > > > > > > > @@ -817,6 +817,7 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+> > > > > > > >  	struct fwnode_handle *fwnode = dev_fwnode(dev);
+> > > > > > > >  	struct dma_device *d, *_d;
+> > > > > > > >  	struct dma_chan *chan = NULL;
+> > > > > > > > +	struct device_link *dl;
+> > > > > > > >
+> > > > > > > >  	if (is_of_node(fwnode))
+> > > > > > > >  		chan = of_dma_request_slave_channel(to_of_node(fwnode), name);
+> > > > > > > > @@ -858,6 +859,13 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+> > > > > > > >  	/* No functional issue if it fails, users are supposed to test before use */
+> > > > > > > >  #endif
+> > > > > > > >
+> > > > > > > > +	dl = device_link_add(dev, chan->device->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
+> > > > > > >
+> > > > > > > chan->device->dev is dmaengine devices. But some dmaengine's each channel
+> > > > > > > have device, consumer should link to chan's device, not dmaengine device
+> > > > > > > because some dmaengine support per channel clock\power management.
+> > > > > >
+> > > > > > I get your point. Can you give me some pointers please? To me it seems
+> > > > > > like the dma_chan_dev is only used for sysfs purpose according the
+> > > > > > dmaengine.h.
+> > > > >
+> > > > > Not really, there are other dma engineer already reuse it for other purpose.
+> > > > > So It needs update kernel doc for dma_chan_dev.
+> > > >
+> > > > Can you please provide me some pointers? I checked the kernel code base
+> > > > for the struct::dma_chan_dev. I didn't found any references within the
+> > > > dmaengine drivers. The only usage I found was for the sysfs purpose.
+> > >
+> > > static void k3_configure_chan_coherency(struct dma_chan *chan, u32 asel)
+> > > {
+> > > 	struct device *chan_dev = &chan->dev->device;
+> > > 	...
+> > > }
+> > >
+> > > >
+> > > > > > > chan's device's parent devices is dmaengine devices. it should also work
+> > > > > > > for sdma case
+> > > > > >
+> > > > > > I see, this must be tested of course.
+> > > > > > > >         if (chan->device->create_devlink) {
+> > > > > > >                 u32 flags = DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_CONSUMER;
+> > > > > >
+> > > > > > According device_link.rst: using DL_FLAG_STATELESS and
+> > > > > > DL_FLAG_AUTOREMOVE_CONSUMER is invalid.
+> > > > > >
+> > > > > > >                 if (pm_runtime_active(dev))
+> > > > > > >                         flags |= DL_FLAG_RPM_ACTIVE;
+> > > > > >
+> > > > > > This is of course interessting, thanks for the hint.
+> > > > > >
+> > > > > > > When create device link (apply channel), consume may active.
+> > > > > >
+> > > > > > I have read it as: "resue the supplier and ensure that the supplier
+> > > > > > follows the consumer runtime state".
+> > > > > >
+> > > > > > >                 dl = device_link_add(chan->slave, &chan->dev->device, flags);
+> > > > > >
+> > > > > > Huh.. you used the dmaengine device too?
+> > > > >
+> > > > > /**
+> > > > >  * struct dma_chan_dev - relate sysfs device node to backing channel device
+> > > > >  * @chan: driver channel device
+> > > > >  * @device: sysfs device
+> > > > >  * @dev_id: parent dma_device dev_id
+> > > > >  * @chan_dma_dev: The channel is using custom/different dma-mapping
+> > > > >  * compared to the parent dma_device
+> > > > >  */
+> > > > > struct dma_chan_dev {
+> > > > > 	struct dma_chan *chan;
+> > > > > 	struct device device;
+> > > > > 	int dev_id;
+> > > > > 	bool chan_dma_dev;
+> > > > > };
+> > > > >
+> > > > > struct dma_chan {
+> > > > > 	struct dma_device *device; /// this one should be dmaengine
+> > > > > 	struct dma_chan_dev *dev; /// this one is pre-chan device.
+> > > > > }
+> > > >
+> > > > I've tested your approach but it turns out that teh dma_chan_dev has no
+> > > > driver. Of course we could use the DL_FLAG_STATELESS flag but this is
+> > > > described as:
+> > > >
+> > > > | When driver presence on the supplier is irrelevant and only correct
+> > > > | suspend/resume and shutdown ordering is needed, the device link may
+> > > > | simply be set up with the ``DL_FLAG_STATELESS`` flag.  In other words,
+> > > > | enforcing driver presence on the supplier is optional.
+> > > >
+> > > > I want to enforce the driver presence, therefore I used the manged flags
+> > > > which excludes the DL_FLAG_STATELESS, if I get it right.
+> > > >
+> > > > Please see the below the debug output:
+> > > >
+> > > > ** use the dmaengine device as supplier **
+> > > >
+> > > > device_link_init_status: supplier.dev:30bd0000.dma-controller supplier.drv:imx-sdma supplier.status:0x2 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
+> > > > device_link_init_status: supplier.dev:30e10000.dma-controller supplier.drv:imx-sdma supplier.status:0x2 consumer:dev:30c20000.sai consumer.drv:fsl-sai consumer.status:0x1
+> > > >
+> > > >
+> > > > ** use the dma channel device as supplier **
+> > > >
+> > > > device_link_init_status: supplier.dev:dma0chan0 supplier.drv:no-driver supplier.status:0x0 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
+> > > > device_link_init_status: supplier.dev:dma0chan1 supplier.drv:no-driver supplier.status:0x0 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
+> > >
+> > > It should be similar with phy drivers, which phy_create() create individual
+> > > phy devices (like dma channel devices).
+> >
+> > Unfortunately phy drivers do use the DL_FLAG_STATELESS mechanism. My
+> > main goal was to have managed links to overcome the current situation:
+> > dmaengine drivers can be removed without removing the consumer drivers
+> > first.
+> >
+> > You have a valid point by making use dma-channel devices ( dma<X>cha<Y>)
+> > to manage suspend/resume, as well as runtime-PM for each channel.
+> >
+> > But I see this rather as an addition to my solution because these links
+> > must be stateless and stateless/unmanaged links don't guarantee the
+> > correct remove order (my main goal).
+> 
+> If that, phy should have simiar problems. It should be resolved at higher
+> layer to avoid fix this kinds of problem one by one.
 
-Fix below CHECK_DTBS warnings:
-arch/arm/boot/dts/nxp/imx/imx6dl-victgo.dtb: keypad@70 (holtek,ht16k33): 'keypad,num-columns', 'keypad,num-rows' do not match any of the regexes: '^pinctrl-[0-9]+$'
-        from schema $id: http://devicetree.org/schemas/auxdisplay/holtek,ht16k33.yaml#
+I'm not sure because the devlink API is more or less clear about STATELESS
+links. So phy should rather consider using managed links if they want to
+ensure this.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- .../devicetree/bindings/auxdisplay/holtek,ht16k33.yaml          | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> > That beeing said, I'm not sure how you want to handle the clock/power
+> > enablement per channel-device. This would require additional work on the
+> > dma_devclass to add a proper .pm hook else the PM and runtime-PM calls
+> > are only forwarded to the parent dmaengine driver. On this level the
+> > dmaengine driver has no knowledge which channel is going to be
+> > enabled/disabled.
+> 
+> I have draft runtime pm patch for eDMA.
+> 
+> >
+> > In conclusion, I see my approach as valid to ensure the correct remove
+> > order. Your suggestion is valid and can be added later on too since this
+> > needs more work to have a proper per-channel runtime-PM.
+> 
+> We need pave a good road. This part is common dma-engine, which is worth to
+> do good solution.
 
-diff --git a/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml b/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
-index b90eec2077b4b..fe1272e86467e 100644
---- a/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
-+++ b/Documentation/devicetree/bindings/auxdisplay/holtek,ht16k33.yaml
-@@ -66,7 +66,7 @@ then:
-   required:
-     - refresh-rate-hz
- 
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
--- 
-2.34.1
++1
 
+I will send a new v2 which split the devlink patches (common part and
+the imx-sdma part) from the rest of this series. This decouples most of
+the the imx-sdma cleanup from the devlink discussion and we can continue
+there.
+
+Regards,
+  Marco
