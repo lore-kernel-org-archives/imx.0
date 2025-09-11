@@ -1,125 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B300029E11A;
-	Thu, 11 Sep 2025 07:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFC329E114;
+	Thu, 11 Sep 2025 07:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757577208; cv=none; b=rZDAOCb0uar9OrWf+maummKOE3tJPUGKa/rBmnDQs0efQFIsaZHRv5gKLXOPf1q0djZJQ7Y+lazMy+CHkLgJ1sidIwRvnNtLmcnkLL0L8acGj2VgcaxbyXmHPQeH7jXxM+WaJReAnQpGXXlMs/QsvGedRtl+r93e2EXCbyQYnHc=
+	t=1757577351; cv=none; b=nn3rxH7acZGs5D6TvkXiF40IstQxeVA/7zgCAOgST6lqqTcBNlHNCsylse/ctaAoTfkG6mT1HqyCH4g4phOiilK+/PFcYvItfj7lAJnmCyMOSBZUOe4EwxOPTiQEQa1rIS1Fauy8JvZBoMbsdcjftQsKmN3DcD/r64jHG2eYaxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757577208; c=relaxed/simple;
-	bh=Ym/gINLHmikuw69uc6+19TWOxHmwsBHXCw48WiyJQsw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=m2mT8d6szLZc14xogAYsYXmA8E9KT0/GWi7JygIYMNFKwxgCG1kFdb3xknU4T0sZQSH+G7fhdlYBIMgC2bpN4kfMDscgLDmzw98lkDidZ5U81hJh+GnNNuKkqhWcLQtxdYwusucz9DHYnrxaUoKNAXETckxwEkgMe7VlAFexVjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UD0BngKf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757577351; c=relaxed/simple;
+	bh=0i8hnUhy8sTZUL4Vq1iThkRVn9V+TzPj40ZtrBzJyFE=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Ff0+wVd02L4GqDbPqKcpwaT/20HayKZaGR6DmggLs/x4fRrV8SYQRIGHbdKokp8PJkb11ECqqmxcVxVBsrzCt1mNMBfvXWvYnOuqJqBQysei4xzrx6hZcr5dfX8oPaAysRYmFTsRGh8hvwjuzK0eQUWVkFF+nlBSVqxlS99jljU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Iu/xuWao; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XIlM4cTN; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UD0BngKf"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5264FC4CEFE;
-	Thu, 11 Sep 2025 07:53:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757577208;
-	bh=Ym/gINLHmikuw69uc6+19TWOxHmwsBHXCw48WiyJQsw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=UD0BngKfEOEQtMBSI8z7uftnKJd3DgMs57frIxGd2AnM10aK4WYIyxvqBQa1h2r5f
-	 mYlfCAHyxv1vLNeY5T8kKnrbuPEOsjaGPv8pevpsI2TC9H1OkJZwbihEf9FiFk7wec
-	 lVfDOX90DYNiu6TcUCULeD/2BOrWW85mciBL0o6oSxOUDBZoY2i5XAbyzBWGQPmZk3
-	 q7quZ9nqCxtleOWF1hlATQuyKkdP3QeqHqtxBdakhYWtdvWrPw9ZY3y/rrR0GcDEkq
-	 6SIcXI01gJ5WrZSJDK1ct2Qn1RCwTNSmhCYFYzTkDybsR3ZwU1jPCroi68PiG/aoI6
-	 VCuve4TBp0/tA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 47273CAC587;
-	Thu, 11 Sep 2025 07:53:28 +0000 (UTC)
-From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Thu, 11 Sep 2025 09:53:20 +0200
-Subject: [PATCH v3 3/4] arm64: dts: freescale:
- moduline-display-av101hdt-a10: add backlight
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Iu/xuWao";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XIlM4cTN"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 612031400147;
+	Thu, 11 Sep 2025 03:55:48 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Thu, 11 Sep 2025 03:55:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1757577348;
+	 x=1757663748; bh=xezEPREPJQkkrl73Yff7UEqumVCaWAif9r9fc2gAvZU=; b=
+	Iu/xuWaoII7KNzuVcloK0wQmhd56+d5wX0Bleltp/a1sZa3XhGzX/yG9JsPSkl/7
+	2cu0Mu9lmvGcmqeKU6/KrMP/1aCgzIef4N/ewbqrmGkduxdjqLHlEalPav5le4TA
+	+jbgQ1Z+mvU5GokUwPzbGIhEj3HxlMneK0jBDzXQV6kMI00VxiXlnhook7P+C5Y7
+	UriP1BgBZbVa1zMIyagjnMw+2sY7iskhAR0+3srbSjSH0y3Yg7G1I2wCRXsEXXYs
+	8KS2JECjFLMhfIZNMjx0egOaiCksw2shqo/EvFx/UtUO1SZUtqDZzPy4b136cHwy
+	fnHZvT9pGYqsuKxHDCD1Vw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757577348; x=
+	1757663748; bh=xezEPREPJQkkrl73Yff7UEqumVCaWAif9r9fc2gAvZU=; b=X
+	IlM4cTNCufTDuTwE3rh5KIXiSVCwiy8YX9A8fo53sWQ4p2TKGrlQ/9DVCBOHTBG0
+	ffEsLPh+36l9na0nrD2CgxP/dy96GoNkRtEQRzG5aK6nn56aYQGtYTO9P7Y8UiUs
+	an20A9oCUfkbsypc1JODoplvQuBjF8st8s1x31lQ2U0SYE4Jn1XlEMxhnjGHJwJg
+	CNtYItDmOsxdBDmvbtNp8EHZzfn0AGkDnlRRUoNT54QTlsnpmjuslvLqJymldyuB
+	7h+E3hJYEoPPv37Hpq0Dkh4acaBuHq9oAPE4oR1s4jxxyqb8Wde0k9toW89TrDKm
+	U4uNM1J+ErI42a2u/TYQg==
+X-ME-Sender: <xms:goDCaKLlbLhafX1ItUb5fO7F7xQAPgD71xlygMsk3wgbEP7eJM2VEQ>
+    <xme:goDCaCJu-9GwvmuDVC8Y37QomJEPe0pHbKXVqPPiqeh9QFxf908KEUF8un4MQt4Yp
+    DHkwlYQwPBqiaQ5cv4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvheeivdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvkedpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
+    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
+    tghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvg
+    gvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghn
+    uggvrhdrshhvvghrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgih
+    hordhprghrrggtuhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgv
+    nhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrg
+    gurdhorhhgpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:g4DCaPln0xPi_AdWtVR-mPv6uC8M-3Q_mjf16Kd5LjcVVSzFRbJ7CA>
+    <xmx:g4DCaDlZzyLWYRlZII_JRVLfe6viWHF9oK_S1UNgWncQPOR1vmL64w>
+    <xmx:g4DCaJdy81733zjxS4Q3r5w2j6PHhciLt1QMfw2trLXRldoMsUuYcw>
+    <xmx:g4DCaJIi6RXGIaczaDEPnKMDiC-8AkssR85-snNhqeii8rn1LFIfJA>
+    <xmx:hIDCaH7vVqOM0fbJf4funeExzGloqdRoMAB7v2eOhCknP0mHQleXCcBx>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id D083E700065; Thu, 11 Sep 2025 03:55:46 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-ThreadId: AmcCJOTBQ5ho
+Date: Thu, 11 Sep 2025 09:53:45 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andreas Larsson" <andreas@gaisler.com>, ksummit@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>
+Message-Id: <363853cd-7f10-4aa9-8850-47eee6d516b9@app.fastmail.com>
+In-Reply-To: <5d2fec2b-8e59-417e-b9e6-12c6e27dd5f0@gaisler.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <5d2fec2b-8e59-417e-b9e6-12c6e27dd5f0@gaisler.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250911-max25014-v3-3-d03f4eba375e@gocontroll.com>
-References: <20250911-max25014-v3-0-d03f4eba375e@gocontroll.com>
-In-Reply-To: <20250911-max25014-v3-0-d03f4eba375e@gocontroll.com>
-To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
- Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-fbdev@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- Maud Spierings <maudspierings@gocontroll.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757577207; l=1541;
- i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=MKPHYiixnvo18K/Tipnb4mW1ZFhvWvMFDXU6EXpZykM=;
- b=/CA6jwFw9AdCyBAGzCS1uYBPRwTDVmL+ssxdE9/CUUa/h/o7hlenPzXWcz1X3FtED346hee9A
- 8SD+Do7xMlUAHbnbtAef882ZeDM34phyYWsrLI83NbXgjNDIo6iamk1
-X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
- pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
-X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
- with auth_id=341
-X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
-Reply-To: maudspierings@gocontroll.com
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+On Thu, Sep 11, 2025, at 07:38, Andreas Larsson wrote:
+>
+> We have a upcoming SoC with support for up to 16 GiB of DRAM. When that is
+> used in LEON sparc32 configuration (using 36-bit physical addressing), a
+> removed CONFIG_HIGHMEM would be a considerable limitation, even after an
+> introduction of different CONFIG_VMSPLIT_* options for sparc32.
 
-Add the missing backlight driver.
+I agree that without highmem that chip is going to be unusable from Linux,
+but I wonder if there is a chance to actually use it even with highmem,
+for a combination of reasons:
 
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
----
- ...tx8p-ml81-moduline-display-106-av101hdt-a10.dtso | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+- sparc32 has 36-bit addressing in the MMU, but Linux apparently never
+  supported a 64-bit phys_addr_t here, which would be required.
+  This is probably the easiest part and I assume you already have patches
+  for it.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtso b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtso
-index e3965caca6be42a17aa89b77bd5b919382c84151..3d0983a3ab5463196de8cefb863bde74426b735d 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtso
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtso
-@@ -17,6 +17,7 @@
- 
- 	panel {
- 		compatible = "boe,av101hdt-a10";
-+		backlight = <&backlight>;
- 		enable-gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
- 		pinctrl-0 = <&pinctrl_panel>;
- 		pinctrl-names = "default";
-@@ -40,7 +41,27 @@ reg_vbus: regulator-vbus {
- 	};
- };
- 
-+&i2c4 {
-+	backlight: backlight@6f {
-+		compatible = "maxim,max25014";
-+		reg = <0x6f>;
-+		default-brightness = <50>;
-+		enable-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_backlight>;
-+		maxim,iset = <7>;
-+		maxim,strings = <1 1 1 0>;
-+	};
-+};
-+
- &iomuxc {
-+	pinctrl_backlight: backlightgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO04__GPIO1_IO04
-+				(MX8MP_PULL_UP | MX8MP_PULL_ENABLE)
-+		>;
-+	};
-+
- 	pinctrl_panel: panelgrp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07
+- As far as I can tell, the current lowmem area is 192MB, which would
+  be ok(-ish) on a 512MB maxed-out SPARCstation, but for anything bigger
+  you likely run out of lowmem long before being able to touch the
+  all highmem pages. This obviously depends a lot on the workload.
 
--- 
-2.51.0
+- If you come up with patches to extend lowmem to 2GB at the expense
+  of a lower TASK_SIZE, you're still  looking at a ration of 7:1 with
+  14GB of highmem on the maxed-out configuration, so many workloads
+  would still struggle to actually use that memory for page cache.
 
+- If we remove HIGHPTE (as discussed in this thread) but keep HIGHMEM,
+  you probably still lose on the 16GB configuration. On 4GB configurations,
+  HIGHPTE is not really a requirement, but for workloads with many
+  concurrent tasks using a lot of virtual address space, you would
+  likely want to /add/ HIGHPTE support on sparc32 first.
 
+When you say "used in LEON sparc32 configuration", does that mean
+you can also run Linux in some other confuration like an rv64
+kernel on a NOEL-V core on that chip?
+
+Aside from the upcoming SoC and whatever happens to that, what is
+the largest LEON Linux memory configuration that you know is used
+in production today and still requires kernel updates beyond ~2029?
+
+      Arnd
