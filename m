@@ -1,145 +1,341 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013034.outbound.protection.outlook.com [52.101.83.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF28534AB14
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 14:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757601971; cv=none; b=NalXjWPxHh6X9R4XDLyP7BkuybfSk9j79DplV2Gvo+kv1qElM3QnpKRJ6HvdpnuiQmTwQuPhIom43Y1B9/lKQuYZs7VIjgJW60G4ptf+6yp8vfxui5Oxb7D8sHceCUtpmqYYNlvht3LVja9cvnxh5KoVH9bj20BnT5dKaHHtkNo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757601971; c=relaxed/simple;
-	bh=VKSX47Aju/DzSJYwp5bYidhSzFn8zeiXLyG/eQpEZMg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ECoc27IEyOHEGo0ayRrAp/8bASpLO0wSTeTMfvjxRuueHjuUn0nUOXjM7brQAuLJR3RDzSVWPRlXHH+i0ce00gG1nef4iewp9VJKKm+MLmF5safCoQ3/X2+n9z8fkWpVwZo77MpfD6lOfxUQnF6hfP3V8LISDgJxBlIxRrcnADQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=I1vOIRRF; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8819035084A
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 15:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757603924; cv=fail; b=sHpXLJ/72LDvkpABZfN9c5U+jgH6YxKgqdXK6KqtzYWNil9X7r2ColYrmm26RhYwB+1PD2yWlzmZrOpdllci/5uktFNOgR5DNf+1rJRLpIdCLKZeXWvH+uBCCfb0uSJrYhtASy4hGYLfm5ZsGnGxlP6Iv5kuFJYDNzGbR/6qpkY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757603924; c=relaxed/simple;
+	bh=8sGQXb+IpS196cBo42FercTlkffm+C94C4GEuqG33+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=CqS05DhsrXGmUbkwUCbyJvJLCxSgrswmPwc9gUre+QAL7ntTW2bCcInQmH3+0PRa29LRL/fee0lEg3alFEm4WpIzraTrDlpAaj3+SqMY/BGHRop8gvVn4ZlBw45fwTo3oq+gaXwzHyoOj+UVe3gteQ8zgXT4Qu/BeIa+7SaU81E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MSNxem0R; arc=fail smtp.client-ip=52.101.83.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I1vOIRRF"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e9baa0310cbso781926276.2
-        for <imx@lists.linux.dev>; Thu, 11 Sep 2025 07:46:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757601968; x=1758206768; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HG5KODUu0GjbUdNiiv9Xwk+9exlrDUpck0LIesxLbE4=;
-        b=I1vOIRRFl7BupsgTtP80h9tvvDeMHSwsLpLQEujwUjgheXOhDC59B66Sq+86KKgDt1
-         lW5bt9H6pEGvw0xj1so0HaimknU3r+14EF88JIebUDYsh9LyAzvgcvXohlU40546NdZ/
-         Vx1wEUP0nBzffWQodcr7E18mW/v6CRj9mG9KvKN/Oq5pcqx7aKJYQ6vTy5/gIZV9anMe
-         JP6Qr70J4USMrrjQL7ZXurgAQJh7Rv71OipPWiZCiyEI0CmmkPPbT+G7yuLF+X6oS0OQ
-         uZuvAnRBcR59apop9yPTVMVsKYxfKxZWQy0yaHBkkwkHjz3u1+iBmEnsfWS59RSo2Xfo
-         bDhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757601968; x=1758206768;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HG5KODUu0GjbUdNiiv9Xwk+9exlrDUpck0LIesxLbE4=;
-        b=dI0SDKgXz6oXWfgYUOSNVUn+yoxTnEzHdpiItv+GarO3OXFq3LkfKEsfQnjzqbTmmm
-         KqFsTRYivOX/hgdKcsT2jTbiQpEKtMucjEDiLKFJSV1QZvzK8FavskDUbjnWMC3Xt287
-         M4UtTin/GSoyVhsWpnYwjciE3wjVLmfuoMlWGwWQcVp2Iz6vV8A0Ckl3kZ0MbXEJQp1J
-         +FAUAquMynmHVa9zmZYwn33BtuUhuNSzzebsS3G9yubgcAWuujSYTcD/sm22qdZjXPYN
-         eG7Ej5NIfNbn34maMyka9dw5y5DtpXkOXRNd7quMrKzqg9W8zEqP4PoTh6GF6CoE48sO
-         koAg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUiOook1YN7z/Dl5QPDXUk4uT7f70/jNScJ2ETnpPmKNy3LghR1BsM6WnKx5gHImUJJ+8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyCDpI7Y9ZIj2lkXBfSpHxBivh/x75xvhgOAeElLTJMQhTiIMCJ
-	lYWM+8Ok5wkb/GsQWKophWlRE7MrMMscrB9nwRtuGsUfVXgPnWSbcBHvjKpwvYSXH+stMYPDf1l
-	J00NzZkofuOM+Th9GlrIDPPJuMHhiDuf+Np25qjxW5Q==
-X-Gm-Gg: ASbGncs38N98VUsuS+JiY7qCeDn8/Pz6zuUh/2sTd4UVIH7qpZuYjahsrzq0wRinFJq
-	1OlMLoq9ElhDc/gWKgiFdODgLqjS6wrL+AEg7136OFCtU3rdsee9TQ5R0ccJUYGKkJfL/5wZwnx
-	E1nMGISVxBkLBjUcDUT9tHuokidT/6jf2VdXM8ByBPRIYLKtY97Q2he+2czuurD559WCOhPYDAU
-	iVJlR8YkIYCLaZ5iBUcztfRT4cOJQ==
-X-Google-Smtp-Source: AGHT+IGA14KLSVMCK2zV6p8As0+Jn95rbWVq+KPV+CqkNJxyiiFOFLcSxRvo/0exdQaaGDHMXMlIe6ixp4mKa1e9IQY=
-X-Received: by 2002:a05:6902:1892:b0:ea3:d40a:2563 with SMTP id
- 3f1490d57ef6-ea3d40a2737mr1177746276.41.1757601967783; Thu, 11 Sep 2025
- 07:46:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MSNxem0R"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h1eqfCaSSXWF1m8QIP7QDIqW49nz5BYPlaIYeW5JHuWfrMbCJYwq3k8g73oDGy5aMP+iRhqE0TevT1TeUB7meQFJivimTvTvT/otYeSAzxzi+MxvuN9PWkEhCkD46nOJlNTdfBrHc8YeweThCoEI6wxhwgbplYL4jYa09FzNY8Nmp4/NwYjsqD8oZ5I17SQsKmrfpeGjEkUMXP2FeF+xbvQ6sOwyBl1zmspxuYwUmFwbPlzIHkZbXYXuMCYN6jtGloZrfbvKl8YU5I4vYKX3g/XyTcIMHSDLc0U9e88jARGu/7h/I4YyioB9tsJKBX5LqUUGC7eehfPogjFX+Zwx/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=btq2Nmd5j0A24I4A9mWNr+OYdS8csQku3ZV3dHpm2xQ=;
+ b=vWJBuY6JRxEPwmlX9ES79KtIGXwDLSbrFWUuVwcyhaT4coRxY1WaJOJ7vxiUeaGAbw/UNUAWX9VwMSOX+xrOTxwPm96+GPdlZVVt89yiKgrFH1LGuvyTBKG6YgU38xDGrxcscBqF2Z04xt6Vy3xEhBINzf1mqu2PJf6wVgo+DBK4abZXLj13ZoOSh83EH0NWdwcdiqC17C/e5+GNYYnPh6t/R8heQbIVie9yfRLCpHzxFL4tEXHJKJEOy4gBjCJ7KTklkMd3clYxQcCrzFgLm+cTTYmkTr7PdWNzyiRAKrB4yCu88TeD5a954qwdYU0fLDTFQF8j6+3nU0GoJZneYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=btq2Nmd5j0A24I4A9mWNr+OYdS8csQku3ZV3dHpm2xQ=;
+ b=MSNxem0RxPxENzgCGAIbLuPvw0jMlktLJOBSGjhPBrBj9dE4YUPKCW4I7B8B8+sq2vZtkxpHNR7g526A/wPfRTjB0eJHam9Fvl5tClyBJDGG3NhvX73ZQ/Fb6Om/tRXT8pUK9SfhAnqEkp6ewd+sR7ELcLNrfYjuHBZr0CYJlCtauYuSTbtVNUraAjv7BkobQZdbYjs4/dgCndXRW4ujtlb131y3StBfX3fjodCly2fbn2EI4fIsmQeXX80kElLhZW0PLS5chh5GYfoCaQuz0+lRq1Oqp71oguArqdu0HHbOUuXmfaGuON4xg0KMNfv/GjWqsvYdkCW+AGz4UnFw8Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
+ by VE1PR04MB7392.eurprd04.prod.outlook.com (2603:10a6:800:1b2::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Thu, 11 Sep
+ 2025 15:18:33 +0000
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9115.015; Thu, 11 Sep 2025
+ 15:18:33 +0000
+Date: Thu, 11 Sep 2025 11:18:23 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jiada Wang <jiada_wang@mentor.com>, dmaengine@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/11] dmaengine: add support for device_link
+Message-ID: <aMLoP1/Wmay2v37G@lizhi-Precision-Tower-5810>
+References: <20250903-v6-16-topic-sdma-v1-0-ac7bab629e8b@pengutronix.de>
+ <20250903-v6-16-topic-sdma-v1-9-ac7bab629e8b@pengutronix.de>
+ <aLhUv+mtr1uZTCth@lizhi-Precision-Tower-5810>
+ <20250909120309.5zgez5exbvxn5z3y@pengutronix.de>
+ <aMA88W/rDxFesEx+@lizhi-Precision-Tower-5810>
+ <20250910193545.gx3qoyjamoxlncqd@pengutronix.de>
+ <aMHwbogOA6QTc3Dm@lizhi-Precision-Tower-5810>
+ <20250911115056.5iufhnjdhsbiwugw@pengutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250911115056.5iufhnjdhsbiwugw@pengutronix.de>
+X-ClientProxiedBy: BYAPR01CA0034.prod.exchangelabs.com (2603:10b6:a02:80::47)
+ To AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250902-pm-v3-0-ffadbb454cdc@nxp.com>
-In-Reply-To: <20250902-pm-v3-0-ffadbb454cdc@nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 11 Sep 2025 16:45:31 +0200
-X-Gm-Features: Ac12FXy4zlU7KeT4OFE-vyI1bqh6ZB1528BpXJl_SwXQzUbCOw7DO0NcEvUZLJA
-Message-ID: <CAPDyKFqBJQ92HH1tSq1rfbXV1OwbyvgChyHfv7ykJqf2A6qYpw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] pmdomain: core: Introduce device_set/get_out_band_wakeup
- and use it in usb
-To: Peng Fan <peng.fan@nxp.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>, 
-	Peter Chen <peter.chen@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Xu Yang <xu.yang_2@nxp.com>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-usb@vger.kernel.org, imx@lists.linux.dev, arm-scmi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|VE1PR04MB7392:EE_
+X-MS-Office365-Filtering-Correlation-Id: b8cd219a-0aa4-4428-0983-08ddf14678c8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?cbf2GmXuESKhrUTvLkDaULFA/37+cm3Hqdqs74xtr2utq3vJWH0SLVIO/9LB?=
+ =?us-ascii?Q?BkmgV13iJ/H3Jwf4bj1kcxT2Ca/wWknikjmyE8X19ByBuEfUGs59zqZHJ8Bi?=
+ =?us-ascii?Q?2J83ag2TCWIEUpox78l9T81OwsxaSQzF8v41ly81LYETtsfPePGyUJRXEOdt?=
+ =?us-ascii?Q?3YTt43ji2qhuYwONXcK3ntN5PEAfD93nLrIo7/iFGWn1GC1b4wl40wbddjwB?=
+ =?us-ascii?Q?ylu0zvIoKFiXvdcpOMKpfbwPEkf1gjLs1Ohf7Kna8mVWrCv5fQwiSlnERmvO?=
+ =?us-ascii?Q?8gQ11z8emRUxhDghdMLBsPAnPNBxVF45rF57Ewu2P2a/J2JxOLImHBZR+0nG?=
+ =?us-ascii?Q?+kwKMTHnImNyqdvoSzIqBVW4sG4hB+qG4JOjTyfMFF8B+dTTJWU1SKrdho50?=
+ =?us-ascii?Q?YqJ9m5ZgVFU5SnqduA/ZPaWsT8hhBuS5pZ99ADTrx0rkq3r+kMUGHEqjsh90?=
+ =?us-ascii?Q?qI26ZLVEl6p5GSesgrrJtPpSD6mGJXl1lBOdFY5dPF1g1zUm+wu5j7J8gwyn?=
+ =?us-ascii?Q?/2usot4f0iodhEAcDxlGSmKYWT02UWAHadwcUw1ocVAtzpjAsVNFodH31kzS?=
+ =?us-ascii?Q?dforN/iYUHBByqRgpgn3LUcP6JC6JBl5T1/P+Qp6KwD0fN3XyGg3qUjkNHnW?=
+ =?us-ascii?Q?Yrffx15kO9hEb0+ie6tRtS+cbrWzsZzDGY3xZnM7l71nuF7i3szcwVhNVb8B?=
+ =?us-ascii?Q?4Lu6G50U3WJYL26rJCkHDarJ4e10p9dLqayaRnHnNhqt7N0N1GFkXvqgz2j3?=
+ =?us-ascii?Q?6qHHK8ky4O8/8RvKNMVY6c8kiKMzPU0GTgDUd6iZCItK0jUka1NgANFgaBxH?=
+ =?us-ascii?Q?c3MzvG4LZwz8YFZ2RBeSu5P3JBJyv9rbrNFWNWY7VO1KL6/iWOo+Aq+rj3Eu?=
+ =?us-ascii?Q?MaM3WZfRLpqF5Vgk+EHy57SClMsSJfQbePi9Eddr4iV7Swz2rqYZNiKWumyQ?=
+ =?us-ascii?Q?zIV/ZmDeVhHXHsd45ci30q/SfKc4Lp8MUM7+4UXh++TH/84eN/CtI6Ojyl0K?=
+ =?us-ascii?Q?nnTPCXiQpdQXSi5OS/QbTHdOlVzdVNQ+opaBJsf5lwgJi7zJFBHQfjNX88aR?=
+ =?us-ascii?Q?sC+cZ5U6OL3YHd9IpZhs3l5ZcClN97LaGBtPTz3egX8GUBiu/Ucb+ZD4OWgZ?=
+ =?us-ascii?Q?+yFVCnOhO4VdtefrFKNSOIhRT+y0WyqYWVAKrNQFzW5/5F8QFVNJg2nN77uW?=
+ =?us-ascii?Q?YTfA/GqfR6oPqqCwh+Yt1HEn310uiRfQn3BrNlSGqYgsh6eZKpaikLPNmTjP?=
+ =?us-ascii?Q?iPD9oqvgtruzZ4YB6/RKihfHwqaNtuuyhcwy29HCNXDlYBDI1+OgwBYmcHHy?=
+ =?us-ascii?Q?bIKbV8zxVhtZiKf18oeAHkRaCMVcCDt2XPdzLzm4KkHOhmfRFymOmlYWy+5Y?=
+ =?us-ascii?Q?STATsnZp0hJNvTdXAAzEwh9yqm96w8KgH6MLjkKgPx5vM3j+AQa6jNGYXA8M?=
+ =?us-ascii?Q?O8qSvWVE2s2ljPNIRsgxdr6xtVQyVP1ydh8nSOCa2VDp2MYneC2RUXIp1pOp?=
+ =?us-ascii?Q?h6B9qFafGfLwxa8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?a/4qi7mtxl3EgfraiV7+Ya2EFDnv1UBFZQv9CcBnds6ObdSCoOMWSHpDhp+8?=
+ =?us-ascii?Q?RANsOx9rneDXKdUlE4cPlsRhI59MJf2rWBRFGvD5Tc47kkyyYaYPa/qHqzxY?=
+ =?us-ascii?Q?w7Iyks9ggI6+mkEFuavEYN9S5oIvYSjDu7xyZwtSebn0YkUPbR6Bj4Xlivw1?=
+ =?us-ascii?Q?km84N88cInJpiKm6SEMmZ8CxXTls8DNsmXM6HDGZtDMCMnHpSJQct08cL3ZX?=
+ =?us-ascii?Q?+HG5l+hQ7N87fT86rkyxAXz9TWGZPIvecZlm9WMFRIpYYoCj7kYBgacu14Jq?=
+ =?us-ascii?Q?DmRC5HCEK8FNXMqX/zTiU05d8+U/Yp6hDjU7zv2OpT+ThGefT3vdF3YMaK3K?=
+ =?us-ascii?Q?uituaDKjPe4Tfna3fG4RSWqgoeAVH6wMRkPSV4mQ0/kqoUq85vGJezauEWRN?=
+ =?us-ascii?Q?PZ3fuh+5K0rolqnCDZHgCuVhJZ/635lI14HZ+u9jCAThWi/5gf4Ni4lp+uig?=
+ =?us-ascii?Q?8qwIS/7+qS50iUQ1SeZ44oEnE1Qx4lTSOYacng46iOpv7viLFsWE2FLAYmhT?=
+ =?us-ascii?Q?dJqTuUH45n0UdarA5R7gcWWPlLpeP/QsMu3CDtX5ANLUTCg1zDt+RRJ2CS44?=
+ =?us-ascii?Q?83i9gDeSPqdP7A88zbzarafGC665CLYu2sbuaQMJnK06rkZCKv8C74A02cxW?=
+ =?us-ascii?Q?aglm84xqQByGMsIHDK8I3N3gghxYpByjWjza3AM4hxWGQBMDNGQMwasxrT5h?=
+ =?us-ascii?Q?epXjL2RhFRYLOP+HExJ0dAeB5EJVKYvVyM50Vpl9zKP/MXpcL6tCAlXlkUaU?=
+ =?us-ascii?Q?5+MvdIFkFyQ5IKzqZRxeaIq6qxTpCg76aHsjDI2qmeuWp8rsXdNrjkb6ZOAn?=
+ =?us-ascii?Q?IaT5iBdreX7NZnDrudLoTGS6119/l+9ZER/JmDgcd1OwXA9Q1fqrTxc0YC6P?=
+ =?us-ascii?Q?/IsyDlUYI3TbVQcyXmSEbpuQo1BfcFkVzCcj0dyyr07F+hreVIt4y20nto2M?=
+ =?us-ascii?Q?FaBGmarMQX5nNHt6rpARSEBcjComjRsIiXz3k9aekuU9oVhJh0GimZjY4I9Z?=
+ =?us-ascii?Q?wxPfd6PuDYJwOrzhk4PJCYN1mHCPM9SR8jSEYPsUeapYusLoUdfGm4HqliKa?=
+ =?us-ascii?Q?dMDKcjw+/CRxLB1KXt/cQYPWQRUxdsVNhCwIIF7Sbmy4HEMFBQSWKA8DBMq/?=
+ =?us-ascii?Q?pleAkiLTk8VXsnw+L6ReNGNWNy6JtM9YYzn2dXtbUr+3efBuuaf83t6lfcGP?=
+ =?us-ascii?Q?F1SMr79cvLcLDfwaD5yhXXK3VBE6d6f7oHljIslaa7rp6vwitTt84TJwibh5?=
+ =?us-ascii?Q?RN30J/nBwBlna/79kAblffSbEwNiN3bNvmEMCEKgmY3m3GTiqIc9HtqNfBXr?=
+ =?us-ascii?Q?/6wlS3mZp8yh0ueBYso0XJR3ovt8qMOx8x9ARuWdTGt4WHCNTOnu1grMAPiU?=
+ =?us-ascii?Q?3i6M7xMcdyhzOFcSjNyqU0/+W1QHcJYUVC/77rVu/YwF8JnlC+t5tCDO5scf?=
+ =?us-ascii?Q?UIqb45PX43NLU1460zg9JzUJ9j4SvlYqJYn6JNJSx6b2jcglqgC5nHWe8kPR?=
+ =?us-ascii?Q?KiM5AeeGlmvbiERuVbgJJOnFzYAvWvuGEopZU1t6b5k/szwkmvXM9cHEpf6N?=
+ =?us-ascii?Q?RRdTahYFuEUbqzwsu5t2uflXiG/ZKu8Z+VfwWb+p?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b8cd219a-0aa4-4428-0983-08ddf14678c8
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 15:18:33.5411
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fszt/F6131Tzq2zpVbF1B8PzjLsH5Bt3GJkgQWBrwNKf5z3lSr9zgLaFHIy551e/W+DphXwUQXsXsaIhACM95A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7392
 
-On Tue, 2 Sept 2025 at 05:33, Peng Fan <peng.fan@nxp.com> wrote:
+On Thu, Sep 11, 2025 at 01:50:56PM +0200, Marco Felsch wrote:
+> On 25-09-10, Frank Li wrote:
+> > On Wed, Sep 10, 2025 at 09:35:45PM +0200, Marco Felsch wrote:
+> > > On 25-09-09, Frank Li wrote:
+> > >
+> > > ...
+> > >
+> > > > > > > diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+> > > > > > > index 758fcd0546d8bde8e8dddc6039848feeb1e24475..a50652bc70b8ce9d4edabfaa781b3432ee47d31e 100644
+> > > > > > > --- a/drivers/dma/dmaengine.c
+> > > > > > > +++ b/drivers/dma/dmaengine.c
+> > > > > > > @@ -817,6 +817,7 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+> > > > > > >  	struct fwnode_handle *fwnode = dev_fwnode(dev);
+> > > > > > >  	struct dma_device *d, *_d;
+> > > > > > >  	struct dma_chan *chan = NULL;
+> > > > > > > +	struct device_link *dl;
+> > > > > > >
+> > > > > > >  	if (is_of_node(fwnode))
+> > > > > > >  		chan = of_dma_request_slave_channel(to_of_node(fwnode), name);
+> > > > > > > @@ -858,6 +859,13 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+> > > > > > >  	/* No functional issue if it fails, users are supposed to test before use */
+> > > > > > >  #endif
+> > > > > > >
+> > > > > > > +	dl = device_link_add(dev, chan->device->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
+> > > > > >
+> > > > > > chan->device->dev is dmaengine devices. But some dmaengine's each channel
+> > > > > > have device, consumer should link to chan's device, not dmaengine device
+> > > > > > because some dmaengine support per channel clock\power management.
+> > > > >
+> > > > > I get your point. Can you give me some pointers please? To me it seems
+> > > > > like the dma_chan_dev is only used for sysfs purpose according the
+> > > > > dmaengine.h.
+> > > >
+> > > > Not really, there are other dma engineer already reuse it for other purpose.
+> > > > So It needs update kernel doc for dma_chan_dev.
+> > >
+> > > Can you please provide me some pointers? I checked the kernel code base
+> > > for the struct::dma_chan_dev. I didn't found any references within the
+> > > dmaengine drivers. The only usage I found was for the sysfs purpose.
+> >
+> > static void k3_configure_chan_coherency(struct dma_chan *chan, u32 asel)
+> > {
+> > 	struct device *chan_dev = &chan->dev->device;
+> > 	...
+> > }
+> >
+> > >
+> > > > > > chan's device's parent devices is dmaengine devices. it should also work
+> > > > > > for sdma case
+> > > > >
+> > > > > I see, this must be tested of course.
+> > > > > > >         if (chan->device->create_devlink) {
+> > > > > >                 u32 flags = DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_CONSUMER;
+> > > > >
+> > > > > According device_link.rst: using DL_FLAG_STATELESS and
+> > > > > DL_FLAG_AUTOREMOVE_CONSUMER is invalid.
+> > > > >
+> > > > > >                 if (pm_runtime_active(dev))
+> > > > > >                         flags |= DL_FLAG_RPM_ACTIVE;
+> > > > >
+> > > > > This is of course interessting, thanks for the hint.
+> > > > >
+> > > > > > When create device link (apply channel), consume may active.
+> > > > >
+> > > > > I have read it as: "resue the supplier and ensure that the supplier
+> > > > > follows the consumer runtime state".
+> > > > >
+> > > > > >                 dl = device_link_add(chan->slave, &chan->dev->device, flags);
+> > > > >
+> > > > > Huh.. you used the dmaengine device too?
+> > > >
+> > > > /**
+> > > >  * struct dma_chan_dev - relate sysfs device node to backing channel device
+> > > >  * @chan: driver channel device
+> > > >  * @device: sysfs device
+> > > >  * @dev_id: parent dma_device dev_id
+> > > >  * @chan_dma_dev: The channel is using custom/different dma-mapping
+> > > >  * compared to the parent dma_device
+> > > >  */
+> > > > struct dma_chan_dev {
+> > > > 	struct dma_chan *chan;
+> > > > 	struct device device;
+> > > > 	int dev_id;
+> > > > 	bool chan_dma_dev;
+> > > > };
+> > > >
+> > > > struct dma_chan {
+> > > > 	struct dma_device *device; /// this one should be dmaengine
+> > > > 	struct dma_chan_dev *dev; /// this one is pre-chan device.
+> > > > }
+> > >
+> > > I've tested your approach but it turns out that teh dma_chan_dev has no
+> > > driver. Of course we could use the DL_FLAG_STATELESS flag but this is
+> > > described as:
+> > >
+> > > | When driver presence on the supplier is irrelevant and only correct
+> > > | suspend/resume and shutdown ordering is needed, the device link may
+> > > | simply be set up with the ``DL_FLAG_STATELESS`` flag.  In other words,
+> > > | enforcing driver presence on the supplier is optional.
+> > >
+> > > I want to enforce the driver presence, therefore I used the manged flags
+> > > which excludes the DL_FLAG_STATELESS, if I get it right.
+> > >
+> > > Please see the below the debug output:
+> > >
+> > > ** use the dmaengine device as supplier **
+> > >
+> > > device_link_init_status: supplier.dev:30bd0000.dma-controller supplier.drv:imx-sdma supplier.status:0x2 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
+> > > device_link_init_status: supplier.dev:30e10000.dma-controller supplier.drv:imx-sdma supplier.status:0x2 consumer:dev:30c20000.sai consumer.drv:fsl-sai consumer.status:0x1
+> > >
+> > >
+> > > ** use the dma channel device as supplier **
+> > >
+> > > device_link_init_status: supplier.dev:dma0chan0 supplier.drv:no-driver supplier.status:0x0 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
+> > > device_link_init_status: supplier.dev:dma0chan1 supplier.drv:no-driver supplier.status:0x0 consumer:dev:30840000.spi consumer.drv:spi_imx consumer.status:0x1
+> >
+> > It should be similar with phy drivers, which phy_create() create individual
+> > phy devices (like dma channel devices).
 >
-> This is pick up of [1] which does not have response in about 5 months.
+> Unfortunately phy drivers do use the DL_FLAG_STATELESS mechanism. My
+> main goal was to have managed links to overcome the current situation:
+> dmaengine drivers can be removed without removing the consumer drivers
+> first.
+>
+> You have a valid point by making use dma-channel devices ( dma<X>cha<Y>)
+> to manage suspend/resume, as well as runtime-PM for each channel.
+>
+> But I see this rather as an addition to my solution because these links
+> must be stateless and stateless/unmanaged links don't guarantee the
+> correct remove order (my main goal).
 
-Sorry, I have planned to have a look at this, but just never got to it.
+If that, phy should have simiar problems. It should be resolved at higher
+layer to avoid fix this kinds of problem one by one.
 
-> This V2 patchset
-> - includes usb driver changes(patch 2,3) to give people a full picture on how it is used.
-> - Rebased next-20250729 to resolve conflicts
 >
-> To i.MX95, USB2 and USB3 are in HSIOMIX, but there is always on logic
-> to make USB2 and USB3 has wakeup capability when HSIOMIX power domain
-> is in off state. Otherwise the HSIOMIX will be kept on when
-> USB2 and USB3 are configured to be wakeup source and Linux suspended.
-> With this patchset, HSIOMIX could be powered off and Linux could still
-> be woke up by USB hotplug event.
->
-> Patch 1 introduces device_set/get_out_band_wakeup
-> Patch 2 and 3 are drivers changes to use device_set_out_band_wakeup
->
-> [1]https://lore.kernel.org/linux-pm/20250311083239.3336439-1-peng.fan@oss.nxp.com/
->
-> More old discussions:
-> https://lore.kernel.org/linux-pm/20250311083239.3336439-1-peng.fan@oss.nxp.com/
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> That beeing said, I'm not sure how you want to handle the clock/power
+> enablement per channel-device. This would require additional work on the
+> dma_devclass to add a proper .pm hook else the PM and runtime-PM calls
+> are only forwarded to the parent dmaengine driver. On this level the
+> dmaengine driver has no knowledge which channel is going to be
+> enabled/disabled.
 
-Overall I think the series looks nice, but I will make some more
-thinking of this in the next few days and come back with some proper
-comments, at latest in the middle of next week.
+I have draft runtime pm patch for eDMA.
 
-Kind regards
-Uffe
+>
+> In conclusion, I see my approach as valid to ensure the correct remove
+> order. Your suggestion is valid and can be added later on too since this
+> needs more work to have a proper per-channel runtime-PM.
 
-> ---
-> Changes in v3:
-> - Add a new patch from Xu Yang to detach power domain for ci hdrc
-> - Add A-b for patch 4
-> - Link to v2: https://lore.kernel.org/r/20250801-pm-v2-0-97c8fb2a433c@nxp.com
+We need pave a good road. This part is common dma-engine, which is worth to
+do good solution.
+
+Frank
+
 >
-> ---
-> Peng Fan (3):
->       pmdomain: core: Introduce device_set/get_out_band_wakeup()
->       usb: chipidea: ci_hdrc_imx: Set out of band wakeup for i.MX95
->       usb: dwc3: imx8mp: Set out of band wakeup for i.MX95
+> Regards,
+>   Marco
 >
-> Xu Yang (1):
->       usb: chipidea: core: detach power domain for ci_hdrc platform device
->
->  drivers/pmdomain/core.c            |  6 ++++--
->  drivers/usb/chipidea/ci_hdrc_imx.c |  8 ++++++++
->  drivers/usb/chipidea/core.c        |  3 +++
->  drivers/usb/dwc3/dwc3-imx8mp.c     |  4 ++++
->  include/linux/pm.h                 |  1 +
->  include/linux/pm_wakeup.h          | 17 +++++++++++++++++
->  include/linux/usb/chipidea.h       |  1 +
->  7 files changed, 38 insertions(+), 2 deletions(-)
-> ---
-> base-commit: 1b09efec32046a9c78cfecc46a26b1b139a3e8a8
-> change-id: 20250729-pm-243ff7097e44
->
-> Best regards,
-> --
-> Peng Fan <peng.fan@nxp.com>
->
+> >
+> > > ------------[ cut here ]------------
+> > > WARNING: CPU: 0 PID: 51 at /drivers/base/core.c:1387 device_links_driver_bound+0x170/0x3a0
+> > > ...
+> > > ---[ end trace 0000000000000000 ]---
+> > > ------------[ cut here ]------------
+> > >
+> > > As said, I get your point regarding the usage of the dma-channel device
+> > > but I didn't found any reference to a driver which used the dma-channel
+> > > device. Also since I want to have the supply driver to enforced by the
+> > > devlink I don't want to use the DL_FLAG_STATELESS flag.
+> >
+> > Maybe add DL_FLAG, link to parent's device driver. Need some time to
+> > investigate more. PHY driver should good example to refer to.
+> >
+> > >
+> > > Regarding your point, that some DMA controllers may have seperate clocks
+> > > for each channel: I think this can be handled by the dmaengine driver,
+> > > e.g. via the device_alloc_chan_resources() hook.
+> >
+> > device_alloc_chan_resources() is not efficient enough, most driver allocate
+> > channel at probe, so clk of this channel will be always on. ideally, only
+> > when consumer devices is runtime resume state,  turn on dma channel clock.
+> >
+> > Frank
+> > >
+> > > @all
+> > > I'm pleased about any input :)
+> > >
+> > > Regards,
+> > >   Marco
+> >
