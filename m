@@ -1,31 +1,31 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FCB224D6
-	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 01:50:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E326F18DB0D
+	for <imx@lists.linux.dev>; Thu, 11 Sep 2025 01:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757555460; cv=none; b=tWnZsUvp/rVb53B0ijXKx9Tacijpkgn7pSUiVN8JkbUo/tIjqbrgACuh4Bv+AJvuUKrALUShkkRuB5XM7lUYTFaKNNHSMBW7YaThwPxqN2zwuDjyaG7XUlZCYY7HFzlrTrNTCSADgcvWWitVzVNYY41Y1iHyKZ7GuZFnWq132A4=
+	t=1757555477; cv=none; b=h0cudqy/g8y3eLkfKNBsW4EMCr7LILHozwfwl6S/gYsDaBz+QKTW0FAgWrGVZpA3o5zK+Q9jMvbcgcbT3UAAvXIk1u2COOndog+/e8MAmxg402kIABzDEJhrXnpwW/EYLBTTazOz/f0myhqd3z1qvsxIGSyeLqpXxr2hnbooFA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757555460; c=relaxed/simple;
-	bh=S0GcGkgfIGg68g741TdmbBJHFnk5Vj/Wgu4whH0XC4M=;
+	s=arc-20240116; t=1757555477; c=relaxed/simple;
+	bh=JY//uoibDxk3JFUWdVtNj/CDTfn1GzOHLvWCQpSngMo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HCK+4yfX9t9E7eSeQdP+PHItAXT2KYj0iS8PMESx0S2CulJMVnY8Da4gEsXvvR1Um267wzYXhARFgouR3kCbnnMEY5uP51N0+9SEhU98QhQO14c3oBrXjYGWJ0nYIpxaXUr8/03Aheurgvc+9Nu8WvJMepR/rjKHNlaeH5sYLN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=O76U9ZV2; arc=none smtp.client-ip=1.95.21.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=HMi0Fu9naHa17uCbQo34SaZJ+I3omSXBv8JlijRb3uaNCQGLiebFDc7Crmuc9TG6qjlmEoZskmpnkZCAsmTQG2Pa6w7/Lb7c6aXLDzE6Ug2TMv8lst9CZjctVev7gM4njDcloz6zmsq4pEmzoH9C82fg3lBBFdGe3KAPhCC5zsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=BSVDzRFH; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="O76U9ZV2"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="BSVDzRFH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ZUI/i+ja9oevYg1fVVK/IyksXCQlyryj3w/XBV25Te8=;
-	b=O76U9ZV2uADWd+6J6/mpLppDnBErAY1qsuLBqi/9SqqnLNQsucrZTE+bYVIJmV
-	JEGmRiYB2qeBPxw2h88ujedrxhmq02Ap6++IENga7E7tXIO0Vkb1C0qgNi/jxvr7
-	Ohc7zYFtqfRIURZNcKRVK2OdT/EHLyPhplRO+A6ExuyGc=
+	Content-Type; bh=FIebiWHIdHOR8V4xRaj6i5CqlzafrAmw1NlFomf5KyI=;
+	b=BSVDzRFH0Umy7SvEDJO7JZWBTtZLSY2uMEWDjTtgp6PH0qq0wUnD6LVfz79zk8
+	rHr11E9uiwQeo15rt56V0iP6MOQahZUfSM0aTB/ZcSsWJGOmfPf2NLnuh06la43W
+	DdJrSf3/BNFp3xMVQAGC5E3AX54ECHIBoYNMZUg+T56oI=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDnnyjwKsJoColfBA--.14977S3;
-	Thu, 11 Sep 2025 09:50:42 +0800 (CST)
-Date: Thu, 11 Sep 2025 09:50:40 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3Fx4DK8Jo74lfBA--.16446S3;
+	Thu, 11 Sep 2025 09:51:01 +0800 (CST)
+Date: Thu, 11 Sep 2025 09:50:59 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
 To: Josua Mayer <josua@solid-run.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -38,11 +38,11 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Jon Nettleton <jon@solid-run.com>, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/3] dt-bindings: arm: fsl: Add bindings for SolidRun
- i.MX8MP SoM and boards
-Message-ID: <aMIq8FAJ3f6irsX0@dragon>
+Subject: Re: [PATCH v3 2/3] arm64: dts: add description for solidrun imx8mp
+ som and cubox-m
+Message-ID: <aMIrA7UMhJXXuWzM@dragon>
 References: <20250823-imx8mp-sr-som-v3-0-a18a21fbebf0@solid-run.com>
- <20250823-imx8mp-sr-som-v3-1-a18a21fbebf0@solid-run.com>
+ <20250823-imx8mp-sr-som-v3-2-a18a21fbebf0@solid-run.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,21 +51,34 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250823-imx8mp-sr-som-v3-1-a18a21fbebf0@solid-run.com>
-X-CM-TRANSID:Ms8vCgDnnyjwKsJoColfBA--.14977S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUw5l1UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIhKR9mjCKvKOowAA3I
+In-Reply-To: <20250823-imx8mp-sr-som-v3-2-a18a21fbebf0@solid-run.com>
+X-CM-TRANSID:Ms8vCgD3Fx4DK8Jo74lfBA--.16446S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrWw4rJrW8Cr43tr4UZF1kZrb_yoWxGrX_XF
+	98KF43Xw4xJF9aya1kKr45KFyI9a1kKr95ur4ftrWfX34fC3Z2yFZ7Jayrur4jvrs3tFn2
+	gwnxGF18Ar1xKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU1sNVDUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEhLFZWjB-SpoYQAAsX
 
-On Sat, Aug 23, 2025 at 05:28:21PM +0300, Josua Mayer wrote:
-> Add bindings for SolidRun i.MX8M Plus System on Module based boards:
+On Sat, Aug 23, 2025 at 05:28:22PM +0300, Josua Mayer wrote:
+> Add description for the SolidRun i.MX8M Plus based System on Module, and
+> the CuBox-M.
 > 
-> - CuBox-M is a complete produc with enclosure including the SoM
-> - HummingBoard Mate/Pro/Pulse/Ripple are evaluation boards with common
->   design but different available interfaces.
+> The SoM features:
+> - 2x 1Gbps Ethernet with PHY
+> - eMMC
+> - 1/2/3/8GB DDR
+> - MIPI-CSI Camera Connector (not described without specific camera)
+> 
+> The CuBox-M is a complete product with enclosure featuring:
+> - 1x 1Gbps RJ45 Ethernet Port
+> - 2x USB-3.0 Type A
+> - HDMI connector
+> - microSD connector
+> - microUSB connector for console (using fdtdi chip)
+> - IR receiver
+> - RTC with backup battery
 > 
 > Signed-off-by: Josua Mayer <josua@solid-run.com>
-> Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
 Applied, thanks!
 
