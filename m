@@ -1,178 +1,196 @@
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F040C28489B;
-	Fri, 12 Sep 2025 21:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5831E5219;
+	Fri, 12 Sep 2025 22:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757711394; cv=none; b=hwLvYcvmp9Lu0EhZ+rP0NeiHMNqoMPcq+l5xm29cnzwTBR6rYT2ieq0YYobA3cIxfETOMTly7U2GKpdG04ukcr7get2Gm7g1XFFNj0ZYCbo/5YM/FnZacRleBG9yZ+AM/yNWuWqw8XzFHzmYBGuduwTeS7xDogQoLKUSqqFL2Js=
+	t=1757716555; cv=none; b=Zc/V1Ce0MwzG84ZaptRNzmOScFLonjnwMqV5PjjmcX6xKrsF0nWEpY6t3Xo1ot1FW9RyD50zPImmPFB8i92cG1LaMj11irpLAB78fsj2S2kr6hNQs8OePQFsyX3uXYEbsYboUYhCAhZuFKOAu1NjV6ZxXzgtCEy+M7AanoASsaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757711394; c=relaxed/simple;
-	bh=e7oq3c2bmJNjTLNH0WCmh3oqHoeflOXUxfd9Pnphqm8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Wjlqgy/RxUiW8j/BMkZIDOajFJl/zhU9mq4Xxh1CmRqb8YGjgnWdUV1ga9bDXrl2JstZFIbCd0mQeh5h7mSJnMNUiccVpv4nzmXTPLmTVTQERk0+2rem4lKeKQY63tmkzZSGQ5GlVea3x3UXjQnmOp6oUQEf3vutd7c8bLdYSGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=GI4t6+q5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Hg+efwLE; arc=none smtp.client-ip=202.12.124.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1757716555; c=relaxed/simple;
+	bh=2CnoRP2z2CLiNDktcdk7xPf8rU6fPu5yFoEfsAQ+Ojs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H+Vk/umPUjm2ERGtaz6WJv3H+bWiQlcWxFE8JRLA0/K1CJrtXfroh59463/IzYbuUAwdSAKIcI9/6w56CFx24g+Vxc6AxatVRlOwUMabk37IqBaY3PetaceZMRgo1lh1rkPrbJxlt10oevAO3PumXej2vN3m0z240FwTzKVNvoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hu/SOl5u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="GI4t6+q5";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Hg+efwLE"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 128BF7A01CD;
-	Fri, 12 Sep 2025 17:09:50 -0400 (EDT)
-Received: from phl-imap-17 ([10.202.2.105])
-  by phl-compute-05.internal (MEProxy); Fri, 12 Sep 2025 17:09:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1757711389;
-	 x=1757797789; bh=CLqRBKVf5IvTh800HM+2y42LrS7XFT+UlQoEp2IAPso=; b=
-	GI4t6+q5kXjCO6cruisFBrxlfYspQdyR2nSwyVUifQzM7VEMrmYCNyjAVYjNhTgm
-	WqCqX8kZdK2deNSwLTBVJ3N8pSl0NhU5c9HH2kyD2VdFMzafqFVFH9hpDeIJNrzj
-	g4Qa7RVKOklHp6T9//Fk2QqJOmtlyMcvCzaPH7vzB72i03nMdNbtRdOZjHzQ4h/L
-	ftry70985VVJ0JC8deKiZyhzurfBwKKn5fmc5YLwZO9NW0AWFO9cbhr6Oa1pnc8X
-	IbeXUCwwcUmmLw1JIdKGv7tJjqaUU7L6MH1vAFkSQFJ8ZQ5CrDw16pFxmTMYZ3b4
-	iRfechyn/kmAf/3LIGcGLw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757711389; x=
-	1757797789; bh=CLqRBKVf5IvTh800HM+2y42LrS7XFT+UlQoEp2IAPso=; b=H
-	g+efwLEojmMZRq8iZwYjjIYprH/XYxRGz4gmpycxwdhPe1s8+YfTor2bbGv0c0B2
-	RLsa8YQz2KykS1Kzwhrjk5vc4sNyX55mlyEc/YPCTF+a+h5XGA1P5EP0qMtntlaW
-	glaOlh/Kn+XcHwMTpuhR2UrjWZGj35jBvgxWwqm5OAUbjTj6+VnIzZ7ANky9E3Wz
-	IpurPFx3x7zuk4nsRKyP70Og/99u4DsemcafNS5R+S7aIEm+gzBBWkmSBQ6mFI6Z
-	sZlMDN5oUpNr0X2A2oOZa95CyTZTboiXtWUjzqMltgruej+lvRP5fnsTfi9FdrWx
-	iwGev+FnsPgCi2tPWVfjQ==
-X-ME-Sender: <xms:GozEaJ7WVeaEI1J4FNYCAeFSe1bMurC67OT_BB0Jbhk6PWXzJbvBLQ>
-    <xme:GozEaG5x_FaTJVZFNRf7pkhjUFbOGrPCkzZW9DKjVtpsq9dK8yfY--QfEjU7m0KIT
-    _ceh86DRDz2N8UZEKI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeftddtlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpeevhfelgeefleefgedttefhgfffieejkefghfeghffhheelieeivdduteevhedvgeen
-    ucffohhmrghinheplhifnhdrnhgvthenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthho
-    peefvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhvghsthgvrhdrrgdruh
-    hnrghlsegrrhhinhgtledrtghomhdprhgtphhtthhopegrlhgvgigrnhgurhgvrdgsvghl
-    lhhonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgvrd
-    hlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegrnhgurhgvrghssehgrghi
-    shhlvghrrdgtohhmpdhrtghpthhtohepghgvvghrthdorhgvnhgvshgrshesghhlihguvg
-    hrrdgsvgdprhgtphhtthhopegrlhgvgigrnhguvghrrdhsvhgvrhgulhhinhesghhmrghi
-    lhdrtghomhdprhgtphhtthhopehsvghrghhiohdrphgrrhgrtghuvghllhhoshesghhmrg
-    hilhdrtghomhdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghp
-    thhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrgh
-X-ME-Proxy: <xmx:GozEaDU9e-ltO4GjQuBQZhofb5Kj9EDyPaq1nCnmbW-klx59mcvMXA>
-    <xmx:GozEaKDK4yJBaHtkl_LHlcH0jkKXOLdoeoxqmFBWV2JzvB84rcbpfw>
-    <xmx:GozEaCC2WD64DUi7GSydM1X-85yv-7hi6n4v8g8ii_kFrgTh92XlXw>
-    <xmx:GozEaJphW--h3lZUWi9M-TVTnM42xRnish8dD4tvsnrWGtNkHbKeKA>
-    <xmx:HYzEaKn6J5RHAuH4Qzhj_HsWd61NA-XKIndTEYj5XMySXeVQsv1vmoqt>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id AFA80C40077; Fri, 12 Sep 2025 17:09:46 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hu/SOl5u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB511C4CEF1;
+	Fri, 12 Sep 2025 22:35:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757716555;
+	bh=2CnoRP2z2CLiNDktcdk7xPf8rU6fPu5yFoEfsAQ+Ojs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hu/SOl5u4tRtqyhIOiqYNA6XR+OljawU94WoV3xl2KyKukaDgM3hrqX1oeitvy3fe
+	 xl5QuU3ysL1uJUsjgCMz1KBdUHW7TrgQc5lE1NRoP7oqzXuicalQzfseXQPZZVv1AW
+	 64r5Me63yOJf0e2v9qKH4UHZoXbB9O3QrAOun2q1UvEElh09kY7ryfg8mPjtdplex0
+	 Qqy6SZ/6x6jTUcsJzY0SPPCenlwjeCZc+ypWUuk8gpDl0ejgeOwhjvVkxqHpbvraua
+	 4EQ6RnAnqNrFmjxjPeF8OAaTvof5TB4h8WptdYxIlSygut+PuL7dgiOheOYXmRnVyG
+	 ZANYc3XlgMgaA==
+Date: Fri, 12 Sep 2025 17:35:54 -0500
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Peter Senna Tschudin <peter.senna@gmail.com>,
+	Ian Ray <ian.ray@ge.com>,
+	Martyn Welch <martyn.welch@collabora.co.uk>,
+	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: display: bridge: convert
+ megachips-stdpxxxx-ge-b850v3-fw.txt to yaml
+Message-ID: <20250912223554.GA1536924-robh@kernel.org>
+References: <20250912181419.1114695-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AneuvEk2E7Kg
-Date: Fri, 12 Sep 2025 23:09:22 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Nicolas Ferre" <nicolas.ferre@microchip.com>, ksummit@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, imx@lists.linux.dev,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Richard Weinberger" <richard@nod.at>,
- "Lucas Stach" <l.stach@pengutronix.de>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Ankur Arora" <ankur.a.arora@oracle.com>,
- "David Hildenbrand" <david@redhat.com>,
- "Mike Rapoport" <rppt@kernel.org>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Suren Baghdasaryan" <surenb@google.com>,
- "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
- "Andreas Larsson" <andreas@gaisler.com>,
- "Mihai.Sain" <Mihai.Sain@microchip.com>,
- "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
- "Claudiu Beznea" <claudiu.beznea@tuxon.dev>
-Message-Id: <1d58fc51-b921-4669-b6e2-f9a71d1eda58@app.fastmail.com>
-In-Reply-To: <f931da29-5f10-494a-acc0-309bd805d41a@microchip.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <f931da29-5f10-494a-acc0-309bd805d41a@microchip.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250912181419.1114695-1-Frank.Li@nxp.com>
 
-On Fri, Sep 12, 2025, at 18:49, Nicolas Ferre wrote:
-> Arnd,
->
-> On 09/09/2025 at 23:23, Arnd Bergmann wrote:
->> I'm still collecting information about which of the remaining highmem
->> users plan to keep updating their kernels and for what reason.
->
-> We have 1GB of memory on our latest Cortex-A7 SAMA7D65 evaluation boards 
-> [1] (full production announced beg. 2025). The wide range of DDR types 
-> supported make some of these types interesting to use at such density.
-> Both our Cortex-A7 SoCs don't have IOMMU; core and DMAs can address the 
-> full range of the 32 bit address space, so we're quite 
-> standard/simplistic in this area. We use CMA with large chunks as our 
-> camera or display interfaces address "modern-ish" resolutions (~1080p).
->
-> We use CONFIG_HIGHMEM and activated it for simplicity, conformance to 
-> usual user-space workloads and planned to add it to our sama7_defconfig 
-> [2]. I understand that we might reconsider this "by default" choice and 
-> move to one of the solutions you highlighted in your message, lwn.net 
-> article or recent talk at ELC-E.
+On Fri, Sep 12, 2025 at 02:14:18PM -0400, Frank Li wrote:
+> Convert megachips-stdpxxxx-ge-b850v3-fw.txt to yaml format.
+> 
+> Additional changes:
+> - Only keep one example.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../megachips,stdp2690-ge-b850v3-fw.yaml      | 105 ++++++++++++++++++
+>  .../megachips-stdpxxxx-ge-b850v3-fw.txt       |  91 ---------------
+>  2 files changed, 105 insertions(+), 91 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/display/bridge/megachips,stdp2690-ge-b850v3-fw.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/display/bridge/megachips-stdpxxxx-ge-b850v3-fw.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/display/bridge/megachips,stdp2690-ge-b850v3-fw.yaml b/Documentation/devicetree/bindings/display/bridge/megachips,stdp2690-ge-b850v3-fw.yaml
+> new file mode 100644
+> index 0000000000000..6b5cfc41f7414
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/bridge/megachips,stdp2690-ge-b850v3-fw.yaml
+> @@ -0,0 +1,105 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/bridge/megachips,stdp2690-ge-b850v3-fw.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: GE B850v3 video bridge
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description: |
+> +   STDP4028-ge-b850v3-fw bridges (LVDS-DP)
+> +   STDP2690-ge-b850v3-fw bridges (DP-DP++)
+> +
+> +   The video processing pipeline on the second output on the GE B850v3:
+> +
+> +   Host -> LVDS|--(STDP4028)--|DP -> DP|--(STDP2690)--|DP++ -> Video output
+> +
+> +   Each bridge has a dedicated flash containing firmware for supporting the custom
+> +   design. The result is that, in this design, neither the STDP4028 nor the
+> +   STDP2690 behave as the stock bridges would. The compatible strings include the
+> +   suffix "-ge-b850v3-fw" to make it clear that the driver is for the bridges with
+> +   the firmware specific for the GE B850v3.
+> +
+> +   The hardware do not provide control over the video processing pipeline, as the
+> +   two bridges behaves as a single one. The only interfaces exposed by the
+> +   hardware are EDID, HPD, and interrupts.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - megachips,stdp4028-ge-b850v3-fw
+> +      - megachips,stdp2690-ge-b850v3-fw
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
+> +    properties:
+> +      port@0:
+> +        $ref: /schemas/graph.yaml#/properties/port
 
-Hi Nicolas,
+Need to state this is the input port.
 
-Thanks for your summary! I think with 1GB, you'll be mostly on the safe
-side in general. I would definitely recommend using VMSPLIT_3G_OPT
-as the default in the long run and turn off highmem on those.
+> +
+> +      port@1:
+> +        $ref: /schemas/graph.yaml#/properties/port
 
-My expectation is that VMSPLIT_3G_OPT may uncover application bugs, but
-those should be fixed anyway, while using highmem is safer but makes
-everything slightly worse through the added runtime overhead and
-increased fragmentation risk. The 1GB case has caused additional bugs
-because it has a very small highmem area on CONFIG_VMSPLIT_3G and
-that can make it run out of highmem first. 
+And this is the output.
 
-> Of course we plan to maintain these boards and keep updating our kernel 
-> "offer" once a year for those associated SoCs (with maintaining 
-> upstream, as usual). As you said, being ARMv7, we're quite confident for 
-> now.
->
-> As you mentioned, we've recently released one ARMv5te arm926ejs-based 
-> soc: the SAM9x75 family. But we don't have the intention to use too big 
-> memory sizes on them, even if they do address large screens, with LVDS 
-> and MIPI or modern camera interfaces...
->
-> I don't have too much info about our customer's use cases as they are 
-> very, very diverse, but don't hesitate to reach out to me if you have 
-> questions about a particular combination of use.
-> Thanks for your regular update on these topics.
+Aren't both required as well?
 
-I'm curious about the AT91RM9200 part, which I think is the oldest 
-SoC with Linux support that is still advertised as "in production".
-I understand that Microchip hardly ever discontinues parts, and there is
-clearly no need to stop supporting it as long as you maintain the SAM9
-family, but I wonder how many users are still buying this part or
-running the latest kernel on it. 
-
-    Arnd
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - ports
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: megachips,stdp4028-ge-b850v3-fw
+> +    then:
+> +      required:
+> +        - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        bridge@73 {
+> +            compatible = "megachips,stdp4028-ge-b850v3-fw";
+> +            reg = <0x73>;
+> +            interrupt-parent = <&gpio2>;
+> +            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+> +
+> +            ports {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                port@0 {
+> +                    reg = <0>;
+> +
+> +                    endpoint {
+> +                        remote-endpoint = <&lvds0_out>;
+> +                    };
+> +
+> +                };
+> +
+> +                port@1 {
+> +                    reg = <1>;
+> +
+> +                    endpoint {
+> +                        remote-endpoint = <&stdp2690_in>;
+> +                    };
+> +               };
+> +            };
+> +        };
+> +    };
+> +
