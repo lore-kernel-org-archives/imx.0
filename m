@@ -1,85 +1,174 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF3F285C8E
-	for <imx@lists.linux.dev>; Fri, 12 Sep 2025 10:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3153B285C8E;
+	Fri, 12 Sep 2025 10:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757672893; cv=none; b=NoG07RfOUbl/B5qpE/e9MAw8Z47U19EJph5As6HoQfEduKsbN0QO8RCi/FBU6GTG7FPe3e3okZ0CtnTGA7E7Ob+6nA1NpPsJHuJXtvnXhuZe0Z26Yna4dbcEPIdegJlshKGlnOolPcJLOCcmjeOFib2yLtGKcnZeHOF2jzH1xyM=
+	t=1757673095; cv=none; b=cavJFh/W7zL03nbBoU4MncQ698wzSIeQ3HtpbMzLBytEPVjEEHRWCON8SUsts2T3pEoO+dFKbjD6kCK5mr9fkFpGMxHnDOPiqAUVJ8z+pMDkkGsgqB808DUZwM2IHU8rscAuZwIFKoMwEL0m9iW3vUocmn6KvWhH+NDex0fAWtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757672893; c=relaxed/simple;
-	bh=LM2uyXhj+XDus1rPpWtaMOoT7jlnqf79kqux4+P7tss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iGpqSsIEFV6ZhHJCR9jf3yIYMIKKQqKi61AQrg3HfwOO2zkRyBtHto9lFs7s1uKPFmnxT3Ir4u5JFhs8wdkgAIp6cQmEbObXnYyIMusvOgxGeAIHYQJl2lkixLclp/iChtC+Df470fKyXZeiESYEw5HFYfJEslNlSywrCLj8KHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5287616A3;
-	Fri, 12 Sep 2025 03:28:03 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 923FE3F66E;
-	Fri, 12 Sep 2025 03:28:09 -0700 (PDT)
-Date: Fri, 12 Sep 2025 11:28:06 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	"Pengutronix Kernel Team" <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 5/6] firmware: arm_scmi: imx: Support getting syslog
- of MISC protocol
-Message-ID: <20250912-rampant-lemming-of-champagne-54ca7a@sudeepholla>
-References: <20250904-sm-misc-api-v1-v4-0-0bf10eaabdf1@nxp.com>
- <20250904-sm-misc-api-v1-v4-5-0bf10eaabdf1@nxp.com>
- <20250908-sparkling-owl-of-judgment-f17eeb@sudeepholla>
- <PAXPR04MB845929E7106141E785A32387880CA@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <20250909040159.GC20475@nxa18884-linux.ap.freescale.net>
- <20250909-excellent-unbiased-seriema-8d619f@sudeepholla>
- <PAXPR04MB8459B7B9A42DB387368629608809A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1757673095; c=relaxed/simple;
+	bh=pu0gdKrhxEyl//CR0XUZT7QWZKUbgxfCqjXP3s6wHA4=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=UR9kUMGQ1+sZoGjtC8G5f5tLUfWptLuCb0WAMEfkGXtNam8iLKohlNvE6I3cWGVaGcvdcnbiynk7Vl9Mb7s60koqcAIyQaiaMbSaJPBWDWuOW8qVBb79Q1Yb+2Y0VXbxUQxdqhlHamSlma9t2DQVRIKjpQ72+5aDb9AN6SX1lpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=jT0WwhhK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=k1vyC6rj; arc=none smtp.client-ip=202.12.124.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="jT0WwhhK";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="k1vyC6rj"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id AED0D1D003A5;
+	Fri, 12 Sep 2025 06:31:32 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Fri, 12 Sep 2025 06:31:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1757673092;
+	 x=1757759492; bh=ZnTz2gc51WJkMzlk/mlrEsU7FqUmmq3NOjbYK7bSYp4=; b=
+	jT0WwhhKNltNjX6oy1wi2+oKiJaYylL7esPneJwhFB9N0maSA8KhckfKJ6NnZQXz
+	bYSKUzEJ1WD8GBoOttQ4k4McWa7PUuOpoj8s0jC70raXwNw+Joio585FI3WnZjbl
+	x3pSTwt/PxqKxJ9lJ31N1oKIcXKJBT4zXz+pCyvFVjV9Kraw9dayg9sb9jRwV+Nw
+	ZCwIvDwoMDizk5Oy4w5Fq4PGMoCfY9L/WG+9W9or8bVbia9mvqlXoeo2P0NR+JgN
+	5c355lhHhH91mQkZARqOAP1UqOJCYuCPS9yuex3K/8pU9ahBPN8OBiub5LCVDUWa
+	qZJfE07pcyZBzcIZ+mGBAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757673092; x=
+	1757759492; bh=ZnTz2gc51WJkMzlk/mlrEsU7FqUmmq3NOjbYK7bSYp4=; b=k
+	1vyC6rj2xmNIeSXoxg3bvnTWj9wX83aGkU2Em5DF79HTuHrMRkI/xWw7759LQ+5B
+	bkcvjmV9Qcxb5zeuIlTgRw5J7nFj1ieCipA/jEvNGwd6HN40RiueQR16QHBzDb8h
+	VtUVL9bF9ugklG9UPWPwK1OXzf1y5zcSOVT/aIDSE7/tpO+qIxlm036IloNQ38vX
+	GYO835wCXejsuEjw7jRJxt+JFUijm5OA7IcHo9Ic5uxJrBm8P5nGWjGtURshGLI/
+	Jm0wr8SJkFo/frJJBMF0lfIbNHl9FUpWia57G4LZzDDKNpmKp6M9YMb4iODMRpV9
+	KmdcZMWP9FzP3F+KYOnRg==
+X-ME-Sender: <xms:g_bDaJkb4BCSIXaN20hGGvDbpq_uYHUfXJVkDOB_mVGTfxamBLbrCg>
+    <xme:g_bDaE1SOe8uQM2xOpAvalLtJNFp4-tFiBJJg00LzpboZKgRb_HiWpnQAMxIFtxov
+    Y9ewlkME-ye5_zj9pk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvkeekudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpedvhfdvkeeuudevfffftefgvdevfedvleehvddvgeejvdefhedtgeegveehfeeljeen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvledpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
+    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
+    tghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvg
+    gvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghn
+    uggvrhdrshhvvghrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgih
+    hordhprghrrggtuhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgv
+    nhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrg
+    gurdhorhhgpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:g_bDaFXJUTCPg8Gg2uXGQ5RgMU0uaHD5VVXSZgwboz-q7ftAYqBd_A>
+    <xmx:g_bDaH89g0FuTDFfLJztpjIor2KN7O4LrVLiR6mLfjS9st6ed4KczQ>
+    <xmx:g_bDaKpKyJokmXH4ARM6vTbfA_Kk9jW9MQRMrRlbx2LKjFb1x4w1Wg>
+    <xmx:g_bDaLcx1abt47vng-9Brf4PakpSJA5ATOGTsoYy2HXs2gu4PoxW_w>
+    <xmx:hPbDaDl4p91INzeg69byU-AorUJTlq5vFDDCdsqCRc1puYq7VFqbSjGD>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 9ED19700065; Fri, 12 Sep 2025 06:31:31 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-ThreadId: AmcCJOTBQ5ho
+Date: Fri, 12 Sep 2025 12:30:59 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Richard Weinberger" <richard@nod.at>, "Dave Hansen" <dave@sr71.net>
+Cc: ksummit <ksummit@lists.linux.dev>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-mips <linux-mips@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
+ imx <imx@lists.linux.dev>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>
+Message-Id: <4fcd272f-81e3-4729-922b-588ad144e39b@app.fastmail.com>
+In-Reply-To: <640041197.22387.1757536385810.JavaMail.zimbra@nod.at>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
+ <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net>
+ <640041197.22387.1757536385810.JavaMail.zimbra@nod.at>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PAXPR04MB8459B7B9A42DB387368629608809A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 11, 2025 at 11:15:37AM +0000, Peng Fan wrote:
-> Hi Sudeep,
-> 
-> > Subject: Re: [PATCH v4 5/6] firmware: arm_scmi: imx: Support getting
-> > syslog of MISC protocol
-> > 
-> > >
-> > > I checked with firmware owner, this should be using raw dump.
-> > > The layout would be changed for new platforms.
-> > >
-> > > Since this is raw dump, I think debugfs might be preferred.
-> > >
-> > 
-> > It can be sysfs, but it can be just one single 4K dump, no more details
-> > from the kernel than just raw bytes.
-> 
-> Thanks for approving the use of sysfs. However, I've already developed
-> a patchset based on debugfs, and following a recent internal discussion,
-> the consensus is to keep this functionality for debugging purposes.
-> Given that, I'm inclined to continue using debugfs unless there are
-> any objections.
-> 
+On Wed, Sep 10, 2025, at 22:33, Richard Weinberger wrote:
+> ----- Urspr=C3=BCngliche Mail -----
+>> Von: "Dave Hansen" <dave@sr71.net>
+>>> Even with a new memory split, which could utilize most of the
+>>> available memory, I expect there to be issues with various
+>>> applications and FPGA device drivers.
 
-No objections if this is for debug purposes only and you do understand
-CONFIG_DEBUG_FS is disabled always in production images. Basically you
-can't ask customers to share the info from there as it doesn't exist 😉.
+I also remember driver problems on older Marvell NAS systems, which
+we never fully figured out, my best guess in retrospect is that these
+had devices with DMA address restrictions, and if lowmem is small
+enough it would always work, but any lowmem allocation above the
+hardware DMA address limit would cause data corruption.
 
--- 
-Regards,
-Sudeep
+A similar restriction exists on Raspberry Pi, which can run
+both 32-bit and 64-bit kernels. The workaround in this case is
+a combination of:
+
+- correctly representing the DMA limits in the devicetree, using
+  the 'dma-ranges' property.
+- enabling SWIOTLB (which is not enabled by default on 32-bit
+  Arm without LPAE).
+- Using GFP_DMA or dma_alloc_noncoherent() allocations for
+  streaming buffers if possible, to avoid extra bounces
+
+(documenting this here, in case someone tries out VMSPLIT_2G
+and runs into a similar bug on other hardware, I expect there
+may be a few more of these, though most hardware should be fine)
+
+>> I'd be really curious what the _actual_ issues would be with a
+>> non-standard split. There are a lot of "maybe" problems and solutions
+>> here, but it's hard to move forward without known practical problems =
+to
+>> tackle.
+>>=20
+>> Has anybody run into actual end user visible problems when using one =
+of
+>> weirdo PAGE_OFFSET configs?
+>
+> In the past I saw that programs such as the Java Runtime (JRE) ran into
+> address space limitations due to a 2G/2G split on embedded systems.
+> Reverting to a 3G/1G split fixed the problems.
+
+Right, that makes sense, given the tricks they likely play on the
+virtual address space. Are the 2GB devices you maintain using a JRE,
+or was this on other embedded hardware? How common is Java still in
+this type of workload?
+
+Another type of software that I've seen mentioned struggling with
+VMSPLIT_2G is web browsers, but I don't know if that is a similar
+problem with a V8/spidermonkey JIT managing its own address space,
+or more about general bloat exceeding 2GB of user addresses.
+
+      Arnd
