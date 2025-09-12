@@ -1,201 +1,178 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011048.outbound.protection.outlook.com [52.101.70.48])
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253EE31691E
-	for <imx@lists.linux.dev>; Fri, 12 Sep 2025 18:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757703146; cv=fail; b=AsT+bbw3LeT2RKGSro9GwGL5JOABvXRndn0L5VlwzdcDg0+JqbfE46lYgaJzqkffST5RGuK4a17V9rUtGL/dXhN+7FXtEIn6IgFtTXzc2S5xvrE8oM2FViN/WxhhaWDM3ZDMgXlTOJKJznNuk4CFUj8iJACAKW5b0MVCX72H4Ak=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757703146; c=relaxed/simple;
-	bh=weJfRV1xaEe4LYUcpVC+UELBt01hayB6uBqTotpkFGA=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rcG0t1euaUuXH7VGmluW2QwSGOwm8sLf7jPe9Ua8Y/LJ1s2jTFCQcfa4tc3d6j20PqY6wk7rcAYuf7reBxIIVJy+BvcDweMh7sjS1w1WH526t5fRX2uXY95EVPX6RLU0uWLun+MpSAJu0rGJudTa68C3XQXG+N9GEPlhLav+bSc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iC3G+Okv; arc=fail smtp.client-ip=52.101.70.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F040C28489B;
+	Fri, 12 Sep 2025 21:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757711394; cv=none; b=hwLvYcvmp9Lu0EhZ+rP0NeiHMNqoMPcq+l5xm29cnzwTBR6rYT2ieq0YYobA3cIxfETOMTly7U2GKpdG04ukcr7get2Gm7g1XFFNj0ZYCbo/5YM/FnZacRleBG9yZ+AM/yNWuWqw8XzFHzmYBGuduwTeS7xDogQoLKUSqqFL2Js=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757711394; c=relaxed/simple;
+	bh=e7oq3c2bmJNjTLNH0WCmh3oqHoeflOXUxfd9Pnphqm8=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Wjlqgy/RxUiW8j/BMkZIDOajFJl/zhU9mq4Xxh1CmRqb8YGjgnWdUV1ga9bDXrl2JstZFIbCd0mQeh5h7mSJnMNUiccVpv4nzmXTPLmTVTQERk0+2rem4lKeKQY63tmkzZSGQ5GlVea3x3UXjQnmOp6oUQEf3vutd7c8bLdYSGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=GI4t6+q5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Hg+efwLE; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iC3G+Okv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rTANrkJNYSEzF/p4agd56ub5g50sANNDHegBtbf50FBkOiAOHmAMSOO/hW0mpIneo1sa2cToTWnyrqz3/QM5Zkoi7R2Z9AywV4pgX6Nk3jKMf8an87NuurTOUK5YAjOrHtcGDBD+DxJEiB8x/U8bFudH5/w2753F/TUkHYXzbYOvEUETj5inXFK4971GfM32DIDuQngHAsYZv4ViAdWEuA404NIQ0gKM1jWCY/IxzLSggshtqDogAkiz4xd49QZpcFkogK5GoJqZArMdplIaL6A7IbxxXl6NSsSOU9iU1Olw6qAwQSekFrfM70Yp80Nn4zVfKwm23ftjCZq9JIuGfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zO1nMwuha9pKDdyR0lzZUSPos0IX/rXy+1KeQ5BbQdc=;
- b=DfBRIYg+kPqlsZuW1/ihyQtpgndLU599XFAxiK0o1v988RGlWwHkyWDEqGWfgG5J9RLSdxiZqGrdz+Ii9iWiARMSrczJROhoas8QMp0kXbSj9JZVOSV8/Kd1zomK9m4yM5yygIf02LpwY9VuNnJ9hDTz6pqMEm8Kc9gVtRXC2PTbKrkw8achH3rnNRHrQd6P+ZMoX1nmq7SemR2LdTSmpDatUixqo7KR8huAxzmYOt5phTvONRcIlsQbI6L5NKuzth2wsBsFhLsPIXXL+QebTUUA4bzuAMMMYtxOqNGImODZQza/6ZHb/qOZf9bBqcrMygXDQASQ2XccxyTrtV6cuA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zO1nMwuha9pKDdyR0lzZUSPos0IX/rXy+1KeQ5BbQdc=;
- b=iC3G+OkvMp1h7FKgUsgvilEMnN8O6/W7o9uT2nkDF0f/+nFuUsnBoTQMKbsmXl+nSywXgs3ImsccOXF6VhcYb7JsY9tzkNGHyrs9WioqhWWOp9FhuaagQ4TdVWrVdxBfE0M/3Bt1rbdSwjlh/kauhKeKabWzhCTGeh2r/H6wAPKFJfm3/w7g3KvTCLXdElJGfFIlB4371EIInsRlVQr5B7UYVToLvbQ2JgMaAooNcPvSJBTQXvuvFAm7n1Zv0II9OVn7PoBEkNjtA0Aiz0vINsSxVXW6kZBqm89aF48bMqwQb1DTOfvIVd5R1kpTY3NfYX73faQfasf/7j0PL4sa5w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by AM8PR04MB8033.eurprd04.prod.outlook.com (2603:10a6:20b:234::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.19; Fri, 12 Sep
- 2025 18:52:17 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9115.015; Fri, 12 Sep 2025
- 18:52:17 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	dri-devel@lists.freedesktop.org (open list:DRM PANEL DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: display: simple: Add innolux,n133hse-ea1 and nlt,nl12880bc20-spwg-24
-Date: Fri, 12 Sep 2025 14:51:59 -0400
-Message-Id: <20250912185159.1118209-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR13CA0229.namprd13.prod.outlook.com
- (2603:10b6:a03:2c1::24) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="GI4t6+q5";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Hg+efwLE"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 128BF7A01CD;
+	Fri, 12 Sep 2025 17:09:50 -0400 (EDT)
+Received: from phl-imap-17 ([10.202.2.105])
+  by phl-compute-05.internal (MEProxy); Fri, 12 Sep 2025 17:09:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1757711389;
+	 x=1757797789; bh=CLqRBKVf5IvTh800HM+2y42LrS7XFT+UlQoEp2IAPso=; b=
+	GI4t6+q5kXjCO6cruisFBrxlfYspQdyR2nSwyVUifQzM7VEMrmYCNyjAVYjNhTgm
+	WqCqX8kZdK2deNSwLTBVJ3N8pSl0NhU5c9HH2kyD2VdFMzafqFVFH9hpDeIJNrzj
+	g4Qa7RVKOklHp6T9//Fk2QqJOmtlyMcvCzaPH7vzB72i03nMdNbtRdOZjHzQ4h/L
+	ftry70985VVJ0JC8deKiZyhzurfBwKKn5fmc5YLwZO9NW0AWFO9cbhr6Oa1pnc8X
+	IbeXUCwwcUmmLw1JIdKGv7tJjqaUU7L6MH1vAFkSQFJ8ZQ5CrDw16pFxmTMYZ3b4
+	iRfechyn/kmAf/3LIGcGLw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757711389; x=
+	1757797789; bh=CLqRBKVf5IvTh800HM+2y42LrS7XFT+UlQoEp2IAPso=; b=H
+	g+efwLEojmMZRq8iZwYjjIYprH/XYxRGz4gmpycxwdhPe1s8+YfTor2bbGv0c0B2
+	RLsa8YQz2KykS1Kzwhrjk5vc4sNyX55mlyEc/YPCTF+a+h5XGA1P5EP0qMtntlaW
+	glaOlh/Kn+XcHwMTpuhR2UrjWZGj35jBvgxWwqm5OAUbjTj6+VnIzZ7ANky9E3Wz
+	IpurPFx3x7zuk4nsRKyP70Og/99u4DsemcafNS5R+S7aIEm+gzBBWkmSBQ6mFI6Z
+	sZlMDN5oUpNr0X2A2oOZa95CyTZTboiXtWUjzqMltgruej+lvRP5fnsTfi9FdrWx
+	iwGev+FnsPgCi2tPWVfjQ==
+X-ME-Sender: <xms:GozEaJ7WVeaEI1J4FNYCAeFSe1bMurC67OT_BB0Jbhk6PWXzJbvBLQ>
+    <xme:GozEaG5x_FaTJVZFNRf7pkhjUFbOGrPCkzZW9DKjVtpsq9dK8yfY--QfEjU7m0KIT
+    _ceh86DRDz2N8UZEKI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeftddtlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpeevhfelgeefleefgedttefhgfffieejkefghfeghffhheelieeivdduteevhedvgeen
+    ucffohhmrghinheplhifnhdrnhgvthenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthho
+    peefvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhvghsthgvrhdrrgdruh
+    hnrghlsegrrhhinhgtledrtghomhdprhgtphhtthhopegrlhgvgigrnhgurhgvrdgsvghl
+    lhhonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgvrd
+    hlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegrnhgurhgvrghssehgrghi
+    shhlvghrrdgtohhmpdhrtghpthhtohepghgvvghrthdorhgvnhgvshgrshesghhlihguvg
+    hrrdgsvgdprhgtphhtthhopegrlhgvgigrnhguvghrrdhsvhgvrhgulhhinhesghhmrghi
+    lhdrtghomhdprhgtphhtthhopehsvghrghhiohdrphgrrhgrtghuvghllhhoshesghhmrg
+    hilhdrtghomhdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghp
+    thhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrgh
+X-ME-Proxy: <xmx:GozEaDU9e-ltO4GjQuBQZhofb5Kj9EDyPaq1nCnmbW-klx59mcvMXA>
+    <xmx:GozEaKDK4yJBaHtkl_LHlcH0jkKXOLdoeoxqmFBWV2JzvB84rcbpfw>
+    <xmx:GozEaCC2WD64DUi7GSydM1X-85yv-7hi6n4v8g8ii_kFrgTh92XlXw>
+    <xmx:GozEaJphW--h3lZUWi9M-TVTnM42xRnish8dD4tvsnrWGtNkHbKeKA>
+    <xmx:HYzEaKn6J5RHAuH4Qzhj_HsWd61NA-XKIndTEYj5XMySXeVQsv1vmoqt>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id AFA80C40077; Fri, 12 Sep 2025 17:09:46 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AM8PR04MB8033:EE_
-X-MS-Office365-Filtering-Correlation-Id: 340e33b9-3314-4ffa-75f7-08ddf22d7ec6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|52116014|19092799006|366016|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZUYrWmVnOW5mTkdsS1N4MHZsUmg3QWI1TVRRTVNKNjMwSlVxdEJWcWlNbGFS?=
- =?utf-8?B?d05HMmhZKzJZRWNEaEpjemtwdG9hek5DQ0FBcDRyeW9XSWZKeWxhLzl0Nk8w?=
- =?utf-8?B?cGxENTZNSmdma01MN1hGbEhJSjk5RFJ6ckdhVlkxeVVhR04vdCtIcDVsdGRq?=
- =?utf-8?B?KzhZT0hFUThvbGdDZGVyTE1RYnl4NVRsWktOb1RxVlVKUTNYbk4rZkxnUzA4?=
- =?utf-8?B?Y1lYTzVmbzNqeGdCNUhqZzdyNmJienpISjZlWXV3UUhuRlZEbkMrM0J0RWU2?=
- =?utf-8?B?UWNJRy9GRDdUS1ozZnY2bDQ2dzduNUpQLzR5LzVteEF0a00zSXMxT004ZzdX?=
- =?utf-8?B?eGs4NDcyV1hibGdrYVFUTnFJSXdtNEd2WTErYmhGam5uYXJsOVpIQ1dkMUF3?=
- =?utf-8?B?OFp6RGlPMnduNHBIMEJnZ0ZCUGJIWkZ5OXFWZXNzSHR4bXBhRmU1WUh0WmFJ?=
- =?utf-8?B?RmNSM0FmVENtazdIdUE5YThjVnRjeDIva0ZFb3B3c1dCcWM1N2J0a3JUVVc3?=
- =?utf-8?B?WnlFWllwOGduWGtTSzdDOUF0N09LRkpBVmcxelh0Y1N5Y2xrWmRyRzRtWHNp?=
- =?utf-8?B?blZsaGpaZmFmNGxDNnFtYWJMVy9oL3QvUERFNUh3dDJDQkgyN2dTd2U3RWpQ?=
- =?utf-8?B?RDgwRkZneTNkUlpvanl0Uy81cGpHbnU1UDErZWw2ci9wMXBCaEp0bkxreGdX?=
- =?utf-8?B?c2U1alI4OXJSUm9KYjhuazdqMzJROUhldDFHb2VwUm5KRmo1TGdNc1dNeTdB?=
- =?utf-8?B?MkNEeUZBNEdBUWdqTlVyMHFybk9HbkU5emJ1S25HUGcwM3JKMTV0MzY2T1pq?=
- =?utf-8?B?SW1uQ3lNemY1T0gzRnJSMGkxOTd3c2VkU29YV1RYZ292QmJneVp4emhLUWdW?=
- =?utf-8?B?U0RFSzRRa1B3S2pmdk81MkpVc0ZrY1NIblhpaWJmNXFaVWd4SmxLYkVuVDdt?=
- =?utf-8?B?dEFVMnJOc0x3cW9PdmFBRU9LNTcvTjhHdnB3VUtvOWw0S3E4RkhTOWFicE5N?=
- =?utf-8?B?U0hoNjUwV1puaFpUVUFBd2pOMEp2OFZkb1lpdUk2SGViOC9malE0cWZnNjRZ?=
- =?utf-8?B?M1lVVVFybUY2UHpENGVjZTdENW1VLzlpT3N2eXQ4MmU4aHpUeWVrQlh5Q1lO?=
- =?utf-8?B?cExCRDVJV0xzMW93NmhHYjRCdCs1ZnR0U2VSN25RSkZJN0hHdFlRZXBYRUUy?=
- =?utf-8?B?N0ROT01ISm1KdGxxd3Q1Z1ViRVExR0g2SDhQTkdNRDNTMFJVcmpQVXp6Yk5T?=
- =?utf-8?B?bDNhdVEyNlJhOHp5SGJIUy9EY3VpRWZJOHk5cDFxbW9xaG91V2h1djN2c1lK?=
- =?utf-8?B?d1NNelNJTWtMZEJ2Rmd6QndrN2c2RVBUZklOMXRyakEvckdDS0NJL01rdkRV?=
- =?utf-8?B?ZGhRaGE5S1VQZUJadG5xUVRQQlgwcmlNNk5EZk5GQkRzTGJtMVNQQmxCbWw5?=
- =?utf-8?B?Q01sSjBqdU5nRzJvTVBqRDg1MGdGS1piMTJibkg4YmNMQ3UyVkwzWHRnY0Zj?=
- =?utf-8?B?ZG00TE1lbWd6VzhLK1B6djJ0d3pRSU1UbXAwYTVyZC8wek1peE1kUVNvekI3?=
- =?utf-8?B?aVFQYUJmRFFBT0xia0hMcExBV1pKVnFZeElDUCsrZGVUZm1PdWJ5RzZwSlVF?=
- =?utf-8?B?cVRGQS8xMG9NaWpMMGN4QytnaEtvUmM3L09GOURIVk5FODAzbkN4U29ZaHcv?=
- =?utf-8?B?M0l4MWFSZ0k2K25wQjdMcCs2ZXZyaHFUcVBxQUZVNlk0STlpcWI5OStpOVVT?=
- =?utf-8?B?eCtKZ1NmR1BodjFVSHFIK2hITmQzaVNaN1FrMGlMUDdQbDRKNFJNcFNleWl1?=
- =?utf-8?B?R0hUajk4TFU5WjBZN2xINDkwWVkzL1QxaEZMR3lvRVhNQ3JtT1hJLzc5aCtL?=
- =?utf-8?B?c25kMml6N3ZtWjdhRlVMTDRVU1Z1bE16QTJiTW5XSWpIQ3NGQVNXMkdpM1Jl?=
- =?utf-8?B?NXNuaEJ6eUw2WlZ0ZUs0RnA0ZUxlbmZ0ZVUyRk8rTGN6ZGtibjRmUXoyUGxy?=
- =?utf-8?Q?TE9jWsh66RF5pIw4IgUJcvUgFHRUPA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(52116014)(19092799006)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?KzBleW9Zb2RrRGVZMU41RjAzenFxeWRBVDVKRS9FWXI0OXNRUld6alpxUXpr?=
- =?utf-8?B?MksxRGIwL09pUi9TbjcyZFNCZkFxalptMG5iSDZFSERFTlI4dytlaDY0aHdr?=
- =?utf-8?B?VTZyYUM2QURDUW12QXNmQXJaaURHL3lKR0p5dEVyaitIKzc1T2w1b3hLaVpO?=
- =?utf-8?B?MUViMWgzdk4xOWNheVZmYUxCL2wxdDN0TDZpUnNKdVFEdllSQlBoUUlvU2F3?=
- =?utf-8?B?ZGhFZVViRUQ4YXhXWXl3M2pNaHJTeVlmemZaQXF3UnlydlBRclFndUNxS2lr?=
- =?utf-8?B?VER2T2JRM1RvNUtKRTBzajU5ZjkvWThhUVJ0NXp5Z0pFZ203Q1ZkT2d6UTVu?=
- =?utf-8?B?aW5XVVJCMi9XclJ5a014MU5EMFRyUis3TWtSSHIzNWtHbncyUC9RNU1oRERj?=
- =?utf-8?B?a2pIZS9LbmF5N3NSdkdjUUNGMzcvQmkxNHJsUG44R0dqeUFtQjdLc3hoWGZz?=
- =?utf-8?B?TDlucUZMMG5XMnE3ZFhqNVZ6RE1yTy9qSys3c0s2Q1JyUjRRdDl3ZW9zUHNn?=
- =?utf-8?B?aG5XSDZtbC9wTTdrV2VHTDMyMUM1UytSVCt6TzlIZ1dnRDNNY1M0cU5CNVN5?=
- =?utf-8?B?czNCMGdsWGdUVDdBSE0wZHlhallkZ3NkK2cyVjJVTHJzdkhjZXFoZkMyMkpE?=
- =?utf-8?B?QmRjK1ZGMHk0bXYwNkphTHFON3lMeEZUMzh5bk5id1pNUE55eTZERlV4SzBa?=
- =?utf-8?B?Uk5hMGVJR095eG1ZZkg4SldPK2tUZSt2NlNvaEZzUGZlSEQ1WW81NTl2bXhi?=
- =?utf-8?B?L0U0R21YRnRrek42S2RLWFhNcXJGL0xwVmJ5V3d1N2FDK3JPMVl5OHZqREMw?=
- =?utf-8?B?VGNHUXNQRElvNGIwMWJUMll2RHlkYUpMYXJVR3BPbDNwSDNVaXJVODVocnlq?=
- =?utf-8?B?TVk1RUppUktrbGdSdTBjWlRENlhIME1xU0Vrd0xvLzhuOVJ2WHI3SEFMWE0z?=
- =?utf-8?B?RWwrSU5Ib2lKdlRhV0hTdnpUN1NCRVVLR0o5NEdNbm94dVBHTzJqZEI2T1Bz?=
- =?utf-8?B?UFhOd0xkU2ZQTWpSODZoQU93NE5mUWREQzRuZ0JhWEpZYXVteEpOb1pReVpP?=
- =?utf-8?B?UVRXK0w2NE5qdUNxMkppb291VTBzcHpacGNsOGYrM1ZnNFdVeHYweFlBclBT?=
- =?utf-8?B?Q24xZUVLR0JXYjg5R0RrdzRVR3dBMjhkbnpiUUo4OGV3UVE0WitaQ1FUYy9y?=
- =?utf-8?B?RTMycEk2YkZQZGptb0hOQmFVbnhEMm9mV2k1azdoSmVxTldKZHBzK3l5UmE4?=
- =?utf-8?B?T05ub0RneVlrRzB4bG1WMWlGWklPeW0wUkFIZE9NcE1udWV0elhWeUs5dWp4?=
- =?utf-8?B?YjdaV2JQS25Qa0dqdUhzQjhMTTF6Z3NnSVRWSnZQYkNwK0hrNGZoZllDL1VO?=
- =?utf-8?B?U2wyRUpLYTRIcUpiY0hEMm52UUVsNllLN3B4djZweU9ybE9pRWFBcTlqSmt5?=
- =?utf-8?B?Z05zL09WeDNaWkxRcUt4U3RpOTBCNlRkVGY5UCtPZmJSeWdmdDhpY0tTSlRJ?=
- =?utf-8?B?cVNZLzFsMlYwVmt0bjB2c3Q4RnpJSk9Rc0xNU0xNdWhnME4yT2ZnbHdBMGFj?=
- =?utf-8?B?ekpobStodThlZU5HeVRNOVJWVlBmeXhiZkJKcXhJeHgvclhxY056VnNaTmFj?=
- =?utf-8?B?YktUMjJwT2FKZUlWNElxUDFQb3lNZVpVcjFQZlRGS3NGK012OHJqaEhXKzhP?=
- =?utf-8?B?aTJPTnZXdi9uUXZUeWt2OEZ1SWZMWnNZeXdNZXY2c1Q5b2x0QkVORFF3NmJx?=
- =?utf-8?B?cWxYVWZ2RzB5dndIV3EyTzBpY2hEY3dzeVh1YXp4OGt3dDdLOTdsS1pTL255?=
- =?utf-8?B?ZVVhU21WRVJ3T3RTd0dHcDFiNHZGUGpra0xhQUhaUXR6bmVweTJ2SU81OFFq?=
- =?utf-8?B?ZmlaRDhCSnR1cTJFTHA1WmlUMXBoZ3Y4ekZwV2xCTW5jL1VLRVBpcVBKQ0NY?=
- =?utf-8?B?ZkYrNHNpaXUyOVgybDhMVEZFRERTQ1NCWFFhM09qaVVZMUpKZXRtVUFCa3FB?=
- =?utf-8?B?anJpSG5sOG1aS0lHYmtLMlI1UVhxaDQ3NTNtam1DOVYxMzVEMzRkZ0NpOFJX?=
- =?utf-8?B?dkViMmdqZU4zRU12ZFpodHI0eUsvbFJwcEhKeGtiS2NGWnYySTRYcFovU0xt?=
- =?utf-8?Q?/ukJrYQsQoGNMteOGWCGR+6x9?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 340e33b9-3314-4ffa-75f7-08ddf22d7ec6
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2025 18:52:17.2384
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kuF5371iCX49XEopxvB8BZrj8Dsum3s1vIPOoVXObPzXCVXy9SUWRO5L+5dLo6pYwo/PTkWqUsHOvjpgOXzulA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB8033
+X-ThreadId: AneuvEk2E7Kg
+Date: Fri, 12 Sep 2025 23:09:22 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Nicolas Ferre" <nicolas.ferre@microchip.com>, ksummit@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>,
+ "Mihai.Sain" <Mihai.Sain@microchip.com>,
+ "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+ "Claudiu Beznea" <claudiu.beznea@tuxon.dev>
+Message-Id: <1d58fc51-b921-4669-b6e2-f9a71d1eda58@app.fastmail.com>
+In-Reply-To: <f931da29-5f10-494a-acc0-309bd805d41a@microchip.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <f931da29-5f10-494a-acc0-309bd805d41a@microchip.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Add innolux,n133hse-ea1 13.3" TFT LCD panel and nlt,nl12880bc20-spwg-24
-12.1" WXGA (1280 x 800) LVDS TFT LCD panel.
+On Fri, Sep 12, 2025, at 18:49, Nicolas Ferre wrote:
+> Arnd,
+>
+> On 09/09/2025 at 23:23, Arnd Bergmann wrote:
+>> I'm still collecting information about which of the remaining highmem
+>> users plan to keep updating their kernels and for what reason.
+>
+> We have 1GB of memory on our latest Cortex-A7 SAMA7D65 evaluation boards 
+> [1] (full production announced beg. 2025). The wide range of DDR types 
+> supported make some of these types interesting to use at such density.
+> Both our Cortex-A7 SoCs don't have IOMMU; core and DMAs can address the 
+> full range of the 32 bit address space, so we're quite 
+> standard/simplistic in this area. We use CMA with large chunks as our 
+> camera or display interfaces address "modern-ish" resolutions (~1080p).
+>
+> We use CONFIG_HIGHMEM and activated it for simplicity, conformance to 
+> usual user-space workloads and planned to add it to our sama7_defconfig 
+> [2]. I understand that we might reconsider this "by default" choice and 
+> move to one of the solutions you highlighted in your message, lwn.net 
+> article or recent talk at ELC-E.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- .../devicetree/bindings/display/panel/panel-simple.yaml       | 4 ++++
- 1 file changed, 4 insertions(+)
+Hi Nicolas,
 
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-index 48344ce74a6e7..742ec6033b724 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-@@ -180,6 +180,8 @@ properties:
-       - innolux,g121xce-l01
-         # InnoLux 15.6" FHD (1920x1080) TFT LCD panel
-       - innolux,g156hce-l01
-+        # InnoLux 13.3" FHD (1920x1080) TFT LCD panel
-+      - innolux,n133hse-ea1
-         # InnoLux 15.6" WXGA TFT LCD panel
-       - innolux,n156bge-l21
-         # Innolux Corporation 7.0" WSVGA (1024x600) TFT LCD panel
-@@ -230,6 +232,8 @@ properties:
-       - netron-dy,e231732
-         # Newhaven Display International 480 x 272 TFT LCD panel
-       - newhaven,nhd-4.3-480272ef-atxl
-+        # NLT Technologies, Ltd. 12.1" WXGA (1280 x 800O LVDS TFT LCD panel
-+      - nlt,nl12880bc20-spwg-24
-         # NLT Technologies, Ltd. 15.6" WXGA (1366×768) LVDS TFT LCD panel
-       - nlt,nl13676bc25-03f
-         # New Vision Display 7.0" 800 RGB x 480 TFT LCD panel
--- 
-2.34.1
+Thanks for your summary! I think with 1GB, you'll be mostly on the safe
+side in general. I would definitely recommend using VMSPLIT_3G_OPT
+as the default in the long run and turn off highmem on those.
 
+My expectation is that VMSPLIT_3G_OPT may uncover application bugs, but
+those should be fixed anyway, while using highmem is safer but makes
+everything slightly worse through the added runtime overhead and
+increased fragmentation risk. The 1GB case has caused additional bugs
+because it has a very small highmem area on CONFIG_VMSPLIT_3G and
+that can make it run out of highmem first. 
+
+> Of course we plan to maintain these boards and keep updating our kernel 
+> "offer" once a year for those associated SoCs (with maintaining 
+> upstream, as usual). As you said, being ARMv7, we're quite confident for 
+> now.
+>
+> As you mentioned, we've recently released one ARMv5te arm926ejs-based 
+> soc: the SAM9x75 family. But we don't have the intention to use too big 
+> memory sizes on them, even if they do address large screens, with LVDS 
+> and MIPI or modern camera interfaces...
+>
+> I don't have too much info about our customer's use cases as they are 
+> very, very diverse, but don't hesitate to reach out to me if you have 
+> questions about a particular combination of use.
+> Thanks for your regular update on these topics.
+
+I'm curious about the AT91RM9200 part, which I think is the oldest 
+SoC with Linux support that is still advertised as "in production".
+I understand that Microchip hardly ever discontinues parts, and there is
+clearly no need to stop supporting it as long as you maintain the SAM9
+family, but I wonder how many users are still buying this part or
+running the latest kernel on it. 
+
+    Arnd
