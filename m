@@ -1,145 +1,124 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E7B1F948;
-	Fri, 12 Sep 2025 00:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D947281ACA;
+	Fri, 12 Sep 2025 00:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757635711; cv=none; b=QtbMK1S+B9hGz7QRzm2jjSkrbS6kaRhipcCYHXGzYXwKs1dCsHkNmmvtL9aoVuTyGtOCPLgXjPHoY///EFV+mwqsWkr0MyORy04JB8LKmhmVxqjBeD84w4lfF9MqCV8PHLmZ840l/uKQAG58zpNEDowSPW6qtvR60imIvfF1F3E=
+	t=1757636272; cv=none; b=WycDuhYNjSDLLZI/tGK7ZAb1+6RnxJHKBgNQYNkMnAxsT0jj0H3L6EJ2TiV62VGzFc6VkrFHRdwa+VcpKkRUUjabb63IUSlrvq3to31/qCJU48Ito7KA8Nuc0I4vvIsVLv4cDGqxCIaVvUZyMexDOLnxLcQT+O5KSVLJAemH/pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757635711; c=relaxed/simple;
-	bh=UxcuXC6sExcpG8BeW6MP7jgxfMtnH1Fa8tN/NA404Fg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bV1LhvnOLznGIJdl7tBbnDwFeY8UgDPgfEBKV/PT0GLX2QSlD31ZunRWAZkU1OdjxgblQWq7rs/fi+I7gRixoB03+4OqeIcBGuoIINk4/J525RbV66bnYDnBJF1oCVxlUD8pJ81wLv45JXq38ar7EQq7J2R/bVwKBXWx1tduOMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NPcHy8dV; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1757636272; c=relaxed/simple;
+	bh=DNAaszBerFJ+PyZv9j52FnEQJyyHkVAX4kFYN/3vj9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C7BvFBXZxy0uG3eG/NbhzRrkJQY7Nj/wGyYQlVSHb+rKo9ks6e4td4oCCZwr3UMF2TjoTFJTFk9WxKr5rDxZ//fR3XQKugoNljNmrysd3uBWakVfIjCuqML8IU03clMkMGnGOUZqdVd2dm5aTL+rJFLp8SqokxvsEhdVj7+eAok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G4KBt6D2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NPcHy8dV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757635710; x=1789171710;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UxcuXC6sExcpG8BeW6MP7jgxfMtnH1Fa8tN/NA404Fg=;
-  b=NPcHy8dVB0iuvC5pQB64RBtcao1jIpE4xNT+WfIoc/WSsQ75R+37P58c
-   j3IIdXvUFDH8lYPJDBAJ5lLBJJ83lmlCDV5m5T4W9XzedVbOHPbeL8njA
-   bw8DaUSrV1jEnmw9ExrNVk4SfQSBjqoWx7zyiB5Xr6pYxMMXHuMDuvrWf
-   84bWNdm6L2ukojSLkBe2dh48i/1Ku4AgbuRIVv7s1CglNKSN0D/NK7iMH
-   iRFLL8UxUlW8OUNsLt4H3VYcZBmS8jhNpfOuyQuY9f5vFcfKtbTEJ6osK
-   iEf3tP4b8a3x7ziE6tg33BdIsf4IVRDl03pUOyFBHvCyP3VENFyOgCVYi
-   Q==;
-X-CSE-ConnectionGUID: nu8Bulr7SxKJ9VREcYKlPQ==
-X-CSE-MsgGUID: NisRXcZ4QfaT0LncsvKEOw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60040654"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="60040654"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 17:08:29 -0700
-X-CSE-ConnectionGUID: JkE15ZKyT4Wcs/nc8sjVrw==
-X-CSE-MsgGUID: jm0+/LUrS322nD6lO7OCzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,258,1751266800"; 
-   d="scan'208";a="178163399"
-Received: from lkp-server02.sh.intel.com (HELO eb5fdfb2a9b7) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 11 Sep 2025 17:08:26 -0700
-Received: from kbuild by eb5fdfb2a9b7 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uwrKx-0000iO-2Z;
-	Fri, 12 Sep 2025 00:08:23 +0000
-Date: Fri, 12 Sep 2025 08:08:15 +0800
-From: kernel test robot <lkp@intel.com>
-To: Peng Fan <peng.fan@nxp.com>, Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	arm-scmi@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 2/2] firmware: imx: sm-misc: Dump syslog info
-Message-ID: <202509120758.omltrDMi-lkp@intel.com>
-References: <20250910-sm-syslog-v1-2-5b36f8f21da6@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G4KBt6D2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807CEC4CEF0;
+	Fri, 12 Sep 2025 00:17:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757636271;
+	bh=DNAaszBerFJ+PyZv9j52FnEQJyyHkVAX4kFYN/3vj9o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=G4KBt6D2JPbMJgwp3sNI6ccIVbdSjkL4rqzADWILEBwpladiBPBM2PKGrKiPDeI+k
+	 S4Maz1Z+hf/p47I9lDd2PQJp/ocuS+us0npUghSfHz4VjEfONaFirvLb9C5+XVxxuk
+	 qj+c/wdHMFFv2xk/9bObiwqy1OMMiqsnLUbHQv7O1+VVRNEP2TbCwIbWkVgRqz35gg
+	 1ruL+m8gSStj7xOJu2rNZZu31rvWgSybZdIYwV+N/fbM9C8E6IYKau4hRy6Im/cvoW
+	 o/N6CnjZeaG6ykndaIiGJG+1lLC6RzZXNIkMW25UYyVp3tFNP4EeCnBnkJCBaYAGly
+	 5dLEbRypBerLg==
+Date: Thu, 11 Sep 2025 17:17:49 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>
+Subject: Re: [net-next v19 4/7] net: mtip: Add net_device_ops functions to
+ the L2 switch driver
+Message-ID: <20250911171749.02e9fd99@kernel.org>
+In-Reply-To: <20250911235547.477460e4@wsk>
+References: <20250824220736.1760482-1-lukasz.majewski@mailbox.org>
+	<20250824220736.1760482-5-lukasz.majewski@mailbox.org>
+	<20250827082512.438fd68a@kernel.org>
+	<20250907183854.06771a13@wsk>
+	<20250908180535.4a6490bf@kernel.org>
+	<20250910231552.13a5d963@wsk>
+	<20250910172251.072a8d36@kernel.org>
+	<20250911235547.477460e4@wsk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910-sm-syslog-v1-2-5b36f8f21da6@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Peng,
+On Thu, 11 Sep 2025 23:55:47 +0200 =C5=81ukasz Majewski wrote:
+> > > Ok. No adjustments needed then. Good :)   =20
+> >=20
+> > No, you were talking about build_skb() which is Rx.
+> > This is the patch that adds Tx. Tx is wrong. =20
+>=20
+> The same approach is taken in fec_main.c (@ fec_enet_txq_submit_skb()
+> function).
 
-kernel test robot noticed the following build errors:
+FWIW I'm 99% sure we were once investigating a bug in FEC related to
+modifying timestamped packets, leading to crashes. Maybe there is more.
 
-[auto build test ERROR on 65dd046ef55861190ecde44c6d9fcde54b9fb77d]
+> > > could be replaced just with mtip_switch_tx(napi->dev);
+> > > as TX via napi->dev shall be forward to both ports if required.
+> > >=20
+> > > I will check if this can be done in such a way.   =20
+> >=20
+> > Not napi->dev. You have to attribute sent packets to the right netdev. =
+=20
+>=20
+> And then we do have some issue to solve. To be more specific -
+> fec_main.c to avoid starvation just from fec_enet_rx_napi() calls
+> fec_enet_tx() with only one net device (which it supports).
+>=20
+> I wanted to mimic such behaviour with L2 switch driver (at
+> mtip_rx_napi()), but then the question - which network device (from
+> available two) shall be assigned?
+>=20
+> The net device passed to mtip_switch_tx() is only relevant for
+> "housekeeping/statistical data" as in fact we just provide another
+> descriptor to the HW to be sent.
+>=20
+> Maybe I shall extract the net device pointer from the skb structure?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Peng-Fan/firmware-arm_scmi-imx-Support-getting-syslog-of-MISC-protocol/20250910-223316
-base:   65dd046ef55861190ecde44c6d9fcde54b9fb77d
-patch link:    https://lore.kernel.org/r/20250910-sm-syslog-v1-2-5b36f8f21da6%40nxp.com
-patch subject: [PATCH 2/2] firmware: imx: sm-misc: Dump syslog info
-config: i386-buildonly-randconfig-004-20250912 (https://download.01.org/0day-ci/archive/20250912/202509120758.omltrDMi-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250912/202509120758.omltrDMi-lkp@intel.com/reproduce)
+Exactly :)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509120758.omltrDMi-lkp@intel.com/
+> > > You mean a separate SW queues for each devices? This is not
+> > > supported in the MTIP L2 switch driver. Maybe such high level SW
+> > > queues management is available in the upper layers?   =20
+> >=20
+> > Not possible, each netdev has it's own private qdisc tree. =20
+>=20
+> Please correct me if I'm wrong, but aren't packets from those queues
+> end up with calling ->ndo_start_xmit() function?
 
-All errors (new ones prefixed by >>):
+Right. I think I'm lost, why does this matter?
 
->> drivers/firmware/imx/sm-misc.c:54:39: error: use of undeclared identifier 'SZ_4K'
-      54 |         void *syslog __free(kfree) = kmalloc(SZ_4K, GFP_KERNEL);
-         |                                              ^
->> drivers/firmware/imx/sm-misc.c:54:39: error: use of undeclared identifier 'SZ_4K'
->> drivers/firmware/imx/sm-misc.c:54:39: error: use of undeclared identifier 'SZ_4K'
-   drivers/firmware/imx/sm-misc.c:56:13: error: use of undeclared identifier 'SZ_4K'
-      56 |         u16 size = SZ_4K / 4;
-         |                    ^
-   drivers/firmware/imx/sm-misc.c:64:14: error: use of undeclared identifier 'SZ_4K'
-      64 |                 if (size > SZ_4K / 4) {
-         |                            ^
-   drivers/firmware/imx/sm-misc.c:64:14: error: use of undeclared identifier 'SZ_4K'
-   drivers/firmware/imx/sm-misc.c:64:14: error: use of undeclared identifier 'SZ_4K'
-   7 errors generated.
+> > I think I explained this enough times. Next version is v20.
+> > If it's not significantly better than this one, I'm going to have=20
+> > to ask you to stop posting this driver. =20
+>=20
+> I don't know how to reply to this comment, really.=20
+>=20
+> I've spent many hours of my spare time to upstream this driver.
+> I'm just disappointed (and maybe I will not say more because of high
+> level of my frustration).
 
-
-vim +/SZ_4K +54 drivers/firmware/imx/sm-misc.c
-
-    49	
-    50	static int syslog_show(struct seq_file *file, void *priv)
-    51	{
-    52		struct device *dev = file->private;
-    53		/* 4KB is large enough for syslog */
-  > 54		void *syslog __free(kfree) = kmalloc(SZ_4K, GFP_KERNEL);
-    55		/* syslog API use num words, not num bytes */
-    56		u16 size = SZ_4K / 4;
-    57		int ret;
-    58	
-    59		if (!ph)
-    60			return -ENODEV;
-    61	
-    62		ret = imx_misc_ctrl_ops->misc_syslog(ph, &size, syslog);
-    63		if (ret) {
-    64			if (size > SZ_4K / 4) {
-    65				dev_err(dev, "syslog size is larger than 4KB, please enlarge\n");
-    66				return ret;
-    67			}
-    68		}
-    69	
-    70		seq_hex_dump(file, " ", DUMP_PREFIX_NONE, 16, sizeof(u32), syslog, size * 4, false);
-    71		seq_putc(file, '\n');
-    72	
-    73		return 0;
-    74	}
-    75	DEFINE_SHOW_ATTRIBUTE(syslog);
-    76	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I believe mlxsw has fewer DMA queues than ports. But TBH I'm not sure
+how they handle the congestion. In your case since you only have two
+ports (at most) I think you can trivially just always stop and start
+both.
