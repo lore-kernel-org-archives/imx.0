@@ -1,201 +1,85 @@
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596FE2F28EB;
-	Fri, 12 Sep 2025 10:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF3F285C8E
+	for <imx@lists.linux.dev>; Fri, 12 Sep 2025 10:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757672286; cv=none; b=U0TJJPs43jkOq+lonz5UKUDChRTRMiXhVaRXkkpoLeOKUCoDyNez0HDEiwR0MXNTwwKtxXLV2VPs2c6aFebzvAKqUUkx7kedOaiQjmpB8fFFOxB4J18Tc2X2MRXTHWZKfNtGYozcKua7X8Gyzp3Gl6LrLRdItlMnhPjsQuam5/U=
+	t=1757672893; cv=none; b=NoG07RfOUbl/B5qpE/e9MAw8Z47U19EJph5As6HoQfEduKsbN0QO8RCi/FBU6GTG7FPe3e3okZ0CtnTGA7E7Ob+6nA1NpPsJHuJXtvnXhuZe0Z26Yna4dbcEPIdegJlshKGlnOolPcJLOCcmjeOFib2yLtGKcnZeHOF2jzH1xyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757672286; c=relaxed/simple;
-	bh=A7Kzz+zhIAM3YR0SQ2Hdjwrje5nYVG/w0i+Ha7QFdyU=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=VW/Pg6AiyESHX6wrHk8ZJhweKBxF7A5on2mIkjbKvmS5+SI0sJjUlDfWwEdnRaQS01TFbwjF/rJLe77b/wel1KI9JmsVkXwWeu+Oc+8rI5aw+HVZsgCnuESwopdJqeAeAJ/U6S4gAl2bcKkGIeRSJiFlmGFbWO3xwugN2jrnZOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=MkTTGqz5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Bq3IzD3e; arc=none smtp.client-ip=202.12.124.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="MkTTGqz5";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Bq3IzD3e"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id B472E1D00410;
-	Fri, 12 Sep 2025 06:18:02 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Fri, 12 Sep 2025 06:18:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1757672282;
-	 x=1757758682; bh=9YTVFTqv3esr6/4o2z0BMROL8ZzR/twbyPKp7dOgQ8c=; b=
-	MkTTGqz582tMoXiaxv+WzOMeCUpK43NVEMy0S2ODRVT6sTC0DTo0bXB3GAv1vukK
-	dJEC0SEQ1h46wMjlM0kgfqFGcTG77SIC41gzKic0kOGz3o8tsU3ZI5hbyTA4Y43x
-	ohKbeayVJdnZPqj5V+ZrKqHCFhmkeEC+rgbi5TVJ9v7kqJ9DvvqO+MW1peFNO+aN
-	mTGOCkN0mQA7/SxHODsqxDeHrU/CWbhSVvD98tPKm4aIz0VarFAl4Im3dVLMMG5a
-	3o77/cyDl8VssAc4Bm2hiOmeweHDoNJNxytvsrCbvJoDBeOLvwXoe/Io4OCKMv3o
-	IFLx/C3HuKRmZ3rVttd6tA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757672282; x=
-	1757758682; bh=9YTVFTqv3esr6/4o2z0BMROL8ZzR/twbyPKp7dOgQ8c=; b=B
-	q3IzD3eNVHz5NfcgZdq/BAq7VPToJWFLvnE7NSgoDR5AJIuIqwb+T3keAu2cJZWY
-	KkzHKH6eb7irC3elLVTowyLeB7wOwVeeV/uULPDUTpad6DkCRBwmlz+DF1TRJWKE
-	HpaBmN8htE/95T8l/xUhANUYuPEdxZ4tehrOIIQvJbCE81x6NDbZo6UWl6uLMES/
-	U11kHYWOB1W7hz9smWXW1HIBNmK10Mxhh5en6Rk3VV1qfc+axmcfLYoJ9h9Fw9ia
-	xaoQbgf0e0mWOsExo1UxF/88Xe6B1qgFmYZ6MDtZiX7DVKI0GdE1TRG9X6KT5SW6
-	PEaXJyDPEEospM9IHNmFA==
-X-ME-Sender: <xms:WfPDaGuIsUrEe6-e3HJpzHbjJCYFKzrF7mghMR4O1VstVjwEdYX-QQ>
-    <xme:WfPDaLdTwSIO6wHADzHbI1GCZVROUQFrBN5bf1RSzeigqwVbg08C6WM00Afp-65x0
-    RZWEqL5Xjboy3OYyz0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvkeejlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvkedpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
-    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
-    tghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvg
-    gvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghn
-    uggvrhdrshhvvghrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgih
-    hordhprghrrggtuhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgv
-    nhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrg
-    gurdhorhhgpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:WfPDaEqN_q6tYpYBgHqbaXeMIWWYeCD7i1PfPOpiNQgTfTusQAbplA>
-    <xmx:WfPDaFgM8M1jDJDlqZkPywyDozkHTeqG-FJA8dINcdX2bB7OuZkcag>
-    <xmx:WfPDaKIxdHlABr-TMX6jl6rL10byP7mIBcu10ZsTsaxIGEL3I_VyEg>
-    <xmx:WfPDaC4MP1PgKGRLiJso9NwDui0b7sZsJbvIFwjoBQONQKl07idhZg>
-    <xmx:WvPDaAlcw0aU0UxqRmsaUcMFIiKW8MFdVdLPSfFJyj5hIs03ouv_j11Y>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id F0CF1700069; Fri, 12 Sep 2025 06:18:00 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1757672893; c=relaxed/simple;
+	bh=LM2uyXhj+XDus1rPpWtaMOoT7jlnqf79kqux4+P7tss=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iGpqSsIEFV6ZhHJCR9jf3yIYMIKKQqKi61AQrg3HfwOO2zkRyBtHto9lFs7s1uKPFmnxT3Ir4u5JFhs8wdkgAIp6cQmEbObXnYyIMusvOgxGeAIHYQJl2lkixLclp/iChtC+Df470fKyXZeiESYEw5HFYfJEslNlSywrCLj8KHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5287616A3;
+	Fri, 12 Sep 2025 03:28:03 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 923FE3F66E;
+	Fri, 12 Sep 2025 03:28:09 -0700 (PDT)
+Date: Fri, 12 Sep 2025 11:28:06 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	"Pengutronix Kernel Team" <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 5/6] firmware: arm_scmi: imx: Support getting syslog
+ of MISC protocol
+Message-ID: <20250912-rampant-lemming-of-champagne-54ca7a@sudeepholla>
+References: <20250904-sm-misc-api-v1-v4-0-0bf10eaabdf1@nxp.com>
+ <20250904-sm-misc-api-v1-v4-5-0bf10eaabdf1@nxp.com>
+ <20250908-sparkling-owl-of-judgment-f17eeb@sudeepholla>
+ <PAXPR04MB845929E7106141E785A32387880CA@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <20250909040159.GC20475@nxa18884-linux.ap.freescale.net>
+ <20250909-excellent-unbiased-seriema-8d619f@sudeepholla>
+ <PAXPR04MB8459B7B9A42DB387368629608809A@PAXPR04MB8459.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AmcCJOTBQ5ho
-Date: Fri, 12 Sep 2025 12:17:26 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Andreas Larsson" <andreas@gaisler.com>, ksummit@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, imx@lists.linux.dev,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Richard Weinberger" <richard@nod.at>,
- "Lucas Stach" <l.stach@pengutronix.de>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Ankur Arora" <ankur.a.arora@oracle.com>,
- "David Hildenbrand" <david@redhat.com>,
- "Mike Rapoport" <rppt@kernel.org>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Suren Baghdasaryan" <surenb@google.com>,
- "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- "Sergio Paracuellos" <sergio.paracuellos@gmail.com>
-Message-Id: <c6ad1870-f5c1-42f4-9de8-953f2e0f6a6f@app.fastmail.com>
-In-Reply-To: <a393f6bd-ac30-4861-818c-ba0b558df4a4@gaisler.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <5d2fec2b-8e59-417e-b9e6-12c6e27dd5f0@gaisler.com>
- <363853cd-7f10-4aa9-8850-47eee6d516b9@app.fastmail.com>
- <a393f6bd-ac30-4861-818c-ba0b558df4a4@gaisler.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <PAXPR04MB8459B7B9A42DB387368629608809A@PAXPR04MB8459.eurprd04.prod.outlook.com>
 
-On Fri, Sep 12, 2025, at 11:32, Andreas Larsson wrote:
-> On 2025-09-11 09:53, Arnd Bergmann wrote:
->> On Thu, Sep 11, 2025, at 07:38, Andreas Larsson wrote:
->>>
->>> We have a upcoming SoC with support for up to 16 GiB of DRAM. When that is
->>> used in LEON sparc32 configuration (using 36-bit physical addressing), a
->>> removed CONFIG_HIGHMEM would be a considerable limitation, even after an
->>> introduction of different CONFIG_VMSPLIT_* options for sparc32.
->> 
->> I agree that without highmem that chip is going to be unusable from Linux,
->> but I wonder if there is a chance to actually use it even with highmem,
->> for a combination of reasons:
->
-> I would definitely not call it unusable in LEON sparc32 mode with
-> HIGHMEM gone, but it would of course be seriously hampered memory wise
-> without HIGHMEM support compared to with HIGHMEM.
+On Thu, Sep 11, 2025 at 11:15:37AM +0000, Peng Fan wrote:
+> Hi Sudeep,
+> 
+> > Subject: Re: [PATCH v4 5/6] firmware: arm_scmi: imx: Support getting
+> > syslog of MISC protocol
+> > 
+> > >
+> > > I checked with firmware owner, this should be using raw dump.
+> > > The layout would be changed for new platforms.
+> > >
+> > > Since this is raw dump, I think debugfs might be preferred.
+> > >
+> > 
+> > It can be sysfs, but it can be just one single 4K dump, no more details
+> > from the kernel than just raw bytes.
+> 
+> Thanks for approving the use of sysfs. However, I've already developed
+> a patchset based on debugfs, and following a recent internal discussion,
+> the consensus is to keep this functionality for debugging purposes.
+> Given that, I'm inclined to continue using debugfs unless there are
+> any objections.
+> 
 
-I meant specifically a configuration with 16GB of RAM would be
-unusable.
+No objections if this is for debug purposes only and you do understand
+CONFIG_DEBUG_FS is disabled always in production images. Basically you
+can't ask customers to share the info from there as it doesn't exist 😉.
 
->> - If you come up with patches to extend lowmem to 2GB at the expense
->>   of a lower TASK_SIZE, you're still  looking at a ration of 7:1 with
->>   14GB of highmem on the maxed-out configuration, so many workloads
->>   would still struggle to actually use that memory for page cache.
->
-> Yes, we already have patches for 36-bit addressing with 64-bit
-> phys_addr_t. Patches for CONFIG_VMSPLIT_* are under development.
-
-Ok
-
-> Even with 192 MiB lowmem we have being using up to 4 GiB without running
-> into problems. Could you elaborate on why you think lowmem would run out
-> before 14 GiB highmem in a VMSPLIT_3G or VMSPLIT_2G configuration?
->
-> And even if 14 GiB highmem would be hard to get full usage out of, for a
-> board with 8 GiB memory (or a configuration limiting 16 GiB down to only
-> use 8 GiB or somewhere in between) the difference between getting to use
-> 2 GiB and 8 GiB is quite hefty.
-
-This is highly workload dependent, but usually what happens is that
-one type of allocations fills up lowmem to the point where the
-system runs out of memory. This could be any of:
-
-- AFAICT the mem_map[] array uses 40 bytes per physical page on sparc64,
-  so on 16GB, you need 160MB of lowmem for the mem_map[] alone.
-- to actually access the memory from user space, you need several tasks
-  that each map a portion of the physical memory. Each task requires
-  at least page tables, task_struct, kernel stack, inodes, vma structures
-  etc, all of which have to be in lowmem.
-- anything you find in /proc/slabinfo comes from lowmem, and for any
-  network or filesystem heavy workload, there are a lot of those
-
-It's easy to construct an artifical testcase that maximises the
-highmem usage, but much harder to change an existing workload to
-use highmem without using more lowmem as well.
-
->> When you say "used in LEON sparc32 configuration", does that mean
->> you can also run Linux in some other confuration like an rv64
->> kernel on a NOEL-V core on that chip?
->
-> Yes, boot strapping will select between sparc32 LEON and rv64 NOEL-V.
-
->> Aside from the upcoming SoC and whatever happens to that, what is
->> the largest LEON Linux memory configuration that you know is used
->> in production today and still requires kernel updates beyond ~2029?
->
-> The maximum I know of for systems currently in production has the
-> capacity to have up to 2 GiB memory.
-
-Ok. The 2GB point is clearly the one that works well enough on
-x86-32, arm32, powerpc32 and others, with VMSPLIT_3G+highmem
-that gives you a 1:1 or 2:1 ratio of highmem to lowmem, and
-a single process is able to use all the available memory in
-its 3GB virtual space. Alternatively you can already use 2GB
-on those architectures with VMSPLIT_2G_OPT to have everything
-in lowmem, again depending on your workload.
-
-Once you go to 4GB and beyond, you really want a 64-bit kernel.
-CPU designers have added 36-bit addressing to all the major
-32-bit architectures at some point, but it's been very rare
-that this was actually used after 64-bit CPUs became available.
-
-    Arnd
+-- 
+Regards,
+Sudeep
