@@ -1,109 +1,151 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB512727F4
-	for <imx@lists.linux.dev>; Fri, 12 Sep 2025 08:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAA92882D6;
+	Fri, 12 Sep 2025 09:32:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757667522; cv=none; b=XDRjNXW9NaySXqFpNA5CCTggKlS+FijmCGEXe2NenGV7XksFMReH7X5KQwwnDkZ9YeZtAVLu+O0l9uOMtPm6h+EOvmqzun9BUXm9ml7IVzRooexuWuzBN8I6q0jbYFDoraPeDJRYZQx8KMaUu7G4vz+CaUESG6VUrFHVqE+7HYM=
+	t=1757669537; cv=none; b=hd+zAs40qeJrV/fQ/ZWCKmyTLkKquLjIfyHwwfuofFwnEbInARi9ke7IqOde9SNg8XFIOv7iRnpYvSoU2dMnG/xBrUbcLPjcNJccYazJgymQyr6PrKhsHBQRIa5gE7hpKm2UbLeJV7Ie1sJ0vvexB+xCweifR7blJAjfBQ+d8Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757667522; c=relaxed/simple;
-	bh=ro8PZYwRD9DQ2WA2wyE5JTGfo06TRzy3FDdEN0mwaow=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cPcoCEyjDu+2VmehcI515xf82GroGDbmAfqJMCGb0YeWF+6zH+CXy5Xgur+RRBpQQhbg0yzjGE3cu3RCnrWNUmjWnZZLbgzJNjeBIntNjGcHrDyAbBlU1YGaJ2GAxsX1t4wvFSXZXoeLWJ4SKsWaxED9C5J5YNY0/+axelrMpBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dSlEYHs+; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757669537; c=relaxed/simple;
+	bh=Ce7fdp+lyhbKwDMukdlU8c7lTw0HSqaCFWJYr1TtJQk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CAj7ghouh19AuXBoGPZoLccZCCLpXmpAeP/6XifERnyZE2kAidKudM7imTeirNGxx3zpIWQ8CfsfBo3MayM7bw26Fv+/o3xYCEz6jnwIoeAMOys6jjIMKSjiEJYNNwQUEWwUCFkhMuX3lYFDC+//8mCcFeFcOknaddePp0CBqxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=K2KSDbGz reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dSlEYHs+"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2445806e03cso19110735ad.1
-        for <imx@lists.linux.dev>; Fri, 12 Sep 2025 01:58:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757667521; x=1758272321; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ro8PZYwRD9DQ2WA2wyE5JTGfo06TRzy3FDdEN0mwaow=;
-        b=dSlEYHs+2psM31XrztvLXmTQsh9VeB9mcEyRHPHD8DyUcUIvIPa4L8BWW1JVWIlg6r
-         DfFpSnYikJQdjqiv0mPrQsT4a4eaR+9CbPO0XvcB0ZrIQvxRTgQqB7CFAkYKvG5fS6qo
-         gB1ITvCHpRpMiwnRiY8ec3EZvdRGGG54WLfsqI0xkHEdgxHbvNr4yozbwEHxZVNVDfQF
-         C/Cdy2P7qe3QVnQQzcyO45dfjw5jDpm4Rsr35kve4PfSbYu9BIWwtbAPGV7qQ/UJ1aDK
-         XsSFGflU80czmoMkYJUGO4nura/5iQI5KbHRO8qUBIorxsBdsRlihL14iW7cyUmytqaU
-         h/TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757667521; x=1758272321;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ro8PZYwRD9DQ2WA2wyE5JTGfo06TRzy3FDdEN0mwaow=;
-        b=tuKgsV/byrZm1fVEAFJiGagLeAmHnLTznIguSRlKLV1cP0iNKmTZosOuZu3n9QBq2e
-         BdFRf9IQzYUa1QN08BgvpsLYgvebC51N+jgciPot55WZHyeuLZklbvWFakwPKYdFLwqL
-         yjoiILShT6kgt4nej1LXr7IAfnQ0RJjKk/U8/QUIr1aiJxJIV/Zy597l6Pzf0bER4UR5
-         E9aHIoXeYBF35WFLdp6jjdX049OIFLJWARjwvhTKSrWm/hwol+QTIrYaR8P7J+EaZSjl
-         imQxIjpXWRUCl7qV2rXErWP697w4n4YUnM2EeWjU38UJxsKVi9ICI8Q/FrDvl+egV1+a
-         A9eQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVI+kjrZiPjp7ln1OvLj0aQ4GOv3T790TeXFLtiyhuzAJjrlNFdbKej/5jFsbO7g21zRDc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwntgJyfUSSjj0UMuD3FQvh47rAyn3BsiFrivugPL0WM5ORlPJU
-	Z2OUQAq0YJBistUEKEpEjjdE+7YPg14/E7jr+elbxxPzQ0jfQCMzUJRAJDD5YzCCow8XTMshUz0
-	8aMyei6YhAtoR504hcgMgw8j2W7OYVbs=
-X-Gm-Gg: ASbGncv9Eo7aY8V9IgRmp/dIk7kkOznO0uN4baNnLM1wiaMMgHJYFyHMxebRAFZhbth
-	v5K3Kd3wY+853BkgUKZztzlvaI9dYJgnkoKn1P8V5iV1TIT2e3a8ZEyx0GGqcwctragcLGfWw2q
-	kvp11LCG87Yh6rtI3o3bL5MUYbLhxSbDiCTmW/oB868dlcOThJRbaYSwXv9eMb8vzPe66wsfcb8
-	fc3J6slwYfg670CtSPpj0N24JKDXKGtRF0zg8P1inn7mBBM/wS9uxTlK4s=
-X-Google-Smtp-Source: AGHT+IFQRimSGNTZUF8rsCECFnkgLkqZ++YXJEJA7EhcHsbtO0t6DFoZ5dfeGu/99EC1Bwvu0xIa9exB4T1QYyticTg=
-X-Received: by 2002:a17:903:3888:b0:248:9e56:e806 with SMTP id
- d9443c01a7336-25d24100ebemr28596975ad.12.1757667520671; Fri, 12 Sep 2025
- 01:58:40 -0700 (PDT)
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="K2KSDbGz"
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4cNTj20s27z1FXSX;
+	Fri, 12 Sep 2025 11:32:06 +0200 (CEST)
+Received: from [10.10.15.10] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4cNTj10dkrz1DNGn;
+	Fri, 12 Sep 2025 11:32:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1757669526;
+	bh=MdbRNQz00X6py3J27RP8bnCKWb4q1OzSckJ7oG7jAxY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=K2KSDbGzkvWBOxonsgdVaz4kyPUEDqqg6zdhMLv2aF3Nzko04CUw7JvSMaWWK04Lm
+	 vNC1Cj2uBTKc8xdM9glCOdIXQssxtmJblCCyQc2Hi8GbcgeoJPlaNNtX0zy4fREEW3
+	 r6UBaNcudI5k5SPw01Hru5aQU4tI1O1+rPvNEGW9haH4Jy2D6mmjs1dPo7LscCkHqG
+	 0exPIQ+bH57TWaUThA+auuuCXOn4ogST+BxKsuMBMtASfRMsOGVWUUlnDa9TIfd9b/
+	 3Pojb/BipKi+V2g4K0tvCJ/Ey32+ia3F6PZBK+f4oAwOhtLZwlnW83e9G2I0Ng81Ss
+	 PBZ0wbaihaoyA==
+Message-ID: <a393f6bd-ac30-4861-818c-ba0b558df4a4@gaisler.com>
+Date: Fri, 12 Sep 2025 11:32:04 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250910-imx-rproc-cleanup-v2-0-10386685b8a9@nxp.com>
- <20250910-imx-rproc-cleanup-v2-6-10386685b8a9@nxp.com> <aMGe/gwmFqjoFszg@lizhi-Precision-Tower-5810>
- <PAXPR04MB8459CABA152B6C1C122B35F28809A@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <20250912061120.GA27864@nxa18884-linux.ap.freescale.net>
-In-Reply-To: <20250912061120.GA27864@nxa18884-linux.ap.freescale.net>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Fri, 12 Sep 2025 11:58:23 +0300
-X-Gm-Features: Ac12FXwYlGvGgqyGXugiWWObiJmtXxlEmnlZ40W_NSnxtz2WGuiuVYkoCU-Wo6s
-Message-ID: <CAEnQRZB-yoV+BYsM-9CvmuSZw_8EF3ijtZhqtBoJOoyUc+-pSw@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] remoteproc: imx_rproc: Clean up after ops introduction
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>, Frank Li <frank.li@nxp.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Daniel Baluta <daniel.baluta@nxp.com>, Hiago De Franco <hiago.franco@toradex.com>, 
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Richard Weinberger <richard@nod.at>, Lucas Stach <l.stach@pengutronix.de>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand
+ <david@redhat.com>, Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+ Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ Sergio Paracuellos <sergio.paracuellos@gmail.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <5d2fec2b-8e59-417e-b9e6-12c6e27dd5f0@gaisler.com>
+ <363853cd-7f10-4aa9-8850-47eee6d516b9@app.fastmail.com>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <363853cd-7f10-4aa9-8850-47eee6d516b9@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-<snip>
+On 2025-09-11 09:53, Arnd Bergmann wrote:
+> On Thu, Sep 11, 2025, at 07:38, Andreas Larsson wrote:
+>>
+>> We have a upcoming SoC with support for up to 16 GiB of DRAM. When that is
+>> used in LEON sparc32 configuration (using 36-bit physical addressing), a
+>> removed CONFIG_HIGHMEM would be a considerable limitation, even after an
+>> introduction of different CONFIG_VMSPLIT_* options for sparc32.
+> 
+> I agree that without highmem that chip is going to be unusable from Linux,
+> but I wonder if there is a chance to actually use it even with highmem,
+> for a combination of reasons:
 
-> >> Can you remove 'method' in data struct also?
-> >
-> >The method is used in other places and other purpose, imx_rproc_detach
-> >imx_rproc_put_scu, imx_rproc_remove, it is also referred
-> >imx_dsp_rproc.c.
-> >
-> >Could we keep it for now?
->
-> The method could not be removed from the data structure, because it is also
-> used in imx_dsp_rproc.c.
->
-> I have a few more patches to do further cleanup, but that would make
-> the patchset a bit larger. I would like to see Mathieu's view.
->
-> Mathieu,
->
-> Do you expect me to add more patches in V3 to cleanup other parts or
-> we could keep the patchset size as it is, with further cleanup in
-> a standalone new patchset?
+I would definitely not call it unusable in LEON sparc32 mode with
+HIGHMEM gone, but it would of course be seriously hampered memory wise
+without HIGHMEM support compared to with HIGHMEM. In NOEL-V 64-bit
+RISC-V mode it will of course not be affected by these matters.
 
-I would go with this as it is now. It is easy and clean. Lets always
-go into small increments, test them across all the hardware we have.
 
-Then we could come with the next patch series.
+> - sparc32 has 36-bit addressing in the MMU, but Linux apparently never
+>   supported a 64-bit phys_addr_t here, which would be required.
+>   This is probably the easiest part and I assume you already have patches
+>   for it.
+> 
+> - As far as I can tell, the current lowmem area is 192MB, which would
+>   be ok(-ish) on a 512MB maxed-out SPARCstation, but for anything bigger
+>   you likely run out of lowmem long before being able to touch the
+>   all highmem pages. This obviously depends a lot on the workload.
+> 
+> - If you come up with patches to extend lowmem to 2GB at the expense
+>   of a lower TASK_SIZE, you're still  looking at a ration of 7:1 with
+>   14GB of highmem on the maxed-out configuration, so many workloads
+>   would still struggle to actually use that memory for page cache.
+
+Yes, we already have patches for 36-bit addressing with 64-bit
+phys_addr_t. Patches for CONFIG_VMSPLIT_* are under development.
+
+Even with 192 MiB lowmem we have being using up to 4 GiB without running
+into problems. Could you elaborate on why you think lowmem would run out
+before 14 GiB highmem in a VMSPLIT_3G or VMSPLIT_2G configuration?
+
+And even if 14 GiB highmem would be hard to get full usage out of, for a
+board with 8 GiB memory (or a configuration limiting 16 GiB down to only
+use 8 GiB or somewhere in between) the difference between getting to use
+2 GiB and 8 GiB is quite hefty.
+
+ 
+> - If we remove HIGHPTE (as discussed in this thread) but keep HIGHMEM,
+>   you probably still lose on the 16GB configuration. On 4GB configurations,
+>   HIGHPTE is not really a requirement, but for workloads with many
+>   concurrent tasks using a lot of virtual address space, you would
+>   likely want to /add/ HIGHPTE support on sparc32 first.
+
+That is an interesting point. Regardless of workloads though, it still
+would be a huge difference between having or not having HIGHMEM, with or
+without HIGHPTE.
+
+
+> When you say "used in LEON sparc32 configuration", does that mean
+> you can also run Linux in some other confuration like an rv64
+> kernel on a NOEL-V core on that chip?
+
+Yes, boot strapping will select between sparc32 LEON and rv64 NOEL-V.
+
+
+> Aside from the upcoming SoC and whatever happens to that, what is
+> the largest LEON Linux memory configuration that you know is used
+> in production today and still requires kernel updates beyond ~2029?
+
+The maximum I know of for systems currently in production has the
+capacity to have up to 2 GiB memory.
+
+
+Cheers,
+Andreas
+
