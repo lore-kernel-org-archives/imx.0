@@ -1,78 +1,82 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3574C2DEA73
-	for <imx@lists.linux.dev>; Sun, 14 Sep 2025 17:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064E62DEA96
+	for <imx@lists.linux.dev>; Sun, 14 Sep 2025 17:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757870184; cv=none; b=fggtwygcZ1wc7NBVmoZUhNUJSGByKKLbhNstf7BQccDCLYpZy1Ph4xpxpAg0YExjJsh4gnLlwkoli4qGDjeLDqg3nf+OXSLzbYWeppD2BCXU7B+7xwWcPDJMtsDraAqE4PPXvMO3phvPJUtTOX7HXvCLeu/9hjTGSAJOUEAXvFc=
+	t=1757870185; cv=none; b=LdNpBkjkT+vywTJtWV/T68Q4qgWPnWmxF3jbfIihxwaWTmd5FxcMgDjU9ESaQxcZRIggwz5IKf4z0PjkUA+qPNFdPh2QwUTuh4V9KD27UUPplY9HsVMMC8uZrGZroznE/OB68GDJ4dy75h6j8MbQUXePKSQ+WD67ChEaWsCqDr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757870184; c=relaxed/simple;
-	bh=DAoeTCIIwwGqg9u3B1JkXfX42HpCsPKCXtkx/QE8BvU=;
+	s=arc-20240116; t=1757870185; c=relaxed/simple;
+	bh=RJXStlwzS4+/UQXUO3hnO45i3KP2svoFAvMb0SbrmwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=seKaL1J505aXM2amDkFYFlmKjQHMPU/WI1eiMYaBvHZfcCd1lzQzW9Wf3mbH+u8KRyhJX0j+4QcPSoQuOCnCFfcdmTFaCJYTyY+0yAxzb0bRNjt0qMhYvAo8wpv6ssxbIuwTc9gzilwEOJOz6xiAeXNtpLIUcuw4nbnP0hjhPFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=lYYcBVPA; arc=none smtp.client-ip=209.85.218.42
+	 MIME-Version; b=TwLOOaW0501Ip+aTxj0/NXbSZ7q72GAv6yUmOtyl2K4/I+22Cy96kHCtUIsNDFmtsHa7qLTVAYp7cFQnrjuDvjWmBe2dWJv71AjoSK8FUfvv/3YStyQ9A+/szQE1SwwGXgOm+RGb2iDJZpvBJjcMeBY8jr5tV/b70FPD9dJMrqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=TXjcgEo6; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="lYYcBVPA"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b04271cfc3eso437071666b.3
-        for <imx@lists.linux.dev>; Sun, 14 Sep 2025 10:16:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="TXjcgEo6"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b04ba58a84fso460066466b.2
+        for <imx@lists.linux.dev>; Sun, 14 Sep 2025 10:16:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1757870178; x=1758474978; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1757870181; x=1758474981; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VnBZKBOJmiN67eQQM1Bf1khwvZJgal4hwMc9eP3h39w=;
-        b=lYYcBVPAJS5K5onk1z21R1TToi9Qr0VgAgouVguXGMAyOtpXbtBfn5yKjAdlrl6N9a
-         GaDxztp8ZVZcaYbMFiCUC1Yy9Bwr2Bs8FKI/OCfwblO3MD+vCGueAJ8F28TD8pewGZL/
-         JsWo4aYbbhQvAVNcqf2TJJX3KE20NEIR/c5ME=
+        bh=WMdgI0iZ2TvocV4JZ7DyZgorR1pQL3heQi0CeqfMARw=;
+        b=TXjcgEo6BMJcuCpJ4aDJ8EGqkqqWKdUcifTW/OFvdkassNy3jx7bdBrNZsNgJKp4XQ
+         yUnXbz1myQtLpdOuunlL5Bjn7PRfgJ3ZdYLyx1uuLStqHhJov0gjikCpKCq5zUZcXX9y
+         2pfQwUdJUUdSZX8ELk4pzvV6Pz/pL8PZiM04Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757870178; x=1758474978;
+        d=1e100.net; s=20230601; t=1757870181; x=1758474981;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VnBZKBOJmiN67eQQM1Bf1khwvZJgal4hwMc9eP3h39w=;
-        b=qSr07LhX40maJU8OD9TOZqaJb/s3ssyQ0+aQLSPaD6nT1b8Y9fBy2mOid8q8p1rKRd
-         PpayvcZxCVHCEGiwXocBYbVukc8QDLm5xXs5m9Z9xYwnnb/aBSlZq/45NQvDe7egVKcV
-         dPyfA7boeXa7mnyDiZfGP7qkGIqOBilRUWuESCrL7ONaKl5tZ5MUNRKatNnySP/0DrJz
-         +OqSbpjP960JrXh3drGYievw+l7lXzswn4VNmBL9p0qpVX+IjSJg2nRRTrKhi9jbllps
-         c3HNISabjsOrTs5PDRvnUst4EtGimCXekLZ3Q0WXhR6ZmeY9iN+zeT3SEQ5pVXgJs6fQ
-         5Nqw==
-X-Forwarded-Encrypted: i=1; AJvYcCXL15xycgauxnjW44oWrVy2tSxVaIzfQTPgY5RZatiOpS+ieEWYrSx3KXWihNLjbaSipns=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxNgY8YDtVAVMGQTBumBkAdgFbuOk4M+oY1gag6EEplZQICQF3J
-	S/aRoCgoK+mKJnEvC+Xh3vyK8EZ8ROol24xyUaiIeitibETXYSN7SrvGEiCEU/MEyIs=
-X-Gm-Gg: ASbGncudy58ri9gGzrGJiYDfLo73IW2/mN3i+fvS/npax77vcGlTV9hpWLu74z8IwmR
-	vwXutIaBf+DqO46yj6tS/XB8YWPurQgTeVDhkGeHAtp3s2XpuCUoKjfG+ydXg/fjrVeKtH7vJig
-	y5//06O78hr4XI0Fum6ATcTUeH57JNLiQqnGHlBS7297yfaoiV8bZKHBl0g2eV/x03xaAQ7lFOQ
-	RbTNdmgiTyqFtbKP9Qyl9GLHM27lAMwcyPKJBmn2eCF7MNUAR8fIZDm2LgN33qyF4fr1/a1nNbC
-	QNOdS1jK+zokw32irNVB06r7zjPXJ6gcfIq/yNWTo6VIhdMnJPpg+jJ509hAAZjPFqPOExn50MX
-	+dTJvEVhOIDLBlIYG+lu9SF1AT/wZbLvJu13sXUOXHApFvO15kKmoa+St8VoxZM26SfQNsvPTMr
-	NncVfSVU6xF5hlwOvaoQiztIX8ufYnYfIzud8/e5rV6b0GWfn2PHoC5NApArz8ucRV
-X-Google-Smtp-Source: AGHT+IGTu8BD4q01N7jRbGlEMQ6UMK1mwiKmfPW/m2RwIO0Ts7qqmSd+/c4Mm3Jym91bOgEHInMb0g==
-X-Received: by 2002:a17:907:2da2:b0:afd:d94b:830d with SMTP id a640c23a62f3a-b07c3a7b887mr976251766b.62.1757870178516;
-        Sun, 14 Sep 2025 10:16:18 -0700 (PDT)
+        bh=WMdgI0iZ2TvocV4JZ7DyZgorR1pQL3heQi0CeqfMARw=;
+        b=ks6xUyH8JH9qPX+PzYuQrtgvpibGnMPWlpLUivQuJO6/RMjfvhdvOaNPkuyJtHIy6+
+         qcocLAt24ZtgfAWUaZ7i2wv7E3uq5IMS0t8kvDJ70C8N0aneBpd/or4OH5ydvpKg1ElB
+         M0SPZGvJimda54H9I3wMnxzTB+mxv+qitOEqW0kTmWf7vAWGmFK77EY+YCdjHqf86u/3
+         h2mJ1bVymvzAzQC+ff7gNowBkg8mG5i1mBMyzF/S2HrxWAYAu82OpwSi0eZInu2LeDJ4
+         aE34a6LTFirQ3zIFxbzO2ylxjrzuHc8CAhfa9fWkR9v5PF80SAzVOSedCGSqE44R2bFl
+         P1iA==
+X-Forwarded-Encrypted: i=1; AJvYcCVGlL4sbbNHLdI/+BEqYjgfinR75c6JlGkZGrFItOH5/jrryrHOn57/eVpw/SfRv7UWJ5M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxFzChTedQXJoypIf5SO7pJHI88S3zZkP4yM6Sta8LrqKH1Cum1
+	wcFy492btmLzfbBygDy5TsJtqMhf7LcvNzJNW+ESqab96YHnVglJpttGEPNn7b9WCdw=
+X-Gm-Gg: ASbGncsBx4AbFLKgJNM4+eUsudcNla2kP5yhFEoPWgNV1Wxe8u/UjeyUztxD3Dy1q3C
+	m5mZx1aMd91LU/esh9Hame7JH6XVc6AtYvPzsAfxZAKd1BDuAntDOy5PnyNsNAVS5TjT4glOADQ
+	962JsyLvoYg4itm6W7JgqusL+MkCwcmJmh0WjyvCqUNEvwY11CY59YafML/kTK+CYZPSZwDiU4R
+	8qDmi4o5huDOK8toadx4W6tBmUFgMb3KHAy8tb+MjuRKK5baheOGKwZ5S1ljhCssepyerJKeNTX
+	pls8AUVP18MsCELU9J/Ly+vDaylEezkOLshjTV88qANxdOogtFB0GVsChvTttPoC6wjsOyG3uki
+	x17woiyGBLRTC3yS+q/W8P0n4x94bfyyVyGsccp/Ew6KgXXTD5xQTrs4X3rWYLCBNcNQv6Vb12G
+	5dzwX0j88g2gwQimms09LndbCJB3VQ6BzgmJEXA89niS0ALia4KgZWfNMFGbvoz4B4
+X-Google-Smtp-Source: AGHT+IHfjFWKG/mF8+Rc9t6eyI85z35rKOGB32yV2tBXoq5uOjqdENe0BpELyw7Da4eiS0RVUPNPpw==
+X-Received: by 2002:a17:907:c08:b0:b04:3a46:c4f2 with SMTP id a640c23a62f3a-b07c383f1bemr990265066b.48.1757870181371;
+        Sun, 14 Sep 2025 10:16:21 -0700 (PDT)
 Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-82-56-38-125.retail.telecomitalia.it. [82.56.38.125])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b334e76dsm776980466b.102.2025.09.14.10.16.17
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b334e76dsm776980466b.102.2025.09.14.10.16.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Sep 2025 10:16:18 -0700 (PDT)
+        Sun, 14 Sep 2025 10:16:21 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: Frank Li <Frank.Li@nxp.com>,
 	linux-amarula@amarulasolutions.com,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	Michael Trimarchi <michael@amarulasolutions.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-input@vger.kernel.org
-Subject: [PATCH v2 2/6] Input: imx6ul_tsc - use BIT, FIELD_{GET,PREP} and GENMASK macros
-Date: Sun, 14 Sep 2025 19:15:59 +0200
-Message-ID: <20250914171608.1050401-3-dario.binacchi@amarulasolutions.com>
+Subject: [PATCH v2 4/6] dt-bindings: touchscreen: fsl,imx6ul-tsc: support glitch thresold
+Date: Sun, 14 Sep 2025 19:16:01 +0200
+Message-ID: <20250914171608.1050401-5-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250914171608.1050401-1-dario.binacchi@amarulasolutions.com>
 References: <20250914171608.1050401-1-dario.binacchi@amarulasolutions.com>
@@ -84,204 +88,44 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace opencoded masking and shifting, with BIT(), GENMASK(),
-FIELD_GET() and FIELD_PREP() macros.
+Support the touchscreen-glitch-threshold-ns property. Unlike the
+generic description in touchscreen.yaml, this controller maps the
+provided value to one of four discrete thresholds internally.
 
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
 ---
 
-Changes in v2:
-- Add Reviewed-by tag of Frank Li.
-- Move the patch right after the one fixing the typo according
-  to Frank Li's suggestions.
+(no changes since v1)
 
- drivers/input/touchscreen/imx6ul_tsc.c | 96 +++++++++++++++-----------
- 1 file changed, 54 insertions(+), 42 deletions(-)
+ .../input/touchscreen/fsl,imx6ul-tsc.yaml         | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/input/touchscreen/imx6ul_tsc.c b/drivers/input/touchscreen/imx6ul_tsc.c
-index c2c6e50efc54..e2c59cc7c82c 100644
---- a/drivers/input/touchscreen/imx6ul_tsc.c
-+++ b/drivers/input/touchscreen/imx6ul_tsc.c
-@@ -7,6 +7,7 @@
- #include <linux/errno.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/bitfield.h>
- #include <linux/gpio/consumer.h>
- #include <linux/input.h>
- #include <linux/slab.h>
-@@ -20,25 +21,23 @@
- #include <linux/log2.h>
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-tsc.yaml b/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-tsc.yaml
+index 678756ad0f92..310af56a0be6 100644
+--- a/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-tsc.yaml
++++ b/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-tsc.yaml
+@@ -62,6 +62,21 @@ properties:
+     description: Number of data samples which are averaged for each read.
+     enum: [ 1, 4, 8, 16, 32 ]
  
- /* ADC configuration registers field define */
--#define ADC_AIEN		(0x1 << 7)
-+#define ADC_AIEN		BIT(7)
-+#define ADC_ADCH_MASK		GENMASK(4, 0)
- #define ADC_CONV_DISABLE	0x1F
--#define ADC_AVGE		(0x1 << 5)
--#define ADC_CAL			(0x1 << 7)
--#define ADC_CALF		0x2
--#define ADC_12BIT_MODE		(0x2 << 2)
--#define ADC_CONV_MODE_MASK	(0x3 << 2)
-+#define ADC_AVGE		BIT(5)
-+#define ADC_CAL			BIT(7)
-+#define ADC_CALF		BIT(1)
-+#define ADC_CONV_MODE_MASK	GENMASK(3, 2)
-+#define ADC_12BIT_MODE		0x2
- #define ADC_IPG_CLK		0x00
--#define ADC_INPUT_CLK_MASK	0x3
--#define ADC_CLK_DIV_8		(0x03 << 5)
--#define ADC_CLK_DIV_MASK	(0x3 << 5)
--#define ADC_SHORT_SAMPLE_MODE	(0x0 << 4)
--#define ADC_SAMPLE_MODE_MASK	(0x1 << 4)
--#define ADC_HARDWARE_TRIGGER	(0x1 << 13)
--#define ADC_AVGS_SHIFT		14
--#define ADC_AVGS_MASK		(0x3 << 14)
-+#define ADC_INPUT_CLK_MASK	GENMASK(1, 0)
-+#define ADC_CLK_DIV_8		0x03
-+#define ADC_CLK_DIV_MASK	GENMASK(6, 5)
-+#define ADC_SAMPLE_MODE		BIT(4)
-+#define ADC_HARDWARE_TRIGGER	BIT(13)
-+#define ADC_AVGS_MASK		GENMASK(15, 14)
- #define SELECT_CHANNEL_4	0x04
- #define SELECT_CHANNEL_1	0x01
--#define DISABLE_CONVERSION_INT	(0x0 << 7)
- 
- /* ADC registers */
- #define REG_ADC_HC0		0x00
-@@ -65,19 +64,26 @@
- #define REG_TSC_DEBUG_MODE	0x70
- #define REG_TSC_DEBUG_MODE2	0x80
- 
-+/* TSC_MEASURE_VALUE register field define */
-+#define X_VALUE_MASK		GENMASK(27, 16)
-+#define Y_VALUE_MASK		GENMASK(11, 0)
++  touchscreen-glitch-threshold-ns:
++    description: |
++      Unlike the generic property defined in touchscreen.yaml, this
++      controller does not allow arbitrary values. Internally the value is
++      converted to IPG clock cycles and mapped to one of four discrete
++      thresholds exposed by the TSC_DEBUG_MODE2 register:
 +
- /* TSC configuration registers field define */
--#define DETECT_4_WIRE_MODE	(0x0 << 4)
--#define AUTO_MEASURE		0x1
--#define MEASURE_SIGNAL		0x1
--#define DETECT_SIGNAL		(0x1 << 4)
--#define VALID_SIGNAL		(0x1 << 8)
--#define MEASURE_INT_EN		0x1
--#define MEASURE_SIG_EN		0x1
--#define VALID_SIG_EN		(0x1 << 8)
--#define DE_GLITCH_2		(0x2 << 29)
--#define START_SENSE		(0x1 << 12)
--#define TSC_DISABLE		(0x1 << 16)
-+#define MEASURE_DELAY_TIME_MASK	GENMASK(31, 8)
-+#define DETECT_5_WIRE_MODE	BIT(4)
-+#define AUTO_MEASURE		BIT(0)
-+#define MEASURE_SIGNAL		BIT(0)
-+#define DETECT_SIGNAL		BIT(4)
-+#define VALID_SIGNAL		BIT(8)
-+#define MEASURE_INT_EN		BIT(0)
-+#define MEASURE_SIG_EN		BIT(0)
-+#define VALID_SIG_EN		BIT(8)
-+#define DE_GLITCH_MASK		GENMASK(30, 29)
-+#define DE_GLITCH_2		0x02
-+#define START_SENSE		BIT(12)
-+#define TSC_DISABLE		BIT(16)
- #define DETECT_MODE		0x2
-+#define STATE_MACHINE_MASK	GENMASK(22, 20)
- 
- struct imx6ul_tsc {
- 	struct device *dev;
-@@ -112,19 +118,20 @@ static int imx6ul_adc_init(struct imx6ul_tsc *tsc)
- 
- 	adc_cfg = readl(tsc->adc_regs + REG_ADC_CFG);
- 	adc_cfg &= ~(ADC_CONV_MODE_MASK | ADC_INPUT_CLK_MASK);
--	adc_cfg |= ADC_12BIT_MODE | ADC_IPG_CLK;
--	adc_cfg &= ~(ADC_CLK_DIV_MASK | ADC_SAMPLE_MODE_MASK);
--	adc_cfg |= ADC_CLK_DIV_8 | ADC_SHORT_SAMPLE_MODE;
-+	adc_cfg |= FIELD_PREP(ADC_CONV_MODE_MASK, ADC_12BIT_MODE) |
-+		FIELD_PREP(ADC_INPUT_CLK_MASK, ADC_IPG_CLK);
-+	adc_cfg &= ~(ADC_CLK_DIV_MASK | ADC_SAMPLE_MODE);
-+	adc_cfg |= FIELD_PREP(ADC_CLK_DIV_MASK, ADC_CLK_DIV_8);
- 	if (tsc->average_enable) {
- 		adc_cfg &= ~ADC_AVGS_MASK;
--		adc_cfg |= (tsc->average_select) << ADC_AVGS_SHIFT;
-+		adc_cfg |= FIELD_PREP(ADC_AVGS_MASK, tsc->average_select);
- 	}
- 	adc_cfg &= ~ADC_HARDWARE_TRIGGER;
- 	writel(adc_cfg, tsc->adc_regs + REG_ADC_CFG);
- 
- 	/* enable calibration interrupt */
- 	adc_hc |= ADC_AIEN;
--	adc_hc |= ADC_CONV_DISABLE;
-+	adc_hc |= FIELD_PREP(ADC_ADCH_MASK, ADC_CONV_DISABLE);
- 	writel(adc_hc, tsc->adc_regs + REG_ADC_HC0);
- 
- 	/* start ADC calibration */
-@@ -164,19 +171,21 @@ static void imx6ul_tsc_channel_config(struct imx6ul_tsc *tsc)
- {
- 	u32 adc_hc0, adc_hc1, adc_hc2, adc_hc3, adc_hc4;
- 
--	adc_hc0 = DISABLE_CONVERSION_INT;
-+	adc_hc0 = FIELD_PREP(ADC_AIEN, 0);
- 	writel(adc_hc0, tsc->adc_regs + REG_ADC_HC0);
- 
--	adc_hc1 = DISABLE_CONVERSION_INT | SELECT_CHANNEL_4;
-+	adc_hc1 = FIELD_PREP(ADC_AIEN, 0) |
-+		FIELD_PREP(ADC_ADCH_MASK, SELECT_CHANNEL_4);
- 	writel(adc_hc1, tsc->adc_regs + REG_ADC_HC1);
- 
--	adc_hc2 = DISABLE_CONVERSION_INT;
-+	adc_hc2 = FIELD_PREP(ADC_AIEN, 0);
- 	writel(adc_hc2, tsc->adc_regs + REG_ADC_HC2);
- 
--	adc_hc3 = DISABLE_CONVERSION_INT | SELECT_CHANNEL_1;
-+	adc_hc3 = FIELD_PREP(ADC_AIEN, 0) |
-+		FIELD_PREP(ADC_ADCH_MASK, SELECT_CHANNEL_1);
- 	writel(adc_hc3, tsc->adc_regs + REG_ADC_HC3);
- 
--	adc_hc4 = DISABLE_CONVERSION_INT;
-+	adc_hc4 = FIELD_PREP(ADC_AIEN, 0);
- 	writel(adc_hc4, tsc->adc_regs + REG_ADC_HC4);
- }
- 
-@@ -188,13 +197,16 @@ static void imx6ul_tsc_channel_config(struct imx6ul_tsc *tsc)
- static void imx6ul_tsc_set(struct imx6ul_tsc *tsc)
- {
- 	u32 basic_setting = 0;
-+	u32 debug_mode2;
- 	u32 start;
- 
--	basic_setting |= tsc->measure_delay_time << 8;
--	basic_setting |= DETECT_4_WIRE_MODE | AUTO_MEASURE;
-+	basic_setting |= FIELD_PREP(MEASURE_DELAY_TIME_MASK,
-+				    tsc->measure_delay_time);
-+	basic_setting |= AUTO_MEASURE;
- 	writel(basic_setting, tsc->tsc_regs + REG_TSC_BASIC_SETTING);
- 
--	writel(DE_GLITCH_2, tsc->tsc_regs + REG_TSC_DEBUG_MODE2);
-+	debug_mode2 = FIELD_PREP(DE_GLITCH_MASK, DE_GLITCH_2);
-+	writel(debug_mode2, tsc->tsc_regs + REG_TSC_DEBUG_MODE2);
- 
- 	writel(tsc->pre_charge_time, tsc->tsc_regs + REG_TSC_PRE_CHARGE_TIME);
- 	writel(MEASURE_INT_EN, tsc->tsc_regs + REG_TSC_INT_EN);
-@@ -250,7 +262,7 @@ static bool tsc_wait_detect_mode(struct imx6ul_tsc *tsc)
- 
- 		usleep_range(200, 400);
- 		debug_mode2 = readl(tsc->tsc_regs + REG_TSC_DEBUG_MODE2);
--		state_machine = (debug_mode2 >> 20) & 0x7;
-+		state_machine = FIELD_GET(STATE_MACHINE_MASK, debug_mode2);
- 	} while (state_machine != DETECT_MODE);
- 
- 	usleep_range(200, 400);
-@@ -278,8 +290,8 @@ static irqreturn_t tsc_irq_fn(int irq, void *dev_id)
- 
- 	if (status & MEASURE_SIGNAL) {
- 		value = readl(tsc->tsc_regs + REG_TSC_MEASURE_VALUE);
--		x = (value >> 16) & 0x0fff;
--		y = value & 0x0fff;
-+		x = FIELD_GET(X_VALUE_MASK, value);
-+		y = FIELD_GET(Y_VALUE_MASK, value);
- 
- 		/*
- 		 * In detect mode, we can get the xnur gpio value,
++        0: 8191 IPG cycles
++        1: 4095 IPG cycles
++        2: 2047 IPG cycles
++        3: 1023 IPG cycles
++
++      Any value provided in device tree is converted to cycles and rounded
++      up to the next supported threshold, or to 8191 if above 4095.
++
+ required:
+   - compatible
+   - reg
 -- 
 2.43.0
 
