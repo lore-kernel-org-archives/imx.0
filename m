@@ -1,71 +1,89 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA072E1F1C
-	for <imx@lists.linux.dev>; Sun, 14 Sep 2025 21:17:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D722E765C;
+	Sun, 14 Sep 2025 21:30:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757884632; cv=none; b=mrLlbsmsATQV4j/IIX45kucLFHj5oVFMsOsDZ5i2/H4UXTq44DxAe/cky0RqEezS7tW0tC2H0rY4DyGGtKy5Rsau2mXlOzxI6gcvQErB0fphgCyP0uq31gkd1uwMKLr7M5Lrx/kTpv1ozpIopeHFaQa70Gvc0zyJC7/CNWWHwg8=
+	t=1757885415; cv=none; b=EX5l8k5KrvWfHvMT92mH+b1wGcW8KrVCSYV5l0E/bLCQuK+vZHmYyv8nn9riuQpDscbNwM72pfkUpbavr5TdHl8E5Gy40zkvC4VwZC1HoIpt7NdJEZGDQ8w2rvcKw3ZR+8RrAN4DuTLXcqku5LfJosbueZl9rWqZZ3vL5qlICcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757884632; c=relaxed/simple;
-	bh=URdhwSzTVTr6jnbDNqiV173BojDqOvJ98BtN7nxNUbg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sVjKWwgBXd8RHkVX2FgT63zWGxDHwPzm5/DKGj9rbYsVt3/r3srQ9xYeH7iZo1l33RdtQ8y2aOjKOiRfZZYIDuAzezucY7J+/3ITj1F5IAkRtmx6OSvYX6ScZVvpGfzmttZp+x5R5a+5Mwnw5+0WGoP8DTAb239wAgZvXTIOW4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cQOmKQK/; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1757885415; c=relaxed/simple;
+	bh=y1ScwfLNpQGdRhzR3jPC/JGvzbTPqjCZQN7mITZ15TQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=GhjQQmnjSrBRJoQzpk4eVPmdT78PAQ0Y+lcalLde84zh/Zy15eVH52ceXRmZXp9J26R4uduHP4SCgKOsEpxyHgSbe9hXMEW8rQBhC16pMNAuWhqdBDHeBnGA9PyNn1REpNIv1AZZ4Gd5y9VNDliBa4JENtGwENuyu+Ur81DN4aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ihq52V/G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cQOmKQK/"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 2F0AC4E40BD1;
-	Sun, 14 Sep 2025 21:17:09 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 04FFE6063F;
-	Sun, 14 Sep 2025 21:17:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9A8A8102F2A78;
-	Sun, 14 Sep 2025 23:17:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1757884628; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=OkqbEDTG/+GAW4UlfVPaLCa1gjibhe38pdOw5DtxKK8=;
-	b=cQOmKQK//9unzznVxjZPY72Zq0diePDB8AuvMrj3OXfD/HfDUApsWJISmMkBYgmBv4cwBn
-	sG1znEXphFFz0pigi9i0E8BvWMVhbCqz9LbUuy53IshXA20/Kh/4VFQoxT44CKVuB/flr+
-	F2KO86gDTQ+fl+zRmsF8NTh2eP/znv5okt658EIjTmV7kAG5g0qLqWBOftb8428nsNu+V4
-	f1MOZIDU81GO06zfta415cjMvLnhWexlyMPf7Cq+ljLOq+lsXFmwT9qvrjGhjedhMhc0D1
-	GbLtOuxXxH3E3Stn5gA7BrxcFANuZP2lJYa1JHnR3hUZuEenbMa0gAnSVcs+yQ==
-Date: Sun, 14 Sep 2025 23:17:07 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-rtc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: rtc: trivial-rtc: add dallas,m41t00
-Message-ID: <175788449951.388732.3384121989400255394.b4-ty@bootlin.com>
-References: <20250827193356.78368-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ihq52V/G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F563C4CEF0;
+	Sun, 14 Sep 2025 21:30:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757885414;
+	bh=y1ScwfLNpQGdRhzR3jPC/JGvzbTPqjCZQN7mITZ15TQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ihq52V/GoW0kgMTeJMcAslwunXM1We8JC9V2UN0j8UTKPPSZ6fS218msCIW6WXQZO
+	 7zb7flAMtw/MfV4VtWK1B20Chsd+vDrD/rNXUzOXT0UYGzAfKAtav0JsFDRRTpi1s2
+	 PslzLrXlzCtjuSDaPEsXCA32qU8lsnk09ej5BAnnMKe2U49sgF/w46LCPD/Tu0q9Tb
+	 ZviAi6Z2MInEB552NpPJXw+2RltVKDQ92HoBqBo3CN5d/Swc7tI+LOxmWz8mEdhJXC
+	 D0sJll4eW1DNlsviOBJIJaMA4LYLy0XcspZXuHDJKugS2rK5cLkuGCeYFoprDVDiUX
+	 s6qBYHSOMpj0A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7159D39B167D;
+	Sun, 14 Sep 2025 21:30:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250827193356.78368-1-Frank.Li@nxp.com>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v7 net-next 0/6] net: fec: add the Jumbo frame support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175788541624.3556271.6428495484921450740.git-patchwork-notify@kernel.org>
+Date: Sun, 14 Sep 2025 21:30:16 +0000
+References: <20250910185211.721341-1-shenwei.wang@nxp.com>
+In-Reply-To: <20250910185211.721341-1-shenwei.wang@nxp.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: wei.fang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ xiaoning.wang@nxp.com, sdf@fomichev.me, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-imx@nxp.com
 
-On Wed, 27 Aug 2025 15:33:55 -0400, Frank Li wrote:
-> Add compatible string dallas,m41t00 for dallas m41t00 RTC.
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 10 Sep 2025 13:52:05 -0500 you wrote:
+> Changes in v7:
+>  - replaced #ifdef with if statement per Jakub's suggestion.
 > 
+> Changes in v6:
+>  - address the comments from Frank and Jakub.
+>  - only allow changing mtu when the adaptor is not running, simplifying
+>    the configuration logic.
 > 
+> [...]
 
-Applied, thanks!
+Here is the summary with links:
+  - [v7,net-next,1/6] net: fec: use a member variable for maximum buffer size
+    https://git.kernel.org/netdev/net-next/c/ec2a1681ed4f
+  - [v7,net-next,2/6] net: fec: add pagepool_order to support variable page size
+    https://git.kernel.org/netdev/net-next/c/29e6d5f89e48
+  - [v7,net-next,3/6] net: fec: update MAX_FL based on the current MTU
+    https://git.kernel.org/netdev/net-next/c/62b5bb7be7bc
+  - [v7,net-next,4/6] net: fec: add rx_frame_size to support configurable RX length
+    (no matching commit)
+  - [v7,net-next,5/6] net: fec: add change_mtu to support dynamic buffer allocation
+    (no matching commit)
+  - [v7,net-next,6/6] net: fec: enable the Jumbo frame support for i.MX8QM
+    (no matching commit)
 
-[1/1] dt-bindings: rtc: trivial-rtc: add dallas,m41t00
-      https://git.kernel.org/abelloni/c/ab2849666022
-
-Best regards,
-
+You are awesome, thank you!
 -- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
