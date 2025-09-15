@@ -1,148 +1,125 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1B9306D52
-	for <imx@lists.linux.dev>; Mon, 15 Sep 2025 12:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5702D30C376
+	for <imx@lists.linux.dev>; Mon, 15 Sep 2025 13:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757938978; cv=none; b=mdZufbgWTs0dYMJ1+eYVNdjrSEhYY0thuV636TxjANXCQaoOc5k/GEhGgDMqoHnm8FMdYCECwRIjyqr3Xed4hPpYjv5XR8eMTgnInSG8RXmd5Kcq4OUNjNFMm+Ua1xte0ySRlnQNjCWWeD1VZ0D7RdURXzqeUyX/TydwIE8kRP4=
+	t=1757942323; cv=none; b=btfro5VC0yxW7qcW1z4P1DgeaKpeWdzW2psjpYTLhFdAnV2mSqCt1QDA1SQWVVdN8GL9qxaSWcDM03yFzpLPMYocTCD5MaIN2aTY0CSZyD7t8YmcHPFanUMtqEwOKnG/imLgAOCVjy4/M+yLEPuXXaB8sQwf0za/D8ErMda0roQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757938978; c=relaxed/simple;
-	bh=SmrCL28GAjsbU/AGRJmWPNTDM+wz8OJR28D+aH2m6qc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LV2INAYaBVRWN94lEB9LzPubHZT9h7P5f494LwcOWRfiwHLHthY60NpvRZjKmXhqjplCWJGLauWwj4dqHlxOALIJ2pno11Q4pQKehxCNsbbmpOZkwESN+N4O8xf2q0DmrteTCX0hqKkOayiUPpq7m+rBN+tNlfExkfQd5GXsMwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XlnGu/QN; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1757942323; c=relaxed/simple;
+	bh=K168Nz0/cSOMcDV5Ibjm1ORQDmfgPC7IGoVfDOOSL+o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lrvq0ZqE+107uSKBW3r5FRwElKcaQ6EAJ2j4So3gK5MxrTWxJygUlrLJVm5lHsPmZgtQdkSDbnYLZSSxoqTiOnJ9HsKNSju3r74O7dJ5yLCXqRmVTZHej2CK+fIqzyYsm6f83+Rq7Z7jlXC2ulcUlir+TomjNKqU36SJj1+UJ4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=oPi9ooxI; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XlnGu/QN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757938976; x=1789474976;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SmrCL28GAjsbU/AGRJmWPNTDM+wz8OJR28D+aH2m6qc=;
-  b=XlnGu/QNFXefrnYnf9yHLiVSCK+xRBkpRQ0f7Gy2+kX1JYoqLRzh1que
-   It+cO0Sk+YJiLPqH2bsbmQXS3u7UCf0fAfGayC6dOW7EU3rASV0sIYCg7
-   KDRMvQj7BlO/tUEBuBNQx3KZ2XYiS8QNHysdVs1S/AI3qh7P8hLwqFfoB
-   02gwMH00ep5L5tUySP9eAgm96tlNIf0luEtKsMTZFlo3IBJUUGHn0TckX
-   EHiILuSKuyCcd5/huZOVxc277/hBtMGTZNWQkdLME4aKEuwy7Odi1itU+
-   NlZvxnc3y8Nafh31VJ7mvdW7qoTOyYSQabFo2ly/2N2oM6JDWj0j/exjq
-   g==;
-X-CSE-ConnectionGUID: XrHM2ZrvSVyHIbbHEBv5PA==
-X-CSE-MsgGUID: nStIhEegQZGBi9kVnry9JA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="64008127"
-X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
-   d="scan'208";a="64008127"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 05:22:55 -0700
-X-CSE-ConnectionGUID: ll7eqTNTSJ2IfOduqdCFdg==
-X-CSE-MsgGUID: NXKsOtBPSHWvh9ShbfKDSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
-   d="scan'208";a="173757220"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by orviesa006.jf.intel.com with SMTP; 15 Sep 2025 05:22:53 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 15 Sep 2025 15:22:51 +0300
-Date: Mon, 15 Sep 2025 15:22:51 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: badhri@google.com, gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v2] usb: typec: tcpci: add wakeup support
-Message-ID: <aMgFG9WRBqOe5POT@kuha.fi.intel.com>
-References: <20250910105042.695146-1-xu.yang_2@nxp.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="oPi9ooxI"
+Received: from [127.0.1.1] (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E43D11744;
+	Mon, 15 Sep 2025 15:17:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1757942240;
+	bh=K168Nz0/cSOMcDV5Ibjm1ORQDmfgPC7IGoVfDOOSL+o=;
+	h=From:Subject:Date:To:Cc:From;
+	b=oPi9ooxIybJfeENFQJOqbO+uh9kdSW9cB4wvM25ugmvLs02/B/0MVG1zAyEN+P4Cx
+	 QFJySqYsAu3RSOOW9DWY9XKdj6DBkyFFVHjWths/W3RSoLJKl69++RXsIo6EHPXDPp
+	 Ox5B/qNAvS2bS8lvGMlgEQStM+oi3nrqGr4zGOKU=
+From: Isaac Scott <isaac.scott@ideasonboard.com>
+Subject: [PATCH v3 0/3] media: imx-mipi-csis: Get the number of active
+ lanes from mbus_config
+Date: Mon, 15 Sep 2025 14:18:32 +0100
+Message-Id: <20250915-mbus-config-active-lanes-v3-0-97a1282a410b@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910105042.695146-1-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACgSyGgC/03MTQ6CMBBA4auYrh3SHwroynsYF0M7wCTSmrYSE
+ 8LdbVy5/Bbv7SJTYsrietpFoo0zx1BhzifhFgwzAftqoaW28qIsrOM7g4th4hnQFd4Inhgog2r
+ R28H1qIZO1PyVaOLPb31/VE8prlCWRPg3lEZJrVvTKNsZq3tQwBnRNdnFUm7sCXMMY8TkGxdXc
+ Rxfb9mITrIAAAA=
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Rui Miguel Silva <rmfrfs@gmail.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Frank Li <Frank.Li@nxp.com>, Isaac Scott <isaac.scott@ideasonboard.com>
+X-Mailer: b4 0.13.0
 
-On Wed, Sep 10, 2025 at 06:50:42PM +0800, Xu Yang wrote:
-> Add wakeup support for tcpci. If the user enables the wakeup file, call
-> enable_irq_wake() during system suspend and disable_irq_wake() during
-> system resume. Since this driver supports shared interrupts, mask the
-> chip interrupt by default when wakeup is disabled to avoid affecting
-> other IRQ users.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+It is possible that the number of desired active MIPI CSI2 data lanes
+does not match the maximum listed in device tree. Add a helper function
+to v4l2_common that calls the get_mbus_config op to get the number of
+actively used data lanes in drivers that support it.
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Compare it to the number of lanes configured in device tree, and if its
+invalid, use the number present in device tree.
 
-> ---
-> Changes in v2:
->  - improve commit message
->  - add Rb tag
-> ---
->  drivers/usb/typec/tcpm/tcpci.c | 33 +++++++++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-> index a56e31b20c21..2a951c585e92 100644
-> --- a/drivers/usb/typec/tcpm/tcpci.c
-> +++ b/drivers/usb/typec/tcpm/tcpci.c
-> @@ -949,6 +949,8 @@ static int tcpci_probe(struct i2c_client *client)
->  	if (err < 0)
->  		goto unregister_port;
->  
-> +	device_set_wakeup_capable(chip->tcpci->dev, true);
-> +
->  	return 0;
->  
->  unregister_port:
-> @@ -969,6 +971,36 @@ static void tcpci_remove(struct i2c_client *client)
->  	tcpci_unregister_port(chip->tcpci);
->  }
->  
-> +static int tcpci_suspend(struct device *dev)
-> +{
-> +	struct i2c_client *i2c = to_i2c_client(dev);
-> +	struct tcpci_chip *chip = i2c_get_clientdata(i2c);
-> +	int ret;
-> +
-> +	if (device_may_wakeup(dev))
-> +		ret = enable_irq_wake(i2c->irq);
-> +	else
-> +		ret = tcpci_write16(chip->tcpci, TCPC_ALERT_MASK, 0);
-> +
-> +	return ret;
-> +}
-> +
-> +static int tcpci_resume(struct device *dev)
-> +{
-> +	struct i2c_client *i2c = to_i2c_client(dev);
-> +	struct tcpci_chip *chip = i2c_get_clientdata(i2c);
-> +	int ret;
-> +
-> +	if (device_may_wakeup(dev))
-> +		ret = disable_irq_wake(i2c->irq);
-> +	else
-> +		ret = tcpci_write16(chip->tcpci, TCPC_ALERT_MASK, chip->tcpci->alert_mask);
-> +
-> +	return ret;
-> +}
-> +
-> +DEFINE_SIMPLE_DEV_PM_OPS(tcpci_pm_ops, tcpci_suspend, tcpci_resume);
-> +
->  static const struct i2c_device_id tcpci_id[] = {
->  	{ "tcpci" },
->  	{ }
-> @@ -987,6 +1019,7 @@ MODULE_DEVICE_TABLE(of, tcpci_of_match);
->  static struct i2c_driver tcpci_i2c_driver = {
->  	.driver = {
->  		.name = "tcpci",
-> +		.pm = pm_sleep_ptr(&tcpci_pm_ops),
->  		.of_match_table = of_match_ptr(tcpci_of_match),
->  	},
->  	.probe = tcpci_probe,
-> -- 
-> 2.34.1
+This series also uses the helper in imx-mipi-csis driver to set the
+currently configured num_data_lanes, while keeping track of the number
+of data lanes set in device tree to ensure we can still use all possible
+lanes if we need to, and the upstream subdev driver requests them.
 
+Tested on v6.15, compile tested on v6.17-rc6.
+
+---------
+
+Changes v2 -> v3:
+
+- Rename dt_lanes to max_data_lanes
+- Remove check for < 0 on unsigned int max_data_lanes in
+  v4l2_get_active_data_lanes()
+- Added comment to explain that mbus_config is expected to be zeroed at
+  init in drivers implementing get_mbus_config subdev pad op
+- Wrapped signature in header file and source for
+  v4l2_get_active_data_lanes()
+- Added kernel-doc documentation for v4l2_get_active_data_lanes()
+- Added debug message to indicate an invalid number of active lanes
+- Changed csis->max_data_lanes to csis->num_data_lanes
+- Changed uses of csis->bus.num_data_lanes to csis->num_data_lanes where
+  appropriate to make csis->bus immutable after probe
+
+Changes v1 -> v2:
+
+- Added helper function to get active data lanes in v4l2-common
+- Store the maximum data lanes possible, as configured in device tree
+- Added media: prefix to commit titles
+
+Isaac Scott (3):
+  media: v4l: Add helper to get number of active lanes via a pad
+  media: imx-mipi-csis: Store the number of data_lanes configured in dt
+  media: imx-mipi-csis: Get number of active lanes via mbus_config
+
+ drivers/media/platform/nxp/imx-mipi-csis.c |  8 ++++++-
+ drivers/media/v4l2-core/v4l2-common.c      | 25 ++++++++++++++++++++++
+ include/media/v4l2-common.h                |  1 +
+ 3 files changed, 33 insertions(+), 1 deletion(-)
+
+--
+2.43.0
+
+---
+Isaac Scott (3):
+      media: v4l: Add helper to get number of active lanes via a pad
+      media: imx-mipi-csis: Store the number of data_lanes configured in dt
+      media: imx-mipi-csis: Get number of active lanes via mbus_config
+
+ drivers/media/platform/nxp/imx-mipi-csis.c | 17 +++++++++++-----
+ drivers/media/v4l2-core/v4l2-common.c      | 32 ++++++++++++++++++++++++++++++
+ include/media/v4l2-common.h                | 21 ++++++++++++++++++++
+ 3 files changed, 65 insertions(+), 5 deletions(-)
+---
+base-commit: f83ec76bf285bea5727f478a68b894f5543ca76e
+change-id: 20250915-mbus-config-active-lanes-14ad58c7a186
+
+Best regards,
 -- 
-heikki
+Isaac Scott <isaac.scott@ideasonboard.com>
+
