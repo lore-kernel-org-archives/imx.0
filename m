@@ -1,220 +1,132 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013053.outbound.protection.outlook.com [40.107.162.53])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419EB27FD7C
-	for <imx@lists.linux.dev>; Mon, 15 Sep 2025 09:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757926956; cv=fail; b=Td9yXC3UbMTLmPMFGNJjqy15x8GlTsfnvwlA4XQUG1zLvbpon1B5H+7/wlHNOOYskylnJOrglGchV2d1VmnbXtuAtmnKHjHp6EQlaminuaNVB8YI0e7MZ0hwVRqHdsJYaGLeCEa9JeuOun44CeMNmX1yfBEhkMoyinAnCzUsiHM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757926956; c=relaxed/simple;
-	bh=jUrGxdc2Ks4JxYKR8vdpLF5/PBNbK24BshaaWySEOto=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=jzQQphdFPJp2uUQuHvw9clEtmYOarLSmAhKfKJjXgQ8oSekzGtxEYNnS0BcYRRjefNLrb9XlRZOomqXuj7IBQT0XC21jba4XWRmdHCi8zYB+zUeQsN1PAF6zER+3oUXV0WKInSygPLUEn9gd8a+7Ei1YpdrBrVaN9Oc4Wn/czZg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=B+EHScyX; arc=fail smtp.client-ip=40.107.162.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27F72F3614
+	for <imx@lists.linux.dev>; Mon, 15 Sep 2025 09:25:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757928304; cv=none; b=g3pCt1pKeoRKW3LbiZeDHc3y0QUy5QE0wD2e4I8ezS6cokOyL+Be2aOX7GJHeziO/APO/bLguiJMc077tR1l0Ayww4l0l1b6HvV4IlpVqN2cR0lwEgCrTk63lVr9N/hJ7cvamh7A7Mcx9jVP/zTmIc/mIbfDD30wf8WCs4J3eYU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757928304; c=relaxed/simple;
+	bh=q5RA/RaHr9bqdc2QYzU95opigf2/icTVMiyCVrzT/HA=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=dM5r0CNTCAmQYg4WeRCEi0OSDOaZ6LV3dMH5coQFDOJIJQGzf+Sxw5JXdCTZDy5DJ0NUDEhIkTCcCo6jOybraDYWTpkAgIUJAs49tCByrMys5JEtBzH2Pb6v/p0rjFOSd7bqUHmAcnLfcdCwvDJ906ZyP+hHUV673wX1kIsn5Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=O/6DYqcm; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="B+EHScyX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bGpQMHOCpPYMArzCszmHPmnT/lfmXF+tETCx3pmdeBk4BDnRLDwe9pNS/d1r2oeUbX1po6aqpdQmMULdC3cP3Ub7JzcQiSn1J2sb0P7t9Rf2rsKLMyJ+meW5z2+uNyN5EiGFbN9vOzz2YLTe3xRqZvu55zkE9H59Fs2D7QUypIdr1zPi09B1dKnXD/OfuOVWWvCoqxieovMtaUhOFpZ5uKph3m1aUl0gDRiXqVrZn0tnjbf+ni8tSWZY9w3nv48FX5j4jtF9o+bU+A3SnuKMl0CTouVuTvNRneaNF2cWD9riRyjngxVSvLaSFLKCBDnBSx3w2XInht6jv4e5ey2caA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OxVnN4heDn8CfXYc2w4VbTE1jK/68QZpA0tLeplv8a0=;
- b=DnCIwmFG+FTdC0rpYYKCQDx4J/7waupCdHdMyGXzZHMl1qtq/I04du0ZPIC7eV/qmGAGBl8x0mX1tQ0s4kKz+716DZ1RhUAnJCS64ujBMskVvjpAoYQQxuYWTCd/vnLxLm9XRX9HS0kIBg74Mb0OPWW30hhbSpPkAr6hBYtN8hRejipnquJ2HLJATgD6xO2D450MzW6Bh65R0PbxhPLFelMXix90Um9MnnL1PLMXJjjciHpJZqLieKFp6n0454nTo/+biwiTpA6ke65CHHzUfFx6SydxNtp7+zumGzGLQiza5gqK3fzYeMxOtGDDlV51btCbt+Ddtn/F7lUYNfEkmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OxVnN4heDn8CfXYc2w4VbTE1jK/68QZpA0tLeplv8a0=;
- b=B+EHScyXjSksyMjCSzb24w7+wwLBOj8be6OcUU8c3GNnqh6aS8i409l9XTf7TjwlO76oIyWeFhTK1tKBsvUq0PbPn+a6Y+PYpIxlt0zLZNBQyMOqHt7vAr3ms0jE5aYIHddq/2tVyOiJUQ43roaEEmEQgL48eyQnXLhYBxtsje3TbguzhaXAXsfDACHY9c+BFmaEHm2AxgM0W6tR5ku+O2CY5eL5rPkADMAKEh7cEe3fJrv1nMAxSAD2jPfQZD/V+Xpvg/wF0228QjKKGEJU2zjFCqNwPevBFqZ7A0MjTySkL9XhT0kMChxS24vCJD+xWDe4zlIXZB0cooFtSpD6lA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by PAXPR04MB8782.eurprd04.prod.outlook.com (2603:10a6:102:20d::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.11; Mon, 15 Sep
- 2025 09:02:30 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce%4]) with mapi id 15.20.9115.020; Mon, 15 Sep 2025
- 09:02:30 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: gregkh@linuxfoundation.org,
-	tglx@linutronix.de,
-	mingo@kernel.org
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	jun.li@nxp.com
-Subject: [PATCH] usb: gadget: zero: add function wakeup support
-Date: Mon, 15 Sep 2025 17:02:30 +0800
-Message-Id: <20250915090230.1280460-1-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0029.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::20) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="O/6DYqcm"
+Received: from thinkpad.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id EB5E722CF;
+	Mon, 15 Sep 2025 11:23:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1757928222;
+	bh=q5RA/RaHr9bqdc2QYzU95opigf2/icTVMiyCVrzT/HA=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=O/6DYqcm91ykCd6LEz2Gfd0XuyJBeV7P5y7EtdQ53V7GebfEUjnQLhOqE/FQ2IJOd
+	 4MBpJiKNNv8CsjH/l7DSPGDLvS8gxrR/oQRTL7bF3gxGlLSr/W+4pbXd/Pnm6QA7Dl
+	 LSHqzy9ctbj3FvaWP0k8LlKVOye27UqT19OpSESM=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|PAXPR04MB8782:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a4f423d-51fa-48b5-cb25-08ddf43699aa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|19092799006|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?vqjpBHB1lIhwiUlSFCJeuC7kcFeEnTt6f39vuy/mDX8pnRhjyKIhHbzXFbRm?=
- =?us-ascii?Q?JsSAXGKUEYCUeTnHrD2vzCKFmzEih8j/CHbb4tnqhmTRr/Mdzr5+6vPuvCWj?=
- =?us-ascii?Q?eY7K7yU04EsKkL2Ec+9tXOIywQRy1Eemr29gKQzHjCWHDe1GnpF/da0pJo+v?=
- =?us-ascii?Q?kfAyMuk0Hgd4PxqAissr4mDiWZTd/nKwEiyB09jAGsMl78HmQipYJQGcBMem?=
- =?us-ascii?Q?80eEaBfLKpwjB6zPT5A6yY70X1euqtzRqsIkYsqfs8us4Uu499psu2rRS87E?=
- =?us-ascii?Q?bOGPRUJ9TwkYLB3ulvnHRZKdHfRv2Rp9n4gEVaD6DtNEDd4oYo93lnNcMjLa?=
- =?us-ascii?Q?9eBpzOfhMAK7J5E/Os/5VDx4Zmorr3D3AnkH1jXfpqNYgv4OwlpG60EGJl/X?=
- =?us-ascii?Q?MhT1tpdGlEHKLcXV2O+qHChnzEOCfj/xvRckqFUr7eTE3N++VXmbjeTRXl8+?=
- =?us-ascii?Q?O2F1ZEJAREUlZOYLVVPRJStvnnb42rD+2i0P0QdtMBXGNdhVV3THcfZHPfZh?=
- =?us-ascii?Q?B/iwDJF6Jjyg7XuCQLt5jRM8yAtVxshGG7hA2W6Uoi6bvqPZJT+Yn12BcaOe?=
- =?us-ascii?Q?stsPEhLlC3GCRPHB6qcFd64YIEjsEBjTHf+CDsw6RSKERzCc5ZN5CCAgGNJG?=
- =?us-ascii?Q?vvx3yhCNAcXAk2dCjuupk1G2pMn+jDWbMC20CoG9uBHLMmFQjzTPSD9MqnjV?=
- =?us-ascii?Q?LOe27MGjpQM+3NvbmxQiQRhQU8tXyk+6O1nImSADLT7wDMutmFI97OhXd3yT?=
- =?us-ascii?Q?/iEw/Rm4iaSVHoCNBL7O8WkVFFMy35TsnIDCeiZLL6d7I6jHOzIWc5xc8lSm?=
- =?us-ascii?Q?2+5dNSCLxUk7uHg/i0NcG7Zhh/YxXRsdNP2FF597mhizasSRGhYB8lwjzZFf?=
- =?us-ascii?Q?xjv8BuYyhFf+ClCLDDxzeIYfXJI0M4I/L12A4EA/Jl74EGVSCN2b+mGSxWt4?=
- =?us-ascii?Q?iGP5RIWsQ/MTCYoyEPzyWKroAJxRdaN4w/JyszUgp227uKYT8PXiHM6sfaVn?=
- =?us-ascii?Q?wWWck0aaxSi/BQqWV46sJ0OY1H1145k046Lkrk/iO/iCuMvLCWi8vq5c34jz?=
- =?us-ascii?Q?KSksggoXI2esIhdXce+0ziike2pk2oG9cCZ/S9sM7L+cssLYQRvBEbtSlxuZ?=
- =?us-ascii?Q?GbZxsYmI8z8jqdddqIaKysuCzvBhUOtg/9Vo4cjVKR56aLInxsj1NGvAtvP7?=
- =?us-ascii?Q?VmwfMD4cuz2IHxc2HoVe3mgA3xry3UKPKfhfPPCVMnFrR9rxaQ4ONsimMDT4?=
- =?us-ascii?Q?c6gPWuB0EUCSnoUgcRgQlQmTUycY2J2t+i/cJcKa4pE7l5d4EQsmOXfqY4W2?=
- =?us-ascii?Q?pUu1vVc5uytCsGu5m8UHR79lqPi8UEYwHeoM+EnHNdvKOeZi8yrHt2qK80hb?=
- =?us-ascii?Q?t71w4NBMfwYbdzzVpmR9TeNd8jCQMEw+8uwXEABk44dJ+A9hN8p6HYPcbOXb?=
- =?us-ascii?Q?UsIX/JectNefqwS9Vvw0AVRlyThv5CohUuEvsgQEPQekTmByO2HCxg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(19092799006)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KRm++bmvzEuB6ds6fFVATav84zGAkEEK/ThzN1mQUGSogIXkPOvwT0xrEGGf?=
- =?us-ascii?Q?Wo91WRgRfRNaXGOtsKxjC8+i/WAK9rDEBmYBlnVmz2aTDVUJxDquBm7hTf/Z?=
- =?us-ascii?Q?pVoULYAUxbuXZbTT0Ei2ZbQSkMsaX10WmDVCQZY0I80j2gMBp9nGAKQV9q2B?=
- =?us-ascii?Q?vxOw4Mcdo41Db26Xnq0T2zDFiYpn10sN6SX/hj37ZeDupwnLkzWOCfXhEK0v?=
- =?us-ascii?Q?Qya45s7eNxm7N3XEk6aQ/Uvg8l18HCFndf/CWsx4KWdK0YSMBgy5Gm2ZcFTV?=
- =?us-ascii?Q?6zczm+2PJTR68yx3PprLT446JK4HRrA+kPbFni9J76HoDhu/wtqPWEW7opDQ?=
- =?us-ascii?Q?qjj7JEcrN4VRurrcxQtvL5Eh72V0Ram/SZtiwTy5K7EwQ8GwGeSVqU+R0kyw?=
- =?us-ascii?Q?EJeurYt2vUjDfyQPNqWDwjJzRaVUTOXeCMGt4QrcTuWUFIkkgmuf1MKZbu12?=
- =?us-ascii?Q?bjtI+ZwKs2UImZpVbPKWPCD/N7OAdE1PqtLmRFPjdHw0+Urnu38oWx7Lf8nV?=
- =?us-ascii?Q?hfoRuwQzOBSkkbHSotHd43WbGlDZyO3bR22dgZC78Mi0bzvzoqAich2/Teg3?=
- =?us-ascii?Q?cOVigvwCXK74VxDdKx2xizfIdAejf6mmB5cVlHwpr13qK7cuNpU2Op3o3JSX?=
- =?us-ascii?Q?0Wkw4qg1HKhiUqpsyDNGIWreO1sPM752P3bfE2n2uvMa2PDHcxxELXccv7Ls?=
- =?us-ascii?Q?8/S9APhZpurpHwFVOAiXjUnSbvm3Nt/H5PeMxvHxvMIleTuTBXVhcMS6xgMm?=
- =?us-ascii?Q?TFcYI4bNNXMn/HeyFx/EICcryXJzjqXA4NST8NWHmS3NS++9e5tFtMVpYjXS?=
- =?us-ascii?Q?9tCyWF+j5vM2fPCX0b30DPGsK5thPHVVs0ZO55nVUFqfiQmV3C7MLTXi8ufC?=
- =?us-ascii?Q?6fDG8T3xYOXsq2JU9VSah4f83355yRAeYI7sAWZNNxdqZmraiFUtshaBLMOg?=
- =?us-ascii?Q?/hSOT/276P0NtXAHkYnTUklkxIrs7FgjBuN5VFsv1+U30AmagoSBX/TIznlr?=
- =?us-ascii?Q?DEh81OfMeBsSKP93SbzR/h/xvnpqGbAe14Wg2ZEMvpt6hnnAcd0iUEsZA9+M?=
- =?us-ascii?Q?z5SwX6bf/38DpFZ0B6gjLWNJUOmuk7Eiji6KqALITqOrEcM2Gvkn+z/eR7/b?=
- =?us-ascii?Q?85/K1o7c18oEz8Sra8LiwJueAqWnnOGlgk1cddm+fy6IIliu08HRwOsaKenq?=
- =?us-ascii?Q?ywP8p4geCyXIgp17nsv201n6Mx/8y9EW118dbhrZyqOjw8ipEvb/cnu+4AWN?=
- =?us-ascii?Q?NZkftqYU4AuEDu81M4Or2SGCSI7CMiJcevDdW13MhY2+wJr3GnBBesTgxSuT?=
- =?us-ascii?Q?fbUnJ/PV2jL7qCa74EEm7jJratXHxCLyOQLx72TvYj3EYwEJrQXsXrFkyNH5?=
- =?us-ascii?Q?BGdp0dDDBczTqslY6utYjS0dL56f2fKyhQQdCf7RVSGmltjd9qEf8/TdJKyo?=
- =?us-ascii?Q?00IIR77y9K8RrtVDaxW2maOx1bpPewB5yfwDWNAaCpNMKVY3L7Vc1I2GciB6?=
- =?us-ascii?Q?EhVRVDooJsQb6rbvzRECrKL2KaWnIWHtKRo9ARVCPu1MYDxMwQMuqNu3AQol?=
- =?us-ascii?Q?HDLN9xcUK6KYfmd/U+L0xCdtpnTd0moTPuIIsFba?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a4f423d-51fa-48b5-cb25-08ddf43699aa
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2025 09:02:30.2635
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3N+5uKERHMKAybSvKgNk8BVImBdN0AWLeKGFb/SdiE5IoggzxtD0fLmjy26CEiyreeftLRtxcg897/P7P+aMWQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8782
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250904150153.GB6174@pendragon.ideasonboard.com>
+References: <20250903102243.1563527-1-isaac.scott@ideasonboard.com> <20250903102243.1563527-3-isaac.scott@ideasonboard.com> <aLhfu0KK5NHIGH/W@lizhi-Precision-Tower-5810> <20250904150153.GB6174@pendragon.ideasonboard.com>
+Subject: Re: [PATCH v2 2/3] media: imx-mipi-csis: Store the number of data_lanes configured in dt
+From: Isaac Scott <isaac.scott@ideasonboard.com>
+Cc: rmfrfs@gmail.com, martink@posteo.de, kernel@puri.sm, mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, linux-media@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, hverkuil@kernel.org, nicolas.dufresne@collabora.com, sakari.ailus@linux.intel.com, tomi.valkeinen@ideasonboard.com, jonas@kwiboo.se, dan.scally+renesas@ideasonboard.com, m.szyprowski@samsung.com, mehdi.djait@linux.intel.com, niklas.soderlund+renesas@ragnatech.se
+To: Frank Li <Frank.li@nxp.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Mon, 15 Sep 2025 10:24:56 +0100
+Message-ID: <175792829662.11401.2553264927858948770@isaac-ThinkPad-T16-Gen-2>
+User-Agent: alot/0.10
 
-When the device working at enhanced superspeed, it needs to send function
-remote wakeup signal to the host instead of device remote wakeup. Add
-function wakeup support for the purpose.
+Hi all,
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
----
- drivers/usb/gadget/legacy/zero.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+Thank you very much for the reviews!
 
-diff --git a/drivers/usb/gadget/legacy/zero.c b/drivers/usb/gadget/legacy/zero.c
-index a05785bdeb30..fe286b597f9f 100644
---- a/drivers/usb/gadget/legacy/zero.c
-+++ b/drivers/usb/gadget/legacy/zero.c
-@@ -147,6 +147,12 @@ static struct usb_gadget_strings *dev_strings[] = {
- 	NULL,
- };
- 
-+static struct usb_function *func_lb;
-+static struct usb_function_instance *func_inst_lb;
-+
-+static struct usb_function *func_ss;
-+static struct usb_function_instance *func_inst_ss;
-+
- /*-------------------------------------------------------------------------*/
- 
- static struct timer_list	autoresume_timer;
-@@ -156,6 +162,7 @@ static void zero_autoresume(struct timer_list *unused)
- {
- 	struct usb_composite_dev	*cdev = autoresume_cdev;
- 	struct usb_gadget		*g = cdev->gadget;
-+	int status;
- 
- 	/* unconfigured devices can't issue wakeups */
- 	if (!cdev->config)
-@@ -165,10 +172,18 @@ static void zero_autoresume(struct timer_list *unused)
- 	 * more significant than just a timer firing; likely
- 	 * because of some direct user request.
- 	 */
--	if (g->speed != USB_SPEED_UNKNOWN) {
--		int status = usb_gadget_wakeup(g);
--		INFO(cdev, "%s --> %d\n", __func__, status);
-+	if (g->speed == USB_SPEED_UNKNOWN)
-+		return;
-+
-+	if (g->speed >= USB_SPEED_SUPER) {
-+		if (loopdefault)
-+			status = usb_func_wakeup(func_lb);
-+		else
-+			status = usb_func_wakeup(func_ss);
-+	} else {
-+		status = usb_gadget_wakeup(g);
- 	}
-+	INFO(cdev, "%s --> %d\n", __func__, status);
- }
- 
- static void zero_suspend(struct usb_composite_dev *cdev)
-@@ -206,9 +221,6 @@ static struct usb_configuration loopback_driver = {
- 	/* .iConfiguration = DYNAMIC */
- };
- 
--static struct usb_function *func_ss;
--static struct usb_function_instance *func_inst_ss;
--
- static int ss_config_setup(struct usb_configuration *c,
- 		const struct usb_ctrlrequest *ctrl)
- {
-@@ -248,9 +260,6 @@ module_param_named(isoc_maxburst, gzero_options.isoc_maxburst, uint,
- 		S_IRUGO|S_IWUSR);
- MODULE_PARM_DESC(isoc_maxburst, "0 - 15 (ss only)");
- 
--static struct usb_function *func_lb;
--static struct usb_function_instance *func_inst_lb;
--
- module_param_named(qlen, gzero_options.qlen, uint, S_IRUGO|S_IWUSR);
- MODULE_PARM_DESC(qlen, "depth of loopback queue");
- 
--- 
-2.34.1
+Quoting Laurent Pinchart (2025-09-04 16:01:53)
+> On Wed, Sep 03, 2025 at 11:33:15AM -0400, Frank Li wrote:
+> > On Wed, Sep 03, 2025 at 11:22:41AM +0100, Isaac Scott wrote:
+> > > The number of lanes actively used by a MIPI CSI transmitter may differ
+> > > from that which is defined in device tree. To allow us to be able to =
+set
+> > > the number of configured lanes without changing the maximum lane coun=
+t,
+> > > store the number of lanes configured in device tree, and adjust the
+> > > debug print to reflect the device tree value.
+> > >
+> > > Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
+> > > ---
+> > >  drivers/media/platform/nxp/imx-mipi-csis.c | 5 ++++-
+> > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/med=
+ia/platform/nxp/imx-mipi-csis.c
+> > > index 2beb5f43c2c0..fc89325f2f94 100644
+> > > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > @@ -313,6 +313,8 @@ struct mipi_csis_device {
+> > >     u32 hs_settle;
+> > >     u32 clk_settle;
+> > >
+> > > +   unsigned int max_data_lanes;
+> > > +
+> >=20
+> > is num_data_lanes better? you get from vep.bus.mipi_csi2.num_data_lanes
+>=20
+> That's a good point, but I think I prefer max_data_lanes here as it
+> conveys better the fact that the field stores the maximum number of data
+> lanes that can be used, not the number of data lanes being used at a
+> given point of time.
+>=20
+> This being said, why do we need this ? The maximum number of data lanes
+> can be accessed through csis->bus.num_data_lanes. I've looked at patch
+> 3/3 to answer this question, it there csis->bus.num_data_lanes is
+> modified to store the number of data lanes used at runtime. I think it
+> would be better to consider csis->bus as immutable after probe, and
+> store the number of used data lanes in csis->num_data_lanes.
 
+Yes, this makes a lot of sense. I only used max_data_lanes because I
+wanted to avoid potential confusion between csis->bus.num_data_lanes and
+csis->num_data_lanes; if that's not acutally an issue, I'll change it to
+num_data_lanes.
+
+>=20
+> Isaac, could you replace this patch by another one that adds
+> csis->num_data_lanes, sets it to csis->bus.num_data_lanes in
+> mipi_csis_async_register(), and replace usage of
+> csis->bus.num_data_lanes with csis->num_data_lanes through the driver ?
+> Patch 3/3 should then modify csis->num_data_lanes, not
+> csis->bus.num_data_lanes.
+>=20
+
+Good idea! Thanks, I'll take a look at submitting a v3.
+
+Best wishes,
+
+Isaac
+
+> > >     spinlock_t slock;       /* Protect events */
+> > >     struct mipi_csis_event events[MIPI_CSIS_NUM_EVENTS];
+> > >     struct dentry *debugfs_root;
+> > > @@ -1299,8 +1301,9 @@ static int mipi_csis_async_register(struct mipi=
+_csis_device *csis)
+> > >     }
+> > >
+> > >     csis->bus =3D vep.bus.mipi_csi2;
+> > > +   csis->max_data_lanes =3D vep.bus.mipi_csi2.num_data_lanes;
+> > >
+> > > -   dev_dbg(csis->dev, "data lanes: %d\n", csis->bus.num_data_lanes);
+> > > +   dev_dbg(csis->dev, "data lanes: %d\n", csis->max_data_lanes);
+> > >     dev_dbg(csis->dev, "flags: 0x%08x\n", csis->bus.flags);
+> > >
+> > >     asd =3D v4l2_async_nf_add_fwnode_remote(&csis->notifier, ep,
+>=20
+> --=20
+> Regards,
+>=20
+> Laurent Pinchart
