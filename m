@@ -1,208 +1,136 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011037.outbound.protection.outlook.com [52.101.65.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCC11D618A
-	for <imx@lists.linux.dev>; Mon, 15 Sep 2025 15:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757951510; cv=fail; b=fdHjasJCQJZEP6QdxrYQAVtNsKr/x0YqO3UDZcbqqvguS5a0tLtUe1/QzOF2+qgqjVXdFRYdgfC/JenzuZmvHkWrglvlVImCzD1BTCGQdFoOkHe2zKSOqsPUnTcLJH6MEqqhPYV/JNBviFIKuysCXiEj4U4lAzHkUDGMXE5bKH4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757951510; c=relaxed/simple;
-	bh=WJuaSGSZpFZh9lpybkSardsbcrS/BCDmm55QOVpOBm0=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=MNrrUWSj2H0DlPsbrlvKqy5fZKus0zGG9llVALlsIXs/GIh/PudZufqbz9xXC7UbrDTZFWHuHPCJGrqAPTCyhegIkgxjaZLQ9u1JLEY3G6PsJ9t56EN1Csnr1B73v6i1UjM1Cl0mUIWqAUkoATGAgudht1fYdVmFq9EIo0njxkw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=b4wdhx9s; arc=fail smtp.client-ip=52.101.65.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFC92798E6
+	for <imx@lists.linux.dev>; Mon, 15 Sep 2025 16:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757953643; cv=none; b=R5cdMaSoC3yUf6xAHrCfIBduXs+oGDI67GeOg/Wy+6tpOy/ExFyxUimC+vXjkvSVdMVpFIYUEtA73noXN11Ju3Z9ei/5U2YW2inOAGnk6sWpKzLLlpK6xuPL3YGkgcRgZgLb5CljjyGBBfA2mEZpyxDkloJEhJTY7EOteYNd4uA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757953643; c=relaxed/simple;
+	bh=0VlPIbvVpTDmLyoSfoRRRH9s5pOp0mu5ypKCH+mS90U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BuU8tuv49Rfhex5ZpwJMU2X5LRRX+NXI+BJqxRNAPuQRlfS8GmhRttC7KBKbNg2ymyENXFUezx9h2qX3PYwUquWWOH9iJHgUbRLwtJtmUIbwH83M4jz+oanGPoZAiTW+7UqhfGhgrmqaUP99SD2+0fqin6WcKavG3XzHGh37eZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vhzlmQlV; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="b4wdhx9s"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=schoTgq/UredTl3xKNfQuDa+em3noIis/Ic4hX1biYjOuh85WUKZei8FjJV9KoWIccY74TM3K21RQfC2xW80exob0TR0pj2bwU4d+vTb5oZL5PspeZ4oAaHxDFbVFEnNnAbBYvjIQz1BVd4jm4U6zK579ZuAADcyAr5iXfr0Slq/tfM5YNOpbzL9OXXinqCiyhjgrzDzoeCROwmh4pAwqLsTXmrU6HTp2m+IWTmYePGJnsCncCbHxZn5/2ZLOfwiAG368F0f79dodFzFqJHqyK3JWer5+fc12BWUEFUPfbot2wNny6j30iA3Qn6+hXnDCen0HHk5Yb7IqnqNbDJzow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cLA1HSDhDTNI5zGlm+oV8Lz414pHFtp980ccHUjK9Xk=;
- b=tPnoJE8OF+4Zd28W7SnLdWrp14X9f9C//ORZPT8mHRE9rFp4MwPVIswFwYZuOBscW4npwvqkrrzRGzhuhSeidtHlCPYdo5Amcd8shXgu1iMNeW7kn3PzcAV01AVz8JXImj/qj5sJ/WdkFWo8XBBif8E0UD4uuabtmomDukDCQEJmDKX2NQX1U5HufHXxrMRvNsuKOUknmzyf1wIO4wesg6pjmlwVhpAN8nXK7NdYFdoBGKCCaC/3ecCoxYFUqQJ0Ma6/ukDEzF6/EBG9l0FXPMAiaQWKcBTcyl6TlWqCrsyqLvbaYfihkrlHVTs4O6keEViisUv0Qj4qkIi1e7Lk6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cLA1HSDhDTNI5zGlm+oV8Lz414pHFtp980ccHUjK9Xk=;
- b=b4wdhx9sPlqjq7tt+PpMqJCtbo53tKSasSMHO7WMzFv7wAtMlcDPbHWa18K1Zee4F2x2L+6Rf9VXY5OynVMZmRrYC/tQ/kMAHP66bFNkLUNZf6YaoSzLRfZyfNhSmf1lCQbSzUkDQu23pIGehZpc8VGX0aATuCVwcPvcaN1H92eciuqbNoF9I2Z+ikrpiqmiVNUiBxcSTLg5/Du343bIh99t3N8GxusQmRX6PmhSBKUfEA9HyHWourEVK253XzmAvzMvMupmwJYcPsQgch2aj0QvRxOEw38NLyOJq79u6sLFY1hvEE6Y3KP1o/etF59e3SwLpDJPzifFGU8kaWAc4Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by VI2PR04MB11217.eurprd04.prod.outlook.com (2603:10a6:800:29a::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.19; Mon, 15 Sep
- 2025 15:51:43 +0000
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9137.010; Mon, 15 Sep 2025
- 15:51:43 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	dri-devel@lists.freedesktop.org (open list:DRM PANEL DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: display: simple: Add innolux,n133hse-ea1 and nlt,nl12880bc20-spwg-24
-Date: Mon, 15 Sep 2025 11:51:23 -0400
-Message-Id: <20250915155123.3250823-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR13CA0106.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::21) To AS4PR04MB9621.eurprd04.prod.outlook.com
- (2603:10a6:20b:4ff::22)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vhzlmQlV"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-261682fdfceso16863455ad.1
+        for <imx@lists.linux.dev>; Mon, 15 Sep 2025 09:27:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757953641; x=1758558441; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Wq0zL/Wc0Htkj+BfsfKHKvDwUIKed8MK8zTT8591bA=;
+        b=vhzlmQlVSQGwUHGu+65tu7YrZKGTHQGRoewnSfCgAR93SrSHU+Abjpx/qOSECAW/aC
+         94JEWuSpJI/9t1K6bmpfhjW5XG7iO5hGLcCOWNrjnMykO/Tfm42uzDqXUKkNbMMUxEWd
+         LV+4NEE84x6mjBlUcIzaAg8tZInVDJns6RLEovkswQgoO0H3sH93gW5bejcoPw/5EDQG
+         0TO1pTjx6rSbVTPGgN9lFZmOowfViu2dd7nBJxHghjqBXH1ov4JXwheW/DOCzi+IJc3/
+         aUABC6V0WJ6piC+s8s7vZWoHB2M6lUB8Y2yyAjRtWDdg9eoUKFoP1OChWKfqwMqXjE1J
+         As8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757953641; x=1758558441;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0Wq0zL/Wc0Htkj+BfsfKHKvDwUIKed8MK8zTT8591bA=;
+        b=il3oQ+B3AfWvHfyewn1qNyjIZmM3BI9PTv/2XfDPAp53wV6N/H0Cj24CCWOMo4MR+4
+         AWJ4aX9Qvn8+WaAGcipxWfYzh/tV5/+3bWiZ+O08MMj+gx2oqQOaIGkiZFGZrqEuCrpd
+         SJzYbQkohm2ZGavLGcJI23ZHgzjhfEjxUzRi4zZtjmZAtdEOVgvmcvB6dDB54gEXBTCu
+         2shGMiRQGIFtuIXKZEXhjSKByCY9RfoQEbrXt1Ohtv3oLt0A/L1VirlolsWAQFuZzWEr
+         zUDQdSOmlvu4aXNx5dCAMzX7XOjdLfrM5NqtYsxwfUDrCALTX+4t3m+/5o4TWTxbJUeK
+         BXGA==
+X-Forwarded-Encrypted: i=1; AJvYcCXzmfvhuDSbreEBGLMx70mr2OntmnpId2S5jI2srV8hAAB/HftcqqYbup5PRyMbnaPAfXE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyUCnn04JMOfZy83yh//k/uyjNHWHa2wl/bROLtorAlIjciqYcB
+	uq/7h9UAzN3hAwqUHPU+faRiQ3WnPcbNKrziI3h9TWb911aU2BWbz0jaBScC24W1IEo=
+X-Gm-Gg: ASbGncvD1UY1XCSuCfWquOJJHb3lVKXAqCq7259o4J4uhJcOPkTZJQAJoNMeSHoDljH
+	My7wWqhht95hNJ1O4DL5FdD+9wv7KxmTT2PyDaemJKVvrhwK+KmazYgIj+SS6OFP+BXyvQ5aTZC
+	Z/F38jilKJZHcGJlrOXdtIP3eW6wqcnOCW0Dpok7UfVTcDzH2AusO+x5+l9vAh/4lvwh5oYKcaj
+	JTGtKu+N5SUPwufzYO7zd9f/OVVPDkcI3Is50AJKWPLwYYvKBJGhLoX86GXWQdas9m8iykQwZ7o
+	sBo4wBl7l9n161JYkTY90pCkGuN+mYfr+GuD2WvQ0StZNry60REVnh2UV/zNMX/0FlIPgJ1Q+v+
+	4F9KGyWlZu1YxlX6OboUaCP/A+n7MfbWvsKKlQ53GtLNSfQue3f6LpfXWdQ2RRvHbVFVwNkCIcG
+	gYz6k9aHomqvG35yomZoyesgkt4WFpee8ddw==
+X-Google-Smtp-Source: AGHT+IH31zRCUDSkqS9JLKhdPK0Ywp1tQqr2PiZwav0DNP7t0zDxlTNym5N+G+H44epmJz9G3i3bdg==
+X-Received: by 2002:a17:903:41c1:b0:262:3e45:4c88 with SMTP id d9443c01a7336-2623e454f01mr114037935ad.18.1757953641028;
+        Mon, 15 Sep 2025 09:27:21 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:67c:a85d:f066:9008])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-267a1d2eccdsm22392055ad.97.2025.09.15.09.27.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 09:27:20 -0700 (PDT)
+Date: Mon, 15 Sep 2025 10:27:18 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>, Frank Li <frank.li@nxp.com>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/6] remoteproc: imx_proc: Simplify driver by removing
+ the switch-case
+Message-ID: <aMg-Zg6juddLZwfO@p14s>
+References: <20250910-imx-rproc-cleanup-v2-0-10386685b8a9@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|VI2PR04MB11217:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e0037e3-125b-4d12-e649-08ddf46fc48b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|52116014|7416014|376014|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QldFV0xaWXJNWUNJbmpVWXJkNXJuRytvV0R6bWJ1WU1VQlZSc3BKY1BhdmFK?=
- =?utf-8?B?MUM3R05SSS9QUVV3dUpmNzVjU2swVVI5MVVHbnJxZlZTSVlGT05SMmNIUnZZ?=
- =?utf-8?B?S0pUeTFrcVNtN285bzRuRFhoV1FYQkFJNVkxNEpRTXZyYXRjSGZ3MTNzMy9E?=
- =?utf-8?B?QUU3VDIxck83TFk3UTJ6aGU3ZkEwUTNPb3lIVGRyN0RSeDMyWTh4aGl0TzQ1?=
- =?utf-8?B?Q1dOSnkxOXc5dmExZ1ArTDFQUlg0Y1YyYzYrM3lOUWUxWkR3OWpmTC9DcUxH?=
- =?utf-8?B?TGRIeWd3QzNyaDJOWXVHMU12aVJJOXp3ekplYk5RRnYwSVB3U2d5NkJTNVM5?=
- =?utf-8?B?ZmlMNzlNWmc2MTEwY1EvYUdVL05kOW9Lc0VyeGlCQmNQVUhaUXllSStZeWQw?=
- =?utf-8?B?TjRlTWdDR3FrNDM4VndsNWtKOS9KaG95QlFTem5Td3NmYkRnMEVQYTdNNSs0?=
- =?utf-8?B?ZFlMSU1LZThla0ZCdjlqSTNDS2cxT2wwakNMMDVjQUV5Q0V4Z2d0bDlrNHdI?=
- =?utf-8?B?a3RuSXZuQmQvc1VOMWlyOG9UMjdHVlBDOW5GRnRhUTV6ckk3UjFLaDViOXY0?=
- =?utf-8?B?MXVhemhLSFBwUG9hRjJDY0NXU0tTckZ4VGQyTmIxRnp3MnlBV2FwTHBsSXRz?=
- =?utf-8?B?cDhhODVLMHdTUHV0c1VBaUNRYVlmMFIyeFdodFRjcjM4dXlsdTRyYnQ5Q29J?=
- =?utf-8?B?RzV1TEZUNVNEU0VqWWNEcmlhekZTSXQ2NWx5L0hrZkJPUWJaQjZMV0RZa0FV?=
- =?utf-8?B?R0NBNmE4bkNyREhmenV0ZEMrT2RzL3ZqUGNYblJhWHphamUrbldYZHByUnJN?=
- =?utf-8?B?eVhhbng0TnJnSVdjQUFacm5LR0YxV0Jab2x6M1VxQXNqMEF5S3lSSnh4b1pj?=
- =?utf-8?B?d3ZXSnRkQW5DeXN5N1FGeTN1N28yRG1lMFVTaXB3T3VnSitTa1lZMWh4c3Nv?=
- =?utf-8?B?Tk9ZVGFhYlh3eXAvSzg4UlhWd1piN0dsVzlOYW5vbVZmeWtGWThSTzNucDZB?=
- =?utf-8?B?c1psRmc2Nncva2s0VitxSVd4dC9wSmNzN3IxclRHSG9sczFBWFV0UzNoOWtv?=
- =?utf-8?B?dnlDaWZWWnYzbk5tYU9KaEFTamE0MTJ6RG1OVURtcTd1bjZwVnJWb1BPdHVL?=
- =?utf-8?B?b1dicHJOOFd1ZWtCTzRSQlUybTVqaUFRakYvK2IyekE2d3F2VGhFWlkwSnh0?=
- =?utf-8?B?T3pjNi8wZ1lkUHlIZy9qYXRnZURMeVVralh5UVVuc2RVbWtlZzF3OTdtdzFx?=
- =?utf-8?B?N0p2bi9kUE0zeTRlKyt1NDQ4MjVqc1NoM1VPbitQb1U4aHpLWXNhWjFHWGNQ?=
- =?utf-8?B?NUZhQStQUDBtY0FmZk92TFBQNFZ4TStSSk0vdFVDdU84Rkl2bzNXaFllbmxY?=
- =?utf-8?B?ZGcrdEM3S1h0Q3I1azRmVm5nUnhQRy9hSzQvblg1M2Q2S05CbnJwZDZHRTVo?=
- =?utf-8?B?R2UzczJ5ZlVQZ25UNnNuZjUzQkRHWXdyaTZPYjQxTkRyaHFSK0dOZDRQUXhh?=
- =?utf-8?B?QXZpVG80a3RZNUJydTMrTXl4MGZaMUNuNlFGTFd5djFqZitYcElVUkEzRWEz?=
- =?utf-8?B?Ykd6R1JkaUl4Y0FOTU00V1k5VTBoeGV6NlpEc1dScmZTVlFBTUlHS3Vyd0Rs?=
- =?utf-8?B?b05jQm9FSlFIQVlQQUlXVjM4ZnVQUWVRRnFmQldUQjZXa3J4OEhlUFRlVk5x?=
- =?utf-8?B?a1oxV2pYVWxlSzJhMzNLb1pjclVTVHF1bG8xdFVnTlZvWXd2KzZjL2dTdXpK?=
- =?utf-8?B?TVBPT29YaXZCdkUrVUpiZmpWSmkwRlMvd2FsQVBzNDk2WnFJUENxNTV6aXZI?=
- =?utf-8?B?QUh4eVcxSk1ua2llMVNDVkI5MEI0VzAwY0RvM05GbE1vd0ZrTTdWZll2d2N6?=
- =?utf-8?B?cHVNVnYxRGQ4MmxRKzFJb0VSRUJ6elNGaEs0ckpnWnh4eGpxSldFTGVWUGdv?=
- =?utf-8?B?K25ibnV4WnFHSnJGVmVnUUd0VTluSGdIMFRjbng5cTFwNk1hYmVOWUQ4U2Zj?=
- =?utf-8?Q?Lng4Z8dCvCRzGZtx3iV7PTnspllTR4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(52116014)(7416014)(376014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NHNaY1YvNEJFMHl6eWZyNUdMcDVaTm9udU53cmtEVWRsM1NENmhVZFZzYnA3?=
- =?utf-8?B?TWVUc0lja0s4QnRpYW80UFpueE5Td2xwbmZRS2JxaGFleTA3S3I3NUExajV4?=
- =?utf-8?B?M3VwZlRFaUVQbGFFRUhWR1c2d09xMGE2UU1yVjl0bWlPclNudEh4S1ZiaThX?=
- =?utf-8?B?dWw0L1I1NUxHMDZReC9ueVJBVmxSNlN2VHB3QlBoaHpyZUFYaXhHdy9sWGRT?=
- =?utf-8?B?SHIxSzZmcUpLVEpGeHpTOXNKWE1VMFNIQWRSVzdQdytCY1Y1STlaUnl1YlJH?=
- =?utf-8?B?NHY5Q0JySFU4Z3pzTkhXZFpZRkwraytVQUFpTld1Q3BIZmdXODdENG1pUkUz?=
- =?utf-8?B?ZWtVZHVOd0FhSStDWUhGZzd6UGw2ZEE1Y0tHaUZveUU2VFpVY2NCY1dDbE1i?=
- =?utf-8?B?UkVPaTN3cTk1RmRxeXEzN2o5TlorK04wbXpySEorYld2S1FOYXhLLyt6UmlD?=
- =?utf-8?B?RnZ5dysrTmhXQ0E2WFk2aWh5dnVsQUlJMXdYYnBBcWhEcXJSaWxKbW1qVmFC?=
- =?utf-8?B?QldNWHRWWDJVT3RJYWdZOWVLc0h6Y1lsdmZsMzVscDZnSytxKzZkRGZHUTNV?=
- =?utf-8?B?OGFvNmFtNHNQRXI2cER3QnN4SjNBQ0hHTGNyb0pobW93QjgxUjdEeUY4M1Qr?=
- =?utf-8?B?cUFxbjRWazNETU80TlRIdk1CMktmTHRPUVpyYlkzbFZZMTA3QjdmSGJZb1JE?=
- =?utf-8?B?dzQ1L013SGxCS08wNHAzSS96RGJWaERzRGpyVFdUditvbWhoUmJLSlJhbUtj?=
- =?utf-8?B?QnJLRzdSRXEzWVRhSFpkeVJ6dTJHaC9wa1VRMFFTaU9jU1RHK3hoRmtHbXlu?=
- =?utf-8?B?S3pNYmRMRzRMaWFsa2xIeU81Qjk3N1BVVGdzR1Y4c1hVNG5DY0Z2bHl4bmNJ?=
- =?utf-8?B?aXVQZ01sN21ic3pGdkxxVDFxS2MwRWUrWk5mZkdlQVp0NXZWOFloc0tSVVd6?=
- =?utf-8?B?NTd3d3ovWTQxVjluNEN3NUNUcXVqeTE3TEdOSktqSkl0NkpVUDdvSi9zeFZ2?=
- =?utf-8?B?VlU1SVN4SXNsUUVmaTRUNDFwZGE3YzY3czdROWlTTnlIT1E0SEpsWFgxSm5T?=
- =?utf-8?B?MlNHZm9QYzR1T3BFYzVTOTIxTU84dnExWHgvVUNqY3hvYmZwTVlyVzZKckhh?=
- =?utf-8?B?WEw0ay9OV29JaHdSK3pzMjd0VktrV29qYWE0L3BTWkdFbUE4bHk2WXNXRmY4?=
- =?utf-8?B?ekZzWUpZdnE0MkMvc3Q2OU1VaEUxazBqcjJBV0tFSHY0eTVXT3ZQeWxoQTFP?=
- =?utf-8?B?WmZYejdnWHA0dFEyRFI4a2lndG1LeDlMaExsZzZvdENyVE9ldVpZaW9YMXhE?=
- =?utf-8?B?NFhHZ1RrNWQ5czlDU0k4TmpZRm9JY1lnTHVkc1ExY0hGdTNydlhzdXFCb0V4?=
- =?utf-8?B?RWlDdUxXM3o3WEp0RlJVR3lKQ3pRb0JhSE9FaEZadFhKMEdPdmJzOUdKOTdY?=
- =?utf-8?B?cXM5MVQ0bUxxVXpyTUJBRHg1Y3lpR1c5TXlFbmlqSG1xR2FJcnZkV3MvNGJz?=
- =?utf-8?B?NlExNlZ4UTM5OGVKRW1EWm9IcWJxd092dGU1VVFqcTcySlpUd1dseHVQVmEy?=
- =?utf-8?B?WWZvSFBGZnpaWVc0a2xOc3ZhSHd6S2ViVVI3dGRKUEpveS80dzVhclh0UzN5?=
- =?utf-8?B?bEVPZFAyL1BabFRrbXM3dlRDaGcrQmJ3MUJFN2pXMFZZbENjYmVEZmpLL1JF?=
- =?utf-8?B?UzdlNHVQVU9pQ3gva3BsWHVWS0lQUFdlM3NVOFRZMHpnT2RhOVowSEdvczNE?=
- =?utf-8?B?V0JxcXdkaUsyck1FMEdjTkdRSTM4amR1NCs4TGoxZS94bEl1R1g3MUIxOFJR?=
- =?utf-8?B?Q0RscExRS2c5VGlrWEtkdzRSSVYxOHpwWXJmc3NBREFwdnY5MHAwRFZEaEtv?=
- =?utf-8?B?MGd4UUtHNG5pcXR4RURvWldTb3E1Y2p3Y2ZmbnpWRXlkcnpKZ0pXS21RUzJv?=
- =?utf-8?B?aHJPbFZjRzlyZFVkRk4xVXVPYmIzN0NMbXRxaVJZeDBRLzNTRlNiNWhVbURN?=
- =?utf-8?B?UmgzNDhsQlYvTm1SL2ZkL0IzS1RhaXJHOXlTeHE1N1BSQ2Y1aFMxdk9YN0I5?=
- =?utf-8?B?L29MSkZxb2E0SHNPNDR6VXEwcmJtM1RDbzUvRGRDODlOOU9FYms2SVdxeE5s?=
- =?utf-8?Q?ZlOMemsqTFFi+bjd9B2uNnQJS?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e0037e3-125b-4d12-e649-08ddf46fc48b
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2025 15:51:43.5401
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4eJ+BYl2D0HwZEfK07zfsnZocB6N/eK1orDfZbZIDvvkXfOAuNSdoynjirDuhXcsC1CZAtVvcjLBdpd8nVPkyA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11217
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910-imx-rproc-cleanup-v2-0-10386685b8a9@nxp.com>
 
-Add innolux,n133hse-ea1 13.3" TFT LCD panel and nlt,nl12880bc20-spwg-24
-12.1" WXGA (1280 x 800) LVDS TFT LCD panel.
+On Wed, Sep 10, 2025 at 03:11:44PM +0800, Peng Fan wrote:
+> This patchset serves as a preparing patchset for i.MX95 support.
+> 
+> The current code logic is complicated, with mix the usage of switch-case
+> and if-else.
+> 
+> To simplify the code logic:
+>  Introduce struct imx_rproc_plat_ops to wrap platform start,stop,detect_mode.
+>  Each imx_rproc_dcfg data structure is assigned a ops pointer.
+>  The common imx_rproc_{start,stop}() directly invokes the plat ops, no
+>  need the switch-case.
+>  mmio/smc/scu_api ops are included.
+>  No functional changes.
+> 
+> Thanks to Daniel and Frank for the help.
+> 
+> Test on i.MX8MM for MMIO ops, i.MX8MP for SMC ops, i.MX8QM for SCU-API ops.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+> Changes in v2:
+> - Simplify the if/else in patch 6 per Frank and Mathieu
+> - Add R-b from Daniel and Frank.
+> - Link to v1: https://lore.kernel.org/r/20250908-imx-rproc-cleanup-v1-0-e838cb14436c@nxp.com
+> 
+> ---
+> Peng Fan (6):
+>       remoteproc: imx_rproc: Introduce start/stop/detect_mode ops for imx_rproc_dcfg
+>       remoteproc: imx_rproc: Move imx_rproc_dcfg closer to imx_rproc_of_match
+>       remoteproc: imx_rproc: Simplify IMX_RPROC_MMIO switch case
+>       remoteproc: imx_rproc: Simplify IMX_RPROC_SCU_API switch case
+>       remoteproc: imx_rproc: Simplify IMX_RPROC_SMC switch case
+>       remoteproc: imx_rproc: Clean up after ops introduction
+> 
+>  drivers/remoteproc/imx_rproc.c | 449 +++++++++++++++++++++++------------------
+>  drivers/remoteproc/imx_rproc.h |   7 +
+>  2 files changed, 265 insertions(+), 191 deletions(-)
 
-Fix below CHECK_DTBS warnings:
-arch/arm/boot/dts/nxp/imx/imx6q-novena.dtb: /panel: failed to match any schema with compatible: ['innolux,n133hse-ea1']
-arch/arm/boot/dts/nxp/imx/imx6dl-tx6u-811x.dtb: /lvds0-panel: failed to match any schema with compatible: ['nlt,nl12880bc20-spwg-24']
+I have applied this set.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v2
-- update commit message to show fix CHECK_DTBS warnings.
----
- .../devicetree/bindings/display/panel/panel-simple.yaml       | 4 ++++
- 1 file changed, 4 insertions(+)
+Thanks,
+Mathieu
 
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-index 48344ce74a6e7..77a5d20a8b0d9 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-@@ -180,6 +180,8 @@ properties:
-       - innolux,g121xce-l01
-         # InnoLux 15.6" FHD (1920x1080) TFT LCD panel
-       - innolux,g156hce-l01
-+        # InnoLux 13.3" FHD (1920x1080) TFT LCD panel
-+      - innolux,n133hse-ea1
-         # InnoLux 15.6" WXGA TFT LCD panel
-       - innolux,n156bge-l21
-         # Innolux Corporation 7.0" WSVGA (1024x600) TFT LCD panel
-@@ -230,6 +232,8 @@ properties:
-       - netron-dy,e231732
-         # Newhaven Display International 480 x 272 TFT LCD panel
-       - newhaven,nhd-4.3-480272ef-atxl
-+        # NLT Technologies, Ltd. 12.1" WXGA (1280 x 800) LVDS TFT LCD panel
-+      - nlt,nl12880bc20-spwg-24
-         # NLT Technologies, Ltd. 15.6" WXGA (1366×768) LVDS TFT LCD panel
-       - nlt,nl13676bc25-03f
-         # New Vision Display 7.0" 800 RGB x 480 TFT LCD panel
--- 
-2.34.1
-
+> ---
+> base-commit: 3e8e5822146bc396d2a7e5fbb7be13271665522a
+> change-id: 20250908-imx-rproc-cleanup-6f3b546b9fdf
+> 
+> Best regards,
+> -- 
+> Peng Fan <peng.fan@nxp.com>
+> 
