@@ -1,43 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10FC196C7C;
-	Mon, 15 Sep 2025 00:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF0C288D6;
+	Mon, 15 Sep 2025 00:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757896061; cv=none; b=lMzAr6uUBFH+pXAtpck+ZMox5So9mIBsLBtevuXRoET1j8TykTZebE7HYf68gUAnz9gbhNK75zCkb07U+G7fQoHmtq7lWrLiXYrVhxErheyElvi02SqL5jRsOoLvpYPrnHyJI95KU4bMXlYoLACL1rGhKWUXjGP0uU9Yn8Zi6LI=
+	t=1757896313; cv=none; b=s7LrRXptx4k5cGx80EWnMgsCfOWDdV5Pmn8PgJcA9ta2RbBnJfYXdBT7PiYTl60BUBlum7rH6sMcQ6wU95oJYSBy5J8XqAi8RkZijVM5H65hEclfb7scCCe3NL0xwIu6GOwgttTroQoDB7qLRKGWCDZ6FprITgQ6F7EKyc+T3MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757896061; c=relaxed/simple;
-	bh=ZIFcHoaSWWp3DQJCIox2jskJxfvkeB9LoKZVgsK5c8k=;
+	s=arc-20240116; t=1757896313; c=relaxed/simple;
+	bh=4o0YmVyHmVWaq2at96tQ0tiR/PkE6ZDwW+ZN9xlB0lM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TNDM5NbLNA6ZdTl6hdqd/mjd4R2BvC6Yv+nb1UwaZzCdzQtZzC1igz9SExcp569Aw/UNuw6f990jdhthILdzBesVcivSomeW1ZCUZB06QbI3XoJJWYQ60Bul4Xn9qyBdUysf9LHadaup5v1ObFnGw1QAVo04wUE0a2xF/uP68Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hvd3SOEk; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=gmyUwXw7AqCcRSa6cwqyVLQyXE2tvstnmH3trQRPmCcAjOqjSy8SRYvH62ToudG6IXbuGNBQncSNmoM3qMpYQyCS6eaXt2qVU3B5xzfLd9jLk+5I52e8qHupCcgeK1lOyDKG2vR06irPKSAkem7g5qdTCQgCxp/f8/8Hss9F/aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5hMe1dX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hvd3SOEk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CBAC4CEF0;
-	Mon, 15 Sep 2025 00:27:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5hMe1dX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE8FC4CEF0;
+	Mon, 15 Sep 2025 00:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757896061;
-	bh=ZIFcHoaSWWp3DQJCIox2jskJxfvkeB9LoKZVgsK5c8k=;
+	s=k20201202; t=1757896313;
+	bh=4o0YmVyHmVWaq2at96tQ0tiR/PkE6ZDwW+ZN9xlB0lM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hvd3SOEkAojJFnQ/5zpGO9T6dAvpQdur6xSQWBO6ew9S7i3Kv2FzlfQ3sViUD/+mI
-	 GQq+QTXzs3EACi9u3778pBmsBnGkABERFkakvcbYdzOALLurci9kO7T4LLPAikI4cE
-	 Uj69TF8B/3yXjvea0p87BzxzoB7ulzl4CZgeb9RVM3TJYaJXgPUf0OhP6YniGSNccK
-	 ujmvXYNZQ20izavM+P84y1rwU9b6EH5lX3QNVoTvygmT5DSAzVEC8gRS6MtrB9ex4w
-	 kAmeAVJJAQKOdLxir8/ELx0dYxVW7MlgAGFrPzBVrM+BYdAJySlsZO3RvFcn8Yu2a/
-	 6ZUjhQcq2dyQA==
-Date: Sun, 14 Sep 2025 19:27:40 -0500
+	b=O5hMe1dXiprsNDyFwPihatD0CDifPrvmYxtwQ/n21XVMCqr60HeYYFjg5jkY2QHmm
+	 zTKIzGanLRCSMULbnZz3EpkralNJyzarG3EoW/X/i0fiFQSxY1PrG0kyQwTw1nIcVC
+	 T9lde+PdAQGGmy85CqsCArXXBGTd47clTUoj2yx/Qren9sAd/canh55yOET5zc8c5d
+	 CP6ajbraB2jI7u9jF8THxMIjqjkcYuc2zypuHCVpudhGcVsWyUZFtACJZg1TBKsuqF
+	 bEWEof4gOOa4BJaVAOTLF4T1aCHTf7IB06syFAWboJCyCUK/PMqHJ7LV2lS48JJI3E
+	 8Sg2/lPrjHaSw==
+Date: Sun, 14 Sep 2025 19:31:52 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: linux-input@vger.kernel.org, Oleksij Rempel <o.rempel@pengutronix.de>,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: Re: [PATCH 1/1] dt-bindings: touchscreen: resistive-adc-touch:
- change to unevaluatedProperties
-Message-ID: <175789605966.2312485.3317752924558038291.robh@kernel.org>
-References: <20250910224402.994046-1-Frank.Li@nxp.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: imx@lists.linux.dev, conor+dt@kernel.org, shawnguo@kernel.org,
+	krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
+	frank.li@nxp.com, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2] dt-bindings: soc: imx-iomuxc-gpr: Document the CSI mux
+Message-ID: <175789631104.2317240.10004704514465285001.robh@kernel.org>
+References: <20250910233402.567245-1-festevam@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,21 +43,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250910224402.994046-1-Frank.Li@nxp.com>
+In-Reply-To: <20250910233402.567245-1-festevam@gmail.com>
 
 
-On Wed, 10 Sep 2025 18:44:01 -0400, Frank Li wrote:
-> Change additionalProperties to unevaluatedProperties because it refs to
-> touchscreen.yaml.
+On Wed, 10 Sep 2025 20:34:02 -0300, Fabio Estevam wrote:
+> On i.MX6Q/6DL the following subnodes exist to describe the CSI port muxing:
 > 
-> Fix below CHECK_DTBS warnings:
-> arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt6.dtb: touchscreen (resistive-adc-touch): 'touchscreen-y-plate-ohms' does not match any of the regexes: '^pinctrl-[0-9]+$'
-> 	from schema $id: http://devicetree.org/schemas/input/touchscreen/resistive-adc-touch.yaml#
+> - ipu1_csi0_mux
+> - ipu1_csi1_mux
+> - ipu2_csi0_mux
+> - ipu2_csi1_mux
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> As they were not documented, dt-schema emits warnings like:
+> 
+>   'ipu1_csi0_mux', 'ipu1_csi1_mux' do not match any of the regexes:
+>   '^pinctrl-[0-9]+$'
+> 
+> Add a top-level patternProperties entry for these CSI mux subnodes
+> and restrict it to i.MX6Q.
+> 
+> Signed-off-by: Fabio Estevam <festevam@gmail.com>
 > ---
->  .../bindings/input/touchscreen/resistive-adc-touch.yaml         | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Changes since v1:
+> - Restrict it to i.MX6Q (Frank).
+> 
+>  .../bindings/soc/imx/fsl,imx-iomuxc-gpr.yaml     | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 > 
 
 Acked-by: Rob Herring (Arm) <robh@kernel.org>
