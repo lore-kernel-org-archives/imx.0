@@ -1,89 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D722E765C;
-	Sun, 14 Sep 2025 21:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1FC4A35;
+	Mon, 15 Sep 2025 00:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757885415; cv=none; b=EX5l8k5KrvWfHvMT92mH+b1wGcW8KrVCSYV5l0E/bLCQuK+vZHmYyv8nn9riuQpDscbNwM72pfkUpbavr5TdHl8E5Gy40zkvC4VwZC1HoIpt7NdJEZGDQ8w2rvcKw3ZR+8RrAN4DuTLXcqku5LfJosbueZl9rWqZZ3vL5qlICcU=
+	t=1757894905; cv=none; b=p8qTxorfsNsywTLmcQXio9zllc+XSIwCdVI73pG0jOo40jD97kwSVsDYcx46HN1JpqGe+oz4HdLl4xs+QEtoHWSlT2ZPIgGI+4I9+3YlMCTctwECrcktEdm2jIo8cHzbtApef4pjgxEcdhvCPeUP4pswRQuqzN9gBqV1fN/UGk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757885415; c=relaxed/simple;
-	bh=y1ScwfLNpQGdRhzR3jPC/JGvzbTPqjCZQN7mITZ15TQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=GhjQQmnjSrBRJoQzpk4eVPmdT78PAQ0Y+lcalLde84zh/Zy15eVH52ceXRmZXp9J26R4uduHP4SCgKOsEpxyHgSbe9hXMEW8rQBhC16pMNAuWhqdBDHeBnGA9PyNn1REpNIv1AZZ4Gd5y9VNDliBa4JENtGwENuyu+Ur81DN4aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ihq52V/G; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757894905; c=relaxed/simple;
+	bh=6W35ED/5B6DMe6+JEfViwGJLMbiEsNhy58ZClSAv1W0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cZ2XuPEQ/hR8egDR375kMypE743gznZp60xRjzYR8k1YexKtv9ZLI/oODgHT9oj/R0nzV49/g0DDGfx8jfK+S5KWwjZMl+aKBhtTOVTyMVIesFIrkrAWtwaJFzTMp89PqD8F5s2xJYYSFBgNoJMOpkLEepUB7yYF9aMcNHs0vHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jG7Up0pu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ihq52V/G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F563C4CEF0;
-	Sun, 14 Sep 2025 21:30:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jG7Up0pu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7AA0C4CEF0;
+	Mon, 15 Sep 2025 00:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757885414;
-	bh=y1ScwfLNpQGdRhzR3jPC/JGvzbTPqjCZQN7mITZ15TQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ihq52V/GoW0kgMTeJMcAslwunXM1We8JC9V2UN0j8UTKPPSZ6fS218msCIW6WXQZO
-	 7zb7flAMtw/MfV4VtWK1B20Chsd+vDrD/rNXUzOXT0UYGzAfKAtav0JsFDRRTpi1s2
-	 PslzLrXlzCtjuSDaPEsXCA32qU8lsnk09ej5BAnnMKe2U49sgF/w46LCPD/Tu0q9Tb
-	 ZviAi6Z2MInEB552NpPJXw+2RltVKDQ92HoBqBo3CN5d/Swc7tI+LOxmWz8mEdhJXC
-	 D0sJll4eW1DNlsviOBJIJaMA4LYLy0XcspZXuHDJKugS2rK5cLkuGCeYFoprDVDiUX
-	 s6qBYHSOMpj0A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7159D39B167D;
-	Sun, 14 Sep 2025 21:30:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1757894904;
+	bh=6W35ED/5B6DMe6+JEfViwGJLMbiEsNhy58ZClSAv1W0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jG7Up0puetanBV5R16T9Mr5YOcJLCgaxlDxjZBjU+M0rn926h86BboU2D7lC0/4S6
+	 5LCgjt++UOgh1/WThZ8Q4LAQU4yjViY8zK1f9Fgm2jxbL2Rj59LNHwbjwqLssHC39/
+	 dLxezNIv5NX6PfJDyd6Xj+baN3I3Tpx7VG3FXUgXlOLG1MiVwonH5wl1FE/rrzvVLL
+	 E8bmf3j4k1b4jsIYIXvyUPwxF3I8hSmfOIOR2tb0C5srcGVfHI2ta2YBQVumVp9Z0r
+	 AdHPjLMT17JeVft4fvJGJzfK3fT0EQMaI/rMvoi9mnuJFUxTWlwnZWR9MrdLZXnhKi
+	 BTg7oKM3lhJgQ==
+Date: Sun, 14 Sep 2025 19:08:23 -0500
+From: Rob Herring <robh@kernel.org>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Mark Brown <broonie@kernel.org>, Jonas Rebmann <jre@pengutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-sound@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH 1/4] dt-bindings: net: dsa: nxp,sja1105: Add reset-gpios
+ property
+Message-ID: <20250915000823.GA2282513-robh@kernel.org>
+References: <20250910-imx8mp-prt8ml-v1-0-fd04aed15670@pengutronix.de>
+ <20250910-imx8mp-prt8ml-v1-1-fd04aed15670@pengutronix.de>
+ <20250910125611.wmyw2b4jjtxlhsqw@skbuf>
+ <20250910143044.jfq5fsv2rlsrr5ku@pengutronix.de>
+ <20250910144328.do6t5ilfeclm2xa4@skbuf>
+ <693c3d1e-a65b-47ea-9b21-ce1d4a772066@sirena.org.uk>
+ <20250910153454.ibh6w7ntxraqvftb@skbuf>
+ <20250910155359.tqole7726sapvgzr@pengutronix.de>
+ <20250910164231.cnrexx4ds3cdg6lu@skbuf>
+ <20250910165518.bzpz5to5dtwe2z6x@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v7 net-next 0/6] net: fec: add the Jumbo frame support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175788541624.3556271.6428495484921450740.git-patchwork-notify@kernel.org>
-Date: Sun, 14 Sep 2025 21:30:16 +0000
-References: <20250910185211.721341-1-shenwei.wang@nxp.com>
-In-Reply-To: <20250910185211.721341-1-shenwei.wang@nxp.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: wei.fang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- xiaoning.wang@nxp.com, sdf@fomichev.me, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-imx@nxp.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250910165518.bzpz5to5dtwe2z6x@pengutronix.de>
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 10 Sep 2025 13:52:05 -0500 you wrote:
-> Changes in v7:
->  - replaced #ifdef with if statement per Jakub's suggestion.
+On Wed, Sep 10, 2025 at 06:55:18PM +0200, Marco Felsch wrote:
+> On 25-09-10, Vladimir Oltean wrote:
+> > On Wed, Sep 10, 2025 at 05:53:59PM +0200, Marco Felsch wrote:
+> > > IMHO silently removing the support will break designs for sure and
+> > > should never be done. As said, imagine that the firmware will handle the
+> > > supplies and the driver only needs to release the reset. If you silently
+> > > remove the support, the device will be kept in reset-state. In field
+> > > firmware updates are seldom, so you break your device by updating to a
+> > > new kernel.
+> > > 
+> > > One could argue that the driver supported it but there was no dt-binding
+> > > yet, so it was a hidden/unstable feature but I don't know the policy.
+> > 
+> > Ok, I didn't think about, or meet, the case where Linux is required by
+> > previous boot stages to deassert the reset. It is the first time you are
+> > explicitly saying this, though.
+> > 
+> > So we can keep and document the 'reset-gpios' support, but we need to
+> > explicitly point out that if present, it does not supplant the need to
+> > ensure the proper POR sequence as per AH1704.
 > 
-> Changes in v6:
->  - address the comments from Frank and Jakub.
->  - only allow changing mtu when the adaptor is not running, simplifying
->    the configuration logic.
-> 
-> [...]
+> We could do that but I think that no one should assume that the driver
+> ensures this due to the missing power-supply and clock support. But this
+> goes to the DT maintainers. IMHO we shouldn't mention any document
+> within the binding, maybe within the commit message, since those
+> documents may get removed.
 
-Here is the summary with links:
-  - [v7,net-next,1/6] net: fec: use a member variable for maximum buffer size
-    https://git.kernel.org/netdev/net-next/c/ec2a1681ed4f
-  - [v7,net-next,2/6] net: fec: add pagepool_order to support variable page size
-    https://git.kernel.org/netdev/net-next/c/29e6d5f89e48
-  - [v7,net-next,3/6] net: fec: update MAX_FL based on the current MTU
-    https://git.kernel.org/netdev/net-next/c/62b5bb7be7bc
-  - [v7,net-next,4/6] net: fec: add rx_frame_size to support configurable RX length
-    (no matching commit)
-  - [v7,net-next,5/6] net: fec: add change_mtu to support dynamic buffer allocation
-    (no matching commit)
-  - [v7,net-next,6/6] net: fec: enable the Jumbo frame support for i.MX8QM
-    (no matching commit)
+We probably have lots of dead links... So what's one more possible one. 
+If the information is useful, then I'd put the link there.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Rob
