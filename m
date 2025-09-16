@@ -1,155 +1,227 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010021.outbound.protection.outlook.com [52.101.69.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273C434320C
-	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 15:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758037540; cv=none; b=GCWeyiDCf4ElIR/wPBftiyiuMWuz8ds2No5+vUC+sFZD63zGzetvMleHNw2WfsqOatnSdnAzzookClDJnATYzYNDhQbVn0MMl8TvJPqVWizw6mdooNMlkRUbOje93DIVYzTR0ICKQtyezlmZdvCD15O7sdciWlk/dameTzmEVx4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758037540; c=relaxed/simple;
-	bh=25zoFGJ/KjvyeEziS9jblooXfqbAD14YJaRScn03eOg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V5wa7ePb+2PagRaLQvkwZN4Ks5PvaGmU6Ucv/e9ptYP1GxzjKF1UJhgL65UScIH7LwTd74aUFv6V9tCQrUXohqZlVrSuSltyAeqMpaQB2SMQSVmRmD+gGvPvUblfVWtxM/FhX1h5AEHHhlqVo9wHmx9MBC4kWugT/nSc+fNS5Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=whFW2M2q; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1C82905
+	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 15:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758037580; cv=fail; b=EGw7hnHGPHQZ2pQdNTjfBwQ46d847iSbc75Urc7Dz2iECDZSqHt0z/YvKUM4XWYf8cNVlKC9SQqQ+6vyLYwtPHenMAf4cX3irDTRctmg4Uem1nBS3Me6e7hLujbiqbb3FGLN+VgnlPbhdpWEeplW15exKXYlGQrNhxOcewBtGNU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758037580; c=relaxed/simple;
+	bh=erBCDtsaW2PaBNI8zufX7HTbn3Urap0UgEc1NN2/uKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gJBq2Ycvx3aw0JVLI67PHS3X10cc/5b8pvNijKASxqiFQXHLleMJkql0+2dzw+ox4YifxsW0clI6UZNxNVlGkxobLx0xxXRJ7Nkjujba5OsG8aydxLjZaiY+tlt8HS8RCgLBHPtzFPzb04qcXD3Pol+X6gpnFBP/jre7YC7jSnI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Kp0cfW5l; arc=fail smtp.client-ip=52.101.69.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="whFW2M2q"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=B042PuqJi9NbQLV9an/BzFEM6v9ffo05PFd6mZQihTI=; b=whFW2M2qCLM+fu1xqI1ycBdOfG
-	PfdYXb7FzHlP9a1croBa32/6j4TeDPmvqbS3PiszqaRsGQX4L3zQFuSpxbZxgiaf5cfm5ikBc+HGg
-	M0PgiYDmXcx9hM/uKfdpkiHubwSDo2UV8t6F0YmBO6Xkzf5UpJdFFCVCAbuJzF00SlXzOJQzK8kEG
-	CadUBlqXtI+dvXkvpB0FQRclsgJuifpoUERiOlsOXvN4OzWyFnVfm8H0iFDFdFVxwShlZLyX/qL6c
-	YFBxN+EjvU4D3hpF2V6gND4ChJqdTYNPEnKelG1WmrwFR+0dlL8P1QIJnI6RUEFgb7fcE8CGykwLu
-	WFl4sdtA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35864)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1uyXs1-0000000056B-0Hor;
-	Tue, 16 Sep 2025 16:45:29 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uyXrx-000000007lt-0tMu;
-	Tue, 16 Sep 2025 16:45:25 +0100
-Date: Tue, 16 Sep 2025 16:45:25 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: Richard Cochran <richardcochran@gmail.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Eric Dumazet <edumazet@google.com>, imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jonathan Lemon <jonathan.lemon@gmail.com>, netdev@vger.kernel.org,
-	Nick Shi <nick.shi@broadcom.com>, Paolo Abeni <pabeni@redhat.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Yangbo Lu <yangbo.lu@nxp.com>
-Subject: Re: [PATCH net-next 2/2] ptp: rework ptp_clock_unregister() to
- disable events
-Message-ID: <aMmGFQx5lWdXQq_j@shell.armlinux.org.uk>
-References: <aMglp11mUGk9PAvu@shell.armlinux.org.uk>
- <E1uyAP7-00000005lGq-3FqI@rmk-PC.armlinux.org.uk>
- <9d197d92-3990-4e48-aa35-87a51eccb87a@linux.dev>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Kp0cfW5l"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=U1nPChOOPj44CcvdwjTQWLlNTYJpTVIt+CTQZ3GZJNDwz2RQe3VYLyhxCtssipJg86lX7StIYFR6RLUka+NUDF96x5mVSxxXYcFjFuqUKqwmhU+3XgazfKEhxmILPATaysjyrzR4M0vIsfCKn7+udEFlZ0EVvnboxI/yr35nfjlToNkF3lqUFw0kvS4/bWBaxwVEqXFpPIZwaFnS8VISNgzylFXmAUenal31r+P8E2BtQkSP1g9OvoYNwMVOij0Ps/+LAsvNFwnxT+t/LJeL5xWTVaodKeLCGaDSfLX3oqkeaCDmgF6bFV470+kzeYsJxPcPhG2U5xZ2hghp39Cx2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yaALLyC1ugR/Foi5tdl5wZjJ1XN9H8cQh83oSTPsSjo=;
+ b=hoSz4QueCZHCyLf3ui5+x64fnqI/5r18GTdfpUKXY10kmvD7p20fB6iZRwdRRcdJ1srrV2KeZckZeOZnV0jczRL0ZxIJhI3y2iV8GO62ryfumw/HzDyw5GueJeu2o+dB0/xVdGDFHOKHny5rP0J94q3M3us/PERYHl9iFNnLB7DdUDSziMimCnBAAi3F9fOVAsHcqbchFzO44XfbWbs75AkSsoWmXyUtsWzvJH82zFe8k8CMQ75+m81QzEjfi88zvkmyUfA29Q1rMNGQyBKYIPZYHeMuFCyU8VvN8dkeNdm4HEvMo3Fj1hT6XiFLVtKFQyCPVmo4k1IoEc3VDwrjVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yaALLyC1ugR/Foi5tdl5wZjJ1XN9H8cQh83oSTPsSjo=;
+ b=Kp0cfW5lq8P5U9mZ4nG63FYOn/RAhGeHmLUxpiptru19wE0s3lbGiBw/Dn/Lp/tlqjk7oSUpfBvG0tmMLwo7foPRAnY9Z2hOMFBEW1mlTvK0GC/qVXv+M9ajqoEouNojnu5DUXdkPYogMOLnvHQbHuRGccuMSZDKnd/OIeQ00nk7OguqpnLy+ybxDtjd1kyUhc3d/gtI20uV4PEqqpy2ornjXveDeLJXGCFM5cUHjZvkOVry5W7AYfogYlYUWg9F49dk9tXAXuoBqo7cbQgOucTt+Pmv9Tmd2wHou52SUUDT8YD5PbWLOseWridbV8NxpiQM2NMDmfHL7JhAXWpXCg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
+ by AS8PR04MB8578.eurprd04.prod.outlook.com (2603:10a6:20b:425::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.12; Tue, 16 Sep
+ 2025 15:46:14 +0000
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9137.010; Tue, 16 Sep 2025
+ 15:46:14 +0000
+Date: Tue, 16 Sep 2025 11:46:06 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@kernel.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v2] usb: gadget: zero: add function wakeup support
+Message-ID: <aMmGPmBdRi7ACxBm@lizhi-Precision-Tower-5810>
+References: <20250916020544.1301866-1-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250916020544.1301866-1-xu.yang_2@nxp.com>
+X-ClientProxiedBy: BY5PR17CA0026.namprd17.prod.outlook.com
+ (2603:10b6:a03:1b8::39) To AS4PR04MB9621.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9d197d92-3990-4e48-aa35-87a51eccb87a@linux.dev>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|AS8PR04MB8578:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9bc6bca6-d4f9-4fb1-8e9e-08ddf5382a7a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|376014|52116014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?nFp8CxNs+dolGraKX9BVl7SjP+d/2zvaNof7eTefbxMSrKq0gNtUVcAZlrVg?=
+ =?us-ascii?Q?Ae9QoS9BweUYNul8L+NcaUAcxUbXkEaJBcXz6i82xOEugDzWgHOHYkHPKONO?=
+ =?us-ascii?Q?5aXhj2qy1lmeKtv46Eaa40ltL2wTXHLI0Mc9A6uMMLEXzmHuLJXiScjpRDVk?=
+ =?us-ascii?Q?uE3RjI3zqavCkC3s23j+oYPyF8J/iSUQxl5jr75Iu/rbO2riYGv+wH9x5g04?=
+ =?us-ascii?Q?L3yMXso6U1IizYC8XoZ2snqVz+hOtyK/o1DLF4aDfZPm3h3MFD5WBdA4O4Qq?=
+ =?us-ascii?Q?vCtP9toZ1tkpPIaZX8owsWi2tzYKQ0Rtz+wqK0qsFRtvUnE3HVKS7lOrdTFe?=
+ =?us-ascii?Q?z+JGp60XwKxlv+WoNmpz7jEZZ1Z1ZFtzCW/CUccsU+PQTg2Uig1/fzcGxQno?=
+ =?us-ascii?Q?MTzvo9KdTzJk4eFFdNMRVIEjfxSB7NNpCwiW1+za1UK30BqBDLjFHT1rBKnf?=
+ =?us-ascii?Q?BLo/w8vRl0yZdb2zQMnVhltXiWBEq5kB7xyWwDjXJljhNs23PiGLyNKiMKbT?=
+ =?us-ascii?Q?Bb56yfcqQj/sVptfHGcJAnDeb8xlMfiRmoLeYUFGs0EYuVC9qkhnevFYiKFC?=
+ =?us-ascii?Q?590/MF0dsV53+W2Dkf9tw8MYAVjKpsz/6u/OIW/2njRLDrKjt8zbpDGg6Rf+?=
+ =?us-ascii?Q?aDlNx5UeSVritkzYPDX5Cho/i+hzGieT3mByFYjk7pICHp+mpq/kVcAM+GIO?=
+ =?us-ascii?Q?zXz92o9yLBru1jk5lE9Ctyk34LM/r/9o+1eGZasUVlC+fQvXWVkTl7zeSXr5?=
+ =?us-ascii?Q?Gpuv+gEan+cALPcr0FtZEUMDd6RosPhPFq7tNrAdxPigAC7TC5ebARTzyzUj?=
+ =?us-ascii?Q?k6j7XBkg9fOde36QuGr1cg8X6q4pZ40Qt5hrM1gfWrgEJUvYfCTj7F5dx4/d?=
+ =?us-ascii?Q?VDLeotzX8cLaUA322AzxBc69Tm0EyinNLbseuAk8Q/wNS2JbocZYOVSniILm?=
+ =?us-ascii?Q?a/P5PeirxZeIW5mgpk0bUizDSIXowpaomOlcU5XNgstMvlzSPsJCWhbLXhOV?=
+ =?us-ascii?Q?LAzO8j/FvDi0AdsMhm4+fQjC9FbvQ80D2IRSyR3Nx4RluWGaSjs9xCDxjSec?=
+ =?us-ascii?Q?Vfu/uOfu60zVUWwkuoZNvv+OO1sVme+jZ2Lm3uE8a06DjqMK5dh54bK5A7M9?=
+ =?us-ascii?Q?KbLguCZ9mhS0HImC7UXzvrBD1NiXALGV7eW04TLYayCZVSQq6n6V6d4z9Gbe?=
+ =?us-ascii?Q?u39qOl4lpFU8jELGpB5N3tY02OlpKxtbb7bXu5JWx7uJFWKwMp3a2gE6B1c1?=
+ =?us-ascii?Q?hk8ymP0EoWNoM107XeQ/PGiT6viv3lBzzpDhT9QjOFWDUpxYoe+nLq4P4PTr?=
+ =?us-ascii?Q?H0bAMzCdhVOWKSk1mMji2duMyyer3zYSfMNyU8ywC04QAfYuQ+tGJSqVW2EK?=
+ =?us-ascii?Q?KbRykl3cLYWbWq5Z6nbFujwrg0A6VYUymc+tJ49vY9QAGtvacTq/VfcARKd8?=
+ =?us-ascii?Q?5WdwujwghAG2vMLqAtznpuT86J11MuDRt0wHpS4/0YURw/Mp5iu6CDC6bQoo?=
+ =?us-ascii?Q?fuP4eQCWsvuXVTY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6ohftw9rpKsCG6krb80FJXb5A2Giyid7tTUPD7jbL2y/83nVyhceNt9mjsq+?=
+ =?us-ascii?Q?g+f3yKjEla1EBi+hPDsx2WPX3zdMdx5uD/vF36uCAlZquaxkEX6T9o8Ngq3F?=
+ =?us-ascii?Q?vohoIOpjECzFwTirH9pvbOyqaZZdGw0b1QX86y6GKQ1lllfIV3VnA6amhcAx?=
+ =?us-ascii?Q?nxsANzw7FlLYoTWiBUIU7TWnBZ+yfkqUstTaSko/KF0zaNk2K4DuxVlW8jou?=
+ =?us-ascii?Q?D2fRa9oyLlIxOK+qXDiSNv8/RuH3x1pKnyuNdRrof5mJsXlmyLLoEwJg9H2p?=
+ =?us-ascii?Q?zzJmkESUzYwgtCNA7Ssqmg48JVLizvoaRaieIt//ySDjO+ej8iPrB+jjutvU?=
+ =?us-ascii?Q?pnevVHC7TfGUQWqQq/IZ8ke5dYp23hLcg+TRD7xrvCOqHQ0xLzwucfCN9QDM?=
+ =?us-ascii?Q?ycIqgzPFzNdincdTjMZlp0EiW4xsI9TrsxRil81Bd7VCv3yGLLHJ8Zzawlkl?=
+ =?us-ascii?Q?3n5SNrM+f5Q17rcK9qlKNNRpjGWkfqQbnTu4OOUfFNktpJHPcTuxonp7Ol0Q?=
+ =?us-ascii?Q?exzoN1ezwmN8Yrvq3aAm+gPatNDiZzdLjoh82IbWsQca/yMx34Dsu8Qg1Sjl?=
+ =?us-ascii?Q?jMd/SWMP+EZFAXByAlk+2S1d6WuwJj5W/9iCc8rWsUOhX5fGJQnI750UmS9E?=
+ =?us-ascii?Q?ZOgdxz7WHJKt+42XSKf5gu0ddD4c+eJ1rvThIqsnpE5OHAOE5JjtrOQKexiI?=
+ =?us-ascii?Q?LrGapsc6ZjL9xYw4QMKs+UL7AInvQ9jpjdESBVwzgQHqHfkBKcViwTkabcYA?=
+ =?us-ascii?Q?jrEecMw4Ol1tTSgUCXNDuXsPQlRpd3/IR0C4m/bEnh+OrvZ1fZ3ZGZCJYGqV?=
+ =?us-ascii?Q?E0AgOo3zMopf5RLIevyLYw5r9eTK3OW8ZgpNFmO5pPXqOWZO2w1HWEG5ELMx?=
+ =?us-ascii?Q?GYozQP2OZ8j1P1yYuaGked2Vi/CEDYdZVBomJS3+yeM4mgnfZL3HqQGtAPFP?=
+ =?us-ascii?Q?TRqqR7JB3wV783/yFzWs1yg7h9nqDYyTMsYk8BPMXdZdvabIZUkHC1RyK0pX?=
+ =?us-ascii?Q?niTtFbVH1DjK1VIqxp2gSVfDvsDc1BFiwRBdLVk8gmGRrNc0CtP59CLwv1l2?=
+ =?us-ascii?Q?UbhUoeQJu3hDp7RmoTm1xi2jzo+PlHWw+EhWZdlyg+/5h1AtvO/jQYv6MNO7?=
+ =?us-ascii?Q?CdoZ5Sxye1BkoIohQrpgBMvKZVGoAO33iAqg56CUZxy7T9BF9MzGEHEWaye8?=
+ =?us-ascii?Q?+JNYJAtFXBdExWh5jfgCmbDIhJ2WnPrwOZ1B0ePdJLn0h3rfDPfTRnimp0Vn?=
+ =?us-ascii?Q?Ns3zzhkFghSKWJ37NVN4w6+CCazPWhGV+OgHhikIIG/6RppLQPR6w59pa5Z3?=
+ =?us-ascii?Q?C5yL/n6LLQ6BkSd2c8nNf2ad3dfw4Merfg/RTBRzGgr++42ZJEmq0nr4QrtT?=
+ =?us-ascii?Q?zJ7CNFxlgYSW8eT7rvrwQe9ehHWo7JofpwtdQjmATV1CVDChtXuV/cQEwQbM?=
+ =?us-ascii?Q?aKy5oKFkGcYI47r+V7V4aLPJpg/lG1Sfr7VDHiBbo1UHJI3cDvLZWQdaMMLn?=
+ =?us-ascii?Q?V5pLUdvLuoydmTY5xPAqVspyLV7o73U1yaBzsmn5gkdCCxQht4wDtPvGgFSy?=
+ =?us-ascii?Q?uzMnvZo6ve068cnnR9tzm6Ba6M6WbTS5avs/Ecg/?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bc6bca6-d4f9-4fb1-8e9e-08ddf5382a7a
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 15:46:14.5130
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NUXES0SaR+WJoA67X/SFA1Gi0x4ndIET4UOk9U9W3AWsiqkSgNvCDj/UgRH4PVxRzg80SwVx/dc0rfE7hMk0PQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8578
 
-On Tue, Sep 16, 2025 at 02:02:56PM +0100, Vadim Fedorenko wrote:
-> On 15/09/2025 15:42, Russell King (Oracle) wrote:
-> > the ordering of ptp_clock_unregister() is not ideal, as the chardev
-> > remains published while state is being torn down. There is also no
-> > cleanup of enabled pin settings, which means enabled events can
-> > still forward into the core.
-> > 
-> > Rework the ordering of cleanup in ptp_clock_unregister() so that we
-> > unpublish the posix clock (and user chardev), disable any pins that
-> > have events enabled, and then clean up the aux work and PPS source.
-> > 
-> > This avoids potential use-after-free and races in PTP clock driver
-> > teardown.
-> > 
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > ---
-> >   drivers/ptp/ptp_chardev.c | 13 +++++++++++++
-> >   drivers/ptp/ptp_clock.c   | 17 ++++++++++++++++-
-> >   drivers/ptp/ptp_private.h |  2 ++
-> >   3 files changed, 31 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-> > index eb4f6d1b1460..640a98f17739 100644
-> > --- a/drivers/ptp/ptp_chardev.c
-> > +++ b/drivers/ptp/ptp_chardev.c
-> > @@ -47,6 +47,19 @@ static int ptp_disable_pinfunc(struct ptp_clock_info *ops,
-> >   	return err;
-> >   }
-> > +void ptp_disable_all_pins(struct ptp_clock *ptp)
-> > +{
-> > +	struct ptp_clock_info *info = ptp->info;
-> > +	unsigned int i;
-> > +
-> > +	mutex_lock(&ptp->pincfg_mux);
-> > +	for (i = 0; i < info->n_pins; i++)
-> > +		if (info->pin_config[i].func != PTP_PF_NONE)
-> > +			ptp_disable_pinfunc(info, info->pin_config[i].func,
-> > +					    info->pin_config[i].chan);
-> > +	mutex_unlock(&ptp->pincfg_mux);
-> > +}
-> > +
-> 
-> This part is questionable. We do have devices which have PPS out enabled
-> by default. The driver reads pins configuration from the HW during PTP
-> init phase and sets up proper function for pin in ptp_info::pin_config.
-> 
-> With this patch applied these pins have PEROUT function disabled on
-> shutdown and in case of kexec'ing into a new kernel the PPS out feature
-> needs to be manually enabled, and it breaks expected behavior.
+On Tue, Sep 16, 2025 at 10:05:44AM +0800, Xu Yang wrote:
+> When the device working at enhanced superspeed, it needs to send function
+> remote wakeup signal to the host instead of device remote wakeup. Add
+> function wakeup support for the purpose.
+>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-Does kexec go to the trouble of unregistering PTP clocks? I don't see
-any driver in drivers/ptp/ that has the .shutdown method populated.
-
-That doesn't mean there aren't - it isn't obvious where they are or
-if it does happen.
-
-The question about whether one wants to leave the other features in
-place when the driver is removed is questionable - without the driver
-(or indeed without something discplining the clock) it's going to
-drift, so the accuracy of e.g. the PPS signal is going to be as good
-as the clock source clocking the TAI.
-
-Having used NTP with a PPS sourced from a GPS, I'd personally want
-the PPS to stop if the GPS is no longer synchronised, so NTP knows
-that a fault has occurred, rather than PPS continuing but being
-undiscplined and thus of unknown accuracy.
-
-I'd suggest that whether PPS continues to be generated should be a
-matter of user policy. I would suggest that policy should include
-whether or not userspace is discplining the clock - in other words,
-whether the /dev/ptp* device is open or not.
-
-Consider the case where the userspace daemons get OOM-killed and
-that isn't realised. The PPS signal continues to be generated but
-is now unsynchronised and drifts. Yet PPS users continue to
-believe it's accurate.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>
+> ---
+> Changes in v2:
+>  - fix alignment
+> ---
+>  drivers/usb/gadget/legacy/zero.c | 27 ++++++++++++++++++---------
+>  1 file changed, 18 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/usb/gadget/legacy/zero.c b/drivers/usb/gadget/legacy/zero.c
+> index a05785bdeb30..08a21bd0c2ba 100644
+> --- a/drivers/usb/gadget/legacy/zero.c
+> +++ b/drivers/usb/gadget/legacy/zero.c
+> @@ -147,6 +147,12 @@ static struct usb_gadget_strings *dev_strings[] = {
+>  	NULL,
+>  };
+>
+> +static struct usb_function *func_lb;
+> +static struct usb_function_instance *func_inst_lb;
+> +
+> +static struct usb_function *func_ss;
+> +static struct usb_function_instance *func_inst_ss;
+> +
+>  /*-------------------------------------------------------------------------*/
+>
+>  static struct timer_list	autoresume_timer;
+> @@ -156,6 +162,7 @@ static void zero_autoresume(struct timer_list *unused)
+>  {
+>  	struct usb_composite_dev	*cdev = autoresume_cdev;
+>  	struct usb_gadget		*g = cdev->gadget;
+> +	int				status;
+>
+>  	/* unconfigured devices can't issue wakeups */
+>  	if (!cdev->config)
+> @@ -165,10 +172,18 @@ static void zero_autoresume(struct timer_list *unused)
+>  	 * more significant than just a timer firing; likely
+>  	 * because of some direct user request.
+>  	 */
+> -	if (g->speed != USB_SPEED_UNKNOWN) {
+> -		int status = usb_gadget_wakeup(g);
+> -		INFO(cdev, "%s --> %d\n", __func__, status);
+> +	if (g->speed == USB_SPEED_UNKNOWN)
+> +		return;
+> +
+> +	if (g->speed >= USB_SPEED_SUPER) {
+> +		if (loopdefault)
+> +			status = usb_func_wakeup(func_lb);
+> +		else
+> +			status = usb_func_wakeup(func_ss);
+> +	} else {
+> +		status = usb_gadget_wakeup(g);
+>  	}
+> +	INFO(cdev, "%s --> %d\n", __func__, status);
+>  }
+>
+>  static void zero_suspend(struct usb_composite_dev *cdev)
+> @@ -206,9 +221,6 @@ static struct usb_configuration loopback_driver = {
+>  	/* .iConfiguration = DYNAMIC */
+>  };
+>
+> -static struct usb_function *func_ss;
+> -static struct usb_function_instance *func_inst_ss;
+> -
+>  static int ss_config_setup(struct usb_configuration *c,
+>  		const struct usb_ctrlrequest *ctrl)
+>  {
+> @@ -248,9 +260,6 @@ module_param_named(isoc_maxburst, gzero_options.isoc_maxburst, uint,
+>  		S_IRUGO|S_IWUSR);
+>  MODULE_PARM_DESC(isoc_maxburst, "0 - 15 (ss only)");
+>
+> -static struct usb_function *func_lb;
+> -static struct usb_function_instance *func_inst_lb;
+> -
+>  module_param_named(qlen, gzero_options.qlen, uint, S_IRUGO|S_IWUSR);
+>  MODULE_PARM_DESC(qlen, "depth of loopback queue");
+>
+> --
+> 2.34.1
+>
