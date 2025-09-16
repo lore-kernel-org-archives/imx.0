@@ -1,73 +1,73 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4405826058D
-	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 09:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0CC275B1F
+	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 09:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758015738; cv=none; b=fMU+fcgFVpgxm+dKG39ckESEINiXFqvxacSnz8DlshQ67uj9oU/s67delYRWjRdhbHju+0xRABJT2CrhvWpHSoTwJJOoc4BRjacJJfiCX4Z2bMnknX8hn88PPbxPlYWQWUdo7yaLYkv9txe9Y3hXV5ENTe9y0w8tL3EVuFSmRaE=
+	t=1758015796; cv=none; b=gF6YBGSq6alBLqST8gylVUJEN0BmU7eUKu4UpYYhnG/2KD0On+cT933BYPRAIYdtXwhDHJz+YRoagzVgAZR6LEO0AtQJrq7dzaSzd/OWh/n1wnBk1p+f5EmPcaO8wPiM/jfIEtSBQmA+nnXj70UQt9l7jTXLqfH0QnMG5PaSaD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758015738; c=relaxed/simple;
-	bh=yxrxMt/N4dpi/T9k6sahK9m+SYHc4ch9rBILVIoKVxU=;
+	s=arc-20240116; t=1758015796; c=relaxed/simple;
+	bh=6xbawwmBoJ+wZI7xS6DVzS80oa3hVLAsUDbr1E7VfLM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rTUi0dwoaDymS4gRGk7aRMc3/qayr6hhkl7OthQNP/71MSGSHSPAyk8EpdPcK09eQztpfJqhjGrXsJRgweZ+DQDEXDkaYAzPN3DUHEswSQyhr/kUDC/0H3iwIZkU7Tn+SsI3iuwQYO7H4jk6EIQ3gEcVVJo/OmWBhQ3S9Rb4zkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F6SOi7pY; arc=none smtp.client-ip=209.85.208.177
+	 To:Cc:Content-Type; b=TGls/mUY8KUoNvTqEKAmYvh324d6XWesD2gZEYsD2JmZdZEUoTlQUMgb01chEdJO7GOk43ZzcH7ZKweNJXmFU5IKh44AmcusbRus2lEMxc0jVob1dxjGc2B1YDmI7zEWYXpSVeaX57PSbvFXNbPniooFybNy1gbhGQTeYqp5mcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WakPHu+4; arc=none smtp.client-ip=209.85.128.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F6SOi7pY"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3515a0bca13so40934211fa.1
-        for <imx@lists.linux.dev>; Tue, 16 Sep 2025 02:42:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WakPHu+4"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d60150590so32318317b3.0
+        for <imx@lists.linux.dev>; Tue, 16 Sep 2025 02:43:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758015735; x=1758620535; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1758015793; x=1758620593; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yxrxMt/N4dpi/T9k6sahK9m+SYHc4ch9rBILVIoKVxU=;
-        b=F6SOi7pYG/SvcZI/daTr1Yz8yvfJvrnqJ9cOY4cmzIeSkAlePIhLubRQZbt8UqlyXH
-         2fD0Aq+WYNEslLIqQGL7KcgndlF8lBoYXiq8WHJW/6PLfT+ZoWcnEI0EZNxycEP4N3Ox
-         djXM4Ktz6q+oMsic8Ye1q5XEHOJqkK4NjO1PbTNKdGxB2f+OiEuQzHwz1YrvZZl2GDmb
-         +qdSJ9hnFo49HINmLB2Di3YB3P4Tp9A4KaAu6lxAWO1mt8baaadjiu7ltaKQmK93zCqT
-         knjxgqDLTHgyeeDJ4vnma72lpPtbO+H3qA0cGdLkhk6OwqLoDDKszQgoEV65i4i8BPTV
-         KWXw==
+        bh=6xbawwmBoJ+wZI7xS6DVzS80oa3hVLAsUDbr1E7VfLM=;
+        b=WakPHu+4lTgC0z56Mn1iNUtd/S5AdZXBLZOcvlXTjqHDLhXXFcwdN6QBH4pcQW8+aJ
+         xU6dXItq8DWuShvWEo4rC8l6WfIq9v5uNnT4OUpGqyUGbbRR/d2kTkYORPtOgO/VkmnT
+         b02FBS4VVuLclFoTmVAaIX/p+zrulIcBE9MyKjfXqWK+giaq8Yh0pNEpg/Hz5r5gseDm
+         Gz1aDd6A1ciMRJScrATZFl+J4dawny57SiOqtYsFTnsw0ShtwCAbMqoLVaVhqMDwSyG8
+         dJfCOFs5xBc6lZXZcHBySmvIwKhRgOWBB5ssvtnAZ92TKPcOJb/QCHME9TC1QO124ijh
+         Ouyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758015735; x=1758620535;
+        d=1e100.net; s=20230601; t=1758015793; x=1758620593;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yxrxMt/N4dpi/T9k6sahK9m+SYHc4ch9rBILVIoKVxU=;
-        b=rgvGo98wwlS8TbU8EgcirvcsEKoy7U/+EMpRJ8qXh47aEnOGHn23qTs92cO1wCBcpZ
-         CNEpKVvjcQwVotRHdVSR0xX9qs9nRcveUMD2kyQK36Rn8wIjSidtWaFPXYFaSAw0A2XB
-         fribG6T1h+x3SmLK6VOtxwjvkEAQCySncw244AvMs3B/F0uZf0MchQIAE3a/bjJCkBp1
-         QwbE6E05o+s0lX9NS7eLEyZbDbRLroCbqffIcQT6/iSrs3+S57VY4ZAkRtR3PPIzvnnI
-         doBD8OXpLBdvjAqWahJMRtb/+SQsU8ZwpghEgxFqztdtHH1T888zDBLLTPugDOFPFtP5
-         aPnw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmfNz0ChetZWv9ha1WUTD++OSojRXARCXBHBC1AEK7AGUbtwvEqazSRH19nbYJy3QIiGc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyiazvYheNlwzjYc9TGTNNiVUfr7TwIduQx/KII7FnAnhS84QNG
-	yBUOUeMohlbwAvl6JmPDiT3FNQBQKYytVbI7ZfomM+4gKokMV9DmnGZpxdTrC7u0N6Utqa8uUN9
-	MJWLNpYhglaO1WYNQLRwRS/yCSzd9BAI=
-X-Gm-Gg: ASbGncvNNh5dmzYiCRReJ4marsMrm88/Lsh2yC0chToLNCruZVPLQ9CtGWv8wDqzA00
-	BOKn0uApswsKw2DCWW554deN+q1+qVvUVCMeNmf+JAsSgPMUNUcjDPjZL798sxqdupeeMzL8Ry8
-	dtyGlJ1avBi6Z/+O2PJUoEy7Ib20aMQ8k1dlQ9XCQ4hcwm/5RBM4lBb5ZrRBh/pS/2ycRY4xAHK
-	9hmuEOPE6zVQzDkVXO3
-X-Google-Smtp-Source: AGHT+IHSzD/UXtsWQJdvEcDe5zgMaGL6TzhZJBGJKbCYfBRewNgR6XMtJmfU671bOH5GYMzsf1oInRq2RbM4os8qMC4=
-X-Received: by 2002:a05:651c:4393:20b0:354:4e91:5163 with SMTP id
- 38308e7fff4ca-35cc1503303mr4719061fa.10.1758015735185; Tue, 16 Sep 2025
- 02:42:15 -0700 (PDT)
+        bh=6xbawwmBoJ+wZI7xS6DVzS80oa3hVLAsUDbr1E7VfLM=;
+        b=XWXTZZnJLEvPwt/rkCxr1d0dJ1Ev4li473sz/+Z2phUoOukudRIzFYQ+/3nXBJ9MFm
+         y74IAWWVApS58ZxIC+bR0ktinKRJSiSfM1U7xygLs3uRKtdOHZX91ro5CxWH4Qkg8EER
+         QcseaBOqG4xTjDh5n5axBWoZyBnUFm6dFZOZDs8dWFeqWePo5PQzhjWhCj8N8REEQTPB
+         yhM0sxWebfIb9R5SGeeVcKOqnCK9UFZn/xevq7MjsQ6mThTv8AzSFQTsOJGtGOHpiwBk
+         tWkGrFp/PAoPYU9WXMRX+d+kI4Smqmyu1cT6ZqtbG2zFIpgFDmKTMf22TpZWsTuPV2fu
+         mVLw==
+X-Forwarded-Encrypted: i=1; AJvYcCWZmUOFLkNPtO3k6n1bdDHmiksxGhyamme9bjGDoVWofql0URfjG8x6aX7DeoMvhQEwPeY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxAD3BPdvCOKX+NGw/eVbBw2gdTMdk8afYH3VMM5A8CDd1jX55b
+	pxlQrwYnGpDQCIXIHaJWywdwXtmUek9Megwx6zrkAYRiPypKC2e3VU0vB2rcq+rBHsD3V31Qoa5
+	Ro5SXWdt+hsJhAU3a5/Y+8d8PwpE4Uq0=
+X-Gm-Gg: ASbGncsbk9hmxJGi8se+lnjNVZxsmxuuEszjpFWfTM8rbFGWu+dzOh5VbbtmLR0a+bf
+	GW2JHqXkDNsNHvCoTO9SCOR/5q9z72ExWKk4ADfonsdFL0JZHBzGxleRQfdu3twxMkvjUrYpwYI
+	9d6OZeBgPO452yOmHMoytjTac8SqukMrbuVZdMf4YUod3dYEhVqCXD7Tf/qaeT+M7E29aB621ay
+	jgPEXCxc4RXGc3JeNjdNHixj0CnglU=
+X-Google-Smtp-Source: AGHT+IHV/RX93XAmuJF2uL0N4vvl4pBykKHWOWIaKMzu4BBoHbE2JJaflos/7YY6pTURHoTpA1UgbNRwBPMZjCyfZfM=
+X-Received: by 2002:a05:690c:7088:b0:723:b16a:ce6 with SMTP id
+ 00721157ae682-730659be315mr116536247b3.50.1758015793437; Tue, 16 Sep 2025
+ 02:43:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250916-flexspi-dts-v1-0-61567f969165@nxp.com> <20250916-flexspi-dts-v1-2-61567f969165@nxp.com>
-In-Reply-To: <20250916-flexspi-dts-v1-2-61567f969165@nxp.com>
+References: <20250916-flexspi-dts-v1-0-61567f969165@nxp.com> <20250916-flexspi-dts-v1-1-61567f969165@nxp.com>
+In-Reply-To: <20250916-flexspi-dts-v1-1-61567f969165@nxp.com>
 From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 16 Sep 2025 06:42:03 -0300
-X-Gm-Features: AS18NWDVVl3vA9anWkY4oi_Wwrstjq0EwNsL75GDNd_C0krbxXIk6QAPlbESP7c
-Message-ID: <CAOMZO5DYWenp7fzrthWUiEyOHAVcL02wBqvzA3RyPqiQ8CzGUw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] arm64: dts: imx8mm/mn/mp: limit the max frequency of
- spi nor chip
+Date: Tue, 16 Sep 2025 06:42:54 -0300
+X-Gm-Features: AS18NWBOYsyflacEeUU1SMpoaGg-Ie2TjGzWnHyRp3ZhqTvzAQSB9G1WINvKAyg
+Message-ID: <CAOMZO5CTrGA19npaW+u0=V0nUV0nAqoH+p75L06yR28DVBGfYg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] arm64: dts: correct the flexspi compatible string to
+ match with yaml
 To: Haibo Chen <haibo.chen@nxp.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
@@ -77,21 +77,11 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Haibo,
-
 On Tue, Sep 16, 2025 at 5:57=E2=80=AFAM Haibo Chen <haibo.chen@nxp.com> wro=
 te:
 >
-> The spi nor on imx8mm/mn/mp evk board works under SDR mode, and
-> driver use FlexSPIn_MCR0[RXCLKSRC] =3D 0x0 for SDR mode.
-> According to the datasheet, there is IO limitation on these chips,
-> the max frequency of such case is 66MHz, so add the limatation here
+> According to Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml,
+> imx93/imx95 should use it's own compatible string and back compatible
+> with imx8mm.
 
-Typo: limitation.
-
-> to align with datasheet.
->
-> Refer to 3.9.9 FlexSPI timing parameters on page 65.
-> https://www.nxp.com/docs/en/data-sheet/IMX8MNCEC.pdf
-
-Fixes tag?
+Nitpick: "fallback compatible"
