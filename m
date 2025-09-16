@@ -1,103 +1,89 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156952C3272
-	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 13:38:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE40D1A0728;
+	Tue, 16 Sep 2025 14:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758029914; cv=none; b=sKWKfiqEDaqdRvxuvSYg1pxZEHPNElTIZRHSR4n8bNu3k9d8D0B6csArKv2lFQ4gMuuOxvGhkYaut9HEnzQzJyOehJNm9Q92s0BqItVvIeKUWJ7t8QA66KPgfXXV3/KItFTt1TmV/3UOH9uUd3tDqE5cdw7rLVUlIaSRwZne4xU=
+	t=1758032288; cv=none; b=qDEjy6Q9xc+CoUBi7QEjqNfF0V6OqQm/DWfagFOv5T6pbv2E8ILPkPjRzmFXVetTU8Yubk4XWBeQBY6Q4apg4kbVsnxiqG28A7kRf+lG7p6agIKN3tHzYvSoLO4BStkwEGli35XMZWBdm8ls8pquOZWlfBARrxCHp7OCdUeJvk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758029914; c=relaxed/simple;
-	bh=RUIOFUyGAU9lf/b6ffnhbghIz3X/+a8GFkJzvSDd0UA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=InJkhn7ouHKtTQerjdTW2ZutT5cHcZ7HmMWcoEeS/htVDUftDpEXghgZm3hbCdqlA2B3peeh8odRGFLFs/fqcBMGkRszCWOO9tNm5scMJpKkfpZROPEJ5LR20atVDkNCCFDRzEat15suEFdmaxnxdg3++h6ugbgejnVDrY9FvUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=v5gj2Erz; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1758032288; c=relaxed/simple;
+	bh=MHGfGuchcAt29gAf8ZZAge+ONTorOmrLa6kSLpgeWZI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=iYnW6BQHeXdUiT41oPhCb4b7oxAyOegeHLWqDZpWSffnmwneiQSZPBUPszvDbwbBk0IZjDgDJt6SVOEn+OQtVG8cmkXeBuqVabHVarmDRhDB6AXwjNUI7QA9xgCeV+ZZvpKAnp/zbge+htqYv8Mn91VMjub2+yMkvBLVcVUNv6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/W6kloe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="v5gj2Erz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WPVN6uX7KvmtEwe9ZmBY3J+N/O0DGcQ0FgQs3IdZ+84=; b=v5gj2ErzdPrRuimce0O2nKewK0
-	pwYRtdVSMcZzmSOhsvXE9lvCpL67O6yNeI/hiiCAiT/w2NcXgzxF21fIBjl8Ks61MRzM7O1XcWsde
-	14/Bq2FY00clRhJFC8zJaxZR5fKdm6chntG8wATe/Apckz7fTodaIXn5+GCAh2nCs2Jj0yaqQLwVP
-	MAUJiIFm99au241Bo5lzaYZN83D6kfMUz4rjd9eKMubrsRhbrLh+ZbU+YSLdz3JMWcZWODnDpTvJu
-	rFf0Qa9DB+Iqzil89VqCKUdYDTLB6MEzIf2z6knfQ3VNuPi3jpi+HXixeGOkDlzp0RxK8ELvic4pg
-	Cluj0nqg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58202)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1uyVt3-000000004fD-2eCm;
-	Tue, 16 Sep 2025 14:38:25 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uyVt1-000000007ga-1Nb3;
-	Tue, 16 Sep 2025 14:38:23 +0100
-Date: Tue, 16 Sep 2025 14:38:23 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jonathan Lemon <jonathan.lemon@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	Nick Shi <nick.shi@broadcom.com>, Paolo Abeni <pabeni@redhat.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"Y.B. Lu" <yangbo.lu@nxp.com>
-Subject: Re: [PATCH net-next 2/2] ptp: rework ptp_clock_unregister() to
- disable events
-Message-ID: <aMloTwObRUIRAzPF@shell.armlinux.org.uk>
-References: <aMglp11mUGk9PAvu@shell.armlinux.org.uk>
- <E1uyAP7-00000005lGq-3FqI@rmk-PC.armlinux.org.uk>
- <PAXPR04MB851098C0A69B74DD232071B68814A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/W6kloe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4A3C4CEFC;
+	Tue, 16 Sep 2025 14:17:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758032287;
+	bh=MHGfGuchcAt29gAf8ZZAge+ONTorOmrLa6kSLpgeWZI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=F/W6kloe5Ooa5vCU4qDrZO3r1d7KJtj+Gak0Q9Me8sYdmZ1CBp12ReGezCg9qiVIq
+	 3WdX/lPq/AakhJYk4OsmNboW/hypMsRQUOMZBOqhAXdQ2YHSGQScugk282pdoy4C8W
+	 V78jhgk+QUnlPUs2Q6S0LfMLfMoFHmQ98wCc3xx4EaMKWWAaDBMjhJgYpQLukDOaF1
+	 P+P/Y1+1q2fal5LAaK9hmBES3nMwan/jbYnrV+72oiMWJ3zCHHpjM90NEmH8jzzUrM
+	 7vvmSbi+eHXMjSXibDCV1WvG7OpN2r/lGun4yvA3/PjgTD0bJ+XuFF/XMtA/hsXJIx
+	 OCumt0iWlbyyQ==
+From: Lee Jones <lee@kernel.org>
+To: Lee Jones <lee@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@intel.com>, 
+ Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
+ Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
+ Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ =?utf-8?q?Cl=C3=A9ment_Le_Goffic?= <legoffic.clement@gmail.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ James Cowgill <james.cowgill@blaize.com>, 
+ Matt Redfearn <matt.redfearn@blaize.com>, 
+ Neil Jones <neil.jones@blaize.com>, 
+ Nikolaos Pasaloukos <nikolaos.pasaloukos@blaize.com>, 
+ Hoan Tran <hoan@os.amperecomputing.com>, Yang Shen <shenyang39@huawei.com>, 
+ Imre Kaloz <kaloz@openwrt.org>, Yinbo Zhu <zhuyinbo@loongson.cn>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Manivannan Sadhasivam <mani@kernel.org>, 
+ Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, 
+ Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, imx@lists.linux.dev, 
+ linux-unisoc@lists.infradead.org, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+In-Reply-To: <20250910-make-compound-literals-normal-again-v1-1-076ee7738a0b@linaro.org>
+References: <20250910-make-compound-literals-normal-again-v1-1-076ee7738a0b@linaro.org>
+Subject: Re: (subset) [PATCH 1/3] mfd: vexpress-sysreg: use more common
+ syntax for compound literals
+Message-Id: <175803227904.3821457.282370095352768515.b4-ty@kernel.org>
+Date: Tue, 16 Sep 2025 15:17:59 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB851098C0A69B74DD232071B68814A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-c81fc
 
-On Tue, Sep 16, 2025 at 09:03:17AM +0000, Wei Fang wrote:
-> > the ordering of ptp_clock_unregister() is not ideal, as the chardev
->  ^
-> Nit: Uppercase, 't' -> 'T'
+On Wed, 10 Sep 2025 09:25:45 +0200, Bartosz Golaszewski wrote:
+> The (typeof(foo)) construct is unusual in the kernel, use a more typical
+> syntax by explicitly spelling out the type.
 > 
-> > +void ptp_disable_all_pins(struct ptp_clock *ptp)
-> > +{
-> > +	struct ptp_clock_info *info = ptp->info;
-> > +	unsigned int i;
-> > +
-> > +	mutex_lock(&ptp->pincfg_mux);
 > 
-> Currently ptp_chardev.c has been converted to use the auto-cleanup
-> API (scoped_cond_guard()), so scoped_guard() can be used here.
 
-... which are very non-C like, non-obvious, and I currently have no
-idea at the moment how to use it. In my opinion, it makes code more
-difficult to understand.
+Applied, thanks!
 
-Maybe someone else can convert this for me to this non-C like
-structure?
+[1/3] mfd: vexpress-sysreg: use more common syntax for compound literals
+      commit: f8cba973e4e51b8a166cbf81f827ff926f64d92e
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+--
+Lee Jones [李琼斯]
+
