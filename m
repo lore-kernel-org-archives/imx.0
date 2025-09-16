@@ -1,115 +1,113 @@
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F5923BD1F
-	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 13:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86323FC1D
+	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 13:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758027786; cv=none; b=Xj6374Cb27zjSwI21gr3mBQrv5hUxlRdBk77YQYZ9vqeDnBxlxSgdE6nu8CrW2LFaB3uB7PzmFKOxKqvj+Fh9E+ae1X1hzgdcN1mrfHDN5gf2MNpaMb+GIkhHG5KpE3jgIJJb+5l9vNJBD2HnMYTp93spQ0C8kWroWhLefVoE2I=
+	t=1758029461; cv=none; b=V5saHDz4MdbvsajemEUfYYqpySox9g2Rr9VqUMQVUWK0PCAwbh0BpArD4yFfmyllXZIHA5aWt586wMlkt8QCWt97rsc+yq05Wmfv7ot+nSTLAhKUml7C86ue7duR5OWlDqlgauTLf7C1BNt8rk9oQPRsEH3bBn/2vc0UdxnsnWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758027786; c=relaxed/simple;
-	bh=zkTIaovo86K2Fs3yp+tdXlVVJpsvXWwe9xrdORsXMjw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cAXufdIyLbaPw83r0fr286eYMT8id1awOALmIBGDlVSd7AOwVVpw7BUm6sijGwROxm2Bj5TLVsfOFk4fPsyAMn5ZQW2czE0cW5DGoJXTlzgeF70NRgSFDlIW1Lq6ib+wT77oyz1l/F7gghkRc+zwrZY1rqYzMntCCFr5OMykpU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tHYL8Gle; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1758029461; c=relaxed/simple;
+	bh=vHGeoc6gZ+/27XjQT7Icf4xx8n94wIYqdOJfkABkoDo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KZ1Lepx8ycz2/fGxPs9xOkyBrUitYlrVaNhttePbf6iTsWLr6s6XGQEZnWeuZUjyI8PWdyh84/3TduAM43WLj21FoLtSFQAM9abp1N7W0kL2/hJCf+oI/v8Jl2OUqNjX5u85VH9MZEAToB2YeB97mGnRJh2SrlY3EmiZe97Lra0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IYJ1APij; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tHYL8Gle"
-Message-ID: <9d197d92-3990-4e48-aa35-87a51eccb87a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758027779;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0l51roOY8mL8wGeiKdL6Wccc2vrF+Htbvn0n+KqebS8=;
-	b=tHYL8GleWD5V7BwWLOfrPL7qz1AtXq3AXJl174foyTg6BzxTK/CkPNuaq0/rFTdaGkQUxk
-	0njfmoO40f97TADZBYEkJ4dgNlqJxxV6SSvBR5un61l0BVGf3iS9q1bhPznmmAFvj2glkT
-	O+S16sH02+qwXyQY7iOG6fj/fSvN1VE=
-Date: Tue, 16 Sep 2025 14:02:56 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IYJ1APij"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id EACC21A0D84;
+	Tue, 16 Sep 2025 13:30:57 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BCE9B6061E;
+	Tue, 16 Sep 2025 13:30:57 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3A0ED102F16EB;
+	Tue, 16 Sep 2025 15:30:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1758029456; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=tUyzwXW4458dpExn6r1iPeVrMvWBtYuEhb3Ju7KaSQg=;
+	b=IYJ1APijKsoPsmylpXB1reCXjld/uQqgECM+pnJVPqDiw15H3pG8uQAqDIGoKPMA0+d306
+	HHdU6PEy7Aidx1OZH6BH+CTrcWkLtunt63vvp3q17Dsd9Nw4DD2bRhsYlCfD4M7BGiN/Sl
+	NPiOODnElalEawczpz7eSqn4lPNPFQE+L50fP4nBfcV/ea0soFr+OLF0NLhzPsIBsMpGuc
+	IVj6TCVouLXWiSK9ElBNvUlb8u8uuIGwLBqYTxFgjzDpfwhMZIAhBYPT2YVZ3eVWe21DIe
+	ccSk/qVsKJeAQMtt36QM1HGOhrPx5kButftwcY6pPVBQpuC3F40r3Ho/Hvh7XA==
+Date: Tue, 16 Sep 2025 15:30:40 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
+ Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Liu Ying
+ <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Tomi Valkeinen
+ <tomi.valkeinen@ideasonboard.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Zijun Hu <zijun.hu@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH v2 0/9] drm/bridge: get/put the bridge returned
+ by drm_bridge_get_next_bridge()
+Message-ID: <20250916153040.0eb77a92@booty>
+In-Reply-To: <175681953112.353165.466531296795467773.b4-ty@bootlin.com>
+References: <20250801-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v2-0-888912b0be13@bootlin.com>
+	<175681953112.353165.466531296795467773.b4-ty@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next 2/2] ptp: rework ptp_clock_unregister() to
- disable events
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Richard Cochran <richardcochran@gmail.com>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Clark Wang <xiaoning.wang@nxp.com>,
- "David S. Miller" <davem@davemloft.net>,
- David Woodhouse <dwmw2@infradead.org>, Eric Dumazet <edumazet@google.com>,
- imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
- Jonathan Lemon <jonathan.lemon@gmail.com>, netdev@vger.kernel.org,
- Nick Shi <nick.shi@broadcom.com>, Paolo Abeni <pabeni@redhat.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
- Yangbo Lu <yangbo.lu@nxp.com>
-References: <aMglp11mUGk9PAvu@shell.armlinux.org.uk>
- <E1uyAP7-00000005lGq-3FqI@rmk-PC.armlinux.org.uk>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <E1uyAP7-00000005lGq-3FqI@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 15/09/2025 15:42, Russell King (Oracle) wrote:
-> the ordering of ptp_clock_unregister() is not ideal, as the chardev
-> remains published while state is being torn down. There is also no
-> cleanup of enabled pin settings, which means enabled events can
-> still forward into the core.
+Hello,
+
+On Tue, 02 Sep 2025 15:25:31 +0200
+Luca Ceresoli <luca.ceresoli@bootlin.com> wrote:
+
+> On Fri, 01 Aug 2025 19:05:22 +0200, Luca Ceresoli wrote:
+> > Note: the cover in v1 was mentioning by mistake
+> > drm_bridge_get_last_bridge() instead of drm_bridge_get_next_bridge().
+> >                ^^^^
+> > 
+> > This series adds drm_bridge_get/put() calls for DRM bridges returned by
+> > drm_bridge_get_next_bridge().
+> > 
+> > [...]  
 > 
-> Rework the ordering of cleanup in ptp_clock_unregister() so that we
-> unpublish the posix clock (and user chardev), disable any pins that
-> have events enabled, and then clean up the aux work and PPS source.
+> Applied, thanks!
 > 
-> This avoids potential use-after-free and races in PTP clock driver
-> teardown.
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
->   drivers/ptp/ptp_chardev.c | 13 +++++++++++++
->   drivers/ptp/ptp_clock.c   | 17 ++++++++++++++++-
->   drivers/ptp/ptp_private.h |  2 ++
->   3 files changed, 31 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-> index eb4f6d1b1460..640a98f17739 100644
-> --- a/drivers/ptp/ptp_chardev.c
-> +++ b/drivers/ptp/ptp_chardev.c
-> @@ -47,6 +47,19 @@ static int ptp_disable_pinfunc(struct ptp_clock_info *ops,
->   	return err;
->   }
->   
-> +void ptp_disable_all_pins(struct ptp_clock *ptp)
-> +{
-> +	struct ptp_clock_info *info = ptp->info;
-> +	unsigned int i;
-> +
-> +	mutex_lock(&ptp->pincfg_mux);
-> +	for (i = 0; i < info->n_pins; i++)
-> +		if (info->pin_config[i].func != PTP_PF_NONE)
-> +			ptp_disable_pinfunc(info, info->pin_config[i].func,
-> +					    info->pin_config[i].chan);
-> +	mutex_unlock(&ptp->pincfg_mux);
-> +}
-> +
+> [1/9] list: add list_last_entry_or_null()
+>       commit: cb86408b1fc2e3f6fe45ebe8509a5404060e01e0
+> [2/9] drm/bridge: add drm_bridge_chain_get_last_bridge()
+>       commit: d77ad5178e90f5aa4ce6085510b3b2f742abc5f0
+> [3/9] drm/bridge: imx93-mipi-dsi: use drm_bridge_chain_get_last_bridge()
+>       commit: 5849eff7f06709c98baa7989806165fe30bd0cbe
+> [4/9] drm/omapdrm: use drm_bridge_chain_get_last_bridge()
+>       commit: c3183f71c3f1f004a0ca0b84c45c40d8b84dce3d
+> [5/9] drm/bridge: add drm_bridge_is_last()
+>       commit: e4cedfd4f0fc839bb3c783d7e827e9755e1af5cf
+> [6/9] drm/display: bridge_connector: use drm_bridge_is_last()
+>       commit: 306734a1c76ce35fa613ea823a31ddbcdbf1eef5
 
-This part is questionable. We do have devices which have PPS out enabled
-by default. The driver reads pins configuration from the HW during PTP
-init phase and sets up proper function for pin in ptp_info::pin_config.
+Last 3 patches applied (but I don't get why 'b4 ty' fails at finding
+them to send an automated thank-you e-mail).
 
-With this patch applied these pins have PEROUT function disabled on
-shutdown and in case of kexec'ing into a new kernel the PPS out feature
-needs to be manually enabled, and it breaks expected behavior.
+Luca
 
-Why do you need to clear up configured PEROUT function?
-
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
