@@ -1,214 +1,155 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013024.outbound.protection.outlook.com [52.101.83.24])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C176345722
-	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 15:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758037409; cv=fail; b=ODxoim7HZT/RpJW3KPEIHrigJQnnplIfbqxJ7Ri1hPZEJVObXNN3ygzxX2Jrd5b91PJjncHHVq5yCdy2qtevfle8r5y417OfWWVhh9uwbYyKrKx3xxDNsHImQ9fXhy9XyyLsbbvEsQHWcJaiK9Ek6OwZHAWub4rWkMtqAVKsFAA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758037409; c=relaxed/simple;
-	bh=k+x+EejTrEPCClAUj8qWUiDk5ytAGrR5sorute4BePQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tU2MPY+smmIoz2HvrSRdPMJi1GZeiVnTCJUVjcCHK2WsHfk3AhtBG+gLo4X3jc9zEnKMbcfltbsf7JO0SC4io33xUkjbg+ceOXEEAQ75KPED2373ZjPLWsHRp+H0IgaqeQ7i3E7J4faTonAat8yYnEF/kHgcO+PVqvtD/OmTVHc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=d1Sv6TwV; arc=fail smtp.client-ip=52.101.83.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273C434320C
+	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 15:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758037540; cv=none; b=GCWeyiDCf4ElIR/wPBftiyiuMWuz8ds2No5+vUC+sFZD63zGzetvMleHNw2WfsqOatnSdnAzzookClDJnATYzYNDhQbVn0MMl8TvJPqVWizw6mdooNMlkRUbOje93DIVYzTR0ICKQtyezlmZdvCD15O7sdciWlk/dameTzmEVx4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758037540; c=relaxed/simple;
+	bh=25zoFGJ/KjvyeEziS9jblooXfqbAD14YJaRScn03eOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V5wa7ePb+2PagRaLQvkwZN4Ks5PvaGmU6Ucv/e9ptYP1GxzjKF1UJhgL65UScIH7LwTd74aUFv6V9tCQrUXohqZlVrSuSltyAeqMpaQB2SMQSVmRmD+gGvPvUblfVWtxM/FhX1h5AEHHhlqVo9wHmx9MBC4kWugT/nSc+fNS5Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=whFW2M2q; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="d1Sv6TwV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DDsNX8dOr5B+6SqSNVx+FBfDuAJLJWddvqvCA/52LgQYfT2YNNP9u+AHo1HmW1kbFexrsJ9E713ax9uywbV1UfNUQUyQHG7RmznktOsTI+Z5kgb4E7rSJFV8BCef7fBxNdjywZ43GlHcwXlM6bUHQy9WFexaSVs9dv5EURLrcChtXW0PlecWejnIqjFWbqKwfUWxNaD7jGu9FTmIs5hW5+ARC6c6zbd48g0hZ7AXA1DFncVdgsVg7Rac0+N7vWVAKYCAK1EP2aXECbazzphnS/W4MyD06QCdrdnzECuDz4Q4zOTxbFobWtLWTF/cUjwcfjtqPYABHKq8HV1qEy/Tlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v5nOAF2llBOtTZWdWb28XQBREVpTnzlNfzAhD9nleR0=;
- b=omeP2VlQ0PgzlQzaw11eqjCjndP1OPwTYMqQYQeegY88TMZSfRVD4uMpmu/4gPRREbwWa19F/iFTli5sVJHmKeSP8JyF9k6fMyAl7meFNPBiIfMkb2Jzulj0WX+QOLquhExdZWOuygYUXM/+lC3Uf+tCzjES3pr7r9pYja5WDsg0mObb7MjzII0zYjm3GmTYx1DKzVjhRuhgPewG6QHazXjBpL5plP5sFqzokNlamMAvMkgEzRJ+egSfz46TJZTQ9DScGn6If0Wpw2wt3E63ER5auW2hW2hhIhxtOU7+wL5mRW1rPu9ZtWPb3B+x1FrJ65rze8j01ytre4PlNKPY6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v5nOAF2llBOtTZWdWb28XQBREVpTnzlNfzAhD9nleR0=;
- b=d1Sv6TwVwZBNzA0WPqzb1vi/BiHE0+j2qKgdd50N5sqCpoDuAt+8sGdOh9wTu1OrxF55jLXXwa48Kf9445cVCNFkCOhKuP7w2vSHwMNBTmYsvuAWOb9cOgb8JIqCkS+2N1JTMsVGNRdzOgI56/DUWnBwW0fxF6YyAMhCeWEwPXhw4yxWHFI9yJtWc+hGhkFL0gdc/rMo1wZQ9BQytxU2Epnrzu0WQVyVZ22lP44bRnDnAb5mipILlF8fE+rkUWLNljvSJLObB2m6UGOCIVN2V5CrgXf7e5cTPLTKukZibZP2TY7sGj4oy9IKkKSOIDu37BaSh4bS/W+a+OcNmCAqNA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by AM7PR04MB7110.eurprd04.prod.outlook.com (2603:10a6:20b:119::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.12; Tue, 16 Sep
- 2025 15:43:23 +0000
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9137.010; Tue, 16 Sep 2025
- 15:43:23 +0000
-Date: Tue, 16 Sep 2025 11:43:16 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Haibo Chen <haibo.chen@nxp.com>
-Cc: Han Xu <han.xu@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] spi: spi-nxp-fspi: Add OCT-DTR mode support
-Message-ID: <aMmFlClUOkFG3TyH@lizhi-Precision-Tower-5810>
-References: <20250916-flexspi-ddr-v1-0-69358b5dc862@nxp.com>
- <20250916-flexspi-ddr-v1-5-69358b5dc862@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250916-flexspi-ddr-v1-5-69358b5dc862@nxp.com>
-X-ClientProxiedBy: SJ0PR03CA0372.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1::17) To AS4PR04MB9621.eurprd04.prod.outlook.com
- (2603:10a6:20b:4ff::22)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="whFW2M2q"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=B042PuqJi9NbQLV9an/BzFEM6v9ffo05PFd6mZQihTI=; b=whFW2M2qCLM+fu1xqI1ycBdOfG
+	PfdYXb7FzHlP9a1croBa32/6j4TeDPmvqbS3PiszqaRsGQX4L3zQFuSpxbZxgiaf5cfm5ikBc+HGg
+	M0PgiYDmXcx9hM/uKfdpkiHubwSDo2UV8t6F0YmBO6Xkzf5UpJdFFCVCAbuJzF00SlXzOJQzK8kEG
+	CadUBlqXtI+dvXkvpB0FQRclsgJuifpoUERiOlsOXvN4OzWyFnVfm8H0iFDFdFVxwShlZLyX/qL6c
+	YFBxN+EjvU4D3hpF2V6gND4ChJqdTYNPEnKelG1WmrwFR+0dlL8P1QIJnI6RUEFgb7fcE8CGykwLu
+	WFl4sdtA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35864)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uyXs1-0000000056B-0Hor;
+	Tue, 16 Sep 2025 16:45:29 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uyXrx-000000007lt-0tMu;
+	Tue, 16 Sep 2025 16:45:25 +0100
+Date: Tue, 16 Sep 2025 16:45:25 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Eric Dumazet <edumazet@google.com>, imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jonathan Lemon <jonathan.lemon@gmail.com>, netdev@vger.kernel.org,
+	Nick Shi <nick.shi@broadcom.com>, Paolo Abeni <pabeni@redhat.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>, Yangbo Lu <yangbo.lu@nxp.com>
+Subject: Re: [PATCH net-next 2/2] ptp: rework ptp_clock_unregister() to
+ disable events
+Message-ID: <aMmGFQx5lWdXQq_j@shell.armlinux.org.uk>
+References: <aMglp11mUGk9PAvu@shell.armlinux.org.uk>
+ <E1uyAP7-00000005lGq-3FqI@rmk-PC.armlinux.org.uk>
+ <9d197d92-3990-4e48-aa35-87a51eccb87a@linux.dev>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|AM7PR04MB7110:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b03a82b-6ca1-4f66-083f-08ddf537c4f4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|19092799006|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+3LWNuJNz7TqTg33ZLXyfRL6v0hjXOYJZXH9M9WdYj1/8luKyE1hzKmOQJ0f?=
- =?us-ascii?Q?FY7Gg6uFUcEl0+woe5IMZa1idZcbMwYm9f9x5gHtddPvlvmLpPjCUihzRKH9?=
- =?us-ascii?Q?R/8wdEKFmBFUhBBd3qJzsuZik/v4A/Xt7jgdCTZBQSLeoR68bCfPXlMfyYMb?=
- =?us-ascii?Q?TXwJ8UNbClMlXN+Sdt1raC/EdIifILh7qtqm7saSoKLarJFtGEVzKFHLUHqZ?=
- =?us-ascii?Q?yPxKxS3hAcD3cQY2jjzbM0QSej83H6KI+7XkEamCw8wSUWJpHJDxapxJloAk?=
- =?us-ascii?Q?WOV1IIfm4LHJE8x91HaaeoArFGH5k3XV6pEYWGa/Ftgrk73roDYKBZZAzKa1?=
- =?us-ascii?Q?/cHyNtqk4/gAvrnHA9yrztTF7bVkZHCNYSLCI4+k1YSuH4xZq7zCVPj8oni3?=
- =?us-ascii?Q?yuC9ImqJehb8sTeNCZxYBcEemGLkNqde1N2Jcjv/5X4HRjsPJciQCbUyE0Qw?=
- =?us-ascii?Q?C8feQc6hNBZzxL2wc+FP2aleLrAvA83zDmtZ3g7i429owqsQl68HV6nuLm7x?=
- =?us-ascii?Q?ucWWd0Od/qdesPDgPASmNKkJxDc4a0MyJjsVSIWXD114IgTGJpvxuJ7Esyrf?=
- =?us-ascii?Q?Fqa5CpI0ZwlfHwU/78FNNMCoIdpak/mcKSR/0ZKtAOt5xomfoISgaNIBwf0B?=
- =?us-ascii?Q?gtykyXnymft6kZjxn/Z3usF5yw26bGOBNP0gIailIIzAirTrJZcBBiIV3KE+?=
- =?us-ascii?Q?l/G8+o2EclP0C1RTdvfuJjPRYerYsQtzb3/FVqZfgZcwi0Yl7kGAIgTZszME?=
- =?us-ascii?Q?UtfbykCRkRI3a/7mGER/RNTWAqdQ2ezxyYHsbXDQLKBuPgSTWBDpAnil++kc?=
- =?us-ascii?Q?hI4Q5iKUnWpD0Z1dF7nuOXRZyZKuSgm7DuFuTu8i1y4fqzjAdTV5yEA3EjRS?=
- =?us-ascii?Q?yuBW6NJGMi/07A2AohF8ncixf1aqE/QfndUTpAKMcBZTuzifyCCMKql+OMSm?=
- =?us-ascii?Q?ClDHWoGyqZMCmkLGsEBYlO478Pz4VP0kD43LwrflUxK65aSSexNqUzfQR8Vh?=
- =?us-ascii?Q?VS6hYxl8Kyhv/ylMhbpRc7XMjTNsunZYK00szfwK8RR+Tal4QyVMTtQ8hpJh?=
- =?us-ascii?Q?ELha4+e3BlKLPy+86/OF0/0ih7HJKpkE3Ji+HVrJoNIyImGJuHrpHTOWsnTo?=
- =?us-ascii?Q?weMjCt6OGQoyRnL2KDXyWTijbDhHz7/U9BdxEahawAYJobvi7pgAFUlyFTmp?=
- =?us-ascii?Q?5Fn/4stqSFTdNMjDDltK+kuD+SuZj08sMfVPMK0YNRNxWLWIetk9D+LeTY/t?=
- =?us-ascii?Q?hQnuHfrvGmEGV/JlriD5dMZmU/6Dei6qhw5Rkphk81I6yToAdOa8f+I697HW?=
- =?us-ascii?Q?5LQKxZQyawN3eLViLOeE2+1FgjKqlIIYCnaUWvhTllEIKbiKEw8UxUa3inFP?=
- =?us-ascii?Q?suGi+nXX2BK7+WECmv1N4UuEMD63asP3fxlJpt8HNUZF/TxwX95ws3Pqt7Sy?=
- =?us-ascii?Q?fJWzo1YAFp+f83qIOJ6j/14hOUYqInMc4EVSovQ0V95ObJaZCPuiMw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(19092799006)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+6RVlXXHd2L9MW2Np0QI+I7yF2dIfhSKwgoIhxC99QpV38wJIftsxA0Tcvqu?=
- =?us-ascii?Q?gaHkyQ3jtTYvQqi/d6heAz6UJRBOjHbvQ1DIRCmOvPNcEQN++a8821VKaiCV?=
- =?us-ascii?Q?yBPxw6o+yR6Pc9B/z1cXdAT7yDZ6IwcxO1l+Wx+q9eUWQREcR3vymroxadFk?=
- =?us-ascii?Q?A10+pKHvnn8JZaXruokG/Uac+ukSED+twXOMMGAuhAJpdTg/t80y/JBWh52N?=
- =?us-ascii?Q?yIx+fBZC+BL725eQf0tujiGjGd2Ml+O9QOlYNbi/3HkuT32VeSeoGOb5lOpD?=
- =?us-ascii?Q?ChAoosEoapYArSq+/talCDcmyqXjoSVxqi5bBdyE3fxX6wMOyXlVxJuLBFpB?=
- =?us-ascii?Q?vR71RC9B95++rUSawsGAWtD5y/B4+E/LUzxJcn7xcMuWIV24tVY8Qj1Lo+eg?=
- =?us-ascii?Q?JRItYQHUrA4F13z6gIpzK5NeJqWIqrZCmbX04umiKgjDya0lUVWK3uvIgldi?=
- =?us-ascii?Q?UjkLZuwn7pwTJ4yZ0Gv4OaUyzWIwdItmSCJ2e0iwyAECU7mWzfdWaGz2nCPm?=
- =?us-ascii?Q?amcgxl/JUh7uIqV4gK6uJmYxHB2fat4qcKVWHNswDQt1tiO85tuO5eS29wyo?=
- =?us-ascii?Q?8+2MgoUXFt5+3hBJInPaBwcp1RulifoSwsnODlMFV9CikxDBBZCGbdASicZL?=
- =?us-ascii?Q?SmjwdgP5HhGVWxBzEf8RBraXwBkqjyZ346w1sr/+NIgg2RHvEm9InllnZ+wE?=
- =?us-ascii?Q?XijzkLhLvpZIVKgrKigExalej6dSLfIoXUXoQZKnuE30yEpXwr+ySrDA0Qvf?=
- =?us-ascii?Q?ANYQSQLJP6NzcN50Gr4BYGeigIss6g7zsFyO0XrBJAbppe5VJA8zS0ssAWew?=
- =?us-ascii?Q?p1NhVnIet/2D3H5H5d2x1D+tucbksn4OElHth3HtVyQZfsO8p5A6z3Yv+YmR?=
- =?us-ascii?Q?RKhjyENHDZm65dFkQRhkBK12bAGhPj6KflCokyEwMGDHZ4o/PHXI7YAHdtdL?=
- =?us-ascii?Q?IHiZ9df6I/JB1LPBxtZoU18yJ8cAZ8gEFXxYuSuhA+CBGF56kaApuOFkh9MG?=
- =?us-ascii?Q?LF2x25cIBZS2e25JgwU4xsJZRoiuW8bJAdOmwGeVZfscn1xfCcPr0cgXx5eA?=
- =?us-ascii?Q?82qOozqmom2U/2LAqgKn3jRb9dcGz3Zcc/GL8hvPzc2iUrPqwfWAQv3nw+6E?=
- =?us-ascii?Q?CVOKr1tEdXUSf9tuQEZmrkVqTccln+BUKxi5MJc83zizivNeXDkkPVJsbYjR?=
- =?us-ascii?Q?tnbSMNY3JhogXcqCFYCisYUompBWLRMwBm7XMIqzex2DFur1mh4erpZ0Dcvx?=
- =?us-ascii?Q?EKPS++GtBekNXxGGMdNZ6If48jJ+2TVLOBTV2p0172v51EWXl5DSOjNmtqe1?=
- =?us-ascii?Q?nxS+IlR8d/sY3lBnF59SgEC7k6dcqpV13CRBOp7wydRhUCGgvKUhQ6wAqVPb?=
- =?us-ascii?Q?+rg4JblbkO3iU6WMR9svxPKMiuZnTrBtiCKqRJyY3mOJ2pB4bl8ucsHtIWkS?=
- =?us-ascii?Q?9p68yOGe+O7nlhAHIFJR42NHYn9EdOCTSLeg5MeZulIqodB0NanWnVcZEX4S?=
- =?us-ascii?Q?bscIvD0TEWFqZkYnpcW0+1PSkldI0q7Ro9zVaMVLPVyUG6IkBPtWQSE/p/eK?=
- =?us-ascii?Q?e5JOscHgtXgJU4ZMVxQASUMtTuHqSatjeEkSZqp/?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b03a82b-6ca1-4f66-083f-08ddf537c4f4
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 15:43:23.4630
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: McNnP4BS6EkGGQv3Ae7mW6Fxf4uIlY1HkQVkRzo2RCzkPy9TmOvy58LBpn3dyowX/o78TAu6mYZNks2M5Ck3iw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7110
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9d197d92-3990-4e48-aa35-87a51eccb87a@linux.dev>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Sep 16, 2025 at 03:56:44PM +0800, Haibo Chen wrote:
-> Add OCT-DTR mode support in default, since flexspi do not supports
-> swapping bytes on a 16 bit boundary in OCT-DTR mode, so mark swap16
-> as false.
->
-> lx2160a do not support DQS, so add a quirk to disable DTR mode for this
-> platform.
->
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
->  drivers/spi/spi-nxp-fspi.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-> index 15b094e8e892f0b61c1f320bba897fa1f588be91..389cb20872db6d9653a146eac7182b9a4574496b 100644
-> --- a/drivers/spi/spi-nxp-fspi.c
-> +++ b/drivers/spi/spi-nxp-fspi.c
-> @@ -330,6 +330,8 @@
->
->  /* Access flash memory using IP bus only */
->  #define FSPI_QUIRK_USE_IP_ONLY	BIT(0)
-> +/* Disable DTR */
-> +#define FSPI_QUIRK_DISABLE_DTR	BIT(1)
->
->  struct nxp_fspi_devtype_data {
->  	unsigned int rxfifo;
-> @@ -344,7 +346,7 @@ static struct nxp_fspi_devtype_data lx2160a_data = {
->  	.rxfifo = SZ_512,       /* (64  * 64 bits)  */
->  	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
->  	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
-> -	.quirks = 0,
-> +	.quirks = FSPI_QUIRK_DISABLE_DTR,
->  	.lut_num = 32,
->  	.little_endian = true,  /* little-endian    */
->  };
-> @@ -1236,6 +1238,13 @@ static const struct spi_controller_mem_ops nxp_fspi_mem_ops = {
->  };
->
->  static const struct spi_controller_mem_caps nxp_fspi_mem_caps = {
-> +	.dtr = true,
-> +	.swap16 = false,
-> +	.per_op_freq = true,
-> +};
-> +
-> +static const struct spi_controller_mem_caps nxp_fspi_mem_caps_quirks = {
-> +	.dtr = false,
->  	.per_op_freq = true,
->  };
->
-> @@ -1351,7 +1360,12 @@ static int nxp_fspi_probe(struct platform_device *pdev)
->  	ctlr->bus_num = -1;
->  	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
->  	ctlr->mem_ops = &nxp_fspi_mem_ops;
-> -	ctlr->mem_caps = &nxp_fspi_mem_caps;
-> +
-> +	if (f->devtype_data->quirks & FSPI_QUIRK_DISABLE_DTR)
-> +		ctlr->mem_caps = &nxp_fspi_mem_caps_quirks;
+On Tue, Sep 16, 2025 at 02:02:56PM +0100, Vadim Fedorenko wrote:
+> On 15/09/2025 15:42, Russell King (Oracle) wrote:
+> > the ordering of ptp_clock_unregister() is not ideal, as the chardev
+> > remains published while state is being torn down. There is also no
+> > cleanup of enabled pin settings, which means enabled events can
+> > still forward into the core.
+> > 
+> > Rework the ordering of cleanup in ptp_clock_unregister() so that we
+> > unpublish the posix clock (and user chardev), disable any pins that
+> > have events enabled, and then clean up the aux work and PPS source.
+> > 
+> > This avoids potential use-after-free and races in PTP clock driver
+> > teardown.
+> > 
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > ---
+> >   drivers/ptp/ptp_chardev.c | 13 +++++++++++++
+> >   drivers/ptp/ptp_clock.c   | 17 ++++++++++++++++-
+> >   drivers/ptp/ptp_private.h |  2 ++
+> >   3 files changed, 31 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
+> > index eb4f6d1b1460..640a98f17739 100644
+> > --- a/drivers/ptp/ptp_chardev.c
+> > +++ b/drivers/ptp/ptp_chardev.c
+> > @@ -47,6 +47,19 @@ static int ptp_disable_pinfunc(struct ptp_clock_info *ops,
+> >   	return err;
+> >   }
+> > +void ptp_disable_all_pins(struct ptp_clock *ptp)
+> > +{
+> > +	struct ptp_clock_info *info = ptp->info;
+> > +	unsigned int i;
+> > +
+> > +	mutex_lock(&ptp->pincfg_mux);
+> > +	for (i = 0; i < info->n_pins; i++)
+> > +		if (info->pin_config[i].func != PTP_PF_NONE)
+> > +			ptp_disable_pinfunc(info, info->pin_config[i].func,
+> > +					    info->pin_config[i].chan);
+> > +	mutex_unlock(&ptp->pincfg_mux);
+> > +}
+> > +
+> 
+> This part is questionable. We do have devices which have PPS out enabled
+> by default. The driver reads pins configuration from the HW during PTP
+> init phase and sets up proper function for pin in ptp_info::pin_config.
+> 
+> With this patch applied these pins have PEROUT function disabled on
+> shutdown and in case of kexec'ing into a new kernel the PPS out feature
+> needs to be manually enabled, and it breaks expected behavior.
 
-the name 'nxp_fspi_mem_caps_quirks' is too general.
+Does kexec go to the trouble of unregistering PTP clocks? I don't see
+any driver in drivers/ptp/ that has the .shutdown method populated.
 
-nxp_fspi_mem_caps_disable_dtr?
+That doesn't mean there aren't - it isn't obvious where they are or
+if it does happen.
 
-Frank
-> +	else
-> +		ctlr->mem_caps = &nxp_fspi_mem_caps;
-> +
->  	ctlr->dev.of_node = np;
->
->  	ret = devm_add_action_or_reset(dev, nxp_fspi_cleanup, f);
->
-> --
-> 2.34.1
->
+The question about whether one wants to leave the other features in
+place when the driver is removed is questionable - without the driver
+(or indeed without something discplining the clock) it's going to
+drift, so the accuracy of e.g. the PPS signal is going to be as good
+as the clock source clocking the TAI.
+
+Having used NTP with a PPS sourced from a GPS, I'd personally want
+the PPS to stop if the GPS is no longer synchronised, so NTP knows
+that a fault has occurred, rather than PPS continuing but being
+undiscplined and thus of unknown accuracy.
+
+I'd suggest that whether PPS continues to be generated should be a
+matter of user policy. I would suggest that policy should include
+whether or not userspace is discplining the clock - in other words,
+whether the /dev/ptp* device is open or not.
+
+Consider the case where the userspace daemons get OOM-killed and
+that isn't realised. The PPS signal continues to be generated but
+is now unsynchronised and drifts. Yet PPS users continue to
+believe it's accurate.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
