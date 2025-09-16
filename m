@@ -1,44 +1,44 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9541A08CA
-	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 19:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7AC283FF0
+	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 21:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758052007; cv=none; b=jkRWY5HjLgNAtz1IHO1dCuZW4ID9nQKHHrDtKx3pEWDtHSgJDG9PaDfK6yIE/bKrBFH2uTbYD/BdztFNafHs2anyoY02CZInfqYr2saR3zofAZPSAHPMoZRIeoOHhIyn46qUIY/+IOr0boXcNMTEIDkWglaFbcVNkEOqtA1hMDA=
+	t=1758057751; cv=none; b=VS/Ke6yG8TsMYqNl3pubU54HZaE/bQISwf2AWhCbfbO+OanKrC+fpgL0XOQ/C/bO17csMpYcpM4TXZ+JJXH0Lx9Wb0xf8p+mlv8rBEt68YdmLyc+wSB9OomttN66aMSDjrtpNV4+P2BBfhr6qd7Pi370uL741xSzUsCiPpjPu5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758052007; c=relaxed/simple;
-	bh=hjlbGMnEdQXqboDffiNNcDlFplfeyLWIkEw8DiKHx9Q=;
+	s=arc-20240116; t=1758057751; c=relaxed/simple;
+	bh=+jvcMiLnfD4i6zJzLDIXCcPmQHBn40LTU35VsRktKt8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yqq1ZyXtyjb7aN47g0noRfjMcPf7yPFa+joDfoEJXMPbqVfeXh9JdYZDeTIcmueuk5ocj5iwLDzq2FSKWnQFDDXud5W9ME0HQGCuBkwF+w0D9WNdWJAd/B55sGStyRxXIdYCH/ebWRk54/jPCUi4H0sL3JAjhCqTd7uSpBR0btU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=nAccP1lb; arc=none smtp.client-ip=78.32.30.218
+	 Content-Type:Content-Disposition:In-Reply-To; b=IShpy2mWfxZO9i6LHqVjkjIUmhDYt6s0EPjLYPWmKMbhrjfNYNxNKAgAQNLzGkDQmnNBpIc90SeUtgt8smZjultoVprZkae8DN++ckIMumbbyl6O4Ag5zlsLMNasMvRPWyEeZINnRz432qAoJ7Mf/KxdJSKnRjlwqVaZnkNIbUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Qpqu09QQ; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="nAccP1lb"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Qpqu09QQ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=/27pgnXaxIMKYeUlTcrehHP6JdCeXAiWGCDPpMyW0lg=; b=nAccP1lb2LDc7Keqz0AMVRrvmF
-	Q9OcEgQcmx9XZL6UEqiOpDZalAnS10VBojLI9MZyz74jOBacmy8uAtnYvUgb7F+ASiV6+XdIVSHkO
-	sWEK3eMqWFIuAPhNwl3ZqvmWplVfQw4n3dRbCaRHzYYL6Q5trhMhPhy8Ljtckb2Zb0UkxzYyOP62g
-	R5Dd0o/BWCPfci0MX4bT1+Cgx6ENnnXrf6t37W/P51SJPwuvT67d2gFJM68NqneUzgKv5XbCJUSiV
-	0xOVX2/itEpKrIlRElcMDpk13vA5vbkM5X5c8K/IzL+cx5NcrCc5VsGvraYI7hJqfwK6edrXoiUae
-	30vJ6DlA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58378)
+	bh=9gO1bEneKYqrxemk74wXPwbNJQphdoGowwHZ4MHMiJ4=; b=Qpqu09QQSVL90Olq3BkI4+U2r2
+	eHsbeCXQ5mmx376B8SndfocbWj6MFEfg5vh1JRr7tyhYsCH2ecmq1E48cKy6bKQ2UWsYnsPZ8URHO
+	KyAmjYzNoXPRFjHGo9VIsohdwCb+q4rVsFTh3O9XSMmbt0n5HejtthgnuNLuApQI0ob5aPrny08P4
+	53Px0Ng8v9/jdipMDobgT4Mi4XJGayHJzi0iKzMoSq5nl3wsSxK1AylRSTyobyWLPRkyz96NRMDJu
+	bZGzeW+hkJPdFUC3q4IOm2YLN5K7S5zT8jvR7bTuM3OH+s2GuevRso7eHpBILOtSHuXdOy0xFEmv8
+	7BrVMnng==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53652)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1uybdJ-000000005v5-3cqm;
-	Tue, 16 Sep 2025 20:46:33 +0100
+	id 1uyd7y-000000006Hz-0zjX;
+	Tue, 16 Sep 2025 22:22:18 +0100
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uybdE-000000007uU-0aRN;
-	Tue, 16 Sep 2025 20:46:28 +0100
-Date: Tue, 16 Sep 2025 20:46:27 +0100
+	id 1uyd7u-000000007zN-10oB;
+	Tue, 16 Sep 2025 22:22:14 +0100
+Date: Tue, 16 Sep 2025 22:22:14 +0100
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
 To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 Cc: Richard Cochran <richardcochran@gmail.com>,
@@ -58,12 +58,13 @@ Cc: Richard Cochran <richardcochran@gmail.com>,
 	Wei Fang <wei.fang@nxp.com>, Yangbo Lu <yangbo.lu@nxp.com>
 Subject: Re: [PATCH net-next 2/2] ptp: rework ptp_clock_unregister() to
  disable events
-Message-ID: <aMm-k47VdNlGP84m@shell.armlinux.org.uk>
+Message-ID: <aMnVBgMG3Nnjgr8E@shell.armlinux.org.uk>
 References: <aMglp11mUGk9PAvu@shell.armlinux.org.uk>
  <E1uyAP7-00000005lGq-3FqI@rmk-PC.armlinux.org.uk>
  <9d197d92-3990-4e48-aa35-87a51eccb87a@linux.dev>
  <aMmGFQx5lWdXQq_j@shell.armlinux.org.uk>
  <b6e0d1e5-bd50-464a-9eae-05ecd11de4ee@linux.dev>
+ <aMm-k47VdNlGP84m@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,103 +73,47 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b6e0d1e5-bd50-464a-9eae-05ecd11de4ee@linux.dev>
+In-Reply-To: <aMm-k47VdNlGP84m@shell.armlinux.org.uk>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Sep 16, 2025 at 05:20:19PM +0100, Vadim Fedorenko wrote:
-> On 16/09/2025 16:45, Russell King (Oracle) wrote:
-> > On Tue, Sep 16, 2025 at 02:02:56PM +0100, Vadim Fedorenko wrote:
-> > > On 15/09/2025 15:42, Russell King (Oracle) wrote:
-> > > > the ordering of ptp_clock_unregister() is not ideal, as the chardev
-> > > > remains published while state is being torn down. There is also no
-> > > > cleanup of enabled pin settings, which means enabled events can
-> > > > still forward into the core.
-> > > > 
-> > > > Rework the ordering of cleanup in ptp_clock_unregister() so that we
-> > > > unpublish the posix clock (and user chardev), disable any pins that
-> > > > have events enabled, and then clean up the aux work and PPS source.
-> > > > 
-> > > > This avoids potential use-after-free and races in PTP clock driver
-> > > > teardown.
-> > > > 
-> > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > > > ---
-> > > >    drivers/ptp/ptp_chardev.c | 13 +++++++++++++
-> > > >    drivers/ptp/ptp_clock.c   | 17 ++++++++++++++++-
-> > > >    drivers/ptp/ptp_private.h |  2 ++
-> > > >    3 files changed, 31 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-> > > > index eb4f6d1b1460..640a98f17739 100644
-> > > > --- a/drivers/ptp/ptp_chardev.c
-> > > > +++ b/drivers/ptp/ptp_chardev.c
-> > > > @@ -47,6 +47,19 @@ static int ptp_disable_pinfunc(struct ptp_clock_info *ops,
-> > > >    	return err;
-> > > >    }
-> > > > +void ptp_disable_all_pins(struct ptp_clock *ptp)
-> > > > +{
-> > > > +	struct ptp_clock_info *info = ptp->info;
-> > > > +	unsigned int i;
-> > > > +
-> > > > +	mutex_lock(&ptp->pincfg_mux);
-> > > > +	for (i = 0; i < info->n_pins; i++)
-> > > > +		if (info->pin_config[i].func != PTP_PF_NONE)
-> > > > +			ptp_disable_pinfunc(info, info->pin_config[i].func,
-> > > > +					    info->pin_config[i].chan);
-> > > > +	mutex_unlock(&ptp->pincfg_mux);
-> > > > +}
-> > > > +
+On Tue, Sep 16, 2025 at 08:46:28PM +0100, Russell King (Oracle) wrote:
+> On Tue, Sep 16, 2025 at 05:20:19PM +0100, Vadim Fedorenko wrote:
+> > On 16/09/2025 16:45, Russell King (Oracle) wrote:
+> > > Having used NTP with a PPS sourced from a GPS, I'd personally want
+> > > the PPS to stop if the GPS is no longer synchronised, so NTP knows
+> > > that a fault has occurred, rather than PPS continuing but being
+> > > undiscplined and thus of unknown accuracy.
 > > > 
-> > > This part is questionable. We do have devices which have PPS out enabled
-> > > by default. The driver reads pins configuration from the HW during PTP
-> > > init phase and sets up proper function for pin in ptp_info::pin_config.
-> > > 
-> > > With this patch applied these pins have PEROUT function disabled on
-> > > shutdown and in case of kexec'ing into a new kernel the PPS out feature
-> > > needs to be manually enabled, and it breaks expected behavior.
+> > > I'd suggest that whether PPS continues to be generated should be a
+> > > matter of user policy. I would suggest that policy should include
+> > > whether or not userspace is discplining the clock - in other words,
+> > > whether the /dev/ptp* device is open or not.
 > > 
-> > Does kexec go to the trouble of unregistering PTP clocks? I don't see
-> > any driver in drivers/ptp/ that has the .shutdown method populated.
+> > The deduction based on the amount of references to ptp device is not
+> > quite correct. Another option is to introduce another flag and use it
+> > as a signal to remove the function in case of error/shutdown/etc.
+> > > Consider the case where the userspace daemons get OOM-killed and
+> > > that isn't realised. The PPS signal continues to be generated but
+> > > is now unsynchronised and drifts. Yet PPS users continue to
+> > > believe it's accurate.
 > > 
-> > That doesn't mean there aren't - it isn't obvious where they are or
-> > if it does happen.
+> > And again, there is another use-case which actually needs thisunsynchronised
+> > signal
 > 
-> That's part of mlx5 and at least Intel's igc and igb drivers.
-> 
-> > The question about whether one wants to leave the other features in
-> > place when the driver is removed is questionable - without the driver
-> > (or indeed without something discplining the clock) it's going to
-> > drift, so the accuracy of e.g. the PPS signal is going to be as good
-> > as the clock source clocking the TAI.
-> 
-> In our use-case we use PPS out as an input to the external monitoring
-> and we would like to see the PPS signal to drift in case of any errors.
-> 
-> > Having used NTP with a PPS sourced from a GPS, I'd personally want
-> > the PPS to stop if the GPS is no longer synchronised, so NTP knows
-> > that a fault has occurred, rather than PPS continuing but being
-> > undiscplined and thus of unknown accuracy.
-> > 
-> > I'd suggest that whether PPS continues to be generated should be a
-> > matter of user policy. I would suggest that policy should include
-> > whether or not userspace is discplining the clock - in other words,
-> > whether the /dev/ptp* device is open or not.
-> 
-> The deduction based on the amount of references to ptp device is not
-> quite correct. Another option is to introduce another flag and use it
-> as a signal to remove the function in case of error/shutdown/etc.
-> > Consider the case where the userspace daemons get OOM-killed and
-> > that isn't realised. The PPS signal continues to be generated but
-> > is now unsynchronised and drifts. Yet PPS users continue to
-> > believe it's accurate.
-> 
-> And again, there is another use-case which actually needs thisunsynchronised
-> signal
+> For my use case (Marvell platforms) we only support EXTTS there, so I'm
+> happy to restrict this behaviour to EXTTS. If drivers need e.g. timers
+> or workqueues to support the other pin functions, then this will need
+> to be revisited so they can safely tear down their software resources.
 
-For my use case (Marvell platforms) we only support EXTTS there, so I'm
-happy to restrict this behaviour to EXTTS. If drivers need e.g. timers
-or workqueues to support the other pin functions, then this will need
-to be revisited so they can safely tear down their software resources.
+I think I've missed another source of trouble here: PPS input, enabled
+via PTP_CLK_REQ_PPS, which seems to be a purely software construct
+where the hardware triggers e.g. an interrupt to forward a PPS event.
+
+As this is not a pin, this doesn't get disabled. This is subject to
+all the same race conditions that EXTTS is subject to, so I think
+ptp_unregister_clock() needs to deal with this too.
+
+New patches on their way shortly...
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
