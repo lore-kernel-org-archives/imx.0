@@ -1,48 +1,47 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7AC283FF0
-	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 21:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4877F31BC8F
+	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 21:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758057751; cv=none; b=VS/Ke6yG8TsMYqNl3pubU54HZaE/bQISwf2AWhCbfbO+OanKrC+fpgL0XOQ/C/bO17csMpYcpM4TXZ+JJXH0Lx9Wb0xf8p+mlv8rBEt68YdmLyc+wSB9OomttN66aMSDjrtpNV4+P2BBfhr6qd7Pi370uL741xSzUsCiPpjPu5g=
+	t=1758058542; cv=none; b=WZR7yzZmNLUTLQ3LBLkJ+OJhNDf9O7zLb/0yJs40w2XI8cokcjbnMIcm8EvkWq9J1zwxVnII5L75QawvI6oMOiLDM9hGgO7NohPqC3Mry1pO12KZ9WXpalctfRllbuiJyYPYPjiyCgmm/EgATz9JfgwvL8Q+RozdOv1OZ1CjHAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758057751; c=relaxed/simple;
-	bh=+jvcMiLnfD4i6zJzLDIXCcPmQHBn40LTU35VsRktKt8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IShpy2mWfxZO9i6LHqVjkjIUmhDYt6s0EPjLYPWmKMbhrjfNYNxNKAgAQNLzGkDQmnNBpIc90SeUtgt8smZjultoVprZkae8DN++ckIMumbbyl6O4Ag5zlsLMNasMvRPWyEeZINnRz432qAoJ7Mf/KxdJSKnRjlwqVaZnkNIbUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Qpqu09QQ; arc=none smtp.client-ip=78.32.30.218
+	s=arc-20240116; t=1758058542; c=relaxed/simple;
+	bh=GzXsPGxgSPtnUzOnC0pzPzXBCKex8zRkL3uu5xax5oA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ROBB8Lz5953CG6kTYJpkplMMMAk3clTSzD53ZBwwkpHCCLIN3zP+46Te9atprUCW20sS/hA4HlbOPzP5eWWU70xmBCBF9qy+1e1At0+IynK9sAwLM/qVA9ATg/Ru1y74sTfaABk/uIuytsqfdsAe6YLxCJNrUKUkXaMrBl7U/3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=0cs+9xG/; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Qpqu09QQ"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="0cs+9xG/"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=9gO1bEneKYqrxemk74wXPwbNJQphdoGowwHZ4MHMiJ4=; b=Qpqu09QQSVL90Olq3BkI4+U2r2
-	eHsbeCXQ5mmx376B8SndfocbWj6MFEfg5vh1JRr7tyhYsCH2ecmq1E48cKy6bKQ2UWsYnsPZ8URHO
-	KyAmjYzNoXPRFjHGo9VIsohdwCb+q4rVsFTh3O9XSMmbt0n5HejtthgnuNLuApQI0ob5aPrny08P4
-	53Px0Ng8v9/jdipMDobgT4Mi4XJGayHJzi0iKzMoSq5nl3wsSxK1AylRSTyobyWLPRkyz96NRMDJu
-	bZGzeW+hkJPdFUC3q4IOm2YLN5K7S5zT8jvR7bTuM3OH+s2GuevRso7eHpBILOtSHuXdOy0xFEmv8
-	7BrVMnng==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53652)
+	bh=oEaBh55+azWDXu/wNCOa8loY8KkzsLqXMQnJI7BUjns=; b=0cs+9xG/YQE9aeC+yUC2wWtxfX
+	iW6btycrN1RQ+TfDEsaeJBJGEQektJXx+cZGXpqVZlWsJM0wZY86prtgEtgyVzLytRnv8IV5n5Nea
+	UyfYtEqC5sISmwJxJM7G7swdNEyHivWNquWTKTiMBLHP1GBfdNGFGdMbm2ShCp/MfN+rRbbsIbb4z
+	m9ZTnK4RSuEnAA7tdRggdW3FO6hpfHaij9DtvClVxhOnF2TXFHMbbqqohzx+rpY6lkym5vwduKN0G
+	jYhU4pUjgBURDOqoxaIgfWnkJmolkzPwxaOT5jKLys05YM1VafJGqAzv0Gcw7IBBD5ItYNMbUjrWO
+	piQqO0rA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46122)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1uyd7y-000000006Hz-0zjX;
-	Tue, 16 Sep 2025 22:22:18 +0100
+	id 1uydKn-000000006L6-3O3E;
+	Tue, 16 Sep 2025 22:35:33 +0100
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uyd7u-000000007zN-10oB;
-	Tue, 16 Sep 2025 22:22:14 +0100
-Date: Tue, 16 Sep 2025 22:22:14 +0100
+	id 1uydKk-000000007zr-34yR;
+	Tue, 16 Sep 2025 22:35:30 +0100
+Date: Tue, 16 Sep 2025 22:35:30 +0100
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: Richard Cochran <richardcochran@gmail.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
+To: Richard Cochran <richardcochran@gmail.com>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>,
 	Alexey Makhalov <alexey.makhalov@broadcom.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
@@ -54,17 +53,12 @@ Cc: Richard Cochran <richardcochran@gmail.com>,
 	Jonathan Lemon <jonathan.lemon@gmail.com>, netdev@vger.kernel.org,
 	Nick Shi <nick.shi@broadcom.com>, Paolo Abeni <pabeni@redhat.com>,
 	Sven Schnelle <svens@linux.ibm.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Wei Fang <wei.fang@nxp.com>, Yangbo Lu <yangbo.lu@nxp.com>
-Subject: Re: [PATCH net-next 2/2] ptp: rework ptp_clock_unregister() to
- disable events
-Message-ID: <aMnVBgMG3Nnjgr8E@shell.armlinux.org.uk>
-References: <aMglp11mUGk9PAvu@shell.armlinux.org.uk>
- <E1uyAP7-00000005lGq-3FqI@rmk-PC.armlinux.org.uk>
- <9d197d92-3990-4e48-aa35-87a51eccb87a@linux.dev>
- <aMmGFQx5lWdXQq_j@shell.armlinux.org.uk>
- <b6e0d1e5-bd50-464a-9eae-05ecd11de4ee@linux.dev>
- <aMm-k47VdNlGP84m@shell.armlinux.org.uk>
+Subject: [PATCH net-next v2 0/2] ptp: safely cleanup when unregistering a PTP
+ clock
+Message-ID: <aMnYIu7RbgfXrmGx@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,47 +67,70 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aMm-k47VdNlGP84m@shell.armlinux.org.uk>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Sep 16, 2025 at 08:46:28PM +0100, Russell King (Oracle) wrote:
-> On Tue, Sep 16, 2025 at 05:20:19PM +0100, Vadim Fedorenko wrote:
-> > On 16/09/2025 16:45, Russell King (Oracle) wrote:
-> > > Having used NTP with a PPS sourced from a GPS, I'd personally want
-> > > the PPS to stop if the GPS is no longer synchronised, so NTP knows
-> > > that a fault has occurred, rather than PPS continuing but being
-> > > undiscplined and thus of unknown accuracy.
-> > > 
-> > > I'd suggest that whether PPS continues to be generated should be a
-> > > matter of user policy. I would suggest that policy should include
-> > > whether or not userspace is discplining the clock - in other words,
-> > > whether the /dev/ptp* device is open or not.
-> > 
-> > The deduction based on the amount of references to ptp device is not
-> > quite correct. Another option is to introduce another flag and use it
-> > as a signal to remove the function in case of error/shutdown/etc.
-> > > Consider the case where the userspace daemons get OOM-killed and
-> > > that isn't realised. The PPS signal continues to be generated but
-> > > is now unsynchronised and drifts. Yet PPS users continue to
-> > > believe it's accurate.
-> > 
-> > And again, there is another use-case which actually needs thisunsynchronised
-> > signal
-> 
-> For my use case (Marvell platforms) we only support EXTTS there, so I'm
-> happy to restrict this behaviour to EXTTS. If drivers need e.g. timers
-> or workqueues to support the other pin functions, then this will need
-> to be revisited so they can safely tear down their software resources.
+(I'm assuming drivers/ptp/ patches go via net-next as there is no
+git tree against the "PTP HARDWARE CLOCK SUPPORT" maintainers entry.)
 
-I think I've missed another source of trouble here: PPS input, enabled
-via PTP_CLK_REQ_PPS, which seems to be a purely software construct
-where the hardware triggers e.g. an interrupt to forward a PPS event.
+The standard rule in the kernel for unregistering user visible devices
+is to unpublish the userspace API before doing any shutdown of the
+resources necessary for the operation of the device.
 
-As this is not a pin, this doesn't get disabled. This is subject to
-all the same race conditions that EXTTS is subject to, so I think
-ptp_unregister_clock() needs to deal with this too.
+PTP has several issues in this area:
 
-New patches on their way shortly...
+1. ptp_clock_unregister() cancells and destroys work while the PTP
+   chardev is still published, which gives the opportunity for a
+   precisely timed user API call to cause a driver to attempt to
+   queue the aux work.
+
+2. PTP pins are not cleaned up - if userspace has enabled PTP pins,
+   e.g. for extts, drivers are forced to do cleanup before calling
+   ptp_clock_unregister() to stop events being forwarded into the
+   PTP layer. E.g mv88e6xxx cancells its internal tai_event_work
+   to avoid calling into the PTP clock code with a stale ptp_clock
+   pointer, but a badly timed userspace EXTTS enable will re-schedule
+   the tai_event_work.
+
+Simplify the process by ensuring that:
+
+1. we take a referene on the PTP struct device to stop the
+   ptp_clock structure going away underneath us when we call
+   posix_clock_unregister().
+
+2. call posix_clock_unregister() to remove the /dev/ptp* device.
+
+3. add additional functionality to disable any PTP EXTTS pins and
+   PPS event generation that have been configured on this device.
+   This should shutdown all events coming from PTP clock drivers.
+
+4. cancel the delayed aux_work and destroy the kthread.
+
+5. remove the PPS source.
+
+6. drop the reference on the PTP struct device to allow the
+   ptp_clock structure to be released.
+
+This is difficult for me to test beyond build testing - on the
+Clearfog platform with Marvell PHY PTP, the ethernet PHY is the
+primary connectivity, so removing the PHY driver for an in-use
+network interface isn't possible.
+
+On the ZII rev B platform, where the DSA switches have the TAI
+hardware and where root NFS is used, removal of the DSA switch
+module somehow forces the FEC interface _not_ connected to the DSA
+switch to lose link, causing the machine to become unresponsive
+as its root filesystem vanishes.
+
+---
+v2:
+- add r-b's to patch 1
+- only disable EXTTS pins
+- disable PPS event generation
+
+ drivers/ptp/ptp_chardev.c | 28 +++++++++++++++++++++++++++-
+ drivers/ptp/ptp_clock.c   | 15 ++++++++++++++-
+ drivers/ptp/ptp_private.h |  2 ++
+ 3 files changed, 43 insertions(+), 2 deletions(-)
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
