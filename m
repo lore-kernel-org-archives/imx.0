@@ -1,152 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB3A2036E9;
-	Tue, 16 Sep 2025 19:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9541A08CA
+	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 19:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758050834; cv=none; b=NYLfmi3/YlSLBRwndV3fCdwOPf0/503hN0NGk5rMOpWv09h7W3irbB5kYh38JCvTB96tkwgjSLJ+gv5UONWPoqfhPfzzh0QJIPTUsNvqMHZAkPjixhFxiksbYTpaLCatXGXvheY8nxiRxCGCO62Pwe/5mc+aqRhtWtx91kidh6g=
+	t=1758052007; cv=none; b=jkRWY5HjLgNAtz1IHO1dCuZW4ID9nQKHHrDtKx3pEWDtHSgJDG9PaDfK6yIE/bKrBFH2uTbYD/BdztFNafHs2anyoY02CZInfqYr2saR3zofAZPSAHPMoZRIeoOHhIyn46qUIY/+IOr0boXcNMTEIDkWglaFbcVNkEOqtA1hMDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758050834; c=relaxed/simple;
-	bh=SvkZnrjbq/9F17psAbb495EqR7oYJMGmVyT9vm58sw8=;
+	s=arc-20240116; t=1758052007; c=relaxed/simple;
+	bh=hjlbGMnEdQXqboDffiNNcDlFplfeyLWIkEw8DiKHx9Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hfG9AKVjsa34nNiel6VLulio7BW/CaMrOI6PTsxQ0TB94tqXmYUkWNlruhToXiQg45sTP5DaUvuNDtzfZuGYBmKZi3cJJRYQIHgY8N23folr+BteEt8Rg43gk8U/lKzr1oZjfteBUwsrI278CFDtVaz7z+7nlFJI5S9C4da9YCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=js4XbzbF; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yqq1ZyXtyjb7aN47g0noRfjMcPf7yPFa+joDfoEJXMPbqVfeXh9JdYZDeTIcmueuk5ocj5iwLDzq2FSKWnQFDDXud5W9ME0HQGCuBkwF+w0D9WNdWJAd/B55sGStyRxXIdYCH/ebWRk54/jPCUi4H0sL3JAjhCqTd7uSpBR0btU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=nAccP1lb; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="js4XbzbF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966D0C4CEEB;
-	Tue, 16 Sep 2025 19:27:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758050833;
-	bh=SvkZnrjbq/9F17psAbb495EqR7oYJMGmVyT9vm58sw8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=js4XbzbFp9Re2Q6jO01FPk9zXAX1E8lWkZQajgfn4JESITqYqcKPOwYNeJTNBkgra
-	 1OHurdgLt+TY+SkbTWIYwdiITROKwGsy3OuNqVX6DnDJ2c+s2leAYQArIqWzaj23AD
-	 bEQePVlxQBWbcF6/udOSI5phoGcDrmSEf92vqw3LbROQTIudGQB95RJQ4vE4rvd0qt
-	 mGJo7+qITyjv9/bHBZ+Px+wBhUE80M6+SMIX2vEWGt+gNEZTlkAIhdy6ruvhLTbJ7t
-	 5VPfb5c+Ir0YjBSz0zBEdM9r/f7l/NKBg2XOsGwFLofL2bPJ+yI1TinOTh1rOoCpG1
-	 6fXs8/60vRhBQ==
-Date: Tue, 16 Sep 2025 20:27:08 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-input@vger.kernel.org
-Subject: Re: [PATCH v3 4/6] dt-bindings: touchscreen: fsl,imx6ul-tsc: support
- glitch thresold
-Message-ID: <20250916-envelope-depict-7c321fe12341@spud>
-References: <20250915195335.1710780-1-dario.binacchi@amarulasolutions.com>
- <20250915195335.1710780-5-dario.binacchi@amarulasolutions.com>
- <aMmIZTMqr0rtiP6z@lizhi-Precision-Tower-5810>
- <20250916-auction-angelfish-0239691a54e5@spud>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="nAccP1lb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=/27pgnXaxIMKYeUlTcrehHP6JdCeXAiWGCDPpMyW0lg=; b=nAccP1lb2LDc7Keqz0AMVRrvmF
+	Q9OcEgQcmx9XZL6UEqiOpDZalAnS10VBojLI9MZyz74jOBacmy8uAtnYvUgb7F+ASiV6+XdIVSHkO
+	sWEK3eMqWFIuAPhNwl3ZqvmWplVfQw4n3dRbCaRHzYYL6Q5trhMhPhy8Ljtckb2Zb0UkxzYyOP62g
+	R5Dd0o/BWCPfci0MX4bT1+Cgx6ENnnXrf6t37W/P51SJPwuvT67d2gFJM68NqneUzgKv5XbCJUSiV
+	0xOVX2/itEpKrIlRElcMDpk13vA5vbkM5X5c8K/IzL+cx5NcrCc5VsGvraYI7hJqfwK6edrXoiUae
+	30vJ6DlA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58378)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uybdJ-000000005v5-3cqm;
+	Tue, 16 Sep 2025 20:46:33 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uybdE-000000007uU-0aRN;
+	Tue, 16 Sep 2025 20:46:28 +0100
+Date: Tue, 16 Sep 2025 20:46:27 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Eric Dumazet <edumazet@google.com>, imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jonathan Lemon <jonathan.lemon@gmail.com>, netdev@vger.kernel.org,
+	Nick Shi <nick.shi@broadcom.com>, Paolo Abeni <pabeni@redhat.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>, Yangbo Lu <yangbo.lu@nxp.com>
+Subject: Re: [PATCH net-next 2/2] ptp: rework ptp_clock_unregister() to
+ disable events
+Message-ID: <aMm-k47VdNlGP84m@shell.armlinux.org.uk>
+References: <aMglp11mUGk9PAvu@shell.armlinux.org.uk>
+ <E1uyAP7-00000005lGq-3FqI@rmk-PC.armlinux.org.uk>
+ <9d197d92-3990-4e48-aa35-87a51eccb87a@linux.dev>
+ <aMmGFQx5lWdXQq_j@shell.armlinux.org.uk>
+ <b6e0d1e5-bd50-464a-9eae-05ecd11de4ee@linux.dev>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="up2hkdYrwSZhILqz"
-Content-Disposition: inline
-In-Reply-To: <20250916-auction-angelfish-0239691a54e5@spud>
-
-
---up2hkdYrwSZhILqz
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <b6e0d1e5-bd50-464a-9eae-05ecd11de4ee@linux.dev>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Sep 16, 2025 at 08:25:53PM +0100, Conor Dooley wrote:
-> On Tue, Sep 16, 2025 at 11:55:17AM -0400, Frank Li wrote:
-> > On Mon, Sep 15, 2025 at 09:53:06PM +0200, Dario Binacchi wrote:
-> > > Support the touchscreen-glitch-threshold-ns property. Unlike the
-> > > generic description in touchscreen.yaml, this controller maps the
-> > > provided value to one of four discrete thresholds internally.
-> > >
-> > > Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> > >
-> > > ---
-> > >
-> > > Changes in v3:
-> > > - Remove the final part of the description that refers to
-> > >   implementation details.
-> > >
-> > >  .../bindings/input/touchscreen/fsl,imx6ul-tsc.yaml   | 12 ++++++++++=
-++
-> > >  1 file changed, 12 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/input/touchscreen/fsl,=
-imx6ul-tsc.yaml b/Documentation/devicetree/bindings/input/touchscreen/fsl,i=
-mx6ul-tsc.yaml
-> > > index 678756ad0f92..6214d8be5a99 100644
-> > > --- a/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-=
-tsc.yaml
-> > > +++ b/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-=
-tsc.yaml
-> > > @@ -62,6 +62,18 @@ properties:
-> > >      description: Number of data samples which are averaged for each =
-read.
-> > >      enum: [ 1, 4, 8, 16, 32 ]
-> > >
-> > > +  touchscreen-glitch-threshold-ns:
-> > > +    description: |
-> > > +      Unlike the generic property defined in touchscreen.yaml, this
-> > > +      controller does not allow arbitrary values. Internally the val=
-ue is
-> > > +      converted to IPG clock cycles and mapped to one of four discre=
-te
-> > > +      thresholds exposed by the TSC_DEBUG_MODE2 register:
-> > > +
-> > > +        0: 8191 IPG cycles
-> > > +        1: 4095 IPG cycles
-> > > +        2: 2047 IPG cycles
-> > > +        3: 1023 IPG cycles
-> > > +
-> >=20
-> > You have to use ns here. You can caculate in driver to match to closed =
-one.
->=20
-> That is what he is saying it is doing - "internally the value is
-> converted to IPG clock cycles" and so on. Your repeated misunderstanding
-> of this though points out that maybe the description is still lacking?
->=20
-> Dario, how about:
-> | The gitch threshold in nanoseconds. Drivers must convert this value to
+On Tue, Sep 16, 2025 at 05:20:19PM +0100, Vadim Fedorenko wrote:
+> On 16/09/2025 16:45, Russell King (Oracle) wrote:
+> > On Tue, Sep 16, 2025 at 02:02:56PM +0100, Vadim Fedorenko wrote:
+> > > On 15/09/2025 15:42, Russell King (Oracle) wrote:
+> > > > the ordering of ptp_clock_unregister() is not ideal, as the chardev
+> > > > remains published while state is being torn down. There is also no
+> > > > cleanup of enabled pin settings, which means enabled events can
+> > > > still forward into the core.
+> > > > 
+> > > > Rework the ordering of cleanup in ptp_clock_unregister() so that we
+> > > > unpublish the posix clock (and user chardev), disable any pins that
+> > > > have events enabled, and then clean up the aux work and PPS source.
+> > > > 
+> > > > This avoids potential use-after-free and races in PTP clock driver
+> > > > teardown.
+> > > > 
+> > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > > > ---
+> > > >    drivers/ptp/ptp_chardev.c | 13 +++++++++++++
+> > > >    drivers/ptp/ptp_clock.c   | 17 ++++++++++++++++-
+> > > >    drivers/ptp/ptp_private.h |  2 ++
+> > > >    3 files changed, 31 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
+> > > > index eb4f6d1b1460..640a98f17739 100644
+> > > > --- a/drivers/ptp/ptp_chardev.c
+> > > > +++ b/drivers/ptp/ptp_chardev.c
+> > > > @@ -47,6 +47,19 @@ static int ptp_disable_pinfunc(struct ptp_clock_info *ops,
+> > > >    	return err;
+> > > >    }
+> > > > +void ptp_disable_all_pins(struct ptp_clock *ptp)
+> > > > +{
+> > > > +	struct ptp_clock_info *info = ptp->info;
+> > > > +	unsigned int i;
+> > > > +
+> > > > +	mutex_lock(&ptp->pincfg_mux);
+> > > > +	for (i = 0; i < info->n_pins; i++)
+> > > > +		if (info->pin_config[i].func != PTP_PF_NONE)
+> > > > +			ptp_disable_pinfunc(info, info->pin_config[i].func,
+> > > > +					    info->pin_config[i].chan);
+> > > > +	mutex_unlock(&ptp->pincfg_mux);
+> > > > +}
+> > > > +
+> > > 
+> > > This part is questionable. We do have devices which have PPS out enabled
+> > > by default. The driver reads pins configuration from the HW during PTP
+> > > init phase and sets up proper function for pin in ptp_info::pin_config.
+> > > 
+> > > With this patch applied these pins have PEROUT function disabled on
+> > > shutdown and in case of kexec'ing into a new kernel the PPS out feature
+> > > needs to be manually enabled, and it breaks expected behavior.
+> > 
+> > Does kexec go to the trouble of unregistering PTP clocks? I don't see
+> > any driver in drivers/ptp/ that has the .shutdown method populated.
+> > 
+> > That doesn't mean there aren't - it isn't obvious where they are or
+> > if it does happen.
+> 
+> That's part of mlx5 and at least Intel's igc and igb drivers.
+> 
+> > The question about whether one wants to leave the other features in
+> > place when the driver is removed is questionable - without the driver
+> > (or indeed without something discplining the clock) it's going to
+> > drift, so the accuracy of e.g. the PPS signal is going to be as good
+> > as the clock source clocking the TAI.
+> 
+> In our use-case we use PPS out as an input to the external monitoring
+> and we would like to see the PPS signal to drift in case of any errors.
+> 
+> > Having used NTP with a PPS sourced from a GPS, I'd personally want
+> > the PPS to stop if the GPS is no longer synchronised, so NTP knows
+> > that a fault has occurred, rather than PPS continuing but being
+> > undiscplined and thus of unknown accuracy.
+> > 
+> > I'd suggest that whether PPS continues to be generated should be a
+> > matter of user policy. I would suggest that policy should include
+> > whether or not userspace is discplining the clock - in other words,
+> > whether the /dev/ptp* device is open or not.
+> 
+> The deduction based on the amount of references to ptp device is not
+> quite correct. Another option is to introduce another flag and use it
+> as a signal to remove the function in case of error/shutdown/etc.
+> > Consider the case where the userspace daemons get OOM-killed and
+> > that isn't realised. The PPS signal continues to be generated but
+> > is now unsynchronised and drifts. Yet PPS users continue to
+> > believe it's accurate.
+> 
+> And again, there is another use-case which actually needs thisunsynchronised
+> signal
 
-Or maybe instead of what I did here for the first sentence, yoink the text
-=66rom [3/6] instead and re-use it.
+For my use case (Marvell platforms) we only support EXTTS there, so I'm
+happy to restrict this behaviour to EXTTS. If drivers need e.g. timers
+or workqueues to support the other pin functions, then this will need
+to be revisited so they can safely tear down their software resources.
 
-> | IPG clock cycles and map it to one of the four discrete thresholds
-> | exposed by the TSC_DEBUG_MODE2 register:
-> |=20
-> |         0: 8191 IPG cycles
-> |         1: 4095 IPG cycles
-> |         2: 2047 IPG cycles
-> |         3: 1023 IPG cycles
-> ?=20
-> I dropped the bit about arbitrary values, due to my comment on the other
-> version a few mins ago.
-
-
-
---up2hkdYrwSZhILqz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaMm6DAAKCRB4tDGHoIJi
-0r+8AQCh1pvwS8dKmQpDjpCd2rHydQeIys66IYitwQfTMldZQwD/fMpbr0KvyaCW
-iM0erGHkx+tSkhIfbPbPTddxQMz+wwM=
-=0w/+
------END PGP SIGNATURE-----
-
---up2hkdYrwSZhILqz--
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
