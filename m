@@ -1,100 +1,150 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A313081AE;
-	Tue, 16 Sep 2025 14:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C380E31B820
+	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 14:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758033502; cv=none; b=NNzx5wFYSceZ6uvjjUbMWUtPubogqTgIxcuHIdp2c078gNybAcF/JwM3X8SFFe3zQIYvSuC9sNm/lpgjT2IG0UneP2wbjKq74okjZezmIi2NGZIgEwFVpCDpbb+BDTogmnPPGgsZjlX9s8GshCI+jOVK+SZRWLSrLG+WIf1avLA=
+	t=1758034039; cv=none; b=Itm0TlnnfluclB28mPc5w6teIFVk1LUat/mGypexpfnCkmIt4sqGSqcz57wm1huNo3jdc/+zHrn+Haf2YSFb+f8r4SVsDn4u4seX0cqHx/isMdyo/3Fe/YqS3rtIRf+gMIq4/eWdoXP8AsfgRJbHKd2Up0hwYTCW6z8Om+L41KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758033502; c=relaxed/simple;
-	bh=MjN8NM+9Mz20xb1nIlZpOEr/3Qh3fNWBkaaj1YjyEdc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AdfmPN2yUhvvtc6ENFkdQsCZKsOgmjohV9EEblIfXiWEUK71vufxwNhtQ+cESFZzhAaXU2OgvKTYeRNnD4pfRtGQ4zW+GcHxLu8FOLa8j80OiKwkoa+Z+SjDtHD9yb75Kp6gTW1ELGz7HfPx0ZkLi18QBrW804vD8EkOx+64HsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=P4X5dLLl; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1758034039; c=relaxed/simple;
+	bh=/dTeJXdPxUT53/ruJthxURTgDXuMrYo4Vt5Nrzhj828=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k9mQISOIuOMQYijGiylVDUeGi9HEmY6zlcfmJkY94E3u2iMm1XIodZpqIKuydIQDHbk3ESY1QaeCIf7IAmyc8Xb6TdxA6JZV/XQU5L6K570mM0dQve9kZwhBNY71k9/6qwoPcF4RKTmpFmiZOQhfHzOmZkFfoHQNjHMTt0pertU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=iegQpZ/N; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="P4X5dLLl"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=M6rgThuM1WGuVWDhs++mootFR4ZaiAUjcCQGb6p8Tss=; b=P4X5dLLlT8VyoF4RIlX15OQY1w
-	NSvr5fdoleoIJbcE58nozjiIy5z0pribctXcYMd9koR2tvsswbhZE6PoV1ZjimQkogS6SYgmXg6H4
-	/+RgV2Ix4nHkXjOpLmfwenkHqoVlDPLQhA1NdH8C3IwB2raG7FxB29aoR1t0lBRCf34s=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uyWos-008Zkp-6q; Tue, 16 Sep 2025 16:38:10 +0200
-Date: Tue, 16 Sep 2025 16:38:10 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Wei Fang <wei.fang@nxp.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jonathan Lemon <jonathan.lemon@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	Nick Shi <nick.shi@broadcom.com>, Paolo Abeni <pabeni@redhat.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"Y.B. Lu" <yangbo.lu@nxp.com>
-Subject: Re: [PATCH net-next 2/2] ptp: rework ptp_clock_unregister() to
- disable events
-Message-ID: <ac7c6c84-02e6-4e3d-8c38-abd5339a021d@lunn.ch>
-References: <aMglp11mUGk9PAvu@shell.armlinux.org.uk>
- <E1uyAP7-00000005lGq-3FqI@rmk-PC.armlinux.org.uk>
- <PAXPR04MB851098C0A69B74DD232071B68814A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <aMloTwObRUIRAzPF@shell.armlinux.org.uk>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="iegQpZ/N"
+Received: from Monstersaurus.lan (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6BBDC8D4;
+	Tue, 16 Sep 2025 16:45:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1758033956;
+	bh=/dTeJXdPxUT53/ruJthxURTgDXuMrYo4Vt5Nrzhj828=;
+	h=From:To:Cc:Subject:Date:From;
+	b=iegQpZ/Nnu/0NTRKHBLZgQ57/302Okt9v041Ht7QjnlH8DT9U+6kRbLbND+1+tNcx
+	 sXagert615SuTGfA2XlbPcR4SZw9z86g2k72Z9cq7jk8IsK+ckaCSkEwvE0mLb1ahU
+	 O/sKQBPjHJul0BeJuBATD5n9UVExtcLDhsdKgj6Q=
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Subject: [PATCH] arm64: dts: freescale: debix-som-a-bmb-08: Enable HDMI output
+Date: Tue, 16 Sep 2025 15:47:09 +0100
+Message-ID: <20250916144710.1285650-1-kieran.bingham@ideasonboard.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aMloTwObRUIRAzPF@shell.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 16, 2025 at 02:38:23PM +0100, Russell King (Oracle) wrote:
-> On Tue, Sep 16, 2025 at 09:03:17AM +0000, Wei Fang wrote:
-> > > the ordering of ptp_clock_unregister() is not ideal, as the chardev
-> >  ^
-> > Nit: Uppercase, 't' -> 'T'
-> > 
-> > > +void ptp_disable_all_pins(struct ptp_clock *ptp)
-> > > +{
-> > > +	struct ptp_clock_info *info = ptp->info;
-> > > +	unsigned int i;
-> > > +
-> > > +	mutex_lock(&ptp->pincfg_mux);
-> > 
-> > Currently ptp_chardev.c has been converted to use the auto-cleanup
-> > API (scoped_cond_guard()), so scoped_guard() can be used here.
-> 
-> ... which are very non-C like, non-obvious, and I currently have no
-> idea at the moment how to use it. In my opinion, it makes code more
-> difficult to understand.
+Enable the HDMI output on the Debix SOM A board, using the HDMI encoder
+present in the i.MX8MP SoC.
 
-+1
+Enable and configure all nodes required for the HDMI port usage.
 
-Plain scoped_guard() is not too magical and reasonably
-understandable. But ptp_chardev.c is using scoped_conf_guard() which
-is much more magical and i have no idea what it does.
+Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
 
-> Maybe someone else can convert this for me to this non-C like
-> structure?
+---
 
-Yes, if you want to write plain simple code, I submit it so. Somebody
-else can follow up with an obfuscation patch.
+This replicates 4880ee1c9046 ("arm64: dts: imx8mp-debix-model-a: Enable
+HDMI output") to support the Debix SOM as well.
 
-     Andrew
+
+ .../freescale/imx8mp-debix-som-a-bmb-08.dts   | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-som-a-bmb-08.dts b/arch/arm64/boot/dts/freescale/imx8mp-debix-som-a-bmb-08.dts
+index d241db3743a9..04619a722906 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-debix-som-a-bmb-08.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-som-a-bmb-08.dts
+@@ -22,6 +22,18 @@ chosen {
+ 		stdout-path = &uart2;
+ 	};
+ 
++	hdmi-connector {
++		compatible = "hdmi-connector";
++		label = "hdmi";
++		type = "a";
++
++		port {
++			hdmi_connector_in: endpoint {
++				remote-endpoint = <&hdmi_tx_out>;
++			};
++		};
++	};
++
+ 	reg_baseboard_vdd3v3: regulator-baseboard-vdd3v3 {
+ 		compatible = "regulator-fixed";
+ 		regulator-min-microvolt = <3300000>;
+@@ -222,6 +234,28 @@ flash: flash@0 {
+ 	};
+ };
+ 
++&hdmi_pvi {
++	status = "okay";
++};
++
++&hdmi_tx {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hdmi>;
++	status = "okay";
++
++	ports {
++		port@1 {
++			hdmi_tx_out: endpoint {
++				remote-endpoint = <&hdmi_connector_in>;
++			};
++		};
++	};
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
+ &i2c4 {
+ 	expander0: gpio@20 {
+ 		compatible = "nxp,pca9535";
+@@ -276,6 +310,10 @@ ethmac2: mac-address@c {
+ 	};
+ };
+ 
++&lcdif3 {
++	status = "okay";
++};
++
+ &snvs_pwrkey {
+ 	status = "okay";
+ };
+@@ -430,6 +468,15 @@ MX8MP_IOMUXC_NAND_DATA03__FLEXSPI_A_DATA03      0x82
+ 		>;
+ 	};
+ 
++	pinctrl_hdmi: hdmigrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x1c3
++			MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x1c3
++			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x19
++			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x19
++		>;
++	};
++
+ 	pinctrl_i2c1: i2c1grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL			0x400001c2
+-- 
+2.50.1
+
