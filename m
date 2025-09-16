@@ -1,246 +1,160 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010071.outbound.protection.outlook.com [52.101.84.71])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA8D2F5A22
-	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 17:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758042831; cv=fail; b=GjOUpHH7D/XopoAamR+txbe5qPto1W/BSrey4R1s7v8UP9F9CMJ3CIAZGVNLvnD6aZUaBHSj07ZDtYRiQ3j/KnHUOWLrsSJR/tCo6/gwdMdWwF0i0iAKeVPA1ZMugKgfaCMKPYM7GCAkc0dRpYM6zgg6sDbvkA9rmzNWYxQLLJQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758042831; c=relaxed/simple;
-	bh=YW9K12BZr3U75DDTX9cGptGLttUKkxlgzXo6yqeeNe8=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=L5GE3cmHsSb/ArcgAJqLfk7Uto3X3HTcd2bKrX/mlACX7PpgRjz4SBgNLmeSdM5PeCD1D6IC+BBk1yPTxlSn83FaxsGeRpq2CFRwFwmQl7D/svrurAmiLP2U5xLaKS7umF9dMXeqiWCeqnfqyR/n3D4lfw2T9MHAmNJlrsbT7J0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Vd+9Mpq2; arc=fail smtp.client-ip=52.101.84.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E7832D5D4
+	for <imx@lists.linux.dev>; Tue, 16 Sep 2025 17:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758044528; cv=none; b=sLDPlyCL8s9hQTqYAKYt+EpbVr5fNHRAsFn3nSb+nb1cFqvDSi2yWkA8RlX6RoR6GH5MZQ5Ed0URpX/24CaSAeMHtuhrtn+o3vMeBFM2z97xFF1HbM0sd4tjwXfH/uhl3jDOKeN1P/GJmekeGEe4uXXejkMiYrHEvUL0xKVMJTU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758044528; c=relaxed/simple;
+	bh=kXvxNpxTNPnZlJLOBBRMOvLBdnefe8KLJAlM2MSxPrc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KB978YdHZnN4rLIFJfYeDhga1dqissbM2naIx5+NL488FBWmph5RRtR50hxyZ5WIzyY+XtrrD3K3MmKjlIUMIaqVrtLzPiE9T8bpN3lAIk+mq68+e3dNO6Auw0tWKMuXTFpmj9KNAuyNsaDrjOq2KEJp6BSX0K6mSMtomHZDQLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=jqm2YX50; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Vd+9Mpq2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OZdjiQe/4R25FBovH1P2jlN3XVq2bgoAfjVO6rKs3bexVzPh8tA8oEHI6VH7KLfnRF7gX6t0hmaQ5EloSQBATmn18Pzpd9Cu8QkgOSULuY+OTDsSIWzbDnau3WEXHQpjQsQKviuk2qX6AXJDZY2ISKEs/Z20t3oyo1qKalNde8WpgV3C2b5JxVwQzsbY76YkiEaZXA/3e+0Wr1MbaLD0VbUJQWR2h1NRt0rUVsYHFNUEB0AntbvosIDxuwwBfOEYgR/t841QYlxRlU7eVygFJ8f6pH0cYl7tjrZ5Em4c3lH8gz9XREIvo32I7p0qnoYY/5s5/Mv/YDBgV9GieLNctQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Kd53B0DDd+sCElPXdFSTQlPzJV3VP2CDPR9WbBT96x8=;
- b=QhDjOy4KvfapS+gPm9UQJgBSlf4zWj0JsnZ4hSV5ObL++y5Ozl8dHnPu2dsmh2ucvynGVR7/ghg9PwixisKxrz9j3vZ9Bnk4ywcwI+acgseTNxhH7AMIZtkY81ZXACQL4N3+/rszctOpl0QbKjF2/DWS6iAavjg2WMYQjs7CRf+jZb1vN99KbZtJ+QvQjNAfZXrTWwWAq6furSLe2/frsYEzRzGoafZMSjpTnD1Nfx+YxB5k1QqOeuFnrtTewT6tQCbPR1v26SNiWjyr2xxAfBYJMHdknB1pR4+jOeCaoGkejnrnMTIxPnprBWV6yh0HVuskQ0slK1nQmtXhgHI1Pg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Kd53B0DDd+sCElPXdFSTQlPzJV3VP2CDPR9WbBT96x8=;
- b=Vd+9Mpq2RveHMrohYFGHvmpQMqeNFSiDkIXDHY9BdggE5mZjQR6vgV616k+UUnMj8aTAOnc/POkP7rCWPMmi0hvwD5/KocCkdbHJigDkv8VXSg85WAZjJvhwWhFEqpDMwK+bBOOzdhLVNcJtYTsVN8EXL91oJPjsLkOd7j0t77Rsye2Ze6ixmaZvGZ1S+mu2WRs5q5rb6wbp+P94m5Vvl9PKcZShRb4qdNiLvxHnbwJd2IGFqsuwIx4XAcd+rAuH4GEw+2gYcwyrsYqAGuMfX1L3vGZ3x2yyGFq1LRHv9vyVad2A3AZuQICDJUyZqQgxXUwIuafO/EbY6ZsQhAYAug==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by AM0PR04MB7075.eurprd04.prod.outlook.com (2603:10a6:208:19e::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.12; Tue, 16 Sep
- 2025 17:13:45 +0000
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9137.010; Tue, 16 Sep 2025
- 17:13:45 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: input: convert tca8418_keypad.txt to yaml format
-Date: Tue, 16 Sep 2025 13:13:26 -0400
-Message-Id: <20250916171327.3773620-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0144.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::29) To AS4PR04MB9621.eurprd04.prod.outlook.com
- (2603:10a6:20b:4ff::22)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="jqm2YX50"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4cR8D9282Wz9tSQ;
+	Tue, 16 Sep 2025 19:34:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1758044089;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SbZA5ejotqw68mTNh34KYL6GNeLbdM9s9dCD+1x1S5c=;
+	b=jqm2YX50DAmH42cCu3Dm4pk0e/4TCsANo9ubKawkQA6ebZbjVL6LAOI3ABl3lGU016EesK
+	A6f0N+ycb03D1u+60nFA7/860yAygYO/taBOTAM6lz1uvCaMMXi0XJJ7Fv+YfJJi14kl7V
+	2DGHrnLCxWoQOwg8Xh5aJRQKxrEdCOesoZs3itZKXcLXF6A2hUSN8ZYESUrBwEGRaOUW7g
+	xIj2osBuO//P2wYFP4aQ00Dup1UwIuKaKBXuFhuAkLrIsRS5eFMeeGT3O16YIH9zX/iPOo
+	+HTkVo5lKeVsFclOctD9GxJeMRTZpXib1Jp8KRyHyLtKwVHH22nBCwvVjGOo/w==
+Message-ID: <c34dc4bc-de12-42fc-aaf5-50474dc53042@mailbox.org>
+Date: Tue, 16 Sep 2025 19:34:42 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|AM0PR04MB7075:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7c7d9d25-bce9-4716-c10f-08ddf54464d2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|19092799006|366016|1800799024|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?LDyqizBP/JBsFAivflMSzK1p+jKr/lzTJ1x2FDlbpVEGtcVp4T98LmAtNlPv?=
- =?us-ascii?Q?7xZvadjUtlq8oSTA/gu9Bsq1zoo3G2MaL4JmFDutR/ZAYoBDbJZAPaAWHCbJ?=
- =?us-ascii?Q?kylJzmDSevdohdmlJpcbB2GPDf26LnvYmAgeCMvrDTfF46C6nYikgVydMNAv?=
- =?us-ascii?Q?der8Q90F4Doy7QjoQ4pVPE7MZuSYi2lK7g0icngIUBjFW5DEZjXmAJuQbHdG?=
- =?us-ascii?Q?TvfeJc1Np1P/5wVm67KGK9fQabGOqkhuZI0mjrpsayjN6u7CdCvjr2QY4CpT?=
- =?us-ascii?Q?uII0YTmuvNsxvmf0vae+vdYIawvdm0A68uSiwEX2LtRd/9+C058Hru9SDOri?=
- =?us-ascii?Q?KJK/a5yknMWQe1/SN/HT3Vv9yLi9g6F8JIkDPmhDl7QGQRS+1jZFYboRPocL?=
- =?us-ascii?Q?u+YYVe5tdaL2h8f6SM+2JrTEzqK8GtD6D42ufunCMIXXRdKDfHZi00r6M8Jf?=
- =?us-ascii?Q?3khXm6QMM3BS19+URKqcbmbE1v1VtnbIKp54trII/l70jJKILAGJBd1kayrH?=
- =?us-ascii?Q?m9Y+8Uy2QNYqjnVZxTmqwy2SKjn9j+rJ2bE9+CNaKCjFjiEyNLivTGoEc9ga?=
- =?us-ascii?Q?Ok8OjfatFpvQq3sOY7FtaLB8mKNQpw4MS1wvl3TuljLFdoAqku8hyGaRmJU1?=
- =?us-ascii?Q?fbd7gxJW1/3YQiZ7fyjTbOvB9Z4XZsSuJAamKGZl4cl5JQ4zrquZmVRDXEEm?=
- =?us-ascii?Q?ZHk+dI8SCTmObVKNDw3LJejcMmGBz44hLGOcs7/xdVr32kAj3/qDBWsT6tpw?=
- =?us-ascii?Q?d6USKR+hjgYUwrvV1f0baVbjzU0a5cFMrmNCpyPKO61HqlJ3meXDSPfe4qq+?=
- =?us-ascii?Q?bRkH2xguPyLEDe5mveaEoFIArQRLzVYLK9Ac7m1xZ4XmPnpnsh006F9TWts3?=
- =?us-ascii?Q?9eKx36vciiDkiLqufObq8eph1651Y/K2C6P9X8FswyRicSP77Q0wUNQz7c+w?=
- =?us-ascii?Q?Vyh754cKLYlVQmw7l7RyCifS/7mWzyC/8LAvU1aO2rzfBBundMcjUCvbhoeP?=
- =?us-ascii?Q?FVXU/ff5kAe8T82alW9KlVZXbBo5LymHEPUGFc0dcHG66ENsew+HIyuPqDyc?=
- =?us-ascii?Q?qleE+U7lPP4yUfzk4iZfECJDaZccLiyf9p0H8y1szrafkvjduQlHzoNch8M8?=
- =?us-ascii?Q?kYPY5jogH+FRtt748vul2A7a1V93GajZBCo7Ime13S5+aHxLGZWM1Nik7gtN?=
- =?us-ascii?Q?wxx9KHlo47fdmioVGttgUNzoVynTbFlzT2/rWvck8LBQxGA7o2rUWku5UiIy?=
- =?us-ascii?Q?++gIGxasV+BBruNFiNwUOt3aFCVY4V1taFnwhbk/pP2C0kxAHiibvrPxq03h?=
- =?us-ascii?Q?nxd/bv5uTq0EunhTBmYtxwuqlXQRE+7Tq/3Ypp72OQrB7jghntpfvKlmycDG?=
- =?us-ascii?Q?CUErNQIroPldfrW4/f0Wk3MdETzU5L3wdK3eYDKtoQMCneIUccsjleyCxhQ2?=
- =?us-ascii?Q?m3sds8KXMPS0MDr0W1dHptak0peLlkFNq6tO8+DGJkh7YacSrBemnJC0aB08?=
- =?us-ascii?Q?k7nP/y+wm4UN0ZwqToKsaDjeHOVomapJ7VQSxYHnBj+ecWqJQ4Bve00xAW8V?=
- =?us-ascii?Q?InM1f3xTHr8gPMD/RO0ZlMGtqm+VccJT8afopMDXza9uWq/HQ+66wNrRNJwb?=
- =?us-ascii?Q?iZvExHr6EpG7DmunlXEZaau3pteMgJOflxTyLdFGQ1K803ygBmpST2zL8MiQ?=
- =?us-ascii?Q?yXCRVeDrGO8IH+P+bcIWidncqSF2roUESiIoO7RW1FqQLBfj6s++O5AAZrnd?=
- =?us-ascii?Q?M/a230RguA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(19092799006)(366016)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?28ahXiNqkzXrNPzWiXHj4uAfxlDjECY5NhGgcutr14+jrXNMOgwiY24iOeMC?=
- =?us-ascii?Q?440gXMafuBbgjWwJygA2eedXw2HxZ6ac14Q3EXL1kD7WXtdpv2HvJivHqEJN?=
- =?us-ascii?Q?5Ph/OyPE+qvvYeR7xNzkqTYiwzSkLib/UyrohFGlJX6+7JG91156FNHEC39j?=
- =?us-ascii?Q?jZEkDbW+iTzikYjXfs5+gYAJ4OKTeaIxfe4O+D1IkDFMP8H/KAu4RC5f8EcR?=
- =?us-ascii?Q?ebS5i/XCPD5Slo7vhFbrSrz1bkS/XhezESavKatWvDR+daEqic8pix6u5WDE?=
- =?us-ascii?Q?ypXK4OtMiOzeBlcCvvB/ox3tMDLH+ldDx/xDq3ZbVjtHuBXwVVFibbm793Jt?=
- =?us-ascii?Q?7RDneV/i3891DY5P11lga/JzGt6KrPx9nDDPtPSAJBXf0DKVWnykwzmMjtZu?=
- =?us-ascii?Q?cdldRep8Y5IDMDY+c5UqNlrw9iMdGRGC9nU1jQ0QmRJT9UBudz7L+Cfbcf+x?=
- =?us-ascii?Q?w66xZVfpD8A+8oxRIMGIUDSjcrrGOC2sLFzhzPYCfnqbbZRCy3GZOgbHqvkB?=
- =?us-ascii?Q?Mi0pgTbZNBNOBHP5H3voL8WIDoXPC3EUVpkwCyGXWqMftIL4RI5sJkAkWY5F?=
- =?us-ascii?Q?628aUY6ynmr62q3c1k/HjUMyRnf0vJwFEyAlrZLdk2AdaIPp0Kx9HXAijBkP?=
- =?us-ascii?Q?MLDpysCweklDWQYeYiVotNq7B+BGAfCdtzOOjlQKC8NyHCpXHl7Mg6ymqCNP?=
- =?us-ascii?Q?+SORze37+2zolhqvzSwBf5qw5ajAvRtgyXqhxBvG7m/bPcT7TwX9syg4bNKW?=
- =?us-ascii?Q?Y/Pgcv8D57uwkUgBrqUII9LtwPdGVZE8pNJ885DDmu2r8vtt1m967EcfSfY8?=
- =?us-ascii?Q?ap0Etgu39y9I/qCG+VpJ0SYCaiQDWabqTEimiSuyRpdzbvnMmzZ1IIKupX7T?=
- =?us-ascii?Q?l7lDFc2jKmsZ9X85BugIWgIpAwadeJvirkez9fLBH3BsW81wFFvoOVQieDOP?=
- =?us-ascii?Q?PvSKGKzAT/rOCyfVRitimZBZV66w8XDSnLNOBbykUG7sgnk/ryD7fpq5BfTJ?=
- =?us-ascii?Q?rOzraP9ey0Crd/Q3DxJsVg4ZDTGJ3rcWrbv+SPLb9P+L/xRsoZQ34EVjwxd7?=
- =?us-ascii?Q?KPJwmjiPIt7Acgkd5StmDPFkURBhfU0hll40wmPEXyyGwLd3+H0iKRGie3jq?=
- =?us-ascii?Q?ZDGm0a/mgLvn7qEzWTlUcRhiehJva3JWNhTrG68eSheJxyeNvA8Q2FzgI4n3?=
- =?us-ascii?Q?8UWJZX3/Jm+/QaI1/45yYE8KzJVzb3bspPlJuflzL0P2kRKURkHCs8VUTIQF?=
- =?us-ascii?Q?U4w9NFw5T95vbE/aOcAAg6eeZNiGBkLcpEW674PtF1waavdnbfuBW2y2c47A?=
- =?us-ascii?Q?/jBx05SbmZuqgPIuVHiS9h1PIlFkASecHodcVDxzCURz2wELQv5Yuvnq/XHr?=
- =?us-ascii?Q?jRDWLdt9nsyV/KqeuhvP50rpDrHqJnbFSktThDeoL4+fEuvXPVjjYMVtQald?=
- =?us-ascii?Q?xaT2kWDCLrQPl8XS2nNet8EksSdSC7tlCyVc2IJ/rCuxKDrKdBWDsIuiU0ye?=
- =?us-ascii?Q?+rMmAEid9ZSdeE8qWOS+hrcXk60NLhJyx5Wov4iDF8QDv4ROLq6sMaeNTuDw?=
- =?us-ascii?Q?ErsCCJkFDJRANjvDhZgguVvAfPTWRzhFq73Jfu8D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c7d9d25-bce9-4716-c10f-08ddf54464d2
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2025 17:13:45.6224
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gM9vcjfJ6A9Q6VRm1JJLiInM2dSNVzDh5qyw7CV7X5LNF6/xbdfwKFlnGoOKQiiI+0LfnNYhk0D1EREpvZD3bQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7075
+Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
+To: Rain Yang <jiyu.yang@oss.nxp.com>, boris.brezillon@collabora.com
+Cc: airlied@gmail.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, festevam@gmail.com, imx@lists.linux.dev,
+ kernel@pengutronix.de, krzk+dt@kernel.org,
+ linux-arm-kernel@lists.infradead.org, liviu.dudau@arm.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ p.zabel@pengutronix.de, peng.fan@nxp.com, robh@kernel.org,
+ s.hauer@pengutronix.de, shawnguo@kernel.org, simona@ffwll.ch,
+ sre@kernel.org, steven.price@arm.com, tzimmermann@suse.de
+References: <20250325153507.61d82e39@collabora.com>
+ <4c06aef3-a254-437c-aa15-8e3eb7bf5951@denx.de>
+ <20250325155231.0d1b1000@collabora.com>
+ <838a0c6b-845b-428d-86b3-1480e5b8080f@mailbox.org>
+ <20250904082224.113d0cd1@fedora>
+ <7d4e773b-64ac-49ce-8d8b-7a39c353d18f@mailbox.org>
+ <20250904160445.1671f140@fedora>
+ <36298ed9-05e4-4871-8e99-dfe814342c29@mailbox.org>
+ <20250904172019.58e5f589@fedora>
+ <4147d10f-fb54-4f1b-ac1b-58cf657a3aeb@mailbox.org>
+ <aMk1CISrn2_p0qzJ@oss.nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <aMk1CISrn2_p0qzJ@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: 55b373c7a525aab004c
+X-MBO-RS-META: nmx8tqfcxgafify9h3ojna5p9h68zpi5
 
-Convert tca8418_keypad.txt to yaml format.
+On 9/16/25 12:06 PM, Rain Yang wrote:
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v2
-- add TCA8418 to title
----
- .../bindings/input/tca8418_keypad.txt         | 10 ---
- .../devicetree/bindings/input/ti,tca8418.yaml | 61 +++++++++++++++++++
- 2 files changed, 61 insertions(+), 10 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/input/tca8418_keypad.txt
- create mode 100644 Documentation/devicetree/bindings/input/ti,tca8418.yaml
+Hello everyone,
 
-diff --git a/Documentation/devicetree/bindings/input/tca8418_keypad.txt b/Documentation/devicetree/bindings/input/tca8418_keypad.txt
-deleted file mode 100644
-index 2551850091678..0000000000000
---- a/Documentation/devicetree/bindings/input/tca8418_keypad.txt
-+++ /dev/null
-@@ -1,10 +0,0 @@
--This binding is based on the matrix-keymap binding with the following
--changes:
--
--keypad,num-rows and keypad,num-columns are required.
--
--Required properties:
--- compatible: "ti,tca8418"
--- reg: the I2C address
--- interrupts: IRQ line number, should trigger on falling edge
--- linux,keymap: Keys definitions, see keypad-matrix.
-diff --git a/Documentation/devicetree/bindings/input/ti,tca8418.yaml b/Documentation/devicetree/bindings/input/ti,tca8418.yaml
-new file mode 100644
-index 0000000000000..624a1830d0b0d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/input/ti,tca8418.yaml
-@@ -0,0 +1,61 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/input/ti,tca8418.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: TI TCA8418 I2C/SMBus keypad scanner
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,tca8418
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+allOf:
-+  - $ref: matrix-keymap.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/input/input.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        keypad@34 {
-+            compatible = "ti,tca8418";
-+            reg = <0x34>;
-+            interrupt-parent = <&gpio5>;
-+            interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
-+            keypad,num-rows = <4>;
-+            keypad,num-columns = <4>;
-+            linux,keymap = < MATRIX_KEY(0x00, 0x01, BTN_0)
-+                             MATRIX_KEY(0x00, 0x00, BTN_1)
-+                             MATRIX_KEY(0x01, 0x01, BTN_2)
-+                             MATRIX_KEY(0x01, 0x00, BTN_3)
-+                             MATRIX_KEY(0x02, 0x00, BTN_4)
-+                             MATRIX_KEY(0x00, 0x03, BTN_5)
-+                             MATRIX_KEY(0x00, 0x02, BTN_6)
-+                             MATRIX_KEY(0x01, 0x03, BTN_7)
-+                             MATRIX_KEY(0x01, 0x02, BTN_8)
-+                             MATRIX_KEY(0x02, 0x02, BTN_9)
-+            >;
-+        };
-+    };
--- 
-2.34.1
+> you're right.
+> *0x4d810008=1, this register is a write-once register, so it was moved into SM
+> since imx 6.12.3 release, and latest 6.6.52 release. some document work is still
+> needed in the future.
+> 
+> Hi Marek,
+> thanks for your effort to make the i.MX95 GPU upstreamed.
+> I created one PR to support i.MX95 GPU expcept the multi power domain[1],
+> but it seemed to be placed in the wrong location. No one responded to it,
+> so I closed it.
+> 
+> for the suspend/resume issue, the panthor driver works well with 6.12.34
+> patched with pm_domains operation like you did.
+> run vkmark->suspend 10min in the 4th console->wakeup in the 4th console.
+> 
+> can you show me your SM version when uboot start,
 
+Build 470, Commit a07928b4 Sep 03 2025 23:43:49
+
+> and the G310 firmware version which can be found by search git_sha string.
+
+That would be 50.2 . I now tried 53.0 and I suspect something might have 
+been fixed there ?
+
+As for the reset via block controller at 0x4d810000, without it, I get 
+SError, so it seems the reset is still needed.
+
+[    2.788317] panthor 4d900000.gpu: [drm] clock rate = 800000000
+[    2.795246] panthor 4d900000.gpu: EM: created perf domain
+[    2.801029] Internal error: synchronous external abort: 
+0000000096000010 [#1]  SMP
+[    2.808597] Modules linked in:
+[    2.811658] CPU: 3 UID: 0 PID: 52 Comm: kworker/u24:1 Tainted: G   M 
+               6.17.0-rc6-next-20250916-00076-ga73c9babac81-dirty #496 
+PREEMPT
+[    2.824939] Tainted: [M]=MACHINE_CHECK
+[    2.828684] Hardware name: Board (DT)
+[    2.834770] Workqueue: events_unbound deferred_probe_work_func
+[    2.840601] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS 
+BTYPE=--)
+[    2.847545] pc : panthor_hw_init+0x18/0x620
+[    2.851728] lr : panthor_device_init+0x388/0x5e0
+[    2.856333] sp : ffff800082383aa0
+[    2.859643] x29: ffff800082383aa0 x28: 0000000000000000 x27: 
+0000000000000000
+[    2.866782] x26: ffff000080034c28 x25: 0000000000000000 x24: 
+0000000000000000
+[    2.873909] x23: ffff00008036f010 x22: ffff000081082638 x21: 
+ffff00008036f010
+[    2.881033] x20: ffff000081082000 x19: ffff000081082000 x18: 
+0000000000000801
+[    2.888165] x17: 0000000000000000 x16: 0000000000000100 x15: 
+0000000000000001
+[    2.895298] x14: 0140000000000000 x13: ffff800083800000 x12: 
+ffff800083c7ffff
+[    2.902422] x11: 000000004dd80000 x10: 0000000040000000 x9 : 
+ffff8000809696b8
+[    2.909555] x8 : ffff8000823839a0 x7 : ffff000081082000 x6 : 
+ffff800082383a50
+[    2.916679] x5 : ffff8000823839d0 x4 : ffff800081beb4d0 x3 : 
+ffff800081beb000
+[    2.923803] x2 : 0000000000000000 x1 : ffff0000809a90c0 x0 : 
+ffff800083800000
+[    2.930934] Call trace:
+[    2.933378]  panthor_hw_init+0x18/0x620 (P)
+[    2.937555]  panthor_device_init+0x388/0x5e0
+[    2.941812]  panthor_probe+0x40/0x68
+[    2.945383]  platform_probe+0x60/0xa8
+[    2.949040]  really_probe+0xc0/0x2b8
+[    2.952611]  __driver_probe_device+0x7c/0x120
+[    2.956962]  driver_probe_device+0x40/0x180
+[    2.961130]  __device_attach_driver+0xb4/0x140
+[    2.965567]  bus_for_each_drv+0x88/0xf8
+[    2.969398]  __device_attach+0xa0/0x1a0
+[    2.973220]  device_initial_probe+0x18/0x30
+[    2.977397]  bus_probe_device+0x9c/0xa8
+[    2.981228]  deferred_probe_work_func+0x88/0xc8
+[    2.985743]  process_one_work+0x158/0x3a8
+[    2.989754]  worker_thread+0x2d8/0x410
+[    2.993498]  kthread+0x144/0x200
+[    2.996722]  ret_from_fork+0x10/0x20
+[    3.000296] Code: a9bb7bfd aa0003e7 910003fd f9430800 (b9400000)
+[    3.006378] ---[ end trace 0000000000000000 ]---
