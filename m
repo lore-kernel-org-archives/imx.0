@@ -1,192 +1,230 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013005.outbound.protection.outlook.com [52.101.72.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9393F2FBE14
-	for <imx@lists.linux.dev>; Wed, 17 Sep 2025 14:44:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758120280; cv=fail; b=pUQyv9mfPwJNLLtUbTpmI8o9TAGQsgBO9QuC9chYRyDoDVi/Hsd7Y/TTrBl6bZ8I1YqL4jSc8LIrSvF74U7KTVF1OK4MJ/QtNbFlP7IUQW4OB3Vf8Zvufb2JS/qcWUPHiWpLmHnJ5IfE0pkK/Fw/aMBUXtLk3WhpUTJF1vmLY0o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758120280; c=relaxed/simple;
-	bh=hYN9Q2s62fgxHGfUJV8zSo3F+EZDNdKJH/nmCx3iP28=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rBDJUly1u3fMG89xydvZJMgyZrijlaSAsfL0H7j1ABpl3DZsbZY9SQzeslcRoWipmU2jfJPpnm1qDUSzPxAJz7fK+mIoeaSoy6w7sieZ1MgPFyb6fSTkOkU0Dc6ljQFz+8SaCyI99Rsb0HW0PD1aXdaXqTOMFWuN3jWfuEORWxE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=l0pY/vAM; arc=fail smtp.client-ip=52.101.72.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDBD323F68;
+	Wed, 17 Sep 2025 14:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758120372; cv=none; b=lSLy1EoMskaZSpkenGp1LEYsnGD8YnAiokuHy7SbQiCbZXij3dwtERi5ndg3M6il6Qqni6Xt7I81F/m4ZzxTPyfIqauEaFxXJYykt0wmuXICI8Du2PENg3UhIVafaf1k0GBlu47T8geJzWnNsq2pAPgjhrnvIk/XTqVR5MwFnu8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758120372; c=relaxed/simple;
+	bh=QiXOszuUJaheRV8S9Arrs3CKQDXneHf83M7ZXth8QR4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=R4nUwT2jQbo68gOJaBL73t34/NFRBkYZCwADSS174Bt5aWyjWJVfOPrAi6dJrW149GUiYmNf+2eGstFLVLyLpgUoe8NEY0xFfJv8PW77axrhJsuyR35ZTjAhlKqB3n1kw1tQRUbR4kRyPVSdxFCJWbRAO9jrDrldxQmSItUksHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MIwa8x9g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="l0pY/vAM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mI6ZFFmLE4etXFIf3NEeDXjSRNeBUTN6b3QtcCDTigd1WHk9b2uc6kwW0H392ba2iXlDk4rvKdPoTeOmgr2LUE3s+GLtjuIFiHT5oTevd9mjrslu4Q7wFR7BQcumWfxYUCcw0oTI9CtXciK/F35z6QQP38h93rhTcY2YaoXLFj1zRu9hk0bvEN9/rG1ohRTAiJiy99wkLBTKnnFyLbql8FWarSzEA78orXr+Ef74U4daANOQ4zzZThn3uwSc2D864fVMwmkU8xi6mvWz9jqeCMh6NVE42Q75Z7Ra1OjO0PpiGqkVph+WFfdhftSNREAhVsRidOBSOtQP8ZTiVMEc5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Zpq/ddmYXKIWjy3959yyawbAs0oGUjNe5Fqu0QYNsjc=;
- b=ud64NcV2YAj6XGEcQDe/u3mi4umWwYqGYSAj5m3CsQI6Ok1Woj7ESi7KQtl/zFquNnCmP2/Vllfv1NwU7zM59eZvjfDHyfQcEH8YSBsFthUyykfy3UKlAO5qY5aSRSTw69JrLJz3C4nI5fU8Ww6B4X7mpNlLlNpPFbIEn10/mIKUs33yQVkoLgimgROJXWlZAOvgsJmFGFgNHNIMuZyMt9HcQReSd1b9JoAIAbsi2NQHALSztiRVzC0AOYzrbp+vExGRtlq/oudgZ/DUxkmTv/eeIsv0j0+VdmoB1Y29GXGiq8XL9NmolURTT0plBropz4BIeTjxSUGYbG70Fi8heA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zpq/ddmYXKIWjy3959yyawbAs0oGUjNe5Fqu0QYNsjc=;
- b=l0pY/vAMNqoqKLL+vAM/LMpzhZe0IK93/0XOZn2SqVTesoSU25jERgsm5NxwcTmcvXoTuz7qwHuCKHT7ZxbQvPcN+3hUArj8gxuzMwJfz3lt9+yT1QIZ2x2aapFU1KsGZkFaERU1BxWudNAov/QeSUAnWKiMn5TwzV2Q6NC3+4aZ4uUw9oj1D8owP6lsHSeu3K4kPARX5FchID6guROsnnPH9cMSWOwiih2cHlFdRunb63oRhxXfO03ZtmQpOQs+85MQXxX8smPgAtd8eyzolrGVFCLFFRZFN+lmD/xs5q2sOVgVXgGFFXs8B/mNADi+VKF+gAPUSnu7DHU9vdbXuw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by AS8PR04MB9175.eurprd04.prod.outlook.com (2603:10a6:20b:44a::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.12; Wed, 17 Sep
- 2025 14:44:35 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9137.012; Wed, 17 Sep 2025
- 14:44:35 +0000
-Date: Wed, 17 Sep 2025 10:44:26 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Haibo Chen <haibo.chen@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Walle <michael@walle.cc>, Peng Fan <peng.fan@nxp.com>,
-	Marco Felsch <m.felsch@pengutronix.de>, Han Xu <han.xu@nxp.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] arm64: dts: correct the flexspi compatible string
- to match with yaml
-Message-ID: <aMrJSkVYSH1BO5zf@lizhi-Precision-Tower-5810>
-References: <20250917-flexspi-dts-v2-0-7e2a95e3cf4d@nxp.com>
- <20250917-flexspi-dts-v2-1-7e2a95e3cf4d@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917-flexspi-dts-v2-1-7e2a95e3cf4d@nxp.com>
-X-ClientProxiedBy: SJ0PR03CA0139.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::24) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIwa8x9g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC381C4CEF0;
+	Wed, 17 Sep 2025 14:46:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758120371;
+	bh=QiXOszuUJaheRV8S9Arrs3CKQDXneHf83M7ZXth8QR4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=MIwa8x9gHctSBJzz9zwPFWbclfLYWnLFUCKoJnI+49+anpgrnykmOdyUjTTvAbLkZ
+	 82mnCK4D4uDWlw4RIpC+5ERBSM1P5SR4ciJanNbxduEky/QciqERoB1qq1NED9XiSn
+	 66gB6tkJyjfAZDQrfQPzBle3VfJkdjxsSS4F24ej1n2WfyFEDXrDtnYMz1BhYgvAdE
+	 6O7kyVki6zaIYpXNAPRNVkX6gb9dEBPhchv6lIWzdkQjoqjXmsB015AvkbAdSVuJ0y
+	 aCJsawhoW8KjCtbxUdJx5ZTtm6WpZb6XyJBaNjU+g23ptMjyxWCIj1Z9Ci9qorSl8d
+	 Fy0HzdBvAOIKA==
+From: Maxime Ripard <mripard@kernel.org>
+Subject: [PATCH v4 00/39] drm/atomic: Get rid of existing states (not
+ really)
+Date: Wed, 17 Sep 2025 16:45:41 +0200
+Message-Id: <20250917-drm-no-more-existing-state-v4-0-5d4b9889c3c8@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS8PR04MB9175:EE_
-X-MS-Office365-Filtering-Correlation-Id: bcbf1eaf-e6c7-41e6-4f51-08ddf5f8b863
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|19092799006|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2kNWDNho+bo9eCOZEJd+nIDDTE8Kx7gHz0K5tZ5msy2i4lZMm6wkpYhFfOuC?=
- =?us-ascii?Q?WqxsuUXBB7ee3y9nUpkWKrKnkKhm3JJ1nGlzrcZs3rLTME69nb4H6mtvVTat?=
- =?us-ascii?Q?OWPa6LmJztONa/HDnZ8vZPiR2RXb1rC69iQwaZ/4FOioEPdDK6e8Q0tHn/w+?=
- =?us-ascii?Q?UdwglfZ4jQQi9+/t/dysvy9B2IiYMNNMM6V1buwMUGPmXqd9ADTrRcAil4Bv?=
- =?us-ascii?Q?MQf3i17auk9dARwxTgjL/6ebak+TfFYF7EEogQ1Z+PqpyXAKA8vwtdpEfUAC?=
- =?us-ascii?Q?tnncdvkbe3bd82goMPd2tOnTHgSb1DDLtJ6OChP60VPPOXpFGwMb5/BskGwL?=
- =?us-ascii?Q?nWbymtOLD8j0zG6xjA4NGsSshz/rdveCe/rCMEmTo2rYNR555RAQw/u+DQFm?=
- =?us-ascii?Q?ZZAfDY+1fUMhrulDweZttp9Wrcbu1YMiTU74hqcCD+BI9Gf/yJqnfOFETZ4S?=
- =?us-ascii?Q?+xmPdttV8alyLwR/qJb67nPwcYcrDbYCDPQ7XKjwpGjgMWH6FQpmgdnu3gVq?=
- =?us-ascii?Q?tpbV1Gkn4lObTpX6Ch7ONwQC+KbrKD4pPZO/HOmvK8/93EH8KN9F/NujtB8u?=
- =?us-ascii?Q?Ags+OAlMkGwcLwzYLH5UFUOV4vcO4TPMIGsm7dGWE/fQOC/uMemBl6Fk0Uxs?=
- =?us-ascii?Q?6QKwywiDzkZ435vOFlRnQfbCPHdZdUa4oMRv3v05YoL6SUihTrDa0KOmkzSv?=
- =?us-ascii?Q?XamnIrqAAWcxHPQ5jB2pPSsrMm1dQHLzFLPN+fFh1I9lQMH88LSzcBCDwPmD?=
- =?us-ascii?Q?0NwI8NM9lpBms41Mp0Kydglqm/7fHFczn5dU8tCnoiNlqdVk3Md3b/RpL7tm?=
- =?us-ascii?Q?BhSbSbq46TXduQdop1k3sWUFHOD+20HG5qgZrY9kk0dMRgbUsxDfHbh3NKNO?=
- =?us-ascii?Q?oLDOMVB2IrZ5D24yv9Ej60dIcQnl5dmQ9l/1yt0ttCzuBQHlDl9yKOpL/Mn/?=
- =?us-ascii?Q?/qOWrtZgKNHJT1NqRFHCBmvTg7VYgibUKKJFDra8u1eZAUpwTppqtoM5GNKf?=
- =?us-ascii?Q?8aBPdwdOchwwi8057WS8Z2gtM1DSsa/8h5KSg+R92dJrdmP+a9mlEUwG1vFc?=
- =?us-ascii?Q?gkj7eGflhCoWD87SoKic+3jDU8K4duyOS8Xh+OB3p72s29XxJ5wnsPNL+O0J?=
- =?us-ascii?Q?rgapMQb+MWTiZoFoTv6gjB9ArZWdxU3gjpWZeC2m9DUF2Mjgvt1TgCekdug5?=
- =?us-ascii?Q?w1exx7UKXiV/vLHffrVV9Czm2gkdLzx8HorTYQ+6Urb88AcG1IPrR3KYASuo?=
- =?us-ascii?Q?G+nIf/F4TSfwrOnSitIII0FNryLtQIwXFLpRgF23KpPrpS9xGPtAN5gJPKtb?=
- =?us-ascii?Q?8v4v4mSLrVLe5hWDk4OMYJ+Y9brRBSp0IpGt1tt30/LApzFcU+ymDt5PXVDE?=
- =?us-ascii?Q?qcBMVxHjnJp6Tdx8bufq4bbv9+gMcDmFpTKReOfBtf9k9p2+PRDyXNgRQV8r?=
- =?us-ascii?Q?f/HGmMyCZMH352xZGV+5mbtXR8u0HNoT2iJL15q4+tXWVnqqbFD22g=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9jFNB9YhbKayP62IGEI76vxZAN67Q3p1RaitZFzB9HvWogsDXgBuWTiSWbOq?=
- =?us-ascii?Q?qb58upEM4Rl3IZL/jyyvJfBNn+SwJIBvSqsrFOzTqCFpxuZy2h2rEGvdYZ3k?=
- =?us-ascii?Q?DFdtibJN2/9Y344ZCaUOWQvVBlV0hKJjFewzvx3xkW3ECg0t/0J+QJQQ06ix?=
- =?us-ascii?Q?cD5Bx1+YFbXXVPvyzqnQ6vrb2cKsAbIwEAw8jCQDptm/FPxmchME2kwA+SH4?=
- =?us-ascii?Q?4ZizO1te5MHLZMUwYv0tRDTCE2yMUUdTjiFkJjDtbsM54fwCZM6xhuRolqkw?=
- =?us-ascii?Q?BcCxDHt2fzoHe+Xj/xRVHPAdVRMlcSNVhxmTjybL2z7t88MzmfH/6ohU45qO?=
- =?us-ascii?Q?WqyDKbr8sPChMChIA68ffTJF58CR8/i+RDAxLlYuNScR+XQaGbjEbE/l6rMp?=
- =?us-ascii?Q?7dOQXLsUmfOPtg0E5BdGCTMtqAYxX5zs1ESQW/jr66EhziHne4W1oeQOmYNb?=
- =?us-ascii?Q?g71JYTWYbuS7Giclzmwp2PWrbLVhK3ZM/UU80NYGcmTkon8FhWqADLCfHM/T?=
- =?us-ascii?Q?f6jihtNNs3y8TqC0Lk4om6qorapRzC7H/nrkXWVOIWY2qTi+dhqG8jz9jbIx?=
- =?us-ascii?Q?kWnyIZrUqHYB0EbDK5f219/1i4PuIXP8Vdq1CTAWx/dLVX4sW+yz+3lmckRa?=
- =?us-ascii?Q?MQZbQlzgw8azD09NOT7XUaFZgkneOgyLvFFdVj+iw66ja0Pic4BJ2Kd90F28?=
- =?us-ascii?Q?HH2suCSxG1enizAkefOr6bnlGrfDCCKpLPCMlyUn6UOY/gyuPN10afvgBdbC?=
- =?us-ascii?Q?hnere98QSSP+n2GFcHMeIjxDcKuGKPcVx7e7PdWh/tpkIkK8TqNDfH2SqgLa?=
- =?us-ascii?Q?9dBNsKy3kKAw/O1F805PbexvU7iH/TWiJFWOJUxF8q2xanCjp7suUpjGD8hv?=
- =?us-ascii?Q?rx0HXnL56AEpn7GzFRtdugGkJK57quHcWSRlgIpYftx++yOKlrIpwcvlTCd8?=
- =?us-ascii?Q?qMvpPcAg7EQEKifOFLpIy7YVwH3W9KCNauEyWG8j3Nx+lUYSGGT0gkWTKUwG?=
- =?us-ascii?Q?h0Cur30rRRwl9PKBqq1w/80D3UNGLQZU7jb71iQ6rtsuHGwbeN5cAGrRsxet?=
- =?us-ascii?Q?yvAlQHqsv7suejxQUQdSwRisW+MV2B6/jgDkX2+kJm1lg2l12RK2lEyHRfyP?=
- =?us-ascii?Q?klkodCUK9W1g9K84fujoL0ftTWCnv83VTWbWKrUYXqTXoKp7AGWbV7NZPxve?=
- =?us-ascii?Q?EbGFNYTKZyJkA2jxt6QdG6SJbK5qnte+RaVqpff2oxcomrMPFWshquCVBFJ3?=
- =?us-ascii?Q?DvaesU8vXacrXpiLLNGMqQfJnq9x09BfRqMAD5NlRR5eoZE07hCkJ4rp3yZm?=
- =?us-ascii?Q?6aipoPir7TkEeFrSqV66kN987r8EZI7SjWuwfA49KT+lLKvi21E7XY4QfqN4?=
- =?us-ascii?Q?tsmkiN/24noPjSAXn7ySFLg38oHq2W4Ix/9LPim4kcks4TKOrXAJhVjiyhml?=
- =?us-ascii?Q?SKmhutqn7kwn4nfhsoJrGJi9nmF7J9W4XNMUycaTW1/V6owLXApT1OycZxwx?=
- =?us-ascii?Q?9FGwFN50i6jYkF7n7+RDQ4qof2o8W0wjVI6JPsxhLL3wiPFcpKWHHPepR71p?=
- =?us-ascii?Q?p1+YDOatMFOFD2ENJUbXnj9mEcjqZBXxCM0Vmusw?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bcbf1eaf-e6c7-41e6-4f51-08ddf5f8b863
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 14:44:35.1612
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eceGPHhF6bBAtOm+TFH9KfuGNHzOxpJUw3JKXZmprD0T3tfGgChacSc2+VO/2ySVd6Npg1I/575QThde4JPs0g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9175
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJXJymgC/43NQQ6CMBCF4auQrh1TWgvUlfcwLqCdQqO2piUEQ
+ 7i7hY0aE+Lyf5l8M5GIwWIkx2wiAQcbrXcpDruMqK52LYLVqQmjTNCKCdDhDs7D3QcEHG3srWs
+ h9nWPIBvOBFN5zXlDEvAIaOy44udL6i5d+/Bcfw35sv7FDjlQMLRSSktTCSVPVwwOb3sfWrK4A
+ 3tbkrJNiyVLo6yMEqbQRfFj8U9Lblo8Wbkq61LLgirOv6x5nl/BcxAsXQEAAA==
+X-Change-ID: 20250825-drm-no-more-existing-state-9b3252c1a33b
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ =?utf-8?q?Ville_Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>, 
+ Louis Chauvet <louis.chauvet@bootlin.com>, 
+ Haneen Mohammed <hamohammed.sa@gmail.com>, 
+ Melissa Wen <melissa.srw@gmail.com>, Jyri Sarha <jyri.sarha@iki.fi>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Paul Cercueil <paul@crapouillou.net>, linux-mips@vger.kernel.org, 
+ Liviu Dudau <liviu.dudau@arm.com>, Russell King <linux@armlinux.org.uk>, 
+ Manikandan Muralidharan <manikandan.m@microchip.com>, 
+ Dharma Balasubiramani <dharma.b@microchip.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ linux-arm-kernel@lists.infradead.org, Inki Dae <inki.dae@samsung.com>, 
+ Seung-Woo Kim <sw0312.kim@samsung.com>, 
+ Kyungmin Park <kyungmin.park@samsung.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, linux-samsung-soc@vger.kernel.org, 
+ Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+ Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+ Lucas Stach <l.stach@pengutronix.de>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
+ Edmund Dea <edmund.j.dea@intel.com>, Paul Kocialkowski <paulk@sys-base.io>, 
+ Sui Jingfeng <suijingfeng@loongson.cn>, 
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Rob Clark <robin.clark@oss.qualcomm.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Abhinav Kumar <abhinav.kumar@linux.dev>, 
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>, Sean Paul <sean@poorly.run>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
+ Sandy Huang <hjc@rock-chips.com>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+ Andy Yan <andy.yan@rock-chips.com>, linux-rockchip@lists.infradead.org, 
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, linux-sunxi@lists.linux.dev, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, linux-tegra@vger.kernel.org, 
+ Hans de Goede <hansg@kernel.org>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5910; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=QiXOszuUJaheRV8S9Arrs3CKQDXneHf83M7ZXth8QR4=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDBmnTs7nOfS799mbr9bv3QWVn5ovvPrUukglLeninLOyA
+ R/m/WFW65jKwiDMySArpsjyRCbs9PL2xVUO9it/wMxhZQIZwsDFKQATMeJlbHgVHJux/5lLmPAb
+ rsdT1NM0Dn/JDXOK3CIpESl7v+b+5x1ai+viVEpeF7X81Wy2KQtqZWyYybN97q7MiwaiXzYWJTp
+ ZHKzc3xN17e/JKRb7Pqd0/KjmNtjwSJFdl1GqyGg2q73RpDcA
+X-Developer-Key: i=mripard@kernel.org; a=openpgp;
+ fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
-On Wed, Sep 17, 2025 at 04:42:27PM +0800, Haibo Chen wrote:
-> According to Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml,
-> imx93/imx95 should use it's own compatible string and fallback
-> compatible with imx8mm.
->
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
+Hi,
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Here's a series to get rid of the drm_atomic_helper_get_existing_*_state
+accessors.
 
->  arch/arm64/boot/dts/freescale/imx91_93_common.dtsi | 2 +-
->  arch/arm64/boot/dts/freescale/imx95.dtsi           | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-> index 52da571f26c4e8a2703e4476b5541fa7aca52f10..7958cef353766a430df5e626ff2403dc05a974b1 100644
-> --- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-> @@ -706,7 +706,7 @@ flexcan2: can@425b0000 {
->  			};
->
->  			flexspi1: spi@425e0000 {
-> -				compatible = "nxp,imx8mm-fspi";
-> +				compatible = "nxp,imx93-fspi", "nxp,imx8mm-fspi";
->  				reg = <0x425e0000 0x10000>, <0x28000000 0x10000000>;
->  				reg-names = "fspi_base", "fspi_mmap";
->  				#address-cells = <1>;
-> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> index 1292677cbe4eb8c5f3ec2874a17ad6efd0111192..a0ff7002be9fa0529ba5712df4c056c56f0e3242 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> @@ -945,7 +945,7 @@ flexcan3: can@42600000 {
->  			};
->
->  			flexspi1: spi@425e0000 {
-> -				compatible = "nxp,imx8mm-fspi";
-> +				compatible = "nxp,imx95-fspi", "nxp,imx8mm-fspi";
->  				reg = <0x425e0000 0x10000>, <0x28000000 0x8000000>;
->  				reg-names = "fspi_base", "fspi_mmap";
->  				#address-cells = <1>;
->
-> --
-> 2.34.1
->
+The initial intent was to remove the __drm_*_state->state pointer to
+only rely on old and new states, but we still need it now to know which
+of the two we need to free: if a state has not been committed (either
+dropped or checked only), then we need to free the new one, if it has
+been committed we need to free the old state. 
+
+Thus, the state pointer is kept (and documented) only to point to the
+state we should free eventually.
+
+All users have been converted to the relevant old or new state
+accessors.  
+
+This was tested on tidss.
+
+Let me know what you think,
+Maxime
+
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+---
+Changes in v4:
+- Fix ingenic
+- Rebased on latest drm-misc-next tag
+- Link to v3: https://lore.kernel.org/r/20250909-drm-no-more-existing-state-v3-0-1c7a7d960c33@kernel.org
+
+Changes in v3:
+- Added an armada rework patch
+- Added an ingenic fix
+- Collected tags
+- Rebased on latest drm-misc-next tag
+- Link to v2: https://lore.kernel.org/r/20250902-drm-no-more-existing-state-v2-0-de98fc5f6d66@kernel.org
+
+Changes in v2:
+- Dropped the first and second patches
+- Reworked the recipient list to be nicer with SMTPs
+- Link to v1: https://lore.kernel.org/r/20250825-drm-no-more-existing-state-v1-0-f08ccd9f85c9@kernel.org
+
+---
+Maxime Ripard (39):
+      drm/atomic: Convert drm_atomic_get_connector_state() to use new connector state
+      drm/atomic: Remove unused drm_atomic_get_existing_connector_state()
+      drm/atomic: Document __drm_connectors_state state pointer
+      drm/atomic: Convert __drm_atomic_get_current_plane_state() to modern accessor
+      drm/atomic: Convert drm_atomic_get_plane_state() to use new plane state
+      drm/vkms: Convert vkms_crtc_atomic_check() to use new plane state
+      drm/tilcdc: crtc: Use drm_atomic_helper_check_crtc_primary_plane()
+      drm/atomic: Remove unused drm_atomic_get_existing_plane_state()
+      drm/atomic: Document __drm_planes_state state pointer
+      drm/atomic: Convert drm_atomic_get_crtc_state() to use new connector state
+      drm/ingenic: ipu: Switch to drm_atomic_get_new_crtc_state()
+      drm/arm/malidp: Switch to drm_atomic_get_new_crtc_state()
+      drm/armada: Drop always true condition in atomic_check
+      drm/armada: Switch to drm_atomic_get_new_crtc_state()
+      drm/atmel-hlcdc: Switch to drm_atomic_get_new_crtc_state()
+      drm/exynos: Switch to drm_atomic_get_new_crtc_state()
+      drm/imx-dc: Switch to drm_atomic_get_new_crtc_state()
+      drm/imx-dcss: Switch to drm_atomic_get_new_crtc_state()
+      drm/imx-ipuv3: Switch to drm_atomic_get_new_crtc_state()
+      drm/ingenic: Switch to drm_atomic_get_new_crtc_state()
+      drm/kmb: Switch to drm_atomic_get_new_crtc_state()
+      drm/logicvc: Switch to drm_atomic_get_new_crtc_state()
+      drm/loongson: Switch to drm_atomic_get_new_crtc_state()
+      drm/mediatek: Switch to drm_atomic_get_new_crtc_state()
+      drm/msm/mdp5: Switch to drm_atomic_get_new_crtc_state()
+      drm/omap: Switch to drm_atomic_get_new_crtc_state()
+      drm/rockchip: Switch to drm_atomic_get_new_crtc_state()
+      drm/sun4i: Switch to drm_atomic_get_new_crtc_state()
+      drm/tegra: Switch to drm_atomic_get_new_crtc_state()
+      drm/tilcdc: Switch to drm_atomic_get_new_crtc_state()
+      drm/vboxvideo: Switch to drm_atomic_get_new_crtc_state()
+      drm/vc4: Switch to drm_atomic_get_new_crtc_state()
+      drm/atomic: Switch to drm_atomic_get_new_crtc_state()
+      drm/framebuffer: Switch to drm_atomic_get_new_crtc_state()
+      drm/atomic: Remove unused drm_atomic_get_existing_crtc_state()
+      drm/atomic: Document __drm_crtcs_state state pointer
+      drm/ingenic: crtc: Switch to ingenic_drm_get_new_priv_state()
+      drm/atomic: Convert drm_atomic_get_private_obj_state() to use new plane state
+      drm/atomic: Document __drm_private_objs_state state pointer
+
+ drivers/gpu/drm/arm/malidp_planes.c             |   2 +-
+ drivers/gpu/drm/armada/armada_plane.c           |   7 +-
+ drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c |   2 +-
+ drivers/gpu/drm/drm_atomic.c                    |  21 ++--
+ drivers/gpu/drm/drm_framebuffer.c               |   2 +-
+ drivers/gpu/drm/exynos/exynos_drm_plane.c       |   2 +-
+ drivers/gpu/drm/imx/dc/dc-plane.c               |   2 +-
+ drivers/gpu/drm/imx/dcss/dcss-plane.c           |   4 +-
+ drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c         |   3 +-
+ drivers/gpu/drm/ingenic/ingenic-drm-drv.c       |  13 ++-
+ drivers/gpu/drm/ingenic/ingenic-ipu.c           |   4 +-
+ drivers/gpu/drm/kmb/kmb_plane.c                 |   3 +-
+ drivers/gpu/drm/logicvc/logicvc_layer.c         |   4 +-
+ drivers/gpu/drm/loongson/lsdc_plane.c           |   2 +-
+ drivers/gpu/drm/mediatek/mtk_plane.c            |   3 +-
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c      |   7 +-
+ drivers/gpu/drm/omapdrm/omap_plane.c            |   2 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c     |   6 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c    |   2 +-
+ drivers/gpu/drm/sun4i/sun8i_ui_layer.c          |   3 +-
+ drivers/gpu/drm/sun4i/sun8i_vi_layer.c          |   3 +-
+ drivers/gpu/drm/tegra/dc.c                      |   2 +-
+ drivers/gpu/drm/tilcdc/tilcdc_crtc.c            |   9 +-
+ drivers/gpu/drm/tilcdc/tilcdc_plane.c           |   3 +-
+ drivers/gpu/drm/vboxvideo/vbox_mode.c           |   8 +-
+ drivers/gpu/drm/vc4/vc4_plane.c                 |   6 +-
+ drivers/gpu/drm/vkms/vkms_crtc.c                |   4 +-
+ include/drm/drm_atomic.h                        | 144 ++++++++++++------------
+ 28 files changed, 132 insertions(+), 141 deletions(-)
+---
+base-commit: 91494dee1091a14d91da6bcb39e12a907765c793
+change-id: 20250825-drm-no-more-existing-state-9b3252c1a33b
+
+Best regards,
+-- 
+Maxime Ripard <mripard@kernel.org>
+
