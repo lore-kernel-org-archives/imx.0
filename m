@@ -1,73 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6636EA55;
-	Wed, 17 Sep 2025 22:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6016430FC12;
+	Wed, 17 Sep 2025 22:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758147838; cv=none; b=AIcxS8001dorJj6bFu/Rt7oL9iznrb01FSqAlQxnU70P+fKpkci/80ukOtyUBrS3PJbl3R8meep2Hm2kz2eNe6e1qQjqsdHhKdCWh7plUnOC+frXIwIPHEjC3NeAJ8UnzdZWVu+0bFZah3Sif3lV2RPHyk9wjRIa3zuRsRuTeb0=
+	t=1758148208; cv=none; b=QN4+0gDqQujQQ1laimjeovYxIWfUJ8RQXtYYOUUGup3bvmlnOSDfHBlGBIWdzW2Nh/s70Q1+Mg0+Oh2S/bdwadz6wQZZuVcbXYe5W2NiQ7SFNrMtAFswgEsY35SzUSx2EIobiXzbOF4lqcnI/itWIWD5rnpOoFDQRAZhFllNtJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758147838; c=relaxed/simple;
-	bh=UnGcqVgS4GD/7L0fDg931OMlNpuv6k722YO8GEx8cqA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=DKgB/rxaWOKQ0MC/d9lxHrOXPyiFJbRJzAxbtit+GZBNJlZ0lECDY6C5W2wI2CcumHKFbrQbkbxVltvgcQ3xuSH/K3thKRWpReFskPLxpx/dTENMM3GJFb7u5eMo6pG9rzEMuruHskSnjZzELvypt4xFWGySe/piqA6Gjhr6bdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FscnWqJ9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758148208; c=relaxed/simple;
+	bh=t5U7bWcgyUOybfHJuAL0KyhfI9YLLbZycfjGX3jWjNo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YYgcmRNtxH6S6eUeVn+vkPGjsPplRDQO5uSLWQxVe9mY+8LtWUceMDaXD8cRTSshQsijgX3dCSYWx+OYfW1jqRPl0MvT5KsR1RRfoxpr2r1xsCGk3k2TLRbSPmlCPcTm904yrpuABGBj/MtoFImDc8H3+hUGzoJvPL3xh3TxVTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVaQzSzs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FscnWqJ9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD618C4CEE7;
-	Wed, 17 Sep 2025 22:23:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVaQzSzs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FFFC4CEF5;
+	Wed, 17 Sep 2025 22:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758147838;
-	bh=UnGcqVgS4GD/7L0fDg931OMlNpuv6k722YO8GEx8cqA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=FscnWqJ9AamopYzEys8/f8cfqCwSnkZMxdUlYjDRJrUENMYwk9TZD/ySS+hqZK6qb
-	 zXtzx0R0Vbs176BSgMdIm3es4SHf8lKbT9d95iBS23JJFixlpAM9nYTx0DNrS+vNla
-	 rpraXAObjE0eOTtLZmTfa24eaOqBaSgU3rBTCY3ogNWpoDEOO3XTqs0LtQRZALXwcE
-	 bG7v0Wfz/2XkFbuKVqtuO2sWW6rJjGVTdO/wrwOumeDzouAjjEkddtQaAwZ4GWG/qQ
-	 XyHMEjTT13N7fXH3xfeLMoGWxDo7cKsR+VEjeNa+hOePBnXg/+3kf/PoReZD3LCB0u
-	 5DXf6T+YnmBnw==
-Date: Wed, 17 Sep 2025 17:23:56 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, jingoohan1@gmail.com, l.stach@pengutronix.de,
-	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
-	robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] PCI: imx6: Add a method to handle CLKREQ#
- override active low
-Message-ID: <20250917222356.GA1879221@bhelgaas>
+	s=k20201202; t=1758148208;
+	bh=t5U7bWcgyUOybfHJuAL0KyhfI9YLLbZycfjGX3jWjNo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=jVaQzSzsiXiJRliHRdiQf+Z/BjWHYypt4IK5+QDJftboOd8jN179ZQT9NpEdtjIsd
+	 R+CMv6kbdWhj2pW18QPfU6XqTW99Tze356a/iMb1vZKkGoEjoSyZvQ+x9HIW6cqIqI
+	 ImQln1XNS4QY+bwa3SIC9XhOyCdQqL4rbe4rm872ZVYl4yV+ns682cQi/rme9Xb8ct
+	 AEHRuxAUj0zKc2L2a4p2q+4xpE2v4Uzvi2bZIj1JFnwd21c0QbqwBzvqgnYfeloisT
+	 e7BjdLIia1rOdM/XSdgRjM4gPlYTmFak79jGmKuwc3qAieZ4SCYa1TdEh+cC/ExjF5
+	 aiCqE4X+YGvGQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE1B39D0C28;
+	Wed, 17 Sep 2025 22:30:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917093751.1520050-3-hongxing.zhu@nxp.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] ptp: netc: only enable periodic pulse event
+ interrupts for PPS
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175814820850.2170568.9776868991501848097.git-patchwork-notify@kernel.org>
+Date: Wed, 17 Sep 2025 22:30:08 +0000
+References: <20250915082528.1616361-1-wei.fang@nxp.com>
+In-Reply-To: <20250915082528.1616361-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: xiaoning.wang@nxp.com, richardcochran@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ Frank.Li@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Wed, Sep 17, 2025 at 05:37:51PM +0800, Richard Zhu wrote:
-> The CLKREQ# is an open drain, active low signal that is driven low by
-> the card to request reference clock.
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 15 Sep 2025 16:25:28 +0800 you wrote:
+> The periodic pulse event interrupts are used to register the PPS events
+> into the system, so it is only applicable to PTP_CLK_REQ_PPS request.
+> However, these interrupts are mistakenly enabled in PTP_CLK_REQ_PEROUT
+> request, so fix this error.
 > 
-> But the CLKREQ# maybe reserved on some old device, compliant with CEM
-> r3.0 or before. Thus, this signal wouldn't be driven low by these old
-> devices.
-
-Can you include a citation to a relevant section in the CEM spec?
-Maybe the point is that CLKREQ# is an optional signal added in PCIe
-CEM r4.0, sec 2?
-
-If that's accurate, we can add it when applying, no need to repost for
-that.
-
-> Since the reference clock controlled by CLKREQ# may be required by i.MX
-> PCIe host too. To make sure this clock is ready even when the CLKREQ#
-> isn't driven low by the card(e.x old cards described above), force
-> CLKREQ# override active low for i.MX PCIe host during initialization.
+> Fixes: 671e266835b8 ("ptp: netc: add periodic pulse output support")
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 > 
-> The CLKREQ# override can be cleared safely when supports-clkreq is
-> present and PCIe link is up later. Because the CLKREQ# would be driven
-> low by the card in this case.
+> [...]
+
+Here is the summary with links:
+  - [net-next] ptp: netc: only enable periodic pulse event interrupts for PPS
+    https://git.kernel.org/netdev/net-next/c/2479cba20946
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
