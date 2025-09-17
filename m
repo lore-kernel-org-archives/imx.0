@@ -1,83 +1,244 @@
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABE7143756
-	for <imx@lists.linux.dev>; Wed, 17 Sep 2025 10:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347AB32BBEF
+	for <imx@lists.linux.dev>; Wed, 17 Sep 2025 12:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758106038; cv=none; b=lTbVQRBxidN5n79Dakx130sVvmYYi38BgyPBr7D/SNjlRWjIDLtctnnVvU0fnYuY7gcDl4jsHbxqXTUzgYJxXQK1Z3B9eD0gztXQB/W+pBLIQB8Ld/iQnHwKouf6DMGvPZfnU6X6CXxyByj5zpOL/XJmwg97g5fFEzJZHMKJHWU=
+	t=1758110988; cv=none; b=edPjlS+SANhn8i7a9kA8Ofkf5g2xCZH3j2J3pGLGKfhQ/PbQrL832Qwe/KV1hoaI6vTBWZdEWxgcPpG6HuiKWPSZoHy9YJ18NGFOIRksCw04j7TkjvgyY9CZ+tDGZdfaBMgC75TjdFlwcgPMzvqiwzDPotlgVdPlv/yu80yU+Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758106038; c=relaxed/simple;
-	bh=VRLwGUcuRKvY24Qe4T2v4d9v5n56AV4gdzIOLjHFicE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s20OXuHlPQZOQ37UvqCZru6i1ah+7WWUne68PsR2EMiJpuUcCwXSjSVduFBROwzcOy6xP1Dj4/OULKgAT+i2fkrFLeWhZ2+sWbUm8X0gIMm674txUH3mCRr9+L+1hLkHnGL3qjyDShKDtIBjqR3helhW+Jd1ctrqXpHof2F8wMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KfJ5e/O/; arc=none smtp.client-ip=95.215.58.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1758110988; c=relaxed/simple;
+	bh=8oUJwioEDnAfVO3Y1PXWwxoLC14KxAtkMyhu2PHDtkY=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Type:References; b=E72NpKesHenLyazmPgPZ6rFGQWMHIxftP5mB9bxRnJsY5wfx4mbM2A/iRp0Fc6uH6cvTt9jmdHmvEZFeLA0mkKMdWUb7SqFd96k8pYpDhigUQFW+FTvYGX5RbqlpgnHzZWLdDLz3/NH5bkneXjC8nw7Icn2UtQaG6q84mUs9ffI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=WBNlnGOy; arc=none smtp.client-ip=203.254.224.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KfJ5e/O/"
-Message-ID: <8994414a-07f3-425f-8b76-5d433ff4716f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758106034;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qXvN9zguKxTNFj65lLAAK90IdwxrcqN9SiKarg0zXno=;
-	b=KfJ5e/O/KhKd96q2i3CAATfQT+IfK9EVuUHgX0Z5dZ481iRGJUY44exufBYubXLTvzBiNh
-	l5d4JlA78FXiKiXE/mCPN59mc3sKv5AfBv5LoHluHdhxobYquAyXEbpVVYn4l5+z4YFuXM
-	dJ2MC06zispZ469q84bmL7MfxZ2fB7c=
-Date: Wed, 17 Sep 2025 11:47:08 +0100
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="WBNlnGOy"
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20250917120943epoutp0320b6a027ff32c687a398d3d0f92d8419~mEJ-MQpcV2507125071epoutp038
+	for <imx@lists.linux.dev>; Wed, 17 Sep 2025 12:09:43 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20250917120943epoutp0320b6a027ff32c687a398d3d0f92d8419~mEJ-MQpcV2507125071epoutp038
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1758110983;
+	bh=owWadpSv9H77ZxbKoBmofshhPRj3pGK/wIU+s8/EQVc=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+	b=WBNlnGOyvhvdURAbgVsc8eIroy5H8a2SRO75EfKSBc741Nklz9GuHlXwKhGkpBx7i
+	 NJ4PocbRepuBeZmxh6sDk2lkIC6+IfkVvFVtbwTWIqq00H9tVxmPrUcs4OBKvjsIBT
+	 IH6udZJYiSGrQ0QhlT51XCv96TJuZCZo1e68KdI4=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
+	20250917120942epcas5p357c123d3099e83bb132f2cf79da872fb~mEJ_a0QgV0694206942epcas5p3J;
+	Wed, 17 Sep 2025 12:09:42 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.38.93]) by
+	epsnrtp03.localdomain (Postfix) with ESMTP id 4cRcyY23SNz3hhT4; Wed, 17 Sep
+	2025 12:09:41 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250917120940epcas5p2ccd8cbd489fe1634d9b176f1e8c01e79~mEJ85vD6F3174731747epcas5p26;
+	Wed, 17 Sep 2025 12:09:40 +0000 (GMT)
+Received: from FDSFTE196 (unknown [107.116.189.214]) by epsmtip2.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20250917120937epsmtip29e2450f342f91ad1dce9599cf91c9426~mEJ6DjSln1850718507epsmtip2N;
+	Wed, 17 Sep 2025 12:09:37 +0000 (GMT)
+From: "Inbaraj E" <inbaraj.e@samsung.com>
+To: "'Rob Herring'" <robh@kernel.org>
+Cc: <rmfrfs@gmail.com>, <laurent.pinchart@ideasonboard.com>,
+	<martink@posteo.de>, <kernel@puri.sm>, <mchehab@kernel.org>,
+	<krzk+dt@kernel.org>, <conor+dt@kernel.org>, <shawnguo@kernel.org>,
+	<s.hauer@pengutronix.de>, <kernel@pengutronix.de>, <festevam@gmail.com>,
+	<linux-media@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-samsung-soc@vger.kernel.org>,
+	<pankaj.dubey@samsung.com>, <ravi.patel@samsung.com>,
+	<shradha.t@samsung.com>
+In-Reply-To: <20250829174638.GA1054721-robh@kernel.org>
+Subject: RE: [PATCH v3 1/7] dt-bindings: media: nxp: Add support for FSD SoC
+Date: Wed, 17 Sep 2025 17:39:35 +0530
+Message-ID: <024f01dc27cb$f167d370$d4377a50$@samsung.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v2 2/2] ptp: rework ptp_clock_unregister() to
- disable events
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Richard Cochran <richardcochran@gmail.com>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Clark Wang <xiaoning.wang@nxp.com>,
- "David S. Miller" <davem@davemloft.net>,
- David Woodhouse <dwmw2@infradead.org>, Eric Dumazet <edumazet@google.com>,
- imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
- Jonathan Lemon <jonathan.lemon@gmail.com>, netdev@vger.kernel.org,
- Nick Shi <nick.shi@broadcom.com>, Paolo Abeni <pabeni@redhat.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
- Yangbo Lu <yangbo.lu@nxp.com>
-References: <aMnYIu7RbgfXrmGx@shell.armlinux.org.uk>
- <E1uydLH-000000061DM-2gcV@rmk-PC.armlinux.org.uk>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <E1uydLH-000000061DM-2gcV@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQIBSJFzUA8Lz5NCh/Whmc1GwVh24gH1qTvqAkLBkWsB/yoSjrQbSRSA
+Content-Language: en-in
+X-CMS-MailID: 20250917120940epcas5p2ccd8cbd489fe1634d9b176f1e8c01e79
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-541,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250828085926epcas5p1b82576210280fb44c6c7f02851da71c6
+References: <20250828085911.81266-1-inbaraj.e@samsung.com>
+	<CGME20250828085926epcas5p1b82576210280fb44c6c7f02851da71c6@epcas5p1.samsung.com>
+	<20250828085911.81266-2-inbaraj.e@samsung.com>
+	<20250829174638.GA1054721-robh@kernel.org>
 
-On 16/09/2025 22:36, Russell King (Oracle) wrote:
-> The ordering of ptp_clock_unregister() is not ideal, as the chardev
-> remains published while state is being torn down, which means userspace
-> can race with the kernel teardown. There is also no cleanup of enabled
-> pin settings nor of the internal PPS event, which means enabled events
-> can still forward into the core, dereferencing a free'd pointer.
-> 
-> Rework the ordering of cleanup in ptp_clock_unregister() so that we
-> unpublish the posix clock (and user chardev), disable any pins that
-> have EXTTS events enabled, disable the PPS event, and then clean up
-> the aux work and PPS source.
-> 
-> This avoids potential use-after-free and races in PTP clock driver
-> teardown.
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Hi Rob,
 
-Now LGTM, shouldn't break our use-case, thanks!
+Thanks for the review
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+
+> > +    description:
+> > +      Syscon used to hold and release the reset of MIPI D-PHY
+> 
+> Reset? Sounds like you should be using the reset binding.
+
+The Tesla FSD Soc does not have a dedicated reset controller. Instead, we
+are using the
+system controller which is MMIO Space handled by syscon driver, to assert or
+de-assert the D-PHY
+reset. So, I prefer to use syscon.
+
+> 
+> > +
+> >    phy-supply:
+> >      description: The MIPI D-PHY digital power supply
+> >
+> > @@ -93,7 +91,8 @@ properties:
+> >              properties:
+> >                data-lanes:
+> >                  description:
+> > -                  Note that 'fsl,imx7-mipi-csi2' only supports up to 2
+data lines.
+> > +                  Note that 'fsl,imx7-mipi-csi2' only supports up to 2
+data
+> > +                  lines.
+> 
+> Reformatting should be a separate patch.
+
+Sure, I'll add new patch in next patchset.
+
+> 
+> >                  minItems: 1
+> >                  items:
+> >                    - const: 1
+> > @@ -115,7 +114,6 @@ required:
+> >    - interrupts
+> >    - clocks
+> >    - clock-names
+> > -  - power-domains
+> >    - ports
+> >
+> >  additionalProperties: false
+> > @@ -124,20 +122,73 @@ allOf:
+> >    - if:
+> >        properties:
+> >          compatible:
+> > -          contains:
+> > -            const: fsl,imx7-mipi-csi2
+> > +          const: fsl,imx7-mipi-csi2
+> 
+> 'contains' was correct. It is more future proof when there is another SoC
+that
+> is backwards compatible with imx7.
+
+Sure, I'll add new patch in next patchset.
+
+> 
+> >      then:
+> > +      properties:
+> > +        clocks:
+> > +          items:
+> > +            - description: The peripheral clock (a.k.a. APB clock)
+> > +            - description: The external clock (optionally used as the
+pixel
+> > +                clock)
+> > +            - description: The MIPI D-PHY clock
+> > +        clock-names:
+> > +          items:
+> > +            - const: pclk
+> > +            - const: wrap
+> > +            - const: phy
+> > +        tesla,syscon-csis: false
+> > +        fsl,num-channels: false
+> 
+> blank line
+
+Will remove in nextpatchset.
+
+> 
+> >        required:
+> > +        - power-domains
+> >          - phy-supply
+> >          - resets
+> > -    else:
+> > +
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          const: fsl,imx8mm-mipi-csi2
+> > +    then:
+> >        properties:
+> >          clocks:
+> > -          minItems: 4
+> > +          items:
+> > +            - description: The peripheral clock (a.k.a. APB clock)
+> > +            - description: The external clock (optionally used as the
+pixel
+> > +                clock)
+> > +            - description: The MIPI D-PHY clock
+> > +            - description: The AXI clock
+> >          clock-names:
+> > -          minItems: 4
+> > +          items:
+> > +            - const: pclk
+> > +            - const: wrap
+> > +            - const: phy
+> > +            - const: axi
+> > +        tesla,syscon-csis: false
+> > +        fsl,num-channels: false
+> >          phy-supply: false
+> >          resets: false
+> 
+> blank line
+> 
+> > +      required:
+> > +        - power-domains
+> > +
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          const: tesla,fsd-mipi-csi2
+> > +    then:
+> > +      properties:
+> > +        clocks:
+> > +          items:
+> > +            - description: The peripheral clock (a.k.a. APB clock)
+> > +            - description: The DMA clock
+> 
+> Wouldn't this be the same as the "AXI clock"?
+
+According to v4.3 manual it is DMA clock.
+
+> 
+> > +        clocks-names:
+> > +          items:
+> > +            - const: pclk
+> > +            - const: aclk
+> > +        phy-supply: false
+> > +        resets: false
+> > +        power-domains: false
+> 
+> blank line
+
+Sure will remove in next patchset.
+> 
+> > +      required:
+> > +        - tesla,syscon-csis
+> > +        - fsl,num-channels
+> >
+> >  examples:
+> >    - |
+> > --
+> > 2.49.0
+> >
+
+Regards,
+Inbaraj E
+
