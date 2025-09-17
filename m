@@ -1,157 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D6534BA28;
-	Wed, 17 Sep 2025 19:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11832FBDFD;
+	Wed, 17 Sep 2025 22:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758137215; cv=none; b=o49IDmIViPNzYABy1Zbph8uTJ8q3k+spyfM5ASPZ2YWD6NqBXkHqNgtg8nhC9sV4oCN7x4dm/yKrqlbGGkBiG6mgRmSdLthSdr9qFaEEfJoWZ5nw8CrH96vtlPuBUR3Zv94wtwCSUuBFH3d2cfYOgLzTkRy5rYgoC012x1qGLE4=
+	t=1758147189; cv=none; b=evenklO/PM0n6nmUjCn+pJAfkpFufAZCQdHu5wLIskLktPykO69WMY2fNz5Kv2FNY7+IrssMvJ0wphKxQ6d2DtrHcYJQRPkP5RVfSyfIENPf8xzd4Xeohz+uToWrjEPhxzdNwBlWUS14aqvgWQ8TFB2sZNbN6QtW/F4sL4E+kRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758137215; c=relaxed/simple;
-	bh=rxQ5P0gTfpf4dmZ7B42QPAmEImAeP2nFA/KifuYjACM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Io19eJUgJvi7XDhBLVtm+XBUSWafCv7pH1waaJSfUGUZQ0dyG1HFhlPPQBGWbBAiGvJ4NgDQOCCi7OyFC1pSM8aQPZqgLIzFPAPVFcZqTVda/nSm/Ozdv0IUBCIyxConi2KQtR3bQcI6rfmVUzQn6IHHN3GBC8C0je4t190zeQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tMhwH362; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758147189; c=relaxed/simple;
+	bh=nRhOXcIKGpSGtX2j3Z7sQdDPzcHkUdRka8dIo7+u2MM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=fsJDga/zl3nZjDlxtap2/TMvBdqlk9TT2+nQrOvi1fMOCDRkoE8DOiDFHVzMjhP2LIJCikzSZA3qD+g4nCTYaHCQx/nOzx974QwcH13LG5+eJ+A62DZ9c/xx+u4QEVMhUF5tfHnuVz70IYG5b6VNrA3Y/193/SiNQy2gCCqt8s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BaKTMrT1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tMhwH362"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9256C4CEE7;
-	Wed, 17 Sep 2025 19:26:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BaKTMrT1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C506C4CEE7;
+	Wed, 17 Sep 2025 22:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758137214;
-	bh=rxQ5P0gTfpf4dmZ7B42QPAmEImAeP2nFA/KifuYjACM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tMhwH362ygjjwtnqhXiVywzh3oiDjnrB5XKf0gfMFk/qbDnOy0tJhMrLeVNSz0XX1
-	 nF/X6JJvntikX0l4b7OuOv8ibCjAfJCW1P/mzjf03kgBw5yyB1Xe9LqCX4tJIrrQhP
-	 CCnjdAC0Lwj4DN+Zhc95Puuo6k9iXc/Z5ppMcbB5miUh4+tesHDmssV1vs6JMMjtC1
-	 lNhyo4jJGo/wCqrT3pOeG/zRkLc9PKFy8x/WxX+5l8RJMh4wcwDkah8aMz8m2yHyGN
-	 9KAIkeZfXV2rUFurIu/vgS94QSZkilL6fF1cVfI7nqawQUtFWDX/rzQSwcDSUSD78B
-	 FcmkowUHZpt1g==
-Date: Wed, 17 Sep 2025 20:26:49 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-input@vger.kernel.org
-Subject: Re: [PATCH v4 4/6] dt-bindings: touchscreen: fsl,imx6ul-tsc: support
- glitch thresold
-Message-ID: <20250917-unhidden-foothill-7c103245be1f@spud>
-References: <20250917080534.1772202-1-dario.binacchi@amarulasolutions.com>
- <20250917080534.1772202-5-dario.binacchi@amarulasolutions.com>
- <aMrc0GhVbpI38t3L@lizhi-Precision-Tower-5810>
+	s=k20201202; t=1758147188;
+	bh=nRhOXcIKGpSGtX2j3Z7sQdDPzcHkUdRka8dIo7+u2MM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=BaKTMrT1udkFpO61y+Hb4PIDaqrTRP5+K4vQcHhu3ukTFmGGuFhiyBJFYJrcVQOb9
+	 Yp+FgtddGxOhXyXQ479M/AYNZAjCbF7W3oTzy0AOE7LQIGXEV+GEmcWss7f11dqTde
+	 JNK2/5fySEjH8S3B5iDRzx79wWjGU+JjbX1/h0WdEColE08kYHmT+nU2pIluwYB1rA
+	 T9p/acvm2s8Slk8W+oRgopfbQSJ05X8ixNAO+H8hVoF+SwQ8ZtxZMh8WOcFsE375Xf
+	 0IjqXKbOYV9D5j9+YmPhWEDZCPnelCPCPIGlzcyKHXk2KJ7XQMJREtdO/irULVANoL
+	 d9uVDvLmgJAFQ==
+Date: Wed, 17 Sep 2025 17:13:06 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, bhelgaas@google.com,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 1/3] dt-bindings: PCI: dwc: Add one more reference
+ clock
+Message-ID: <20250917221306.GA1878395@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="1WzqRwur55oUj4Vo"
-Content-Disposition: inline
-In-Reply-To: <aMrc0GhVbpI38t3L@lizhi-Precision-Tower-5810>
-
-
---1WzqRwur55oUj4Vo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250917045238.1048484-2-hongxing.zhu@nxp.com>
 
-On Wed, Sep 17, 2025 at 12:07:44PM -0400, Frank Li wrote:
-> On Wed, Sep 17, 2025 at 10:05:09AM +0200, Dario Binacchi wrote:
-> > Support the touchscreen-glitch-threshold-ns property.
-> >
-> > Drivers must convert this value to IPG clock cycles and map it to one of
->=20
-> binding descript hardware, not drivers. So below sentence should be bette=
-r.
->=20
-> "TSC only supports the four discrete thresholds, counted by IPG clock cyc=
-les.
-> See SC_DEBUG_MODE2 register."
->=20
-> > the four discrete thresholds exposed by the TSC_DEBUG_MODE2 register:
-> >
-> >   0: 8191 IPG cycles
-> >   1: 4095 IPG cycles
-> >   2: 2047 IPG cycles
-> >   3: 1023 IPG cycles
-> >
-> > Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> >
-> > ---
-> >
-> > Changes in v4:
-> > - Adjust property description following the suggestions of
-> >   Conor Dooley and Frank Li.
-> > - Update the commit description.
-> >
-> > Changes in v3:
-> > - Remove the final part of the description that refers to
-> >   implementation details.
-> >
-> >  .../bindings/input/touchscreen/fsl,imx6ul-tsc.yaml | 14 ++++++++++++++
-> >  1 file changed, 14 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/input/touchscreen/fsl,im=
-x6ul-tsc.yaml b/Documentation/devicetree/bindings/input/touchscreen/fsl,imx=
-6ul-tsc.yaml
-> > index 678756ad0f92..1975f741cf3d 100644
-> > --- a/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-ts=
-c.yaml
-> > +++ b/Documentation/devicetree/bindings/input/touchscreen/fsl,imx6ul-ts=
-c.yaml
-> > @@ -62,6 +62,20 @@ properties:
-> >      description: Number of data samples which are averaged for each re=
-ad.
-> >      enum: [ 1, 4, 8, 16, 32 ]
-> >
-> > +  touchscreen-glitch-threshold-ns:
-> > +    description: |
-> > +      Minimum duration in nanoseconds a signal must remain stable
-> > +      to be considered valid.
-> > +
-> > +      Drivers must convert this value to IPG clock cycles and map
-> > +      it to one of the four discrete thresholds exposed by the
-> > +      TSC_DEBUG_MODE2 register:
->=20
-> same as commit messsage, talk about hardware.
+In the subject, can you replace "one more" with something specific?
+E.g., maybe "Add external reference clock input" or similar?
 
-This is fine. It's a generic comment about what must be done with the
-property by software that helps people understand how to populate it.
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-
-
-> > +        0: 8191 IPG cycles
-> > +        1: 4095 IPG cycles
-> > +        2: 2047 IPG cycles
-> > +        3: 1023 IPG cycles
-> > +
->=20
-> This case genenerally need enum 4 values, but it relates IPG frequency.
-> I have not idea how to restrict it base on clk frequency. May DT mainatai=
-ner
-> have idea.
-
-I don't see how you really can restrict it based on the frequency of a
-clock that can probably be varied at runtime.
-
---1WzqRwur55oUj4Vo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaMsLeQAKCRB4tDGHoIJi
-0lL5AQCLnyauVzJQEzihjVDX0KlDXBi1HSOzSRs+/oAZJqNsBAEA8sAFqz68gVZ5
-J9dWazzA8+lZXRKWTAXkUnsZSD9G7Ac=
-=6CrS
------END PGP SIGNATURE-----
-
---1WzqRwur55oUj4Vo--
+On Wed, Sep 17, 2025 at 12:52:36PM +0800, Richard Zhu wrote:
+> Add one more reference clock "extref" for a reference clock that comes
+> from external crystal oscillator.
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../devicetree/bindings/pci/snps,dw-pcie-common.yaml        | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml b/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml
+> index 34594972d8db..0134a759185e 100644
+> --- a/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml
+> +++ b/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml
+> @@ -105,6 +105,12 @@ properties:
+>              define it with this name (for instance pipe, core and aux can
+>              be connected to a single source of the periodic signal).
+>            const: ref
+> +        - description:
+> +            Some dwc wrappers (like i.MX95 PCIes) have two reference clock
+> +            inputs, one from an internal PLL, the other from an off-chip crystal
+> +            oscillator. If present, 'extref' refers to a reference clock from
+> +            an external oscillator.
+> +          const: extref
+>          - description:
+>              Clock for the PHY registers interface. Originally this is
+>              a PHY-viewport-based interface, but some platform may have
+> -- 
+> 2.37.1
+> 
