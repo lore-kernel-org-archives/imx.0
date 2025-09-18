@@ -1,73 +1,171 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0412030F7E4;
-	Thu, 18 Sep 2025 14:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A852FC01F
+	for <imx@lists.linux.dev>; Thu, 18 Sep 2025 14:19:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758205095; cv=none; b=MK8AmtroeP39WWmcGdY1H2Tlt7PpENWFx51Ve3ATxwApIgfBxsLfZlr8BiZBPEYKAQYeBwHUlW1dHkfksowJZNzodNfvzqbqWt9ZuaDUS3Zt4LKs2OgtY6V4bDJ0bMHkOR7X31fGc+O+2ViNzhJ/FXh6bm9+mJxBlJeJ2Xiy9lw=
+	t=1758205151; cv=none; b=pa+9DWyqeXCT+wPe5b291bJiO/2I0CXJA6eKpHUqR8a12eJUm186D2YiGp+ABOUJTrR6yWweJSU9dZXAQWK6oNc30D4kMySEIrgpKpv6nqJ+/p8maNyyPaEMuEdewH1YFNRnRzDq3Nwgr9A6PFezyC/OxAWJr0iCrMIMc/fhst0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758205095; c=relaxed/simple;
-	bh=26U6CzCELKRAi4X7TIQjNGqBzh5+urYGa3ZBhmDxRzQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EHu/rQcV8sD2WJ/vrAxnzd5gZztcWbUhZOMBXsIa1ewQXPiNcjJQGb12IdqftAlxGw3l4AM5DSmnG1vdx2SOY5zaeizXBJVa77bBfW/40XFCa7ex9JXXf3i3LDA1aMRGWTYjdzEK3DA7c+GdxcPcjDSbBTebxbOoB6WP9kTAGV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eOc8+LYe; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1758205151; c=relaxed/simple;
+	bh=efV7ND5peOzZ6wFre05dZsI2sW9Mwg+FnrXTj0ULe04=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NeA1p1e1KMSucytk0+XAHMyjXqZ/JPKLFBpWBcPPWgL5eRyOg9o+Fjgh/lI1Wn3uVrxda/mxmcV8f7kCZ5UjTsMeRKL2Og54mYV3R+8JyPau2uSYID0AMwuUgCrsaoWuFke/Hpeyz7SRzrOFMZ6omezv1bvorQ0OP1KwxO7pgBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cU80tyos; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eOc8+LYe"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Iex3K3wmKhamz+vqqFHrkjRQrwHLXzKu/EFAlHaGQ9k=; b=eOc8+LYe25TkopazB3zILcKsJW
-	uPQCUan41UW29wctSekpNjGXYZRyh0MdKje3dj/Q9rFqVnE/ePWqDfKmQmOjwPnMoiSQT9ownQ9Vz
-	L2r76OKZvqQVY0gcpk+zLncycsny4MO0nC8xo+FhV4FVFsG5ExEtpEbt45pYqq0q6t+0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uzFSY-008phN-AK; Thu, 18 Sep 2025 16:18:06 +0200
-Date: Thu, 18 Sep 2025 16:18:06 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jonas Rebmann <jre@pengutronix.de>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-sound@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	David Jander <david@protonic.nl>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: Re: [PATCH v2 3/3] arm64: dts: add Protonic PRT8ML board
-Message-ID: <0f520191-7d9f-4800-a41e-a623b9335c9d@lunn.ch>
-References: <20250918-imx8mp-prt8ml-v2-0-3d84b4fe53de@pengutronix.de>
- <20250918-imx8mp-prt8ml-v2-3-3d84b4fe53de@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cU80tyos"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-723bc91d7bbso9951877b3.3
+        for <imx@lists.linux.dev>; Thu, 18 Sep 2025 07:19:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1758205149; x=1758809949; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rwnJ7MfncjQZZqEO7RPiB5wvlA6TdyUbKRJ/WpUXEpc=;
+        b=cU80tyosp5hGDXpjtg/5Qy32Q+hadyyS2oHBk70gTh/GYxP5HiRbsM/jPo1TR0Wdoh
+         ttYwOWG7xc+IjaxPOUGvd5EMVzdxRLMqx1lQvxWp7qI2QHnhVFaBnX4LSh91gQObO2wA
+         5+Qs8KLD4OuWPfMgj01DJl9U5pdtrKAXaCmhThRq/z5LqGUaptgqkRjwdm09VfFmGpfS
+         mwAvRvIAZPlPRf5ZA4blu8oGoNcSZwZE0tS8rRLcRrM9NFEJ5nssejzgduubFETYhM1x
+         RPxmS/3EBXHMJwM4QpIfn+vJSEZHLFUN0gYNHTLEw+SQgFrOhhH/UyM0O7kjNT3qgwND
+         V1FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758205149; x=1758809949;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rwnJ7MfncjQZZqEO7RPiB5wvlA6TdyUbKRJ/WpUXEpc=;
+        b=vowNjs64HiWa7b/7Npysvr09f/Wj6fSgf8L/xgq2qGd7WVVEg09iZar3ebRB6ICHGo
+         uvrsSdk3qqYbuciDnO0g0qwTPH1q76wMzgskwCsal8sX5bp49thgBBLMJoC/bhtMfed0
+         7G4KQK9wOQ3DXPAdvU/iwrxH0nkXF/gPjNwFnZdmnvVyPpUEOKipDQfk7XuVD1xCiB39
+         7TOO5iW1U/278bLpu1tDO30ObSwgx41roxfnFLlkbA34wKBpcGIAu9sIDdST+7j5OXi2
+         vgJlHzvjKlau1uoR1s3CDVuGTiOwm81/sccIe39iYaQLz4XN3YDon1agN0BpU0mLp1yV
+         q7uA==
+X-Forwarded-Encrypted: i=1; AJvYcCWiDqGkdxYAkpFwrkug1PP/0R7fNLrLWpe7c1AC0Cx2tNsZlE5TpDR7PuJVeMhnQXjOgcE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yycq5I0j0Jv4KpgxK1gQLo+OlxXb6Dm0LJ9LwOLEXl/SROQdD6J
+	cXQF6wRf5xhN5iaZtLl64wHgAlB9GNPpxfV+Ga5+50Oq1y83u0JzacC6Y5XBHH3OT2TPDaXz0SQ
+	T8u7EJJ5hGh5of2t9ght9dp7S/EzGdo4YXlkWZYsuZg==
+X-Gm-Gg: ASbGncurNR1bjzhv2biJMrSOuvxlOmS7oaDeY764nxLZzJY/d1aO1MlWbLFv5UTco4o
+	+IVTO2i4RUxsxLhQMWyXiUi5Kr81rAqy1+3RsEeAcCq+/gERHEpwG2yANMxMfdeaL+kkWNl7XG0
+	oGo7vO5Ro3ZSGuP08+W1iptTWfgAixXRA0cyUK4NNBg/BWXtbJ6gFqrQskH8fzXR23XWSP5Ut/u
+	OFc953vJMlriUqcI5MG9oE1Ves=
+X-Google-Smtp-Source: AGHT+IFja2SGfrTtCyPdRJCCefTmrgo0mQhH1O6x561N6cabqmvG2QM8w3ohhfxToBTf2XJdX84zA191m+AeXdLVuso=
+X-Received: by 2002:a05:690c:3582:b0:735:8634:be68 with SMTP id
+ 00721157ae682-73890cb0553mr52912587b3.23.1758205148353; Thu, 18 Sep 2025
+ 07:19:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250918-imx8mp-prt8ml-v2-3-3d84b4fe53de@pengutronix.de>
+References: <20250902-pm-v3-0-ffadbb454cdc@nxp.com> <20250902-pm-v3-1-ffadbb454cdc@nxp.com>
+ <20250918095950.h7wmz2qj5e6khtwr@lcpd911> <20250918131230.GD9196@nxa18884-linux.ap.freescale.net>
+ <20250918134039.zkpeqsbf6m2ymxvt@lcpd911>
+In-Reply-To: <20250918134039.zkpeqsbf6m2ymxvt@lcpd911>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 18 Sep 2025 16:18:32 +0200
+X-Gm-Features: AS18NWB-C7Q2eLiy5k262B4Ual4xN_o15_I0cJZ8lRcTd3E2RvJskp1XeHp2s5E
+Message-ID: <CAPDyKFrweJTBHfOOU5r8Lcfs-dsTj94A=JK8+jKDqwJ0jNfiQw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] pmdomain: core: Introduce device_set/get_out_band_wakeup()
+To: Peng Fan <peng.fan@oss.nxp.com>, Dhruva Gole <d-gole@ti.com>
+Cc: Peng Fan <peng.fan@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Peter Chen <peter.chen@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Xu Yang <xu.yang_2@nxp.com>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, imx@lists.linux.dev, 
+	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
->  - Onboard T1 ethernet (10BASE-T1L+PoDL, 100BASE-T1+PoDL, 1000BASE-T1)
+On Thu, 18 Sept 2025 at 15:40, Dhruva Gole <d-gole@ti.com> wrote:
+>
+> Hi Peng,
+>
+> On Sep 18, 2025 at 21:12:30 +0800, Peng Fan wrote:
+> > Hi Dhruva,
+> >
+> > On Thu, Sep 18, 2025 at 03:29:50PM +0530, Dhruva Gole wrote:
+> > >On Sep 02, 2025 at 11:33:00 +0800, Peng Fan wrote:
+> > >> For some cases, a device could still wakeup the system even if its power
+> > >> domain is in off state, because the device's wakeup hardware logic is
+> > >> in an always-on domain.
+> > >>
+> > >> To support this case, introduce device_set/get_out_band_wakeup() to
+> > >> allow device drivers to control the behaviour in genpd for a device
+> > >> that is attached to it.
+> > >>
+> > >
+> > >Thinking more into it, to me it seems like if the intent here is to only
+> > >allow the device drivers to figure out whether they should be or not be
+> > >executing the suspend/resume_noirqs then that can still be checked by
+> > >wisely using the device set_wakeup APIs in the driver itself.
+> > >
+> > >Not sure why this patch should be necessary for a
+> > >driver to execute the suspend_noirq or not. That decision can very well
+> > >be taken inside the driver's suspend resume_noirq hooks based on wakeup
+> > >capability and wake_enabled statuses.
+> >
+> > I should join today's SCMI meeting, but something else caught me (:
+>
+> It's alright, maybe see you in the next one ;)
+>
+> >
+> > Thanks for looking into this.
+> >
+> > In genpd_suspend_finish, genpd_sync_power_off will be called if
+> > "(device_awake_path(dev) && genpd_is_active_wakeup(genpd))" is false.
+> > So if the device is enabled wakeup, the genpd will not be turned off because
+> > the check return true.
+>
+> Umm I think this device_awake_path stuff is only going to be true when
+> someone calls device_set_wakeup_path, I don't think it is going to
+> return true for a wakeup_capable device. I know all these "wakeup"
+> terminology and APIs have become all too confusing :( , so maybe Ulf can
+> correct me.
 
-Are these PHYs connected to the switch? It just seems odd you have a
-switch with only one port connected to the outside world.
+The PM core checks device_may_wakeup() in device_suspend() and then
+sets dev->power.wakeup_path = true;
 
-	Andrew 
+The device_set_awake_path() and device_awake_path(), is to allow
+drivers/subsystems to enforce its device to stay powered-on during
+system-wide suspend. This may be needed even if the device isn't
+configured to deliver system-wakeups.
+
+> I maybe misremembering, but I have seen in some cases where a driver may
+> have marked itself wakeup_capable but the suspend hooks still do get
+> called... So your concern about genpd_sync_power_off not being called
+> due to wakeup capable device driver may not be valid... Again please
+> feel to correct me if I am wrong.
+
+The system PM callbacks should get called no matter what.
+
+The problem Peng pointing out, is when genpd_suspend_noirq() (which
+calls genpd_finish_suspend()) is called for a device that is attached
+to a genpd, we may end up bailing out, preventing the power-off for
+its PM domain, while it may be perfectly fine to allow the PM domain
+to be powered-off.
+
+The particular code we are looking at, is in genpd_finish_suspend():
+
+        if (device_awake_path(dev) && genpd_is_active_wakeup(genpd))
+                return 0;
+
+>
+> Did you also look at the wake IRQ stuff I mentioned?
+> In the path you're talking about it just checks
+> device_awake_path(dev) && genpd_is_active_wakeup(genpd)
+> However if the device irq is just marked as a wake IRQ, I don't think
+> that is checked anywhere in this path. So definitely if the IRQ of your
+> device is set as a wake IRQ, it will still get suspended and resumed as
+> usual and that's what you want right?
+
+The missing piece for the wake_irq, is to know whether the interrupt
+can be delivered via an out-band-powered-on-logic, thus without
+requiring the device to stay powered-on during system suspend.
+
+[...]
+
+Kind regards
+Uffe
