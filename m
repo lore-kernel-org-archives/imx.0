@@ -1,77 +1,149 @@
-Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B467314B84;
-	Thu, 18 Sep 2025 15:45:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637683F9FB
+	for <imx@lists.linux.dev>; Thu, 18 Sep 2025 15:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758210311; cv=none; b=k8P9zOdFP8LexXBPl9kAbqqCHRGG7qCOChNfnVfJDo4h8XfQS3KpH/Dr6i3ySg3CHKSoTJah+m6scifsWa/7Dw72ESrpaA+24U+ZljgTDqJOLuB8nSs591kgJnT+8w5LtHnk/HQK7SiIeuELzfCjsgnViF2XJA6Vh/rKG9ml+Hk=
+	t=1758210767; cv=none; b=DIX6Jzc2k8R5o3UnVfczPn7cxa6KLK/xWIFycz6RCe45dkrZAoTnvUwbR6gdxNIH2682yT15qwfe2NxIH4FmLaj0+iaoijNB9sGRcm7Vum/hzNyO/nG1n5QOcr14bDtjrft46v6W/zqa8AnVxzh/UAPnvr/2cq8LjgS+vIiWM24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758210311; c=relaxed/simple;
-	bh=bm8hHyQemjiUmvDQCawOnSDA0FHUe7wJgTnpKvnzYJ8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nPVHyUh0tRDsXIOz3G/3i9YuVDMHz6uKBekUIZfoBYBzqifhVFdi+72R22gfSzOzXoM5wIA8hzWgkIvIBweGqbt/rWv3RoyYCK4FdJug3M9aKpYRdEMP1rYewqqNeBDFtRT+l9+Qmv8fh65JDuBnTRc3CaUsobrhjQT+BOLtwLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
-Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
-	by finn.localdomain with esmtp (Exim 4.95)
-	(envelope-from <tharvey@gateworks.com>)
-	id 1uzGoa-00B1eF-QM;
-	Thu, 18 Sep 2025 15:44:56 +0000
-From: Tim Harvey <tharvey@gateworks.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	s=arc-20240116; t=1758210767; c=relaxed/simple;
+	bh=XEbVT5cHI/ZnCfuYl88356BThxY6qeHy1joKNaxu4iE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mfdPUKv3x3kGKlXK8kT5ULJa8odcAErbsT8KQcHjOzZF6SENk041m5bphQK6Dwiedj6Q0ynS/fk0s5znenbrlMcx4IgRIwkm/RmFGtt2pK/P3omO5EHgumZt7JymlYsnuFeG/nox1BsmAkNXAmNdYvUbICKkG5RgiZWviAtrg4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=XpzDz74d; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="XpzDz74d"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b0473327e70so203565066b.3
+        for <imx@lists.linux.dev>; Thu, 18 Sep 2025 08:52:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1758210763; x=1758815563; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DAYxgB8lIv1DHNu4xD8U3kG1jVIbjN/0r1y6HPZ0wc4=;
+        b=XpzDz74djaB+UfATZnE9g5cz1RpCtOfffxWxURWoToRo6s6QyTu/dAYxZWX55xX6G6
+         GR1jxinlE39oDWXoJbnMT1VKN99JOYOBK/BVzTU0dwtSC4hkaDoIPmz8nPNo8O6idLdZ
+         9zhcmgjpvi8BBo4uk22h5EO1OobkWW2tVarqQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758210763; x=1758815563;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DAYxgB8lIv1DHNu4xD8U3kG1jVIbjN/0r1y6HPZ0wc4=;
+        b=fd/4JIJb+XPJSl2EqWp9CBJXG9OP7aftLDJ1GXRcaZqUWzFdb3nL0Pmlt3Ff0kuxma
+         rgENqtHXR+pi2sPiJxNVPQk11uuMottkhSwzNeJtMDHYaLRFQ/QZbYr0tLtlFznm1hmb
+         d4OhTESFqteDdIFeX9T4YNFHaWE7YV169gdtZUQHVXwtH9cuFJLaplwT5D1NMlG3LgLc
+         THhHP2PlmTJIC/2maVA0IDMvVWllWgxckKdE33pSkitDgtUZrb2PQPLUrJMDCtSXq/8F
+         sR641UmsdgWBhfj1l+d9RzmqpHLXL5MaBzIYNXcHxu9drVW4b1Ydh50xe2HaVY5PWAfG
+         bm0g==
+X-Forwarded-Encrypted: i=1; AJvYcCWau2EVDiGPNqgN/qNCYCN7ZaBled9qs5QQ2y2z+GejAmK47ozMhVfoLxvfzVIdL1V0dOw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YytzwdkgjCt6IZi5fRPYBawnicv2d96sE8Y8+JHl0X0MgNtazES
+	/EZC7Xf89IGYVUTIA5NYEexzyvXZlrosXBlwhIjgYnNJKz4QrwN1FD1zOoqb0xHpeIk=
+X-Gm-Gg: ASbGncvcB3RD3+tKFQfTDxtgSxMDWaghxw6dWeSq3hKaixjp+wxf3kucBs+qSIWsKe3
+	32hKR53hOSmkYcpE38JAFvpY0JFL1HjEG/eHBDlQc1jRekKvVf6C5tf6FKD8yrnWC0Fj49Ufi6/
+	5q5xAJ2qN10JgxPt9MMCE2hOYGB2GaPL9UEykZ2CkUBpjTOc5ZmKRq5HLcDf5ILoadnvfg011h+
+	2fkRT4owMnBSZmXb5E2oe+jcHeKp3iCtmYvJlxy6Rn6DCVRmQRO0qrmF2fRLuQQXWecfbMcGgkq
+	tqyx3QE3VBvB4BDW4gCQnB1fe5ET3u8tOeeh7m8YCcrM2RQxUPlr24VDUTV/QmhzZYoOnrGUnHW
+	77FPF2zntnesrKSpjHfMpqXpW3LnceTVqdW4UyDITqLyTE0rjofnyibzmtAQwDaOuJn9/m/pD8u
+	xUWp31xmVInX8j8CjGnhKcW/I0l9QtWGNH9Q++4VyYUtXaOwZIwieb4iEqEFhalOVaq//swy7EN
+	uOp69FzkpU=
+X-Google-Smtp-Source: AGHT+IGEnllZKc46D2GPpX8tp6qlYesswGm+zRYFM4v7XWzLwEmIplTDvSQ6hbelWc77fsdE9AoPPA==
+X-Received: by 2002:a17:906:d145:b0:b1d:285d:185d with SMTP id a640c23a62f3a-b1d285d2b12mr512201366b.0.1758210763485;
+        Thu, 18 Sep 2025 08:52:43 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-82-56-38-125.retail.telecomitalia.it. [82.56.38.125])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b23a1227bacsm60449766b.41.2025.09.18.08.52.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 08:52:43 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: Frank Li <Frank.Li@nxp.com>,
+	linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Javier Carrasco <javier.carrasco@wolfvision.net>,
+	Jeff LaBundy <jeff@labundy.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH v2 4/7] arm64: dts: imx8mm-venice-gw700x: reduce RGMII CLK drive strength
-Date: Thu, 18 Sep 2025 08:44:48 -0700
-Message-Id: <20250918154451.2531802-5-tharvey@gateworks.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250918154451.2531802-1-tharvey@gateworks.com>
-References: <20250918154451.2531802-1-tharvey@gateworks.com>
+	linux-input@vger.kernel.org
+Subject: [PATCH v5 0/6] Input: imx6ul_tsc - set glitch threshold by dts property
+Date: Thu, 18 Sep 2025 17:52:28 +0200
+Message-ID: <20250918155240.2536852-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The i.MX8M Mini FEC RGMII tracelength is less than 1in and does not
-require a x6 drive strength. Reduce the CLK drive strength to x1 for
-lower emissions. Additionally since TXC is not a high frequency clock,
-use slow slew rate (FSEL=0) for lower emmissions and improved signal
-quality.
+The series allows setting the glitch threshold for the detected signal
+from a DTS property instead of a hardcoded value.
+In addition, I applied a patch that replaces opencoded masking and
+shifting, with BIT(), GENMASK(), FIELD_GET() and FIELD_PREP() macros.
 
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
----
-v2: add FSEL detail to log (Peng)
----
- arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I didn’t remove patches:
+ - 2/6 Input: imx6ul_tsc - use BIT, FIELD_{GET,PREP} and GENMASK macros
+ - 1/6 Input: imx6ul_tsc - fix typo in register name
+even though they were accepted, to avoid generating conflicts detected
+by the kernel test robot.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi
-index baf46fe28133..dca213c85cc3 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi
-@@ -446,7 +446,7 @@ MX8MM_IOMUXC_ENET_RD3_ENET1_RGMII_RD3		0x91
- 			MX8MM_IOMUXC_ENET_RD2_ENET1_RGMII_RD2		0x91
- 			MX8MM_IOMUXC_ENET_RD1_ENET1_RGMII_RD1		0x91
- 			MX8MM_IOMUXC_ENET_RD0_ENET1_RGMII_RD0		0x91
--			MX8MM_IOMUXC_ENET_TXC_ENET1_RGMII_TXC		0x1f
-+			MX8MM_IOMUXC_ENET_TXC_ENET1_RGMII_TXC		0x0
- 			MX8MM_IOMUXC_ENET_RXC_ENET1_RGMII_RXC		0x91
- 			MX8MM_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x91
- 			MX8MM_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x1f
+Changes in v5:
+- I didn’t remove patches:
+   - 2/6 Input: imx6ul_tsc - use BIT, FIELD_{GET,PREP} and GENMASK macros
+   - 1/6 Input: imx6ul_tsc - fix typo in register name
+  even though they were accepted, to avoid generating conflicts detected
+  by the kernel test robot.
+
+Changes in v4:
+- Adjust property description fsl,imx6ul-tsc.yaml following the
+  suggestions of Conor Dooley and Frank Li.
+
+Changes in v3:
+- Remove the final part of the description that refers to
+  implementation details in fsl,imx6ul-tsc.yaml.
+
+Changes in v2:
+- Replace patch ("dt-bindings: input: touchscreen: fsl,imx6ul-tsc: add
+  fsl,glitch-threshold") with ("dt-bindings: touchscreen: add
+  touchscreen-glitch-threshold-ns property"), making the previous property
+  general by moving it to touchscreen.yaml.
+- Rework "Input: imx6ul_tsc - set glitch threshold by DTS property" patch
+  to match changes made to the DTS property.
+- Move "Input: imx6ul_tsc - use BIT, FIELD_{GET,PREP} and GENMASK macros"
+  patch right after the patch fixing the typo.
+
+Dario Binacchi (5):
+  Input: imx6ul_tsc - use BIT, FIELD_{GET,PREP} and GENMASK macros
+  dt-bindings: touchscreen: add touchscreen-glitch-threshold-ns property
+  dt-bindings: touchscreen: fsl,imx6ul-tsc: support glitch thresold
+  ARM: dts: imx6ull-engicam-microgea-bmm: set touchscreen glitch
+    threshold
+  Input: imx6ul_tsc - set glitch threshold by DTS property
+
+Michael Trimarchi (1):
+  Input: imx6ul_tsc - fix typo in register name
+
+ .../input/touchscreen/fsl,imx6ul-tsc.yaml     |  14 ++
+ .../input/touchscreen/touchscreen.yaml        |   4 +
+ .../nxp/imx/imx6ull-engicam-microgea-bmm.dts  |   1 +
+ drivers/input/touchscreen/imx6ul_tsc.c        | 122 +++++++++++-------
+ 4 files changed, 97 insertions(+), 44 deletions(-)
+
 -- 
-2.25.1
+2.43.0
 
+base-commit: 8b789f2b7602a818e7c7488c74414fae21392b63
+branch: tsc_de_glitch
