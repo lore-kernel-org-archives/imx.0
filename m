@@ -1,79 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6016430FC12;
-	Wed, 17 Sep 2025 22:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00FD17E0;
+	Thu, 18 Sep 2025 00:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758148208; cv=none; b=QN4+0gDqQujQQ1laimjeovYxIWfUJ8RQXtYYOUUGup3bvmlnOSDfHBlGBIWdzW2Nh/s70Q1+Mg0+Oh2S/bdwadz6wQZZuVcbXYe5W2NiQ7SFNrMtAFswgEsY35SzUSx2EIobiXzbOF4lqcnI/itWIWD5rnpOoFDQRAZhFllNtJE=
+	t=1758153677; cv=none; b=ARBDxq9K+hjveg7PDrPJltEcVDxICdnZjdK0vi+bf49JbjKZIw7T2Ayj1wRePhxab60G6e4KBYdt0qLfqbGQKl764BuOKSoQ/UyjRWK1Y8JisMWHH3M6TFJOb9JmmvbpctvMZ5FCjJtcWS5dV6tjUGty12NyihdNnHjvDU5YaeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758148208; c=relaxed/simple;
-	bh=t5U7bWcgyUOybfHJuAL0KyhfI9YLLbZycfjGX3jWjNo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YYgcmRNtxH6S6eUeVn+vkPGjsPplRDQO5uSLWQxVe9mY+8LtWUceMDaXD8cRTSshQsijgX3dCSYWx+OYfW1jqRPl0MvT5KsR1RRfoxpr2r1xsCGk3k2TLRbSPmlCPcTm904yrpuABGBj/MtoFImDc8H3+hUGzoJvPL3xh3TxVTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVaQzSzs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758153677; c=relaxed/simple;
+	bh=1B3/y6mC3x0Gb7mESrjJVqtP5iKoAmAQvn0c34F3HYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ufwV9JJypoiiCeWyE3qg7xJQfalAJ0nNLWTkITubpzpr7HvrYrYuUu8a34EQHnWk2iQYrrOo9xX3yUE42C56DVi82qJ3H+Jc/Zke+BtH/ykZnxWL8Npa4Kc4bqkalKmrbes1/HhHNxo3Z0fPQb6+IIKE1X//Eevmu/utDfPnxmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VDDVgE8B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVaQzSzs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FFFC4CEF5;
-	Wed, 17 Sep 2025 22:30:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VDDVgE8B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF7BC4CEE7;
+	Thu, 18 Sep 2025 00:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758148208;
-	bh=t5U7bWcgyUOybfHJuAL0KyhfI9YLLbZycfjGX3jWjNo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=jVaQzSzsiXiJRliHRdiQf+Z/BjWHYypt4IK5+QDJftboOd8jN179ZQT9NpEdtjIsd
-	 R+CMv6kbdWhj2pW18QPfU6XqTW99Tze356a/iMb1vZKkGoEjoSyZvQ+x9HIW6cqIqI
-	 ImQln1XNS4QY+bwa3SIC9XhOyCdQqL4rbe4rm872ZVYl4yV+ns682cQi/rme9Xb8ct
-	 AEHRuxAUj0zKc2L2a4p2q+4xpE2v4Uzvi2bZIj1JFnwd21c0QbqwBzvqgnYfeloisT
-	 e7BjdLIia1rOdM/XSdgRjM4gPlYTmFak79jGmKuwc3qAieZ4SCYa1TdEh+cC/ExjF5
-	 aiCqE4X+YGvGQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE1B39D0C28;
-	Wed, 17 Sep 2025 22:30:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1758153676;
+	bh=1B3/y6mC3x0Gb7mESrjJVqtP5iKoAmAQvn0c34F3HYY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VDDVgE8BCfMQPQ6fqgNJCfqaNGdgmJyEgRe2ykUFgjSd+ZBzPU5ulEDRfLPZY86Ko
+	 VBoiy9cHUAM3MMEw8uNXmNL3NRNtBZKopg3noLfc9RmH89sPqGS1rj4X/hhDxhpxYb
+	 8rQWdHRhbHk0pepfxNSTpcM2TK6bSNcEnXAduDi35HgQOH7CbMuxBzzU6kii96TMlp
+	 gn5Qs8BYvAgJNsOVkPbKuJWS5cTAoXW4qAos6D90t14uWlZ7hct0mISncgCmy8oFOI
+	 GEOQ15U7PkofWvlykkzLAFBGRkXIK43wUoGVZ8qjWIMcXP6AFmFK5g5VgtHYjhh77U
+	 hDovHNlhfh57w==
+Message-ID: <0daf1bda-d0f2-45bb-a68b-2437ba0579e7@kernel.org>
+Date: Thu, 18 Sep 2025 09:01:11 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] ptp: netc: only enable periodic pulse event
- interrupts for PPS
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175814820850.2170568.9776868991501848097.git-patchwork-notify@kernel.org>
-Date: Wed, 17 Sep 2025 22:30:08 +0000
-References: <20250915082528.1616361-1-wei.fang@nxp.com>
-In-Reply-To: <20250915082528.1616361-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: xiaoning.wang@nxp.com, richardcochran@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- Frank.Li@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/7] dt-bindings: media: nxp: Add support for FSD SoC
+To: Inbaraj E <inbaraj.e@samsung.com>, 'Rob Herring' <robh@kernel.org>
+Cc: rmfrfs@gmail.com, laurent.pinchart@ideasonboard.com, martink@posteo.de,
+ kernel@puri.sm, mchehab@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ pankaj.dubey@samsung.com, ravi.patel@samsung.com, shradha.t@samsung.com
+References: <20250828085911.81266-1-inbaraj.e@samsung.com>
+ <CGME20250828085926epcas5p1b82576210280fb44c6c7f02851da71c6@epcas5p1.samsung.com>
+ <20250828085911.81266-2-inbaraj.e@samsung.com>
+ <20250829174638.GA1054721-robh@kernel.org>
+ <024f01dc27cb$f167d370$d4377a50$@samsung.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <024f01dc27cb$f167d370$d4377a50$@samsung.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 15 Sep 2025 16:25:28 +0800 you wrote:
-> The periodic pulse event interrupts are used to register the PPS events
-> into the system, so it is only applicable to PTP_CLK_REQ_PPS request.
-> However, these interrupts are mistakenly enabled in PTP_CLK_REQ_PEROUT
-> request, so fix this error.
+On 17/09/2025 21:09, Inbaraj E wrote:
+> Hi Rob,
 > 
-> Fixes: 671e266835b8 ("ptp: netc: add periodic pulse output support")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Thanks for the review
 > 
-> [...]
+> 
+>>> +    description:
+>>> +      Syscon used to hold and release the reset of MIPI D-PHY
+>>
+>> Reset? Sounds like you should be using the reset binding.
+> 
+> The Tesla FSD Soc does not have a dedicated reset controller. Instead, we
+> are using the
+> system controller which is MMIO Space handled by syscon driver, to assert or
+> de-assert the D-PHY
 
-Here is the summary with links:
-  - [net-next] ptp: netc: only enable periodic pulse event interrupts for PPS
-    https://git.kernel.org/netdev/net-next/c/2479cba20946
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+But that's the reset controller, no?
 
 
+Best regards,
+Krzysztof
