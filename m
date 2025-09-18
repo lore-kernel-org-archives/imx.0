@@ -1,171 +1,93 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A852FC01F
-	for <imx@lists.linux.dev>; Thu, 18 Sep 2025 14:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A298221F26;
+	Thu, 18 Sep 2025 14:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758205151; cv=none; b=pa+9DWyqeXCT+wPe5b291bJiO/2I0CXJA6eKpHUqR8a12eJUm186D2YiGp+ABOUJTrR6yWweJSU9dZXAQWK6oNc30D4kMySEIrgpKpv6nqJ+/p8maNyyPaEMuEdewH1YFNRnRzDq3Nwgr9A6PFezyC/OxAWJr0iCrMIMc/fhst0=
+	t=1758207017; cv=none; b=DdPgcXnouthwuvydwbouzy5gK8N5kSQqf/IWkKR+HK4fhcKrjhsnRwADRJFMzjC4FIJtG//+T+8BUP1JxdGv7RAyrQQGbA+dpuq6FXOlvdONztuvpN9xBjZe+bDNWl2vkOV57LfDeSM407+HT4M09Bt+EURt6PZMv7IGMQlOr9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758205151; c=relaxed/simple;
-	bh=efV7ND5peOzZ6wFre05dZsI2sW9Mwg+FnrXTj0ULe04=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NeA1p1e1KMSucytk0+XAHMyjXqZ/JPKLFBpWBcPPWgL5eRyOg9o+Fjgh/lI1Wn3uVrxda/mxmcV8f7kCZ5UjTsMeRKL2Og54mYV3R+8JyPau2uSYID0AMwuUgCrsaoWuFke/Hpeyz7SRzrOFMZ6omezv1bvorQ0OP1KwxO7pgBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cU80tyos; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1758207017; c=relaxed/simple;
+	bh=rdKpK3nchvp/w38h4f46KmCsTfhjjVcybQBpTUeTe9Y=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=KHD+vKbPR/S9VAynxlQcGGG/b15X4z76LaSsxHHB+MuF/LpAUcf7LrKStEx0r9UXx52ql75AHsPjR8LHlEuFBOD/l8REuP9ikDANL/Jce4sRzz/8vbpkBrfYP06e97o/nZw1mjm408Z0VCe0+TfD78OkiY6DtHbllpWM57alhDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z67xktK3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cU80tyos"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-723bc91d7bbso9951877b3.3
-        for <imx@lists.linux.dev>; Thu, 18 Sep 2025 07:19:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758205149; x=1758809949; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rwnJ7MfncjQZZqEO7RPiB5wvlA6TdyUbKRJ/WpUXEpc=;
-        b=cU80tyosp5hGDXpjtg/5Qy32Q+hadyyS2oHBk70gTh/GYxP5HiRbsM/jPo1TR0Wdoh
-         ttYwOWG7xc+IjaxPOUGvd5EMVzdxRLMqx1lQvxWp7qI2QHnhVFaBnX4LSh91gQObO2wA
-         5+Qs8KLD4OuWPfMgj01DJl9U5pdtrKAXaCmhThRq/z5LqGUaptgqkRjwdm09VfFmGpfS
-         mwAvRvIAZPlPRf5ZA4blu8oGoNcSZwZE0tS8rRLcRrM9NFEJ5nssejzgduubFETYhM1x
-         RPxmS/3EBXHMJwM4QpIfn+vJSEZHLFUN0gYNHTLEw+SQgFrOhhH/UyM0O7kjNT3qgwND
-         V1FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758205149; x=1758809949;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rwnJ7MfncjQZZqEO7RPiB5wvlA6TdyUbKRJ/WpUXEpc=;
-        b=vowNjs64HiWa7b/7Npysvr09f/Wj6fSgf8L/xgq2qGd7WVVEg09iZar3ebRB6ICHGo
-         uvrsSdk3qqYbuciDnO0g0qwTPH1q76wMzgskwCsal8sX5bp49thgBBLMJoC/bhtMfed0
-         7G4KQK9wOQ3DXPAdvU/iwrxH0nkXF/gPjNwFnZdmnvVyPpUEOKipDQfk7XuVD1xCiB39
-         7TOO5iW1U/278bLpu1tDO30ObSwgx41roxfnFLlkbA34wKBpcGIAu9sIDdST+7j5OXi2
-         vgJlHzvjKlau1uoR1s3CDVuGTiOwm81/sccIe39iYaQLz4XN3YDon1agN0BpU0mLp1yV
-         q7uA==
-X-Forwarded-Encrypted: i=1; AJvYcCWiDqGkdxYAkpFwrkug1PP/0R7fNLrLWpe7c1AC0Cx2tNsZlE5TpDR7PuJVeMhnQXjOgcE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yycq5I0j0Jv4KpgxK1gQLo+OlxXb6Dm0LJ9LwOLEXl/SROQdD6J
-	cXQF6wRf5xhN5iaZtLl64wHgAlB9GNPpxfV+Ga5+50Oq1y83u0JzacC6Y5XBHH3OT2TPDaXz0SQ
-	T8u7EJJ5hGh5of2t9ght9dp7S/EzGdo4YXlkWZYsuZg==
-X-Gm-Gg: ASbGncurNR1bjzhv2biJMrSOuvxlOmS7oaDeY764nxLZzJY/d1aO1MlWbLFv5UTco4o
-	+IVTO2i4RUxsxLhQMWyXiUi5Kr81rAqy1+3RsEeAcCq+/gERHEpwG2yANMxMfdeaL+kkWNl7XG0
-	oGo7vO5Ro3ZSGuP08+W1iptTWfgAixXRA0cyUK4NNBg/BWXtbJ6gFqrQskH8fzXR23XWSP5Ut/u
-	OFc953vJMlriUqcI5MG9oE1Ves=
-X-Google-Smtp-Source: AGHT+IFja2SGfrTtCyPdRJCCefTmrgo0mQhH1O6x561N6cabqmvG2QM8w3ohhfxToBTf2XJdX84zA191m+AeXdLVuso=
-X-Received: by 2002:a05:690c:3582:b0:735:8634:be68 with SMTP id
- 00721157ae682-73890cb0553mr52912587b3.23.1758205148353; Thu, 18 Sep 2025
- 07:19:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z67xktK3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC12C4CEE7;
+	Thu, 18 Sep 2025 14:50:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758207016;
+	bh=rdKpK3nchvp/w38h4f46KmCsTfhjjVcybQBpTUeTe9Y=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=Z67xktK32N/0SPPgxilFoJF1XbCI1YMq7szYokGU2rekjwG2KEwCkHufVLC4FF48s
+	 1wuVqPA/hK97kJcLZOdyMzO4zd7fKcJ0D31BzcmRYuwr7TuCqo46bnQ6vg4D/jj8qN
+	 /c1KWRYRfOAWZOLcNpw0ojkJPffXQZhr9w1zG/s4eRsRwnX55JNBHaqa4WQ8IBbGLC
+	 9Pc3alfWtNYoTtW0Q0rDzpilTxsrnKQYyHsVmMP+yvS8yEuASGdI2Iz955TrIn6e9M
+	 fB/ed7yGOAkZLdr8OsBhJqIJ6M9SzNkdK7brA3wOJPtCU/UEJQ22Dx09g9qXG237ZK
+	 2Pa6QSJBGzwGQ==
+Date: Thu, 18 Sep 2025 09:50:14 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250902-pm-v3-0-ffadbb454cdc@nxp.com> <20250902-pm-v3-1-ffadbb454cdc@nxp.com>
- <20250918095950.h7wmz2qj5e6khtwr@lcpd911> <20250918131230.GD9196@nxa18884-linux.ap.freescale.net>
- <20250918134039.zkpeqsbf6m2ymxvt@lcpd911>
-In-Reply-To: <20250918134039.zkpeqsbf6m2ymxvt@lcpd911>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 18 Sep 2025 16:18:32 +0200
-X-Gm-Features: AS18NWB-C7Q2eLiy5k262B4Ual4xN_o15_I0cJZ8lRcTd3E2RvJskp1XeHp2s5E
-Message-ID: <CAPDyKFrweJTBHfOOU5r8Lcfs-dsTj94A=JK8+jKDqwJ0jNfiQw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] pmdomain: core: Introduce device_set/get_out_band_wakeup()
-To: Peng Fan <peng.fan@oss.nxp.com>, Dhruva Gole <d-gole@ti.com>
-Cc: Peng Fan <peng.fan@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Pavel Machek <pavel@kernel.org>, Peter Chen <peter.chen@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Xu Yang <xu.yang_2@nxp.com>, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, imx@lists.linux.dev, 
-	arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: conor+dt@kernel.org, josua@solid-run.com, Markus.Niebel@tq-group.com, 
+ frieder.schrempf@kontron.de, s.hauer@pengutronix.de, krzk+dt@kernel.org, 
+ devicetree@vger.kernel.org, francesco.dolcini@toradex.com, 
+ linux-arm-kernel@lists.infradead.org, alexander.stein@ew.tq-group.com, 
+ kernel@pengutronix.de, marex@denx.de, dario.binacchi@amarulasolutions.com, 
+ joao.goncalves@toradex.com, y.moog@phytec.de, linux-kernel@vger.kernel.org, 
+ primoz.fiser@norik.com, imx@lists.linux.dev, festevam@gmail.com, 
+ shawnguo@kernel.org
+To: Rogerio Pimentel <rpimentel.silva@gmail.com>
+In-Reply-To: <20250918014053.696710-1-rpimentel.silva@gmail.com>
+References: <20250918014053.696710-1-rpimentel.silva@gmail.com>
+Message-Id: <175820686275.1653785.13196624699524860361.robh@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Add i.MX8MP FRDM board
 
-On Thu, 18 Sept 2025 at 15:40, Dhruva Gole <d-gole@ti.com> wrote:
->
-> Hi Peng,
->
-> On Sep 18, 2025 at 21:12:30 +0800, Peng Fan wrote:
-> > Hi Dhruva,
-> >
-> > On Thu, Sep 18, 2025 at 03:29:50PM +0530, Dhruva Gole wrote:
-> > >On Sep 02, 2025 at 11:33:00 +0800, Peng Fan wrote:
-> > >> For some cases, a device could still wakeup the system even if its power
-> > >> domain is in off state, because the device's wakeup hardware logic is
-> > >> in an always-on domain.
-> > >>
-> > >> To support this case, introduce device_set/get_out_band_wakeup() to
-> > >> allow device drivers to control the behaviour in genpd for a device
-> > >> that is attached to it.
-> > >>
-> > >
-> > >Thinking more into it, to me it seems like if the intent here is to only
-> > >allow the device drivers to figure out whether they should be or not be
-> > >executing the suspend/resume_noirqs then that can still be checked by
-> > >wisely using the device set_wakeup APIs in the driver itself.
-> > >
-> > >Not sure why this patch should be necessary for a
-> > >driver to execute the suspend_noirq or not. That decision can very well
-> > >be taken inside the driver's suspend resume_noirq hooks based on wakeup
-> > >capability and wake_enabled statuses.
-> >
-> > I should join today's SCMI meeting, but something else caught me (:
->
-> It's alright, maybe see you in the next one ;)
->
-> >
-> > Thanks for looking into this.
-> >
-> > In genpd_suspend_finish, genpd_sync_power_off will be called if
-> > "(device_awake_path(dev) && genpd_is_active_wakeup(genpd))" is false.
-> > So if the device is enabled wakeup, the genpd will not be turned off because
-> > the check return true.
->
-> Umm I think this device_awake_path stuff is only going to be true when
-> someone calls device_set_wakeup_path, I don't think it is going to
-> return true for a wakeup_capable device. I know all these "wakeup"
-> terminology and APIs have become all too confusing :( , so maybe Ulf can
-> correct me.
 
-The PM core checks device_may_wakeup() in device_suspend() and then
-sets dev->power.wakeup_path = true;
+On Wed, 17 Sep 2025 21:40:52 -0400, Rogerio Pimentel wrote:
+> Add device tree compatible string for the i.MX8MP FRDM board.
+> 
+> Signed-off-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-The device_set_awake_path() and device_awake_path(), is to allow
-drivers/subsystems to enforce its device to stay powered-on during
-system-wide suspend. This may be needed even if the device isn't
-configured to deliver system-wakeups.
 
-> I maybe misremembering, but I have seen in some cases where a driver may
-> have marked itself wakeup_capable but the suspend hooks still do get
-> called... So your concern about genpd_sync_power_off not being called
-> due to wakeup capable device driver may not be valid... Again please
-> feel to correct me if I am wrong.
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-The system PM callbacks should get called no matter what.
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-The problem Peng pointing out, is when genpd_suspend_noirq() (which
-calls genpd_finish_suspend()) is called for a device that is attached
-to a genpd, we may end up bailing out, preventing the power-off for
-its PM domain, while it may be perfectly fine to allow the PM domain
-to be powered-off.
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
 
-The particular code we are looking at, is in genpd_finish_suspend():
+  pip3 install dtschema --upgrade
 
-        if (device_awake_path(dev) && genpd_is_active_wakeup(genpd))
-                return 0;
 
->
-> Did you also look at the wake IRQ stuff I mentioned?
-> In the path you're talking about it just checks
-> device_awake_path(dev) && genpd_is_active_wakeup(genpd)
-> However if the device irq is just marked as a wake IRQ, I don't think
-> that is checked anywhere in this path. So definitely if the IRQ of your
-> device is set as a wake IRQ, it will still get suspended and resumed as
-> usual and that's what you want right?
+This patch series was applied (using b4) to base:
+ Base: attempting to guess base-commit...
+ Base: remotes/next/fs-next-7200-gdcb597fa814c (exact match)
 
-The missing piece for the wake_irq, is to know whether the interrupt
-can be delivered via an out-band-powered-on-logic, thus without
-requiring the device to stay powered-on during system suspend.
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
 
-[...]
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250918014053.696710-1-rpimentel.silva@gmail.com:
 
-Kind regards
-Uffe
+arch/arm64/boot/dts/freescale/imx8mp-frdm.dtb: gpio-leds (gpio-leds): 'blue', 'green', 'red' do not match any of the regexes: '(^led-[0-9a-f]$|led)', '^pinctrl-[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/leds/leds-gpio.yaml#
+
+
+
+
+
