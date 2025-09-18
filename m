@@ -1,186 +1,95 @@
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07F32BE648
-	for <imx@lists.linux.dev>; Thu, 18 Sep 2025 05:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A232D6E5B
+	for <imx@lists.linux.dev>; Thu, 18 Sep 2025 05:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758174004; cv=none; b=Hoibsqf0rDqpWGWsgBu4IariX7/TRziMwMEf95NAY9cnmoDfqf0CHpym2yKN5NUAVcMDAVl3sSpTE96c1d5CVhpQK3tY15QIY7SAhJHUBG4wk05OiaThWgDp2u3eb7IP3Cc9KAO9DOb0R1rI2fiH5QEa7cS1MEbu33FcsT+oBXk=
+	t=1758175112; cv=none; b=P+IWrd6DGO+BF3DWzor5fQ2WYAV1IKYRVvFSVoyt6WzLI4h/jy4VjE42nsX9ah0k9A6YQPV8LLOVDHAba3rMwRsqf2fzcrvThX50MIpk/Bd/O1WyObvF3TmKuw6ecP1lBsiDqQ8qYwPcpWF06bncV83UKltArNhzIldRQwT/QIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758174004; c=relaxed/simple;
-	bh=DHo36Nw9Mhb8OSdyfEa69N5hMrs1OO6ojIUqj1gz0sE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f8OxY/3fhuysWlCnmYfCN64VEeK1YKsLiEzN+Dnz7zUOHTZB6KP7SM1wp0kCXIK1iNZ6khpwhsyw8GUVk0+AeDnKPXAUsq7xzaobYo22NE1VExIm1y+y1b0OpF/J7dyPbxFFwxkkwWO6BAeeMezEuNRvtT06kqHDj3aeAdrg5+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Jn+/3YUR; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1758175112; c=relaxed/simple;
+	bh=e7yRxA2B68UWIKkdczYYijQsT9ZC4h4tFwI2brifv3E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NyK15P4CIt2hC1kV2dK+u0A3bHOofC5B5QWc73GdnuIGDbXufOIsaMNmfLDQCG60IK630VoBy97t+SaLSXCBjrUcZyhCWp1dBuAIJJ9/FG4XFz30+0bZtAf/edCsgTBlWexpwZjfEL4YHJD8dJXTmKLiN0YDVsTWAnyrmUxINwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nBTU0bHb; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Jn+/3YUR"
-Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58I5dad41676466;
-	Thu, 18 Sep 2025 00:39:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1758173976;
-	bh=DKjp6N/ixan1BjatOrTjluVvM3Lvf9IQYxDJwVkTHGI=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=Jn+/3YUR2Waxjc9kICUNeTvsLCWZ4SzptzZzI552+gi1e+Q2RL8vnGaY9mJvRB210
-	 IBO/CfMwq6N3MSR4jYnGhI4HH7PNUrWg5OaAvNzXbiZrzAR++zhdOj5N7ozg9HZlXF
-	 ng1LpS5A5lLuaRU1bZCJWi9aSylBGdVhX1NZzp+A=
-Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
-	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58I5da5Q1878417
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Thu, 18 Sep 2025 00:39:36 -0500
-Received: from DFLE211.ent.ti.com (10.64.6.69) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 18
- Sep 2025 00:39:35 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE211.ent.ti.com
- (10.64.6.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Thu, 18 Sep 2025 00:39:35 -0500
-Received: from localhost (lcpd911.dhcp.ti.com [172.24.233.130])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58I5dYu7066935;
-	Thu, 18 Sep 2025 00:39:35 -0500
-Date: Thu, 18 Sep 2025 11:09:34 +0530
-From: Dhruva Gole <d-gole@ti.com>
-To: Peng Fan <peng.fan@nxp.com>
-CC: Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-        Pavel Machek
-	<pavel@kernel.org>, Peter Chen <peter.chen@kernel.org>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer
-	<s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Xu Yang <xu.yang_2@nxp.com>, <linux-pm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        <imx@lists.linux.dev>, <arm-scmi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v3 1/4] pmdomain: core: Introduce
- device_set/get_out_band_wakeup()
-Message-ID: <20250918053934.dweerdmcqdkr342w@lcpd911>
-References: <20250902-pm-v3-0-ffadbb454cdc@nxp.com>
- <20250902-pm-v3-1-ffadbb454cdc@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nBTU0bHb"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-77287fb79d3so594165b3a.1
+        for <imx@lists.linux.dev>; Wed, 17 Sep 2025 22:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758175110; x=1758779910; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1M8K/x0sWMdi+p7zlur7P/Abek/ld1zdxtrufjSounw=;
+        b=nBTU0bHb5sKsASP+HrVotBmrLLaCfEwAuIWqPXI5thennrs7GelsaNVTjsRWljkufi
+         hoyhPKPTq0NPU+o374tH/o1aCd9uitPtChs53LpwWLY1ACQaw8wT0MawVJrfKibE4WIm
+         8R/Rfh1w+CGrgezcLA190RKYr03s/VpR5TA0od8pPBIMuzrd8Z6oSYbKoNBKitMGw/8+
+         6L+vvzkyfFkumo1kU2hQg/yJU6KyvcDVEKyxrHIfACfvIP5fF2n7xR/Q3X9G28lmyfvY
+         v8XHOLSxkaX9YKS1jWRXnAW0ks1/1V+dXjUVUT6qO1vNEp+hFdNx1sA/t4Z84cgrcXQ8
+         5DXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758175110; x=1758779910;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1M8K/x0sWMdi+p7zlur7P/Abek/ld1zdxtrufjSounw=;
+        b=QLwZ48oeZwCQ16FBCN0nlIi5oQA6lacPHL8YObUy/wIWhWv8fkFpXCgCe+uwXTdfPj
+         +Jnilx1PXlL89Ponn5SHZEekh4HeT+8OsBu1UmQUnUuzkAtJ2JkVS8WkgFdLy3pXxNmm
+         0KJSTXXnAZl7LcmTqSC7bQbuuVZ+xJEl3ag/tQNt03YHro9ijVwFP0sS62RYub3531W1
+         LBcJ/s8AFVavRCoYWrvEeSPtDSsZ1hAi5sQG51zPukzscw4RtGwAADFhderPrtTDzH7P
+         gvDOTm0RQrsAOTk8j8DhuS9knZtt2LRuED96K+840fhd0dRGhTx1/VrIbqMHPHGQ+NpU
+         PPrA==
+X-Forwarded-Encrypted: i=1; AJvYcCVXeZped83bmkzTB62jLK3jVDjCLIRip70Rfmoy1JUKXeSvK7IXJHG5mK3xdeavr7zcjfs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxBG5lT1tSRHUh7X6wq7SY9Jy6BU2wTv/1ikktyzpLd3qzrn5f7
+	Ol48SUSQyGECZ7CDee8QY5h+2fVRdEJiDukHRch8B7qCR/1VJO9EiDF3
+X-Gm-Gg: ASbGncukcDDAYUX8LXImc/QRBhjcTMgEi3v6ix9lCekYXg5lJmyRSy76ZxuKlAREMmb
+	KbwpXXTajH0f2x18GnrrlhqPK9X+o6q6sHyZlRw49LLTTX4uzB8P4Bj++5qHOtNTBwsg6e/YYiE
+	pzvmg0F9mQEaR6MEFraLaeBWIuU6HMsX++VD01KygN5qdnDA/xpt3CdeOk5J9+EW32RwkauYisu
+	ZzOmoza7ChQPRyD5745YpKwNPbta2mVGfQ1pNhSYY0gJuStcpX7MZR69rpI5wMu0PX+9gOTkF8c
+	GDt7PUcZPPd6E5Sioo1Jbs3LaRt+jvOgdJAD8jA7maHow1uZa7/bRejqg2aBShGEl2HyQ3CbCYo
+	EjE7Rnonfvz0usZhSoS/p3NOYM7EzCQCSdRQtaunV8Q==
+X-Google-Smtp-Source: AGHT+IGb+rdTMfwVbcT/i/JK1WiLKpQvT7aq4HHFKHQrPydPEVY0k2OXSVn7CE/ZKWO3IERNaHMXMw==
+X-Received: by 2002:a05:6a20:748c:b0:271:cdbb:4d26 with SMTP id adf61e73a8af0-27aac3da5a9mr6725643637.58.1758175110263;
+        Wed, 17 Sep 2025 22:58:30 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:194b:8358:5c91:3d3d])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b54ff4002edsm1199838a12.33.2025.09.17.22.58.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Sep 2025 22:58:29 -0700 (PDT)
+Date: Wed, 17 Sep 2025 22:58:27 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Oleksij Rempel <o.rempel@pengutronix.de>, 
+	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: touchscreen: resistive-adc-touch:
+ change to unevaluatedProperties
+Message-ID: <wbwtlcrlwnvvjyv7cnffu3sltrqfaddjf5f6dzizhgglwskjgb@zgxjfm5oafxz>
+References: <20250910224402.994046-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250902-pm-v3-1-ffadbb454cdc@nxp.com>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+In-Reply-To: <20250910224402.994046-1-Frank.Li@nxp.com>
 
-On Sep 02, 2025 at 11:33:00 +0800, Peng Fan wrote:
-> For some cases, a device could still wakeup the system even if its power
-> domain is in off state, because the device's wakeup hardware logic is
-> in an always-on domain.
-
-Don't we already have something like wake IRQs [1] for such purposes?
-
-8<----------------------------------------------------------------------
-That may involve turning on a special signal handling logic within the
-platform (such as an SoC) so that signals from a given line are routed
-in a different way during system sleep so as to trigger a system wakeup
-when needed
------------------------------------------------------------------------>8
-
-[1] https://docs.kernel.org/power/suspend-and-interrupts.html#system-wakeup-interrupts-enable-irq-wake-and-disable-irq-wake
-
+On Wed, Sep 10, 2025 at 06:44:01PM -0400, Frank Li wrote:
+> Change additionalProperties to unevaluatedProperties because it refs to
+> touchscreen.yaml.
 > 
-> To support this case, introduce device_set/get_out_band_wakeup() to
-> allow device drivers to control the behaviour in genpd for a device
-> that is attached to it.
-
-Do you have any explanation as to why wake IRQ is not solving this
-problem and you need to introduce these new APIs?
-
+> Fix below CHECK_DTBS warnings:
+> arch/arm/boot/dts/nxp/imx/imx6dl-skov-revc-lt6.dtb: touchscreen (resistive-adc-touch): 'touchscreen-y-plate-ohms' does not match any of the regexes: '^pinctrl-[0-9]+$'
+> 	from schema $id: http://devicetree.org/schemas/input/touchscreen/resistive-adc-touch.yaml#
 > 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/pmdomain/core.c   |  6 ++++--
->  include/linux/pm.h        |  1 +
->  include/linux/pm_wakeup.h | 17 +++++++++++++++++
->  3 files changed, 22 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
-> index 0006ab3d078972cc72a6dd22a2144fb31443e3da..8e37758cea88a9ee051ad9fb13bdd3feb4f8745e 100644
-> --- a/drivers/pmdomain/core.c
-> +++ b/drivers/pmdomain/core.c
-> @@ -1549,7 +1549,8 @@ static int genpd_finish_suspend(struct device *dev,
->  	if (ret)
->  		return ret;
->  
-> -	if (device_awake_path(dev) && genpd_is_active_wakeup(genpd))
-> +	if (device_awake_path(dev) && genpd_is_active_wakeup(genpd) &&
-> +	    !device_get_out_band_wakeup(dev))
->  		return 0;
->  
->  	if (genpd->dev_ops.stop && genpd->dev_ops.start &&
-> @@ -1604,7 +1605,8 @@ static int genpd_finish_resume(struct device *dev,
->  	if (IS_ERR(genpd))
->  		return -EINVAL;
->  
-> -	if (device_awake_path(dev) && genpd_is_active_wakeup(genpd))
-> +	if (device_awake_path(dev) && genpd_is_active_wakeup(genpd) &&
-> +	    !device_get_out_band_wakeup(dev))
->  		return resume_noirq(dev);
->  
->  	genpd_lock(genpd);
-> diff --git a/include/linux/pm.h b/include/linux/pm.h
-> index cc7b2dc28574c24ece2f651352d4d23ecaf15f31..5b28a4f2e87e2aa34acc709e146ce729acace344 100644
-> --- a/include/linux/pm.h
-> +++ b/include/linux/pm.h
-> @@ -684,6 +684,7 @@ struct dev_pm_info {
->  	bool			smart_suspend:1;	/* Owned by the PM core */
->  	bool			must_resume:1;		/* Owned by the PM core */
->  	bool			may_skip_resume:1;	/* Set by subsystems */
-> +	bool			out_band_wakeup:1;
->  	bool			strict_midlayer:1;
->  #else
->  	bool			should_wakeup:1;
-> diff --git a/include/linux/pm_wakeup.h b/include/linux/pm_wakeup.h
-> index c838b4a30f876ef5a66972d16f461cfba9ff2814..c461c7edef6f7927d696b7d18b59a6a1147f53a3 100644
-> --- a/include/linux/pm_wakeup.h
-> +++ b/include/linux/pm_wakeup.h
-> @@ -94,6 +94,16 @@ static inline void device_set_wakeup_path(struct device *dev)
->  	dev->power.wakeup_path = true;
->  }
->  
-> +static inline void device_set_out_band_wakeup(struct device *dev, bool capable)
-> +{
-> +	dev->power.out_band_wakeup = capable;
-> +}
-> +
-> +static inline bool device_get_out_band_wakeup(struct device *dev)
-> +{
-> +	return dev->power.out_band_wakeup;
-> +}
-> +
->  /* drivers/base/power/wakeup.c */
->  extern struct wakeup_source *wakeup_source_register(struct device *dev,
->  						    const char *name);
-> @@ -162,6 +172,13 @@ static inline bool device_wakeup_path(struct device *dev)
->  
->  static inline void device_set_wakeup_path(struct device *dev) {}
->  
-> +static inline void device_set_out_band_wakeup(struct device *dev, bool capable) {}
-> +
-> +static inline bool device_get_out_band_wakeup(struct device *dev)
-> +{
-> +	return false;
-> +}
-> +
->  static inline void __pm_stay_awake(struct wakeup_source *ws) {}
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Applied, thank you.
 
 -- 
-Best regards,
-Dhruva Gole
-Texas Instruments Incorporated
+Dmitry
