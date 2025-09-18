@@ -1,98 +1,74 @@
-Received: from smtp16.bhosted.nl (smtp16.bhosted.nl [94.124.121.27])
+Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF323126D2
-	for <imx@lists.linux.dev>; Thu, 18 Sep 2025 15:35:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF9821171B;
+	Thu, 18 Sep 2025 15:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758209701; cv=none; b=JQEsZlqtBG/nw7ghi6BKD7uTfEMEAJr0mbQvPekl8i3tmBWlnGzfX3DVKfF0LOMLP2azOfsewlOq2G7Rm8PmNl/TsP7xnD4QgLz4GWSlQLk/HjQ1Lb+yzzxQRprom957ewocS+Jv0iqLD8yPL1qiHfr0eEWgW+vOT+1zBfqeF2g=
+	t=1758210306; cv=none; b=jVXT9rFgQB4JM8tzG1+m80qAjinu+dndsBY6Z19rrpr5hPDKYsy1A23cKRe6TYwzkJKa50/JdjBiV9m8bkzut0+Ir61Ciggp5keLJNFx/9JhXGTwj9zr0BU0GX1ypINFckJgNon/PBfgWXWYP+kieJP8E0Bfg5I/3mxvkmt3ktg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758209701; c=relaxed/simple;
-	bh=1L4ztzZI21TGZatF3aNWfrnQCTgXQdveVEOhyL3fA0g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cbf1oF0LhgiQvFnOWEVu0LKYbU29UN7oZzdu14DQNcw0gJtn6XCRCRxq+XHptM85zgD9cVrc0+iQVGIvv9it07VVvT11w/PAmTHOc0qc+BF1AooPPqxle+TycPdfsNnlxZsumY752pxWftjpougO0g/EckNv2q3xRlg/BooKD+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=QQemO7m4; arc=none smtp.client-ip=94.124.121.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="QQemO7m4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=protonic.nl; s=202111;
-	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
-	 message-id:subject:cc:to:from:date:from;
-	bh=SqjdATjfjZTk7QANAggTs1mW/P13EV6a+Izt0r+agQ0=;
-	b=QQemO7m4x6zCxk4M9laZ90eCIBZvlHRq/VuixCptBB7zzwo7W14mF7GpiYLDE2KravDs5mWr5Fe32
-	 YI5vbPnjY8XchNI9DA2VxwqrhGOoXIMDArJfiLqW1D+YRL2YnyHQ4WHp2jj+Z3dwdLVow44GMCxb0b
-	 S6ozX0oObc8Pf1HBbvovaxNrs8/iL/hnZAJYohUXXEqDuxD0E+wq2MS2PgcGQeAqkHwHgbtE3szPdO
-	 LY51aW6TvUu1QOAIlIzGxXruryI8IjrqSj/QbUYXHmCSZMbUySBHPD6UI6terkJcLsOTJupcY0AuoB
-	 JpIpBWXwmgF0fXl9CqpcwJtEM9ZcoKQ==
-X-MSG-ID: df093cf2-94a4-11f0-858c-005056817704
-Date: Thu, 18 Sep 2025 17:33:47 +0200
-From: David Jander <david@protonic.nl>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Jonas Rebmann <jre@pengutronix.de>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Shengjiu Wang
- <shengjiu.wang@nxp.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Vladimir Oltean
- <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-sound@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Lucas Stach <l.stach@pengutronix.de>,
- Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: Re: [PATCH v2 3/3] arm64: dts: add Protonic PRT8ML board
-Message-ID: <20250918173347.28db5569@erd003.prtnl>
-In-Reply-To: <7f1d9289-4102-4db9-a2bb-ff270e8871b7@lunn.ch>
-References: <20250918-imx8mp-prt8ml-v2-0-3d84b4fe53de@pengutronix.de>
-	<20250918-imx8mp-prt8ml-v2-3-3d84b4fe53de@pengutronix.de>
-	<af554442-aeec-40d2-a35a-c7ee5bfcb99a@lunn.ch>
-	<20250918165156.10e55b85@erd003.prtnl>
-	<7f1d9289-4102-4db9-a2bb-ff270e8871b7@lunn.ch>
-Organization: Protonic Holland
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1758210306; c=relaxed/simple;
+	bh=RUmv7s1jitvc1BSZi/7LjTeH/MS5Ezj+kTTcCo4TgR0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lkCcw8sIsTFdfVh4pdTq9fj9SRRdkYHnI0vvOkhifdXqv2IghriHpPh1dtOEgdA3X82sMSgcqajX/FN6rdzjC3p/1kUApGNvMSXBMl5G4b+3PvaXp+5cteEKfokR5wmBB+mFNEKF4L8ICtQzaC3C+ijQKxYzBhilqR1KiCyAY8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
+	by finn.localdomain with esmtp (Exim 4.95)
+	(envelope-from <tharvey@gateworks.com>)
+	id 1uzGoX-00B1eF-8d;
+	Thu, 18 Sep 2025 15:44:53 +0000
+From: Tim Harvey <tharvey@gateworks.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Tim Harvey <tharvey@gateworks.com>
+Subject: [PATCH v2 0/7] various imx8m*-venice dt fixes
+Date: Thu, 18 Sep 2025 08:44:44 -0700
+Message-Id: <20250918154451.2531802-1-tharvey@gateworks.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 18 Sep 2025 17:04:55 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
+This series contains various imx8m*-venice board dt fixes.
 
-> > Yes, unfortunately the SJA1105Q does not support PAUSE frames, and the i.MX8MP
-> > FEC isn't able to sustain 1000Mbps (only about 400ish) due to insufficient
-> > internal bus bandwidth. It will generate PAUSE frames, but the SJA1105Q
-> > ignores these, leading to packet loss, which is obviously worse than
-> > restricting this link to 100Mbps. Ironically both chips are from the same
-> > manufacturer, yet are incompatible in this regard.  
-> 
-> Thanks for the explanation. Maybe add a comment that the bandwidth is
-> limited due to the lack of flow control resulting in packet loss in
-> the FEC.
->
-> Anything which looks odd deserves a comment, otherwise somebody will
-> question it....
+v2:
+ - add additional info to commit explaining changing TXC slew rate for
+   improved signal quality and emiisions (Peng)
+ - add tags
 
-Yes! This is a golden tip. Ironically what I said above is incorrect. Sorry
-for the noise.
+Tim Harvey (7):
+  arm64: dts: freescale: imx8mp-venice-gw7905-2x: remove duplicate
+    usdhc1 props
+  arm64: dts: imx8m{m,n,p}-venice: disable unused clk output for TI PHY
+  arm64: dts: imx8mp-venice-gw702x: reduce RGMII CLK drive strength
+  arm64: dts: imx8mm-venice-gw700x: reduce RGMII CLK drive strength
+  arm64: dts: imx8mm-venice-gw72xx: remove unused sdhc1 pinctrl
+  arm64: dts: imx8mp-venice-gw702x: remove off-board uart
+  arm64: dts: imx8mp-venice-gw702x: remove off-board sdhc1
 
-Ftr: I wrote this DT about 4 years ago, so my memory failed me, and a comment
-in the code would have saved me this embarrassment ;-)
-
-The comment above applies to the i.MX6 SoC's which had this limitation. On the
-i.MX8MP we had a different problem that also caused the SJA1105Q not to work
-reliably at 1000Mbps either. We haven't been able to find the issue, but so far
-this switch hasn't been able to work at 1000Mbps reliable on any platform,
-possibly for different reasons in each case.
-
-Best regards,
+ .../dts/freescale/imx8mm-venice-gw700x.dtsi   |  3 +-
+ .../dts/freescale/imx8mm-venice-gw72xx.dtsi   | 11 ----
+ .../dts/freescale/imx8mm-venice-gw7902.dts    |  1 +
+ .../dts/freescale/imx8mn-venice-gw7902.dts    |  1 +
+ .../dts/freescale/imx8mp-venice-gw702x.dtsi   | 54 +------------------
+ .../dts/freescale/imx8mp-venice-gw72xx.dtsi   | 11 ----
+ .../dts/freescale/imx8mp-venice-gw74xx.dts    |  1 +
+ 7 files changed, 7 insertions(+), 75 deletions(-)
 
 -- 
-David Jander
+2.25.1
+
