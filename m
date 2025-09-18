@@ -1,90 +1,180 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFED284688;
-	Thu, 18 Sep 2025 13:34:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3096430C0E8
+	for <imx@lists.linux.dev>; Thu, 18 Sep 2025 13:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758202492; cv=none; b=pCmm5Cs+sLJPodfNaNikomFEeiS5clWgNTswOEXW6ZN+8u8iZCdUhgwaxdlGvFLBE8fMtLvqYF31TynHHflv/zs8t8e9QCa8kgEtiE0c6jGPH/AiK9Nh5VIs6EDgUyFlPZsjgGN49M7HHhulZauCHQ9e1e0qM9sscNgqfEuQc24=
+	t=1758202868; cv=none; b=H90kuurNPrULTwU7CSupejOO12jnBOLj372n9yo009Hy+v6w9oxLLgAUs349PgNJyhp8EGGORD/SElJioLmP0+5mkcXFQX0rW0Ypa02BlwN0ztstoqhdrzM6NT5TbRVunWgMIFg43Z348ObzoQA+qRCrrXtFD2YO/sJtIfp4Jjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758202492; c=relaxed/simple;
-	bh=fbMOsgK3KBan8r6PCrVT0WZEekJpyTiFl1qcW51/sfs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eqlT2Z6XcVnA+/YiKUB6ufQxmgqxctF8SzieI86pPEuzsSYXN9vxA4IjqvPeAseEGrgEpCeCHzhfHTHTA9L491eXUaDQM9OvLHpp6qHu9VJLUndCW8z/URdO+n10728ad0t6PhFVBOYEgpRXcKazxOjZ/XAnNempihh+HToz+68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=mffiEw3N; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1758202868; c=relaxed/simple;
+	bh=GS1lHfbXJUZu4M/K47vm1xoi0khW3qkbtkY3iQh5qDQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FBc82f+uMZ+kBQZois0c+Ui/uZN8TPLR6EujoMO7ra/DG97zbXXErSutD8lKg/iIzb1v3PDCRhwAZqY0cidj5CyuiWrxrnl/X2f74SbAT156BoO+rGH1rKb3mjbidfzmfQetMLYZlKW0BzXMzz5dnBaN8NT7ezrZIgr/7/s7s3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=MFbMU4sh; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mffiEw3N"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=2WK7RF7NsYG+8NsyTTvySh7GNGT5jm6UcDa778flAEQ=; b=mffiEw3N0Xsy0iehgYkPk5d+dg
-	sWKIhv5XK/zUNW+x7cpwzMKn+fWVigxBkekrLwF/YIOd76oce1YtRzHGNOghxSvsx4TZKrO8BB5yX
-	oA6G/OA6kjESeDYNowdA/HoKupolfgZZgm9ZJ1RTWZMa7p8eDc9puB5qodRd9gcxhoms=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uzEmL-008pSt-MZ; Thu, 18 Sep 2025 15:34:29 +0200
-Date: Thu, 18 Sep 2025 15:34:29 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
-	linux-mm@kvack.org, imx@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Richard Weinberger <richard@nod.at>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Message-ID: <ca6fc8dc-d1ee-41a8-a1c9-11ed2907207f@lunn.ch>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <20250917125951.GA1390993@nvidia.com>
- <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="MFbMU4sh"
+Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58IDegeo493090;
+	Thu, 18 Sep 2025 08:40:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1758202842;
+	bh=nilE7uTgSMT2YbWFrd5UVjg90TJPQVzV3fTHvrJ5g9Q=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=MFbMU4shPzOOyyPffN2117PkiSfS5+6xV4iCKozf8h/zi023q/OaB8HgpicPY3/OA
+	 MMqoO9v9QqYMEeseYLjZ/rzwu6PpbAwO0f7VGVFXwap1ryREJUzyEnIW5jJu4WxzQ2
+	 4dXH+0N0u1mUURA3voN8NbHY2f36H3tu5/DW+P68=
+Received: from DLEE207.ent.ti.com (dlee207.ent.ti.com [157.170.170.95])
+	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58IDef4E2388304
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 18 Sep 2025 08:40:42 -0500
+Received: from DLEE214.ent.ti.com (157.170.170.117) by DLEE207.ent.ti.com
+ (157.170.170.95) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 18 Sep
+ 2025 08:40:41 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE214.ent.ti.com
+ (157.170.170.117) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Thu, 18 Sep 2025 08:40:41 -0500
+Received: from localhost (lcpd911.dhcp.ti.com [172.24.233.130])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58IDeeNc667154;
+	Thu, 18 Sep 2025 08:40:41 -0500
+Date: Thu, 18 Sep 2025 19:10:40 +0530
+From: Dhruva Gole <d-gole@ti.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+CC: Peng Fan <peng.fan@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>,
+        "Rafael
+ J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+        Pavel Machek
+	<pavel@kernel.org>, Peter Chen <peter.chen@kernel.org>,
+        Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer
+	<s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Xu Yang <xu.yang_2@nxp.com>, <linux-pm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        <imx@lists.linux.dev>, <arm-scmi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v3 1/4] pmdomain: core: Introduce
+ device_set/get_out_band_wakeup()
+Message-ID: <20250918134039.zkpeqsbf6m2ymxvt@lcpd911>
+References: <20250902-pm-v3-0-ffadbb454cdc@nxp.com>
+ <20250902-pm-v3-1-ffadbb454cdc@nxp.com>
+ <20250918095950.h7wmz2qj5e6khtwr@lcpd911>
+ <20250918131230.GD9196@nxa18884-linux.ap.freescale.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+In-Reply-To: <20250918131230.GD9196@nxa18884-linux.ap.freescale.net>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-> * Marvell mv78xx0 and kirkwood (armv5 pj1) were fairly
->   powerful in 2008 and could support at least 1GB of RAM,
->   but I only found one machine (OpenBlocks A7) that does
->   this. It's unclear if anyone is still updating kernels
->   on this machine, but they could /probably/ use
->   VMSPLIT_3G_OPT if they do.
+Hi Peng,
 
-If i remember correctly, there was a design issue with the OpenBlocks
-A7, and it would not run with its full amount of memory. To get a
-stable system you had to limit the RAM. I don't remember if that was
-just with the NULL series, and it was fixed for mass production
-devices, or they are all broken.
+On Sep 18, 2025 at 21:12:30 +0800, Peng Fan wrote:
+> Hi Dhruva,
+> 
+> On Thu, Sep 18, 2025 at 03:29:50PM +0530, Dhruva Gole wrote:
+> >On Sep 02, 2025 at 11:33:00 +0800, Peng Fan wrote:
+> >> For some cases, a device could still wakeup the system even if its power
+> >> domain is in off state, because the device's wakeup hardware logic is
+> >> in an always-on domain.
+> >> 
+> >> To support this case, introduce device_set/get_out_band_wakeup() to
+> >> allow device drivers to control the behaviour in genpd for a device
+> >> that is attached to it.
+> >> 
+> >
+> >Thinking more into it, to me it seems like if the intent here is to only
+> >allow the device drivers to figure out whether they should be or not be
+> >executing the suspend/resume_noirqs then that can still be checked by
+> >wisely using the device set_wakeup APIs in the driver itself.
+> >
+> >Not sure why this patch should be necessary for a
+> >driver to execute the suspend_noirq or not. That decision can very well
+> >be taken inside the driver's suspend resume_noirq hooks based on wakeup
+> >capability and wake_enabled statuses.
+> 
+> I should join today's SCMI meeting, but something else caught me (:
 
-I doubt there are any mv78xx0 machines left, why where never very
-popular, but there are still Kirkwood NAS boxes around. I keep mine up
-to date, put an LTS kernel on it once a year, update to the latest
-debian sid.
+It's alright, maybe see you in the next one ;)
 
-	Andrew
+> 
+> Thanks for looking into this. 
+> 
+> In genpd_suspend_finish, genpd_sync_power_off will be called if
+> "(device_awake_path(dev) && genpd_is_active_wakeup(genpd))" is false.
+> So if the device is enabled wakeup, the genpd will not be turned off because
+> the check return true.
+
+Umm I think this device_awake_path stuff is only going to be true when
+someone calls device_set_wakeup_path, I don't think it is going to
+return true for a wakeup_capable device. I know all these "wakeup"
+terminology and APIs have become all too confusing :( , so maybe Ulf can
+correct me.
+I maybe misremembering, but I have seen in some cases where a driver may
+have marked itself wakeup_capable but the suspend hooks still do get
+called... So your concern about genpd_sync_power_off not being called
+due to wakeup capable device driver may not be valid... Again please
+feel to correct me if I am wrong.
+
+Did you also look at the wake IRQ stuff I mentioned?
+In the path you're talking about it just checks
+device_awake_path(dev) && genpd_is_active_wakeup(genpd)
+However if the device irq is just marked as a wake IRQ, I don't think
+that is checked anywhere in this path. So definitely if the IRQ of your
+device is set as a wake IRQ, it will still get suspended and resumed as
+usual and that's what you want right?
+
+
+> 
+> But to i.MX, if the device is configured as wakeup source, we still need to
+> power off the power domain, because the device has out-of-band wakeup logic.
+> 
+> This patch is to make sure the power domain could be powered off in
+> suspend flow and powered up in resume flow.
+> 
+> Thanks,
+> Peng
+> 
+> >
+> >Just a pseudo code:
+> >```
+> >driver_suspend_noirq () {
+> >	if (device_may_wakeup()) {
+> >		// do the sequence where the power domain might get turned off
+> >		// but like you say device can do some out band wakeup
+> >		return XXX;
+> >	}
+> >	// regular suspend sequence here... maybe inband wakeup config / clk
+> >	// disable etc...
+> >}
+> > ```
+> >
+> >And something similar in resume_noirq?
+> >
+> >Just need to make sure that the probe func does the
+> >device_set_wakeup_enable or capable stuff correctly as per your H/w and
+> >wakeup requirements...
+> >
+> >
+> >-- 
+> >Best regards,
+> >Dhruva Gole
+> >Texas Instruments Incorporated
+
+-- 
+Best regards,
+Dhruva Gole
+Texas Instruments Incorporated
