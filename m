@@ -1,24 +1,24 @@
 Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76AB313276;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A761B31283A;
 	Thu, 18 Sep 2025 15:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758210307; cv=none; b=bv341gJGLSzU1L/K8v/+qVhBmQCVFRMXS8LX0w5YWnj2NuCUUx8YiDz3CPQiN4T/pqUob7m3ofI2l6Vp6LHZnMfoxhIs5nikzWbQXfouzDiDm7mL0ci0aSJkHDRFkmUoxjrva/wXjxGqwXnQ59hwf7upxC9z7nQRZdSoGcNOn+8=
+	t=1758210307; cv=none; b=fZNHnz+ZB4yjQgnx5grr2z8xEJC3OYPar7xOdPVeG2xkfbHbjPYvnD1BJ+lEI5HB0Ij3i2IFhdKhMrpGZFkAymUslyklsnkrggRsGGk20QzYKK9psBcFZ4Cxq8Kmrbyb0HjQCVU+e0bSrrcsQ+vbSki1/ITSHN6jfKWwIpnhKms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758210307; c=relaxed/simple;
-	bh=ZZbwCNlCDRbxxzUuukJLcLpJLbc7KSTrPFgOFAVCEJ0=;
+	bh=MbypJfzVC6GKmODNJ+9gpiNQk2fIjM8aGK4yK0eVNl8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KB+UU1lARCeTVvqdzgjW1f/5PbPoBruCUwWD+TOcMp8XF14WgNNs+nz1Lo5ova+nWYbwwf9v6daJ9NfIh/VPIc3OPEmixYfIWKchRwpLVPmO/P9M732os6JxUof9Z0Z/BWOm0vJfmsQ+o+lhEkAUt9R9iAK8zht9MMo1RCxHqPo=
+	 MIME-Version; b=gywqE4wQQyink+v9xpT+eLhY+0n3OgE1BwwdK5Z1q/yzY4p8Os2i9hr2wby7APD85SdHKODh/Sg8Q4KgUi+98NMKdrHvxSZ6en9OP3xYP/K/vM2O7mkon2qmghRdDHb76D7RKIegtLSWewYMby0IOc5+MhjB4LtZWQfMyMsuOfY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
 	by finn.localdomain with esmtp (Exim 4.95)
 	(envelope-from <tharvey@gateworks.com>)
-	id 1uzGoY-00B1eF-67;
-	Thu, 18 Sep 2025 15:44:54 +0000
+	id 1uzGoc-00B1eF-Lu;
+	Thu, 18 Sep 2025 15:44:58 +0000
 From: Tim Harvey <tharvey@gateworks.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -33,9 +33,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Tim Harvey <tharvey@gateworks.com>,
 	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH v2 1/7] arm64: dts: freescale: imx8mp-venice-gw7905-2x: remove duplicate usdhc1 props
-Date: Thu, 18 Sep 2025 08:44:45 -0700
-Message-Id: <20250918154451.2531802-2-tharvey@gateworks.com>
+Subject: [PATCH v2 6/7] arm64: dts: imx8mp-venice-gw702x: remove off-board uart
+Date: Thu, 18 Sep 2025 08:44:50 -0700
+Message-Id: <20250918154451.2531802-7-tharvey@gateworks.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250918154451.2531802-1-tharvey@gateworks.com>
 References: <20250918154451.2531802-1-tharvey@gateworks.com>
@@ -47,32 +47,80 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Remove the un-intended duplicate properties from usdhc1.
+UART1 and UART3 go to a connector for use on a baseboard and as such are
+defined in the baseboard device-trees. Remove them from the gw702x SOM
+device-tree.
 
-Fixes: 0d5b288c2110e ("arm64: dts: freescale: Add imx8mp-venice-gw7905-2x")
+Fixes: 0d5b288c2110 ("arm64: dts: freescale: Add imx8mp-venice-gw7905-2x")
 Signed-off-by: Tim Harvey <tharvey@gateworks.com>
 Reviewed-by: Peng Fan <peng.fan@nxp.com>
 ---
 v2:
  - add tags
 ---
- arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ .../dts/freescale/imx8mp-venice-gw702x.dtsi   | 28 -------------------
+ 1 file changed, 28 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
-index cbf0c9a740fa..303995a8adce 100644
+index dd9eeb3479fd..dba35b3394bc 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
-@@ -423,9 +423,6 @@ &usdhc1 {
- 	bus-width = <4>;
- 	non-removable;
+@@ -396,13 +396,6 @@ &i2c3 {
  	status = "okay";
--	bus-width = <4>;
--	non-removable;
--	status = "okay";
  };
  
- /* eMMC */
+-/* off-board header */
+-&uart1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart1>;
+-	status = "okay";
+-};
+-
+ /* console */
+ &uart2 {
+ 	pinctrl-names = "default";
+@@ -410,13 +403,6 @@ &uart2 {
+ 	status = "okay";
+ };
+ 
+-/* off-board header */
+-&uart3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart3>;
+-	status = "okay";
+-};
+-
+ /* off-board */
+ &usdhc1 {
+ 	pinctrl-names = "default";
+@@ -521,13 +507,6 @@ MX8MP_IOMUXC_I2C3_SDA__GPIO5_IO19	0x400001c2
+ 		>;
+ 	};
+ 
+-	pinctrl_uart1: uart1grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART1_RXD__UART1_DCE_RX	0x140
+-			MX8MP_IOMUXC_UART1_TXD__UART1_DCE_TX	0x140
+-		>;
+-	};
+-
+ 	pinctrl_uart2: uart2grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX	0x140
+@@ -535,13 +514,6 @@ MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX	0x140
+ 		>;
+ 	};
+ 
+-	pinctrl_uart3: uart3grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART3_RXD__UART3_DCE_RX	0x140
+-			MX8MP_IOMUXC_UART3_TXD__UART3_DCE_TX	0x140
+-		>;
+-	};
+-
+ 	pinctrl_usdhc1: usdhc1grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x190
 -- 
 2.25.1
 
