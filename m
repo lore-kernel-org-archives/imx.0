@@ -1,124 +1,101 @@
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51A921579F
-	for <imx@lists.linux.dev>; Thu, 18 Sep 2025 10:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F388303A08
+	for <imx@lists.linux.dev>; Thu, 18 Sep 2025 11:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758189606; cv=none; b=hzbDABaR/HPn4+uxreIO9tpSHUN5NlCFoGcmbCjdTsfyi58V3NaW3w2+N3atGLJWQ7sKODo4ZF0cgTzqhkWiEc3wyZXG3OI7fo75jHmpmEvZoXbDtSoyeY+evg1RNAVv+asLTYce8azo7IQS3jCLrR+T4+3sWC+3SOeYcnrSS7k=
+	t=1758195356; cv=none; b=ntj+BwRkBjfFnltU0YfFI4jb9TpmsG6g8xUe0N7IBsasmXMhNCz6rSSoXtYfQXDdPVUl/lfhJSQp4md8NsbMZ6LYUBoBA6e63epcsqu9FClwajAzfPwgOofu6eOII+yMG6x/isRXr/dUMYC5IQe03ikgPDmV2FUa9gquJTru1g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758189606; c=relaxed/simple;
-	bh=Bse43jyzR8nZcEl4pAQd2Sdp31p7Bh/3Ilo+I2o2rJA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NJrwzYF3VEDpNqTaHWXcsuyKwfN7Fdib9kC8tDTPVd7Iuj7BpCJhfbbyJNq9X1Cy90/xH71mavAHj/57lfwf9DjTDupSVUb6HlbIgbBxERnO33XTkBiMF+5yt7N0v/y/nFFfqLAk5c8O1fgzojZCGBtUdV4dV7sTeFn3p+69Gbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=tsgj5sal; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1758195356; c=relaxed/simple;
+	bh=CH1PrPamLBcIL2akQUYxoj1jI5NyoHazD5PXsVbHZK0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OCVj95CEr2mWSwwmjEElEfLsmrS7xNh6ZGw7zwC3n0IJ4Bjkiebsj8GWGkLmqcpENeHpTEEsute17sDey70O5lO4dcAryocPgq08rIoh6xLlhs64Kxts9RzzChTFnO5lsSD+z6/utbZyxhRNjT2vaF6Gx/he65ouUgla0vOiEjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HZ046bCf; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="tsgj5sal"
-Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58I9xqX71721643;
-	Thu, 18 Sep 2025 04:59:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1758189592;
-	bh=38CN86+v/N3yFeHrI8mpeV2lMrT0UcLaFt3ugTYePww=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=tsgj5salexCwGPpZCXDQDFIU1+Hr0BUPeO100cAx0k7uv3bkMyqjLbtZfon1aGGY3
-	 vZxWPSG+FkIFsunHQRfvFwJ3gDfKIN/qIduzHHRcPi8limvOKOu3QZa5mzYqTx9MhC
-	 15bPn/eNvj+Gj96Smuc0Ig7TRDH7LE1COliYUPp4=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58I9xqTX1465831
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Thu, 18 Sep 2025 04:59:52 -0500
-Received: from DFLE209.ent.ti.com (10.64.6.67) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 18
- Sep 2025 04:59:52 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE209.ent.ti.com
- (10.64.6.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Thu, 18 Sep 2025 04:59:52 -0500
-Received: from localhost (lcpd911.dhcp.ti.com [172.24.233.130])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58I9xoAl683748;
-	Thu, 18 Sep 2025 04:59:51 -0500
-Date: Thu, 18 Sep 2025 15:29:50 +0530
-From: Dhruva Gole <d-gole@ti.com>
-To: Peng Fan <peng.fan@nxp.com>
-CC: Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-        Pavel Machek
-	<pavel@kernel.org>, Peter Chen <peter.chen@kernel.org>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer
-	<s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Xu Yang <xu.yang_2@nxp.com>, <linux-pm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        <imx@lists.linux.dev>, <arm-scmi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v3 1/4] pmdomain: core: Introduce
- device_set/get_out_band_wakeup()
-Message-ID: <20250918095950.h7wmz2qj5e6khtwr@lcpd911>
-References: <20250902-pm-v3-0-ffadbb454cdc@nxp.com>
- <20250902-pm-v3-1-ffadbb454cdc@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HZ046bCf"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b550eff972eso161441a12.3
+        for <imx@lists.linux.dev>; Thu, 18 Sep 2025 04:35:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758195354; x=1758800154; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CH1PrPamLBcIL2akQUYxoj1jI5NyoHazD5PXsVbHZK0=;
+        b=HZ046bCf0Q59iYmoiCUk+TPPy/zRZrFT8ea7jY2GdXtoH+aH1lO6gTb3OIddmIGRCv
+         3kk0qq3IG2Zfex9Q9Itt7S8PPNESKAOUpb/mvonlgLiRmDzZ4/vu4ga6sy+6xKOAIhIY
+         KfmmKxLEOsPlb4msbMjQ2rNaD8FLTqGcoPCcez8X8X8aasypcsRPsGj/+0LZlBJnefZq
+         AD4hy9Ofwc4CUXcEzrtRApbzRxbxVEbaHFMCPQmCl8XxrIx6zWDFv4bySTdlT84wKM89
+         ukSJjm8vR9vmZpCekHVPO7NOLU7M827Ldx1DEA682KkrJPkMwzwYNbs76djRCtqeSxvA
+         JEcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758195354; x=1758800154;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CH1PrPamLBcIL2akQUYxoj1jI5NyoHazD5PXsVbHZK0=;
+        b=A6XAySh6xhHGQ4hEqJ0mpjphI2cxeYD8eXXWfogOPMluEnnlO0u4jbihlOgJDucSfS
+         QJINepOk6oUjt3mTWsajcGV6EIYG+ETpXeZdMvsIPohkSVxShv74N90Bdt6WlvHcKNHK
+         bv3RZedLYU36lHnmcYwUg6QNARkwM6ej7vYlvFnGvBRk7nBO/HZDJjnfUwcHrcG4MeBo
+         QC8FgCDSWZKa+4pPSVkyzaK2Jjcw4mluvg2IQOUD7wAjXDOTH8cqeCFChYPsyTgqzPnz
+         5unmFvFbRIHy+5V3/7SMkbgDX+yuOeZpmVff6XpUC9BM0AOtz/27H0lfABfkSwCj3K3e
+         8CDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXsQqoK4f6VPXXS4ic8RPiGGFhGagF8qKAPx/YL2940US5y+wMyQsGX2bYWa8ASjRtEI8k=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzcpQZ8s1n/eXskI/MEqy92RwzNNz8daIm5kAX8zjrNhBZXsPsh
+	BBaeTE7g64c2R20JmSaZLyTe4clr5xcL3FgknRRaEhmknM/XJ7V55YubBOQCbP9n7MEva1pHRhl
+	lA178F0PIdXju2zd2V/KYSkAgIsUS2J4=
+X-Gm-Gg: ASbGncv0hFfdFOglxHwtoU1BC7MJzorQHZyOOOFSE6E5YQaVEqorE/hyNEXvMze2ud2
+	JxsWRxmM7AlHV4tfVd7AhUeV1lLk0qD8oIMsGfv8yByC1z8ABV6F+TsE0DyAhfJWC/EXEJbUfkp
+	DP+sjmlio8kZjFohBL0eaWFNV9NUxmm6jWqLpTysfnaY5/dY+3eWeVkdlScvYtmaRrUeGupcYqn
+	EUu6h+68dqd8BrnnujBkO9L++kH71OhO7US8m6cqNV0T6gQvmRBZsc=
+X-Google-Smtp-Source: AGHT+IGj6a4sc19wyzd63Dixg/UySiquRPpGXq2m5G0nsVQ6YbTUTB+pMgEHhGrVA5tqjbsOrjjh+YB6F+lqKoiYvWE=
+X-Received: by 2002:a17:903:1b25:b0:266:d648:bf53 with SMTP id
+ d9443c01a7336-268119b832bmr72456925ad.7.1758195354344; Thu, 18 Sep 2025
+ 04:35:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250902-pm-v3-1-ffadbb454cdc@nxp.com>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+References: <20250918014053.696710-1-rpimentel.silva@gmail.com> <20250918014053.696710-2-rpimentel.silva@gmail.com>
+In-Reply-To: <20250918014053.696710-2-rpimentel.silva@gmail.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Thu, 18 Sep 2025 14:38:12 +0300
+X-Gm-Features: AS18NWCUGtPgOgXzmXtowvoHWKNQHRraFSnJDD8RcxIe00cDqMMkAGlPM7jIMlk
+Message-ID: <CAEnQRZBb+FOah-owK2u4CM_ngLm675_tbrn5tdyUTnTSu-Mmbw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
+To: Rogerio Pimentel <rpimentel.silva@gmail.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, alexander.stein@ew.tq-group.com, 
+	dario.binacchi@amarulasolutions.com, marex@denx.de, 
+	Markus.Niebel@tq-group.com, y.moog@phytec.de, joao.goncalves@toradex.com, 
+	frieder.schrempf@kontron.de, josua@solid-run.com, 
+	francesco.dolcini@toradex.com, primoz.fiser@norik.com, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Aisheng Dong <aisheng.dong@nxp.com>, xiaofeng.wei@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sep 02, 2025 at 11:33:00 +0800, Peng Fan wrote:
-> For some cases, a device could still wakeup the system even if its power
-> domain is in off state, because the device's wakeup hardware logic is
-> in an always-on domain.
-> 
-> To support this case, introduce device_set/get_out_band_wakeup() to
-> allow device drivers to control the behaviour in genpd for a device
-> that is attached to it.
-> 
+On Thu, Sep 18, 2025 at 4:44=E2=80=AFAM Rogerio Pimentel
+<rpimentel.silva@gmail.com> wrote:
+>
+> The FRDM-i.MX8MP is an NXP development platform based on the i.MX8M Plus
+> SoC, featuring a quad Cortex-A53, Cortex-M7 co-processor, 4GB LPDDR4,
+> 32GB eMMC, Wi-Fi 6/Bluetooth 5.4/802.15.4 tri-radio, Ethernet, HDMI/MIPI
+> display interfaces, camera connectors, and standard expansion headers.
+>
+> Based on the device tree found in the NXP repository at github
+> https://github.com/nxp-imx-support/meta-imx-frdm and on imx8mp-evk
+> board kernel mainline device tree.
 
-Thinking more into it, to me it seems like if the intent here is to only
-allow the device drivers to figure out whether they should be or not be
-executing the suspend/resume_noirqs then that can still be checked by
-wisely using the device set_wakeup APIs in the driver itself.
+Hi Rogerio,
 
-Not sure why this patch should be necessary for a
-driver to execute the suspend_noirq or not. That decision can very well
-be taken inside the driver's suspend resume_noirq hooks based on wakeup
-capability and wake_enabled statuses.
+Please keep the original Signed-off-by from NXP (DCO [1]) and also please k=
+eep
+the Copyright line from NXP.
 
-Just a pseudo code:
-```
-driver_suspend_noirq () {
-	if (device_may_wakeup()) {
-		// do the sequence where the power domain might get turned off
-		// but like you say device can do some out band wakeup
-		return XXX;
-	}
-	// regular suspend sequence here... maybe inband wakeup config / clk
-	// disable etc...
-}
- ```
-
-And something similar in resume_noirq?
-
-Just need to make sure that the probe func does the
-device_set_wakeup_enable or capable stuff correctly as per your H/w and
-wakeup requirements...
-
-
--- 
-Best regards,
-Dhruva Gole
-Texas Instruments Incorporated
+Also, adding Xiaofeng for comments.
