@@ -1,161 +1,156 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013025.outbound.protection.outlook.com [52.101.72.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F67270809
-	for <imx@lists.linux.dev>; Fri, 19 Sep 2025 03:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758252909; cv=fail; b=XTlwxu9tacBIUVrvWGxYfbrDLUk40FS5tyLlZvXiwGV05WuwqMRzxIMKgfCsdSzVQlh6Sa3GBcEnFmvWYJBAJVXSqF/eOwH+1MBKmdfJZSeHLYMH66WpY5Xlax04B8SCcQtUaZ4AEVT67Am4ceLonvNOKQvOYYJCEfgGT575Ey4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758252909; c=relaxed/simple;
-	bh=vaM9lx78voQVfY3cw3gZFLT8TFrYSNi19aRuxuKnKHA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SVTmBVmSXHQuufpwm1jw+Ona69LSyEz7uKqZg2lgCcUWquB6F90tG84CowyksIujPhvi3eiXV4RV4GEMSLk/WRTPuPa+Vl7jP5PCKbOi9wxXgd1KkYNvVpBsqEtCSVuq5N7oy96nwtXL2pXcO3p03uaCOOxE466G9H+0z/OZ7+U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=tNw1DPqr; arc=fail smtp.client-ip=52.101.72.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CB234BA42
+	for <imx@lists.linux.dev>; Fri, 19 Sep 2025 03:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758253413; cv=none; b=q8eM92CXvSoFKrmzsOKvY7L84seIyhlE/u9xEvWrPBpXM6cva8MoeS54ckt7IAp9/fGhlRlADDXZyZUdzo79LuSuFg0VudPwX/bCLQBURsHPqev5KkWowWJyDu5SQzOJCpo1+wu0s6edu3jlI5WnbMXg3q2QXbIQiF1D5Uibo48=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758253413; c=relaxed/simple;
+	bh=aeNvmUS62k0jH566cB0cmH9oXeO2gW4GJlD3nXTVxAE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=imddQHvmH8BEmQKwoMJOfCLUMZWB/G7CLK6D/qf6YTuh5zTa1CU5aGFO46QKyib5YjX27R37yINkacqLqHB1ZhAeU6o0DZr9azKoK/X6fkW4S1SFArRZokr6gPyJpqDk7ZGK4NSNBSpNUprEp+n2YRPvR+tW3pXlkHBm/q0niOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZzhSCfI5; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="tNw1DPqr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YNwEu82b3M3t8MzsrSD7IGd5reDZ6ATCVJOgZ2vewdkmglxLyxOFita7kz9uQe7AeGOVolVvslGFSxYNn9W2sRH3XsBQvIDt3vSLdRmsWsL0gNvG+qULEr2CpLpQ6kpRXznxvkpknKi2nIIU9DDjkZitAKvPm7n9Nh4MwpZBepm76rpjVK7O2OshvOkCuHy2UDQQtuiQ+iOjSPk8b+y98A0rE3Fq7Z4Fi9xBk9FHhG/CUBR1bBRq0UfN7huhpangQWRkGFPS/VmwPR4dxi6x2CG6bA7hy7q8h+4s0RHV/5ChzOu3yd9UuN0mJ7sc7y+aCCD7lQdp7vzig0RMbp/+oA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vaM9lx78voQVfY3cw3gZFLT8TFrYSNi19aRuxuKnKHA=;
- b=n6RjpQpEKWI0Yll6EFGzP4x7vIxRpnaxMPu34Fqig/awHwiMI44mB1o3Pv+qfmgLGISzUlVqes8tP6UMM5teV91jMaqerYyGJ/YpM87QY5j5fRzShznlUbd/etgXgVdXuuYSaCEMBYnjMrutF/O04QLU0nibuTVXyyBJ0AT4PnUBwORKJbSfMHS4g+nsSBA6A5ufGotIfUDBJfagemH8NkUpC3CbM3ZjJZ2bXrazaIYT+mZAADJ6jXzcKkpxG1bQggMZQzk1kheEyGFuN8435bFfewAPVsIa1YBMtUVsVzYnsL9FkZZsW6qffPCDElPdxAgz1w4fhMxpfy/2ndiL3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vaM9lx78voQVfY3cw3gZFLT8TFrYSNi19aRuxuKnKHA=;
- b=tNw1DPqrNhFqs13cWjqPp/U4HLtbkG3JGqnQeaABR4OPYTGMUChhUF69kFpIkYOn5JBmblZKLH8k6HANZ3q0zCrSBElycEtN2kUKteo35d4S6TDDGUbwpJMdLpanrpoEYu7uJPo1utsO8TvjvPT5npuwViEFfdgaTkBFpghzjy8JhxG141DH2fmbjpVdlby3+uXqn5DpUJ+oFdNGNJUTYFvTmZrR653oBUq5DHK6J/kyZ3NiDTc7Qjgr7b5nZCsIZuK+56BqUVmJ8G+/u/9ym7DreAFw+dLw+uVgAzodLTJdnk0ydOLNwfMFc710019Ms+X4O8qO8T4tDBlWIwai0A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AM7PR04MB6872.eurprd04.prod.outlook.com (2603:10a6:20b:106::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.14; Fri, 19 Sep
- 2025 03:35:05 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9137.015; Fri, 19 Sep 2025
- 03:35:05 +0000
-Date: Fri, 19 Sep 2025 12:46:44 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Tim Harvey <tharvey@gateworks.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/7] arm64: dts: imx8mm-venice-gw700x: reduce RGMII
- CLK drive strength
-Message-ID: <20250919044644.GH9196@nxa18884-linux.ap.freescale.net>
-References: <20250918154451.2531802-1-tharvey@gateworks.com>
- <20250918154451.2531802-5-tharvey@gateworks.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250918154451.2531802-5-tharvey@gateworks.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SG2PR02CA0031.apcprd02.prod.outlook.com
- (2603:1096:3:18::19) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZzhSCfI5"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-330631e534eso1419552a91.0
+        for <imx@lists.linux.dev>; Thu, 18 Sep 2025 20:43:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758253411; x=1758858211; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SKMYfdVwb74kV6i8GOAfD4K3WUGY3beOoq2S/aiwLCo=;
+        b=ZzhSCfI5DtGcen8M1NAWIu1fA9cavuEfb3K94RMt7MWIJ+kQAtI6QE1aupeWvdoNzY
+         C0v7iZ8xdqrCakOz8u4ZQNj0HpcpBIYpUaQhZXUbrEYSQ7BFD75WM4WN8shASuKyS8J7
+         MeFlDNhavAKh/3b2nSuGKkONPw0htKhy1Nmk6Ebt2JgQneg+kRYEpQjecbT5n/M/k2NR
+         7Gf8glz2QnBmKMqqiqiOCvwsrC0u6+0mI8FV4dxX2ii8h929fW8+NwS9C0pc1vk2SoJt
+         N45dsmS7TPDFyMDvyemVp+V0hbtqHgmpfEAO/hA06SNxO/gUvKytBXgRkAmVSWy46HTn
+         sLvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758253411; x=1758858211;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SKMYfdVwb74kV6i8GOAfD4K3WUGY3beOoq2S/aiwLCo=;
+        b=DxWLPHWC7InnQqN7s+zKC4LOMDPXf6V9Uws90X8vOqUfVHSTyN7awz+AZxz4wGmXfE
+         Z+H1GqnvClUPDZTfCfQZMLLrwtN5q3HBz+P52+PsGxvfs6UxhmCXhNVE8AlU1TeGTmqB
+         w3nYNmOhYHNp2ZBrzvHFb50xBVEzlRD0xUni/SBwflUnBY8lN9Hn5vYj+JDDBV68uC6r
+         /eK984BX+L1aiCu8k7oRt+i+zjIGzVH7qwxOZF8VrvZe4Xs33ZwN8mMX+cSuIFd8dJBQ
+         LvidscGUSeOyfge4SKBkw+abEUSGgUSrcpHK4iV31O6JQhxLNwhGnUEWRG/2aUi0xc56
+         8+Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCVNoacnweY6BwdJgPD8TpyqfSBQNjzU++um52o/tfJxeh+9EK5C4hOc4WhowneC3VE2eBs=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy47A+DCjNZZyiFtIS1Y11a0TM7X9mWj/FzErLUCY+c4C2v/shR
+	dsNI0GJ9ur1z30XMV642j9wVo4uu7v1VyVcvHRAQvVzHLAL9w7czK+CqGqGIWldE6HP3/aHc3Jq
+	fdGvDI8kHJ3kj3uY1q/7jt8mAcr+tSxM=
+X-Gm-Gg: ASbGncutlxKW63Nhh9hE2R30WvbP1+x0n4t1ohsI1g8mtCgKm12FyBtci4zWAs7LBcZ
+	MVEpVT/uHRIU9rMERjslNPKbpi25qItQ+NPFJ2aN7ALPnymdrwlzwAL1rzHc2+j+FUhN7OPLUO5
+	4c2ayUrNqylTojkSmcuqsd4Q909+JKd0kt1nvax7r3i2YRlz7arEOdcEmU5XtqfsFZKutIhI14X
+	dtgL6k=
+X-Google-Smtp-Source: AGHT+IF3ku8gvZB1hxFYXtLnd7iwTR3jkeyD4oKxxo5kWDQcOyxdH6t3IjIvgH7PYtQujNBSFI44t24lqUYUtwzzka8=
+X-Received: by 2002:a17:90b:52d0:b0:32e:d011:ea1c with SMTP id
+ 98e67ed59e1d1-33097ffd1b2mr2599824a91.15.1758253411070; Thu, 18 Sep 2025
+ 20:43:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|AM7PR04MB6872:EE_
-X-MS-Office365-Filtering-Correlation-Id: a6669033-a950-4d15-e62d-08ddf72d85e7
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|19092799006|52116014|376014|1800799024|7416014|366016|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?gu+LeGyM1ljGldC2uQnS2pwW6+Y5al+subnpSDTiu+G21aSxViKZUuVKQjJY?=
- =?us-ascii?Q?IeNxgpZDwdhSpD1D4d5BAxAoz0BYpG6c1fknrrj4jZhYHaB8o5IaO1hNoJgI?=
- =?us-ascii?Q?93rlB6dA7qF/Cr5I2dx0dvRdUnftaGyhWaEsjVLViyyDPqy5ehHFFa9tqi38?=
- =?us-ascii?Q?jiVy7XGr9WDP5bXkNF7l/+vf/D7/siFhYFNbkUxk6Jto4XrHkGNfKaUeRLCk?=
- =?us-ascii?Q?+y8r+UNPPtaJmoQkHsHuqtJI+tmqr80VN5JnHLpouTb7peAuHfMb13M9p6LV?=
- =?us-ascii?Q?Q8NZ5yNJFSL5mkop/QwRUEBPVyuouwa23x8BUyksy9nrASjxD2dHRBWMoTRu?=
- =?us-ascii?Q?zFUNJJMTJMCmjf9LP2jPLLNqw9wz+NYbjn1icT5rl92bC2N1YY/6Q8yQqnoL?=
- =?us-ascii?Q?A2n+0aUN8eteXWd5yVW8NWWfzufubINhWsT8qCCS2xhwwMnfX3q+CaL1yljl?=
- =?us-ascii?Q?cUggww/VF1HhECHoSEq9QEEC49ZbCnhX2+0dx9V68GbBFFUM92HZr1fuxBk0?=
- =?us-ascii?Q?Ur5ts1b9/89GiiG1bKZTh9dvdPIn4HfZODKHHevBpZ4POwxCru4KaHw2eSAh?=
- =?us-ascii?Q?Q4g3bxvh/C0Z9IJbbgFp5IaV36xXlj/5nPj7N3VEfhKObXJZQ+KM1XCapMGR?=
- =?us-ascii?Q?Whi2ae3Jv634ndZTtBGSmXBXkuyhND0BKvp6k4dbFOSDdG+TDoisCOerT7to?=
- =?us-ascii?Q?4UGogH0EWfPDLTkPhOpJL1jWcVKgD6MhTelOTBkBJAT+jgJDVAL8apUSibLZ?=
- =?us-ascii?Q?QZUfkQ2Jv8YYW5TaLodcXR0U1W2CJh0z/dK5y8TpFL8EFNlQsV5Mj/YgKxur?=
- =?us-ascii?Q?fgk/zqw3uyT8hsBqxuOCCA4k+n03iitevmKwTYHAIZ2Z2J5BDIEZg3415kKx?=
- =?us-ascii?Q?o2adoqy8kw+OOTVoLuXWJ8BunE4P3FwfvF+ks3YS3QBYzWzGz48Pq2tw0p18?=
- =?us-ascii?Q?6QsQ5/1UaX0+X0I53+trM7KDem3phC0gL7XkjqoPTTDfESXydT1SmnxX8WHP?=
- =?us-ascii?Q?39MZnxqamZKVzfpwycNNetWB7jt4xx7s33huGf52GplvK7d/2fERjSMbnEb+?=
- =?us-ascii?Q?PMuVlsMr27/1YAklqjW0cYJzcec5VqInW7AasPp9CvY+D3Y+f7SOUUNx7JPl?=
- =?us-ascii?Q?LdU+JudYMxGjHh/bfUqFzTLrSWkKxbqnxnMPVl1Iux6NiVd1se/DfI48APqE?=
- =?us-ascii?Q?qfldO84DbaFWhcVhEq7l4mR6A58RkUZ7uSpGTVvGdvvLRTpTc/KUl9/Qm3Er?=
- =?us-ascii?Q?SZOu7g+xrnZMAAEtHYvd3lw0W8E99BkspQTw+R1DabsjlRSKHhwFn4riFypY?=
- =?us-ascii?Q?fslfFhLg83TtzNr/YrHhXd8h7YlvP0JBSzyZoHK4sPpWgQ3rddSO83qPjeFf?=
- =?us-ascii?Q?L8QZQrmCgNsKA2NVk1VdjuVq/6gk92OiMkM9CVIA0mLR1CAV5I5h5FoeKc7f?=
- =?us-ascii?Q?DgKJnfpcBadMZrvnBuuFGWDgmNLZmcvxb31h/AMjF62uO4V8SF4Yrg=3D=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(1800799024)(7416014)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?p4Ppwrd8b+4sgUwCKAQdGGbCLV05GqfBCMWqkhMxxIlIbZKVuS4KsOXmraDf?=
- =?us-ascii?Q?4WiK1KYuOixQSIWYw1+OXELME1xB0yV5SDCJlXAuayj5bMr8qTPd53Fevnes?=
- =?us-ascii?Q?o+DfSs3+ZiYZ/mv8NVNSnV2BdEn1Mh0blshoDmsIxXRkHps1AZ1VGWVMdpNV?=
- =?us-ascii?Q?IcedExozCqU93aCU+h8JUDFZBNehx1PkmjWgUqQUTY5RnF+SkJSKnx3GOTtW?=
- =?us-ascii?Q?PDAQpsSm/RAT38VPI3xy7WpROgx5P5nEFpQP65S9BOAyOpd0DfYnhxLwwiYf?=
- =?us-ascii?Q?o+kP3qTDLySWzSULL0P+vpB5riajq3zcUoh7tsijVV8ihBYsuHbglPLSS+Y6?=
- =?us-ascii?Q?izjy1tzh3nyoHj4bmkqFrAzQdSb2S4gjZnZ67b2SV9gK+ZxVtbC1yLOOkZTh?=
- =?us-ascii?Q?KISRopHGzrq5mY4R+mf+U0q5otVZWLVZzJ9CLMCG7xK769t4pYjKOnUn9vu5?=
- =?us-ascii?Q?olHHe/RAqpon3urZOfByq1JnK/x3UrlIoOLiebwuq59duzYOfOIk8OLExzaa?=
- =?us-ascii?Q?SVtsY50SL+NNjrFp4Bk9ifnpWLDbnSEUrC7OmmfJ2H2HSDGbST2SiKWB4bsA?=
- =?us-ascii?Q?Hc+lprLF213TPvAEGw+AEOsopLLcwPIDYmi3hhtvR22R9dPv+rIiTXgrpWcg?=
- =?us-ascii?Q?CzvCk/R00YO1gbRcWTkRiqDz3hph/XS1quXC0CeV3PVQ7wnC6pz0a10vNp/O?=
- =?us-ascii?Q?FPaRJCH3oU1vNA8XaQI81KzDCf2lsOSFxjyh0Gdyp0F5JqSd+o55DlrEXwQa?=
- =?us-ascii?Q?xj8woSJ/VvjpM/PbsXNYBOeB8ZKLUMYe8/HvapN38gXeQn0yb7X0mq0aIPjg?=
- =?us-ascii?Q?W5l/NeRWtQ6rUqfESGpQeVdeD/a0q+QUPYErd7/cXd0Ggpj/gJUM6RScC2Ts?=
- =?us-ascii?Q?+y2ZUAECtYxb9+69Xr634LobwpcN/dXfsM9K/CwlF4lKPfG5qy3Cp7VmKUfo?=
- =?us-ascii?Q?lE6GaKtHM3aG04l4DhTB18OzbPVgNm5rxvv9qNiL1eL3G6pNa4yhHFDehRUB?=
- =?us-ascii?Q?WQ1AN9BeiFtfvIKECLxSAsI06L9P43sCOEONKKRfTogxJz8w/b9olt3mrKfg?=
- =?us-ascii?Q?sp3eqRi1HRI3UZr5A/SAgOlPA1uEppYh4bDKma/1YPW8fPWiEHendTvCR8Fg?=
- =?us-ascii?Q?BhRaZk5CXPwTCcrjNJu63nr3E4gv2svKLTM63OR0SAOH2LPrliyN3G/MzH7g?=
- =?us-ascii?Q?XEhj5mH92l/Xi4wcb03KLkbNZxMs5bn/RiCx6EANsS6ri2YZmfS/Fi2LcrOW?=
- =?us-ascii?Q?EBQ9XyHhfYcFizC4fmlS9dLSmXoDkN0+32CFXuJs3xdGZEYxunSKx7cTC/l2?=
- =?us-ascii?Q?EPcGEtX/ljxa8nG4SZkExDXcLC8iTqF6HbiqmJXo2l9fMUnQ6CZ8G4m9H/+s?=
- =?us-ascii?Q?VsyPiIkZd7LtEkZweeduFUk959gQwTkPSiX9cPCcg3Q/GFmhl65/5Dw5Udsz?=
- =?us-ascii?Q?siBX3iMneWYFMZusOfz+cjLfcEG4JNO+z78rke9JFcEHIRCWA58HdzQA2FbM?=
- =?us-ascii?Q?h0UVzsUBLWcWwUyvhw2JjsYsXuqbps49DkxAZgoNk9p2sOq4B/BKKOIWkTJz?=
- =?us-ascii?Q?M2+Kl9ebwKnReikX8q3Co7nOuAzTLo59GmjGw/F0?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6669033-a950-4d15-e62d-08ddf72d85e7
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2025 03:35:05.0097
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AjTzpz5tNzGi4JtQJmWpLmjEwCbd+v+ZIMNacjhl9W/sPOmimBDxOwdBCjtStr/eSCGpchhaOKC8sH1x/k1I+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6872
+References: <20250821073131.2550798-1-shengjiu.wang@nxp.com>
+ <20250821073131.2550798-5-shengjiu.wang@nxp.com> <20250901185208.394cd162@booty>
+ <CAA+D8AOCTqb5jLeRapYk4wRGZrsrPiuAR=ow3OA1B0+M9X4k7w@mail.gmail.com>
+ <20250909-omniscient-honeybee-of-development-adca8a@houat> <CAA+D8AM=aRU-0QcgtxZ+=YBZ2+kMrP2uzSE3e+NJs3Z3zkrSVg@mail.gmail.com>
+In-Reply-To: <CAA+D8AM=aRU-0QcgtxZ+=YBZ2+kMrP2uzSE3e+NJs3Z3zkrSVg@mail.gmail.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 19 Sep 2025 11:43:05 +0800
+X-Gm-Features: AS18NWDra1nGW4hE_RulzgXqUXLGFVIDrxwneg_8Sfyhy5B_85F5WDGUq5FPeS8
+Message-ID: <CAA+D8AP8eJ8_pueq1ZSb-ORzTJbNT7HOwKFOO5ZCXqgqoQ1qGQ@mail.gmail.com>
+Subject: Re: [PATCH v5 4/7] drm/bridge: dw-hdmi: Add API dw_hdmi_set_sample_iec958()
+ for iec958 format
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+	andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
+	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, airlied@gmail.com, 
+	simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org, 
+	cristian.ciocaltea@collabora.com, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, victor.liu@nxp.com, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de, 
+	devicetree@vger.kernel.org, l.stach@pengutronix.de, perex@perex.cz, 
+	tiwai@suse.com, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 18, 2025 at 08:44:48AM -0700, Tim Harvey wrote:
->The i.MX8M Mini FEC RGMII tracelength is less than 1in and does not
->require a x6 drive strength. Reduce the CLK drive strength to x1 for
->lower emissions. Additionally since TXC is not a high frequency clock,
->use slow slew rate (FSEL=0) for lower emmissions and improved signal
->quality.
+Hi Luca
+
+On Wed, Sep 10, 2025 at 6:29=E2=80=AFPM Shengjiu Wang <shengjiu.wang@gmail.=
+com> wrote:
 >
->Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> Hi
+>
+> On Tue, Sep 9, 2025 at 2:39=E2=80=AFPM Maxime Ripard <mripard@kernel.org>=
+ wrote:
+> >
+> > Hi,
+> >
+> > On Wed, Sep 03, 2025 at 06:41:05PM +0800, Shengjiu Wang wrote:
+> > > On Tue, Sep 2, 2025 at 12:52=E2=80=AFAM Luca Ceresoli <luca.ceresoli@=
+bootlin.com> wrote:
+> > > >
+> > > > Hello Shengjiu,
+> > > >
+> > > > On Thu, 21 Aug 2025 15:31:28 +0800
+> > > > Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+> > > >
+> > > > > Add API dw_hdmi_set_sample_iec958() for IEC958 format because aud=
+io device
+> > > > > driver needs IEC958 information to configure this specific settin=
+g.
+> > > > >
+> > > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > > > Acked-by: Liu Ying <victor.liu@nxp.com>
+> > > >
+> > > > [...]
+> > > >
+> > > > > +void dw_hdmi_set_sample_iec958(struct dw_hdmi *hdmi, unsigned in=
+t iec958)
+> > > > > +{
+> > > > > +     mutex_lock(&hdmi->audio_mutex);
+> > > > > +     hdmi->sample_iec958 =3D iec958;
+> > > > > +     mutex_unlock(&hdmi->audio_mutex);
+> > > > > +}
+> > > >
+> > > > Apologies for jumping in the discussion as late as in v5, but I not=
+iced
+> > > > this patch and I was wondering whether this mutex_lock/unlock() is
+> > > > really needed, as you're copying an int.
+> > >
+> > > Thanks for your comments.
+> > >
+> > > Seems it is not necessary to add mutex here. I just follow the code a=
+s
+> > > other similar functions.  I will send a new version to update it.
+> >
+> > Let's not be smart about it. Next thing you know, someone will add
+> > another field in there that would absolutely require a mutex and now
+> > you're not race free anymore.
+> >
+> > Unless there's a real concern, the mutex must stay.
+> >
+>
+> Ok, thanks for comments.  Then Patch v6 need to be dropped.
+>
+> Is there any other comments for this Patch v5?
+> If no, can this series be accepted?
+>
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Can we have a conclusion that keeps the mutex as Maxime's comments?
+
+Best regards
+Shengjiu Wang
