@@ -1,236 +1,210 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011064.outbound.protection.outlook.com [40.107.130.64])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D23303A20
-	for <imx@lists.linux.dev>; Fri, 19 Sep 2025 08:26:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758270368; cv=fail; b=sL74d5/CrpocE0GV0Ekr5+lYgz6tLekb4LkTWLCJV75J+EcRkqh/6uEuRewml7c0dFUkoyusa78DMg8gPueauqCo8pE16QjBh10njEKe+9F6pIEMWbTPSnzmAbvAGg2B8KQVCs92w5IZpvBrV+pgbfVB4vXMA/2J2oPmiWIwo2s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758270368; c=relaxed/simple;
-	bh=xrSuKhYvgnt933JmC7CGX3umc6Fq/7mXxQuAwP1X0e8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=vBx4UCcnFYWOqY43UUVsH9s4JavednmOQ7qqzVEy1mRvuI/I+rOCKkHHcbvEpBxNY0gunlVzGgOhlQPQAn7056xXqJ5jL59JU3r2h0auTJHaouHD1QUnzI0WXjYyu7dkbqV9JW6EHf4B/MIOhCuWsXB8XaMRKiICYR1/ZKyWIG0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TMmuTwIw; arc=fail smtp.client-ip=40.107.130.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3D22E62D8
+	for <imx@lists.linux.dev>; Fri, 19 Sep 2025 08:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758270779; cv=none; b=T0zMCEwRAc4WerHnEm4CjoXP7471fZKBjduH1j1kzq3U0fLeSy1CyQst4SIQuYr61TR5fvAUT3rIMm4nAK1BDGkoX+7yJO5kfq37JlH2jBnwtoWVnVGG1GNW2h61xahMm2XYvJVrKHxUQAL6GZUZCYC7xKaoCuhTLDje9UFtr2I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758270779; c=relaxed/simple;
+	bh=a0jGbuINXDYYLHXrX6+Ip5hZUOHKxpyoBXTqd81umCk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MLa13PzRTfJwVN7r0EeJyv7bpEEusuoMHu0h3lj2GC6bxu3vfV9Hs82fkLiUGjY+4FweTwtG/Ew6kTUaOted5+O8sVc0ZILLZ0AsVErp1ah9TnOczc0rc+yPfpn1uE9S7K8uSR8v1Z0OPSTRDHtEyUcOjqGHPC3jVKHb/grX0i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nClz5dy3; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TMmuTwIw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MRpU9/fpFzGVNH7//WSUVKOaze3LxC3L7UJGlxTbeEtm5C03FQDDbIL7iXjM9xhMfvbs084TlGf35TuSXiYnCUHRsd7oNesJ2BvfW1dtj9BLNfYeetc+2n6CeCK0uxBsIUpILeQcxl1PTYSX5xNOA/2leX5DFjNEJKp0oIDMr9wbbFFqLRbbzpdrPWjjHfT2l5tSigYTVLR2W6/OEiMP7jIJzJejd4N8KLNBBk4n1sRTkUdFLtMPRIS9h+H3CaD6B0Wsc/IApFfazy6OT14VI4BfWHrcuGRwZ2zI19WoRFYrp8F/ZthghPmUsRuyAt6qeA9u48PjJ2GYWHxC0RIhcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xrSuKhYvgnt933JmC7CGX3umc6Fq/7mXxQuAwP1X0e8=;
- b=Bm/6Ecjo4V5k5AClTcT0Bf0KdIBNd0s252W8jb5Ml4BdHY2U5S/PgylKf+TsbLdBg9mFouJTAFNqOwsrtfyOgFe+UJUWJn5d+v0Yq1S4CD+nN84+OLbmHzCx2lR7WCLk+cKlLICbpp2FiumjR+Dos0IxXZg5ipY2zri0cr1c08WvzJRlPtW/AoQKrjSR4Y1usAFN3/kZK3s7nf+FSjqV7MHidLiekF6oDjgl8YwrTnDe9Q8c5bbNVnJCsO16qW3ovr6C8dBBFRqD2aY8+Z6waKskHnqWHRXYOoebchVA1UkH4H39dgHLLYIvx95kRae2a+Lj4/UehrA1cgg4vbkOhg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xrSuKhYvgnt933JmC7CGX3umc6Fq/7mXxQuAwP1X0e8=;
- b=TMmuTwIw5s35Fa+Ux/Tal126Xo/5Ab78sYDib71mYHBTDZMmvdFNcBDuCs+KKAzoVnguCKe66K+Bx3NaiKH+I5KDzCNIBZL0aFbDWyyjF0tDyZ7G5GUrT2upyJN0/h4qMcz3WQRKmgHZvvpmy/28Ses2FofneTT62tKTm+7A5P5WVzvZ7QrD50Jnee4/hFpP41ClLqiFKusHHBrE8StBQy8aIuGKm2n2vjsF3Yod9tHL+Kb2u5tCr21JDzvCdli0JK/u3X9MxvNEmsu21OpzF0DGeX3OekDbF9llDPZCrvMqH5f69RvMHI3JTaYTquXuFh6C6s4xTggdes6kqC9rXg==
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
- by DB9PR04MB11577.eurprd04.prod.outlook.com (2603:10a6:10:607::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.14; Fri, 19 Sep
- 2025 08:26:01 +0000
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::868b:3935:5e0f:6a33]) by DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::868b:3935:5e0f:6a33%4]) with mapi id 15.20.9137.012; Fri, 19 Sep 2025
- 08:26:01 +0000
-From: Bough Chen <haibo.chen@nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Michael Walle <michael@walle.cc>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan
-	<peng.fan@nxp.com>, Frank Li <frank.li@nxp.com>, Marco Felsch
-	<m.felsch@pengutronix.de>, Han Xu <han.xu@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2 3/4] arm64: dts: imx8mm-evk: limit the max frequency of
- spi nor chip
-Thread-Topic: [PATCH v2 3/4] arm64: dts: imx8mm-evk: limit the max frequency
- of spi nor chip
-Thread-Index: AQHcJ68ICHeMj8+9hU6aNZDJpTxzIrSYpmCAgAF4lICAACHHAP//7Gsg
-Date: Fri, 19 Sep 2025 08:26:01 +0000
-Message-ID:
- <DU0PR04MB949642DC45B33BD1B0587F059011A@DU0PR04MB9496.eurprd04.prod.outlook.com>
-References: <20250917-flexspi-dts-v2-0-7e2a95e3cf4d@nxp.com>
- <20250917-flexspi-dts-v2-3-7e2a95e3cf4d@nxp.com>
- <20250918090151.GB23028@nxa18884-linux.ap.freescale.net>
- <DCWLMKKUEALZ.CX4XNGWG80B8@walle.cc>
- <20250919093034.GK9196@nxa18884-linux.ap.freescale.net>
-In-Reply-To: <20250919093034.GK9196@nxa18884-linux.ap.freescale.net>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9496:EE_|DB9PR04MB11577:EE_
-x-ms-office365-filtering-correlation-id: c66ea3b2-5b34-4ada-448f-08ddf7562ab5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|7416014|376014|366016|19092799006|38070700021;
-x-microsoft-antispam-message-info:
- =?utf-8?B?bzNsQlZHQnVwR2hDb2cvS0RFNXdmdS9NQ2ZUb2hZTEs4RXZHRmJJTXY2d1Rp?=
- =?utf-8?B?d3Bxc0JrNEdKSUNON0daNjZlRkd5MmFCVHFlOGJTbjZwaC8rOG0wYVB2alhs?=
- =?utf-8?B?M2VXd0J1NHFocFZmWjkzZUI4RWw4RCt6MHVmNTdEcUhWK1grcFNvNHYzQVpD?=
- =?utf-8?B?ODBPeklQekh5UkNNY3pnTlY3c0IxZDRuanE3b2FWNWhBQlRhd09mV0lmS0xh?=
- =?utf-8?B?dm5OK3ZpVWN3RGkzRkprZG9WYThTekhhRDVVemoyTEJNWUl4dVVIYlBUODNm?=
- =?utf-8?B?eEZGMWlDdDRjeFQwNW1qdEtUc2RVY2NqUTg5c2FnaDBycEtSTk50dFo0bUxt?=
- =?utf-8?B?LzFEVmZOS00rRitQWVJIUWMvRWtla3NiVEhyd25KTzM5ZllodXg2WnZybVRi?=
- =?utf-8?B?dFpiUmVzUUo4ZHZRd1pabkFnUVZUNmR4b1I5VStjK1Y5TlAvS1dsZUliTTdR?=
- =?utf-8?B?K1crQ0VFSkg4Wi9HczNCQVJVRElsY3dWeisrVXVETWw0Y1FqbjF3YTFqSWFt?=
- =?utf-8?B?MjRCeVFNR2oybExTeDNXano2Vy9wK0VPc0JKT0lBODc5aE0yVk94YXBTaDVi?=
- =?utf-8?B?VnZqMWprWnFwYUFXTmFIazhUVWdOWmlYSFV4elpLQjRvbzg0c0dVclEzOHFp?=
- =?utf-8?B?cVM5d3pJUWlCOWRSYkVwRjNCVlBEQ21FWm1IVHNmUXNtZmRROXRMczMvWEJQ?=
- =?utf-8?B?UEVKd0w0QkNaMFhRSWhUdXlqcy9iYmx1a2NHYzF0Mjh3M2ZmdlZWQXlWY2cx?=
- =?utf-8?B?NXc3SHNEaTNHakJsRzExT0pzS0ZVVjloK0FIRENhSWVROFNSek92NDNjZzdV?=
- =?utf-8?B?NUo4ZVNQWWl0WnlHdGNPMTJ3QUwxSUZ6NFZNMG01TzlZVUo5TFo3Smhtdkxw?=
- =?utf-8?B?M0d6bU02U0lsK2lDbWRiSjJqUGdZRk1wWGdIUjVXbVRyZVBnd0ROV291VVZr?=
- =?utf-8?B?UDdMUTduUmVQUWJzdGZacVZMZS9ZRndzaHZMcHo5SDFqSERxZFhuaFMraHFm?=
- =?utf-8?B?U0c4QkkzUVFmOXdCZWhYdzdwaVhQdHJhUFY0TVRFNENmSDBIV2VwL2R4OUl6?=
- =?utf-8?B?OWhhdnBqK1YvZHQ5UlJiQkpoYmdyUzE1Nmo2OVgwQjFzRTdaT05VS3FYNXRs?=
- =?utf-8?B?R2tldWdZbnE0dG0wYUVZS09qTWJrUWtjenV3SVN5V1dVTGc3QmUvMnFpUlNh?=
- =?utf-8?B?ZFNmV0lLemZZZytXUVRZYk5md25RTWVVWmlnRS9PQ2w2aXR2eDR4dlUzWFBS?=
- =?utf-8?B?Ti81UERFU2JiSmJtUFZ2VXhGSG9jNzYzbnNuWThpNDViMmJ1SC9WbW5RSUJ6?=
- =?utf-8?B?dG81Ujh0WDBNdEhOd1M2WU0vQXZyQlJFU0pIYjRPeDdqcXBLdXdUckUxN0pK?=
- =?utf-8?B?K0J1aUJVSy8xc2xEMmF6eVJ6U2ZHRVJNTzZTcmpHd0VZK3A3eHBlK3RTcFl4?=
- =?utf-8?B?ajJtUlVlS0dSY1V6WFpNbnNXM2xJckFJYmIrbTdtVHNUTHZrTGoycFUvWDlv?=
- =?utf-8?B?SitDSlhFQUJpNEcwU0VIVUtKUkg1ekRqbmMrV1pkR3J6MlBsZHQ5bGFDKytY?=
- =?utf-8?B?NWdIR0UrSnhkN0tFVlFYdFBrQjJoWnMwYlhJTnF0UVdjMS9vNTE5dkQ5UVVM?=
- =?utf-8?B?NTg4MFBydUVXbWVEdnVNdGFvblg4V3lmbjlwMFBRaDFCRWhnNFgyOXB3VnV2?=
- =?utf-8?B?azdEcnVIR1NQaFd0M0N5ditsSUJGV0ZGdjlrNGpXd0lkNHp5cFZGMHpodHJw?=
- =?utf-8?B?K2hlRHZ5MHZGa2ZXdGt5RGNMcTZlMFlGTEgyOE5xYkNkemtnYXN6U2g2ZDhk?=
- =?utf-8?B?OWtmaWMrelUyOGRaTDZzV1ZzeldmbjJxZ2xGZkVLN3lRUEFFVzJzaEUrRXAy?=
- =?utf-8?B?TzlIeWMxdW1QRGd6NzNkL2x6Q3FOb2l5VGtGY2tiNTU0THhsQ21Ra0JPRjF2?=
- =?utf-8?Q?o/0N+FjM/hg=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(19092799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?N2l5MnhTQlpkTW8zMGtVSkFpNktnbnFLL3phM2tWbm9GVU5YSUtwVkRMZGpp?=
- =?utf-8?B?ejR4UlEycSswTmFXNnlYR1EwdVpOaDY1RHJHVVRid2V6aDI4YTFhRFpoV2Rj?=
- =?utf-8?B?amt4QkkzT2ZvNnRwaUdhSldwbUJKTkNPVDc5ZUZyR2JTb3BWQm9TTmFrK1BR?=
- =?utf-8?B?UjBVMG93Rzh3RXJEdEVlL0hPS3Z0Uzg1VjhRYnNWaDBGRTMzTytEUG1TM3dy?=
- =?utf-8?B?NkVCWmZUdUlsb3JNK2VSNjkrcjhyS0lUYk4xaXVId3dBaEtyVTFmWmtGeldJ?=
- =?utf-8?B?YjZWaG0wTFg4NkNyZkJqdndQUlhZRHFidzJJMzhta2Y1alNQdmFUamV6ZXBD?=
- =?utf-8?B?VHFkcW9OTHBFN1RBS2FzQjRKSW8yVzg5M0lyVkpqT0J4cTRFZlovRW95ck5j?=
- =?utf-8?B?eGVtTHd4YUc3Yk5ZTlFGSTNDenpYY0l2RUZkMW5zMk1hRmFUQVRuaHlUenlz?=
- =?utf-8?B?MGpQcmNzOWIzYnNxdUdWV3FLTlZyazVFeVcwYms1ZjFUanBVUzlzQlJ1THAy?=
- =?utf-8?B?YVhXZTV5SjlDdVJRSDNmL0Z2SUpwSndlQlJsMUhsQzFVMDQzNGcwc2ROa1dq?=
- =?utf-8?B?eVN1QWs0VXRpRmIvTjlDS1BYTmg3MnJKMVB4bWRKZGRkWVcxeDF1ZGlMSldm?=
- =?utf-8?B?cm8rTmNGNjU0aHlYWUZ4RU54Qmc2dTRKM0FMcDB4bUg1OFpsTUxuQ3E1MEVY?=
- =?utf-8?B?WXpxTFd0bG1mdnk4dk0rTkV1TnZ4a2lNblU0OWtiTlFJcUd3S0tXT2FORUlE?=
- =?utf-8?B?QTJmb1lVYVFwOU5HMGZKbG9mc2tFd29Db0NLbEZsZk80Ujc1a3NZdEcwOTdO?=
- =?utf-8?B?U1gwR0hzUmxtWmRkZlIzYXdVZVdrcVFFdVZMMlI4RCtWUkY3NEp6TXJPZnNj?=
- =?utf-8?B?ODBVd0JEdTZjME5iQjI4NFVTWkNjTDhnbnJNOXYyWWg0Tm1hUm5vTmozTndr?=
- =?utf-8?B?SzNCT1dtRWpERERzUWFJR3psOGpCZWpHSHZQd1ozOTQyYTVXcjNaUllTaG1J?=
- =?utf-8?B?VGlQTTNnVi84ekk3Q0FBOGlEOFZmOUZkdFhQblFEcW5BanFWRi9MZ2x1RXpz?=
- =?utf-8?B?R2VtVVV4NFBzZWI2Z3BjdDlISlVUQ1ZkRkk4MGNJcnFmeE1xQTBuOEFGNFFY?=
- =?utf-8?B?S2RYdmtIN3RwZHYwZWZuN0FPajhhdHBmWWh6S2Nvb3NxRHNxODdidFI4b2VU?=
- =?utf-8?B?QUd5SlVIbFlFWXlNZ0RuYldiTFhVa0p5cVlURDBmak5DSWFlTld6T3FIMlh6?=
- =?utf-8?B?NWhyYzR2dGptT1plUysyTVZobk5GMmNnNGJZR2tCb3daYXZBQXRWSTZjaEJm?=
- =?utf-8?B?bjVFL1gwS2JDVlRvTUR4M0hDWUFTNDFNc0RHRzlMbE9lemJyQnA4aC9ZOGJy?=
- =?utf-8?B?OUtLTDdrN1dsWml1c2JMRUZZMTVQN0JsM3ZuR3hIY3J0NDBjcFluZWhqSytF?=
- =?utf-8?B?bmpFUEZweEV4VjZlN0l6Vk8rZFo1REtYY3FZN1ozdHdzM0RyUmFDT2xBUHVU?=
- =?utf-8?B?NXF0VGd6bGh2VE83VmxxcmM2VXlBNXJiazBLRHNBMmlyYzBSdDkwTFFOOHM3?=
- =?utf-8?B?YlZGMFpicHNZRFc2cXk1VmpMdmZqVUNDVTh6aVVtZ2RpdGl1VUxJL05PYlBQ?=
- =?utf-8?B?YldzQU5QK2JwNTdmMUJIaHNrSWV6eno5T0lVR1o5dTJSYWhTVGIrZmR1aGJs?=
- =?utf-8?B?S0VNTmpmd2x5dnJoUFBvYWpxQXdCdGxlUWhhYkdmbEQ0Qm5qNGJJY1ExYlV3?=
- =?utf-8?B?NkRYZXZLMTRTem0vWWFuQlVpRWJJbnBmV3lRekRlLzU3Q3Z3b08vcXNnVWp2?=
- =?utf-8?B?YkJxbjZ5dGJJK0cwOHZ1QisxOElvN0hGcXhwRUVoZ2xjeW9Kc05TQUpXdjRC?=
- =?utf-8?B?YTNoUXRRWWVIYmVEcG1IM25SaEFOeGk2YjVrQnFZT1FTRCtTVDIxZ3FDa1dh?=
- =?utf-8?B?Q1JYMnR4NlhYeWdKQzFjMmZ0YlJoeXR4L1AxNTMyRmowbnh4dE1OU2RTd2NQ?=
- =?utf-8?B?S3NYeDZNeW5tdDdieG1vUnF0VytKU09QZVYvUkg1SnM4YURXK3cwWFdFTm1S?=
- =?utf-8?B?YWFKUFdtQkRqUVhxMXlIZ1dXZWVqZDgrSklBSkxwZVFyakloaWw3ZTZaZ2RZ?=
- =?utf-8?Q?J+H8=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nClz5dy3"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 071D24E40D50;
+	Fri, 19 Sep 2025 08:32:49 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CEAAB606A8;
+	Fri, 19 Sep 2025 08:32:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C3354102F1D07;
+	Fri, 19 Sep 2025 10:32:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1758270768; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=aYSdvv1PGdJwPuRoTj/5x3ILygoqiHtqkDX7UP6C+Dk=;
+	b=nClz5dy3UJ39xi0U6noITgt5NHEUm6oO1ha0PnBdfDaOwm8+x0bhPbBb3KSQm94KHGcl2t
+	u+HQ/9nB3Rf5bzRM9ydQe1uyFDTOaokNI0Kn4YZlfgkOKWiaM/Z+UPc8A2b6ieCIF13moG
+	corSAPx3GLssAcX79ej3TV+uNKdC8W5KtN7aqrP+x6VNIXj/Og3MfzwuGw5wLMjgb61ua5
+	E/WdwxkoX4ICiMotZhMMJl3wGeV5bL4gaosK2ihAmiNI2rO4f4SWv/yu1HMn52g3GGImbz
+	gCyGfH/VokpSWoFEGA9f/A7SqKgkKAza3mGoKxO+YZ7zgbUN+4UEmNfJkvS4Ug==
+Date: Fri, 19 Sep 2025 10:32:32 +0200
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com,
+ xiaoning.wang@nxp.com, yangbo.lu@nxp.com, richardcochran@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, Frank.Li@nxp.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: enetc: use generic interfaces to get
+ phc_index for ENETC v1
+Message-ID: <20250919103232.6d668441@kmaincent-XPS-13-7390>
+In-Reply-To: <20250918124823.t3xlzn7w2glzkhnx@skbuf>
+References: <20250918074454.1742328-1-wei.fang@nxp.com>
+	<20250918124823.t3xlzn7w2glzkhnx@skbuf>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c66ea3b2-5b34-4ada-448f-08ddf7562ab5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Sep 2025 08:26:01.1737
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jknS28ss4tPi0ulKcz2Caz7fe/PhxRjoixWyXt0TUFuAYFdIVothpF0YEnXN3NO6d8HLP0aYWpJQP9NrMLII0g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB11577
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBQZW5nIEZhbiAoT1NTKSA8cGVu
-Zy5mYW5Ab3NzLm54cC5jb20+DQo+IFNlbnQ6IDIwMjXlubQ55pyIMTnml6UgMTc6MzENCj4gVG86
-IE1pY2hhZWwgV2FsbGUgPG1pY2hhZWxAd2FsbGUuY2M+DQo+IENjOiBCb3VnaCBDaGVuIDxoYWli
-by5jaGVuQG54cC5jb20+OyBSb2IgSGVycmluZyA8cm9iaEBrZXJuZWwub3JnPjsNCj4gS3J6eXN6
-dG9mIEtvemxvd3NraSA8a3J6aytkdEBrZXJuZWwub3JnPjsgQ29ub3IgRG9vbGV5DQo+IDxjb25v
-citkdEBrZXJuZWwub3JnPjsgU2hhd24gR3VvIDxzaGF3bmd1b0BrZXJuZWwub3JnPjsgU2FzY2hh
-IEhhdWVyDQo+IDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjsgUGVuZ3V0cm9uaXggS2VybmVsIFRl
-YW0NCj4gPGtlcm5lbEBwZW5ndXRyb25peC5kZT47IEZhYmlvIEVzdGV2YW0gPGZlc3RldmFtQGdt
-YWlsLmNvbT47IFBlbmcgRmFuDQo+IDxwZW5nLmZhbkBueHAuY29tPjsgRnJhbmsgTGkgPGZyYW5r
-LmxpQG54cC5jb20+OyBNYXJjbyBGZWxzY2gNCj4gPG0uZmVsc2NoQHBlbmd1dHJvbml4LmRlPjsg
-SGFuIFh1IDxoYW4ueHVAbnhwLmNvbT47DQo+IGRldmljZXRyZWVAdmdlci5rZXJuZWwub3JnOyBp
-bXhAbGlzdHMubGludXguZGV2Ow0KPiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5v
-cmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2
-MiAzLzRdIGFybTY0OiBkdHM6IGlteDhtbS1ldms6IGxpbWl0IHRoZSBtYXggZnJlcXVlbmN5IG9m
-DQo+IHNwaSBub3IgY2hpcA0KPiANCj4gT24gRnJpLCBTZXAgMTksIDIwMjUgYXQgMDk6Mjk6NDFB
-TSArMDIwMCwgTWljaGFlbCBXYWxsZSB3cm90ZToNCj4gPkhpLA0KPiA+DQo+ID5PbiBUaHUgU2Vw
-IDE4LCAyMDI1IGF0IDExOjAxIEFNIENFU1QsIFBlbmcgRmFuIHdyb3RlOg0KPiA+PiBPbiBXZWQs
-IFNlcCAxNywgMjAyNSBhdCAwNDo0MjoyOVBNICswODAwLCBIYWlibyBDaGVuIHdyb3RlOg0KPiA+
-PiA+VGhlIHNwaSBub3Igb24gaW14OG1tIGV2ayBib2FyZCB3b3JrcyB1bmRlciBTRFIgbW9kZSwg
-YW5kIGRyaXZlciB1c2UNCj4gPj4gPkZsZXhTUEluX01DUjBbUlhDTEtTUkNdID0gMHgwIGZvciBT
-RFIgbW9kZS4NCj4gPj4gPkFjY29yZGluZyB0byB0aGUgZGF0YXNoZWV0LCB0aGVyZSBpcyBJTyBs
-aW1pdGF0aW9uIG9uIHRoaXMgY2hpcCwgdGhlDQo+ID4+ID5tYXggZnJlcXVlbmN5IG9mIHN1Y2gg
-Y2FzZSBpcyA2Nk1Ieiwgc28gYWRkIHRoZSBsaW1pdGF0aW9uIGhlcmUgdG8NCj4gPj4gPmFsaWdu
-IHdpdGggZGF0YXNoZWV0Lg0KPiA+PiA+DQo+ID4+ID5SZWZlciB0byAzLjkuMTAgRmxleFNQSSB0
-aW1pbmcgcGFyYW1ldGVycyBvbiBwYWdlIDU5Lg0KPiA+PiA+aHR0cHM6Ly93d3cubnhwLmNvbS9k
-b2NzL2VuL2RhdGEtc2hlZXQvSU1YOE1NSUVDLnBkZg0KPiA+Pg0KPiA+PiBUaGUgU29DIFNEUiBt
-b2RlIG1heCBzdXBwb3J0cyA2Nk1IeiwgMTMzTUh6LiBERFIgbW9kZSBtYXggc3VwcG9ydHMNCj4g
-Pj4gMzNNSHogYW5kIDY2TUh6LiBTYXlpbmcgdGhlIGRyaXZlciBub3cgb25seSB1c2UgUlhDTEtT
-UkMgMCB0bw0KPiA+PiByZXN0cmljdCB0aGUgZGV2aWNlIHRyZWUgdG8gNjZNSHogaXMgbm90IHRo
-YXQgY29ycmVjdC4NCj4gPj4NCj4gPj4gVGhlIFNvQyBtYXggZnJlcXVlbmN5IGNvdWxkIGJlIGNv
-ZGVkIGluIGRyaXZlciBwZXIgbXkgdW5kZXJzdGFuZGluZy4NCj4gPg0KPiA+WWVzIHRoYXQgaXMg
-Y29ycmVjdC4gVGhlIHNwaS1tYXgtZnJlcXVlbmN5IHByb3BlcnR5IGlzIGZvciB0aGUgZGV2aWNl
-LA0KPiA+bm90IHRoZSBjYXBhYmlsaXRpZXMgb2YgdGhlIGNvbnRyb2xsZXIuIEkuZS4gdGhlIGZs
-YXNoIGNoaXAgb24gdGhlDQo+ID5ib2FyZC4NCg0KT2theSwgSSB3aWxsIGFkZCB0aGUgcmF0ZSBs
-aW1pdGF0aW9uIGluIGhvc3QgZHJpdmVyLg0KDQo+ID4NCj4gPj4gRm9yIHRoZSBRU1BJLU5PUiBj
-aGlwLCB0aGUgc3BpLW1heC1mcmVxdWVuY3kgc2hvdWxkIHJlcHJlc2VudCB0aGUgTk9SDQo+ID4+
-IGNoaXAgZnJlcXVlbmN5LiBCdXQgdGhhdCBjaGlwIHN1cHBvcnRzIFNEUi9ERFIsIHNvIGEgbmV3
-IHByb3BlcnR5DQo+ID4+IHNwaS1kZHItbWF4LWZyZXF1ZW5jeSwgaWYgd2UgdGFrZSBzcGktbWF4
-LWZyZXF1ZW5jeSBhcyB0aGUgbWF4IE5PUg0KPiA+PiBDSElQIFNEUiBtb2RlIGZyZXF1ZW5jeT8N
-Cj4gPg0KPiA+V2hpY2ggY2hpcCBpcyBpdD8gSSdtIG5vdCBzdXJlIHRoYXQgdGhpcyBpcyByZXF1
-aXJlZCBiZWNhdXNlIHRoZQ0KPiA+c3VwcG9ydGVkIG1vZGVzIG1pZ2h0IGJlIGluIHRoZSBTRkRQ
-IGRhdGEgYW5kIHdlIGp1c3Qgc3VwcG9ydCB0aGUNCj4gPjhkOGQ4ZCBtb2RlIGJhY2tlZCBieSB0
-aGUgSkVERUMgc3RhbmRhcmQuDQo+IA0KPiBNVDI1UVUyNTZBQkENCj4gQ2xvY2sgZnJlcXVlbmN5
-DQo+IOKAkyAxNjYgTUh6IChNQVgpIGZvciBhbGwgcHJvdG9jb2xzIGluIFNUUiDigJMgOTAgTUh6
-IChNQVgpIGZvciBhbGwgcHJvdG9jb2xzIGluDQo+IERUUg0KPiANCj4gQ3VycmVudCBzcGktbWF4
-LWZyZXF1ZW5jeSBkb2VzIG5vdCBpbmRpY2F0ZSBpdCBpcyBTVFIgb3IgRERSLg0KPiANCj4gSWYg
-ZGV2aWNlIHRyZWUgaGFzIHNwaS1tYXgtZnJlcXVlbmN5IGFzIDE2Nk1IeiwgYnV0IGRyaXZlciBj
-b25maWd1cmVzIHRoZQ0KPiB3b3JraW5nIG1vZGUgYXMgRERSLCB0aGVyZSBtaWdodCBiZSBpc3N1
-ZXMuIEkgbm90IGxvb2sgaW50byBkZXRhaWxzIG9uIFNGRFAgb3INCj4gOGQ4ZDhkOGQsIHNvIG15
-IHVuZGVyc3RhbmRpbmdzIG1pZ2h0IGJlIHdyb25nLg0KDQpNaWNyb24gTVQzNXggaGFzIG1vcmUg
-Y29tcGxpY2F0ZSBsaW1pdGF0aW9uOg0K4oCiIENsb2NrIGZyZXF1ZW5jeToNCuKAkyAxNjYgTUh6
-IChNQVgpIGluIFNEUiAoMTY2IE1CL3MpICgxLjhWKQ0K4oCTIDIwMCBNSHogKE1BWCkgaW4gRERS
-ICg0MDAgTUIvcykgd2l0aCBEUVMgKDEuOFYpDQrigJMgMTMzIE1IeiAoTUFYKSBpbiBTRFIgKDEz
-MyBNQi9zKSAoMy4wVikNCuKAkyAxMzMgTUh6IChNQVgpIGluIEREUiAoMjY2TUIvcykgd2l0aCBE
-UVMgKDMuMFYpDQoNClNlZW1zIG5lZWQgYWRkIHRoaXMgcmF0ZSBsaW1pdGF0aW9uIGluIHNwaS1u
-b3IgZHJpdmVyIGZvciBkaWZmZXJlbnQgY2hpcHMuDQoNClJlZ2FyZHMNCkhhaWJvIENoZW4NCj4g
-DQo+IFRoYW5rcywNCj4gUGVuZw0KPiANCj4gPg0KPiA+LW1pY2hhZWwNCj4gPg0KPiA+PiBTbyBp
-ZiBzcGktbWF4LWZyZXF1ZW5jeSBpcyB0aGUgbWF4aW11bSBOT1IgY2hpcCBTRFIgZnJlcXVlbmN5
-LCB0aGUNCj4gPj4gZHJpdmVyIHNob3VsZCBhbHNvIGJlIHVwZGF0ZSBkdGhhdCBERFIgbW9kZSBp
-cyBub3Qgc3VwcG9ydGVkIGFzIG9mIG5vdy4NCj4gPj4NCj4gPj4gSnVzdCBteSB0aG91Z2h0cy4N
-Cj4gPj4NCj4gPj4gUmVnYXJkcw0KPiA+PiBQZW5nLg0KPiA+DQo+IA0KDQo=
+On Thu, 18 Sep 2025 15:48:23 +0300
+Vladimir Oltean <vladimir.oltean@nxp.com> wrote:
+
+> On Thu, Sep 18, 2025 at 03:44:54PM +0800, Wei Fang wrote:
+> > @@ -954,17 +957,9 @@ static int enetc_get_ts_info(struct net_device *nd=
+ev,
+> >  	if (!enetc_ptp_clock_is_enabled(si))
+> >  		goto timestamp_tx_sw;
+> > =20
+> > -	if (is_enetc_rev1(si)) {
+> > -		phc_idx =3D symbol_get(enetc_phc_index);
+> > -		if (phc_idx) {
+> > -			info->phc_index =3D *phc_idx; =20
+>=20
+> phc_idx remains unused in enetc_get_ts_info() after this change, and it
+> produces a build warning.
+>=20
+> > -			symbol_put(enetc_phc_index);
+> > -		}
+> > -	} else {
+> > -		info->phc_index =3D enetc4_get_phc_index(si);
+> > -		if (info->phc_index < 0)
+> > -			goto timestamp_tx_sw;
+> > -	}
+> > +	info->phc_index =3D enetc_get_phc_index(si);
+> > +	if (info->phc_index < 0)
+> > +		goto timestamp_tx_sw;
+> > =20
+> >  	enetc_get_ts_generic_info(ndev, info);
+> >   =20
+>=20
+> Also, testing reveals:
+>=20
+> root@fii:~# ethtool -T eno2
+> [   43.374227] BUG: sleeping function called from invalid context at
+> kernel/locking/rwsem.c:1536 [   43.383268] in_atomic(): 0, irqs_disabled(=
+):
+> 0, non_block: 0, pid: 460, name: ethtool [   43.392076] preempt_count: 0,
+> expected: 0 [   43.396454] RCU nest depth: 1, expected: 0
+> [   43.400908] 3 locks held by ethtool/460:
+> [   43.405206]  #0: ffffcb976c5fb608 (cb_lock){++++}-{4:4}, at:
+> genl_rcv+0x30/0x60 [   43.412886]  #1: ffffcb976c5e9f88
+> (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock+0x28/0x40 [   43.420931]  #2:
+> ffffcb976c0b32d0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x=
+48 [
+>   43.429785] CPU: 1 UID: 0 PID: 460 Comm: ethtool Not tainted 6.17.0-rc5+
+> #2920 PREEMPT [   43.429796] Call trace: [   43.429799]  show_stack+0x24/=
+0x38
+> (C) [   43.429814]  dump_stack_lvl+0x40/0xa0
+> [   43.429822]  dump_stack+0x18/0x24
+> [   43.429828]  __might_resched+0x200/0x218
+> [   43.429837]  __might_sleep+0x54/0x90
+> [   43.429844]  down_read+0x3c/0x1f0
+> [   43.429852]  pci_get_slot+0x30/0x88
+> [   43.429860]  enetc_get_ts_info+0x108/0x1a0
+> [   43.429867]  __ethtool_get_ts_info+0x140/0x218
+> [   43.429875]  tsinfo_prepare_data+0x9c/0xc8
+> [   43.429881]  ethnl_default_doit+0x1cc/0x410
+> [   43.429888]  genl_rcv_msg+0x2d8/0x358
+> [   43.429896]  netlink_rcv_skb+0x124/0x148
+> [   43.429903]  genl_rcv+0x40/0x60
+> [   43.429910]  netlink_unicast+0x198/0x358
+> [   43.429916]  netlink_sendmsg+0x22c/0x348
+> [   43.429923]  __sys_sendto+0x138/0x1d8
+> [   43.429928]  __arm64_sys_sendto+0x34/0x50
+> [   43.429933]  invoke_syscall+0x4c/0x110
+> [   43.429940]  el0_svc_common+0xb8/0xf0
+> [   43.429946]  do_el0_svc+0x28/0x40
+> [   43.429953]  el0_svc+0x4c/0xe0
+> [   43.429960]  el0t_64_sync_handler+0x78/0x130
+> [   43.429967]  el0t_64_sync+0x198/0x1a0
+> [   43.429974]
+> [   43.537263] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [   43.541282] [ BUG: Invalid wait context ]
+> [   43.545301] 6.17.0-rc5+ #2920 Tainted: G        W
+> [   43.550891] -----------------------------
+> [   43.554909] ethtool/460 is trying to lock:
+> [   43.559016] ffffcb976c26ab80 (pci_bus_sem){++++}-{4:4}, at:
+> pci_get_slot+0x30/0x88 [   43.566628] other info that might help us debug
+> this: [   43.571694] context-{5:5}
+> [   43.574317] 3 locks held by ethtool/460:
+> [   43.578251]  #0: ffffcb976c5fb608 (cb_lock){++++}-{4:4}, at:
+> genl_rcv+0x30/0x60 [   43.585603]  #1: ffffcb976c5e9f88
+> (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock+0x28/0x40 [   43.593301]  #2:
+> ffffcb976c0b32d0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire+0x4/0x=
+48 [
+>   43.601786] stack backtrace: [   43.604672] CPU: 1 UID: 0 PID: 460 Comm:
+> ethtool Tainted: G        W           6.17.0-rc5+ #2920 PREEMPT [
+> 43.604679] Tainted: [W]=3DWARN [   43.604683] Call trace:
+> [   43.604685]  show_stack+0x24/0x38 (C)
+> [   43.604692]  dump_stack_lvl+0x40/0xa0
+> [   43.604699]  dump_stack+0x18/0x24
+> [   43.604706]  __lock_acquire+0xab4/0x31f8
+> [   43.604713]  lock_acquire+0x11c/0x278
+> [   43.604720]  down_read+0x6c/0x1f0
+> [   43.604726]  pci_get_slot+0x30/0x88
+> [   43.604732]  enetc_get_ts_info+0x108/0x1a0
+> [   43.604738]  __ethtool_get_ts_info+0x140/0x218
+> [   43.604745]  tsinfo_prepare_data+0x9c/0xc8
+> [   43.604750]  ethnl_default_doit+0x1cc/0x410
+> [   43.604757]  genl_rcv_msg+0x2d8/0x358
+> [   43.604765]  netlink_rcv_skb+0x124/0x148
+> [   43.604771]  genl_rcv+0x40/0x60
+> [   43.604778]  netlink_unicast+0x198/0x358
+> [   43.604784]  netlink_sendmsg+0x22c/0x348
+> [   43.604790]  __sys_sendto+0x138/0x1d8
+> [   43.604795]  __arm64_sys_sendto+0x34/0x50
+> [   43.604799]  invoke_syscall+0x4c/0x110
+> [   43.604806]  el0_svc_common+0xb8/0xf0
+> [   43.604812]  do_el0_svc+0x28/0x40
+> [   43.604818]  el0_svc+0x4c/0xe0
+> [   43.604825]  el0t_64_sync_handler+0x78/0x130
+> [   43.604832]  el0t_64_sync+0x198/0x1a0
+> Time stamping parameters for eno2:
+> Capabilities:
+>         hardware-transmit
+>         software-transmit
+>         hardware-receive
+>         software-receive
+>         software-system-clock
+>         hardware-raw-clock
+> PTP Hardware Clock: 0
+> Hardware Transmit Timestamp Modes:
+>         off
+>         on
+>         onestep-sync
+> Hardware Receive Filter Modes:
+>         none
+>         all
+>=20
+> It looks like we have a problem and can't call pci_get_slot(), which
+> sleeps on down_read(&pci_bus_sem), from ethtool_ops :: get_ts_info(),
+> which can't sleep, as of commit 4c61d809cf60 ("net: ethtool: Fix
+> suspicious rcu_dereference usage").
+>=20
+> K=C3=B6ry, do you have any comments or suggestions? Patch is here:
+> https://lore.kernel.org/netdev/20250918074454.1742328-1-wei.fang@nxp.com/
+
+This is annoying indeed. I don't know how this enetc drivers works but why
+ts_info needs this pci_get_slot() call? It seems this call seems to not be
+used in ndo_hwtstamp_get/set while ts_info which does not need any hardware
+communication report only a list of capabilities.
+
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
