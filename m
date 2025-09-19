@@ -1,93 +1,150 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD320277C8B
-	for <imx@lists.linux.dev>; Fri, 19 Sep 2025 11:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05441313E0B;
+	Fri, 19 Sep 2025 14:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758281045; cv=none; b=CUidbed8hsPgI1mmmrt0uHwFMvZNkceHk8XywTY2yEZCMELMAGXxzoIOJv09dJtgtit9/ALZT1FprQF2y2cEdb0OxwHYEi7puW1mUlztVh+2Lu8j/zPwNIUVxPqthUG+utalVZEh+b0CxTWY3B4sQRpGlftgaqum6zwnPy4Ealk=
+	t=1758291777; cv=none; b=mMmUJrhH7phmzVN0uFJd25oB2M1nmDRtUcDk8uKmuSxuu/ev5qhcaS2AJnAjCBCJgF/lalxUKWfUPKTyHedBan1WzscGeNOo9APoafqghSUjwglOmG8LTS72N1UUobVCNL0khpL7tqCR7YYp1J+gnU6bv0yquQkPA+dtb01lptE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758281045; c=relaxed/simple;
-	bh=He+6sdn61LRVIxrBafIW06DcfRvltNAdv31TV0CKGnQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=srcD6pdh6zv//m74w6sjhSpu4zyTz0Z+j4620DG5wNoMztOwTcov9hBxa1uwzmGmTIfxe/bdFTddRR5Me1spcYp0aEFc2kDlWc7YTR6WhUNKhKs17ZzVyU/Kv/JCBwCMHdX8xaOwHg8z091mgNrnTA067wwQvU7UghNy9coVB+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M54bqdJy; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758291777; c=relaxed/simple;
+	bh=aZA8prTitTZ/eYBw5SroAW+Jfqg49mZTo5qsSdtKR3s=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Kf9wtOYXm22SkYZQ5didS6b1ow6wL/aUDdicxNdkVMudR5CFMu5cT/WRWYvQRIelsSZYKpT0behldSWn3PENgcVAFL6QERjVBsNFs+FMY3+iFkulmu6l2in7/rscNgobf7ma0FBIXz26KGt+eNLds/DbQD4yTVrqWkCUjIM1ksI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=3P7vtOxX; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NwEFh+Eh; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M54bqdJy"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-33082c95fd0so1318253a91.1
-        for <imx@lists.linux.dev>; Fri, 19 Sep 2025 04:24:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758281043; x=1758885843; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=He+6sdn61LRVIxrBafIW06DcfRvltNAdv31TV0CKGnQ=;
-        b=M54bqdJyZ1j0BdMxIrTlBbY/uxG3zGLc4XUvSziy4FHbqTNr1Sfu7/xURSKml/jBJU
-         FYt8z7Jvcz4vyLdDMFFv+ffwCdQBU7vwy69eIZPB2GFXtqF8qIANiuGOxp19XVI0lAiO
-         Qz2fZlku9Bqw3I0J5irIiWIgX5CvM2JpHHJ9uJAEFWR5TubOiT5/Na0rQxBWCLeXSYVt
-         4v7MLoM0x9L/D9wPwBWcTgyaED83puR4R4eaHB6yKKJJPrHBoIoe0MFZh27ikcC9O2j7
-         wZvdtn3U5qRiAoVAIa/4SDv/9muDANQVpGWffVNksjSlkump8xXiP9ReBMlu6Fs5T0iE
-         NZrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758281043; x=1758885843;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=He+6sdn61LRVIxrBafIW06DcfRvltNAdv31TV0CKGnQ=;
-        b=kvKkjyNu+HQId7+QF7VHYPoDedcZ+iC1UJsfXAyWMGE/pyktvs+bRZoqAmUwAMzD/F
-         bLzW1D+TqDxDmSm41+7VSZSmA5ysHUPdLV1qXM0tXTaIlA4qCrz9PcRygZV9IEvvbIEu
-         dmikYR4bCtG9KNSanuHW+xCS8qrE9PTRhq+bHJU8vByEvnZJB6LFljlKOupMErcEDR47
-         M42lD2x/SsVvZKKnGcos+Mbzj35vXl2mXze9lOs/KEJo2X1Ran+ZBRFbPl1lMYhYeGEu
-         4tkVJJsNIJoEZDHWS13qiffFGqzaMZjZRsd4pTRX9oRQNJlv+CzMvX6C+df8In8IypQQ
-         2V2g==
-X-Forwarded-Encrypted: i=1; AJvYcCUbRMpNw3f5nKlIVG1s+z9iNhPN2fAjpv7f867i67gr1Q4JZyN0lwWJYg2aUuPn9Ou/Zvk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyn5KwRzmo1ZSMI91EVZbC/uN6wCnkdLynRr6JVxJGJvehy4X5F
-	cLSl4kaf10UzL8HPv8GYleBTSB0JMbmLX4twUBNg+g7OCCOQoB3WzKMDkKr1AvLhmiqMoHoWMku
-	u26vjkDkjniQFBR9Cv/5Q120J2KOYZYc=
-X-Gm-Gg: ASbGncsH+H9pR4Jh9xaeqWaFXlY3vX1kxktff+i6a3lAxjsCg4p0/myRE8ndpUizela
-	SVZXCOfwiM2AJwJV6rJYoCnvGOl0uB5F6oedGEPEHsxHcaoD2ICtHJkK27FXUNKmQ3JK79x08D4
-	lU1Zeb8ysdUisAFzfx5xijH+L9PL5yky3hkLaejgS1wmyIvMcnHQqwvyGhj9stQJGn3J2P6vwnI
-	Vf5JpoaHv0l8ccDhZMPPFHXa9cdBSvrxk75
-X-Google-Smtp-Source: AGHT+IGR+j53MtR7Ycbzac1nvh8/Xsimed1/N5Ir4au4nEDEE6nsTs+zulbhVQrxaMtQaq9Cc1ET2UPKXkixOlwNUv4=
-X-Received: by 2002:a17:90b:3a4f:b0:32b:d089:5c12 with SMTP id
- 98e67ed59e1d1-3309838e042mr3853941a91.33.1758281042999; Fri, 19 Sep 2025
- 04:24:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="3P7vtOxX";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NwEFh+Eh"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 3BC477A0068;
+	Fri, 19 Sep 2025 10:22:53 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Fri, 19 Sep 2025 10:22:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1758291773;
+	 x=1758378173; bh=DGBIXWoQfciFg5TTWblokxBsiewcOE1bszsE8YzDKWM=; b=
+	3P7vtOxXTlRKZGWlZLsRFVQlQg4bj5SvQvb5v1zmryo4PCz5xUCZ/fSZUuL33qsW
+	2XFxpoh130HNWVqUH00GYFR2OLcWx0fbXjhyeBAR8yseNvBXLhN/0OOMJL6U3cy9
+	NOxQGScNJsPb3WM84wfJPFb4rdhDXJNr0eUbkkBFZAqgCNYQVkp1Eolbo7eGfx6T
+	UIhoCwGZmmCD2l9Vdt05U1amomaUxFZDiopcE8Uiha2UPEfSrnPL/cBLPrd/w2SK
+	AOAYXKR8GES89WQNC+kxfLcj7gP5oZndIPzi3FtUM0Qapm2gqlAC8zK00Iux7Czt
+	u3Hzk4X0b7bccGPCfsVDGQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758291773; x=
+	1758378173; bh=DGBIXWoQfciFg5TTWblokxBsiewcOE1bszsE8YzDKWM=; b=N
+	wEFh+Ehq8I5Ne8BUFO132THoMndwZ6szg6zS6b+qZvszYrP+sSryFfqlrr++t+re
+	52mUZjJS/MqYpcQK4IrqneI3Q+QV87n44m8BdrbXyltTFUsKqWVoFc7LxhztSzR1
+	/CyOnK6h4cAgGvOrrvZPqQ+kytQaKCIBFxaNl1m4svOmCOmwcwS8Yq4fdKJu928x
+	+iYoSc2Dwk0r2zFgWPLHA2uWyYEEbO2I/L1Q2EIYz5f60VEk6QPi921HwITH7WAh
+	xpt1386OGSe7LQJ7/CDBPPYMPl7W+ZdVVK91Q5wl7+/wWjKCPzRy6B5d7I5vClBH
+	kLIZeQgRg6fEx8N/FKj5Q==
+X-ME-Sender: <xms:O2fNaHPZsDEluqQ3K1xXVYzEPxMOHfVlGvrDBsZCIGFfPOnh7MIMIw>
+    <xme:O2fNaB8EpINHV6429QucyQqOJUWdlBgZRzftFfr0w1fqno7OIhXeVkca9g9sUwCxx
+    WJ4lzYGsR2mwvafSTA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegleeggecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeeftddpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
+    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
+    tghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvg
+    gvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghn
+    uggvrhdrshhvvghrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgih
+    hordhprghrrggtuhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgv
+    nhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrg
+    gurdhorhhgpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:O2fNaLcxJAwbyL7fF-hDxzqk5CnB_5srfmblzDObKefDa2_Yw3Nu9Q>
+    <xmx:O2fNaI_XmRHiAy2z_8UrPdVkq5oq8nmdQ4T2W7CdP781TiN2_pBACw>
+    <xmx:O2fNaJixEsf2I4UZLqtJvoBDqXbeFMrBT42lISbnoEN9uVt68m1a8w>
+    <xmx:O2fNaE_oeBhVK0r7xewR08-ipIjEJmwOjKy_oXBB5MOm1ZA557kJ_A>
+    <xmx:PWfNaL2dV5R9mOO8RHYelr4frobgiBB2zH1lISJhguP3OD7Lp1pVdNvG>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 04B80700098; Fri, 19 Sep 2025 10:22:51 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250918-imx_rproc_c2-v1-0-deec8183185f@nxp.com> <20250918-imx_rproc_c2-v1-4-deec8183185f@nxp.com>
-In-Reply-To: <20250918-imx_rproc_c2-v1-4-deec8183185f@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Fri, 19 Sep 2025 14:26:19 +0300
-X-Gm-Features: AS18NWCk1Oc5eecL3-ZExUWvIBIypCHeXmF72jHYDkEXM6phwnZTdZT1871xqCc
-Message-ID: <CAEnQRZCByoFeuH0KyPbrt8T4pPyPwG1DBvrFQq82mD3KGPTuZQ@mail.gmail.com>
-Subject: Re: [PATCH 4/5] remoteproc: imx_rproc: Remove the assignement to method
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
-	Daniel Baluta <daniel.baluta@nxp.com>, linux-remoteproc@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ThreadId: AneuvEk2E7Kg
+Date: Fri, 19 Sep 2025 16:22:20 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Geert Uytterhoeven" <geert@linux-m68k.org>
+Cc: "Jason Gunthorpe" <jgg@nvidia.com>, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>
+Message-Id: <547dcb81-434d-4910-aa7c-1d69019fcb3d@app.fastmail.com>
+In-Reply-To: 
+ <CAMuHMdVecUeLZ2LPpa457C0a=uduvDhQ4KZJx-++dEFJraRi3w@mail.gmail.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <20250917125951.GA1390993@nvidia.com>
+ <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
+ <CAMuHMdVecUeLZ2LPpa457C0a=uduvDhQ4KZJx-++dEFJraRi3w@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 18, 2025 at 2:53=E2=80=AFPM Peng Fan <peng.fan@nxp.com> wrote:
+On Fri, Sep 19, 2025, at 09:17, Geert Uytterhoeven wrote:
+> On Thu, 18 Sept 2025 at 15:13, Arnd Bergmann <arnd@arndb.de> wrote:
+>> On Wed, Sep 17, 2025, at 14:59, Jason Gunthorpe wrote:
+>> > On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
 >
-> There is no referring to the field method, it could be removed now.
+>> * Microchip SAM9x7 is the newest ARMv5 chip, clearly does
+>>   get kernel updates, and the only one I can think of with
+>>   DDR3 support, but seems to be limited to 256MB total memory.
 >
-> No functional changes.
+> Are they limited to DDR3?
+>
+> IIRC, someone (you? ;-) told me at ELCE that Microchip keeps on spinning
+> new variants of old SoCs, to accommodate the changing DDR landscape
+> and market.  So perhaps they also accept larger RAM sizes?
 
-Please mention that you are no longer require to provide .method with
-imx_rproc. We are still not
-removing the filed in imx_rproc_dcfg struct because is used with imx_dsp_rp=
-roc.
+Yes, that was me. The previous SAM9x60 was released in 2020
+and I think that one was an upgrade to a smaller process node,
+raising the clock frequency to 600MHz and adding more modern
+peripherals, but I see now that this used the same SDRAM/LPDDR/DDR2
+memory controller as previous chips, with a limit of 128MB
+total DRAM.
 
-With that,
+SAM9X7 in 2023 added DDR3 mode with up to 256MB according to
+the datasheet, no idea why they chose not to support more,
+since a 32-bit wide DDR3 bus should allow up to 1GB with two
+256Mbit x16 chips that are widely available, or even more using
+expensive 512Mbit x16 or 1Gbit x8 chips.
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+       Arnd
