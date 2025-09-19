@@ -1,128 +1,215 @@
-Received: from smtp28.bhosted.nl (smtp28.bhosted.nl [94.124.121.40])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011034.outbound.protection.outlook.com [52.101.65.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93912D3EEB
-	for <imx@lists.linux.dev>; Fri, 19 Sep 2025 07:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.40
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758267153; cv=none; b=OJ/IUam4unEHZ4uPCYsLSwHgHccWCsQJVh2inIOg1dFpb7XVQL5W6kIVTn2PBrJ0SMIZNuYb+DVH762K5II1+6c/j90SzaGqzsQwMNNXsjbUiDEFtOj+Z1HJREmu/V+B9hm032MwH1Q5FS/oCSLdrzkr8gP+eC10dc/GJi0wF0A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758267153; c=relaxed/simple;
-	bh=QDBKRYM86Xj8SvcY0SO2armSTunx77RSYXQE6GhjxRQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X7c2ew2kElnYums1WQcjrJkWpSUrwuGUxJwhChITy2akXoKFV+JPHFpBUTAc9mMXd8TUkW/gOgLNDQcyp8FD4BycvulmOQ8SKF8/7QcN8F2FMtkQMJrb+1DN1w2FdyKLClyLnvPnS8VT1Z7qfwMsAVdKGC1zO8V3ZNS0x6Zi8X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=pZW+VN/z; arc=none smtp.client-ip=94.124.121.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1212EA721
+	for <imx@lists.linux.dev>; Fri, 19 Sep 2025 08:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758269943; cv=fail; b=IqK/3k0gNAJZV+3IAlua4mb+0JqBQ8+V35oFYFV2H0qUevnfIdgvxA5Ne4rhFtVg/2dQI+/Po7IcbGILXTcu+aRyz725H7ICXZ1AlPKFD8t0WHWmmNJsZpWT3+Csu7/ddh20OfwXliIRKBMXwz8GlHB8gA0nSRCkbRLEDizl7Bg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758269943; c=relaxed/simple;
+	bh=QLQNviM3ISijSfCR/zgBY7IrWypvwT6VWOGvXmPnx/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=sxxYtFspGMOeb6rAkOAWl7J77RwUjAg5aUiKVOBTSjZiEUnjPORKGF/I9uOXCKva74IJE0SQ9wdHxkKJLKUU9IlX77/2hAtDx/H/fx6hy+vfaGv+dpMr2/BkX/vJZW3GCtqAAjG+32WRdvphm75KQbEBFTPkBT54JNKeNp5BbyE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=sxeuSdAn; arc=fail smtp.client-ip=52.101.65.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="pZW+VN/z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=protonic.nl; s=202111;
-	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
-	 message-id:subject:cc:to:from:date:from;
-	bh=hb4JA4fTwI5S97+qQFy6E++mwXzjCgpI2x6Kz7sl75c=;
-	b=pZW+VN/zunUr8uqIHPr8ZaMHKz5+wpBS9g8mkldWI1GlhOZ01lslSu5UYQzFFEQjJGU6szmDdCNKa
-	 ySq3Dw2xuCzKeSw0pwSskYbqCuz5OEfnY7UVSvHFYKJCvZo6jQszXDWFPZ9S0lHA5mO4bq7UxDJs1q
-	 xBBj42CcHzqdnv8cwgal4DV4B9DJtas2zLBBc+SXtplp2DWYC4MvM8ZMDPG+mJQw0QhmfFYwq5zgRO
-	 jhAfBFwCAQrZ41fpzXDmJErIh4nugZek44vJMRmcedZPGs7MtWD1uwQ/GB2R2Bj0uLtVXBoG70fM67
-	 tPnUN4xs3iJtqwqVRpwzZVXsJ+2N6Yg==
-X-MSG-ID: a2929316-952a-11f0-8678-0050568164d1
-Date: Fri, 19 Sep 2025 09:31:19 +0200
-From: David Jander <david@protonic.nl>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew@lunn.ch>, Jonas Rebmann <jre@pengutronix.de>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-sound@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Lucas Stach <l.stach@pengutronix.de>
-Subject: Re: [PATCH v2 3/3] arm64: dts: add Protonic PRT8ML board
-Message-ID: <20250919093119.24d2711a@erd003.prtnl>
-In-Reply-To: <aMzlXerFpsfdHnwB@pengutronix.de>
-References: <20250918-imx8mp-prt8ml-v2-0-3d84b4fe53de@pengutronix.de>
-	<20250918-imx8mp-prt8ml-v2-3-3d84b4fe53de@pengutronix.de>
-	<af554442-aeec-40d2-a35a-c7ee5bfcb99a@lunn.ch>
-	<20250918165156.10e55b85@erd003.prtnl>
-	<7f1d9289-4102-4db9-a2bb-ff270e8871b7@lunn.ch>
-	<20250918173347.28db5569@erd003.prtnl>
-	<aMzlXerFpsfdHnwB@pengutronix.de>
-Organization: Protonic Holland
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="sxeuSdAn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w6w0FAXs0qxf0eckTuxzB+GDnJhw0E2PHhRVsaFE+v+9K8zbuUteIE7uOmU5QfPM7mSgJ02iIP9n5b/BfId2csg+4SjM4YizC65tuwzpFrNsTVt6zgMCOqPHKBnakCQNWKgQYhtGEaNQfn3FWeESbfefDyp37EaMFMZjBD/PLsjKnGyAEYXCQhRhLQLhDSH/lybT8A06eNVJ9YrInIkpkd8ckePWu0GxRCDqoERG5SLaVW4ZFoh4MGj9VvJhvKOmUK5AN+d460PF4L/6mh/+ft9x0yiEW+I+LfN2ojK8nfBH6y2qqRMjRnnj8NrXEjouhrpmYWuaKmp12KxfLSc78w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QLQNviM3ISijSfCR/zgBY7IrWypvwT6VWOGvXmPnx/w=;
+ b=d2UBXafLFJHb3Pnyw2uj7mia9IoE/PzIWOrV5JrswJH2zO4zti3vlFdh3ei7xbA+A0bhHwNcqqwXw9Qkn6PK/bhPBv/bDUSNT2mVI76Ghm+HyibrH1IKSmsjyZlo0O0IsRLYqkXdmQQ6uQVAHTKtkPjEt3Z2YZN5tiYV9Mt2v1S9W53vmOmF7A0d40mfq8zjIGAyFHPoVqt1/Kbq4LtpFb5mgWkN809pBF+tl+JAPdIyv649W3OVqs8CXoSv/d7syuJUgALaCrokYRXPwWl8+4bt6bPoI+YvKe3IqvkhUNpjwhoQ5gP7xLWMiztDzhOo8rxygERNh+maB0WkryJvqg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QLQNviM3ISijSfCR/zgBY7IrWypvwT6VWOGvXmPnx/w=;
+ b=sxeuSdAnmZmVwgEt7qiuoWL6Jv3VOyP4TWAbXBXnN6iP/wIohgNqVZKh6kzVCFsetf1a4i6tcPbPo/kx60Rh3RMFTMsHc9jHkM+IqiXK3D/HoZROgj+LMJeEIxAkCexQ98uJoFPXNdJx7DxEKtdr4R+vycmSZ3PzmApFDD+afN04l4QkDzpL0FCP3PMShkJ/qkRXXXWBTHPjXmh0PVo2CuVHCQ4ViU4pmnR20MsN1Mm1SUmVJ1oYRA1w36yas0CjSzPvdu8+47G2NSLBttfy5IeHAHeVpCU4ElqvVUvpr9BuXHesd87yui6P4YvrhZPOEGyTx+UC7d3IB78cx0vFKQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by VI2PR04MB10545.eurprd04.prod.outlook.com (2603:10a6:800:270::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.16; Fri, 19 Sep
+ 2025 08:18:55 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9137.015; Fri, 19 Sep 2025
+ 08:18:55 +0000
+Date: Fri, 19 Sep 2025 17:30:34 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Michael Walle <michael@walle.cc>
+Cc: Haibo Chen <haibo.chen@nxp.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Frank Li <frank.li@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>,
+	Han Xu <han.xu@nxp.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] arm64: dts: imx8mm-evk: limit the max frequency
+ of spi nor chip
+Message-ID: <20250919093034.GK9196@nxa18884-linux.ap.freescale.net>
+References: <20250917-flexspi-dts-v2-0-7e2a95e3cf4d@nxp.com>
+ <20250917-flexspi-dts-v2-3-7e2a95e3cf4d@nxp.com>
+ <20250918090151.GB23028@nxa18884-linux.ap.freescale.net>
+ <DCWLMKKUEALZ.CX4XNGWG80B8@walle.cc>
+Content-Type: text/plain; charset=unknown-8bit
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DCWLMKKUEALZ.CX4XNGWG80B8@walle.cc>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-ClientProxiedBy: SG2P153CA0017.APCP153.PROD.OUTLOOK.COM (2603:1096::27) To
+ PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|VI2PR04MB10545:EE_
+X-MS-Office365-Filtering-Correlation-Id: 956573c4-74ed-4fc4-b503-08ddf7552cca
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|1800799024|7416014|376014|19092799006|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Z+/cszy5nxcYV+mtlQK2TkboWJA2r3vGPJmGUAfVLUUVC1TujtjH+7/n+2/R?=
+ =?us-ascii?Q?r2bWSiHB8XejOaw8FKf3pwefwTiXYt48NB+3zJHevGTi83WZwYwmUlV+MMxJ?=
+ =?us-ascii?Q?dEY9rWDiUuoRrxi+Dyi//hbhtImV/SmPxAsO8uJFrgGyjEALrbuFXdzBOTbT?=
+ =?us-ascii?Q?zvQ33LnElNRHu9cB+gg1Zhcnsl/nQoz0t/qJ7b37mC0+56rjGX9N6Tfpzbbj?=
+ =?us-ascii?Q?rozcW2+9gFLxbYcKE/NPBHgds9U9zq+Dclafb4v4B5ALcq0AeCa5eBODNb54?=
+ =?us-ascii?Q?M7Gpi0gFS/er/gKMIvW2hC/ITeuyfoeGITYMCsnjc2p0/egr9LWUti/F3Iip?=
+ =?us-ascii?Q?PFnmPQdrMmSdhCX41/4bZ41vlGcrjDU54qhp/s9iScEMxWOIQm4twa/cnEzG?=
+ =?us-ascii?Q?YSyC0rHnApLzCgkvjOo+iebxORlZuoUkXBVK92X5RhZrJ9ufWOgyCzLGeT4n?=
+ =?us-ascii?Q?xM0M0C1+xEJ4CNZboVBFqOxf/SqzGDSqYKNhwt3UQ3wFdi8Lqf3ssBObhmIO?=
+ =?us-ascii?Q?MuGD37ixqfBo+khHG4RL5GmtprrkdE+55Qhr55c5XMQztGmBhj31m1jOptku?=
+ =?us-ascii?Q?lRH8ZEgIJChzVIlkYn6ofJbN9mAxr04W00C7+joOpD1dW5oflxoFSLF5OKUT?=
+ =?us-ascii?Q?eq7V5hrrf4OfqRV62ScLrpjj6kJpuSpMO4dhXSxJQaTUxHVt9vMhwY2Xb+Iq?=
+ =?us-ascii?Q?/vvJ3v1KWvzWVHLdilqND+Y+0LqbYFyik0+xiENZeIP49wFGAtRtyzjohoxv?=
+ =?us-ascii?Q?4qxO8KpXKfgpCRxPjXHDlCbQzQ4rALFaz4H0+WSXBiXQG2VXRTDtt1GeVlN8?=
+ =?us-ascii?Q?I13e82PxA6qZCYU+GCeQ0tSA3WJPD+58If+hLgPU3bZMZeQcSl57UpoCtAvl?=
+ =?us-ascii?Q?cDNFLGk6bstICJZNZspnzIHZ99JMRe08tXqHU6X9JIuv4V9a8tzeAbdAjwdO?=
+ =?us-ascii?Q?WssMfTRl0ewe1oDl4rx1sKLTEi0g+tqcNSsQlGFiuDCLN8UOr1cK4Cl3LASC?=
+ =?us-ascii?Q?2mXHFKsFF9O0hisMCaw+hV3h7MuRlNQoys+CoetAVnE9m7ITHYm+K6UC/FEL?=
+ =?us-ascii?Q?gXxaXvxQiJRaYhngGTM8jKBxq1KFvOHdu6hHG3AVMK7Q6hlf+WzmFgirhww/?=
+ =?us-ascii?Q?+nsEo17JzoZydS49/j+kpIS1kFdb6R6JhHSKYxpTeis9olMe+3rLjYuSUIVM?=
+ =?us-ascii?Q?MFsHt+kWJIsCVBsIKeFLLBF/1No+rph0mdfmCxG3Yy1pfTtjTVKq5V+229WG?=
+ =?us-ascii?Q?o2HM6n+VPOKekq8W43ewVgzQk9LM1043fNek7O3kxThXlNk1HG3KFaIjVqKu?=
+ =?us-ascii?Q?wmvU2nCcjihgNQar5UKuFPrKBlbKtSzWSrSgE7gwxBq6HTvF2rKhQRCzRSdp?=
+ =?us-ascii?Q?thfVhIDJqLtfYAlnt+st7TIZZJME3/2w5FXH6D/JrNpcKBJLuAm1qii+NdHM?=
+ =?us-ascii?Q?lUBmAtbfbq4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(7416014)(376014)(19092799006)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4f5Gre9eeonYXtQvSdrRvOckYGT/9MH+yG+esAPEF5W1MsHE36N8F/+8V4FH?=
+ =?us-ascii?Q?+COIfgPfeXrIBi1d164KumxqRrgu7YKasGBBa5a957YVKbSbwcLzlJA+YK+W?=
+ =?us-ascii?Q?7obF16KpNCNnsWggJw/8IuatPJbE2ZA0OS4glFErmW6uZLfMqYnce8YsJikb?=
+ =?us-ascii?Q?K0dhHxNIBBii0Gwcllr8rYPx8d+XnaOMSTtVRAqibr9hLX+uph5GdRFBxxuf?=
+ =?us-ascii?Q?FtBPKbp34vILyLnB6wcth6KW+spzaEezR6G4G4GvaR3f1g3VKKZxPL5fFkT4?=
+ =?us-ascii?Q?t6tqZLGL3Mo679zEMeNfrC0LTXO+zWKBuzpoLyPmtt0oy8BLKCK5zkOCSxr4?=
+ =?us-ascii?Q?VxP4vUCIgW4vRCJqcGzZsXSfcHqiu8Rpld3WAQPZm/yn676KK4JvrYrS6Tjv?=
+ =?us-ascii?Q?1YSMG0VgEF2gH6uPGuNwQe+7XclrpHQX0mdLBQjoeO8T+RVfWaStMY0jL8/W?=
+ =?us-ascii?Q?fbYqzx+k3MWvpTOe43dt5nPXB+jgP9K5D+PQKivYZUIxoNvOGrks4GDESzVX?=
+ =?us-ascii?Q?QntgC2tK5FgYoxnuDOda1IfxEUVroARjuznULbfPGxwQqqIhmqhHVusiOjer?=
+ =?us-ascii?Q?zZXmlsL2gkE7YX3SAjojYw/PzJUGqWEjnsxk6H8N1vSrU/0PhFl9OFTNtg5Z?=
+ =?us-ascii?Q?SYQoiZYReXnuTeRV2S7eITB7bjFAvBuWtye/YjRhQ0j/Q17PYSt5add5P3nZ?=
+ =?us-ascii?Q?rtUqyZsNAFZ6WfYLy1glIdOSGFv+FpqxhD0l2nE8jy4CZ5GHN6olui2T7Rx9?=
+ =?us-ascii?Q?nSZW0wQbO5ag+C7yKU2oUQKfhAZyfUkmmQ1sFeglF1YSzlTvvBc/3ErS0VRr?=
+ =?us-ascii?Q?4BJ6HvXIlTR4rIWuJcKguTDZzZQETAFtYmEB+iwU/Ud/gtV9ucSTuwujMrFX?=
+ =?us-ascii?Q?ui97VksHn9YzToi5Mrt+tPPyz/snUY1/eeXq9BPWik9tFShEGLN0nyeUaSb1?=
+ =?us-ascii?Q?8HnHBGJon3yfoaZ+6Gi0pTLv4uWSh8jL24m55zACGMl5UFzydgysFd5T0WbJ?=
+ =?us-ascii?Q?fCjcALsI9/x+k3dRewS4vE3e8pthI/vQo4NV+hQriPXFCcBRCCBTQM+DwnZL?=
+ =?us-ascii?Q?75Lj6IAkKdl6Pvr3nre6ykEHIjwcKdFMIErPDkJN9HZARPHhY3A6xMX0Vudd?=
+ =?us-ascii?Q?eZvV3NFyoL14QfL8d7arZeB14gWyWYjz/Odk2DRP1iYjL0ZqQBfWWw5pPT3+?=
+ =?us-ascii?Q?esGj6ZRzmtZzIOvB2gAd9PYSoFNu5OEiF1xI1PunaNRVFabalAgt1vamn6zd?=
+ =?us-ascii?Q?fisOZ1UfCZBCF/6E5sXjtcQR4Id7JK5olAl6lJ1GH3AVblqcKZUdvpN/WyLc?=
+ =?us-ascii?Q?LAWU54Ybxwa7ArEwsDWHaQPHVsF464CdncUO0n4dOka1/egBIqbpJx1t+Tha?=
+ =?us-ascii?Q?aIf3zmmxB0I3scJDaxCcs22QU6VBqI4vk3Gpb84+zCB9rRejFZl8/Tb0OiCV?=
+ =?us-ascii?Q?QSUyFas9oncmFVfPei4hYo7fV36M0SE0CCGGcxqq1tv8OucKntqYyRtnKrK4?=
+ =?us-ascii?Q?XsJ1clHPLR4v7gVctXgH7WaKV+uBYU/0xCWG9BYQ7C3HhcZ40QnphzS7urEE?=
+ =?us-ascii?Q?Dt3tpXf7B7qtqY0077lmV0AQ2c5Jq9ukv985BcND?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 956573c4-74ed-4fc4-b503-08ddf7552cca
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2025 08:18:55.6113
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hQ4YSfq0woaqLtCHFFIY26QtUqIwd36on8PD+800my886h1iUgeDitDrfXYgQnB/Z9eMjOdH+gR/9w0isXDmSQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10545
 
-On Fri, 19 Sep 2025 07:08:45 +0200
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+On Fri, Sep 19, 2025 at 09:29:41AM +0200, Michael Walle wrote:
+>Hi,
+>
+>On Thu Sep 18, 2025 at 11:01 AM CEST, Peng Fan wrote:
+>> On Wed, Sep 17, 2025 at 04:42:29PM +0800, Haibo Chen wrote:
+>> >The spi nor on imx8mm evk board works under SDR mode, and
+>> >driver use FlexSPIn_MCR0[RXCLKSRC] = 0x0 for SDR mode.
+>> >According to the datasheet, there is IO limitation on this chip,
+>> >the max frequency of such case is 66MHz, so add the limitation
+>> >here to align with datasheet.
+>> >
+>> >Refer to 3.9.10 FlexSPI timing parameters on page 59.
+>> >https://www.nxp.com/docs/en/data-sheet/IMX8MMIEC.pdf
+>>
+>> The SoC SDR mode max supports 66MHz, 133MHz. DDR mode max supports 33MHz and
+>> 66MHz. Saying the driver now only use RXCLKSRC 0 to restrict the
+>> device tree to 66MHz is not that correct.
+>>
+>> The SoC max frequency could be coded in driver per my understanding.
+>
+>Yes that is correct. The spi-max-frequency property is for the
+>device, not the capabilities of the controller. I.e. the flash chip
+>on the board.
+>
+>> For the QSPI-NOR chip, the spi-max-frequency should represent the NOR chip
+>> frequency. But that chip supports SDR/DDR, so a new property
+>> spi-ddr-max-frequency, if we take spi-max-frequency as the max NOR
+>> CHIP SDR mode frequency?
+>
+>Which chip is it? I'm not sure that this is required because the
+>supported modes might be in the SFDP data and we just support the
+>8d8d8d mode backed by the JEDEC standard.
 
-> On Thu, Sep 18, 2025 at 05:33:47PM +0200, David Jander wrote:
-> > On Thu, 18 Sep 2025 17:04:55 +0200
-> > Andrew Lunn <andrew@lunn.ch> wrote:
-> >   
-> > > > Yes, unfortunately the SJA1105Q does not support PAUSE frames, and the i.MX8MP
-> > > > FEC isn't able to sustain 1000Mbps (only about 400ish) due to insufficient
-> > > > internal bus bandwidth. It will generate PAUSE frames, but the SJA1105Q
-> > > > ignores these, leading to packet loss, which is obviously worse than
-> > > > restricting this link to 100Mbps. Ironically both chips are from the same
-> > > > manufacturer, yet are incompatible in this regard.    
-> > > 
-> > > Thanks for the explanation. Maybe add a comment that the bandwidth is
-> > > limited due to the lack of flow control resulting in packet loss in
-> > > the FEC.
-> > >
-> > > Anything which looks odd deserves a comment, otherwise somebody will
-> > > question it....  
-> > 
-> > Yes! This is a golden tip. Ironically what I said above is incorrect. Sorry
-> > for the noise.
-> > 
-> > Ftr: I wrote this DT about 4 years ago, so my memory failed me, and a comment
-> > in the code would have saved me this embarrassment ;-)
-> > 
-> > The comment above applies to the i.MX6 SoC's which had this limitation. On the
-> > i.MX8MP we had a different problem that also caused the SJA1105Q not to work
-> > reliably at 1000Mbps either. We haven't been able to find the issue, but so far
-> > this switch hasn't been able to work at 1000Mbps reliable on any platform,
-> > possibly for different reasons in each case.  
-> 
-> May be it is doe to RGMII clock switching issue and the requirement to
-> have specific silence time for proper clock frequency detection on the
-> switch side?
+MT25QU256ABA
+Clock frequency
+– 166 MHz (MAX) for all protocols in STR
+– 90 MHz (MAX) for all protocols in DTR
 
-I doubt it is that, because it works well at 100Mbps still in RGMII mode, and
-according to the documentation the delay line is active for all rates.
+Current spi-max-frequency does not indicate it is STR or DDR.
 
-OTOH, this switch probably has some other issues related to the RXC delay
-line. It is always the RX path (RX at the switch, TX at the MAC) that
-randomly does not work.
+If device tree has spi-max-frequency as 166MHz, but driver configures
+the working mode as DDR, there might be issues. I not look into details
+on SFDP or 8d8d8d8d, so my understandings might be wrong.
 
-OT (but still posting in case someone here knows something):
-Coincidentally I am currently working on a different design with a SJA1105Q
-switch connected to a LAN743X MAC. The complication is that this MAC cannot
-disable the TXC (RXC at the switch) at all. Still working on this, but right
-now it looks like not even with the RX delay line deactivated (doing the delay
-at the MAC) is the switch working reliably (at 1000Mbps). Investigation still
-on-going so take with grain of salt.
+Thanks,
+Peng
 
-> Or it is just artifact from iMX6 platform and it should be retested?
+>
+>-michael
+>
+>> So if spi-max-frequency is the maximum NOR chip SDR frequency, the driver
+>> should also be update dthat DDR mode is not supported as of now.
+>>
+>> Just my thoughts.
+>>
+>> Regards
+>> Peng.
+>
 
-I remember having tested it and it not working reliably, but that was 4 years
-ago or so. Drivers have evolved since, so maybe it is worth testing again?
-
-Best regards,
-
--- 
-David Jander
 
