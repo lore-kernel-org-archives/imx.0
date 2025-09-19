@@ -1,185 +1,189 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011030.outbound.protection.outlook.com [52.101.65.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77A0262FFC
-	for <imx@lists.linux.dev>; Fri, 19 Sep 2025 16:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758300170; cv=none; b=czBjz/4cfMC0QN5/eAL4ZZDZYuunXt6ZmXaKw6YwwQaHeNBoy06b712KQL4/gYvYpYuKYhKFsAMZm5jG0jOFuiINWHR69wKgzw1bF73t/ZgmKFwjJtiGZ83B18w9a8TBrhRoSPkJ2aouMtaFo5V5Qksencab+fjpeVj2UHyqNI4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758300170; c=relaxed/simple;
-	bh=IVmeYFEt5n78kowyzbALJ2qR43obCrrnzs3YepyioWM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EZLk0PpLxFetH3F1XQ4Zb2u3EKEyXT6tKJeTyM7587NH+hh7o9T+AqQ7OHgrHpbAq+SHfj2akpE2G+qlJqD3SzVCnI5tj/RZOxLkrtprpnGyq/RNmfU2CV3433ozHUTx8pcujHPmp5Qe9SMm/J3m2tRjC4mxFFH3Z5o3MyTmr+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hCqevV08; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE76817B50A
+	for <imx@lists.linux.dev>; Fri, 19 Sep 2025 16:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758301152; cv=fail; b=W2+nZsUtPhGlg+Rmhi0Q3qVZben/flB09iE/PeiIhfAzZhBLyvedvEEUhXF1FbiYOP2kkVZdfb+C7Wn2CLkZ73cAKnBe67ZNAxsmnzv7zIu+71nA9ej9Dro7o7lBLZ2jwZco9KyRUAH/s4BSEXRHkFeY+H/ga4rKZ03mo7JabS8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758301152; c=relaxed/simple;
+	bh=F0013r+UpafVyjRQXSLaehhQpZi6b1J+Lku5Q55MDh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=S725r4jJQAh47aDh4t5LAPXSWeFGtoZtFeX1ZM7t5tJ4LnNrcaB7d8mceoJM6UWp2EsoXs6HftKinCVem1yqTUqUkFGvzL70ovUr88YpqDJpjT3qA/9lUfIm7sjQkg6Nfll7Jhk+76G89wPdOh0mWNSLokJlhBTFjOEZ/lqZ7BA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=L0IiUNXg; arc=fail smtp.client-ip=52.101.65.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hCqevV08"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ee1317b1f7so1200504f8f.2
-        for <imx@lists.linux.dev>; Fri, 19 Sep 2025 09:42:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758300167; x=1758904967; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QkHj6yxNHqV86xD9f9rRMp4RmegxtrG2NNsn/fkhknU=;
-        b=hCqevV08WCZWy1N04x6397XoKLGyCPbbNw2JppXCB0dANcynhXwfO2jOOME4ESeJPY
-         W/UBqotoC0wEXiqHNcVFPs9gktk3zklarxjELpiPV+4L3l3C1dK5OV18VERylfD1p5Jy
-         PagqkZCs8AMPK/5NHBEZA3e4LX0ZyF3YuaikQrdP6uwoxe2+p9+vdDhUbPGJoHjbYxuL
-         9WzIwboyyN9F2uSt3WEuVfun5JfFkmL0p8cLjOGJtoVuNu1+wK39G7QbU2kriasbUQps
-         UBAvdtO1krDeTYUZ06lbQWc165cwuxH9KW1R9tC01qlEKEkqmAp3aIY8ZFdhJP4jtWPG
-         TVSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758300167; x=1758904967;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QkHj6yxNHqV86xD9f9rRMp4RmegxtrG2NNsn/fkhknU=;
-        b=Z0mAxnTDdnCnVzWAo3CiPfsCBkZjcXbdqrBjTUCa2VGSyjIdYuX2Jb+4ycx+W0eS67
-         y5q23Uc6FP//MBegRM7z1wjELucnnZgM3RW7wDxjAgbYbQDvMZ68L32C2jgHmByCEw8M
-         sFSb++kJSKChk/843NKuyYKOKTyIAO2Icz0Tu03WtD4zoO2Q4VQLbl3aau72fSAgtS/K
-         c0hNZkSMqshqFI8MskrDRRBu/OP2GT9fXCSOgFovPO2kDr9RVB1OxmqH8CeXfboFEeEZ
-         3owjYees8liQMeHcPJN/+Ke5QeTncGdo2kpL1QYYKTmPqzIiO9fSufH6mnHEyUCfu51M
-         S52g==
-X-Forwarded-Encrypted: i=1; AJvYcCXmLIrTWvD9J3Az0602bSbwhT/P2G7v+hs1IRigmgHySN6gKbJ04g4FcRZDiqZhiJdbjqI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzMfWr8Va9a5AnEMSmz8Me3jt0uYTpU9TSK7JctQy/sjBkFccer
-	sn591uqrAanPR010uyBRTdaC0a5wvwql+n2krxvZk57lPTTty9sgOWrx1MEjaQ+QTuM=
-X-Gm-Gg: ASbGncu7XC1Qsdj8F+kCi5iNhPzU9fWBR0cJlvIT7dVXIy9blnlKxb7h8/PQBhynFC+
-	MwdOD6hnmLE5oAS+KGw6jOvMdmbjTZ5n0StMK3o6YYpECiCQVtvaz9zn0Xa/71Yggohe98QXME9
-	TiECez+kcMNaPd4awDcR5wx9oNHKpJ7rAFD3IK5zVI1zC+mnXY0Bj1sDzWzdYxraohCyqo8OYFZ
-	0oQItWu/UaJj7E/ZEpEe6yGWHRQw23mEoZG2zTQ/QfLHPv5D7vgQQUfxoh8PLbD7j9BaMeFq9Im
-	QN8D1NQ5+BPzpdU9dnsBmuiU6Ihe9COE+2BT4W+30MPmP4t9X537I1+lmi4ZTcRyzuj8U1ZOhi+
-	Zzx29Pv1fPFBIUxv/VDGngRgZ+Y/d92bPLCu5uhUecuxgUjA4no7oj32EIj7oGsi2mW0sR5JXkZ
-	N9ccn4qBt/vgKO
-X-Google-Smtp-Source: AGHT+IFhUncdh/63zODwAY6Eoa8z9GQAGmPnzhNb7b4Y3hgpiTCynPlk24Zvc+GNdq/F+x3+CVBVbA==
-X-Received: by 2002:a05:6000:1aca:b0:3b9:148b:e78 with SMTP id ffacd0b85a97d-3ee855812a7mr3683227f8f.53.1758300166902;
-        Fri, 19 Sep 2025 09:42:46 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:8ffd:205a:6719:49c1? ([2a05:6e02:1041:c10:8ffd:205a:6719:49c1])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3f1549285c9sm1799412f8f.52.2025.09.19.09.42.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Sep 2025 09:42:46 -0700 (PDT)
-Message-ID: <ffa6fcdd-2b0d-4493-a8b1-961e51d41e6f@linaro.org>
-Date: Fri, 19 Sep 2025 18:42:45 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="L0IiUNXg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cG/ZeZa2IFWyFYkZRLlVCaMLpnJGEfbhxovnUgnACMXBEj+4c9T5MAwLGP6YGPK3SIq3mtw4hc3ZS69IEXfQWOQzDFs3Mvcn0zkNVlISfutR/bFJeoiH+ALNn5W/kd1l9FB9FlCab0N0CUwCJwXcdINDFwwF6tOIe52fKZW/cp55C02t/d0XHQERqNChrnfpuTQvRn++A5x6Vygdc7RDMyrsUvqieAXxgrqKVyXVC+dff8nO9Gdf7dvwV//yXt2sPqBbyf2nvWVpzK1jp1smLlb0szOtYEhzcINRJunaqQslqWmAX0YeyWRwn569Gdw2S/5G9G6gl0MB4A4ezczj6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HWOdJrCsnYanaP8JouiirI2ajLlTJB6sVZiACaYGgt8=;
+ b=cd5w0LCHL64VU/R1oehCIjQzxOhnfFrh+MW5IWDz/9WH77y+bF2fpu20R1xnMHhjuiq41nszPhPdHUN250jKIEUOZvAKrV5sWJy/TFzZFYp7ukf78J4RGOb8PeK+4+se4s6j1yhMiS5Q+hdbtrysQiJpVqGqPG3qBdH+BDTMSFwhEk4t6EIMRDzr6EFHqQvUqe+rHqhPMjoPEokSuxHRYj2I06RtCFDUpalZEQ1XmOLn6h+1Me3DFZPIxIUlzibW9y5+5oYo0WujiboQrP9J3VYGYV7rXQl7g28Une5jAB76Wk+Na7gLd53w60kneCxmkqErWBsMdsENvqZY1RHXAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HWOdJrCsnYanaP8JouiirI2ajLlTJB6sVZiACaYGgt8=;
+ b=L0IiUNXgqD/kZgwKPb7xrilJqEMpPz3+lmDYM+bg+jbA+H7iszY52bV6tPAQVvB6cxnaj1Ox+qlXt4frmTA8JhyhanSfO9Jqhp/usWLlYo+UFwsjjrosLRgDtfVTcvnSF5r0hnCht7ITGgi3klI4GsMfETHx9RDfO1m9RUAlqcZVjEUt+pvFopKZ0HqbQzKY0fEN6QdNLp+E8+7BH0SFAS1PEP+V7oxxBEjHO5EmYPx+68+NSFSUbMA2T9dotcwbywLjshaJUfSo98SWfV4DdGvaJvetBW7RBolcoSuKnfqH9YnElOj0/aFq99jjbwOYYhOPPiNTj3nRj4ntHBNgZQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by DU4PR04MB10646.eurprd04.prod.outlook.com (2603:10a6:10:58e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.16; Fri, 19 Sep
+ 2025 16:59:06 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9137.015; Fri, 19 Sep 2025
+ 16:59:06 +0000
+Date: Fri, 19 Sep 2025 12:58:56 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: chester62515@gmail.com, mbrugger@suse.com,
+	ghennadi.procopciuc@oss.nxp.com, s32@nxp.com, bhelgaas@google.com,
+	jingoohan1@gmail.com, lpieralisi@kernel.org, kwilczynski@kernel.org,
+	mani@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com,
+	Ghennadi.Procopciuc@nxp.com, ciprianmarian.costea@nxp.com,
+	bogdan.hamciuc@nxp.com, linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	cassel@kernel.org
+Subject: Re: [PATCH 3/3 v2] MAINTAINERS: Add MAINTAINER for NXP S32G PCIe
+ driver
+Message-ID: <aM2L0C4SsGTzLQwi@lizhi-Precision-Tower-5810>
+References: <20250919155821.95334-1-vincent.guittot@linaro.org>
+ <20250919155821.95334-4-vincent.guittot@linaro.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919155821.95334-4-vincent.guittot@linaro.org>
+X-ClientProxiedBy: PH5P222CA0012.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:510:34b::8) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/4] thermal: qoriq: add i.MX93 tmu support
-To: Frank Li <Frank.li@nxp.com>
-Cc: Jacky Bai <ping.bai@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, linux-pm@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Alice Guo <alice.guo@nxp.com>
-References: <20250821-imx93_tmu-v4-0-6cf5688bf016@nxp.com>
- <20250821-imx93_tmu-v4-2-6cf5688bf016@nxp.com>
- <d9392dbc-806a-41df-8992-28c3d6132309@linaro.org>
- <aM2D+q/XCI38M9sp@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <aM2D+q/XCI38M9sp@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DU4PR04MB10646:EE_
+X-MS-Office365-Filtering-Correlation-Id: bdc1d2e8-ab34-433b-63a8-08ddf79dd7a8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|7416014|376014|19092799006|366016|1800799024|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?yKHA7yf1huwGj89qr3UrIjEXhFIXX4+fdQOABrCEJJFpVV1MQB3L4SULiu9H?=
+ =?us-ascii?Q?7aNcU3pV5vmfrnvHMMi78vLq00Cqcu60SZEscr05KrJXqHFzNduzlYnNHE+x?=
+ =?us-ascii?Q?XlEREXv6CWZWaY2l7lGQThUmsg88zaIqcMLUeIJBCj0CwJycp8LfkGc/Tjq9?=
+ =?us-ascii?Q?x81ljIMQQ3ntWdNcQ7vT/AoFvdaMtlGsPjjV+nbzUucAXVAJ1MUafCbbwWe5?=
+ =?us-ascii?Q?Kaz2yi5dbDaeXT2dvfe+1KJHYT0nIZ3rBxZn8v+eyHBYd8cPl+7FbdV+Z3Ef?=
+ =?us-ascii?Q?DvrRQjEjvUd90lhdxiwdA+oOis29P38WWxTqV9uU8O9DR0MgFSPiAcLOjtwW?=
+ =?us-ascii?Q?sCDnue8rRT04m2VGIoIK3XMOGZUy0dOdmAKasWRzm3A3hO1EiFvbzitvHvUE?=
+ =?us-ascii?Q?WUacphZnBp3lt+ueIVUZFK8YAgd2pwLJCgJxwK+oNsAgegLK5j53XlQ7VkC2?=
+ =?us-ascii?Q?o7OAYzB5S1vaM5T46Zn7hZh3b2B8+q7PQTpOd5O87eyokprHXsKjUmNNOUsk?=
+ =?us-ascii?Q?Oe0qYPmUw0+yJrN63Phz8M0JPPxfEZ5JTG1I+5C1yqiG2zsw/uswetBU5gRw?=
+ =?us-ascii?Q?MD1w5enLeLCEvHfFUiR5f6t5e30U2Mu6RVVEYIPPlnKNPDLuSQiZlczQVMrr?=
+ =?us-ascii?Q?PG7pg32S0uWKIP/tewnq3JL/ifw4oGHLK7MlpJwUV+0zv1miN3Tv8CDaJtKo?=
+ =?us-ascii?Q?7fVvPYaDf+CA0q+hfdTqTCde1/VPJdkWOSJhs/cdT2W67UmFIf1K7b+tf7qY?=
+ =?us-ascii?Q?JDmmVuBtsaDlUFckYUfxUmmcqeDCte5MJiW86BFR4tldEY9vcRYSuWtFDi+W?=
+ =?us-ascii?Q?RUrCadmWOGgKu3iohtYTIfacpBEPTRp06ZB2yeXiHkuW+xW8BLbURFd12BSV?=
+ =?us-ascii?Q?P86nJv23ug/eipGdAePaqjDicYheSWp1+qFc0V/1Xt2AbeXS+rIsQnr0zNKt?=
+ =?us-ascii?Q?jmCojdFLZxRfbm2qtKxxkyRUVvQcotFsugfFLxHDz91urU+Pf4RCQoarDodS?=
+ =?us-ascii?Q?aFR+HSlS857sZiwRzOA4h0sz4CRlgnAcUETqZc4QKORwiDTnOuPuD+Eeyrag?=
+ =?us-ascii?Q?NwZxSNnsIk0fVMiBsVtau0sONtleSvFqhzFa2DN8/Na7VS8oLGdTLLqCR3k3?=
+ =?us-ascii?Q?qhY89JfDjICsvkH8J7X0EHfHTH4ULUk0btE/VGwOadV1W6nUrXzR1/Q7e1Ix?=
+ =?us-ascii?Q?5OvV5KnwH9ajK4W3+AGKJkTIdaU9JkrD7R2hXR+gWA7an5Qa1/4uoM7ivHFS?=
+ =?us-ascii?Q?PEd9H5oxPD++ktB+cD2v5SB+1hOPb74KFT+0rHywvBab+0aoT4B06jCagZoO?=
+ =?us-ascii?Q?sSnWl1d/wxYb8ihCjnQF44UhWypRWUW1tU3vwuUTVWP5oZv1ok1HLyVP6rpB?=
+ =?us-ascii?Q?wIkJfX4aAK4eJ+mcZE/XIoFdlnyENnIfTFejrB9/+ODQIU9NYylTMhKER+DQ?=
+ =?us-ascii?Q?LiuFAo0j5A76OEAJGtUZqB/iajTofFgBsnGJ4Xx6fvn237yMZK6IEQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(19092799006)(366016)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?P3XnHnID2202HnDRfNomURbXxYUynoSgHbEV5tGz7Btb9nviTZv+jebhmYph?=
+ =?us-ascii?Q?1oqFspC2hMSF80ZtCmeO1ApQXXBCaNqEiBTahRtSP5WunXvgwRcEe+DVeADo?=
+ =?us-ascii?Q?29WD7h4SpTZEzoKvN6Ko4VIuYCCanXlt/TJfKr+b4kabmRP+0vvehjVq0RVJ?=
+ =?us-ascii?Q?EvIbHRp9tSySlVYOuaIGFaH5KkzcApu49vk67jOsXvP+fJwNCRyWWFy9EjvN?=
+ =?us-ascii?Q?SSM72TSA7+ch6tSLMoRyroscMCS8Gev/uPTStBvUkgK6Pzb8mi5XaqVTSFcb?=
+ =?us-ascii?Q?2Q2M3GQpoCvv+FI7HxxxI7ygSZd2JqFE6oyC1BvokP9eZSelNSJK3BswFRAV?=
+ =?us-ascii?Q?2Rb19x0S8FTv9EfMGM4WKJHQO5PvUbowXc/7St9n0UfyFRAlvdvObmLscDa5?=
+ =?us-ascii?Q?4WN+iJCHP7SbF/4yGjnr4wTcSwymXGTVfuat+GCqcy2VEbke0Z4T6At+6ixg?=
+ =?us-ascii?Q?iUwnENEL4k291+bjR/7JlYZS2P0pQ7eG5KV1TY8BZf6aeT+lzee7T75jQRqd?=
+ =?us-ascii?Q?WEs7DvnDLP3sCxDmkcTn0RINiFyB217T1kcSzyLvblE0D3GQWU7gOLGR++br?=
+ =?us-ascii?Q?rNlbIed+isakjF5gc1df0K92fmWA85LJXyw6I4kHy2k33NIXHqJarUOEMN/l?=
+ =?us-ascii?Q?vmfdXGkq/2OSe4iROzOktxBSYt5b//goPI0tSd3cBJJCKhqNH9rPzcyVdDeX?=
+ =?us-ascii?Q?HhamZlyQYYJuQ4RNJTW0wqYimMYh64GgDBwAIO87twRUEsUpzcHLq0X3LnYA?=
+ =?us-ascii?Q?v975PYfnoyTg+wYjubjblKTQC5YIDG6bCHpZe3Qvhdye3s1o4xg2OidLdjfE?=
+ =?us-ascii?Q?a4t7r7tUFDsSlNDBJm4A9KYcZYEliaBo2OwQqbEj8Rxpzr5b51vJFeppLGbS?=
+ =?us-ascii?Q?A+HK+QzVanCcPYZD9Z4Q1oZYLVIAs6EkTDyXb+IFA/OwiS+FG2C3Y8WjV5HR?=
+ =?us-ascii?Q?+FEup6YHNKl3XkDeX+kwoqEKmCp9vOuaOrcu+Irps4WpwNxf7xjSTlvLp85a?=
+ =?us-ascii?Q?MTPnRhespyCGcKf2jGL8eWJF6aR6Kml8vo7VEhRr0hQFTyMRIWfW5uBzuiWG?=
+ =?us-ascii?Q?Z/I6i7MpI/s664V7NGJZewAv1OQlqIvNqwi5XdF1Rbl+onCARY//4nwWFm4V?=
+ =?us-ascii?Q?qZVeLBABzr6x9+jYbphCLBow+AfHjgviWAGBY6+BnhMmFpvtEDHVRo8q7Cgs?=
+ =?us-ascii?Q?KJWnRv6YodTklKvOvB56aZoFMFDD7tnhcIvAWpDalPVY94ZI/ePQ8Mtf3/q5?=
+ =?us-ascii?Q?eiBZsq8ShMnECZPHGy/MGW8pwYvQ0GFUfh3nf5hTRlD/Kx8BV2JFd2laDren?=
+ =?us-ascii?Q?l0KPa/3HKkiIbQAh7aDa4j/OsQjICPOFxpup8ag6vXd/cz6pF9TPD+S3QFaC?=
+ =?us-ascii?Q?Jtri2WpuQYaGhJFOp7crUEEYtSA75cninpmhNLRX4tzP7UmgiyM5Y3oNRRNi?=
+ =?us-ascii?Q?SJmnGOLIDUD3YZNOaNDzFtWSfWJ9KRsBVPGhGosxBO/QKaFOYQYhKQsKFJdo?=
+ =?us-ascii?Q?1k06eFvf/Sz7FSN0LgRrSrxyTxvQna5oKcvSTS5ZPVoc9IK3f/f4XGv5PNXu?=
+ =?us-ascii?Q?DetsEXaNtP55gYQF9tSx6qs0rMrY+SqS273xWKse?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bdc1d2e8-ab34-433b-63a8-08ddf79dd7a8
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2025 16:59:05.9382
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /rhcNJ/f5lyUbGdkun2vL8LPR9xJ0/j8PwW/Ehr662hPrr2XZY3iwOj9j2pqH82Mqn+wwXe+lU14emNscXFokw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10646
 
-On 19/09/2025 18:25, Frank Li wrote:
-> On Fri, Sep 19, 2025 at 05:51:20PM +0200, Daniel Lezcano wrote:
->> On 21/08/2025 08:23, Jacky Bai wrote:
->>> For Thermal monitor unit(TMU) used on i.MX93, the HW revision info read
->>> from the ID register is the same the one used on some of the QorIQ
->>> platform, but the config has some slight differance. Add i.MX93 compatible
->>> string and corresponding code for it.
->>>
->>> Signed-off-by: Alice Guo <alice.guo@nxp.com>
->>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->>> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
->>> ---
->>>    - v4 changes:
->>>     - no
->>>
->>>    - v3 changes:
->>>     - use the drv data struct for match data and refine the code
->>>     - update the copyright
->>>
->>>    - v2 changes:
->>>     - use the compatible match data to identify the i.MX93 TMU variant
->>> ---
->>>    drivers/thermal/qoriq_thermal.c | 18 +++++++++++++++++-
->>>    1 file changed, 17 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/thermal/qoriq_thermal.c b/drivers/thermal/qoriq_thermal.c
->>> index 01b58be0dcc64d14ca5e4bba654eed8f15e827fc..b2e634547271dcf512c714907baa162921d2d527 100644
->>> --- a/drivers/thermal/qoriq_thermal.c
->>> +++ b/drivers/thermal/qoriq_thermal.c
->>> @@ -1,6 +1,7 @@
->>>    // SPDX-License-Identifier: GPL-2.0
->>>    //
->>>    // Copyright 2016 Freescale Semiconductor, Inc.
->>> +// Copyright 2025 NXP
->>>    #include <linux/clk.h>
->>>    #include <linux/err.h>
->>> @@ -24,6 +25,7 @@
->>>    #define TMTMIR_DEFAULT	0x0000000f
->>>    #define TIER_DISABLE	0x0
->>>    #define TEUMR0_V2		0x51009c00
->>> +#define TEUMR0_V21		0x55000c00
->>>    #define TMSARA_V2		0xe
->>>    #define TMU_VER1		0x1
->>>    #define TMU_VER2		0x2
->>> @@ -66,6 +68,8 @@
->>>    						   */
->>>    #define REGS_V2_TEUMR(n)	(0xf00 + 4 * (n))
->>> +#define GET_TEUMR0(drvdata)	(drvdata && drvdata->teumr0 ? drvdata->teumr0 : TEUMR0_V2)
->>
->> This is not adequate for code which will evolve. Please don't use this
->> macro.
->>
->>>    /*
->>>     * Thermal zone data
->>>     */
->>> @@ -73,12 +77,17 @@ struct qoriq_sensor {
->>>    	int				id;
->>>    };
->>> +struct tmu_drvdata {
->>> +	u32 teumr0;
->>> +};
->>> +
->>>    struct qoriq_tmu_data {
->>>    	int ver;
->>>    	u32 ttrcr[NUM_TTRCR_MAX];
->>>    	struct regmap *regmap;
->>>    	struct clk *clk;
->>>    	struct qoriq_sensor	sensor[SITES_MAX];
->>> +	const struct tmu_drvdata *drvdata;
->>
->> The drvdata pointer is not usually used.
->>
->> 	u32 model;
-> 
-> I think it is not true.  Copy model here is not extendable if need add
-> new field in drvdata in future, especially need ops callback for differece
-> variances.
-> 
-> Just list two examples:
-> 
-> https://elixir.bootlin.com/linux/v6.17-rc6/source/drivers/pci/controller/dwc/pci-imx6.c#L173
-> https://elixir.bootlin.com/linux/v6.17-rc6/source/drivers/pci/controller/dwc/pcie-qcom.c#L286
+On Fri, Sep 19, 2025 at 05:58:21PM +0200, Vincent Guittot wrote:
+> Add the s32g PCIe driver under the ARM/NXP S32G ARCHITECTURE entry.
 
-Yeah may be I'm doing a confusion with a previous comment I had related 
-to this approach
+I think common ARCH maintainer part should only include core port of SOC.
 
+PCI driver should be sperated entry.
 
+see PCI DRIVER FOR IMX6
 
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Frank
+>
+> Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> ---
+>  MAINTAINERS | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index cd7ff55b5d32..fa45862cb1ea 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3084,12 +3084,16 @@ R:	Chester Lin <chester62515@gmail.com>
+>  R:	Matthias Brugger <mbrugger@suse.com>
+>  R:	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
+>  R:	NXP S32 Linux Team <s32@nxp.com>
+> +L:	imx@lists.linux.dev
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>  S:	Maintained
+> +F:	Documentation/devicetree/bindings/pci/nxp,s32-pcie.yaml
+>  F:	Documentation/devicetree/bindings/rtc/nxp,s32g-rtc.yaml
+>  F:	arch/arm64/boot/dts/freescale/s32g*.dts*
+> +F:	drivers/pci/controller/dwc/pci-s32g*
+>  F:	drivers/pinctrl/nxp/
+>  F:	drivers/rtc/rtc-s32g.c
+> +F:	include/linux/pcie/nxp-s32g-pcie-phy-submode.h
+>
+>  ARM/NXP S32G/S32R DWMAC ETHERNET DRIVER
+>  M:	Jan Petrous <jan.petrous@oss.nxp.com>
+> --
+> 2.43.0
+>
