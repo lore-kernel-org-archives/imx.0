@@ -1,222 +1,223 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010007.outbound.protection.outlook.com [52.101.84.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CB42D29D1
-	for <imx@lists.linux.dev>; Sat, 20 Sep 2025 10:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758365378; cv=none; b=CYzaXbRPMK8yDHECvHlgqd13Pef5A8OpSD2v/b69RPIHH9zy+PxoFCg5x8AU8NoXmD4SQ3FzVRPeFl2pvlofJeklJHAP+k3ZWJ21J+Ve7RVBKZ/aSnCgWatgBBsIv6tvGPohHNzfIqj24gjDcCQ8C5sL7gFmpNtq5+Mm2cAEBuM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758365378; c=relaxed/simple;
-	bh=LeD+Kp6HPaiggwjhXT1KWVi4MySo4T2YgcXx0PkGZ0A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P3NGKBPFeYPnjwx4tMjRug9VLaSTSWP4cdyMzMdXr3QYHoC3S6ZmcvFVF8NURObZnCkQAQCMl3H7+sIKeEVw26roDvjsQ9drPP8XejPpl/9qBX1Zoqxf1qX7+MFj4S3BJ3My3Yh0hicce30Z3+hbo6kQuhQPqJaO7sGEktyjeAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AdGGL++Q; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3811E1E1C
+	for <imx@lists.linux.dev>; Sat, 20 Sep 2025 13:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758374098; cv=fail; b=JcSZSTA1UP3MGfOmBB6j9yXEB7FoUWv7rRckX8gQM5mzkZ/OeNmsGRNAiYuP+EZ+hTrkR0p7D+61OTGB8j8j+ocUej67yHye6CyKX737FEiVeARc+osVecWsMSqaxQ5cc1n6CfihKOe2cgBbiIp8ibLcSFvKxxGPf+yYHKbS2ZQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758374098; c=relaxed/simple;
+	bh=98gATFBx0dzYYaKLMQIusZXTKYuy1ePGpya0sT1cTO8=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=KdW6RM8Hz8W9PZbYr9t1am8LCLnBfSS7RGvLAFQHrqDvymwkzrgKBKi9i0as4Y2t9CzFgGV3exL7my5dD7Feo2ZqZHVHxyEDD4npTIBn8NnK/SX5MKXpDTpHRqDkV7eSZJi+FPYD0FF/sSM5wQBJT1RAL40BkCj5BOm14aCdeTI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=b0kb+KsH; arc=fail smtp.client-ip=52.101.84.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AdGGL++Q"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b0473327e70so531734266b.3
-        for <imx@lists.linux.dev>; Sat, 20 Sep 2025 03:49:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758365374; x=1758970174; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QJc0EGzS/+BK6QuDuFmI2nY7ewfLLXuJxl0wU299He8=;
-        b=AdGGL++Qr7XfJxx84FGJOGK2guISw5ZFuXgAvTSfgBIEPKzyjPuq6Q0hjISoOne/MY
-         AmISi9hpx4dNOLamtNpxg9dt+vv7btgqAnYilHBA33gyIw6A1jwNKqenCSfdXeA/NqDe
-         ByKFYVCGcEYh0IeUVIRFHXvJkUFqFcGxRjReYsV3rF93MLbgTmZ5ZjFqziPjz9JAeZqO
-         I7UZRt4vT7GuXkkDs+JPTRHgEf8+zeNVksY0RIJDZb2NnJtiu6MRRE5QGnhOkCs4LOf1
-         VjbCLk1XXIhAlA3k04Fxuqpg27mP9y/VIMFkMAa43qqLWYnWioK8Vkqu6FhfiCywIxOs
-         x99w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758365374; x=1758970174;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QJc0EGzS/+BK6QuDuFmI2nY7ewfLLXuJxl0wU299He8=;
-        b=RB3oQeMhjQ0m8ahv1jz5ONgVU4uE2oqMpgBO2ymmoKtBZfL7+RCnLxPejlkGg0KCvc
-         Xp36hhci29tJPOzqifrBel10dDN59yBwm9XO8cf7uEHGdVd+fYLRW2ZdpUG/V1bzZzzK
-         FpR+Q60AVRGbu0Fcr+BJ651+kHk6GOkkXm7o+AyyBXHgUXxfgF5moLWlMnUqsEU/7u0x
-         TnWwrZLgE9TJfoKAjzqhZ7D/LVJn2XexTVLJnbiavnJCSfgDRe6K1gjFAUfpsZZ6CdXZ
-         f40r24rVpfpyiMNwHfGpQD3GygAEgZ2vGQpCMmcHhEVbZbRZcNKNCXlfRBKoyyRvjBcD
-         TcTw==
-X-Forwarded-Encrypted: i=1; AJvYcCUavVdkI6MJsXSzaFIMuca+YcL0sz7BDp4MaKn0JbkZafRaqmEcFYcl3Qn2SCqkPNfYnts=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzcb7iP1f3+hRX/w3jhjQ1KnU9DaswlA4+jP8LaYDFeOWzaI2W+
-	s9WJM9VIRsbtdMXmtHS5G+HiSTPiVxb6gaROc3f1rMlZ2JQlOpuJe23jW7xBly+pwjf3TMaUMwR
-	rGowN7p+ii5AXzHkwdx0Sn28ieF37jDc=
-X-Gm-Gg: ASbGncsjhKQfL7dAU+SLOfiX4hJQ2Qm6rus1+Gv9JOOWd4To6SwmEnYUamjjEkEVq6v
-	oUmf0ruOPNPkuwPVVyafmMsJOwY46oK9h4jEMLiOVwNSXscCG5yx5MXFIw2Rg7CGuAC5agDjJvS
-	CJKBrPVs0T3O7QDKccBrrTaGP5FXIJ0TGx338le/0THVctDRVP4i0M8eC9dkEejGwrQ3P6avEtK
-	HZHrKY=
-X-Google-Smtp-Source: AGHT+IHHbhBTYGUaEQMbVjyA0lAj2luPxy2XsbzoJZ2rvsPEEjKDVfN8Ekg2zTb0h70UHa/ky/mxQ7DHX1RPk/WuHD8=
-X-Received: by 2002:a17:907:2d86:b0:afe:f418:2294 with SMTP id
- a640c23a62f3a-b24f4cd1612mr662812666b.49.1758365373591; Sat, 20 Sep 2025
- 03:49:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="b0kb+KsH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GkCx9c3adUThKHnvrQQLM53KVI3+OUdMEsvv+3hyufVPq0M9bP9Kd676V5mKMMq7CiJjK/7ap3AruMagxcKrR/OmshAWbEAPtGE6yGOCOyvg9TPkeNxWKRy+QNls7gDeoV4KpTg2rYLfce1OhJYiponMIo6cCCR/7KfdPnR0OQq7oonFrP1gfAJu5S+q+lEmDOJ7gVjOd1gYz/NLJXsFReg5IGyxf3ZAXizKz6vA1bufc/nWPFBe+BfIJAoD6hjs30AtrCQczMEd5XzC44wtcTAQGtArzs345bYbONjdyaervISRHUkYbDoQf4U2/KJOLVxVMlHhwXzaEcBQJhHtVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=N/sAuwmIGdSamct0yEWyTSRmcHpvIIWpeKWMzcNbqtM=;
+ b=E2TEpLl1ia/hgARpfcS9wMLyKzTqp9f9w1Pejx0b9MFf+qNowhFnL9YXjZc0HQTs6IGzvTgxeJk+i04lUlVQb2hXxH8u6YZ6C4wpxXz2qbyMZlChnMUQ6zp3X16+sh4ptB0rSOr7I36Foc6UVxdp0VhoYwkRfG3gJ6OJfKYIqFS3VAdy8Jp9AJT5Jct/9BoqogdOGMrsyqw1WNYm09UPfnzcDxkglQhp+wd5Xi68xwRR0gegf+PBVcNejZFD6ZeqOhExymqKEpFtVUGfoZZ65UVl/rh+Cxqn22VrWnszanP37VO+CuOXNT3PRwjTRmy0HxeJxBOPU7Zh8jkOxpK5tg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=N/sAuwmIGdSamct0yEWyTSRmcHpvIIWpeKWMzcNbqtM=;
+ b=b0kb+KsHMRViQxKZqJZCI8qsLliJvnOOQQRw2t5wh+CIz2sf+EGO3Umm/qcwKgOnFpdvw4wTcGXAgV8Z1i3WaGxMC/bVe2MzmFwpohddMu+zPh27xzwHNQd6AwegzfwumgFPLM2eNaed40e9eOro7l8cifU6/74JZIk87NYdlBfDDT8mBSHkN2RaVuXVmmIn+Lx4MklLBEaIX1bIqWkpTwC8mQHGFxO8EBeR0eNOEbz/dm5zeICTG3N7b81IUkxpnluHlewZ69QxAAod+mf6AVb8RuAr35hyLE/Px5KryX+g8Xl59q/Zqs3qGACmH6nzizrJWA3ew3ZSpkuZwfXc/A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by AS8PR04MB8833.eurprd04.prod.outlook.com (2603:10a6:20b:42c::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.18; Sat, 20 Sep
+ 2025 13:14:52 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9137.017; Sat, 20 Sep 2025
+ 13:14:52 +0000
+From: Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH v2 0/5] remoteproc: imx_rproc: misc clean up
+Date: Sat, 20 Sep 2025 21:14:33 +0800
+Message-Id: <20250920-imx_rproc_c2-v2-0-3351c4c96df5@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALmozmgC/3WOyw6CMBREf4V0bU17ebWu/A9jCNxepAsoKYZgC
+ P9uIUaNweVMcs7MzAbylgZ2imbmabSDdV0IcIgYNmV3I25NyAwEpELLjNt2KnzvHRYIHCpdmlw
+ pqBPDAtJ7qu206S7XkBs73J1/bPZRru0f0Si54CbBrKakTLSMz93UH9G1q/WF5DuIEEgQG9SY0
+ Q6i9laIUEkVS5XWb2Q9O8L3wd81CCiUmSCoUOTafNBlWZ7nZWwwRwEAAA==
+X-Change-ID: 20250916-imx_rproc_c2-2b9ad7882f4d
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
+ Daniel Baluta <daniel.baluta@nxp.com>, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758374085; l=1971;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=98gATFBx0dzYYaKLMQIusZXTKYuy1ePGpya0sT1cTO8=;
+ b=Mx3Da8hyJhccuJEyTna/dsnAu5J957AMym4uPMmdIywsM2kEUh5fZkxwsnJ0FXe4qLk8dRXhl
+ dsm5DxSPyYKBCd6S10wm30lsPOfliTZ3KN+6Hscc8clszRv0jqcfHC4
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: SGXP274CA0003.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::15)
+ To PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250919-vdev-state-v2-0-b2c42426965c@ideasonboard.com>
-In-Reply-To: <20250919-vdev-state-v2-0-b2c42426965c@ideasonboard.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 20 Sep 2025 13:48:57 +0300
-X-Gm-Features: AS18NWAsgghzm2kBTHVAUWgTvM4Rjv6fz5BEJyNeWi6WNSHflPsd2h04LFjYcyQ
-Message-ID: <CAHp75Vfx9kyP-rVtfvyyMK4VH+oiRVjP1fZOtbVH14iLh98Jxw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/10] media: Introduce video device state management
-To: Jai Luthra <jai.luthra@ideasonboard.com>
-Cc: Hans Verkuil <hverkuil@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>, linux-media@vger.kernel.org, 
-	Ricardo Ribalda <ribalda@chromium.org>, 
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Ma Ke <make24@iscas.ac.cn>, 
-	linux-kernel@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Hans de Goede <hansg@kernel.org>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Nick Dyer <nick@shmanahar.org>, 
-	Tomasz Figa <tfiga@chromium.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Matt Ranostay <matt@ranostay.sg>, Andy Walls <awalls@md.metrocast.net>, 
-	Yong Zhi <yong.zhi@intel.com>, Bingbu Cao <bingbu.cao@intel.com>, 
-	Dan Scally <djrscally@gmail.com>, Tianshu Qiu <tian.shu.qiu@intel.com>, 
-	Martin Tuma <martin.tuma@digiteqautomotive.com>, 
-	Bluecherry Maintainers <maintainers@bluecherrydvr.com>, Andrey Utkin <andrey_utkin@fastmail.com>, 
-	Ismael Luceno <ismael@iodev.co.uk>, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>, 
-	Corentin Labbe <clabbe@baylibre.com>, Michael Tretter <m.tretter@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Keke Li <keke.li@amlogic.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Ming Qian <ming.qian@nxp.com>, 
-	Zhou Peng <eagle.zhou@nxp.com>, Eddie James <eajames@linux.ibm.com>, 
-	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Eugen Hristev <eugen.hristev@linaro.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Nas Chung <nas.chung@chipsnmedia.com>, Jackson Lee <jackson.lee@chipsnmedia.com>, 
-	Devarsh Thakkar <devarsht@ti.com>, Bin Liu <bin.liu@mediatek.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Minghsiu Tsai <minghsiu.tsai@mediatek.com>, Houlong Wei <houlong.wei@mediatek.com>, 
-	Andrew-CT Chen <andrew-ct.chen@mediatek.com>, Tiffany Lin <tiffany.lin@mediatek.com>, 
-	Yunfei Dong <yunfei.dong@mediatek.com>, Joseph Liu <kwliu@nuvoton.com>, 
-	Marvin Lin <kflin@nuvoton.com>, Dmitry Osipenko <digetx@gmail.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Xavier Roumegue <xavier.roumegue@oss.nxp.com>, Mirela Rabulea <mirela.rabulea@nxp.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Rui Miguel Silva <rmfrfs@gmail.com>, 
-	Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, Robert Foss <rfoss@kernel.org>, 
-	Todor Tomov <todor.too@gmail.com>, "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, 
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
-	Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
-	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, Abhinav Kumar <abhinav.kumar@linux.dev>, 
-	=?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
-	Nikita Yushchenko <nikita.yoush@cogentembedded.com>, Jacob Chen <jacob-chen@iotwrt.com>, 
-	Heiko Stuebner <heiko@sntech.de>, Dafna Hirschfeld <dafna@fastmail.com>, 
-	Detlev Casanova <detlev.casanova@collabora.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>, 
-	=?UTF-8?Q?=C5=81ukasz_Stelmach?= <l.stelmach@samsung.com>, 
-	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>, Jacek Anaszewski <jacek.anaszewski@gmail.com>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Fabien Dessenne <fabien.dessenne@foss.st.com>, 
-	Hugues Fruchet <hugues.fruchet@foss.st.com>, 
-	Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Alain Volmat <alain.volmat@foss.st.com>, Maxime Ripard <mripard@kernel.org>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Yong Deng <yong.deng@magewell.com>, 
-	Paul Kocialkowski <paulk@sys-base.io>, Shreeya Patel <shreeya.patel@collabora.com>, 
-	"Lad, Prabhakar" <prabhakar.csengg@gmail.com>, 
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, Jai Luthra <jai.luthra@linux.dev>, 
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>, 
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Michal Simek <michal.simek@amd.com>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Eduardo Valentin <edubezval@gmail.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Michael Krufky <mkrufky@linuxtv.org>, Mike Isely <isely@pobox.com>, Andy Shevchenko <andy@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Steve Longerbeam <slongerbeam@gmail.com>, 
-	Jack Zhu <jack.zhu@starfivetech.com>, 
-	Changhuang Liang <changhuang.liang@starfivetech.com>, 
-	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
-	Christian Gromm <christian.gromm@microchip.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	Ingo Molnar <mingo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Plamen Atanasov <tigerment@mail.bg>, Sean Young <sean@mess.org>, 
-	Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>, 
-	"Dr. David Alan Gilbert" <linux@treblig.org>, Jiasheng Jiang <jiashengjiangcool@gmail.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Daniel Scally <dan.scally+renesas@ideasonboard.com>, 
-	Matthew Majewski <mattwmajewski@gmail.com>, Yunseong Kim <ysk@kzalloc.com>, Chen Ni <nichen@iscas.ac.cn>, 
-	Fabio Luongo <f.langufo.l@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Yang Yingliang <yangyingliang@huawei.com>, Ludwig Disterhof <ludwig@disterhof.eu>, 
-	"Everest K.C." <everestkc@everestkc.com.np>, Stefan Wahren <wahrenst@gmx.net>, 
-	Dave Stevenson <dave.stevenson@raspberrypi.com>, 
-	Michael Grzeschik <m.grzeschik@pengutronix.de>, Akash Kumar <quic_akakum@quicinc.com>, 
-	linux-input@vger.kernel.org, mjpeg-users@lists.sourceforge.net, 
-	linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	openbmc@lists.ozlabs.org, linux-aspeed@lists.ozlabs.org, 
-	linux-rpi-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-tegra@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
-	kernel@collabora.com, linux-staging@lists.linux.dev, 
-	linux-usb@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|AS8PR04MB8833:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e01cb5d-5e38-41ef-343b-08ddf847af26
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|19092799006|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bmgzdFd4VlgyR1RyQVNOU00rSU0xL1dCVW15VExNMlUwSHQ2by82WEN5RVVT?=
+ =?utf-8?B?R1o0cE1xNXBaenNsSWx1dUtPdjc4ZktPM2VQSU9rRUNHTG9GcmZRcStwbkNq?=
+ =?utf-8?B?MTVRZkRWdDdlanA2K1p1VEFrK0FpRldSczViN282eUdaQURCdDRTNk5VYjRa?=
+ =?utf-8?B?ZXhnYndPZ21zejJiSU1WUWZQd2xiSnBmVGtZMVZ2dmxyYjFualFIWDlqZVYv?=
+ =?utf-8?B?TGVITmZlOUJydWlrRmtKci9YbU9OTmxYM2xTL2xINGh2UXFUZUxLeUo4dkJa?=
+ =?utf-8?B?Qi96YjZmZktvMDNCMlJaVXNRUWprcDhVb2hBeFUzUXU0cU1Uc3ZMWVhuM3cz?=
+ =?utf-8?B?ZGhJckl6WVpwMG9VbUd2TEpXdzJObzVnTG1qTThyZm1zV2I5dk5FYnJmUGZW?=
+ =?utf-8?B?akxtam5OVW1ld3A5ME15Qnc1ZW9TQW9zN2dCUExVaU03SUNOcTNrWEhBVkRM?=
+ =?utf-8?B?b2d6VXJNQWFEVnFDekhtL1lENng3MDhDZms5cWhnTG9uVjNCMG9OMjdWbkxY?=
+ =?utf-8?B?ZGxiNUhEWkM1cGd5N0pLNTh6c2l2cEwwNGxmVGpFQ3YrV205S3k4Z1dXd0NN?=
+ =?utf-8?B?K2pLcDRsRUFqRHJESmlNU3lQN3c1WjFRczRXTzZ2U1hUN05ORVQ5VGFGR0Mx?=
+ =?utf-8?B?Y3pRMzdzcW0zRlVsYnc4Q0xDR3lyenZrQUNaK3FHUzhIajFkRWhrL0o3a3F2?=
+ =?utf-8?B?elFxR0UrUS90L20zdENhN1JkMGZhbXRoSS9LTUFIcnJNeWFTaVRFb2xUay9t?=
+ =?utf-8?B?bEk0R012aDU0ejFXS0E0b2daZ2hsV1ZlVWtwTTJkWE9kUk53Q0l5eS9XQnN5?=
+ =?utf-8?B?N2V6Slg3YWtlZjdDM3NVQnlDMStqWkVMMVJmTjBiaFJhL2VnU0lick43dCtz?=
+ =?utf-8?B?TlI3dDE5bDByYVJjS0F5U1kxV3Zrem9OSmE1WEN6RHlyRGNTNnQxQitSTlZv?=
+ =?utf-8?B?MlRscXdtMlZKRVdtKzQ5Y1RNWGFtK2cyYTYxbVNpL21CZXU2R29tMGluQkRs?=
+ =?utf-8?B?RFRQNi8vN1k0WndNa2NCb1UxTEh3TjFjSVN0YnkwVUxmQlZ5MktNcTBhWmdY?=
+ =?utf-8?B?aHJwblI1RUw1aFcxUXluVWNJclNHbllmQ2dQNXJUMjMxTCsveFB5bHMzNlRv?=
+ =?utf-8?B?QWlTSnpYbSttWkkzT1RTbWlSYldzYnNNa1ozK2lvL2h1M3JuVmQ2akhvbVNs?=
+ =?utf-8?B?cC9xd1M5MHA4S2E2SmxvZlNyRFRIVE9EWUo4OEJERUVuRmdFRjcrbEtaVGZy?=
+ =?utf-8?B?R2Q2QlVzSG91RGtUZmdTYXdoOE5Udm41eHVuTEcwbEFXSTRlWEpYVU4relJS?=
+ =?utf-8?B?SjY2SmRQN3ZrelZsSzdSS083Q2lMVC9Ra1o5R1c2K0FHSVExcWc2T09aVW5L?=
+ =?utf-8?B?Q29qZEdmQVpYWlJGZVZiZUc5cGlhYTFzdzFEdHNtNXVSR1BEaXBlUThhQ1Zz?=
+ =?utf-8?B?Rk1QcEVTeVQ4VXY2ZVlKZGZWaCtTOWlFR0VmL2s2ZXJFZThkbStiSHdRaTNv?=
+ =?utf-8?B?Sk0rRjZsYVpPaTFpd1E1OFkybm1wYzBaZDVLak1YMGVISTRuanJNWmVpTHFF?=
+ =?utf-8?B?a1ZqdFpLaXJJdUxWMW90Y0IzalZMcXpraVU0Wm1RVUljaFdjY2hiaHhFak5G?=
+ =?utf-8?B?czBuZVJFWTRFTEVFYmZRSnRoM1ZVbjUwOEFqK3JnNVdoOEhDWXE1WWZFUS9h?=
+ =?utf-8?B?bE9GbzlyeElJZjdPMGg0em9WRk5HTm1vMnVSNW1MNS9wSmFpS2MzRDBodHJq?=
+ =?utf-8?B?dmdyRHB2V2w2enZ6MjZGTTNsRzBLeHlFY0o1MjlSZWRiMnV2NEhHaksvQVdm?=
+ =?utf-8?B?a0Y0ZlZPdEdZQWx1ZnlmVUJWcmJaWWtkMUoxa3NyL3ljS3ZTYkdLRFZYWmFQ?=
+ =?utf-8?B?OFVFL0ZrSjAzbmtySWlraDJ4MXlHOW9UL1lMWC84amJUMy9BRDdIaFgxKzNP?=
+ =?utf-8?Q?omSf1n2WQ5HH20rT7u2iRRvaBNiHkLM3?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(19092799006)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UDJ4RmdQcGZTVGpIY2tLQXNlU3lUUHpXUU9mR0F6K3hhcW55RklCQ25sM2Rp?=
+ =?utf-8?B?Y2VQOHU3WlRKYjIzeDFsRDZ1SjhzZGh3WlB3YjBhWlhjaW9ZSjZ1Sjd6SFQ1?=
+ =?utf-8?B?VFpIekNvUGZTNE1qMFhUUmZxbGYyQWlyOVQ3OWZjbUM3NzZQY3dwdGhDSXhz?=
+ =?utf-8?B?dEZtY0ZhVHBXd2QzRk91eWJVQmZ3SHNsaTR2UWFNbDZxTEhEL05CTUlYZlR2?=
+ =?utf-8?B?S09kdmxzSENDVmtwanI1VTJZMGRzNVZReGR4S1c1cnl0N3lJQXBiK2VaaXll?=
+ =?utf-8?B?dWdFZjgzWFEzcnkwTWhRVjB1VENPZDdMcGtWL3VhLzljaUIwNlJNMUF4akQ4?=
+ =?utf-8?B?eUVEZm1BQlo5dnJhUm9rYmRjajJBbXhUclJiK05lQy9QVTNQUVNRNVdBL2RC?=
+ =?utf-8?B?aWR1YXhqeFlDS0ZRRXU0Q1k5RDNPRkE2MWhDYkUxV3lqN3duN3hxaVptdmhU?=
+ =?utf-8?B?Z3luYVhKRDVIcWVISkNsYTU2T1BvR2NvWTB0NVYwanQ3SXdqOStwb0RUak5X?=
+ =?utf-8?B?ckRqZGd5cU82c0V1WTJwTjQrYUZuK1JVVkpEV29kTHFhZjV6UytOTkoyYzVm?=
+ =?utf-8?B?WVFSd0FRM1RIa1hVVnBjNS9TVktqQWRHZmNZeUpwWnlMMGdROGNkejlqa2RI?=
+ =?utf-8?B?MFdhU0hyMGhwM2FRdWVERDhWRFdwamd5d01pUmZlSlJKaVR2WDNOQW10MmVm?=
+ =?utf-8?B?ek13UUtKM0xEeVJBaC9YVk05b1JDUnR3WFJkTzdFMWRmUjN3UUNocHlHdDNB?=
+ =?utf-8?B?eXQ4ZDZ2V0N2RmlDWW1BcnE1alJBaUt0YlVyUlh5RWhYeGJuenRlbUp4NS83?=
+ =?utf-8?B?aWJwNUkzUDdWS3MzK1MxQjRNeGhIa1NBUno4VmlHNzI1WDQzZGZGTDlMWklD?=
+ =?utf-8?B?Yi9zVEtHRFZFMU43VFlKeEExTzR3VEJ6T0lDQVVIMklUWUhTWTJyQlY2MUJJ?=
+ =?utf-8?B?VmR3YThiMGhPRjB4VU9JamRtVmNhcUpVay92R29LSW5KOTZiNHZZMUZzMEdh?=
+ =?utf-8?B?NWJhdzV5K2hQR3BXRjRmUSs5UDVPQkFwd2FVVU9IRnBsNFVieURrYi9IWWFr?=
+ =?utf-8?B?L2tYSE5oK003dGlISE8zRDhWUFljZ0I3dk5RNmdXZWlMbWwxanI4T05wYVBZ?=
+ =?utf-8?B?OXJEeVdaS3FWRjlSSzBaOHFUc0lpQTBPalY2WlphMERzYlhFYUtONGtQYS9v?=
+ =?utf-8?B?dGVsV0N3dEVXZlB3NUtmWVRJMHJURkhQdURFa1VMTTRhaHBVam95WXVjQWsw?=
+ =?utf-8?B?S1FyTFV5SDl0aXFzc1plZi91aVlMRjhrV2hscksyY1psaENUaU93bUptQy8z?=
+ =?utf-8?B?Qmo4VlRLeUZCQWtORlJDWGxjaUlEMHBwWnJNWWpaL04rcDNRU0VUZWlNM2dp?=
+ =?utf-8?B?Uk42RCtvVU5QdFJ5ZGdiVXhCZ1E1ZzU4UHhFS1VxWjByZGpsbWtnV2NIUnBP?=
+ =?utf-8?B?Zm8yOHBTUEF3eDJDUWoxMldydm5xQzIvOXg2YjdhYkZiNjdzc2VJNTNYQnln?=
+ =?utf-8?B?Z2VJR2VERFpha1VvRUJnZ1FHYmh6cFJIWFR3UVlTVEtkY0NjWTZoczFTWFFZ?=
+ =?utf-8?B?MndWTS9KOTIzREc1VWhlek9CdXM3UlhzdytzajFyVVZIV0xNc1pxcDV2RVZz?=
+ =?utf-8?B?eXRicWZqc1VKNUpzcXVNTmhlemkvcHdVSUpkL29qWkhYKzVhbW9QcFArWnZ4?=
+ =?utf-8?B?bHRLbGtNUjZrazROTS9IQU14c01JclZIUG1iVkFVQmlON01mNTB0VENYK0NQ?=
+ =?utf-8?B?dU8zcjl4a2FlNXF6aWVtMXA3bGhaaCtkTlZCank1dHFrMEU4Q0FoVGYxQ2dB?=
+ =?utf-8?B?eDdRL3BYSjFMZk5abEkxNXZFcEpYc0J0b090U0ZHNEtRaEdmUzlhQlhhMVB3?=
+ =?utf-8?B?NGhLN2R2N2ZKVDNCV1NqdlNxNk1JR1UybndVUmN3YzFKRzNqV0NhVFZPa1RY?=
+ =?utf-8?B?Uk90NGczYnY3dlZheldodE1oUWJuL0tER1BMckZqNGd2d21ZdjlvdDB2ODNi?=
+ =?utf-8?B?NWdmbjI4ZUtKRkZNd1RZWGVqY0xYYTArMENpWUJXKzdoOHJiRE1WdWVXenpj?=
+ =?utf-8?B?NE56ZjBJOWI2L3NsamVrL2RTbzlxbmtTQjduMDVkNjloOWR3Ukg4djJ0eExI?=
+ =?utf-8?Q?6i1L3cLbEscRlj2U7XOZ1gxqJ?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e01cb5d-5e38-41ef-343b-08ddf847af26
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2025 13:14:52.3555
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RYzgnz1u+kVrujFsQQmp3KtUtZGJevBy1jLFSXVcYFx21A8s1KwQ45jJQxtc8gvq87BKTBbwjcw89zS5qhLkZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8833
 
-On Fri, Sep 19, 2025 at 12:57=E2=80=AFPM Jai Luthra <jai.luthra@ideasonboar=
-d.com> wrote:
->
-> Hi,
->
-> This patch series introduces state management for video devices.
->
-> Currently, V4L2 subdevices have a well-established state management
-> system [1] that allows the framework to store the subdevice state
-> at a central location.
->
-> Video devices however lack this, leading to inconsistent state handling
-> across drivers and making it difficult to implement features like
-> hardware multiplexing in complex media pipelines [2].
->
-> The series is composed of three parts:
->
-> - Core Infrastructure (PATCH 1-4)
->         Introduces the basic state structure, try state support,
->         initialization callbacks, and driver helpers
-> - Framework Integration (PATCH 5-7)
->         Integrates state passing through the ioctl wrappers and driver
->         implementations
-> - Driver Examples (PATCH 8-10)
->         Use the state to store formats in TI J721E CSI2RX and Rockchip
->         RKISP1 drivers
->
-> This should also provide a foundation for drivers to extend or subclass
-> the state structure with device-specific variables in future.
->
-> I have tested capture and format negotiation with the converted drivers
-> on SK AM62A (j721e-csi2rx) and Debix Model A (rkisp1).
->
-> [1]: https://lore.kernel.org/linux-media/20210610145606.3468235-1-tomi.va=
-lkeinen@ideasonboard.com/
-> [2]: https://lore.kernel.org/linux-media/20250724-multicontext-mainline-2=
-025-v2-0-c9b316773486@ideasonboard.com/
+This is the 3rd series to cleanup the driver. This patchset is based
+on the 2nd patchset [1] for the clean-up
 
-When you add a Cc list., do it after the '---' (three minus signs)
-line, otherwise that huge unneeded noise will become part of the
-commit message.
+Patch 1: simplify clock enable logic
+Patch 2: Add a platform detach ops which will be easier to support new
+         platforms
+Patch 3: Enable runtime for all
+Patch 4: Drop method assignment
+Patch 5: Add an MAINTAINER entry for i.MX remoteproc drivers with
+         Daniel and me as maintainer
 
+This is the last patchset to do the clean up for imx_rproc.c.
+After imx_dsp_rproc.c moved to use platform ops with swith-case removed,
+the method entry from dcfg could be removed in the end.
 
---=20
-With Best Regards,
-Andy Shevchenko
+Tested on
+i.MX8MP-EVK, i.MX8MM-EVK, i.MX93-11x11-EVK, i.MX8QXP-MEK, and i.MX8ULP-EVK.
+
+Thanks to Daniel and Frank for the internal reviewing.
+
+[1] https://lore.kernel.org/linux-remoteproc/CAEnQRZD=1hxMmR98qfpoH_RFFrSrYMQ6ithFkjyqVgtqWKB_+Q@mail.gmail.com/T/#mc08d4cbf10e913d9e680ed93f5467603be37228a
+
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Changes in v2:
+- Add R-b from Daniel and Frank
+- Update comment in patch 1 (from Daniel)
+- Update commit log in patch 4 (from Daniel)
+- Include Shengjiu as maintainer
+- Link to v1: https://lore.kernel.org/r/20250918-imx_rproc_c2-v1-0-deec8183185f@nxp.com
+
+---
+Peng Fan (5):
+      remoteproc: imx_rproc: Simplify clock enable logic using dcfg flags
+      remoteproc: imx_rproc: Make detach operation platform-specific
+      remoteproc: imx_rproc: Enable PM runtime support unconditionally
+      remoteproc: imx_rproc: Remove the assignement to method
+      MAINTAINERS: Add an entry for i.MX remoteproc driver
+
+ MAINTAINERS                    |  9 +++++
+ drivers/remoteproc/imx_rproc.c | 88 ++++++++++++++++++------------------------
+ drivers/remoteproc/imx_rproc.h |  2 +
+ 3 files changed, 48 insertions(+), 51 deletions(-)
+---
+base-commit: 872c1e97ca571f8e1afff2659006a2948b9fb483
+change-id: 20250916-imx_rproc_c2-2b9ad7882f4d
+
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
+
