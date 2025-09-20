@@ -1,107 +1,105 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F07256C6C
-	for <imx@lists.linux.dev>; Fri, 19 Sep 2025 19:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54D1200BA1;
+	Sat, 20 Sep 2025 00:30:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758309526; cv=none; b=Ps0NQTeYjcvMjkociJrvsUeNTy9GPgJT3SjUx6wGr0wGIix+yoexHXaeWkUR48oQIMIINtrdTp1rWnWahBDYZMvjXWOo048D5olU1bJFQgxS7hSxzNh/yxVq6Pp8W1suIqWs6A9AQnJQy1dAFT6CDeUbv8uo/NeyQA34Ru/+854=
+	t=1758328221; cv=none; b=EeIVVpd4nhyl+6nsThObhA75oM9j5HdwV/qd+U/rl6Zg7txGlMSn5zB8hgYOnEvO8ADv1N8pY27Omk6HSqQYRjcxfnt2RZt0EbkxlgXad/xOgVnXsR7nok3+yj3rKIia0Sld170LtgyCPd1KsFg5ftjWq93cbhjbeLccTt7A1bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758309526; c=relaxed/simple;
-	bh=Nm+atkHlX329nBUD+ou4VUp5OVx7b5SAjbLtVdyGzew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y+v6ltyXRJPGaWbfJl/6Sz7OkgcJ9wDR03d++V6utDKPVpDqyksaxFqC1kJVgMJBEjyB4jtB0kh1egrEYyDGPjtm4TM64xWKOoDlaKnYJ0Ovc/A9APVuj2y5JWJ4v+k8tFIbM4rudFdzd+3o49C2ZHzUdylSCnZpNIyFK43rs7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uzgcr-0004Qj-VG; Fri, 19 Sep 2025 21:18:33 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uzgcq-0029eE-2e;
-	Fri, 19 Sep 2025 21:18:32 +0200
-Received: from pengutronix.de (ip-185-104-138-125.ptr.icomera.net [185.104.138.125])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id B75A847520E;
-	Fri, 19 Sep 2025 19:18:29 +0000 (UTC)
-Date: Fri, 19 Sep 2025 21:18:21 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Aswath Govindraju <a-govindraju@ti.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
-	Haibo Chen <haibo.chen@nxp.com>, linux-can@vger.kernel.org, linux-phy@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v6 5/9] phy: phy-can-transceiver: Propagate return value
- of gpiod_set_value_cansleep
-Message-ID: <20250919-lovely-amethyst-bullmastiff-5cef8b-mkl@pengutronix.de>
-References: <20250909-can-v6-0-1cc30715224c@nxp.com>
- <20250909-can-v6-5-1cc30715224c@nxp.com>
+	s=arc-20240116; t=1758328221; c=relaxed/simple;
+	bh=Yes7uCAJIf1OW9O4lN6N9kWrrNuylVquEJn5lf44T44=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=HyN3Qkrs5ov9NiaJ3BYtA72WfuiISNBYZjWbTHU3f9HgtaG95EglQ4W8bMBXqxkANincqG7yVMGjP576nzwiS5kKWork5Ek9ELr88Yo2vJsaHBox7LwUDTWFvmAbI1Eh3tg478MBzRlr/oHIn0eDa/cpBVHRlZAcMLuOlHrVgkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LlSAb8P8; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LlSAb8P8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A72C4CEF0;
+	Sat, 20 Sep 2025 00:30:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758328219;
+	bh=Yes7uCAJIf1OW9O4lN6N9kWrrNuylVquEJn5lf44T44=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=LlSAb8P8UrBmrtodlL0ShRrL0RB/FGZLzl+svKgxt3WY1vou6qUJwz7D00B/ZXSle
+	 dmmeHMKIrCaZPNQYJ+hbARFCLF3BeG7+mz+dA8iu16BHLxtWaMVYHn18eynY59S/H9
+	 /yJYfv6NkCmIc8bZBwewQOWosl+jp9OATHySy4BBchEKejpLe42R6GnT0ArMrcZcQl
+	 7KvspaiqADgBilZFJk9CxI1SLjT2ttZ6NdGhUs5mUL1c8a84R8T5jqZSj0cStOifYd
+	 T2cP/YDSwrwUsiYhSxYdupE+K5NMm8whtP8u94NItPIpXVKTOcTvlB1gTfV4WKbTHf
+	 PN2u2DiCDEE6w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADFF439D0C20;
+	Sat, 20 Sep 2025 00:30:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="t6u4zda4cx5kdnck"
-Content-Disposition: inline
-In-Reply-To: <20250909-can-v6-5-1cc30715224c@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 00/10] net: stmmac: remove mac_interface
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175832821850.3748897.10411784128279455244.git-patchwork-notify@kernel.org>
+Date: Sat, 20 Sep 2025 00:30:18 +0000
+References: <aMrPpc8oRxqGtVPJ@shell.armlinux.org.uk>
+In-Reply-To: <aMrPpc8oRxqGtVPJ@shell.armlinux.org.uk>
+To: Russell King (Oracle) <linux@armlinux.org.uk>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, alexandre.torgue@foss.st.com,
+ andrew+netdev@lunn.ch, wens@csie.org, davem@davemloft.net,
+ fustini@kernel.org, kernel@esmil.dk, edumazet@google.com, festevam@gmail.com,
+ wefu@redhat.com, guoren@kernel.org, imx@lists.linux.dev, kuba@kernel.org,
+ jernej.skrabec@gmail.com, linux-arm-kernel@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-sunxi@lists.linux.dev, maxime.chevallier@bootlin.com,
+ mcoquelin.stm32@gmail.com, minda.chen@starfivetech.com,
+ mohd.anwar@oss.qualcomm.com, netdev@vger.kernel.org, pabeni@redhat.com,
+ kernel@pengutronix.de, samuel@sholland.org, s.hauer@pengutronix.de,
+ shawnguo@kernel.org, vz@mleia.com
+
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 17 Sep 2025 16:11:33 +0100 you wrote:
+> The dwmac core supports a range of interfaces, but when it comes to
+> SerDes interfaces, the core itself does not include the SerDes block.
+> Consequently, it has to provide an interface suitable to interface such
+> a block to, and uses TBI for this.
+> 
+> The driver also uses "PCS" for RGMII, even though the dwmac PCS block
+> is not present for this interface type - it was a convenice for the
+> code structure as RGMII includes inband signalling of the PHY state,
+> much like Cisco SGMII does at a high level.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,01/10] net: stmmac: rework mac_interface and phy_interface documentation
+    https://git.kernel.org/netdev/net-next/c/32a8d2a197c1
+  - [net-next,02/10] net: stmmac: use phy_interface in stmmac_check_pcs_mode()
+    https://git.kernel.org/netdev/net-next/c/0522f152a2c9
+  - [net-next,03/10] net: stmmac: imx: convert to use phy_interface
+    https://git.kernel.org/netdev/net-next/c/db1948da6860
+  - [net-next,04/10] net: stmmac: ingenic: convert to use phy_interface
+    https://git.kernel.org/netdev/net-next/c/9ff682b4a28f
+  - [net-next,05/10] net: stmmac: socfpga: convert to use phy_interface
+    https://git.kernel.org/netdev/net-next/c/de696c63c1dc
+  - [net-next,06/10] net: stmmac: starfive: convert to use phy_interface
+    https://git.kernel.org/netdev/net-next/c/6cb2b69c3419
+  - [net-next,07/10] net: stmmac: stm32: convert to use phy_interface
+    https://git.kernel.org/netdev/net-next/c/0ca60c26f655
+  - [net-next,08/10] net: stmmac: sun8i: convert to use phy_interface
+    https://git.kernel.org/netdev/net-next/c/0fe080fa884e
+  - [net-next,09/10] net: stmmac: thead: convert to use phy_interface
+    https://git.kernel.org/netdev/net-next/c/3a94ecdf1afb
+  - [net-next,10/10] net: stmmac: remove mac_interface
+    https://git.kernel.org/netdev/net-next/c/6b0ed6a3a89c
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
---t6u4zda4cx5kdnck
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v6 5/9] phy: phy-can-transceiver: Propagate return value
- of gpiod_set_value_cansleep
-MIME-Version: 1.0
-
-On 09.09.2025 13:40:15, Peng Fan wrote:
-> gpiod_set_value_cansleep might return failure, propagate the return value
-> of gpiod_set_value_cansleep to parent.
-
-Are there any expectations of the phy framework from the driver if the
-switch on or off fails? Do you have to roll back any changes in case of
-an error?
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---t6u4zda4cx5kdnck
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmjNrHoACgkQDHRl3/mQ
-kZwqYQf/c1/IXd7aRBuqdaMALPyXhUQLb5zDa8xv15HZudLAlb4N3ZCTwnOa8WuR
-6C1PiBoxg6JPbbcgfCADKc3ADq/+nxjr8fk1rU3bPf/9t3p+BNJFfX8jiwL7B42w
-X/Yt9MEtmxWaOBWeNXedyM4pFB2qT+GJncKrl6lBIjyjIRkhABKaiNyt/M/DFenK
-rA+xEFrZVljI5iLMktjI92K1FlNaRiaEyOvCSYrM33pHz8RQWPECEF0T4D9z9siI
-XPy/dP9YRUkUszZ1kp+vh//bd2I8Z1R7fwNBWZf+ZwLMISDDx/lt06ohQQwTcLgs
-fHVzHn541sJjrfMO6kikrs8r0W3FQg==
-=qpEC
------END PGP SIGNATURE-----
-
---t6u4zda4cx5kdnck--
