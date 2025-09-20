@@ -1,108 +1,222 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEAB34BA52;
-	Sat, 20 Sep 2025 07:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CB42D29D1
+	for <imx@lists.linux.dev>; Sat, 20 Sep 2025 10:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758353944; cv=none; b=KMzYu1J17WngM8kS8Q7AkNAmQoZDRRZRU9uoXFdELDHQbR0LWUHF30f+XVIz3/VU1rdiAf0dRodu6QG2RxAucAavvx2xpL/tOZV49NklCHQkvT9BIkoRoCUvT+M4jqkKcwIKSGd9aaorsnOoNsog2w/oTNc5SN6+J0rQoT7G8lg=
+	t=1758365378; cv=none; b=CYzaXbRPMK8yDHECvHlgqd13Pef5A8OpSD2v/b69RPIHH9zy+PxoFCg5x8AU8NoXmD4SQ3FzVRPeFl2pvlofJeklJHAP+k3ZWJ21J+Ve7RVBKZ/aSnCgWatgBBsIv6tvGPohHNzfIqj24gjDcCQ8C5sL7gFmpNtq5+Mm2cAEBuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758353944; c=relaxed/simple;
-	bh=sj+tflV0kHMCbQri64zoVlUok5g2vfYMLDu5l5fnDk4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eYbw8e95n2zs2gT2oIuYG+QASz8Ip9pORZTY6ukqCZ7kuIw7F8rg/HjN5eq4cMoBRin6Qq6pa9vpGMCgKebRz8YmbvYN7YFBeAYBNaWu0W+1wJ3zAp5RU7A6c8Id6aAbRRdYsw7tzzJZT3lrEsuZNgJ3NJvsIk3qsCIcqMKHq4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EcWCpoId; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758365378; c=relaxed/simple;
+	bh=LeD+Kp6HPaiggwjhXT1KWVi4MySo4T2YgcXx0PkGZ0A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P3NGKBPFeYPnjwx4tMjRug9VLaSTSWP4cdyMzMdXr3QYHoC3S6ZmcvFVF8NURObZnCkQAQCMl3H7+sIKeEVw26roDvjsQ9drPP8XejPpl/9qBX1Zoqxf1qX7+MFj4S3BJ3My3Yh0hicce30Z3+hbo6kQuhQPqJaO7sGEktyjeAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AdGGL++Q; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EcWCpoId"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BC5C4CEEB;
-	Sat, 20 Sep 2025 07:38:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758353944;
-	bh=sj+tflV0kHMCbQri64zoVlUok5g2vfYMLDu5l5fnDk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EcWCpoIdBnJQP1EH8pDFEfVUpO/FjhF+HkJ6O5IJjnMvPZpbw/6ALA7oZgM2IgqlA
-	 7V/8MT0+ouzOobywMaXGXSdNC+YrDHREXR8uJ2AjMboT16AlMbHqATmNoA2azJLhJW
-	 3eXdKBNACPQmZoRA9gYoo5bZ5L8uUTZMyZJG4ftt6TOPFpklyIDUZlZo4Xt17KsRlJ
-	 TiSu11AysiAlG0uzUUik760u6vwF/olDV8647+ev2povbq70vDIPzSBku2dlQArjXz
-	 LFaAjMDPWWVilbt/imqXyFgy3rFT2A+m+RDHLUrK+XFaXOyQoKNID5n0wKRCaGAoAj
-	 oyd84F0gPK7ZQ==
-Date: Sat, 20 Sep 2025 13:08:54 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 0/3] PCI: imx6: Add external reference clock mode
- support
-Message-ID: <o3pajmedldkgpmqrnnnoz5nrbx6dz7vnodlpuc6tivbxvln6lf@nxuvdtqoixdx>
-References: <20250918032555.3987157-1-hongxing.zhu@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AdGGL++Q"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b0473327e70so531734266b.3
+        for <imx@lists.linux.dev>; Sat, 20 Sep 2025 03:49:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758365374; x=1758970174; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QJc0EGzS/+BK6QuDuFmI2nY7ewfLLXuJxl0wU299He8=;
+        b=AdGGL++Qr7XfJxx84FGJOGK2guISw5ZFuXgAvTSfgBIEPKzyjPuq6Q0hjISoOne/MY
+         AmISi9hpx4dNOLamtNpxg9dt+vv7btgqAnYilHBA33gyIw6A1jwNKqenCSfdXeA/NqDe
+         ByKFYVCGcEYh0IeUVIRFHXvJkUFqFcGxRjReYsV3rF93MLbgTmZ5ZjFqziPjz9JAeZqO
+         I7UZRt4vT7GuXkkDs+JPTRHgEf8+zeNVksY0RIJDZb2NnJtiu6MRRE5QGnhOkCs4LOf1
+         VjbCLk1XXIhAlA3k04Fxuqpg27mP9y/VIMFkMAa43qqLWYnWioK8Vkqu6FhfiCywIxOs
+         x99w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758365374; x=1758970174;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QJc0EGzS/+BK6QuDuFmI2nY7ewfLLXuJxl0wU299He8=;
+        b=RB3oQeMhjQ0m8ahv1jz5ONgVU4uE2oqMpgBO2ymmoKtBZfL7+RCnLxPejlkGg0KCvc
+         Xp36hhci29tJPOzqifrBel10dDN59yBwm9XO8cf7uEHGdVd+fYLRW2ZdpUG/V1bzZzzK
+         FpR+Q60AVRGbu0Fcr+BJ651+kHk6GOkkXm7o+AyyBXHgUXxfgF5moLWlMnUqsEU/7u0x
+         TnWwrZLgE9TJfoKAjzqhZ7D/LVJn2XexTVLJnbiavnJCSfgDRe6K1gjFAUfpsZZ6CdXZ
+         f40r24rVpfpyiMNwHfGpQD3GygAEgZ2vGQpCMmcHhEVbZbRZcNKNCXlfRBKoyyRvjBcD
+         TcTw==
+X-Forwarded-Encrypted: i=1; AJvYcCUavVdkI6MJsXSzaFIMuca+YcL0sz7BDp4MaKn0JbkZafRaqmEcFYcl3Qn2SCqkPNfYnts=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzcb7iP1f3+hRX/w3jhjQ1KnU9DaswlA4+jP8LaYDFeOWzaI2W+
+	s9WJM9VIRsbtdMXmtHS5G+HiSTPiVxb6gaROc3f1rMlZ2JQlOpuJe23jW7xBly+pwjf3TMaUMwR
+	rGowN7p+ii5AXzHkwdx0Sn28ieF37jDc=
+X-Gm-Gg: ASbGncsjhKQfL7dAU+SLOfiX4hJQ2Qm6rus1+Gv9JOOWd4To6SwmEnYUamjjEkEVq6v
+	oUmf0ruOPNPkuwPVVyafmMsJOwY46oK9h4jEMLiOVwNSXscCG5yx5MXFIw2Rg7CGuAC5agDjJvS
+	CJKBrPVs0T3O7QDKccBrrTaGP5FXIJ0TGx338le/0THVctDRVP4i0M8eC9dkEejGwrQ3P6avEtK
+	HZHrKY=
+X-Google-Smtp-Source: AGHT+IHHbhBTYGUaEQMbVjyA0lAj2luPxy2XsbzoJZ2rvsPEEjKDVfN8Ekg2zTb0h70UHa/ky/mxQ7DHX1RPk/WuHD8=
+X-Received: by 2002:a17:907:2d86:b0:afe:f418:2294 with SMTP id
+ a640c23a62f3a-b24f4cd1612mr662812666b.49.1758365373591; Sat, 20 Sep 2025
+ 03:49:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250918032555.3987157-1-hongxing.zhu@nxp.com>
+References: <20250919-vdev-state-v2-0-b2c42426965c@ideasonboard.com>
+In-Reply-To: <20250919-vdev-state-v2-0-b2c42426965c@ideasonboard.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 20 Sep 2025 13:48:57 +0300
+X-Gm-Features: AS18NWAsgghzm2kBTHVAUWgTvM4Rjv6fz5BEJyNeWi6WNSHflPsd2h04LFjYcyQ
+Message-ID: <CAHp75Vfx9kyP-rVtfvyyMK4VH+oiRVjP1fZOtbVH14iLh98Jxw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/10] media: Introduce video device state management
+To: Jai Luthra <jai.luthra@ideasonboard.com>
+Cc: Hans Verkuil <hverkuil@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>, linux-media@vger.kernel.org, 
+	Ricardo Ribalda <ribalda@chromium.org>, 
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Ma Ke <make24@iscas.ac.cn>, 
+	linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Hans de Goede <hansg@kernel.org>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Nick Dyer <nick@shmanahar.org>, 
+	Tomasz Figa <tfiga@chromium.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Matt Ranostay <matt@ranostay.sg>, Andy Walls <awalls@md.metrocast.net>, 
+	Yong Zhi <yong.zhi@intel.com>, Bingbu Cao <bingbu.cao@intel.com>, 
+	Dan Scally <djrscally@gmail.com>, Tianshu Qiu <tian.shu.qiu@intel.com>, 
+	Martin Tuma <martin.tuma@digiteqautomotive.com>, 
+	Bluecherry Maintainers <maintainers@bluecherrydvr.com>, Andrey Utkin <andrey_utkin@fastmail.com>, 
+	Ismael Luceno <ismael@iodev.co.uk>, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>, 
+	Corentin Labbe <clabbe@baylibre.com>, Michael Tretter <m.tretter@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Keke Li <keke.li@amlogic.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Ming Qian <ming.qian@nxp.com>, 
+	Zhou Peng <eagle.zhou@nxp.com>, Eddie James <eajames@linux.ibm.com>, 
+	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Eugen Hristev <eugen.hristev@linaro.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Nas Chung <nas.chung@chipsnmedia.com>, Jackson Lee <jackson.lee@chipsnmedia.com>, 
+	Devarsh Thakkar <devarsht@ti.com>, Bin Liu <bin.liu@mediatek.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Minghsiu Tsai <minghsiu.tsai@mediatek.com>, Houlong Wei <houlong.wei@mediatek.com>, 
+	Andrew-CT Chen <andrew-ct.chen@mediatek.com>, Tiffany Lin <tiffany.lin@mediatek.com>, 
+	Yunfei Dong <yunfei.dong@mediatek.com>, Joseph Liu <kwliu@nuvoton.com>, 
+	Marvin Lin <kflin@nuvoton.com>, Dmitry Osipenko <digetx@gmail.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Xavier Roumegue <xavier.roumegue@oss.nxp.com>, Mirela Rabulea <mirela.rabulea@nxp.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Rui Miguel Silva <rmfrfs@gmail.com>, 
+	Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, Robert Foss <rfoss@kernel.org>, 
+	Todor Tomov <todor.too@gmail.com>, "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, 
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+	Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
+	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, Abhinav Kumar <abhinav.kumar@linux.dev>, 
+	=?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+	Nikita Yushchenko <nikita.yoush@cogentembedded.com>, Jacob Chen <jacob-chen@iotwrt.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Dafna Hirschfeld <dafna@fastmail.com>, 
+	Detlev Casanova <detlev.casanova@collabora.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+	=?UTF-8?Q?=C5=81ukasz_Stelmach?= <l.stelmach@samsung.com>, 
+	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>, Jacek Anaszewski <jacek.anaszewski@gmail.com>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Fabien Dessenne <fabien.dessenne@foss.st.com>, 
+	Hugues Fruchet <hugues.fruchet@foss.st.com>, 
+	Jean-Christophe Trotin <jean-christophe.trotin@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Alain Volmat <alain.volmat@foss.st.com>, Maxime Ripard <mripard@kernel.org>, 
+	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Yong Deng <yong.deng@magewell.com>, 
+	Paul Kocialkowski <paulk@sys-base.io>, Shreeya Patel <shreeya.patel@collabora.com>, 
+	"Lad, Prabhakar" <prabhakar.csengg@gmail.com>, 
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, Jai Luthra <jai.luthra@linux.dev>, 
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Michal Simek <michal.simek@amd.com>, 
+	Alexey Klimov <alexey.klimov@linaro.org>, Eduardo Valentin <edubezval@gmail.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Michael Krufky <mkrufky@linuxtv.org>, Mike Isely <isely@pobox.com>, Andy Shevchenko <andy@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Steve Longerbeam <slongerbeam@gmail.com>, 
+	Jack Zhu <jack.zhu@starfivetech.com>, 
+	Changhuang Liang <changhuang.liang@starfivetech.com>, 
+	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+	Christian Gromm <christian.gromm@microchip.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+	Ingo Molnar <mingo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Plamen Atanasov <tigerment@mail.bg>, Sean Young <sean@mess.org>, 
+	Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>, 
+	"Dr. David Alan Gilbert" <linux@treblig.org>, Jiasheng Jiang <jiashengjiangcool@gmail.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
+	Daniel Scally <dan.scally+renesas@ideasonboard.com>, 
+	Matthew Majewski <mattwmajewski@gmail.com>, Yunseong Kim <ysk@kzalloc.com>, Chen Ni <nichen@iscas.ac.cn>, 
+	Fabio Luongo <f.langufo.l@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Yang Yingliang <yangyingliang@huawei.com>, Ludwig Disterhof <ludwig@disterhof.eu>, 
+	"Everest K.C." <everestkc@everestkc.com.np>, Stefan Wahren <wahrenst@gmx.net>, 
+	Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+	Michael Grzeschik <m.grzeschik@pengutronix.de>, Akash Kumar <quic_akakum@quicinc.com>, 
+	linux-input@vger.kernel.org, mjpeg-users@lists.sourceforge.net, 
+	linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	openbmc@lists.ozlabs.org, linux-aspeed@lists.ozlabs.org, 
+	linux-rpi-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	linux-tegra@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
+	kernel@collabora.com, linux-staging@lists.linux.dev, 
+	linux-usb@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 18, 2025 at 11:25:52AM +0800, Richard Zhu wrote:
-> i.MX95 PCIes have two reference clock inputs: one from internal PLL, the
-> other from off chip crystal oscillator. The "extref" clock refers to a
-> reference clock from an external crystal oscillator.
-> 
-> Add external reference clock input mode support for i.MX95 PCIes.
-> 
+On Fri, Sep 19, 2025 at 12:57=E2=80=AFPM Jai Luthra <jai.luthra@ideasonboar=
+d.com> wrote:
+>
+> Hi,
+>
+> This patch series introduces state management for video devices.
+>
+> Currently, V4L2 subdevices have a well-established state management
+> system [1] that allows the framework to store the subdevice state
+> at a central location.
+>
+> Video devices however lack this, leading to inconsistent state handling
+> across drivers and making it difficult to implement features like
+> hardware multiplexing in complex media pipelines [2].
+>
+> The series is composed of three parts:
+>
+> - Core Infrastructure (PATCH 1-4)
+>         Introduces the basic state structure, try state support,
+>         initialization callbacks, and driver helpers
+> - Framework Integration (PATCH 5-7)
+>         Integrates state passing through the ioctl wrappers and driver
+>         implementations
+> - Driver Examples (PATCH 8-10)
+>         Use the state to store formats in TI J721E CSI2RX and Rockchip
+>         RKISP1 drivers
+>
+> This should also provide a foundation for drivers to extend or subclass
+> the state structure with device-specific variables in future.
+>
+> I have tested capture and format negotiation with the converted drivers
+> on SK AM62A (j721e-csi2rx) and Debix Model A (rkisp1).
+>
+> [1]: https://lore.kernel.org/linux-media/20210610145606.3468235-1-tomi.va=
+lkeinen@ideasonboard.com/
+> [2]: https://lore.kernel.org/linux-media/20250724-multicontext-mainline-2=
+025-v2-0-c9b316773486@ideasonboard.com/
 
-Driver change looks good to me (except a nitpick that I reported, but I could
-fix it while applying), but the binding patches need to be reviewed by the DT
-binding maintainers.
+When you add a Cc list., do it after the '---' (three minus signs)
+line, otherwise that huge unneeded noise will become part of the
+commit message.
 
-- Mani
 
-> Main change in v7:
-> - Refine the subjects and commit message refer to Bjorn's comments.
-> 
-> Main change in v6:
-> - Refer to Krzysztof's comments, let i.MX95 PCIes has the "ref" clock
->   since it is wired actually, and add one more optional "extref" clock
->   for i.MX95 PCIes.
-> https://lore.kernel.org/imx/20250917045238.1048484-1-hongxing.zhu@nxp.com/
-> 
-> Main change in v5:
-> - Update the commit message of first patch refer to Bejorn's comments.
-> - Correct the typo error and update the description of property in the
->   first patch.
-> https://lore.kernel.org/imx/20250915035348.3252353-1-hongxing.zhu@nxp.com/
-> 
-> Main change in v4:
-> - Add one more reference clock "extref" to be onhalf the reference clock
->   that comes from external crystal oscillator.
-> https://lore.kernel.org/imx/20250626073804.3113757-1-hongxing.zhu@nxp.com/
-> 
-> Main change in v3:
-> - Update the logic check external reference clock mode is enabled or
->   not in the driver codes.
-> https://lore.kernel.org/imx/20250620031350.674442-1-hongxing.zhu@nxp.com/
-> 
-> Main change in v2:
-> - Fix yamllint warning.
-> - Refine the driver codes.
-> https://lore.kernel.org/imx/20250619091004.338419-1-hongxing.zhu@nxp.com/
-> 
-> [PATCH v7 1/3] dt-bindings: PCI: dwc: Add external reference clock
-> [PATCH v7 2/3] dt-bindings: PCI: pci-imx6: Add external reference
-> [PATCH v7 3/3] PCI: imx6: Add external reference clock input mode
-> 
-> Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml      |  3 +++
-> Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml |  6 ++++++
-> drivers/pci/controller/dwc/pci-imx6.c                          | 20 +++++++++++++-------
-> 3 files changed, 22 insertions(+), 7 deletions(-)
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+--=20
+With Best Regards,
+Andy Shevchenko
