@@ -1,54 +1,50 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899A4258EF0
-	for <imx@lists.linux.dev>; Sun, 21 Sep 2025 16:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CDB35977
+	for <imx@lists.linux.dev>; Sun, 21 Sep 2025 22:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758470866; cv=none; b=t3oOxysxIcit3Sixed4eNag6ZYoMEwPPHjEgTze4jNQ8a1C0x0yPH0jvrEWucLD3BANjr2iOfsSXQXiC5mcaxJfwLfWGMwGJKNA7PYwdIVqxEZImZz4t31ckC1jhrknXqeYcNYAZCLdPLi1OyQDKNKf0AkE8Ex+Ayau6zRMUyGE=
+	t=1758492686; cv=none; b=OKEtgNk0VMFuaJm81dPa0ywUykQdg7B6lTSNZwO9qKzAZubXPUxhRXRaE1B7ytRoHDJXWtDJkGCgrgqbl3KA7NQpbO//283l6u4eMeZC2t2MokYN5130NEP+pYDeXU9hPi479oFSdTueJV8332GSeklfxbv09/AYuEfPpf4R+uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758470866; c=relaxed/simple;
-	bh=SOxfcuAg/wHY4zUhpi4EhLnADzgpkX8Jpg/fLpNoMp0=;
+	s=arc-20240116; t=1758492686; c=relaxed/simple;
+	bh=LAVT7fd94Dqyvggjb7HfswE4SogprjltEzomfWvmFqE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iDkl18GisnUZDoZbJJICAES8hqg7vHVWmgFhG5ve9Sn5tFBbeuQK2XaYkibORH2QqgIgvzTn+q9N0HidPeub9g029DpvgaFwdAyX+YDYwe6HyI54hM3B+SzLTyDBP3qyeGOELvY5KIRHUzrdhlC2NNxgtTY7Rh8NCeHuKUT5xUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=guX3vtQ1; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=VCAjNL5qIoLNnYG6gNp+gq8QXpM7JkvcuXsjPcGLF9Ke2DYn9NP4yZcA5lKelcArvzb+1rdpjyjeevwBblhjPSBpmgwmZ0TOKfXsSetxdFeebV4Aneb/SGyQi6AtqxEmzzpAQrX41LZ7dxO9ONlk2kVGrPMJ7mTwtnIA1qonpGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=il58Bdov; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="guX3vtQ1"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="il58Bdov"
 Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 0D213169;
-	Sun, 21 Sep 2025 18:06:13 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 3A82910C4;
+	Mon, 22 Sep 2025 00:09:59 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1758470773;
-	bh=SOxfcuAg/wHY4zUhpi4EhLnADzgpkX8Jpg/fLpNoMp0=;
+	s=mail; t=1758492599;
+	bh=LAVT7fd94Dqyvggjb7HfswE4SogprjltEzomfWvmFqE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=guX3vtQ1J6g5ihr5dodogs1eocaF6XVcFMrHKbETIm77ZVJ4vxZmz0NpdkPI5dPm0
-	 cUxdWnS6ZUV3qibeB2k+tpUYHZeUi5ofnrlM/fyCEwrkR0POjH2DiqY2RGv9ifDbbr
-	 +u0TxG79fuLkHvu2k3X3vcw0vCj8/3tackr5WAmg=
-Date: Sun, 21 Sep 2025 19:07:04 +0300
+	b=il58BdovW9wqLdI9J5VQ3MUe7NyCvg6VqG6B1dgcjzlpcqMPLbk0USxPOKK2NGoaS
+	 605omlvMMFhiZ3tKn1QVSCg0F8FC2O9QSC2BEoGt6+oJJMlf09652v9iEgKlcNzEgx
+	 p3rXbh4WpjG9b5cIjcS6we/Md6PcdL9gxoFbHcIY=
+Date: Mon, 22 Sep 2025 01:10:50 +0300
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: "G.N. Zhou" <guoniu.zhou@nxp.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+To: Guoniu Zhou <guoniu.zhou@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Alice Yuan <alice.yuan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Alice Yuan <alice.yuan@nxp.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v2 0/5] media: imx91: Add ISI support
-Message-ID: <20250921160704.GA29453@pendragon.ideasonboard.com>
+Subject: Re: [PATCH v2 1/5] media: dt-bindings: nxp,imx8-isi: Add i.MX91 ISI
+ compatible string
+Message-ID: <20250921221050.GA10540@pendragon.ideasonboard.com>
 References: <20250905-isi_imx93-v2-0-37db5f768c57@nxp.com>
- <AS8PR04MB90801C7CE8D06EDC8CAA6750FA11A@AS8PR04MB9080.eurprd04.prod.outlook.com>
- <aM2AurOTxTB4raSg@lizhi-Precision-Tower-5810>
+ <20250905-isi_imx93-v2-1-37db5f768c57@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,75 +53,71 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aM2AurOTxTB4raSg@lizhi-Precision-Tower-5810>
+In-Reply-To: <20250905-isi_imx93-v2-1-37db5f768c57@nxp.com>
 
-Hi Frank,
-
-On Fri, Sep 19, 2025 at 12:11:38PM -0400, Frank Li wrote:
-> On Fri, Sep 19, 2025 at 02:40:01AM +0000, G.N. Zhou wrote:
-> > Hi,
-> >
-> > Could you help to please review the patches which I have submitted
-> > some time back to linux media community and move forward driver part
-> > if possible.
-> > 
-> > Your feedback will be very appreciated. Thanks.
-> >
-> > Best Regards
-> > G.N Zhou
-> >
+On Fri, Sep 05, 2025 at 02:55:58PM +0800, Guoniu Zhou wrote:
+> From: Alice Yuan <alice.yuan@nxp.com>
 > 
-> Laurent Pinchart:
+> The ISI module on i.MX91 is reused from i.MX93 and implements one channel
+> and one camera input which only can be connected to parallel camera input.
+> So needn't to select camera source like i.MX93 in gasket ops.
 > 
-> 	Could you please consider pickup these patches? Consider these
-> related simple changes, is my Reviewed-by enough?
+> Signed-off-by: Alice Yuan <alice.yuan@nxp.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
 
-I've completed a set of other reviews and will get to this patch series
-in the upcoming week.
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-> > >
-> > > Add ISI support for i.MX91 chip.
-> > >
-> > > The bellow patch refine code, no functions changed.
-> > >    media: nxp: imx8-isi: Simplify code by using helper macro
-> > >    media: nxp: imx8-isi: Reorder the platform data
-> > >
-> > > The bindings and driver patch for i.MX91 ISI.
-> > >    media: dt-bindings: nxp,imx8-isi: Add i.MX91 ISI compatible string
-> > >    media: nxp: imx8-isi: Add ISI support for i.MX91
-> > >
-> > > Add parallel camera input for i.MX93 ISI.
-> > >    media: nxp: imx8-isi: Add parallel camera input support
-> > >
-> > > Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-> > > ---
-> > > Changes in v2:
-> > > - Update commit log in patch 5 to better describe why introduce it.
-> > > - Include two header files in patch 2 since kernel test robot report build
-> > >   issue when arch is riscv and compiler is clang-22.
-> > >   #include <linux/bitfield.h>
-> > >   #include <linux/bits.h>
-> > > - Link to v1: https://lore.kernel.org/all/20250827-isi_imx93-v1-0-
-> > > 83e6b4b50c4d@nxp.com
-> > >
-> > > ---
-> > > Alice Yuan (2):
-> > >       media: dt-bindings: nxp,imx8-isi: Add i.MX91 ISI compatible string
-> > >       media: nxp: imx8-isi: Add parallel camera input support
-> > >
-> > > Guoniu Zhou (3):
-> > >       media: nxp: imx8-isi: Simplify code by using helper macro
-> > >       media: nxp: imx8-isi: Reorder the platform data
-> > >       media: nxp: imx8-isi: Add ISI support for i.MX91
-> > >
-> > >  .../devicetree/bindings/media/nxp,imx8-isi.yaml    | 13 +++++-
-> > >  .../media/platform/nxp/imx8-isi/imx8-isi-core.c    | 50 ++++++++++++++--------
-> > >  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  1 +
-> > >  .../media/platform/nxp/imx8-isi/imx8-isi-gasket.c  | 18 ++++++--
-> > >  4 files changed, 59 insertions(+), 23 deletions(-)
-> > > ---
-> > > base-commit: 603957ae903e81fb80d3788297c0f58a68802dfc
-> > > change-id: 20250826-isi_imx93-4a59288b33e4
+> ---
+>  Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> index f43b91984f0152fbbcf80db3b3bbad7e8ad6c11e..001a0d9b71e096db3f543adaad40b84af378d707 100644
+> --- a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> +++ b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> @@ -22,6 +22,7 @@ properties:
+>        - fsl,imx8mn-isi
+>        - fsl,imx8mp-isi
+>        - fsl,imx8ulp-isi
+> +      - fsl,imx91-isi
+>        - fsl,imx93-isi
+>  
+>    reg:
+> @@ -66,7 +67,6 @@ required:
+>    - interrupts
+>    - clocks
+>    - clock-names
+> -  - fsl,blk-ctrl
+>    - ports
+>  
+>  allOf:
+> @@ -77,6 +77,7 @@ allOf:
+>              enum:
+>                - fsl,imx8mn-isi
+>                - fsl,imx8ulp-isi
+> +              - fsl,imx91-isi
+>                - fsl,imx93-isi
+>      then:
+>        properties:
+> @@ -109,6 +110,16 @@ allOf:
+>              - port@0
+>              - port@1
+>  
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          not:
+> +            contains:
+> +              const: fsl,imx91-isi
+> +    then:
+> +      required:
+> +        - fsl,blk-ctrl
+> +
+>  additionalProperties: false
+>  
+>  examples:
 
 -- 
 Regards,
