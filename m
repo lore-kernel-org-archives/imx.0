@@ -1,27 +1,26 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9011E30277E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAADF302CBA
 	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 11:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758539489; cv=none; b=b6FV4i2QrI/lpucmTF9iYV9rYnTrY4AnoNjmlq15y7I30duJMF1lbHNvPktsevtlvdaYOMuR2tVPW/g14wDjybOibLbT43TjvhhFS7wPpnxHQrD1fQkyUJkTqEYP7Cvp9ySvNlQSFWvwcU80EvV3IclLPJdxY5jzVIldPgVVZNM=
+	t=1758539489; cv=none; b=PmVHxXnhmrtKX0C3c8ojkpnnZPsL/s3/Wfacx6JaTCCsY+4vQhOi6nxJ3/0U+1fo3z+kdJPd1+9lO7QEcnmE8jw9EL0JU2f1as3NcrH2jwY4zgNySwJFM2dUKGhiyaj1/XsKI6t9MJCZvq/FtqCdLYETwvFWQu2p9t4YXCJN4m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758539489; c=relaxed/simple;
-	bh=AptTenFlnFakiSsKWBr9+gI3TZAnyMz05ha+0J8l85Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dj4jBrzqYHhQ92tnbEScAiHDjc2xZfdheL+6mDdopSRpIKG5IdVUmupX7RWSvMGjpIlTOfE529D9LC8m8vASmmQpu/PwqZtZ0oiRtTEwnbmkxWH8KMEaOO5/PJ+LTJmhuBpOAumNZkSmodu70Ol84JkJLBG5Y/E14UeiOg74lNE=
+	bh=7QFjO8uzNm9hY4U+sWRX9qDV5/YD4htnFLFO4rr5rZA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=l/eQPB/+2e2LSQkj5+cLsn+WoZKFtCMahecaCAVvFcC2xyeHne0/LHN9PgLBq5IM3YSATwaRkd7XwilWACg5H59DG4+z1Xy7B+G/cAi/DOdYYQEAZx1orAVQdLSmgMZItfH1NJnSi+TNyUJGGnI2ScQLr5xbFv64uQwR4ylWBB8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1v0eRn-0002HM-Dz; Mon, 22 Sep 2025 13:11:07 +0200
+	id 1v0eRk-0002HM-ET; Mon, 22 Sep 2025 13:11:04 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 22 Sep 2025 13:10:53 +0200
-Subject: [PATCH v2 2/5] dt-bindings: display: simple: Add JuTouch
- JT101TM023 panel
+Subject: [PATCH v2 0/5] arm64: dts: imx8mp-skov: add new 10" variant
+Date: Mon, 22 Sep 2025 13:10:51 +0200
+Message-Id: <20250922-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v2-0-abbb759cf8ef@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -30,9 +29,11 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250922-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v2-2-abbb759cf8ef@pengutronix.de>
-References: <20250922-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v2-0-abbb759cf8ef@pengutronix.de>
-In-Reply-To: <20250922-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v2-0-abbb759cf8ef@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIALsu0WgC/52NQQ6DIBBFr2JYdxogWrUr79G4sDLotBEIILEx3
+ r3UI3T18/7ivZ0F9ISB3YudeUwUyJoM8lKwcR7MhEAqM5NcVryRAtINRA3ROhqBlq1ZHIS3TaB
+ igNca7TrOIDiZPC3qVg9DXVWiZFnoPGraztijzzxTiNZ/znYSv/evTBLA4Vm2EnXDayVk59BMa
+ /TW0HZVyPrjOL4D5acR6QAAAA==
+X-Change-ID: 20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-9ef9faa75514
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
  Neil Armstrong <neil.armstrong@linaro.org>, 
@@ -47,35 +48,45 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, 
- Steffen Trumtrar <s.trumtrar@pengutronix.de>
+ Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 X-Mailer: b4 0.14.2
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
 X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Add the JuTouch Technology Co. 10" JT101TM023 LVDS panel.
+Add a new board variant for the Skov i.MX8MP based family of boards.
+
+This variant uses a different 10" panel than the existing ones.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/display/panel/panel-simple.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+Changes in v2:
+- add wider compat "eeti,exc80h84" after "eeti,exc81w32" to pass CHECK_DTB 
+- add Acked-by and Reviewed-By
+- Link to v1: https://lore.kernel.org/r/20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v1-0-b492ef807d12@pengutronix.de
 
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-index 1ac1f02190790cbff00c9f977d5c1a4420ed9f27..8107dc60e19695d56cd7302e7af7c808575df491 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-@@ -182,6 +182,8 @@ properties:
-       - innolux,n156bge-l21
-         # Innolux Corporation 7.0" WSVGA (1024x600) TFT LCD panel
-       - innolux,zj070na-01p
-+        # JuTouch Technology Co.. 10" JT101TM023 WXGA (1280 x 800) LVDS panel
-+      - jutouch,jt101tm023
-         # Kaohsiung Opto-Electronics Inc. 5.7" QVGA (320 x 240) TFT LCD panel
-       - koe,tx14d24vm1bpa
-         # Kaohsiung Opto-Electronics. TX31D200VM0BAA 12.3" HSXGA LVDS panel
+---
+Steffen Trumtrar (5):
+      dt-bindings: vendor-prefixes: Add JuTouch Technology Co, Ltd
+      dt-bindings: display: simple: Add JuTouch JT101TM023 panel
+      drm/panel: simple: add JuTouch JT101TM023
+      dt-bindings: arm: fsl: add compatible for Skov i.MX8MP variant
+      arm64: dts: imx8mp-skov: support new 10" panel board
 
+ Documentation/devicetree/bindings/arm/fsl.yaml     |  1 +
+ .../bindings/display/panel/panel-simple.yaml       |  2 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |  2 +
+ arch/arm64/boot/dts/freescale/Makefile             |  1 +
+ .../imx8mp-skov-revc-jutouch-jt101tm023.dts        | 79 ++++++++++++++++++++++
+ drivers/gpu/drm/panel/panel-simple.c               | 35 ++++++++++
+ 6 files changed, 120 insertions(+)
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250821-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-9ef9faa75514
+
+Best regards,
 -- 
-2.49.0
+Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
