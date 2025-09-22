@@ -1,46 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483CE313523;
-	Mon, 22 Sep 2025 17:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2D8314B73;
+	Mon, 22 Sep 2025 17:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758561494; cv=none; b=DsMdf7xwP7mzuIQn8zLmsP3G5q1eDWPeKdsXSmYtK17FZb4zU67D6F7/L9CZuEJ+zUu1WChntbnkNPHBsELI2EMj3749XFdv71KW4KjXANihMjYjyvdS4cwjJtdTi82VPzt/o5hEZk+dpsTa1qkdUe8WDN2fpzzFtPhuOGgPJaU=
+	t=1758562437; cv=none; b=I2obEI0nNMj5yfYmnp+CeeUAbjWYWlwE7FjEkdFipiJUEvZyIMGgQ3YNyoRfH+4zU/RH+JvONvKrgk2DBZ8HKwUbzqQ4aahRLFk/iRR55AQB7BmXa2ngIu2kRZwIslOLWGvznsvTaXTarSR5WJP82eHSWrkvnt+ya2s6hX91Ing=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758561494; c=relaxed/simple;
-	bh=7n91RXDPAxgH1q840XCue47m4bAyVbyVfAnh6yft++U=;
+	s=arc-20240116; t=1758562437; c=relaxed/simple;
+	bh=/VUh7SsvRLqVAoILRJvmLKOwGytnLANEuCYxE2Y6Nsw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HT2qIp8eVzsRd7nm/Rgg4RvQ7h7tbW7N7uNiYIT33YHAo50dvSEFtautIMpG5BxSUnu/BxkCnptTWLbnGwa6iTl6/tXP6DW/wFkTJy224R+iKhwGZIEArLICwd5LpWXz8jcVH2aUljEFeYAyqkODehLX5VtC5LW0lIbG8yUxdvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ByKyEGTi; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Egn+YfNeZ7HNMwqHawbVZk4FTQLUuT7TAs3AkB233gzxIBg/ImVdrfLy4y35hH5YMGArDgRH3Ur/Y4u75Dl+WRWl3PuxxGSRQqMDYwFSMPwo4MuuIwGLsF8oy35PjILYbqpj87EVPolCp5O9AlA0ErIN9wj5XEPtKemtlRprx5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ujixOvZ/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ByKyEGTi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC0EC4CEF0;
-	Mon, 22 Sep 2025 17:18:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ujixOvZ/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C66C4CEF0;
+	Mon, 22 Sep 2025 17:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758561493;
-	bh=7n91RXDPAxgH1q840XCue47m4bAyVbyVfAnh6yft++U=;
+	s=k20201202; t=1758562437;
+	bh=/VUh7SsvRLqVAoILRJvmLKOwGytnLANEuCYxE2Y6Nsw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ByKyEGTiZjs/nEy3Xzn/QKsdiFqIK/jEadu1pqoZ5vZGLCg+MfsnCiu9gaEf9kl6b
-	 sZK68I/axPzRYCujKthTI//IXqGF5PpFZEuTkue+wUWS7MyUtfOJPVLWib01kMEb6G
-	 sUETtL4ThYkyvjh2XZDBhW/FO/uzt+xE9Cwv3gZdckKKc2zsT8B4SnvhhY5vcsVY2H
-	 dlbMtRcBCAw9g5hGmHTpms6o3QXkH9AaJBTQYzVbQyNZ03UenK6S39/yV6cYQolwnH
-	 +4aM0+NuPv074cEDycBfVbVpmYfW4UPWVHTsjflNIECHo9mcqO1d2VP8VkNZ9oTHKc
-	 QwuHIUOw2KN7w==
-Date: Mon, 22 Sep 2025 12:18:12 -0500
-From: Rob Herring <robh@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, bhelgaas@google.com, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/3] dt-bindings: PCI: dwc: Add external reference
- clock input
-Message-ID: <20250922171812.GA489088-robh@kernel.org>
-References: <20250918032555.3987157-1-hongxing.zhu@nxp.com>
- <20250918032555.3987157-2-hongxing.zhu@nxp.com>
+	b=ujixOvZ/cuH76701/N2sz1vu2SRUt38ykB39GGe9k/Rk33d5rK6o+EQQmmQoJwSe+
+	 I8ukNEmX0UKxoeNqu2MJmke0E/iGRq0s8/Z3Gr0NodxphpIXyWZpdlWX5371Ddh0Ry
+	 2bUjySSfg28fCpFpENGH8mHn142UNaMKIkD8CJtWbyYj6CxuiEAk18m8myXyp+NWas
+	 fgQoVUO3qtE77qj+6GZ4RpQOfYcDBeCb0uivQr5Pq7azrWb098WZ8pTMYKEeD2MQ78
+	 b88RN+F3xSsTrO75YY96NP4wr+D8OmBnnfgiJW15QEpkNSRDVeWXcW0VylsjlCr1O8
+	 XtvCHdxD4ILpg==
+Date: Mon, 22 Sep 2025 12:33:56 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Jonas Rebmann <jre@pengutronix.de>
+Cc: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>, Mark Brown <broonie@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Eric Dumazet <edumazet@google.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	linux-arm-kernel@lists.infradead.org,
+	Sascha Hauer <s.hauer@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
+	imx@lists.linux.dev, linux-sound@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] dt-bindings: net: dsa: nxp,sja1105: Add
+ reset-gpios property
+Message-ID: <175856243558.512098.3904766472489050008.robh@kernel.org>
+References: <20250918-imx8mp-prt8ml-v2-0-3d84b4fe53de@pengutronix.de>
+ <20250918-imx8mp-prt8ml-v2-1-3d84b4fe53de@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,41 +57,19 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250918032555.3987157-2-hongxing.zhu@nxp.com>
+In-Reply-To: <20250918-imx8mp-prt8ml-v2-1-3d84b4fe53de@pengutronix.de>
 
-On Thu, Sep 18, 2025 at 11:25:53AM +0800, Richard Zhu wrote:
-> Add external reference clock input "extref" for a reference clock that
-> comes from external crystal oscillator.
 
-Sigh. A different subject on every version throws off my scripts... 
-Perhaps slow down your pace of sending new versions.
-
-See my comments on v5.
-
+On Thu, 18 Sep 2025 14:19:44 +0200, Jonas Rebmann wrote:
+> Both the nxp,sja1105 and the nxp,sja1110 series feature an active-low
+> reset pin, rendering reset-gpios a valid property for all of the
+> nxp,sja1105 family.
 > 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 > ---
->  .../devicetree/bindings/pci/snps,dw-pcie-common.yaml        | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml b/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml
-> index 34594972d8db..0134a759185e 100644
-> --- a/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml
-> +++ b/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml
-> @@ -105,6 +105,12 @@ properties:
->              define it with this name (for instance pipe, core and aux can
->              be connected to a single source of the periodic signal).
->            const: ref
-> +        - description:
-> +            Some dwc wrappers (like i.MX95 PCIes) have two reference clock
-> +            inputs, one from an internal PLL, the other from an off-chip crystal
-> +            oscillator. If present, 'extref' refers to a reference clock from
-> +            an external oscillator.
-> +          const: extref
->          - description:
->              Clock for the PHY registers interface. Originally this is
->              a PHY-viewport-based interface, but some platform may have
-> -- 
-> 2.37.1
-> 
+
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+
