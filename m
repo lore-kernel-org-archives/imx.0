@@ -1,103 +1,185 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012034.outbound.protection.outlook.com [52.101.66.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D682772D
-	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 08:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758528616; cv=none; b=elM1UmCdYo+uWF7IH9IIFPvyf+0V1gvVxVfaFwOUqVYJ5kxyZ3xjHuYfAL9wnPgPtGCi1wp8avg4bTiB6unTlagomoh/ZqVM4ijsmSfRALHl6YUqmA+aKxCZrk/28x5Nr4n0o3KJ/K3FkRfgiSi/gQnD/8dpDNyA5Pqcw8fWCM8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758528616; c=relaxed/simple;
-	bh=18f5YMsjYZt/JpwSvP2ZKdCGT3Fnxm5o02Bv+/atmq0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p8Rk4bOPj77caFREv+ZIGHlc9fgiPKiNf0oAP0qlBP3c/lEfvhSRl6J+IZLSeVcFUWfYSJyvhNhi48wr+Bx94ZR6igTVPrrXWqBmFbYXbwplczOHYpjpfuJGeF3OffcksRYFePjycmO1rKTnRJ+a1j3PdwImuBqTAjFNMwADEN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=jVy1UK05; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B072F2EFDB5
+	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 08:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758529512; cv=fail; b=oLQti++lJxfcmI4frf2E+CIcyFyhyXQ3BG0zFt5mC5WSku8OhDFpSU6SW/qOqyWQYPwN1GSh9bvWQRzYuQr6favhsRM1Fq8K5JusOatxUZDO4kPPzoOWKj3A+S15kDCEYdJ0PxkqGUKNckJm1nbuJRoYXroNIVnbgfY4DCZwLq8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758529512; c=relaxed/simple;
+	bh=5Tm4LQxrA/ArekP3Xx189SxnUB2uiC7pLdHmtR3L258=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=qStVIuANW7Imx86Z6UdzsLUk+P0djSf+JcYEV1DbsgrfazinKHo+fFxXFEFjyxbHbZnjaNmBk0+fEpfmjwhwYfbQaTfGKWCwbOcS+x3yhx1gR/dXmRzxDjTKO/+1nbXaORf8mWNTIwbN87mijxdKFs8I1RPzyit1t4ztIGtUm4w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Y5SfcPvH; arc=fail smtp.client-ip=52.101.66.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="jVy1UK05"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 9F127F89;
-	Mon, 22 Sep 2025 10:08:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1758528530;
-	bh=18f5YMsjYZt/JpwSvP2ZKdCGT3Fnxm5o02Bv+/atmq0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jVy1UK05TYd2fa94+IeDgPM1EOXE0rfftB6gdSDd0BrAR2UCLtWeCZ6GUmL1c9HYS
-	 6fBBr7CnlWx/EL+J16yScsAC6xdqG6Qd41aCIQC3AJtwimqY7RWP4qAT6VmdO9cm0B
-	 gnj/P35YRjLORqT9Fsz8sX66rUrgX4DmXSrah2/Q=
-Date: Mon, 22 Sep 2025 11:09:35 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Isaac Scott <isaac.scott@ideasonboard.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 3/3] media: imx-mipi-csis: Get number of active lanes
- via mbus_config
-Message-ID: <20250922080935.GJ10540@pendragon.ideasonboard.com>
-References: <20250915-mbus-config-active-lanes-v3-0-97a1282a410b@ideasonboard.com>
- <20250915-mbus-config-active-lanes-v3-3-97a1282a410b@ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Y5SfcPvH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UpVAD1Cr0lYq+kJV2lLFPzTrIpI7rzt8iyY0lS2B9RkNvTQH5IB9YyH/CUXq25U82154p2OyP8U400RrfEgpwa4V7IfH1o9UO7v5BsUzSE1LuZyFlZCazCpoX1TZrq1bhSXAcSGPByuoiNeBZ7wU/76Ydg/Cbd1yxm56RoXcGxXeAN5wsVDEWl6u/BVJQjoQd/3MluB67r4HHqwAkYvZYquZTPY1OUeWpl2UGpqKtII5QyswTnqAg42pxniyYRTXJkT8zLSsv+LhHK2YSM+ZxBMV1iZIzVhm6CblYfMyypON471BeWIOHCI2TEUmp603SyQkBuI/TaD8YdEhtgW6dQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=T1j0leQ0NtQtXricpxf9GO8TNtNoPNVQtwgt5jUyOhw=;
+ b=yOaj7ABvYxruCcIwvuCNtdGzZQKGu/kUJPHGdOVp/fnRmgb0wU3O2DwhbswSuhbGpUjCwnFbMaVmSrYpJT/E8doGD8KZ8S59PkvDkQcRKOqbgGt8TkGEN7ZBW4qXggnxHDE6FE0I+cPsHjl0b56Xqhd+3Uth9Pdd1LWhMPAOA8zveVq1PIIE6Hr/56DsSYtHRi6WuvMy4g0tdKm4S1OdJB9N3Dl2mMeSLrE8CrN6P67NKH/hE3ZfRNa6UhmTZzuT0GOyvUFH6UYpY9hUNLOXuR/Ucvt6fN/XF/McA+pxP+RXhEEIiUvgmafhhdZceDEBDMInmwPpemLwa/qFB4GkEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=T1j0leQ0NtQtXricpxf9GO8TNtNoPNVQtwgt5jUyOhw=;
+ b=Y5SfcPvHv6Q3CyqCTSNN7IXINXdVqVuM9iGNETDB5BWgo2oSH+3OLVG2d7g/bmUWsQ5fuP//qlujPh6/Qtg9KBDMcfe7RUbfgwOnYveX2ihi7XrcAkiALgDZH8uaXLUVGmh3rS0p7AxQNB0pqQS7EQmCkAVIyHS26KsuwBHDsgWu4Wkk8elIH1/8pQPwETVbxwwLvDfbB5Sd464Y6aCA5gDp7mpsy5XwRGC0W2fa1HhwWhTPzBs4QVk5vgnbtDELq7esq16B3kGCpehPwNAN1Xpyuq7HDFfMPnFy0Tve2gRfKQ3y9kYU58ovq5DWvgjkYJjaNeXL23b5kDHXUjDOsg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8833.eurprd04.prod.outlook.com (2603:10a6:20b:42c::19)
+ by PA4PR04MB7727.eurprd04.prod.outlook.com (2603:10a6:102:e0::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Mon, 22 Sep
+ 2025 08:25:06 +0000
+Received: from AS8PR04MB8833.eurprd04.prod.outlook.com
+ ([fe80::209c:44e4:a205:8e86]) by AS8PR04MB8833.eurprd04.prod.outlook.com
+ ([fe80::209c:44e4:a205:8e86%3]) with mapi id 15.20.9160.008; Mon, 22 Sep 2025
+ 08:25:06 +0000
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: frank.li@nxp.com,
+	jingoohan1@gmail.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/3] PCI: imx6: Add a method to handle CLKREQ# override
+Date: Mon, 22 Sep 2025 16:24:30 +0800
+Message-Id: <20250922082433.1090066-1-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2P153CA0016.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:140::17) To AS8PR04MB8833.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250915-mbus-config-active-lanes-v3-3-97a1282a410b@ideasonboard.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8833:EE_|PA4PR04MB7727:EE_
+X-MS-Office365-Filtering-Correlation-Id: fd6d9bb5-6405-4da7-42ee-08ddf9b18916
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|52116014|7416014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?q5Cgnu6J4R8iGrWDfBZ/eEN9jN4QoObKSqHY6MIRrIq1/VTIqvhWcH9QFLkQ?=
+ =?us-ascii?Q?Exy3G6/0luwdYXmTipYOJLX+Z+ylLBS9ihCAicYTn/5TC/nzhC3jZ4dTlgTS?=
+ =?us-ascii?Q?LpRU9aVrsCvqjnxXgxDfitVlR/6vSoXiLLkRqkssVaL1AmGQaqQk90THOln/?=
+ =?us-ascii?Q?xhKEYBlAPtWgJRJurKA7N4fwpAJfjbhzFfpB4ZJQ3aq8yqV61E90h65YHtXg?=
+ =?us-ascii?Q?gF6WsE+32T7N54D8SrevrE3vOtaqBZOVi9BzlFjntCe5pKbqG9yV4fPaSCuQ?=
+ =?us-ascii?Q?IZyN4pohi4pYn7ONBdi0YfkMy49ZqZguJ8L+PLIsSJMu3+b9o4RE6PMTqERb?=
+ =?us-ascii?Q?jFvhOvqbEJEuKgLD1guC83nDlQi66L8cABmvoQRrwBA2CaAM4fzQmpVHhQc8?=
+ =?us-ascii?Q?dqhsX9nvZU0Klmpx+VONAGOaVhYX2A+Rt8Y0I+JI1hbSG0d5FmDhu9kYy+xq?=
+ =?us-ascii?Q?RjKuiosigLAES4X8aSgMqK5kUzqhOQaKE4en1ipW5W+9Wl4QMI9WulJ15vas?=
+ =?us-ascii?Q?2n1hNOUJzPsR8jFuHQISRdV1PNFZiiQu0OEJ6RUog95mMvFLpmxXNeBg5hVl?=
+ =?us-ascii?Q?TWNrL7vwjIzX64k2/wz61QBHmO9oboMMhqNj7YVZlY0vxXUmRZTKwxU40HsS?=
+ =?us-ascii?Q?tnwsR8H0VD588LrbcyMAxn2oapDHwM5ozTfn6lyQaZVEyPQzPIMWNX9s62/f?=
+ =?us-ascii?Q?5kp1cjMfXOnOM8qutg1Uhfd+poDJzGh6TH2493YS8vHP7v2+kLiXwrytzQkM?=
+ =?us-ascii?Q?KPrn7obkTWmGsQlmx+6l43OYk6Y8+wcJsU3xiPG6oU+WN/1XW0zlqsDO8PnY?=
+ =?us-ascii?Q?dfPJcWvXkMZ+5RR6Qcoby6Z6+dU384+ryOG993eldBcS0g+ETpEcb+jglvPW?=
+ =?us-ascii?Q?0oZaVwncvGuNLTxfJJhPY5OiqwsvIC33Edeo3lrnvfeIWmsFtTiwWxA74dox?=
+ =?us-ascii?Q?kTDvmqUECeWwdWMm6jU/g1CzVrGrtIUyxpSYVXdlzE0Mb9OPjC/pswNt3sQP?=
+ =?us-ascii?Q?ZM1hdh5Mw+ZfsMjuZL96Ymus+eia0FpRt1bOoFCXQUjeHHlg9QQuCMinCwWK?=
+ =?us-ascii?Q?+77V3XrYJTW9BtNVFuV0qVMEQqLUemfrS/TkYIlofR6UyiQk9JKU7WoKLWN3?=
+ =?us-ascii?Q?Nyg+bHkQN2X1zygAZ0zfT16AQHmsDRC+hOVrSV8obiCCy3+rzAt3Om8jLNgZ?=
+ =?us-ascii?Q?XHxo6VSPZCMUqWVwBE1M/HewjHaIOIox41DCcp6H/vzSLWdlcJj00Sqi/UzJ?=
+ =?us-ascii?Q?weMtbAH3wjIGmaBHJcgzFJ8fMVFNlZIPVGDILWiP1VI77/3HUIhBQTGio34C?=
+ =?us-ascii?Q?BbAxK03njo7apU0ynFAjGDljYczznwI35zqixRYG74QNDQHWlU9s/z16IAgn?=
+ =?us-ascii?Q?Kas+z4VfYYlUXi2iukoU6eo3ZUAs9SNa0OQ4Dyf/mXMisBywYJy0RXRNMVRi?=
+ =?us-ascii?Q?KXNKdDnBlogAa/YFSy3qkYHp4dDryVcKFStIf5zuSShY39yzJraY6nfQxyDb?=
+ =?us-ascii?Q?V1vvNHgrl2cRjnc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8833.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(52116014)(7416014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?aCiBKT+Do7Sc5hF2DK15fNjCHOx7N77GUscK8L0SHub0vgWil/8SQzSzMWvB?=
+ =?us-ascii?Q?xdEYUMT/lx5yJOjO58zfFp9BYucO3IMACDXl2s8uMqBcCQLa76twSFE4nZWC?=
+ =?us-ascii?Q?l0B7NlesFJx03+Y4sqqspAFHZEJWTdjcnizGclejLlHF91lTujT3S3XXft60?=
+ =?us-ascii?Q?cyshypqmsDmkSQ/9g4DVK0LPh7Im00o+fUNNSH/eG8D5Rzk0aKwdYvn7X2rC?=
+ =?us-ascii?Q?Hy4GAfmKdqobd52BvuiZ2R3BiyAEEKXY0bC2DYa8kCxq04i6iuc5eX7VYsP9?=
+ =?us-ascii?Q?UqfBkO5jOdkpAY4i6W4/rC5EUZ4icfKIT3vFc+ryz3tCXAWAGRkX8zcurG2P?=
+ =?us-ascii?Q?jrYU5eVo9lyLKMzYixomGuZI6pSfHAHAvJH1C3lvJhfEtvYTJTXP29mTwgfT?=
+ =?us-ascii?Q?daKTHAOZ+7AG35dbvOvYuvjym9jeS+E+HdATUj6hvQjoVnxYT2rvpELyaC6L?=
+ =?us-ascii?Q?RgW7iuv2mh2VP153eQd4+a+GHq6oV/PT9EFxtu9lQATgj9zAAqyQ8LZCgvjz?=
+ =?us-ascii?Q?eHd5mzX9p0PmTLuylXCIL1zKL+azCv/HEjDNtvghbsEeA+uzEMItmehkf/GC?=
+ =?us-ascii?Q?3itWBPYHpZfXHecDuFUN3O2RtkP13DFrUT/29IIgRIFVXKISC3zm1c1BG5IL?=
+ =?us-ascii?Q?E8d2hH65fErf8mSmMyCECf9IhiGmrj5ppQCHpF4t+L6MlUQ9itgwL5GoZTf1?=
+ =?us-ascii?Q?2Rwbzg/TbMOB7vIOIP7NHHJE0Qys+XDN1i7r8jd2bs9B+sZSYbozr/zgadZ/?=
+ =?us-ascii?Q?Orexzu+fNP7AlY/t4e3hmaCUKFmjGlTclBVIsp7Q7X3zU+5m8Kcd4WAydPUN?=
+ =?us-ascii?Q?kegvwh0/qORsv9IVhH+YRGFUWqXM/0uKh//b3yXGlh+bfdjKzDrMvqblY91G?=
+ =?us-ascii?Q?qRZDSnuMzs7QCARaoz/Kb14M6Q8cjH3eiRhNk1915Q0bpQKYXuQ6ydQ7iHqi?=
+ =?us-ascii?Q?YxGi0YbmiWdNJUJzThwLxOLfasXsdNDnnJJ0/ga8XlYKrHESt8SSzrMjwjSr?=
+ =?us-ascii?Q?1bGHSfYabDR38JxNC3UEWkUqup6KkTYkSORvwXw0bP6AbB6MEnOL758hNcEQ?=
+ =?us-ascii?Q?S1xulgceIaqMoV2u4+UTxf75BpcDb52ar3tsUL3b3vA/NE//qjB/G9xHir9B?=
+ =?us-ascii?Q?7/oEXkYI6NRtLH2AVlLDdgPSSQ8E6IKjmKZlLgaRUPorlpioRJ9S3QsXUh1d?=
+ =?us-ascii?Q?Dfk6C/YO+mkD3ucyjP7NRhG+4ZYnfhQiFCDFA+hBHGScADSd4nYjIYZGMJDK?=
+ =?us-ascii?Q?jTIjwWvTTGAnUbYm8oucV3/4vrVZM4FMCG+++kO26QslY/2NyzV84JfH3oVv?=
+ =?us-ascii?Q?M4ZYb70xeqk/7wdfNeWp7uXPxitAxAcLVP1Q8LDoSYGETSq1VcemPTv+dHLo?=
+ =?us-ascii?Q?XISAh5COqoaxT3cLHt1LGxYypFVr6n+zr3Fyf/DK+HE/5TvofA3kZ5e/ulFg?=
+ =?us-ascii?Q?NYLhSQiMvxThFVUslWmKJaexdEovV9U+O/q3Myf9ompSWnPlQrl3q2lW0vOi?=
+ =?us-ascii?Q?doBpM8k2gvKPHGblB1iVY+w9kVzoSZ1irbv6WnCxjYl0SSGtVPpbBEUn8xxO?=
+ =?us-ascii?Q?4JhNAJ4S2yQunLzN9CYg9F6DxnIjU/cs4qzYEVsX?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd6d9bb5-6405-4da7-42ee-08ddf9b18916
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8833.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 08:25:06.3103
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 17HoIcUYIRLISIMAuartf6U7jG9FhAALwSaLpQUWOouJ0rU2kxZT3lc6SAH/bqUkZBk7beZDuO4SyzHPH7kfCg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7727
 
-Hi Isaac,
+The CLKREQ# is an open drain, active low signal that is driven low by
+the card to request reference clock. It's an optional signal added in
+PCIe CEM r4.0, sec 2. Thus, this signal wouldn't be driven low if it's
+reserved.
 
-Thank you for the patch.
+Since the reference clock controlled by CLKREQ# may be required by i.MX
+PCIe host too. To make sure this clock is ready even when the CLKREQ#
+isn't driven low by the card(e.x the scenario described above), force
+CLKREQ# override active low for i.MX PCIe host during initialization.
 
-On Mon, Sep 15, 2025 at 02:18:35PM +0100, Isaac Scott wrote:
-> The number of lanes actively used by a MIPI CSI transmitter may differ
-> from that which is defined in device tree. As such, call on
-> v4l2_get_active_data_lanes() to check if the driver reports a
-> differing number of lanes to device tree, and use that number of active
-> lanes.
+The CLKREQ# override can be cleared safely when supports-clkreq is
+present and PCIe link is up later. Because the CLKREQ# would be driven
+low by the card at this time.
 
-It would be useful to explain there that the difference would be caused
-by the source using less data lanes than the number of connected lanes
-on the board.
+Main changes in v4:
+- To align the function name when add the CLKREQ# override clear, rename
+imx8mm_pcie_enable_ref_clk(), clean up codes refer to Mani' suggestions.
 
-> If the number of active data lanes is invalid, or the op is not
-> supported, use the number of lanes defined in device tree.
+Main changes in v3:
+- Rebase to v6.17-rc1.
+- Update the commit message refer to Bjorn's suggestions.
 
-Is this still true ?
+Main changes in v2:
+- Update the commit message, and collect the reviewed-by tag.
 
-> Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-> ---
->  drivers/media/platform/nxp/imx-mipi-csis.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> index 6afbedfe131e..d3424ad54b4e 100644
-> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> @@ -967,6 +967,9 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
->  	format = v4l2_subdev_state_get_format(state, CSIS_PAD_SINK);
->  	csis_fmt = find_csis_format(format->code);
->  
-> +	csis->num_data_lanes = v4l2_get_active_data_lanes(csis->source.pad,
-> +							  csis->bus.num_data_lanes);
-> +
 
-If the function returns an error you'll have a problem.
+[PATCH v4 1/3] PCI: dwc: Invoke post_init in dw_pcie_resume_noirq()
+[PATCH v4 2/3] PCI: imx6: Rename imx8mm_pcie_enable_ref_clk() as
+[PATCH v4 3/3] PCI: imx6: Add a method to handle CLKREQ# override
 
->  	ret = mipi_csis_calculate_params(csis, csis_fmt);
->  	if (ret < 0)
->  		goto err_unlock;
+drivers/pci/controller/dwc/pci-imx6.c             | 50 +++++++++++++++++++++++++++++++++++++++++++-------
+drivers/pci/controller/dwc/pcie-designware-host.c |  3 +++
+2 files changed, 46 insertions(+), 7 deletions(-)
 
--- 
-Regards,
-
-Laurent Pinchart
