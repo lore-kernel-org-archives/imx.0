@@ -1,167 +1,111 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010022.outbound.protection.outlook.com [52.101.69.22])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9E931577D
-	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 17:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758562538; cv=fail; b=JE9xsQzQmppNuwtjWv/A5SObAO5wHotwN6nrLbgprTjg6rxXSkwA8M+sxkG4jORPoQ3a+sXH78B2r4qbPIVqRKl0lDhMmHxADWt+42goKVSFRS7Sg1vvK1Tjmel0jOAYnNtbw/d0zxvtLyFXmWKqmFrIkh/lZKRseQtMUU2OY2Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758562538; c=relaxed/simple;
-	bh=t9rZttgSeBCP4TV3uJrq4Ies8KwRewOCxTR/aZ4idAw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fH+F8XKnaydlQtwIGO8eoaYa9AqK5RTcg7tsriJs5bYSzbDP5zZ6wZYxtTFlGc7DyoeTxN8TZZIcLNpp5WQHngvWIlYT2VFRcCcDfgYZAVEL8+fZGBrHEHuj3AWiSGGGl6Rykk/8gZDlNvyHiTLJRUKxbDr6yfrJn+TsbkT4UwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IW7K9sTi; arc=fail smtp.client-ip=52.101.69.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8427931A072
+	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 18:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758566646; cv=none; b=bx8HLSZEokhdD+8K1Ijry70ogecwg+5N8FRybl88hVSRVVDQL4qxQ/mwGP6GTDHXqnKD8FGjaswe8oTLpAbSnTvSb/e/t4CKAE7GyBQ4ZJ7WzcyEFpu2lmikfoJ4FMUieqqdj/RKFxf5F5NBzhs33nHy+F7PDrDC0buElHpxfiY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758566646; c=relaxed/simple;
+	bh=qJ+biJM2TwoXnGA56XQYa05itNz8yBOcvDagz+NFrGU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=D/46b346d3wCrvDYdNycR4NZgaJ5yVCEFWSaIVJYmyb/FmB58ujFXam+EVmkW6j2c9feSexafBb1y5zcJrSSlUmdVh4TCDoygRBUQa7VpD4/GbmrelOE/VVn9KbOY9GEcTBsc3cskIjGdF3DxX9hw0jPOAm03oEs0gMNHvA7tp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ebwaCkxH; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IW7K9sTi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cfHb6k4AcoE2HN1X2uOM53mSWswKZbnZQX2URazQzbgHHsSYr0IVp6YBFkHu64kMwQ69NiOC4+eQUiyYxWrPwYwbrx/GdcAwqSCdFcJsr8L4VesjYzEivgPlWplDXcHoRMgysVhx/YOK4SeOSqpdzxCBYGObCM+25S4AV9MpW5KRaaLr+k/Fe37iCLlAdbPlf7UptatNTqX86bpaJIAWBDM+L2692RwxAjW2tJBlQPsYtnE9zfweXBvA1uHx4mASivwhz+6zs/4dSzZtrd1sfvdx3HfxxwC/fv542qqFuAMWAHyEDDeECNmNpkOavXr4J5SyfnXMWfVya/SSK3K0Ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v0aNnWB+xFKr6LujjAR0acC+k2IMp56FlAlJSpBKwhs=;
- b=OKdrtg6E7/pHyup5WGxMdmaepcjmWDw3fj92p7VxpNrEfXMp/6wPQNQm6b6uYxb+Gh5wYV+i7v++uZGbTg/csqm+ADI/2ulHcuz0iVXVr94Mm7/Z8bCtluXgFvszQ9EDz/5reBnObR63itiL/D2ej+vsftbWvHIjp/LUxjgk+HVzlWaA78NdQ4/nWSOiQG0QnZCUKaN5kTMF42g/sePa8uzbLJT4GrHYarxGQ/6gGnhmPnLlANjSij1TxqYPYk487YharJtq5m0q4PP7PgOfyz+YLioqGiXVCv3TonzpEvjnEC54zOBJ5oNZfJ9WcUOGrClGMgbtbeDsRr2KpCichA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v0aNnWB+xFKr6LujjAR0acC+k2IMp56FlAlJSpBKwhs=;
- b=IW7K9sTi0373hIR0ZoSrBecYScnw8qM1QEdV7bAKUIHqsUQhHTnKhbPSc6aBpiuX42aptxs124nuIp7TRHqp3GolTxcSfGtA9nb+6eZsAGek5h02bE4OYi/r9RBveDVi1h8PHpu8F0Thmk3ZOrUjWgdHVRIX7bVELV20Sp3/Oxwer3BDwtJEgBu0EtABBv9hV+OI7dRICSGJI6hhznHUnHIus2FUCh6cOVSnQxUU4PBHe7mFiFeloXMnpp6XJVx3gi2D0eb1YDQY8tcAuOlcLfKAeakrhCrmMY1NyQuKpO0e1aBd7RCxGomS7Hlvw/790IAY0AVw8go/hZ60YBL2yw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by PA1PR04MB10504.eurprd04.prod.outlook.com (2603:10a6:102:444::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Mon, 22 Sep
- 2025 17:35:33 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::b067:7ceb:e3d7:6f93]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::b067:7ceb:e3d7:6f93%5]) with mapi id 15.20.9160.008; Mon, 22 Sep 2025
- 17:35:33 +0000
-Date: Mon, 22 Sep 2025 20:35:29 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Jonas Rebmann <jre@pengutronix.de>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: net: dsa: nxp,sja1105: Add
- reset-gpios property
-Message-ID: <20250922173529.2372hfwwyhihqccd@skbuf>
-References: <20250918-imx8mp-prt8ml-v2-0-3d84b4fe53de@pengutronix.de>
- <20250918-imx8mp-prt8ml-v2-1-3d84b4fe53de@pengutronix.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250918-imx8mp-prt8ml-v2-1-3d84b4fe53de@pengutronix.de>
-X-ClientProxiedBy: VI1PR03CA0074.eurprd03.prod.outlook.com
- (2603:10a6:803:50::45) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ebwaCkxH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1758566642;
+	bh=qJ+biJM2TwoXnGA56XQYa05itNz8yBOcvDagz+NFrGU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=ebwaCkxHDAGHYS4qE8QPgOdYsJO6p5SHToqt6R/xmZUc2nyC5YmOn1TmNIH/TLIjX
+	 WqaAwY4noR5s0Roa9ac1OaDa08wQIQDT6xtmUmg25QzyM8HdIb/icMWquGIN7i50Cz
+	 elcNukL3U+BSecVNtDaJ1/FrVAKZ98CZ5meoEr5Ka+9DcoeRlPY51n4WpjBQXiUsMe
+	 vO8OkI5Nx7asWoNczggXDG3Uf9wjsfjoAZdZrarvAxelWxxsVVmCeEQSEPNHFOyA1b
+	 iebbRxnZKeQtOGMZluTaAKXwTQpVc64UzS9xBlkkGxOz3a9JBfwITtxRt2q7RpTsuw
+	 mPVBEYdQmhrXw==
+Received: from [192.168.13.179] (unknown [IPv6:2606:6d00:10:aee0::5ac])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id CAF7517E124A;
+	Mon, 22 Sep 2025 20:44:00 +0200 (CEST)
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Subject: [PATCH 0/2] media: verisilicon: Fix Hantro G2 handling of invalid
+ DPB index
+Date: Mon, 22 Sep 2025 14:43:37 -0400
+Message-Id: <20250922-imx8mq-hantro-g2-hang-v1-0-67d00eb6a548@collabora.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|PA1PR04MB10504:EE_
-X-MS-Office365-Filtering-Correlation-Id: c6378916-2da9-44be-abad-08ddf9fe6eab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|10070799003|7416014|376014|19092799006|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?yZtNUGVF1dXB7DRqeNwMGhi+tCP05RZJ5uL0/Et+KnepA3mp5pn113xt6DWt?=
- =?us-ascii?Q?ksMOfyem1zRKr8EwAGcpBa4STqxEz+uyIRdWb7/pvQOQsZplkkgb9NdLSCiH?=
- =?us-ascii?Q?mzL1pG5bq/yTp5Ox9TNUjgjkcRkLY/p2VhPDBWY5kOzRpDjJaU2nYdwS8M1m?=
- =?us-ascii?Q?SX0Xo4UUDCR3+oI7X8U7pC6TefuGe2OFZQpuzjxS6y1VPk/I2ZY0RHMm3CYl?=
- =?us-ascii?Q?t2BpxGPT8CXlM0vOk4kVixTgJOToc5bKHxUKjot2mW0pwUa/hClo4DxTcxlO?=
- =?us-ascii?Q?DCgRt2711aP9uOzjAuBkD80Dm2F+bZ/Lxqo3WSV5soKA7WmP9ilwHpr3uZ6f?=
- =?us-ascii?Q?3iLEIX8FfUTNxJ47w0ZcAEqbpnv6ugSDK3QLIDM98owbzSFEqQrxug1QORw8?=
- =?us-ascii?Q?/Ig6XySRMTKnKiCIHUnSZ93WjQAc/OVN+8UFVdKhBcvaK9HvNMFQX5LbLp6m?=
- =?us-ascii?Q?+EA2hbzvViAqNbVIjeoiptKkAOy/BI1H4sNVPXzhPYFDbNO/qP5YX5SrYiFG?=
- =?us-ascii?Q?pYoFQFaA32yIDCinGMP85/NfYN9qUzMdCCEWce8peTsbFERuPEhDYsJXjumJ?=
- =?us-ascii?Q?j0P5CyPnNEuWDJrJjdHoBPByfCFqh04w1NZZieuiP3KTxz3YL8090gBy0+xf?=
- =?us-ascii?Q?5dnGKESrYOpa2n2QOOHSYmHio+GkOI90n+ByfIdFM5bFns6+B13UUFqz98o9?=
- =?us-ascii?Q?WjYxKMqLKuh0Xc60GH8rtivzFThTu140iBdJ/FEq248c+4OZBqW/PiYf5lIA?=
- =?us-ascii?Q?rglqKdZCK6X17oogkWXIOhyOttQme9N121JS0N4ras3rQUj5FAL4BQ0t7wxH?=
- =?us-ascii?Q?Ne1G5+b6uHLLhON1Dbx8kAZKaFuKAnvWt0ntbvZYJM2rg9F+pnwTJwkBMrA9?=
- =?us-ascii?Q?qDxUVGyShXRBPwCkp0zzYG3/43otQjJzzT13Em808W4m07K+vyqep2tbDoef?=
- =?us-ascii?Q?X0Zg8GyCJtUPD6Qy6sYMNK/eIBx4ZND7DDklf5tdr7r+QJEUl4QOB2vBbGoG?=
- =?us-ascii?Q?YV+xlzcx3X+NMR0Vz5t6uoSuuhqPtwnCs5ws04N9l/ywq4u3c48vYzQ+ml5+?=
- =?us-ascii?Q?HiIKBZZTuRZOPagMqj/JwJEtA+Ne0zDkdE6VKMgE6rbwuGu2pfFjVMf2sml3?=
- =?us-ascii?Q?/xDaB+cgd7wWe6UGEh6o99VEXbYglt52d9O4yo2yD0R9JBntg0h3yFpQlcPP?=
- =?us-ascii?Q?HN3CFgHYeGorPOqjNuJ7SAbxsehUL1cZU9bYQy80RgvSNFalsGGqokqlCqIx?=
- =?us-ascii?Q?awsDLXMFBiXszPikJY1srgr/5hcBVyKTk0EdDqFdbpz5Hp3Zvx7ll4p+UI2d?=
- =?us-ascii?Q?jsIBl8Fy7dtiaS5u6vRRJfVV6ETSHw7MRFxYA0mZDg1T/iu9Hi0jf4MCBwmq?=
- =?us-ascii?Q?Af/mBTOsMootRR9irT1JRZvGrMVYX7JeE+vjPnuqNTHT0lLjBRxrm0484mRZ?=
- =?us-ascii?Q?eDlS6Y4piFc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(7416014)(376014)(19092799006)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LJhaF6B3tGu8rw/EZ6BJv40iSwamSSXU4j6y1SfhyfFlL1FYYEaQSQ2Slj7f?=
- =?us-ascii?Q?Lkk0rF4U2F1y5GZAxjYI+6hjnGZbu2NumzXKOI/QVIA8SsbSZZSOfy5OB039?=
- =?us-ascii?Q?3ojfk1WR+Gu8DHynclkmwkkRHlMmJIFbCDLv/d4XSYL8F/l4xaXq9XhEhKw6?=
- =?us-ascii?Q?UJZn2aooLgzARvndym8bpU9It4Y10Lzo5CVvTNBvv3jBGj4/9M9jHx2bZHTp?=
- =?us-ascii?Q?HriSokIE2pSfkYUA1/kSTX0XUavrY/PeEXtjOtDT+UZ4rL8jyQiX7fVEkh83?=
- =?us-ascii?Q?F8ckbVu2iw14d14lJT982pL0t6hdvT79PQXV5SPW92BplUluc6QCPzGU1d7x?=
- =?us-ascii?Q?L3yJSqj9ypkPmvdSu+5oxf+HzlLTCBXoooQPcR2iEl5yyoCr58GpbZTUl012?=
- =?us-ascii?Q?97aL/Lfz9Yq/izgOKdISk2zWAm1+F5PhF+GA8Pwegm6ZLvjWNB/Wc3O/pM4j?=
- =?us-ascii?Q?Mhmn1rSxKG9rttXGUEi+dQgXClTw9qtvkT5Dkr0c+6b654PVPJWqgoPfcAq8?=
- =?us-ascii?Q?K0kKyVqkY3zuAPDGm3tcCSyY1Fu9oGhxWjMAFOlQ58OXyS9JV7at0/mQqpzY?=
- =?us-ascii?Q?wJYpLny6ugdwyJ5K9Qk7fCSVYWuheQdFp2SQJxxMfiKr72OTixAnp0T0sS1G?=
- =?us-ascii?Q?hTIe9lk2ki+7reUGpthc7ahtp03JPHuYnWZN8KkhfeDuJfUshZarOcm5ycXr?=
- =?us-ascii?Q?aUPfV3aowD9CTI4/cNB4mtZOslv17owg1dy8noNkgsB1evJUOYLiyfMd/19r?=
- =?us-ascii?Q?7Tjd3QXX5J9naUJnp4Xz4I7d6bK1o5yi9AEUNjAl0YDKiYnVcQeRJFEKi5mv?=
- =?us-ascii?Q?EDQx045scSRIfWqEIiJmdsnhh4cIKUSq9Fma7RC+SOWIzkrJsV7RHVBtHGhV?=
- =?us-ascii?Q?RImW8lJcREW3g++NeTU9HELrjP0XitbT3+2el3Mie91AH521w2OQs614ISqP?=
- =?us-ascii?Q?5m/4Oj9Tp/gjSUo3Wfpu+Y3Keq1dNc6BzsdQVUEgU4zJgDYvy+gMDnmZmZkA?=
- =?us-ascii?Q?XqSoVgw1IdzObFByfFUcjXKJJDFWhjvhvXLlHgK+krqjhWee8Mkz/VfO/Asi?=
- =?us-ascii?Q?ozGOMgFKTfX9pkfrcC0RezXTQl4nVon9v5pzDPnBJfpsLnlHAI7Avn/QtNLL?=
- =?us-ascii?Q?CjQlhMD9G+3rCDj3iSs3CfWJsCCNidlmoyUmyNjbne/Unuz+fGOQzAcc4nw+?=
- =?us-ascii?Q?GJD4euXVupnycGQOaURB2xhauPqkdZto06gKYyFsJ5VaGHqi4fu+thI+UKK/?=
- =?us-ascii?Q?xV4a+frRJyTcNPkceUN6BdRcgt5L68SyAvT8MQrmFEfdUjr6q0LQeT0+ypPA?=
- =?us-ascii?Q?8ZJ0qhBSWZScxbRefkP7u6HrAd7WcVnz4VvZ02YcL6J/TaguMmbVI0Gzg8jj?=
- =?us-ascii?Q?ONQAf7UygUsMjFKr1jYuvhRRUFvVNnF17+ehx6ollgEhDsI1kGBoWOrjAp2Z?=
- =?us-ascii?Q?hx/tIpeaP0DaY05am83FmdM/7+yYD21sXCpI3x/vdssX4uW7KnmJbyxhKVnJ?=
- =?us-ascii?Q?ckHBFy0MVWcaeRzsgIoZQ072ZJUt8wj39nkkVpSfHd8Ce71+fzWEwKYA2l/N?=
- =?us-ascii?Q?7rirNbwYa+qZ+xPMw+5Z49uju1L+FeJKIiF8ivr3Tej40zo8Id4hHPWySU6w?=
- =?us-ascii?Q?lrrtPn4s9aFIasb2xACIg3ogmpC6ZhHIaxEwMyJCHCSQYJsDLzOqYLsoRL8o?=
- =?us-ascii?Q?ZwFKKA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6378916-2da9-44be-abad-08ddf9fe6eab
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 17:35:33.2118
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7A/9gyWmNBoJan2sL3c5UH8oS2DtIxMeEhYDjOy3ZTmlHh0dybgUlIIiFWLKagaFe+tRw1UaqbLQo/8SNhHjpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10504
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANmY0WgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDS0NL3czcCovcQl2gXElRvm66EYiVrpucZGCSkpxiYJ5oYaIE1FtQlJq
+ WWQE2Nzq2thYAdneXa2cAAAA=
+X-Change-ID: 20250919-imx8mq-hantro-g2-hang-cb04dcd07a84
+To: Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Hans Verkuil <hverkuil@kernel.org>, 
+ Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+ linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, kernel@collabora.com, 
+ Stable@vger.kernel.org, Nicolas Dufresne <nicolas.dufresne@collabora.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1598;
+ i=nicolas.dufresne@collabora.com; h=from:subject:message-id;
+ bh=qJ+biJM2TwoXnGA56XQYa05itNz8yBOcvDagz+NFrGU=;
+ b=owGbwMvMwCV203FKoGZC0RfG02pJDBkXZ3yovtPKc/bayuTVDL5Te89tm/FbdErJsc2fd4XbV
+ 7fkbXyo1FHKwiDGxSArpsjynjeoUfTI4UNSLPlCMHNYmUCGMHBxCsBEihkZ/odfUsnYEhFo8fR7
+ rNdNKW3pL4opq9dsnJ82w0Q2ereLgSDDf/8GueoZh8xYDdZ+yG/fINd6z3b93u8P9u5lXcdVuL+
+ 8nBsA
+X-Developer-Key: i=nicolas.dufresne@collabora.com; a=openpgp;
+ fpr=EF0D528115C4C3C21A046F12D9419451296072F4
 
-On Thu, Sep 18, 2025 at 02:19:44PM +0200, Jonas Rebmann wrote:
-> Both the nxp,sja1105 and the nxp,sja1110 series feature an active-low
-> reset pin, rendering reset-gpios a valid property for all of the
-> nxp,sja1105 family.
-> 
-> Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
-> ---
+First patch hardens the IRQ handler so the driver can resume after
+hitting bus errors (presumably AXI errors). This will reduce the
+risk of having to reboot the system in order to recover.
 
-Acked-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+The second patch actually fix the issue, ensuring the decoder won't be
+instructed to use address 0x0 as a reference anymore.
+
+The issues was discovered using GStreamer. A bug in the userspace lead
+to skippable (RASL) frames not being skipped if its past reference are
+missing. This will happen when seeking inside a video that makes use of
+this GOP configuration. The probably could also have been hit in lossy
+streaming use cases, such as WebRTC. The JCT-VC-HEVC_V1 ITU tests still
+results in 141/147 with two concurrent decoders.
+
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+---
+Nicolas Dufresne (2):
+      media: verisilicon: Fix CPU stalls on G2 bus error
+      media: verisilicon: Protect G2 HEVC decoder against invalid DPB index
+
+ drivers/media/platform/verisilicon/hantro_g2.c     | 88 +++++++++++++++++-----
+ .../platform/verisilicon/hantro_g2_hevc_dec.c      | 17 ++++-
+ .../media/platform/verisilicon/hantro_g2_regs.h    | 13 ++++
+ .../media/platform/verisilicon/hantro_g2_vp9_dec.c |  2 -
+ drivers/media/platform/verisilicon/hantro_hw.h     |  1 +
+ drivers/media/platform/verisilicon/imx8m_vpu_hw.c  |  2 +
+ 6 files changed, 98 insertions(+), 25 deletions(-)
+---
+base-commit: 40b7a19f321e65789612ebaca966472055dab48c
+change-id: 20250919-imx8mq-hantro-g2-hang-cb04dcd07a84
+
+Best regards,
+-- 
+Nicolas Dufresne <nicolas.dufresne@collabora.com>
+
