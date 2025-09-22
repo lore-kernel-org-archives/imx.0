@@ -1,210 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013011.outbound.protection.outlook.com [52.101.83.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB7DEACD;
-	Mon, 22 Sep 2025 06:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758522079; cv=none; b=Jbt3Zim7PZU6QF5yiFs/VgiUZV5JAdHKaNnTMyXqhFFFmtH84A71lZTaM5Xk4WsDmY2CgHpTeU9UGbRr0vVgcQwNq8qTqSbEnjoajW+4KwFbukHF+xqlsq3JJswYhQvU0zpMPrqOpTGkWWb7xMO+rp1UQv95Hmz67iIotWLPN1I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758522079; c=relaxed/simple;
-	bh=eoFLH+PsSdyp4SGdZ6FacLOobyF33z0eyFcT731wQJQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CvW17WkdkV8SywL5txM3djEnirQ+7yU5aOGU2GRhQU8px/L+ZNEGXV37jSnn6KfRn0tDb3oDjQik/fVNQgbHFsgb0ggc32c/QwsmpB+Yk4H64xrF4PVwiwZzBUhgNlVPPOsO/5YLTeVaBfAZpVmCjN6U05alNLqNs7KFxau2wRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s5bk4DNT; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4752236E5
+	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 06:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758522886; cv=fail; b=MpwLM4bkGs1s/jRya5h0Cfrs+i5g/v8WZ1n8AZzuG12LkfIB+uUQQk+shdmFwjpV1G1Mhezt9sn9RS+ATJ+6pj4GXRiV9IvfAAwgFdDRlYmOB4BWP71aXPSfq754xMxrGCL84NKPVjxGdJiE93bIEKVZ0YJDXhaKE0FKIOwuP1s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758522886; c=relaxed/simple;
+	bh=nUESTG1gh9df6qZIvouCAXBm8zm6b3W5H3UYGBoGyg4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ikOmqzsoF92vqXdgz4c8egMisWUmxmmOPXwxXeEws902RqwOqxlgAXkXyMTDQ1wprC6pKSDm8S3ZcNeKvdf29XirZe1rTkvJ2Zss+qstMSMvhzpxfkOsUOdKbbj5mLKfcTMI6BDPzPZG83FPwSQNNF9jQlgf4Lq1jYBoVjz5Pmk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lN8gufNe; arc=fail smtp.client-ip=52.101.83.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s5bk4DNT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0344CC4CEF5;
-	Mon, 22 Sep 2025 06:21:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758522079;
-	bh=eoFLH+PsSdyp4SGdZ6FacLOobyF33z0eyFcT731wQJQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s5bk4DNTrF+fVQt7Y4vSJDQSLniwAcB1wt81kInI24cqVmOK8zXroa7j4dVWfcwVl
-	 v5WQjcnGafariu5UTDAmyjc31ph71NhaoGpdtNNOry+j7rWUUOf2mlv1nCiAknwJes
-	 2VvcDleMFWUAAs3lP0LCjILv8DxMaKZmKy/HDnM6N3ux1bVsi8ZRviCN7qX8jbF7Uj
-	 8PCwZDBR0/9vLvw3zKvBiQ9bCzIc67+j4gByspw2cSXwpZS8Nm/vu/AaTcS6YINWRX
-	 hcEBY4IW9mNIZcju+o3X672Xe3cnVPMc7Xl2gmSm/w2Y6zmFrEkxA3RQHYQ6fFsyAO
-	 Iv0rWyUzUMQjg==
-Date: Mon, 22 Sep 2025 11:51:07 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: chester62515@gmail.com, mbrugger@suse.com, 
-	ghennadi.procopciuc@oss.nxp.com, s32@nxp.com, bhelgaas@google.com, jingoohan1@gmail.com, 
-	lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com, 
-	Ghennadi.Procopciuc@nxp.com, ciprianmarian.costea@nxp.com, bogdan.hamciuc@nxp.com, 
-	Frank.li@nxp.com, linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	cassel@kernel.org
-Subject: Re: [PATCH 1/3 v2] dt-bindings: PCI: s32g: Add NXP PCIe controller
-Message-ID: <iom65w7amxqf7miopujxeulyiglhkyjszjc3nd4ivknj5npcz2@bvxej6ymkecd>
-References: <20250919155821.95334-1-vincent.guittot@linaro.org>
- <20250919155821.95334-2-vincent.guittot@linaro.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lN8gufNe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=u898xUSQcEMsMDZlApE0UsopTbIcJkhwTUQirHLQZ8gh7LHuV1XXkALGtS6cY0HEenE+afNk+G4+KpfgxiKsv2U7C0BUjVLUPiNeuzERLnZTQrdR1ueOHJLMz2Iz/L9MuPnym9DcAOcB3K1QBSgBe/gsZbPCJZKE0gXh7zyhLjdi9WN+L+0iTlKM0uo5uPNIShHSAQgWIt4ZNZL/crzvE88cdKeyoOkdkWlertOyTXTUeE8cVEmS0T8nWFMQVPlNFNBeTucAjEVx5lk8dbnyUYGndwumCr4gdR4PAVA7p/EL4+9+D457lhZArvmsITdQi8EQ2i5HLV7IstZ1mSl3xQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nUESTG1gh9df6qZIvouCAXBm8zm6b3W5H3UYGBoGyg4=;
+ b=LMfaNxIoLpsNN4YEpdfh7pzZvXONaswsrAHFrmPVumLtG0UXKTgPozl+qycnpTEKVnREEkueiH6H7ftvprW6/weSILS7Q6otb5L+/OYFL37whI+q7WDi4v2fKfg5eLiWFZUZ54+2uFPJLSgjzAmBXvnPgm1g/7JNXs5uw9j1vrXtJ/430zUMFbfpV4ocXBO/gW4WZ8zx7wwB3AM/G0Rfhnv7OyZpB5zAnxAJ4fh731eNw0OzhagUmrQDrb917WO0GjOsLa2D0oHnG0rzSJxusj+RERblnlfGUU/6a26wapou/Dh/9ZX+CgpD9x1nO9M2haQzg6W7QRS2xF52b+g5WQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nUESTG1gh9df6qZIvouCAXBm8zm6b3W5H3UYGBoGyg4=;
+ b=lN8gufNeNnyQyFUQgrn+h348qOcLVdOSCWnPUHvBmy/YRgmHdEWfXK3GPAQAZKdsUozQ9Sg6bIVuk2M9MudEnqcwsK2QlOc1XFsj6HRPz//PeB8A87J++sE9+7LMu5RMN2ktKdVBvMZ1OoPuVVx4Dvj7v8jSQjn4gvVXRjg3nA49WEIowxwk4wByH9FBjeHzKFHgpr488KcwqirBq73EQqWUWv/0PmSHfY6Q3abhSWV6Jygcb8vLC0MfGI37LQOilgnqRWCmh8uh8f7+3WknygAlDg/+U+ZR8H6Ahd+sJPdG4SYne/bftYiNL0dGDL+0/Q4ICfDclvxf3f1GAi3KvA==
+Received: from AS8PR04MB8833.eurprd04.prod.outlook.com (2603:10a6:20b:42c::19)
+ by AS8PR04MB8403.eurprd04.prod.outlook.com (2603:10a6:20b:3f7::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Mon, 22 Sep
+ 2025 06:34:40 +0000
+Received: from AS8PR04MB8833.eurprd04.prod.outlook.com
+ ([fe80::209c:44e4:a205:8e86]) by AS8PR04MB8833.eurprd04.prod.outlook.com
+ ([fe80::209c:44e4:a205:8e86%3]) with mapi id 15.20.9160.008; Mon, 22 Sep 2025
+ 06:34:40 +0000
+From: Hongxing Zhu <hongxing.zhu@nxp.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+CC: Frank Li <frank.li@nxp.com>, "jingoohan1@gmail.com"
+	<jingoohan1@gmail.com>, "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org"
+	<kwilczynski@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>, "shawnguo@kernel.org"
+	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
+	<festevam@gmail.com>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v5 1/6] PCI: dwc: Remove the L1SS check before putting the
+ link into L2
+Thread-Topic: [PATCH v5 1/6] PCI: dwc: Remove the L1SS check before putting
+ the link into L2
+Thread-Index: AQHcG9/yKmOyPQFTd0uVVtf8TcR5V7Sbr2IAgAMt42A=
+Date: Mon, 22 Sep 2025 06:34:40 +0000
+Message-ID:
+ <AS8PR04MB8833C4E6F51614D78D349E6C8C12A@AS8PR04MB8833.eurprd04.prod.outlook.com>
+References: <20250902080151.3748965-1-hongxing.zhu@nxp.com>
+ <20250902080151.3748965-2-hongxing.zhu@nxp.com>
+ <b44numhx2wnelicynz36b3wdqrkudchn6l2s2jjmg6iecjk6ae@uo535zip3vq3>
+In-Reply-To: <b44numhx2wnelicynz36b3wdqrkudchn6l2s2jjmg6iecjk6ae@uo535zip3vq3>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB8833:EE_|AS8PR04MB8403:EE_
+x-ms-office365-filtering-correlation-id: 471c04e3-fb5c-449e-3ec4-08ddf9a21bcb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|1800799024|376014|7416014|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?dzg5d2lram0xN3FUbzdHSjN5MkxmOXZvZkZuYzBWd2VTNG5HdUZwMkczNWtU?=
+ =?utf-8?B?UXNCRWFGeC9UaXJQUWRhVThxRk9Yd0FHcmQ1OU56aW1hTFZoaDNpVzZJWmgr?=
+ =?utf-8?B?aDNrY2xxL2dUSWFTcUZvd2VqNFlrcCtkNmRRWit4cVNJUFVxRVJPekRzSUZS?=
+ =?utf-8?B?ak5wRmNaZWQxcHdJd2M3bkdVbmFrVnM2WlVqZUg1NUF1SDFWSEcreHdHbHQx?=
+ =?utf-8?B?RytGaVFMZHlaK3ZIQkhISkRWMjdYTGFGaVI4R045OFhqejJ4dDR4amszb1Vk?=
+ =?utf-8?B?V3ZRZmFpZVVGV05mSDVJT3lzMmxiUEVlZVgyamxqVHJzNnVSQnVTenRyUTEw?=
+ =?utf-8?B?MG1ZcFhOZmpIeUZCaVkvVHN1TmpSUzRjeExBN1VZZEtyWFpYZDlDc3NLRFdH?=
+ =?utf-8?B?VmpQV3I2Lzl3RmxmL3JBdW1nNit0aTRYR1RpYzdKVVRielNEdmhtS0U5b2ly?=
+ =?utf-8?B?VjV0WmpTMUhteDRtaGV4TGsxMTQ2VlBwQUtqNG1zeW9QQmtJaEZ6WFczT1hH?=
+ =?utf-8?B?NUxiRlVQVlpTaWNvQWVKRjFFcmJXYVFBdHFVLzA5TzlVYlpVcERPMGw1U1Yz?=
+ =?utf-8?B?RTd2TXoxNWJmOU5pb3cxWnVYenY3aXgrOSs0L3Z2eFF3UnE5Uk00T1k5cG0y?=
+ =?utf-8?B?enUwOVlhZEJDYSszWi90VjRDMHJhMjh0c3lTbkNvR2VxSlpUQWRyRE5Cb2lB?=
+ =?utf-8?B?N0FYKzhQSVIwa0VLR2N3NFRNaFZDRnJScFRYS0J2R21DVHg0MHcvQUNyT0lz?=
+ =?utf-8?B?UTZ3STBEb2FSTzNaRWlsdnFTUTBLTnpjQTJSREl3aWpXQTNobEhYaXNXTUVP?=
+ =?utf-8?B?YUczYXZTZjFLenhpdGgxU2g4ajczK2d4UUlJMjg1d0NTYndXdnNFZFdRT2Q5?=
+ =?utf-8?B?UkhJWVhXTmNqaGxyRG5JRWtaZHFPaTl3RHpjMHVlMk10Rk00MkdZSDV6N2gx?=
+ =?utf-8?B?bnlCRkpKTFU3aUVoNm8zTUtkT0ZzMEhUMWZDL09GeUhmUHErb1M4YkNCN3dl?=
+ =?utf-8?B?Mk5ETytFeUtFM0w4cmJpRDgrSXVUSjk3UGhjUXJWVWxkbDc3MW5XMjlqTm1H?=
+ =?utf-8?B?a1FkZW1qbEtrUlM0YXVWQTlCUVpEalJyRWE3d1F0WUlyOTdoaDZvSFQrcko2?=
+ =?utf-8?B?WWlRRlhsUnI1bFc4ZGpNaVA1REFLUkVrY2hpT3NZNlJRaDhWam9pTUpQaWNP?=
+ =?utf-8?B?ZkdaU3BwUms5ZlNPS3dQZnNYY0R6K1VKN1U1aDZFdXZDeWFnemVkSldXWVFT?=
+ =?utf-8?B?Q0RTT2NYSE9QaFluZStuR3d1VUlyV3NiSVBPL2R0bmlGeTVNc0ZMdkRBSEll?=
+ =?utf-8?B?QzhJWFVWS2NpSWZzZDlraVRjaDl0V3Z5Zm40VnFYd0JRRnVQWDl1ZEJzYVcx?=
+ =?utf-8?B?eEFOT3l1UFh3aU9mVGhUa2V6SHQ1QXJmVVd4Zi9nMlZQT1dXMk1mb21pYVBs?=
+ =?utf-8?B?YVNTNlJ5RDBRY0psV1o0SHg0bU1MMGN3NjJDVVNnNGFxVWJPdUlrM3BhU0lZ?=
+ =?utf-8?B?cy9MbTlncnF0eVpsd3grSXpndmNvWTlhazZUWTVkd2gvWUVScUFLNkQ5bEdn?=
+ =?utf-8?B?WjdELzZLZzdxTFF1ZlFXd1cvd1ozcFI3VUlZRGttdkI0MHU0RGZGUkZXc3FV?=
+ =?utf-8?B?RHZGTm5GSzNXSy8rbGFDUDgvVjYrMUUva0R1MVpQL1FDbTNuRVBhNDBRaUkv?=
+ =?utf-8?B?bmVKT0tCWnBRbGZSMkdaOWs5aVdMZXk4Nno0QmhRYlE0ZXlzWnNKN0c3Tit5?=
+ =?utf-8?B?emh1U0xYUjRPS1ZyK2Y1c2Rybnk5V2c5ejROT1NPMHVvL3FTSzRRRHFzN0JL?=
+ =?utf-8?B?VkNNYlBaWEZuR1FwS1FybDUwaXhsMnQ2dGkzbFlMYW9wUXJIa0JSYU9EY09P?=
+ =?utf-8?B?aGx1YkNJVmNzNDBRS3k1bzdkUW9pR3lRblMvcXNySUVvUXFDUHlJNmYvRjZm?=
+ =?utf-8?Q?aTYvFtPBvME=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8833.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(7416014)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?d2pBVlJEdlZpSHJwOE93SERTL2paby9lclNBOGVEa2dtOW5BNHpYdkNlWTFP?=
+ =?utf-8?B?RW0xSTEwa0Q4dmxhMHYzN3gvaTZxb1RnbzE0eEFJeXRRL1Q3SVFIZmtKaGlr?=
+ =?utf-8?B?bmg3OXhRNUxEMXhEVUtKaUFTNEphTm9MQ3psNmhPb2QxeVBpamZvSys3RmhK?=
+ =?utf-8?B?UHgrb2dGUThXVWJqWDFjZXJvR2t5OXk5RE5iV3dXSmRoMHdxN1QrQ3lrZncx?=
+ =?utf-8?B?eHYzSEhKeVFFLzBPUU95RFppRUJVV0Vka0dGQ1FLa1ZkSE1CTy9NcDB0MFhD?=
+ =?utf-8?B?aGpyaUlzalJ4S0k2enJ0TnVORW45aHF1REx6cTlzZTNjcklBVmMzeENuSURY?=
+ =?utf-8?B?bHlHOWhHWHE1U0llNHlrdSt3YWhOYkN5OTlON3g0UDh3cXFMa1dpRE4welNu?=
+ =?utf-8?B?TU5rdzhrUGRCUjNCQUQ5WkdVbHgvZjA2cUk0WC8xQ3RTUlh5RXQ1KytYQ1Z2?=
+ =?utf-8?B?OHZUTUhpY25CQjMzeVp4ZGxyU2hSRjArdTB1K2pJbjJCN01QNlFIbnJmSThC?=
+ =?utf-8?B?eVhJQXBES0NDV1A4Tk56ZThIUWJiclFvRUxuQXlsS3VFYkltRmp6Nm9tSUpt?=
+ =?utf-8?B?UUlQV2VSZmdNV1ZadkNGWm1xRDg5d3hKNWdGQzQvYmRyZ1NNdUNSV1lkZTQ5?=
+ =?utf-8?B?alpPVkNZQStIYmprcjZhcnArQmFKQmxLTjRHNFQ4M0crOFpzdXM5VU1ERFpo?=
+ =?utf-8?B?TjBDTXhSVkZnTjdvd3dpTjFqQVdwa0ZXbEkrSDMrbTZNOHI2NXIzMG56dStu?=
+ =?utf-8?B?RTZRbDJMTmhPOWpXK283bmQrL0ppNWRVaXYrSmRjQm5JenQ1TUszMWVqcFFs?=
+ =?utf-8?B?T3VtWmlXSVFMOUdnajN0TWZmbnovaCsxendYTWJSamhFSWxaWGwxYVVkcHVY?=
+ =?utf-8?B?ODhnTFhiblR2Y2xyWFBZWkp6Rk9yMmZ0bFg4QUNoR2ZzQ0FyanJISVhvN2RY?=
+ =?utf-8?B?MlRCV1k0ZVQyK3BYUmlFYUhlUlA3b1hrMVlRL0ZBUmV0dVNRdTJVZFhScW1T?=
+ =?utf-8?B?Vi9ndSs0ZDlpZmR6OGY1eERjcWZzL0tVZlBCclVUWnpvZXZQWGxKUktkbDZB?=
+ =?utf-8?B?cWhjSzEwOGlqUWJyWmduSjNSYzdnYkJaWXJXdGNIZjM3NjRIN1ZydFVRTEVt?=
+ =?utf-8?B?QlpHRVpUOXBEQkhqTVhLc3gwbkFMZlBBRDN5aHB4aG9DUlFON0oxb1NudEdB?=
+ =?utf-8?B?ejNnaE9Eang2TkJmMFZVd0dJSk9FUlZCd1I5Y1I1U1lKYkRkUGp1Sk1GMnQw?=
+ =?utf-8?B?L240L1AxNTI2ZFJzVWJtMzl0c3ZwTFcvRi9MU09NYjJMbVBvdGkxTWRqSHVi?=
+ =?utf-8?B?cHQzbk4zL1lhSHV5M25GbkNEay9mSjVZdjdET0hDUkJGNnN0VVYwRTdYbitL?=
+ =?utf-8?B?ZTJ2Y0R3bmJMbXdQWkZVMWwrSyt4VkhJYlpNdDNkR09WQWNuT0x5YmhSLzdh?=
+ =?utf-8?B?bytqNEZoNW8zcjZWcDl0TVZnR3NMVVNMa1MvUEdiVjFTdk9Gai80RVdLL3Zo?=
+ =?utf-8?B?NzJSbDNNM3hiLzJOWDJTVFV0UUpoMHJyRXpkTENpV3EyZWYxb3pEUjRpcFQr?=
+ =?utf-8?B?blA2aFRxdXFFQS9uWmFxMTVBa3hNVEZ6bjFXNEJyKzVka3JkcjVxQmxJbGk0?=
+ =?utf-8?B?ZzUyaGcySW5kdUtqcS9iblYzaEF1L3VwYW8ydGJpSFluRGxoTGJSMnZDOVRa?=
+ =?utf-8?B?ZkNSdWR2L0dtb1l0a0Qvbkt2SUQ2WGViVDBBV0Jud0VlUHBPc3hHVC9wWENu?=
+ =?utf-8?B?Zm9xNHI2TGo3Q1Y5eUxBM01LdTVXajkzd2F1QnBRcloyTktMQTROMjBHOFdK?=
+ =?utf-8?B?V2xmTlg0SXdwWk9SeEdrTERJRFFVSmJHWTRHQ0dRQU9UdGlCaHVJMTBIWUVk?=
+ =?utf-8?B?TDNxNDZzQ3k0NjNnaGkrenNVM0Yvck1UVk9ZNDdKQkFuMzRhYk56amtXSTJQ?=
+ =?utf-8?B?bVFkdEtQZXVEUnhLSk9Ka0l0d0VxWk1kNFRUZ1BVcnQzVlpTTW44cEZoUUZB?=
+ =?utf-8?B?SUlta3Bhd0FoSEh5ZWlyNG1rOEhCcnd5Ui9OaXBZU0NwNENCNy9wMlJXOXgy?=
+ =?utf-8?B?cTB0NnZVck44eUFGVXlZazVXNmZnZ25PZ1dxWFFVQkh0b3BuWk1kSXArT3B6?=
+ =?utf-8?Q?PYWE=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250919155821.95334-2-vincent.guittot@linaro.org>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8833.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 471c04e3-fb5c-449e-3ec4-08ddf9a21bcb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Sep 2025 06:34:40.2728
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: P1Xi67qex4Ykf3I6kLic+p4A+hlOIN4yatZSM+ikF843/+1Ixn122BZ26ZRMpKrMwCqOCpin0q73aFiL0+gXlA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8403
 
-On Fri, Sep 19, 2025 at 05:58:19PM +0200, Vincent Guittot wrote:
-> Describe the PCIe controller available on the S32G platforms.
-> 
-
-You should mention that this binding is for the controller operating in 'Root
-Complex' mode.
-
-> Co-developed-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
-> Signed-off-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
-> Co-developed-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
-> Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
-> Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
-> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-> Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-> Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-> Co-developed-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
-> Co-developed-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
-> Signed-off-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
-> Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> ---
->  .../devicetree/bindings/pci/nxp,s32-pcie.yaml | 131 ++++++++++++++++++
->  1 file changed, 131 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/pci/nxp,s32-pcie.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/pci/nxp,s32-pcie.yaml b/Documentation/devicetree/bindings/pci/nxp,s32-pcie.yaml
-> new file mode 100644
-> index 000000000000..cabb8b86c042
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/pci/nxp,s32-pcie.yaml
-> @@ -0,0 +1,131 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/pci/nxp,s32-pcie.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP S32G2xx/S32G3xx PCIe controller
-> +
-> +maintainers:
-> +  - Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
-> +  - Ionut Vicovan <ionut.vicovan@nxp.com>
-> +
-> +description:
-> +  This PCIe controller is based on the Synopsys DesignWare PCIe IP.
-> +  The S32G SoC family has two PCIe controllers, which can be configured as
-> +  either Root Complex or Endpoint.
-> +
-
-But this binding is going to cover only the 'Root Complex' mode, isn't it?
-
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - enum:
-> +          - nxp,s32g2-pcie     # S32G2 SoCs RC mode
-> +      - items:
-> +          - const: nxp,s32g3-pcie
-> +          - const: nxp,s32g2-pcie
-> +
-> +  reg:
-> +    maxItems: 7
-> +
-> +  reg-names:
-> +    items:
-> +      - const: dbi
-> +      - const: dbi2
-> +      - const: atu
-> +      - const: dma
-> +      - const: ctrl
-> +      - const: config
-> +      - const: addr_space
-> +
-> +  interrupts:
-> +    maxItems: 8
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: link-req-stat
-> +      - const: dma
-> +      - const: msi
-> +      - const: phy-link-down
-> +      - const: phy-link-up
-> +      - const: misc
-> +      - const: pcs
-> +      - const: tlp-req-no-comp
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - interrupts
-> +  - interrupt-names
-> +  - ranges
-> +  - phys
-> +
-> +allOf:
-> +  - $ref: /schemas/pci/snps,dw-pcie-common.yaml#
-> +  - $ref: /schemas/pci/pci-bus.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    #include <dt-bindings/phy/phy.h>
-> +
-> +    bus {
-> +        #address-cells = <2>;
-> +        #size-cells = <2>;
-> +
-> +        pcie@40400000 {
-> +            compatible = "nxp,s32g3-pcie",
-> +                         "nxp,s32g2-pcie";
-> +            reg = <0x00 0x40400000 0x0 0x00001000>,   /* dbi registers */
-> +                  <0x00 0x40420000 0x0 0x00001000>,   /* dbi2 registers */
-> +                  <0x00 0x40460000 0x0 0x00001000>,   /* atu registers */
-> +                  <0x00 0x40470000 0x0 0x00001000>,   /* dma registers */
-> +                  <0x00 0x40481000 0x0 0x000000f8>,   /* ctrl registers */
-> +                  /*
-> +                   * RC configuration space, 4KB each for cfg0 and cfg1
-> +                   * at the end of the outbound memory map
-> +                   */
-> +                  <0x5f 0xffffe000 0x0 0x00002000>,
-> +                  <0x58 0x00000000 0x0 0x40000000>; /* 1GB EP addr space */
-> +            reg-names = "dbi", "dbi2", "atu", "dma", "ctrl",
-> +                        "config", "addr_space";
-> +            dma-coherent;
-> +            #address-cells = <3>;
-> +            #size-cells = <2>;
-> +            device_type = "pci";
-> +            ranges =
-> +                  /*
-> +                   * downstream I/O, 64KB and aligned naturally just
-> +                   * before the config space to minimize fragmentation
-> +                   */
-> +                  <0x81000000 0x0 0x00000000 0x5f 0xfffe0000 0x0 0x00010000>,
-
-s/0x81000000/0x01000000
-
-since the 'relocatable' is irrelevant.
-
-> +                  /*
-> +                   * non-prefetchable memory, with best case size and
-> +                   * alignment
-> +                   */
-> +                  <0x82000000 0x0 0x00000000 0x58 0x00000000 0x7 0xfffe0000>;
-
-s/0x82000000/0x02000000
-
-And the PCI address really starts from 0x00000000? I don't think so.
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBNYW5pdmFubmFuIFNhZGhhc2l2
+YW0gPG1hbmlAa2VybmVsLm9yZz4NCj4gU2VudDogMjAyNeW5tDnmnIgyMOaXpSAxMzo1OA0KPiBU
+bzogSG9uZ3hpbmcgWmh1IDxob25neGluZy56aHVAbnhwLmNvbT4NCj4gQ2M6IEZyYW5rIExpIDxm
+cmFuay5saUBueHAuY29tPjsgamluZ29vaGFuMUBnbWFpbC5jb207DQo+IGwuc3RhY2hAcGVuZ3V0
+cm9uaXguZGU7IGxwaWVyYWxpc2lAa2VybmVsLm9yZzsga3dpbGN6eW5za2lAa2VybmVsLm9yZzsN
+Cj4gcm9iaEBrZXJuZWwub3JnOyBiaGVsZ2Fhc0Bnb29nbGUuY29tOyBzaGF3bmd1b0BrZXJuZWwu
+b3JnOw0KPiBzLmhhdWVyQHBlbmd1dHJvbml4LmRlOyBrZXJuZWxAcGVuZ3V0cm9uaXguZGU7IGZl
+c3RldmFtQGdtYWlsLmNvbTsNCj4gbGludXgtcGNpQHZnZXIua2VybmVsLm9yZzsgbGludXgtYXJt
+LWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOw0KPiBpbXhAbGlzdHMubGludXguZGV2OyBsaW51
+eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjUgMS82XSBQ
+Q0k6IGR3YzogUmVtb3ZlIHRoZSBMMVNTIGNoZWNrIGJlZm9yZSBwdXR0aW5nDQo+IHRoZSBsaW5r
+IGludG8gTDINCj4gDQo+IE9uIFR1ZSwgU2VwIDAyLCAyMDI1IGF0IDA0OjAxOjQ2UE0gKzA4MDAs
+IFJpY2hhcmQgWmh1IHdyb3RlOg0KPiA+IFNpbmNlIHRoaXMgTDFTUyBjaGVjayBpcyBqdXN0IGFu
+IGVuY2Fwc3VsYXRpb24gcHJvYmxlbSwgYW5kIHRoZSBBU1BNDQo+ID4gc2hvdWxkbid0IGxlYWsg
+b3V0IGhlcmUuIFJlbW92ZSB0aGUgTDFTUyBjaGVjayBkdXJpbmcgTDIgZW50cnkuDQo+ID4NCj4g
+DQo+IFNvcnJ5LCBJIGNvdWxkbnQnIGRlY2lwaGVyIHRoaXMgc3RhdGVtZW50LiBDb3VsZCB5b3Ug
+cGxlYXNlIGVsYWJvcmF0ZT8NCj4NCkl0J3MgbXkgZmF1bHQgdGhhdCBJIGRvbid0IGRlc2NyaWJl
+IGl0IGNsZWFybHkuIFdpbGwgdXBkYXRlIHRoZSBjb21taXQgbWVzc2FnZS4NCkhlcmUgaXMgdGhl
+IG9yaWdpbmFsIGRpc2N1c3Npb24gYWJvdXQgdGhpcyBwYXRjaC4NCmh0dHBzOi8vbG9yZS5rZXJu
+ZWwub3JnL2lteC8yMDI1MDgxODE1NDgzMy5HQTUyODI4MUBiaGVsZ2Fhcy8NCg0KQmVzdCBSZWdh
+cmRzDQpSaWNoYXJkIFpodQ0KIA0KPiAtIE1hbmkNCj4gDQo+ID4gRml4ZXM6IDQ3NzRmYWY4NTRm
+NSAoIlBDSTogZHdjOiBJbXBsZW1lbnQgZ2VuZXJpYyBzdXNwZW5kL3Jlc3VtZQ0KPiA+IGZ1bmN0
+aW9uYWxpdHkiKQ0KPiA+IFNpZ25lZC1vZmYtYnk6IFJpY2hhcmQgWmh1IDxob25neGluZy56aHVA
+bnhwLmNvbT4NCj4gPiAtLS0NCj4gPiAgZHJpdmVycy9wY2kvY29udHJvbGxlci9kd2MvcGNpZS1k
+ZXNpZ253YXJlLWhvc3QuYyB8IDggLS0tLS0tLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDggZGVs
+ZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9wY2kvY29udHJvbGxlci9k
+d2MvcGNpZS1kZXNpZ253YXJlLWhvc3QuYw0KPiA+IGIvZHJpdmVycy9wY2kvY29udHJvbGxlci9k
+d2MvcGNpZS1kZXNpZ253YXJlLWhvc3QuYw0KPiA+IGluZGV4IDk1MmY4NTk0YjUwMS4uOWQ0NmQx
+ZjAzMzRiIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvcGNpL2NvbnRyb2xsZXIvZHdjL3BjaWUt
+ZGVzaWdud2FyZS1ob3N0LmMNCj4gPiArKysgYi9kcml2ZXJzL3BjaS9jb250cm9sbGVyL2R3Yy9w
+Y2llLWRlc2lnbndhcmUtaG9zdC5jDQo+ID4gQEAgLTEwMDUsMTcgKzEwMDUsOSBAQCBzdGF0aWMg
+aW50IGR3X3BjaWVfcG1lX3R1cm5fb2ZmKHN0cnVjdCBkd19wY2llDQo+ID4gKnBjaSkNCj4gPg0K
+PiA+ICBpbnQgZHdfcGNpZV9zdXNwZW5kX25vaXJxKHN0cnVjdCBkd19wY2llICpwY2kpICB7DQo+
+ID4gLQl1OCBvZmZzZXQgPSBkd19wY2llX2ZpbmRfY2FwYWJpbGl0eShwY2ksIFBDSV9DQVBfSURf
+RVhQKTsNCj4gPiAgCXUzMiB2YWw7DQo+ID4gIAlpbnQgcmV0Ow0KPiA+DQo+ID4gLQkvKg0KPiA+
+IC0JICogSWYgTDFTUyBpcyBzdXBwb3J0ZWQsIHRoZW4gZG8gbm90IHB1dCB0aGUgbGluayBpbnRv
+IEwyIGFzIHNvbWUNCj4gPiAtCSAqIGRldmljZXMgc3VjaCBhcyBOVk1lIGV4cGVjdCBsb3cgcmVz
+dW1lIGxhdGVuY3kuDQo+ID4gLQkgKi8NCj4gPiAtCWlmIChkd19wY2llX3JlYWR3X2RiaShwY2ks
+IG9mZnNldCArIFBDSV9FWFBfTE5LQ1RMKSAmDQo+IFBDSV9FWFBfTE5LQ1RMX0FTUE1fTDEpDQo+
+ID4gLQkJcmV0dXJuIDA7DQo+ID4gLQ0KPiA+ICAJaWYgKHBjaS0+cHAub3BzLT5wbWVfdHVybl9v
+ZmYpIHsNCj4gPiAgCQlwY2ktPnBwLm9wcy0+cG1lX3R1cm5fb2ZmKCZwY2ktPnBwKTsNCj4gPiAg
+CX0gZWxzZSB7DQo+ID4gLS0NCj4gPiAyLjM3LjENCj4gPg0KPiANCj4gLS0NCj4g4K6u4K6j4K6/
+4K614K6j4K+N4K6j4K6p4K+NIOCumuCupOCuvuCumuCuv+CuteCuruCvjQ0KDQo=
