@@ -1,36 +1,35 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B572749E6
-	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 08:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D682772D
+	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 08:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758528478; cv=none; b=gwBaUHthAuUEMiiA/qNwmCSuF45CrTwHW0a8Ah21Y3MRaoMBiQ6FaJs1XlLpavwvWtfCvsPSsKnizs02P04npassiVVnKybDkoExQZfNdJOV70YD1sFsZjEavtpb0wKOgtj2o5C6FSVH/pFC07YsvjaedCqIz7mrXbpLtf+dEC8=
+	t=1758528616; cv=none; b=elM1UmCdYo+uWF7IH9IIFPvyf+0V1gvVxVfaFwOUqVYJ5kxyZ3xjHuYfAL9wnPgPtGCi1wp8avg4bTiB6unTlagomoh/ZqVM4ijsmSfRALHl6YUqmA+aKxCZrk/28x5Nr4n0o3KJ/K3FkRfgiSi/gQnD/8dpDNyA5Pqcw8fWCM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758528478; c=relaxed/simple;
-	bh=vhNsUXDWD5mlApfmMJfi5q4ViL1LmxbLuD0y5YquSBE=;
+	s=arc-20240116; t=1758528616; c=relaxed/simple;
+	bh=18f5YMsjYZt/JpwSvP2ZKdCGT3Fnxm5o02Bv+/atmq0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=st92Rp2S32Aml3JtieDaMKjlaD3UbCAmqViRRzk2dJ/muHYq/Zzih37hZ6Ma5dPRlKbm5N5ZgT/0FKmJKbI7/5DksUi6ZbQyma9H0/NmZKKQ8LtLPZlqbDlzTUqUxEY511QI3y9Vj+JtYrSmiCVTSuP6xDHz0fWV7b353PTV3pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Pzp+430z; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=p8Rk4bOPj77caFREv+ZIGHlc9fgiPKiNf0oAP0qlBP3c/lEfvhSRl6J+IZLSeVcFUWfYSJyvhNhi48wr+Bx94ZR6igTVPrrXWqBmFbYXbwplczOHYpjpfuJGeF3OffcksRYFePjycmO1rKTnRJ+a1j3PdwImuBqTAjFNMwADEN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=jVy1UK05; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Pzp+430z"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="jVy1UK05"
 Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 54D0BF89;
-	Mon, 22 Sep 2025 10:06:32 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 9F127F89;
+	Mon, 22 Sep 2025 10:08:50 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1758528392;
-	bh=vhNsUXDWD5mlApfmMJfi5q4ViL1LmxbLuD0y5YquSBE=;
+	s=mail; t=1758528530;
+	bh=18f5YMsjYZt/JpwSvP2ZKdCGT3Fnxm5o02Bv+/atmq0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pzp+430zL259s4SgzVaIeEXvGiwDzPVPmd9jsSQzvLDxnSNdgcAL7fPJ7Q7RRR3PZ
-	 56129ewwGgIXI1tIyeum9dD1sHNrfcGxr0rJfAeE+ClmvRvlQ2emgMG2id2eRaviMX
-	 HK7yw9bW6fxlOKWgY+g477a9rXINLXzqA3Goyh7o=
-Date: Mon, 22 Sep 2025 11:07:23 +0300
+	b=jVy1UK05TYd2fa94+IeDgPM1EOXE0rfftB6gdSDd0BrAR2UCLtWeCZ6GUmL1c9HYS
+	 6fBBr7CnlWx/EL+J16yScsAC6xdqG6Qd41aCIQC3AJtwimqY7RWP4qAT6VmdO9cm0B
+	 gnj/P35YRjLORqT9Fsz8sX66rUrgX4DmXSrah2/Q=
+Date: Mon, 22 Sep 2025 11:09:35 +0300
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Sakari Ailus <sakari.ailus@iki.fi>
-Cc: Isaac Scott <isaac.scott@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+To: Isaac Scott <isaac.scott@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rui Miguel Silva <rmfrfs@gmail.com>,
 	Martin Kepplinger <martink@posteo.de>,
 	Purism Kernel Team <kernel@puri.sm>,
@@ -40,12 +39,11 @@ Cc: Isaac Scott <isaac.scott@ideasonboard.com>,
 	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 2/3] media: imx-mipi-csis: Store the number of
- data_lanes configured in dt
-Message-ID: <20250922080723.GI10540@pendragon.ideasonboard.com>
+Subject: Re: [PATCH v3 3/3] media: imx-mipi-csis: Get number of active lanes
+ via mbus_config
+Message-ID: <20250922080935.GJ10540@pendragon.ideasonboard.com>
 References: <20250915-mbus-config-active-lanes-v3-0-97a1282a410b@ideasonboard.com>
- <20250915-mbus-config-active-lanes-v3-2-97a1282a410b@ideasonboard.com>
- <aNDxd9rWjmgrVCd9@valkosipuli.retiisi.eu>
+ <20250915-mbus-config-active-lanes-v3-3-97a1282a410b@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,108 +52,50 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aNDxd9rWjmgrVCd9@valkosipuli.retiisi.eu>
+In-Reply-To: <20250915-mbus-config-active-lanes-v3-3-97a1282a410b@ideasonboard.com>
 
-On Mon, Sep 22, 2025 at 09:49:27AM +0300, Sakari Ailus wrote:
-> On Mon, Sep 15, 2025 at 02:18:34PM +0100, Isaac Scott wrote:
-> > The number of lanes actively used by a MIPI CSI transmitter may differ
-> > from that which is defined in device tree. To allow us to be able to set
-> > the number of configured lanes without changing the maximum lane count,
-> > store the number of lanes configured in device tree, and adjust the
-> > debug print to reflect the device tree value.
-> > 
-> > Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-> > ---
-> >  drivers/media/platform/nxp/imx-mipi-csis.c | 14 +++++++++-----
-> >  1 file changed, 9 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > index 2beb5f43c2c0..6afbedfe131e 100644
-> > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > @@ -313,6 +313,8 @@ struct mipi_csis_device {
-> >  	u32 hs_settle;
-> >  	u32 clk_settle;
-> >  
-> > +	unsigned int num_data_lanes;
-> > +
-> >  	spinlock_t slock;	/* Protect events */
-> >  	struct mipi_csis_event events[MIPI_CSIS_NUM_EVENTS];
-> >  	struct dentry *debugfs_root;
-> > @@ -535,7 +537,7 @@ static void mipi_csis_system_enable(struct mipi_csis_device *csis, int on)
-> >  	val = mipi_csis_read(csis, MIPI_CSIS_DPHY_CMN_CTRL);
-> >  	val &= ~MIPI_CSIS_DPHY_CMN_CTRL_ENABLE;
-> >  	if (on) {
-> > -		mask = (1 << (csis->bus.num_data_lanes + 1)) - 1;
-> > +		mask = (1 << (csis->num_data_lanes + 1)) - 1;
+Hi Isaac,
+
+Thank you for the patch.
+
+On Mon, Sep 15, 2025 at 02:18:35PM +0100, Isaac Scott wrote:
+> The number of lanes actively used by a MIPI CSI transmitter may differ
+> from that which is defined in device tree. As such, call on
+> v4l2_get_active_data_lanes() to check if the driver reports a
+> differing number of lanes to device tree, and use that number of active
+> lanes.
+
+It would be useful to explain there that the difference would be caused
+by the source using less data lanes than the number of connected lanes
+on the board.
+
+> If the number of active data lanes is invalid, or the op is not
+> supported, use the number of lanes defined in device tree.
+
+Is this still true ?
+
+> Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
+> ---
+>  drivers/media/platform/nxp/imx-mipi-csis.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> Please use 1U or BIT() for bit-shifted values.
+> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+> index 6afbedfe131e..d3424ad54b4e 100644
+> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> @@ -967,6 +967,9 @@ static int mipi_csis_s_stream(struct v4l2_subdev *sd, int enable)
+>  	format = v4l2_subdev_state_get_format(state, CSIS_PAD_SINK);
+>  	csis_fmt = find_csis_format(format->code);
+>  
+> +	csis->num_data_lanes = v4l2_get_active_data_lanes(csis->source.pad,
+> +							  csis->bus.num_data_lanes);
+> +
 
-BIT() isn't appropriate here. GENMASK(csis->num_data_lanes, 0) could be
-fine, but this patch just changes the variable, I wouldn't insist in
-fixing separate issues.
+If the function returns an error you'll have a problem.
 
-> >  		val |= (mask & MIPI_CSIS_DPHY_CMN_CTRL_ENABLE);
-> >  	}
-> >  	mipi_csis_write(csis, MIPI_CSIS_DPHY_CMN_CTRL, val);
-> > @@ -586,7 +588,7 @@ static int mipi_csis_calculate_params(struct mipi_csis_device *csis,
-> >  
-> >  	/* Calculate the line rate from the pixel rate. */
-> >  	link_freq = v4l2_get_link_freq(src_pad, csis_fmt->width,
-> > -				       csis->bus.num_data_lanes * 2);
-> > +				       csis->num_data_lanes * 2);
-> >  	if (link_freq < 0) {
-> >  		dev_err(csis->dev, "Unable to obtain link frequency: %d\n",
-> >  			(int)link_freq);
-> > @@ -631,7 +633,7 @@ static void mipi_csis_set_params(struct mipi_csis_device *csis,
-> >  				 const struct v4l2_mbus_framefmt *format,
-> >  				 const struct csis_pix_format *csis_fmt)
-> >  {
-> > -	int lanes = csis->bus.num_data_lanes;
-> > +	int lanes = csis->num_data_lanes;
-> >  	u32 val;
-> >  
-> >  	val = mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
-> > @@ -1299,8 +1301,10 @@ static int mipi_csis_async_register(struct mipi_csis_device *csis)
-> >  	}
-> >  
-> >  	csis->bus = vep.bus.mipi_csi2;
-> > +	csis->bus.num_data_lanes = vep.bus.mipi_csi2.num_data_lanes;
-
-That doesn't seem to be needed.
-
-> > +	csis->num_data_lanes = csis->bus.num_data_lanes;
-> >  
-> > -	dev_dbg(csis->dev, "data lanes: %d\n", csis->bus.num_data_lanes);
-> > +	dev_dbg(csis->dev, "data lanes: %d\n", csis->num_data_lanes);
-
-Neither is this change. What you print here is the number of connected
-data lanes, not the number of effectively used lanes. You could change
-it to 
-
-	dev_dbg(csis->dev, "max data lanes: %u\n", csis->bus.num_data_lanes);
-
-You'll want to also update the commit message, which I think needs some
-improvement regardless.
-
-> >  	dev_dbg(csis->dev, "flags: 0x%08x\n", csis->bus.flags);
-> >  
-> >  	asd = v4l2_async_nf_add_fwnode_remote(&csis->notifier, ep,
-> > @@ -1498,7 +1502,7 @@ static int mipi_csis_probe(struct platform_device *pdev)
-> >  	}
-> >  
-> >  	dev_info(dev, "lanes: %d, freq: %u\n",
-> > -		 csis->bus.num_data_lanes, csis->clk_frequency);
-> > +		 csis->num_data_lanes, csis->clk_frequency);
-
-Drop this change too. This message is actually redundant, the number of
-lanes is printed in mipi_csis_async_register(). You could submit a
-separate patch to remove this, possibly replacing it with a dev_dbg() in
-mipi_csis_parse_dt() to print clk_frequency.
-
-> >  
-> >  	return 0;
-> >  
+>  	ret = mipi_csis_calculate_params(csis, csis_fmt);
+>  	if (ret < 0)
+>  		goto err_unlock;
 
 -- 
 Regards,
