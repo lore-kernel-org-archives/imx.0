@@ -1,217 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010035.outbound.protection.outlook.com [52.101.84.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC6EC120;
-	Mon, 22 Sep 2025 11:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758540386; cv=none; b=dyH7ywXbXDPN4d4+aqgkgm0YaAQvFK7AK/WgiHspc/sKlVuyu+RIi6kpk2c4tnTzg1Fxd941g9XUSvYb6DdMPnZY2g1XrFKMDXTwIXFuJafvcVoE+cO873NFjHrAF8v0uCDO12flCHQx2bHOHK+r1TEQ5oTiSg4R4CHQfpar7SM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758540386; c=relaxed/simple;
-	bh=9JQedTHdHctfJGT11PtE1ZER88ziPva3c5zByj/E2cA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=miDWSicUZL0wjVPLNvLi0zjXysa+q0OvM9PbFGw8lI1LdGskAzS1W+u5rcbf+l68/7NTvAHHSk7W3t8jAI7jq+mAuvbLhjjUVaS8wiEzeLqG3m+A3w93cJ+PxMsE0eP0THjUmsIJsWzc5ItasUD5/y/+/n6+jkm2HWf49WrnkKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a186c2oz; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769AC27AC2E
+	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 11:41:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758541289; cv=fail; b=rBa0oW9H7vxXJmk9LHPhu+9PPyxlXNgPxu6T+qhC66ygLvzru8pM6+9C4FwOw7Wb0eHlT2lQlhgbUSG8ijSQdn8qQRl17BXJ379muna5WyhrEsjb2ipB9UvtpC67damSQ7O+7hPvvKdmHkTSTZBSo4w4rxf547iICCHJNXUF9pA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758541289; c=relaxed/simple;
+	bh=sD2E5K+7MtPoiHJodEyLj80zYChh9XlIIpXtuC1UEE4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qc/dSdLJH5PjPAv3X+jrmWsBSKT++oAe95p1jEUuyGCRpmDtAVRa0+Jt8meSa9rrTzqe68P0/PKnA/q/a2m7eWtH/6DTqxF8IRNeElhU58GziH8856X7FgqzQL4GsGRl1a/BjcH/4lIZHQjy/HuxRDhIWl4XuwKGsjC9UCyEddY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=euXm1ZmW; arc=fail smtp.client-ip=52.101.84.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a186c2oz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3BAC4CEF0;
-	Mon, 22 Sep 2025 11:26:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758540386;
-	bh=9JQedTHdHctfJGT11PtE1ZER88ziPva3c5zByj/E2cA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a186c2ozsEjuVX0cAaANqNZGa3frykYXft/EdxosHYevKrOTCM+d0s5O0vQrrN5K7
-	 MzMCxNaChm7DVirKgDOBYxulGsvrsYyz8yGMb74fjqEiwEkUs3EKUAAanoF9D3fnB4
-	 D462ka0eD9dzNCiolfkCDGnfv9ML12SifwOOE+LyznuqRhm1GTz4p9hnjG5/vnP+T7
-	 QeIvFQGs45VhhsUqsEevJw1JawgDX5zDwrhlWuDkb/SacVW25gl4qaW3+ZOdVUSt1K
-	 35wOSbgLDicbQ/bryJMAlVp7K3kVZinNRE9fNZ8DbNnHDA5bKm063NQH5dNKz1/wkp
-	 8hmar9DpNTAMQ==
-Date: Mon, 22 Sep 2025 16:56:17 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>, 
-	"jingoohan1@gmail.com" <jingoohan1@gmail.com>, "l.stach@pengutronix.de" <l.stach@pengutronix.de>, 
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>, 
-	"robh@kernel.org" <robh@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 2/6] PCI: dwc: Don't poll L2 if QUIRK_NOL2POLL_IN_PM
- is existing in suspend
-Message-ID: <agtozwcmgwj7kfmzkrglqcba5vaqmd2hv3matzmksbckkrrno3@zdteyblgvpyr>
-References: <20250902080151.3748965-1-hongxing.zhu@nxp.com>
- <20250902080151.3748965-3-hongxing.zhu@nxp.com>
- <p4hqjnhpih2uy5hzf7llrd3ah7ov6sijkuqjecpvv5j2iqrsji@kxj5xwb7a5p4>
- <AS8PR04MB88335CEA526C3B5E957EF0C88C12A@AS8PR04MB8833.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="euXm1ZmW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ngwGSd8kRb37vMwkVAYFhtjm8iYg7eusorVeZqxqt/B5wBq/jPzwIrzY9mx++SHIZ1845mUWUVJZgOkIgorVFMK+K9X9mF3if8sbui9wQSUY1dI490CFjs3fb6U2LUkc4Ta0bl8/Ti/IUCdGPKBDEk3HmPWJpVRQOBKxCEfjoc9vgUX0W4CaiQB+Kk7SZ4sfPvm+dnXfyaXcORtliEkhn015OwKbNVu0foA8czoq0mprF1aogr9AQzL3IBqaL/c7aLN6kl8uCkbejcOQwV3yo6e5iDJUeFPvQpPdYMMvBhDSjLkgOpirklxBZcdeTNKl2R4maSh5hyTh6IBI+D23Ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b6RPzWM77W/cCSvkWojL9kEwVMdUiG+q0lAe9GXVzm0=;
+ b=MuDtU/KiQuFsku5lK8EwIQtWYmPl+TdkML0dP34G3BKdGhUjVlBw27/4U6ow9ESw55x9ypvdBeojfIs0HPBUe/EZWNY+08KWBwga//t8YJXMXKlP8EhSl1HsBH7+gqnMV2O7nNyPij2AM23js9Xz1KZIVTcNhdbYz7SeE7i6p0lF8E2LudiFnZdFDybGjRP4uAHT/Un54jZtroebIix2pJdq0JnH8ww2V5KBlqUvoeDxwP/m185lza57hmk9lyels4L7dLxSSQxIo871Xh6+hLRy42Pnljo2xBO7XmmDvhruNiZdKfPFO1ZU+o9HVTD1AgaxDgf0oYsdZPg2ZgMrrw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b6RPzWM77W/cCSvkWojL9kEwVMdUiG+q0lAe9GXVzm0=;
+ b=euXm1ZmWYlmAh1m0bFCdFkLb0m7q9BAHdvIUeRm8OpAoRjUse1oopn+ciD0jrjQUKpxomzYiCUS26eo9hw61PggmqO7pIrQBDM2K2QGtF7f6U6EVaIjXqdeC3WW77LGDAQ/7i2sKwbcdgh1/OMXTCx+LGNr0rDsXjkiyznKbrtGVtjwdVeE7ttZquoTuWdP0cqJCjuyRi2IxBn1f/eK02jdhEo9czIkA7273Q6R0YCh0gtsSSFRVRRqww6I2zpZAORDRlrW6H0Cx93FV/xuHQkd6z9ZtaSBQdAHbZivJUQgGALhvf0Jw25lJirb14HuiekR1UjJ2r4obI8LtKdaxeg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by DU7PR04MB11210.eurprd04.prod.outlook.com (2603:10a6:10:5b3::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Mon, 22 Sep
+ 2025 11:41:24 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::b067:7ceb:e3d7:6f93]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::b067:7ceb:e3d7:6f93%5]) with mapi id 15.20.9160.008; Mon, 22 Sep 2025
+ 11:41:24 +0000
+Date: Mon, 22 Sep 2025 14:41:20 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, yangbo.lu@nxp.com,
+	richardcochran@gmail.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, Frank.Li@nxp.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net-next 0/2] net: enetc: improve the interface for
+ obtaining phc_index
+Message-ID: <20250922114120.bogu5vovrafeytow@skbuf>
+References: <20250919084509.1846513-1-wei.fang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919084509.1846513-1-wei.fang@nxp.com>
+X-ClientProxiedBy: BE1P281CA0228.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:8c::7) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB88335CEA526C3B5E957EF0C88C12A@AS8PR04MB8833.eurprd04.prod.outlook.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|DU7PR04MB11210:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e03bf09-2596-4d87-b804-08ddf9ccf535
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|376014|366016|10070799003|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?0g3PGeukngwlifzVX6M/rU06u1cncp3jVrBWi+iyAx9VkgoJ39+wFTCPXPiS?=
+ =?us-ascii?Q?S7bcgePteOAFpeVlS5rwvH8JZFV2NL3AbWC0a+09OamToZT7Ks+AcIw3rVxU?=
+ =?us-ascii?Q?xHu3EQlS8OaozDH0raKOVJQoZF/ROe15RsOdz6Asp1qrL1r0+NRVrEXMElIn?=
+ =?us-ascii?Q?pFHJoXBhSXxSiW+ZE6zWaGxHrXCdX9w5BW5HebJLqg2pXcgBffEUpr+eb6eo?=
+ =?us-ascii?Q?8zeadA5ATYpAQwa0cTM7pc7JYTGy/LY9jtGWGG/TSPztGgWnIMhjc7TR7+ak?=
+ =?us-ascii?Q?9J2bFDD/3d4x/xxnvKFXVsxVHsF27Qe6QZIcVZMYfDGXTFI84X2/6VY0HNhj?=
+ =?us-ascii?Q?YzP/ro5oHhxPo3OVf3lOSUincDsYs0uzQ0FrUI0EmFOEY0Yf34EIu7L1FiYZ?=
+ =?us-ascii?Q?YDfXqjNwVd7mq89i0ivU0O9XxVm6+I0CPr2urAoOO4h8cz+JIm964fpfp8LT?=
+ =?us-ascii?Q?GE/yVQub7/NEMLq520kdFE+vVVLzE0Xw0UPWVoh2bPUqHG1EYHcCN2Hg6bOl?=
+ =?us-ascii?Q?/XtewA5/sXf07ATr4H948FEWoelmadmYg7cNFNQ+EG/2FK6WcyMtVDQNX5Ed?=
+ =?us-ascii?Q?XnqGS2yQQv62IXwOEw25JzagSguajuL54pHn5xMcJX0Dh06L98exaAMkHcRm?=
+ =?us-ascii?Q?PwE0FlTA0zdoyoIx1b9NECC2ED08GQPbKaTJV7HsoCCHhIjk74faqB1TQUOH?=
+ =?us-ascii?Q?i/evbRjXM/qRt/Tx4geT5JdnjWPgHW7BTiyJtc9piERHJWndj0dzJ6HLAt0q?=
+ =?us-ascii?Q?Fsh2u8My0xPVPW0XSUVILGdFLWZcqVb+Viay1ca4X095cr+Nnx5znx2pVe+D?=
+ =?us-ascii?Q?88V/UzU7I65sTFwEho28EV9G8yTjaAp6X06LETyDEl6Abky9KmtHbWeTpPZw?=
+ =?us-ascii?Q?q2/GmO4NMTJ9bF/F/TBYbTEMxbHoIYDTjGRT22HTkWYaxw9F0Gohw6QXyXat?=
+ =?us-ascii?Q?cZD27+k80W50RZS6H9+4iv9W7tb7+IlLtvi4c0lU5I1KXDgyYR5XERY8x/g3?=
+ =?us-ascii?Q?2PFDsK3t64Pg7mYCRc6PxWpIsw5yIHJ24Je73g8CZrtLdQHETzIDX8yom47V?=
+ =?us-ascii?Q?JtEeR24heDlCSdE0QorZKhn5vJwf0bPn1rQpyWEdOOShhUbEF7NTnH2mRwhe?=
+ =?us-ascii?Q?NGcEK1BYuBGDBrYCrK7AwtAUd8Zh3Lg7rYDstcPbraXX6VmhzdElZMcteK5e?=
+ =?us-ascii?Q?koiDQJ8EAEfo2f/Mmvve9Q6JqOJ+nGW/0vmxWg0rrXbLX71uZirttokKJI5+?=
+ =?us-ascii?Q?AkLKx7pjXxKOfGx0DmzRRkGcWruehvZcAWE70VAEisY9A3Px/xPAtV7FlFPB?=
+ =?us-ascii?Q?565cHoLPYZUO2B6tmCsZCh2PYEG+uuVhSckLu7IMVuo9b44Bg0SCPZiaQM/5?=
+ =?us-ascii?Q?tn2PL3I=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?L5ZLjTOJvk6ooGPgHO8T2tzGbON6BlW6LX4r+14K2g7Tc9srHaacUy9PA20J?=
+ =?us-ascii?Q?cTtDESBd2dclYujhC53sBaoU05KexZw/EPSqcetnwoU23P5vDicj+5hAhDN8?=
+ =?us-ascii?Q?ol26WPFFTnmm4TTSY0Fl4cYEeTe3keQ/ehQzNX0QYGUnjVrEok+aUh28yYYz?=
+ =?us-ascii?Q?3mqRe9QcgPYo6AURiSO+slwdUHHNMFFBqrK1xQ08cEwm1tTRZ6QOmJa7W/45?=
+ =?us-ascii?Q?ftKPchp1Yy9F+LSheMQtIsv1mgarlBLr2kGYkV1HM7figT4b8PxVufxq7H5/?=
+ =?us-ascii?Q?MWKHdXfIg4u8npV6vcUTiDTEvMwnQNmpUOrxsDFlcarcWHAI/HSjQvAsfuhD?=
+ =?us-ascii?Q?2m6yFh4TtnErEs41sdN310oPBcy3qaTW2fQbYNP8T6JYvelXl73yaqW8Bpsk?=
+ =?us-ascii?Q?grkVo3HtGMIVPoQ5Tc6UVc3djLBtShtL+7Lg3F5B2eSNegQmiOKEHCdVSCYC?=
+ =?us-ascii?Q?DycxJYO4eYlB5Ee/HATPjYwZhGAbj5bcd2c80R6fLt+1nzETIIZj5vwCy4yr?=
+ =?us-ascii?Q?cQ8aeOmt/dvxvvXa+9JLOZVwkWfYMHReT2Dl7RkWDBbknfjs0zksUwHcZU1H?=
+ =?us-ascii?Q?uDh0YKJYUNWXuUqe8QRtq0j7/qMD9YjnajwAoCaewUNHN2BnITZJek5wyi/8?=
+ =?us-ascii?Q?smZN6V3/nqPWOuJWPcvlTSvIfwSXFjUtGNQBKXPGj/FeaHw2eN7GrsFDS0z0?=
+ =?us-ascii?Q?9ydzUT5fQ4yN+TABGKJT6fN/AuBAhH1day3j52lkP0C+nvE0+FPbF5xZOzMl?=
+ =?us-ascii?Q?EydjofQwt2MhiugK0XtLe1DSABHGpdEeIjhSGaGYGpzFPhAo2RzKDx1w5IVT?=
+ =?us-ascii?Q?CFBSQrsRzeWApb4E/L1dp68fudvPlwvgdLLR9zK4tZgAyIdJEbCXSDLBz6tM?=
+ =?us-ascii?Q?Mbf3G2SjIo5Fg1zzvnl5Hirn49avVVsMyeQ1omUbMtIxObdZePnDfl6J9mr+?=
+ =?us-ascii?Q?2z9/LpOrVQY/k7Yvklml9zL0TnLjxbj8E2AjN19Igpe7DonI6CLHT7ZDiMUA?=
+ =?us-ascii?Q?BOimJN+agqUopywWS9/Eba+sueMQGbkG+41bPVdsGdCcA+Kik0OBXYoTSjlz?=
+ =?us-ascii?Q?1L2tgb/BibyGqutsC9BmPe6KoQ0U7Om8gJSp8Qi6dWQWtgXbeD29pBeUNJbE?=
+ =?us-ascii?Q?UQmk8HHUDpwbApeG4jvmSVco/1jdELGevSGJaHgHf/3jLeD1opRGjopUIjmI?=
+ =?us-ascii?Q?Hw80YmYtkQXB2awH+OXdBf0JAWFO0Q0l5J1+GCT8mLUNCprdU/PDpdt1iFGR?=
+ =?us-ascii?Q?vFGSg2ShpPfgGXfnvnGLou6kfhSKKA46Bzm5YW/MQkiAzBgyMqGE1KViaNxh?=
+ =?us-ascii?Q?sE4qS1fw3rgONf6VmNqEmBsOaRRAKE8Y+So2VOin6tBmIiLSGZtX1wddi8mw?=
+ =?us-ascii?Q?UiHb1EzXqTywrgtUpN0B5rlUzJnkv6ypBD3tuBmyMIhR8gmuk7ANdwgLISNd?=
+ =?us-ascii?Q?aChWjb05EEPjDynrD7ukVS8hCE4VJIt2ETs8KmfIHykRH7uT9Z2f6sACahei?=
+ =?us-ascii?Q?80kPS3H2iMbSHP2l7S93MOwS75/StTfS9xzqgujrvQF0PLmyIsG0LBiHz+uo?=
+ =?us-ascii?Q?PS0tNrnif9VR9Q5rQfGvhl/ZjsTvmfFBW+oq+TIUNkdxD7ru6scFEm+QddBI?=
+ =?us-ascii?Q?VX8lqm/4AycXUrZKdTBLdseeLTv0ZT34lkViq45DsjmxUotizVHkrPKkcvVg?=
+ =?us-ascii?Q?uDodqQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e03bf09-2596-4d87-b804-08ddf9ccf535
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 11:41:24.3656
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xGb3uAMQphLJHHkssN4OQuIOIORLAx+PfUpAoiQnakz1JBZT1onQwvg2AsnRYdHB2AuMfHGZlBqs+rP0ulNW2A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PR04MB11210
 
-On Mon, Sep 22, 2025 at 09:18:20AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Manivannan Sadhasivam <mani@kernel.org>
-> > Sent: 2025年9月20日 14:29
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: Frank Li <frank.li@nxp.com>; jingoohan1@gmail.com;
-> > l.stach@pengutronix.de; lpieralisi@kernel.org; kwilczynski@kernel.org;
-> > robh@kernel.org; bhelgaas@google.com; shawnguo@kernel.org;
-> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> > imx@lists.linux.dev; linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCH v5 2/6] PCI: dwc: Don't poll L2 if QUIRK_NOL2POLL_IN_PM
-> > is existing in suspend
-> > 
-> > On Tue, Sep 02, 2025 at 04:01:47PM +0800, Richard Zhu wrote:
-> > > Refer to PCIe r6.0, sec 5.2, fig 5-1 Link Power Management State Flow
-> > > Diagram. Both L0 and L2/L3 Ready can be transferred to LDn directly.
-> > >
-> > > It's harmless to let dw_pcie_suspend_noirq() proceed suspend after the
-> > > PME_Turn_Off is sent out, whatever the LTSSM state is in L2 or L3
-> > > after a recommended 10ms max wait refer to PCIe r6.0, sec 5.3.3.2.1
-> > > PME Synchronization.
-> > >
-> > > The LTSSM states are inaccessible on i.MX6QP and i.MX7D after the
-> > > PME_Turn_Off is sent out.
-> > >
-> > 
-> > This statement is not accurate. A single register read cannot cause hang AFAIK.
-> > I'm guessing that the link down (LDn) happens after initiating PME_Turn_Off
-> > and the access to CSR register (LTSSM) causes hang.
-> > 
-> > Is my understanding correct? 
-> The access of LTSSM is not relied on the link is up or not. For example,
->  the LTSSM stats can be accessed when the link is in the training
->  and not up yet.
+On Fri, Sep 19, 2025 at 04:45:07PM +0800, Wei Fang wrote:
+> The first patch is to fix the issue that a sleeping function is called
+> in the context of rcu_read_lock(). The second patch is to use the generic
+> API instead of the custom API to get phc_index. In addition, the second
+> patch depends on the first patch to work.
 > 
-> Per to the discussion with Bjorn, the most possible reason is that the
->  LTSSM isn't powered anymore on i.MX6/7 when PME_Turn_Off is kicked off.
-> https://lore.kernel.org/imx/20250819192838.GA526045@bhelgaas/
+> Note, the first patch is a fix, but the issue does not exist in the net
+> tree, so the target tree is net-next.
 > 
+> ---
+> v2 changes:
+> 1. Add patch 1 to fix the issue that sleeping function called from
+>    invalid context
+> 2. Fix the build warning of patch 2.
+> v1 link: https://lore.kernel.org/netdev/20250918074454.1742328-1-wei.fang@nxp.com/
+> ---
+> 
+> Wei Fang (2):
+>   net: enetc: fix sleeping function called from rcu_read_lock() context
+>   net: enetc: use generic interfaces to get phc_index for ENETC v1
+> 
+>  drivers/net/ethernet/freescale/enetc/enetc.h  |  3 --
+>  .../ethernet/freescale/enetc/enetc_ethtool.c  | 29 ++++++++-----------
+>  .../net/ethernet/freescale/enetc/enetc_ptp.c  |  5 ----
+>  3 files changed, 12 insertions(+), 25 deletions(-)
+> 
+> -- 
+> 2.34.1
+>
 
-I'm not sure though. Could you try to read any DBI register at this point and
-see if the hang is observed or not?
+For the set:
 
-LTSSM states are expressed through the DBI registers. So as per my
-understanding, unless the whole DBI register space is inaccessible, LTSSM
-registers should be accessible.
-
-- Mani
-
-> Best Regards
-> Richard Zhu
-> > 
-> > > To support this case, don't poll L2 state and apply a simple delay of
-> > > PCIE_PME_TO_L2_TIMEOUT_US(10ms) if the QUIRK_NOL2POLL_IN_PM flag
-> > is
-> > > set in suspend.
-> > >
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > 
-> > We need Fixes tag also and you do need to set the flag in relevant glue driver
-> > in this patch itself so that it can cleanly be backported.
-> > 
-> > - Mani
-> > 
-> > > ---
-> > >  .../pci/controller/dwc/pcie-designware-host.c | 34
-> > > +++++++++++++------  drivers/pci/controller/dwc/pcie-designware.h  |
-> > > 4 +++
-> > >  2 files changed, 28 insertions(+), 10 deletions(-)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > index 9d46d1f0334b..57a1ba08c427 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > @@ -1016,15 +1016,29 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> > >  			return ret;
-> > >  	}
-> > >
-> > > -	ret = read_poll_timeout(dw_pcie_get_ltssm, val,
-> > > -				val == DW_PCIE_LTSSM_L2_IDLE ||
-> > > -				val <= DW_PCIE_LTSSM_DETECT_WAIT,
-> > > -				PCIE_PME_TO_L2_TIMEOUT_US/10,
-> > > -				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> > > -	if (ret) {
-> > > -		/* Only log message when LTSSM isn't in DETECT or POLL */
-> > > -		dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n",
-> > val);
-> > > -		return ret;
-> > > +	if (dwc_quirk(pci, QUIRK_NOL2POLL_IN_PM)) {
-> > > +		/*
-> > > +		 * Add the QUIRK_NOL2_POLL_IN_PM case to avoid the read hang,
-> > > +		 * when LTSSM is not powered in L2/L3/LDn properly.
-> > > +		 *
-> > > +		 * Refer to PCIe r6.0, sec 5.2, fig 5-1 Link Power Management
-> > > +		 * State Flow Diagram. Both L0 and L2/L3 Ready can be
-> > > +		 * transferred to LDn directly. On the LTSSM states poll broken
-> > > +		 * platforms, add a max 10ms delay refer to PCIe r6.0,
-> > > +		 * sec 5.3.3.2.1 PME Synchronization.
-> > > +		 */
-> > > +		mdelay(PCIE_PME_TO_L2_TIMEOUT_US/1000);
-> > > +	} else {
-> > > +		ret = read_poll_timeout(dw_pcie_get_ltssm, val,
-> > > +					val == DW_PCIE_LTSSM_L2_IDLE ||
-> > > +					val <= DW_PCIE_LTSSM_DETECT_WAIT,
-> > > +					PCIE_PME_TO_L2_TIMEOUT_US/10,
-> > > +					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> > > +		if (ret) {
-> > > +			/* Only log message when LTSSM isn't in DETECT or POLL */
-> > > +			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n",
-> > val);
-> > > +			return ret;
-> > > +		}
-> > >  	}
-> > >
-> > >  	/*
-> > > @@ -1040,7 +1054,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> > >
-> > >  	pci->suspended = true;
-> > >
-> > > -	return ret;
-> > > +	return 0;
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(dw_pcie_suspend_noirq);
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware.h
-> > > b/drivers/pci/controller/dwc/pcie-designware.h
-> > > index 00f52d472dcd..4e5bf6cb6ce8 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware.h
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> > > @@ -295,6 +295,9 @@
-> > >  /* Default eDMA LLP memory size */
-> > >  #define DMA_LLP_MEM_SIZE		PAGE_SIZE
-> > >
-> > > +#define QUIRK_NOL2POLL_IN_PM		BIT(0)
-> > > +#define dwc_quirk(pci, val)		(pci->quirk_flag & val)
-> > > +
-> > >  struct dw_pcie;
-> > >  struct dw_pcie_rp;
-> > >  struct dw_pcie_ep;
-> > > @@ -504,6 +507,7 @@ struct dw_pcie {
-> > >  	const struct dw_pcie_ops *ops;
-> > >  	u32			version;
-> > >  	u32			type;
-> > > +	u32			quirk_flag;
-> > >  	unsigned long		caps;
-> > >  	int			num_lanes;
-> > >  	int			max_link_speed;
-> > > --
-> > > 2.37.1
-> > >
-> > 
-> > --
-> > மணிவண்ணன் சதாசிவம்
-
--- 
-மணிவண்ணன் சதாசிவம்
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
