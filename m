@@ -1,73 +1,49 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4A02E22BF
-	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 16:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739472E2850;
+	Mon, 22 Sep 2025 16:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758557486; cv=none; b=HonhDvGotIVLUziDRvrmeYZCEy7nQ9t98tCFLC9ylC/Z43Yv4COlDximpaoyqwRHLbVbd+dz6jegGqSVdwYA1MaFCBkS6kYFMuOqVUyRj90JYdVwV8N3rhMUcYzBTsq2hFHzDT+AqhAaarI71KyvVsYwRf2xjAN2upvxDdMpfJQ=
+	t=1758557794; cv=none; b=RdQ2Wz8U7sECKnqVo75bClxNA9brUZ88qKqG7iUT02XQOceg1unW0fAbc3sZM7GnpCUriACBfRYlpJppj6Oua6vY9L4vXMU50ldIlPSGWQIbOfH0OUoZzpJlDnqkj82dBZqhL2j+GcU+YqjJAc5r2D/CUqd/XbN3jczSbQa1k2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758557486; c=relaxed/simple;
-	bh=lbCZuCRT4lMk8VwiDJS9qwmYIpPm3rZqFqTsl8NKnl8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=MkY7hzbJOG7WOoRmOm4AxIxM2kR3UHKU/DB6xXLRlPrqy9FPme5t2ca+4QcZdLCeGvKZqEvbhHL3UBAK0nee/gF9MpKMHVFpoCD59NWRgx75B0mCl7N/s1OMoBSp6qZaR1a+E1sM+UH1hGlLZfSt9HZgQxjqD7Y38iAkIAyoErU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4aPMfOD; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758557794; c=relaxed/simple;
+	bh=1dfMpJNe9CaQr+gmF+4ghG/X4jd+YzJxvDL8/008AXA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rcn5thASjqQw0Ox/1vb/XEdNMlQJw+OZRbjis4fSWi37RSte9bT7Ueel5tz8qhAMrsz2MKS3mRxn2MT89gyR+vovXT7QrlQHZgPAlxwd6dgeBsLG8eYz2UWcU8glKgJl5b49fB6TTMo5DKBsFWDFoSIYXr+93uyJUA9EgpjPP1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qvAGmm7b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4aPMfOD"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45dcff2f313so27795505e9.0
-        for <imx@lists.linux.dev>; Mon, 22 Sep 2025 09:11:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758557483; x=1759162283; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DEnMMyTPzSbYjCuENNMIPA0pMqJ+aV1qFH9XDih+9hQ=;
-        b=d4aPMfODZNwN67kClfI/AIamL5kw1UxENRCxS+jYThk6lm2Q2HApFDMzLGYEQqlEru
-         A4ZuJ2M5iTLIviZUPGqffEnuqA7DoDXfxbjxEXBIq1hnTSZP1mjDg8YxWXU3pP6MUmv6
-         G6lLRmPiJqjqy8w7TNLqb9Aw7yxVyodhqLgC8xfOP7yAiiu+2Mo4xGMsFFRog0xafEZn
-         E+xewjAj9M6aWWEnaYIR8VYYo7oe29RXiyWA6qTErO66fNkLRGyeyQHcigdWC9C3I8Nw
-         qD4aZ23YfycFoVcpwSt31PvV+v/gwiHSbcZXx5KFV8qL9w6X4CQ4f9sKmDmUhMPfxBr0
-         A+Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758557483; x=1759162283;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DEnMMyTPzSbYjCuENNMIPA0pMqJ+aV1qFH9XDih+9hQ=;
-        b=vslwbhPtd/rXM7c5eY6fRA8XKLWpiNbknQT+i5rXy4xXzvsUyM8HY4rzMUWbDl3FM1
-         ShWdVoQK/iDMfkZPAFQlHynoQYkzkHJtm6ezF4ISjG0kEYcpbNw8JGu+VPtXgeWEmqlw
-         ZFtdl8+LMEzQlZv/XYsPpsYDOaafjciNFeOIzEnuTpEUMfYZMkTvu8IxQItHU33FFRET
-         PfwQ3HJ1SZ04uEvhk0ks919JH+/oZPWbeH+lS+0W8+wj77dzLNZPbBlqgh9KP7r9IuH7
-         AmrCVIw8b+70CcrA54uvXpfNeCsPYmEQ6n5mzPmZNqYwvguU2nxCOXqmZZCf+Nek8ncY
-         qXXA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZwITzPfirPSA/7sB6UTCDh/ZwxnQdIfd0QV5lPV7+HB7SFh/6gDjFIL6aDIijR9HItU4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzia991m/hGH/chrPxUgmN4wSThYCaI5z9MQJtBOWyVOqKpldku
-	1se5yGg3WFiI0UuU0LMN0DiadDxwIGRdvL0ojapyMwMZLw0d642vK64F
-X-Gm-Gg: ASbGnctfKWDIyZ1D2vjZLECQvzRibfVijukDDCgGofn6/cL7WYOtLp3kzmICSaslrvX
-	2hFfZ5DETEA6/ofnn8hZ93zjfb+BYH0VjBHKSgnTBYJoXa2oQis2wpemEAOTVSbFB2Dz6l7zuAh
-	xzeD0os3X6Igt4VmEun0SQwUZygxrST2qrBRcJqbSMYZpRIex0xaPvTkxC03SrZcTQ7cL/bnvxG
-	m4b33KZCciAGSSOamObRToaxthxgnzaf9eY+LDhPf5kuvFOe9O0Ha+YzgUfVtaOGAVzGiPJpiEl
-	CW+G7inqkS9tBDTFXS5IFmEE7mxkS05PARtH5gtDwfXH+PhoY3kvC52gTw8ru9FSHv1Yo+a1gwm
-	A1mnYcTkwuIE7PEZSwhJK24LNmvooZUy6bucRMtF8IQZBrpRo+D0JekLk5qOluCQ8zeRXyFd9KZ
-	cpGXjIBQ==
-X-Google-Smtp-Source: AGHT+IGdiz7k8V0AhAdxhfd+pKps/rRfo1454RdG9IyhVYMPnmXBEYKoLxSXpCioAD2M8iGpREQWoQ==
-X-Received: by 2002:a05:600c:3b20:b0:45b:9912:9f30 with SMTP id 5b1f17b1804b1-467ead6730bmr108706325e9.6.1758557482842;
-        Mon, 22 Sep 2025 09:11:22 -0700 (PDT)
-Received: from Lord-Beerus (net-93-70-53-177.cust.vodafonedsl.it. [93.70.53.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46de4d67625sm31370685e9.16.2025.09.22.09.11.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 09:11:22 -0700 (PDT)
-Date: Mon, 22 Sep 2025 18:11:20 +0200
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [RFC] arm64: dts: freescale: imx93-var-som: Align dts adding missing
- components
-Message-ID: <aNF1KOCs0eHL1Njb@Lord-Beerus>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qvAGmm7b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA87C4CEF0;
+	Mon, 22 Sep 2025 16:16:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758557794;
+	bh=1dfMpJNe9CaQr+gmF+4ghG/X4jd+YzJxvDL8/008AXA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qvAGmm7bHQaJTtovurC5Tgd1tn9qExeJQlWnQ829g9Sz3HIU2MtewyqqT8t4yWxTS
+	 mqmOH10mpt9skq8e0m+5ex9mRyG2MQmV+OsrXtLnv1DfdzCJcv1+1a11FHS09l2cxc
+	 3DBV1KZJePYrJoC9YSCHvOcKJBwZh5xQmFZ1F+n+uxcrX5ri5ltj7V3/bBu8KuNKIl
+	 u9lenqys7VfZvMK1BeRvWBZzovdzsqH3QQlJOhzLe0gCbG6JV5y437PTGTH69cIjPe
+	 T/nb2lGGSbCUp+qYnvAxRJh+IqAo10mTVTRMBnXd1iC0njEs5IVEIGekEAzSRGe8py
+	 q/d3PU96U8bLg==
+Date: Mon, 22 Sep 2025 11:16:33 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev, Thierry Reding <thierry.reding@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
+	devicetree@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maxime Ripard <mripard@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 1/1] dt-bindings: display: simple: Add
+ innolux,n133hse-ea1 and nlt,nl12880bc20-spwg-24
+Message-ID: <175855779086.199115.18124595806588777298.robh@kernel.org>
+References: <20250915155123.3250823-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,29 +52,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20250915155123.3250823-1-Frank.Li@nxp.com>
 
-Hi all,
 
-the current device tree for the i.MX93 VAR-SOM is incomplete. 
-In particular, several peripherals that are present on the hardware 
-are not yet described, such as:
+On Mon, 15 Sep 2025 11:51:23 -0400, Frank Li wrote:
+> Add innolux,n133hse-ea1 13.3" TFT LCD panel and nlt,nl12880bc20-spwg-24
+> 12.1" WXGA (1280 x 800) LVDS TFT LCD panel.
+> 
+> Fix below CHECK_DTBS warnings:
+> arch/arm/boot/dts/nxp/imx/imx6q-novena.dtb: /panel: failed to match any schema with compatible: ['innolux,n133hse-ea1']
+> arch/arm/boot/dts/nxp/imx/imx6dl-tx6u-811x.dtb: /lvds0-panel: failed to match any schema with compatible: ['nlt,nl12880bc20-spwg-24']
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v2
+> - update commit message to show fix CHECK_DTBS warnings.
+> ---
+>  .../devicetree/bindings/display/panel/panel-simple.yaml       | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
 
-  - audio codec
-  - PMIC
-  - WiFi + Bluetooth module
+Applied, thanks!
 
-My plan is to align the DTS with the actual hardware by adding these 
-missing nodes.
-
-Before preparing the patches, I would like to ask for your advice:  
-should I send one patch that performs the full DTS alignment (describing the 
-patch as an alignemnt of the dts with the actual hardware), or would 
-you prefer a patch series with one patch per peripheral (e.g. one for 
-codec, one for PMIC, one for WiFi/BT, etc.)?
-
-I will do the same with the other Variscite SOMs and Carrier Boards
-
-Thanks for your guidance.
-
-Best regards,
-Stefano
