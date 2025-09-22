@@ -1,177 +1,179 @@
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B96470823;
-	Mon, 22 Sep 2025 06:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9984A59
+	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 07:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758524372; cv=none; b=RV5yBAQmZIhdrpFnlAbMbVj97d0Os6P+TREj+742/t0TBIQSE720q7InvhBpgVHs+IRcTQore29v/W+sq2Xz9a+iIpyFMLXEb3RWQsQykfo6OIAKjl/WY0srapXLeVTWfmm9Htp06AwHPlyqd4nW8tVOjGnLIe6+QkdS3Zijncg=
+	t=1758525435; cv=none; b=FaFjBd6zL1Qjw7B+VTZSXrMqUSaFzYq8+WacydLEjyuxna9AHvgG5jVRbP0UGt8KiqewB1f8BoGtjuvou1ncgu032+H7BCBnlRoFhutEoVuyQnTsoSNTWXMiX3c92qefu4npcaiR1rFox9ZglAhCHzWEPQBqHa5QuQfrWYmDkOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758524372; c=relaxed/simple;
-	bh=Z4a99FyJQzgGi/pMN3UMIYUuikvwd00kIlYCCwNP6pI=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=meXoiIXiKWmxPi1YWLBQDpl/THxnHgdnb9p5bIspXb7gHW7MjX+cbZet3ZykipNYE+aPTKmPep6G7rIc777g+AqECib3kPPKrj50z9aHDVbXMRFYbO5jsVK9k9A57a/zQODmQ/Hbhpg22Fe2gvneGRXTT4Q9lFKJcAv02QkK1Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=l/zsR0G5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QzwoyyBX; arc=none smtp.client-ip=202.12.124.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1758525435; c=relaxed/simple;
+	bh=eulG1dlDhbrFnqQ/5xFfJsT6m8P5BkUgfXxI6mGrGeo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NA+7DRoRODRaoSmuFzTMrg/t1W/lfJnTPKNfzTWW1WWFPrzPpEdI5KoZ5bl+Q9VbVRSTOpOf3NPGB81xWBhVViR7y5kM+OVU9V7ZIKOjkWO1YdfBs4w4/r/PmbliVm8SOV54hudU2MYKvIo7nL25CfqNZFq27SM5QsglkDINafw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ufpHgwcg; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="l/zsR0G5";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QzwoyyBX"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 535241D0018C;
-	Mon, 22 Sep 2025 02:59:29 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Mon, 22 Sep 2025 02:59:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1758524369;
-	 x=1758610769; bh=tw7JZ6uQ+dSxRm1cR3ykcHwmxGgsza4QaeIC4IgS1AM=; b=
-	l/zsR0G5eT2gz2q4CXpfCwEpXLiXIWeuSMMOfqTnOtjbPdFXKq1o5OVaHjeuQvok
-	O/W1x65coIcNpApW8qDJuJ4wKYWnuGNwyn7j6woJVBtie9xTAb11d6HngQbvPBKf
-	HkCNYVpWqebU7GhZ9Qey2zLtrgNjUWrVxAmBONRPhSMCY64Yky9DXR9XDsvA3+XZ
-	ZbbjO4HokYqsR0tDqaso05RrMm8/wXDNhWRhP1S8JSdqgGPk660msIOs8xolJTTe
-	2E/lysfyyJ9YlxYZ8Aor/xg7B2nhZhTFHzG0yoqk3Jvxl/t/B3hFBhIboNtcexas
-	F/U17mzbpFvEthrXVADCEg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758524369; x=
-	1758610769; bh=tw7JZ6uQ+dSxRm1cR3ykcHwmxGgsza4QaeIC4IgS1AM=; b=Q
-	zwoyyBXTJ/xlyTuAl6eaDR08Yk7cKQ/BYb5Q+OZLHccYXOTq0s/D4PTdaj96/BWY
-	ggJn+VsyjX4BR1Hr2f98K40hOZatGzQ2cuJfCPnbWUbSoltfyoQfrYcbTyI5AP3z
-	cdO1sLjEizaP++pe3JWdqMUu8E/hcLc6Ezoa3b1J8l3zBl/LcuFy2NWUviuBLo+j
-	hEda/Sd5M2ZGiE+v/q3X7Sq/5MeU9PWw3eI+9cHwC3G6RvYy60ZxsD8o6B1XVsHD
-	/+UIoZdinlSwV09zE0r1PRQKkYVnb6LlKZJUsMPxXN8tUA+c46acCx0AdynNnU3F
-	AWgKAlnztXyZ2gLYJNgsQ==
-X-ME-Sender: <xms:z_PQaHJgzXYKoYDzZ-ssaOLFznF26Q_ZnAG6-dRyqJQJmlL_yyLZLQ>
-    <xme:z_PQaLKYJie8lkusfN2_LRJLymKL9CiEKO2L9JMaW6nU_INMf_a-KAqcU9AVkuY7H
-    Dtm7lvTZTS76OqV9zI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdehjedulecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeefuddpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
-    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
-    tghpthhtohepnhhstghhihgthhgrnhesfhhrvggvsghogidrfhhrpdhrtghpthhtoheprg
-    hnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvggvrhhtodhrvghn
-    vghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghnuggvrhdrshhvvg
-    hrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgihhordhprghrrggt
-    uhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgvnhgssehgohhogh
-    hlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhg
-X-ME-Proxy: <xmx:z_PQaO-AbAyrchLt1gPFzz5ImqtdsCE4MtwCgozi9Nvp6tIrZcpE2Q>
-    <xmx:z_PQaOrgvuN6qNmRYjHfGwBTMsdEkP_7cBTz8lKVYq6AnPpCxT48tA>
-    <xmx:z_PQaPkdEcrkiW2nIGq5bH_Mu4Fdt4bCb8JYLLnUSHz6JcSrKkzR9Q>
-    <xmx:z_PQaLbNi1YcKXD1-mIpvlgsrc7fhhvtK_CV_WIUToIeUNXLq5ldZg>
-    <xmx:0fPQaCrlRiKZ3grcKLdDxNAcmQRYM5wxeUnR0jLm2DG7jGDKd4pLMQoQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 79F2D700065; Mon, 22 Sep 2025 02:59:27 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ufpHgwcg"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 7A5A36DC;
+	Mon, 22 Sep 2025 09:15:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1758525346;
+	bh=eulG1dlDhbrFnqQ/5xFfJsT6m8P5BkUgfXxI6mGrGeo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ufpHgwcg0ZMn+gEkWQoQ0MiIM9bDGIl/lywer96IBtniuPFz5oOsjbEFh+tg6pgyz
+	 JSm9kKuOFPF37Ke5swwPo7gwH4NSjImdP9yrAwL6VemJQ9ugGX+OxKzkIfJMo4gYy+
+	 bpSj8V7c/yqUW9qKjjT0arg7TobiT+h2ybCFWkok=
+Date: Mon, 22 Sep 2025 10:16:37 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Sakari Ailus <sakari.ailus@iki.fi>
+Cc: Isaac Scott <isaac.scott@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 1/3] media: v4l: Add helper to get number of active
+ lanes via a pad
+Message-ID: <20250922071637.GH10540@pendragon.ideasonboard.com>
+References: <20250915-mbus-config-active-lanes-v3-0-97a1282a410b@ideasonboard.com>
+ <20250915-mbus-config-active-lanes-v3-1-97a1282a410b@ideasonboard.com>
+ <aNDxR72CmvGofTHy@valkosipuli.retiisi.eu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AneuvEk2E7Kg
-Date: Mon, 22 Sep 2025 08:58:57 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Jason Gunthorpe" <jgg@nvidia.com>
-Cc: "Geert Uytterhoeven" <geert@linux-m68k.org>, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, imx@lists.linux.dev,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Richard Weinberger" <richard@nod.at>,
- "Lucas Stach" <l.stach@pengutronix.de>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Ankur Arora" <ankur.a.arora@oracle.com>,
- "David Hildenbrand" <david@redhat.com>,
- "Mike Rapoport" <rppt@kernel.org>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Suren Baghdasaryan" <surenb@google.com>,
- "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
- "Andreas Larsson" <andreas@gaisler.com>,
- "Nicolas Schichan" <nschichan@freebox.fr>
-Message-Id: <44f910bf-ac2c-4b2f-8e50-5cfc7dd0761a@app.fastmail.com>
-In-Reply-To: <20250919143436.GC2132010@nvidia.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <20250917125951.GA1390993@nvidia.com>
- <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
- <CAMuHMdVecUeLZ2LPpa457C0a=uduvDhQ4KZJx-++dEFJraRi3w@mail.gmail.com>
- <547dcb81-434d-4910-aa7c-1d69019fcb3d@app.fastmail.com>
- <20250919143436.GC2132010@nvidia.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aNDxR72CmvGofTHy@valkosipuli.retiisi.eu>
 
-On Fri, Sep 19, 2025, at 16:34, Jason Gunthorpe wrote:
-> On Fri, Sep 19, 2025 at 04:22:20PM +0200, Arnd Bergmann wrote:
->
->> SAM9X7 in 2023 added DDR3 mode with up to 256MB according to
->> the datasheet, no idea why they chose not to support more,
->
-> Quite possible the internal SOC wiring only has 28 address lines. :)
->
-> I am right it sounds like we can drop vivt cache support with highmem?
-> vivt is alot easier to understand if kmap isn't running around
-> creating virtual addresses aliases!
+On Mon, Sep 22, 2025 at 09:48:39AM +0300, Sakari Ailus wrote:
+> On Mon, Sep 15, 2025 at 02:18:33PM +0100, Isaac Scott wrote:
+> > Sometimes, users will not use all of the MIPI CSI 2 lanes available when
+> > connecting to the MIPI CSI receiver of their device. Add a helper
+> > function that checks the mbus_config for the device driver to allow
+> > users to define the number of active data lanes through the
+> > get_mbus_config op.
+> > 
+> > If the driver does not implement this op, fall back to using the number
+> > of data lanes specified in device tree.
+> > 
+> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
+> > ---
+> >  drivers/media/v4l2-core/v4l2-common.c | 32 ++++++++++++++++++++++++++++++++
+> >  include/media/v4l2-common.h           | 21 +++++++++++++++++++++
+> >  2 files changed, 53 insertions(+)
+> > 
+> > diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
+> > index 6e585bc76367..2ce8407f1397 100644
+> > --- a/drivers/media/v4l2-core/v4l2-common.c
+> > +++ b/drivers/media/v4l2-core/v4l2-common.c
+> > @@ -571,6 +571,38 @@ s64 __v4l2_get_link_freq_pad(struct media_pad *pad, unsigned int mul,
+> >  	return __v4l2_get_link_freq_ctrl(sd->ctrl_handler, mul, div);
+> >  }
+> >  EXPORT_SYMBOL_GPL(__v4l2_get_link_freq_pad);
+> > +
+> > +unsigned int v4l2_get_active_data_lanes(const struct media_pad *pad,
+> > +					unsigned int max_data_lanes)
+> > +{
+> > +	struct v4l2_mbus_config mbus_config = {};
+> > +	struct v4l2_subdev *sd;
+> > +	unsigned int lanes;
+> > +	int ret;
+> > +
+> > +	sd = media_entity_to_v4l2_subdev(pad->entity);
+> > +	ret = v4l2_subdev_call(sd, pad, get_mbus_config, pad->index,
+> > +			       &mbus_config);
+> > +	if (ret < 0 && ret != -ENOIOCTLCMD)
+> > +		return ret;
+> > +
+> > +	/*
+> > +	 * This relies on the mbus_config being zeroed at init time.
+> > +	 */
 
-I think so, yes. I've prototyped a patch for it to add a dependency
-on !VIVT and the drop the code paths that are clearly no longer
-needed without it. This obviously needs proper testing, but the
-diffstat is promising:
+This holds on a single line.
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index f14bac913d50..0a31cfaf3818 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -1214,6 +1214,7 @@ config ARCH_SPARSEMEM_ENABLE
- config HIGHMEM
-        bool "High Memory Support"
-        depends on MMU
-+       depends on !CPU_CACHE_VIVT
-        select KMAP_LOCAL
-        select KMAP_LOCAL_NON_LINEAR_PTE_ARRAY
-        help
- arch/arm/Kconfig                    |  1 +
- arch/arm/configs/gemini_defconfig   |  1 -
- arch/arm/configs/multi_v5_defconfig |  1 -
- arch/arm/configs/mvebu_v5_defconfig |  1 -
- arch/arm/include/asm/highmem.h      | 56 +-----------------------
- arch/arm/mm/cache-feroceon-l2.c     | 31 +------------
- arch/arm/mm/cache-xsc3l2.c          | 47 +++-----------------
- arch/arm/mm/dma-mapping.c           | 14 ++----
- arch/arm/mm/flush.c                 | 19 ++------
- mm/highmem.c                        | 86 +++++--------------------------------
- 10 files changed, 27 insertions(+), 230 deletions(-)
+> > +	if (!mbus_config.bus.mipi_csi2.num_data_lanes)
+> 
+> I'd either use the local variable for this (lanes) either all the time, or
+> not at all.
+> 
+> > +		return max_data_lanes;
+> > +
+> > +	lanes = mbus_config.bus.mipi_csi2.num_data_lanes;
+> > +
+> > +	if (lanes > max_data_lanes) {
+> > +		dev_dbg(sd->dev, "Active data lanes (%u) exceeds max (%u)\n",
+> > +			lanes, max_data_lanes);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	return lanes;
+> > +}
+> > +EXPORT_SYMBOL_GPL(v4l2_get_active_data_lanes);
+> >  #endif /* CONFIG_MEDIA_CONTROLLER */
+> >  
+> >  /*
+> > diff --git a/include/media/v4l2-common.h b/include/media/v4l2-common.h
+> > index 0a43f56578bc..6af0695460ab 100644
+> > --- a/include/media/v4l2-common.h
+> > +++ b/include/media/v4l2-common.h
+> > @@ -584,6 +584,27 @@ int v4l2_fill_pixfmt_mp(struct v4l2_pix_format_mplane *pixfmt, u32 pixelformat,
+> >  	(pad, mul, div)
+> >  s64 __v4l2_get_link_freq_pad(struct media_pad *pad, unsigned int mul,
+> >  			     unsigned int div);
+> 
+> Is your tree up to date?
 
-I did get an email from Nicolas Schichan (added to Cc here),
-and he is still supporting a widely deployed Kirkwood based
-platform that uses 1GB RAM configurations. He should get
-a chance to test that with CONFIG_VMSPLIT_3G_OPT, but I
-would expect that to continue working, possibly with minor
-bugfixes.
+We seem to be moving faster than we used to :-)
 
-For the timeline, the coming merge window is for an LTS
-release, so if we remove VIVT highmem support in 6.19,
-any remaining users we missed at least still be able to
-use 6.18 for a couple of years and get security updates.
+> > +
+> > +/**
+> > + * v4l2_get_active_data_lanes - Get number of active data lanes from driver
+> > + *
+> > + * @pad: The transmitter's media pad.
+> > + * @max_data_lanes: The maximum number of active data lanes supported by
+> > + * 		    the MIPI CSI link in hardware. This can be configured
+> > + * 		    in device tree.
+> 
+> I'd remove the latter sentence. Alternatively, it needs to be improved:
+> there are other sources for this information than DT.
+> 
+> > + *
+> > + * This function is intended for obtaining the number of data lanes that are
+> > + * actively being used by the driver for a MIPI CSI-2 device on a given media pad.
+> > + * This information is derived from a mbus_config fetched from a device driver
+> > + * using the get_mbus_config v4l2_subdev pad op.
+> > + *
+> > + * Return:
+> > + * * >0: Number of active data lanes
+> > + * * %-EINVAL: Number of active data lanes is invalid, as it exceeds the maximum
+> > + *	       supported data lanes listed in device tree.
 
-      Arnd
+Drop "listed in the device tree" here too.
+
+With those small issues fixed,
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+> > + */
+> > +unsigned int v4l2_get_active_data_lanes(const struct media_pad *pad,
+> > +					unsigned int max_data_lanes);
+> >  #else
+> >  #define v4l2_get_link_freq(handler, mul, div)		\
+> >  	__v4l2_get_link_freq_ctrl(handler, mul, div)
+
+-- 
+Regards,
+
+Laurent Pinchart
