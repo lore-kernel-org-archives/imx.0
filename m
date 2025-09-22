@@ -1,27 +1,27 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F3F305054
-	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 11:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64E53043DB
+	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 11:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758539491; cv=none; b=g3btrV7KrKYsiI1sYO8+MPv1e8CSDTGA+dBaVNJBkrUd0r82Kyr2VUyizLlwV/q4CIbcIuu96IIyWw0KiQVZTKmdew5eiDNFnKJsbaolI7N1dNQKOMF0XCx22h/wKNQ1P3ECgMCW/lnzVV3Tf/6L2FG3jV7jzZnV+xOgMj8ppiw=
+	t=1758539491; cv=none; b=Xd9XgAEGkK+uifyCtBHdkrhfrRvEslGGZgD8waZU7vowXaQc/sLso+xTdVriUdV8GjHkXjkmjahcmShtg0h8fHL3bY6jQVMcpyEyQsryrBTPnYHG1HVednoAjmwrmjiZFkwhHeKvviLUPeacnymgJ1z7nC3k5s/RGZGMi/Z7bwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758539491; c=relaxed/simple;
-	bh=xsmAq3dD8T1O9QBOvKaD4Sg+D6YePeRPaUCTw/xNkh8=;
+	bh=Uo9nCKnhrCEWJtFJDVa1RPwlQawqN+Vhk/e/1vP62XM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ex0rfv36IsSe7Mdiv5yb1TsI4RpuWWYRS89aEgiKJkmXN0Qw8PdAu5gA3inQ0IyELbZH/oeSOMVDTVBCuAfutMEcAvyb6Qc8BPGcNt8eFEqUj3/CUqyfbr5dpWXiM/dNznB3P+uxUexJGdgbJaf5xa6hy88GONG54MuEUXLIInA=
+	 In-Reply-To:To:Cc; b=f57kjH/Zo8xQpJIxLmmJVHLgoG3Sr3IBsDB0GUbSEZh2oz2dA8R9se5U4FslHiRQL8U21JVWRF0T+iBQjXQK8hHD8m50SesjBhA6nVJdggNu5b+5FHwV5b184QQeDgdJtKIQP1U418lpjphhX6Na1Q5mSjJ2tT30ynKFPSWiqyg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1v0eRq-0002HM-Uy; Mon, 22 Sep 2025 13:11:11 +0200
+	id 1v0eRl-0002HM-Uk; Mon, 22 Sep 2025 13:11:06 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 22 Sep 2025 13:10:55 +0200
-Subject: [PATCH v2 4/5] dt-bindings: arm: fsl: add compatible for Skov
- i.MX8MP variant
+Date: Mon, 22 Sep 2025 13:10:52 +0200
+Subject: [PATCH v2 1/5] dt-bindings: vendor-prefixes: Add JuTouch
+ Technology Co, Ltd
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,8 +29,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250922-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v2-4-abbb759cf8ef@pengutronix.de>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250922-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v2-1-abbb759cf8ef@pengutronix.de>
 References: <20250922-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v2-0-abbb759cf8ef@pengutronix.de>
 In-Reply-To: <20250922-v6-17-topic-imx8mp-skov-dts-jutouch-10inch-v2-0-abbb759cf8ef@pengutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -54,27 +54,31 @@ X-SA-Exim-Mail-From: s.trumtrar@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-In preparation for adding a new device tree variant with a different
-panel, describe the DT compatible in the binding.
+JuTouch is a chinese touch screen supplier dedicated to manufacturing
+high-end touch display products for the global industrial market.
+(www.jutouch.com)
+
+Add a vendor prefix for it.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Acked-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index a3e9f9e0735a8808721ebba713f14818ee49172a..95078d1a70b07e9c0d298f18ce4eaba3aebd4591 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -1111,6 +1111,7 @@ properties:
-               - skov,imx8mp-skov-revb-lt6 # SKOV i.MX8MP climate control with 7” panel
-               - skov,imx8mp-skov-revb-mi1010ait-1cp1 # SKOV i.MX8MP climate control with 10.1" panel
-               - skov,imx8mp-skov-revc-bd500 # SKOV i.MX8MP climate control with LED frontplate
-+              - skov,imx8mp-skov-revc-jutouch-jt101tm023 # SKOV i.MX8MP climate control with 10" JuTouch panel
-               - skov,imx8mp-skov-revc-tian-g07017 # SKOV i.MX8MP climate control with 7" panel
-               - ysoft,imx8mp-iota2-lumpy  # Y Soft i.MX8MP IOTA2 Lumpy Board
-           - const: fsl,imx8mp
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 77160cd47f54079a39f35b570d69f7c4c2274724..074e2ce9025dfa5ff76f7df3a743c2dd2f9ccd93 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -799,6 +799,8 @@ patternProperties:
+     description: JOZ BV
+   "^jty,.*":
+     description: JTY
++  "^jutouch,.*":
++    description: JuTouch Technology Co., Ltd.
+   "^kam,.*":
+     description: Kamstrup A/S
+   "^karo,.*":
 
 -- 
 2.49.0
