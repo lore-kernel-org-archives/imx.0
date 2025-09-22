@@ -1,157 +1,122 @@
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25681A239D;
-	Mon, 22 Sep 2025 21:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5682F0C63
+	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 23:25:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758576186; cv=none; b=VZKhFbSQb78VHtUD1oNB2x/6ByfXK5XakofZWmnj11nfZ0Z9/EgVdzZyo64BGC5OnFgmtqqtJUfcg7pwAiQGrVD4OZb4XuVbGWlPY+iy5pmoo5sVcfEyfs+gNxY+YWnW0oKaB4Hre8EWRgRgRJAX5EGnhEgkvnLk7RNkSZQa848=
+	t=1758583552; cv=none; b=enq/7otZIGiMvcCZ/sIpTCoocrhVknyCvbwNBLaMAFq7fz7NUeFyytKN/56+NvORRosf/TS4RAieIgTzcdZe0aQQGSQBsQjQivBy6/JGYnwkFh4yigKig85AXfsl63fDexlJIfL6UCMqgjI2LyWQvUjt+Tx2YmcN5UQ2Fbk7C0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758576186; c=relaxed/simple;
-	bh=9MeoJVbhO66Lo2sUM7HZCvvlOclMK/bvVvuvlROFij4=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=renrY4ANz1DT6N90mD3q/2Yid4CeF2wP4z92jyidgI7+Lt/DDb3EOpWbqkgZwvg5032Ks0GPl1oBAfkVI2Fml3QdDsOAEyhoErMcpt80wbI4/AQXguMLOg2D4MJt0A+2Pjmb2QV/l+DrlOjaLcJN766sJwiMJYYiqgaq0QUU9ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=BOU6mVcT; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gmHBoxtT; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1758583552; c=relaxed/simple;
+	bh=JLZ6zJ1daf0+CDFQwAvOjSOsjU7qluGVOxSDdjbTdGQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m4+tiWSBt6G7vQoPz7fIS2qDXFZt782UsA5fzhFFIijD0Yqywvp+nhnRrL6lwHR5x7qYhTa+QbtmFtRIY81sl49hLN+luby9EAOmhN3lZypGmaKv8FPGSnPBH80rT6sRGV/5grRA96spiFg/b2vjXaLjU/whrzW6rAykQsRSn/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bO6pIxUy; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="BOU6mVcT";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gmHBoxtT"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 97915EC0301;
-	Mon, 22 Sep 2025 17:23:03 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Mon, 22 Sep 2025 17:23:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1758576183;
-	 x=1758662583; bh=Di8U+yHpW9PWxGMprMpa0qfyAiwc5nChUHQPZxjrHH8=; b=
-	BOU6mVcToMxa6qFUiC6cht0bV05a8ANyKR5ukskNj74Kgap+DqTUaWSu+IKdFe3l
-	WRpUM30Wu3H0Q7A2y/voOAEVMz1ItWGdFd+w1g29YJ7Tjl2aT+hQdsIjBYzOSRat
-	P6tosIN336s/ecXEeQ/mGTufNXrxc6oPikF3ykV/4Wx5E6r8XKZkcW5rH07dbYAi
-	hVS+ZWgjs+wGKwhWw9MlR/A61u1V4gi072jORA/RDnj7Nu/QRBfiadbi2FwamY3C
-	z1g3eaCmC+6ZV0VO36eJ9rA4ai9KBUyUl+kX8rwbdvVby3ynOJZk+yOUH9dNivMj
-	J6BkZ2jlIo5ZNgAXnGA8VQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758576183; x=
-	1758662583; bh=Di8U+yHpW9PWxGMprMpa0qfyAiwc5nChUHQPZxjrHH8=; b=g
-	mHBoxtTQev5hHzzjS7DzOG6LjQc2O42dSxLb4L6WQb2WlRSURFQb5PpcuBN2HTms
-	62d99pLVtJPUCF7OT5ICVSqlboyOqdGHXJIUax+oI0O3IgOolDGEnOWayvlw19bk
-	GTctlMrBtCTrn15fz5C78bks5N4t7sTFyuHhpbp7bypfTbN9jsFm7miJXebzUTbu
-	GkBm5/mf2z9Lam8hkmNkaZhD/Aa8ufZ9KIVP69Ld+kkRg/FCv7kH/PRqbJ/kSgjT
-	Ys/j3Va2f5abW1fJBGV59q3b0QcV6n8w4sBB+Pm5+Jpany6I0MqmylWHR2hKS/7W
-	p6MNsjIRV0fcgvwbafw5Q==
-X-ME-Sender: <xms:Nb7RaHIv0elNNGqKqz2hq59PlbQ1WvH3PQekoKoYN6GHdrkbplcdZg>
-    <xme:Nb7RaF9zWPO1z0eI-85xdehQcHCJ4U-ixtIweYwspyjZNwYzs6sJyQVkn2QKVroo2
-    tuHZCnZ7Y6hRCAk3yvZYtO1xCbsZ8geow9JBfeHT6Z-a8qAnaICeO8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdehkeelvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeefuddpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
-    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
-    tghpthhtohepnhhstghhihgthhgrnhesfhhrvggvsghogidrfhhrpdhrtghpthhtoheprg
-    hnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvggvrhhtodhrvghn
-    vghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghnuggvrhdrshhvvg
-    hrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgihhordhprghrrggt
-    uhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgvnhgssehgohhogh
-    hlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhg
-X-ME-Proxy: <xmx:Nb7RaHyj4-U5cmLtj8aV6Obmj2wE8qDHFtnv04wApvnSKRdpvOTwyQ>
-    <xmx:Nb7RaPNEf6QOHCcg2sOwG2YcDZEDgMATtieOS7b2v4iNsq7NAARQhg>
-    <xmx:Nb7RaM7LJ7xoeWbjkfv203dQeqEDMpWgwtURBYX5yI5dIc7-dM-KOA>
-    <xmx:Nb7RaGcvvcBerj7e35_eqxKXMQdHMfkXoSuoEeKpoVO0WLLALUm55w>
-    <xmx:N77RaF-PoW2bovyuykM0k5mv84evTeZMjlxPQrSMV7i2vSrQZNKLFHZX>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 2385C70006A; Mon, 22 Sep 2025 17:23:01 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bO6pIxUy"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-78f15d5846dso56063386d6.0
+        for <imx@lists.linux.dev>; Mon, 22 Sep 2025 16:25:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758583548; x=1759188348; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=F8P93O7mFuM2RNG5Gl6sjJK4baF70StwSvvALSzglIM=;
+        b=bO6pIxUykKG0uYwwmWU5C6kztJxdgo9ligX+ELiab7fci+mg42/CiozYprHqUv577p
+         8g+7YRyaDrjFz7I8Laxw/O5YfSz/tl2XDD1Zjj6I8+2I2ntKB5XPxwLm/duYRnuZiCcX
+         4MHSNxCqS05lCevHD1yYsBeT5DpnGFItBKGOYPelCH+QQWF7TlLSRF+Tie+YsuYFPq7B
+         Cbnx9d/03gvce9hPBZCPhJGPCTRdpacjIvGjqao9L8kwpnbrcpmZh9qqzqlZbcZwgbiU
+         9XpkUSi0ifLhAqGEXWRxUiZl0sdKUYwMT9ZQg0mO4CamagVgiawsZgSVkHyVHC01y07I
+         QtGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758583548; x=1759188348;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F8P93O7mFuM2RNG5Gl6sjJK4baF70StwSvvALSzglIM=;
+        b=gb57muvhctTBj+ZQZ+nI3HQ6IBJF5Ws56EAUQ3YaqQ/hrmSJ2QzapumcXP3rgREYo5
+         YiMAuboKuPH8B5vqGbxxJL6cd0nxd94eCzuG1ExwgGyLKnkOOZqaSGzvNblPqvBSHKB4
+         qI+5wYWmOMsLNxVTkdJ1Rn2AsKYgYkK7hcKMihaGiK01aohNJGJ+wuLmROSXX5pW40Vk
+         W3rRSqa1RNzI7G4EiNSQcNJ6PK2rkaycaDNAG1Mm6+B46LOEjLNdcQCx59K7j+ORbHmu
+         5JLMY8ycCUFDIAB2A/FwL+1Ix4bC2YW/xSpGnfsX23zA4LNR9gMRxeWg9z//dh8FcgRc
+         ksjA==
+X-Forwarded-Encrypted: i=1; AJvYcCWKglq/i8uR1ZLJocwuv4T8f/r8PuP0jzhPvGpecP/j0Beaqi/iDPnCydqw9w2QRkhQlO4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwSVg3os7uu/eeSj+HxuUUDAjskgLtiVW4kHnozhp5Gm9iGPQgO
+	tZgyCTQ7x0VFt+FnpksWQKQRS1m6I0dZ2noWOgJ8PWxqQugHgmznki0a
+X-Gm-Gg: ASbGncvA5HbM7Kjn67Vymni+1tctXFrXPybaofWDWf+bvOcp1EdBuFeSfiXho1R1Gwz
+	L4/1VLyjuqa2U7HAtrdZHZg4u1jqbh+Bk9AA/oo700ILm/6Q+Zkh1qB1X5CW4Qy+Zuq6iKiNlQc
+	59A50kBSaEiCnqVaIi+g1O7TCYSoDfscuOOOWjY6ESHCG7/Vdv7LnGEbdDZpEQBI5segQus9h45
+	3Y/QxrGy50r0nooKucrYb+VjIj9XVoZOf5vzzSqOhLvZEYwHb++3nlfvkRQMJnr7Y66Mi7QKaZH
+	Hh36cu+g196bdjXPcrXJYsJoGl7oBy1bL1muMBiWx1eIqnro8RX0q0rEoUQC4EHzy7Na+/kib64
+	9HjRwO58EEKMFQ768+mPrGVrkVX/UNC81kqOJBC+S
+X-Google-Smtp-Source: AGHT+IFbSBgrLxfeIQurMy9quETHgDR5erLT96k/GtUBVfyP12lxyT/MwQ6vyqqabYOGY6hcIz9rTg==
+X-Received: by 2002:ad4:5ce1:0:b0:777:2f9d:71ca with SMTP id 6a1803df08f44-7e719766627mr7924456d6.56.1758583547736;
+        Mon, 22 Sep 2025 16:25:47 -0700 (PDT)
+Received: from rogerio-laptop.home ([184.148.194.86])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-793548c63desm79417226d6.57.2025.09.22.16.25.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Sep 2025 16:25:47 -0700 (PDT)
+From: Rogerio Pimentel <rpimentel.silva@gmail.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de
+Cc: xiaofeng.wei@nxp.com,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	alexander.stein@ew.tq-group.com,
+	dario.binacchi@amarulasolutions.com,
+	marex@denx.de,
+	Markus.Niebel@tq-group.com,
+	y.moog@phytec.de,
+	joao.goncalves@toradex.com,
+	frieder.schrempf@kontron.de,
+	josua@solid-run.com,
+	francesco.dolcini@toradex.com,
+	primoz.fiser@norik.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Rogerio Pimentel <rpimentel.silva@gmail.com>
+Subject: [PATCH v3 1/2] dt-bindings: arm: fsl: Add i.MX8MP FRDM board
+Date: Mon, 22 Sep 2025 19:25:22 -0400
+Message-Id: <20250922232523.844633-1-rpimentel.silva@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AneuvEk2E7Kg
-Date: Mon, 22 Sep 2025 23:22:30 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Nicolas Schichan" <nschichan@freebox.fr>
-Cc: "Jason Gunthorpe" <jgg@nvidia.com>,
- "Geert Uytterhoeven" <geert@linux-m68k.org>, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, imx@lists.linux.dev,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Richard Weinberger" <richard@nod.at>,
- "Lucas Stach" <l.stach@pengutronix.de>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Ankur Arora" <ankur.a.arora@oracle.com>,
- "David Hildenbrand" <david@redhat.com>,
- "Mike Rapoport" <rppt@kernel.org>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Suren Baghdasaryan" <surenb@google.com>,
- "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
- "Andreas Larsson" <andreas@gaisler.com>
-Message-Id: <598ab56d-7dd0-4adb-b0fe-30ad5cf24335@app.fastmail.com>
-In-Reply-To: 
- <CAHNNwZCsBY+ta2-OqD40K0-C8N25PLMYfOJowiVeaEMotqR1nQ@mail.gmail.com>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <20250917125951.GA1390993@nvidia.com>
- <02b0f383-1c43-4eeb-a76f-830c2970b833@app.fastmail.com>
- <CAMuHMdVecUeLZ2LPpa457C0a=uduvDhQ4KZJx-++dEFJraRi3w@mail.gmail.com>
- <547dcb81-434d-4910-aa7c-1d69019fcb3d@app.fastmail.com>
- <20250919143436.GC2132010@nvidia.com>
- <44f910bf-ac2c-4b2f-8e50-5cfc7dd0761a@app.fastmail.com>
- <CAHNNwZCsBY+ta2-OqD40K0-C8N25PLMYfOJowiVeaEMotqR1nQ@mail.gmail.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 22, 2025, at 19:05, Nicolas Schichan wrote:
->> On Fri, Sep 19, 2025, at 16:34, Jason Gunthorpe wrote:
->> > On Fri, Sep 19, 2025 at 04:22:20PM +0200, Arnd Bergmann wrote:
->>
->> I did get an email from Nicolas Schichan (added to Cc here),
->> and he is still supporting a widely deployed Kirkwood based
->> platform that uses 1GB RAM configurations. He should get
->> a chance to test that with CONFIG_VMSPLIT_3G_OPT, but I
->> would expect that to continue working, possibly with minor
->> bugfixes.
->
-> We don't use HIGMEM on our Kirkwood platform, we are happy using a
-> 2G/2G WMSPLIT. We don't need a lot of virtual address space for
-> userland, and with the 2G split we don't waste physical memory.
+Add device tree compatible string for the i.MX8MP FRDM board.
 
-Ok, good.
+Signed-off-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
+---
 
-> I'm happy to test your patch serie with VMSPLIT_3G_OPT and see if it
-> still boots with it once you send it.
+No changes in v3
 
-The patches I did for turning off HIGHMEM on ARMv5 won't have
-any effect if you are already running without highmem, so I
-don't think we need to wait for your tests specifically.
-Any testing would be useful of course just to check that
-everything still works.
+No changes in v2
 
-Jason, I think we can go ahead with your suggestion. I can
-post my patches for review once I've done some testing on
-them.
 
-     Arnd
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 00cdf490b062..8bddf1f8a78d 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1099,6 +1099,7 @@ properties:
+               - emcraft,imx8mp-navqp      # i.MX8MP Emcraft Systems NavQ+ Kit
+               - fsl,imx8mp-evk            # i.MX8MP EVK Board
+               - fsl,imx8mp-evk-revb4      # i.MX8MP EVK Rev B4 Board
++              - fsl,imx8mp-frdm           # i.MX8MP Freedom Board
+               - gateworks,imx8mp-gw71xx-2x # i.MX8MP Gateworks Board
+               - gateworks,imx8mp-gw72xx-2x # i.MX8MP Gateworks Board
+               - gateworks,imx8mp-gw73xx-2x # i.MX8MP Gateworks Board
+-- 
+2.25.1
+
