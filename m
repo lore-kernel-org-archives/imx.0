@@ -1,79 +1,73 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C9A2E36F1
-	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 16:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4A02E22BF
+	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 16:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758557234; cv=none; b=IEo6y27cMLFc+IoNGi7Du5Ox21S+XjoxwKH5pijmyb6Oa4uz98b3jpLfr/MK5my5apE4PElHcG/GeXFLOcvjeL9fFnO7qYOdUn5TiCSiTXQ8WLaQaGeSYKkYKkKPbgXs2sfLG5iHSzsvjZFXontP6i/In3VI3Fdu/dZyDtJ5GIQ=
+	t=1758557486; cv=none; b=HonhDvGotIVLUziDRvrmeYZCEy7nQ9t98tCFLC9ylC/Z43Yv4COlDximpaoyqwRHLbVbd+dz6jegGqSVdwYA1MaFCBkS6kYFMuOqVUyRj90JYdVwV8N3rhMUcYzBTsq2hFHzDT+AqhAaarI71KyvVsYwRf2xjAN2upvxDdMpfJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758557234; c=relaxed/simple;
-	bh=SGd/Y77sUXn6Zr/jkMncw9ZuF4nFQwtDQXKAhq+qfS4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PoP4WNpR8K+2f2RslABDdwfI7mdPIuPHse970ff/+ssBcqdHMYI8UPHSBtNVEqmOaPHg73jCJYghnGlu12Wm8S2jxFKvJdh8TPFbS93/QAUWcvafseRj/H1tCX7idLxmA0lzaKNy+ZTTKj94yLT621wm622Zt0Ul44gKkEy1FR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VYqfr7Pq; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1758557486; c=relaxed/simple;
+	bh=lbCZuCRT4lMk8VwiDJS9qwmYIpPm3rZqFqTsl8NKnl8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=MkY7hzbJOG7WOoRmOm4AxIxM2kR3UHKU/DB6xXLRlPrqy9FPme5t2ca+4QcZdLCeGvKZqEvbhHL3UBAK0nee/gF9MpKMHVFpoCD59NWRgx75B0mCl7N/s1OMoBSp6qZaR1a+E1sM+UH1hGlLZfSt9HZgQxjqD7Y38iAkIAyoErU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4aPMfOD; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VYqfr7Pq"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b550eff972eso2669240a12.3
-        for <imx@lists.linux.dev>; Mon, 22 Sep 2025 09:07:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4aPMfOD"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45dcff2f313so27795505e9.0
+        for <imx@lists.linux.dev>; Mon, 22 Sep 2025 09:11:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758557232; x=1759162032; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fBIeGLBQwDo9z1+Bndm5UcTEHsot/RRojoQ38PoeRdg=;
-        b=VYqfr7PqcsCeD/GV+XyvZnc9ZyX2G23cfRS/u5tg8hwireAOWyXTXnO1o91zBEG/fa
-         MqHYAJgPf6RIYopaB7fjLpTautpcoPxCeKwhUtqkkSrQjHIVu00czlSY4mpvcLf4zvG7
-         J9O6jp7VQLfQT1GMmotQJozQfS5PRAQnt0FIuk8gxcpKnVjS6XDRJQqmnQBmG7Z30snM
-         8YgdcTiklBml4oLYSSNMAaybm0xgMOYuk907Q8y217jurFYWEjgrj8X2D+iRFmwBLD7Z
-         zBdi6nkAc2T0c0ME80SvfEWUyj+06Xnc7YU6x5jaUO00GQlcH3lBIf//SrUmJKDYJiK8
-         S9rQ==
+        d=gmail.com; s=20230601; t=1758557483; x=1759162283; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DEnMMyTPzSbYjCuENNMIPA0pMqJ+aV1qFH9XDih+9hQ=;
+        b=d4aPMfODZNwN67kClfI/AIamL5kw1UxENRCxS+jYThk6lm2Q2HApFDMzLGYEQqlEru
+         A4ZuJ2M5iTLIviZUPGqffEnuqA7DoDXfxbjxEXBIq1hnTSZP1mjDg8YxWXU3pP6MUmv6
+         G6lLRmPiJqjqy8w7TNLqb9Aw7yxVyodhqLgC8xfOP7yAiiu+2Mo4xGMsFFRog0xafEZn
+         E+xewjAj9M6aWWEnaYIR8VYYo7oe29RXiyWA6qTErO66fNkLRGyeyQHcigdWC9C3I8Nw
+         qD4aZ23YfycFoVcpwSt31PvV+v/gwiHSbcZXx5KFV8qL9w6X4CQ4f9sKmDmUhMPfxBr0
+         A+Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758557232; x=1759162032;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fBIeGLBQwDo9z1+Bndm5UcTEHsot/RRojoQ38PoeRdg=;
-        b=VR967LyYC8jgDA/oVXCaUSuYfRK8iSUIUGsqadIdAeAVTNSl3dZazrIXtlxRAFykx9
-         e2jURnrVKdeLchosctDK5BqoczR81LG9CTveFb9LBI4s8jHZXR5cBqpYksi5HytvTzO0
-         9mB2tqocLZlZPylo5eXezWV5QBFaZ3RcWyS38vmeTeyZ0G2cxw8VYix+A2whthjbCqLl
-         vzRaBdkfc5t063VCR0NvxmshgR5eOxSQl/IBhF+USMImjWKO22kWsZI6gRpa9a2yy8O1
-         /3gyEVdborwuaskgy9uW7o59Nqor2goOv4AGqiQZFWdxl/Anv1lMnFnQo2CorMsw1+u0
-         LYRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWjSwV4AXantChlj9NCBD+pMCcZnRpZNG11M9Ras8r3srI782yGtmqRC+ewYF1SK47p2Ko=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzRHlKwaSgQZ+o0m310b0wp3PK7nzFylZEKV4VWr0Wmyb7PWz+L
-	b677y+2JR63vcEOjgng+mKuLtT97Br7xRrBay7HkjOShA1SMqT1kcDbrB5j3cSq4tAM=
-X-Gm-Gg: ASbGnctfsfS4vSWdKO8z8ISbVwuFG7XsVG5GL69jyNuoRb1uGcwXmuDED7w0/Lb5WyS
-	PqfZKHdKR3BDsu4lt8MV6fln2G2yly4JeUUAZrZiBc5zLZfoAX4pXszJElQ1hwjdgBexvZoBEq/
-	BQpqmThQI2DxmA7QnNWeByRiHXTkvOqzLhSFo4WjGTYyhA5OmrVy/QwbUYsbh+Go0zbCMktMqqo
-	KJLNLMiFkqS+V1Wvsnufuq0eJCQvjoc+8SwH8aDuoNm9aApta6XQIhPdxTbieMQxH+GMIFqFt8W
-	NeIxq/nKeFyTHIj5AxKj+dr+x1w05FsEQqOHzqsBRIZk7Vveg4BUZ4SWqh9S2aMWtcsmHxzUWn/
-	+6l8UZK3eR0r2R0RhHTJWQt0N0MVMhxgh3A4g0jnMXGA9B5+I3T5tfeMkHkxRsRbq2g3FE/nkmg
-	/+3Q80wd6cK2hL7FUVUwO/velOVxaBURVMU+E=
-X-Google-Smtp-Source: AGHT+IH2NzERQbi1RoTQELtlO5ZOlqSD7C5iySM5N99gbWGr6H6ojxxoxB4xZsUBWMUxh34xDnn+dA==
-X-Received: by 2002:a17:902:ccd2:b0:267:99bf:6724 with SMTP id d9443c01a7336-269ba50876fmr165383605ad.31.1758557232460;
-        Mon, 22 Sep 2025 09:07:12 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:4631:7929:7e95:6485])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269803184d3sm133896545ad.116.2025.09.22.09.07.10
+        d=1e100.net; s=20230601; t=1758557483; x=1759162283;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DEnMMyTPzSbYjCuENNMIPA0pMqJ+aV1qFH9XDih+9hQ=;
+        b=vslwbhPtd/rXM7c5eY6fRA8XKLWpiNbknQT+i5rXy4xXzvsUyM8HY4rzMUWbDl3FM1
+         ShWdVoQK/iDMfkZPAFQlHynoQYkzkHJtm6ezF4ISjG0kEYcpbNw8JGu+VPtXgeWEmqlw
+         ZFtdl8+LMEzQlZv/XYsPpsYDOaafjciNFeOIzEnuTpEUMfYZMkTvu8IxQItHU33FFRET
+         PfwQ3HJ1SZ04uEvhk0ks919JH+/oZPWbeH+lS+0W8+wj77dzLNZPbBlqgh9KP7r9IuH7
+         AmrCVIw8b+70CcrA54uvXpfNeCsPYmEQ6n5mzPmZNqYwvguU2nxCOXqmZZCf+Nek8ncY
+         qXXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZwITzPfirPSA/7sB6UTCDh/ZwxnQdIfd0QV5lPV7+HB7SFh/6gDjFIL6aDIijR9HItU4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzia991m/hGH/chrPxUgmN4wSThYCaI5z9MQJtBOWyVOqKpldku
+	1se5yGg3WFiI0UuU0LMN0DiadDxwIGRdvL0ojapyMwMZLw0d642vK64F
+X-Gm-Gg: ASbGnctfKWDIyZ1D2vjZLECQvzRibfVijukDDCgGofn6/cL7WYOtLp3kzmICSaslrvX
+	2hFfZ5DETEA6/ofnn8hZ93zjfb+BYH0VjBHKSgnTBYJoXa2oQis2wpemEAOTVSbFB2Dz6l7zuAh
+	xzeD0os3X6Igt4VmEun0SQwUZygxrST2qrBRcJqbSMYZpRIex0xaPvTkxC03SrZcTQ7cL/bnvxG
+	m4b33KZCciAGSSOamObRToaxthxgnzaf9eY+LDhPf5kuvFOe9O0Ha+YzgUfVtaOGAVzGiPJpiEl
+	CW+G7inqkS9tBDTFXS5IFmEE7mxkS05PARtH5gtDwfXH+PhoY3kvC52gTw8ru9FSHv1Yo+a1gwm
+	A1mnYcTkwuIE7PEZSwhJK24LNmvooZUy6bucRMtF8IQZBrpRo+D0JekLk5qOluCQ8zeRXyFd9KZ
+	cpGXjIBQ==
+X-Google-Smtp-Source: AGHT+IGdiz7k8V0AhAdxhfd+pKps/rRfo1454RdG9IyhVYMPnmXBEYKoLxSXpCioAD2M8iGpREQWoQ==
+X-Received: by 2002:a05:600c:3b20:b0:45b:9912:9f30 with SMTP id 5b1f17b1804b1-467ead6730bmr108706325e9.6.1758557482842;
+        Mon, 22 Sep 2025 09:11:22 -0700 (PDT)
+Received: from Lord-Beerus (net-93-70-53-177.cust.vodafonedsl.it. [93.70.53.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46de4d67625sm31370685e9.16.2025.09.22.09.11.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 09:07:11 -0700 (PDT)
-Date: Mon, 22 Sep 2025 10:07:08 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+        Mon, 22 Sep 2025 09:11:22 -0700 (PDT)
+Date: Mon, 22 Sep 2025 18:11:20 +0200
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/6] remoteproc: imx_rproc: Fix runtime PM cleanup order
- and error handling
-Message-ID: <aNF0LFkuS_hADmrz@p14s>
-References: <20250917-imx_rproc_c2-v1-0-00ce23dc9c6e@nxp.com>
- <20250917-imx_rproc_c2-v1-1-00ce23dc9c6e@nxp.com>
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [RFC] arm64: dts: freescale: imx93-var-som: Align dts adding missing
+ components
+Message-ID: <aNF1KOCs0eHL1Njb@Lord-Beerus>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,92 +76,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250917-imx_rproc_c2-v1-1-00ce23dc9c6e@nxp.com>
 
-On Wed, Sep 17, 2025 at 09:19:13PM +0800, Peng Fan wrote:
-> The order of runtime PM API calls in the remove path is wrong.
-> pm_runtime_put() should be called before pm_runtime_disable(), per the
-> runtime PM guidelines.
+Hi all,
 
-Where is this mentioned?  I have looked in [1] and couldn't find anything.
+the current device tree for the i.MX93 VAR-SOM is incomplete. 
+In particular, several peripherals that are present on the hardware 
+are not yet described, such as:
 
-[1]. Documentation/power/runtime_pm.rst
+  - audio codec
+  - PMIC
+  - WiFi + Bluetooth module
 
-> Calling pm_runtime_disable() prematurely can
-> lead to incorrect reference counting and improper device suspend behavior.
-> 
-> Additionally, proper cleanup should be done when rproc_add() fails by
-> invoking both pm_runtime_put() and pm_runtime_disable() to avoid leaving
-> the device in an inconsistent power state.
-> 
-> With using devm_pm_runtime_enable() for automatic resource management and
-> introducing a devres-managed cleanup action imx_rproc_pm_runtime_put() to
-> enforce correct PM API usage and simplify error paths, the upper two
-> issues could be fixed. Also print out error log in case of error.
-> 
-> Fixes: a876a3aacc43 ("remoteproc: imx_rproc: detect and attach to pre-booted remote cores")
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Hiago De Franco <hiago.franco@toradex.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/remoteproc/imx_rproc.c | 24 +++++++++++++++++++-----
->  1 file changed, 19 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index bb25221a4a8987ff427d68e2a5535f0e156b0097..12305f36552fb5265b0953a099ea0d561880e3ff 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -1046,6 +1046,13 @@ static int imx_rproc_sys_off_handler(struct sys_off_data *data)
->  	return NOTIFY_DONE;
->  }
->  
-> +static void imx_rproc_pm_runtime_put(void *data)
-> +{
-> +	struct device *dev = data;
-> +
-> +	pm_runtime_put(dev);
-> +}
-> +
->  static int imx_rproc_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
-> @@ -1125,12 +1132,23 @@ static int imx_rproc_probe(struct platform_device *pdev)
->  	}
->  
->  	if (dcfg->method == IMX_RPROC_SCU_API) {
-> -		pm_runtime_enable(dev);
-> +		ret = devm_pm_runtime_enable(dev);
-> +		if (ret) {
-> +			dev_err(dev, "Failed to enable runtime PM, %d\n", ret);
-> +			goto err_put_clk;
-> +		}
-> +
->  		ret = pm_runtime_resume_and_get(dev);
->  		if (ret) {
->  			dev_err(dev, "pm_runtime get failed: %d\n", ret);
->  			goto err_put_clk;
->  		}
-> +
-> +		ret = devm_add_action_or_reset(dev, imx_rproc_pm_runtime_put, dev);
-> +		if (ret) {
-> +			dev_err(dev, "Failed to add devm disable pm action: %d\n", ret);
-> +			goto err_put_clk;
-> +		}
->  	}
->  
->  	ret = rproc_add(rproc);
-> @@ -1158,10 +1176,6 @@ static void imx_rproc_remove(struct platform_device *pdev)
->  	struct rproc *rproc = platform_get_drvdata(pdev);
->  	struct imx_rproc *priv = rproc->priv;
->  
-> -	if (priv->dcfg->method == IMX_RPROC_SCU_API) {
-> -		pm_runtime_disable(priv->dev);
-> -		pm_runtime_put(priv->dev);
-> -	}
->  	clk_disable_unprepare(priv->clk);
->  	rproc_del(rproc);
->  	imx_rproc_put_scu(rproc);
-> 
-> -- 
-> 2.37.1
-> 
+My plan is to align the DTS with the actual hardware by adding these 
+missing nodes.
+
+Before preparing the patches, I would like to ask for your advice:  
+should I send one patch that performs the full DTS alignment (describing the 
+patch as an alignemnt of the dts with the actual hardware), or would 
+you prefer a patch series with one patch per peripheral (e.g. one for 
+codec, one for PMIC, one for WiFi/BT, etc.)?
+
+I will do the same with the other Variscite SOMs and Carrier Boards
+
+Thanks for your guidance.
+
+Best regards,
+Stefano
