@@ -1,305 +1,189 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013015.outbound.protection.outlook.com [40.107.162.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1271D5146
-	for <imx@lists.linux.dev>; Tue, 23 Sep 2025 18:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758650897; cv=fail; b=F2N7zlSe5veciRw8wQHQgHVKbj28zA0JWDOFYj/djmGrIYcFYtLMRQZlTR+4vBnZYW7RVytD5wjV0YSVbg78+Z1xZ4tnyAZhmbtHLRlkO9WnixYG7coZvnnYhyWl8EUmi1uY7EZYiNNxlu4iLCzf0eLsGyy4zD+/VTkCiquCyAA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758650897; c=relaxed/simple;
-	bh=DrzLOK4ieGjXFynsC8v93Pjylu/85EnzE6gmrFmVEBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=F9yTC8WJsrGmpkSvRZdOl5iEQD1INboYxmFZvHuPz46D3NaOa6dNiWqgDfjh0/rSF1d3RxXdoTI88BZo8luIznrEF45QHl6KmZ2/1skeJz6YozNLJggGpo3pPz1DVY6bFus0HPQhs4divT6SYmMQu5kytez4x3jiE24xVzZbVb8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DiysRj+i; arc=fail smtp.client-ip=40.107.162.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C3728A1E6;
+	Tue, 23 Sep 2025 18:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758652066; cv=none; b=Pyq5UnVR1ahwQuuIiQ3gEP+RHoBs/Y1cVE2Xv9YsTvNtodQo+UfU3pyCa1okI3TUcYirvgSv1F69NJNXQzvVU0LBZ+0MgZKC+8PDL2V8N3nrlZSu7D+Pk12t4y3bqV+n/SarQNTFPlsfi0f3ohrOG+cOLkiloi2wNWbsyfFecV0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758652066; c=relaxed/simple;
+	bh=u4+PrGZdgCauoOlW4112fdJ4hZl7Vp6GjCfbithZYI8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kdzwVbEc8HN4V2x8id0Fx8Fz4wGQ0NOlF2uLPyA8cJDOZxUxVVh4G0hl3OD2qQ1tN3yoQ+wZQRbOk/yBcPJXajz75JVhzDatftiy3uWssa0pdPOuRuUrayKURLOTUkvh+7Fb0yDK7buIhmXoiT7MVzXVpPecmFesBe6c6x/5Yu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nhLwqx1w; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DiysRj+i"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Dli8eLTjSFRuENIeczqGsvpHmRx4SJWhsNlF0XB22IOrCMPftx6PMtA0wzsTfLvdC/RvbUm3zR9erMHy8pJHtmKy4NwY02H08T0oJsOHXJLMFRJe3ThKbyeab2x4qH9SH/JmJ/RMLnsORNVdg+HZMj9ehV+NBtrSQPnBJH6L+vvtIcAv2qCVO/8EPiTIjuVfniqQue/1hfP0Hv/i9Lw1kczoOCys6+0HqN3uxYZ149NVmm7lMrdrdFOWt10BtocyNHoKD+hefH2Kj1jj4drPfjlBKYdCW0IJ/agxvTKL7azMwhDPMzDITWTNzVz6WR8Xeq7ZoRQdfjp3LvEhyBG3Yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CtNALJRMR58MML5TWR/be8WIIR1mw2taniKCpvP/U3k=;
- b=rybihzyKKtTd4I9yaY+XGJoR7bI7O18MRa8FnK7r0vJQpyNdVD3lrKLvwAkDOYklyYEKrMLsWlq/cjRVnYDFdBEllIwq8IYRDDEy7hWdeZFx7B0Q+FiPkNec2CiFLZkR3MinVBHEW9hglkBudAjT+A73Ea4z6ul+BZ/dz9zj2Drvke0YKbuU17mNFrMrJDq0YTXM0uliIaSY6TAKGGzTpzSswhpwm/vxyns7TWXa+tPvUw8uTr7z3rqMsavUQHBqy3SStVOH/m2vKqiUzNLU1ewwJ0/Mk5rsEQc35CUmGdW8Ap/oONV0bNJ8qMHnQ95AiZzviYJsIT94+zBo5Ih+Mw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CtNALJRMR58MML5TWR/be8WIIR1mw2taniKCpvP/U3k=;
- b=DiysRj+ixVAc7BLQF9BFfJ6pkvMHMiBdtPd5av860u6hOighg4GBw1Ey46zU2qkzTsvSX1NAqhsO+NFYudyrXA19Tl88ptMKHTvudgu1NzFLSqb7XyVL0iBMfJr8acO4MbNwadSc5PhqXnKRlorTJOThgMaxyJDxkT3NPeGQB8wJIB5mQ6P2T2aoERBtqtbWPW5uOsvbChlSlUf2bz0lPtnrAfjjoV0hwkhY2SIu84tqFZiP9+5P6sovzRfabaQKUA/GbvMLBNmUH8w/kHRmf7Lqad8Fr9qukYSid5PwTDLH4oNOmqu23x+Z11EBJgOMikq32peE/UKNuk1KroPnIQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by AM8PR04MB8052.eurprd04.prod.outlook.com (2603:10a6:20b:234::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Tue, 23 Sep
- 2025 18:08:10 +0000
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9160.008; Tue, 23 Sep 2025
- 18:08:09 +0000
-Date: Tue, 23 Sep 2025 14:08:00 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 05/14] drm/imx: dc-crtc: Disable at boot
-Message-ID: <aNLiAA0TnqfpkqTL@lizhi-Precision-Tower-5810>
-References: <20250923-imx8-dc-prefetch-v2-0-5d69dc9ac8b5@nxp.com>
- <20250923-imx8-dc-prefetch-v2-5-5d69dc9ac8b5@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250923-imx8-dc-prefetch-v2-5-5d69dc9ac8b5@nxp.com>
-X-ClientProxiedBy: PH0P220CA0017.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:d3::24) To AS4PR04MB9621.eurprd04.prod.outlook.com
- (2603:10a6:20b:4ff::22)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nhLwqx1w"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758652065; x=1790188065;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=u4+PrGZdgCauoOlW4112fdJ4hZl7Vp6GjCfbithZYI8=;
+  b=nhLwqx1wGqqph+hww8HO/O3b5vBgKYVuHhF5RyBa4CEBOwBm9vDtZmym
+   oHyuXqvddG1Vtlm+Neabs8I6u9JeSWrF5X1pkE0MRrnfG3vMNY8D3K+MG
+   FEE+jqNAJ65hyya3s0zxvMwdBw8ZJ9n3Vjhm94G1HAhvpUczUhyInCkd/
+   LdHZ09eDesPghFsAMvOqnFi9+RFDP/BQlIbQwu0YpMuDOtfaiZurfaDzr
+   ftgPsTyXnKfb8wYhdPdy0fvTk4IQ/wP7QlExKTDS0+Rk7eSrqc6jGu1N7
+   Q6/YyZOzDSZWT5gT7UsVnDNaw8Y213fYMxIcrtXEb9l+51Lk5LfGjKMEO
+   Q==;
+X-CSE-ConnectionGUID: ePw4JcjyS3uDcUe1B4JaeQ==
+X-CSE-MsgGUID: BGDgJ7pHSbq/1W4F9Bjljw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="64580398"
+X-IronPort-AV: E=Sophos;i="6.18,288,1751266800"; 
+   d="scan'208";a="64580398"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2025 11:27:40 -0700
+X-CSE-ConnectionGUID: stv7vfFCSdeHBPP5LF+uSw==
+X-CSE-MsgGUID: aPOfJi39TMSEQztG3b8yRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,288,1751266800"; 
+   d="scan'208";a="177620568"
+Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
+  by fmviesa010.fm.intel.com with ESMTP; 23 Sep 2025 11:27:36 -0700
+Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v17ji-0003Q5-1C;
+	Tue, 23 Sep 2025 18:27:34 +0000
+Date: Wed, 24 Sep 2025 02:27:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sherry Sun <sherry.sun@nxp.com>, gregkh@linuxfoundation.org,
+	jirislaby@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, shenwei.wang@nxp.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH 2/2] tty: serial: imx: Add missing wakeup event reporting
+Message-ID: <202509240214.bHWiT4Db-lkp@intel.com>
+References: <20250923031613.2448073-3-sherry.sun@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|AM8PR04MB8052:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4c88906-0e23-45fa-e4bd-08ddfacc26fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|52116014|7416014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7kW/DMaTLFX67h1ais1xWOJYKPYGwIt+nl+ROmmudJLEcBL+Avm2G3s28+7B?=
- =?us-ascii?Q?RNI0NiHncN0zX076vG7Hb0RNhYmjC2t40UPGjXRhkmEqTJgoeSccrWEFZBfU?=
- =?us-ascii?Q?FTPhyaO3QucTgCjM5nzoW/BHy3lgV+yqmvFGY4basCom377idLh9fWIbA137?=
- =?us-ascii?Q?FEIOQL4v4yYfTw4GC01I3OfCuhQHUwc93o48yJTI1Um5Z9ISwkJLhnHJ4Tp4?=
- =?us-ascii?Q?byK9Wdj9YqFP6IdgdIjV9lREabJfhqlKN76AqjWJUTkUt5sul7a0HmdsZfIZ?=
- =?us-ascii?Q?R3dSwotlfD5wpj3nGEE12m1+lQdMYhkkH70ZYjWsj1ef3ocbQGCAetSZBssR?=
- =?us-ascii?Q?DXLesbZJzx4Mc/8ZdbJURUbAzjwbmrK1apKS4svNcYS0CCu2ezrI35+iPjUG?=
- =?us-ascii?Q?VfyhDW1G/Hyuk3p/u33giQvNwS/vto/ipR+c0tJEWrVRxSHuG5ihj2UafU1m?=
- =?us-ascii?Q?ISeJAkvgDB/YknEpfhKn+ruPSghGtLtiS7xL5h345u5WAxg0Jo97OS+KQaIX?=
- =?us-ascii?Q?LbPTOZoySbf2TK0SXgsMHyloZcHhEQoNKf90uKEdBnwuRnKE1SYJzltKJ5BL?=
- =?us-ascii?Q?b96fHwPfINihTlvWEWY2hdd89SjN87ZmXw7iftNhfelu+3zMT+WXQK24oK51?=
- =?us-ascii?Q?5R3kGrPpFkNLRXsM/HjsViwAp/ge7OM24xWMt/VuhP04+An5HAdXX5iIIHLL?=
- =?us-ascii?Q?sEpkyiWIul+ZG8cz3qJxuWpdY43tFmkQ5pfJqugOyZfTS6ZurFDYQiknIrCg?=
- =?us-ascii?Q?LqgDffEzM5ryh7x3zwA/TkzyMMoYWZ0WYd1ja5VhETtQDVOa6pHYOYW2+IxA?=
- =?us-ascii?Q?OnXiJsY02lcqRuSTWxFJYZpLJ0lmZVW3SKlfzU4edecSEgAGvjX1oNCRXIiE?=
- =?us-ascii?Q?ZaqKpg7iIdIE6k7zY1lT8yxxHCtDCbpKeNsl0ISHF7cOz5Rjf/x9W2iOahvx?=
- =?us-ascii?Q?ygbQiY/fVLEHRK8PyWiCnthOs5zUaEd1DELbIaUEkGdb8J9bXkltjxnO/vLZ?=
- =?us-ascii?Q?npzqPY286Y3k6lAKJWvKtf0UoQLKAK3zcheO0Iu0T5XAky9U9gHI6U2Fa+3f?=
- =?us-ascii?Q?yiPOYLrycRsOgBNwkE4k+5lDos+27/XBNOUIED/10XEeICMowBqvetfzn98S?=
- =?us-ascii?Q?fYS8riLpElf6C4zVAsSDOq6aMv0tS+l4tQI8VVuXAEM+aWIS0zK5MtxYL+bK?=
- =?us-ascii?Q?huLc3fp4emuiEtr0MnisnK/SqImWCWNfhF7Uxf6u8WIS4MpO2mM/0g0WucUl?=
- =?us-ascii?Q?ssxrAf/2sbCOK1x8hTBWXPXUTRVe7xvNf6cOGXwZAY5e7Ui+3h3gkANxPRlj?=
- =?us-ascii?Q?jia4d+q0wr8mrLzyp6uaSatYFBeVhTzdMX4H8u+MNFoITF7NuYJ64fXg0KVt?=
- =?us-ascii?Q?yXEUWIBvmBxpoSnpY9iAMNc3+hJQS+0yDhGGvrd25MF1Vtfv8pKd97FykTBe?=
- =?us-ascii?Q?ND23995IVNmd3frHTPTE4dPSC0c5xeKI6R+te1vMnQh604yGcwB6AA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lWQdhtg1Yg1zkhILQ4c+aILTWogHObIJkDtOmYZ/gSjrlI1V7OL3RPs7SA6E?=
- =?us-ascii?Q?Vr0u3njucGQWAb2VQCAvSNXRWPrt7DkVp69juxXVAxroWgDBvJtrZXfrA1YP?=
- =?us-ascii?Q?ycd3Z7VW7Fd8u5W2FOg/VxBiON/thUySAxRTZ23momvuUDBvq/IeFGNA/Exc?=
- =?us-ascii?Q?5O6xQt0BLbNkPvq9ZnJxzCNoKlquuYA2yFkmryVJSKRsBHYCsa+rjpynWO5q?=
- =?us-ascii?Q?xwFlwTS55NboGPtVWDfPbREGU2Ga1hnCYLs3ZiUIQz8I9l8+oGagZPvm4m+T?=
- =?us-ascii?Q?IccoGc6EkJhOBZTCGwi1ihGmOOd9slt6uJUqEi2k6z/LyHi/1bySAc1Wgkun?=
- =?us-ascii?Q?KASlaLfM1+eO8F5yXg/8Ubof3GzE/IiJzhUP5udmgBE4d7ExwNWAjLtHu25p?=
- =?us-ascii?Q?nrCuWS3FHtBYNrqDMsNlVf5Tv+jERpQ5EtHmVTPKnI6a5SASb/WKEa687dzg?=
- =?us-ascii?Q?oHA9B1JUbmFaOy3G+hS5qIy0WVGJbsQt1IIW+5S8KNy8gaKFaNutD78D7LbU?=
- =?us-ascii?Q?No71Z/o7B7NSA6h89KWQzZiz+kZ/JXUK72yRvIEXFlmbCFxZy+usrt/mN0Z9?=
- =?us-ascii?Q?b/b9G30xCeGz6+Xv/rkqX5F+ln/Pg6rsfX09U4UGtmG0+GNB/w9N1Rf6n5ky?=
- =?us-ascii?Q?NjBDrclm5LQdHbCPCaQeii2Q4wSIiNtkVvAqUEa/nYhRQkVyytJP/Taa0NBr?=
- =?us-ascii?Q?lBPxYqvcU0MzPa7dkZSORNPNzgiEoJAfkdKZ0kkObSXw9n/NPdjxJk5JEyvJ?=
- =?us-ascii?Q?XpaWnVKuPPiWKdGTM9DIQ6KaJswSiFoDBLyfy/x9AEaEp6KngbQGwSbMTO+E?=
- =?us-ascii?Q?UcJSHkXtiU2CKv1PfebDwrxjJcHPCkwmoYnaXKhZ3xILNO4CWMRT2oCNFYGl?=
- =?us-ascii?Q?f8dKTOtApqsiTnI0fveOeUkSrsAWqAJtsHPYlFmAuM+12V8vtnWRIYN3V6mA?=
- =?us-ascii?Q?7+90G68w6V378oSASqHVUTLbpyPN2+CiBVns6G3+1w92qOTkW/MZsYmLsIPw?=
- =?us-ascii?Q?xMtCADfUlZI711iCydHeXx9zAfpxCLfgH+zWJtMZwk2J9Kexv4Ff3rws8Yth?=
- =?us-ascii?Q?lD0k9oGb3jeyJzZWAaAoIDaCtx9DzHZF+Zsr0TK2pQaiwyhfcqsQlRCg42xr?=
- =?us-ascii?Q?YEClEzBaD/j+cn7mbsbtP3Noa+cri0yy8rCBAW0kkmy1nSvYFSl40sYVkXBU?=
- =?us-ascii?Q?o5faEuMCajkLO42cVk5Rsh4pc/Tj5uT/ndEgbPd571wvYdhM6UZJFLPuJA2U?=
- =?us-ascii?Q?5PYGg7pARZhoiSp4pdX7i0TVeLE9GTCMMKRDjPYHoDzl1yurczyLfMcGlzAX?=
- =?us-ascii?Q?cVQF8wQbhC5LjcoB0YkKCIbQuqsVuQQUlOvN8teXa9/CcPZvaDsumiQbAPfc?=
- =?us-ascii?Q?gH/1FsS/BN0Db8asuUByngutMCpKvG6n8knMczGoQ3gKohUy+w7ikzcGLP0s?=
- =?us-ascii?Q?c+dAMOBYo/xTy1O6gXqOM3PONl2ZRAxQ38tL4W4vE7kaDu8Jg7ZU0z7Uq2CQ?=
- =?us-ascii?Q?bmHKJ2aKCfqya8/HgofCTGNK8gmiUvB6XBHZ0VUs+6JgI5YAcku3IisRfN5L?=
- =?us-ascii?Q?8GQD0j5gjHeILvxEl8QkjDt5D/Nc/hiZP7AS5qoN?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4c88906-0e23-45fa-e4bd-08ddfacc26fd
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2025 18:08:09.6466
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UGTKomjrbBwsPWJUMAO3vCpIRVTpFgd/tnurwtJRo1bxmSAkPEDmjphJytJY3TNJyu6BSUg3eIpJr6CpFAyLwQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB8052
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250923031613.2448073-3-sherry.sun@nxp.com>
 
-On Tue, Sep 23, 2025 at 10:07:55AM +0800, Liu Ying wrote:
-> CRTC(s) could still be running after the DRM device is unplugged by
-> calling drm_dev_unplug(), because the CRTC disablement logic is
-> protected and bypassed by the drm_dev_enter()/drm_dev_exit() pair.
-> Hence, Pixel Engine's AXI clock use count(managed by Pixel Engine
-> driver's runtime PM) and pixel clock use count could be inbalanced
-> after removing and re-installing the driver module.  To fix this,
-> add a helper dc_crtc_disable_at_boot() and call it to properly
-> disable all CRTCs before advertising DRM device to user-space by
-> calling drm_dev_register().
->
-> Fixes: 711a3b878366 ("drm/imx: Add i.MX8qxp Display Controller KMS")
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Hi Sherry,
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+kernel test robot noticed the following build warnings:
 
-> ---
->  drivers/gpu/drm/imx/dc/dc-crtc.c | 50 ++++++++++++++++++++++++++++++++++++----
->  drivers/gpu/drm/imx/dc/dc-drv.c  |  5 ++++
->  drivers/gpu/drm/imx/dc/dc-drv.h  |  3 +++
->  3 files changed, 53 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/gpu/drm/imx/dc/dc-crtc.c b/drivers/gpu/drm/imx/dc/dc-crtc.c
-> index 31d3a982deaf7a0390937285c9d5d00100323181..45a87df1ad6a8bd768aa5ed38d6f03f14052b3d7 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-crtc.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-crtc.c
-> @@ -293,6 +293,16 @@ dc_crtc_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_state *state)
->  	dc_crtc_queue_state_event(new_crtc_state);
->  }
->
-> +static inline void __dc_crtc_disable_fg(struct drm_crtc *crtc)
-> +{
-> +	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
-> +
-> +	enable_irq(dc_crtc->irq_dec_seqcomplete);
-> +	dc_fg_disable(dc_crtc->fg);
-> +	DC_CRTC_WAIT_FOR_COMPLETION_TIMEOUT(dec_seqcomplete_done);
-> +	disable_irq(dc_crtc->irq_dec_seqcomplete);
-> +}
-> +
->  static void
->  dc_crtc_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_state *state)
->  {
-> @@ -305,11 +315,7 @@ dc_crtc_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_state *state)
->  	if (!drm_dev_enter(crtc->dev, &idx))
->  		goto out;
->
-> -	enable_irq(dc_crtc->irq_dec_seqcomplete);
-> -	dc_fg_disable(dc_crtc->fg);
-> -	DC_CRTC_WAIT_FOR_COMPLETION_TIMEOUT(dec_seqcomplete_done);
-> -	disable_irq(dc_crtc->irq_dec_seqcomplete);
-> -
-> +	__dc_crtc_disable_fg(crtc);
->  	dc_fg_disable_clock(dc_crtc->fg);
->
->  	/* request pixel engine power-off as plane is off too */
-> @@ -337,6 +343,40 @@ dc_crtc_atomic_disable(struct drm_crtc *crtc, struct drm_atomic_state *state)
->  	spin_unlock_irq(&crtc->dev->event_lock);
->  }
->
-> +void dc_crtc_disable_at_boot(struct drm_crtc *crtc)
-> +{
-> +	struct dc_drm_device *dc_drm = to_dc_drm_device(crtc->dev);
-> +	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
-> +	int ret;
-> +
-> +	ret = pm_runtime_resume_and_get(dc_crtc->de->dev);
-> +	if (ret < 0) {
-> +		dc_crtc_err(crtc, "failed to get DC display engine RPM: %d\n",
-> +			    ret);
-> +		return;
-> +	}
-> +
-> +	if (!dc_fg_wait_for_frame_index_moving(dc_crtc->fg)) {
-> +		dc_crtc_dbg(crtc, "FrameGen frame index isn't moving\n");
-> +		goto out;
-> +	}
-> +
-> +	dc_crtc_dbg(crtc, "disabling at boot\n");
-> +	__dc_crtc_disable_fg(crtc);
-> +	dc_fg_disable_clock(dc_crtc->fg);
-> +
-> +	if (!dc_drm->pe_clk_axi_disabled) {
-> +		clk_disable_unprepare(dc_drm->pe->clk_axi);
-> +		dc_drm->pe_clk_axi_disabled = true;
-> +	}
-> +
-> +out:
-> +	ret = pm_runtime_put(dc_crtc->de->dev);
-> +	if (ret < 0)
-> +		dc_crtc_err(crtc, "failed to put DC display engine RPM: %d\n",
-> +			    ret);
-> +}
-> +
->  static bool dc_crtc_get_scanout_position(struct drm_crtc *crtc,
->  					 bool in_vblank_irq,
->  					 int *vpos, int *hpos,
-> diff --git a/drivers/gpu/drm/imx/dc/dc-drv.c b/drivers/gpu/drm/imx/dc/dc-drv.c
-> index 04f021d2d6cfc93972aa8d9073be24d347152602..f93766b6bfbfae8510db05278d104820ca0719c4 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-drv.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-drv.c
-> @@ -17,6 +17,7 @@
->
->  #include <drm/clients/drm_client_setup.h>
->  #include <drm/drm_atomic_helper.h>
-> +#include <drm/drm_crtc.h>
->  #include <drm/drm_drv.h>
->  #include <drm/drm_fbdev_dma.h>
->  #include <drm/drm_fourcc.h>
-> @@ -96,6 +97,7 @@ static int dc_drm_bind(struct device *dev)
->  	struct dc_priv *priv = dev_get_drvdata(dev);
->  	struct dc_drm_device *dc_drm;
->  	struct drm_device *drm;
-> +	struct drm_crtc *crtc;
->  	int ret;
->
->  	dc_drm = devm_drm_dev_alloc(dev, &dc_drm_driver, struct dc_drm_device,
-> @@ -118,6 +120,9 @@ static int dc_drm_bind(struct device *dev)
->  	if (ret)
->  		return ret;
->
-> +	drm_for_each_crtc(crtc, drm)
-> +		dc_crtc_disable_at_boot(crtc);
-> +
->  	ret = drm_dev_register(drm, 0);
->  	if (ret) {
->  		dev_err(dev, "failed to register drm device: %d\n", ret);
-> diff --git a/drivers/gpu/drm/imx/dc/dc-drv.h b/drivers/gpu/drm/imx/dc/dc-drv.h
-> index eb61b8c7626933adc7688f046139e2167665dad1..68e99ba7cedbca1b8bdc0d8ced7a610a1056bfc7 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-drv.h
-> +++ b/drivers/gpu/drm/imx/dc/dc-drv.h
-> @@ -50,6 +50,8 @@ struct dc_drm_device {
->  	struct dc_pe *pe;
->  	/** @tc: tcon list */
->  	struct dc_tc *tc[DC_DISPLAYS];
-> +	/** @pe_clk_axi_disabled: disablement flag at boot */
-> +	bool pe_clk_axi_disabled;
->  };
->
->  struct dc_subdev_info {
-> @@ -96,6 +98,7 @@ static inline int dc_subdev_get_id(const struct dc_subdev_info *info,
->  	return -EINVAL;
->  }
->
-> +void dc_crtc_disable_at_boot(struct drm_crtc *crtc);
->  void dc_de_post_bind(struct dc_drm_device *dc_drm);
->  void dc_pe_post_bind(struct dc_drm_device *dc_drm);
->
->
-> --
-> 2.34.1
->
+[auto build test WARNING on shawnguo/for-next]
+[also build test WARNING on tty/tty-testing tty/tty-next tty/tty-linus usb/usb-testing usb/usb-next usb/usb-linus linus/master v6.17-rc7 next-20250922]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Sherry-Sun/tty-serial-imx-Only-configure-the-wake-register-when-device-is-set-as-wakeup-source/20250923-111951
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
+patch link:    https://lore.kernel.org/r/20250923031613.2448073-3-sherry.sun%40nxp.com
+patch subject: [PATCH 2/2] tty: serial: imx: Add missing wakeup event reporting
+config: arm-randconfig-004-20250923 (https://download.01.org/0day-ci/archive/20250924/202509240214.bHWiT4Db-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project cafc064fc7a96b3979a023ddae1da2b499d6c954)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250924/202509240214.bHWiT4Db-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509240214.bHWiT4Db-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/tty/serial/imx.c:2721:6: warning: variable 'wake_active' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+    2721 |         if (on) {
+         |             ^~
+   drivers/tty/serial/imx.c:2742:6: note: uninitialized use occurs here
+    2742 |         if (wake_active && irqd_is_wakeup_set(irq_get_irq_data(sport->port.irq)))
+         |             ^~~~~~~~~~~
+   drivers/tty/serial/imx.c:2721:2: note: remove the 'if' if its condition is always false
+    2721 |         if (on) {
+         |         ^~~~~~~~~
+    2722 |                 imx_uart_writel(sport, USR1_AWAKE, USR1);
+         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    2723 |                 ucr3 |= UCR3_AWAKEN;
+         |                 ~~~~~~~~~~~~~~~~~~~~
+    2724 |         } else {
+         |         ~~~~~~
+   drivers/tty/serial/imx.c:2704:28: note: initialize the variable 'wake_active' to silence this warning
+    2704 |         bool may_wake, wake_active;
+         |                                   ^
+         |                                    = 0
+   drivers/tty/serial/imx.c:2707:6: warning: variable 'may_wake' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+    2707 |         if (tty) {
+         |             ^~~
+   drivers/tty/serial/imx.c:2714:7: note: uninitialized use occurs here
+    2714 |         if (!may_wake)
+         |              ^~~~~~~~
+   drivers/tty/serial/imx.c:2707:2: note: remove the 'if' if its condition is always true
+    2707 |         if (tty) {
+         |         ^~~~~~~~
+   drivers/tty/serial/imx.c:2704:15: note: initialize the variable 'may_wake' to silence this warning
+    2704 |         bool may_wake, wake_active;
+         |                      ^
+         |                       = 0
+   2 warnings generated.
+
+
+vim +2721 drivers/tty/serial/imx.c
+
+c868cbb7e5c6d3 Eduardo Valentin 2015-08-11  2696  
+3c199ed5bd6469 Esben Haabendal  2024-09-13  2697  /* called with irq off */
+9d1a50a2cceb3a Uwe Kleine-König 2018-03-02  2698  static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
+189550b8644ef5 Eduardo Valentin 2015-08-11  2699  {
+519ca97b8a2e94 Sherry Sun       2025-09-23  2700  	struct tty_port *port = &sport->port.state->port;
+519ca97b8a2e94 Sherry Sun       2025-09-23  2701  	struct tty_struct *tty;
+519ca97b8a2e94 Sherry Sun       2025-09-23  2702  	struct device *tty_dev;
+2e33c984e6b3d6 Sherry Sun       2025-09-23  2703  	u32 ucr3, usr1;
+2e33c984e6b3d6 Sherry Sun       2025-09-23  2704  	bool may_wake, wake_active;
+519ca97b8a2e94 Sherry Sun       2025-09-23  2705  
+519ca97b8a2e94 Sherry Sun       2025-09-23  2706  	tty = tty_port_tty_get(port);
+519ca97b8a2e94 Sherry Sun       2025-09-23  2707  	if (tty) {
+519ca97b8a2e94 Sherry Sun       2025-09-23  2708  		tty_dev = tty->dev;
+519ca97b8a2e94 Sherry Sun       2025-09-23  2709  		may_wake = tty_dev && device_may_wakeup(tty_dev);
+519ca97b8a2e94 Sherry Sun       2025-09-23  2710  		tty_kref_put(tty);
+519ca97b8a2e94 Sherry Sun       2025-09-23  2711  	}
+519ca97b8a2e94 Sherry Sun       2025-09-23  2712  
+519ca97b8a2e94 Sherry Sun       2025-09-23  2713  	/* only configure the wake register when device set as wakeup source */
+519ca97b8a2e94 Sherry Sun       2025-09-23  2714  	if (!may_wake)
+519ca97b8a2e94 Sherry Sun       2025-09-23  2715  		return;
+189550b8644ef5 Eduardo Valentin 2015-08-11  2716  
+fbd22c4fa737f9 Xiaolei Wang     2024-12-11  2717  	uart_port_lock_irq(&sport->port);
+3c199ed5bd6469 Esben Haabendal  2024-09-13  2718  
+2e33c984e6b3d6 Sherry Sun       2025-09-23  2719  	usr1 = imx_uart_readl(sport, USR1);
+4444dcf1fe7ea5 Uwe Kleine-König 2018-03-02  2720  	ucr3 = imx_uart_readl(sport, UCR3);
+09df0b3464e528 Martin Kaiser    2018-01-05 @2721  	if (on) {
+27c844261b87f8 Uwe Kleine-König 2018-03-02  2722  		imx_uart_writel(sport, USR1_AWAKE, USR1);
+4444dcf1fe7ea5 Uwe Kleine-König 2018-03-02  2723  		ucr3 |= UCR3_AWAKEN;
+4444dcf1fe7ea5 Uwe Kleine-König 2018-03-02  2724  	} else {
+4444dcf1fe7ea5 Uwe Kleine-König 2018-03-02  2725  		ucr3 &= ~UCR3_AWAKEN;
+2e33c984e6b3d6 Sherry Sun       2025-09-23  2726  		wake_active = usr1 & USR1_AWAKE;
+09df0b3464e528 Martin Kaiser    2018-01-05  2727  	}
+4444dcf1fe7ea5 Uwe Kleine-König 2018-03-02  2728  	imx_uart_writel(sport, ucr3, UCR3);
+bc85734b126f81 Eduardo Valentin 2015-08-11  2729  
+38b1f0fb42f772 Fabio Estevam    2018-01-04  2730  	if (sport->have_rtscts) {
+4444dcf1fe7ea5 Uwe Kleine-König 2018-03-02  2731  		u32 ucr1 = imx_uart_readl(sport, UCR1);
+c67643b46c28fc Fugang Duan      2021-11-25  2732  		if (on) {
+c67643b46c28fc Fugang Duan      2021-11-25  2733  			imx_uart_writel(sport, USR1_RTSD, USR1);
+4444dcf1fe7ea5 Uwe Kleine-König 2018-03-02  2734  			ucr1 |= UCR1_RTSDEN;
+c67643b46c28fc Fugang Duan      2021-11-25  2735  		} else {
+4444dcf1fe7ea5 Uwe Kleine-König 2018-03-02  2736  			ucr1 &= ~UCR1_RTSDEN;
+2e33c984e6b3d6 Sherry Sun       2025-09-23  2737  			wake_active |= usr1 & USR1_RTSD;
+c67643b46c28fc Fugang Duan      2021-11-25  2738  		}
+4444dcf1fe7ea5 Uwe Kleine-König 2018-03-02  2739  		imx_uart_writel(sport, ucr1, UCR1);
+189550b8644ef5 Eduardo Valentin 2015-08-11  2740  	}
+3c199ed5bd6469 Esben Haabendal  2024-09-13  2741  
+2e33c984e6b3d6 Sherry Sun       2025-09-23  2742  	if (wake_active && irqd_is_wakeup_set(irq_get_irq_data(sport->port.irq)))
+2e33c984e6b3d6 Sherry Sun       2025-09-23  2743  		pm_wakeup_event(tty_port_tty_get(port)->dev, 0);
+2e33c984e6b3d6 Sherry Sun       2025-09-23  2744  
+fbd22c4fa737f9 Xiaolei Wang     2024-12-11  2745  	uart_port_unlock_irq(&sport->port);
+38b1f0fb42f772 Fabio Estevam    2018-01-04  2746  }
+189550b8644ef5 Eduardo Valentin 2015-08-11  2747  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
