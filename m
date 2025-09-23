@@ -1,50 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF08275B16;
-	Tue, 23 Sep 2025 18:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D7219AD70;
+	Tue, 23 Sep 2025 19:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758653003; cv=none; b=HW5rxaBqcGwvpkum+KWF+Ufdeh69+r/RByimedAXP+iyaiRTPXw6rXZcDIEFqBkdPbkVn8kkJmf9KeIOU2ngOWrump333XSFjLfZrndLbf0nZrauEaiMCjMsoSY6Spz+LlTPbus0a8K6UDWKPQTD/v5VuzgGzkug2lWvuggTdAU=
+	t=1758654024; cv=none; b=NLsQmg7XuTspEVY3ybRk0xtdwNp8GMPbGWASd9J94i5SFDuzSrcq9X9nzj0MTp8Yr42+Mw46FUMn4R+EihqHvM5jAXVk9fNYtMIItg1lJJZwYe29xQVx6xvy+zeFooX08Z7Y1p/30SXGC1gt3vLGe1ScDGr7hAiySRqMTLwqw58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758653003; c=relaxed/simple;
-	bh=BoA7Qt6p/doO1poK8qFimQ63AdK+bLNjKL/AePatJGY=;
+	s=arc-20240116; t=1758654024; c=relaxed/simple;
+	bh=XUTFqyLsRiUw4+Nvp52DmyRLNg8nvrGqeV2q6vnRQUw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r6x7EoE1Adjr6fxHG3eobqK5gCTMo/jNHhYPz5nfONhvzc2LVW9I5w0NkGMiHBcy9qLagvTCQtNwsIiCjjyi0pb1gukSCTEeEq48IMf4+OinCHfs6mf7kPd2a57NCOOH6044r++3aQLvwqf9hzQ9UfEyQNi8/KWoOviqLaYdal4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=biZ9Rcul; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mbDpanyK8yqr2y6LmKcR6DPBUUJQSdg/cPubhlQOo7d15rYpt6LVVWCCMn+sO0A3ClScXsLUT+gNslFhyMDdJrd0c2W+JMaj6LZ0u6Wnl3mPMULAaZn5t2KebgEu8g/NObLv0HLdPEg3Yb/InO5dde8ej5ZcJXaJQIQpjisEros=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MEPo+aRh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="biZ9Rcul"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE49C4CEF5;
-	Tue, 23 Sep 2025 18:43:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MEPo+aRh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53752C4CEF5;
+	Tue, 23 Sep 2025 19:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758653003;
-	bh=BoA7Qt6p/doO1poK8qFimQ63AdK+bLNjKL/AePatJGY=;
+	s=k20201202; t=1758654023;
+	bh=XUTFqyLsRiUw4+Nvp52DmyRLNg8nvrGqeV2q6vnRQUw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=biZ9Rculpz5cocRFM0PpbiAITUomLI5qb5UE9K4ZTvcU/gwOon9KR4Z+1OotvO0+S
-	 SDmJf2bWiGk0dmoOvc7VnUHMjADwKaozqZmSxPJnhmhZkOYurLN/Dv1qjpJJTD15XG
-	 a2PkkA1+GRcCZMgH9xExcxPON9sEiH9Z8gf5EkhUbYQobrG/egSExmV9WSTOZIcEXh
-	 MYktJkmbO2HTfy9UD08EJhXMhcL7iKv/aFdC5DdgOdQMhfwkHJEq/oNmMuzvF7ALdj
-	 PsLUPdHRSKOGSG374skm+w7EMoN/UTdWitT6mUKEGbbJAkzrSnW/6Hes4l7tXhMBNz
-	 8A2WnJSc522GQ==
-Date: Tue, 23 Sep 2025 19:43:18 +0100
+	b=MEPo+aRh1jkDSXtKrDyj3L26eYMPhxNsgkT7S5Xf/1owH/w9y8Mn+e5D7+VYI5laI
+	 XL8ibTOX4L9HebPN1wJr3iL79Uif/P5t65Dasdd//bVMhmo+Tv1kbPmisthASxKiyy
+	 iNTOfU2//lRCwraOOgo+gaf7WHuKLmu0I8zBQxCv15c9PgIJWAghPaxKPZBym5w+A+
+	 u2jfm1IpxwDhxHCTBgFGuVWXf4RLJzLdc7XjhRAr/s0oMV7yeHQj7GDGMRbkPohPEv
+	 q15LzgmGwttYrHL9mTo20Vp3auNOh0mmKIhCzIOuC1Sjg0dt5EYrXARJMUvXCp19Qa
+	 3STSUFJcZhl8g==
+Date: Tue, 23 Sep 2025 20:00:16 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com,
-	Frank Li <Frank.Li@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-input@vger.kernel.org
-Subject: Re: [PATCH v6 4/6] dt-bindings: touchscreen: fsl,imx6ul-tsc: support
- glitch thresold
-Message-ID: <20250923-mummified-striking-192198266acf@spud>
-References: <20250923143746.2857292-1-dario.binacchi@amarulasolutions.com>
- <20250923143746.2857292-5-dario.binacchi@amarulasolutions.com>
+To: Rogerio Pimentel <rpimentel.silva@gmail.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, xiaofeng.wei@nxp.com,
+	kernel@pengutronix.de, festevam@gmail.com,
+	alexander.stein@ew.tq-group.com,
+	dario.binacchi@amarulasolutions.com, marex@denx.de,
+	Markus.Niebel@tq-group.com, y.moog@phytec.de,
+	joao.goncalves@toradex.com, frieder.schrempf@kontron.de,
+	josua@solid-run.com, francesco.dolcini@toradex.com,
+	primoz.fiser@norik.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: arm: fsl: Add i.MX8MP FRDM board
+Message-ID: <20250923-closable-duvet-741100cc086b@spud>
+References: <20250922232523.844633-1-rpimentel.silva@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,26 +50,26 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="PCBzagFcJLSc8BY1"
+	protocol="application/pgp-signature"; boundary="nTbosrGlPtwTCxyt"
 Content-Disposition: inline
-In-Reply-To: <20250923143746.2857292-5-dario.binacchi@amarulasolutions.com>
+In-Reply-To: <20250922232523.844633-1-rpimentel.silva@gmail.com>
 
 
---PCBzagFcJLSc8BY1
+--nTbosrGlPtwTCxyt
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
---PCBzagFcJLSc8BY1
+--nTbosrGlPtwTCxyt
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaNLqRQAKCRB4tDGHoIJi
-0rxyAP9098hBDWKs7oTCrQx4WGee1/ChmLRYUWc4rCGntjhTSwEAtvglJdBLLB0X
-KBL4Ckeg2RpE4A/0Kj7HJz/rNTYFWww=
-=qofl
+iHQEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaNLuQAAKCRB4tDGHoIJi
+0oYdAPiLZjc1vLxHXffdihKk1uGPPqVJhdk/F29RKN5MCd9/AQCLChUxXA/UMhul
+cgT7Ah/f+QkxEN3CmyC1LRiLogkTBA==
+=Nt33
 -----END PGP SIGNATURE-----
 
---PCBzagFcJLSc8BY1--
+--nTbosrGlPtwTCxyt--
