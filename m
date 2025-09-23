@@ -1,202 +1,166 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011043.outbound.protection.outlook.com [40.107.130.43])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCEB1DBB13
-	for <imx@lists.linux.dev>; Tue, 23 Sep 2025 17:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758646854; cv=fail; b=HUKr4nUZjn5AeM5Wp3EDSmIlaxLyp8/rmNe1BImtoDBXZpqdtaDfxVZ0wdMS2GJmQlUCSiRiMA4XJKN1aRmQttws6MjJYTVib8xft6eoT9BsWoEjI9AgdclA/QLfjnucAQfvQ8FqgBNJV3r2yPYoXyY2s7U2jQ7zAB1aW1Zvafw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758646854; c=relaxed/simple;
-	bh=dxDmWJLk/VWHhZACSjszWNQjigwgfsFvCLYGjOZZOeg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=V4ksudocGGtMcqiclGAIyNcMQkVi3oxWvTp9EHz/hm+b+uGqHqa2RncB+kgRPViz6aPmxogoX19LkqtETgADcuMFEySQaPr35yxWz/WFFFmSxyJNT8ile6hYQiDjFuX496AZpYh0lEyZ/VKaT1WzACWDs91m6z4ND8q05utTrO0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PO0ddrxw; arc=fail smtp.client-ip=40.107.130.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866DD260590;
+	Tue, 23 Sep 2025 17:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758648969; cv=none; b=LK2Bx4ka0osrLeaKhFFXQ0lQaypS806xYGFzDk8n+OnJeSRbi2+3eElh9vuTXyNPocl8vP8BIwLskfENIFDi0piaYnmPS9jgHMFeYKEDJJX+lBszJ1EnMMbdMe3xenx3TM8bq+X685FI2NlFUfn7LJPLhIDPZuwFd/bFDH79CaI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758648969; c=relaxed/simple;
+	bh=UO2O51VzC78DSwnhfdoePqLlffRPw7JsQtk2TxHv3IM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P8PdQztIkksvTiIOl48isqgF/iMtBZZrlOmDgQDFdn21hfUSoDETbGKKKUVzoBdjmuKNFcKynKXueOsB6HVaUj+M2yb8kvyFG83OX8lFm0Cnh79E3A+bDWIgvKeaYM4aZn1mE33RTIlmw4n7Jg3pBqCmK6GvbTKsaW94rFRSpsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cAN4upMG; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PO0ddrxw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fTi61w/Ktq9pvdUvVXNX2Su/p4a+YksKidmKD4Ea0NFqWzkrtyl7VqmBXE7QonrZIeXU9UYB9ILCLjZYs2ZBv7Dc3h/GmJU2VVjeECRnbIa/LeBqZbG5HwLacwK9ie4Fm6KPCEJtxaHX2gpYkikabs03hMrxwRqSOTEohnKBhGkIiQ8VC2KbQBIlqs5c5gA/bS8qs1xTebuUy0/gYZZzsVVVgHBb1c2nGp6R/ExAAN33pTL2dfj7Mk4mfsmK8r3aZy061YWdlvelsPOAKjbIFoEg0yusitW1r+QLiJqnRGdwuvCVaeuchCZ0EnjXPmszkkeNtW2+B5cPSsa2RXgyAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8PJCryrcGZlLyn2yOaE6LhwVAHu35o09M608LkhpNsM=;
- b=JeJ7MMUntL2Hk9czy4KBq/pEa4mhowPdjuO+CauZ5XMLjKEjO5QDXGPQqFOOTFRkHKUJJCUaE5QTI8NyPg1zfEyErpOA1gFUH07DJCKMkhNER4Tb4+e34c4Hf+oMqW0tIvOwQKvMjAJH6btOkVjG91qS3m/73vYF9gdZjXYqLQEBuuVU9sgbRgkuY01FqUJ8NNHlm6snQZNPKmXyiTb4i4CXxEWDlw7dDamDXlTkPbScakClg8Jghx1MtOQEh9dj812DuH1OQ4dbiDqiDzJ0dJtwnP2OckFDAdNIzbaUGv7eo1vmonS7K9Q7lYwpJR8f9Guhw4CM3kuYPqSK6+GZFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8PJCryrcGZlLyn2yOaE6LhwVAHu35o09M608LkhpNsM=;
- b=PO0ddrxwSt8J5yEhMKP0NN24H0U/Sa/HsI57XfoCvkn6nJCpSrkZDiNQB9uY+AuB38Hp6kATroZPKur6QxQ5qI7oBUBWUURCgoMHyNYUgkhWm6nEhcRlpGY+w4yn7l158Z3m2ECXUGXZrlDDIesVhOlywRKHmRCNIS1NQzgzo5IXHrgqop8NG6IOX9EOUtyXd4prbJCHQ8SXuJgBvkMbWk43pIVANW6xrAOq4LHDJPcrae/c/340McrsdcRr+o06iSK2wMW+9F0wDYi13feqU6oNtsIKKJgu6mczLCuWwxUdUU8faJJbB3/e4YXQ0ZOD8P8SrMHo49cfHZWBPDyBvg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by VI0PR04MB10613.eurprd04.prod.outlook.com (2603:10a6:800:25f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Tue, 23 Sep
- 2025 17:00:49 +0000
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9160.008; Tue, 23 Sep 2025
- 17:00:49 +0000
-Date: Tue, 23 Sep 2025 13:00:39 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>, l.stach@pengutronix.de,
-	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, bhelgaas@google.com,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] dt-bindings: pci-imx6: Add external reference
- clock mode support
-Message-ID: <aNLSN5Ix2iZyxeng@lizhi-Precision-Tower-5810>
-References: <20250915035348.3252353-1-hongxing.zhu@nxp.com>
- <20250915035348.3252353-3-hongxing.zhu@nxp.com>
- <20250922155054.GA38670-robh@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250922155054.GA38670-robh@kernel.org>
-X-ClientProxiedBy: SJ0PR13CA0042.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::17) To AS4PR04MB9621.eurprd04.prod.outlook.com
- (2603:10a6:20b:4ff::22)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cAN4upMG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758648968; x=1790184968;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UO2O51VzC78DSwnhfdoePqLlffRPw7JsQtk2TxHv3IM=;
+  b=cAN4upMGN0mLp4Hxsg5dzxrC+K+q5kOXMymHs/g7OgOFW15OSL+dWG4g
+   SI40OYSib8oJpzjcKiNfrSd1Ppv32+LPVSHhmZe0AkznZmfrKrz5E4MgI
+   Wdyz5lUEuyyRgQvJGs1pUkF3qxLOA1ClJI/Ykqqw2KoFreFZg03rXZlWD
+   VhBx26+LpeTyuZWywIRt3TemniKzXbq7Sz+GbtxQaFOSgNUv32Ena3H2r
+   M2rUSezkF2G9YhRhfxh9g53DlVJ02IfishUT5uMzPEsXidCTYLE0eH633
+   JLX8CcXiiMjoLKqbFn3y4OFajtV5FtoxmCtM9+LdkDY6OLTPUlJ8A2pom
+   Q==;
+X-CSE-ConnectionGUID: 2ZpuK7sWTOGADFRTZKC2yQ==
+X-CSE-MsgGUID: wLh8OrqDSv2H4A539B3iFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="60637901"
+X-IronPort-AV: E=Sophos;i="6.18,288,1751266800"; 
+   d="scan'208";a="60637901"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2025 10:36:07 -0700
+X-CSE-ConnectionGUID: zeCWYP7RRuqxfU0nURwVhg==
+X-CSE-MsgGUID: yvx2pBrOT+K/zO2LlHrCjw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,288,1751266800"; 
+   d="scan'208";a="176419047"
+Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
+  by fmviesa007.fm.intel.com with ESMTP; 23 Sep 2025 10:36:04 -0700
+Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v16vp-0003Nh-2B;
+	Tue, 23 Sep 2025 17:36:01 +0000
+Date: Wed, 24 Sep 2025 01:35:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sherry Sun <sherry.sun@nxp.com>, gregkh@linuxfoundation.org,
+	jirislaby@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, shenwei.wang@nxp.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH 2/2] tty: serial: imx: Add missing wakeup event reporting
+Message-ID: <202509240146.aj950Liu-lkp@intel.com>
+References: <20250923031613.2448073-3-sherry.sun@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|VI0PR04MB10613:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71dee60e-e4b4-4596-29ec-08ddfac2beaa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|376014|7416014|366016|1800799024|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?sjIt1bO04rdiTUFRQWw/I2Oh5uDZa+2aS4AcmO7+VfMtbsflZ2fTdSPvKMZd?=
- =?us-ascii?Q?VwfzGMf8XWQRbmmfJ93ArgFNPwfx0xarx7hWIiQYBcmBd/3KIs5ssZrKg1Sb?=
- =?us-ascii?Q?Jez6C+VtO5rbiBhRubf+g/HdzihlqGsO8mY2ObDxSnZf/vBiFVf38U5s4z4P?=
- =?us-ascii?Q?/5ALuxPkC9aVe5n/6gs9bNc4Pn5W6UkJLeUTB4w3sKW+uPABkv+Upyis3HaV?=
- =?us-ascii?Q?545fxgk7VrxMAppkYXRAHCwiyftyWNjNzL2aLZ8/Ng+pFYbMkYiZRNsZ4l43?=
- =?us-ascii?Q?9W445KjZoXY5RYnoOfvJzFDfkhKBQddXbJ7yKpL9JjzPMOezzPfCTOe8EL4z?=
- =?us-ascii?Q?NFB374Z+D11MOM62vIvDBur685hts/IKW5UequhuU6/gIx76LMBjVIzcXCUu?=
- =?us-ascii?Q?iLo7vF/XJpNzLMhJqepyCKWyz6dO9yV36vAQ1y5HRc1UtUfPVbiSe0P/onI+?=
- =?us-ascii?Q?MU/ofcBSD5W35tt2liWoQope9vwcbpHTWxMwHsRHUZLfqdCBRlT4IH6Q//rQ?=
- =?us-ascii?Q?+O9ZCmTRrbx3cnqL8S40HDfo35SnoA5v9cmREekk3dVrvW7rN+tO15fAMH75?=
- =?us-ascii?Q?T3u4vOzEV5Fzt0pAJHIHyuVNxZO5Sua5hFZjk6ppYvWWy4ryCSlJ2LjvcMdJ?=
- =?us-ascii?Q?JRegZcqi1/Ly3mhdfqMPoxc8D1xEv8OQSxuv6vEpfomkW3BAs5m4MbBl2yHG?=
- =?us-ascii?Q?FM5Pb7xgFmD37OnW24jOwVC9HfEDesp44CoYAuYGBOsIi2oJqiA9S7uVfW0x?=
- =?us-ascii?Q?WQDnFcDxKJ9JekVdDy8kS4vLb7QJc2okzg97jSD1YoD0Ej2a/C4u4aG4ymAj?=
- =?us-ascii?Q?oFpmFguAkuy5KmjfvnKngTyUZhsEkgNKdSsIseziEbrLMWNk1jerWW8+W/MQ?=
- =?us-ascii?Q?bTHyNPyIYNGEMzSvH833J/I7hAI+SNh+TDln9FAb12Ttp9pu0+assjIQrKPP?=
- =?us-ascii?Q?OE8AKhdR2LNjzrY9+/Y95Lfo8Rwxe2sm9oL70x5+ZRDNdDORu0fZQBndYYvM?=
- =?us-ascii?Q?ExS54eMEApPxuiqNzLCiHrifQl3vI9gDCamYkd7J8EeQrPZtLZhS3V4Zl0sV?=
- =?us-ascii?Q?u/VqCl0LbsLi4tp7/tN9hiU3C2KEEhjSSvv/a6GZm8rh4LBuBZmH+Pwgqyqj?=
- =?us-ascii?Q?CvWTsUw6YNoCSgQsnFwQPC/OYhS/LZkSzrSG+bVIKJrTrhsyxGdXkuKWyRmg?=
- =?us-ascii?Q?Lq4k2ggexfVsFIa/GInuLL5LLNFUANWUnasTkhBR/QIMk5aJ569cc+h1AmAt?=
- =?us-ascii?Q?i/wKviRJt4I0dBihEogQTHUISsQf0fE6zCCbQ/B3xHtuWIx0Q7g/E06gVffv?=
- =?us-ascii?Q?A08Wwqa9+tj8RWN6g3wcEL1sB6d3e9L/p9vx8iP9RI5t7SqD/0ryeykcxq5R?=
- =?us-ascii?Q?F9dZcVN7imVkRcFvF0YJyORBhswE9Itj8hsOSt1TV3pDZMINY2vuREweKSko?=
- =?us-ascii?Q?q4RpxCdiog6tQSpbYJ3eRoG9fsGwiDk6BuWILgmlxTyInpsW8nZ1bbEbdVJ3?=
- =?us-ascii?Q?2J6EYKBpwv/1boE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(7416014)(366016)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?aj2NUpMeoBRjBAMZP2coGd6/BO+xq1fEeCm0E94ohwnO1XFAoAv2lo0N7Lgy?=
- =?us-ascii?Q?9pFi5zSjEj0aAU/Syi+GBqfabKbMa+Pl1FDU5PxhQlUISqXah3tby3vrvl4o?=
- =?us-ascii?Q?aDaRYmsOCMV6l8fRUI21MB6LPgMEU+FPUKmAN7HdhqmRw0aOESPD9/HLo6TZ?=
- =?us-ascii?Q?Qg48jyTGMGczI1lI9IJ31pKDAH1jRNyT/VbkWYGigw2M4ZsDL4ugOwv1649P?=
- =?us-ascii?Q?2sjB6Otm+jRFtLOwC3OfGxjQMmWNEIQ/v5EPGNeNWbxk2AOAyNjimWW4EkgS?=
- =?us-ascii?Q?f7S0Af4nq3Z7C8WcSM2ZafYzAsCBr8LM9WAoKVYWMpanJy7UWv5UuBucpoA5?=
- =?us-ascii?Q?nKJywp5ptmi/VQqBO8XEyQ5RsjT3pRNnlMP5DgdnSWEIZZCuS0n5IXpkBGqS?=
- =?us-ascii?Q?lISUbsrtb9oY9wcRmYVSDUPdNS6scFoC4qNf6Iv61aQwqx9S9yZQVi/gibiZ?=
- =?us-ascii?Q?3yw8GpwOruZPjIN2e+O/AKcVkiG5597DFqt2M4T/XE5u8IYPcBmmhTsLBjn8?=
- =?us-ascii?Q?CFVt06fOLyMprHubrxBl7X8xJrrFR5szI5eCFN3/NeIXOLvYgrTUfgDUZtti?=
- =?us-ascii?Q?cJUvAN5iPkmlgyj7Ros2I0IUiAYcutLiHmapb10TxQBvrq58TCC8rqcdYIhe?=
- =?us-ascii?Q?vGqAJi2eaV7qL6/KWyw3t0/EDPe43ei693klPIsSyV8XVdn85zPmKR+axjkq?=
- =?us-ascii?Q?yG4cfrHHwAhs2oNPDoe7exqjgjQYwiUSltJxNvHZviC5VxbXZZvVaPLsgvrH?=
- =?us-ascii?Q?CbuCMUiTBmlQZrjmJENsxJVe5Pol0V58n+ZToV0gSAsd8zfzO/JX7rKv7UL+?=
- =?us-ascii?Q?SZjH9Q/TtT4XOl0O2KelyU4aDRHR4aWEcPzqv1Upgpvotwy6u5iCwHt5gOJT?=
- =?us-ascii?Q?g2L+7+ieJldsHzO+Iu7s6Bz60x9FwrFs362jhtHA09N/+dWqcS/dOz5uyVuc?=
- =?us-ascii?Q?Z8EykDa4us1OsR4lVDYZeDd3VXoyMIRgVaox8NCJ0bMaKXFE0J/qhFlayuSI?=
- =?us-ascii?Q?YuGQAl05Dk2sWqvipmw4RQXkEsm/5gmIH+TizDslkL3IW1Xc09ROmEutF/Ls?=
- =?us-ascii?Q?pPJer7pqce4rNHSH4CeiHilfzaD/PxbmB2wutV4ZJ1AudzaVPwj7uEqQPQJV?=
- =?us-ascii?Q?xre6exs5PGKc3J1R3lVRN4cjDrO2ELPLyo4fYafQmxiv/Cbb5aOmcTwmOR7l?=
- =?us-ascii?Q?m+2XcIEzgOgOfLV9G93z94IT9ThYltvXt7AAfP1nP60U2wKFiyKSNwd05nfw?=
- =?us-ascii?Q?RA8O3F0kXCtmC9HpsfzTwf9Xr2EJYRZYTfs8zTZsIIhP95S3jaT1EhS5gCsr?=
- =?us-ascii?Q?y+3S3dLAkMZeWgWF1toNKeVfuJ6WvvR31kJe2NCBBGmaElLpRyiekZMXuJ9q?=
- =?us-ascii?Q?zE6pFCh7XIARHgf3rI0OoN40cnOktBxgsXr8GQoRDx/TMxLwKNKYRJKKqVl0?=
- =?us-ascii?Q?tv77EQ4Tem0LSpCMdBWteKQAlHTGIlELgOkLo0IU3tQEhi+sBSXdlW4J2AhX?=
- =?us-ascii?Q?RAfx+hnHq5YeUOC4kt52mkrXuL6GmXFmKh94ma1CgcjxAwmBRe/+KovA7Xpc?=
- =?us-ascii?Q?z8OvtsrUD1zp+ni1a6CGK8HDcAkKupRzWLMVlVRJ?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71dee60e-e4b4-4596-29ec-08ddfac2beaa
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2025 17:00:48.9410
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Lib635bzvERGXr/8bxiCxSzzy7OmiBuvPu7pkdi9SGrj0FJyN+j6H3M304alpNd66xSO8hNFjNYkKmv7fq1Uiw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10613
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250923031613.2448073-3-sherry.sun@nxp.com>
 
-On Mon, Sep 22, 2025 at 10:50:54AM -0500, Rob Herring wrote:
-> On Mon, Sep 15, 2025 at 11:53:47AM +0800, Richard Zhu wrote:
-> > On i.MX, PCIe has two reference clock inputs: one from the internal PLL
-> > and one from an external clock source. Only one needs to be used,
-> > depending on the board design. Add the external reference clock source
-> > for reference clock.
-> >
-> > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> > index ca5f2970f217..6be45abe6e52 100644
-> > --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> > +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> > @@ -219,7 +219,12 @@ allOf:
-> >              - const: pcie_bus
-> >              - const: pcie_phy
-> >              - const: pcie_aux
-> > -            - const: ref
-> > +            - description: PCIe reference clock.
-> > +              oneOf:
-> > +                - description: The controller has two reference clock
-> > +                    inputs, internal system PLL and external clock
-> > +                    source. Only one needs to be used.
-> > +                  enum: [ref, extref]
->
-> This seems wrong to me. There's still only 1 ref input to the PCIe
-> block. If you had 10 possible choices for the ref clock source, would
-> you add 10 clock names here? No!
->
-> Can't you detect what the parent clock is for the 'ref' clock?
+Hi Sherry,
 
-In include/linux/clk.h, I have not found any API to get clk providor's
-information. let me know if I missed it.
+kernel test robot noticed the following build errors:
 
-> and
-> configure the GPR register appropriately. Or that mux should be modeled
-> as a clock provider.
+[auto build test ERROR on shawnguo/for-next]
+[also build test ERROR on usb/usb-testing usb/usb-next usb/usb-linus linus/master v6.17-rc7 next-20250922]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-The mux is inside PCIe controller IP. Similar case in S32 RTC, which have
-4 clk inputs and mux is inside IP.
+url:    https://github.com/intel-lab-lkp/linux/commits/Sherry-Sun/tty-serial-imx-Only-configure-the-wake-register-when-device-is-set-as-wakeup-source/20250923-111951
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
+patch link:    https://lore.kernel.org/r/20250923031613.2448073-3-sherry.sun%40nxp.com
+patch subject: [PATCH 2/2] tty: serial: imx: Add missing wakeup event reporting
+config: x86_64-buildonly-randconfig-004-20250923 (https://download.01.org/0day-ci/archive/20250924/202509240146.aj950Liu-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250924/202509240146.aj950Liu-lkp@intel.com/reproduce)
 
-https://lore.kernel.org/all/20241104152934.GA129622-robh@kernel.org/
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509240146.aj950Liu-lkp@intel.com/
 
-We met many similar cases. Actually s32 rtc's first version modeled as
-clock provider, but this way is rejected because no clock output.
+All errors (new ones prefixed by >>):
 
-Frank
+>> drivers/tty/serial/imx.c:2742:21: error: call to undeclared function 'irqd_is_wakeup_set'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    2742 |         if (wake_active && irqd_is_wakeup_set(irq_get_irq_data(sport->port.irq)))
+         |                            ^
+>> drivers/tty/serial/imx.c:2742:40: error: call to undeclared function 'irq_get_irq_data'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    2742 |         if (wake_active && irqd_is_wakeup_set(irq_get_irq_data(sport->port.irq)))
+         |                                               ^
+   drivers/tty/serial/imx.c:2742:40: note: did you mean 'irq_set_irq_wake'?
+   include/linux/interrupt.h:481:12: note: 'irq_set_irq_wake' declared here
+     481 | extern int irq_set_irq_wake(unsigned int irq, unsigned int on);
+         |            ^
+   2 errors generated.
 
->
-> Rob
+
+vim +/irqd_is_wakeup_set +2742 drivers/tty/serial/imx.c
+
+  2696	
+  2697	/* called with irq off */
+  2698	static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
+  2699	{
+  2700		struct tty_port *port = &sport->port.state->port;
+  2701		struct tty_struct *tty;
+  2702		struct device *tty_dev;
+  2703		u32 ucr3, usr1;
+  2704		bool may_wake, wake_active;
+  2705	
+  2706		tty = tty_port_tty_get(port);
+  2707		if (tty) {
+  2708			tty_dev = tty->dev;
+  2709			may_wake = tty_dev && device_may_wakeup(tty_dev);
+  2710			tty_kref_put(tty);
+  2711		}
+  2712	
+  2713		/* only configure the wake register when device set as wakeup source */
+  2714		if (!may_wake)
+  2715			return;
+  2716	
+  2717		uart_port_lock_irq(&sport->port);
+  2718	
+  2719		usr1 = imx_uart_readl(sport, USR1);
+  2720		ucr3 = imx_uart_readl(sport, UCR3);
+  2721		if (on) {
+  2722			imx_uart_writel(sport, USR1_AWAKE, USR1);
+  2723			ucr3 |= UCR3_AWAKEN;
+  2724		} else {
+  2725			ucr3 &= ~UCR3_AWAKEN;
+  2726			wake_active = usr1 & USR1_AWAKE;
+  2727		}
+  2728		imx_uart_writel(sport, ucr3, UCR3);
+  2729	
+  2730		if (sport->have_rtscts) {
+  2731			u32 ucr1 = imx_uart_readl(sport, UCR1);
+  2732			if (on) {
+  2733				imx_uart_writel(sport, USR1_RTSD, USR1);
+  2734				ucr1 |= UCR1_RTSDEN;
+  2735			} else {
+  2736				ucr1 &= ~UCR1_RTSDEN;
+  2737				wake_active |= usr1 & USR1_RTSD;
+  2738			}
+  2739			imx_uart_writel(sport, ucr1, UCR1);
+  2740		}
+  2741	
+> 2742		if (wake_active && irqd_is_wakeup_set(irq_get_irq_data(sport->port.irq)))
+  2743			pm_wakeup_event(tty_port_tty_get(port)->dev, 0);
+  2744	
+  2745		uart_port_unlock_irq(&sport->port);
+  2746	}
+  2747	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
