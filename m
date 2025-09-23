@@ -1,166 +1,269 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866DD260590;
-	Tue, 23 Sep 2025 17:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046AD27FD51
+	for <imx@lists.linux.dev>; Tue, 23 Sep 2025 17:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758648969; cv=none; b=LK2Bx4ka0osrLeaKhFFXQ0lQaypS806xYGFzDk8n+OnJeSRbi2+3eElh9vuTXyNPocl8vP8BIwLskfENIFDi0piaYnmPS9jgHMFeYKEDJJX+lBszJ1EnMMbdMe3xenx3TM8bq+X685FI2NlFUfn7LJPLhIDPZuwFd/bFDH79CaI=
+	t=1758649257; cv=none; b=aZoVBlk5/zhx/d8XKBAkaOKc2aKWV3fIghbqHY+Eddcm9o9CsbHt5Cy/NYA1EDBDq7RnCxGY5FZWLjqCA6PYV8FcNAOJSLuHjWTcmihRSzevlFltjcP0dmOHYfOzbjoWgVLmZK6+7/awsCpLgig1raBEwhOIWQU+wg2FeFlhqs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758648969; c=relaxed/simple;
-	bh=UO2O51VzC78DSwnhfdoePqLlffRPw7JsQtk2TxHv3IM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P8PdQztIkksvTiIOl48isqgF/iMtBZZrlOmDgQDFdn21hfUSoDETbGKKKUVzoBdjmuKNFcKynKXueOsB6HVaUj+M2yb8kvyFG83OX8lFm0Cnh79E3A+bDWIgvKeaYM4aZn1mE33RTIlmw4n7Jg3pBqCmK6GvbTKsaW94rFRSpsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cAN4upMG; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1758649257; c=relaxed/simple;
+	bh=gnYeGB2B1v903Xtz4VVWD8MoJQwc4kIonn9k6NGquuU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rHm2SBY5o6avoM/uFngRHnwIljagycN7F9UJZk6jgVlwhZ71rQxapzJDs4xBmKWlDMael19dcNJPXUzcQlEtIrk9dGWuFjUUq/nsB+8MAWSZXZqQta+vkt8lwkUUmoO1v3z8dNNQr40YPhoAQycQbPy2RcihwYhOtZp0ptcZycc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Z30K3k2i; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cAN4upMG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758648968; x=1790184968;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UO2O51VzC78DSwnhfdoePqLlffRPw7JsQtk2TxHv3IM=;
-  b=cAN4upMGN0mLp4Hxsg5dzxrC+K+q5kOXMymHs/g7OgOFW15OSL+dWG4g
-   SI40OYSib8oJpzjcKiNfrSd1Ppv32+LPVSHhmZe0AkznZmfrKrz5E4MgI
-   Wdyz5lUEuyyRgQvJGs1pUkF3qxLOA1ClJI/Ykqqw2KoFreFZg03rXZlWD
-   VhBx26+LpeTyuZWywIRt3TemniKzXbq7Sz+GbtxQaFOSgNUv32Ena3H2r
-   M2rUSezkF2G9YhRhfxh9g53DlVJ02IfishUT5uMzPEsXidCTYLE0eH633
-   JLX8CcXiiMjoLKqbFn3y4OFajtV5FtoxmCtM9+LdkDY6OLTPUlJ8A2pom
-   Q==;
-X-CSE-ConnectionGUID: 2ZpuK7sWTOGADFRTZKC2yQ==
-X-CSE-MsgGUID: wLh8OrqDSv2H4A539B3iFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="60637901"
-X-IronPort-AV: E=Sophos;i="6.18,288,1751266800"; 
-   d="scan'208";a="60637901"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2025 10:36:07 -0700
-X-CSE-ConnectionGUID: zeCWYP7RRuqxfU0nURwVhg==
-X-CSE-MsgGUID: yvx2pBrOT+K/zO2LlHrCjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,288,1751266800"; 
-   d="scan'208";a="176419047"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 23 Sep 2025 10:36:04 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v16vp-0003Nh-2B;
-	Tue, 23 Sep 2025 17:36:01 +0000
-Date: Wed, 24 Sep 2025 01:35:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sherry Sun <sherry.sun@nxp.com>, gregkh@linuxfoundation.org,
-	jirislaby@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, shenwei.wang@nxp.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 2/2] tty: serial: imx: Add missing wakeup event reporting
-Message-ID: <202509240146.aj950Liu-lkp@intel.com>
-References: <20250923031613.2448073-3-sherry.sun@nxp.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z30K3k2i"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-62fca01f0d9so8208334a12.3
+        for <imx@lists.linux.dev>; Tue, 23 Sep 2025 10:40:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1758649252; x=1759254052; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QKpIP4JHqz6cG4UOF6o0Lt4gug+UcA+CBt0Oa3txFso=;
+        b=Z30K3k2i/GLRrR9+C9MOZfst84t7DVAwIYOXRUH+cVwo7mUcd7IZKqFWUrIf5GvkHP
+         O2g9eO2mqDXPmnX4pEYO6Ro19ovh79NsOzE8NQK0zjJmNDXd79STJdEQFLrn3jhVxflU
+         Y446tk2N8M3EOaUDe68OowKnzutrOcZkxxVQQJLHxvDsbhstgLeYctFxyk31Ft9DHOgP
+         /IaHbmlfcoU/ekmCQecMkTPRTNJjS0pmpAQquzk/dUgNhU1bxmXluJ12Gl+/OAQ9mGZg
+         trcnpkx0SoiSlYm9boVEECHYOg4UHIBrxGlWIpu4+S7PTdNSCbcQ6Eo3jiaLBkhUzvc6
+         BVBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758649252; x=1759254052;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QKpIP4JHqz6cG4UOF6o0Lt4gug+UcA+CBt0Oa3txFso=;
+        b=n40eRhVskFiG1V1U0NO1RiSBwIT94a0TF5wFVbV+yhqaezFn/n8p+Lx1oHqkyNu5CC
+         T6hmJLXcxVqIrjXh09B5nQQXQ2GiQvQ48QklpYCjV4/n91hUfhiY5cVd/OE/CN0TbiHh
+         93TwYTcZZcg8ByDiZJ7lBKU2MZmG3ccqhiMEguX5pdvxa1ksqEx+AW/8YONymKv1B6Y1
+         Eqiy4bFYiEGuq7nL6mNtpX/bBfA3dBcmhY56cWNg1Un3KpMdHF2+7NjYUcc0I1tUPa95
+         RD7eKf/hNNfBytHMmLudbpdI/58EtLnHPc3is+nffLeB6YqWDHV4UFqhdkFA1M8qZuaq
+         M0ag==
+X-Forwarded-Encrypted: i=1; AJvYcCV3uMNQsqUlfUyzvaoWK2p/4SlA96XPaDWGc10LfOykpTeNAHRGRaimRtam/S+sv7jT2ks=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwNW8caTON4T1k2GB9A4JLON4QRe0vLYrUB/a2h+P5xpc52ZspF
+	Mb4X30X1zqhPzH/0vfh7xt1eUI8bXfwIUH/kgA/uLxaA44oj7UPjwQ7lDMN4hnSTSimR2+8KgT/
+	u2q7G7TfyQUpX6Q6Yt410FB69Atn5k0ziUcmWg6RNiw==
+X-Gm-Gg: ASbGncsliZlr9vuYb5e3hYf/HO0+2Izc5qegiiAm3QPk10AmFQsj+/whOlVnJCFE2NU
+	DKLgQM3g4KH1j2u0LSB8SIjFmTAlL2KQDTcyCfLB9pVDGmdyfunwfDHu/VG8mwfotijCnlmtCh5
+	UtMyw8NX1Jjyy7F4UCHVtdpdzXm5sz/9XRxdWjZ01S/U8eDwV5MP3hwyGyc1hmnupU8ADXm+IS9
+	BrOIuChcVW1+SR6YCIb5l5UH1szXUWjgERL
+X-Google-Smtp-Source: AGHT+IGKj6Y7Rbxbcuv/p78PYY4VhOn0VuHWkuzF4bBzMgRnn4BUqA5lXuES789K8QEVi7gDnX95FchYWyP/N+Yb7J4=
+X-Received: by 2002:a05:6402:42d4:b0:634:66c8:9e6d with SMTP id
+ 4fb4d7f45d1cf-63467a196c6mr3151558a12.35.1758649252279; Tue, 23 Sep 2025
+ 10:40:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250923031613.2448073-3-sherry.sun@nxp.com>
+References: <20250919155821.95334-1-vincent.guittot@linaro.org>
+ <20250919155821.95334-2-vincent.guittot@linaro.org> <iom65w7amxqf7miopujxeulyiglhkyjszjc3nd4ivknj5npcz2@bvxej6ymkecd>
+In-Reply-To: <iom65w7amxqf7miopujxeulyiglhkyjszjc3nd4ivknj5npcz2@bvxej6ymkecd>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Tue, 23 Sep 2025 19:40:40 +0200
+X-Gm-Features: AS18NWBNIKbQJlsVTlHAuM-w_iiTyLoHRH4gz5lC-pFfTqvjXuoI-RD55es6jyQ
+Message-ID: <CAKfTPtD2MH9_xT+Fq4vvpGNMJPSkwh3CMaVCLRcNxrn_Ab7eLQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3 v2] dt-bindings: PCI: s32g: Add NXP PCIe controller
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: chester62515@gmail.com, mbrugger@suse.com, ghennadi.procopciuc@oss.nxp.com, 
+	s32@nxp.com, bhelgaas@google.com, jingoohan1@gmail.com, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com, 
+	Ghennadi.Procopciuc@nxp.com, ciprianmarian.costea@nxp.com, 
+	bogdan.hamciuc@nxp.com, Frank.li@nxp.com, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	cassel@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Sherry,
+On Mon, 22 Sept 2025 at 08:21, Manivannan Sadhasivam <mani@kernel.org> wrot=
+e:
+>
+> On Fri, Sep 19, 2025 at 05:58:19PM +0200, Vincent Guittot wrote:
+> > Describe the PCIe controller available on the S32G platforms.
+> >
+>
+> You should mention that this binding is for the controller operating in '=
+Root
+> Complex' mode.
+>
+> > Co-developed-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> > Signed-off-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> > Co-developed-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+> > Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+> > Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
+> > Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+> > Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> > Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> > Co-developed-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+> > Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+> > Co-developed-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> > Signed-off-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> > ---
+> >  .../devicetree/bindings/pci/nxp,s32-pcie.yaml | 131 ++++++++++++++++++
+> >  1 file changed, 131 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/pci/nxp,s32-pcie.=
+yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/pci/nxp,s32-pcie.yaml b/=
+Documentation/devicetree/bindings/pci/nxp,s32-pcie.yaml
+> > new file mode 100644
+> > index 000000000000..cabb8b86c042
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/pci/nxp,s32-pcie.yaml
+> > @@ -0,0 +1,131 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/pci/nxp,s32-pcie.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: NXP S32G2xx/S32G3xx PCIe controller
+> > +
+> > +maintainers:
+> > +  - Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> > +  - Ionut Vicovan <ionut.vicovan@nxp.com>
+> > +
+> > +description:
+> > +  This PCIe controller is based on the Synopsys DesignWare PCIe IP.
+> > +  The S32G SoC family has two PCIe controllers, which can be configure=
+d as
+> > +  either Root Complex or Endpoint.
+> > +
+>
+> But this binding is going to cover only the 'Root Complex' mode, isn't it=
+?
 
-kernel test robot noticed the following build errors:
+I was planning to add the endpoint in the same file as the hardware
+description remains the same between RC and EP but only the use of the
+HW is different. But it looks like I have to separate binding for RC
+and endpoint
 
-[auto build test ERROR on shawnguo/for-next]
-[also build test ERROR on usb/usb-testing usb/usb-next usb/usb-linus linus/master v6.17-rc7 next-20250922]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+> > +properties:
+> > +  compatible:
+> > +    oneOf:
+> > +      - enum:
+> > +          - nxp,s32g2-pcie     # S32G2 SoCs RC mode
+> > +      - items:
+> > +          - const: nxp,s32g3-pcie
+> > +          - const: nxp,s32g2-pcie
+> > +
+> > +  reg:
+> > +    maxItems: 7
+> > +
+> > +  reg-names:
+> > +    items:
+> > +      - const: dbi
+> > +      - const: dbi2
+> > +      - const: atu
+> > +      - const: dma
+> > +      - const: ctrl
+> > +      - const: config
+> > +      - const: addr_space
+> > +
+> > +  interrupts:
+> > +    maxItems: 8
+> > +
+> > +  interrupt-names:
+> > +    items:
+> > +      - const: link-req-stat
+> > +      - const: dma
+> > +      - const: msi
+> > +      - const: phy-link-down
+> > +      - const: phy-link-up
+> > +      - const: misc
+> > +      - const: pcs
+> > +      - const: tlp-req-no-comp
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - reg-names
+> > +  - interrupts
+> > +  - interrupt-names
+> > +  - ranges
+> > +  - phys
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/pci/snps,dw-pcie-common.yaml#
+> > +  - $ref: /schemas/pci/pci-bus.yaml#
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> > +    #include <dt-bindings/phy/phy.h>
+> > +
+> > +    bus {
+> > +        #address-cells =3D <2>;
+> > +        #size-cells =3D <2>;
+> > +
+> > +        pcie@40400000 {
+> > +            compatible =3D "nxp,s32g3-pcie",
+> > +                         "nxp,s32g2-pcie";
+> > +            reg =3D <0x00 0x40400000 0x0 0x00001000>,   /* dbi registe=
+rs */
+> > +                  <0x00 0x40420000 0x0 0x00001000>,   /* dbi2 register=
+s */
+> > +                  <0x00 0x40460000 0x0 0x00001000>,   /* atu registers=
+ */
+> > +                  <0x00 0x40470000 0x0 0x00001000>,   /* dma registers=
+ */
+> > +                  <0x00 0x40481000 0x0 0x000000f8>,   /* ctrl register=
+s */
+> > +                  /*
+> > +                   * RC configuration space, 4KB each for cfg0 and cfg=
+1
+> > +                   * at the end of the outbound memory map
+> > +                   */
+> > +                  <0x5f 0xffffe000 0x0 0x00002000>,
+> > +                  <0x58 0x00000000 0x0 0x40000000>; /* 1GB EP addr spa=
+ce */
+> > +            reg-names =3D "dbi", "dbi2", "atu", "dma", "ctrl",
+> > +                        "config", "addr_space";
+> > +            dma-coherent;
+> > +            #address-cells =3D <3>;
+> > +            #size-cells =3D <2>;
+> > +            device_type =3D "pci";
+> > +            ranges =3D
+> > +                  /*
+> > +                   * downstream I/O, 64KB and aligned naturally just
+> > +                   * before the config space to minimize fragmentation
+> > +                   */
+> > +                  <0x81000000 0x0 0x00000000 0x5f 0xfffe0000 0x0 0x000=
+10000>,
+>
+> s/0x81000000/0x01000000
+>
+> since the 'relocatable' is irrelevant.
+>
+> > +                  /*
+> > +                   * non-prefetchable memory, with best case size and
+> > +                   * alignment
+> > +                   */
+> > +                  <0x82000000 0x0 0x00000000 0x58 0x00000000 0x7 0xfff=
+e0000>;
+>
+> s/0x82000000/0x02000000
+>
+> And the PCI address really starts from 0x00000000? I don't think so.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sherry-Sun/tty-serial-imx-Only-configure-the-wake-register-when-device-is-set-as-wakeup-source/20250923-111951
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
-patch link:    https://lore.kernel.org/r/20250923031613.2448073-3-sherry.sun%40nxp.com
-patch subject: [PATCH 2/2] tty: serial: imx: Add missing wakeup event reporting
-config: x86_64-buildonly-randconfig-004-20250923 (https://download.01.org/0day-ci/archive/20250924/202509240146.aj950Liu-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250924/202509240146.aj950Liu-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509240146.aj950Liu-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/tty/serial/imx.c:2742:21: error: call to undeclared function 'irqd_is_wakeup_set'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    2742 |         if (wake_active && irqd_is_wakeup_set(irq_get_irq_data(sport->port.irq)))
-         |                            ^
->> drivers/tty/serial/imx.c:2742:40: error: call to undeclared function 'irq_get_irq_data'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    2742 |         if (wake_active && irqd_is_wakeup_set(irq_get_irq_data(sport->port.irq)))
-         |                                               ^
-   drivers/tty/serial/imx.c:2742:40: note: did you mean 'irq_set_irq_wake'?
-   include/linux/interrupt.h:481:12: note: 'irq_set_irq_wake' declared here
-     481 | extern int irq_set_irq_wake(unsigned int irq, unsigned int on);
-         |            ^
-   2 errors generated.
+I'm going to check why they set this value
 
 
-vim +/irqd_is_wakeup_set +2742 drivers/tty/serial/imx.c
 
-  2696	
-  2697	/* called with irq off */
-  2698	static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
-  2699	{
-  2700		struct tty_port *port = &sport->port.state->port;
-  2701		struct tty_struct *tty;
-  2702		struct device *tty_dev;
-  2703		u32 ucr3, usr1;
-  2704		bool may_wake, wake_active;
-  2705	
-  2706		tty = tty_port_tty_get(port);
-  2707		if (tty) {
-  2708			tty_dev = tty->dev;
-  2709			may_wake = tty_dev && device_may_wakeup(tty_dev);
-  2710			tty_kref_put(tty);
-  2711		}
-  2712	
-  2713		/* only configure the wake register when device set as wakeup source */
-  2714		if (!may_wake)
-  2715			return;
-  2716	
-  2717		uart_port_lock_irq(&sport->port);
-  2718	
-  2719		usr1 = imx_uart_readl(sport, USR1);
-  2720		ucr3 = imx_uart_readl(sport, UCR3);
-  2721		if (on) {
-  2722			imx_uart_writel(sport, USR1_AWAKE, USR1);
-  2723			ucr3 |= UCR3_AWAKEN;
-  2724		} else {
-  2725			ucr3 &= ~UCR3_AWAKEN;
-  2726			wake_active = usr1 & USR1_AWAKE;
-  2727		}
-  2728		imx_uart_writel(sport, ucr3, UCR3);
-  2729	
-  2730		if (sport->have_rtscts) {
-  2731			u32 ucr1 = imx_uart_readl(sport, UCR1);
-  2732			if (on) {
-  2733				imx_uart_writel(sport, USR1_RTSD, USR1);
-  2734				ucr1 |= UCR1_RTSDEN;
-  2735			} else {
-  2736				ucr1 &= ~UCR1_RTSDEN;
-  2737				wake_active |= usr1 & USR1_RTSD;
-  2738			}
-  2739			imx_uart_writel(sport, ucr1, UCR1);
-  2740		}
-  2741	
-> 2742		if (wake_active && irqd_is_wakeup_set(irq_get_irq_data(sport->port.irq)))
-  2743			pm_wakeup_event(tty_port_tty_get(port)->dev, 0);
-  2744	
-  2745		uart_port_unlock_irq(&sport->port);
-  2746	}
-  2747	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> - Mani
+>
+> --
+> =E0=AE=AE=E0=AE=A3=E0=AE=BF=E0=AE=B5=E0=AE=A3=E0=AF=8D=E0=AE=A3=E0=AE=A9=
+=E0=AF=8D =E0=AE=9A=E0=AE=A4=E0=AE=BE=E0=AE=9A=E0=AE=BF=E0=AE=B5=E0=AE=AE=
+=E0=AF=8D
