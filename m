@@ -1,118 +1,168 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CF0260583
-	for <imx@lists.linux.dev>; Mon, 22 Sep 2025 23:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97802D0C83
+	for <imx@lists.linux.dev>; Tue, 23 Sep 2025 01:29:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758584042; cv=none; b=E5w/MzVO94xth+Sc9sJjK/ZqMgFL3NJxLfPn60Q9Jr07RIS+mPYiegagArSkx9txtW4MPlJcwmGbMyRQYsnBX9QFLOVay3LRw3J308AQf/ON/AjFzJPQJWO7liZz0TNSSk+EPMOgb25n0U33LOLofxKgKHGC0scoIeK2gVPvLus=
+	t=1758590980; cv=none; b=UYli6juBt1yUr7e5PX+vThBkuPnG+mu7svFaBP7HNq9SjKKAuTV/vwnoI4ZLaMdPc20OBRTgy/gRAkLPGQmBq6GTMvH1o+DJlbedYZfXDOMyER0VQU/e6wLxiFBrOUNgQp1fZNmhvSl387XaYcpPYESGw77X9/4Dk4WgmY/zJqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758584042; c=relaxed/simple;
-	bh=LhPuL9sG3C8zlI8IcIwj4dNxj3q1GjMeZApYiKxUmOo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lfFefVPUfQMzvlpG9AHIYTAfZo3hvGHpqr9sLuTRlUkqxghiNKKb+XAc6Th3EU1jgU9w2PR6zUO0E3O6JlCQhQb7OrUltPzoCwgNABW8upb3RdgFD/HJY29JgAOnMQtM52elIRi2rjFzuxflZ57xqDSX2DN5au/HtopzceyW/Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2y+TLRap; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1758590980; c=relaxed/simple;
+	bh=Keih4ozM2ClJ7bLKolp4rzu48rFOC9n6MVTSF0I4RXw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qb/ZfbBr2CJDiCFdxDPfWZ3xbMDWgjg5EgcxZdl3pd33wESoIzX2PRV2Z66AuctOwyCfwCvy6CH5VbSmx/mof7N8AKZcFuIiCgj/SDBhzaUbsU6qmlsJsZPEQIR0QHqUTxdWskkxwzQvYtLeid3P+3quUgDFvnGrcb9fVE7A13U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lEP5K+SQ; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2y+TLRap"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 221B1C01FAE;
-	Mon, 22 Sep 2025 23:33:41 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EDE2560635;
-	Mon, 22 Sep 2025 23:33:57 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C406A102F1877;
-	Tue, 23 Sep 2025 01:33:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1758584036; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=LhPuL9sG3C8zlI8IcIwj4dNxj3q1GjMeZApYiKxUmOo=;
-	b=2y+TLRap1pN3HRdoKgD6Zk4og08A79Jne/wlePbE2xwEZ63s2OK2TBJ1q/GuzMb5XynQSv
-	0fJTNL1FTuC8cSk+UrP9ndtsQl9gxHn1cWvIPlISQrPiBmOMc+qtgdsrpKSIVh9XB1v4xl
-	lbyFPybQ+rdU8nmlG6P7QMucJzaPiZiMzWORdK7oh4v8RSA3Kat6X+LvIYOOgStylihgNS
-	p5Q9wdGSoK8qs6Gqyb35TpwVDGtbx/z6V/RsDG5BvyXTujLR4cSdBweBQnwiz4fm9EYgDH
-	CV0WAQXfXqeZEJtsu9LuiZlfTt8139tAGLEvbNOINYHs9fcfqkigIJ71s8sElg==
-Date: Tue, 23 Sep 2025 01:33:48 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, Claudiu Manoil
- <claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, "Y.B. Lu"
- <yangbo.lu@nxp.com>, "richardcochran@gmail.com" <richardcochran@gmail.com>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
- <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
- "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
- <pabeni@redhat.com>, Frank Li <frank.li@nxp.com>, "imx@lists.linux.dev"
- <imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: enetc: use generic interfaces to get
- phc_index for ENETC v1
-Message-ID: <20250923013348.62f44bba@kmaincent-XPS-13-7390>
-In-Reply-To: <PAXPR04MB8510ABEC85E704D1289A0E098811A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250918074454.1742328-1-wei.fang@nxp.com>
-	<20250918124823.t3xlzn7w2glzkhnx@skbuf>
-	<20250919103232.6d668441@kmaincent-XPS-13-7390>
-	<PAXPR04MB8510ABEC85E704D1289A0E098811A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lEP5K+SQ"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-330b4739538so3132113a91.3
+        for <imx@lists.linux.dev>; Mon, 22 Sep 2025 18:29:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758590977; x=1759195777; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UGIEsRlxQ6SB/60aNk9YuezwzaWruzT6GSumf3z2VMQ=;
+        b=lEP5K+SQ6IYsQLeAhs/dfx/TsgHDar3EYcC2f7nJGs2z5x6QPECHEqaqyZAuDdIBV+
+         yuH8ZXLMkebj7qOUVfE1NdVlHAYtZ6iN3+fE59ZfGpGJTLSHIAy6bO8VSVhTahg1Mgko
+         QxlQkgJ/J1MO9ihqLjD4qUX07ifBqhLE/xavscB0oayo/aYgFetCLacIG7Qlu9hkR3Iw
+         uNRzSq21A2WAbtSQKFfG40OsaMMBh0/AB6ckRQm1TtB6IDGuGgkk8haFHKjrWzru/8dY
+         z3JisO3/Fr0/oLKplQ6vH/RFyWt9yUl/GkGudc2EC+midMsB7MU0cAXyGSr/Gemj2sXp
+         bJfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758590977; x=1759195777;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UGIEsRlxQ6SB/60aNk9YuezwzaWruzT6GSumf3z2VMQ=;
+        b=cBwg7GyE/UIIqtpwbdXprFv46g4rCAtUrBiu80Wg4wXiDmh7ivbfq8+KJeklu80FKg
+         iXN3/dm0NMNUQryMSslbyuhV5dkhW7tMn/SIajrq9v16saBidXuXPVJdypI1hfSGSOGl
+         jE7Z9WJ9BT1vUMswUu1b1Zwqa8KAt+Se6nQLT0H8QrSnnTHXzaakXaSxcSV+WePcVgn3
+         m9aBQswl6OUxe4pPxvh30TbujwN34u842gauCVTmyWCXH9pGJcZTVSyqsJh5jPOpmc+w
+         sb39xp60XsD5FVEfQ3nNqqsLFAqhzXDqMPGOyN5nRzdghxKD4zHn7dMBDWk+cxS1yyM8
+         xWqg==
+X-Forwarded-Encrypted: i=1; AJvYcCW8ZBcZu1CxpTU3Z06NiHNAcdCMyeQN2RbkRJVPHthj6ISJLZ+LBIvcCkpOXYrRNRwky9U=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwL5ItJ/9OTo0Fz5IXwgjy+7j9VfkL1r431oysr5y6QUQr2h4wC
+	X9/nEG6l7R8aYbg4OkWINPJinraBrmUF+yMrrxlYG2NsxMO4GLZ2kkZq2v4LNEwg5gCFwR8Dv4q
+	B13XRlo+zyYL2OzscGzrwxV78mRFacT8=
+X-Gm-Gg: ASbGncvUGMNM7V1QQjVc8x4YGVProhcifW1m2ZJp8ZVaZuOJYwoOZ1b7nxu2fhnfOhl
+	n7PWYdlpgSXbSC6PVsuYnLIwL+ha4xxhFrmk/cpOK+Ja2Sy6tU4zJJX07p2y0HFvz8oUkh/9H/M
+	waRacHo4lUZ/eXs+Yun8MXcjHyzFadTSzdBdKnmFTsWQAwF7s1dtLQzxbLKWnbvn+n7FfYAC0h1
+	d95GZo=
+X-Google-Smtp-Source: AGHT+IGBT9LTfm84q4DXIRoJSFR8hZ2WWRU49SsvtumqUnLfaKU5tnx1duKBXoUog0HE+Dc5+BSde4IFSplat+4nyaY=
+X-Received: by 2002:a17:90b:33c8:b0:32d:f4cb:7486 with SMTP id
+ 98e67ed59e1d1-332a95e8e19mr1041351a91.19.1758590976762; Mon, 22 Sep 2025
+ 18:29:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20250821073131.2550798-1-shengjiu.wang@nxp.com>
+ <20250821073131.2550798-5-shengjiu.wang@nxp.com> <20250901185208.394cd162@booty>
+ <CAA+D8AOCTqb5jLeRapYk4wRGZrsrPiuAR=ow3OA1B0+M9X4k7w@mail.gmail.com>
+ <20250909-omniscient-honeybee-of-development-adca8a@houat>
+ <CAA+D8AM=aRU-0QcgtxZ+=YBZ2+kMrP2uzSE3e+NJs3Z3zkrSVg@mail.gmail.com> <97288c51-954a-48a9-92b9-e165ce480707@nxp.com>
+In-Reply-To: <97288c51-954a-48a9-92b9-e165ce480707@nxp.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Tue, 23 Sep 2025 09:29:23 +0800
+X-Gm-Features: AS18NWBhgiBnQW_QrjL4oCw3YUyblBEb719xz-MBTlZAVwouH205ucQ6fmr_z54
+Message-ID: <CAA+D8APA85PhWVkW7c=d_qWF7L1ERxe7cS3Gg00SV-3TSyLwQw@mail.gmail.com>
+Subject: Re: [PATCH v5 4/7] drm/bridge: dw-hdmi: Add API dw_hdmi_set_sample_iec958()
+ for iec958 format
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Maxime Ripard <mripard@kernel.org>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com, neil.armstrong@linaro.org, 
+	rfoss@kernel.org, Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, 
+	jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com, 
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, lumag@kernel.org, 
+	dianders@chromium.org, cristian.ciocaltea@collabora.com, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	p.zabel@pengutronix.de, devicetree@vger.kernel.org, l.stach@pengutronix.de, 
+	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, 19 Sep 2025 08:48:57 +0000
-Wei Fang <wei.fang@nxp.com> wrote:
-
-> > > It looks like we have a problem and can't call pci_get_slot(), which
-> > > sleeps on down_read(&pci_bus_sem), from ethtool_ops :: get_ts_info(),
-> > > which can't sleep, as of commit 4c61d809cf60 ("net: ethtool: Fix
-> > > suspicious rcu_dereference usage").
-> > >
-> > > K=C3=B6ry, do you have any comments or suggestions? Patch is here:
-> > > =20
-> > https://lore.kern/
-> > el.org%2Fnetdev%2F20250918074454.1742328-1-wei.fang%40nxp.com%2F&d
-> > ata=3D05%7C02%7Cwei.fang%40nxp.com%7Cca70608eb6c9487d98e108ddf7571
-> > de6%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C63893867571474
-> > 2481%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjA
-> > uMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7
-> > C%7C&sdata=3Dh6rMPPxArsYdoPOz95UZRU88Oz9IJ3sD6lRjqC5SHMU%3D&reser
-> > ved=3D0
+On Mon, Sep 22, 2025 at 11:01=E2=80=AFAM Liu Ying <victor.liu@nxp.com> wrot=
+e:
+>
+> On 09/10/2025, Shengjiu Wang wrote:
+> > Hi
 > >
-> > This is annoying indeed. I don't know how this enetc drivers works but =
-why
-> > ts_info needs this pci_get_slot() call? It seems this call seems to not=
- be
-> > used in ndo_hwtstamp_get/set while ts_info which does not need any hard=
-ware
-> > communication report only a list of capabilities.
-> > =20
->=20
-> The ENETC (MAC controller) and the PTP timer are separate devices, they
-> are both PCIe devices, the PTP timer provides the PHC for ENETC to use, so
-> enetc_get_ts_info() needs to get the phc_index of the PTP timer, so
-> pci_get_slot() is called to get the pci_dev pointer of the PTP timer. I c=
-an
-> use pci_get_domain_bus_and_slot() to instead to fix this issue.
->=20
-> I do not know whether it is a good idea to place the get_ts_info() callba=
-ck
-> within an atomic lock context. I also noticed that idpf driver also has t=
-he
-> same potential issue (idpf_get_ts_info()).
+> > On Tue, Sep 9, 2025 at 2:39=E2=80=AFPM Maxime Ripard <mripard@kernel.or=
+g> wrote:
+> >>
+> >> Hi,
+> >>
+> >> On Wed, Sep 03, 2025 at 06:41:05PM +0800, Shengjiu Wang wrote:
+> >>> On Tue, Sep 2, 2025 at 12:52=E2=80=AFAM Luca Ceresoli <luca.ceresoli@=
+bootlin.com> wrote:
+> >>>>
+> >>>> Hello Shengjiu,
+> >>>>
+> >>>> On Thu, 21 Aug 2025 15:31:28 +0800
+> >>>> Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+> >>>>
+> >>>>> Add API dw_hdmi_set_sample_iec958() for IEC958 format because audio=
+ device
+> >>>>> driver needs IEC958 information to configure this specific setting.
+> >>>>>
+> >>>>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> >>>>> Acked-by: Liu Ying <victor.liu@nxp.com>
+> >>>>
+> >>>> [...]
+> >>>>
+> >>>>> +void dw_hdmi_set_sample_iec958(struct dw_hdmi *hdmi, unsigned int =
+iec958)
+> >>>>> +{
+> >>>>> +     mutex_lock(&hdmi->audio_mutex);
+> >>>>> +     hdmi->sample_iec958 =3D iec958;
+> >>>>> +     mutex_unlock(&hdmi->audio_mutex);
+> >>>>> +}
+> >>>>
+> >>>> Apologies for jumping in the discussion as late as in v5, but I noti=
+ced
+> >>>> this patch and I was wondering whether this mutex_lock/unlock() is
+> >>>> really needed, as you're copying an int.
+> >>>
+> >>> Thanks for your comments.
+> >>>
+> >>> Seems it is not necessary to add mutex here. I just follow the code a=
+s
+> >>> other similar functions.  I will send a new version to update it.
+> >>
+> >> Let's not be smart about it. Next thing you know, someone will add
+> >> another field in there that would absolutely require a mutex and now
+> >> you're not race free anymore.
+> >>
+> >> Unless there's a real concern, the mutex must stay.
+> >>
+> >
+> > Ok, thanks for comments.  Then Patch v6 need to be dropped.
+>
+> To properly track the changelog with patchwork, can you send v7 to add
+> the mutex?
 
-We can change the device providing the PTP (currently between MAC or PHY),
-that's why we need to acquire the rcu lock to avoid any pointer change duri=
-ng
-the get_ts_info callback which could cause an use after free issue.
+Yes, will send it.
 
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Best regards
+
+Shengjiu wang
+
+>
+> >
+> > Is there any other comments for this Patch v5?
+> > If no, can this series be accepted?
+> >
+> > Best regards
+> > Shengjiu Wang
+>
+>
+> --
+> Regards,
+> Liu Ying
