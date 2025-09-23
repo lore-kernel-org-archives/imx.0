@@ -1,134 +1,194 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916D123A989
-	for <imx@lists.linux.dev>; Tue, 23 Sep 2025 14:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9736E5695
+	for <imx@lists.linux.dev>; Tue, 23 Sep 2025 14:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758638967; cv=none; b=qAkwlz9vVp9TGsTtWsEhwgY0spPYnSL5/TFfkLp0QxU8fPY4IY3iV7R0JH7CdAohZNLEwzyeCEa32OwQE6nzdngLBn/2tCf5hclabrcxzSia1X3gTulEydWHepZHY9D/lFNKxGlWTnmb9UsQ+bik5ZHQjqxaoDTsP9wntpCEvCA=
+	t=1758638969; cv=none; b=k5LWLzY5SrvcEJkvlwBxSLvt6NLZdlNwrjWKIgjL9mzVV2ga55nNgdsHhIr3UTYSjNJ9u7g6+0uD8ml8GR+V1OJQBOl8rSCIkavgWdi1Acb9ymNDZiqSvUyTVTNkp0Tnzpm41jWLujmGXo7nHKDnOLPqafxlGZOES2D+FGbPpf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758638967; c=relaxed/simple;
-	bh=DNqQwxK29Us8xfmOHYcY1uinDcMdwRcq4PUlWc2Tuv0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rY5W+V5Sy3DsJDVcRFVOwc2pQFBuaR5NcqGZimFboeHQbg7P5l/zbmdC0IXozmpeWzSNMCOz7IIhioxmHj8ylSS5U1rI2f0hHYR0+/HIwStS8RlZ2Ud+JG8Y5yWB/f4+L2t2pz7OuVgFaSQxLvy/NHPJK5cn4lx+PXpRO9JzZLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=Wc14mpE5; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1758638969; c=relaxed/simple;
+	bh=ic044369QqtidAh8yfSu/u+g2qCbcTn5nkvJ11LGmK8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jRM6dICcjDTjtUKMcLvctuPqSlVcmm/3+td8dfJDjGMv3H7hos5Uam+Wx+eO+fEXlSuNYQhUIVW9S+H1ckU3MBe1rsROWKz6P6M0hZDegxsfDJCc/BE5UBbV1feJYoyv5mMw7rKQKdjrZr12XpGNLOZ6WUAjnJA7Fu4qFaGQrPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F7LEvcAG; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Wc14mpE5"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b0787fdb137so880702066b.0
-        for <imx@lists.linux.dev>; Tue, 23 Sep 2025 07:49:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F7LEvcAG"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b2e0513433bso298191866b.1
+        for <imx@lists.linux.dev>; Tue, 23 Sep 2025 07:49:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1758638964; x=1759243764; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xur5ogzlO3BxY7k/WpoKiidJ69mrTNy6lGE5CvTWMk4=;
-        b=Wc14mpE5alLSyIu1ZWocMbr73edW5oB2wN4eqgCE99fzBfdHgUseWUvF0qlLuTvqy5
-         23cAihSZzpUE/DrHnm3ImELn78sBek0jOmYr7mYuZXETPyWXaSdhQUd1KSAbqvQ5xALI
-         89w5BGAJT44hMsNeRCDh7eemK69AiQMmQin5g=
+        d=linaro.org; s=google; t=1758638965; x=1759243765; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y52Xkcdn7xk0ZUxLnhD94pTmXLnFSczNPfuhX4p80MM=;
+        b=F7LEvcAGYob/A0I+bMGoseMtuna8NTPcj3o9LhcQ5dtkW4xEz9D8w9YI/zOBE1ehUR
+         JRbHIl9czuKAupsteyi8MsBJAGuWl43pJqpp19CuAF7lyVucOdph6VPVCv7uJJH8HvvE
+         pk7HGWAbRy4DpLhRgsYlI5/h/RQj1cBfXqu9VKvAfQ4+N+X7l9cFWupPx9nRv31kIIna
+         3pb1jCJwq5bViqzB4fiy9q7Ago0pn04YkIDatolmIsNbAs7oRcnvy295Wt6+kS2Z+7tD
+         4nqc8g69OhumLYSi3Rg8aHHDqRk/MFRK9v3J3EyiuqVS/aFkc3uW4VNZsSRWexYbwyxa
+         ZqNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758638964; x=1759243764;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1758638965; x=1759243765;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=xur5ogzlO3BxY7k/WpoKiidJ69mrTNy6lGE5CvTWMk4=;
-        b=S8L1lHqb1q22DY3aN3OmlwUgHZfj/HhkAeuhxwJ6Z+YT52afxCgkfgZXN2uBj73yoe
-         4W1WqiCkwsQMQ0NZtDycERhf0WlxMCyS+hzifZgky34HbEOiCu+kzZFNuBVU2zChmCQ0
-         ol9zRlKY7M1D7ACOQRXKMZ0rPO3QNU0KTKpFEopiCkmjkPJvQAyTOsyfmgvpkH7sZqoC
-         kFC9aoPn1ilTnfFw2v0CC74Z9KmdnxiAlJvePrQwePIUFKVEs8ZFppAx8eQ5LFo9EcZB
-         3ANd8434m6G/mUzCyoTtB7mVwZXNjYoNSiceBbhfnqYNDhucvtHQTcvEYk2qBJKvf1ft
-         LsJg==
-X-Forwarded-Encrypted: i=1; AJvYcCU94Af1NhGeEXHKHmfAD6yVyiO8clkaKAFA4qEXi2W8xr+4X7r8hJ5kRvXQbQdZ5DP9gyo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxNMRjj9WubbVxTBDT65fvAhR2U+NjfywEaf1vSRzmJREIkC8J3
-	3wJ0F/EVWB09xdev1OIVR2cIQ6PuYBNoKd+TrVq2mb18mDKJOOlqzBRhPjYw7Zf+bzVATlxIhT/
-	lEMlY
-X-Gm-Gg: ASbGncuMOSyd3p0ImmMWEYDxqjeo4v0K+FF/KoFDjdYru5MAGxyD/41p8Q2Zt2wLk6v
-	9FjAy7SZ27gT5DPwaKQsshdlS9t3BsuH5QAOrMbijoloLWhEcGM9an1EHQjnD39K2yHcN3T9ME7
-	Wfla0HGDi9fcUYPpj0jTzws3UH2PgRIgungTLmkYgzCkZJRVHdvWVNg9PvLPSI//XGveSRfbBiT
-	m2OQxJg6gHD1013Wk2+1/d9ad4TnlpSp+cE9OYH2a1WwDTuzP0vbAgFjfsGJmRAFEIb53tG5lI0
-	bVd3w6HiMubAsaXzvIhW3cugFA9rjvItU1ScnYtRBSy4YQrdrcd0agTuyIU8rUxvLZVs7XLVCNB
-	WM1LmSog7+JSXjrghY8zXf5n5B08Jc9GvmJyHH5vBkkFsvf9NkV56ohDbvfjaHUAS5ZDORra/uK
-	d3XmDDDqhOGJp6tEIkPCML+JPhUp7hwSxVRpzH9Ct1QtlPXKRgci4pZ+Ei7+TiFgR2
-X-Google-Smtp-Source: AGHT+IFdTyE8sOB500lABprpHvm3+W8fwHKLli2EEJnbWm8PCy1bRjTjWqFurJ5b3114azHIHI936g==
-X-Received: by 2002:a17:907:3f92:b0:afe:87bd:da59 with SMTP id a640c23a62f3a-b302a07b5demr278688766b.42.1758638963797;
-        Tue, 23 Sep 2025 07:49:23 -0700 (PDT)
-Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-82-56-38-125.retail.telecomitalia.it. [82.56.38.125])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b2c0e7f7b01sm515746166b.91.2025.09.23.07.49.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Sep 2025 07:49:23 -0700 (PDT)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-amarula@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Michael Trimarchi <michael@amarulasolutions.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [RESEND PATCH] ARM: dts: imx6ull-engicam-microgea-rmm: fix report-rate-hz value
-Date: Tue, 23 Sep 2025 16:49:10 +0200
-Message-ID: <20250923144920.2858693-1-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
+        bh=Y52Xkcdn7xk0ZUxLnhD94pTmXLnFSczNPfuhX4p80MM=;
+        b=HTiqeioBiSgI/PljcTSX2dQNlkCHNVp25EXOAjoenwFYRHY9NVvKO1V8VfgEZrCezu
+         DI99OynujAg/QYGc83ABAxqeAgpVNBwNr5LIBwetpbWRdC1HQv2E8vTyUD8tH1DA0y3g
+         iWXjlB8R94soEEtYcUS1rm28is4fYAmFtcz4F3Y0rzOVkX91Qwg1zu0RwB7jnsNuo/E9
+         9vq/DwdR2rDLcXZsGyyyGjt4CorUA4hl9GP+n1gyIHm75WOSmwQsxp5i+JvCZNYrOJ0n
+         2Xi/tK39cVIGcxFnBqlY3q+fqlb9jdGiSwJebSubVBkyIf22lHjzKq5/j3WiSNJM0DQp
+         vNVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKbvbsOg4LotthwT/RA5aOtf8MazDODZcdMWomxo3gw5ymZL71aITBosJnT8FiGBglNPo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YynjoSxeXzjSWF7kxYeFESmLgavccUD92Xopz8Kwpz2Z5hXTt+Z
+	Uts0/mN2fMfMP87h7O8wEmggMuV7gEgt5yMAl20tYWvf6aCI/KcDZ5sU3klVxXrfYR6w7i7LNnN
+	12PXNkJsJWGO4KQ+skcyxb2GzWF7dK88fasdzybjQjg==
+X-Gm-Gg: ASbGncvUtZ0k3pctP9MOC9uCgUvdAOZsI+tblp2/IF/CltLIMHfkFwuAgsGNwCiuOQ2
+	im7X9+jVBIPs4MCd8M0FMojW1LyfGw47ohf+tWSG+sCkOLI3XsSJ4EFtJljXi+2M2tnViejspbs
+	bzAWPCnU7B3IXrS2O3OU9RH9v49IUJsvBNUUFVLIAaLPhZHE4heCVhblPkG0k7dWnxVrFb9BQwE
+	oQ/4zBsQPjQutupHOcPwjABuHPVRU8XWXxi
+X-Google-Smtp-Source: AGHT+IECKT9YZPD+FAdye+FerjTbLGMGSvvRtZ+Pjo4XFET+bb/b/phi396gjsk4a+Gepk9kfKc2SZh1oT+jOw9HvrM=
+X-Received: by 2002:a17:907:6d03:b0:b04:2533:e8dd with SMTP id
+ a640c23a62f3a-b302d29ad94mr253112266b.60.1758638964984; Tue, 23 Sep 2025
+ 07:49:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250919155821.95334-1-vincent.guittot@linaro.org>
+ <20250919155821.95334-2-vincent.guittot@linaro.org> <aM2HMOvksD0kSd1u@lizhi-Precision-Tower-5810>
+In-Reply-To: <aM2HMOvksD0kSd1u@lizhi-Precision-Tower-5810>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Tue, 23 Sep 2025 16:49:13 +0200
+X-Gm-Features: AS18NWBnvH3cHGC78xNej_-VaL44m5KxupJlVq-5uA_Jq-oxSoNspDlHAQbMDqk
+Message-ID: <CAKfTPtDadioUFDn2F5gJ59tYJD2owVZMZs9TNUBHk-2uuz0GmQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3 v2] dt-bindings: PCI: s32g: Add NXP PCIe controller
+To: Frank Li <Frank.li@nxp.com>
+Cc: chester62515@gmail.com, mbrugger@suse.com, ghennadi.procopciuc@oss.nxp.com, 
+	s32@nxp.com, bhelgaas@google.com, jingoohan1@gmail.com, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com, 
+	Ghennadi.Procopciuc@nxp.com, ciprianmarian.costea@nxp.com, 
+	bogdan.hamciuc@nxp.com, linux-arm-kernel@lists.infradead.org, 
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, cassel@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The 'report-rate-hz' property for the edt-ft5x06 driver was added and
-handled in the Linux kernel by me with patches [1] and [2] for this
-specific board.
+On Fri, 19 Sept 2025 at 18:39, Frank Li <Frank.li@nxp.com> wrote:
+>
+> On Fri, Sep 19, 2025 at 05:58:19PM +0200, Vincent Guittot wrote:
+> > Describe the PCIe controller available on the S32G platforms.
+> >
+> > Co-developed-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> > Signed-off-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> > Co-developed-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+> > Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+> > Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
+> > Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+> > Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> > Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> > Co-developed-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+> > Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+> > Co-developed-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> > Signed-off-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> > ---
+> ...
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - reg-names
+> > +  - interrupts
+> > +  - interrupt-names
+> > +  - ranges
+> > +  - phys
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/pci/snps,dw-pcie-common.yaml#
+> > +  - $ref: /schemas/pci/pci-bus.yaml#
+>
+> why not snps,dw-pcie.yaml?
 
-The v1 upstream version, which was the one applied to the customer's
-kernel, used the 'report-rate' property, which was written directly to
-the controller register. During review, the 'hz' suffix was added,
-changing its handling so that writing the value directly to the register
-was no longer possible for the M06 controller.
+dt binding check reports a number errors and warnings with snps,dw-pcie.yaml.
+In addition to the reg and irq names which I can't all map on the
+snps,dw-pcie.yaml, it reports unevaluated properties which I don't
+have with schemas/pci/pci-bus.yaml
 
-Once the patches were accepted in mainline, I did not reapply them to
-the customer's kernel, and when upstreaming the DTS for this board, I
-forgot to correct the 'report-rate-hz' property value.
 
-The property must be set to 60 because this board uses the M06 controller,
-which expects the report rate in units of 10 Hz, meaning the actual value
-written to the register is 6.
 
-[1] 625f829586ea ("dt-bindings: input: touchscreen: edt-ft5x06: add report-rate-hz")
-[2] 5bcee83a406c ("Input: edt-ft5x06 - set report rate by dts property")
-Fixes: ffea3cac94ba ("ARM: dts: imx6ul: support Engicam MicroGEA RMM board")
-Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
-Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-
----
-
- arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-rmm.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-rmm.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-rmm.dts
-index 5d1cc8a1f555..8d41f76ae270 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-rmm.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-rmm.dts
-@@ -136,7 +136,7 @@ touchscreen: touchscreen@38 {
- 		interrupt-parent = <&gpio2>;
- 		interrupts = <8 IRQ_TYPE_EDGE_FALLING>;
- 		reset-gpios = <&gpio2 14 GPIO_ACTIVE_LOW>;
--		report-rate-hz = <6>;
-+		report-rate-hz = <60>;
- 		/* settings valid only for Hycon touchscreen */
- 		touchscreen-size-x = <1280>;
- 		touchscreen-size-y = <800>;
--- 
-2.43.0
-
-base-commit: f975f08c2e899ae2484407d7bba6bb7f8b6d9d40
-branch: report-rate-hz-on-microgea-rmm
+>
+> Frank
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> > +    #include <dt-bindings/phy/phy.h>
+> > +
+> > +    bus {
+> > +        #address-cells = <2>;
+> > +        #size-cells = <2>;
+> > +
+> > +        pcie@40400000 {
+> > +            compatible = "nxp,s32g3-pcie",
+> > +                         "nxp,s32g2-pcie";
+> > +            reg = <0x00 0x40400000 0x0 0x00001000>,   /* dbi registers */
+> > +                  <0x00 0x40420000 0x0 0x00001000>,   /* dbi2 registers */
+> > +                  <0x00 0x40460000 0x0 0x00001000>,   /* atu registers */
+> > +                  <0x00 0x40470000 0x0 0x00001000>,   /* dma registers */
+> > +                  <0x00 0x40481000 0x0 0x000000f8>,   /* ctrl registers */
+> > +                  /*
+> > +                   * RC configuration space, 4KB each for cfg0 and cfg1
+> > +                   * at the end of the outbound memory map
+> > +                   */
+> > +                  <0x5f 0xffffe000 0x0 0x00002000>,
+> > +                  <0x58 0x00000000 0x0 0x40000000>; /* 1GB EP addr space */
+> > +            reg-names = "dbi", "dbi2", "atu", "dma", "ctrl",
+> > +                        "config", "addr_space";
+> > +            dma-coherent;
+> > +            #address-cells = <3>;
+> > +            #size-cells = <2>;
+> > +            device_type = "pci";
+> > +            ranges =
+> > +                  /*
+> > +                   * downstream I/O, 64KB and aligned naturally just
+> > +                   * before the config space to minimize fragmentation
+> > +                   */
+> > +                  <0x81000000 0x0 0x00000000 0x5f 0xfffe0000 0x0 0x00010000>,
+> > +                  /*
+> > +                   * non-prefetchable memory, with best case size and
+> > +                   * alignment
+> > +                   */
+> > +                  <0x82000000 0x0 0x00000000 0x58 0x00000000 0x7 0xfffe0000>;
+> > +
+> > +            bus-range = <0x0 0xff>;
+> > +            interrupts =  <GIC_SPI 124 IRQ_TYPE_LEVEL_HIGH>,
+> > +                          <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
+> > +                          <GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>,
+> > +                          <GIC_SPI 126 IRQ_TYPE_LEVEL_HIGH>,
+> > +                          <GIC_SPI 127 IRQ_TYPE_LEVEL_HIGH>,
+> > +                          <GIC_SPI 132 IRQ_TYPE_LEVEL_HIGH>,
+> > +                          <GIC_SPI 133 IRQ_TYPE_LEVEL_HIGH>,
+> > +                          <GIC_SPI 134 IRQ_TYPE_LEVEL_HIGH>;
+> > +            interrupt-names = "link-req-stat", "dma", "msi",
+> > +                              "phy-link-down", "phy-link-up", "misc",
+> > +                              "pcs", "tlp-req-no-comp";
+> > +            #interrupt-cells = <1>;
+> > +            interrupt-map-mask = <0 0 0 0x7>;
+> > +            interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>,
+> > +                            <0 0 0 2 &gic 0 0 GIC_SPI 129 IRQ_TYPE_LEVEL_HIGH>,
+> > +                            <0 0 0 3 &gic 0 0 GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>,
+> > +                            <0 0 0 4 &gic 0 0 GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
+> > +
+> > +            phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
+> > +        };
+> > +    };
+> > --
+> > 2.43.0
+> >
