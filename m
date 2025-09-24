@@ -1,605 +1,275 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011039.outbound.protection.outlook.com [52.101.70.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6036B285CB5
-	for <imx@lists.linux.dev>; Wed, 24 Sep 2025 08:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702888; cv=none; b=KOHjGNj9pkaXCjm+XrM486H2gynaXkxDCWqUmZEM+LAiyYUE8taMVcCUYSI0YdunhEnBCT/Zpy4CuYMk2nAIXmnkCvTnixZkKTQDLFYlHYUx62Op1rBjD+krVg4zhLA+iY741ZezupGIuaB4lwR2BUQb3grWePvgX1F3/q2FlMg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758702888; c=relaxed/simple;
-	bh=s13xlcpl8Y8dVA0cWl22bd7D9dmntNP5uIUILgzFOxE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CT4WSQcFsV76sic9ZyLoZ7IV2G4w17hEVuU8p4vXWlHpIFov6Jpq5K6nezJgJDXx9SH8T+Lg/3a9+lB2NAeaQ2ZiVrJupVdRDM4bGAA9TSFRMjbE5N9u4GdehQFIibsa17Qwp0JPihw+c7b0WuNDw5IL1PIHzzYFa1MvZfi07uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1v1KxR-0006Aj-Fd; Wed, 24 Sep 2025 10:34:37 +0200
-From: Jonas Rebmann <jre@pengutronix.de>
-Date: Wed, 24 Sep 2025 10:34:14 +0200
-Subject: [PATCH v3 3/3] arm64: dts: add Protonic PRT8ML board
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FC828A1ED
+	for <imx@lists.linux.dev>; Wed, 24 Sep 2025 08:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758703195; cv=fail; b=qhZTf0b7uP/JxHvIqZxSI1I4kYL6fN9OGXM0+SVZAcP94jK4wDDCv1YT9aaFqY+TNxwSr3QjRyKkdj5GA7hQIDjyYmarxWNXrK4/A276nvzinuxYbVOBcu6vWeAdY+CrkgALYzO6q3VejPZ0ju2QQLZgTp74vUxZWWt6mDuYzdA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758703195; c=relaxed/simple;
+	bh=ui/M004we8LQ+szHMq2OZ/1wfI/IqMVtn7fAOkEYU40=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=dWOoKTzjfp1K01/y/f77SvjPm7fxgKMjkd+p5Pt13IoNYlwIc25gxKNFGS93gbZusLkDmwwOILTcMLc4iRp/i10fYdI5ZSNL6ojoZUJZI3M8c9jaGjeFYX4i3Ud/fazMt/Ur0pfsb4sc83BS+Fa9CZCMY/Z6EpYE/yFrrJbDewY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ckwqclxa; arc=fail smtp.client-ip=52.101.70.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ckwqclxa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=N5neNI08OTvooxd9CoBG6zVmdlYxmO+utPaAEISvOTgKnWY/p5T5tnyChw2u+mMMrDIcZPiJUkZ68HTT/x2AYnFVhV4hCSOsQgaHfbsZ4fYxEg9BgR7QrGQG4zJ8J9hqVL1O6A6nCRrRkqWhhDC18fmNuT7bup8Am36AZOz8/TMtIcQpVy80Uv+/SjSjQbBvJWh0sM5gi36fCHo98dOQLZMExaYe8vlrUlwxZns1t26Dfvs68mpqA4mdh6KygcSLYhxpyhs5CqeG6sEE1LXwSH1ARiQChJmp39YIHR/eVdRSIfhNFZFFcJd2X7IA04Kx1mELBrkGAv8WokKDQnLsKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ouDXIbVCq+4BtEbNIoZDP0uV7RlsVEFli145MyUH9MA=;
+ b=KnEWggcVnFIecDfaKrVJLDo3oNDiVIkMwgt+GNU4nHTUnolTMXgittS99FY2yG+Glte0uHSYyO9O18QRUUME3+DLwDHk/Hq1rea8FZsAQ5sbawbCVKG2IUHXx/xowuXt9Bzmjydvg2CZlrzRdiM+SFNICKSGHcwxjV7e5279ta4wwzqHCQGQjdxbbhaxLFpUqUuVRNVwFkyXyIC1yzisTFzpl5bhW0Hwg5lJvwN7Te/bAvnM6zg5JyvOS6SRS8db/VJQZ5rElBWprnr/3rfAdM9F6P/ZnVGEkK2KvHSoV8BokPi+WuVjaVQV/m84caJEwVxtKjZeP4CvhRmTDuBxKA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ouDXIbVCq+4BtEbNIoZDP0uV7RlsVEFli145MyUH9MA=;
+ b=ckwqclxapjVmoUgNidHa2WFeUqHcIdkWktjJeBSCtfxdXjzXkA/ThOFbdjCvEYF+KE66ypLIWvXQFiELH4jHW9yH4eLuSqQ+qHMjevF+zc8Nr7Z74Xa7a7UVibhSigi0LgE5hX5EAFa4YDlqK2tS7+WSZQkNAlpkgLgAhnj8HoUs4jLDUGLOA6cBpk2iW8lPCZGUlXazzOYx75v66IRPtWZsfbXr21eJXUQPTRBOkrxDNdXkM7IdYZhkcyoZllKvYkshmfdCMs9UCJU/gq/oGjDQyudq0AqvNDN+3IG1PtZG1E+Csbohs5Hrr/hOMizHu4Ncry32mK+3YMf+RI3Sfw==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by VI0PR04MB11844.eurprd04.prod.outlook.com (2603:10a6:800:2eb::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Wed, 24 Sep
+ 2025 08:39:47 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9160.008; Wed, 24 Sep 2025
+ 08:39:47 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, Alexandru Marginean
+	<alexandru.marginean@nxp.com>
+Subject: RE: [PATCH] net: enetc: fix the deadlock of enetc_mdio_lock
+Thread-Topic: [PATCH] net: enetc: fix the deadlock of enetc_mdio_lock
+Thread-Index: AQHcLRa4p93zS5zz2UC/+ImNSDj9z7Sh+w1Q
+Date: Wed, 24 Sep 2025 08:39:47 +0000
+Message-ID:
+ <PAXPR04MB851022A10BB676DBCEBF66BC881CA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250924054704.2795474-1-jianpeng.chang.cn@windriver.com>
+In-Reply-To: <20250924054704.2795474-1-jianpeng.chang.cn@windriver.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|VI0PR04MB11844:EE_
+x-ms-office365-filtering-correlation-id: 6cef7815-1c35-4e31-a10e-08ddfb45eb6c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|19092799006|1800799024|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?/+/+u1EU4W1JJAX+xhW8e59f8lCzoZmrg4fSYlR0wBpN5jON8UbBQ2qhsjcI?=
+ =?us-ascii?Q?rRf3cCz13K1UGxPRrZt8SWHSQzoXHZo7S93DqQAEejb/3c7qwwbxpe60Qpm5?=
+ =?us-ascii?Q?KDZzUyors8O9BR3UzbCH9R+7flPj3UvPbaxDqKdm0XYyKbWc2D1ORMj+HCIZ?=
+ =?us-ascii?Q?3bgkLZ1ccVcx5OdlYsrPAhP3FcHyJn4wRAXMNUijS9Z2g6DweKJCjUnecP16?=
+ =?us-ascii?Q?DvOb7BiNA95YGnR7PormYGmtfI2fDrwKHapNOE0Ycp3YR2MHQ7gBJ8fMamnx?=
+ =?us-ascii?Q?XZRXnuVubYick4O+CINR9m8ysOTFAoLgZGIlts7zg6+UFBzaxJrpj756JxfI?=
+ =?us-ascii?Q?vH7YcnnMr970HNpNWKxnddLm5S2DDZF9BPFuv9u1t11UJfc3owGnwFGd+gpM?=
+ =?us-ascii?Q?N+N8jp1ckbtS+NXrdvHQlZnVvhj38zAfo/r6N/qtj1tPA0gtPV15+0wKAtdN?=
+ =?us-ascii?Q?eCQG+y5jT9Bynw1EQxws8Ij/pHyUiQrGk2uR5CIpCc+lZEk8iesgFTGwJBn7?=
+ =?us-ascii?Q?kWYxXoXJTVcLLw9PrxVMkFLu2b/qxYxf3PBgDz7C48+bxyVbQn6e3BSbCk2R?=
+ =?us-ascii?Q?Jy8QgPP//delEUgNrpHKI1igeWDrZCsH8vox5APthh4NRN+d4p35E9iGtB+6?=
+ =?us-ascii?Q?ydrnmnCBUbgm7Y7TCnyvfE8acdVtaDXkwh4QW3QV1pvpchePDUv4AsqeRPmT?=
+ =?us-ascii?Q?oRFXmQHDG7jK22sKQTTUR8ZaXQJB2slEVNnajTJjhP1XWPfS4gDQWXHj54zZ?=
+ =?us-ascii?Q?XeI87NpZo0IKO62dLpBeorrlAlSgal9WPMjKrLiVisAvAR4JBEgCeoEM56W1?=
+ =?us-ascii?Q?HKAsdob7Ig+/yLrLNV0JMB4Ue1GKHS9gueM4mSdfny3G7L9zC0ONl9vsL6rL?=
+ =?us-ascii?Q?lNygUD7TDHMrhpcZBlDBHLE+AfSBPfdc8c45FiUnSLFr50GkSSPzFeOpl3TE?=
+ =?us-ascii?Q?K41YBX+SGfp2nnI3tUwRDy/kGM4ZIPDk0tZ+pKAO2Ry4hHcku8TDOZdUCPcu?=
+ =?us-ascii?Q?IGc12AaHiCRW8f5T2xZB40DFvS0vRKMIVe7qk5fxpSvWK/Pne5nqbGQOU9ru?=
+ =?us-ascii?Q?wEwTd2TQYOQ6sgSrBhdoAAGwI6EE7Y1BWXejh1ngAw+CZdHqG3jnH3b7F9rt?=
+ =?us-ascii?Q?ZVjX2TPS6xi3kgxZsLFgODdsmONhnHzPZVCqxT1TBgzdsjZqKYr0P8PaX5BA?=
+ =?us-ascii?Q?JNSkIwTA4DjrR+p6gk2/LQ4uLfzOzFLDcv/JaPET7dMgxJ+pAE1n/6uw6fcs?=
+ =?us-ascii?Q?MUdl7N0XPvwiDlQ5KByK4Z4YmZK6jEmKuGRpjQJSqg15EL2M+b/hxE5MegBE?=
+ =?us-ascii?Q?IWy9BvIIqHRkWP1N/H1vFpKXis8kKI9T2FdYXxcfp58104kyYMZeoFzpWFg3?=
+ =?us-ascii?Q?B6ZtUlhPHC77udD3dCQWn9q4tyaU/9nlTfpT7OMrGtFbYWEKT+VYIncAKe1q?=
+ =?us-ascii?Q?cS0KoNpjCM5knhNZjjJmTO+kpsh/D7um/Vk5CtrkpiokLpE7pV+xWA=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?etkEY9IYuCnzlKds9rfDP8Pi3n/YQlPQa3mexIzpgE+qtGUcJ4JsNdfGV9XE?=
+ =?us-ascii?Q?L3VRc4grbOdSUlmu8laHt3fO0PDLA0TfvL+bvwjR1ZFA9YTAib/EG+ZclqFX?=
+ =?us-ascii?Q?7LDzNHqRFdsjRS/Navcu6n+0ftV/HdgAPptt1PYsu3sD5OSDR5PsYl+Iv+Td?=
+ =?us-ascii?Q?WE9y9cQQdlgoNg4BvKcxW9//usOBDhjHjJt5zhH3JUP/70hgRu11ltGvdNTX?=
+ =?us-ascii?Q?kz2URtN/8eFtMgPFPHHv97FFeV5IZ6cg7lONIXTVyn4fhEzpx7iKxZ+hJ5Dl?=
+ =?us-ascii?Q?eu2GXyMoqxruoeYDD1wdHvljJ/HW8gbPVkKAVtmSjhrxEAp8CNAjHLifHVs+?=
+ =?us-ascii?Q?Ddz6mgN3pwk5Q95456ytWNgKGWgStI7EVn9bX0TN2dTd+lX0/QRtaph9tYDx?=
+ =?us-ascii?Q?9FY1n9aEFZY/OdBhcXO/KNeSbhP6IrGFqQdJEDvfc2gco2FAjpNBMqMji3g/?=
+ =?us-ascii?Q?CdXSfMc/pXcteNMW6/ZOB2M8u8xReVSZAPYb/HLagTI5Sj6nBJxwvm0Rego+?=
+ =?us-ascii?Q?Qs4AmagcuXas0i7yzy6fey25G90tlpJUARt/BZJDJuzD3F8NRmhzvbjvet1e?=
+ =?us-ascii?Q?mqA8mRkWZq21e8Plh4MOQzKjvd+SZbVsEM7UJod/cW+lyWUs1OQk1KivFr81?=
+ =?us-ascii?Q?P/ViOetw8xlV+fB1l2oZO3QUVpwC/fMI1Ib82xLt7+6TmnKo3NtBKZTn/CH9?=
+ =?us-ascii?Q?0EVmWaqJXUVKtgxbo+uG1iqRZjjO3z5jiCkAcZsOpt7MIqiAnlwnj2Z/Ovu4?=
+ =?us-ascii?Q?VB09hod9H5U/Ejti+IVsTB1eodowG2K6Nez9vGP2pjTaSb4MoaP0iiHRLMZc?=
+ =?us-ascii?Q?y8h3YiZ1ik+nMlpPI807Ht1adHTmpBmk297ilFUAoDRICnlrklmjRwV7qPFn?=
+ =?us-ascii?Q?VqQl8xRatCqlMzBcJqa8imW3sz3jtCkJIFT5jxlUqmcDwbzsKz2o8ILzaJ7v?=
+ =?us-ascii?Q?Y35C9g7Iovix46J2mRqNr6ahpiMqgBDP/uam5ISjVguKm1qCyIWFDnCl6sj3?=
+ =?us-ascii?Q?Ko53O2X7YF2giW6ULs9G79quYZnjYG8TMPzN6MN3kbh5307M5QNC2mrm/oqr?=
+ =?us-ascii?Q?Q/SLK2TnE5ge39TF09SKBH04MZPfxV7k2DbHPz7BFslBUtBmaU/EbowXlTDY?=
+ =?us-ascii?Q?dLRHAEFn85Vht3aXBwBJ7KxDf+jH7QpHJ9yXqiNww8FS9BWf9vGpOlftdmmS?=
+ =?us-ascii?Q?vtLUilT6PpaYyBiI7kMeFhYhGKf8t0BBvxHIzcN2WXmZkzbVZMOoYJMBdMWF?=
+ =?us-ascii?Q?R8DPgs1LlHLuO9z1bfkbF1nkbj8U8UxgdZ1wbPfH5UGdZEme1U/buQG2jUfM?=
+ =?us-ascii?Q?9BJDmIBDbcwuK7w0lZbk8T0g2L5Fcm+o5SX8lM2WS1kWPO0YlgjwHooV6P6q?=
+ =?us-ascii?Q?XPwqwUJPY1sy85BkrB9HkuYwVP6Fok1AFa1U9EbD5IYOrRpsZTtE5Jm2Q5QV?=
+ =?us-ascii?Q?W3OgMK8Yto6E7Cp3l7G9UdtahzhpOxchh7+s+l9Vd6KmPiaRj4qDmY91aEiT?=
+ =?us-ascii?Q?CWy40VdApljUamliu/lJMrQYLk/ozqI2oxSFym/ptUPUbw1UvNQ9RAOxAitC?=
+ =?us-ascii?Q?YAB37C5rAdTrG78ZYT0=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250924-imx8mp-prt8ml-v3-3-f498d7f71a94@pengutronix.de>
-References: <20250924-imx8mp-prt8ml-v3-0-f498d7f71a94@pengutronix.de>
-In-Reply-To: <20250924-imx8mp-prt8ml-v3-0-f498d7f71a94@pengutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-sound@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, Jonas Rebmann <jre@pengutronix.de>, 
- David Jander <david@protonic.nl>, Lucas Stach <l.stach@pengutronix.de>, 
- Oleksij Rempel <o.rempel@pengutronix.de>
-X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13667; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=s13xlcpl8Y8dVA0cWl22bd7D9dmntNP5uIUILgzFOxE=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsi4vFbmX7wNb0uuXJlNvrttxIzv+d88tV/Ebg6xeW7Bq
- /rWlGFNRykLgxgXg6yYIkusmpyCkLH/dbNKu1iYOaxMIEMYuDgFYCLqcQz/444dfJ7NdGLz59Sr
- 4S8crTaulX/3yfdrPf+le4depKp4L2T4n14sHXU2zUuQK1B/3rpo7QvzNvFlbZ4lc+nf/OtlSt/
- UuAE=
-X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
- fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::ac
-X-SA-Exim-Mail-From: jre@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cef7815-1c35-4e31-a10e-08ddfb45eb6c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Sep 2025 08:39:47.7352
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: khtYUa2KxbUZk4WNzPmFGsBciXgAuDtX96TRk2DQg7aeB1q7NOwNtCOd+KdHXpPsJaA3EfrgqqBJ2W5hhDP2OA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11844
 
-Add devicetree for the Protonic PRT8ML.
+Hi Jianpeng,
 
-The board is similar to the Protonic PRT8MM but i.MX8MP based.
+This patch should target to net tree, please add the target tree to the
+subject, for example, "[PATCH net]".
 
-Some features have been removed as the drivers haven't been mainlined
-yet or other issues where encountered:
- - Stepper motors to be controlled using motion control subsystem
- - MIPI/DSI to eDP USB alt-mode
- - Onboard T1 ethernet (10BASE-T1L+PoDL, 100BASE-T1+PoDL, 1000BASE-T1)
+> After applying the workaround for err050089, the LS1028A platform
+> experiences RCU stalls on RT kernel. This issue is caused by the
+> recursive acquisition of the read lock enetc_mdio_lock. Here list some
+> of the call stacks identified under the enetc_poll path that may lead to
+> a deadlock:
+>=20
+> enetc_poll
+>   -> enetc_lock_mdio
+>   -> enetc_clean_rx_ring OR napi_complete_done
+>      -> napi_gro_receive
+>         -> enetc_start_xmit
+>            -> enetc_lock_mdio
+>            -> enetc_map_tx_buffs
+>            -> enetc_unlock_mdio
+>   -> enetc_unlock_mdio
+>=20
+> After enetc_poll acquires the read lock, a higher-priority writer attempt=
+s
+> to acquire the lock, causing preemption. The writer detects that a
+> read lock is already held and is scheduled out. However, readers under
+> enetc_poll cannot acquire the read lock again because a writer is already
+> waiting, leading to a thread hang.
+>=20
+> Currently, the deadlock is avoided by adjusting enetc_lock_mdio to preven=
+t
+> recursive lock acquisition.
+>=20
+> Fixes: fd5736bf9f23 ("enetc: Workaround for MDIO register access issue")
 
-Signed-off-by: David Jander <david@protonic.nl>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
----
- arch/arm64/boot/dts/freescale/Makefile          |   1 +
- arch/arm64/boot/dts/freescale/imx8mp-prt8ml.dts | 501 ++++++++++++++++++++++++
- 2 files changed, 502 insertions(+)
+Thanks for catching this issue, we also found the similar issue on i.MX95, =
+but
+i.MX95 does not have the hardware issue, so we removed the lock for i.MX95,
+see 86831a3f4cd4 ("net: enetc: remove ERR050089 workaround for i.MX95").
+We also supposed that the LS1028A should have the same issue, but we did
+not reproduce it on LS1028A and did not debug the issue further.
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 525ef180481d..0c9abfa8d23d 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -228,6 +228,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-nitrogen-smarc-universal-board.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
- imx8mp-phyboard-pollux-rdk-no-eth-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-eth.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-eth.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-prt8ml.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-basic.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-hdmi.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-lt6.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-prt8ml.dts b/arch/arm64/boot/dts/freescale/imx8mp-prt8ml.dts
-new file mode 100644
-index 000000000000..afca368ea1fd
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-prt8ml.dts
-@@ -0,0 +1,501 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * Copyright 2020 Protonic Holland
-+ * Copyright 2019 NXP
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx8mp.dtsi"
-+
-+/ {
-+	model = "Protonic PRT8ML";
-+	compatible = "prt,prt8ml", "fsl,imx8mp";
-+
-+	chosen {
-+		stdout-path = &uart4;
-+	};
-+
-+	pcie_refclk: pcie0-refclk {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <100000000>;
-+	};
-+
-+	pcie_refclk_oe: pcie0-refclk-oe {
-+		compatible = "gpio-gate-clock";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_pcie_refclk>;
-+		clocks = <&pcie_refclk>;
-+		#clock-cells = <0>;
-+		enable-gpios = <&gpio5 23 GPIO_ACTIVE_HIGH>;
-+	};
-+};
-+
-+&A53_0 {
-+	cpu-supply = <&fan53555>;
-+};
-+
-+&A53_1 {
-+	cpu-supply = <&fan53555>;
-+};
-+
-+&A53_2 {
-+	cpu-supply = <&fan53555>;
-+};
-+
-+&A53_3 {
-+	cpu-supply = <&fan53555>;
-+};
-+
-+&a53_opp_table {
-+	opp-1200000000 {
-+		opp-microvolt = <900000>;
-+	};
-+
-+	opp-1600000000 {
-+		opp-microvolt = <980000>;
-+	};
-+
-+	/delete-node/ opp-1800000000;
-+};
-+
-+&ecspi2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ecspi2>;
-+	cs-gpios = <&gpio5 13 GPIO_ACTIVE_HIGH>;
-+	/delete-property/ dmas;
-+	/delete-property/ dma-names;
-+	status = "okay";
-+
-+	switch@0 {
-+		compatible = "nxp,sja1105q";
-+		reg = <0>;
-+		reset-gpios = <&gpio_exp_1 4 GPIO_ACTIVE_LOW>;
-+		spi-cpha;
-+		spi-max-frequency = <4000000>;
-+		spi-rx-delay-us = <1>;
-+		spi-tx-delay-us = <1>;
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@3 {
-+				reg = <3>;
-+				label = "rj45";
-+				phy-handle = <&rj45_phy>;
-+				phy-mode = "rgmii-id";
-+			};
-+
-+			port@4 {
-+				reg = <4>;
-+				ethernet = <&fec>;
-+				label = "cpu";
-+				phy-mode = "rgmii-id";
-+				rx-internal-delay-ps = <2000>;
-+				tx-internal-delay-ps = <2000>;
-+
-+				/* Unreliable at 1000Mbps, limit RGMII to 100Mbps */
-+				fixed-link {
-+					full-duplex;
-+					speed = <100>;
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&fec {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_fec>;
-+	phy-mode = "rgmii"; /* switch inserts delay */
-+	rx-internal-delay-ps = <0>;
-+	tx-internal-delay-ps = <0>;
-+	status = "okay";
-+
-+	fixed-link {
-+		full-duplex;
-+		speed = <100>;
-+	};
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		rj45_phy: ethernet-phy@2 {
-+			reg = <2>;
-+			reset-gpios = <&gpio_exp_1 1 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <10000>;
-+			reset-deassert-us = <80000>;
-+		};
-+	};
-+};
-+
-+&flexcan1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_flexcan1>;
-+	status = "okay";
-+};
-+
-+&flexcan2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_flexcan2>;
-+	status = "okay";
-+};
-+
-+&i2c1 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c1>;
-+	status = "okay";
-+
-+	ak5558: codec@10 {
-+		compatible = "asahi-kasei,ak5558";
-+		reg = <0x10>;
-+		reset-gpios = <&gpio_exp_1 2 GPIO_ACTIVE_LOW>;
-+	};
-+
-+	gpio_exp_1: gpio@25 {
-+		compatible = "nxp,pca9571";
-+		reg = <0x25>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+	};
-+};
-+
-+&i2c2 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	status = "okay";
-+
-+	tps65987ddh_0: usb-pd@20 {
-+		compatible = "ti,tps6598x";
-+		reg = <0x20>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_tps65987ddh_0>;
-+		interrupts-extended = <&gpio1 12 IRQ_TYPE_LEVEL_LOW>;
-+	};
-+
-+	gpio_exp_2: gpio@25 {
-+		compatible = "nxp,pca9571";
-+		reg = <0x25>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+
-+		c0-hreset-hog {
-+			gpio-hog;
-+			gpios = <7 GPIO_ACTIVE_LOW>;
-+			line-name = "c0-hreset";
-+			output-low;
-+		};
-+
-+		c1-hreset-hog {
-+			gpio-hog;
-+			gpios = <6 GPIO_ACTIVE_LOW>;
-+			line-name = "c1-hreset";
-+			output-low;
-+		};
-+	};
-+
-+	fan53555: regulator@60 {
-+		compatible = "fcs,fan53555";
-+		reg = <0x60>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_fan53555>;
-+		regulator-name = "fan53555";
-+		regulator-min-microvolt = <900000>;
-+		regulator-max-microvolt = <980000>;
-+		regulator-always-on;
-+		regulator-boot-on;
-+		fcs,suspend-voltage-selector = <1>;
-+	};
-+};
-+
-+&i2c3 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c3>;
-+	status = "okay";
-+
-+	ak4458: codec@11 {
-+		compatible = "asahi-kasei,ak4458";
-+		reg = <0x11>;
-+		#sound-dai-cells = <0>;
-+		reset-gpios = <&gpio_exp_2 5 GPIO_ACTIVE_LOW>;
-+	};
-+
-+	tps65987ddh_1: usb-pd@20 {
-+		compatible = "ti,tps6598x";
-+		reg = <0x20>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_tps65987ddh_1>;
-+		interrupts-extended = <&gpio1 15 IRQ_TYPE_LEVEL_LOW>;
-+	};
-+};
-+
-+&lcdif1 {
-+	status = "okay";
-+};
-+
-+&snvs_pwrkey {
-+	status = "okay";
-+};
-+
-+&uart4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart4>;
-+	status = "okay";
-+};
-+
-+&usb3_0 {
-+	status = "okay";
-+};
-+
-+&usb3_1 {
-+	status = "okay";
-+};
-+
-+&usb3_phy0 {
-+	status = "okay";
-+};
-+
-+&usb3_phy1 {
-+	status = "okay";
-+};
-+
-+&usb_dwc3_0 {
-+	dr_mode = "host";
-+	status = "okay";
-+};
-+
-+&usb_dwc3_1 {
-+	dr_mode = "host";
-+	status = "okay";
-+};
-+
-+&usdhc2 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
-+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-+	assigned-clocks = <&clk IMX8MP_CLK_USDHC2>;
-+	assigned-clock-rates = <100000000>;
-+	bus-width = <4>;
-+	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-+	no-1-8-v;
-+	sd-uhs-sdr12;
-+	sd-uhs-sdr25;
-+	status = "okay";
-+};
-+
-+&usdhc3 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc3>;
-+	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	assigned-clocks = <&clk IMX8MP_CLK_USDHC3_ROOT>;
-+	assigned-clock-rates = <400000000>;
-+	bus-width = <8>;
-+	non-removable;
-+	no-sdio;
-+	no-sd;
-+	status = "okay";
-+};
-+
-+&wdog1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_wdog>;
-+	fsl,ext-reset-output;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_ecspi2: ecspi2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ECSPI2_SCLK__ECSPI2_SCLK		0x154
-+			MX8MP_IOMUXC_ECSPI2_MOSI__ECSPI2_MOSI		0x154
-+			MX8MP_IOMUXC_ECSPI2_MISO__ECSPI2_MISO		0x154
-+			MX8MP_IOMUXC_ECSPI2_SS0__GPIO5_IO13		0x154
-+		>;
-+	};
-+
-+	pinctrl_fan53555: fan53555grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SPDIF_EXT_CLK__GPIO5_IO05		0x114
-+		>;
-+	};
-+
-+	pinctrl_fec: fecgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_RXD2__ENET1_MDC		0x3
-+			MX8MP_IOMUXC_SAI1_RXD3__ENET1_MDIO		0x3
-+			MX8MP_IOMUXC_SAI1_RXD4__ENET1_RGMII_RD0		0x91
-+			MX8MP_IOMUXC_SAI1_RXD5__ENET1_RGMII_RD1		0x91
-+			MX8MP_IOMUXC_SAI1_RXD6__ENET1_RGMII_RD2		0x91
-+			MX8MP_IOMUXC_SAI1_RXD7__ENET1_RGMII_RD3		0x91
-+			MX8MP_IOMUXC_SAI1_TXC__ENET1_RGMII_RXC		0x91
-+			MX8MP_IOMUXC_SAI1_TXFS__ENET1_RGMII_RX_CTL	0x91
-+			MX8MP_IOMUXC_SAI1_TXD0__ENET1_RGMII_TD0		0x1f
-+			MX8MP_IOMUXC_SAI1_TXD1__ENET1_RGMII_TD1		0x1f
-+			MX8MP_IOMUXC_SAI1_TXD2__ENET1_RGMII_TD2		0x1f
-+			MX8MP_IOMUXC_SAI1_TXD3__ENET1_RGMII_TD3		0x1f
-+			MX8MP_IOMUXC_SAI1_TXD4__ENET1_RGMII_TX_CTL	0x1f
-+			MX8MP_IOMUXC_SAI1_TXD5__ENET1_RGMII_TXC		0x1f
-+		>;
-+	};
-+
-+	pinctrl_flexcan1: flexcan1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SPDIF_RX__CAN1_RX		0x154
-+			MX8MP_IOMUXC_SPDIF_TX__CAN1_TX		0x154
-+		>;
-+	};
-+
-+	pinctrl_flexcan2: flexcan2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART3_TXD__CAN2_RX		0x154
-+			MX8MP_IOMUXC_UART3_RXD__CAN2_TX		0x154
-+		>;
-+	};
-+
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ECSPI1_SCLK__I2C1_SCL	0x400000c3
-+			MX8MP_IOMUXC_ECSPI1_MOSI__I2C1_SDA	0x400000c3
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL		0x400000c3
-+			MX8MP_IOMUXC_I2C2_SDA__I2C2_SDA		0x400000c3
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL		0x400000c3
-+			MX8MP_IOMUXC_I2C3_SDA__I2C3_SDA		0x400000c3
-+		>;
-+	};
-+
-+	pinctrl_pcie_refclk: pcierefclkgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART1_TXD__GPIO5_IO23	0xc6
-+		>;
-+	};
-+
-+	pinctrl_tps65987ddh_0: tps65987ddh_0grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12	0x1d0
-+		>;
-+	};
-+
-+	pinctrl_tps65987ddh_1: tps65987ddh_1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO15__GPIO1_IO15	0x1d0
-+		>;
-+	};
-+
-+	pinctrl_uart4: uart4grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART4_RXD__UART4_DCE_RX		0x040
-+			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX		0x040
-+		>;
-+	};
-+
-+	pinctrl_usdhc2: usdhc2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x190
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d0
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d0
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d0
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d0
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d0
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x194
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d4
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d4
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d4
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d4
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d4
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x196
-+			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d6
-+			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d6
-+			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d6
-+			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d6
-+			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d6
-+		>;
-+	};
-+
-+	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD2_CD_B__GPIO2_IO12		0x0d4
-+		>;
-+	};
-+
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x190
-+			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d0
-+			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d0
-+			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d0
-+			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d0
-+			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d0
-+			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d0
-+			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d0
-+			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d0
-+			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d0
-+			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x190
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x194
-+			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d4
-+			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d4
-+			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d4
-+			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d4
-+			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d4
-+			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d4
-+			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d4
-+			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d4
-+			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d4
-+			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x194
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x196
-+			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d6
-+			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d6
-+			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d6
-+			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d6
-+			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d6
-+			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d6
-+			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d6
-+			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d6
-+			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d6
-+			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x196
-+		>;
-+	};
-+
-+	pinctrl_wdog: wdoggrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO02__WDOG1_WDOG_B		0x166
-+		>;
-+	};
-+};
+Claudiu previously suspected that this issue was introduced by 6d36ecdbc441
+("net: enetc: take the MDIO lock only once per NAPI poll cycle"). Your patc=
+h
+is basically the same as the one after reverting it. Therefore, the blamed
+commit may be the commit 6d36ecdbc441 not the commit fd5736bf9f23,
+please help check it.
 
--- 
-2.51.0.297.gca2559c1d6
+> Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc.c | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
+> b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index e4287725832e..164d2e9ec68c 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -1558,6 +1558,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr
+> *rx_ring,
+>         /* next descriptor to process */
+>         i =3D rx_ring->next_to_clean;
+>=20
+> +       enetc_lock_mdio();
+> +
+>         while (likely(rx_frm_cnt < work_limit)) {
+>                 union enetc_rx_bd *rxbd;
+>                 struct sk_buff *skb;
+> @@ -1593,7 +1595,9 @@ static int enetc_clean_rx_ring(struct enetc_bdr
+> *rx_ring,
+>                 rx_byte_cnt +=3D skb->len + ETH_HLEN;
+>                 rx_frm_cnt++;
+>=20
+> +               enetc_unlock_mdio();
+>                 napi_gro_receive(napi, skb);
+> +               enetc_lock_mdio();
+>         }
+>=20
+>         rx_ring->next_to_clean =3D i;
+> @@ -1601,6 +1605,7 @@ static int enetc_clean_rx_ring(struct enetc_bdr
+> *rx_ring,
+>         rx_ring->stats.packets +=3D rx_frm_cnt;
+>         rx_ring->stats.bytes +=3D rx_byte_cnt;
+>=20
+> +       enetc_unlock_mdio();
+
+Nit: please add a blank line before "return".
+
+>         return rx_frm_cnt;
+>  }
+>=20
+> @@ -1910,6 +1915,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr
+> *rx_ring,
+>         /* next descriptor to process */
+>         i =3D rx_ring->next_to_clean;
+>=20
+> +       enetc_lock_mdio();
+> +
+>         while (likely(rx_frm_cnt < work_limit)) {
+>                 union enetc_rx_bd *rxbd, *orig_rxbd;
+>                 struct xdp_buff xdp_buff;
+> @@ -1973,7 +1980,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr
+> *rx_ring,
+>                          */
+>                         enetc_bulk_flip_buff(rx_ring, orig_i, i);
+>=20
+> +                       enetc_unlock_mdio();
+>                         napi_gro_receive(napi, skb);
+> +                       enetc_lock_mdio();
+>                         break;
+>                 case XDP_TX:
+>                         tx_ring =3D priv->xdp_tx_ring[rx_ring->index];
+> @@ -2038,6 +2047,7 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr
+> *rx_ring,
+>                 enetc_refill_rx_ring(rx_ring, enetc_bd_unused(rx_ring) -
+>                                      rx_ring->xdp.xdp_tx_in_flight);
+>=20
+> +       enetc_unlock_mdio();
+
+Nit: same as above.
+
+>         return rx_frm_cnt;
+>  }
+
 
