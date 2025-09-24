@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86B428314A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD39F2D6E69;
 	Wed, 24 Sep 2025 09:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758706101; cv=none; b=XHJnuiLCbcHRFjx3jXNo65MO4nHuugEeV5bvsjMhx6tuSqJpAqVQ/16V5ahvsvxhZDbv4HmabcX3DOSj/zLNz2IQfOfnWvAkpk0CQT3CsByvwmQEMeXzlp8I7FV6YtHVWxCXtptaVsqOwOWM2phjtdoRn0zQvOgpQvilSvvXUVo=
+	t=1758706102; cv=none; b=UtLh6o84H0A8KQwKSgOKpdWezYzJFiW9r7rJj2/J/CgAT2A8HPKIf3D3BbGK7SnwQQHbyTtV7tPe5OnbwKvjbu0V02qVn3gudUzv4emkYRys9vaELKTF9OVrJWnvk8q/IvrKTHRWTec8STw0vFh3vjEUl9g51crJGrzWopQqCCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758706101; c=relaxed/simple;
-	bh=JeezoGPCvEL1Rw85QMPh7l/F/95kWKSx8wcoS1htAp0=;
+	s=arc-20240116; t=1758706102; c=relaxed/simple;
+	bh=LjEZsu/eRN6Oc2WFJua8KrGaq3Ac5hB3lBQxT0YFGr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XqGJ9n2scIXV+01yQ/zfdQOYyCg6MWvkes4zLfaE4OGPI+/gdafwHZaJnDbul7hSS3ocBepACgy+9EiKyX8o98Gj68JvVO2fsQO9PNrwQx0iFJ9Opjfio/92ffuuBmvHX1NPnA/EXc6Otsf8XDx4VyLjb5r4lWRoWtReg24jgds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZCIgqoL; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=jNZOm0AxhEPCLW6FGDF5Pb0BgOi3/w+Phmunux4Sbp2LaCEZS1cO4XPXAArzhU7gVfh7n23GmW5fnXgYI2HU8MS8DtxNEi7sxDfCc+YelkQ7yVi+ipQn0jEUFRUFxlvcsmc1mbHNtZHNTVv5oUlGuezWuv3QmarjtkGs6fpd57Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TMpUya35; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZCIgqoL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B625C2BCB3;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TMpUya35"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90A8C2BCB8;
 	Wed, 24 Sep 2025 09:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758706101;
-	bh=JeezoGPCvEL1Rw85QMPh7l/F/95kWKSx8wcoS1htAp0=;
+	bh=LjEZsu/eRN6Oc2WFJua8KrGaq3Ac5hB3lBQxT0YFGr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZCIgqoLG1XHzeMxN/G3cqWiZYOdv2EGfdQf2DmDdvBcpt2s+EXpWnG+Q2a6V0SM4
-	 PyzfhC/LrR7DQemCzDd3qD/l5IGFu9eIpiqYj9H1bJsJlu7h1QDjfxTFf3D5CBuUEy
-	 Qbx7/kHyiVFKpBi+m21BaCfpAbDrTLsto0Y0yUrrh0jcC55cUImiQuwKeOlzvpGbU+
-	 cA+//VtNY0fZys9gaG8SzAwyjtuowFy+fqM+2cw6xgjJMEczQZSEn7XcEkcJNHzUI4
-	 +rtOgPjC8bGPMVYNIJsKEB3tuBJN5oTkL8pLIQX4SAD1TTEhycOdD9V69azevVcK9u
-	 vOb1a1TmgfTqg==
+	b=TMpUya35NhDTWF7mbMjNWQQqW3N0pzPrB2gSmhinHpi2ocrNXnjX2f3YaYFqsoiXc
+	 ahF2Wlvp0am8TI70w7hDTsPuECDiwVvXjhn+Fa12NApwVuoJqoyrcFcU6h33MrwKSy
+	 WWt3ysvpl8vqxz9wXSao37d2q/nxsCs7Aj3tBId2jm+FYpGL1/r9ywgnxp2Ld4la/a
+	 9bPZd8GxiWDzKvPraMKPgSLkwrM9MVSKC+Nl5D23lXwUbVE8/eqzczPqgpVIrq2StP
+	 dgq8/S0WFmzQkWiVRPiheQNKCac6OgNEQFaSHXJOPKEroMK0rGgrjtFFLQiN7TCIcD
+	 x4SNSNFCkd52Q==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1v1LnL-000000006p8-1OmT;
+	id 1v1LnL-000000006pE-2Qg0;
 	Wed, 24 Sep 2025 11:28:15 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Philipp Zabel <p.zabel@pengutronix.de>
@@ -43,9 +43,9 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 1/4] drm/imx/dw-hdmi: drop unused module alias
-Date: Wed, 24 Sep 2025 11:26:40 +0200
-Message-ID: <20250924092643.26113-2-johan@kernel.org>
+Subject: [PATCH 4/4] drm/imx/parallel-display: drop unused module alias
+Date: Wed, 24 Sep 2025 11:26:43 +0200
+Message-ID: <20250924092643.26113-5-johan@kernel.org>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250924092643.26113-1-johan@kernel.org>
 References: <20250924092643.26113-1-johan@kernel.org>
@@ -58,23 +58,23 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 The driver has never supported anything but OF probe so drop the unused
-platform module alias which was incorrectly added by commit 3d1b35a3d9f3
-("drm: imx: imx-hdmi: convert imx-hdmi to drm_bridge mode").
+platform module alias incorrectly added by commit b2da05ff4797
+("imx-drm: parallel-display: Add MODULE_ALIAS()")
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c | 1 -
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c b/drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c
-index 8333c4bf7369..07e5f96202d4 100644
---- a/drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c
-+++ b/drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c
-@@ -278,4 +278,3 @@ MODULE_AUTHOR("Andy Yan <andy.yan@rock-chips.com>");
- MODULE_AUTHOR("Yakir Yang <ykk@rock-chips.com>");
- MODULE_DESCRIPTION("IMX6 Specific DW-HDMI Driver Extension");
+diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+index 6d8325c76697..f2f36f425664 100644
+--- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
++++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+@@ -286,4 +286,3 @@ module_platform_driver(imx_pd_driver);
+ MODULE_DESCRIPTION("i.MX parallel display driver");
+ MODULE_AUTHOR("Sascha Hauer, Pengutronix");
  MODULE_LICENSE("GPL");
--MODULE_ALIAS("platform:dwhdmi-imx");
+-MODULE_ALIAS("platform:imx-parallel-display");
 -- 
 2.49.1
 
