@@ -1,34 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87E52882A7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8728285CBC;
 	Wed, 24 Sep 2025 09:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758706101; cv=none; b=u61tHdTn0Q1aH8zO3/a4TJicm6nSvZtk/re/j3nX9gYFuUBq6bppyviQ6HejA2U1UCMX2IuGnc9j7CZPeee1eH4YQtrgvr57NUQ1lw1UegRuT5T+RMm6X8pmzpAbkKlYnIz/Sulc42o5BwC5hhhd0pjbzCfdjBnDtpep7wZmMfY=
+	t=1758706101; cv=none; b=jhb+k1jk17yqohyyomiNxzGNsEbLo8B8BQg0gZcevVUkbosiQChaCgB/qRYAwYi9B+bWtVFSPYm93OPnojXhLj85DUsfDaDl12/2Yyl9tP/SESnfySxdjoN9YEIhcJHfadvybnZuVTDxG1nwXmzhfzfpO5GTJLi6eYoN04byBa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758706101; c=relaxed/simple;
-	bh=aucfxwIehpz3q4PmJQg0bLLpC3j4Jr0IJwNGf6IB8sA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WX1SG/R9sebM+WiHYIreybkrC8+Q531lwDnKYJoRNbsduBINZu7tj8rIscRyXJFKaT7AaFWiNWXpAitnLqn3YMD57O0t7ZC42JS3SwK2b/8IPogJ90Ht+sDxjutSMtCSHYOp76Tdf0n7QIXgEM3NcsMRhISWe3pOxR5jH097m9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AsoYN5EK; arc=none smtp.client-ip=10.30.226.201
+	bh=47f3TxVSb5XBlK+7j3tmWOP9WWwsUxqEELtzzZHVOso=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RJzeQE0Epnv7vEXlu5HcBEzTcPkjSJuoIbuE18+rYxq6YKGbv9G8uf/Z0UVsHkIPLYd0EGjN88SlroiDAsOV9b7Ox0bVUGpaRHbpvN4bkwQRsJWlzo0mjo/IpxWQECk7euMquhe4NtLUd8mv4pcX45sa86NsyKLTQ6lArLHb+s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bogVNTk/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AsoYN5EK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4C9C4AF11;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bogVNTk/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581DAC2BCB2;
 	Wed, 24 Sep 2025 09:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758706101;
-	bh=aucfxwIehpz3q4PmJQg0bLLpC3j4Jr0IJwNGf6IB8sA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AsoYN5EKLNNjjqGHGVI0LET75KTXf7vK2x4ZiDwghs/Q0TvRPaqNOcFzYfdz4JGnq
-	 eFKQhJuem8zDXU+gffIIS2Y3FcQPNxvOfGp/1r5uvIuZqr6rC9H/PpNSFqhUg8sJJZ
-	 +i4F5SNaf8xbXcetzipLAUXOqvOe6P2/UlM3AigK6ZfD0T2cXWjbaM/7Emw9ViNejd
-	 ZVqrtVhQhhTTNojrsPfjxuX7e6OBLjRzRiayWiqsOIYtC+UOFiVfZArVa1vIezxsRv
-	 UgUTLg06CDWKbH5cShaq9MINsrzdkLQlGv7k8M+LYk3t+PcTH3EPyNcxY1qmkYSFc+
-	 NqIqE/BnBSskg==
+	bh=47f3TxVSb5XBlK+7j3tmWOP9WWwsUxqEELtzzZHVOso=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bogVNTk/cEiqP2mS+0+T+MLtpf4sOtySUsCQGN38IEf1lojp+iwQxRwHgRo0FJZCp
+	 jVLOiFJ9wtUsXxHe8rstJ3ilLZ4J05ywrxFIIXW2ODs/vGELtp3vP/SOgP2TqQt73R
+	 Wimu93Xj30m9pYrJU6guLk5DNSn6uQDIu73zXBQrMAMmo6dpyfL5gh69f0nQpiOSKU
+	 SiRxWv9Jhz172m0vXKsAccJ6PX2+KbhGzI2K1cBmHTBWpOnHLqaygErEAk13MzqJO2
+	 72tJVtrtK9lpTsstnaNk5i3YGky2PJyYG2k8S+S3u/VU/+dYwXUQMI8zE85+mlPz4X
+	 AHe2bnxt9MTBQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1v1LnL-000000006pA-1m2t;
+	id 1v1LnK-000000006p0-2BWm;
 	Wed, 24 Sep 2025 11:28:15 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Philipp Zabel <p.zabel@pengutronix.de>
@@ -43,12 +42,10 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 2/4] drm/imx/ldb: drop unused module alias
-Date: Wed, 24 Sep 2025 11:26:41 +0200
-Message-ID: <20250924092643.26113-3-johan@kernel.org>
+Subject: [PATCH 0/4] drm/imx: drop unused module aliases
+Date: Wed, 24 Sep 2025 11:26:39 +0200
+Message-ID: <20250924092643.26113-1-johan@kernel.org>
 X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20250924092643.26113-1-johan@kernel.org>
-References: <20250924092643.26113-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,24 +54,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The driver has never supported anything but OF probe so drop the unused
-platform module alias incorrectly added by commit bc627387a951
-("imx-drm: imx-ldb: Add MODULE_ALIAS()").
+When fixing up a device reference leak in the tve drivers I noticed it
+had an unused platform alias. This series drops unused aliases from the
+imx drm drivers.
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/gpu/drm/imx/ipuv3/imx-ldb.c | 1 -
- 1 file changed, 1 deletion(-)
+Johan
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
-index 6be7a57ad03d..626d410d9150 100644
---- a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
-+++ b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
-@@ -644,4 +644,3 @@ module_platform_driver(imx_ldb_driver);
- MODULE_DESCRIPTION("i.MX LVDS driver");
- MODULE_AUTHOR("Sascha Hauer, Pengutronix");
- MODULE_LICENSE("GPL");
--MODULE_ALIAS("platform:" DRIVER_NAME);
+
+Johan Hovold (4):
+  drm/imx/dw-hdmi: drop unused module alias
+  drm/imx/ldb: drop unused module alias
+  drm/imx/tve: drop unused module alias
+  drm/imx/parallel-display: drop unused module alias
+
+ drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c      | 1 -
+ drivers/gpu/drm/imx/ipuv3/imx-ldb.c          | 1 -
+ drivers/gpu/drm/imx/ipuv3/imx-tve.c          | 1 -
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c | 1 -
+ 4 files changed, 4 deletions(-)
+
 -- 
 2.49.1
 
