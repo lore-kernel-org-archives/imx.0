@@ -1,200 +1,268 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010033.outbound.protection.outlook.com [52.101.84.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5302D0C80
-	for <imx@lists.linux.dev>; Wed, 24 Sep 2025 10:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758708434; cv=fail; b=VeqE1nR4XrpdQ7YuOZnoWu+cXEn2NUOY2AL8FOu8cPxElcXWrliW0nsm+vVhu3D070uC79MWM6gzNYdeU1yZPTNWdxcV1P+hOI3xJglUXCZSABNzVdtetMCUVjyGgeIW/Uq7ksu1q/6dKIKM4PBktnaM/pEK0Y/MSjXnpFPLcLY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758708434; c=relaxed/simple;
-	bh=jE7rjfSYnbWjNct8VCf6B9EOO66UnIo9NxsceOa5zZ8=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=NhyA+HPkZEoXoEVeGgMAIuzZ81+60dFiuVRW4W1qPAoixrnv2HNrwHTtnUj/9A1DdB7qAEMxyR1JhbHsfy4m4ARWmkwirKdTS1zkyO9y9GGlrDZa5ll3EB/NM3RVE1yz2vQRQ800Jdxdv+poE0niEVeJVLeYzptG2/ztXpx7jTA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=szwD3iJ9; arc=fail smtp.client-ip=52.101.84.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FA61AA1D2
+	for <imx@lists.linux.dev>; Wed, 24 Sep 2025 10:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758709010; cv=none; b=NjrfTZQrgH+dFg8jgenrLrIIzFdge6bPSYeKcnC5OmIuqg4smROxD5hryAQZiq9RSk4As+4R0HMzFEg2FtLpDmXpeL0wiicG7Tq+LeAIagrG4oFW2W86TaFqc1xGbTfpzDEltoD60z7lxuGJe9+/DJ97ZB3vIimLQ6KH580FYH4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758709010; c=relaxed/simple;
+	bh=/qGCNh8abWDm3X5xS+Iz+DznKUJ2gBpds0vUYbMtcNI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Syyw8VsflTvqU5yhcsSfzaRcrlsoafUH7RWcvfTr4SKnAXqDumbKskkSQYcA6QJOxYkeDVuy5shsRr8bLfPH4PlS3lyq9p3j+7XMsmcnzgZxjr05kl/TR6NxQTeswickgmhiZUzTrMkYGhg446kJpi/0XgdK4YGzxHH/dq1J6gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=dHu7aojN; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="szwD3iJ9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DZVwRsWIKyjML95j70SCdjiJ728pA9FncDdluuaD10AGdU5+Lv1aFhfzcBDhsUONIr6gP+1Zv5yysHqMfVWO4JGL83weoW2fP6VckU+i4XjIvDTmLMKn2eMJdMw/gXuFX75Wcx/+DpJTLlEHi9xc7q4wcXjynyWmRn/hF6/E79lR9Yct9RCkZAe/hpvzZvtlnXTVYnmuc6hPx8ZObrbEr+I/3Kt8e+NjebyKr7KTO5XT62cAQcvQvkn7hib/6YZ9L9X1Uryuys8w9dxHVVV4KIjXQ4IRRul9X9ZT+1wNPGIfsXVb8h7sTaQTEr3NN0HPt1tcgJbSndWfexiG8/AdhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ixb0C3Sp0HxtgLcFurVrGVe+hdOrrcIleoawD2oA71c=;
- b=HkjSUs/V1fN3714CHeCBv9p8dDiCF9lyCUeoEZ5vIZzPJHd8MBo9giWa7zZD3jcphT0w6Bdsn5HpT3qCkU+oCUQ3YykYSX42ALfk78xP+8KxAbNzgSx9eIUO0z8NLQG6QsK+y5q4g0shiNsdxO2KpF1wk2D8tsLuiaI6a7vnRRHYHVwuc5jkSwgpd630ryrXAbZ5t0By6TC24p4Z9DCe0Ntevy06L+eanuTvjLENDjHoBIeBK5Og0MYp3teYo865xYTpYPSFbZT+VZxU19Sv8d386Wx02TxXNP/m/FECK3ncTGzff6ALB4BuwlygC5gmH9w4L0ZTCC6ZG1zP/IvvAA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ixb0C3Sp0HxtgLcFurVrGVe+hdOrrcIleoawD2oA71c=;
- b=szwD3iJ96IGrWeIBSY+uCn1DyMgMco4STRw8dfzfrNArp2a5FmKvr0xFRgxLL0nBeQoBZHlRwChgtNTOESY0Bd2jcZLdmg8rDcXLNAuMLh//XVnSQma83vJAb8cbVLTned/OxQakUAyjW10c9ngmdkSHjlM+p+0XmBvTJkjIrIXw0akU9Gq0LGLUKi+I9t18gh1CwV9sZ9fJzewWHVy4gmxSvA5BdGw65OgcQF5sI/H8CYkxLPhErY3yzLJOayEo8I8G90uWT+LVp0YNNzpT27xvsMj8WQkjQBfrf6ZTk8IADI4CE0+QxWJfRZvgvJwHlHbUHnwf0wRxsHNUKmLflw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB9644.eurprd04.prod.outlook.com (2603:10a6:102:242::11)
- by DUZPR04MB9745.eurprd04.prod.outlook.com (2603:10a6:10:4e1::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.8; Wed, 24 Sep
- 2025 10:07:01 +0000
-Received: from PAXPR04MB9644.eurprd04.prod.outlook.com
- ([fe80::6979:311a:bf0c:1a49]) by PAXPR04MB9644.eurprd04.prod.outlook.com
- ([fe80::6979:311a:bf0c:1a49%7]) with mapi id 15.20.9160.008; Wed, 24 Sep 2025
- 10:07:01 +0000
-From: "Alice Guo (OSS)" <alice.guo@oss.nxp.com>
-Date: Wed, 24 Sep 2025 18:06:25 +0800
-Subject: [PATCH v1 3/3] arm64: dts: imx94: Add OCOTP node
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250924-imx943-v1-3-0d32d7852ecb@oss.nxp.com>
-References: <20250924-imx943-v1-0-0d32d7852ecb@oss.nxp.com>
-In-Reply-To: <20250924-imx943-v1-0-0d32d7852ecb@oss.nxp.com>
-To: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Alice Guo <alice.guo@nxp.com>
-X-Mailer: b4 0.13.0
-X-ClientProxiedBy: SI2PR01CA0051.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::6) To PAXPR04MB9644.eurprd04.prod.outlook.com
- (2603:10a6:102:242::11)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="dHu7aojN"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b28e1b87aa7so562899266b.3
+        for <imx@lists.linux.dev>; Wed, 24 Sep 2025 03:16:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1758709003; x=1759313803; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pL2uoqzypHbRpbvTBPNzb3YECUS6GHGmBJvJaUK0ytc=;
+        b=dHu7aojNfbgLCwpgs1CaWuuw2SILiHtNesrhQRzdN1sJ7DFACUsKtLNei/spNbHVMD
+         I4ekY8h+oT1gJLdGs71K3K31z+oyM27mNUprmsGwYMr7rXGl4Lx90eyNb7O6JjjSDivk
+         BMpg4R91XnLYCE+Ge/LvOZKa5SHBUC429zaiM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758709003; x=1759313803;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pL2uoqzypHbRpbvTBPNzb3YECUS6GHGmBJvJaUK0ytc=;
+        b=ZsuG0Kgw1qAuwYSQBiBRNiWGa5sNwcgV6vdy+7rgvZso9W74V2ljzxQt/WAhGruaOv
+         zADISLvSU2NndhmsIMciDflmgBCLKNALSyarrPtwBi7HsIO0335E8V6t++Clac33wt9d
+         QvBpiMf/zeceo0tV5HCUYIjaXdlKjJ8zqhS0Z9+xgVCCGK91w+89mIpYxNmclorD0HSx
+         /EYRW2Kr1Ph7OephXHX0E6NAHNyNFl9SRygiw8NU5sTO/bB9c0jInJ1ucpDWnAepb9C/
+         TApNuLkQbZNa8mshjMznSrFW1D69b8sTEqUyM8ZtrklK75s6KIIqEADeiL9/N5PuC62e
+         YeTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVisSO89wPLvBvmwvNgLgTyidEOkZkuI/jK/Pj4h7vt+79rtH70EB5EGiTdGFr8f4oD8CI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwfpLaHZDBqa+hlshGX537rY1waNOYI6ZliXaSF9S3QYMr/IaSr
+	iwxj4K1ksrcOuziUHJsIPKN6gyBOhmzkI8ghjnF6BHBNegVh0BNJ3dwKBPcUoTQ0Bi4=
+X-Gm-Gg: ASbGnctjeRiWgRzaGrimYfmcQuukSX/tRaVgtr9jBufwLSXyi/86H0ISAw8c6uAK/Nj
+	xdV2vUS3jg3YycNsMti5ELLgrUYJy3XtbL/orhYvqg1rDKt3bPJOot4sddc/osOidxB165l37q/
+	XOPiBMo29pslFGmhipsebyxVu00D5OxHhOZ+irYxWdpFJWEmG4JywlBLSwtyL9wLxjOkXV6LtRT
+	k8+U0yAsBOX/1a8sicpEbomzrWumEJqWeTpQ0YcC4KZxirWDaZ93Af8F5Jz6qQou95O1jmEdqtO
+	Qyed8PMp9ai5q3uOd//z51K4J/FiCgu+VjLjHw9nQRDclFYI0UffPlgeO5TJ56bRSUWnYGx6s2O
+	VKNnXHu+/YMaGLRt/rM3/hF6c+qhNtLLDYkFwlqEWiWS2Xr8hK6eKlrFwb4LIFX62y/iIT6PGWl
+	FWRPnEySyZozw2S0rNgyCYfULJlB7T6Xfu5q/AalchAGNK2H4SOrWQqFs0kVz/Zv1eDEVeSw==
+X-Google-Smtp-Source: AGHT+IHOIaPIXlWeLkZKenFEtjzYGIM9G3O+kz9aBGgbCcayPpzFvqsW2MirypYhSn7F+tMkSctIcg==
+X-Received: by 2002:a17:907:1c10:b0:b2d:d73:de59 with SMTP id a640c23a62f3a-b30263b7c73mr570377266b.9.1758709003021;
+        Wed, 24 Sep 2025 03:16:43 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com (host-82-56-38-125.retail.telecomitalia.it. [82.56.38.125])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b28d206bd13sm949712766b.31.2025.09.24.03.16.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 03:16:42 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Takashi Iwai <tiwai@suse.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH 1/3] ASoC: mxs-saif: support usage with simple-audio-card
+Date: Wed, 24 Sep 2025 12:16:25 +0200
+Message-ID: <20250924101640.2942635-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9644:EE_|DUZPR04MB9745:EE_
-X-MS-Office365-Filtering-Correlation-Id: 60a77f74-08ea-4fc9-3a7f-08ddfb521b10
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|7416014|19092799006|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cHVsZ0xTeHRhNTRuWnlyRmVoUHFHbnVnVm5sa1lkbm91RFppbTlkamhTRGp0?=
- =?utf-8?B?UTN1M2lpQ0Z2QjJsRUNCMXNMZzFlL3R2M1dYOW96TXVrNG81cXR1MDZEZnR5?=
- =?utf-8?B?NXQzM3lHN1hNTEhybWFWUlV3UzRPUTRheXVERjhSSWdlM2RtTUpuMjUwNkRN?=
- =?utf-8?B?YTJQS3h2cFErVU0wamZqL2RsS1A4dEFkelJpTmNrcjRXOUFzaEpxdGFiaVJK?=
- =?utf-8?B?QlltODVJRStlNnJ6c2RBdDRpdjJreG8zQmJpUUtwdm85S3J4UTk3TFE4VGxB?=
- =?utf-8?B?Ym5mU0VvL2xCOGpPcTlGTEE3L3E5WlpOcnVEem5ZM2MzbDQ3NGFCdkJYY0JV?=
- =?utf-8?B?SzNGRkpqZDVVQmp3WkZOUnlrbUlrRXJjL0tielUvSjk3UmwrbXRmZU04SStO?=
- =?utf-8?B?dFRTK1ZJWldHWjJEVlZhc2xzMlR3UXpscW5ZdzNVSEh0RC9JNSsrUTU0UCs2?=
- =?utf-8?B?QThWSEhRNVdQOUFjNjBnbXBHOFV5V2Jlci9jaDVPdTFEczQ5aTVhOHBwR0FJ?=
- =?utf-8?B?VHFUbXFHNHRCQWZzQXVtb2tPeVJpWjNaaFgzMGNBMGV4eXVCcldIMm9zQm1R?=
- =?utf-8?B?UFREVXFPR2hBTmh4WjNaR2lCUHNRMldTNXlQY1F2Q3J4Qks1eVN6VE1wSVhz?=
- =?utf-8?B?WDV0OGg1YmI5dWE1ZVBvaFIrVUZRUkhkbjZ6c1M4d055dkhtOUljQTBtQ1hJ?=
- =?utf-8?B?eWZCZE4wK0ZoSnp3dkUwZmZ2VkRTcmtUeXdSd0hvZkVBS3FCS2tKQWcxQk14?=
- =?utf-8?B?cUUrOTA2ZHdrQytNSEdpOW9Lc1VtdENRTUxJVmhUWE5tczhMeUVRZWU4aktV?=
- =?utf-8?B?Y0U1SUZrRFIrOUVKclRuWnYrbzdrQ3lXWnR5cXpHM05rN3VMOHVibG1IZnFT?=
- =?utf-8?B?VUkweGdtTnJ0WTMvSWdoUDl5SlkvV2VRTEMwYmxWWnZwTklIRXNyYU1KNUhz?=
- =?utf-8?B?eFp1VkRjNGcxYThIOVBTTDNwSVhpZG1lRUFNY0JrTUFZeHRZcXlmUlcrMm5D?=
- =?utf-8?B?L1p3RnhxZ3Q1RkNVemFHaytTcVBPVktjYklseWNTSU0yQ1NsclBMRGxWdHZr?=
- =?utf-8?B?NXhmY2QwdHFZZWF6SXdSemFhVTVBYVgxU0xWSWtkSS9VZHcwWmdGVytMVjF5?=
- =?utf-8?B?dlZUMXUrd3NhQU05bDB1clNJUnF3ZGRSRnNDd0NqWGVpTDVqTkxKZTdXeVND?=
- =?utf-8?B?cHlEVWJQMWR6OEgyL09MR2dIQkdVVzh5a0tkT0piSVhzMzV1cHowWFp3WHo2?=
- =?utf-8?B?MUErM3poRVB4SE9FcHRJc1hKUWMwcGwzK0tsWnRvRVEyQytMNW93MEJtdmxa?=
- =?utf-8?B?ZjhZQVZZcEIrRmh1cExQN212bm9xY29yaDNta0d1QjBQdEZkaEFUZVhuU1RD?=
- =?utf-8?B?bkw0R2d2SzZHNUg5dVFYM2hsbm5TcDd3T0tBMUhFZ0t2UWE4NUh5SVVhc004?=
- =?utf-8?B?cmQrczBNKzJzM1JjM2NSSTVhdkRLNXFqL1haRVNKVU9zNGpLcTBXaCtRQXZX?=
- =?utf-8?B?cVFCNDZFdlIyTDRlWmxBTUNvOEhoTUR4WGVrdzFCYkZFRnR4Y3V1WmhWT2N1?=
- =?utf-8?B?eTEzM2U3NDg3Z001QW9qOVJkQmtId3VEdFNKa0xNSnc1UHROK2trdTQvejIz?=
- =?utf-8?B?VGtFUHRIUUV2NlRXNmdRNnJ5M0poSzFqUVkwektLVVRFaW5mVVpxcnlzYkRJ?=
- =?utf-8?B?V3dVRVdRQlMzNVFURFRwZnN3Zit0WnBVbkQ2NUlOSXlteGxGYXFGNDMzRkIx?=
- =?utf-8?B?cnhIcFAyWWxrZ1FmZ3lHTzZYT1M3SzkyVTRXUWlHSVdyclJzeCs5WndFckc2?=
- =?utf-8?B?U1F5azRld2dWdlh6K3YxNFg5eHFHSDhyVGxSVFlRUmMvNENJYStYdDM4ckZt?=
- =?utf-8?B?S05ud0FtL1lVcXpIdW5jamQ2ZEEwN2I3b0dDSkdzWWZMUjNXUTAxa2ZmaWIy?=
- =?utf-8?B?OTJ3dkRxRXlhMElSL0ZnSEtkL0w0RnJEZ0g5R1VWOEJaeS9WcGE3SVJNMmFR?=
- =?utf-8?B?R0RzT0c4VElnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9644.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RUxJeDdaeVZyMHFiSE9xR0lHZTA0MENXbmsweW1abWtRcW5qOVozYm1XbDF6?=
- =?utf-8?B?alBRZEJteWlMdkg4NWpiUm0rWDZtZDloVUlzWW1wZGxHTk9Xbk16dVhSd1hm?=
- =?utf-8?B?bnJ3RlpVVmllRWhYUVhYbUlybDdTR05mUStJa1I5aFVlWDB4V3k1Ny9KY0xF?=
- =?utf-8?B?b2t3RTREZjJLVFM3V3NPajVHTm9RYnlIMWV4TTRGWlZNTTNwdlp4dGxoMjI5?=
- =?utf-8?B?aGxhRDRFOVRibGt3TmF0eVpFZG5veHAveHQydWthazB3WVFGM0kvUExMQlBp?=
- =?utf-8?B?SGZhWEdwdEJ5bHhOdlp0cDNoUlFQWFRQNitnQWxUNXA4MFdseFBCM3pORHEy?=
- =?utf-8?B?Y0haRUI3clRYM1BBVGVYcUxoR0RNRXNISktZTS9ieEJRY05IaUdYcmdMNlpT?=
- =?utf-8?B?TnB4ajZDVEtSTDk5YU1zZy8zUUpvWDY5M1craytKbEZrY1pWRy9hUzlFa21m?=
- =?utf-8?B?T1piVXhMM2NLaGxOUFJab0JtRVBGa21kQ1FETEt3S3I2K2lGT2RoV05zOFAx?=
- =?utf-8?B?b05kU3JNTFBtRkx3dHp5ajJVTE9zY0dGUWlnREIvMUxidzA4bnBZRlZPS3FE?=
- =?utf-8?B?c0hFejNDUnM0bjMyWnVIdTUzOHJYWXVRbU91M3FsNiszaU1mc0w3VjlRSUlv?=
- =?utf-8?B?VnFSQy9zQTJVYUxnaDh2Tk1FRXlUYlJsdUFVaHdtakJGak82Q1RMak1pRzRj?=
- =?utf-8?B?bjhvSVJRaFROSzVBYUFiZzFRTHZZYXNwdm1wTTB1dEVuY3R1TVZoemNGcEcx?=
- =?utf-8?B?eTkzSVRvRHQ2bzQySWlHTlF4TExHUE03aVRFOFg1ak1oK2lOd3Q2eW5XcjVn?=
- =?utf-8?B?OEtESVRZL2xvQTRsdzVES0RtaW9OT1MvQmhJMHBPOGF1UFRzNWM4OTVEQjNo?=
- =?utf-8?B?cnE0dHVKaWhwdlFWbmw3TWhCYWFjQXB4akVHLzRzNGdmNEoydnpWSG5qTjBL?=
- =?utf-8?B?VkhPbGxjUk0zVTgxcUE2THJsdmhNVHRPTkJ2eXVPNm9WY2oyMC9DU1RqeXhn?=
- =?utf-8?B?Zzc4cHMzOHBvdFREWXVwMDFjSTQyR280bmVZbHNoTkJxRXJhYWFTb2RxckpB?=
- =?utf-8?B?QTF3dHhLeUhnT2NzS2h5MWt4RUVQbEhhZ1JWMElvN3d0bEdKempUTjZRZ3Ay?=
- =?utf-8?B?OU9vbGtiU21BdVFzOXYvTEJLa09LeHpibnM0ckF6ZW80WlRNbmd4b2FpVEtp?=
- =?utf-8?B?eWxwVERzTXg3dXJCbGw0R2RUZWU2eG93ejVkL3JBa3ZPMjY4YWJqWi9TZkd5?=
- =?utf-8?B?VEJXK0RGTkRsUXpLMFpHTDJrZDcyMk04cTkzc2F6bFpMNjNySnNaOUhsS1Nv?=
- =?utf-8?B?UWdwSThQclQ0MXJtRFRoVXY3K1R1WHVVcXR4eGc1a2VYcnd1UmlWZEVtdFVO?=
- =?utf-8?B?WW5LYkRVSlFaZ29SKzhCYXZGNm02NXNWTCsrMUltUWF3UWlibnJJb1pGNkRy?=
- =?utf-8?B?bzdBbmxNaExBcE5UYXRQd2EzUmVyQlU5OWpoVXJMNnAybjkrMXVuTERsclN6?=
- =?utf-8?B?YTlOamZ3OWN6ZXFYcW1oUVdYc3Z5MUgvZWlnSUY4MjYxdUEwZ2k0K0dDWkI0?=
- =?utf-8?B?cllObzV3dkJYNDZaR2phOURIenFOdWNCRjNNSEpOWkN0ajZZUUo0ZnNXcDlC?=
- =?utf-8?B?eUNjSDFaNlk4Y3BmM1BnVkcwRUpidUFaYUp1R1MxMXlLNlYrOXM1TEZkUWZ2?=
- =?utf-8?B?L21KZnBHd0ZEckRVaVBRSnEwTEVwZzZzWjZjbWR5Wm4yRFdwSFgxQnpwb0t3?=
- =?utf-8?B?N2djdFNYK2pvbkNhN1BxQ1poOGxDdmpWNXZBVktjNTZ5VUM5T2owWDNZR0VZ?=
- =?utf-8?B?TjlUbkZBWUhzc1FIVEE3K1hYclg5elBQTDFsM0t0ZU9pVlVmT0hyamFxdkYw?=
- =?utf-8?B?eEdBQXFhOSt2MUU5QnVzbWpYcWNvOFJDbkdvb1RHWGZZZ0piRmZTakN5R0Rq?=
- =?utf-8?B?SjRBZ0RVNDFWWlkrcHNGWDZWZko5RURrYmsvb05adVVVc0l0eHZYSGtFMTlE?=
- =?utf-8?B?ZzM5ZWhWT3pRZmpSeFlYRjg2N2w1TW81b2JObmFsNE1XaW1GR0tKdmNrKzhx?=
- =?utf-8?B?TGVrUVArVlNZeStFR2duSGI3ZkZJK25lTFJXcmJOSXE2Rm9NNEIzSWxFbDA5?=
- =?utf-8?Q?rzLhUCXYW1AVNyDOOCehuhrQ3?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 60a77f74-08ea-4fc9-3a7f-08ddfb521b10
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9644.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2025 10:07:01.7909
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sdtCtOJwbFx+SJVcij5L3QsFeO8c/5TsBLrwFlEUSXyVlu4NXrR1YI7PDeFaAwBoeC+Up3WvxUIAZFe0BQ51fA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9745
+Content-Transfer-Encoding: 8bit
 
-From: Alice Guo <alice.guo@nxp.com>
+Add support for enabling MCLK output when using the simple-audio-card
+driver. In the sound/soc/mxs/mxs-sgtl5000.c use case, that driver
+handles MCLK enable/disable by calling mxs_saif_get_mclk() and
+mxs_saif_put_mclk() at probe/remove. This does not happen when the
+simple-audio-card driver is used. Extend the mxs-saif driver to enable
+MCLK output in that scenario.
 
-Add the OCOTP controller node to the i.MX94 device tree. This enables
-support for accessing eFuse regions on i.MX94 SoCs via the imx-ocotp
-driver.
-
-Signed-off-by: Alice Guo <alice.guo@nxp.com>
+Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 ---
- arch/arm64/boot/dts/freescale/imx94.dtsi | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx94.dtsi b/arch/arm64/boot/dts/freescale/imx94.dtsi
-index 44dee2cbd42d..1f1148405193 100644
---- a/arch/arm64/boot/dts/freescale/imx94.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx94.dtsi
-@@ -1171,6 +1171,13 @@ a55_irqsteer: interrupt-controller@446a0000 {
- 			};
- 		};
+ sound/soc/mxs/mxs-saif.c | 123 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 90 insertions(+), 33 deletions(-)
+
+diff --git a/sound/soc/mxs/mxs-saif.c b/sound/soc/mxs/mxs-saif.c
+index 3e3a62df3d7e..a01a680ad4d7 100644
+--- a/sound/soc/mxs/mxs-saif.c
++++ b/sound/soc/mxs/mxs-saif.c
+@@ -24,8 +24,79 @@
+ #define MXS_SET_ADDR	0x4
+ #define MXS_CLR_ADDR	0x8
  
-+		ocotp: efuse@47510000 {
-+			compatible = "fsl,imx94-ocotp";
-+			reg = <0x0 0x47510000 0x0 0x10000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+		};
++#define MXS_SAIF_BUSY_TIMEOUT_US 10000
 +
- 		aips4: bus@49000000 {
- 			compatible = "fsl,aips-bus", "simple-bus";
- 			reg = <0x0 0x49000000 0x0 0x800000>;
-
+ static struct mxs_saif *mxs_saif[2];
+ 
++/*
++ * Since SAIF may work on EXTMASTER mode, IOW, it's working BITCLK&LRCLK
++ * is provided by other SAIF, we provide a interface here to get its master
++ * from its master_id.
++ * Note that the master could be itself.
++ */
++static inline struct mxs_saif *mxs_saif_get_master(struct mxs_saif *saif)
++{
++	return mxs_saif[saif->master_id];
++}
++
++static int __mxs_saif_put_mclk(struct mxs_saif *saif)
++{
++	u32 stat;
++	int ret;
++
++	ret = readx_poll_timeout(__raw_readl, saif->base + SAIF_STAT, stat,
++				 (stat & BM_SAIF_STAT_BUSY) == 0,
++				 MXS_SAIF_BUSY_TIMEOUT_US,
++				 USEC_PER_SEC);
++	if (ret) {
++		dev_err(saif->dev, "error: busy\n");
++		return -EBUSY;
++	}
++
++	/* disable MCLK output */
++	__raw_writel(BM_SAIF_CTRL_CLKGATE,
++		saif->base + SAIF_CTRL + MXS_SET_ADDR);
++	__raw_writel(BM_SAIF_CTRL_RUN,
++		saif->base + SAIF_CTRL + MXS_CLR_ADDR);
++
++	saif->mclk_in_use = 0;
++
++	return 0;
++}
++
++static int __mxs_saif_get_mclk(struct mxs_saif *saif)
++{
++	u32 stat;
++	struct mxs_saif *master_saif;
++
++	if (!saif)
++		return -EINVAL;
++
++	/* Clear Reset */
++	__raw_writel(BM_SAIF_CTRL_SFTRST,
++		saif->base + SAIF_CTRL + MXS_CLR_ADDR);
++
++	/* FIXME: need clear clk gate for register r/w */
++	__raw_writel(BM_SAIF_CTRL_CLKGATE,
++		saif->base + SAIF_CTRL + MXS_CLR_ADDR);
++
++	master_saif = mxs_saif_get_master(saif);
++	if (saif != master_saif) {
++		dev_err(saif->dev, "can not get mclk from a non-master saif\n");
++		return -EINVAL;
++	}
++
++	stat = __raw_readl(saif->base + SAIF_STAT);
++	if (stat & BM_SAIF_STAT_BUSY) {
++		dev_err(saif->dev, "error: busy\n");
++		return -EBUSY;
++	}
++
++	saif->mclk_in_use = 1;
++
++	return 0;
++}
++
+ /*
+  * SAIF is a little different with other normal SOC DAIs on clock using.
+  *
+@@ -48,6 +119,7 @@ static int mxs_saif_set_dai_sysclk(struct snd_soc_dai *cpu_dai,
+ 			int clk_id, unsigned int freq, int dir)
+ {
+ 	struct mxs_saif *saif = snd_soc_dai_get_drvdata(cpu_dai);
++	int ret;
+ 
+ 	switch (clk_id) {
+ 	case MXS_SAIF_MCLK:
+@@ -56,18 +128,22 @@ static int mxs_saif_set_dai_sysclk(struct snd_soc_dai *cpu_dai,
+ 	default:
+ 		return -EINVAL;
+ 	}
+-	return 0;
+-}
+ 
+-/*
+- * Since SAIF may work on EXTMASTER mode, IOW, it's working BITCLK&LRCLK
+- * is provided by other SAIF, we provide a interface here to get its master
+- * from its master_id.
+- * Note that the master could be itself.
+- */
+-static inline struct mxs_saif *mxs_saif_get_master(struct mxs_saif * saif)
+-{
+-	return mxs_saif[saif->master_id];
++	if (!saif->mclk_in_use && freq) {
++		ret = __mxs_saif_get_mclk(saif);
++		if (ret)
++			return ret;
++
++		/* enable MCLK output */
++		__raw_writel(BM_SAIF_CTRL_RUN,
++		saif->base + SAIF_CTRL + MXS_SET_ADDR);
++	} else if (saif->mclk_in_use && freq == 0) {
++		ret = __mxs_saif_put_mclk(saif);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
+ }
+ 
+ /*
+@@ -238,34 +314,15 @@ int mxs_saif_get_mclk(unsigned int saif_id, unsigned int mclk,
+ 					unsigned int rate)
+ {
+ 	struct mxs_saif *saif = mxs_saif[saif_id];
+-	u32 stat;
+ 	int ret;
+-	struct mxs_saif *master_saif;
+ 
+ 	if (!saif)
+ 		return -EINVAL;
+ 
+-	/* Clear Reset */
+-	__raw_writel(BM_SAIF_CTRL_SFTRST,
+-		saif->base + SAIF_CTRL + MXS_CLR_ADDR);
+-
+-	/* FIXME: need clear clk gate for register r/w */
+-	__raw_writel(BM_SAIF_CTRL_CLKGATE,
+-		saif->base + SAIF_CTRL + MXS_CLR_ADDR);
+-
+-	master_saif = mxs_saif_get_master(saif);
+-	if (saif != master_saif) {
+-		dev_err(saif->dev, "can not get mclk from a non-master saif\n");
+-		return -EINVAL;
+-	}
+-
+-	stat = __raw_readl(saif->base + SAIF_STAT);
+-	if (stat & BM_SAIF_STAT_BUSY) {
+-		dev_err(saif->dev, "error: busy\n");
+-		return -EBUSY;
+-	}
++	ret = __mxs_saif_get_mclk(saif);
++	if (ret)
++		return ret;
+ 
+-	saif->mclk_in_use = 1;
+ 	ret = mxs_saif_set_clk(saif, mclk, rate);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
+base-commit: cec1e6e5d1ab33403b809f79cd20d6aff124ccfe
+branch: microgea-rmm-audio
