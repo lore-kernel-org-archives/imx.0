@@ -1,26 +1,27 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6D128507F
-	for <imx@lists.linux.dev>; Wed, 24 Sep 2025 08:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E04285C80
+	for <imx@lists.linux.dev>; Wed, 24 Sep 2025 08:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702886; cv=none; b=fhOHt6KqvrL27oKS6P0IAoU7kPoJhlTrg6WlQ3TX+Cvq9junC1TeP7LFAhj+YfgFLqsW4rFKAQjdcqP6iE6DY0I1QpgCcVNJrSBhF8U+tFZA2iKRAjYoJYaqVdxJhL4bRorH67308e3qYN9hB5NMhIB5z4v588dkrg/4C050nIY=
+	t=1758702886; cv=none; b=sxmHYZdN/2mQ9PrdA3iz1D/d3p4yxRRK3Z2/hjbVWbDoZ1rT6DdKc+zNsZhD87ZC7A7hSzuwKjSYNLcoHdnjxjv9Wq72z4h6aZJi5xFpyMxUmrXh3CTyQyc1cmlDP+9rFYgI+A0yZeaNOCBxmBcUU7Lh/ZqLHy0zlKf5rOrGQDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758702886; c=relaxed/simple;
-	bh=es09yTqH3vjY+MucOzbeZ0YoUvTIbmtEWDEy+H56jXU=;
+	bh=LBjy3XzRX+g+K5biGGKQclnmtSD7CAxE4QMEql4hRcQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KMCLbZUrAiXJYVPRleQScQSphiI8i4T461WG0STtngogzsgviFFh8mCjAOGFb/ej44Ltu4+E4VEob22VCMnQpkK9bX0hcGBCK1JY39/8Y0PGdEPJWjDXhgLYgefzCzi2kcBMlolEUyonpvT5erOQNJ2q00eQw7F+OPJx+6C/VcI=
+	 In-Reply-To:To:Cc; b=WLWsXPJKrNPx4D0dCKvHHT8b9mj4t68oVNBH6n+Ubvq1fD4tihcMkmqqzH5XSFgn2c3z3XmTqTar2h+AOmw4eJfO+3QYmWefLchTFRntmJ0mSgM/8Av7KAzBQ+YOYd8zQtdidPJDL56iNC/FfBiX4bKTaQVHd5GD/1eL15y/eGI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1v1KxR-0006Aj-Ck; Wed, 24 Sep 2025 10:34:37 +0200
+	id 1v1KxR-0006Aj-A5; Wed, 24 Sep 2025 10:34:37 +0200
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Wed, 24 Sep 2025 10:34:13 +0200
-Subject: [PATCH v3 2/3] dt-bindings: arm: fsl: Add Protonic PRT8ML
+Date: Wed, 24 Sep 2025 10:34:12 +0200
+Subject: [PATCH v3 1/3] dt-bindings: net: dsa: nxp,sja1105: Add reset-gpios
+ property
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -28,8 +29,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250924-imx8mp-prt8ml-v3-2-f498d7f71a94@pengutronix.de>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250924-imx8mp-prt8ml-v3-1-f498d7f71a94@pengutronix.de>
 References: <20250924-imx8mp-prt8ml-v3-0-f498d7f71a94@pengutronix.de>
 In-Reply-To: <20250924-imx8mp-prt8ml-v3-0-f498d7f71a94@pengutronix.de>
 To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
@@ -44,14 +45,15 @@ To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
 Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-sound@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, Jonas Rebmann <jre@pengutronix.de>
+ linux-arm-kernel@lists.infradead.org, Jonas Rebmann <jre@pengutronix.de>, 
+ Frank Li <Frank.Li@nxp.com>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1127; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=es09yTqH3vjY+MucOzbeZ0YoUvTIbmtEWDEy+H56jXU=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsi4vFbG69XkDMl93vnyK//IRwo7BsvzFbXIBmTlqD1Qm
- v1a55tURykLgxgXg6yYIkusmpyCkLH/dbNKu1iYOaxMIEMYuDgFYCIXbjIyfGqvy2BY2yJw0CEm
- 7lfPO/me3BtH+L9u8YsoTxaKLmJvY2T4xaP/12nxkvuPhTb/ea6caWhR1Xcl76fri5t+nmF6S4J
- 5AQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1322; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=LBjy3XzRX+g+K5biGGKQclnmtSD7CAxE4QMEql4hRcQ=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsi4vFZ6h2lV0qRN0/zXP7BQSlw9Ofid5NydT6d06DM36
+ B/wr9Je3lHKwiDGxSArpsgSqyanIGTsf92s0i4WZg4rE8gQBi5OAZiIJhMjw6XJlh6R/3aVqmsE
+ RZRY/22vlpsjrTr5SZ93zAzOnO/yCxn+qfLd3H8g/kah6noONZfrZt3uR99d0+ee3DyXbfLneHk
+ ZXgA=
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::ac
@@ -59,26 +61,38 @@ X-SA-Exim-Mail-From: jre@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Add DT compatible string for Protonic PRT8ML board.
+Both the nxp,sja1105 and the nxp,sja1110 series feature an active-low
+reset pin, rendering reset-gpios a valid property for all of the
+nxp,sja1105 family.
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Acked-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index 00cdf490b062..b135f6360733 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -1106,6 +1106,7 @@ properties:
-               - gateworks,imx8mp-gw75xx-2x # i.MX8MP Gateworks Board
-               - gateworks,imx8mp-gw82xx-2x # i.MX8MP Gateworks Board
-               - gocontroll,moduline-display # GOcontroll Moduline Display controller
-+              - prt,prt8ml             # Protonic PRT8ML
-               - skov,imx8mp-skov-basic # SKOV i.MX8MP baseboard without frontplate
-               - skov,imx8mp-skov-revb-hdmi # SKOV i.MX8MP climate control without panel
-               - skov,imx8mp-skov-revb-lt6 # SKOV i.MX8MP climate control with 7” panel
+diff --git a/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml b/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
+index 9432565f4f5d..e9dd914b0734 100644
+--- a/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
++++ b/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
+@@ -32,6 +32,15 @@ properties:
+   reg:
+     maxItems: 1
+ 
++  reset-gpios:
++    description:
++      A GPIO connected to the active-low RST_N pin of the SJA1105. Note that
++      reset of this chip is performed via SPI and the RST_N pin must be wired
++      to satisfy the power-up sequence documented in "SJA1105PQRS Application
++      Hints" (AH1704) sec. 2.4.4. Connecting the SJA1105 RST_N pin to a GPIO is
++      therefore discouraged.
++    maxItems: 1
++
+   spi-cpha: true
+   spi-cpol: true
+ 
 
 -- 
 2.51.0.297.gca2559c1d6
