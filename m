@@ -1,72 +1,66 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010002.outbound.protection.outlook.com [52.101.69.2])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011010.outbound.protection.outlook.com [52.101.70.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B072309EE0
-	for <imx@lists.linux.dev>; Wed, 24 Sep 2025 14:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3F63081BD
+	for <imx@lists.linux.dev>; Wed, 24 Sep 2025 14:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758724231; cv=fail; b=bMQF/d7WqBPDx/6h6JgcdLca3c1wHLego7iwM6g9SXbj4RohtJIhuS8V2ftBlUXaSae95soP7DRkgMGPIkx4yMMTHiMj81IgFiSleT1MH3AUm1p+MMR+ZrkxlnYz2bcNmXHRgtLst5jiZo9L8MldMoL6k4GNc5/18lDzqU3Lz9Q=
+	t=1758724630; cv=fail; b=k/690VoETdPrizY87np7HuQNOm6gW1/Q1wMqss1ykxZTUf0QMOnXqUl9DzvZqp3/NDyVsIY9JVZwevKID2xjxyishacnObS2REX4VzOVDNxCHY88f06+V9LqrFRbGekee70vkoufJnBnA1v49niiCkinja54G8iRGp3+T8xuj7g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758724231; c=relaxed/simple;
-	bh=mGVJS659wK9160cSVNdJWdGl9B2DwE4hJtduv1xkEm0=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=sj54NaeZ8IypGgk5/ldtoCyeoItK2Vnvx19IgsMX4f2CoXi+hXQfsx0+68rse/apIVAZA03fICJpOAbQMCbKzp8gxFuku2I5JRDUPnJfRqewc+S2guGyQAclYTjh+s7It7oaW3/joEob/0vcSZ4Hfb0qXXShC3O+V1DOeOOd8EQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hy2yMkps; arc=fail smtp.client-ip=52.101.69.2
+	s=arc-20240116; t=1758724630; c=relaxed/simple;
+	bh=S75c4NHv8L69wf7ARikIil/jDymv+QikLJNRYeANXqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=OazdaCbnE2pIs4DRL+XtoiV7OHh/OWFcgJSLO+IITvEQC5pzDvVzuyw5IKJ3xWiFCceHC06owTIP5MHDo4kRnmEupX1SsInZVlF7QRsiuVURY959q9LSoem2AKPz6aZnwG2477ECNW7DH6p+ogZGPQ1AMl8F/ZEgUMxpmz5mj8Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KELm8YaI; arc=fail smtp.client-ip=52.101.70.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hy2yMkps"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KELm8YaI"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W0CWpVmPe9lsIRXs+Pc7nwG6fITt/PtsWUATNs6qcs9DXi2XQIuYSBdLG5Ntx+XZgK5UPUtla22PrJQG3FuMk2NCxhz8RXOOKCATjsUWDAu1iw+BHsFWlW0FmJ6+7OzKIXD6a/QkCBnd8v94DAAVYy8HMOzqauJ0tXPJcyKPnW2/GVUXRmHlUD7LMOQ2F6XACNjrboLJCk8pm3lvhjUiUf43NA4D7dMaIl/11DlpYFpO0EjsNMJnQYSEQLubpmCn0P8cOCIY9R7/x4HGNpbe4rWXJmobOHs7nTOkESnoldiB0/MX9WVi1KiKz7ZH1gn9YC7sd3t1esZlBsBFECyPuw==
+ b=XcWaoHn0RCAwToyGUjy+f19W9N3kqRyE3bp1nqjZKA7HFz/8J8EB/K9DJ6+ubMSqizNMq42n5T1yWk8SkBM2F559Z2+rMCf22bTzs+Y0+mKQrpal4D3AgVXo8v8V7NQw4PP31CnOsx1UNcZzRXzTAq0aSPXJGV8e6NUFq8+VAuBfhxZV10yP1sZbcxA8InnzmzV1rlvfbdbREszHZVewyvvpALT/ekgsroTNdB2P5aE66TSAZBLYJIjL9FTeeZYpIF27DsGaZHX6k/lj4MJFef26cVdsKdO1FBhDVink9kllg1fGkEEbALgWJRRko2uCw7qKLtjU9KMPTOFA1WiJ0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0z6mgzIjKqt+0BKgGXkrDBWw/Lh22xrK4HCubO0lQuM=;
- b=We8fSAqrWZaWDaX55DSQQgQOT/GKKNTH6tj2sNOhG8SBQA8NWKKLLYNETSvvwzIW3W+JXOhhC0FxYrR3hg+hzI+Y1fscLL3XDsz/3VD/8Scnq9OMa/ONsbj6ytsSPbfQohR4btRNpggvRiuD/lTrx4T2xXIWQISbyWRlUq1CTYU5e/lAeNTVGwa1vtV5s8XrA9jMHLCyCFpEa/zIIZb9WO5l7QqPmvqot8KCrDkRq9xX+ZcLjW0853nAK2Pfc8S46GpoUF2IKudAsJGC5c+t6bGHG5x7gDaRCbPzCbIkUdVVLRqTz5kodIOKygvYyKbIJz9zQorb28tH5qgR/+dF1g==
+ bh=Tt2nzROO1dP5M+WfbYjjlUOFquD62+5wVc0GNE0v67c=;
+ b=wfAJJMLighirr0JVUAdscAaCgtOo6wE0dEIkPkXmAZYNTvVP4YakpVz/axQDyvH4QLhaBKczfJ2vxKUG+CWuRfgMUsj06RVOupyusyfjWuX+5rB7E26YhpTyMPmfV9lWq1PNvLmxkO+qW7pz9HlsPGCVdRJkpWsV9tYWhxGlSGu3dNCFU7dV8qE6QkjJviJP96gpjryDk5mGE2dRxECkux5WYxXC1OyYAiqfUGByNPvJPno582uI+udKvClmOEqZ5iZEpj9A2Ej2j4XM5Flz9ixO6wBVXd7oqTwbKnUrp7qffGWU/DeRcKy31m52efcbEd7lVsx0A0o1sRtXx2odWg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0z6mgzIjKqt+0BKgGXkrDBWw/Lh22xrK4HCubO0lQuM=;
- b=hy2yMkpsyTwwHTrazHdpzcpok7oQMR5FfPmZasUNTN8Etqj6z9QHg82aQ5GwbwHBsyR15pPHcjygWTn+n0lNr8hqfElWhmbkQ00Any6XGJ3JcM1ctPT4eSkJr9GO98+SigG+PWnBqrv8OMMaefbQ9Dr2kqH/S4SgsDL/mX3LMpPx/sKF6TMr0J7eLaW11h26M+/gfQiBeMXlSJRt6mvgfrbJPzrz12jtroxgOt9kuzOVcZdQoAK7vuf4SaXmwya3NlfH8d3gXczIMSN4iQ1cdnYIr578fuVVyiiO8Q+KWy1pvg/n7fOpisCkBhRg0oIkxHjsUSXH/yZZ2e9Gtog5hQ==
+ bh=Tt2nzROO1dP5M+WfbYjjlUOFquD62+5wVc0GNE0v67c=;
+ b=KELm8YaI+WfrLUL40SzEDIuGvb5ntiPCrbfKI77DoXnhG+FxgJ8VU8FiYCeRyUfRsY4XyVrAcc8yH7gyD73wLcQWV/b2MJII8z91g/hCXAkYyTtGjNeeOb2AQOeX3ZCS9EedIBbppSWeiGkIiPfsyi0NI0RQMdhMc8Phj7U/IHdGNefVPRJf4GJqHZHhlvuCqAQ6bYNAlfzRPAeXJw/BcDbF0FlFwk7vckMOhoOUNSuT3yphRHaRSkEcjbOS8D+AY/CDVcS1x107+Kg1iHLBdMQ5Rdcw7EeYWwDQCeMsJ8Q9xZARH5lgdE7hTVx2Xq92ywrL+G2tZz2x3YLOwqP0Mw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by VI2PR04MB10192.eurprd04.prod.outlook.com (2603:10a6:800:229::16) with
+ by VI2PR04MB11028.eurprd04.prod.outlook.com (2603:10a6:800:27e::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.17; Wed, 24 Sep
- 2025 14:30:27 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Wed, 24 Sep
+ 2025 14:37:03 +0000
 Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
  ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
  ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9160.008; Wed, 24 Sep 2025
- 14:30:27 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Wed, 24 Sep 2025 10:30:05 -0400
-Subject: [PATCH v2 4/4] iio: magnetometer: Add mmc5633 sensor
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250924-i3c_ddr-v2-4-682a0eb32572@nxp.com>
-References: <20250924-i3c_ddr-v2-0-682a0eb32572@nxp.com>
-In-Reply-To: <20250924-i3c_ddr-v2-0-682a0eb32572@nxp.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-iio@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
- Carlos Song <carlos.song@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758724211; l=15984;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=mGVJS659wK9160cSVNdJWdGl9B2DwE4hJtduv1xkEm0=;
- b=RIJ5xwUzaH51OCbtUQnckh3DqvFuFZCqi5tSCiwaMovIdmj2ENS8nBE7XzClzAce/bkL0mpt9
- CUCVlWcI/+CAfsnehDJcf24LPRNtkI+6mj4LPYzORdn8FeqNKQx5AgD
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: PH8P222CA0021.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:510:2d7::6) To AS4PR04MB9621.eurprd04.prod.outlook.com
+ 14:37:03 +0000
+Date: Wed, 24 Sep 2025 10:36:56 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Yannic Moog <y.moog@phytec.de>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, upstream@lists.phytec.de
+Subject: Re: [PATCH v2 2/3] arm64: dts: imx8mp pollux: add expansion board
+ overlay
+Message-ID: <aNQCCDQkFFT0ad4s@lizhi-Precision-Tower-5810>
+References: <20250924-imx8mp-pollux-display-overlays-v2-0-600f06b518b9@phytec.de>
+ <20250924-imx8mp-pollux-display-overlays-v2-2-600f06b518b9@phytec.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250924-imx8mp-pollux-display-overlays-v2-2-600f06b518b9@phytec.de>
+X-ClientProxiedBy: PH7P220CA0050.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:32b::28) To AS4PR04MB9621.eurprd04.prod.outlook.com
  (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -75,701 +69,338 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|VI2PR04MB10192:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8dcc47de-6586-46ce-f02a-08ddfb76e7b8
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|VI2PR04MB11028:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3fbaf97e-146a-4b9d-cea6-08ddfb77d426
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|366016|52116014|7416014|376014|38350700014;
+	BCL:0;ARA:13230040|52116014|7416014|376014|19092799006|1800799024|366016|38350700014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RS9mZUxyQ0Y5V1FpMnN4Z2MzdVdBZHRVbE9Eckt2RWNHOWtCTThkUDNzOVhn?=
- =?utf-8?B?RXI1OTZzQ0FwOHJHWkFsc2FpSmd0bEk4STB2Q2J2MGNsUG8vRzhDRjhyNDkw?=
- =?utf-8?B?VzhpZ0ppYmJxeUtUUDZpa1lhL2hjRnpMUzV4TEowcjNWSFdLeTlScitNS1d6?=
- =?utf-8?B?L0ZEZUtvVkRNQUJwWDdJWnJsQWVLblVvdFF2UWZZWGRoZHJhem82OHdmd0NY?=
- =?utf-8?B?T1R1bnZNNmxpZlo5TDdDOWE2Q2ZuSXo2b2Z6NUlyeklBTHZxRklDcVkvL0l1?=
- =?utf-8?B?bHlNWERrQ2xxWDE4QzNKem5Yb2dGdE91bEJOblFhMk14MklyYjVoWTJUTkNK?=
- =?utf-8?B?djFYakplTTRHMWVmY21UYTl3ZlFJSWJBT3lWNTRYNE9CYUxiOGxjWjMxMWZw?=
- =?utf-8?B?aElRbUsrWldRT2JZQjQzTW1RV1RUSE8vSW1BS2kwQVJlQUtHMW53OFF4aERz?=
- =?utf-8?B?NFBSWmZDQWtMRDhhSGlqTnFNTlRJanZQNERlN1lTZ2ZyMG8vUHhCUDNGUldn?=
- =?utf-8?B?cHRSMzhZdGZLNVJjbVAvZStONmtJL3BrMXR6bkRJOWpSMk42blRjaHI3ZDM5?=
- =?utf-8?B?bTNSL2ZXbVpQZWkvQlRseG4zU2owSHZ5TVRJbjcyZVZnbWx0Yzg4MEI1UGla?=
- =?utf-8?B?REozNzRESjBzclFkdGM2T2VmcHZGQzJHTEx4RWh3MFFxb3lRRVNkZjR1ckQ1?=
- =?utf-8?B?WE9FZ2VZLzJFNkdtYjZrVHQzalBRS0I3clF2RzhnRFNpS2ovbWVOQnkvVDZz?=
- =?utf-8?B?dFVGSlhHZGw4c0VqLzgwTTh5K0MzcWFja2N6Sko3SnRFUE5qajFLcEJxVCsz?=
- =?utf-8?B?T2hFWVd6cVRtdzJ3U3FrYTl1cElTWGg3VE1TbTdKdGNrQzdHelNPUGJUWnJP?=
- =?utf-8?B?dk5va0htZE9tUVRhbmY1b3R6U05sMjFyaDA3NkxOM1hnMTFXTGM0cHZUWjBq?=
- =?utf-8?B?L2g0VmlEMHFTeEt2YmczblVGUjE1WHAzbmd3UW1LNVNES2lnemFpeHg0UmtW?=
- =?utf-8?B?dVVXVDVWR3pUMUhnYURpNnhMZ01SaGNIRnYzaitsUWhnVytmQ2R2bk1tSUh3?=
- =?utf-8?B?WERYcjR4UWxFVG1HSWR4bWluZVo5bGpSalRsK0M4SDZSYUs5QVgxWFRjdzJO?=
- =?utf-8?B?Unp0VVRPYkl4bnlQL1lqQXlLVGpIaGd4anA1aG5Jd0xGT3dXeTVoWXRzbHox?=
- =?utf-8?B?ckNScmxVbDIzbTg1RndDWGw2M1FwbEpQWkQvS043WXMyb3FvY0RIdDE4U3VE?=
- =?utf-8?B?Y05reTJLMmJUM0plZzdKbUZlTjJOUUVLY2hwakczaDY0TitHZTR0Qmpmc0M3?=
- =?utf-8?B?d3VKbzloSjNCVm8xQUorVXFLRkZCeHVUamxZOHc3YzRoVWx1UjVCaWZ0elRs?=
- =?utf-8?B?bWlMZER1TENBczBveTU1d2tTQ0tEb3kxZGh4MFNYcUZ3OTN5VXhpWm9FTWhm?=
- =?utf-8?B?MThWTTlwN0swalh2eDJlZE10RFU4VzJlemdRRjMzWXB1UjBZSmM1eG9GUitC?=
- =?utf-8?B?V3pNcEFBb1B2VndIQTkweHppaEl6cHJLSlJHeTNmMGQ3TkE3blZZV2xBU3hI?=
- =?utf-8?B?UHBPSXh2U3VUNWMrSXA5K0tUeHEzM212Y1pKY0FBMlNUSG8yYnRmTlBENXUx?=
- =?utf-8?B?ZGNMYitZUUJSK0VrN2R5Tm1FakV2dFFIVHYvNjVmUGZ6NGhXVVp0b0FTSEph?=
- =?utf-8?B?dmpMdEtxUkFrZS9MSnlCaDFRRmp5TGNCU2MrOXNoMXF2RFJnaG54dk1VRk5E?=
- =?utf-8?B?WG10VkoyRlRqTHBGSkMzNEFPbHMvR0pjdFFFK252UXJWaVJYaE93ZFBSMDV3?=
- =?utf-8?B?RFR4L21lcEtoRGpXa3BWU2VSbC9lb0VDbGpQTjdFbE1IOU9sMzd5WmJ3QWtJ?=
- =?utf-8?B?Zll5ZGlFN0V3QTN3cGlCdlZRRUxPSjAxMFVnNHdGTFBWdmRLRm1FVkVDK1M1?=
- =?utf-8?B?ZG94SCs4dlZnSThleUFkVi9ZamRrQ05uZEw0MU1LMkZ2TElQYVZKM2VhcGlh?=
- =?utf-8?B?TDc5NlFMRTVRPT0=?=
+	=?us-ascii?Q?YO+UuKWgZCZoe1BcfT+qN6AmjYDG6To2zMUeJAUjrzvix0qRrt1Se+zNYCXl?=
+ =?us-ascii?Q?eD/A6m7WDpQhRMSErAqCT4HkxRboxrDzd130vvhNcxizaUPNlVJLM64hw23H?=
+ =?us-ascii?Q?skS4vaJY1tclXvckTvSWRmQo8al7GeO3ttfg1IU7v8eGY1meY8PsL4YjvtTX?=
+ =?us-ascii?Q?ipYvtng9SyfLcTbYfwzDcRnqvRXlFV4gDSHx7L7+CLiN+Ioy/gN4hLn8fj2/?=
+ =?us-ascii?Q?GDoY/0ucAFyHq9B+GcogLrhwrHPbXEJ2KjVGDujHAdb4cHo9iGG/vvxjOrgp?=
+ =?us-ascii?Q?DwZH4Z4uq9xB9fOR1+gbWIR+r39EcA24nvZuTbsNlQL9dpevKKGFUmvxEyN0?=
+ =?us-ascii?Q?HYcPpcZUgUci7UWyaPnUjFpTmW0Wxk+9eTd4GMZtCQmSGE9f8C4J5c7IfheI?=
+ =?us-ascii?Q?ou6Xwkv7QnwDli4zkFTOS+/7HCW32fMBLC5tN8O7in59Ay8GhE81lwRbZWhm?=
+ =?us-ascii?Q?F8Yy0NAJHCwD5JgRqjBTdSfagfs/fcXWI8/jWTr65xqsrwKLakOXbV74Rr8E?=
+ =?us-ascii?Q?uwKui7tMevDb3GpcvQI2P1NtHHh2T98uiLZY3ASnqxvu8NbYd6an8kta9Xbm?=
+ =?us-ascii?Q?rxjxDZ0AtO9DLKR9gDdXmZsqjyFKMwcfjdnpZsdh/G9CajzV3USxlpppxHRe?=
+ =?us-ascii?Q?sxNLnTnkEwFtB44Xm5yDoltlQTACt5I2kwfPTgzz8HMBiSPBIOiagPITb3UD?=
+ =?us-ascii?Q?6Rk41LR0voOLiMai1e6gWrvMnu47YUgpSa83NP3zWy22QGwoskfaahUG8lsB?=
+ =?us-ascii?Q?eToM7+6oflhvydkyBmF/WE5rGf8stUL7NWe3XJPmpE4OieYIa1a2UUYurKnP?=
+ =?us-ascii?Q?DahSbJyC9Z1IjcBaVqxi8IKX859sw0IWbPsaG+oDMU/5XK7iW/Bnd87ky31e?=
+ =?us-ascii?Q?Ox6hUgPOl8Ndk1Garv/cDuUwuMsKsZC8MXw/PD218y6UG8EXa30QucwC2iZL?=
+ =?us-ascii?Q?yFbrqdYlgKt2CgcrZ8MBl5JKUhYCoMhHL88SyMPiREfyOjkm8FgvhBgKswuN?=
+ =?us-ascii?Q?swTWxeWA9DcumjdmNIVEvEt5OdSA+s3heDNmwHa/DwC03++1PAyxA4i5NwYI?=
+ =?us-ascii?Q?m82Ysx00DWY/TUPH3j6t/piTiKv9VMt512oYdlQdBPCWBhtLwZmMgTqMUu2F?=
+ =?us-ascii?Q?+Te1r1Cu4bTcuU2sR0mdKPjREJymW6M3T+K+US6mLWRwtd1XQLHKqB5YVl8/?=
+ =?us-ascii?Q?mqWHcVpoK4NINDs6lZA6LTp4RAGNV5TKwse7Q5KHgQsOz9TqwWcGvlAtpkVg?=
+ =?us-ascii?Q?GCXOVdYXmTepCIEtMqOmnKvPWMLz73ZPhvWS+Q+jEYmcpqSh029NtqONmEFM?=
+ =?us-ascii?Q?7+4+sTZ0oxcNEg+nfWFXsgbIKYaJXlWwxd3qWRoXT92Wt53t4RUaKUijh1kf?=
+ =?us-ascii?Q?mV++o4uPLwalyhm7yE/mgtbHTYeqpfUGKbSgxix0JRDHM8JhAlc7pY0ikt2o?=
+ =?us-ascii?Q?Zr0z/u5AHpS7V0BL65THNMSnfLQBkl+1aQdx5G/7q2KDaOs8967Lvw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(19092799006)(1800799024)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ampjanpueUgwNlRwbFdPQlRFSnVxWCtmRGlyN1N6NVRtQkZwWWpWZDBEY0dk?=
- =?utf-8?B?SnZlbFpJcjVXYXI3RG56ZUFvaGxzYjg4NjVrUG9IRTJDUkFZOEdzb3crbnRy?=
- =?utf-8?B?dUlmOW5QaHVhZ3I3ZTNwRnZhZ0t3V0VhMEEwMm1yTXNHaUg4b3VtVk1ySytJ?=
- =?utf-8?B?OExFQ2dzRlBnRU52VDJ5aWs0bllma3lxZk04L1NQK3oyNjZEcXVFZG02ZU5v?=
- =?utf-8?B?ZFJkcXhucDJ5YXhHZEFmbHdoQ0ZhV0NpTUp6U2lBc09vbDVNNktHdlRWV0M3?=
- =?utf-8?B?SWlvMlJSQ1YwS3hRU2lZNE5IUFErQ1lFVXpqUmtTRnpiaU5OUmkyOE1SVVNU?=
- =?utf-8?B?RE4xRHorQS8rVWxaN05VTlV0OFNXT3NyUTJuVlJaV2pKOVkrbWpLWkhkOVVp?=
- =?utf-8?B?ZHBOdDFGamxwWCtmSmlIajZVblIxRFdsNDErSk8vN2R2dnI1VDNvV2JDNTlB?=
- =?utf-8?B?SEF6V2xCRElReUhtOVVDcDRVOEIwSEZ2YnlrOWpmMExSR3JLRVFhR1cwWlg3?=
- =?utf-8?B?MnhHR0ltaVhMVUYyK3l2MVpkRkMrWkNDaXNvOVFVWFY5ejYzbmZSbzYrcE9C?=
- =?utf-8?B?TSt0SG4vZjhBL05BQnNSWUNreXNDTTk4YktYMmk5bTBVMzlqVmNVaEViS3Nn?=
- =?utf-8?B?V0FhTXNHZmQzbmNHUE5pRWNOWW0vZVJKZ2ZVQkdkSEsvYTZMUmcvMmRPUzFW?=
- =?utf-8?B?cUJmNlZBbnl2NkVIbG1jbGVFZ3B1alBrcHpRWTBMQTROOHpsSmlTUHdZdU1U?=
- =?utf-8?B?Tnl0dWFZMWs2c1J0ZGxuZ2tJd2x1NGZRdGxOOG9Hc01qRC9QTHdWdCtVbDEw?=
- =?utf-8?B?Tnk0Vlhia0tQMnBDTGhBRkc0STVPU1VveTRmMTdlTmpOV1oydWVrNVdhNEZQ?=
- =?utf-8?B?S0Z2djYyUHNQUUdMOFJXNm43amR3N0pWbUpjbTg0OW93N0k0Z3U5REhhNUo1?=
- =?utf-8?B?QW9LcE9uK0lnY2h3aVQ2dDh5L0U3SkMzc2xmSEFkOElQYy9TT0p4U295QUZL?=
- =?utf-8?B?OStJM241Sm9RRUt3STNDaXNraGlJcjlibjJTTFJVZ2NERTBmWktrWWs0N0o4?=
- =?utf-8?B?WlZxc1hOclFHbVJMbk9KUE9qK1NqKzNZdVZhYUZrYlJyS1N1WW9PUEJzczho?=
- =?utf-8?B?N0M3ajZnSUIrR3FmUVZ6WTlSNHpWQzRZQTRrckljc3VWVkMyZTdtclgxanpG?=
- =?utf-8?B?Mm1DaCtnNm5uWnpHSlNsbmd6YUI1VTY0ZmlvS2lpSEc3RDhiaGpEOWVkRTI5?=
- =?utf-8?B?T2ZZSHEzemR1a0N4alBJblduMnZGTnY2bm1mVWN1d0VYKzhhRGsyZ2xSUk9T?=
- =?utf-8?B?OGNBcWw1Mko3Q0hWaXJQUVJyeDA4MjBIYlRneFFhc3VzK3hKK2o0T0hLZzRh?=
- =?utf-8?B?WnZRYUd2TWtlRDk2S0NqTUZnSW51SDRJV1JsdG15SDdHTkpxaXJzVFF4TVJm?=
- =?utf-8?B?OTgyazZqM1lTMnNGc3JxQmVaRDd0SmVkRFppV3VGYTJQSnNwNE1LT3duUHJQ?=
- =?utf-8?B?WXhMNWxmT3VyODErWXVZVHlHaGdBK3poU25ubHFseVBGUFA1ek1OT0g4V3Vz?=
- =?utf-8?B?Nlh4S0FCOGFhOTNidGlIMWJEQmY5ejR5cG1KaXc4SGFxWGovb2w4bTBPT25v?=
- =?utf-8?B?YVBXeUVBVkp4cTd4Y2I3ZGhjek50THl1NUlKVlpTa0tIUUNma0c4cklxMXpn?=
- =?utf-8?B?R3NSbXBtQ0ZtWGFyOGxpaFBsTkZTRndEbnRpcGsyQURETnhYNkVtczE4Um9E?=
- =?utf-8?B?STl3bWV0UGZ6Y2x3ZUFUekxMU0NBbWU4Y01SSDNMckJJd2QzR1hTakpTMG54?=
- =?utf-8?B?MUVrd3hUTEIwOVZyMUxHVFJGenZ1MVNwdVFNRXdNakFtS2Mwa0RIcUJ5ZlZw?=
- =?utf-8?B?ZEpCZHJEeU82RVlxR2FLVm5hRHVaWFVmalh4MXBpcWNLRXg5MEo2RmxOSEMy?=
- =?utf-8?B?d0VUUEd4dSt6UG1DMGFjM1RROFBrNUxMZUtUbDZxMVJJZVFBSU5peURReXVG?=
- =?utf-8?B?OEZoQm0vRUVvUFNzdjRvakgxZkg0cjM1YzltME8xN2pMN201K3pZaE04dXVT?=
- =?utf-8?B?MUVpMEtUZkE0N0xzanlHK0o0QXBXd0tnRTF1QXdOckZ3R3FrUmpJL2NRcC9S?=
- =?utf-8?Q?zzkJIKSqj04+SajbTYuPLU0ns?=
+	=?us-ascii?Q?3Vq9CzjpqCKozJI8x2Abt3CmrkFSVbe6VMt8WevWVoGUDK+Ym4D4OLY99Ll3?=
+ =?us-ascii?Q?G69GKGrmvHsW8wQNTFvCso2utwNPFN8KGjPoTrw4xY7iXDXkBczsjmhJObl4?=
+ =?us-ascii?Q?luuRuGkZibRtzFujaufk+NK2bME/QcboNZhxykMCI1y/l+z/rrCV5AI4xop4?=
+ =?us-ascii?Q?ih6XQkYMlw83EMPJZ7UGnQxz2QPVOljVhnzfnOppEbW++QXP9gN8qc8AgMB8?=
+ =?us-ascii?Q?z7kL1awLwzhFZK3UFqE/c+S1y+/L+bdnIpCQbVne7uni4yDFVmq1rMtLWcFn?=
+ =?us-ascii?Q?g+Kr5AmpV9rq+y7Nrq6C2gXsCkZ1IkLQsFuyZHKoAT//eOz+lLHnHc69ulUU?=
+ =?us-ascii?Q?r+yYoOQnUglZ1LqZa7xS8HajnFDtL/z5KjHub+CA5+HBcsBcDC6pM+MR45Wp?=
+ =?us-ascii?Q?jOk5pZ9RxwqbveuLBKtLWAIIls51gW55Rw9q58ijSIXkJ27NepAtOd3Rpk7u?=
+ =?us-ascii?Q?46NzAqhSb0Gl3lQq4OiOSFPojJ+8eTdayEi5vHreF3AQsjtWVSetGnq4NPqs?=
+ =?us-ascii?Q?QjK5W3wOrVTpOkaPA3zEUgp0j0vGTzeRwxR+PuGDcymieal+QyLRmvXFZm3f?=
+ =?us-ascii?Q?VtOLpf62iJ+RXvwlO7r1YOCsdk6biWpji0doEBSVhyhrn24VuoCN69ZrdEn6?=
+ =?us-ascii?Q?Ro3iEkSUvUBHzgCalanNjOFlnvca0qyiU11CgcHYbcopMVyvWmPeKIHOq+F9?=
+ =?us-ascii?Q?kCEB4ViXmXjohR1KLXiyKT4Xeb/fXAU2JWboVRyREXCUmZVDSiYcImqGpnNt?=
+ =?us-ascii?Q?iCfF4J6EojkahJBG5sRjHcJcfyRXry718CgOJlU5yzVm/ow+s4apgmy5v9ES?=
+ =?us-ascii?Q?iwhgEi4gecfsbi4YZH+njjVC3fXQfyi/hthZVoGLHTnLOeP355Ub5gXgwo6v?=
+ =?us-ascii?Q?x/IM4EzWd+F+sm028oCoCL0zO2ipkzMYSFF8itaNUkbFi4LO9Ln0CXrWg6lG?=
+ =?us-ascii?Q?ovSDIlH46bw44hVWiHbB7qakG61Ma9PEHH+q7j1c2Oq66CR0HUh/I97g71wX?=
+ =?us-ascii?Q?Zmq0KIBrPPBukBrm8+VdxPN5SoX2rH1tEp02qDm3UYf3tVHq2NmwrIEr2Y63?=
+ =?us-ascii?Q?593HgF2vvylsxLItR52No2HuhPkSl81R2F7m4gf7WCLQBdb5tN7QnnCO2+1O?=
+ =?us-ascii?Q?I6yt+toeNlzAJt3FsCdGowWOETMSF/DQ6Su1Pxh2+hbnPHcp2o8XwvG0KAmN?=
+ =?us-ascii?Q?4S9VHUx/wyjoEpOZG3xKeubzmV48hDQxtnPW95ladPMnNQqVav1nRpepIS35?=
+ =?us-ascii?Q?hTBa1n780x+A18141A8IG+jaSoQvtHiIGialOB5J/TujFSrhSGWvKtz63lKD?=
+ =?us-ascii?Q?cihFOkf0JxeicB3Ih4PC94MlVHzGrmZfusBqDvc2IKHJc7rZmov/cygBUmHm?=
+ =?us-ascii?Q?XbEXKMs9sR6HnfJVrtkkQVCm6zD2WOBB//mZVYEzJwkW4Qf6tlSRY4bBU6EJ?=
+ =?us-ascii?Q?CR4Aofjcv8AfGfIx2SD5sl+Uak6Y5cddYhIh1NWeiKctlJC7RG6Pon6zXzvm?=
+ =?us-ascii?Q?hLqRBtup8U6zV1razPpCTTrDDFilH/YpG5JanU+SUN/wR+B9NbtSkWrMugFq?=
+ =?us-ascii?Q?te5OHUkX43EC0f5TnKcBNMxU4K+pP4ZeMqvvofG2?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8dcc47de-6586-46ce-f02a-08ddfb76e7b8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fbaf97e-146a-4b9d-cea6-08ddfb77d426
 X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2025 14:30:27.1482
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2025 14:37:03.7246
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AHB1ZWqExD9D6gPM8CuZzoZ5dXbpLd1ZCWT3tGsJaLjXMlEGOhgFUpBNUolWMF19OQoM1wQfC4GScPfwBMCSZg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10192
+X-MS-Exchange-CrossTenant-UserPrincipalName: Fm46DbJnCtojEz3ukG5cMp1tJUmvzM2kBE0ehtGuEjPscYXMPc+Topf1NnOO9EjX2+dhCHt6Q9AEwKPIpsOoFQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11028
 
-Add mmc5633 sensor basic support.
-- Support read 20 bits X/Y/Z magnetic.
-- Support I3C HDR mode to send start measurememt command.
-- Support I3C HDR mode to read all sensors data by one command.
+On Wed, Sep 24, 2025 at 01:59:05PM +0200, Yannic Moog wrote:
+> An expansion board (PEB-AV-10) may be connected to the
+> imx8mp-phyboard-pollux. Its main purpose is to provide multimedia
+> interfaces, featuring a 3.5mm headphone jack, a USB-A port and LVDS as
+> well as backlight connectors.
+>
+> Signed-off-by: Yannic Moog <y.moog@phytec.de>
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile             |   3 +
+>  .../imx8mp-phyboard-pollux-peb-av-10.dtsi          | 198 +++++++++++++++++++++
+>  .../imx8mp-phyboard-pollux-peb-av-10.dtso          |   9 +
+>  3 files changed, 210 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 805ab9e5942bc9e2b9776e92412f56e969b6b39a..9c121041128972d2239e2cc74df98b0bf7de1ac2 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -220,10 +220,13 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-nitrogen-smarc-universal-board.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
+>  imx8mp-phyboard-pollux-etml1010g3dra-dtbs += imx8mp-phyboard-pollux-rdk.dtb \
+>  	imx8mp-phyboard-pollux-etml1010g3dra.dtbo
+> +imx8mp-phyboard-pollux-peb-av-10-dtbs += imx8mp-phyboard-pollux-rdk.dtb \
+> +	imx8mp-phyboard-pollux-peb-av-10.dtbo
+>  imx8mp-phyboard-pollux-ph128800t006-dtbs += imx8mp-phyboard-pollux-rdk.dtb \
+>  	imx8mp-phyboard-pollux-ph128800t006.dtbo
+>  imx8mp-phyboard-pollux-rdk-no-eth-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-eth.dtbo
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-etml1010g3dra.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-peb-av-10.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-ph128800t006.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-eth.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-basic.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..4653af62b582ead04aed2cffde11ef0b142be343
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi
+> @@ -0,0 +1,198 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (C) 2025 PHYTEC Messtechnik GmbH
+> + */
+> +
+> +#include <dt-bindings/clock/imx8mp-clock.h>
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include "imx8mp-pinfunc.h"
+> +
+> +&{/} {
+> +	backlight_lvds0: backlight0 {
+> +		compatible = "pwm-backlight";
+> +		pinctrl-0 = <&pinctrl_lvds0>;
+> +		pinctrl-names = "default";
+> +		power-supply = <&reg_vcc_12v>;
+> +		status = "disabled";
+> +	};
+> +
+> +	panel_lvds0: panel-lvds0 {
+> +		backlight = <&backlight_lvds0>;
+> +		power-supply = <&reg_vcc_3v3_sw>;
+> +		status = "disabled";
+> +
+> +		port {
+> +			panel0_in: endpoint {
+> +				remote-endpoint = <&ldb_lvds_ch0>;
+> +			};
+> +		};
+> +	};
+> +
+> +	reg_vcc_12v: regulator-12v {
+> +		compatible = "regulator-fixed";
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +		regulator-max-microvolt = <12000000>;
+> +		regulator-min-microvolt = <12000000>;
+> +		regulator-name = "VCC_12V";
+> +	};
+> +
+> +	reg_vcc_1v8_audio: regulator-1v8 {
+> +		compatible = "regulator-fixed";
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +		regulator-max-microvolt = <1800000>;
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-name = "VCC_1V8_Audio";
+> +	};
+> +
+> +	reg_vcc_3v3_analog: regulator-3v3 {
+> +		compatible = "regulator-fixed";
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +		regulator-max-microvolt = <3300000>;
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-name = "VCC_3V3_Analog";
+> +	};
+> +
+> +	sound {
+> +		compatible = "simple-audio-card";
+> +		simple-audio-card,name = "snd-peb-av-10";
+> +		simple-audio-card,format = "i2s";
+> +		simple-audio-card,bitclock-master = <&dailink_master>;
+> +		simple-audio-card,frame-master = <&dailink_master>;
+> +		simple-audio-card,mclk-fs = <32>;
+> +		simple-audio-card,widgets =
+> +			"Line", "Line In",
+> +			"Speaker", "Speaker",
+> +			"Microphone", "Microphone Jack",
+> +			"Headphone", "Headphone Jack";
+> +		simple-audio-card,routing =
+> +			"Speaker", "SPOP",
+> +			"Speaker", "SPOM",
+> +			"Headphone Jack", "HPLOUT",
+> +			"Headphone Jack", "HPROUT",
+> +			"LINE1L", "Line In",
+> +			"LINE1R", "Line In",
+> +			"MIC3R", "Microphone Jack",
+> +			"Microphone Jack", "Mic Bias";
+> +
+> +		simple-audio-card,cpu {
+> +			sound-dai = <&sai2>;
+> +		};
+> +
+> +		dailink_master: simple-audio-card,codec {
+> +			sound-dai = <&codec>;
+> +			clocks = <&clk IMX8MP_CLK_SAI2>;
+> +		};
+> +	};
+> +};
+> +
+> +&i2c4 {
+> +	clock-frequency = <400000>;
+> +	pinctrl-0 = <&pinctrl_i2c4>;
+> +	pinctrl-1 = <&pinctrl_i2c4_gpio>;
+> +	pinctrl-names = "default", "gpio";
+> +	scl-gpios = <&gpio5 20 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+> +	sda-gpios = <&gpio5 21 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	status = "okay";
+> +
+> +	codec: codec@18 {
+> +		compatible = "ti,tlv320aic3007";
+> +		reg = <0x18>;
+> +		pinctrl-0 = <&pinctrl_tlv320>;
+> +		pinctrl-names = "default";
+> +		#sound-dai-cells = <0>;
+> +		reset-gpios = <&gpio4 28 GPIO_ACTIVE_LOW>;
+> +		ai3x-gpio-func = <0xd 0x0>;
+> +		ai3x-micbias-vg = <2>;
+> +		AVDD-supply = <&reg_vcc_3v3_analog>;
+> +		DRVDD-supply = <&reg_vcc_3v3_analog>;
+> +		DVDD-supply = <&reg_vcc_1v8_audio>;
+> +		IOVDD-supply = <&reg_vcc_3v3_sw>;
+> +	};
+> +
+> +	eeprom@57 {
+> +		compatible = "atmel,24c32";
+> +		reg = <0x57>;
+> +		pagesize = <32>;
+> +		vcc-supply = <&reg_vcc_3v3_sw>;
+> +	};
+> +};
+> +
+> +&ldb_lvds_ch0 {
+> +	remote-endpoint = <&panel0_in>;
+> +};
+> +
+> +&pwm4 {
+> +	pinctrl-0 = <&pinctrl_pwm4>;
+> +	pinctrl-names = "default";
+> +};
+> +
+> +&sai2 {
+> +	pinctrl-0 = <&pinctrl_sai2>;
+> +	pinctrl-names = "default";
+> +	assigned-clocks = <&clk IMX8MP_CLK_SAI2>;
+> +	assigned-clock-parents = <&clk IMX8MP_AUDIO_PLL1_OUT>;
+> +	assigned-clock-rates = <12288000>;
+> +	clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI2_IPG>,
+> +		 <&clk IMX8MP_CLK_DUMMY>,
+> +		 <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI2_MCLK1>,
+> +		 <&clk IMX8MP_CLK_DUMMY>,
+> +		 <&clk IMX8MP_CLK_DUMMY>,
+> +		 <&clk IMX8MP_AUDIO_PLL1_OUT>,
+> +		 <&clk IMX8MP_AUDIO_PLL2_OUT>;
+> +	clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3", "pll8k",
+> +		      "pll11k";
+> +	#sound-dai-cells = <0>;
+> +	fsl,sai-mclk-direction-output;
+> +	fsl,sai-synchronous-rx;
+> +	status = "okay";
+> +};
+> +
+> +&iomuxc {
+> +	pinctrl_i2c4: i2c4grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_I2C4_SCL__I2C4_SCL		0x400001c2
+> +			MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA		0x400001c2
+> +		>;
+> +	};
+> +
+> +	pinctrl_i2c4_gpio: i2c4gpiogrp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_I2C4_SCL__GPIO5_IO20	0x1e2
+> +			MX8MP_IOMUXC_I2C4_SDA__GPIO5_IO21	0x1e2
+> +		>;
+> +	};
+> +
+> +	pinctrl_lvds0: lvds0grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_SAI3_TXD__GPIO5_IO01	0x12
+> +		>;
+> +	};
+> +
+> +	pinctrl_pwm4: pwm4grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_SAI3_MCLK__PWM4_OUT	0x12
+> +		>;
+> +	};
+> +
+> +	pinctrl_sai2: sai2grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_SAI2_MCLK__AUDIOMIX_SAI2_MCLK	0xd6
+> +			MX8MP_IOMUXC_SAI2_RXFS__AUDIOMIX_SAI2_RX_SYNC	0xd6
+> +			MX8MP_IOMUXC_SAI2_TXC__AUDIOMIX_SAI2_TX_BCLK	0xd6
+> +			MX8MP_IOMUXC_SAI2_TXD0__AUDIOMIX_SAI2_TX_DATA00	0xd6
+> +			MX8MP_IOMUXC_SAI2_RXD0__AUDIOMIX_SAI2_RX_DATA00 0xd6
+> +		>;
+> +	};
+> +
+> +	pinctrl_tlv320: tlv320grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_SAI3_RXFS__GPIO4_IO28	0x16
+> +			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22	0x16
+> +		>;
+> +	};
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtso b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtso
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..52020c9361cc8fc84823fcae93aa3651332b91d2
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtso
+> @@ -0,0 +1,9 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (C) 2025 PHYTEC Messtechnik GmbH
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include "imx8mp-phyboard-pollux-peb-av-10.dtsi"
 
-Co-developed-by: Carlos Song <carlos.song@nxp.com>
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v2
-- new patch
----
- drivers/iio/magnetometer/Kconfig   |  12 +
- drivers/iio/magnetometer/Makefile  |   1 +
- drivers/iio/magnetometer/mmc5633.c | 543 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 556 insertions(+)
+Your dtso only include one dtsi file, why not direct use
+imx8mp-phyboard-pollux-peb-av-10.dtsi as dtso.
 
-diff --git a/drivers/iio/magnetometer/Kconfig b/drivers/iio/magnetometer/Kconfig
-index 81b812a29044e2b0b9ff84889c21aa3ebc20be35..cfb74a4a083630678a1db1132a14264de451a31a 100644
---- a/drivers/iio/magnetometer/Kconfig
-+++ b/drivers/iio/magnetometer/Kconfig
-@@ -139,6 +139,18 @@ config MMC35240
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called mmc35240.
- 
-+config MMC5633
-+	tristate "MEMSIC MMC5633 3-axis magnetic sensor"
-+	select REGMAP_I2C
-+	select REGMAP_I3C
-+	depends on I2C || I3C
-+	help
-+	  Say yes here to build support for the MEMSIC MMC5633 3-axis
-+	  magnetic sensor.
-+
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called mmc5633
-+
- config IIO_ST_MAGN_3AXIS
- 	tristate "STMicroelectronics magnetometers 3-Axis Driver"
- 	depends on (I2C || SPI_MASTER) && SYSFS
-diff --git a/drivers/iio/magnetometer/Makefile b/drivers/iio/magnetometer/Makefile
-index dfe970fcacb8664b293af84893f7d3e3e8d7bf7e..5bd227f8c1204bdd8b8a43da180833eedca1457b 100644
---- a/drivers/iio/magnetometer/Makefile
-+++ b/drivers/iio/magnetometer/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_BMC150_MAGN_SPI) += bmc150_magn_spi.o
- obj-$(CONFIG_MAG3110)	+= mag3110.o
- obj-$(CONFIG_HID_SENSOR_MAGNETOMETER_3D) += hid-sensor-magn-3d.o
- obj-$(CONFIG_MMC35240)	+= mmc35240.o
-+obj-$(CONFIG_MMC5633)	+= mmc5633.o
- 
- obj-$(CONFIG_IIO_ST_MAGN_3AXIS) += st_magn.o
- st_magn-y := st_magn_core.o
-diff --git a/drivers/iio/magnetometer/mmc5633.c b/drivers/iio/magnetometer/mmc5633.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..b1a6973ea175634bbc2247ff84488ea5393eba0e
---- /dev/null
-+++ b/drivers/iio/magnetometer/mmc5633.c
-@@ -0,0 +1,543 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * MMC5633 - MEMSIC 3-axis Magnetic Sensor
-+ *
-+ * Copyright (c) 2015, Intel Corporation.
-+ * Copyright (c) 2025, NXP
-+ *
-+ * IIO driver for MMC5633, base on mmc35240.c
-+ *
-+ */
-+
-+#include <linux/delay.h>
-+#include <linux/i2c.h>
-+#include <linux/i3c/device.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/init.h>
-+#include <linux/iopoll.h>
-+#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/pm.h>
-+#include <linux/regmap.h>
-+
-+#define MMC5633_REG_XOUT_L	0x00
-+#define MMC5633_REG_XOUT_H	0x01
-+#define MMC5633_REG_YOUT_L	0x02
-+#define MMC5633_REG_YOUT_H	0x03
-+#define MMC5633_REG_ZOUT_L	0x04
-+#define MMC5633_REG_ZOUT_H	0x05
-+#define MMC5633_REG_XOUT_2	0x06
-+#define MMC5633_REG_YOUT_2	0x07
-+#define MMC5633_REG_ZOUT_2	0x08
-+
-+#define MMC5633_REG_STATUS1	0x18
-+#define MMC5633_REG_STATUS0	0x19
-+#define MMC5633_REG_CTRL0	0x1b
-+#define MMC5633_REG_CTRL1	0x1c
-+#define MMC5633_REG_CTRL2	0x1d
-+
-+#define MMC5633_REG_ID		0x39
-+
-+#define MMC5633_STATUS1_MEAS_M_DONE_BIT	BIT(6)
-+
-+#define MMC5633_CTRL0_CMM_FREQ_EN	BIT(7)
-+#define MMC5633_CTRL0_AUTO_ST_EN	BIT(6)
-+#define MMC5633_CTRL0_AUTO_SR_EN	BIT(5)
-+#define MMC5633_CTRL0_RESET		BIT(4)
-+#define MMC5633_CTRL0_SET		BIT(3)
-+#define MMC5633_CTRL0_MEAS_T		BIT(1)
-+#define MMC5633_CTRL0_MEAS_M		BIT(0)
-+
-+#define MMC5633_CTRL1_BW0_BIT		BIT(0)
-+#define MMC5633_CTRL1_BW1_BIT		BIT(1)
-+
-+#define MMC5633_CTRL1_BW_MASK		(MMC5633_CTRL1_BW0_BIT | \
-+					 MMC5633_CTRL1_BW1_BIT)
-+
-+#define MMC5633_WAIT_CHARGE_PUMP	50000	/* us */
-+#define MMC5633_WAIT_SET_RESET		1000	/* us */
-+
-+#define MMC5633_HDR_CTRL0_MEAS_M	0x01
-+#define MMC5633_HDR_CTRL0_MEAS_T	0x03
-+#define MMC5633_HDR_CTRL0_SET		0X05
-+#define MMC5633_HDR_CTRL0_RESET		0x07
-+
-+enum mmc5633_axis {
-+	AXIS_X,
-+	AXIS_Y,
-+	AXIS_Z,
-+};
-+
-+struct mmc5633_data {
-+	struct device *dev;
-+	struct i3c_device *i3cdev;
-+	struct mutex mutex; /* protect to finish one whole measurement */
-+	struct regmap *regmap;
-+};
-+
-+static const struct {
-+	int val;
-+	int val2;
-+} mmc5633_samp_freq[] = { {1, 200000},
-+			  {2, 0},
-+			  {3, 500000},
-+			  {6, 600000},
-+			};
-+
-+static IIO_CONST_ATTR_SAMP_FREQ_AVAIL("1.2 2.0 3.5 6.6");
-+
-+#define MMC5633_CHANNEL(_axis) { \
-+	.type = IIO_MAGN, \
-+	.modified = 1, \
-+	.channel2 = IIO_MOD_ ## _axis, \
-+	.address = AXIS_ ## _axis, \
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ) | \
-+				    BIT(IIO_CHAN_INFO_SCALE), \
-+}
-+
-+static const struct iio_chan_spec mmc5633_channels[] = {
-+	MMC5633_CHANNEL(X),
-+	MMC5633_CHANNEL(Y),
-+	MMC5633_CHANNEL(Z),
-+};
-+
-+static struct attribute *mmc5633_attributes[] = {
-+	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group mmc5633_attribute_group = {
-+	.attrs = mmc5633_attributes,
-+};
-+
-+static int mmc5633_get_samp_freq_index(struct mmc5633_data *data,
-+				       int val, int val2)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(mmc5633_samp_freq); i++)
-+		if (mmc5633_samp_freq[i].val == val &&
-+		    mmc5633_samp_freq[i].val2 == val2)
-+			return i;
-+	return -EINVAL;
-+}
-+
-+static int mmc5633_hw_set(struct mmc5633_data *data, bool set)
-+{
-+	u8 coil_bit;
-+
-+	if (set)
-+		coil_bit = MMC5633_CTRL0_SET;
-+	else
-+		coil_bit = MMC5633_CTRL0_RESET;
-+
-+	return regmap_write(data->regmap, MMC5633_REG_CTRL0, coil_bit);
-+}
-+
-+static int mmc5633_init(struct mmc5633_data *data)
-+{
-+	unsigned int reg_id, ret;
-+
-+	ret = regmap_read(data->regmap, MMC5633_REG_ID, &reg_id);
-+	if (ret < 0)
-+		return dev_err_probe(data->dev, ret,
-+				     "Error reading product id\n");
-+
-+	/*
-+	 * make sure we restore sensor characteristics, by doing
-+	 * a SET/RESET sequence, the axis polarity being naturally
-+	 * aligned after RESET
-+	 */
-+	ret = mmc5633_hw_set(data, true);
-+	if (ret < 0)
-+		return ret;
-+
-+	usleep_range(MMC5633_WAIT_SET_RESET, MMC5633_WAIT_SET_RESET + 1);
-+
-+	ret = mmc5633_hw_set(data, false);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* set default sampling frequency */
-+	ret = regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
-+				 MMC5633_CTRL1_BW_MASK,
-+				 FIELD_PREP(MMC5633_CTRL1_BW_MASK, 0));
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int mmc5633_take_measurement(struct mmc5633_data *data)
-+{
-+	unsigned int reg_status;
-+	int ret;
-+
-+	ret = regmap_write(data->regmap, MMC5633_REG_CTRL0, MMC5633_CTRL0_MEAS_M);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = regmap_read_poll_timeout(data->regmap, MMC5633_REG_STATUS1, reg_status,
-+				       reg_status & MMC5633_STATUS1_MEAS_M_DONE_BIT,
-+				       10000, 10000 * 100);
-+
-+	if (ret) {
-+		dev_err(data->dev, "data not ready\n");
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mmc5633_read_measurement(struct mmc5633_data *data, void *buf, size_t sz)
-+{
-+	__le16 data_word;
-+	__le16 status;
-+	int ret, val;
-+
-+	if (data->i3cdev &&
-+	    (i3c_device_get_supported_xfer_mode(data->i3cdev) & BIT(I3C_HDR_DDR))) {
-+		struct i3c_xfer xfers_wr_cmd[] = {
-+			{
-+				.cmd = 0x3b,
-+				.len = 2,
-+				.data.out = &data_word,
-+			}
-+		};
-+
-+		struct i3c_xfer xfers_rd_sta_cmd[] = {
-+			{
-+				.cmd = 0x23 | BIT(7), /* RDSTA CMD */
-+				.len = 2,
-+				.data.in = &status,
-+			},
-+		};
-+
-+		struct i3c_xfer xfers_rd_data_cmd[] = {
-+			{
-+				.cmd = 0x22 | BIT(7), /* RDLONG CMD */
-+				.len = sz,
-+				.data.in = buf,
-+			},
-+		};
-+
-+		data_word = cpu_to_le16(MMC5633_HDR_CTRL0_MEAS_M << 8);
-+
-+		ret = i3c_device_do_xfers(data->i3cdev, xfers_wr_cmd, 1, I3C_HDR_DDR);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = read_poll_timeout(i3c_device_do_xfers, val,
-+					val ||
-+					(le16_to_cpu(status) & MMC5633_STATUS1_MEAS_M_DONE_BIT),
-+					10000, 10000 * 100, 0,
-+					data->i3cdev, xfers_rd_sta_cmd, 1, I3C_HDR_DDR);
-+
-+		if (ret || val) {
-+			dev_err(data->dev, "data not ready\n");
-+			return -EIO;
-+		}
-+
-+		return i3c_device_do_xfers(data->i3cdev, xfers_rd_data_cmd, 1, I3C_HDR_DDR);
-+	}
-+
-+	/* Fallback to use SDR/I2C mode */
-+	ret = mmc5633_take_measurement(data);
-+	if (ret < 0)
-+		return ret;
-+
-+	return regmap_bulk_read(data->regmap, MMC5633_REG_XOUT_L, buf, sz);
-+}
-+
-+static int mmc5633_get_raw(struct mmc5633_data *data, int index, unsigned char *buf, int *val)
-+{
-+	/*
-+	 * X[19..12] X[11..4] Y[19..12] Y[11..4] Z[19..12] Z[11..4] X[3..0] Y[3..0] Z[3..0]
-+	 */
-+	*val = buf[2 * index];
-+	*val <<= 8;
-+
-+	*val |= buf[2 * index + 1];
-+	*val <<= 8;
-+
-+	*val |= buf[index + 6];
-+
-+	*val >>= 4;
-+
-+	return 0;
-+}
-+
-+#define MMC5633_ALL_SIZE (3 * 3 + 1) /* each channel have 3 byte and TEMP */
-+
-+static int mmc5633_read_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan, int *val,
-+			    int *val2, long mask)
-+{
-+	struct mmc5633_data *data = iio_priv(indio_dev);
-+	char buf[MMC5633_ALL_SIZE];
-+	unsigned int reg;
-+	int ret, i;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		scoped_guard(mutex, &data->mutex) {
-+			ret = mmc5633_read_measurement(data, buf, MMC5633_ALL_SIZE);
-+			if (ret < 0)
-+				return ret;
-+		}
-+
-+		ret = mmc5633_get_raw(data, chan->address, buf, val);
-+		if (ret < 0)
-+			return ret;
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		*val = 0;
-+		*val2 = 62500;
-+		return IIO_VAL_INT_PLUS_NANO;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		scoped_guard(mutex, &data->mutex) {
-+			ret = regmap_read(data->regmap, MMC5633_REG_CTRL1, &reg);
-+			if (ret < 0)
-+				return ret;
-+		}
-+
-+		i = FIELD_GET(MMC5633_CTRL1_BW_MASK, reg);
-+		if (i < 0 || i >= ARRAY_SIZE(mmc5633_samp_freq))
-+			return -EINVAL;
-+
-+		*val = mmc5633_samp_freq[i].val;
-+		*val2 = mmc5633_samp_freq[i].val2;
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int mmc5633_write_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan, int val,
-+			     int val2, long mask)
-+{
-+	struct mmc5633_data *data = iio_priv(indio_dev);
-+	int i, ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		i = mmc5633_get_samp_freq_index(data, val, val2);
-+		if (i < 0)
-+			return -EINVAL;
-+
-+		scoped_guard(mutex, &data->mutex) {
-+			ret = regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
-+						 MMC5633_CTRL1_BW_MASK,
-+						 FIELD_PREP(MMC5633_CTRL1_BW_MASK, i));
-+			if (ret)
-+				return ret;
-+		};
-+		return ret;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info mmc5633_info = {
-+	.read_raw	= mmc5633_read_raw,
-+	.write_raw	= mmc5633_write_raw,
-+	.attrs		= &mmc5633_attribute_group,
-+};
-+
-+static bool mmc5633_is_writeable_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case MMC5633_REG_CTRL0:
-+	case MMC5633_REG_CTRL1:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static bool mmc5633_is_readable_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case MMC5633_REG_XOUT_L:
-+	case MMC5633_REG_XOUT_H:
-+	case MMC5633_REG_YOUT_L:
-+	case MMC5633_REG_YOUT_H:
-+	case MMC5633_REG_ZOUT_L:
-+	case MMC5633_REG_ZOUT_H:
-+	case MMC5633_REG_XOUT_2:
-+	case MMC5633_REG_YOUT_2:
-+	case MMC5633_REG_ZOUT_2:
-+	case MMC5633_REG_STATUS1:
-+	case MMC5633_REG_ID:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static bool mmc5633_is_volatile_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case MMC5633_REG_CTRL0:
-+	case MMC5633_REG_CTRL1:
-+		return false;
-+	default:
-+		return true;
-+	}
-+}
-+
-+static const struct reg_default mmc5633_reg_defaults[] = {
-+	{ MMC5633_REG_CTRL0,  0x00 },
-+	{ MMC5633_REG_CTRL1,  0x00 },
-+};
-+
-+static const struct regmap_config mmc5633_regmap_config = {
-+	.name = "mmc5633_regmap",
-+
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+
-+	.max_register = MMC5633_REG_ID,
-+	.cache_type = REGCACHE_FLAT,
-+
-+	.writeable_reg = mmc5633_is_writeable_reg,
-+	.readable_reg = mmc5633_is_readable_reg,
-+	.volatile_reg = mmc5633_is_volatile_reg,
-+
-+	.reg_defaults = mmc5633_reg_defaults,
-+	.num_reg_defaults = ARRAY_SIZE(mmc5633_reg_defaults),
-+};
-+
-+static int mmc5633_common_probe(struct device *dev, struct regmap *regmap,
-+				char *name, struct i3c_device *i3cdev)
-+{
-+	struct mmc5633_data *data;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(dev, indio_dev);
-+
-+	data = iio_priv(indio_dev);
-+
-+	data->regmap = regmap;
-+	data->i3cdev = i3cdev;
-+	data->dev = dev;
-+
-+	ret = devm_mutex_init(dev, &data->mutex);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->info = &mmc5633_info;
-+	indio_dev->name = name;
-+	indio_dev->channels = mmc5633_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(mmc5633_channels);
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	ret = mmc5633_init(data);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "mmc5633 chip init failed\n");
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static int mmc5633_suspend(struct device *dev)
-+{
-+	struct mmc5633_data *data = iio_priv(dev_get_drvdata(dev));
-+
-+	regcache_cache_only(data->regmap, true);
-+
-+	return 0;
-+}
-+
-+static int mmc5633_resume(struct device *dev)
-+{
-+	struct mmc5633_data *data = iio_priv(dev_get_drvdata(dev));
-+	int ret;
-+
-+	regcache_mark_dirty(data->regmap);
-+	ret = regcache_sync_region(data->regmap, MMC5633_REG_CTRL0,
-+				   MMC5633_REG_CTRL1);
-+	if (ret < 0)
-+		dev_err(dev, "Failed to restore control registers\n");
-+
-+	regcache_cache_only(data->regmap, false);
-+
-+	return 0;
-+}
-+
-+static int mmc5633_i2c_probe(struct i2c_client *client)
-+{
-+	struct device *dev = &client->dev;
-+	struct regmap *regmap;
-+
-+	regmap = devm_regmap_init_i2c(client, &mmc5633_regmap_config);
-+	if (IS_ERR(regmap))
-+		return dev_err_probe(dev, PTR_ERR(regmap), "regmap init failed");
-+
-+	return mmc5633_common_probe(dev, regmap, client->name, NULL);
-+}
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(mmc5633_pm_ops, mmc5633_suspend,
-+				mmc5633_resume);
-+
-+static const struct of_device_id mmc5633_of_match[] = {
-+	{ .compatible = "memsic,mmc5633", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, mmc5633_of_match);
-+
-+static const struct i2c_device_id mmc5633_i2c_id[] = {
-+	{ "mmc5633" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i2c, mmc5633_i2c_id);
-+
-+static struct i2c_driver mmc5633_i2c_driver = {
-+	.driver = {
-+		.name = "mmc5633_i2c",
-+		.of_match_table = mmc5633_of_match,
-+		.pm = pm_sleep_ptr(&mmc5633_pm_ops),
-+	},
-+	.probe	  = mmc5633_i2c_probe,
-+	.id_table       = mmc5633_i2c_id,
-+};
-+
-+static const struct i3c_device_id mmc5633_i3c_ids[] = {
-+	I3C_DEVICE(0x0251, 0x0000, NULL),
-+	{}
-+};
-+MODULE_DEVICE_TABLE(i3c, mmc5633_i3c_ids);
-+
-+static int mmc5633_i3c_probe(struct i3c_device *i3cdev)
-+{
-+	struct device *dev = i3cdev_to_dev(i3cdev);
-+	struct regmap *regmap;
-+
-+	regmap = devm_regmap_init_i3c(i3cdev, &mmc5633_regmap_config);
-+	if (IS_ERR(regmap))
-+		return dev_err_probe(dev, PTR_ERR(regmap),
-+				     "Failed to register i3c regmap\n");
-+
-+	return mmc5633_common_probe(dev, regmap, "mmc5633_i3c", i3cdev);
-+}
-+
-+static struct i3c_driver mmc5633_i3c_driver = {
-+	.driver = {
-+		.name = "mmc5633_i3c",
-+	},
-+	.probe = mmc5633_i3c_probe,
-+	.id_table = mmc5633_i3c_ids,
-+};
-+
-+module_i3c_i2c_driver(mmc5633_i3c_driver, &mmc5633_i2c_driver)
-+
-+MODULE_AUTHOR("Frank Li <Frank.li@nxp.com>");
-+MODULE_DESCRIPTION("MEMSIC MMC5633 magnetic sensor driver");
-+MODULE_LICENSE("GPL");
 
--- 
-2.34.1
-
+Frank
+>
+> --
+> 2.51.0
+>
