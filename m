@@ -1,116 +1,224 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010029.outbound.protection.outlook.com [52.101.69.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C993002A6
-	for <imx@lists.linux.dev>; Wed, 24 Sep 2025 13:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758719279; cv=none; b=hSMlfzz5htLPSVWeNk/ofXGCaS3kdpZMsqNnfuf6tn2VzHYF15CQFnHc5qtYuAh/jQnQOVqJYXc+DYj28fc7OIOXQ0/OnIK35YiNWfMUtJOS9AyLKiehNY1+HH7pay3aRVGmAZpa9f4vIAlYRUT8bgMbNXct8eVchZn3rZHFNUQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758719279; c=relaxed/simple;
-	bh=S9krJNAXbYfiBjHOowFzU/MHlCd/viA3rjI5GntmR2M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GE8tTJZNC7DgORhpUIoMknn/Cj1cySzU0PdYVC1bEGxGzbBir6re09cC+Ny83ZLknuzjhv8j9g9YMQaRqQS4szqg2toMpckvKXbYO6O3P3uma9Cr36zu/y7ErI4xTjMLz2gWll4Gypfj6A9mLwVjQFd+9kGs/3uBYaT7h+o544k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=p3S5aNzj; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4301D6194
+	for <imx@lists.linux.dev>; Wed, 24 Sep 2025 14:30:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758724223; cv=fail; b=Q33dU3zNN9qB7kDApBIPBEFDps3cTIcXk9piYgFfSWJOWZLO0+H2rTJnHNKI805XBbNXE5DlbBvHxs+Cfo+bWOTylxZeJervGXc/d+FX7Hu1nNxjY0xjT1QyO7rE5+qW1c9QaOoITFwpnYemCGpmoHAJVlVFw2TqqgzRgh22SvU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758724223; c=relaxed/simple;
+	bh=x+vfteEN20fSvs+vx5KAROlZV0aVBG9w6WPcN+FXNEc=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=Ven6CXU2KizdOK0v++EZALCDCWiHcCnE1VNrYkJCqGoerSKwastg/fQyw6d2hGfrvwzPuXne0LdN286BOv3GwWK1e8wdh64wKd1UHj7RBHXWboCRCuDC8evsYDm7Wzu6vbJjX3coWm+g1zC5hNmXAG8gUBdFMtrj7E2hpBhSH8w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ELhaPlm0; arc=fail smtp.client-ip=52.101.69.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="p3S5aNzj"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b33d785de7cso67844166b.1
-        for <imx@lists.linux.dev>; Wed, 24 Sep 2025 06:07:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1758719275; x=1759324075; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rr4AHNLZpak0/qwDXluW3tBh9480ZbWvsfmpnJ8cepg=;
-        b=p3S5aNzjJTrKgsXH92Q8Azff8MQh1hAXJlX4SPbV11AZ/RZiTkYK/9YqPqDEMqXtBj
-         21r/Zy/USolHfIfJzrjsiFbpkB542hatI+5Ea4sB0+1Vc24kLFm1Flg7uYVaM7qwJHhE
-         +JWHSCKnopDt793G1zalDzry7ukBE5zr5u9vg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758719275; x=1759324075;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Rr4AHNLZpak0/qwDXluW3tBh9480ZbWvsfmpnJ8cepg=;
-        b=HglKO7di+jFB88jiN9jZOixK17qNtCwWFaGdNpPAx49PvnCEYl9mrZzY1ztZHOtx8Q
-         m2BQIJqXykN7APm7PApfcW8UJHL1d+BR6QJTkINcfIeKGOYs6h+Qr76+GuBvgOMnJ6Bs
-         p+w1Q/mcHqOQ1d9v4q+dPauCFK6JnUfznLM0k1LZgHsYiQM+qSTsEBltCtoqcM8fFUsc
-         EBwmkCr345Lu7fw+yTVbK30g8MTfHzwghsE7KdXNfelIsFvmgRP6NyB46AjSABbiTOQp
-         HeKumXnBVi/MdBrWDbGh5cr+O7dXfFmTtKAQT7b8Ja9NMvieXIYuf49oCKZ8hzFqkIZ3
-         uSzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUKxTMc+HhGX85y73gcge5FsUBLpOGOT1OY30ENNOOd0ilCeLxKgcYpfaoQvyT0Mq5a62U=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyt1u750qXiqRV/l6eKCr97D+fNLq6o6y/RyL768Ey9GZJpthKW
-	/krhl5vzHVm2UrjvZ/ezfFQ2mUQX1ZZeu5Gm3zxpJNIAwL3q8PWEJH4jJnD8turjh4A=
-X-Gm-Gg: ASbGncsRh/x+apsuEO4iQ7g1Yx1oCLqE94fYCfuTXVf+w/+SLrv0hSkWjTJD9Neh28z
-	RkpGcWPtPAcCSF0vSAHtRmg23Wwksl0y8pOtdKAt7P4/CLVYDTVf5ckXCYJgtwJ5Zhd1SJTJuEF
-	7H/Rfp5byPODtt/ha6MHJ+TqAGtAW2GOWXItYCSToo2/Eol2bZ06imp8rUNa7KfyE2Pvb8zaVlZ
-	b8aYqbj0xDRVMaWLsDyW8sBvKORmVtSZ8HAKbGH/SdoYgN1X2qA40pIXSFpIN3zCr999pdp5vjN
-	q7I3QvpxkAGxjSzQI7pDlrbCmS0Y17OAKs8M3UefEfJYENM1xDq33FLArdFRnxcYcf3aMOz0fs8
-	XdnM/gpWcVzemoWHrDOgg+j8Jr9lDJJlSgb1iBm1p+5GVLGk0N3GIw4snLtVUIlDFTyXpX99esG
-	oEf3J5OjZHKjeQMvQ0yDqeLuDtYJlzRVswn3uUdx0A3tCVPINvj51egOWu2cw=
-X-Google-Smtp-Source: AGHT+IFx9RJ+/2IFWtcGeD4AIDWcZcKVdKo7r0/4aN/+yno0pYXxsSMoGTi5NzRLLyVL5lFzEdLoFQ==
-X-Received: by 2002:a17:906:6a03:b0:afe:dd76:7cd4 with SMTP id a640c23a62f3a-b302b21c432mr677014766b.57.1758719275523;
-        Wed, 24 Sep 2025 06:07:55 -0700 (PDT)
-Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com (host-82-56-38-125.retail.telecomitalia.it. [82.56.38.125])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fc5f382b0sm1574379866b.2.2025.09.24.06.07.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 06:07:55 -0700 (PDT)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-amarula@amarulasolutions.com,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Russell King <linux@armlinux.org.uk>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [RESEND PATCH 3/3] ARM: mxs_defconfig: enable sound drivers for imx28-amarula-rmm
-Date: Wed, 24 Sep 2025 15:07:46 +0200
-Message-ID: <20250924130749.3012071-3-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250924130749.3012071-1-dario.binacchi@amarulasolutions.com>
-References: <20250924130749.3012071-1-dario.binacchi@amarulasolutions.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ELhaPlm0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LTFS5bV+wDH6PXUOapboVQjs9GSLGOQNZeO9z1cgIhoGtKGLKpU+4yoCixzAo7iYO9+kK1gWzrPp2nOHaKskMiZ5j57sFruGEFACChUDhyfp460NDJz+lDL4vDBXyGC+8HRvN0wZbc9VzlOHEXsOAaDWpwTjTkwbGNVV2rTjytUQKM3qg9uKuxcMv/Um0jHz7OJlC7PytegJ9W+TkFtS8Gh+zY8A8CiVxhPoum7HhXuBEe6nTSTZ7Mer1CaBHpcfRZovKU7xRMTDD/vVc0+B9dKkU5Jmj4wWFDQaHyVJXPEGCiTc6pqD64edgwBEaNcYzrR8zGOLn4lmF2L7AHTCPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1f6aD6PzPV539hc/RaLhyOQDvCWNGWs3WKloaVtp7gA=;
+ b=SWVumQJgXRAGL1ku/36VPwaNATqbtx6J6TeNgE5nEzW13Gl0uiKlgB3LhHHtSOhuUrrdwl8jqygoQ3hEWv6TioTlT7sutRwY/dpHTinK/ARhHqCVJg+pLb47FwTFq1gjivANyjik+9va3N6WnY4dxkfxZteeuNiCOBp5LssMPKctkHY0xOohejoPG8uqxVAnu3tVdu2duW4m6EclMs3Fp0ifCbUM8UkIcBxIrYCrJBrBjTnnobrYR3ZAWrahuSwpjcE2uHchwIKrCR19+P2gaBYKYgZCJ4U186BY/qDi0LrCG3oY6pf+vj5ZDu/OG6sLljFsmBZ2qpCxxsCgnHvFuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1f6aD6PzPV539hc/RaLhyOQDvCWNGWs3WKloaVtp7gA=;
+ b=ELhaPlm0Qp5Efj6p8JIM4nvZxndiLkZsdtGMIxGACTbFHRiDColfMEYGN3Dfp6mZOLIeD+M7YBuPS1SmTJykOSTAOcQrIkpNHWUvuV8XKOQEY0vSPeFxitEg0Bq1HUVMxUWDKlHTpa7oCnbfQ9ZqEwZtVxKfcbg45cBUdGa8k/+n12odS+zJ6ygFl2hGlOEIR2XOoK0vZMfGUEBk89TGdRZCjrApVdPNSi/pOVCJKubh9TrQ2E+wOJ5a8GehqHkfziS8/sMXfFpl56JOKQt12UGYWMBRQAEyG6LeaKwjpggEQ1Sv/Nz2+UIgg7Mi8aWLzBfNAnO+qMOwVdI4R0WIdg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
+ by DBBPR04MB7818.eurprd04.prod.outlook.com (2603:10a6:10:1f2::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Wed, 24 Sep
+ 2025 14:30:14 +0000
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9160.008; Wed, 24 Sep 2025
+ 14:30:14 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2 0/4] i3c: Add basic HDR mode support
+Date: Wed, 24 Sep 2025 10:30:01 -0400
+Message-Id: <20250924-i3c_ddr-v2-0-682a0eb32572@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGkA1GgC/2XMQQ7CIBCF4as0sxYDFCJ11XuYxlAY7SyEBgypa
+ bi72K3L/+Xl2yFjIsxw7XZIWChTDC3kqQO32PBERr41SC41F3Jg1Lu794nNQitjBi5wNtDea8I
+ HbYd0m1ovlN8xfQ64iN/6bxTBOOPS2IvVXvVSjWFbzy6+YKq1fgEAecR4nAAAAA==
+X-Change-ID: 20250129-i3c_ddr-b15488901eb8
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-iio@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
+ Carlos Song <carlos.song@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758724211; l=1949;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=x+vfteEN20fSvs+vx5KAROlZV0aVBG9w6WPcN+FXNEc=;
+ b=BMgN2nnKklgbjy7me7ySVb6Er+lmjk5op0UjsLiATYLuMSLDOfNKGY/nvSI4qoIln5NEx/c85
+ vfSvWA0ia8TA/yK9ezm9ci3OyBGNmdb7ihiakArOxV94JpGFK5KJ0wQ
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: PH8P222CA0021.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:510:2d7::6) To AS4PR04MB9621.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|DBBPR04MB7818:EE_
+X-MS-Office365-Filtering-Correlation-Id: 946d0887-81af-4d2f-bf95-08ddfb76e05c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|7416014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N3o0eU1ialBQVisrd1lKQkNwdDJPOHR4eC90UGpLTHhrcm5PSTE1YWFZU0Nh?=
+ =?utf-8?B?d005ZHFpUWtOeTJYVUxlOTRFV25LeTlFbVVGSkZUK3JXV1NEOU9hcVYvaTJ1?=
+ =?utf-8?B?NXhZNmtxMzh6ai9VblIxNEwyOXd2T1U4L2NCN0JmZUhPTCthTnRyTHhYa1hy?=
+ =?utf-8?B?S3ZPZWFVRzZyQW95WlZOdVQyZmVNQk5NRXo3UnUyRHptUlROYThRcXdRRDkr?=
+ =?utf-8?B?K1BLb0I0VERmUHNCQjE3TXJMTnJWc3pIVjB3ZTQrODVaWjhnY0g2Q3FWZmhQ?=
+ =?utf-8?B?ZWx0b25pS2ZQQlBGRVVCQjdpS0xwMzNGMlIySWNvOEljT2JDc0w1RWR2cVRu?=
+ =?utf-8?B?VnF0dkJobURXd0NnYTVlVXhQdUh4b3hBOGJ1SUFMQXIwYXVCQ0RoWjdjNDhp?=
+ =?utf-8?B?R3E2Z2hjY1YzdExDNThYTGdrU3hjN05tRW9mdHpHMHBOWWNQUGdPSlZjVng0?=
+ =?utf-8?B?bkJJTTkzRXlmS0tPQXBFNG0yTDYrbzI4T3ZFa3dJZkxlSUpvbjJkOVFiWUxH?=
+ =?utf-8?B?UTBuRUdWU3Jpb2xxK0NNQU5MRXBYL0RUakEvSmRVSjVyQXhGV0c5cnRTbXNR?=
+ =?utf-8?B?Nk00U1RtTm9TTUx5bDkvSHlLdXdrTUF3UTVBak82QTdRS2toRERnZkF4NTJX?=
+ =?utf-8?B?STMwUVVpTXpvV2ROV0dwSWh0YWEzZ2RwSlNzcm1rMWIvSmlHK3ZMMUhia05M?=
+ =?utf-8?B?dWpUcUszcHFzSVpuNkJkSEkzQm9qL3B2NVVXNUY4eEdxUWRTbDhBbHFLbEsy?=
+ =?utf-8?B?WVE4MTYvdk5jMTFjVDhPWjdENHg3cXp6Z0Uzd1ZKNjYxRTZZc2pvUVllZTFT?=
+ =?utf-8?B?OTdvNkhOTVFqOGRYMnFmMHQxbDFhYzR1UzJBVGJ6L25jQWlpdkJUSmJHdGlx?=
+ =?utf-8?B?WCtJWS9MdW1HV2xyMVJwRmNpRXNzMjBkVHNYTFh0Tjhrb1B5NGtDWExQVlJJ?=
+ =?utf-8?B?YW5OMFVDSUlaZ1BEdjIxOWNTbEFnUElGcGFMVlcwLzBISVRIUGI0NEprOTNn?=
+ =?utf-8?B?K2ZVWk1LU2VieGFqdFF4RGk5aXpaTjVFSXhiS3lRMk51MmZYcUc1MCt2d0hr?=
+ =?utf-8?B?NXZScVBLZ1B4Nm4vbHkxa2UrdHh3T2tCZTIzcEtFd0tsdjk2Z1pDTkN1K2dw?=
+ =?utf-8?B?VkloNGRRMy9YQmV0VlI0Q3BHV2cwVTV1Q29vcTg5V0ZhMW1lREtkajZvdFdo?=
+ =?utf-8?B?WWVmemRMVjhzWFp4VC8yUjNuZ2kzWWQ2aEJlU1pCcDZEdlZJaitMNnFuWDdy?=
+ =?utf-8?B?eExCZDBNMUlubldrb200cG95ZnFUbC9vQkpad2lFL3gzbG80RG5MWWJwajU2?=
+ =?utf-8?B?SURLRVlHR1FPYlBaZmpsb2dVNXZHWWUzQmswSSt0ZEYvSUd4aDlQcWxYUXps?=
+ =?utf-8?B?OFBGbUhKVFZHdWdnSE9KeFhSZUIvRm0weWR5VlBYY1ZvR2hkRktxR2lzNkJk?=
+ =?utf-8?B?WkJ3NVdpRWtFaFhpZ0daaU1UdTdaT2NUQmtzSEdKQWNnOTl4RTRCTTE1bWhv?=
+ =?utf-8?B?VzlMbjRiQzhuaWpmRXNTbXpuWlR2VURaY21PL0dUYlFsaHJDN09Da20zeFRz?=
+ =?utf-8?B?ZlloZ3ZYVWhNZTRPWGEvVUhjMzIvRHY2NzBLRElsbGdKdXFuNURGOHpDaEZO?=
+ =?utf-8?B?NllXb1hFYXVmNXpxT2N4QVM1MnhLTzVlRGJ2OG9kQlNhcE0wUmQxOFdpQks2?=
+ =?utf-8?B?MkxIekRkMXJFZUpZZFFIMFpva0FwM2ZRam1TZkRyV2NMVEgzNUFBMVcyS3VH?=
+ =?utf-8?B?TGhNRDhYNEdxdkZqVk9kc2ZtRFVKUGFvOVVaWjJsS3FYWWt4V2lrYzIrRC9M?=
+ =?utf-8?B?Y0pJbC9wSVVCV3JhN3hKRzlKR1NxeGUzOG9jSlg4ekN3cjZ6RlBzYU0xa1J2?=
+ =?utf-8?B?eDlBZXlOWlk2aXQ5cVhHbjhEK2REaTN4dGVmNzhzT0cyMlU4aVBGazVyWTZz?=
+ =?utf-8?Q?9tRLAAHPNRI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ajZ2aTJKb3hyb3hmTkxZQTVKQnVzbFU1SHlxTnRaQ3V6bVFhRGlmb2EydUo4?=
+ =?utf-8?B?Mkxuek41VTljdTlLMWQwQS9LRUdNRjRFZW9YVTdoM2Z0cmhFZEZJajVUZnZs?=
+ =?utf-8?B?amI4OHpPT0E1RjFhNHY0RVBxZ2lLNzRURzJvcWMxUHpqcTRNNUtnUDdUZVNE?=
+ =?utf-8?B?VWZtZ1RKZTZGVXJZRzRvdXdxRW5xNUhKbE1adTNCb0JZZG0xVXEza0xIMU4v?=
+ =?utf-8?B?dk9zeEd5ZzAvUk0yNjNNeSsyLzhwTjRLUHZ0VHlPejVvRjNzUnJlTjVLSito?=
+ =?utf-8?B?NHE0L2Nuak15NkRmOVdRQ0JnOE1FNFBOUXZaSVlVWmpUU1VUb3duOFExOFBz?=
+ =?utf-8?B?T0hMQ1R6YVRnb1QwWTV6SjZnVzBlZ0F3WHlPL0g1Z2N5RDBTVkZ5SC9GN3J1?=
+ =?utf-8?B?ZndWeStJcmdzUXJyaHNTZllRV3NCZVpQQmcxRjV2bG02WERmOUswQ3hrSXY0?=
+ =?utf-8?B?emcwd2NYRjhOb014M3JhSFk1YjJ2a002YklYc0VzQngvdWVzWWlOb0ZiZE1T?=
+ =?utf-8?B?R3ZsZU9DU0g4OTFDUG1zTVJjU2ZSV1dlTEVkWlJtMzFuZFBrbVRXY3F0WEpK?=
+ =?utf-8?B?VmMxZURkaVc3U0NGMnVkTEl3bEdLRGJTWEZwVnRNdEszaWxyRlJ3blBXY3p2?=
+ =?utf-8?B?ZHp0QjlYSFN0M0MyY2VXa0lvK0NNNFg4emFNdjlLdjFLenlHa1BKNVJWaEVt?=
+ =?utf-8?B?VkdXbmJ3c0FjTktiRG1Ka1BsY0NXdXhVZ1FpOG1mcUdnMG5LeDF3S3owaktw?=
+ =?utf-8?B?aDV0eENmb1VvamdNblJ4bDlPU3VkZGgzRDQ5TVRySC9NSEFtdjYxVFZLcnRV?=
+ =?utf-8?B?RXQ5RmNjdnQ0eTI2KzNVY0p6TDl1Y3FnOU4yWmFwS3Bna01GdGRqaW1GU0dI?=
+ =?utf-8?B?dk9EUHJ2a1pUUENqanlPKzF6T1ppaS9uL2xCamJHMTRYVENERlh3Sm5Xb21L?=
+ =?utf-8?B?UndOQzRZRU9OMzJBM25KL2tESGFCYXVVYVBSSzYzdlI1dVdJL1RkQXc0VVZl?=
+ =?utf-8?B?bmZoVThCRk5TNjVpQnJPaTljMXhWZElEWHJHSFdleVFXLzZNYzFYWktCSlgw?=
+ =?utf-8?B?QStPMEplK0VYdzBhb2txQm9RSE44Sk0zMlZhY1p0eDJyc2dJRzZzUUhhbGlW?=
+ =?utf-8?B?c2VORytNQ28wRU10SkFXanNPSWFwTlF6TnhPanJXRERJWXpSZEZXQUVKdTB1?=
+ =?utf-8?B?YTc2a2FROE9SY0JsVkVmamZFREprN05EdmlDZnpvSUFrS0JHYzhNbGg1dDRm?=
+ =?utf-8?B?akpQZ1RMVHBIaFNvdUdLYkRkdk1iTmE5dllBcFhNbmh1Nkk4VTBjSTJhbjFI?=
+ =?utf-8?B?ZGt4Y0w2aVFmSWpXODZQZW56Z2xTcjFwMW11UEFUbnRRNjBXYTEwc0FFNDg1?=
+ =?utf-8?B?bjdQV0p6bHREL3k3ZDF5Y1A5RWxTdmd1OWNLUGtSN1VEZndYK05HMllLTDRM?=
+ =?utf-8?B?dStjY0Z2dEYyTFdKT1JSMmhOWklPUE5uM2JYblI0YllxZXErUGR2Q2ppejBF?=
+ =?utf-8?B?Q25RcEpGRXgya0RtR28xKzgyVWlDVS90REFtNzFyYmRaOE9OR0FmNDlLTUJH?=
+ =?utf-8?B?TnR5amk4L0NQZU1HOVR4S2NTWFBJNm4zY3NlODhtOWNCaHp0OTlzUWtMdUxP?=
+ =?utf-8?B?ekhUUzh3Nmo5eS9hck03b0RLbFJQVXpaMWNtbFlJUkFHSWFaaFBlV3dOdTBX?=
+ =?utf-8?B?bVA4NzVRSGk5cEVTYS9xMmljSzZYWWdhVTBOU3IxM1lhNHpoRU1rVnVrQjZw?=
+ =?utf-8?B?bnp2VWUzc3UweXB3WUcxRnVwVWtaK2lvL1FKRjNxdE1oVHZPYzZHOTEwdFUw?=
+ =?utf-8?B?akZKOVAxOWNNUlZtZjlTUXQweERTcVJJLzVuS2ZaT21xSEZCYnVpc2w2aVg4?=
+ =?utf-8?B?RDBZaStOMmVjZWhra2NVV3dHbVhWSDl3S2oxV0N1QjZqT2lLVWRwSU5ZVTJ0?=
+ =?utf-8?B?eUZPc2tKMjU5Vkc3V2RuTDI0TU45TzhwMDhJeGRySldIOENGMHlzN1NhZ3Bh?=
+ =?utf-8?B?VUNZRVVmMXJaUmZXVjFXVHdHNld2THp3MVQ5MFdVR0pITUJGeEhjOWNIK1ZB?=
+ =?utf-8?B?WU9WZERTT0kvaFdISlJBSDBIdVFCSHpkdFd1Uk5LdlBhQytkSkttY2hNb0dt?=
+ =?utf-8?Q?0Ti9+ifAVK+P4uHRbNdQQiPe6?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 946d0887-81af-4d2f-bf95-08ddfb76e05c
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2025 14:30:14.7341
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +jVNST1FvxoUHRV2KXzKPn5a7cXc86pi9+z8WAPTsxCxNh+M5pdlKZRK7WWK4EKZozDh1Pw1xSpBUYgUy0DAiw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7818
 
-Enable TLV320AIC3X I2C codec and simple-card support used on Amarula
-rmm board.
+Add basic HDR mode support, only support private transfer, not support
+CCC command.
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Update i3c framework API to allow pass down mode and extend driver callback
+function.
+
+Implement HDR transfer in svc i3c master driver.
+
+Simplifed HDR flow is (ref i3c spec line 5514) Figure 129
+
+<--              SDR            ---> | <--- HDR
+START 0x7E RnW(0) ACK CCC(ENTHDR0) T   HDR-CMD(00-7f write, 80--ff read)
+
+                                    ----> |
+HDR-DATA HDR-CRC HDR-RESTART .... HDR-EXIT
+
+Note: HDR-CMD is 16bit data, which included 7bit slave address and 8bit
+read/write command.
+
+svc hardware can auto issue SDR part.
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v2:
+- Add sensor driver, which use HDR mode read/write data.
+- change priv_xfer to i3c_xfer.
+- Link to v1: https://lore.kernel.org/r/20250129-i3c_ddr-v1-0-028a7a5d4324@nxp.com
 
 ---
+Frank Li (4):
+      i3c: Add HDR API support
+      i3c: master: svc: Add basic HDR mode support
+      dt-bindings: trivial-devices: add MEMSIC 3-axis magnetometer
+      iio: magnetometer: Add mmc5633 sensor
 
- arch/arm/configs/mxs_defconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ .../devicetree/bindings/trivial-devices.yaml       |   2 +
+ drivers/i3c/device.c                               |  27 +-
+ drivers/i3c/internals.h                            |   6 +-
+ drivers/i3c/master.c                               |  22 +-
+ drivers/i3c/master/svc-i3c-master.c                |  95 +++-
+ drivers/iio/magnetometer/Kconfig                   |  12 +
+ drivers/iio/magnetometer/Makefile                  |   1 +
+ drivers/iio/magnetometer/mmc5633.c                 | 543 +++++++++++++++++++++
+ include/linux/i3c/device.h                         |  28 +-
+ include/linux/i3c/master.h                         |   5 +
+ 10 files changed, 702 insertions(+), 39 deletions(-)
+---
+base-commit: 5248ab97a6dd1dc6856422f6b1595baaf4fa85ce
+change-id: 20250129-i3c_ddr-b15488901eb8
 
-diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defconfig
-index 3b08c63b6de4..603fb003b223 100644
---- a/arch/arm/configs/mxs_defconfig
-+++ b/arch/arm/configs/mxs_defconfig
-@@ -100,6 +100,8 @@ CONFIG_SND=y
- CONFIG_SND_SOC=y
- CONFIG_SND_MXS_SOC=y
- CONFIG_SND_SOC_MXS_SGTL5000=y
-+CONFIG_SND_SOC_TLV320AIC3X_I2C=y
-+CONFIG_SND_SIMPLE_CARD=y
- CONFIG_USB=y
- CONFIG_USB_EHCI_HCD=y
- CONFIG_USB_STORAGE=y
--- 
-2.43.0
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
 
-base-commit: cec1e6e5d1ab33403b809f79cd20d6aff124ccfe
-branch: microgea-rmm-audio
