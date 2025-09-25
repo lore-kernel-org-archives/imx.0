@@ -1,45 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C6931D74E;
-	Thu, 25 Sep 2025 19:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EA552F88;
+	Thu, 25 Sep 2025 19:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758829462; cv=none; b=hW6HAyCzXk0hkot/YlP8FOlTcvI9UoCixFyd9iD66LWHIkYnIePnooF334dAwG0W8Fik/3Dh9nDM0p2L/vNW1u6xQz4GMxRQ4fF+vGsdqcc+5JxjBVHWiZKT9utAAtYJKg3yBPBQD3Bl2cmzCHu5caoglVtdIQ8uHZ1/B+DaRec=
+	t=1758829602; cv=none; b=oOhPWxqtxdF8CdzEZ096LMQYjUvz//GBPoTJYCmIJxZ8JUr23UFOrPXs43YdYj1zCnPwtBvTG4H9QVh8ARRXCBBnP2kwaPaPZWC1lD15NGa2Skqz1Ck1r+F7GFAAKhbfppj01C6ej1I+ZBxKh1qR47lnT3pfBLeOkJXKXBEIJ0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758829462; c=relaxed/simple;
-	bh=vghySfSa/y6MmaR36iNIrcLGg9onAQWW93s2ZzdWBcU=;
+	s=arc-20240116; t=1758829602; c=relaxed/simple;
+	bh=1CMpelpJPOQG59n98d4hwrAEWkj5zityT4djB5jxbMU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YHkzCmZhWvg3kNjFcc0mdll3Vx+wxCHbAa3ZqqjszETdu6eigX2u92WFFmlxrJxnXuSTCKwWgZ22k6WLtcpoDB0Pw0m/ZsnuNFMHmAID6YdiKmKXcopnjO1LVkiz3VnJg0d0j5uv6QV82JSkvnFGSAz4GNLyCRLligR54NUHMG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oCJScUX8; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=cRniG9Uv5jVM77GUbopC+GXGZtlIO2uNsu0W6Dve2maBs+McUH+AlsmnX+RAcfQZSaEZvgiSpmiVa4xPwkhF6o1w4tHprJ1PSf9DdSsMU8yQktHsv0ctyy49YUkopNbbwHgRrFfJuHQNBDYh8ULhWwSx1HOkVELqWNMbWcye2eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHJPWf6N; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oCJScUX8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE56C4CEF0;
-	Thu, 25 Sep 2025 19:44:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHJPWf6N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83338C4CEF0;
+	Thu, 25 Sep 2025 19:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758829462;
-	bh=vghySfSa/y6MmaR36iNIrcLGg9onAQWW93s2ZzdWBcU=;
+	s=k20201202; t=1758829602;
+	bh=1CMpelpJPOQG59n98d4hwrAEWkj5zityT4djB5jxbMU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oCJScUX8tRRKdtU1+T/o5HRu9r4mTlVPo28Y31GGhsHjOn4qyghUbvQp4rBJ5rWQm
-	 /6IBTCvOUyZXX9tD+WOzB5QropFX9bYYmotHKVN29cvZqS4Q8/tUugmMageWGoOFRg
-	 QX6V841zzdHFSX9/m29YVP4Z9pQd4LCiMTflSj/oEs0DxXXkz29arXJGSkpRRroLNZ
-	 +HzNy47DLWQfq4fdMYZeM0JeMkGosBEe9ybXqBxOIpaillHb2LvgRMlIRZR7TuHSW6
-	 6wRUenwQukt4ftH8AyFBdLpXqvzO+cyiDzwSUcSEV1bVUE7B9XU356DtoIMbL8rFfA
-	 wvdQS9w8xyo8w==
-Date: Thu, 25 Sep 2025 20:44:18 +0100
+	b=HHJPWf6NyAQeEXhR0uY501tp12VdDzgSTEKCAEpQzkrnrOM/os2TYggiPWPyejJNt
+	 AC2wCCv3piz/Qf/cxnb3SbiAxcg0Jhy3q1+EeO7aT+xLmjwpafIQqv7dsia0/QE1IY
+	 bzdpCd+LStyXKHxBJcAaOkNk6BZcaE2GT/RvhuNQ+wTj0p8DhxxH6XikN9SIQe7nZt
+	 1YfrO9n3zOx2Z9VzNyVNpSIU+Fnc+B4FR8mhcQKnT6iUX4yPnnapqKbZDYfHz9rGSn
+	 eypAyvSS5xdPUsAPGrHGaEtDqYxELibaxRRxTPKQuUqlL7J8kxrNi6mN3lhyPh5p9p
+	 xz6ec1mBUpaZg==
+Date: Thu, 25 Sep 2025 20:46:38 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh@kernel.org>,
+To: Frank Li <Frank.li@nxp.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	"open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
+	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
 	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: hwmon: (lm75) allow interrupt for
- ti,tmp75
-Message-ID: <20250925-granite-pawing-5ee4bb84efaa@spud>
-References: <20250925192219.303825-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/1] dt-bindings: touchscreen: move ar1021.txt to
+ maxim,max11801.yaml
+Message-ID: <20250925-swimming-overspend-ddf7ab4a252c@spud>
+References: <20250925185653.298246-1-Frank.Li@nxp.com>
+ <20250925-boundless-announcer-007f08404112@spud>
+ <aNWX+DxUOXlOvsmo@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,26 +49,47 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ONb/nGNj+fiW7Rs6"
+	protocol="application/pgp-signature"; boundary="WV+/qNvvVSDWWLA1"
 Content-Disposition: inline
-In-Reply-To: <20250925192219.303825-1-Frank.Li@nxp.com>
+In-Reply-To: <aNWX+DxUOXlOvsmo@lizhi-Precision-Tower-5810>
 
 
---ONb/nGNj+fiW7Rs6
+--WV+/qNvvVSDWWLA1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+On Thu, Sep 25, 2025 at 03:28:56PM -0400, Frank Li wrote:
+> On Thu, Sep 25, 2025 at 08:20:02PM +0100, Conor Dooley wrote:
+> > On Thu, Sep 25, 2025 at 02:56:47PM -0400, Frank Li wrote:
+> > > ar1021 have only reg and interrupts property beside touch common
+> > > properties. So move context of ar1021.txt into maxim,max11801.yaml.
+> >
+> > Are these devices even remotely related, other than both being touch
+> > devices?
+>=20
+> No, just properties is the same. There are many binding files, which bund=
+le
+> similar properties's yaml to one file.
+>=20
+> we may create trivial-touch.yaml, which similar with trivial-rtc.yaml.
 
---ONb/nGNj+fiW7Rs6
+I think putting trivial devices that are completely unrelated into one
+file is confusing. It makes it seem like these devices are similar in
+programming model etc.
+Merging them into a explicitly designated trivial-touch binding would be
+an improvement, if there are lots of very similar devices that could
+also be merged in together.
+
+--WV+/qNvvVSDWWLA1
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaNWbkQAKCRB4tDGHoIJi
-0pTzAQCvBS0NjKDWCSDBUuV4a+DVogdoM3u/jzfJdCkHyCal+wEAovVXjIDV7Hnd
-rU9GBm+oCUQIJGsny6tl1+M6uvq8qAY=
-=rdhU
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaNWcHgAKCRB4tDGHoIJi
+0kjRAP9QfSjE6qkn0yqyazy04cUhyWgyeJm0x1LmKrRPXJALdwD/f/7AkBsO1Odt
+i8cZvFn404CDFdbXMPMJ/dLkfhTWFAg=
+=FRwh
 -----END PGP SIGNATURE-----
 
---ONb/nGNj+fiW7Rs6--
+--WV+/qNvvVSDWWLA1--
