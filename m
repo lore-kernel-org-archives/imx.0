@@ -1,78 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B757C1DA23;
-	Thu, 25 Sep 2025 19:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2AB13635E;
+	Thu, 25 Sep 2025 19:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758827722; cv=none; b=C1xBomLiZFkmayiIM6auYofh5PW2jbgs90BCop+ZP0/9/9wUep1obZOjucJRtlpvPHtqrPZhXfJ30zJ3NIEPKiylQEw7e1GcrGRzo/+drg2ZAxnxU6qYy09tniNimw9rlEFyooy6fJtTkmAg/0dM0/okdQmwWCqerr3iU6mlA9U=
+	t=1758828007; cv=none; b=oOAWV2R3lECkQXizYC86GcFiJZazHXb4e2NDMtZ1MsrxVXLp9K+nCFoEOJR2eKWk5N6EoNaHuKUlAlfwJlX3zn2N2/oyJn3twwikj+Lp6qX6EhoPO5VVAEG/L96iwfUGqOfTkFNPT1dRBOyUyFJdWfxxC9q1x8x3xn0bPXMpSUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758827722; c=relaxed/simple;
-	bh=7MCu9WAn1XhTifdzDhG1kliHkb7fivInIPRnmRZyBcI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=EB4GYqqkwTz2tPNzfkI4EnTYIngfQL8EujMGbvknIz28aCwEJoicwLyC/zZACxMORcATbN6aG6i2stxPJx3bMlcQ1OcQZWhMlhuMJKZzHJllKTpDsEM/RbAEbAM0uJhVp+DSfInmIn4OHmAuP2Avrk9/rSK/CPR5vRDl8FKf3Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LcD8AaqX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758828007; c=relaxed/simple;
+	bh=oXFywUUkgH8AChne9M1JETfHccSCydGfLpgO9ndlksQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uJlwAulICyqyXubpQ0YEblzlb2N0aBCJAkeMkBwm444H35liqePG5lPxmVRVe8j7oV/QMeQ6pm+D91S8h0Lvyj5juEDOr2hMRcHvsrSNF9zm1aH7CvmQBUGRvIcvU6ErjMhBS6wr6zm5M948nK3K6LQ6w6rf039hFnegJH4MnoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bq1kVWL9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LcD8AaqX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C103DC4CEF0;
-	Thu, 25 Sep 2025 19:15:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bq1kVWL9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45294C4CEF0;
+	Thu, 25 Sep 2025 19:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758827722;
-	bh=7MCu9WAn1XhTifdzDhG1kliHkb7fivInIPRnmRZyBcI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=LcD8AaqXB/BQZIvkaRLcXzSCaP3SbfWtQadWYo5Amvi8SAxPZKOlNHJYI2RX/kRTl
-	 YH8388EkQAd1KOQFD3vaVuso5ricLSBDYfBApSyfBg0doQNULBFHA0fjCrpJEIVx66
-	 9xVzPhP0//4EETfvnP7/Pyy/wK7LGEQT4jrJZ/UBI+81zCV/7hlT0s8dfQnH8O2wh9
-	 QS6JDsQXkw4fMJVjy1jnqK2ltXMSMEElAxzFidZhzaK1J4qm+7U3LKPyq0qBAsqlmc
-	 /BbcSA/ESWpoKcrBnD3zlyktSnBV52expi0auAW4Gxbcrpu9ICd0drRFNqejZHOvOr
-	 Ahna0RK7Sf37Q==
-Date: Thu, 25 Sep 2025 14:15:20 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>, chester62515@gmail.com,
-	mbrugger@suse.com, ghennadi.procopciuc@oss.nxp.com, s32@nxp.com,
-	bhelgaas@google.com, jingoohan1@gmail.com, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com,
-	Ghennadi.Procopciuc@nxp.com, ciprianmarian.costea@nxp.com,
-	bogdan.hamciuc@nxp.com, Frank.li@nxp.com,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, cassel@kernel.org
-Subject: Re: [PATCH 2/3 v2] PCI: s32g: Add initial PCIe support (RC)
-Message-ID: <20250925191520.GA2175949@bhelgaas>
+	s=k20201202; t=1758828007;
+	bh=oXFywUUkgH8AChne9M1JETfHccSCydGfLpgO9ndlksQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bq1kVWL9hbWdgjZGZ5Mus6XNwyyOYsBNq+n3lo1gwGFoDsnQPJN8dW+DedftJM5Rv
+	 ldkq0opweIZp/+RPVqsWAr8tomaZmy2ikpI1a4Cit9sl4OuxkQEXNWNdwuRv/b3ZE/
+	 /EQ9AhxHvpa2HvH7eYQg3QJg9DY8OWUBOaDBwDjE0euD5IPY9G9zlcwMnrZAScnlGF
+	 eS4pwTDXwCH84HSm7r5Y9/ghyTrHEA9qHpKUhkQ4dLeshJGQkVGYYYazqZdkZErdql
+	 74UUFasGf8n++iaHGzXiuEVopL5HOQvCPLC4CblzcTL2GB0wGZu76BIISm3dg6UAhT
+	 r7c7Sl+clS+Xg==
+Date: Thu, 25 Sep 2025 20:20:02 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: touchscreen: move ar1021.txt to
+ maxim,max11801.yaml
+Message-ID: <20250925-boundless-announcer-007f08404112@spud>
+References: <20250925185653.298246-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3Tz25XhdHN4bT8F8"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqJMibSgsEFeUvHswVy6zsHMn7ZXkpbhch06oQxPY9NocQ@mail.gmail.com>
+In-Reply-To: <20250925185653.298246-1-Frank.Li@nxp.com>
 
-On Mon, Sep 22, 2025 at 09:52:21AM -0500, Rob Herring wrote:
-> On Fri, Sep 19, 2025 at 10:58 AM Vincent Guittot
-> > Add initial support of the PCIe controller for S32G Soc family. Only
-> > host mode is supported.
 
-> > +++ b/drivers/pci/controller/dwc/Kconfig
-> > @@ -255,6 +255,17 @@ config PCIE_TEGRA194_EP
-> >           in order to enable device-specific features PCIE_TEGRA194_EP must be
-> >           selected. This uses the DesignWare core.
-> >
-> > +config PCIE_S32G
-> > +       bool "NXP S32G PCIe controller (host mode)"
-> > +       depends on ARCH_S32 || (OF && COMPILE_TEST)
-> 
-> Why the OF dependency? All the DT API should be available with !CONFIG_OF.
+--3Tz25XhdHN4bT8F8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-We have lots of similar OF dependencies.  Do we really want it to be
-possible to build a non-working driver in the !COMPILE_TEST case?
+On Thu, Sep 25, 2025 at 02:56:47PM -0400, Frank Li wrote:
+> ar1021 have only reg and interrupts property beside touch common
+> properties. So move context of ar1021.txt into maxim,max11801.yaml.
 
-Maybe we should retain the OF dependency but only for !COMPILE_TEST,
-like this:
+Are these devices even remotely related, other than both being touch
+devices?
 
-  config PCIE_S32G
-         depends on (ARCH_S32 && OF) || COMPILE_TEST
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/input/touchscreen/ar1021.txt         | 15 ---------------
+>  .../input/touchscreen/maxim,max11801.yaml         |  4 +++-
+>  2 files changed, 3 insertions(+), 16 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/a=
+r1021.txt
+>=20
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/ar1021.t=
+xt b/Documentation/devicetree/bindings/input/touchscreen/ar1021.txt
+> deleted file mode 100644
+> index 82019bd6094ee..0000000000000
+> --- a/Documentation/devicetree/bindings/input/touchscreen/ar1021.txt
+> +++ /dev/null
+> @@ -1,15 +0,0 @@
+> -* Microchip AR1020 and AR1021 touchscreen interface (I2C)
+> -
+> -Required properties:
+> -- compatible		: "microchip,ar1021-i2c"
+> -- reg			: I2C slave address
+> -- interrupts		: touch controller interrupt
+> -
+> -Example:
+> -
+> -	touchscreen@4d {
+> -		compatible =3D "microchip,ar1021-i2c";
+> -		reg =3D <0x4d>;
+> -		interrupt-parent =3D <&gpio3>;
+> -		interrupts =3D <11 IRQ_TYPE_LEVEL_HIGH>;
+> -	};
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/maxim,ma=
+x11801.yaml b/Documentation/devicetree/bindings/input/touchscreen/maxim,max=
+11801.yaml
+> index 4f528d2201992..288c7e6e1b3b7 100644
+> --- a/Documentation/devicetree/bindings/input/touchscreen/maxim,max11801.=
+yaml
+> +++ b/Documentation/devicetree/bindings/input/touchscreen/maxim,max11801.=
+yaml
+> @@ -11,7 +11,9 @@ maintainers:
+> =20
+>  properties:
+>    compatible:
+> -    const: maxim,max11801
+> +    enum:
+> +      - maxim,max11801
+> +      - microchip,ar1021-i2c
+> =20
+>    reg:
+>      maxItems: 1
+> --=20
+> 2.34.1
+>=20
+
+--3Tz25XhdHN4bT8F8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaNWV4gAKCRB4tDGHoIJi
+0v9+AP4+SeGB5bYI1zCI06eAxO9wh1uemfGAuFgtfYMXkFosDQEA+0IvYQ/31C8M
+pDHYBfqh67VBMbZ9Qiq32iZ/+IzxVws=
+=s8Jj
+-----END PGP SIGNATURE-----
+
+--3Tz25XhdHN4bT8F8--
