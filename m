@@ -1,214 +1,236 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013003.outbound.protection.outlook.com [40.107.159.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989B72D6E60
-	for <imx@lists.linux.dev>; Thu, 25 Sep 2025 09:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758791586; cv=fail; b=YLUAOiHCQl6lZPIyMRvu7CRXqeKH4z3nd804Pht9QtAOWSQn/tmd62XUSadhkk4Q5AOBWrVpser0ySNB7Cn7sBFC2lSibbvxp4bVbNTrFTMg9rqpq3hlReRHZP0v8CcvF+Hqr91fpFzL5/2xJXc806f+uJVyKel+vV/SGFc8D9k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758791586; c=relaxed/simple;
-	bh=XBM3CUY1qJXBCleCNR6UhrOudMBQ6hKCSVJfr9vWshU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nLx3LQB+ooKaVGDRD5jzRvOeui5wvfqmKVjKqdmroXdOEQSEPO0OnVBmte0okMk3G7pbK2CH68OH4NxQ82kA9kssKzULgn2QWVLWRaM4z5vrZlRNToax7+ZzmXZHNtI4k5QSXxNnIXOj9sN0rqj4oFokZeb0wAQKIBU2BrEAl3k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Bl/6cksx; arc=fail smtp.client-ip=40.107.159.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6C62DE71A;
+	Thu, 25 Sep 2025 09:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758792166; cv=none; b=mTH4g6d9lo1W4/xWcYtIWBRP5tbs0+zbVABptrE7IcQlONuIDEy5pt6Ck1MSLf+zPjsbsWaJzmIhwwAbRB7UwyfmrQqmQ9h5Bc+JhJRBRoW40yneSAGLi1gQUFswTb5JqKWp0mwqCoiecndDiuvRWGFMf8itYN734Qxahkg1C0s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758792166; c=relaxed/simple;
+	bh=MR44boVKHWx7J8V80/L147ARrhRQ5rTfMFmzDF/Cnyc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SwbyKO+IJVNMc/3ZBcY1EHmlOwVjVKTMa/wfKPp2xwOl2EUKAuZc4DjAUjnDldgmbCGuswCmnE4nhPCSRU5bST/ymKXrLKT4Tn8o6XSScEXqlqKjm4TVP+/E7zfFIniTiVQ3e3bCMo3RHPNrBTWxJ+HjlpyA53NZyiFkUBBYGvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HFi5QdXp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Bl/6cksx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ut4r3FBQyExmkI+1nRrwlEXmQNCyJRgcVuZqk88xs29ZLK0H6LTIGAznHWpDExbmlNgz5HzrS5APmbsLgyxmv4HViEdu6C3GB00dlJ4qb05jcQCyajPzcND22t51/fDxBasaT480PYC0TzV5RpyCWcC9Q9Wi5iCmVJ65lIzkWfwD/BgsE8oAylMpg804V/Kzfo8gFf7VLbmgMyS/2rEFXY1aO/r/OHUIXfgyug/kma81AXN46/Q+OP6J5ME9DpvYgzMHDgSIr4ghflTMXMg/D2T7v67l8HaPp8iYyxWtUnlsb5lSQG1YxBhqdTackn2ZjdGgbKw2xUEwr0Kf75Lzqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iXuDmkPkt9wnCtKeGivpwD5KKcBU3SPAJeCbsr21qlU=;
- b=ULoP3C23sKtrEyJsqDNzdaO2n6qaILx9WtFRNuC88ZEr1h+06jSRonRauV9inQj1NXO7IZAQoM47ZuijypYyj25wENhmqfDcUjkLEMhwqOMmled4zwxsjO7XXjLMMnnImojCzCAFaG5veJnKLJI6zTOOAAkQUbwfRMys/DY/KnPPhN2stpJ7VbBKFNnAyLohyG4G8IjOBO+RjjuyKQ9RtQlXI1V+iLKPpBLlCXJ8kioe3gem6C0Ck1aRLYWEnCSmIVEltTfli7ZQsMXM64y8+QyPUk3xwXHViq+7YlGIYbkFv6AhJuzENRbhYM/U1Ut5coZHLSom+4v8aos1jkf+Bg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iXuDmkPkt9wnCtKeGivpwD5KKcBU3SPAJeCbsr21qlU=;
- b=Bl/6cksxxllEgkbVjBUQy9XgDCKMZ0zxNFCXW8Zcsuo7KMQ5jfWo00bJmYX6245lU1r3h37bMGp4Ow5a/KNJd1N3KmJqgC9IZz6VpYXqgeFuvsHStDIumxKc/l7TCVs7Wqs4orfKemRJN8HFrYfBN4x9Y6ISoMNUj38xbmX7LFEqhbTxfmcfVCFrefYKt4DjR2r9zaL923e9Rw41nu/nC1FgWGMt5TtM2Lk+1QQIMZJJn0W2vaSVOMLRB7ygd++ly9qce8rXjIMXEeSCNRF+GPh0oH7DRiQi3gYF/nSXqzoXqqSorXFiV8zr0MyqOOBujPN/tJg8VEMju67VFnyo9g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB8429.eurprd04.prod.outlook.com (2603:10a6:10:242::19)
- by AS8PR04MB8610.eurprd04.prod.outlook.com (2603:10a6:20b:425::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.10; Thu, 25 Sep
- 2025 09:13:01 +0000
-Received: from DB9PR04MB8429.eurprd04.prod.outlook.com
- ([fe80::2edf:edc4:794f:4e37]) by DB9PR04MB8429.eurprd04.prod.outlook.com
- ([fe80::2edf:edc4:794f:4e37%6]) with mapi id 15.20.9160.008; Thu, 25 Sep 2025
- 09:13:01 +0000
-From: Sherry Sun <sherry.sun@nxp.com>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	shenwei.wang@nxp.com,
-	peng.fan@nxp.com,
-	frank.li@nxp.com
-Cc: linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH V3 2/2] tty: serial: imx: Add missing wakeup event reporting
-Date: Thu, 25 Sep 2025 17:11:32 +0800
-Message-Id: <20250925091132.2537430-3-sherry.sun@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250925091132.2537430-1-sherry.sun@nxp.com>
-References: <20250925091132.2537430-1-sherry.sun@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0059.apcprd02.prod.outlook.com
- (2603:1096:4:1f5::19) To DB9PR04MB8429.eurprd04.prod.outlook.com
- (2603:10a6:10:242::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HFi5QdXp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823B2C4CEF0;
+	Thu, 25 Sep 2025 09:22:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758792166;
+	bh=MR44boVKHWx7J8V80/L147ARrhRQ5rTfMFmzDF/Cnyc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HFi5QdXpegI+f87kOQy95vbTr9xn/cuNgSpsAd33hvErpjNaBtVaCR4nuLtTwDhVr
+	 Im3k5vvVkhR13t3QNvh/qiT9TH0j2q/8Ns5R1CefY/LO/orPDfNwyhMM1pBYC30Iya
+	 +7Gfq7ar1A4LZ0NylLS2li6d1J9XUnj5BQ/uSeNwdhTMOvtJe65rJTE2IPCqd5B+gX
+	 kNVh56gYpcbBgcfL9Iloc6vVKteCSAKnjo6xnSeN7VN9U/y4djPHkKIIoa5YVmqZ93
+	 awhvidmEGBmklOefcZLZumvHtv8UxldvKYsR26DCW/L/KZf/27oostn4WyifKMzLIM
+	 C0BN5KzKXKV2A==
+Date: Thu, 25 Sep 2025 14:52:38 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>, 
+	Allen Hubbe <allenbh@gmail.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ntb@lists.linux.dev, imx@lists.linux.dev
+Subject: Re: [PATCH v2 3/3] PCI: endpoint: pci-epf-vntb: Add MSI doorbell
+ support
+Message-ID: <qm7jvvvywqmegynkghxbfn6pwfdlkboowa45sqbvygpetkiyj4@ovve44f7qvpr>
+References: <20250915-vntb_msi_doorbell-v2-0-ca71605e3444@nxp.com>
+ <20250915-vntb_msi_doorbell-v2-3-ca71605e3444@nxp.com>
+ <ejhs6fb2nmfhnjswhrvd7iwyddwvvr5nv6bu7dt4aypbiecyfb@wza667q2x4qp>
+ <aNRZxAU0n1hvYeEZ@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB8429:EE_|AS8PR04MB8610:EE_
-X-MS-Office365-Filtering-Correlation-Id: e7b6377e-bfdf-40be-bca0-08ddfc13ba48
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?gFcMJXb2d7FxgE7KDRJoTmmkKmfAMh3HCjN3lXkXcprCSTJTKsA1gT34glD7?=
- =?us-ascii?Q?aYyyomOMw/B0yta6Xe6XOB/XEqJydYVUkY+PRLCSxuZyEgHlnDEZwlgkn3up?=
- =?us-ascii?Q?Eosd4TTXG154jZLBohH7VhUklSplorgNiJq534ptBSV/qDI+MKGgShUCLboZ?=
- =?us-ascii?Q?UgLw6yoOFjdY2JAhEiwRaDkw7RbyTJY4Uc9/kWHGEKCotSSWb19l4ijfoI2i?=
- =?us-ascii?Q?6lUOt4gKn1ApBWGuRsL1gQMLAfd3Y9l/t/Uv3BpJ2nOpO2PhP02t1sJdAxzl?=
- =?us-ascii?Q?MaLI4nf+z/f8sjLtof5aQhBHD60kgA9mt8NoQkwvhsRDFOLg/4zpDj6dTDgO?=
- =?us-ascii?Q?zv19KdyKHm6vgXfWDjoz7cxDWGYAhGmSdq+K0pAiKa5fIoXSIAeo+WTNeSYQ?=
- =?us-ascii?Q?IGopMA+XtKlslaqN3LHZTkQLpryhNGyWNkX48ypT047r2ZsQg/oRrKt+7pgp?=
- =?us-ascii?Q?5iZf1DHtLMV22ZLJsMadg5ampYcs/i1n4dTSOWwusgKcsS+qaMzV/O2ONwx1?=
- =?us-ascii?Q?7b3yJsMTP9kUN0p7nhXrXmxAOue4jQSyB587EsHqmZAcO81o8pDeAmVwZwQ2?=
- =?us-ascii?Q?tf/vnX6tQaHHrGlHILqcqo9Cu0Ewsezga5DMcPp9rKP5MLyaSdLMeaE0fnxM?=
- =?us-ascii?Q?cZJfzOZvEbZ3HzNzp/7RDHsS4XKvVGe6J7BSbol2qwcZwJOvB6AGgJCxYfrf?=
- =?us-ascii?Q?U4aNRsbmIW6pDQxi/CY43KdZKIyR7tyL+wjeR0NOLHMtPUvU/UgMrPaXHtj8?=
- =?us-ascii?Q?E0bmEKXNE5j0Pq0aD7fJVvP6CGL9kYRmDcJIkeAuYSU8sH3SrzjDqqpcUaqZ?=
- =?us-ascii?Q?q/bkjG/jA+9Jjbaz4Xc7eJaNduNCHK8khyGBisv4ettIkFKbU5DX5zywT4DM?=
- =?us-ascii?Q?jtvrC1OM77Ec93En2O4mjMAnuOy3Ws5FelIJlMd3VKUanE7jChN//7w9VArC?=
- =?us-ascii?Q?DKat8f7YQouRtrO78aguZlsJt5w44ppllVfRr9TZsD0OCCSC3Qwz19VVoQzU?=
- =?us-ascii?Q?g1NI7Phv87/fCJ02a+fhp5HKWw4eWfiXjIZhN99VmK/yphipxJ81l8w/ztfa?=
- =?us-ascii?Q?d09/3Pk38bIyYthJMs1w5hZ/VijGfRmxqU0TL1o6vO45xRPz9TTItKPnHa0q?=
- =?us-ascii?Q?n6fEss6HZLHUPya8yBflg9eREqSxx3A4TCXJVBP/N1LaNM+76+OLVfXshAV/?=
- =?us-ascii?Q?MeJJywSiQHI/MtaylRagBp824r8YrhLFFhHQDjNKUeN4QwMK4WxjJaAMG9tD?=
- =?us-ascii?Q?DPSx0aCx92QR79kM3eCJ19nHMYTwKAK4X4t26RM0qcVwD6arS7LTBz2i5A9c?=
- =?us-ascii?Q?VhUeM/cvC+8V8EFm9Oo+STrHz0dtVySr31IPeLL8Ftoi1Xw+Hro2MxSQhsfx?=
- =?us-ascii?Q?BeO6N1+uq++LJ7iXCFTJVJ+ND2ojh3D5VzTdqIZ0Mr+66H9dYCuGNMlDeKgB?=
- =?us-ascii?Q?D6ClYLwukr/l4WWIBcq6LrG0jRnqFZJZHKP7MEdlPTZwnQ6UIdVrAA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8429.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?94Azy/I7eCtUfxhiFqg2n20v45vkujDClr/h40kaYGYtQbwEOF0kfW6pCx1j?=
- =?us-ascii?Q?hKSQs3dqRRiUeHMJKwPmyNqVyvq84i3dBlUsajpZcJXGQU9kFugK7CGwTsN4?=
- =?us-ascii?Q?o6ToMs3q1+Rzp9mU8UrLjCoOUVhSi59AvkSfChpM74k255wcrxiDrCN9qA1e?=
- =?us-ascii?Q?lhGd4ouRCvacTAsjtBL0D3Nm3BuG9AvbUvGYyKpMiyhRK0ydQ2MHf/gkzSPG?=
- =?us-ascii?Q?u/IZadNdwYSxhoLkVLlVV1PLLKI83EZfqnIOH4lgCPqu3cFow/JBFpaPuvlN?=
- =?us-ascii?Q?f0douVPoyoPzGgyYvs+l2D2G9Oze6q6QViPZHEjsPP/Y/QYKRPMA22+WlJg1?=
- =?us-ascii?Q?Dpp9L5dKWLCqdvgb6Pej5hvMqm3zEERCe4XNggu3hAIxGUulCdy7U9IJR8eg?=
- =?us-ascii?Q?v6E0IPWkBMJ2t+lUuVOe7If2g9dwbzgvfgVJo2JmqmR+nYnEfnB6hk/nXFIi?=
- =?us-ascii?Q?MngxIA7ZdcxIoKNVDCDBAlf0I8gGaDFOz4t+YYL/KuqggKdKOowROE3z2luh?=
- =?us-ascii?Q?xtWJ7iXjmTj2InhGxZ4FKZbkkIaFvJ7xP+PZ48pNm0/jtjhVKtWQ/NjqLtvE?=
- =?us-ascii?Q?MZypsJbgQWvwIHshSNf+hmfm71rfbKrv1lAg8/NTMLD40nONJQBN4Cv3V2yQ?=
- =?us-ascii?Q?iy51BtYO9Sr6WsB45YbDoC4f3yBKSmhiAhVKp5SsC016yQt8norIGA7dDncg?=
- =?us-ascii?Q?yQH+B/lk/resMexmsxDzEaDWwdol2KIhiGUw1WB7K7atEzFO3NTMWVlRz1Hr?=
- =?us-ascii?Q?8IGM8EOrz0vcSXWL/Q8pV8/sBuEhuro3E+V1PpVB17WZ2dZA38rAMl5ZVLHf?=
- =?us-ascii?Q?yxw7StW+7Ro4jRhuaFnIxByuexguIDwv1cKTlD3H2Ykcx9U1k3b0nv4WVWQ9?=
- =?us-ascii?Q?WeZxh0tMDH0+BWtyePfcyhhGFkLHXBQyL191lLXnI2HXewjYLailDCfeLIPU?=
- =?us-ascii?Q?J7rrvLKnqKKHUaXN7mrpOrHOlYdqX1OywSB883HTTnGQqwQeJ+H9xT4YhrdI?=
- =?us-ascii?Q?ZXP8hjhDmbEkdvRuCPag750cv6gboU+AMIbjYoRCoNhPWZ/rLOc+rLmIGTLT?=
- =?us-ascii?Q?2LT2PLLqnyS31AP2kBCtJkcqNSRT8N6affQ8N5bZYPJ5mi5jOKr+HEtOtXdl?=
- =?us-ascii?Q?9oLT/FxPXG1RTD9IdHjkyJy7ISVQKcst2niDiKilSRvJD9qRtdllnNmPmyQW?=
- =?us-ascii?Q?UbZ7SkXB1xqXuxBadxCWyc3uXJsNNgjwgDgRc2Uh1laqmENu+lBBk5bahvwl?=
- =?us-ascii?Q?PwQ3HQCjoJHVIzDwLX6bN9wX70fk912cG4pYNq8PkcyLJDgVtw8esFvr4v17?=
- =?us-ascii?Q?04t8qoUY//DZzWAJ1aeg27S/pBn/fJNBfa6IuJ5zR7rLgZ9SzUrfcIuTmWLC?=
- =?us-ascii?Q?Nk8BdfmylVbWufaOKbiDh/1La1f9pGP58/iJ+xrPeaKfJYzEREWb1ADFHj3k?=
- =?us-ascii?Q?IVBl7fcFfRX08swu9gm18mO5Tc1JgDsrebW0vNQyqZ/JBHzh70We3VSk0HRI?=
- =?us-ascii?Q?sObF9pFklkHeVr/BuqmQphJRTncNfO5MgzUP6gaIVAnZBqJbLnW+KJOQdT+7?=
- =?us-ascii?Q?YG8sg4Pappf8RyK2xTrdde+u/zjxkpKqSflBeebY?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e7b6377e-bfdf-40be-bca0-08ddfc13ba48
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8429.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2025 09:13:01.8612
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yaDBYpST9HSbyuP8TBkcs1yV8kxlifVxKgY0FtfmgzH5cGr1ptHSMm5oSHnmaVxhuN7piZve7n6WlW+v0S5mJw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8610
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aNRZxAU0n1hvYeEZ@lizhi-Precision-Tower-5810>
 
-Current imx uart wakeup event would not report itself as wakeup source
-through sysfs. Add pm_wakeup_event() to support it.
+On Wed, Sep 24, 2025 at 04:51:16PM -0400, Frank Li wrote:
+> On Wed, Sep 24, 2025 at 11:52:29PM +0530, Manivannan Sadhasivam wrote:
+> > On Mon, Sep 15, 2025 at 06:22:46PM -0400, Frank Li wrote:
+> > > Add MSI doorbell support to reduce latency between PCI host and EP.
+> > >
+> > > Before this change:
+> > >   ping 169.254.172.137
+> > >   64 bytes from 169.254.172.137: icmp_seq=1 ttl=64 time=0.575 ms
+> > >   64 bytes from 169.254.172.137: icmp_seq=2 ttl=64 time=1.80 ms
+> > >   64 bytes from 169.254.172.137: icmp_seq=3 ttl=64 time=8.19 ms
+> > >   64 bytes from 169.254.172.137: icmp_seq=4 ttl=64 time=2.00 ms
+> > >
+> > > After this change:
+> > >   ping 169.254.144.71
+> > >   64 bytes from 169.254.144.71: icmp_seq=1 ttl=64 time=0.215 ms
+> > >   64 bytes from 169.254.144.71: icmp_seq=2 ttl=64 time=0.456 ms
+> > >   64 bytes from 169.254.144.71: icmp_seq=3 ttl=64 time=0.448 ms
+> > >
+> > > Change u64 db to atomic_64 because difference doorbell may happen at the
+> > > same time.
+> > >
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > > change in v2
+> > > - update api pci_epf_set_inbound_space
+> > > - atomic_64 should be enough, which just record doorbell events, which is
+> > > similar with W1C irq status register.
+> > > ---
+> > >  drivers/pci/endpoint/functions/pci-epf-vntb.c | 153 +++++++++++++++++++++++---
+> > >  1 file changed, 136 insertions(+), 17 deletions(-)
+> > >
+> > > diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> > > index 83e9ab10f9c4fc2b485d5463faa2172500f12999..06c13f26db1c6e55d23769e98e2cfd80da693a20 100644
+> > > --- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> > > +++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+> > > @@ -36,11 +36,13 @@
+> > >   * PCIe Root Port                        PCI EP
+> > >   */
+> > >
+> > > +#include <linux/atomic.h>
+> > >  #include <linux/delay.h>
+> > >  #include <linux/io.h>
+> > >  #include <linux/module.h>
+> > >  #include <linux/slab.h>
+> > >
+> > > +#include <linux/pci-ep-msi.h>
+> > >  #include <linux/pci-epc.h>
+> > >  #include <linux/pci-epf.h>
+> > >  #include <linux/ntb.h>
+> > > @@ -126,12 +128,13 @@ struct epf_ntb {
+> > >  	u32 db_count;
+> > >  	u32 spad_count;
+> > >  	u64 mws_size[MAX_MW];
+> > > -	u64 db;
+> > > +	atomic64_t db;
+> > >  	u32 vbus_number;
+> > >  	u16 vntb_pid;
+> > >  	u16 vntb_vid;
+> > >
+> > >  	bool linkup;
+> > > +	bool msi_doorbell;
+> > >  	u32 spad_size;
+> > >
+> > >  	enum pci_barno epf_ntb_bar[VNTB_BAR_NUM];
+> > > @@ -258,9 +261,9 @@ static void epf_ntb_cmd_handler(struct work_struct *work)
+> > >
+> > >  	ntb = container_of(work, struct epf_ntb, cmd_handler.work);
+> > >
+> > > -	for (i = 1; i < ntb->db_count; i++) {
+> > > +	for (i = 1; i < ntb->db_count && !ntb->msi_doorbell; i++) {
+> > >  		if (ntb->epf_db[i]) {
+> > > -			ntb->db |= 1 << (i - 1);
+> > > +			atomic64_or(1 << (i - 1), &ntb->db);
+> > >  			ntb_db_event(&ntb->ntb, i);
+> > >  			ntb->epf_db[i] = 0;
+> > >  		}
+> > > @@ -319,7 +322,24 @@ static void epf_ntb_cmd_handler(struct work_struct *work)
+> > >
+> > >  reset_handler:
+> > >  	queue_delayed_work(kpcintb_workqueue, &ntb->cmd_handler,
+> > > -			   msecs_to_jiffies(5));
+> > > +			   ntb->msi_doorbell ? msecs_to_jiffies(500) : msecs_to_jiffies(5));
+> > > +}
+> > > +
+> > > +static irqreturn_t epf_ntb_doorbell_handler(int irq, void *data)
+> > > +{
+> > > +	struct epf_ntb *ntb = data;
+> > > +	int i = 0;
+> > > +
+> > > +	for (i = 1; i < ntb->db_count; i++)
+> > > +		if (irq == ntb->epf->db_msg[i].virq) {
+> > > +			atomic64_or(1 << (i - 1), &ntb->db);
+> > > +			ntb_db_event(&ntb->ntb, i);
+> > > +		}
+> > > +
+> > > +	if (irq == ntb->epf->db_msg[0].virq)
+> >
+> > So doorbell 0 is supposed to trigger the command handler? Is it documented
+> > somewhere?
+> 
+> I missed my very old patch in drivers/ntb/hw/epf/ntb_hw_epf.c to use
+> doorbell 0 as trigger command handler, this path should never triggered.
+> 
+> db 0 is not used in ntb_hw_epf.c
+> 
+> >
+> > > +		queue_delayed_work(kpcintb_workqueue, &ntb->cmd_handler, 0);
+> > > +
+> > > +	return IRQ_HANDLED;
+> > >  }
+> > >
+> > >  /**
+> > > @@ -500,6 +520,90 @@ static int epf_ntb_configure_interrupt(struct epf_ntb *ntb)
+> > >  	return 0;
+> > >  }
+> > >
+> > > +static int epf_ntb_db_bar_init_msi_doorbell(struct epf_ntb *ntb,
+> > > +					    struct pci_epf_bar *db_bar,
+> > > +					    const struct pci_epc_features *epc_features,
+> > > +					    enum pci_barno barno)
+> > > +{
+> > > +	struct pci_epf *epf = ntb->epf;
+> > > +	dma_addr_t low, high;
+> > > +	struct msi_msg *msg;
+> > > +	size_t sz;
+> > > +	int ret;
+> > > +	int i;
+> > > +
+> > > +	ret = pci_epf_alloc_doorbell(epf,  ntb->db_count);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	for (i = 0; i < ntb->db_count; i++) {
+> > > +		ret = request_irq(epf->db_msg[i].virq, epf_ntb_doorbell_handler,
+> > > +				  0, "vntb_db", ntb);
+> > > +
+> > > +		if (ret) {
+> > > +			dev_err(&epf->dev,
+> > > +				"Failed to request doorbell IRQ: %d\n",
+> > > +				epf->db_msg[i].virq);
+> > > +			goto err_request_irq;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	msg = &epf->db_msg[0].msg;
+> > > +
+> > > +	high = 0;
+> > > +	low = (u64)msg->address_hi << 32 | msg->address_lo;
+> > > +
+> > > +	for (i = 0; i < ntb->db_count; i++) {
+> > > +		struct msi_msg *msg = &epf->db_msg[i].msg;
+> > > +		dma_addr_t addr = (u64)msg->address_hi << 32 | msg->address_lo;
+> > > +
+> > > +		low = min(low, addr);
+> > > +		high = max(high, addr);
+> > > +	}
+> > > +
+> > > +	sz = high - low + sizeof(u32);
+> > > +
+> > > +	ret = pci_epf_set_inbound_space(epf, sz, barno,
+> > > +					epc_features, 0, low);
+> >
+> > Should this new API be used in pci-epf-test also?
+> 
+> Needn't, because pcie-epf-test default set system memory as bar's space.
+> switch to MMIO when enable doorbell and switch back to system memory.
+> 
+> size alignment already consider at bar initilization, and we can't change
+> bar's size after bind now.
+> 
 
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
----
- drivers/tty/serial/imx.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+The memory and size are allocated during pci_epf_test_bind(), I agree. But
+that's for memory allocated through pci_epf_alloc_space(). So if the MSI region
+has size restrictions (as taken care by this API), it should be handled in the
+pci-epf-test driver as well.
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 87d841c0b22f..0eb3f5b8f820 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -30,7 +30,7 @@
- #include <linux/iopoll.h>
- #include <linux/dma-mapping.h>
- 
--#include <asm/irq.h>
-+#include <linux/irq.h>
- #include <linux/dma/imx-dma.h>
- 
- #include "serial_mctrl_gpio.h"
-@@ -2700,8 +2700,8 @@ static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
- 	struct tty_port *port = &sport->port.state->port;
- 	struct tty_struct *tty;
- 	struct device *tty_dev;
--	bool may_wake = false;
--	u32 ucr3;
-+	bool may_wake = false, wake_active = false;
-+	u32 ucr3, usr1;
- 
- 	tty = tty_port_tty_get(port);
- 	if (tty) {
-@@ -2716,12 +2716,14 @@ static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
- 
- 	uart_port_lock_irq(&sport->port);
- 
-+	usr1 = imx_uart_readl(sport, USR1);
- 	ucr3 = imx_uart_readl(sport, UCR3);
- 	if (on) {
- 		imx_uart_writel(sport, USR1_AWAKE, USR1);
- 		ucr3 |= UCR3_AWAKEN;
- 	} else {
- 		ucr3 &= ~UCR3_AWAKEN;
-+		wake_active = usr1 & USR1_AWAKE;
- 	}
- 	imx_uart_writel(sport, ucr3, UCR3);
- 
-@@ -2732,10 +2734,14 @@ static void imx_uart_enable_wakeup(struct imx_port *sport, bool on)
- 			ucr1 |= UCR1_RTSDEN;
- 		} else {
- 			ucr1 &= ~UCR1_RTSDEN;
-+			wake_active |= !!(usr1 & USR1_RTSD);
- 		}
- 		imx_uart_writel(sport, ucr1, UCR1);
- 	}
- 
-+	if (wake_active && irqd_is_wakeup_set(irq_get_irq_data(sport->port.irq)))
-+		pm_wakeup_event(tty_port_tty_get(port)->dev, 0);
-+
- 	uart_port_unlock_irq(&sport->port);
- }
- 
+Otherwise, we will end up with different implementations between EPF drivers.
+
+- Mani
+
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
