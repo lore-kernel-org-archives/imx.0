@@ -1,155 +1,256 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011018.outbound.protection.outlook.com [40.107.130.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C228326AA94
-	for <imx@lists.linux.dev>; Thu, 25 Sep 2025 08:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758787927; cv=none; b=teMXRWdoHynAv4OGT84PnMhkku082PVreUfjjrQ2P6H5DW6q15goWEtfXJNfVAWS18l8FKDpALXYwHeZtl5ZVbwNm9q0uu/BXjFiq9rsh6JlA8NFvXDpDEr5gSM8xxBEj9OFT1mJ5H3Ko+3rSJGxSjuAXGbpe4ySwmeJzFM/Euw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758787927; c=relaxed/simple;
-	bh=moVqkNvoC/U4Kiv+fBtM+ZZcVvqGIdKeTYp5d2BfFYE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fAEWpdZivG5R1p3Z3QNL/Jc9JlOegMCs6BNEOIDV+sHk8xwz4TeC1tIc0Qm8eBK3yzWz7yWwtsRYbEOovoqFk//kfs8CC9JA80ZYcbnw0MY+YW2ZDbIhEoqAGXu/ZgpwiooNVWzgzKiQKynBoDVNaCrbzZbiPn23f2EfjiplKmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=KDNJzVkG; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432BB27280E
+	for <imx@lists.linux.dev>; Thu, 25 Sep 2025 08:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758790281; cv=fail; b=Y0hPnxzb+ygUdPaaOHwn4bo1sBtHjgV2ZKvg4coeRGvkFB17L7/uVxn0udOWIQijx8deVBKDHbdK9a3gpEBMi2yMoHrASaThc2qRxp76EoPOk0rN1tpTGwoIHjPA06tYcjMj48/olgGSr/Rw2NfWsaDrTRKVJqfabyax47QASf4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758790281; c=relaxed/simple;
+	bh=kftweQz6xZhQKdWRPNwywgGVXwDQudgRoYcDbVlD2cs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DPUaCjpgeHqrW0eaV0xvmsk+lAGztrsYoiVQj+lRejrKlBqJE4MIeF87meiqFoDL2pDe1WUXKBGnEb8dNijp5I+AKVgpaOnaE3xmkaafB2vYDGqWRxIEWN+tLsVDHrr4vrqDdTdYXOG2GlCjw/c6v94etPaSpukJQ0/upc7feNs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=caXwaOu5; arc=fail smtp.client-ip=40.107.130.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="KDNJzVkG"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-57933d3e498so698595e87.3
-        for <imx@lists.linux.dev>; Thu, 25 Sep 2025 01:12:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1758787924; x=1759392724; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pOUEu/+y60hAFjLRRexZAgc5r0XDC4GIpSh+/gdmcBM=;
-        b=KDNJzVkGmRoJnvMwBFSrnR1qzJWqaidohApreMKo+WppckKBfFBGFk2NuCYu1AnXP/
-         +/DuTrOXSEVJPJHA/V4+/YQiLNB7hcy+vmskSHCvp3cTGif03KfKt3VAPlxdS5LFCzve
-         p3ySLX69BYVu09MMO/9ivg3raZAEYsSQILJ7Vh/Uv/e345FqA1NzJ4t01YCxU/90jM3k
-         c/bvaPi5FFbcjOHwZZ219O+xMNFFt2vY6tXNfiaZBmz9QnKKpdtCxrJX8DDKwzuAEKxe
-         4tdnN4HhhGbKCK69Jj3Rcp6ueyUYDUqQZqlLdtrNO7oOzml3XqxTBshhfdjiBtZPfigk
-         S32A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758787924; x=1759392724;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pOUEu/+y60hAFjLRRexZAgc5r0XDC4GIpSh+/gdmcBM=;
-        b=hoom8pxYSJQMN+AP6kyIp7JeYXNhmwGZ5SDMZywdPy9B5aOyCzE0SpnhVH3jEYeV51
-         1EZ02rBjkJQ7ccmOHkEQT3zQ/kokvFBjiaLfauowCQpN2wt0/B6hzCh6xC7g9hn3cCco
-         WT512eq4LIzEjfqK5+ltz7iGnH/iEY2fnGTyrh0LZkTQ9bvdu1OFxMgfm4mRAENx0myM
-         2jKg4jo1qKj3YirPgX4zgyOoTkzdsfmwdt+o+Xs0urcLhQb6MuzH2J66L7enHAjaobUX
-         XjfDTgupUXhp0pp+AzKlZrzl4y9fmyrgAujFvp8gnEdDUXbySOZSIVplMGCZ0GBXEAJd
-         VQUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZkSdAKdWap4/0j0fTsynu7jQ+1EpOcSEFgGWyAZ9DKLDQqNgnXleCJqEmeBGJ6PzjfYE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yww7lC5Rvhv+/0B7FmR15XesWw+dlu5/lgyVgPsyuvJ38tXftjX
-	FfHpMRxa9tHHVGr+J7lzKvYwM2KwxFOKZaoel1O8GbbLQj5VNYebRT0YxCRD+71lhdp6BdM6M5x
-	Bwimw2uJxEP2WDduhaAuLFFc0PZh+An3ziTfcIzBbWA==
-X-Gm-Gg: ASbGncuZ4O7/CGyZZP6a1HiIsAbVgWBgmjxr1nUR33hgD2BgrfbFlHdq99JDpURkpvW
-	Kh6j5jrdTm+lHg2bPiGWhxaDNK0O03nWnXwO5YrCGTRllyWgbJXdeR4eIpIeN1IjyUzVmhvo7sQ
-	d5qB3/s1VIlmCqy1/XD/yRyqnFE5kujeQp6OYg1C3G1S6HeIIs0JcWocd3bzn48d/82A3bdr3MH
-	2RNgLXJtCBybKtXey/ypy2IGPLd3tQDQDTAvA==
-X-Google-Smtp-Source: AGHT+IGJf55i3bv2L8+gmNkmzkA9WiH37A1+UEGPjEgNIhsONYzUjkvXwduJeRWAHBQx5JD4yW8UWOq3aNBoELENYBs=
-X-Received: by 2002:a05:6512:114a:b0:57e:6aef:3ffc with SMTP id
- 2adb3069b0e04-582d073fab8mr832508e87.4.1758787923677; Thu, 25 Sep 2025
- 01:12:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="caXwaOu5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Gwgo4V0+eCI59EWw18uFD/LlmvFuG7iesDf5kiMGZZfxRVNw4+4F6Cryi92We59n2EHtvv9Mu8/cZoRROm9v3e7B+dGpzTi1rGmytMVb2zTcVGUtTGiFmHz0jwLZqv8nHcI1UEGETM9pVe06s9viA4SpD8Qsgo4PkLC43Gb5MhZzdq96im3QqiEC8twAvRkEPxmT9BgB2BzxkFy1fe1zgtMJqe1aSx2DyhigGLts/B6/1MHOhH4hwt7KqwKRqTJaz21cB1P3OflGkUe69x7TwADWIVoJWD95tCC2PPu34c9QBP//+UmOimdUDG3Rtwtc8S3Q+4jEcI+OEeh072E1aQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZMh6ah17x+1eac7jggdvsG3nehFaR3TpqV0p6I+siJw=;
+ b=HofzAubxUbKXFl4GV/04RuPHtFp8uejAFQzm2VdH+ZPsVpvFBYdTMPo8B3T5PQ/bjIVwlxbNk9btCB4HNG779iWV63wCQ/9EQVf7TPwknsUp46iCNkdNsOoMig3MzqtQJE8JAYB0QigWxSUFD5zAfGbj8XAsuJUkP09UAo4h6ImeRQ9cAoLKnFYDI5f6AopQP8aXCuIdVWICPaiuOfp7XVIy+hC0IeE7tISp1I/ZA5Mv4OS6jJasc8fHNArgyvx8QmLeNTqtAYk4WOllEUQigoef1YfL8xH46jJ8QMh/rs16ChMMMc9V29QQy1mphS0Jg3DK4ektWNFWE4NtNHvzYg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZMh6ah17x+1eac7jggdvsG3nehFaR3TpqV0p6I+siJw=;
+ b=caXwaOu5jDkzQq21r8XlkEFoWKeJHKb9wu90k7jPM0acirsFvF7zAHWN5j8QAfM9B6XpuasTr7A0aD+KJT1vh9dNWAx/SxbVejq866vF7N4cu8SgCdUNYMacBmbDFsNuGzHpI2Emy6EOheredn5UKDxWLhp1Ev1LMLw7Dnb5EWoxzZtww2KPGwQw2e2Nzlj0JVVHG84VT412uC6ULzeorMjLYrilnbkiBAsOeDHN3SDRfte48oxbBX6nRBZWeby4MqAk0KmAeFG/x9WQkEUwgOhn1AGTBpdGW6m0PQEmQYUuqynYrW1O2seWti5PoRehdbaRNrK8fp1w9K28Y+csYQ==
+Received: from DB9PR04MB8429.eurprd04.prod.outlook.com (2603:10a6:10:242::19)
+ by VI0PR04MB10289.eurprd04.prod.outlook.com (2603:10a6:800:242::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Thu, 25 Sep
+ 2025 08:51:12 +0000
+Received: from DB9PR04MB8429.eurprd04.prod.outlook.com
+ ([fe80::2edf:edc4:794f:4e37]) by DB9PR04MB8429.eurprd04.prod.outlook.com
+ ([fe80::2edf:edc4:794f:4e37%6]) with mapi id 15.20.9160.008; Thu, 25 Sep 2025
+ 08:51:11 +0000
+From: Sherry Sun <sherry.sun@nxp.com>
+To: Frank Li <frank.li@nxp.com>
+CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"jirislaby@kernel.org" <jirislaby@kernel.org>, "shawnguo@kernel.org"
+	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
+	<festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan
+	<peng.fan@nxp.com>, "linux-serial@vger.kernel.org"
+	<linux-serial@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH V2 2/2] tty: serial: imx: Add missing wakeup event
+ reporting
+Thread-Topic: [PATCH V2 2/2] tty: serial: imx: Add missing wakeup event
+ reporting
+Thread-Index: AQHcLQG9neSop8RAeEmPmvgiHbrCIrSia9QAgAErJ+A=
+Date: Thu, 25 Sep 2025 08:51:11 +0000
+Message-ID:
+ <DB9PR04MB842963CA515E645566CFD2B4921FA@DB9PR04MB8429.eurprd04.prod.outlook.com>
+References: <20250924031550.2516704-1-sherry.sun@nxp.com>
+ <20250924031550.2516704-3-sherry.sun@nxp.com>
+ <aNQFzKY33OWobpcy@lizhi-Precision-Tower-5810>
+In-Reply-To: <aNQFzKY33OWobpcy@lizhi-Precision-Tower-5810>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB9PR04MB8429:EE_|VI0PR04MB10289:EE_
+x-ms-office365-filtering-correlation-id: 39e36830-dd98-4b1f-1201-08ddfc10ad8f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|376014|366016|1800799024|7053199007|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?w9wkW7cwliOPJGeZLqLMeENXjXVFnxuM7qvBeVH5q2DNLuRoMkYT6FswfYvp?=
+ =?us-ascii?Q?IqfHbilBwNoXCTkFG3aQq0519rp1zMYwANYFduDzrUuyjT4F1gh3eWJFP2VM?=
+ =?us-ascii?Q?cC5h7IHRnJeOErdE7N9rLoxoSyqqjdjyZYOJU8yJ+M33QGv0jWIowdHfRCWG?=
+ =?us-ascii?Q?faARn3o8OUmkA07qOdAe5coiP+FD6CWRezkvqTTxhopyFYuJoTUn2Fg/+VBS?=
+ =?us-ascii?Q?0Ex3X11ZMr0lGk3B2IVR9Tcm2bi6OY2AIsC0L02IzwR7Bt3QlHaNlRU4DJKe?=
+ =?us-ascii?Q?9JN45fmsMUxdrtIEhX+UBboR11EjaF2lnnqYYZN8OOtSqucaB2fh0TBhu9C4?=
+ =?us-ascii?Q?jHFWeGqvyNBs2heg6ACo36xOqeBy1ftm1pJG4lzGLyK8Mmo78byHmi2AUIrv?=
+ =?us-ascii?Q?e+9XjM+UC9aNXIa6jyD9SecV4Ugs1ruFKiAg4722/QemRooXSDAKk8as73hM?=
+ =?us-ascii?Q?03hQcuzNICKlP70JZGi7Yzv/LhC78LEXcSroN6n8MSjw4Cvvs4PnSiErz1Lo?=
+ =?us-ascii?Q?Y0JfD32wzztQ4GDvdWKDIS5NyiMH0K1lCKRCKUqN4Ii12YZFpZFRpph1HV0s?=
+ =?us-ascii?Q?1VLhlRB0OTKasp6vwoD03kD+NiGVyWvspS4T4Y2M4fypsmatBH3VOgEc6Ig1?=
+ =?us-ascii?Q?0eQmdklUUpnwqLbqkXA+QmArvDAzx6f+nT5SKPKCgdQ3K4pEwtU+CBwSqXci?=
+ =?us-ascii?Q?1kE9ncbpnRHq6eVWR08Z0djLE5tomnYyGCEBe17lqRHo5CR81ZOw3OpmU+Y7?=
+ =?us-ascii?Q?8dPAWZVbs/ADLScGgFRFB3lW3TbHg6Twyayf8qGOEACUZ8pVjleKzj6AWBfG?=
+ =?us-ascii?Q?ZOqDQj+04rbUmkoJfPhAfECmLVStbbxhfWAP/7/REn6cNgWuZ6RkQf/jO0xw?=
+ =?us-ascii?Q?c6cdt7TKM3f9Ywp5gMmSz9gGTFCOiFsHVQD1guxJdEf1DJwkw9H7fnk5l0Of?=
+ =?us-ascii?Q?dm4e0XBQMWeloXyslLMOki8ScdN9sj+oGla9kSpGfNLs8BU0VUoMoAY3DmHD?=
+ =?us-ascii?Q?rIs0zL3I+rJq5SQR+YY65karJlJRQhATRen+07r5SjbvK+chw3K5SYyZaOza?=
+ =?us-ascii?Q?ZtsSAVx2D2FLR5qfns4ZODmGcyxkDLcNbfyZGRS47+3cVFQxFDSJasDh1XKl?=
+ =?us-ascii?Q?cew5Y0oQTdmb2rAOjOmiOAw1+WO/V/WvdL+YN5XyAP8I64+lexYDoHwes+Vr?=
+ =?us-ascii?Q?JNB7na92BWO12sj5k6nm1BESTCbjNXPHBmGT+ZC6LUBbM3U9XiSd891s/ZfH?=
+ =?us-ascii?Q?PnII3LHgxtK/2PndMmwRRbLo9lDlX5O5zxGtT7xNwWYazv8ZOzi4Qn5wAlon?=
+ =?us-ascii?Q?j2JAiEGPnXxk3ITidxgCAROwFBY0CW4W7YbqR6E09iAoLdNNGMPcWbPGrm9m?=
+ =?us-ascii?Q?SRSvI7q8I5QBqT2rPLyfiy2bgSXuFORCdBleAM581RHLv0r+rwQwjVLp9jyk?=
+ =?us-ascii?Q?QV6S0tg8cmXk457JapBXhj/bIMVk3i7JuyGamp77MkwvzsXFVTxgp/xvWXSt?=
+ =?us-ascii?Q?hygbKcpZsQNcslM=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8429.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(1800799024)(7053199007)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?kBUS52t1TBers2Io6c1ltWFkNT8JpMNUjyo5NaQH5XAkeqClnYT2IlmxSN3W?=
+ =?us-ascii?Q?7+SKoj/yppv2BuU/Qbc+y2qVluq4+HVnb/M3btYWr8MZI02IF5qS/zI6dbZC?=
+ =?us-ascii?Q?Top6XSZH+PJo+pX5JZcjpOrERzv2OFyj/KoWf/sDssnMsTPP8LfHU1owq+H6?=
+ =?us-ascii?Q?6QBGerSQrD6HGVJnBTnX9Tn017Zw9jkzRQQeUv4YUxjQ3Gqqcr9iLVshaUte?=
+ =?us-ascii?Q?TGdjjyD52BduV0YD9blbxDp+RwXAccoiWFGaKFsuhR6BpYGEtf48A6wJX49n?=
+ =?us-ascii?Q?lfVzrhIf59peogbM9agyynZfRb7hW3QSQGSljTVCqRL1jk+K3gJB/7WDpiN4?=
+ =?us-ascii?Q?s66sVaTIIxQm6RyndrFhLiNRrF5/3VcaKivU70RLxoD/fjuMnL27nIZOF0Xc?=
+ =?us-ascii?Q?Q1BXEBWyWIi/p29oJYYuOxVwBzk6/n0Vh/TbdAUaV61Ij8FJiaFrD1lGeGgN?=
+ =?us-ascii?Q?8KFxXnnQhDfKkBKSeOk3t2BLjRU6VXR2FVEKOnbmB/TTRE5LKIHIiC4j6soA?=
+ =?us-ascii?Q?faYymPn89NIkseiDxRxFIXMlFESuZYNfcBubetIbewT6xAHn5Pm11WG8JsZg?=
+ =?us-ascii?Q?jCkgjJl0A+FiyigdA9en9UWDf3/WXFSKtO5Pkacqjtwf4zKNeqOSCcz4UcEt?=
+ =?us-ascii?Q?Cc8IvQtRxvSyvB4uSOztk40taNinOCjtoCIVv5Nkcu482u+xg1r4FMu9SUkG?=
+ =?us-ascii?Q?Q8rIcxTclUK1hASSiZqzvumgN7Fuyl/Z7l4DQl668ckjMRPQB9e2zvXIDDRN?=
+ =?us-ascii?Q?Kz/GeAYzrhI1NyjhETSU6khU4ArS8naEERD1RiRYDHPErX2WPyasvk+B4WTm?=
+ =?us-ascii?Q?Pfe6CYFDR3hJUSuTUfrhAe2Ztv5gxfNgbhwLskbo9TZ6iGWIjykcba63oOBk?=
+ =?us-ascii?Q?bCAN++cycP13rSRp20FIl3nGDCwtQaFJSKDV2aGgLAJXV3/ZZ0NDIht6rtnr?=
+ =?us-ascii?Q?67CSAp8SwOwLvyCv2X+KCB1eiSL2k6E/r2NiiCphrH2TlgGvep1y3+khBv+M?=
+ =?us-ascii?Q?Uthg1d9Vt9jJQoHuMYvhNfsJyJ5LkW2XmcPZBzJcSXvm2vCI1vPur340xrdg?=
+ =?us-ascii?Q?7ZWPgSupiGIslAotpytmfmwBZl9r05kz878cTCdVBbxzQ+OthLbfParJt9MJ?=
+ =?us-ascii?Q?Dag/y7WzMPtffbozehT/113SvSEEeDse+y7fD+ICftYx9Ve81wivbjKt/SSk?=
+ =?us-ascii?Q?K3qK7e7OqSXSAye6qBlugZtkThZxOK5oxHFYT5kIIQqwIO1qPws75ktP3SXN?=
+ =?us-ascii?Q?PQ2ZYDQZdZ2KHdlz4EJLQnBV2zf3S1Zz9aPfR/mu239G6bmkf+QrEiFOVQC4?=
+ =?us-ascii?Q?21O6eiY9GyhVsFE81MtBfvuxqNNgvHpYdJbt7yN+ynbdI7tcUyqEcIV8QHpN?=
+ =?us-ascii?Q?+c90TVIUAqNArAXmB9vJZe/25B3KuRtUYe2wbyO2pkgKlpp+vgtWcXf8Y+X/?=
+ =?us-ascii?Q?QBrg+eBQ6S9qHWZAvNKAaQR8rkCzu69qyJQfWcd0iHlancTiztEzWs3zf38g?=
+ =?us-ascii?Q?jcjg6RfP2IByd7L1JgD0v/7uA+qHInOSp4Fjyq6ZE2SKiwz4DfxyXVRfvnKI?=
+ =?us-ascii?Q?8na63nojkdXatBgWqm4=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250910-make-compound-literals-normal-again-v1-0-076ee7738a0b@linaro.org>
- <20250910-make-compound-literals-normal-again-v1-2-076ee7738a0b@linaro.org>
- <CAMuHMdWoEXLTPyQL4kt1OPVbrDDcBdBigqUM7EbNZjZUsSmRHQ@mail.gmail.com>
- <CAMRc=Mej9fQk-1zYKhPK6aWdptXKvjq28TywRyP+iZExRuX9og@mail.gmail.com> <CAMuHMdXgoj+XuKhruEmMpjZignuM9fJLp8NJ0=ZLw8KdFKohsA@mail.gmail.com>
-In-Reply-To: <CAMuHMdXgoj+XuKhruEmMpjZignuM9fJLp8NJ0=ZLw8KdFKohsA@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 25 Sep 2025 10:11:52 +0200
-X-Gm-Features: AS18NWBR36rLL1CtueiFc1sMJzM_SH_VKHScbJyKloWTmjZnMKzJiRko6sa-obs
-Message-ID: <CAMRc=MeR3iH7cH4aLuN5T+y5FCFyzpR3BBc4chE7CPAy8Ug2gQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] pinctrl: use more common syntax for compound literals
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Lee Jones <lee@kernel.org>, Andy Shevchenko <andriy.shevchenko@intel.com>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Avi Fishman <avifishman70@gmail.com>, 
-	Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, 
-	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, 
-	Benjamin Fair <benjaminfair@google.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	=?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
-	=?UTF-8?Q?Cl=C3=A9ment_Le_Goffic?= <legoffic.clement@gmail.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	James Cowgill <james.cowgill@blaize.com>, Matt Redfearn <matt.redfearn@blaize.com>, 
-	Neil Jones <neil.jones@blaize.com>, 
-	Nikolaos Pasaloukos <nikolaos.pasaloukos@blaize.com>, Hoan Tran <hoan@os.amperecomputing.com>, 
-	Yang Shen <shenyang39@huawei.com>, Imre Kaloz <kaloz@openwrt.org>, 
-	Yinbo Zhu <zhuyinbo@loongson.cn>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Manivannan Sadhasivam <mani@kernel.org>, 
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, imx@lists.linux.dev, 
-	linux-unisoc@lists.infradead.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8429.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39e36830-dd98-4b1f-1201-08ddfc10ad8f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Sep 2025 08:51:11.7821
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: VbGCRMqNjmLwnt6N7SEOFOuNi7kJPuKfc+nsyH1J8/VmHCUJINOcwTC7dN+Aba3SssVk6/M/bC0pX9hIosKTGw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10289
 
-On Thu, Sep 25, 2025 at 10:03=E2=80=AFAM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
->
-> Hi Bartosz,
->
-> On Thu, 25 Sept 2025 at 09:52, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > On Thu, Sep 25, 2025 at 9:48=E2=80=AFAM Geert Uytterhoeven <geert@linux=
--m68k.org> wrote:
-> > > On Thu, 11 Sept 2025 at 12:02, Bartosz Golaszewski <brgl@bgdev.pl> wr=
-ote:
-> > > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > > >
-> > > > The (typeof(foo)) construct is unusual in the kernel, use a more ty=
-pical
-> > > > syntax by explicitly spelling out the type.
-> > >
-> > > Thanks for your patch, which is now commit da3a88e9656c17a3 ("pinctrl=
-:
-> > > use more common syntax for compound literals") in pinctrl/for-next
-> > >
-> > > > Link: https://lore.kernel.org/all/20250909-gpio-mmio-gpio-conv-part=
-4-v1-13-9f723dc3524a@linaro.org/
->
-> This is the origin link to the patch (by you) that started the discussion=
-.
->
-> > >
-> > > Looks like you (slightly) missed your target. The correct link is:
-> > >
-> > >     Link: https://lore.kernel.org/aMAP9hAWars0T83r@smile.fi.intel.com
->
-> This is the link to the comment (by Andy) that questioned the construct.
->
-> > >
-> > > > Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> > > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+
+> -----Original Message-----
+> From: Frank Li <frank.li@nxp.com>
+> Sent: Wednesday, September 24, 2025 10:53 PM
+> To: Sherry Sun <sherry.sun@nxp.com>
+> Cc: gregkh@linuxfoundation.org; jirislaby@kernel.org; shawnguo@kernel.org=
+;
+> s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
+> Shenwei Wang <shenwei.wang@nxp.com>; Peng Fan <peng.fan@nxp.com>;
+> linux-serial@vger.kernel.org; linux-kernel@vger.kernel.org;
+> imx@lists.linux.dev
+> Subject: Re: [PATCH V2 2/2] tty: serial: imx: Add missing wakeup event
+> reporting
+>=20
+> On Wed, Sep 24, 2025 at 11:15:50AM +0800, Sherry Sun wrote:
+> > Current imx uart wakeup event would not report itself as wakeup source
+> > through sysfs. Add pm_wakeup_event() to support it.
 > >
-> > This is a link to the discussion with Andy as per Linus Torvalds'
-> > recent request to use the Link: tag to point to actually useful
-> > information rather than just the patch's origin. Linus Walleij doesn't
-> > use b4 so the origin link you'd normally expect to be added
-> > automatically is not there at all. That's probably what caused the
-> > confusion.
->
-> I know ;-)
->
-> Given the "Suggested-by: Andy", shouldn't the link point to the email
-> with the actual suggestion?
->
+> > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> > ---
+> >  drivers/tty/serial/imx.c | 12 +++++++++---
+> >  1 file changed, 9 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c index
+> > 87d841c0b22f..b83f5c9c722c 100644
+> > --- a/drivers/tty/serial/imx.c
+> > +++ b/drivers/tty/serial/imx.c
+> > @@ -30,7 +30,7 @@
+> >  #include <linux/iopoll.h>
+> >  #include <linux/dma-mapping.h>
+> >
+> > -#include <asm/irq.h>
+> > +#include <linux/irq.h>
+> >  #include <linux/dma/imx-dma.h>
+> >
+> >  #include "serial_mctrl_gpio.h"
+> > @@ -2700,8 +2700,8 @@ static void imx_uart_enable_wakeup(struct
+> imx_port *sport, bool on)
+> >  	struct tty_port *port =3D &sport->port.state->port;
+> >  	struct tty_struct *tty;
+> >  	struct device *tty_dev;
+> > -	bool may_wake =3D false;
+> > -	u32 ucr3;
+> > +	bool may_wake =3D false, wake_active =3D false;
+>=20
+> You use bit OR at follow code. so wake_active should not bool type.
+> change it u32.
 
-Ah, I didn't realize this is what you meant. I wanted to point to the
-entire discussion and also this is already in Linus' tree so it's up
-to him if he wants to change it.
+Hi Frank, thanks for pointing this out, this does need improvement.
+I'd still prefer to use a bool type for wake_active, since it indicates whe=
+ther uart wakeup was triggered.
+Maybe add !!()  would make it clearer.
 
-Bartosz
+-                       wake_active |=3D usr1 & USR1_RTSD;
++                       wake_active |=3D !!(usr1 & USR1_RTSD);
+
+Best Regards
+Sherry
+
+>=20
+> Frank
+> > +	u32 ucr3, usr1;
+> >
+> >  	tty =3D tty_port_tty_get(port);
+> >  	if (tty) {
+> > @@ -2716,12 +2716,14 @@ static void imx_uart_enable_wakeup(struct
+> > imx_port *sport, bool on)
+> >
+> >  	uart_port_lock_irq(&sport->port);
+> >
+> > +	usr1 =3D imx_uart_readl(sport, USR1);
+> >  	ucr3 =3D imx_uart_readl(sport, UCR3);
+> >  	if (on) {
+> >  		imx_uart_writel(sport, USR1_AWAKE, USR1);
+> >  		ucr3 |=3D UCR3_AWAKEN;
+> >  	} else {
+> >  		ucr3 &=3D ~UCR3_AWAKEN;
+> > +		wake_active =3D usr1 & USR1_AWAKE;
+> >  	}
+> >  	imx_uart_writel(sport, ucr3, UCR3);
+> >
+> > @@ -2732,10 +2734,14 @@ static void imx_uart_enable_wakeup(struct
+> imx_port *sport, bool on)
+> >  			ucr1 |=3D UCR1_RTSDEN;
+> >  		} else {
+> >  			ucr1 &=3D ~UCR1_RTSDEN;
+> > +			wake_active |=3D usr1 & USR1_RTSD;
+> >  		}
+> >  		imx_uart_writel(sport, ucr1, UCR1);
+> >  	}
+> >
+> > +	if (wake_active && irqd_is_wakeup_set(irq_get_irq_data(sport-
+> >port.irq)))
+> > +		pm_wakeup_event(tty_port_tty_get(port)->dev, 0);
+> > +
+> >  	uart_port_unlock_irq(&sport->port);
+> >  }
+> >
+> > --
+> > 2.34.1
+> >
