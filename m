@@ -1,218 +1,247 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010060.outbound.protection.outlook.com [52.101.69.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000E325CC4D;
-	Thu, 25 Sep 2025 22:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758837843; cv=none; b=NxsVApHrTuJrW3DvY5dtcE7KAy8Ns4qyetoDvgco6GEH69ZvzOjPb4YLunPNChywD8RqkncqQs2883amkMA2ahfkpG4FrzSIAAlUk5ZVaw6eWYMSCCALwFusxQrA9diFgxYstVDromCHjRYSIpPJWnN1zhiyOR5nNTW2u6JLA1w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758837843; c=relaxed/simple;
-	bh=hu1EQlTMo9DEgndmffGfA29c8ETyA13nPng1Cr0CAtg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=eFEXUU+TP2Q4YgplCCDBI5BruEGXvOcmEdp/vVpMtKtruyahsoHPf0mWlkiTQOgithWhwcQ+AflqAkpQhN4E4XW9sFIfYBK7ub5yN3X/eO/HqOXYJiziOiJ76dxdGZp5tBUD6MbwaoyZINe9POkM0Yc4/KhL5rXmD+qVkZ/o2DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXxKBSfh; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB5B31E885
+	for <imx@lists.linux.dev>; Thu, 25 Sep 2025 22:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758838903; cv=fail; b=SRSWaYBtRlr80ydwdLOb89GMz1Y04ssoy0SahPzH7Wkh4SzW2IwNrny/kYJcG7iL8s+vgZMea3ts0Dm9xdizG1ljNdoqldQDhY4hcJMXYBtQ+PNtzmo4uyuw4gQH0bncrUflqLUyVxcBJrS7ZVAMwCBRsanPAUQ135679MWw5hc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758838903; c=relaxed/simple;
+	bh=65PPOdTYg+rCyXRTzfa/IqbhNnApwDCYv4+FjwnqaFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pt2RNKl+GqAyKSBGgWeiOMGhviE+Ht9hXjwBr2awYFPKOJVOXqTPsSL/o/yzOTyOoYSDAWcIRJKc9Q5/yZ0BgFLWAQU7uHZuSwDYRYKAs3aue+HwXeTKttV9mJAYeQrqBMLEYXkePzz42G9zP4KO8kKId0cdrUe17adX3dtogPg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TGILIuAE; arc=fail smtp.client-ip=52.101.69.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXxKBSfh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5307EC4CEF0;
-	Thu, 25 Sep 2025 22:04:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758837842;
-	bh=hu1EQlTMo9DEgndmffGfA29c8ETyA13nPng1Cr0CAtg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=WXxKBSfhlZuO/9iTAPjDoEIbxiyc4T01O3tEd3IewRO54u1LHJhSmheRJUv8PjifK
-	 Vy566N/ZKcqcKOcEZkN+ctd9tfksRHYsr67PMz8XU0xmgymQfmTqu+im2AC28t6rZf
-	 X6m9BoTU6SL2OC2JiH7Dy1SA6tcVu9umVmiZXeB7yTiFDzE1KdmbBTCb35Yfo/JvOt
-	 gCbzeyA1YBvo5jXgTAnKy+bKmPCwthKzmC8v0Z/AyPE9hhKu/BjMwAW9Z7dMuNzNRQ
-	 ecDVr6neMzdaC8WEveVvVBfwG4+DRwEcsDSzbhtVYd5hVlivxpYeYOv+z2iNdTan/K
-	 09VwIoe6gDSyQ==
-Date: Thu, 25 Sep 2025 17:04:00 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, jingoohan1@gmail.com, l.stach@pengutronix.de,
-	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
-	robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] PCI: imx6: Add a method to handle CLKREQ#
- override active low
-Message-ID: <20250925220400.GA2206333@bhelgaas>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TGILIuAE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qR3zQPI6ZxLHoq+PgyVZGsDCmBLgVBSE/VhF6suqcCswV0Ps22MUhPBzcqF4jQlBVqSn9Z1t+AxukPlNPNTMjefQRYVBrsMHl7QxyLK6JNJzt1Hw4c9AlJRctYNVyqXi3D3gbDt+c04p3kPjDX9yFhz7soJ+9RdmiPgYwUplq+z1WEFtnyeHYfOjBoS6jaxf2fTnF5GLEKjLOtLs1OoZbLcelUiIrUZta9JW9+62GLcF22wIBdt8S2GktN38OwwFHvr291l6hm2kTV33TQZ/0h0KQiwZiDxPCvFy5vFlzqbW6OzibUK6BGzr6s5hC8TrIFENijZO3/y4KWmmzAEEWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1PWlajqaiB/vFlMiroWpQ69Au6RRDckpnFzWuXBINmA=;
+ b=g+fQ8IPAmLol8IJnJCioUP6RO2+1ZjgxR5amm4okDzkT8M1DnL05WV+gSfkpt1eyi/FjbTwEFC10jPz8QVQ+emTvhV7CqbAHvEPWVAcQ1gjHW6ScdfKBpyjTJlqlVhI25JDw6SV9z+4vu0VEdbUkZVkOo/1GHzrKxSxOyYMXM2QBWAOlUuvKmt7UpYZ1Y1hhEIirn8/c7wS0X5g9J6LKgGBf7GVKKL1nJhq2lt/EEm6xhD9kmL0ebsDIH/tJKN1pnpK+juhTVqvs73IMuaCEKHdPGeZs+FytsmrwMJZ+TlAcrE/e6qTkuOPLWFz6a8N6Cqld60D64O2oxlSDZf71AQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1PWlajqaiB/vFlMiroWpQ69Au6RRDckpnFzWuXBINmA=;
+ b=TGILIuAEZWQC3dCPA98Rpfltl8NLSTxa7lXhPdPyApICye7RfYjFq0AL5q/gMuRaDUrLqScjcBxn2KT0V+RIqgtYnRw2SyXYjdpBxg7e4oe9tIn5wt0ZPEkTYwMI56h/WnOZZvgsxJyR50wSh9PlgGIEf/5T0iz7WckfFISACpu0lBuPUXUtJGLvLoVBQDdwZSJeQUw4go6HidS84X2BxaTfSAndoiQbIrq8SDMusPLbIJzwl8tXHxYc26uxNBCf+IcfFw5Qg/xrAm89Zx4JVjzqke0jrm0WTqNupSt185Uy1aGomoSoY3kZv3zG4+HJDRUD+i+d+bfvalb3MMkc0A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by AS8PR04MB8039.eurprd04.prod.outlook.com (2603:10a6:20b:2a2::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.10; Thu, 25 Sep
+ 2025 22:21:37 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9160.008; Thu, 25 Sep 2025
+ 22:21:36 +0000
+Date: Thu, 25 Sep 2025 18:21:29 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: stefan.prisacariu@prevas.dk
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: imx6qdl: make VAR-SOM SoM SoC-agnostic
+Message-ID: <aNXAaewv/MpqL78M@lizhi-Precision-Tower-5810>
+References: <20250925104942.4148376-1-stefan.prisacariu@prevas.dk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250925104942.4148376-1-stefan.prisacariu@prevas.dk>
+X-ClientProxiedBy: SJ0PR13CA0204.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::29) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250923073913.2722668-3-hongxing.zhu@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS8PR04MB8039:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7933e966-f9b3-4311-d73e-08ddfc81e431
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|19092799006|52116014|376014|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?fXEWFtmuCjoAeYrDJOI9HTw+1DtS45iDFg7gCyefRCqeeW4SxwFB+rK6cKwc?=
+ =?us-ascii?Q?NOozMRxtDPhV070eyW9v6r8r0aLmhx0E6VxuGXuEer/Ev+bHfEbsOtFrOLjB?=
+ =?us-ascii?Q?urap483HygMdzDL8k51EsSvlYkCWECQYv7z4/QW23LdC/t6KWQ7qtfqZw80B?=
+ =?us-ascii?Q?e8pLrvHKzk/JS02ge74MwxukAbEaw6GGPYaHmXMuTprTbvUZwDT8s7OBLI97?=
+ =?us-ascii?Q?aW36X0MsPDB3wHTyyLCeq3eF2B7lGT1z7sqYr5yqrcRKAlFK+fvSsTkM4g9J?=
+ =?us-ascii?Q?l3pFZLA22sBsohIWRSRjPIZYAt/wFjn5g2OYvx0a1fDzmgps6wBjYVNAIclO?=
+ =?us-ascii?Q?SzbMnb+NdS+XH011sA12MIQqLSutk755hL+QEd5eo+RkEI6/VhkgxExDyFjy?=
+ =?us-ascii?Q?4F4xN8H5TxfghPZFWHBphBU5gciCXoJkKH31r7YEtwrkbRS5RDUy/wsUqMdU?=
+ =?us-ascii?Q?a8oYcitwTRo80+hUnl8I2opXK+QP/EfXCVRYcqJ1GTpHd425s9osoL6ZWVjr?=
+ =?us-ascii?Q?c40DrNegkTJL7IgMpxe9ks3hQbJlvZlWifwWTKH2t4uLMqAUzO9HOfzwNrYE?=
+ =?us-ascii?Q?kwmg+j/1FKq72ABxZXnqtZ+ZXrmWx+VTAvMFx9nXnWJhDlh6fVHeIAzxBas0?=
+ =?us-ascii?Q?nP8Jb66ZpoIBG2YTxO2vP74VlO4S4cOnWQOXoTq+gR1HQUa5jcWdP1fNZ2jQ?=
+ =?us-ascii?Q?S0nlUi3xFwES7pLHi/2zC3aeKxfgEyOrWHcu/9rjQ3N6hVx9s7iiNn15kPnp?=
+ =?us-ascii?Q?at/y/w9GxYN8S+AohzrmO1ErIQUZeFH5mSgAzrfTnaoqjFIcGG854ME6l2w8?=
+ =?us-ascii?Q?8uyUTg//JS7WG4aqowSXXli9P+DnJUBFJJ791FLp7YcfVVDUd0Ksth/QWnJT?=
+ =?us-ascii?Q?endew9f3v6117xO4YKDZBiQsJ6SCBkjBMudx7jBDwOMq68DQjT0foa/AG1MH?=
+ =?us-ascii?Q?5wwSQxtq6R+PLuLObdOjIts23wKGOzx8JvIjNeIzkBNmTolgAE+wusOXlO3O?=
+ =?us-ascii?Q?xQJ4iKG5qcpBI4bsSAVGLOBkHOJeTWabKNVHE4c4CJTPr6Ia8bI+narSmtCW?=
+ =?us-ascii?Q?Agv+3UkHu0DZK/5Vd7TE6vN542WEyvD+0p1XiJMTq86boK3zfYLL/yd82WlC?=
+ =?us-ascii?Q?pDo/OrTZi/CLeAYhuGv+zRpSAIBmmEyv2be78p9DVIw0Ujee9An5ScrIY8ZS?=
+ =?us-ascii?Q?+p/Tb+moeZfZ/lT/+Bm5x0NsMDt/fp9dQY/ibXHF1TxgppoGl5EifwoIblpx?=
+ =?us-ascii?Q?A5ArtCnsd0WHPoI744dmIWCaGj1p5V7tGHDYYEIstKi0oLXCOltnGD0xvDjm?=
+ =?us-ascii?Q?rNMU0bQ45lioHgiEHfjETvRMhwKFgyoJzHL8tler+gUSjEmrBW/EtYAu7icQ?=
+ =?us-ascii?Q?azmQk04Gr0qyqMXWef6LhHQFdjQotpLPeuGQQd19UbH+PzKLtIr9yR1+AQHs?=
+ =?us-ascii?Q?mzRleU56lmrSRP7SBh/E5PmxqvALPYubNxu+RVGtJohbgvU083Wcat+vPcKl?=
+ =?us-ascii?Q?QKUOqGjOeFhuk+SXRiCR9Im1lWZw6kdSphS6?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(19092799006)(52116014)(376014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?DSj35pNsny5wIof7JXK5KVEake4DT68yPhlFJjINdh1zzZSu8m6PeaLuv3g1?=
+ =?us-ascii?Q?oJj98a+THhZRKa+lH7NCfThSglIcNNJwgJ7lo+b3PSdDchely7iCJrlReILB?=
+ =?us-ascii?Q?h7O68UlaAtuxc3Ir/DuXCrD8LHgvRhgmA0k7Q/tgRDRKbXjrE4KUHHKzdzU9?=
+ =?us-ascii?Q?aXmqOgBLSSfZLvOvB7qO7fC+gRbXmswoEeDO4ktqlWHThwnHe1kr84th5xHA?=
+ =?us-ascii?Q?2ydN+ttP+BS4eMZ2ngAmRbVc6TnJfxDZvwwb06kuDtMByMjC/wg/kERrp8Ty?=
+ =?us-ascii?Q?kPXwi9t96nLHgSZYT+hFhlrgN0EV6v3Qms4trjAbCr0Qa9ogU5dQlxnHahJu?=
+ =?us-ascii?Q?fND5MWbKSwXEpEOnHK9FQLfIOml3a5wdeVKRP1iNDO8qvqNhzWgh6ZPYikgn?=
+ =?us-ascii?Q?T0r5aWISMyoJTdE6AjBeUL9/J14bvGpMXQ8SvrR4riQbsMnqS6jNqC08cRGE?=
+ =?us-ascii?Q?fd+Jbz6aABNpeW7MCPWvv9ZwF8N1x5fmbkf6Qjkps23VwacIYbsaP2izBx3o?=
+ =?us-ascii?Q?hvIKzCYuhi2QaOoI6ypb/EWgST+e9RncfujQ+8sIOhoiBC/Vxi1qyRQpZhkY?=
+ =?us-ascii?Q?dS1uj4BaDO9ATAbeFBPB1SiZTyp+fDJy28iPcqD8IAELVXD7YxJyQd+f8PDm?=
+ =?us-ascii?Q?lPR3ODCGb0+jjuchI4dBgtmjJcwsXxzLxqf2rwltgpDS4ERu+/vHxVZHwmv4?=
+ =?us-ascii?Q?opbDmv4uq6U5whA/GkR1LXvpBhMIYXXBMvjTVszzgv19r8CuO7R3timWIKrR?=
+ =?us-ascii?Q?WQxb7LOvpu+Tv8J+kjo//YdnaPfDs7JSzhbKzTtSvaJqU7BgAe6cNJtYo3MN?=
+ =?us-ascii?Q?Y7fpe6yS/mzMzz/ZaAJEiRvF/cSm177ohk/CD8hTiRUihzKtGjz+KatOpZN0?=
+ =?us-ascii?Q?1VkL0DFeMHFoOqdIIclLqHEBPRT08+4+mI/1+LlsRT5wMzgJRlOGAz+rhL2a?=
+ =?us-ascii?Q?0Ry/46eZol8VuBGcL6zKtZSuRwh09Cv0vaEg0hxu5VTkNoRlnV99thAjHb2j?=
+ =?us-ascii?Q?T/rsECFttlmwceYpKYNkpU18hot/k5quR7UKpkYn9awiLxqMtXB1gTsgO2Tq?=
+ =?us-ascii?Q?fjg66+QXFqgAXtoU5MoiY0cVENX2RZOCfJbW/YjE2L08AW+EDAeReyCswZnj?=
+ =?us-ascii?Q?H7FrAuYCmSTAiW/clF58EOOW8ott5EX2fZn3M2HC4CUMstu098m6mlXSoAg6?=
+ =?us-ascii?Q?B//B5IQxR414/JqINgDNzK1LrsMQ+KYyOWPx65Q2H2mjkLaSLkNYlz6gz2OD?=
+ =?us-ascii?Q?mF1dW3E9eQi0KtvMNwoRABsvu4xfr5KcQL3SO1FV09F4r86x/SNWTP/+Grbm?=
+ =?us-ascii?Q?pXpvcok9nsTn7LjwnbvcjqPAf80JCPNgB7KFuuQC91yzM9mwuX9GRR/AQSLt?=
+ =?us-ascii?Q?SGfrtWq7PJDWBMWBtm8FIhro6UteW4oVaZ6MwNUl1CW09RPJmlbZNXahgNwj?=
+ =?us-ascii?Q?DawhSmcHDD8ysdjPopMJ/xeQRqIxGx2jSvEh2YMiKr+gO1l6frgxHVnb0vP7?=
+ =?us-ascii?Q?so1dzM03KFm9U5XzuX90B+mnBsWAqclgy9u3tr5HO8ls/1OK+bG4sDdBokCO?=
+ =?us-ascii?Q?PW7COLu0fwMSV1mXfqn+0OLLn/LVG30/lwljbyiL?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7933e966-f9b3-4311-d73e-08ddfc81e431
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2025 22:21:36.7523
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wohNf7UItvTdeD79BhPUM/d9h0pL7BdkDRT2dE+E36XSY+cWQ+gV/2PnCMguKHfgM5R0YzvNLDyjHyTIbsr5eA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8039
 
-On Tue, Sep 23, 2025 at 03:39:13PM +0800, Richard Zhu wrote:
-> The CLKREQ# is an open drain, active low signal that is driven low by
-> the card to request reference clock. It's an optional signal added in
-> PCIe CEM r4.0, sec 2. Thus, this signal wouldn't be driven low if it's
-> reserved.
-> 
-> Since the reference clock controlled by CLKREQ# may be required by i.MX
-> PCIe host too. To make sure this clock is ready even when the CLKREQ#
-> isn't driven low by the card(e.x the scenario described above), force
-> CLKREQ# override active low for i.MX PCIe host during initialization.
-> 
-> The CLKREQ# override can be cleared safely when supports-clkreq is
-> present and PCIe link is up later. Because the CLKREQ# would be driven
-> low by the card at this time.
+On Thu, Sep 25, 2025 at 12:49:40PM +0200, stefan.prisacariu@prevas.dk wrote:
+> From: Stefan Prisacariu <stefan.prisacariu@prevas.dk>
+>
+> Make SoM .dtsi SoC-agnostic by moving SoC include to board level
+>
+> imx6qdl-var-som.dtsi currently includes imx6q.dtsi, which makes this SoM
+> description Quad/Dual specific and prevents reuse from i.MX6DL boards.
+>
+> Move the SoC selection to the board level:
+>  - Drop the imx6q.dtsi include from the SoM .dtsi.
+>  - Add imx6q.dtsi include to imx6q-var-mx6customboard.dts.
 
-What happens if we clear the CLKREQ# override (so the host doesn't
-assert it), and the link is up but the card never asserts CLKREQ#
-(since it's an optional signal)?
+move imx6q.dtsi from imx6qdl-var-som.dtsi to imx6q-var-mx6customboard.dts.
 
-Does the i.MX host still work?
+>
+> This keeps the SoM .dtsi SoC-agnostic (it already relies on imx6qdl.dtsi
+> for family-common parts) and allows boards using the DualLite or Solo to
+> include imx6dl.dtsi instead.
+>
+> Why this is needed:
+> I need to reuse imx6qdl-var-som.dtsi for a board based on i.MX6DL
+> (VAR-SOM SoM + custom carrier). Without this change, the SoM .dtsi
+> forces imx6q.dtsi, which is incorrect for DL and breaks the layering
+> model used upstream.
 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Can use simple words
+
+To reuse imx6qdl-var-som.dtsi on i.MX6DL board.
+
+>
+> Verification:
+> The DTB for imx6q-var-mx6customboard was rebuilt before and after this
+> change. Both the binary DTB and the decompiled DTS
+> (via dtc -I dtb -O dts -s) are identical, confirming no functional change
+> for the existing board.
+
+Needn't this section (good place for these informaiton is cover letter).
+
+>
+> Alignment:
+> This also aligns the layering with how it is already done for
+> imx6q-var-dt6customboard.dts, where the SoC include is handled at the
+> board level.
+
+Needn't this section
+
+>
+> No functional changes for imx6q-var-mx6customboard are intended.
+
+good
+
+>
+> Files were introduced in:
+> commit e5c810848d2a ("ARM: dts: imx6qdl: Add Variscite VAR-SOM-MX6
+> SoM support")
+> commit a5b59a3f41bd ("ARM: dts: imx6q: Add Variscite MX6 Custom board
+> support")
+
+Needn't this section.
+
+>
+> Signed-off-by: Stefan Prisacariu <stefan.prisacariu@prevas.dk>
 > ---
->  drivers/pci/controller/dwc/pci-imx6.c | 43 ++++++++++++++++++++++++++-
->  1 file changed, 42 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 80e48746bbaf..6b03b1111d06 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -52,6 +52,8 @@
->  #define IMX95_PCIE_REF_CLKEN			BIT(23)
->  #define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
->  #define IMX95_PCIE_SS_RW_REG_1			0xf4
-> +#define IMX95_PCIE_CLKREQ_OVERRIDE_EN		BIT(8)
-> +#define IMX95_PCIE_CLKREQ_OVERRIDE_VAL		BIT(9)
->  #define IMX95_PCIE_SYS_AUX_PWR_DET		BIT(31)
->  
->  #define IMX95_PE0_GEN_CTRL_1			0x1050
-> @@ -136,6 +138,7 @@ struct imx_pcie_drvdata {
->  	int (*enable_ref_clk)(struct imx_pcie *pcie, bool enable);
->  	int (*core_reset)(struct imx_pcie *pcie, bool assert);
->  	int (*wait_pll_lock)(struct imx_pcie *pcie);
-> +	void (*clr_clkreq_override)(struct imx_pcie *pcie);
->  	const struct dw_pcie_host_ops *ops;
->  };
->  
-> @@ -149,6 +152,7 @@ struct imx_pcie {
->  	struct gpio_desc	*reset_gpiod;
->  	struct clk_bulk_data	*clks;
->  	int			num_clks;
-> +	bool			supports_clkreq;
->  	struct regmap		*iomuxc_gpr;
->  	u16			msi_ctrl;
->  	u32			controller_id;
-> @@ -239,6 +243,16 @@ static unsigned int imx_pcie_grp_offset(const struct imx_pcie *imx_pcie)
->  	return imx_pcie->controller_id == 1 ? IOMUXC_GPR16 : IOMUXC_GPR14;
->  }
->  
-> +static void  imx95_pcie_clkreq_override(struct imx_pcie *imx_pcie, bool enable)
-> +{
-> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
-> +			   IMX95_PCIE_CLKREQ_OVERRIDE_EN,
-> +			   enable ? IMX95_PCIE_CLKREQ_OVERRIDE_EN : 0);
-> +	regmap_update_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
-> +			   IMX95_PCIE_CLKREQ_OVERRIDE_VAL,
-> +			   enable ? IMX95_PCIE_CLKREQ_OVERRIDE_VAL : 0);
-> +}
-> +
->  static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
->  {
->  	/*
-> @@ -685,7 +699,7 @@ static int imx6q_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
->  	return 0;
->  }
->  
-> -static int imx8mm_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
-> +static void imx8mm_pcie_clkreq_override(struct imx_pcie *imx_pcie, bool enable)
->  {
->  	int offset = imx_pcie_grp_offset(imx_pcie);
->  
-> @@ -695,6 +709,11 @@ static int imx8mm_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
->  	regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
->  			   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN,
->  			   enable ? IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN : 0);
-> +}
-> +
-> +static int imx8mm_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
-> +{
-> +	imx8mm_pcie_clkreq_override(imx_pcie, enable);
->  	return 0;
->  }
->  
-> @@ -1298,6 +1317,16 @@ static void imx_pcie_host_exit(struct dw_pcie_rp *pp)
->  		regulator_disable(imx_pcie->vpcie);
->  }
->  
-> +static void imx8mm_pcie_clr_clkreq_override(struct imx_pcie *imx_pcie)
-> +{
-> +	imx8mm_pcie_clkreq_override(imx_pcie, false);
-> +}
-> +
-> +static void imx95_pcie_clr_clkreq_override(struct imx_pcie *imx_pcie)
-> +{
-> +	imx95_pcie_clkreq_override(imx_pcie, false);
-> +}
-> +
->  static void imx_pcie_host_post_init(struct dw_pcie_rp *pp)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-> @@ -1322,6 +1351,12 @@ static void imx_pcie_host_post_init(struct dw_pcie_rp *pp)
->  		dw_pcie_writel_dbi(pci, GEN3_RELATED_OFF, val);
->  		dw_pcie_dbi_ro_wr_dis(pci);
->  	}
-> +
-> +	/* Clear CLKREQ# override if supports_clkreq is true and link is up */
-> +	if (dw_pcie_link_up(pci) && imx_pcie->supports_clkreq) {
-> +		if (imx_pcie->drvdata->clr_clkreq_override)
-> +			imx_pcie->drvdata->clr_clkreq_override(imx_pcie);
-> +	}
->  }
->  
->  /*
-> @@ -1745,6 +1780,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
->  	pci->max_link_speed = 1;
->  	of_property_read_u32(node, "fsl,max-link-speed", &pci->max_link_speed);
->  
-> +	imx_pcie->supports_clkreq =
-> +		of_property_read_bool(node, "supports-clkreq");
->  	imx_pcie->vpcie = devm_regulator_get_optional(&pdev->dev, "vpcie");
->  	if (IS_ERR(imx_pcie->vpcie)) {
->  		if (PTR_ERR(imx_pcie->vpcie) != -ENODEV)
-> @@ -1873,6 +1910,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
->  		.init_phy = imx8mq_pcie_init_phy,
->  		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
-> +		.clr_clkreq_override = imx8mm_pcie_clr_clkreq_override,
->  	},
->  	[IMX8MM] = {
->  		.variant = IMX8MM,
-> @@ -1883,6 +1921,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.mode_off[0] = IOMUXC_GPR12,
->  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
->  		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
-> +		.clr_clkreq_override = imx8mm_pcie_clr_clkreq_override,
->  	},
->  	[IMX8MP] = {
->  		.variant = IMX8MP,
-> @@ -1893,6 +1932,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.mode_off[0] = IOMUXC_GPR12,
->  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
->  		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
-> +		.clr_clkreq_override = imx8mm_pcie_clr_clkreq_override,
->  	},
->  	[IMX8Q] = {
->  		.variant = IMX8Q,
-> @@ -1913,6 +1953,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.core_reset = imx95_pcie_core_reset,
->  		.init_phy = imx95_pcie_init_phy,
->  		.wait_pll_lock = imx95_pcie_wait_for_phy_pll_lock,
-> +		.clr_clkreq_override = imx95_pcie_clr_clkreq_override,
->  	},
->  	[IMX8MQ_EP] = {
->  		.variant = IMX8MQ_EP,
-> -- 
-> 2.37.1
-> 
+>  arch/arm/boot/dts/nxp/imx/imx6q-var-mx6customboard.dts | 1 +
+>  arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi         | 3 ---
+>  2 files changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-var-mx6customboard.dts b/arch/arm/boot/dts/nxp/imx/imx6q-var-mx6customboard.dts
+> index 18a620832a2a..a55644529c67 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6q-var-mx6customboard.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-var-mx6customboard.dts
+> @@ -8,6 +8,7 @@
+>
+>  /dts-v1/;
+>
+> +#include "imx6q.dtsi"
+>  #include "imx6qdl-var-som.dtsi"
+>  #include <dt-bindings/pwm/pwm.h>
+>
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
+> index 59833e8d11d8..51bcaf04546b 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
+> @@ -9,9 +9,6 @@
+>   * Copyright 2022 Bootlin
+>   */
+>
+> -/dts-v1/;
+
+why drop this line.
+
+Frank
+> -
+> -#include "imx6q.dtsi"
+>  #include <dt-bindings/clock/imx6qdl-clock.h>
+>  #include <dt-bindings/gpio/gpio.h>
+>  #include <dt-bindings/sound/fsl-imx-audmux.h>
+>
+> base-commit: 8f5ff9784f3262e6e85c68d86f8b7931827f2983
+> --
+> 2.49.1
+>
