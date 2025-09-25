@@ -1,114 +1,143 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CFA21B9F1
-	for <imx@lists.linux.dev>; Thu, 25 Sep 2025 20:41:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FE14204E
+	for <imx@lists.linux.dev>; Thu, 25 Sep 2025 20:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758832913; cv=none; b=LALoq833yaJj7DtCyn5c+shGe40ZJPadv2h5mmMIKW/+VAruvEebeZ5kfGjGbkMCw72R58NpNZIl+Ftl32aiHsez9RtQmFOtOxIaKYWcid58c6Ns1pJkoXwAHa69enav3YTS4ZiS3Ji3+rogZAskCuhpK9WfU9Br78Roa9ZIFAM=
+	t=1758833558; cv=none; b=GDzbYpMj9dV1GbdlE+c2jeXHxNC0rjOSbpy1UD0Yz55lu20gu3+tMK3WHqMM+0YcS83hcVC0ut4vsxGq5k9c4TSLTexx3/oRQqCQPjX8IHobycznAmMRLBxanPoLvL/ad+rAAk8P7zBdwqMvhknxnNfyz9fZ/yxwIzQu8OqzRtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758832913; c=relaxed/simple;
-	bh=cerRnY1fWQOG+wc6hvM14NQvggaVXStqYkV6A1pmvac=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EaXYM+8fscVYC5heFUnfkWkFxbPO7Fa5tLLzevYq75yuS3of/EOFh1Y+VIqoynIc7TQLkQhSdMFqUmPU7XW9bBzjLqUbKXMFXXwjMrAq2U8nHEttd/wwREssRbQBVYSqhrK8ucR7VB4TpxCceicBvDfviK+qmYvvnUXbQDKJ3u8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=r/jHz6jn; arc=none smtp.client-ip=80.241.56.172
+	s=arc-20240116; t=1758833558; c=relaxed/simple;
+	bh=IQ4qZCtCZIYWIGaW2ha2qzV0BGFt1JnggjVVAl/goMM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JeQ2ULo1NJfzFYFj2zrN83HK4j60E7pwx8oEdYLFBr15uJ9HmJNTWYGwyCGFVGgRpoXRH2Ha9Ky3on06ygS2tACrt9amtyBrMHnqfln3wDY5jLcXitTrpC4TT3CCAmVrIWfFvn8kvaWs6T4sfwlAzTookQhps6RxdPYf6/qOIfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=V3GEiR6K; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=XH3baMCn; arc=none smtp.client-ip=80.241.56.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="r/jHz6jn"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="V3GEiR6K";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="XH3baMCn"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4cXlxd5FDcz9t6q;
-	Thu, 25 Sep 2025 22:41:41 +0200 (CEST)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4cXmBB564Wz9sl7;
+	Thu, 25 Sep 2025 22:52:34 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1758832901;
+	t=1758833554;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CijZ3Xqd6wqxDdeAlLP2vKxFbA+8L+sWoLSvg2ZGilI=;
-	b=r/jHz6jnoaua6QeLVAKaSSvhFNHUK1SEppt1e4VfZcHodDk0zlMAdXYuen99UuKB+ssZUu
-	zIouJzVc2yEVwP8p/SAQlZGLe/Z1Zl0SsbllTruD79VTA2he6cWIWiTz1jN8W5MEnLzF25
-	Gr/ezLzyiwEVn4u13TZxJsqJdHTnrFWTU8WEZ+G5yWBnEWQteTCi04Czn5/cuMV/b2mmQD
-	UlseG98XIWiJDk5doIyOtt9KYJlIs69B8+hgPFzAVRhmPHzmKJCuWWU1E9TgBRKDEZI5TK
-	9Wg7q/Llf2ayJDuNxwRBGnw7A4ZePEH3XGxWeCszEed6TRhUvQLt/n4popvhng==
-Message-ID: <609113fa-6af3-4e7e-b47a-45b3152d8581@mailbox.org>
-Date: Thu, 25 Sep 2025 22:41:37 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=di1Qn1dMYtgFxXZEmc2QHL5MDRrtBScA8er1ThtwkQ4=;
+	b=V3GEiR6KdOTRLLE8u/AJMBWOS7sgqcU4LX2iX/Bqy0WO846bXalIVU3pxWXwlcR9md+8tg
+	X2kUQhrNkvuZILmQ7MfQmYdW1HtS8eol2qXZS1JKJJ37rISqiSIAdNZDu1zPxv8lGZWWEu
+	w/RwW5lFr5nU2DjhdOzivXCD/mI07YyAht+Eg6p6rrwKZ8RKnclrt2E6b6J/2ORaOyl//w
+	nWQWtk7ixcaSwsIhnK9oplPVpj9k2WVoQyhtCG80KZDBeU5AXyNG1omz2MuHOog2McqmiP
+	+Z5RMNKIdn+NPxUEOgCPNdw3lTr2mut0oWJkT2YCdLjLipep1qBIGe6DwQNFCQ==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=XH3baMCn;
+	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
+From: Marek Vasut <marek.vasut@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1758833552;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=di1Qn1dMYtgFxXZEmc2QHL5MDRrtBScA8er1ThtwkQ4=;
+	b=XH3baMCnljKn1CagYckEYHfmAAdIDrXTQLGILz/9UBAVajStTXC3RxtMksTd21PKpsE9j0
+	adOeHyG9W15aUAE+R+qldBiVWS3rvkuYO/Z+9Zk54D9mXACI++FJHyu9yFaIaEzLMROkw7
+	+UC/ZLjA3d0NwRio0M/2ugt3cNGa2trbasKfdI1C8dCyMA2soCSzUjnOfV6GEmhBJH4FUe
+	MIZj2cI/xozEYq84EsGlLk2S28aMBTpT6ta+oP/R/LtUYbcwaA/FVnQCkrUEuddf1cGgxx
+	wHHda7MDyNGHQC/ZHUKOI/5fX7kkhMCV4NLuq5W6D7vRlZd554V0E8Te9ys1gQ==
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marek.vasut@mailbox.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Joao Goncalves <joao.goncalves@toradex.com>,
+	Joao Goncalves <jpaulo.silvagoncalves@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Tim Harvey <tharvey@gateworks.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/2] dt-bindings: arm: imx: document i.MX 95 Verdin Evaluation Kit (EVK)
+Date: Thu, 25 Sep 2025 22:51:54 +0200
+Message-ID: <20250925205211.171699-1-marek.vasut@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
-To: Rain Yang <jiyu.yang@oss.nxp.com>
-Cc: airlied@gmail.com, boris.brezillon@collabora.com, conor+dt@kernel.org,
- devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
- festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de,
- krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
- liviu.dudau@arm.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- p.zabel@pengutronix.de, peng.fan@nxp.com, robh@kernel.org,
- s.hauer@pengutronix.de, shawnguo@kernel.org, simona@ffwll.ch,
- sre@kernel.org, steven.price@arm.com, tzimmermann@suse.de,
- xianzhong.li@nxp.com
-References: <20250904082224.113d0cd1@fedora>
- <7d4e773b-64ac-49ce-8d8b-7a39c353d18f@mailbox.org>
- <20250904160445.1671f140@fedora>
- <36298ed9-05e4-4871-8e99-dfe814342c29@mailbox.org>
- <20250904172019.58e5f589@fedora>
- <4147d10f-fb54-4f1b-ac1b-58cf657a3aeb@mailbox.org>
- <aMk1CISrn2_p0qzJ@oss.nxp.com>
- <c34dc4bc-de12-42fc-aaf5-50474dc53042@mailbox.org>
- <aMoTtr9KmdrgDUiE@oss.nxp.com>
- <c1a45cfa-a249-4782-b5c8-0ee2d173fc97@mailbox.org>
- <aMrDKkIoZvAlBD8d@oss.nxp.com>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <aMrDKkIoZvAlBD8d@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: 1dyck573mitkj4nhekjarxur44xtxn3t
-X-MBO-RS-ID: 09b1e6ab6b2edc227a4
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: jzfk9accpwdoyrj9oxc6athy3ng1m71p
+X-MBO-RS-ID: c5eaf82e82a3ea441d2
+X-Rspamd-Queue-Id: 4cXmBB564Wz9sl7
 
-On 9/17/25 4:18 PM, Rain Yang wrote:
+Document support for i.MX 95 Verdin Evaluation Kit (EVK), which
+used to be the Titan EVK.
 
-Hello Jiyu,
+Note that the SoM used in this EVK is a derivative SoM from Verdin
+line of SoMs, an actual i.MX95 Verdin SoM is under development.
 
-sorry for the late reply.
+[1] https://www.toradex.com/computer-on-modules/verdin-arm-family/nxp-imx95-evaluation-kit
 
->>> sorry for the inconvienence. this uboot version don't include SM-184's change.
->>> I heard you're using i.MX95 A1 Chip, so you can extract the uboot in below link[1],
->>> or build from source, or raise one ticket in this website[2].
->>
->> I use mainline U-Boot 2025.07 with about 10 extra patches, but nothing
->> significant. I don't think this is U-Boot issue, is it ?
->>
->> I can rebuild SM, which commit in SM (from imx-sm repository) do I need to
->> use ?
->>
->> -- 
->> Best regards,
->> Marek Vasut
-> Hi Marek,
-> I think the problem may be about the multi power domain, the second power domain named perf
-> is for frequency change only, you can try to power on gpumix power domain only.
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+---
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>
+Cc: Hiago De Franco <hiago.franco@toradex.com>
+Cc: Joao Goncalves <joao.goncalves@toradex.com>
+Cc: Joao Goncalves <jpaulo.silvagoncalves@gmail.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Max Merchel <Max.Merchel@ew.tq-group.com>
+Cc: Michael Walle <mwalle@kernel.org>
+Cc: Peng Fan <peng.fan@nxp.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Tim Harvey <tharvey@gateworks.com>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+V2: Add AB from Rob, RB from Daniel and Francesco
+V3: No change
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-I dropped that one.
-
-> as the 0x4d810008 is a write-once register and whose operation has been moved into the SM side,
-> so please drop the reset change.
-> can you also change the label of the gpu node from gpu to mali like "mali: gpu@4d900000",
-> as the internal driver use mali label to control the thermal up/low limitation.
-
-I updated all of the AHAB container, imx-oei and imx-sm components, and 
-the reset controller is no longer needed indeed.
-
-> BTW, does the dynamic frequency work well on your side so far with perf domain?
-
-How do I test that ?
-
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 00cdf490b0620..b42240004d81c 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1430,6 +1430,7 @@ properties:
+           - enum:
+               - fsl,imx95-15x15-evk       # i.MX95 15x15 EVK Board
+               - fsl,imx95-19x19-evk       # i.MX95 19x19 EVK Board
++              - toradex,verdin-imx95-19x19-evk  # i.MX95 Verdin Evaluation Kit (EVK)
+           - const: fsl,imx95
+ 
+       - description: PHYTEC i.MX 95 FPSC based Boards
 -- 
-Best regards,
-Marek Vasut
+2.51.0
+
