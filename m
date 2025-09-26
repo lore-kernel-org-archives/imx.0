@@ -1,102 +1,106 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EE12AD2C
-	for <imx@lists.linux.dev>; Fri, 26 Sep 2025 13:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C312187554
+	for <imx@lists.linux.dev>; Fri, 26 Sep 2025 14:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758893578; cv=none; b=NwaSQ7Z2HPHj1/Vm9Gfcq2vAl+BVnZkM+70gw/fcFCph8hX5TA4PvFUdkfiMC+dr9XS7QAmvy8hiIVpH6lnVyhABDWazp3EgsbkM91CPl35Sle3ESST5Zd//MxlJJn62DHw6JkQcSpS6EMdVgRzCwQl8Kd7dKwq/CCx5P4YKHpw=
+	t=1758896294; cv=none; b=Iq1K37TMdk5e0xzmkCofD8C/oZ/GnjChGHlemPVYAJvxmf0Y5pYaYtVRlGy0bQFBf20rICIZUqfNgcTLgLWtD1GA+2t3TF6scdchKR5s15JIEYbp+6ohC9CanlJ9qbpAHbwKAQVtjUtj/hEO6fYCweFDEhu2qdDokt0N+xL6b/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758893578; c=relaxed/simple;
-	bh=bCg5ZCDZlbBoeYRSDTBdcsJZdFVKVBO2mwH3cdLPz74=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qC3E3sqnaZ9Dl5vkzTpEQdq5Od8Bi6/bemRNLac5UPXR8ca6yk12fg/GtshPz6DdrKKPmn2L0vOx1cUGCw97+gqb4rW2uyajd3LlIiO1vvo+EODKgczX3/+j7734HHYA7yC+hAweYCqDhA4Z4wjuGmOrz8+wihWb5jSJCws9qXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=wUyAiw6M; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1758896294; c=relaxed/simple;
+	bh=ovRK5c7wZT8POELugcGy2OQZLq61t1b/lN/zUBC5q+I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tRDticZVD4+LqGYqFEHGQ6+1HTsxIcKc1nLltji8J52lO1xhOlITVaLS7XSafnk3bf3lLdQesBawkqbF3IPBmqDrKbYE0+kXd286YWW94o12lSZzothWUjCyrJdsiGyDtjxmF8YQ4iJyTdOjgkaio37eqYcOJkWM3QrRVc/ucLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJvGYY1H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="wUyAiw6M"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cYBNP0pt7z9tNq;
-	Fri, 26 Sep 2025 15:32:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1758893573;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yd4Mx+jNOSdf6VCUIn0E+aIjOManxtZgx8FZ6L3wTIs=;
-	b=wUyAiw6MOzMV6zf7lkEjnsjt+tRDVO6Ao57dGOEZTYgFMcEL65ECbBvEI/2WXzr8uXZO/W
-	v1BEdJa66C9cq0i+QiS09TuaR84YYZxSmSI1HtIB8vuGqw44LAPcDzA2JmqeWZgYi7zuWl
-	2PQUufCxWo1oDAu+Tauj9BxOqDiz1NehzBWN6FfwIUcPP6nXLE9FPI432+sKnK2vXSc+Lh
-	JThwcs9VHk+BV24T7GI9J6u3hNVRYSFxLE3dwCJqdFHoGs20mIxI5u6lj1ppRuodwF0Rgw
-	FSwRL4iQ3sdvK7EJAPupK1+g28EiZJfgoJeAYplUjKj4fxnq/UQcF4SmTbxLeQ==
-Message-ID: <32fffaad-7738-4fa6-80cc-2f8eba7ca099@mailbox.org>
-Date: Fri, 26 Sep 2025 15:32:46 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJvGYY1H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CE1C4CEF4
+	for <imx@lists.linux.dev>; Fri, 26 Sep 2025 14:18:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758896294;
+	bh=ovRK5c7wZT8POELugcGy2OQZLq61t1b/lN/zUBC5q+I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LJvGYY1H2Ar5fYVu2W9DinOLbtd2vFvo5wcY5kL9J3oapMmum4o9C5hq8ROOUx8aW
+	 IIPepmzcBFFYIU1xx4T1PdQqq8w5nzu4m3BW/xd8L1+Ujxz3ynJpW1XetZUgHEyj0n
+	 h+WeDoskvMFDAextzTbW5m74OfmGcDAzvvfapv8eVho5WSlg6H4blwLViSH+/TBKGb
+	 qifZi7Hfjj6wCNTtqizUwQuFs80I5V9jtG7pQA+kesVh9Iu+jbRQsscti7Ifrss2f+
+	 0xmVf7YRlGpNKRVTzMKBbIjkXP1ir5Vsmv1xqGbMBdMh9gdXoHHMrF4Tx3dj6nD1mm
+	 s5M+NXeTpQDlA==
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-62fc28843ecso2924515a12.1
+        for <imx@lists.linux.dev>; Fri, 26 Sep 2025 07:18:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVnkQFq7gqqiFLPSrv0thq+247ROFud12yS+I5Z5R3BNis4sKCMTCpIz9hdcmAx42lXWnk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzeyesbI1t/pDzSEekLVxQ8mUA17j1cqRbTSvxnV6bZJH1klZp1
+	RR6GRKHlaJxvnD0pXkD789+xV4BugKyNzEaIk8X7KQz5wy2PNlQLrrA5A6PQpfylEycGoXyct+F
+	i9Q+F/JDYsSjcAls/yd2y0UztZhJSRg==
+X-Google-Smtp-Source: AGHT+IE5CRm41wAWa2CrClw2VSy83ReWu352foMXpDkXsta+N2WvoCGKuTDsi9qX3wkbts1/ms47yyeQSn9EBlyrs5E=
+X-Received: by 2002:aa7:da45:0:b0:62f:97ab:6062 with SMTP id
+ 4fb4d7f45d1cf-6349fa942c5mr5046024a12.32.1758896292321; Fri, 26 Sep 2025
+ 07:18:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
-To: Rain Yang <jiyu.yang@oss.nxp.com>
-Cc: airlied@gmail.com, boris.brezillon@collabora.com, conor+dt@kernel.org,
- devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
- festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de,
- krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
- liviu.dudau@arm.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- p.zabel@pengutronix.de, peng.fan@nxp.com, robh@kernel.org,
- s.hauer@pengutronix.de, shawnguo@kernel.org, simona@ffwll.ch,
- sre@kernel.org, steven.price@arm.com, tzimmermann@suse.de
-References: <20250904160445.1671f140@fedora>
- <36298ed9-05e4-4871-8e99-dfe814342c29@mailbox.org>
- <20250904172019.58e5f589@fedora>
- <4147d10f-fb54-4f1b-ac1b-58cf657a3aeb@mailbox.org>
- <aMk1CISrn2_p0qzJ@oss.nxp.com>
- <c34dc4bc-de12-42fc-aaf5-50474dc53042@mailbox.org>
- <aMoTtr9KmdrgDUiE@oss.nxp.com>
- <c1a45cfa-a249-4782-b5c8-0ee2d173fc97@mailbox.org>
- <aMrDKkIoZvAlBD8d@oss.nxp.com>
- <609113fa-6af3-4e7e-b47a-45b3152d8581@mailbox.org>
- <aNZaatnVRRkaPrnD@oss.nxp.com>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <aNZaatnVRRkaPrnD@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: 39f223dbff010fb2613
-X-MBO-RS-META: 7t9f5dx43crya5tca76ssnuhq4bazs8u
+References: <CAL_JsqJMibSgsEFeUvHswVy6zsHMn7ZXkpbhch06oQxPY9NocQ@mail.gmail.com>
+ <20250925191520.GA2175949@bhelgaas>
+In-Reply-To: <20250925191520.GA2175949@bhelgaas>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 26 Sep 2025 09:18:00 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq++S5C+9xFsXBJyaRfS5uO_2c+VtCMKJfRg2_ERHyRAgQ@mail.gmail.com>
+X-Gm-Features: AS18NWAk7P-VFFKYhli2Rr8XOPLqBnC-mvDYbm-Fwop3vyyqN_Q7TWJokqE9yg8
+Message-ID: <CAL_Jsq++S5C+9xFsXBJyaRfS5uO_2c+VtCMKJfRg2_ERHyRAgQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3 v2] PCI: s32g: Add initial PCIe support (RC)
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>, chester62515@gmail.com, mbrugger@suse.com, 
+	ghennadi.procopciuc@oss.nxp.com, s32@nxp.com, bhelgaas@google.com, 
+	jingoohan1@gmail.com, lpieralisi@kernel.org, kwilczynski@kernel.org, 
+	mani@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com, Ghennadi.Procopciuc@nxp.com, 
+	ciprianmarian.costea@nxp.com, bogdan.hamciuc@nxp.com, Frank.li@nxp.com, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	cassel@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/26/25 11:18 AM, Rain Yang wrote:
+On Thu, Sep 25, 2025 at 2:15=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org> =
+wrote:
+>
+> On Mon, Sep 22, 2025 at 09:52:21AM -0500, Rob Herring wrote:
+> > On Fri, Sep 19, 2025 at 10:58=E2=80=AFAM Vincent Guittot
+> > > Add initial support of the PCIe controller for S32G Soc family. Only
+> > > host mode is supported.
+>
+> > > +++ b/drivers/pci/controller/dwc/Kconfig
+> > > @@ -255,6 +255,17 @@ config PCIE_TEGRA194_EP
+> > >           in order to enable device-specific features PCIE_TEGRA194_E=
+P must be
+> > >           selected. This uses the DesignWare core.
+> > >
+> > > +config PCIE_S32G
+> > > +       bool "NXP S32G PCIe controller (host mode)"
+> > > +       depends on ARCH_S32 || (OF && COMPILE_TEST)
+> >
+> > Why the OF dependency? All the DT API should be available with !CONFIG_=
+OF.
+>
+> We have lots of similar OF dependencies.  Do we really want it to be
+> possible to build a non-working driver in the !COMPILE_TEST case?
 
-Hello Jiyu,
+We do. IMO, they should all be removed. The only real purpose it
+serves is hiding drivers on non-OF architectures. But the whole point
+of COMPILE_TEST is to *not* hide things. (CONFIG_IOMEM dependencies
+are similar and really only hide drivers on UML.)
 
->>> as the 0x4d810008 is a write-once register and whose operation has been moved into the SM side,
->>> so please drop the reset change.
->>> can you also change the label of the gpu node from gpu to mali like "mali: gpu@4d900000",
->>> as the internal driver use mali label to control the thermal up/low limitation.
->>
->> I updated all of the AHAB container, imx-oei and imx-sm components, and the
->> reset controller is no longer needed indeed.
-> 
-> thanks, please update the gpu node label if possibly.
+>
+> Maybe we should retain the OF dependency but only for !COMPILE_TEST,
+> like this:
+>
+>   config PCIE_S32G
+>          depends on (ARCH_S32 && OF) || COMPILE_TEST
 
-Which label do you refer to, and which one would you prefer to have there ?
+That's completely redundant because ARCH_S32 is only enabled on ARM
+which selects OF.
 
->>> BTW, does the dynamic frequency work well on your side so far with perf domain?
->>
->> How do I test that ?
-> 
-> cat /sys/kernel/debug/clk/gpu/clk_rate, although its name in dts is core.
-> it is an read-only scmi-clk.
-> the clk rate should be fixed, as it can be changed only via scmi_perf in i.MX95.
-
-Right now, it is indeed fixed at 1 GHz .
-
--- 
-Best regards,
-Marek Vasut
+Rob
