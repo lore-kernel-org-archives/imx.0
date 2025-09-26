@@ -1,134 +1,230 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013064.outbound.protection.outlook.com [40.107.162.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31A8224FA;
-	Fri, 26 Sep 2025 12:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758889908; cv=none; b=oT7Yezr1E2eVToczpdS5P4dsFW6tAy/GKtOInwGqukZPOsHh1eemrV5XfZZ8KxhxWbdsuL6QAFqDizZTOlkQZCGatY0ClbB5xm5QsVq78SjXUc9CB8kMPNntdNLT1rE3sLSe+Hd7xeoSSEp+ZIaPS0t62EJ56A1AZuYWu+nTHBU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758889908; c=relaxed/simple;
-	bh=kw9e9hX+qHyTZwjTMHqpMeFf4Ats1Mc0FvLjDKIewG4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CxF10B0E8wBkobP9tzo0BtA+ZT3T0QqBV+tuCKAWgYotAiGW1hCvDfLp1h/J+CKpMP7uWMblBKxT+JKLtSnsjIKeUirFFO3ldr2jM5YsQg/hv5umCJNPon7Vk76w74ZIk/3xHbx//S3FGcEGaUK291wwqKTYRMvs/JXwwqy7aHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1rVe1Ox; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FD229D270
+	for <imx@lists.linux.dev>; Fri, 26 Sep 2025 12:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758890023; cv=fail; b=rEmcQdwn5f730DaPhCtrn4jvrirEyNhie1IdGX+fR2yXZTM/gkUGEug5ZpJTug4GfuwnqNZXk8J9RjWeDahupSWKF20UR2/Vl50ORludlNk7gPRQJRYeh/qFykJHhyQPi+hcurG6ktf3TE5aipV4wJRG7WfM7yl3SzjiQgcKknA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758890023; c=relaxed/simple;
+	bh=hCaq7XkIv5DWOEjYWBRXQ0HOL7Zrek5TPOvsD4qDNBI=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=atJQx+J5T2TgChLWf8aJPfQ7+mxFAkG4rvm4zRGIQsAopbY1v0DP0zbcTxr+6u+u79cZzWdcEtHICNB6c8xMYZKsI2wcp6EIqgfJceRryzfc9veCj+/TNhPX38J89kM1U86lLlRU/TC0yzTvZ+39piIefGNJbqhqAKFJWyZp/kI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Gahl2KmY; arc=fail smtp.client-ip=40.107.162.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1rVe1Ox"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD29C4CEF4;
-	Fri, 26 Sep 2025 12:31:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758889908;
-	bh=kw9e9hX+qHyTZwjTMHqpMeFf4Ats1Mc0FvLjDKIewG4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h1rVe1Ox+rHKkQtDUowYr86UwQCVziXJmcOkTGLQXzKmiGgl6SY3f7onXq6i1Kfrc
-	 1GQzRjlD9wiMz9mrq3DDHte9+7qbDuudRhHys2KtU0/ifdsWOwoeipoIEdPD7GkQji
-	 HeKKXVwMsP8EYj9k1IKJ5I31bvWRDH04JqeUa2IXXRIfcaANlZ/NFcoA52WWMy8FBx
-	 w8QgN7OVtfsTK6UakxOWshzyhxlUb4Ec9sNasDtVpA3AK5wDXp5zxbIR1tvlMYyXSV
-	 c50AVEu3InYORNYDJrpWxb2R3dsPsfsPilXHfXpAVqFOjJITDon65Z1HbDGAOE300s
-	 tvs4emt0r61nA==
-Date: Fri, 26 Sep 2025 14:31:42 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Jon Mason <jdmason@kudzu.us>,
-	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ntb@lists.linux.dev, imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/3] PCI: endpoint: Add helper function
- pci_epf_get_bar_required_size()
-Message-ID: <aNaHrj0rwLTtSRS3@ryzen>
-References: <20250925-vntb_msi_doorbell-v3-0-ae0b0c93caae@nxp.com>
- <20250925-vntb_msi_doorbell-v3-1-ae0b0c93caae@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Gahl2KmY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iX0KGkWWFdS4RmkW4Sgj9dDzCgkPXD50A9sg895c0F0S476RBk5vH+ZLRjkp6yXAHSSyybZI5dWycT8Y6RfJ+ZtRtFs9eUQaNrpfU+NeXVBYZCJtmEGXWarq7IkbZhCC8Zfls7VCO5/f/TO2DaScwtDxc8SVwPiYT2H3k6zS0brHAnHMvza8F1B7DlPKyvXail+gbF/qmlz9lt58trpcVdZtSqoMs2oBOijHE445SVEaoYmtTnqNwRq6dDCCINWp5zRMLHYYSmtmSivyw9ik3ODuLCfo2hN0z6fyx5gKchNRsKQ6T8A+x3V9fISQGwAKkLzOM1hNqrS7PDzfOpUnLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Q2SbXyOivKdMrftq2+jH5oAg3dLd4Psbhq4kxHhl+bE=;
+ b=ZBG2tqpP4Q2jB+XAn+bVmoh8Z3xGo/O2+vd570plE93vC3PwYCLKjQ9Y91fgW6N9+y55dlLBIYvFWTxkK8TNyeXsWDj4aA7Pzni4i654SRmmEdkG3cauqFM5Iv9qnA4RGUJig0M0ctkIffB9VtOU8soqF2FsYziYVrPIjmPdUhYEB+6DeLGNme6SsBR18241bN124BLaOSqqJriz6HjPoBFb6JMk7voqqS8eR7IUGk0k+EIWGD04Hv+aeQepQLiPPWOW88r8Z2M+PLUhSCsIuKafm7ycRsYKSCXaQMLM6FGNjsUJIDiclbx6MuzU4VXosZoKeRIfB08J0tkk3z6yBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q2SbXyOivKdMrftq2+jH5oAg3dLd4Psbhq4kxHhl+bE=;
+ b=Gahl2KmYtUzlwR4oZtfSPY59pvFOFjhxf8SmUqGaaRwWSvhsEitCx7+Kpciyab7xFeoF8M80/HzELcCyLsh1YQXfPexexnUEUEOmzeuExbGGsEsHEnz482q8YlElX5MKsXQacBcqKAlUzlmpM9V4SZZzhDe6fgycZiN8yP+O+Z8xGkAhLCJZk7i0Tv2L1HnbSt46i3vltCKIelzUgBAoV3E2+FjQyecnA/ggFZZibng5sYsuGyAPVdY+sdv+pbgXFq25O1RlqNgFoThlECV6ULmimHeCN6JeZ7tqh3z4vtOF7lBVQYFOiFHbUZZD6f81XQsV44YI3zP1tXB3PA0SbQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by PR3PR04MB7403.eurprd04.prod.outlook.com (2603:10a6:102:8b::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.11; Fri, 26 Sep
+ 2025 12:33:38 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9160.010; Fri, 26 Sep 2025
+ 12:33:38 +0000
+From: Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH v3 0/6] remoteproc: imx_rproc: Use device managed API to
+ clean up the driver
+Date: Fri, 26 Sep 2025 20:33:14 +0800
+Message-Id: <20250926-imx_rproc_v3-v3-0-4c0ec279cc5f@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAuI1mgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDSyMz3czciviigqL85PgyY91EU4PEpNQUYyMLi0QloJaCotS0zAqwcdG
+ xtbUA/glKv14AAAA=
+X-Change-ID: 20250926-imx_rproc_v3-a50abed3288a
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+ Hiago De Franco <hiago.franco@toradex.com>, Frank Li <Frank.Li@nxp.com>, 
+ Daniel Baluta <daniel.baluta@nxp.com>
+Cc: linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758890010; l=2129;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=hCaq7XkIv5DWOEjYWBRXQ0HOL7Zrek5TPOvsD4qDNBI=;
+ b=BaxVvNmiSHbsFyEKTqa42+6MGmuqnNoUErDyNg80zDW6O6yEkjCPQl93V1q8b9iFvLGY4Mbu3
+ PFQS0ShYMI0Ba2ruw6zWIJXK4bg6sqxQpXdtim1yKOxm6/TdbKQFZc4
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: SG2PR03CA0115.apcprd03.prod.outlook.com
+ (2603:1096:4:91::19) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250925-vntb_msi_doorbell-v3-1-ae0b0c93caae@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PR3PR04MB7403:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6aa172ad-faa2-4d5a-734c-08ddfcf8eadc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|19092799006|1800799024|366016|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Z2hSQnM0Wjh5b3Uvc0h2MWhXZFBqUHBwWXd5VkZMR2pWYitEWHhwNXU5U2p2?=
+ =?utf-8?B?TWwrVDVnWEx3ZGNDbEg0c2VqUng0OWY3V0lmRCtkVnMwZlZYTWxTTEVrVmtm?=
+ =?utf-8?B?UDRxVjVjeElDYjU4N3lOd2VBcFBVaURrRWYvZUYwQlRiVDJBdmYxdmYxMkJx?=
+ =?utf-8?B?bzI4N3J2T20xWjBLVjFSajdpM2JKaGs0R2RpM0MzbHEyckNQV2xlUEdJeXQ4?=
+ =?utf-8?B?b0N1bGNzbTNJbWx1MkJ6bzVKZ2FIaURjK3pKejZ2REVncWhPWEtFYng5ZDF3?=
+ =?utf-8?B?MWp5T2pJK01QQlFzWVBrYlN4MVBlZWc2aUtpRjE4Q0xjWlNpWllWaW44WFNC?=
+ =?utf-8?B?MWpIcmV3V2ZzNEEvWlR4M09mQUg5UnIxM0s5NExuc1p3a29MQWkrZW5ZU3M1?=
+ =?utf-8?B?cVM2dlo3d2pBcUJrV0tmOXB5dEhtbjFMbUZyZGdqelFDY3RmZXFUK3MwaDky?=
+ =?utf-8?B?OHZqUy9uUFZYV0x5eUxRN3dkQ0VZS0w4cm1tQmt3M2V1RE53OCtHa0tObFV0?=
+ =?utf-8?B?QWwvTDIrS1o0Mm9yTHV5WkJWRXpLcktLakZJSzlQUEUwejlBWjhRVEF2UmJw?=
+ =?utf-8?B?TlFqTWI0NmNZWGwrd3BTU1p4MFIxd0lSZTQzMkhJSWMyZFYzU0p4UzJib2Za?=
+ =?utf-8?B?N0dXMnhPSHR1NzNTT1hYaEk3eXpEam5PM2t0Qm05ODQxT1ZGT0xzR1U5aEta?=
+ =?utf-8?B?ZlBXOFBEK2xxWU1ob2xIbm9UcFJ4WVA4U3VaRzZTYXdvMjI4MmM4alpTd24w?=
+ =?utf-8?B?YTBQUjByam1kT1pXM0JjRHVsVFJHeThGYUt2UXlXcUxEbENsK1Z1RHp3TmMw?=
+ =?utf-8?B?aGtOY0VKcmZCTWc5ZXpDNTIvMHFacHRsckRwYlFpSVFlK3Y4Y3dwSGVuQjBh?=
+ =?utf-8?B?RTZCS1RPVmxwV1h1aXFWdUNUM1FZVG8xRDBaKzhhR1RZNUNMRGRUcE1BdDlT?=
+ =?utf-8?B?MG1IUlJZcVk3WGpvT3phNm5UaWJDdFJkL2JSaDMrR0dkc2E2SWFucWF2eS80?=
+ =?utf-8?B?WnVJdkRDdm11V3l3a1RmTHRTUVMwenlKSEIwdVJYUHpjRHdJdTJFVGJYckdk?=
+ =?utf-8?B?MkxIVVlvYmJFZzVtOUJ4d1pabWNncEdsYVJwYSsvQW1DVS9ndE11MXdlYVZN?=
+ =?utf-8?B?R01TdHBOYUZMVjNWNFBxa3c2cXNWenQ5a2YrUGRsQ3hqcDRkajdxSTd5b3Zo?=
+ =?utf-8?B?R0VuTkVUek5YaDhFTHhDV2s4UGhMdVVxcVNtdjhqREk0SUdmdWtSMlpXK1I3?=
+ =?utf-8?B?UTdWMXkyQXRXQ3RjdDNUcE1vNmFLUzJ5NHFuZUI3VFBCRWc0WDZ2UXBJR1dE?=
+ =?utf-8?B?VEJ2NUovNFZIaXVLNE95OEVmTUEwRlNMclRtZVVWckJqOW83UXVmVE5rT3Mz?=
+ =?utf-8?B?MUhYUHl2U29BUDUzOE92MFF4Ymk3Z0FjaVMxTHpmRi9qMVRmS1lpRkxuNGRj?=
+ =?utf-8?B?NzAzTDNnMmNuekw5aWoxdU4ybVQxUVE0VnpmR0ppRm9pS3I1dnZnSzY2bk5G?=
+ =?utf-8?B?amZFLzduQ1MvQ1U4UFRBcmNuTDVEK0RYY0NreCtIMkw2TThHcHFob1ZKYW5l?=
+ =?utf-8?B?QzBieGxWY3d1Y0g3WUhocDl3YnBFVkZNU1dBK0IwOVp1TktEU2FaQjFxZEhR?=
+ =?utf-8?B?RmNIUytrdVRPUFFJcERWMGRzRGo5VlF1VVZTdTdHbWdjRHFBMnQ2Q3h5UE1y?=
+ =?utf-8?B?aFpOQlRXWXhCZnNZWmtxSGF4dXRrMEJIbU1oMWIrQXN2R09yMTdjNk5NdUIv?=
+ =?utf-8?B?ZklhaXVRYVFjN05iUnNVVW1oZEEvNEoxdVMyZW9tdnV5U0RzTXlZQ0loT2V1?=
+ =?utf-8?B?dDQ3OTJyOXBVYmVDSkVnY2E4ZUZ6WWxOZmdldG5uNlNOUEFUV1VqSlFHV0lp?=
+ =?utf-8?B?ZjNQbmxtRUQrVUhETTRkN1RZK2FxMTJKTHdHUjAxM0xhblp5U1MxUjdNVHVk?=
+ =?utf-8?B?VVJ1K2VHMkhqbWd1bE5LcDlOLzl0b1pmbHRjODVqWWZGWHhTVEtEV2VRT0cv?=
+ =?utf-8?B?WlJBTk5hNEJ3QndRR0p6VUMrRi9EOHF5YzdSVGsvOHIrcEVUTW5FQzM0dm9s?=
+ =?utf-8?B?V1J2aXdrME9KbU9vQ3FWTEQzZWtDVGZwd2dGQT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(19092799006)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aFV4UTNWVjJlS1RWT0Fpd1J2KzRqWFI5cUxIUnlxaGV3QmJiby82ekEzYXJq?=
+ =?utf-8?B?WkpLT2FQWTRobnJCQVlaYWhYTGRqcmhIRCswc005eXR6SHdocFBVSGNpSnp2?=
+ =?utf-8?B?SzgzbzlhL0ZGMUJQTzNZcmhKbUxmUzM5TDVIQ1NhSzl6VGtKa00wcXZOTWpE?=
+ =?utf-8?B?OWpZZWNrdjVWMXluWEFFVlNXY0JyZVV1dTdUQks5SUFIMTRUZS82UFJJUE1Y?=
+ =?utf-8?B?d0FZUE5KdEU3c3JYOG91RnVZY1dsUGVKUktlWG5wdVh6ZU5zaFhEUFdBSEI4?=
+ =?utf-8?B?czRYVWN1RjZGeVoxLzVyeHZSb1ZacXp4M3pkVTNIZkxCejdaRUJwdTlVNkRS?=
+ =?utf-8?B?OGM5UC96RVAvQlExbU1TcnB4VG5GQm5vdWU5NFZCT2RvZEpFY1RRTVVxWlZR?=
+ =?utf-8?B?M1hyWXRiTkxQQWt0S0RKOTVZTzcwOFcvcW9BQ08zWFA0TVUrMFpVNWd0MFc2?=
+ =?utf-8?B?Q042NHVXU3BwbDBONjVxakVDWnY2aGo4U3pxZHVXZFIxWlFRRVpucHJuRzEv?=
+ =?utf-8?B?QzdRYmhzdlg3UDNnZmcwZCt5ZlhQTzJkMkRXeWRrSWZBUk5BR0tMTWZyaWcy?=
+ =?utf-8?B?UkV6Lzd2Y2hUS0lvQVBkMXFBMjVrU01BUENQOWpKL3V5amdYbG5EVTVJUTJh?=
+ =?utf-8?B?WnBnbEJ5UE1wem9TWTF4WlZCQ0NkODFHNkt5SmJyZzdrUXBvUURQenlmWVNF?=
+ =?utf-8?B?TnFpcjF5MFR4dC90UEd4RHpXQXhRc2c3aE9YUWtNekpDTmkzcmxFSldBZHR0?=
+ =?utf-8?B?a0JNOWtBeWFzVUNZMk9NZXdQUlZIOURQOTMzYUkzMlRnblV4c0I4a2dSeXlY?=
+ =?utf-8?B?YURPemY5cC9zVzlKd3hYSXlSamJKWXFRT3NzVkRhdkNOMEZXb1pOWkkwWFVM?=
+ =?utf-8?B?UWkzTE5zZUNFTmRVOExndFlJQUtqeDZlVWx3Rjl5YnBzY2VqTVlVN2J6SEln?=
+ =?utf-8?B?QlE3VGVKcjBUYkQvZ2tBZGtCY3dCUFJBR2lQd3FTTTRNeXJRODdnQ1Y2cFpO?=
+ =?utf-8?B?a045YXAvYU9ldGp1ZUJJamE3cUFVbld2VG1WREY4NTZsVU9waDR0T1hmRWVH?=
+ =?utf-8?B?aE1sM3lPTGlHMFVjNGtHUHB4Nk5xeDNpcndiTUVUaTVRZ0t3SFhBSXlKNXI2?=
+ =?utf-8?B?Ylo5Z3VSVzNmR1I3YndJMFBvOXlvSmVaalhiaXhMalFqUDNIbjlMUzJxZzdW?=
+ =?utf-8?B?ZGd5NWF5SVZuaEVIbWRxS0dNT1diY3E1UWhibUg5SzNab3hPRzA5NzBiNGlK?=
+ =?utf-8?B?bHE0WjRFdGxRVVFtRHZBMkIwUWNYa00vMnpDdjZnRzhuK2NIR2pLc0pZTWo1?=
+ =?utf-8?B?Z3VaanJhQk8wQTk5ZzY4ZGlDRjdvdlpGVG13VGQ0b2lMMzZqWHZrN2NDWndt?=
+ =?utf-8?B?V1h1eGRPZnp2bEoxZGp3NGl1MmI3K3ZxSEo3bkd0TERUTWpFVjFXR1hub3kv?=
+ =?utf-8?B?UzdIb0JxZkdwL3l2YmRmZWx4VGJDMHpSeHdEalRENEFJSlBETTRvNCt0Z040?=
+ =?utf-8?B?TktjWWwwZEM2STJPbjZHRjk1RWM1a0pxUHhTZytiNExkKzFnM3BVNFVVYUM4?=
+ =?utf-8?B?REdRbnk4S0V1b2NWZEU2MUEzU2NwZ3l6aGtKWjUwU0lhWm9NakIwdHlUNHZX?=
+ =?utf-8?B?L3grNVcrZXA5K1FOaGFIbHhjNzRKSGpJT21xYWJFbnVobHlsTUNuVUltRkF6?=
+ =?utf-8?B?Q3d0WjJzdXhTdk5Ib2VCQVgyZ1RtRVBZSWRRS1RVNjVOYzJaYytGZUNxV0Fr?=
+ =?utf-8?B?VkZwTDVXODlSZHR0S2pBdDM5aUszbVFkeGtGU2xnZDZlRkRKRE9kb0hJd3Bz?=
+ =?utf-8?B?TzZJcWh1R0l2SnpyMEE0MHlpUjRDMkltaFVvanJGb3haRFpOcldXWXQyWTdx?=
+ =?utf-8?B?Rm1VS2NudGNvK3MyYXRRdzQ4dWhUbGR6dm80ajdHNGloTXpFdDd2V1oyUHZl?=
+ =?utf-8?B?dzZieVJsbEJ1TUJQYWtoaFZndndvRFNlK1RUVzJFUThrcUMrcmVZenRoMDUw?=
+ =?utf-8?B?VGdGcUFOaUR4UHVPRWtuZ3U0N2NFQkxqa1BtMjdTUVpxMU9vcUtHWENJM2NE?=
+ =?utf-8?B?SHZKaVI5UmJpZjFPYzk1SzZsRFNvWTE0SENIaDBFNWhObmVIc2kwQWtVUTBi?=
+ =?utf-8?Q?Wl8rsuZkU7xfidS3k4KDk9LQu?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6aa172ad-faa2-4d5a-734c-08ddfcf8eadc
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2025 12:33:38.2726
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: M+r23CbFGFBd91yukKDulaquM0caACvNMfxUOmCxc7frfRbJcpmy/qQI2T2UxDtI528jTZuys1x0bzQx2GfXaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7403
 
-On Thu, Sep 25, 2025 at 01:01:47PM -0400, Frank Li wrote:
-> Introduce pci_epf_get_bar_required_size() to retrieve the required BAR
-> size and memory size. Prepare for adding support to set an MMIO address to
-> a specific BAR.
-> 
-> Use two variables 'aligned_bar_size' and 'aligned_mem_size' to avoid
-> confuse.
+Tested on
+i.MX8MP-EVK, i.MX8MM-EVK, i.MX93-11x11-EVK, i.MX8QXP-MEK, and i.MX8ULP-EVK.
 
-s/confuse/confusion/
+Retested all the patches for V3 on above platforms. And pass build
+with patch incremental applied with ARM64 defconfig. pass build for
+imx_v6_v7_defconfig with all patches applied.
 
+This is the 2nd series to cleanup the driver.
 
-> 
-> No functional changes.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v3
-> - change return value to int.
-> - use two pointers return bar size aligned and memory start address aligned
-> - update comments about why need memory align size. Actually iATU require
-> start address match aligned requirement. Since kernel return align to
-> size's address.
-> - use two varible aligned_bar_size and aligned_mem_size to avoid confuse
-> use 'size'.
-> 
-> change in v2
-> - new patch
-> ---
->  drivers/pci/endpoint/pci-epf-core.c | 84 +++++++++++++++++++++++--------------
->  1 file changed, 53 insertions(+), 31 deletions(-)
-> 
-> diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
-> index d54e18872aefc07c655c94c104a347328ff7a432..2cd0257831f9885a4381c087ed8f3326f5960966 100644
-> --- a/drivers/pci/endpoint/pci-epf-core.c
-> +++ b/drivers/pci/endpoint/pci-epf-core.c
-> @@ -208,6 +208,49 @@ void pci_epf_remove_vepf(struct pci_epf *epf_pf, struct pci_epf *epf_vf)
->  }
->  EXPORT_SYMBOL_GPL(pci_epf_remove_vepf);
->  
-> +static int
-> +pci_epf_get_bar_required_size(struct pci_epf *epf, size_t size,
-> +			      size_t *aligned_bar_size,
-> +			      size_t *aligned_mem_size,
-> +			      enum pci_barno bar,
-> +			      const struct pci_epc_features *epc_features,
-> +			      enum pci_epc_interface_type type)
-> +{
-> +	u64 bar_fixed_size = epc_features->bar[bar].fixed_size;
-> +	size_t align = epc_features->align;
-> +
-> +	if (size < 128)
-> +		size = 128;
-> +
-> +	/* According to PCIe base spec, min size for a resizable BAR is 1 MB. */
-> +	if (epc_features->bar[bar].type == BAR_RESIZABLE && size < SZ_1M)
-> +		size = SZ_1M;
-> +
-> +	if (epc_features->bar[bar].type == BAR_FIXED && bar_fixed_size) {
-> +		if (size > bar_fixed_size) {
-> +			dev_err(&epf->dev,
-> +				"requested BAR size is larger than fixed size\n");
-> +			return -ENOMEM;
-> +		}
-> +		size = bar_fixed_size;
-> +	} else {
-> +		/* BAR size must be power of two */
-> +		size = roundup_pow_of_two(size);
-> +	}
-> +
-> +	*aligned_bar_size = size;
+Patch 1:
+Fix the runtime usage. This is not critical bug fix, so it could be
+defered to 6.18.
 
-I think this name is wrong.
-The BAR size has not been aligned to anything.
-The BAR size has to be a power of two, but that is a requirement of the PCI
-specification, so that in an inherent property of a BAR.
+Patch 2-6:
+Use devres managed API to cleanup the error handling path and remove path.
 
-Perhaps just name it size or bar_size?
+Thanks to Ulf for the suggestion on the runtime PM fix in patch 1.
+Thanks to Daniel and Frank for the internal reviewing.
 
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-Kind regards,
-Niklas
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Changes in v3:
+- Follow Ulf's suggestion to address the runtime PM in patch 1, and add
+  Ulf's suggested-by tag. I dropped Frank and Daniel's tag in patch 1.
+- With the changes in patch 1, the remove() is kept, then there are very
+  minor conflicts when picking remaining patches in V2, so I still keep
+  R-b tag from Frank and Daniel for patch 2-6.
+- Link to v2: https://lore.kernel.org/r/20250923-imx_rproc_c2-v2-0-d31c437507e5@nxp.com
+
+Changes in v2:
+- Address a build warning in patch 4/6
+- Add R-b from Frank and Daniel
+- Link to v1: https://lore.kernel.org/r/20250917-imx_rproc_c2-v1-0-00ce23dc9c6e@nxp.com
+
+---
+Peng Fan (6):
+      remoteproc: imx_rproc: Fix runtime PM cleanup and improve remove path
+      remoteproc: imx_rproc: Use devm_add_action_or_reset() for workqueue cleanup
+      remoteproc: imx_rproc: Use devm_add_action_or_reset() for mailbox cleanup
+      remoteproc: imx_rproc: Use devm_clk_get_enabled() and simplify cleanup
+      remoteproc: imx_rproc: Use devm_add_action_or_reset() for scu cleanup
+      remoteproc: imx_rproc: Use devm_rproc_add() helper
+
+ drivers/remoteproc/imx_rproc.c | 100 +++++++++++++++++++----------------------
+ 1 file changed, 47 insertions(+), 53 deletions(-)
+---
+base-commit: 8e2755d7779a95dd61d8997ebce33ff8b1efd3fb
+change-id: 20250926-imx_rproc_v3-a50abed3288a
+
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
+
