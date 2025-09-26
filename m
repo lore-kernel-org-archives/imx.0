@@ -1,93 +1,134 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F3F433AD
-	for <imx@lists.linux.dev>; Fri, 26 Sep 2025 10:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31A8224FA;
+	Fri, 26 Sep 2025 12:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758881008; cv=none; b=L3GCv331GsLRPtaRaa4oWr+hMJP2AIKpH7+Thxq5lBeOR2uEoYyFr88TZ4ABvw3XtDIGuD3FIFqycJXp+X3QuAXMVyHMEYSTXZeoFfm8NX1vMi3BdVCWtzNQPUqN3cobghDMufpm/YN1I/bpAXlYo47tjKzvpoJ12icOzORQG8c=
+	t=1758889908; cv=none; b=oT7Yezr1E2eVToczpdS5P4dsFW6tAy/GKtOInwGqukZPOsHh1eemrV5XfZZ8KxhxWbdsuL6QAFqDizZTOlkQZCGatY0ClbB5xm5QsVq78SjXUc9CB8kMPNntdNLT1rE3sLSe+Hd7xeoSSEp+ZIaPS0t62EJ56A1AZuYWu+nTHBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758881008; c=relaxed/simple;
-	bh=kF/ob4umFP9kKPgy5tMXsyqO93WOIy3ot+pLXGSH27U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oUj9ekpLldOEywvgRyVgWqlW+KcLU47lK0T4VB4D57cDt/ONYCaQDMihsQ4ApUPp249HYMLlsHD/8JXsbDqbuk7EBAfxdKgqKT25nUbMJS50PDOOWBRSbls/AG/MAJYPTAG5TRTubjMMGG1b3FHhf1D0r1PzgQpYc+obolQe0xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=lwll2ny2; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1758889908; c=relaxed/simple;
+	bh=kw9e9hX+qHyTZwjTMHqpMeFf4Ats1Mc0FvLjDKIewG4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CxF10B0E8wBkobP9tzo0BtA+ZT3T0QqBV+tuCKAWgYotAiGW1hCvDfLp1h/J+CKpMP7uWMblBKxT+JKLtSnsjIKeUirFFO3ldr2jM5YsQg/hv5umCJNPon7Vk76w74ZIk/3xHbx//S3FGcEGaUK291wwqKTYRMvs/JXwwqy7aHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1rVe1Ox; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="lwll2ny2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1758881005;
-	bh=kF/ob4umFP9kKPgy5tMXsyqO93WOIy3ot+pLXGSH27U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lwll2ny24Ng1P/EnBLpX5SjIpwOve83e3swU8JB6qOmb6wd1hxotwptrhelEAPBDh
-	 XCiVQHFHmhIGe+8I/si8LRQTk5RgjLAGaAcQEdLNnpLISiCUSSBkUT4Vnz3apV5l8n
-	 c/rogoZlpxgrifva5FXMfIQwGWu+WwyJm43W2+4dpqXC1O6teeSyjY8SkLfsogwTlj
-	 VbhuIIWuHPe5SQZVAFAI1Nqv1RTXA3WU1PtMRNdyXHKGUgFSRwCGCDO7Plt4dQpHBm
-	 Wp/oeMEMT1B5s09EioVTT2Zfv0zBaLGEB1mdoVFAqL3HcXwpH5bDdUNjz0fRRaSQpC
-	 /v0rKcurvYq3w==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9D8EF17E12C9;
-	Fri, 26 Sep 2025 12:03:24 +0200 (CEST)
-Date: Fri, 26 Sep 2025 12:03:11 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Rain Yang <jiyu.yang@oss.nxp.com>
-Cc: steven.price@arm.com, liviu.dudau@arm.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.co, simona@ffwll.ch, marek.vasut@mailbox.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, Rain Yang <jiyu.yang@nxp.com>
-Subject: Re: [PATCH v1] drm/panthor: skip regulator setup if no such prop
-Message-ID: <20250926120311.33dc9fb1@fedora>
-In-Reply-To: <20250926090722.23097-1-jiyu.yang@oss.nxp.com>
-References: <20250926090722.23097-1-jiyu.yang@oss.nxp.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1rVe1Ox"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD29C4CEF4;
+	Fri, 26 Sep 2025 12:31:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758889908;
+	bh=kw9e9hX+qHyTZwjTMHqpMeFf4Ats1Mc0FvLjDKIewG4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h1rVe1Ox+rHKkQtDUowYr86UwQCVziXJmcOkTGLQXzKmiGgl6SY3f7onXq6i1Kfrc
+	 1GQzRjlD9wiMz9mrq3DDHte9+7qbDuudRhHys2KtU0/ifdsWOwoeipoIEdPD7GkQji
+	 HeKKXVwMsP8EYj9k1IKJ5I31bvWRDH04JqeUa2IXXRIfcaANlZ/NFcoA52WWMy8FBx
+	 w8QgN7OVtfsTK6UakxOWshzyhxlUb4Ec9sNasDtVpA3AK5wDXp5zxbIR1tvlMYyXSV
+	 c50AVEu3InYORNYDJrpWxb2R3dsPsfsPilXHfXpAVqFOjJITDon65Z1HbDGAOE300s
+	 tvs4emt0r61nA==
+Date: Fri, 26 Sep 2025 14:31:42 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ntb@lists.linux.dev, imx@lists.linux.dev
+Subject: Re: [PATCH v3 1/3] PCI: endpoint: Add helper function
+ pci_epf_get_bar_required_size()
+Message-ID: <aNaHrj0rwLTtSRS3@ryzen>
+References: <20250925-vntb_msi_doorbell-v3-0-ae0b0c93caae@nxp.com>
+ <20250925-vntb_msi_doorbell-v3-1-ae0b0c93caae@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250925-vntb_msi_doorbell-v3-1-ae0b0c93caae@nxp.com>
 
-On Fri, 26 Sep 2025 17:07:22 +0800
-Rain Yang <jiyu.yang@oss.nxp.com> wrote:
-
-> From: Rain Yang <jiyu.yang@nxp.com>
+On Thu, Sep 25, 2025 at 01:01:47PM -0400, Frank Li wrote:
+> Introduce pci_epf_get_bar_required_size() to retrieve the required BAR
+> size and memory size. Prepare for adding support to set an MMIO address to
+> a specific BAR.
 > 
-> The regulator is optional, skip the setup instead of returning an
-> error if it is not present
+> Use two variables 'aligned_bar_size' and 'aligned_mem_size' to avoid
+> confuse.
 
-AFAICT, it's not flagged optional in the DT bindings yet, so I'd prefer
-to have this change and the DT bindings update in the same patch series
-(both will go through the drm-misc tree anway).
+s/confuse/confusion/
+
 
 > 
-> Signed-off-by: Rain Yang <jiyu.yang@nxp.com>
+> No functional changes.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/gpu/drm/panthor/panthor_devfreq.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> change in v3
+> - change return value to int.
+> - use two pointers return bar size aligned and memory start address aligned
+> - update comments about why need memory align size. Actually iATU require
+> start address match aligned requirement. Since kernel return align to
+> size's address.
+> - use two varible aligned_bar_size and aligned_mem_size to avoid confuse
+> use 'size'.
 > 
-> diff --git a/drivers/gpu/drm/panthor/panthor_devfreq.c b/drivers/gpu/drm/panthor/panthor_devfreq.c
-> index 3686515d368d..2df1d76d84a0 100644
-> --- a/drivers/gpu/drm/panthor/panthor_devfreq.c
-> +++ b/drivers/gpu/drm/panthor/panthor_devfreq.c
-> @@ -146,10 +146,9 @@ int panthor_devfreq_init(struct panthor_device *ptdev)
->  	ptdev->devfreq = pdevfreq;
+> change in v2
+> - new patch
+> ---
+>  drivers/pci/endpoint/pci-epf-core.c | 84 +++++++++++++++++++++++--------------
+>  1 file changed, 53 insertions(+), 31 deletions(-)
+> 
+> diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
+> index d54e18872aefc07c655c94c104a347328ff7a432..2cd0257831f9885a4381c087ed8f3326f5960966 100644
+> --- a/drivers/pci/endpoint/pci-epf-core.c
+> +++ b/drivers/pci/endpoint/pci-epf-core.c
+> @@ -208,6 +208,49 @@ void pci_epf_remove_vepf(struct pci_epf *epf_pf, struct pci_epf *epf_vf)
+>  }
+>  EXPORT_SYMBOL_GPL(pci_epf_remove_vepf);
 >  
->  	ret = devm_pm_opp_set_regulators(dev, reg_names);
-> -	if (ret) {
-> +	if (ret && ret != -ENODEV) {
->  		if (ret != -EPROBE_DEFER)
->  			DRM_DEV_ERROR(dev, "Couldn't set OPP regulators\n");
-> -
->  		return ret;
->  	}
->  
+> +static int
+> +pci_epf_get_bar_required_size(struct pci_epf *epf, size_t size,
+> +			      size_t *aligned_bar_size,
+> +			      size_t *aligned_mem_size,
+> +			      enum pci_barno bar,
+> +			      const struct pci_epc_features *epc_features,
+> +			      enum pci_epc_interface_type type)
+> +{
+> +	u64 bar_fixed_size = epc_features->bar[bar].fixed_size;
+> +	size_t align = epc_features->align;
+> +
+> +	if (size < 128)
+> +		size = 128;
+> +
+> +	/* According to PCIe base spec, min size for a resizable BAR is 1 MB. */
+> +	if (epc_features->bar[bar].type == BAR_RESIZABLE && size < SZ_1M)
+> +		size = SZ_1M;
+> +
+> +	if (epc_features->bar[bar].type == BAR_FIXED && bar_fixed_size) {
+> +		if (size > bar_fixed_size) {
+> +			dev_err(&epf->dev,
+> +				"requested BAR size is larger than fixed size\n");
+> +			return -ENOMEM;
+> +		}
+> +		size = bar_fixed_size;
+> +	} else {
+> +		/* BAR size must be power of two */
+> +		size = roundup_pow_of_two(size);
+> +	}
+> +
+> +	*aligned_bar_size = size;
 
+I think this name is wrong.
+The BAR size has not been aligned to anything.
+The BAR size has to be a power of two, but that is a requirement of the PCI
+specification, so that in an inherent property of a BAR.
+
+Perhaps just name it size or bar_size?
+
+
+Kind regards,
+Niklas
