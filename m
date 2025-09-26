@@ -1,53 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702F4284669;
-	Fri, 26 Sep 2025 20:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F56230270;
+	Fri, 26 Sep 2025 20:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758918323; cv=none; b=mvClH3MSIRadHswWgEL04HY4baQS07YFsJbjIzlPB9AEDYzh1GWjaux4OssOl2M730h4SGdDbGkJ+7tjf8SgXp0A9HzEpZiha4Bkltg0uPpm7c8zFOXFZKLsb6hULkk7+upB2wyIbhcamE37Mp8l6AXXYm+7fysuVSlm3+15nGY=
+	t=1758918600; cv=none; b=IGYVG+2Z/B8wg0oO6DMO210Gw3/ZYScq/W0kjXnCiw0f2ZfOLwFU7QbdH2zA/C6iO+6e6Wsg7AzwZXbLv1SXZLfE+emnLJzGz0jMpqWL8WCFakFz0Lr5aZVgJ1NOgMwOYnwbwafZ561ENaPjppu2ALhaB54WpXmNvGRGS1V78+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758918323; c=relaxed/simple;
-	bh=QtssM2JLS2bcwQ9EUpp9ZJifiBkLbCEIm03Xx4xumZE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=kEURuPUP6n+kmnJThZU0ZruHZ6/Yzca+FURS5UwE3bdy2sjJoof2Y4kzqH3bAVy3f57OpOQgR7gG88XYw2BzJ3CyWoKEvVS1LAlXXPPiq9NVZrWiaw5XjNx+DzfKDKredt9WS6CZElXGfbAAuRaMld0dsgjr+h1dwUsI29DQkCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tp/CxQ5g; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758918600; c=relaxed/simple;
+	bh=4Gq7KvjaCB2WFHjOUePwFbctD4FXh5nNheLbEmsCuc0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eA4IwJ4ml+0XkD7y3qp9gNs21dAWWZhpGSoPINgVcKIXQExZU8ngqewRh+OvDIWWs38gffLZBjRNNrg7MK1o3X8WDbMZIqI+x8goegCmExJB16REDNQM4C+8ey93pPM4yqVwdbzhwgPpqbw1gVJYT+Tdcpp72iQaxp3giY3HhWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kW0QYxg6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tp/CxQ5g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3850C4CEF7;
-	Fri, 26 Sep 2025 20:25:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kW0QYxg6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF811C4CEF4;
+	Fri, 26 Sep 2025 20:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758918323;
-	bh=QtssM2JLS2bcwQ9EUpp9ZJifiBkLbCEIm03Xx4xumZE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=tp/CxQ5gjwcR342fUAjKaT8ALiUmpYRJfJAcdPoLHdJYV1GLl8fSuaUbGpu61WYOu
-	 3h9xNS1xaKSS+Erz5jQiXcpVAjr+qmx4ecf57WcVHgxLTY6uV0DkmN0c0G16diwqM5
-	 2ZoBgH3sro0maUU3PZ3riXz7b5kkCPr3ar/tRrlnME/xJWlVn2k72sbjwKggA91yiR
-	 H/WXyL11Cbz9Y37qBe5EhWHTpiFCozCwm6sI8qdYuY9IC9nHKVm8riBvo8QkgRRENZ
-	 +aR/C871KI/mc9f/d5GhS87lPZT0aQpAV5ZJ4R1Mf4f1Exb3/veHOKgMmk0mz+ZruX
-	 On7+mzH0lzm0w==
-Date: Fri, 26 Sep 2025 15:25:21 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>,
-	"jingoohan1@gmail.com" <jingoohan1@gmail.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"mani@kernel.org" <mani@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 2/2] PCI: imx6: Add a method to handle CLKREQ#
- override active low
-Message-ID: <20250926202521.GA2235281@bhelgaas>
+	s=k20201202; t=1758918600;
+	bh=4Gq7KvjaCB2WFHjOUePwFbctD4FXh5nNheLbEmsCuc0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kW0QYxg6I4w5dsZg2JSo/Xbb6rcY7ewPqlzNVdR56q06BO6p16KmNN2GHNtL9cZFM
+	 8EFObXPXlBqe5FBWOstFKaXRcB+NdXvtc2V4ergURRYfHOkR8NR18Kx05UCOzKvpHX
+	 sINOHh4P06RXAt7rfye8i9buZfn17rXuNUUaKbM35OQy0JKgPNS1NleOiF74gFRbP9
+	 Zm8jSr+BinwyyoWsI/Gkh2ClH4f+JhVULiIJAWnC2RH0y/pngqIjYme9+EfPfAWi60
+	 fdUMnxcJdxm+EJMTqvS8Feuu40Yng3iiBud7P1VlVr0W6u4wj0vUUOcygQbunImT61
+	 qQ8SEPtZ2AIZQ==
+Date: Fri, 26 Sep 2025 15:29:58 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, imx@lists.linux.dev,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+	Jonas Karlman <jonas@kwiboo.se>, David Airlie <airlied@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Peter Senna Tschudin <peter.senna@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Martyn Welch <martyn.welch@collabora.co.uk>,
+	Ian Ray <ian.ray@ge.com>, Conor Dooley <conor+dt@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Simona Vetter <simona@ffwll.ch>
+Subject: Re: [PATCH v2 1/1] dt-bindings: display: bridge: convert
+ megachips-stdpxxxx-ge-b850v3-fw.txt to yaml
+Message-ID: <175891859618.1448277.6748514316682100995.robh@kernel.org>
+References: <20250923205549.200670-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -56,69 +57,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AS8PR04MB8833BEF8C043CB239DA074E38C1EA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+In-Reply-To: <20250923205549.200670-1-Frank.Li@nxp.com>
 
-On Fri, Sep 26, 2025 at 03:08:30AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Bjorn Helgaas <helgaas@kernel.org>
 
-> > On Fri, Sep 26, 2025 at 02:19:37AM +0000, Hongxing Zhu wrote:
-> > > > -----Original Message-----
-> > > > From: Bjorn Helgaas <helgaas@kernel.org> On Tue, Sep 23, 2025 at
-> > > > 03:39:13PM +0800, Richard Zhu wrote:
-> > > > > The CLKREQ# is an open drain, active low signal that is
-> > > > > driven low by the card to request reference clock. It's an
-> > > > > optional signal added in PCIe CEM r4.0, sec 2. Thus, this
-> > > > > signal wouldn't be driven low if it's reserved.
-> > > > >
-> > > > > Since the reference clock controlled by CLKREQ# may be
-> > > > > required by i.MX PCIe host too. To make sure this clock is
-> > > > > ready even when the CLKREQ# isn't driven low by the card(e.x
-> > > > > the scenario described above), force CLKREQ# override active
-> > > > > low for i.MX PCIe host during initialization.
-> > > > >
-> > > > > The CLKREQ# override can be cleared safely when
-> > > > > supports-clkreq is present and PCIe link is up later.
-> > > > > Because the CLKREQ# would be driven low by the card at this
-> > > > > time.
-> > > >
-> > > > What happens if we clear the CLKREQ# override (so the host
-> > > > doesn't assert it), and the link is up but the card never
-> > > > asserts CLKREQ# (since it's an optional signal)?
-> > > >
-> > > > Does the i.MX host still work?
-> > >
-> > > The CLKREQ# override active low only be cleared when link is up
-> > > and supports-clkreq is present. In the other words, there is a
-> > > remote endpoint  device, and the CLKREQ# would be driven active
-> > > low by this endpoint device.
-> > 
-> > Assume an endpoint designed to CEM r2.0.  CLKREQ# doesn't exist in
-> > CEM r2.0, so even if the endpoint is present and the link is up,
-> > the endpoint will not assert CLKREQ#.
-> > 
-> > Will the i.MX host still work?
+On Tue, 23 Sep 2025 16:55:48 -0400, Frank Li wrote:
+> Convert megachips-stdpxxxx-ge-b850v3-fw.txt to yaml format.
+> 
+> Additional changes:
+> - Only keep one example.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v2
+> - add description for port@0 and port@1
+> - add both ports to required list
+> ---
+>  .../megachips,stdp2690-ge-b850v3-fw.yaml      | 111 ++++++++++++++++++
+>  .../megachips-stdpxxxx-ge-b850v3-fw.txt       |  91 --------------
+>  2 files changed, 111 insertions(+), 91 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/display/bridge/megachips,stdp2690-ge-b850v3-fw.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/display/bridge/megachips-stdpxxxx-ge-b850v3-fw.txt
+> 
 
-> Yes, i.MX host still work. 
-> If the endpoint designed to CEM r2.0, and CLKREQ# is reserved. The
-> property suppots-clkreq wouldn't present in this scenario. Thus, the
-> CLKREQ# override active low set by host driver wouldn't be cleared
-> later, although the link is up and an endpoint is present.
+Applied, thanks!
 
-Do you mean 'supports-clkreq' describes the *endpoint*, and you need
-to change the devicetree depending on which endpoint is connected?
-
-The schema says 'supports-clkreq' tells us whether CLKREQ# signal
-routing exists, not whether the downstream device actually supports
-CLKREQ#:
-
-  https://github.com/devicetree-org/dt-schema/blob/4b28bc79fdc552f3e0b870ef1362bb711925f4f3/dtschema/schemas/pci/pci-bus-common.yaml#L155
-
-I don't see 'supports-clkreq' in any devicetree related to imx6, so
-I'm not sure this patch is needed yet.  Does it fix an existing
-problem?
-
-If it enables some future functionality, maybe we should defer it
-until we're actually ready to enable that functionality?
-
-Bjorn
