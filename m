@@ -1,230 +1,151 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013022.outbound.protection.outlook.com [52.101.72.22])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D461727E071
-	for <imx@lists.linux.dev>; Fri, 26 Sep 2025 07:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758870915; cv=fail; b=uVJdgBl4WxpfyyMUUHdJxus3w8KgkG1RaVPVQ3epSY81OzWQcu6m1I/ZoffpdfT9IRh0WdmF8l02bR9R3wCF6ilFD7Mf4dIYbQzeZbhcWCwUkCECGcrPE7gSX9AjEvqegD4WzQf2Gs824HSpJowqD+k2clWpiSpIPLM7xYtewTQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758870915; c=relaxed/simple;
-	bh=KCMneI2qKNjjfxMR6CNicSY8FqXkVQm9bSmntSWxTVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=IEbJII6X5+LEpLqOOjqS0WBpD+CiSA5QwMi4sef1AkA/EXfHcfAYuDUs2CSkdTnOGjCVNJcsL7iitjCCrTONwGj9EVwQbgXuMj5MQ1mEAogurTignI8xu/6HJ6XcZhx+M01rTYy4We+uXtstYTBb33QITd51CfGUnw4QXcZwtf8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=soXnLxP5; arc=fail smtp.client-ip=52.101.72.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2433DBA4A
+	for <imx@lists.linux.dev>; Fri, 26 Sep 2025 08:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758876391; cv=none; b=uS9dzBzTLNlBiUANCprjCBR1mctbDj1/RewqZ4NBbKTWKzEgUYT2RFhjY2WJiB6UU8TXuSorXFTsIuAPMJ5+vXDpznZnBbqTQAIbf19BvfdR5RONzgBOjpYeGEB2NRyJ58VR+eHgyYRty/MiSYsLzLZmGDLsOVlxyzyau//cGNQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758876391; c=relaxed/simple;
+	bh=IUA1ANsoSDf4ynFNcNEX5PCTUFJtU9aJS/An4xPjPW4=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=AKn+r1Dk6bWjDeYrJqtXfK0lbx+ZIk4/v19VYG1cq4diqK83nth6InK2rRcrlnYcLu6KcCNwIxf+kbAKf6W3utjN+tHoXvfotrRP4kh19sL8DdL8dm4e5GHvejnY55w+1iIbnolzvKN1IlCMKkE0PHWkf8oqB8HRZ6DXKzV3Jss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ZrQsmMkv; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="soXnLxP5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LH0carA2SqlQpK9ib+Y1w08f7LkzuNj+PCvb9cgSqZfSxDYBayk6CmCwDZ6/5DnD4VGbONo7IJRcd5TS5kwSTaB2BuY7gUSmPCa5qx7FlebtgyR/4uURvPLam29fmfbRM+ZhxtamHgZD8Arp7HIgIOaJsORv+Vw4gDU9W8uK58if4NDXjGPmiG8xUnGopY7Pm4oscdDQMaDaopIrMCUiyvFA1KuY1PV4bVEsc8j5+us/Ir2Ud1vduquTwiMcwHqKOu/Y6a7JDQdGP4YY5M7ZiT/Qg6FsUmDtny+NOGRrRQfK6Pty1FVRJZt78iVwkMN9P0WoivNNFIVC7/os0nA54Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N5GI18a0Rv0wtOjT8DjM/6ILXIW8znOVC+f0Lcc44ts=;
- b=fvkp+4WVE8OynsH1fSSBuyAR9GV4IHTkflKJLLxNLQNCcEB8Y4DUzRMliHiWZUp/EZaxSxl9mLUcExJEQqDH/zag2lSblDpbukHFLUFTPe0MQkTvmtkmSuPmARrwQp8arPk5LlhSW4G+6aTg0caMBYg803BA4mqAcZGRlHkM+0tadRe6I3Z8WvLr1DWAzpo9VFsuc0bbeIOcMWAg+rU3BydIlpUk9GDouJafNHyl1WfQWUo00Z3S4hFZjqKsk0A24RWymC1wd/RE50Uy02Owc+nqHLO2bOZ0clU1F6o1VPee1XUGhuGW6iLAYUBxbRZZM62Sp8xIq47a2v9Ar4mn+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=N5GI18a0Rv0wtOjT8DjM/6ILXIW8znOVC+f0Lcc44ts=;
- b=soXnLxP5l/QaCiAGYRojRaZ2/rmX35q+/AUCTIGLG5cE8qqn3N1ANceBJCzTaSUAou22rAP+6APIXjljlRb+hBr0J71V0jzCLgOQYiIs9XhswZIEUpPp1OhBFo0zWtXZVue6mGCMScno4qStU2ZbM1QWspgEQzS4hOCdmp7ivDtGbcZPS4g7ZpD2rWw2aqycBGsfTEiixYOF0M0vubSlSXiz0AIkTgYvhlxlYai/676ijohztDRFik5WpVhqIqXN+Hmq9uPdy81xyUy4fmqE+Ep0DDjavEbRc098x8ZCjt/a1/4kLj7WehUtqS9F7ZtXEd3H3/cB7RtKTpi6AQlLhw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by DB8PR04MB7129.eurprd04.prod.outlook.com (2603:10a6:10:127::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.11; Fri, 26 Sep
- 2025 07:15:09 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9160.010; Fri, 26 Sep 2025
- 07:15:09 +0000
-Date: Fri, 26 Sep 2025 16:26:55 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>
-Subject: Re: [PATCH v2 0/6] remoteproc: imx_rproc: Use device managed API to
- clean up the driver
-Message-ID: <20250926082655.GE8204@nxa18884-linux.ap.freescale.net>
-References: <20250923-imx_rproc_c2-v2-0-d31c437507e5@nxp.com>
- <20250924164650.GA2711@nxa18884-linux.ap.freescale.net>
- <CANLsYkzWQEWKM-_iff7wY-sk_OERFiAMSrXP6Cyf8vJfXqunjg@mail.gmail.com>
- <20250924203115.GB2711@nxa18884-linux.ap.freescale.net>
- <aNVe6MG2HiWNJZQP@p14s>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aNVe6MG2HiWNJZQP@p14s>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SG2PR04CA0212.apcprd04.prod.outlook.com
- (2603:1096:4:187::8) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ZrQsmMkv"
+Received: from thinkpad.ideasonboard.com (cpc90716-aztw32-2-0-cust408.18-1.cable.virginm.net [86.26.101.153])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 43FF81807;
+	Fri, 26 Sep 2025 10:45:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1758876301;
+	bh=IUA1ANsoSDf4ynFNcNEX5PCTUFJtU9aJS/An4xPjPW4=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=ZrQsmMkvFij0yY31VIvySARzvzdhWNfhnXkQnUrONYi17lCK3I/2qDmzyhBdTSJxL
+	 dN3HbjbpWxRuWVge+mXh5887a+MeWz59bmy6T+ocVoozAj0AHJ1zwKwW1L6iKWBrJi
+	 GQ2d7SrtwAsUz2uQQAegMhsnMOBp5a89Epi8fOsY=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB8PR04MB7129:EE_
-X-MS-Office365-Filtering-Correlation-Id: 70935d2d-c927-44f3-64bf-08ddfccc6b55
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|1800799024|7416014|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TNhStKUQhedpDaLrrcd5qNv2qWcS6mzVjxTM0llD2Dqrs8VD2/FTiHHGv9IF?=
- =?us-ascii?Q?2XCAWXixLBmBLXr8jLjG6dQXhTkY16HAFVxiqbWEyVqYaGWzyxGB+9Hrj4jD?=
- =?us-ascii?Q?0jCq5ZOoPlQN3OLlg12Eeg6ff47nRFL3ctOyGWx0Iy1sEbGcp/hEcRPnJbdC?=
- =?us-ascii?Q?OjvPTwEe9eoQuGcpqUqh8uBHilwWjdOB/86qqjwbiRDMGRtCcEW7d32jFI4W?=
- =?us-ascii?Q?IPMOpG7+mlCHihXcw60kujhh9LmL1JzNLHD6CrgL4ApA5piWCf2CSOTPKH/z?=
- =?us-ascii?Q?euLWoi5rIOjnzwL78lT/9ITsN2bSVmSR/A2gg4Dy1zxZuwOlNal2D9Nz9MMT?=
- =?us-ascii?Q?E7ogQ29mgdvJmm6bc3V1x3nWcAeG5/0K0M1UYCdFCIWlz+bCPzUfrkue4NBH?=
- =?us-ascii?Q?k1+IDHO60oXADEh3c45RQdDyp871SD4QzuuTRIiL7DYu4yZ1xNriPprVkA7B?=
- =?us-ascii?Q?/YX1Dr+0Y7KlwvqDCTIbZa3G6CjQ6K7hsYUWICAQtOQrgJ5CBy9MLPW03r9s?=
- =?us-ascii?Q?CH8KJRKxSKZUKY60umn36pm3JuVv4iJN/sW3eHTHKxFw35JdGvQUHBH4TS4N?=
- =?us-ascii?Q?3SXHQCYj6To5aA3FZ0CNhERxN86yBTlEIfGQEMC0q1+uD3F/3T4lpDu07hfk?=
- =?us-ascii?Q?MaPSeeonYQ5/2cQIGjb4MrlJ5PKI/z9+wEq5cLyDOY5HPpHVxU28B8zg+BXx?=
- =?us-ascii?Q?RyVlzXRf61UwL8I0amEjaMlt4ir3+Kwvt3Jhh7fdL4ftXYdzzMnb1v6L057O?=
- =?us-ascii?Q?thlb7OXNxPqqFYf4CSMbZgBHNTQui6fqcfkrESwjwmf/mICh2mTRAGSTVgNF?=
- =?us-ascii?Q?o79wtJ+JN29XCnM8dP+EXwa5wEZx7LvFClSobE3on3WQ7eAaSfcIdFT6xJoo?=
- =?us-ascii?Q?v8BCssTc6r8T0NbcFkGwPJah752UC+wjVCRxKe1wgIr4sgHSzUhu059vdrAW?=
- =?us-ascii?Q?9vTcSaxv2fPmX2RhrtVfIrJmwc2KOnAPPwgzwdeIJo7XtgAD1hR13Y4BH5fo?=
- =?us-ascii?Q?wcsRGhae/ohIl7zzE9CPdnRQ0CHCqmEnrUYOydH8u3OrtLmJ7zeF1wBnh9f2?=
- =?us-ascii?Q?zoAa734z88tvjjpXYMwssWhOEbe2b4wmfOhAL9I3Ix/Han5k6qT9NuFEHpTq?=
- =?us-ascii?Q?EU3OJ19iJuSLq5eZs+f6lQ0kxiYEITWrKEwzm1Msr9fkXtPzDI+uI0fpUKGf?=
- =?us-ascii?Q?FSr4TptbR4AxMkUuiwwQK/qlXaXIqiFtbSRomo8ulVh9TbHwTU9hNe5UgeQ+?=
- =?us-ascii?Q?vkHvSgUuotT7B4ZdOR/xmGjLOPLJrX0m7kGpnekGWsiCQ1XSu+6p42TS02zl?=
- =?us-ascii?Q?6tyzLTCjdc3efW5eCAG2iAJhVS507mrOf1hH2seYme+VEKAOht6B8kk7hWh7?=
- =?us-ascii?Q?uU7EMOtubXfqexcQVCYi+avXRx4BoDZyBQU3649KHghfXzYJKj9M0pyW9nOD?=
- =?us-ascii?Q?wCh+dg58vVf9vHxxTBBRJ3JDuJHAuiPNmJlUF1hMJd7i4Ut469gvs6F4cJm6?=
- =?us-ascii?Q?QOH/UqB2oqKIPINIGNnQBnPS3I+Rk2kHIocD?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(1800799024)(7416014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?PzUNVxtrkBsOs9MONEVI3CZ3JSpAD9t6qS1+y1QDk2h0xJOOXJp3jmQH8uTf?=
- =?us-ascii?Q?KZLO3bOzzS5aOo4Br8Gfk3JWZ5bRMtPRU7bR9A0pcC/W5Q0rpcnoEf0iO51I?=
- =?us-ascii?Q?EJpX+7XJxqAqH+Z2a6HiPD2cXr3uzPjk1mP0oCL8slWoiwdxjgOr7gl68vxw?=
- =?us-ascii?Q?qDGjq/7p1Lo40XTnOjFUNxn2Cb/p8sryxNFf6RgdAZXzd/CnsjIWSZx+ttFM?=
- =?us-ascii?Q?FNbn1Q3aZmYjCdY3wdpZ1Yc2h79WyyklvTLQqghGeSUaeWee6whBcQb8y0fB?=
- =?us-ascii?Q?4aTAI/vBlGRNLpo1EZc4mxaVK36Wvslf4DZiUOBMdVsMabQqcbp711uJWzh6?=
- =?us-ascii?Q?MIvuHNOvxhBvP3+qskSmVuALGEJy5qSxCwShfh7T+80nap2VGUMS2xfx6wsc?=
- =?us-ascii?Q?iJwIUE5yfSY58/r90rDAsZYislqaYNEMp9FIrDZ2P4m53hQudyDLjT0JRHdq?=
- =?us-ascii?Q?BXha8l6zQ1lX/RX++pUFh8TNTyPLNF7STUIk0TraV1ow9nd5SSCHdp6JjCyM?=
- =?us-ascii?Q?nsXuW8Etp7yR1mLmsP5y02/Y5KlV15gV9xdlyXeqoYyhwUPFJzrhTkgLiJU9?=
- =?us-ascii?Q?UDOb9JoMcLQDwdhrjaPCkRsIHQ/0KyenftAKVDtQBJgEOn6pNcNYEpRxuI4B?=
- =?us-ascii?Q?vZ25aB/rc/dJ+O3Vi8xq/zUd9f1yYRkkt32kKywWyPspYUAeyzkQmF3IPuMq?=
- =?us-ascii?Q?Pmkga3jpQnLCZNERR0zDsTgmBfAHeaQe5VCMWzO5DqNokaaD/arp+3oDcM+0?=
- =?us-ascii?Q?89xTx3jigCqDDqea1o4FmKZhIvJja//cjVpGGd+8C/PEoRrzpiI7CAMSa5hR?=
- =?us-ascii?Q?XDQ3Xfd8DU6Bcyi/PpFFAUNyNr4bMvYVM+iLXB77HCUIe6/LCvDKeFf0KOFl?=
- =?us-ascii?Q?SvQZoWvzWqLYOs8wim16NxMdID9ZVwX1UlHtOR9sZBC9XyF1v3dTHrJ62v79?=
- =?us-ascii?Q?Ybl9vIWDtj6idD6Fq7RVj3wsoQCmXzdbSL2xG4cGJ2/gqcL/wV8LsMor/CcC?=
- =?us-ascii?Q?jmQGfgwEkLc9m1rwpL+NOgmc5DM/VjxUC2W9nWupskUHxxs6kKLtU98W3nQw?=
- =?us-ascii?Q?h6qViKF6lem9JMrPlB6C5/NOWAIV/8DmkjshekpAVlipbBa8egfcxZNXUgEM?=
- =?us-ascii?Q?3CINbqBZn/tZyR0skXEo8XXfbf+bwUVnAePU4xYdCXuU9vaJmKVDrqGBbYtr?=
- =?us-ascii?Q?ltr/NzJezbMH8zrjXbVrnM2YOzXP6Ka/HRobIDi9M+8lrsQy4zDydKvepuO7?=
- =?us-ascii?Q?sp0t42T35qSskkG+uzH6yEgievohDusJQGoda1qR/5lZ5/B+gNFdcAkoRvuX?=
- =?us-ascii?Q?Jr8D7XZDwaBt5kDHvvZo9vBXZzr5UBaKJyeRVTjUdr48+I3KbuwDK93wpTJ1?=
- =?us-ascii?Q?6yddeNjmfTggTda1JxKW2+f/pWFR56eIy8R6VCy+jZoo+Vkp2OScvrZxJxlY?=
- =?us-ascii?Q?A8vJDeyGJTAtL8f9uyd8hyF2qOibR0Oa1QeZ0GU1sJJQwoXbZU4k0I6orA3B?=
- =?us-ascii?Q?cfJ/KZ9B+LtaBYXykCbwPZ63+GbZg4azk+0Sk52NC+0Aqhzf4/e8V6rzwbb+?=
- =?us-ascii?Q?dl4UDZN7E1hoZKsAodhhSYHGaOzcFAqgUKU6FZ0d?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70935d2d-c927-44f3-64bf-08ddfccc6b55
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2025 07:15:09.2138
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L+QXRJCPKKTtIViYV85PGUAwckzu4ohbyLCSsQAbGpWm7hqrGMQ3v4uBtieqQdgJuIU1W5OUX7O2xle5xduymg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB7129
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <aNW4zDRAREUZ7v8k@lizhi-Precision-Tower-5810>
+References: <20250925-active-data-lanes-v4-0-8b54e3d5af6c@ideasonboard.com> <20250925-active-data-lanes-v4-3-8b54e3d5af6c@ideasonboard.com> <aNW4zDRAREUZ7v8k@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v4 3/4] media: imx-mipi-csis: Store the number of data_lanes configured in dt
+From: Isaac Scott <isaac.scott@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rui Miguel Silva <rmfrfs@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+To: Frank Li <Frank.li@nxp.com>
+Date: Fri, 26 Sep 2025 09:46:22 +0100
+Message-ID: <175887638283.180868.8800087471301856681@isaac-ThinkPad-T16-Gen-2>
+User-Agent: alot/0.10
 
-On Thu, Sep 25, 2025 at 09:25:28AM -0600, Mathieu Poirier wrote:
->On Thu, Sep 25, 2025 at 04:31:15AM +0800, Peng Fan wrote:
->
->It is fortunate that time was taken to understand the problem and fix it
->correctly.  Otherwise we'd still have a problem and more patches, possibly
->wrong as well, would have been needed.
+Hi Frank,
 
-Thanks for your caution and patience.
+Thank you for your review!
 
-> 
->> >
->
->Most people tend to address one problem at a time, especially when subsequent
->patchsets have dependencies on the previous ones.  I'm not sure there is a need
->to document something like that.
+Quoting Frank Li (2025-09-25 22:49:00)
+> On Thu, Sep 25, 2025 at 04:54:28PM +0100, Isaac Scott wrote:
+> > The number of active data lanes in use on a MIPI CSI2 bus is not
+> > necessarily always the maximum. To allow us to configure the number of
+> > data lanes actively in use, store the maximum to ensure we can configure
+> > a number of data lanes that is supported.
+> >
+>=20
+> This patch just add num_data_lanes, and use csis->num_data_lanes instead
+> of bus.num_data_lanes.
+>=20
+> So commit message not reflect what you did
+>=20
+> "
+> media: imx-mipi-csis: Add num_data_lanes in mipi_csis_device
+>=20
+> Add num_data_lanes field in mipi_csis_device, set equal to
+> csis->bus.num_data_lanes. Prepare to support cases where the number of
+> active data lanes differs from the maximum supported lanes.
+>=20
+> No functional changes.
+> "
 
-I will not post dependent patches in future.
+Yes, that is much better, thank you for your suggestions (on this and
+the next patch), I'll wait to see if there are any other comments and
+improve my commit messages in the next version.
 
-> 
->> I ask because I have other patches queued that are independent of the current
->> series, such as:
->>  - Reintroducing the table_sz clearing
->>  - Misc cleanup in remoteproc core
->
->I'm fine with those, as long as you address just one proble at any given time.
+Best wishes,
+Isaac
 
-Thanks. So multiple patchsets/patches from one developer are allowed only if
-each patchset/patch focus on a specific area/problem and no dependency.
-
-It is clear to me.
-
->
->> 
->> I understand you may be busy and have limited bandwidth. Would it be feasible
->> to offload part of the review work to Bjorn? I rarely see Bjorn reviewing i.MX
->> patches. Alternatively, could we consider bringing in a third maintainer to
->> help accelerate the review process?
->>
->
->How fast do you want to go?  By and large, I reply to patchsets within a week,
->sometimes two when things are busy.  And when I can't meet those standards, I
->send out an email to the mailing list with the review order of the patches in
->my queue.  What else are you expecting?
-
-I have been blocked once [1], this make me delay about two months to post out
-i.MX95 (: For i.MX95 reviewing cycle, it is not that smooth. Anyway, I get
-lesson learned and will follow the rules.
-
-More and more, we(NXP) are taking upstream first. And I have requested Daniel
-and Frank(both are very experienced Linux Kernel developer) to help review, so
-hope we could move a bit smoothly.
-
-For now,
-To imx_rproc.c, the queue:
-cleanup patchset2(at here now), cleanup patchset3, i.MX95 support, i.MX943 support
-
-To imx_dsp_rproc.c, the queue:
-Drop method, switch to use ops
-
-To remoteproc_core.c, the queue:
-Introduce back clearing table_sz.
-Use scoped API
-
-Nothing special to expect from you. I get the message that non-relevant
-patchsets could be posted out for reviewing, and one or two weeks is good for
-me.
-
-Appreciate for your time.
-
-[1] https://lore.kernel.org/linux-remoteproc/CANLsYkyEhhQA5KOsNveGSHUc3ZpckoL-CCHNZ0DZLMNYdNGzdQ@mail.gmail.com/
-
-Thanks,
-Peng
+>=20
+> Frank
+>=20
+> > Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
+> > ---
+> >  drivers/media/platform/nxp/imx-mipi-csis.c | 11 +++++++----
+> >  1 file changed, 7 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media=
+/platform/nxp/imx-mipi-csis.c
+> > index 7c2a679dca2e..838a1ad123b5 100644
+> > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > @@ -351,6 +351,8 @@ struct mipi_csis_device {
+> >       u32 hs_settle;
+> >       u32 clk_settle;
+> >
+> > +     unsigned int num_data_lanes;
+> > +
+> >       spinlock_t slock;       /* Protect events */
+> >       struct mipi_csis_event events[MIPI_CSIS_NUM_EVENTS];
+> >       struct dentry *debugfs_root;
+> > @@ -573,7 +575,7 @@ static void mipi_csis_system_enable(struct mipi_csi=
+s_device *csis, int on)
+> >       val =3D mipi_csis_read(csis, MIPI_CSIS_DPHY_CMN_CTRL);
+> >       val &=3D ~MIPI_CSIS_DPHY_CMN_CTRL_ENABLE;
+> >       if (on) {
+> > -             mask =3D (1 << (csis->bus.num_data_lanes + 1)) - 1;
+> > +             mask =3D (1 << (csis->num_data_lanes + 1)) - 1;
+> >               val |=3D (mask & MIPI_CSIS_DPHY_CMN_CTRL_ENABLE);
+> >       }
+> >       mipi_csis_write(csis, MIPI_CSIS_DPHY_CMN_CTRL, val);
+> > @@ -623,7 +625,7 @@ static int mipi_csis_calculate_params(struct mipi_c=
+sis_device *csis,
+> >
+> >       /* Calculate the line rate from the pixel rate. */
+> >       link_freq =3D v4l2_get_link_freq(csis->source.pad, csis_fmt->widt=
+h,
+> > -                                    csis->bus.num_data_lanes * 2);
+> > +                                    csis->num_data_lanes * 2);
+> >       if (link_freq < 0) {
+> >               dev_err(csis->dev, "Unable to obtain link frequency: %d\n=
+",
+> >                       (int)link_freq);
+> > @@ -668,7 +670,7 @@ static void mipi_csis_set_params(struct mipi_csis_d=
+evice *csis,
+> >                                const struct v4l2_mbus_framefmt *format,
+> >                                const struct csis_pix_format *csis_fmt)
+> >  {
+> > -     int lanes =3D csis->bus.num_data_lanes;
+> > +     int lanes =3D csis->num_data_lanes;
+> >       u32 val;
+> >
+> >       val =3D mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
+> > @@ -1366,8 +1368,9 @@ static int mipi_csis_async_register(struct mipi_c=
+sis_device *csis)
+> >       }
+> >
+> >       csis->bus =3D vep.bus.mipi_csi2;
+> > +     csis->num_data_lanes =3D csis->bus.num_data_lanes;
+> >
+> > -     dev_dbg(csis->dev, "data lanes: %d\n", csis->bus.num_data_lanes);
+> > +     dev_dbg(csis->dev, "max data lanes: %d\n", csis->bus.num_data_lan=
+es);
+> >       dev_dbg(csis->dev, "flags: 0x%08x\n", csis->bus.flags);
+> >
+> >       asd =3D v4l2_async_nf_add_fwnode_remote(&csis->notifier, ep,
+> >
+> > --
+> > 2.43.0
+> >
