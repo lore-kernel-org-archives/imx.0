@@ -1,181 +1,391 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A6227874F
-	for <imx@lists.linux.dev>; Sat, 27 Sep 2025 09:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA251632C8;
+	Sat, 27 Sep 2025 18:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758966644; cv=none; b=um/98S34LnvRJ95XOCd7CqtFlgNL65cqxL7PemJ/o9NI8w3v3x3Q2PnQOU3Rl81W4JU0BihHyg2QQA/KXjbQIG1FM0zgJ7t7NQCLm0o8DtQWiElycZU1P3lTK+qM0IlARmjv1u9mOWb8EKpVQw+/zhpjCTDWtxBffjNsFxdpGXU=
+	t=1758999549; cv=none; b=X9cq8BdxP1IpTT12dXJVp3iXGVwfLB9qYf2d5brQbl2CrmYN+dQyM9DbLLMEreWh1yMZASNQJvEoz4gD6GmkQ4faZThZdKYRoTnw/Jd8JGZPb30LX69ApmWE1QwZn434kYM05++QgedvajUX2c2xdkVqjGQ/0kBo/wByLm7posw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758966644; c=relaxed/simple;
-	bh=BotcDeRJ5Xchr3Qo6LfezDRpDesds0piADefeH4E2oE=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eEKYL5nlQksAPYQUO5TV4WoTwv34n2o9rDz2EdVSvxoee3nhOq8JFjHqjMA2TmDx4DmFHZd8EzMOmF8RhsyZr3KyH4gIfZ/QyrQuuUm+M32/svcjieEvLWNcHnrHASizX0OefHE6JaiIk4+wceK4/5DVyTtjOl2Mit4kfihAHYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nHWDrUGh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wqsgagUJ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nHWDrUGh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wqsgagUJ; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1758999549; c=relaxed/simple;
+	bh=1OSBLp+ttR8asbRvrYHxL+vC8NOwayV1Z9SDsTwxsds=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rjecOvSuKc+AJqFYZPoI/MELxkdPpKIjsSCTj+PXA89codq5KUvTjBLgOpriEaaE+esz92iVZocRag1Qzc2Mjk0sqeqShU9ZxX8gTwoAOzvuc0oYXfs4Zh0tp6WBY07FJF+KACNNW2FuiqE780fTn7/9ARyp2km00ylvFar/M+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1Qugc1n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nHWDrUGh";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wqsgagUJ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nHWDrUGh";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wqsgagUJ"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CA119267D8;
-	Sat, 27 Sep 2025 09:50:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1758966633; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hWSLsp5Q+OBEvCxaJhtiJufQYs9Iqj0DaWEu/Y3fjh0=;
-	b=nHWDrUGhPhsS4p6nX3rWYGg+1HBuJNgbyLnB8Zx67wt351CSM6U2jtPpS22tqTFVve1dGL
-	QrPV8stgpN18MtwtXeHqBUVKGzqnlsVT8c+7Sn8zumsasPYPeASUDqZEEMf8W/j2ToHV2E
-	1khQEQk16pM68hT4R1/Dm3Eor4vYVF8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1758966633;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hWSLsp5Q+OBEvCxaJhtiJufQYs9Iqj0DaWEu/Y3fjh0=;
-	b=wqsgagUJ5zJ5eFRWpqC0GJSO5pLrcPx9OEehVtsKIdyrFz0sVh8NE5e6qpDE1/QjoSOAJN
-	BPM9/DIzPQHwr9CA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1758966633; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hWSLsp5Q+OBEvCxaJhtiJufQYs9Iqj0DaWEu/Y3fjh0=;
-	b=nHWDrUGhPhsS4p6nX3rWYGg+1HBuJNgbyLnB8Zx67wt351CSM6U2jtPpS22tqTFVve1dGL
-	QrPV8stgpN18MtwtXeHqBUVKGzqnlsVT8c+7Sn8zumsasPYPeASUDqZEEMf8W/j2ToHV2E
-	1khQEQk16pM68hT4R1/Dm3Eor4vYVF8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1758966633;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hWSLsp5Q+OBEvCxaJhtiJufQYs9Iqj0DaWEu/Y3fjh0=;
-	b=wqsgagUJ5zJ5eFRWpqC0GJSO5pLrcPx9OEehVtsKIdyrFz0sVh8NE5e6qpDE1/QjoSOAJN
-	BPM9/DIzPQHwr9CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D4B3A13782;
-	Sat, 27 Sep 2025 09:50:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0xVUMmiz12i8UAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Sat, 27 Sep 2025 09:50:32 +0000
-Date: Sat, 27 Sep 2025 11:50:32 +0200
-Message-ID: <87y0q09qc7.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>,
-	andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	lumag@kernel.org,
-	dianders@chromium.org,
-	cristian.ciocaltea@collabora.com,
-	luca.ceresoli@bootlin.com,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	p.zabel@pengutronix.de,
-	devicetree@vger.kernel.org,
-	l.stach@pengutronix.de,
-	shengjiu.wang@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH v7 0/7] drm/bridge: imx: Add HDMI PAI driver on i.MX8MP
-In-Reply-To: <d39bc215-5b67-4cf5-b9d5-6e1e9ab20159@nxp.com>
-References: <20250923053001.2678596-1-shengjiu.wang@nxp.com>
-	<b411c188-b564-4ae8-9186-d0877880fa99@nxp.com>
-	<d39bc215-5b67-4cf5-b9d5-6e1e9ab20159@nxp.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1Qugc1n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3E6C4CEE7;
+	Sat, 27 Sep 2025 18:59:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758999548;
+	bh=1OSBLp+ttR8asbRvrYHxL+vC8NOwayV1Z9SDsTwxsds=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=n1Qugc1n/7qqhn6TamTuS738XeJlrTckf1cUScCmq7GIX27zuh5Euk8VTTbhSiRFd
+	 n46Avvw0lBz/09SA/+gNV30ChokxznBIE+ASVU4nci40ODmvYphyY1fax9ptgAU6NU
+	 Wcoq/GwG6QUUNYE9bXFzd3d0qM1O1bsfnhf0NpJ8V8/TQLNvGzGcMtYFGiC5mF5wDg
+	 arZ+IbA+8zNJo5CM0RqcyKpFKnu+qTg3+1wFOZAPnpp9da8a1j1ndTDN5VimErMxhe
+	 +vXQ5B2JWNbKuDx16YHkXFMXOH1K9YNTvndQG4SypuY9JaDeqp8W1WWNYk0WLEZOa+
+	 FdEeReYeLdeSQ==
+Date: Sat, 27 Sep 2025 19:58:59 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-iio@vger.kernel.org, Carlos Song
+ <carlos.song@nxp.com>
+Subject: Re: [PATCH v2 4/4] iio: magnetometer: Add mmc5633 sensor
+Message-ID: <20250927195859.28a6069e@jic23-huawei>
+In-Reply-To: <20250924-i3c_ddr-v2-4-682a0eb32572@nxp.com>
+References: <20250924-i3c_ddr-v2-0-682a0eb32572@nxp.com>
+	<20250924-i3c_ddr-v2-4-682a0eb32572@nxp.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[35];
-	TAGGED_RCPT(0.00)[dt];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[nxp.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,chromium.org,collabora.com,bootlin.com,lists.freedesktop.org,vger.kernel.org,pengutronix.de,lists.linux.dev,lists.infradead.org,perex.cz,suse.com];
-	R_RATELIMIT(0.00)[to_ip_from(RL8m7tqgwaqu97o1bbfnn6ewdz)];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -1.80
+Content-Transfer-Encoding: 7bit
 
-On Fri, 26 Sep 2025 08:03:15 +0200,
-Liu Ying wrote:
+On Wed, 24 Sep 2025 10:30:05 -0400
+Frank Li <Frank.Li@nxp.com> wrote:
+
+> Add mmc5633 sensor basic support.
+> - Support read 20 bits X/Y/Z magnetic.
+> - Support I3C HDR mode to send start measurememt command.
+> - Support I3C HDR mode to read all sensors data by one command.
 > 
-> Hi Jaroslav, Takashi,
+> Co-developed-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v2
+> - new patch
+> ---
+HI Frank,
+
+Some minor comments inline,
+
+Thanks,
+
+Jonathan
+
+>  drivers/iio/magnetometer/Kconfig   |  12 +
+>  drivers/iio/magnetometer/Makefile  |   1 +
+>  drivers/iio/magnetometer/mmc5633.c | 543 +++++++++++++++++++++++++++++++++++++
+>  3 files changed, 556 insertions(+)
 > 
-> On 09/23/2025, Liu Ying wrote:
-> > On 09/23/2025, Shengjiu Wang wrote:
-> >> Shengjiu Wang (7):
-> >>   dt-bindings: display: imx: add HDMI PAI for i.MX8MP
-> >>   ALSA: Add definitions for the bits in IEC958 subframe
-> >>   drm/bridge: dw-hdmi: Add API dw_hdmi_to_plat_data() to get plat_data
-> >>   drm/bridge: dw-hdmi: Add API dw_hdmi_set_sample_iec958() for iec958
-> >>     format
-> >>   drm/bridge: imx: add driver for HDMI TX Parallel Audio Interface
-> >>   arm64: dts: imx8mp: Add hdmi parallel audio interface node
-> >>   arm64: dts: imx8mp-evk: enable hdmi_pai device
-> > 
-> > Jaroslav, Takashi, do you think it's ok to land patch 2 through drm-misc,
-> > as that patch touches include/sound/asoundef.h?
-> 
-> Can you please comment?
+> diff --git a/drivers/iio/magnetometer/Kconfig b/drivers/iio/magnetometer/Kconfig
+> index 81b812a29044e2b0b9ff84889c21aa3ebc20be35..cfb74a4a083630678a1db1132a14264de451a31a 100644
+> --- a/drivers/iio/magnetometer/Kconfig
+> +++ b/drivers/iio/magnetometer/Kconfig
 
-Sorry, I've been off in this week (and am catching backlogs).
+> diff --git a/drivers/iio/magnetometer/mmc5633.c b/drivers/iio/magnetometer/mmc5633.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..b1a6973ea175634bbc2247ff84488ea5393eba0e
+> --- /dev/null
+> +++ b/drivers/iio/magnetometer/mmc5633.c
+> @@ -0,0 +1,543 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * MMC5633 - MEMSIC 3-axis Magnetic Sensor
+> + *
+> + * Copyright (c) 2015, Intel Corporation.
+> + * Copyright (c) 2025, NXP
+> + *
+> + * IIO driver for MMC5633, base on mmc35240.c
+> + *
+Trivial but this blank line doesn't add anything, so drop it.
 
-And, yes, feel free to take the change via drm tree.  I already gave
-my Reviewed-by tag for that.
+> + */
+
+> +static const struct {
+> +	int val;
+> +	int val2;
+> +} mmc5633_samp_freq[] = { {1, 200000},
+> +			  {2, 0},
+> +			  {3, 500000},
+> +			  {6, 600000},
+> +			};
+
+Generally prefer { 1, 20000 } 
+style for IIO and here I'd format this as:
+
+static const struct {
+	int val;
+	int val2;
+} mmc5633_samp_freq[] = {
+	{ 1, 200000 },
+	{ 2, 0 },
+	{ 3, 500000 },
+	{ 6, 600000 },
+};
+
+> +
+> +static IIO_CONST_ATTR_SAMP_FREQ_AVAIL("1.2 2.0 3.5 6.6");
+
+> +
+> +static struct attribute *mmc5633_attributes[] = {
+> +	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
+Please use the read_avail() callback and the associated masks.
+
+That makes it available for in kernel users and generally is preferred
+for new drivers.  One day I'll get rid of the defines you are using here
+but it will take a while yet!
+
+> +	NULL
+> +};
+> +
+> +static const struct attribute_group mmc5633_attribute_group = {
+> +	.attrs = mmc5633_attributes,
+> +};
+
+> +
+> +static int mmc5633_hw_set(struct mmc5633_data *data, bool set)
+> +{
+> +	u8 coil_bit;
+> +
+> +	if (set)
+> +		coil_bit = MMC5633_CTRL0_SET;
+> +	else
+> +		coil_bit = MMC5633_CTRL0_RESET;
+> +
+> +	return regmap_write(data->regmap, MMC5633_REG_CTRL0, coil_bit);
+
+This helper doesn't provide all that much value. Maybe just
+call the regmap_write() inline and let the value written make
+it obvious which is set and reset?
+
+> +}
+> +
+> +static int mmc5633_init(struct mmc5633_data *data)
+> +{
+> +	unsigned int reg_id, ret;
+> +
+> +	ret = regmap_read(data->regmap, MMC5633_REG_ID, &reg_id);
+> +	if (ret < 0)
+> +		return dev_err_probe(data->dev, ret,
+> +				     "Error reading product id\n");
+> +
+> +	/*
+> +	 * make sure we restore sensor characteristics, by doing
+
+Make
+
+> +	 * a SET/RESET sequence, the axis polarity being naturally
+> +	 * aligned after RESET
+
+RESET.
+
+> +	 */
+> +	ret = mmc5633_hw_set(data, true);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	usleep_range(MMC5633_WAIT_SET_RESET, MMC5633_WAIT_SET_RESET + 1);
+> +
+> +	ret = mmc5633_hw_set(data, false);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* set default sampling frequency */
+> +	ret = regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
+> +				 MMC5633_CTRL1_BW_MASK,
+> +				 FIELD_PREP(MMC5633_CTRL1_BW_MASK, 0));
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 0;
+
+	return regmap_upate_bits()
+
+Given regmap always returns negative for errors of 0 for success it
+would be better to check if (ret) which then makes this sort of final
+call look more obviously correct.
 
 
-thanks,
+> +}
+> +
+> +static int mmc5633_take_measurement(struct mmc5633_data *data)
+> +{
+> +	unsigned int reg_status;
+> +	int ret;
+> +
+> +	ret = regmap_write(data->regmap, MMC5633_REG_CTRL0, MMC5633_CTRL0_MEAS_M);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = regmap_read_poll_timeout(data->regmap, MMC5633_REG_STATUS1, reg_status,
+> +				       reg_status & MMC5633_STATUS1_MEAS_M_DONE_BIT,
+> +				       10000, 10000 * 100);
+> +
+Drop the blank line here to keep the error check associated with the call
+> +	if (ret) {
+> +		dev_err(data->dev, "data not ready\n");
+> +		return -EIO;
+Why not return ret
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int mmc5633_read_measurement(struct mmc5633_data *data, void *buf, size_t sz)
+> +{
+> +	__le16 data_word;
+> +	__le16 status;
+Might as well combine on one line.
 
-Takashi
+> +	int ret, val;
+> +
+> +	if (data->i3cdev &&
+> +	    (i3c_device_get_supported_xfer_mode(data->i3cdev) & BIT(I3C_HDR_DDR))) {
+
+I'd factor this lot out as a helper function to improve readability a little.
+
+> +		struct i3c_xfer xfers_wr_cmd[] = {
+> +			{
+> +				.cmd = 0x3b,
+> +				.len = 2,
+> +				.data.out = &data_word,
+> +			}
+> +		};
+> +
+> +		struct i3c_xfer xfers_rd_sta_cmd[] = {
+> +			{
+> +				.cmd = 0x23 | BIT(7), /* RDSTA CMD */
+> +				.len = 2,
+> +				.data.in = &status,
+> +			},
+> +		};
+> +
+> +		struct i3c_xfer xfers_rd_data_cmd[] = {
+> +			{
+> +				.cmd = 0x22 | BIT(7), /* RDLONG CMD */
+> +				.len = sz,
+> +				.data.in = buf,
+> +			},
+> +		};
+> +
+> +		data_word = cpu_to_le16(MMC5633_HDR_CTRL0_MEAS_M << 8);
+
+if you are shifting it by 8 bits and it's an 16 bit value, feels like it's actually not
+and it's a pair of bytes. Perhaps just set the relevant byte in a u8 [2] would be clearer?
+If this is how it's described on the datasheet I guess I don't mind that much.
+
+> +
+> +		ret = i3c_device_do_xfers(data->i3cdev, xfers_wr_cmd, 1, I3C_HDR_DDR);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		ret = read_poll_timeout(i3c_device_do_xfers, val,
+> +					val ||
+> +					(le16_to_cpu(status) & MMC5633_STATUS1_MEAS_M_DONE_BIT),
+> +					10000, 10000 * 100, 0,
+> +					data->i3cdev, xfers_rd_sta_cmd, 1, I3C_HDR_DDR);
+> +
+> +		if (ret || val) {
+> +			dev_err(data->dev, "data not ready\n");
+> +			return -EIO;
+Nice to return ret if it is set.  
+
+> +		}
+> +
+> +		return i3c_device_do_xfers(data->i3cdev, xfers_rd_data_cmd, 1, I3C_HDR_DDR);
+> +	}
+> +
+> +	/* Fallback to use SDR/I2C mode */
+> +	ret = mmc5633_take_measurement(data);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return regmap_bulk_read(data->regmap, MMC5633_REG_XOUT_L, buf, sz);
+> +}
+> +
+> +static int mmc5633_get_raw(struct mmc5633_data *data, int index, unsigned char *buf, int *val)
+> +{
+> +	/*
+> +	 * X[19..12] X[11..4] Y[19..12] Y[11..4] Z[19..12] Z[11..4] X[3..0] Y[3..0] Z[3..0]
+> +	 */
+> +	*val = buf[2 * index];
+> +	*val <<= 8;
+> +
+> +	*val |= buf[2 * index + 1];
+> +	*val <<= 8;
+
+First bit could be a get_unaligned_be16() << 8 or something like that.
+
+> +
+> +	*val |= buf[index + 6];
+> +
+> +	*val >>= 4;
+> +
+> +	return 0;
+> +}
+> +
+> +#define MMC5633_ALL_SIZE (3 * 3 + 1) /* each channel have 3 byte and TEMP */
+> +
+> +static int mmc5633_read_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan, int *val,
+> +			    int *val2, long mask)
+> +{
+> +	struct mmc5633_data *data = iio_priv(indio_dev);
+> +	char buf[MMC5633_ALL_SIZE];
+> +	unsigned int reg;
+> +	int ret, i;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		scoped_guard(mutex, &data->mutex) {
+> +			ret = mmc5633_read_measurement(data, buf, MMC5633_ALL_SIZE);
+> +			if (ret < 0)
+> +				return ret;
+> +		}
+> +
+> +		ret = mmc5633_get_raw(data, chan->address, buf, val);
+> +		if (ret < 0)
+> +			return ret;
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*val = 0;
+> +		*val2 = 62500;
+> +		return IIO_VAL_INT_PLUS_NANO;
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		scoped_guard(mutex, &data->mutex) {
+> +			ret = regmap_read(data->regmap, MMC5633_REG_CTRL1, &reg);
+> +			if (ret < 0)
+> +				return ret;
+> +		}
+> +
+> +		i = FIELD_GET(MMC5633_CTRL1_BW_MASK, reg);
+> +		if (i < 0 || i >= ARRAY_SIZE(mmc5633_samp_freq))
+
+How does a FIELD_GET() give a negative?
+
+> +			return -EINVAL;
+> +
+> +		*val = mmc5633_samp_freq[i].val;
+> +		*val2 = mmc5633_samp_freq[i].val2;
+> +		return IIO_VAL_INT_PLUS_MICRO;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+
+>
+> +static const struct of_device_id mmc5633_of_match[] = {
+> +	{ .compatible = "memsic,mmc5633", },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, mmc5633_of_match);
+> +
+> +static const struct i2c_device_id mmc5633_i2c_id[] = {
+> +	{ "mmc5633" },
+> +	{}
+be consistent. I'd prefer
+	{ }
+
+> +};
+> +MODULE_DEVICE_TABLE(i2c, mmc5633_i2c_id);
