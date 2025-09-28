@@ -1,186 +1,114 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011026.outbound.protection.outlook.com [52.101.70.26])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7616B2D0C8F
-	for <imx@lists.linux.dev>; Sun, 28 Sep 2025 09:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759050233; cv=fail; b=Zd4iFVTZCPqoHTSeMhX4qckwzXGwFql+KBOFX937faiMrm+0zjGuiwlGsJiUdCzAiCz3tRFDMWzPYUmcLIgPS0QWN+5u3LxZoCNWOzpvuRrz5q/JUrpKG4MGpjTzx47ndLEz2O+5a0PdEHzPwF/wg1EbRuA5Nz1Zbii+wpMwjIU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759050233; c=relaxed/simple;
-	bh=/vtKL19T55dPkRlAelQG+/9Sc2HLnpAXUDKzHHYYJMI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cH70tDWWAyC+VdVtjLibSK/RWGQPvhER1FE7Ar8qSLh+AjBhtVwvO1qUQA6EzAO4MbHbbJZHi6/7DjMwH7rnbkjWD0qEWbfTebQVzVhgVW32o/CsHbAcPULIThO4KCPVDDV6YfSFl0pvSC68StYG5lq0MlXnIYTtFBtQULohOrU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qPAYykua; arc=fail smtp.client-ip=52.101.70.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C285E4C98
+	for <imx@lists.linux.dev>; Sun, 28 Sep 2025 16:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759078629; cv=none; b=BeaZDk1u+4WmyUCkuOUIPufpRuHPSyNd74mWHsVCPATUTxvX9145oR3Kz15IbBqM5UcrYpOy60vOeVrm+Tbec30bIh+51E1iHSqbeC/ZqsHYhKy0LvVOjJwsouBwQYjOM5PedDPYZPpCSFkUbxEv007PLDcwrdeJgZBGGkoi49o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759078629; c=relaxed/simple;
+	bh=xujErc0QSlYq7R2METgndt3Q6nhNzJsdH6KXtpfhUWc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hjCDbBlVLB//4YjESejrTM6jW2+HGsp2D9i7eyejTblRkzZIPdgq5ohP0s4O2Eg/aMn7hRTLWzutnBQmedefxYXXK8emxizNpnDEK7gCQvuIrVUpPQZ0UPBPcXOypPp+6ye+w+gTeOb65sL2KglHKHxR7UPduvUzkiPXklRUeMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=xHuubiMS; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qPAYykua"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LLNfU39ByQF8L0Q7adpAayXAkL8BWFTTpr6QwjNSp28ezJ8pmwqDKL0VrjdnkuVCKBt/u+TOcrGYJFV6sLnExIwlVH1QYz9PWD7LHVM81nqBILqdMBx0Qk1dqy1lYGwTy7biwbHeeIpNPI6pwFpm0+AEPsQ9hf38c7EiYBEQeQ9yta9/O1yiU5WawtAYiFpup74FHs4cguaAD4OlRcUB9LlxHyCEtZPqUXSbbbU0lvCpOriTuqSPcufJTwPOlF4ETfEbSYm+Yl4GbkYS9QKnO/6MI5c3oTatNSe1i4eP8/2zj5NnUTZKG2wV8aV9g5wC4a8jfI598dr9GlOQpz1pIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VEaZZ72mspNTASiE4HYy/1H8weAC7yYw3VK4Xl5LZJI=;
- b=AzROYmZyFf1nbw4CZuLrNaByB97XwN1Dn6EmgLBYThPAQ0xbDHGTlVBMajsY50aahPT7inybVS9woKDCZEd6QUOXdOzNftHI5hHso/gRiaWnqHSJ3WLHBKVf6dEqC7l/xDtaWQqx07VxG0sUKn+o2DcdfnlZQWUgaRKxCLnzELK9RXyv9qSuPRi6gGt+PJqx9N6PKoFHcMJ4DUEYnaoHRflOFylPZPWyt9Mcmr0MXGXjOA53IqUHZEB6CIME8gW5N0kKpuu/NUEiF8GMowonsAjGkQjDxWujCk+ih5ij21WWkSgTPKn66PSs7JD5scf5l1Azus0KfFaWmqUsx4uyQA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VEaZZ72mspNTASiE4HYy/1H8weAC7yYw3VK4Xl5LZJI=;
- b=qPAYykuaFJYJ3YGbWQ0TRIT7riusoy2LIQ3aqp6lZM3YgHpQlkGipPQKY9ntI6IQfrrE9BflUP3Ur5Jhx17u9/mgZi442Q8HN8q3P25wqKIhL/OCGtnIt8+PETHGXM7ggsuyry5zO3FOWiDKAOYUnbknV57ZTne09njQBhZkBNgoNCabNZbMxZTSpf9bT+ftfXew5k5cKQlXCzl+7lXo1P4nzvlIqMa4y8gtoZdxfUVN4kn/43rhTTTVmPN/CO7C+PPR/MMWZXEr3HEhYmeAm7Pn467a1gjhT8at1JB9dHI/5pPiAVz+uUSbEeAy3CcjHe/1MmoUP1nV/c2jZmz6Dw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS4PR04MB9624.eurprd04.prod.outlook.com (2603:10a6:20b:4ce::9)
- by GV2PR04MB11302.eurprd04.prod.outlook.com (2603:10a6:150:2ae::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.15; Sun, 28 Sep
- 2025 09:03:47 +0000
-Received: from AS4PR04MB9624.eurprd04.prod.outlook.com
- ([fe80::fa4e:dc6f:3f71:13b7]) by AS4PR04MB9624.eurprd04.prod.outlook.com
- ([fe80::fa4e:dc6f:3f71:13b7%4]) with mapi id 15.20.9160.013; Sun, 28 Sep 2025
- 09:03:47 +0000
-From: Rain Yang <jiyu.yang@oss.nxp.com>
-To: imx@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: boris.brezillon@collabora.com,
-	steven.price@arm.com,
-	liviu.dudau@arm.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.co,
-	simona@ffwll.ch,
-	marek.vasut@mailbox.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	Rain Yang <jiyu.yang@nxp.com>
-Subject: [PATCH v2 2/2] drm/panthor: skip regulator setup if no such prop
-Date: Sun, 28 Sep 2025 17:03:34 +0800
-Message-Id: <20250928090334.35389-2-jiyu.yang@oss.nxp.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250928090334.35389-1-jiyu.yang@oss.nxp.com>
-References: <20250928090334.35389-1-jiyu.yang@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG3P274CA0001.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::13)
- To AS4PR04MB9624.eurprd04.prod.outlook.com (2603:10a6:20b:4ce::9)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="xHuubiMS"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cZVpy4LP0z9sST;
+	Sun, 28 Sep 2025 18:56:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1759078618;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q3CPsXihGUBBwniCQJtpfCea9ZS+16bumyYVi9msdPY=;
+	b=xHuubiMSI1U7n2AhL8UbwNP5D24fqsTalz73+pLetWsJpayvL0H7U0vNPv/fXMsI76dT9Y
+	BA0jodO4DTAljzh5/955NxjTofoDmHZfTNUOzlkDS3J171LiYOLyY2SDUBvNsaq1Zwh5zL
+	6JrhLKl4TghKRUMVY2QndMe/TNc8ZCO/SBDtDQGLdUowAIqGUQIJk4QRKEjbHGiHF0Kkkb
+	ssTiWE8H09QNuZwWRR85eCbezsFXR7izc2l8Wz8JgyHv/B3EUqnTEKNDmL32N1AHcrAcSI
+	mz6nzP+67SteciLT+nVZFgYGAuATIL2UgbA4E/I23JKuFiecI4PRluLDgCXXUw==
+Message-ID: <a8d62ed4-38c7-4ff7-a283-3708761d94a7@mailbox.org>
+Date: Sun, 28 Sep 2025 18:56:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9624:EE_|GV2PR04MB11302:EE_
-X-MS-Office365-Filtering-Correlation-Id: 42d948c2-7936-47f6-3fdc-08ddfe6deed7
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|19092799006|366016|376014|7416014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?fJpk5aDp9d2rKnrQXpqKz7EHbEK85VTmFzMV2ecBsAUmQRA4q6gtLAiwiw+u?=
- =?us-ascii?Q?uIBXxPQKXw/CM/gFd6pE7sKbYR37sgUH918VKpmyW+ChxIr1+xUrFpBdiXEt?=
- =?us-ascii?Q?f2O9p21vWFir39iiWZJeks/miuU6WFDdwYKs46aP5CVsGLvmWMvbAuD4GLiD?=
- =?us-ascii?Q?NJfNCuQhybe+GsyT/VC6LblMlG1eWXMCzGqq7IlhUrgXwAv0NP9/ItqTny6w?=
- =?us-ascii?Q?b6Z8cOFFWPgEEtjv2tyPRs1Gq2gmmd0B7gxo52ZjzgyQcPjHZgN1A5bZbmda?=
- =?us-ascii?Q?7j5z7cbjs0nMtrpqvAFYrZDYWnFOiilxEYiDB2hpoQjHiqQQFHUTDElNDiAu?=
- =?us-ascii?Q?zbfvpzsUpVRt7B+BMG1+uamBBOAfeStmDEfg8JYk26mjnlYeguYrLXgaldfd?=
- =?us-ascii?Q?+s8MYX6KTAhDhKCUYoVhHdsh9cteI3k+IU9XWHEJh8CNt9yBFHRU7bWcH9P8?=
- =?us-ascii?Q?DzvFn5bO1fChjEv/NLK4uHmnx52rRY/muMWhn1n0jvN7RDK21EpSgcikQu/p?=
- =?us-ascii?Q?9sdDZSnuAHr2rffm4EWxAcycl8pwOTulO6JFc5QYZDhywZQII1L9HeI/rtbm?=
- =?us-ascii?Q?boqZSDL4Amh1UjQRWwkV1X08Hfnh1ac3/d0MDKFgboQSZSQ7imwBDXqlXuzp?=
- =?us-ascii?Q?QK4Ss1upuS53qp4xuW8nmZ2Qo71ZcRtjgW3mK4yDwcY3bqpIb7/m6ry9Egd8?=
- =?us-ascii?Q?Z6Qj2LX2IjSzEPjEdGe4FpeV90zEmW230B00TAbCjf9neBFD8QHnrF7Wz9wD?=
- =?us-ascii?Q?BlGK5Y0mGs4TuTQhH8zQ5ZzfIwfMzhhFqiJFE1pNvtEtrUfmQ4PgRuLBLKyo?=
- =?us-ascii?Q?f3q8iHGmZwe14EHvsQbgJKUEFjOXSkDwuC8bk8tIHXVsUEyij+AofAYNkiyo?=
- =?us-ascii?Q?FWxC6ipyyAhB9sGS+bnnfia9b2JV1MceRKuoDEXcP03TzSqxNMo0oN5S561i?=
- =?us-ascii?Q?bLpjzmu1UQ8Cuo80Jfy0NyyO5y66AoLlOh8EI4BxTKXBBslAraMYwWHrlbCa?=
- =?us-ascii?Q?LbMez4jELAVgSn+9gvMy6z8LEyE3MNZTHEgT1vwY8Y/NE4WCOf0YXt5OKTGG?=
- =?us-ascii?Q?ZOkNRuIzvD6F5an7dPHFAk8I0aYx02Q1SnSyLhgARF34LBIxtaoMM1pkdGrG?=
- =?us-ascii?Q?rkYyBHTIF0hJ4IL9JQGrioh2psSoRuvXLcRd7BuHE4EdsP06iTOaL/PCsOdB?=
- =?us-ascii?Q?FJjL7LSYn20IFtJW28AeUEqgSKWYTnow34MiTzvJYwzIItv/c5b5gFWfm6Ld?=
- =?us-ascii?Q?SEDfn6XT43eoqVdsyZW9yJOLIvGo83kQfQh+mEJG87aEzfuBl9I2hog4Q8Vu?=
- =?us-ascii?Q?dR8DYbmhC7JGfNTFkONAZWCiodok3Sw/8heV6qjD0LeFKP3N7t5FmY2qgTOy?=
- =?us-ascii?Q?FVqDcv4vJHJob9Irxp1y0/a/yHkJmMi4VRPT85GV/8J9Vqyu4tUjf5t+3EFD?=
- =?us-ascii?Q?VriJyY9bLJtDAZKMRqibBejGHSpJ4E2ljhOtEJC+zeLq+YqPq2XyKtF+G5/5?=
- =?us-ascii?Q?W9aFqD68hTHli0Cj3sEIENUYa2+0LCw2oYxv?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9624.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(19092799006)(366016)(376014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?62eELKQiGBJDSzM31tQ87IwCGTuxSKd9g2gOqnjaWhSsjNClh30/rUVwXR5e?=
- =?us-ascii?Q?Kul8D1wutP/d2ICudP/SV5LzeUGhMap1C7YjHacmAOw8/pypWC4ZzItTtgGd?=
- =?us-ascii?Q?6RtxSk8OzNvT9pDrBCGHByIoTQxK1joAzVw4mAKYafkSCg3GzzOAqg0USgml?=
- =?us-ascii?Q?Dfm75Le7eudTS2DtmWglQ9GCFgd+QfVWXDlYCbFc03gtEYAo9UxPguFelmNj?=
- =?us-ascii?Q?LJoNt6yv8iin/Tzir3Z1Ikn9UsLLrp/2D163usU2mhDea4yNUwtUO25v/3cq?=
- =?us-ascii?Q?73jl3NldQEf1pwj7MHiY2OkVJYNM6xLhNfdLrQMvp+aMXxDDM3vgUUNy8gm1?=
- =?us-ascii?Q?fVxoducCmPMggw3f5p6n0fp+eRW/kHsfb+1L2pMMpmc7w8nGiVtSjPdKAzG8?=
- =?us-ascii?Q?aH27qGAyg5oo/tih9kT2vqs7BVfDLjbbhFxBAhX8GfyNyn5jZ++6uE/GPnoD?=
- =?us-ascii?Q?aRPx7FZdQ9YH61flJMoYpZUXlrrrETZPdB9z4dBI836tmFJZWUHQwGS79Dn0?=
- =?us-ascii?Q?n6LoVYU5SThtWVrfpKwX0wz9P65NnExHNHHMJxh4reiGH8AZ6vqkm35/yDNv?=
- =?us-ascii?Q?rUifeF3y0LP1m+enuz2SifSKa6Lx9i1CunBF5EMlc/XKtu7Ys/ToN6/5s3Bi?=
- =?us-ascii?Q?1IUZHUGZZutBVtumHF7Fi/hqO+ouFIw2e+jVE97RBfnkuxSPtuMtQdOP06uc?=
- =?us-ascii?Q?5HgmNnAXy5gB2RCETURt8NlBSFYEnIP7ZSqDF6U8OHWd0PJIu5Al82MfAPtS?=
- =?us-ascii?Q?FD9OTnLkDwIFhvrE4u9Dpw9JlQiYkeS/xynP2hPwA+GG3Yf8pbu33uXgeSEt?=
- =?us-ascii?Q?0nDA7KJpa6s3jVVgbzavbl2sWq4ZYiUJi59KE1lAycjFXbCR9AqtkHkjSuuM?=
- =?us-ascii?Q?wX0gIkQnWqzByiFkjo/YNIDFpGTyvXCLiT6GUlPhnpZlf85hh7o3fEOCyWT6?=
- =?us-ascii?Q?Xp0xMnJpXujMgDOUCP+gkQoyJBrDteKIzx3K7wtJg5N+sozenkaQZYSKKiln?=
- =?us-ascii?Q?2jMjHW0JYBB/ArtyqorSKVJkU0r6dNSzGO9PvhD/1sqky6/aVxRKwcM0snhI?=
- =?us-ascii?Q?ngKzYzoXSt1aP7Npu5Qupzoh5g2NT5UeUqZGAdPeaYU0wjGup94RQD+DCsHy?=
- =?us-ascii?Q?74BPFiXp79SGr9DME8/wD3oDSAM3CzLK1DZrx5RyqDSzfjQ3gFov90DW9wXc?=
- =?us-ascii?Q?r5nHnvTL6g3XD1oax4z0zr5rGWUArE4aB204VoH3NfxsRlyzWV7wlBTMdmmt?=
- =?us-ascii?Q?kiiwLEOQHNFtirXMWbqkSTWHWMzIOdT3JU3T2DeJJ6l0MkXYO744XVfQczrZ?=
- =?us-ascii?Q?7N78r8Ag3b3BjicQ6b4CGIEMlwFPDsjACBK2L4ow/g1K5i7zb5vWtVGJQgCi?=
- =?us-ascii?Q?bGeo9dyAkLtTDZiRvMxq/z1bTEXmpemguecUS1vv8S75mpGZmJoA+h1B3dZb?=
- =?us-ascii?Q?2iD61HQ0tp6rCcUC82mPIfAEyt/fPyL0MyozLK8clACi3KvRBReph6XYyCRI?=
- =?us-ascii?Q?JNvSTzzRygoGNsp+tcSzPp/feGjTstvLVGubR3gqEVw7Ipt2VWB/8vMSoRhI?=
- =?us-ascii?Q?D6VmzjiMxhLteldUn8wmdKFGHBo640aM5udzmyyy?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42d948c2-7936-47f6-3fdc-08ddfe6deed7
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9624.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2025 09:03:47.3658
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sgagYFgx0VDUpzx6rvREiXHsFh8vCsNRIvRXfB7Ye4tbCQ984OGXClxF2Io+dBgfd2TbZD7P+0aOLF93T3DXqg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11302
+Subject: Re: [PATCH v2 4/9] drm/panthor: Implement optional reset
+To: Rain Yang <jiyu.yang@oss.nxp.com>
+Cc: airlied@gmail.com, boris.brezillon@collabora.com, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de,
+ krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
+ liviu.dudau@arm.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ p.zabel@pengutronix.de, peng.fan@nxp.com, robh@kernel.org,
+ s.hauer@pengutronix.de, shawnguo@kernel.org, simona@ffwll.ch,
+ sre@kernel.org, steven.price@arm.com, tzimmermann@suse.de
+References: <20250904172019.58e5f589@fedora>
+ <4147d10f-fb54-4f1b-ac1b-58cf657a3aeb@mailbox.org>
+ <aMk1CISrn2_p0qzJ@oss.nxp.com>
+ <c34dc4bc-de12-42fc-aaf5-50474dc53042@mailbox.org>
+ <aMoTtr9KmdrgDUiE@oss.nxp.com>
+ <c1a45cfa-a249-4782-b5c8-0ee2d173fc97@mailbox.org>
+ <aMrDKkIoZvAlBD8d@oss.nxp.com>
+ <609113fa-6af3-4e7e-b47a-45b3152d8581@mailbox.org>
+ <aNZaatnVRRkaPrnD@oss.nxp.com>
+ <32fffaad-7738-4fa6-80cc-2f8eba7ca099@mailbox.org>
+ <aNjwyIgs9fzWiprq@oss.nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <aNjwyIgs9fzWiprq@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: 09c0d8297a0a9a440e3
+X-MBO-RS-META: axcuj6fk8qs9i65ufsbua5pb77z3odbx
 
-From: Rain Yang <jiyu.yang@nxp.com>
+On 9/28/25 10:24 AM, Rain Yang wrote:
+> On Fri, Sep 26, 2025 at 03:32:46PM +0200, Marek Vasut wrote:
+>> On 9/26/25 11:18 AM, Rain Yang wrote:
+>>
+>> Hello Jiyu,
+>>
+>>>>> as the 0x4d810008 is a write-once register and whose operation has been moved into the SM side,
+>>>>> so please drop the reset change.
+>>>>> can you also change the label of the gpu node from gpu to mali like "mali: gpu@4d900000",
+>>>>> as the internal driver use mali label to control the thermal up/low limitation.
+>>>>
+>>>> I updated all of the AHAB container, imx-oei and imx-sm components, and the
+>>>> reset controller is no longer needed indeed.
+>>>
+>>> thanks, please update the gpu node label if possibly.
+>>
+>> Which label do you refer to, and which one would you prefer to have there ?
+> 
+> "mali: gpu@4d900000", not "gpu: gpu@4d900000".
+All of imx*.dts* use gpu: or gpu2d:/gpu3d:/vpuvg: for the GPU label.
 
-The regulator is optional, skip the setup instead of returning an
-error if it is not present
+I see allwinner does use mali: label, but maybe it would be better to 
+stay consistent with the i.MX labels ?
 
-Signed-off-by: Rain Yang <jiyu.yang@nxp.com>
----
- drivers/gpu/drm/panthor/panthor_devfreq.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Also, variants of gpu: label seems more popular:
 
-diff --git a/drivers/gpu/drm/panthor/panthor_devfreq.c b/drivers/gpu/drm/panthor/panthor_devfreq.c
-index 3686515d368d..2df1d76d84a0 100644
---- a/drivers/gpu/drm/panthor/panthor_devfreq.c
-+++ b/drivers/gpu/drm/panthor/panthor_devfreq.c
-@@ -146,10 +146,9 @@ int panthor_devfreq_init(struct panthor_device *ptdev)
- 	ptdev->devfreq = pdevfreq;
- 
- 	ret = devm_pm_opp_set_regulators(dev, reg_names);
--	if (ret) {
-+	if (ret && ret != -ENODEV) {
- 		if (ret != -EPROBE_DEFER)
- 			DRM_DEV_ERROR(dev, "Couldn't set OPP regulators\n");
--
- 		return ret;
- 	}
- 
--- 
-2.39.5
-
+linux$ grep -hro '[a-z0-9_]\+: gpu@' arch/ | sort | uniq -c
+       3 adreno_gpu: gpu@
+       1 bb2d: gpu@
+       1 gpu2d: gpu@
+       1 gpu3d: gpu@
+      80 gpu: gpu@
+       4 gpu_2d: gpu@
+       1 gpu_3d0: gpu@
+       4 gpu_3d: gpu@
+       6 gpu_mem: gpu@
+       1 gpu_reserved: gpu@
+       2 gpu_vg: gpu@
+      17 mali: gpu@
+       1 v3d: gpu@
+       2 zap_shader_region: gpu@
