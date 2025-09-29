@@ -1,590 +1,267 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011062.outbound.protection.outlook.com [52.101.70.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2973090C9;
-	Mon, 29 Sep 2025 13:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759154238; cv=none; b=HOCGOU5Zw86sIb5rJ/aIRiNBVCCc11xATWypMX+YpCJmt7U00xgVJQiKwOu7mSir+5j0B+n9EZMDYhpchy8ReHpeL7j/XlggGXIF747uhHdti3l9DOcfSrqLOH5R9vuYM78K0ADdUpXj65GJO/R15Ms4NaEoruVmoDAyKk0GDmI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759154238; c=relaxed/simple;
-	bh=V28ScHZUk31Y/PHYeuAAxTC1bxzcn5pYcwPDPIx9b3E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nSrF31qn+wLWrIkDsavaNYIpZOWXjqFTd3ieB6S9sCdzTHK0j3287LoLCSzXA7Vfm7GHsatIx0qIm4XbxKsKreU71W+xPdl8tzMvzx3GKouPUaEaEIUmglXT3MB4X2XqJpgyosO230j4UvolLxVXZ3tMmbOI+Jls79jEqYRff7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pBMuLTur; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E4E306D5E
+	for <imx@lists.linux.dev>; Mon, 29 Sep 2025 14:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759155873; cv=fail; b=edW3oV76wJ4bpYZc0MT5TSq+frxeUXicJ4x1JsarIFLbrG5L+gVmKK1eY+jjFzOzUSM+dLMprkiwKJ+zYAA8YZTHcZoFAlu2gRggjkEUSNLxSoeM0PwIiuhJoF7S63ICXWjKkL6SgG/cDYJFQzjLyIIoNJwIdpEBExdmSfPrOEU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759155873; c=relaxed/simple;
+	bh=icBFyztIsa/NOSosyZIaaOciT7KlKcD6Ofi9v9wrrno=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=hX6+sraqbm2e54wTaimusOPqxKcRAnF0nANgWFL9+a7wWJT9ZzdeP7jxIGEsSwMcVYvtWvM2kD6dUTKCMoaCUOdk5S17IJlCosIwee794FDPkBz7ViLm1Hvl5to9bhJ0At3daVaW/X1QQbYyFf7ejF0Z4vIOU4pSpTo6hsnfwf4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=e+wTxiAb; arc=fail smtp.client-ip=52.101.70.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pBMuLTur"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B69C4CEF7;
-	Mon, 29 Sep 2025 13:57:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759154238;
-	bh=V28ScHZUk31Y/PHYeuAAxTC1bxzcn5pYcwPDPIx9b3E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pBMuLTur0TQyNhthdX2G9UsTool1TdPs+yso2/RV9nHcWRg9mIzgjIJS3kgLeEkzf
-	 ya53rTqC/JFnC/ApZL1PPIo3fqIEWL0+8H2OrHH9zSXTdSKrhs+Mx2j/ILCNytx+Wd
-	 FWTmVYbcnl2T504zcJNpqoyzH+rDIuitKzRjq9htcy5vhlmczikiey6x09z8XBpV3S
-	 ZXPwn7kLyrKdwwP3ZO5UnGGU9nLlcTw8HNgGoHGnXSInVY1Y2334p8wwfPRDlgKfHG
-	 SrRAxv4boPwczPbGuhcEqi7NQsaTnU01EARS2/WJqTm8z0PROmxdlqsP8C6Jh5jJQi
-	 wcWc5yAy65RTA==
-Date: Mon, 29 Sep 2025 19:27:01 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: chester62515@gmail.com, mbrugger@suse.com, 
-	ghennadi.procopciuc@oss.nxp.com, s32@nxp.com, bhelgaas@google.com, jingoohan1@gmail.com, 
-	lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com, 
-	Ghennadi.Procopciuc@nxp.com, ciprianmarian.costea@nxp.com, bogdan.hamciuc@nxp.com, 
-	Frank.li@nxp.com, linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	cassel@kernel.org
-Subject: Re: [PATCH 2/3 v2] PCI: s32g: Add initial PCIe support (RC)
-Message-ID: <lmczw5agheqbcl6xcomlhf7yfbdvfx45pozmaxjmbkkqudsxlu@c7u6s5h4xm6j>
-References: <20250919155821.95334-1-vincent.guittot@linaro.org>
- <20250919155821.95334-3-vincent.guittot@linaro.org>
- <4ee5tqdjv5ogcdtysiebtoxmrvrzhkar4bjcsqi47dxtgwac4c@rezn4waubroh>
- <CAKfTPtAEkegCV-9_x-dXSWQFOoG6kO5JbJq_LToY9YuuRusoVA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="e+wTxiAb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KtOKAOot5liVShHg5aYdp64Jlu7gN6FzeRZo2XYBH+NsrdUuRoywDXbtEFPoLX3zVz1Tkmm6111A4JrysGplSRPDxCCtPTYgFxof6J+m1g43+X4+35T55mNoa8PoZT4oKggqHTwck8IvElEYcQK4I40TkfvJHzyQCY5Vf+foWmZwGJ+HAbC1sjn+av98l16XqkpkVbnvGve6+IUIN9+KP9DZYycGrO4ZHuf1wx5cjX71X6L6tEa3YmewEGG1uWIi6CH7GJK6M73RvKFDWas8GxzDx2RFM3YO+sM2l4+n/jOWPCzCqvOdujpcxB5cTX1RVKvCiB4WjwUTZQ+visDMTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F4C72FEmF0TAAldjxHkoN/0iVEZWoEB7/zNFkH01ax0=;
+ b=ZSyYdt4qbsriEX75ltCE2HOsEIsO5GlWMzDEJSoXsWNCEV4HV4h+sAInwpyn8fmYiGNcC3DGW6pPFvbK7IlXFPlVAf/5RkogAqYesIs3MBsqEEoRe7bFRKpqU0kPntOqP0D331sCJdkcerX3D/LYumnMgS9BQmGrUYggjTCeWQi9OuPqldDSqzKPGkbAOmR3rmUsTsPK+keVVB6JSzdTAmO11E7YB/rlgPT53aQyi4roM9kz7eHrQWslaR9dtfr0I/rMPBFT+zi6K94S3SgSP84pg/+1DN9BhrxGko4I26xxBT4PeR/60fqLJPAo4u5V7rRxviVsMzCpLcWvFgegtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F4C72FEmF0TAAldjxHkoN/0iVEZWoEB7/zNFkH01ax0=;
+ b=e+wTxiAbpGDooNartDOlUq82c+/h3Dy2RqgEq7GD7JHZYzTqtTVWnTpvkRvUuqJqvzC7tgEQPbopwbH2tj8pl4wme+SMAnl3+otu2yIn8aggZ1BOWCfzP2P88voqgKZ7AF4DkE8N+e0dyiZIdCAjnkw++HgaqoCsZKiKBNzc++KM4CVWy5RMGY6XC2SDwCf2rGzZWC9Nmr39mY07mszMtuCthKx38ZMJnA/ijWIn12sUUU6Pa/tdy34kCpqqAmILvrxQpnAjH0aDWtBrKrU2EavVlK8Kp39FggGdINuHnSJRgR4WRiTLE+OtKCe/4t/ZfUDgqBUO/gAhLyORFdhzMQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
+ by PAXPR04MB8607.eurprd04.prod.outlook.com (2603:10a6:102:21a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Mon, 29 Sep
+ 2025 14:24:27 +0000
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9160.014; Mon, 29 Sep 2025
+ 14:24:27 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v5 0/4] usb: dwc3: add layerscape platform driver use
+ flatten dwc3 core
+Date: Mon, 29 Sep 2025 10:24:13 -0400
+Message-Id: <20250929-ls_dma_coherence-v5-0-2ebee578eb7e@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI2W2mgC/4XOTQrCMBAF4KtI1kaSSTq1rryHiDST0Qa0LYkUR
+ Xp3Uzf+ILp8A997cxOJY+AkVrObiDyEFLo2h2I+E9TU7YFl8DkLUFAoVCCPaedP9Y66hiO3xJI
+ MgcN9WXkHIrM+8j5cHpWbbc5NSOcuXh8Lg56uP8oGLZUkLO3Seqwd2nV76RfUncRUNcCTV2C+c
+ Jg4G12iqdB5987NK8cv3GSe/3KaFDG6j3X7j9vMQXNF03RBL+vjON4BjmtHJ2sBAAA=
+X-Change-ID: 20250602-ls_dma_coherence-c3c2b6f79db2
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Thinh Nguyen <Thinh.Nguyen@synopsys.com>, Shawn Guo <shawnguo@kernel.org>
+Cc: linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ bjorn.andersson@oss.qualcomm.com, imx@lists.linux.dev, 
+ Frank Li <Frank.Li@nxp.com>, Ze Huang <huang.ze@linux.dev>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759155863; l=3875;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=icBFyztIsa/NOSosyZIaaOciT7KlKcD6Ofi9v9wrrno=;
+ b=oRv51j7FJwIH9K+NJuJZfw0iPsej7OyUzfb/kATyfnLZZBVJblW9LwmS6rqTpxATfd5WJezQj
+ yVpIsPcd+orAVDrikJsyapoPA6HyZ2Y/8L1qCP5/wyxdB9eMwNw4t3q
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0PR13CA0099.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::14) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKfTPtAEkegCV-9_x-dXSWQFOoG6kO5JbJq_LToY9YuuRusoVA@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|PAXPR04MB8607:EE_
+X-MS-Office365-Filtering-Correlation-Id: cfd65217-1873-4be9-6fe8-08ddff63e53b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|7416014|19092799006|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bE5ERUJGU1AzdVVlZ0dEeVpMLzQzaStYQ1AxTHNjYU54VjhUUnZEaDUvSFlz?=
+ =?utf-8?B?ZmtaVGpCN0FicTZYS2pwVEtyWW53bVM0UmNXN1ZIWU16NDVTUHJuMXJaLzhN?=
+ =?utf-8?B?WTUwbHcvdE53N2lsSXB3ZDllZEpPMlIwMUZqNGhMaXU4bXl4MllYZE5QZHJL?=
+ =?utf-8?B?RDZWazZjVHYrSklLanMxSy9seWJXUC9nSEVBazFKcE4zdzB4QmU5NUlXRHZh?=
+ =?utf-8?B?cmw0QWF1bUlWd081WVFQMmVXS3VEWE5DVFMyVjNJdDF6WmxFd0psY0t0TmNR?=
+ =?utf-8?B?NDlLSG1ZanltMzNWT3E1cUg2dTM4WVBkUnorY1hEWGwvbGZKZFJ2MUN0Q3RM?=
+ =?utf-8?B?dWNnaXVYa2dFTkxRM214R0k5S1RiVDhLTllLUmNWRytXUk5NVndnWUxBUUJu?=
+ =?utf-8?B?c0YvL3hiOU92ckhYYjJxejMrY1RUeFZxMlp0Sm0xWWxOOHlFTDN5cjlwWTAw?=
+ =?utf-8?B?azcyajVSeU9ERWp1WFJ5MkZaUDJ3MXNvcmcxN2Y1TnVvQ3hreVA4V1llYzZ1?=
+ =?utf-8?B?bmU4K3JKNGdHQTdOVGRBQUFvWWppc29kcDN5R2d4ZWFnQnVHeEMyUUtjaytM?=
+ =?utf-8?B?clRFb25QWWZpRitxL2o5djdkMGdaT1MvMGN5YXBWUXZNQWVnRjgyWE5RbGFH?=
+ =?utf-8?B?aUEzTitIa0wzdFh0M2JpQmRGMnd4cHB4QkxCSFgvWTc2Z0dNeDRkY1hDRUl1?=
+ =?utf-8?B?ekxDUWVKYVFiWmdScUZKK0JaT25XanpZamhmK05VcUs4WlN0WmNtZkNOc291?=
+ =?utf-8?B?Y0QwQXhnTi9ucnlsQjJNcEtHTkZvc1ZYZ1BGbGZKTnlPMlJJUm1iZTBTQVlQ?=
+ =?utf-8?B?V25td0t2enNpT3lkYlZuT0hpSjZYMlk4bkhoOTkxVzUzKzE3YzRKdkdDdjhn?=
+ =?utf-8?B?QXIvOTIyaGFORnJXUEQ5dzhYOGdqTWdFY3lISndRWGdrajZpMWNic1lVL3VT?=
+ =?utf-8?B?RktFa01Zajltc21adEc5RkU1MWFqcmN3ZllnYldaNVE2WlBPN3Z5ZURIbUsv?=
+ =?utf-8?B?TXo1YWdtbC9MeUt5MmJxMXNPQWpJaXl3RVpReWprRTFZekhIRW9sMUdiTU5k?=
+ =?utf-8?B?RXNvemFJZTdrdkNEWDZWNTNvRVlhSGZDWm1NbktwVkNwVnk4NGxKUFcycVpS?=
+ =?utf-8?B?QmhEMU4rbmpLcU1aRmpwdEpEZ00xZ29CMjFzNi9rK3BjUUdkVFRKSHEvb09l?=
+ =?utf-8?B?TlNnUllGMG5tUHF3aDdaT0k3WFhncXlMM3RmNGRzb2lhcjhpSlI1OXA5US9v?=
+ =?utf-8?B?WTdUMG1vMXhsdkJyYlkwZlZRSm8xRE05S0p1YjZjV3YxQkVkUmwvQkpqNmc3?=
+ =?utf-8?B?SWRkZU9EV21wKzZ0NjJZcEZuUHJQQXJsNEF5SzlpQXE2WnNYUVdUdGRMSHRN?=
+ =?utf-8?B?TlpQU2xYcXJGNVJpc0ZVUlRieE53Rk5YbU16THBpaEFBdjgwUmpUSjdsR1RC?=
+ =?utf-8?B?VGZyQzVYMlIvakFOT1Vsd2xINXNvYTZiVEVsckxGUlI5T1ZKdnN4ZmlZVXBr?=
+ =?utf-8?B?RWVDNDdnQlJXTGhaWisvQTZkdG5hZ2VGTXZQZzFiWDBpaDB6Q3VUWS9sV2ZW?=
+ =?utf-8?B?Vk1rNSttdUR3TE8xKyt6OXI2R05nQWdNQlRGMGtIMGFRMTRtVklyZzJ1VWp0?=
+ =?utf-8?B?VjRhZ1hFUGFsMC83a0ZLdElOU1ZFN0txR05ub2MzZzNUZ09wNmIvQU1rc21Z?=
+ =?utf-8?B?ajBzMThvcUtEcWdCTjd5S1RLcWpyNWtVb2NoRkpveEZyYVN3NlBkQW0vbkxt?=
+ =?utf-8?B?RG04eHViSktXSnJqenN3dFkxSlZucjVXbTFaZUk3ZFVZUlJsUTg1bzZQYVho?=
+ =?utf-8?B?RDBZcndYOWZEQXViVUJXQ2V5L2lVVCtnS216VFhZK003Z0hrR05UNjNRVXlh?=
+ =?utf-8?B?N0FrTE5sSk8rU0JMTEIvMmp0R29mcko4cGZCOTEwbXZyNXY0WXU2M2RBKy9v?=
+ =?utf-8?Q?+Ec3FsBBzio8apPnHG0DRGg1tUkMxjDv?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dE9rTW9GM3BYcCtxYUFLdGxqOGNUb0lKZWl5TnRDYzhLTTg0Y2xEMTFzeDVK?=
+ =?utf-8?B?OHlFenpoYUx6UHNXYVpFK0xEMGlxdkJjaUhnUlhNZmpFdlBwZWhRcnI2c3gv?=
+ =?utf-8?B?SGlGSVlTRnB5NDVNUmF4S2E1TzA1U1RwcCtWa3BUaVJDb3JaUG5xNEF0UXVL?=
+ =?utf-8?B?N041SXBFMHZCcWlKR1FMVTM5cStNNDZGcGN0NUVqZW1MbDhoK1NJbDdJbDEz?=
+ =?utf-8?B?cjlDSVp3UldZbU1rdjJ4STMwWW1NZitKZzM2S1loSTJqTGtqUVRDaFRPdGpx?=
+ =?utf-8?B?T21OalVkU253TEp3N1dsMityTzJjSE1Kb1diYUhDSEZjd1ErajJ1S08rdzZ2?=
+ =?utf-8?B?azdpVXlMSEl4UFVHVG1VeXNpS0MrUTMyQURpeWRwOW5CbUhXVGxlVnl5UlJU?=
+ =?utf-8?B?WHRTYzd0b2R6YUNnLzdUemtUUXhUUXlXWEkwaUlITlVPTnA2Mkh1aXhENEk3?=
+ =?utf-8?B?NWdldC8zVVJRTk5LOWhTbkM2T3AvMVVVbGl2angrL3lNbVlXVmNHTHZHQmVJ?=
+ =?utf-8?B?UzZoVUlRb1E1Tkdmd3Fia2dXN2cvZWZpMlhaNytYSXNZVFcxUmdyaHlreWtL?=
+ =?utf-8?B?bG1zc0svYi95a2hlY1kzb2RYKzVrLzBiRUVoOUZyV0VGMG9DOFAzaGNFRGEz?=
+ =?utf-8?B?MURIcmM5Sm85am5LZm5KbG04SDBpQkMrS3JLTnQxZ0RYeWY2amdxbW5DMTBL?=
+ =?utf-8?B?TUJnUldabTZUT2R0N0N5R2RRT0ZTUHBraE15V25wMmp4SFRHNENGa2N0aVNu?=
+ =?utf-8?B?aG5raGZSczFBN0F4NWwrMTBWMkdhcm5EOTlrSkhJYkk3VWhHTzZLNnNFcHg4?=
+ =?utf-8?B?OGVWUlVvYWhPdExJbWhXVHlwSmVRNFRUdk5ZMEQwSDREUEoyY2dxM1p5SzI4?=
+ =?utf-8?B?ZHExck9WNDZOem82eGlCYUZReHN4eWtnOE9yeWJrS0hwL2Z0ak1jakVFOU5a?=
+ =?utf-8?B?eVZwZ2ttU2ljVnFTQXErYUE2RDRFZm1uaGYzcXF6em83TTZLclM2VFo1NlNt?=
+ =?utf-8?B?aHpaeXk4ZTRkYThaU2Y2RnNTVnFFVkF3WUVhU3A1dTU0VE5pODNuNVkzclRF?=
+ =?utf-8?B?dFF6Sy9nRS9nUHA0TEpIbFE1VnpjcDN5WUVBMzJodGhpYkJVdnJCOThlaVlW?=
+ =?utf-8?B?TzhWazdZazE1ZmNjdkxPZDRYbUYwalo5VVdCa0ZTK1p5QXY1akZ3dzlQRGsr?=
+ =?utf-8?B?Z1lUekZibW9YVkRNR1FSNjlQSUF3bW5xUlhSRlhDeXR1NG9UOXpPWGJwRTRj?=
+ =?utf-8?B?Nnd6SExTSWNQU1YwY3NzaWRLUU1aUzhqRlVqRlpkcFJ0dzVVNDQxUDE2WWJG?=
+ =?utf-8?B?RWxYeUhrcHNRMmdYUDFSWjdzWW9LYlNiYnl2VW9Ebmo4QWVva2hneVhJVnU2?=
+ =?utf-8?B?ZkpWVEpnTlJyRFd1aldCR05Lek84Umh5bDhGUDRHUHZFTzN6dmNLM2M2MVVi?=
+ =?utf-8?B?SStsMjN2ME14aUVsT0FCdDRNTXFoTitMbHc5OHZWZXhtdUM1bno1dnpBQ3dH?=
+ =?utf-8?B?RnphRVFveFJJYkYyLzRtOHd0cjcwOHA4RzRpaVJ5cWpzdnpXT2Z3cFBSaWsy?=
+ =?utf-8?B?VVR3dE93Zit0cHdSbFRFazBNSkhPdkgwUnRXSVUxWEY0M2RRVmNDNWI1OHls?=
+ =?utf-8?B?YzVwNy9YV2phaWtLa3k5WEFnQ0FXalhVY0JSQ1c2eFM1dlY5K1RrMyt2d1cx?=
+ =?utf-8?B?dllCOTVjZTZnVXI1MktUYmRkbUtYaHJIUE40Ny83VS9uTkNhWG1CTXpFL21v?=
+ =?utf-8?B?alFXYWl0RXAyeHVHZUd0UUJLQmNodDNrNDBEWVoxQ285SWRnQjI1ejcxa1VT?=
+ =?utf-8?B?TlZrbEJCRU55YU14akFSOHRacXBqazBabm1RUzU2VWdQUHh0dytaYnJmS24x?=
+ =?utf-8?B?VlNwOXVHRHh0SC8xZmdpRmhQeWM5UXcvc2JkUTJVek5QYkRiT3Y4SnBsdXV0?=
+ =?utf-8?B?SG9wOFI2UWs4R01UdTc3S20rdjA4Q1VaanJROGFsbVVlUFQyUCtOSnlUWmJy?=
+ =?utf-8?B?Q3Bva0JhY2dtT2wrL1QxaVIvbFlyR2lEUlMrUGMySUIvQ2N4dWl2OVFSVEkr?=
+ =?utf-8?B?UjQybTlFeVlFanlWRnRBUkU4V3graG9MVXVCaWFVeHBINndnRlJPaFhSNFFi?=
+ =?utf-8?Q?rva0=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cfd65217-1873-4be9-6fe8-08ddff63e53b
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2025 14:24:27.6742
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hTjiIEiWhPRbNgSwYw9XUGdAWA7lJK6mLiuo6bS+AVsjYZGd14vQotmzDn8uRm79wTarfoy+LaYAyR4n0ZSLVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8607
 
-On Thu, Sep 25, 2025 at 06:52:57PM +0200, Vincent Guittot wrote:
-> On Mon, 22 Sept 2025 at 09:56, Manivannan Sadhasivam <mani@kernel.org> wrote:
-> >
-> > On Fri, Sep 19, 2025 at 05:58:20PM +0200, Vincent Guittot wrote:
-> > > Add initial support of the PCIe controller for S32G Soc family. Only
-> > > host mode is supported.
-> > >
-> > > Co-developed-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
-> > > Signed-off-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
-> > > Co-developed-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
-> > > Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
-> > > Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-> > > Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-> > > Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
-> > > Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-> > > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> > > ---
-> > >  drivers/pci/controller/dwc/Kconfig           |  11 +
-> > >  drivers/pci/controller/dwc/Makefile          |   1 +
-> > >  drivers/pci/controller/dwc/pcie-designware.h |   1 +
-> > >  drivers/pci/controller/dwc/pcie-s32g-regs.h  |  61 ++
-> > >  drivers/pci/controller/dwc/pcie-s32g.c       | 578 +++++++++++++++++++
-> > >  5 files changed, 652 insertions(+)
-> > >  create mode 100644 drivers/pci/controller/dwc/pcie-s32g-regs.h
-> > >  create mode 100644 drivers/pci/controller/dwc/pcie-s32g.c
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/dwc/Kconfig
-> > > index ff6b6d9e18ec..d7cee915aedd 100644
-> > > --- a/drivers/pci/controller/dwc/Kconfig
-> > > +++ b/drivers/pci/controller/dwc/Kconfig
-> > > @@ -255,6 +255,17 @@ config PCIE_TEGRA194_EP
-> > >         in order to enable device-specific features PCIE_TEGRA194_EP must be
-> > >         selected. This uses the DesignWare core.
-> > >
-> > > +config PCIE_S32G
-> >
-> > PCIE_NXP_S32G?
-> 
-> I don't have a  strong opinion on this. I have followed what was done
-> for other PCIE drivers which only use soc family as well like
-> PCI_IMX6_HOST
-> PCIE_KIRIN
-> PCIE_ARMADA_8K
-> PCIE_TEGRA194_HOST
-> PCIE_RCAR_GEN4
-> PCIE_SPEAR13XX
-> 
+Add layerscape platform driver use flatten dwc3 core to enable dma-coherence.
+It needs set gsburstcfg0 to 0x2222.
 
-I'd prefer to have vendor prefix to avoid collisions. Especially if the product
-name is something like S32G, which is not 'unique'.
+There are some several try before:
+[1] https://lore.kernel.org/imx/20240710-ls-dwc-v1-0-62f8cbed31d7@nxp.com/
+[2] https://lore.kernel.org/imx/20240123170206.3702413-1-Frank.Li@nxp.com/
 
-> >
-> > > +     bool "NXP S32G PCIe controller (host mode)"
-> > > +     depends on ARCH_S32 || (OF && COMPILE_TEST)
-> > > +     select PCIE_DW_HOST
-> > > +     help
-> > > +       Enable support for the PCIe controller in NXP S32G based boards to
-> > > +       work in Host mode. The controller is based on DesignWare IP and
-> > > +       can work either as RC or EP. In order to enable host-specific
-> > > +       features PCIE_S32G must be selected.
-> > > +
-> > > +
-> > >  config PCIE_DW_PLAT
-> > >       bool
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/Makefile b/drivers/pci/controller/dwc/Makefile
-> > > index 6919d27798d1..47fbedd57747 100644
-> > > --- a/drivers/pci/controller/dwc/Makefile
-> > > +++ b/drivers/pci/controller/dwc/Makefile
-> > > @@ -14,6 +14,7 @@ obj-$(CONFIG_PCIE_SPEAR13XX) += pcie-spear13xx.o
-> > >  obj-$(CONFIG_PCI_KEYSTONE) += pci-keystone.o
-> > >  obj-$(CONFIG_PCI_LAYERSCAPE) += pci-layerscape.o
-> > >  obj-$(CONFIG_PCI_LAYERSCAPE_EP) += pci-layerscape-ep.o
-> > > +obj-$(CONFIG_PCIE_S32G) += pcie-s32g.o
-> >
-> > pcie-nxp-s32g?
-> 
-> Same as Kconfig, other drivers only use the SoC family.
-> 
-> >
-> > >  obj-$(CONFIG_PCIE_QCOM_COMMON) += pcie-qcom-common.o
-> > >  obj-$(CONFIG_PCIE_QCOM) += pcie-qcom.o
-> > >  obj-$(CONFIG_PCIE_QCOM_EP) += pcie-qcom-ep.o
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> > > index 00f52d472dcd..2aec011a9dd4 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware.h
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> > > @@ -119,6 +119,7 @@
-> > >
-> > >  #define GEN3_RELATED_OFF                     0x890
-> > >  #define GEN3_RELATED_OFF_GEN3_ZRXDC_NONCOMPL BIT(0)
-> > > +#define GEN3_RELATED_OFF_EQ_PHASE_2_3                BIT(9)
-> > >  #define GEN3_RELATED_OFF_RXEQ_RGRDLESS_RXTS  BIT(13)
-> > >  #define GEN3_RELATED_OFF_GEN3_EQ_DISABLE     BIT(16)
-> > >  #define GEN3_RELATED_OFF_RATE_SHADOW_SEL_SHIFT       24
-> > > diff --git a/drivers/pci/controller/dwc/pcie-s32g-regs.h b/drivers/pci/controller/dwc/pcie-s32g-regs.h
-> > > new file mode 100644
-> > > index 000000000000..674ea47a525f
-> > > --- /dev/null
-> > > +++ b/drivers/pci/controller/dwc/pcie-s32g-regs.h
-> > > @@ -0,0 +1,61 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0+ */
-> > > +/*
-> > > + * Copyright 2015-2016 Freescale Semiconductor, Inc.
-> > > + * Copyright 2016-2023, 2025 NXP
-> > > + */
-> > > +
-> > > +#ifndef PCIE_S32G_REGS_H
-> > > +#define PCIE_S32G_REGS_H
-> > > +
-> > > +/* Instance PCIE_SS - CTRL register offsets (ctrl base) */
-> > > +#define LINK_INT_CTRL_STS                    0x40
-> >
-> > Use PCIE_S32G prefix for vendor specific registers.
-> 
-> Okay
-> 
-> >
-> > > +#define LINK_REQ_RST_NOT_INT_EN                      BIT(1)
-> > > +#define LINK_REQ_RST_NOT_CLR                 BIT(2)
-> > > +
-> > > +/* PCIe controller 0 general control 1 (ctrl base) */
-> > > +#define PE0_GEN_CTRL_1                               0x50
-> > > +#define SS_DEVICE_TYPE_MASK                  GENMASK(3, 0)
-> > > +#define SS_DEVICE_TYPE(x)                    FIELD_PREP(SS_DEVICE_TYPE_MASK, x)
-> > > +#define SRIS_MODE_EN                         BIT(8)
-> > > +
-> > > +/* PCIe controller 0 general control 3 (ctrl base) */
-> > > +#define PE0_GEN_CTRL_3                               0x58
-> > > +/* LTSSM Enable. Active high. Set it low to hold the LTSSM in Detect state. */
-> > > +#define LTSSM_EN                             BIT(0)
-> > > +
-> > > +/* PCIe Controller 0 Link Debug 2 (ctrl base) */
-> > > +#define PCIE_SS_PE0_LINK_DBG_2                       0xB4
-> > > +#define PCIE_SS_SMLH_LTSSM_STATE_MASK                GENMASK(5, 0)
-> > > +#define PCIE_SS_SMLH_LINK_UP                 BIT(6)
-> > > +#define PCIE_SS_RDLH_LINK_UP                 BIT(7)
-> > > +#define LTSSM_STATE_L0                               0x11U /* L0 state */
-> > > +#define LTSSM_STATE_L0S                              0x12U /* L0S state */
-> > > +#define LTSSM_STATE_L1_IDLE                  0x14U /* L1_IDLE state */
-> > > +#define LTSSM_STATE_HOT_RESET                        0x1FU /* HOT_RESET state */
-> > > +
-> > > +/* PCIe Controller 0  Interrupt Status (ctrl base) */
-> > > +#define PE0_INT_STS                          0xE8
-> > > +#define HP_INT_STS                           BIT(6)
-> > > +
-> > > +/* Link Control and Status Register. (PCI_EXP_LNKCTL in pci-regs.h) */
-> > > +#define PCIE_CAP_LINK_TRAINING                       BIT(27)
-> > > +
-> > > +/* Instance PCIE_PORT_LOGIC - DBI register offsets */
-> > > +#define PCIE_PORT_LOGIC_BASE                 0x700
-> > > +
-> > > +/* ACE Cache Coherency Control Register 3 */
-> > > +#define PORT_LOGIC_COHERENCY_CONTROL_1               (PCIE_PORT_LOGIC_BASE + 0x1E0)
-> > > +#define PORT_LOGIC_COHERENCY_CONTROL_2               (PCIE_PORT_LOGIC_BASE + 0x1E4)
-> > > +#define PORT_LOGIC_COHERENCY_CONTROL_3               (PCIE_PORT_LOGIC_BASE + 0x1E8)
-> > > +
-> > > +/*
-> > > + * See definition of register "ACE Cache Coherency Control Register 1"
-> > > + * (COHERENCY_CONTROL_1_OFF) in the SoC RM
-> > > + */
-> > > +#define CC_1_MEMTYPE_BOUNDARY_MASK           GENMASK(31, 2)
-> > > +#define CC_1_MEMTYPE_BOUNDARY(x)             FIELD_PREP(CC_1_MEMTYPE_BOUNDARY_MASK, x)
-> > > +#define CC_1_MEMTYPE_VALUE                   BIT(0)
-> > > +#define CC_1_MEMTYPE_LOWER_PERIPH            0x0
-> > > +#define CC_1_MEMTYPE_LOWER_MEM                       0x1
-> > > +
-> > > +#endif  /* PCI_S32G_REGS_H */
-> > > diff --git a/drivers/pci/controller/dwc/pcie-s32g.c b/drivers/pci/controller/dwc/pcie-s32g.c
-> > > new file mode 100644
-> > > index 000000000000..995e4593a13e
-> > > --- /dev/null
-> > > +++ b/drivers/pci/controller/dwc/pcie-s32g.c
-> > > @@ -0,0 +1,578 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +/*
-> > > + * PCIe host controller driver for NXP S32G SoCs
-> > > + *
-> > > + * Copyright 2019-2025 NXP
-> > > + */
-> > > +
-> > > +#include <linux/interrupt.h>
-> > > +#include <linux/io.h>
-> > > +#include <linux/module.h>
-> > > +#include <linux/of_device.h>
-> > > +#include <linux/of_address.h>
-> > > +#include <linux/pci.h>
-> > > +#include <linux/phy.h>
-> > > +#include <linux/phy/phy.h>
-> > > +#include <linux/platform_device.h>
-> > > +#include <linux/pm_runtime.h>
-> > > +#include <linux/sizes.h>
-> > > +#include <linux/types.h>
-> > > +
-> > > +#include "pcie-designware.h"
-> > > +#include "pcie-s32g-regs.h"
-> > > +
-> > > +struct s32g_pcie {
-> > > +     struct dw_pcie  pci;
-> > > +
-> > > +     /*
-> > > +      * We have cfg in struct dw_pcie_rp and
-> > > +      * dbi in struct dw_pcie, so define only ctrl here
-> > > +      */
-> > > +     void __iomem *ctrl_base;
-> > > +     u64 coherency_base;
-> > > +
-> > > +     struct phy *phy;
-> > > +};
-> > > +
-> > > +#define to_s32g_from_dw_pcie(x) \
-> > > +     container_of(x, struct s32g_pcie, pci)
-> > > +
-> > > +static void s32g_pcie_writel_ctrl(struct s32g_pcie *s32g_pp, u32 reg, u32 val)
-> > > +{
-> > > +     if (dw_pcie_write(s32g_pp->ctrl_base + reg, 0x4, val))
-> > > +             dev_err(s32g_pp->pci.dev, "Write ctrl address failed\n");
-> > > +}
-> >
-> > Since you are having complete control over the register and the base, you can
-> > directly use writel/readl without these helpers. They are mostly used to
-> > read/write the common register space like DBI.
-> 
-> fair enough
-> 
+[2]: add new property, which was reject because there are no varience in
+the soc. Fortunately the below commit resolve this problem by use software
+managed property.
 
-You should also use _relaxed variants unless ordering is necessary.
+d504bfa6cfd1a usb: dwc3: enable CCI support for AMD-xilinx DWC3 controller
 
-> >
-> > > +
-> > > +static u32 s32g_pcie_readl_ctrl(struct s32g_pcie *s32g_pp, u32 reg)
-> > > +{
-> > > +     u32 val = 0;
-> > > +
-> > > +     if (dw_pcie_read(s32g_pp->ctrl_base + reg, 0x4, &val))
-> > > +             dev_err(s32g_pp->pci.dev, "Read ctrl address failed\n");
-> > > +
-> > > +     return val;
-> > > +}
-> > > +
-> > > +static void s32g_pcie_enable_ltssm(struct s32g_pcie *s32g_pp)
-> > > +{
-> > > +     u32 reg;
-> > > +
-> > > +     reg = s32g_pcie_readl_ctrl(s32g_pp, PE0_GEN_CTRL_3);
-> > > +     reg |= LTSSM_EN;
-> > > +     s32g_pcie_writel_ctrl(s32g_pp, PE0_GEN_CTRL_3, reg);
-> > > +}
-> > > +
-> > > +static void s32g_pcie_disable_ltssm(struct s32g_pcie *s32g_pp)
-> > > +{
-> > > +     u32 reg;
-> > > +
-> > > +     reg = s32g_pcie_readl_ctrl(s32g_pp, PE0_GEN_CTRL_3);
-> > > +     reg &= ~LTSSM_EN;
-> > > +     s32g_pcie_writel_ctrl(s32g_pp, PE0_GEN_CTRL_3, reg);
-> > > +}
-> > > +
-> > > +static bool is_s32g_pcie_ltssm_enabled(struct s32g_pcie *s32g_pp)
-> > > +{
-> > > +     return (s32g_pcie_readl_ctrl(s32g_pp, PE0_GEN_CTRL_3) & LTSSM_EN);
-> > > +}
-> > > +
-> > > +static enum dw_pcie_ltssm s32g_pcie_get_ltssm(struct dw_pcie *pci)
-> > > +{
-> > > +     struct s32g_pcie *s32g_pp = to_s32g_from_dw_pcie(pci);
-> > > +     u32 val = s32g_pcie_readl_ctrl(s32g_pp, PCIE_SS_PE0_LINK_DBG_2);
-> > > +
-> > > +     return (enum dw_pcie_ltssm)FIELD_GET(PCIE_SS_SMLH_LTSSM_STATE_MASK, val);
-> > > +}
-> > > +
-> > > +#define PCIE_LINKUP  (PCIE_SS_SMLH_LINK_UP | PCIE_SS_RDLH_LINK_UP)
-> > > +
-> > > +static bool has_data_phy_link(struct s32g_pcie *s32g_pp)
-> > > +{
-> > > +     u32 val = s32g_pcie_readl_ctrl(s32g_pp, PCIE_SS_PE0_LINK_DBG_2);
-> > > +
-> > > +     if ((val & PCIE_LINKUP) == PCIE_LINKUP) {
-> > > +             switch (val & PCIE_SS_SMLH_LTSSM_STATE_MASK) {
-> > > +             case LTSSM_STATE_L0:
-> > > +             case LTSSM_STATE_L0S:
-> > > +             case LTSSM_STATE_L1_IDLE:
-> > > +                     return true;
-> > > +             default:
-> > > +                     return false;
-> > > +             }
-> > > +     }
-> > > +
-> > > +     return false;
-> > > +}
-> > > +
-> > > +static bool s32g_pcie_link_up(struct dw_pcie *pci)
-> > > +{
-> > > +     struct s32g_pcie *s32g_pp = to_s32g_from_dw_pcie(pci);
-> > > +
-> > > +     if (!is_s32g_pcie_ltssm_enabled(s32g_pp))
-> > > +             return false;
-> > > +
-> > > +     return has_data_phy_link(s32g_pp);
-> > > +}
-> > > +
-> > > +static int s32g_pcie_start_link(struct dw_pcie *pci)
-> > > +{
-> > > +     struct s32g_pcie *s32g_pp = to_s32g_from_dw_pcie(pci);
-> > > +
-> > > +     s32g_pcie_enable_ltssm(s32g_pp);
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > > +static void s32g_pcie_stop_link(struct dw_pcie *pci)
-> > > +{
-> > > +     struct s32g_pcie *s32g_pp = to_s32g_from_dw_pcie(pci);
-> > > +
-> > > +     s32g_pcie_disable_ltssm(s32g_pp);
-> > > +}
-> > > +
-> > > +struct dw_pcie_ops s32g_pcie_ops = {
-> > > +     .get_ltssm = s32g_pcie_get_ltssm,
-> > > +     .link_up = s32g_pcie_link_up,
-> > > +     .start_link = s32g_pcie_start_link,
-> > > +     .stop_link = s32g_pcie_stop_link,
-> > > +};
-> > > +
-> > > +static const struct dw_pcie_host_ops s32g_pcie_host_ops;
-> > > +
-> > > +static void disable_equalization(struct dw_pcie *pci)
-> > > +{
-> > > +     u32 val;
-> > > +
-> > > +     val = dw_pcie_readl_dbi(pci, GEN3_EQ_CONTROL_OFF);
-> > > +     val &= ~(GEN3_EQ_CONTROL_OFF_FB_MODE |
-> > > +              GEN3_EQ_CONTROL_OFF_PSET_REQ_VEC);
-> > > +     val |= FIELD_PREP(GEN3_EQ_CONTROL_OFF_FB_MODE, 1) |
-> > > +            FIELD_PREP(GEN3_EQ_CONTROL_OFF_PSET_REQ_VEC, 0x84);
-> >
-> > FIELD_MODIFY()?
-> 
-> FIELD_PREP() allows  adding multiple fields changes in a single access
-> instead of having one access per field with FIELD_MODIFY
-> 
+[1] was reject because there are not actually dwc wrap at layerscape
+platform. Fortunately Bjorn Andersson's below patch to make it possible
+by use correct dts dwc3 node layer out.
 
-Yeah, but it gets rid of the explicit masking.
+613a2e655d4dc usb: dwc3: core: Expose core driver as library
 
-> >
-> > > +     dw_pcie_dbi_ro_wr_en(pci);
-> > > +     dw_pcie_writel_dbi(pci, GEN3_EQ_CONTROL_OFF, val);
-> > > +     dw_pcie_dbi_ro_wr_dis(pci);
-> > > +}
-> > > +
-> > > +static void s32g_pcie_reset_mstr_ace(struct dw_pcie *pci, u64 ddr_base_addr)
-> >
-> > What does _ace stands for?
-> 
-> AMBA AXI Coherency Extensions (ACE)
-> 
+This resolve problem [1] and [2] by use flatten dwc3 core library.
 
-Ok. You could add a comment to make it clear of what this function does.
+1. add soc specific compatible string at dt-binding.
+2. create platform driver for layerscape chips and pass down gsbuscfg0 if
+dma-coherence enabled.
+3. update layerscape dts files.
 
-> >
-> > > +{
-> > > +     u32 ddr_base_low = lower_32_bits(ddr_base_addr);
-> > > +     u32 ddr_base_high = upper_32_bits(ddr_base_addr);
-> > > +
-> > > +     dw_pcie_dbi_ro_wr_en(pci);
-> > > +     dw_pcie_writel_dbi(pci, PORT_LOGIC_COHERENCY_CONTROL_3, 0x0);
-> > > +
-> > > +     /*
-> > > +      * Transactions to peripheral targets should be non-coherent,
-> >
-> > What is exactly meant by 'Transactions to peripheral targets'? Is it the MMIO
-> > access to peripherals? If so, all MMIO memory is marked as non-cacheable by
-> > default.
-> 
-> From the ref manual of s32g :
-> Ncore is a cache-coherent interconnect module. It enables the
-> integration of heterogeneous coherent agents and non-coherent
-> agents in a chip. It processes transactions with coherent access
-> semantics from various fully-coherent and IO-coherent masters,
-> targeting shared resources.
-> 
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: linux-usb@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: bjorn.andersson@oss.qualcomm.com
+Cc: imx@lists.linux.dev
 
-Ok. It would help if this is described in the patch description.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v5:
+- remove of_dma_is_coherent() check
+- Link to v4: https://lore.kernel.org/r/20250926-ls_dma_coherence-v4-0-21e9c6bdb5cb@nxp.com
 
-> >
-> > > +      * or Ncore might drop them.
-> >
-> > What is 'Ncore'?
-> >
+Changes in v4:
+- Use flatten properties, instead of use dt pass down information to core.
+- Link to v3: https://lore.kernel.org/r/20250926-ls_dma_coherence-v3-0-602b1c0ce6b4@nxp.com
 
-[...]
+Changes in v3:
+- skipped, accident sendout
+- Link to v2: https://lore.kernel.org/r/20250923-ls_dma_coherence-v2-0-ce3176396bdb@nxp.com
 
-> >
-> > > +
-> > > +     return 0;
-> > > +
-> > > +err_host_deinit:
-> > > +     dw_pcie_host_deinit(pp);
-> > > +     return ret;
-> > > +}
-> > > +
-> > > +static int s32g_pcie_probe(struct platform_device *pdev)
-> > > +{
-> > > +     struct device *dev = &pdev->dev;
-> > > +     struct s32g_pcie *s32g_pp;
-> > > +     int ret;
-> > > +
-> > > +     s32g_pp = devm_kzalloc(dev, sizeof(*s32g_pp), GFP_KERNEL);
-> > > +     if (!s32g_pp)
-> > > +             return -ENOMEM;
-> > > +
-> > > +     ret = s32g_pcie_get_resources(pdev, s32g_pp);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +
-> > > +     devm_pm_runtime_enable(dev);
-> > > +     ret = pm_runtime_get_sync(dev);
-> >
-> > Does this driver rely on any of its parent to enable the resources? Like
-> > pm-domain, clock, etc... If so, just set pm_runtime_no_callbacks() before
-> 
-> pm_runtime_no_callbacks() is missing.
-> 
+Changes in v2:
+- base on drivers/usb/dwc3/dwc3-generic-plat.c
 
-I was specifically questioning the 'pm_runtime_get_sync()' call. If you need to
-enable any parent resources, then you can keep it. Otherwise, just drop it.
+commit e0b6dc00c701e600e655417aab1e100b73de821a
+Author: Ze Huang <huang.ze@linux.dev>
+Date:   Sat Sep 13 00:53:48 2025 +0800
 
-> > devm_pm_runtime_enable(). If not, then do:
-> >
-> >         pm_runtime_set_active()
-> >         pm_runtime_no_callbacks()
-> >         devm_pm_runtime_enable()
-> >
-> > > +     if (ret < 0)
-> > > +             goto err_pm_runtime_put;
-> > > +
-> > > +     ret = s32g_pcie_init(dev, s32g_pp);
-> > > +     if (ret)
-> > > +             goto err_pm_runtime_put;
-> > > +
-> > > +     ret = s32g_pcie_host_init(dev, s32g_pp);
-> > > +     if (ret)
-> > > +             goto err_deinit_controller;
-> > > +
-> > > +     return 0;
-> > > +
-> > > +err_deinit_controller:
-> > > +     s32g_pcie_deinit(s32g_pp);
-> > > +err_pm_runtime_put:
-> > > +     pm_runtime_put(dev);
-> > > +
-> > > +     return ret;
-> > > +}
-> > > +
-> > > +static int s32g_pcie_suspend(struct device *dev)
-> > > +{
-> > > +     struct s32g_pcie *s32g_pp = dev_get_drvdata(dev);
-> > > +     struct dw_pcie *pci = &s32g_pp->pci;
-> > > +     struct dw_pcie_rp *pp = &pci->pp;
-> > > +     struct pci_bus *bus, *root_bus;
-> > > +
-> > > +     s32g_pcie_downstream_dev_to_D0(s32g_pp);
-> > > +
-> > > +     bus = pp->bridge->bus;
-> > > +     root_bus = s32g_get_child_downstream_bus(bus);
-> > > +     if (!IS_ERR(root_bus))
-> > > +             pci_walk_bus(root_bus, pci_dev_set_disconnected, NULL);
-> > > +
-> > > +     pci_stop_root_bus(bus);
-> > > +     pci_remove_root_bus(bus);
-> >
-> > Why can't you rely on dw_pcie_host_deinit()?
-> 
-> I need to check but mainly because we don't do dw_pcie_host_init() during resume
-> 
+    usb: dwc3: add generic driver to support flattened
 
-You should and it will simplify your driver a lot.
+    To support flattened dwc3 dt model and drop the glue layer, introduce the
+    `dwc3-generic` driver. This enables direct binding of the DWC3 core driver
+    and offers an alternative to the existing glue driver `dwc3-of-simple`.
 
-> >
-> > > +
-> > > +     s32g_pcie_deinit(s32g_pp);
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > > +static int s32g_pcie_resume(struct device *dev)
-> > > +{
-> > > +     struct s32g_pcie *s32g_pp = dev_get_drvdata(dev);
-> > > +     struct dw_pcie *pci = &s32g_pp->pci;
-> > > +     struct dw_pcie_rp *pp = &pci->pp;
-> > > +     int ret = 0;
-> > > +
-> > > +     ret = s32g_pcie_init(dev, s32g_pp);
-> > > +     if (ret < 0)
-> > > +             return ret;
-> > > +
-> > > +     ret = dw_pcie_setup_rc(pp);
-> > > +     if (ret) {
-> > > +             dev_err(dev, "Failed to resume DW RC: %d\n", ret);
-> > > +             goto fail_host_init;
-> > > +     }
-> > > +
-> > > +     ret = dw_pcie_start_link(pci);
-> > > +     if (ret) {
-> > > +             /*
-> > > +              * We do not exit with error if link up was unsuccessful
-> > > +              * Endpoint may not be connected.
-> > > +              */
-> > > +             if (dw_pcie_wait_for_link(pci))
-> > > +                     dev_warn(pci->dev,
-> > > +                              "Link Up failed, Endpoint may not be connected\n");
-> > > +
-> > > +             if (!phy_validate(s32g_pp->phy, PHY_MODE_PCIE, 0, NULL)) {
-> > > +                     dev_err(dev, "Failed to get link up with EP connected\n");
-> > > +                     goto fail_host_init;
-> > > +             }
-> > > +     }
-> > > +
-> > > +     ret = pci_host_probe(pp->bridge);
-> >
-> > Oh no... Do not call pci_host_probe() directly from glue drivers. Use
-> > dw_pcie_host_init() to do so. This should simplify suspend and resume functions.
-> 
-> dw_pcie_host_init() is doing much more than just init the controller
-> as it gets resources which we haven't released during suspend.
-> 
+- Link to v1: https://lore.kernel.org/r/20250602-ls_dma_coherence-v1-0-c67484d6ab64@nxp.com
 
-Any specific reason to keep resources enabled, even though you were removing the
-Root bus? This doesn't make sense to me.
+---
+Frank Li (4):
+      dt-bindings: usb: add missed compatible string for arm64 layerscape
+      usb: dwc3: Add software-managed properties for flattened model
+      usb: dwc3: dwc3-generic-plat: Add layerscape dwc3 support
+      arm64: dts: layerscape: add dma-coherent for usb node
 
-- Mani
+ .../devicetree/bindings/usb/fsl,ls1028a.yaml       | 33 ++++++++++++----------
+ arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi     |  3 +-
+ arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi     |  8 ++++--
+ arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi     |  9 ++++--
+ arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi     |  9 ++++--
+ arch/arm64/boot/dts/freescale/fsl-ls1088a.dtsi     |  8 ++++--
+ arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi     |  8 ++++--
+ drivers/usb/dwc3/core.c                            | 12 ++++++--
+ drivers/usb/dwc3/dwc3-generic-plat.c               | 13 +++++++++
+ drivers/usb/dwc3/dwc3-qcom.c                       |  1 +
+ drivers/usb/dwc3/glue.h                            | 14 +++++++++
+ 11 files changed, 88 insertions(+), 30 deletions(-)
+---
+base-commit: c45d2c21b3889c520bf141d576eaecb25666895c
+change-id: 20250602-ls_dma_coherence-c3c2b6f79db2
 
--- 
-மணிவண்ணன் சதாசிவம்
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
+
