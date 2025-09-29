@@ -1,85 +1,260 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011029.outbound.protection.outlook.com [40.107.130.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D216B1FBC91
-	for <imx@lists.linux.dev>; Mon, 29 Sep 2025 16:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759161893; cv=none; b=oOunAEATCXXA0KgBg3PBY6UcZB3bZrtQB0k7eV1/tx36MseuHhbunjCldpko1NT7v8h4w64Tn3wx8wxtEWXThyUt9GNYakMHgl8sHgwSY0loqKJN/IXA8jPVRN4+BM2gSPYnM/QtvWLPkJPzzCh3OK65lKb+xmERKrSnZbKXk04=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759161893; c=relaxed/simple;
-	bh=6K6xnMzg6H0rJ1/Ys5KhM8cvsEqih0X00Quwze+pSpM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=CayJBhYgeD4IX8LGpBPtyEr/KmNW+kTODD6d91QTYOxqqTEfoqp/usHwVmz8wh0QzH8S8aXUkLjqxEhm/GFjVM4S94uas1Tgvi4zAFPbZXOElRHB00pvHY0M/VFPxxqfJZf+fkyfWnLLf0KnAeMI+d/YjzvWixKZlA5uXr1FBaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IFdjSM8P; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6452144CF
+	for <imx@lists.linux.dev>; Mon, 29 Sep 2025 16:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759162858; cv=fail; b=qIaPOaZqrut0NkVw9qjG27Fr6vRsjXNGwatqKrwWUnG/0O/3hcMEqUnE0qLj9ElYsWebG8sGWTH4o0K8nUzaHB9L1qrp4v4hxLkbLuJIiCnmid7T0t7ujUhYFi5knusezqYh854w5GJE6dhxkcbLzZpRe2TESAi1kRBKuu8/Ows=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759162858; c=relaxed/simple;
+	bh=C76SGVtGBD4+MUVuXHatYSasir4E9GdFq57grbpWfw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mR2YAkd+DWakmYy6C4hJ/MawHETxwaG6iwu83t7q3+5Ir8Xq0mYNGwf/vSuU6c0GUHtEhMOyjc52BxzTguawFbPIJLF5iqRoVrL5nXXj8g3jzTS2jfxuXoDT8qbSQCaC0Zc/hZVlktSHvtkHKQhmk9SuLYN9gT1HwbBcKf6q0Uc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=xZIidCt6; arc=fail smtp.client-ip=40.107.130.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IFdjSM8P"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 87C1EC02449;
-	Mon, 29 Sep 2025 16:04:32 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 34192606AE;
-	Mon, 29 Sep 2025 16:04:50 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5337C102F1892;
-	Mon, 29 Sep 2025 18:04:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1759161889; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=7a7GtGpo5X1l9P3GKhsuPNB4IdunnxAGumvvi4gFkU8=;
-	b=IFdjSM8P98TJ647WzjSZ0INP7ROVt/cFJRjnRpoupp21cigmNYclzd1f+V90eX9Rw4AcrA
-	H7bf0hNKucf7KwbDU8luAP4qZk1HSS/pwpdnv09Kb5fbq/hO9NZPyGtk4DnZjxm9KJ/aq8
-	Z3ERVub5+DNVuvHQFR2/bFHBCA75qVEqJuuqWGqtikNXhsD+s8KMRjMPd7R9HycuVVQtI7
-	acxueVvM+LLewj8GIpoicofTHkdhuT0D5Hl94QAhiVQU/H6XLrA/SaKmJ4nS3cRE9As1Xa
-	Q5k74nACZPO2l13uqMuW2NF/LtTcFSwcXB3tvqmsxBlFbcrp37lXWLPy49zeYQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,  Jonathan Cameron
- <jic23@kernel.org>,  David Lechner <dlechner@baylibre.com>,  Nuno
- =?utf-8?Q?S=C3=A1?=
- <nuno.sa@analog.com>,  Andy Shevchenko <andy@kernel.org>,
-  linux-i3c@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  imx@lists.linux.dev,  linux-iio@vger.kernel.org,  Carlos Song
- <carlos.song@nxp.com>
-Subject: Re: [PATCH v2 2/4] i3c: master: svc: Add basic HDR mode support
-In-Reply-To: <aNqr8+ehPehq41gw@lizhi-Precision-Tower-5810> (Frank Li's message
-	of "Mon, 29 Sep 2025 11:55:31 -0400")
-References: <20250924-i3c_ddr-v2-0-682a0eb32572@nxp.com>
-	<20250924-i3c_ddr-v2-2-682a0eb32572@nxp.com>
-	<87seg5i810.fsf@bootlin.com>
-	<aNqr8+ehPehq41gw@lizhi-Precision-Tower-5810>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Mon, 29 Sep 2025 18:04:46 +0200
-Message-ID: <873485i6sh.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="xZIidCt6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AF869Jv3iMVgmhe2MyH3889wDEuqQbaHPogFifZA70vSKo1NzltsZFJIOaFCaYGD5z4BjKqhznL0PygIe7cAW03FECye9oHQgVqO60prP4rFuHzi8xdTWQKikChWs+4KyvqjiqdTp6lAO29exi+IUGoCt9agwb+muMbyn8qRwFB8zW2mNclYx/rYwdNXevX6SBA8p3p91xFWjldh04DQfPhRw6gDOPvsQhQU7kJkTHGuq95eU04L/i6jM/doL00/rRG1ydd9vP3fD1v3pxdtWlUe2CeGGM/wKfQrvB7FnmEwLB+kAat5v3xCyeRi8kszQfpRzKkgYK838G8M4boEPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LQwe2FhXVT1VGbKRfQQLD5z724mEPwGpCz3Y3SZ3pzc=;
+ b=a9uDjogdnZ2MHbrcv9d28inhVDFPVOnE3giACYYjGpdFovHhI9OGf9k3wyo0ndP5QZwSqqxLW3ak05yuiKZaJTnC/YgC6U1pdI05OYfoxj6MHQnZC3T1FhNUzojYqyFf0jrA9MAUd3SmLVuf5p0EX49JXSTbz4kUf/hKVthwjyqCwLWs5hdj4oCVgBPoURfQdEKPdJd66lhOsL+vKK7OIakewFi5248u9DQx0EHm7DJCXUjZ5jKUb2ZN3vug5D80UhWXyg7EA3MzjUo7v9ERyedDVacWB9sQ/2fADwMZEnMk/337SpK9n0k4QFELVdfQW7G4EIGey16YG9fA3sLThw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LQwe2FhXVT1VGbKRfQQLD5z724mEPwGpCz3Y3SZ3pzc=;
+ b=xZIidCt6YRz+2oVK96kZ5zDQk9M1HtKmWNgtZe5hMWcbM1Ch0QcnKQi2btrooe2viX0uYC619dwaQAmUWxPgZYtSxrv60E/fDm7TV7ahfcAoI5M5Or1EtkJ4vbkQn4fZcy9oImn6vb8V++11GtI4ULfsTglneDBQGfLDuHKETv2CA60uAl9Xb8c4wbeDuRezlUtuNPrOxSb//wPMT0zlPLeQ8AzDesiWRkPZy2CtQyf1OaQ3bqU3NEYIxdt5yKjxmkpmXQva9CItCkCdGmESyqWFVCVhiKLFchFt9QcS6X0Wo8oh7BQR4KstAiseo5w6MwRF+tm4yUWsP+6vYLCQoQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS4PR04MB9624.eurprd04.prod.outlook.com (2603:10a6:20b:4ce::9)
+ by AS8PR04MB7847.eurprd04.prod.outlook.com (2603:10a6:20b:2ad::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Mon, 29 Sep
+ 2025 16:20:51 +0000
+Received: from AS4PR04MB9624.eurprd04.prod.outlook.com
+ ([fe80::fa4e:dc6f:3f71:13b7]) by AS4PR04MB9624.eurprd04.prod.outlook.com
+ ([fe80::fa4e:dc6f:3f71:13b7%4]) with mapi id 15.20.9160.013; Mon, 29 Sep 2025
+ 16:20:51 +0000
+Date: Tue, 30 Sep 2025 00:20:57 +0800
+From: Rain Yang <jiyu.yang@oss.nxp.com>
+To: Marek Vasut <marek.vasut@mailbox.org>
+Cc: Frank.Li@nxp.com, airlied@gmail.com, alexander.stein@ew.tq-group.com,
+	boris.brezillon@collabora.com, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	festevam@gmail.com, imx@lists.linux.dev, jiyu.yang@oss.nxp.com,
+	kernel@pengutronix.de, krzk+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org, liviu.dudau@arm.com,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	p.zabel@pengutronix.de, robh@kernel.org, s.hauer@pengutronix.de,
+	shawnguo@kernel.org, simona@ffwll.ch, sre@kernel.org,
+	steven.price@arm.com, tzimmermann@suse.de, xianzhong.li@nxp.com
+Subject: Re: [PATCH v3 2/2] arm64: dts: imx95: Describe Mali G310 GPU
+Message-ID: <aNqx6XrUGBgUJ-pF@oss.nxp.com>
+References: <20250925203938.169880-1-marek.vasut@mailbox.org>
+ <20250925203938.169880-2-marek.vasut@mailbox.org>
+ <20250926055701.GC8204@nxa18884-linux.ap.freescale.net>
+ <8f4ed393-f94a-4abb-9cdd-60dd693f3ec6@mailbox.org>
+ <aNpYG5VITPmKkNgl@oss.nxp.com>
+ <cc873c8b-435c-467f-b1e9-dc78ddbfb483@mailbox.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cc873c8b-435c-467f-b1e9-dc78ddbfb483@mailbox.org>
+X-ClientProxiedBy: SG2PR01CA0121.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:40::25) To AS4PR04MB9624.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4ce::9)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9624:EE_|AS8PR04MB7847:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2fd2bfb-1f57-41af-8515-08ddff742847
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|19092799006|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?xk6k+/vCCAWk1haNcuC618extLjUVRGwf9GgIEO7z90ZLSKjux/ymzJcEtPL?=
+ =?us-ascii?Q?+e7PsaiqSReasFedFfiGTcGOpw6lPFJ+Ddynkejdv2h39H2y/C6VdbiMxRL7?=
+ =?us-ascii?Q?3s8yws0DC3IpbPbdMgtxA3nzqUZm+3hNQebaWuuXMv1gj9dDUv8aZiUnjx5/?=
+ =?us-ascii?Q?Bm+1kCFTo9vcog9dYGDTEKHk+Qb+9/4Q2+/G6hnzDa4v9+eVODGPKxwCADny?=
+ =?us-ascii?Q?Slsg/vywdShnXgDiZSm75dlo29Wsw31rqhpSYOWhPOJVuyQBidcFvNC48E9p?=
+ =?us-ascii?Q?VQh8q7l2xGqTqGJi+K7wg7iRCSQSXpaAUgpgoMK8mtUz+ilps4xVHXjvmQEz?=
+ =?us-ascii?Q?1+VdDMxu922Q6BaaZCEztffsDEIGhzz6zGesZQkEL3H7uFDhgknmH/zV11Gy?=
+ =?us-ascii?Q?JX00HVTFjG2WdWeB/q+lFViZom1LagvRTll6fc68o2GG4U2Bsu0+2d+ri70p?=
+ =?us-ascii?Q?QYzodzlNdMbMr3Fg8oPiOWdvdZyZE/B74GIrDgKUWpymBdiQkIRuS4PIYR5x?=
+ =?us-ascii?Q?2TUlmQQwjmtdplLQgMfqK2g17nVAJ9jC6DOeEGVkLPz/g5j6fapm+i34ZCZo?=
+ =?us-ascii?Q?DE4ukhUt0RtWg7Mz2hkfwYXPhtKH30tHiWJxQX2KvwL/l6/3RAHArARElNrB?=
+ =?us-ascii?Q?drWfFfor2l2ycB8pztvafg1ft35BfSqV/x/Z7OOHZwgLvaU9xZwMd7dpd12W?=
+ =?us-ascii?Q?z7NoZLBEizcYKPH2nBnCVpNF/4q8G7ZyPkkXtW/QupVGx3ZaEHnwbA2Wlt39?=
+ =?us-ascii?Q?PBKknsdFu1Mcv3zFWVtSa2OOGUbl4W1ypooiUTIHJEqo9EE49TliqhiydXhg?=
+ =?us-ascii?Q?dMWsIcO8ooWGluXxgcSUjx4o1YCk7oxu8jylDXLr4lev/52VO+n8cRxlRzsO?=
+ =?us-ascii?Q?55DFn7m3Of+hKEUIbCOIIsJTMqOctHxMIvSm6NCxh1s9kq5bsRyNwwOgyhD1?=
+ =?us-ascii?Q?chEzS5GB8d2qjwarZpxGP1Wv4NdjACcoGKKnr8Z0HzR0FZj2Kf+3j2ca/6tR?=
+ =?us-ascii?Q?O1x/bZtfAV+uFuP77dy4uJYQYlzn5TSBouttFNMRlnisThC71omBg9Qenygb?=
+ =?us-ascii?Q?H80kl7qvZMcBtyhuA8n6DTkClqUO5/3wOG/YzfdQl18mrgScKiFfvRB5z7fG?=
+ =?us-ascii?Q?QtXmrfYHmXH/ctt2auPq+kgMZJBIwjyYJKAFMcbXqLEHaYqFnEx6y1w3wHQb?=
+ =?us-ascii?Q?kfT/7/GE9cmq+7tlMpkZMjWPM9nMUeMdcdZ0n+XQjdXzwLyfO+p+TxV7YXQz?=
+ =?us-ascii?Q?WsYX1pAYCJY/g/7L2NiOF7TPMNVxddXVM/mRS5hOHM6yBncdzc3ScYgNCQTP?=
+ =?us-ascii?Q?fs5PPLCfoE7rm2coE2bYk4AfNfviETiwXTkriRlAh90nzMvCvzEbaYNwyT6w?=
+ =?us-ascii?Q?1z695qtRuKQx0B62Ktgo9Xpc823e55A/ns8yI/cjJEhqZgoiT0zpq6N7pSE4?=
+ =?us-ascii?Q?bdAqse7q/Bh21EqNBi5HdaJ/fpmCwKalGC9WKTVy4kakRJYqWL+a5w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9624.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fYl1e3sepBbqt4EQx7Gbm3wp1tdwtpnY/LopKCtNEQNHRqS5oj6yOF20U4kz?=
+ =?us-ascii?Q?mr171iUosfp3yEHuU8GKrICIWnuc1wy4ZhQYMR4pYKY3oCfA8VxKVKufcpxq?=
+ =?us-ascii?Q?i6ySDLthqWZ9rJuPH/VpVryr2Yf/zVQNgi3t5qBM9uqTkLFkROs/+OL2/FG/?=
+ =?us-ascii?Q?j/O0PfFAycKBQKqqFdBTnc73HynYCm9a6x41B8HXfyieKv46pgOifnzFCOmi?=
+ =?us-ascii?Q?fgXsp3ugZdUwNRWLpn1fFv8lzlNCIhWs7UQJJK6t4kRZFCZ8A7eAQbsOFMzB?=
+ =?us-ascii?Q?+OIiunSqCNY8ULVHqCrTDJK0eYHNOYgng8zjGiCm40mIrlla61DKGk4m6Mp4?=
+ =?us-ascii?Q?uWf8acF9DeOa4/n4R+5gtQ+WMm78wXBme1lElPVf4+Ch12bgfXgHRxfm7tap?=
+ =?us-ascii?Q?lXHimtkrB7Udv6u3pzb6sFzkWjwqsDkJDLZo1aMsohd4pu8N/62IXBIZs7f7?=
+ =?us-ascii?Q?/+Cstnl+eDYDAxfocET38VKFuudF8IPZiH/7Gr78TvS6I34ZlK9iJ1OFEnTG?=
+ =?us-ascii?Q?vlnfEE6kpT2IhZr5FpUaoigILytr+uoQ72yRYJAN6mVbV/OSZqMsBy4Lt+4g?=
+ =?us-ascii?Q?jEmNGR7vlgIzkf2uK9/lBuUuC9VSEMNCjwQP77+MGlRYpXOZgeiqBo0iw+9P?=
+ =?us-ascii?Q?75hNedwP6DmvfSCZGNlewGkLnwh2Wa+4QHLEgjs5bucJR78m0r0EHfO4M3zI?=
+ =?us-ascii?Q?i/uiMwj/4IgYrY4E+KpEBYcb0JeRe9um0bPqmrxNuhD3bjjbJ4d7JKwhbxfL?=
+ =?us-ascii?Q?tj/Dvqaw6E7WrgQMnXwa+2pd3YTROSXt4v+YA385YRrLHuhWeLwEO0Sqtq6p?=
+ =?us-ascii?Q?rZVIdN2EcoxW06Pb15GiEcbn2Als0e48ZUdNjSOMQXAxo7qSNS9PE0bylZxU?=
+ =?us-ascii?Q?CC/2y8KO7RUi/Tscrqo/UykFbg5rkTdDb9mCWVsTvlDlb/vzZvitgI4r3IGE?=
+ =?us-ascii?Q?wkOxGnEebukoukn9TpeiQaDwUVUgDR5LDDtFLhnN+XoX9N0pn8tcKp4e+fVq?=
+ =?us-ascii?Q?JhD2CL71nH4/eHNv+SfAR9rnE+x1STYVXF6lvIf7ZeJuwyPUWYFEiatQZIdt?=
+ =?us-ascii?Q?ZtvxQ4kfR87fUGHOsonUbafQqpIUNjLz3UxZWSn0KClLm+g6jj+54PTw/Ru+?=
+ =?us-ascii?Q?A8cfWPEkrAlavyYViyWVs7zAx3Cgq0OZBP2hjMY2YZh/879iNcF479fnUf31?=
+ =?us-ascii?Q?Sh4S7z5+EOXOvfx/5KKIn/EyQOSSyhEEr9UC4uQNSa1lBB+DYitjSsgm6PPb?=
+ =?us-ascii?Q?GbIruVVYJSmQ3Ah2XRD4m9IlDTOiA+VmmjvjciHXmNrxK83IicFK/4nqODuX?=
+ =?us-ascii?Q?L+VhCt5WB+nvcpBBhD4xDOY0T4XGD3MvdTy6xiid6XQKHiQjKur/VEpmhWl+?=
+ =?us-ascii?Q?rEygUVmZ0EU4SPSIXF7JAkW6es7cmYkXxU0iKxp3qxn7oOppUOIZvn7FDfJ+?=
+ =?us-ascii?Q?wv3gQdUWf8cDW8R92YBR69JpA+yxx+XUUDWg1o+1sk+hrfnCIyxY3lWHSX29?=
+ =?us-ascii?Q?9hvL+3Z7cIoxxsSSyOVceEQfQPPRj9bSQXMgV7n2aIvixwI2YwVQRqk7r3lA?=
+ =?us-ascii?Q?frJhTqC8HzZvtVSys1Ycpijrg6Cb1EtE1S/Ot4rm?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2fd2bfb-1f57-41af-8515-08ddff742847
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9624.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2025 16:20:51.6471
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ymUDZFPyFml9M26C8fEdplYN6zMhia7QlbrGXVh9hbLUcocvJ7fMekmzZvJQgUkVDG7I1SvK/1BBamM06yXS3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7847
 
-On 29/09/2025 at 11:55:31 -04, Frank Li <Frank.li@nxp.com> wrote:
-
-> On Mon, Sep 29, 2025 at 05:38:03PM +0200, Miquel Raynal wrote:
->> Hi Frank,
->>
-> ...
+On Mon, Sep 29, 2025 at 03:09:01PM +0200, Marek Vasut wrote:
+>On 9/29/25 11:57 AM, Rain Yang wrote:
+>> On Mon, Sep 29, 2025 at 02:23:01AM +0200, Marek Vasut wrote:
+>> > On 9/26/25 7:57 AM, Peng Fan wrote:
+>> > 
+>> > Hello Peng,
+>> > 
+>> > > On Thu, Sep 25, 2025 at 10:38:31PM +0200, Marek Vasut wrote:
+>> > > > The instance of the GPU populated in i.MX95 is the G310, describe this
+>> > > > GPU in the DT. Include dummy GPU voltage regulator and OPP tables.
+>> > > > 
+>> > > > 
+>> > > > +		gpu: gpu@4d900000 {
+>> > > > +			compatible = "nxp,imx95-mali", "arm,mali-valhall-csf";
+>> > > > +			reg = <0 0x4d900000 0 0x480000>;
+>> > > > +			clocks = <&scmi_clk IMX95_CLK_GPU>, <&scmi_clk IMX95_CLK_GPUAPB>;
+>> > > > +			clock-names = "core", "coregroup";
+>> > > > +			interrupts = <GIC_SPI 289 IRQ_TYPE_LEVEL_HIGH>,
+>> > > > +				     <GIC_SPI 290 IRQ_TYPE_LEVEL_HIGH>,
+>> > > > +				     <GIC_SPI 288 IRQ_TYPE_LEVEL_HIGH>;
+>> > > > +			interrupt-names = "job", "mmu", "gpu";
+>> > > > +			mali-supply = <&gpu_fixed_reg>;
+>> > > > +			operating-points-v2 = <&gpu_opp_table>;
+>> > > > +			power-domains = <&scmi_devpd IMX95_PD_GPU>;
+>> > > > +			#cooling-cells = <2>;
+>> > > > +			dynamic-power-coefficient = <1013>;
+>> > > 
+>> > > Sorry for my ignorance, would you please share how to get the value?
+>> > Copy-pasted from NXP downstream kernel fork DT bindings, see:
+>> > 
+>> > https://github.com/nxp-imx/linux-imx.git
+>> > 
+>> > 11495de7c24a ("MGS-7621-4 dts: gpu: update devfreq para")
+>> Hi Marek,
+>> 
+>> 1. this "mali: gpu@4d900000" label can be found in this commit you showed.
+>> please correct this to be compatible with the downstream
 >
->> > @@ -1858,7 +1913,7 @@ static const struct i3c_master_controller_ops svc_i3c_master_ops = {
->> >  	.do_daa = svc_i3c_master_do_daa,
->> >  	.supports_ccc_cmd = svc_i3c_master_supports_ccc_cmd,
->> >  	.send_ccc_cmd = svc_i3c_master_send_ccc_cmd,
->> > -	.priv_xfers = svc_i3c_master_priv_xfers,
->> > +	.i3c_xfers = svc_i3c_master_i3c_xfers,
->>
->> Didn't you change this name in patch 1? If you kept both naming, it's
->> fine, otherwise you must do the switch in patch 1 as well to make sure
->> you don't break the build in the middle of the series.
+>No, sorry, that's not how it works. Upstream is not being adjusted to match
+>decisions made by downstream kernel forks unless there is a good rationale
+>for such a change. "Downstream does this" is not a good one. (*)
 >
-> We keep both API for while. After first patch apply, I change all drivers
-> to i3c_xfers, then remove old .priv_xfers.
+>> and upstream kernel
+>
+>All of imx*.dts* use gpu: or gpu2d:/gpu3d:/vpuvg: for the GPU label.
+>Also, variants of gpu: label seems more popular:
+>
+>linux$ grep -hro '[a-z0-9_]\+: gpu@' arch/ | sort | uniq -c
+>      3 adreno_gpu: gpu@
+>      1 bb2d: gpu@
+>      1 gpu2d: gpu@
+>      1 gpu3d: gpu@
+>     80 gpu: gpu@
+>      4 gpu_2d: gpu@
+>      1 gpu_3d0: gpu@
+>      4 gpu_3d: gpu@
+>      6 gpu_mem: gpu@
+>      1 gpu_reserved: gpu@
+>      2 gpu_vg: gpu@
+>     17 mali: gpu@
+>      1 v3d: gpu@
+>      2 zap_shader_region: gpu@
+>
 
-Fine. Maybe mark it deprecated with a comment in the core? (I haven't
-checked).
+Existence does not necessarily imply validity. Since a single SoC may contain
+multiple GPUs, it's generally better to use the specific GPU name as a label
+rather than simply using 'gpu', to avoid potential conflicts.
+
+>> 2. the compatible string is different from our downstream kernel,
+>
+>See above (*)
+Additionally, there are still some performance differences between the upstream
+driver and the Mali property driver. If compatibility with both can be achieved,
+it would allow users to choose the driver that best suits their needs.
+Personally, I find it convenient to switch between the two drivers using insmod
+and rmmod, which allows for quick testing and comparison.
+
+>
+>> also you dropped the "nxp,imx95-mali" compatible patch in the panthor
+>> driver, why?
+>
+>Because it is unnecessary, the generic compatible string is sufficient for
+>the in-tree kernel driver.
+>
+>> this will impact the mali property driver too, which
+>> has already been used in many customer project.
+>
+>See above (*)
+>
+>All the more reason to focus on upstream and avoid deployment of various
+>downstream components, blobs and so on. They cannot be maintained in the long
+>run, they break, and cause all kinds of maintenance problems.
+>
+>Upstream cannot be hindered by downstream blobs and their issues, sorry.
+>
+>> 3. the number of frequency in opp-table is only one, but there are two clocks
+>> in clocks property, this really make people confused.
+>> CLK/CLK_COREGROUP/CLK_STACK in i.MX95 are from the same source
+>> <&scmi_clk IMX95_CLK_GPU>, the other clock <&scmi_clk IMX95_CLK_GPUAPB>
+>> is always-on APB clock, which can't be changed by A-cores, and has been removed
+>> from clocks property in the latest release.
+>
+>Can the APB clock be enabled/disabled from Linux, e.g. to save power ?
+
+please note that the APB clock can't be turned off on the A-core.
