@@ -1,399 +1,162 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBF9258EFC
-	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 17:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09347263F5E
+	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 18:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759252647; cv=none; b=Y8qWuCfZewEowjyW5YMJo58lAYpu2sC+Rq6cJJx4wNx01IG5OOVXCiLhIn8NrdgPx3RgkHC1K+OgysfenIU1d3LMNyipq/VGL/7Z8/PZKZ1GxXB40ng7rmGsCLNEbm6CvHJBnOl0e4MslZm4NwdUUzHhUOfspGLjG+9bw/IH9a0=
+	t=1759257826; cv=none; b=ajlYzD2jxV9ILaW3w9k+E6K9+myXigVnDuOPesJjAlQR6aKyhyhl/DhpqlAmLWGT6g81QHKvrvSX4qp4nNb7qbnvYdzB/iq62MtjJxDed/dmiFLv3ogdJSH1ZKwy1QViDGlrc+A5i1IznmF54351T+vEHo+wxUo8u58PJQNelaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759252647; c=relaxed/simple;
-	bh=+dDf6+3YhN4vz3PDVIAYw6UpFs5vKV8CVEAHEvVlH40=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cXTzn3fnnplcDs5UmN1+tC4wv3Vd3x/3+UfUeUGkJSI+2su7rjj5YEbo1/oM2QnwdOlBTho4U4I9EPBFlI9rgHAZk9d9Kl3l/Hx+QDzypJcKCPsKSb66gaIhO13i3U+P4F8I2iyNBbpy4hd/wT1aCBqcgZPyTLokAm1xxaz3bp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bICNFngm; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1759257826; c=relaxed/simple;
+	bh=FjCaxSo0gdGhvu7zeLMnYLhnP7QBFHb9v99tTue3MwY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gYwkijIsTsQzlq3xvQtDBEhnHLT4ZYAdiVIVht0b6FjJKxTZ7CuG/wDkJk7pp+uh/fQZWLYfxsKDfjLPK3BDPQD14TTCZxNXLsbMS3Hv4wzRz8/9rOmJxMjNluY2gmZvVhsK1OmMKuMAWTH6UsQb++B+/D79JyCCwW0jnDdEW6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bfTmvrZJ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bICNFngm"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-46e2e363118so59938115e9.0
-        for <imx@lists.linux.dev>; Tue, 30 Sep 2025 10:17:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1759252644; x=1759857444; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RNePBLAvYV3wK8ibZpgmHCPCbmbpde/eqvSInVk0KIc=;
-        b=bICNFngmudwb0BP9C7o4gAux4qYZ3lr9F9MhV1ZdOMvq5guh3Fnp30+rte8hIC49SA
-         Gcb7qIKIWKv2O5qVTHAisabtaIW8aGIzWG4x6bpJOsR4wmBxtCaPy0jMJbrYkvALHr1t
-         1KndyxbcYFNsVTvt+k3zN118n/oLIUIu4t3zae9QPAODdfRqp9WRhgZDJHefpVUUMrNk
-         gRGIoDX8U13ViIP/5XWJGTmIKESFtprNPn/FVvBw497TVCBEV0pcz0AfG0U1f7zpE1y5
-         78Y5T5NAY1CwcMQvgn/TGLv7fS7ZocyUpD14xbCF1WUGA31OnjLUTJVHxrbmjAe3OD3s
-         XJAA==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bfTmvrZJ"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58UBUsA4010706
+	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 18:43:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=yGmiFBtk8zoxCM+T4HUw6+ZD
+	+jra215LvynAxpP5vgk=; b=bfTmvrZJra+/oQZi7uhdBmbERNSFcTLqisqpazM1
+	wiudlbDafBQKYQ6pepOJctTKpmrQZLScq2Ie2N7USskXBRMWD61lwlErIgXOMJN1
+	qmq79ohKTxUDoPGobDLWT5bGi+/L34X/W9bxBGDsNwKUp93UaBDrvGqMjJxwddVv
+	twZAAp/AyQzDTi9fCjHWxV2d2jpJzcZmPHSum5dzsj1p5zNaGphdjbtvdj3uGbsl
+	syJVbQRAxIaMzySx/jd27fn8v+vpXiG3HM7OTe6rWRUwrdTQbojn/tGpr7OocZTK
+	QsbqQ25r2ltFmYQHFm4C318tKfN+YNZeJSWJg4psEJRt3A==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49e5mctfc4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 18:43:43 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8589058c59bso1919809285a.2
+        for <imx@lists.linux.dev>; Tue, 30 Sep 2025 11:43:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759252644; x=1759857444;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RNePBLAvYV3wK8ibZpgmHCPCbmbpde/eqvSInVk0KIc=;
-        b=u7efeMbcm7g/Rm1jBNEJWMbUOVFwYHepLxfK96IOVwNnnAYK7RaCSI9srVLvNsImgJ
-         OOrDRe8DINYKzlDSRAnsUjEvb7Fhyr38FbaVBgGk3z94X7KLfojjebKzvFYd2P2o4auA
-         8cf6ZFFd9RBkwTSlLcSuDJBrRDzC8h4in6bEUNR3msQybDmCnuv5e4gjpp3l+Bmw8M8J
-         T03T/PmRKzXttoEG6FMr+jm/I9H6JCuHONqMQ0qBy/iMFFPibHpwaqCigcXc0nhyh9B9
-         1DK5dzxYN9JUou0rjn6gAMqHfsc8PBrSU7Ov1mweb+IiP94FrpWMCmiJtj7CJuHNG4Cd
-         9qnw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/W8TFgPePNV+GYqB7Yk0mbKFJ/mfKM+CPoo7XbUV9tWntT3sLyWh1Y5ieFocGM2gMO6A=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywk7w1j+TM2JC7aCKG/l6sHV8zZ80aXp/ZpsbXPA9dv4liA1IH4
-	FlCbgedPvUrGvhFL95uOu8eghXG5p9WsDeH1fTrcGeL/YNeh7MFy+0gM6iwneAEj9X8=
-X-Gm-Gg: ASbGncsnVD8Q015UtPfRzQYHAgT90x1bUh6Kvp6g4DCPbjO+TYrSzv/zy1vKtHpA6sV
-	qu3OQH6GDl+7JqRSwumMNVN/D7+FHouMTeweLB4A/0imsqUzpd2zIet6EMxDDGDig8qi52LoG8c
-	3oLw8pWq7i+vvcZulipdgLeHa0u9qkXWnKTKj71fmOeadDyQnD+PV8DVPWwX6BfWPKxCov4tARc
-	C6AJXlz8GP8PdV+XdqCzzDSDxXPUR3NiHE4dZt+MF8fwoVtxWFriU62KbRnxmJ/hLczEfAV05nv
-	qTQbJwAImyfzJFme/dwRCYwj7EiPVy4AknuKNIO+wYk6pIZetI5wAJIYcQkGSlY+L6wta8aasi/
-	KDxqiUtGmW9JSpCB+CFcvrJL1QPthqy0ztJhNoLQ89y5vvPTqdSHwFMVszngvmv4nl9Q=
-X-Google-Smtp-Source: AGHT+IElfAfSUmqbhDMTil+yEDuc0QOUeaDmYZur34EATX4bKiElLsQT72CWpqSOwiVb4bZzmxTvtQ==
-X-Received: by 2002:a05:600c:8b18:b0:46e:4a13:e6c6 with SMTP id 5b1f17b1804b1-46e612bfe6fmr4845315e9.19.1759252643701;
-        Tue, 30 Sep 2025 10:17:23 -0700 (PDT)
-Received: from arrakeen.starnux.net ([2a01:e0a:3d9:2080:52eb:f6ff:feb3:451a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb72fb017sm23443480f8f.3.2025.09.30.10.17.22
+        d=1e100.net; s=20230601; t=1759257822; x=1759862622;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yGmiFBtk8zoxCM+T4HUw6+ZD+jra215LvynAxpP5vgk=;
+        b=aZxhizDoj/S04O+h8pOHc2EH3jNrsSjAzr6sWUM+bcn/Wc4T6XKafioqqivTsCacc8
+         WUc2hgILnVw0NireWHaqd/zOKIhIedGMPLb5/U1k7n943yyFRZQb/ekQhf2do2pwKCkF
+         1be20cC4eBffxyiMpaOhKPdXrsmviZVbEAaxBWOam3E4T5k5JXr70f5Crc4gWrS2hbk4
+         vXovXe05n4J67JDRK2nApPLlyAtSIBmnHb7KQnEzjVfCrLLaTTmsgVeglsQiONd6i4bZ
+         wLA5PAHAuK9s/n5WsCWIBFikiR2GPsiwHx6LNqUev1djs4ZH9B5HSgo8z9Zelkqt48PB
+         jtuw==
+X-Forwarded-Encrypted: i=1; AJvYcCXOH/zvJ66bBeGt76FGxUbcj4Yq1CM0nqMFXIT6+/3RtqweCjz66iTTS6G/pophoAxWKW8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxgXDrQxKeNwnuiZ2kuMEn/qsjbkROJwlFOqbJWt7HD6bsS+VbE
+	l8wCDDb47JFtOHX3sWAaf+t41gx5RTb/jPrD3pq2CnIc15A3xMuImOBrvyVslo3NNypJD+qPzJW
+	EETaIn1YIpkGvH9cXf4eXVY4zjtcoLFJHy+S1/CAd5ce63jeZjtoTI+c=
+X-Gm-Gg: ASbGncu+Ed2f1zOT4Fn7B+ycihfdD+niPTTiH4gd+OxXL7jFThxUpve2MvdTXUjyJ5T
+	ffgP0gbNJIpeciRwAlSSXN4jkleTfbkgGXoIpSIm8mDJbl1OEHlbEWWc7GNV6wR291L8HBni62s
+	jTjhNnNkTlzd2eDE60eK9wmgPGN2idQAXObhiKXNpzPzENfNEXrhIS4pqH+QN+Q4Bj672/H+FEv
+	MTAHi2PJLBx//7+rHXE42edqcu1e6eK616Z2JBegSmzsE2dD6uX7DZ1VyFWVIo7/zMF08nJGy4r
+	j2l86wPtW2gFVpTQIFSSJPJA5OrX87sPfsx0kLNmxm4T3Hcvgdj26rlNnM4yBJk7Qkp1s85PTED
+	7wdFbqyRQGdlfLHUsGo6hcXUvCpkmHJ+0w9ufJqVk8FD8IxdQcJIrS6vlcQ==
+X-Received: by 2002:a05:622a:2c9:b0:4b6:38f8:4edf with SMTP id d75a77b69052e-4e41ca1b2d1mr8343121cf.29.1759257821833;
+        Tue, 30 Sep 2025 11:43:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEVoTpyYZEYD5BDhL/ibzffyH63whEH/5BJy4dUuRPx4WpG/DtAm/AZa0wD/E68tizX2uBZjA==
+X-Received: by 2002:a05:622a:2c9:b0:4b6:38f8:4edf with SMTP id d75a77b69052e-4e41ca1b2d1mr8342591cf.29.1759257821234;
+        Tue, 30 Sep 2025 11:43:41 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5831665791esm5232132e87.82.2025.09.30.11.43.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Sep 2025 10:17:23 -0700 (PDT)
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Date: Tue, 30 Sep 2025 19:17:21 +0200
-Subject: [PATCH] dt-bindings: usb: switch: split out ports definition
+        Tue, 30 Sep 2025 11:43:39 -0700 (PDT)
+Date: Tue, 30 Sep 2025 21:43:37 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Romain Gantois <romain.gantois@bootlin.com>, Li Jun <jun.li@nxp.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>, linux-phy@lists.infradead.org,
+        devicetree@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: usb: switch: split out ports definition
+Message-ID: <vwlshz5li23xlthn5delxwxdsdci5nc22iey3xih4qf5uhbory@clskdsy64xpx>
+References: <20250930-topic-sm8x50-fix-qmp-usb43dp-usb-switch-v1-1-060568de9538@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250930-topic-sm8x50-fix-qmp-usb43dp-usb-switch-v1-1-060568de9538@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAKAQ3GgC/x2NQQqDMBBFryKz7sBoTLG9SnGhcdRZqGnGViHk7
- gZXjweP/yMoB2GFdxEh8F9UtjVL+SjAzd06McqQHSqqLL0M4b55cahLc1rCUU78Lh5/2tdmuIl
- 6yO5mJNfUTL0dzbOEvOYD5/p++rQpXbUAOVp5AAAA
-X-Change-ID: 20250930-topic-sm8x50-fix-qmp-usb43dp-usb-switch-0c84e0b5f361
-To: Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Romain Gantois <romain.gantois@bootlin.com>, Li Jun <jun.li@nxp.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Luca Weiss <luca.weiss@fairphone.com>, Abel Vesa <abel.vesa@linaro.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-phy@lists.infradead.org, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- Neil Armstrong <neil.armstrong@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11052;
- i=neil.armstrong@linaro.org; h=from:subject:message-id;
- bh=+dDf6+3YhN4vz3PDVIAYw6UpFs5vKV8CVEAHEvVlH40=;
- b=owEBbQKS/ZANAwAKAXfc29rIyEnRAcsmYgBo3BCihvjWzPnZJlhuvLZ6p0GUKsLhNQeMd0D0Boz9
- 8oDpIKmJAjMEAAEKAB0WIQQ9U8YmyFYF/h30LIt33NvayMhJ0QUCaNwQogAKCRB33NvayMhJ0cCnD/
- 4sX406R2aFjpxvYRVXxdYNHyWS+bQ0NWwtfX7a9BcMA2e/NxnIRA2upqPHp8CbtZUUdLxnqUkMwvic
- ZfWZLurSh3Zul3FvrDx77K5j6N+CCwx0VAwqb0B9dR7n4oSa0e+nnnYNTvZxaPMbIUHdmW9jSZvTWe
- sdiA6qZ2NdWWGyfPqNgbprHsJ9GulUpGM9Xf9ye4gMKcCUebeh46ztBXFuw2TyArwv5BboZRlEU8AT
- L5N+PgzSc+GBPFr5kJe0ENIAfwsX0YWZd9bLgDqtB25SJo9Au5qAi7AvSXLALF6IheULmjPlRp0cG8
- 1rmQFE9OAXtVWOxjVh+Dk1Sol1IYqhO4l8Am2AlscIefWGo53l2HD2VPaWVUhpMQVMElX203eoqImR
- ALTvtipR5YQxqS2X9YSelreAAqYXhUO2wRwO6kCo+0YvC1rPRM6WdyY1A90WA2NXVVTlI82fK14d5q
- xm2GFOQOYqgA1ZSJpDzGhoR/52iP4KGPLkxTYEi910T3qUrcy2LxFOO5C5ub4FW+CS7+roF/o6hJFg
- 396De3BB76e2uzLq/mJPxiu9xWL+zSRGa0DHxKiC6lJVNOsANguPUXa66G1OFllKVaydZNZKqQuBm0
- AwjcM/W3kSVdHdLFUUEwobhDutHxehRMz8PwFyh5SllOkzKHRBc5d09UMrWQ==
-X-Developer-Key: i=neil.armstrong@linaro.org; a=openpgp;
- fpr=89EC3D058446217450F22848169AB7B1A4CFF8AE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250930-topic-sm8x50-fix-qmp-usb43dp-usb-switch-v1-1-060568de9538@linaro.org>
+X-Authority-Analysis: v=2.4 cv=RMC+3oi+ c=1 sm=1 tr=0 ts=68dc24df cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=OOCT3r6X_P3o6Jl0E7UA:9
+ a=CjuIK1q_8ugA:10 a=NFOGd7dJGGMPyQGDc5-O:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: aVynLL0p2nQzfAKw9QzmZWhjdV0-Daew
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAwNCBTYWx0ZWRfXyKm7qtuWcMX4
+ k3AFm+livSsNFId2BciCzi3AKmiOvxWj7DnDYU6o1cA/KnpTWB4EM7TfjazRVv/xFdrrCyhT5Bx
+ 2GOF0eKKaqB3uR2g5cYkYYOUk7Z25tEwf/5+vYsmudTIjFBvMoPwvFWMy2a70FzpoNhaV+FHklj
+ 0nyntu4yPHJN6F/Rzs+b4612xkmNaZj3Bi2RovkDVXpFEpWMnqtrm+w26UDdRypnYHohL2fmiFK
+ Sz8QIsLDScRXcZ18unSl+5A7XI+ttcXS5LI218e60AZBM5xK/newwAtSSzMZfv3ZftkS4BwanVE
+ RTMI16ayBtaLANxWU+RH78Meh2jJ6Wx0PS36LWGhn5PCQEfRMazHrEEowqpPOm6B28VkKgBq2ME
+ KMLbF6/4aqdCEb4dttqgJShAiD2Arw==
+X-Proofpoint-GUID: aVynLL0p2nQzfAKw9QzmZWhjdV0-Daew
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-30_03,2025-09-29_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 suspectscore=0 impostorscore=0 spamscore=0
+ adultscore=0 bulkscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270004
 
-The ports definition currently defined in the usb-switch.yaml
-fits standards devices which are either recipient of altmode
-muxing and orientation switching events or an element of the
-USB Super Speed data lanes.
+On Tue, Sep 30, 2025 at 07:17:21PM +0200, Neil Armstrong wrote:
+> The ports definition currently defined in the usb-switch.yaml
+> fits standards devices which are either recipient of altmode
+> muxing and orientation switching events or an element of the
+> USB Super Speed data lanes.
+> 
+> This doesn't necessarely fit combo PHYs like the Qualcomm
+> USB3/DP Combo which has a different ports representation.
+> 
+> Move the ports definition to a separate usb-switch-ports.yaml
+> and reference it next to the usb-switch.yaml, except for
+> the Qualcomm USB3/DP Combo PHY bindings.
 
-This doesn't necessarely fit combo PHYs like the Qualcomm
-USB3/DP Combo which has a different ports representation.
+Isn't it easier to make QMP PHY use $ref for port nodes instead of allOf
+and keep ports definitions inside the usb-switch schema?
 
-Move the ports definition to a separate usb-switch-ports.yaml
-and reference it next to the usb-switch.yaml, except for
-the Qualcomm USB3/DP Combo PHY bindings.
+> 
+> Reported-by: Rob Herring <robh@kernel.org>
+> Closes: https://lore.kernel.org/all/175462129176.394940.16810637795278334342.robh@kernel.org/
+> Fixes: 3bad7fe22796 ("dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp: Reference usb-switch.yaml to allow mode-switch")
+> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+> ---
+>  .../bindings/phy/fsl,imx8mq-usb-phy.yaml           |  4 +-
+>  .../bindings/phy/samsung,usb3-drd-phy.yaml         |  4 +-
+>  .../devicetree/bindings/usb/fcs,fsa4480.yaml       |  1 +
+>  .../devicetree/bindings/usb/gpio-sbu-mux.yaml      |  1 +
+>  .../devicetree/bindings/usb/nxp,ptn36502.yaml      |  1 +
+>  .../devicetree/bindings/usb/onnn,nb7vpq904m.yaml   |  1 +
+>  .../devicetree/bindings/usb/parade,ps8830.yaml     |  1 +
+>  .../bindings/usb/qcom,wcd939x-usbss.yaml           |  1 +
+>  .../devicetree/bindings/usb/ti,tusb1046.yaml       |  1 +
+>  .../devicetree/bindings/usb/usb-switch-ports.yaml  | 68 ++++++++++++++++++++++
+>  .../devicetree/bindings/usb/usb-switch.yaml        | 52 -----------------
+>  11 files changed, 81 insertions(+), 54 deletions(-)
+> 
 
-Reported-by: Rob Herring <robh@kernel.org>
-Closes: https://lore.kernel.org/all/175462129176.394940.16810637795278334342.robh@kernel.org/
-Fixes: 3bad7fe22796 ("dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp: Reference usb-switch.yaml to allow mode-switch")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
----
- .../bindings/phy/fsl,imx8mq-usb-phy.yaml           |  4 +-
- .../bindings/phy/samsung,usb3-drd-phy.yaml         |  4 +-
- .../devicetree/bindings/usb/fcs,fsa4480.yaml       |  1 +
- .../devicetree/bindings/usb/gpio-sbu-mux.yaml      |  1 +
- .../devicetree/bindings/usb/nxp,ptn36502.yaml      |  1 +
- .../devicetree/bindings/usb/onnn,nb7vpq904m.yaml   |  1 +
- .../devicetree/bindings/usb/parade,ps8830.yaml     |  1 +
- .../bindings/usb/qcom,wcd939x-usbss.yaml           |  1 +
- .../devicetree/bindings/usb/ti,tusb1046.yaml       |  1 +
- .../devicetree/bindings/usb/usb-switch-ports.yaml  | 68 ++++++++++++++++++++++
- .../devicetree/bindings/usb/usb-switch.yaml        | 52 -----------------
- 11 files changed, 81 insertions(+), 54 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-index 6a47e08e0e97b286538798190225ca2966a7ab34..f9cffbb2df07d6fa352a844071af7cc894652d0c 100644
---- a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-+++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-@@ -142,7 +142,9 @@ allOf:
-       required:
-         - orientation-switch
-     then:
--      $ref: /schemas/usb/usb-switch.yaml#
-+      allOf:
-+        - $ref: /schemas/usb/usb-switch.yaml#
-+        - $ref: /schemas/usb/usb-switch-ports.yaml#
- 
- unevaluatedProperties: false
- 
-diff --git a/Documentation/devicetree/bindings/phy/samsung,usb3-drd-phy.yaml b/Documentation/devicetree/bindings/phy/samsung,usb3-drd-phy.yaml
-index e906403208c02951ff2bf5ed8420d53ad70eb29c..ea1135c91fb74c01ba860b9588ca89e611701359 100644
---- a/Documentation/devicetree/bindings/phy/samsung,usb3-drd-phy.yaml
-+++ b/Documentation/devicetree/bindings/phy/samsung,usb3-drd-phy.yaml
-@@ -125,7 +125,9 @@ allOf:
-           contains:
-             const: google,gs101-usb31drd-phy
-     then:
--      $ref: /schemas/usb/usb-switch.yaml#
-+      allOf:
-+        - $ref: /schemas/usb/usb-switch.yaml#
-+        - $ref: /schemas/usb/usb-switch-ports.yaml#
- 
-       properties:
-         clocks:
-diff --git a/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
-index e3a7df91f7f15e9a6d8eb4971bc2b9646bdad0c6..89b1fb90aeebc0ccfc50ea52b67015034294e1a8 100644
---- a/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
-+++ b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
-@@ -76,6 +76,7 @@ required:
- 
- allOf:
-   - $ref: usb-switch.yaml#
-+  - $ref: usb-switch-ports.yaml#
- 
- additionalProperties: false
- 
-diff --git a/Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml b/Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml
-index e588514fab2d8c9d0d3717865fe2e733664fc28b..793662f6f3bff4a4b4b73b38983abca12e1e61d2 100644
---- a/Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml
-+++ b/Documentation/devicetree/bindings/usb/gpio-sbu-mux.yaml
-@@ -52,6 +52,7 @@ required:
- 
- allOf:
-   - $ref: usb-switch.yaml#
-+  - $ref: usb-switch-ports.yaml#
-   - if:
-       required:
-         - mode-switch
-diff --git a/Documentation/devicetree/bindings/usb/nxp,ptn36502.yaml b/Documentation/devicetree/bindings/usb/nxp,ptn36502.yaml
-index d805dde80796f31a066cf52ba2f226ce2e9e9cc2..4d2fcaa718708fe5d0a05ebce211f0a729d6c617 100644
---- a/Documentation/devicetree/bindings/usb/nxp,ptn36502.yaml
-+++ b/Documentation/devicetree/bindings/usb/nxp,ptn36502.yaml
-@@ -46,6 +46,7 @@ required:
- 
- allOf:
-   - $ref: usb-switch.yaml#
-+  - $ref: usb-switch-ports.yaml#
- 
- additionalProperties: false
- 
-diff --git a/Documentation/devicetree/bindings/usb/onnn,nb7vpq904m.yaml b/Documentation/devicetree/bindings/usb/onnn,nb7vpq904m.yaml
-index 589914d22bf250ff94c98ed22b32616d2c0cca1c..25fab5fdc2cd712a8075c2ee20bdc80829c3b043 100644
---- a/Documentation/devicetree/bindings/usb/onnn,nb7vpq904m.yaml
-+++ b/Documentation/devicetree/bindings/usb/onnn,nb7vpq904m.yaml
-@@ -91,6 +91,7 @@ required:
- 
- allOf:
-   - $ref: usb-switch.yaml#
-+  - $ref: usb-switch-ports.yaml#
- 
- additionalProperties: false
- 
-diff --git a/Documentation/devicetree/bindings/usb/parade,ps8830.yaml b/Documentation/devicetree/bindings/usb/parade,ps8830.yaml
-index aeb33667818eb0d116a3467d30220002a3b5df73..eaeab1c01a594e05666d01cf6b82a6d7127ae075 100644
---- a/Documentation/devicetree/bindings/usb/parade,ps8830.yaml
-+++ b/Documentation/devicetree/bindings/usb/parade,ps8830.yaml
-@@ -81,6 +81,7 @@ required:
- 
- allOf:
-   - $ref: usb-switch.yaml#
-+  - $ref: usb-switch-ports.yaml#
- 
- additionalProperties: false
- 
-diff --git a/Documentation/devicetree/bindings/usb/qcom,wcd939x-usbss.yaml b/Documentation/devicetree/bindings/usb/qcom,wcd939x-usbss.yaml
-index 96346723f3e9c92c32325c7395eff49336cbcaf8..96dcec9b76204606397cc1e31338832e518816f3 100644
---- a/Documentation/devicetree/bindings/usb/qcom,wcd939x-usbss.yaml
-+++ b/Documentation/devicetree/bindings/usb/qcom,wcd939x-usbss.yaml
-@@ -60,6 +60,7 @@ required:
- 
- allOf:
-   - $ref: usb-switch.yaml#
-+  - $ref: usb-switch-ports.yaml#
- 
- additionalProperties: false
- 
-diff --git a/Documentation/devicetree/bindings/usb/ti,tusb1046.yaml b/Documentation/devicetree/bindings/usb/ti,tusb1046.yaml
-index f713cac4a8ac8e89c017999bc11e4b3a38d3ac2e..e1501ea6b50bf76e4bac6cbc2a3243f7107029d0 100644
---- a/Documentation/devicetree/bindings/usb/ti,tusb1046.yaml
-+++ b/Documentation/devicetree/bindings/usb/ti,tusb1046.yaml
-@@ -11,6 +11,7 @@ maintainers:
- 
- allOf:
-   - $ref: usb-switch.yaml#
-+  - $ref: usb-switch-ports.yaml#
- 
- properties:
-   compatible:
-diff --git a/Documentation/devicetree/bindings/usb/usb-switch-ports.yaml b/Documentation/devicetree/bindings/usb/usb-switch-ports.yaml
-new file mode 100644
-index 0000000000000000000000000000000000000000..6bf0c97e30ae7069481e41ef8745804e5efde974
---- /dev/null
-+++ b/Documentation/devicetree/bindings/usb/usb-switch-ports.yaml
-@@ -0,0 +1,68 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/usb/usb-switch-ports.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: USB Orientation and Mode Switches Ports Graph Properties
-+
-+maintainers:
-+  - Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-+
-+description:
-+  Ports Graph properties for devices handling USB mode and orientation switching.
-+
-+properties:
-+  port:
-+    $ref: /schemas/graph.yaml#/$defs/port-base
-+    description:
-+      A port node to link the device to a TypeC controller for the purpose of
-+      handling altmode muxing and orientation switching.
-+
-+    properties:
-+      endpoint:
-+        $ref: /schemas/graph.yaml#/$defs/endpoint-base
-+        unevaluatedProperties: false
-+        properties:
-+          data-lanes:
-+            $ref: /schemas/types.yaml#/definitions/uint32-array
-+            minItems: 1
-+            maxItems: 8
-+            uniqueItems: true
-+            items:
-+              maximum: 8
-+
-+  ports:
-+    $ref: /schemas/graph.yaml#/properties/ports
-+    properties:
-+      port@0:
-+        $ref: /schemas/graph.yaml#/properties/port
-+        description:
-+          Super Speed (SS) Output endpoint to the Type-C connector
-+
-+      port@1:
-+        $ref: /schemas/graph.yaml#/$defs/port-base
-+        description:
-+          Super Speed (SS) Input endpoint from the Super-Speed PHY
-+        unevaluatedProperties: false
-+
-+        properties:
-+          endpoint:
-+            $ref: /schemas/graph.yaml#/$defs/endpoint-base
-+            unevaluatedProperties: false
-+            properties:
-+              data-lanes:
-+                $ref: /schemas/types.yaml#/definitions/uint32-array
-+                minItems: 1
-+                maxItems: 8
-+                uniqueItems: true
-+                items:
-+                  maximum: 8
-+
-+oneOf:
-+  - required:
-+      - port
-+  - required:
-+      - ports
-+
-+additionalProperties: true
-diff --git a/Documentation/devicetree/bindings/usb/usb-switch.yaml b/Documentation/devicetree/bindings/usb/usb-switch.yaml
-index 89620191263023bec800dec114c0017c41b7c056..f77731493dc4901d0e95746b0cf1ffa3ee7ddfd0 100644
---- a/Documentation/devicetree/bindings/usb/usb-switch.yaml
-+++ b/Documentation/devicetree/bindings/usb/usb-switch.yaml
-@@ -25,56 +25,4 @@ properties:
-     description: Possible handler of SuperSpeed signals retiming
-     type: boolean
- 
--  port:
--    $ref: /schemas/graph.yaml#/$defs/port-base
--    description:
--      A port node to link the device to a TypeC controller for the purpose of
--      handling altmode muxing and orientation switching.
--
--    properties:
--      endpoint:
--        $ref: /schemas/graph.yaml#/$defs/endpoint-base
--        unevaluatedProperties: false
--        properties:
--          data-lanes:
--            $ref: /schemas/types.yaml#/definitions/uint32-array
--            minItems: 1
--            maxItems: 8
--            uniqueItems: true
--            items:
--              maximum: 8
--
--  ports:
--    $ref: /schemas/graph.yaml#/properties/ports
--    properties:
--      port@0:
--        $ref: /schemas/graph.yaml#/properties/port
--        description:
--          Super Speed (SS) Output endpoint to the Type-C connector
--
--      port@1:
--        $ref: /schemas/graph.yaml#/$defs/port-base
--        description:
--          Super Speed (SS) Input endpoint from the Super-Speed PHY
--        unevaluatedProperties: false
--
--        properties:
--          endpoint:
--            $ref: /schemas/graph.yaml#/$defs/endpoint-base
--            unevaluatedProperties: false
--            properties:
--              data-lanes:
--                $ref: /schemas/types.yaml#/definitions/uint32-array
--                minItems: 1
--                maxItems: 8
--                uniqueItems: true
--                items:
--                  maximum: 8
--
--oneOf:
--  - required:
--      - port
--  - required:
--      - ports
--
- additionalProperties: true
-
----
-base-commit: 262858079afde6d367ce3db183c74d8a43a0e83f
-change-id: 20250930-topic-sm8x50-fix-qmp-usb43dp-usb-switch-0c84e0b5f361
-
-Best regards,
 -- 
-Neil Armstrong <neil.armstrong@linaro.org>
-
+With best wishes
+Dmitry
