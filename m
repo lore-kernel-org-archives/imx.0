@@ -1,139 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704B22848A7;
-	Tue, 30 Sep 2025 19:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC3A285077
+	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 19:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759259160; cv=none; b=pnFvFPa3gXGmpG7n0k2Q2ievcdH5FtZdk8cYlAcVAPePR/q0lMLW1rACqJc2GqNUyioJ7u/O2bDVu5SQiPdYEuLKkRv7BNjIAx+MJlidB866e85nbX0Gvfnw6luwjkvBXWzl462D1WHV9rjnsv8InMIWSLFMNmmdZgkmgaK1Ma4=
+	t=1759259623; cv=none; b=sHFV8fkk2d5X1AWs427Aa0+Y4EfDWlBV3RMS4n1Snej19GM67JoPBjVH/+7wp3KfKGn2S/FkaBddcnmJKToneIg/lsB6Gr0QBhmXkgzfPxPWlCqH6/4shLycRLpZxzmZ4sHhgbecHkKl9Zvsqwr4B8YhQ9ioCLbFB+m4lsPmdX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759259160; c=relaxed/simple;
-	bh=WmddhDMLhlRHiSGuLiIAMMbrgljd/6gY8s8Pt0q4Wk4=;
+	s=arc-20240116; t=1759259623; c=relaxed/simple;
+	bh=w4MMi2h8A5GX9+b9Jfk6wj8TawNywWGn759hh7b6Yuk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fKXPV/fG7Dn9RHWAMy8Ul5WRkuyEQO+NndpG9Kn2T3ETvIJm7LPVabYr3GBPthsL4Erj9+qs2M4Mdn3NZRDh3T/qjkNoaLXJhNUyU1ntQ57q+fEZvJQScin/QUZiYWmGkB5KfxuMqkzRcNEVugmZmUzIayKv7ysPqcKTPaKzv6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2eUU7cU; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GVchAoxogq02n+ElfCZu8dTl+X3RZY7sB/iyRCnYVqdor++xUiqGnnPljBu2icgwuwO6Vk2/eTnWETexwEX/aBY61Wsj6vZ0JEmZwXBQeoXFPZFKBRxYW0U0bIHg3mg9+aqA5ha19pDp3MgV6AuJ0Gcvtiy/wKxbO7fOB6PtP/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=e17CAAdP; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2eUU7cU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4198DC4CEF0;
-	Tue, 30 Sep 2025 19:05:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759259160;
-	bh=WmddhDMLhlRHiSGuLiIAMMbrgljd/6gY8s8Pt0q4Wk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W2eUU7cUXRGj+mGEOq7ooTEnMGDxfrReh3aFSELB262VQV8th2Q+CVDdoVh3JQkYw
-	 hntbAnMVU/LuRNuV7Jaozslqr4UcXHDHjtsb3UqTIji1aR0XLFTd9WHHDmouW6hhsn
-	 2LWWE89/dtvq1rK9uw1zo4HBzmSAoBk+PrHaNWPlmOwEw44Ij3Sz6SehTjol/0lZK1
-	 JOQKK28lqqqgkUc3wMPl97Nfyni3cmY74uQiogPNMJhgGLYMgtg9k/zW0FsaGMJpzb
-	 GXYFGHu2T49jOT2NkSGkmLLdOmcUToXe4hPx/FESuSErR0nO3Djmp9bMflesY/USio
-	 E/bUFOoeOAXZg==
-Date: Tue, 30 Sep 2025 20:05:56 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 2/2] dt-bindings: touchscreen: move ar1021.txt to
- trivial-touch.yaml
-Message-ID: <20250930-venomous-tracing-669be2e1163b@spud>
-References: <20250926184720.391335-1-Frank.Li@nxp.com>
- <20250926184720.391335-2-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="e17CAAdP"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58UCZ2A9017486
+	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 19:13:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=xSV9Cq1e9SR7LQlW44w+/ize
+	/XOY0Num8chSiEvfZ7I=; b=e17CAAdPmEViiiRfz9DjP7RWN8bu7dQFSMUkU5At
+	rqFHUetkJCwyTtYhVlMAyzfNjmQ+COIt0RzoX1LbuOQBVm616mGtDPTsEOZo/cHa
+	rn3O33q//t2dUqleoTN1Yn2BSKwsu/2dzUTc2LVbD3uaTn58OpB4+sG+Rx3zfI6y
+	IW2gAyQAQUta8xwKOG+Bwe9eUxSESA0SNMNA4iTS7i1lgsxOJY17i0u5tDWGqi2X
+	4PDWUEcdJhCZ6m85DefF7S97zf/ylZogMYoJE3EyqePdM8mmw5zhX8Y6d6/8Fk77
+	+7XnWiNhdFwJyrC6x98xfWrZbmMt/z/M9skQTSZBAX8ybw==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49e93hhwn4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 19:13:41 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4dfe8dafd18so117347021cf.0
+        for <imx@lists.linux.dev>; Tue, 30 Sep 2025 12:13:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759259620; x=1759864420;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xSV9Cq1e9SR7LQlW44w+/ize/XOY0Num8chSiEvfZ7I=;
+        b=YUY/7xrjW0LP81PLBOkCQaU7fKwUTMqs0ugNfqyy30CzRTG0natWOR9cEeWJFqmhDO
+         uDbZfq0rOItgCwHx5zkB2zUJCh9jynuVABvguRLQ4m/KQ65qQX0uQbAUxhFFeavpIcRm
+         6O4A8UunDn0q5kQrCVEA208zo7E3a2qVxqHgqbNuWIWgh0GvD72uzXSte+W7UvYnBbjc
+         FM1jzvl2SLNilqiXSbL6mCskumpOBuJz1oIkfThP5hgiAig+0e7XkIYUJVb2wdIUd9GA
+         CCcqhIYZ9G78bk9A2EC4Qf1wWZYVlNUf99fseb3vwut1U0/EaejdrWB1PzZdcIj9QmQi
+         1RIg==
+X-Forwarded-Encrypted: i=1; AJvYcCWGpXskeHuR6hYyhceNB2J2VfCePvMOQXPwTd3s7PRJZfC5IZD52nj9V3VIA4f5bLlIbo4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzQFkor24NrruXI+NSPrFurjfihiYHpuOV/Jkb2JO8gVuYlD2r5
+	9HEwL31rXGBezd6U6uvUxys+TcEXLWcs2Av9QUR3ZGvL9xLsLpJEqpi8iR4utxUzW4qWGbRkF6v
+	D/V6AUAkwrlmyM770uP/jPSUTkSyPL/ii38PVMkkqlhbIX9k8gmLyMNM=
+X-Gm-Gg: ASbGnctN8uTMB1WQVY/2N3oU5I/LYQhTASwKkqwIh/QwPUT8Z6Wy8P1tmBc19AWe4bb
+	NDEGyKidLJTSeWOFQ7M/nTTmhqAFD8SGvstboAfTMJ0rAQJOiB9swqAyPQrqa9U9tsSf2dHdIpY
+	hYlV7GU/Z22DAfpGraDuOEVCgtU6XbawaD004ADp1fLUgsoO9YHvi09/+5vFJxiBXAiuBJ6fsgb
+	sd3Q7N/r4UQoknY7HSPSBfWFxzQHgJ3YIkKEWOTXyRLtqbz2KPr1CR5VFnXmo5ELPfPqnFJdw7T
+	nqJUdZ7BStGtaOeagi+CmLUZkPmiiSAN91GqA/dGtAe+/thceP8wxmDhwmO452fJe44s9WV8Ym1
+	irlQE4Yq6De7mw3bVSXi3DivaWtP2pJX49BdWMcqhb0wR5zdF6kDeQ88Fqw==
+X-Received: by 2002:ac8:59cf:0:b0:4d2:4df8:4cb5 with SMTP id d75a77b69052e-4e41bd7a0edmr10557421cf.4.1759259619547;
+        Tue, 30 Sep 2025 12:13:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHWLFpkh8hsbF0BWjWEBKzr7EQDGz46NeB9GyBzVRvHn8dRxUQboxhAGEfSv3X96BGi8K3Eww==
+X-Received: by 2002:ac8:59cf:0:b0:4d2:4df8:4cb5 with SMTP id d75a77b69052e-4e41bd7a0edmr10557091cf.4.1759259619073;
+        Tue, 30 Sep 2025 12:13:39 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-583134312c7sm5264888e87.8.2025.09.30.12.13.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Sep 2025 12:13:38 -0700 (PDT)
+Date: Tue, 30 Sep 2025 22:13:36 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Romain Gantois <romain.gantois@bootlin.com>, Li Jun <jun.li@nxp.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>, linux-phy@lists.infradead.org,
+        devicetree@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: usb: switch: split out ports definition
+Message-ID: <xxvexvdedkzbvhhoh6tubqkbrtxjskhgjockawa22onzwqusp5@iggjnospkryv>
+References: <20250930-topic-sm8x50-fix-qmp-usb43dp-usb-switch-v1-1-060568de9538@linaro.org>
+ <vwlshz5li23xlthn5delxwxdsdci5nc22iey3xih4qf5uhbory@clskdsy64xpx>
+ <426679ae-03c4-47d5-895d-7c927b2c3b07@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nfQSaJ5LsA5jl7n8"
-Content-Disposition: inline
-In-Reply-To: <20250926184720.391335-2-Frank.Li@nxp.com>
-
-
---nfQSaJ5LsA5jl7n8
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <426679ae-03c4-47d5-895d-7c927b2c3b07@linaro.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDA0MSBTYWx0ZWRfXw+ZTPLW2QO6S
+ E1lZbTfLoPTa6B2GHzQNRNOycVIgNSaFXawCf0TUwinm5iBqvYqfLMnh43izeVx07rs1sxYL0dR
+ X+NiOGxdUMyC0cI/70yruHTvjQN6uftg+PpvHwWxnlgWLcmbYs9dFOiNiutuGQV1OsIAhiJ1Lzo
+ s45SCxzs3GjHI+s5Z38iO5ZUKV0aCzHn/IwYuwq23uaB24MFoTMhoAIBW+ILD+OIytTsC1y9KW8
+ mIp8dXJVVvv6nKOWL2PsZnh0iPxkG+Ke+HtkB8oVCYqKxxyzTU3D7NE9E/CcgL32OV9nY+xDIxr
+ HCutHxoSatos6mQ21klwCs/LWp2G1hkhfUM+R5C3p7/vcYh4YZtxMu/kimVcyK2MPjBjgcZAUiC
+ k8eBzjTG+okije7WScG646b99hd67A==
+X-Proofpoint-GUID: 5U7a-RGPnxtUCrdgsgyn0eObSv_s7Tme
+X-Proofpoint-ORIG-GUID: 5U7a-RGPnxtUCrdgsgyn0eObSv_s7Tme
+X-Authority-Analysis: v=2.4 cv=Rfydyltv c=1 sm=1 tr=0 ts=68dc2be5 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=0GIP9b1rOs9S8cRHSfUA:9 a=CjuIK1q_8ugA:10
+ a=dawVfQjAaf238kedN5IG:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-30_04,2025-09-29_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 bulkscore=0 adultscore=0 lowpriorityscore=0
+ impostorscore=0 clxscore=1015 malwarescore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270041
 
-On Fri, Sep 26, 2025 at 02:47:12PM -0400, Frank Li wrote:
-> ar1021 have only reg and interrupts property beside touch common
-> properties. So move context of ar1021.txt into trivial-touch.yaml.
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v2
->  move to trivial-touch.yaml
->=20
-> previous discussion
->     https://lore.kernel.org/imx/20250925-swimming-overspend-ddf7ab4a252c@=
-spud/T/#t
+On Tue, Sep 30, 2025 at 08:48:13PM +0200, Neil Armstrong wrote:
+> On 9/30/25 20:43, Dmitry Baryshkov wrote:
+> > On Tue, Sep 30, 2025 at 07:17:21PM +0200, Neil Armstrong wrote:
+> > > The ports definition currently defined in the usb-switch.yaml
+> > > fits standards devices which are either recipient of altmode
+> > > muxing and orientation switching events or an element of the
+> > > USB Super Speed data lanes.
+> > > 
+> > > This doesn't necessarely fit combo PHYs like the Qualcomm
+> > > USB3/DP Combo which has a different ports representation.
+> > > 
+> > > Move the ports definition to a separate usb-switch-ports.yaml
+> > > and reference it next to the usb-switch.yaml, except for
+> > > the Qualcomm USB3/DP Combo PHY bindings.
+> > 
+> > Isn't it easier to make QMP PHY use $ref for port nodes instead of allOf
+> > and keep ports definitions inside the usb-switch schema?
+> 
+> Rob asked to not do that... see https://lore.kernel.org/all/20250905175533.GA1000951-robh@kernel.org/
 
-You mentioned there were a load of other devices using just these 3
-properties. Do you intend moving those too?
+(Just for the sake of keeping it here too): your current patch allows
+using mode-switch and retimer-switch for the fsl,imx95-usb-phy device,
+which it should not (because it can only be an orientation-switch).
+Likewise our Combo QMP PHYs should only be orientation and/or mux, but
+not retimer. I am not sure how to solve it without actually allowing
+properties to reference nodes from another schema.
 
-> ---
->  .../bindings/input/touchscreen/ar1021.txt         | 15 ---------------
->  .../bindings/input/touchscreen/trivial-touch.yaml |  2 ++
->  2 files changed, 2 insertions(+), 15 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/a=
-r1021.txt
->=20
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/ar1021.t=
-xt b/Documentation/devicetree/bindings/input/touchscreen/ar1021.txt
-> deleted file mode 100644
-> index 82019bd6094ee..0000000000000
-> --- a/Documentation/devicetree/bindings/input/touchscreen/ar1021.txt
-> +++ /dev/null
-> @@ -1,15 +0,0 @@
-> -* Microchip AR1020 and AR1021 touchscreen interface (I2C)
-> -
-> -Required properties:
-> -- compatible		: "microchip,ar1021-i2c"
-> -- reg			: I2C slave address
-> -- interrupts		: touch controller interrupt
-> -
-> -Example:
-> -
-> -	touchscreen@4d {
-> -		compatible =3D "microchip,ar1021-i2c";
-> -		reg =3D <0x4d>;
-> -		interrupt-parent =3D <&gpio3>;
-> -		interrupts =3D <11 IRQ_TYPE_LEVEL_HIGH>;
-> -	};
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/trivial-=
-touch.yaml b/Documentation/devicetree/bindings/input/touchscreen/trivial-to=
-uch.yaml
-> index c393cce273c5b..d6aed3afd4acb 100644
-> --- a/Documentation/devicetree/bindings/input/touchscreen/trivial-touch.y=
-aml
-> +++ b/Documentation/devicetree/bindings/input/touchscreen/trivial-touch.y=
-aml
-> @@ -14,6 +14,8 @@ properties:
->      enum:
->        # MAXI MAX11801 Resistive touch screen controller with i2c interfa=
-ce
->        - maxim,max11801
-> +      # Microchip AR1020 and AR1021 touchscreen interface (I2C)
-> +      - microchip,ar1021-i2c
-> =20
->    reg:
->      maxItems: 1
-> --=20
-> 2.34.1
->=20
 
---nfQSaJ5LsA5jl7n8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaNwqFAAKCRB4tDGHoIJi
-0tWLAQC1n2yPqxzpGGLumm0bVK/6IxAfADZgCmHqAKwU+J4k3gD/XjOYFP6oF2YV
-soUksHK6tuNWn4eoX9th5iV5eKtlGQk=
-=7hjP
------END PGP SIGNATURE-----
-
---nfQSaJ5LsA5jl7n8--
+-- 
+With best wishes
+Dmitry
