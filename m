@@ -1,162 +1,169 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09347263F5E
-	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 18:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3763222599
+	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 18:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759257826; cv=none; b=ajlYzD2jxV9ILaW3w9k+E6K9+myXigVnDuOPesJjAlQR6aKyhyhl/DhpqlAmLWGT6g81QHKvrvSX4qp4nNb7qbnvYdzB/iq62MtjJxDed/dmiFLv3ogdJSH1ZKwy1QViDGlrc+A5i1IznmF54351T+vEHo+wxUo8u58PJQNelaA=
+	t=1759258100; cv=none; b=E/NaR5zMRLTGm5iFSaasbEv8LkjOuUvgoAqQvGAW1rWGix276vfo60cn4To39zpn7W+ySu1aCUFqZ2o3CU+QfI0IZABCentkYi3JuhRwHTVw1VLqa9y5cnJkabSPnF7tetGrYKFKxZCrmj6ymMEx9Z74UGKqImLAtWu6WA5m2aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759257826; c=relaxed/simple;
-	bh=FjCaxSo0gdGhvu7zeLMnYLhnP7QBFHb9v99tTue3MwY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gYwkijIsTsQzlq3xvQtDBEhnHLT4ZYAdiVIVht0b6FjJKxTZ7CuG/wDkJk7pp+uh/fQZWLYfxsKDfjLPK3BDPQD14TTCZxNXLsbMS3Hv4wzRz8/9rOmJxMjNluY2gmZvVhsK1OmMKuMAWTH6UsQb++B+/D79JyCCwW0jnDdEW6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bfTmvrZJ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1759258100; c=relaxed/simple;
+	bh=AkSZ2p2ipyMcwGlPDAvkNQcfgzKLfIjz9ybYo7uFpDY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=YCojlz4SMU53a9O2h4CvsiXp+s5T/nVb8XlEdtjWawC96+B6ynk9sYUSlHyrm4DjHxdYs5LvuHo6noq5KG9v1ut7dZrs/GhLJ3b1KMLMPCudPtHKPEJZPHNpKqtCZ361p9PsKWFcwVEyo8ku1jYbsdebeEcyRx+2UbS0UIM/0CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uPkk+rL0; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bfTmvrZJ"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58UBUsA4010706
-	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 18:43:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=yGmiFBtk8zoxCM+T4HUw6+ZD
-	+jra215LvynAxpP5vgk=; b=bfTmvrZJra+/oQZi7uhdBmbERNSFcTLqisqpazM1
-	wiudlbDafBQKYQ6pepOJctTKpmrQZLScq2Ie2N7USskXBRMWD61lwlErIgXOMJN1
-	qmq79ohKTxUDoPGobDLWT5bGi+/L34X/W9bxBGDsNwKUp93UaBDrvGqMjJxwddVv
-	twZAAp/AyQzDTi9fCjHWxV2d2jpJzcZmPHSum5dzsj1p5zNaGphdjbtvdj3uGbsl
-	syJVbQRAxIaMzySx/jd27fn8v+vpXiG3HM7OTe6rWRUwrdTQbojn/tGpr7OocZTK
-	QsbqQ25r2ltFmYQHFm4C318tKfN+YNZeJSWJg4psEJRt3A==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49e5mctfc4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 18:43:43 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8589058c59bso1919809285a.2
-        for <imx@lists.linux.dev>; Tue, 30 Sep 2025 11:43:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uPkk+rL0"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-46e2826d5c6so48569435e9.1
+        for <imx@lists.linux.dev>; Tue, 30 Sep 2025 11:48:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1759258096; x=1759862896; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ffgRfYtnm1HKc4tZUZavEotYf7CHOSNEIdJwn2PiGvQ=;
+        b=uPkk+rL0IGSitcdhydSg9oui7nJvxEb6xqTOuVqbQViksc4C1e+rDtpLXddjOLW8bF
+         qSdgDUtMtQ6kzmJwRxBqLh7bnjI4niytcTVVxMMFScqr356hRDNXPsugSpRPSBGOw7//
+         cZGe7jhvcnqxecxRpU8snXUELRGHmauuKyI+x8b5KRDgDfjjHFfDslSkH7szRfmqSOcT
+         nj3pWsUkbmvDg1bh5a5u305DGS/aFvtUsaGjrEk+ZA+4h13O68vKZ3LQcmcT8wTOU2Vj
+         djooBTGAS7ybFJUOydLOJLBTeXfVkwYP5r460/xk9F4zw8U6N1Fc3q2v47rWkbw6XXHa
+         PRhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759257822; x=1759862622;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yGmiFBtk8zoxCM+T4HUw6+ZD+jra215LvynAxpP5vgk=;
-        b=aZxhizDoj/S04O+h8pOHc2EH3jNrsSjAzr6sWUM+bcn/Wc4T6XKafioqqivTsCacc8
-         WUc2hgILnVw0NireWHaqd/zOKIhIedGMPLb5/U1k7n943yyFRZQb/ekQhf2do2pwKCkF
-         1be20cC4eBffxyiMpaOhKPdXrsmviZVbEAaxBWOam3E4T5k5JXr70f5Crc4gWrS2hbk4
-         vXovXe05n4J67JDRK2nApPLlyAtSIBmnHb7KQnEzjVfCrLLaTTmsgVeglsQiONd6i4bZ
-         wLA5PAHAuK9s/n5WsCWIBFikiR2GPsiwHx6LNqUev1djs4ZH9B5HSgo8z9Zelkqt48PB
-         jtuw==
-X-Forwarded-Encrypted: i=1; AJvYcCXOH/zvJ66bBeGt76FGxUbcj4Yq1CM0nqMFXIT6+/3RtqweCjz66iTTS6G/pophoAxWKW8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxgXDrQxKeNwnuiZ2kuMEn/qsjbkROJwlFOqbJWt7HD6bsS+VbE
-	l8wCDDb47JFtOHX3sWAaf+t41gx5RTb/jPrD3pq2CnIc15A3xMuImOBrvyVslo3NNypJD+qPzJW
-	EETaIn1YIpkGvH9cXf4eXVY4zjtcoLFJHy+S1/CAd5ce63jeZjtoTI+c=
-X-Gm-Gg: ASbGncu+Ed2f1zOT4Fn7B+ycihfdD+niPTTiH4gd+OxXL7jFThxUpve2MvdTXUjyJ5T
-	ffgP0gbNJIpeciRwAlSSXN4jkleTfbkgGXoIpSIm8mDJbl1OEHlbEWWc7GNV6wR291L8HBni62s
-	jTjhNnNkTlzd2eDE60eK9wmgPGN2idQAXObhiKXNpzPzENfNEXrhIS4pqH+QN+Q4Bj672/H+FEv
-	MTAHi2PJLBx//7+rHXE42edqcu1e6eK616Z2JBegSmzsE2dD6uX7DZ1VyFWVIo7/zMF08nJGy4r
-	j2l86wPtW2gFVpTQIFSSJPJA5OrX87sPfsx0kLNmxm4T3Hcvgdj26rlNnM4yBJk7Qkp1s85PTED
-	7wdFbqyRQGdlfLHUsGo6hcXUvCpkmHJ+0w9ufJqVk8FD8IxdQcJIrS6vlcQ==
-X-Received: by 2002:a05:622a:2c9:b0:4b6:38f8:4edf with SMTP id d75a77b69052e-4e41ca1b2d1mr8343121cf.29.1759257821833;
-        Tue, 30 Sep 2025 11:43:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEVoTpyYZEYD5BDhL/ibzffyH63whEH/5BJy4dUuRPx4WpG/DtAm/AZa0wD/E68tizX2uBZjA==
-X-Received: by 2002:a05:622a:2c9:b0:4b6:38f8:4edf with SMTP id d75a77b69052e-4e41ca1b2d1mr8342591cf.29.1759257821234;
-        Tue, 30 Sep 2025 11:43:41 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5831665791esm5232132e87.82.2025.09.30.11.43.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Sep 2025 11:43:39 -0700 (PDT)
-Date: Tue, 30 Sep 2025 21:43:37 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Romain Gantois <romain.gantois@bootlin.com>, Li Jun <jun.li@nxp.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>, linux-phy@lists.infradead.org,
-        devicetree@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: usb: switch: split out ports definition
-Message-ID: <vwlshz5li23xlthn5delxwxdsdci5nc22iey3xih4qf5uhbory@clskdsy64xpx>
-References: <20250930-topic-sm8x50-fix-qmp-usb43dp-usb-switch-v1-1-060568de9538@linaro.org>
+        d=1e100.net; s=20230601; t=1759258096; x=1759862896;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ffgRfYtnm1HKc4tZUZavEotYf7CHOSNEIdJwn2PiGvQ=;
+        b=E6ZEa1FU+NsBkbPkjOazmR9wZRqSKE9D6pjaefqEUoheHQ7rbG8B4JLGaiySAbl93b
+         KDBVR4i7elSPAwUaUHv2slia++3dQTwINDVaP6XeF9feEMMXGWMTb8Aacb0XesTfhQ42
+         NE2Hv4H9LciF007+shw02AKmEzXQ8OOlsq52YhhEQ75Rk23B2cIGBSNYjCFho1uuABr4
+         /+YtPLkQFN7cn7Gpj7y6WWvsBt73RFWscdmWmr9HygPCyL13EllJlhrmS5Qqf4i9eI4P
+         qFjmjEgvMUaUTk3y49YlSHxgC2wNs7NTX43lRqEZSakVt5oy53g8uPO26XqHlRIGwxZN
+         D1vg==
+X-Forwarded-Encrypted: i=1; AJvYcCWYhpPLZNS1TKIPyw3tpF7ADYOGOKZ/32TvYQ0zcxQwQnMU7sJTkeGxUmtvDTf4nPsuvLo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwadTzs5M9aSMtqjUkfhtcvevrYPWpSojbHjUi15twaTJNiAK+g
+	q1W+42XVgbIzVhc5E8FEYvJJtOrIDALGtfbkHt7lY2+pNmrDm3z0CpN8wkp45UsLujg=
+X-Gm-Gg: ASbGncsl3bE+HPNxOn9WdZQ+/r8uNKViqTLBvEWOdxeddPMYPx8kDZUcrWTW7r7Xu3o
+	EGnAFJiKjkD71Y7MUrIIrBVZpozf1iAh4B5CtGKVf4xrbyqeDxL/rhyoKYAtqXtkLhmxrr/BUCN
+	F1M7XamPwq5R9ZwoAdEV8kNTfPWAmdgRoIYN6QB8g5s4pfzwi8Inh8RK1T8m/a4RZ3XBJ0UUxYo
+	4wa6L8xUdCtgBuWI8cKWIMwMWgq4yowX2DImaAL/jAXvPwSszT77gqjVFil/OgomrdB2cIlmENT
+	JUZFmgCW+SynfGyBoWmfm9K5/snC5bTpbAkLzQPRhF6YPdAylvRS9w/OsqhktVmQHKjpnPC7u+w
+	ULKNOXK60zqbSfoIHUBuztyqof6spqa1BZLbrZ9kzTI+5RHt5Rf81Td82bEoq69gQKDS4Xc3703
+	VPMSZxO6IlgrZoEs/9FNttQIU=
+X-Google-Smtp-Source: AGHT+IEYI3huopKWdfDQEJir5e/rv3rOBRHS1Emu0fC6ieyMwwYyTSg13GLpRz3qoAuTqhlVIXzV/Q==
+X-Received: by 2002:a05:600c:5303:b0:46e:4287:a85e with SMTP id 5b1f17b1804b1-46e612192ecmr7706325e9.13.1759258095988;
+        Tue, 30 Sep 2025 11:48:15 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:3d9:2080:9459:14e0:525e:d859? ([2a01:e0a:3d9:2080:9459:14e0:525e:d859])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e6199fb54sm5013245e9.9.2025.09.30.11.48.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Sep 2025 11:48:15 -0700 (PDT)
+Message-ID: <426679ae-03c4-47d5-895d-7c927b2c3b07@linaro.org>
+Date: Tue, 30 Sep 2025 20:48:13 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250930-topic-sm8x50-fix-qmp-usb43dp-usb-switch-v1-1-060568de9538@linaro.org>
-X-Authority-Analysis: v=2.4 cv=RMC+3oi+ c=1 sm=1 tr=0 ts=68dc24df cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=OOCT3r6X_P3o6Jl0E7UA:9
- a=CjuIK1q_8ugA:10 a=NFOGd7dJGGMPyQGDc5-O:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-ORIG-GUID: aVynLL0p2nQzfAKw9QzmZWhjdV0-Daew
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAwNCBTYWx0ZWRfXyKm7qtuWcMX4
- k3AFm+livSsNFId2BciCzi3AKmiOvxWj7DnDYU6o1cA/KnpTWB4EM7TfjazRVv/xFdrrCyhT5Bx
- 2GOF0eKKaqB3uR2g5cYkYYOUk7Z25tEwf/5+vYsmudTIjFBvMoPwvFWMy2a70FzpoNhaV+FHklj
- 0nyntu4yPHJN6F/Rzs+b4612xkmNaZj3Bi2RovkDVXpFEpWMnqtrm+w26UDdRypnYHohL2fmiFK
- Sz8QIsLDScRXcZ18unSl+5A7XI+ttcXS5LI218e60AZBM5xK/newwAtSSzMZfv3ZftkS4BwanVE
- RTMI16ayBtaLANxWU+RH78Meh2jJ6Wx0PS36LWGhn5PCQEfRMazHrEEowqpPOm6B28VkKgBq2ME
- KMLbF6/4aqdCEb4dttqgJShAiD2Arw==
-X-Proofpoint-GUID: aVynLL0p2nQzfAKw9QzmZWhjdV0-Daew
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-30_03,2025-09-29_04,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 suspectscore=0 impostorscore=0 spamscore=0
- adultscore=0 bulkscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270004
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH] dt-bindings: usb: switch: split out ports definition
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I
+ <kishon@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Romain Gantois <romain.gantois@bootlin.com>, Li Jun <jun.li@nxp.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>,
+ Bjorn Andersson <andersson@kernel.org>, Luca Weiss
+ <luca.weiss@fairphone.com>, Abel Vesa <abel.vesa@linaro.org>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, linux-phy@lists.infradead.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20250930-topic-sm8x50-fix-qmp-usb43dp-usb-switch-v1-1-060568de9538@linaro.org>
+ <vwlshz5li23xlthn5delxwxdsdci5nc22iey3xih4qf5uhbory@clskdsy64xpx>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <vwlshz5li23xlthn5delxwxdsdci5nc22iey3xih4qf5uhbory@clskdsy64xpx>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 30, 2025 at 07:17:21PM +0200, Neil Armstrong wrote:
-> The ports definition currently defined in the usb-switch.yaml
-> fits standards devices which are either recipient of altmode
-> muxing and orientation switching events or an element of the
-> USB Super Speed data lanes.
+On 9/30/25 20:43, Dmitry Baryshkov wrote:
+> On Tue, Sep 30, 2025 at 07:17:21PM +0200, Neil Armstrong wrote:
+>> The ports definition currently defined in the usb-switch.yaml
+>> fits standards devices which are either recipient of altmode
+>> muxing and orientation switching events or an element of the
+>> USB Super Speed data lanes.
+>>
+>> This doesn't necessarely fit combo PHYs like the Qualcomm
+>> USB3/DP Combo which has a different ports representation.
+>>
+>> Move the ports definition to a separate usb-switch-ports.yaml
+>> and reference it next to the usb-switch.yaml, except for
+>> the Qualcomm USB3/DP Combo PHY bindings.
 > 
-> This doesn't necessarely fit combo PHYs like the Qualcomm
-> USB3/DP Combo which has a different ports representation.
-> 
-> Move the ports definition to a separate usb-switch-ports.yaml
-> and reference it next to the usb-switch.yaml, except for
-> the Qualcomm USB3/DP Combo PHY bindings.
+> Isn't it easier to make QMP PHY use $ref for port nodes instead of allOf
+> and keep ports definitions inside the usb-switch schema?
 
-Isn't it easier to make QMP PHY use $ref for port nodes instead of allOf
-and keep ports definitions inside the usb-switch schema?
+Rob asked to not do that... see https://lore.kernel.org/all/20250905175533.GA1000951-robh@kernel.org/
+
+Neil
 
 > 
-> Reported-by: Rob Herring <robh@kernel.org>
-> Closes: https://lore.kernel.org/all/175462129176.394940.16810637795278334342.robh@kernel.org/
-> Fixes: 3bad7fe22796 ("dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp: Reference usb-switch.yaml to allow mode-switch")
-> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-> ---
->  .../bindings/phy/fsl,imx8mq-usb-phy.yaml           |  4 +-
->  .../bindings/phy/samsung,usb3-drd-phy.yaml         |  4 +-
->  .../devicetree/bindings/usb/fcs,fsa4480.yaml       |  1 +
->  .../devicetree/bindings/usb/gpio-sbu-mux.yaml      |  1 +
->  .../devicetree/bindings/usb/nxp,ptn36502.yaml      |  1 +
->  .../devicetree/bindings/usb/onnn,nb7vpq904m.yaml   |  1 +
->  .../devicetree/bindings/usb/parade,ps8830.yaml     |  1 +
->  .../bindings/usb/qcom,wcd939x-usbss.yaml           |  1 +
->  .../devicetree/bindings/usb/ti,tusb1046.yaml       |  1 +
->  .../devicetree/bindings/usb/usb-switch-ports.yaml  | 68 ++++++++++++++++++++++
->  .../devicetree/bindings/usb/usb-switch.yaml        | 52 -----------------
->  11 files changed, 81 insertions(+), 54 deletions(-)
+>>
+>> Reported-by: Rob Herring <robh@kernel.org>
+>> Closes: https://lore.kernel.org/all/175462129176.394940.16810637795278334342.robh@kernel.org/
+>> Fixes: 3bad7fe22796 ("dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp: Reference usb-switch.yaml to allow mode-switch")
+>> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+>> ---
+>>   .../bindings/phy/fsl,imx8mq-usb-phy.yaml           |  4 +-
+>>   .../bindings/phy/samsung,usb3-drd-phy.yaml         |  4 +-
+>>   .../devicetree/bindings/usb/fcs,fsa4480.yaml       |  1 +
+>>   .../devicetree/bindings/usb/gpio-sbu-mux.yaml      |  1 +
+>>   .../devicetree/bindings/usb/nxp,ptn36502.yaml      |  1 +
+>>   .../devicetree/bindings/usb/onnn,nb7vpq904m.yaml   |  1 +
+>>   .../devicetree/bindings/usb/parade,ps8830.yaml     |  1 +
+>>   .../bindings/usb/qcom,wcd939x-usbss.yaml           |  1 +
+>>   .../devicetree/bindings/usb/ti,tusb1046.yaml       |  1 +
+>>   .../devicetree/bindings/usb/usb-switch-ports.yaml  | 68 ++++++++++++++++++++++
+>>   .../devicetree/bindings/usb/usb-switch.yaml        | 52 -----------------
+>>   11 files changed, 81 insertions(+), 54 deletions(-)
+>>
 > 
 
--- 
-With best wishes
-Dmitry
