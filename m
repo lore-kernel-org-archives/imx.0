@@ -1,71 +1,71 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826911D5CD4
-	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 20:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1F322A4F6
+	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 20:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759263018; cv=none; b=Ckbtney9N64xnFOErm9emafO7WRaPVJHQPUxIDa62xQVzsHBwVh0dtz2ZdLOs0+pkpmY8tYSQm3dhpGXmOcfcb9JNHX2VFJ/uXH5bWovL2xYU8zoRaGUpcY3Qotgp07jcwveWzyuhfSXinEI5XjDPTRD4DT2DY4eSoWxDiKQO0o=
+	t=1759263485; cv=none; b=iN6/QimQqZicm1zjrzkozTS2S52HHH3pr6tZZc9D7WuhDm2EAFkeNPORHEMtIrYwBeZkqlSCft2EGB9Adm/R9UESFNAvpnLAg02UrwInBFBGlreTrj4IIEekw+mCks8ieQ3lnLRiAKQkQZ8EYiTQRRnaB4v8QJxhrxnKiUrPsFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759263018; c=relaxed/simple;
-	bh=B13kSDZYJQFkU0t1zC9c3G3HWldP0y99UADm4IFZCpA=;
+	s=arc-20240116; t=1759263485; c=relaxed/simple;
+	bh=kfQqOG3eCJg32IjZw+ZQCxJ2xnF8nSOsHLMk+gCmMfw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q53exqFhxLQT9qSSca2qj9QGvldcQJWYAlj1KY9T8zCw4HbzV2OKUwk9k/AK8O62I6knibvsbFGmcoSfc/z+LT13TmMIMUbyxqE48GwjWNKFTa2podj/B5wi7/67Bn3UIy4hBPKhqWBy7ralpRfI9hd6ldVtxHvH5bDqZA6i5K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ffJrJ0PS; arc=none smtp.client-ip=205.220.180.131
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sjhfi1zvXRSjclFp6js7IyS/myrHKgVp0FSfi1cpcfEeHmByTzm8GtXRYh1AGZO5PHlqBV4vr02BkLR5tLy4EbFK6qBz82fmWu/46AOcV+pFPk4tV4RUqbGhXvFI/PxPH1ys4l0tZklDTm4gx331CIAaIwIZKetByRNRtyybe+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Pe4Y/dsR; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ffJrJ0PS"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58UCm3p2024901
-	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 20:10:15 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Pe4Y/dsR"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58UK6lZH001100
+	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 20:18:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=HUh15XTlHhQ6Q1q/DhGrQFrr
-	yiPIaucH02PqHMC1azU=; b=ffJrJ0PSTxvIAskznd1HN89PYvrtK1jPtX4SKcyO
-	n9M360aQdp97l/HD2LB0hM7I3AIBClvyVjFNX4Pe/4gDkw4p9PlD04eunPSwsfaU
-	bBZ2YMmmJnJdJ/GcYahlQn8cIUTUvbx1ueAUfOYhx8IYeK88/xQZh9o48wuAIdXR
-	ijxVM3znvZbccrA6V9xUPuFJsIrCrN59afxk7F0fEZttLODdeHJQTFWQBJf6Bxa5
-	gtEUZJv9MH7ZwXBQq/ay7K9XBo1P0u8OSz4pSDBjqaBB/TGe9u3vSOB94F4KoOj+
-	jyc8+qidoq5LZ/0oKAzmhM9or2F0L1OrF6O3XA/5b+R9VA==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49e59n2ps7-1
+	:references:subject:to; s=qcppdkim1; bh=sdLCuj5V1B6mGqY302QitcGK
+	Fp9JJVU/Ya21+9Ly7EM=; b=Pe4Y/dsRASMVOkBpq1opV2LmbOdpxDfVc7aI+ElS
+	544wIH3lQYA5SQiUMZQp28vek9ObwV7iz4w5vSnE7J6E8IHtOQJ9ckTV1jlERRwm
+	/TbtSHV0W/1HHnQUknINy73i9V+ig57gpREelyC0QDOeIbrviiLhLLnyEo1lUJlu
+	clNg+5gsqLIPJX8z27r3tLuiyZrTYejLf00vyCyGbF5nHBIeKquXRSrH8sn1bkA8
+	4VQ+AnhjucwyY1qmVl7s9xGCGCkn67p7AurHo/w0O/S0x7arWbbM3X/Ltj67qCxd
+	3eTuof2oqS+cN5qfBi+MgrgTzORxYpFN0fEgTMkCoWpdxQ==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49fppr5u86-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 20:10:15 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4bf1e8c996eso129930291cf.1
-        for <imx@lists.linux.dev>; Tue, 30 Sep 2025 13:10:15 -0700 (PDT)
+	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 20:18:02 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4de5fe839aeso114133541cf.3
+        for <imx@lists.linux.dev>; Tue, 30 Sep 2025 13:18:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759263014; x=1759867814;
+        d=1e100.net; s=20230601; t=1759263482; x=1759868282;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HUh15XTlHhQ6Q1q/DhGrQFrryiPIaucH02PqHMC1azU=;
-        b=lTU5r5mb8/1IUAGDQXMmHnHmZWjsDYSCL80dYgTe94a2qcmev66Yx1//XC+UtwVX7k
-         kpCIYQKe4070i3G3OzbMa72r4c5LLMk37dTQxU6+80id3mL4Dv10jLeWIeYrTCE+96xq
-         BkkzbE0SeLd+t6A0rmQ4jSjrdEhJ71Ghnx5XNd43cDO1gqMLs31jOH1NzMqkpDzr6aUf
-         UK5xaM81Kij/eFtFyhDWE3Qh+QC4QxKOBtharEt914x8Hqsab2W1YkDZrdTuP+PqNh+U
-         DekPOS5SSgqT7QlPBGebUakHF4VBlp8WvXsYPgZbMpUMA+ASsWWWF1EnE3r9qMTOQYE3
-         q24w==
-X-Forwarded-Encrypted: i=1; AJvYcCUCpHCCCGBRn0JNSOiAegm0BSYSLo/HNtCjmkLExWShs44aZlpu/HPhXxNtn9dWAwlON7g=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxlyqFayC+fVQYplfCsCysoxrdGs9ufPW+7CgLiCdzYrbB7lKAs
-	oyH4C6jiM7bq1hbS1xrJ3TgEWjcD2PgGpAXo5mOIOE1IERihsPDCjKKCIQLcYkNQnj2krmnO1KI
-	NULcRW7IN6GblqznbA6dpLcyq0OFFROVCQaV7B6W40iZtpmwn05dd3wM=
-X-Gm-Gg: ASbGncuPl93t9FPGdzpAHF2AeOuo6qb5lOADIHMWvW+GrzeZUhpI506h7kTL6bLaLJ5
-	EDbG9972QXaFJkHf6KDcLYw2gR6b3gXnkjfqqXpiOe31ls7PO75bLkksYhOtGTxjvoZ4wApsyVa
-	ARNpBTljkOPWWvi9gdpvq/Iv3noVP36DefZoObK7ZAM4XtZpH5vhV0Yp3HudkeevRJTQOd+Dx2e
-	Sf+TMZrlwUkzMEa0emDAJRSGhqF+uVPH/cNFF6vNojC8gmEqbZwnh2YpwQtLHJoQmvKHMhkf/lS
-	7vXJ1eswvins2uUO/nwFtyzLkdqPj+UN5Mt+edLxWsOar4t3KC0GIEAZ4tBPCGJSrSQHJGJo6W9
-	VT0tSIHR3/qhF65JUNhf8SKiInlrU8HHhaAETj1YCTSPcOQh6r+V+VrU1uQ==
-X-Received: by 2002:a05:622a:3c6:b0:4b2:f4e5:8eb1 with SMTP id d75a77b69052e-4e41eb14998mr12847951cf.55.1759263014288;
-        Tue, 30 Sep 2025 13:10:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGkOHi3Cw4K9bHAEsEdXynVuyKt+2OCerw8APvAAWKM2bNTs+Ga5p28b3x5snKdH664Kuc9Vw==
-X-Received: by 2002:a05:622a:3c6:b0:4b2:f4e5:8eb1 with SMTP id d75a77b69052e-4e41eb14998mr12847201cf.55.1759263013780;
-        Tue, 30 Sep 2025 13:10:13 -0700 (PDT)
+        bh=sdLCuj5V1B6mGqY302QitcGKFp9JJVU/Ya21+9Ly7EM=;
+        b=Zeo8GWsYaaU3qyVNJP+mpW6/05dyl2l8MNQbmbc6t/cSOWR79SKnWknf97Pw5ScUBv
+         XxUypl7n2vYWtrUBF9lAYWIrv01w8EtKw0xjMHufg1CUqMlkrxoF44RxASis+PFF+5vN
+         S4TMsj92UNURSHHcADoiotBkM+zFUc9etKzVuweb3YKqIhuAr7fXi8bSWAV/v4LSWjTK
+         iPvY3vmHW5yvmF5jbDBT+WchuNboset6nhkPRalUXvOLH93jg7sBjPCYDK0Xcka6qc23
+         w+Z++M7gaoR0MZIRA5sXuo0ac498+1XYzbLyDAZhV/GW1ZDc+BOhlc33xIX59Qwhn30Q
+         KQ1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWj+kPQaWOeHB8LxIZbclTCkN6aJZ5M/fR5dAkGb/SSkkbWoU0tFTDoNXTXzMWZUZJGyYk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwpbfmCmp5fKJwUPlP30idguoCBIv6NFukdFe7RphbeEhOnaZUB
+	r1x624fSGgFhjvxapE3rcKGtKWWIHDADVmTGL3e/RSEcnBy74Lebw9xfuFFb2fOLGmVKgaRxuey
+	qfw0S8PkZn4qTzpclQ7aoGLmVKWaYjAjA9nY47Atj9kaX4F+xz1p6ARY=
+X-Gm-Gg: ASbGnctmxh57kroqu/n7dy+MGWWtkCJYpLVqdIFfuEN5x3iZWPq1eHIpwjNsnlUd83C
+	zJ+/0nZaewyxe0gtRDQzk0mk7zAnpQjVsvYJq9LgAPRonc/sBZNgm2dcOvLMbhGF8c07JudYGLt
+	aK5FktG176ElwuubkcA85S0/hPtVx3aMeqqWHPVEYrZDZEWX6HBES83YmGXurLUwqa+UAlvIp/w
+	nqzcTMM3iF0KEv8CxE34fb2W9clUhxCYQtlsybYH35on43fqiHDSAa1z+yQjwivCumV+P/LxvMJ
+	W8Kwpk6JWGOiHot1ARkoqBnnbXA4WguyDF9lVRIJLOFNMAcHoos1RRdQDh9TOZk6pArwl+La2At
+	gih4BGc0P2qj3jG4yRzicj1XS3WnyWjwImGTed9nir9nxL+vL7NqFEk5PUg==
+X-Received: by 2002:a05:622a:30b:b0:4db:f72a:b816 with SMTP id d75a77b69052e-4e41ca1cd94mr12855561cf.22.1759263481839;
+        Tue, 30 Sep 2025 13:18:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzLJ/aNHaWVThXpiXhQPhNd6bXcsrZRT/lYLsQU/H/2CL9o9NPlqCKuAEDT1vBgHAP0z6Niw==
+X-Received: by 2002:a05:622a:30b:b0:4db:f72a:b816 with SMTP id d75a77b69052e-4e41ca1cd94mr12854801cf.22.1759263481206;
+        Tue, 30 Sep 2025 13:18:01 -0700 (PDT)
 Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-586b0c1f9d4sm2610582e87.49.2025.09.30.13.10.10
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-585f4a77b82sm3072757e87.27.2025.09.30.13.17.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Sep 2025 13:10:12 -0700 (PDT)
-Date: Tue, 30 Sep 2025 23:10:09 +0300
+        Tue, 30 Sep 2025 13:17:59 -0700 (PDT)
+Date: Tue, 30 Sep 2025 23:17:57 +0300
 From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 To: Damon Ding <damon.ding@rock-chips.com>
 Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
@@ -82,11 +82,11 @@ Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
         linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
         imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v6 04/18] drm/bridge: Move legacy bridge driver out of
- imx directory for multi-platform use
-Message-ID: <x2fpm4rb7ermb2tyjefdwwbvwvzt6uosd45ad7ku3tp3yqkmqc@bayzgz3jsqkp>
+Subject: Re: [PATCH v6 07/18] drm/exynos: exynos_dp: Apply legacy bridge to
+ parse the display-timings node
+Message-ID: <73bpf77trhqdo5amfxbn4qhlwf4ta7hmouwfen7m3aslycd3bj@72artzwafbmq>
 References: <20250930090920.131094-1-damon.ding@rock-chips.com>
- <20250930090920.131094-5-damon.ding@rock-chips.com>
+ <20250930090920.131094-8-damon.ding@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -95,63 +95,133 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250930090920.131094-5-damon.ding@rock-chips.com>
-X-Proofpoint-GUID: pv3SvsoODTcaD9GVJ5IhpKoF3N4oRx4d
-X-Authority-Analysis: v=2.4 cv=O4g0fR9W c=1 sm=1 tr=0 ts=68dc3927 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=s8YR1HE3AAAA:8 a=EUspDBNiAAAA:8 a=_9FxbLpkiinsEApfcMMA:9
- a=CjuIK1q_8ugA:10 a=kacYvNCVWA4VmyqE58fU:22 a=jGH_LyMDp9YhSvY-UuyI:22
-X-Proofpoint-ORIG-GUID: pv3SvsoODTcaD9GVJ5IhpKoF3N4oRx4d
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAwMSBTYWx0ZWRfX9lwReOnNQhfU
- ls/KnB8Dci4DZrk/gllbXfH7lWYKzWMOVjEx39ULwj1jkDOypeHKDe2jJmJMyvDESAWkK4kRQt2
- zX/fMWx+5WtFoUkKNfm89Sq81XIGIl/wEA3dpxpQJiYQml9q4AkynkDglcwKy7NZHqlzAVkjaUY
- p/pOisBhVV2JpGOimu970UkE2p4Cr1YFNI8nb7y/U2fu5lDavCcLxdc2MTWwAqD+exPdhB53LtA
- xFA6FQaUdNvsVzaJepdMZyfY6AAL3m+ZNuzgCgPhhTtu1YRMRaMPjYYEs1NQShShVbOArurj9xD
- 9GfxRienWd8XRU70ags48x6mcrY/w0+k23Gn24FLx7tvkcHshgwl/xCtG/5bp0/G79uAYKsJ9Vd
- ioqNLf/rZMJy1f2X/Jvp0di1Zk0Hpg==
+In-Reply-To: <20250930090920.131094-8-damon.ding@rock-chips.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI5MDA4MiBTYWx0ZWRfX4F+CmDCVzBy3
+ nVNnm6kRVPVJP7mqIW0FlP5COwoXJKz9Ew0WGdKwB9rfS5K2IUxL3koSW7ERaX3leGQyQhLEEGP
+ Mxm4ovKdKwvRJLNbn6Js2nyYQn1iO3Wh8o2ZTcpOlAuhmrzY7UpKrNikhPbfQbl2ATDo/YUmZhO
+ YkPUUA/9a2Fm+aDgl4EVUYUQWy8r7EzEOAEN8JEfpSO+/+fKGGU5f0d0YxRRSu3zzeIRPxpQrEU
+ 2T5QBIxIPhEsYs+zqo8L4MbkFcp6YnQ/rEIxscQ42pHGYvzWHV1Nv6cbzV8uSCC8rzL5kZiRMi9
+ ANPq2sk+3+L2qCek0WjqMEC3su0j5Pb/kh45z4/jW9OnlCQ1IOeQs3gknusKt3fNSviy++n/aFf
+ j44MwevZd+N74Uk9PFJ7HeH7R3Gilw==
+X-Proofpoint-ORIG-GUID: 4QGfe-w8v4vWazaPjeUMT2uuZbrFlHXT
+X-Authority-Analysis: v=2.4 cv=GLoF0+NK c=1 sm=1 tr=0 ts=68dc3afa cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=yJojWOMRYYMA:10 a=s8YR1HE3AAAA:8 a=tHzXnULJKltlW3Z4dK8A:9 a=CjuIK1q_8ugA:10
+ a=dawVfQjAaf238kedN5IG:22 a=jGH_LyMDp9YhSvY-UuyI:22
+X-Proofpoint-GUID: 4QGfe-w8v4vWazaPjeUMT2uuZbrFlHXT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-30_04,2025-09-29_04,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 phishscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
- spamscore=0 impostorscore=0 bulkscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270001
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 suspectscore=0
+ impostorscore=0 spamscore=0 bulkscore=0 clxscore=1015 phishscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2509150000
+ definitions=main-2509290082
 
-On Tue, Sep 30, 2025 at 05:09:06PM +0800, Damon Ding wrote:
-> As suggested by Dmitry, the DRM legacy bridge driver can be pulled
-> out of imx/ subdir for multi-platform use. The driver is also renamed
-> to make it more generic and suitable for platforms other than i.MX.
+On Tue, Sep 30, 2025 at 05:09:09PM +0800, Damon Ding wrote:
+> If there is neither a panel nor a bridge, the display timing can be
+> parsed from the display-timings node under the dp node.
 > 
-> Additionally, a new API drm_bridge_is_legacy() is added to identify
-> the legacy bridge, allowing specialized handling for such cases.
-
-Why do you need special handling for it?
-
+> In order to get rid of &analogix_dp_plat_data.get_modes() and make
+> the codes more consistent, apply DRM legacy bridge to parse display
+> timings.
 > 
 > Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> 
+> ------
+> 
+> Changes in v6:
+> - Apply DRM legacy bridge to parse display timings intead of
+>   implementing the same codes only for Exynos DP.
 > ---
->  drivers/gpu/drm/bridge/Kconfig                | 10 ++
->  drivers/gpu/drm/bridge/Makefile               |  1 +
->  drivers/gpu/drm/bridge/imx/Kconfig            | 10 --
->  drivers/gpu/drm/bridge/imx/Makefile           |  1 -
->  .../gpu/drm/bridge/imx/imx-legacy-bridge.c    | 91 -----------------
->  drivers/gpu/drm/bridge/legacy-bridge.c        | 99 +++++++++++++++++++
->  drivers/gpu/drm/imx/ipuv3/Kconfig             |  4 +-
->  drivers/gpu/drm/imx/ipuv3/imx-ldb.c           |  6 +-
->  drivers/gpu/drm/imx/ipuv3/parallel-display.c  |  4 +-
->  include/drm/bridge/imx.h                      | 17 ----
->  include/drm/bridge/legacy-bridge.h            | 18 ++++
->  11 files changed, 135 insertions(+), 126 deletions(-)
->  delete mode 100644 drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c
->  create mode 100644 drivers/gpu/drm/bridge/legacy-bridge.c
->  delete mode 100644 include/drm/bridge/imx.h
->  create mode 100644 include/drm/bridge/legacy-bridge.h
+>  drivers/gpu/drm/exynos/Kconfig     |  1 +
+>  drivers/gpu/drm/exynos/exynos_dp.c | 71 +++++++++---------------------
+>  2 files changed, 22 insertions(+), 50 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/exynos/Kconfig b/drivers/gpu/drm/exynos/Kconfig
+> index 0d13828e7d9e..66665d317848 100644
+> --- a/drivers/gpu/drm/exynos/Kconfig
+> +++ b/drivers/gpu/drm/exynos/Kconfig
+> @@ -72,6 +72,7 @@ config DRM_EXYNOS_DP
+>  	select DRM_ANALOGIX_DP
+>  	select DRM_DISPLAY_DP_HELPER
+>  	default DRM_EXYNOS
+> +	select DRM_LEGACY_BRIDGE
+>  	select DRM_PANEL
+>  	help
+>  	  This enables support for DP device.
+> diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
+> index e20513164032..507d0a98fe5b 100644
+> --- a/drivers/gpu/drm/exynos/exynos_dp.c
+> +++ b/drivers/gpu/drm/exynos/exynos_dp.c
+> @@ -19,6 +19,7 @@
+>  #include <video/videomode.h>
+>  
+>  #include <drm/bridge/analogix_dp.h>
+> +#include <drm/bridge/legacy-bridge.h>
+>  #include <drm/drm_atomic_helper.h>
+>  #include <drm/drm_bridge.h>
+>  #include <drm/drm_crtc.h>
+> @@ -38,11 +39,23 @@ struct exynos_dp_device {
+>  	struct drm_device          *drm_dev;
+>  	struct device              *dev;
+>  
+> -	struct videomode           vm;
+>  	struct analogix_dp_device *adp;
+>  	struct analogix_dp_plat_data plat_data;
+>  };
+>  
+> +static int exynos_dp_legacy_bridge_init(struct exynos_dp_device *dp,
+> +					struct drm_bridge **bridge)
+> +{
+> +	if (!bridge)
+> +		return -EINVAL;
 
-I'm slightly concerned with the name of 'legacy drm bridge', It was fine
-for 'i.MX legacy', but now it might be a bit of overkill. Maybe
-something like drm_display_mode or drm_of_display_mode bridge?
+Well, this can't happen, can it?
+
+> +
+> +	*bridge = devm_drm_legacy_bridge(dp->dev, dp->dev->of_node, DRM_MODE_CONNECTOR_eDP);
+> +	if (IS_ERR(*bridge))
+> +		return PTR_ERR(*bridge);
+> +
+> +	return 0;
+> +}
+
+I'd suggest inlining the function. It doesn't make sense to have
+one-line wrapper.
+
+> +
+>  static int exynos_dp_crtc_clock_enable(struct analogix_dp_plat_data *plat_data,
+>  				bool enable)
+>  {
+
+[...]
+
+>  static int exynos_dp_bridge_attach(struct analogix_dp_plat_data *plat_data,
+>  				   struct drm_bridge *bridge,
+>  				   struct drm_connector *connector)
+>  {
+>  	struct exynos_dp_device *dp = to_dp(plat_data);
+> +	enum drm_bridge_attach_flags flags = 0;
+>  	int ret;
+>  
+>  	/* Pre-empt DP connector creation if there's a bridge */
+>  	if (plat_data->next_bridge) {
+> -		ret = drm_bridge_attach(&dp->encoder, plat_data->next_bridge, bridge,
+> -					0);
+> +		if (drm_bridge_is_legacy(plat_data->next_bridge))
+
+I see... You are going to kill this line in one of the next patches, but
+the API will stay. I suggest adding a flag to the exynos_dp_device and
+then removing the flag once you migrate to drm_bridge_connector.
+
+> +			flags = DRM_BRIDGE_ATTACH_NO_CONNECTOR;
+> +
+> +		ret = drm_bridge_attach(&dp->encoder, plat_data->next_bridge, bridge, flags);
+>  		if (ret)
+>  			return ret;
+>  	}
 
 -- 
 With best wishes
