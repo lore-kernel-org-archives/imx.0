@@ -1,213 +1,235 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B602F6586
-	for <imx@lists.linux.dev>; Tue, 30 Sep 2025 10:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B022F9D8E;
+	Tue, 30 Sep 2025 11:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759227453; cv=none; b=iNqRbeWRed/o79S/Qo7RBkvFd57u0IpPst86R1x2MT2zYYnQOE28ukKNcrUN7DlMsRjkXs0KJT7X01OLsKICsKBTboaaWpudW2g3bpq8TfDje+6WY7K+QDw96lXeD7sYCw4rwwTEUR8L72j+Nb1e3nC3BVEF0pt5Bg5Vr7s1BmI=
+	t=1759230004; cv=none; b=bbExXTsfBcFu4hPNBQfoJPzQGWK6D48mdUkrZ0o6e/jCfTt/MTIXKv4MQTGedigz5GR8tmYeqgMmI4CsgNY9OqOscA2iZwtqis+Dm10rHOJdtpv4Z90UviKWkZQ7CRAhlkxyJN1gQd0dQAG5JdXh3fRquzXnZGBa1WLJaQazylA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759227453; c=relaxed/simple;
-	bh=8qHORJqUAHi9vbg7Lzi5OOvYqpe8RBN6f+IRPWO8/Bs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=FwkgtpV9KFiytPmjLK9ySCz5pfjgu47dw5qsXyuO7L2OLfI2A8LrxuuTYwSeaO+lj3fgtuvB+3OD/R7Ss740xH+2VkkrMem4LA5U3K7YmBF//M/bX7IBBK0Ed08iAhfInuc5JarKZesNkEVUovZWIak9iNVIwojO9JAMeFO8uWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=YPdM2M7D; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1759230004; c=relaxed/simple;
+	bh=hl6CpBsFM0yclQLF3Wr1UR3e+Pr0M3yXUJx6ZUgVFTo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WSYuc+M3UiIhWil9LzeCvIgf0lBpGri/ly+LkJoSOZi0qPSGV24hi1IW6e/vZ+ervFZCC8nYioZjEa04+NPE2cZBcUDg+jTttjzyFMeFsex1+zWJ3dYfVKvgo2QymQ3LnURrWfhgGR3Ng5tsS+EH245O8Dc/ajGRCNI/VYu42ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hMgAjDFi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="YPdM2M7D"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250930101729euoutp01b57e6fa199f1d9764685b479ee393f2c~qCAteIN_K1423914239euoutp01S;
-	Tue, 30 Sep 2025 10:17:29 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250930101729euoutp01b57e6fa199f1d9764685b479ee393f2c~qCAteIN_K1423914239euoutp01S
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1759227449;
-	bh=i0hsYIdTBG3RoYY2oCy/zDpSiKCipQoEifIaLF7Lbqw=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=YPdM2M7DLyVY6SAOTHX498pf0ytk9nQQ+weWK1WExpMmK0cg8gTYgrpSPX6QOX6zn
-	 icZtcxZ4LcbPQt1kPN2ld9XcNpX2M8e8z3G4+0flukSeQfZzUVZBPDtiFLKFpOE0nC
-	 0GihKsb7ZPd9aC6ShngC8sIFtoA7m0PgHtycPcb4=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250930101728eucas1p2d174bb7433699baa7583852c50f9ccb7~qCAtAAJvC0536105361eucas1p27;
-	Tue, 30 Sep 2025 10:17:28 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250930101727eusmtip2963d1f7d88d03e442d658090d83d7b2d~qCArVvP-21105911059eusmtip28;
-	Tue, 30 Sep 2025 10:17:27 +0000 (GMT)
-Message-ID: <41c2a141-a72e-4780-ab32-f22f3a2e0179@samsung.com>
-Date: Tue, 30 Sep 2025 12:17:26 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hMgAjDFi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51488C4CEF0;
+	Tue, 30 Sep 2025 11:00:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759230003;
+	bh=hl6CpBsFM0yclQLF3Wr1UR3e+Pr0M3yXUJx6ZUgVFTo=;
+	h=From:Subject:Date:To:Cc:From;
+	b=hMgAjDFiUcHZlHXjNfiivYmi8e8vUVWCi59OcfXv0rRTbwfOXoZRgN9AbmT6dp24I
+	 QG9cauPJW6cadrjxv9LaBeqXg2c41/8Afqvud6K2PeYu5cT41oVL2Rd0dO08HLJ1KN
+	 EzucbmMAqmuZu+7MBn6um5hAXXbmRWnDv/rV8vIGOBaSOEnTsFyZ6ZM571/O9AUMGH
+	 Flap9Gu7hgedgeX22zbtnMoQdL9pkmX/clya9FLtDuexAQAJiXx6m81fUxDWpuNtm+
+	 hQszCjBUs8oMkf3jYBWhJnB4L+H4zNY2ZqKUrJaEKvD8H/JgewXOHCi9u/myHJLxn8
+	 dS3ZTJeRZILEw==
+From: Maxime Ripard <mripard@kernel.org>
+Subject: [PATCH v5 00/39] drm/atomic: Get rid of existing states (not
+ really)
+Date: Tue, 30 Sep 2025 12:59:15 +0200
+Message-Id: <20250930-drm-no-more-existing-state-v5-0-eeb9e1287907@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v6 00/18] Apply drm_bridge_connector and panel_bridge
- helper for the Analogix DP driver
-To: Damon Ding <damon.ding@rock-chips.com>, andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org, rfoss@kernel.org
-Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
-	jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
-	jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
-	heiko@sntech.de, andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com,
-	dianders@chromium.org, luca.ceresoli@bootlin.com, jani.nikula@intel.com,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20250930090920.131094-1-damon.ding@rock-chips.com>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20250930101728eucas1p2d174bb7433699baa7583852c50f9ccb7
-X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250930091415eucas1p1f82ef0c96cbe0c7c673d975d502629e2
-X-EPHeader: CA
-X-CMS-RootMailID: 20250930091415eucas1p1f82ef0c96cbe0c7c673d975d502629e2
-References: <CGME20250930091415eucas1p1f82ef0c96cbe0c7c673d975d502629e2@eucas1p1.samsung.com>
-	<20250930090920.131094-1-damon.ding@rock-chips.com>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAO422gC/43NTWrDMBCG4asErTtFP5at6ar3KF3Yo5Ej2khFM
+ iYl+O5VsmlKwHT5fgzPXETlErmKl8NFFF5jjTm1sE8HQccxzQzRtxZaaiudtuDLCVKGUy4MfI5
+ 1iWmGuowLA05GW01qNGYSDfgqHOL5hr+9tz6261y+b79WdV3/xa4KJATpiDwGZwlfP7gk/nzOZ
+ RZXd9W/Fkq9a+lmeUYXyIbe9/2DZe4t3LVMsxQN4+Cxl2TMg9XdWWrYtbpmWd9N6BySIffH2rb
+ tB24+KlipAQAA
+X-Change-ID: 20250825-drm-no-more-existing-state-9b3252c1a33b
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ =?utf-8?q?Ville_Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>, 
+ Louis Chauvet <louis.chauvet@bootlin.com>, 
+ Haneen Mohammed <hamohammed.sa@gmail.com>, 
+ Melissa Wen <melissa.srw@gmail.com>, Jyri Sarha <jyri.sarha@iki.fi>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Paul Cercueil <paul@crapouillou.net>, linux-mips@vger.kernel.org, 
+ Liviu Dudau <liviu.dudau@arm.com>, Russell King <linux@armlinux.org.uk>, 
+ Manikandan Muralidharan <manikandan.m@microchip.com>, 
+ Dharma Balasubiramani <dharma.b@microchip.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ linux-arm-kernel@lists.infradead.org, Inki Dae <inki.dae@samsung.com>, 
+ Seung-Woo Kim <sw0312.kim@samsung.com>, 
+ Kyungmin Park <kyungmin.park@samsung.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, linux-samsung-soc@vger.kernel.org, 
+ Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+ Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, 
+ Lucas Stach <l.stach@pengutronix.de>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
+ Edmund Dea <edmund.j.dea@intel.com>, Paul Kocialkowski <paulk@sys-base.io>, 
+ Sui Jingfeng <suijingfeng@loongson.cn>, 
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Rob Clark <robin.clark@oss.qualcomm.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Abhinav Kumar <abhinav.kumar@linux.dev>, 
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>, Sean Paul <sean@poorly.run>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
+ Sandy Huang <hjc@rock-chips.com>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+ Andy Yan <andy.yan@rock-chips.com>, linux-rockchip@lists.infradead.org, 
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, linux-sunxi@lists.linux.dev, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, linux-tegra@vger.kernel.org, 
+ Hans de Goede <hansg@kernel.org>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6084; i=mripard@kernel.org;
+ h=from:subject:message-id; bh=hl6CpBsFM0yclQLF3Wr1UR3e+Pr0M3yXUJx6ZUgVFTo=;
+ b=owGbwMvMwCmsHn9OcpHtvjLG02pJDBm3d8j/a/a6xTLbujO7gOmIX8GRFI/Z08TFfa8l/f2wJ
+ 1vwnOCTjqksDMKcDLJiiixPZMJOL29fXOVgv/IHzBxWJpAhDFycAjCRo76M9RGT5kX9/PrcYUOU
+ Xc3vVCdrnrZQvp8/9rW2TlB2zd9arHTJpL76n8H01qSDffMSOxbsZayPWzpdcdqEsnkMcZ3Su3a
+ bh9aUT/vo9XJ+SPfni76/f52viFVZ8PjkVV3ZNO+5Bldt9xgAAA==
+X-Developer-Key: i=mripard@kernel.org; a=openpgp;
+ fpr=BE5675C37E818C8B5764241C254BCFC56BF6CE8D
 
-On 30.09.2025 11:09, Damon Ding wrote:
-> PATCH 1 is a small format optimization for struct analogid_dp_device.
-> PATCH 2 is to perform mode setting in &drm_bridge_funcs.atomic_enable.
-> PATCH 3 is to add a new parameter to store the point of next bridge.
-> PATCH 4 is to make legacy bridge driver more universal.
-> PATCH 5-10 are preparations for apply drm_bridge_connector helper.
-> PATCH 11 is to ensure last bridge determines OP_EDID/OP_MODES capabilities.
-> PATCH 12 is to apply the drm_bridge_connector helper.
-> PATCH 13-15 are to move the panel/bridge parsing to the Analogix side.
-> PATCH 16 is to attach the next bridge on Analogix side uniformly.
-> PATCH 17-18 are to apply the panel_bridge helper.
+Hi,
 
-Works fine on my Exynos based test boards with (e)DP displays. Thanks!
+Here's a series to get rid of the drm_atomic_helper_get_existing_*_state
+accessors.
 
-Feel free to update tags if needed:
+The initial intent was to remove the __drm_*_state->state pointer to
+only rely on old and new states, but we still need it now to know which
+of the two we need to free: if a state has not been committed (either
+dropped or checked only), then we need to free the new one, if it has
+been committed we need to free the old state. 
 
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Thus, the state pointer is kept (and documented) only to point to the
+state we should free eventually.
 
+All users have been converted to the relevant old or new state
+accessors.  
 
-> Damon Ding (18):
->    drm/bridge: analogix_dp: Formalize the struct analogix_dp_device
->    drm/bridge: analogix_dp: Move &drm_bridge_funcs.mode_set to
->      &drm_bridge_funcs.atomic_enable
->    drm/bridge: analogix_dp: Add &analogix_dp_plat_data.next_bridge
->    drm/bridge: Move legacy bridge driver out of imx directory for
->      multi-platform use
->    drm/exynos: exynos_dp: Remove &exynos_dp_device.ptn_bridge
->    drm/exynos: exynos_dp: Remove unused &exynos_dp_device.connector
->    drm/exynos: exynos_dp: Apply legacy bridge to parse the
->      display-timings node
->    drm/bridge: analogix_dp: Remove redundant
->      &analogix_dp_plat_data.skip_connector
->    drm/bridge: analogix_dp: Move the color format check to
->      .atomic_check() for Rockchip platforms
->    drm/bridge: analogix_dp: Remove unused
->      &analogix_dp_plat_data.get_modes()
->    drm/display: bridge_connector: Ensure last bridge determines
->      EDID/modes detection capabilities
->    drm/bridge: analogix_dp: Apply drm_bridge_connector helper
->    drm/bridge: analogix_dp: Add new API analogix_dp_finish_probe()
->    drm/rockchip: analogix_dp: Apply analogix_dp_finish_probe()
->    drm/exynos: exynos_dp: Apply analogix_dp_finish_probe()
->    drm/bridge: analogix_dp: Attach the next bridge in
->      analogix_dp_bridge_attach()
->    drm/bridge: analogix_dp: Remove bridge disabing and panel unpreparing
->      in analogix_dp_unbind()
->    drm/bridge: analogix_dp: Apply panel_bridge helper
->
->   drivers/gpu/drm/bridge/Kconfig                |  10 +
->   drivers/gpu/drm/bridge/Makefile               |   1 +
->   drivers/gpu/drm/bridge/analogix/Kconfig       |   1 +
->   .../drm/bridge/analogix/analogix_dp_core.c    | 395 +++++++++---------
->   .../drm/bridge/analogix/analogix_dp_core.h    |   5 +-
->   drivers/gpu/drm/bridge/imx/Kconfig            |  10 -
->   drivers/gpu/drm/bridge/imx/Makefile           |   1 -
->   .../gpu/drm/bridge/imx/imx-legacy-bridge.c    |  91 ----
->   drivers/gpu/drm/bridge/legacy-bridge.c        |  99 +++++
->   .../gpu/drm/display/drm_bridge_connector.c    |  42 ++
->   drivers/gpu/drm/exynos/Kconfig                |   2 +
->   drivers/gpu/drm/exynos/exynos_dp.c            | 117 ++----
->   drivers/gpu/drm/imx/ipuv3/Kconfig             |   4 +-
->   drivers/gpu/drm/imx/ipuv3/imx-ldb.c           |   6 +-
->   drivers/gpu/drm/imx/ipuv3/parallel-display.c  |   4 +-
->   drivers/gpu/drm/rockchip/Kconfig              |   1 +
->   .../gpu/drm/rockchip/analogix_dp-rockchip.c   |  67 +--
->   include/drm/bridge/analogix_dp.h              |   8 +-
->   include/drm/bridge/imx.h                      |  17 -
->   include/drm/bridge/legacy-bridge.h            |  18 +
->   20 files changed, 433 insertions(+), 466 deletions(-)
->   delete mode 100644 drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c
->   create mode 100644 drivers/gpu/drm/bridge/legacy-bridge.c
->   delete mode 100644 include/drm/bridge/imx.h
->   create mode 100644 include/drm/bridge/legacy-bridge.h
->
-> ---
->
-> Changes in v2:
-> - Update Exynos DP driver synchronously.
-> - Move the panel/bridge parsing to the Analogix side.
->
-> Changes in v3:
-> - Rebase for the existing devm_drm_bridge_alloc() applying commit.
-> - Fix the typographical error of panel/bridge check in exynos_dp_bind().
-> - Squash all commits related to skip_connector deletion in both Exynos and
->    Analogix code into one.
-> - Apply panel_bridge helper to make the codes more concise.
-> - Fix the handing of bridge in analogix_dp_bridge_get_modes().
-> - Remove unnecessary parameter struct drm_connector* for callback
->    &analogix_dp_plat_data.attach().
-> - In order to decouple the connector driver and the bridge driver, move
->    the bridge connector initilization to the Rockchip and Exynos sides.
->
-> Changes in v4:
-> - Rebase for the applied &drm_bridge_funcs.detect() modification commit.
-> - Rename analogix_dp_find_panel_or_bridge() to analogix_dp_finish_probe().
-> - Drop the drmm_encoder_init() modification commit.
-> - Rename the &analogix_dp_plat_data.bridge to
->    &analogix_dp_plat_data.next_bridge.
->
-> Changes in v5:
-> - Add legacy bridge to parse the display-timings node under the dp node
->    for Exynos side.
-> - Move color format check to &drm_connector_helper_funcs.atomic_check()
->    in order to get rid of &analogix_dp_plat_data.get_modes().
-> - Remove unused callback &analogix_dp_plat_data.get_modes().
-> - Distinguish the &drm_bridge->ops of Analogix bridge based on whether
->    the downstream device is a panel, a bridge or neither.
-> - Select DRM_DISPLAY_DP_AUX_BUS for DRM_ANALOGIX_DP, and remove it for
->    ROCKCHIP_ANALOGIX_DP.
-> - Apply rockchip_dp_attach() to support the next bridge attachment for
->    the Rockchip side.
-> - Move next_bridge attachment from Analogix side to Rockchip/Exynos sides.
->
-> Changes in v6:
-> - Move legacy bridge driver out of imx directory for multi-platform use.
-> - Apply DRM legacy bridge to parse display timings intead of implementing
->    the same codes only for Exynos DP.
-> - Ensure last bridge determines EDID/modes detection capabilities in DRM
->    bridge_connector driver.
-> - Remove unnecessary drm_bridge_get_modes() in
->    analogix_dp_bridge_get_modes().
-> - Simplify analogix_dp_bridge_edid_read().
-> - If the next is a bridge, set DRM_BRIDGE_OP_DETECT and return
->    connector_status_connected in analogix_dp_bridge_detect().
-> - Set flag DRM_BRIDGE_ATTACH_NO_CONNECTOR for bridge attachment while
->    binding. Meanwhile, make DRM_BRIDGE_ATTACH_NO_CONNECTOR unsuppported
->    in analogix_dp_bridge_attach().
-> - Move the next bridge attachment to the Analogix side rather than
->    scattered on Rockchip and Exynos sides.
-> - Remove the unnecessary analogix_dp_bridge_get_modes().
-> - Squash [PATCH v5 15/17] into [PATCH v5 17/17].
-> - Fix the &drm_bridge->ops to DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT.
->
-Best regards
+This was tested on tidss.
+
+Let me know what you think,
+Maxime
+
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+---
+Changes in v5:
+- Added some more documentation on state teardown
+- Link to v4: https://lore.kernel.org/r/20250917-drm-no-more-existing-state-v4-0-5d4b9889c3c8@kernel.org
+
+Changes in v4:
+- Fix ingenic
+- Rebased on latest drm-misc-next tag
+- Link to v3: https://lore.kernel.org/r/20250909-drm-no-more-existing-state-v3-0-1c7a7d960c33@kernel.org
+
+Changes in v3:
+- Added an armada rework patch
+- Added an ingenic fix
+- Collected tags
+- Rebased on latest drm-misc-next tag
+- Link to v2: https://lore.kernel.org/r/20250902-drm-no-more-existing-state-v2-0-de98fc5f6d66@kernel.org
+
+Changes in v2:
+- Dropped the first and second patches
+- Reworked the recipient list to be nicer with SMTPs
+- Link to v1: https://lore.kernel.org/r/20250825-drm-no-more-existing-state-v1-0-f08ccd9f85c9@kernel.org
+
+---
+Maxime Ripard (39):
+      drm/atomic: Convert drm_atomic_get_connector_state() to use new connector state
+      drm/atomic: Remove unused drm_atomic_get_existing_connector_state()
+      drm/atomic: Document __drm_connectors_state state pointer
+      drm/atomic: Convert __drm_atomic_get_current_plane_state() to modern accessor
+      drm/atomic: Convert drm_atomic_get_plane_state() to use new plane state
+      drm/vkms: Convert vkms_crtc_atomic_check() to use new plane state
+      drm/tilcdc: crtc: Use drm_atomic_helper_check_crtc_primary_plane()
+      drm/atomic: Remove unused drm_atomic_get_existing_plane_state()
+      drm/atomic: Document __drm_planes_state state pointer
+      drm/atomic: Convert drm_atomic_get_crtc_state() to use new connector state
+      drm/ingenic: ipu: Switch to drm_atomic_get_new_crtc_state()
+      drm/arm/malidp: Switch to drm_atomic_get_new_crtc_state()
+      drm/armada: Drop always true condition in atomic_check
+      drm/armada: Switch to drm_atomic_get_new_crtc_state()
+      drm/atmel-hlcdc: Switch to drm_atomic_get_new_crtc_state()
+      drm/exynos: Switch to drm_atomic_get_new_crtc_state()
+      drm/imx-dc: Switch to drm_atomic_get_new_crtc_state()
+      drm/imx-dcss: Switch to drm_atomic_get_new_crtc_state()
+      drm/imx-ipuv3: Switch to drm_atomic_get_new_crtc_state()
+      drm/ingenic: Switch to drm_atomic_get_new_crtc_state()
+      drm/kmb: Switch to drm_atomic_get_new_crtc_state()
+      drm/logicvc: Switch to drm_atomic_get_new_crtc_state()
+      drm/loongson: Switch to drm_atomic_get_new_crtc_state()
+      drm/mediatek: Switch to drm_atomic_get_new_crtc_state()
+      drm/msm/mdp5: Switch to drm_atomic_get_new_crtc_state()
+      drm/omap: Switch to drm_atomic_get_new_crtc_state()
+      drm/rockchip: Switch to drm_atomic_get_new_crtc_state()
+      drm/sun4i: Switch to drm_atomic_get_new_crtc_state()
+      drm/tegra: Switch to drm_atomic_get_new_crtc_state()
+      drm/tilcdc: Switch to drm_atomic_get_new_crtc_state()
+      drm/vboxvideo: Switch to drm_atomic_get_new_crtc_state()
+      drm/vc4: Switch to drm_atomic_get_new_crtc_state()
+      drm/atomic: Switch to drm_atomic_get_new_crtc_state()
+      drm/framebuffer: Switch to drm_atomic_get_new_crtc_state()
+      drm/atomic: Remove unused drm_atomic_get_existing_crtc_state()
+      drm/atomic: Document __drm_crtcs_state state pointer
+      drm/ingenic: crtc: Switch to ingenic_drm_get_new_priv_state()
+      drm/atomic: Convert drm_atomic_get_private_obj_state() to use new plane state
+      drm/atomic: Document __drm_private_objs_state state pointer
+
+ drivers/gpu/drm/arm/malidp_planes.c             |   2 +-
+ drivers/gpu/drm/armada/armada_plane.c           |   7 +-
+ drivers/gpu/drm/atmel-hlcdc/atmel_hlcdc_plane.c |   2 +-
+ drivers/gpu/drm/drm_atomic.c                    |  21 ++--
+ drivers/gpu/drm/drm_framebuffer.c               |   2 +-
+ drivers/gpu/drm/exynos/exynos_drm_plane.c       |   2 +-
+ drivers/gpu/drm/imx/dc/dc-plane.c               |   2 +-
+ drivers/gpu/drm/imx/dcss/dcss-plane.c           |   4 +-
+ drivers/gpu/drm/imx/ipuv3/ipuv3-plane.c         |   3 +-
+ drivers/gpu/drm/ingenic/ingenic-drm-drv.c       |  13 +-
+ drivers/gpu/drm/ingenic/ingenic-ipu.c           |   4 +-
+ drivers/gpu/drm/kmb/kmb_plane.c                 |   3 +-
+ drivers/gpu/drm/logicvc/logicvc_layer.c         |   4 +-
+ drivers/gpu/drm/loongson/lsdc_plane.c           |   2 +-
+ drivers/gpu/drm/mediatek/mtk_plane.c            |   3 +-
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c      |   7 +-
+ drivers/gpu/drm/omapdrm/omap_plane.c            |   2 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c     |   6 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c    |   2 +-
+ drivers/gpu/drm/sun4i/sun8i_ui_layer.c          |   3 +-
+ drivers/gpu/drm/sun4i/sun8i_vi_layer.c          |   3 +-
+ drivers/gpu/drm/tegra/dc.c                      |   2 +-
+ drivers/gpu/drm/tilcdc/tilcdc_crtc.c            |   9 +-
+ drivers/gpu/drm/tilcdc/tilcdc_plane.c           |   3 +-
+ drivers/gpu/drm/vboxvideo/vbox_mode.c           |   8 +-
+ drivers/gpu/drm/vc4/vc4_plane.c                 |   6 +-
+ drivers/gpu/drm/vkms/vkms_crtc.c                |   4 +-
+ include/drm/drm_atomic.h                        | 152 +++++++++++++-----------
+ 28 files changed, 140 insertions(+), 141 deletions(-)
+---
+base-commit: 91494dee1091a14d91da6bcb39e12a907765c793
+change-id: 20250825-drm-no-more-existing-state-9b3252c1a33b
+
+Best regards,
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Maxime Ripard <mripard@kernel.org>
 
