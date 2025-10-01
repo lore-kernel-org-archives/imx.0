@@ -1,217 +1,217 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013002.outbound.protection.outlook.com [52.101.72.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49132836A0
-	for <imx@lists.linux.dev>; Wed,  1 Oct 2025 16:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759334999; cv=none; b=WKikFgflDc/nY9UGZ3vLWGIRRkcqnq0IsxY4A9ZeN0x52xQySVNy+j1ycljJoCqcPXt40N65umY/3kI0XupXVeKzsy4CG2Hi1DdW5NwfNPjs2ZCZ6Hwug5+rvOYvqoUQNMyj2rB54i3ImbacIIoy9RjOIzz4LmdOOD5Qv+3Js7k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759334999; c=relaxed/simple;
-	bh=2k01JO4kLyXEdsY63gzIBYkAfPijzflAQjkb2arWM9o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VzGItj6RzZdLtmP+dZ6vg0eB5CYyTmodSkT7Z/RTe+/CH1F/Tt8CaqGKJbiTkSq1Dr1hs0vqh4GnjhHv9RRVjmby+FrAgYFRdLJpiIVM4Jml+niyBhc2zOAuyiWBoEos5veH8MlpnwDrmWv8Eq33SvE7IGMuRWoxPRSJ3cl3o1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=rv7pdWQx; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3B42777E0
+	for <imx@lists.linux.dev>; Wed,  1 Oct 2025 20:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759349393; cv=fail; b=MuI7xqN9crkF1rDlhDVcrYXyDvLe1+FoNWn+cxYLdksfSHxojZwok23dZdqP9sbSqJqpp25ixyFs6Hjdv2DpjhAmGjEXk9o4r/8ZAFS7GQq+pBxjxgpGnuqLxHDJkbAf46nCUvY59qbBR3Nmbd8LTUB8P8xemep4c06Q8smA1mw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759349393; c=relaxed/simple;
+	bh=OxcdilawAgVhKGrESNfURNwn4AxwrIrZUKEemrOjLsY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=MKzWtRm/FYrCTNIO4q3PJXe3Po1bshoczCNNLdPMZFoj5DqEnJ6dwlgXJ8eai/pCX+JaxKi/0YtbELnKUvKmHnXNmbd5wiJJrnvP/DNgbxbk2iUjwd8C3qpM3xbJSLXeIKXidW4lqXl3OiLW6/TP+y23N7dqqKMnyUJDSdzVkxo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=l0g7Gvgf; arc=fail smtp.client-ip=52.101.72.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="rv7pdWQx"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3A8AC1A1075;
-	Wed,  1 Oct 2025 16:09:55 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 093A5606BF;
-	Wed,  1 Oct 2025 16:09:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E7266102F1A3E;
-	Wed,  1 Oct 2025 18:09:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1759334993; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=9CvJDGBSoVXbt+J412aK4yig9hsCig6aqy7YzBwhW2U=;
-	b=rv7pdWQxzoqrjN3bhcDG6IeHqv9N+XFI6QwkO+p2auYuGPT6LdtWBCRBaL+JXAoVwiZp3M
-	GCz4Tg3Kp9FHaQ9ya4b1XoJUTf6IrVRO2rb9kWsrBaj8QlhrQSzkcUKcKaIjBJevIfdKML
-	Wq9Hw3uoV22IEeAse398wh3dpFWcPNP4997mm0bXmVga+Na0ZqDBIom3Xkc/v8U54fbN0P
-	dUv7sLcbxNiQ6FHk4AuZ6ks4JvbyqGVlVceYlp2gOFBy2i4u7ZoQOFNKAjjRBjtVSLzzx1
-	IWzQUOqHYmLJoe+mlbvD6F85QWGNZgLSYs8vBFGYgIlNgCS9dU1HYJqlbZYC9A==
-Date: Wed, 1 Oct 2025 18:09:22 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Damon Ding <damon.ding@rock-chips.com>
-Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
- simona@ffwll.ch, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, inki.dae@samsung.com,
- sw0312.kim@samsung.com, kyungmin.park@samsung.com, krzk@kernel.org,
- alim.akhtar@samsung.com, jingoohan1@gmail.com, p.zabel@pengutronix.de,
- hjc@rock-chips.com, heiko@sntech.de, andy.yan@rock-chips.com,
- dmitry.baryshkov@oss.qualcomm.com, dianders@chromium.org,
- m.szyprowski@samsung.com, jani.nikula@intel.com,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v6 11/18] drm/display: bridge_connector: Ensure last
- bridge determines EDID/modes detection capabilities
-Message-ID: <20251001180922.6bbe42ac@booty>
-In-Reply-To: <20250930090920.131094-12-damon.ding@rock-chips.com>
-References: <20250930090920.131094-1-damon.ding@rock-chips.com>
-	<20250930090920.131094-12-damon.ding@rock-chips.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="l0g7Gvgf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dHAHdbW6X1Fwzpu9FTsnk/8d39y3xWgfJwGhHbD9W2A+a3jePuONTgpGSg2lpWi1Dy6HR4wU+WBSe/5Wg8f4ooRn9cgU8ZRlelOUnCCIqblAd96nRH1/f+tauSOx/tcvNnZSeaM4ypuc8+xobnwIVZOhlIRFEwcDY1n63DHdhiiVF+8I9XkXg9DiSn/+skpxpDnACB9962Ey9ucugfMaj7p+BPSK+nzlYb3T22KP2nyPNzEbRPcyLJz9V3kVhaXoU0HJlnqc5nitACFCOX6vZmon6tSb3Fjsy1HlpDvsRJItpPP07KWfkgufkzestdiF1gTJL5RpSBgi0R0hUpnvxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r12MnguW8L5mvyMD2zTs9NXdaqYFLRmMYAGm7E6tPS8=;
+ b=KzGVj/2iibM9yp14UUekolcKkNmvWoQvQWINOQxcOTaQPSQNBL8heC9dEJHnd3VyonoUKWdDIKAGD0E7K74+da8pHJhmUWbKy+V/4A56J8TqgQ9D9B/Xf4pZA+bXUuycqlLk2bpP6u65uHmVTCg9k6UR2XFjTChRWGtqJ7SkZJWR2kwb8x79GWRJZFT3TWYfpqXE6Y+4vJPcnKQBKicUabP6+TRcg4NzimuMaA1Mmmf7dt4/Dt7Z/9uWa3ADbtm1oHOxfCUGm3G2AJwVu+eH8Ht/iDHbzi7LMX34dlhgaXn6gcfHhIgBXsVfK7OEgtzFAcmVg0Dy2RSjY7vbfXdDTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r12MnguW8L5mvyMD2zTs9NXdaqYFLRmMYAGm7E6tPS8=;
+ b=l0g7GvgfVWN5h7cDvdCnMHwjP7pKN1aysm6Jf2GSdzOKecerdseAqQxAHqmZ/WKSH6wNvWHN9jpLVMeush7UMltAhUu6kq09Gg9OfNRRRJiRVjSpg2+feguunJLLg5TbscJrPlugxDyudhdF0Jot2uJW97YNvbnW/yPNqugy2Vs6HNLCEgRz+bGRaOKUndrQfA9n049DUWUye8SsyCaiQOAPOsdnc2kSRrheFjA16+jzcc2Rvh4q/P0gS8JT7KhbHC3XSI74lgkTWtF83YULgPpAPzWSNs6NwyXuCfuf3qbeP3POPxv5Flc4tsICvwpb1/V2XI/jUPe2DWCOUji7sw==
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by VI1PR04MB9737.eurprd04.prod.outlook.com (2603:10a6:800:1dc::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.14; Wed, 1 Oct
+ 2025 20:09:46 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612%4]) with mapi id 15.20.9182.013; Wed, 1 Oct 2025
+ 20:09:46 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+CC: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier
+	<mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Linus Walleij
+	<linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng
+ Fan <peng.fan@nxp.com>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
+Subject: RE: [PATCH v2 2/4] remoteproc: imx_rproc: Populate devices under
+ "rpmsg" subnode
+Thread-Topic: [PATCH v2 2/4] remoteproc: imx_rproc: Populate devices under
+ "rpmsg" subnode
+Thread-Index: AQHcK/wu+aOBwXRWf0WFo1ZHzvDRXrSoUS4AgAV0X7A=
+Date: Wed, 1 Oct 2025 20:09:46 +0000
+Message-ID:
+ <PAXPR04MB9185B231F18733127969B47489E6A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20250922200413.309707-1-shenwei.wang@nxp.com>
+ <20250922200413.309707-3-shenwei.wang@nxp.com>
+ <20250928084752.GB29690@nxa18884-linux.ap.freescale.net>
+In-Reply-To: <20250928084752.GB29690@nxa18884-linux.ap.freescale.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|VI1PR04MB9737:EE_
+x-ms-office365-filtering-correlation-id: 21320c8c-2847-4ab2-a946-08de01267801
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|376014|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?wM3OaXpP6SL6npoWC1NeVyNKSZGiNxs9H0TqNEra6WAGMfFk2uXRVZSPeLhE?=
+ =?us-ascii?Q?pxNMKCWnn2Dt4FcIZ8uDgB9/ZkL6Oyj1nQfI3jyld20uZ5tXXcLEHcfgM1kf?=
+ =?us-ascii?Q?4nYnxKs8VQ6tlOpHPxFoz1b8yIB2inNSThBG2PJ6gu1wRHNVLoaM0wBditHc?=
+ =?us-ascii?Q?kZOK8eaC/UmVsrgvTqr4RJI47M6sUpinfACevLHBNua9rMY+Ro2WOca3xOTH?=
+ =?us-ascii?Q?tv1aMW5NsWwbt61yXLNTzm19Bq2d6C7e69VUXeJ7AaN2NGn7bTRQMhmJwByN?=
+ =?us-ascii?Q?FkLZMlRX+AxU/PBdIy2NxT0ikSIWk7WS4nADA+iakLYxvQQKXmbbPqP/DnXq?=
+ =?us-ascii?Q?8fDZ9bkw1EB1kFqdIwFoA6KA0LWfuLL8n8N0qoixJAgOSx02Xu9+ZJKCvrpM?=
+ =?us-ascii?Q?j8ZIW9t0qhJ6m/oDIblVTGR8FFP3J6EC07ud47oneZyyVq/E6SvoFmin+oRv?=
+ =?us-ascii?Q?WEKPLZlIkplBF0NEOp7nHTVVFd7VTxjG8JTIiNc+dPjSme7u+VWcCfUyv0j+?=
+ =?us-ascii?Q?1J0sb6fxqQgCNc1UxKqYjzJaE3Fh7LuE1JyJ/6Xi3/yS6aExEnfOEmoUR5F/?=
+ =?us-ascii?Q?cCCfSwp1q1p2xhp5coPfxsrHgHyqp6i+cvfeNpxMB+Sfnr2HyEdLSzVJ/GCv?=
+ =?us-ascii?Q?RgSd/kS+JcEEmTthDeD70UWvKvFXgALwvKyjX6KuTYK4BBTSVQcNzXeeX7sX?=
+ =?us-ascii?Q?421Wp6cIBHK9fFebFNVNPCuNVlg/OF2M6wZt+1tqo4VQgdtkc3KtRU6RGSKt?=
+ =?us-ascii?Q?jqEArRbDq0PSLE4gj8COuJJaR8Vl82IKBjzTUZQ+wJRlLeFO/Aj5Y81FoBMY?=
+ =?us-ascii?Q?SC2JpjnkpUxaGIhnjY3t3DSMaH9rQEFuZx8pmgEz89QNPgADc+8hLdOH4Zzu?=
+ =?us-ascii?Q?8ro5dY4yE8x2I+eBGPIX52CIcRObb7oBvmAf4J/RNiHKNSpHaMdL5JCFhsRR?=
+ =?us-ascii?Q?0L+BpM2NyA/qhq7uCrb+q2EM0zbM/LNFCj+NuCgiEtM/t92LJrVsYKriyA6i?=
+ =?us-ascii?Q?FcCcSTp7zCli9t+UK+zjkcLhf9ZHdeG9v+QuX2uVpbFKlfeXpFyfXnSbovcR?=
+ =?us-ascii?Q?7IwHXu34eF6u2X1wZK3ETZBkQJdxlZsKmBDOyHvHpeLx7+NMKLDDnGyVFjDJ?=
+ =?us-ascii?Q?NHON14U294C41Qn2wYe+jmxQGPAR11BQa6apMsPjgUF61zmt8GQbI8EBAb+9?=
+ =?us-ascii?Q?NprnLMnyHx8TrIFuqc5L7N5qRgUAvPi1cfS+L1hMWaGQvfJWD+6YBBVc+k5g?=
+ =?us-ascii?Q?4nwZ11sXy20PGr+9uU/+Q5obr8lhy1130vgW7yMbjfcwJxrf96B5b2QEEUrA?=
+ =?us-ascii?Q?Ly1GN8gCBlBdXDY0viOwXlqvpBp5a47mLRLZF/VEmKQWUCvLOMViv5LqVP21?=
+ =?us-ascii?Q?QD/RcNHaqtE7Gcy+GYX2/InQevzyLSJFP6n/DUvvvuUUTQdpVRsjV1ZInoGI?=
+ =?us-ascii?Q?8s4ef4MQK1K2ddnmdG8wctwoc44T/29iyXBwefXhv0HseCWq7GfX5Ub0FtG+?=
+ =?us-ascii?Q?BhAKKswu6sgxUfbNFUQYZZMwWmuq9OhjfvUZ?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?1tbizWQXLDvamJT9AapdOb9SqTW/vlTrYigl4Pht+G3G6aSmTV1nldB3Z6u2?=
+ =?us-ascii?Q?Z/EdoTyZkJzm8ZFMSnZTHx08MfI521/34P7OE5buCBJZtAEfAeuB1PChkyIq?=
+ =?us-ascii?Q?FshsX/ADLCI/tgC1oHIAFx9rzlKcMLUaFjwrfkhrqlvdRY9ctP3yVsFpyuxA?=
+ =?us-ascii?Q?QdRODuzIRmbCoor9sy3EctzQBm/NEPyNQvN1PgazHYkOldCtROBTsQAngK0U?=
+ =?us-ascii?Q?iPfK52vMxfu+HYhYicwR/9NHMc9u8MDq0zEMksAAzyTnnyzdSmq2fohBwjP2?=
+ =?us-ascii?Q?vndJzUZRRg4BOLRvF3uiLUEiv80A9+YehlBu18pqCH1mLt2NJ1twE7caRY2h?=
+ =?us-ascii?Q?aGsk/MzaupYcXxvoNINNwZRMKQYwuZirs8lWesVm5jsTrR5U/5sYrBHj9fEU?=
+ =?us-ascii?Q?tl6CT8zR/bhQSDEpqAPwMewr+CD0Y/r7O6UFmFO0fVllOmA1SGGliJqn3/V+?=
+ =?us-ascii?Q?ZJNpye4d4Xoqmzr8MPw3ByUZocoK+IPwl1TTZ5pt2qg+NA8JO+HpYK2CY1nn?=
+ =?us-ascii?Q?q2nsQyd+kaphz5214HjWYXWUF5hkKpUPXXLgeftWBJvxsiaX8rOnveN6CN9v?=
+ =?us-ascii?Q?WYvs3QSpUS7tnXSXl59WTW1Xjfb4cegCFu/B9JM8KZLpgRcnw9KOeSRDD2sT?=
+ =?us-ascii?Q?eHxsyhqD3cMjfWcD0ybAVjqt5zn1sLJqLBn1XslsP8Ub/LQ5uQF5zhVXyMXX?=
+ =?us-ascii?Q?h2TwAp0XzzhhFLz8vI0RSTWvulrcemHyHDVvKXKYVSemigsvywT8DKZ4qsnM?=
+ =?us-ascii?Q?4/2CVadNO65Lmd3/PAuvpMMCHNKCLP2pB7Ya9FDEduwZV+aADitTJQP1m5Qg?=
+ =?us-ascii?Q?kgSaRif4moCyJQUaKIgTOtDIbjNnizM2MKvSp7JSpr30u/Urfeq81iGXgP+p?=
+ =?us-ascii?Q?QDjA+NSvOrF7Jq61dS9a/aj6VXvgJq4yTKcNpXxU17/32VE70lKvUBudCq+z?=
+ =?us-ascii?Q?QPK2Zwp3ySGy69KzdJlhklYDA1BE6GE3DGiUSvW1v3NGpZZKM/UkcT1sge5f?=
+ =?us-ascii?Q?EZ1k9msXPKDmG9u2BkAZyyrYBS/xv0CQizpugluV24bVz3hPvDNr6XIP0D5p?=
+ =?us-ascii?Q?gnqxYHoTyW/vxyVOSpDuBJPHUvoeNBveqqXBXLeyG2EORem2bhlPWXruIa+j?=
+ =?us-ascii?Q?fB//iK4WApkaagOe3pmgbpcRk1hvSS5AaezH/nNt9wyotTytsRxezZl6mJeg?=
+ =?us-ascii?Q?4hDVFQa9PMqoFOzmVMcz6Si9t178LbtF2XKak0TCKYetJickzHWdl7avyPP3?=
+ =?us-ascii?Q?h48YWz/cMHP47qphNl3wRS7I8Ubq2Q1A9gi6r1sNQ6OaWb6+AS6m/2SkUnBK?=
+ =?us-ascii?Q?Qv9Lo24zFMPshZ2eHddHUuycxMnbT5u0d/v4+UTP2pPnRUKpW7rI1UnViAJ7?=
+ =?us-ascii?Q?O33544NgRe/htMqms3AZyC352M721026Lma9IsR3NxG3lBBHOx9oAfVG8Xth?=
+ =?us-ascii?Q?I9lQJSyqV4kgZVQdPAC34YsQgaKDV2ad1PLf/BYvtKPw5frF+xSo/dXCuiMU?=
+ =?us-ascii?Q?UgHOC3pIaflgJkmZFo0OAtI/cXcYHM+4RVvN5+qTfBI1SNAiDfTNfezv+Yjq?=
+ =?us-ascii?Q?YYUr2nP4ujvoH1UeHaQ=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21320c8c-2847-4ab2-a946-08de01267801
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Oct 2025 20:09:46.6743
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PDobZZUjOK7N66bEtive8RHiD64edgjXMMOW0mDLymRHERwo4Iw2b52MUtXEdKHWqZSeRqRNm8+GuJ3vClHgYw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9737
 
-Hello Damon,
+Hi Peng,
 
-On Tue, 30 Sep 2025 17:09:13 +0800
-Damon Ding <damon.ding@rock-chips.com> wrote:
+> -----Original Message-----
+> From: Peng Fan (OSS) <peng.fan@oss.nxp.com>
+> Sent: Sunday, September 28, 2025 3:48 AM
+> To: Shenwei Wang <shenwei.wang@nxp.com>
+> Cc: Bjorn Andersson <andersson@kernel.org>; Mathieu Poirier
+> <mathieu.poirier@linaro.org>; Rob Herring <robh@kernel.org>; Krzysztof
+> Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Shawn
+> Guo <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>; Linus
+> Walleij <linus.walleij@linaro.org>; Bartosz Golaszewski <brgl@bgdev.pl>;
+> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+> <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>; linux-
+> remoteproc@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.d=
+ev;
+> >+
+> >+	drvdata->rpdev =3D rpdev;
+> >+	auxdata[0].compatible =3D channel_device_map[i][1];
+> >+	auxdata[0].platform_data =3D drvdata;
+> >+	dev_set_drvdata(dev, drvdata);
+> >+
+> >+	of_platform_populate(drvdata->channel_node, NULL, auxdata, dev);
+> >+	of_node_put(drvdata->channel_node);
+>=20
+> of_platform_populate will decrement the reference to drvdata->channel_nod=
+e
+> before it return. I not see other places increment the reference to chann=
+el_node,
+> of_node_put here could be removed.
+>=20
 
-> When multiple bridges are present, EDID detection capability
-> (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
-> (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities are
-> determined by the last bridge in the chain, we handle three cases:
-> 
-> Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
->  - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
->    &drm_bridge_connector.bridge_edid to NULL and set
->    &drm_bridge_connector.bridge_modes to the later bridge.
->  - Ensure modes detection capability of the later bridge will not
->    be ignored.
-> 
-> Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
->  - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
->    &drm_bridge_connector.bridge_modes to NULL and set
->    &drm_bridge_connector.bridge_edid to the later bridge.
->  - Although EDID detection capability has higher priority, this
->    operation is for balance and makes sense.
-> 
-> Case 3: the later bridge declares both of them
->  - Assign later bridge as &drm_bridge_connector.bridge_edid and
->    and &drm_bridge_connector.bridge_modes to this bridge.
->  - Just leave transfer of these two capabilities as before.
+The of_node_put is to balance the reference counter which is increased by o=
+f_get_child_by_name in imx_of_rpmsg_node_init function.
 
-I think the whole explanation can be more concisely rewritten as:
++static int imx_of_rpmsg_node_init(struct platform_device *pdev)
++{
+...
++	for (i =3D 0; i < count; i++) {
++		ret =3D -ENOMEM;
++		channel =3D of_get_child_by_name(np, channel_device_map[i][0]);
 
-If the later bridge declares OP_EDID, OP_MODES or both, then both
-.bridge_modes and .bridge_edid should be set to NULL (if any was set
-from a previous bridge), and then .bridge_modes and/or .bridge_edid be
-set to the later bridge as is done already.
 
-Does this look correct (i.e. does it convey the same meaning)?
+Thanks,
+Shenwei
 
-> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
-> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
-> @@ -640,6 +640,7 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
->  	struct drm_connector *connector;
->  	struct i2c_adapter *ddc = NULL;
->  	struct drm_bridge *bridge, *panel_bridge = NULL;
-> +	struct drm_bridge *pre_bridge_edid, *pre_bridge_modes;
->  	unsigned int supported_formats = BIT(HDMI_COLORSPACE_RGB);
->  	unsigned int max_bpc = 8;
->  	bool support_hdcp = false;
-> @@ -668,6 +669,9 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
->  	 */
->  	connector_type = DRM_MODE_CONNECTOR_Unknown;
->  	drm_for_each_bridge_in_chain(encoder, bridge) {
-> +		pre_bridge_edid = bridge_connector->bridge_edid;
-> +		pre_bridge_modes = bridge_connector->bridge_modes;
-> +
->  		if (!bridge->interlace_allowed)
->  			connector->interlace_allowed = false;
->  		if (!bridge->ycbcr_420_allowed)
-> @@ -681,6 +685,44 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
->  			bridge_connector->bridge_detect = bridge;
->  		if (bridge->ops & DRM_BRIDGE_OP_MODES)
->  			bridge_connector->bridge_modes = bridge;
-> +
-> +		/*
-> +		 * When multiple bridges are present, EDID detection capability
-> +		 * (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
-> +		 * (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities
-> +		 * are determined by the last bridge in the chain, we handle
-> +		 * three cases:
-> +		 *
-> +		 * Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
-> +		 *  - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
-> +		 *    &drm_bridge_connector.bridge_edid to NULL and set
-> +		 *    &drm_bridge_connector.bridge_modes to the later bridge.
-> +		 *  - Ensure modes detection capability of the later bridge
-> +		 *    will not be ignored.
-> +		 *
-> +		 * Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
-> +		 *  - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
-> +		 *    &drm_bridge_connector.bridge_modes to NULL and set
-> +		 *    &drm_bridge_connector.bridge_edid to the later bridge.
-> +		 *  - Although EDID detection capability has higher priority,
-> +		 *    this operation is for balance and makes sense.
-> +		 *
-> +		 * Case 3: the later bridge declares both of them
-> +		 *  - Assign later bridge as &drm_bridge_connector.bridge_edid
-> +		 *    and &drm_bridge_connector.bridge_modes to this bridge.
-> +		 *  - Just leave transfer of these two capabilities as before.
-> +		 */
-> +		if (bridge->ops & DRM_BRIDGE_OP_EDID &&
-> +		    !(bridge->ops & DRM_BRIDGE_OP_MODES)) {
-> +			if (pre_bridge_modes)
-> +				bridge_connector->bridge_modes = NULL;
-> +		}
-> +		if (bridge->ops & DRM_BRIDGE_OP_MODES &&
-> +		    !(bridge->ops & DRM_BRIDGE_OP_EDID)) {
-> +			if (pre_bridge_edid)
-> +				bridge_connector->bridge_edid = NULL;
-> +		}
-> +
-
-If the above rewrite is correct, then I think this patch can be
-rewritten in a simple way (build tested only):
-
-diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu/drm/display/drm_bridge_connector.c
-index a5bdd6c10643..bd5dbafe88bc 100644
---- a/drivers/gpu/drm/display/drm_bridge_connector.c
-+++ b/drivers/gpu/drm/display/drm_bridge_connector.c
-@@ -672,14 +672,18 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
-                if (!bridge->ycbcr_420_allowed)
-                        connector->ycbcr_420_allowed = false;
- 
--               if (bridge->ops & DRM_BRIDGE_OP_EDID)
--                       bridge_connector->bridge_edid = bridge;
-+               if (bridge->ops & DRM_BRIDGE_OP_EDID || bridge->ops & DRM_BRIDGE_OP_MODES) {
-+                       bridge_connector->bridge_edid = NULL;
-+                       bridge_connector->bridge_modes = NULL;
-+                       if (bridge->ops & DRM_BRIDGE_OP_EDID)
-+                               bridge_connector->bridge_edid = bridge;
-+                       if (bridge->ops & DRM_BRIDGE_OP_MODES)
-+                               bridge_connector->bridge_modes = bridge;
-+               }
-                if (bridge->ops & DRM_BRIDGE_OP_HPD)
-                        bridge_connector->bridge_hpd = bridge;
-                if (bridge->ops & DRM_BRIDGE_OP_DETECT)
-                        bridge_connector->bridge_detect = bridge;
--               if (bridge->ops & DRM_BRIDGE_OP_MODES)
--                       bridge_connector->bridge_modes = bridge;
-                if (bridge->ops & DRM_BRIDGE_OP_HDMI) {
-                        if (bridge_connector->bridge_hdmi)
-                                return ERR_PTR(-EBUSY);
-
-Another thing to note is that this patch conflicts with [0], which I
-plan to apply in the next few days. The two patches are orthogonal but
-they insist on the same lines (those assigning
-bridge_connector->bridge_* = bridge). Not a big deal, whichever patch
-comes later will be easily adapted. Just wanted to ensure you are aware.
-
-[0] https://lore.kernel.org/all/20250926-drm-bridge-alloc-getput-bridge-connector-v2-1-138b4bb70576@bootlin.com/
-
-Best regards,
-Luca
-
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> >+
+> >+	return 0;
+> >+}
+> >+
+> >+static int imx_of_rpmsg_node_init(struct platform_device *pdev) {
+> >+	struct device_node *np __free(device_node), *channel;
+> >+	struct imx_rpmsg_driver_data *driver_data;
+> >+	struct imx_rpmsg_driver *rp_driver;
+> >+	struct rpmsg_device_id *rpdev_id;
+> >+	int i, ret;
+> >+
+> >+	int count =3D ARRAY_SIZE(channel_device_map);
+> >+	struct device *dev =3D &pdev->dev;
+> >+
