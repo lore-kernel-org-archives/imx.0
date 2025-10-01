@@ -1,323 +1,187 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11023121.outbound.protection.outlook.com [40.107.162.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DAD3770B
-	for <imx@lists.linux.dev>; Wed,  1 Oct 2025 10:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759314688; cv=none; b=W/gmeJnBGTUXVbTJApyC4ImLw7/1RknNv60ctCbqSeZzQICDZF+A3jIEyzBholh7rFngTNvLTkIZoLuINn9/gr7pmNIlBIp9/7kpVXBUu12DRdbXbImuWt2K3/aqTDvTyxvuEav0Ga8++s14Rb/wZn2L25JZuwphuSxCfAArkh8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759314688; c=relaxed/simple;
-	bh=lC/Ht4lvxcJknyKTTGWMSHnCmys4XvWIrjmrB/eWvvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K+zfn/T+TnVDKkeXKf8bCe592r4KKlcGr3kPVKKBG/SNshbCIZ3nRg+MTx7Ote97uE96AOi9+AFJVXav02ED2Z/d19IPNtyK+b/Cl2ul7XMkU6oGkfz8n9tEOREu5tyeawtLD8NcXAhdV7Jx1J58xT+0GrffMzEE6WnDOqvIkU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1v3u7C-0003Zd-Bw; Wed, 01 Oct 2025 12:31:18 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1v3u7C-001OfZ-08;
-	Wed, 01 Oct 2025 12:31:18 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1v3u7B-006UDM-31;
-	Wed, 01 Oct 2025 12:31:17 +0200
-Date: Wed, 1 Oct 2025 12:31:17 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jiada Wang <jiada_wang@mentor.com>, dmaengine@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 02/10] dmaengine: imx-sdma: fix spba-bus handling for
- i.MX8M
-Message-ID: <20251001103117.zpwyxnqret5sjwq6@pengutronix.de>
-References: <20250911-v6-16-topic-sdma-v2-0-d315f56343b5@pengutronix.de>
- <20250911-v6-16-topic-sdma-v2-2-d315f56343b5@pengutronix.de>
- <aMQ53pZQD4tj+GvN@lizhi-Precision-Tower-5810>
- <20250912152748.gn66fmmrqyqlqdrb@pengutronix.de>
- <aMRRECxBqzRqGYwf@lizhi-Precision-Tower-5810>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6701C84DC
+	for <imx@lists.linux.dev>; Wed,  1 Oct 2025 12:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.121
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759322054; cv=fail; b=WCPsgi45lKHl8S+9cOY86OpPaUuFhPUmqkWqBt+QIVwuF9Q1336GcWo8ojA0Xj6n/Wl7Wd+UGua380JcuyPedhkEoIePBRTUYCkzDUqnlrD9hacPOpKt4xc86mA5V7N7XQrZLIRBoxC9/v9BmTXfqhoNwoczMOQFuB472fefM8I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759322054; c=relaxed/simple;
+	bh=8jnO68Eifbctux7NsdIUq8+ZBpq1aT1VEQPLxxZRBlA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=GiNIP50xiYB19jSFWbCDTAyBEm0Yv8s8yJIvecuQ90jGSbkVm4gXnbZOd11Zc98romZAdLLT/a1O/MPer3P6g8eYxXD8QZ9Yp4/rDXKrucJhqnI3jND5vNJgxnWHyA9HWgc1vwlpSH7hPPojlrfsXtefAeFl8i0O8NtCiJw4FgE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=NvIrx1MM; arc=fail smtp.client-ip=40.107.162.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="NvIrx1MM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Oj13o822oPQhRjoOPUKx8EGKXhoSbkUzSel+Wzs5Q31gHQ9qqPwAUVtWiVfQPHXMBj73oPWOxVIoB9Y7MzQuFFwT+W5AdgYlNxWIZiqk7vGnqpAliBb6co6Nzwll5ThSBeXte/i+BHnBeIPX2WbvEJEB48QRLdIgKfNke2c0U3f3QF2pxNgYfNvfu4ZUy2ahoVXyhK5lfrjhbI97rfDFXk0tEcuhBlltkiFFmZh2SCnuvrAdm9pING8tfI/Bx00C2NM71aEuQbBHouib22wzDJMAAAmAuz+bW0CcSjwcv8diwF+76s6KH5zZHef4Q0WOvhzfUov/FX6LZATHz4+6WQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sjCIyFtFHi0GvlKPxsqA+2/T7h9cBoLwjmbGkPRIDN0=;
+ b=De5HmsWl6IyVkSxurGpEqdxM4Fvv3N24QsNU3iJHrTsb+g+h+EQReT+ixE8Z4wyf7Xn9t9PGb3evKingCXhrRQlMEBCGZRAoq+vDRizru6auZsaTrfiXIG1rVybg/n/3d+zsLptmfsL1LLyXP+yt4sjQp8zy99VbZZLU01XWNJk6U2QRhugdXZz4qSWwuf8X2Noc+4/jwtzrgj4nvO3O+d2TnA+C1WKm3Edr81EqJBjFlK+tjbrdtFcnx29El4HXYvLkWNrRkRdoZCjn31ROdOQWsPjg0VdZ5R4cPXDr/C5Qo3+VuBrsyub8Ql/sq2tkrzb4kjZBbJRoQ6pdI77RPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 91.26.50.189) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=phytec.de;
+ dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
+ header.from=phytec.de; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sjCIyFtFHi0GvlKPxsqA+2/T7h9cBoLwjmbGkPRIDN0=;
+ b=NvIrx1MMi/xNeLcVJephaVxjslXUksGRj3M9+sAbUSZ9OHmdjcetaYbK7OTVa4J8yEwXCVpK/74Mk3C7ljWodCodPkW4YtlbI/vsH3FRAWq/DoE936WVfoAzoHVC6E2YbmXztbjgdVjqfgkaTrJ4y1S6QdR4orR88QLB209ZHIIdg4vyAdiYavikEEwJBtd1NmpbZKUkwF9AuqM/I3IPWkvrrys35F2pOHSKMo0mrATYQ7J0qfxB+CblhWwdCnTiDnjyD7EaSOmqJF7+aMKvX7h+7IYBpFmtZvAww0z1ui4A0T85P5PkYE4MbMcIan0DEplxTVpnRL3fcP/o8oKLPg==
+Received: from AM0PR03CA0029.eurprd03.prod.outlook.com (2603:10a6:208:14::42)
+ by DU4P195MB3201.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:621::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.18; Wed, 1 Oct
+ 2025 12:34:08 +0000
+Received: from AM3PEPF00009BA1.eurprd04.prod.outlook.com
+ (2603:10a6:208:14:cafe::79) by AM0PR03CA0029.outlook.office365.com
+ (2603:10a6:208:14::42) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9182.14 via Frontend Transport; Wed,
+ 1 Oct 2025 12:34:08 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 91.26.50.189)
+ smtp.mailfrom=phytec.de; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=phytec.de;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ phytec.de discourages use of 91.26.50.189 as permitted sender)
+Received: from Postix.phytec.de (91.26.50.189) by
+ AM3PEPF00009BA1.mail.protection.outlook.com (10.167.16.26) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9182.15 via Frontend Transport; Wed, 1 Oct 2025 12:34:07 +0000
+Received: from llp-moog.phytec.de (172.25.32.44) by Postix.phytec.de
+ (172.25.0.11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 1 Oct
+ 2025 14:34:07 +0200
+From: Yannic Moog <y.moog@phytec.de>
+Date: Wed, 1 Oct 2025 14:33:51 +0200
+Subject: [PATCH v3 1/4] arm64: dts: im8mp-phy{board,core}: update license
+ and copyright
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aMRRECxBqzRqGYwf@lizhi-Precision-Tower-5810>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20251001-imx8mp-pollux-display-overlays-v3-1-87f843f6bed6@phytec.de>
+References: <20251001-imx8mp-pollux-display-overlays-v3-0-87f843f6bed6@phytec.de>
+In-Reply-To: <20251001-imx8mp-pollux-display-overlays-v3-0-87f843f6bed6@phytec.de>
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+CC: <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<upstream@lists.phytec.de>, Yannic Moog <y.moog@phytec.de>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759322046; l=1642;
+ i=y.moog@phytec.de; s=20250509; h=from:subject:message-id;
+ bh=8jnO68Eifbctux7NsdIUq8+ZBpq1aT1VEQPLxxZRBlA=;
+ b=Gfa7HWoOX3Pfmo3nHxfWWN4L3q0C4fd1RuPTn0uIa56wEiivA9JajdpVJdJEDZysH3Rc2a1LY
+ 24bpoNd0mUrCikzOztIfQlJ5MYtPolHxWwzLs3aeJlT7VCdmAHdzR6C
+X-Developer-Key: i=y.moog@phytec.de; a=ed25519;
+ pk=rpKoEJ4E7nD9qsrU/rfKVwMTWNWYaTBylZuJUXUiFr8=
+X-ClientProxiedBy: Postix.phytec.de (172.25.0.11) To Postix.phytec.de
+ (172.25.0.11)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF00009BA1:EE_|DU4P195MB3201:EE_
+X-MS-Office365-Filtering-Correlation-Id: beaf96a5-3114-49ea-7e81-08de00e6d0da
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eHdCTnJtSTNDU1NMUjNwMnRLU3VJb2pxV3BHUWkxaE1yRFJPMWVpVzUyOU93?=
+ =?utf-8?B?b3NKWFJVSExLaVFYL3NtNi8zT1E4VGNFOEdkSE9tRjBlY1BvcFlaWlo5eVYx?=
+ =?utf-8?B?cnhidG9BTDJOYnM1bjdXa29SeXZjNi9BS3ZmaHljVXRnalc3RzdhT0xscWds?=
+ =?utf-8?B?Z0YrM0p1aXQ1WGQwS0dEZ0Nlc1BqazZndVZibnJ4dnRBUU0rdWUxczdSYzdN?=
+ =?utf-8?B?Nit1QWpYWHZ2N2lFZVl6RHAwQUxFcWtmaE5ncm04K1IzckYyeEVUVWh1TWFL?=
+ =?utf-8?B?NVpKK1NkSDcvbitOd3FYK01CTm0zbHZHMksvamVTeHdxWTUrL0J6K29iOGpI?=
+ =?utf-8?B?L0VFMEpkeGUvUDZjbjZjTDJnQmpTMWdwUGxSM1Nnc2FGVEVxVHZUWW54NWdw?=
+ =?utf-8?B?cndUQnZWSHVhSnBGcjFybzJBdjBPeWNiL1pZaTJid0FRbllFZ21VVjdxWk1l?=
+ =?utf-8?B?UmtKTUdpdTR1QWFtaHRESmZPc25ES1czd3dPcVQvUVI1SVZUUTZQSldCK21k?=
+ =?utf-8?B?bHNoK3FtSHp6N21QRjZVeTFZUVRJYnVlVmM0UTh5ZUNDdmVuRTlNVUdRd2ZB?=
+ =?utf-8?B?NEJRTlY0MXZNY2FBNzN3RzRKTURRRDluM3REa25FOEI2N3A5eGFIeEhHeWha?=
+ =?utf-8?B?akhENlpWUXlzWHc3U0Y1UnVQSFdDZHFCa0VQZFMxOWVhNDFHcTNIakZwd044?=
+ =?utf-8?B?R2dzVThMblgzdGI0a2p0V3hUWHNiM1E3M2trWnFtVytHUFVQQVF4R1dObmJM?=
+ =?utf-8?B?NUFzdFR6eW13b3JPUFpOTHVmOCt3VzlHdkszd2NIQm9DaTV1cHVUZnd1NVdT?=
+ =?utf-8?B?bGhKbWR2SFcvTHVCNG9BNEtpSXV2bjVJQU5GS24yOE5TRU5iOTlMQTJPZms5?=
+ =?utf-8?B?RnZ0RzdaOVdiK2loVVN0VmkzdysrQlAvd0NJQzNwRVZjTkRWTm4xUmhRQVA2?=
+ =?utf-8?B?bU9IRmx1SCtnVUJ4dmFtZUxLOURBZmF0Ly92MGg4ajdHRG85MWhwT0kwYzMr?=
+ =?utf-8?B?aTFKaXc3Zmd2dHRoQzZqa0FsUW9yeG5qbHRKMW9IcFowNm9RRU9qbGVuTnpj?=
+ =?utf-8?B?Rk5YaFRtMVk1K2lQVWtWSXlKSDlBRjRDbDJQQlF2MlBvQUZWbS9mYnhrbjNZ?=
+ =?utf-8?B?WUdlbVNoTTFHMHRIVUlpbW5QdW9vbW1xTllETGNaV0NuREYrQ3ZiSktoK1ha?=
+ =?utf-8?B?VVdZa09OdGtybFZjS05hcm9Cb2NmcWUzWXdsOTg5YVlRdWhmNjRmNG9QRnlM?=
+ =?utf-8?B?end1TGJlMEhWSzVYMkNhazJBNi9NMGZCN0NIeUJCREFXUmpaSlRBZzgramZS?=
+ =?utf-8?B?cy9RRW4zVHVkUXNCR0FRc3U0YVZRendEU3FmV2ROUm5YR2RLVWRwc2RJWW51?=
+ =?utf-8?B?TGk2c2NNYzVzOUUwSUUyOUJTM0M3aXkxdzRucWoxb1dORDFWWnRTK0hrZFFH?=
+ =?utf-8?B?SThiZ2dFN3I3YTNvOGEyNEd1VG15Rkg2OUpUV0xVWTVuTS92ZUg3SkFqdDJD?=
+ =?utf-8?B?Nmw1MmVxVDJDUE0zek5qbnNOZ2tOUXdsZGNFdDhHVG5rVytZU3pNNGRaeEJl?=
+ =?utf-8?B?T3VtbjFyMVVGbDg5c0hCRjcvb21VRE9HRE5nL3k5eEhnU0tOc29uUTVGaWlr?=
+ =?utf-8?B?T05LMUFBSlRCY1h4cEFoVGtJUjhqRWtSaWJRcUNIRmUvUHBuVEN5clFLdWo2?=
+ =?utf-8?B?SHBXdHpYVFJOTy9pcUhwZ1YweU14Y2lWdnpMcjlOUEpmNlRpdFNsKzVYcWVG?=
+ =?utf-8?B?SkJSNjNWQzRQMzArSHByNVNxbkN2d3dYQkh1RjVBcUhtTGpicEd4Uy8zRkZi?=
+ =?utf-8?B?RVdVUXhZc1JZN1N3WTA4c2hENE9PV05hTTgwdE13MThIdXBSMHF2dThoYkd2?=
+ =?utf-8?B?cGJDTFhDcTZSSjFkZDhKU2hGeGFzUGtpQTFOck1jZFh4eUNlY3RBNGdjQk5m?=
+ =?utf-8?B?Uk1mUS82TjBvOXEwN1VISHFPdEQxSjY5cHNiL2VSeXIzd1g2OSt2aUlaVkhB?=
+ =?utf-8?B?dFRaMWtSelBuVmpDM0IzbTJ3MExrSGRjM3loNnFBTm1vaUd5eVNET1I3NFBD?=
+ =?utf-8?B?eVZaYmRYV3RKU0MyNGFzU2hXaHpMQjlFeVkwTUdEc0RmYXNSR3VGZTlSREwz?=
+ =?utf-8?Q?JqII=3D?=
+X-Forefront-Antispam-Report:
+	CIP:91.26.50.189;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:Postix.phytec.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1102;
+X-OriginatorOrg: phytec.de
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2025 12:34:07.9170
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: beaf96a5-3114-49ea-7e81-08de00e6d0da
+X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e609157c-80e2-446d-9be3-9c99c2399d29;Ip=[91.26.50.189];Helo=[Postix.phytec.de]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF00009BA1.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4P195MB3201
 
-On 25-09-12, Frank Li wrote:
-> On Fri, Sep 12, 2025 at 05:27:48PM +0200, Marco Felsch wrote:
-> > On 25-09-12, Frank Li wrote:
-> > > On Thu, Sep 11, 2025 at 11:56:43PM +0200, Marco Felsch wrote:
-> > > > Starting with i.MX8M* devices there are multiple spba-busses so we can't
-> > > > just search the whole DT for the first spba-bus match and take it.
-> > > > Instead we need to check for each device to which bus it belongs and
-> > > > setup the spba_{start,end}_addr accordingly per sdma_channel.
-> > > >
-> > > > While on it, don't ignore errors from of_address_to_resource() if they
-> > > > are valid.
-> > > >
-> > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > >
-> > > I think the below method should be better.
-> > >
-> > > of_translate_address(per_address) == OF_BAD_ADDR to check if belong spba-bus
-> >
-> > The SDMA engine doesn't have to be part of the SPBA bus, please see the
-> > i.MX8MM for example.
-> 
-> which one, can you point me?
+Update Copyright year and change license from GPL-2.0 to
+GPL-2.0-or-later OR MIT. Use syntax as defined in the SPDX standard.
 
-The imx8mm.dtsi, e.g. the SDMA2 [1] is not part of the SPBA bus but
-serves as DMA for devices within the SPBA bus [2].
+Signed-off-by: Yannic Moog <y.moog@phytec.de>
+---
+ arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts | 4 ++--
+ arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi        | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/freescale/imx8mm.dtsi?h=v6.17#n525
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/boot/dts/freescale/imx8mm.dtsi?h=v6.17#n305
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+index 436152308642270c320e3ae3b21b9e46b923c043..6110c6a484d3f0b427ad372e1bd16063d1ce165f 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-rdk.dts
+@@ -1,6 +1,6 @@
+-// SPDX-License-Identifier: GPL-2.0
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+ /*
+- * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
+  * Author: Teresa Remmet <t.remmet@phytec.de>
+  */
+ 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi
+index 04f724c6ec210bc2f382e6b9e2b13fe85d3926de..f6168984a31cca2b97344805c9474db900e3af3a 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi
+@@ -1,6 +1,6 @@
+-// SPDX-License-Identifier: GPL-2.0
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+ /*
+- * Copyright (C) 2020 PHYTEC Messtechnik GmbH
++ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
+  * Author: Teresa Remmet <t.remmet@phytec.de>
+  */
+ 
 
-> spba_bus = of_get_parent(chan->slave->of_node);
-> 
-> Actaully you get dma consumers' spba-bus, not dmaengine one.
+-- 
+2.43.0
 
-I know that and this is intended because the dmaengine is not part of
-the SPBA bus. There was only one SPBA bus but this changed with the
-i.MX8M* SoCs and the driver is not aware of this (as explained within
-the commit message).
-
-That beeing said, the dmaegine was never part of the SPBA bus, e.g. see
-the imx6qdl.dtsi. There only one SDMA engine exists which is not part of
-the SPBA bus but it serves as DMA engine for devices within the SPBA
-bus:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi?h=v6.17#n932
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi?h=v6.17#n299
-
-The driver logic only worked because there was only one SPBA bus.
-
-> And I also confused
-> 
->  +	if (sdmac->per_address2 >= sdmac->spba_start_addr &&
->  +			sdmac->per_address2 <= sdmac->spba_end_addr)
->   		sdmac->watermark_level |= SDMA_WATERMARK_LEVEL_SP;
-> 
->  -	if (sdmac->per_address >= sdma->spba_start_addr &&
->  -			sdmac->per_address <= sdma->spba_end_addr)
->  +	if (sdmac->per_address >= sdmac->spba_start_addr &&
->  +			sdmac->per_address <= sdmac->spba_end_addr)
->   		sdmac->watermark_level |= SDMA_WATERMARK_LEVEL_DP;
-> 
-> what's purpsoe of this code, check if dma target address in spba_bus ?
-
-I didn't add this code, just adapted it. But yes somehow the address is
-checked.
-
-> And only here use spba_start_addr!
-
-Again I didn't added the code. I just fixed it for multi SPBA bus SoCs.
-
-Regards,
-  Marco
-
-
-> 
-> Frank
-> 
-> >
-> > Regards,
-> >   Marco
-> >
-> > > aips3: bus@30800000 {
-> > > 	...
-> > >         ranges = <0x30800000 0x30800000 0x400000>,
-> > >                  <0x8000000 0x8000000 0x10000000>;
-> > >
-> > >                         spba1: spba-bus@30800000 {
-> > >                                 compatible = "fsl,spba-bus", "simple-bus";
-> > >                                 #address-cells = <1>;
-> > >                                 #size-cells = <1>;
-> > >                                 reg = <0x30800000 0x100000>;
-> > >                                 ranges;
-> > >
-> > > 				...
-> > > 				sdma1:
-> > >
-> > > };
-> > >
-> > > of_translate_address() will 1:1 map at spba-bus@30800000 spba1.
-> > > then
-> > > reach ranges = <0x30800000 0x30800000 0x400000> of aips3
-> > >
-> > > if per_address is not in this range, it should return OF_BAD_ADDR. So
-> > > needn't parse reg of bus@30800000 at all.
-> > >
-> > > Frank
-> > >
-> > > > ---
-> > > >  drivers/dma/imx-sdma.c | 58 ++++++++++++++++++++++++++++++++++----------------
-> > > >  1 file changed, 40 insertions(+), 18 deletions(-)
-> > > >
-> > > > diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-> > > > index 3ecb917214b1268b148a29df697b780bc462afa4..56daaeb7df03986850c9c74273d0816700581dc0 100644
-> > > > --- a/drivers/dma/imx-sdma.c
-> > > > +++ b/drivers/dma/imx-sdma.c
-> > > > @@ -429,6 +429,8 @@ struct sdma_desc {
-> > > >   * @event_mask:		event mask used in p_2_p script
-> > > >   * @watermark_level:	value for gReg[7], some script will extend it from
-> > > >   *			basic watermark such as p_2_p
-> > > > + * @spba_start_addr:	SDMA controller SPBA bus start address
-> > > > + * @spba_end_addr:	SDMA controller SPBA bus end address
-> > > >   * @shp_addr:		value for gReg[6]
-> > > >   * @per_addr:		value for gReg[2]
-> > > >   * @status:		status of dma channel
-> > > > @@ -461,6 +463,8 @@ struct sdma_channel {
-> > > >  	dma_addr_t			per_address, per_address2;
-> > > >  	unsigned long			event_mask[2];
-> > > >  	unsigned long			watermark_level;
-> > > > +	u32				spba_start_addr;
-> > > > +	u32				spba_end_addr;
-> > > >  	u32				shp_addr, per_addr;
-> > > >  	enum dma_status			status;
-> > > >  	struct imx_dma_data		data;
-> > > > @@ -534,8 +538,6 @@ struct sdma_engine {
-> > > >  	u32				script_number;
-> > > >  	struct sdma_script_start_addrs	*script_addrs;
-> > > >  	const struct sdma_driver_data	*drvdata;
-> > > > -	u32				spba_start_addr;
-> > > > -	u32				spba_end_addr;
-> > > >  	unsigned int			irq;
-> > > >  	dma_addr_t			bd0_phys;
-> > > >  	struct sdma_buffer_descriptor	*bd0;
-> > > > @@ -1236,8 +1238,6 @@ static void sdma_channel_synchronize(struct dma_chan *chan)
-> > > >
-> > > >  static void sdma_set_watermarklevel_for_p2p(struct sdma_channel *sdmac)
-> > > >  {
-> > > > -	struct sdma_engine *sdma = sdmac->sdma;
-> > > > -
-> > > >  	int lwml = sdmac->watermark_level & SDMA_WATERMARK_LEVEL_LWML;
-> > > >  	int hwml = (sdmac->watermark_level & SDMA_WATERMARK_LEVEL_HWML) >> 16;
-> > > >
-> > > > @@ -1263,12 +1263,12 @@ static void sdma_set_watermarklevel_for_p2p(struct sdma_channel *sdmac)
-> > > >  		swap(sdmac->event_mask[0], sdmac->event_mask[1]);
-> > > >  	}
-> > > >
-> > > > -	if (sdmac->per_address2 >= sdma->spba_start_addr &&
-> > > > -			sdmac->per_address2 <= sdma->spba_end_addr)
-> > > > +	if (sdmac->per_address2 >= sdmac->spba_start_addr &&
-> > > > +			sdmac->per_address2 <= sdmac->spba_end_addr)
-> > > >  		sdmac->watermark_level |= SDMA_WATERMARK_LEVEL_SP;
-> > > >
-> > > > -	if (sdmac->per_address >= sdma->spba_start_addr &&
-> > > > -			sdmac->per_address <= sdma->spba_end_addr)
-> > > > +	if (sdmac->per_address >= sdmac->spba_start_addr &&
-> > > > +			sdmac->per_address <= sdmac->spba_end_addr)
-> > > >  		sdmac->watermark_level |= SDMA_WATERMARK_LEVEL_DP;
-> > > >
-> > > >  	sdmac->watermark_level |= SDMA_WATERMARK_LEVEL_CONT;
-> > > > @@ -1447,6 +1447,31 @@ static void sdma_desc_free(struct virt_dma_desc *vd)
-> > > >  	kfree(desc);
-> > > >  }
-> > > >
-> > > > +static int sdma_config_spba_slave(struct dma_chan *chan)
-> > > > +{
-> > > > +	struct sdma_channel *sdmac = to_sdma_chan(chan);
-> > > > +	struct device_node *spba_bus;
-> > > > +	struct resource spba_res;
-> > > > +	int ret;
-> > > > +
-> > > > +	spba_bus = of_get_parent(chan->slave->of_node);
-> > > > +	/* Device doesn't belong to the spba-bus */
-> > > > +	if (!of_device_is_compatible(spba_bus, "fsl,spba-bus"))
-> > > > +		return 0;
-> > > > +
-> > > > +	ret = of_address_to_resource(spba_bus, 0, &spba_res);
-> > > > +	of_node_put(spba_bus);
-> > > > +	if (ret) {
-> > > > +		dev_err(sdmac->sdma->dev, "Failed to get spba-bus resources\n");
-> > > > +		return -EINVAL;
-> > > > +	}
-> > > > +
-> > > > +	sdmac->spba_start_addr = spba_res.start;
-> > > > +	sdmac->spba_end_addr = spba_res.end;
-> > > > +
-> > > > +	return 0;
-> > > > +}
-> > > > +
-> > > >  static int sdma_alloc_chan_resources(struct dma_chan *chan)
-> > > >  {
-> > > >  	struct sdma_channel *sdmac = to_sdma_chan(chan);
-> > > > @@ -1527,6 +1552,8 @@ static void sdma_free_chan_resources(struct dma_chan *chan)
-> > > >
-> > > >  	sdmac->event_id0 = 0;
-> > > >  	sdmac->event_id1 = 0;
-> > > > +	sdmac->spba_start_addr = 0;
-> > > > +	sdmac->spba_end_addr = 0;
-> > > >
-> > > >  	sdma_set_channel_priority(sdmac, 0);
-> > > >
-> > > > @@ -1837,6 +1864,7 @@ static int sdma_config(struct dma_chan *chan,
-> > > >  {
-> > > >  	struct sdma_channel *sdmac = to_sdma_chan(chan);
-> > > >  	struct sdma_engine *sdma = sdmac->sdma;
-> > > > +	int ret;
-> > > >
-> > > >  	memcpy(&sdmac->slave_config, dmaengine_cfg, sizeof(*dmaengine_cfg));
-> > > >
-> > > > @@ -1867,6 +1895,10 @@ static int sdma_config(struct dma_chan *chan,
-> > > >  		sdma_event_enable(sdmac, sdmac->event_id1);
-> > > >  	}
-> > > >
-> > > > +	ret = sdma_config_spba_slave(chan);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > >  	return 0;
-> > > >  }
-> > > >
-> > > > @@ -2235,11 +2267,9 @@ static struct dma_chan *sdma_xlate(struct of_phandle_args *dma_spec,
-> > > >  static int sdma_probe(struct platform_device *pdev)
-> > > >  {
-> > > >  	struct device_node *np = pdev->dev.of_node;
-> > > > -	struct device_node *spba_bus;
-> > > >  	const char *fw_name;
-> > > >  	int ret;
-> > > >  	int irq;
-> > > > -	struct resource spba_res;
-> > > >  	int i;
-> > > >  	struct sdma_engine *sdma;
-> > > >  	s32 *saddr_arr;
-> > > > @@ -2375,14 +2405,6 @@ static int sdma_probe(struct platform_device *pdev)
-> > > >  			dev_err(&pdev->dev, "failed to register controller\n");
-> > > >  			goto err_register;
-> > > >  		}
-> > > > -
-> > > > -		spba_bus = of_find_compatible_node(NULL, NULL, "fsl,spba-bus");
-> > > > -		ret = of_address_to_resource(spba_bus, 0, &spba_res);
-> > > > -		if (!ret) {
-> > > > -			sdma->spba_start_addr = spba_res.start;
-> > > > -			sdma->spba_end_addr = spba_res.end;
-> > > > -		}
-> > > > -		of_node_put(spba_bus);
-> > > >  	}
-> > > >
-> > > >  	/*
-> > > >
-> > > > --
-> > > > 2.47.3
-> > > >
-> > >
-> 
