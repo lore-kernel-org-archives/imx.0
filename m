@@ -1,121 +1,95 @@
-Received: from freeshell.de (freeshell.de [116.202.128.144])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFCD248F72
-	for <imx@lists.linux.dev>; Thu,  2 Oct 2025 05:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.128.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D40028751E
+	for <imx@lists.linux.dev>; Thu,  2 Oct 2025 06:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759382862; cv=none; b=N+R8Vj8yaul0fNEJS+lcqUjFfOQP69daClSg+qnKS1LJJUWIf7BTjTvxgrTU7lxY9uyaEai13AP91oMQ8P+ECr0pqE6oRBjvVK1n2FpOqRUkDEyYyp/fckT/GAk9qjL4A0LUl0QPnbCrfCEF0AAjjneH0lofEVbWmMzlj63yvv4=
+	t=1759387098; cv=none; b=HhoKE8J80S0pkXiImpF8xCjI0eJ4odt/r+KMk3eOzXgxlawaZl1DMZrCWY/T5ohjh1LtZQCzXstb6D6WpaJLHT2wVBty/o9nVW/+vpkdC3Ct42sPi+FwKn3Ly4Yhbgij8bR1Wu9VzywPNF8zO5F2gajNVED/QyEfaXMqhMYxr0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759382862; c=relaxed/simple;
-	bh=UVL0h2gpfbpisGJGWv9nM9Yclg14uvlw0HsAA7aPh8w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bQERF+AqKtN8triYvwkoqg2ErOVgVgVT17yC+/MInQWMTFIuYJUcNOc3ML8JI+/a4RQEqaSkZ+u3jfQTZ56/PKS7PNFF+d7A0Gcv0L8CXMGoDE/e0+P1fTe+dXcFXIniWnNsNGtWmq1e6h5LpOGy9V62+BsX8DcxVBZbwWWEJMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=freeshell.de; spf=pass smtp.mailfrom=freeshell.de; arc=none smtp.client-ip=116.202.128.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=freeshell.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freeshell.de
-Received: from [192.168.2.54] (unknown [98.97.27.149])
-	(Authenticated sender: e)
-	by freeshell.de (Postfix) with ESMTPSA id 67423B22008E;
-	Thu,  2 Oct 2025 07:27:28 +0200 (CEST)
-Message-ID: <694a3d9e-4096-4782-a918-42d033737fbd@freeshell.de>
-Date: Wed, 1 Oct 2025 22:27:26 -0700
+	s=arc-20240116; t=1759387098; c=relaxed/simple;
+	bh=enLnV0HYXZbv7b64zQbKXzxzNjvlJRrVQycKKZy3GdA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CQIlA0JpO60QsDWZ+jJRDjqLX4LI34apct9e2E/a3AqXvji1bbuT4YYjShoTyBH2RxGUsH4cLYrfNvrUPzpS8/qjYnSSoduuJL1xN5RFAVHOh2Jk+Aqz9lmwt56QCfQekMkiWR0LOEghgMQs0FnqwnuO9wkI782TnhfYzrtYzOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ShT506+Z; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ShT506+Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1759387093;
+	bh=enLnV0HYXZbv7b64zQbKXzxzNjvlJRrVQycKKZy3GdA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ShT506+Z7swYdDEkhtZWn0md7zVNhYEFqWu4hQ5NsUFVPvbKkIM1hSCpegS0QrRko
+	 AANlcyCjHLt1Mi0HWFyPyzQd5Ovmmp+oF3hhqUU2Pk2DbOPpR3ZM4vSW/9UpbyxgXm
+	 a6tyqFedl6cHb+5NpXlkx5LR1Tm/NnsaA7Nd2Bi0fypfk+IbuBNGMs2JjD0sHY/VRE
+	 /udWbOpsXOkxszsbLqV0l81b+vxKN2G62qpImyIhpWF7IRShTJGqiSWJnDOSZPMCP2
+	 WcWRJ/nyn81qJMvthZIHg3DM4hTAOp1zUJiDI5gxSSw4ugSon8T3olDP+KAiBr9977
+	 jg0sBzKSxq+4Q==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0507617E009B;
+	Thu,  2 Oct 2025 08:38:12 +0200 (CEST)
+Date: Thu, 2 Oct 2025 08:38:07 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Rain Yang <jiyu.yang@oss.nxp.com>
+Cc: imx@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ steven.price@arm.com, liviu.dudau@arm.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ airlied@gmail.co, simona@ffwll.ch, marek.vasut@mailbox.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, Rain Yang
+ <jiyu.yang@nxp.com>
+Subject: Re: [PATCH v2 2/2] drm/panthor: skip regulator setup if no such
+ prop
+Message-ID: <20251002083807.1d7d837d@fedora>
+In-Reply-To: <20250928090334.35389-2-jiyu.yang@oss.nxp.com>
+References: <20250928090334.35389-1-jiyu.yang@oss.nxp.com>
+	<20250928090334.35389-2-jiyu.yang@oss.nxp.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] dts: arm64: freescale: move imx9*-clock.h
- imx9*-power.h into dt-bindings
-To: Peng Fan <peng.fan@nxp.com>, Marek Vasut <marek.vasut@mailbox.org>,
- "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>
-References: <20250831200516.522179-1-e@freeshell.de>
- <20250901032203.GA393@nxa18884-linux.ap.freescale.net>
- <3a165d77-3e36-4c0d-a193-aa9b27e0d523@mailbox.org>
- <05f7d69a-9c05-4b47-ab04-594c37e975eb@kernel.org>
- <51daddc4-1b86-4688-98cb-ef0f041d4126@mailbox.org>
- <8920d24b-e796-4b02-b43b-8a5deed3e8fb@kernel.org>
- <be2fc937-b7a6-49a7-b57d-6e3f16f4ccc3@mailbox.org>
- <20250904093442.GA13411@nxa18884-linux.ap.freescale.net>
- <afe58aa6-0c3e-4508-8133-8e7621a0484a@mailbox.org>
- <PAXPR04MB845970863A16718967270D1A880EA@PAXPR04MB8459.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: E Shattow <e@freeshell.de>
-In-Reply-To: <PAXPR04MB845970863A16718967270D1A880EA@PAXPR04MB8459.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Sun, 28 Sep 2025 17:03:34 +0800
+Rain Yang <jiyu.yang@oss.nxp.com> wrote:
 
-
-On 9/10/25 00:07, Peng Fan wrote:
-> Hi Marek,
+> From: Rain Yang <jiyu.yang@nxp.com>
 > 
->> Subject: Re: [PATCH v1] dts: arm64: freescale: move imx9*-clock.h
->> imx9*-power.h into dt-bindings
->>
->> On 9/4/25 11:34 AM, Peng Fan wrote:
->>
->> Hi,
->>
->> sorry for my late reply.
->>
->>>> Instead of playing this "I found this code somewhere, so I can do
->>>>> whatever the same" answer the first implied question - why these
->> are
->>>>> bindings? Provide arguments what do they bind.
->>>>
->>>> I am not sure how to answer this, but what I can write is, that if I
->>>> scramble these IDs in either the DT or the firmware (which provides
->>>> the SCMI clock service), then the system cannot work. I am not sure
->>>> if this is the answer you are looking for.
->>>
->>> Marek,
->>>    Some U-Boot code indeed directly use the IDs to configure the clock
->> without
->>>    relying on any drivers. Since the SCMI IDs could not be moved to
->>> dt-bindings,
->>
->> Why can they not be moved to DT bindings ?
+> The regulator is optional, skip the setup instead of returning an
+> error if it is not present
 > 
-> DT maintainers suggested to keep the files under
-> arch/arm64/boot/dts/freescale/
+> Signed-off-by: Rain Yang <jiyu.yang@nxp.com>
+
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+
+> ---
+>  drivers/gpu/drm/panthor/panthor_devfreq.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> https://lore.kernel.org/all/75ab9162-ed02-479d-92a1-7cfabff6b32e@linaro.org/
-> 
-> Regards
-> Peng
+> diff --git a/drivers/gpu/drm/panthor/panthor_devfreq.c b/drivers/gpu/drm/panthor/panthor_devfreq.c
+> index 3686515d368d..2df1d76d84a0 100644
+> --- a/drivers/gpu/drm/panthor/panthor_devfreq.c
+> +++ b/drivers/gpu/drm/panthor/panthor_devfreq.c
+> @@ -146,10 +146,9 @@ int panthor_devfreq_init(struct panthor_device *ptdev)
+>  	ptdev->devfreq = pdevfreq;
+>  
+>  	ret = devm_pm_opp_set_regulators(dev, reg_names);
+> -	if (ret) {
+> +	if (ret && ret != -ENODEV) {
+>  		if (ret != -EPROBE_DEFER)
+>  			DRM_DEV_ERROR(dev, "Couldn't set OPP regulators\n");
+> -
+>  		return ret;
+>  	}
+>  
 
-Follow up FYI to all this is resolved from U-Boot [1] as not using the
-header and duplicating the information.
-
-1:
-https://lore.kernel.org/u-boot/20250923-imx94-v1-5-cb3b65169048@oss.nxp.com/
-
-There was yet some IRC discussion about what justification can be for
-avoiding this maintenance and duplication.
-
-I am dropping this suggestion to move imx9*-clock.h imx9*-power.h into
-dt-bindings. There is some better way of doing this, maybe a future
-dt-firmware includes? That is not at all my area of interest or
-expertise, however. I just noticed something out-of-place and bring it
-to our attention.
-
-My great appreciation is due for the reviews and discussion about this.
-Thanks, everyone!
-
--E
