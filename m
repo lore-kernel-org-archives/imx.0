@@ -1,94 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C989C246BB8;
-	Mon,  6 Oct 2025 10:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EDD10FD;
+	Mon,  6 Oct 2025 12:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759747437; cv=none; b=CQPfH1bpor1tQGHD2ZoLkoR1/yl27mYHF8+mmT6KiiB0o7ymuXZDykxWDWUSqkldePKRAwTdL6Ve5Z9agELOdBLz27P4NVxlQT37LXYMTihtu47dagSC0N1ipgzARTUx+sR+CAbOZhZsjWaNNR0WVa/VdGCLcXPgY16GBho9otM=
+	t=1759752168; cv=none; b=QlERonl441m9+rSOEYkJpR8r8aVoTgqhyj49v6ry3HH5nM0LFb2QkvsWWDlX18Cco+DsWOdCpbQ0H5y9YGQEh5qOhwe59D0QGwLYRAd0gfJn5fl8Fxg9fzfZtoV1M3CNcxMaDQ3So5uGMua4M6oT2qWY/LbkuHCRGOGXoeCLe0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759747437; c=relaxed/simple;
-	bh=l/o/ZdfQ6BEWu7LeBwywJyRN51NFnbNzGbCL+Oqum2Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r/RNUIkIC7AxXX8dRtZd5ciUoXK5xH6wVmNUqaWqUiAsOUmGUFn3+ulue8lQhK5J3v707Yh+o53z2R9bfOjxF5h1Al4kU2CBco6yj8ha5aLemWjPgqBrBblvNHCQu37qXVz50Bxt0+ZcFUQmDrZdtLVQNgipg8EFRBuDMkjEYAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8Y8FSAq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759752168; c=relaxed/simple;
+	bh=cUe8CtrafWoQsXn9fWcPDQv7fF4kzWcQD9k5yUC/Uwg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LKJz7zaQiJkV6OrMvdjmY6zhERdhkahIu/nFBq+RjAIwjMW+Yz/7Y9WEkT++5yuzGIv1l5HiDyD6Zd9aX3nNe/37XI0W6jgQNIi4o8ybwhvRhlNxxC+hsUWBo7oRItT/RHK3TVl8bvfLLlVy4NvgUAffS53R1S3tazxvb6FWRmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XrCExbDG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8Y8FSAq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0775C4CEF5;
-	Mon,  6 Oct 2025 10:43:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XrCExbDG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB346C4CEF5;
+	Mon,  6 Oct 2025 12:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759747437;
-	bh=l/o/ZdfQ6BEWu7LeBwywJyRN51NFnbNzGbCL+Oqum2Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E8Y8FSAqROWRUvcLBdssNUqfYa/b3x64jbUT1nsUHDOZjlH3UTKodH8tpDn495E6D
-	 v0lSMi82cRwq8bjjbL4ZxkIjZyzQUlI+gh12enavejj7VUsIHi0/MXQ2u4iKQp+TEy
-	 iG0m98/UaznH0xFeIJYNCYCbyspwq+euUSvvUr7yWI+y5eVSEptJxnNb6gZweVlcem
-	 UfWAd4dftS4L/wPR3wvGWG/jOeoLEySEnciwm3TEY0JB+AfztJCpOnEtDg+d29ULuH
-	 KiwBKNDe/PQQG6kyIf4woNMhZljB2qoVNerK50tlwlyN9Cm9/+W/Jh4f4A0vVdK3LR
-	 XtvToTw5U48eg==
-Date: Mon, 6 Oct 2025 12:43:52 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Jon Mason <jdmason@kudzu.us>,
-	Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ntb@lists.linux.dev, imx@lists.linux.dev
-Subject: Re: [PATCH v4 1/3] PCI: endpoint: Add helper function
- pci_epf_get_bar_required_size()
-Message-ID: <aOOdaDdxCAkmGbkd@ryzen>
-References: <20250930-vntb_msi_doorbell-v4-0-ea2c94c6ff2e@nxp.com>
- <20250930-vntb_msi_doorbell-v4-1-ea2c94c6ff2e@nxp.com>
+	s=k20201202; t=1759752167;
+	bh=cUe8CtrafWoQsXn9fWcPDQv7fF4kzWcQD9k5yUC/Uwg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XrCExbDGUw0LYXohARq0wj5ixhBkiguFlV69LWhd/t5NkqihItIxVGgkJYVYebHeS
+	 bbGyaUuLZY+rwJSwZdtdSVGYP6I24TmlPhVDqN3Wu92pv+ho39wr+IsgKQ4bTbIXIF
+	 /rxkzb2rUvpt4jA4wBfhlKXw9LrjD5ZY3pm0GvalCYvKo8YZv0RDduhtmOOi5uTZcr
+	 5QGgim6xn/vbzvVz0I6jiD9IgFzb0QM0DR+KeRrjaciAgfDTBhDRWzcUBYkJdaez7v
+	 oj403k6Xyt+lqNwWRmPTY+GWjQCnvIg51e+wjQY/qGWc5qLIda+gQeEaowTaVrk0Rs
+	 AiZqBRuYNrzoQ==
+From: Maxime Ripard <mripard@kernel.org>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maxime Ripard <mripard@kernel.org>
+Cc: dri-devel@lists.freedesktop.org,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Haneen Mohammed <hamohammed.sa@gmail.com>,
+	Melissa Wen <melissa.srw@gmail.com>,
+	Jyri Sarha <jyri.sarha@iki.fi>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	linux-mips@vger.kernel.org,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Manikandan Muralidharan <manikandan.m@microchip.com>,
+	Dharma Balasubiramani <dharma.b@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	linux-arm-kernel@lists.infradead.org,
+	Inki Dae <inki.dae@samsung.com>,
+	Seung-Woo Kim <sw0312.kim@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	linux-samsung-soc@vger.kernel.org,
+	Liu Ying <victor.liu@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+	Edmund Dea <edmund.j.dea@intel.com>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Sui Jingfeng <suijingfeng@loongson.cn>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+	Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org,
+	Sandy Huang <hjc@rock-chips.com>,
+	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	linux-rockchip@lists.infradead.org,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	linux-sunxi@lists.linux.dev,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	linux-tegra@vger.kernel.org,
+	Hans de Goede <hansg@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>
+Subject: Re: [PATCH v5 00/39] drm/atomic: Get rid of existing states (not really)
+Date: Mon,  6 Oct 2025 14:02:42 +0200
+Message-ID: <175975215493.792368.2468724280200785252.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250930-drm-no-more-existing-state-v5-0-eeb9e1287907@kernel.org>
+References: <20250930-drm-no-more-existing-state-v5-0-eeb9e1287907@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250930-vntb_msi_doorbell-v4-1-ea2c94c6ff2e@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 30, 2025 at 04:39:37PM -0400, Frank Li wrote:
-> Introduce pci_epf_get_bar_required_size() to retrieve the required BAR
-> size and memory size. Prepare for adding support to set an MMIO address to
-> a specific BAR.
+On Tue, 30 Sep 2025 12:59:15 +0200, Maxime Ripard wrote:
+> Here's a series to get rid of the drm_atomic_helper_get_existing_*_state
+> accessors.
 > 
-> Use two variables 'aligned_bar_size' and 'aligned_mem_size' to avoid
-> confuse.
+> The initial intent was to remove the __drm_*_state->state pointer to
+> only rely on old and new states, but we still need it now to know which
+> of the two we need to free: if a state has not been committed (either
+> dropped or checked only), then we need to free the new one, if it has
+> been committed we need to free the old state.
+> 
+> [...]
 
-'aligned_bar_size' has been renamed, so this sentence should be updated.
+Applied to misc/kernel.git (drm-misc-next).
 
-
-(snip)
-
-> @@ -308,7 +327,9 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
->  	}
->  
->  	dev = epc->dev.parent;
-> -	space = dma_alloc_coherent(dev, aligned_size, &phys_addr, GFP_KERNEL);
-> +
-> +	space = dma_alloc_coherent(dev, aligned_mem_size,
-> +				   &phys_addr, GFP_KERNEL);
->  	if (!space) {
->  		dev_err(dev, "failed to allocate mem space\n");
->  		return NULL;
-> @@ -317,7 +338,7 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
->  	epf_bar[bar].phys_addr = phys_addr;
->  	epf_bar[bar].addr = space;
->  	epf_bar[bar].size = size;
-> -	epf_bar[bar].aligned_size = aligned_size;
-> +	epf_bar[bar].aligned_size = aligned_mem_size;
-
-I like that this local variable is now named aligned_mem_size
-to more clearly highlight that it is the aligned _memory_ size.
-
-Perhaps you could also rename the struct pci_epf_bar struct member
-'aligned_size' to 'aligned_mem_size' or perhaps even better,
-'backing_mem_size' or 'mem_size' ?
-
-
-Kind regards,
-Niklas
+Thanks!
+Maxime
