@@ -1,174 +1,357 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010050.outbound.protection.outlook.com [52.101.84.50])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB4B2C3263
-	for <imx@lists.linux.dev>; Mon,  6 Oct 2025 14:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759761501; cv=fail; b=nFG9pdmc+/0twcZZDh8I32FG3/NHdl+iY957BLng8Rwf5iub8pMIs4veQLbtWmJ0wbH9Ju5y8XOAPdeB01sVx6QLiL/TPtv1mJHXqmJSz6dys3YbB6/EGLKNPUPV+aTnhUG249XR69cUbaM6O04q7BwYv8o9yCrxf9unBDbHv9Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759761501; c=relaxed/simple;
-	bh=JLeSHQCP+ZUnstzoBJBNbrHjKJgn7+K+oQ5YkkaR/ks=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nF1kl7CyESFDUB/L1mZIShX/KvJAS/MWGoHfzM3VRiZu3IVncmgX3m7eWl/GH4VBxcnl4yWdnebxIsvRvqYZ8Mu7kCismP2gL98maWCZgPcT/zdixEJgrAhQ6LspjpSfnbnvUn3qhTqQkiVeVKVzYrpQRIYDLvCbMeiQqjJbmQI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oNB3mnTX; arc=fail smtp.client-ip=52.101.84.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB7A21FF3E;
+	Mon,  6 Oct 2025 16:31:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759768314; cv=none; b=BNcqk0gcciXtU/oruH/K+yx0xt6zOQshs8fttmyPW/g5huqhEpmIwqGOBHUWz9ml3/jl4PZOkWzt1YdPYATHFNi+mo1HwgVpcU5KfdmB7k/gBilMo7/RN08cS3rgl3dLJ+SEHfPHdugfv0wqecEa0FMkkvmelwbClLf2A1SL9W8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759768314; c=relaxed/simple;
+	bh=lmmhiSMSM0QI5UtyLT1oRwAi1Xu2NtSABJdRNdbbkNE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=OBrDHVRkKAzsCD/t4B/4QsL0x0zi9Et8SsM5Q7HoNcAyzIQQRMQZV+QqBq4LV7F/wXQ4LaVUIk9PIKsjRLGY5R1jQ5TYyoWCXmO3kVK/RlLMTmTEo+Ig2bR58mxU4+GGIqbMBv9V/BEmWrYglRx8B4uFMd36SkZqZdX5riwTZEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CwnYn4NH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oNB3mnTX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n9cBWI75ejPpTDplEo/a8ufnVm5aI2CBSHVqkLYtV772rxXqaFcmpypllAKgGUuRK7oZDVBcRtSuP6BslvtwjdzIxj5tEuNA+PH0tHtQGPyVSnJ25gyvfmDnKW7xAsIr99JidctZSkw8pJu41DA9j6lvw4IKgbLYrxm3XcUVcem8mzBi0PvTi4oHRf72DvOIPH6pqXU0/9m8G3VcV6xSMw3Cd1BBsroyQMyUxRPp9bft4ZElV79x70a3JvDokRjQJDX9diUqyKBXqok3TlAwHJO2123Xkal7023+Lo1eSgJYiDSEH2WHuq7OF2uBnNghnPXgtf6JT0DXoUArMwECXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ueF3YR/BGuDlSXldtbE6qqPf9DIpXetlVuV8iOPdaIs=;
- b=jHsRxmgJ+Bcw+QlUtOWzcQEf8ydrfU2cxuMRG3SBfpLXOJ5Gef/NWEazrH/Nj5pdJ/+GA5JL+yXYj9+jApVJ8UomnJVXF/vIou9F4GaxFwuZoozAVGCBnHVGqja5HqJ29gsL98cAxvB4ujWg0bknhwjTrEymjsEyPG5eEVW9OeYvof93xW4U0IJAivwsZAUy8huXxMJy4Y8GBd6+qUfF3VByQ1mwt6Q2dHJLwOzaZQ/y62FpMQ7dqYozB0JtAmYZIWleGID2xUgj58cgla3ebS24kB74j/gvGXtJtk+I87MqI9sbHi5oYy6mPLlB0LlGtl/NYT4DvU3JtskFAes9tA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ueF3YR/BGuDlSXldtbE6qqPf9DIpXetlVuV8iOPdaIs=;
- b=oNB3mnTXHIQrU5iyNY8izt/KwZxS1iMxumBgT0GhRnplqXQt+63W1SkZuHHJq2ZxQ+lUhcH4RJW1ZFew13B60TcpdZY3zd/mkyehGDs4nzzM65AP0VORL1ct9KF+IbQMDLTJGlla7AN1HdHhCCaBdt4dMDxuC+DcsOCU0AdTeA31u+x4toWuNOwAs3hmK+GNG68il3MAvCyumr733zVuRZc8JvWvzNpIqf3IiWVe6w7vPofci0e5MdPLambD1OUIQmDKueGb+trnHPgoZRjs38rSDK5JFp2jVkCoyYuzn8AZTuOwtsdhSrzmWsZfQMpDi9GE4wjs22Kf/kXT2Od8vQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by VI0PR04MB10495.eurprd04.prod.outlook.com (2603:10a6:800:235::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.20; Mon, 6 Oct
- 2025 14:38:10 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9182.015; Mon, 6 Oct 2025
- 14:38:09 +0000
-Date: Mon, 6 Oct 2025 10:37:59 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: alexandre.belloni@bootlin.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: imx6q-evi: fix rtc compatible
-Message-ID: <aOPUR8UAVND5SDNy@lizhi-Precision-Tower-5810>
-References: <20251005215146.3804629-1-alexandre.belloni@bootlin.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251005215146.3804629-1-alexandre.belloni@bootlin.com>
-X-ClientProxiedBy: SJ0PR13CA0051.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::26) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CwnYn4NH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EC01DC4CEF5;
+	Mon,  6 Oct 2025 16:31:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759768314;
+	bh=lmmhiSMSM0QI5UtyLT1oRwAi1Xu2NtSABJdRNdbbkNE=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=CwnYn4NHuuK2n+KeFOkVrYSrz7n6GusDJdpomGbI25ZrSucN60q12b+U00K9N5Jqo
+	 tIxIu75efDoSY0RpM6GXkUJ7gFlKNK+Swvp1ee4nlNimP5stM0KRRgznWB3ykSBFhh
+	 pszmsF/cfWyXCmT1AR00Cyy1O8ROROl2A3QiLzBLp+gmTea4mBWqaqgOlFiJOPGYfJ
+	 Goxm52Ko5z7ft7lhqv+oQ83w5QN6N6I7g7LRLx9tvp+eI62DzGEJIbjh3QtYH7xrje
+	 gq/qXCKamoh5wGnf/u7uDmGtc7NLtawyIw6Zp3+Bxc4PbQ9RkwJV18VlWVMRT5/Sks
+	 zVE9CJFsWMdJg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D95F8CCA470;
+	Mon,  6 Oct 2025 16:31:53 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Mon, 06 Oct 2025 18:31:28 +0200
+Subject: [PATCH] arm64: dts: freescale: Add GMAC Ethernet for S32G2 EVB and
+ RDB2 and S32G3 RDB3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|VI0PR04MB10495:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4b10d957-41bf-4b46-18e5-08de04e5f873
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|52116014|376014|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VYYEl+aWb8vJSGoTS7m9ajeArG7wlE43NxgYE4RuGhQzrQ/nRtj9xm7Ctdqr?=
- =?us-ascii?Q?HgUc72epWojDW5j5HYpPqa0+MoKk/ituhtQLgRuz/fpOscfbTut4jdIxASB7?=
- =?us-ascii?Q?1W6vJbeO6CASLD0AGdDlehify5Gtj3M5J36FXpPbv7xj5AkgNmlYjGCHRUP7?=
- =?us-ascii?Q?Ub9Qtm/gGUyyJYZvkb/HcvLj8P90s6zR9E6g7fBtm3uW+Oj1aN6ZZfsmhkq2?=
- =?us-ascii?Q?m+18vaNLqs5iXrwoYAL+l7ZxR2hTw3WKE3GvaI9UMTNmGmZHMmTo+h8sMVOT?=
- =?us-ascii?Q?deMPuaf2gc8hRnV1W1cVTVWrry55y18TaqOua6/mUI9oyFkSsiOcU1rfhwIu?=
- =?us-ascii?Q?XX1sJj0R2UXlaKnIkz85axvOWGlKg4kx5QdSj/36JMcgvjsPxL/TUBCu8jro?=
- =?us-ascii?Q?VLre9fy/9QF/74lQLYMdAI1BjQq1rwyWiknYiB9IXGixoCHXf2AJUcCiLn3U?=
- =?us-ascii?Q?bQpiRo5Ne+T94q8oZyDgUXEL7Ufb3gRXqG9i4j6K28JT9OCj8ynUq/y47tgU?=
- =?us-ascii?Q?9FB0hDsngAGVhZnvUh4wwBqmCGQ8sFjfg/heVNC/plDjvb8Sjgcw2Cl7Iagj?=
- =?us-ascii?Q?PqkH+yPMdqplgQq2JEmstEWTXmGN/jgh3p4agaNcPB8Qe7COfvGDXnm81CEd?=
- =?us-ascii?Q?Pn6dd7HhRVLP5QdVTe/Hh+o7rJkHWhl/loy/+VbSZYGgBpjn1+iC947hncvN?=
- =?us-ascii?Q?yK2KX+qxm/zgWZczMJz1znv7RIZEq+iaJ2DoSX/Z9IFurYDmmkwDSQAJHhc4?=
- =?us-ascii?Q?MqXw051LCLXNs2q75KbkQyaxjJOA2JLI66vj8Dy1kxYbqSBxN44HwtpK0hGi?=
- =?us-ascii?Q?v2/ouTBsn+dXzXgLvcdnd9Fh8tZXXusm9Fwfx0yITDZ39LyUTN8OylcAAch8?=
- =?us-ascii?Q?6h5Vr8crRSItIrAY7lF2kWB7VQPYlTC8EmvVEYNbl2rmldc5HOJJWwbGdNQy?=
- =?us-ascii?Q?I8zh6OO/Sj9fXAwAuci5er6PSiDjlNTGfZ3I1qP54mGJ0cIX/7s04rlzNX+F?=
- =?us-ascii?Q?BNFix2rinDKD3Xd83g/lyDlavJXQzYKb6G7U2JJxynHNCwJoYmOltya8K+cq?=
- =?us-ascii?Q?hIsBxF+b3YV1PTMBSfhR1RkqcALRHsszbZKbes9DPe8te3FfGp6o2Mj4BY4i?=
- =?us-ascii?Q?ZZO/phoTwwqyvq/8u5s4X/VIgKDxm3S82mf3Js0RejJCXZsqoDQrnqhzHcUt?=
- =?us-ascii?Q?93UA9B/F9yZQQog/Cjja9t7cH+YttReaB0EC4CUBrFUAPo541OpjMQaST9qz?=
- =?us-ascii?Q?KdRJBJTTNqPPtzLCVlhp18FQ0s0kBkCcWRG6gInnjIraFNsh4nSobu8Blk4y?=
- =?us-ascii?Q?V9UOSpVkxzniD7MBlZ/Pl97yq5GVtaFzHV8LtSgdO+jThDncfh9GnoJEyim1?=
- =?us-ascii?Q?cLp5jZOdovopJm6+38EH+LZuLa4zYQTPo7P3MZVGbTzdIAjz45fxMPSDxE4u?=
- =?us-ascii?Q?18dNzfT5xlukdKZ1vAd2lQmyQ2cRYbvzykfJyZLAJKL3WSKnsmFZoUfPeq5C?=
- =?us-ascii?Q?4Xc7K/lviaNBhIYMyfDgy7wVG5SMnCdo6Mmc?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(52116014)(376014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?PBmd403ZHsla23gJk7Ky4t32vkiVIJY863r60XADvIgNk3YN/ooVO7ZIR1UG?=
- =?us-ascii?Q?xGKslycdH5hxVFMq9oTNndj+SgGIdoMpmmPpdDo8+sKb56lvBXxmWf12H8av?=
- =?us-ascii?Q?YQppOAaDDZ/ba80SJHgZmOMoM0cTnKpVeCf1PDXUhhRAMikn3OLgF7EwBvE/?=
- =?us-ascii?Q?weDxYGoucvXot1epfmpM2Po5fHD0h74YL93f4E5dqcQyXvyrhOJMXOFKU+iM?=
- =?us-ascii?Q?nY/QGVSDool7ZF6JZGtIW9JFrTmwuily4yrWjtigu518fWiCtQFsDvj6Hk3u?=
- =?us-ascii?Q?c5guF36Fm45EfB+699GvG/SfHSPyOK6GaTwL7ro8ke6Sj92pR304q1585Br+?=
- =?us-ascii?Q?ZVJxhxUm21Sq41yuwpZRcPSnDzkk4k+jOmRw/DwZNs55/ubdy0/4Q0ein4vF?=
- =?us-ascii?Q?G8QHBucAueg9PeAkdhSlvXiR0JRjXtm7V5vFNC6cfPZZzJ+xLlyWaJJ9icDW?=
- =?us-ascii?Q?ThuoGkeH7oq1V2jh7fz3yWDaVTkUSuh9Ga/9Vf46846XsIECGEFEYz0MYQj5?=
- =?us-ascii?Q?tZbGzbFpwCWlyXSlgPDpKr0s5fmZe4baWHVqwgqDfs2XegWW1WsXpax4zk/L?=
- =?us-ascii?Q?FevVSq5XdF9xDNzRwO6dbelexl+a6Byd8TnZbSXhk+pzHV+5RHInZg9keL29?=
- =?us-ascii?Q?f+76qldaxDIEkQlDkNYK4EW3qXMgjjimcjTvvdXIzSqBLuWz8wS/X/FsYjKw?=
- =?us-ascii?Q?2S7dH0o5bi0GfrCuOJFz38wWVYMA7k1IpJujpyNVz9+clPAl3OA6izio+Zei?=
- =?us-ascii?Q?22J96FyOFuPh26PrS2TOSDswLnHmB7Sn702CGrSZcwO/Fc2Ve8brYtSMI/vj?=
- =?us-ascii?Q?I1vWU8NGIkTcZd2UJGFqoY62g0H/gBYqp0InRa2L4O8x3aCAEC7dvNUmdY9g?=
- =?us-ascii?Q?JpQfwI0akfPpy3eqSavZKFKkkGYSw/6setiX5MQqm3imDEZgi19mwGzQPWix?=
- =?us-ascii?Q?ggrtEpNlOL6rkt/x//HiAy9Os88P37wTb8C7qYGMkGxa6YWYDHPKU5Vm3aRP?=
- =?us-ascii?Q?WSL+gQV78UynVx4WFibu9Wyb6vVgzYtmmSN5PjY7xPjhps1XoM1JsX3FSgqf?=
- =?us-ascii?Q?Os0olJWvRf/cl0RIKfaCJefAR+5zw/JUZ9ZzjzTifjYqF2KTHfJzdq1y4c2S?=
- =?us-ascii?Q?Am/yGHr4xp5zmS4ai1VwtMeVwU5CP3rIo6yPL7Q+0IPbW4tnkS7RRH6ey7tc?=
- =?us-ascii?Q?O7/NdAN+0FmtiWL8lAEENgcwVpf6OzwwELQYs8JCfWlqVERpgF4I+7WPKpda?=
- =?us-ascii?Q?ul33iXTZVLZXLuLDLYJKWTN+DyJR7VQqAU1IS4og3WODb1+Ui/0U2UPBRJ+7?=
- =?us-ascii?Q?jmelXij6sScpBrirV9fNSGuKckYr1TI0LV4ucSAz0Ubi4T3lkTpvml4AtvIN?=
- =?us-ascii?Q?hHUHKCKZf0VSS010pbQ2AS3y4AZBAn677v3tsJFzQ5RrU5k2KBLy6WKlbrqA?=
- =?us-ascii?Q?nPSL5IJJbERfHYdlm1gbI31czXYu7X7b0AqIWNBNu6ZnLrywo4BM2puALBBI?=
- =?us-ascii?Q?d6+gf9IGgocdurv2NRNVNQ4BFnniV+XYjvxEQZmjN3nscBC3uxbOa6qiVwOv?=
- =?us-ascii?Q?LJqOc1EXro/C8TGamcWHW/vCzHY4jQxeRNTL2DO+?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b10d957-41bf-4b46-18e5-08de04e5f873
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2025 14:38:09.7952
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zt1x0ABinkPiBE9YeKKOqdJHtsRRLn0hm1+gExuDXklNge5w7JPUhd3ceL8IChEVYnnDVEDHk6TwcuWyFDuMtQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10495
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251006-nxp-s32g-boards-v1-1-f70a57b8087f@oss.nxp.com>
+X-B4-Tracking: v=1; b=H4sIAN/u42gC/x3MMQqAMAxA0atIZgNtJIJeRRysjTVLlQZEEO9uc
+ XzD/w+YFBWDsXmgyKWmR67wbQPrvuQkqLEayBF753rM94nWUcJwLCUaUvTcE3PggaBWZ5FN7/8
+ 4ze/7AaoG5dxhAAAA
+To: Chester Lin <chester62515@gmail.com>, 
+ Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759768312; l=7038;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=TMWFQ/FCO7r1LG54aYnEDegZ7oUI5MIx6sPdhGBxOcA=;
+ b=BYkrZtIcJy8FigoNiS7KdvSacfpqLvQ8+glEubaeNymGK1JA+8tu/tR1m9gshcgR22HkuQ5Mw
+ Cmy9eQyLBqgD4z5OxjWHaoTIiGXyJAXPiv+S2FEYTssNJq0IC465zL+
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Sun, Oct 05, 2025 at 11:51:45PM +0200, alexandre.belloni@bootlin.com wrote:
-> From: Alexandre Belloni <alexandre.belloni@bootlin.com>
->
-> The correct compatible is nxp,pcf2123
->
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> ---
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Add support for the Ethernet connection over GMAC controller connected to
+the Micrel KSZ9031 Ethernet RGMII PHY located on the boards.
 
->  arch/arm/boot/dts/nxp/imx/imx6q-evi.dts | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts b/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts
-> index 78d941fef5df..5da9631cb3ec 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-evi.dts
-> @@ -134,7 +134,7 @@ eeprom: m95m02@1 {
->  	};
->
->  	pb_rtc: rtc@3 {
-> -		compatible = "nxp,rtc-pcf2123";
-> +		compatible = "nxp,pcf2123";
->  		spi-max-frequency = <2450000>;
->  		spi-cs-high;
->  		reg = <3>;
-> --
-> 2.51.0
->
+The mentioned GMAC controller is one of two network controllers
+embedded on the NXP Automotive SoCs S32G2 and S32G3.
+
+The supported boards:
+ * EVB:  S32G-VNP-EVB with S32G2 SoC
+ * RDB2: S32G-VNP-RDB2
+ * RDB3: S32G-VNP-RDB3
+
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+ arch/arm64/boot/dts/freescale/s32g2.dtsi        | 50 ++++++++++++++++++++++++-
+ arch/arm64/boot/dts/freescale/s32g274a-evb.dts  | 21 ++++++++++-
+ arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts | 19 ++++++++++
+ arch/arm64/boot/dts/freescale/s32g3.dtsi        | 50 ++++++++++++++++++++++++-
+ arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts | 21 ++++++++++-
+ 5 files changed, 157 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+index d167624d1f0c..d06103e9564e 100644
+--- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+@@ -3,7 +3,7 @@
+  * NXP S32G2 SoC family
+  *
+  * Copyright (c) 2021 SUSE LLC
+- * Copyright 2017-2021, 2024 NXP
++ * Copyright 2017-2021, 2024-2025 NXP
+  */
+ 
+ #include <dt-bindings/interrupt-controller/arm-gic.h>
+@@ -738,5 +738,53 @@ gic: interrupt-controller@50800000 {
+ 			interrupt-controller;
+ 			#interrupt-cells = <3>;
+ 		};
++
++		gmac0: ethernet@4033c000 {
++			compatible = "nxp,s32g2-dwmac";
++			reg = <0x4033c000 0x2000>, /* gmac IP */
++			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
++			interrupt-parent = <&gic>;
++			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq";
++			snps,mtl-rx-config = <&mtl_rx_setup>;
++			snps,mtl-tx-config = <&mtl_tx_setup>;
++			status = "disabled";
++
++			mtl_rx_setup: rx-queues-config {
++				snps,rx-queues-to-use = <5>;
++
++				queue0 {
++				};
++				queue1 {
++				};
++				queue2 {
++				};
++				queue3 {
++				};
++				queue4 {
++				};
++			};
++
++			mtl_tx_setup: tx-queues-config {
++				snps,tx-queues-to-use = <5>;
++
++				queue0 {
++				};
++				queue1 {
++				};
++				queue2 {
++				};
++				queue3 {
++				};
++				queue4 {
++				};
++			};
++
++			gmac0mdio: mdio {
++				#address-cells = <1>;
++				#size-cells = <0>;
++				compatible = "snps,dwmac-mdio";
++			};
++		};
+ 	};
+ };
+diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+index c4a195dd67bf..f020da03979a 100644
+--- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
++++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+ /*
+  * Copyright (c) 2021 SUSE LLC
+- * Copyright 2019-2021, 2024 NXP
++ * Copyright 2019-2021, 2024-2025 NXP
+  */
+ 
+ /dts-v1/;
+@@ -15,6 +15,7 @@ / {
+ 
+ 	aliases {
+ 		serial0 = &uart0;
++		ethernet0 = &gmac0;
+ 	};
+ 
+ 	chosen {
+@@ -43,3 +44,21 @@ &usdhc0 {
+ 	no-1-8-v;
+ 	status = "okay";
+ };
++
++&gmac0 {
++	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
++	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
++	phy-mode = "rgmii-id";
++	phy-handle = <&rgmiiaphy4>;
++	status = "okay";
++};
++
++&gmac0mdio {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	/* KSZ 9031 on RGMII */
++	rgmiiaphy4: ethernet-phy@4 {
++		reg = <4>;
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+index 4f58be68c818..b9c2f964b3f7 100644
+--- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
++++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+@@ -16,6 +16,7 @@ / {
+ 	aliases {
+ 		serial0 = &uart0;
+ 		serial1 = &uart1;
++		ethernet0 = &gmac0;
+ 	};
+ 
+ 	chosen {
+@@ -77,3 +78,21 @@ &usdhc0 {
+ 	no-1-8-v;
+ 	status = "okay";
+ };
++
++&gmac0 {
++	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
++	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
++	phy-mode = "rgmii-id";
++	phy-handle = <&rgmiiaphy1>;
++	status = "okay";
++};
++
++&gmac0mdio {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	/* KSZ 9031 on RGMII */
++	rgmiiaphy1: ethernet-phy@1 {
++		reg = <1>;
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+index be3a582ebc1b..e31184847371 100644
+--- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+ /*
+- * Copyright 2021-2024 NXP
++ * Copyright 2021-2025 NXP
+  *
+  * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+  *          Ciprian Costea <ciprianmarian.costea@nxp.com>
+@@ -883,6 +883,54 @@ gic: interrupt-controller@50800000 {
+ 			      <0x50420000 0x2000>;
+ 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
++
++		gmac0: ethernet@4033c000 {
++			compatible = "nxp,s32g2-dwmac";
++			reg = <0x4033c000 0x2000>, /* gmac IP */
++			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
++			interrupt-parent = <&gic>;
++			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq";
++			snps,mtl-rx-config = <&mtl_rx_setup>;
++			snps,mtl-tx-config = <&mtl_tx_setup>;
++			status = "disabled";
++
++			mtl_rx_setup: rx-queues-config {
++				snps,rx-queues-to-use = <5>;
++
++				queue0 {
++				};
++				queue1 {
++				};
++				queue2 {
++				};
++				queue3 {
++				};
++				queue4 {
++				};
++			};
++
++			mtl_tx_setup: tx-queues-config {
++				snps,tx-queues-to-use = <5>;
++
++				queue0 {
++				};
++				queue1 {
++				};
++				queue2 {
++				};
++				queue3 {
++				};
++				queue4 {
++				};
++			};
++
++			gmac0mdio: mdio {
++				#address-cells = <1>;
++				#size-cells = <0>;
++				compatible = "snps,dwmac-mdio";
++			};
++		};
+ 	};
+ 
+ 	timer {
+diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
+index e94f70ad82d9..4a74923789ae 100644
+--- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
++++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+ /*
+- * Copyright 2021-2024 NXP
++ * Copyright 2021-2025 NXP
+  *
+  * NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)
+  */
+@@ -18,6 +18,7 @@ aliases {
+ 		mmc0 = &usdhc0;
+ 		serial0 = &uart0;
+ 		serial1 = &uart1;
++		ethernet0 = &gmac0;
+ 	};
+ 
+ 	chosen {
+@@ -93,3 +94,21 @@ &usdhc0 {
+ 	disable-wp;
+ 	status = "okay";
+ };
++
++&gmac0 {
++	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
++	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
++	phy-mode = "rgmii-id";
++	phy-handle = <&rgmiiaphy1>;
++	status = "okay";
++};
++
++&gmac0mdio {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	/* KSZ 9031 on RGMII */
++	rgmiiaphy1: ethernet-phy@1 {
++		reg = <1>;
++	};
++};
+
+---
+base-commit: fd94619c43360eb44d28bd3ef326a4f85c600a07
+change-id: 20251006-nxp-s32g-boards-2d156255b592
+
+Best regards,
+-- 
+Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+
+
