@@ -1,111 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB31B34BA5F;
-	Tue,  7 Oct 2025 23:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D922EB853
+	for <imx@lists.linux.dev>; Wed,  8 Oct 2025 08:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759880752; cv=none; b=h5AQ6MmKdmL1TIEzDDrWBTplPS9nO0FBccopNUK+/s25n2dwMHdr9lLc3umkoBkRjUig/RnEeODPWpYcH/hAk3ccXRyMT8ui2HArIED30/ylewamDZv3u3K8FbEz+99BVrILJS3ELvVDUsoRcyRQDXdlPYvazfgHM5UzrcZRvFo=
+	t=1759912019; cv=none; b=tXLQUK6l4ibXb7Z888EEeuhcE9vu3DV+sf0/2JOQ5J9sFT7Kfuut3V6wje+6MjL90kAQeKrdcEEAS42isVNvg0krbMiw7rCfdL0ZWsT4b1fd4ROwxIgIstAkeI62eQhlU1riyrI54bTErvR0nZfrguJxNc68iRAVfOa3utQYIVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759880752; c=relaxed/simple;
-	bh=IqRRuKIoEphO+gj4luQowZCNvLxltjulvENl9vZ2t+0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=QmZjgAYDBRGtsSCd5OFBmez84doHX0AR5J75szvg3eNGpAdnaa7jHJLyLBxfBgSgk/KuYfqiZNlRlZtG5tKRE8bkjX+VgJrHgyq1wssH15KT0MscVb0/fV3QESdF/rETcltrDm1N26rJOXw2vvh/ZVtVDd82hUSJXDIZnAsszAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmbyFnpC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759912019; c=relaxed/simple;
+	bh=NoCj3PDj/ucFGgOoGoh7zLKQ6F3k/KhvKUWc0JBR6AE=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=NnxEHVQ4IgGa0bH1IUkCn92a56xHNSg50U98o4lVyfiIm2iCIkD+kl6XVfhZ3HNHLFztwfmQ/EbRbMKQ5intu8PBQiS/91vI+iQ0lPvI+SBX6xwr6KLaU7MLoRoluAxlLH+Fn1kry+qfjadRSoZOsWrTTuSPyrUliGdypX+5mno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=zTDwunbg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MerVP5i+; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmbyFnpC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B17C4CEF1;
-	Tue,  7 Oct 2025 23:45:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759880751;
-	bh=IqRRuKIoEphO+gj4luQowZCNvLxltjulvENl9vZ2t+0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=FmbyFnpCYKwydzg66aV+Sua/TbY8p/XI9373e4P1XP0oJUHVtNKWGLa5ONUCoJAZB
-	 zjir8jaXGOsic7nKP30hhQuqcx9N4f7FWJjUf3itM1YQoG3W7pzhJPXdtR8b/uiT6W
-	 zpY9ErUIk0Vat6419gP+qxO9Iojrh56ieTeZ9rjlu/7M/Nm+PNowx6yqY1gl8tx/HI
-	 RwcLdPMvDj3kRaK1NSnHOsskVljDT38VvtGvMy1DJEPhezdIvLs3IjCUgGM8B1jreS
-	 F9n5r7dpYSvWDTvsosaUpQit2FF5TsoTln1UzvXld0Yy6tjNa4ZwGL5NylcV4SiZLD
-	 i/rQbHX7Rd8ng==
-Date: Wed, 08 Oct 2025 01:45:48 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-CC: Manivannan Sadhasivam <mani@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Jon Mason <jdmason@kudzu.us>,
- Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, ntb@lists.linux.dev,
- imx@lists.linux.dev
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_1/3=5D_PCI=3A_endpoint=3A_Add_help?=
- =?US-ASCII?Q?er_function_pci=5Fepf=5Fget=5Fbar=5Frequired=5Fsize=28=29?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <aOVbOb5UyhM7c7p1@lizhi-Precision-Tower-5810>
-References: <20250930-vntb_msi_doorbell-v4-0-ea2c94c6ff2e@nxp.com> <20250930-vntb_msi_doorbell-v4-1-ea2c94c6ff2e@nxp.com> <aOOdaDdxCAkmGbkd@ryzen> <aOVbOb5UyhM7c7p1@lizhi-Precision-Tower-5810>
-Message-ID: <247854C3-B81F-48E2-A68C-CCA5F4338600@kernel.org>
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="zTDwunbg";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MerVP5i+"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 9C908EC0215;
+	Wed,  8 Oct 2025 04:26:56 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Wed, 08 Oct 2025 04:26:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1759912016;
+	 x=1759998416; bh=F4g4adTQMUVwYTDDDF3YwmkpD9IuhJi9J7dGpH8tKXI=; b=
+	zTDwunbgyiibER+SJRhVJ+wD8TQHC+nS5vN6gnuJkpoCMK14LuJ7xVdZv/FtGJM5
+	IYm1EJu0KyvUHx03BsLReaNFEHGmIUj8U1VPHKgG3hFxr3IzJF2NcuDtLkZ8kXTd
+	EGb96HO6CvmndsCCo/a3+c6q3cOj3Q6kooj1F6daq9E+rBPJLdcChoDk7NSSr1Kw
+	jsGihAdTGM4glkALrJf6HWlgnKiFSaNFDF1B/ZOTwLRuLb6dGjs+1/erTd2rqalt
+	XLT/9ikSGBcYqd+Az6PLpMTna1mjlnd5AM3l0pXYhMiyZA0odoAdKrhq6yXLb/EK
+	icj927pR6I7LBhY+ZzQwxA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1759912016; x=
+	1759998416; bh=F4g4adTQMUVwYTDDDF3YwmkpD9IuhJi9J7dGpH8tKXI=; b=M
+	erVP5i+Y9D4XNXBQRjJOzk1JGwnjOFCsrKtlQZ4+z9LhO95zA1wi3evNak1A0gUb
+	ggDDJfrDw5qiM49bGqJXsbKHFreGINqu/YieesKfTcxqmHEsgUtag6pCZiw8FsxT
+	bHpmw+LMRXwmqtsy5v3PxEUaWw3QyF2xPtk75Bx6/GPIfKOuh/E/bhsQEv2xf4fH
+	mu3PvkZDKJhW6Hmp4+9Se4ldz0v0VzyTv6q0m1Jpr7m8zJjHMN4Fm4ZkePPDFHlq
+	H5kU5pzqQA00dI1haKXO8Y/ieM6bqvlVTP1vAVT0jaApi1rt+u1rFzqpAZNbsifN
+	nHmU8bZ5cEzlLwn3ddb3w==
+X-ME-Sender: <xms:UCDmaL0IImzm_PwDSWna-4KHTqF_cK4_Y_cTVNtaxk4gzR4FuGokPw>
+    <xme:UCDmaE5aIm7pFRnzvlVbg172uS3EqNI61R2QrTIlgIbBlMOPd_cvDr5jPnkk7MeV2
+    4Vu1L0Rq3sORWcFcPZJHLWN5lo8UqMqPSCIkQ5YcIaIFOU-r2L7QB8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddutddvkedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepvdehpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopegthhgvshhtvghriedvheduheesghhmrghilhdrtghomhdprhgtph
+    htthhopehjihhnghhoohhhrghnudesghhmrghilhdrtghomhdprhgtphhtthhopegshhgv
+    lhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheptggrshhsvghlsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhifih
+    hltgiihihnshhkiheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhpihgvrhgrlhhi
+    shhisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghniheskhgvrhhnvghlrdhorh
+    hg
+X-ME-Proxy: <xmx:UCDmaLOlPWHWdQNn4xwFmfSGyab7IqavwPNkHkbJHvvIlDF412pKvQ>
+    <xmx:UCDmaF3eBOY6zZMrPIU2phnPckb9VbQZjihp4ek57JRTeF9RPqLjlA>
+    <xmx:UCDmaHlCbkpoXY8N1wP84u7TScth8RLT_OtHiGT6yZXAibJBU3XSTw>
+    <xmx:UCDmaL66592w09_8OC5012ug0qgCwMPjzCNBU-Re4z41ccAqlChzFA>
+    <xmx:UCDmaPYlOr7WPuRBXF8g9VDKDh-FKa8dFjSczSM3F_4uhgs3VBvXXCwE>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id EB7F6700063; Wed,  8 Oct 2025 04:26:55 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-ThreadId: AIHrVq-NOQMk
+Date: Wed, 08 Oct 2025 10:26:35 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Manivannan Sadhasivam" <mani@kernel.org>,
+ "Lorenzo Pieralisi" <lpieralisi@kernel.org>
+Cc: "Vincent Guittot" <vincent.guittot@linaro.org>,
+ "Chester Lin" <chester62515@gmail.com>,
+ "Matthias Brugger" <mbrugger@suse.com>,
+ "Ghennadi Procopciuc" <ghennadi.procopciuc@oss.nxp.com>,
+ "NXP S32 Linux Team" <s32@nxp.com>, bhelgaas@google.com,
+ jingoohan1@gmail.com,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ "Rob Herring" <robh@kernel.org>, krzk+dt@kernel.org,
+ "Conor Dooley" <conor+dt@kernel.org>, Ionut.Vicovan@nxp.com,
+ "Larisa Grigore" <larisa.grigore@nxp.com>,
+ "Ghennadi Procopciuc" <Ghennadi.Procopciuc@nxp.com>,
+ ciprianmarian.costea@nxp.com, "Bogdan Hamciuc" <bogdan.hamciuc@nxp.com>,
+ "Frank Li" <Frank.li@nxp.com>, linux-arm-kernel@lists.infradead.org,
+ linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ "Niklas Cassel" <cassel@kernel.org>
+Message-Id: <eba7d968-209d-4acb-ba41-4bebf03e96ba@app.fastmail.com>
+In-Reply-To: 
+ <4rghtk5qv4u7vx4nogctquu3skvxis4npxfukgtqeilbofyclr@nhkrkojv3syh>
+References: <20250919155821.95334-1-vincent.guittot@linaro.org>
+ <20250919155821.95334-2-vincent.guittot@linaro.org>
+ <iom65w7amxqf7miopujxeulyiglhkyjszjc3nd4ivknj5npcz2@bvxej6ymkecd>
+ <aOU0w5Brp6uxjZDr@lpieralisi>
+ <4rghtk5qv4u7vx4nogctquu3skvxis4npxfukgtqeilbofyclr@nhkrkojv3syh>
+Subject: Re: [PATCH 1/3 v2] dt-bindings: PCI: s32g: Add NXP PCIe controller
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On 7 October 2025 20:26:01 CEST, Frank Li <Frank=2Eli@nxp=2Ecom> wrote:
->On Mon, Oct 06, 2025 at 12:43:52PM +0200, Niklas Cassel wrote:
->> On Tue, Sep 30, 2025 at 04:39:37PM -0400, Frank Li wrote:
->> > Introduce pci_epf_get_bar_required_size() to retrieve the required BA=
-R
->> > size and memory size=2E Prepare for adding support to set an MMIO add=
-ress to
->> > a specific BAR=2E
->> >
->> > Use two variables 'aligned_bar_size' and 'aligned_mem_size' to avoid
->> > confuse=2E
->>
->> 'aligned_bar_size' has been renamed, so this sentence should be updated=
-=2E
->>
->>
->> (snip)
->>
->> > @@ -308,7 +327,9 @@ void *pci_epf_alloc_space(struct pci_epf *epf, si=
-ze_t size, enum pci_barno bar,
->> >  	}
->> >
->> >  	dev =3D epc->dev=2Eparent;
->> > -	space =3D dma_alloc_coherent(dev, aligned_size, &phys_addr, GFP_KER=
-NEL);
->> > +
->> > +	space =3D dma_alloc_coherent(dev, aligned_mem_size,
->> > +				   &phys_addr, GFP_KERNEL);
->> >  	if (!space) {
->> >  		dev_err(dev, "failed to allocate mem space\n");
->> >  		return NULL;
->> > @@ -317,7 +338,7 @@ void *pci_epf_alloc_space(struct pci_epf *epf, si=
-ze_t size, enum pci_barno bar,
->> >  	epf_bar[bar]=2Ephys_addr =3D phys_addr;
->> >  	epf_bar[bar]=2Eaddr =3D space;
->> >  	epf_bar[bar]=2Esize =3D size;
->> > -	epf_bar[bar]=2Ealigned_size =3D aligned_size;
->> > +	epf_bar[bar]=2Ealigned_size =3D aligned_mem_size;
->>
->> I like that this local variable is now named aligned_mem_size
->> to more clearly highlight that it is the aligned _memory_ size=2E
->>
->> Perhaps you could also rename the struct pci_epf_bar struct member
->> 'aligned_size' to 'aligned_mem_size' or perhaps even better,
->> 'backing_mem_size' or 'mem_size' ?
+On Wed, Oct 8, 2025, at 00:28, Manivannan Sadhasivam wrote:
+> On Tue, Oct 07, 2025 at 05:41:55PM +0200, Lorenzo Pieralisi wrote:
+>> On Mon, Sep 22, 2025 at 11:51:07AM +0530, Manivannan Sadhasivam wrote:
+>> 
+>> [...]
+>> 
+>> > > +                  /*
+>> > > +                   * non-prefetchable memory, with best case size and
+>> > > +                   * alignment
+>> > > +                   */
+>> > > +                  <0x82000000 0x0 0x00000000 0x58 0x00000000 0x7 0xfffe0000>;
+>> > 
+>> > s/0x82000000/0x02000000
+>> > 
+>> > And the PCI address really starts from 0x00000000? I don't think so.
+>> 
+>> Isn't the DWC ATU programmed to make sure that the PCI memory window DT
+>> provides _is_ the PCI "bus" memory base address ?
+>> 
+>> It is a question, I don't know the DWC inner details fully.
+>> 
+>> I don't get what you mean by "I don't think so". Either the host controller
+>> AXI<->PCI translation is programmable, then the PCI base address is what
+>> we decide it is or it isn't.
+>> 
 >
->How about alloc_mem_size ? which actually used for dma_free() function=2E
+> As per the binding, I/O PCI address already starts from 0x0. How can you have
+> two OB mappings with same PCI address?
 
+I/O space and memory space can use the same bus addresses,
+since they are disambiguated by the type in the actual PCIe
+transactions.
 
-I prefer mem_size, but I am not the maintainer=2E
-Hopefully Mani has an option to avoid bike shedding :)
+We usually assume that I/O space port numbers start at 0 (as done
+here), while PCI memory ranges are identity-mapped to the CPU
+physical address they are mapped at, but in this case the physical
+address window is outside of the low 4GB range, so an identity map
+at 0x58.0x00000000 woulds prevent the use of 32-bit BARs, and
+mapping something in the low bus address range is the only
+possibility.
 
-Have an awesome day!
+On the other hand, what looks like a bug to me is that the CPU
+physical address range for the PCI BAR space overlaps with the
+the physical addresses for RAM at 0x80000000 and on-chip devices
+at 0x40000000. This probably works fine as long as the total
+PCI memory space assignment stays below 0x40000000 but would
+fail once addresses actually start clashing.
 
+Maybe the memory space can be split into two windows like
 
-/Niklas
+ <0x82000000 0x0 0x00000000 0x58 0x00000000 0x0 0x40000000>, //  1GB 32-bit non-pref
+ <0xc2000000 0x1 0x00000000 0x59 0x00000000 0x6 0x00000000>; // 24GB 64-bit pref
 
+The 64-bit window could be either prefetchable or
+non-prefetchable in this case. If there is only one programmable
+window for memory space, that would probably have to be
+limited to 1GB non-prefetchable for the normal 32-bit BARs.
+
+       Arnd
