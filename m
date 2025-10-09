@@ -1,118 +1,212 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82B727B347;
-	Wed,  8 Oct 2025 20:18:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BB433EC
+	for <imx@lists.linux.dev>; Thu,  9 Oct 2025 01:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759954719; cv=none; b=qZthjgjKaPG68e/jV14r++le9aW2Ay4qpSbqRcPL50DkU7mUdaKmCqVJekVzz1LU302FubAwiiL13XWxGnxI6pndmJVpAbnQ48/I113DzdEzgz8YFcXWgdrIS0pXN3il1/qkTPQdP9KP8pn8EI2L37ShdHzjqZOPsRyx0cyWLKo=
+	t=1759973562; cv=none; b=XxNHZ5mi/eV1bKCQUEeelKMBBupiPNfNT5uaqpYqnxX+xUhe++KubAiC9d+9MPumhQznnp2hnpNgknt2Vu5kpp7IBGH8TrZbDOv0bsfB5inpHdzrLYCKsyUWsmYVjERnTFKh325q2qdVzY/u4xouZZf4RG7YZLbk0smuXnWoZcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759954719; c=relaxed/simple;
-	bh=NPfFVoW/LsVVuz6xy4asuQtfUdYNXIh1K0Bl95lxHK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K7cHN5gIrC3B0Oap6S/R+GFVEuHea0q47V4O0NNo765elBwB3FJTAQqCwh1eaSRAx1dEO4gp6KDfAFslr/5e3GY34ieStalMFAjHuopPBRuxgsBRIbEjFA2ehc1KvilA3/ThjyXD9Uz/X3nheZrBDy1fuv3vzJ6fE9vwMyXnfGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWEuV7Nd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759973562; c=relaxed/simple;
+	bh=3B1vDXL+5ZxmKxM5VMyucqBlGJTQ0nSlr7HJnS/EdzY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=p/5NlTZM3/n1c2M0x2MuIfxat7uyNQNtmAJF68itrh/htr533Vdsa9kXexXOYpsVNDV4nrJgzIkni/J3r6JmrmbQGL3X4hYN6keHNfQ5NzRuywd8RYrF0Tk5MBbFSvJeMlQt3pOhOkQxOrvJZ7fHCFqzbYlEyvwDtKhLVV6uf3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=rlia1CGo; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWEuV7Nd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51887C4CEE7;
-	Wed,  8 Oct 2025 20:18:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759954719;
-	bh=NPfFVoW/LsVVuz6xy4asuQtfUdYNXIh1K0Bl95lxHK0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eWEuV7Nd5F7lsXWr/UkCGuvskUUzW9C9N2qKdcElDqx/deuTzBTWJueKZCqT5MWC/
-	 kE9/oj3IagxHP2hfMgU4vzc/Njx/JocASOAc5uKkczRX+NIlOw6Mqyp/fQefLpzg8G
-	 wdZ0PE/DJ3aqz4hxPAy53TqIx2L5wSKfK5n3GRFbuiq6XWwlUvSyo5gBcH5hYoqXPG
-	 MjuNTh9Zt8dK2y/pJsA6K5jRLX+DyJVYc+XBwb5npwxFnU6Tg5tJW+37C8v8Bly8tm
-	 xAGkxk47sVjIiMklhP2bNpjIUHz4ummV0re5RGFKkE0hpc6l4oMmX042tikLqLgpwE
-	 JgOoQ+b6LPL7g==
-Date: Wed, 8 Oct 2025 21:18:34 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 4/5] dt-bindings: trivial-devices: add MEMSIC 3-axis
- magnetometer
-Message-ID: <20251008-subtitle-estranged-b35dfcd2d3a7@spud>
-References: <20251007-i3c_ddr-v5-0-444184f7725e@nxp.com>
- <20251007-i3c_ddr-v5-4-444184f7725e@nxp.com>
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="rlia1CGo"
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 599108HW3370552;
+	Wed, 8 Oct 2025 18:32:20 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=PPS06212021; bh=VlarLxHL1
+	sIoJ71xUXZ9I1oD/PTQZbEBLOsDpXM+iBc=; b=rlia1CGoqwXXzC4ImSTrHfDqA
+	nOPgq3891j0TczMn+sCdpZ0xBNQDNJPNS7le35O2KOWqA4vKnzAGUBEeqrHPB5MO
+	oEaf1T4Nr+8uD8j4Pf5v9a37UfuROQoSBPuTqCRYNgqOVJZNWhAlsVZJXD7M8tCj
+	Zp8uKlI4nvQmsy1839EmosOU/P917+hb/rqjDT+i0bcsKsuSgV/MOzWI62tfWtZO
+	+UHB4zI+SitrZ9yz2atxk+6eHL94fxSqIsgnXam4ekJvyTr7/G9xhgFrSoYYlqHS
+	G1Br9XnlwZsmqqG3Ye9pkl1E5w17hsNbWKODzuY7mIpZLKuzZ4I7roUHYj2Dg==
+Received: from ala-exchng01.corp.ad.wrs.com ([128.224.246.36])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 49nx2x08k0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 08 Oct 2025 18:32:20 -0700 (PDT)
+Received: from ala-exchng01.corp.ad.wrs.com (10.11.224.121) by
+ ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.59; Wed, 8 Oct 2025 18:32:19 -0700
+Received: from pek-lpggp9.wrs.com (10.11.232.110) by
+ ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server id
+ 15.1.2507.59 via Frontend Transport; Wed, 8 Oct 2025 18:32:16 -0700
+From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+To: <claudiu.manoil@nxp.com>, <vladimir.oltean@nxp.com>, <wei.fang@nxp.com>,
+        <xiaoning.wang@nxp.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <alexandru.marginean@nxp.com>
+CC: <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Jianpeng Chang
+	<jianpeng.chang.cn@windriver.com>
+Subject: [v3 PATCH net] net: enetc: fix the deadlock of enetc_mdio_lock
+Date: Thu, 9 Oct 2025 09:32:15 +0800
+Message-ID: <20251009013215.3137916-1-jianpeng.chang.cn@windriver.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sqGdDHF1UKLk1vs2"
-Content-Disposition: inline
-In-Reply-To: <20251007-i3c_ddr-v5-4-444184f7725e@nxp.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: -q4BHPh4hvEtw9lpsvawWdfD9ytuD3md
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA5MDAwNyBTYWx0ZWRfX8ks3jYwF/07M
+ pqoNXQ6AqBgauoFkC+PfwkTMEGku2GwBDq9AHe+EqNGHUjgyotODBsHbNtI0Z0iuiPvgEn21cMe
+ b1WHSo47gCnYA++sATfqxZjlypvUx02WAQKjalzGS3poni3JEHlyk8zC8ledE/pK1T7sHsjYBPR
+ 4vtk3VTD0dWwTs2qnbqsFMO/QllA3Hr4odWDL9o3RDJPptO18sg0t+Wk33EYlNlYzVTxfUURUL0
+ jP5U+FN4zKqlCm5UiwNGBbGa3BlZ9v+PV22fM53mK1j8pkhedDPaE1Mx9KsHel6lsGQ/yE7OcM1
+ 0Cw+pUekWGn56FH4szmgmQ+YuhiEWuBFKLFiw/+Uc/iNdT3biNHUkRwzwe/HMYaEyDn0if08ghL
+ 3DgRUT9ODLNv/KM5aD700jTc/1kiwA==
+X-Proofpoint-ORIG-GUID: -q4BHPh4hvEtw9lpsvawWdfD9ytuD3md
+X-Authority-Analysis: v=2.4 cv=N78k1m9B c=1 sm=1 tr=0 ts=68e710a4 cx=c_pps
+ a=AbJuCvi4Y3V6hpbCNWx0WA==:117 a=AbJuCvi4Y3V6hpbCNWx0WA==:17
+ a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8 a=sSYRAcqiQU9DoQOrsSkA:9
+ a=FdTzh2GWekK77mhwV6Dw:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-08_08,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 bulkscore=0 adultscore=0
+ impostorscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510020000 definitions=main-2510090007
 
+After applying the workaround for err050089, the LS1028A platform
+experiences RCU stalls on RT kernel. This issue is caused by the
+recursive acquisition of the read lock enetc_mdio_lock. Here list some
+of the call stacks identified under the enetc_poll path that may lead to
+a deadlock:
 
---sqGdDHF1UKLk1vs2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+enetc_poll
+  -> enetc_lock_mdio
+  -> enetc_clean_rx_ring OR napi_complete_done
+     -> napi_gro_receive
+        -> enetc_start_xmit
+           -> enetc_lock_mdio
+           -> enetc_map_tx_buffs
+           -> enetc_unlock_mdio
+  -> enetc_unlock_mdio
 
-On Tue, Oct 07, 2025 at 04:06:16PM -0400, Frank Li wrote:
-> Add compatible string 'memsic,mmc5603' and 'memsic,mmc5633' for
-> MEMSIC 3-axis magnetometer.
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+After enetc_poll acquires the read lock, a higher-priority writer attempts
+to acquire the lock, causing preemption. The writer detects that a
+read lock is already held and is scheduled out. However, readers under
+enetc_poll cannot acquire the read lock again because a writer is already
+waiting, leading to a thread hang.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
---
-pw-bot: handled-elsewhere
+Currently, the deadlock is avoided by adjusting enetc_lock_mdio to prevent
+recursive lock acquisition.
 
-> ---
-> Changes in v4
-> - add memsic,mmc5603
->=20
-> Changes from v1 .. v3
-> - None
-> ---
->  Documentation/devicetree/bindings/trivial-devices.yaml | 4 ++++
->  1 file changed, 4 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Doc=
-umentation/devicetree/bindings/trivial-devices.yaml
-> index 7609acaa752d5c1c89a26bb007fa38357dee1a28..72786eebfbd63beffd2a09fc2=
-0c7aedbe9e96a8e 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -225,6 +225,10 @@ properties:
->            - meas,tsys01
->              # MEMSIC magnetometer
->            - memsic,mmc35240
-> +            # MEMSIC 3-axis magnetometer
-> +          - memsic,mmc5603
-> +            # MEMSIC 3-axis magnetometer (Support I3C HDR)
-> +          - memsic,mmc5633
->              # MEMSIC 3-axis accelerometer
->            - memsic,mxc4005
->              # MEMSIC 2-axis 8-bit digital accelerometer
->=20
-> --=20
-> 2.34.1
->=20
+Fixes: 6d36ecdbc441 ("net: enetc: take the MDIO lock only once per NAPI poll cycle")
+Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+---
+v3:
+  - remove the curly braces
+v2:https://lore.kernel.org/netdev/20250925021152.1674197-1-jianpeng.chang.cn@windriver.com/
+  - change the fix line and subject.
+  - add blank line before return.
+v1:https://lore.kernel.org/netdev/20250924054704.2795474-1-jianpeng.chang.cn@windriver.com/
 
---sqGdDHF1UKLk1vs2
-Content-Type: application/pgp-signature; name="signature.asc"
+ drivers/net/ethernet/freescale/enetc/enetc.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index aae462a0cf5a..27f53f1bbdf7 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -1595,6 +1595,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
+ 	/* next descriptor to process */
+ 	i = rx_ring->next_to_clean;
+ 
++	enetc_lock_mdio();
++
+ 	while (likely(rx_frm_cnt < work_limit)) {
+ 		union enetc_rx_bd *rxbd;
+ 		struct sk_buff *skb;
+@@ -1630,7 +1632,9 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
+ 		rx_byte_cnt += skb->len + ETH_HLEN;
+ 		rx_frm_cnt++;
+ 
++		enetc_unlock_mdio();
+ 		napi_gro_receive(napi, skb);
++		enetc_lock_mdio();
+ 	}
+ 
+ 	rx_ring->next_to_clean = i;
+@@ -1638,6 +1642,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
+ 	rx_ring->stats.packets += rx_frm_cnt;
+ 	rx_ring->stats.bytes += rx_byte_cnt;
+ 
++	enetc_unlock_mdio();
++
+ 	return rx_frm_cnt;
+ }
+ 
+@@ -1947,6 +1953,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 	/* next descriptor to process */
+ 	i = rx_ring->next_to_clean;
+ 
++	enetc_lock_mdio();
++
+ 	while (likely(rx_frm_cnt < work_limit)) {
+ 		union enetc_rx_bd *rxbd, *orig_rxbd;
+ 		struct xdp_buff xdp_buff;
+@@ -2010,7 +2018,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 			 */
+ 			enetc_bulk_flip_buff(rx_ring, orig_i, i);
+ 
++			enetc_unlock_mdio();
+ 			napi_gro_receive(napi, skb);
++			enetc_lock_mdio();
+ 			break;
+ 		case XDP_TX:
+ 			tx_ring = priv->xdp_tx_ring[rx_ring->index];
+@@ -2075,6 +2085,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 		enetc_refill_rx_ring(rx_ring, enetc_bd_unused(rx_ring) -
+ 				     rx_ring->xdp.xdp_tx_in_flight);
+ 
++	enetc_unlock_mdio();
++
+ 	return rx_frm_cnt;
+ }
+ 
+@@ -2093,6 +2105,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
+ 	for (i = 0; i < v->count_tx_rings; i++)
+ 		if (!enetc_clean_tx_ring(&v->tx_ring[i], budget))
+ 			complete = false;
++	enetc_unlock_mdio();
+ 
+ 	prog = rx_ring->xdp.prog;
+ 	if (prog)
+@@ -2104,10 +2117,8 @@ static int enetc_poll(struct napi_struct *napi, int budget)
+ 	if (work_done)
+ 		v->rx_napi_work = true;
+ 
+-	if (!complete) {
+-		enetc_unlock_mdio();
++	if (!complete)
+ 		return budget;
+-	}
+ 
+ 	napi_complete_done(napi, work_done);
+ 
+@@ -2116,6 +2127,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
+ 
+ 	v->rx_napi_work = false;
+ 
++	enetc_lock_mdio();
+ 	/* enable interrupts */
+ 	enetc_wr_reg_hot(v->rbier, ENETC_RBIER_RXTIE);
+ 
+-- 
+2.51.0
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaObHGQAKCRB4tDGHoIJi
-0kYFAQDlJRBo3V6un4TdXGebaBOYpaei0g/okMdZdefOo2s6WAEA7JKupNoV9yYg
-TZOT/iUlzA563LqVO58o6aXWJEQGyQk=
-=vzKo
------END PGP SIGNATURE-----
-
---sqGdDHF1UKLk1vs2--
