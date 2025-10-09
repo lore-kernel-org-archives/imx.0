@@ -1,172 +1,197 @@
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011000.outbound.protection.outlook.com [40.107.130.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B26272E41
-	for <imx@lists.linux.dev>; Thu,  9 Oct 2025 21:16:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760044587; cv=none; b=LuaVVtFEXaEX7BToBQNkG6XXjTJ48NKjv4rrbbQ1Rq9wgchyQmpHtc7KiUBAcoW25P1cAPTjkTegFNA1y90v+OfFcb4HlyJ8Roj0T1S/+JzElbhifeB/eTOj1h07cPklXGkiw3Yplo7oVvZIM0m65eIwCmeaVcgsFGNbsstSesk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760044587; c=relaxed/simple;
-	bh=j10cHAf5FWRw7VGsF/d4LWqO0kfsTZpy1sJ27u2YnjU=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=O5tHZ7SePlsyNjiGhMVOu8QBBiHM6vXiCoJTrJj04rSrtiDGpl8UpOX9f6yI+C7k/ZKpaEaqJqI5a5rYs1ex54/Ryl1LKaxAslJ8C0Cjx6/GKxGenlmw9YwPa30ZfJ3ukQcnUN+ngWATLtT17y6QAk8aNSxVZ6bBqBSNjtufvA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=AbQFnV+b; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EHmpTDc5; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5E5286402
+	for <imx@lists.linux.dev>; Thu,  9 Oct 2025 22:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760048856; cv=fail; b=YI+LdZ2Bu8+riZihdu3MR0S8IBB0XEF5Vr7dnVNiz8Oie/HCXo27w37kjTwWB4bOQnht9JFRYV1URCneT3MvAbQEaQ27R3P6BX2F2CTFZkqOW0EERRfc5qqtz1V06OVEqcyxq6ruAOZuWTpX/Kd6MtKXA1KTqr1ynwtchgJrRnI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760048856; c=relaxed/simple;
+	bh=FCiiElyOErGlVFt73AFdGVYYKoH1DErM+VzxqWLqz50=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ZpjK/RvZvKLsMJfeWa9DhcDNWs9+Dfu+nPH0aOtVzEifjoMKmkZCNMDWr0hALwi/oenQ9trZZE8yDI+dJyhiKY+sjCl8jdYZv+M0O4MYRSr49qN0EzRO7E7aXRLyMCZpULJhSgbi0IAAGwtFvmx0RvmE8T3ScmJ9Musnf4/Ub4I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VUItkM/w; arc=fail smtp.client-ip=40.107.130.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="AbQFnV+b";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EHmpTDc5"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 623367A0147;
-	Thu,  9 Oct 2025 17:16:23 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Thu, 09 Oct 2025 17:16:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1760044583;
-	 x=1760130983; bh=IoNTmFVBWG81Z8jPkjSyUXyeQNMXRWj30MhKaE6XHgs=; b=
-	AbQFnV+b8ZYeLCRKItywfYNA5Dd8v+oWv3NUzKZXGytsRishs+OLhi0sA0rm2O/o
-	QLd7UDaDvd8hSVJ4vm+iknIVqJYiJSRy7aDqvjQRVL1YYEAOch212aL6JwNzYC/0
-	gxoOr7MlqPf9OndJYM+XVVd/SCEai5D8Hmd9XH0su6mw6wDTQgCI/UqePc14Y4mc
-	8l5dgwhf7fh2PEgzKEIrwnWeveHotomhZGhLcmjKox3ZfACIvUiTqGgZ1BZKZg5k
-	rH6LBuYCn4/idKHrU4eBchO+PsK0YajfUBPApSPEMbB+Or4zJlvTkXukaAV5Kd2e
-	eQhZTwql/c0TmVPZyliGyg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1760044583; x=
-	1760130983; bh=IoNTmFVBWG81Z8jPkjSyUXyeQNMXRWj30MhKaE6XHgs=; b=E
-	HmpTDc5xRJ3TXz5x2hZeE2MXvOu6IUyw1eg8bbYCxTXKXiYskUZ8DWu4XanWSfTa
-	4mVZMnmsQBY8o2zfvCFBca1rM1/2eCf5q8tM3QLU86PUKr1sJDvLj2TOgM9YtXZR
-	+m8xhJOj78+h/2q1Pf+vtpReNVod1kjOlnbsN2epZt7czSjLRWu6SO5eH+x2Ek4y
-	i0boRPEZvm4rj/WSIeFCAAYmnjQZHxS8ClavA6xWC94QXiGS1AOuZIM0au2FDZbN
-	lGV1L+3qFBHljpv16lL9InzoDx1Lb/anPYtyCst08ZZ1yzv4CzC/L8UNRn1pVStm
-	YLEG5w9AvqANqTEkTL4jQ==
-X-ME-Sender: <xms:JiboaKb-MGLsTLhTj9uJL3sd49TdJmleSY92FhFOjenpgIPzMBR9Pw>
-    <xme:JiboaINkPGTacipbSrsOVyfF3NamakhSURWRSrnAtvBf-HqcCAlmziHR2w2MWYwO9
-    -vPD3gT_jPzdMKeRah0tHFy5Q2UUYPcpLccxeucBuWWyUW8X7uTJNZ1>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddutdejvdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepvdehpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopegthhgvshhtvghriedvheduheesghhmrghilhdrtghomhdprhgtph
-    htthhopehjihhnghhoohhhrghnudesghhmrghilhdrtghomhdprhgtphhtthhopegshhgv
-    lhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheptggrshhsvghlsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhifih
-    hltgiihihnshhkiheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhpihgvrhgrlhhi
-    shhisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghniheskhgvrhhnvghlrdhorh
-    hg
-X-ME-Proxy: <xmx:JiboaKzjsKO1_WQG04CIprEGKf71yM5hOy-8anD7RRhtZ7ftpo8Wpw>
-    <xmx:JiboaGL3T8rgFBUNlNLoEzdCZmZb9R0h6pwMlMFI1IZxisK1gm-jeg>
-    <xmx:JiboaJpnfl2MAFwPgIgtocS8kPtCyPmWKUPr_aeHeEkQm7PzoxtkMw>
-    <xmx:JiboaMsvj1UUHlfbYdzbwLI2CqHl_ls__C_Bk6sK0L4tGU7FKgSFWQ>
-    <xmx:JyboaDdp-OmcX3EnwEF9gbyqZztZszgw7zUa-4n3H4-3GDfifWvXEoVD>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 47F22700063; Thu,  9 Oct 2025 17:16:22 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VUItkM/w"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YmTlvPm344oScsSBFk38LTxKYu/7tKmnjUvxgUskv8Ikh2AKwPyPVNYOFnUmqbUyzpV2HmPMo95p51qokGjprcMythhjCCKfvTXy+A8djfcI+dYngqxNi24vyQdj6CUMbDoBG1dZbUzPnhGMNJ9U7tr43kPNCctZ516/k5LFzSMAOt7Ne9Jw63lvE2prt71Up0ANHHLhTsbm70LLl2vtq7RpBvYfXvCTYVkYGg+OsnRwerMrJQU1fHq2EvoKkWcj+JtE3iL+R/dG84RibV1j9qLoRnb4SC/1N8xRSanOb0JmOvdLs+CtWZBoSjqU8RE41RuHDZ2jKX4qmr6b6mjkeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vLcqYFll5vqt4vBEM/gEVwXCj3itN5uBVLsBxHqTrMM=;
+ b=tsTK7S2qNjMa4m0FIUEJCIu5elXumbDW6G9MbuGSGxcRjZ3AX9KGLAS6+JLm993UmAEEn5fJEqCJ8bLO8hmEQMWqkcKVHsZsNWySDGED6b+0FRliIkR+MrOCJ9H+cTvUYelvaMk1cm4f9vBajUlsDPTfmQnAmxmrPcmrDb9YFpiU9Dqh+kNFJrg3X03dtvZ7skDkjTzEZtbSmIvfXgYs3Lgw0KADAV7NjyEN07hmWy+dxze5U/457HbKWSoYn0qCb9ABgQkixRutsJQDn19dvbmBr8IcArc5XDt+YnVAJOD/opoiE0tL2/zf38EpKRvlLdeUQ6e51+h4MVXFogCBCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vLcqYFll5vqt4vBEM/gEVwXCj3itN5uBVLsBxHqTrMM=;
+ b=VUItkM/w346VTfjPViT4t17qWvxADPWfiL46ywQgBpr3WK/8mQ6qK0XmJhxYMn6wNEBnfeO0/djbV/D/NaK8BBb+1PW6GaaDGeApSe7FtwPMYPmEjbWR4XN8CmNdRapnjY41pEW9cAlgbIkFN7Hri0zNEwr3D/E/N12Zd+aHn4l7LcikHR50G9p0lucXIASwreCZPZ0NEuZNMrtiJEGGH0pmIyfFrz8jI+zzNqGeJ4iDJ9IGLNJFYiKn8h4UDWeT35YT1UW06fw5Lwz0njIcLxpX/9B1vz79TFEDDO6ygsQv9Flj0uIEzfcMzTO79efwsqKX2u9v2Ak7DfJL5Au4SQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by GVXPR04MB10852.eurprd04.prod.outlook.com (2603:10a6:150:225::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.10; Thu, 9 Oct
+ 2025 22:27:29 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612%4]) with mapi id 15.20.9203.009; Thu, 9 Oct 2025
+ 22:27:29 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	linux-remoteproc@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-imx@nxp.com,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH v3 0/4] Enable Remote GPIO over RPMSG on i.MX Platform
+Date: Thu,  9 Oct 2025 17:27:12 -0500
+Message-ID: <20251009222716.394806-1-shenwei.wang@nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH7PR17CA0006.namprd17.prod.outlook.com
+ (2603:10b6:510:324::28) To PAXPR04MB9185.eurprd04.prod.outlook.com
+ (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AIHrVq-NOQMk
-Date: Thu, 09 Oct 2025 23:16:02 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Manivannan Sadhasivam" <mani@kernel.org>
-Cc: "Lorenzo Pieralisi" <lpieralisi@kernel.org>,
- "Vincent Guittot" <vincent.guittot@linaro.org>,
- "Chester Lin" <chester62515@gmail.com>,
- "Matthias Brugger" <mbrugger@suse.com>,
- "Ghennadi Procopciuc" <ghennadi.procopciuc@oss.nxp.com>,
- "NXP S32 Linux Team" <s32@nxp.com>, bhelgaas@google.com,
- jingoohan1@gmail.com,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- "Rob Herring" <robh@kernel.org>, krzk+dt@kernel.org,
- "Conor Dooley" <conor+dt@kernel.org>, Ionut.Vicovan@nxp.com,
- "Larisa Grigore" <larisa.grigore@nxp.com>,
- "Ghennadi Procopciuc" <Ghennadi.Procopciuc@nxp.com>,
- ciprianmarian.costea@nxp.com, "Bogdan Hamciuc" <bogdan.hamciuc@nxp.com>,
- "Frank Li" <Frank.li@nxp.com>, linux-arm-kernel@lists.infradead.org,
- linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- "Niklas Cassel" <cassel@kernel.org>
-Message-Id: <839e3878-ae62-4c8b-a74b-ac4f6f060d98@app.fastmail.com>
-In-Reply-To: 
- <4kvo2qg2til22hlssv7lt2ugo63emr5c4hfjur5m3vnxvpdekx@jcbhaxb2d2j2>
-References: <20250919155821.95334-1-vincent.guittot@linaro.org>
- <20250919155821.95334-2-vincent.guittot@linaro.org>
- <iom65w7amxqf7miopujxeulyiglhkyjszjc3nd4ivknj5npcz2@bvxej6ymkecd>
- <aOU0w5Brp6uxjZDr@lpieralisi>
- <4rghtk5qv4u7vx4nogctquu3skvxis4npxfukgtqeilbofyclr@nhkrkojv3syh>
- <eba7d968-209d-4acb-ba41-4bebf03e96ba@app.fastmail.com>
- <4143977f-1e70-4a63-b23b-78f87d9fdcde@app.fastmail.com>
- <2erycpxudpckmme3k2cpn6wgti4ueyvupo2tzrvmu7aqp7tm6d@itfj7pfrpzzg>
- <3d480f73-15b4-4fb8-8d2b-f9961c1736ca@app.fastmail.com>
- <4kvo2qg2til22hlssv7lt2ugo63emr5c4hfjur5m3vnxvpdekx@jcbhaxb2d2j2>
-Subject: Re: [PATCH 1/3 v2] dt-bindings: PCI: s32g: Add NXP PCIe controller
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|GVXPR04MB10852:EE_
+X-MS-Office365-Filtering-Correlation-Id: bc2c59f3-14a3-4fbb-e9aa-08de0783085f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|376014|19092799006|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?WMDS3+S6klCrQlsCCYTGH2Yvp9ftdenPGvZ0vvMYEYH73UsDvHGXK+UDPbkQ?=
+ =?us-ascii?Q?hqYOzeHgdZ2Dv5XNrCi08Oi44GxhXjU+f7dPyI2fAYEzPZQjcLG1cfYuDsCZ?=
+ =?us-ascii?Q?mW2xWn8a6tv9NBsjWYrwtzONa2SdENhLjLMg424503qR9UyXMpA1+aIfwtVv?=
+ =?us-ascii?Q?RU9c6Ka2nX+jHiF8W0gLAP9BzDUDof3WV2TTUrCuHkTmyOxtQqNxdpGE+LRd?=
+ =?us-ascii?Q?t+PQtFl14/6Icfyax+9ax4JWW2XnsFcpfw7yGT7irpIbIJJl2auXBb3r1zKM?=
+ =?us-ascii?Q?vEA9pkhK9wNAVE78nQZHmzOwiSQXc6h19Gw9HLzf3e8zrgzdb5ErBhh/Tgch?=
+ =?us-ascii?Q?VlHfoM126qTRTvw9ZPUBG1zB0nSr1/xbr4VPZT2M0L4Y7wkwmsVy/I0T+9Ye?=
+ =?us-ascii?Q?jkeLQv6ZwYuEUmo/JQf9nCDVVCuhqcbbHBoZwBtpQJrfjxMXbuLcgDEQNX+o?=
+ =?us-ascii?Q?AfTnXMPYWEXasE/D/ptcbAO1Rr9yzx75JYet1PUWUwj+MMQAXxNc78yscmJ6?=
+ =?us-ascii?Q?Njmpvpl2h9mdrem5vbetmua/PLl6M1d/HEZqCynHHcvhD9qgmtenBNkNu4fN?=
+ =?us-ascii?Q?ENfOU1b0jEDs4fahAVdC/umNQWx8YAJka4E0jlq/vWjW4ewBVHxDpVZ3qFUO?=
+ =?us-ascii?Q?sPGz2HwFbf5qVYCKy75yun9wEFOTxItRYhDqhcI0bC49DA9nYCvQ8V8mOYeU?=
+ =?us-ascii?Q?Cob/Ywu2tcw8zBQvvtQOw4gfTrGhkzb5txS+1h9hk0hvlemUG6Qn8dBPMX0u?=
+ =?us-ascii?Q?3IivmmSOkI7G+ju8QbX6MqG/i2VfKVJU+xVP92mVl0PclmmXFoEgRi4jVSYG?=
+ =?us-ascii?Q?x3AOWKVe9p9B0Vb/BM2iI7+RN8tKbRh/BmfHAJmkxn2tR90E+RxFFd0FPIEs?=
+ =?us-ascii?Q?mDkzoOv3GYg1zsveyLi9DkQXeRKkUBjEdeyZnsLrcNi8FiAW+Uq27PoTsGN9?=
+ =?us-ascii?Q?VC6nEz/YPMl2cO+3dFattFt3HVA4Hfc0fhPjtRx3kUEm6mj0yvyetC35Tvcb?=
+ =?us-ascii?Q?8hO6jK4xaRAvnPeML8x0IeruZdny5K/t3emD5QuEaTphDdbiIF3/m4L6T9ww?=
+ =?us-ascii?Q?918gPkKs3nJU3zUV/hCgIxYFiiFDZ+duLDY+SzyGuAsrwS/bPMlkrXidLBZ4?=
+ =?us-ascii?Q?j9vQ0Nz8TakDBN8dqtjDMLJyVDiKE3N436LNo3OXAGYUuZMZJUTDtIEitcGr?=
+ =?us-ascii?Q?okMOdR3Ies92HRdAuNsAzllOcble3sgypGBgU3WLDN3Hzn5bcWKG5LwFQXiu?=
+ =?us-ascii?Q?bj1rarXtaYsvGKJSBnZ3nDyzbhitkbKZJxqXWAkPM/x7cMCRSkAl5JraZcXR?=
+ =?us-ascii?Q?6sX3Hs3eZOGRq5V7DvutKwb3idq4L0MBpsPJTqlLJhUhVHHgDSCvHbVRcAyv?=
+ =?us-ascii?Q?NahApmmF1AeLr8diT5ZxJBdAqM8oHP/JihXAflmISXFJ3JLgx9pZzHpm5ev/?=
+ =?us-ascii?Q?ZtAbSZuRqirFZrYEGjDeFVP1fdPKorujTgRBGpb/lSG8CwnUmOUMgHQPOW5z?=
+ =?us-ascii?Q?TXRfM9rEjJ6zCrw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?AmiDDc+TMLWkOcdiPM9YVb7khQKyKv8MefpPvdU9XHxCTKRBHH4aWRxtO+YI?=
+ =?us-ascii?Q?XDvWPtx1+60qZRgDPuUmF5QtWWIpqr8Hhz590iSjo+V3FxubgCij08oBoI/a?=
+ =?us-ascii?Q?I/sZ+Bvyex7VgtBnmfy0pxwn913Ie37JDYg4iVFK1QY1dgY1haezfte9UbAK?=
+ =?us-ascii?Q?S64ll+dUgWXvAr1+yQCXDRkiWrNZouCzK3PN1QTnpQs8XIiJ1+vNLc1YkuTS?=
+ =?us-ascii?Q?C8NH2TCaMSLwf3G7xbksnM+YVwK8J8y2QSJSnv0hX2jDzCAU1pb5PkOQO9U9?=
+ =?us-ascii?Q?VRiggf4uMGR95J+1gJbq6qRH3KKBiy2WkXxgENL1/JAolE+IA+Z0naFpfIaz?=
+ =?us-ascii?Q?Ox1mGmuijiR1vJncCLqLlVrEltL6iQvwThcs8gevLI4orojrJSi1gtN5ubWc?=
+ =?us-ascii?Q?4RBo16JDC17YERFPB5r3SamId5WwzlYuuV0hXnupm1LeqPoy4jqmScPVbi8g?=
+ =?us-ascii?Q?UOrGOVroAgmLSEhX5dWQLLuzrFQuGVBSJ6ldW2DmH68YiFBQflUegaUeR2Ow?=
+ =?us-ascii?Q?pD/Vo+zI+EBGIe7Q4nqz8Ffj2QoR3wxu8+LjMPZ/JO42qLC/N0kWKZSu/PXJ?=
+ =?us-ascii?Q?Lu8grW9569dL67G5Iadw70tdsf19FI01zouxvYorOz/EVV3jvTQSImHRoXay?=
+ =?us-ascii?Q?aMwsku2lJh/oCka8Hn2P5gqFh5ssaSpfE4SrpB+PutdgsZi8jSlq2zjBMt5l?=
+ =?us-ascii?Q?kWBQ8OxZI/T0RYPbPM4IO5wUQSsLe3dW6zFovf6QUwQ0s3QGIsw8LsywnfeI?=
+ =?us-ascii?Q?I1kYryr38ZY+R2HytbA//luV8yE+FHS24sEVZD5rhuCxMNTs+KAI5nWJvXGw?=
+ =?us-ascii?Q?BaJjIdSThaU8i8HLb2QCxnTgD4gU1Xz6vbTOdgWf+zKqcSovitVGQpG/MSE4?=
+ =?us-ascii?Q?2gD/ifXn0dbNMrxbrOVVfbnVn9Fq4O0NPR7u5BpkpGkIIbPr6e9tGxu32Q9c?=
+ =?us-ascii?Q?f46apbOlzdeBS2HL1boFwRuwSXkJl0/jWQGRRqfnNObHioAzWLwqeVXvoE8H?=
+ =?us-ascii?Q?CSdSAIRiKnQcneHaMazX8C36SJoAYnIagxw1J2Z3e5uf3TLF0uBKZuiom5TL?=
+ =?us-ascii?Q?OVrTZAl6Lv9HUF4zf5Ac59dLlMfs7e5gJlu+58vxhLtuFjsilx3HX0eIwPlW?=
+ =?us-ascii?Q?xB4eWm48rcDGgI/aDGLed2RPZLS5bRlKgI6Kvwnpe8h1AU1MKmtwNJxnReqO?=
+ =?us-ascii?Q?PsKVX67NvmwPe3amMj5zssUTdy6xl253QnZ46IFZUAFC7UtvdkYf8S/5qJKk?=
+ =?us-ascii?Q?A7tiVbXzT70p/g2cQRHT2FNok0FaS2nPb84/d+IaTF9nQUQWKWlvIvEYt+Zl?=
+ =?us-ascii?Q?pDib/ixHsrv1mHJP2538WAvNQGv/bSzIDavFJw3sKeNeeAWXhRICNpqyroug?=
+ =?us-ascii?Q?KOAfVIDMrbN9r2upZAUarzwi6J0k2G9NuQCzJZ17d1MyFG5QyPilPaafd6eV?=
+ =?us-ascii?Q?VPZJu4UZ6ecLx2/1aB83ZEkLGyRk7yiWeNDEzUN8HvhhPjuf2R6XDQgt6TF9?=
+ =?us-ascii?Q?5bk22fujzcsqV11gSy27WwLmfPD4b8KDi62JBZPwO+v9LXY72/RYNooa8xbM?=
+ =?us-ascii?Q?v51z28FB2f2gTMgPD2k76DsI0d3cZHZLqr2IrOd9?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc2c59f3-14a3-4fbb-e9aa-08de0783085f
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2025 22:27:29.7853
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uQ+fD4uwh3BJe3/o8rg+O9wP/icL4IrvRsGH7a3f06IVJQykqJMNzryLLQErepI4tcjp8b+GCdTokagNOlII3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10852
 
-On Thu, Oct 9, 2025, at 20:47, Manivannan Sadhasivam wrote:
-> On Wed, Oct 08, 2025 at 07:56:44PM +0200, Arnd Bergmann wrote:
->> On Wed, Oct 8, 2025, at 17:19, Manivannan Sadhasivam wrote:
->>
->> That is not my impression from reading the code: At least for
->> the case where both devices are on the same bridge and they
->> use map_type=PCI_P2PDMA_MAP_BUS_ADDR, I would expect the DMA
->> to use the plain PCI bus address, not going through the
->> dma-ranges+ranges translation that would apply when they are
->> on different host bridges.
->> 
->
-> Right, but I don't get the overlap issue still. If the P2P client triggers a
-> write to a P2P PCI address (let's assume 0x8000_0000), and if that address
-> belongs to a an endpoint in a different domain, the host bridge should still
-> forward it to the endpoint without triggering write to the RAM.
+Support the remote devices on the remote processor via the RPMSG bus on
+i.MX platform.
 
-If 0x8000_0000 is an endpoint in a different domain, I would expect the
-DMA transfer to go to the RAM at that address since the DMA has to leave
-the PCI host bridge upstream by following its inbound windows.
+Changes in v3:
+ - fix various format issue and return value check per Peng 's review
+   comments.
+ - add the logic to also populate the subnodes which are not in the
+   device map per Arnaud's request. (in imx_rproc.c)
+ - update the yaml per Frank's review comments.
 
-This is not the problem I'm talking about though, since cross-domain
-P2P is not particularly well-defined.
+Changes in v2:
+ - re-implemented the gpio driver per Linus Walleij's feedback by using
+   GPIOLIB_IRQCHIP helper library.
+ - fix various format issue per Mathieu/Peng 's review comments.
+ - update the yaml doc per Rob's feedback
 
-> Atleast, I don't see any concern from the outbound memory translation point of
-> view.
->
-> Please let me know if there is any gap in my understanding.
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-gpio@vger.kernel.org
 
-To clarify: I don't think that programming the output translation this
-way is the problem here, but assigning memory resources to ambiguous
-addresses is. The host bridge probe uses the 'ranges' both for
-setting up the outbound window and the bus resources. 
+Shenwei Wang (4):
+  dt-bindings: remoteproc: imx_rproc: Add "rpmsg" subnode support
+  remoteproc: imx_rproc: Populate devices under "rpmsg" subnode
+  gpio: imx-rpmsg: add imx-rpmsg GPIO driver
+  arm64: dts: imx8ulp: Add rpmsg node under imx_rproc
 
-If the PCI bus scan assigns address 0x8000_0000 to the memory BAR
-of a device, and that device or any other one in the /same/
-domain tries to DMA to DRAM at address 0x8000_0000, it would likely
-reach the memory BAR instead of DRAM. If for some reason it does reach
-DRAM after all, it would be unable to do a P2P DMA into the BAR when
-it tries.
+ .../bindings/remoteproc/fsl,imx-rproc.yaml    | 123 +++++
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi    |  27 +
+ drivers/gpio/Kconfig                          |  17 +
+ drivers/gpio/Makefile                         |   1 +
+ drivers/gpio/gpio-imx-rpmsg.c                 | 486 ++++++++++++++++++
+ drivers/remoteproc/imx_rproc.c                | 146 ++++++
+ include/linux/rpmsg/imx_rpmsg.h               |  48 ++
+ 7 files changed, 848 insertions(+)
+ create mode 100644 drivers/gpio/gpio-imx-rpmsg.c
+ create mode 100644 include/linux/rpmsg/imx_rpmsg.h
 
-If the PCI scan already checks for overlap between the DT "ranges"
-and other resources (DRAM or MMIO) before assigning a BAR, this may
-be a non-issue, but I haven't found the code that does this.
-Looking at pci_bus_allocate_dev_resources() it seems that it would
-attempt to assign an overlapping address to a BAR but then fail
-to claim it because of the resource conflict. If that is the
-case, it would not actually have an ambiguous DMA routing
-but instead the device would fail to be probed because of the
-conflict.
+--
+2.43.0
 
-    Arnd
