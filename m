@@ -1,281 +1,94 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF6C241CB7;
-	Thu,  9 Oct 2025 11:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A7F2E092E
+	for <imx@lists.linux.dev>; Thu,  9 Oct 2025 12:51:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760008315; cv=none; b=Xoa7zld9e0v/UqC6lzYMCKY1Wxfvt8iFS6jeJIBPd9cQkmU0ClUj2GBUYyNjLi1odGxiab6Clxed0j3xSSoALnzzGrTxNJGF6EMB7SsA1e+bIHYhy+ZyqCnnLpCtFAVBcRgiInIM/d+Qz1TxLGQUV0Gc2M2GKJmdG6itYP7YmgM=
+	t=1760014279; cv=none; b=ZJvUordSykrjyjDpiHlpeftxGvfP05VRSkgrq5cCckrfHczMzHwFfpLIWKXmcvvAKqD0DtXiFrttl1lozvkTEe510GqyjsoXOELF7xw2Cg87YBtflvEy+31DeLq1p4Zwjjb604ZolEuo880/PKcfrec8U/owWYrKMD8krv52mno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760008315; c=relaxed/simple;
-	bh=hHz8YdtHioPSOVwHRJYVN90dGjplXI5Vmj7Mglb6IE8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bLTnQrAZeG/+kbU10fdIEI5MuzTwpAkWZ5Xl9vr+b8mTPaH8Ruj6Ew57qPu74mrhRKcT+x+7UebE5nRUTaH3K2mHZs7Pi4jSdmjfmGf5ZLKChzZh1QvbzRtSfQ4JLnckC5n9SXgtOLGcM7Yb1UpAPB2BsDEY9XwLl3nsGnoSP4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Pyv/kJxz; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1760014279; c=relaxed/simple;
+	bh=MDMFuxtj7DOoK9vdG1w2+Ih86u05O/nr3t6ARiKVfns=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aX/wkOgc3lvS26bDyMT5xcgL3+vP7yZ3SvOQfkZXvwD6SBDdm3iAXC3dEJhQPMbUTM0E4B0T4s+IFY7ljduWzPgkjmmYyKLoi1cUSZ2wVVDvGmv+HqJ5iIPIcEBfr/rWB62bOhDJApNFsJ8xy3lHKqRISC+zTuE54HRB3tJSLtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nnQbst4Y; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Pyv/kJxz"
-Received: from pendragon.ideasonboard.com (82-203-166-19.bb.dnainternet.fi [82.203.166.19])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 84018965;
-	Thu,  9 Oct 2025 13:10:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1760008215;
-	bh=hHz8YdtHioPSOVwHRJYVN90dGjplXI5Vmj7Mglb6IE8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Pyv/kJxz95Ui53C0pDU9sxoFjf0lXr36X+jpVrdRnVmSfnPYQ8mf0E0TIyJV+asyy
-	 ViTKOlbKiqc6JELvOZGMspBZH6b9tDA6c1El3DncWGcXlFPkxa74Wtl7fIGKjfUI2r
-	 G8W3cga/15Td3/GqHNkAkIF7JVNtktCe9D7DMPcU=
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: linux-media@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-staging@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev
-Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-	Bin Liu <bin.liu@mediatek.com>,
-	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Jacob Chen <jacob-chen@iotwrt.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Matthew Majewski <mattwmajewski@gmail.com>,
-	Mirela Rabulea <mirela.rabulea@nxp.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Xavier Roumegue <xavier.roumegue@oss.nxp.com>
-Subject: [PATCH] media: v4l2-mem2mem: Don't copy frame flags for frame-based devices
-Date: Thu,  9 Oct 2025 14:11:43 +0300
-Message-ID: <20251009111143.9137-1-laurent.pinchart@ideasonboard.com>
-X-Mailer: git-send-email 2.49.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nnQbst4Y"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-271d1305ad7so14928505ad.2
+        for <imx@lists.linux.dev>; Thu, 09 Oct 2025 05:51:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760014277; x=1760619077; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MDMFuxtj7DOoK9vdG1w2+Ih86u05O/nr3t6ARiKVfns=;
+        b=nnQbst4Y2nSbdvPlQeqM6dAmxjoN6pTvKvKlL998Oh/KMFZtZv39RWHgLVcycqcsLk
+         oUCaR8roqs8bsE5FqKaoBdyKOMUPHt4ujXPSx793XHyrQ8w+YGUoq1ZhFAsc+Ho0WWpS
+         MWaTviMqKziwkHiT4pNKKAWJYrzRN8KV4vsvoMWTwhm8V1Zurb0N/3jCS+WTmOMDLhcS
+         jfzl2agH+fU6K4IgwKsgOWo4u1/urBz1wR8bCSAe+sWIcEqlDTVVUrpYA4S46W80Bb3Y
+         PgaBYRu9QiJ+oNiWrjFMSsmQTJfx8JcZdZTjbvO6kajdCVXi8fNkQAaBEQYpZuLSBLlY
+         bhPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760014277; x=1760619077;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MDMFuxtj7DOoK9vdG1w2+Ih86u05O/nr3t6ARiKVfns=;
+        b=Nu9AutbaXndVKjFPTw6p/Vz5BbNDtVheBfuesInDHbk40J/gpxQwF5Vv6d0I/yEDcS
+         nL9Til+vtTvgN0toHxv5june4gOmj+w+drRhil8GwVMeSHO34dgEANiO1C8SqMPjniDM
+         168+ZB9anB0E5auMKbboBmOTGdqlzk1w3nkAdqQCNPoQdOEV6Km1geeHXuO0wWbhrVgf
+         jZblnyGayzl1IjnJPMDzYhheJsREx505ECLaA4Vcyt8/CJT1zVotp9TfawSqXg/pyzcB
+         QqhApY6FleaCIoRhCXldMY0CsrNjZ5OfDBGljXlWdLzfKG77MndPOsbcRuXKsDGi4OY2
+         z2zw==
+X-Forwarded-Encrypted: i=1; AJvYcCXhgRBwoYHx8brvYBKKnnJyWHPcpd6vVSBRoGa2hcpnQLzLAUVdB+2nZXmy9v6VUGZfiXw=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywi3yKvozwzNUv4fQ3Xkmhpt0QXeo5vfKeiXm5a8WqKltgUm6eB
+	xnouhHokTDWwiUcxHwyCKj5DDO9T0WtTwIymXN24QtuaNryKYM6S5+qDcOqt67AzHtVdKTEzWh6
+	Hsej1n+CYFlh7+fmYj2bRrK2FnDD4hgM=
+X-Gm-Gg: ASbGncvZGuGynfKSOXm5Ogu/K66Yx3nJRtAqTHYX53x3jgz1On8mMroQ8wH2ru3jI6T
+	QeVpMxU1wBmD3KUG0YkohLMa6u9rCIRxvw2Epdvg60JdYqs9KUVx7pgOPOP7j9HEgSlSXG+g9RE
+	D31J68usnro2pBDz5ETW5aO4Mmp/RpvOu+CLhH08yxp7mx4mcAB9bIO1V2nmflA3Wjionw+T5/B
+	rtwfNGA5BvTqPHvEe1Eari1ALr7oFB4W0RzOsQy/ta32vnhb5s5eX+xNWpe
+X-Google-Smtp-Source: AGHT+IEhAV1wqwmuEfqj9eDPRuTr5xhy6QzH+Fe4j6lHSFhQoyHt9bJp9C/EYN1+uc18PLR1t+1Bf7rHPlE1k2VNj6E=
+X-Received: by 2002:a17:902:f608:b0:263:b8f:77dd with SMTP id
+ d9443c01a7336-2902741d0a7mr98644915ad.57.1760014276668; Thu, 09 Oct 2025
+ 05:51:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250923053001.2678596-1-shengjiu.wang@nxp.com>
+In-Reply-To: <20250923053001.2678596-1-shengjiu.wang@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Thu, 9 Oct 2025 15:53:34 +0300
+X-Gm-Features: AS18NWAD-sPW--RGZUkk020BQr_wBUAqvEISI-DaoXi4Qt_J4rUCZMsA_rvkqkw
+Message-ID: <CAEnQRZCFk=07=tDgEPJeXx_xDp_6LGXi+2o9GAADoP86mWYZ2A@mail.gmail.com>
+Subject: Re: [PATCH v7 0/7] drm/bridge: imx: Add HDMI PAI driver on i.MX8MP
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, jernej.skrabec@gmail.com, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
+	airlied@gmail.com, simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org, 
+	cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	victor.liu@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, p.zabel@pengutronix.de, devicetree@vger.kernel.org, 
+	l.stach@pengutronix.de, shengjiu.wang@gmail.com, perex@perex.cz, 
+	tiwai@suse.com, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The v4l2_m2m_buf_copy_metadata() function takes a boolean
-copy_frame_flags argument. When true, it causes the function to copy the
-V4L2_BUF_FLAG_KEYFRAME, V4L2_BUF_FLAG_BFRAME and V4L2_BUF_FLAG_PFRAME
-flags from the output buffer to the capture buffer.
+On Tue, Sep 23, 2025 at 8:30=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.co=
+m> wrote:
+>
+> The HDMI TX Parallel Audio Interface (HTX_PAI) is a digital module that
+> acts as the bridge between the Audio Subsystem to the HDMI TX Controller.
+>
+> Add HDMI PAI driver on i.MX8MP to make HDMI audio function fully work.
 
-Many frame-based M2M drivers (e.g. for JPEG encoders, scalers,
-dewarpers, 2D blenders, ...) set the argument to true, while the frame
-flags are not applicable to those drivers as they have no concept of
-key, B or P frames. Set the argument to false to avoid further
-cargo-cult mistakes.
-
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
----
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c     | 4 ++--
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c   | 4 ++--
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c   | 4 ++--
- drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c      | 2 +-
- drivers/media/platform/nxp/dw100/dw100.c                 | 2 +-
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c           | 2 +-
- drivers/media/platform/rockchip/rga/rga.c                | 2 +-
- drivers/media/platform/st/stm32/dma2d/dma2d.c            | 2 +-
- drivers/media/platform/sunxi/sun8i-di/sun8i-di.c         | 2 +-
- drivers/media/platform/sunxi/sun8i-rotate/sun8i_rotate.c | 2 +-
- drivers/media/test-drivers/vim2m.c                       | 2 +-
- drivers/staging/media/imx/imx-media-csc-scaler.c         | 2 +-
- 12 files changed, 15 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-index 35c70ec3ad2c..6bd5036430dc 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -1619,7 +1619,7 @@ static void mtk_jpegenc_worker(struct work_struct *work)
- 	if (!dst_buf)
- 		goto getbuf_fail;
- 
--	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
-+	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
- 
- 	mtk_jpegenc_set_hw_param(ctx, hw_id, src_buf, dst_buf);
- 	ret = pm_runtime_get_sync(comp_jpeg[hw_id]->dev);
-@@ -1715,7 +1715,7 @@ static void mtk_jpegdec_worker(struct work_struct *work)
- 	if (!dst_buf)
- 		goto getbuf_fail;
- 
--	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
-+	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
- 	jpeg_src_buf = mtk_jpeg_vb2_to_srcbuf(&src_buf->vb2_buf);
- 	jpeg_dst_buf = mtk_jpeg_vb2_to_srcbuf(&dst_buf->vb2_buf);
- 
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c
-index e78e1d11093c..556865100872 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c
-@@ -530,7 +530,7 @@ static void mtk_jpegdec_timeout_work(struct work_struct *work)
- 
- 	src_buf = cjpeg->hw_param.src_buffer;
- 	dst_buf = cjpeg->hw_param.dst_buffer;
--	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
-+	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
- 
- 	mtk_jpeg_dec_reset(cjpeg->reg_base);
- 	clk_disable_unprepare(cjpeg->jdec_clk.clks->clk);
-@@ -560,7 +560,7 @@ static irqreturn_t mtk_jpegdec_hw_irq_handler(int irq, void *priv)
- 	ctx = jpeg->hw_param.curr_ctx;
- 	src_buf = jpeg->hw_param.src_buffer;
- 	dst_buf = jpeg->hw_param.dst_buffer;
--	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
-+	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
- 
- 	irq_status = mtk_jpeg_dec_get_int_status(jpeg->reg_base);
- 	dec_irq_ret = mtk_jpeg_dec_enum_result(irq_status);
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
-index 9ab27aee302a..4c8427b3c384 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
-@@ -261,7 +261,7 @@ static void mtk_jpegenc_timeout_work(struct work_struct *work)
- 
- 	src_buf = cjpeg->hw_param.src_buffer;
- 	dst_buf = cjpeg->hw_param.dst_buffer;
--	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
-+	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
- 
- 	mtk_jpeg_enc_reset(cjpeg->reg_base);
- 	clk_disable_unprepare(cjpeg->venc_clk.clks->clk);
-@@ -289,7 +289,7 @@ static irqreturn_t mtk_jpegenc_hw_irq_handler(int irq, void *priv)
- 	ctx = jpeg->hw_param.curr_ctx;
- 	src_buf = jpeg->hw_param.src_buffer;
- 	dst_buf = jpeg->hw_param.dst_buffer;
--	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
-+	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
- 
- 	irq_status = readl(jpeg->reg_base + JPEG_ENC_INT_STS) &
- 		JPEG_ENC_INT_STATUS_MASK_ALLIRQ;
-diff --git a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c
-index 59ce5cce0698..dba46a69c6be 100644
---- a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c
-+++ b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c
-@@ -51,7 +51,7 @@ static void mdp_m2m_process_done(void *priv, int vb_state)
- 	ctx->curr_param.frame_no = ctx->frame_count[MDP_M2M_SRC];
- 	src_vbuf->sequence = ctx->frame_count[MDP_M2M_SRC]++;
- 	dst_vbuf->sequence = ctx->frame_count[MDP_M2M_DST]++;
--	v4l2_m2m_buf_copy_metadata(src_vbuf, dst_vbuf, true);
-+	v4l2_m2m_buf_copy_metadata(src_vbuf, dst_vbuf, false);
- 
- 	v4l2_m2m_buf_done(src_vbuf, vb_state);
- 	v4l2_m2m_buf_done(dst_vbuf, vb_state);
-diff --git a/drivers/media/platform/nxp/dw100/dw100.c b/drivers/media/platform/nxp/dw100/dw100.c
-index 7a0ee44d9e1f..b73302d54635 100644
---- a/drivers/media/platform/nxp/dw100/dw100.c
-+++ b/drivers/media/platform/nxp/dw100/dw100.c
-@@ -1483,7 +1483,7 @@ static void dw100_start(struct dw100_ctx *ctx, struct vb2_v4l2_buffer *in_vb,
- 				V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE),
- 		in_vb->sequence, out_vb->sequence);
- 
--	v4l2_m2m_buf_copy_metadata(in_vb, out_vb, true);
-+	v4l2_m2m_buf_copy_metadata(in_vb, out_vb, false);
- 
- 	/* Now, let's deal with hardware ... */
- 	dw100_hw_master_bus_disable(dw_dev);
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-index 37e0670f98c5..e1dda1e834e4 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -1537,7 +1537,7 @@ static void mxc_jpeg_device_run(void *priv)
- 	src_buf->sequence = q_data_out->sequence++;
- 	dst_buf->sequence = q_data_cap->sequence++;
- 
--	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
-+	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
- 
- 	jpeg_src_buf = vb2_to_mxc_buf(&src_buf->vb2_buf);
- 	if (q_data_cap->fmt->mem_planes != dst_buf->vb2_buf.num_planes) {
-diff --git a/drivers/media/platform/rockchip/rga/rga.c b/drivers/media/platform/rockchip/rga/rga.c
-index 48b88da59da0..075b684fb178 100644
---- a/drivers/media/platform/rockchip/rga/rga.c
-+++ b/drivers/media/platform/rockchip/rga/rga.c
-@@ -75,7 +75,7 @@ static irqreturn_t rga_isr(int irq, void *prv)
- 		WARN_ON(!src);
- 		WARN_ON(!dst);
- 
--		v4l2_m2m_buf_copy_metadata(src, dst, true);
-+		v4l2_m2m_buf_copy_metadata(src, dst, false);
- 
- 		dst->sequence = ctx->csequence++;
- 
-diff --git a/drivers/media/platform/st/stm32/dma2d/dma2d.c b/drivers/media/platform/st/stm32/dma2d/dma2d.c
-index 643913adc1f3..4184bdb96e6d 100644
---- a/drivers/media/platform/st/stm32/dma2d/dma2d.c
-+++ b/drivers/media/platform/st/stm32/dma2d/dma2d.c
-@@ -483,7 +483,7 @@ static void device_run(void *prv)
- 
- 	src->sequence = frm_out->sequence++;
- 	dst->sequence = frm_cap->sequence++;
--	v4l2_m2m_buf_copy_metadata(src, dst, true);
-+	v4l2_m2m_buf_copy_metadata(src, dst, false);
- 
- 	if (clk_enable(dev->gate))
- 		goto end;
-diff --git a/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c b/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
-index 3e7f2df70408..11a6c7f5212e 100644
---- a/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
-+++ b/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
-@@ -71,7 +71,7 @@ static void deinterlace_device_run(void *priv)
- 	src = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
- 	dst = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
- 
--	v4l2_m2m_buf_copy_metadata(src, dst, true);
-+	v4l2_m2m_buf_copy_metadata(src, dst, false);
- 
- 	deinterlace_write(dev, DEINTERLACE_MOD_ENABLE,
- 			  DEINTERLACE_MOD_ENABLE_EN);
-diff --git a/drivers/media/platform/sunxi/sun8i-rotate/sun8i_rotate.c b/drivers/media/platform/sunxi/sun8i-rotate/sun8i_rotate.c
-index abd10b218aa1..f6e2f11a20dd 100644
---- a/drivers/media/platform/sunxi/sun8i-rotate/sun8i_rotate.c
-+++ b/drivers/media/platform/sunxi/sun8i-rotate/sun8i_rotate.c
-@@ -70,7 +70,7 @@ static void rotate_device_run(void *priv)
- 	src = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
- 	dst = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
- 
--	v4l2_m2m_buf_copy_metadata(src, dst, true);
-+	v4l2_m2m_buf_copy_metadata(src, dst, false);
- 
- 	val = ROTATE_GLB_CTL_MODE(ROTATE_MODE_COPY_ROTATE);
- 	if (ctx->hflip)
-diff --git a/drivers/media/test-drivers/vim2m.c b/drivers/media/test-drivers/vim2m.c
-index dc82830a35a5..3e8476165721 100644
---- a/drivers/media/test-drivers/vim2m.c
-+++ b/drivers/media/test-drivers/vim2m.c
-@@ -482,7 +482,7 @@ static int device_process(struct vim2m_ctx *ctx,
- 
- 	out_vb->sequence = q_data_out->sequence++;
- 	in_vb->sequence = q_data_in->sequence++;
--	v4l2_m2m_buf_copy_metadata(in_vb, out_vb, true);
-+	v4l2_m2m_buf_copy_metadata(in_vb, out_vb, false);
- 
- 	if (ctx->mode & MEM2MEM_VFLIP) {
- 		start = height - 1;
-diff --git a/drivers/staging/media/imx/imx-media-csc-scaler.c b/drivers/staging/media/imx/imx-media-csc-scaler.c
-index 19fd31cb9bb0..770ba3fbaba2 100644
---- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-+++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-@@ -96,7 +96,7 @@ static void ipu_ic_pp_complete(struct ipu_image_convert_run *run, void *_ctx)
- 	src_buf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
- 	dst_buf = v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
- 
--	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
-+	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
- 
- 	src_buf->sequence = ctx->sequence++;
- 	dst_buf->sequence = src_buf->sequence;
-
-base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
--- 
-Regards,
-
-Laurent Pinchart
-
+Tested-by: Daniel Baluta <daniel.baluta@nxp.com>
