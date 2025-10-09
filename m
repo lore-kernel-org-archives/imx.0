@@ -1,26 +1,26 @@
-Received: from mail-m32103.qiye.163.com (mail-m32103.qiye.163.com [220.197.32.103])
+Received: from mail-m1973198.qiye.163.com (mail-m1973198.qiye.163.com [220.197.31.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E7625522B
-	for <imx@lists.linux.dev>; Thu,  9 Oct 2025 09:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1941F9F70
+	for <imx@lists.linux.dev>; Thu,  9 Oct 2025 09:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760002947; cv=none; b=o+kqKQzeo+yTcCFVp5XGSwGZKKN0ulV8Dwmrhnv5bAGzB3M84mMFNCu3xQEVW7TkCIasvUCOhGJT01U08xVx4aug+1MB0Ye471M+fnfUbC9n/f0JWAIYEe1NZsn9mrgvTbDzOi3Wc1FZ85F2NvykbPMJOxIOsn5QDX2rNX6maVk=
+	t=1760003611; cv=none; b=kNIDfCDqOFErSyMqg4fWIcQG+ZPH7QloGbd0Z5sXqhwg9CUxSHUnXe18Z3hiSy5XwWJH9fOoGt7H6YriGrFM/ziAYgAytbZ9YZreXzju1i7r5ZgUn/gBGARoARK6nUsCD9/lrAeRDuqWEP4Rj3PrcU5jo1s5jSOX1xpzzrrBlYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760002947; c=relaxed/simple;
-	bh=5fEN8sELCsGXqQKuNJfIHTLeM8JVRnsehDFy9q3bzno=;
+	s=arc-20240116; t=1760003611; c=relaxed/simple;
+	bh=y7OlmIAK8vLkfU3+JxQ1Pkm7zAIwUPOpZpXABe/3DLs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hhugW31/RSoaT/XT8rxRCCBKVYCwTmUYBoki0xJgyWiYrfa6xYEKXFQuQTKnjxKJ/cbdvxjJx+/jXlz7XhCs5C00A1PwF8pfKMbR05mcDmpUYTIWEk78Pj5z0S5RkRCh6tkw0jaH1G3tnpBiTLhWjR/DHqE9f6LeyKUYwcoUOIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=WNdbsaZb; arc=none smtp.client-ip=220.197.32.103
+	 In-Reply-To:Content-Type; b=I3PtxLsj6rlc08Ujb2cuXZBFZ28e41qN2fpeCrj+nadxoidgLhRpE213Uin9NsK3bl5GTpl1xcZfvDj+3yjHXIcjT1ymwhr0Dtw8vpYqwmH2C+WIsXoFOj71hZkHjkqTkOg3GtHl0v/12HgJL2MJjZcpkJeDOySRWUlJLp/7KiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=CRpZqVpX; arc=none smtp.client-ip=220.197.31.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="WNdbsaZb"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="CRpZqVpX"
 Received: from [172.16.12.26] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 253d44f19;
-	Thu, 9 Oct 2025 09:45:58 +0800 (GMT+08:00)
-Message-ID: <ac2b6c11-b3c2-4ecd-a0b3-fafc584425bc@rock-chips.com>
-Date: Thu, 9 Oct 2025 09:46:00 +0800
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2543142d9;
+	Thu, 9 Oct 2025 12:10:40 +0800 (GMT+08:00)
+Message-ID: <a42ebdca-1cbc-498c-b859-336557823f26@rock-chips.com>
+Date: Thu, 9 Oct 2025 12:10:42 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -28,9 +28,10 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 04/18] drm/bridge: Move legacy bridge driver out of imx
- directory for multi-platform use
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: Re: [PATCH v6 11/18] drm/display: bridge_connector: Ensure last
+ bridge determines EDID/modes detection capabilities
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
  Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
  jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
@@ -40,74 +41,188 @@ Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
  kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
  jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
  heiko@sntech.de, andy.yan@rock-chips.com, dianders@chromium.org,
- m.szyprowski@samsung.com, luca.ceresoli@bootlin.com, jani.nikula@intel.com,
+ m.szyprowski@samsung.com, jani.nikula@intel.com,
  linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
 References: <20250930090920.131094-1-damon.ding@rock-chips.com>
- <20250930090920.131094-5-damon.ding@rock-chips.com>
- <x2fpm4rb7ermb2tyjefdwwbvwvzt6uosd45ad7ku3tp3yqkmqc@bayzgz3jsqkp>
+ <20250930090920.131094-12-damon.ding@rock-chips.com>
+ <20251001180922.6bbe42ac@booty>
 Content-Language: en-US
 From: Damon Ding <damon.ding@rock-chips.com>
-In-Reply-To: <x2fpm4rb7ermb2tyjefdwwbvwvzt6uosd45ad7ku3tp3yqkmqc@bayzgz3jsqkp>
+In-Reply-To: <20251001180922.6bbe42ac@booty>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-HM-Tid: 0a99c6a57e3103a3kunmfad084a5a34e64
+X-HM-Tid: 0a99c729f83903a3kunm16370414a6fa98
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGkkZGlZNHUxNTBlKSBlJH09WFRQJFh
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGRhISlZKSRgYQkhITx4fSEtWFRQJFh
 	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
 	1VSktLVUpCWQY+
 DKIM-Signature: a=rsa-sha256;
-	b=WNdbsaZbbltnfB98jhkb8/mQbmF1sAaoVzHqeW9JnKbGUruIhACGVxkCCl91k3GBm68p9ZqogDvjX5tMx77yXn/LSwAAWRdhdh2Af+R1vTKiL8aRbalbQV2uWiC25vNrgQ5aMK8cVPAUcZHFWBzKDp71wr7tro+sAejfj7pfigA=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=U8Lyg1iODEcriIg8AQsHGCBrZHwVaWgFuk2yxIxhxAI=;
+	b=CRpZqVpXED0SBtQWsNn3unDFg6hHUsSbzj0hQuFlxkwW+RHOgdqWJ+gRlo060O6EvTD8QiK/bJkRJC7jl8p3TKWpa+RYxJFZxheUO49caZ0+LEO/SzLEqHTLZz4OpdNo5ABc75WLQf70YZcuBwLuXIDCpICPiK4KZ7G+gX4C7Gg=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=qQ2zeMeYDfoWTQYJ4xG+nhpK+0ZJUttKUUEWrzWjUSw=;
 	h=date:mime-version:subject:message-id:from;
 
-Hi Dmitry,
+Hi Luca,
 
-On 10/1/2025 4:10 AM, Dmitry Baryshkov wrote:
-> On Tue, Sep 30, 2025 at 05:09:06PM +0800, Damon Ding wrote:
->> As suggested by Dmitry, the DRM legacy bridge driver can be pulled
->> out of imx/ subdir for multi-platform use. The driver is also renamed
->> to make it more generic and suitable for platforms other than i.MX.
+On 10/2/2025 12:09 AM, Luca Ceresoli wrote:
+> Hello Damon,
+> 
+> On Tue, 30 Sep 2025 17:09:13 +0800
+> Damon Ding <damon.ding@rock-chips.com> wrote:
+> 
+>> When multiple bridges are present, EDID detection capability
+>> (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
+>> (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities are
+>> determined by the last bridge in the chain, we handle three cases:
 >>
->> Additionally, a new API drm_bridge_is_legacy() is added to identify
->> the legacy bridge, allowing specialized handling for such cases.
-> 
-> Why do you need special handling for it?
-> 
-
-As you suggested, I will remove this API and add a temporary flag to the 
-Exynos side.
-
+>> Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
+>>   - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
+>>     &drm_bridge_connector.bridge_edid to NULL and set
+>>     &drm_bridge_connector.bridge_modes to the later bridge.
+>>   - Ensure modes detection capability of the later bridge will not
+>>     be ignored.
 >>
->> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
->> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->> ---
->>   drivers/gpu/drm/bridge/Kconfig                | 10 ++
->>   drivers/gpu/drm/bridge/Makefile               |  1 +
->>   drivers/gpu/drm/bridge/imx/Kconfig            | 10 --
->>   drivers/gpu/drm/bridge/imx/Makefile           |  1 -
->>   .../gpu/drm/bridge/imx/imx-legacy-bridge.c    | 91 -----------------
->>   drivers/gpu/drm/bridge/legacy-bridge.c        | 99 +++++++++++++++++++
->>   drivers/gpu/drm/imx/ipuv3/Kconfig             |  4 +-
->>   drivers/gpu/drm/imx/ipuv3/imx-ldb.c           |  6 +-
->>   drivers/gpu/drm/imx/ipuv3/parallel-display.c  |  4 +-
->>   include/drm/bridge/imx.h                      | 17 ----
->>   include/drm/bridge/legacy-bridge.h            | 18 ++++
->>   11 files changed, 135 insertions(+), 126 deletions(-)
->>   delete mode 100644 drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c
->>   create mode 100644 drivers/gpu/drm/bridge/legacy-bridge.c
->>   delete mode 100644 include/drm/bridge/imx.h
->>   create mode 100644 include/drm/bridge/legacy-bridge.h
+>> Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
+>>   - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
+>>     &drm_bridge_connector.bridge_modes to NULL and set
+>>     &drm_bridge_connector.bridge_edid to the later bridge.
+>>   - Although EDID detection capability has higher priority, this
+>>     operation is for balance and makes sense.
+>>
+>> Case 3: the later bridge declares both of them
+>>   - Assign later bridge as &drm_bridge_connector.bridge_edid and
+>>     and &drm_bridge_connector.bridge_modes to this bridge.
+>>   - Just leave transfer of these two capabilities as before.
 > 
-> I'm slightly concerned with the name of 'legacy drm bridge', It was fine
-> for 'i.MX legacy', but now it might be a bit of overkill. Maybe
-> something like drm_display_mode or drm_of_display_mode bridge?
+> I think the whole explanation can be more concisely rewritten as:
+> 
+> If the later bridge declares OP_EDID, OP_MODES or both, then both
+> .bridge_modes and .bridge_edid should be set to NULL (if any was set
+> from a previous bridge), and then .bridge_modes and/or .bridge_edid be
+> set to the later bridge as is done already.
+> 
+> Does this look correct (i.e. does it convey the same meaning)?
+> 
+>> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
+>> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
+>> @@ -640,6 +640,7 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+>>   	struct drm_connector *connector;
+>>   	struct i2c_adapter *ddc = NULL;
+>>   	struct drm_bridge *bridge, *panel_bridge = NULL;
+>> +	struct drm_bridge *pre_bridge_edid, *pre_bridge_modes;
+>>   	unsigned int supported_formats = BIT(HDMI_COLORSPACE_RGB);
+>>   	unsigned int max_bpc = 8;
+>>   	bool support_hdcp = false;
+>> @@ -668,6 +669,9 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+>>   	 */
+>>   	connector_type = DRM_MODE_CONNECTOR_Unknown;
+>>   	drm_for_each_bridge_in_chain(encoder, bridge) {
+>> +		pre_bridge_edid = bridge_connector->bridge_edid;
+>> +		pre_bridge_modes = bridge_connector->bridge_modes;
+>> +
+>>   		if (!bridge->interlace_allowed)
+>>   			connector->interlace_allowed = false;
+>>   		if (!bridge->ycbcr_420_allowed)
+>> @@ -681,6 +685,44 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+>>   			bridge_connector->bridge_detect = bridge;
+>>   		if (bridge->ops & DRM_BRIDGE_OP_MODES)
+>>   			bridge_connector->bridge_modes = bridge;
+>> +
+>> +		/*
+>> +		 * When multiple bridges are present, EDID detection capability
+>> +		 * (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
+>> +		 * (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities
+>> +		 * are determined by the last bridge in the chain, we handle
+>> +		 * three cases:
+>> +		 *
+>> +		 * Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
+>> +		 *  - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
+>> +		 *    &drm_bridge_connector.bridge_edid to NULL and set
+>> +		 *    &drm_bridge_connector.bridge_modes to the later bridge.
+>> +		 *  - Ensure modes detection capability of the later bridge
+>> +		 *    will not be ignored.
+>> +		 *
+>> +		 * Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
+>> +		 *  - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
+>> +		 *    &drm_bridge_connector.bridge_modes to NULL and set
+>> +		 *    &drm_bridge_connector.bridge_edid to the later bridge.
+>> +		 *  - Although EDID detection capability has higher priority,
+>> +		 *    this operation is for balance and makes sense.
+>> +		 *
+>> +		 * Case 3: the later bridge declares both of them
+>> +		 *  - Assign later bridge as &drm_bridge_connector.bridge_edid
+>> +		 *    and &drm_bridge_connector.bridge_modes to this bridge.
+>> +		 *  - Just leave transfer of these two capabilities as before.
+>> +		 */
+>> +		if (bridge->ops & DRM_BRIDGE_OP_EDID &&
+>> +		    !(bridge->ops & DRM_BRIDGE_OP_MODES)) {
+>> +			if (pre_bridge_modes)
+>> +				bridge_connector->bridge_modes = NULL;
+>> +		}
+>> +		if (bridge->ops & DRM_BRIDGE_OP_MODES &&
+>> +		    !(bridge->ops & DRM_BRIDGE_OP_EDID)) {
+>> +			if (pre_bridge_edid)
+>> +				bridge_connector->bridge_edid = NULL;
+>> +		}
+>> +
+> 
+> If the above rewrite is correct, then I think this patch can be
+> rewritten in a simple way (build tested only):
+> 
+> diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu/drm/display/drm_bridge_connector.c
+> index a5bdd6c10643..bd5dbafe88bc 100644
+> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
+> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
+> @@ -672,14 +672,18 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+>                  if (!bridge->ycbcr_420_allowed)
+>                          connector->ycbcr_420_allowed = false;
+>   
+> -               if (bridge->ops & DRM_BRIDGE_OP_EDID)
+> -                       bridge_connector->bridge_edid = bridge;
+> +               if (bridge->ops & DRM_BRIDGE_OP_EDID || bridge->ops & DRM_BRIDGE_OP_MODES) {
+> +                       bridge_connector->bridge_edid = NULL;
+> +                       bridge_connector->bridge_modes = NULL;
+> +                       if (bridge->ops & DRM_BRIDGE_OP_EDID)
+> +                               bridge_connector->bridge_edid = bridge;
+> +                       if (bridge->ops & DRM_BRIDGE_OP_MODES)
+> +                               bridge_connector->bridge_modes = bridge;
+> +               }
+>                  if (bridge->ops & DRM_BRIDGE_OP_HPD)
+>                          bridge_connector->bridge_hpd = bridge;
+>                  if (bridge->ops & DRM_BRIDGE_OP_DETECT)
+>                          bridge_connector->bridge_detect = bridge;
+> -               if (bridge->ops & DRM_BRIDGE_OP_MODES)
+> -                       bridge_connector->bridge_modes = bridge;
+>                  if (bridge->ops & DRM_BRIDGE_OP_HDMI) {
+>                          if (bridge_connector->bridge_hdmi)
+>                                  return ERR_PTR(-EBUSY);
 > 
 
-The 'drm_of_display_mode_bridge' is more descriptive. Compared to that, 
-the 'legacy-bridge' is somewhat ambiguous.
+Yes, this is correct and maintains functional equivalence with the 
+previous implementation.
+
+I previously attempted to implement this feature by modifying the logic 
+in this section. However, that approach would obscure the explicit 
+propagation semantics of the bridge chain flags 
+(OP_EDID/OP_HPD/OP_DETECT/OP_MODES). Therefore, I finally decided to 
+implemented it as a specific check after this code block.
+
+Dmitry, what's your take on this?
+
+> Another thing to note is that this patch conflicts with [0], which I
+> plan to apply in the next few days. The two patches are orthogonal but
+> they insist on the same lines (those assigning
+> bridge_connector->bridge_* = bridge). Not a big deal, whichever patch
+> comes later will be easily adapted. Just wanted to ensure you are aware.
+> 
+> [0] https://lore.kernel.org/all/20250926-drm-bridge-alloc-getput-bridge-connector-v2-1-138b4bb70576@bootlin.com/
+> 
+
+This is indeed a clever approach to the managing bridge resource cleanup 
+in drm_bridge_connector. Thanks a lot for the heads-up! I'll resolve 
+this conflict and rebase the patch series.
 
 Apologies for the delayed reply as I was on vacation. ;-)
 
