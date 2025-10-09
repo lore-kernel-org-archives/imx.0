@@ -1,70 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A5423C505;
-	Thu,  9 Oct 2025 12:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC7211713
+	for <imx@lists.linux.dev>; Thu,  9 Oct 2025 13:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760014322; cv=none; b=FewtsYwEVf+lB22kCCIPsLXgnfKwsFFvSWvbMJYV+Lmviuv/8+SRL5p9+FH7OUz+7JSQWEHm/liVhFPjAvyX+ZbuzvcX/3DmNWZeT2yAEhAP+/Nz9I28+CHcMMH6guafwORczWi8WWlUmKd1KZ55t/1xJIRKtM8h240WKiS9bis=
+	t=1760014851; cv=none; b=Tzj4w3qs+r9P4jx7wyV/RxrYUr+qtW73gX+sb6uP7gujHBdHDyxK1pELu0OEZRmquiqhsaPtpf/FxdiET52LSaO3jrGSrkMsjkcUEFikcRfn/0dKqCg5R8W1rDXltevHDxhYSZbQYZHD0oCuSaYE9A93RE1b0hGO/ZeTMGvxVas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760014322; c=relaxed/simple;
-	bh=AVIp+jMYzxaeQL2X5j0m3um+EbwGIdcZQgDXBd6gbp4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XlBhdWgRTvHcOST7HOIo8ADiLHeUD2e5M11eDfgQ9TrITerjCfP2jCcKzKoHyA9eULXbZXMvnFKT+UqfFEFCypGOs8L/pPMUQUic7+x3VgQw7xJR/dwE5mhI7oxgyVBVyUkFAe0GJLW6zishwlpt2rijhF6SacSFaYhElWRLg5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XBbbOCLu; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XBbbOCLu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A780BC4CEE7;
-	Thu,  9 Oct 2025 12:51:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760014322;
-	bh=AVIp+jMYzxaeQL2X5j0m3um+EbwGIdcZQgDXBd6gbp4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XBbbOCLu3oW5xZbEYzEgu1/eoKRz0rV9BnC8X45E7wZOwC2bKbYf708BuxKK/CIJY
-	 eHXlQ3jC+erSYmS8wIIGVnsYhcx0BoS4oc245XXU6f67/sLgDODcix1xHCZip2WMEh
-	 UNsLGabGTJw9vVZEH6EojIII3RvMHBuwV4m6XTvbKOWrxMw+K43j3Jj/lrOcXg1rqH
-	 BqDbuV9PhoOunbbGVHZzDIgSowJkpDvYynk7dTCG8ixK4+wkj7xjO3Gckmjv6YXjkB
-	 bCZaXeFm9VRU6PPIcrhghm0z0v0jc0Vl2uigBWXQGo7oC0fO3H0c0v7sJY25me4vGr
-	 aQZ4+6bolRPCA==
-Date: Thu, 9 Oct 2025 13:51:55 +0100
-From: Lee Jones <lee@kernel.org>
-To: samuel.kayode@savoirfairelinux.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>,
-	Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>,
-	Robin Gong <yibin.gong@nxp.com>,
-	Enric Balletbo i Serra <eballetbo@gmail.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH v12 0/6] add support for pf1550 PMIC MFD-based drivers
-Message-ID: <20251009125155.GE2796410@google.com>
-References: <20251001-pf1550-v12-0-a3302aa41687@savoirfairelinux.com>
+	s=arc-20240116; t=1760014851; c=relaxed/simple;
+	bh=2gf6pqNjzmoPeyJUzHKtZEz8WXFWsv+O++Fdle7Chcs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dMfkCHuUn9EjyGr0Ok+DwIK1N8rMPWt6xIbhwuJCBiXH0GEo4/MR8pt/acHHHwAsTcy8tdiJhnuP/wndWTJEyFfP0FOCGDDdcsf8P1+W75uVUjtogheQFQtCqdr1MbrGsdhOsE5YxM+k9KKQct+DtVXAbQOVwiSOTfFz32+/p0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7AB6F176A;
+	Thu,  9 Oct 2025 06:00:41 -0700 (PDT)
+Received: from [10.1.34.29] (e122027.cambridge.arm.com [10.1.34.29])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 23F373F59E;
+	Thu,  9 Oct 2025 06:00:44 -0700 (PDT)
+Message-ID: <7c3b219f-f504-4c4c-a13a-6a25a0eda277@arm.com>
+Date: Thu, 9 Oct 2025 14:00:43 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251001-pf1550-v12-0-a3302aa41687@savoirfairelinux.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: gpu: mali-valhall: make mali-supply
+ optional
+To: Rain Yang <jiyu.yang@oss.nxp.com>, imx@lists.linux.dev,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: boris.brezillon@collabora.com, liviu.dudau@arm.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ airlied@gmail.co, simona@ffwll.ch, marek.vasut@mailbox.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, Rain Yang <jiyu.yang@nxp.com>
+References: <20250928090334.35389-1-jiyu.yang@oss.nxp.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20250928090334.35389-1-jiyu.yang@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, 01 Oct 2025, Samuel Kayode via B4 Relay wrote:
+Series applied to drm-misc-next.
 
-> This series adds support for pf1550 PMIC. It provides the core driver and
-> sub-drivers for the regulator, power supply and input subsystems.
+Thanks,
+Steve
 
-Note to self: Everything is in order.  Apply to an IB once -rc1 is out.
+On 28/09/2025 10:03, Rain Yang wrote:
+> From: Rain Yang <jiyu.yang@nxp.com>
+> 
+> Not all platforms require the mali-supply regulator. This change removes
+> it from the required list in the binding schema, and make mali-supply
+> required for rk3588 only.
+> 
+> Signed-off-by: Rain Yang <jiyu.yang@nxp.com>
+> ---
+>  .../devicetree/bindings/gpu/arm,mali-valhall-csf.yaml          | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
+> index b220cbd5362f..ef9791d8ed95 100644
+> --- a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
+> +++ b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
+> @@ -92,7 +92,6 @@ required:
+>    - interrupts
+>    - interrupt-names
+>    - clocks
+> -  - mali-supply
+>  
+>  additionalProperties: false
+>  
+> @@ -109,6 +108,8 @@ allOf:
+>          power-domains:
+>            maxItems: 1
+>          power-domain-names: false
+> +      required:
+> +        - mali-supply
+>  
+>  examples:
+>    - |
 
--- 
-Lee Jones [李琼斯]
