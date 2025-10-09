@@ -1,217 +1,146 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010006.outbound.protection.outlook.com [52.101.69.6])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECC52E285B
-	for <imx@lists.linux.dev>; Thu,  9 Oct 2025 15:08:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760022515; cv=fail; b=qSIsvws9LRz9TpdaD5DaS1LrOmzuOZ0LBPG/H8XoWIq2ooXO6TVeFHxJCcQui2w/xzRPDSoCQzxpYYAFoFjjZ1WlJJfftYozQCw+OrW618mUpV9sG9FslHN/xQfjm3CorUmOoIVngwogQxXvaNfj3mrGQfaRc0u9ifr0xopSBrw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760022515; c=relaxed/simple;
-	bh=gL6Kes480vCiPV/bT9VbtvaNmqtoI2FJeJa8hS5x6Y8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uiQzRMqU6qNHaQcedfBFolP1VYsXizro1KmQEqCJdC8II95hWUvpnlA++8ZtpQYAFZSMJTSR2UZ1/TkEksHcIJPLbbZFFwv9MPHDfm5aiRnmxnR66RuMcL+kjBfUnbBytY+KIeLcLlhE6NhId8aZHk4eeozYdj7wYnLbxlH1sgE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=KmV0eeJ1; arc=fail smtp.client-ip=52.101.69.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34091B663
+	for <imx@lists.linux.dev>; Thu,  9 Oct 2025 15:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760023411; cv=none; b=jcss+zzVQfFY7ZS+gy/sM55TZmoP339Em2YKzBEuYUMHcLvQD9tFSCX5BCrFAG+MPZZ0TGvJBczXJt5eoe+D6myW+ExUy1S8sdnNUGPRGtUJGsXFNrPCn2sDo0tAHuVQIppMzmva/0OniPkC8sbxtYNMcQfoSQ7PSCuaP80ErNc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760023411; c=relaxed/simple;
+	bh=fABUvVjWguE7ZAc9zmpVNOJs87WzajiLPsaFUvRx/YE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jj+X0IqwVkDFfEOOk6NYih4azpeLI3ohXtSV7aW6mNvwzH+tb9GxvjVHtg6LoZqc+WXQiUu6AgqoEGQ8ApvVpmyNPoE5uhldN8MpdYxjPxAn30iLWlx2rT1pZnRIik8jFXnB2lhymskvc8WnJrF030tffvle6K3TjiFLsAH/37M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=k3igkG6G; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="KmV0eeJ1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tbLNxcbJhv2Fq03UqJxmk3DUdtUG77zqwi5ny4jQldmyzEPiYDbV43vOezd5UWqKn56goIoos+JZgRxgp6s2laVorC64Vi+CgMBNf1YECOChVZcr9T9dioyO2WvPbeVA7lg8zKigC17t+bPScueYysLmG6PNjsEPxh62F7n4rBkcbp8668jVrOWadLXd0zQVtSvTgO2R05PgtssFgxvzB7KNpp4yCFDlHY4+2xWiZhBSRsj/j7uexjirKpV4Lrui3ryPkQry4Qx/jQmavZpO/Bjcmf8FKkq+nKsycL2YO6qHX1x0ACQKLUIcwyxpP8Oydm0FrmnR3I2HW6hFOHTKXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3t5RSA0w2ALBpqQKc2IhUTOpOZNBk2jg2jO2yMFE2Ek=;
- b=My008e2Bc/F+0Xcslv4lWmBVM4ON4G6jku53YcAXL6cKXsnPgA9EkBD39ygO7+oxkMNSFcajQkRbvchNqWmuG5gArKXIloFL7p48untxGOBiHyL61CoaJGgVci5PzscKPBb61jpl8Jp92v82I/XOgyMQ8q49H1GVgJr9nmtmGa5jVgcdHbmfmHGdFuEqvN+is0MXMh1ZrpaeQ6f0b2dbYEWDk9AXq//j1QRdVqNDshMQXra9QAFQQOY5Xt453zf6dOw9ZB2cTuE1zY/G5fGaT5kJ0ZB6Ax5JB1TKfdyC8wy1j7CWmyeQGBP/W8/Fj7dvtYIv/Axwl46TqjRQaEFnDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3t5RSA0w2ALBpqQKc2IhUTOpOZNBk2jg2jO2yMFE2Ek=;
- b=KmV0eeJ1FYXtFJpc16JClh25YxAhpgMVEx9NuyTPn3VpU1QzccHjMvQWPs6AXWFsJBTQplCI0LG44rnliT+fMRIUWzpzpYXoD/z2NWSt5U3ws+haWidjJTCFSI9bpt2SUiA34vih+Wim/y7IW5/Jerls/ZypiZYYIVLnPt7uteKZKxITUYrmwcV6hn/IIMk4Q1PZCyEwPwAY4y2Z6Es6bQYa2oSr5G8CnRcYJd+J8migBxCIpCqohHsFz6iW1IMrH+2xP4q8ojEIZKQAw1ENE7IfEw/3KlpwxU4uKKWMNJf6tyqJ3ehC+QCsMEwO++HvlYuIv0XuGm/31sdtI0HuAA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB9PR04MB9627.eurprd04.prod.outlook.com (2603:10a6:10:30a::13)
- by AS5PR04MB10059.eurprd04.prod.outlook.com (2603:10a6:20b:680::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.10; Thu, 9 Oct
- 2025 15:08:28 +0000
-Received: from DB9PR04MB9627.eurprd04.prod.outlook.com
- ([fe80::c5f7:3093:4ebd:1a2]) by DB9PR04MB9627.eurprd04.prod.outlook.com
- ([fe80::c5f7:3093:4ebd:1a2%6]) with mapi id 15.20.9182.017; Thu, 9 Oct 2025
- 15:08:27 +0000
-Date: Thu, 9 Oct 2025 23:06:17 +0800
-From: Rain Yang <jiyu.yang@oss.nxp.com>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: airlied@gmail.com, boris.brezillon@collabora.com,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, liviu.dudau@arm.com,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	prabhu.sundararaj@nxp.com, simona@ffwll.ch, steven.price@arm.com,
-	tzimmermann@suse.de, xianzhong.li@nxp.com
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="k3igkG6G"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1760023405;
+	bh=fABUvVjWguE7ZAc9zmpVNOJs87WzajiLPsaFUvRx/YE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=k3igkG6GNAPCtAPJTHo7O59kj7/IKadIvAuGEDLLNwEnaVnvt2GAMveHPvyLkevsd
+	 dYv4W+I47pvkIFqp/l/WUrsVokgl/NTG4Qja8Xvpc9r6U3FiwatBdcRmmCI1Bry+OF
+	 Ld4J5JtjtYLvm1mWNhXIJO+QsLJg4YhqrP5o1OI2vELYCq5HH+0BNYVU1ZOMKSYNCG
+	 cTbrURKVDHDrmc+qBsQ2qVB6pec+nG1wYUk1kIovY/MIvSi4lfpnhoVz82x291SuqW
+	 dQC6OxVpBm2RAKikphTMVhyXnYzTAYrr6XN5TRqRZVONlscG8xy1EQt6uAlHuAgo9v
+	 3GnePNHjZmSQQ==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id CD76F17E108C;
+	Thu,  9 Oct 2025 17:23:24 +0200 (CEST)
+Date: Thu, 9 Oct 2025 17:23:20 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Rain Yang <jiyu.yang@oss.nxp.com>
+Cc: airlied@gmail.com, dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org, liviu.dudau@arm.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ prabhu.sundararaj@nxp.com, simona@ffwll.ch, steven.price@arm.com,
+ tzimmermann@suse.de, xianzhong.li@nxp.com
 Subject: Re: [PATCH] drm/panthor: attach the driver's multiple power domains
-Message-ID: <aOfPaQWIVzMaWlSl@oss.nxp.com>
+Message-ID: <20251009172320.6a2cbf55@fedora>
+In-Reply-To: <aOfPaQWIVzMaWlSl@oss.nxp.com>
 References: <20251009140039.101189-1-jiyu.yang@oss.nxp.com>
- <20251009160820.74f04ead@fedora>
- <20251009160929.1b36b9ea@fedora>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251009160929.1b36b9ea@fedora>
-X-ClientProxiedBy: SI2P153CA0032.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::23) To DB9PR04MB9627.eurprd04.prod.outlook.com
- (2603:10a6:10:30a::13)
+	<20251009160820.74f04ead@fedora>
+	<20251009160929.1b36b9ea@fedora>
+	<aOfPaQWIVzMaWlSl@oss.nxp.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9627:EE_|AS5PR04MB10059:EE_
-X-MS-Office365-Filtering-Correlation-Id: 284af00e-cbcd-4ff8-dcc0-08de0745b32f
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|19092799006|7416014|52116014|366016|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?5X5EX0Fij6/RUFoVTibDY82NFQK//57wbwTRnftELvuSU+HbAl1SZ/y1k/lY?=
- =?us-ascii?Q?gszHpbaaf828RtsmDIEn/nNPkitA7M96zDRKPXBkwOjnS8mojEUFOYR1QI2H?=
- =?us-ascii?Q?MnoJyg9oY5AcbiSa9g5fbHOlnJIUPEBEFBbpGbpurAIBMGbiAeb85xt/1hKO?=
- =?us-ascii?Q?5oqA5At9sRyr4WonAxsHFqquxAeQlf1aTuQAtQ1Fk6eNQqJv0dxLvt5z9POP?=
- =?us-ascii?Q?TQaHC98195xY7GQzKdOpnYZiN/DaRZkVbl4anl72pN8boE+Ar9irRjobgki5?=
- =?us-ascii?Q?H6neXD6nn4ZZkAIpC2X0pHtnQFm5LHi8r4TxnfBbZcCubtuq4HBV0UBcUD3A?=
- =?us-ascii?Q?Ja842ZrEOCHHzE7jqBoMZc7qt9AeuY9KbV5m1OS2UUlGTNGSkXCxgZb2vUCW?=
- =?us-ascii?Q?OT0bL4bifO0yZcYWFtePdAeQCHb1UdgbdixIHweJHqFMepcTf1kfiuE5CclB?=
- =?us-ascii?Q?VHeXZ6l6TKw5m59GUUj4+DMBKfmpy6xTVNqW5OBwyFibfLM3R9WkaGADgXne?=
- =?us-ascii?Q?A4EMAqKnp6S/NK1oKhdFQMXDYSch/UM2F+4HTfySHbZLAWmX/5TIt8eKW2uO?=
- =?us-ascii?Q?gNgl1kD/micSfy/ViX6rqrqA/LFz5hGytNbsDxJ5PXJOtqv6Banmie3p9Z/3?=
- =?us-ascii?Q?0zAZ+e2JUOW4COWUDhS32pm03JEANDuJ6mp9olNGx6JQ2WKhxn21OJ1q30AF?=
- =?us-ascii?Q?UmULOTYTu/kK6P74Zk2d/iZpVGJTp7rMV2VmNVORioCKWc0QvS2jG+3JMyUP?=
- =?us-ascii?Q?Am6r3hgu8Pis7BjGOdvqxgO13cnxZbmpP/wGnm4RnubyEHP4a8BIXUw/xKJb?=
- =?us-ascii?Q?WOmoNH/gcTw1S2RaPBIU4cPIixCCHFPq0DxqUIJgRXVawypBOjZq+q/deXgB?=
- =?us-ascii?Q?XOnX0VrNnps5hpTkzaDSXps3RROiZQWCtjfeVY4FSNYgX5p5QoRprDagamqc?=
- =?us-ascii?Q?VRzvRZnbf270l4i0yYcq4OgiX7OzmdALMvR8mQIXZrnGvIiYByQtLEYFxWWi?=
- =?us-ascii?Q?iDVj80FDd8d2ryAT4Je3P0vIpDIEfobBvnHl0Et8OLQ7LxkkgPEAotMotWPK?=
- =?us-ascii?Q?A82vJDC8cYIyDQpo3FFsgnpvyFKSyuMOqYufOmzPxMusVUtXkP1gi5Gjy4W6?=
- =?us-ascii?Q?0Cy056M+vBXXfFYmSSo7OgBYFFPwsYhoOW9tCEGbeDCfZ6fNRcMhvroAtsDt?=
- =?us-ascii?Q?uPRboCBwGkNXGWgD7lL1SqUxAIvjpcSb0Z9370EyeczXF1sxr0X3okjQ2BtV?=
- =?us-ascii?Q?ukngkAKAlenDNPuPHhrlAjJNgOMFsteC/HjUvR6E2JSKHTOiHdUmJQifZKT9?=
- =?us-ascii?Q?wuGrW3HRp18fNdSd+fvfIeb7xhEVfdLTnPLpfYJXt9uHnDCTeh1v+SbT+zMi?=
- =?us-ascii?Q?e8xrRIlx773xRiG/CemoTo+AkZljq3ft4My6jiq3hJZ3cYQTUdFLRcLY+NeI?=
- =?us-ascii?Q?abbfPZ81Z7dNj6sm/H9WCp/6L+JcxieuTBJvp1uFh7HUx1VYq0S/XeDSV0t1?=
- =?us-ascii?Q?YWFC+Lk/034qgxokZMijXCuKUtYWnGh9j/0l?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9627.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(7416014)(52116014)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?a5feOl5L9obORcC55BdruP3JFlCMIQO2hxA6uzw4JK0qI2HCxFr0TCcEo/Mq?=
- =?us-ascii?Q?fIQHiFjGewIpeoLHLMUdrM45GoFUUB9wBx62t95nopHOzLbJxPTxZGgVCBs9?=
- =?us-ascii?Q?qnXNkuSWkO+7IPZJ9CtdsjLDHTSqktzOuuy3ckIg5LgC5W5K3VwfgRCISMpS?=
- =?us-ascii?Q?/Xx1GWkkEZXGxAe+TCzBhXIhvBhw/sHG8y8HQszrZm61X/X8kB+3BeE4RQmA?=
- =?us-ascii?Q?OtlMQp1ZNSwfXBasZ348K6G0Vg935oyjwRc8APBx2n98syiBFC1uWfBfyuju?=
- =?us-ascii?Q?cCJEVVlaFMGZCpndSTv8sEPOtMABZ/i6QtlPj2HAZAW3IGkHAa1r+RFmr9sA?=
- =?us-ascii?Q?XnOGzFRvPM0k5FyDUKdVKsPeuPDCP2UUCTMBbTmlJgQA9oWIF8Qsaf0oU8kc?=
- =?us-ascii?Q?RIOGgGfPfEUvBE/XE+zNP1LpwZoBr6yVSgslbX8Algz19QZtL4EFx+9I0fax?=
- =?us-ascii?Q?u1QtwfUt0zP9565VXbEeSzofmAqGUV3rSFswogNdxflVJ9yoXdSPw9W0mr8J?=
- =?us-ascii?Q?X+9fkVT9ACIHv5dKg6h/37XBgrrdZuKNdAx5b2bf3WnFjQK2YPkCbKwQpCXp?=
- =?us-ascii?Q?XulbQWnPFDoqgFkK4Y697ZZ+1/ry0gzwrVHRc34TjmuuKT9FN3lWPMAXJJyW?=
- =?us-ascii?Q?+xAkp49SyanvtjtGHppL+uZ1rCCuT+AA2hYzYeqYPIk2JCJWStMT9+uRIVQv?=
- =?us-ascii?Q?+RGgJX7VVRXt7FKlsQmvlKaL8tbsoIayu85pFotF/cQiHJbBdu9axS6QLT5A?=
- =?us-ascii?Q?yJhRQtq3mFgbgxk0coa3SDkrZLIYO9ynnieato+RZToKglwfGjjfhI/U47e0?=
- =?us-ascii?Q?V4WVdx8QBfAOAh2d7DkQdlh5Lq9P60W1scP7a11iEzCPLX3bQXUzYt0bKy2+?=
- =?us-ascii?Q?ADirbMItXvNzxVYSsDpHt5hFSfybHmyxOC/XMVU2gxjcBoaEbKFG+BJZWgeV?=
- =?us-ascii?Q?PvfKfwmYydb/tFOc81drFZWWXlx2qBJfaPaE7YMJXTgWbB0VLwsyt3WPTqrW?=
- =?us-ascii?Q?LGNsr8zsk7NexOTeum5imToaVTLDK+XLuEckxgWX/KJWfnSnH4XWMVPbSzmy?=
- =?us-ascii?Q?Ap1d9U80HSAQgtVqcSPOWBwjoMcEmaUHvI1IWuR0m2ayFTF8lQ1V0Vk65/Su?=
- =?us-ascii?Q?j8GvvmJJGSfcCCU2BqhrlrwTj4MGdXM024UJkf58aq0gs9VbzMfNzyl/R5ee?=
- =?us-ascii?Q?CpibVzkgcLKRnsejYpSWECxY0WfHXwokMew89XlYMhoDhO4Dv/Gd6RPxZUJQ?=
- =?us-ascii?Q?abZtAB7F01wFEYLZKMUgQr08yd2eo213+bqzOKe670Eh0FQeDReJEWxUoGyT?=
- =?us-ascii?Q?MOQVbBmEQIGqS58MPkZorqT7NGy8cQe96ThDQ3DU3CGa/Q6mP773iivEpv7S?=
- =?us-ascii?Q?9D+pwnWh+PjBaeBFEOY2yXNny9LRHPrzlr7iPBJk8DixlJswYGasYJMPLmiF?=
- =?us-ascii?Q?5LQItuZ5kGtkZTd6FgoCnuX8gRTwjVED9wS5z9aO9awYcfixERz8GT8K5P0M?=
- =?us-ascii?Q?pZYjAPSSylNlQkP6iz2213IlTy3597xbzDzCRggUnCZIzLMaW9t0+b89Z+s2?=
- =?us-ascii?Q?45CW70ZEBt6u7S1XAov7fm4SUdE6Yj0ojv2eis/H?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 284af00e-cbcd-4ff8-dcc0-08de0745b32f
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9627.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2025 15:08:27.8438
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p+czQJ3nMNj/DJ7iTJP1X3RpA4TfP0Sx67WTgELZLw/g+P6wQQZ9KNf37WHfzClbHF8LZ0UvH/QN83105x//LQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB10059
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 09, 2025 at 04:09:29PM +0200, Boris Brezillon wrote:
->On Thu, 9 Oct 2025 16:08:20 +0200
->Boris Brezillon <boris.brezillon@collabora.com> wrote:
->
->> On Thu,  9 Oct 2025 22:00:39 +0800
->> Rain Yang <jiyu.yang@oss.nxp.com> wrote:
->> 
->> > From: Rain Yang <jiyu.yang@nxp.com>
->> > 
->> > Some platforms, such as i.MX95, utilize multiple power domains that need
->> > to be attached explicitly. This patch ensures that the driver properly
->> > attaches all available power domains using devm_pm_domain_attach_list().
->> > 
->> > Signed-off-by: Prabhu Sundararaj <prabhu.sundararaj@nxp.com>
->> > Signed-off-by: Rain Yang <jiyu.yang@nxp.com>
->> > ---
->> >  drivers/gpu/drm/panthor/panthor_device.c | 6 ++++++
->> >  drivers/gpu/drm/panthor/panthor_device.h | 2 ++
->> >  2 files changed, 8 insertions(+)
->> > 
->> > diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
->> > index f0b2da5b2b96..6f40d053b16c 100644
->> > --- a/drivers/gpu/drm/panthor/panthor_device.c
->> > +++ b/drivers/gpu/drm/panthor/panthor_device.c
->> > @@ -218,6 +218,12 @@ int panthor_device_init(struct panthor_device *ptdev)
->> >  	if (ret)
->> >  		return ret;
->> >  
->> > +	ret = devm_pm_domain_attach_list(ptdev->base.dev, NULL, &ptdev->pd_list);
->> > +	if (ret < 0) {
->> > +		drm_err(&ptdev->base, "attach power domains failed, ret=%d", ret);
->> > +		return ret;
->> > +	}
->> > +
->> >  	ret = panthor_devfreq_init(ptdev);
->> >  	if (ret)
->> >  		return ret;
->> > diff --git a/drivers/gpu/drm/panthor/panthor_device.h b/drivers/gpu/drm/panthor/panthor_device.h
->> > index 4fc7cf2aeed5..5ecb541ec67b 100644
->> > --- a/drivers/gpu/drm/panthor/panthor_device.h
->> > +++ b/drivers/gpu/drm/panthor/panthor_device.h
->> > @@ -196,6 +196,8 @@ struct panthor_device {
->> >  		/** @recovery_needed: True when a resume attempt failed. */
->> >  		atomic_t recovery_needed;
->> >  	} pm;  
->> 
->> Add a blank line here.
->> 
->> > +	/** @pm: Power management related data. */
->
->Also, the comment is wrong, and it would probably make sense to move
->that to the pm sub-struct since this is PM related.
-thanks, will fix it next version.
->
->> > +	struct dev_pm_domain_list  *pd_list;
->> >    
->> 
->> Do we even need to keep the pd_list in panthor_device if we don't do
->> anything with it?
-The second power domain is typically used for frequency scaling. The driver
-works fine when there's only one single power domain. That said, I will update
-the implementation to attach multiple power domains only when the domain count
-is greater than one.
->> 
->> >  	/** @profile_mask: User-set profiling flags for job accounting. */
->> >  	u32 profile_mask;  
->> 
->
+On Thu, 9 Oct 2025 23:06:17 +0800
+Rain Yang <jiyu.yang@oss.nxp.com> wrote:
+
+> On Thu, Oct 09, 2025 at 04:09:29PM +0200, Boris Brezillon wrote:
+> >On Thu, 9 Oct 2025 16:08:20 +0200
+> >Boris Brezillon <boris.brezillon@collabora.com> wrote:
+> >  
+> >> On Thu,  9 Oct 2025 22:00:39 +0800
+> >> Rain Yang <jiyu.yang@oss.nxp.com> wrote:
+> >>   
+> >> > From: Rain Yang <jiyu.yang@nxp.com>
+> >> > 
+> >> > Some platforms, such as i.MX95, utilize multiple power domains that need
+> >> > to be attached explicitly. This patch ensures that the driver properly
+> >> > attaches all available power domains using devm_pm_domain_attach_list().
+> >> > 
+> >> > Signed-off-by: Prabhu Sundararaj <prabhu.sundararaj@nxp.com>
+> >> > Signed-off-by: Rain Yang <jiyu.yang@nxp.com>
+> >> > ---
+> >> >  drivers/gpu/drm/panthor/panthor_device.c | 6 ++++++
+> >> >  drivers/gpu/drm/panthor/panthor_device.h | 2 ++
+> >> >  2 files changed, 8 insertions(+)
+> >> > 
+> >> > diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
+> >> > index f0b2da5b2b96..6f40d053b16c 100644
+> >> > --- a/drivers/gpu/drm/panthor/panthor_device.c
+> >> > +++ b/drivers/gpu/drm/panthor/panthor_device.c
+> >> > @@ -218,6 +218,12 @@ int panthor_device_init(struct panthor_device *ptdev)
+> >> >  	if (ret)
+> >> >  		return ret;
+> >> >  
+> >> > +	ret = devm_pm_domain_attach_list(ptdev->base.dev, NULL, &ptdev->pd_list);
+> >> > +	if (ret < 0) {
+> >> > +		drm_err(&ptdev->base, "attach power domains failed, ret=%d", ret);
+> >> > +		return ret;
+> >> > +	}
+> >> > +
+> >> >  	ret = panthor_devfreq_init(ptdev);
+> >> >  	if (ret)
+> >> >  		return ret;
+> >> > diff --git a/drivers/gpu/drm/panthor/panthor_device.h b/drivers/gpu/drm/panthor/panthor_device.h
+> >> > index 4fc7cf2aeed5..5ecb541ec67b 100644
+> >> > --- a/drivers/gpu/drm/panthor/panthor_device.h
+> >> > +++ b/drivers/gpu/drm/panthor/panthor_device.h
+> >> > @@ -196,6 +196,8 @@ struct panthor_device {
+> >> >  		/** @recovery_needed: True when a resume attempt failed. */
+> >> >  		atomic_t recovery_needed;
+> >> >  	} pm;    
+> >> 
+> >> Add a blank line here.
+> >>   
+> >> > +	/** @pm: Power management related data. */  
+> >
+> >Also, the comment is wrong, and it would probably make sense to move
+> >that to the pm sub-struct since this is PM related.  
+> thanks, will fix it next version.
+> >  
+> >> > +	struct dev_pm_domain_list  *pd_list;
+> >> >      
+> >> 
+> >> Do we even need to keep the pd_list in panthor_device if we don't do
+> >> anything with it?  
+> The second power domain is typically used for frequency scaling. The driver
+> works fine when there's only one single power domain. That said, I will update
+> the implementation to attach multiple power domains only when the domain count
+> is greater than one.
+
+That's not what I meant. What I mean is that the
+panthor_device::pd_list is never used, because the extra power domains
+get attached to the struct device directly, and the PM core
+automatically enables all PDs on resume and disable them on suspend.
+Because it's a devm_ function, you don't need it to detach the pd_list
+at ::remove() time either. TLDR; that means you can pass
+devm_pm_domain_attach_list() a local pd_list instead of ptdev->pd_list
+and you can thus drop panthor_device::pd_list altogether, I think.
+
+If you intend to use the pd_list for manual PD control in panthor in a
+follow-up patchset, this should be mentioned in the commit message.
+
+> >>   
+> >> >  	/** @profile_mask: User-set profiling flags for job accounting. */
+> >> >  	u32 profile_mask;    
+> >>   
+> >  
+
