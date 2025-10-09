@@ -1,111 +1,223 @@
-Received: from mail-m1973195.qiye.163.com (mail-m1973195.qiye.163.com [220.197.31.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F6D2AD16
-	for <imx@lists.linux.dev>; Thu,  9 Oct 2025 06:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72ED51EA7D2;
+	Thu,  9 Oct 2025 06:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759992268; cv=none; b=erDFum0DNARY0/pp6/u/bj/0LpDDVkliLsLCeIlK7Xf6E6Q0q/WlGBP8BFfrP7qSt3j6ftQz1z6gY6Ugy0usWhrfzVSb3xg5+iCDu6nu9OhUnsCzltq2LpwSd5QDPnGcFGXpGgQtS1cuWkLt9pTivu0AwEvhD5oCH0aF8Hrvp78=
+	t=1759992508; cv=none; b=frtANBE2P7/mdcEPz2LJ6uuPsm0wU7BpBu6wGouJ+ywGgbUwBESTcUWJrwEZy09IsqFF7ZcYUrBjgELloG9YjD1nqXDmwmmwV0y05GVfY1TmBFY6bp8p11ISAb9xUTDIHT5C7m3Nz87K3gxiWhu0IoK0gM+TR87Xwwj749/SvtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759992268; c=relaxed/simple;
-	bh=rd/lbmT2upkHWzOJOfdBnwlgLrDr7wZmyHVjlFZei44=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kzcBXOj7rOpt+u/QCCWh86rWb4qhPl/07kRlplDIS+ik55P25QP5VsJtOG3WrQwIxrHwM2Rn9ebFD9Tz3vpBnq0P8TX6h5bLkped8rRwK/vZEawprH01gGEEz7Y05perY7hTr+7Clm+IxJIPwq+0HkodkIEgQesN8soGm7j5k1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=iQs0T/oM; arc=none smtp.client-ip=220.197.31.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1759992508; c=relaxed/simple;
+	bh=DDjKpr6gtv7Sbw5NKGi8tB6eysY8h2EsJ4D5k4IEpiQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=gegED06JEKt+cyuJM5cC9Tqs2GmqM88d9xLAK/1rfw42y/NIsUdgiIsPVV+AMI2pSium3o1A6F/Yppg73OgQq8aIUpZJ76MjAdVR8obb4H3ThTFEEt6AQvf98V6qGwPlHYwbpUGxBnnrL9LE+urZAZEKJPnCQxX1yyHE+c7XlqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u8Ip4fj3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="iQs0T/oM"
-Received: from [172.16.12.26] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2540f1755;
-	Thu, 9 Oct 2025 11:15:12 +0800 (GMT+08:00)
-Message-ID: <600da5e2-da28-429b-ba7a-6ddabeeb044d@rock-chips.com>
-Date: Thu, 9 Oct 2025 11:15:13 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u8Ip4fj3"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EEE3AC4CEF9;
+	Thu,  9 Oct 2025 06:48:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759992508;
+	bh=DDjKpr6gtv7Sbw5NKGi8tB6eysY8h2EsJ4D5k4IEpiQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=u8Ip4fj3WcI8ZBqrCkDuUs4NN+BSaXF21LK1pxB+JtyNMi3Ju2h/LhBe3r+sHygaq
+	 P+1+e/ZhR1yVQ1xLZeeOlmO5PJbZkCAUjJO5DmZJGJwTAhaToNrYElvOeFs3xsRVWN
+	 foQp2zAyYFj+YRcjjws/gOf30wEt1qkjUHgsplU5gcvRmG3VzHF9LCNXJWpT2FKtkO
+	 OifT7C4fQVNSiy/c4KRj7FcjvzR4XXK8aUFrYeWLPNUvDXEPGbEfayNdNUCwdUwkHd
+	 40qPin308Se4CNTYnJbK1c3tkJu24o5SCgJsSQTt78igZ2QJdFPLMkG4w+uz/CmjUz
+	 b67No4lduQVtA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DC1C3CCA470;
+	Thu,  9 Oct 2025 06:48:27 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Date: Thu, 09 Oct 2025 08:48:25 +0200
+Subject: [PATCH v4 1/4] dt-bindings: backlight: Add max25014 bindings
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 11/18] drm/display: bridge_connector: Ensure last
- bridge determines EDID/modes detection capabilities
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
- kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
- jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
- heiko@sntech.de, andy.yan@rock-chips.com, dianders@chromium.org,
- m.szyprowski@samsung.com, luca.ceresoli@bootlin.com, jani.nikula@intel.com,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
-References: <20250930090920.131094-1-damon.ding@rock-chips.com>
- <20250930090920.131094-12-damon.ding@rock-chips.com>
- <4r25h5uaamfkprrmvrtdqfjlcgcnkfyca2o5q53hteta7rlrbq@xqlrjxhi7z2u>
-Content-Language: en-US
-From: Damon Ding <damon.ding@rock-chips.com>
-In-Reply-To: <4r25h5uaamfkprrmvrtdqfjlcgcnkfyca2o5q53hteta7rlrbq@xqlrjxhi7z2u>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-HM-Tid: 0a99c6f72dc603a3kunmfe4252c4a5c7bd
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGhgfT1ZMGkxMTE1KSUtCTB5WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=iQs0T/oMZ2uhdZcdybDbf32wCENpnpEDgP3/4nIpyZchoiqx101XIqUFLuYnQ8IcKx4Znl6ZyzkvOgsZ4UWhvqaSNB33nuRn9W/w1YboaMZpZdr5IObRzog7tr1A8nYt2b/3iKtdXeVXmfBjPuu7pX24s1jtIDZnRMVvEGAEOEc=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=iABHohkXXscty3ygSSBQiwpr5DtvMO/CY8j782HEq18=;
-	h=date:mime-version:subject:message-id:from;
+Message-Id: <20251009-max25014-v4-1-6adb2a0aa35f@gocontroll.com>
+References: <20251009-max25014-v4-0-6adb2a0aa35f@gocontroll.com>
+In-Reply-To: <20251009-max25014-v4-0-6adb2a0aa35f@gocontroll.com>
+To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
+ Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-fbdev@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Maud Spierings <maudspierings@gocontroll.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759992506; l=3924;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=9GoY1YFZup8pyevGMqP0p2CbHPXkb49eiT7Kk0Aql2c=;
+ b=UTjxhRktWaJOCpVH6gPGCMfTW3yTl1VRmKMfw3ZqGDel/DpQX0w9z2TUyP2RDcHVhlFV1p58m
+ 68O/GoD9kEgDWP6i3NF+m3joPvLgytuKbxJZjcaCTet5R9sS0BsNQtT
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-Hi Dmitry,
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-On 10/1/2025 4:21 AM, Dmitry Baryshkov wrote:
-> On Tue, Sep 30, 2025 at 05:09:13PM +0800, Damon Ding wrote:
->> When multiple bridges are present, EDID detection capability
->> (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
->> (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities are
->> determined by the last bridge in the chain, we handle three cases:
->>
->> Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
->>   - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
->>     &drm_bridge_connector.bridge_edid to NULL and set
->>     &drm_bridge_connector.bridge_modes to the later bridge.
->>   - Ensure modes detection capability of the later bridge will not
->>     be ignored.
->>
->> Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
->>   - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
->>     &drm_bridge_connector.bridge_modes to NULL and set
->>     &drm_bridge_connector.bridge_edid to the later bridge.
->>   - Although EDID detection capability has higher priority, this
->>     operation is for balance and makes sense.
->>
->> Case 3: the later bridge declares both of them
->>   - Assign later bridge as &drm_bridge_connector.bridge_edid and
->>     and &drm_bridge_connector.bridge_modes to this bridge.
->>   - Just leave transfer of these two capabilities as before.
->>
->> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
->> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->> ---
->>   .../gpu/drm/display/drm_bridge_connector.c    | 42 +++++++++++++++++++
->>   1 file changed, 42 insertions(+)
->>
-> 
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> 
-> But I'd suggest pulling this to a top of the series to let others also
-> take a look at it.
-> 
+The Maxim MAX25014 is a 4-channel automotive grade backlight driver IC
+with integrated boost controller.
 
-Will do in v7.
+In the current implementation the control registers for channel 1,
+control all channels. So only one led subnode with led-sources is
+supported right now. If at some point the driver functionality is
+expanded the bindings can be easily extended with it.
 
-Best regards,
-Damon
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+---
+ .../bindings/leds/backlight/maxim,max25014.yaml    | 109 +++++++++++++++++++++
+ MAINTAINERS                                        |   5 +
+ 2 files changed, 114 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
+new file mode 100644
+index 0000000000000..496520e1374e5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
+@@ -0,0 +1,109 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/leds/backlight/maxim,max25014.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Maxim max25014 backlight controller
++
++maintainers:
++  - Maud Spierings <maudspierings@gocontroll.com>
++
++properties:
++  compatible:
++    enum:
++      - maxim,max25014
++
++  reg:
++    maxItems: 1
++
++  "#address-cells":
++    const: 1
++
++  "#size-cells":
++    const: 0
++
++  enable-gpios:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  power-supply:
++    description: Regulator which controls the boost converter input rail.
++
++  pwms:
++    maxItems: 1
++
++  maxim,iset:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    maximum: 15
++    default: 11
++    description:
++      Value of the ISET register field. This controls the current scale of the
++      outputs, a higher number means more current.
++
++patternProperties:
++  "^led@[01]$":
++    type: object
++    description: Properties for a string of connected LEDs.
++    $ref: common.yaml#
++
++    properties:
++      reg:
++        const: 0
++
++      led-sources:
++        allOf:
++          - minItems: 1
++            maxItems: 4
++            items:
++              minimum: 0
++              maximum: 3
++            default: [0, 1, 2, 3]
++
++      default-brightness:
++        minimum: 0
++        maximum: 100
++        default: 50
++
++    required:
++      - reg
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        backlight@6f {
++            compatible = "maxim,max25014";
++            reg = <0x6f>;
++            enable-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
++            interrupt-parent = <&gpio1>;
++            interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
++            power-supply = <&reg_backlight>;
++            pwms = <&pwm1>;
++            maxim,iset = <7>;
++
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            led@0 {
++                reg = <0>;
++                led-sources = <0 1 2 3>;
++                default-brightness = <50>;
++            };
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 47fbc5e06808f..be5e2515900ce 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15171,6 +15171,11 @@ F:	Documentation/userspace-api/media/drivers/max2175.rst
+ F:	drivers/media/i2c/max2175*
+ F:	include/uapi/linux/max2175.h
+ 
++MAX25014 BACKLIGHT DRIVER
++M:	Maud Spierings <maudspierings@gocontroll.com>
++S:	Maintained
++F:	Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
++
+ MAX31335 RTC DRIVER
+ M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+ L:	linux-rtc@vger.kernel.org
+
+-- 
+2.51.0
+
 
