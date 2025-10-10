@@ -1,57 +1,45 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8218E270EBA;
-	Fri, 10 Oct 2025 19:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B112C277C88;
+	Fri, 10 Oct 2025 22:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760124725; cv=none; b=V1LwM5g63BzUluzSV2zOi5PgLSJswROmXl1XLzv44+vsSRiOXaBsqjiObD1LoMbK2UJNnlNSq1W5b1fa/tUfe2OEakp8SdvpnQRId3tgyifbYZxbIJGJTiy0Ujji9Py0GGx1j442F7pu3UXfqKSnwziQtP57yuUURytpG7hoyFo=
+	t=1760135692; cv=none; b=d0y2yUeD6YCHGK726WRBp0issy7y9u0DAnPjkII7qbFP+KGQuPKOtEld2sOAGHFRjkC/6fIuKpxmyIIZZhWXxVrw+SwnBrd0HWX7N73eXAybpd3RmKh60WK1nS8j+VCzp5js5WigMe4FihMvJoOb3NHvetfCfci3xsZ9blm11YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760124725; c=relaxed/simple;
-	bh=qtnSzonR6W0Cv1rX5Y6WVUNsvtka5ChSZBJBbqU7rgo=;
+	s=arc-20240116; t=1760135692; c=relaxed/simple;
+	bh=WROgCmZgtstKv4eITK/u78V+uzOkFLK31P8ASk/uNc8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f43/xHohgA60uh2goaf6sqOxlY+aP8VKYs7FA7MJFBcIAkFEEOHphCDzTPEHTaKT9DiMF5V24mFNzMcm9twQAMtb4w6+muEG7qoSmU+xU4i2v6tWoqZ6lcfEfBM+zNvG9m1S4hsIZ88Xqi8YiXATSMEWe8MyZ/Ks5rLfztlo88w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=27QRfO0E; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=ckuqOpzMwbE3ldskyQBmDl3o7H3MdJMtL5N0pSeJ3rgDaKZukDuuL6RmGUbbFinEV7RnuAu7crCmxWyJ1W+Qoxiy2LrmfI2zrFqAE+Zqd8LNWIK47+vrGMarw2my4MH7xhQ5LmEsErC/zbwC9nVt4v2ZEU5dyShokGByFjR/Rbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ShFlpnwa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="27QRfO0E"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=sPg6tFmE44GO59Osmm6OJOsXJFjD9dOzK+Pou3aQd1c=; b=27QRfO0Egr4ssojusmNF/vvsXi
-	6sPZztKOfe+I3ZeGlmigAgpjzzSxVViZTvdyVqzi/1WpBAAreUqrl3eg8oRMEhWk15NhHNVnoeOkf
-	RavLSNw0COOTLc0bZ9h1DoJ/+no6V6J5tmj/zYPBaWJv40C9NRS57bCzvQ8XS7R6edmU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1v7IqJ-00Acyl-Qt; Fri, 10 Oct 2025 21:31:55 +0200
-Date: Fri, 10 Oct 2025 21:31:55 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ShFlpnwa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F40C4CEF9;
+	Fri, 10 Oct 2025 22:34:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760135692;
+	bh=WROgCmZgtstKv4eITK/u78V+uzOkFLK31P8ASk/uNc8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ShFlpnwa+lPDPbhRLPLBmb6E8nJ/rJpw2X16SDp1057TrTCeFUjHMz8bhh/mPQk+A
+	 RYdRu9li6jR2Im4gjJPrAAQR1dzy/xw61LhSwa4M7AUg+kqRENa2y9sTCZ8cECKxoK
+	 8DIuUbKEYrh/p5qgFYe8H/OSv2tjmnOtAbF+CYXWWeJZb90cNWyeZFNNBLsk9o+NlB
+	 LYD58f89xei9DFIHvVIArLppncAfZ1lfODqbnZMp6hKZ4prFkiuURpN9AqW/CYZ2Ox
+	 +JDSLF7BWY9GUdsApmWRVZuvoC/GSo07c5bdLanU6hWl/cm06LhAt+J49lopjka6At
+	 sICLBvRaaXIcQ==
+Date: Fri, 10 Oct 2025 17:34:50 -0500
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [PATCH v3 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
-Message-ID: <6025be80-7007-48bb-bdd1-c8198e951400@lunn.ch>
-References: <20251009222716.394806-1-shenwei.wang@nxp.com>
- <20251009222716.394806-4-shenwei.wang@nxp.com>
- <eb99d9a8-eb96-445d-899a-6e1d9b6f6c69@lunn.ch>
- <PAXPR04MB9185A829534963B22D1C49FD89EFA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Tim Harvey <tharvey@gateworks.com>,
+	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: media: convert nxp,tda1997x.txt to yaml
+ format
+Message-ID: <20251010223450.GA1293636-robh@kernel.org>
+References: <20251010151637.2061727-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -60,41 +48,196 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PAXPR04MB9185A829534963B22D1C49FD89EFA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+In-Reply-To: <20251010151637.2061727-1-Frank.Li@nxp.com>
 
-> The only platform-specific part is the message format exchanged between Linux and the remote processors.
-> As long as the remote processor follows the same message protocol, the driver should work as expected.
+On Fri, Oct 10, 2025 at 11:16:23AM -0400, Frank Li wrote:
+> Convert nxp,tda1997x.txt to yaml format
 > 
-> Here's the layout of the message packets:
+> Additional changes:
+> - update audio width to 8, 16, 24, 32.
+> - keep one example only.
 > 
-> +--------+--------+--------+--------+--------+----------------+--------+--------+---------------+---------------+
-> |0x00    |0x01    |0x02    |0x03    |0x04    |0x05..0x09      |0x0A    |0x0B    |0x0C           |0x0D           |
-> |cate    |major   |minor   |type    |cmd     |reserved[5]     |pin_idx |port_idx|out:{evt/rc/v} |in:{wkup/val}  |
-> +--------+--------+--------+--------+--------+----------------+--------+--------+---------------+---------------+
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/media/i2c/nxp,tda19971.yaml      | 158 ++++++++++++++++
+>  .../bindings/media/i2c/nxp,tda1997x.txt       | 178 ------------------
+>  2 files changed, 158 insertions(+), 178 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/media/i2c/nxp,tda19971.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/media/i2c/nxp,tda1997x.txt
 > 
-> Cate (Category field ): can be GPIO /I2C/PMIC/AUDIO ... etc
-> Major : Major version number
-> Minor: Minor version number
-> Type (Message Type): Can be SETUP / REPLY /NOTIFY for GPIO category
-> Cmd (Command): Can be Input INIT / Output INIT / Input GET for GPIO category
-> Pin_idx: The GPIO line index
-> Port_idx: The GPIO controller index
-> 
-> For Out packet:  
-> 	if it is OUPUT INIT, the out field value is the gpio output level.
-> 	If it is INPUT INIT, the out filed is 0.
-> 
-> For In packet:
-> 	If it is a REPLY message, the out field is return code. 0 means success.  
-> 	If it is a REPLY of INPUT GET, the in field is the value of GPIO line level.
-> 	If it is an NOTIFY type of message, it simulates an interrupt event from the remote processor.
-> 
-> I can add above comments in the commit log or the beginning of the driver source file.
+> diff --git a/Documentation/devicetree/bindings/media/i2c/nxp,tda19971.yaml b/Documentation/devicetree/bindings/media/i2c/nxp,tda19971.yaml
+> new file mode 100644
+> index 0000000000000..7624391e1c1e8
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/i2c/nxp,tda19971.yaml
+> @@ -0,0 +1,158 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/i2c/nxp,tda19971.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP TDA1997x HDMI receiver
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description: |
+> +  The TDA19971/73 are HDMI video receivers.
+> +
+> +  The TDA19971 Video port output pins can be used as follows:
+> +   - RGB 8bit per color (24 bits total): R[11:4] B[11:4] G[11:4]
+> +   - YUV444 8bit per color (24 bits total): Y[11:4] Cr[11:4] Cb[11:4]
+> +   - YUV422 semi-planar 8bit per component (16 bits total): Y[11:4] CbCr[11:4]
+> +   - YUV422 semi-planar 10bit per component (20 bits total): Y[11:2] CbCr[11:2]
+> +   - YUV422 semi-planar 12bit per component (24 bits total): - Y[11:0] CbCr[11:0]
+> +   - YUV422 BT656 8bit per component (8 bits total): YCbCr[11:4] (2-cycles)
+> +   - YUV422 BT656 10bit per component (10 bits total): YCbCr[11:2] (2-cycles)
+> +   - YUV422 BT656 12bit per component (12 bits total): YCbCr[11:0] (2-cycles)
+> +
+> +  The TDA19973 Video port output pins can be used as follows:
+> +   - RGB 12bit per color (36 bits total): R[11:0] B[11:0] G[11:0]
+> +   - YUV444 12bit per color (36 bits total): Y[11:0] Cb[11:0] Cr[11:0]
+> +   - YUV422 semi-planar 12bit per component (24 bits total): Y[11:0] CbCr[11:0]
+> +   - YUV422 BT656 12bit per component (12 bits total): YCbCr[11:0] (2-cycles)
+> +
+> +  The Video port output pins are mapped via 4-bit 'pin groups' allowing
+> +  for a variety of connection possibilities including swapping pin order within
+> +  pin groups. The video_portcfg device-tree property consists of register mapping
+> +  pairs which map a chip-specific VP output register to a 4-bit pin group. If
+> +  the pin group needs to be bit-swapped you can use the *_S pin-group defines.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - nxp,tda19971
+> +      - nxp,tda19973
 
-Maybe Documentation/admin-guide/gpio-rpmsg.rst would be better.  You
-should also document how to handle features the device does not
-support. e.g. i _think_ your hardware supports all 4 interrupt
-types. But maybe other hardware needs to return something meaning
--EOPNOTSUP?
+blank line
 
-	Andrew
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  DOVDD-supply: true
+> +
+> +  DVDD-supply: true
+> +
+> +  AVDD-supply: true
+> +
+> +  '#sound-dai-cells':
+> +    const: 0
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/$defs/port-base
+> +    unevaluatedProperties: false
+> +
+> +    properties:
+> +      endpoint:
+> +        $ref: /schemas/media/video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +  nxp,vidout-portcfg:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> +    minItems: 1
+> +    maxItems: 4
+> +    items:
+> +      items:
+> +        maxItems: 2
+
+1 too many levels...
+
+items:
+  maxItems: 2
+
+But really you need to describe what each of the 2 items are. And are 
+there some constraints? I'd assume pins here is something like pin 1-N?
+
+> +
+> +    description:
+> +      array of pairs mapping VP output pins to pin groups.
+> +
+> +  nxp,audout-format:
+> +    enum:
+> +      - i2s
+> +      - spdif
+> +
+> +  nxp,audout-width:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [8, 16, 24, 32]
+> +    description:
+> +      width of audio output data bus.
+> +
+> +  nxp,audout-layout:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [0, 1]
+> +    description:
+> +      data layout (0=AP0 used, 1=AP0/AP1/AP2/AP3 used).
+> +
+> +  nxp,audout-mclk-fs:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Multiplication factor between stream rate and codec mclk.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - DOVDD-supply
+> +  - AVDD-supply
+> +  - DVDD-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/media/tda1997x.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        hdmi-receiver@48 {
+> +            compatible = "nxp,tda19971";
+> +            reg = <0x48>;
+> +            pinctrl-names = "default";
+> +            pinctrl-0 = <&pinctrl_tda1997x>;
+> +            interrupt-parent = <&gpio1>;
+> +            interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
+> +            DOVDD-supply = <&reg_3p3v>;
+> +            AVDD-supply = <&reg_1p8v>;
+> +            DVDD-supply = <&reg_1p8v>;
+> +            /* audio */
+> +            #sound-dai-cells = <0>;
+> +            nxp,audout-format = "i2s";
+> +            nxp,audout-layout = <0>;
+> +            nxp,audout-width = <16>;
+> +            nxp,audout-mclk-fs = <128>;
+> +            /*
+> +             * The 8bpp YUV422 semi-planar mode outputs CbCr[11:4]
+> +             * and Y[11:4] across 16bits in the same pixclk cycle.
+> +             */
+> +            nxp,vidout-portcfg =
+> +                /* Y[11:8]<->VP[15:12]<->CSI_DATA[19:16] */
+> +                < TDA1997X_VP24_V15_12 TDA1997X_G_Y_11_8 >,
+> +                /* Y[7:4]<->VP[11:08]<->CSI_DATA[15:12] */
+> +                < TDA1997X_VP24_V11_08 TDA1997X_G_Y_7_4 >,
+> +                /* CbCc[11:8]<->VP[07:04]<->CSI_DATA[11:8] */
+> +                < TDA1997X_VP24_V07_04 TDA1997X_R_CR_CBCR_11_8 >,
+> +                /* CbCr[7:4]<->VP[03:00]<->CSI_DATA[7:4] */
+> +                < TDA1997X_VP24_V03_00 TDA1997X_R_CR_CBCR_7_4 >;
+> +
+> +            port {
+> +                endpoint {
+> +                    remote-endpoint = <&ipu1_csi0_mux_from_parallel_sensor>;
+> +                    bus-width = <16>;
+> +                    hsync-active = <1>;
+> +                    vsync-active = <1>;
+> +                    data-active = <1>;
+> +                };
+> +            };
+> +        };
+> +    };
