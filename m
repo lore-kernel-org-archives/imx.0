@@ -1,178 +1,173 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012026.outbound.protection.outlook.com [52.101.66.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926C026F28B
-	for <imx@lists.linux.dev>; Fri, 10 Oct 2025 09:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760088707; cv=none; b=pqchx6Lv7T8ewQshCsOchdLbjh7Qj9cyHXXgocvlr1b1XwUbRFGAGDdj88uf3GcctyhbcCy9d2wwrKAECTv3yzfpohaJudEXJh49IJbHawEBhKxduix7intFv08JOCkkL2lu/ophHCpcLwacXIEpu/ANGzrk6Msr5hJKQ9OuUbA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760088707; c=relaxed/simple;
-	bh=9SG9MfMh9cU3sLQ9N+U2VcoFk/gaHuh7G5vb2XTyEsU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NcsTrysxxILo3QOypf69xcd9yG6pe9x22+ogYm/y6nBU87uQjx9SlrSoVSLYM5lUAmjfAqcXNdP/flCqHU/v/yMCSXZ7sirqsIR+8I07yf8crAVElgfsEg52PBLxX4BUkQwaBetPU/+yOrg1ctew/XM7jeZuu8mxdh+BfVQ8Yog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Bk6+g3YK; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF842ED14C
+	for <imx@lists.linux.dev>; Fri, 10 Oct 2025 09:49:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760089759; cv=fail; b=anYvVNXKlKGXYdksKq8zes5pKR8MpydhhXAaK9aqZYs4hg2NsVHJ+3fE1bzkkKy9qZK0KpJ8kYgXtVRyKL8GTDvuKRjeccaPqZABlThfWLeFRbf14aWxt8HiA/1cXeg9PIW4Iht7GeNXBuWu22/1cQXuFVnhXouQpFoVTod3Jxo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760089759; c=relaxed/simple;
+	bh=3MOMElqVaW1I+oCG3aAxf4Ajp4jh9RGcqOgCAGT/LBg=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=tXKRc/EtaW/Gnz53ukN4+jCP9CrV1GjFU0Peh4p4tvlKPwNEXes/kPJUXAwl/S304ou9g1N30a/deHV2A5hAlTfDkBI9Zn/VD/2o2gmGI/K9Cumla6w+tCJnbzAx6VoE9nNeoye5exJfUvWUPXwabcxuQSICkMtdmteSIyQklZw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ejUQyV64; arc=fail smtp.client-ip=52.101.66.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Bk6+g3YK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1760088703;
-	bh=9SG9MfMh9cU3sLQ9N+U2VcoFk/gaHuh7G5vb2XTyEsU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Bk6+g3YKfbe0t+0IWYGKF7sMSEPeW2pRNi6aNJh5j8QHcsixq/vpVM3b4XSYCNnr5
-	 Q+iKwa477RT7u3XN5ErSzt2Zm+7knrLtxjv75CRW303r6sQh6pNmofkVMwbdOzFe+j
-	 mY5u9axHe5C9k54pZJnJD6UXLRk608gyyFic4/yKl5DzzWzli8vJFd2rRy4pe4OZ5X
-	 eWZKutGmGce3vZBkXmct1BZU78OYa7LywO1EBAJ/haGERXIsN3TKCh5KmO4A4uLma3
-	 CkR+SouiJQEP+Km5NrbcNSiircUSzGm+iIUtDJ4G8YovaMpRuZSjRZ2ZWLgF9ABwb3
-	 yrrRvJH+vKqdQ==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 5F6DC17E013C;
-	Fri, 10 Oct 2025 11:31:43 +0200 (CEST)
-Date: Fri, 10 Oct 2025 11:31:38 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Rain Yang <jiyu.yang@oss.nxp.com>
-Cc: airlied@gmail.com, dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org, liviu.dudau@arm.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- prabhu.sundararaj@nxp.com, simona@ffwll.ch, steven.price@arm.com,
- tzimmermann@suse.de, xianzhong.li@nxp.com
-Subject: Re: [PATCH] drm/panthor: attach the driver's multiple power domains
-Message-ID: <20251010113138.719d431f@fedora>
-In-Reply-To: <aOjOjFVGb8MLjvYI@oss.nxp.com>
-References: <20251009140039.101189-1-jiyu.yang@oss.nxp.com>
-	<20251009160820.74f04ead@fedora>
-	<20251009160929.1b36b9ea@fedora>
-	<aOfPaQWIVzMaWlSl@oss.nxp.com>
-	<20251009172320.6a2cbf55@fedora>
-	<aOjOjFVGb8MLjvYI@oss.nxp.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ejUQyV64"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n/SCWk8wZQHakYYuML4XXqOa9t4gcE/AjAhgm2IqXUN425DCHL7OVZqhq4a+GNHXZ49OMs4y1qqg7pQJype84mQoAViLKc9gI2VRNsSKpGbqS0xH0cG7HkEGaTGbjAMcKAmHVzMmKe9+/5kWaeXFOAk5FLfJME+cCgmmp7DNCyxiezstjl8ttZFRV+Ju6W25FjNIKGxXZxxH/Z0A/V7vh9Ycqb/7WKC8vEVUbfQwcE0TnGJ3BVr+Jf85m4o+NYwNrHxKS9y6XdC3lcANW0uUIR8G8YMQbIiud19HWrKYPClim3U5tv/AVqUi1bS4xxJyG3SElOhxCIAgcWv0Bepmtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vFb2socNW5tc9YdA+GnG+Lsne9GZZnFsiKOhmQXEIbA=;
+ b=ayb8QFSTPb6OIpYXLS54WWn4L9vPcH27znwgxnLEWgU5PRUlER6s7utqwjwiOWr5dnTG0VhAqsbXsg+vHtXPsEUSxMkwmab0WGzY+mP7Pr5F3zLLNf0s5RUybPAqQ0FZCaXKnWQjvC4qykjANCKaUEDkd3DoJY6PjRcOnxnaChsz/nu0zqc8aTVwmcBZjuiC2daNTkDCC+ETInRpBHhcO3olHHdQRCWuDOBQMKg9upCRwuJYrxr3dVV1zFss47MYh+IiUPfUyE3wF4KPrSQ3F4OK/itYr8krvujXtLMZ4O1j1MbuiV+/WsUWEEcQSHmE4cBXdYCNdFMoDv/4cVi+bw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vFb2socNW5tc9YdA+GnG+Lsne9GZZnFsiKOhmQXEIbA=;
+ b=ejUQyV64avqkMX2vQLqwsYwcgDFL92bMXxBQEqBJSMrDCrM1d9r/hJwQnTQD1Ot/tGcz/MY4/7+ibjoOelQI+f08DFxOY/j/lTqx1uUoX2Qcc2r1WLKkotoOYjPK4nOKl8+Cz+r/Cn4ltYwXLTKcQIX9HKAXScYz50lasw7NtGk9IpwlpIgyIZd0Xy3bjaBpzUwcvfbHeSoAbD4sPB1VGOih5lMoJkMkt1Ym2QgsQfkM6yJnm1cb+GiMt+zkr+qn+xEByjb7UAwwhcWt/KdmYqFRl44bhjCCObykoadjTa0JhZ6tCdmC3dYDBDV7ne+Qec1rFG/iTbHmfsGy00u96g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PAWPR04MB9958.eurprd04.prod.outlook.com (2603:10a6:102:380::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.10; Fri, 10 Oct
+ 2025 09:49:14 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9203.009; Fri, 10 Oct 2025
+ 09:49:14 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Frank.Li@nxp.com
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: enetc: correct the value of ENETC_RXB_TRUESIZE
+Date: Fri, 10 Oct 2025 17:26:08 +0800
+Message-Id: <20251010092608.2520561-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA5P287CA0212.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ab::9) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PAWPR04MB9958:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9900df42-11d1-42a3-9dee-08de07e24527
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|52116014|376014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?xONMyccmJnd0Ai3m945ZITmKJCVkAsf8OgxLGXDNYW46C+igx1N9Sl0QfBNc?=
+ =?us-ascii?Q?MmABB1fvQUck/LT4Q31Yed8IwoKsLK60EDcKWIzq/41XUwjTFQceFYfgurav?=
+ =?us-ascii?Q?U8Udz51M0mH7L2b9iuzN2TpzlNkWiKWf5eUYULXDLsjbdLY0yxzupkfDUz6D?=
+ =?us-ascii?Q?L4n7F+rRnQqqzYvOmtL65WbUuldDB3bslThHHjib/a5H8Kan/tbsRU/NPkc5?=
+ =?us-ascii?Q?pZqO2ZkpncrlihQwNViRLWOdF27iQuuMwZiC05+Fu1pN1cD6UosRlk+6kqTV?=
+ =?us-ascii?Q?blk70tFBGg3CgOnsFEqd84MemRvVKIwbP53Z5nXdURK7L3iJ6jYVb7Wxm+hk?=
+ =?us-ascii?Q?pmZnY6eFPiy5G2jhDyoK7X+4CJwb4TyjrabBH857LRSyIrST/QmmaB18+6Xa?=
+ =?us-ascii?Q?2YChx+4f7XcQ6eEXTd8idnB0+A3yl9RPc/PVylwbsOtkTXI7GY8osZngn/2C?=
+ =?us-ascii?Q?RZNSvZMdMKXlrwKtckpS6/UwrlE7hPkNWuilfCRs6kcd2nZUDCgAPK7uj0LO?=
+ =?us-ascii?Q?uBeAIMCHM1gAxxKBXQCvrnLG9drw4MasX+hTcqVsMDDpjLu9h77tTkGFD14M?=
+ =?us-ascii?Q?saQvKSp+CvlgN/OEbub3XP7UFq5bMUb52nPndqVeiaIfiiWTYgpbDG/yZCox?=
+ =?us-ascii?Q?n8dIlwEqaA9+LUTBGtn2u2csuuvoNrwteBVyqzU7n+8N1TX96U5N88IlQHNX?=
+ =?us-ascii?Q?J242nYUXuF2ElDJwH3T9b5/DXS6kfXPaxpmeOWGXH1YNhjea26ZzP4UD6lDB?=
+ =?us-ascii?Q?Osd0wEbQzsI2pxzMVFuCJnq/yDNWRjVOn5rpLPqX+i2CudMi7XU517MYwMta?=
+ =?us-ascii?Q?I00dWtB9G3PjDmaOe15BIE06b/7rUXJiEJ+o696uNccatNOysMoMLkEye6qW?=
+ =?us-ascii?Q?jJ/D1ge9Yw6OqbguRSO82yVlF2oLmJqIWukw/fU+p7Ch6HpNPJMOXY0iw8s3?=
+ =?us-ascii?Q?ukTtDvoupbQL7WqmpEchstft+N0ViCOGsJxvoEcwRsTqkkwSCNiGs1Kgds3m?=
+ =?us-ascii?Q?WmyDTqkLa6KtIwGTEx+67YMkeb/NxTYVUcQ5RmTWNmcRhVG2jbk8C5JAu+hf?=
+ =?us-ascii?Q?ddYPjeQHur4WnXZ0afYcKqG0iustT6FM4X1Edom9q3LuHVnGCdSjKDZOahI0?=
+ =?us-ascii?Q?h6g2VBrxf/EAJ2yYK0xxNE2Iwuiw6DY123v14isuRpEQI/XcGJIYgQ8f1bmW?=
+ =?us-ascii?Q?uAlJoy8jtfLDjMRWJKBgnrXOn+JlA6eSbv61OOd9YohRI/QxFHTJV9949qag?=
+ =?us-ascii?Q?STSJWjgxJT9W0Z5C4kLKP8XK/S4fZy5AvvoO/w+HXWaZz+wxWpVuWjkmDGwP?=
+ =?us-ascii?Q?jKc8gVnM7oSG7IwLUH1F5I5JdxYQK6pyHLS1psxPddW/fji2LKgvJDLUuz4s?=
+ =?us-ascii?Q?jDbW1gSie04KUwiOdKm5HxSwh5/LcJaPPqzIFpdW+UNOwUOFcO5fmfQuaeua?=
+ =?us-ascii?Q?jKkXyhnTjt5eTnhkAf7YirGT7muXxzpsVNHczotTwuL91WIAp+zwy+R2n6Gx?=
+ =?us-ascii?Q?6ZdDWdpoPGMK25ZlKMlNyZ1iJ0VR2dGfQXBP?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kn5TXEyZZXruMSF5HXtXkKjKFzlxrxjg2Z9ze+C5Zzf983io58ed5GS6Gfh1?=
+ =?us-ascii?Q?fZ2v5aWyhrwBm5vmCZRW4Lx/XgFUgehnivpAnc3alsmKRI9d5PB+0UIawXDv?=
+ =?us-ascii?Q?p1iWu4LKYk4FELOWP73jK4PjD2FJeKMKtOfsivWW5zruAxTvCmuHBGg0gLFZ?=
+ =?us-ascii?Q?QzB1FH6HrK4HF9IsZebaVe0YL9NMCZQIzW3FXQzpKlChbbiCAZjYRP1laLvf?=
+ =?us-ascii?Q?fT8k68NZ4L7/PXUYCOye0s8qNCOtvo16GSdBoHpJlwTMkf4fOlP90n6qvbrT?=
+ =?us-ascii?Q?gTmcDHYp3eq+M7w/iI+jZbw53xyjajtGRgrv9RYA5dqWhrD0BErCLm/abRBT?=
+ =?us-ascii?Q?aGs2EDiuTbUO5nhsAfJaf1ORAR/fmC9gSYz4BLp5Dhp6lwK6nvLjoRPdDcgg?=
+ =?us-ascii?Q?wJtzAZmDgsiq4EPM53TgjRMFSwn6R7pNumRpqguTvceSO4YS6/DNIrEfhtZu?=
+ =?us-ascii?Q?//66kAOGo96piVUC+RFovJjVQBho/hFa7AG0ZUBnNhreAC10CXke7Sh+tofz?=
+ =?us-ascii?Q?pqoi2xvxtEqcMZ7/lUceEsvguNCviBVo0eSat2wPywj2S51yDOBz9QErRs+e?=
+ =?us-ascii?Q?aVw/jNVVR1h9wrh225kP3sCXu8VAskxeoSV4yQJplj9WLcm9LANdmkXd5Yr7?=
+ =?us-ascii?Q?8dfbqq0Cu5brbRlQSksjwVsxrbsqo/F7CFmQxfsNKlNCz2caiJ8cjqF8ZV4J?=
+ =?us-ascii?Q?zBaxd9j3J+zITVBmuf6oiHjWlz5I+/Cf8HTTYWax2L4MLgKB7G0PpnHVMU2X?=
+ =?us-ascii?Q?JStnq0NCRt/5sS1tbZB/Dx1WgguuZcTfkHnwt27nZExixNWwPmaFVCzZwbnd?=
+ =?us-ascii?Q?FF7oAnNw8KcSAIbuBV8wHTLUM6zEaSPkb3lklV4e3TOENureotEXD886xoE8?=
+ =?us-ascii?Q?34IuzoUuPXmSgNImWotCHqSZqnthQiCVGL30ato3+OPgWVzuYpLufHZld0dU?=
+ =?us-ascii?Q?jkK9gZJdr0fnFMykCcdRofq+jnHz6B1+JMpMBjjDGM+e3k/yEmr7SF7tA1QY?=
+ =?us-ascii?Q?OksvR3Rhdi19vCzsD9nEaUTBWAJ6BMCN6/oE7Imlju3Z322+gv3VFU8AfaHj?=
+ =?us-ascii?Q?y2c26H73z/Qx98f47SgurD1cMmVd+9+g9zuif9ViSklwY1WiCANmfp5p6Xoy?=
+ =?us-ascii?Q?OUX5ltekI79zssKZ0vqUvEVg12W/RUSSPy0eM/7N5ahNtKX2GM0xCCxU9dcM?=
+ =?us-ascii?Q?hpVsmu1AkW93NI31eTRrdiBflJd8EQuUHU3tYNvtPtriIb0BPUEE8TtBI7cI?=
+ =?us-ascii?Q?d3cQxpO20iTMdeJOdSr56SGA4JJ9ghiHLwkgUBs6mSXv9wt49tt5a8dXBj84?=
+ =?us-ascii?Q?1cGI4/W/hDR/ug+UVYlq6P/Jj9AlgN4j101KZFnzkSJWnC+gFau2aWoGRtrA?=
+ =?us-ascii?Q?DWRCBNAZ+6W7ErxeJLNrK09ASCy9gLW61XCqlaETiYbbtj5RO6hHRFe53DRo?=
+ =?us-ascii?Q?3woXouYE7la4oislLgy47UuJXppHvqLjtcIs1dlhKHL0lcSwJ5eEubspjxz9?=
+ =?us-ascii?Q?MV9KuxPJozVQDKwK/Vtt+PqFCvPE3Mfbg89WmPgSX9CGytLB275jmZxqqoyi?=
+ =?us-ascii?Q?hKR3rzmr+XE4OVChR7wXboez9NIwutS6IOYqHGwv?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9900df42-11d1-42a3-9dee-08de07e24527
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2025 09:49:14.1275
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wBAwpfMfrPInpYYV+vunTSmsJJEiKey8ZOjfB5JZjzdOqIaqMAFGG3dWXLPheuD528CzvXdjRYYo6yJ3Sx2GEw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9958
 
-Hello Rain,
+ENETC_RXB_TRUESIZE indicates the size of half a page, but the page size
+is adjustable, for ARM64 platform, the PAGE_SIZE can be 4K, 16K and 64K,
+so a fixed value '2048' is not correct when the PAGE_SIZE is 16K or 64K.
 
-On Fri, 10 Oct 2025 17:14:52 +0800
-Rain Yang <jiyu.yang@oss.nxp.com> wrote:
+Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+ drivers/net/ethernet/freescale/enetc/enetc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> On Thu, Oct 09, 2025 at 05:23:20PM +0200, Boris Brezillon wrote:
-> >On Thu, 9 Oct 2025 23:06:17 +0800
-> >Rain Yang <jiyu.yang@oss.nxp.com> wrote:
-> >  
-> >> On Thu, Oct 09, 2025 at 04:09:29PM +0200, Boris Brezillon wrote:  
-> >> >On Thu, 9 Oct 2025 16:08:20 +0200
-> >> >Boris Brezillon <boris.brezillon@collabora.com> wrote:
-> >> >    
-> >> >> On Thu,  9 Oct 2025 22:00:39 +0800
-> >> >> Rain Yang <jiyu.yang@oss.nxp.com> wrote:
-> >> >>     
-> >> >> > From: Rain Yang <jiyu.yang@nxp.com>
-> >> >> > 
-> >> >> > Some platforms, such as i.MX95, utilize multiple power domains that need
-> >> >> > to be attached explicitly. This patch ensures that the driver properly
-> >> >> > attaches all available power domains using devm_pm_domain_attach_list().
-> >> >> > 
-> >> >> > Signed-off-by: Prabhu Sundararaj <prabhu.sundararaj@nxp.com>
-> >> >> > Signed-off-by: Rain Yang <jiyu.yang@nxp.com>
-> >> >> > ---
-> >> >> >  drivers/gpu/drm/panthor/panthor_device.c | 6 ++++++
-> >> >> >  drivers/gpu/drm/panthor/panthor_device.h | 2 ++
-> >> >> >  2 files changed, 8 insertions(+)
-> >> >> > 
-> >> >> > diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
-> >> >> > index f0b2da5b2b96..6f40d053b16c 100644
-> >> >> > --- a/drivers/gpu/drm/panthor/panthor_device.c
-> >> >> > +++ b/drivers/gpu/drm/panthor/panthor_device.c
-> >> >> > @@ -218,6 +218,12 @@ int panthor_device_init(struct panthor_device *ptdev)
-> >> >> >  	if (ret)
-> >> >> >  		return ret;
-> >> >> >  
-> >> >> > +	ret = devm_pm_domain_attach_list(ptdev->base.dev, NULL, &ptdev->pd_list);
-> >> >> > +	if (ret < 0) {
-> >> >> > +		drm_err(&ptdev->base, "attach power domains failed, ret=%d", ret);
-> >> >> > +		return ret;
-> >> >> > +	}
-> >> >> > +
-> >> >> >  	ret = panthor_devfreq_init(ptdev);
-> >> >> >  	if (ret)
-> >> >> >  		return ret;
-> >> >> > diff --git a/drivers/gpu/drm/panthor/panthor_device.h b/drivers/gpu/drm/panthor/panthor_device.h
-> >> >> > index 4fc7cf2aeed5..5ecb541ec67b 100644
-> >> >> > --- a/drivers/gpu/drm/panthor/panthor_device.h
-> >> >> > +++ b/drivers/gpu/drm/panthor/panthor_device.h
-> >> >> > @@ -196,6 +196,8 @@ struct panthor_device {
-> >> >> >  		/** @recovery_needed: True when a resume attempt failed. */
-> >> >> >  		atomic_t recovery_needed;
-> >> >> >  	} pm;      
-> >> >> 
-> >> >> Add a blank line here.
-> >> >>     
-> >> >> > +	/** @pm: Power management related data. */    
-> >> >
-> >> >Also, the comment is wrong, and it would probably make sense to move
-> >> >that to the pm sub-struct since this is PM related.    
-> >> thanks, will fix it next version.  
-> >> >    
-> >> >> > +	struct dev_pm_domain_list  *pd_list;
-> >> >> >        
-> >> >> 
-> >> >> Do we even need to keep the pd_list in panthor_device if we don't do
-> >> >> anything with it?    
-> >> The second power domain is typically used for frequency scaling. The driver
-> >> works fine when there's only one single power domain. That said, I will update
-> >> the implementation to attach multiple power domains only when the domain count
-> >> is greater than one.  
-> >
-> >That's not what I meant. What I mean is that the
-> >panthor_device::pd_list is never used, because the extra power domains
-> >get attached to the struct device directly, and the PM core
-> >automatically enables all PDs on resume and disable them on suspend.
-> >Because it's a devm_ function, you don't need it to detach the pd_list
-> >at ::remove() time either. TLDR; that means you can pass
-> >devm_pm_domain_attach_list() a local pd_list instead of ptdev->pd_list
-> >and you can thus drop panthor_device::pd_list altogether, I think.
-> >
-> >If you intend to use the pd_list for manual PD control in panthor in a
-> >follow-up patchset, this should be mentioned in the commit message.  
-> thanks for your suggestion, pd_list will be allocated by devm_kmalloc.
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+index 0ec010a7d640..f279fa597991 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -76,7 +76,7 @@ struct enetc_lso_t {
+ #define ENETC_LSO_MAX_DATA_LEN		SZ_256K
+ 
+ #define ENETC_RX_MAXFRM_SIZE	ENETC_MAC_MAXFRM_SIZE
+-#define ENETC_RXB_TRUESIZE	2048 /* PAGE_SIZE >> 1 */
++#define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
+ #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if needed */
+ #define ENETC_RXB_DMA_SIZE	\
+ 	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
+-- 
+2.34.1
 
-There's no extra allocation needed. Just do:
-
-	struct dev_pm_domain_list  *pd_list;
-
-	...
-	
-	ret = devm_pm_domain_attach_list(ptdev->base.dev, NULL, &pd_list);
-	if (ret < 0) {
-		drm_err(&ptdev->base, "attach power domains failed, ret=%d", ret);
-		return ret;
-	}
-
-and that's it.
-
-> 
-> I have not found a general solution to modify the frequency via SCMI perf
-> and OPP framework except the manual PD control, I'd appreciate it if
-> there is any idea.
-
-What's the manual PD control you're talking about? I don't see
-anything using the pd_list in this patch. Is there another patchset
-on top of this one that you haven't posted yet? Dunno if that's of
-any help, but this patchset [1] might give you some ideas.
-
-Regards,
-
-Boris
-
-[1]https://lwn.net/Articles/1040831
