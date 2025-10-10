@@ -1,298 +1,184 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013066.outbound.protection.outlook.com [52.101.83.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9873236124
-	for <imx@lists.linux.dev>; Fri, 10 Oct 2025 14:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760105351; cv=none; b=UPcnr1EC+Y/6Cg8g5M+2f66iTmXJrLgvtQx4z26Q25Tuf03t+YZmR/Wft3cCpezKEzHHNt6VXgkoLQyVMkNlaD+c3/7/hjYQ1huk5EOsxZkf7e8WGu6+fCmm4jFsGLu3BiTS2m37a2tJTLAmBl+IvqnS5WHMzvDpBDLfTglZEqY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760105351; c=relaxed/simple;
-	bh=BVqR6BSVlRCmZYhYYZFBvrAOLZNktKtRyNOjkZoSw50=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t6o6O11u3l+RQExZ3iay4/+5dkvyyThtEGaqmOVmvnzoMoXEjMAqqOquvtBbpnsnl2aKkDCn8140xhFY5HuG2wCDYqNms5tVBo8JNLuvP9oeJYMrdUkDIgtosxxJV93Cks4q87xZ34oKLtW9Av8AhSkwRlgGuMSYkX3AP1QG5h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YtCKZR/M; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EC836124
+	for <imx@lists.linux.dev>; Fri, 10 Oct 2025 14:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760105419; cv=fail; b=GhghIuowK7VOMMGWut6IrESeK7DJEZ/rrkJ+GBOIAE4OCoDOyxuqjQt10z8QvSuHPRjUFR0dQwAixa9iBhPNlUGOW5j/zdaGoGIycdGKrmGWfs55w8T2QlPYwXMzPblB1p5HE+nU4YmI2kAgyXM0l3ZU0JfXKM638shZ3lZlMMA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760105419; c=relaxed/simple;
+	bh=Ao1JWBrBIO2Thkxp3Yh0oLmsthDuVDUMCUvWZEMsiEA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=EeE1SNkE7LeD6QSY29ricbXpz1R/ktPCj3eV+vMEQlSyrMYq2aHFBMwNRiJR/peevHGY7Mh5CweCoOpHO4EPtjMf6zW7QER7MbF96oJeFpp8+Q+BVkeOsDnlsM4sNv2hfQRGgNOd3Imy0GCfYjclWZUm7CLfhd8qbHd1WmmFr8g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nBW9VtQ1; arc=fail smtp.client-ip=52.101.83.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YtCKZR/M"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59A6Whfh002465
-	for <imx@lists.linux.dev>; Fri, 10 Oct 2025 14:09:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=7wkzrxKudGSviXsY/mtwV95A
-	pO2/F8bqxrMw6rKRUQs=; b=YtCKZR/MKHgtOZi6vcOxpQ3qKxJqn0UgdFTNCXsI
-	sJVqDaRakSag7bU65LgFJK+ZEtLghWpshoZQpGdcZbfU69ysSXSVY6nMYoup7qmn
-	/S69nHAvpHOe+A8qTrFDRHds8Q2JVhmmPdI4LK7R7iLVuFXUhxD0dtlC2opfsn6f
-	CiCfBvQ5lcF+SNXOiycOUAV0cDzWQGeUdCd1qpJ6PjWBMQVSLtJ1NZBmDu+ihbeB
-	2JvToGRINChtwlpNekLtlqubx4oYd1oDeBN5FvHJ02rIK8AadmMX7M1YJz9aigBp
-	U9tuzgu13YAiJua6n3sRGlt4YTW02NVsgH9Hf0qjdcTaJg==
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49pgdsu3v5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Fri, 10 Oct 2025 14:09:08 +0000 (GMT)
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-761169b7f11so4856465a34.3
-        for <imx@lists.linux.dev>; Fri, 10 Oct 2025 07:09:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760105347; x=1760710147;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7wkzrxKudGSviXsY/mtwV95ApO2/F8bqxrMw6rKRUQs=;
-        b=u/+yRlyIuxyEiICjqVUt2G1a8D7HZ1mDDGpSj3hRYAhKl+0b75MD6k7wkIcMDyKR3C
-         QTK0x9Hq3r62p+Y43z3tCyi3v7kBQAI+sAPKIt2w8erZZWhzY0qnAf+g7Ll2FXSBEqqD
-         3sPFu758xesA3xczpXIbRnLSqcLRQafb210y6D9dd655s/kjOUTEEo5Ry9qn1S6FJIOD
-         Vr1w+GAJ8CIWND4yZBhUQv7b2vbH5o2VemzADUtHP/rzqxV/vKqjDzHluDOtd9WllVq2
-         qXSyW4xgQeXsjgytn8OizhIsf0nNZXjIjG/NBdOugBWpGz9Y79ZmsP80RIiNK0Es6/Ql
-         n2Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCUXKwtqoLLEp+mmKhQ0inHMpYgIwW6Q/Z/gLl2jXd+beU2n2F9zaPLhMIBPY7pNGXyoDmc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxhwSojFJqpelaggIfIyM8Yb7VQta0TEU8VHG+oLWkvg+xPlmCO
-	61RETWbw/hC9T3SenehRwcVdDOew+nFJoOojVCVqDCt1bBXVkafdAMwufXKZNfXhXOXwj3uT7iY
-	GDVeyyn7gIAP5IJ1kk2r0oxBwy/wLilFnglfXzFyFomfoB4cArumnIk0=
-X-Gm-Gg: ASbGncvgzdBrGLnARxUJpNSc839rRM93Oo3/GCAAD+k+PtZT4mijgokznkz1A9peIZu
-	HZKx6cvBp7idDy/AJ1yEc3Xdwh+6oxqaMg7cNIRY2VwlU0/GFDxYy4VL2inBPdeHPTfP1dvckhK
-	V4Qf2/Cvf0w/IGGfBbYl+2g9VmCZEbh93qJkgQMKCDm783pOVvTsQSEA02eiV6gljs12758s0g7
-	QnUoFH3bs26Kl9HK+Ff1952qpDZBqRFH51nILtRVMF/hIRRuIObg8If1stJoinUcntJBio1uAFm
-	k8rJvDck+awNBvJK137ehjncaa3+GBotR83kfb2/cXmAzeV/IgV4C9hIvRSqOoMz7JOr8Y62Ijv
-	AA9L+mim9y0k23cX7OBnnSFo/OKomyo1QcFEwyYct2Bqr6g4j5rZm
-X-Received: by 2002:a05:6a20:12cc:b0:2ff:3752:8375 with SMTP id adf61e73a8af0-32da845f843mr16839518637.45.1760104966431;
-        Fri, 10 Oct 2025 07:02:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGx6lmwhdGB5tiz/Bc58mePgSBZ2wqdgFCoifjtltdKT0RsIy6in4D98ACg4FIrT0oC09J4cw==
-X-Received: by 2002:a05:6a20:12cc:b0:2ff:3752:8375 with SMTP id adf61e73a8af0-32da845f843mr16839190637.45.1760104964177;
-        Fri, 10 Oct 2025 07:02:44 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-590881e4de3sm909304e87.1.2025.10.10.07.02.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 07:02:41 -0700 (PDT)
-Date: Fri, 10 Oct 2025 17:02:39 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Damon Ding <damon.ding@rock-chips.com>
-Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
-        neil.armstrong@linaro.org, rfoss@kernel.org,
-        Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
-        jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
-        mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-        simona@ffwll.ch, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        kernel@pengutronix.de, festevam@gmail.com, inki.dae@samsung.com,
-        sw0312.kim@samsung.com, kyungmin.park@samsung.com, krzk@kernel.org,
-        alim.akhtar@samsung.com, jingoohan1@gmail.com, p.zabel@pengutronix.de,
-        hjc@rock-chips.com, heiko@sntech.de, andy.yan@rock-chips.com,
-        dianders@chromium.org, m.szyprowski@samsung.com, jani.nikula@intel.com,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH v6 11/18] drm/display: bridge_connector: Ensure last
- bridge determines EDID/modes detection capabilities
-Message-ID: <dkblceiweall37j4anpgkumizxc5zni3axnxb5hyokv2jlsta5@immpjaczktnh>
-References: <20250930090920.131094-1-damon.ding@rock-chips.com>
- <20250930090920.131094-12-damon.ding@rock-chips.com>
- <20251001180922.6bbe42ac@booty>
- <a42ebdca-1cbc-498c-b859-336557823f26@rock-chips.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nBW9VtQ1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AlxzFMUPjA1KOcJCBhhMDrae1ZATd/PgZiNO6DVOeZDrq1PeIMceiHDs7pnt7YmrbPLuhioP4YTW0tUDYczNZ7w4TcnHbeaovVhvOK9cglAvPFBjnuc3n9XBiplFwpBaIlAgSg2wgObhscsLw0D3GCP5kBNYrUJp1cFbuk8bthLkoJPrzYJMWy5XsbnRJKxtN2Oxnu18FlXOtkqtc8qgMwoyZUiv7mbaxE7ujEJ+rTR2hWwUxia2mM72V5eUgEq7rplLiGLGPtzb85KZWaFdwdc1h6QLlU8xDAMkWWHaJawi3sJmue/bOcRyxc7NNSs9NhfSJzJnEgdJ0EbxyJIhzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=l5fwsTxj/eiyJJDNNN6YdGThI8Hv0PoEjcAfKn3nC00=;
+ b=D9FUL/2bQKwl/mtdWA5rHMvhTNo1IZcpa+CIB6sLok0mCtzkOD0+L/DUSf/E+pDotfel1Ot+a8NPwKszo8EQGaCOKJ+6New9h/kCvIhSZEam+7cmPAfUc5zb+dKF/eUhy6d7h/KePWsb5CcaunKy03lgrAwM3I68Opo63E+MQ2HepDnhCDJeFJL0QIv+Sn8QJYZ1MFgQTM1DYZwW1yZEippeN2WgXasYCBv7oqXKX72a14b1CTmgrLkoFUHf38H68ah7qUOju5QT32pz5h7o/M5BTQRKmRgoSLW+oD3uHTlYeB7fy8wBUapZl8dW1AIV2FItAqJY2Nvxp8sNyHJpEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l5fwsTxj/eiyJJDNNN6YdGThI8Hv0PoEjcAfKn3nC00=;
+ b=nBW9VtQ1r2kBNHnXSWeZM2TfxuvcvD/jwgYGubhfFfpwcMiQLNUQdV0DHrN2Y7Q+7zQ36a9OQ8+Tv7HY4ukprJ6KBQguVD3ATh5X2nmLrDOL5q57PNK6A+8RI38eSWGytGwp2tq75rTVeMwN0BuMqAjgONzxmmsPBsMwA/BGKdiG9JYQ1x6cKOXcN90Zg72juaoXaVONqmEDmQtF2BmHKYM3vjtxFfKYaPqQpZSEw/opIN9jSjMqOeKaIrsNSf6H1pv1rLExmnpFiNzn64vmyEyKze5DuhxNiIlZtx/C2F9qFLl54qP+bs0dt5zSmbr2uvLvz+3ezfz2ccvMNKbFTQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by AS8PR04MB7671.eurprd04.prod.outlook.com (2603:10a6:20b:299::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.10; Fri, 10 Oct
+ 2025 14:10:14 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9203.007; Fri, 10 Oct 2025
+ 14:10:14 +0000
+Date: Fri, 10 Oct 2025 10:10:07 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Zhen Ni <zhen.ni@easystack.cn>
+Cc: vkoul@kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] dmaengine: fsl-edma: Fix clk leak on
+ alloc_chan_resources failure
+Message-ID: <aOkTv4Q2bwbOazwH@lizhi-Precision-Tower-5810>
+References: <20251010090257.212694-1-zhen.ni@easystack.cn>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251010090257.212694-1-zhen.ni@easystack.cn>
+X-ClientProxiedBy: PH5P220CA0010.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:34a::13) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a42ebdca-1cbc-498c-b859-336557823f26@rock-chips.com>
-X-Proofpoint-ORIG-GUID: 8BeMV7eDvyRDWf-EF-RxFqUlQl4GCgpQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA5MDA5OCBTYWx0ZWRfX4LJW26RVpwlA
- 9UE8hvwX0X5uQrNnJryHCXbRI/MLagybpztcYtOBwUB4y9kJJGHNZtK65Q4BfsWUKpxkRbwfL+F
- 7N8rcTTsGoNEjV8yIbfKrj19/Ion5D4XIdGRyGDpLII4rywJDRL8ffyNZxcuzf3ZCGlzuVAgsmA
- /HTVE9h5eHOZuxzY+PwcQZEsNHNhhSB1sp/1vx99eYDFIt9iDP8E0oOfqdh/tXRI+XA6HX7MJ4g
- tc3qtZ5OBf4E0oG0tUKf9raOrfZf9vf+ij91M/qhALnP9I8e3l86cpJNV+mC96EuRnOfBcOiy6A
- WhHa/1G5zJRX6L1yosTAzKSbQ7GgJprugwanzwqyzluc9qSTqOREDLowP1Y0DAK8t0OR/0I7H47
- ZgVfc0Ahh+5JEXT808t5/uX2uWwSdw==
-X-Authority-Analysis: v=2.4 cv=DISCIiNb c=1 sm=1 tr=0 ts=68e91384 cx=c_pps
- a=+3WqYijBVYhDct2f5Fivkw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=P-IC7800AAAA:8 a=s8YR1HE3AAAA:8
- a=Y6CNJq9B8L7KKZcxe68A:9 a=CjuIK1q_8ugA:10 a=eYe2g0i6gJ5uXG_o6N4q:22
- a=d3PnA9EDa4IxuAV0gXij:22 a=jGH_LyMDp9YhSvY-UuyI:22
-X-Proofpoint-GUID: 8BeMV7eDvyRDWf-EF-RxFqUlQl4GCgpQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-10_03,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 malwarescore=0 spamscore=0 clxscore=1015
- priorityscore=1501 suspectscore=0 phishscore=0 impostorscore=0 adultscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
- definitions=main-2510090098
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS8PR04MB7671:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5463f3f5-f97f-4787-30af-08de0806bb38
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|376014|52116014|1800799024|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qk/AuM5BEeqyXiAYW6tC8NlYUV97YaNyezqLqJ9nDTrTT/2wAVQhsNrPWhMg?=
+ =?us-ascii?Q?OXhhKCHjGcM2O+RNK4/CH+hR24/BlAbBaXdheGrRmx/gv2Ul3e7uaD1OyJBq?=
+ =?us-ascii?Q?fPHmnb0lkDcumN5RzNbCXIUg1bS3y/2G/6xjQSC1HqnPM5ZRsahoAEESDuZP?=
+ =?us-ascii?Q?hAwZ5doDDd+xihFVXG19vJD+Qn9wBL3hHVrOvdTqKtIrvkvVCV29EqRkhgYX?=
+ =?us-ascii?Q?3kQuSWjH4cNV6Stx+JnZyQ05quwDRoz7TilIX3/z9VWVjZ8Ca/hFz4niUKFe?=
+ =?us-ascii?Q?d4EFXJweD6xH0Yr8RPUETq1mAbsX/IAo45fz12k+8taoexCPmA60gHRUwvrW?=
+ =?us-ascii?Q?ZLUHd1BAPOR2jvCOzm86vdIpRCcwbS0c49u0JpxRC79e7WZr/jLx5t4x5LSF?=
+ =?us-ascii?Q?nX4WhtPTUrN/H2afqaI6EiJYrV7a+v/YL8bexCO1h3p1r52I6JYAwYO8GvyZ?=
+ =?us-ascii?Q?UgYiEtxs1JmfMo/jZh3iuOxenuWVSDYzJeEAmWB5nd6RyMlV6niPs1SJsq73?=
+ =?us-ascii?Q?QmC/GEGaqwbk6f3GSeIocpNxSCab306WMpaGw0nG84irgT14Aku4sasmx1El?=
+ =?us-ascii?Q?m6BY9CsYRcUFbFJktam1dFCIXmWP172PCp91Grijda/Zu5ZGQaw+P7Gvh1RL?=
+ =?us-ascii?Q?jm/WgLGhjBoM7wmGUTd7TLjzcRDOPVTScx9zmc9TW+lfS4ysWy7stXd/F9uA?=
+ =?us-ascii?Q?tstMjVTblghLazs/oZnw6dTIVa1ymV1d7L4xmvuKSiT11xYOJuU4n6LZ/4fs?=
+ =?us-ascii?Q?bgM2NbpXe0LX1KnQJV5xGvpZ1BEUpfLtPyyI0rz0YiHDDRDGOgz/R7D4cMPO?=
+ =?us-ascii?Q?S00WNYxiuQb/uIH9zcI0RWt60nExSnGYGYtPPJ+E56qbTca6RQq8CQzu7YgY?=
+ =?us-ascii?Q?uuEKzalzuZwPlJJyj1qDSt/H4gQa2LgRrB2Qx9GNmnllsGUK2mPhJEuS5Lit?=
+ =?us-ascii?Q?LBNAc/BOgHMw+U01d1MOxeWT9zeizOejs+WFr8sLj3fCcpYh7QpVmsyPoe2/?=
+ =?us-ascii?Q?Quh9qOhtEbUmXagrFlgkQou3xaao4KyaDld1Mnrpint7U0IgE3KqspNpXJxQ?=
+ =?us-ascii?Q?kH8IsJ50rXAYcKJYFtiQrxJHK8lLcUIC+XKHRMR2qCYJIsYtXkkIyiMKMjQN?=
+ =?us-ascii?Q?paKp6Ct91oNDaP3SRVbOyJoq1BqNw94WXk5D3isyGFfwBqgUCa/aMd9LHgAQ?=
+ =?us-ascii?Q?wz/BxEbxN5+fV5IZ6oc2r5itbRBPJRGg+PDvpdBJlZCBHS1uCOSo5PKbn5wJ?=
+ =?us-ascii?Q?BCcxIieacRdNHzfqB2Q8HSucDa+T6mRIYswcxGS2wJPSBQtnkZP1WeNFhaef?=
+ =?us-ascii?Q?tcl2gyI4Xu2IhsEg8UgvL8Qq1bYsC9al1XWHEAkQ45uqZJ2Z8FVbF2GMF456?=
+ =?us-ascii?Q?SgFg/RMtjkfoGPVhstEmWID04H+vnEKKGo6RumhPv+NiN49WMuRv8CVv74Ov?=
+ =?us-ascii?Q?YFAlttIf4grtfsmsplpBShFzkhMo0aAEsVI0eObrbTQGFmk2oDuR1trATlto?=
+ =?us-ascii?Q?dldvlN94t1s59qnoehL/kXdOieVERUO20fo7?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(52116014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?t/fDe9NMu9GmxS1TT6/L07iRthw9fCcne48v0qNQwInIR25RYVJdL11bNOvL?=
+ =?us-ascii?Q?F0o7s7yqxf058vXHMlYWModcrZLO1r1y+puOz/K9QsRbXYFqZcq8kTAr8a8A?=
+ =?us-ascii?Q?S705TXXrVGiU0nAU1utkH8Jr8rm5KDj0760yUZDa2tRi2Q/KT6KXcHvDiZNt?=
+ =?us-ascii?Q?0vY/7/o+xUPE+kwsXHOfxOW21ddvCOP04MDkZkwJ2SL+Q2RyBsLNsl9hm315?=
+ =?us-ascii?Q?iQm6o6VlFPWTrQalgKKBPUrOUyBFrVKN5vU9dTQbuVD+KFGFNL5sUKgsx1fE?=
+ =?us-ascii?Q?AWAOM8IPSQh3KW2p6uePceYgkT5kQjGMq9jUQQuxSa2fir4Prksui4Z3pod7?=
+ =?us-ascii?Q?4NE1ZWGqgs57ddHU23JVaFzVvBlFhbFbTNCJZTxLgZxEpZPot9wsUBZ4olc0?=
+ =?us-ascii?Q?/RcYeoXVRi+VoN6nzMeCt25c5TZWCBSkYF1WJ0djy7WSdD2KVUlc49q9CWHq?=
+ =?us-ascii?Q?+xoWpAa80k62+Rv4zqgHvmbj/rDUGcjjx0Kdkjxv4qBZ0O61fn1T8VuuvBS2?=
+ =?us-ascii?Q?opTR37lGmtUs0YpZlzfVN2yA9cSG9jUYewauPmRoPdpIqTZulCdfX4OBIOy/?=
+ =?us-ascii?Q?UvgropIlWjSiUXP7kMgXQsG9GpYWFF9qryRc2eSMQ+knOWkEWKqDPag7u9bg?=
+ =?us-ascii?Q?tlXlR3IIlJlspb7BDbrwmbT7q39oNeEd56UFl1M6NsmqtTk3pXN6I0OgWlH3?=
+ =?us-ascii?Q?q5hnEOCI7oD0rMNTZPk29r/Z90cji9IW/MuI1GUzsj3fgz6Zs/6fSqMDb5nX?=
+ =?us-ascii?Q?QyrqVOFG0OXkCoOIWFzijQ2gK0FumLINcq2MJ9A9biBtQxAvQq115mB39ax4?=
+ =?us-ascii?Q?7zuV0d1HpwSMmkdaiiS5r4a4GAcwo3PGVsInbeqYu0twNnzejWgjXQwHnf9X?=
+ =?us-ascii?Q?Ky/ubbma8d+ecRPm1Qrc31VNV/ru6IAabg2vmR7MvutBw+7IKC+gDWDaQLLO?=
+ =?us-ascii?Q?Bl0MG4C2K9nHGZOoULSua368qVvySsgLau0nIYC3Eb0q37C/S9lBFwpPnyFZ?=
+ =?us-ascii?Q?CbfBs2FKqQWHRh5KrZyp0P57ufQ98SQMGyPhR/CSlU7+tX4+wKUubHVMVvV1?=
+ =?us-ascii?Q?dgDSA02hxlXL/GhXrRsLo5HQzAY1C6Dg4BCN58+HYLoh7Dyfe+PZBnWqINlm?=
+ =?us-ascii?Q?2Et3ysIVv7VAWkQVrljK19XOo9R36g0ri8SoNoIfqNok3/57ib1foxQDyB48?=
+ =?us-ascii?Q?ettAb6q4rDyiZ2d6TMgMptJVHasaNllF4FGOmRwAzL6yqnltoZnRFZ2G8Eyv?=
+ =?us-ascii?Q?5xxY7Z8FMoRuKYHixj6qY4Fib+afsh9XojDFdWWsRTWRPZmqI18QyUYQC8EY?=
+ =?us-ascii?Q?SnNq4E45tBV3l0PRt+S2wXMv/eCTMC5uD0MMrBp2tHtwuZxcwDFtflsaLkcN?=
+ =?us-ascii?Q?FElk3tGl/QNPza3WMEEiVj2F1xJXFVe9MRyL2Bj39K8MUQ+Y0dGF9MHsJfsg?=
+ =?us-ascii?Q?GLxmSxcBNA4V+ocTrs35jRltlJ6yV8re5ZRoz5k3Bkt9SljTUol1yeJN0ztD?=
+ =?us-ascii?Q?Gx/Bz0pyBpIHaFZONgxD6IwwvN4Aisd+ipZ0LrJm+E/2WQihdQw552fxzThf?=
+ =?us-ascii?Q?rCqmAZfoAHSuXk74MCD/MS+SpmdUyJFGZ2M1l8tg?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5463f3f5-f97f-4787-30af-08de0806bb38
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2025 14:10:14.0473
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QG71FPXQ9J14Ou2x6O2aDtUooLTunfZpXgqZ+fBCEA2mX7x8osGo+g8lvQ1ghNUl0U3vbIEg5CzNHKPTSSQSxw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7671
 
-On Thu, Oct 09, 2025 at 12:10:42PM +0800, Damon Ding wrote:
-> Hi Luca,
-> 
-> On 10/2/2025 12:09 AM, Luca Ceresoli wrote:
-> > Hello Damon,
-> > 
-> > On Tue, 30 Sep 2025 17:09:13 +0800
-> > Damon Ding <damon.ding@rock-chips.com> wrote:
-> > 
-> > > When multiple bridges are present, EDID detection capability
-> > > (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
-> > > (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities are
-> > > determined by the last bridge in the chain, we handle three cases:
-> > > 
-> > > Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
-> > >   - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
-> > >     &drm_bridge_connector.bridge_edid to NULL and set
-> > >     &drm_bridge_connector.bridge_modes to the later bridge.
-> > >   - Ensure modes detection capability of the later bridge will not
-> > >     be ignored.
-> > > 
-> > > Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
-> > >   - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
-> > >     &drm_bridge_connector.bridge_modes to NULL and set
-> > >     &drm_bridge_connector.bridge_edid to the later bridge.
-> > >   - Although EDID detection capability has higher priority, this
-> > >     operation is for balance and makes sense.
-> > > 
-> > > Case 3: the later bridge declares both of them
-> > >   - Assign later bridge as &drm_bridge_connector.bridge_edid and
-> > >     and &drm_bridge_connector.bridge_modes to this bridge.
-> > >   - Just leave transfer of these two capabilities as before.
-> > 
-> > I think the whole explanation can be more concisely rewritten as:
-> > 
-> > If the later bridge declares OP_EDID, OP_MODES or both, then both
-> > .bridge_modes and .bridge_edid should be set to NULL (if any was set
-> > from a previous bridge), and then .bridge_modes and/or .bridge_edid be
-> > set to the later bridge as is done already.
-> > 
-> > Does this look correct (i.e. does it convey the same meaning)?
-> > 
-> > > --- a/drivers/gpu/drm/display/drm_bridge_connector.c
-> > > +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
-> > > @@ -640,6 +640,7 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
-> > >   	struct drm_connector *connector;
-> > >   	struct i2c_adapter *ddc = NULL;
-> > >   	struct drm_bridge *bridge, *panel_bridge = NULL;
-> > > +	struct drm_bridge *pre_bridge_edid, *pre_bridge_modes;
-> > >   	unsigned int supported_formats = BIT(HDMI_COLORSPACE_RGB);
-> > >   	unsigned int max_bpc = 8;
-> > >   	bool support_hdcp = false;
-> > > @@ -668,6 +669,9 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
-> > >   	 */
-> > >   	connector_type = DRM_MODE_CONNECTOR_Unknown;
-> > >   	drm_for_each_bridge_in_chain(encoder, bridge) {
-> > > +		pre_bridge_edid = bridge_connector->bridge_edid;
-> > > +		pre_bridge_modes = bridge_connector->bridge_modes;
-> > > +
-> > >   		if (!bridge->interlace_allowed)
-> > >   			connector->interlace_allowed = false;
-> > >   		if (!bridge->ycbcr_420_allowed)
-> > > @@ -681,6 +685,44 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
-> > >   			bridge_connector->bridge_detect = bridge;
-> > >   		if (bridge->ops & DRM_BRIDGE_OP_MODES)
-> > >   			bridge_connector->bridge_modes = bridge;
-> > > +
-> > > +		/*
-> > > +		 * When multiple bridges are present, EDID detection capability
-> > > +		 * (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
-> > > +		 * (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities
-> > > +		 * are determined by the last bridge in the chain, we handle
-> > > +		 * three cases:
-> > > +		 *
-> > > +		 * Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
-> > > +		 *  - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
-> > > +		 *    &drm_bridge_connector.bridge_edid to NULL and set
-> > > +		 *    &drm_bridge_connector.bridge_modes to the later bridge.
-> > > +		 *  - Ensure modes detection capability of the later bridge
-> > > +		 *    will not be ignored.
-> > > +		 *
-> > > +		 * Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
-> > > +		 *  - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
-> > > +		 *    &drm_bridge_connector.bridge_modes to NULL and set
-> > > +		 *    &drm_bridge_connector.bridge_edid to the later bridge.
-> > > +		 *  - Although EDID detection capability has higher priority,
-> > > +		 *    this operation is for balance and makes sense.
-> > > +		 *
-> > > +		 * Case 3: the later bridge declares both of them
-> > > +		 *  - Assign later bridge as &drm_bridge_connector.bridge_edid
-> > > +		 *    and &drm_bridge_connector.bridge_modes to this bridge.
-> > > +		 *  - Just leave transfer of these two capabilities as before.
-> > > +		 */
-> > > +		if (bridge->ops & DRM_BRIDGE_OP_EDID &&
-> > > +		    !(bridge->ops & DRM_BRIDGE_OP_MODES)) {
-> > > +			if (pre_bridge_modes)
-> > > +				bridge_connector->bridge_modes = NULL;
-> > > +		}
-> > > +		if (bridge->ops & DRM_BRIDGE_OP_MODES &&
-> > > +		    !(bridge->ops & DRM_BRIDGE_OP_EDID)) {
-> > > +			if (pre_bridge_edid)
-> > > +				bridge_connector->bridge_edid = NULL;
-> > > +		}
-> > > +
-> > 
-> > If the above rewrite is correct, then I think this patch can be
-> > rewritten in a simple way (build tested only):
-> > 
-> > diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu/drm/display/drm_bridge_connector.c
-> > index a5bdd6c10643..bd5dbafe88bc 100644
-> > --- a/drivers/gpu/drm/display/drm_bridge_connector.c
-> > +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
-> > @@ -672,14 +672,18 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
-> >                  if (!bridge->ycbcr_420_allowed)
-> >                          connector->ycbcr_420_allowed = false;
-> > -               if (bridge->ops & DRM_BRIDGE_OP_EDID)
-> > -                       bridge_connector->bridge_edid = bridge;
-> > +               if (bridge->ops & DRM_BRIDGE_OP_EDID || bridge->ops & DRM_BRIDGE_OP_MODES) {
-> > +                       bridge_connector->bridge_edid = NULL;
-> > +                       bridge_connector->bridge_modes = NULL;
-> > +                       if (bridge->ops & DRM_BRIDGE_OP_EDID)
-> > +                               bridge_connector->bridge_edid = bridge;
-> > +                       if (bridge->ops & DRM_BRIDGE_OP_MODES)
-> > +                               bridge_connector->bridge_modes = bridge;
-> > +               }
-> >                  if (bridge->ops & DRM_BRIDGE_OP_HPD)
-> >                          bridge_connector->bridge_hpd = bridge;
-> >                  if (bridge->ops & DRM_BRIDGE_OP_DETECT)
-> >                          bridge_connector->bridge_detect = bridge;
-> > -               if (bridge->ops & DRM_BRIDGE_OP_MODES)
-> > -                       bridge_connector->bridge_modes = bridge;
-> >                  if (bridge->ops & DRM_BRIDGE_OP_HDMI) {
-> >                          if (bridge_connector->bridge_hdmi)
-> >                                  return ERR_PTR(-EBUSY);
-> > 
-> 
-> Yes, this is correct and maintains functional equivalence with the previous
-> implementation.
-> 
-> I previously attempted to implement this feature by modifying the logic in
-> this section. However, that approach would obscure the explicit propagation
-> semantics of the bridge chain flags (OP_EDID/OP_HPD/OP_DETECT/OP_MODES).
-> Therefore, I finally decided to implemented it as a specific check after
-> this code block.
-> 
-> Dmitry, what's your take on this?
+On Fri, Oct 10, 2025 at 05:02:57PM +0800, Zhen Ni wrote:
+> When fsl_edma_alloc_chan_resources() fails after clk_prepare_enable(),
+> the error paths only free IRQs and destroy the TCD pool, but forget to
+> call clk_disable_unprepare(). This causes the channel clock to remain
+> enabled, leaking power and resources.
+>
+> Fix it by disabling the channel clock in the error unwind path.
+>
+> Fixes: d8d4355861d8 ("dmaengine: fsl-edma: add i.MX8ULP edma support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+> ---
+>  drivers/dma/fsl-edma-common.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+> index 4976d7dde080..bd673f08f610 100644
+> --- a/drivers/dma/fsl-edma-common.c
+> +++ b/drivers/dma/fsl-edma-common.c
+> @@ -852,6 +852,8 @@ int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
+>  		free_irq(fsl_chan->txirq, fsl_chan);
+>  err_txirq:
+>  	dma_pool_destroy(fsl_chan->tcd_pool);
+> +	if (fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_HAS_CHCLK)
+> +		clk_disable_unprepare(fsl_chan->clk);
 
-I think I prefer Luca's code, it is simpler and easier to understand. It
-doesn't need a huge comment, something like "leave the last bridge which
-provides either OP_EDID or OP_MODES" should be enough.
+Thank you for your fix. clk API do nothing when input is NULL.
 
-> 
-> > Another thing to note is that this patch conflicts with [0], which I
-> > plan to apply in the next few days. The two patches are orthogonal but
-> > they insist on the same lines (those assigning
-> > bridge_connector->bridge_* = bridge). Not a big deal, whichever patch
-> > comes later will be easily adapted. Just wanted to ensure you are aware.
-> > 
-> > [0] https://lore.kernel.org/all/20250926-drm-bridge-alloc-getput-bridge-connector-v2-1-138b4bb70576@bootlin.com/
-> > 
-> 
-> This is indeed a clever approach to the managing bridge resource cleanup in
-> drm_bridge_connector. Thanks a lot for the heads-up! I'll resolve this
-> conflict and rebase the patch series.
-> 
-> Apologies for the delayed reply as I was on vacation. ;-)
-> 
-> Best regards,
-> Damon
-> 
+So check if (fsl_edma_drvflags(fsl_chan) & FSL_EDMA_DRV_HAS_CHCLK) is
+reduntante.
 
--- 
-With best wishes
-Dmitry
+I saw existed code have such check. You can clean up it.
+
+Only need keep check at probe()
+ fsl_chan->clk = devm_clk_get_enabled()
+
+Frank
+>
+>  	return ret;
+>  }
+> --
+> 2.20.1
+>
