@@ -1,56 +1,53 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAB127F195
-	for <imx@lists.linux.dev>; Sat, 11 Oct 2025 17:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5F727FB2E
+	for <imx@lists.linux.dev>; Sat, 11 Oct 2025 17:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760202189; cv=none; b=UpJUN9AcLDuseBV9RRmN/ov+H6Wn1SjL+yrSaWKvhPV7BwvnijjrAJD0BnyBR2vyL1Cs1t5ihpyPnup+0mAjdnSvjh6YdCZSXUFU5P/uQj5rOXA9uKvCrgj4FskigBf6snG/Re/sMftUasuABeM8/rhwHMGHerf1gCgrCcFiczE=
+	t=1760202190; cv=none; b=ZQ32CV/TT708PwQfXxz1vG4dwP5yfRWZwaBYdir7KrHnYh4EQHDhENzintLjKN49v7PAM9PfNNdbmoCFBMrtH1NLFhepyurCcRzgi7RHLMZg6ylN88YA5zmhjIFTkgCI+FGXDd6wC2DEvpFH64tCATMrca3+sIAk3p51w9j+dIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760202189; c=relaxed/simple;
-	bh=HPn2sO8LGJYLy+mIsvOzYw4mfFxDCOrQ4/dV9RwQ2lI=;
+	s=arc-20240116; t=1760202190; c=relaxed/simple;
+	bh=yJmIjQGyfvga55orYafriAKH/g6XNUUlIBBnGj94e1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOvC+uP1xVUm+8ofcsei3es/Hgcf3PZ92Irc/tzCjAiz109BZILz6fuYhEGd7HK8u1cvvcNJxBYBgRcSERcbLlt9c/LpPgwQCGZ2bCVm++VV+MFTNe2bGswYHWTtxDiNMt5Hz6SQO6mlt9pSCmEsBziTkupNfDls5bJImk5I4dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=XT+fK0jV; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=EPBZMZkf; arc=none smtp.client-ip=80.241.56.152
+	 MIME-Version; b=dbDutj29C+gxViX/1pclmEbPLShOHB+ZCmYYgCEgQY7fHxAAGLqWlrSK/1hk692PQgERzC3LwQWqJQ33p0k2LN1czpq7i3m5XTexYKqDiNw2sneSdC8im4Nm/2s4PEdAKmOH+KiNoarpSVta7aXfYc6B/cSixyjW/rXzdvLM1YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=c60H68j8; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=IoylzJtJ; arc=none smtp.client-ip=80.241.56.151
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="XT+fK0jV";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="EPBZMZkf"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="c60H68j8";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="IoylzJtJ"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4ckVKs6YN1z9tX0;
-	Sat, 11 Oct 2025 19:02:57 +0200 (CEST)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4ckVL25NMQz9svm;
+	Sat, 11 Oct 2025 19:03:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760202177;
+	t=1760202186;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YeJ3480foHs4P/4QH2kuvmYbUusLrT5/lA1r++dUvvU=;
-	b=XT+fK0jV5U0dn2TRnz3k/jWoqUoNfUnJ0nGRVgqqYK3uE2VeUjM7SuvRKxQlBvO/jCUFr8
-	yAc/1FU+TmSVbGPqEK950D73TNrOEJ0x7y5M4Nb5W5s3vGveKAd4kIKDg2jxCc1xT0m73B
-	54A1X9Q+MAhtWAxYAaxGlUI9w5GHkMb4lt/GnMlQ5XpscBHmCSQQPsNrBpIsy4PNVh2nWe
-	llC0ziT4dx5yglFqdvyDEv0XvPtJKPVXqVVtpZAAHs8Bf2NGAy5e/hoSnXmnIAgcOesvbE
-	KFcVm7DOijgsVz0MSvZh8Q+DHO6tr+o8dxTHz1lyiSdeKqLWq0iHyMq/TxaECQ==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=EPBZMZkf;
-	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
+	bh=pmtF7sr5VKHGaQnCr/8RpPbC8MxI/zKFym2ctoTYmv8=;
+	b=c60H68j8CLPjRm3JNtqEGHAzSm9WDeguj+ZdNECw+wst96nsyREzM75mfRZvdfrv4eSmVI
+	eZcfx48rza3WuO+7iGsmI8uhlvLY/jRRZm2tX368TQxMJ+HgoHEH9Uy1UioL+IrM3sks57
+	AluBtY5NGYcDLoHhnHbFiqBeRkJkEA3R4mpddZNaHN+ZnrStWW2y3PNZKp6kV219zCdDfy
+	jHzYxg4ESwtbkUBIktOtLYUcCqK3oEF6OlCBGoqksh/XD0wzhhsVD4F6Ds5d76OlloVSbm
+	qkaDu9DeTGd38q5EX/xUST8JdlVFG9mzr3JKrQUdh5YD8lCZuNZJ9ZYByh2ihw==
 From: Marek Vasut <marek.vasut@mailbox.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760202175;
+	t=1760202184;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YeJ3480foHs4P/4QH2kuvmYbUusLrT5/lA1r++dUvvU=;
-	b=EPBZMZkfGdt137DgmB9SHudd4z4syxJEmkRFWMYZhqRHYSqXRpIRz7+daVy+ChG6HCeKZa
-	nYafZ+e9C8gm82wOvf94eojMgx/CkGifw3w+3p8PWejEwofBkL6QvdNKzRfrnBBz4n5vC6
-	Wii0eeWk/V5R6ZzOFP+ttWBDGnfCQrwFzmoUU5cpn/r9bOJ8HUhvXyuvB9byp6PERuG68w
-	XEyxk2JWDnaslAkjIFkgF7pWOm3sn6XG5oJ6WGCL2PAASKcCo25/GXbZxpFW1NJj1TWF4b
-	jTAcN0lgzcZRragpfzB4B/EzAcFKTvLoXtDTes/FZMVWlmZWjKZWIdPAzM0/Gw==
+	bh=pmtF7sr5VKHGaQnCr/8RpPbC8MxI/zKFym2ctoTYmv8=;
+	b=IoylzJtJtbMJkBc/HlYKP5IEzrSZTySyIYZmsSYwJ7ALSM/1FY3x29CsJMmaNahHHwktP0
+	9hxrHePDaVE+CE9aENXvrcjK3XjjxGXn3NHmLnlYsqwQQwoA9NxPO+uHheBGUi+0I+wyZs
+	c+Iltd18UdSnZEGOIFBdsPvjg21NHu5Vr76OWGMLOTIUs8DBwmrDKvSvHuOz3+1X5Ant/p
+	XacxT0eYbEeHWBgo3HPAgw43/3US3Fp1dDG/Ac+zxrKurnDxeS7csk9Q8sUsMSHz4QuoRa
+	W0kD5OFsPirsFrkSzEIpAZBaUlOfzh4DuyYAFkd0gWFiidKJspOqqTF9GuJSnQ==
 To: dri-devel@lists.freedesktop.org
 Cc: Marek Vasut <marek.vasut@mailbox.org>,
 	Abel Vesa <abelvesa@kernel.org>,
@@ -69,9 +66,9 @@ Cc: Marek Vasut <marek.vasut@mailbox.org>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-clk@vger.kernel.org
-Subject: [PATCH 02/39] drm/imx: Add i.MX95 Display Controller DomainBlend
-Date: Sat, 11 Oct 2025 18:51:17 +0200
-Message-ID: <20251011170213.128907-3-marek.vasut@mailbox.org>
+Subject: [PATCH 05/39] drm/imx: dc: Rework dc_subdev_get_id() to drop ARRAY_SIZE() use
+Date: Sat, 11 Oct 2025 18:51:20 +0200
+Message-ID: <20251011170213.128907-6-marek.vasut@mailbox.org>
 In-Reply-To: <20251011170213.128907-1-marek.vasut@mailbox.org>
 References: <20251011170213.128907-1-marek.vasut@mailbox.org>
 Precedence: bulk
@@ -81,14 +78,13 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: fuzqd5nfnkzf88phuhdfdrktxttszs3z
-X-MBO-RS-ID: 4c2a417960d5f920dbd
-X-Rspamd-Queue-Id: 4ckVKs6YN1z9tX0
+X-MBO-RS-ID: 13b9dfbe60165ab100e
+X-MBO-RS-META: jxz5ib93m94j66tt7d7149g53wu7jamq
 
-i.MX95 Display Controller display engine consists of all processing
-units that operate in a display clock domain. Add DomainBlend driver
-which is specific to i.MX95 and required to get any display output on
-that SoC.
+Rework dc_subdev_get_id() to drop ARRAY_SIZE() use and use empty trailing
+entry in each ID look up array instead. This allows passing of those arrays
+around as OF match data, which will be useful when using this pipeline on
+i.MX95, which has different address-to-ID mapping.
 
 Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
 ---
@@ -110,392 +106,233 @@ Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-clk@vger.kernel.org
 ---
- drivers/gpu/drm/imx/dc/Makefile  |   2 +-
- drivers/gpu/drm/imx/dc/dc-crtc.c |   2 +
- drivers/gpu/drm/imx/dc/dc-db.c   | 226 +++++++++++++++++++++++++++++++
- drivers/gpu/drm/imx/dc/dc-de.c   |   2 +
- drivers/gpu/drm/imx/dc/dc-de.h   |  11 ++
- drivers/gpu/drm/imx/dc/dc-drv.c  |   1 +
- drivers/gpu/drm/imx/dc/dc-drv.h  |   3 +
- drivers/gpu/drm/imx/dc/dc-kms.h  |   4 +
- 8 files changed, 250 insertions(+), 1 deletion(-)
- create mode 100644 drivers/gpu/drm/imx/dc/dc-db.c
+ drivers/gpu/drm/imx/dc/dc-cf.c  | 3 ++-
+ drivers/gpu/drm/imx/dc/dc-db.c  | 3 ++-
+ drivers/gpu/drm/imx/dc/dc-de.c  | 3 ++-
+ drivers/gpu/drm/imx/dc/dc-drv.h | 8 +++++---
+ drivers/gpu/drm/imx/dc/dc-ed.c  | 3 ++-
+ drivers/gpu/drm/imx/dc/dc-fg.c  | 3 ++-
+ drivers/gpu/drm/imx/dc/dc-fl.c  | 3 ++-
+ drivers/gpu/drm/imx/dc/dc-fw.c  | 3 ++-
+ drivers/gpu/drm/imx/dc/dc-lb.c  | 3 ++-
+ drivers/gpu/drm/imx/dc/dc-tc.c  | 3 ++-
+ 10 files changed, 23 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/imx/dc/Makefile b/drivers/gpu/drm/imx/dc/Makefile
-index b9d33c074984a..20386e4082e56 100644
---- a/drivers/gpu/drm/imx/dc/Makefile
-+++ b/drivers/gpu/drm/imx/dc/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- 
--imx8-dc-drm-objs := dc-cf.o dc-crtc.o dc-de.o dc-drv.o dc-ed.o dc-fg.o dc-fl.o \
-+imx8-dc-drm-objs := dc-cf.o dc-crtc.o dc-db.o dc-de.o dc-drv.o dc-ed.o dc-fg.o dc-fl.o \
- 		    dc-fu.o dc-fw.o dc-ic.o dc-kms.o dc-lb.o dc-pe.o \
- 		    dc-plane.o dc-tc.o
- 
-diff --git a/drivers/gpu/drm/imx/dc/dc-crtc.c b/drivers/gpu/drm/imx/dc/dc-crtc.c
-index 31d3a982deaf7..56991cb033945 100644
---- a/drivers/gpu/drm/imx/dc/dc-crtc.c
-+++ b/drivers/gpu/drm/imx/dc/dc-crtc.c
-@@ -272,6 +272,7 @@ dc_crtc_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_state *state)
- 	dc_fg_enable_clock(dc_crtc->fg);
- 	dc_ed_pec_sync_trigger(dc_crtc->ed_cont);
- 	dc_ed_pec_sync_trigger(dc_crtc->ed_safe);
-+	dc_db_shdtokgen(dc_crtc->db);
- 	dc_fg_shdtokgen(dc_crtc->fg);
- 	dc_fg_enable(dc_crtc->fg);
- 
-@@ -521,6 +522,7 @@ int dc_crtc_init(struct dc_drm_device *dc_drm, int crtc_index)
- 	dc_crtc->ed_cont = pe->ed_cont[crtc_index];
- 	dc_crtc->ed_safe = pe->ed_safe[crtc_index];
- 	dc_crtc->fg = de->fg;
-+	dc_crtc->db = de->db;
- 
- 	dc_crtc->irq_dec_framecomplete = de->irq_framecomplete;
- 	dc_crtc->irq_dec_seqcomplete = de->irq_seqcomplete;
-diff --git a/drivers/gpu/drm/imx/dc/dc-db.c b/drivers/gpu/drm/imx/dc/dc-db.c
-new file mode 100644
-index 0000000000000..789942d1c446d
---- /dev/null
-+++ b/drivers/gpu/drm/imx/dc/dc-db.c
-@@ -0,0 +1,226 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright 2025 Marek Vasut <marek.vasut@mailbox.org>
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/component.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+
-+#include <drm/drm_blend.h>
-+
-+#include "dc-drv.h"
-+#include "dc-pe.h"
-+
-+#define PIXENGCFG_DYNAMIC			0x8
-+#define  PIXENGCFG_DYNAMIC_PRIM_SEL_MASK	GENMASK(5, 0)
-+#define  PIXENGCFG_DYNAMIC_PRIM_SEL(x)		\
-+		FIELD_PREP(PIXENGCFG_DYNAMIC_PRIM_SEL_MASK, (x))
-+#define  PIXENGCFG_DYNAMIC_SEC_SEL_MASK		GENMASK(13, 8)
-+#define  PIXENGCFG_DYNAMIC_SEC_SEL(x)		\
-+		FIELD_PREP(PIXENGCFG_DYNAMIC_SEC_SEL_MASK, (x))
-+
-+#define STATICCONTROL				0x8
-+#define  SHDTOKSEL_MASK				GENMASK(6, 4)
-+#define  SHDTOKSEL(x)				FIELD_PREP(SHDTOKSEL_MASK, (x))
-+#define  SHDLDSEL_MASK				GENMASK(3, 1)
-+#define  SHDLDSEL(x)				FIELD_PREP(SHDLDSEL_MASK, (x))
-+
-+#define CONTROL					0xc
-+#define  SHDTOKGEN				BIT(0)
-+
-+#define MODECONTROL				0x10
-+
-+#define ALPHACONTROL				0x14
-+#define  ALPHAMASKENABLE			BIT(0)
-+
-+#define BLENDCONTROL				0x18
-+#define  ALPHA_MASK				GENMASK(23, 16)
-+#define  ALPHA(x)				FIELD_PREP(ALPHA_MASK, (x))
-+#define  PRIM_C_BLD_FUNC_MASK			GENMASK(2, 0)
-+#define  PRIM_C_BLD_FUNC(x)			\
-+		FIELD_PREP(PRIM_C_BLD_FUNC_MASK, (x))
-+#define  SEC_C_BLD_FUNC_MASK			GENMASK(6, 4)
-+#define  SEC_C_BLD_FUNC(x)			\
-+		FIELD_PREP(SEC_C_BLD_FUNC_MASK, (x))
-+#define  PRIM_A_BLD_FUNC_MASK			GENMASK(10, 8)
-+#define  PRIM_A_BLD_FUNC(x)			\
-+		FIELD_PREP(PRIM_A_BLD_FUNC_MASK, (x))
-+#define  SEC_A_BLD_FUNC_MASK			GENMASK(14, 12)
-+#define  SEC_A_BLD_FUNC(x)			\
-+		FIELD_PREP(SEC_A_BLD_FUNC_MASK, (x))
-+
-+enum dc_db_blend_func {
-+	DC_DOMAINBLEND_BLEND_ZERO,
-+	DC_DOMAINBLEND_BLEND_ONE,
-+	DC_DOMAINBLEND_BLEND_PRIM_ALPHA,
-+	DC_DOMAINBLEND_BLEND_ONE_MINUS_PRIM_ALPHA,
-+	DC_DOMAINBLEND_BLEND_SEC_ALPHA,
-+	DC_DOMAINBLEND_BLEND_ONE_MINUS_SEC_ALPHA,
-+	DC_DOMAINBLEND_BLEND_CONST_ALPHA,
-+	DC_DOMAINBLEND_BLEND_ONE_MINUS_CONST_ALPHA,
-+};
-+
-+enum dc_db_shadow_sel {
-+	SW = 0x4,
-+	SW_PRIM = 0x5,
-+	SW_SEC = 0x6,
-+};
-+
-+static const struct dc_subdev_info dc_db_info[] = {
-+	{ .reg_start = 0x4b6a0000, .id = 0, },
-+	{ .reg_start = 0x4b720000, .id = 1, },
-+};
-+
-+static const struct regmap_range dc_db_regmap_ranges[] = {
-+	regmap_reg_range(STATICCONTROL, BLENDCONTROL),
-+};
-+
-+static const struct regmap_access_table dc_db_regmap_access_table = {
-+	.yes_ranges = dc_db_regmap_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(dc_db_regmap_ranges),
-+};
-+
-+static const struct regmap_config dc_db_cfg_regmap_config = {
-+	.name = "cfg",
-+	.reg_bits = 32,
-+	.reg_stride = 4,
-+	.val_bits = 32,
-+	.fast_io = true,
-+	.wr_table = &dc_db_regmap_access_table,
-+	.rd_table = &dc_db_regmap_access_table,
-+	.max_register = BLENDCONTROL,
-+};
-+
-+enum dc_db_mode {
-+	DB_PRIMARY,
-+	DB_SECONDARY,
-+	DB_BLEND,
-+	DB_SIDEBYSIDE,
-+};
-+
-+static inline void dc_db_enable_shden(struct dc_db *db)
-+{
-+	regmap_write_bits(db->reg_cfg, STATICCONTROL, SHDEN, SHDEN);
-+}
-+
-+static inline void dc_db_shdtoksel(struct dc_db *db, enum dc_db_shadow_sel sel)
-+{
-+	regmap_write_bits(db->reg_cfg, STATICCONTROL, SHDTOKSEL_MASK,
-+			  SHDTOKSEL(sel));
-+}
-+
-+static inline void dc_db_shdldsel(struct dc_db *db, enum dc_db_shadow_sel sel)
-+{
-+	regmap_write_bits(db->reg_cfg, STATICCONTROL, SHDLDSEL_MASK,
-+			  SHDLDSEL(sel));
-+}
-+
-+void dc_db_shdtokgen(struct dc_db *db)
-+{
-+	regmap_write(db->reg_cfg, CONTROL, SHDTOKGEN);
-+}
-+
-+static void dc_db_mode(struct dc_db *db, enum dc_db_mode mode)
-+{
-+	regmap_write(db->reg_cfg, MODECONTROL, mode);
-+}
-+
-+static inline void dc_db_alphamaskmode_disable(struct dc_db *db)
-+{
-+	regmap_write_bits(db->reg_cfg, ALPHACONTROL, ALPHAMASKENABLE, 0);
-+}
-+
-+static inline void dc_db_blendcontrol(struct dc_db *db)
-+{
-+	u32 val = PRIM_A_BLD_FUNC(DC_DOMAINBLEND_BLEND_ZERO) |
-+		  SEC_A_BLD_FUNC(DC_DOMAINBLEND_BLEND_ZERO) |
-+		  PRIM_C_BLD_FUNC(DC_DOMAINBLEND_BLEND_ZERO) |
-+		  SEC_C_BLD_FUNC(DC_DOMAINBLEND_BLEND_ONE);
-+
-+	regmap_write(db->reg_cfg, BLENDCONTROL, val);
-+}
-+
-+void dc_db_init(struct dc_db *db)
-+{
-+	dc_db_enable_shden(db);
-+	dc_db_shdtoksel(db, SW);
-+	dc_db_shdldsel(db, SW);
-+	dc_db_mode(db, DB_PRIMARY);
-+	dc_db_alphamaskmode_disable(db);
-+	dc_db_blendcontrol(db);
-+}
-+
-+static int dc_db_bind(struct device *dev, struct device *master, void *data)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct dc_drm_device *dc_drm = data;
-+	struct resource *res_cfg;
-+	void __iomem *base_cfg;
-+	struct dc_db *db;
-+
-+	db = devm_kzalloc(dev, sizeof(*db), GFP_KERNEL);
-+	if (!db)
-+		return -ENOMEM;
-+
-+	base_cfg = devm_platform_get_and_ioremap_resource(pdev, 0, &res_cfg);
-+	if (IS_ERR(base_cfg))
-+		return PTR_ERR(base_cfg);
-+
-+	db->reg_cfg = devm_regmap_init_mmio(dev, base_cfg,
-+					    &dc_db_cfg_regmap_config);
-+	if (IS_ERR(db->reg_cfg))
-+		return PTR_ERR(db->reg_cfg);
-+
-+	db->id = dc_subdev_get_id(dc_db_info, ARRAY_SIZE(dc_db_info), res_cfg);
-+	if (db->id < 0) {
-+		dev_err(dev, "failed to get instance number: %d\n", db->id);
-+		return db->id;
-+	}
-+
-+	db->dev = dev;
-+	dc_drm->db[db->id] = db;
-+
-+	return 0;
-+}
-+
-+static const struct component_ops dc_db_ops = {
-+	.bind = dc_db_bind,
-+};
-+
-+static int dc_db_probe(struct platform_device *pdev)
-+{
-+	int ret;
-+
-+	ret = component_add(&pdev->dev, &dc_db_ops);
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "failed to add component\n");
-+
-+	return 0;
-+}
-+
-+static void dc_db_remove(struct platform_device *pdev)
-+{
-+	component_del(&pdev->dev, &dc_db_ops);
-+}
-+
-+static const struct of_device_id dc_db_dt_ids[] = {
-+	{ .compatible = "fsl,imx95-dc-domainblend" },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, dc_db_dt_ids);
-+
-+struct platform_driver dc_db_driver = {
-+	.probe = dc_db_probe,
-+	.remove = dc_db_remove,
-+	.driver = {
-+		.name = "imx95-dc-domainblend",
-+		.suppress_bind_attrs = true,
-+		.of_match_table = dc_db_dt_ids,
-+	},
-+};
-diff --git a/drivers/gpu/drm/imx/dc/dc-de.c b/drivers/gpu/drm/imx/dc/dc-de.c
-index 5a3125596fdf4..23b0cea68d325 100644
---- a/drivers/gpu/drm/imx/dc/dc-de.c
-+++ b/drivers/gpu/drm/imx/dc/dc-de.c
-@@ -114,6 +114,7 @@ void dc_de_post_bind(struct dc_drm_device *dc_drm)
- 
- 	for (i = 0; i < DC_DISPLAYS; i++) {
- 		de = dc_drm->de[i];
-+		de->db = dc_drm->db[i];
- 		de->fg = dc_drm->fg[i];
- 		de->tc = dc_drm->tc[i];
- 	}
-@@ -149,6 +150,7 @@ static int dc_de_runtime_resume(struct device *dev)
- 	struct dc_de *de = dev_get_drvdata(dev);
- 
- 	dc_dec_init(de);
-+	dc_db_init(de->db);
- 	dc_fg_init(de->fg);
- 	dc_tc_init(de->tc);
- 
-diff --git a/drivers/gpu/drm/imx/dc/dc-de.h b/drivers/gpu/drm/imx/dc/dc-de.h
-index 211f3fcc1a9ad..1ac70b4f6276f 100644
---- a/drivers/gpu/drm/imx/dc/dc-de.h
-+++ b/drivers/gpu/drm/imx/dc/dc-de.h
-@@ -16,6 +16,12 @@
- #define DC_FRAMEGEN_MAX_FRAME_INDEX	0x3ffff
- #define DC_FRAMEGEN_MAX_CLOCK_KHZ	300000
- 
-+struct dc_db {
-+	struct device *dev;
-+	struct regmap *reg_cfg;
-+	int id;
-+};
-+
- struct dc_fg {
- 	struct device *dev;
- 	struct regmap *reg;
-@@ -30,6 +36,7 @@ struct dc_tc {
- struct dc_de {
- 	struct device *dev;
- 	struct regmap *reg_top;
-+	struct dc_db *db;
- 	struct dc_fg *fg;
- 	struct dc_tc *tc;
- 	int irq_shdload;
-@@ -37,6 +44,10 @@ struct dc_de {
- 	int irq_seqcomplete;
+diff --git a/drivers/gpu/drm/imx/dc/dc-cf.c b/drivers/gpu/drm/imx/dc/dc-cf.c
+index 2f077161e9126..846705534546a 100644
+--- a/drivers/gpu/drm/imx/dc/dc-cf.c
++++ b/drivers/gpu/drm/imx/dc/dc-cf.c
+@@ -29,6 +29,7 @@ static const struct dc_subdev_info dc_cf_info[] = {
+ 	{ .reg_start = 0x561809e0, .id = 1, },
+ 	{ .reg_start = 0x561809a0, .id = 4, },
+ 	{ .reg_start = 0x56180a20, .id = 5, },
++	{ /* sentinel */ },
  };
  
-+/* Domain Blend Unit */
-+void dc_db_init(struct dc_db *db);
-+void dc_db_shdtokgen(struct dc_db *db);
-+
- /* Frame Generator Unit */
- void dc_fg_cfg_videomode(struct dc_fg *fg, struct drm_display_mode *m);
- void dc_fg_enable(struct dc_fg *fg);
-diff --git a/drivers/gpu/drm/imx/dc/dc-drv.c b/drivers/gpu/drm/imx/dc/dc-drv.c
-index 04f021d2d6cfc..f108964bf89f4 100644
---- a/drivers/gpu/drm/imx/dc/dc-drv.c
-+++ b/drivers/gpu/drm/imx/dc/dc-drv.c
-@@ -263,6 +263,7 @@ static struct platform_driver dc_driver = {
+ static const struct regmap_range dc_cf_regmap_ranges[] = {
+@@ -106,7 +107,7 @@ static int dc_cf_bind(struct device *dev, struct device *master, void *data)
+ 	if (IS_ERR(cf->reg_cfg))
+ 		return PTR_ERR(cf->reg_cfg);
  
- static struct platform_driver * const dc_drivers[] = {
- 	&dc_cf_driver,
-+	&dc_db_driver,
- 	&dc_de_driver,
- 	&dc_ed_driver,
- 	&dc_fg_driver,
+-	id = dc_subdev_get_id(dc_cf_info, ARRAY_SIZE(dc_cf_info), res_pec);
++	id = dc_subdev_get_id(dc_cf_info, res_pec);
+ 	if (id < 0) {
+ 		dev_err(dev, "failed to get instance number: %d\n", id);
+ 		return id;
+diff --git a/drivers/gpu/drm/imx/dc/dc-db.c b/drivers/gpu/drm/imx/dc/dc-db.c
+index 789942d1c446d..3958a2c4ec934 100644
+--- a/drivers/gpu/drm/imx/dc/dc-db.c
++++ b/drivers/gpu/drm/imx/dc/dc-db.c
+@@ -74,6 +74,7 @@ enum dc_db_shadow_sel {
+ static const struct dc_subdev_info dc_db_info[] = {
+ 	{ .reg_start = 0x4b6a0000, .id = 0, },
+ 	{ .reg_start = 0x4b720000, .id = 1, },
++	{ /* sentinel */ },
+ };
+ 
+ static const struct regmap_range dc_db_regmap_ranges[] = {
+@@ -176,7 +177,7 @@ static int dc_db_bind(struct device *dev, struct device *master, void *data)
+ 	if (IS_ERR(db->reg_cfg))
+ 		return PTR_ERR(db->reg_cfg);
+ 
+-	db->id = dc_subdev_get_id(dc_db_info, ARRAY_SIZE(dc_db_info), res_cfg);
++	db->id = dc_subdev_get_id(dc_db_info, res_cfg);
+ 	if (db->id < 0) {
+ 		dev_err(dev, "failed to get instance number: %d\n", db->id);
+ 		return db->id;
+diff --git a/drivers/gpu/drm/imx/dc/dc-de.c b/drivers/gpu/drm/imx/dc/dc-de.c
+index 23b0cea68d325..81334c0088219 100644
+--- a/drivers/gpu/drm/imx/dc/dc-de.c
++++ b/drivers/gpu/drm/imx/dc/dc-de.c
+@@ -21,6 +21,7 @@
+ static const struct dc_subdev_info dc_de_info[] = {
+ 	{ .reg_start = 0x5618b400, .id = 0, },
+ 	{ .reg_start = 0x5618b420, .id = 1, },
++	{ /* sentinel */ },
+ };
+ 
+ static const struct regmap_range dc_de_regmap_ranges[] = {
+@@ -90,7 +91,7 @@ static int dc_de_bind(struct device *dev, struct device *master, void *data)
+ 	if (ret)
+ 		return ret;
+ 
+-	id = dc_subdev_get_id(dc_de_info, ARRAY_SIZE(dc_de_info), res_top);
++	id = dc_subdev_get_id(dc_de_info, res_top);
+ 	if (id < 0) {
+ 		dev_err(dev, "failed to get instance number: %d\n", id);
+ 		return id;
 diff --git a/drivers/gpu/drm/imx/dc/dc-drv.h b/drivers/gpu/drm/imx/dc/dc-drv.h
-index eb61b8c762693..17ce2d748262b 100644
+index 17ce2d748262b..a7ad17680a9b2 100644
 --- a/drivers/gpu/drm/imx/dc/dc-drv.h
 +++ b/drivers/gpu/drm/imx/dc/dc-drv.h
-@@ -40,6 +40,8 @@ struct dc_drm_device {
- 	struct dc_ed *ed_safe[DC_DISPLAYS];
- 	/** @ed_cont: extdst list(content stream) */
- 	struct dc_ed *ed_cont[DC_DISPLAYS];
-+	/** @lb: domainblend list */
-+	struct dc_db *db[DC_DISPLAYS];
- 	/** @fg: framegen list */
- 	struct dc_fg *fg[DC_DISPLAYS];
- 	/** @fu_disp: fetchunit list(used by display engine) */
-@@ -71,6 +73,7 @@ void dc_kms_uninit(struct dc_drm_device *dc_drm);
- int dc_plane_init(struct dc_drm_device *dc_drm, struct dc_plane *dc_plane);
+@@ -85,16 +85,18 @@ extern struct platform_driver dc_pe_driver;
+ extern struct platform_driver dc_tc_driver;
  
- extern struct platform_driver dc_cf_driver;
-+extern struct platform_driver dc_db_driver;
- extern struct platform_driver dc_de_driver;
- extern struct platform_driver dc_ed_driver;
- extern struct platform_driver dc_fg_driver;
-diff --git a/drivers/gpu/drm/imx/dc/dc-kms.h b/drivers/gpu/drm/imx/dc/dc-kms.h
-index cd7860eff986a..3e61dbb87afe7 100644
---- a/drivers/gpu/drm/imx/dc/dc-kms.h
-+++ b/drivers/gpu/drm/imx/dc/dc-kms.h
-@@ -48,6 +48,8 @@ struct dc_crtc {
- 	struct dc_ed *ed_cont;
- 	/** @ed_safe: safety stream extdst */
- 	struct dc_ed *ed_safe;
-+	/** @db: domain blend */
-+	struct dc_db *db;
- 	/** @fg: framegen */
- 	struct dc_fg *fg;
- 	/**
-@@ -122,6 +124,8 @@ struct dc_plane {
- 	struct dc_fu *fu;
- 	/** @cf: content stream constframe */
- 	struct dc_cf *cf;
-+	/** @db: domainblend */
-+	struct dc_db *db;
- 	/** @lb: layerblend */
- 	struct dc_lb *lb;
- 	/** @ed: content stream extdst */
+ static inline int dc_subdev_get_id(const struct dc_subdev_info *info,
+-				   int info_cnt, struct resource *res)
++				   struct resource *res)
+ {
+-	int i;
++	int i = 0;
+ 
+ 	if (!res)
+ 		return -EINVAL;
+ 
+-	for (i = 0; i < info_cnt; i++)
++	while (info[i].reg_start) {
+ 		if (info[i].reg_start == res->start)
+ 			return info[i].id;
++		i++;
++	}
+ 
+ 	return -EINVAL;
+ }
+diff --git a/drivers/gpu/drm/imx/dc/dc-ed.c b/drivers/gpu/drm/imx/dc/dc-ed.c
+index 86ecc22d0a554..a63c387a4c023 100644
+--- a/drivers/gpu/drm/imx/dc/dc-ed.c
++++ b/drivers/gpu/drm/imx/dc/dc-ed.c
+@@ -40,6 +40,7 @@ static const struct dc_subdev_info dc_ed_info[] = {
+ 	{ .reg_start = 0x56180a00, .id = 1, },
+ 	{ .reg_start = 0x561809c0, .id = 4, },
+ 	{ .reg_start = 0x56180a40, .id = 5, },
++	{ /* sentinel */ },
+ };
+ 
+ static const struct regmap_range dc_ed_pec_regmap_write_ranges[] = {
+@@ -226,7 +227,7 @@ static int dc_ed_bind(struct device *dev, struct device *master, void *data)
+ 
+ 	ed->dev = dev;
+ 
+-	id = dc_subdev_get_id(dc_ed_info, ARRAY_SIZE(dc_ed_info), res_pec);
++	id = dc_subdev_get_id(dc_ed_info, res_pec);
+ 	if (id < 0) {
+ 		dev_err(dev, "failed to get instance number: %d\n", id);
+ 		return id;
+diff --git a/drivers/gpu/drm/imx/dc/dc-fg.c b/drivers/gpu/drm/imx/dc/dc-fg.c
+index 7f6c1852bf724..5fadd67aa911b 100644
+--- a/drivers/gpu/drm/imx/dc/dc-fg.c
++++ b/drivers/gpu/drm/imx/dc/dc-fg.c
+@@ -92,6 +92,7 @@ enum dc_fg_dm {
+ static const struct dc_subdev_info dc_fg_info[] = {
+ 	{ .reg_start = 0x5618b800, .id = 0, },
+ 	{ .reg_start = 0x5618d400, .id = 1, },
++	{ /* sentinel */ },
+ };
+ 
+ static const struct regmap_range dc_fg_regmap_write_ranges[] = {
+@@ -326,7 +327,7 @@ static int dc_fg_bind(struct device *dev, struct device *master, void *data)
+ 		return dev_err_probe(dev, PTR_ERR(fg->clk_disp),
+ 				     "failed to get display clock\n");
+ 
+-	id = dc_subdev_get_id(dc_fg_info, ARRAY_SIZE(dc_fg_info), res);
++	id = dc_subdev_get_id(dc_fg_info, res);
+ 	if (id < 0) {
+ 		dev_err(dev, "failed to get instance number: %d\n", id);
+ 		return id;
+diff --git a/drivers/gpu/drm/imx/dc/dc-fl.c b/drivers/gpu/drm/imx/dc/dc-fl.c
+index 3ce24c72aa13e..d4e746f8c4297 100644
+--- a/drivers/gpu/drm/imx/dc/dc-fl.c
++++ b/drivers/gpu/drm/imx/dc/dc-fl.c
+@@ -33,6 +33,7 @@ struct dc_fl {
+ 
+ static const struct dc_subdev_info dc_fl_info[] = {
+ 	{ .reg_start = 0x56180ac0, .id = 0, },
++	{ /* sentinel */ },
+ };
+ 
+ static const struct regmap_range dc_fl_regmap_ranges[] = {
+@@ -120,7 +121,7 @@ static int dc_fl_bind(struct device *dev, struct device *master, void *data)
+ 	if (IS_ERR(fu->reg_cfg))
+ 		return PTR_ERR(fu->reg_cfg);
+ 
+-	id = dc_subdev_get_id(dc_fl_info, ARRAY_SIZE(dc_fl_info), res_pec);
++	id = dc_subdev_get_id(dc_fl_info, res_pec);
+ 	if (id < 0) {
+ 		dev_err(dev, "failed to get instance number: %d\n", id);
+ 		return id;
+diff --git a/drivers/gpu/drm/imx/dc/dc-fw.c b/drivers/gpu/drm/imx/dc/dc-fw.c
+index acb2d4d9e2ecd..c1131b7b17c2f 100644
+--- a/drivers/gpu/drm/imx/dc/dc-fw.c
++++ b/drivers/gpu/drm/imx/dc/dc-fw.c
+@@ -35,6 +35,7 @@ struct dc_fw {
+ 
+ static const struct dc_subdev_info dc_fw_info[] = {
+ 	{ .reg_start = 0x56180a60, .id = 2, },
++	{ /* sentinel */ },
+ };
+ 
+ static const struct regmap_range dc_fw_pec_regmap_access_ranges[] = {
+@@ -157,7 +158,7 @@ static int dc_fw_bind(struct device *dev, struct device *master, void *data)
+ 	if (IS_ERR(fu->reg_cfg))
+ 		return PTR_ERR(fu->reg_cfg);
+ 
+-	id = dc_subdev_get_id(dc_fw_info, ARRAY_SIZE(dc_fw_info), res_pec);
++	id = dc_subdev_get_id(dc_fw_info, res_pec);
+ 	if (id < 0) {
+ 		dev_err(dev, "failed to get instance number: %d\n", id);
+ 		return id;
+diff --git a/drivers/gpu/drm/imx/dc/dc-lb.c b/drivers/gpu/drm/imx/dc/dc-lb.c
+index 38f966625d382..34ea61c2de87d 100644
+--- a/drivers/gpu/drm/imx/dc/dc-lb.c
++++ b/drivers/gpu/drm/imx/dc/dc-lb.c
+@@ -76,6 +76,7 @@ static const struct dc_subdev_info dc_lb_info[] = {
+ 	{ .reg_start = 0x56180bc0, .id = 1, },
+ 	{ .reg_start = 0x56180be0, .id = 2, },
+ 	{ .reg_start = 0x56180c00, .id = 3, },
++	{ /* sentinel */ },
+ };
+ 
+ static const struct regmap_range dc_lb_pec_regmap_access_ranges[] = {
+@@ -273,7 +274,7 @@ static int dc_lb_bind(struct device *dev, struct device *master, void *data)
+ 	if (IS_ERR(lb->reg_cfg))
+ 		return PTR_ERR(lb->reg_cfg);
+ 
+-	lb->id = dc_subdev_get_id(dc_lb_info, ARRAY_SIZE(dc_lb_info), res_pec);
++	lb->id = dc_subdev_get_id(dc_lb_info, res_pec);
+ 	if (lb->id < 0) {
+ 		dev_err(dev, "failed to get instance number: %d\n", lb->id);
+ 		return lb->id;
+diff --git a/drivers/gpu/drm/imx/dc/dc-tc.c b/drivers/gpu/drm/imx/dc/dc-tc.c
+index 0bfd381b2cea1..f44b68c0a5e6d 100644
+--- a/drivers/gpu/drm/imx/dc/dc-tc.c
++++ b/drivers/gpu/drm/imx/dc/dc-tc.c
+@@ -28,6 +28,7 @@
+ static const struct dc_subdev_info dc_tc_info[] = {
+ 	{ .reg_start = 0x5618c800, .id = 0, },
+ 	{ .reg_start = 0x5618e400, .id = 1, },
++	{ /* sentinel */ },
+ };
+ 
+ static const struct regmap_range dc_tc_regmap_ranges[] = {
+@@ -91,7 +92,7 @@ static int dc_tc_bind(struct device *dev, struct device *master, void *data)
+ 	if (IS_ERR(tc->reg))
+ 		return PTR_ERR(tc->reg);
+ 
+-	id = dc_subdev_get_id(dc_tc_info, ARRAY_SIZE(dc_tc_info), res);
++	id = dc_subdev_get_id(dc_tc_info, res);
+ 	if (id < 0) {
+ 		dev_err(dev, "failed to get instance number: %d\n", id);
+ 		return id;
 -- 
 2.51.0
 
