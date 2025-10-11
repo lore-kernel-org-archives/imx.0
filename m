@@ -1,243 +1,244 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m15593.qiye.163.com (mail-m15593.qiye.163.com [101.71.155.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B112C277C88;
-	Fri, 10 Oct 2025 22:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2D9381AF
+	for <imx@lists.linux.dev>; Sat, 11 Oct 2025 01:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760135692; cv=none; b=d0y2yUeD6YCHGK726WRBp0issy7y9u0DAnPjkII7qbFP+KGQuPKOtEld2sOAGHFRjkC/6fIuKpxmyIIZZhWXxVrw+SwnBrd0HWX7N73eXAybpd3RmKh60WK1nS8j+VCzp5js5WigMe4FihMvJoOb3NHvetfCfci3xsZ9blm11YI=
+	t=1760144672; cv=none; b=HaWU0W3G3JDfO/KfZPZfDDg1HvrS0dOlJfX2js/Sbe3n6lE3FVX1mRnP1XgG6hvmsJO05KNFjyPxHaIwifS7fpjHQzCf9SXj426y0zVlBo8mytW0HtOQ3ByfEpgRmoE3Jp60UOyZqSegwxgf9tDm5STiAAY2GfK6T7rDgGi+zlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760135692; c=relaxed/simple;
-	bh=WROgCmZgtstKv4eITK/u78V+uzOkFLK31P8ASk/uNc8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ckuqOpzMwbE3ldskyQBmDl3o7H3MdJMtL5N0pSeJ3rgDaKZukDuuL6RmGUbbFinEV7RnuAu7crCmxWyJ1W+Qoxiy2LrmfI2zrFqAE+Zqd8LNWIK47+vrGMarw2my4MH7xhQ5LmEsErC/zbwC9nVt4v2ZEU5dyShokGByFjR/Rbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ShFlpnwa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760144672; c=relaxed/simple;
+	bh=IkBlV457elCUwnlsmaAD0xUxK5eNiGvJn1HiucN5LOU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X6REBw5UzKLMc6VZDFe2BCwobqSciufz42psOwfUVY652GfDpqTBgljpmm8/mJ9qsm+CTxzfcBMyTrBcb4l0wEqOPY4+D/QrINSXCzEbT3oM11esH6a2XY+9J9I3AvQg50obLvBI+YupW+5wLYtIlQQqW6N4VAaWh0CppR39Ay0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=N7SbZjP3; arc=none smtp.client-ip=101.71.155.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ShFlpnwa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F40C4CEF9;
-	Fri, 10 Oct 2025 22:34:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760135692;
-	bh=WROgCmZgtstKv4eITK/u78V+uzOkFLK31P8ASk/uNc8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ShFlpnwa+lPDPbhRLPLBmb6E8nJ/rJpw2X16SDp1057TrTCeFUjHMz8bhh/mPQk+A
-	 RYdRu9li6jR2Im4gjJPrAAQR1dzy/xw61LhSwa4M7AUg+kqRENa2y9sTCZ8cECKxoK
-	 8DIuUbKEYrh/p5qgFYe8H/OSv2tjmnOtAbF+CYXWWeJZb90cNWyeZFNNBLsk9o+NlB
-	 LYD58f89xei9DFIHvVIArLppncAfZ1lfODqbnZMp6hKZ4prFkiuURpN9AqW/CYZ2Ox
-	 +JDSLF7BWY9GUdsApmWRVZuvoC/GSo07c5bdLanU6hWl/cm06LhAt+J49lopjka6At
-	 sICLBvRaaXIcQ==
-Date: Fri, 10 Oct 2025 17:34:50 -0500
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Tim Harvey <tharvey@gateworks.com>,
-	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: media: convert nxp,tda1997x.txt to yaml
- format
-Message-ID: <20251010223450.GA1293636-robh@kernel.org>
-References: <20251010151637.2061727-1-Frank.Li@nxp.com>
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="N7SbZjP3"
+Received: from [172.16.12.26] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2580dfba9;
+	Sat, 11 Oct 2025 09:04:16 +0800 (GMT+08:00)
+Message-ID: <16181573-f53b-4e76-abe9-953c1e967d75@rock-chips.com>
+Date: Sat, 11 Oct 2025 09:04:16 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251010151637.2061727-1-Frank.Li@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 11/18] drm/display: bridge_connector: Ensure last
+ bridge determines EDID/modes detection capabilities
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
+ kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
+ jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
+ heiko@sntech.de, andy.yan@rock-chips.com, dianders@chromium.org,
+ m.szyprowski@samsung.com, jani.nikula@intel.com,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
+References: <20250930090920.131094-1-damon.ding@rock-chips.com>
+ <20250930090920.131094-12-damon.ding@rock-chips.com>
+ <20251001180922.6bbe42ac@booty>
+ <a42ebdca-1cbc-498c-b859-336557823f26@rock-chips.com>
+ <dkblceiweall37j4anpgkumizxc5zni3axnxb5hyokv2jlsta5@immpjaczktnh>
+Content-Language: en-US
+From: Damon Ding <damon.ding@rock-chips.com>
+In-Reply-To: <dkblceiweall37j4anpgkumizxc5zni3axnxb5hyokv2jlsta5@immpjaczktnh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-HM-Tid: 0a99d0cc08f803a3kunm26ee5aba1a2ddc
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGR8dSVZPThhPHRkaTx0aHklWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=N7SbZjP3/qQp/MbHh1FRivi1ZDZmlC1sUSNZ9BpOLHrS2WK1bnoUCFeU5/H4i5NrXj53d0oPjddq1lBuYM+9CWUWpFMHwiExq5KveU9KQo05BWcro9WNi3RFuyb3KMJi+VkkddY2/VtPvGbobSY7JZNMM8tIkSTiJqcELilOiAc=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=eV9amtj4CCoD8Gk1h+Z3/oynWPk9WjFeER7mS5pHxCc=;
+	h=date:mime-version:subject:message-id:from;
 
-On Fri, Oct 10, 2025 at 11:16:23AM -0400, Frank Li wrote:
-> Convert nxp,tda1997x.txt to yaml format
+Hi,
+
+On 10/10/2025 10:02 PM, Dmitry Baryshkov wrote:
+> On Thu, Oct 09, 2025 at 12:10:42PM +0800, Damon Ding wrote:
+>> Hi Luca,
+>>
+>> On 10/2/2025 12:09 AM, Luca Ceresoli wrote:
+>>> Hello Damon,
+>>>
+>>> On Tue, 30 Sep 2025 17:09:13 +0800
+>>> Damon Ding <damon.ding@rock-chips.com> wrote:
+>>>
+>>>> When multiple bridges are present, EDID detection capability
+>>>> (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
+>>>> (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities are
+>>>> determined by the last bridge in the chain, we handle three cases:
+>>>>
+>>>> Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
+>>>>    - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
+>>>>      &drm_bridge_connector.bridge_edid to NULL and set
+>>>>      &drm_bridge_connector.bridge_modes to the later bridge.
+>>>>    - Ensure modes detection capability of the later bridge will not
+>>>>      be ignored.
+>>>>
+>>>> Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
+>>>>    - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
+>>>>      &drm_bridge_connector.bridge_modes to NULL and set
+>>>>      &drm_bridge_connector.bridge_edid to the later bridge.
+>>>>    - Although EDID detection capability has higher priority, this
+>>>>      operation is for balance and makes sense.
+>>>>
+>>>> Case 3: the later bridge declares both of them
+>>>>    - Assign later bridge as &drm_bridge_connector.bridge_edid and
+>>>>      and &drm_bridge_connector.bridge_modes to this bridge.
+>>>>    - Just leave transfer of these two capabilities as before.
+>>>
+>>> I think the whole explanation can be more concisely rewritten as:
+>>>
+>>> If the later bridge declares OP_EDID, OP_MODES or both, then both
+>>> .bridge_modes and .bridge_edid should be set to NULL (if any was set
+>>> from a previous bridge), and then .bridge_modes and/or .bridge_edid be
+>>> set to the later bridge as is done already.
+>>>
+>>> Does this look correct (i.e. does it convey the same meaning)?
+>>>
+>>>> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
+>>>> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
+>>>> @@ -640,6 +640,7 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+>>>>    	struct drm_connector *connector;
+>>>>    	struct i2c_adapter *ddc = NULL;
+>>>>    	struct drm_bridge *bridge, *panel_bridge = NULL;
+>>>> +	struct drm_bridge *pre_bridge_edid, *pre_bridge_modes;
+>>>>    	unsigned int supported_formats = BIT(HDMI_COLORSPACE_RGB);
+>>>>    	unsigned int max_bpc = 8;
+>>>>    	bool support_hdcp = false;
+>>>> @@ -668,6 +669,9 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+>>>>    	 */
+>>>>    	connector_type = DRM_MODE_CONNECTOR_Unknown;
+>>>>    	drm_for_each_bridge_in_chain(encoder, bridge) {
+>>>> +		pre_bridge_edid = bridge_connector->bridge_edid;
+>>>> +		pre_bridge_modes = bridge_connector->bridge_modes;
+>>>> +
+>>>>    		if (!bridge->interlace_allowed)
+>>>>    			connector->interlace_allowed = false;
+>>>>    		if (!bridge->ycbcr_420_allowed)
+>>>> @@ -681,6 +685,44 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+>>>>    			bridge_connector->bridge_detect = bridge;
+>>>>    		if (bridge->ops & DRM_BRIDGE_OP_MODES)
+>>>>    			bridge_connector->bridge_modes = bridge;
+>>>> +
+>>>> +		/*
+>>>> +		 * When multiple bridges are present, EDID detection capability
+>>>> +		 * (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
+>>>> +		 * (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities
+>>>> +		 * are determined by the last bridge in the chain, we handle
+>>>> +		 * three cases:
+>>>> +		 *
+>>>> +		 * Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
+>>>> +		 *  - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
+>>>> +		 *    &drm_bridge_connector.bridge_edid to NULL and set
+>>>> +		 *    &drm_bridge_connector.bridge_modes to the later bridge.
+>>>> +		 *  - Ensure modes detection capability of the later bridge
+>>>> +		 *    will not be ignored.
+>>>> +		 *
+>>>> +		 * Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
+>>>> +		 *  - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
+>>>> +		 *    &drm_bridge_connector.bridge_modes to NULL and set
+>>>> +		 *    &drm_bridge_connector.bridge_edid to the later bridge.
+>>>> +		 *  - Although EDID detection capability has higher priority,
+>>>> +		 *    this operation is for balance and makes sense.
+>>>> +		 *
+>>>> +		 * Case 3: the later bridge declares both of them
+>>>> +		 *  - Assign later bridge as &drm_bridge_connector.bridge_edid
+>>>> +		 *    and &drm_bridge_connector.bridge_modes to this bridge.
+>>>> +		 *  - Just leave transfer of these two capabilities as before.
+>>>> +		 */
+>>>> +		if (bridge->ops & DRM_BRIDGE_OP_EDID &&
+>>>> +		    !(bridge->ops & DRM_BRIDGE_OP_MODES)) {
+>>>> +			if (pre_bridge_modes)
+>>>> +				bridge_connector->bridge_modes = NULL;
+>>>> +		}
+>>>> +		if (bridge->ops & DRM_BRIDGE_OP_MODES &&
+>>>> +		    !(bridge->ops & DRM_BRIDGE_OP_EDID)) {
+>>>> +			if (pre_bridge_edid)
+>>>> +				bridge_connector->bridge_edid = NULL;
+>>>> +		}
+>>>> +
+>>>
+>>> If the above rewrite is correct, then I think this patch can be
+>>> rewritten in a simple way (build tested only):
+>>>
+>>> diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu/drm/display/drm_bridge_connector.c
+>>> index a5bdd6c10643..bd5dbafe88bc 100644
+>>> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
+>>> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
+>>> @@ -672,14 +672,18 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+>>>                   if (!bridge->ycbcr_420_allowed)
+>>>                           connector->ycbcr_420_allowed = false;
+>>> -               if (bridge->ops & DRM_BRIDGE_OP_EDID)
+>>> -                       bridge_connector->bridge_edid = bridge;
+>>> +               if (bridge->ops & DRM_BRIDGE_OP_EDID || bridge->ops & DRM_BRIDGE_OP_MODES) {
+>>> +                       bridge_connector->bridge_edid = NULL;
+>>> +                       bridge_connector->bridge_modes = NULL;
+>>> +                       if (bridge->ops & DRM_BRIDGE_OP_EDID)
+>>> +                               bridge_connector->bridge_edid = bridge;
+>>> +                       if (bridge->ops & DRM_BRIDGE_OP_MODES)
+>>> +                               bridge_connector->bridge_modes = bridge;
+>>> +               }
+>>>                   if (bridge->ops & DRM_BRIDGE_OP_HPD)
+>>>                           bridge_connector->bridge_hpd = bridge;
+>>>                   if (bridge->ops & DRM_BRIDGE_OP_DETECT)
+>>>                           bridge_connector->bridge_detect = bridge;
+>>> -               if (bridge->ops & DRM_BRIDGE_OP_MODES)
+>>> -                       bridge_connector->bridge_modes = bridge;
+>>>                   if (bridge->ops & DRM_BRIDGE_OP_HDMI) {
+>>>                           if (bridge_connector->bridge_hdmi)
+>>>                                   return ERR_PTR(-EBUSY);
+>>>
+>>
+>> Yes, this is correct and maintains functional equivalence with the previous
+>> implementation.
+>>
+>> I previously attempted to implement this feature by modifying the logic in
+>> this section. However, that approach would obscure the explicit propagation
+>> semantics of the bridge chain flags (OP_EDID/OP_HPD/OP_DETECT/OP_MODES).
+>> Therefore, I finally decided to implemented it as a specific check after
+>> this code block.
+>>
+>> Dmitry, what's your take on this?
 > 
-> Additional changes:
-> - update audio width to 8, 16, 24, 32.
-> - keep one example only.
+> I think I prefer Luca's code, it is simpler and easier to understand. It
+> doesn't need a huge comment, something like "leave the last bridge which
+> provides either OP_EDID or OP_MODES" should be enough.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../bindings/media/i2c/nxp,tda19971.yaml      | 158 ++++++++++++++++
->  .../bindings/media/i2c/nxp,tda1997x.txt       | 178 ------------------
->  2 files changed, 158 insertions(+), 178 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/media/i2c/nxp,tda19971.yaml
->  delete mode 100644 Documentation/devicetree/bindings/media/i2c/nxp,tda1997x.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/media/i2c/nxp,tda19971.yaml b/Documentation/devicetree/bindings/media/i2c/nxp,tda19971.yaml
-> new file mode 100644
-> index 0000000000000..7624391e1c1e8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/i2c/nxp,tda19971.yaml
-> @@ -0,0 +1,158 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/i2c/nxp,tda19971.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP TDA1997x HDMI receiver
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +description: |
-> +  The TDA19971/73 are HDMI video receivers.
-> +
-> +  The TDA19971 Video port output pins can be used as follows:
-> +   - RGB 8bit per color (24 bits total): R[11:4] B[11:4] G[11:4]
-> +   - YUV444 8bit per color (24 bits total): Y[11:4] Cr[11:4] Cb[11:4]
-> +   - YUV422 semi-planar 8bit per component (16 bits total): Y[11:4] CbCr[11:4]
-> +   - YUV422 semi-planar 10bit per component (20 bits total): Y[11:2] CbCr[11:2]
-> +   - YUV422 semi-planar 12bit per component (24 bits total): - Y[11:0] CbCr[11:0]
-> +   - YUV422 BT656 8bit per component (8 bits total): YCbCr[11:4] (2-cycles)
-> +   - YUV422 BT656 10bit per component (10 bits total): YCbCr[11:2] (2-cycles)
-> +   - YUV422 BT656 12bit per component (12 bits total): YCbCr[11:0] (2-cycles)
-> +
-> +  The TDA19973 Video port output pins can be used as follows:
-> +   - RGB 12bit per color (36 bits total): R[11:0] B[11:0] G[11:0]
-> +   - YUV444 12bit per color (36 bits total): Y[11:0] Cb[11:0] Cr[11:0]
-> +   - YUV422 semi-planar 12bit per component (24 bits total): Y[11:0] CbCr[11:0]
-> +   - YUV422 BT656 12bit per component (12 bits total): YCbCr[11:0] (2-cycles)
-> +
-> +  The Video port output pins are mapped via 4-bit 'pin groups' allowing
-> +  for a variety of connection possibilities including swapping pin order within
-> +  pin groups. The video_portcfg device-tree property consists of register mapping
-> +  pairs which map a chip-specific VP output register to a 4-bit pin group. If
-> +  the pin group needs to be bit-swapped you can use the *_S pin-group defines.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nxp,tda19971
-> +      - nxp,tda19973
 
-blank line
+Yes, I will update the code in v7.
 
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  DOVDD-supply: true
-> +
-> +  DVDD-supply: true
-> +
-> +  AVDD-supply: true
-> +
-> +  '#sound-dai-cells':
-> +    const: 0
-> +
-> +  port:
-> +    $ref: /schemas/graph.yaml#/$defs/port-base
-> +    unevaluatedProperties: false
-> +
-> +    properties:
-> +      endpoint:
-> +        $ref: /schemas/media/video-interfaces.yaml#
-> +        unevaluatedProperties: false
-> +
-> +  nxp,vidout-portcfg:
-> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
-> +    minItems: 1
-> +    maxItems: 4
-> +    items:
-> +      items:
-> +        maxItems: 2
+>>
+>>> Another thing to note is that this patch conflicts with [0], which I
+>>> plan to apply in the next few days. The two patches are orthogonal but
+>>> they insist on the same lines (those assigning
+>>> bridge_connector->bridge_* = bridge). Not a big deal, whichever patch
+>>> comes later will be easily adapted. Just wanted to ensure you are aware.
+>>>
+>>> [0] https://lore.kernel.org/all/20250926-drm-bridge-alloc-getput-bridge-connector-v2-1-138b4bb70576@bootlin.com/
+>>>
+>>
+>> This is indeed a clever approach to the managing bridge resource cleanup in
+>> drm_bridge_connector. Thanks a lot for the heads-up! I'll resolve this
+>> conflict and rebase the patch series.
+>>
+>> Apologies for the delayed reply as I was on vacation. ;-)
 
-1 too many levels...
+Best regards,
+Damon
 
-items:
-  maxItems: 2
-
-But really you need to describe what each of the 2 items are. And are 
-there some constraints? I'd assume pins here is something like pin 1-N?
-
-> +
-> +    description:
-> +      array of pairs mapping VP output pins to pin groups.
-> +
-> +  nxp,audout-format:
-> +    enum:
-> +      - i2s
-> +      - spdif
-> +
-> +  nxp,audout-width:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [8, 16, 24, 32]
-> +    description:
-> +      width of audio output data bus.
-> +
-> +  nxp,audout-layout:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [0, 1]
-> +    description:
-> +      data layout (0=AP0 used, 1=AP0/AP1/AP2/AP3 used).
-> +
-> +  nxp,audout-mclk-fs:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Multiplication factor between stream rate and codec mclk.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - DOVDD-supply
-> +  - AVDD-supply
-> +  - DVDD-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/media/tda1997x.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        hdmi-receiver@48 {
-> +            compatible = "nxp,tda19971";
-> +            reg = <0x48>;
-> +            pinctrl-names = "default";
-> +            pinctrl-0 = <&pinctrl_tda1997x>;
-> +            interrupt-parent = <&gpio1>;
-> +            interrupts = <7 IRQ_TYPE_LEVEL_LOW>;
-> +            DOVDD-supply = <&reg_3p3v>;
-> +            AVDD-supply = <&reg_1p8v>;
-> +            DVDD-supply = <&reg_1p8v>;
-> +            /* audio */
-> +            #sound-dai-cells = <0>;
-> +            nxp,audout-format = "i2s";
-> +            nxp,audout-layout = <0>;
-> +            nxp,audout-width = <16>;
-> +            nxp,audout-mclk-fs = <128>;
-> +            /*
-> +             * The 8bpp YUV422 semi-planar mode outputs CbCr[11:4]
-> +             * and Y[11:4] across 16bits in the same pixclk cycle.
-> +             */
-> +            nxp,vidout-portcfg =
-> +                /* Y[11:8]<->VP[15:12]<->CSI_DATA[19:16] */
-> +                < TDA1997X_VP24_V15_12 TDA1997X_G_Y_11_8 >,
-> +                /* Y[7:4]<->VP[11:08]<->CSI_DATA[15:12] */
-> +                < TDA1997X_VP24_V11_08 TDA1997X_G_Y_7_4 >,
-> +                /* CbCc[11:8]<->VP[07:04]<->CSI_DATA[11:8] */
-> +                < TDA1997X_VP24_V07_04 TDA1997X_R_CR_CBCR_11_8 >,
-> +                /* CbCr[7:4]<->VP[03:00]<->CSI_DATA[7:4] */
-> +                < TDA1997X_VP24_V03_00 TDA1997X_R_CR_CBCR_7_4 >;
-> +
-> +            port {
-> +                endpoint {
-> +                    remote-endpoint = <&ipu1_csi0_mux_from_parallel_sensor>;
-> +                    bus-width = <16>;
-> +                    hsync-active = <1>;
-> +                    vsync-active = <1>;
-> +                    data-active = <1>;
-> +                };
-> +            };
-> +        };
-> +    };
