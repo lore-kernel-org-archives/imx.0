@@ -1,53 +1,56 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A476F27FB28
-	for <imx@lists.linux.dev>; Sat, 11 Oct 2025 17:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128FA27F749
+	for <imx@lists.linux.dev>; Sat, 11 Oct 2025 17:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760202184; cv=none; b=UolTdFW4gAI4OsWe4rp128/2E47TObMmlEu6J1y3i57kKLCkNSWVJaWhqepKDU/qo8CivBES9pko0gorDM7EOfwKi+6ETHnEtcx4fB0Mcnk5NSsRGNbJd7dEHtk/f+qhd/bkXX11rJSXa6zYm9/EXKoRjC2uT7kfEQJlZRJOV+Y=
+	t=1760202188; cv=none; b=ROCfU/QtF/OYjAI1e3fpNbRUGAwebpq0v9PMgp0ETOKgEIa/+mS37oSnr0WdbasXKpcInGSpQhuQnhK6lfs2WPc4yf4LodD93io5/f2j44Enj7RYD/tDb9xiWJ4jhjZ37xzLU8xBZnDigqdPl8MH9H1LciT/3mWE8Lp+m2JPcFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760202184; c=relaxed/simple;
-	bh=RIiKrgIvMU/IjFcqOPDAzbGkKomi1CihhO9jPnIYg88=;
+	s=arc-20240116; t=1760202188; c=relaxed/simple;
+	bh=bFEVbQmygDYLCE/bDEDOcvBSVFY1+/Eey1AHZExt5RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSF+vXgy3+U2XaGJx1F7LEdCWPGew3gXLfzcWoES6M5utcfJ2a4cZ+C71UhiupdVhioItNTE16P9q+GF4AWOx/fvm7AjY1amSdKfcmf1Z6F/K8ot7NCExLPlD4FIxONeSbxIqif1b7d6BaJ875EkY+Esk1Dw8viB8McMRd0anpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=e7edRgvr; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=vEZiE5kR; arc=none smtp.client-ip=80.241.56.151
+	 MIME-Version; b=d0PYQBS/FdDgjqeMlizgMzvUnPYHfTUfkC406JrTHl/wIxQzgIsc0M/oUmuee0oRn/0aD7q4NlBsN4fayCnrlRGXHap2TcQ+LcI7pdosieSOODYWKWWx87OYa9Pc2RmMZaT7hIEwtmr3e9Kahg6x8wmuzYYmXwoFcu0KStjzjSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=bpdAM743; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ixLvw9ab; arc=none smtp.client-ip=80.241.56.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="e7edRgvr";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="vEZiE5kR"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="bpdAM743";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ixLvw9ab"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4ckVKq29N6z9svm;
-	Sat, 11 Oct 2025 19:02:55 +0200 (CEST)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4ckVL00C43z9sm3;
+	Sat, 11 Oct 2025 19:03:04 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760202175;
+	t=1760202184;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=t5LIwADdeTrYwbX6llVTzDuJpx8CtqSl8BhfaECop4A=;
-	b=e7edRgvr7JCvLHkAnG2gKhAYgQgN1BDydmcfE24RmzO9bTGEPJoeeueGSxojF6dvwz3vNQ
-	TzUJHpnC05SshopU/YEyWiUlSZy5JhrMU8iqs6OoJywYRR7nPXzN+lDFeHDuWVZ9iwScpE
-	+t5R1w0MjEs3xnjR0tODpKwGH+53kcbzWwx4je6amDuh6RmJ8MM/b1PDYi7Fr5uaJEhVwX
-	Zf82lRtf2TQFKQjIjjFcC5/XZ29Snq0KAStl3g14Ai4zwaMGPVWq8aga0u4mFtmUppaFuK
-	t4YNw1cTVjo8aSCXTSGddvVtdquvqbpOyexZ7hieCJ0cSGuZ8hpGtd3sTr0qQw==
+	bh=SC+/Y0nmVIFcQ2pWahGO/IJdntF+c5+bodHF9PVowes=;
+	b=bpdAM743DEFe5YIgViwjz8+83tTREKdB49L9J6jrCCNy0NJf2HLnXGaQ1RII62qNuFLUVP
+	nskSpWSDe0vWAb/bbiwzVNkMrjzdDy/IsysmPJID1ovb4jm6OTs/eDZ7TZLjHJsMC4U14x
+	1hfUKIvIvmsQ0sIjqBPI3OxBOOfO2ZoeT9UoxZrkKmpRPhtL14Kdvm1u/o1GOgjBaA7VGl
+	3k3+2GpXz0nVazkRpBFHO7SO+6NwFVXOypk167Ar3Svv2N85RRJy8KwpXiZPVhc9Qrj2Mb
+	q6aT9aZKpDuZQ7HGabFCbZQNruuCqmY2Te9nB/ikMv4IYEOv30CQXwgHqE0OlQ==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=ixLvw9ab;
+	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
 From: Marek Vasut <marek.vasut@mailbox.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760202173;
+	t=1760202182;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=t5LIwADdeTrYwbX6llVTzDuJpx8CtqSl8BhfaECop4A=;
-	b=vEZiE5kRykGhGEjoOqVbJP0v71GbvnBv3DNUXoBdCQweCz3kGCpE1TzRUPSDE68yKWXh84
-	XKQ3nvmO7zTC1rLi2ERpioTilckplNCIaqRjQ5BSIG9QbCww57kzLBMOvi4OePMczmc6oG
-	Hu0Fyk92lCY/f/4/gbtDY/l/eQ4ztCD0/x4fkZ3fcVUYS9/gh53GVpoYwyIDKInj9ZShJK
-	lmycnmUlqFM5wOHDOybzS/lrsQwBpgFpYWaaDlAqKKnkm8DC5iJYFa39HoPjQnsFjWj2KF
-	msBk3CzVpBnpmGLqZ+talo7CMxhgofzd4DpnlzhKX8jfy3FUyVfSwyW7bS9hmw==
+	bh=SC+/Y0nmVIFcQ2pWahGO/IJdntF+c5+bodHF9PVowes=;
+	b=ixLvw9abgHVEI0sZWQjxG9Dth/ksM86xmAnTuLBG6jlH5UDQRR6rnLnW/xo9nmY9eS6slf
+	joEiPvEk5PhcXD2r8idWnYZoN2DkFbRHjsbI9rlpzQ06DMf5i9KNn+rKjkAkguL3ogcQV4
+	fQe3UDrH/oRXMFAcvMjvb0G23aPXWNbdbg3j86zzhDwYkXznNmGak2m4mMvKkpVF3AbCXa
+	AEmSgsnGZgnTxUc0eJFdaNG4FdLop1yXsBzPomopY0SYJ4r6hAOtITznt26TC+DEmk50y4
+	p7Mmnbccao3YVYhxOAIEdIIJ0/IiMxQgSrvhu7hzrM70ibpTN4N3B3M9n23MaQ==
 To: dri-devel@lists.freedesktop.org
 Cc: Marek Vasut <marek.vasut@mailbox.org>,
 	Abel Vesa <abelvesa@kernel.org>,
@@ -66,9 +69,9 @@ Cc: Marek Vasut <marek.vasut@mailbox.org>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-clk@vger.kernel.org
-Subject: [PATCH 01/39] dt-bindings: display: imx: Document i.MX95 Display Controller DomainBlend
-Date: Sat, 11 Oct 2025 18:51:16 +0200
-Message-ID: <20251011170213.128907-2-marek.vasut@mailbox.org>
+Subject: [PATCH 04/39] drm/imx: dc: Use bulk clock
+Date: Sat, 11 Oct 2025 18:51:19 +0200
+Message-ID: <20251011170213.128907-5-marek.vasut@mailbox.org>
 In-Reply-To: <20251011170213.128907-1-marek.vasut@mailbox.org>
 References: <20251011170213.128907-1-marek.vasut@mailbox.org>
 Precedence: bulk
@@ -78,13 +81,13 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: gqxarmiuu1o1k3jtio5duniphc4sjzo3
-X-MBO-RS-ID: 54db7b2b31df76cf6e5
+X-MBO-RS-ID: 3c19b5b512e3de1a7b6
+X-MBO-RS-META: m6utjgyz4k4mj83qbrydrpkc6xgkcgte
+X-Rspamd-Queue-Id: 4ckVL00C43z9sm3
 
-i.MX95 Display Controller display engine consists of all processing
-units that operate in a display clock domain. Document DomainBlend
-block which is specific to i.MX95 and required to get any display
-output on that SoC.
+Switch to bulk clock operations, as many of the blocks present in DC
+use multiple clock on i.MX95. The use of bulk clock operations allows
+the driver to seamlessly handle one or multiple clock.
 
 Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
 ---
@@ -106,48 +109,157 @@ Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-clk@vger.kernel.org
 ---
- .../display/imx/fsl,imx95-dc-domainblend.yaml | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx95-dc-domainblend.yaml
+ drivers/gpu/drm/imx/dc/dc-drv.c | 14 ++++++++------
+ drivers/gpu/drm/imx/dc/dc-ic.c  | 14 ++++++++------
+ drivers/gpu/drm/imx/dc/dc-pe.c  | 12 ++++++------
+ drivers/gpu/drm/imx/dc/dc-pe.h  |  3 ++-
+ 4 files changed, 24 insertions(+), 19 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx95-dc-domainblend.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx95-dc-domainblend.yaml
-new file mode 100644
-index 0000000000000..703f98e3321e8
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/imx/fsl,imx95-dc-domainblend.yaml
-@@ -0,0 +1,32 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/imx/fsl,imx95-dc-domainblend.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale i.MX95 Display Controller Domain Blend Unit
-+
-+description: Combines two input frames to a single output frame.
-+
-+maintainers:
-+  - Marek Vasut <marek.vasut@mailbox.org>
-+
-+properties:
-+  compatible:
-+    const: fsl,imx95-dc-domainblend
-+
-+  reg:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    domainblend@4b6a0000 {
-+        compatible = "fsl,imx95-dc-domainblend";
-+        reg = <0x4b6a0000 0x10>;
-+    };
+diff --git a/drivers/gpu/drm/imx/dc/dc-drv.c b/drivers/gpu/drm/imx/dc/dc-drv.c
+index f108964bf89f4..2717c92aba6c5 100644
+--- a/drivers/gpu/drm/imx/dc/dc-drv.c
++++ b/drivers/gpu/drm/imx/dc/dc-drv.c
+@@ -31,7 +31,8 @@
+ 
+ struct dc_priv {
+ 	struct drm_device *drm;
+-	struct clk *clk_cfg;
++	struct clk_bulk_data *clk_cfg;
++	int clk_cfg_count;
+ };
+ 
+ DEFINE_DRM_GEM_DMA_FOPS(dc_drm_driver_fops);
+@@ -163,10 +164,11 @@ static int dc_probe(struct platform_device *pdev)
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+-	priv->clk_cfg = devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(priv->clk_cfg))
+-		return dev_err_probe(&pdev->dev, PTR_ERR(priv->clk_cfg),
++	ret = devm_clk_bulk_get_all(&pdev->dev, &priv->clk_cfg);
++	if (ret < 0)
++		return dev_err_probe(&pdev->dev, ret,
+ 				     "failed to get cfg clock\n");
++	priv->clk_cfg_count = ret;
+ 
+ 	dev_set_drvdata(&pdev->dev, priv);
+ 
+@@ -201,7 +203,7 @@ static int dc_runtime_suspend(struct device *dev)
+ {
+ 	struct dc_priv *priv = dev_get_drvdata(dev);
+ 
+-	clk_disable_unprepare(priv->clk_cfg);
++	clk_bulk_disable_unprepare(priv->clk_cfg_count, priv->clk_cfg);
+ 
+ 	return 0;
+ }
+@@ -211,7 +213,7 @@ static int dc_runtime_resume(struct device *dev)
+ 	struct dc_priv *priv = dev_get_drvdata(dev);
+ 	int ret;
+ 
+-	ret = clk_prepare_enable(priv->clk_cfg);
++	ret = clk_bulk_prepare_enable(priv->clk_cfg_count, priv->clk_cfg);
+ 	if (ret)
+ 		dev_err(dev, "failed to enable cfg clock: %d\n", ret);
+ 
+diff --git a/drivers/gpu/drm/imx/dc/dc-ic.c b/drivers/gpu/drm/imx/dc/dc-ic.c
+index a270ae4030cdc..67441b349a7d2 100644
+--- a/drivers/gpu/drm/imx/dc/dc-ic.c
++++ b/drivers/gpu/drm/imx/dc/dc-ic.c
+@@ -30,7 +30,8 @@
+ 
+ struct dc_ic_data {
+ 	struct regmap		*regs;
+-	struct clk		*clk_axi;
++	struct clk_bulk_data	*clk_axi;
++	int			clk_axi_count;
+ 	int			irq[IRQ_COUNT];
+ 	struct irq_domain	*domain;
+ };
+@@ -136,10 +137,11 @@ static int dc_ic_probe(struct platform_device *pdev)
+ 	if (IS_ERR(data->regs))
+ 		return PTR_ERR(data->regs);
+ 
+-	data->clk_axi = devm_clk_get(dev, NULL);
+-	if (IS_ERR(data->clk_axi))
+-		return dev_err_probe(dev, PTR_ERR(data->clk_axi),
++	ret = devm_clk_bulk_get_all(dev, &data->clk_axi);
++	if (ret < 0)
++		return dev_err_probe(dev, ret,
+ 				     "failed to get AXI clock\n");
++	data->clk_axi_count = ret;
+ 
+ 	for (i = 0; i < IRQ_COUNT; i++) {
+ 		/* skip the reserved IRQ */
+@@ -242,7 +244,7 @@ static int dc_ic_runtime_suspend(struct device *dev)
+ {
+ 	struct dc_ic_data *data = dev_get_drvdata(dev);
+ 
+-	clk_disable_unprepare(data->clk_axi);
++	clk_bulk_disable_unprepare(data->clk_axi_count, data->clk_axi);
+ 
+ 	return 0;
+ }
+@@ -252,7 +254,7 @@ static int dc_ic_runtime_resume(struct device *dev)
+ 	struct dc_ic_data *data = dev_get_drvdata(dev);
+ 	int ret;
+ 
+-	ret = clk_prepare_enable(data->clk_axi);
++	ret = clk_bulk_prepare_enable(data->clk_axi_count, data->clk_axi);
+ 	if (ret)
+ 		dev_err(dev, "failed to enable AXI clock: %d\n", ret);
+ 
+diff --git a/drivers/gpu/drm/imx/dc/dc-pe.c b/drivers/gpu/drm/imx/dc/dc-pe.c
+index 6676c22f3f458..eb96a6206cc6d 100644
+--- a/drivers/gpu/drm/imx/dc/dc-pe.c
++++ b/drivers/gpu/drm/imx/dc/dc-pe.c
+@@ -27,10 +27,10 @@ static int dc_pe_bind(struct device *dev, struct device *master, void *data)
+ 	if (!pe)
+ 		return -ENOMEM;
+ 
+-	pe->clk_axi = devm_clk_get(dev, NULL);
+-	if (IS_ERR(pe->clk_axi))
+-		return dev_err_probe(dev, PTR_ERR(pe->clk_axi),
+-				     "failed to get AXI clock\n");
++	ret = devm_clk_bulk_get_all(dev, &pe->clk_axi);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "failed to get AXI clock\n");
++	pe->clk_axi_count = ret;
+ 
+ 	pe->dev = dev;
+ 
+@@ -99,7 +99,7 @@ static int dc_pe_runtime_suspend(struct device *dev)
+ {
+ 	struct dc_pe *pe = dev_get_drvdata(dev);
+ 
+-	clk_disable_unprepare(pe->clk_axi);
++	clk_bulk_disable_unprepare(pe->clk_axi_count, pe->clk_axi);
+ 
+ 	return 0;
+ }
+@@ -109,7 +109,7 @@ static int dc_pe_runtime_resume(struct device *dev)
+ 	struct dc_pe *pe = dev_get_drvdata(dev);
+ 	int i, ret;
+ 
+-	ret = clk_prepare_enable(pe->clk_axi);
++	ret = clk_bulk_prepare_enable(pe->clk_axi_count, pe->clk_axi);
+ 	if (ret) {
+ 		dev_err(dev, "failed to enable AXI clock: %d\n", ret);
+ 		return ret;
+diff --git a/drivers/gpu/drm/imx/dc/dc-pe.h b/drivers/gpu/drm/imx/dc/dc-pe.h
+index f5e01a6eb9e91..ffeb1c7af1c9f 100644
+--- a/drivers/gpu/drm/imx/dc/dc-pe.h
++++ b/drivers/gpu/drm/imx/dc/dc-pe.h
+@@ -67,7 +67,8 @@ struct dc_lb {
+ 
+ struct dc_pe {
+ 	struct device *dev;
+-	struct clk *clk_axi;
++	struct clk_bulk_data *clk_axi;
++	int clk_axi_count;
+ 	struct dc_cf *cf_safe[DC_DISPLAYS];
+ 	struct dc_cf *cf_cont[DC_DISPLAYS];
+ 	struct dc_ed *ed_safe[DC_DISPLAYS];
 -- 
 2.51.0
 
