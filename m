@@ -1,161 +1,228 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011003.outbound.protection.outlook.com [40.107.130.3])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFED225A33F
-	for <imx@lists.linux.dev>; Sat, 11 Oct 2025 12:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760184135; cv=fail; b=Nv8m80u4KL+D2UmeZAAEmsdTFIHlG1ilygWlBjYZj2TteyxhoTGsXYceI2yxaU80hXdKdCXbBrW5sVGRtsjoXLzgdSuBBgeDI3S7JW9XRM7KRWLb9v9yaikmKfCgvlb7WNmWH5HFb/b/9SQTD8zoC+BWAHWOp8VKL5R4U3L7BnI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760184135; c=relaxed/simple;
-	bh=EhmwmjfVPvfwIo+pr1yi/lvQFsbgQe39nPa9+qtplkI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sRo2Ra3y9vF6xQhUvE/06SW1cU5dbePY1eFxCXWInUSeBid8ZJZtJskTT0k8Jj5EQqNhpe5f5jfr85CNUKiOiCWtA7VFzIbeZrJxvJZs7NoeUG2pbUeNl6gxeRYguthHi9jBXkH1nUZ+Qp6ZItYMI3zB1CIrJRwQNNNPywDKlmc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=w+R/thve; arc=fail smtp.client-ip=40.107.130.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8875233993
+	for <imx@lists.linux.dev>; Sat, 11 Oct 2025 17:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760202182; cv=none; b=B0xVZqkJUmEO9B0dypGsR9h3fdA3Zcybd14hjxPIeGQs0jvZub3dSpmbH2L4J5b5m7NPyrYJ3uiBZNBod4EJ8L46js3lVQm9Zpzk6CaPoSwElYnZ7kVQ8CtNHQ+BttQuQpmkqq2e3/pZ4V+VWjNQifcT4v6mG7Sgfz+zBxLn85o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760202182; c=relaxed/simple;
+	bh=LECoISrbAUXZ1zTG2XB1ICW01bCWNc5clDi08W+52Fc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qaNJhjnejakA1TYSMNHG9u46Ts+C5JnT34hV7GpJ1zRmvxCiY9G7V//h526cjVonCZVoN9Fxj3JzTBuxme4gbMZJy8S/xhcOvQ7X3XyAtbKdnY6zyCl4itq9UEpuzuQ7rANG/7p6C7DZOSSV0Ja+kDHUq0CL/kZBnLZWFsGy3qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=v17tz+tJ; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=fOf3IvO2; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="w+R/thve"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TOpSE3C9EdHaEewf+0m562OHLwxE0aG6UuzReowk1UiB7YDmQQNnCL9C7/1n95as3OhGdRHscEQ3GW+sQJ+ZhHB9ONqD7EQQ+SwitujZEtqVBtu/bqj9Uugc+NhMbz+yoLlJIbA0Kyfe2Ul5h3fY+cbcsVG1wX/Ajpvi61Imau3gylK2Io5YXyN8mI9mQvUrPm7nj5oWLKF1kYxUfCtFur18JOWAGib5NWAC+ybfkW/mKxeiSSG1BGqq1D1qh/Y3vtUtzszrNd+JKYr7AijgqAcZbK8psrQBoccoTRrtbC7sOfejN+/t9ryf0lh61LE2eFDTxN1AEP5+LC72YHSzAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EhmwmjfVPvfwIo+pr1yi/lvQFsbgQe39nPa9+qtplkI=;
- b=B4eTKdcb5ElPyB8QilIqjN8Vt06yFEwLuSzFPNidZk9Pg1QQ/4CNeA3XvMF7feTKuRnZzTLiQQQLLgo6f5oneAMd99OOgaxV2PmSvYO2MSNnkW6A0ucK0Sy9oC4vCTfYK02NPftZ5He36qKeC+LxNZ1SCAaW54EJtzBuv8pef+mtkmTYnSjZpl1gdQ1fxxHWAssYqzygbU1yW54xjrrYU0QBPo9C3Pmg9p/sp4uceNav0s1bFZdUMQmXrQ0AtQlYxPBTF8r2bR8tLdYtGpL9lNRf2oWyl2OefyeCVvmR/SKEFrm86ZWd5CaXi/MKhZY61DUcaZBn+h1pTSuQHDMtyw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EhmwmjfVPvfwIo+pr1yi/lvQFsbgQe39nPa9+qtplkI=;
- b=w+R/thveHv3AzWcbL7MnA2gTj2or1eMk7ydy0PYXekkuOUttCW6dtY6bCcAGcT7aAcs5MoLM2WlKUdEdprfcqfNrjeH3jGD9izXuNxixBP6av1lDvWjVJu4xccBABuAA4cRcT4aMWQGBKTbXoob+yfsJMADWBcLQUvRO3jmvOw5yAYkRZhtJRLPXGD4b5VBfK03MabeuoAip7c+LR3g/hdDXIdw/v5cGmDPDCKhVRCMT+9yzhb+ubjBlJvvBnCBm/ggOuGi9hfgMjGXdw+2CxqToviKWu7D5VCuwQ3mFpX/nNp4Wc40KipIQlhiuLcOzdB6ogmSj4hxz79XsXe22zg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
- by DU4PR04MB11364.eurprd04.prod.outlook.com (2603:10a6:10:5d7::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.10; Sat, 11 Oct
- 2025 12:02:06 +0000
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197]) by DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197%4]) with mapi id 15.20.9203.009; Sat, 11 Oct 2025
- 12:02:06 +0000
-Date: Sat, 11 Oct 2025 21:14:15 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Yannic Moog <y.moog@phytec.de>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="v17tz+tJ";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="fOf3IvO2"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4ckVKm1Lvnz9t8r;
+	Sat, 11 Oct 2025 19:02:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1760202172;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mL1+Jl7MA/4qoWAJdJa7Mwpah/QL/KBofTWVwpT9vcQ=;
+	b=v17tz+tJ4Qd2MFf5nMyiML7pzfojjVnwMlVGf8YZXLnmCNdiV6kKloKsx/Cy3k1xpDbJlO
+	2kAMjXrPo02ZKS65uG+KuIMey6tCA20VVnbSlE/su/6H1fbq2ReJ9lvhwhmgBNlVN5Aov2
+	fE762fqdNpdt0xbjaz1qFqFA2DpdIigssugTTtE31oqZeiRu1NUeoVgxWNxHPUXVKqcAAD
+	WfUk2vebvtAMOejZ11+tREEcXN9LZjz5DNT5Ze9hi80ueP6iZ+tYZTrqeeP4rwnyi9XKdG
+	CttMdmpYKRkTJUFx+FHa7kN61mrqrc8R1BkpviVISC9mavHy14mnHNndiWmnVw==
+From: Marek Vasut <marek.vasut@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1760202170;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mL1+Jl7MA/4qoWAJdJa7Mwpah/QL/KBofTWVwpT9vcQ=;
+	b=fOf3IvO2feDe+e8hnSxNLxlH3hILMtTs5FU4j9NwAOvSzaD5bmd/zkR7MkHSicKr1CASif
+	v9kJwCIxGljdV0I/HpqKoYNzIGpOluun+FOmmIAarOyRXQEv3VSNaCLW6TEUhTw/5sJQ30
+	1LsCwmnjVk50O6gp4Oyogd+gjT96SrGKmlkN7070/Zs0iQf7vIsC+GHvD3fxpEVXrb/5F7
+	vNUN7bsQVKNT/iPawQdzUWBxHG475I7k0IcwpUP+uleVATOk+xs8f3+idJHY+AEzMKny/k
+	ziCzErMXp/BfSGjDh4g/X64PTrfH8PyRP3OrGw/qDIe9TwUyFNJ/6xlfBWxRiA==
+To: dri-devel@lists.freedesktop.org
+Cc: Marek Vasut <marek.vasut@mailbox.org>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, upstream@lists.phytec.de
-Subject: Re: [PATCH v3 4/4] arm64: dts: imx8mp pollux: add displays for
- expansion board
-Message-ID: <20251011131415.GE20642@nxa18884-linux.ap.freescale.net>
-References: <20251001-imx8mp-pollux-display-overlays-v3-0-87f843f6bed6@phytec.de>
- <20251001-imx8mp-pollux-display-overlays-v3-4-87f843f6bed6@phytec.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251001-imx8mp-pollux-display-overlays-v3-4-87f843f6bed6@phytec.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI1PR02CA0025.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::13) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Liu Ying <victor.liu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org
+Subject: [PATCH 00/39] Add i.MX95 DPU/DSI/LVDS support
+Date: Sat, 11 Oct 2025 18:51:15 +0200
+Message-ID: <20251011170213.128907-1-marek.vasut@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB8461:EE_|DU4PR04MB11364:EE_
-X-MS-Office365-Filtering-Correlation-Id: 26bea00c-491f-4f67-7ed7-08de08bdff81
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|7416014|52116014|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bYK+ESJmsqMVEjgH+XMyQTCMq2jE5OdRbGVZCFuTEsOsTMxTHp1S3zqFNht3?=
- =?us-ascii?Q?vMaHiXR2z2/txsugSW4DURlnkjqIHo+pY16bnyvUh+Iuv3j3vR2g0Ynfiyu6?=
- =?us-ascii?Q?5ulxQ4nUB6a9yrA3itArWfe4//5yXKC4+mbTTfUWgTv+ep9ey9t4TsTxNDFG?=
- =?us-ascii?Q?9DaStPc53yyM8zPrLKMCnRw+lg/YfU0ygHM+byQJa8Xt8xdjgt/eCyqlGpP3?=
- =?us-ascii?Q?pnNKfuRmix5V5Mpl49yYMwD0GwPTLtPHGOj9zDN5rL3g90glvZ/SlvMVlylr?=
- =?us-ascii?Q?pqWOwwaXBnCiW3sK8xXO/oo1pz/DjBOHiJKMx8Ckj7nXOryklONfsCXuiXpY?=
- =?us-ascii?Q?LdOVqCX9JSVjlulfoX7hrqAoL0k11GWLMekbZyodbZjHKK364phgG/L4NWo/?=
- =?us-ascii?Q?vIYi+rorG5zD+pjts+BUQJnDVz0+Tmw7iNry5LkZr7NxMgzQm6PB3RFDuJc6?=
- =?us-ascii?Q?4Cjsr8eJMhSiHACrIUlB3ZuEtB7OhNyetq/W6lBUurVIm9DpeK0+h4MWgGJU?=
- =?us-ascii?Q?MId/XT/Gn/7EUrjpmdixB/RvKxxGlgCsaPL0FDSr89SgMeAZIhT8e/kl287u?=
- =?us-ascii?Q?2Ns4lU7HooagafHlxhqq41mte4Je0+byuz+VBoJYxxgLtrqaQTDQ8AHzUxQ0?=
- =?us-ascii?Q?6oUW9mSdSLrn9ZmOLqezeB2yRPuZ+/F2my6VuZp9kpXZocpOJp14KVx3jkix?=
- =?us-ascii?Q?YqWi4f+ktzD1QPAneRttJUtBZPuvmGwUN4KR+3hioJZ6Dz7ltji/Lzh+P6bd?=
- =?us-ascii?Q?RuV13Fo+PqOVx9mKtTZARlZyj+60DztQbAQeN8X2Hq0j7ish7wI1KJl8CJlr?=
- =?us-ascii?Q?L/zIw07vWIiZZXgOBpRw15wdEXwqQHnNPlv89lFnBeT6n4wqs+RAXsFHyfsT?=
- =?us-ascii?Q?j/O2rJlAgrPkhAMUnjWKPLlYQTwmlRXSkBUEzWDxtHLajMsB0tkUqSfSFnuQ?=
- =?us-ascii?Q?QjPXOh6twl3aDq0A3GQvRiG0az7pooPrcLLffBIEf4kupuQ5PJvfCgzsRehh?=
- =?us-ascii?Q?IEthTEiKpVLcV1yz8KrpSW6kMFkpmMbByOQX1hGSzu1UymC/fb1uqsYPDuz5?=
- =?us-ascii?Q?kKDZAa7qWox4iuzJ/NyY5tqQyQCGUIzS7iTpsrdWmU3tctcB3Ewvdaqv56Q9?=
- =?us-ascii?Q?akf1waxFatvmSY1QJQuDind1/l1LNS55ITNkpjHHiZAPuwXPfTXqeiU+uO6a?=
- =?us-ascii?Q?lVrrmVjIUZHc1zZ1vhTqNQv+1t6mggOIA42SqgOjsO9El6Dp9hg0RnB2NC+A?=
- =?us-ascii?Q?7WucdtWk71VmCOBkheySJ5Sc0/ZW3l/5m5MXWrw1K5Ti3JvqPt280zB82Tdd?=
- =?us-ascii?Q?d4m7Ioxl0ULtcrhE5OxUWthWmTNuIyXcVyw2j1BSipSoNSnWNxs917NWX7HB?=
- =?us-ascii?Q?9ZnwZgpU67P9NIPDpUeZGGP9HKYaV409NnpFvW+Do4F6+4ErB4hdLGfWM6w5?=
- =?us-ascii?Q?qWKvDiR7bZO/7JbWq3HG/cdrHfM2Js7EqhuZOph3iwRKpmiE2N/80B7TuJLG?=
- =?us-ascii?Q?iMuBgibzHAUFOqfJKib6EmtYBB+SGwRSein4?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(7416014)(52116014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZO61OiAMuwGHMfXzP4J15CA7ng8mhO0JS4mv2W9WydDW2TUdmC1U9KP2dvs7?=
- =?us-ascii?Q?IU6reYcFKxvAY/hhIHwrSSjkX5FpT2CruU9Tb08PFT9xxuzdnBllx8DQAzjr?=
- =?us-ascii?Q?Gpx6EgzPIe7T0rRLpbtMx/Xkz7MZ0KUoRy3bZgLYYFnozDnZVkHkD/ApKm8K?=
- =?us-ascii?Q?4jHVsr8UVDDlx4p0no3z/tFNeXpbcY4aekMwi2JS1Tyq9wBu67mxoOBE0Zd8?=
- =?us-ascii?Q?bUU8RhDbnkSOlbL/rmjn3l3q+QR64GtlR3RB+znIyV7z2L3GPYc4u4OjfxlL?=
- =?us-ascii?Q?vEgyK6ZRQ/Wyb+GAnD2jPr/vrTZgWDm7RRUHxUI8JoGAJDEQG/hLSG0q5FsQ?=
- =?us-ascii?Q?W3S7CkRKSZajIqPQVtA05irZR6Oq62SWvcWOsNxwpS1Ilx2y7ih/ltkdmXXN?=
- =?us-ascii?Q?gQvePUphO0F4Jkha25COuOZw9EbwJy/V/uY0L/e7PEP1QiBgWCGJUKdZssl+?=
- =?us-ascii?Q?Ddys4u8nwZEv9+KQtooBqruaDBDyYdOwLHZ5UHnsBC7mvYdUwyVpBfEAP1r/?=
- =?us-ascii?Q?gezbLSVfzSeRw1c/h6dyYg3CmjB5BZ03/iUWyj6kRTtq3UEzy/lGrARddKeI?=
- =?us-ascii?Q?fGuc5J0zQzMAV4+tMnl7A+m/A3jIhnoThGav8AxqKE6xGQD7GE8jr2Efsjr3?=
- =?us-ascii?Q?MPfgQL4FYTn3H/vRnOXrSi5PMacQMFJ/AEMg/zQwEpwYcLveeGiUAxQGZJho?=
- =?us-ascii?Q?2c8UST7LH7zcTMqZ0J6ag/BJnjPwMoXt7i1d+hJjMvhklXkINA2+kiuJHU7z?=
- =?us-ascii?Q?GR9iqK5ufSfvf+9HdaWp3ckqCAg9QlOI9PqBG2fUPkcc255e1wk4ECaq2K0E?=
- =?us-ascii?Q?/6nr3XBca0uPQT7pwGfW/9ZANGGWRTJZyo2MccKvcEDCcW0iLp9idGTEoFQ5?=
- =?us-ascii?Q?0g6G/XTE9ClbUPu5QSIWStYhN/SQPSC4jfP76V66n8FdTIbH5BepWcqQr7UF?=
- =?us-ascii?Q?S5jv6vRJEAZEedbGlOuiO6QeZcLijX/WD6lj0yVde+4qcH0YlYEZv85TkfNW?=
- =?us-ascii?Q?BZAFh+iRrcs1dXKBHucPBPWLmXRUjkwkgZtGePaGTDfVMjUlwx2jDt5yH3nE?=
- =?us-ascii?Q?GEWD3gRExbqek6SyDyg0hJ9EUNsu6wWzkVchaI7bpa9Q5OUYZGacYgCmRJxF?=
- =?us-ascii?Q?xeJh/buxIMhAwu6QFU/43Hb1TG3XLwhCCT4Mwd84SteT0c3NYsVAHV4iu/8v?=
- =?us-ascii?Q?MNI7Mr1fjRwqvp+qQtzOPrbHSsKs8g0OmOQyuu1U8LAmtzmkJniXnMaW6Gn1?=
- =?us-ascii?Q?gzK49VS0Gq0MRMNjSbLibsQtLLsUiwr4vCQFr8hzaVWGMVnt/ZDLZidfI3U3?=
- =?us-ascii?Q?YUkVqq5x0Hu5c8mxTG/o/o1AAG2E9dXCji7M1HO97/7+UmRG2GhyudNvsicw?=
- =?us-ascii?Q?889xc+w5UfURtFwesvzIC0nEs8eP6fCHObFs/U3rEhNWEcQBBlesqa0ybQsy?=
- =?us-ascii?Q?Mtgm9YUW5+YurVB5HWo6EYOAOPBfBLF4DvAWqbmvB7acWT4JaUXIXADHpNp+?=
- =?us-ascii?Q?LjeVOfOHz7yFGJBSBIvTxBWMuAaaos3uXu9pwjFqa8wmsXQTEzPDsEaxmBzY?=
- =?us-ascii?Q?XUnshETOodC0cpBM+lVE40PU2uVaFmACTf8WaCVw?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26bea00c-491f-4f67-7ed7-08de08bdff81
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2025 12:02:06.7488
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yQsIWsx7SyFcU8w1Kq1Zh1xM4Zrzs63voYC4LDIR/USdMN+WNR2HkWE8M22C3wCeB9q3HuyMjZcdEQZCevzETQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11364
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: x47qkkhta4xd3ewnu1awe5y7riujfwoj
+X-MBO-RS-ID: 238e2e9e1fd66030e55
 
-On Wed, Oct 01, 2025 at 02:33:54PM +0200, Yannic Moog wrote:
->The same displays that can be connected directly to the
->imx8mp-phyboard-pollux can also be connected to the expansion board
->PEB-AV-10. For displays connected to the expansion board, a second LVDS
->channel of the i.MX 8M Plus SoC is used and only a single display
->connected to the SoC LVDS display bridge at a given time is supported.
->
->Signed-off-by: Yannic Moog <y.moog@phytec.de>
+This large series adds support for the i.MX95 display pipeline, including
+DPU, DSI and LVDS support. Most of the components extend existin drivers,
+DPU is added into DC driver, DSI into iMX93 DSI driver, LVDS into iMX8MP
+LDB. Pixel link and pixel interleaver drivers are reworked to work as two
+independent channels, since there seems to be no dependency between their
+two channels. The i.MX95 DTSI changes are also included.
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Since the DPU chapter is missing from the i.MX95 RM, this is based on the
+NXP downstream kernel fork code and there might be issues.
+
+Majority of this series are DPU patches on top of the DC driver, I tried
+to keep them separate and easy to review. Later part adds LVDS and DSI
+support, this can be split into separate series.
+
+Both DSI-to-HDMI path using LT8912 bridge and LVDS single-lane with Logic
+Techno LT170410-2WHC panel were tested on Toradex i.MX95 Verdin EVK v1.2 .
+
+Liu Ying (2):
+  drm/bridge: imx: Add NXP i.MX95 pixel interleaver support
+  drm/bridge: imx: Add NXP i.MX95 pixel link support
+
+Marek Vasut (36):
+  dt-bindings: display: imx: Document i.MX95 Display Controller
+    DomainBlend
+  drm/imx: Add i.MX95 Display Controller DomainBlend
+  dt-bindings: display: imx: Document i.MX95 Display Controller
+    processing units
+  drm/imx: dc: Use bulk clock
+  drm/imx: dc: Rework dc_subdev_get_id() to drop ARRAY_SIZE() use
+  drm/imx: dc: Rename i.MX8QXP specific Link IDs
+  drm/imx: dc: cf: Pass struct dc_subdev_info via OF match data
+  drm/imx: dc: de: Pass struct dc_de_subdev_match_data via OF match data
+  drm/imx: dc: ed: Rework dc_ed_pec_src_sel() to drop ARRAY_SIZE() use
+  drm/imx: dc: ed: Pass struct dc_ed_subdev_match_data via OF match data
+  drm/imx: dc: fg: Parametrize register access
+  drm/imx: dc: ed: Pass struct dc_fg_subdev_match_data via OF match data
+  drm/imx: dc: fu: Describe remaining register offsets
+  drm/imx: dc: fu: Inline FRAC_OFFSET into FetchLayer and FetchWrap
+  drm/imx: dc: fu: Pass struct dc_fu_subdev_match_data via OF match data
+  drm/imx: dc: lb: Pass struct dc_lb_subdev_match_data via OF match data
+  drm/imx: dc: tc: Pass struct dc_tc_subdev_match_data via OF match data
+  drm/imx: dc: ic: Pass struct dc_ic_subdev_match_data via OF match data
+  drm/imx: dc: ic: Use DT node as interrupt controller name
+  drm/imx: dc: Configure display CSR clock feed select
+  drm/imx: dc: crtc: Do not check disabled CRTCs
+  drm/imx: dc: Keep FU unit running on i.MX95
+  drm/imx: dc: Add OF match data for i.MX95
+  drm/imx: Add more RGB swizzling options
+  dt-bindings: display: bridge: Document NXP i.MX95 pixel interleaver
+    support
+  dt-bindings: display: bridge: Document NXP i.MX95 pixel link support
+  dt-bindings: display: bridge: Document Freescale i.MX95 MIPI DSI
+  drm/bridge: imx93-mipi-dsi: Add i.MX95 PLL initialization
+  dt-bindings: clock: Split support for i.MX95 LVDS CSR
+  dt-bindings: display: bridge: Document i.MX95 LVDS display bridge
+    binding
+  dt-bindings: display: bridge: ldb: Add an i.MX95 entry
+  drm/bridge: fsl-ldb: Parse register offsets from DT
+  drm/bridge: fsl-ldb: Add i.MX95 support
+  dt-bindings: interrupt-controller: fsl,irqsteer: Add i.MX95 support
+  dt-bindings: clock: support i.MX95 Display Stream CSR module
+  arm64: dts: imx95: Describe display pipeline
+
+Sandor Yu (1):
+  drm: bridge: imx: Add i.MX95 LVDS Display Bridge (LDB) driver
+
+ .../bindings/clock/nxp,imx95-blk-ctl.yaml     |   1 -
+ .../clock/nxp,imx95-lvds-blk-ctl.yaml         |  80 ++
+ .../display/bridge/fsl,imx93-mipi-dsi.yaml    |  48 +-
+ .../display/bridge/fsl,imx95-lvds.yaml        | 140 ++++
+ .../bridge/fsl,imx95-pixel-interleaver.yaml   |  85 +++
+ .../display/bridge/fsl,imx95-pixel-link.yaml  | 101 +++
+ .../bindings/display/bridge/fsl,ldb.yaml      |   2 +
+ .../imx/fsl,imx8qxp-dc-constframe.yaml        |   4 +-
+ .../imx/fsl,imx8qxp-dc-display-engine.yaml    |  45 +-
+ .../display/imx/fsl,imx8qxp-dc-extdst.yaml    |   4 +-
+ .../display/imx/fsl,imx8qxp-dc-fetchunit.yaml |   1 +
+ .../display/imx/fsl,imx8qxp-dc-framegen.yaml  |  13 +-
+ .../imx/fsl,imx8qxp-dc-layerblend.yaml        |   4 +-
+ .../imx/fsl,imx8qxp-dc-pixel-engine.yaml      |  52 +-
+ .../display/imx/fsl,imx8qxp-dc-tcon.yaml      |   5 +-
+ .../bindings/display/imx/fsl,imx8qxp-dc.yaml  |  53 +-
+ .../display/imx/fsl,imx95-dc-domainblend.yaml |  32 +
+ .../imx/nxp,imx95-display-stream-csr.yaml     |  41 +
+ .../interrupt-controller/fsl,irqsteer.yaml    |   2 +
+ arch/arm64/boot/dts/freescale/imx95.dtsi      | 710 ++++++++++++++++++
+ drivers/gpu/drm/bridge/fsl-ldb.c              |  65 +-
+ drivers/gpu/drm/bridge/imx/Kconfig            |  28 +
+ drivers/gpu/drm/bridge/imx/Makefile           |   3 +
+ drivers/gpu/drm/bridge/imx/imx-ldb-helper.h   |   2 +
+ drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c   | 612 ++++++++++++++-
+ drivers/gpu/drm/bridge/imx/imx95-ldb.c        | 470 ++++++++++++
+ .../drm/bridge/imx/imx95-pixel-interleaver.c  | 217 ++++++
+ drivers/gpu/drm/bridge/imx/imx95-pixel-link.c | 184 +++++
+ drivers/gpu/drm/imx/dc/Kconfig                |   4 +-
+ drivers/gpu/drm/imx/dc/Makefile               |   2 +-
+ drivers/gpu/drm/imx/dc/dc-cf.c                |  41 +-
+ drivers/gpu/drm/imx/dc/dc-crtc.c              |   6 +
+ drivers/gpu/drm/imx/dc/dc-db.c                | 227 ++++++
+ drivers/gpu/drm/imx/dc/dc-de.c                |  83 +-
+ drivers/gpu/drm/imx/dc/dc-de.h                |  14 +
+ drivers/gpu/drm/imx/dc/dc-drv.c               |  45 +-
+ drivers/gpu/drm/imx/dc/dc-drv.h               |  11 +-
+ drivers/gpu/drm/imx/dc/dc-ed.c                |  67 +-
+ drivers/gpu/drm/imx/dc/dc-fg.c                | 157 ++--
+ drivers/gpu/drm/imx/dc/dc-fl.c                | 145 +++-
+ drivers/gpu/drm/imx/dc/dc-fu.c                |  46 +-
+ drivers/gpu/drm/imx/dc/dc-fu.h                |   7 +-
+ drivers/gpu/drm/imx/dc/dc-fw.c                |  54 +-
+ drivers/gpu/drm/imx/dc/dc-ic.c                | 192 +++--
+ drivers/gpu/drm/imx/dc/dc-kms.h               |   6 +
+ drivers/gpu/drm/imx/dc/dc-lb.c                | 109 ++-
+ drivers/gpu/drm/imx/dc/dc-pe.c                |  12 +-
+ drivers/gpu/drm/imx/dc/dc-pe.h                |  41 +-
+ drivers/gpu/drm/imx/dc/dc-plane.c             |  18 +-
+ drivers/gpu/drm/imx/dc/dc-tc.c                |  55 +-
+ 50 files changed, 4000 insertions(+), 346 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/nxp,imx95-lvds-blk-ctl.yaml
+ create mode 100644 Documentation/devicetree/bindings/display/bridge/fsl,imx95-lvds.yaml
+ create mode 100644 Documentation/devicetree/bindings/display/bridge/fsl,imx95-pixel-interleaver.yaml
+ create mode 100644 Documentation/devicetree/bindings/display/bridge/fsl,imx95-pixel-link.yaml
+ create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx95-dc-domainblend.yaml
+ create mode 100644 Documentation/devicetree/bindings/display/imx/nxp,imx95-display-stream-csr.yaml
+ create mode 100644 drivers/gpu/drm/bridge/imx/imx95-ldb.c
+ create mode 100644 drivers/gpu/drm/bridge/imx/imx95-pixel-interleaver.c
+ create mode 100644 drivers/gpu/drm/bridge/imx/imx95-pixel-link.c
+ create mode 100644 drivers/gpu/drm/imx/dc/dc-db.c
+
+---
+Cc: Abel Vesa <abelvesa@kernel.org>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+Cc: Liu Ying <victor.liu@nxp.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>
+Cc: Peng Fan <peng.fan@nxp.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: devicetree@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-clk@vger.kernel.org
+
+-- 
+2.51.0
+
