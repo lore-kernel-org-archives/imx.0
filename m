@@ -1,134 +1,188 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7932989A2
-	for <imx@lists.linux.dev>; Sun, 12 Oct 2025 15:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970BD19258E;
+	Sun, 12 Oct 2025 17:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760281494; cv=none; b=jRJH1YQ20Rh+V/SyHzG5tz5XyQhARrYCw2i2Yv3glovGaxqda6QWSOrm0wjS9a3yn3qzhVJiBOWtxE8nbklpg2ZYv9RPJ/mNjjMiJU+OISLk87y1T58ByDEXM0r1SYww9uSeYoPC2Fws6yqqCIjxgLpIjBvwN9ItZ9gp1sex95Y=
+	t=1760288490; cv=none; b=kikj0EDJLlKMosKGZ5ovetQUvZUfI/9ilp0verFUK2KvQAy65pHPKybXqs4i1pyKqtd6vqlxmSdzULEkKxmEF+3PZvO5122uMvYnS+yG3TPxR5qvowXOqiujNs28Ku/xBKMVohWqCTtVEUyyF79z6fsmcO6kGgF5MJPStpm2NFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760281494; c=relaxed/simple;
-	bh=OeCCMF9AcXLG29Pk7q6X5M/KcH0ku8Exfiu7RFLfqZU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eZ916aDx7UWuQptXJU/QXpiSNEA3MpfGX9W6zX4jS6AlOJ32wtA2/umRFtvLKHBSqsMWJHG36b4dK0YdcSmXO/DX9sTNvuS4/pV952OStJYCaWdcO8Aiw0qyENDZe6IOFhouRYvPZe+/oBEP7tEgrGjCEdo9JgNwF+bEZO3a5b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1v7xcb-0007bV-LG; Sun, 12 Oct 2025 17:04:29 +0200
-Message-ID: <adc5287f-416d-4bb9-8ae9-b65a59b0ea93@pengutronix.de>
-Date: Sun, 12 Oct 2025 17:04:26 +0200
+	s=arc-20240116; t=1760288490; c=relaxed/simple;
+	bh=K5u3yiOfDjFXa37+LYFs7qYjcwjZgMOR4ZuK/iED6As=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oZ08jnSUKaeQJA79+spo4A7AkMTFz+NnRNwj3+EGLbBfpJiMuL4iz9wc9IIAfSWsHWQYKxEku5U8+Di+2GsjzUmSg6OqfPwKJwhzasDN/0j9MASyHCKzDIZdaZFmxHsh7JSqjrCe+pu+qOO4bw7WmWl563elJ/cwjew3P5XaKKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bw8DY+5P; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bw8DY+5P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16CAC4CEE7;
+	Sun, 12 Oct 2025 17:01:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760288489;
+	bh=K5u3yiOfDjFXa37+LYFs7qYjcwjZgMOR4ZuK/iED6As=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bw8DY+5Pfpg1R8UcoCM122hWFKDBhgU/9yRH5uMR2xTdxsTiAHJYzlsRP3MBuKA+A
+	 1vC8hsLHvHS8Y9CKurr179lLopG66hDKWRvayvIVlenefGSmSmolBu6NvD0wFa2g2P
+	 tHsRtrKTcpYKgf3fhYOBTXjeSH7oyPUpYmBgxd7J4TCyAzOIaUViw03aT+zDxMQQ7R
+	 2uIIGrC+43oI46R6FK5ilRpWBwiHowZmi4KWxMWqCaYfqExkzK7BBY6QXjESm/+AxQ
+	 T8IiRBgRG52FACaeaTCQm5qqw76XYtgo4lbx1AhpkBuaS/geUgQiSZqeHCRHeNSlAi
+	 EH8Z4I6ygOE2Q==
+Date: Sun, 12 Oct 2025 18:01:19 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+ devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>, Adrian
+ Fluturel <fluturel.adrian@gmail.com>
+Subject: Re: [PATCH v5 5/5] iio: magnetometer: Add mmc5633 sensor
+Message-ID: <20251012180119.312191fd@jic23-huawei>
+In-Reply-To: <20251007-i3c_ddr-v5-5-444184f7725e@nxp.com>
+References: <20251007-i3c_ddr-v5-0-444184f7725e@nxp.com>
+	<20251007-i3c_ddr-v5-5-444184f7725e@nxp.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] arm64: dts: add Protonic PRT8ML board
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-sound@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, David Jander <david@protonic.nl>,
- Lucas Stach <l.stach@pengutronix.de>,
- Oleksij Rempel <o.rempel@pengutronix.de>
-References: <20250924-imx8mp-prt8ml-v3-0-f498d7f71a94@pengutronix.de>
- <20250924-imx8mp-prt8ml-v3-3-f498d7f71a94@pengutronix.de>
- <20251012023714.GF20642@nxa18884-linux.ap.freescale.net>
-Content-Language: en-US
-From: Jonas Rebmann <jre@pengutronix.de>
-In-Reply-To: <20251012023714.GF20642@nxa18884-linux.ap.freescale.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: jre@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Peng
+On Tue, 07 Oct 2025 16:06:17 -0400
+Frank Li <Frank.Li@nxp.com> wrote:
 
-On 2025-10-12 04:37, Peng Fan wrote:
-> On Wed, Sep 24, 2025 at 10:34:14AM +0200, Jonas Rebmann wrote:
->> +&a53_opp_table {
->> +	opp-1200000000 {
->> +		opp-microvolt = <900000>;
->> +	};
->> +
->> +	opp-1600000000 {
->> +		opp-microvolt = <980000>;
->> +	};
->> +
->> +	/delete-node/ opp-1800000000;
+> Add mmc5633 sensor basic support.
+> - Support read 20 bits X/Y/Z magnetic.
+> - Support I3C HDR mode to send start measurememt command.
+> - Support I3C HDR mode to read all sensors data by one command.
 > 
-> Why drop this?
+> Co-developed-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Co-developed-by: Adrian Fluturel <fluturel.adrian@gmail.com>
+> Signed-off-by: Adrian Fluturel <fluturel.adrian@gmail.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Until now I missed the ACPI IDs that look to be almost certainly invalid.
+See below.
+
+
+> ---
+> Change in V4
+> - use { 1, 2000 }
+> - Add _US for timeout
+> - Use GEN_MASK for MMC5633_CTRL1_BW_MASK
+> - Use { } for terminator.
+> - remove !!
+> - fix mix tab and space
+> - add mmc5603 (merge https://lore.kernel.org/all/20251003000731.22927-1-fluturel.adrian@gmail.com/)
+> - add tempature measure support
 > 
-
-The board is designed for the industrial variant of the i.MX 8M Plus and
-therefore only for the 1.2GHz and 1.6GHz modes. There exist however some
-units which which where assembled with the consumer variant. As the
-power supply is not outfitted for their 1.8GHz mode, it must be
-disabled.
-
-I'll add a comment in v4.
-
->> +};
->> +
->> +&ecspi2 {
->> +	pinctrl-names = "default";
->> +	pinctrl-0 = <&pinctrl_ecspi2>;
->> +	cs-gpios = <&gpio5 13 GPIO_ACTIVE_HIGH>;
+> Change in v3
+> - remove mmc5633_hw_set
+> - make -> Make
+> - change indention for mmc5633_samp_freq
+> - use u8 arrary to handle dword data
+> - get_unaligned_be16() to get raw data
+> - add helper function to check if i3c support hdr
+> - use read_avail() callback
 > 
->> +	/delete-property/ dmas;
->> +	/delete-property/ dma-names;
-> 
-> Why remove dmas?
+> change in v2
+> - new patch
 
-Sadly, in drivers/spi-imx.c we don't have proper heuristics to choose on
-which chips to use dma or to use polling at which speeds and transfer
-sizes. Therefore in cases where there is a high number of small
-transfers, for which dma is inefficient, this way of manually disabling
-dma is the only current way of meeting specific performance
-requirements.
+> diff --git a/drivers/iio/magnetometer/mmc5633.c b/drivers/iio/magnetometer/mmc5633.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..9b04cba6dbf633b7e0d136629a5aebffd072a68d
+> --- /dev/null
+> +++ b/drivers/iio/magnetometer/mmc5633.c
 
-I'll add a comment in v4.
 
->> +	status = "okay";
->> +
->> +
->> +&iomuxc {
->> +
->> +	pinctrl_tps65987ddh_0: tps65987ddh_0grp {
-> 
-> tps65987ddh_0grp - > tps65987ddh-0grp
-> 
->> +		fsl,pins = <
->> +			MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12	0x1d0
->> +		>;
->> +	};
->> +
->> +	pinctrl_tps65987ddh_1: tps65987ddh_1grp {
-> 
-> tps65987ddh_1grp -> tps65987ddh-1grp
+> +static int mmc5633_write_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan, int val,
+> +			     int val2, long mask)
+> +{
+> +	struct mmc5633_data *data = iio_priv(indio_dev);
+> +	int i, ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		i = mmc5633_get_samp_freq_index(data, val, val2);
+> +		if (i < 0)
+> +			return -EINVAL;
+> +
+> +		scoped_guard(mutex, &data->mutex) {
+> +			ret = regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
+> +						 MMC5633_CTRL1_BW_MASK,
+> +						 FIELD_PREP(MMC5633_CTRL1_BW_MASK, i));
+> +			if (ret)
+> +				return ret;
+> +		};
+> +		return ret;
 
-Will rename those in 4v.
+Trivial but to get here it must be 0 so make that apparent via
+		return 0;
+Then everyone can see the 'good' exit really easily.
 
-Regards,
-Jonas
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
 
--- 
-Pengutronix e.K.                           | Jonas Rebmann               |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+> +static const struct i2c_device_id mmc5633_i2c_id[] = {
+> +	{ "mmc5603" },
+> +	{ "mmc5633" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(i2c, mmc5633_i2c_id);
+> +
+> +static const struct acpi_device_id mmc5633_acpi_match[] = {
+
+Guess I missed these in previous versions. Sorry about that!
+
+Where do these come from? 
+
+MMC is not a registered PNP ID according to
+https://uefi.org/PNP_ID_List?pnp_search=mmc
+
+So are these in the wild? If they are provide the DSDT snippet
+and a reference for where.  Also add a comment after the ID to provide
+one device on which it is used.
+
+ACPI IDs can take two valid forms. (1)   A 4 letter prefix that is
+a registered ACPI ID.  e.g. HISI is the HiSilicon one I use for
+the day job. And 4 digits that must be unique.  Typically each company
+has a tracker for this and a process to get one assigned.
+(2) A 3 letter PNP ID.  Similar otherwise.  Memsic has neither
+unless issued very recently. 
+
+So if these turn up on a device that uses ACPI either the manufacturer
+of that should get MEMSIC to follow process to get an ID or use their
+own.  It's common to find random sensors with IDs from device manufacturers
+for this reason.  Here NXP could use their own ID for example.
+They have a registered PNP ID which is the obvious NXP.  To do that
+though you need to make sure you get a unique ID.
+
+
+
+> +	{ "MMC5603", 0 },
+> +	{ "mmc5633", 0 },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(acpi, mmc5633_acpi_match);
+> +
+> +static struct i2c_driver mmc5633_i2c_driver = {
+> +	.driver = {
+> +		.name = "mmc5633_i2c",
+> +		.of_match_table = mmc5633_of_match,
+> +		.acpi_match_table = mmc5633_acpi_match,
+> +		.pm = pm_sleep_ptr(&mmc5633_pm_ops),
+> +	},
+> +	.probe = mmc5633_i2c_probe,
+> +	.id_table =  mmc5633_i2c_id,
+
+Really trivial but there is a extra space after the =
+
