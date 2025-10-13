@@ -1,137 +1,116 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC492F5327
-	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 20:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE752566;
+	Mon, 13 Oct 2025 23:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760388747; cv=none; b=dVjhI6Lh9ZnixNwinQsvi3gw8vrJflv8oYOLAXVvi2zdn1ggM9qP2Fd9MMD177P/YRkMH1/FAJppAqiz0eqxl/OdLEmczPPZbukBY1EnRCdVEYTkEqXdk1d/5K+XHGce27q26gktV23I9vdfm7ej2d5MR5AaiXiD+d50RDLnjfw=
+	t=1760399137; cv=none; b=P1wms5rz0Zpnp6u+/vMeYgjutpucLy51bKYFq7j1V049QlltGCie+wsCrFEFjTQoFoyZ9B0VJaX1hBjV5/pS7UXfAuHA7BiIrVRtbVIU2hBu/gDvWFNG2LphWC9gCu0PD7Z/zU8RrOou1uoAlJhgO+DoC/8mB/n/HhUnJvcndr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760388747; c=relaxed/simple;
-	bh=xDInXmxrDtG5u5Nw6FmUJ4lbWM39+ecdSdVKA/N4PpU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gCIbTtM5CkroPcryRR1NAps8q/ql77ZU9BoRO+LtNOFvuTfAR1cE32UCLdiWulmepXFrmr6MK1uGg1oM4BUqGX6jtt0O6F55Y9BbUSexokZZuekvAS6v+CTQge2LBUkYEDxpRH4oUGMcvJv+UZVdzV5oPpHyg6rIUCLmVO5Mq4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VSNP/4is; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760399137; c=relaxed/simple;
+	bh=2f1utiAKopa7ZuUmslutQNS8BtFzuw3EgW0uafIqTys=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g/ukdHoDQpzJUt0P/AHVJ9+7WNBy7YrwDUUmeJWHWe1tKDPEeg+UiCQWc7GCDdhGKI2Ho3Sy0PSWtTYNWzvt6kNlqXvyZlwey4uYEde6yDekeRZ80bZY1pTrd0Ls+E7MKe+JvpatmmE0Tg7TEf7Qp1R09cFqdUw1AIYiEhuoBTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADXELeR/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VSNP/4is"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-780fc3b181aso2690208b3a.2
-        for <imx@lists.linux.dev>; Mon, 13 Oct 2025 13:52:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760388745; x=1760993545; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PRJbkM4wepO56t2Jx9Mj/0XBiWzZWPdz2VVmdtIvIJA=;
-        b=VSNP/4isnfdGxo4157zER837cc9EOIgux6SRuo7tx/ZuhgKmglUKI8RZM57UjhIXs8
-         1AJwZLgewvlKrox/MwwhKIk/pPcbxedkoj/JqI2KSf3N/niLIBwp24lRnchKIFArzmOV
-         THOkrO+qdb1O5PN052xIz8hboo0d0AiANFVY6Vcwtn55d3f2S2N4CHfK4aTGPqGQ6ord
-         0K4UD3WnXXkUj2s1lr9t+sreeTOYigbLCzTvCYSQqhgl2NSRr0cUZJxRoQizgENj+kuf
-         mIkeW7vxL/eXEsVPH+Dx2+xEG/jzeqXj0twpVUCFF9OFTX1hzpecyPUh/pNLWYZkWHns
-         vghA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760388745; x=1760993545;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PRJbkM4wepO56t2Jx9Mj/0XBiWzZWPdz2VVmdtIvIJA=;
-        b=KDPF4NX1AsfiOJY8Qgb3qyopEqk0G3hF5+7G2RfWNChLKPSGUZfBD8IRpPndDjG5aT
-         8SegtMH2Umt6lh9LA7552wf4xQIsjCFjv6+MO4S9weg71NJoaHexrpOU0tXehwI8qvJu
-         ihPZbSRRh0ng5/VAX1oU48J0cezAhxlPmK7E4bCQTv6YakH3qsyDC4BYrgj0U+F7G5QC
-         FRr0E6KiyQm+0HJfLO/bWiKnRuyTWTKf8rBj7ZAk0+ygrotilmtGTUP5GQ9HLPFIAMOq
-         HdmCsVPefzCOebYxZkHoj8saVJSK/TrU1tV4ow99xJIZqqn/22znZpt7ok09sTpp6Aux
-         NcMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUGiibP/L4J3LfPCyJdI6zEX7p2pML+JNUMHR0bcQFjrNKa6SXbrdIcthvw2kUbjuXBXL4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzvrDz0Lc4FUirMh+6WaYnLXeoiOfsmAX3bQT4q09dDrYZnViIj
-	vvsN7vUMKRf/4hCVoIdR48aEjE5WFN2lHlKmX5RyX7pBUUS7wXSLNUKN
-X-Gm-Gg: ASbGncu7tLn5vpXOxvOkX5U25ZzbnRwaQoPk1oDO8LovynVmpEY0uwKI70ObvjSQ5TD
-	jRh0BdXxjEkevIWG7QYWYwotzzprjzN4MiRHXeMpzPXDJGpEFcX+Q3bECUDeqaW8pv+b5Lvhuxr
-	/qns7NfHQyv8u4GfRq9+TRAENmkm7wEQHIdl5eNVv6EmnZLpCw7FAA0PiQ8bS2BxnlYkOjQzm8a
-	GJIZBEHbXCD4GTJW7PyQoQUWxbWDMq5rYo+whqXu82VF3JcKbdKyubV7BlCJ21tn4DGSC+BBF5b
-	hyKTOZbfV1MBiKp5FfSuUkCyuQPPGlSLwlC81Fmvm3Xp6kHI/LVBsiPQUe2ahkmF63ashp5lktE
-	eFFoYOk5M4/61+Jo9vew2NJ+BEvTQX8oBUhFSBDmu9I0MrT8mEB+bUEI=
-X-Google-Smtp-Source: AGHT+IEbc0HqY8CLIHs2k8aq/yJ+qGsFrnOrDj32getTUXol/oijADm5b/7xs/AL3ljfJbDbndG3kw==
-X-Received: by 2002:a17:90b:4b04:b0:32e:8c14:5d09 with SMTP id 98e67ed59e1d1-33b51105bbfmr33280515a91.7.1760388745433;
-        Mon, 13 Oct 2025 13:52:25 -0700 (PDT)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:cc82:37a1:ecfc:e51c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b61acc413sm13445147a91.20.2025.10.13.13.52.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 13:52:25 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: victor.liu@nxp.com
-Cc: marex@denx.de,
-	stefan@agner.ch,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	shawnguo@kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Fabio Estevam <festevam@gmail.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH RESEND v4 3/3] ARM: dts: imx6sl: Provide a more specific lcdif compatible
-Date: Mon, 13 Oct 2025 17:51:55 -0300
-Message-Id: <20251013205155.1187947-3-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251013205155.1187947-1-festevam@gmail.com>
-References: <20251013205155.1187947-1-festevam@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADXELeR/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0F5C4CEE7;
+	Mon, 13 Oct 2025 23:45:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760399136;
+	bh=2f1utiAKopa7ZuUmslutQNS8BtFzuw3EgW0uafIqTys=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ADXELeR/1Fx+QRR8gH83ZZNhuxl5wv3NPYkNhUbSP49tTsOmFCwxj6J5COMG+z/o1
+	 O62vop6fn8JerXXa5/CtVgbf8M7LLsbRyV1POkKmaY2DVsNsNVHU19mdMrK3giuiwu
+	 Cm+zN7hJJCS89vOif7gs0Ql+hXCsrZ2lOXWWSEpTi4KAvVVW8ogysuDFfcWIxeKLj6
+	 /P3z8gGgFtou9f6wmK7BvFT9sLX7l86EkfdsA+2eak/dLzR9YNbjffKREdLneVBix9
+	 NLwvBQScXduaax65LzhWPTsNAYTSEVIbjSfM6gZmdXmoLkwYpqdqY9+3zSdiqHs7pu
+	 bCAzUTJHE1NOQ==
+Message-ID: <5c934650-c01a-4d16-a5fe-aa12acc5a75a@kernel.org>
+Date: Tue, 14 Oct 2025 01:45:28 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] dt-bindings: clock: imx8ulp: add SIM LPAV clock gate
+ ID definitions
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ linux-clk@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Pengutronix Kernel Team <kernel@pengutronix.de>
+References: <20250804155407.285353-1-laurentiumihalcea111@gmail.com>
+ <20250804155407.285353-3-laurentiumihalcea111@gmail.com>
+ <20250805-natural-vulture-of-glamour-5fac8d@kuoka>
+ <27b2e692-ecff-483f-bb88-392f6ce87574@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
+ QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
+ +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
+ ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
+ 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
+ hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
+ tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
+ 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
+ naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
+ hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
+ whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
+ qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
+ RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
+ Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
+ H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
+ dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
+ AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
+ jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
+ zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
+ XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
+In-Reply-To: <27b2e692-ecff-483f-bb88-392f6ce87574@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The LCDIF IP on i.MX6SL and i.MX6SLL is compatible with i.MX6SX.
+On 13/10/2025 14:52, Laurentiu Mihalcea wrote:
+>>> +
+>>> +#define IMX8ULP_CLK_SIM_LPAV_END		3
+>> Drop. Not a binding (see other discussions for many SoCs why).
+> 
+> 
+> these definitions are being used by the clock driver we're introducing here
 
-Provide a more specific "fsl,imx6sx-lcdif" compatible and still keep
-"fsl,imx28-lcdif" for DT compatibility.
 
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Reviewed-by: Frank Li <Frank.Li@nxp.com
----
- arch/arm/boot/dts/nxp/imx/imx6sl.dtsi  | 3 ++-
- arch/arm/boot/dts/nxp/imx/imx6sll.dtsi | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+So you did not read these other discussions and just replied to me with
+the same argument as others.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
-index 7381fb7f8912..074c48b04519 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sl.dtsi
-@@ -776,7 +776,8 @@ epdc: epdc@20f4000 {
- 			};
- 
- 			lcdif: lcdif@20f8000 {
--				compatible = "fsl,imx6sl-lcdif", "fsl,imx28-lcdif";
-+				compatible = "fsl,imx6sl-lcdif", "fsl,imx6sx-lcdif",
-+					     "fsl,imx28-lcdif";
- 				reg = <0x020f8000 0x4000>;
- 				interrupts = <0 39 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX6SL_CLK_LCDIF_PIX>,
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi b/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-index 8c5ca4f9b87f..745f3640e114 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sll.dtsi
-@@ -657,7 +657,8 @@ pxp: pxp@20f0000 {
- 			};
- 
- 			lcdif: lcd-controller@20f8000 {
--				compatible = "fsl,imx6sll-lcdif", "fsl,imx28-lcdif";
-+				compatible = "fsl,imx6sll-lcdif", "fsl,imx6sx-lcdif",
-+					     "fsl,imx28-lcdif";
- 				reg = <0x020f8000 0x4000>;
- 				interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX6SLL_CLK_LCDIF_PIX>,
--- 
-2.34.1
-
+Best regards,
+Krzysztof
