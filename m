@@ -1,109 +1,151 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1E225C80E
-	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 19:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1202EAB66
+	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 20:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760385313; cv=none; b=HUuwCI4p8mK0HRpa618IIh4teFvfv8YFv053uWGjMwLNkT0HlnjHscopTk3M2kMVbiSPDPLO3laEnWrJcLoPGCxdQ1i89/hB1Kd3nTh/jmdy41kxWsKCZBzLVC/nvQIVkac7HLFsaKIOZ3HiBtVuE49SLBFqAXuiQBvseSvHD5Q=
+	t=1760388737; cv=none; b=sEbviblrdV2nx+Kfc8jV9SDzt6opzeVkpn/tjQt7M/az/Z2PfNh5EacupXZaZwUz3GEbAHt6m3PKOHrSAwEnlUmi6Tcl8l6g+BIXquVKm+8rGGCIDRHXxHpEoHo/x/bDRoZxV/yq3XJJoV3zgyXgmqeh4mYwAXtiXEgLTGzMeiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760385313; c=relaxed/simple;
-	bh=p04emB7EWJKdYHfPdfNWI5BlN1aHWFazFo2EChhEZhw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RS/cLu6Ghoa/1Jz1paSbjKuyE4kioqXU12VRYzYnV9IiinKfrfeaWJeZhYO4E0cSGRf5JbqmeUKqtSh78rOkuha/oRKO5FuNEKReeHboCpZvk4XHQCGwCxCPi6N9OD7VHCDtzehb/4ns9nDcFJEMK+g6HreK2dWtE8aSrbXP1vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=tSMPaCM3; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1760388737; c=relaxed/simple;
+	bh=NiYf8HpP3IzLaBb0elE5gimWCZ4+UjLZTmvs7wOi0Pk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tUSG3+CypoPeo+xshrGGBJ9OKx2Eefmu//+AYY7YItMWgiT3E5Dhx5eWjcMEI77R6UPejBYLkd6x2AweGHXtes8SICsjY66ZN0wiRYbBdUPkwgRsGLQs0vwoXTVpSrCcYN49Hkv7GAK37cU23dzeCtF1c16G0roTVN9t8SyKovI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RhcBn1Kt; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="tSMPaCM3"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 60C4FC093B5;
-	Mon, 13 Oct 2025 19:54:47 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 45DA66067B;
-	Mon, 13 Oct 2025 19:55:06 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 10BD9102F227A;
-	Mon, 13 Oct 2025 21:54:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760385305; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=ueA4Mw4ZvAdPduByR8LCFz7NV7MIajA8VN4BjDi+iYc=;
-	b=tSMPaCM3u/5AMWi6C2uaGeO7nteYc8EWKCbf8Atx+55xMokblB8D7uyqQUIN5UN0VCyf8M
-	92rSu2RHAMygLwiTzDHbfNr6o39la14ofppeSKWml+FP2LeSBi+tMVaA9t21CfewwODbPY
-	O2iuzUWMZ9m3sdCASDH/6F85ruQDAszHZA2BlFfDdR01oDoTOGJcZVTzMKsl+PR7xrtB/u
-	kCvU5b6eyw7dGzYrzu/ZYfz+585J2Rmp3YyycCPmvrqpkvXzI4JJICjnHtrTPDlVVxjYUD
-	8Lnbu5vdBtJDAqrcnk19G+o0IESLUGkvny+JXMAEGdeZnfZ8WdPwOeSuFhLf8w==
-Date: Mon, 13 Oct 2025 21:54:55 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v5 0/5] i3c: Add basic HDR mode support
-Message-ID: <2025101319545551cfb399@mail.local>
-References: <20251007-i3c_ddr-v5-0-444184f7725e@nxp.com>
- <20251012180327.5d94dda2@jic23-huawei>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RhcBn1Kt"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3322e63602eso6228747a91.0
+        for <imx@lists.linux.dev>; Mon, 13 Oct 2025 13:52:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760388735; x=1760993535; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lCJT5qJRzoYDN5HCSmFRUGhqrxSLVQWaebjounZZ2/g=;
+        b=RhcBn1KtlRi0/EDJRKU99WdyL9XwlUh2qHUFRTMToUcefNKxGfsIUtebvuKo55DxNs
+         igXPtjRE6Y2D6UpnG06jjOmsVgL5r2HJHcl5BdbdetZTzU/7sKFsivMDQ7O+DS9wLK4d
+         XzYnlMhDxa38Crq+qzr5GnGWsteQQuh5zeEBOvOSXZdAcDP6mdJAFtTKOid8aNljc9QD
+         zmWBxxJJ/rsE6JANKA7L/S9nYYEijXF75JGEoW0kYYu/PFx4XNTlcpHAQdCqXsq+/VDl
+         eYb3xTvC4KxEFkit69W5N4QwsCLqJV/WoS7k+ZXC3Hxn+qpnT8kOPYGsw2OULril3JI9
+         w2+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760388735; x=1760993535;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lCJT5qJRzoYDN5HCSmFRUGhqrxSLVQWaebjounZZ2/g=;
+        b=UvAR3+MSYuOp/w46TqOTF9Rxtz+WVZFxlZrwLskxZrU4kKzME5LIbqKxTrE5zbmDD5
+         5VKzfCSwVh+I+NIHZb4LSrmIhE6uiT2pne2Bx0a7ToAmkRC/A2zxDwW3clSwLBKwL0oh
+         y9tXZ5Ng5sANJsssz07VKFV1V+PU87gDnM7c5vE+aYl9ki/MaEsZq5hIFa5ELsoljby6
+         25WYg1bNx2QCORf1fHYEv0G5x8ZOnpwbYOrgqlvknd+5oOazg93oh2/lmJNwsxv2CHyu
+         Nb1Mqu6rpwVbkrk6U3jd7jr8Rm+x5pDRqqDhD4aP1vkmTTS+0ovv4zC+zYlfSdVZJtEn
+         X/Hg==
+X-Forwarded-Encrypted: i=1; AJvYcCVActvlbaP0Yvy3zWhT6iSBUzj+A+mPRPmyZuBAsRupENXO93hfMp2heaRQS0DHWqlHlAY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzwvbqiFtbQmFn/bPbZ9xFecIfldcsw/1i5DgU4DUFVSFebPsrm
+	1q2f+omFCKEEX6X5OT6JUgy/L+6PS8H3BJvVr90xo2k/9wfyQEniTcem
+X-Gm-Gg: ASbGncslDY6pemfRXedcd/meCbysn2OtgQTpcegb6NmIeNLa0OreL49I1EtHMBt95v2
+	rrmVzfYb/Tx36NsTFifqR8KxqNyLn/0DMb+eaaGjNBL4mZkIJLW+ZMut746+XCM3D1PAlnyimuk
+	Uf5kCqhMVeI2XspuBuYno5IaRVG/1faUb4RnrTk0OFWTjLJXSaQvJg8my+XU7COsps1oNLSHPg6
+	7oMT/4saKppTsuhDS4QvBsW5DUIaaBuXrygvAmYYGNEOc2AhGFg3UnTVNOnRSKq/FMdoTx9i0Zr
+	Fz5TZDGza5V5AjOcn6cxyf3dLOteER1y1MGuyHt11Z5FV95BlPwmYSKNqyz2dVLCRtLr6YgreNo
+	csWeBGF9rFRy06pzPzgw5YXJY7XZ9vhvpF4lOwYr+JHte4HuEcZSyyxT4rs7v59TDZA==
+X-Google-Smtp-Source: AGHT+IGSiJ0cJsM0+QkIjYTOvMW3PPxd74LrG+PyQSmnXQ1wow4hy7WMH7D3pl2v9plOVEqf1jvdHg==
+X-Received: by 2002:a17:90b:3b8d:b0:332:5349:279 with SMTP id 98e67ed59e1d1-33b51148b30mr30740786a91.3.1760388735130;
+        Mon, 13 Oct 2025 13:52:15 -0700 (PDT)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:cc82:37a1:ecfc:e51c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33b61acc413sm13445147a91.20.2025.10.13.13.52.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Oct 2025 13:52:14 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+To: victor.liu@nxp.com
+Cc: marex@denx.de,
+	stefan@agner.ch,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	shawnguo@kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <festevam@gmail.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH RESEND v4 1/3] dt-bindings: lcdif: Document a imx6sx-lcdif fallback
+Date: Mon, 13 Oct 2025 17:51:53 -0300
+Message-Id: <20251013205155.1187947-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251012180327.5d94dda2@jic23-huawei>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On 12/10/2025 18:03:27+0100, Jonathan Cameron wrote:
-> On Tue, 07 Oct 2025 16:06:12 -0400
-> Frank Li <Frank.Li@nxp.com> wrote:
-> 
-> > Add basic HDR mode support, only support private transfer, not support
-> > CCC command.
-> > 
-> > Update i3c framework API to allow pass down mode and extend driver callback
-> > function.
-> > 
-> > Implement HDR transfer in svc i3c master driver.
-> > 
-> > Simplifed HDR flow is (ref i3c spec line 5514) Figure 129
-> > 
-> > <--              SDR            ---> | <--- HDR
-> > START 0x7E RnW(0) ACK CCC(ENTHDR0) T   HDR-CMD(00-7f write, 80--ff read)
-> > 
-> >                                     ----> |  
-> > HDR-DATA HDR-CRC HDR-RESTART .... HDR-EXIT
-> > 
-> > Note: HDR-CMD is 16bit data, which included 7bit slave address and 8bit
-> > read/write command.
-> > 
-> > svc hardware can auto issue SDR part.
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> 
-> Whilst there will probably have to be a v6 for the ACPI ID issue in patch 5,
-> I'd like to ask the question of how are we planning to merge this?
-> 
-> Maybe an immutable branch either in IIO or I3C trees that the other one picks up?
-> 
-> It's a new driver so could gamble on taking the IIO driver the I3C tree but even
-> then I'd like a topic / immutable branch in case any IIO wide refactors or similar
-> hit this cycle.
-> 
+imx6sx.dtsi has the following lcdif entries:
 
-I can definitively provide an immutable branch once this goes in or if
-you are more comfortable with this, I guess there is no urgency and we
-could apply this over two cycles, first the I3C part and then you can
-take the driver.
+compatible = "fsl,imx6sx-lcdif", "fsl,imx28-lcdif";
 
+This causes the following dt-schema warning:
 
+['fsl,imx6sx-lcdif', 'fsl,imx28-lcdif'] is too long
+
+To keep DT compatibility, document 'fsl,imx28-lcdif' as a possible
+'fsl,imx6sx-lcdif' fallback.
+
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+Hi Liu Ying,
+
+Could you please help apply patches 1 and 2 to drm-misc?
+
+I got several Reviewed-by/Acked-by tags on this series, but the patches were
+not applied during several kernel cycles.
+
+Thanks
+
+ Documentation/devicetree/bindings/display/fsl,lcdif.yaml | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
+index 2dd0411ec651..ce31b873fb95 100644
+--- a/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
++++ b/Documentation/devicetree/bindings/display/fsl,lcdif.yaml
+@@ -19,7 +19,6 @@ properties:
+       - enum:
+           - fsl,imx23-lcdif
+           - fsl,imx28-lcdif
+-          - fsl,imx6sx-lcdif
+           - fsl,imx8mp-lcdif
+           - fsl,imx93-lcdif
+       - items:
+@@ -32,6 +31,10 @@ properties:
+               - fsl,imx8mn-lcdif
+               - fsl,imx8mq-lcdif
+           - const: fsl,imx6sx-lcdif
++      - items:
++          - enum:
++              - fsl,imx6sx-lcdif
++          - const: fsl,imx28-lcdif
+ 
+   reg:
+     maxItems: 1
+@@ -199,7 +202,7 @@ examples:
+     #include <dt-bindings/interrupt-controller/arm-gic.h>
+ 
+     display-controller@2220000 {
+-        compatible = "fsl,imx6sx-lcdif";
++        compatible = "fsl,imx6sx-lcdif", "fsl,imx28-lcdif";
+         reg = <0x02220000 0x4000>;
+         interrupts = <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
+         clocks = <&clks IMX6SX_CLK_LCDIF1_PIX>,
 -- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
+
