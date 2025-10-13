@@ -1,64 +1,64 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0017E3081C4
-	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 14:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D64B308F1B
+	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 14:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760364906; cv=none; b=Mpvcx0jD1x341lyV4/tQ8w2StTCA6T0qUpwDHhss12glZIOSmx8SdTfma0UiBIHARQRdy+L9aV+9MMk1o1QvFP3ztqImNWLh7ju0+rVK/BXaBrfLf19n+mhSTsQTAMWonS5xIjtc0ORoV9a0tT2doyJvn/IEf2B/YtoQnTOoROc=
+	t=1760364907; cv=none; b=Q5hsyY1rPs/iZMzyV+BiOMKPc2ldHKT/B177JOPTyaX6biLgdzDpIHBThzRqc0ryDpl7ojWvfD4tf1fDqDQ24eINuhukF9XlRo72NIFjM/dFrKiAWT50Ze29gC+4gCMIs1Z6Udz9SH20ixY6RQg/Kp2h8BBXK0F5ErLoiI9XGNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760364906; c=relaxed/simple;
-	bh=IYbyVo3NUXYVIwRmrClYpoFVDSCS8PA6N1mE0EyDE2w=;
+	s=arc-20240116; t=1760364907; c=relaxed/simple;
+	bh=I7TGAr67/gQzv/N2orW4jc5CGXZ/k6/Zdc8d4ItKKFs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OOLo7f40XKGb+tj3pMNkZ5VBrzhvn0/VXUXpujpwa9B0diHqb4tVEwaBYOvVVrg2hfUh+i2favCjdcMYy3LtIlnKDkGvQmRhYVJsXTcjy3j55Jd5QiilD9KlmwZe8Ya0caDIPPbik7x0jAsgyOhp7hxmabpHEo+z3LdfJ+WpSdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=iRiLH1ZM; arc=none smtp.client-ip=209.85.167.42
+	 In-Reply-To:To:Cc; b=cGYE55jE1Mjp4QGDqOTDbh4qiAEJK2zQGxkTlDCG65RkFhj3ToEZqAGeVO8N7Ukop1k7sJ1h7pe7RvGQkJGt2Q9T0ldOyipU/Q53iSfcJ/09ySFWV18KmmGsiczGK7tfLDKkRLfo6aj947VaFfVTbelBfzRcGFsbTLpcwY4ZFtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=if+8EG/0; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="iRiLH1ZM"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-57f1b88354eso4814428e87.1
-        for <imx@lists.linux.dev>; Mon, 13 Oct 2025 07:15:00 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="if+8EG/0"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-57a292a3a4bso5390292e87.3
+        for <imx@lists.linux.dev>; Mon, 13 Oct 2025 07:15:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1760364898; x=1760969698; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1760364899; x=1760969699; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=U+HlSqes1yCsLkQoWVAYYhek4ZxMIKlt6Lo2LEEYk1o=;
-        b=iRiLH1ZMCKPaNX9AmJL4UNSh5iS3KNqgYu0B5a4/lXrM5hoLEAr41pU2GnkHzFdDwM
-         b/CYJCWO5dqxkceHu4ypuwzc6srd99Uj58YC9x8mE/aDpKmryqFIB6Wnao5Yl5guaynC
-         E9mVZkZIKOUtjgRcehzwsmGfD7R9fhrJ7cnvQ=
+        bh=Kj07cX9dfdog7qE3ITvyCUHudwQ7Qr1GriLN3ezW2JQ=;
+        b=if+8EG/0J0nufayC6q6dE2srw4w5BWKoY9Wpbg1A/x9VIj5gacOzm6FSOjypPvYUxb
+         SqWIeFozjtL97psZyL3N193ghScc0y120Cn0u1ZcO5J6+MUo0T4Iyml32pm9/t9ZIPWR
+         V4WLCr4j7HO2JoJ0+gf6Zv5p3pUlfyADu/gq4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760364898; x=1760969698;
+        d=1e100.net; s=20230601; t=1760364899; x=1760969699;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=U+HlSqes1yCsLkQoWVAYYhek4ZxMIKlt6Lo2LEEYk1o=;
-        b=qMc7Hd03Dhv3wecfQQ7//7O5h0GeeEp6+DGf1lJvGPskyjhJZgR6aasrZPTtyzHsRl
-         JeGwa7frXHyubEWC0Lv6oEYIes3Fq9plhQDf65igfUmF92WO/vqgim9QKn0akbKWL5TH
-         x4s4LbjYgaHF95rD6m579jo4mgLuX07sVFKKhWQv6WrGSeuPyDcYacr4YmFAlZWu+SSG
-         PwE7OKGrdHBJTuEzMl+dTKJu3ZtdK+PnRLy1OZtWBb4dDnQXl11YjWQkeyJD7Ke+EFil
-         PBvCXygRrReVJG+PyuJTYbl6bSjNC2GJMpbCUd6LJ1iqYP1jHGjCVnOH+8BqXNoGlVLU
-         nJaA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8LfFVlUbc1AShplogxcMYimMQYpChDmRiOcjlIHFSUMyltr0TdT43gYHrlL80T8fHAHU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyQy8On6aKSoaC5NW94x7CoyqtmPzzjeu3fin4MkJ+x/uc4csOa
-	WbWgrD8SCFZaIRChUYGSp7glNN8Ptla7kYNaYr7rPZZGqMib+ghy0p9cJyfpgids9g==
-X-Gm-Gg: ASbGncsnL1LSDOjeXnpUqBuN0QcKWQ2Bk0EbUfgb/+VvjUVC0+2xomlcL07rVTMYF3e
-	qolT92EMaVIMNCyKDW9Eu/KKasEi5NNUIOUXwuGlUg7yH0d226qIB68jN5lnYVWhpkYxYh6lbPC
-	AXIuBXqDqV7BnZ0YmXDou72rDMm4A5cNq4RKWicYiFgA5Kwl4EIkpN6IPwaWr97et4L4Q4cZf9E
-	Rkr2SoB95bNeYwcAcl4zfeRvkXOBR7gJHNIRf/4XWM0fXPbViqNPCigrufF4LidCRjWSDjZr99Z
-	w17cRapp60glbuD4tFwfCZPItmxEj0DRHuCWaLsoG8oNWIlIevL9/e0wFi6vuHe7pO/UxzTS73b
-	YcQNKsStCV8PBLDEw6f27HjpP5TGt+auoqEYc1McYzkkqQfSzgzZdK5sZ8CPDY14pmzwMBcS6jO
-	yMbJqIsLARiVg5lAatpQ==
-X-Google-Smtp-Source: AGHT+IH27CfYjloqEXA5bxWZfYaU4LA1SVwbUAxn03k9AIO/MXhXvYZJr7Cls4Tsp0u6mygHRedkXg==
-X-Received: by 2002:a05:6512:3d94:b0:579:d89:20c7 with SMTP id 2adb3069b0e04-5906d896e12mr6073927e87.9.1760364898078;
-        Mon, 13 Oct 2025 07:14:58 -0700 (PDT)
+        bh=Kj07cX9dfdog7qE3ITvyCUHudwQ7Qr1GriLN3ezW2JQ=;
+        b=VUJbj5JzCwpfAsAwkFSUcM7Sx+yXtN30YL7Cai2cTiQWBlhM2YyqUpT/PuT0WC4PS6
+         FPgFr2VrPPAyNQHIGpThrq16kz6hjuFYWtxktWoJ8zDbNYDjLkpo3wk59seiNxCOzoFM
+         uCdHCGCBo5Pjsm3TgBYXdVBOu1Jvhs1FyM9+vUU2iJUGwuMpit6910MBL7adVHBAU+tX
+         cigmYOBF64jTu2QPMYUhZzOY2WviIR0Vxavg9upKWdEwHzR5W/QsQ41MM5IN7S1tTShM
+         E7uwycWc+88iyRH0aqkxXd1EFn2Po6UgIr1fgm1ydPxNWGlTz5d3kDb+UFvNkeXDRHYM
+         RErA==
+X-Forwarded-Encrypted: i=1; AJvYcCVCMUt6UuyAaP1X4rLBTCkNbmBMK7f7y/z3+51B2kYtU4uiIHU72In1lgS2Qx7wYVQwDGo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywt9bamFj5jEbxFwlYaCMrMc0gBIYjGP3p7jr5h52D9HnAv5rj/
+	Ds3b0f44sjhs6MsU30BFw3+JiFOMm8w7y+JeO77gRXQroBP4kQnb0l2EN6TCQnZ1Cw==
+X-Gm-Gg: ASbGncvbMyU2ngP2jwCAN4nl24zxjt+qSYrGiMLjJMIjWkrsPlL+hv5HcOUzTy5QckR
+	2DR5idm1u4zzNMv7IzFazI+V4xGv03kPD8ZAkV4C6T7PE7U073qvu3TsOcHcTr4zTSdlUO78u++
+	90cjtWVf66bFdhyEstt2AbxpyLIDQ4VKOwGHCxgih+/Kp/UsM6asrxOfjbhsvLys1iz6cWgjoGT
+	5/5ye4HSFGoaRqm7wIVxh6+k74705iR3jUJ1h4rKKznPSdDi8R5RAGCmD9QFvdDk8ymS5Ir4wnB
+	4Lxs58F9vcU0X2ZCe1SDaQ9Ndl/PN0xojNIV5N/lhMyHBxlsbMDsCIw8aejM2oAKDJRKOhQX0oW
+	mXDntUkvmSY4RUMiXI41PZR5SohJDj8lMpTwZOsOZZPt4FJwnZgDdnsl/ONUJ1HbxEhYdSbNxIA
+	d9ivwgsrJYkC8agvlwnA==
+X-Google-Smtp-Source: AGHT+IE2HB4PNnNNZPoJgrmm/zoBzzLugjubCTHQBbs/Uafloy4/vUsHxeeEoDk1I+UDuJlRtAHv9Q==
+X-Received: by 2002:a05:6512:3dac:b0:586:7f:a141 with SMTP id 2adb3069b0e04-5906d88e732mr5437316e87.18.1760364899093;
+        Mon, 13 Oct 2025 07:14:59 -0700 (PDT)
 Received: from ribalda.c.googlers.com (56.213.88.34.bc.googleusercontent.com. [34.88.213.56])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-590881e4e58sm4165256e87.25.2025.10.13.07.14.57
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-590881e4e58sm4165256e87.25.2025.10.13.07.14.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 07:14:57 -0700 (PDT)
+        Mon, 13 Oct 2025 07:14:58 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 13 Oct 2025 14:14:54 +0000
-Subject: [PATCH 14/32] media: i2c: mt9m111: Use %pe format specifier
+Date: Mon, 13 Oct 2025 14:14:56 +0000
+Subject: [PATCH 16/32] media: i2c: ov5675: Use %pe format specifier
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251013-ptr_err-v1-14-2c5efbd82952@chromium.org>
+Message-Id: <20251013-ptr_err-v1-16-2c5efbd82952@chromium.org>
 References: <20251013-ptr_err-v1-0-2c5efbd82952@chromium.org>
 In-Reply-To: <20251013-ptr_err-v1-0-2c5efbd82952@chromium.org>
 To: Linus Walleij <linus.walleij@linaro.org>, 
@@ -120,28 +120,28 @@ a symbolic error name (eg. -EINVAL) and it makes the code simpler by
 omitting PTR_ERR().
 
 This patch fixes this cocci report:
-./i2c/mt9m111.c:1290:3-10: WARNING: Consider using %pe to print PTR_ERR()
+./i2c/ov5675.c:1188:9-16: WARNING: Consider using %pe to print PTR_ERR()
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/i2c/mt9m111.c | 4 ++--
+ drivers/media/i2c/ov5675.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/mt9m111.c b/drivers/media/i2c/mt9m111.c
-index 05dcf37c6f013b1cefb5d85f893af08f4533c7b4..3532c7c38becc21df88957f8f323c77033026a81 100644
---- a/drivers/media/i2c/mt9m111.c
-+++ b/drivers/media/i2c/mt9m111.c
-@@ -1286,8 +1286,8 @@ static int mt9m111_probe(struct i2c_client *client)
+diff --git a/drivers/media/i2c/ov5675.c b/drivers/media/i2c/ov5675.c
+index 30e27d39ee445c2603b8fecf7a1107969eb97df3..ea26df328189eef449ce121c0f62a4ef02631830 100644
+--- a/drivers/media/i2c/ov5675.c
++++ b/drivers/media/i2c/ov5675.c
+@@ -1184,8 +1184,8 @@ static int ov5675_get_hwcfg(struct ov5675 *ov5675)
+ 	ov5675->xvclk = devm_v4l2_sensor_clk_get(dev, NULL);
+ 	if (IS_ERR(ov5675->xvclk))
+ 		return dev_err_probe(dev, PTR_ERR(ov5675->xvclk),
+-				     "failed to get xvclk: %ld\n",
+-				     PTR_ERR(ov5675->xvclk));
++				     "failed to get xvclk: %pe\n",
++				     ov5675->xvclk);
  
- 	mt9m111->regulator = devm_regulator_get(&client->dev, "vdd");
- 	if (IS_ERR(mt9m111->regulator)) {
--		dev_err(&client->dev, "regulator not found: %ld\n",
--			PTR_ERR(mt9m111->regulator));
-+		dev_err(&client->dev, "regulator not found: %pe\n",
-+			mt9m111->regulator);
- 		return PTR_ERR(mt9m111->regulator);
- 	}
- 
+ 	xvclk_rate = clk_get_rate(ov5675->xvclk);
+ 	if (xvclk_rate != OV5675_XVCLK_19_2) {
 
 -- 
 2.51.0.760.g7b8bcc2412-goog
