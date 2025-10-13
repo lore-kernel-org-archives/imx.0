@@ -1,121 +1,203 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939B32FD7AA
-	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 13:33:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B0C24A044
+	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 14:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760362432; cv=none; b=JDmyxlz9asvJcCAbur63zH0Wf4PlUCt6r8YEliiRnC7hM9+kJ1EDAqAQVfU+uz5kdkG2u7n6oCM/JIyQ7XSY1qDLGYe/iTfk4t0YxsfEa/MTay8+B+UxraHCwnDVZY41etfyhd1EHwsS9MuJRNFJbM9bNzaJIxXN5YCiMF1Q9MA=
+	t=1760364894; cv=none; b=sCa+GXuf3JmlwrgIPS/nwduCXYsj5SJGRDjYekMARGwN7XWWIA81pTmiMrY/GWXOXHBEl1/WXTgxnTJP3DSiVbykS8cmJoAjxdLo4WnL9S6mxvr+ZRIGa1i9RGQ2cZsOg7Dxl6XMPr33SCZw8q1JeDceYNa/RR9pTQS9usjOROM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760362432; c=relaxed/simple;
-	bh=H2juMaGdKsnPU2tLSraoa5b9/EA9CP4IrGvXhZXInKU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BBzwfDgaXpJVQFi0VHKBVwhjJbiGcDSRNKPyaiB6ibPLh1p2HNRlAmS9eUYRU3kNNRVqnRS10fvidsbgOsWQrq7DrpzLqUWw2nO4sO91sCt6CfZKCrJkrB207sTRJfuEhMwYOC1RDNNef2OX457KYT5RszkdenwQ+2q3MV1TeSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Du9+UW+8; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1760364894; c=relaxed/simple;
+	bh=xM6+M/SyFflYknH7dftgYleR+CqneUH3h+wd93U33vM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jIlSe75sa/5tGOccq5TNQD0EAAY+DxQhwUP1Byy9BiHpZRuASOEJLlKIj0MVQWZG8ox41rqtO7BffatSEL62iu+UoQN7d16Z5anUm47yuPvYoI1M66y49n9VESoEBHS/Djgy4Td1MvxAWC+kPtYP1cGzJXK9U5a4Cr/Vjfu5I8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=J+xkZbYJ; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Du9+UW+8"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-36ba647ac9fso33438371fa.0
-        for <imx@lists.linux.dev>; Mon, 13 Oct 2025 06:33:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="J+xkZbYJ"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-57a604fecb4so5593465e87.1
+        for <imx@lists.linux.dev>; Mon, 13 Oct 2025 07:14:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1760362429; x=1760967229; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n2vv6Elqb0iIv4dJrDSGaSWX9dF6LnvkTkr6vnIRmSI=;
-        b=Du9+UW+8/OeWTx6/6dNt0vWO/BhHT1aydLptH9bfNDrY9o5LECjXdj7d4Kix0hw9at
-         bBcmIVmt2ujR88V+oyuOrdsxElZX0otySfDNKcis546ff/widGKYhE/OXLzBeJqw14NY
-         ephGC35TXqqQ+90x6spcJepjprqAwvWQaScL87ymAgep7BWPWHlzUJFPMOz9d8u87u1M
-         rdku5/07fg89/6ltEddyq1kVHq6ekQzqtng9Bj2tPW4o1cQOTthWsxGIxVcbf5mcQ+Hg
-         mEMZWGf/p0sqvZdCpRVbqtepD5S+C5GHSOYIU0ycPjX7bM9p54Xx6k3SLN4yb727RuDF
-         QLzQ==
+        d=chromium.org; s=google; t=1760364890; x=1760969690; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4+LqH67jKM/F3LSKb9pvwKSduKssNZljIxm4L3nejxY=;
+        b=J+xkZbYJKtPGTz3WN/3C3bjx6uPk43uo4+8poM6zAF0vJj1nrNT01lJiOUkRROed6e
+         Mpp+mS/oatk+isLE4akWaEwUHHRXerEs3ayJsDfRk6u6JWX2OHpnhCIf99ZkMHRWTYYT
+         ZZkYA+tozExMrcXp+IaS1u1YdV6kaClYM9xzU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760362429; x=1760967229;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n2vv6Elqb0iIv4dJrDSGaSWX9dF6LnvkTkr6vnIRmSI=;
-        b=KdXm9ezy/wB0hGhj/2sfI9c9EGHwZodWU5zyA8eK/3WPjLrXSYRJgHdsuNn21SDjt+
-         0MxaenvwJglvRdImK5yIzUaJ62djO/9vKwBZlp99wWlvA40NO5NBPEExl6pJg0Ai4p40
-         L7oLd2z5zbQJDKPQaooNLt1GsU0nE9e8Qy9x5YkGK+UoNoE1OU3uS+QOOZFIhLp0C4sz
-         yvnNFroUAABajDrsek2we7EQlBLkUpNMPG3TCjjcMqYggsMeF+aO75SaGtg52tpPSSM7
-         vzdQ5Sye+3RnSn4wb3XdJvFbspPVFqCXV0GprmCMPQX9CftGeUKYP6350hHx7+8BELAf
-         DvDw==
-X-Forwarded-Encrypted: i=1; AJvYcCXVtmOkphEN4SDaOn+7GdL6O3nL1RuqUJiXkbR2x6XTFSCAKpKt5d+UxlmR5mmoMn8iKEI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YycUoy5IkxEwpkBQi/Ldn8yY3UVJoKe+iBAnVHgDx7xWfZs+wHW
-	gv6oNKqjmHUdNDluYLLPJbCfY9eNA0mzOC/AK19zO99q833isZMi3zeY1gU4jcBPCfZW5QoekX0
-	jMHRRItJZhv4DHzh8Hf5qmGxx5zHS37mIaEM3BgkRHA==
-X-Gm-Gg: ASbGncu6EMYKEOS+Ps+zCSREZe7oxHI+VI2cYwzMLWP4y/vBxSe2TkXSgu36tbHRFUE
-	GWEWSEqJimhUi18Oi19oKVf8LXc+YAtIWbeFV+EETozrijodxzLbHTRl/AYpL008cXlOeibMRw2
-	6J5jnYqEj584Lv1ghASjztiE+IJ6yxc3hdLAhAxZY/+qXrW65drHKCxlJnlaBa90sSWvYGu8nMI
-	rYyhT6i2NGfsFLbKfCo4htHMlzufQDT9YfGhjJ9
-X-Google-Smtp-Source: AGHT+IHgmK1HRnpsjGLKqPnG70DMAC1goUv3OwVcHtnyu/bV4k7lGHTS4AnKXk+tRstKPxroMpvqgq8QwqZeDkRf4ek=
-X-Received: by 2002:a05:651c:1ca:b0:36b:8361:15c7 with SMTP id
- 38308e7fff4ca-37609ee797dmr52547101fa.42.1760362428700; Mon, 13 Oct 2025
- 06:33:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760364890; x=1760969690;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4+LqH67jKM/F3LSKb9pvwKSduKssNZljIxm4L3nejxY=;
+        b=kaSBCPlwVa1Sa1T0L4q2vWS/ZqZ+3AEdPzn0sY4qe/URZn0Hx8X3En8QITLJCGbBS8
+         H73bBOlJeEOH0twWQy+4s+yRHbTk+LbFD3W6VU0yF10B9OBW377jEkLvEQld7uajXfdS
+         OuEZJFb0LMW30vD+A1+iD0MjWTl9Q6eD5N53rFltCaPw9fzErhCKkzU2B+cG852QxuR0
+         l0oz+x8LSdCptNuI3BSkPe38Hbh0OpTQ4tYZD3butBI9ORiUyIbpaKO0+VzBJLZvRtx0
+         BBKKwdXa2D0IUgCGDxqeSJl68EC3u6plomc+f5JBxiGo10XeZpxQA97lD68ybesPEbq+
+         umVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXJNVGJv8gAnN4h/pwZ5rpokGhEAXauLH17k1imo+Wo7ZERpwPKJbvk3rKWfl7VNKL0GnI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwwP5GlRJrakhuVDKxh34s3qoiyTAKS39u31/cp7OIdm7Tul+A9
+	FEvHjxAuSgohVg48OoaLul4cMbGsQmjcM+1patEGzO+KkSHnH1h2H9oWV4HtejKKOQ==
+X-Gm-Gg: ASbGncvnU4W1L/yrPRvJrs5czR61/4fJKMesWrwU85lR6mlXo6ZUSTxhkBZe7EWBpWI
+	ssTYLB7E3oH/DMWiolk437uo7+xEfRpTXGi7jh0zBPnGubna5H00qi6zlqfn4+g4dQKy0+n8/jH
+	WF9tIAgIYqvyurSjSX+3bA0PMgPrWbb5hDcFzGt93PVa4cR7f4/MTi5U7lmQnVBqIwH/lY1grsV
+	Fw0+m7Sz4wkd9eI6meRE649nxJ5MaptF9qoUfCYEjRuJY4tK2vQClsYe7aUxIRmwVsKIhiUsyyM
+	dQOy2PalXXuatVUpRvggnZmuWq8+q+VFqo9h7drGcrYf/C3KIvmpP/E+XMHUefc1/fMYQzMB2qV
+	+VR5j2AI37Zrg3pZFsy7Ft0CA4BJbszbBhHnz0KxiTkie/Gw/N/JJnSg1FFkFFOSnA4vyOUgUHa
+	MhN8T2O3tycK52x5pkA6c2rKn5MjEQ
+X-Google-Smtp-Source: AGHT+IG+iBDcqiuo6CtjHJApPQk8SPIEd1S5IwUf4U1/yNdgttxsX0zixn6oQdpzKAlIqjeJyJH+pw==
+X-Received: by 2002:a05:6512:1110:b0:590:656c:d114 with SMTP id 2adb3069b0e04-5906dae5d1bmr5995198e87.46.1760364890201;
+        Mon, 13 Oct 2025 07:14:50 -0700 (PDT)
+Received: from ribalda.c.googlers.com (56.213.88.34.bc.googleusercontent.com. [34.88.213.56])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-590881e4e58sm4165256e87.25.2025.10.13.07.14.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Oct 2025 07:14:49 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH 00/32] media: Use %pe format specifier
+Date: Mon, 13 Oct 2025 14:14:40 +0000
+Message-Id: <20251013-ptr_err-v1-0-2c5efbd82952@chromium.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251009222716.394806-1-shenwei.wang@nxp.com> <20251009222716.394806-4-shenwei.wang@nxp.com>
- <eb99d9a8-eb96-445d-899a-6e1d9b6f6c69@lunn.ch> <aOk0y8xTi9hoGvyX@p14s>
-In-Reply-To: <aOk0y8xTi9hoGvyX@p14s>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 13 Oct 2025 15:33:36 +0200
-X-Gm-Features: AS18NWBC-gdxliFCyTe38OsztEkF4HyZ8vB9ddnx1Arh4R638fPWDwBoKXMNGso
-Message-ID: <CACRpkdaTp4SPj1DvJUD+ThBuQRrK+0ciVE0j92P9_c7EVvF0Jw@mail.gmail.com>
-Subject: Re: [PATCH v3 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, linux-remoteproc@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-imx@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFAJ7WgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDA0Nj3YKSovjUoiJdy0RzSzOLtOQUQ8s0JaDqgqLUtMwKsEnRsbW1AKj
+ z2DxZAAAA
+X-Change-ID: 20251013-ptr_err-9a7968fcd19f
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ =?utf-8?q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Leon Luo <leonl@leopardimaging.com>, 
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, 
+ Jacopo Mondi <jacopo+renesas@jmondi.org>, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, 
+ Julien Massot <julien.massot@collabora.com>, 
+ Jacopo Mondi <jacopo@jmondi.org>, Daniel Scally <djrscally@gmail.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ Benjamin Mugnier <benjamin.mugnier@foss.st.com>, 
+ Sylvain Petinot <sylvain.petinot@foss.st.com>, 
+ Yong Zhi <yong.zhi@intel.com>, Bingbu Cao <bingbu.cao@intel.com>, 
+ Tianshu Qiu <tian.shu.qiu@intel.com>, 
+ Tiffany Lin <tiffany.lin@mediatek.com>, 
+ Andrew-CT Chen <andrew-ct.chen@mediatek.com>, 
+ Yunfei Dong <yunfei.dong@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Rui Miguel Silva <rmfrfs@gmail.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Dafna Hirschfeld <dafna@fastmail.com>, 
+ Heiko Stuebner <heiko@sntech.de>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev, 
+ Ricardo Ribalda <ribalda@chromium.org>
+X-Mailer: b4 0.14.2
 
-On Fri, Oct 10, 2025 at 6:31=E2=80=AFPM Mathieu Poirier
-<mathieu.poirier@linaro.org> wrote:
-> On Fri, Oct 10, 2025 at 12:58:38AM +0200, Andrew Lunn wrote:
-> > On Thu, Oct 09, 2025 at 05:27:15PM -0500, Shenwei Wang wrote:
-> > > On i.MX SoCs, the system may include two processors:
-> > >     - An MCU running an RTOS
-> > >     - An MPU running Linux
-> > >
-> > > These processors communicate via the RPMSG protocol.
-> > > The driver implements the standard GPIO interface, allowing
-> > > the Linux side to control GPIO controllers which reside in
-> > > the remote processor via RPMSG protocol.
-> >
-> > I've not seen the discussion on earlier versions of this patchset, so
-> > i might be asking something already asked and answered. Sorry if i am.
-> >
-> > Is there anything IMX specific in here? This appears to be the first
-> > RPMSG GPIO driver. Do we have the opportunity here to define a
-> > protocol for all future RPMSG GPIO drivers, which any/all vendors
-> > should follow, so we don't have lots of different implementations of
-> > basically they same thing? So this would become gpio-rpmsg.c and a
-> > Document somewhere describing the protocol?
-> >
->
-> I haven't looked at this patchset yet but I think Andrew's proposal has m=
-erit.
+The %pe format specifier is designed to print error pointers. It prints
+a symbolic error name (eg. -EINVAL) and it makes the code simpler by
+omitting PTR_ERR().
 
-Yeah this was my comment on v2 as well :D
+The recently introduced test scripts/coccinelle/misc/ptr_err_to_pe.cocci
+checks that we use %pe. Let's make it happy.
 
-I even posted a bug to the AMP mailing list to elicit some attention
-from that camp. It worked because now Arnaud is on board reviewing
-the patch set from an ST PoV.
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+Ricardo Ribalda (32):
+      Input: cyttsp5 - Use %pe format specifier
+      media: dvbdev: Use %pe format specifier
+      media: mn88443x: Use %pe format specifier
+      media: adv7842: Use %pe format specifier
+      media: ar0521: Use %pe format specifier
+      media: ccs: Use %pe format specifier
+      media: i2c: ds90ub913: Use %pe format specifier
+      media: i2c: ds90ub953: Use %pe format specifier
+      media: i2c: imx274: Use %pe format specifier
+      media: i2c: imx335: Use %pe format specifier
+      media: i2c: imx412: Use %pe format specifier
+      media: i2c: max9286: Use %pe format specifier
+      media: i2c: max96717: Use %pe format specifier
+      media: i2c: mt9m111: Use %pe format specifier
+      media: i2c: mt9v111: Use %pe format specifier
+      media: i2c: ov5675: Use %pe format specifier
+      media: i2c: ov5693: Use %pe format specifier
+      media: i2c: ov9282: Use %pe format specifier
+      media: rj54n1cb0c: Use %pe format specifier
+      media: i2c: st-mipid02: Use %pe format specifier
+      media: ipu-bridge: Use %pe format specifier
+      media: ipu3-cio2: Use %pe format specifier
+      media: ipu6: isys: Use %pe format specifier
+      media: mediatek: vcodec: Use %pe format specifier
+      media: imx8mq-mipi-csi2: Use %pe format specifier
+      media: platform: rzg2l-cru: Use %pe format specifier
+      media: renesas: vsp1: Use %pe format specifier
+      media: rkisp1: Use %pe format specifier
+      media: samsung: exynos4-is: Use %pe format specifier
+      media: ti: cal Use %pe format specifier
+      media: staging: ipu3-imgu: Use %pe format specifier
+      media: staging/ipu7: Use %pe format specifier
 
-Maybe it is possible to split the driver in one generic part and one
-i.MX part, so it is easy to reuse for other SoCs?
+ drivers/input/touchscreen/cyttsp5.c                          |  4 ++--
+ drivers/media/dvb-core/dvbdev.c                              |  4 ++--
+ drivers/media/dvb-frontends/mn88443x.c                       |  7 +++----
+ drivers/media/i2c/adv7842.c                                  |  4 ++--
+ drivers/media/i2c/ar0521.c                                   |  4 ++--
+ drivers/media/i2c/ccs/ccs-core.c                             |  8 ++++----
+ drivers/media/i2c/ds90ub913.c                                |  2 +-
+ drivers/media/i2c/ds90ub953.c                                |  2 +-
+ drivers/media/i2c/imx274.c                                   |  3 +--
+ drivers/media/i2c/imx335.c                                   |  4 ++--
+ drivers/media/i2c/imx412.c                                   |  4 ++--
+ drivers/media/i2c/max9286.c                                  |  4 ++--
+ drivers/media/i2c/max96717.c                                 |  2 +-
+ drivers/media/i2c/mt9m111.c                                  |  4 ++--
+ drivers/media/i2c/mt9v111.c                                  | 12 ++++++------
+ drivers/media/i2c/ov5675.c                                   |  4 ++--
+ drivers/media/i2c/ov5693.c                                   |  4 ++--
+ drivers/media/i2c/ov9282.c                                   |  4 ++--
+ drivers/media/i2c/rj54n1cb0c.c                               |  8 ++++----
+ drivers/media/i2c/st-mipid02.c                               |  4 ++--
+ drivers/media/pci/intel/ipu-bridge.c                         |  4 ++--
+ drivers/media/pci/intel/ipu3/ipu3-cio2.c                     |  4 ++--
+ drivers/media/pci/intel/ipu6/ipu6-isys-csi2.c                |  4 ++--
+ .../media/platform/mediatek/vcodec/common/mtk_vcodec_dbgfs.c |  4 ++--
+ drivers/media/platform/nxp/imx8mq-mipi-csi2.c                |  4 ++--
+ drivers/media/platform/renesas/rzg2l-cru/rzg2l-csi2.c        |  8 ++++----
+ drivers/media/platform/renesas/vsp1/vsp1_drv.c               |  3 +--
+ drivers/media/platform/rockchip/rkisp1/rkisp1-csi.c          |  4 ++--
+ drivers/media/platform/rockchip/rkisp1/rkisp1-isp.c          |  4 ++--
+ drivers/media/platform/samsung/exynos4-is/media-dev.c        |  4 ++--
+ drivers/media/platform/ti/cal/cal.c                          |  3 +--
+ drivers/staging/media/ipu3/ipu3.c                            |  3 +--
+ drivers/staging/media/ipu7/ipu7-isys-csi-phy.c               |  4 ++--
+ drivers/staging/media/ipu7/ipu7-isys-csi2.c                  |  4 ++--
+ 34 files changed, 72 insertions(+), 77 deletions(-)
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251013-ptr_err-9a7968fcd19f
 
-Yours,
-Linus Walleij
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
+
