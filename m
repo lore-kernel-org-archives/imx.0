@@ -1,97 +1,414 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011048.outbound.protection.outlook.com [52.101.65.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764CB28B4F0;
-	Mon, 13 Oct 2025 16:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760374547; cv=none; b=GH1Ez9li1n5ZQLbHOiNRJ6zB1lvQIMbdCIgawIhAxP3Gv/MqWONoso+er2wTV+339DoceyMftOnVlaLdJpN2W11oftSiwqthfmH/qgWgiUGieWet1ezw1n64nkoLcEXx+rpOKe/kLSiVcVe3f9mekPUwriBOUMH8jvEwg/JNyug=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760374547; c=relaxed/simple;
-	bh=wlwWwsOaGymy2W8eGgiEpASjFWKBeDo7iH2NE6LILLw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QvH9bv5J8Y2zxL+ur1nm8XGeMuo3GXa0+C5xMUkYFqvHOvnV7S1p+pebNq8u3i42DRL3OWIp70Ucj3pG4fZth/5VRA4W4rqRW3UCvtI5kHF8b2QHObNqdmH9yDowBruJkl3HoWSAnZaRgZPzylb4nvIX5ezShK4TparrmtedmVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=T4hxPhCE; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA9A29BDAB
+	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 16:56:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760374588; cv=fail; b=a/IfmEKSwSOoevorHS4w/3jjGGEofYUEiUkcsoCCToIssUAqTrsBeEj4t3Fyk1X2Mb3XYyXT5AbuKFwKdwJSUKa1X/eB/ccKJrh2W2IYEx9HYdOV/koOfkLNhW5OmkTzTmFLFTpcjkltKBvclzma1SSE3xrZs7uRcyhyLWFgoFI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760374588; c=relaxed/simple;
+	bh=G8rLAXtxoti5imBn4go0QVhqx551AxU1Pz2d7fXcmT8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dhXNWa6cvvM+Aam7nSVYsNohaa+gIP5d2o5mUWXytTRm4a1xN9Qo4dg6E0PnOUUfsMlMnkcCn4k/H2h6vrlu8o3VOFl2j3+27qa2f9YoTioQK/laT2w42hoQdKMUJ/32ns52A47jkThyBr81P9+JQx7bbhpONdPOJsloK/p3cmc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OAlk7Vid; arc=fail smtp.client-ip=52.101.65.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="T4hxPhCE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=CBULL6DgUe9CggCYIRWgvIG8dAx0oc/6eJPoZVfJcfA=; b=T4hxPhCElqyDUJn4At/i47NzZu
-	2DY8dI0GRwfjMqDSf9GAUK9rWrPMGkZStwDQEmZxpE1q8fApUkTxFxNZ1ry054Z9NLTCS4PQCjV7n
-	saL8ocOQr0vVqHRKluj481AJzVhgyiTZHjgFsKPB/AAWcvGKPkW4/xAKF5vievn+M5d4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1v8Lpj-00Aoea-Hd; Mon, 13 Oct 2025 18:55:39 +0200
-Date: Mon, 13 Oct 2025 18:55:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OAlk7Vid"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Q68cIu4ir2PAg0RlILPK1GopWi8r7MzFwVKMkNJSDXzwPasBFiVcFqVdjPjPzDm7yCMuR+zePQitYLdh4xFyn+nsmzNyVkgr1cbBF3RQQSdfc5r2NE6dSEAuAc0IcnfSfSHW9MpUJoyjYnMaNTaObTeyYZV1AUH3iTKw0xIXTwg3gGmPx7grUuu97Dq6zAcBoVR2/f9idV0tCKKviBCTczsPqYOdOkW5XmsF0p3fikGkJHrQuVowPhOtM7ynLQXI5LjbXQwnkm7ayJJi5byGAqYVoqoiJ5qf/McAX48RiL2LX94DPu8FgC3NJN+ovZ5Ir9+XJSmQqtswq5guHHXTfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/UUc4XCIJv2p1F4wzXgwBQ54c1W5FQ6pc2w8Ias4Mp4=;
+ b=Jxjb2RnG/dKbDswCBkW3e+5IOQFhMZzrh6wuFtV1t8UCh/MWev0+Y7PveG3vj1f6EHdxAcDPVjbNnGMN9PtsH49zzhsg1jlphb/beGghLVqN5MBet39JOiwVwhxur9EA4ikGVwC28sXF1TXxdU7vKMSHD9MrwmdfyE1C8o5xyZ9SXWvDUgKWQdTvlxURj9YdGePfI01Y0j2tCcM0DvkluhHe5o6dxxSJLFvKHJSF2sujY6TgfNQ90QZECBSEH4CeDNeXWab0t4wbNNiV9FXVtG0Lh1YJcyUmQFjcgrBaWJmD0UBB+fuZnyFUmpdtgIjFYD9AabhrnGZTm544yvb2uA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/UUc4XCIJv2p1F4wzXgwBQ54c1W5FQ6pc2w8Ias4Mp4=;
+ b=OAlk7Vid7UKQC0IlVhDtHPCD8h5dY9UyWhA+rbXG8bwawiRt9YWgZXMax0x4xG7pSTa5Sr5vccoONqWZZnYV7M+S3xiJcvWTTYXxklJCLgtmcsIWzxm8hXmloilXNfdIB2BFCgvqIzl8T0mHGCxGNpmBSJPXZXXb5GozHZdNjekQLrtOjVOnkc0c4/UO4m1eUCIHPCr8YL3qr9Vbceh4zeBFbYvpfnYLeFMyEXQNQqs2AeVV1YQ7d147VxrCeHe+L2T6Dj52GbJGmW+rF6Y1qUgOb2JN6jwBbM+GboFiVFLqO/lIzLwCJzURGFpmSRlJMUlf5N23gBEtZxN4EqEuFA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
+ by DU4PR04MB10551.eurprd04.prod.outlook.com (2603:10a6:10:588::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Mon, 13 Oct
+ 2025 16:56:22 +0000
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9203.009; Mon, 13 Oct 2025
+ 16:56:22 +0000
+Date: Mon, 13 Oct 2025 12:56:13 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Marek Vasut <marek.vasut@mailbox.org>
+Cc: dri-devel@lists.freedesktop.org, Abel Vesa <abelvesa@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Liu Ying <victor.liu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [PATCH v3 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
-Message-ID: <08a8e0d6-f486-40bd-a2f1-43e33ccde1d2@lunn.ch>
-References: <20251009222716.394806-1-shenwei.wang@nxp.com>
- <20251009222716.394806-4-shenwei.wang@nxp.com>
- <eb99d9a8-eb96-445d-899a-6e1d9b6f6c69@lunn.ch>
- <PAXPR04MB9185A829534963B22D1C49FD89EFA@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <6025be80-7007-48bb-bdd1-c8198e951400@lunn.ch>
- <PAXPR04MB918524EAA74F72D64AE0ACA489EAA@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <f5b15eeb-a183-40bc-993a-49736739c0f5@lunn.ch>
- <PAXPR04MB9185A0A5494A00280F97676C89EAA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org
+Subject: Re: [PATCH 05/39] drm/imx: dc: Rework dc_subdev_get_id() to drop
+ ARRAY_SIZE() use
+Message-ID: <aO0vLbkpXejre2Ta@lizhi-Precision-Tower-5810>
+References: <20251011170213.128907-1-marek.vasut@mailbox.org>
+ <20251011170213.128907-6-marek.vasut@mailbox.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251011170213.128907-6-marek.vasut@mailbox.org>
+X-ClientProxiedBy: PH8P220CA0029.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:348::13) To AS4PR04MB9621.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB9185A0A5494A00280F97676C89EAA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|DU4PR04MB10551:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac051316-e9de-4a8c-3ac6-08de0a796ff4
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|7416014|376014|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?UaeQJMZKyZuPvQXmpt/xgB7+bJqDcUAN137o3TnoJzfKCj9ZPTRxT+J5ogJW?=
+ =?us-ascii?Q?Hi4w8VPxfvu6Wz5qHwy0poOoY17Lig1/U4EOoY5qo0zVTCkMIEpVouSZiq+i?=
+ =?us-ascii?Q?Kuf5AipSHl9HgpT7Yo4KoKOCaVZGeASVjkrb8plnDGfL1lC4fqTZIDUDFAoz?=
+ =?us-ascii?Q?G9bM7SqNfo4eSrivnSUYjgZn4WTei9NCslfYNav4J/3lpBqA5WgdX+sSpspd?=
+ =?us-ascii?Q?OyuAMFppSxcZHvQa6FT8jES4ze6Jss1aDF5XYbQmrymY+tl0TqoNfCO/i3Ow?=
+ =?us-ascii?Q?m+vx+vs+LZCUGn4G4oswa/IQDPcFR8QYTiM7xUbKc5OM6jVAq+EYqoPFv8LE?=
+ =?us-ascii?Q?6IfmJKN/jObAZIvoB2fR7fJqqPVfEqQE57Ap4L78O8fnx6lA2P+D2pnPCT1m?=
+ =?us-ascii?Q?83p1AIWJvMmAWcmttMCp3EwzxGA9K2fmEgA/wB+FKgtH+jRcxkfj8AgOGZ61?=
+ =?us-ascii?Q?xIeDFA6ZDnJgdHObVcfduTC8L+bOD0KzOXDRTgAyTj2cApIn6EiK5FQvhN14?=
+ =?us-ascii?Q?zk3CQAx2xbswRDVq94dZMdxFlebNXwJf+O4TIX6kKQK03fc9psQLcd8rGqne?=
+ =?us-ascii?Q?fMVZhSLs67vxW94ouZexIwF+n8kZfxMkKy4tnwwHOanKHHBKjMn8Jy0nk9eM?=
+ =?us-ascii?Q?beoQIP+F7LPTL/v6LcagUjSusnlM39QdClOlhSp44NJ1+4Uz0AY7PkC6BRb/?=
+ =?us-ascii?Q?91RsDvQdrUh2f2FFP+HYKXGMyOvj0iK0Osys4sscDg468xbFVqhFxuRYwP0l?=
+ =?us-ascii?Q?++b/651p8aSQOomdz0h2RRMIpdyzhYBGY7ASgsfLFVyBjUeA6XPR9o3p+Buy?=
+ =?us-ascii?Q?zXkKcyx/TxtxZ0gVvJ4To7pTuenzR64ajGJwKyRNS5uq7U1fv8rBOFFF7W8P?=
+ =?us-ascii?Q?hBLcNSs7Agr87PIO9EdtqNrTyJvTPYVj18Hite2K8U5cMVy3EUntMFkdI0gl?=
+ =?us-ascii?Q?qhiJSlX7qgffIFk2fmugYJ06OHj8x8gW6puiiNa15y+AwvA/jdQe4Bn4ZPMy?=
+ =?us-ascii?Q?mb3x7Iq4o5WHTxwA6ZOyAGvfpGMBJJnZ73qwTRG6BFJ/QiXgJGnmvsTdriLV?=
+ =?us-ascii?Q?LebJWQXR2fP2l12qtAT6CZkPLZCksgZC87wZBkvS7zlB9oOO4VCnZKUtTY4J?=
+ =?us-ascii?Q?JymdWUj3iiYKE9ao0xNnIEpA2xyu0R51Wd7cK6/G/f0B3WWSEU831w7LrNal?=
+ =?us-ascii?Q?26a30Nd3QdZNjXgZQFkOZUiI9PHNlnM9nTg+ks8G3O9VcnW8krbjegccmqpK?=
+ =?us-ascii?Q?xQR2bgPp6FTVvKG5F+JDqAFae8P22+OfFvu4wYxN3bjrj5t4V1i9iVQH3SOE?=
+ =?us-ascii?Q?hUdEyaC6YjvnTtdTSGXCEbxV7RVN12m7ghxQRO39rtnvLOsKKa5DqO9l3qY2?=
+ =?us-ascii?Q?YI0PgjIPVvQOQ82cFixboZy9eeB+WQA+gAImpxBbFaCyqmOpBX26/l+f/uf/?=
+ =?us-ascii?Q?2qD8StdSPCg6FriGmbBa9+MzFn9LcfYqoDJJA7fFq2ZhrE8RJjxZjG32gxqE?=
+ =?us-ascii?Q?5JrlQVlE3OTYuxGTb0wpjV94g7LB+qsKGGPE?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(7416014)(376014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?q+3IFpYHbXc7uSCdR3NcWZAd2jkptxYlcPv9A+W1zci0uwpwSIEyjDeEPKKB?=
+ =?us-ascii?Q?8n+TPoodjmZ4zfJXrhD6c7M8YLKjddLYT0fTQK5OnVNkLPoNQc5XDGycjWRr?=
+ =?us-ascii?Q?AZCDMTmnp4iKcaLH2EdGlb7/aK20p546fjrqaLnK392uUx1HzqXlnOOFeY4A?=
+ =?us-ascii?Q?LdfRkcHkxZwipWSezZyK11mNtBsFzt6ZHHjv1IRmvrdsigEjcayrpcr6Jbws?=
+ =?us-ascii?Q?VQQrTM4Ksfn7n2SNbMzY6+bTT9gIBPYVW2o+lS3kkCDOe3L4BVK0jI2WYMuy?=
+ =?us-ascii?Q?Bb65pvozGveHgxaWxgMLxG5ifvSh0IiLUblvsDOXuVMQ4jZIehDMYCf8OD5X?=
+ =?us-ascii?Q?KHeULZLKHNnKyvfl8D0U5l9sWihOtyqnC0gpoOW7NE1LlQhDifns6E58Bf7K?=
+ =?us-ascii?Q?EcqfUWWemZskeXdWfk1sT9G/MNQJPcrYV1ezL9n3RdNJSxHUOW1YX8Ngb8my?=
+ =?us-ascii?Q?efwP/a2od9ElV43oZZw5VTF4gmbZ1c7xsel+/x+YKKY7gdsIk7lr8uD1R9kB?=
+ =?us-ascii?Q?6KYTjhQk1hSqaAhP+sHY0a37SkU/fJYZeQXTjmO0Tqmvad1Hci+djEFfP4BN?=
+ =?us-ascii?Q?ERrfdKuUQfqYtV08TzkKzsEvAo47/3DCwYJUBJlvE1ckKvrOQ5/BF9EhBxoP?=
+ =?us-ascii?Q?v0+Q3rLlgBhTdXmL561ECgXPvuxDST2ee4wNkF0HttTzeG9OtHcskCHGDx/f?=
+ =?us-ascii?Q?XdyBtQ+tY+9nE4xt4DvduP+bd1oiPSXcASHuM5Gh6SwO9RoRuCEyJtroMAAk?=
+ =?us-ascii?Q?eZRYvYR0m8sSz8NfaTXU1qA+6LTA49cDUKQJ6VseuV7Fl9uIsNoAq1TxSQBm?=
+ =?us-ascii?Q?ldByx1mtooEiy7XO8lrWclSLLGTiGFMZ640cwPnnK4uamsrsbrt/C8O/ho79?=
+ =?us-ascii?Q?4mRDns3hDL2Guup2QW/93pE5d3eoOwi93E+gK5Wl4EQTFGckVxrtYf0QFbV6?=
+ =?us-ascii?Q?qzXQ0vZMIWjrM7Pa8kRK85YAJLyJZEUn5IeBScKJclsUcD+wIolDTjV+hV7y?=
+ =?us-ascii?Q?u5Di6aC1zWBaOayqol2io1jNWSr4eCdfFhIOGehVJT5Fje92hM25K0tbmrF0?=
+ =?us-ascii?Q?l9OwhCxkia5RuKdKMiWsGNNzo+wEOSsBxvi6bpfQ15BaD8MzprNjDHKhKads?=
+ =?us-ascii?Q?aEJ7X+voOaWUbgmQ+cbjxx26MPhhkCz2n9y5QJVg4RjFmBkvrfGqNBVuXqZW?=
+ =?us-ascii?Q?n8I/X+hZqBl8+t5ZEqlBfPjWcPj/uM6TgTySaYDXloQWkmfs4EyCoDCK986T?=
+ =?us-ascii?Q?O9u6sDT5fXGFxQlOd2WVLQ8T2CbkPH3BM9DEZXvrl9tCQGyyX+wCcZMz4to7?=
+ =?us-ascii?Q?xVcPnfDX5Jufj/mPcBeG4b0jhK7c1jQJKYf6tFAWhF5zx7GoLPiEWcIcSfUw?=
+ =?us-ascii?Q?Yku0nxtkkr4IfUJ3U+LONMc3j1Ut3byVzTNKDsyfkMG/awYxL9YQegayJx2X?=
+ =?us-ascii?Q?uFECwCa5v9BqumcGy8EWaac5XMwplBZ2xGlSg9Dki7l3ITPChnLfkEkUy+ji?=
+ =?us-ascii?Q?JgmYHhtyP/8WeI2kg/XSwg/lexDt/SC2aogqn+/KOeZnwLi0XjI1c0zzOFzq?=
+ =?us-ascii?Q?a3PTGu1rHF6dRh/eLI8=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac051316-e9de-4a8c-3ac6-08de0a796ff4
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2025 16:56:22.1124
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JrTmGkO6IwQYqoaemX+huAh5Huxg27nLWgER/lDVsUgzfWBxpqpNPrZMIaRTwuoK+lcya5wXur//Rg3nF+IJKw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10551
 
-> > Notice how ENOPNOTSUPP can be 45, 122, 223, or 95. Returning EL2NSYNC or
-> > EDQUOT to user space is going to cause confusion...
-> >
-> 
+On Sat, Oct 11, 2025 at 06:51:20PM +0200, Marek Vasut wrote:
+> Rework dc_subdev_get_id() to drop ARRAY_SIZE() use and use empty trailing
+> entry in each ID look up array instead. This allows passing of those arrays
+> around as OF match data, which will be useful when using this pipeline on
+> i.MX95, which has different address-to-ID mapping.
+>
+> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
 
-> I think we should just follow the definitions in
-> include/uapi/asm-generic/errno.h, right?
+This change is okay. but my questions is why need map register to id.
 
-No.
+Frank
 
-Try a make for mips, and look at includes you end up with. You will
-find it goes something like:
-
-# 1 "./arch/mips/include/asm/errno.h" 1
-# 11 "./arch/mips/include/asm/errno.h"
-# 1 "./arch/mips/include/uapi/asm/errno.h" 1
-# 16 "./arch/mips/include/uapi/asm/errno.h"
-# 1 "./include/uapi/asm-generic/errno-base.h" 1
-# 17 "./arch/mips/include/uapi/asm/errno.h" 2
-
-and this results in
-
-#define EOPNOTSUPP      122     /* Operation not supported on transport endpoint */
-
-not what you get from asm-generic/errno.h:
-
-#define	EOPNOTSUPP	95	/* Operation not supported on transport endpoint */
-
-	Andrew
+> ---
+> Cc: Abel Vesa <abelvesa@kernel.org>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> Cc: Liu Ying <victor.liu@nxp.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Cc: Peng Fan <peng.fan@nxp.com>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: devicetree@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-clk@vger.kernel.org
+> ---
+>  drivers/gpu/drm/imx/dc/dc-cf.c  | 3 ++-
+>  drivers/gpu/drm/imx/dc/dc-db.c  | 3 ++-
+>  drivers/gpu/drm/imx/dc/dc-de.c  | 3 ++-
+>  drivers/gpu/drm/imx/dc/dc-drv.h | 8 +++++---
+>  drivers/gpu/drm/imx/dc/dc-ed.c  | 3 ++-
+>  drivers/gpu/drm/imx/dc/dc-fg.c  | 3 ++-
+>  drivers/gpu/drm/imx/dc/dc-fl.c  | 3 ++-
+>  drivers/gpu/drm/imx/dc/dc-fw.c  | 3 ++-
+>  drivers/gpu/drm/imx/dc/dc-lb.c  | 3 ++-
+>  drivers/gpu/drm/imx/dc/dc-tc.c  | 3 ++-
+>  10 files changed, 23 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/imx/dc/dc-cf.c b/drivers/gpu/drm/imx/dc/dc-cf.c
+> index 2f077161e9126..846705534546a 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-cf.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-cf.c
+> @@ -29,6 +29,7 @@ static const struct dc_subdev_info dc_cf_info[] = {
+>  	{ .reg_start = 0x561809e0, .id = 1, },
+>  	{ .reg_start = 0x561809a0, .id = 4, },
+>  	{ .reg_start = 0x56180a20, .id = 5, },
+> +	{ /* sentinel */ },
+>  };
+>
+>  static const struct regmap_range dc_cf_regmap_ranges[] = {
+> @@ -106,7 +107,7 @@ static int dc_cf_bind(struct device *dev, struct device *master, void *data)
+>  	if (IS_ERR(cf->reg_cfg))
+>  		return PTR_ERR(cf->reg_cfg);
+>
+> -	id = dc_subdev_get_id(dc_cf_info, ARRAY_SIZE(dc_cf_info), res_pec);
+> +	id = dc_subdev_get_id(dc_cf_info, res_pec);
+>  	if (id < 0) {
+>  		dev_err(dev, "failed to get instance number: %d\n", id);
+>  		return id;
+> diff --git a/drivers/gpu/drm/imx/dc/dc-db.c b/drivers/gpu/drm/imx/dc/dc-db.c
+> index 789942d1c446d..3958a2c4ec934 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-db.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-db.c
+> @@ -74,6 +74,7 @@ enum dc_db_shadow_sel {
+>  static const struct dc_subdev_info dc_db_info[] = {
+>  	{ .reg_start = 0x4b6a0000, .id = 0, },
+>  	{ .reg_start = 0x4b720000, .id = 1, },
+> +	{ /* sentinel */ },
+>  };
+>
+>  static const struct regmap_range dc_db_regmap_ranges[] = {
+> @@ -176,7 +177,7 @@ static int dc_db_bind(struct device *dev, struct device *master, void *data)
+>  	if (IS_ERR(db->reg_cfg))
+>  		return PTR_ERR(db->reg_cfg);
+>
+> -	db->id = dc_subdev_get_id(dc_db_info, ARRAY_SIZE(dc_db_info), res_cfg);
+> +	db->id = dc_subdev_get_id(dc_db_info, res_cfg);
+>  	if (db->id < 0) {
+>  		dev_err(dev, "failed to get instance number: %d\n", db->id);
+>  		return db->id;
+> diff --git a/drivers/gpu/drm/imx/dc/dc-de.c b/drivers/gpu/drm/imx/dc/dc-de.c
+> index 23b0cea68d325..81334c0088219 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-de.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-de.c
+> @@ -21,6 +21,7 @@
+>  static const struct dc_subdev_info dc_de_info[] = {
+>  	{ .reg_start = 0x5618b400, .id = 0, },
+>  	{ .reg_start = 0x5618b420, .id = 1, },
+> +	{ /* sentinel */ },
+>  };
+>
+>  static const struct regmap_range dc_de_regmap_ranges[] = {
+> @@ -90,7 +91,7 @@ static int dc_de_bind(struct device *dev, struct device *master, void *data)
+>  	if (ret)
+>  		return ret;
+>
+> -	id = dc_subdev_get_id(dc_de_info, ARRAY_SIZE(dc_de_info), res_top);
+> +	id = dc_subdev_get_id(dc_de_info, res_top);
+>  	if (id < 0) {
+>  		dev_err(dev, "failed to get instance number: %d\n", id);
+>  		return id;
+> diff --git a/drivers/gpu/drm/imx/dc/dc-drv.h b/drivers/gpu/drm/imx/dc/dc-drv.h
+> index 17ce2d748262b..a7ad17680a9b2 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-drv.h
+> +++ b/drivers/gpu/drm/imx/dc/dc-drv.h
+> @@ -85,16 +85,18 @@ extern struct platform_driver dc_pe_driver;
+>  extern struct platform_driver dc_tc_driver;
+>
+>  static inline int dc_subdev_get_id(const struct dc_subdev_info *info,
+> -				   int info_cnt, struct resource *res)
+> +				   struct resource *res)
+>  {
+> -	int i;
+> +	int i = 0;
+>
+>  	if (!res)
+>  		return -EINVAL;
+>
+> -	for (i = 0; i < info_cnt; i++)
+> +	while (info[i].reg_start) {
+>  		if (info[i].reg_start == res->start)
+>  			return info[i].id;
+> +		i++;
+> +	}
+>
+>  	return -EINVAL;
+>  }
+> diff --git a/drivers/gpu/drm/imx/dc/dc-ed.c b/drivers/gpu/drm/imx/dc/dc-ed.c
+> index 86ecc22d0a554..a63c387a4c023 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-ed.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-ed.c
+> @@ -40,6 +40,7 @@ static const struct dc_subdev_info dc_ed_info[] = {
+>  	{ .reg_start = 0x56180a00, .id = 1, },
+>  	{ .reg_start = 0x561809c0, .id = 4, },
+>  	{ .reg_start = 0x56180a40, .id = 5, },
+> +	{ /* sentinel */ },
+>  };
+>
+>  static const struct regmap_range dc_ed_pec_regmap_write_ranges[] = {
+> @@ -226,7 +227,7 @@ static int dc_ed_bind(struct device *dev, struct device *master, void *data)
+>
+>  	ed->dev = dev;
+>
+> -	id = dc_subdev_get_id(dc_ed_info, ARRAY_SIZE(dc_ed_info), res_pec);
+> +	id = dc_subdev_get_id(dc_ed_info, res_pec);
+>  	if (id < 0) {
+>  		dev_err(dev, "failed to get instance number: %d\n", id);
+>  		return id;
+> diff --git a/drivers/gpu/drm/imx/dc/dc-fg.c b/drivers/gpu/drm/imx/dc/dc-fg.c
+> index 7f6c1852bf724..5fadd67aa911b 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-fg.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-fg.c
+> @@ -92,6 +92,7 @@ enum dc_fg_dm {
+>  static const struct dc_subdev_info dc_fg_info[] = {
+>  	{ .reg_start = 0x5618b800, .id = 0, },
+>  	{ .reg_start = 0x5618d400, .id = 1, },
+> +	{ /* sentinel */ },
+>  };
+>
+>  static const struct regmap_range dc_fg_regmap_write_ranges[] = {
+> @@ -326,7 +327,7 @@ static int dc_fg_bind(struct device *dev, struct device *master, void *data)
+>  		return dev_err_probe(dev, PTR_ERR(fg->clk_disp),
+>  				     "failed to get display clock\n");
+>
+> -	id = dc_subdev_get_id(dc_fg_info, ARRAY_SIZE(dc_fg_info), res);
+> +	id = dc_subdev_get_id(dc_fg_info, res);
+>  	if (id < 0) {
+>  		dev_err(dev, "failed to get instance number: %d\n", id);
+>  		return id;
+> diff --git a/drivers/gpu/drm/imx/dc/dc-fl.c b/drivers/gpu/drm/imx/dc/dc-fl.c
+> index 3ce24c72aa13e..d4e746f8c4297 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-fl.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-fl.c
+> @@ -33,6 +33,7 @@ struct dc_fl {
+>
+>  static const struct dc_subdev_info dc_fl_info[] = {
+>  	{ .reg_start = 0x56180ac0, .id = 0, },
+> +	{ /* sentinel */ },
+>  };
+>
+>  static const struct regmap_range dc_fl_regmap_ranges[] = {
+> @@ -120,7 +121,7 @@ static int dc_fl_bind(struct device *dev, struct device *master, void *data)
+>  	if (IS_ERR(fu->reg_cfg))
+>  		return PTR_ERR(fu->reg_cfg);
+>
+> -	id = dc_subdev_get_id(dc_fl_info, ARRAY_SIZE(dc_fl_info), res_pec);
+> +	id = dc_subdev_get_id(dc_fl_info, res_pec);
+>  	if (id < 0) {
+>  		dev_err(dev, "failed to get instance number: %d\n", id);
+>  		return id;
+> diff --git a/drivers/gpu/drm/imx/dc/dc-fw.c b/drivers/gpu/drm/imx/dc/dc-fw.c
+> index acb2d4d9e2ecd..c1131b7b17c2f 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-fw.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-fw.c
+> @@ -35,6 +35,7 @@ struct dc_fw {
+>
+>  static const struct dc_subdev_info dc_fw_info[] = {
+>  	{ .reg_start = 0x56180a60, .id = 2, },
+> +	{ /* sentinel */ },
+>  };
+>
+>  static const struct regmap_range dc_fw_pec_regmap_access_ranges[] = {
+> @@ -157,7 +158,7 @@ static int dc_fw_bind(struct device *dev, struct device *master, void *data)
+>  	if (IS_ERR(fu->reg_cfg))
+>  		return PTR_ERR(fu->reg_cfg);
+>
+> -	id = dc_subdev_get_id(dc_fw_info, ARRAY_SIZE(dc_fw_info), res_pec);
+> +	id = dc_subdev_get_id(dc_fw_info, res_pec);
+>  	if (id < 0) {
+>  		dev_err(dev, "failed to get instance number: %d\n", id);
+>  		return id;
+> diff --git a/drivers/gpu/drm/imx/dc/dc-lb.c b/drivers/gpu/drm/imx/dc/dc-lb.c
+> index 38f966625d382..34ea61c2de87d 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-lb.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-lb.c
+> @@ -76,6 +76,7 @@ static const struct dc_subdev_info dc_lb_info[] = {
+>  	{ .reg_start = 0x56180bc0, .id = 1, },
+>  	{ .reg_start = 0x56180be0, .id = 2, },
+>  	{ .reg_start = 0x56180c00, .id = 3, },
+> +	{ /* sentinel */ },
+>  };
+>
+>  static const struct regmap_range dc_lb_pec_regmap_access_ranges[] = {
+> @@ -273,7 +274,7 @@ static int dc_lb_bind(struct device *dev, struct device *master, void *data)
+>  	if (IS_ERR(lb->reg_cfg))
+>  		return PTR_ERR(lb->reg_cfg);
+>
+> -	lb->id = dc_subdev_get_id(dc_lb_info, ARRAY_SIZE(dc_lb_info), res_pec);
+> +	lb->id = dc_subdev_get_id(dc_lb_info, res_pec);
+>  	if (lb->id < 0) {
+>  		dev_err(dev, "failed to get instance number: %d\n", lb->id);
+>  		return lb->id;
+> diff --git a/drivers/gpu/drm/imx/dc/dc-tc.c b/drivers/gpu/drm/imx/dc/dc-tc.c
+> index 0bfd381b2cea1..f44b68c0a5e6d 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-tc.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-tc.c
+> @@ -28,6 +28,7 @@
+>  static const struct dc_subdev_info dc_tc_info[] = {
+>  	{ .reg_start = 0x5618c800, .id = 0, },
+>  	{ .reg_start = 0x5618e400, .id = 1, },
+> +	{ /* sentinel */ },
+>  };
+>
+>  static const struct regmap_range dc_tc_regmap_ranges[] = {
+> @@ -91,7 +92,7 @@ static int dc_tc_bind(struct device *dev, struct device *master, void *data)
+>  	if (IS_ERR(tc->reg))
+>  		return PTR_ERR(tc->reg);
+>
+> -	id = dc_subdev_get_id(dc_tc_info, ARRAY_SIZE(dc_tc_info), res);
+> +	id = dc_subdev_get_id(dc_tc_info, res);
+>  	if (id < 0) {
+>  		dev_err(dev, "failed to get instance number: %d\n", id);
+>  		return id;
+> --
+> 2.51.0
+>
