@@ -1,83 +1,89 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCB830DD1D;
-	Mon, 13 Oct 2025 14:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D702030EF65;
+	Mon, 13 Oct 2025 15:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367377; cv=none; b=koQIpLGYcaCB5tAiIXUYoZP0EVWH1gCLolRSw4ukYOeGM5jXkAZGj+dMCDyhNPWhkTY2vo1y/gU+QDJxGg9DNrS5OTrwDkFY7kDz5MSuY3JX157xp6t3Kme5vzC3WqTzPoUnFxPoY+ZteRLqgt1gMewJPqW/k/cPQiN71E/aU4s=
+	t=1760367811; cv=none; b=PnSVqL7S2nDsEM8L4RtaAA2CUGJ2147+th/45NVdEEVk7uq669pkQegstpQC9T+Z6Q3fMZ35qTBjCir2gNZSuHzjJ8Sm94TAkK5PyRDI03CIwgOZXecZMkyoKEMagSSCZK5K/w3FnuGkn0yEAPRkBNw5fmMS3fXU0Vsy+AhUayY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367377; c=relaxed/simple;
-	bh=w/omJbNT4x72wb+nQF8ohpq3gHn9aanfrR54LexT5pw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OgytPOaVxgZ1IkdZ1PoshPK230CoueBPPKrN7LcE1nDGa2hKd01BOOaSUPFBZJY5OLXHD8Wzqii4TwDwAEwLfMieouK+5XcUngyWhXshy0OsPmL9OUYuw0QKrSk/xNTpjwcHowe66+xs8Qa23NQZpTh3pRyG3iwWMDCKvIpZWRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=I9+6rhSn; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1760367811; c=relaxed/simple;
+	bh=G1U4VjihWrTjR/0pZxBUsKlb85UKypAyhjdzAAp6raw=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=Q5wcVHLAY46W/1jwyv1gxKaapwdPhx21h1YmCACaEzUNfaMxrjvvf7ahCEOGeBtVGtJZlzI5FIpzf2PfuitNx+hJ0mZhiuiDyj/4rjFGxLMaOwhklwVSS/QZNuEVdsCfG6LY9qK7wzP/fPlljcvr83kweQDA9uN7m3MhDYIkhIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=fail (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=VjFW7j5w reason="signature verification failed"; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="I9+6rhSn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0U6kFGimkqum2GFBGCMz+lQcGUUrU07CQbrnu3JOJdk=; b=I9+6rhSnHziVfbSBw3fbS6Gb9Z
-	/4rGeaA/cv5ok3Ql3ezORHK0h0fNw3DrM7mWEYnOstI/MLbwvX0eAU1gv8aoc1hR/7jsMt21mgIbW
-	6myA59Xad8mIMXgKha2c+G1bEuTqz8Xkwzn0b9eewhOTWYWnPN/d0ajj24U8uKeTJGs0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1v8Jy6-00Anad-BJ; Mon, 13 Oct 2025 16:56:10 +0200
-Date: Mon, 13 Oct 2025 16:56:10 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [PATCH v3 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
-Message-ID: <f5b15eeb-a183-40bc-993a-49736739c0f5@lunn.ch>
-References: <20251009222716.394806-1-shenwei.wang@nxp.com>
- <20251009222716.394806-4-shenwei.wang@nxp.com>
- <eb99d9a8-eb96-445d-899a-6e1d9b6f6c69@lunn.ch>
- <PAXPR04MB9185A829534963B22D1C49FD89EFA@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <6025be80-7007-48bb-bdd1-c8198e951400@lunn.ch>
- <PAXPR04MB918524EAA74F72D64AE0ACA489EAA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="VjFW7j5w"
+Received: from pendragon.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4CACF557;
+	Mon, 13 Oct 2025 17:01:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1760367708;
+	bh=G1U4VjihWrTjR/0pZxBUsKlb85UKypAyhjdzAAp6raw=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=VjFW7j5w3uImm2q1iWEwqGyFzq7DNfkTVBaq5lpyK2yHJ7aZC29Xfhr1ySWtwXTaA
+	 WkHQ6VshkR+fiQpIVovTbGFpBwEMHuBVTocpv9nEkNKv8sOsKQAAdkX1fA4a8tva/n
+	 KEgIrlSrlFZ6cr2flWju1lvfyogNPxedvXUY+v3Y=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB918524EAA74F72D64AE0ACA489EAA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20251013-ptr_err-v1-10-2c5efbd82952@chromium.org>
+References: <20251013-ptr_err-v1-0-2c5efbd82952@chromium.org> <20251013-ptr_err-v1-10-2c5efbd82952@chromium.org>
+Subject: Re: [PATCH 10/32] media: i2c: imx335: Use %pe format specifier
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>
+To: Alim Akhtar <alim.akhtar@samsung.com>, Andrew-CT Chen <andrew-ct.chen@mediatek.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Benjamin Mugnier <benjamin.mugnier@foss.st.com>, Bingbu Cao <bingbu.cao@intel.com>, Dafna Hirschfeld <dafna@fastmail.com>, Daniel Scally <djrscally@gmail.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Fabio Estevam <festevam@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Hans Verkuil <hverkuil@kernel.org>, Heiko Stuebner <heiko@sntech.de>, Jacopo Mondi <jacopo+renesas@jmondi.org>, Jacopo Mondi <jacopo@jmondi.org>, Julien Massot <julien.massot@collabora.com>, Krzysztof =?utf-8?q?Ha=C5=82asa?= <khalasa@piap.pl>, Krzysztof Kozlowski <krzk@kernel.org>, Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Leon Luo <leonl@leopardimaging.com>, Linus Walleij <linus.walleij@linaro.org>, Martin Kepplinger <mar
+ tink@posteo.de>, Matthias Brugger <matthias.bgg@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Niklas =?utf-8?q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, Pengutronix Kernel Team <kernel@pengutronix.de>, Purism Kernel Team <kernel@puri.sm>, Ricardo Ribalda <ribalda@chromium.org>, Rui Miguel Silva <rmfrfs@gmail.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Sylvain Petinot <sylvain.petinot@foss.st.com>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Tianshu Qiu <tian.shu.qiu@intel.com>, Tiffany Lin <tiffany.lin@mediatek.com>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, Yong Zhi <yong.zhi@intel.com>, Yunfei Dong <yunfei.dong@mediatek.com>
+Date: Mon, 13 Oct 2025 16:03:23 +0100
+Message-ID: <176036780330.559803.287308146210017676@ping.linuxembedded.co.uk>
+User-Agent: alot/0.9.1
 
-> > Maybe Documentation/admin-guide/gpio-rpmsg.rst would be better.  You should
-> > also document how to handle features the device does not support. e.g. i _think_
-> > your hardware supports all 4 interrupt types. But maybe other hardware needs to
-> > return something meaning -EOPNOTSUP?
-> > 
-> 
-> That should be one type of the error return code in the out field of REPLY message. 
-> The return code of 0 means success, and the others are error codes. 
+Quoting Ricardo Ribalda (2025-10-13 15:14:50)
+> The %pe format specifier is designed to print error pointers. It prints
+> a symbolic error name (eg. -EINVAL) and it makes the code simpler by
+> omitting PTR_ERR().
+>=20
+> This patch fixes this cocci report:
+> ./i2c/imx335.c:1013:3-10: WARNING: Consider using %pe to print PTR_ERR()
 
-You need to be careful of architecture code:
+Ohhh nice. Is this new ? First I've come across it.
 
-https://elixir.bootlin.com/linux/v6.17.1/A/ident/EOPNOTSUPP
 
-Notice how ENOPNOTSUPP can be 45, 122, 223, or 95. Returning EL2NSYNC
-or EDQUOT to user space is going to cause confusion...
 
-       Andrew
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>  drivers/media/i2c/imx335.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
+> index c043df2f15fb25b3a56422092f99a1fd9a508fa9..71ed9a0d84a252ee362621c4d=
+38001508fb86d28 100644
+> --- a/drivers/media/i2c/imx335.c
+> +++ b/drivers/media/i2c/imx335.c
+> @@ -1009,8 +1009,8 @@ static int imx335_parse_hw_config(struct imx335 *im=
+x335)
+>         imx335->reset_gpio =3D devm_gpiod_get_optional(imx335->dev, "rese=
+t",
+>                                                      GPIOD_OUT_HIGH);
+>         if (IS_ERR(imx335->reset_gpio)) {
+> -               dev_err(imx335->dev, "failed to get reset gpio %ld\n",
+> -                       PTR_ERR(imx335->reset_gpio));
+> +               dev_err(imx335->dev, "failed to get reset gpio %pe\n",
+> +                       imx335->reset_gpio);
+
+Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+
+>                 return PTR_ERR(imx335->reset_gpio);
+>         }
+> =20
+>=20
+> --=20
+> 2.51.0.760.g7b8bcc2412-goog
+>
