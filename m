@@ -1,164 +1,411 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013071.outbound.protection.outlook.com [40.107.162.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D183090D4
-	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 16:13:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760372015; cv=none; b=SeEm8j/KctzQvEFNQNss0SW70/sLT9EyyqMfSWlA3yiRLZ5xE3pQjNn+BL3HhfvTsWqOcvgrvQjSAkicoENpBj254+KY3pEcVMdbsRuMcM4DrspZdVz4rZCA1iQcCuejoS/jeuYlll+Wj+TJayFVRwn1C9z+3hAAI8iXbDljREs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760372015; c=relaxed/simple;
-	bh=cAB0kIpqj20tM7yHpaFoe3xcfA2AB5cxFaYcvZmpAuc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MCiS84JNYk8n9GET12gpCN1YXsyG3HjitqLjsYtePoSqlsooaZyy6TeGunPCZOWS5ajUwDzmd4bsThLZOCkdg5qfQG8Jx8PFTBdK/TznEWwWMSGCLfysuvG/XdPd/xoPpJhWOMZ/n5iG3FfzgddnmtffUuXVFKnI35e1JiyTgwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=cPJAYBsY; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65CC224B05
+	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 16:38:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760373521; cv=fail; b=ZFr1vvFaXClY9JS8TGVYS5PSwA7UjfB/3cJxj+9bGlzwLyO+kH+BLWvn0RHa9TEPgvca/Izr8XX/NAUlo7vjHegHb8Pi4rQGGKLcAIldGMAN+p6KUE8J04gGFnABO0IH47UfazFkPz6Ag1CvzMjc+EoE/ZZUwLU57voVnjCzQmU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760373521; c=relaxed/simple;
+	bh=r/YWUyO/HwiSFU+8ISqtHfZUWqbcOngtBfsMLFV1Cxo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=PtZCxu6jFbOA23udPESpweyrOnsrFoDjG2sdv4sbx/sZVdKDrTnHsqRenlWQTe7sAKqWVW5WA1QeITRJEw+nsE96p5EtytvMW7KNLKyN7I3pSlOopQSKKIs0IbWtGQUdIymRU5fjcquOOYveBRKCoeit1mVgycGQ8o78cs8pZgQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LbzQKNNh; arc=fail smtp.client-ip=40.107.162.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="cPJAYBsY"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-afcb7ae31caso946604766b.3
-        for <imx@lists.linux.dev>; Mon, 13 Oct 2025 09:13:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1760372011; x=1760976811; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LK0kBaNkf30iNo8Y7sNwo/F78yA794Ns47GaxpHfRwE=;
-        b=cPJAYBsYnwQdu5JeKrTetpfJ8r2YKS4ZDAAbdFJy3dCeL+1Iiymy2PMn7vGQgkDA5Z
-         VKmaP4oD+eXxq1zX7Y5kWiYQVyo/0TLSZPa/57gCc7qQni7nFZx4fm1E4zqT26kdhvEY
-         u66idzkB60uD31F1ERESKh+yPoPckxME6akKk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760372011; x=1760976811;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LK0kBaNkf30iNo8Y7sNwo/F78yA794Ns47GaxpHfRwE=;
-        b=ibWMJD7CEky3g+YUQZtW/Kt0f4i8YAaX6ew3gHiM2G9MYLrAsc1omWfwESK4f52Yrh
-         2kR6gFKsOulcnEAXMGPvSCeNrkNr+Z8JCN7cGO/a8Z4I6uCKE46sZ1CbM5XYhk2MgQna
-         LTn9QXylIoTBzyjzhiKuQm+epROBrZapV0kQ925N0uOBESDcp1V0mOTV8aD8MJwuzQI+
-         31JQvlbYtfQM8zq4FI2wOMMRYQ7HSpANQz3h6tzg3J9iFvwYcXN1dauVAbhLPn4dhAnY
-         I1pgfwrLG9r+Hthduj1KXua1I6tvIKqYQef5+arFs4aZZqw+KVgNiH+lW80nW66VVqIH
-         z4oA==
-X-Forwarded-Encrypted: i=1; AJvYcCXCZv0uTzF2zIbKj/dcroh4Bfx9RLIcu1gYwTvcTl97UmIYoZ23NOQQ1NV2OWldIFMR5wI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yziti8N7BqIUUz7qJKA0MEDL7OiKJoXrNg5alQ28T7/6HtbfVzu
-	Rfi5mq1Jzl6vqiFHlVe+fyKHyT+kbV5YfuQN3QhJoKsQ/qt06XJ4+gIWZLcMwVLcKZqq3JFSzu8
-	9r4cJUbpf
-X-Gm-Gg: ASbGncvBhhWzJp2uk+noinh8Aenm28JgW7QOZsHl+Od3fXbO9WalZv6IxWmvf+zJDhP
-	vYFaUabNfutp/5EYC2q0IQw4G2eZs4mnpD9tIszSqIAZ+WmHNXjonJF+pNCGuzU3Ao633AaIqeM
-	+eIvKxqeLkKEFawDfFKT4XvoFG/9VR0znezNtBMzecUsQLFPkcvFZQPpPVB08CbAszp9jjQrmGX
-	0U8OmRxm8wc5xwVnz65v+Y9JycGSaTHEvxOkyikYlfnMIsgyitI5bYhElGpJdDdpPT2iAmpD21M
-	mMdaOgQRLDmenk8R3UqoBqRwdC5DZsW/fl508g9Kdq1p63PNwYlcFwsyhEpHOLG7q+f6zSO8izH
-	NOI7wCekC4HW3u1WhokxEY3riyuZx0KA1zGW0S1xWOCg2Dnsh2Yg4MjNScSee8X93hONb0wW+5+
-	IVXmr4PBOEpmv1nE04ms5KpMot
-X-Google-Smtp-Source: AGHT+IHlwqnH8DNT7s/OfSxZUqQaxK5WPTQYYonZiQJ+UTqrem5/nUm3JJnDPH7YfN3JHvLzV6+QPA==
-X-Received: by 2002:a17:907:d1d:b0:b43:b740:b35d with SMTP id a640c23a62f3a-b50abfd6a73mr2250908366b.33.1760372010669;
-        Mon, 13 Oct 2025 09:13:30 -0700 (PDT)
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com. [209.85.208.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d65d6994sm957694266b.28.2025.10.13.09.13.30
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Oct 2025 09:13:30 -0700 (PDT)
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-637dbabdb32so8641046a12.2
-        for <imx@lists.linux.dev>; Mon, 13 Oct 2025 09:13:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUlWziKR4kC7v3ZiWnrPOGRDPZLZc7hn829+mlEn88TSZDRd9A8yNEnOvEutD6zhzlFSVY=@lists.linux.dev
-X-Received: by 2002:a05:6512:1095:b0:58b:75:8fbc with SMTP id
- 2adb3069b0e04-5906dd8ef00mr6030162e87.50.1760370658194; Mon, 13 Oct 2025
- 08:50:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LbzQKNNh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fxBT+efA8P9q7x6UqLFJUR9N/WhK3qNlD9WtHrEAxCAnD/LHg5Y4UyIQ1hNvLXUDlPlcuntyuCgXeGVBCQ6Xvs/0AXB5DQgsIATEd/wpJz46z7snFif8Q5uigvJ897iLoAm1Y5m/YA4yIgMyRU2gKsYk4c8s7xcJs7Wa3jAl88XVhuuZnJLOlT165xZoG9otNX9FZ7kfxjBfLT/5Hx6QwVpljdhkCvKakEL14TmWRkwY1ywJkSZZs89GaRxJBBqUABjcKXIHyOJnOU4W5OlFyjkFBq13YKidk3XtoEul34wtKFS30OuTrA2J86fGx++Trg4pMpekMnbPSgyYGw1cKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G3y6XMHzJDYSiOn9Bi4+wtiY5q16nu0gZyVSaGsy0TA=;
+ b=JLNkRcL4kjB8q3b6m/a1nJ6WqlOzj6pSq9M5gyaX8V9dWnIRaYiHDskJUdfnQB6LwEjiMR/JZozxUMsU1mtOEf/UIR2lQbMbMnBUBBaBsqq5dGxxtwXQXeJdz/7/sp/8TpsxkMip118zair2pmz1XcJxgt4K3jB6jErWsVNgNUJwbyX3hsnKcasTCJgDqAU3S3REYnQcoK+E9B6Uc55py/PesdA9JdTggLjEs+H2NdiJbMTcIBW1lnEc1jAw3rx1wmyQaLX9UUi41v4xsapOyklOdPEJhzYSezDYtyGHjKCtzdZUF6k7veGh26qggOqXUKBPh4btbt4tnyn6B0KboQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G3y6XMHzJDYSiOn9Bi4+wtiY5q16nu0gZyVSaGsy0TA=;
+ b=LbzQKNNh6WRaf85YahAGnjtzg8FJJlKTYX06MHR6tL+cSiLqGYXk4bHj74Kli1h6YKaU/jWR8/OcUBN7Tzgf1wfMeaK0sEJeuct/YcOr2PPh/ohMmuG+sPKKGk30vKy6QldcDH0Wdqwf5s3JvRPTp7wMndgZqUvfSgXmDR/WXryVEuHakeR+j4pTFcjiiDKY0sEzHaInKMn2qo7aKSSVjmwnlT9lyv5V3JTfoRd0LOnPWMgmErFfvgFD7AohG4Khb8qZcEgg7vMCJzMkfRdK8aCVC4Llf4nKGdkYwkXjuxEGeasWxNKiexwg1VQ6gXM8l63Kb+7UupLwblqMdh18Bg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
+ by AM9PR04MB7521.eurprd04.prod.outlook.com (2603:10a6:20b:2df::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Mon, 13 Oct
+ 2025 16:38:35 +0000
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9203.009; Mon, 13 Oct 2025
+ 16:38:35 +0000
+Date: Mon, 13 Oct 2025 12:38:28 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Marek Vasut <marek.vasut@mailbox.org>
+Cc: dri-devel@lists.freedesktop.org, Abel Vesa <abelvesa@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Liu Ying <victor.liu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org
+Subject: Re: [PATCH 02/39] drm/imx: Add i.MX95 Display Controller DomainBlend
+Message-ID: <aO0rBBzI3cGWzO34@lizhi-Precision-Tower-5810>
+References: <20251011170213.128907-1-marek.vasut@mailbox.org>
+ <20251011170213.128907-3-marek.vasut@mailbox.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251011170213.128907-3-marek.vasut@mailbox.org>
+X-ClientProxiedBy: CH5P223CA0023.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:610:1f3::28) To AS4PR04MB9621.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251013-ptr_err-v1-0-2c5efbd82952@chromium.org>
- <20251013-ptr_err-v1-1-2c5efbd82952@chromium.org> <aO0cXYeGLwwDABP6@lizhi-Precision-Tower-5810>
-In-Reply-To: <aO0cXYeGLwwDABP6@lizhi-Precision-Tower-5810>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 13 Oct 2025 17:50:44 +0200
-X-Gmail-Original-Message-ID: <CANiDSCtxnR-ydCquhH1=g-XwZ9DN=eeJNxRBOGiqufS_DMYzUg@mail.gmail.com>
-X-Gm-Features: AS18NWAjEedfD0tRDHHy9p2HIYCpNxcTQpn_Xf2f0oNW4TLvTJ881tcLSkxWDmQ
-Message-ID: <CANiDSCtxnR-ydCquhH1=g-XwZ9DN=eeJNxRBOGiqufS_DMYzUg@mail.gmail.com>
-Subject: Re: [PATCH 01/32] Input: cyttsp5 - Use %pe format specifier
-To: Frank Li <Frank.li@nxp.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, =?UTF-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Leon Luo <leonl@leopardimaging.com>, 
-	Kieran Bingham <kieran.bingham@ideasonboard.com>, Jacopo Mondi <jacopo+renesas@jmondi.org>, 
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
-	=?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, 
-	Julien Massot <julien.massot@collabora.com>, Jacopo Mondi <jacopo@jmondi.org>, 
-	Daniel Scally <djrscally@gmail.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
-	Benjamin Mugnier <benjamin.mugnier@foss.st.com>, 
-	Sylvain Petinot <sylvain.petinot@foss.st.com>, Yong Zhi <yong.zhi@intel.com>, 
-	Bingbu Cao <bingbu.cao@intel.com>, Tianshu Qiu <tian.shu.qiu@intel.com>, 
-	Tiffany Lin <tiffany.lin@mediatek.com>, Andrew-CT Chen <andrew-ct.chen@mediatek.com>, 
-	Yunfei Dong <yunfei.dong@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Rui Miguel Silva <rmfrfs@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Dafna Hirschfeld <dafna@fastmail.com>, 
-	Heiko Stuebner <heiko@sntech.de>, Sylwester Nawrocki <s.nawrocki@samsung.com>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|AM9PR04MB7521:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3ea40dcf-de5d-4b1b-f844-08de0a76f441
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|7416014|376014|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?yvcms/qvd7BimrATUL4IJcDQQwIeFzXdHuatFpk0dI5znrNntEIqAa64Nf14?=
+ =?us-ascii?Q?Kb3EWmH5I3yUcqIiBAxnpeSHAk5FqTbosJYPq6yHecF4FZ4jQy7BDTfpT6Yl?=
+ =?us-ascii?Q?Bqdl1WyYe2Wy8cgY7QzfVx6MWOB+deg3FzXOKjDy1R04K4cPZ58O41MaCch8?=
+ =?us-ascii?Q?rRxTuEYjz14YsVxjjTPeIDwX6+rzFBybUstYnyk32lEBZa93BTO9UtXUHnSM?=
+ =?us-ascii?Q?GK7pERq1alxhwKFny2n8lUncNVuMVO0/UgvlT20kzyKK0axXE7V8PyzbJOvc?=
+ =?us-ascii?Q?mLYirlSirUPaP/x+F4l3BrRTP5vrTCbx2zGEPllpgj/NPBBvSXbc7rWp/g5H?=
+ =?us-ascii?Q?QIjBomPiWx8ykt3gxKATsET3Y5R6kMZWIT4mIox3+t0rkwklLc0zpSSVLd71?=
+ =?us-ascii?Q?YhjkzKPOQ3WYAYxJGMUWVwq2ZnlfMHdRF2jc7s+FGcUFun8Jh9c860nz0mIp?=
+ =?us-ascii?Q?zE1fNRnVJgnSRxr0AEeH9PBZuERPRUvdYYBMNRWLgKxGe3pJx9/W4vpSxlhI?=
+ =?us-ascii?Q?AsP73ZOk3CC0Irh+VVmcnTltDbxM731tA2gcNgpmU6AhbmD1SrsjMUP+GxyG?=
+ =?us-ascii?Q?N/lQLwZJladUnstLc3SkdjOMTBR0M7+TYd4hopTm6hTRhEj3QgXI5WE6djY0?=
+ =?us-ascii?Q?wsHTbUr9nVxr5BkfdkcUeSIg9baSZuH0n7yn+ouyeybdZ8s7/wKx13CUhK/t?=
+ =?us-ascii?Q?jHBprDc1WjT0JxzzFi/jkjr/aURm5ggziV4W+Hnqy2WljCBJ0D2EtUV4zeBb?=
+ =?us-ascii?Q?ek3FyENG/bor0j8Exkn1irlNwQj1R9kGoGLSxAPaeP4f/zF2o9ejAL2ComVX?=
+ =?us-ascii?Q?c1Pxni4uaklvZ8m/PKedbcv8i40vPmylLcSDjmbi9ekVf96YFkGRTwP2vCJn?=
+ =?us-ascii?Q?vcGvkXs3r2j/6pBn8SUcdhquVYkIu6U/jpuECcaN6/7/Mo3wOmIXzScEfPbY?=
+ =?us-ascii?Q?RuMBo2HUBNXdBa0HEF6SPLcchmbdSqKgfHkaUzhg+xsAGJ8Lua5CO+s+780B?=
+ =?us-ascii?Q?jxtmRFMCLcEzi/aIAPbXVppmVlmpO1yf8IalC7LWITLn+Mi4TWoRKC3/Bg57?=
+ =?us-ascii?Q?z9u8LovSHiPmXCc+gIQ/VsqnsakCnoinkoGpYuT5jsYwQb84QpNPr786MM1L?=
+ =?us-ascii?Q?dltSIFpRmsARoF1gJBci24D9F/LjfSvN26h8mtS1AQ6i4fGN6Nacrn8d6aM0?=
+ =?us-ascii?Q?/z3/wtlHKx4a0bWJpQJFHWfndsYCHF0E2nT4fB4r+vmIhCcmvd7efH0z3IXI?=
+ =?us-ascii?Q?tD5qPKw8vXDqQUcRpNwL3+UK3TXxhbXdZGa3Da7QXYbNtoRSjxOWvZvXolO1?=
+ =?us-ascii?Q?d7Qf+/XMRwwmMjzcllMjHoKjlbQYnbH9/tTg9GKT4NGMB3oDM5lhsgf5LEMj?=
+ =?us-ascii?Q?2YHou7j20/yBqfcAOktgJsIEoQHCJTW5duCpyssCqBwDj3C2OO7b8Ttxe4Mv?=
+ =?us-ascii?Q?6QgJay2Pj3DhDYZHCYw/qvCH3MUZUeciZYpgmWiqRr5kH7xAQDnvxZRt5blj?=
+ =?us-ascii?Q?qSqdr2qXEhgk7Mzsk8OgxN51wbkUSp/HwPRh?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(7416014)(376014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?p/OUFL/WOySkw8dKH1lnNrI35zTLTe1wz5V1wAY8hUoQmE/YJqphC3ZY1f/o?=
+ =?us-ascii?Q?2VSu5L9a2bowpz6+X7pQK6ErS8HqccGElsiR482/mYi8pp2zEb8IMAiDL48k?=
+ =?us-ascii?Q?pb/JfIrZgjXB22yqLVXaSfKWHX+AXWLUU6SaKaiYAaQjTBX9dQe+gVMHYBx4?=
+ =?us-ascii?Q?+WwI5sfQSJ4gbH0BJWjuthkiJ5D62KKbICiIp0lyGrgNicYKufD1Ay3x0wZY?=
+ =?us-ascii?Q?tt+DMWTHNbiVJUk06vs1wZzCSfvRfMKLXFEvNN/51Ovr6kDiqKBIi96wgq4M?=
+ =?us-ascii?Q?bwpfM/uQ/ny7hKcEeP6vWzYRZT8d2oKelWIYUT0pR3sTzD+kBfpHzIv5VRJu?=
+ =?us-ascii?Q?ziF50X1v/O4bxv1fnrvE9Yzw6bx1hE+xv2qSNXppkFBrFhS0XORTS7+rE8GE?=
+ =?us-ascii?Q?BF6JF0yBkAjzreyWGUtLhFImmb0I+XSI6WR3fK7mkH66RAg65g3305I7Ju9r?=
+ =?us-ascii?Q?OPgMLslOZNW3jQhOOODDX45K1rYdiuRe1ximMr/0am3MowcT93WzFF4lmtZD?=
+ =?us-ascii?Q?jHGA9/SihrYT7w2ykdjG/2XfVTrz7JMQxl0QnmrTZ8/jBC8Di93uRvzWLE4G?=
+ =?us-ascii?Q?klprEJ5IhrfrYAqjrO0WgosA9PRIhm9dSQia72lL+youaALW6DX19wUwi/OO?=
+ =?us-ascii?Q?wrWxZhv2o4WmteIzIQCItMTnrUjThY45tn24c8Pvd1v5nycrVetO1/FWQ0Vb?=
+ =?us-ascii?Q?Wpdvpj7qAh2gpTqeFBG8EuHt9KrEBZNRbtsTPArgSokNX3PWMYHaT/QqHG2G?=
+ =?us-ascii?Q?n/PXEC/ZZwviC8ZI5sCJnBA1b4wdzlJMyc55AODt589t8EBnKaRMahuFjm9z?=
+ =?us-ascii?Q?Ku41mLy2sU/PlZ3wR3ofi9aZP+T/7RguXz1GEVd0FZJ/E+KQ6lRUYYDJtsUJ?=
+ =?us-ascii?Q?+lOKTIkrvulvrP+tiNxf0y24+eSPSIWHIEhb7YLsIHDG3Nh4tgh+y3wLoe6W?=
+ =?us-ascii?Q?SVjG7UoNq7nrhab30P+JhayEFimdfzBomlW5tqsGQAeEq40SRT2oBoEEJKL0?=
+ =?us-ascii?Q?ocf8dl/NKR3+FCHVT0DSBTXIs+PZGXA4lkGWfWLlPbVeG1qwg7fFW6aLukaU?=
+ =?us-ascii?Q?9Ht76xRGfx8IA5428j02+eeDJRVQ7k3FVP2iWIp1DAbjV2QibfXIqUnbBJ3d?=
+ =?us-ascii?Q?mWAP3Smk1Qd9ldC5cIlQPGcL9Gvp/UlHtR8glWNxtCWhO8ua7BDE70LD+gf+?=
+ =?us-ascii?Q?jtbRAQksEvPgr6d0f7n1EqI/ZM6QdLnJrk6akfEjqJFIeXJpsfBtRGXw0elN?=
+ =?us-ascii?Q?i+E6KlHDvEXAknxidalQJ+1B65OE76An9e/r8jG5BQxGOdgOZ2XHDCfLLAaj?=
+ =?us-ascii?Q?waxrKzyCmXs92fUjRZdqfH2i7sFdbv1/Tr++GL48P6IK0C/d1TJm8rinOq+R?=
+ =?us-ascii?Q?FpDYAt2Vh085/6CTdjLm32YURzRCRN9385NUfGUiACI+wWBMAEvVeC8D30Wb?=
+ =?us-ascii?Q?C1cVspgACI6qVBjZlLX0gq+mrK99kYx4ruKUYeteLObbqk/6nwA8ZRY4B2vH?=
+ =?us-ascii?Q?2cQDwhLkva3mjog8i5mWoLWSU92NcirF4G+YZilN5ITHA7cN7QCCWdzNJqBJ?=
+ =?us-ascii?Q?s7jqgVbo/T6RAjhOI/tb6NnT8Ob76e/LtUh8L1Xv?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ea40dcf-de5d-4b1b-f844-08de0a76f441
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2025 16:38:35.6424
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sY/qPOW32r2jiokJmlGge/hTZw1gdG43WJH4dd9RtnDBRr5epWFCuFh5maf1GHRFjbymDryA0hESb0p8a2MSsg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7521
 
-Hi Frank
-
-On Mon, 13 Oct 2025 at 17:36, Frank Li <Frank.li@nxp.com> wrote:
+On Sat, Oct 11, 2025 at 06:51:17PM +0200, Marek Vasut wrote:
+> i.MX95 Display Controller display engine consists of all processing
+> units that operate in a display clock domain. Add DomainBlend driver
+> which is specific to i.MX95 and required to get any display output on
+> that SoC.
 >
-> On Mon, Oct 13, 2025 at 02:14:41PM +0000, Ricardo Ribalda wrote:
-> > The %pe format specifier is designed to print error pointers. It prints
-> > a symbolic error name (eg. -EINVAL) and it makes the code simpler by
-> > omitting PTR_ERR()
-> >
-> > This patch fixes this cocci report:
-> > ./cyttsp5.c:927:3-10: WARNING: Consider using %pe to print PTR_ERR()
-> >
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > ---
-> >  drivers/input/touchscreen/cyttsp5.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+> ---
+> Cc: Abel Vesa <abelvesa@kernel.org>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> Cc: Liu Ying <victor.liu@nxp.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Cc: Peng Fan <peng.fan@nxp.com>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: devicetree@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-clk@vger.kernel.org
+> ---
+>  drivers/gpu/drm/imx/dc/Makefile  |   2 +-
+>  drivers/gpu/drm/imx/dc/dc-crtc.c |   2 +
+>  drivers/gpu/drm/imx/dc/dc-db.c   | 226 +++++++++++++++++++++++++++++++
+>  drivers/gpu/drm/imx/dc/dc-de.c   |   2 +
+>  drivers/gpu/drm/imx/dc/dc-de.h   |  11 ++
+>  drivers/gpu/drm/imx/dc/dc-drv.c  |   1 +
+>  drivers/gpu/drm/imx/dc/dc-drv.h  |   3 +
+>  drivers/gpu/drm/imx/dc/dc-kms.h  |   4 +
+>  8 files changed, 250 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/gpu/drm/imx/dc/dc-db.c
 >
-> Suppose it will go though input subsystem intead of media.
-> Need post seperated at difference thread?
-
-Indeed, it belongs to input. if there is a v2 I will move it to a
-different thread.
-
-Thanks!
-
+> diff --git a/drivers/gpu/drm/imx/dc/Makefile b/drivers/gpu/drm/imx/dc/Makefile
+> index b9d33c074984a..20386e4082e56 100644
+> --- a/drivers/gpu/drm/imx/dc/Makefile
+> +++ b/drivers/gpu/drm/imx/dc/Makefile
+> @@ -1,6 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
 >
-> Frank
+> -imx8-dc-drm-objs := dc-cf.o dc-crtc.o dc-de.o dc-drv.o dc-ed.o dc-fg.o dc-fl.o \
+> +imx8-dc-drm-objs := dc-cf.o dc-crtc.o dc-db.o dc-de.o dc-drv.o dc-ed.o dc-fg.o dc-fl.o \
+>  		    dc-fu.o dc-fw.o dc-ic.o dc-kms.o dc-lb.o dc-pe.o \
+>  		    dc-plane.o dc-tc.o
 >
-> >
-> > diff --git a/drivers/input/touchscreen/cyttsp5.c b/drivers/input/touchscreen/cyttsp5.c
-> > index 071b7c9bf566eb0b58e302a941ec085be1eb5683..47f4271395a69b8350f9be7266b57fe11d442ee3 100644
-> > --- a/drivers/input/touchscreen/cyttsp5.c
-> > +++ b/drivers/input/touchscreen/cyttsp5.c
-> > @@ -923,8 +923,8 @@ static int cyttsp5_i2c_probe(struct i2c_client *client)
-> >
-> >       regmap = devm_regmap_init_i2c(client, &config);
-> >       if (IS_ERR(regmap)) {
-> > -             dev_err(&client->dev, "regmap allocation failed: %ld\n",
-> > -                     PTR_ERR(regmap));
-> > +             dev_err(&client->dev, "regmap allocation failed: %pe\n",
-> > +                     regmap);
-> >               return PTR_ERR(regmap);
-> >       }
-> >
-> >
-> > --
-> > 2.51.0.760.g7b8bcc2412-goog
-> >
+...
+> +
+> +#include "dc-drv.h"
+> +#include "dc-pe.h"
+> +
+> +#define PIXENGCFG_DYNAMIC			0x8
+> +#define  PIXENGCFG_DYNAMIC_PRIM_SEL_MASK	GENMASK(5, 0)
+> +#define  PIXENGCFG_DYNAMIC_PRIM_SEL(x)		\
+> +		FIELD_PREP(PIXENGCFG_DYNAMIC_PRIM_SEL_MASK, (x))
+> +#define  PIXENGCFG_DYNAMIC_SEC_SEL_MASK		GENMASK(13, 8)
+> +#define  PIXENGCFG_DYNAMIC_SEC_SEL(x)		\
+> +		FIELD_PREP(PIXENGCFG_DYNAMIC_SEC_SEL_MASK, (x))
+> +
+> +#define STATICCONTROL				0x8
+> +#define  SHDTOKSEL_MASK				GENMASK(6, 4)
+> +#define  SHDTOKSEL(x)				FIELD_PREP(SHDTOKSEL_MASK, (x))
+> +#define  SHDLDSEL_MASK				GENMASK(3, 1)
+> +#define  SHDLDSEL(x)				FIELD_PREP(SHDLDSEL_MASK, (x))
 
+Can you keep bit fields as consistent order,  from 31..0 or 0..31.
 
+> +
+> +#define CONTROL					0xc
+> +#define  SHDTOKGEN				BIT(0)
+> +
+...
+> +
+> +enum dc_db_blend_func {
+> +	DC_DOMAINBLEND_BLEND_ZERO,
+> +	DC_DOMAINBLEND_BLEND_ONE,
+> +	DC_DOMAINBLEND_BLEND_PRIM_ALPHA,
+> +	DC_DOMAINBLEND_BLEND_ONE_MINUS_PRIM_ALPHA,
+> +	DC_DOMAINBLEND_BLEND_SEC_ALPHA,
+> +	DC_DOMAINBLEND_BLEND_ONE_MINUS_SEC_ALPHA,
+> +	DC_DOMAINBLEND_BLEND_CONST_ALPHA,
+> +	DC_DOMAINBLEND_BLEND_ONE_MINUS_CONST_ALPHA,
+> +};
+> +
+> +enum dc_db_shadow_sel {
+> +	SW = 0x4,
+> +	SW_PRIM = 0x5,
+> +	SW_SEC = 0x6,
+> +};
+> +
+> +static const struct dc_subdev_info dc_db_info[] = {
+> +	{ .reg_start = 0x4b6a0000, .id = 0, },
+> +	{ .reg_start = 0x4b720000, .id = 1, },
+> +};
 
--- 
-Ricardo Ribalda
+Not sure why need map register address to id? Does graphic link or use
+dt cells pass it as argument.
+
+I have find use .id at this driver.
+
+> +
+> +static const struct regmap_range dc_db_regmap_ranges[] = {
+> +	regmap_reg_range(STATICCONTROL, BLENDCONTROL),
+> +};
+> +
+...
+> +
+> +static inline void dc_db_enable_shden(struct dc_db *db)
+> +{
+> +	regmap_write_bits(db->reg_cfg, STATICCONTROL, SHDEN, SHDEN);
+> +}
+> +
+> +static inline void dc_db_shdtoksel(struct dc_db *db, enum dc_db_shadow_sel sel)
+> +{
+> +	regmap_write_bits(db->reg_cfg, STATICCONTROL, SHDTOKSEL_MASK,
+> +			  SHDTOKSEL(sel));
+> +}
+> +
+> +static inline void dc_db_shdldsel(struct dc_db *db, enum dc_db_shadow_sel sel)
+> +{
+> +	regmap_write_bits(db->reg_cfg, STATICCONTROL, SHDLDSEL_MASK,
+> +			  SHDLDSEL(sel));
+> +}
+> +
+> +void dc_db_shdtokgen(struct dc_db *db)
+> +{
+> +	regmap_write(db->reg_cfg, CONTROL, SHDTOKGEN);
+> +}
+> +
+> +static void dc_db_mode(struct dc_db *db, enum dc_db_mode mode)
+> +{
+> +	regmap_write(db->reg_cfg, MODECONTROL, mode);
+> +}
+> +
+> +static inline void dc_db_alphamaskmode_disable(struct dc_db *db)
+> +{
+> +	regmap_write_bits(db->reg_cfg, ALPHACONTROL, ALPHAMASKENABLE, 0);
+> +}
+
+This helper function just write value to one register, not helper much
+at all.
+
+> +
+> +static inline void dc_db_blendcontrol(struct dc_db *db)
+> +{
+> +	u32 val = PRIM_A_BLD_FUNC(DC_DOMAINBLEND_BLEND_ZERO) |
+> +		  SEC_A_BLD_FUNC(DC_DOMAINBLEND_BLEND_ZERO) |
+> +		  PRIM_C_BLD_FUNC(DC_DOMAINBLEND_BLEND_ZERO) |
+> +		  SEC_C_BLD_FUNC(DC_DOMAINBLEND_BLEND_ONE);
+> +
+> +	regmap_write(db->reg_cfg, BLENDCONTROL, val);
+> +}
+> +
+> +void dc_db_init(struct dc_db *db)
+> +{
+> +	dc_db_enable_shden(db);
+> +	dc_db_shdtoksel(db, SW);
+> +	dc_db_shdldsel(db, SW);
+> +	dc_db_mode(db, DB_PRIMARY);
+> +	dc_db_alphamaskmode_disable(db);
+> +	dc_db_blendcontrol(db);
+> +}
+> +
+...
+>
+> +struct dc_db {
+> +	struct device *dev;
+> +	struct regmap *reg_cfg;
+> +	int id;
+
+where actually use this id?
+
+Frank
+
+> +};
+> +
+>  struct dc_fg {
+>  	struct device *dev;
+>  	struct regmap *reg;
+> @@ -30,6 +36,7 @@ struct dc_tc {
+>  struct dc_de {
+>  	struct device *dev;
+>  	struct regmap *reg_top;
+> +	struct dc_db *db;
+>  	struct dc_fg *fg;
+>  	struct dc_tc *tc;
+>  	int irq_shdload;
+> @@ -37,6 +44,10 @@ struct dc_de {
+>  	int irq_seqcomplete;
+>  };
+>
+> +/* Domain Blend Unit */
+> +void dc_db_init(struct dc_db *db);
+> +void dc_db_shdtokgen(struct dc_db *db);
+> +
+>  /* Frame Generator Unit */
+>  void dc_fg_cfg_videomode(struct dc_fg *fg, struct drm_display_mode *m);
+>  void dc_fg_enable(struct dc_fg *fg);
+> diff --git a/drivers/gpu/drm/imx/dc/dc-drv.c b/drivers/gpu/drm/imx/dc/dc-drv.c
+> index 04f021d2d6cfc..f108964bf89f4 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-drv.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-drv.c
+> @@ -263,6 +263,7 @@ static struct platform_driver dc_driver = {
+>
+>  static struct platform_driver * const dc_drivers[] = {
+>  	&dc_cf_driver,
+> +	&dc_db_driver,
+>  	&dc_de_driver,
+>  	&dc_ed_driver,
+>  	&dc_fg_driver,
+> diff --git a/drivers/gpu/drm/imx/dc/dc-drv.h b/drivers/gpu/drm/imx/dc/dc-drv.h
+> index eb61b8c762693..17ce2d748262b 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-drv.h
+> +++ b/drivers/gpu/drm/imx/dc/dc-drv.h
+> @@ -40,6 +40,8 @@ struct dc_drm_device {
+>  	struct dc_ed *ed_safe[DC_DISPLAYS];
+>  	/** @ed_cont: extdst list(content stream) */
+>  	struct dc_ed *ed_cont[DC_DISPLAYS];
+> +	/** @lb: domainblend list */
+> +	struct dc_db *db[DC_DISPLAYS];
+>  	/** @fg: framegen list */
+>  	struct dc_fg *fg[DC_DISPLAYS];
+>  	/** @fu_disp: fetchunit list(used by display engine) */
+> @@ -71,6 +73,7 @@ void dc_kms_uninit(struct dc_drm_device *dc_drm);
+>  int dc_plane_init(struct dc_drm_device *dc_drm, struct dc_plane *dc_plane);
+>
+>  extern struct platform_driver dc_cf_driver;
+> +extern struct platform_driver dc_db_driver;
+>  extern struct platform_driver dc_de_driver;
+>  extern struct platform_driver dc_ed_driver;
+>  extern struct platform_driver dc_fg_driver;
+> diff --git a/drivers/gpu/drm/imx/dc/dc-kms.h b/drivers/gpu/drm/imx/dc/dc-kms.h
+> index cd7860eff986a..3e61dbb87afe7 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-kms.h
+> +++ b/drivers/gpu/drm/imx/dc/dc-kms.h
+> @@ -48,6 +48,8 @@ struct dc_crtc {
+>  	struct dc_ed *ed_cont;
+>  	/** @ed_safe: safety stream extdst */
+>  	struct dc_ed *ed_safe;
+> +	/** @db: domain blend */
+> +	struct dc_db *db;
+>  	/** @fg: framegen */
+>  	struct dc_fg *fg;
+>  	/**
+> @@ -122,6 +124,8 @@ struct dc_plane {
+>  	struct dc_fu *fu;
+>  	/** @cf: content stream constframe */
+>  	struct dc_cf *cf;
+> +	/** @db: domainblend */
+> +	struct dc_db *db;
+>  	/** @lb: layerblend */
+>  	struct dc_lb *lb;
+>  	/** @ed: content stream extdst */
+> --
+> 2.51.0
+>
