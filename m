@@ -1,118 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C331B25FA10;
-	Mon, 13 Oct 2025 11:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8022C28642A
+	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 12:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760355292; cv=none; b=HyGeIM4H+Q4uEtco9nX6aXSQGqIQhpYNh0sEc8x7kYbH+A+3kwVkJjUeLBMXrNlJzYizWEnzoEBbI1QKAacT2bLSlPmyXpDrTFcxow94R+G/7IJj9mZPnj8Ye/buhDQuY6fPF2Y0qW2ptTA1XBb2CIz+VDYpP+wVXzY9M6fEhPg=
+	t=1760358970; cv=none; b=SzGKUL1eEG/rGOcNglFvlJEvnXeYMPvXgY8/5xWGJrdnLpLLwBbijgneB+cwbEO/1/2+yaSdZWybrtw34f8EaHO+Wm8gpqloaLDZ7T4xsDUPBv0WHWcV/W5ZNeOHolgkpezfhSEYgBVu6JvRUcs+ViGpitEQJdF8AOwpi+pXxuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760355292; c=relaxed/simple;
-	bh=qHo5Ociuz3ISYbBTktS8mV4hBaTdUD1TNltNhHxPHe8=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=ilYS0gTjt5/t5LhbNTgtSuBvBRYyoi8siy7FAyLMPTQHLGgSieHemwLRp3qVAT37CSdq7a9mtu6jzCN5j+JHYqD0vkN2FQxaeOSRLSomeP6VHPmcKsrSl160VyU48t/koj/2qv/kKyccfmn9tdUFPnQZopPruv7fDMupYyvqTuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMUYgqQJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760358970; c=relaxed/simple;
+	bh=JN2nrz1jM5oOA3YioyA2ynVFlmP+iurajezl38qJx4o=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=nNPkF+hOKRwLwrel315r131AHch2f4cM/e35N39elL08zet2AqhsiZonlg6YL5wRNM4RU4XS3FDOgau743AW4fY+zOrO8DfFyFpHUGEh67Mze1rAJ+5YpFKnJPdEji4DaLDX8Evs1p+6SP0uyvgf8se2wXVHWwuEH18IWf/NlMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=21iEEdtV; arc=none smtp.client-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMUYgqQJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F80C4CEFE;
-	Mon, 13 Oct 2025 11:34:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760355292;
-	bh=qHo5Ociuz3ISYbBTktS8mV4hBaTdUD1TNltNhHxPHe8=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=EMUYgqQJBaG9oIHosv/b1lUaybryPArFGOXVa3RxUD2oBMMMGC6h7mCPW3TGu+e+5
-	 9e9RCfdDUkgMqStiDigqgKp/n2/H0REgZWT0kblWrhVnMqv5gv5eKS4XQ+HsECSiNC
-	 XjdMiRrsIDBevkWHEKHjrjEOQwjkaPjrmo2RfZiyeU4VQUuZOEnO8AYYOUaxSYNPcu
-	 3bdrPemORMWeT9WzPKMCCC2RQcNeSKALOB1asoC2qDdwn9xM5jMegR5Woipdx+NeA9
-	 /SGv+4b7iDIHPixpgn9q3i9wDiTi2Wz2wvF8m7176XLaS3itqELAthUS1p7z9T+lwQ
-	 iTSo2LCa0mUgw==
-Date: Mon, 13 Oct 2025 06:34:50 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="21iEEdtV"
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1v8HUa-00000000ekf-4APY;
+	Mon, 13 Oct 2025 14:17:33 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=From:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=Du1q0d8iaqBmjtERDybGAzIfy4R227O66LOdBibIRSM=; b=21iEEdtVLyqas0aNnOcZjTKntt
+	ZNA7ATosy4Fr6Ptu7q5SB4+t+eicCNXHJtqyfeYwxRoU5FnflligZ51sejMPaKdzk7NVPwkhIxwxA
+	vdrXQY5vAyFZ9aPw7t3pFxRVFynn9TRaYZoQNcFN1dmejBRSw1Q3h6nEGVXT3Z0TNHcpujngvKX+8
+	CcmbN5LB4WKGPNrbopZ82KmBlp8t1OSJT9ElcwYu4b/s25OK0HbUxi1oY+HkK3Yx8Uqka8AAj3wGa
+	efh3upEJn4JIyBOPIFoG7PWpNN60yLLCMi2rFh3cr8+V7yVLMFI3g0ilK3aBO4oVMTdKZyjzAEUeK
+	jNnkhKxg==;
+From: Andreas Kemnade <andreas@kemnade.info>
+To: linux@armlinux.org.uk,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	ebiggers@google.com,
+	ardb@kernel.org,
+	dario.binacchi@amarulasolutions.com,
+	martin.petersen@oracle.com,
+	andreas@kemnade.info,
+	alexander.stein@ew.tq-group.com,
+	stefan.eichenberger@toradex.com,
+	lukas.bulwahn@redhat.com,
+	tytso@mit.edu,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arm: imx_v6_v7_defconfig: enable ext4 directly
+Date: Mon, 13 Oct 2025 14:17:09 +0200
+Message-ID: <20251013121709.104546-1-andreas@kemnade.info>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- imx@lists.linux.dev, Fabio Estevam <festevam@gmail.com>, 
- Abel Vesa <abelvesa@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Liu Ying <victor.liu@nxp.com>, linux-arm-kernel@lists.infradead.org, 
- dri-devel@lists.freedesktop.org, Lucas Stach <l.stach@pengutronix.de>, 
- Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
- Thomas Zimmermann <tzimmermann@suse.de>, linux-clk@vger.kernel.org
-To: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <20251011170213.128907-35-marek.vasut@mailbox.org>
-References: <20251011170213.128907-1-marek.vasut@mailbox.org>
- <20251011170213.128907-35-marek.vasut@mailbox.org>
-Message-Id: <176035524848.2736280.3284568560507441062.robh@kernel.org>
-Subject: Re: [PATCH 34/39] dt-bindings: display: bridge: ldb: Add an i.MX95
- entry
+Content-Transfer-Encoding: 8bit
 
+In former times, ext4 was enabled implicitely by enabling ext3 but with
+the ext3 fs gone, it does not get enabled, which lets devices fail to
+mount root on non-initrd based boots with an ext4 root.
 
-On Sat, 11 Oct 2025 18:51:49 +0200, Marek Vasut wrote:
-> i.MX95 has twice a single LVDS port and share a similar LDB_CTRL register
-> layout with i.MX8MP and i.MX93. Unlike the other SoCs, i.MX95 does have a
-> mapping bridge in front of this LDB PHY.
-> 
-> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-> ---
-> Cc: Abel Vesa <abelvesa@kernel.org>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-> Cc: Liu Ying <victor.liu@nxp.com>
-> Cc: Lucas Stach <l.stach@pengutronix.de>
-> Cc: Peng Fan <peng.fan@nxp.com>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: devicetree@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-clk@vger.kernel.org
-> ---
->  Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+Fixes: d6ace46c82fd ("ext4: remove obsolete EXT3 config options")
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+---
+ arch/arm/configs/imx_v6_v7_defconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/bridge/fsl,imx95-lvds.example.dtb: ldb (fsl,imx95-ldb): '#address-cells', '#size-cells', 'channel@0', 'channel@1', 'power-domains' do not match any of the regexes: '^pinctrl-[0-9]+$'
-	from schema $id: http://devicetree.org/schemas/display/bridge/fsl,ldb.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/bridge/fsl,imx95-lvds.example.dtb: ldb (fsl,imx95-ldb): clock-names:0: 'ldb' was expected
-	from schema $id: http://devicetree.org/schemas/display/bridge/fsl,ldb.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/bridge/fsl,imx95-lvds.example.dtb: ldb (fsl,imx95-ldb): clock-names: ['pixel', 'bypass'] is too long
-	from schema $id: http://devicetree.org/schemas/display/bridge/fsl,ldb.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/bridge/fsl,imx95-lvds.example.dtb: ldb (fsl,imx95-ldb): clocks: [[4294967295, 266, 2], [4294967295, 266, 4]] is too long
-	from schema $id: http://devicetree.org/schemas/display/bridge/fsl,ldb.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/bridge/fsl,imx95-lvds.example.dtb: ldb (fsl,imx95-ldb): 'ports' is a required property
-	from schema $id: http://devicetree.org/schemas/display/bridge/fsl,ldb.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20251011170213.128907-35-marek.vasut@mailbox.org
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
+index 9a57763a8d38a..0d55056c6f821 100644
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -436,9 +436,9 @@ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+ CONFIG_EXT2_FS_SECURITY=y
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
+ CONFIG_QUOTA=y
+ CONFIG_QUOTA_NETLINK_INTERFACE=y
+ CONFIG_AUTOFS_FS=y
+-- 
+2.47.3
 
