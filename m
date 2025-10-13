@@ -1,346 +1,224 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011046.outbound.protection.outlook.com [40.107.130.46])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011021.outbound.protection.outlook.com [52.101.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374AB2D47E1
-	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 18:40:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1C623AB90
+	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 18:41:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760380809; cv=fail; b=ObROTpqRCkmnHOrHUtCy1/zNCSGr614VcI8k+wG0qN1jsaF97ynjTU9LzQ6tox5kSbz/DsGcknOAbPswaVBXo1i/4MH2w1O7E/l8jSfPlyvHaGjg6lS95BsHZeNGyvlJC9jPoaOBgWcsvkjkeT406GarkdBRjvlUMvfM1DfOv94=
+	t=1760380877; cv=fail; b=kINE08PQDFlI2fldLGHSTIv7AhdQsbdMtpgBskIMDVygIxx8JvicjqW5ULY5vMnLt2VoNhzwXLPrqxyJa5OCeiYPM59+rx2pj7dna/fsMCSFB86XFmMbaeQH5CaIr9fzgYfpGXY4GqtsQ8rk3euz8cxZb8B5YRvja9OrXnQJ/iQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760380809; c=relaxed/simple;
-	bh=csvrb02Pu0FWDWOVfbTyhJXnojzJZzbMDu6LlVPVPLs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GpBioLCJv4q0HzlGEHgYECPiYudhMRTS0Oh1GFx7osEjhSwUF716Bz/+ZNdqnNydGSwPSwC8tGYhLWhrB7fTcntWxKkURY3BE2cQ5ml+X8dBs+2LD1BFrQfu6hjxYcM8SiGzFduWRS4etyrZAFPrQs6n/CjwMPNhXavxhgjYjK0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BlBR1fXl; arc=fail smtp.client-ip=40.107.130.46
+	s=arc-20240116; t=1760380877; c=relaxed/simple;
+	bh=AGoS9HhbY1y2gfF23qMo7B85x24dLra2m0NKVvQk2tU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XC4ORVX3L9ZYCpXxJgDD+VW57bteuL1V0kC/BSDn2KhAl/gETGtEsM/e2Mv68EBZj3OuDT5Rzwz1zuAJB8RI/M2STwWQa6A9dZOLLjqNnpQ+B3fydkFxAijJnGnIqepWO+3am81CHM6aefWip8TmDXfekO1mSjs2jICKgLMIFrw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=H2cyQ2BR; arc=fail smtp.client-ip=52.101.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BlBR1fXl"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="H2cyQ2BR"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JVPmXkOr/ovBB6Q94KBm4Bpl9Gf2jwHtbVnOysXddMriVqbXPavl4uuz+5mlD5xG09Fs9j90Xbtk1v2KmhzdqYYM4NfkckcDywaVUo7eKtdZ/iE6zjC6/XfLXhUsrICwSljJX1i7SPpUWSyWe/pHqDnxOYjtYzyIEyDKWuIUDGt0vHE+vqsNn645DqBiP7tjba09aw2y6NFSr47LrQVzDYCrqaaGjaFgx1elB7uiDSt7e80bGmiFuhsyhpwk9vxJzMfPjnrg8s86whYWRLVK/OJGBC8DZ2ripdIBpfISXBnQntczFodqmEouECTX7wxO23eHJ5F8WkKnAjWOPyIeSQ==
+ b=sV/bYcVklyZFM5ksRrUqoqlAUiY2XHzogXkYCcLtK2wEZ/TCATc6KqvW+sl02YScZWKRJtVVvQK5P/Se/9VTW1D4G4Ed/sJwJ5o3wXY0Jb+ZMikI+CNx+OQ2u5l04tx075Vb4Jw0s4yIWuJP7l5SBdw+cM8JIa6gAZCNoWheb4fXb9jK0QVT1EDBA0NAUjGfgbk/aEF5KRy5OBcKcZFhUv8+6U3zod1Isl0cgwN5iJqs6pi8cR1xzJC01RCZXtP10B2OZu191q14133Lr79iS73uj6r+o/awhMxiEwniYu9/JeTx4+JmFB67tuJP+mU/c70rQ/nmNP0HY2ycRI7kkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sz664bP9dtVPa3Oaa8mhUExr3ltiu3qt8K3/HuK9XSA=;
- b=r0isxweccUWNB9Uw1R13cXir+s7pmatLmfAp0W17GYLvC83NZA2VeRe1y5gaSzPIp1nkG28PIRgaehobaY7+oOEC8iJSFvQxKMpDTqbfgDWdlCNp7zQe62ffK9uSKIiXSdhQZ5SJ/6xTK0ZQC3gQ95z5oxXRf6EwVB3YcgXlQdvheK06thY/t7eIBvXh4rNj/vdO/dgX55e7UW8qGssQxKak2lMoUb4zibwmoeAUa5H9R0M3dpIsGYgY9g/isJXblQgKtZuMcwz1MyVlkh1QTmdqobN9jnBl+dVAmaEnIxPvvcmSaU/+DkYMVoA3PyPISKjASt/5tWtBtkZApmPeDA==
+ bh=VcZD7PYUjCBEbDj/wu3dEGtOw9P6eOXn7RfnhvBryR4=;
+ b=lIunFSrVfdpZcHx9uZo0hkqHUmHANEe/xfP60DcLE39T5e5yOjxt9jlnPiDPGWPitTRSYAyW8hYrimBbyiiUz0PgbHNWuQ7cTTqpaLAjEFtCpJkPp5jX7G8XaTXmuSVvWs5pAhdUpsc+Zf1HBYVvJY5S6mue+pTPMQKF1BnISvUY7L2YX/60rlnwFWt3uSCSKJRwaqbmd0yjGMCTqBZHW/gXQm45E7EcvINRkzFkvlX3ulmXxfzEF8ihEe5kL19OGsXHSwCO1D6dL+aY0y/OE6NI4LkI/uSqAkkrCHBXLx8kMzBEeX4zV0CQv8ZuiRvGieP+pqBcNf8bUfe+LDPCPA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Sz664bP9dtVPa3Oaa8mhUExr3ltiu3qt8K3/HuK9XSA=;
- b=BlBR1fXlFFPvndoUnshGtJKCS8Pvtuq+M+qnHO22fabGc0wQgqtcbaQEzK3Na1jDgKIhYTh3uPbYsp0+jAQ6o/ftrk/Z5MoJ0PdZwlnSEkIvMBpBBez82mh9Gvbe4LgwvK0I5baLCAuiTnYGZydY1Rg3JolBYB4znAOBbaoiKXP6VnN7XI42Ybp9X7NWrvsCAbGyvyzoF7kLsq2r3pF+B5RThW8s/TLSXwo0oAAVWvJTPDBIE+nErg91Qyglcy6tuLIOUU4deEfkDbEVY7rORW1GfxajVf27daH6YXsefkxYEioc8eZEV7Qv8M5R+jltrQChq7vs5jxOSgzkBOtRew==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by DUZPR04MB9948.eurprd04.prod.outlook.com (2603:10a6:10:4dd::16) with
+ bh=VcZD7PYUjCBEbDj/wu3dEGtOw9P6eOXn7RfnhvBryR4=;
+ b=H2cyQ2BRBF05rN5tdRFxwyX8VDcu2rSdAmCNKTHwsIPjAJ8yFIRt9VeQ1B3GLJzh1vJl6QipcVO6ksiaUjZVbgJ7uj6R/jBwcmqju1thLopcyJWBBX+UVjlqRGWXD7yZ8o5Td8ULqcwTMN4d043W0D03NV1uF/USRSVJ4filGvO399nv5pwIisYEl/FE3Giqx8OjQP6pU9DI0L6aQiuPquDLM0LroU5vnrRXdKGgfHsBNS+NvfyihEwlB04qC7cuYaW14qwu1LcQkk8h2ivi4VqfYhA3GxdtmV507g1YI7p6OuQUz85uSvQnJ/MvkRDFZsYmg0fuAcKAYEUCoz0XBw==
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by VE1PR04MB7278.eurprd04.prod.outlook.com (2603:10a6:800:1b1::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.13; Mon, 13 Oct
- 2025 18:40:02 +0000
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9203.009; Mon, 13 Oct 2025
- 18:40:02 +0000
-Date: Mon, 13 Oct 2025 14:39:53 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Marek Vasut <marek.vasut@mailbox.org>
-Cc: dri-devel@lists.freedesktop.org, Abel Vesa <abelvesa@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Liu Ying <victor.liu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
-	Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org
-Subject: Re: [PATCH 14/39] drm/imx: dc: fu: Inline FRAC_OFFSET into
- FetchLayer and FetchWrap
-Message-ID: <aO1HeW9SvERZbt50@lizhi-Precision-Tower-5810>
-References: <20251011170213.128907-1-marek.vasut@mailbox.org>
- <20251011170213.128907-15-marek.vasut@mailbox.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251011170213.128907-15-marek.vasut@mailbox.org>
-X-ClientProxiedBy: PH8PR05CA0001.namprd05.prod.outlook.com
- (2603:10b6:510:2cc::22) To AS4PR04MB9621.eurprd04.prod.outlook.com
- (2603:10a6:20b:4ff::22)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Mon, 13 Oct
+ 2025 18:41:11 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612%4]) with mapi id 15.20.9203.009; Mon, 13 Oct 2025
+ 18:41:11 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier
+	<mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Linus Walleij
+	<linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng
+ Fan <peng.fan@nxp.com>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
+Subject: Re: [PATCH v3 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
+Thread-Topic: [PATCH v3 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
+Thread-Index: AQHcPHDxrwBNnphHPkW1XfQLsNQyvQ==
+Date: Mon, 13 Oct 2025 18:41:10 +0000
+Message-ID:
+ <PAXPR04MB9185DB2E801B8A2139C7C29089EAA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20251009222716.394806-1-shenwei.wang@nxp.com>
+ <20251009222716.394806-4-shenwei.wang@nxp.com>
+ <eb99d9a8-eb96-445d-899a-6e1d9b6f6c69@lunn.ch>
+ <PAXPR04MB9185A829534963B22D1C49FD89EFA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <6025be80-7007-48bb-bdd1-c8198e951400@lunn.ch>
+ <PAXPR04MB918524EAA74F72D64AE0ACA489EAA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <f5b15eeb-a183-40bc-993a-49736739c0f5@lunn.ch>
+ <PAXPR04MB9185A0A5494A00280F97676C89EAA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <08a8e0d6-f486-40bd-a2f1-43e33ccde1d2@lunn.ch>
+In-Reply-To: <08a8e0d6-f486-40bd-a2f1-43e33ccde1d2@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|VE1PR04MB7278:EE_
+x-ms-office365-filtering-correlation-id: 4a159cec-bbc4-4508-388e-08de0a881483
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|19092799006|7416014|376014|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?+T1qFpMNEZNSKa+WRt+XcC8nwtqPysBCqtzjovPWwF1fRScqqPhQ23JWe6Bw?=
+ =?us-ascii?Q?Zbt5rllqRAg8fmaUe/jsTW8zbB+m49I87c8m+amXXojMT72hUy5l99A9euvz?=
+ =?us-ascii?Q?SbdDONMWERWLThN1BQQnXv5GM3pEChtx9/2ovfOeJ7rya8za4+d3l98c9pw0?=
+ =?us-ascii?Q?4q7HWwc1mIpnw+pmHSaDEcA95ImXDcWRLXCV1DZenmC71c/ykI/tMHelRZoc?=
+ =?us-ascii?Q?Rn9z33ttsi/tYZ1fm0pqWj61BoyCiMvSyEFZv46JWb1mldqmibUWH6T1f2zZ?=
+ =?us-ascii?Q?lWZ4Sqgeh8y+T+oPz7m1qvSJtj0cVvhANbEX20qNUDetyG1qbpkkgQSHEazU?=
+ =?us-ascii?Q?l4zml+uXi2/bHBwpiS4BhMegA/H7OLIKrJB1ruh8Ku+4QCTH+0m7vCawbFAv?=
+ =?us-ascii?Q?GpuVWIRPGBQl3gV4nqAxWnK1O93eQXbZofzo0KdQB41PbXn/HMPW+rybE3Px?=
+ =?us-ascii?Q?BnrkmLNGXb6fMf4EC1nKuIR1VOGqwr1emhwbPvD6MX6OJ0g5oNYZhrZ6KXTo?=
+ =?us-ascii?Q?dpxV0VdcseFAR58I+7xLCaN3v57YEPlvobZeVNAQPSsXUfdHMNfqLLZS8P8+?=
+ =?us-ascii?Q?1IK47dI6sfCeejc9tY0feXYw0X9QczMA5ml2bd1Q9MFhA44hhjFZyyxLRiwB?=
+ =?us-ascii?Q?VmP2Xm8T2lhePpWW2uqF0mdu8S9h5FejVkl8dB3CBAB4CvTvG0gDnSr7FxQY?=
+ =?us-ascii?Q?98RkOcuRFHc/trfClRQWbeYGEBoCxpUN1CYklgpRrqPSO+5t8COEER3WkXjY?=
+ =?us-ascii?Q?y7QGF8WcElD7ks87crXp7+kt4PMGiH2fei5iZp7Pz+FVIQ6b6xLGVmvEDDzN?=
+ =?us-ascii?Q?QWErKu/MGVSexKMGWlCY3PiGCi7HsqySTQn11qW/3PzqbE61Fqm6D7iUl/92?=
+ =?us-ascii?Q?FVN7sn5cfWCDUq8fd93SbKPICcAb24DBJ71WdQZ/JjEwzo9ovGDGTfxhwlFR?=
+ =?us-ascii?Q?tCVrkrA+47M2CJMOF/Dde1Z12bp7l4wLhh1ZWENNs+n42tvmWcTv87F0kApw?=
+ =?us-ascii?Q?Q+pioTbU+bc4SV80kpQeN6M3OE9bWEleD56bQBYNfIqNI+8FB0Ht0cUqNIaF?=
+ =?us-ascii?Q?roht9FOgHTeTS3yvmfgAZPOj1gfrogWOCa6p0iZYFnMHsxvwesfc7wy9Zhfr?=
+ =?us-ascii?Q?8bwwrpVZka8/h/NlML+tc7j1KOf/M19nDiwe3E8/oEJYsc9S6OahVI8m50CT?=
+ =?us-ascii?Q?jaBF6NYkbV77zKhVPxfz6XdoDZPHXBqbGl3mtNUQKKInyVmNf/FcEdHxCccy?=
+ =?us-ascii?Q?LDt36IA7tEoix8sPML7lqsa85ONnzVawxKiqSHCLk1BFUv3ludH04lcgur+U?=
+ =?us-ascii?Q?dF/hlUJHVHmfbhx7Itzmk3hhM+B9ksiQQjddQce4UpbRMPLyiVggcgHdpMos?=
+ =?us-ascii?Q?dSNtduSpp+Nc/WdJcgIaGlhBwY5Zc0+SffOPgGFR3GmBX/Gu0+1uASVNFZp3?=
+ =?us-ascii?Q?9AAP0kQAVhpBg/wmyQNlttR9eutXL6AEZtt+TgKSOTB/aK11CR8Wdgjt+8ob?=
+ =?us-ascii?Q?AbsPYjH4JWSLGxGM5UXm97sTVCrX4g5NjSW5?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?nZBTuCQezDrQF83x+pDDP3pfvfN1Ar9UhRJMlxOw+K+lmGxSFu6lfnDWr+h9?=
+ =?us-ascii?Q?ec5g5KgHSQ0QA01n/OBVuIijzANayl5AiQ9S+h/6psLD9thCBTl2MDjwimuu?=
+ =?us-ascii?Q?X1wq0AzhZfU3evmJdF3QPieSkIox+Pkq6TQUC0NuEL0+QGP/R3bvV3B4t4EX?=
+ =?us-ascii?Q?lmuV/SnFo9fY9ukALsXrV8hPQxb1tYKvFPtj4It/C3DJzVk01w/Xg2dr0wUf?=
+ =?us-ascii?Q?h0KZcArm7d5kP/IsGqsSrMpck3hQWeIjQuMOI0WlYJz4kmahg8nIOlNjgK8u?=
+ =?us-ascii?Q?biD596l3kpxQVlFT3Oos6QlFvBHkscdZvZUeobhLddphzV+vklgCE210kJga?=
+ =?us-ascii?Q?3Tc8MNPV9J/2dp+BGm8mMLDNQDrSGf8+GX2JK10LbjgMXxly2uZzZgt3ME79?=
+ =?us-ascii?Q?/0/PDLAWI8HGvo3yOHB/l4zPEiDcejB2023ri0EBsqseyOFjRYYf9kUEmcKD?=
+ =?us-ascii?Q?XvBQ2hrbeNnoVt3QF/LUw6jQ7M128Rr5jZgzH6wgWqach/rwcxW1AwUnE3P2?=
+ =?us-ascii?Q?K5eC6gzt8BoKrdDvRBMPIjtdfLk7HuKQW47hXvlwCXr7eQujfHy2jMlpDr5Y?=
+ =?us-ascii?Q?OVj+lr0fKuEVU1Xt0H8vcuvnKJsR7BNfVoDXBxpIYKRHHQRkJr5v5/BS2P5+?=
+ =?us-ascii?Q?XXGme+TT9DJYfxkH78DaeN3ufl8AIRaNTwghPTAjpNLyQCNzXX9iaKZpYZCP?=
+ =?us-ascii?Q?iYD0yxlZf8+GxYD/QRR3sshRNSx8BzgxJb3/p+oJaWsWeuFE5X4dXYoWBJyF?=
+ =?us-ascii?Q?2sBV3h+TZkCjmhdyo2i4mZZRmxfrJNXfIEdnyfjWWGUxAe4OX2qgq/i5DwGv?=
+ =?us-ascii?Q?/c7LpmtRLg0pF7gHEb4neW4O5AKLNGHlWL8qMUJ66swr/72QBRaigJv5Ma/D?=
+ =?us-ascii?Q?z5THcWXslXuIYgJfehVpCpQoCAFsPm7UeS32fGrZMGfXHZ52SE1votbnCovR?=
+ =?us-ascii?Q?hid8NLYFqhSq04547mifuA0vQEXWDGSMp4LCcxzV38nX3VvRsvcaCPQ8JgEJ?=
+ =?us-ascii?Q?HXYlH+wdDUfbiPMVG5IcsAViHHqLd93aJoExrtxdoBPuprvBgWQkBqXhkZ76?=
+ =?us-ascii?Q?Mh0S4Mq3vTjYmVeT7V5d1D/c+KCPAm8TEJn8scLQFsmHbEWvyGeVGU/LUVYU?=
+ =?us-ascii?Q?aU2OQeYFf4vA7uLY0zeUqe8yPieVtKoIczVEfIKhMCBN/BssTvMXNeJYYd3J?=
+ =?us-ascii?Q?yHSu8gXc30VP72IcEoMg+V9Qv15urHk9rZD9f/OzcMp7xU5x7ICBT1IsyuCi?=
+ =?us-ascii?Q?w0PNs58E5hG2mJ4RKYBcfx5LDJ+k//j6BZdaNKowqpm8dP+S9Wog0flRCfb0?=
+ =?us-ascii?Q?v0+U95HA1lE5huoPu/7I9ijpa3hUB/yoV3yFmhSRwpBMHzLjFugA2Uc0TobS?=
+ =?us-ascii?Q?yLlKZf86a8CL4W3jrAgcGP+e3fjfxZgAHpo5eX1iPvo4F5csenWZKCMqyr3A?=
+ =?us-ascii?Q?/NMWyJHxzm5YpRE2sP9XQ4mD1+wNZhnJcaD6rKZvrq96DfPmi3l1Gn0L2BF4?=
+ =?us-ascii?Q?AK4yxvbzuP88yj6GS1Ka0U0LdsAaqqvHCJaS9PsMQjGhjuS+vC/MXXRBs/3Q?=
+ =?us-ascii?Q?sRyrOM3aU8183Hn4Bo0=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|DUZPR04MB9948:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab59fdbe-3594-402d-948a-08de0a87eb5d
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|19092799006|376014|7416014|52116014|1800799024|366016|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?4uFnn1fj8Q2Ws7juxvwoIYa1i1MTzaPfHfpuHcLCtgeg5iPhjbwJBFuJW+QQ?=
- =?us-ascii?Q?YB/gO+EyZe/T7kNRbAUO+pesOXp0RcwazqeXiZeIWZ9lOKeeZlfFNCyGKZYC?=
- =?us-ascii?Q?LTfVeXbKgDoUJkKiyiajaF14HiaCIrJn0b2pq1AsaBxSHwF1P57/qJXf3FRj?=
- =?us-ascii?Q?TeWIatKCM+DeF6G87694XzXhp80+SYQFM0CLDKhLOGKfYv4fxkNGOmxNV7A0?=
- =?us-ascii?Q?WeUOpu1AfUtaXtCbmIAnyLmglZAo3+1YIWMhh8/skg1HbQBDJhM1Cl6MG6h2?=
- =?us-ascii?Q?l4EPEUxGIX93lnSXu7WCQOQofsFdEniGcZ0MYXRIENVEnNz6qxo7dINMEFoY?=
- =?us-ascii?Q?3NiHZ8Aa2gPKf/rbv2Bce1qorSnMJgBdntLdZN3H4J7Bkk/ckVuOtqUgCVZg?=
- =?us-ascii?Q?NvAWrizYv1QchpWmQ9lNxvLR3yOGeCEn8iIGnO7oXrX0EppUSBk02RebXK+w?=
- =?us-ascii?Q?HIapZQY5x9/QczjDLYiTW/m8MNsaOKI5kgEDqPm/QRiOZA7PoLq9hZSI8EK1?=
- =?us-ascii?Q?0PKCTdJxvPpQVajlvU9ngjr/+SI7XoeeBjmtc8KyFHaY/xnl0PbpqtRJh44q?=
- =?us-ascii?Q?WD9D7BlHGQ3fBXn4BhdITZrxPuuRHDt56jfnHLst3NPHuQHH5ngCbIz6GNYC?=
- =?us-ascii?Q?5pS4sQtOBpEZj1zB5dKjVC2i3w4+5XAkYhexaXtQlkfRZCgQxiGVN7efTweD?=
- =?us-ascii?Q?kuMdhLA2Drhi5aN35g3pe1NH5/PW4JbyWw4MAoV+q/jTK3YiVeoh1iwW8+XL?=
- =?us-ascii?Q?KN6QTIer/USuxs7CLz/8ckJ4bhjo3RmiCsKWhmr6tVSn1q9J05jMXSbL4YJf?=
- =?us-ascii?Q?mv7RN0cd6DiCzQSijA5U6QlzO+13LQaEICAMXn9AUxhuk1lmStJJgPTLC8gc?=
- =?us-ascii?Q?29gSEm2g+KFqfxQCsl4ll/rvfCKG2Lqo1MvZD89aYHodl7CZ7SQieUBV7Dmb?=
- =?us-ascii?Q?Nte5+lrOwP9d+Y5H/gvJ6Jh0VgRTb/80aHU4CgP7V0QtFcOP+J3XugoiCS2R?=
- =?us-ascii?Q?NxLi77x9PKg8qSnKM219zvqSH4yBiI7Tu6meCR7uAb1mGuS5DrYN6R+uivhO?=
- =?us-ascii?Q?N/+8pu/Zg/r0OahoarVh32iwZNMPLieHPdSkXEfLmfLgVZu0VrQTQj13jrJA?=
- =?us-ascii?Q?PVhIGvKkmXfTARqoCAbuu1uun8b9qoSDI7CzcSDQpS7MABC+tPWDaTOc2pt7?=
- =?us-ascii?Q?qSjjWSW4pBiz86MKP5SRhhog/soIjRwkDr4c41LxvTUg/Q16gJ/uD3KbqlXt?=
- =?us-ascii?Q?vE0TRIZBF17CdXuxF/zgBahzFCL59AVWgAeDW9iQnrgLmtY1+w13xwWThk/k?=
- =?us-ascii?Q?E0wc6XBMPcne+MVF+H4E1TqtABh6E0HPdPlMNh3GUCPN+rXT9pd7Gy4f3VaG?=
- =?us-ascii?Q?vcUJZBX9h/Y4mpVDLhvrF1+MxLLWQxPm6PdRMWSe0b0CQw6An8CzcKjtPoQJ?=
- =?us-ascii?Q?ba+NbUFzc8VhwRWb1MhbhN0Umyxn6ct5w0E4S2LEQY3FFRIsyRbs+1Iy0OEn?=
- =?us-ascii?Q?XSEVT6fvPNNP6uTPW2rG2enqB14omzua8Lr6?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(52116014)(1800799024)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?FVVqhkVNeED8oq9ycUokSM+3HOd1WCTnhgwS/fHPKtXefGLe39ZBuLA390CP?=
- =?us-ascii?Q?nD9zDGSTsWgEH569GUqzNKG+prPgzv4Wc/wj/yX4YFz2dqyWZ+Imk2F1JIrO?=
- =?us-ascii?Q?tPXBDd5bxZOvMusFAH3W3osA8EukgT/rvBwnMoJceVWU8stSJShDl6gHtc2E?=
- =?us-ascii?Q?f5pq0emYF1mVVXCoounQwrJghIs1Q4xZmk5YMojDyM9A1BQFswyEy2zssuxz?=
- =?us-ascii?Q?nJIMsFkSr+BHTLpHb33tbSo41jHGFQ0H1SPaVktm62AEmRIxZbrYY4Ha0jZ2?=
- =?us-ascii?Q?/bs+6UnJdiFPCW1UyC15BxO4dctGHjf/CRDtzK+ERCHBeHieZ04I955fOMW2?=
- =?us-ascii?Q?vm+EUbIO3aBiHSDwmflGcXgntVEjjnhohIUNODz82PeCnQHqfRDLUzwqJPsX?=
- =?us-ascii?Q?d2m2IP2LOq0YpzTgMi65YoAJXqENFyPbv/S5l2ZvSvpkyLIbBTe4owhwCZWk?=
- =?us-ascii?Q?qYjPNErMdWPHg73eeBs48Vh1MaVCRyxS+l+CwKmFs8ssq0yzj61tkeZ5pvh0?=
- =?us-ascii?Q?8BCZ0xRZadHzR431gcwXIDA0+96JVDYzu86NmAwCQVRo62jvWFucfJVrW+Fw?=
- =?us-ascii?Q?ON8JMX7wxdAyA6hlZgwaSDELGuzGggIEzeatytTp/RiymfZlwJ9GSTmt0CmL?=
- =?us-ascii?Q?PABvOqi0R1ytwy/PHiagOZnB8KVfoZ1mULd/NJJW6VEozx7Wg6zn+I9QtC1q?=
- =?us-ascii?Q?HWCxcBdhL8gpFMOTxfaqECu5VJ54JVdJa52fWmJ7bKExjueb0sAA9lbs3e5O?=
- =?us-ascii?Q?ZxmJtr8ZA1+BhUmAG6RCwB1NAxjNXuL0uGVlvi1EfXuNRk2KEMOeH/rjHyFU?=
- =?us-ascii?Q?XEHzUbwdFCQ0gNK1DY3uOYEux9WThvt0oSXHWUi7l64xDon8peERdZTCThFw?=
- =?us-ascii?Q?+hWxJGtPwjgrJxmBa/gHn9fT8URCyz0780cmQrtl5MTSPAd79jwGYLYSrykS?=
- =?us-ascii?Q?SKfq3yjiJN9nDl6kxXnfnmhjgckxGHI3xpoeQfdyNSLd5NLuBmlmViSC202I?=
- =?us-ascii?Q?HpHJSuxJX+jKUnTvOjWgF+Ot59Ppaol/pykJGoCQkGg/BHKfgQ8LcHIwBHdg?=
- =?us-ascii?Q?Qo4ZcuvSfeXX1jNmm8MHt7S+GkBxkrq3tqYcfzNzudAnD+rJqRkwXvp5WEyc?=
- =?us-ascii?Q?e+vJ2MbP4P3Y1WfyC3Q4AEvejGeA/5/XQtXaF6i617/TNzo4hdoEGafT4wL/?=
- =?us-ascii?Q?w1p28IG+PNqW8/UvheyBGXAOP5QfM2mo+uq2RFRVY9Rd3Z4ap0yQ+UYNgms/?=
- =?us-ascii?Q?cCaT1IBSQIEEbSgrAC6SvbJFT3zZhQnLlPVUP4c00uJVu1CLm2DeTo1C/Rcf?=
- =?us-ascii?Q?mkaEQRMDVP+Pra0TD/VQ+mPF9mutE+lD5d90T7kUOiWv1nKSRO4HqSDv3onR?=
- =?us-ascii?Q?uXeMaYGLLCb04iVq/BOPYcn2b5eL0ympN7OP2CDvl+3e5OiltcEEDDBJyNFW?=
- =?us-ascii?Q?gakdhadNrf/gFyHw+9pTSxzGcf9bxE5fH4JZrkbJ5NikHoCXD8LaZThr7ZuV?=
- =?us-ascii?Q?SY8RKJDpDfvInDuVe1e7dJryQvPdVXo5PHxyL1rzB0Hk4YSBCMX4V889o9Uq?=
- =?us-ascii?Q?DLPL4m5wDzpZbGfUGviUiWHTwSRE2AY5prd3UPy8?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab59fdbe-3594-402d-948a-08de0a87eb5d
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2025 18:40:02.1490
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a159cec-bbc4-4508-388e-08de0a881483
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Oct 2025 18:41:10.9018
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5L/hlnfcWY1F+adq50uVMOLANimiJ2PhJJTzuLQtT9qfOfmkPLciZNCT21dqBRzeKOBx7xYiJaY1042wAnA+jg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9948
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /fdCp+zotIa+skk+P6hUGCVD7zgOQKwRv23+5mYrj+0+b+fji7gP7SCDFEyprdyIcwa32fbK+Yyfh8Fuggb2hw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7278
 
-On Sat, Oct 11, 2025 at 06:51:29PM +0200, Marek Vasut wrote:
-> Move FRAC_OFFSET into FetchLayer and FetchLayer drivers, because
-> FetchLayer is present on i.MX95 with different FRAC_OFFSET and
-> FetchWrap is not present. Prepare the register offset calculation
-> for i.MX95 addition. No functional change.
->
-> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-> ---
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-> Cc: Abel Vesa <abelvesa@kernel.org>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-> Cc: Liu Ying <victor.liu@nxp.com>
-> Cc: Lucas Stach <l.stach@pengutronix.de>
-> Cc: Peng Fan <peng.fan@nxp.com>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: devicetree@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-clk@vger.kernel.org
-> ---
->  drivers/gpu/drm/imx/dc/dc-fl.c | 46 +++++++++++++++++++---------------
->  drivers/gpu/drm/imx/dc/dc-fu.h |  3 ---
->  drivers/gpu/drm/imx/dc/dc-fw.c | 45 ++++++++++++++++++---------------
->  3 files changed, 51 insertions(+), 43 deletions(-)
->
-> diff --git a/drivers/gpu/drm/imx/dc/dc-fl.c b/drivers/gpu/drm/imx/dc/dc-fl.c
-> index 8571871c6a683..a76825dc75fe1 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-fl.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-fl.c
-> @@ -15,16 +15,19 @@
->  #include "dc-drv.h"
->  #include "dc-fu.h"
->
-> -#define BASEADDRESS(x)			(0x10 + FRAC_OFFSET * (x))
-> -#define SOURCEBUFFERATTRIBUTES(x)	(0x14 + FRAC_OFFSET * (x))
-> -#define SOURCEBUFFERDIMENSION(x)	(0x18 + FRAC_OFFSET * (x))
-> -#define COLORCOMPONENTBITS(x)		(0x1c + FRAC_OFFSET * (x))
-> -#define COLORCOMPONENTSHIFT(x)		(0x20 + FRAC_OFFSET * (x))
-> -#define LAYEROFFSET(x)			(0x24 + FRAC_OFFSET * (x))
-> -#define CLIPWINDOWOFFSET(x)		(0x28 + FRAC_OFFSET * (x))
-> -#define CLIPWINDOWDIMENSIONS(x)		(0x2c + FRAC_OFFSET * (x))
-> -#define CONSTANTCOLOR(x)		(0x30 + FRAC_OFFSET * (x))
-> -#define LAYERPROPERTY(x)		(0x34 + FRAC_OFFSET * (x))
-> +#define FRAC_OFFSET			0x28
-> +
-> +#define BURSTBUFFERMANAGEMENT		0xc
-> +#define BASEADDRESS			0x10
-> +#define SOURCEBUFFERATTRIBUTES		0x14
-> +#define SOURCEBUFFERDIMENSION		0x18
-> +#define COLORCOMPONENTBITS		0x1c
-> +#define COLORCOMPONENTSHIFT		0x20
-> +#define LAYEROFFSET			0x24
-> +#define CLIPWINDOWOFFSET		0x28
-> +#define CLIPWINDOWDIMENSIONS		0x2c
-> +#define CONSTANTCOLOR			0x30
-> +#define LAYERPROPERTY			0x34
->  #define FRAMEDIMENSIONS			0x150
->
->  struct dc_fl {
-> @@ -98,6 +101,7 @@ static int dc_fl_bind(struct device *dev, struct device *master, void *data)
->  {
->  	struct platform_device *pdev = to_platform_device(dev);
->  	struct dc_drm_device *dc_drm = data;
-> +	unsigned int off_base, off_regs;
->  	struct resource *res_pec;
->  	void __iomem *base_cfg;
->  	struct dc_fl *fl;
-> @@ -130,16 +134,18 @@ static int dc_fl_bind(struct device *dev, struct device *master, void *data)
->  	fu->link_id = LINK_ID_FETCHLAYER0;
->  	fu->id = DC_FETCHUNIT_FL0;
->  	for (i = 0; i < DC_FETCHUNIT_FRAC_NUM; i++) {
-> -		fu->reg_baseaddr[i]		  = BASEADDRESS(i);
-> -		fu->reg_sourcebufferattributes[i] = SOURCEBUFFERATTRIBUTES(i);
-> -		fu->reg_sourcebufferdimension[i]  = SOURCEBUFFERDIMENSION(i);
-> -		fu->reg_colorcomponentbits[i]     = COLORCOMPONENTBITS(i);
-> -		fu->reg_colorcomponentshift[i]    = COLORCOMPONENTSHIFT(i);
-> -		fu->reg_layeroffset[i]		  = LAYEROFFSET(i);
-> -		fu->reg_clipwindowoffset[i]	  = CLIPWINDOWOFFSET(i);
-> -		fu->reg_clipwindowdimensions[i]	  = CLIPWINDOWDIMENSIONS(i);
-> -		fu->reg_constantcolor[i]	  = CONSTANTCOLOR(i);
-> -		fu->reg_layerproperty[i]	  = LAYERPROPERTY(i);
-> +		off_base = i * FRAC_OFFSET;
-> +		fu->reg_baseaddr[i]		  = BASEADDRESS + off_base;
-> +		off_regs = i * FRAC_OFFSET;
-> +		fu->reg_sourcebufferattributes[i] = SOURCEBUFFERATTRIBUTES + off_regs;
-> +		fu->reg_sourcebufferdimension[i]  = SOURCEBUFFERDIMENSION + off_regs;
-> +		fu->reg_colorcomponentbits[i]     = COLORCOMPONENTBITS + off_regs;
-> +		fu->reg_colorcomponentshift[i]    = COLORCOMPONENTSHIFT + off_regs;
-> +		fu->reg_layeroffset[i]		  = LAYEROFFSET + off_regs;
-> +		fu->reg_clipwindowoffset[i]	  = CLIPWINDOWOFFSET + off_regs;
-> +		fu->reg_clipwindowdimensions[i]	  = CLIPWINDOWDIMENSIONS + off_regs;
-> +		fu->reg_constantcolor[i]	  = CONSTANTCOLOR + off_regs;
-> +		fu->reg_layerproperty[i]	  = LAYERPROPERTY + off_regs;
->  	}
->  	fu->reg_burstbuffermanagement = BURSTBUFFERMANAGEMENT;
->  	fu->reg_framedimensions = FRAMEDIMENSIONS;
-> diff --git a/drivers/gpu/drm/imx/dc/dc-fu.h b/drivers/gpu/drm/imx/dc/dc-fu.h
-> index 2a330c0abf6a1..3983ef23e40fb 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-fu.h
-> +++ b/drivers/gpu/drm/imx/dc/dc-fu.h
-> @@ -15,10 +15,7 @@
->
->  #include "dc-pe.h"
->
-> -#define FRAC_OFFSET			0x28
-> -
->  #define STATICCONTROL			0x8
-> -#define BURSTBUFFERMANAGEMENT		0xc
->
->  /* COLORCOMPONENTBITS */
->  #define R_BITS(x)			FIELD_PREP_CONST(GENMASK(27, 24), (x))
-> diff --git a/drivers/gpu/drm/imx/dc/dc-fw.c b/drivers/gpu/drm/imx/dc/dc-fw.c
-> index dc036121f0d23..7bbe06a840c93 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-fw.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-fw.c
-> @@ -16,16 +16,19 @@
->
->  #define PIXENGCFG_DYNAMIC		0x8
->
-> -#define BASEADDRESS(x)			(0x10 + FRAC_OFFSET * (x))
-> -#define SOURCEBUFFERATTRIBUTES(x)	(0x14 + FRAC_OFFSET * (x))
-> -#define SOURCEBUFFERDIMENSION(x)	(0x18 + FRAC_OFFSET * (x))
-> -#define COLORCOMPONENTBITS(x)		(0x1c + FRAC_OFFSET * (x))
-> -#define COLORCOMPONENTSHIFT(x)		(0x20 + FRAC_OFFSET * (x))
-> -#define LAYEROFFSET(x)			(0x24 + FRAC_OFFSET * (x))
-> -#define CLIPWINDOWOFFSET(x)		(0x28 + FRAC_OFFSET * (x))
-> -#define CLIPWINDOWDIMENSIONS(x)		(0x2c + FRAC_OFFSET * (x))
-> -#define CONSTANTCOLOR(x)		(0x30 + FRAC_OFFSET * (x))
-> -#define LAYERPROPERTY(x)		(0x34 + FRAC_OFFSET * (x))
-> +#define FRAC_OFFSET			0x28
-> +
-> +#define BURSTBUFFERMANAGEMENT		0xc
-> +#define BASEADDRESS			0x10
-> +#define SOURCEBUFFERATTRIBUTES		0x14
-> +#define SOURCEBUFFERDIMENSION		0x18
-> +#define COLORCOMPONENTBITS		0x1c
-> +#define COLORCOMPONENTSHIFT		0x20
-> +#define LAYEROFFSET			0x24
-> +#define CLIPWINDOWOFFSET		0x28
-> +#define CLIPWINDOWDIMENSIONS		0x2c
-> +#define CONSTANTCOLOR			0x30
-> +#define LAYERPROPERTY			0x34
->  #define FRAMEDIMENSIONS			0x150
->  #define CONTROL				0x170
->
-> @@ -130,6 +133,7 @@ static int dc_fw_bind(struct device *dev, struct device *master, void *data)
->  	struct resource *res_pec;
->  	void __iomem *base_pec;
->  	void __iomem *base_cfg;
-> +	unsigned int off;
->  	struct dc_fw *fw;
->  	struct dc_fu *fu;
->  	int i, id;
-> @@ -167,16 +171,17 @@ static int dc_fw_bind(struct device *dev, struct device *master, void *data)
->  	fu->link_id = LINK_ID_FETCHWARP2;
->  	fu->id = DC_FETCHUNIT_FW2;
->  	for (i = 0; i < DC_FETCHUNIT_FRAC_NUM; i++) {
-> -		fu->reg_baseaddr[i]		  = BASEADDRESS(i);
-> -		fu->reg_sourcebufferattributes[i] = SOURCEBUFFERATTRIBUTES(i);
-> -		fu->reg_sourcebufferdimension[i]  = SOURCEBUFFERDIMENSION(i);
-> -		fu->reg_colorcomponentbits[i]     = COLORCOMPONENTBITS(i);
-> -		fu->reg_colorcomponentshift[i]    = COLORCOMPONENTSHIFT(i);
-> -		fu->reg_layeroffset[i]		  = LAYEROFFSET(i);
-> -		fu->reg_clipwindowoffset[i]	  = CLIPWINDOWOFFSET(i);
-> -		fu->reg_clipwindowdimensions[i]	  = CLIPWINDOWDIMENSIONS(i);
-> -		fu->reg_constantcolor[i]	  = CONSTANTCOLOR(i);
-> -		fu->reg_layerproperty[i]	  = LAYERPROPERTY(i);
-> +		off = i * FRAC_OFFSET;
-> +		fu->reg_baseaddr[i]		  = BASEADDRESS + off;
-> +		fu->reg_sourcebufferattributes[i] = SOURCEBUFFERATTRIBUTES + off;
-> +		fu->reg_sourcebufferdimension[i]  = SOURCEBUFFERDIMENSION + off;
-> +		fu->reg_colorcomponentbits[i]     = COLORCOMPONENTBITS + off;
-> +		fu->reg_colorcomponentshift[i]    = COLORCOMPONENTSHIFT + off;
-> +		fu->reg_layeroffset[i]		  = LAYEROFFSET + off;
-> +		fu->reg_clipwindowoffset[i]	  = CLIPWINDOWOFFSET + off;
-> +		fu->reg_clipwindowdimensions[i]	  = CLIPWINDOWDIMENSIONS + off;
-> +		fu->reg_constantcolor[i]	  = CONSTANTCOLOR + off;
-> +		fu->reg_layerproperty[i]	  = LAYERPROPERTY + off;
->  	}
->  	fu->reg_burstbuffermanagement = BURSTBUFFERMANAGEMENT;
->  	fu->reg_framedimensions = FRAMEDIMENSIONS;
-> --
-> 2.51.0
->
+> -----Original Message-----
+> From: Andrew Lunn <andrew@lunn.ch>
+> Sent: Monday, October 13, 2025 11:56 AM
+> To: Shenwei Wang <shenwei.wang@nxp.com>
+> Cc: Bjorn Andersson <andersson@kernel.org>; Mathieu Poirier
+> <mathieu.poirier@linaro.org>; Rob Herring <robh@kernel.org>; Krzysztof
+> Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Shawn
+> Guo <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>; Linus
+> Walleij <linus.walleij@linaro.org>; Bartosz Golaszewski <brgl@bgdev.pl>;
+> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+> <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>; linux-
+> remoteproc@vger.kernel.org; devicetree@vger.kernel.org; imx@lists.linux.d=
+ev;
+> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; dl-li=
+nux-imx
+> <linux-imx@nxp.com>
+> Subject: [EXT] Re: [PATCH v3 3/4] gpio: imx-rpmsg: add imx-rpmsg GPIO dri=
+ver
+> > > Notice how ENOPNOTSUPP can be 45, 122, 223, or 95. Returning
+> > > EL2NSYNC or EDQUOT to user space is going to cause confusion...
+> > >
+> >
+>=20
+> > I think we should just follow the definitions in
+> > include/uapi/asm-generic/errno.h, right?
+>=20
+> No.
+>=20
+> Try a make for mips, and look at includes you end up with. You will find =
+it goes
+> something like:
+>=20
+> # 1 "./arch/mips/include/asm/errno.h" 1
+> # 11 "./arch/mips/include/asm/errno.h"
+> # 1 "./arch/mips/include/uapi/asm/errno.h" 1 # 16
+> "./arch/mips/include/uapi/asm/errno.h"
+> # 1 "./include/uapi/asm-generic/errno-base.h" 1 # 17
+> "./arch/mips/include/uapi/asm/errno.h" 2
+>=20
+> and this results in
+>=20
+> #define EOPNOTSUPP      122     /* Operation not supported on transport
+> endpoint */
+>=20
+> not what you get from asm-generic/errno.h:
+>=20
+> #define EOPNOTSUPP      95      /* Operation not supported on transport e=
+ndpoint
+> */
+>=20
+
+That shouldn't be an issue in this case.=20
+For instance, if we define the error code as 1 in the return message, the d=
+river will interpret it and just return -EOPNOTSUPP, regardless of the arch=
+itecture.
+
+Thanks,
+Shenwei
+
+>         Andrew
