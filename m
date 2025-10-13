@@ -1,188 +1,142 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011016.outbound.protection.outlook.com [52.101.70.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF86314D32
-	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 15:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760370234; cv=fail; b=XdHWvtHv0Awof/R4rh0skmj9SaRydqfc68o91oPBg7r/fUM7Be3qr+Qm53nJiVKG2jFaOsqowgcR9IHzyvXwVKlg+alQzh59UXne1s2c38NPSg15pS6dfvef+pi6HzQBDu19HSCvHOwbGuBhtpPbpSf3kFIuQ7aqZgHFQOhJXEs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760370234; c=relaxed/simple;
-	bh=RNE0+SftQ7iYkBopqdTWIZYR2PSrm8pfd3h80OHZJ8o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=d55tGfvTbQ/azksgrAhLHUHcm1ITXP8/lJXum7uXqe193HFbrn/PlVftc7erwTVdJpQBPUwfYj0/VRrDlmNrp0ovIbzm30nTEVb5sS/quujzyulogihJPWHpVuqjXndpw/+q3f69K6BXwpIEebBbUQUk7PZQtSpaobdR0eHmt8Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=AZrl0qpB; arc=fail smtp.client-ip=52.101.70.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FAA26F46F
+	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 15:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760370474; cv=none; b=ksVnGx32yUgvshYhkasC5kQODKWy//CRE56VNlrJsPlfEtO0HABNuTm06Fu9C3Vg/MXS5DFcTOODNLRiNv0HZcxaa6zeKjdfVfcjdJ7Qg404yt+Sx5RH7CDzRnk3DheL0xOjBi4Nt8e+yYygRy84GvSLP4cFD36E7cKaCBpBf7A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760370474; c=relaxed/simple;
+	bh=g6TFFFPGjr50jQR7xQx4h+CFBPxdsLdChbbFuSFu0bM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lADH9VqKHsZfhSKBdvKawZlV0mehC29Dyuut6cWdB0xKIHBP/1PQLY0+4BTYYDJdgN6Xeh7pMFNRn1gUq4618xmGcrpjtlhWELpiNNt4NpHkRz9G/eZt33sZk+NAncSrO/xUOmLnCd9m9iL53Ko5j8eGJRGDF/O5ZI1C8XGdtMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Q7WI1IyO; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="AZrl0qpB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LU7o+SNpdll5nTkKbT9aL3KHBlbVq2veqSUgYEmjSGV62j5EoiclnWDt0McEuq7WhLb8xEvtAcPxjy2ppEgV7/AaB3Vk4EsU8G4+FbdNyfcuLM/ZLsH8uALe0wS8XDJzGktJTO6rLBSYkNQuqTZkHgBQltRYHAVp7tJ7MJaQ+HOYjsNH4FIU/8K6a2ljGl/nA2wtZgo1D0on3ZWxUEFobSjjc1OTuqj217d7lYLk5PM3saE5fWDiaoCpf7NDem3WZ5Rrf6PuNLSINCgYknq3sZaWCLG/neMvQ0fWDyrGvDzN+eRTPUm6oMLnbZ0XjquCSb2Ma8XgPnimQ8aX0o6Lvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ovixykIvpvogHyfVNes2uGKfWnEtc8VNL4BULuUyoHc=;
- b=s5mIvWazqMEnbHjRQ7mlow72bbHuIJsiPC+wwr2xxr3nkgLLpWjtiQCiQlxZE04Ta+Ssu2MkSR59GnUVzpu9PZIf/oIxVTqeehnB4ACAVCZ0f/qeANPqRR+7xU1vJGBXr2bT/NRge46RUr8b32zScUXJBW4HC8KzKnwNhxSpZD+aEGi/oK/BQMW5b9fnACEiwTHiMBhTN0eF6DJZ8/sTGPF5Q/y2cV3GUpLLlhO4Ah7GW8DFro6s+Hs6sE38e6DQV262IUPO8UBMtmtemDMFcsI7I64EKN6/I9RM3ZN94aiu+ArHy1sOwfk1mkfDmgRy/+EJAvuB7D2suDF4D/dEgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ovixykIvpvogHyfVNes2uGKfWnEtc8VNL4BULuUyoHc=;
- b=AZrl0qpBl9Fw1kYaE+APDNO/konrcFMqGssv/J433/c5+jyzUALWCQcAkm+pYPFM3lrkzUXz4BwggD1rncLOAsBKSOeDZfnXTo2y2RY9nOerQ8VP+NZFsT8dkzubHikmtlMTWsG8AY2bdSzVXZkYc0B6g5/uKyvKZ2AzW1kLNbVuEP7kW3b8MCQXFqbEXtG4qSuBsPvcxUOhJLfpuBSAYYzOsmpO6zt8kvJY6AS839ogn/8cLL754UKyYMWtn3Do7EghVXmqwcIGZ52NqRpybozIqLBncJG/yH8pLZlE8dnfGBdHVBvNcqR3EcKFRQTKRLZF5jht7SLRz002vLHKVQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by PAXPR04MB8989.eurprd04.prod.outlook.com (2603:10a6:102:20c::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Mon, 13 Oct
- 2025 15:43:49 +0000
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9203.009; Mon, 13 Oct 2025
- 15:43:49 +0000
-Date: Mon, 13 Oct 2025 11:43:41 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: media: fsl,imx6q-vdoa: Remove redundant
- quote
-Message-ID: <aO0eLbLCGLKf6sF+@lizhi-Precision-Tower-5810>
-References: <20251013-dts-v1-1-5731ed92684a@chromium.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251013-dts-v1-1-5731ed92684a@chromium.org>
-X-ClientProxiedBy: PH0PR07CA0045.namprd07.prod.outlook.com
- (2603:10b6:510:e::20) To AS4PR04MB9621.eurprd04.prod.outlook.com
- (2603:10a6:20b:4ff::22)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Q7WI1IyO"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-57b7c83cc78so4348898e87.1
+        for <imx@lists.linux.dev>; Mon, 13 Oct 2025 08:47:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1760370470; x=1760975270; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YBeBnLojRUp+3BGjW9hqqMrpXMlk2wEyeaFT1Bjf2RU=;
+        b=Q7WI1IyOWXQ+tAL6lACqm60XIWiDEHphEYD4EBaJ5DX7UwylDFVHIPne6eXRnGNxLI
+         4O3saFS2AeWE/38/IbLp/Hhn12Lc17icLUCYwxP8b97cyzDtgdHiJFtBiuzpFYOh62hf
+         ngHfzuHKKULSWRSwNpleFRVWGXmvJg/8tpsOs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760370470; x=1760975270;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YBeBnLojRUp+3BGjW9hqqMrpXMlk2wEyeaFT1Bjf2RU=;
+        b=wa7+V8IV30jAwIQUX5nb32Ci1HQspEO+Om6c+jQ3dcdG1OMMtGS0nSnp2N+tZD8nod
+         eX0MpgpsvpBHBdJsare9Ltw1y1iK6mr0snfI0yMrsziselLKMc7iXTIc5eGtT8vR5CnG
+         tgbilw/JE2PZPRbQv8jf14+7EF7TT51bNbMmtcniVbGo4hM98B0eXHPnANecHB2/d/Nc
+         MHn1hXgDyb/GRBJIFfOffCAMrH8yBRPtl2W3S+a4AQ81IDnkgGmEpTmm2jYzaRAFt3J2
+         xI765HBixXk8RLp13NxM6R0Y8Xg7q/IMr9mhNMi8Sj2d1SsnZo0xOE2EmZzn9nfx4T7S
+         aLLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVfDxUsSRNJdfvVHtEcn43M/8Vy7GzMZXr1iJHKP17QBaemM6sGCAvKlE4IPgFaaz517HY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxgOX6uwqQX49NB/t9ps+B2TVlK0MvkthIlVTOWE/wZf7p3km73
+	sW9DOQy1ScvyggQgUsBqMckVK3mnE9UyhAEb6XloDQWNT8C/ULlw09rXziwg1wtFosPWlee86pD
+	t0W9X0Q==
+X-Gm-Gg: ASbGncv2c4afAQSReeSRbj5MrIPc4bbdBgkb8CRqlbHTgd/bPvtFq0BCqAP95Lo4Orj
+	o+yPuudJTx0LV3RFmus7zCwduNrs9tA3kRpaWGwprCNDRuhxzwQuFdSOptkF5ml91bhpVZeY7zH
+	6eJY8Kf8RR3AU5EOgSliCcL/DlX88zfz+vkywgupBrUNw0JTWUE2wTO5LUZ+W6n1tZ0kELRcA0Q
+	pLPFPt4BFjAWYJpDzZ1shy5YS3pHl+86NeK+APVW4NCUKoRbp9LkoLMaA1WjapHo9KbRxuvv7ny
+	rrcEqfrzsINCKJeP9ZosPCt+asYmZoQ95IZTVV5q05LSG1ruZuajSXDg7apfsMUW00W8QI4lZCv
+	Zpw4Fqj7SHv1GNOStc3WF4bMTRGpnOemLAX2zdrxsTdZn/lU4iEbvIAKGRBpO+n9SY301+EQIpu
+	2CqQ9oWheUfipeK86AMQ==
+X-Google-Smtp-Source: AGHT+IHJk07FAcd6WPP6c7rxF0gkW79QyI11Mkn1N3mjrlqE3oPUtvwSnNWGuJSrayQy+h/m7ZpZbA==
+X-Received: by 2002:a05:6512:31c7:b0:58a:f948:92d7 with SMTP id 2adb3069b0e04-5906f458ffamr5372839e87.21.1760370469985;
+        Mon, 13 Oct 2025 08:47:49 -0700 (PDT)
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com. [209.85.208.180])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59092ed98e4sm3400317e87.4.2025.10.13.08.47.48
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Oct 2025 08:47:48 -0700 (PDT)
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-373ac916b35so42506541fa.0
+        for <imx@lists.linux.dev>; Mon, 13 Oct 2025 08:47:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXAsFTeLtc+NjcAbFVJUBrhcgn5DUVzaTg5oOXl6Ewm01CsJBzylyIGf1MetxtQnv+QChc=@lists.linux.dev
+X-Received: by 2002:a05:6512:1329:b0:581:bdb8:6df9 with SMTP id
+ 2adb3069b0e04-5905e1ffebamr6390861e87.10.1760370468172; Mon, 13 Oct 2025
+ 08:47:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|PAXPR04MB8989:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ffe4703-ecfc-4033-44be-08de0a6f4d4f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|19092799006|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?distq/fIOI0ll2iyX9sahTCo8xu2zISEeGYgilbBMj3p67Tnl0dBFNC47XFi?=
- =?us-ascii?Q?2il+jK+xUD4e9WJXBJkRyJuDMffsJGGm9zb/OkWwUiCeeJnMQ8AwL1VIUbY9?=
- =?us-ascii?Q?cTSCt3RfywjlseQHAVCEQfy8eYtvDIiResViB3S2F3BuKNh9WCI86ZZwYR/e?=
- =?us-ascii?Q?gFtXr1bazYjfQALhuq5gRH9rZSRrz+9UoYaEUj/G5rjx0BjMvwYhxpfInaOt?=
- =?us-ascii?Q?FXxFBin2yArKiWpT0KB8/UDTTVYl3y1Ibz1WrdT7dq2N9g5++jimOWBK9EoE?=
- =?us-ascii?Q?ssUytbveWzVISmFeSix3LCBmS9M8eu7pewYVmDq2ZrTEaiepNfYlBM7eY3qi?=
- =?us-ascii?Q?GbpvMh7AzHwqlfr9aDZHKOKzsJHkxmJHM/cq3haHL50JQdKbsXVaFiklSSzQ?=
- =?us-ascii?Q?1jZ+w6JpTKto3Cghmfww+NPJ1KMNomoQORP3X1TKBUKIsFZHnV+DSgUY3tz+?=
- =?us-ascii?Q?0Nz7yjGPU735nFLMNAI3KU3ZInKCcKcBerczTOdYYevT2xrl8wLJzh7oIyuH?=
- =?us-ascii?Q?Q6drKU7a+cpfsfabiAY2XXplNB0ue2z609g84h6G2/mkwZrKuLrBpIk4tqSp?=
- =?us-ascii?Q?cO4lwz9lO+0uzwepAXGapogf3K6qU1EzGmiLx/VnQo5HDe1stTmt0CA2aBJc?=
- =?us-ascii?Q?HWC2hqB2uRp4JCTOT/htTF1Y7vjXLqwvXufC8GqB/gp6uK+kPvGBiuUVMD0a?=
- =?us-ascii?Q?XBwreZmz3+pNBZbG2spJgYdIHKRH0zxvEM6XNWHJdFZu5Uo6Le4wSGgxitc7?=
- =?us-ascii?Q?ZgGKlHeB8iIBiJV/sE20BZbfKQmWpfNYdpJ6373ih5s4o+VUh2ezMwbNJ4MJ?=
- =?us-ascii?Q?qD0RWvGgKu9NCp6eLj28L6MGiDaPeZLXce9N41wMqNW3eDy0YEi1T0/X70Bn?=
- =?us-ascii?Q?IHRi6Lm+LY3252JhrkDzItXvMuTkmpE8ixdLXGkB9LS0fjBO38vt5sFvz+qb?=
- =?us-ascii?Q?wGHuEF+SpWZvvItl0DC7nnM9BO9JBuY+PmX49LS5jY4bquaw8jL4BYir8iQ0?=
- =?us-ascii?Q?ew+iZozFUNGsvr9ZEmbJechX1qlzi1okKJuC6ND4g1eKVjUkifazDzzVsuYF?=
- =?us-ascii?Q?HJJA0IMizKGPKlsIQW7g8kt+yzuGhwYCaAS3hUr7Y8ZpjXKNcmP//mUEUoSK?=
- =?us-ascii?Q?sFR7KqPQC+71e85CUj25QCOwAE6mQd5AHgOoWqc+LkxmgHo+Y6Q92Bky4tYm?=
- =?us-ascii?Q?g4qFq96wIZu0amdR+fbSf2zBsUQPvMWOvJzi+OzDQeOHHfdr0onZqMl3vJ0e?=
- =?us-ascii?Q?6e3obViph1njaWrcAxE4ZPg76LDD9WtccHfNzf/42FzRrfUlkJSzygXO3ZhU?=
- =?us-ascii?Q?LxDiRaWWtt2Cuy0BVv+/6LJbrbzjcfnxZDQaqMRisr8NHtpwLQQ7aHbw8uRo?=
- =?us-ascii?Q?JquibtqWLsCvQPpzrhGHbHBjSfDNU1svo/XOJAsqiWZuqsBZARdkcyuez6WC?=
- =?us-ascii?Q?QyZ+2BdwJ+M8KY1NgBbsWTVB7pdUtLfJGvlM3EbNfPxegZUgc0Pwh1inRw+Q?=
- =?us-ascii?Q?1D8N99x0ZT96Au8C+vEOrCRuf6At+MKvb2b8?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(19092799006)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?w2hCoIyr/Wd+sOl6Jx/jzvoo7mFmqC8Xb3LCviw4wCZVlL9fYZ1SX28c7Xq+?=
- =?us-ascii?Q?jaUefGR/PA/r5O/oPLdkjc2DfOf6d39jJoyjUKRDK9V/wwBROsIFFL56Eg4z?=
- =?us-ascii?Q?W2l7lxJLK3QqKtijmGhtA/muVe5e9jk7VAcIceo14iW+SIuXufZqHMkOGpUh?=
- =?us-ascii?Q?vn3o8IRMOfAbc9EJzniiN6w9nTIhdFCi9DPSUYcVeb6IIGygK3vHD14UUCCE?=
- =?us-ascii?Q?O3htAJRJ2n9jtWxfZBWiHzoBt5XiFEIBSnVutdS8zA13MukZ8EMtFC5Z2iPE?=
- =?us-ascii?Q?NVZ7+OhU9kBTrhoNTpy8V1BTwKaaninxh6vBnLWOMt1vArQ7gFITrk9kklS3?=
- =?us-ascii?Q?wbLPOpZPz0UuKkYtApVm9mYCC5nhNCCutA0b2PUsf7Q4sbdVC3RzTDogV/Dj?=
- =?us-ascii?Q?qEMi40Z0EWPEJPvfdm8WLbOLwIGH7U7B4uIngn4iOv5Nw6ZL1RJ/7grTg2Kg?=
- =?us-ascii?Q?294sCTCKcC5LlD8cQBZAw44jAtJI4LJHlpYBM2bPw5oltQy8Lx2H8xiwNGBN?=
- =?us-ascii?Q?ZvW7kDdIYrwtGiN9KG0oFmj8nifd5Hs/3NKLI8F7CdJoh8zNGsKX7zar0oqK?=
- =?us-ascii?Q?R9Mv+s6jEDC8+Y+/IZIszvO6k0aI+FKs2UkTda0FaqkeQWPu24GqtrEyKoTb?=
- =?us-ascii?Q?5kdAO2YU3ZnsN/iTGbm0yoUvagN2DBKrJnCMqlXBMqlSHn0G3dlmYqnCua07?=
- =?us-ascii?Q?xF0tIetzmqa7uVIK1zAHy8fyE5nJghrk+tFsYA/2V82PZLaDMZ5kDQkaVLqP?=
- =?us-ascii?Q?BCYJHB72uBTRIQ8Owc3bN+5IdLMhV1EiGtKczEecCluKTDPY10y8TfZl5uDO?=
- =?us-ascii?Q?0FLW0gAExl6bYCuIn30pEIiiWYHTxRLIraHc1tzaFBzQBF3oTJaurZz4Hgtv?=
- =?us-ascii?Q?odqpkiaHjuX1WUDwIjr0KzlqBWZLU0yLYcb2a+bPh3b99JDFPEdM7DGNxjsf?=
- =?us-ascii?Q?bpioouh1yaW4FeVrtmj9WbWAKx94vAeFNmOj56QKJxkUTg7FTnNKR7l872L0?=
- =?us-ascii?Q?ii148xSini4Sm3Nmg0ovaEsNQoANL6CVglr5zMKg9KoaPVfdYVz2DGVnJb1y?=
- =?us-ascii?Q?3xw05z2gF3yNcq/ZRaOin9YkRbcMewwQJp5dd4NvWOwNu4Xn9Mj6WFgezoaM?=
- =?us-ascii?Q?wYERR2hrn2prAuSOi0OhsDHjYnv0TrJ/05ZdBYmg4wyEK32O+RMfc9PYpCZP?=
- =?us-ascii?Q?RO8XfhEhAi9GmKMqzDoQXIEwPDVUE7NWmDUgoDB3mkGilhGEkSY9t1q6556f?=
- =?us-ascii?Q?7wmn27dzlKmMCCTotiNyd2fflY0Smqt1uhMK4tFMt9jfl+hk9Pqpp9iBLvoK?=
- =?us-ascii?Q?tFhY4OuDNDh6oFPw2d0gAEcDaU/usanNvVJ4pXa3wRUlMSyxg3fTAsS+nO4q?=
- =?us-ascii?Q?VXxj8q+WSj3GvCKDYDrGCLnZFHRMuynJr71XWEo7mzlw1mJ4cnVgm2XBfRrs?=
- =?us-ascii?Q?zl3TDgkTZ5TH++OW58vRcjRriaP9U4hj3OeS/ib/Wh9/mHiHndyUsmq76nR6?=
- =?us-ascii?Q?eMqrTiC+bGasXEK28sP04s5StGSLkf1WO6e3ShACVEyFZBJh1GB4hV0w9doO?=
- =?us-ascii?Q?/GsPiM9ricWbRfnwZ18=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ffe4703-ecfc-4033-44be-08de0a6f4d4f
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2025 15:43:48.9509
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vrx1gol5JX2gbiaywV4MNML/lMFy7zwzbQiiFlOTWjpww+Oo+NSjSV01rQOc+6RIDeYSZv+JqKQHcO4qg+89GA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8989
+References: <20251013-dts-v1-1-5731ed92684a@chromium.org> <aO0eLbLCGLKf6sF+@lizhi-Precision-Tower-5810>
+In-Reply-To: <aO0eLbLCGLKf6sF+@lizhi-Precision-Tower-5810>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Mon, 13 Oct 2025 17:47:35 +0200
+X-Gmail-Original-Message-ID: <CANiDSCu2hdaO5r8v_GcCksepy58AJFsuLb-xxz3WYOUknvKLwg@mail.gmail.com>
+X-Gm-Features: AS18NWCpy9_8RtaLxButea2qoJBXTdgqbhebqmgYPmIE7BU8dSEVQ_qnVy1gyYw
+Message-ID: <CANiDSCu2hdaO5r8v_GcCksepy58AJFsuLb-xxz3WYOUknvKLwg@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: media: fsl,imx6q-vdoa: Remove redundant quote
+To: Frank Li <Frank.li@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 13, 2025 at 02:52:20PM +0000, Ricardo Ribalda wrote:
-> Latest dts-ci complains about this:
-> ./Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml:19:12: [error] string value is redundantly quoted with any quotes (quoted-strings)
->
-> Fix it to make our CI happy.
->
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> ---
+Hi Frank
 
-Thank you fix it. I have posted at
+On Mon, 13 Oct 2025 at 17:43, Frank Li <Frank.li@nxp.com> wrote:
+>
+> On Mon, Oct 13, 2025 at 02:52:20PM +0000, Ricardo Ribalda wrote:
+> > Latest dts-ci complains about this:
+> > ./Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml:19:12: [error] string value is redundantly quoted with any quotes (quoted-strings)
+> >
+> > Fix it to make our CI happy.
+> >
+> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > ---
+>
+> Thank you fix it. I have posted at
+>
+> https://lore.kernel.org/imx/20250925193546.305036-1-Frank.Li@nxp.com/
 
-https://lore.kernel.org/imx/20250925193546.305036-1-Frank.Li@nxp.com/
+Sorry, I missed that one :)
 
-Frank
 
->  Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+
 >
-> diff --git a/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml b/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
-> index 511ac0d67a7f2360afe22b81d76644575081089b..988a5b3a62bdebeda6b922a986b9ac93d0933e51 100644
-> --- a/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
-> +++ b/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
-> @@ -16,7 +16,7 @@ maintainers:
+> Frank
 >
->  properties:
->    compatible:
-> -    const: "fsl,imx6q-vdoa"
-> +    const: fsl,imx6q-vdoa
->
->    reg:
->      maxItems: 1
->
-> ---
-> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-> change-id: 20251013-dts-83ce7f7b9e54
->
-> Best regards,
-> --
-> Ricardo Ribalda <ribalda@chromium.org>
->
+> >  Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml b/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
+> > index 511ac0d67a7f2360afe22b81d76644575081089b..988a5b3a62bdebeda6b922a986b9ac93d0933e51 100644
+> > --- a/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
+> > +++ b/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
+> > @@ -16,7 +16,7 @@ maintainers:
+> >
+> >  properties:
+> >    compatible:
+> > -    const: "fsl,imx6q-vdoa"
+> > +    const: fsl,imx6q-vdoa
+> >
+> >    reg:
+> >      maxItems: 1
+> >
+> > ---
+> > base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+> > change-id: 20251013-dts-83ce7f7b9e54
+> >
+> > Best regards,
+> > --
+> > Ricardo Ribalda <ribalda@chromium.org>
+> >
+
+
+
+-- 
+Ricardo Ribalda
