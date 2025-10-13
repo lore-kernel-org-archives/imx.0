@@ -1,64 +1,64 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707DA3093A6
-	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 14:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA263093C3
+	for <imx@lists.linux.dev>; Mon, 13 Oct 2025 14:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760364917; cv=none; b=mbEiI0Vy+js3rSdlGJj5YHJ2BPozUxc8f/SrITagqT5bKDKOEjd5E/zpyQFYSRZuPGoCONP+Bh9B3mmyxTaW47tic5t2sCP4Tkxg8yw6KykPrZNhWiQ1sCcXhwXErH7lpWXoOfeahoLBb3TzpuIAbnRgbfDrD9y4VFpgzAm3Ud8=
+	t=1760364918; cv=none; b=ZhJdw16bX9ZZn8GoTbG1N4ROPt8ivXNKiDsVK7ICyHR5F2VAo2l/JPDy67hableMzIM6MFGwXd/KN8TRdAjIpknO1e3CoFalyandV0QyO1mdIy6oSeQv7KwgEH46x899UStZbuVfAC7jDl+TVg5S3XF/LP53MxfmiPHJWN3ekwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760364917; c=relaxed/simple;
-	bh=1KGLnwkNkXZu6CtEdNPModZR1Vc28L95VShr6d6uVXE=;
+	s=arc-20240116; t=1760364918; c=relaxed/simple;
+	bh=8RLalehrPbI0nVV069+gt8p26w3tCNH5+ujATmPll/c=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=V7Zi7Gf9ybuJtIFTVuOwAMrepWvL3RkF5It4H5yFiEYbFvF28xvhTQ1PED8DJK8JM2ouSltekUxCPDuWZ36fX2iIsuJkf8QFFO8R+ZmUVNG8WEaY2TYBiCzYSptmsyJY7eoEjVFccVZyw/KdpJSrmb4kqYYEIXb1Uqe99KRni+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=gEaDcJD3; arc=none smtp.client-ip=209.85.167.51
+	 In-Reply-To:To:Cc; b=oUnsoDxEgDKLjLsJVTqiRtkBGnBXcq5yUZv1JHUIoWudjy4oEL9MZDLTPnbJky5gyNxstghPfMsl0yQYCuoi4cXJWcDgg/5IpFoBkSu66AR5QS7uo6xn2OMoPSXYIqFOGrYk2NtbG1xoJD2mOCPRyiKQ91DnCpsUsPHdvO5XdMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HTQAFEjm; arc=none smtp.client-ip=209.85.208.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="gEaDcJD3"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-57da66e0dc9so4294618e87.0
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HTQAFEjm"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-36a6a39752bso40631201fa.0
         for <imx@lists.linux.dev>; Mon, 13 Oct 2025 07:15:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1760364902; x=1760969702; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1760364901; x=1760969701; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XTfgrP773mTzuIwpFbkRpkdwa1sJQvDkaUU5vsQzRTQ=;
-        b=gEaDcJD3RizhwCT6+IiJNrggiLgReOrrrBtvZFd4phyHt3lnXtIUaA7tamesuRw17r
-         BNTh/H1YNKMU+d4jEB3pyt4zr1I/ijhoc+K/Ms3E8kkoXM6CnYiHe0/aJQ3RGbkrQK5B
-         Yp8eE3K2WZ0DqGr3Z1+RMEg5F0vsBgDT1GUpM=
+        bh=BSJdC/O4+ZsAqBeRWK64BAxaBhpHQ02dQ2HoRNMjbAI=;
+        b=HTQAFEjmYex4PkoeZ6ONl61cb0hs1/d9ZvCMY/HfPGuwiLGMCWF7Ohc9cdPODXUa7w
+         ta/gBGNmg/WFjMUYml/v8qCC2zHUaLCFv1PuzpI9ceYprD4gHk9L4pzMJjSwSKqaWAas
+         OTCL49IipZ6ZUZ2got+GYn+aj7C9YRdUjXubM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760364902; x=1760969702;
+        d=1e100.net; s=20230601; t=1760364901; x=1760969701;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XTfgrP773mTzuIwpFbkRpkdwa1sJQvDkaUU5vsQzRTQ=;
-        b=nSJWnLFPd0ebAHieFg1WhN4GlyfAnnHJyRt1SSpGK+3JUnUgrn9KUBxC1M3EuxZAkt
-         LLG1yCI00ZhIJSF7FQq5LP0bhwhZy+x2UBuHNNKaBQU+Q8933fgsjjIyQNCrTXl0TiOZ
-         QEpKWbUpiEzKbbwG8+eU55UONFsz2ISwnDsZz9sBYigHiArhW9GDSUrWDo6a0tl23pRq
-         2FbTPZelzD1fG+QZGENgPEjw78vdDB7n4zQlKl1YuEASZOD53jmULZJc38NETUgTp07l
-         fqBXZ1XPXxTgtLZG6i7AW86elFZt7fuHGtUye7lIPs8qPlGnB1tvmmzfMTC1IiQZtivo
-         CRLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVR7VNOwJA6T66jCZKU9aZSbH8fnGD8h0hY5/hvZrjQlgSY8mO8yPtiEyJHxqFIhNM0CLo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwNqWUcHnR7gx85Jr8HTBksak9dDTGMVgWWs5onw46rmzDTQPY8
-	SpY5Fzmha2gnFrLmPymHn6MEGmyOZ6iDtWK88CbvaJ6phBIS0mHe6Df2fId3973LtQ==
-X-Gm-Gg: ASbGncuJFJjyuhKCN3MPpZyQKv6kr4/x3CYW+Wg9Tmk71BXZ9REAl/V4B4EPFit+l6P
-	NGx5QCEVPHz6cotE0RyZVHftPkvXLi3XYF42uoRMzdDFtwses2PADmiYFO8EKz2ckRdXEFFnGip
-	2dDvrhR4CWetdDzeA3J8tkh6N3Bpb4csW832FI8YZ2lSEEZPUsUEcdvyzMd+AKaMKOsj88OWIoZ
-	jZnCphsW9ucPgpWT+W0gUnXVx6DetAWyX6UNEOAGDK/m1zRu1IT+y9g11clCL2Bz7VCKCMxftnI
-	eZ8oTHmEQkNE3+zgf7H4TGc5p6Olv1+ws9TDu8SnXybeIFkuPaxl5LguR2w0UhkWD4cBwp2BwDi
-	qy/72hXDdK+lJaiUvKffHKwuYUIc3/YaG7RbJuQolE1/GR+qorVDMDs6hQFdMreoXmelhC1d94q
-	978rhl5xI8SdXQMMMGC7807cM6/Gz0
-X-Google-Smtp-Source: AGHT+IEmYSyu4nHTtG8vRgmb2LccUUeX39k0JKnrkMfDo77UUQwM9CrYH1frfefAQcn5JPDuzUf+OA==
-X-Received: by 2002:a05:6512:104b:b0:58b:394:fd4c with SMTP id 2adb3069b0e04-5906dd6fb89mr6060927e87.33.1760364902483;
-        Mon, 13 Oct 2025 07:15:02 -0700 (PDT)
+        bh=BSJdC/O4+ZsAqBeRWK64BAxaBhpHQ02dQ2HoRNMjbAI=;
+        b=WG6Y5816iHnPaGGggt9AcOpBC2z6yJSE+zFmxt2gJpR/DZKFSo4M0MeRuxSs4FrnJK
+         D5jKUJHkMvmi/aEDR65ZHKLQ+A6sXm9QHRwWTlH+TIIIQ+wUDT/CzqoRxz3dwRC2ksyZ
+         3HqbMuhTTOiJnfMLSIBMcETQfEB3MZp4jvTFN/lCaaBHoHwguvwkCN/Q0ySMWQkJnO5I
+         W2nwDIqzneOiUTS/KToIV6V9THrJBDH0QDwwKHKCVdlHMiYBm/Zt6fAA4yvehXiq4jXU
+         sk0LP/vGOtG+GuVafH5fAQZV9hH4G6tnvyz3I66+KqkI+VqXA3JY/JhAkWdSnW8Ea0ri
+         sf7w==
+X-Forwarded-Encrypted: i=1; AJvYcCWE7C45PsR5OaGc5gsoEvu4zXMMoD3VXZvpEZunrpvm8h6LEsLXjqyTbnMcEwtPRuB45Mg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwMnDtiTiwNn9WoGs0WCB6nLVqWbb3GqcavIfPJDHlwf8hoZXu/
+	hoqYe3biduSukaQuVAmIcVbZ98+c/xLfOfPJRqc15EmCWw8HATPUOKG5grzasaO4Hg==
+X-Gm-Gg: ASbGncufEGBOK/1hrqvpzv5mRuXK/MxZz6tBQGW81b5KsX4GSAkDQtRlEvkAi8za0KL
+	t4D7LzpYPnyFUngCbhGZfNeB+5UdJW1C2XxmIsWeMFbsBNu3Jii1kOxbvsqCqHGBkIkOy1KotTb
+	t471b5Cx4juIYb7tw2j8zvz05b4B0uvoLHH3MQz2DttOKI6hB1hwfDpPkFAOGyQtSDSuZZGBB/k
+	QngpTIZGE4fvqbKXXlNFHF9OL/tQSufof5Rn2lGQ1/vdA8IdqIwgobGSJkqQshw0hEet0ZI3StV
+	sJcCjOU59DRFVRzO0irzrphSLFt10YyY4HIZ81zBZ1kwmC8c9P5XUOio9kDZwgedojiTbDxk5Z3
+	QBXFwpy3QFDDR/Q9abyhpwrJrgrghZzyaYW4osgM7o6+5pV8ndfu20OodpvbubRjYu0ek79/PQY
+	TZcI//Dpwg3tYRUckCWFp51t2L+OUGHp1N+qzn60U=
+X-Google-Smtp-Source: AGHT+IHaXYtEGcC0lCeqZAPaJ1Eba36sEUnGMYsHL1RWVLLcW4i0NjVadIfSh/QN3FLm+/VJwSwBng==
+X-Received: by 2002:a05:651c:3617:b0:36d:501:76d8 with SMTP id 38308e7fff4ca-37609e5e0b9mr54139201fa.31.1760364901230;
+        Mon, 13 Oct 2025 07:15:01 -0700 (PDT)
 Received: from ribalda.c.googlers.com (56.213.88.34.bc.googleusercontent.com. [34.88.213.56])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-590881e4e58sm4165256e87.25.2025.10.13.07.15.01
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-590881e4e58sm4165256e87.25.2025.10.13.07.15.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 07:15:02 -0700 (PDT)
+        Mon, 13 Oct 2025 07:15:00 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 13 Oct 2025 14:15:02 +0000
-Subject: [PATCH 22/32] media: ipu3-cio2: Use %pe format specifier
+Date: Mon, 13 Oct 2025 14:15:00 +0000
+Subject: [PATCH 20/32] media: i2c: st-mipid02: Use %pe format specifier
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251013-ptr_err-v1-22-2c5efbd82952@chromium.org>
+Message-Id: <20251013-ptr_err-v1-20-2c5efbd82952@chromium.org>
 References: <20251013-ptr_err-v1-0-2c5efbd82952@chromium.org>
 In-Reply-To: <20251013-ptr_err-v1-0-2c5efbd82952@chromium.org>
 To: Linus Walleij <linus.walleij@linaro.org>, 
@@ -120,28 +120,28 @@ a symbolic error name (eg. -EINVAL) and it makes the code simpler by
 omitting PTR_ERR().
 
 This patch fixes this cocci report:
-./pci/intel/ipu3/ipu3-cio2.c:318:19-26: WARNING: Consider using %pe to print PTR_ERR()
+./i2c/st-mipid02.c:751:3-10: WARNING: Consider using %pe to print PTR_ERR()
 
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/pci/intel/ipu3/ipu3-cio2.c | 4 ++--
+ drivers/media/i2c/st-mipid02.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/pci/intel/ipu3/ipu3-cio2.c b/drivers/media/pci/intel/ipu3/ipu3-cio2.c
-index a87f105beb5e267fd450b8a36ef9b0e0ecafc598..986b9afd7cb5b6a07c796b4333f93d427a8c4fbe 100644
---- a/drivers/media/pci/intel/ipu3/ipu3-cio2.c
-+++ b/drivers/media/pci/intel/ipu3/ipu3-cio2.c
-@@ -314,8 +314,8 @@ static int cio2_csi2_calc_timing(struct cio2_device *cio2, struct cio2_queue *q,
+diff --git a/drivers/media/i2c/st-mipid02.c b/drivers/media/i2c/st-mipid02.c
+index 41ae25b0911f02517f137d6b5307d13154266e07..4675181af5fb00df837c8b796fc32d50e077a480 100644
+--- a/drivers/media/i2c/st-mipid02.c
++++ b/drivers/media/i2c/st-mipid02.c
+@@ -747,8 +747,8 @@ static int mipid02_parse_rx_ep(struct mipid02_dev *bridge)
+ 	of_node_put(ep_node);
  
- 	src_pad = media_entity_remote_source_pad_unique(&q->subdev.entity);
- 	if (IS_ERR(src_pad)) {
--		dev_err(dev, "can't get source pad of %s (%ld)\n",
--			q->subdev.name, PTR_ERR(src_pad));
-+		dev_err(dev, "can't get source pad of %s (%pe)\n",
-+			q->subdev.name, src_pad);
- 		return PTR_ERR(src_pad);
+ 	if (IS_ERR(asd)) {
+-		dev_err(&client->dev, "fail to register asd to notifier %ld",
+-			PTR_ERR(asd));
++		dev_err(&client->dev, "fail to register asd to notifier %pe",
++			asd);
+ 		return PTR_ERR(asd);
  	}
- 
+ 	bridge->notifier.ops = &mipid02_notifier_ops;
 
 -- 
 2.51.0.760.g7b8bcc2412-goog
