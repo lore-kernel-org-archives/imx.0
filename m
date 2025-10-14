@@ -1,106 +1,92 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F56A2FCC02;
-	Tue, 14 Oct 2025 11:29:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656662FE055
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 11:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760441381; cv=none; b=qtyMHt3hXX9Ng3CSvrWZh0IB8YxxA6tDsGaJK0xbGn+tXM7uzJUt5w1+S69huCYMV0crW15FwyvbExk9PN9KK5fRW99Y+MjbHVd6J3pplXNydKQM17biv7kwYZYYXbZPt80s6fkZvqgdzm3MEwoe7gYSFhsJpllUMiz2sFnxz+c=
+	t=1760441482; cv=none; b=Jh+Ftg8HxZMLGGN8iebaEd8VNnyx534u/8qLPHINXTQzCbd7xdHGS4fY0QCdm7isbpKT5I3LePz3cmBERtbtpGLJTovx8XFweKwuBPNRB5H1JVWvFXW8GrCtEZlXj26ZuMVYdtl2ku0NuwefM2r7qm/+TfTDTkdZT1pJttDNlbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760441381; c=relaxed/simple;
-	bh=1GfZigKl8BK6ItvIvHiHwUmP9apgJNQtcjLeOH0Fo9w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pASI8TM04qlVzFiUl7wZaSoV70mydYoe4bHMOb5HyFQqUKudmM8YEvKEKnhmRE/SucRFHk0BVzm3GrvMpoaQhIpGIOIj/oJolff9/URpCyby6FTa+/Hp9sivF1JbEsKUzntqUI611rLeQMU1K9dduDI7cEEX5EhZJ/i1Rv78MMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=K7jAIQBA; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1760441482; c=relaxed/simple;
+	bh=X5O4OuxN4PPu5H+pq82wHNI8XN+5YsztxwuTWtmrORk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZHPbbGqicw1jnUcNDVgfyYtz2CChyYVyJT5faHV7EK679lvrlNmkfq4gNT2FuBVkX5tpeKc7yIkYCW6N5wMzgj4b5NF12sJcNren5ZxMvTDZWxwcC4ElD3f+yOchq7/dnF9agaqGnF5VKl/rn0qsmHpAHbiY5OzofG8uQObb25A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MFJvYsc6; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="K7jAIQBA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1760441377;
-	bh=1GfZigKl8BK6ItvIvHiHwUmP9apgJNQtcjLeOH0Fo9w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=K7jAIQBADMt3OIAdrE5ksGeiSSHn+ISFhMcWzPAkpAwTKDDKt1+rpCu0J1r1kxoIm
-	 zNE1qxXvfwjh7+J1vFhd+CXwaCDeTCBRPYI1e2Y7bRQ2yYeUial1kg5IXqPHmqGaol
-	 gNuazANough8dB0l1ZoB4bOQEMjfaMH4tTYj++IBGNQym4nZU8eDT5rUBZMuL3ahg5
-	 gE9qgUqEkQHVwdmMl74AovVLF8DX+jhSJVJorUEvN8fOWQOGImf9FMfeK7S3diHVfW
-	 w4w/90WAi+UBH348POXLwJPK18r2KfgdyNNcXSuy3mtUqBmQc1ZFuoIhho81lJrW6M
-	 OO3IAjcJ+77kA==
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id CEE8617E0456;
-	Tue, 14 Oct 2025 13:29:35 +0200 (CEST)
-Message-ID: <15d26478-89e5-4815-8e20-7f34778d077a@collabora.com>
-Date: Tue, 14 Oct 2025 13:29:35 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MFJvYsc6"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 5E0D7C09F84;
+	Tue, 14 Oct 2025 11:30:57 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 48E46606EC;
+	Tue, 14 Oct 2025 11:31:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 16468102F2298;
+	Tue, 14 Oct 2025 13:31:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760441475; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=6p8WMfmPS/2ENAV2cQiuR3uNGwiPH4kh/nqLPv36UjI=;
+	b=MFJvYsc63DmUpUkpCKHQjuI/RLnMI17jrS5/jJUT8DRfNGXMIzmthheE7w4LzLqwHC3IMm
+	y7R4pOQTiMiChEj5glwZ4fHyPYaJvgdBpIiSzC20ONyWYDFRZbl82IyUUzPJ7EYns56TdV
+	xdFsFSXr25J3Rzqlob7LrEjEVqq2E/SOlv8rQo4yDJKFPFgPV3G92CcrYOhCobjJZaHzgV
+	b9TSxh8rOwq5tgkxjEndTgluNftA6FDVSGmpI50WESXJqZEN9zdayy7LvACxIrIxhHNOIj
+	k34PxeHOYjOX7Ww2NDHhXL7B1Y1DPgf5g1vBaSHuvld4DDIjVqydaF7QFsBruQ==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 0/2] drm/imx: parallel-display: fix drm/panel/panel-simple
+ v6.17 WARNING regression
+Date: Tue, 14 Oct 2025 13:30:50 +0200
+Message-Id: <20251014-drm-bridge-alloc-imx-ipuv3-v1-0-a1bb1dcbff50@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 24/32] media: mediatek: vcodec: Use %pe format specifier
-To: Ricardo Ribalda <ribalda@chromium.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Hans Verkuil <hverkuil@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- =?UTF-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Leon Luo <leonl@leopardimaging.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Jacopo Mondi <jacopo+renesas@jmondi.org>,
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
- Julien Massot <julien.massot@collabora.com>, Jacopo Mondi
- <jacopo@jmondi.org>, Daniel Scally <djrscally@gmail.com>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
- Sylvain Petinot <sylvain.petinot@foss.st.com>, Yong Zhi
- <yong.zhi@intel.com>, Bingbu Cao <bingbu.cao@intel.com>,
- Tianshu Qiu <tian.shu.qiu@intel.com>, Tiffany Lin
- <tiffany.lin@mediatek.com>, Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
- Yunfei Dong <yunfei.dong@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Rui Miguel Silva <rmfrfs@gmail.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Dafna Hirschfeld <dafna@fastmail.com>,
- Heiko Stuebner <heiko@sntech.de>, Sylwester Nawrocki
- <s.nawrocki@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>,
- Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, imx@lists.linux.dev,
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev
-References: <20251013-ptr_err-v1-0-2c5efbd82952@chromium.org>
- <20251013-ptr_err-v1-24-2c5efbd82952@chromium.org>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <20251013-ptr_err-v1-24-2c5efbd82952@chromium.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGo07mgC/x3MSQqAMAxA0atI1gZsnahXERfaphpwIkURine3u
+ Hx8+BECCVOALosgdHPgY09QeQZ2GfeZkF0y6ELXqlAVOtlwEnapjOt6WOTtQT6vu0QztUb7pjb
+ WG0iDU8jz88/74X0/M86X3mwAAAA=
+X-Change-ID: 20251014-drm-bridge-alloc-imx-ipuv3-9b792f659cf9
+To: Ernest Van Hoecke <ernestvanhoecke@gmail.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.14.2
+X-Last-TLS-Session-Version: TLSv1.3
 
-Il 13/10/25 16:15, Ricardo Ribalda ha scritto:
-> The %pe format specifier is designed to print error pointers. It prints
-> a symbolic error name (eg. -EINVAL) and it makes the code simpler by
-> omitting PTR_ERR().
-> 
-> This patch fixes this cocci report:
-> ./platform/mediatek/vcodec/common/mtk_vcodec_dbgfs.c:187:3-10: WARNING: Consider using %pe to print PTR_ERR()
-> 
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+This series fixes the WARNING regressions reported by Ernest [0] and due to
+the missing conversion of the DRM_IMX driver to the new
+devm_drm_bridge_alloc() API.
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+The second patch also adds drm_bridge_add(), which is a good practice and
+proposed to become mandatory [1].
 
+[0] https://lore.kernel.org/all/hlf4wdopapxnh4rekl5s3kvoi6egaga3lrjfbx6r223ar3txri@3ik53xw5idyh/
+[1] https://lore.kernel.org/lkml/20251003-b4-drm-bridge-alloc-add-before-attach-v1-0-92fb40d27704@bootlin.com/
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Luca Ceresoli (2):
+      drm/imx: parallel-display: convert to devm_drm_bridge_alloc() API
+      drm/imx: parallel-display: add the bridge before attaching it
+
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+---
+base-commit: 48a710760e10a4f36e11233a21860796ba204b1e
+change-id: 20251014-drm-bridge-alloc-imx-ipuv3-9b792f659cf9
+
+Best regards,
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
