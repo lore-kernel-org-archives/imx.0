@@ -1,137 +1,173 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012020.outbound.protection.outlook.com [52.101.66.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BCC23236D
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 21:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760479105; cv=none; b=A7U/PtP1tqSd7z/2FN2ia3lWAIa2ovpPyPCxkcIH/bElZ2H61b2CEjvyokJcD2J24v322kCJ1JBIkbqhlhRi+cyvhpJK/gK/tkPuS3JRKksQeT5x+WSw4AAcd7OsbM+EvUZPl3Muu47f0W+XoR05gBibQGSLbttHrmOiNbH+D6A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760479105; c=relaxed/simple;
-	bh=s9jDvYtUk//D8IEKe9vGCZodv2kIq9aHsDcZJQ3nbUk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kg3q2oUiO0oVpg+1kCnG2++iI8YS90JuHmLvvv5E2OrF6w1z/k93lx/tzIgl7KT0FSicRdy+8OZcnxatifRPJx64tB3wiOvuyFsxafWNT0oyHT1UNdHpCcBI3g/ACBOfAe4ObQvPT3IHSoMdxMyKEq+1pE1F6xzvtj/hctjR/f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=pBEikIK+; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=snsRmcIz; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A861B238C1B
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 22:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760479302; cv=fail; b=Rjrll9U3kePPGjYwUkc7g39Kfz3M+LA9R2m4viU9iwcq/v/hSotCi6OP3brbZwLL0XG31ysmdigYWLhDbuIuu0pW/Cp9bDHRlOLzCaSv5xvteNSa65xmk+C05ZhYL4uBFt8n299xRYP+/zfXKoTRBlw670ka+BED8nQm8uNhf1A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760479302; c=relaxed/simple;
+	bh=ktgbOgTy+tqXkDcTfYiKOjbl0NNfpCLrdedbODa48GA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=AbsN+Yl4TnO4uTU/EB0u7KgJf5OmaF/CPtM1iiJEGMh4vXJVAVBVzV3WyVAheF2eBA9UJ10OeKbxR26IKlgNNq7tQM8Z4mJaTdQnyZVZM/lwa/mQnvlo52NAEvuXMwZ0fskBNe8HgDo2x0bXFCDw+yNMnF+vwsnH6BEIhqmoW2E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iMEinAJ2; arc=fail smtp.client-ip=52.101.66.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="pBEikIK+";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="snsRmcIz"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cmSlL1cmMz9tBF;
-	Tue, 14 Oct 2025 23:58:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760479102;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ECD6YD/9cVcme/PryDiEd6/cZXsWx2lAl+ZUZ5W8UlA=;
-	b=pBEikIK+wtwvSAqqpRB732i7/omGwXf3d8SQ7CVldrydsdHvoqgWetmcCdNvHntoC/qvxC
-	HZVzvzeMhylPrn5x7LYs4TaBXBOpZdDD3tU0j1AbgJLzhYV+7eiDFSbdu/1dD1VlgyFwrX
-	JYOvJtCqEr1AJ5PVpYcXMlK6TotJU45tGTbYa9sQRXDEBxLCh43IrwLHMlJKu+eICECpny
-	jBJAuULpendajw2tvPrMn1CjCywAU26dnA4aI4xOsnFb9z9EAa+ijWG5NlkQQ2M1KnVChJ
-	st/Qx6XMVAffMDLjg/o7Rc3FC2ROrtJ0DJY7+ZO2RGbkaqvpLHVmfQ9JV/y9ww==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=snsRmcIz;
-	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
-From: Marek Vasut <marek.vasut@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760479100;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ECD6YD/9cVcme/PryDiEd6/cZXsWx2lAl+ZUZ5W8UlA=;
-	b=snsRmcIzhz2zONjehPba451aEJcwqxKk4vdTuE8eRF93uf8/e8n10U24xledVckHrAkY9V
-	2g7L/Bwax9Mw7U8o6HCRoujAIZgDr103EavOTseOJsorQywzQPja580Y25jD5dKlCezjmy
-	RnE6AJM588ZmGtqv34Ndt2JQblXhNHz/SxmRVMNEV+nHMzKNEO1k40bMNc1SlOcPFDzl0H
-	oY1qoc1csonb6QOtku1oiK3njoTIjbvaygxFWHwxU2Oop3MfZpGXBQIrBAfqRWi2Qgv6ZQ
-	HFEJ56WiiXw8VDJooazjnuEmcyqP04L/OqXkxUiqnGUE2oeIuknggKVdwHFzdw==
-To: dri-devel@lists.freedesktop.org
-Cc: Marek Vasut <marek.vasut@mailbox.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Liu Ying <victor.liu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Peng Fan <peng.fan@nxp.com>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iMEinAJ2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TRAun1sgKIqAiAZpErFBiU+UgHakNkhfgokA8vz2NMyXYuokigXPJ/lWb5O9fViGN9OUiT2bZqQO901d7GbEnUHxbr+05hbmbJASdgZD4tKVYIyUiNIR0kjKGrzx2MFkLymgFybhEZ22CtNemJgs8gwWxcwIBc0qgc9qYgrWz6ncKVM+7PHqL6I4ZhFGYgMYRGQkRRqq9BjLjLexl5c28U7Clle2qs7T5JkvJK1OmC1R9adBvzx5R6MTyrwAnd3NiL1nd6/WVvZopHuXz8qF41BXEMIwwjpgZyYY7oH1cUmL3HIL2G23UBHxW3xpysUcb25xiHXHw5lvdJ/Rj0qYqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gnMmvrNYmskI7u+aocAyQD6qSSVVYtjInY2fv2qrow0=;
+ b=C8zC/C4UiIQAcoL1vtyb7l3DsoRwUNbIPp0ncXckddUXb9HH/Lc81Ja46+luM5ueDKf3MHIvJxTUOBckK+3/jxJZTXcpy1E5Qywy7SiUAjmzCyft5JnfnZZMclB9gTKdqNFUKUiUsnYaEvX1w42KOt2a791b3HUniaZYwULrmTXDRS/G2UUNnfi8JLnUzSFMtfnIS6w+sYMl/TWZwVBXbLwTnuATAWE1/DS5NjBLqwXk8MrxUj2soe9MBSzWRJcKNo6G37jNje/dQzX/tmx35ok8v94LQ/yHhDsaxmo06oTZ0aYbOqZeBWhOPlFWVwAhYcSiM6zEJP1/HpL23Xgt/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gnMmvrNYmskI7u+aocAyQD6qSSVVYtjInY2fv2qrow0=;
+ b=iMEinAJ27unKlDD8bBRzD0I4TrkxiPh6rD88bTiKlSPRTOTqyKvaaAqHOsDM2I3ZVtvamx5uc+aCOLbzFW9KM9gd4RKWblBLS/3eeof9yA6Yhy4cfPG3vMuIeIAobnL7saQ6Q6rzxynYdJgMc/g9d3NxLgXgGVX/oJJfAiJzVAsy7BQnl4/Rf12DsvrJuaRIVEnEX1JmoazUNSDbTdCTp+6CEirGBFZNXOchzEQc4Gh7C2ER1lw1ui8hL8JPNjK9ZnqfK64pBGs6f9VIHwcjOwiV6sUeGcl12ODG5Hrj1ESWKGskXeavVsf1gQhvx1hOsUlLFC52UU+w7xqx9BGG+A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by PA2PR04MB10346.eurprd04.prod.outlook.com (2603:10a6:102:423::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Tue, 14 Oct
+ 2025 22:01:37 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
+ 22:01:37 +0000
+Date: Tue, 14 Oct 2025 18:01:28 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Marek Vasut <marex@nabladev.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH v2] dt-bindings: interrupt-controller: fsl,irqsteer: Add i.MX95 support
-Date: Tue, 14 Oct 2025 23:57:15 +0200
-Message-ID: <20251014215801.51331-1-marek.vasut@mailbox.org>
+	Fabio Estevam <festevam@gmail.com>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Marek Vasut <marex@denx.de>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, kernel@dh-electronics.com
+Subject: Re: [PATCH 1/8] ARM: dts: imx: add power-supply for lcd panel
+Message-ID: <aO7IOCdq013j3rre@lizhi-Precision-Tower-5810>
+References: <20251014-imx6_dts_clean_2-v1-0-508b36e5a3fd@nxp.com>
+ <20251014-imx6_dts_clean_2-v1-1-508b36e5a3fd@nxp.com>
+ <ddc44948-4816-452f-8b78-b1dfe44d507b@nabladev.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ddc44948-4816-452f-8b78-b1dfe44d507b@nabladev.com>
+X-ClientProxiedBy: SJ0PR13CA0150.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c6::35) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: wjwkupjez7okptt7rcxc4om87i55xhh8
-X-MBO-RS-ID: 96a075b7f644b75232d
-X-Rspamd-Queue-Id: 4cmSlL1cmMz9tBF
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|PA2PR04MB10346:EE_
+X-MS-Office365-Filtering-Correlation-Id: f6b74ff3-e6d7-48af-8611-08de0b6d3f24
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|7416014|19092799006|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?C3v4u0NYy//4mxXsVG2tRCg4zjJ63sEHAxV/sW9w0X1E0ZS+K8YvIEt1RFHH?=
+ =?us-ascii?Q?PdN67vXmSqDqDSlwP0tCLSoeY0z8PUnPi0GcUFnVaTVG5g/O88Cbce2JCZL1?=
+ =?us-ascii?Q?mnisXp/qOF/mKcJoy9SLpsWoq07Wc6fkNgdwFxoia2ksoctxKzD4sctZ/9Du?=
+ =?us-ascii?Q?t1sLxlQL8CUrQFOZ778CT6H6ZOZM5CGSWaiC6TE6KlBuDQJH4pRYLiuZEy7H?=
+ =?us-ascii?Q?uBAwxu2Tgjy3Mzvz3jIl8Ji2IHOmZzKZa1zlEVIR3Mgjb+wfBmJyiyDjGKz1?=
+ =?us-ascii?Q?klEvyO3y3mOIY2xQJj3NxHsVE6BmVMwhuVxo5qBIPCk8OLgN0Qk761kMoYS1?=
+ =?us-ascii?Q?1njFy0784U1MBxIESvTZfiAL2jdgJswXM1ukmrhTHqxBHMaSUpfSN9ZoowHB?=
+ =?us-ascii?Q?saXp1OM1rax4EmteLCrwFR4gerxJ9vLgO8LgzTrfAa/4IxrTB2C15RuzwW3p?=
+ =?us-ascii?Q?TNIxQeiTvfKTqQtKBdmnz1Cghzfzyk0Ztd/PSCiYf0c5F13PkRWi/KbnxpIO?=
+ =?us-ascii?Q?IXmIq/7MD2cokUeTD76js9fhDK2fFKfXn5THR6Yk4NsmBKQvGjknQ30jppS4?=
+ =?us-ascii?Q?YWykl4vWbpwY5LdxadxaQI6OmH9Of3cvo9rQFlHlvLN/6Zde/9yfrchUPfsZ?=
+ =?us-ascii?Q?ITd75PeBhPAS5C4L0l8CVcU0rwFR1zz3vXYLwopqT7hbsIfPQTscZbjpRBjG?=
+ =?us-ascii?Q?X+kDXkmIF7/9Czvww3UIAfa7ji3PD2Wjdc9tniz6XbEYJSfEcqfHv5Hb+nT+?=
+ =?us-ascii?Q?r/1C2/qLaSoGJqWJh4HHLj7I+un2BakrgkJshBcEfxMQ2Y7kWpLZZqRZaRCN?=
+ =?us-ascii?Q?/os+Uq+X1H4Ng3su+sRsSpvXA8FquFip601P9D0WAyWRKrA02DolQNtdDuzF?=
+ =?us-ascii?Q?HUWUWu6+zit79npAbXNqS+JRlQhHyH3/uO4AgWCub315cZDJsZRxyK0ScMB8?=
+ =?us-ascii?Q?Xzueegx4L/gS+XH8u883/iB4ooh0Ma/PbPHq5re84GDkgyiyJDOpj92IWFC4?=
+ =?us-ascii?Q?B1jHG2/abeleH4qH3Y8wOtCWPTIpyO3K8+ah/u5gznbKOEBMB/TOgEM2LFBV?=
+ =?us-ascii?Q?4cuh/ZIOM6jwPCYW5N6BsmrI8NRKasvNRcBJlaTu23xuUm6EkZUbkMZdPCPN?=
+ =?us-ascii?Q?bAdi5hGbtUMTUN4QyyQQt+YF4H5AiBWYxQClPPfsVJeuHX/TtdEQtfatt0zN?=
+ =?us-ascii?Q?I2alksxx/j8RQTVYqSkblE6PbK1vBZBmNJGS1n23ZUMsyLsskISjq7VxqsXo?=
+ =?us-ascii?Q?vaqIwGzS2CfIbe5V1mV98MSTADvkwZ5kJfNdGIZYUit6CwT+ZzpgCvHpi/NT?=
+ =?us-ascii?Q?kxYUB2VboSfAyD+wim4VrRirgBljGwvbDWvLohOAdjll/yAeI+4k+hqyx1lF?=
+ =?us-ascii?Q?xDji5Qk1vITgqa3VrQV7KZ9750uQSHSARBD9FfJP9VkmCsQFzRSPXbc0wiV7?=
+ =?us-ascii?Q?TwaJdEFVcH0Ha4FrVGNhnB0WOQ8KewfgfUZxEA/K2LYrhNCDCXlMDlUxlfGq?=
+ =?us-ascii?Q?+ZWdIdKOwVpYE6Lyg3YTUKdtzGRuEOg83iPS?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JqYQvmlQ2gvo9acDAf0DzjDVqHAaLhobx5dOpTOtFZoas7sVZENWSll8QAQd?=
+ =?us-ascii?Q?Dm47zswz0Gz2PdUDeVdNqig0V549ae9fMK7q4taIQHjBzJiv6YfOetn1ZnbU?=
+ =?us-ascii?Q?Azb1ww4S/BDDxHxdznKZe47HxMRliq/49AH36LOj9fq/Sv2JWyBbQAEk72oC?=
+ =?us-ascii?Q?eO+A2Ijr4nY9mNX79cJLXVksLHicYODKvzjopCo9QcSzIo2K/tTMc6RGJoI/?=
+ =?us-ascii?Q?ObFYidXH7twaCnogCDCFzp3z3cdyjdy7JWUnrUeY/i4Yx05hgP/uWDTZ5hAz?=
+ =?us-ascii?Q?yuNLuYjZag7p9DVVhYS5ZBPn/NRC9hfdtc6fmn/G9crICRq4JI7lurRNeY5R?=
+ =?us-ascii?Q?SE3BPms0GjMyiAExP9VkLrL6VZCFc1jass92o0AlG0b/1Bw5d4+l/DRPSUB2?=
+ =?us-ascii?Q?YhwMy2BHiQY25IdweI20pCmdRDpiP1IJvpuOqp0n84j7UdFeoEhi7opZCN2U?=
+ =?us-ascii?Q?qiU6UpPXyzodx74dhmGVQyXvtAeI9L7Y8JcfzCwSAweQP8e8r5QpSgoWKXYN?=
+ =?us-ascii?Q?oXBJC0Eq1w1BM8pXLCUV+K0+7k8yw59l6WGAI6cK37iyvuAvpfEcxk2cWdh3?=
+ =?us-ascii?Q?2yPgaqsWlDma4qLwQcsSW5dJRlWQ42gUKuprT2IODxaxInLj0u7y8/6VAah8?=
+ =?us-ascii?Q?W9ljHFJHSfoxJ2LYbHlo5SmQ6nDDfGPS/qUohyBDH2yJKPC3rvY8Rv2bOl5H?=
+ =?us-ascii?Q?ICianX0HOJp8IXeH9cdziw8MvqHOHFBdPA414etzWUYhlpmW/eIUq1KajCww?=
+ =?us-ascii?Q?Y/FsXAnEjNdm3FCoK4sF5G/kAO/u9cUwa2URl6XGArGXq2akDkaGPG4T5U3L?=
+ =?us-ascii?Q?eQa3kqYvIaVfsdcKEZ1PkwD6ZSol4Tfrs5JatRhle07nHTkr7OiMy7Rw6adB?=
+ =?us-ascii?Q?E0hUOOivZnsHYtWzWIFAUpwgvQJ0oebGo3gbKrlXyBgv0Autmx9z91W6OgEy?=
+ =?us-ascii?Q?ZSj2K7biGmK0QFpRJQ9YRbjfTGwIFrvBRvgUmQp/FF31TkrtiKin/ApDO+Yq?=
+ =?us-ascii?Q?0lg11T2wxkkmYgSuowpJnl+ERr4lsp5TtEYLdNhdozWlIup1I2Ma6Lk9CCdq?=
+ =?us-ascii?Q?3vMUoBzOVJGdtwb0UpUGUb1TCuvNNeFEQP+UIwB3BjIV2KQxoE3zVxEthbhz?=
+ =?us-ascii?Q?iF0qG9mcenLsl0pOahZoTLaD7ViRII4XxLZy29YjbO+GARY9rlIUiUuisutO?=
+ =?us-ascii?Q?DkA36KJ4fVE7/rlgWSbepJn4whUV83O5Q2U1RHr+2tcwvc/eOYx44stPoqXi?=
+ =?us-ascii?Q?If5YhG58LeK1Z+bb5KAO5zy21puxrzutbcBSP1qunp4gS8UYlFPubspm1sF/?=
+ =?us-ascii?Q?PoCiRtpPWGpThaBFVAuUi4vWGJ7ZZocEk4aJpTtLASA/haHiZB4w/qWctGwJ?=
+ =?us-ascii?Q?FmatdAmjpbROFEvda+ugaSRzTQGUSxEmpaZI2E1AYXvZB6O8LOO1Ctl7PFXK?=
+ =?us-ascii?Q?PMdn5E8PCLWmEQHfbc3x94n17519fKCBkJqG48H2i7iLBCNi3K+EaBmtsfEp?=
+ =?us-ascii?Q?xYqQXpWa8g1kTRw7upLlTDWggCNrKUTyLouMO4iwvN8av1CZz7vQvUefEyvm?=
+ =?us-ascii?Q?MfkkyYNsF43Bf24aPb8=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6b74ff3-e6d7-48af-8611-08de0b6d3f24
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 22:01:37.2931
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OEHaJK1xRwNYfkgGpmeRuX6OQVYUY3qJVwNRvQvuQuBm1lq+5FI8JnzQItjP3zvVrMR8u3l988ks/dIQssDywA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10346
 
-Add compatible string "fsl,imx95-irqsteer" for the i.MX95 chip, which is
-backward compatible with "fsl,imx-irqsteer".
+On Tue, Oct 14, 2025 at 10:46:56PM +0200, Marek Vasut wrote:
+> On 10/14/25 9:38 PM, Frank Li wrote:
+> > Add power-supply for lcd panel to fix below CHECK_DTBS warnings:
+> >    arch/arm/boot/dts/nxp/imx/imx6q-evi.dtb: panel (sharp,lq101k1ly04): 'power-supply' is a required property
+>
+> ...
+>
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts
+> > index b29713831a74489e8cc0e651c18a40d85f9f9113..04e570d76e42cd67a38e0f3b2301598f712e6bd4 100644
+> > --- a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts
+> > +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts
+> > @@ -199,7 +199,7 @@ touchscreen@38 {
+> >   		reg = <0x38>;
+> >   		interrupt-parent = <&gpio5>;
+> >   		interrupts = <4 IRQ_TYPE_EDGE_FALLING>; /* GPIO E */
+> > -		power-supply = <&reg_panel_3v3>;
+> > +		vcc-supply = <&reg_panel_3v3>;
+> This looks like a different kind of change ?
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
----
-Cc: Abel Vesa <abelvesa@kernel.org>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-Cc: Liu Ying <victor.liu@nxp.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>
-Cc: Peng Fan <peng.fan@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: devicetree@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-clk@vger.kernel.org
----
-V2: Add RB from Frank
----
- .../devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml  | 2 ++
- 1 file changed, 2 insertions(+)
+It is touchscreen, It needs sperate patch fix it to align
+edt-ft5x06.yaml.
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml
-index c49688be10581..5c768c1e159c1 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml
-+++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,irqsteer.yaml
-@@ -20,6 +20,7 @@ properties:
-               - fsl,imx8qm-irqsteer
-               - fsl,imx8qxp-irqsteer
-               - fsl,imx94-irqsteer
-+              - fsl,imx95-irqsteer
-           - const: fsl,imx-irqsteer
- 
-   reg:
-@@ -87,6 +88,7 @@ allOf:
-               - fsl,imx8mp-irqsteer
-               - fsl,imx8qm-irqsteer
-               - fsl,imx8qxp-irqsteer
-+              - fsl,imx95-irqsteer
-     then:
-       required:
-         - power-domains
--- 
-2.51.0
+Frank
 
