@@ -1,92 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1063A2877FA;
-	Tue, 14 Oct 2025 20:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361FA30BBBF
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 21:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760474890; cv=none; b=IskXLde4tYer1iicF+3UMowtCx1RwJjDaXHDrS9SuHLs+2C+Afu+8ldnMisgyAqyXJm2Z28xv2cJpX3b0MV1NDXaju75lUarDj2oK40+TesvxPiDtx8zbhzcVSrASfuFWo1IMC30Kiwha0bAtzjjLfspWVlzwQJK4rbpJ25161c=
+	t=1760476198; cv=none; b=Cn/mf8ZYH6mgynT5fR1mWxv4tXaJxVsNA08M7vrwtVWH7zPMqehu9Imimg8PpIFJCEC5myRImbK3rm9a0mSAOGhH4o9Z3tniz05AutYobEKN2PmGIhzuXhuAAUZqULFD3/7mydfump0fUI7EY/PtLWVX8z94/u+aVbbPmsknKBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760474890; c=relaxed/simple;
-	bh=Em10QkwHKTKXlsyI+2+xjbCURDQJuQZ+0ngrcp0Ttxw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KLVZ+YS2IjHi0JYNjfuSNuEcm9EPfWwSd/ab4UHzSryPUXjNznEzUH+MtkNcWefwoFD7KQHNnjJJyWliLfkDd2u0bVHENt8HFSf8TIaVW2K9gDBvT/CY7BbFeD82LSBIg6PYIJMkiSTIGoxw57uy8JOFmMq5pv7TwKg9G37CWaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ac1UXg+S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760476198; c=relaxed/simple;
+	bh=FEscob/e+90GaHE2E4U+4fd6PQekvU5FL8BnBdihcrc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pAC9k+ruuTdvuWJ4m0dtDECu4lbfVt18fC/vzI3jULqMipDq4dfvc4oavjyL7cz+SCZ8/V3dYXFMi0MDWxG2XPzP9mZpr370ptQBzyzhVtLkA+dDRg7MFRWhaq5JfjNIGReMrOeXx36ZqqycxEUOYbKLx9xvF6JiJ2hEfo2eS/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=orNflSJz; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ac1UXg+S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A1BC4CEE7;
-	Tue, 14 Oct 2025 20:48:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760474889;
-	bh=Em10QkwHKTKXlsyI+2+xjbCURDQJuQZ+0ngrcp0Ttxw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ac1UXg+SCBy9/GWTf/+/DigHGLV9tHgtMrbSVcPYyXrhuFmiThCmMHN9AJKuNqNRL
-	 Ufwo89GtcIXqjUwkdu3ynzYbGkO63J+XIJCkkYNhxXhwFaIraxXRmPVVgCpB5OxjTD
-	 d+y1Y6UGQ8TXXfnUwedOEYs9+m8PTH5ZLOHJ6IEkftT19EHlmcdOf5TVHTY+aeuNs1
-	 Cgmwt2YB0p9Az1C5Q8QjcVdYsNv4u9Pay4JrOzxRSSRGPxz9uyvbUUhXBR9L3XJivv
-	 APhB4MK8AyEYDnP8wl0QR0Ec37I4RM/KnZFPeLgRu3Te76fy7uR2LKIAubikoL6FXJ
-	 HCeltuj8/Nmfw==
-Date: Tue, 14 Oct 2025 15:48:07 -0500
-From: Rob Herring <robh@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: nxp,sja1105: Add optional
- clock
-Message-ID: <20251014204807.GA1075103-robh@kernel.org>
-References: <20251010183418.2179063-1-Frank.Li@nxp.com>
- <20251014-flattop-limping-46220a9eda46@spud>
- <20251014-projector-immovably-59a2a48857cc@spud>
- <20251014120213.002308f2@kernel.org>
- <20251014-unclothed-outsource-d0438fbf1b23@spud>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="orNflSJz"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-46e542196c7so1587195e9.0
+        for <imx@lists.linux.dev>; Tue, 14 Oct 2025 14:09:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1760476194; x=1761080994; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aAFIy48SiNIefLRd1BAuON2DcAPzB6rd2TTAzyi/zmQ=;
+        b=orNflSJzbHtw1M470U5qO1uIFPPuUqZOABJnBqweA4CMnEj1k/mNtHDqpe0tVygCfN
+         llBSfHrvgXgNWCy4uSoBHs8bYF9NofSSEvtGctOpENby5yJoeS5+5p/y32uH43pFYZMR
+         LH8e9AwQtzqM9RpwOj3H4DHKbgZEwj6AbwAcKNtiNpnE6rFDHOgnnBtriU67l70H4jvL
+         6aZj9tljb4e2wVtEN39yvay7dyjlJkUNKTTArqsRp09nnx7Ww78G31L5tRTq3iGBz1zV
+         K1SvQkXFU0ZfdiwFpbbb7wsqVmTDPCP7bNv9cLvYSgzXglXpXB8+jgqwx/woKFqvquHQ
+         xKqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760476194; x=1761080994;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aAFIy48SiNIefLRd1BAuON2DcAPzB6rd2TTAzyi/zmQ=;
+        b=hQmARjdoegzK3KfP1+RqWDjTVx04ZfsWwRjwhI8gV9FPkvYD6OZozCiuHQgj1oaFGb
+         CxW+IXaxtsoFzjw+0fh+uvad76uzyvtyhdO4jgqnd3HTQyJR2z+z+cWKEYuOUA5od9Rh
+         D+rSOdTEGQWeTnzE/yiKRGfV5NL9bvGUby97oYTOgsq9lppe4sckoeZYqMp2hfb0/nDt
+         EofoUxcbI9qFbin6a2RlsE7extlHAdDfmYZKIYsCQO1PoO5T12fIEHf4F/URfnGAUrmH
+         6Ae7dD+CwGHuhd/NjSMtE1dQpyTLo2anVW6j1VMnRdnWV/feoQgxDe/RPzjbz3sPXv+9
+         Q5rg==
+X-Forwarded-Encrypted: i=1; AJvYcCWzcVAj1soSWzTvqePDXYItWDBFpipRLdfsdYUo3TVPvbmfunMHw2h96fdj9OlpgY+ExLw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwyzS8edOhhWDbYMu2ffwM8x7SiK2ORhaWRIG5eCnOVBdgIeFfE
+	6co7Q4N3BgJWHoZ4wtKyoGdwoGl9pUPg9fTw1JH5yRsIvFWULWCk5KL0BVQbKkuylcs=
+X-Gm-Gg: ASbGncsxpsrTIjR/2348hguy9OT4xSBRXRk1K2UXCBLPePIm/g1OvY1FuullTo9ds1g
+	9AaDaudfb5WlQafgkJASMFrAD6CSyRlKCv8eq4bL2l6z/7MEv+KjXMp+Xh/zAbSxJ4vl1J3eSHG
+	MtCfGJ+3nNHv52ZgL6OejA0nWay61CN3jIpBR6sqXPQzEcOt0apV8wqaLdE/YQb+5U7n6tjermB
+	GmMllr6fhvNhjmPizWTUEfGyHnnZHHtT++0MZnw/XSVexSPJxtKO9je1yQ/Elk+G0wF7A0vGWq/
+	GJJcYgA4ILCFDkZdw+fMpSSUfLxV0qod9GOfTG18BGsMCn8iBV8iDtQJHRvytv6jVmjPCHbbIcw
+	V/orSPQZWmtvKJtBLQS7Z2L9Fpwdv843jijXXjM720uwJas0YfjumKe3vdOmigY0yEIHDz9UnMz
+	QZGG6XSM8Ip+3rsNuqj6ONRQ==
+X-Google-Smtp-Source: AGHT+IHMLDEl/2OUqyd6dsVKt1UGXh3BaRNNfQRox5yRqmlsYRCZeNTg0aqnPOJfK+LSUdRcw9kJiQ==
+X-Received: by 2002:a05:6000:2389:b0:411:3c14:3ad9 with SMTP id ffacd0b85a97d-4266e7c7b2fmr20416940f8f.21.1760476194354;
+        Tue, 14 Oct 2025 14:09:54 -0700 (PDT)
+Received: from [192.168.0.19] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce582b39sm25169444f8f.15.2025.10.14.14.09.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Oct 2025 14:09:53 -0700 (PDT)
+Message-ID: <ebc5be79-7184-4a91-92fc-8a181ba096b5@linaro.org>
+Date: Tue, 14 Oct 2025 22:09:51 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251014-unclothed-outsource-d0438fbf1b23@spud>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 11/32] media: i2c: imx412: Use %pe format specifier
+To: Ricardo Ribalda <ribalda@chromium.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Hans Verkuil <hverkuil@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ =?UTF-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Leon Luo <leonl@leopardimaging.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Jacopo Mondi <jacopo+renesas@jmondi.org>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+ Julien Massot <julien.massot@collabora.com>, Jacopo Mondi
+ <jacopo@jmondi.org>, Daniel Scally <djrscally@gmail.com>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+ Sylvain Petinot <sylvain.petinot@foss.st.com>, Yong Zhi
+ <yong.zhi@intel.com>, Bingbu Cao <bingbu.cao@intel.com>,
+ Tianshu Qiu <tian.shu.qiu@intel.com>, Tiffany Lin
+ <tiffany.lin@mediatek.com>, Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+ Yunfei Dong <yunfei.dong@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Rui Miguel Silva <rmfrfs@gmail.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dafna Hirschfeld <dafna@fastmail.com>,
+ Heiko Stuebner <heiko@sntech.de>, Sylwester Nawrocki
+ <s.nawrocki@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>,
+ Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, imx@lists.linux.dev,
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev
+References: <20251013-ptr_err-v1-0-2c5efbd82952@chromium.org>
+ <U1BUWm68sWNPUXHr6NOsnc48bb6eXIL5tcAzrNijItgutDvPaBTmCI0qf2ERLQB_2BFYEBVNvWTQdmx5z_UU-g==@protonmail.internalid>
+ <20251013-ptr_err-v1-11-2c5efbd82952@chromium.org>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20251013-ptr_err-v1-11-2c5efbd82952@chromium.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 14, 2025 at 08:35:04PM +0100, Conor Dooley wrote:
-> On Tue, Oct 14, 2025 at 12:02:13PM -0700, Jakub Kicinski wrote:
-> > On Tue, 14 Oct 2025 19:12:23 +0100 Conor Dooley wrote:
-> > > On Tue, Oct 14, 2025 at 07:02:50PM +0100, Conor Dooley wrote:
-> > > > On Fri, Oct 10, 2025 at 02:34:17PM -0400, Frank Li wrote:  
-> > > > > Add optional clock for OSC_IN and fix the below CHECK_DTBS warnings:
-> > > > >   arch/arm/boot/dts/nxp/imx/imx6qp-prtwd3.dtb: switch@0 (nxp,sja1105q): Unevaluated properties are not allowed ('clocks' was unexpected)
-> > > > > 
-> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>  
-> > > > 
-> > > > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> > > > pw-bot: not-applicable  
-> > > 
-> > > Hmm, I think this pw-bot command, intended for the dt patchwork has
-> > > probably screwed with the state in the netdev patchwork. Hopefully I can
-> > > fix that via
-> > 
-> > The pw-bot commands are a netdev+bpf thing :) They won't do anything
-> > to dt patchwork. IOW the pw-bot is a different bot than the one that
-> > replies when patch is applied.
+On 13/10/2025 15:14, Ricardo Ribalda wrote:
+> The %pe format specifier is designed to print error pointers. It prints
+> a symbolic error name (eg. -EINVAL) and it makes the code simpler by
+> omitting PTR_ERR().
 > 
-> Rob's recently added it to our patchwork too.
-
-And the issue is that both PW projects might get updated and both don't 
-necessarily want the same state (like this case). So we need to 
-distinguish. Perhaps like one of the following:
-
-dt-pw-bot: <state>
-
-or
-
-pw-bot: <project> <state>
-
-Rob
+> This patch fixes this cocci report:
+> ./i2c/imx412.c:931:3-10: WARNING: Consider using %pe to print PTR_ERR()
+> 
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>   drivers/media/i2c/imx412.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/media/i2c/imx412.c b/drivers/media/i2c/imx412.c
+> index 7bbd639a9ddfa7fa76d3a4594be1e1c4d002c98a..b3826f80354703b17b416dc233854da3f5736e38 100644
+> --- a/drivers/media/i2c/imx412.c
+> +++ b/drivers/media/i2c/imx412.c
+> @@ -927,8 +927,8 @@ static int imx412_parse_hw_config(struct imx412 *imx412)
+>   	imx412->reset_gpio = devm_gpiod_get_optional(imx412->dev, "reset",
+>   						     GPIOD_OUT_LOW);
+>   	if (IS_ERR(imx412->reset_gpio)) {
+> -		dev_err(imx412->dev, "failed to get reset gpio %ld\n",
+> -			PTR_ERR(imx412->reset_gpio));
+> +		dev_err(imx412->dev, "failed to get reset gpio %pe\n",
+> +			imx412->reset_gpio);
+>   		return PTR_ERR(imx412->reset_gpio);
+>   	}
+> 
+> 
+> --
+> 2.51.0.760.g7b8bcc2412-goog
+> 
+> 
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
