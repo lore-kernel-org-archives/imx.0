@@ -1,187 +1,126 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939DA2EA14E
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 10:31:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9983C30C351
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 11:25:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760437919; cv=none; b=R2s2/P9/Im6vJ00F4Q4S6/J5o5YfIHGyCbtv9kRfLqWkxWlhYR7uU43/ueXUK51HLawzU1apIvtHhiv423hTbVa7HyBI8ryBc241z15aUTpKoyX3j0XvYekNrTjJqru0/Tm9Ps8pzuNNCoDB/HnYKS6U5Wkcz/pa8HfeLFS/rR4=
+	t=1760441158; cv=none; b=unKtO+baKykKcWGBgMHGHL9DBFc4zU/uiekrhRgWo9HJLDsMoZasdnKNjVagGGcqqWL8nCT+coX5186ac1c9080xS9GuGnoUvKFAMTrSx3PI3nppKZgyuXJiGp3F6aw4U2bANzY1Qce032vE6r/u9IlZLIsRf3wR2UxEr6ciLkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760437919; c=relaxed/simple;
-	bh=kGW7w8QtX0KaO3Y5uxbAu9buMLMHCqGKPvA76Zt4nM4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=rcqZdOrID7BVnE+zmUQt8NgZSyqWrJNZqRmhbiN+Q73nUlAeiZIN4wS0CPQpLUcYezkI/h+Zm519Eg4kj076228oV6u47mcEu9sGMeypV508B8WkiJ+G/rxFca8c6wKAFHDHbhgBJ+TN4PeGw0EJFzCHE1QyHdb92gcbsTzC1x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jhHVLY6M; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1760441158; c=relaxed/simple;
+	bh=iQmTbrHUexc232Nhf3QX3VZFHuse7k+IcjM2fAe1ig4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=us+UAVgkQWLmwUmX3ABCXfcSZKGlSKLlnD2mdACNeaqUbhGlbdCsYu6wShvjM3dHr7ZqjGxHXKNwBRY7UVusPREer1KgYYdvOZFEqZwQqOEVj+//WVPAqXcmkwv2QWrxV8tMpJ3IoxbL9tnL38/csRj/n/uKSvJa69qZpp6pqIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NwfIMGG3; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jhHVLY6M"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id DBCE04E4108C;
-	Tue, 14 Oct 2025 10:31:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A49A2606EC;
-	Tue, 14 Oct 2025 10:31:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8630B102F2291;
-	Tue, 14 Oct 2025 12:31:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760437913; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=IurHRNwPS5bUvPhYdCwcQ9dFIG4PiztIuBV3e51dI4o=;
-	b=jhHVLY6MGMT6NDtAeVatp666lR0Q3ErPybpTm/GZoCgz52fhFxeBZ88/KUFrMTy3tn7nQx
-	OLS1Y0nMFLudn8RUF2CezHmKOrxoNrzt37GuMMWroWZOFA8DvMJx8528kv6PFAOjUSAuHj
-	rP7u8nf0IR9tDMaWousMtO0BAZwxT+1SZ/bkG7QEgBQ3BkgmOhTovPDY+F549/aI4PI/R1
-	ds3aArNw5sDGxPKxhcFdvtuWMyjVUlQtpwpEv6qpufX7RxRmd0s1A9lEYNFStkzqSfS8dn
-	0KsWwqvCN97v7SEMnmAO9DkNSYqxxVgkSdSux6tQJYqLJQU35Ow8k53fcAybrA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NwfIMGG3"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4257aafab98so4412391f8f.3
+        for <imx@lists.linux.dev>; Tue, 14 Oct 2025 04:25:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760441155; x=1761045955; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uiSHBqGlXIEAZvcjTP0Y/hDCrVSuK2ils+FnYn9ERgY=;
+        b=NwfIMGG3KyhvL1IbWw9Ja6fhKoX26+Xn3x9/WObSR7ehK4ArIMbDMYui3a49I6Is77
+         yVsbbfMggCiCV3jOVjmj9GzyeBTr2/2dYD0Lsh5+P/HHJYkw3BavlnpGnYp5dY3+IrLV
+         0vDIcn6b8MR0DuCf/Jix/BY1Thbb5BlMiqVhrTIbA4bt6rPj+/4Jp1Zbua8OnALFS6SZ
+         WWotxiLEoQFgPmjk/qoXYNPYq9lVUZUXuZUWGAouKlsXZHFkTKU/jNuptfKK2QSeEONF
+         QHCFFH8FJOJd6Tp9sQ0knGTOsrx9CwuKNTD0jl3s9t68oQN7R6u7ZNbUIFjlkce98stB
+         5yXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760441155; x=1761045955;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uiSHBqGlXIEAZvcjTP0Y/hDCrVSuK2ils+FnYn9ERgY=;
+        b=xUif9u65tWoPHRXFTjXTUtdfhzgB6IYWI/U1jsRfRlgw12TXJ3kKf03KSF+jxAVAjo
+         QElOv5KWdmjLb920HHKQL+IYdL/mPUIimohD7m2G7+DNqC8anxdw6GHMoeDwiDrOiFjW
+         kHWZkMyuHN40GOMLbQX10EJlKjqsweURzLX+89vgF9tO/1vzMXLgHgPIH+J9U68nolfj
+         4jfNI4RzggwO7a2dcWmIv6nc9DYlQSctjvivS3dMU+8Fj99h0m9wlNIGZtaXRGInhuk1
+         0r738cogP8PXbqyGQaqu0Mqv8XBOab+XAujlhus+JCQcbx4ibhXa3LH4qvIiuzsGDHY7
+         XYDA==
+X-Forwarded-Encrypted: i=1; AJvYcCUknE79TF/4FHpUQt2RJTBeEePiu8LPC9m6QGNTO0XPuzjrplfnsZuFQYcdgpV2yrRQq0E=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzMDdgP/0sNP0uzLRc9fCt3OMJbPtH/fejpBbTDL2FZXXgiVnSk
+	5o+GYTKLUii2dY1M315hhnZqzfIhS2IFwh9MC1gFQJQJSExY8E+yWUQN
+X-Gm-Gg: ASbGnct+2ilcOgNAsVah4J7yavIfsbehM7ZaD0KzZTJRMXlJ2r3sBkhG4msfqbSboku
+	9Tj0eg4omAlgoWFn6T5VNjjpj1xSxc/97RlYiMgIFRYfsTEcBON1m/QHId905Qiz5P0842RjFxG
+	Fr4/sd6+CQ4BPGSh+1pLpEK6HULYh6upUvT+YlOwZWjVTFei3b/8i40BH1CBBwciEmFCDXMABrw
+	C6QbC6ypUA6+76aMDTuPXVvVuwbjKjzdOw5qV0iYx18rt63tNSChjJCnE+VSHiM+BNiTGJ2wvHH
+	2z3KTS2CIeXZfrTgZrE6CbJav26yGN3Bk4AvIOcMXqnXjEOIqrvClrUQlv/dt4SBMT+PMbVSGSA
+	5yDaD/6276o4xfxa4mBpTAand7zQMRztljkwTpl0ZzpIIHrbrjx/qxx3jt14GdjFCU19M3NrlIe
+	/cIUbsNDP19u/HryQjUFhTBMqJMeZjJ81hUUWZX1buYRYLEfwA240=
+X-Google-Smtp-Source: AGHT+IEqaf50xViFqcGYgiRoMt4dwJ2xrUn7bmjBXs3Kk/pC18UdQvc3UcQNURWNwY1ZJ/f0754E/Q==
+X-Received: by 2002:a05:6000:3111:b0:3ce:9872:fd3 with SMTP id ffacd0b85a97d-4266e7d92eemr13663773f8f.34.1760441154531;
+        Tue, 14 Oct 2025 04:25:54 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5e1024sm23047515f8f.42.2025.10.14.04.25.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 04:25:54 -0700 (PDT)
+Date: Tue, 14 Oct 2025 13:25:53 +0200
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Anusha Srivatsa <asrivats@redhat.com>, 
+	Maxime Ripard <mripard@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Hui Pu <Hui.Pu@gehealthcare.com>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, regressions@lists.linux.dev
+Subject: Re: [REGRESSION] drm/panel/panel-simple v6.17 WARNING regression
+Message-ID: <kcunz2b2usmvadgrnnu65op5oi5ttblrc463twgxp5gqhnufav@eze53y23avel>
+References: <hlf4wdopapxnh4rekl5s3kvoi6egaga3lrjfbx6r223ar3txri@3ik53xw5idyh>
+ <DDHZ5GO9MPF0.CGYTVBI74FOZ@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 14 Oct 2025 12:31:35 +0200
-Message-Id: <DDHZ5GO9MPF0.CGYTVBI74FOZ@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-To: "Ernest Van Hoecke" <ernestvanhoecke@gmail.com>, "Anusha Srivatsa"
- <asrivats@redhat.com>, "Maxime Ripard" <mripard@kernel.org>
-Cc: "Neil Armstrong" <neil.armstrong@linaro.org>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Jessica Zhang" <quic_jesszhan@quicinc.com>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Hui
- Pu" <Hui.Pu@gehealthcare.com>, "Dmitry Baryshkov"
- <dmitry.baryshkov@oss.qualcomm.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
- <regressions@lists.linux.dev>
-Subject: Re: [REGRESSION] drm/panel/panel-simple v6.17 WARNING regression
-X-Mailer: aerc 0.20.1
-References: <hlf4wdopapxnh4rekl5s3kvoi6egaga3lrjfbx6r223ar3txri@3ik53xw5idyh>
-In-Reply-To: <hlf4wdopapxnh4rekl5s3kvoi6egaga3lrjfbx6r223ar3txri@3ik53xw5idyh>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DDHZ5GO9MPF0.CGYTVBI74FOZ@bootlin.com>
 
-Hello Ernest,
+Hi Luca,
 
-thanks for your detailed analysis and report!
+Thanks for your fast reply and all your work here.
 
-On Tue Oct 14, 2025 at 10:13 AM CEST, Ernest Van Hoecke wrote:
-> Hello everyone,
->
-> Commit 94d50c1a2ca3 ("drm/bridge: get/put the bridge reference in drm_bri=
-dge_attach/detach()")
-> introduced a regression with the below warning dure probe with panel
-> dpi described in the device tree.
->
-> [    9.160074] ------------[ cut here ]------------
-> [    9.160092] WARNING: CPU: 0 PID: 66 at /usr/src/kernel/lib/refcount.c:=
-25 drm_bridge_attach+0x2c/0x1dc
-> [    9.160138] refcount_t: addition on 0; use-after-free.
-> [    9.160147] Modules linked in: coda_vpu(+) snd_soc_fsl_asrc snd_compre=
-ss v4l2_jpeg pwm_imx27 imx_vdoa spi_imx imx6_media(C) imx_media_common(C) v=
-ideobuf2_dma_contig etnaviv snd_soc_fsl_ssi v4l2_mem2mem imx_pcm_dma panel_=
-simple gpio_keys gpu_sched pwm_bl loop fuse ipv6 autofs4
-> [    9.160423] CPU: 0 UID: 0 PID: 66 Comm: kworker/u10:2 Tainted: G      =
-   C          6.17.0-rc5-0.0.0-devel #1 PREEMPT
-> [    9.160459] Tainted: [C]=3DCRAP
-> [    9.160476] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-> [    9.160497] Workqueue: events_unbound deferred_probe_work_func
-> [    9.160535] Call trace:
-> [    9.160546]  unwind_backtrace from show_stack+0x10/0x14
-> [    9.160603]  show_stack from dump_stack_lvl+0x54/0x68
-> [    9.160637]  dump_stack_lvl from __warn+0x7c/0xd4
-> [    9.160672]  __warn from warn_slowpath_fmt+0x130/0x1c4
-> [    9.160726]  warn_slowpath_fmt from drm_bridge_attach+0x2c/0x1dc
-> [    9.160780]  drm_bridge_attach from imx_pd_bind+0x74/0xa0
-> [    9.160836]  imx_pd_bind from component_bind_all+0xfc/0x254
-> [    9.160881]  component_bind_all from imx_drm_bind+0xa8/0x154
-> [    9.160903]  imx_drm_bind from try_to_bring_up_aggregate_device+0x1f8/=
-0x2b0
-> [    9.160959]  try_to_bring_up_aggregate_device from __component_add+0x9=
-c/0x160
-> [    9.161003]  __component_add from imx_pd_probe+0xa8/0x160
-> [    9.161042]  imx_pd_probe from platform_probe+0x5c/0x90
-> [    9.161066]  platform_probe from really_probe+0xd0/0x3a4
-> [    9.161093]  really_probe from __driver_probe_device+0x8c/0x1d4
-> [    9.161144]  __driver_probe_device from driver_probe_device+0x34/0xd0
-> [    9.161195]  driver_probe_device from __device_attach_driver+0xa4/0x13=
-4
-> [    9.161248]  __device_attach_driver from bus_for_each_drv+0x90/0xe4
-> [    9.161299]  bus_for_each_drv from __device_attach+0xa4/0x1cc
-> [    9.161328]  __device_attach from bus_probe_device+0x84/0x88
-> [    9.161354]  bus_probe_device from deferred_probe_work_func+0x8c/0xcc
-> [    9.161395]  deferred_probe_work_func from process_one_work+0x158/0x2e=
-0
-> [    9.161434]  process_one_work from worker_thread+0x254/0x3fc
-> [    9.161449]  worker_thread from kthread+0x128/0x24c
-> [    9.161473]  kthread from ret_from_fork+0x14/0x28
-> [    9.161494] Exception stack(0xe0aa1fb0 to 0xe0aa1ff8)
-> [    9.161505] 1fa0:                                     00000000 0000000=
-0 00000000 00000000
-> [    9.161517] 1fc0: 00000000 00000000 00000000 00000000 00000000 0000000=
-0 00000000 00000000
-> [    9.161529] 1fe0: 00000000 00000000 00000000 00000000 00000013 0000000=
-0
-> [    9.161539] ---[ end trace 0000000000000000 ]---
->
-> Note that this commit was added to branch 'drm-next-2025-07-30',
-> which did not contain an already mainlined fix for another regression [1]=
-.
-> Without that fix [2], this new regression is masked.
->
-> Reverting 94d50c1a2ca3 on top of
-> commit 260f6f4fda93 ("Merge tag 'drm-next-2025-07-30' of https://gitlab.f=
-reedesktop.org/drm/kernel")
-> fixes the issue. At that point, [1] was fixed in mainline, and the new
-> regression reported here was merged in. v6.17-rc1 to v6.17-rc7 are in
-> this state.
+On Tue, Oct 14, 2025 at 12:31:35PM +0200, Luca Ceresoli wrote:
+> Let me have a look at the DRM_IMX driver, I'll try to send a series
+> converting it to the new API within today.
 
-This is because the DRM_IMX has not been converted to the new
-devm_drm_bridge_alloc() [0] DRM bridge allocation API, which is now
-mandatory.
+I will gladly test, thanks!
 
-I converted all the bridges, except for a few which I missed because my
-search was based on looking for drm_bridge_add() calls, and this driver
-does not call it.
+> I recently sent a series proposing to make drm_bridge_add() mandatory
+> before drm_bridge_attach() in the docs and warn if that is violated [1]. If
+> you apply patch 4 of that series you should see the warning.
 
-I recently sent a series proposing to make drm_bridge_add() mandatory
-before drm_bridge_attach() in the docs and warn if that is violated [1]. If
-you apply patch 4 of that series you should see the warning.
+I gave it a quick try and did not see the warning. Some printk debugging
+told me that `list_empty(&bridge->list)`, inside drm_bridge_attach, is
+returning 0. 
 
-Let me have a look at the DRM_IMX driver, I'll try to send a series
-converting it to the new API within today.
+> > However, later on, another regression seems to be introduced by
+> > commit 8fa5909400f3 ("drm/bridge: get the bridge returned by drm_bridge_chain_get_first_bridge()")
+> > so reverting 94d50c1a2ca3 on top of drm-misc-next does not solve
+> > everything. This was tested by rebasing drm-misc-next onto (260f6f4fda93
+> > plus the revert of 94d50c1a2ca3) and then bisecting.
+> >
+> > So in v6.18-rc1, both regressions are present.
+> >
+> > There, I get the following additional warnings:
+> >
+> > [    9.732278] ------------[ cut here ]------------
+> > [    9.732336] WARNING: CPU: 0 PID: 38 at lib/refcount.c:22 drm_bridge_get+0x10/0x18
+> > [    9.744608] refcount_t: saturated; leaking memory.
+> 
+> Not sure here, but it may well be another symptom of the same bug: the
+> refcount was not initialized correctly, so it is found inconsistent later
+> when trying to increase it. Let's fix the known issue and then we'll see.
 
-[0] https://elixir.bootlin.com/linux/v6.17.1/source/include/drm/drm_bridge.=
-h#L1282
-[1] https://lore.kernel.org/lkml/20251003-b4-drm-bridge-alloc-add-before-at=
-tach-v1-0-92fb40d27704@bootlin.com/#t
+Makes sense to me.
 
-> However, later on, another regression seems to be introduced by
-> commit 8fa5909400f3 ("drm/bridge: get the bridge returned by drm_bridge_c=
-hain_get_first_bridge()")
-> so reverting 94d50c1a2ca3 on top of drm-misc-next does not solve
-> everything. This was tested by rebasing drm-misc-next onto (260f6f4fda93
-> plus the revert of 94d50c1a2ca3) and then bisecting.
->
-> So in v6.18-rc1, both regressions are present.
->
-> There, I get the following additional warnings:
->
-> [    9.732278] ------------[ cut here ]------------
-> [    9.732336] WARNING: CPU: 0 PID: 38 at lib/refcount.c:22 drm_bridge_ge=
-t+0x10/0x18
-> [    9.744608] refcount_t: saturated; leaking memory.
-
-Not sure here, but it may well be another symptom of the same bug: the
-refcount was not initialized correctly, so it is found inconsistent later
-when trying to increase it. Let's fix the known issue and then we'll see.
-
-Best regards,
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Kind regards,
+Ernest
