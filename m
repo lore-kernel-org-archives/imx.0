@@ -1,164 +1,84 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00D126560A
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 17:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356C37083C;
+	Tue, 14 Oct 2025 18:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760463451; cv=none; b=FUvGAcVoe2uf28ISW0m26ae/XKKVQQBjMeEeWTZDiEEddzbeJPb7mFPdttdquHtsfY5HhudP4+Ez1vlbPUJZzf6aG4gsNeWZKYkZa9Pa4VPHBoC2eNcybcNVRB449+iZ4G5B5UO3afbZhq1BeEcrRodtB7Hn2WX4sp1t2MqubNA=
+	t=1760464975; cv=none; b=aUvDGj7vymn+CgdsJFpZim/KTCSl2QSMgkupAe5TFYg8HqPuoIl4XWYTDp4io2C5N0ylk5n8+VfWBup0eqZnHa//6qyORO5PGSEIgPIrbGEBs8JwcG77umXZR0LEKtFdgLjhr4MPrpEicNSV8mkHOGNtsN3QEmhv08YudnrIPIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760463451; c=relaxed/simple;
-	bh=HiHxgPNFAWSB/iS1Eg4H0inrzfOnWi/it/DJfDndziA=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=c8wxIg0YmKVHE7b07BjHWkw0stSLFsKpFNU646qhWQyHniMjvYICec6N1Y6trZjtxd3UA6ZbSy/st/QWZIhxuiSg7YKStH7a/HVZhEwP6QcER+TMUNuRhir3UtZ7dfD3/bZEAQagTyKiIXYFVSHZwwT+bVU2FyKhweQhWTaceJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=q9jTq4a6; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1760464975; c=relaxed/simple;
+	bh=3aJGCCas08m3S7gHD19HqzqscSuOVpUV8AM+dynP93Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UHwVCBh4M9OE3n2dZSXHg4TWao60JAmFM0DxIKN5rUooVhmii/x8eUSB6kIT2hY+lSzf1OK8IK1JG3p5AoEWHLsOvxV25P3y83t4HfRWpE+5v2KX9CsXOzU2uQn6ZUQY7O9CNl79IXuPtm9MOvh4fKGl+8X/t8PP5Nt6j0I3Wl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sWMSoGUB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="q9jTq4a6"
-Received: from pendragon.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1B5A1741;
-	Tue, 14 Oct 2025 19:35:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1760463348;
-	bh=HiHxgPNFAWSB/iS1Eg4H0inrzfOnWi/it/DJfDndziA=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=q9jTq4a6Wd81pLyp1VGc5fLh85ad6D3pNvVulfbdw6nNHMFfwQHZ+9YodjLIwb/tf
-	 OFUJHqcDSVDA1RGICzlwOuLLW8Jd6hpeXuJzD5A1yLJzUAHXvb1WykyTG/aJt3UuBv
-	 yDqmkZJeiY5Z5R4V1MVbHtD4AkP2IQSy9vXuIVUs=
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sWMSoGUB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D7FC4CEE7;
+	Tue, 14 Oct 2025 18:02:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760464974;
+	bh=3aJGCCas08m3S7gHD19HqzqscSuOVpUV8AM+dynP93Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sWMSoGUB1e/WSomPhcYiyYvbLWHEpOmsOHF0giBDglwt5DfNkSpTu2Zh/fghnWBwU
+	 Oi+mBZKmgEBxu80YN1PSbImf5zrKW6oalp/WwaIz2dh+cPyE2kX3LwIn++7HJjJtAK
+	 rf2R1Zl126Z7wuyAj0+2dlUpGoFpRUXZpvMfiN1dPco4RAwCrEAdl6MjZcwxsgoWNE
+	 KT7lDpUuXin7GuO8lZraIIHuQGVnFOGA0AfJbzaAuyEXVS14PSxpVqbPEnUV7TEklQ
+	 r8x35HeMJPDH3ByFMlZo8ddwPp68Ou6YuNFPu1dATXIZK2vUwPsQHpQlc2+HL19VWc
+	 xM5juQ7DWwKqQ==
+Date: Tue, 14 Oct 2025 19:02:50 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: nxp,sja1105: Add optional
+ clock
+Message-ID: <20251014-flattop-limping-46220a9eda46@spud>
+References: <20251010183418.2179063-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Dn3+JVL4O4laIKgw"
+Content-Disposition: inline
+In-Reply-To: <20251010183418.2179063-1-Frank.Li@nxp.com>
+
+
+--Dn3+JVL4O4laIKgw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250916144710.1285650-1-kieran.bingham@ideasonboard.com>
-References: <20250916144710.1285650-1-kieran.bingham@ideasonboard.com>
-Subject: Re: [PATCH] arm64: dts: freescale: debix-som-a-bmb-08: Enable HDMI output
-From: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: Shawn Guo <shawnguo2@yeah.net>, Marco Felsch <m.felsch@pengutronix.de>
-To: Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Tue, 14 Oct 2025 18:37:23 +0100
-Message-ID: <176046344348.1246375.13335893574135284814@ping.linuxembedded.co.uk>
-User-Agent: alot/0.9.1
 
-Hi All,
-
-Quoting Kieran Bingham (2025-09-16 15:47:09)
-> Enable the HDMI output on the Debix SOM A board, using the HDMI encoder
-> present in the i.MX8MP SoC.
+On Fri, Oct 10, 2025 at 02:34:17PM -0400, Frank Li wrote:
+> Add optional clock for OSC_IN and fix the below CHECK_DTBS warnings:
+>   arch/arm/boot/dts/nxp/imx/imx6qp-prtwd3.dtb: switch@0 (nxp,sja1105q): U=
+nevaluated properties are not allowed ('clocks' was unexpected)
 >=20
-> Enable and configure all nodes required for the HDMI port usage.
->=20
-> Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-One review tag at https://lore.kernel.org/all/20250925171744.5eyhqjlqp7skes=
-qi@pengutronix.de/
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-Could anyone be able to review / collect / apply this one please?
+--Dn3+JVL4O4laIKgw
+Content-Type: application/pgp-signature; name="signature.asc"
 
---
-Regards
+-----BEGIN PGP SIGNATURE-----
 
-Kieran
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaO6QSQAKCRB4tDGHoIJi
+0sXUAP9LYKTUydtydHeuxkp9yARH73uLXSVZLOOXNdGjZzAUjgEAout6dmnqQlgt
+w6mijUTOOjkghVoJPa0/PMpqZLVnegw=
+=fep+
+-----END PGP SIGNATURE-----
 
-
-> ---
->=20
-> This replicates 4880ee1c9046 ("arm64: dts: imx8mp-debix-model-a: Enable
-> HDMI output") to support the Debix SOM as well.
->=20
->=20
->  .../freescale/imx8mp-debix-som-a-bmb-08.dts   | 47 +++++++++++++++++++
->  1 file changed, 47 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-som-a-bmb-08.dts =
-b/arch/arm64/boot/dts/freescale/imx8mp-debix-som-a-bmb-08.dts
-> index d241db3743a9..04619a722906 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-debix-som-a-bmb-08.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-som-a-bmb-08.dts
-> @@ -22,6 +22,18 @@ chosen {
->                 stdout-path =3D &uart2;
->         };
-> =20
-> +       hdmi-connector {
-> +               compatible =3D "hdmi-connector";
-> +               label =3D "hdmi";
-> +               type =3D "a";
-> +
-> +               port {
-> +                       hdmi_connector_in: endpoint {
-> +                               remote-endpoint =3D <&hdmi_tx_out>;
-> +                       };
-> +               };
-> +       };
-> +
->         reg_baseboard_vdd3v3: regulator-baseboard-vdd3v3 {
->                 compatible =3D "regulator-fixed";
->                 regulator-min-microvolt =3D <3300000>;
-> @@ -222,6 +234,28 @@ flash: flash@0 {
->         };
->  };
-> =20
-> +&hdmi_pvi {
-> +       status =3D "okay";
-> +};
-> +
-> +&hdmi_tx {
-> +       pinctrl-names =3D "default";
-> +       pinctrl-0 =3D <&pinctrl_hdmi>;
-> +       status =3D "okay";
-> +
-> +       ports {
-> +               port@1 {
-> +                       hdmi_tx_out: endpoint {
-> +                               remote-endpoint =3D <&hdmi_connector_in>;
-> +                       };
-> +               };
-> +       };
-> +};
-> +
-> +&hdmi_tx_phy {
-> +       status =3D "okay";
-> +};
-> +
->  &i2c4 {
->         expander0: gpio@20 {
->                 compatible =3D "nxp,pca9535";
-> @@ -276,6 +310,10 @@ ethmac2: mac-address@c {
->         };
->  };
-> =20
-> +&lcdif3 {
-> +       status =3D "okay";
-> +};
-> +
->  &snvs_pwrkey {
->         status =3D "okay";
->  };
-> @@ -430,6 +468,15 @@ MX8MP_IOMUXC_NAND_DATA03__FLEXSPI_A_DATA03      0x82
->                 >;
->         };
-> =20
-> +       pinctrl_hdmi: hdmigrp {
-> +               fsl,pins =3D <
-> +                       MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL     0=
-x1c3
-> +                       MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA     0=
-x1c3
-> +                       MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD         0=
-x19
-> +                       MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC         0=
-x19
-> +               >;
-> +       };
-> +
->         pinctrl_i2c1: i2c1grp {
->                 fsl,pins =3D <
->                         MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL                 0=
-x400001c2
-> --=20
-> 2.50.1
->
+--Dn3+JVL4O4laIKgw--
