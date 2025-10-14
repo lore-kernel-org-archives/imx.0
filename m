@@ -1,219 +1,128 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DC330507F
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 05:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DD330DEA3
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 07:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760421293; cv=none; b=In2sQ5G+Dw/vsTGETUnRnDWQwXOVwaq9MEyhRacUFZj0Sid8didpVzLp/UoBpzPljmu4P2emhHgzk9tfxRSfk1Ea/BvS9MUXUxlTlyy1xWN3T1fkcadLTf03zdePkxUkre6QKssd8pGuEwIceElel2dVrhCKm5WE7yn63/LFu1Y=
+	t=1760425636; cv=none; b=pKFiCVPN1PGg6dhhLlzcVwFyG4/+xHyZbPLk/XJDnzX07Ed6La4Rfw1UzgHDeVYTG89R+2rksohkb7VwFyQ1qY1NMucjMuw8Og8PNrpw6frk9GOcmpQTguJsEBQtQzDVIWwNNp4pCSLMRFXiasNVRxQNJbR2PmOLd39wCnwK068=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760421293; c=relaxed/simple;
-	bh=uhpQJtFLv1rBxsAcfck67pJR/8AGuXyPU5pS3+P1YE0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=aBaZon6NShhe+KK9ICApqUnDzUtDo+6BUbHz5lc6/T+CIAhc1rvN3Tg5YEhIX+T79vs5UQ2Tn3q/OaMd9+tgUiilBID0/HhPucYYPA0R/ekTxnL3Ie0ocRCa296nUckOxX30ZaV4h42ppKjT3rScfR0ycUrunVVkIdXv9ixFTDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=AoNNOTWj; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1760425636; c=relaxed/simple;
+	bh=AE6o9rBchXM9ButRAfqsiHwvFzmlHsuVVU5dxOZZtd8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nn9YHwoD9+RV3TOkJrUG4wV9cHM3csQYIwHNxblJQpkRokZJIMENgKfm6GvgBUcAc4PeFkkus7eOt4YO3OsAEDHb1in2C/Vuqpjk5OfN3dbzsFYCC0zxFYfGpodmRPYM/o4m5RZeEn5D9U6b3PsJANW0lu0/cDs5a+cTPDkcxCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=qs/anXn2; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="AoNNOTWj"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20251014055448euoutp02242d954f28ae83af3873d6bd92a9fa6b~uRdWhoaiY1330913309euoutp02d
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 05:54:48 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20251014055448euoutp02242d954f28ae83af3873d6bd92a9fa6b~uRdWhoaiY1330913309euoutp02d
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1760421288;
-	bh=KgrxKYIuyb4cf8d6Kw/QEO1mOl+rpOs8+2xF6zyBwbI=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=AoNNOTWje9UdiRcES1n/LO/FyiHUuq1ECbVfCOGTMRHeZXTpTmmp/T7vb67c16J3t
-	 16KE+6qpFaZmrohQBoB+huJWKp/mL8GyGTv4CTg41h0kifueBNE4xskov1w8se4bgv
-	 zokyMswSZwnNg1dJsquVCFisW/OKNdh+y/K1vNxs=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20251014055447eucas1p2c67687acd32add33c7bb253f94c46e0d~uRdWPkuq42592925929eucas1p2r;
-	Tue, 14 Oct 2025 05:54:47 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20251014055447eusmtip230ff3a2be12cab6c9753d94c32e4dd37~uRdVarDXi1545615456eusmtip2D;
-	Tue, 14 Oct 2025 05:54:46 +0000 (GMT)
-Message-ID: <f3fba346-6fdd-4b0e-9414-087a12772a6a@samsung.com>
-Date: Tue, 14 Oct 2025 07:54:46 +0200
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="qs/anXn2"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 52438240027
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 09:07:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1760425627; bh=m2ao7yOlmXtTR+gAWOXEYdjwi7rdtHCkxzZCJ5XFR9E=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:From;
+	b=qs/anXn2TVnJ3gfmAMlt/gZ6fHeZdmw8nlor261Uc6AaFBIEbGJq4MC7QA5reFK0w
+	 0/PJKEyhUqqbCtiyOMuFuopxx0xkpGCfrUsi0RtgLsMTpGKpkkmIc5xTD1b3ZZozXO
+	 IxdgnISemS2GtLR1dbxwe5PSfug/pF+yzodMP8MImM7aIJAwZgpis5h48v6PNA9ti8
+	 ML+17oz4AzLX/16JGZiUQrkqTmUqxcr0GvmHM+qDCwxzO3hxCnv4WAEavaC2RU5W2I
+	 GWdSCeK7fMSy/OHfVFz7/E76HREqG687Nkt2HYjZqhcPW+h7juEPOAhhJjtMPxTiVz
+	 TywBmW4HlmzbA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4cm4yp6z2Tz9rxR;
+	Tue, 14 Oct 2025 09:06:58 +0200 (CEST)
+Message-ID: <f30b137685be9148e69f18065d811d011bfe3409.camel@posteo.de>
+Subject: Re: [PATCH 25/32] media: imx8mq-mipi-csi2: Use %pe format specifier
+From: Martin Kepplinger-Novakovic <martink@posteo.de>
+To: Ricardo Ribalda <ribalda@chromium.org>, Linus Walleij	
+ <linus.walleij@linaro.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Mauro Carvalho Chehab	 <mchehab@kernel.org>, Hans Verkuil
+ <hverkuil@kernel.org>, Sakari Ailus	 <sakari.ailus@linux.intel.com>,
+ Krzysztof =?UTF-8?Q?Ha=C5=82asa?=	 <khalasa@piap.pl>, Tomi Valkeinen
+ <tomi.valkeinen@ideasonboard.com>, Leon Luo	 <leonl@leopardimaging.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,  Jacopo Mondi
+ <jacopo+renesas@jmondi.org>, Kieran Bingham
+ <kieran.bingham+renesas@ideasonboard.com>,  Laurent Pinchart
+ <laurent.pinchart+renesas@ideasonboard.com>, Niklas
+ =?ISO-8859-1?Q?S=F6derlund?=	 <niklas.soderlund+renesas@ragnatech.se>,
+ Julien Massot	 <julien.massot@collabora.com>, Jacopo Mondi
+ <jacopo@jmondi.org>, Daniel Scally	 <djrscally@gmail.com>, Dave Stevenson
+ <dave.stevenson@raspberrypi.com>,  Benjamin Mugnier
+ <benjamin.mugnier@foss.st.com>, Sylvain Petinot
+ <sylvain.petinot@foss.st.com>, Yong Zhi	 <yong.zhi@intel.com>, Bingbu Cao
+ <bingbu.cao@intel.com>, Tianshu Qiu	 <tian.shu.qiu@intel.com>, Tiffany Lin
+ <tiffany.lin@mediatek.com>, Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+ Yunfei Dong <yunfei.dong@mediatek.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno	
+ <angelogioacchino.delregno@collabora.com>, Rui Miguel Silva
+ <rmfrfs@gmail.com>,  Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Purism Kernel Team <kernel@puri.sm>, Shawn Guo	 <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Dafna
+ Hirschfeld	 <dafna@fastmail.com>, Heiko Stuebner <heiko@sntech.de>,
+ Sylwester Nawrocki	 <s.nawrocki@samsung.com>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar	 <alim.akhtar@samsung.com>, Yemike Abhilash
+ Chandra <y-abhilashchandra@ti.com>,  Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev
+Date: Tue, 14 Oct 2025 07:07:05 +0000
+In-Reply-To: <20251013-ptr_err-v1-25-2c5efbd82952@chromium.org>
+References: <20251013-ptr_err-v1-0-2c5efbd82952@chromium.org>
+	 <20251013-ptr_err-v1-25-2c5efbd82952@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 0/3] dma_mapping: Add auto cleanup support
-To: Frank Li <Frank.Li@nxp.com>, Robin Murphy <robin.murphy@arm.com>, Dong
-	Aisheng <aisheng.dong@nxp.com>, Andi Shyti <andi.shyti@kernel.org>, Shawn
-	Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, Peter Zijlstra <peterz@infradead.org>
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20251010-dmamap_cleanup-v1-0-ec5bc14e82c4@nxp.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251014055447eucas1p2c67687acd32add33c7bb253f94c46e0d
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20251010185046eucas1p26868b540b74a96e36943066216525bed
-X-EPHeader: CA
-X-CMS-RootMailID: 20251010185046eucas1p26868b540b74a96e36943066216525bed
-References: <CGME20251010185046eucas1p26868b540b74a96e36943066216525bed@eucas1p2.samsung.com>
-	<20251010-dmamap_cleanup-v1-0-ec5bc14e82c4@nxp.com>
 
-Hi
-
-On 10.10.2025 20:50, Frank Li wrote:
-> There are many below pattern
->
-> 	fun()
-> 	{
-> 		...
-> 		dma_map_single();
-> 		if (dma_mapping_error)
-> 			goto err1;
->
-> 		dmaengine_prep_slave_single()
-> 		if (...)
-> 			goto err2
->
-> 		dmaengine_submit()
-> 		if (...)
-> 			goto err3
->
-> 		wait_for_completion_timeout()
-> 		if (...)
-> 			goto err4
->
-> 	err4:
-> 	err3:
-> 	err2:
-> 		dma_umap_single();
-> 	err1:
-> 	}
->
-> Use cleanup can simple error handle like guard(), such as guard(mutex).
-> or __free(kfree) = kmalloc.
->
-> But dma_umap_single() need more argurements. So situation below complex.
->
-> It need pack argurments list into structure.
->
-> 	#define __DEFINE_GUARD_CLASS(_name, _return_type, _list_class_fields)   \
-> 	typedef struct {                                                \
-> 	       	 _return_type ret;                                       \
-> 	        bool    okay;                                           \
-> 	        struct  {                                               \
-> 	                __REMOVE(_list_class_fields);                   \
-> 	        } args;                                                 \
-> 	} class_##_name##_t;
->
-> So save all arugments to it.
->
-> __DEFINE_GUARD_CLASS(dma_map_single, dma_addr_t, (struct device *dev; void *ptr; size_t size; enum dma_data_direction dir)
-> will expand to
->
-> 	struct {
-> 		dma_addr_t ret;
-> 		bool	okay;
-> 		struct {
-> 			struct device *dev;
-> 			void *ptr;
-> 			size_t size;
-> 			enum dma_data_direction dir;
-> 		}
-> 	}
->
-> So cleanup function can use saved argurement.
->
-> The above fun will be
->
-> 	fun()
-> 	{
-> 		CLASS(dma_map_single, dma)(dev, ...);
->
-> 		...
-> 		if (...)
-> 			return err;
-> 	}
->
-> if funtion return, which need keep map,
->
-> 	submit()
-> 	{
-> 		dma_map_single();
-> 		...
-> 		dmaengine_submit();
-> 		if (...)
-> 			goto err1
-> 		return;
->
-> 	goto err1:
-> 		dma_umap_single();
-> 	}
->
-> Macro retain_and_empty() will clean varible to avoid unmap.
->
->          ({                                  \
->                  __auto_type __ptr = &(t); typeof(t) empty= {};   \
->                  __auto_type __val = *__ptr; \
->                  __ptr->okay = 0;        \
->                  __val.ret;              \
->          })
->
-> So
->
-> 	submit()
-> 	{
->         		CLASS(dma_map_single, dma)(dev,...;
->
-> 	        ...
-> 	        dmaengine_submit();
-> 		if (...)
-> 			return err;
->
-> 		//before return;
->
-> 		retain_and_empty(dma)
-> 	}
->
-> This series just show how to hanndle many agurement at resource alloc/free
-> functions. Only show dma_map_single. If the over all method is acceptable.
-> I will more define for dma mapping functions.
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-This looks fine from the DMA-mapping API perspective. I think we should 
-also get some feedback from Peter, who authored most of the __cleanup() 
-based infrastructure, so I've added him to the recipients list.
-
-
+Am Montag, dem 13.10.2025 um 14:15 +0000 schrieb Ricardo Ribalda:
+> The %pe format specifier is designed to print error pointers. It
+> prints
+> a symbolic error name (eg. -EINVAL) and it makes the code simpler by
+> omitting PTR_ERR().
+>=20
+> This patch fixes this cocci report:
+> ./platform/nxp/imx8mq-mipi-csi2.c:422:23-30: WARNING: Consider using
+> %pe to print PTR_ERR()
+>=20
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 > ---
-> Frank Li (3):
->        cleanup: Add DEFINE_GUARD_ARGS_CLASS macro for resource alloc/free functions with multiple arguments
->        dma-mapping: Add auto cleanup support dma_map_single()
->        i2c: lpi2c: Use auto cleanup for dma_map_single()
->
->   drivers/i2c/busses/i2c-imx-lpi2c.c | 13 ++++---
->   include/linux/cleanup.h            | 73 ++++++++++++++++++++++++++++++++++++++
->   include/linux/dma-mapping.h        |  8 +++++
->   3 files changed, 87 insertions(+), 7 deletions(-)
-> ---
-> base-commit: 7c3ba4249a3604477ea9c077e10089ba7ddcaa03
-> change-id: 20251008-dmamap_cleanup-d0a7f0525a3d
->
-> Best regards,
-> --
-> Frank Li <Frank.Li@nxp.com>
->
->
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+> =C2=A0drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 4 ++--
+> =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> index
+> 3a4645f59a44028fdca82a4d8393e1a0a6ba88f0..d333ff43539f061b8b9cf88af2c
+> da8c44b3ec2a9 100644
+> --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> @@ -418,8 +418,8 @@ static int imx8mq_mipi_csi_calc_hs_settle(struct
+> csi_state *state,
+> =C2=A0
+> =C2=A0	src_pad =3D media_entity_remote_source_pad_unique(&sd_state-
+> >sd->entity);
+> =C2=A0	if (IS_ERR(src_pad)) {
+> -		dev_err(state->dev, "can't get source pad of %s
+> (%ld)\n",
+> -			sd_state->sd->name, PTR_ERR(src_pad));
+> +		dev_err(state->dev, "can't get source pad of %s
+> (%pe)\n",
+> +			sd_state->sd->name, src_pad);
+> =C2=A0		return PTR_ERR(src_pad);
+> =C2=A0	}
+> =C2=A0
 
+Reviewed-by: Martin Kepplinger-Novakovic <martink@posteo.de>
+
+thanks you,
+
+                             martin
