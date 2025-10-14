@@ -1,79 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15272C17A0;
-	Tue, 14 Oct 2025 20:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FD42DECB1
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 20:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760474452; cv=none; b=RJVy0atbk+B/ZT3fwTg2vu+cnXKSHTfrYe4ha1OasIuGQc4vTqEeXoU22nXIJfC4GkbNp0UHIwYHgp7mMCtuPgL1VpNxmAWBeKzMmFWdtIKrYMflnSQcuivffEwb1BH7oryr12Ssu5T3B1o3AADdPG9dLIIiN84jZ3BjpIDZVOE=
+	t=1760474830; cv=none; b=GCoo5UIQ3j3C8bN0BTTQ4YV7Hg/kf9D/Jf9i/ueB2nCoTD4TWLIEon/NgqKgitO7dOmkYOxiN5zw6aKuhdScZW+mBnZ13t4LNbGiuJP1gPfqiUM0H5wL+aGV2Tlzseu5mRWNFs3teWa7QrF9Do2WIBQNtWEjvWWUislR0qQ0xjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760474452; c=relaxed/simple;
-	bh=jImoalCcPHmDFBiacMfQm6yGQJymS2ov7FLU0F5bxfs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fQhy2+5McuN+YYyjqoRDdC2/p5TlXDwe6/LTXpFEzLAPCweqs1iqaFPJwtHgBlvx32F5yjrUOaRpY8+chige451lxjfpV0Du7Ep6aI0TzzBA1YWqZWrq0TnfNmKMA1bhLiFtdZM0fVLA7eEfAMh4J4QfyDpmInAeo6Fa7ZTgCUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQvwyvap; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760474830; c=relaxed/simple;
+	bh=O2xu8KT6jgh+ye6JsDNiUiafB4U434onqsAXqGafFck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EUH2RDj0jXCpoa1+Nbl0XjwXXLsKcdzf06hB30sVN72j6bu6cyfm/WTeNcdMQHXfW4S2Zd3G1KeYoUdJMfyb5zQiDDwdjgHI5WcRRm87ePGiPJpfiWy+UkoAvyh/EvHPr/saRIEWcolzuXcBr7mD6kkZFnRKaXcYmaoAaIvqbv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=AU+V64vL; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQvwyvap"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A321FC4CEE7;
-	Tue, 14 Oct 2025 20:40:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760474452;
-	bh=jImoalCcPHmDFBiacMfQm6yGQJymS2ov7FLU0F5bxfs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aQvwyvapJDAzAymxezDh2olc4lO3euRwirQUj7nDo5L20NgpBYQHt6Zhk0Gu49lj9
-	 X0OfNT7Wlh8z7fdLUtIumR7xhro/W/rwn3ec+5PeXyQAYfQKCTXW5QwkC+/Cao2+D1
-	 GQ+/g0Dfpe8Ok6SOWqVACvC9/4Px8/U4GXBjUU8ltgn+oV5zJVUqmVLtBjTDxrDaFU
-	 l5VORK5XWJdv+uNLlzXi/oqzEFyT3IFZdJCbt3WdiwOS1rMNPiuHCXKf5hfv+6JQW/
-	 pwYCeex3AmupQPwMEzqcTg2KuJsAO0HjdVkI3RTDvAga2LVCY3J9IOpSEWIuTBZc2r
-	 ya8sgCgRcunHg==
-Date: Tue, 14 Oct 2025 13:40:50 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Andrew Lunn <andrew@lunn.ch>, Vladimir
- Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "open list:NETWORKING DRIVERS"
- <netdev@vger.kernel.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE
- TREE BINDINGS" <devicetree@vger.kernel.org>, open list
- <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: nxp,sja1105: Add optional
- clock
-Message-ID: <20251014134050.371d0c97@kernel.org>
-In-Reply-To: <20251014-unclothed-outsource-d0438fbf1b23@spud>
-References: <20251010183418.2179063-1-Frank.Li@nxp.com>
-	<20251014-flattop-limping-46220a9eda46@spud>
-	<20251014-projector-immovably-59a2a48857cc@spud>
-	<20251014120213.002308f2@kernel.org>
-	<20251014-unclothed-outsource-d0438fbf1b23@spud>
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="AU+V64vL"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0A2EB102E6F;
+	Tue, 14 Oct 2025 22:46:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1760474820;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=nuqzPscocXsv4QGjyp5D1JTIpMR6i71bIBd2xUs9GwA=;
+	b=AU+V64vLJIS8nNCskYQUQ6xa5LNBOJsrT6MDC0ynISJ+E0kFKF3GtvEtSz185FJmQxjXj5
+	NMdf69XtvShQojk/cVcN0D0hWzNXGhBW8o/URYh2/xE2BBRDlAxYewSODWq/h2u9CNj4Fo
+	EC3iVycbEEkQ4M7YamcnnIY0kkj3GdfvqfxyhrUkt4mhIjXPwa8lM+Ay0rE1yNDkCRKvN0
+	5ePw+RoIlzKOMiy9rDshvnVvYr3CQxvwwoBXhcEPbJm6ZwD9cnAubrZfjYUFOVvJhAS4ON
+	Cquol+3D3I13/Kv8RKPivc3yPZDAt1uZCb0pEh6zLHYURMD6Y9HRd63QQd2o+A==
+Message-ID: <ddc44948-4816-452f-8b78-b1dfe44d507b@nabladev.com>
+Date: Tue, 14 Oct 2025 22:46:56 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/8] ARM: dts: imx: add power-supply for lcd panel
+To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+ Marek Vasut <marex@denx.de>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ kernel@dh-electronics.com
+References: <20251014-imx6_dts_clean_2-v1-0-508b36e5a3fd@nxp.com>
+ <20251014-imx6_dts_clean_2-v1-1-508b36e5a3fd@nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20251014-imx6_dts_clean_2-v1-1-508b36e5a3fd@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, 14 Oct 2025 20:35:04 +0100 Conor Dooley wrote:
-> On Tue, Oct 14, 2025 at 12:02:13PM -0700, Jakub Kicinski wrote:
-> > On Tue, 14 Oct 2025 19:12:23 +0100 Conor Dooley wrote:  
-> > > Hmm, I think this pw-bot command, intended for the dt patchwork has
-> > > probably screwed with the state in the netdev patchwork. Hopefully I can
-> > > fix that via  
-> > 
-> > The pw-bot commands are a netdev+bpf thing :) They won't do anything
-> > to dt patchwork. IOW the pw-bot is a different bot than the one that
-> > replies when patch is applied.  
-> 
-> Rob's recently added it to our patchwork too.
+On 10/14/25 9:38 PM, Frank Li wrote:
+> Add power-supply for lcd panel to fix below CHECK_DTBS warnings:
+>    arch/arm/boot/dts/nxp/imx/imx6q-evi.dtb: panel (sharp,lq101k1ly04): 'power-supply' is a required property
 
-:-o  Nice!
+...
 
-Do you know if it's the NIPA one or did he write his own?
-I think we need to add support for some kind of project tagging 
-to avoid changing state in each other's patchworks?
-
-  pw-bot: xyz [project]
-
-(with the [] brackets, not just meaning that the project is optional)
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts
+> index b29713831a74489e8cc0e651c18a40d85f9f9113..04e570d76e42cd67a38e0f3b2301598f712e6bd4 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts
+> @@ -199,7 +199,7 @@ touchscreen@38 {
+>   		reg = <0x38>;
+>   		interrupt-parent = <&gpio5>;
+>   		interrupts = <4 IRQ_TYPE_EDGE_FALLING>; /* GPIO E */
+> -		power-supply = <&reg_panel_3v3>;
+> +		vcc-supply = <&reg_panel_3v3>;
+This looks like a different kind of change ?
