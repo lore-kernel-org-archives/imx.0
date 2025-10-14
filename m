@@ -1,87 +1,93 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676132D46D8
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 22:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3430A221F13
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 23:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760479771; cv=none; b=ZNeZnNpGdNHcv7bwtuPFPq1yxoHSTTx/do4nroNkSwvru1ruf5jKwfQ68i8azrwTpfcOeaJX8Tih7SgSE+o35E1SeNZLmDMLRjeGa/S7wGmn+X/BMBWOnytfduA+nP3Gc/yajTcw76U5mXQfVDWwkEEz1ydiOpJ+sWJ8JTeAz5k=
+	t=1760484591; cv=none; b=R+x+0S0maydzDCxTOEcIRDQw7Y6iafQQHs0JwnymEDpK9EC2sAMszr+XGx6PM4wSoZu+tw8Cvt/IhPnbhfCYNXqYWoY2j7/Powtb3kixh4ZM9at9IpLYwm2Gx3H0DrLUpoZgNMaFTWdAnjsI7xTydQSFHFec541l/80yTnIZSVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760479771; c=relaxed/simple;
-	bh=oI1abJIFHqXDPS9wXYVnXUtBPXbCwR8ksekULWNMqYg=;
+	s=arc-20240116; t=1760484591; c=relaxed/simple;
+	bh=DbfxI4gIZ2YyPcrjUKBC3FhOTnQ2mCIIwkZ4hgseiNo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CFcg9lzBbmk6/KJZxVTr7l4xDs7Thn+CIpUMADT6Z0xu0epHksFjHbg5hOJzSuCUd3Kz2sdZ3dqj+RRKwwmJ1xZnI7XUqPxGONMzzIyB+jy18JedPbR0MEGpI7xNitz3A9LTgDhbG81HaB9rlnlFZZoeiyPXBFmLRg0lUS0WVWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=wRFL0mRr; arc=none smtp.client-ip=80.241.56.172
+	 In-Reply-To:Content-Type; b=LLwy8BY+7j/YW2wRHXtTLKoKsG5G9xJFGPZ3Obqtk3evS4xGiLZ4ur6h7t9lCUkWBgLb3BmV1vllIEQFuKNRfJJ63v4sDzxPS4/Xyn92s3fpKVAU1TC9QOv1nSZHR1XWekBwiCTdzCzWWOMaWVV10p+4MJAkLdSakcEk+fnxZ3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=MvC2hoFm; arc=none smtp.client-ip=80.241.56.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="wRFL0mRr"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="MvC2hoFm"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4cmT063mGpz9stY;
-	Wed, 15 Oct 2025 00:09:26 +0200 (CEST)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4cmVmm55FMz9t55;
+	Wed, 15 Oct 2025 01:29:44 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760479766;
+	t=1760484584;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AIxf1/4W8b4if0tFBzh4U5BnvAEvdOXSo62yxEFwEXw=;
-	b=wRFL0mRrJT2CfJS4ItX0KWMGyP3Gd6aS+1DYz2MHvDq7l3O06LdxC5IfzJXNCA2M51hrbq
-	1d6Z9j8iX/LlZhdjawnfU6FkCRo01vWKAqQZ3fzGVq+nWSWF08jMUGuT/3E/G68WDlUHaJ
-	trmYmANaird7rtZRuyXC8KEne49qggfwm8AZp4x4MvwYmLM1lkyBOLfsgIIWzIdUG2dZeR
-	v8/cIHOXbp/zMIH433gJFELVOTnIsWxeADBs0I6YYAQcr7KnOVmxlWonIjl4pn0i2RdR7L
-	LTPsWK8zHA21GJf1mjTDKo3hjdejYGsVkXpSURd1uA4Q54Kc8hIqF2/NmIC15g==
-Message-ID: <bf451620-c917-4d4a-999d-32148fbcf11b@mailbox.org>
-Date: Wed, 15 Oct 2025 00:09:22 +0200
+	bh=9EgudNb1t2H04X3Uxf3sckikMBJDc7XWFtowvqn87DA=;
+	b=MvC2hoFmjRlE08Z2cpHd91R496RZQ73YHbMmRpbQ8bRaEwPs/YKcfYcU5Oa02aHUqu/hhp
+	kudwEr50YG+idlJGiVkH+q5YzmmDRFXBR47vXIsg/e9PEicA/XZcrfLJCor89jJozhEL1o
+	WQq0jzaM2fMo2+IiZ2CM1cUoZzzYW0p7MMFUx/KIihW6UnJ4kDCWDeZpdHtv3iueBPnioG
+	XunJSCHsXoGoQfY3+1WC7pI4t+RqCzp0BBNNmcBBOIWBTWnlCGFcDFFR7eLTHeyY29Rhi2
+	RhT7MPyrDaIYzo+Z8CPwApX3rhCQauOrs5by6uJR+Y+jMVbyFxBFuAwxCikXdQ==
+Message-ID: <24287186-1b97-434f-929f-a391a2fd9784@mailbox.org>
+Date: Wed, 15 Oct 2025 01:29:41 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH 00/39] Add i.MX95 DPU/DSI/LVDS support
-To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org
-Cc: Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Lucas Stach <l.stach@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+Subject: Re: [PATCH 1/8] ARM: dts: imx: add power-supply for lcd panel
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org
-References: <20251011170213.128907-1-marek.vasut@mailbox.org>
- <2a22c45e-5de4-49ee-af3e-002941a7e2d0@nxp.com>
+ Fabio Estevam <festevam@gmail.com>,
+ Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ kernel@dh-electronics.com
+References: <20251014-imx6_dts_clean_2-v1-0-508b36e5a3fd@nxp.com>
+ <20251014-imx6_dts_clean_2-v1-1-508b36e5a3fd@nxp.com>
+ <ddc44948-4816-452f-8b78-b1dfe44d507b@nabladev.com>
+ <aO7IOCdq013j3rre@lizhi-Precision-Tower-5810>
 Content-Language: en-US
 From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <2a22c45e-5de4-49ee-af3e-002941a7e2d0@nxp.com>
+In-Reply-To: <aO7IOCdq013j3rre@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: dfgywskta81h96wyddskwwoj8dxm9e8x
-X-MBO-RS-ID: 547d559a5ba5a68b3f8
+X-MBO-RS-META: 1gdpq4cmtt4pmqpa7trd33o7sk81o6h4
+X-MBO-RS-ID: 93991c12fdee1fd4b15
 
-On 10/14/25 11:13 AM, Liu Ying wrote:
-> On 10/11/2025, Marek Vasut wrote:
->> DPU is added into DC driver
+On 10/15/25 12:01 AM, Frank Li wrote:
+> On Tue, Oct 14, 2025 at 10:46:56PM +0200, Marek Vasut wrote:
+>> On 10/14/25 9:38 PM, Frank Li wrote:
+>>> Add power-supply for lcd panel to fix below CHECK_DTBS warnings:
+>>>     arch/arm/boot/dts/nxp/imx/imx6q-evi.dtb: panel (sharp,lq101k1ly04): 'power-supply' is a required property
+>>
+>> ...
+>>
+>>> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts
+>>> index b29713831a74489e8cc0e651c18a40d85f9f9113..04e570d76e42cd67a38e0f3b2301598f712e6bd4 100644
+>>> --- a/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts
+>>> +++ b/arch/arm/boot/dts/nxp/imx/imx6ull-dhcom-pdk2.dts
+>>> @@ -199,7 +199,7 @@ touchscreen@38 {
+>>>    		reg = <0x38>;
+>>>    		interrupt-parent = <&gpio5>;
+>>>    		interrupts = <4 IRQ_TYPE_EDGE_FALLING>; /* GPIO E */
+>>> -		power-supply = <&reg_panel_3v3>;
+>>> +		vcc-supply = <&reg_panel_3v3>;
+>> This looks like a different kind of change ?
 > 
-> This has conflicts with my in-flight patch series for adding i.MX8QXP DC
-> prefetch engine support(though i.MX95 SoC doesn't embed any display controller
-> prefetch engine).  You probably want to take a look at it, just a heads up.
-> 
-> https://lore.kernel.org/all/20250929-imx8-dc-prefetch-v3-0-c01d0608add2@nxp.com/
+> It is touchscreen, It needs sperate patch fix it to align
+> edt-ft5x06.yaml.
+Can you please split this fix from the series, include the error message 
+you get from DT check, and possibly add Fixes: tag ?
 
-Thank you for sharing that.
-
-Would it make sense to send 4 and 5 separately , so the fixes can land 
-faster?
-
-Also, could you please try and avoid the SCU dependency on patch 7 , and 
-more in that direction , can the PRG be made a bit more optional, so the 
-iMX95 can still be supported by the DC driver ?
-
--- 
-Best regards,
-Marek Vasut
+Thank you
