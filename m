@@ -1,144 +1,142 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32028304968;
-	Tue, 14 Oct 2025 11:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7769E1F4CB7
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 11:50:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760442216; cv=none; b=mNoFKSVFakJf6MEOlYpGWtL9EDJlv7vunHtaGmLJrVjXHUB3bvRrdvdFdKYsB6OxH50a1zMqKdiaxIM65TG9iP7/+Mu81+8NHwpXg9qhuiO72NBRBjmm5YyLPClwZHgMIKOwn3PxgL4H6XdTUS1V2rGnuhNu6b8Op5wBVG0aOF8=
+	t=1760442660; cv=none; b=jx+0oeM4vcetyOJJeqPllBFxE34OqZm01s0n6RPCVrEdWGzxnHbs2EHr8Han4BSS+LhMn2pbDGYKGg80Cjot25tSmOTatzEnnpeP6ZIIHfoegAdgxase6MnDW/gd5vN8xAMxW3znuHp10QpTB/lkmOtNPNvoZytascZZIdqOOLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760442216; c=relaxed/simple;
-	bh=z+MOC331uVrPaK4rXD+1EutydV0Qt6VQimqpIgnxja4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=mR4+qUJmTbuBaqtbQbm3ZqjJ9DLRaw+RmprP8hqm+gLzXkRWy95EgSG4HGHpUFoQFyy92sx6OoWBE01nTekM3hzc/fIesLHSQyLxBE0Lk06bB11wIIOqqFQvvbmhXl8VzDlGOSth8k4X2nd/EYp8c8peNxMwj2B/B7c7hzFdu2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yz3OKdHL; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1760442660; c=relaxed/simple;
+	bh=Uj4OXdIQAE4kGcJ49pU0BbBL7WNRPVIIggbcw44y/pI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mVqWVlK2t9Lw0paJ/xiG+dJnO1aHw0yWST7ydtc29yF8edHzhG+iAYQQbuK0IZHE00oPujtubPbD1BpBUuCwgL9Neqpw8BOGAmjd8qmdQykhvyYIq9xs+5P/iO9URNKM7C0ksDWy2Qia3kFPhi1TYdO6p2dGEYEgcXXS5IQFGV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=GkKchx0u; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yz3OKdHL"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 732CC1A136A;
-	Tue, 14 Oct 2025 11:43:32 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 44F13606EC;
-	Tue, 14 Oct 2025 11:43:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0217D102F2298;
-	Tue, 14 Oct 2025 13:43:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760442211; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=nCxasSvJLE/ntqOSQlVYeTt9F+Rb39yn4NlUI8d4k/M=;
-	b=yz3OKdHLUlM5a0ogcR2e1FHIeHsXztLkAOqBkLeUoqs7Om7wan+FAvJcb6nl+Tg6jJb/H8
-	D7DXXQJUDhdX9/NTTT8pCkGoc0aYJHSMfqQtbi6yYQts0yMDaZdr8cbDu5pdxfW0DIHaLd
-	RzrnVGJN95+qXdIHj7ulqmii9Sl6cgovt73I+mcpPSfRqfKYm+sc9QpOTxRCQjBZlCEbGt
-	YHoOBfIfMbARrjtVmVlTUpJt+xWYGZQIYF/t0kQxB95cgb1MMCUOdbn7qf0t+XG8QJiFym
-	7lmzea5XoYT7i9bwNM1wq/2h064mVdgEaxa7K+/rqCTnecTZ6ShzMFioJP/tnQ==
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="GkKchx0u"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4cmCGQ5CZ8z9v76;
+	Tue, 14 Oct 2025 13:50:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1760442654;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EMNRHWzye4fEMo9V9I/sy/z7Qj73KleUZOXSTbXOCDY=;
+	b=GkKchx0uTTywibaUYUiB+jQ38OtMwd5KzWk2aYmnsNgQA/Y4KpKEKjkdyjR4C3lrai8Wtk
+	LvrLhKtNXi35a7GonWkGgufct3sKyf88x6VCa8crFg2ivGJ9Z5E3OvUSxH3dI22msLU5UK
+	honVKVFvi3iHnyOwkJSZ7FWsgGE/v7Qp7KmSyjAa4wmB0Kd+DYRJvTD7fXNjYamZVRw3HP
+	Ygmc+P/IVHWHWhNu/T6YV9ugjiUV+3Y6IyB7wMaQR1SPIGHS/3goO9svCA1JdxwDq3Yrok
+	TivZmFIyTcSM9/Ojpd5d23gveoEx3oaiBnrW6t06pWdcu662FRUM/CghJRoJXA==
+Message-ID: <932b3d3f-534e-4b9b-b85b-5886c3f59c22@mailbox.org>
+Date: Tue, 14 Oct 2025 13:50:49 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 14 Oct 2025 13:43:21 +0200
-Message-Id: <DDI0OEMAGBI3.2WFIP0O7M73LB@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-To: "Ernest Van Hoecke" <ernestvanhoecke@gmail.com>
-Cc: "Anusha Srivatsa" <asrivats@redhat.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Andrzej Hajda" <andrzej.hajda@intel.com>, "Jessica Zhang"
- <quic_jesszhan@quicinc.com>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Hui
- Pu" <Hui.Pu@gehealthcare.com>, "Dmitry Baryshkov"
- <dmitry.baryshkov@oss.qualcomm.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
- <regressions@lists.linux.dev>
-Subject: Re: [REGRESSION] drm/panel/panel-simple v6.17 WARNING regression
-X-Mailer: aerc 0.20.1
-References: <hlf4wdopapxnh4rekl5s3kvoi6egaga3lrjfbx6r223ar3txri@3ik53xw5idyh> <DDHZ5GO9MPF0.CGYTVBI74FOZ@bootlin.com> <kcunz2b2usmvadgrnnu65op5oi5ttblrc463twgxp5gqhnufav@eze53y23avel>
-In-Reply-To: <kcunz2b2usmvadgrnnu65op5oi5ttblrc463twgxp5gqhnufav@eze53y23avel>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Subject: Re: [PATCH 02/39] drm/imx: Add i.MX95 Display Controller DomainBlend
+To: Frank Li <Frank.li@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, Abel Vesa <abelvesa@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Liu Ying <victor.liu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
+ Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
+References: <20251011170213.128907-1-marek.vasut@mailbox.org>
+ <20251011170213.128907-3-marek.vasut@mailbox.org>
+ <aO0rBBzI3cGWzO34@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <aO0rBBzI3cGWzO34@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-META: 997ncizbotjz3d8tasincds5jn7nnqa3
+X-MBO-RS-ID: f823ad7086e9524dd23
 
-Hello Ernest,
+On 10/13/25 6:38 PM, Frank Li wrote:
 
-On Tue Oct 14, 2025 at 1:25 PM CEST, Ernest Van Hoecke wrote:
-> Hi Luca,
->
-> Thanks for your fast reply and all your work here.
->
-> On Tue, Oct 14, 2025 at 12:31:35PM +0200, Luca Ceresoli wrote:
->> Let me have a look at the DRM_IMX driver, I'll try to send a series
->> converting it to the new API within today.
->
-> I will gladly test, thanks!
+Hello Frank,
 
-Just sent:
-https://lore.kernel.org/all/20251014-drm-bridge-alloc-imx-ipuv3-v1-0-a1bb1d=
-cbff50@bootlin.com/
+>> +#define STATICCONTROL				0x8
+>> +#define  SHDTOKSEL_MASK				GENMASK(6, 4)
+>> +#define  SHDTOKSEL(x)				FIELD_PREP(SHDTOKSEL_MASK, (x))
+>> +#define  SHDLDSEL_MASK				GENMASK(3, 1)
+>> +#define  SHDLDSEL(x)				FIELD_PREP(SHDLDSEL_MASK, (x))
+> 
+> Can you keep bit fields as consistent order,  from 31..0 or 0..31.
 
->> I recently sent a series proposing to make drm_bridge_add() mandatory
->> before drm_bridge_attach() in the docs and warn if that is violated [1].=
- If
->> you apply patch 4 of that series you should see the warning.
->
-> I gave it a quick try and did not see the warning. Some printk debugging
-> told me that `list_empty(&bridge->list)`, inside drm_bridge_attach, is
-> returning 0.
+I sent a separate fix for that, so it can go in before these patches:
 
-Ouch, I think this is because without using devm_drm_bridge_alloc() even
-the list is uninitialized, and so list_empty will do:
+[PATCH] drm/imx: dc: Sort bits and bitfields in descending order
 
-static inline int list_empty(const struct list_head *head)
-{
-	return READ_ONCE(head->next) =3D=3D head;
-	                        ^         ^
-                NULL (bridge->list      valid pointer
-                zeroed by kzalloc)      to bridge->list
-}
+[...]
 
-So it returns false. I guess that means the series to make drm_bridge_add()
-mandatory before drm_bridge_attach() [0] will need a better check to
-trigger the warning.
+>> +static const struct dc_subdev_info dc_db_info[] = {
+>> +	{ .reg_start = 0x4b6a0000, .id = 0, },
+>> +	{ .reg_start = 0x4b720000, .id = 1, },
+>> +};
+> 
+> Not sure why need map register address to id? Does graphic link or use
+> dt cells pass it as argument.
 
-[0] https://lore.kernel.org/lkml/20251003-b4-drm-bridge-alloc-add-before-at=
-tach-v1-0-92fb40d27704@bootlin.com/
+The display engine component (de) does use it to figure out which 
+matching domainblend component (db) to access , since there are multiple 
+instances of each.
 
->> > However, later on, another regression seems to be introduced by
->> > commit 8fa5909400f3 ("drm/bridge: get the bridge returned by drm_bridg=
-e_chain_get_first_bridge()")
->> > so reverting 94d50c1a2ca3 on top of drm-misc-next does not solve
->> > everything. This was tested by rebasing drm-misc-next onto (260f6f4fda=
-93
->> > plus the revert of 94d50c1a2ca3) and then bisecting.
->> >
->> > So in v6.18-rc1, both regressions are present.
->> >
->> > There, I get the following additional warnings:
->> >
->> > [    9.732278] ------------[ cut here ]------------
->> > [    9.732336] WARNING: CPU: 0 PID: 38 at lib/refcount.c:22 drm_bridge=
-_get+0x10/0x18
->> > [    9.744608] refcount_t: saturated; leaking memory.
+Is there anything I should change ?
+
+>> +static inline void dc_db_alphamaskmode_disable(struct dc_db *db)
+>> +{
+>> +	regmap_write_bits(db->reg_cfg, ALPHACONTROL, ALPHAMASKENABLE, 0);
+>> +}
+> 
+> This helper function just write value to one register, not helper much
+> at all.
+
+I agree, but it also makes dc_db_init() a bit more readable, so I don't 
+think inlining this is going to improve the driver much.
+
+>> +static inline void dc_db_blendcontrol(struct dc_db *db)
+>> +{
+>> +	u32 val = PRIM_A_BLD_FUNC(DC_DOMAINBLEND_BLEND_ZERO) |
+>> +		  SEC_A_BLD_FUNC(DC_DOMAINBLEND_BLEND_ZERO) |
+>> +		  PRIM_C_BLD_FUNC(DC_DOMAINBLEND_BLEND_ZERO) |
+>> +		  SEC_C_BLD_FUNC(DC_DOMAINBLEND_BLEND_ONE);
+>> +
+>> +	regmap_write(db->reg_cfg, BLENDCONTROL, val);
+>> +}
+>> +
+>> +void dc_db_init(struct dc_db *db)
+>> +{
+>> +	dc_db_enable_shden(db);
+>> +	dc_db_shdtoksel(db, SW);
+>> +	dc_db_shdldsel(db, SW);
+>> +	dc_db_mode(db, DB_PRIMARY);
+>> +	dc_db_alphamaskmode_disable(db);
+>> +	dc_db_blendcontrol(db);
+>> +}
+>> +
+> ...
 >>
->> Not sure here, but it may well be another symptom of the same bug: the
->> refcount was not initialized correctly, so it is found inconsistent late=
-r
->> when trying to increase it. Let's fix the known issue and then we'll see=
-.
->
-> Makes sense to me.
+>> +struct dc_db {
+>> +	struct device *dev;
+>> +	struct regmap *reg_cfg;
+>> +	int id;
+> 
+> where actually use this id?
+Please see dc_db_bind() .
 
-Alright. Let me know whether the series I've sent fixes 0, 1 or both
-warnings.
-
-Best regards,
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+I will be handling the rest of the feedback on this series piece by 
+piece, thank you for your input.
