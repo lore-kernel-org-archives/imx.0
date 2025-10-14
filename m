@@ -1,163 +1,99 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAB23112A5
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 12:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F32C31352D
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 12:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760443373; cv=none; b=LA/Q45RCbN44Ocs5lQnBreOQZeJg1g+SbYLluYX/VCHbwRdwE2NhRi7OJaasq1YSltevo8mmgDTsc98s+2kOhXWlo9K83dHHOn6QjKYfJBWZyR3LtEKo9/RuwEF8Br592845v7fNcDflh1ernVQV5nzd3ZM3gUVwKOFl/OfO6Fc=
+	t=1760444550; cv=none; b=I27X0hlaMVfdupSWfiHEUh++1ZQUAS8wZuG2oj2YMZRIc1Vp3q/JZuqF3Ac0AGXQDjdJBK7NKL6LvJ/FpHN2ku5w7wH0fGrO0rHQvBGz17KLqc6RO+micBBff2W4a0kArc435exWSzxbAGbdw8iAD8ZqwauzT36K796aGSOBmKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760443373; c=relaxed/simple;
-	bh=Nybxa+p9NqNQhgsHzyX9inTtoUZ76g5EyUTzCC1rUjs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YLW6gfPcsovIx/GcHbdnnEQ9ZvLWA9B6MjuIlKx9vA7XZx/PSEWcIajPLPYiaIMpS0JnemihaQ/bWMv+eOlrDaZeom/Jxe6UCUw78F5vK5McTatCFRpz2Swohf4B8/XW4XZ0uhn4bm4fuUfBiVv+49nyC6uPs7zuGLuXeREn3vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=aiqICYOz; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1760444550; c=relaxed/simple;
+	bh=Ad+Act/vyc65p5SZBMOE8fQZgfdis66PnpmCEaRCJyk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ENHxAcA55B8RAk0Vd5jyWESB7tn4/EDiIg/c2GmymSghJ1XcM0S2KyoSqJiimQdhYY14ETVtONz5+Vf2xtm6/pAtDqkI/nVWqlk3jpr9koZUOd0WbYZ1YJimwDeB+DRr1uwa2JECvWOMCOVR0JbBtrcL0c7ycnK4myuTB/bcVhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HNJ/O1iS; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="aiqICYOz"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cmCX207CPz9ssn;
-	Tue, 14 Oct 2025 14:02:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760443362;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o/k03sYntLq8Zfi4yO8/asoWJl9UlmpXJOixmGdXcyI=;
-	b=aiqICYOzVOtRvf45kCUN9D3ePfh9PDjsWLq321JNC/20zo7IUdO0LnT+lmtSBjy4l0mLfL
-	QBctdxgpYAdDupOqxL527XAV8FmE5GVKUQP+YgvzP7GBsu8vCQDqRTcQM4bz9mK616XeHX
-	SF0kvrHLR7CntlilUs1dyeRIn3RFkey0s3aiTr9dOIQiUfawS6dVLWBMp7SJwIEiEJiY3Y
-	H58vSGv9p9lYxw/qEP4TDKIKHQjWTMr2I8ZDE4J/HNWI4BH7KSStlCqLMo8n/1+fQhRkOm
-	GIJUyKKh8RFSgKM3b6tftTIekpOBxU4y6EL6MGDqlbz/YmJtx5/iVvx9Q/IyvQ==
-Message-ID: <f5d51ead-eae8-430f-b8b3-1ad4b78490ae@mailbox.org>
-Date: Tue, 14 Oct 2025 14:02:37 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HNJ/O1iS"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-636de696e18so1938593a12.3
+        for <imx@lists.linux.dev>; Tue, 14 Oct 2025 05:22:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760444547; x=1761049347; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ad+Act/vyc65p5SZBMOE8fQZgfdis66PnpmCEaRCJyk=;
+        b=HNJ/O1iSsWwbm8KVtKMfqfnjYp4j7iIONpiaiD8amrl2AAi/0NgLnujcCtW609BbaX
+         FZDTTD0P4hu3lZZevPIVZ1XN5ovU43b2BA0NU03RuTpTkT+7voz6Z715OzS3+S9nKonW
+         I13RPaGmCJNZsOPh77F+0fFe3s6yV5jbF/U1USYkVsxMluLNnCj/AQ9/L18PMs3dHikx
+         Gc1SnaRURqUZabQLvF8/cxfNpmJl/UmZXZF3TgIAyycBA5oLiaZnvKgIs4BlLjGWQ8Lc
+         SqAsgFTfkVzLAAvTs7K4zUSmh2lTQWOL8Sds4/OAcu61IHRFLnr80H+pOICWCGbze0Qu
+         rqbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760444547; x=1761049347;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ad+Act/vyc65p5SZBMOE8fQZgfdis66PnpmCEaRCJyk=;
+        b=PKT2MQVBziUpH7YIZLLTP027FP4pO18xAbqfdlq306OIyCZCHsjlNw7FbG2eJlIO+v
+         yWAu06FZS4Sa3doquzYLivVc2xK9RxKawmP20HHidKz6tHKxymXgcw90506x2idoCKon
+         aYNd3Oabcuz+XjblDggPLNFoMmJdqjYNA7QPoQpu53dZUPA1Xg/JSUXiLvKi7GaHDNgU
+         cMlyyei0ezKlnNtzJ415dIZMaGp0nUiDBjEYIuyaWcCeAgCiP8BXzaVebcZCprygC8xA
+         cqiqk9maIg87aNX7RD4NbHWO71Y4AaCewIinOygAviUPspaVf9PpM3d+hot/O04HHDTx
+         rkaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW1wzTLTghkhfdyY8wgKwvXWYHKE/aS/9V4a3/nawPFCt8Bt/c0570SKZn56FD4vSlKVxM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwwEH05PLLEKmNNhkgzGSTcD+IPaOeJbP2BqsEU+IwQZZiunflF
+	pNsxYJF+wdeu10wjJGVxMt4TmdyyUyJdGYiiGyhXYIPHh5UilVjfrgU4
+X-Gm-Gg: ASbGncuG8mGkLsxJHuw8Bavm9kXKQd/2vyrtgZ+kFTcuap9Wy1xVFXcRFbJh6xONNH1
+	cPjGRlQhkLvBHa9+VfMf7BeSsZxSdTT8U6Lgx11vXjJemTSj6xMNeVcfGtjtyZOphP8Fm8jmlpd
+	br0I/sievV5sOXBFgbq6jA8bCWWZotnOVhzaX6aO3pmWdoXykOrQKOVJTZXBXD0lUmcBxB4AOlm
+	hKxv6jsKuDMpjdmCn5KCPgokl8Itc/FWWteaL6FoBMjUD2G9+Wu0S8EvYBnYOJPteKOiss5uWqU
+	QUOSMrpsAMAnxCSx4tMyA0P7Ed5jO199BZRO1/erHI6x45X0cpVTp3Wq2bd20J5tAC9XaOxt2Nd
+	IPfSKUNfSni2mvnQyYEXycYhgXB5bIGWkWYEm33xLstDciEancsUKV+f0S8A8bJXdn4vK4pmjzu
+	rL0pG9INd7Qw0Cod+RRLAHInRUAVXgDLk6Qh9UCXO7/2SyelKsj64=
+X-Google-Smtp-Source: AGHT+IEj2JtS1ykV7+4SnCPxXcV5s4F2p8zZ4Ybts8U4kG/OqGnxgxiwp/Y8Fv2A2MsHbr+lECLEwQ==
+X-Received: by 2002:a05:6402:d0e:b0:634:5381:530b with SMTP id 4fb4d7f45d1cf-639d5b8956cmr22376195a12.13.1760444547186;
+        Tue, 14 Oct 2025 05:22:27 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63a52b0f358sm10963835a12.10.2025.10.14.05.22.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 05:22:26 -0700 (PDT)
+Date: Tue, 14 Oct 2025 14:22:25 +0200
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Anusha Srivatsa <asrivats@redhat.com>, 
+	Maxime Ripard <mripard@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Hui Pu <Hui.Pu@gehealthcare.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	regressions@lists.linux.dev
+Subject: Re: [REGRESSION] drm/panel/panel-simple v6.17 WARNING regression
+Message-ID: <tguubjlh7ta7rvaq5pzzksamnc2kxy6yunsk3jeiiqz55on4yo@outv5vc3b2vl>
+References: <hlf4wdopapxnh4rekl5s3kvoi6egaga3lrjfbx6r223ar3txri@3ik53xw5idyh>
+ <DDHZ5GO9MPF0.CGYTVBI74FOZ@bootlin.com>
+ <kcunz2b2usmvadgrnnu65op5oi5ttblrc463twgxp5gqhnufav@eze53y23avel>
+ <DDI0OEMAGBI3.2WFIP0O7M73LB@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH 04/39] drm/imx: dc: Use bulk clock
-To: Frank Li <Frank.li@nxp.com>
-Cc: dri-devel@lists.freedesktop.org, Abel Vesa <abelvesa@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Liu Ying <victor.liu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
- Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
-References: <20251011170213.128907-1-marek.vasut@mailbox.org>
- <20251011170213.128907-5-marek.vasut@mailbox.org>
- <aO0utF930vhlJFl8@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <aO0utF930vhlJFl8@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: 211e7aa255b7d3d8ef5
-X-MBO-RS-META: bkw6rpy7gkkayzw1g5i6hemzbnb81gy6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DDI0OEMAGBI3.2WFIP0O7M73LB@bootlin.com>
 
-On 10/13/25 6:54 PM, Frank Li wrote:
-> On Sat, Oct 11, 2025 at 06:51:19PM +0200, Marek Vasut wrote:
->> Switch to bulk clock operations, as many of the blocks present in DC
-> 
-> s/operations/API
-> 
->> use multiple clock on i.MX95. The use of bulk clock operations allows
->> the driver to seamlessly handle one or multiple clock.
->>
->> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
->> ---
->> Cc: Abel Vesa <abelvesa@kernel.org>
->> Cc: Conor Dooley <conor+dt@kernel.org>
->> Cc: Fabio Estevam <festevam@gmail.com>
->> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
->> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
->> Cc: Liu Ying <victor.liu@nxp.com>
->> Cc: Lucas Stach <l.stach@pengutronix.de>
->> Cc: Peng Fan <peng.fan@nxp.com>
->> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
->> Cc: Rob Herring <robh@kernel.org>
->> Cc: Shawn Guo <shawnguo@kernel.org>
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: devicetree@vger.kernel.org
->> Cc: dri-devel@lists.freedesktop.org
->> Cc: imx@lists.linux.dev
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-clk@vger.kernel.org
->> ---
->>   drivers/gpu/drm/imx/dc/dc-drv.c | 14 ++++++++------
->>   drivers/gpu/drm/imx/dc/dc-ic.c  | 14 ++++++++------
->>   drivers/gpu/drm/imx/dc/dc-pe.c  | 12 ++++++------
->>   drivers/gpu/drm/imx/dc/dc-pe.h  |  3 ++-
->>   4 files changed, 24 insertions(+), 19 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/imx/dc/dc-drv.c b/drivers/gpu/drm/imx/dc/dc-drv.c
->> index f108964bf89f4..2717c92aba6c5 100644
->> --- a/drivers/gpu/drm/imx/dc/dc-drv.c
->> +++ b/drivers/gpu/drm/imx/dc/dc-drv.c
->> @@ -31,7 +31,8 @@
->>
->>   struct dc_priv {
->>   	struct drm_device *drm;
->> -	struct clk *clk_cfg;
->> +	struct clk_bulk_data *clk_cfg;
->> +	int clk_cfg_count;
->>   };
->>
->>   DEFINE_DRM_GEM_DMA_FOPS(dc_drm_driver_fops);
->> @@ -163,10 +164,11 @@ static int dc_probe(struct platform_device *pdev)
->>   	if (!priv)
->>   		return -ENOMEM;
->>
->> -	priv->clk_cfg = devm_clk_get(&pdev->dev, NULL);
->> -	if (IS_ERR(priv->clk_cfg))
->> -		return dev_err_probe(&pdev->dev, PTR_ERR(priv->clk_cfg),
->> +	ret = devm_clk_bulk_get_all(&pdev->dev, &priv->clk_cfg);
->> +	if (ret < 0)
->> +		return dev_err_probe(&pdev->dev, ret,
->>   				     "failed to get cfg clock\n");
->> +	priv->clk_cfg_count = ret;
->>
->>   	dev_set_drvdata(&pdev->dev, priv);
->>
->> @@ -201,7 +203,7 @@ static int dc_runtime_suspend(struct device *dev)
->>   {
->>   	struct dc_priv *priv = dev_get_drvdata(dev);
->>
->> -	clk_disable_unprepare(priv->clk_cfg);
->> +	clk_bulk_disable_unprepare(priv->clk_cfg_count, priv->clk_cfg);
->>
->>   	return 0;
->>   }
->> @@ -211,7 +213,7 @@ static int dc_runtime_resume(struct device *dev)
->>   	struct dc_priv *priv = dev_get_drvdata(dev);
->>   	int ret;
->>
->> -	ret = clk_prepare_enable(priv->clk_cfg);
->> +	ret = clk_bulk_prepare_enable(priv->clk_cfg_count, priv->clk_cfg);
->>   	if (ret)
->>   		dev_err(dev, "failed to enable cfg clock: %d\n", ret);
->>
->> diff --git a/drivers/gpu/drm/imx/dc/dc-ic.c b/drivers/gpu/drm/imx/dc/dc-ic.c
->> index a270ae4030cdc..67441b349a7d2 100644
->> --- a/drivers/gpu/drm/imx/dc/dc-ic.c
->> +++ b/drivers/gpu/drm/imx/dc/dc-ic.c
->> @@ -30,7 +30,8 @@
->>
->>   struct dc_ic_data {
->>   	struct regmap		*regs;
->> -	struct clk		*clk_axi;
->> +	struct clk_bulk_data	*clk_axi;
-> 
-> I am not sure if "axi' is good name for bulk clks. Maybe use 'clks'. _axi
-> quite specific to special 'axi' clocks.
-Fixed both, thanks.
+On Tue, Oct 14, 2025 at 01:43:21PM +0200, Luca Ceresoli wrote:
+> Alright. Let me know whether the series I've sent fixes 0, 1 or both
+> warnings.
+
+Hi Luca,
+
+Just replying to have the info in this thread as well, the series fixed
+all warnings I saw, thanks!
+
+Kind regards,
+Ernest
