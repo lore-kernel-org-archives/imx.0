@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356C37083C;
-	Tue, 14 Oct 2025 18:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64632F5A37;
+	Tue, 14 Oct 2025 18:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760464975; cv=none; b=aUvDGj7vymn+CgdsJFpZim/KTCSl2QSMgkupAe5TFYg8HqPuoIl4XWYTDp4io2C5N0ylk5n8+VfWBup0eqZnHa//6qyORO5PGSEIgPIrbGEBs8JwcG77umXZR0LEKtFdgLjhr4MPrpEicNSV8mkHOGNtsN3QEmhv08YudnrIPIc=
+	t=1760465548; cv=none; b=jsaFm4PrQuJX+Il0SJI2qyeTyHKA4KnvnPKn+nL2THGIXTcZWvIFDWzRotjRXyW/Z/4oHT79wezluWY3p6QnD6c3rSB69J+du0WMZI+GJ8KfekR4U1ujIRug3MR0TYX2zpf8v7JVJcXrvNsaQLk56hwkfDn64aqYSJLnlRyih1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760464975; c=relaxed/simple;
-	bh=3aJGCCas08m3S7gHD19HqzqscSuOVpUV8AM+dynP93Q=;
+	s=arc-20240116; t=1760465548; c=relaxed/simple;
+	bh=Pqcib0WjbsS5HXmt5nz+n1gNtS1aHnpdeM+eaWk0/tA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UHwVCBh4M9OE3n2dZSXHg4TWao60JAmFM0DxIKN5rUooVhmii/x8eUSB6kIT2hY+lSzf1OK8IK1JG3p5AoEWHLsOvxV25P3y83t4HfRWpE+5v2KX9CsXOzU2uQn6ZUQY7O9CNl79IXuPtm9MOvh4fKGl+8X/t8PP5Nt6j0I3Wl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sWMSoGUB; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=XdMjO7fmKoBc0yXgaTTR06LIItpnnfuyG1y3ChMJdS096Q+ZBBC+SXMXq58kKf5F2CvDF2spkR/eFSiq2WqG0ghqxbPuvoZTxXx2BSGnIOY4R0tnbYps30od4RsTQ+OIW2dj3joHa2R84w5qZS/jwOg4fPM7LUf1BkBHo4XW3bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SfHtZUaP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sWMSoGUB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D7FC4CEE7;
-	Tue, 14 Oct 2025 18:02:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SfHtZUaP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB69C4CEE7;
+	Tue, 14 Oct 2025 18:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760464974;
-	bh=3aJGCCas08m3S7gHD19HqzqscSuOVpUV8AM+dynP93Q=;
+	s=k20201202; t=1760465548;
+	bh=Pqcib0WjbsS5HXmt5nz+n1gNtS1aHnpdeM+eaWk0/tA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sWMSoGUB1e/WSomPhcYiyYvbLWHEpOmsOHF0giBDglwt5DfNkSpTu2Zh/fghnWBwU
-	 Oi+mBZKmgEBxu80YN1PSbImf5zrKW6oalp/WwaIz2dh+cPyE2kX3LwIn++7HJjJtAK
-	 rf2R1Zl126Z7wuyAj0+2dlUpGoFpRUXZpvMfiN1dPco4RAwCrEAdl6MjZcwxsgoWNE
-	 KT7lDpUuXin7GuO8lZraIIHuQGVnFOGA0AfJbzaAuyEXVS14PSxpVqbPEnUV7TEklQ
-	 r8x35HeMJPDH3ByFMlZo8ddwPp68Ou6YuNFPu1dATXIZK2vUwPsQHpQlc2+HL19VWc
-	 xM5juQ7DWwKqQ==
-Date: Tue, 14 Oct 2025 19:02:50 +0100
+	b=SfHtZUaP7Xv+2c8o/IN5J369CD5NfIElsWrVENcfHOkKhaxXBQVlpFB3ZW+ceoGS6
+	 JgDtjUxARywZWBIC1eXwIGfaryQ1ocVy1UG3FLRA5V0AJT/qko5QCkCrKMIQyvWLuc
+	 RSUfChW40u6gLhyqRUy7rIlfQNWCK7KBM3VkiIH8dyg2gqtRAXkDu6Kz357OU5vIqY
+	 Pcjt7xDuZsmzCEWsnJPS6pcc1sP4SwwF+NgjZbSs1BvO9Xsdfz4UOPJa6txSVy5+mb
+	 KwfWEFS1aZbt91ZkNngSTahCKA38gVjoTRepoOBXXjGf715Mbv8uBuJ2YFdies8G8Z
+	 UYoP2Vqi16Wdg==
+Date: Tue, 14 Oct 2025 19:12:23 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
@@ -41,8 +41,9 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
 	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
 Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: nxp,sja1105: Add optional
  clock
-Message-ID: <20251014-flattop-limping-46220a9eda46@spud>
+Message-ID: <20251014-projector-immovably-59a2a48857cc@spud>
 References: <20251010183418.2179063-1-Frank.Li@nxp.com>
+ <20251014-flattop-limping-46220a9eda46@spud>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,35 +51,43 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Dn3+JVL4O4laIKgw"
+	protocol="application/pgp-signature"; boundary="dNGbIiFgaQ40TQAb"
 Content-Disposition: inline
-In-Reply-To: <20251010183418.2179063-1-Frank.Li@nxp.com>
+In-Reply-To: <20251014-flattop-limping-46220a9eda46@spud>
 
 
---Dn3+JVL4O4laIKgw
+--dNGbIiFgaQ40TQAb
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 10, 2025 at 02:34:17PM -0400, Frank Li wrote:
-> Add optional clock for OSC_IN and fix the below CHECK_DTBS warnings:
->   arch/arm/boot/dts/nxp/imx/imx6qp-prtwd3.dtb: switch@0 (nxp,sja1105q): U=
-nevaluated properties are not allowed ('clocks' was unexpected)
+On Tue, Oct 14, 2025 at 07:02:50PM +0100, Conor Dooley wrote:
+> On Fri, Oct 10, 2025 at 02:34:17PM -0400, Frank Li wrote:
+> > Add optional clock for OSC_IN and fix the below CHECK_DTBS warnings:
+> >   arch/arm/boot/dts/nxp/imx/imx6qp-prtwd3.dtb: switch@0 (nxp,sja1105q):=
+ Unevaluated properties are not allowed ('clocks' was unexpected)
+> >=20
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 >=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> pw-bot: not-applicable
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+Hmm, I think this pw-bot command, intended for the dt patchwork has
+probably screwed with the state in the netdev patchwork. Hopefully I can
+fix that via
+pw-bot: new
 
---Dn3+JVL4O4laIKgw
+
+
+--dNGbIiFgaQ40TQAb
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaO6QSQAKCRB4tDGHoIJi
-0sXUAP9LYKTUydtydHeuxkp9yARH73uLXSVZLOOXNdGjZzAUjgEAout6dmnqQlgt
-w6mijUTOOjkghVoJPa0/PMpqZLVnegw=
-=fep+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaO6ShwAKCRB4tDGHoIJi
+0vWaAQCzkRMH+0Oz7FRQT7PW4SO9mUoYYstikY/KIQg56FyuwQD/SSOUBbG+ssoH
++/o68oUVn7ns7Mg+yge4k1PI35BS3Qw=
+=qaS9
 -----END PGP SIGNATURE-----
 
---Dn3+JVL4O4laIKgw--
+--dNGbIiFgaQ40TQAb--
