@@ -1,99 +1,130 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F32C31352D
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 12:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B4A313530
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 12:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760444550; cv=none; b=I27X0hlaMVfdupSWfiHEUh++1ZQUAS8wZuG2oj2YMZRIc1Vp3q/JZuqF3Ac0AGXQDjdJBK7NKL6LvJ/FpHN2ku5w7wH0fGrO0rHQvBGz17KLqc6RO+micBBff2W4a0kArc435exWSzxbAGbdw8iAD8ZqwauzT36K796aGSOBmKs=
+	t=1760446616; cv=none; b=EI4ftlrkDWJ5vcfUoWof1Y9KVmCZYiIhVPcoUenX1zCxzvku8V4099vnXu4Tx6FFfgjeAP6vu9iB3epwr3mjLE5nBdovbB8fxzZ6CqRQahIMtTGlEFifgLCGAK/8CHRAiXMmQE1Fvwz+bEh7vx8/63SAC4oKWAw6YATMSAwRj4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760444550; c=relaxed/simple;
-	bh=Ad+Act/vyc65p5SZBMOE8fQZgfdis66PnpmCEaRCJyk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ENHxAcA55B8RAk0Vd5jyWESB7tn4/EDiIg/c2GmymSghJ1XcM0S2KyoSqJiimQdhYY14ETVtONz5+Vf2xtm6/pAtDqkI/nVWqlk3jpr9koZUOd0WbYZ1YJimwDeB+DRr1uwa2JECvWOMCOVR0JbBtrcL0c7ycnK4myuTB/bcVhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HNJ/O1iS; arc=none smtp.client-ip=209.85.208.51
+	s=arc-20240116; t=1760446616; c=relaxed/simple;
+	bh=LZnaDE/S/cnLfsiCdgYQZBmm8CJyduVyYwPzdW3joA4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eHCiAg+LiTpzeTD4eAks4kv5JPZnflZ2yWCDZHCtRMx87N8qCQluS2WZMGZBQuwzoHZV52qeAqzDvtVVFxBFLC6Uf9CWUK98pKdGDEqHqKwiJ9AvARRJEKgop0rCdqASVAA79PCDlnuHpV/FBoToRIi+Fla3VzuifCSqtp8gzFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MaFKlhkG; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HNJ/O1iS"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-636de696e18so1938593a12.3
-        for <imx@lists.linux.dev>; Tue, 14 Oct 2025 05:22:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MaFKlhkG"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2897522a1dfso49240595ad.1
+        for <imx@lists.linux.dev>; Tue, 14 Oct 2025 05:56:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760444547; x=1761049347; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ad+Act/vyc65p5SZBMOE8fQZgfdis66PnpmCEaRCJyk=;
-        b=HNJ/O1iSsWwbm8KVtKMfqfnjYp4j7iIONpiaiD8amrl2AAi/0NgLnujcCtW609BbaX
-         FZDTTD0P4hu3lZZevPIVZ1XN5ovU43b2BA0NU03RuTpTkT+7voz6Z715OzS3+S9nKonW
-         I13RPaGmCJNZsOPh77F+0fFe3s6yV5jbF/U1USYkVsxMluLNnCj/AQ9/L18PMs3dHikx
-         Gc1SnaRURqUZabQLvF8/cxfNpmJl/UmZXZF3TgIAyycBA5oLiaZnvKgIs4BlLjGWQ8Lc
-         SqAsgFTfkVzLAAvTs7K4zUSmh2lTQWOL8Sds4/OAcu61IHRFLnr80H+pOICWCGbze0Qu
-         rqbg==
+        d=gmail.com; s=20230601; t=1760446614; x=1761051414; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=o38gmX36PyqmjEq1ZTvcb122z3x4XvhpJiBBsGOOwy4=;
+        b=MaFKlhkGg9AEoGMW/IcSVfdd0c5jMoPUlPm53XD3xXTKCOKy0QMBG/8+OD9IMYACUz
+         hUr/IcgIn90K+VPOGiZxdETM+hROCAnXRSQNwUlSKe8v1AJKM6wO3wplttP54o/au2m0
+         P14XuQoNPpa1bX5xyirPoMJrUV6IsX3X9yMn0yWTXJoINUwNEWHsZTIvYfDo7aPy6rII
+         7b4kpv2vK/fUSbb2HNRUu9Dz15hdfa3xq2nx1YbAz09IXgMsMkAcF2dqYVICbREienhE
+         Y+xNawXiujwDWDzrjWvs2etGztceFTgssFghC6aaLd6hBY4dl5rD0KDRFosHHWe1CZcU
+         1P3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760444547; x=1761049347;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ad+Act/vyc65p5SZBMOE8fQZgfdis66PnpmCEaRCJyk=;
-        b=PKT2MQVBziUpH7YIZLLTP027FP4pO18xAbqfdlq306OIyCZCHsjlNw7FbG2eJlIO+v
-         yWAu06FZS4Sa3doquzYLivVc2xK9RxKawmP20HHidKz6tHKxymXgcw90506x2idoCKon
-         aYNd3Oabcuz+XjblDggPLNFoMmJdqjYNA7QPoQpu53dZUPA1Xg/JSUXiLvKi7GaHDNgU
-         cMlyyei0ezKlnNtzJ415dIZMaGp0nUiDBjEYIuyaWcCeAgCiP8BXzaVebcZCprygC8xA
-         cqiqk9maIg87aNX7RD4NbHWO71Y4AaCewIinOygAviUPspaVf9PpM3d+hot/O04HHDTx
-         rkaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW1wzTLTghkhfdyY8wgKwvXWYHKE/aS/9V4a3/nawPFCt8Bt/c0570SKZn56FD4vSlKVxM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwwEH05PLLEKmNNhkgzGSTcD+IPaOeJbP2BqsEU+IwQZZiunflF
-	pNsxYJF+wdeu10wjJGVxMt4TmdyyUyJdGYiiGyhXYIPHh5UilVjfrgU4
-X-Gm-Gg: ASbGncuG8mGkLsxJHuw8Bavm9kXKQd/2vyrtgZ+kFTcuap9Wy1xVFXcRFbJh6xONNH1
-	cPjGRlQhkLvBHa9+VfMf7BeSsZxSdTT8U6Lgx11vXjJemTSj6xMNeVcfGtjtyZOphP8Fm8jmlpd
-	br0I/sievV5sOXBFgbq6jA8bCWWZotnOVhzaX6aO3pmWdoXykOrQKOVJTZXBXD0lUmcBxB4AOlm
-	hKxv6jsKuDMpjdmCn5KCPgokl8Itc/FWWteaL6FoBMjUD2G9+Wu0S8EvYBnYOJPteKOiss5uWqU
-	QUOSMrpsAMAnxCSx4tMyA0P7Ed5jO199BZRO1/erHI6x45X0cpVTp3Wq2bd20J5tAC9XaOxt2Nd
-	IPfSKUNfSni2mvnQyYEXycYhgXB5bIGWkWYEm33xLstDciEancsUKV+f0S8A8bJXdn4vK4pmjzu
-	rL0pG9INd7Qw0Cod+RRLAHInRUAVXgDLk6Qh9UCXO7/2SyelKsj64=
-X-Google-Smtp-Source: AGHT+IEj2JtS1ykV7+4SnCPxXcV5s4F2p8zZ4Ybts8U4kG/OqGnxgxiwp/Y8Fv2A2MsHbr+lECLEwQ==
-X-Received: by 2002:a05:6402:d0e:b0:634:5381:530b with SMTP id 4fb4d7f45d1cf-639d5b8956cmr22376195a12.13.1760444547186;
-        Tue, 14 Oct 2025 05:22:27 -0700 (PDT)
-Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63a52b0f358sm10963835a12.10.2025.10.14.05.22.26
+        d=1e100.net; s=20230601; t=1760446614; x=1761051414;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=o38gmX36PyqmjEq1ZTvcb122z3x4XvhpJiBBsGOOwy4=;
+        b=WL+JRSCNPjVjP90s9mieBAJt0UET6BylaVXuhq/swMSJMLt4QgcY8+aimaS+Y7D3X3
+         jUitJCKpCejqJGouSnoVVYYcasUXom03t9vBGdxpDUlinco/95FrmbE8yd5FTzHjbXy2
+         AwTxBV0+wXKhDzOzIH7mdJyFGan1OGvBhSYE5JHiWa96BOizGx/sIGtySKeICqomwNLL
+         bx9kRDqmayrKHhTPwRS8gzzt1DZyWplRnvRgeonw+Xs2g7mBziJycOloMnAhEVtwGBt5
+         xvpBLFK5MGb87BpPMk86vRxgDUW9Y4I2YCDY3LVUiE06xRaZgB4w3il/tXu1M4gia5Wx
+         E/pw==
+X-Forwarded-Encrypted: i=1; AJvYcCUaJfgoRUPOs6xTmUsA4PVNwCu8XeKVIu6iy4YZBJGAEmJTpcx2IYMX/q1cP6fEOFd8myU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxpRbe5PEAC37UXvI9qTSNANc9jvAN7NT2H2cNcs55VJTv9I52a
+	6zeFTXq1Ld52KMgrA41Z0XNur63FlrItYi2XirEqutjLY+YUKAswKM5A
+X-Gm-Gg: ASbGnctCAqOojJc+EDdJctPJYlI80gqjXjrKfzw8+sfIYAUs7MGH5MwgDFd3AYdyBrC
+	foY4I1ZzxJFYKme0CL7I0ZSUWNbxOun0xRaylJ/ex1TGxaB6kKvv4qtniHWz6lzuMurqJQvmKUZ
+	4sbrDDbikGlaVrswSwWsQ2+1Wh3x4mlLciYkmIP0DQE2o+riZOd375EW/gZR399qchur+nYwT/2
+	+3LmvUTkOyFHssjeOjxiBevYOk3PsRCFDnzA9au6+OMAIpXI5eGCMzczozvOFwquhdo+LN07xmS
+	xx7xQjB9SxilI3B5iyuapC+vDXMorxDydlM9WZxdUA/ieR6GLPsww/7X5LRV5+dKyJcKFbGnD/t
+	R/usg+N6/2YQViaHehU3+ZeI+SRL4uM3ONKIa2AxY/saWBI0Mq7Sws1fT0cPouC9oO46o79+VLH
+	4=
+X-Google-Smtp-Source: AGHT+IFFPt+m448T/uVhH/uFa4IYkTCQ7dJj+PBX8yKsxeuPCGTRZrXD06eMiOSktRMiwnrCyjS6iw==
+X-Received: by 2002:a17:903:2351:b0:269:a23e:9fd7 with SMTP id d9443c01a7336-29027262689mr366784675ad.26.1760446613904;
+        Tue, 14 Oct 2025 05:56:53 -0700 (PDT)
+Received: from joaog-nb.corp.toradex.com ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034f3ab2fsm163919985ad.105.2025.10.14.05.56.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 05:22:26 -0700 (PDT)
-Date: Tue, 14 Oct 2025 14:22:25 +0200
-From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Anusha Srivatsa <asrivats@redhat.com>, 
-	Maxime Ripard <mripard@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Hui Pu <Hui.Pu@gehealthcare.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	regressions@lists.linux.dev
-Subject: Re: [REGRESSION] drm/panel/panel-simple v6.17 WARNING regression
-Message-ID: <tguubjlh7ta7rvaq5pzzksamnc2kxy6yunsk3jeiiqz55on4yo@outv5vc3b2vl>
-References: <hlf4wdopapxnh4rekl5s3kvoi6egaga3lrjfbx6r223ar3txri@3ik53xw5idyh>
- <DDHZ5GO9MPF0.CGYTVBI74FOZ@bootlin.com>
- <kcunz2b2usmvadgrnnu65op5oi5ttblrc463twgxp5gqhnufav@eze53y23avel>
- <DDI0OEMAGBI3.2WFIP0O7M73LB@bootlin.com>
+        Tue, 14 Oct 2025 05:56:53 -0700 (PDT)
+From: =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>
+Date: Tue, 14 Oct 2025 09:56:43 -0300
+Subject: [PATCH v1] arm64: dts: imx8-ss-img: Avoid gpio0_mipi_csi GPIOs
+ being deferred
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DDI0OEMAGBI3.2WFIP0O7M73LB@bootlin.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20251014-imx8-gpio-csi-deferred-probe-v1-1-62dd1b949731@toradex.com>
+X-B4-Tracking: v=1; b=H4sIAIpI7mgC/x3MQQrDIBAF0KuEWXdAUwxNr1K6sPpNZtEoIwQh5
+ O6RLN/mHVShgkrv4SDFLlXy1mEfA4XVbwtYYjeNZnTWmJnl3168FMkcqnBEgioiF80/MJCm4Cb
+ /dN5TL4oiSbv7D+2Wvud5AVmyznRyAAAA
+X-Change-ID: 20251009-imx8-gpio-csi-deferred-probe-eef6c56a35aa
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>
+X-Mailer: b4 0.14.2
 
-On Tue, Oct 14, 2025 at 01:43:21PM +0200, Luca Ceresoli wrote:
-> Alright. Let me know whether the series I've sent fixes 0, 1 or both
-> warnings.
+From: João Paulo Gonçalves <joao.goncalves@toradex.com>
 
-Hi Luca,
+The gpio0_mipi_csi DT nodes are enabled by default, but they are
+dependent on the irqsteer_csi nodes, which are not enabled. This causes
+the gpio0_mipi_csi GPIOs to be probe deferred. Since these GPIOs can be
+used independently of the CSI controller, enable irqsteer_csi by default
+too to prevent them from being deferred and to ensure they work out of
+the box.
 
-Just replying to have the info in this thread as well, the series fixed
-all warnings I saw, thanks!
+Fixes: 2217f8243714 ("arm64: dts: imx8: add capture controller for i.MX8's img subsystem")
+Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+---
+ arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-Kind regards,
-Ernest
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
+index 2cf0f7208350a416d77b11140279d2f66f41498f..a72b2f1c4a1b2ef26196c810b33ecfdebdbc1675 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi
+@@ -67,7 +67,6 @@ irqsteer_csi0: irqsteer@58220000 {
+ 		power-domains = <&pd IMX_SC_R_CSI_0>;
+ 		fsl,channel = <0>;
+ 		fsl,num-irqs = <32>;
+-		status = "disabled";
+ 	};
+ 
+ 	gpio0_mipi_csi0: gpio@58222000 {
+@@ -144,7 +143,6 @@ irqsteer_csi1: irqsteer@58240000 {
+ 		power-domains = <&pd IMX_SC_R_CSI_1>;
+ 		fsl,channel = <0>;
+ 		fsl,num-irqs = <32>;
+-		status = "disabled";
+ 	};
+ 
+ 	gpio0_mipi_csi1: gpio@58242000 {
+
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251009-imx8-gpio-csi-deferred-probe-eef6c56a35aa
+
+Best regards,
+-- 
+João Paulo Gonçalves <joao.goncalves@toradex.com>
+
