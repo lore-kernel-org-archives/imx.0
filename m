@@ -1,86 +1,79 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FA13101B5
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 11:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEACE23AB8D
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 11:57:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760442759; cv=none; b=oLBcHyHzeE90h9tJiXgqB7Bmny0QzIBWzLqO6uTdjcJDIUJRDcy14qsAln7ehojBoYhIDQKMDgjuuMkBdPL4arnKkw5jQHdqYpPTo/m3uYtTI6bP6yVWZ5kX/6D98FzB38HXc6VTcpdedB+6UrD03qlL+I1G3R1t98JojIrCNx4=
+	t=1760443043; cv=none; b=TJ4mgNxGbf2ugztSM+FqALfAFSHwi0hNmvF+FfQzSRC6bikKrszcEAOnOmteYUON8wqUtfKYgXjQ6OjZ7es2TS/XRuK7+edxW5JfWN0VdpLkyPL2ohISJAm5mB+bPWEmvRUJ/fxvD1fjdK34fqGFVAlcL/5iYBiMFjK61TjkWUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760442759; c=relaxed/simple;
-	bh=x1brUYGY3NW2WQ2EAUXI9/nXmf4kZlLdpbpO/yh7tw4=;
+	s=arc-20240116; t=1760443043; c=relaxed/simple;
+	bh=EV8pPfY7I9OwtXfkZbUk6UzFe2y0S56qrkmnV0+G6Sc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rwWDJAT0R4XFfUgz4cEh14oBNcMbHvv8+mWaWL6wXNhNdcRfhjMsgBUAlkskBX80TRc2Ucpm32iaOg84Y7I/DoCyXU9Hn2H4makHnZSaeuCLLFWsjS9H8ki5qFzfH7Rt7GR4sryz7Y2/KCxhn2njSv3DnCV0TE35ZxatRGyi3ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=lHlc4Mk/; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=rY1drS/2zRLOzQaSnQdXGE7czbpjUSW1IGIwAkFD86GIKXtN8TIFKYGaMBrxWbuxfrijUsY64axljPWIjcCd/rMjk6qc1lwwe+pXGCUvKgQawz9Qse/hks3QOCW7Nb9POzbpaY+8MssOtcABsuE5cbdWjzPt5Kw//fpzpHnJAqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FJOB430f; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="lHlc4Mk/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=vZpO
-	rc8jIqdudWaU55WhDn+MoeYiJWe7gJ48hDY+d1M=; b=lHlc4Mk/T4KsX8seSNJQ
-	vvL90nUOyuUxzJ/sq5J3piw1hVW61or4bFrdau3nnoyj3BFHrxN3871raQO/I1my
-	Bz2hxNc6FqCtd7PgKMnKFKb4zz5l0ZkRZrRwumRqR9BKuI1SJ2ADJNcz2IFKsFdU
-	7nuBCXwtqXb1hDr3WwWQTUQ9u509yeoTAuKhGd6ojJX525GWTZA+l2Y1cCCedxki
-	RoGYmMz1ynzbjCONDddHsTpxmDfBZnv+OBHrb9nSx93bzg7mxVHuiXUmbzunV9v2
-	qfLQ147EJ76zXvWtGcSHT5C/ArHdi6hIp1iJlb+s0EIXecC51hGviWUiT95BVFMO
-	+g==
-Received: (qmail 2951131 invoked from network); 14 Oct 2025 13:52:28 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 14 Oct 2025 13:52:28 +0200
-X-UD-Smtp-Session: l3s3148p1@0cGqBB1B1OIgAwDPXwQHAL/S9V79e5yL
-Date: Tue, 14 Oct 2025 13:52:28 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Elie Morisse <syniurge@gmail.com>,
-	Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Michal Simek <michal.simek@amd.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jan Dabros <jsd@semihalf.com>, Jean Delvare <jdelvare@suse.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Ajay Gupta <ajayg@nvidia.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Vignesh R <vigneshr@ti.com>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Viken Dadhaniya <quic_vdadhani@quicinc.com>,
-	Chris Brandt <chris.brandt@renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-omap@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 23/80] i2c: Remove redundant pm_runtime_mark_last_busy()
- calls
-Message-ID: <aO45fBIEqFyRq3_k@shikoro>
-References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
- <20250704075415.3218608-1-sakari.ailus@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FJOB430f"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b403bb7843eso1116670966b.3
+        for <imx@lists.linux.dev>; Tue, 14 Oct 2025 04:57:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760443040; x=1761047840; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nfYNvCCPGe7L50oTKoEL1dXfDHFFc9ojZJtuVOHJgeU=;
+        b=FJOB430fGSbj+43wxqVZvdRUjHJ6VC/1g/FdNAoT1aaiaxHvzLY2zJKLh2lzAiPTqR
+         /mm2UZ/jDJsovWJTealqJkZHcwopnsYdg7n2cca+eA3sfHNpY0Ajp2SH4mkoSMmfsdlx
+         PVvPvkyCbgk74hwHASjjwtBIKnonlTek3NR7e1txoeMKtKo6AV21Gxk0sA8qcDDPSq+Z
+         qToWAIALytUX+eZlwoBQtMS9fVua4sHncHnnw7qtPpAJWt6PdpkjqbFqot0i9tRrmQzm
+         cZlGxJDVtU26io1CjZ5R0Q6Z1cKA+k1Zpk/3ofPhHqfeHL/bv23Tf+uJwul25IlgXrdS
+         Jj0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760443040; x=1761047840;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nfYNvCCPGe7L50oTKoEL1dXfDHFFc9ojZJtuVOHJgeU=;
+        b=fWQz5vAltGo8vYRWHlRCA3M/TzJfEq0k4PwWV1hmRv4lwM09/SL8OjcR82cw4VMNEs
+         RxnYMdfWtUJH1D7WfWtP9rPxkpjeZ+xQTy3TK5SRWaIGm3aN4zZeLGNRc1LIoDcuWFBh
+         mnJ/ayQgGfJvnjMCy84jNQ7C7x6W5p++RMoOxdZbKdwSYBhv1eShPmhxq+SfjSTiNfxU
+         DUZA6muqilYiQmE29rOoIWemnaewx45mp/Nk1kWs0gwR4YZDsDiLHvHFhXrv9oj/tBLq
+         HCRpI2VjR9q8NpKV1VWl4jYZB+xlF8QltV7rG4DJBydt7lencISLwagN1NWLwQVVzcpD
+         A5ZA==
+X-Forwarded-Encrypted: i=1; AJvYcCV4dlG91OhmmQKmsxKF3UZAEUtB8JaFbmCgjvbkbXCtbm4R7eeTZPw6nJOjHulxp1KjYV8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyhrzclpF3TQoi5MwSTY5WacMQdw1Bm3SERvCKriOImJKPQsu3y
+	WjHCBKqZc4n49AI4RjbRJWV29X3uroBFRUvAGtGnwugnd6Knd6pEJwVA
+X-Gm-Gg: ASbGnctwGTG9w7CGpm02QpklPMl0+puv6jW/gl2nQbkDCd7wsIS+Xhn166HJkMhxrWz
+	d1Pb44FY+m+2D7wYkh5ObcnuebYaRW3KP8gee+MxeXQaI9hRn6V5AEIqC2IUUyYStLStn+8MJ7K
+	C7KcLWJh6G+LwJJPSvn+qEJs9Zjeo3NASzVr3C2Tf+3fEqfmu4RBgNabOogKUuNSZFH5/8M1Gsw
+	H3tROhmbwxhP8u8mnUD9Fyu4WaFLZh3ApGY6WTLQf5DdnZ72hL5juFHSIKY8BLFZ/yIZkdhB9+e
+	nEfXyI8Z+v+3YAPzaZcvOVJHpSUqUslquR4jiL4v/LnlKGGIgVWdoRLMo42IK2yQD4xyK7j4MrE
+	6cPKR1ZcWg822qsqHXaK9V36ldnX6wFudrEDBrOsuJF6nUPupQAFzTnKOdFv8BEpa5mxdD9DEmb
+	XU974lNjksh9VW2yW9VymfBmQVkH6m/H+fAcFmI1n8F22J+S9VFLA=
+X-Google-Smtp-Source: AGHT+IEO5ExkdB+Vc/eA9hYbJB2YUbFHvlBREw3jtxdBP+T0I/Kox+2SWgXKekZXvheyf/FHTlBwdw==
+X-Received: by 2002:a17:906:c104:b0:b04:9ad9:5b29 with SMTP id a640c23a62f3a-b50ac5d1e3bmr2852743666b.54.1760443039715;
+        Tue, 14 Oct 2025 04:57:19 -0700 (PDT)
+Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d8c129c4sm1152162066b.41.2025.10.14.04.57.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 04:57:19 -0700 (PDT)
+Date: Tue, 14 Oct 2025 13:57:18 +0200
+From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] drm/imx: parallel-display: convert to
+ devm_drm_bridge_alloc() API
+Message-ID: <hr4htgladsaixbuhz6un45syyynzxl6qpshsss3cbeww6mnj7y@jbqwfnzbufqs>
+References: <20251014-drm-bridge-alloc-imx-ipuv3-v1-0-a1bb1dcbff50@bootlin.com>
+ <20251014-drm-bridge-alloc-imx-ipuv3-v1-1-a1bb1dcbff50@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -89,17 +82,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250704075415.3218608-1-sakari.ailus@linux.intel.com>
+In-Reply-To: <20251014-drm-bridge-alloc-imx-ipuv3-v1-1-a1bb1dcbff50@bootlin.com>
 
-On Fri, Jul 04, 2025 at 10:54:15AM +0300, Sakari Ailus wrote:
-> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-> pm_runtime_mark_last_busy().
+On Tue, Oct 14, 2025 at 01:30:51PM +0200, Luca Ceresoli wrote:
+> This is the new API for allocating DRM bridges.
 > 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Acked-by: Andi Shyti <andi.shyti@kernel.org>
+> This conversion was missed during the initial conversion of all bridges to
+> the new API. Thus all kernels with commit 94d50c1a2ca3 ("drm/bridge:
+> get/put the bridge reference in drm_bridge_attach/detach()") and using this
+> driver now warn due to drm_bridge_attach() incrementing the refcount, which
+> is not initialized without using devm_drm_bridge_alloc() for allocation.
+> 
+> To make the conversion simple and straightforward without messing up with
+> the drmm_simple_encoder_alloc(), move the struct drm_bridge from struct
+> imx_parallel_display_encoder to struct imx_parallel_display.
+> 
+> Also remove the 'struct imx_parallel_display *pd' from struct
+> imx_parallel_display_encoder, not needed anymore.
+> 
+> Fixes: 94d50c1a2ca3 ("drm/bridge: get/put the bridge reference in drm_bridge_attach/detach()")
+> Reported-by: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+> Closes: https://lore.kernel.org/all/hlf4wdopapxnh4rekl5s3kvoi6egaga3lrjfbx6r223ar3txri@3ik53xw5idyh/
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-With the dependencies being upstream now, applied to for-current,
-thanks!
+Applying fixed all the WARNING regressions I saw before, thanks!
 
+Tested-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+
+Kind regards,
+Ernest
