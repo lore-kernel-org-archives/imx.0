@@ -1,46 +1,47 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013044.outbound.protection.outlook.com [40.107.159.44])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011030.outbound.protection.outlook.com [52.101.70.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A872E0B5F
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 09:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEC42FB98B
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 10:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760434360; cv=fail; b=MKDAv9O0qY97RM2pvjqv1vP7L9y5gtcsYTEbqScEONWHLa2XxnmtbgR8GirSP7pMnYhb3CuJuC7PXJiHgxwvY2pA4wu2b5rco68oFeyX4zkizW02wUBJOT56NCOFWIMyGIfNMkMuDzz7jbYa0ye6CasFTsY+8a+4h0u48zDM4lQ=
+	t=1760436020; cv=fail; b=BR/hLIWCF2OJd8zAEJM/em80srB/1He0oHxX1CpN6g+yqYeSVfC0Kvex8QLUllIeLQjDqqZ+EhRmrkDT5zX+ata7VH4qscmENvA2gEpDH7AHMa+K9JDw7NPza15YftuMDjOqarMOp5k4GeKBYWuoeu4NZkS18q/g7hTMspL7sRU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760434360; c=relaxed/simple;
-	bh=41ZGwyYltPB0Bey4CSPGzWWF1i4bnyrWZuPa17cCD4M=;
+	s=arc-20240116; t=1760436020; c=relaxed/simple;
+	bh=/n6IzfiB5z77G1Xm3T7OdiRIOr/NP9QToC5PAmSIj08=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OT83dd1Ljm+WLulKXvymXoW/QoOPPPQIm1CA3zUsGyZvkQfRvYboMu96ocYHQZ4LztFSGgG8/r5dz3D9WGxApwW0o2x+9ikwnICHZKYplilq4kfmTCDdG7ueZDpibhfXcubxUbM/quYO0buDzAYJWYgCjTcojqPZbrbxv/rCgpg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RVbKICwT; arc=fail smtp.client-ip=40.107.159.44
+	 Content-Type:MIME-Version; b=c/C+I+GxM4OJmSl8pEs8nv64SVfVHGfnPI8bStSRUuVTRG2cLhbm6lD+MGVGve1IEKVOKiN2ZLa9hSf0V6h68Ub4rbEPg4ZfeWqMN53/PkfijMuS6/e3JI/TEXN4BGalrC+O3ab62qD8/bV/IyOLTG109S7qqGlMQY09u4Kmilc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RCo9PFVW; arc=fail smtp.client-ip=52.101.70.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RVbKICwT"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RCo9PFVW"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dDfhea1/YbijcdNK8G5L+399/KlEdsHdsu+bssq6Zj3y8coxwb8STSe8zFpgz/g3Oezsq5V9NJV/1IuuKLq2ojB/g4L2kOf1HLMcF8m0J7RG/a7pPSmw1x/DJRrg3hpfw/CC7b9YrFz+0IzYRA9cfmWOr1GDg7o28jXPN5euSKhy53AOyGxHTrYRdnf3/9LPi+S3b/4JosCB0i5wJlvjJ7DmqGmgiDReXp5xnAAdpRNOQMZthZiYHnf8SWiwuv52mUqNIkTU/hKf8y+yucuC8hwCsbhoGgyA6kyokFajO0je23bmhZ5g+nk9IM6f3ejIHGiSTMELApWpaH44ftdjfg==
+ b=dc5O66U2kYUwrk7oQwdH+6RbOZpuTuEEqvjLqTv5qqiJiilG3erIsIymlqRrOxGZafLfcvLR2l3nNF1QrCKWgHDGplNQBlp6bIZwAyw7HyysmuFHO3Yzj5cITHanmVSRlPCP12h9N3dcblvSh7sOPn6EwuKLBMHoDRYQPkIxotIU8P7N/XqbSJ552nhXfeNRK3bwRNz56XyeOiZZFHBaZC2shSK1fviS01dScKBgrgJcFRQldQ0w9Yvkm4svJOcusbZ/s3rYX7AIhiV2ZqKEoe33dnAYZ8R+K3YnBEwnZbTo0y2BrkgGnNAmjGWALNIzM+uSqNlG1KNJmXqHwg7Bfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zzDJOpkSr0C+uKm3mZbHIF9THWkoS5C7wMo4rPzTdiM=;
- b=SLiXgV6M0TQBAducI8NCJE81O1Gq/n2S/amjoTjidN1GD/y4UMovoQokX2/0wbW9tTqDmbvQWyknM9sxNyh5O8LLueCLgGiHn25i4jb1gDnhsmccMdL6Bvk4msVcpwTdPu9KrDKwox6Ed8kyCR0F92CZap+9Ae979FDndcYy9/jDhWXz2fQK4L12u995nmn6tQ2XXa7lP2cc3FvLoD0Herh74Vl3w8uqScb3AE5WQzmiPrQO55oRRuG8Pxd8IBQJ3mbr33wB+0SoyFEYAlLpfLXGvl+IEvXWlGevkWUQvOA4lJ6m349v+tTJYgYO6v8O6WNqVMqixXunUnbZzRrloA==
+ bh=W9kdL0EqYJAF0pZ6ZQRCz+p2HxWEBDU7HxyEZmwhDY4=;
+ b=IP4VDi2gcjtBMF2Tysd8O2ujq0/L7HJDLDSBYCVxU2LOTXCC82ea0HubyENu8dgwKsDJVHMNj0rAgH8geBB8cX17CU7pHz7DLUoK1MDhN+6QqEKeGBib2pPlhY5tgXWEv3NONAjbGSglwwuh64GOcFMqSiKZd3zHnXyJAiMzEPVydHuOEllad5mbH53bU2AAZ67fqhYUnx9wR/42Xfs+Byp1kkEd2qeoxwuza6Lj/nzIGg+0IoOuq8pEVJcDVprAiFLfiAoqUGU05JW6TU3qekEQnOuLpBAzCQF/dT9177ErZ77If6n0JYnpf8ai9lPZNDGHSLELcxKB5qfgdnsM9A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zzDJOpkSr0C+uKm3mZbHIF9THWkoS5C7wMo4rPzTdiM=;
- b=RVbKICwTnkVvc6SWsRJXuI/+28aBjSYR4ffa0gsD83LChShiRpcl/UYefXJva5M0jZytnZHWR8u/xeUOLmO3VOU7vjeRNLV6bRw7VoWoxeOHU+jSJjNSL9SSogPp7MoJarB2QPlO1+RvDt0QzYtBrOTcx+fZLZuj3ADd2jz1md1U4Os6Ls1qD76P6efUqLQRAj+Sp/QWfLfezseG9fCcCSYI6Yxix0kNzrSGMWF4jpQ/jLp8ntVJvCSZ7eBzZjX0KvLuY+ju1K0MTLoir8iIvKCkjGZkzPtv0gIjqNN5+ccKyty47AVX+/QZEcfBAaasXzCL1G/E+XC2A7PdWn6z6A==
-Received: from AM7PR04MB7142.eurprd04.prod.outlook.com (2603:10a6:20b:113::9)
- by DU0PR04MB9585.eurprd04.prod.outlook.com (2603:10a6:10:316::5) with
+ bh=W9kdL0EqYJAF0pZ6ZQRCz+p2HxWEBDU7HxyEZmwhDY4=;
+ b=RCo9PFVWqLt/9QxFS+h2jgY7LpNatyr1/+fqyxoZicDBjnPW9YIUGYXDT5xGp56g+9dDc2tzZz0Z0/ihmKl/jYKdVpeFyrJ4rHlheyri84fx79llHBSdDMVzzaRX9BRgpk3nfKfjjwvzXzVZPvKrZch24sTgTYrLACkzIfbI5CW8jtkkTZZbpABPxZdaovw2hUSnk9uRZJUpwPDuhLT+8wvMDUWobr0FA9q+QoAv30f6psmp8v1fWKd2RVbb3ALKZF4IekFg6CVmWBctr4lRxPA/k/LiLgxlNwui5JGwHgqRJke1i/ZB+YLWxFz/sr9qjUq+BU6hAwQmkYsxyvv4YA==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AM9PR04MB8857.eurprd04.prod.outlook.com (2603:10a6:20b:408::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.13; Tue, 14 Oct
- 2025 09:32:30 +0000
-Received: from AM7PR04MB7142.eurprd04.prod.outlook.com
- ([fe80::6247:e209:1229:69af]) by AM7PR04MB7142.eurprd04.prod.outlook.com
- ([fe80::6247:e209:1229:69af%6]) with mapi id 15.20.9228.005; Tue, 14 Oct 2025
- 09:32:30 +0000
-From: Claudiu Manoil <claudiu.manoil@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>
+ 2025 10:00:14 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
+ 10:00:14 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>
 CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
 	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
 	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
@@ -50,16 +51,17 @@ CC: Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Subject: RE: [PATCH net] net: enetc: correct the value of ENETC_RXB_TRUESIZE
 Thread-Topic: [PATCH net] net: enetc: correct the value of ENETC_RXB_TRUESIZE
-Thread-Index: AQHcOcsjLfa+tXqAmEqFL+MdmHhkNLS7VNgAgAA7RCCABV5mgIAAbs1g
-Date: Tue, 14 Oct 2025 09:32:30 +0000
+Thread-Index: AQHcOcsiKt52zsPKAk2fo+9Vq3ZFNLS7VNgAgAA8FwCABV0XoIAAeU8AgAAEuPA=
+Date: Tue, 14 Oct 2025 10:00:14 +0000
 Message-ID:
- <AM7PR04MB7142C31C1EA26B48E92042C596EBA@AM7PR04MB7142.eurprd04.prod.outlook.com>
+ <PAXPR04MB85106C49873A85DFB61DFD7A88EBA@PAXPR04MB8510.eurprd04.prod.outlook.com>
 References: <20251010092608.2520561-1-wei.fang@nxp.com>
  <20251010124846.uzza7evcea3zs67a@skbuf>
  <AM7PR04MB7142CA78A2EBA90FE16DF83B96EFA@AM7PR04MB7142.eurprd04.prod.outlook.com>
  <PAXPR04MB8510610DB455D9CF2D4E295088EBA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <AM7PR04MB7142C31C1EA26B48E92042C596EBA@AM7PR04MB7142.eurprd04.prod.outlook.com>
 In-Reply-To:
- <PAXPR04MB8510610DB455D9CF2D4E295088EBA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <AM7PR04MB7142C31C1EA26B48E92042C596EBA@AM7PR04MB7142.eurprd04.prod.outlook.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -67,94 +69,71 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM7PR04MB7142:EE_|DU0PR04MB9585:EE_
-x-ms-office365-filtering-correlation-id: 90d16102-cb02-4713-fcd8-08de0b0498c6
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AM9PR04MB8857:EE_
+x-ms-office365-filtering-correlation-id: b7ffdbc0-21f2-43d3-623b-08de0b087891
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|38070700021;
+ BCL:0;ARA:13230040|19092799006|1800799024|376014|366016|38070700021;
 x-microsoft-antispam-message-info:
- =?iso-2022-jp?B?amJvYThIdXByeTRIUHdGbVJwcDZPU2t6Tm5JaTRZaGRWT0tRWWEydkk5?=
- =?iso-2022-jp?B?RDM1Rm0vNGVmdWlxTThQYXN5OXhxUGVlN2NJc2YvbnJYTzBoSnBxOUI1?=
- =?iso-2022-jp?B?ZXMxb0tlWWgrbGlrMEJSSkZMSjY3d0lndzVIY3pOZUJKRVpzL0ZLZkds?=
- =?iso-2022-jp?B?cW82emlOMmRaK1ByMDJWZmI2bjBuQXl3Q0ZDd0hES0V4dzlxQ1B5bDNQ?=
- =?iso-2022-jp?B?SFFGM3NDdjRSUkRNTWtxcCtQMTZQWjRyUERkMWNrSDZBcnlMbDVNejM4?=
- =?iso-2022-jp?B?aHhLUHEybGxGckhyZWs4SkI0OUNneHYvQVIyc3ZjU29mUm9ZbWNLNVQ2?=
- =?iso-2022-jp?B?NytxSlp3OVg1R3NjME5WSzZzWUtINGxaaEVBcnQ1K0tPaWJMQmFkbXJ2?=
- =?iso-2022-jp?B?OU00b25GUS9TdjlnM1N6TzBicXdYSGpTZG8vN05Xc0V4VzRTNFYvNm9I?=
- =?iso-2022-jp?B?T0k1NVF2VWN6UTRTdmMvYlJhNDBNK2VZR0Nlc3dLL1BQVENINUtrSXh1?=
- =?iso-2022-jp?B?dzRhdUNYVlNNQmRxZTY4d3BmV2o5bEdvUktPNHpNT1c1eWNKQ0NrZ0Ri?=
- =?iso-2022-jp?B?ZDk4S0g4QSsvOXNpZ1pRd0tlV1Ivbm4xNTZ4TFM2c1Jmc0JNcVhiYTVV?=
- =?iso-2022-jp?B?WG8rSm52ZFNOU3FIZXRZY1piTkVrSnZ0RXU5dkhBWElra2cvM0xWL2ps?=
- =?iso-2022-jp?B?anFraHdoYys1dW1TemQxMC9vM1FPcGRMUEluNHhzU2VIL09iRlZMVTV1?=
- =?iso-2022-jp?B?VXRsV1hndlIyRjZyd2RVdDg1clNpem1OVCtHajVzZlBGak8zcWdzUDNR?=
- =?iso-2022-jp?B?ODBoMVFHUlNkM3l3ZUZ6eXkxU3V2cjhTL3dNcURNTmoraEd2ZFVweGhr?=
- =?iso-2022-jp?B?K2c5RzhJVzZobjR0c3cwSDZmWDZ2VkdNRm9ENUdrNFVzL3ZXeE1HL0c3?=
- =?iso-2022-jp?B?YStmTUlWZ0xxNEJQRk1uWXJqQ3Z6dU44ckhpZXZFaHU1MFJWeUR4TlVQ?=
- =?iso-2022-jp?B?cjV4cUJURXFpbFJHM3BUZHhsK29YenVFNDNOVDk0dzZQSFlUaWdLY09N?=
- =?iso-2022-jp?B?WXFRMHU1MHZ2TnI1MEZYNVphUzhqSnQyUEtVQS9ScEl1SDQ1TWVKUUJW?=
- =?iso-2022-jp?B?SkVMaGFXVWswY1RYNG02N3IrZi9VdjRYZFFzUE56bS92Mm1CUkM2SFY1?=
- =?iso-2022-jp?B?eE5CYUxiZzhCQTNrekdrZ3k5ZUg0bXdveW9tdmEwYVpiS0l4MkFHZXNa?=
- =?iso-2022-jp?B?MGViU2wycWNjZzJRRWlJRWFQZTd0Q0h0Y2ZZeWFLTFhFZk8vc2hKRXNG?=
- =?iso-2022-jp?B?TmtFNlJZeUZVSytNdURqZVRua0R2YWE5ejFqTHFnN3JrTkVqWG0wallK?=
- =?iso-2022-jp?B?a1ZpR3F0V2JoRWk1bmx3TStCQ3Zod2JPZGNVcy94QXh3OEs3eUx2Snd2?=
- =?iso-2022-jp?B?WDlqb1lhWTc3SndKbEdLNHFIQ0xxNWozeGw4VHJHVS8xUE5Fb2VHS1Vo?=
- =?iso-2022-jp?B?OVIzV0ZqOHBQaWt3T3Y2bmJEK3BlMDByT3FUcFZoMDM0MHZZUzZyNlJs?=
- =?iso-2022-jp?B?aUlCclh6VkordHRBRVRqdmhOQk5tYUI4R0JoQUx1VjRZcjljWVNjU0Za?=
- =?iso-2022-jp?B?QzR6bTRGdk9NYzZOUnBoTFViSDNkQ2tFMUY2TFJMUE5JbFlyWnJxQ3Nw?=
- =?iso-2022-jp?B?WmxGSUo5bGw1dDBwbDdhVUw2K3lPNUZvTVBNTzlmUFRqUVVGM01HMUVk?=
- =?iso-2022-jp?B?bVRVTU5ER2o4Q0U5cWFOY2dGVkdDQkRJbm02SkhCMUVSWUN4MmxFZGV4?=
- =?iso-2022-jp?B?S2xNaXZqTUxOYjk3WFVidTh6NGVWQVZyYUNlclBNamtDWWtmUGZtUHFk?=
- =?iso-2022-jp?B?Tmg2UXRlN3c3RXlNU0NrSU56ZVFLVFRpbFBYYkpvdzBqbGo2MlY1Q0tI?=
- =?iso-2022-jp?B?SnduMVFDdHRMN2ZBMkd5eGg3WnY3am9DbFBoaURjdmp1d1pPOCtkbUJy?=
- =?iso-2022-jp?B?Z1VSalpmV3JFWkxpMVc5bmIvbjBmTGRmZ1k1T1ZjaGNFR1VQOHdQNjVI?=
- =?iso-2022-jp?B?UUY1eVh1aUlHRnFUY1FDTSs1NE9jQnh6UlpFQkp6MEZMeVZ0dUcwWnFU?=
- =?iso-2022-jp?B?ZEY2Tm5qYmZ0QVc2WDh2dkd5TnVHVjlFR0xHc05yaUp4Ymlxb1NoeWhn?=
- =?iso-2022-jp?B?YU11VXkrUCsrWlhvRWorTEdXUTQ2S2Ju?=
+ =?us-ascii?Q?JrQYqPPxN5Oxpt5EhlkjQhq/RG+YYTUJrhw5Uwvmcs8IXGh9+4a01IamzArz?=
+ =?us-ascii?Q?ojm+Ix3tEzSQwQtHj7rmFB01sBsDV9kgQ8gF3cuUtLc1SKZnAACcmkXkAmAE?=
+ =?us-ascii?Q?rY747QGFPEikGLP6P8b0d5v3NuL3/uHDpLnaymmiZtOqaYOPq7dZXZKEJamJ?=
+ =?us-ascii?Q?9u0zOUt4QybdZhVlTtKSmXKAVvL3KcSGisJk0KB/L9PJAQS/De14XPJ2lMbH?=
+ =?us-ascii?Q?jQKep7nVILL3VelYocw3KnoWReo/wivLjQ3lw+zoz9F1ySq1+fFgD2841pxP?=
+ =?us-ascii?Q?5R3QnCLV4t32KArXvPImsE3OrbOycf/p5/zGqbhcmgY2iI9ljnE40WEk6Y/t?=
+ =?us-ascii?Q?GSTou2kY3RnVKP0jjTvHj/IFV2p4i3u0iAEu7w/4aOwt2mju+ratMTv23cZ1?=
+ =?us-ascii?Q?PjdIh/wLPWLJPuD+u3++L5Uo2/xpjLTYEguM96IKtGdMpOPT4DkpkGinkAlv?=
+ =?us-ascii?Q?4HuxIqQEunwzE8c3MxyZ6SexU+NhgocM4Wpq6Wb5Je5x9p+SL4IKK9ISdwmg?=
+ =?us-ascii?Q?rsHIl3KkowOazPEnI47st5Pt8yFngmhatvAQUuWo6FXCiufkDL6LX7300Kvf?=
+ =?us-ascii?Q?1EX2IiQsy1eL7cuj0q8MA0TwH7IvsLBEO7qMmIkGMBN4rqcjMQNuS2MEjKu2?=
+ =?us-ascii?Q?15GBoywmiqy+lyDUsBiWkGrFvwODYWZWgFmZv/p8mkSqcGh1ZizZB/L7V2bp?=
+ =?us-ascii?Q?BJWqsLdIhuVp9uQRZNJ3COhXSRYeRXtxE0hC/3fC142A+vWCsr81PE3Di5xu?=
+ =?us-ascii?Q?c0eYUHzpCgm0or9w8FUIXmGWD7Nf5JaJeXPoI0G3VOMJe4gGMnNbcej+ZEdA?=
+ =?us-ascii?Q?jtIjoKp+HtYmnI9nAXtXvU/9J+lpb2zB2H4mWAZ+8wKAf4OIkRP52Ldk0M+l?=
+ =?us-ascii?Q?Sfwc5C/s3+IeBo8TAAjo22MfZjyznuODF1gEffA9AuC6Vr3bPxYraMJ2BRf/?=
+ =?us-ascii?Q?yFIZNxeygmJllP6NCJNd1uKucVpDnp+vCiUPY9JT9rjpCM25ZSSHggMk7kl7?=
+ =?us-ascii?Q?fxa20J4kP0pk6V/mWGJMxlhemlH2gu4kady95jc02XOspiTchrWFHUELLV6W?=
+ =?us-ascii?Q?IgsVvJHT+AJy0Jz8p6+c4i/9ycm8fIDJeWxYRg7R7cka2HMaMN0F7TDwzErI?=
+ =?us-ascii?Q?O6Ok2CON5BO+ZoLox9nDJK2NcflHad0nB7Ak19e8cMtwnVXW7Jh1oFD7rsnX?=
+ =?us-ascii?Q?KEOzyM0XdMjyXotir5+zfUwTCXF4ItOoQt84rHb9gldKoAk+mluao1gFbs0A?=
+ =?us-ascii?Q?JXH3YRnl/zk38I7bDcs4yCXhffOwpfhK9PzI/2VbXbN62dIS7JxOI/iYdBa8?=
+ =?us-ascii?Q?8BIInBdIrCLCVsrzrxWcIhA45FlS5HDsf3JmdyZx6rLE34DhotNtzv/8Jb3x?=
+ =?us-ascii?Q?dutmRsyd1AQ2D2Rgq6JyqkxSAW7xD9hcOg7ZI/2Uwr8IiNUU/3m6/YQzJdfO?=
+ =?us-ascii?Q?39kPU8VAq5YQeCkklegERE3YubpVVjEUZ9RdLGxEaqplTZ2TBYJF6CER3lIV?=
+ =?us-ascii?Q?ahj6UWyNQUVjssQfprQd8um2SX0dz4HIHYfd?=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7142.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(38070700021);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(366016)(38070700021);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?iso-2022-jp?B?aFVpT0pENk9tTWRTL2VQdkpITU5CYnBrTUkwTDhRbDVCeG1adEN5TXQ2?=
- =?iso-2022-jp?B?K1dic2pDNkZLKzNnQ2FnMUZkeThsQWtKYVdNOHFrdEpjSUhxRCtaWDJT?=
- =?iso-2022-jp?B?RnllZVl6VDNxeHFEaWRNL0NvM0xPcUkrcVZ5YTBDdUVSVU9XYlFoNzhC?=
- =?iso-2022-jp?B?OUJXUnVwUENueGRHcUV2OGtIbDJFMUtpWFVUbHczQ0p5RXg4dTNPOWJ4?=
- =?iso-2022-jp?B?VVpyZndpeFNYVGlZSWhqekQ5K0Y3Y0RPSmF5UGJsQkdiZGlhVE5OTUtI?=
- =?iso-2022-jp?B?UUdQc0FEamIvTmZLVnhtajNTS3N6c0ExdmxPOHJuMHhWdUkwUzA1bkRu?=
- =?iso-2022-jp?B?Vjd3ZzBaYkV4dkp4dnNUUEROdEJHMExlNm1wejRGa1VSMlNyT1F2VzhX?=
- =?iso-2022-jp?B?bG1ZV0h2SVUva3R3T2w2bUtPR2FuNHpDYlYzOEUrVDhNbEdVamk5bjZz?=
- =?iso-2022-jp?B?SkF6UUg2MW5DdjY5a3NtdnRjNVlDZXF6U3d0VlRFNTJMbzRXS2xlUUpC?=
- =?iso-2022-jp?B?ckJIU0dsQTZ3S0lVVzlyNUJUdWVVV1lOUzNJWldtOW9yc3g1UlVURVcx?=
- =?iso-2022-jp?B?cFppT3RKMXArTTQzTzB4cytyVGpYdFhoSEpFU1NBRG51K2N1MVN4RWYr?=
- =?iso-2022-jp?B?VDRZbmJXT29hcnhVbGExQ3VkeDdyQmR5ODNxWEZCK28zQjFyQjdxVldx?=
- =?iso-2022-jp?B?L2FHQ3VUbDE1VnB2Vlh4NWpUaTE3cUxjdEZZUWx6OUNiczQvTjVPK0Y5?=
- =?iso-2022-jp?B?NHVZTWs3WnF1eUFYdTJCd1ROUzRQUW04VEhqclJYVWVvYklVNUxzY2Ju?=
- =?iso-2022-jp?B?ckw3NHRDWkdMV0JUT2lFU1g4NFppRnJCRzZHT01KNHRoM2hXVWp4elBv?=
- =?iso-2022-jp?B?TldqNkVwSkNRVW9NMW1DTFVUNUlReE1OL2sxMGhiazVLdmZGZ0Z3QUoy?=
- =?iso-2022-jp?B?c3BvbHVoNjk2RlR6ZEEzQ3FpREsyQkJSTWZTb2tKV1R0dFBZbEF5VkFk?=
- =?iso-2022-jp?B?TkRtY2NFaEZDQXlvbVE0dzZBcUFKN0RoTlRkQkI0STJoR1dGcGF0SHlJ?=
- =?iso-2022-jp?B?bWMzZnFrY2RQWFhzQldnaGpSZmExeTA1QlpzYWtiMjg3SXZDem1UazVR?=
- =?iso-2022-jp?B?dzJwZFVHbUllSS8waHJaMitoOWJldjRjRTZERzBmWHJOdkxZdmVCL0Vr?=
- =?iso-2022-jp?B?UFVFTUdGbVFBQnltZU1WTHBnTU41NUR1TDVkRFN5QjFhcnp4YmpjdEZu?=
- =?iso-2022-jp?B?UFlvR2VsazhpZFJvMFpMSFJoUGlHSHJ5Vy9CMm1ubmY0MGR3VlpOMml1?=
- =?iso-2022-jp?B?WU4ybmo4TTUyT1NzdlpRa01ZQTczWkdXc2xuc21OVCtFS0JLNVAyQ3dX?=
- =?iso-2022-jp?B?dUJCZWxSVjZLQnJXb1RZbEZKdi9FVlRFTFUzdXU1LzZPdkxyTkZ3bUNp?=
- =?iso-2022-jp?B?R2g5MTU3WTY4dG52V29ISHdTajdzcWVrWkRqOU5wRENILzZhSHBwbUVm?=
- =?iso-2022-jp?B?aFJaWUNDMjh5QmhMZmt4TFF6NDBGcWhxa1NzS0Z6NWlCNjlUcUZOTGhP?=
- =?iso-2022-jp?B?TTR4TTllaFByYTB0YTJJN1l0YW1BN2p3SmRXYzVGd1ZpTkVHUHh2TURo?=
- =?iso-2022-jp?B?a3ovWkdwbVREZk9EUGhPK3AvazNUa256V0xvSlljM2Zsa3o3Z2Yzbzdt?=
- =?iso-2022-jp?B?a1dYZGdCZHg3U2YxNDZ3MHQ3N3FJdkZoL3k0V3I5NEFUZDM3OWwzYnN1?=
- =?iso-2022-jp?B?YjNYdEFBVXlid1h3N3BBYm94ZG1YQWM0T0pYRTBDcjgreEN2SzU4U2V6?=
- =?iso-2022-jp?B?VzBqaHI3T0pNR1FQWlJoRnEwMUlmaHpQMWludFk0T2JaU3JTVWlhNUlM?=
- =?iso-2022-jp?B?YlFGOUhuRzYyQnVpenp4SUsvMXUzOGNjcTU2cUtWZXd1QlpMenU0eG10?=
- =?iso-2022-jp?B?L082NmVqY29VcUozNlp2QnFaa1paT2h3NHlyVGpTUzlSN205MFpYV3RG?=
- =?iso-2022-jp?B?bEdadyt1OUt6MTViTjMxL1oyOUEvbDBOVjN3bWxrTlVuVzNQSFdmSG50?=
- =?iso-2022-jp?B?WStXMjNVMm03bTRwSnBTMWsvaDVQUXdXcVB2bGlZMUxUaEJ4UkVRTWNK?=
- =?iso-2022-jp?B?amdXREVlbnBlU0xEYmRGa1RLMEt5dXZOZ01sbGxuN3FPMk8xYkRnMmhJ?=
- =?iso-2022-jp?B?RnJ0SkNFVkRVWHZQaWlkZExLMURGVWd6bHdEZyttcVZhWVlodytFbnpn?=
- =?iso-2022-jp?B?UVJsRDNvd1RvdFRnNk9va29DVVpNQ3dnd1pIWm1EMnNiWnh3VmtJZysx?=
- =?iso-2022-jp?B?MHJ1SQ==?=
-Content-Type: text/plain; charset="iso-2022-jp"
+ =?us-ascii?Q?m4X8Jxf3pdnXbM3ilwfd2E4UZoF8wdhztEmZTthIMcRb3LaINHFP5jFkv4g+?=
+ =?us-ascii?Q?58IKB1jQwD18j8pjDA0PN2kOVpg2o0yDMFM//uz5ItTaOj6/yRQsvTI2vy6p?=
+ =?us-ascii?Q?Pl5c9cEmilX3xzHwjR/7mzcDEUp0Jzhxheh3sdhv4ZNPBiOK9EqR5vUlf+WB?=
+ =?us-ascii?Q?IMRvy2tRZjUa4olWPMdDeUm+fR3zjJGH3YLy1TCc/RgmEfum00jWrteZMzmd?=
+ =?us-ascii?Q?t76p4uk8ayGNMX8QWWlKSNSprQg7pgNDBAdtI9dyU5RR+eBKwmNpmqxdZrYF?=
+ =?us-ascii?Q?gB/TKg9+Rcqf+Dif3lM3iV2/0jCEx+jrQW6GPj74xgvRZktQpfnxMhioLYSF?=
+ =?us-ascii?Q?vCgQ/1mN6MlJ86XO2rv4vbHNdRO3XwhIt87XYaKFGCgj37Ne0chAShd10NCo?=
+ =?us-ascii?Q?zf8wfcQl7Mm9mSJJkKhXNDbzMLrtmJFfD0SiKbOSgi1OwfTlVbhizT/NovdL?=
+ =?us-ascii?Q?POuOzn3gmdqtYhu9D1yDtrtZQZZ6qSFYGUTXyfDe+TEctwMNnvCmE3PFilVW?=
+ =?us-ascii?Q?dssNZqSkns5+rpv7/VIeW/PXuc8cYNKtIKxMzYnYDMrHpp7/34knLFE+XXRU?=
+ =?us-ascii?Q?jNmKI3uHiRIGEuNqcwYPHBJwpDT+QGviADqBuCNAvgPSTa4Cd+LzHyHAraW6?=
+ =?us-ascii?Q?bUc4wMFE4E/jPLewAtAy6N6T8tetur3pJU/bovdcw6NdH514pGSLEd/mpT7f?=
+ =?us-ascii?Q?Hjd8jP7ZoBq8cBoojbsTFcHUR+IGVxFhy+5ffpwqKKohUUeEXASYytFDbD8H?=
+ =?us-ascii?Q?9fnXxQE+BxRcnVPzNmApomFlKnIZ3yyM2rI0za1DfDPGXMDdOzdh/qQasL0J?=
+ =?us-ascii?Q?vJtuhfNNO0gdaU8KS0vUG6uQZYCZhDjUIU49vT9CeE7lP3tWjWVfd1/H/JO1?=
+ =?us-ascii?Q?M90lOXRvPpNoJy6++cWNzAHidJyRhTrukvXppld3azn/P704T4uSqDa9zDUW?=
+ =?us-ascii?Q?Gd9z29r6Xwvuf26BRMTLalrkMVS3lxzsiN21YO4Zlm0vFm49Xe3nKKw14cQI?=
+ =?us-ascii?Q?h23UVV4/0KvXJFt6XDxc7zbZu+rDrE6hEDSLPKT7fkX9oBAO+dAgfCtU0tOc?=
+ =?us-ascii?Q?jZvt00T4IKf21O6Gh2jQeCE1xtZAnNy8S695GKdfW/Tq99TpZmJyukeLJmLF?=
+ =?us-ascii?Q?7e2fWYJcHEaRDb/vaIRpenVgQzkSaPP6o9k5KxUcAUpZpF9sOTbfY8jCF9VW?=
+ =?us-ascii?Q?QFDpxqyu8JfNPTEIZ15sRQvIiTxMY0TvOJhAcyNhhODmdqpqtDAa4rj4d/sk?=
+ =?us-ascii?Q?xv5YRv62YB4FwPbrVXAx1zx3KjbJ1Bv8NOh8kVRAj4/5TJ7/lOpj/88pvTJC?=
+ =?us-ascii?Q?ePVWGRvrHOyRRIQEB2K6K9X+ZPvYZBR1QATa0qoEefexA7h3g2NJ6g17okAR?=
+ =?us-ascii?Q?OFbdB6qD/l7egXxzdo3ZdKm0tU2uMEj0oE5gf1+J0Aan4cTnWzEW2k62DATv?=
+ =?us-ascii?Q?QcZMputZjg0HblIQu+IVx+mr1Utt+uBJRVnLvRGndHEMIq5kCoowTecsamkJ?=
+ =?us-ascii?Q?EOuLF6/f+JMjTQIuuACkhJ5wRj+GZfoa434gZBRjEObR8/J9HLAU4X9q0R/E?=
+ =?us-ascii?Q?cDsIH63pM2/bIQa8BPI=3D?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -164,105 +143,89 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7142.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90d16102-cb02-4713-fcd8-08de0b0498c6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Oct 2025 09:32:30.3579
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7ffdbc0-21f2-43d3-623b-08de0b087891
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Oct 2025 10:00:14.3352
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vwVbRWui0NXdn179qBNSgvJCRrL2dOjZjQEUAunxUugHkVEsW0DJJeUoexU5hgWM7QcexJj9SG0oxuWlUpM5hg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9585
+X-MS-Exchange-CrossTenant-userprincipalname: TLOBgoPM7OzinpzC8RyQ5RayhT//OtLkWb5al4s5jkzInFCcjJ+hFsJAJNB8m38Sfx4DJbp6tCIMu4vRfLenzA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8857
 
-> -----Original Message-----
-> From: Wei Fang <wei.fang@nxp.com>
-> Sent: Tuesday, October 14, 2025 5:20 AM
-[...]
-> Subject: RE: [PATCH net] net: enetc: correct the value of ENETC_RXB_TRUES=
-IZE
->=20
->=20
->=20
-> Best Regards,
-> Wei Fang
->=20
-> > -----Original Message-----
-> > From: Claudiu Manoil <claudiu.manoil@nxp.com>
-> > Sent: 2025=1B$BG/=1B(B10=1B$B7n=1B(B11=1B$BF|=1B(B 0:24
-[...]
-> > Subject: RE: [PATCH net] net: enetc: correct the value of
-> > ENETC_RXB_TRUESIZE
-> >
-> >
-> >
-> > > -----Original Message-----
-> > > From: Vladimir Oltean <vladimir.oltean@nxp.com>
-> > > Sent: Friday, October 10, 2025 3:49 PM
-[...]
-> > > Subject: Re: [PATCH net] net: enetc: correct the value of
-> > ENETC_RXB_TRUESIZE
+> > > > On Fri, Oct 10, 2025 at 05:26:08PM +0800, Wei Fang wrote:
+> > > > > ENETC_RXB_TRUESIZE indicates the size of half a page, but the pag=
+e
+> > > > > size is adjustable, for ARM64 platform, the PAGE_SIZE can be 4K,
+> > > > > 16K and 64K, so a fixed value '2048' is not correct when the
+> > > > > PAGE_SIZE is 16K or 64K.
+> > > > >
+> > > > > Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC
+> > > > > ethernet
+> > > > > drivers")
+> > > > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > > > > ---
+> > > > >  drivers/net/ethernet/freescale/enetc/enetc.h | 2 +-
+> > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > >
+> > > > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h
+> > > > > b/drivers/net/ethernet/freescale/enetc/enetc.h
+> > > > > index 0ec010a7d640..f279fa597991 100644
+> > > > > --- a/drivers/net/ethernet/freescale/enetc/enetc.h
+> > > > > +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+> > > > > @@ -76,7 +76,7 @@ struct enetc_lso_t {
+> > > > >  #define ENETC_LSO_MAX_DATA_LEN		SZ_256K
+> > > > >
+> > > > >  #define ENETC_RX_MAXFRM_SIZE	ENETC_MAC_MAXFRM_SIZE
+> > > > > -#define ENETC_RXB_TRUESIZE	2048 /* PAGE_SIZE >> 1 */
+> > > > > +#define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
+> > > > >  #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if
+> > > > needed */
+> > > > >  #define ENETC_RXB_DMA_SIZE	\
+> > > > >  	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
+> > > > > --
+> > > > > 2.34.1
+> > > > >
+> > > >
+> > > > I wonder why 2048 was preferred, even though PAGE_SIZE >> 1 was in =
+a
+> > > > comment.
+> > > > Claudiu, do you remember?
 > > >
-> > > On Fri, Oct 10, 2025 at 05:26:08PM +0800, Wei Fang wrote:
-> > > > ENETC_RXB_TRUESIZE indicates the size of half a page, but the page
-> > > > size is adjustable, for ARM64 platform, the PAGE_SIZE can be 4K,
-> > > > 16K and 64K, so a fixed value '2048' is not correct when the
-> > > > PAGE_SIZE is 16K or 64K.
-> > > >
-> > > > Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC
-> > > > ethernet
-> > > > drivers")
-> > > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > > > ---
-> > > >  drivers/net/ethernet/freescale/enetc/enetc.h | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h
-> > > > b/drivers/net/ethernet/freescale/enetc/enetc.h
-> > > > index 0ec010a7d640..f279fa597991 100644
-> > > > --- a/drivers/net/ethernet/freescale/enetc/enetc.h
-> > > > +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-> > > > @@ -76,7 +76,7 @@ struct enetc_lso_t {
-> > > >  #define ENETC_LSO_MAX_DATA_LEN		SZ_256K
-> > > >
-> > > >  #define ENETC_RX_MAXFRM_SIZE	ENETC_MAC_MAXFRM_SIZE
-> > > > -#define ENETC_RXB_TRUESIZE	2048 /* PAGE_SIZE >> 1 */
-> > > > +#define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
-> > > >  #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if
-> > > needed */
-> > > >  #define ENETC_RXB_DMA_SIZE	\
-> > > >  	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
-> > > > --
-> > > > 2.34.1
-> > > >
+> > > Initial driver implementation for enetcv1 was bound to 4k pages, I
+> > > need to recheck why and get back to you.
 > > >
-> > > I wonder why 2048 was preferred, even though PAGE_SIZE >> 1 was in a
-> > > comment.
-> > > Claudiu, do you remember?
 > >
-> > Initial driver implementation for enetcv1 was bound to 4k pages, I
-> > need to recheck why and get back to you.
-> >
+> > Any updates?
 >=20
-> Any updates?
+> Reviewed RXB_TRUESIZE usage, and confirmed that it's not only used for
+> building
+> skbs and in the page halves flipping mechanism, but this setting is also
+> accordingly
+> propagated to the hardware level Rx buffer size configuration (e.g. for R=
+x S/G).
+> The allowed h/w Rx buffer size can be up to 64KB, so we would be safe eve=
+n
+> with
+> 128K pages.
+> The 'PAGE_SIZE >> 1' comment is actually a TODO item, and I crudely limit=
+ed
+> TRUESIZE to 2K to enforce 4K pages in the initial driver (i.e. for simpli=
+fication).
+>=20
+> So, pls go ahead with the configurable RX_TRUESIZE, and note that this op=
+ens
+> up
+> the driver to new usage / performance scenarios, and user configurable Rx
+> buffer
+> sizes.
+>=20
 
-Reviewed RXB_TRUESIZE usage, and confirmed that it's not only used for buil=
-ding
-skbs and in the page halves flipping mechanism, but this setting is also ac=
-cordingly
-propagated to the hardware level Rx buffer size configuration (e.g. for Rx =
-S/G).
-The allowed h/w Rx buffer size can be up to 64KB, so we would be safe even =
-with
-128K pages.
-The 'PAGE_SIZE >> 1' comment is actually a TODO item, and I crudely limited
-TRUESIZE to 2K to enforce 4K pages in the initial driver (i.e. for simplifi=
-cation).
+Thanks for the update, since PAGE_SIZE is configurable, so the old definiti=
+on
+of RXB_TRUESIZE is not consistent with the page halves flipping mechanism
+if the PAGE_SIZE is not 4K, I would like to fix it in stable kernels, due t=
+o users
+may change PAGE_SIZE for some use cases. Then I will add a separate patch
+to support changing the RX buffer size at runtime.
 
-So, pls go ahead with the configurable RX_TRUESIZE, and note that this open=
-s up
-the driver to new usage / performance scenarios, and user configurable Rx b=
-uffer
-sizes.
-
-Thanks,
-Claudiu
