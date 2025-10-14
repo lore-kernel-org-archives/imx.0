@@ -1,66 +1,60 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011069.outbound.protection.outlook.com [40.107.130.69])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011058.outbound.protection.outlook.com [52.101.65.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5768028D8DB
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 15:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2403002DE
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 15:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760456107; cv=fail; b=nUa2w0+gDzvRlwEJkFgtkzFIiXTxq5qK2cqawRP52c/LZV+R8I4wMgUJwr9UAR7CqdqQzAWm4tWNsG9b9g5FRzZZEQJoOUtxn47WHGg9ry6WGTQtvh50ftoVlYywhN1ddUMvNUB41eMeQgiDRonJw0GNJL8JPYZgbOSeUq1Nj20=
+	t=1760456201; cv=fail; b=ehnny2q1pRdcjRlpX+CCOd+aF9DvaMcnZb0MnIc5Iv0Bp8TC/bDsIq13TPBH0hgNGIemHCEKOUX7SM2WBS3DjRFpe41ru5wv6qhiwZcG4suIHeYhLxlDGKFJkUvvYPRTSpRUlb+6QHy8bqMokdxyWsVxcwCGFadBKkp3dvavyYA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760456107; c=relaxed/simple;
-	bh=YSuU/MQbif3qq5s9amKq1vZ4ieJhGNhytazGKj8+MUg=;
+	s=arc-20240116; t=1760456201; c=relaxed/simple;
+	bh=tPaEYcHt/8lfA6Z1CVeUSs5lcee77CVit4AX0u3t6V0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=t7cJCgtzqG2Ywq2Yiq9EbXVC+s9zPnEIEzJrehx1Ky5RajuljZ3oYZCXDpQnHlVgKWuD70dJubsNtKztsEbOd77+oA+YmD+8k0kT8W/hVxVZPTcs9y6cJiE+Rrd6NOXsG/CSJ+dfMfdhjXurGuEQ0uyhrLY4BYz8MUtOAMqf6gU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kvT9Qodk; arc=fail smtp.client-ip=40.107.130.69
+	 Content-Disposition:In-Reply-To:MIME-Version; b=IutwG4nMT0ksLz9YoIpJZMm4MOXSy8cLQeRXthxjVhlyWvkl1mF1AuCqpzmnACIEyp9J3t1PtLl75Hs6PK8CNnlGKc+o93KBa65QhcYsJwgYrv5+AobLjfncS80Y1rtjkQOCxaIO2IjmVxoIOPHAwln95MqoAzkmUm7WseklPEo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=W6rLL/w7; arc=fail smtp.client-ip=52.101.65.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kvT9Qodk"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="W6rLL/w7"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g3XJi6i67LCq9qFqqt+nxONLWy4D/GiJwvdLGY6/PF/VSZAplp4eQfcQnu4JPCCd12fsTvsiwDbLh4ZERiCDt8LjbbbZFmRf6zMPMoGZpllsJJZPV2C26g4ydYKEzed1EHbKv0NgrwmASw8YOQzMbflz8q2xP9Tb26lPzaBvflOFWJbyunSli3nyiveEEdQwo0qdZ2V+fdK0veDVE0HNYIqvChkTrXbgN4e882KElJMT+6/YbL8mhiNqfyh3nmWb4XlqSizkgCgTiqwY9muqsUiB9yYg5wf6TMiRYSPDT7S3Axyn9opO4aw4xqHQ5SJRv5TgujhQI7Jmk1Isi4BvgA==
+ b=xub/qexTsWHFKq3G3QIVotUyPZzZTEaMZE2keJY4aV1u2hrd5vneKXbIaropUZX8/kF7ETQnJkWxHRDpqxkAObZR3a5iRbUxjnVmg62+BIVYS1xVGiR/A6yLGvej3i0Y68O34a1FQIUQ2myPCpfSxFKzTNhSwkoZ4Rml+vl3Z+z5saAkZ5gkckHmXFBbqwmAUTmcyqJ+FNP0g/tWr18f4JHfCQgcO9mmZBK0p6p67PoW3rgqG/Y6oRfMYXqF6jFjqbfR5n5EJQwas6/DftxjtzlRvp/OHdOGaOikolhIVd+IfHMGhyeQrjpnc3T/HHn8Mre0ITEnvOGPRAmBeKr8JA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Db1s4zc2ZLyKDq8btQkzsNu5P0kbBRecYNovjyMhfks=;
- b=Km1Xr4bL5oLAkTiW3za4qTL8s/9Hd5de0xvJHDX+2+c/iqa8HN4+dZz6AobxP2plzWd6e/5Nd1AdEm/Dw2rvrQEAfACj3zCU/ywwW7IzEvkUNJCanQiSSVjsFemzMQq+IvjDlmoFf7Bhq/f1Wc+vxmZGLSDJn8k5qS2F1txy0CtqIP0Ac36D9/YvBBzeAXjVbHEMu152ldAVZ/gr92KW2Cl89K7rssAFlai1EynqIX012ZfFa5zfIcJXw7wTNLehVYNSCS3uPVrnyd4xuJ+ogOTLrLa/rXZ0FZOlzOPE7dJ4mwj7Op5wCm/7Z8M8enpTU3JkLatHy2UYG8eU9CWWJw==
+ bh=BpcRW1UnGiBWoXFw3AUZO1xaoKlQKzG6gdgmeVVp5VA=;
+ b=AYmkSyQbgJ3h0pJpdi/CvwvKqS9K5nM7P97jNfm3MgAV61Qu6rHJ3JUyhfD9QAabFoWxSrmYsw+8mtTvFUTX0ub2JpkIVJjaKh+Atab7s5fYn+Ps5EyabSjD0zXM9L+j5notF4ltk1HHvAXCS5LRvtxEQSOt3NvW+El1iztKP8eVoIUHNz6TGrLtJA17w7XGYJTPsVWTjCktb38t+Wth5PEmcA6lhFoAy2ZCIYNyDVVFwB1AokFZa32/gAWOJ9mQaSKCSdfc6E1zrTX9b/VpssUbLdk0IeXzt00RyYETvDlP/lIthnK6J43MthEbIVOtpYH21MbI9ofH8fd5MM2ozw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Db1s4zc2ZLyKDq8btQkzsNu5P0kbBRecYNovjyMhfks=;
- b=kvT9Qodkgi+dMLugFrWuhhpyhswsxDD1NCayQpu5OghsJBnrXFXsuqn1KsVojEAk0utiD2gYQuI4LWt8K2wZRTbG414b09ViKirCSgXq+Ui0L/tusMdcjs2qqk5TZ7JlHZ8zo2OFwEtE5mcF7WlFeM+HXtA7SjwGwd0n2I4RC8/ilEr0/Hra4hFtKhurdUeNplHfLlgELkP7WNJQo48/ldmVGDe9dbZwdRwA70rHxgvj9WCLbYRqzJPEt1SbRr6LgQWS99rvkpgXpkp8vtQze/oZjwszgN45ruX2GObNxJ+VX84Ti6Oxk9Q+uDoghu2k9AXUk6Mjgqad7Ie4K8bM6g==
+ bh=BpcRW1UnGiBWoXFw3AUZO1xaoKlQKzG6gdgmeVVp5VA=;
+ b=W6rLL/w7CHsRXuS8UIiPPl280xEJo7aVGc1neROsnvtLPNgD/xic2488D0K4qBUcyxs9n8cH+w72eoNRWD1G8jAPx+AIGl8EbC2pzrU5GZla6T2uXuj3Qp2Oxw9alotSQhIohGB1DVtkV8pG6AhDb/2MvrvkKK2tgQpafyIS8HicLMWmMMk4h+39aiEOHTe1dyv+enylVp7zQVnBBywKVc2IoBrGQTZ7vsSE9b0nyIMm4iHqBMe4ZtD92RvEZNtVet/BtHBJRWSU5GEZLiWPoVs9od7VPAtNEIIULtmuDQq1KM++kmaE8zSF7BAHOS7CDLCr0QUQOmad/h3duWEp1Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
  by AS8PR04MB7720.eurprd04.prod.outlook.com (2603:10a6:20b:299::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.13; Tue, 14 Oct
- 2025 15:35:01 +0000
+ 2025 15:36:35 +0000
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
- 15:35:01 +0000
-Date: Tue, 14 Oct 2025 11:34:53 -0400
+ 15:36:35 +0000
+Date: Tue, 14 Oct 2025 11:36:29 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Marek Vasut <marek.vasut@mailbox.org>
-Cc: dri-devel@lists.freedesktop.org, David Airlie <airlied@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>, Liu Ying <victor.liu@nxp.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Simona Vetter <simona@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/imx: dc: Sort bits and bitfields in descending order
-Message-ID: <aO5tne2YgKpM+Ijy@lizhi-Precision-Tower-5810>
-References: <20251014114148.43922-1-marek.vasut@mailbox.org>
+To: Zhen Ni <zhen.ni@easystack.cn>
+Cc: vkoul@kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4] dmaengine: fsl-edma: Fix clk leak on
+ alloc_chan_resources failure
+Message-ID: <aO5t/dHjLsfkaFar@lizhi-Precision-Tower-5810>
+References: <20251014090522.827726-1-zhen.ni@easystack.cn>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251014114148.43922-1-marek.vasut@mailbox.org>
-X-ClientProxiedBy: SJ0PR03CA0009.namprd03.prod.outlook.com
- (2603:10b6:a03:33a::14) To PAXSPRMB0053.eurprd04.prod.outlook.com
+In-Reply-To: <20251014090522.827726-1-zhen.ni@easystack.cn>
+X-ClientProxiedBy: BY1P220CA0002.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:59d::6) To PAXSPRMB0053.eurprd04.prod.outlook.com
  (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -70,277 +64,119 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS8PR04MB7720:EE_
-X-MS-Office365-Filtering-Correlation-Id: 950a6b8d-78ae-47a9-4a7b-08de0b373d7a
+X-MS-Office365-Filtering-Correlation-Id: 1b627801-016c-4040-7ede-08de0b377588
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|366016|52116014|7416014|1800799024|38350700014|7053199007;
+	BCL:0;ARA:13230040|19092799006|376014|366016|52116014|1800799024|38350700014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?GOm006vQ+anmlPeP5a0NeLroYgtc8yDPrmnHykKcjihSRKmC39foalUadnFp?=
- =?us-ascii?Q?3cXWDbqf3poombSeOeXkjZgpwtKTN7HCQGCs/l8a3xYWxYFVg+wRq2tlUGIy?=
- =?us-ascii?Q?nA9yLsTubFuexHbnvnlmAi8jXaqDeOG0VgCKNj3f195zbwz0r0YeeiGmIHYe?=
- =?us-ascii?Q?PIBVlHGsGqUFIFo0cyPIPbB2Bg5LiPmIrNToMyQCbYvakcD2pGMLlREE6xVN?=
- =?us-ascii?Q?HVDrbmqGyDAJbxqkGnpCUARCyQ/pohUjb8hNUprxHLdJyaREcw1rzRP/1zNI?=
- =?us-ascii?Q?VU4hUEdm4phkfXBqsNtovPd2NgpuJ+5cIAuflvOGZIwMYfu7SecVHETiEqw8?=
- =?us-ascii?Q?qFMzXEAmdlIy7nn1cOeiT0hKi3UPY2fI+D8FU0QdcRTQJrtmiJ7IbR9CcGEy?=
- =?us-ascii?Q?z3tZLgBy5+OIC6SvO0cKs5nJd+TaTIR0e2Uywt5zU1ZlqvWm41w9us8ESEPb?=
- =?us-ascii?Q?Gqlkt9iBPaKxU/bX/vO2H087NriFNWK5RERTm36D0VPMSSlQ8sTwDJVWmMUO?=
- =?us-ascii?Q?AGjabpxraJ2nBIn0RssayXI2X/2bSF3lvfbpZGuq5UW2h6UT+pfj6YJhSLfi?=
- =?us-ascii?Q?m8KUsp6Pw23k2KtFbWxC8md72/fpQCtGNdHrVVyoDgZE2HWxJfXfgrALbe8A?=
- =?us-ascii?Q?6NK6Q43WDyPvj/5cAfVo9jfRSwoN6jaW0FNpf6eiOv6ZUjMEgAQhEBzJE6dJ?=
- =?us-ascii?Q?cQXhjAktHlqueEm3K3biovnFT7jMN0fgqwixIx8m6XV5Dn/nLTnWquoNARhQ?=
- =?us-ascii?Q?RdxoIm23MVuP+vjMHoVvXzqKoMoo/ieGzflcNt76M7QCEsK2pearbBbGdqdZ?=
- =?us-ascii?Q?OxDM23A48DuZ/yL0IIt6yp5WrmywIUagltQFSu5WDg59+gUOp8HcnsMnXPvA?=
- =?us-ascii?Q?uYXP8M9ew5mElGZOlkNvpbkRbHuxlxtvEpMITPTNgP/rAZsr4yYPDBvQeb4Q?=
- =?us-ascii?Q?5WXnNGbQmojGA/N7/EN6qg+9Ahn3EfU33guXbK7bX5XaFzqxge6NTA35WWyv?=
- =?us-ascii?Q?gvf9t8nN8yQM1pd9pXck+VqF8ipoQRiT0bTVp4b6bmT0N0JyI5OdaSXHsJ0x?=
- =?us-ascii?Q?/6HKCuujIIo6Bsaw0AudiZ80AfQgY04egSl93Fs+Ahm/DeRKrJomU40dlQkU?=
- =?us-ascii?Q?kx229r2efRCnVvEmO9qPrKFmDcRVntSTLisk9Cpf1INvv7Wpr03dk9EJ1nLk?=
- =?us-ascii?Q?NS2krOUEZA8coQgUH2hSL+xGLrqdr/pBBEs55EEFji8q9ElFa4STXAIOZrtU?=
- =?us-ascii?Q?e+EDCNsWF4mmiOUe+JQU1CJWC2INelhS/zfdd1FH6wqYO6H/PI8tLQB36+3C?=
- =?us-ascii?Q?jE0aPFEwufweOdB16OS62+jH4dNnXIBag+4zDK1VtUP93ai2/4qtQHjtYbNX?=
- =?us-ascii?Q?9x+vrxiaWvYoiFZrhBZECXBb6T5l51hkO+m4+1pXuhvd8uWcnCdhcCA35RAO?=
- =?us-ascii?Q?XFl0bQ4T8n8XcpmLD+xv54hqZNXt7o1y4/gBGzjXUzXqlx5nommXEALV2nak?=
- =?us-ascii?Q?bOsyyVwS30e07dEx289m2RSi7sOTLTNqIXgD?=
+	=?us-ascii?Q?IXzKyNc9jZJcDjwqUEl3jzUUL+1HfngvkYM9WSaj4VCoHHHL4DBA3iyfofX1?=
+ =?us-ascii?Q?/CrY6Rxl0+yt8b+I6WJ3c2f6e12x7Uk2//ePHCofoAvkz4YUfrS4r4yjhb3T?=
+ =?us-ascii?Q?uKd8yMOOR0MIiVjbqcvDF3cXYldxuiGZruztTJqhq/aZlLB7/2EmOEJhNpt1?=
+ =?us-ascii?Q?dfIzSo+JYsmbar3OVEFcgb1ObZHFNKIuHFG0W0s7LSBZzwkewPjfXP2FQKcv?=
+ =?us-ascii?Q?leIU0Z1rLPAHTNMa6MUBKNKV9wf0Q9f/BsjiY7HLtwXG80xpTVMCzv1rra8e?=
+ =?us-ascii?Q?iI+DEOpay/zIWKN8Eo0YN14OchyMYBI5wDSVG8/4D9Y03aGvJOaIMBiO3kM/?=
+ =?us-ascii?Q?NksePCH+eaKbKMAIPGodUiL4isjdjIs7ngkxDb4XkeSNXLCFpYLZfHfhjI+7?=
+ =?us-ascii?Q?qPSrz3o3OOnRcB/HicSOHT9C7g0kQJv0GdXWqiCwDEoHmXhAVZi46WmEAfwp?=
+ =?us-ascii?Q?pqG7KaJ+i3oO9uBn3hx8tgTWNaPYTTCbJtshvegoVQxkqrkSRvw60dXwNiOg?=
+ =?us-ascii?Q?lFlfO3mhaTSm8f9eRvW8qpTkbpaGWu34McuDMwXJPBBSCsB82H4Wcwlmh85Y?=
+ =?us-ascii?Q?w2/fUnn0D0qLbWtSqam8X8C/cJgtB0gb6cYitv2XUT+ev6iYhA0vBjwEr25g?=
+ =?us-ascii?Q?xM9JStpVygiHcQjJ2weuSdokm7SJDB8eD0tRDS5F6bK6nHPO9A1rLlCvbfoY?=
+ =?us-ascii?Q?O9yn5S2mY5XwPrswRXc9Y9Og5ZROWgy/pmMWL59FxZvUZ1j6tLxfamIMP5uX?=
+ =?us-ascii?Q?XfxqLcpdWCOaEjgHyNGTbQhyunwoKBr9mIMcCHuzS9fj3/8xdVbWOauQpIc+?=
+ =?us-ascii?Q?+DT9J09eIuUfpjWk4b2c7VfZLQnEN55SA68jL5aoSwMfGxFDf6bjJH3DKJMK?=
+ =?us-ascii?Q?oaY9J1HC7wjNrovzRx85s43CDB0xEFx+nRBaMytjb2T8IgwZdkFocVLP13Ae?=
+ =?us-ascii?Q?brF3r3DGVyAlp9SkYlo1KFpb6O/3Mo9Rg7RVgGGMObdM8XhIbcwUGuGz8s3j?=
+ =?us-ascii?Q?+bSwbMMqufX6NAbxCSh1V7mcXron+fEDUyMkeSq7GYmZSyG722VaZLyoCuH7?=
+ =?us-ascii?Q?GHfZsgoIhvlN3PrO/iLv9cekopK+m7dcSIAuUzUn8898Qr+DKC922St6uP9C?=
+ =?us-ascii?Q?kLM74VlooOGW+S1cbTwkeTKNwC7mQyaNcVcgWtoj20ZhkOD7TrJlLtgJqYeZ?=
+ =?us-ascii?Q?U2I3T3DUbd7Pg3QFg7wWjSBtiB85rPxAzcTnA0NL/EwtWNa2hPuI+PBKOc2w?=
+ =?us-ascii?Q?AQonYeyX6LClxrX6Kyi23+b37Bu/EomsqyLXxUVq2BDx5KL/JWN4cE7aFytW?=
+ =?us-ascii?Q?jC+h4g2Kfcw+j9msMdKhR0q/rdlSYgs0da3STzgse6dkFXp7x4dm/cMxUF+w?=
+ =?us-ascii?Q?whYNxTSoix51SijhXoapTNxuzguUBgk3o/OidcT5v5Jjbir9SusmdDKlsXX4?=
+ =?us-ascii?Q?S6QeY8FyUwV7xFiWEnrmncyUp8DZXBsvo/wsuY4064o0bobrecBjzdd/S0mt?=
+ =?us-ascii?Q?qNUpq6gKD7NLJ4xMXrSjfGBp1sx/ZV088Sms?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(52116014)(7416014)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(52116014)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pN83KgjsOx1pIdjP7bdYC7JivMgpu+HeZGOkeygXvG8rim/btFTM7mOhqWb4?=
- =?us-ascii?Q?NVUHIToiYsOytib/WEXp1VramLBIwi8lZeS5JOBGpsVLkDpIRXH/D0wsZqnj?=
- =?us-ascii?Q?NFvYTTSscbNFAXy1f1qsSD2x2HmvoNF82joGnSg2X/r/ebr/ToCuvPxtKZVe?=
- =?us-ascii?Q?0ogdOq2o62bc+fZQtlEJFYSMy8cCuf9AmZNet8bijlOwApIbSfd28/4qJd5O?=
- =?us-ascii?Q?mj4G1KNGC69leQAZiSd8h8dHFEV7dgT84okYSNVS6ubklRYFNn3AQVBIYCtu?=
- =?us-ascii?Q?48AgF6VCmZimSBUYcA6IYD4zcc+6mFIsxCkiLqu2SzLcPRNHLlXuHgVfwOzE?=
- =?us-ascii?Q?xZENu9zR3xaRkSzuT4K7cllX8E57iG0Ko0ri1B/X5TiNWxtUQ7bQ6KabjhgX?=
- =?us-ascii?Q?CdN9dTckt+BX/DF4gRo2/gfKwIPkL0lKJW2WRkkSVd13bdFaCN1/j8DgoPqv?=
- =?us-ascii?Q?Fj7nHz/FSyzq+eg+oOMWM6k5XOUglrg/5dJOsrR4xux6B/qgqdNoikl14dQQ?=
- =?us-ascii?Q?cmUbqgA8qjK8aWqaDy/P2MzqYSGkX94WtImP0Gz0sa7PerYBj0ZZS+JSM8hR?=
- =?us-ascii?Q?BVIjYxIUikV2TdcbCyXFPvP+2E+tAG+fTwKebUp1e6YQp+X6RSjbed2EfIRx?=
- =?us-ascii?Q?YW3jAMVnPpB+MwetCZ95mg+wLqzoRmt7EDVC/cRv6lyjNDoXTUCQNHjIl8JN?=
- =?us-ascii?Q?KB7moxFbwjw3eTjpLgrNF0lT8QFn0oriQbp0UkTTiOPepXj69Nc2BhCnTOgf?=
- =?us-ascii?Q?YygEsIc46Lw97uUpwOxtrguax37a1o2FuZgr7cy843DqV0t+qerhrC6rOFaa?=
- =?us-ascii?Q?eLQnjdpCGQYWccLCaTFwWbxDHDQ8PKphXCdZxMJLgS1OBgURNBb2fAyje7LX?=
- =?us-ascii?Q?LLCPQxmCE7+VF1faz5aQwGdGVb4WZ85UFx8AmrEC8C/bmXuASR9CmO742Xk6?=
- =?us-ascii?Q?FU00yomGs1VRl0tz9Q3U/AdAKOLgPxKJOkfRMxOMV0GS6m9OS2gsvwEHC9+m?=
- =?us-ascii?Q?D2BhIVbMaR9T1AfejIKm/vwowm5DrWfiNLH5MR7/6m5YXwCpmu4lAnFDnnzA?=
- =?us-ascii?Q?fOSKuIpLv8PxrCBPcOwmqtD8WuUlyCXABH9fyEkpfldbEJFFqPXuvUen+7oh?=
- =?us-ascii?Q?7hjAeub4+88f8f2/fVCLlmQrbO/7zr+xiUN+PdA3xX188HWxd5EGrZ8pp7Ky?=
- =?us-ascii?Q?bEtDcvHWVlsao3RSqKS6OD6CD/rexKwmPtaBM0y048jPtwNGRNpQZW0ziyNw?=
- =?us-ascii?Q?lRzKRDmp/txb919WrX4/kSW9jGv0OllRQkFzD/0PAKMY3zJtCIn+Y8wHQ3x5?=
- =?us-ascii?Q?sU2gUe73FSklBwYQA0NHXOtX18fah/y3/jRuY8le7KSZHBkGx1Rhu72woUPM?=
- =?us-ascii?Q?ZGGRvbk7y+Z+t6wDCro+t1tTqHyHtLcYevP8OWCgiHoEAoapYRBsdgy43sgg?=
- =?us-ascii?Q?GuEMazFSSX1HDr+VEgF6DFuij+VzcEE81XNDmV9RcEiKOO9v2dfSGeIx1avw?=
- =?us-ascii?Q?TgEsKhNzzDYuZZnqVx1oJeOWZKsRyrD0V+r6xtOs1iGCGVGiHAdJOHmuJtp8?=
- =?us-ascii?Q?f5D1E4y8sNXfsMJ8/kI=3D?=
+	=?us-ascii?Q?EvDglpQLUNs4IJHJQWXVKkIFxpWaAK3jmsuOGSuBO7biIpDpx/MBYFYI5Ee0?=
+ =?us-ascii?Q?DF7oMb8OIW0kVAQaQJT3QP0Wqr4OLtTmuiza+bq3KoN1dkdmYhL37jDi5z7z?=
+ =?us-ascii?Q?WZYrtDtmqIRsBZ2MnStfDRlBTV0UGTuzZqIEyaDE7K1dEKufPUcbjhXNLEE5?=
+ =?us-ascii?Q?Am/d35vctJQxclqVdjHK0yFyxuRlbn4bd82cRujA1uCHtWFnNYjVAIPeYtSK?=
+ =?us-ascii?Q?RAU/KE0hlRtFfPDsBs1DX1bFmczrec88sNwMuv42n6a0WNAWJVusqSFew0sf?=
+ =?us-ascii?Q?zATJhiyoGBF7pIKEI47fGTGEGtKNk6WuzJqad2EScF4j7lOKP+z7NhyRLtWL?=
+ =?us-ascii?Q?VKUzdxXZNvz9S5+oWvX+L1D/GRFdeR7hsQzY+pyUzttaE5sqwKDJAbg2gpSF?=
+ =?us-ascii?Q?9UQprbKnT8crR2pj9lcpO2UPB6cWXa+Jzdm5jese2grtMywqsQ1Pu6O3wlnS?=
+ =?us-ascii?Q?v6J3+A94kR2UpLkT3uVjOUSyPnoRE+fdciGl/TY8HEmzF31h3/xopGyU5CPd?=
+ =?us-ascii?Q?X0vTHkSaKBjF1uTM68xinZX5ErN8Vevbbg1QQhiYUUDk9s3CAUBP5aiiW3Fp?=
+ =?us-ascii?Q?9HSgIiDeGV5X3lUJ6/Kf5uEDQfP6KdCYSXCbA5vpRl+nif9w77xWWkOSZBRU?=
+ =?us-ascii?Q?Z8DzNzDhZmeOltkXsq4K2ruxi4Bk/XF7EivcGPhvNEWGSDfDJymVjaiFdeKe?=
+ =?us-ascii?Q?o2mKdR3/VxJYi5OYZ4cS2I7hp5n20Olq/dDLORY5uCE7TZHMdTYF7ZkJLZNg?=
+ =?us-ascii?Q?CocPbSEPwN+e3zVbMbMlpdKIZYlRHM69PLddwlCWBqWPocgCgHFmJRe9ogDO?=
+ =?us-ascii?Q?+nQM6o3RktNevjDi1di64KfTmLRVTY5Z/jUwDOqjkwvP0776Pf9PGd6NhbDk?=
+ =?us-ascii?Q?ZdkZ2fGidF1ykUJM8VZ6UO/lGPFMGGfMVRod7ATTrXoK8jIuDiCqOoZOPIbo?=
+ =?us-ascii?Q?xepuse4b3xxvAmDOyvmURVsTAU1wafbTbYeoBrCYP55kVr3Q/lgJiyIvmQxw?=
+ =?us-ascii?Q?PE9NNTBYD8GTB0Gi480bmyuuQ8kyQ8VB2QsB9hgRE4fNXJGScugfA72PCvdO?=
+ =?us-ascii?Q?i66gq10DqtVSUFmoN9vLNzmXxAExOWCg0euOp9Wn+7B1/4RQPSm2myDR8nMP?=
+ =?us-ascii?Q?U1RUTze5J5SuZN8uWPGRvGGQCCzPvYt/+J2gP0LT+Q5bQZOTDnpqsKEhDteW?=
+ =?us-ascii?Q?6LONRmVrBFWe7KEVRQfuowY9ns+VJjZ41pnMRpbFweKgcbdsnOWJyAAkRiwa?=
+ =?us-ascii?Q?sXUqR4Q4Y3AmfO6k+hl8yzCRbkw8LbcsTc+cKiK7KdrvlXND6wY3bBvpdn3I?=
+ =?us-ascii?Q?lIdlMAO/YH7RG07LlaXFXKHPCkTkCHsT5Q5dWL2RiFwxE+rmRHnGzKYgcN6G?=
+ =?us-ascii?Q?cYrXAAQg8M+mjChhdNmxU/L3EZJZ6xgJw8/sMKJzKUVfvmOErJvbkMbSPX/b?=
+ =?us-ascii?Q?y5Cra+5JtEFrpF6XQ0Xt545CE7gVSU9a6/mW+nT5mjpErRhFzJxSgYAimlwX?=
+ =?us-ascii?Q?N3hxcfCjs9z37Zx3abrcvQVFxSS5Vqgan+zm7Ep0UfM/cegsvBx8FSzVHATm?=
+ =?us-ascii?Q?1QMTs9ybmug27d9I9eLix/IOSD0OciS0RAt4sqyJ?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 950a6b8d-78ae-47a9-4a7b-08de0b373d7a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b627801-016c-4040-7ede-08de0b377588
 X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 15:35:01.6756
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 15:36:35.7401
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: F7IHCDLY4/IPSpA2DMRaR/+jjGjlfccIT/Bi+Bb2QM/pf1EPfi7rCG0C8B1JnFvYDfi15yr9ralEqz2xy2CN9w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: uObp0nhLkgYpK3TXshjX0dcz4PUt76FddpqCni6G4/1dEOExwbTPQ3k8fnNDIivkvtpVEwM+04hgGK50x3ApJQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7720
 
-On Tue, Oct 14, 2025 at 01:41:07PM +0200, Marek Vasut wrote:
-> Consistently sort bits and bitfields from highest to lowest bits.
-> No functional change.
+On Tue, Oct 14, 2025 at 05:05:22PM +0800, Zhen Ni wrote:
+> When fsl_edma_alloc_chan_resources() fails after clk_prepare_enable(),
+> the error paths only free IRQs and destroy the TCD pool, but forget to
+> call clk_disable_unprepare(). This causes the channel clock to remain
+> enabled, leaking power and resources.
 >
-> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+> Fix it by disabling the channel clock in the error unwind path.
+>
+> Fixes: d8d4355861d8 ("dmaengine: fsl-edma: add i.MX8ULP edma support")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
 > ---
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Liu Ying <victor.liu@nxp.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
+> Changes in v2:
+> - Remove FSL_EDMA_DRV_HAS_CHCLK check
+> Changes in v3:
+> - Remove cleanup
+> Changes in v4:
+> - Re-send as a new thread
 > ---
->  drivers/gpu/drm/imx/dc/dc-ed.c |  8 ++++----
->  drivers/gpu/drm/imx/dc/dc-fg.c |  4 ++--
->  drivers/gpu/drm/imx/dc/dc-fu.c | 10 +++++-----
->  drivers/gpu/drm/imx/dc/dc-fu.h |  4 ++--
->  drivers/gpu/drm/imx/dc/dc-lb.c | 28 ++++++++++++++--------------
->  5 files changed, 27 insertions(+), 27 deletions(-)
+>  drivers/dma/fsl-edma-common.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/gpu/drm/imx/dc/dc-ed.c b/drivers/gpu/drm/imx/dc/dc-ed.c
-> index 86ecc22d0a554..d42f33d6f3fcc 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-ed.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-ed.c
-> @@ -15,12 +15,12 @@
->  #include "dc-pe.h"
+> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+> index 4976d7dde080..11655dcc4d6c 100644
+> --- a/drivers/dma/fsl-edma-common.c
+> +++ b/drivers/dma/fsl-edma-common.c
+> @@ -852,6 +852,7 @@ int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
+>  		free_irq(fsl_chan->txirq, fsl_chan);
+>  err_txirq:
+>  	dma_pool_destroy(fsl_chan->tcd_pool);
+> +	clk_disable_unprepare(fsl_chan->clk);
 >
->  #define PIXENGCFG_STATIC	0x8
-> -#define  POWERDOWN		BIT(4)
-> -#define  SYNC_MODE		BIT(8)
-> -#define  SINGLE			0
->  #define  DIV_MASK		GENMASK(23, 16)
->  #define  DIV(x)			FIELD_PREP(DIV_MASK, (x))
->  #define  DIV_RESET		0x80
-> +#define  SYNC_MODE		BIT(8)
-> +#define  SINGLE			0
-> +#define  POWERDOWN		BIT(4)
->
->  #define PIXENGCFG_DYNAMIC	0xc
->
-> @@ -28,9 +28,9 @@
->  #define  SYNC_TRIGGER		BIT(0)
->
->  #define STATICCONTROL		0x8
-> +#define  PERFCOUNTMODE		BIT(12)
->  #define  KICK_MODE		BIT(8)
->  #define  EXTERNAL		BIT(8)
-> -#define  PERFCOUNTMODE		BIT(12)
->
->  #define CONTROL			0xc
->  #define  GAMMAAPPLYENABLE	BIT(0)
-> diff --git a/drivers/gpu/drm/imx/dc/dc-fg.c b/drivers/gpu/drm/imx/dc/dc-fg.c
-> index 7f6c1852bf724..28f372be92472 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-fg.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-fg.c
-> @@ -56,9 +56,9 @@
->
->  #define FGINCTRL		0x5c
->  #define FGINCTRLPANIC		0x60
-> -#define  FGDM_MASK		GENMASK(2, 0)
-> -#define  ENPRIMALPHA		BIT(3)
->  #define  ENSECALPHA		BIT(4)
-> +#define  ENPRIMALPHA		BIT(3)
-> +#define  FGDM_MASK		GENMASK(2, 0)
->
->  #define FGCCR			0x64
->  #define  CCGREEN(x)		FIELD_PREP(GENMASK(19, 10), (x))
-> diff --git a/drivers/gpu/drm/imx/dc/dc-fu.c b/drivers/gpu/drm/imx/dc/dc-fu.c
-> index f94c591c81589..1d8f74babef8a 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-fu.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-fu.c
-> @@ -18,11 +18,11 @@
->  #define BASEADDRESSAUTOUPDATE(x)	FIELD_PREP(BASEADDRESSAUTOUPDATE_MASK, (x))
->
->  /* BURSTBUFFERMANAGEMENT */
-> +#define LINEMODE_MASK			BIT(31)
->  #define SETBURSTLENGTH_MASK		GENMASK(12, 8)
->  #define SETBURSTLENGTH(x)		FIELD_PREP(SETBURSTLENGTH_MASK, (x))
->  #define SETNUMBUFFERS_MASK		GENMASK(7, 0)
->  #define SETNUMBUFFERS(x)		FIELD_PREP(SETNUMBUFFERS_MASK, (x))
-> -#define LINEMODE_MASK			BIT(31)
->
->  /* SOURCEBUFFERATTRIBUTES */
->  #define BITSPERPIXEL_MASK		GENMASK(21, 16)
-> @@ -31,20 +31,20 @@
->  #define STRIDE(x)			FIELD_PREP(STRIDE_MASK, (x) - 1)
->
->  /* SOURCEBUFFERDIMENSION */
-> -#define LINEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x))
->  #define LINECOUNT(x)			FIELD_PREP(GENMASK(29, 16), (x))
-> +#define LINEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x))
->
->  /* LAYEROFFSET */
-> -#define LAYERXOFFSET(x)			FIELD_PREP(GENMASK(14, 0), (x))
->  #define LAYERYOFFSET(x)			FIELD_PREP(GENMASK(30, 16), (x))
-> +#define LAYERXOFFSET(x)			FIELD_PREP(GENMASK(14, 0), (x))
->
->  /* CLIPWINDOWOFFSET */
-> -#define CLIPWINDOWXOFFSET(x)		FIELD_PREP(GENMASK(14, 0), (x))
->  #define CLIPWINDOWYOFFSET(x)		FIELD_PREP(GENMASK(30, 16), (x))
-> +#define CLIPWINDOWXOFFSET(x)		FIELD_PREP(GENMASK(14, 0), (x))
->
->  /* CLIPWINDOWDIMENSIONS */
-> -#define CLIPWINDOWWIDTH(x)		FIELD_PREP(GENMASK(13, 0), (x) - 1)
->  #define CLIPWINDOWHEIGHT(x)		FIELD_PREP(GENMASK(29, 16), (x) - 1)
-> +#define CLIPWINDOWWIDTH(x)		FIELD_PREP(GENMASK(13, 0), (x) - 1)
->
->  enum dc_linemode {
->  	/*
-> diff --git a/drivers/gpu/drm/imx/dc/dc-fu.h b/drivers/gpu/drm/imx/dc/dc-fu.h
-> index e016e1ea5b4e0..f678de3ca8c0a 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-fu.h
-> +++ b/drivers/gpu/drm/imx/dc/dc-fu.h
-> @@ -33,13 +33,13 @@
->  #define A_SHIFT(x)			FIELD_PREP_CONST(GENMASK(4, 0), (x))
->
->  /* LAYERPROPERTY */
-> +#define SOURCEBUFFERENABLE		BIT(31)
->  #define YUVCONVERSIONMODE_MASK		GENMASK(18, 17)
->  #define YUVCONVERSIONMODE(x)		FIELD_PREP(YUVCONVERSIONMODE_MASK, (x))
-> -#define SOURCEBUFFERENABLE		BIT(31)
->
->  /* FRAMEDIMENSIONS */
-> -#define FRAMEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x))
->  #define FRAMEHEIGHT(x)			FIELD_PREP(GENMASK(29, 16), (x))
-> +#define FRAMEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x))
->
->  /* CONTROL */
->  #define INPUTSELECT_MASK		GENMASK(4, 3)
-> diff --git a/drivers/gpu/drm/imx/dc/dc-lb.c b/drivers/gpu/drm/imx/dc/dc-lb.c
-> index 38f966625d382..ca1d714c8d6e6 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-lb.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-lb.c
-> @@ -17,12 +17,12 @@
->  #include "dc-pe.h"
->
->  #define PIXENGCFG_DYNAMIC			0x8
-> -#define  PIXENGCFG_DYNAMIC_PRIM_SEL_MASK	GENMASK(5, 0)
-> -#define  PIXENGCFG_DYNAMIC_PRIM_SEL(x)		\
-> -		FIELD_PREP(PIXENGCFG_DYNAMIC_PRIM_SEL_MASK, (x))
->  #define  PIXENGCFG_DYNAMIC_SEC_SEL_MASK		GENMASK(13, 8)
->  #define  PIXENGCFG_DYNAMIC_SEC_SEL(x)		\
->  		FIELD_PREP(PIXENGCFG_DYNAMIC_SEC_SEL_MASK, (x))
-> +#define  PIXENGCFG_DYNAMIC_PRIM_SEL_MASK	GENMASK(5, 0)
-> +#define  PIXENGCFG_DYNAMIC_PRIM_SEL(x)		\
-> +		FIELD_PREP(PIXENGCFG_DYNAMIC_PRIM_SEL_MASK, (x))
->
->  #define STATICCONTROL				0x8
->  #define  SHDTOKSEL_MASK				GENMASK(4, 3)
-> @@ -37,24 +37,24 @@
->  #define BLENDCONTROL				0x10
->  #define  ALPHA_MASK				GENMASK(23, 16)
->  #define  ALPHA(x)				FIELD_PREP(ALPHA_MASK, (x))
-> -#define  PRIM_C_BLD_FUNC_MASK			GENMASK(2, 0)
-> -#define  PRIM_C_BLD_FUNC(x)			\
-> -		FIELD_PREP(PRIM_C_BLD_FUNC_MASK, (x))
-> -#define  SEC_C_BLD_FUNC_MASK			GENMASK(6, 4)
-> -#define  SEC_C_BLD_FUNC(x)			\
-> -		FIELD_PREP(SEC_C_BLD_FUNC_MASK, (x))
-> -#define  PRIM_A_BLD_FUNC_MASK			GENMASK(10, 8)
-> -#define  PRIM_A_BLD_FUNC(x)			\
-> -		FIELD_PREP(PRIM_A_BLD_FUNC_MASK, (x))
->  #define  SEC_A_BLD_FUNC_MASK			GENMASK(14, 12)
->  #define  SEC_A_BLD_FUNC(x)			\
->  		FIELD_PREP(SEC_A_BLD_FUNC_MASK, (x))
-> +#define  PRIM_A_BLD_FUNC_MASK			GENMASK(10, 8)
-> +#define  PRIM_A_BLD_FUNC(x)			\
-> +		FIELD_PREP(PRIM_A_BLD_FUNC_MASK, (x))
-> +#define  SEC_C_BLD_FUNC_MASK			GENMASK(6, 4)
-> +#define  SEC_C_BLD_FUNC(x)			\
-> +		FIELD_PREP(SEC_C_BLD_FUNC_MASK, (x))
-> +#define  PRIM_C_BLD_FUNC_MASK			GENMASK(2, 0)
-> +#define  PRIM_C_BLD_FUNC(x)			\
-> +		FIELD_PREP(PRIM_C_BLD_FUNC_MASK, (x))
->
->  #define POSITION				0x14
-> -#define  XPOS_MASK				GENMASK(15, 0)
-> -#define  XPOS(x)				FIELD_PREP(XPOS_MASK, (x))
->  #define  YPOS_MASK				GENMASK(31, 16)
->  #define  YPOS(x)				FIELD_PREP(YPOS_MASK, (x))
-> +#define  XPOS_MASK				GENMASK(15, 0)
-> +#define  XPOS(x)				FIELD_PREP(XPOS_MASK, (x))
->
->  enum dc_lb_blend_func {
->  	DC_LAYERBLEND_BLEND_ZERO,
+>  	return ret;
+>  }
 > --
-> 2.51.0
+> 2.20.1
 >
