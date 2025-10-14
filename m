@@ -1,126 +1,106 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9983C30C351
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 11:25:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F56A2FCC02;
+	Tue, 14 Oct 2025 11:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760441158; cv=none; b=unKtO+baKykKcWGBgMHGHL9DBFc4zU/uiekrhRgWo9HJLDsMoZasdnKNjVagGGcqqWL8nCT+coX5186ac1c9080xS9GuGnoUvKFAMTrSx3PI3nppKZgyuXJiGp3F6aw4U2bANzY1Qce032vE6r/u9IlZLIsRf3wR2UxEr6ciLkE=
+	t=1760441381; cv=none; b=qtyMHt3hXX9Ng3CSvrWZh0IB8YxxA6tDsGaJK0xbGn+tXM7uzJUt5w1+S69huCYMV0crW15FwyvbExk9PN9KK5fRW99Y+MjbHVd6J3pplXNydKQM17biv7kwYZYYXbZPt80s6fkZvqgdzm3MEwoe7gYSFhsJpllUMiz2sFnxz+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760441158; c=relaxed/simple;
-	bh=iQmTbrHUexc232Nhf3QX3VZFHuse7k+IcjM2fAe1ig4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=us+UAVgkQWLmwUmX3ABCXfcSZKGlSKLlnD2mdACNeaqUbhGlbdCsYu6wShvjM3dHr7ZqjGxHXKNwBRY7UVusPREer1KgYYdvOZFEqZwQqOEVj+//WVPAqXcmkwv2QWrxV8tMpJ3IoxbL9tnL38/csRj/n/uKSvJa69qZpp6pqIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NwfIMGG3; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760441381; c=relaxed/simple;
+	bh=1GfZigKl8BK6ItvIvHiHwUmP9apgJNQtcjLeOH0Fo9w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pASI8TM04qlVzFiUl7wZaSoV70mydYoe4bHMOb5HyFQqUKudmM8YEvKEKnhmRE/SucRFHk0BVzm3GrvMpoaQhIpGIOIj/oJolff9/URpCyby6FTa+/Hp9sivF1JbEsKUzntqUI611rLeQMU1K9dduDI7cEEX5EhZJ/i1Rv78MMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=K7jAIQBA; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NwfIMGG3"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4257aafab98so4412391f8f.3
-        for <imx@lists.linux.dev>; Tue, 14 Oct 2025 04:25:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760441155; x=1761045955; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uiSHBqGlXIEAZvcjTP0Y/hDCrVSuK2ils+FnYn9ERgY=;
-        b=NwfIMGG3KyhvL1IbWw9Ja6fhKoX26+Xn3x9/WObSR7ehK4ArIMbDMYui3a49I6Is77
-         yVsbbfMggCiCV3jOVjmj9GzyeBTr2/2dYD0Lsh5+P/HHJYkw3BavlnpGnYp5dY3+IrLV
-         0vDIcn6b8MR0DuCf/Jix/BY1Thbb5BlMiqVhrTIbA4bt6rPj+/4Jp1Zbua8OnALFS6SZ
-         WWotxiLEoQFgPmjk/qoXYNPYq9lVUZUXuZUWGAouKlsXZHFkTKU/jNuptfKK2QSeEONF
-         QHCFFH8FJOJd6Tp9sQ0knGTOsrx9CwuKNTD0jl3s9t68oQN7R6u7ZNbUIFjlkce98stB
-         5yXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760441155; x=1761045955;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uiSHBqGlXIEAZvcjTP0Y/hDCrVSuK2ils+FnYn9ERgY=;
-        b=xUif9u65tWoPHRXFTjXTUtdfhzgB6IYWI/U1jsRfRlgw12TXJ3kKf03KSF+jxAVAjo
-         QElOv5KWdmjLb920HHKQL+IYdL/mPUIimohD7m2G7+DNqC8anxdw6GHMoeDwiDrOiFjW
-         kHWZkMyuHN40GOMLbQX10EJlKjqsweURzLX+89vgF9tO/1vzMXLgHgPIH+J9U68nolfj
-         4jfNI4RzggwO7a2dcWmIv6nc9DYlQSctjvivS3dMU+8Fj99h0m9wlNIGZtaXRGInhuk1
-         0r738cogP8PXbqyGQaqu0Mqv8XBOab+XAujlhus+JCQcbx4ibhXa3LH4qvIiuzsGDHY7
-         XYDA==
-X-Forwarded-Encrypted: i=1; AJvYcCUknE79TF/4FHpUQt2RJTBeEePiu8LPC9m6QGNTO0XPuzjrplfnsZuFQYcdgpV2yrRQq0E=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzMDdgP/0sNP0uzLRc9fCt3OMJbPtH/fejpBbTDL2FZXXgiVnSk
-	5o+GYTKLUii2dY1M315hhnZqzfIhS2IFwh9MC1gFQJQJSExY8E+yWUQN
-X-Gm-Gg: ASbGnct+2ilcOgNAsVah4J7yavIfsbehM7ZaD0KzZTJRMXlJ2r3sBkhG4msfqbSboku
-	9Tj0eg4omAlgoWFn6T5VNjjpj1xSxc/97RlYiMgIFRYfsTEcBON1m/QHId905Qiz5P0842RjFxG
-	Fr4/sd6+CQ4BPGSh+1pLpEK6HULYh6upUvT+YlOwZWjVTFei3b/8i40BH1CBBwciEmFCDXMABrw
-	C6QbC6ypUA6+76aMDTuPXVvVuwbjKjzdOw5qV0iYx18rt63tNSChjJCnE+VSHiM+BNiTGJ2wvHH
-	2z3KTS2CIeXZfrTgZrE6CbJav26yGN3Bk4AvIOcMXqnXjEOIqrvClrUQlv/dt4SBMT+PMbVSGSA
-	5yDaD/6276o4xfxa4mBpTAand7zQMRztljkwTpl0ZzpIIHrbrjx/qxx3jt14GdjFCU19M3NrlIe
-	/cIUbsNDP19u/HryQjUFhTBMqJMeZjJ81hUUWZX1buYRYLEfwA240=
-X-Google-Smtp-Source: AGHT+IEqaf50xViFqcGYgiRoMt4dwJ2xrUn7bmjBXs3Kk/pC18UdQvc3UcQNURWNwY1ZJ/f0754E/Q==
-X-Received: by 2002:a05:6000:3111:b0:3ce:9872:fd3 with SMTP id ffacd0b85a97d-4266e7d92eemr13663773f8f.34.1760441154531;
-        Tue, 14 Oct 2025 04:25:54 -0700 (PDT)
-Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5e1024sm23047515f8f.42.2025.10.14.04.25.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 04:25:54 -0700 (PDT)
-Date: Tue, 14 Oct 2025 13:25:53 +0200
-From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Anusha Srivatsa <asrivats@redhat.com>, 
-	Maxime Ripard <mripard@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Hui Pu <Hui.Pu@gehealthcare.com>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, regressions@lists.linux.dev
-Subject: Re: [REGRESSION] drm/panel/panel-simple v6.17 WARNING regression
-Message-ID: <kcunz2b2usmvadgrnnu65op5oi5ttblrc463twgxp5gqhnufav@eze53y23avel>
-References: <hlf4wdopapxnh4rekl5s3kvoi6egaga3lrjfbx6r223ar3txri@3ik53xw5idyh>
- <DDHZ5GO9MPF0.CGYTVBI74FOZ@bootlin.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="K7jAIQBA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1760441377;
+	bh=1GfZigKl8BK6ItvIvHiHwUmP9apgJNQtcjLeOH0Fo9w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=K7jAIQBADMt3OIAdrE5ksGeiSSHn+ISFhMcWzPAkpAwTKDDKt1+rpCu0J1r1kxoIm
+	 zNE1qxXvfwjh7+J1vFhd+CXwaCDeTCBRPYI1e2Y7bRQ2yYeUial1kg5IXqPHmqGaol
+	 gNuazANough8dB0l1ZoB4bOQEMjfaMH4tTYj++IBGNQym4nZU8eDT5rUBZMuL3ahg5
+	 gE9qgUqEkQHVwdmMl74AovVLF8DX+jhSJVJorUEvN8fOWQOGImf9FMfeK7S3diHVfW
+	 w4w/90WAi+UBH348POXLwJPK18r2KfgdyNNcXSuy3mtUqBmQc1ZFuoIhho81lJrW6M
+	 OO3IAjcJ+77kA==
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id CEE8617E0456;
+	Tue, 14 Oct 2025 13:29:35 +0200 (CEST)
+Message-ID: <15d26478-89e5-4815-8e20-7f34778d077a@collabora.com>
+Date: Tue, 14 Oct 2025 13:29:35 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DDHZ5GO9MPF0.CGYTVBI74FOZ@bootlin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 24/32] media: mediatek: vcodec: Use %pe format specifier
+To: Ricardo Ribalda <ribalda@chromium.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Hans Verkuil <hverkuil@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ =?UTF-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Leon Luo <leonl@leopardimaging.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Jacopo Mondi <jacopo+renesas@jmondi.org>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+ Julien Massot <julien.massot@collabora.com>, Jacopo Mondi
+ <jacopo@jmondi.org>, Daniel Scally <djrscally@gmail.com>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+ Sylvain Petinot <sylvain.petinot@foss.st.com>, Yong Zhi
+ <yong.zhi@intel.com>, Bingbu Cao <bingbu.cao@intel.com>,
+ Tianshu Qiu <tian.shu.qiu@intel.com>, Tiffany Lin
+ <tiffany.lin@mediatek.com>, Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+ Yunfei Dong <yunfei.dong@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Rui Miguel Silva <rmfrfs@gmail.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dafna Hirschfeld <dafna@fastmail.com>,
+ Heiko Stuebner <heiko@sntech.de>, Sylwester Nawrocki
+ <s.nawrocki@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>,
+ Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, imx@lists.linux.dev,
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-staging@lists.linux.dev
+References: <20251013-ptr_err-v1-0-2c5efbd82952@chromium.org>
+ <20251013-ptr_err-v1-24-2c5efbd82952@chromium.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20251013-ptr_err-v1-24-2c5efbd82952@chromium.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Luca,
-
-Thanks for your fast reply and all your work here.
-
-On Tue, Oct 14, 2025 at 12:31:35PM +0200, Luca Ceresoli wrote:
-> Let me have a look at the DRM_IMX driver, I'll try to send a series
-> converting it to the new API within today.
-
-I will gladly test, thanks!
-
-> I recently sent a series proposing to make drm_bridge_add() mandatory
-> before drm_bridge_attach() in the docs and warn if that is violated [1]. If
-> you apply patch 4 of that series you should see the warning.
-
-I gave it a quick try and did not see the warning. Some printk debugging
-told me that `list_empty(&bridge->list)`, inside drm_bridge_attach, is
-returning 0. 
-
-> > However, later on, another regression seems to be introduced by
-> > commit 8fa5909400f3 ("drm/bridge: get the bridge returned by drm_bridge_chain_get_first_bridge()")
-> > so reverting 94d50c1a2ca3 on top of drm-misc-next does not solve
-> > everything. This was tested by rebasing drm-misc-next onto (260f6f4fda93
-> > plus the revert of 94d50c1a2ca3) and then bisecting.
-> >
-> > So in v6.18-rc1, both regressions are present.
-> >
-> > There, I get the following additional warnings:
-> >
-> > [    9.732278] ------------[ cut here ]------------
-> > [    9.732336] WARNING: CPU: 0 PID: 38 at lib/refcount.c:22 drm_bridge_get+0x10/0x18
-> > [    9.744608] refcount_t: saturated; leaking memory.
+Il 13/10/25 16:15, Ricardo Ribalda ha scritto:
+> The %pe format specifier is designed to print error pointers. It prints
+> a symbolic error name (eg. -EINVAL) and it makes the code simpler by
+> omitting PTR_ERR().
 > 
-> Not sure here, but it may well be another symptom of the same bug: the
-> refcount was not initialized correctly, so it is found inconsistent later
-> when trying to increase it. Let's fix the known issue and then we'll see.
+> This patch fixes this cocci report:
+> ./platform/mediatek/vcodec/common/mtk_vcodec_dbgfs.c:187:3-10: WARNING: Consider using %pe to print PTR_ERR()
+> 
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 
-Makes sense to me.
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-Kind regards,
-Ernest
+
