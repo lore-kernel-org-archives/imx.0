@@ -1,240 +1,328 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011028.outbound.protection.outlook.com [52.101.65.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C841130F812
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 08:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760429618; cv=none; b=NW9oT705YtF7HgALfIn8ubR/zbVWgNucDrs6S6LR40CtWu+Cqamohd+mmT55Ilz8ycECgF1EYqjqkG2ftlGl2MfeuINlKyXPBUi3iqVnRdCiLUOg8DyFNCyBEPxjJUmXkQdT9A/zGedDoIOVxUMNgKkD9RxBsgeeTm3NHV49ark=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760429618; c=relaxed/simple;
-	bh=+2LmzIVa9DmNGLrlYbtdQtzdJ1I1DZNXxMZgk2QxwOw=;
-	h=From:Date:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=n6lbKcNFh4x9FL9rxVvHao/1Wqo23KDCCgN0PFFKBH5gQKm22pRKaqbf8x7JGzvUaqbHu/FETvhDFt3sK5Gvoi0xrrswZAe2+aYEgH7tUDpscsZ2Th6iL3M7NwBRUhot438ew6DOvOAojXLBL6EhU7MmyqIdAV8a71DnW1mTX+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M5MoH2Ea; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAEC2C158D
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 08:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760431892; cv=fail; b=ovxHZleqs0PpQJlKXYpgoRDIfC9US/O6Efyl27NU6bAFgsLndym/Y7XUpaN4oziRKHiGncsNi7sRDgABW7AXhXGkjEXfnPJaoF6I9MRIEhUkWiRZ4nVaRbmxx1E+YWahBbUino/QeAwdYivDq/eiJpyJ3JBKCoojnnLZv6HILAM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760431892; c=relaxed/simple;
+	bh=CeAfvdz94LlSVGszVBddmjql3PLdMAjmN0PtIIXaqRY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=tGqiVss2BQSmKkwofS+AiRBx0SDTOSbbdqD9fw7btr0Ay14vYOms6E01Dox0dyqOKEkT3LUpjiBKe0zf/eR7WZzyYGgcZQ/YwsK14s2QWzDOm4anKHvF+xt24/BmP9Womj+B/ywcjylaxq7Zm9iz7BAYP11u7Urmgx1WbqYZYGQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TTrpZYZy; arc=fail smtp.client-ip=52.101.65.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M5MoH2Ea"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-46e504975dbso29463615e9.1
-        for <imx@lists.linux.dev>; Tue, 14 Oct 2025 01:13:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760429614; x=1761034414; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xhf78mDj7L6zLhIAA4NyhL+vPp3/tw4ip9YZY4CJYUQ=;
-        b=M5MoH2EaPXRr/6DuijT9KSH70wizM40aPj4Z1qVL0UZ/LdLoaN6fD0snc/XaTZFZKI
-         vxjwtdj75Mm+GE5lyGgmQ8wAYn22eYVKKaQtFwSzACkZzdLw1ZebpHA9zIWnRNTGHf+m
-         DO3vQRhcbQkxvflMFM1FjYELySX/M62+V0iVfO3HCbHCI47JayezkCismOErpKeZYL4j
-         YGOd7LKkTWobkL3DC9mDJFZjJ1Xxc4JlS7/WVrgynG++O0lTl+huZJO2FMNX+PPFN46P
-         fs5Z9fnPeQqPZoM21kax4Vxk3hNMRNqLvn37FEKvjbDlosU60iq9RVlYRkef/Y7tqQJt
-         2O9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760429614; x=1761034414;
-        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xhf78mDj7L6zLhIAA4NyhL+vPp3/tw4ip9YZY4CJYUQ=;
-        b=s4Lv8S1x9gjaXa63HlG43b9v/5MXIzi/2E2a95gYAlZKbyYCq53i55nb24AeEN6WUV
-         r7VpkZiP5oFqaK1XS6bsNEXQBuMh0pHEmpgiKq2h5Ffl/Vker8/ftAMwO8pTkZk+t0gM
-         NMnaiVAmeDTyD8V6KJjeWf8lC058gWfkifKsXvaKAajrD91MYVUx6xHkcogYEgCwxm0n
-         2eCUZz1gM53ZyKD0IlQqXpqGI/OEiRtZLs13GndpN2Wdwukjz2BFYE3qxiho3JebvX6R
-         upwe6LnExkcH8bOTPRO3/qQKvpNtrvpra4PY5FkQO7TsOeQJv0SOmnf9i8srBGTzApk7
-         Yj8w==
-X-Forwarded-Encrypted: i=1; AJvYcCV4A/zAR+EBpiVvQas1/+IgsRwmG46FwUc251w3ot6oATj3GPyWbPOLY5lCm24mdGd3Hcg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxTLPqazGA24i3QntKH5qNqlJZJ4hmlrN6kpDzS3CXMd9fIpavU
-	7npIJ3gZfQ8GY4/fYh6kfQyJlId3b/D9KiAHjl1Awon5PsE+dWnNbq47
-X-Gm-Gg: ASbGnctyijWNgwjEKGhyKFxqv47mA6S2+QfxQqPh/Di3M2xTe6LiQivl0ZSc2GaQchn
-	lPSeF59Rqx5RErKwPUpI2TynSW4LmMlJ7oXqFF/sv5VO4lzIxF+YXjykau8IjpGTWr0VEsuz9Cy
-	aHwE5Q08RrX3tlB1BROZBHB+cRdvb2AKCbRCynl0/vlQ0t5+wIwqZBuz2p8OhVDIPjyHO7ZJsvn
-	adCyBlev8luXjRfKlNWf7SLe/CKaSumijRE3OxsCibzmI/SbK9jtmkl7ox2Q2FW/k3FG3BXJYIg
-	gNbvbmH5zK4YV7XC9t3SYK4jeiRVUw83W1Vj9REcECD03rL+rMRSaTVdAyntW/6IJx64M25YEN4
-	SSxGdQKD8KbUKUY6rVCMiKKTGkngEB/lAPvzM2L2hBRJZPR7ceAUV38o/furNqUass2nXix1mPr
-	29hX4Mdna2vBOpFFngIqoYTmDBuG2UemPNx8hnDsPDlVTfcRw3m2gTDz0=
-X-Google-Smtp-Source: AGHT+IE/yvvNi7f9ywz4oKxH3zGAx/TZVEsNIIjjDV3XuFHg8dmmWzqobqnhmfB1Aan5xjCCgtdy/A==
-X-Received: by 2002:a05:600c:314b:b0:46c:adf8:c845 with SMTP id 5b1f17b1804b1-46fa9a98f32mr174482375e9.16.1760429613749;
-        Tue, 14 Oct 2025 01:13:33 -0700 (PDT)
-Received: from ernest.hoecke-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb49c3eeasm225979145e9.14.2025.10.14.01.13.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 01:13:33 -0700 (PDT)
-From: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
-X-Google-Original-From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Date: Tue, 14 Oct 2025 10:13:31 +0200
-To: Anusha Srivatsa <asrivats@redhat.com>, 
-	Luca Ceresoli <luca.ceresoli@bootlin.com>, Maxime Ripard <mripard@kernel.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Hui Pu <Hui.Pu@gehealthcare.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	regressions@lists.linux.dev
-Subject: [REGRESSION] drm/panel/panel-simple v6.17 WARNING regression
-Message-ID: <hlf4wdopapxnh4rekl5s3kvoi6egaga3lrjfbx6r223ar3txri@3ik53xw5idyh>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TTrpZYZy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Tc3D2cS/dYKcRdboQo2SnUKaAEsmhehhxiCzXPouuOv2ZliD/8UfErg3SDlMPJAweP3CB4TJvmFPKEnYI7xtHvDER25Bra+YLTpLQXzmI2MPjCmaKTfLPhfaSDd3Psyv/3fuSR9IMIOM8vWlZgQps+txc7DQeFYul4V4Tn/jF6KsUDNWV2bLOPE0eXZVExDjMnYwjZY9799TMWu4m8pgCIbvXIhOI7YF+dwBxH7xPbmIq2zy/vihYmvZPbF1NjcoHQblWnzEfgiKAunZQSG/GOvMRlCuCqumsKpibv2so/HTntxLdNZzTTE0Uh0CwpJ5lRmlgcDPSWPvh94L37ZLqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QLK3ZIdgkP1ud/vwouJOCPjeYwUEXQbD3a2WgsEMes8=;
+ b=Xrvd1DBbC8BKdHrZDEMtEhH2eTVOi4NvHWjawRJFPHoOYRGCa0wS0PpK9ZxMwD/860XkeP3LDN5HW9kTuMRPsYv7DxH9rYawsa4BaJOj+csyUDVZv+uo4FGnHBfB1kUffPh3tw3U0BF+8l7nMIGnww2R7fhMEc7M3xLeYHS2SKSuhIhbDIOcrh7StA6H8Uv9W1hdXDMiSrUMSHk9rdBUbQRTiQ14Zk+BK8hptsJW93AJ3ZYhwrYy4nHuua+AGFPzFHlJVfBqQ1h3PVuPZ/fS+Tk9saroeGxZIp5/qyE3LtuHvGGK5cVngF+ATkUCiTWAy6X6IZHPAkslwW8vGDi61w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QLK3ZIdgkP1ud/vwouJOCPjeYwUEXQbD3a2WgsEMes8=;
+ b=TTrpZYZyhv51sPGq876QHYHH+6GpwbS+P6kK3i3Qx/Yo+RBX6ekgF7JduTaFN78UyTjefrL7/55u5dXUDeQLLlPoMO8hKsJpRw+HzVG59Mq6ZwkWAuoxYH61GEgdlCpQGQ1sbpX0Uo7UKXhM2IxE1J2LHDEVpqWstGNxjtRcEIJuFgSLXtRK6IrJUSVGa3aG8jDf27WrcBLv2g1NhEQXMZ0+0gxwFb4Lr5bmdAW5PZK5xItXXcIoZ0tEpGZHq7bg+YZt+bRv5vpY5dGKtHEmSQ3sGdy9aGwV3ZmP60ESJ/EdjAM0gKSC5wRsNKXyWYMs/lqWc0un33jln8EZpwVaqg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by DB8PR04MB6794.eurprd04.prod.outlook.com (2603:10a6:10:11b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.10; Tue, 14 Oct
+ 2025 08:51:25 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64%6]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
+ 08:51:25 +0000
+Message-ID: <174ec43e-4cac-4452-a77b-e2e3b8413d05@nxp.com>
+Date: Tue, 14 Oct 2025 16:51:43 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/39] Add i.MX95 DPU/DSI/LVDS support
+To: Marek Vasut <marek.vasut@mailbox.org>, dri-devel@lists.freedesktop.org
+Cc: Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Lucas Stach <l.stach@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org
+References: <20251011170213.128907-1-marek.vasut@mailbox.org>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20251011170213.128907-1-marek.vasut@mailbox.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2PR03CA0101.apcprd03.prod.outlook.com
+ (2603:1096:4:7c::29) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DB8PR04MB6794:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1386ce75-5dab-4e3d-7d13-08de0afedb46
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|19092799006|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?RFpiTHZoK3FrbFN6a1dQcG0zSjRnU3FSZ1NlWjRBU2EvUEpKK3JFTkhSY3BC?=
+ =?utf-8?B?SzNEUTl2YWZuOWlOajJ6azFGOER1NlkyeWlTemcrNldJSlBLSXgrVGo1Qlpm?=
+ =?utf-8?B?QmJJa0JSN29LdlpkL1lQaDIzWTNDRlo4Vzk4T0x0K1h2eDlOWnFKU1JOa3ZY?=
+ =?utf-8?B?c1liM3hUc29nUDMzVGhtWm1tVld5aHdkSkhtRVFVNFB6U0FrYnlOeml1QXVw?=
+ =?utf-8?B?QWhEeWFHV3podXJSTWFSTVI0Vm50VlRWd25tQ0tBWmtjNWsvNXRIY1laSVV3?=
+ =?utf-8?B?ZzRQTm5sMXZXY2s3aFJTNFZSRjBTUDRSclZGKy8yYXRDdkNJZktrQndrYzFN?=
+ =?utf-8?B?K2FjREJUekQ2eEdiRkw3YmRIUlVYT3ZTMnV3N0NzOUwrc1ovdjlpWitrcHVH?=
+ =?utf-8?B?MUgwRE0vNFUyVjhLMGRmc296d1h3b3ExUDFjcnhmT1RKMi81RmdmL2FUQUFr?=
+ =?utf-8?B?UWJTbUFESVZ3VjlKbHRlSlFacU9CVnZJR1NFQzE1WDVpUFBvTkhIa1l6bktw?=
+ =?utf-8?B?UnpkZkFoNmFwQ2k4dzZYQS9lNXE3RE1UMC9Nay8zQXhneXVRaDdEMnNIMEdp?=
+ =?utf-8?B?dEJEVTVhMmRRMjdvKy96Y2dwNmFlVkJ5UkxGTmY1cm1NOFVKR3ltYWdta2hC?=
+ =?utf-8?B?Rm5wcXpQb3NyRncxdkEzRE5CT0RTZnc1QkRyS3hpelVRdXU3U3JBbytCVGFm?=
+ =?utf-8?B?djV6Zmg3ZTF6QzdaN2FkcldONGpWckR4eldSVXFGU2MwdEgvWEpzb0tVVGxF?=
+ =?utf-8?B?VTVHTGgvazl4ZUkwQmU4MmM0bW1QNExGL0FpWGlHZmQ5Qy9tU1cwcDRXK1Uw?=
+ =?utf-8?B?YzhScWRkVkc5Q01WRmIrbUpySkIzekZ5em9mUEhwMjM0TTZXaGJJek94NEg4?=
+ =?utf-8?B?Z2I5bWlxcS9GSU1SNG83NzdrdmRVSGpsVmdmeit1MFBUMW0vN0d2MkY1NVYx?=
+ =?utf-8?B?WUl0bVo2dXZyNC9hbzF5OGdPNnR6NVZ0aUJuVSt6OG1mRXovMVBTM3l5NFBE?=
+ =?utf-8?B?UC9NVCszL1lES3FzaDFadzdpSnhXRkJLdUwrL1hZQ0hXUzdIVGs2T0lDdzZa?=
+ =?utf-8?B?MVY4dW1VaFJIY3lSSDhqSllwMG5SYlVwTGE3RlpORkxvNjRhQXdlanhYM1pV?=
+ =?utf-8?B?US9BcXNXMFNlNytScDZSZUdhRmVqVjlFUjJlZFBzdVNjQ082dVByNU1YTkdR?=
+ =?utf-8?B?YW9kUzlHUXVUNnIyZXYzR3pJSENTRHZFMzNnS1dzS2Vsa05jbDlhck55ZVN2?=
+ =?utf-8?B?U08zYVBYeUtRZk5IQ29HMkxmd2ZsVTJpbDl4cnpBUjhnUVNnZVdRZkNDb3Q3?=
+ =?utf-8?B?ZkFhMExWbkhVMDloaEpjY0xuMVZLTmR6OVgwa2c1Wm5jRklRcW96dUplOW5a?=
+ =?utf-8?B?TjNYaFA5Mm5SRkV3bmgzMDgwT0xoOEVJdDB4YzZwbDF4TU9iaStKZzZpY0FR?=
+ =?utf-8?B?L3ZBRGFvN0UzdCthRVVoMlpCZGJTenh5ZzZNNFBtOEYyNWN0aVgxQm4xRnpZ?=
+ =?utf-8?B?ZnFYVGJjMlZlTWhDSnpnUi9JZUJMcEpMQXl0RVRoa3RNYjA3S1FkemFWNUVu?=
+ =?utf-8?B?V0Y1UFREUmhEdnAyQm92bUtjTjF3UXdYSVFSSzhFZ2ZBVmpWM1VvcndZamQ0?=
+ =?utf-8?B?c2d5NGs1azRmWHBtNnVHa1M2U0h6Tzl4NVlhYTl3K1VtUHo0dldManh2aXZx?=
+ =?utf-8?B?YlFTdmlyaVJoY1JIQUNrUjAxYWo5SVZxQWFReGFVK2FtU3lUWWVtUEZ1eXVM?=
+ =?utf-8?B?RHBWZ0N0TkhOdURvUHVPSUJ6UWY4dWg2ampvQUpFdmhHdHVRUHE2Z0tEQk1J?=
+ =?utf-8?B?R011WlQyNWQxZUxzekQxa1hHNjgxVFZyVno2My95dnVqdjhXazJTT0M3N0pv?=
+ =?utf-8?B?dVZ4TmVsZjEyMWhEeTY4VGZmWHFacGN5TnpFeVhDVFd2UUZXRldscGNQUSs5?=
+ =?utf-8?Q?5Z0XTezhIHGQEh8OgOJlTmuJ7X5RlZ6U?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?RXkvb0ZPdVVlektKcUZzNTBEZ3JMbU1LWEU2c2V1MngyQm15TFVpY1k1V2hh?=
+ =?utf-8?B?U0orWDJXQzRqVytmUkgxQXBtaWxPUytQT0Vuak5mM0Y2eDQxMHlvOHN2alZk?=
+ =?utf-8?B?cFJocjQ0ellTa0pnU0pMN2VzMnhuSkp3OGRqNy9UcGZjQnNsR2ZvbENEYmkr?=
+ =?utf-8?B?QTY1OFQrUytReUdYUTRQdHZGMWYzdXdqN1R4YXQ0bUE0bllaOEJIMXBXKzF6?=
+ =?utf-8?B?YTltQmYxeVBGdGc3UEFXcFcxOXpRR0VlQ1puWFR5bzR1U2NUY0VkQkxiSzZC?=
+ =?utf-8?B?aGEwQ1VhTmg1UGpxL2NsWmtMenpYbnJQK0VjU0RGQVhPMWtkT1NEeHdrNlM1?=
+ =?utf-8?B?MDg2am9kelduOXd0bDc3SW84WFBIbGNuOEwydno0dVZnRkVCQm9qbkJyMm42?=
+ =?utf-8?B?MFRWZUV0bDQyU2dxc3JNWVZzdEpaS2d5Tm95eEZJR0M3Z1lMVTMyUTVkMWxN?=
+ =?utf-8?B?NnZvWVladWh3WlBGZy9EdlNIL0o5elFMSnRkQUZaUlAycnJJU3dNMFVjVWJ6?=
+ =?utf-8?B?M2ZyWUhEK2w5a1l4RDZ1WG5aa0FFd2xRQmkwSjhTWm5XNFRFMnFyQ1h3VXho?=
+ =?utf-8?B?K3EvbjVYYzg2bFZEQXZVUDQ3RGxNMjVXS00xS1paaE9yUzI4Z2lNOWxwOTYy?=
+ =?utf-8?B?Y242SjhLM2RUWnNQTnZEOHBNTFNSMGt0bUQ5c2xJUkNFeUhLYnZlOEpMYUdK?=
+ =?utf-8?B?S2F4Zk8rZmxjUm0vSFJkU1cwdWRCVlhaRzgzMlE5RUpLTkN0TFNPQjRoS2Zx?=
+ =?utf-8?B?bGNwY0xQazFpSWdQK1RaL05tZ3BKMFRFRUxTRkZlMGNhaDkyZVROZU1JRWJR?=
+ =?utf-8?B?UmN0cmlCVE5UYzFxcDAxc2pmbWo4UTdQd1VRWlF1cDJTdzYvN1NTb3ZQOE5Z?=
+ =?utf-8?B?VnRHNk0xYXIrcDFBQndUNFgxaUY1SSsxVCtNM0RvZlFwZ1NHbFZxUTVJMEhD?=
+ =?utf-8?B?bmJoYnc3eUkwb3hFUGlWdnNGc1ZycWE5N2VibWtGaDU4d3p4emE5bHlvcWJ1?=
+ =?utf-8?B?MkQzL0tmWm5pbmNTOXZQdThuTXRHcXVqc2ZVUWZXSkpvRDBIN1FBVXFmWnl5?=
+ =?utf-8?B?VVVzQ2QrUGxZUlZnOTNDdThtc2ttdVc2T0xPV1pUOFUrMzVQMjBjMndlcGdI?=
+ =?utf-8?B?NUM3Z2J0eVNaS3NZM0FJMjVialUxc3JBenhhb2FudmVIanl0emNYemw1QjdD?=
+ =?utf-8?B?b09OQmNTQ0dGNGdOZmhxakIxbitzcHJQVUtQeUdBeTk0TUdXSzk2aThhTzMz?=
+ =?utf-8?B?Y29kVHpPeXZTR29FTE0yVTVQRWtINC92ZFgrbHFTWWtQWm9PdDhvOXlhVUtD?=
+ =?utf-8?B?MXZqZEMxS1h2U0k2UWhvaTZuMSt0bDNpSU9ZaXl4MklUL2VuYWNYZjhoT1h3?=
+ =?utf-8?B?WHY4NE9QNjdpRmgrcEhEWkhSVGhLRDB1VGdRb1ZhSlNsakx6QVNVVUFnNVVM?=
+ =?utf-8?B?U3NTOS9ldWpsMTdxaDljaUdyWVlJT0JtZWNNaDVFcnFVTmpycTNKalAxb09J?=
+ =?utf-8?B?dWptZWtzUktJenpFcXZOVGJqOVBXVW0xN0h1d3QxSzQwT1hCdWZGUXNRamdo?=
+ =?utf-8?B?azRKRU5QVG9oeW02V2puQ0xjTHV1QUh6VU41Z2NKenQ3bXdyU3lITTc4VkR1?=
+ =?utf-8?B?dTlpOHNhWUpNaWkrclgzdTZ6Q1B3QVQvVkJ6V2R1c2h4WTVYOHZuUlc5ejlT?=
+ =?utf-8?B?UnkrYzhlcXZEOGhqU25sVkZjMWx3UnNVZVp0OFNtQnl1bVM0a2FCeURmMDNy?=
+ =?utf-8?B?MWh2Z3p2SmFHSnhneGVEdGhnZjA4dGpORmdwZVQwSkhBdGlVdmgxTnlTcUl1?=
+ =?utf-8?B?WWw0UVpzWFdGa3g3QVNqa0V6eVhKY2dlYVpnNmxrd05oVGVSVTY3M05ldmJk?=
+ =?utf-8?B?WEQ1dkxFK1lKVllMcGtOVkdrRmJPUGhKYWRQTCtwZmFTdTlGK2VmWkhIVk5s?=
+ =?utf-8?B?aFlndUpMSnZ4ZnZaRXpHd2FPUUlvSUwySmNwVkNra244ZW93VmJRdEtTMXQ0?=
+ =?utf-8?B?MU5YNFVvY0JoN1hsOW9yOXRIZEsyT3N5a0J3aENGekcvYmN0cThKNXlBS1Bk?=
+ =?utf-8?B?UDVaN1pDTGMrS0txR0ZLTlN6QWs2ZFQyczlaZUVTcXZvNkZxNGJPUFpheS9X?=
+ =?utf-8?Q?cx42TkJBs6OsJRR3L4D4dzr70?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1386ce75-5dab-4e3d-7d13-08de0afedb46
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 08:51:25.2652
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: f3EmJoGMoMf88arTFd2IUxprdNcQOTNCEJE2qiJrTP0i5uBN/lnwVDxqjK89UYB0K+sNiXA2Ba1A1cTZ4uVg+w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6794
 
-Hello everyone,
+Hi Marek,
 
-Commit 94d50c1a2ca3 ("drm/bridge: get/put the bridge reference in drm_bridge_attach/detach()")
-introduced a regression with the below warning dure probe with panel
-dpi described in the device tree.
+On 10/11/2025, Marek Vasut wrote:
+> This large series adds support for the i.MX95 display pipeline, including
+> DPU, DSI and LVDS support. Most of the components extend existin drivers,
+> DPU is added into DC driver, DSI into iMX93 DSI driver, LVDS into iMX8MP
+> LDB. Pixel link and pixel interleaver drivers are reworked to work as two
+> independent channels, since there seems to be no dependency between their
+> two channels. The i.MX95 DTSI changes are also included.
+> 
+> Since the DPU chapter is missing from the i.MX95 RM, this is based on the
+> NXP downstream kernel fork code and there might be issues.
+> 
+> Majority of this series are DPU patches on top of the DC driver, I tried
+> to keep them separate and easy to review. Later part adds LVDS and DSI
+> support, this can be split into separate series.
 
-[    9.160074] ------------[ cut here ]------------
-[    9.160092] WARNING: CPU: 0 PID: 66 at /usr/src/kernel/lib/refcount.c:25 drm_bridge_attach+0x2c/0x1dc
-[    9.160138] refcount_t: addition on 0; use-after-free.
-[    9.160147] Modules linked in: coda_vpu(+) snd_soc_fsl_asrc snd_compress v4l2_jpeg pwm_imx27 imx_vdoa spi_imx imx6_media(C) imx_media_common(C) videobuf2_dma_contig etnaviv snd_soc_fsl_ssi v4l2_mem2mem imx_pcm_dma panel_simple gpio_keys gpu_sched pwm_bl loop fuse ipv6 autofs4
-[    9.160423] CPU: 0 UID: 0 PID: 66 Comm: kworker/u10:2 Tainted: G         C          6.17.0-rc5-0.0.0-devel #1 PREEMPT 
-[    9.160459] Tainted: [C]=CRAP
-[    9.160476] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-[    9.160497] Workqueue: events_unbound deferred_probe_work_func
-[    9.160535] Call trace: 
-[    9.160546]  unwind_backtrace from show_stack+0x10/0x14
-[    9.160603]  show_stack from dump_stack_lvl+0x54/0x68
-[    9.160637]  dump_stack_lvl from __warn+0x7c/0xd4
-[    9.160672]  __warn from warn_slowpath_fmt+0x130/0x1c4
-[    9.160726]  warn_slowpath_fmt from drm_bridge_attach+0x2c/0x1dc
-[    9.160780]  drm_bridge_attach from imx_pd_bind+0x74/0xa0
-[    9.160836]  imx_pd_bind from component_bind_all+0xfc/0x254
-[    9.160881]  component_bind_all from imx_drm_bind+0xa8/0x154
-[    9.160903]  imx_drm_bind from try_to_bring_up_aggregate_device+0x1f8/0x2b0
-[    9.160959]  try_to_bring_up_aggregate_device from __component_add+0x9c/0x160
-[    9.161003]  __component_add from imx_pd_probe+0xa8/0x160
-[    9.161042]  imx_pd_probe from platform_probe+0x5c/0x90
-[    9.161066]  platform_probe from really_probe+0xd0/0x3a4
-[    9.161093]  really_probe from __driver_probe_device+0x8c/0x1d4
-[    9.161144]  __driver_probe_device from driver_probe_device+0x34/0xd0
-[    9.161195]  driver_probe_device from __device_attach_driver+0xa4/0x134
-[    9.161248]  __device_attach_driver from bus_for_each_drv+0x90/0xe4
-[    9.161299]  bus_for_each_drv from __device_attach+0xa4/0x1cc
-[    9.161328]  __device_attach from bus_probe_device+0x84/0x88
-[    9.161354]  bus_probe_device from deferred_probe_work_func+0x8c/0xcc
-[    9.161395]  deferred_probe_work_func from process_one_work+0x158/0x2e0
-[    9.161434]  process_one_work from worker_thread+0x254/0x3fc
-[    9.161449]  worker_thread from kthread+0x128/0x24c
-[    9.161473]  kthread from ret_from_fork+0x14/0x28
-[    9.161494] Exception stack(0xe0aa1fb0 to 0xe0aa1ff8)
-[    9.161505] 1fa0:                                     00000000 00000000 00000000 00000000
-[    9.161517] 1fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-[    9.161529] 1fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-[    9.161539] ---[ end trace 0000000000000000 ]---
+Like you said that this patch series is large, please split it.
+Also, make sure proper maintainers are in TO or CC lists for each patch(b4
+tool should do that automatically for you), e.g., patch 37 should be sent
+to Thomas Gleixner <tglx@linutronix.de> according to MAINTAINERS.
 
-Note that this commit was added to branch 'drm-next-2025-07-30',
-which did not contain an already mainlined fix for another regression [1].
-Without that fix [2], this new regression is masked.
+> 
+> Both DSI-to-HDMI path using LT8912 bridge and LVDS single-lane with Logic
+> Techno LT170410-2WHC panel were tested on Toradex i.MX95 Verdin EVK v1.2 .
+> 
+> Liu Ying (2):
+>   drm/bridge: imx: Add NXP i.MX95 pixel interleaver support
+>   drm/bridge: imx: Add NXP i.MX95 pixel link support
+> 
+> Marek Vasut (36):
+>   dt-bindings: display: imx: Document i.MX95 Display Controller
+>     DomainBlend
+>   drm/imx: Add i.MX95 Display Controller DomainBlend
+>   dt-bindings: display: imx: Document i.MX95 Display Controller
+>     processing units
+>   drm/imx: dc: Use bulk clock
+>   drm/imx: dc: Rework dc_subdev_get_id() to drop ARRAY_SIZE() use
+>   drm/imx: dc: Rename i.MX8QXP specific Link IDs
+>   drm/imx: dc: cf: Pass struct dc_subdev_info via OF match data
+>   drm/imx: dc: de: Pass struct dc_de_subdev_match_data via OF match data
+>   drm/imx: dc: ed: Rework dc_ed_pec_src_sel() to drop ARRAY_SIZE() use
+>   drm/imx: dc: ed: Pass struct dc_ed_subdev_match_data via OF match data
+>   drm/imx: dc: fg: Parametrize register access
+>   drm/imx: dc: ed: Pass struct dc_fg_subdev_match_data via OF match data
+>   drm/imx: dc: fu: Describe remaining register offsets
+>   drm/imx: dc: fu: Inline FRAC_OFFSET into FetchLayer and FetchWrap
+>   drm/imx: dc: fu: Pass struct dc_fu_subdev_match_data via OF match data
+>   drm/imx: dc: lb: Pass struct dc_lb_subdev_match_data via OF match data
+>   drm/imx: dc: tc: Pass struct dc_tc_subdev_match_data via OF match data
+>   drm/imx: dc: ic: Pass struct dc_ic_subdev_match_data via OF match data
+>   drm/imx: dc: ic: Use DT node as interrupt controller name
+>   drm/imx: dc: Configure display CSR clock feed select
+>   drm/imx: dc: crtc: Do not check disabled CRTCs
+>   drm/imx: dc: Keep FU unit running on i.MX95
+>   drm/imx: dc: Add OF match data for i.MX95
+>   drm/imx: Add more RGB swizzling options
+>   dt-bindings: display: bridge: Document NXP i.MX95 pixel interleaver
+>     support
+>   dt-bindings: display: bridge: Document NXP i.MX95 pixel link support
+>   dt-bindings: display: bridge: Document Freescale i.MX95 MIPI DSI
+>   drm/bridge: imx93-mipi-dsi: Add i.MX95 PLL initialization
+>   dt-bindings: clock: Split support for i.MX95 LVDS CSR
+>   dt-bindings: display: bridge: Document i.MX95 LVDS display bridge
+>     binding
+>   dt-bindings: display: bridge: ldb: Add an i.MX95 entry
+>   drm/bridge: fsl-ldb: Parse register offsets from DT
+>   drm/bridge: fsl-ldb: Add i.MX95 support
+>   dt-bindings: interrupt-controller: fsl,irqsteer: Add i.MX95 support
+>   dt-bindings: clock: support i.MX95 Display Stream CSR module
+>   arm64: dts: imx95: Describe display pipeline
+> 
+> Sandor Yu (1):
+>   drm: bridge: imx: Add i.MX95 LVDS Display Bridge (LDB) driver
+> 
+>  .../bindings/clock/nxp,imx95-blk-ctl.yaml     |   1 -
+>  .../clock/nxp,imx95-lvds-blk-ctl.yaml         |  80 ++
+>  .../display/bridge/fsl,imx93-mipi-dsi.yaml    |  48 +-
+>  .../display/bridge/fsl,imx95-lvds.yaml        | 140 ++++
+>  .../bridge/fsl,imx95-pixel-interleaver.yaml   |  85 +++
+>  .../display/bridge/fsl,imx95-pixel-link.yaml  | 101 +++
+>  .../bindings/display/bridge/fsl,ldb.yaml      |   2 +
+>  .../imx/fsl,imx8qxp-dc-constframe.yaml        |   4 +-
+>  .../imx/fsl,imx8qxp-dc-display-engine.yaml    |  45 +-
+>  .../display/imx/fsl,imx8qxp-dc-extdst.yaml    |   4 +-
+>  .../display/imx/fsl,imx8qxp-dc-fetchunit.yaml |   1 +
+>  .../display/imx/fsl,imx8qxp-dc-framegen.yaml  |  13 +-
+>  .../imx/fsl,imx8qxp-dc-layerblend.yaml        |   4 +-
+>  .../imx/fsl,imx8qxp-dc-pixel-engine.yaml      |  52 +-
+>  .../display/imx/fsl,imx8qxp-dc-tcon.yaml      |   5 +-
+>  .../bindings/display/imx/fsl,imx8qxp-dc.yaml  |  53 +-
+>  .../display/imx/fsl,imx95-dc-domainblend.yaml |  32 +
+>  .../imx/nxp,imx95-display-stream-csr.yaml     |  41 +
+>  .../interrupt-controller/fsl,irqsteer.yaml    |   2 +
+>  arch/arm64/boot/dts/freescale/imx95.dtsi      | 710 ++++++++++++++++++
+>  drivers/gpu/drm/bridge/fsl-ldb.c              |  65 +-
+>  drivers/gpu/drm/bridge/imx/Kconfig            |  28 +
+>  drivers/gpu/drm/bridge/imx/Makefile           |   3 +
+>  drivers/gpu/drm/bridge/imx/imx-ldb-helper.h   |   2 +
+>  drivers/gpu/drm/bridge/imx/imx93-mipi-dsi.c   | 612 ++++++++++++++-
+>  drivers/gpu/drm/bridge/imx/imx95-ldb.c        | 470 ++++++++++++
+>  .../drm/bridge/imx/imx95-pixel-interleaver.c  | 217 ++++++
+>  drivers/gpu/drm/bridge/imx/imx95-pixel-link.c | 184 +++++
+>  drivers/gpu/drm/imx/dc/Kconfig                |   4 +-
+>  drivers/gpu/drm/imx/dc/Makefile               |   2 +-
+>  drivers/gpu/drm/imx/dc/dc-cf.c                |  41 +-
+>  drivers/gpu/drm/imx/dc/dc-crtc.c              |   6 +
+>  drivers/gpu/drm/imx/dc/dc-db.c                | 227 ++++++
+>  drivers/gpu/drm/imx/dc/dc-de.c                |  83 +-
+>  drivers/gpu/drm/imx/dc/dc-de.h                |  14 +
+>  drivers/gpu/drm/imx/dc/dc-drv.c               |  45 +-
+>  drivers/gpu/drm/imx/dc/dc-drv.h               |  11 +-
+>  drivers/gpu/drm/imx/dc/dc-ed.c                |  67 +-
+>  drivers/gpu/drm/imx/dc/dc-fg.c                | 157 ++--
+>  drivers/gpu/drm/imx/dc/dc-fl.c                | 145 +++-
+>  drivers/gpu/drm/imx/dc/dc-fu.c                |  46 +-
+>  drivers/gpu/drm/imx/dc/dc-fu.h                |   7 +-
+>  drivers/gpu/drm/imx/dc/dc-fw.c                |  54 +-
+>  drivers/gpu/drm/imx/dc/dc-ic.c                | 192 +++--
+>  drivers/gpu/drm/imx/dc/dc-kms.h               |   6 +
+>  drivers/gpu/drm/imx/dc/dc-lb.c                | 109 ++-
+>  drivers/gpu/drm/imx/dc/dc-pe.c                |  12 +-
+>  drivers/gpu/drm/imx/dc/dc-pe.h                |  41 +-
+>  drivers/gpu/drm/imx/dc/dc-plane.c             |  18 +-
+>  drivers/gpu/drm/imx/dc/dc-tc.c                |  55 +-
+>  50 files changed, 4000 insertions(+), 346 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/clock/nxp,imx95-lvds-blk-ctl.yaml
+>  create mode 100644 Documentation/devicetree/bindings/display/bridge/fsl,imx95-lvds.yaml
+>  create mode 100644 Documentation/devicetree/bindings/display/bridge/fsl,imx95-pixel-interleaver.yaml
+>  create mode 100644 Documentation/devicetree/bindings/display/bridge/fsl,imx95-pixel-link.yaml
+>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx95-dc-domainblend.yaml
+>  create mode 100644 Documentation/devicetree/bindings/display/imx/nxp,imx95-display-stream-csr.yaml
+>  create mode 100644 drivers/gpu/drm/bridge/imx/imx95-ldb.c
+>  create mode 100644 drivers/gpu/drm/bridge/imx/imx95-pixel-interleaver.c
+>  create mode 100644 drivers/gpu/drm/bridge/imx/imx95-pixel-link.c
+>  create mode 100644 drivers/gpu/drm/imx/dc/dc-db.c
+> 
+> ---
+> Cc: Abel Vesa <abelvesa@kernel.org>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> Cc: Liu Ying <victor.liu@nxp.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Cc: Peng Fan <peng.fan@nxp.com>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: devicetree@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-clk@vger.kernel.org
+> 
 
-Reverting 94d50c1a2ca3 on top of
-commit 260f6f4fda93 ("Merge tag 'drm-next-2025-07-30' of https://gitlab.freedesktop.org/drm/kernel")
-fixes the issue. At that point, [1] was fixed in mainline, and the new
-regression reported here was merged in. v6.17-rc1 to v6.17-rc7 are in
-this state.
 
-However, later on, another regression seems to be introduced by
-commit 8fa5909400f3 ("drm/bridge: get the bridge returned by drm_bridge_chain_get_first_bridge()")
-so reverting 94d50c1a2ca3 on top of drm-misc-next does not solve
-everything. This was tested by rebasing drm-misc-next onto (260f6f4fda93
-plus the revert of 94d50c1a2ca3) and then bisecting.
-
-So in v6.18-rc1, both regressions are present.
-
-There, I get the following additional warnings:
-
-[    9.732278] ------------[ cut here ]------------
-[    9.732336] WARNING: CPU: 0 PID: 38 at lib/refcount.c:22 drm_bridge_get+0x10/0x18
-[    9.744608] refcount_t: saturated; leaking memory.
-[    9.749634] Modules linked in: nvmem_snvs_lpgpr phy_mxs_usb coda_vpu v4l2_jpeg spi_imx imx_vdoa imx6_media(C) pwm_imx27 snd_soc_fsl_asrc snd_soc_fsl_ssi snd_compress 4
-[    9.776972] CPU: 0 UID: 0 PID: 38 Comm: kworker/u8:3 Tainted: G        WC          6.18.0-rc1-00214-g1226cd7c7686 #138 PREEMPT 
-[    9.788476] Tainted: [W]=WARN, [C]=CRAP
-[    9.792320] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-[    9.798858] Workqueue: events_unbound deferred_probe_work_func
-[    9.804729] Call trace: 
-[    9.804744]  unwind_backtrace from show_stack+0x10/0x14
-[    9.812532]  show_stack from dump_stack_lvl+0x68/0x74
-[    9.817614]  dump_stack_lvl from __warn+0x7c/0xe0
-[    9.822355]  __warn from warn_slowpath_fmt+0x130/0x1c0
-[    9.827526]  warn_slowpath_fmt from drm_bridge_get+0x10/0x18
-[    9.833218]  drm_bridge_get from drm_bridge_connector_init+0xc8/0x72c
-[    9.839685]  drm_bridge_connector_init from imx_pd_bind+0x80/0xa0
-[    9.845809]  imx_pd_bind from component_bind_all+0xf4/0x254
-[    9.851422]  component_bind_all from imx_drm_bind+0x98/0x128
-[    9.857109]  imx_drm_bind from try_to_bring_up_aggregate_device+0x1d0/0x29c
-[    9.864097]  try_to_bring_up_aggregate_device from __component_add+0xa0/0x164
-[    9.871263]  __component_add from imx_pd_probe+0xa8/0x164
-[    9.876690]  imx_pd_probe from platform_probe+0x5c/0x90
-[    9.881940]  platform_probe from really_probe+0xd0/0x3a4
-[    9.887280]  really_probe from __driver_probe_device+0x8c/0x1d4
-[    9.893227]  __driver_probe_device from driver_probe_device+0x30/0xc0
-[    9.899694]  driver_probe_device from __device_attach_driver+0x98/0x10c
-[    9.906337]  __device_attach_driver from bus_for_each_drv+0x90/0xe4
-[    9.912634]  bus_for_each_drv from __device_attach+0xa8/0x1c8
-[    9.918409]  __device_attach from bus_probe_device+0x88/0x8c
-[    9.924097]  bus_probe_device from deferred_probe_work_func+0x8c/0xcc
-[    9.930563]  deferred_probe_work_func from process_one_work+0x154/0x2dc
-[    9.937205]  process_one_work from worker_thread+0x250/0x3f0
-[    9.942883]  worker_thread from kthread+0x12c/0x24c
-[    9.947787]  kthread from ret_from_fork+0x14/0x28
-[    9.952513] Exception stack(0xe0961fb0 to 0xe0961ff8)
-[    9.957575] 1fa0:                                     00000000 00000000 00000000 00000000
-[    9.965762] 1fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-[    9.973948] 1fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-[    9.981052] ---[ end trace 0000000000000000 ]---
-
-[    9.985782] ------------[ cut here ]------------
-[    9.985835] WARNING: CPU: 0 PID: 38 at lib/refcount.c:28 drm_bridge_connector_init+0x328/0x72c
-[    9.999210] refcount_t: underflow; use-after-free.
-[   10.004119] Modules linked in: mux_core error nvmem_snvs_lpgpr phy_mxs_usb coda_vpu v4l2_jpeg spi_imx imx_vdoa imx6_media(C) pwm_imx27 snd_soc_fsl_asrc snd_soc_fsl_ss4
-[   10.032757] CPU: 0 UID: 0 PID: 38 Comm: kworker/u8:3 Tainted: G        WC          6.18.0-rc1-00214-g1226cd7c7686 #138 PREEMPT 
-[   10.044260] Tainted: [W]=WARN, [C]=CRAP
-[   10.048104] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-[   10.054642] Workqueue: events_unbound deferred_probe_work_func
-[   10.060511] Call trace: 
-[   10.060523]  unwind_backtrace from show_stack+0x10/0x14
-[   10.068309]  show_stack from dump_stack_lvl+0x68/0x74
-[   10.073390]  dump_stack_lvl from __warn+0x7c/0xe0
-[   10.078127]  __warn from warn_slowpath_fmt+0x130/0x1c0
-[   10.083296]  warn_slowpath_fmt from drm_bridge_connector_init+0x328/0x72c
-[   10.090115]  drm_bridge_connector_init from imx_pd_bind+0x80/0xa0
-[   10.096238]  imx_pd_bind from component_bind_all+0xf4/0x254
-[   10.101843]  component_bind_all from imx_drm_bind+0x98/0x128
-[   10.107525]  imx_drm_bind from try_to_bring_up_aggregate_device+0x1d0/0x29c
-[   10.114512]  try_to_bring_up_aggregate_device from __component_add+0xa0/0x164
-[   10.121676]  __component_add from imx_pd_probe+0xa8/0x164
-[   10.127101]  imx_pd_probe from platform_probe+0x5c/0x90
-[   10.132348]  platform_probe from really_probe+0xd0/0x3a4
-[   10.137683]  really_probe from __driver_probe_device+0x8c/0x1d4
-[   10.143632]  __driver_probe_device from driver_probe_device+0x30/0xc0
-[   10.150099]  driver_probe_device from __device_attach_driver+0x98/0x10c
-[   10.156742]  __device_attach_driver from bus_for_each_drv+0x90/0xe4
-[   10.163035]  bus_for_each_drv from __device_attach+0xa8/0x1c8
-[   10.168804]  __device_attach from bus_probe_device+0x88/0x8c
-[   10.174490]  bus_probe_device from deferred_probe_work_func+0x8c/0xcc
-[   10.180955]  deferred_probe_work_func from process_one_work+0x154/0x2dc
-[   10.187595]  process_one_work from worker_thread+0x250/0x3f0
-[   10.193270]  worker_thread from kthread+0x12c/0x24c
-[   10.198172]  kthread from ret_from_fork+0x14/0x28
-[   10.202895] Exception stack(0xe0961fb0 to 0xe0961ff8)
-[   10.207956] 1fa0:                                     00000000 00000000 00000000 00000000
-[   10.216145] 1fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-[   10.224330] 1fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-[   10.231448] ---[ end trace 0000000000000000 ]---
-
-
-[1]: https://lore.kernel.org/all/20250612081834.GA248237@francesco-nb/
-[2]: https://lore.kernel.org/all/20250626-drm-panel-simple-fixes-v2-0-5afcaa608bdc@kernel.org/
-
-#regzbot ^introduced: 94d50c1a2ca31d80f12d9c2bdbc41437751e320c
-#regzbot ^introduced: 8fa5909400f377351836419223c33f1131f0f7d3
-
-Does this ring a bell for anyone?
-
-Kind regards,
-Ernest
-
+-- 
+Regards,
+Liu Ying
+	
