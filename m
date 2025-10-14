@@ -1,196 +1,219 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013058.outbound.protection.outlook.com [52.101.83.58])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFE330E0E9
-	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 04:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760417728; cv=fail; b=RyI0F+6E6oI1Z1dSI0vxBffarLq+Bxh4eKckd2HxfuYYJjWcYQkXAuDQqi7wUCN20xwQXdwF/2R3T/fI7xgjU7OsqWgVjKoc2N5y9o3mHU8LnUgq9mW8qNrL68dj1yojDqDf10KrtxgOKZTIq9yo6GezI6AIzTxgAgERDaFDaHo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760417728; c=relaxed/simple;
-	bh=oHsfvnKmLj1CEiwgu+6iB1wi6z3K1FVkWhGPPN9Hnew=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=d87UQLuR3gIl+MxFOa8Y+0csqol15KJ9DfssP14xnos5WCXvOk38mE0LEOcxo99Hexck7dWOxsy8PX7jr7PKu5Dlza/XCsW0EWFQiXldmbsX91mXPsVoISYL2FKFKarAtIgeS3D6w9Izbthd7NPilOhe3KXAXew/pDU6EKY2Ddc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MRfsWgqm; arc=fail smtp.client-ip=52.101.83.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DC330507F
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 05:54:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760421293; cv=none; b=In2sQ5G+Dw/vsTGETUnRnDWQwXOVwaq9MEyhRacUFZj0Sid8didpVzLp/UoBpzPljmu4P2emhHgzk9tfxRSfk1Ea/BvS9MUXUxlTlyy1xWN3T1fkcadLTf03zdePkxUkre6QKssd8pGuEwIceElel2dVrhCKm5WE7yn63/LFu1Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760421293; c=relaxed/simple;
+	bh=uhpQJtFLv1rBxsAcfck67pJR/8AGuXyPU5pS3+P1YE0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=aBaZon6NShhe+KK9ICApqUnDzUtDo+6BUbHz5lc6/T+CIAhc1rvN3Tg5YEhIX+T79vs5UQ2Tn3q/OaMd9+tgUiilBID0/HhPucYYPA0R/ekTxnL3Ie0ocRCa296nUckOxX30ZaV4h42ppKjT3rScfR0ycUrunVVkIdXv9ixFTDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=AoNNOTWj; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MRfsWgqm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m2UqLq5E9qLUoHE8gJ9RoHjEL9j43Z4yk0WI8PNvBNHxr0r5A0TQNwc8uSA3zUtjbv33OdT5fQJcR/wq7IHkcl7n+JBZUDs12NlokpaOC5xrP+kpZIv4EiR9IkUvtHUZ9G0HIQjNoDwu2poGI3O1zP6V88HUeYSh9nRgoixxERFjQgw8lkPZosVu/Iv+z7KRSxGBktcIi4S0qhoVFl1rSjGrE6HyCghmYBqvQXsnjSgPX65h65thiCC9tnM8ztB3xvbohILGmGhILNTKcLQtOS8nTUQDrChmZc3eF4UyxlmkBcuZuZYRZl7c4x7QqHpv8I+dlrcMcNKlXvpqSU0XuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WCaHzuktPgDE1alRmcbh+S0xiAEPY7Y4g3kXtlET4TA=;
- b=MhEn+2EYZPhqwjipbGA7FX34OPXXwNEONioooEDJkGo+jWaIsMfogpzBEF/ElU0NEQqespmMh/7CjjNI9fWsQ0r4nEW7G2Ls2jLmc2rs6pSxPAuyWy1SMR4aIpnb5YiLiwPIFH6hqnKxemDmZoIkzeG9u5tYT+6DsVMhkDbmKIvze0aWMRnCC+AWefxb+4lWhzu6GNwX1aYBgPhiQFn9QkxXawdsckLuosJFEtySlj931y/dFFuCTbCa/RbVoJ90Xmw4MwLVx4g1nVUMYoaC7HiL7oQi6N9dGpjOuyQXdb8tyjkYAqqUmLG8hr/d/G+tsPCaEsvr8WonNQL4a1clsg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WCaHzuktPgDE1alRmcbh+S0xiAEPY7Y4g3kXtlET4TA=;
- b=MRfsWgqmn+494FNLqels/xX/jk8a3VRMmxJqV1NkmMz85l0lNwkklYvuW329qgJYG6Wa8axHyqbod5VSVGqfjY7dFswZvLyoJaHmcG1VESkkvObHCdWkuNZJjaj3VdqlValhQS4/IkJYymql9Vmwy4prVTYdvdvNVym8H97PhuekvigEMvfcdk2DSZYzkmtS5mWhc4dMY3uub+nCCDnAtb6HL3vBLwgwmLnLXrwC+B1IyR/bLvhbEPXrLPjtghSEoOuCmuhTxSli4ZjFYiYKZo093apQEVtbPC6EirRSV0JBxaeZe2tsZDlReMfB/EhY9olDWAuchbfHQnMR2Eo9Sg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PAWPR04MB9838.eurprd04.prod.outlook.com (2603:10a6:102:380::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Tue, 14 Oct
- 2025 04:55:23 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
- 04:55:23 +0000
-From: Peng Fan <peng.fan@nxp.com>
-Date: Tue, 14 Oct 2025 12:54:45 +0800
-Subject: [PATCH 8/8] firmware: imx: scu: Use devm_mutex_init
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251014-imx-firmware-v1-8-ba00220613ca@nxp.com>
-References: <20251014-imx-firmware-v1-0-ba00220613ca@nxp.com>
-In-Reply-To: <20251014-imx-firmware-v1-0-ba00220613ca@nxp.com>
-To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
- Dong Aisheng <aisheng.dong@nxp.com>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760417688; l=833;
- i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
- bh=oHsfvnKmLj1CEiwgu+6iB1wi6z3K1FVkWhGPPN9Hnew=;
- b=R+7MquQtjJXnNPoVFJ1WhqFfmWxHqrIamHTZ8rDhHLOO8M43eMYBDmkv6Fj6LVWBTmxjX0Qse
- GyLfMHwUvJdBlUY7mwVigxw2RsJS4E5c+bSmqWg03tZnACIDZYCR1yQ
-X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
- pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
-X-ClientProxiedBy: SI1PR02CA0014.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::9) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="AoNNOTWj"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20251014055448euoutp02242d954f28ae83af3873d6bd92a9fa6b~uRdWhoaiY1330913309euoutp02d
+	for <imx@lists.linux.dev>; Tue, 14 Oct 2025 05:54:48 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20251014055448euoutp02242d954f28ae83af3873d6bd92a9fa6b~uRdWhoaiY1330913309euoutp02d
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1760421288;
+	bh=KgrxKYIuyb4cf8d6Kw/QEO1mOl+rpOs8+2xF6zyBwbI=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=AoNNOTWje9UdiRcES1n/LO/FyiHUuq1ECbVfCOGTMRHeZXTpTmmp/T7vb67c16J3t
+	 16KE+6qpFaZmrohQBoB+huJWKp/mL8GyGTv4CTg41h0kifueBNE4xskov1w8se4bgv
+	 zokyMswSZwnNg1dJsquVCFisW/OKNdh+y/K1vNxs=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20251014055447eucas1p2c67687acd32add33c7bb253f94c46e0d~uRdWPkuq42592925929eucas1p2r;
+	Tue, 14 Oct 2025 05:54:47 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20251014055447eusmtip230ff3a2be12cab6c9753d94c32e4dd37~uRdVarDXi1545615456eusmtip2D;
+	Tue, 14 Oct 2025 05:54:46 +0000 (GMT)
+Message-ID: <f3fba346-6fdd-4b0e-9414-087a12772a6a@samsung.com>
+Date: Tue, 14 Oct 2025 07:54:46 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PAWPR04MB9838:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88e71193-53db-404b-f318-08de0adde218
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NWtnSm4vRmlJb1VuZFRHYzF1UDk1MGZCZG92YnJGTHhSTi8wNDl6aG9pRHVJ?=
- =?utf-8?B?ZXlLcUtJM0J1Z2pCS05hSWVQNEJqTVRrYzU2S0IwT3lYWUZOMDIwOW92dG1Y?=
- =?utf-8?B?VFpZczUxVDEvVlpoN1hwaFFEZExqOXl2dythNmZjaDdEZFVtdmFHeWF2elpt?=
- =?utf-8?B?UUpBMTM0cjlPOWx2YVNRTFJxMUlRYlNqeE9lSzdscmdlSWdNL3pDRUEwdG1B?=
- =?utf-8?B?OS9QQ0hKVWcxWm4vbFh2QVpKMU1Hd0FlOEVNb3YxUksyQmplcUxpd0Z3VnhM?=
- =?utf-8?B?ejZMTzB5NnpRcUt3WEM4TktsZDV0bSt5WWZQV2hhWjlFdDhJMkRCZmF1OHps?=
- =?utf-8?B?dlNWK2k2bkJrYXdkWVBBQi9STlhFOXRsdTk5YVlGQmtzbzBENHY0U1RPRlAy?=
- =?utf-8?B?SnlsNHZGWW5XK3JPa2FhTGF4TEcyY2VFOWZvK3dsR2NuSmszbkxPQlQ0cUFy?=
- =?utf-8?B?Q1BvTXRneUtPaEY0RlJTZktzVktMclI2YUZWSVlLM2JEeHVmaklWNVptamty?=
- =?utf-8?B?V3ZMYnFwQzJsVTRvOEE4bXE5c3c0MlJYWXE5dlpvVENvTVE5Q3FyaVBTNGxW?=
- =?utf-8?B?K2hDcnlJTE8ydFpFb1pXQWFQV1FmVTFOSmIwOThlZE9tUjJVeGQrMERmbTNs?=
- =?utf-8?B?SGZHeERIcDMrcU9jcVlHRlB5anJ3cTZPODkyeTc0Vi9IdngxUHp0WHMxd2lz?=
- =?utf-8?B?aStvUlhTUUFCaGRXWEFoNXJXQlNIWDVDc0pJMWR6aHZzdzc0d3haMXZjV3h4?=
- =?utf-8?B?cVFEK2l6Q1ozNm56cDVlOXk2Sk1lODY0NjNlOVpqbHF3bTQ5MkZzalpNNGxv?=
- =?utf-8?B?QTdLV1QvTzlUWlRESE5WcVdIRGwybmIzSUhmQk4ycW1IL01xSDNMemtlSksx?=
- =?utf-8?B?bEN4YmlkbnNyUFM5Wi82ZkJJWFVVaC9OOVZ2K2NzVmlOWDQ2NituVUJyZVky?=
- =?utf-8?B?cTJsRDFVM2ZCYzNicEVBVHp1QzhJc1VkV25FSW9VVmxaazk1TGxRcnJpclcx?=
- =?utf-8?B?NUUzY0VhZHpFTEdiaTU3M0VNSERQdEtqcFkzRENRUzQrYkZYMi9ueFFJMVNy?=
- =?utf-8?B?TkVUNDVtM3NZUlJ3Szh2b25xbm1WdUlHblFRVk8yendjcFR1K0d2b3JQVWJP?=
- =?utf-8?B?QjFtY3hiWTZoUFUwOHl4NEZWbndBSFg0ak5LdWtQTXRYbEhCeDRaRytLaVBs?=
- =?utf-8?B?VStabWFIR1R2MUV2RTBJWjUvNUpoRTdWSWI3YktEYW5rcUVDeEFabmVPMDF1?=
- =?utf-8?B?dzV4OCtRQUw2Z0UrOHlQTVZiS2ZsTjd2WnQ2NG8venFuUW9OazVla2ZzTnJq?=
- =?utf-8?B?UGVqYko3MngzWWUvYkdmQmZUVW54ZHQ3aGVyOVlxbVNQS1NyYUhQVjZ3Tll2?=
- =?utf-8?B?SW9zSlVQZzhnMERFUXBCNjFod2dsZ2ZuYUFkWWZwbDFDMHkzbXduY0hHMUFR?=
- =?utf-8?B?YzVTZU9iQ3d5VzFUMG50OXBxTzYvT21JRUl0TFJlTEkxaFJSbnIvS1JuN0JP?=
- =?utf-8?B?WWRJSDQ5M2lDQVJGdERIZS9qMFNpampVNWNkRUh4WEJMLys2MHZkYUc0bjVN?=
- =?utf-8?B?MXVQazJhYk1GWWltU3NCQmk2TmlSMVAvb1dtTVNDSmxKb1EwaGJMZm5QcjRq?=
- =?utf-8?B?MUQ0SWh4bUlRaElrWmcwZjY2WmJMd3BMVTdYeXR4RGg0YUkvZWhJODJ5V3U4?=
- =?utf-8?B?aXkrV2tEWmVSTjNnY0J5OXB2R29ZaGNaTzhxbGxXc25JUmViakQ4WXNZemh2?=
- =?utf-8?B?QjUyT2R1TmRaUWVzTUNIdTdzblg1QnF1bzJaYnpQOEZRM2c2RVpNVjIwaU9M?=
- =?utf-8?B?ZkNtUXRFRWhmbTJ0NWNOT1ZTenE1TlJ3aW9DazRDVDhZRHRxQ2RKNWVwR2hq?=
- =?utf-8?B?UDZDM2xoRHRyZTA2dHpCUjVmTThqZERvbnJvUzdFVnc2S2I2R2VyeldhTlV2?=
- =?utf-8?B?RHNkemhLMmN0YW5hTVJadTlWQ0ExSkszVkFiWHQ2RkhhOGRrSWtBU2dQdDMz?=
- =?utf-8?B?ZENZcUxTY20rSkxZb1YrMXU0ck5QTGVvV28yRTFTRjFDZGhwREl6NkRDOHcx?=
- =?utf-8?Q?wxcGFf?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?N3ljYmtZTzYvR0E0b25vazB0RkQ1VTVMQ2ExdU5ZcW50dVVzUzNyOGY0ZVRQ?=
- =?utf-8?B?NGtBdEhRNDJWeGFoYUVOZ0pNWkRoYkZ1eDdVakQ4RmdJYjRrS1ZxZnU4aENt?=
- =?utf-8?B?VW5HV2V4VnNkMmxxbnNKa3JRa3VKYktzSXp3dEdSaE8zSkdHYzZEVWtEOUc0?=
- =?utf-8?B?bXM3Rkl3STFSQ2NoNXVLNDE4Mm1KWlU2SjNLN2dLTGw3bEtqWUFOU24rWURq?=
- =?utf-8?B?Q3ZxYmlmU0VLT2FCNXVMN21kSTJMNnJ4NWdZdk5yYTVoZ2NKZnE1SDdYMEJQ?=
- =?utf-8?B?dmN4YXovZ1VKWHZneUF3NFpCelVtcVZpeWkxWUEzazVyRjErM0Z6R3FqbXJo?=
- =?utf-8?B?WFVKRXlYOWpPbWprbXpYTWdKWVM3RC9JMHB2OFlyamw4YTNsVC9QVUNXYXha?=
- =?utf-8?B?SnhqWFJNWkhsT3AxYnhqaFFBenJ0TEhOWEF0cEM3MmUvbldLOVFvb0pLTE1h?=
- =?utf-8?B?RjQzb0ZrNmxyUUNQZ0NNZW1hNTNVcng5RzVGc1g2UTNuWUVFbmdScVc1dGhH?=
- =?utf-8?B?TUxMOUlrS2lQTlpGWmExNExCNGc0Tit1bUZMRzViM2dLeTVqL2tLOHhiaVBL?=
- =?utf-8?B?WG85RnNaUVNvWUpJWEJRVzdNVTNXaGxqRzdIcllJbkZSSE93MWlQeUhPYTRL?=
- =?utf-8?B?TXJUZm1Yd09EQkxsK3d6bjFtYVpEUTR3U2Y4TmxtQldtcjBoYlRUaHFtNUhB?=
- =?utf-8?B?UjNNdkgvZ2RjZEZPZFM2d3U1MFBXNkNwVzVoazlWcUxGNlNqbUVXaUZEa3JB?=
- =?utf-8?B?YitPVFV4cnl4Q1N1aVFJNmhRekVONFk3V01wOExFQjQrYmROaXJOTVJuaVcv?=
- =?utf-8?B?dVRnVzZoald2UU5TaWJOU200ZnRKaU5hSkZ1aFZSaEJVenlsTDdpZ2crcmxG?=
- =?utf-8?B?YnBvWDRrS0o1V0pSaU9SMDhTU2tmWFZOU0JpWlVOdjRWY2NudnBVbnFOM295?=
- =?utf-8?B?SXp2ak1ROFpxUjdYQ0EwZ2cxZ0thNXQxS1AzcC9NbGx2Z0NRUm1lZ0pNUkRF?=
- =?utf-8?B?TUV2Vk5Qa0kzMy9hY244aTQ1NzdwMVlkZnB6YUZ3YkE5OFc1U2pCeTVRUjVF?=
- =?utf-8?B?VW1nRkl0L0Zqell5aDNlS01yRXNpbzNsVEFyVWYzZDhXT3FvR3hSL0VaZjlH?=
- =?utf-8?B?Y0s3VWIyeDQwOVZCQlYrcWJVdVFhb0lCSDI2T2J1ME9wb202NFQ0OENsNnNj?=
- =?utf-8?B?ODF4U3RBdHNyRnY0WjVSM1ZrUXE1Vm1obEY3RUhWbHVaVVpValVmamFxUkNC?=
- =?utf-8?B?UUNkTFZhVkphNWZRSWZKQUJQQkR2K2lpbGVwUHRYWGtkQm9JRnYra2NycUU3?=
- =?utf-8?B?TllZSGN3eFFMUmNSQkpBRnZMeW1qZG1MTTB5VVdod2FYQnFrbEh5VlllbHhO?=
- =?utf-8?B?YndGMXQzUzA4SGFtTHZ0enhTeHVzZmZoaElZN29IRnVuQTI3TVVscUdhK0pw?=
- =?utf-8?B?N21YNHhsNzhhaVpiM3RIOG52eDRsNVF2N2lhZFIrMGZBd21XWElwSEJqcTha?=
- =?utf-8?B?QlA5S2dQT1dXTXphZ1RUd0NVbkZiajkyZTBnK1k4M2NSeHUrZ1hMWGZPMUdE?=
- =?utf-8?B?YzdoeUxya005MXhxd3V2a1l6d25KcnFYNmVWaUdVMHR6MHdIaytYNXFOTG5J?=
- =?utf-8?B?Nzg1ejdXTnY1U09acFF1dnRsRStIR0lMTGF3L04vbk5TdXBvZTUvMFdLWDMy?=
- =?utf-8?B?d1JQNzM3ZXZFNnBsc2hqQ0tML1ZLcjRDQ0EyYmc3bys2MGhGa1pMd0ZVZG5a?=
- =?utf-8?B?UzB6ODgxbnF3eEozTVFBVW5UQ2lGdlRiMVhVVDU5NHhuNUNMYlBPKzlGZU5S?=
- =?utf-8?B?dnBMMXB0TG9vekNqSnRBcWdhTW5UVjFKYzBublA1UTRLUmZlYlBRK1B2dFAw?=
- =?utf-8?B?cFpQaWJwOHMrZzE1Nnhxa0piMU1JNXYvdFFjTWRCb0pteGZjdWhjMG96ejQ0?=
- =?utf-8?B?RWFkQUNHZEtITFh3bDEvSDJqVmQ3R1lRZjFqV3Y1cEFBL1dYL1E0dzc4b0RJ?=
- =?utf-8?B?NDh5eHViaHhONFZkM2Q2U0hoWWhVYzI1UnUwVlhlMnhmZ2QvTzNKOTZkMnQr?=
- =?utf-8?B?TlRZaFFDVm13NjhqL01BRDJ3Mk9IQlEwWk00dWlVem5TTG8xcXdDekNyeHhN?=
- =?utf-8?Q?reUfxMmGDlM3jO07mrblzH5yP?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88e71193-53db-404b-f318-08de0adde218
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 04:55:23.2854
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YUQhaNXY8c+yNMalAJeEw4NTW9+4W3DlS6B5f/nZpnMHpcbpiPARy8qlf3+Wo8BcRHVXIot7X2W+OmB+TSSzpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9838
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 0/3] dma_mapping: Add auto cleanup support
+To: Frank Li <Frank.Li@nxp.com>, Robin Murphy <robin.murphy@arm.com>, Dong
+	Aisheng <aisheng.dong@nxp.com>, Andi Shyti <andi.shyti@kernel.org>, Shawn
+	Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Peter Zijlstra <peterz@infradead.org>
+Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, Peter Zijlstra <peterz@infradead.org>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20251010-dmamap_cleanup-v1-0-ec5bc14e82c4@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20251014055447eucas1p2c67687acd32add33c7bb253f94c46e0d
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251010185046eucas1p26868b540b74a96e36943066216525bed
+X-EPHeader: CA
+X-CMS-RootMailID: 20251010185046eucas1p26868b540b74a96e36943066216525bed
+References: <CGME20251010185046eucas1p26868b540b74a96e36943066216525bed@eucas1p2.samsung.com>
+	<20251010-dmamap_cleanup-v1-0-ec5bc14e82c4@nxp.com>
 
-In normal case, there is no need to invoke mutex_destroy in error path,
-but it is useful when CONFIG_DEBUG_MUTEXES, so use devm_mutex_init().
+Hi
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
----
- drivers/firmware/imx/imx-scu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On 10.10.2025 20:50, Frank Li wrote:
+> There are many below pattern
+>
+> 	fun()
+> 	{
+> 		...
+> 		dma_map_single();
+> 		if (dma_mapping_error)
+> 			goto err1;
+>
+> 		dmaengine_prep_slave_single()
+> 		if (...)
+> 			goto err2
+>
+> 		dmaengine_submit()
+> 		if (...)
+> 			goto err3
+>
+> 		wait_for_completion_timeout()
+> 		if (...)
+> 			goto err4
+>
+> 	err4:
+> 	err3:
+> 	err2:
+> 		dma_umap_single();
+> 	err1:
+> 	}
+>
+> Use cleanup can simple error handle like guard(), such as guard(mutex).
+> or __free(kfree) = kmalloc.
+>
+> But dma_umap_single() need more argurements. So situation below complex.
+>
+> It need pack argurments list into structure.
+>
+> 	#define __DEFINE_GUARD_CLASS(_name, _return_type, _list_class_fields)   \
+> 	typedef struct {                                                \
+> 	       	 _return_type ret;                                       \
+> 	        bool    okay;                                           \
+> 	        struct  {                                               \
+> 	                __REMOVE(_list_class_fields);                   \
+> 	        } args;                                                 \
+> 	} class_##_name##_t;
+>
+> So save all arugments to it.
+>
+> __DEFINE_GUARD_CLASS(dma_map_single, dma_addr_t, (struct device *dev; void *ptr; size_t size; enum dma_data_direction dir)
+> will expand to
+>
+> 	struct {
+> 		dma_addr_t ret;
+> 		bool	okay;
+> 		struct {
+> 			struct device *dev;
+> 			void *ptr;
+> 			size_t size;
+> 			enum dma_data_direction dir;
+> 		}
+> 	}
+>
+> So cleanup function can use saved argurement.
+>
+> The above fun will be
+>
+> 	fun()
+> 	{
+> 		CLASS(dma_map_single, dma)(dev, ...);
+>
+> 		...
+> 		if (...)
+> 			return err;
+> 	}
+>
+> if funtion return, which need keep map,
+>
+> 	submit()
+> 	{
+> 		dma_map_single();
+> 		...
+> 		dmaengine_submit();
+> 		if (...)
+> 			goto err1
+> 		return;
+>
+> 	goto err1:
+> 		dma_umap_single();
+> 	}
+>
+> Macro retain_and_empty() will clean varible to avoid unmap.
+>
+>          ({                                  \
+>                  __auto_type __ptr = &(t); typeof(t) empty= {};   \
+>                  __auto_type __val = *__ptr; \
+>                  __ptr->okay = 0;        \
+>                  __val.ret;              \
+>          })
+>
+> So
+>
+> 	submit()
+> 	{
+>         		CLASS(dma_map_single, dma)(dev,...;
+>
+> 	        ...
+> 	        dmaengine_submit();
+> 		if (...)
+> 			return err;
+>
+> 		//before return;
+>
+> 		retain_and_empty(dma)
+> 	}
+>
+> This series just show how to hanndle many agurement at resource alloc/free
+> functions. Only show dma_map_single. If the over all method is acceptable.
+> I will more define for dma mapping functions.
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
-index 630e3dba4db15961ae4d77273af6248be614145e..67b267a7408a12deed77d2c8f52d5f64b239a408 100644
---- a/drivers/firmware/imx/imx-scu.c
-+++ b/drivers/firmware/imx/imx-scu.c
-@@ -324,7 +324,9 @@ static int imx_scu_probe(struct platform_device *pdev)
- 	}
- 
- 	sc_ipc->dev = dev;
--	mutex_init(&sc_ipc->lock);
-+	ret = devm_mutex_init(dev, &sc_ipc->lock);
-+	if (ret)
-+		return ret;
- 	init_completion(&sc_ipc->done);
- 
- 	imx_sc_ipc_handle = sc_ipc;
+This looks fine from the DMA-mapping API perspective. I think we should 
+also get some feedback from Peter, who authored most of the __cleanup() 
+based infrastructure, so I've added him to the recipients list.
 
+
+> ---
+> Frank Li (3):
+>        cleanup: Add DEFINE_GUARD_ARGS_CLASS macro for resource alloc/free functions with multiple arguments
+>        dma-mapping: Add auto cleanup support dma_map_single()
+>        i2c: lpi2c: Use auto cleanup for dma_map_single()
+>
+>   drivers/i2c/busses/i2c-imx-lpi2c.c | 13 ++++---
+>   include/linux/cleanup.h            | 73 ++++++++++++++++++++++++++++++++++++++
+>   include/linux/dma-mapping.h        |  8 +++++
+>   3 files changed, 87 insertions(+), 7 deletions(-)
+> ---
+> base-commit: 7c3ba4249a3604477ea9c077e10089ba7ddcaa03
+> change-id: 20251008-dmamap_cleanup-d0a7f0525a3d
+>
+> Best regards,
+> --
+> Frank Li <Frank.Li@nxp.com>
+>
+>
+Best regards
 -- 
-2.37.1
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
