@@ -1,339 +1,411 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2930292B4B;
-	Wed, 15 Oct 2025 08:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601802D46B2
+	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 08:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760515364; cv=none; b=EFjxGtxtHxUtGkoh+FD7nPmO0hS3CtLYIKyh2cRkI+Li3i0heem4cfWg8PDhoL1lMkzMhz3Kn6P2GYL73GGZNdnoj1XlVQJa3WRIJy0sUlVNskPHfwYHblusLgiPiR7BzNGOf4h8WZ3/l/kgMu+uAi4NvjFGvNOuIqfbdvWm0Cc=
+	t=1760516120; cv=none; b=M2n9ZR/hl6injyS/sNGYcqdDXgmdX6/DzpRK+wcKJUwQGTB3c2sjXxBvE7FcC5o2tsrwg3mJ5MUxKEWF0zRHfMo/914wXlyQucHVKzXyCJYkuIxLwMwBkn9MQAbDP61SKrC1PGK/qRRHMyuQV2cW99oz9OHcdSs5YfkQpTvIgw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760515364; c=relaxed/simple;
-	bh=GXdSIq5iw3ZqrU8QMk6N8jf6eMJLMbNXSh7eZkTME/s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gBJ3YkuikcbxQImOsqpgvRmwEaWBDVIQ74eHh9j3pE0BitI1ar8ycWceZBm9qx9b55IkRb7MZALhKTM9kNZ/JZBOhPSAN27bJyUI78Yo+CDApvGeijieF0x+jEcijbDAf9mF0ZRGW+S3Xo+FwmyGSj5p9UC3MdQKCChQkyiEmIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtlVrVun; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760516120; c=relaxed/simple;
+	bh=Ccw1kBiyRhQSVrMu4J+f5y24aPSH1p1AMOPs0E4nI3c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QCc3nu8Z6oghMGrPnWxCNig99/DKA2lqqei/Bi8tfynCcBkTVNcJ0o27OQiou5NE/UiPZFERWEW1FwW9KH3C3hE7UFJlG5fOgzjTym0BJgzwNvwas755zOPUECn2jItE4oZjXYbkwUh9fahkyR274nH6UVbUvUsOWsn83SQt/HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hjz7huSf; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtlVrVun"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD468C4CEF8;
-	Wed, 15 Oct 2025 08:02:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760515363;
-	bh=GXdSIq5iw3ZqrU8QMk6N8jf6eMJLMbNXSh7eZkTME/s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dtlVrVunpIl12FBsJIXRaT26DGtfPd5Qtb5LFc6vYKONhaDjmgrZHOYcIp3oiolCW
-	 NDwL5jSF4vZBrpzj30HjqadB88/mnkbeOAZCSht2+QjCXL9yW487pkL0uQtnSaln4J
-	 xg1lH6ZZDOWxoy6upi8HxFWmLdzhRx9Kn5BEQbJ7KMNvaXCW5seiQ27+QwHJ7okVRj
-	 XuAOVQP1aCgE8aEIxW5Gmy+HJ5qacejx2lVkhIPSRAyk293hl+E6uNYl4Z4iQjnIB8
-	 yvUfcEiBSj2kpTKppq8gdLM+p7fK32Kfh7oMuXFDPKfrxD/3UXtyave1ziFXkkFXsp
-	 BkOAlg28t4TxQ==
-Message-ID: <a4cf7a4a-f833-487d-9861-a6957f25e7e0@kernel.org>
-Date: Wed, 15 Oct 2025 10:02:37 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hjz7huSf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760516116;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tZKda9N5dijKxgcEWmfEVaFBabk39V5bB1Cg5EO94mA=;
+	b=Hjz7huSfSXmQI5+0RGqZTE7TdiBaF08epeHBkdr2YEKPzm6dseyHBPf9wBIoDytcpYqUAc
+	Y7i+WURocb7jqILEWV6UZivFRtQwCpXtYb0fHi+DBV3VXv1DiTiMa4Ueq79k0MSFriEi0v
+	WC1SHSaN+zlWejBPGKGGxOzuqetl2TM=
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
+ [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-290-RHxzX03tNf2CDyey9yKgeQ-1; Wed, 15 Oct 2025 04:15:14 -0400
+X-MC-Unique: RHxzX03tNf2CDyey9yKgeQ-1
+X-Mimecast-MFC-AGG-ID: RHxzX03tNf2CDyey9yKgeQ_1760516114
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7a77ac02893so1825340a34.1
+        for <imx@lists.linux.dev>; Wed, 15 Oct 2025 01:15:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760516114; x=1761120914;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tZKda9N5dijKxgcEWmfEVaFBabk39V5bB1Cg5EO94mA=;
+        b=poupAnG3BfNks+UVO57aoe09OtH8KBtrCFj6yI0CyZqIdiRgFJCowB/PYUFC0V+p2I
+         J6rdCI03GOwi0OigzH6kVniKlRSmjQYgrOcWC+fGaQ7noYk+SsJK5URd98uH4kd6lGGo
+         +EQduZpOSe6sv5z8AF/A8g763ivj+lz594EIyzZz91mTxWOo9BgWPyJ9xHN+K7oQb4g8
+         me4kx1CcQItAOrjQRl/mY4Dl7EC2JrzcafPiiqF1ebR99DNeqKne2bOfEceuN4mmUSSO
+         r6dvXldzt4ITnkQV9zfsI5EzxfbgAWOm1bdz1KM8W6gADWjBQkdhPZv9pXjuNXXL8gVc
+         UEPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUJXCbw5VSn/3Pweh/82DAlB5C7NUW2GR/hil5Zhd+AXDhDrg6zpivlEffFOp+WWYBqyDs=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxh1VJ4jBkLRpaeeZs1nVsuj6Ca92xCVFhZeywd1ozT3F/5ov1b
+	AHP8vmC22WjFz2LFfHNkC7krCEmrGJ4G8IeflJXrSiwtMB6rHABeCCbF5U6+S9xpZ4WN2TpO6fm
+	YigP0KxUWpsoANDowRUxETrfqJ/ONOagA6U3ZlN5s4b4pPYwOFdyVxj3y/mpOqeXGN01Be/NQQE
+	y40GuGF0AOHZUeD3HDO47DZfquWmSB
+X-Gm-Gg: ASbGncsDGlyUpn/dM1gw2K139ye5Y5FyCJ6Ze6f6bhQG8T5gk6yfEXSDXRGatS6x5ZI
+	JWPjkGPJrqKU3BZMe6SMi4K9h3TQuGk4zq4733DBuYvidBMvlx9elxgDvt6b9UqU90UwMZmz3O9
+	YV58cXvalPg57LQvem2g==
+X-Received: by 2002:a4a:a5cb:0:b0:650:11d8:238b with SMTP id 006d021491bc7-65011d82737mr3501930eaf.3.1760516114036;
+        Wed, 15 Oct 2025 01:15:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHmaU0mA5ZgI30BHsNRVowCM5aNsY26oF2v2JdjYxUuHKGZZFoMEDYsj2ZYBfGCAjm2CUzHY53+s7Zb3V4S4Qk=
+X-Received: by 2002:a4a:a5cb:0:b0:650:11d8:238b with SMTP id
+ 006d021491bc7-65011d82737mr3501913eaf.3.1760516113614; Wed, 15 Oct 2025
+ 01:15:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: v4l2-mem2mem: Don't copy frame flags for
- frame-based devices
-To: Nicolas Dufresne <nicolas.dufresne@collabora.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- linux-media@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-staging@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev
-Cc: Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
- Bin Liu <bin.liu@mediatek.com>,
- Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
- Hans Verkuil <hverkuil@kernel.org>, Jacob Chen <jacob-chen@iotwrt.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Jiasheng Jiang <jiashengjiangcool@gmail.com>,
- Matthew Majewski <mattwmajewski@gmail.com>,
- Mirela Rabulea <mirela.rabulea@nxp.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Steve Longerbeam <slongerbeam@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- Xavier Roumegue <xavier.roumegue@oss.nxp.com>
-References: <20251009111143.9137-1-laurent.pinchart@ideasonboard.com>
- <45a3e39fb87fc4e32626dfaa277a314bce5f4f68.camel@collabora.com>
-From: Hans Verkuil <hverkuil+cisco@kernel.org>
-Content-Language: en-US
-In-Reply-To: <45a3e39fb87fc4e32626dfaa277a314bce5f4f68.camel@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20251006-nxp-s32g-boards-v1-1-f70a57b8087f@oss.nxp.com>
+In-Reply-To: <20251006-nxp-s32g-boards-v1-1-f70a57b8087f@oss.nxp.com>
+From: Enric Balletbo i Serra <eballetb@redhat.com>
+Date: Wed, 15 Oct 2025 10:12:55 +0200
+X-Gm-Features: AS18NWBquLznSadLgXrWHTjQr4NrQxZIv7gXTzpb0atLEJ2_g3uy-0qxXqM2JHs
+Message-ID: <CALE0LRusjwiozUPgncUx=iy8O2jbDkm_ktUNXdA3Ludyp02dEg@mail.gmail.com>
+Subject: Re: [PATCH] arm64: dts: freescale: Add GMAC Ethernet for S32G2 EVB
+ and RDB2 and S32G3 RDB3
+To: jan.petrous@oss.nxp.com
+Cc: Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, NXP S32 Linux Team <s32@nxp.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: TbKZ6N9CCNwYiQ0xK8RrKZsyOTChkPScfcD8T42EpO4_1760516114
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/9/25 15:04, Nicolas Dufresne wrote:
-> Hi,
-> 
-> Le jeudi 09 octobre 2025 à 14:11 +0300, Laurent Pinchart a écrit :
->> The v4l2_m2m_buf_copy_metadata() function takes a boolean
->> copy_frame_flags argument. When true, it causes the function to copy the
->> V4L2_BUF_FLAG_KEYFRAME, V4L2_BUF_FLAG_BFRAME and V4L2_BUF_FLAG_PFRAME
->> flags from the output buffer to the capture buffer.
->>
->> Many frame-based M2M drivers (e.g. for JPEG encoders, scalers,
->> dewarpers, 2D blenders, ...) set the argument to true, while the frame
->> flags are not applicable to those drivers as they have no concept of
->> key, B or P frames. Set the argument to false to avoid further
->> cargo-cult mistakes.
-> 
-> There is no use cases in any upstream driver for copying them over (even in
-> Tegra 20 decoder driver). KEY/P/B are properties of bitstream buffer in some
-> formats. Once decoded, this is no longer a property of the video frame and
-> should be discarded. So even decoder supporting that feature should not copy
-> them over.
+Hi Jan
 
-I agree. I think I thought at the time that it could be useful to know if
-an uncompressed frame was decoded from a I/P/B compressed frame, and to
-preserve that information if that same uncompressed frame was passed through
-another M2M device (e.g. a scaler).
+Thank you for your patch.
 
-But looking back at the documentation it is clear that these flags are meant
-for compressed frames, so copying them makes no sense.
 
-Regards,
+On Mon, Oct 6, 2025 at 6:32=E2=80=AFPM Jan Petrous via B4 Relay
+<devnull+jan.petrous.oss.nxp.com@kernel.org> wrote:
+>
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+>
+> Add support for the Ethernet connection over GMAC controller connected to
+> the Micrel KSZ9031 Ethernet RGMII PHY located on the boards.
+>
+> The mentioned GMAC controller is one of two network controllers
+> embedded on the NXP Automotive SoCs S32G2 and S32G3.
+>
+> The supported boards:
+>  * EVB:  S32G-VNP-EVB with S32G2 SoC
+>  * RDB2: S32G-VNP-RDB2
+>  * RDB3: S32G-VNP-RDB3
 
-	Hans
+I got ethernet detected and working with this patch on S32G-VNP-RDB3
 
-> 
-> I'd remove the boolean completely to be fair, this is always inappropriate to
-> set this to true. I'd be fine doing it in two steps, but then the list should be
-> completed, see below:
-> 
->>
->> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->> ---
->>  drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c     | 4 ++--
->>  drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c   | 4 ++--
->>  drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c   | 4 ++--
->>  drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c      | 2 +-
->>  drivers/media/platform/nxp/dw100/dw100.c                 | 2 +-
->>  drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c           | 2 +-
->>  drivers/media/platform/rockchip/rga/rga.c                | 2 +-
->>  drivers/media/platform/st/stm32/dma2d/dma2d.c            | 2 +-
->>  drivers/media/platform/sunxi/sun8i-di/sun8i-di.c         | 2 +-
->>  drivers/media/platform/sunxi/sun8i-rotate/sun8i_rotate.c | 2 +-
->>  drivers/media/test-drivers/vim2m.c                       | 2 +-
->>  drivers/staging/media/imx/imx-media-csc-scaler.c         | 2 +-
-> 
-> Missing:
-> 
-> - drivers/media/platform/amphion/vdec.c
-> - drivers/media/platform/mediatek/vcodec/decoder/vdec/*
-> - drivers/media/platform/nvidia/tegra-vde/h264.c
-> - drivers/media/platform/rockchip/rkvdec/rkvdec.c
-> - drivers/media/platform/verisilicon/hantro_drv.c
-> - drivers/staging/media/sunxi/cedrus/cedrus_dec.c
-> 
-> cheers,
-> Nicolas
-> 
->>  12 files changed, 15 insertions(+), 15 deletions(-)
->>
->> diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
->> b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
->> index 35c70ec3ad2c..6bd5036430dc 100644
->> --- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
->> +++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
->> @@ -1619,7 +1619,7 @@ static void mtk_jpegenc_worker(struct work_struct *work)
->>  	if (!dst_buf)
->>  		goto getbuf_fail;
->>  
->> -	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
->> +	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
->>  
->>  	mtk_jpegenc_set_hw_param(ctx, hw_id, src_buf, dst_buf);
->>  	ret = pm_runtime_get_sync(comp_jpeg[hw_id]->dev);
->> @@ -1715,7 +1715,7 @@ static void mtk_jpegdec_worker(struct work_struct *work)
->>  	if (!dst_buf)
->>  		goto getbuf_fail;
->>  
->> -	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
->> +	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
->>  	jpeg_src_buf = mtk_jpeg_vb2_to_srcbuf(&src_buf->vb2_buf);
->>  	jpeg_dst_buf = mtk_jpeg_vb2_to_srcbuf(&dst_buf->vb2_buf);
->>  
->> diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c
->> b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c
->> index e78e1d11093c..556865100872 100644
->> --- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c
->> +++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c
->> @@ -530,7 +530,7 @@ static void mtk_jpegdec_timeout_work(struct work_struct
->> *work)
->>  
->>  	src_buf = cjpeg->hw_param.src_buffer;
->>  	dst_buf = cjpeg->hw_param.dst_buffer;
->> -	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
->> +	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
->>  
->>  	mtk_jpeg_dec_reset(cjpeg->reg_base);
->>  	clk_disable_unprepare(cjpeg->jdec_clk.clks->clk);
->> @@ -560,7 +560,7 @@ static irqreturn_t mtk_jpegdec_hw_irq_handler(int irq,
->> void *priv)
->>  	ctx = jpeg->hw_param.curr_ctx;
->>  	src_buf = jpeg->hw_param.src_buffer;
->>  	dst_buf = jpeg->hw_param.dst_buffer;
->> -	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
->> +	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
->>  
->>  	irq_status = mtk_jpeg_dec_get_int_status(jpeg->reg_base);
->>  	dec_irq_ret = mtk_jpeg_dec_enum_result(irq_status);
->> diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
->> b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
->> index 9ab27aee302a..4c8427b3c384 100644
->> --- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
->> +++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
->> @@ -261,7 +261,7 @@ static void mtk_jpegenc_timeout_work(struct work_struct
->> *work)
->>  
->>  	src_buf = cjpeg->hw_param.src_buffer;
->>  	dst_buf = cjpeg->hw_param.dst_buffer;
->> -	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
->> +	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
->>  
->>  	mtk_jpeg_enc_reset(cjpeg->reg_base);
->>  	clk_disable_unprepare(cjpeg->venc_clk.clks->clk);
->> @@ -289,7 +289,7 @@ static irqreturn_t mtk_jpegenc_hw_irq_handler(int irq,
->> void *priv)
->>  	ctx = jpeg->hw_param.curr_ctx;
->>  	src_buf = jpeg->hw_param.src_buffer;
->>  	dst_buf = jpeg->hw_param.dst_buffer;
->> -	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
->> +	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
->>  
->>  	irq_status = readl(jpeg->reg_base + JPEG_ENC_INT_STS) &
->>  		JPEG_ENC_INT_STATUS_MASK_ALLIRQ;
->> diff --git a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c
->> b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c
->> index 59ce5cce0698..dba46a69c6be 100644
->> --- a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c
->> +++ b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-m2m.c
->> @@ -51,7 +51,7 @@ static void mdp_m2m_process_done(void *priv, int vb_state)
->>  	ctx->curr_param.frame_no = ctx->frame_count[MDP_M2M_SRC];
->>  	src_vbuf->sequence = ctx->frame_count[MDP_M2M_SRC]++;
->>  	dst_vbuf->sequence = ctx->frame_count[MDP_M2M_DST]++;
->> -	v4l2_m2m_buf_copy_metadata(src_vbuf, dst_vbuf, true);
->> +	v4l2_m2m_buf_copy_metadata(src_vbuf, dst_vbuf, false);
->>  
->>  	v4l2_m2m_buf_done(src_vbuf, vb_state);
->>  	v4l2_m2m_buf_done(dst_vbuf, vb_state);
->> diff --git a/drivers/media/platform/nxp/dw100/dw100.c
->> b/drivers/media/platform/nxp/dw100/dw100.c
->> index 7a0ee44d9e1f..b73302d54635 100644
->> --- a/drivers/media/platform/nxp/dw100/dw100.c
->> +++ b/drivers/media/platform/nxp/dw100/dw100.c
->> @@ -1483,7 +1483,7 @@ static void dw100_start(struct dw100_ctx *ctx, struct
->> vb2_v4l2_buffer *in_vb,
->>  				V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE),
->>  		in_vb->sequence, out_vb->sequence);
->>  
->> -	v4l2_m2m_buf_copy_metadata(in_vb, out_vb, true);
->> +	v4l2_m2m_buf_copy_metadata(in_vb, out_vb, false);
->>  
->>  	/* Now, let's deal with hardware ... */
->>  	dw100_hw_master_bus_disable(dw_dev);
->> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->> b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->> index 37e0670f98c5..e1dda1e834e4 100644
->> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
->> @@ -1537,7 +1537,7 @@ static void mxc_jpeg_device_run(void *priv)
->>  	src_buf->sequence = q_data_out->sequence++;
->>  	dst_buf->sequence = q_data_cap->sequence++;
->>  
->> -	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
->> +	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
->>  
->>  	jpeg_src_buf = vb2_to_mxc_buf(&src_buf->vb2_buf);
->>  	if (q_data_cap->fmt->mem_planes != dst_buf->vb2_buf.num_planes) {
->> diff --git a/drivers/media/platform/rockchip/rga/rga.c
->> b/drivers/media/platform/rockchip/rga/rga.c
->> index 48b88da59da0..075b684fb178 100644
->> --- a/drivers/media/platform/rockchip/rga/rga.c
->> +++ b/drivers/media/platform/rockchip/rga/rga.c
->> @@ -75,7 +75,7 @@ static irqreturn_t rga_isr(int irq, void *prv)
->>  		WARN_ON(!src);
->>  		WARN_ON(!dst);
->>  
->> -		v4l2_m2m_buf_copy_metadata(src, dst, true);
->> +		v4l2_m2m_buf_copy_metadata(src, dst, false);
->>  
->>  		dst->sequence = ctx->csequence++;
->>  
->> diff --git a/drivers/media/platform/st/stm32/dma2d/dma2d.c
->> b/drivers/media/platform/st/stm32/dma2d/dma2d.c
->> index 643913adc1f3..4184bdb96e6d 100644
->> --- a/drivers/media/platform/st/stm32/dma2d/dma2d.c
->> +++ b/drivers/media/platform/st/stm32/dma2d/dma2d.c
->> @@ -483,7 +483,7 @@ static void device_run(void *prv)
->>  
->>  	src->sequence = frm_out->sequence++;
->>  	dst->sequence = frm_cap->sequence++;
->> -	v4l2_m2m_buf_copy_metadata(src, dst, true);
->> +	v4l2_m2m_buf_copy_metadata(src, dst, false);
->>  
->>  	if (clk_enable(dev->gate))
->>  		goto end;
->> diff --git a/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
->> b/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
->> index 3e7f2df70408..11a6c7f5212e 100644
->> --- a/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
->> +++ b/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
->> @@ -71,7 +71,7 @@ static void deinterlace_device_run(void *priv)
->>  	src = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
->>  	dst = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
->>  
->> -	v4l2_m2m_buf_copy_metadata(src, dst, true);
->> +	v4l2_m2m_buf_copy_metadata(src, dst, false);
->>  
->>  	deinterlace_write(dev, DEINTERLACE_MOD_ENABLE,
->>  			  DEINTERLACE_MOD_ENABLE_EN);
->> diff --git a/drivers/media/platform/sunxi/sun8i-rotate/sun8i_rotate.c
->> b/drivers/media/platform/sunxi/sun8i-rotate/sun8i_rotate.c
->> index abd10b218aa1..f6e2f11a20dd 100644
->> --- a/drivers/media/platform/sunxi/sun8i-rotate/sun8i_rotate.c
->> +++ b/drivers/media/platform/sunxi/sun8i-rotate/sun8i_rotate.c
->> @@ -70,7 +70,7 @@ static void rotate_device_run(void *priv)
->>  	src = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
->>  	dst = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
->>  
->> -	v4l2_m2m_buf_copy_metadata(src, dst, true);
->> +	v4l2_m2m_buf_copy_metadata(src, dst, false);
->>  
->>  	val = ROTATE_GLB_CTL_MODE(ROTATE_MODE_COPY_ROTATE);
->>  	if (ctx->hflip)
->> diff --git a/drivers/media/test-drivers/vim2m.c b/drivers/media/test-
->> drivers/vim2m.c
->> index dc82830a35a5..3e8476165721 100644
->> --- a/drivers/media/test-drivers/vim2m.c
->> +++ b/drivers/media/test-drivers/vim2m.c
->> @@ -482,7 +482,7 @@ static int device_process(struct vim2m_ctx *ctx,
->>  
->>  	out_vb->sequence = q_data_out->sequence++;
->>  	in_vb->sequence = q_data_in->sequence++;
->> -	v4l2_m2m_buf_copy_metadata(in_vb, out_vb, true);
->> +	v4l2_m2m_buf_copy_metadata(in_vb, out_vb, false);
->>  
->>  	if (ctx->mode & MEM2MEM_VFLIP) {
->>  		start = height - 1;
->> diff --git a/drivers/staging/media/imx/imx-media-csc-scaler.c
->> b/drivers/staging/media/imx/imx-media-csc-scaler.c
->> index 19fd31cb9bb0..770ba3fbaba2 100644
->> --- a/drivers/staging/media/imx/imx-media-csc-scaler.c
->> +++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
->> @@ -96,7 +96,7 @@ static void ipu_ic_pp_complete(struct ipu_image_convert_run
->> *run, void *_ctx)
->>  	src_buf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
->>  	dst_buf = v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
->>  
->> -	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, true);
->> +	v4l2_m2m_buf_copy_metadata(src_buf, dst_buf, false);
->>  
->>  	src_buf->sequence = ctx->sequence++;
->>  	dst_buf->sequence = src_buf->sequence;
->>
->> base-commit: e5f0a698b34ed76002dc5cff3804a61c80233a7a
+[   43.473918] s32-dwmac 4033c000.ethernet end0: PHY [stmmac-0:01]
+driver [Micrel KSZ9031 Gigabit PHY] (irq=3DPOLL)
+[   43.477547] s32-dwmac 4033c000.ethernet end0: Enabling Safety Features
+[   43.489972] s32-dwmac 4033c000.ethernet end0: Invalid PTP clock rate
+[   43.496479] s32-dwmac 4033c000.ethernet end0: PTP init failed
+[   43.496491] s32-dwmac 4033c000.ethernet end0: configuring for
+phy/rgmii-id link mode
+[   46.599752] s32-dwmac 4033c000.ethernet end0: Link is Up -
+1Gbps/Full - flow control rx/tx
+
+So,
+
+Tested-by: Enric Balletbo i Serra <eballetb@redhat.com>
+
+
+>
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/s32g2.dtsi        | 50 +++++++++++++++++++=
++++++-
+>  arch/arm64/boot/dts/freescale/s32g274a-evb.dts  | 21 ++++++++++-
+>  arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts | 19 ++++++++++
+>  arch/arm64/boot/dts/freescale/s32g3.dtsi        | 50 +++++++++++++++++++=
++++++-
+>  arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts | 21 ++++++++++-
+>  5 files changed, 157 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/d=
+ts/freescale/s32g2.dtsi
+> index d167624d1f0c..d06103e9564e 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+> @@ -3,7 +3,7 @@
+>   * NXP S32G2 SoC family
+>   *
+>   * Copyright (c) 2021 SUSE LLC
+> - * Copyright 2017-2021, 2024 NXP
+> + * Copyright 2017-2021, 2024-2025 NXP
+>   */
+>
+>  #include <dt-bindings/interrupt-controller/arm-gic.h>
+> @@ -738,5 +738,53 @@ gic: interrupt-controller@50800000 {
+>                         interrupt-controller;
+>                         #interrupt-cells =3D <3>;
+>                 };
+> +
+> +               gmac0: ethernet@4033c000 {
+> +                       compatible =3D "nxp,s32g2-dwmac";
+> +                       reg =3D <0x4033c000 0x2000>, /* gmac IP */
+> +                             <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
+> +                       interrupt-parent =3D <&gic>;
+> +                       interrupts =3D <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+> +                       interrupt-names =3D "macirq";
+> +                       snps,mtl-rx-config =3D <&mtl_rx_setup>;
+> +                       snps,mtl-tx-config =3D <&mtl_tx_setup>;
+> +                       status =3D "disabled";
+> +
+> +                       mtl_rx_setup: rx-queues-config {
+> +                               snps,rx-queues-to-use =3D <5>;
+> +
+> +                               queue0 {
+> +                               };
+> +                               queue1 {
+> +                               };
+> +                               queue2 {
+> +                               };
+> +                               queue3 {
+> +                               };
+> +                               queue4 {
+> +                               };
+> +                       };
+> +
+> +                       mtl_tx_setup: tx-queues-config {
+> +                               snps,tx-queues-to-use =3D <5>;
+> +
+> +                               queue0 {
+> +                               };
+> +                               queue1 {
+> +                               };
+> +                               queue2 {
+> +                               };
+> +                               queue3 {
+> +                               };
+> +                               queue4 {
+> +                               };
+> +                       };
+> +
+> +                       gmac0mdio: mdio {
+> +                               #address-cells =3D <1>;
+> +                               #size-cells =3D <0>;
+> +                               compatible =3D "snps,dwmac-mdio";
+> +                       };
+> +               };
+>         };
+>  };
+> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/=
+boot/dts/freescale/s32g274a-evb.dts
+> index c4a195dd67bf..f020da03979a 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+> +++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+> @@ -1,7 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+>  /*
+>   * Copyright (c) 2021 SUSE LLC
+> - * Copyright 2019-2021, 2024 NXP
+> + * Copyright 2019-2021, 2024-2025 NXP
+>   */
+>
+>  /dts-v1/;
+> @@ -15,6 +15,7 @@ / {
+>
+>         aliases {
+>                 serial0 =3D &uart0;
+> +               ethernet0 =3D &gmac0;
+>         };
+>
+>         chosen {
+> @@ -43,3 +44,21 @@ &usdhc0 {
+>         no-1-8-v;
+>         status =3D "okay";
+>  };
+> +
+> +&gmac0 {
+> +       clocks =3D <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
+> +       clock-names =3D "stmmaceth", "tx", "rx", "ptp_ref";
+> +       phy-mode =3D "rgmii-id";
+> +       phy-handle =3D <&rgmiiaphy4>;
+> +       status =3D "okay";
+> +};
+> +
+> +&gmac0mdio {
+> +       #address-cells =3D <1>;
+> +       #size-cells =3D <0>;
+> +
+> +       /* KSZ 9031 on RGMII */
+> +       rgmiiaphy4: ethernet-phy@4 {
+> +               reg =3D <4>;
+> +       };
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64=
+/boot/dts/freescale/s32g274a-rdb2.dts
+> index 4f58be68c818..b9c2f964b3f7 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+> +++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+> @@ -16,6 +16,7 @@ / {
+>         aliases {
+>                 serial0 =3D &uart0;
+>                 serial1 =3D &uart1;
+> +               ethernet0 =3D &gmac0;
+>         };
+>
+>         chosen {
+> @@ -77,3 +78,21 @@ &usdhc0 {
+>         no-1-8-v;
+>         status =3D "okay";
+>  };
+> +
+> +&gmac0 {
+> +       clocks =3D <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
+> +       clock-names =3D "stmmaceth", "tx", "rx", "ptp_ref";
+> +       phy-mode =3D "rgmii-id";
+> +       phy-handle =3D <&rgmiiaphy1>;
+> +       status =3D "okay";
+> +};
+> +
+> +&gmac0mdio {
+> +       #address-cells =3D <1>;
+> +       #size-cells =3D <0>;
+> +
+> +       /* KSZ 9031 on RGMII */
+> +       rgmiiaphy1: ethernet-phy@1 {
+> +               reg =3D <1>;
+> +       };
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/d=
+ts/freescale/s32g3.dtsi
+> index be3a582ebc1b..e31184847371 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+>  /*
+> - * Copyright 2021-2024 NXP
+> + * Copyright 2021-2025 NXP
+>   *
+>   * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+>   *          Ciprian Costea <ciprianmarian.costea@nxp.com>
+> @@ -883,6 +883,54 @@ gic: interrupt-controller@50800000 {
+>                               <0x50420000 0x2000>;
+>                         interrupts =3D <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
+>                 };
+> +
+> +               gmac0: ethernet@4033c000 {
+> +                       compatible =3D "nxp,s32g2-dwmac";
+> +                       reg =3D <0x4033c000 0x2000>, /* gmac IP */
+> +                             <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
+> +                       interrupt-parent =3D <&gic>;
+> +                       interrupts =3D <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+> +                       interrupt-names =3D "macirq";
+> +                       snps,mtl-rx-config =3D <&mtl_rx_setup>;
+> +                       snps,mtl-tx-config =3D <&mtl_tx_setup>;
+> +                       status =3D "disabled";
+> +
+> +                       mtl_rx_setup: rx-queues-config {
+> +                               snps,rx-queues-to-use =3D <5>;
+> +
+> +                               queue0 {
+> +                               };
+> +                               queue1 {
+> +                               };
+> +                               queue2 {
+> +                               };
+> +                               queue3 {
+> +                               };
+> +                               queue4 {
+> +                               };
+> +                       };
+> +
+> +                       mtl_tx_setup: tx-queues-config {
+> +                               snps,tx-queues-to-use =3D <5>;
+> +
+> +                               queue0 {
+> +                               };
+> +                               queue1 {
+> +                               };
+> +                               queue2 {
+> +                               };
+> +                               queue3 {
+> +                               };
+> +                               queue4 {
+> +                               };
+> +                       };
+> +
+> +                       gmac0mdio: mdio {
+> +                               #address-cells =3D <1>;
+> +                               #size-cells =3D <0>;
+> +                               compatible =3D "snps,dwmac-mdio";
+> +                       };
+> +               };
+>         };
+>
+>         timer {
+> diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64=
+/boot/dts/freescale/s32g399a-rdb3.dts
+> index e94f70ad82d9..4a74923789ae 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
+> +++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+>  /*
+> - * Copyright 2021-2024 NXP
+> + * Copyright 2021-2025 NXP
+>   *
+>   * NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)
+>   */
+> @@ -18,6 +18,7 @@ aliases {
+>                 mmc0 =3D &usdhc0;
+>                 serial0 =3D &uart0;
+>                 serial1 =3D &uart1;
+> +               ethernet0 =3D &gmac0;
+>         };
+>
+>         chosen {
+> @@ -93,3 +94,21 @@ &usdhc0 {
+>         disable-wp;
+>         status =3D "okay";
+>  };
+> +
+> +&gmac0 {
+> +       clocks =3D <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
+> +       clock-names =3D "stmmaceth", "tx", "rx", "ptp_ref";
+> +       phy-mode =3D "rgmii-id";
+> +       phy-handle =3D <&rgmiiaphy1>;
+> +       status =3D "okay";
+> +};
+> +
+> +&gmac0mdio {
+> +       #address-cells =3D <1>;
+> +       #size-cells =3D <0>;
+> +
+> +       /* KSZ 9031 on RGMII */
+> +       rgmiiaphy1: ethernet-phy@1 {
+> +               reg =3D <1>;
+> +       };
+> +};
+>
+> ---
+> base-commit: fd94619c43360eb44d28bd3ef326a4f85c600a07
+> change-id: 20251006-nxp-s32g-boards-2d156255b592
+>
+> Best regards,
+> --
+> Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+>
+>
+>
 
