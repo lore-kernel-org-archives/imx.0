@@ -1,411 +1,193 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013061.outbound.protection.outlook.com [52.101.72.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601802D46B2
-	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 08:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760516120; cv=none; b=M2n9ZR/hl6injyS/sNGYcqdDXgmdX6/DzpRK+wcKJUwQGTB3c2sjXxBvE7FcC5o2tsrwg3mJ5MUxKEWF0zRHfMo/914wXlyQucHVKzXyCJYkuIxLwMwBkn9MQAbDP61SKrC1PGK/qRRHMyuQV2cW99oz9OHcdSs5YfkQpTvIgw8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760516120; c=relaxed/simple;
-	bh=Ccw1kBiyRhQSVrMu4J+f5y24aPSH1p1AMOPs0E4nI3c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QCc3nu8Z6oghMGrPnWxCNig99/DKA2lqqei/Bi8tfynCcBkTVNcJ0o27OQiou5NE/UiPZFERWEW1FwW9KH3C3hE7UFJlG5fOgzjTym0BJgzwNvwas755zOPUECn2jItE4oZjXYbkwUh9fahkyR274nH6UVbUvUsOWsn83SQt/HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hjz7huSf; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1B23191DF
+	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 08:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760518739; cv=fail; b=P++EkLIj7iiqiiWRy0Sh+bSL4OH99xfD3tfmk8j2oX6iiZI1qx8W1uzdYi+gUh3ww/wCL6HFFvxpY+FBXtxuqB7ypXMwYZuxJZKHvXGl4vgWKf9e76xB2tHWjazhNopeFpUAGm/FADw403dPikh7JCdLS/UB2BaRc5yMoSdjZ80=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760518739; c=relaxed/simple;
+	bh=JMvQG6LQLFgBDGaAA74K/lKBQJ7rHwiUYf5/a+0dugs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=bGnS3Jq0PL+eHSGatpH4yj1TwE9L50YxePfkQicd41jx92YV/hv7Of4Of2VWaG56I4vkag/wM5X97M3f2Y/UhOqBvPXgbluia7S8OHZsDPiZbfMeXm7hHQu0wj6U6MIrF+U5U54dSlKE5u5xC/7qaaVIgWXe11TbUN9uPb35FBY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YZip9dCs; arc=fail smtp.client-ip=52.101.72.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hjz7huSf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760516116;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tZKda9N5dijKxgcEWmfEVaFBabk39V5bB1Cg5EO94mA=;
-	b=Hjz7huSfSXmQI5+0RGqZTE7TdiBaF08epeHBkdr2YEKPzm6dseyHBPf9wBIoDytcpYqUAc
-	Y7i+WURocb7jqILEWV6UZivFRtQwCpXtYb0fHi+DBV3VXv1DiTiMa4Ueq79k0MSFriEi0v
-	WC1SHSaN+zlWejBPGKGGxOzuqetl2TM=
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
- [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-290-RHxzX03tNf2CDyey9yKgeQ-1; Wed, 15 Oct 2025 04:15:14 -0400
-X-MC-Unique: RHxzX03tNf2CDyey9yKgeQ-1
-X-Mimecast-MFC-AGG-ID: RHxzX03tNf2CDyey9yKgeQ_1760516114
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7a77ac02893so1825340a34.1
-        for <imx@lists.linux.dev>; Wed, 15 Oct 2025 01:15:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760516114; x=1761120914;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tZKda9N5dijKxgcEWmfEVaFBabk39V5bB1Cg5EO94mA=;
-        b=poupAnG3BfNks+UVO57aoe09OtH8KBtrCFj6yI0CyZqIdiRgFJCowB/PYUFC0V+p2I
-         J6rdCI03GOwi0OigzH6kVniKlRSmjQYgrOcWC+fGaQ7noYk+SsJK5URd98uH4kd6lGGo
-         +EQduZpOSe6sv5z8AF/A8g763ivj+lz594EIyzZz91mTxWOo9BgWPyJ9xHN+K7oQb4g8
-         me4kx1CcQItAOrjQRl/mY4Dl7EC2JrzcafPiiqF1ebR99DNeqKne2bOfEceuN4mmUSSO
-         r6dvXldzt4ITnkQV9zfsI5EzxfbgAWOm1bdz1KM8W6gADWjBQkdhPZv9pXjuNXXL8gVc
-         UEPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJXCbw5VSn/3Pweh/82DAlB5C7NUW2GR/hil5Zhd+AXDhDrg6zpivlEffFOp+WWYBqyDs=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxh1VJ4jBkLRpaeeZs1nVsuj6Ca92xCVFhZeywd1ozT3F/5ov1b
-	AHP8vmC22WjFz2LFfHNkC7krCEmrGJ4G8IeflJXrSiwtMB6rHABeCCbF5U6+S9xpZ4WN2TpO6fm
-	YigP0KxUWpsoANDowRUxETrfqJ/ONOagA6U3ZlN5s4b4pPYwOFdyVxj3y/mpOqeXGN01Be/NQQE
-	y40GuGF0AOHZUeD3HDO47DZfquWmSB
-X-Gm-Gg: ASbGncsDGlyUpn/dM1gw2K139ye5Y5FyCJ6Ze6f6bhQG8T5gk6yfEXSDXRGatS6x5ZI
-	JWPjkGPJrqKU3BZMe6SMi4K9h3TQuGk4zq4733DBuYvidBMvlx9elxgDvt6b9UqU90UwMZmz3O9
-	YV58cXvalPg57LQvem2g==
-X-Received: by 2002:a4a:a5cb:0:b0:650:11d8:238b with SMTP id 006d021491bc7-65011d82737mr3501930eaf.3.1760516114036;
-        Wed, 15 Oct 2025 01:15:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHmaU0mA5ZgI30BHsNRVowCM5aNsY26oF2v2JdjYxUuHKGZZFoMEDYsj2ZYBfGCAjm2CUzHY53+s7Zb3V4S4Qk=
-X-Received: by 2002:a4a:a5cb:0:b0:650:11d8:238b with SMTP id
- 006d021491bc7-65011d82737mr3501913eaf.3.1760516113614; Wed, 15 Oct 2025
- 01:15:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YZip9dCs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=X93pz9WOmq4noSiSpMt4CTsAEkvXU/lo1WpvQ0X/0EqPd0Yz/aHJeT6K57HSItyILYEr+i8S2ZfpR/PUSed8m4hbLu71lrlcflPBMLlq9ZJ326ofPUIbiaXkuLlPL5nXc9v1wa7Nkdn0SevyWcwffe2CQRNUwXMXcYiNzzQ90lZN79/5FTOHffDifeIa/1p3tTlAqakCrfKD/ILuKctSydjfUJyKmo/mIYcmAp+ELnIxNAP1qSJOhEyTXivjBf3EWPUq+jwqBahLBXqGd2H1CfK5RbgEACHWe0te0l4IcDblyRQDr3/3oldVn1RJr7ysvwBzuVLoGLWaPlj+byJ0bQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ixCTfF3cX2pK5yUcxhjZ2J5+zjJT83hov47KZUT1s4Y=;
+ b=kmRb5GvXAhKiqU2ajpYGrizWe9kYnz4pxrMQ8h9IRN7m0Nf9tRaRwEDPq9i1Ezr7mpZ885v55rM+KQkLuwgRSEAXky05WngTHzUM0Bc+mwT/V4Z0RYmeOrRmqqkVU/9IAXNzgNUWWid5rymG/5IGYYQKKJUvt1HbS0RSqD7CIIxX32hZq4h/3rGjI4xlu5JCGcPoXVicTBvpfa/d0YzmBHciSGtMvo65uBprLUd3SgsmTz52akpnFjhNYieUuxKJxY1CPF0kdVyJjNbX7r0Cjwisk3ehOU2oVkTw+yqNm+WObPNU+Q2Ap/JDrBP7FBa7UUg1Qd0q2tjnZwO0SOlv3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ixCTfF3cX2pK5yUcxhjZ2J5+zjJT83hov47KZUT1s4Y=;
+ b=YZip9dCs0tJUJOM6XnQo0kqZzCKdvhJVJKXJmX/DZyH7QxaN/jBGqMGyujWXDHZhhwuGPCUEYl5x7hggoD9DkZM6pL7CSUAU8lsRRIoKa6Fj0Ch3/Joy3R6KP2hhuWtryqY3Gp7WzlUEwS+RVH5CezvABvVqlfbfRjeYxjx3RS7/sgnD4sKOyGzCGnAEADQYA/lMeDbts/Iqr7gH1rhGKWO9G07ydnDYhVc/P/abpwRhmdkRQVQMOjkC4L3ts8ELKGrlqdEu42TcMpopPVc62RjL5Sg3W7T8YeKDMeVZAxy7d2HQx57CO9NM9fJxvmQUV4jTHih/BiWRORbAYw7VkA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by AS8PR04MB8056.eurprd04.prod.outlook.com (2603:10a6:20b:288::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.9; Wed, 15 Oct
+ 2025 08:58:51 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64%6]) with mapi id 15.20.9228.009; Wed, 15 Oct 2025
+ 08:58:51 +0000
+Message-ID: <e3ab9421-61a5-4ab6-8c72-6b0ab340f3a8@nxp.com>
+Date: Wed, 15 Oct 2025 16:59:13 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/39] dt-bindings: display: imx: Document i.MX95 Display
+ Controller processing units
+To: Marek Vasut <marek.vasut@mailbox.org>, Frank Li <Frank.li@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, Abel Vesa <abelvesa@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Lucas Stach <l.stach@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org
+References: <20251011170213.128907-1-marek.vasut@mailbox.org>
+ <20251011170213.128907-4-marek.vasut@mailbox.org>
+ <aO0tmUWA5H0J80Ov@lizhi-Precision-Tower-5810>
+ <260b4db1-c02a-48a0-baf8-5e217c729824@mailbox.org>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <260b4db1-c02a-48a0-baf8-5e217c729824@mailbox.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI1PR02CA0044.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::6) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251006-nxp-s32g-boards-v1-1-f70a57b8087f@oss.nxp.com>
-In-Reply-To: <20251006-nxp-s32g-boards-v1-1-f70a57b8087f@oss.nxp.com>
-From: Enric Balletbo i Serra <eballetb@redhat.com>
-Date: Wed, 15 Oct 2025 10:12:55 +0200
-X-Gm-Features: AS18NWBquLznSadLgXrWHTjQr4NrQxZIv7gXTzpb0atLEJ2_g3uy-0qxXqM2JHs
-Message-ID: <CALE0LRusjwiozUPgncUx=iy8O2jbDkm_ktUNXdA3Ludyp02dEg@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: freescale: Add GMAC Ethernet for S32G2 EVB
- and RDB2 and S32G3 RDB3
-To: jan.petrous@oss.nxp.com
-Cc: Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, NXP S32 Linux Team <s32@nxp.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: TbKZ6N9CCNwYiQ0xK8RrKZsyOTChkPScfcD8T42EpO4_1760516114
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AS8PR04MB8056:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f6b381d-c4e1-4804-d868-08de0bc90fb6
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|19092799006|376014|366016|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?ZWRMWnRXWkREdU5FdDkwMmt4RU1yVjBhbTRROHM3L3dpamh1N3BNNW1Cdjd5?=
+ =?utf-8?B?QjZURGdKY3c5c2NubHJGS0hqTlR1YW9IcGdydHk3WDJwRjNvdTdGRkthTjJv?=
+ =?utf-8?B?SGw4Q0pnZzVrenl1UTVBbHFZcHFFV2w5TzBManRrTHBhN3hOblVSNXVRUDhl?=
+ =?utf-8?B?K2V2RzlqYW5PRkVBV2hML0NmYm1hZ1NwM3ZtOGtud3g2SGh1Z0hodkplUFB3?=
+ =?utf-8?B?NGllcjA1akgwN3ZqU3VhVjRja1Bxa25NbnQ4K1Y5UnFHVUhtSElINzhPTjQy?=
+ =?utf-8?B?Z1dRcUcwbGhVblQ4RzhnT1BTV2J0c3BqS2k3NnBFUFlZcFoxaGd3Y3hDalIv?=
+ =?utf-8?B?Rk9UWkJQb1VRUG42L3ZmNEI2d3NGbjI0UHpDZEhZU0lRdVVzVjA5OGo3TW4z?=
+ =?utf-8?B?NWdkb1FzRkdxaDdqcU1KdW8wYXdFbDFBTGg0R1BmL3FWWEgvQ0pRTE00WlVG?=
+ =?utf-8?B?b1h5eEpPTERYVzZKVWE3SXl1SXBZZitjaHY2Mkl5T0tBN3lyZW5mWnRtMXlJ?=
+ =?utf-8?B?SU5hM0pZSHJ6ZkhQcFlyWmdScWJySjdaRnE3QThodGJRNStiQUFrMWgyZ0pz?=
+ =?utf-8?B?QnRxVmh1bFdmRUZSR1V3TDF2Ky9ORW80VkFsdEdBaStHYkdEYktvZDF6Rm9W?=
+ =?utf-8?B?ZGpJcEh1T21WbnJIZ0g4eElvZFNKdWpkWFdnNWJmRWFsdHkrM3VlZ0dTNkIv?=
+ =?utf-8?B?YTA1WHp0S0NrVkxEbXZaVHRoNDlkVHE0MWlRWnNlQmQvcnp5MGZQWjRCc09V?=
+ =?utf-8?B?aVhUekdqMUsvUVltRS9VRWhLTTRMc2lmYnkxeFo4bDc1WkVDdFFhQ2JVUk16?=
+ =?utf-8?B?UEE0dkNIbGVpOU9BbFNUZGcvYTdlSGhpWnZSNEM3Mm4yVlNWM25SSFhCMEtE?=
+ =?utf-8?B?a1o1QVlad1U3YTZuWGRBWVBBZEpyVHdiN0c3RklPRHMxNzljRmJxb0xXbVd1?=
+ =?utf-8?B?NXE2VWdoT25FOEpBQWtRZzZsdnZwc1RyVUpXckFyTnFSc0NJSVNtYW9YYW4x?=
+ =?utf-8?B?T25KRTQrczJxSWltU0hJL1NzY1o3VlBIbkVPMnYxbjRudUZhNTVoWUVzY0dB?=
+ =?utf-8?B?TWhnSFVpS1RSSjIwNGZIbGtYSjBZK2VZaTd2RC9KbmdWeEtoVjh2R2xVcWVj?=
+ =?utf-8?B?T2FXdjRxbFhpNlI5THdRcGJlckQrdHlTV1lTZC93Y1FsQk9mc1dkWU9GZWJk?=
+ =?utf-8?B?cnh3ajFSMlowQm9ZangrU2FHcG0xNmVXbkhDVTRUSnViMzZEVkFsMm9CK2Y5?=
+ =?utf-8?B?dENtTXY3RDhZKzBLSERCRzVPUEo4MXdSVUxrbkdqZzNHUjRUUFcwT3VJclNM?=
+ =?utf-8?B?Z0IzWnlodTBkZmZ4ZUFaWFpQWmJzVm5Bay8zazhkRExUcWJUT3JDMDBKam1M?=
+ =?utf-8?B?MGs5b2ZtN0hoS0tHa043Z1VhUjQ1RnZOdzFJWlpFNm81NUdpK2p2MDJpaWRa?=
+ =?utf-8?B?Tm8xTVRUZ2gxejh3TDRCQTEvU2h5NTF3YTd2M1BmWDdvdWFRTjF2Yk1ud2Vm?=
+ =?utf-8?B?c21DcHIrbnhqT3MwN2VHeFpWN0VLUmtGTmU0bnkzRXFkYUlvakkxT25yU1Ex?=
+ =?utf-8?B?ZXNadWpQdlZEVEVXd250dlNMbjNXQ2IrUy8yMllSSGtoZ08vYTZEa3hTMjdl?=
+ =?utf-8?B?bnpGVG0zaXFWd08waUcvakRIMXdjWHVSS3ovOHUydmYraHY0SnU1U1o1cGlT?=
+ =?utf-8?B?bDd3NjZYSEJOcE9TVVpKcENTQll2R0E0VG15NFJaWThDeklaVjd0L1BYQmNE?=
+ =?utf-8?B?RWZOSGNHdUpnVWhBeWlGNkxpREYrMmUwc3JkNjlqY0dxNkNla0p4NWhFZXNy?=
+ =?utf-8?B?TXN0Q2VvQ0hXQUJGOUFuZ2xLbmM2aXk1TkR6NzkzNjZtdlpSQWNscGppOHpk?=
+ =?utf-8?B?QkhWamIxcXZ3U0pxWDRvVmVhUzRLOXE5UnFkbzlKcTJ1UllYVUNRWWs5b1N2?=
+ =?utf-8?Q?xoJYr4v0j4PsEYUZxhh5tmThre3S+Fpo?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?VVQ2Ui8yQzhRYzVNaEt3QWltaHFGVmZ6dGJaK1QyYzhRNkZNUnhVNjhJSDdz?=
+ =?utf-8?B?RHB1SWIxMUg3dmdtMjRMNGRXWHdxQXViZFR6L0lnQVlvbWd2VnpacWkya3h2?=
+ =?utf-8?B?Q3dvb3haMlVCZGtRNXc5TlAvZ05DT3B2RFJjaCtPS1d4ZlRCZ3NGRDZXSzlr?=
+ =?utf-8?B?eTV3OVFUMmRlaEJBbkVsN29kbVdhSTJTdlY5UVFpOFZmYjFQMmRtaXBkYTdP?=
+ =?utf-8?B?bjVJNk00UVFyMVBrRldSTDB2R3VINzFzZzV6bGlrSGVUOVB4MHg2NUpPY0JD?=
+ =?utf-8?B?WWc4NjVZYUVHNXgrMldYNnc0eHRkcFVSa3VsNHVCN1cxckhsZlVsMEJyUmVu?=
+ =?utf-8?B?WldHNUVxeXp4MFVUV0Y3Y3VFUHA4T29LOHdyTnZmTjRjVm1rbDMwdExOR0VB?=
+ =?utf-8?B?SmVXTU9HNWxQMEoydEswYTdWZEgwVkltSWpjYzBrb0tsMVFTZk5kYVJHTG5Z?=
+ =?utf-8?B?cjdxNWlTdTBzVm11eXQvSzE3QzhKT1BiS2hSTUFnZnBvUUFoemlkNW5LZDB3?=
+ =?utf-8?B?ZEZNaFpCenFGd0dyTS9ZcEl6NmlOS21NY3ZNSExaM1plRm16TnlQN0FJbTR1?=
+ =?utf-8?B?dEdZZ1hOK21ha21HaXFIWUx2VXdYRGc4WE9JaWRpYmRQRUVHM1V0MTFoTHox?=
+ =?utf-8?B?ZENoWFNRc0E3WUl5SlRyWlFMTE5LajF2U3lwMlZSUmFXZ2JZMnRzZXVBWVc3?=
+ =?utf-8?B?S2xsNnd6VGpXWUROT3c4SjVwcWVGMTFRMHI4RGV1Z0I0MzZ2WUxvNXJ1eGZs?=
+ =?utf-8?B?YWYzNVByUDZUTFdNT20xTFFhOGNqUFhyTEhUQmdzTXp5MEZjNkc4alhNNHMx?=
+ =?utf-8?B?UWJyUVd2YlZVOEdIMGhyVkVudXRLeXE5U2RVQnkrOUZRUHM2Z3NTd1V3Wit0?=
+ =?utf-8?B?ZHRsWFlZd0RGUEhlb2lRcVZnWlhRdnJtYWtvMm9UanhwK3FyQTdNbkdwL3Nh?=
+ =?utf-8?B?L0RuV2JWOG44dGNzc3JuNGMzL2NLdzM0S2FsdWNSUk12aWdnUGdNRDN3OTVW?=
+ =?utf-8?B?aTVpdy9wTklTNUVYL3dlUFVHSVFZOWNrYnp0RFk3RlRvejhoUUNBcHhFby9Q?=
+ =?utf-8?B?Y25sT2doTTJXYnIyNWY0cko2K3JlNE0xMWxBYzZmd2I1S3kwcFA4OHh0MFF1?=
+ =?utf-8?B?OTFBV0lvR1NaSjdsUlNRbkZsMExUWkw1TjdqU29Sanh6d2JIRmlVMjlFVC9m?=
+ =?utf-8?B?Y2t1c21ZUlMxN1owemU3Ri9idlJzZUJuekpFOVR0citkVFl2YkN0UFk0TVVO?=
+ =?utf-8?B?Z0oyaXBreStFNDB5RnRzQ0VDV3RWZlgzWE5tWVE1VFdrVlZZZ3A0ejNGeWFP?=
+ =?utf-8?B?cU9TelZ5L1VyWVI3akVXaWJUMFNUNUtTVGhKV3V4M2NLQTN4dEhqdldKRGV5?=
+ =?utf-8?B?d0Q4ZWxlZWxGVTdOVTc4NzlJdWhvbEgrVDVvdnEvYzVCb1BTV1hsMFhxVm14?=
+ =?utf-8?B?b1Z4NktMOE5IMUdrRldsaTJJcE5yUHkzbk4vRklURDFnd2FFNHFFTndOQktx?=
+ =?utf-8?B?UlcveHVFUGtFVzI4Z0Q5T2VOenQ0SjVJWXI2V25YWG0xQUtHV1lsR0FJSkhP?=
+ =?utf-8?B?ejdUOFpkTERvNmJaWG1BWFFsdWFhc01KbmtTZTZzd1ZkeUlJVUtPRXltS0sz?=
+ =?utf-8?B?UWY1WGV2aFJ6WGJIRHphRUtrUnZVWVV2czhHSFVMaGE0OWhKZ0tSV0tkdVBq?=
+ =?utf-8?B?ZHUwcXhJWHNMSDlobHJ0Y3RUL3RXU1BNZkJUVXpWVHlLSVZuQXVkQ3p0WmxP?=
+ =?utf-8?B?RHRFOGtaTXZxUCtweGhtTVVHL2ZLYUhETStOOUxDR08wOVJvQmJMMVVMSlJh?=
+ =?utf-8?B?azJyUDdvVGtmVlVneEo5c2VHbGFKZGtLWHkxUzcvM25TNVl4NlJuN3NTWXJK?=
+ =?utf-8?B?WXNtWXB5b2hWTXVmQzQralJJbTJHM09saDlsTk9aUm55MUNSR0RYVHljMVJH?=
+ =?utf-8?B?azhhT2haT25PcElPMktHem5uWTVxZVoxV0ZDbnNCL21SbGpJYVlpZ1Raalky?=
+ =?utf-8?B?aWg1bUkvWEZLL3h4OVZsTFFSNlNrV3dkbEQzaEVKMUIyZ0JkQkErdmxWWDB1?=
+ =?utf-8?B?SGV1TCtnN0xwTER0c0ZrYWlwZDVpc2tPVXVabVFyVU41TTlGSDIzR01ObkJF?=
+ =?utf-8?Q?9/ReASKyuvHoX5EX1az20oQTS?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f6b381d-c4e1-4804-d868-08de0bc90fb6
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2025 08:58:51.6462
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ibSD1BFTuJ6qXcw8cERm4gupf1LfAfonttGyXoCheNiZMDFKucYhE/dNfszOzV5OmUv8pcSmhzCqVf8iniV9XA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8056
 
-Hi Jan
+On 10/14/2025, Marek Vasut wrote:
+> On 10/13/25 6:49 PM, Frank Li wrote:
+> 
+> Hello Frank,
+> 
+>>> @@ -90,13 +102,15 @@ patternProperties:
+>>>         compatible:
+>>>           const: fsl,imx8qxp-dc-signature
+>>>
+>>> -  "^tcon@[0-9a-f]+$":
+>>> +  "^tcon(@[0-9a-f]+)?$":
+>>
+>> why here allow no address unit tcon?
+> This might be something Liu can clarify too.
+> 
+> TCON on iMX95 DPU does not seem to exist at all, or at least has no control registers. Hence no address.
 
-Thank you for your patch.
+i.MX95 DC hasn't got TCON so it should not be documented for i.MX95 DC.
 
-
-On Mon, Oct 6, 2025 at 6:32=E2=80=AFPM Jan Petrous via B4 Relay
-<devnull+jan.petrous.oss.nxp.com@kernel.org> wrote:
->
-> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
->
-> Add support for the Ethernet connection over GMAC controller connected to
-> the Micrel KSZ9031 Ethernet RGMII PHY located on the boards.
->
-> The mentioned GMAC controller is one of two network controllers
-> embedded on the NXP Automotive SoCs S32G2 and S32G3.
->
-> The supported boards:
->  * EVB:  S32G-VNP-EVB with S32G2 SoC
->  * RDB2: S32G-VNP-RDB2
->  * RDB3: S32G-VNP-RDB3
-
-I got ethernet detected and working with this patch on S32G-VNP-RDB3
-
-[   43.473918] s32-dwmac 4033c000.ethernet end0: PHY [stmmac-0:01]
-driver [Micrel KSZ9031 Gigabit PHY] (irq=3DPOLL)
-[   43.477547] s32-dwmac 4033c000.ethernet end0: Enabling Safety Features
-[   43.489972] s32-dwmac 4033c000.ethernet end0: Invalid PTP clock rate
-[   43.496479] s32-dwmac 4033c000.ethernet end0: PTP init failed
-[   43.496491] s32-dwmac 4033c000.ethernet end0: configuring for
-phy/rgmii-id link mode
-[   46.599752] s32-dwmac 4033c000.ethernet end0: Link is Up -
-1Gbps/Full - flow control rx/tx
-
-So,
-
-Tested-by: Enric Balletbo i Serra <eballetb@redhat.com>
-
-
->
-> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/s32g2.dtsi        | 50 +++++++++++++++++++=
-+++++-
->  arch/arm64/boot/dts/freescale/s32g274a-evb.dts  | 21 ++++++++++-
->  arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts | 19 ++++++++++
->  arch/arm64/boot/dts/freescale/s32g3.dtsi        | 50 +++++++++++++++++++=
-+++++-
->  arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts | 21 ++++++++++-
->  5 files changed, 157 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/d=
-ts/freescale/s32g2.dtsi
-> index d167624d1f0c..d06103e9564e 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> @@ -3,7 +3,7 @@
->   * NXP S32G2 SoC family
->   *
->   * Copyright (c) 2021 SUSE LLC
-> - * Copyright 2017-2021, 2024 NXP
-> + * Copyright 2017-2021, 2024-2025 NXP
->   */
->
->  #include <dt-bindings/interrupt-controller/arm-gic.h>
-> @@ -738,5 +738,53 @@ gic: interrupt-controller@50800000 {
->                         interrupt-controller;
->                         #interrupt-cells =3D <3>;
->                 };
-> +
-> +               gmac0: ethernet@4033c000 {
-> +                       compatible =3D "nxp,s32g2-dwmac";
-> +                       reg =3D <0x4033c000 0x2000>, /* gmac IP */
-> +                             <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
-> +                       interrupt-parent =3D <&gic>;
-> +                       interrupts =3D <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-> +                       interrupt-names =3D "macirq";
-> +                       snps,mtl-rx-config =3D <&mtl_rx_setup>;
-> +                       snps,mtl-tx-config =3D <&mtl_tx_setup>;
-> +                       status =3D "disabled";
-> +
-> +                       mtl_rx_setup: rx-queues-config {
-> +                               snps,rx-queues-to-use =3D <5>;
-> +
-> +                               queue0 {
-> +                               };
-> +                               queue1 {
-> +                               };
-> +                               queue2 {
-> +                               };
-> +                               queue3 {
-> +                               };
-> +                               queue4 {
-> +                               };
-> +                       };
-> +
-> +                       mtl_tx_setup: tx-queues-config {
-> +                               snps,tx-queues-to-use =3D <5>;
-> +
-> +                               queue0 {
-> +                               };
-> +                               queue1 {
-> +                               };
-> +                               queue2 {
-> +                               };
-> +                               queue3 {
-> +                               };
-> +                               queue4 {
-> +                               };
-> +                       };
-> +
-> +                       gmac0mdio: mdio {
-> +                               #address-cells =3D <1>;
-> +                               #size-cells =3D <0>;
-> +                               compatible =3D "snps,dwmac-mdio";
-> +                       };
-> +               };
->         };
->  };
-> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/=
-boot/dts/freescale/s32g274a-evb.dts
-> index c4a195dd67bf..f020da03979a 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
->  /*
->   * Copyright (c) 2021 SUSE LLC
-> - * Copyright 2019-2021, 2024 NXP
-> + * Copyright 2019-2021, 2024-2025 NXP
->   */
->
->  /dts-v1/;
-> @@ -15,6 +15,7 @@ / {
->
->         aliases {
->                 serial0 =3D &uart0;
-> +               ethernet0 =3D &gmac0;
->         };
->
->         chosen {
-> @@ -43,3 +44,21 @@ &usdhc0 {
->         no-1-8-v;
->         status =3D "okay";
->  };
-> +
-> +&gmac0 {
-> +       clocks =3D <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
-> +       clock-names =3D "stmmaceth", "tx", "rx", "ptp_ref";
-> +       phy-mode =3D "rgmii-id";
-> +       phy-handle =3D <&rgmiiaphy4>;
-> +       status =3D "okay";
-> +};
-> +
-> +&gmac0mdio {
-> +       #address-cells =3D <1>;
-> +       #size-cells =3D <0>;
-> +
-> +       /* KSZ 9031 on RGMII */
-> +       rgmiiaphy4: ethernet-phy@4 {
-> +               reg =3D <4>;
-> +       };
-> +};
-> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64=
-/boot/dts/freescale/s32g274a-rdb2.dts
-> index 4f58be68c818..b9c2f964b3f7 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> @@ -16,6 +16,7 @@ / {
->         aliases {
->                 serial0 =3D &uart0;
->                 serial1 =3D &uart1;
-> +               ethernet0 =3D &gmac0;
->         };
->
->         chosen {
-> @@ -77,3 +78,21 @@ &usdhc0 {
->         no-1-8-v;
->         status =3D "okay";
->  };
-> +
-> +&gmac0 {
-> +       clocks =3D <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
-> +       clock-names =3D "stmmaceth", "tx", "rx", "ptp_ref";
-> +       phy-mode =3D "rgmii-id";
-> +       phy-handle =3D <&rgmiiaphy1>;
-> +       status =3D "okay";
-> +};
-> +
-> +&gmac0mdio {
-> +       #address-cells =3D <1>;
-> +       #size-cells =3D <0>;
-> +
-> +       /* KSZ 9031 on RGMII */
-> +       rgmiiaphy1: ethernet-phy@1 {
-> +               reg =3D <1>;
-> +       };
-> +};
-> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/d=
-ts/freescale/s32g3.dtsi
-> index be3a582ebc1b..e31184847371 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
->  /*
-> - * Copyright 2021-2024 NXP
-> + * Copyright 2021-2025 NXP
->   *
->   * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
->   *          Ciprian Costea <ciprianmarian.costea@nxp.com>
-> @@ -883,6 +883,54 @@ gic: interrupt-controller@50800000 {
->                               <0x50420000 0x2000>;
->                         interrupts =3D <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
->                 };
-> +
-> +               gmac0: ethernet@4033c000 {
-> +                       compatible =3D "nxp,s32g2-dwmac";
-> +                       reg =3D <0x4033c000 0x2000>, /* gmac IP */
-> +                             <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
-> +                       interrupt-parent =3D <&gic>;
-> +                       interrupts =3D <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-> +                       interrupt-names =3D "macirq";
-> +                       snps,mtl-rx-config =3D <&mtl_rx_setup>;
-> +                       snps,mtl-tx-config =3D <&mtl_tx_setup>;
-> +                       status =3D "disabled";
-> +
-> +                       mtl_rx_setup: rx-queues-config {
-> +                               snps,rx-queues-to-use =3D <5>;
-> +
-> +                               queue0 {
-> +                               };
-> +                               queue1 {
-> +                               };
-> +                               queue2 {
-> +                               };
-> +                               queue3 {
-> +                               };
-> +                               queue4 {
-> +                               };
-> +                       };
-> +
-> +                       mtl_tx_setup: tx-queues-config {
-> +                               snps,tx-queues-to-use =3D <5>;
-> +
-> +                               queue0 {
-> +                               };
-> +                               queue1 {
-> +                               };
-> +                               queue2 {
-> +                               };
-> +                               queue3 {
-> +                               };
-> +                               queue4 {
-> +                               };
-> +                       };
-> +
-> +                       gmac0mdio: mdio {
-> +                               #address-cells =3D <1>;
-> +                               #size-cells =3D <0>;
-> +                               compatible =3D "snps,dwmac-mdio";
-> +                       };
-> +               };
->         };
->
->         timer {
-> diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64=
-/boot/dts/freescale/s32g399a-rdb3.dts
-> index e94f70ad82d9..4a74923789ae 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> +++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
->  /*
-> - * Copyright 2021-2024 NXP
-> + * Copyright 2021-2025 NXP
->   *
->   * NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)
->   */
-> @@ -18,6 +18,7 @@ aliases {
->                 mmc0 =3D &usdhc0;
->                 serial0 =3D &uart0;
->                 serial1 =3D &uart1;
-> +               ethernet0 =3D &gmac0;
->         };
->
->         chosen {
-> @@ -93,3 +94,21 @@ &usdhc0 {
->         disable-wp;
->         status =3D "okay";
->  };
-> +
-> +&gmac0 {
-> +       clocks =3D <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
-> +       clock-names =3D "stmmaceth", "tx", "rx", "ptp_ref";
-> +       phy-mode =3D "rgmii-id";
-> +       phy-handle =3D <&rgmiiaphy1>;
-> +       status =3D "okay";
-> +};
-> +
-> +&gmac0mdio {
-> +       #address-cells =3D <1>;
-> +       #size-cells =3D <0>;
-> +
-> +       /* KSZ 9031 on RGMII */
-> +       rgmiiaphy1: ethernet-phy@1 {
-> +               reg =3D <1>;
-> +       };
-> +};
->
-> ---
-> base-commit: fd94619c43360eb44d28bd3ef326a4f85c600a07
-> change-id: 20251006-nxp-s32g-boards-2d156255b592
->
-> Best regards,
-> --
-> Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
->
->
->
-
+-- 
+Regards,
+Liu Ying
