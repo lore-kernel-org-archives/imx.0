@@ -1,118 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6166221DAD
-	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 17:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE2F1547EE;
+	Wed, 15 Oct 2025 17:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760549547; cv=none; b=MXCqHPgAsxCPiVKKFzY6X1H097VJVZ9HPU/YM3nQSj6J1fI8aO4MgzXEZWV6NHZhzwXGvoAqlw3jCwN2ObjPuWhIv9WlJhFKPB2Lm/05Cy0BY1Sd4HZI112XE077yhbiJ/7hsq0yFPHwh4mwEmWVG69JEa995aXodCd/QoxgUsw=
+	t=1760550806; cv=none; b=OzjzbT6/7/UFx0ZjI2Qw6Ml0ACmCB68AHHmcXAr6AbLt3KD4FKy+Kwmx1WrOQp8uv3yj+D0WouAK0+xBu0cnrx/3gvU6sguXumusrFgKh/G8lgJ/CtBCvyb7O6RmxVUj5KxJcLXqqtgRuxw7Gm6I7LV6JsDtpC087i1tvk4MFEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760549547; c=relaxed/simple;
-	bh=ypA9Y1XLCJ0JaOsZ9D7arslYmfqek9jmaC0BXfAkFiE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fer2SCQjmjNO9ul2spAiY8WXrO+qk0TXUdQxssbCzph2hX48I3odT7uI5dKUyt/18Q2FDb1RswKc7bm264pKeZRPPT9je2UFBCGL3ACMW+33CGzwhKZbBrFcaneHY1HSULv88a+q8y1+1VqA/ladCYQCONATEF2xqSgk13P6WFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DgAQLS7S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760550806; c=relaxed/simple;
+	bh=M/aIcBS8J3HmXSplvgK4CDJCr+E7y/oHbQ0Pz0V7Kak=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KU6pqNzJsz6fXc8fFIwmA4GN19J1x7ZQEsM4pOufdPAUn+lSzgamio0DJ0i/cA7xnkPu0GQvZ9BuNs/FonxREzBZfEJI8m7x9caTChBOOJMTCRjCEdDgA+db3a9J8outN0yGxEBlIQ2TfHkbqXzbEy5esqegmJfXmj7Y81r95yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h3FfehVg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DgAQLS7S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54737C16AAE
-	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 17:32:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h3FfehVg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51366C4CEF8;
+	Wed, 15 Oct 2025 17:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760549547;
-	bh=ypA9Y1XLCJ0JaOsZ9D7arslYmfqek9jmaC0BXfAkFiE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DgAQLS7SRvSCHOQkA1y37IESNgUB5gXrAR3FEYJwcsQvroASfC4Q9zLmdk4clrFjt
-	 sOdq09PUHXECilbvbfmaD1mBzGdECa3s5cv2kFyZIhUT1QkipXZGxOcoEYcgUOsPF/
-	 X6Q4fk1f1A4spJ+uQnlLZS3p0Uekq+lujVjVWlcdssHEr5FINyx6byQP1r7ACo+Uw0
-	 ScqK3xqpS2VfBYytXmd1MJev7QD7o7C1g26P37JuYPOm4Qsj0gSrxRz6QOxUnAvn1T
-	 Ef5p2WPtI68zahFotMdeFmZpUuRH1wNIfU6lGM8ElB1cAkfL+iKQM1VvUA8UoLZ3JN
-	 1yjd8p85/GTdQ==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b3ee18913c0so1120526266b.3
-        for <imx@lists.linux.dev>; Wed, 15 Oct 2025 10:32:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXLyazp/fv3o4lAE+GSFYAwj5RRmOqmUkZJyjHCXm26jdDe0E2dWC0lr0p633XCrj3jFGs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxtYcqAc6X3UdWBumX4h992dWhTqITCEH71ehzLVwqVBA5eEa3m
-	pGVIntzpuXBR4LgQRseGjSWkSf4DS5e+mSSO6KC0TRPVrjv2E9jvo7R5ni8DzQBSVskGzmgRscC
-	uavLXcZbVUxtEb3dTttoLExoFBXEi8g==
-X-Google-Smtp-Source: AGHT+IG7cYHekwqKp7szJI/bodQqDJQE4T7Y750zy6gYe4uNSyV1ofYKb9OXZ8WAaKzn4fGvZbq+sK2JaM6OSojZBLI=
-X-Received: by 2002:a17:907:9625:b0:b2d:830a:8c01 with SMTP id
- a640c23a62f3a-b50ac4d570emr3206476066b.61.1760549545792; Wed, 15 Oct 2025
- 10:32:25 -0700 (PDT)
+	s=k20201202; t=1760550805;
+	bh=M/aIcBS8J3HmXSplvgK4CDJCr+E7y/oHbQ0Pz0V7Kak=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=h3FfehVgvIXCy9L64S2PD2yx6VgZ9hrVhfS2hw56aO8ssaAUL8taYBTIs66VHyAkT
+	 +ObG/yMw1U1bOGNp7JAlMn8T1MaYd1bQvx30Sxmxp74q1tR5k46Vuo7d+W5IWoZpEs
+	 z/Mj9mi25V5Ej/Tc8J3+W24pAXwB1SOhqzPi0Zmn28ZRx131ObA0ox5jZsKeeptgUJ
+	 DvU/MlLA2YsJTQJPG7NRcpIRpP07oB9xZ7wnMf7SRRDZFSRxvBqlznY+f0tRvQ4eVu
+	 NZZPhXFTfWGEzA0PC7YE0OVtnPAioykH4j/3PGl/mrJYGS6LwwFEdQXAZQ/gcjXJx6
+	 kpdVN2WSmKnbA==
+Date: Wed, 15 Oct 2025 10:53:23 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Cc: Conor Dooley <conor@kernel.org>, Frank Li <Frank.Li@nxp.com>, Andrew
+ Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, "open list:NETWORKING DRIVERS"
+ <netdev@vger.kernel.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE
+ TREE BINDINGS" <devicetree@vger.kernel.org>, open list
+ <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: nxp,sja1105: Add optional
+ clock
+Message-ID: <20251015105323.7342652f@kernel.org>
+In-Reply-To: <CAL_Jsq+wHG_DW1D_=dR6Q_mwyqFAXKGx771PsqjvW+XCRKM3tw@mail.gmail.com>
+References: <20251010183418.2179063-1-Frank.Li@nxp.com>
+	<20251014-flattop-limping-46220a9eda46@spud>
+	<20251014-projector-immovably-59a2a48857cc@spud>
+	<20251014120213.002308f2@kernel.org>
+	<20251014-unclothed-outsource-d0438fbf1b23@spud>
+	<20251014204807.GA1075103-robh@kernel.org>
+	<20251014181302.44537f00@kernel.org>
+	<CAL_Jsq+SSiMCbGvbYcrS1mGUJOakqZF=gZOJ4iC=Y5LbcfTAUQ@mail.gmail.com>
+	<20251015072547.40c38a2f@kernel.org>
+	<CAL_Jsq+wHG_DW1D_=dR6Q_mwyqFAXKGx771PsqjvW+XCRKM3tw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251010183418.2179063-1-Frank.Li@nxp.com> <20251014-flattop-limping-46220a9eda46@spud>
- <20251014-projector-immovably-59a2a48857cc@spud> <20251014120213.002308f2@kernel.org>
- <20251014-unclothed-outsource-d0438fbf1b23@spud> <20251014204807.GA1075103-robh@kernel.org>
- <20251014181302.44537f00@kernel.org> <CAL_Jsq+SSiMCbGvbYcrS1mGUJOakqZF=gZOJ4iC=Y5LbcfTAUQ@mail.gmail.com>
- <20251015072547.40c38a2f@kernel.org>
-In-Reply-To: <20251015072547.40c38a2f@kernel.org>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 15 Oct 2025 12:32:14 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+wHG_DW1D_=dR6Q_mwyqFAXKGx771PsqjvW+XCRKM3tw@mail.gmail.com>
-X-Gm-Features: AS18NWBcn_X0-kfGnOoFGvu-kGdwMnuyg_-qtR_oFRiq_0F3EMcRBbh-LtvesbE
-Message-ID: <CAL_Jsq+wHG_DW1D_=dR6Q_mwyqFAXKGx771PsqjvW+XCRKM3tw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: nxp,sja1105: Add optional clock
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Conor Dooley <conor@kernel.org>, Frank Li <Frank.Li@nxp.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 15, 2025 at 9:25=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Wed, 15 Oct 2025 06:53:01 -0500 Rob Herring wrote:
-> > > > And the issue is that both PW projects might get updated and both d=
-on't
-> > > > necessarily want the same state (like this case). So we need to
-> > > > distinguish. Perhaps like one of the following:
-> > > >
-> > > > dt-pw-bot: <state>
-> > > >
-> > > > or
-> > > >
-> > > > pw-bot: <project> <state>
-> > >
-> > > We crossed replies, do you mind
-> > >
-> > >   pw-bot: xyz [project]
-> > >
-> > > ? I like the optional param after required, and the brackets may help
-> > > us disambiguate between optional params if there are more in the futu=
-re.
+On Wed, 15 Oct 2025 12:32:14 -0500 Rob Herring wrote:
+> On Wed, Oct 15, 2025 at 9:25=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> =
+wrote:
+> > On Wed, 15 Oct 2025 06:53:01 -0500 Rob Herring wrote: =20
+> > > That's fine. Though it will be optional for you, but not us? We have
+> > > to ignore tags without the project if tags intended for netdev are
+> > > continued without the project. Or does no project mean I want to
+> > > update every project? =20
 > >
-> > That's fine. Though it will be optional for you, but not us? We have
-> > to ignore tags without the project if tags intended for netdev are
-> > continued without the project. Or does no project mean I want to
-> > update every project?
->
-> Fair :( I imagine your workflow is that patches land in your pw, and
-> once a DT maintainer reviewed them you don't care about them any more?
+> > Fair :( I imagine your workflow is that patches land in your pw, and
+> > once a DT maintainer reviewed them you don't care about them any more? =
+=20
+>=20
+> Not exactly. Often I don't, but for example sometimes I need to apply
+> the patch (probably should setup a group tree, but it's enough of an
+> exception I haven't.).
+>=20
+> > So perhaps a better bot on your end would be a bot which listens to
+> > Ack/Review tags from DT maintainers. When tag is received the patch
+> > gets dropped from PW as "Handled Elsewhere", and patch id (or whatever
+> > that patch hash thing is called) gets recorded to automatically discard
+> > pure reposts. =20
+>=20
+> I already have that in place too. Well, kind of, it updates my
+> review/ack automatically on subsequent versions, but I currently do a
+> separate pass of what Conor and Krzysztof reviewed. Where the pw-bot
+> tags are useful is when there are changes requested. I suppose I could
+> look for replies from them without acks, but while that usually
+> indicates changes are needed, not always. So the pw-bot tag is useful
+> to say the other DT maintainers don't need to look at this patch at
+> all.
 
-Not exactly. Often I don't, but for example sometimes I need to apply
-the patch (probably should setup a group tree, but it's enough of an
-exception I haven't.).
-
-> So perhaps a better bot on your end would be a bot which listens to
-> Ack/Review tags from DT maintainers. When tag is received the patch
-> gets dropped from PW as "Handled Elsewhere", and patch id (or whatever
-> that patch hash thing is called) gets recorded to automatically discard
-> pure reposts.
-
-I already have that in place too. Well, kind of, it updates my
-review/ack automatically on subsequent versions, but I currently do a
-separate pass of what Conor and Krzysztof reviewed. Where the pw-bot
-tags are useful is when there are changes requested. I suppose I could
-look for replies from them without acks, but while that usually
-indicates changes are needed, not always. So the pw-bot tag is useful
-to say the other DT maintainers don't need to look at this patch at
-all.
-
-Rob
+I don't think we need to do anything, then. Changes-requested will=20
+apply across all the patchwork instances. Only not-applicable /
+handled-elsewhere gets tricky with multiple instances.
