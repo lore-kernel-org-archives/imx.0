@@ -1,268 +1,492 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013064.outbound.protection.outlook.com [40.107.159.64])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119FD301715
-	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 03:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760497575; cv=fail; b=PDH0OQDbd9I+HYK5TLsUpp1KwPLWIK/SeHj9iIBxN5oL6y68ljjYS6LS3I9bh+wZ042jVHM/JNtsjqa6tjBG5J63vGoJSKu/4WG//uSBYVOv0fWnhm95tQ43+2xOTX4hd4HVAeOYLwIoS0h1jmFNH89fzd45FRGLiDk/hRh7Dtk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760497575; c=relaxed/simple;
-	bh=HM95+yFHN1nEVhy7zOJLu7BnBu5eCEEA2rjpy4zWhu0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=g1WDy8lSVt4NM6Kn8O70lRN12P9nl2zX/hcaYIo6CAPY58f0MBhjFH5+Ga78+BKAJsZv1oum0Scjkky8qgIUO012kkSSBAB+n/zUp+9UuNR4LF6EavHWnMaMTgzydnJEa7h+Vys2YCRSomuUVOtGYpFcIsDsp9ojNnDXDeOPa5c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SK1LXEPJ; arc=fail smtp.client-ip=40.107.159.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FEA2BE7A0
+	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 07:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760512521; cv=none; b=QMA2fpnHTmobKYk5DO160WElZipTJr0Z51cTPoR6VcnnpZzh/xdpHf2mml8k5+aMpr8PX8swesT47eR99l4SM1Wl+B1XIUGX/6aY9giEv/cUE5a7lH4+uz+1Baf9XXpjeAHg+OvTamUt/PQK6L0V6T/BdY5fBn/MoNdTuh02SEI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760512521; c=relaxed/simple;
+	bh=tHBL8LZQ/EzxCXyj4Rc5BBYpjFDtYhbliv5BSEcWpUY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ROejG08p+6UwZnzspKhVgei7mjs37Vf/zhApMC2AJk5p4a0VDkkJmTIKwL+PyvnW8/p34Z87hf6aYGeP07HD+a7hZpjYyZhQtmUgHLLmtOOzLptrufU4ovQHVdDV499X8zS8M1ZnNLo0rPOLxCiWmoQQ1NlX5IAZzTNPLUqdymo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zlqpXhXG; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SK1LXEPJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S+nWUO8APIfKD2KkvqICivmxHWLJgAKJK/W7D5xjZbzwjgNcjTfkqRYtHHk8TGf9mKaYxi6Bcl4G2WSby3YbrS+8E6JcBt8+/0G9R/fhTcoDh/PiTPo1tA0vGMzOj0L1XZeIcn5xQhMmmpsQ7eRQD65AkoRTqqTUwDCFs0ysEJx2obwjKUTxpFXSt3iI48O5qachLfj3ebpoy6Y0tuOI0T1MzXVrNFjQ6V6Lfl0cOktCGVc3wvqjs0ZOZNZhJzXIN5YH/MSe6Xtqo3/ZiX9GD7D4rDVIcoEWcxGJLqEOL+a6TYm93ICuOlbLjDgdxVNUOoMYll2vqMYdghdiMLxlbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QQ9+FrUOLU6xs3hDj3/iLJUXMSzokLF5kMjQJ6ztkh8=;
- b=J2hRKcekQn1QUfq/sjWnMO1zIXJcuzfW7kz//e/AZuLRaH3YFhy9yUYoMVAS4n1EAX/e5Fb3V0bbl34klU/mNQ2votEvAqorVbssWfeIENFh4eJXQgqfyvVmOg95R9vctTnrNLTYsxrCigU7g2KcfPh9Bi6/s1IIqmt6cmXdqjkhNhCWELiq5ry++Yspf7VyQJ5UlV7YTrSM3opIU45HzGveluZkPoyLgEvEM1k4pfZYXHllO9fiQgmNJN6dqOD6YzaJiRn9fWPX7dRB09hgx0mpIRH6JIzqTzPvKumSe85MUVgfN/5SWLHkPDPKPgXTZs3uDzxstIf2exA0M9Ajvg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QQ9+FrUOLU6xs3hDj3/iLJUXMSzokLF5kMjQJ6ztkh8=;
- b=SK1LXEPJLOAgKJP22dXvNVt6zuQFBOW+9hyLtVNCSC03PJYxF51QjbbJRJxAe+T8Kdhg3L+takWm74wtQHBCpv2P1j3lSmDcko3IyEiQmZxaiU6nDl1kpj5WzyHokeXjdgPVNWsT92wRcaHxytHoIwEXolNuoABbRvKUeN981O1fgwEUYQ3ENul63k8a3FYwzANGztPE6HwgLWY3TaGeQesT8bU9tD8rK1EtkZdxsGCT0E9leHjgarqMlSwkb/jvndpwFm0yreiun7hlDDHxsvZxa0+mUzrkZ4CyL4IxB1SLnrp5W/k/iPXKuNRZtDEbm66IqAtHRchU1JnHi/AJ1Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8840.eurprd04.prod.outlook.com (2603:10a6:10:2e3::6)
- by VI1PR04MB7006.eurprd04.prod.outlook.com (2603:10a6:803:137::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Wed, 15 Oct
- 2025 03:06:07 +0000
-Received: from DU2PR04MB8840.eurprd04.prod.outlook.com
- ([fe80::7c5d:60c1:2432:86a1]) by DU2PR04MB8840.eurprd04.prod.outlook.com
- ([fe80::7c5d:60c1:2432:86a1%4]) with mapi id 15.20.9228.009; Wed, 15 Oct 2025
- 03:06:06 +0000
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: frank.li@nxp.com,
-	l.stach@pengutronix.de,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	bhelgaas@google.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zlqpXhXG"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 7B852C09FA9;
+	Wed, 15 Oct 2025 07:14:56 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 62371606F9;
+	Wed, 15 Oct 2025 07:15:15 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2B4E7102F22AF;
+	Wed, 15 Oct 2025 09:14:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760512513; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=3j60UDCwsR+fx7dgGrkveclozQFJiothgCwXrWCeZ/Y=;
+	b=zlqpXhXGF42GZ/lA/4uYP53YSSloszkjeYT4xh7RfHT9miTqIJdGrh0yMpPMsFDCMffSh/
+	krak6VQp10Bg9KxMIfb1nodOuz2bnRSTbPT19jBrX7Vaa24qGRY3MAeK4apukHjfPf0KXS
+	P7oTsGuPzNiy5RrDCeiZ1wXWTCvmrqJKka3DMzKd2DsT4AdfyZx2DslcwxY1twu/iiRTps
+	AyB67kGJnLx5WpV4L7oIS3FzKn+oN8VEjG934SHa7MPJXZHcWyW++MQG5EvdoExjVN/wEm
+	1o3I4irjoA6bnsYBSzPPJenH2Zj+3BJSV3GhX/sLzTMxEF2JPBTzWX1wOpQKAQ==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Wolfram Sang <wsa@kernel.org>,
 	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: [PATCH v6 11/11] PCI: imx6: Add a callback to clear CLKREQ# override
-Date: Wed, 15 Oct 2025 11:04:28 +0800
-Message-Id: <20251015030428.2980427-12-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20251015030428.2980427-1-hongxing.zhu@nxp.com>
-References: <20251015030428.2980427-1-hongxing.zhu@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0024.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::12) To DU2PR04MB8840.eurprd04.prod.outlook.com
- (2603:10a6:10:2e3::6)
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	patches@opensource.cirrus.com,
+	linux-gpio@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: [PATCH v4 00/29] lan966x pci device: Add support for SFPs
+Date: Wed, 15 Oct 2025 09:13:47 +0200
+Message-ID: <20251015071420.1173068-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8840:EE_|VI1PR04MB7006:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d760969-7c38-4292-3cd0-08de0b97c8ac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|52116014|19092799006|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?0CXfbYm8gYv1Snmh+0GUsZi2JC6SNxzdV9tQUqlKgGeOUNWL8pjBvKa2FJQ9?=
- =?us-ascii?Q?+64PvapPIbBPSLeGirP+aa8GeX02AdrH9k7VMXZMbIkPp93l+TzDgwa1QXyQ?=
- =?us-ascii?Q?bGA8zeMj7ZuqsJS/KzWgC7EgKwP3mMwA+BofTwnbHVOmlGBo1zIQSulH7i8m?=
- =?us-ascii?Q?wqSgWLZOl1PwZ362HpWDNHSP4jixPvx1C/QuUNtEG+LQUbJiar7VJQ4MVKrz?=
- =?us-ascii?Q?7nxyv5X0K6/3rwk80J7e2EUlvNeha1F2zE9i07OfGB4aZsEgQvi7P3IRzgcw?=
- =?us-ascii?Q?FEg4wXWsLoJeZbsvMswY0UcNwrNXgrrSr9Ug3wJDz9QaTmKEH3is46GuK0ak?=
- =?us-ascii?Q?pFGRh7AAPY3hT1xt+w/ZaTV0MarU4280sdR9e130dcheitLOCRiJ/aQ5SFDX?=
- =?us-ascii?Q?hbjcZsp50ALbxowlEIpGdH9oMXj9fPgnQEcCCJPHHItOQKibrr6JuOqNCGfr?=
- =?us-ascii?Q?c7yPcwEmnNRBTpA+D8Yk238/hvMgzkYJ1MNS/lc5QeiyOzWXC+K1t52uQw7c?=
- =?us-ascii?Q?d6GKVYK8HYSkGjBIaSDn/GvH7atXxOqGrq3fAh+9Z6d0mCJJswdvzMvKHrQR?=
- =?us-ascii?Q?IW3K77qx9h45zJ3/I+i4e0bS2W8eij1nhP+f81YNVix2Fso4sVAF1iF2G4pn?=
- =?us-ascii?Q?F4Z3ziU0EqILN4MgMP2ud7xrWovyOtG7zctGwnOxEKCYdL209yewmmEG2uww?=
- =?us-ascii?Q?Uzibe/FvHw0FtzBmMPPEFpJ5jseKyzdF1nu/lccqCDxtMamE36ilhnnuxGeI?=
- =?us-ascii?Q?O7os0MIp6MYzENY7YER7Qvq6AnaKvuWbMtvKlZZIetmEMs61JFFVClbQG07p?=
- =?us-ascii?Q?KHnErc2idlvtrVw0kwhUByoDWTf+YYfFNZSoxFvjl5jk1kXdSsHtanjf5/aD?=
- =?us-ascii?Q?PH8uZIhffLP7rQ+B4oAM1AucuGvo0C0Njug2KvjUB2EyS1CuynjXLB5h7FJb?=
- =?us-ascii?Q?bGp4IJKDszxp9EP6t6QslUCWJxA4amPtZ+dIDRe43BACkZstaiH0NapVRpLH?=
- =?us-ascii?Q?+Wfiwzh6Sz/uNBMuwkvY/mIBWdCHux/sObqraLsl0OsYYUXU7B43jOfYmW4B?=
- =?us-ascii?Q?762mqDCEnqUq7cfqoJ/vP6bObQqJ/LWvuHbIkvJYB0loaxXyMobDhMRGishJ?=
- =?us-ascii?Q?kRywdxK1cSC0aIKPvJ+UYLuKM7z6MKYDHAhtsDCCOYzVpFFLCU/EY/J9GOyO?=
- =?us-ascii?Q?UkS1CcS6gezU0ySLyFmurnZGkPvEdK4Ia1RrALpQvjsq0Mk/4tK3lRTVHOu5?=
- =?us-ascii?Q?zGjxv8srfrJbEhjuGmFdDPdFSNyN70sIVLNSq81uiJny60OjaDgw8EJhJO46?=
- =?us-ascii?Q?Fq8V5OEl8aVKPyG2xxRingg9nTd3adtlU0Chmgj1G6meyG+NiNt4+jHREQ8U?=
- =?us-ascii?Q?rwonhGw9ylhwYoqe3IDJ3y3uP3+kjgnFw4tbh1eZVtPJhD/Z9jSPiRFsMNUj?=
- =?us-ascii?Q?MwWJFfN3jDPVtUEFshS3TIWJZ2peAfsNOmGadUyduCqGWeFN/Eoe3of38VZ3?=
- =?us-ascii?Q?hr9yldRdvxF6E64hKX2nIMl0tOatmpiCOvaCW5pzaY59w1DWFgfuWzz0Kg?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8840.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(52116014)(19092799006)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?UAxU847J2Mr3T+GspjPDB8Q3TX0j4iNMtiX44Q8ZqIuAoEDx6Ecmf0ExDwa8?=
- =?us-ascii?Q?oz7iks1cSuHIVonxgnBmYYNVh5z9nfn+4sQKqXwfLj0q2tjqxpWYRkQtuCrU?=
- =?us-ascii?Q?/R5jCa8X3lz++UIu9z9B78X41ca8TRunhg+x1iRTCd1ClpIH0oVxoXt+HA96?=
- =?us-ascii?Q?m8gkdVyFhLSCBWoUh/9MW71maoTMw8j8eqaA1YvgeusEKW+27KXqSlriihB+?=
- =?us-ascii?Q?7sGlPO/+PDbrpw4hr27nNKXUEQ0l0JImcLNKncvL+o9959PTj6qYcLBeXIYp?=
- =?us-ascii?Q?+JQ2VQaEAWBcPU7AOjbS6t5QfgCfusIE2mhrzapkXiMtn8wnTHjYNHXnFhcZ?=
- =?us-ascii?Q?N/LdBkxF/m2ZhvrNulad/pSu5vvb8uTDthVkiUPjOmzl25hfMEgQ7zhJ6Sna?=
- =?us-ascii?Q?zQmbAcl9d7H/J/lYiTkpsJYzI9Jlc8q5Dd8pNzX0aYgA/YgW8JFAOJcabt7i?=
- =?us-ascii?Q?XxSUGNd1vHcv0rcUw6lWLfMDlotGQ8I5RfH7LCfTH79fDKmBs+stY4w6/Bo6?=
- =?us-ascii?Q?mv/aKecbSgkzSAd9ovAeOtfrZ+jGjL6TKygbNG6n4c9SFtJqyean+IR9M5Wo?=
- =?us-ascii?Q?hkdn/GJxDaJGxSbVzHU0HCt/KERV5b2EXxDd9OT5iQ2D9OsSlaA0F/Fmij2N?=
- =?us-ascii?Q?LgFi9QWHDVlscwrJdZai9dm2/dPCQwGH5ATJSuCTK9B+tCCvGIO4d1NodbRZ?=
- =?us-ascii?Q?Cwf6Tu8yEGRJ+hrY2jurGpFXh6ynuQHMKMssy8Lyw99y01eM1hrwwa8POx76?=
- =?us-ascii?Q?hH6243U1UZC8naoZMjKfcfoo8TtrVG/ainW65OQ2apwsZJwp375iPM28gU+C?=
- =?us-ascii?Q?+ozbH3fVCMHPeuFgCfrWAHtOuebRUYjRNglzvU5o6t+03313VxH3gzWhNf8A?=
- =?us-ascii?Q?yN4h8KC52SnlgYu70vCSl5LEVhXPY4WcfOcqE6tUcLv4Pqlo8OEsTnkKVfDp?=
- =?us-ascii?Q?QqdWlWRfFs7cAnTfq3tCyL6M1GST//KMxiYwl6c/txR5ag8PGBPZY+uPk6sH?=
- =?us-ascii?Q?ueejcGf7Z9Mlmk3xNPIfb33SNDLOUl0Pdu37tXUce8/mYWs+vJefiVMjanUi?=
- =?us-ascii?Q?CDz1uXJw+iDBiu6lzNE3JFM87A8Lr2YYVbqNw5RPiXPgJRt3lg/M6AhI6slj?=
- =?us-ascii?Q?+GPIqYQ3b7hv8aRys3P9qJaDEeIWZADOCYhGU7GuT+hZP7WSf1R97KPpbTKR?=
- =?us-ascii?Q?+oXvz0gYsNOQbptwen2ZssQS1ZRaWw4ZcOUj9dOjMsqcieXeQl2K0aZmI39z?=
- =?us-ascii?Q?W+Bhjt/Zzi3qHI1zV9+mfAlBj2lGs0qJ0i1yiM0a+GPIpjd5lUreTkSGb2Pg?=
- =?us-ascii?Q?5pSeWh6gy+8jHvj3iBSzBCqoKwZPL7sJsB1fKFV9z/S0guVG1rPtX0cfx1j5?=
- =?us-ascii?Q?TA2y8ZJviTA7RDCI2CqRhIZqBDIqyQxnDs1LXua0HJSfd1Yh1NucAOPCv2Xe?=
- =?us-ascii?Q?/bqvZOOuG4PMan19IwMKj5TG4LIfw/GEI5wNKrbiSfA8EiGAfKv/EgSjNKh8?=
- =?us-ascii?Q?xMTvCnUyC84GX1Nr7wlLhq+ejZ6IsKS8XR3FXof+Lmj2xD4dzDIbOWa1IdpA?=
- =?us-ascii?Q?bVWAlYaSmL819ht9iZtCLi3TX4jNIOMTIhmGdqac?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d760969-7c38-4292-3cd0-08de0b97c8ac
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8840.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2025 03:06:06.8921
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: d3G0Nc6yZl7ptj2SUMhGJ2CSiOuMnhP9JlhC6tsPCwAdKBo64l49T6MymgOyZlSqKAG1/NEnwMyLd3zGkY3/nA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7006
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Clock Request is a reference clock request signal as defined by the PCIe
-Mini CEM and M.2 specification; Also used by L1 PM Substates. But it's
-an optional signal added in PCIe CEM r4.0, sec 2. The CLKREQ# support is
-relied on the exact hardware board and device designs.
+Hi,
 
-To support L1 PM Substates, add a callback to clear CLKREQ# override on
-the boards that support CLKREQ# in the hardware designs.
+This series add support for SFPs ports available on the LAN966x PCI
+device. In order to have the SFPs supported, additional devices are
+needed such as clock controller and I2C.
 
-The CLKREQ# override can be cleared safely when supports-clkreq is
-present and PCIe link is up later. Because the CLKREQ# would be driven
-low by the card at this time.
+As a reminder, the LAN966x PCI device driver use a device-tree overlay
+to describe devices available on the PCI board. Adding support for SFPs
+ports consists in adding more devices in the already existing
+device-tree overlay.
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
----
- drivers/pci/controller/dwc/pci-imx6.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+With those devices added, the device-tree overlay is more complex and
+some consumer/supplier relationship are needed in order to remove
+devices in correct order when the LAN966x PCI driver is removed.
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index aa5a4900d0eb6..7cd0dc62ffd3b 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -138,6 +138,7 @@ struct imx_pcie_drvdata {
- 	int (*enable_ref_clk)(struct imx_pcie *pcie, bool enable);
- 	int (*core_reset)(struct imx_pcie *pcie, bool assert);
- 	int (*wait_pll_lock)(struct imx_pcie *pcie);
-+	void (*clr_clkreq_override)(struct imx_pcie *pcie);
- 	const struct dw_pcie_host_ops *ops;
- };
- 
-@@ -151,6 +152,7 @@ struct imx_pcie {
- 	struct gpio_desc	*reset_gpiod;
- 	struct clk_bulk_data	*clks;
- 	int			num_clks;
-+	bool			supports_clkreq;
- 	struct regmap		*iomuxc_gpr;
- 	u16			msi_ctrl;
- 	u32			controller_id;
-@@ -729,6 +731,16 @@ static int imx95_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
- 	return 0;
- }
- 
-+static void imx8mm_pcie_clr_clkreq_override(struct imx_pcie *imx_pcie)
-+{
-+	imx8mm_pcie_clkreq_override(imx_pcie, false);
-+}
-+
-+static void imx95_pcie_clr_clkreq_override(struct imx_pcie *imx_pcie)
-+{
-+	imx95_pcie_clkreq_override(imx_pcie, false);
-+}
-+
- static int imx_pcie_clk_enable(struct imx_pcie *imx_pcie)
- {
- 	struct dw_pcie *pci = imx_pcie->pci;
-@@ -1345,6 +1357,12 @@ static void imx_pcie_host_post_init(struct dw_pcie_rp *pp)
- 		dw_pcie_writel_dbi(pci, GEN3_RELATED_OFF, val);
- 		dw_pcie_dbi_ro_wr_dis(pci);
- 	}
-+
-+	/* Clear CLKREQ# override if supports_clkreq is true and link is up */
-+	if (dw_pcie_link_up(pci) && imx_pcie->supports_clkreq) {
-+		if (imx_pcie->drvdata->clr_clkreq_override)
-+			imx_pcie->drvdata->clr_clkreq_override(imx_pcie);
-+	}
- }
- 
- /*
-@@ -1763,6 +1781,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
- 	/* Limit link speed */
- 	pci->max_link_speed = 1;
- 	of_property_read_u32(node, "fsl,max-link-speed", &pci->max_link_speed);
-+	imx_pcie->supports_clkreq = of_property_read_bool(node, "supports-clkreq");
- 
- 	ret = devm_regulator_get_enable_optional(&pdev->dev, "vpcie3v3aux");
- 	if (ret < 0 && ret != -ENODEV)
-@@ -1896,6 +1915,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
- 		.init_phy = imx8mq_pcie_init_phy,
- 		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
-+		.clr_clkreq_override = imx8mm_pcie_clr_clkreq_override,
- 	},
- 	[IMX8MM] = {
- 		.variant = IMX8MM,
-@@ -1906,6 +1926,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 		.mode_off[0] = IOMUXC_GPR12,
- 		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
- 		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
-+		.clr_clkreq_override = imx8mm_pcie_clr_clkreq_override,
- 	},
- 	[IMX8MP] = {
- 		.variant = IMX8MP,
-@@ -1916,6 +1937,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 		.mode_off[0] = IOMUXC_GPR12,
- 		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
- 		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
-+		.clr_clkreq_override = imx8mm_pcie_clr_clkreq_override,
- 	},
- 	[IMX8Q] = {
- 		.variant = IMX8Q,
-@@ -1937,6 +1959,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 		.init_phy = imx95_pcie_init_phy,
- 		.wait_pll_lock = imx95_pcie_wait_for_phy_pll_lock,
- 		.enable_ref_clk = imx95_pcie_enable_ref_clk,
-+		.clr_clkreq_override = imx95_pcie_clr_clkreq_override,
- 	},
- 	[IMX8MQ_EP] = {
- 		.variant = IMX8MQ_EP,
+Those links are typically provided by fw_devlink and we faced some
+issues with fw_devlink and overlays.
+
+This series gives the big picture related to the SFPs support from
+fixing issues to adding new devices. Of course, it can be split if
+needed.
+
+The first part of the series (patch 1, 2 and 3) fixes fw_devlink when it
+is used with overlay. Patches 1 and 3 were previously sent by Saravana
+[0]. I just rebased them on top of v6.18-rc1 and added patch 2 in order
+to take into account feedback received on the series sent by Saravana.
+
+Those modification were not sufficient in our case and so, on top of
+that, patches 4 to 7 fix some more issues related to fw_devlink.
+
+Patches 8 to 13 introduce and use fw_devlink_set_device() in already
+existing code.
+
+Patches 14 and 15 are related also to fw_devlink but specific to PCI and
+the device-tree nodes created during enumeration.
+
+Patches 16, 17 and 18 are related fw_devlink too but specific to I2C
+muxes. Patches purpose is to correctly set a link between an adapter
+supplier and its consumer. Indeed, an i2c mux adapter's parent is not
+the i2c mux supplier but the adapter the i2c mux is connected to. Adding
+a new link between the adapter supplier involved when i2c muxes are used
+avoid a freeze observed during device removal.
+
+Patch 19 adds support for fw_delink on x86. fw_devlink is needed to have
+the consumer/supplier relationship between devices in order to ensure a
+correct device removal order. Adding fw_devlink support for x86 has been
+tried in the past but was reverted [1] because it broke some systems.
+Instead of enabling fw_devlink on *all* x86 system, enable it on *all*
+x86 except on those where it leads to issue.
+
+Patches 20 and 21 allow to build clock and i2c controller used by the
+LAN966x PCI device when the LAN966x PCI device is enabled.
+
+Patches 22 to 26 are specific to the LAN966x. They touch the current
+dtso, split it in dtsi/dtso files, rename the dtso and improve the
+driver to allow easier support for other boards.
+
+The next patch (patch 27) update the LAN966x device-tree overlay itself
+to have the SPF ports and devices they depends on described.
+
+The last two patches (patches 28 and 29) sort the existing drivers in
+the needed driver list available in the Kconfig help and add new drivers
+in this list keep the list up to date with the devices described in the
+device-tree overlay.
+
+We believe some items from the above list can be merged separately, with
+no build dependencies. We expect:
+
+ - Patches 1 to 7 to be taken by driver core maintainers
+
+ - Patches 8 to 13 to be taken by driver core maintainers
+
+ - Patches 14 and 15 to be taken by driver core or PCI maintainers
+  (depend on patch 8)
+
+ - Patches 16 to 18 to be taken by I2C maintainers
+
+ - Patch 19 to be taken by driver core or OF maintainers
+
+ - Patch 20 to be taken by clock maintainers
+
+ - Patch 21 to be taken by I2C maintainers
+
+ - Patches 22 to 29 to be taken by misc maintainers
+
+Once again, this series gives the big picture and can be split if
+needed. Let me know.
+
+[0] https://lore.kernel.org/lkml/20240411235623.1260061-1-saravanak@google.com/
+[1] https://lore.kernel.org/lkml/3c1f2473-92ad-bfc4-258e-a5a08ad73dd0@web.de/
+
+Compare to previous iteration, this v4 series mainly:
+ - Introduce simple-platform-bus driver instead of modifying the
+   simple-bus driver (modifying the simple-bus driver could lead to
+   regressions).
+ - Use some device-tree properties to filter out x86 systems that do not
+   support fw_devlink instead of using kconfig symbols.
+ - Add '{Reviewed,Acked}-by'
+
+Best regards,
+Hervé
+
+Changes:
+
+v3 -> v4
+  v3: https://lore.kernel.org/lkml/20250613134817.681832-1-herve.codina@bootlin.com/
+
+  - Patch 1:
+    No change
+
+  - Patch 2:
+    Update and fix conflicts. Indeed, since v3 iteration
+    get_dev_from_fwnode() has been moved to device.h and used by
+    pmdomain/core.c.
+
+  - Patch 3:
+    remove '#define get_device_from_fwnode()'
+
+  - Patch 4:
+    Fix conflict (rebase v6.17-rc6)
+    Add 'Reviewed-by: Rafael J. Wysocki'
+    Add 'Reviewed-by: Saravana Kannan'
+
+  - Patch 5 (new in v4):
+    Introduce simple-platform-bus (binding)
+
+  - Patch 6 (5 in v3):
+    Rework patch and introduce simple-platform-bus
+
+  - Patch 7: (new)
+    Use simple-platform-bus in LAN966x
+
+  - Patch 8 (6 in v3):
+    - No change
+
+  - Patch 9 and 10 (7 and 8 in v3):
+    Add 'Reviewed-by: Andy Shevchenko'
+
+  - Patch 11 and 12 (9 and 10 in v3):
+    Add 'Reviewed-by: Dave Jiang'
+
+  - Patch 13 (11 in v3):
+    Add 'Reviewed-by: Andy Shevchenko'
+
+  - Patch 12 in v3:
+    Patch removed.
+    Adding __private tag in fwnode.dev is going to be handled in a
+    dedicated series. Indeed a test robot reported an issue and more
+    patches are needed (I have missed fwnode.dev users in several part
+    in the kernel).
+
+  - Patch 14 and 15 (13 and 14 in v3):
+    No change
+
+  - Patch 16 (14 in v3):
+    Add 'Reviewed-by: Andi Shyti'
+
+  - Patch 17 and 18 (16 and 17 in v3):
+    No change
+
+  - Patch 19 (18 in v3):
+    Filter out support for fw_devlink on x86 based on some device-tree
+    properties.
+    Rewrite commit changelog
+    Remove 'Reviewed-by: Andy Shevchenko' (significant modification)
+
+  - Patch 20 (19 in v3):
+    Add 'Acked-by: Stephen Boyd'
+
+  - Patch 21 (20 in v3):
+    Fix conflict (rebase v6.18-rc1)
+
+  - Patches 22 to 24 (21 to 23 in v3):
+    No change
+
+  - Patch 25 (24 in v3):
+    Fix conflict (rebase v6.18-rc1)
+    Add 'Acked-by: Bjorn Helgaas'
+
+  - Patches 26 to 29 (25 to 28 in v3):
+    No change
+
+v2 -> v3
+  v2: https://lore.kernel.org/all/20250507071315.394857-1-herve.codina@bootlin.com/
+
+  - Patch 1:
+    Add 'Acked-by: Mark Brown'
+
+  - Patch 2 and 3:
+    No changes
+
+  - Patch 4:
+    Rewrite the WARN_ON() condition to avoid an additional 'if'
+
+  - Patch 5:
+    Fix typos in commit log
+    Update a comment
+    Remove the unneeded check before calling of_platform_depopulate()
+
+  - Patches 6 to 11:
+    No changes
+
+  - Patch 12 (new in v3)
+    Tag the fwnode dev member as private
+
+  - Patch 13 (12 in v2)
+    Fix a typo in the commit log
+
+  - Patches 14 to 16 (13 to 15 in v2)
+    No changes
+
+  - Patch 17 (16 in v2)
+    Check parent_physdev for NULL
+
+  - Patch 18 (17 in v2)
+    Capitalize "Link:"
+    Add 'Reviewed-by: Andy Shevchenko'
+
+  - Patch 19 (18 in v2)
+    No changes
+
+  - Patch 20 (19 in v2)
+    Add 'Acked-by: Andi Shyti'
+
+  - Patch 21 (20 in v2)
+    No changes
+
+  - Patch 22 (21 in v2)
+    Add 'Reviewed-by: Andrew Lunn'
+
+  - Patch 23 (22 in v2)
+    Add 'Reviewed-by: Andrew Lunn'
+
+  - Patch 24 (new in v3)
+    Introduce PCI_DEVICE_ID_EFAR_LAN9662, the LAN966x PCI device ID
+
+  - Patch 25 (23 in v2)
+    Add 'Reviewed-by: Andrew Lunn'
+    Use PCI_DEVICE_DATA() with PCI_DEVICE_ID_EFAR_LAN9662 instead of
+    PCI_VDEVICE()
+
+  - Patch 26 to 28 (24 to 26 in v2)
+    No changes
+
+v1 -> v2
+  v1: https://lore.kernel.org/lkml/20250407145546.270683-1-herve.codina@bootlin.com/
+
+  - Patch 1 and 3
+    Remove 'From' tag from the commit log
+
+  - Patch 2
+    Add 'Reviewed-by: Andy Shevchenko'
+    Add 'Reviewed-by: Saravana Kannan'
+    Add 'Reviewed-by: Luca Ceresoli'
+
+  - Patch 4 and 5
+    No changes
+
+  - Patch 6 (new in v2)
+    Introduce fw_devlink_set_device()
+
+  - Patch 7 (new in v2)
+    Use existing device_set_node() helper.
+
+  - Patch 8 to 11 (new in v2)
+    Use fw_devlink_set_device() in existing code.
+
+  - Patch 12 (6 in v1)
+    Use fw_devlink_add_device()
+
+  - Patch 13 (7 in v1)
+    No changes
+
+  - Patch 14 (8 in v1)
+    Update commit log
+    Use 'physdev' instead of 'supplier'
+    Minor fixes in i2c_get_adapter_physdev() kdoc
+
+  - Patch 15 and 16 (9 and 10 in v1)
+    Use 'physdev' instead of 'supplier' (commit log, title and code)
+
+  - Patch 17 (11 in v2)
+    Enable fw_devlink on x86 only if PCI_DYNAMIC_OF_NODES is enabled.
+    Rework commit log.
+
+  - Patch 18, 19 and 20 (12, 13 and 14 in v1)
+    No changes
+
+  - Patch 21 (new in v2)
+    Split dtso in dtsi/dtso
+
+  - Patch 22 (new in v2)
+    Rename lan966x_pci.dtso using the specific board name
+
+  - Patch 23 (new in v2)
+    Improve the driver introducing board specific data to ease support
+    for other boards (avoid the direct dtbo reference in the function
+    loading the dtbo).
+
+  - Patch 24 (15 in v1)
+    Refactor due to dtso split in dtsi/dtso
+
+  - Patch 25 (new in v2)
+    Sort exist driver list in Kconfig help
+
+  - Patch 26 (16 in v1)
+    Keep alphanumeric order for new drivers added in Kconfig help
+
+Herve Codina (27):
+  driver core: Rename get_dev_from_fwnode() wrapper to
+    get_device_from_fwnode()
+  driver core: Avoid warning when removing a device while its supplier
+    is unbinding
+  dt-bindings: bus: Add simple-platform-bus
+  bus: Introduce simple-platorm-bus
+  misc: lan966x_pci: Use simple-platform-bus
+  driver core: fw_devlink: Introduce fw_devlink_set_device()
+  drivers: core: Use fw_devlink_set_device()
+  pinctrl: cs42l43: Use fw_devlink_set_device()
+  cxl/test: Use device_set_node()
+  cxl/test: Use fw_devlink_set_device()
+  PCI: of: Use fw_devlink_set_device()
+  PCI: of: Set fwnode device of newly created PCI device nodes
+  PCI: of: Remove fwnode_dev_initialized() call for a PCI root bridge
+    node
+  i2c: core: Introduce i2c_get_adapter_physdev()
+  i2c: mux: Set adapter physical device
+  i2c: mux: Create missing devlink between mux and adapter physical
+    device
+  of: property: Allow fw_devlink device-tree on x86
+  clk: lan966x: Add MCHP_LAN966X_PCI dependency
+  i2c: busses: at91: Add MCHP_LAN966X_PCI dependency
+  misc: lan966x_pci: Fix dtso nodes ordering
+  misc: lan966x_pci: Split dtso in dtsi/dtso
+  misc: lan966x_pci: Rename lan966x_pci.dtso to
+    lan966x_evb_lan9662_nic.dtso
+  PCI: Add Microchip LAN9662 PCI Device ID
+  misc: lan966x_pci: Introduce board specific data
+  misc: lan966x_pci: Add dtsi/dtso nodes in order to support SFPs
+  misc: lan966x_pci: Sort the drivers list in Kconfig help
+  misc: lan966x_pci: Add drivers needed to support SFPs in Kconfig help
+
+Saravana Kannan (2):
+  Revert "treewide: Fix probing of devices in DT overlays"
+  of: dynamic: Fix overlayed devices not probing because of fw_devlink
+
+ .../bindings/bus/simple-platform-bus.yaml     |  50 +++++
+ MAINTAINERS                                   |   3 +-
+ drivers/base/core.c                           |  99 +++++++---
+ drivers/bus/imx-weim.c                        |   6 -
+ drivers/bus/simple-pm-bus.c                   |  37 ++++
+ drivers/clk/Kconfig                           |   2 +-
+ drivers/i2c/busses/Kconfig                    |   2 +-
+ drivers/i2c/i2c-core-base.c                   |  16 ++
+ drivers/i2c/i2c-core-of.c                     |   5 -
+ drivers/i2c/i2c-mux.c                         |  26 +++
+ drivers/misc/Kconfig                          |  11 +-
+ drivers/misc/Makefile                         |   2 +-
+ drivers/misc/lan966x_evb_lan9662_nic.dtso     | 167 +++++++++++++++++
+ drivers/misc/lan966x_pci.c                    |  30 ++-
+ drivers/misc/lan966x_pci.dtsi                 | 172 +++++++++++++++++
+ drivers/misc/lan966x_pci.dtso                 | 177 ------------------
+ drivers/of/dynamic.c                          |   1 -
+ drivers/of/overlay.c                          |  15 ++
+ drivers/of/platform.c                         |   5 -
+ drivers/of/property.c                         |  31 ++-
+ drivers/pci/of.c                              |  10 +-
+ drivers/pci/quirks.c                          |   2 +-
+ drivers/pinctrl/cirrus/pinctrl-cs42l43.c      |   2 +-
+ drivers/pmdomain/core.c                       |   4 +-
+ drivers/spi/spi.c                             |   5 -
+ include/linux/device.h                        |   2 +-
+ include/linux/fwnode.h                        |   7 +
+ include/linux/i2c.h                           |   3 +
+ include/linux/pci_ids.h                       |   1 +
+ tools/testing/cxl/test/cxl.c                  |   4 +-
+ 30 files changed, 652 insertions(+), 245 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/bus/simple-platform-bus.yaml
+ create mode 100644 drivers/misc/lan966x_evb_lan9662_nic.dtso
+ create mode 100644 drivers/misc/lan966x_pci.dtsi
+ delete mode 100644 drivers/misc/lan966x_pci.dtso
+
 -- 
-2.37.1
+2.51.0
 
