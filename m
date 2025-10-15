@@ -1,237 +1,214 @@
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013068.outbound.protection.outlook.com [40.107.162.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F341917FB
-	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 02:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760494481; cv=none; b=LTyLXybKxAn+cI85kgfSDPvnSKeXto1f/LaEs4jCEUUppccd29fcRCjdcJmDHW/gixahu20i0SDiZZFnUHmSnIPaF0vWJWF5an3+LI9E3j7UnkMOco8HQe8Q0Y16VL3NHEECz7Y5N8211rFaCw103c43useY4/6GUHBkoR45GJc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760494481; c=relaxed/simple;
-	bh=BvbEDcSgqinTElRN1PhlzH3gEv7DHupXAUVnUvlflLw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jDX+J52SsH1nEGR2v36966b+sUPaHvvj2m6K3blV85r68D4JX0GPtxfavsjy7IaOcW4BngZCHaeIZXKHXX445g4jThMU2GJGfGXshLOgSFPNPV2kJWJwrTB1bit87ArmyePM2IGqB0OPstIT3yURf8OGCHD78ZfPsNfcenK9XYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=jXEzqPMw; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C991E4A08
+	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 03:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760497509; cv=fail; b=OkD0HaZU1Q2GEXuCLOMWN/mpRoxo8OFHmDBzaJ0rzYwbAkdmfFw/juU2kq2Q/NPbn6fS0oVz5zKTRfXMx/3O2PKvIVBgdZSd09G1TIXjjwS7n0wA3eik8pbMLwAkrEjcUyHkO7NL1ziHBDoqfslI9IOvRt3I3tTVHcN3OcalDc0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760497509; c=relaxed/simple;
+	bh=CXJJ1H1shurUa+gU0+GH+KLMMc1D3Smch39AgFCR9D0=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=hJJ70w0uDnzVf3HzHL5VAP7sakNo+qOb/leZrHQVLimJPuLcXWq6pt45ZXtytOQOBib+tZEHxcdBifzEBZxLu2L0MJmDMyZeAFsZ4rjNYBALYbke58M8LAlZNQ2kPw/hDA/t+fYQ9ZCTJJtFzhIsWnqKBmxbtFWpdZ1Dg26JzoU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QbR46BJw; arc=fail smtp.client-ip=40.107.162.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="jXEzqPMw"
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59F1e2wY775953;
-	Tue, 14 Oct 2025 19:14:32 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:message-id:mime-version:subject:to; s=PPS06212021; bh=D54MA87NW
-	08fbFrNjHjEjoR6ukcUqeJK7/n1BS2PVR4=; b=jXEzqPMwfyMybTQ9Ktzkk9+ya
-	kHp8dZax48Tqb2WPoB9irtW3NvuOxD/s9NxBq4ALNIeh2rYV2949EYu0qiFEO6L3
-	nmW1IBueBVkivhW38x3hCqPQqPgWVV6JpWWrZ8zWA7C9hVYuLNYPrvKIjSl29v/o
-	yR3dRbLw7spfLyiPknFZ+b3JVjXtwhbYtBR3qKdJwrjqrvmAG92qxVZpPmxp77XS
-	LvOXwyqsJHpjT+9LQy/FrKHa+ghw0zH0UK5UKpsS+3lfswpV5yLESmreSBzl85nV
-	nsryaz1kQ6XeiCfTwPK4AKibAD9niHSHZ2XEn/pWmY4C4ZDV6mD6nH8KaK0iQ==
-Received: from ala-exchng02.corp.ad.wrs.com ([128.224.246.37])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 49qjh1m193-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 14 Oct 2025 19:14:32 -0700 (PDT)
-Received: from ala-exchng01.corp.ad.wrs.com (10.11.224.121) by
- ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.59; Tue, 14 Oct 2025 19:14:31 -0700
-Received: from pek-lpggp9.wrs.com (10.11.232.110) by
- ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server id
- 15.1.2507.59 via Frontend Transport; Tue, 14 Oct 2025 19:14:28 -0700
-From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-To: <claudiu.manoil@nxp.com>, <vladimir.oltean@nxp.com>, <wei.fang@nxp.com>,
-        <xiaoning.wang@nxp.com>, <andrew+netdev@lunn.ch>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <alexandru.marginean@nxp.com>
-CC: <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Jianpeng Chang
-	<jianpeng.chang.cn@windriver.com>
-Subject: [v4 PATCH net] net: enetc: fix the deadlock of enetc_mdio_lock
-Date: Wed, 15 Oct 2025 10:14:27 +0800
-Message-ID: <20251015021427.180757-1-jianpeng.chang.cn@windriver.com>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QbR46BJw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JOpEbNx7pJHoAOue5uTDq4PAbT+CUEkSAAJcIzNU1KIp+4siGThUE1ye/rUC5cuAlbu7T1WSodJ8avGc0qpsnuvU9FqW8j6t2J3wVJdE6fYzfriCftf6W/dedgoF7QOYTTJWMsVEAd+0MgW2p+aofJNCZa4xdh3Ul67AErzauSTkWo8XJiIIcgZPwomI16eph8KmyIUlNXybHr6CbkaEn/hUxFadiJwv9f4iQVZvFG7IQfaoeDnLu/MlPvhC23xYOcChPcL8tAaSyEiCSP1jn+z/694Xj2xOvXrGBzoPnYGOWhoh8GsN+QtE3WSOy0JJk3L3Taf8nHkZC1XsZ7H/Tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XGQOy1bvYaRaKpXUjE3nj+pRJMYbyR09BI6H+7JWAfY=;
+ b=wEQoVH0FBITxGpaBzJnJVY2VFcvaneo7IkacSpC9+HjK0thJWBWKwcbmw3MoAPbXN8CLoa9sNWGStUGVTh8VQz328OyvfrShh+efFxHbnQO9J1Rrtxv67uFG6W9u10946LGESzQ+z0P1ZpXv78fXTPG0GHLRC/nG4yjSFNRootS4kY0c/ZkMneatGkjPlPpPM82o5899p4xLFVoGiOIzSXvr+lQXyjkM0TiEFNYWV7fDI0Y4KcpgQluaUW1k1IoSM1hTENcvrZkCeBtncH2aw07XAU4bhwxBzQdF6vSNO4yFHLHXCjQ9RTj8spPeVVeJttYR0GXwJcAwMcCGsjeNoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XGQOy1bvYaRaKpXUjE3nj+pRJMYbyR09BI6H+7JWAfY=;
+ b=QbR46BJw9qe0+G/K+hVHtFynU/hnWr460PywPGYuqHg0EMeRwcg9LNLiQnqQnROcAObG7R0x3jBvBWA+CfOrxAiKS34rOdXeS4QVTyvIWRN18gX/eqkIkw4jAG48Zo/Hp49sX61pwtBlHQRyrH0HAqBAYoEKDuiTcZzGZDnmqZlOxgTLrGe01pR2t5OABVa++446gvHIeuyUsCmdL4tVFIWN0w/aqwOGAOBD0OuTmKnfpur5kSOpCvnPrG7+s+qtCRC1VvHkLO0eJUUx/EF/1enrjHkw4Yx6/D9/eOtT0J/S7RbhgjA/fszf7Q8/RarlcHk0JEN97LcmQIyqRoAdiQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8840.eurprd04.prod.outlook.com (2603:10a6:10:2e3::6)
+ by DU2PR04MB9521.eurprd04.prod.outlook.com (2603:10a6:10:2f3::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.13; Wed, 15 Oct
+ 2025 03:05:01 +0000
+Received: from DU2PR04MB8840.eurprd04.prod.outlook.com
+ ([fe80::7c5d:60c1:2432:86a1]) by DU2PR04MB8840.eurprd04.prod.outlook.com
+ ([fe80::7c5d:60c1:2432:86a1%4]) with mapi id 15.20.9228.009; Wed, 15 Oct 2025
+ 03:05:01 +0000
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: frank.li@nxp.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	bhelgaas@google.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 0/11] PCI: imx6: Add a method to handle CLKREQ# override
+Date: Wed, 15 Oct 2025 11:04:17 +0800
+Message-Id: <20251015030428.2980427-1-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0024.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::12) To DU2PR04MB8840.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e3::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE1MDAxNCBTYWx0ZWRfXz9tBRddMGHLY
- BuWH0Zge0ZHujV0/XHNojDZpAMmDuk/hmR7EbRT3QwqozsnB+yWAr6Abgmz48nTTDh/BCZlKEVK
- dktcR+jmtNajne7NnSJ5s/M099wJLaJwsSgR41AIGhCqQSkSPgVIIk6eX+tJoGkQQ2ymBY+QNA6
- woet5orteU5hQze/+eOLdbc5g781KSDFQN/059YZPvLZxkUbJZIyu0suJDcHCmdjhG7FOpdUs6r
- mKEZ+qa347zXDcfrjJ0iN8FbuLoqc34ghV6EBSo2gpcbPgRVkj+XfPs3kph+mauG0f+yw9k1nIU
- s9DtsF/IRUGCo43nF5L+HRuy3mcA+ZlijSRXkx/c7QGgqh8mdGCS9VHK88VG8MnMVsNCtjI2exI
- fxT0bBRMP1FEWINV7BWDect2ywje2g==
-X-Proofpoint-GUID: YbwMUgo_ySs44psVFw4KpoW6hopUq2-Q
-X-Proofpoint-ORIG-GUID: YbwMUgo_ySs44psVFw4KpoW6hopUq2-Q
-X-Authority-Analysis: v=2.4 cv=aetsXBot c=1 sm=1 tr=0 ts=68ef0388 cx=c_pps
- a=Lg6ja3A245NiLSnFpY5YKQ==:117 a=Lg6ja3A245NiLSnFpY5YKQ==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8
- a=sSYRAcqiQU9DoQOrsSkA:9 a=FdTzh2GWekK77mhwV6Dw:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-15_01,2025-10-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 spamscore=0 suspectscore=0 phishscore=0
- malwarescore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510020000 definitions=main-2510150014
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8840:EE_|DU2PR04MB9521:EE_
+X-MS-Office365-Filtering-Correlation-Id: 69116f41-b1e8-408f-0ff6-08de0b97a199
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|52116014|7416014|376014|1800799024|366016|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?NyFe8w95iXTe9HxDW7L1TTlQoPlDw5aEu+w8hRwkioWXEBXXTe0fDmllRXX6?=
+ =?us-ascii?Q?IXrK1A8l546qAAvY7OwgdQT7vfn9nHJJkUDRNSn8THhYEwMVjXus7h/T/8oj?=
+ =?us-ascii?Q?/Y7NSA1QyhI8cCpvND6fURrmKEP7ndiHpKdxR+aXaQyIWQXsCqudIff8DPNI?=
+ =?us-ascii?Q?FOKkTFjxUMXqW1mpe6Y0ma8iuxNUnIL/eclsJihlubEtFQajbsfGOJJ8nG9k?=
+ =?us-ascii?Q?j8mj0N+n6cTOQ+vCYcW3fuM8hBv+yq73ElIAn+kiriMS8I7GjP+fTMDQFABS?=
+ =?us-ascii?Q?OsuActxKeTMD7qitosO2jPzMHCCd4Lp9IVpgXPFfoh+NLwIUtogio8IMCnDD?=
+ =?us-ascii?Q?sJJen7N2YUxddpqhbSmY3Laz903hQX81nftTLEAxfp5SQ6lPeLMGEL6lID+a?=
+ =?us-ascii?Q?dwWhkpM0GJMXDK3s9PaotYAODiMNMCRYBkuTS13ZVxcQxNPjjOkXnRTIkPf4?=
+ =?us-ascii?Q?PmUG3GnGDoj+YxTpKB1Vu6cjAc2vZnmWVnZBa9MMxtKhiSjfCDa6uD0KAPyy?=
+ =?us-ascii?Q?fDKCmWbHF6mQ6LN7fBSj8vYvd0Aql8Bj9m1P1MAcWt3H2UgcUl0O1uptU0qZ?=
+ =?us-ascii?Q?saeTg/aeo9wFGiKI5AzVpYIl8x0BKdbZCOT754BEEkSDXZqZNX0LgoiWjfMj?=
+ =?us-ascii?Q?ApKNNZO8iADe8k83fm/nd62GyxTVHKZmPrF/k170OLu9uPgOW6K575V0x45w?=
+ =?us-ascii?Q?4peyFGrku9LNStffhpxPBvYbQ1nWCZk4M9geQY6tm90902ZuzT5p3QiUFPO+?=
+ =?us-ascii?Q?3I4c5/KCudZ+k8dfP3F+MM2XjiymeFZOK71HPUO1qescTSgbSBbAOkiYPqKJ?=
+ =?us-ascii?Q?iHEU6UKOFBm1PS+2eomNTXAlwJ0ncQRT84ihCeKKGH+KqLW9SeT79scE8oe4?=
+ =?us-ascii?Q?yFuEuZ+13Jx5YoFbptD5tyUXT5YYk92EBxCno1YPDsS84nIvF1ciBYvsBdZK?=
+ =?us-ascii?Q?f1cqNX6pCqu/C2i11CzVAGkgVtI5BBoFxy2cztEj8SxwNb2k6Z/NMl38fBzg?=
+ =?us-ascii?Q?vTSdIJe9jH717oXk9lmemS/6s9qwA9PiF24rsQt91tykFmUzExz/5Mp+zl0m?=
+ =?us-ascii?Q?9cwaojnNLRTOzxH5/MA2lKmTsOBwmIZ5a/2G3PqPi1HW/wcAKOdgS1w60y8d?=
+ =?us-ascii?Q?0skgctovsXdZLMds/neKGuHJVmBD3BSsxctni7nY/q0n+wNumebagW+esrj4?=
+ =?us-ascii?Q?gec06ddN2uJNFOzzC4QhMAdHSnE6iWZGH9LZ/bp06jiO+QI2FM6zQm53FrxA?=
+ =?us-ascii?Q?9YI418V03Zp6maIJkSntgY+XCRdcLkNbKYHxFO5mJNL84bKGVOP1gMGAEX03?=
+ =?us-ascii?Q?7nbm84v8xiUPjfh0JFwLx9qY2NhxoofYY9d+7/W9oxfJc2H+U2jEbWTg2xUZ?=
+ =?us-ascii?Q?h6sht9jLXGQo6TO9U64i5StsCXXg+AUGYc/PyJxJXEb/BVrG2csONxaPwqFv?=
+ =?us-ascii?Q?o2N2CjD0u5W4hchetkmboF6FncBO4I1aBCOUcKDPVWHZfUsyJAp+OuuB1Nwz?=
+ =?us-ascii?Q?rrtEJbhjS+KvboIr/ZYfUOLXEVBDuribsoqEf039Rq2RbsFqZwbg1FViiw?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8840.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?X2cQ15HeaEJepbrkXYlQNSlVDkHixdHLgilBq9KALSu2TlLsmn6Dg749RoUE?=
+ =?us-ascii?Q?JT2OJMxfKIP4eCmFu6lZeijf6uHvzGkh0csuqpRKEWq7HkOhul4PdzEwEgz2?=
+ =?us-ascii?Q?/QWzQwQ+Tlx7lTNJxq3NxBJruJN4bpZ2EtIKM9KttdRwX1jQEDd14jhJDkV1?=
+ =?us-ascii?Q?H7GG+meMqgSIFRyypqQ7Q5YTrVGPShZvnMGTjBXqzYvkpC+rUgCm1AoYHeO9?=
+ =?us-ascii?Q?oyZ3a2y5L7zTB+q0eoNS451wHY4PdiBHpB0l22CcKdlhA1FvUeevcg1Mtlux?=
+ =?us-ascii?Q?H1WjHFQGcw8Ss2ritIVJhf2gbsJkVbCyHYJMEdUglzde7//Ws5C50qGNBN/m?=
+ =?us-ascii?Q?AbSFRynhN71VndQKW5Ia//X5/JbzLLKln1KRlGEqgzNHJxmqmULpaaZbcfAc?=
+ =?us-ascii?Q?ZOhVJ2OryKnOHi/CbjD2sLPqnLA3UoO8/iXZob/198sCXBvX0wr4OSF5NZis?=
+ =?us-ascii?Q?qnOMQMq7WcT+X0t2wr+f3z+2WHrOrJ15FYk2I7jRSCQtOJmHgjAoJFbw9VUF?=
+ =?us-ascii?Q?aTnmnyXLTfbu7nVwbn0q2Jh7DaAaWSj63XcoLi9zYk3TulmiVXz4MpGh8FUX?=
+ =?us-ascii?Q?Qnnmgqc7LjvPg0LWAqJNG3ECgJpt5yQQ9cjl24hSKn+NqnRcdurol1377nrq?=
+ =?us-ascii?Q?t7FadIEcKnXxZSeZIFRi2Gb2ciIAlcqPyKCoYBmdu61gIjmytNtibhSyjIuM?=
+ =?us-ascii?Q?rLAzLH65+H2YXaAvTB1uol/gCmq9Rp9hwkClBtBEo0Z6dhCePCdkvYNtTjzX?=
+ =?us-ascii?Q?fBjJ6DKHGq1WBIWN4PXoS1lSclMQaTD/elXh1X0NXuRoxHPrF/DwWJ/4eQP9?=
+ =?us-ascii?Q?kdVckfiy/Prk7s0jTapn6rFpwZ+NN9AbLveTaVqFAghgcMfN8OuejkwVsYZW?=
+ =?us-ascii?Q?WvvlsjL70F56Xq5dsiqRw1jXlLsVYOKdVTVdr2dYxf0TUcMGDRPT/SJZB+p4?=
+ =?us-ascii?Q?LuXFl5wavqRFo3TcxRcbxHZzK9s5F6DUjLAHCloRkyn/g/5Ayp7Ws+dBBWsd?=
+ =?us-ascii?Q?5Y6fWc7X+BiVYnUhfKXJ1Vskf7VOZoJbAWkAb5UfQ+eCCwEsmmEDS6VPV1JI?=
+ =?us-ascii?Q?jcTdTkZoTG7Ahecg4mxTiW3KFw6nmFzuFeERFVK2n2rDZvsW2+BFOQ8wCb6W?=
+ =?us-ascii?Q?GFYFOzNwdGfvM9dQz5qpFA1UVDIYvl5fHv9PWIFTLwvPfA8aLCcs82yu/4/p?=
+ =?us-ascii?Q?Wn7LIXyszu+vX+w73xB+8eUkOsogdToggVY7mmnpuhG9BW83K9nCjvszlpAR?=
+ =?us-ascii?Q?klKnJ2iZlIratgR3vpYo6/Ce1rjO54K5Co8SIfg1y+4vPtuuNIDpbjcT5Rhl?=
+ =?us-ascii?Q?j5MFPloAc7EF3MmoEPe+ip1vWiXKQdMssN7bPLZC/EmP0h5KhlU5GSu7usha?=
+ =?us-ascii?Q?Symqy5yB72D6V0cAZOMD7dX/n311QFx9BR9yg7aWxRsd3NnZV1MYEyka9UcL?=
+ =?us-ascii?Q?gv6kx9kPgptp6gPCWHckulXpTInsJ8GA74dlmLTywSyes/GurowaHu0yh/v2?=
+ =?us-ascii?Q?xDxX9BbppPTzjvm7c09UUhD68uRk/FFE7dA+Z3zd0rCZN421jZN3Q0jGjj/i?=
+ =?us-ascii?Q?Rzrz/6zMMt0+dlOIiw/t36SV2qL6bFjm65Yxfr+z?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69116f41-b1e8-408f-0ff6-08de0b97a199
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8840.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2025 03:05:01.5537
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MJLGwiPj/IssV1e7/izvZpRiR0pWNxfQgFb8kFqR4QImRGVtS+cKmWqMoT8SpK4fIYRhWyJWrLjfbcqbUQQ3kA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9521
 
-After applying the workaround for err050089, the LS1028A platform
-experiences RCU stalls on RT kernel. This issue is caused by the
-recursive acquisition of the read lock enetc_mdio_lock. Here list some
-of the call stacks identified under the enetc_poll path that may lead to
-a deadlock:
+Clock Request is a reference clock request signal as defined by the PCIe
+Mini CEM and M.2 specification; Also used by L1 PM Substates. But it's
+an optional signal added in PCIe CEM r4.0, sec 2. The CLKREQ# support is
+relied on the exact hardware board and device designs.
 
-enetc_poll
-  -> enetc_lock_mdio
-  -> enetc_clean_rx_ring OR napi_complete_done
-     -> napi_gro_receive
-        -> enetc_start_xmit
-           -> enetc_lock_mdio
-           -> enetc_map_tx_buffs
-           -> enetc_unlock_mdio
-  -> enetc_unlock_mdio
+Add supports-clkreq property to i.MX PCIe M.2 port since the CLKREQ#
+signal would be driven active low on this M.2 connector by the add-in
+card to requtest reference clock. And, the host bridge driver can enable
+the ASPM L1 PM Substates support if this property present.
 
-After enetc_poll acquires the read lock, a higher-priority writer attempts
-to acquire the lock, causing preemption. The writer detects that a
-read lock is already held and is scheduled out. However, readers under
-enetc_poll cannot acquire the read lock again because a writer is already
-waiting, leading to a thread hang.
+To support L1 PM Substates, add a callback to clear CLKREQ# override on
+the boards that support CLKREQ# in the hardware designs.
 
-Currently, the deadlock is avoided by adjusting enetc_lock_mdio to prevent
-recursive lock acquisition.
+Main changes in v6:
+- Rebase to v6.18-rc1.
+- Add the dts changes into the v6 version patch-set.
+- Fix the i.MX95 refclk enable that was missed in the v5 series.
+- Make i.MX95 refclk enable parallel to the others.
+- Describe the potential CLKREQ# problem on i.MX95 19x19 EVK second
+  slot in the commit, and emphasis the CLKREQ# issue is caused by the
+  board and device hardware designs.
 
-Fixes: 6d36ecdbc441 ("net: enetc: take the MDIO lock only once per NAPI poll cycle")
-Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
----
-v4:
-  - remove xdp_do_flush and xdp_do_redirect outside of enetc_lock_mdio.
-v3:https://lore.kernel.org/netdev/20251009013215.3137916-1-jianpeng.chang.cn@windriver.com/
-  - remove the curly braces
-v2:https://lore.kernel.org/netdev/20250925021152.1674197-1-jianpeng.chang.cn@windriver.com/
-  - change the fix line and subject.
-  - add blank line before return.
-v1:https://lore.kernel.org/netdev/20250924054704.2795474-1-jianpeng.chang.cn@windriver.com/
+Main changes in v5:
+- New create imx8mm_pcie_clkreq_override() and keep the original
+  enable_ref_clk callback function.
 
- drivers/net/ethernet/freescale/enetc/enetc.c | 25 ++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+Main changes in v4:
+- To align the function name when add the CLKREQ# override clear, rename
+imx8mm_pcie_enable_ref_clk(), clean up codes refer to Mani' suggestions.
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index aae462a0cf5a..0535e92404e3 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1595,6 +1595,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
- 	/* next descriptor to process */
- 	i = rx_ring->next_to_clean;
- 
-+	enetc_lock_mdio();
-+
- 	while (likely(rx_frm_cnt < work_limit)) {
- 		union enetc_rx_bd *rxbd;
- 		struct sk_buff *skb;
-@@ -1630,7 +1632,9 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
- 		rx_byte_cnt += skb->len + ETH_HLEN;
- 		rx_frm_cnt++;
- 
-+		enetc_unlock_mdio();
- 		napi_gro_receive(napi, skb);
-+		enetc_lock_mdio();
- 	}
- 
- 	rx_ring->next_to_clean = i;
-@@ -1638,6 +1642,8 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
- 	rx_ring->stats.packets += rx_frm_cnt;
- 	rx_ring->stats.bytes += rx_byte_cnt;
- 
-+	enetc_unlock_mdio();
-+
- 	return rx_frm_cnt;
- }
- 
-@@ -1947,6 +1953,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 	/* next descriptor to process */
- 	i = rx_ring->next_to_clean;
- 
-+	enetc_lock_mdio();
-+
- 	while (likely(rx_frm_cnt < work_limit)) {
- 		union enetc_rx_bd *rxbd, *orig_rxbd;
- 		struct xdp_buff xdp_buff;
-@@ -2010,7 +2018,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 			 */
- 			enetc_bulk_flip_buff(rx_ring, orig_i, i);
- 
-+			enetc_unlock_mdio();
- 			napi_gro_receive(napi, skb);
-+			enetc_lock_mdio();
- 			break;
- 		case XDP_TX:
- 			tx_ring = priv->xdp_tx_ring[rx_ring->index];
-@@ -2045,7 +2055,9 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 			}
- 			break;
- 		case XDP_REDIRECT:
-+			enetc_unlock_mdio();
- 			err = xdp_do_redirect(rx_ring->ndev, &xdp_buff, prog);
-+			enetc_lock_mdio();
- 			if (unlikely(err)) {
- 				enetc_xdp_drop(rx_ring, orig_i, i);
- 				rx_ring->stats.xdp_redirect_failures++;
-@@ -2065,8 +2077,11 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 	rx_ring->stats.packets += rx_frm_cnt;
- 	rx_ring->stats.bytes += rx_byte_cnt;
- 
--	if (xdp_redirect_frm_cnt)
-+	if (xdp_redirect_frm_cnt) {
-+		enetc_unlock_mdio();
- 		xdp_do_flush();
-+		enetc_lock_mdio();
-+	}
- 
- 	if (xdp_tx_frm_cnt)
- 		enetc_update_tx_ring_tail(tx_ring);
-@@ -2075,6 +2090,8 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 		enetc_refill_rx_ring(rx_ring, enetc_bd_unused(rx_ring) -
- 				     rx_ring->xdp.xdp_tx_in_flight);
- 
-+	enetc_unlock_mdio();
-+
- 	return rx_frm_cnt;
- }
- 
-@@ -2093,6 +2110,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
- 	for (i = 0; i < v->count_tx_rings; i++)
- 		if (!enetc_clean_tx_ring(&v->tx_ring[i], budget))
- 			complete = false;
-+	enetc_unlock_mdio();
- 
- 	prog = rx_ring->xdp.prog;
- 	if (prog)
-@@ -2104,10 +2122,8 @@ static int enetc_poll(struct napi_struct *napi, int budget)
- 	if (work_done)
- 		v->rx_napi_work = true;
- 
--	if (!complete) {
--		enetc_unlock_mdio();
-+	if (!complete)
- 		return budget;
--	}
- 
- 	napi_complete_done(napi, work_done);
- 
-@@ -2116,6 +2132,7 @@ static int enetc_poll(struct napi_struct *napi, int budget)
- 
- 	v->rx_napi_work = false;
- 
-+	enetc_lock_mdio();
- 	/* enable interrupts */
- 	enetc_wr_reg_hot(v->rbier, ENETC_RBIER_RXTIE);
- 
--- 
-2.49.0
+Main changes in v3:
+- Rebase to v6.17-rc1.
+- Update the commit message refer to Bjorn's suggestions.
+
+Main changes in v2:
+- Update the commit message, and collect the reviewed-by tag.
+
+[PATCH v6 01/11] arm64: dts: imx95-15x15-evk: Add supports-clkreq
+[PATCH v6 02/11] arm64: dts: imx95-19x19-evk: Add supports-clkreq
+[PATCH v6 03/11] arm64: dts: imx8mm-evk: Add supports-clkreq property
+[PATCH v6 04/11] arm64: dts: imx8mp-evk: Add supports-clkreq property
+[PATCH v6 05/11] arm64: dts: imx8mq-evk: Add supports-clkreq property
+[PATCH v6 06/11] arm64: dts: imx8qm-mek: Add supports-clkreq property
+[PATCH v6 07/11] arm64: dts: imx8qxp-mek: Add supports-clkreq
+[PATCH v6 08/11] PCI: dwc: Invoke post_init in dw_pcie_resume_noirq()
+[PATCH v6 09/11] PCI: imx6: Add a new imx8mm_pcie_clkreq_override()
+[PATCH v6 10/11] PCI: imx6: Add CLKREQ# override to enable REFCLK for
+[PATCH v6 11/11] PCI: imx6: Add a callback to clear CLKREQ# override
+
+arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi     |  1 +
+arch/arm64/boot/dts/freescale/imx8mp-evk.dts      |  1 +
+arch/arm64/boot/dts/freescale/imx8mq-evk.dts      |  2 ++
+arch/arm64/boot/dts/freescale/imx8qm-mek.dts      |  1 +
+arch/arm64/boot/dts/freescale/imx8qxp-mek.dts     |  1 +
+arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts |  1 +
+arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts |  1 +
+drivers/pci/controller/dwc/pci-imx6.c             | 50 +++++++++++++++++++++++++++++++++++++++++++++++++-
+drivers/pci/controller/dwc/pcie-designware-host.c |  3 +++
+9 files changed, 60 insertions(+), 1 deletion(-)
 
