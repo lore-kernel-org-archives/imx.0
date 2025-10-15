@@ -1,100 +1,144 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF93A2F8BF5
-	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 21:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462381BC3F;
+	Wed, 15 Oct 2025 21:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760563632; cv=none; b=HjQ1Kqg7BnwUPFLGMkJ4YWsMHRzxH6fi8c4e5hZPsIoOBvNE6np6fcJ3fPdjvLJkC+z/6F+2xvdEgwLnkPf2kSLREcypxHotDwPDellkZGnymWfZ5q99NcVi36egQ4gycWLfHMPkcFKY/mIPnr3+7OgNZcA3nnJdjPLCndE4VIU=
+	t=1760565404; cv=none; b=oCUw2uSoSgzZcawRY4erJJkOlEowhUMWGnAr/abcZMDnQZhJ8nJQLFxHuB4DUlcvghIxrGf+3CM9fAvMtWWBzXYhjVqXhkRGxGoVMWQQgU83whpcPkWp4CHHSYm0Lx+3EaaePnX+SFU7n7hI2ojHrywte9FCSHC6eXPMzhk14Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760563632; c=relaxed/simple;
-	bh=X/H1t5+R0D/4CKNJ6lqhJeQh+HFF3vdvHT/iEgn1t/s=;
+	s=arc-20240116; t=1760565404; c=relaxed/simple;
+	bh=Kp0Iv++zsrADvxWS0araI63hW5WvxHZ8ddvo36MGl0I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A1hSIDbqtnYMKCgBbBUMKqsdGdPZ0+KYGLLgmUMtED1ZsW+ruZu8H4myN/rK3RbgeV8KqrZ37UT9xrpt5I1NIL7BpFT3SSiSeHfirXOs8gfvncZ3la2ElWF1xbxF/crQ/W8Nu9d9o/4SgF8+qKgqO0NiK0gmEU4bDl9CzvLM5+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=uokyPi/p; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=dTh+oCCPFyFjK1xVUvGVrjJeTMTpgQa/gwoLMT0+MZYp/gM9Vp6ahebAZP0cYL7jJXwL/B06Gtds5RgWhmnJLda/JWLZQNnhNhlwlbAr+/4AqJ7EKBNzCTnYkZettjTrn8yt3LdRvukbeQapKbO12qZX1jZobpbQywGxs7FYdv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VgFN27n8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="uokyPi/p"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=AGNZ6BnW7rDeS6xIFWWg/LtSXEvcJ9kKWvp8uKo+oqA=; b=uokyPi/pdGzl7esJWjMXLznKWD
-	Xh8ANLAQ3j/YYuKO/QDwcdjjA5LzS2ydgQlncrmo6rg2+3/3owLO+lQT6+w2PKicRlxWRA08L5hB3
-	flhkYz0tYu8t8pkzqzpbW+aY6ULd4DfeIKTtX/OmtTBtIlcqN4rd0LSS27wtWlDzwEdR0lkFOSgLD
-	dJ2Gzg49La+Q730WbMPlUeFL1sXF5IME+Uu8UlPh5t4H5E+4EKNaYXg+SUkkej2VjHfzwMhpkgGpO
-	IzoIpUEIoiBbL2FqIqB8+W9q/XpbQbbxdiPQrh3UGALGAmh7cHr6dZmyu2DUyejo2ap+XnQ0amvES
-	66vxG8dQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47068)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1v991M-000000005So-2bPW;
-	Wed, 15 Oct 2025 22:26:56 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1v991K-000000002cN-3eca;
-	Wed, 15 Oct 2025 22:26:54 +0100
-Date: Wed, 15 Oct 2025 22:26:54 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 02/11] ARM: dts: imx6: rename touch-thermal0 to
- touch-0-thermal
-Message-ID: <aPARnldAwAYvT0YQ@shell.armlinux.org.uk>
-References: <20251015-imx6_dts_cleanup-v2-0-41a7281b98c6@nxp.com>
- <20251015-imx6_dts_cleanup-v2-2-41a7281b98c6@nxp.com>
- <aO_9Tw1s7VcHauNh@shell.armlinux.org.uk>
- <aPAFWuJCfvTcK8hz@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VgFN27n8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A45C4CEF8;
+	Wed, 15 Oct 2025 21:56:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760565403;
+	bh=Kp0Iv++zsrADvxWS0araI63hW5WvxHZ8ddvo36MGl0I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VgFN27n8KEZT1Aexm3NiOKMCpgxMK5/iNB/6gyxMh42xozmYKs2CwNbMJd3VYddrk
+	 nVF9I9zF4UM5xPWCHLHHUkUE5WFGw8trJ3y+zD1zsgflrgCmEF1NzGCI3il8D2p8vN
+	 R0otY5WNbeZmdbPfibx0elo+Oz3Zs2N2fGVh8KiC63ddY4BJxY619ZNPsHrJuSIU4m
+	 rivDVbx1Myql7IOe7+LkKKF4OhSsN9TLo4m/Fu9sSg5suVVLgKXeuagzqXvdIHzYhp
+	 yrZWQBA8xAk3nbZd3GgBa3R5ybrdI91l9Tk3CJauYFNcpzjBkJmJtQR1mpNjBzWccw
+	 5unwHv2a3Mszw==
+Date: Wed, 15 Oct 2025 22:56:38 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: nxp,sja1105: Add optional
+ clock
+Message-ID: <20251015-convent-handprint-8717277bbffd@spud>
+References: <20251014-flattop-limping-46220a9eda46@spud>
+ <20251014-projector-immovably-59a2a48857cc@spud>
+ <20251014120213.002308f2@kernel.org>
+ <20251014-unclothed-outsource-d0438fbf1b23@spud>
+ <20251014204807.GA1075103-robh@kernel.org>
+ <20251014181302.44537f00@kernel.org>
+ <CAL_Jsq+SSiMCbGvbYcrS1mGUJOakqZF=gZOJ4iC=Y5LbcfTAUQ@mail.gmail.com>
+ <20251015072547.40c38a2f@kernel.org>
+ <CAL_Jsq+wHG_DW1D_=dR6Q_mwyqFAXKGx771PsqjvW+XCRKM3tw@mail.gmail.com>
+ <20251015105323.7342652f@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="GRWFZBjSWdozFA2g"
 Content-Disposition: inline
-In-Reply-To: <aPAFWuJCfvTcK8hz@lizhi-Precision-Tower-5810>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20251015105323.7342652f@kernel.org>
 
-On Wed, Oct 15, 2025 at 04:34:34PM -0400, Frank Li wrote:
-> On Wed, Oct 15, 2025 at 09:00:15PM +0100, Russell King (Oracle) wrote:
-> > On Wed, Oct 15, 2025 at 12:44:27PM -0400, Frank Li wrote:
-> > > -		touch-thermal0 {
-> > > +		touch0-thermal {
-> > ...
-> > > -		touch-thermal1 {
-> > > +		touch1-thermal {
-> > ...
-> > > -		touch-thermal0 {
-> > > +		touch-0-thermal {
-> > ...
-> > > -		touch-thermal1 {
-> > > +		touch-1-thermal {
-> > ...
-> > > -		touch-thermal0 {
-> > > +		touch-0-thermal {
-> > ...
-> > > -		touch-thermal1 {
-> > > +		touch-1-thermal {
-> >
-> > Is it touch-N-thermal or touchN-thermal?
-> 
-> What's difference? I suppose both naming should be okay.
 
-Surely you'd want to be consistent with the node naming? Otherwise
-state in the commit message why you're using two different names
-where the originals had the same name.
+--GRWFZBjSWdozFA2g
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+On Wed, Oct 15, 2025 at 10:53:23AM -0700, Jakub Kicinski wrote:
+> On Wed, 15 Oct 2025 12:32:14 -0500 Rob Herring wrote:
+> > On Wed, Oct 15, 2025 at 9:25=E2=80=AFAM Jakub Kicinski <kuba@kernel.org=
+> wrote:
+> > > On Wed, 15 Oct 2025 06:53:01 -0500 Rob Herring wrote: =20
+> > > > That's fine. Though it will be optional for you, but not us? We have
+> > > > to ignore tags without the project if tags intended for netdev are
+> > > > continued without the project. Or does no project mean I want to
+> > > > update every project? =20
+> > >
+> > > Fair :( I imagine your workflow is that patches land in your pw, and
+> > > once a DT maintainer reviewed them you don't care about them any more=
+? =20
+> >=20
+> > Not exactly. Often I don't, but for example sometimes I need to apply
+> > the patch (probably should setup a group tree, but it's enough of an
+> > exception I haven't.).
+
+I think myself and Krzysztof (well, I can only really speak for myself)
+have some idea about what things are likely to be material for the dt
+tree. I just don't set a status for them if I interact or I outright
+leave them for Rob.
+
+> > > So perhaps a better bot on your end would be a bot which listens to
+> > > Ack/Review tags from DT maintainers. When tag is received the patch
+> > > gets dropped from PW as "Handled Elsewhere", and patch id (or whatever
+> > > that patch hash thing is called) gets recorded to automatically disca=
+rd
+> > > pure reposts. =20
+> >=20
+> > I already have that in place too. Well, kind of, it updates my
+> > review/ack automatically on subsequent versions, but I currently do a
+> > separate pass of what Conor and Krzysztof reviewed. Where the pw-bot
+> > tags are useful is when there are changes requested. I suppose I could
+> > look for replies from them without acks, but while that usually
+> > indicates changes are needed, not always. So the pw-bot tag is useful
+> > to say the other DT maintainers don't need to look at this patch at
+> > all.
+
+Yeah, I think it's better to leave it explicit. Often a non-tag reply is
+looking for clarification before providing one. Both Krzysztof and I
+maintain platforms and minor subsystems (very minor in my case) so
+there's b4-ty or manual patch acceptance emails too that obviously are
+not requesting changes!
+
+> I don't think we need to do anything, then. Changes-requested will=20
+> apply across all the patchwork instances. Only not-applicable /
+> handled-elsewhere gets tricky with multiple instances.
+
+I'm sort of unclear about what to do here. What would make sense to me
+is that the bots disallow each other's maintainers to set the
+not-applicable or handled-elsewhere states, since those are the ones
+with unintended consequences if set in the wrong place, like I did here.
+
+"I don't think we need to do anything" sounds like I can do
+changes-requested when I feel like it, but need to be careful about
+netdev when I do others, which is fine, I just need to know where I
+stand.
+
+Cheers,
+Conor.
+
+--GRWFZBjSWdozFA2g
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaPAYkgAKCRB4tDGHoIJi
+0haWAQDdsl/23JKRW6xnXbeGdTB7WLabxh/De7vIHVpZ2DOyBwEAxWNmQ3XOAI0t
+zvf1Fn/Wx4usSz47ObgAJdGJ3PNlDwQ=
+=fYM1
+-----END PGP SIGNATURE-----
+
+--GRWFZBjSWdozFA2g--
