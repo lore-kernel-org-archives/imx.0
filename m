@@ -1,200 +1,113 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011023.outbound.protection.outlook.com [52.101.70.23])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFBB31B804
-	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 10:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760522962; cv=fail; b=P96CuuLOeMLXjg8+vkoSDtDsNMFWP9agiArGyy2qsP9h5nolDulbi2hr8bS2kIMbsRPyJNV8xdLblR7paHO2UgDahi9oxiDp7zzj3bAESD/UyV5dKfWsNyByTWg4LHweC+F5Y9pPZzKRUCS27GsxidLMkj2byGnrUfGV3EbMUPM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760522962; c=relaxed/simple;
-	bh=9bX9tW2IzDsdGL89vmVQ7UiWbHa/Ig+SrRC2l8/s6sc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=AgIMRn0BaG5vAon49bjX1AdZHu84V68BNIg96g1D7Zgj1KZuqmtRhlyfZ12oRKJduPfyUeSq9VLMYSFUvKHgqZ7oWCQT5uEK7gi0DbzIewJ+EFu9vdbSsicxV0ogq4D6mmYGzebFzSPcarHK2PLxMFRnszSfHTVUZfZ58l1RBJo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NCAsV6co; arc=fail smtp.client-ip=52.101.70.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NCAsV6co"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MzF9aDo/9kevHLSRyntDw20rqVV0Rf6LidLeBpenYqm4yh/wfzCELuxMuk82x1dU7L8GEG4drP+oQaEcjNKBi7DqLzqp3i3Tgsz7MLsuj2VdOn78t1wK0qzD3MmJ8nR/rKL+GA5CqG9LsM1HcjSBMXMBDjJ8lMaMyG3ZblaFc867QovSwblmXTiCEjpd2PCSvCo1ze6Ue27PIpEsaCxwcTW+VCCFBlUwUjeKuly4muVlKTIjlYXbXFopQDeJ51tIlbgDRVTgOy2CKSn4hC9ACrgQ81iv3fNuwCfZiYihpDFbrEP2UtEueAYfYKIx3jvasIGlGAjvnyLzTF1gDPcaFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wHKrmdfVMjq5oJLNteR+WtVT1upjcmeFSxBH/bqwJWM=;
- b=tuR2nn3XrgiCSsMguDeMMwAcSDf27JY9wMLqVQ19L+i0P0Ooyu7lRSGXD69deiWxA2BRSF8L8rDFVr4KaVA8DSGndH+ZyUcqvu1epZXoOQ8ev+ifVwaykXBmCBGWMAO0y4mVr/EhsAkazmpybxPVFf+ycynN5o2h6MDB2eek3CMOOmRRJ0KoFtGTSLaAkiRTq7DZj8hv6r9PWTVgm+Iy16RSePmdop57qFfxr2LkbOpQ1N8iOC2a3zSOwELpvQ79NZMv1Av/3caD+NWwFa8c0W0kldVYUkwK6QohiY7bXB7TvEDHSOhF+DA0z0hIv7AxsYWwbWMvMzFvK4bHuiz9iw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wHKrmdfVMjq5oJLNteR+WtVT1upjcmeFSxBH/bqwJWM=;
- b=NCAsV6coPrxLvpWLgL38YV26RhAl1FLp9t8N7IeyuExr535amU5ycE/wHCsDHKZGUQHPsqTVCtVYnZj7Yd926klynCeThgJpsrpC6fNvNSNPV91CQ75yYhfuJM7KzF2aR5zLlGmrW+x9L02wzvm3nDoQVxqdCOuT0jFkdNyBSMQH39Ecpkstl6Pi4qfgySgmip5r2apV8rL7pHMvJDz9mOzO8ciU2loW+cr+KY4ZLPkWw32SuBGD8fhkLIEj6yJFm7g95A4VCMyiwIooj9ww3yTXQXpq/jffLywLPt27TyWkuwvJ7/BnjETROqqUhxEeSxyHkpo9CNAgRc79GLKX7A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by AM9PR04MB8809.eurprd04.prod.outlook.com (2603:10a6:20b:408::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.11; Wed, 15 Oct
- 2025 10:09:16 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64%6]) with mapi id 15.20.9228.009; Wed, 15 Oct 2025
- 10:09:16 +0000
-Message-ID: <182271f2-4986-4401-a4c5-ca379a02e69b@nxp.com>
-Date: Wed, 15 Oct 2025 18:09:39 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/39] Add i.MX95 DPU/DSI/LVDS support
-To: Marek Vasut <marek.vasut@mailbox.org>, dri-devel@lists.freedesktop.org
-Cc: Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Lucas Stach <l.stach@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org
-References: <20251011170213.128907-1-marek.vasut@mailbox.org>
- <2a22c45e-5de4-49ee-af3e-002941a7e2d0@nxp.com>
- <bf451620-c917-4d4a-999d-32148fbcf11b@mailbox.org>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <bf451620-c917-4d4a-999d-32148fbcf11b@mailbox.org>
-Content-Type: text/plain; charset=UTF-8
-X-ClientProxiedBy: SI2PR01CA0047.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::10) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861A1316917
+	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 10:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760523120; cv=none; b=h6FTs+JVABrp+hvH/8u/DbA84GvduMPspf5oRJrhJ5BVCpERjEW1gJhivx5fHljD4+DdWlVAQ/qXJPVSlhmWV6EzNldL66Lb4ZhrFBRSeTqVJEldx9H7/uMIvHE1ZMo3cgpdnibfbtbIHeecrr8kKPY8ruUxUD5KaE5AKgGrIjA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760523120; c=relaxed/simple;
+	bh=ojRHTIsR8Igk+ruRVGTwSbP0lqKdXdYt17A+3/eQqcM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hdtpkQ1tqPgtoXpfxUMVOi0rKpua/pb2fioVEwhR/vduT5KOC+Sxl4jD9mKGstPxjxTSmLW7MaXobbfBreELvTL2LBcgwe69LVNyxbRGLpyXls2II+llsqez+PiqlymKHMgViOBTu97s8DMiw7YD/h3IboERuPkL3wLAB36M3pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1v8yU1-0005fF-P4; Wed, 15 Oct 2025 12:11:49 +0200
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1v8yTv-003hwe-3D;
+	Wed, 15 Oct 2025 12:11:44 +0200
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1v8yTv-000000007QM-3dJv;
+	Wed, 15 Oct 2025 12:11:43 +0200
+Message-ID: <14f49cddfcb1c86598105ee394cd43a2bdf7fa89.camel@pengutronix.de>
+Subject: Re: [PATCH v2] media: v4l2-mem2mem: Don't copy frame flags in
+ v4l2_m2m_buf_copy_metadata()
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
+	linux-staging@lists.linux.dev
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>, Andrew-CT Chen	
+ <andrew-ct.chen@mediatek.com>, Benjamin Gaignard	
+ <benjamin.gaignard@collabora.com>, Bin Liu <bin.liu@mediatek.com>, Chen-Yu
+ Tsai	 <wens@csie.org>, Daniel Almeida <daniel.almeida@collabora.com>,
+ Detlev Casanova	 <detlev.casanova@collabora.com>, Devarsh Thakkar
+ <devarsht@ti.com>, Dmitry Osipenko <digetx@gmail.com>, Ezequiel Garcia
+ <ezequiel@vanguardiasur.com.ar>, Hans Verkuil	 <hverkuil@kernel.org>, Heiko
+ Stuebner <heiko@sntech.de>, Jacob Chen	 <jacob-chen@iotwrt.com>, Jernej
+ Skrabec <jernej.skrabec@gmail.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Maxime Ripard <mripard@kernel.org>, Michael
+ Tretter	 <m.tretter@pengutronix.de>, Ming Qian <ming.qian@nxp.com>, Mirela
+ Rabulea	 <mirela.rabulea@nxp.com>, Nicolas Dufresne
+ <nicolas.dufresne@collabora.com>,  Paul Kocialkowski	 <paulk@sys-base.io>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Steve Longerbeam
+ <slongerbeam@gmail.com>, Tiffany Lin <tiffany.lin@mediatek.com>, Xavier
+ Roumegue	 <xavier.roumegue@oss.nxp.com>, Yunfei Dong
+ <yunfei.dong@mediatek.com>, Zhou Peng <eagle.zhou@nxp.com>
+Date: Wed, 15 Oct 2025 12:11:43 +0200
+In-Reply-To: <20251015100118.8755-1-laurent.pinchart@ideasonboard.com>
+References: <20251015100118.8755-1-laurent.pinchart@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AM9PR04MB8809:EE_
-X-MS-Office365-Filtering-Correlation-Id: 741273ae-2c59-4fab-d581-08de0bd2e5b2
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?SWsvd3BJYno5T2RwcnpHaWxqL1pwRmhocXFud212VWpjZEpVT3NyQ0N3dktw?=
- =?utf-8?B?TGR0KzdVU0dZYW9qV1pPOTh5aEVSMFF6ZERtc2tBUVI1SUgyYnV4ODViZWN6?=
- =?utf-8?B?eDZVZm9KdGVXZGgydElVdE9UcVIxcGNpc0tVVUZQb1VpQnJZWW8yc3g1cVNU?=
- =?utf-8?B?Sm8xemE1Z2U1dGJieGFwTzcyN0swcHRnUjFBU0duRXQwb0VEMTRwOU5XaVJV?=
- =?utf-8?B?dG9ORjl5Y1NGa3IxL1A3RVd5NTVoY0MzOUNtNjdFOFY4UkdseWhEK2VwVFAz?=
- =?utf-8?B?NGhsZE9QVEFCdHlCTXMyMGowOUZQMTc4TmZyOERlQ0NaWTlucWlFSWpsT25p?=
- =?utf-8?B?TWUwZzBycms5VE4vVGhHbldTM3YxalF0YjZKemJZQllYNWZJbE1ncU9QMUww?=
- =?utf-8?B?R2xPSEpyb0FieFFxMUpsTThuaDVOOHByR3VNTkZYQTFaQ0JVS0NRdnZBU2Zs?=
- =?utf-8?B?TkZpd2YyNHFxbEs1VVRnOVBtTEpwbGxPd3o5QUQ2eFZPUXFsRTBPSFlRUjE4?=
- =?utf-8?B?dll0WWdqR0ZqaWNEcER1UWo5MTlsMWtFa21jM1B5VUl6dC9XVDhIUWY3TTNo?=
- =?utf-8?B?UGwxblRpaW8zaUorZjErT2Fpc0pTVzYvdEpKWmkrMEJ4SWFiZUdkNW5vMW11?=
- =?utf-8?B?V0RhcVJ5MUY0L3ExK016T2tCcmJRcE1xbjk1d0Y2Mk9oUll1Q2dZeFhFNDlK?=
- =?utf-8?B?MEJWc1gxSTkwL3dGNEpyQVFWMFpyZmdXbmFDdEpUYU9zOTY3UjZCQzRiWFRX?=
- =?utf-8?B?cGxjVFphOC8rSTRCK2tSS1p5QTE5ZUZ2NkovUm80UjJxa0lmY0ZZN2xNVWNy?=
- =?utf-8?B?TVhjcU43YVV2SE1wMm1HdWs3K1FOKytHUHdXTlQ0clVkWGtkWDk0b09Gbmtu?=
- =?utf-8?B?N3RQZVZ4ZmM0Ukg2UWRpaEUybFN1VGhnSlJNVW9zSmdKOGNsbXdhNzBncW5I?=
- =?utf-8?B?bDZ3QnoyNlgvNkhRRUxvT1NwNFJjV0daVkhZL2w2ekFUTHZGZEROUnJlUnQr?=
- =?utf-8?B?RnpPR1lmQmNGY2p5ZVRnZXhwZkdnNU41VDNmaW9iN0llbnUzQWNqb2IxVWtx?=
- =?utf-8?B?YytsVmJWYzd1N2ZSelBFdGNicjk3TkRDWFpCVWdyN3AybjNmQlNDS05neCtT?=
- =?utf-8?B?N1owT080S3lrd0NLR1dhZmMwUUV6c3lNUWFCbFZJTFNuSjZQTk1TbDR2R1Fa?=
- =?utf-8?B?MGpRYjB6bUd6QmJ2WGU3QkNzV1pJcUtpVHZ1WFUybWszbDlTZ3Nqa1huNjNP?=
- =?utf-8?B?dU9yUWJJd0t3OUVyM09zazFIR3NocjlzeFpRQkxmYzBEK3BTTHhsRnVBeFUw?=
- =?utf-8?B?SmdsdFJhb3QxOFUxVWIvcnJIakVWRm9YY3JxUU5ZZHV6WGpHQ3RLZ09Zbmlx?=
- =?utf-8?B?a05BUDYyTjJtZ2pkSHM1RDV6ZG9nYkpEaDdsUDJlbzg2aXZKdXNLN3JKWUhK?=
- =?utf-8?B?VzhFQ3JreWQ0NnNaMzJhTXZHVVVHcnllYlAxVHhJMEdZTzhTL3orVU90TWVM?=
- =?utf-8?B?OGVWT1hUTjBWUUNISHlNc1VDWGZ0M3ZnUFBhOW8reGZvRTc4TFBPcmFjN1dI?=
- =?utf-8?B?RC9KSmhSMXFnLytJZEpXZEROOEtvR3RlS0tOMDl4TkZMdzBkMzVESDdZUytO?=
- =?utf-8?B?KzVYQnovWm1NQ0hqQlowZXpHZUFVWnh3ZGlEN3ZLSDBjbUZEeFlPSGJKRkt6?=
- =?utf-8?B?NExQWnZXVUpoTlplenFPa2tOS0U3SlpVWTEwbE9rY015NVJwK0FyOGpSUDQz?=
- =?utf-8?B?R0dYWDkzZkNyaERtbFFxbWFCYzNPOVRjRnkvTm9yYW5KM0VVa2dFZUdYWU1i?=
- =?utf-8?B?eGc3amdjSkZLa2p2QmNWREtPbW5Hc0ZIVVhyQWFpVzJDNkRQd2duK2xCRmFy?=
- =?utf-8?B?eXNhM21FYk5YWldRaE9YSXZnL1d5Q0ZzSmJObVp0Yk5mTlJVTDB5ZzRadG82?=
- =?utf-8?Q?J6PaU4zsvHQ7TW3dM01Ripwn9CfvS/mp?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?Tkc1M0szVElST0t4cGFaZDZOWUovTGYyR3Z2aXRSdUlUT0kwVXlybHlOb3ZY?=
- =?utf-8?B?WGl2NmZvZ29XbDJLSld6TWhHMjQ4VytYTkVBWk1uVmw3ZXRCWGEzRlNSalpR?=
- =?utf-8?B?Zm1aZmIwNEFmaUxUbmx1UXFocUhnT3NZSjUyZWplcStycExVdHFEZUVNNmpY?=
- =?utf-8?B?dXQweWVvdlZleTFxUnI4TmdIemM4Q25TbEFqRXFJRlhtZUlaTDhHVEk3SnAx?=
- =?utf-8?B?aEdhT3RHZUpwT3pxSjB0eTc0UTVSbGFGWGQ0ejdtSHJ1YlFLa0pzYnBmMzN3?=
- =?utf-8?B?VDJla2VPU0o4ckloQUFzRzBKa2RJQkVncGJMc2RKaXI0QVB3SDU0U2xFSDkx?=
- =?utf-8?B?UkdVN1lsbG9BcnJmMklYaUlzbGcyZEQrOVJCREErY3crdVNlcUQrYWdpMXhk?=
- =?utf-8?B?SDhhYXhXMEJUSytyVWFqbXh4TTJWOVVLY0hsTWo2ajFMRzFIOGtQZ09KT2ZX?=
- =?utf-8?B?a28vMEVZOGs3RURXNllZREpIUkl0Tm00OVdJUzRvYVJQYlJ6NDFXQUpzazR3?=
- =?utf-8?B?RU5RSzFlMGVmQ0xUWHJONjQxcTYvUk1hNkZMMTZwdllDcnZSeGZubTdqdjVr?=
- =?utf-8?B?N01tb1VOaklvd2ZiR09pMTgyQkVSYkh2ZHhtWE9UQU05Y25rSUEwQXRtdWNM?=
- =?utf-8?B?YVJsYzRJSFVjYmhBRjhqdlcxaWVpc1lvWnBuanZzVXB6cmV5VGI5TXp1M280?=
- =?utf-8?B?czByaUJJQ05VTUpPWVY3czBRdm5NK3ZsSzZBVG5ld24yZFFoTW82NmlZdGVB?=
- =?utf-8?B?OXNxTjlMeWRpQ3d1ZTA2Tll6UnNQdVAzOUlYT0txTjlkVmtNOW8wR0p2S0xh?=
- =?utf-8?B?US9ETkU4THRZWTFSTUdXa3h4bXVIYmRIc3U1dGlwckFJdkt1QVFaZ3dJU2Zu?=
- =?utf-8?B?aExvem0xQjVSeTlKdHlPaEFwM1JxWXhpU2FOaEozZzN4dXM4R0FZQXJ4eUdo?=
- =?utf-8?B?UndqVThRZGNIdnlrMUU0WWV2dU4wcHBETEhiL250MHpIT05ZbSthMXA2QkRu?=
- =?utf-8?B?a1B5SW1DQ0NMZkl1dUFYeEEweVBURnB6Y1NWQXRkZGx0ZjVYK3EyS00wWDgr?=
- =?utf-8?B?cHBZVEVXQVQ5eUlEaXNUcmFhUGQvQ05uaXpFdUV2MEdVOVhURmJWeXN1QWMw?=
- =?utf-8?B?T2l2K0FXNExjTEZsNllscVl1MWp0ZU5jbWp4TEFORWVWdkI3TDZXQW5WRjRL?=
- =?utf-8?B?OVVvWDQ0cFQ1aVRjZmpHdnVnREFRRDN5dGRaczNFSjVIL3dBdFpGYWFWbHBU?=
- =?utf-8?B?eDBBZG9qRG5NdVc5UlF1bzJnVlJmWnVnUENPblFKc2ErTDFWV05IbGU1cXdw?=
- =?utf-8?B?VHEvZWF6UjlpMG5TV2NrZHN2T1pSd2lZUWR1alV3c0xiUXpQR2pRdmpMTktB?=
- =?utf-8?B?RzNmdzl4ZmY5ZVVRc0FCSytWS2hjdE1jdXlvbXVKaHUxYVRTKzNZNmhjNGd1?=
- =?utf-8?B?TVUraEZURERSdDdtd0FiZkxEMFM2eXhmbFFZNGppOXg2VDhwOXFYczI3UnZv?=
- =?utf-8?B?V2tEdFZBaGFyeEZJbHQzT0d0M2ZreGdLR0haVEIvSkpaKzc4RGphUUdja1RF?=
- =?utf-8?B?UmZSRXRjcUhoZWZmeExHLzhqRG8vb3h2RTQ3d2FKbnhxdUJtNmZoL1duNUoy?=
- =?utf-8?B?ZXlER3UyaytoNHdVYjI2a083dlpNcW9TdjQ4UGQ4a2cya1F2VHptaGtJUDNE?=
- =?utf-8?B?QURWMjNMTFR3VERKMnVURjEzZmVaQlV0NXlIeEltRFcvTElQTG1Mbm5pUFRU?=
- =?utf-8?B?MkdWS3BhcGhQd3Y4T2Y3SS9LdVNzbmN4eE1pMFBOV0VlKy9wTmJpUkZNaE5m?=
- =?utf-8?B?NG9Kb3Nia1dBa1BxT01GR0sxUDVjaHpDeTFPeENoK0xXRU1ZbS85VkN0V0Yy?=
- =?utf-8?B?N3RzRnVsUGdqNU1oU01JdEJzU0ZEVkE1UWxqYW85bkpQOEJBd2ErVGJFUmlT?=
- =?utf-8?B?WE1idTFlazIvdXpzQnFjaW5vdjBOdjJUMDhGV2ttbjd5b1JER0ErT0J4R3Rj?=
- =?utf-8?B?VTJBNzNnUzZ4NDR1eFFGa2RETVVkMFF2eTJKSElON0FHaUFBZHNBbERHRmRo?=
- =?utf-8?B?ZTVPRmlWTWFYdFVSZHdDbGxOS2lNb3ZPM2dDbE10R2hWTkNkZEd5cHR4WjIw?=
- =?utf-8?Q?0tTJoG9hI8/tisB9ulPgSSW5b?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 741273ae-2c59-4fab-d581-08de0bd2e5b2
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2025 10:09:16.0264
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oULF5RGu0lwvtq8qFybKUym9KdctiadwWxRcIgNXfrJcizlFHi2OgyLK5cCu0/9T66k6xsDE03ZQctYJXnb74w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8809
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 10/15/2025, Marek Vasut wrote:
-> On 10/14/25 11:13 AM, Liu Ying wrote:
->> On 10/11/2025, Marek Vasut wrote:
->>> DPU is added into DC driver
->>
->> This has conflicts with my in-flight patch series for adding i.MX8QXP DC
->> prefetch engine support(though i.MX95 SoC doesn't embed any display controller
->> prefetch engine).  You probably want to take a look at it, just a heads up.
->>
->> https://lore.kernel.org/all/20250929-imx8-dc-prefetch-v3-0-c01d0608add2@nxp.com/
-> 
-> Thank you for sharing that.
-> 
-> Would it make sense to send 4 and 5 separately , so the fixes can land faster?
+On Mi, 2025-10-15 at 13:01 +0300, Laurent Pinchart wrote:
+> The v4l2_m2m_buf_copy_metadata() function takes a boolean
+> copy_frame_flags argument. When true, it causes the function to copy the
+> V4L2_BUF_FLAG_KEYFRAME, V4L2_BUF_FLAG_BFRAME and V4L2_BUF_FLAG_PFRAME
+> flags from the output buffer to the capture buffer.
+>=20
+> There is no use cases in any upstream driver for copying the flags.
+> KEY/P/B frames are properties of the bitstream buffer in some formats.
+> Once decoded, this is no longer a property of the video frame and should
+> be discarded.
+>=20
+> It was considered useful to know if an uncompressed frame was decoded
+> from a KEY/P/B compressed frame, and to preserve that information if
+> that same uncompressed frame was passed through another M2M device (e.g.
+> a scaler). However, the V4L2 documentation makes it clear that the flags
+> are meant for compressed frames only.
+>=20
+> Drop the copy_frame_flags argument from v4l2_m2m_buf_copy_metadata().
+> The change to drivers was performed with the following Coccinelle
+> semantic patch:
+>=20
+> @@
+> expression src;
+> expression dst;
+> expression flag;
+> @@
+> -       v4l2_m2m_buf_copy_metadata(src, dst, flag);
+> +       v4l2_m2m_buf_copy_metadata(src, dst);
+>=20
+> include/media/v4l2-mem2mem.h and drivers/media/v4l2-core/v4l2-mem2mem.c
+> have been updated manually.
+>=20
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-Maybe not, since there is no user(DT node is not enabled) so far.
-But I'd like to have more review/ack for that patch series(it's kind of
-hard to get sufficient review...).
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
-> 
-> Also, could you please try and avoid the SCU dependency on patch 7 ,
-> and more in that direction , can the PRG be made a bit more optional, so the
-
-Don't think there is any way to address them.
-
-> iMX95 can still be supported by the DC driver ?
-
-SCU dependency and PRG(even more other reasons) make me opt to separate
-modules for i.MX95/8qxp DCs.
-
--- 
-Regards,
-Liu Ying
+regards
+Philipp
