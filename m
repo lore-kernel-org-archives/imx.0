@@ -1,108 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1C2324B08
-	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 11:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72953233ED;
+	Wed, 15 Oct 2025 12:09:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760529195; cv=none; b=CqRQFByh9xQZ6HtqloT0GnEC3fVRVVc5yM2U1ESlVBlv/w3byYFmOzCoi6URimDKW6dyVnEe410yI2M/J8aMr6D4gLSB/+335+dtJOsVXuEiVMAXwRuowcaMUIUBz8Nx+8bwdXQsCG0ylPHufGKP0S3qmZ1zC2mlJSVRSqONxhc=
+	t=1760530165; cv=none; b=NcJDkUkpCjgsaH/ul1w4UCC1eIFici/1nGXIzzz++NJaz6NkjVHbEp0YqvCgrV9mgJT4fa5/QU2YPI1sRkiEcQY0HjwzXZpeOQ3o4FSA+iRi/DO+13j8sInsXgCcUvn/I+25bngjcxEiH10cznPg04C1BdpVBUiLXXMsrnpInlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760529195; c=relaxed/simple;
-	bh=j68Djg9MIPNj1/yW5wQOpBS5ZJ9KqRr2JdVAjj0PjLU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XHqPzNcleiRL+Bprtbljl/HxuCeXpiH5aHZxFz5yR2DxhJsxHnjehHOrk/eAK1IlUhb3qJhP37IGJWyDxYJe24snk+Fdie6uToCS/owTo7GM8mXAk+0H8nLu1MMAxYPJVHQIMqqdu9fZGJQlrSnEv9WpcFQVqYnzoWhCclg+oDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+tVgvi2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760530165; c=relaxed/simple;
+	bh=byDt9cJNaoV9UerzEQZrWBXDSIWGA1UsTPnBa3lcc2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qHYRex9HI4PtsaEBb3f6mfRWyzVzhdUatYuuu4noAQ7uVJRNUuAdDDMBbgHHz/bTJ63C+i1/NtxT9Epf2WvyMBeC2k6tSvw6T08RtyhvZU7qM/o65z3C7PzddfG80dQJ6vcGpan6bQiVVb2sxPq0avLObUc0uFAhOT3Q5Q3Fj/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=14+Nn4BM; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+tVgvi2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFC0C19424
-	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 11:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760529194;
-	bh=j68Djg9MIPNj1/yW5wQOpBS5ZJ9KqRr2JdVAjj0PjLU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=M+tVgvi2vPNEUpRiZD4fZpAU6hFYWkRPhQbrGFcZCZ0rj6U5K3NkppqPdChIy6jw2
-	 thRVFWL46oNpZJO5WI2ygN1d7vawJmGga5Np2nchNCWKm/Jhb1yZcqAjoKQvlAU+MN
-	 IyXrG+RnBJWOkIgLKEppP8vDbS/26E8D//QCqc28UgIU9kw5kn+TiTZjumekG//lcN
-	 dKvQFQz2KeQUy8aSPJi6e4/hH0EQsH+bhpYzjA4FVqmtgcyXkSuGac2s2x4Hj0AueU
-	 cTKpNeAEMwveihom1R/vjbQcWOwQcHaa1ggOYnUo8Be6c4/xzsHkWzV6z04Ct6WnGK
-	 OJ05/2UTKKa2w==
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-62fc28843ecso9639716a12.1
-        for <imx@lists.linux.dev>; Wed, 15 Oct 2025 04:53:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVjDGM5sIj4nIMM03B+yJlBUgHKUhEP+EkrLCyMOS8hbDH22brm1onOrE0bEB3CWCkDobg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwK9DhQMr0zig5inLxOnLvxQABA6wbml9HnIOavZxh7XI2BjGo9
-	dYF1q02j+rbcYUsYaWShgrXxTXhHcilWVvzYvZdj0R7lBD/WR2BBPcSieYy7g/NUibJzmtgt93X
-	LzrYVLaGNZi7QO+8CkMfXfn+GpEx/KQ==
-X-Google-Smtp-Source: AGHT+IHpBsZoPqy1azuK/vjwTS/jNRB6fTmD0NvYAu3GizHlrEGmyD/1vlyW9f+VRJsbJ7v4OWHL7IrqoHGxFu1lS/8=
-X-Received: by 2002:a17:907:724a:b0:b04:5b0a:5850 with SMTP id
- a640c23a62f3a-b50ac1c3f18mr3099214366b.40.1760529193310; Wed, 15 Oct 2025
- 04:53:13 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="14+Nn4BM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=6qLbkEn/jIW40ylFRsyZqZoQ0CK2OjczehoMcmU90RA=; b=14+Nn4BMuFFT7DcJryd1+OKTcx
+	f/hvL2nKX7yIJaFKQ725q52wAYCItNbYGSQqG1OMTfmvmKg+0mon5EyLpCPlXvz/aGMNNB1lpqbhR
+	MViyAdas/OJMpHrQuONAV2TBGp2sP31eQcFolR0P6INNpBiVqcFG/Cx3eZXG4DW5yeXA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1v90Jb-00B1Qw-Lg; Wed, 15 Oct 2025 14:09:11 +0200
+Date: Wed, 15 Oct 2025 14:09:11 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Rob Herring <robh@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, Conor Dooley <conor@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: nxp,sja1105: Add optional
+ clock
+Message-ID: <0d90ce60-a7cd-4fff-9db2-489531e3c944@lunn.ch>
+References: <20251010183418.2179063-1-Frank.Li@nxp.com>
+ <20251014-flattop-limping-46220a9eda46@spud>
+ <20251014-projector-immovably-59a2a48857cc@spud>
+ <20251014120213.002308f2@kernel.org>
+ <20251014-unclothed-outsource-d0438fbf1b23@spud>
+ <20251014204807.GA1075103-robh@kernel.org>
+ <20251014181302.44537f00@kernel.org>
+ <CAL_Jsq+SSiMCbGvbYcrS1mGUJOakqZF=gZOJ4iC=Y5LbcfTAUQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251010183418.2179063-1-Frank.Li@nxp.com> <20251014-flattop-limping-46220a9eda46@spud>
- <20251014-projector-immovably-59a2a48857cc@spud> <20251014120213.002308f2@kernel.org>
- <20251014-unclothed-outsource-d0438fbf1b23@spud> <20251014204807.GA1075103-robh@kernel.org>
- <20251014181302.44537f00@kernel.org>
-In-Reply-To: <20251014181302.44537f00@kernel.org>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 15 Oct 2025 06:53:01 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+SSiMCbGvbYcrS1mGUJOakqZF=gZOJ4iC=Y5LbcfTAUQ@mail.gmail.com>
-X-Gm-Features: AS18NWC_gYw37Br6ewmB14S0Rj55MCQnT2_L9wHXys5hY5S_h2Z178AMbZOAzBw
-Message-ID: <CAL_Jsq+SSiMCbGvbYcrS1mGUJOakqZF=gZOJ4iC=Y5LbcfTAUQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] dt-bindings: net: dsa: nxp,sja1105: Add optional clock
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Conor Dooley <conor@kernel.org>, Frank Li <Frank.Li@nxp.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAL_Jsq+SSiMCbGvbYcrS1mGUJOakqZF=gZOJ4iC=Y5LbcfTAUQ@mail.gmail.com>
 
-On Tue, Oct 14, 2025 at 8:13=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Tue, 14 Oct 2025 15:48:07 -0500 Rob Herring wrote:
-> > On Tue, Oct 14, 2025 at 08:35:04PM +0100, Conor Dooley wrote:
-> > > On Tue, Oct 14, 2025 at 12:02:13PM -0700, Jakub Kicinski wrote:
-> > > > The pw-bot commands are a netdev+bpf thing :) They won't do anythin=
-g
-> > > > to dt patchwork. IOW the pw-bot is a different bot than the one tha=
-t
-> > > > replies when patch is applied.
-> > >
-> > > Rob's recently added it to our patchwork too.
-> >
-> > And the issue is that both PW projects might get updated and both don't
-> > necessarily want the same state (like this case). So we need to
-> > distinguish. Perhaps like one of the following:
-> >
-> > dt-pw-bot: <state>
-> >
-> > or
-> >
-> > pw-bot: <project> <state>
->
-> We crossed replies, do you mind
->
->   pw-bot: xyz [project]
->
-> ? I like the optional param after required, and the brackets may help
-> us disambiguate between optional params if there are more in the future.
+> I also considered looking at who the email is from and restricting it
+> to the maintainers. I know the netdev one doesn't do that either
+> because I used it a couple of times. :) It does seem like it could be
+> abused.
 
-That's fine. Though it will be optional for you, but not us? We have
-to ignore tags without the project if tags intended for netdev are
-continued without the project. Or does no project mean I want to
-update every project?
+The netdev one does have some restrictions.
 
-I also considered looking at who the email is from and restricting it
-to the maintainers. I know the netdev one doesn't do that either
-because I used it a couple of times. :) It does seem like it could be
-abused.
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html#updating-patch-status
 
-Rob
+says:
+
+  The use of the bot is restricted to authors of the patches (the
+  From: header on patch submission and command must match!),
+  maintainers of the modified code according to the MAINTAINERS file
+  (again, From: must match the MAINTAINERS entry) and a handful of
+  senior reviewers.
+
+Here is one example from you:
+
+https://patchwork.kernel.org/project/netdevbpf/patch/20241113225742.1784723-2-robh@kernel.org/
+
+and it was your own patch.
+
+All its actions are logged:
+
+https://netdev.bots.linux.dev/pw-bot.html
+
+so we can keep an eye of out for abuse. Plus, since it is an email to
+patchwork, patchwork itself should have any abuse emails.
+
+	Andrew
