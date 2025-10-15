@@ -1,136 +1,90 @@
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71018279DC8
-	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 19:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBD586342
+	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 20:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760558209; cv=none; b=fvp/OW17Dqo0a+DNb51bz8sm2vjruNWutauhjx1DGwohMpVtR93H7sQAaMM+jC6XLR1Rt+7NqpGHgjdt7q73QtqQWqM3QwOsDD6Gr4nbWYDZ2LFIhgzi6jDqFTCZEAZPUbQkr0fM/5nbQm6WFD7dWrgsm4YdlZKN3xfZs9A8D/I=
+	t=1760558428; cv=none; b=EBhpAikxVLiFfRnWLjz8TMXZhj0XNj7tK/P4yVEm5RbJuYVM0B0FU71BxNqmN7u/qsRegDB+aVbBHU9mCO/pTzqB67Atj87r0SU8TQaSgNiOFE7b/KQXYaLcSLkFB7K9Es5bd/EZp2RIfG5VQGJwZRSu24vYg2LcLqIbW0+nDRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760558209; c=relaxed/simple;
-	bh=tJUGuCu7ggRIyopQyMCtc58g1/733SmlpECwCzvrvNw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DssmzOUxX9Dt0a0MUcG2fQy0UiycgNC+Y782rcGWdlGS7N4gPLWhXRImj6kUiutntfkuMaOwuqRz5WXfxziPAq3P8HWG9pQR1JJo0Las+6dImC+v1/zS/rlRt3x3/eqizXpGSbXq8hkos7iBPAnCjaWkCCZRIp9GKh5fbld3AF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=dDIadWK1; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=dDIadWK1; arc=none smtp.client-ip=178.79.152.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+	s=arc-20240116; t=1760558428; c=relaxed/simple;
+	bh=RW+BXgyaoyrPiHLnoC9hh3nXlvBz+fvlgT2L7t106jU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CZSasY4PThpXcCp5qIh36UBacbdsDTdJc0De+bwJfLliE+EAN9rmKUoI4n87zIBr8e0ibD9ERkup6AoIpg6tBMEURkld9iyCNJZFvGSJlx4a4Qjllx82g/j/c5AGzMZod7b86twtZNXqls8vrkP1emWVxkzXlQayRmRvBOFI+q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=C74SUiMa; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="dDIadWK1";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="dDIadWK1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1760557729; bh=tJUGuCu7ggRIyopQyMCtc58g1/733SmlpECwCzvrvNw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dDIadWK1+hrZWjIOZwX6YBWXbF3dy2MJkZbjcv0SEfiyzid4Z4drBshnL3owHmAb4
-	 OYNrwKEYm6QFDI7sfEHeHVu8gUlvnnw+vLJwgme1ImlrmQhyaO5Yk7XvtjfK/rky4+
-	 2rUKQYGThZdddTPAG9vpv8xip4tiXsnzh6u0NtyyDBTD+DtjNrfpLzifcjyB3G1Fil
-	 BK+/S8Y8c0nem7m6bs2VJyJ5AgvXk2uD+LGKWRknkaymjy/P0ER7N+jIbH6MBPfGL2
-	 S+qAPxq7AREcNEobzh7O/fAbnBJH9KV+3jGSCyv8XNJJzMwAZQyy1M9/7gGPSv/4n/
-	 PwbLkc2mGuAOw==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id 3C6383DA3EC;
-	Wed, 15 Oct 2025 19:48:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1760557729; bh=tJUGuCu7ggRIyopQyMCtc58g1/733SmlpECwCzvrvNw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dDIadWK1+hrZWjIOZwX6YBWXbF3dy2MJkZbjcv0SEfiyzid4Z4drBshnL3owHmAb4
-	 OYNrwKEYm6QFDI7sfEHeHVu8gUlvnnw+vLJwgme1ImlrmQhyaO5Yk7XvtjfK/rky4+
-	 2rUKQYGThZdddTPAG9vpv8xip4tiXsnzh6u0NtyyDBTD+DtjNrfpLzifcjyB3G1Fil
-	 BK+/S8Y8c0nem7m6bs2VJyJ5AgvXk2uD+LGKWRknkaymjy/P0ER7N+jIbH6MBPfGL2
-	 S+qAPxq7AREcNEobzh7O/fAbnBJH9KV+3jGSCyv8XNJJzMwAZQyy1M9/7gGPSv/4n/
-	 PwbLkc2mGuAOw==
-Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi [91.159.24.186])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.mleia.com (Postfix) with ESMTPSA id A97703DA36F;
-	Wed, 15 Oct 2025 19:48:48 +0000 (UTC)
-Message-ID: <b75b30d4-e33e-4620-bc37-56b36612364c@mleia.com>
-Date: Wed, 15 Oct 2025 22:48:47 +0300
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="C74SUiMa"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=UyAyBxkXaApDM4KsfpCB8GHoJifPSp90vnbMpVzBWEA=; b=C74SUiMaBsN6Ewv2nuaqrHGEsU
+	c1hiR0wYJ8u5oCxQwvULH0b+wZtnM9GjcGti8ITX0XWijY0Bqbeh76Vkl8YbGLqaZRxTHx33RBuCa
+	djChBbayFMyi70dLEFMeB9fqbF7zbphGAipQYyd77oIzUIp1Mwfz9xRc012+Nh7M+OK+3q/RrDYSX
+	1ba5A17DFmcUFir0f+ojyJ6F0cfaFQ98EJD1Ot95cJEZuOvtr4+NZV4Q2+RPK/zNbD+bY8Un62t4v
+	pJqgJMRA6Ptm/eGXQGB0W/6/y24XgaMM0PV1cnHfT/zDCyuoskFQdW2tuuGhR/7BavrLjCCsCbt2t
+	yH0kUZJA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47970)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1v97fV-000000005Mj-2ToV;
+	Wed, 15 Oct 2025 21:00:17 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1v97fT-000000002ZM-3Uh3;
+	Wed, 15 Oct 2025 21:00:15 +0100
+Date: Wed, 15 Oct 2025 21:00:15 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 02/11] ARM: dts: imx6: rename touch-thermal0 to
+ touch-0-thermal
+Message-ID: <aO_9Tw1s7VcHauNh@shell.armlinux.org.uk>
+References: <20251015-imx6_dts_cleanup-v2-0-41a7281b98c6@nxp.com>
+ <20251015-imx6_dts_cleanup-v2-2-41a7281b98c6@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v2 1/1] dt-bindings: arm: lpc: add missed lpc43xx board
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "moderated list:ARM/LPC32XX SOC SUPPORT"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20251015184846.2509016-1-Frank.Li@nxp.com>
-From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <20251015184846.2509016-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20251015_194849_266330_AB8984CD 
-X-CRM114-Status: GOOD (  11.34  )
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015-imx6_dts_cleanup-v2-2-41a7281b98c6@nxp.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Frank,
+On Wed, Oct 15, 2025 at 12:44:27PM -0400, Frank Li wrote:
+> -		touch-thermal0 {
+> +		touch0-thermal {
+...
+> -		touch-thermal1 {
+> +		touch1-thermal {
+...
+> -		touch-thermal0 {
+> +		touch-0-thermal {
+...
+> -		touch-thermal1 {
+> +		touch-1-thermal {
+...
+> -		touch-thermal0 {
+> +		touch-0-thermal {
+...
+> -		touch-thermal1 {
+> +		touch-1-thermal {
 
-On 10/15/25 21:48, Frank Li wrote:
-> Add missed legancy lpc43xx board compatible string to fix below CHECK_DTB
-> warnings:
-> arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: /: failed to match any schema with compatible: ['ciaa,lpc4337', 'nxp,lpc4337', 'nxp,lpc4350']
-> 
-> Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-I'll take it for v6.19, thank you.
-
-If you have any other changes in the queue, please feel free to send them also.
-
-> ---
-> Resend
-> - colloect R-b tags.
-> 
-> change in v2
-> - move to nxp lpc32xx.yaml
-> - fix ea,lpc4357-developers-kit include lpc4337
-> ---
->   .../devicetree/bindings/arm/nxp/lpc32xx.yaml  | 22 +++++++++++++++++++
->   1 file changed, 22 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml b/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
-> index 6b7f5e6f99cfb..1e290f16a7a50 100644
-> --- a/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
-> +++ b/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
-> @@ -22,5 +22,27 @@ properties:
->                 - phytec,phy3250
->             - const: nxp,lpc3250
->   
-> +      - items:
-> +          - enum:
-> +              - ea,lpc4357-developers-kit
-> +          - const: nxp,lpc4357
-> +          - const: nxp,lpc4350
-> +
-> +      - items:
-> +          - enum:
-> +              - ciaa,lpc4337
-> +          - const: nxp,lpc4337
-> +          - const: nxp,lpc4350
-> +
-> +      - items:
-> +          - enum:
-> +              - hitex,lpc4350-eval-board
-> +          - const: nxp,lpc4350
-> +
-> +      - items:
-> +          - enum:
-> +              - myir,myd-lpc4357
-> +          - const: nxp,lpc4357
-> +
->   additionalProperties: true
->   ...
+Is it touch-N-thermal or touchN-thermal?
 
 -- 
-Best wishes,
-Vladimir
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
