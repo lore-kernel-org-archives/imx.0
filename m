@@ -1,193 +1,214 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013035.outbound.protection.outlook.com [40.107.159.35])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD84231A571
-	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 07:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760512634; cv=fail; b=rPkIBL/66SFKTKr+H9A3A7luSkcqyfFF700crfRLe2nxwTJSWMQiUy6qVzCmrmumzE27KAyOWA7AH44IK+HwFzhTY8celLfYgqtw0UhuMnslztgD4FYwn3yZAEpFevJHMEy6Nuy4C6gIsxJJpRl2hf5ngKutuWVOEX2it5E3aw4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760512634; c=relaxed/simple;
-	bh=uCAat8rol8exPSKQf4i8C7Ya4/FeYj6gEcMEVTjtLAI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=j0QUgd5/8ijP/r9irY9jkfi+ObRGHVqJApYq7lS3wNnupXIpKwZz9ywyvCDgLeFlJ687rTkP97zdORLkikkVExEmUa/ooe8qmWUasn4X1+gKh+RG3ptmvzqQNbCSk/6y9V7XjlYCsJ2AIcqwZ0ufOoXkaWTK+YH9M+clenLTLlo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gJyJMo1D; arc=fail smtp.client-ip=40.107.159.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED077315D4B
+	for <imx@lists.linux.dev>; Wed, 15 Oct 2025 07:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760512645; cv=none; b=mMxR93sJCg8FEg7SPgVBoHFgvYnxM7+bFjXdkNtR3nkSs2Sos1/Rivqy+3xhDs6XgaY6I4e915z635Rs1HaHcr4YYHTEKCxwFc/nkoYWYzSytIkrMDZ/irmJ+C9/DRrTeqfBEMobCXulEtmo20L2+SK5CnG5Q0eP7rl3FfUIgNs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760512645; c=relaxed/simple;
+	bh=v6r3hs1mb66me+cWIfzLa1TK/xr9HX/g04TSkIpx5Nw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=M5eHyvUN/TCwMKRFGNOJXD09CFJbFVwZrdJ0FiNe8jz287TY3v6s1L+cDEoazkkDPsyMsIpuVRI4HJO1bJGYD9vefake3KM7T3vRL5lYCtFaCTVg0VkhjTeVzlS+IvQWQ4RL9u6cnqGOG/HGIaP2UR0K37/3S8Ib0OLvMUceGdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ELVreD1t; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gJyJMo1D"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JcZo8MCHUq6ptYqKnOaPvwA88GKL0RvyQxd5iKrE5Z0Ia3g2HQnN1lUSwEt1xcAsraMfvHMN5yIuYHhLJxcSjhFv+PfBSoBhhJbOSVkluzTPfwdnRSrGjcVwnFhTxjj41PGXQKmxjAFzqwQL7OI5AellMP1h8nvD5U+KoRCCnndq//PN/1RSPwOdk1KEBZ7tK4VI0RLFmUgQPMOlf1btlU15TukWUH33tfLrH/xDb4Mcjv5bixBa7N2Z4VHvJjOsq5Ac1jM0851MRwBET/6S8LDDmwcgB1dyAqnKFyae1szO8h/4vsvnXJjTZCXnAg0X+KjE8SsSJXPHnX0Bft1S1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k9AMbvVJmLKZH8ijV5xariPbL8c6T/RcSMj/PCh+qNQ=;
- b=jsAu+pXXdSg8DVbAK3AlYMI5W0JHZXam3NuJiqKvk3KU4Nrpu/MxR5QYlAOkfPOosDPqBseRhPFNXYEGV9vJThGPF2ZbeBclRnXmvHSAgAlhOpcrMPezTEJhQMSGDYgJHluXjLdeN1jcYttEV0utFLajwpet7uJN203uN32zdaiTYjnTQFpCPNJlOUJYCCFGEcrmDeegut3I3yK/nNKwoiqE3Hygi2SAWNc87lEpKgzfk8b6uWVhO+hXtuiL1DqLNLbz3O40WbsEiwSLZ1NbvTKJwOTTFGiX9qw0IwCaa5hfDQuWLi9Xus3idBQ3hbENInv6hMbzG3kNjUc2M8mrkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k9AMbvVJmLKZH8ijV5xariPbL8c6T/RcSMj/PCh+qNQ=;
- b=gJyJMo1DuvDAUqaMHcHr8cxmKanUdR5F5VdSKvlsajouiIvtBGTIlLX6PMJfIxK4eBf5yEYuWThn3HV55gQIWC0W1mYqm2pUVPUBIlc5GqNN/qJvga830gi/82SO32gCH+QtjDshvqMTNLWTfZMhD+TzcqfyYFG83YKZ2T9yrv5VLQx1npqvz2IwmWL0pVWr3nGkX3aYmVHzoDNwAipXdCHxskzeG5LwsV9L6u5kObu+fkij1EA4Enw3Vk8As9hp2op+aGOzeeFULWdafsMWp0sOIYZ0TCOxEh+6I0+XmCOAHed1msp/ehhgTM04Nm1W5H3E3o4jKpgpcCVYxEtUfA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by VI2PR04MB10932.eurprd04.prod.outlook.com (2603:10a6:800:279::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.11; Wed, 15 Oct
- 2025 07:17:08 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64%6]) with mapi id 15.20.9228.009; Wed, 15 Oct 2025
- 07:17:08 +0000
-Message-ID: <7ce054ac-09b8-4051-a10a-5d41b66be02c@nxp.com>
-Date: Wed, 15 Oct 2025 15:17:31 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/imx: dc: Sort bits and bitfields in descending order
-To: Marek Vasut <marek.vasut@mailbox.org>, dri-devel@lists.freedesktop.org
-Cc: David Airlie <airlied@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Simona Vetter <simona@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20251014114148.43922-1-marek.vasut@mailbox.org>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <20251014114148.43922-1-marek.vasut@mailbox.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR02CA0007.apcprd02.prod.outlook.com
- (2603:1096:4:194::23) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ELVreD1t"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 8C72F4E410C2;
+	Wed, 15 Oct 2025 07:17:22 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5B3CB606F9;
+	Wed, 15 Oct 2025 07:17:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B2906102F22BE;
+	Wed, 15 Oct 2025 09:17:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760512638; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=RYTwgWPJ/+mU0YRT6no/oY8laFth2jeihvKHFCfEfvg=;
+	b=ELVreD1t0lBnATGKitGPB0GWBtDZ4eFZf8EexZBFNQxckl3fFduzSHeHZhdMdjBnAyWXp+
+	1HT21z4qROCeXn8m90cOZU0SQcNEHHKx7G/L0WEScQMZbfxw1kc3TuyLk/Y5QoLygfHwgi
+	OultajfeMi8iVCh6INRcaZcP8IExT9hU+rQ3p4/X1BWi4WJS75TvO4a1f7r8g36IUlXh7i
+	Y2cPr4/Muyh0r5b9QPSAa51rW02Kxa9V+3l6uMig8WLebJXQQI8VZFbiy8nJ2RqgG6VYL1
+	YnIuwroRj0Kj4s8jt9BTVBHt4eRwSJSAIoRaCmlc2IvjbR8Z2o3frCxre5sEtA==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Wolfram Sang <wsa@kernel.org>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	patches@opensource.cirrus.com,
+	linux-gpio@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: [PATCH v4 06/29] bus: Introduce simple-platorm-bus
+Date: Wed, 15 Oct 2025 09:13:53 +0200
+Message-ID: <20251015071420.1173068-7-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251015071420.1173068-1-herve.codina@bootlin.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|VI2PR04MB10932:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4f4a497-2693-453b-3329-08de0bbad986
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|376014|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YWN3Z2lFaUtmSVNUMGpFYlBYNnNhdUhSOVc2V0pieWM4TWJRcUFBVk5oOFdr?=
- =?utf-8?B?KzZ6czBHSkRmQnJxaXBCeXg1U1lEKzczbXE5U2FUM2FaWkxhVmRjS3pHcTcr?=
- =?utf-8?B?Nm5nMENrQWVSV1hFbWpxdlhBUHBwTzhpLzVUaHJFSWtJTU5hN3JwWTY1Q0dr?=
- =?utf-8?B?SUMzbG0vbWlhOGJBRzJDRkNNTlBIckJ0Y1RScnEzRWFXMnVZK0R2Vi9QaWpQ?=
- =?utf-8?B?dlZpeU91OW1hV0Q2Mm9yNG13Q095VTBPV21hNkFLT25iOXZIajM5aElNWWdU?=
- =?utf-8?B?UENORVZTaEtYMlRwOFZ4U1F5YXJseGp6eEZheGNmZGE0WjB4WG0zVWdFdXVt?=
- =?utf-8?B?SmdKcTJOaDRuSit0YXp0UllyVG5DOUpnSi9sY00zbDVvVkpwR205a3QvV2V2?=
- =?utf-8?B?ZTR3NWFXTlk1TTF4Y2NQSzV1Z1hmamJiZXNKdUk0S05iWXhUdFBkQ0hXYVNE?=
- =?utf-8?B?SWQzN3ZiT0JSaDFzam9WVDJLMWsxbWFIdmFZTS9vcXJzTHI5R0hrWFdXOWFn?=
- =?utf-8?B?b2Z4RlhSQTd1YWdNYUNLME1YYWtMNDJwNnIvZzQ1UlBJMmZRTmZZdWVhZXVO?=
- =?utf-8?B?dVIrUERJVDJIWXFxM0R0TUtLWEZBWURlR1dWUW9UUzh2L0FVNXZvUzBMUU1r?=
- =?utf-8?B?NFVxUFdTcVJvU0RZYVhBWjZCSlBwSlNTbkJIb3pjRzRUVWhqMkFqVjRRT2k4?=
- =?utf-8?B?YUlEVGZnc2lkVVZVVUdSVFp0WDBVWGJmOU52YzdGU1Fva1FGKzljZVM1UFc0?=
- =?utf-8?B?U2taWlZsQlFaWnNTbFF3ci9VRjNYQnJXRkxObFBXSnV1QTBBRVdySktBSUFv?=
- =?utf-8?B?YUdOQlVYMnVZMUIwYjV3UkZIdDBER1dZNFg3VldYN2lDYWhMenljRHk3d2JB?=
- =?utf-8?B?aHRHSmtPQzhUK21YLzVHMDNFaThMNzhqYVBDYTdtNVd0MnZpTkZyUkkxVEZ4?=
- =?utf-8?B?c3lieXkxZk1WUnQxcktCSWhsNVNncWwxTkVLcVlJdVJWZTRLUzdUYXFKODA2?=
- =?utf-8?B?ajFvcnF3YmdrSlZkQWhRQlpDb0UwRHlOSUx6ZHVZRXRiTDFGY3NuR3RZYm1v?=
- =?utf-8?B?Q3V5cjlOVzJDekY3NTkra3F5MnQvOUp6OUVBQTQ5QUdDbTVoL25oS3N6a1lm?=
- =?utf-8?B?YTlYS241cjZQN0cvdnJsa1RFZDFXQm5LdEpISitZcmxwK3NGQWprTXBQRVFX?=
- =?utf-8?B?K0xMTnR6SUViSWpZa3dKME5zdWdUU2hjRWN1NEdJQ2M2eloyY05DeUxaVDRm?=
- =?utf-8?B?VEJYR0hKaXdScGkxTUdtbGFuUEoyR2RUUVJtSUVSa3cwSDNyME92aEZ0ZkJH?=
- =?utf-8?B?TllYVDZ2bjRiNC8xQXIvMUx1d0FCdDBEbjBIRCtoRFBUak0wRzFsMll1WDli?=
- =?utf-8?B?Z3BnL25NRHV2ZVhzc3lzNDhWQWd1M0FPNVRPMG5wRURERHpGL2JNMzVDSEp6?=
- =?utf-8?B?MUZhN2FSdGgyTmZ6MXQrcWl6VTB1N1lqZEZZMDFFWUhXTkduMkJJczhnc05B?=
- =?utf-8?B?VGZUY1EvS1lTeEMxSmtaNUJubWFNTGl4SWVkL0RpdUY3S3J5R1NqUnZMcGFJ?=
- =?utf-8?B?MWVpdktza3JhVUd1ZC93NHh1TXNUd05wb2lwQy9jVUd5UDJ2Um5kekVTRnN4?=
- =?utf-8?B?dmQ3UGhFMWNUWXNTUXBpSG10bCtsWFRWSHRFQUpMME9WU1NUem9HQ1ZNMDY5?=
- =?utf-8?B?b1hsM1RwNGVPMG9RM25KM0NqVnFzTTFvV1RCY0Y3b2pHYmE2MjREcjRDb25U?=
- =?utf-8?B?YitkU0Mxd1RoUzZhbTdSaW9mS3RlWWpFaDZKZmtaNEdUU2VPNlBCMWJqMTdS?=
- =?utf-8?B?enFoMjlLaFZtWGNOc05JOFFZeHZkREZWYW95ZzV4YjNKaFMwNDF3RGFHNkFW?=
- =?utf-8?B?aHZ2cjVkZUwvVmtsOEluMmpSRElNOWpMbUV4NzFlc2kvaGxMb3A3czAra0k1?=
- =?utf-8?Q?A2B5+SiHkKllHIBbBH2veCiyd0JNeu2u?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UC9maU1qZ1FLWU5DcSs0bVkxNHpMbTFsREhBTTFPVVhZMTdFU29OUjVBQ1p0?=
- =?utf-8?B?QWNxOE5UbTl2cUVrYi8ydUdzVDE1Q2NjRXU4QU96b29MZjNVeE02R3hidGh5?=
- =?utf-8?B?Rm5jS2JaT05wS2taK2hwckJtOE5qWGMzbHd3bDl2cmZ2a0VGRjVMSFFPRDdH?=
- =?utf-8?B?Y21KTjBVL0l0c3VyeWlXWUkybDB1UkJrR3FMUzdYY3F1a1VUVDZENms5VCsr?=
- =?utf-8?B?RUlka0p4UW1qQmFQTFY3NWNZL3ZTdXJuR1loMlFEb0k1S3dKQm5sWHRXT2NW?=
- =?utf-8?B?cS9walJ3bkZuTEZhcDlzMUMrWEpOWjhJK1BValhVdFZtMFBPK0NLdy9wK096?=
- =?utf-8?B?SjNVK2MrU0lOaTBYQ3p2a1NXVnBxTlRpMFNSNVpLMzV6d25wQTgrOXA0b1h6?=
- =?utf-8?B?d2dDZTVvNDlzRWdlTmxwQ2w5WUtna2pGZ2hlOEdxRlE2UFRJd0t4Z3ZlQWtO?=
- =?utf-8?B?S0FUbDhWckVzTmVCRzdnZG42azFGMG04NlcrZ05DM0IwQUJtRVUwM2tDdE44?=
- =?utf-8?B?OVhTOXd5SG85a3pGYm5XTUFSeUhjY0h4ZUZYRk8xWDdRNUhRREZVc2xSNVVV?=
- =?utf-8?B?OU5CMlZKTnNFZEtFRmdGZnZPNWdlZ0FjSDdmemp3aEF4UXhiSko0VkN3N2pt?=
- =?utf-8?B?dHI5Mk5iL016VjFuN0tuV0NKWFlSc3pWMXduNVprR08xYm00TmptaWp4b2c5?=
- =?utf-8?B?ZFZ5TnR5dVJRZ2FuV2hBWkVFS29hM284WVZlbGJuL3k5dWVSRUtMekl5QXZQ?=
- =?utf-8?B?ZjIvUFVxZmpJeVhHYXhtbTJlU2RYcGRvMFcyWGRYSllWUXZoZ1lxSHluZk9h?=
- =?utf-8?B?cW54UFVTSGticzRBR3ZWZ28wQmNSVWdDNi9NZytJOU1McDRjZEY2WHBQNDk1?=
- =?utf-8?B?RHEzK3RSbjVRMjlDdnVudUdCYmtIekZ0Q2FvdEFMVXB6WmlMVG9qWHBmWEl1?=
- =?utf-8?B?cnV6TmY1VU5LWjVvUkRPOUpBcXNCNHNsc0tPYmNSRFlGbFVyVFh5MFVTMkF2?=
- =?utf-8?B?YitlZ0l6N0dZS3dmYk41MXZxd2t6QjVEOHBoRlJNUWRWeFRaUXZIOFhtTTdi?=
- =?utf-8?B?QmRPU1Q4dnpIYkl4V2ZnclZXeW1LL2NiY1F1bGhKa1pvM1dEYWY4eThhVUho?=
- =?utf-8?B?MlJQaml1S1gzSjZJejBoRTM3RU5tUTJvRG1OTE1Tem95QlNCdDlSNjVpREJX?=
- =?utf-8?B?Wk5PSnRKOE1pQmp3NWg0L3d2WHB3aUNDcHNaajVaVkZQQUd5ZGNnU05ySmo3?=
- =?utf-8?B?TGlkdGlNcXNjdzVVNW5CL0lBZUJCR3BEREN0eGt6SUZNMVZES0h0ODNZaGxB?=
- =?utf-8?B?bjBvQWkyS2d2Qmw1K1kxcmdHT08yb0Z3TkNxNWRCSmQ4RHkwUWtDSW41ZW9x?=
- =?utf-8?B?ZkxJSVRUZlJKYkllQVZWd21EaUtQbGhHZnJuOFdIWlBmMFFkU3U1a3NrMUZs?=
- =?utf-8?B?K1Z2eDFJYTQ1QXRJck5sZDMrTkF3bUMrWWFSYTZNaVZSaktrcEJuRGxJeVdK?=
- =?utf-8?B?Z3dyZ2JiWGtJQW1xVFVsNVhtTU84cUpiN0ZabGpmdlU0aGVuaHJQbkxuT3Jr?=
- =?utf-8?B?ZG5JSHZOTUpBUE42NkdZbXZDRitsZDZVRkNCWmd1ZUY2TEJ2QWtPRFRyOW1V?=
- =?utf-8?B?YlZROGRyZjhSaFZDTDNNdk8xbHVBR2NQVkh2b29MSmc4ZHg0T2l5RHVXcUh5?=
- =?utf-8?B?MFRnTGxmcTJ0YldRNlQ5V3B5T3E5OWhGL0FzbWNvOEg3V1puWkxHSEF6ZTNv?=
- =?utf-8?B?MUpVQ0NqWmR0akFHSzIzS3NPejVQemZOOTVOcDNYN29PanBXWUtoODZwbWxw?=
- =?utf-8?B?dzdjSjZGMGVzVXA1TEY5dXdhL3Nhb1J5Mm5ONnl3R09XWDF2dEZiS0E0ZHVv?=
- =?utf-8?B?eDFwQjF1Y29BREZqSHZFNWc3Zko2QnJyYlZjN3RUbzJ6M2RQVXhzNFdhaW1W?=
- =?utf-8?B?enhSVURObGtRQ29NenhjekNjMmlQRmxWZ0p4dGJVcEJCRmpWV2EvYlVocHA0?=
- =?utf-8?B?aDMxY0xTUkQ0RERJZ3NFME11NDQxc3FOUFJrQ0ZReWhOK1Ezem9EVEVWUUlQ?=
- =?utf-8?B?bUNsem5kT2xLb2Z1T3A4MUl5ZTh1V0NxL3pHeE5mSU5CcnY4TjlUbFNTdzlq?=
- =?utf-8?Q?HjwZQBaff50m6cIOzqDUZSgGb?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4f4a497-2693-453b-3329-08de0bbad986
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2025 07:17:08.1205
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Lgpog1s/ET0PHkY594XY4bm92c2BSU+7zybFNtvLFwzV9x6aPDE2KxUECMoydON8MZZlnc7By9Ofig2pf3Foqg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10932
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/14/2025, Marek Vasut wrote:
-> Consistently sort bits and bitfields from highest to lowest bits.
-> No functional change.
-> 
-> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-> ---
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Liu Ying <victor.liu@nxp.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  drivers/gpu/drm/imx/dc/dc-ed.c |  8 ++++----
->  drivers/gpu/drm/imx/dc/dc-fg.c |  4 ++--
->  drivers/gpu/drm/imx/dc/dc-fu.c | 10 +++++-----
->  drivers/gpu/drm/imx/dc/dc-fu.h |  4 ++--
->  drivers/gpu/drm/imx/dc/dc-lb.c | 28 ++++++++++++++--------------
->  5 files changed, 27 insertions(+), 27 deletions(-)
+The simple-pm-bus driver handles several simple busses. When it is used
+with busses other than a compatible "simple-pm-bus", it doesn't populate
+its child devices during its probe.
 
-Reviewed-by: Liu Ying <victor.liu@nxp.com>
+This confuses fw_devlink and results in wrong or missing devlinks.
+
+Once a driver is bound to a device and the probe() has been called,
+device_links_driver_bound() is called.
+
+This function performs operation based on the following assumption:
+    If a child firmware node of the bound device is not added as a
+    device, it will never be added.
+
+Among operations done on fw_devlinks of those "never be added" devices,
+device_links_driver_bound() changes their supplier.
+
+With devices attached to a simple-bus compatible device, this change
+leads to wrong devlinks where supplier of devices points to the device
+parent (i.e. simple-bus compatible device) instead of the device itself
+(i.e. simple-bus child).
+
+When the device attached to the simple-bus is removed, because devlinks
+are not correct, its consumers are not removed first.
+
+In order to have correct devlinks created, make the simple-bus driver
+compliant with the devlink assumption and create its child devices
+during its probe.
+
+Doing that leads to other issues due to the fact that simple-bus is
+closely related to of_platform_populate().
+
+Indeed, of_platform_populate() can probe child devices if a simple-bus
+compatible node is detected. This behavior is expected by some drivers
+such as some MFD drivers. Those drivers perform some operations in their
+probe() but rely on the core (simple-mfd, simple-bus compatible) to
+populate child devices [1].
+
+Avoiding recursive probing in of_platform_populate() and let the
+simple-bus driver probe its child devices will break some system.
+
+For this reason, keep the current behavior of the simple-bus driver and
+of_platform_populate() as they are and introduce simple-platform-bus
+driver.
+
+This driver doesn't interfere with of_platform_populate() and populates
+child devices during its probe() as expected by fw_devlink.
+
+[1] https://lore.kernel.org/all/20250715095201.1bcb4ab7@bootlin.com/
+
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+---
+ drivers/bus/simple-pm-bus.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+diff --git a/drivers/bus/simple-pm-bus.c b/drivers/bus/simple-pm-bus.c
+index d8e029e7e53f..e975685d2b07 100644
+--- a/drivers/bus/simple-pm-bus.c
++++ b/drivers/bus/simple-pm-bus.c
+@@ -158,5 +158,42 @@ static struct platform_driver simple_pm_bus_driver = {
+ 
+ module_platform_driver(simple_pm_bus_driver);
+ 
++static int simple_platform_bus_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct device_node *np = dev->of_node;
++
++	if (np)
++		of_platform_populate(np, NULL, NULL, dev);
++
++	return 0;
++}
++
++static void simple_platform_bus_remove(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct device_node *np = dev->of_node;
++
++	if (np)
++		of_platform_depopulate(dev);
++}
++
++static const struct of_device_id simple_platform_bus_of_match[] = {
++	{ .compatible = "simple-platform-bus", },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, simple_platform_bus_of_match);
++
++static struct platform_driver simple_platform_bus_driver = {
++	.probe = simple_platform_bus_probe,
++	.remove = simple_platform_bus_remove,
++	.driver = {
++		.name = "simple-platform-bus",
++		.of_match_table = simple_platform_bus_of_match,
++	},
++};
++
++module_platform_driver(simple_platform_bus_driver);
++
+ MODULE_DESCRIPTION("Simple Power-Managed Bus Driver");
+ MODULE_AUTHOR("Geert Uytterhoeven <geert+renesas@glider.be>");
+-- 
+2.51.0
+
