@@ -1,150 +1,242 @@
-Received: from mx-relay28-hz2.antispameurope.com (mx-relay28-hz2.antispameurope.com [94.100.136.228])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A197F3164B0
-	for <imx@lists.linux.dev>; Thu, 16 Oct 2025 11:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.228
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760614746; cv=pass; b=vAZ8CDg5wq56JyCzwznZJCvJ3xqWuLH4Is3D9g0EMtrDF32qgdOk7MIolpZn3/uNBzGb3gfQO2fhnGASfMVyCitYQ4Yw/z3PFnIVkdsttyqP57iVtQbkIRiL92r9cdijYcfp7dh8dxcI18ODC3Pqmt2lEP4L23VN6J90076pbpQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760614746; c=relaxed/simple;
-	bh=GlmFA1e3xgMj4OhgcxyrgU5ao2+BLBIMEKfNxeDhUDE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Y3wGvPNHFzf8FPH8P0gYtytkWUf2YGIKTTjYFMkg5mcWvk+WsH3HlluFMC8rVgxRSBEJmUPMQ83SLZOebaixC7iKoKPONW87xACBF3+rsm5bbBH/D67UbgJujB8wrOrut0lltY89j4d7RyacZApoU8etgNubEoyi6YQg5wyA9oQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=grMn+hO2; arc=pass smtp.client-ip=94.100.136.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="grMn+hO2"
-ARC-Authentication-Results: i=1; mx-gate28-hz2.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
- header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=CFRIIs060aUTE/XtgbE3U9aNP00cbQnhfyqtNtGSsHY=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1760614679;
- b=heEFotXuaqtrLcIC2v7pByYXm3xXB4ui/V5Tqz4+PVdcbNxv4qzcXxoRPd/38UrW0vgqeJyD
- hfchZ7tsm4oePPFGR+ImUQDEb9ZSgy7HESzamM/soTh+ylo9OkjdGgSYsE6slds6xnhb2Hl9TEK
- Kv4NhB4tD434roKcMheOyhG6NNJb8Ail0HI/CmGd51C4UwxAsiVKehjDuSXrdkYYQgHpDSPcwPb
- pWL5E4xYVt0Yr8zv/afPpmAbjWyjGiRqNFBQZ+A1K9mdxEYLh+5vZluCp4Mdi4Z5tEcs9Sh7s95
- 9eccmqu9LI+1z7W2AsVj0OXwsRvXff+SV+VBCvwIfFmpQ==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1760614679;
- b=nFfyl0m1XmcozFk+7XFnKbOOwP1z6qIx3vFsC5+r6WKyOc4yImcW0HR5QUe3Xj7jqoB6Rxvf
- oXC1VZ7G2WuwQN772Ggh8jT8YtnoGwR5cyM9qJLnHaPyFZF+DeXkUQ/Y8sBYLEB5js2jMF+xqc2
- ATx3oWsOIebUvFe82WIUmQ7cYGBe3nBq72mO3I/g6F/5iJ9GKoxpB0IEV8cTvg/6qyZHB66ov0Q
- y0xfodoUpCqPXfPZBaFLwJQ0Fa22HHO395K4MGOpnJGxXyvop9Mj2m/Sho3rqpUgmp4CepNSNG5
- k+ccilVYghveZZPnsRWUbtidQW6yDTbXUYUui+9P+DXTQ==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay28-hz2.antispameurope.com;
- Thu, 16 Oct 2025 13:37:59 +0200
-Received: from schifferm-ubuntu.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: matthias.schiffer@ew.tq-group.com)
-	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 3F3EC220BA0;
-	Thu, 16 Oct 2025 13:37:50 +0200 (CEST)
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA00932861A
+	for <imx@lists.linux.dev>; Thu, 16 Oct 2025 11:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760614929; cv=none; b=JHTzmaHMwRUkEIOAGlWDG1hs0Y0ipM/mhV2csPSl12e6WZrND0n1fYVvdhu6Gin4nkgVtDD2Tv7/QQOo7o1BQkYRZQj+D0cb16BH1fCXqFzQo6xhJIBWe/jLC8fIk3MpR26U6jOpObqSfA0H+2p5GwA5RlILplLOTdnQzPhwWJE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760614929; c=relaxed/simple;
+	bh=ZH8anoDC/o0kaWH5bDY8yFuiOz5ptPX33dTSuj/Zqs4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ilmcl5a6QtvaWBGEBTLKRicm+TclCTMP8PzaWYFnH+lNByKPpvjMFATCYj+JSji7L5xtooRb4RLmNkJg29YOTAJva8Rwb7Y7H5C7NT8rJHtGFwPF9amkpqlaHff4lJwkaeDiobH5c2b586E9Bn1uZQghcRWpBjnwcdRiIgqnfaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1v9MMi-0002oB-Us; Thu, 16 Oct 2025 13:41:52 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1v9MMi-003sq4-06;
+	Thu, 16 Oct 2025 13:41:52 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1v9MMh-00HQPu-2x;
+	Thu, 16 Oct 2025 13:41:51 +0200
+Date: Thu, 16 Oct 2025 13:41:51 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Subject: [PATCH] serial: imx: allow CRTSCTS with RTS/CTS GPIOs
-Date: Thu, 16 Oct 2025 13:37:30 +0200
-Message-ID: <20251016113730.245341-1-matthias.schiffer@ew.tq-group.com>
-X-Mailer: git-send-email 2.51.0
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-doc@vger.kernel.org,
+	Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v19 0/7] firmware: imx: driver for NXP secure-enclave
+Message-ID: <20251016114151.jzmapaecsmmnkpt3@pengutronix.de>
+References: <20250927-imx-se-if-v19-0-d1e7e960c118@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-cloud-security-sender:matthias.schiffer@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: matthias.schiffer@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay28-hz2.antispameurope.com with 4cnQtQ6zX8z1QNSK
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:a7531a3aefe8095ad0ffc3e1e5a543aa
-X-cloud-security:scantime:2.247
-DKIM-Signature: a=rsa-sha256;
- bh=CFRIIs060aUTE/XtgbE3U9aNP00cbQnhfyqtNtGSsHY=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1760614679; v=1;
- b=grMn+hO2ejTTWgQ0d1SECsiMygR7p402vRckOdX7lvplOtorVYC03QUFgFoCtvwi7iLWNI1l
- u20XeHfQm9EshhAqMeB6JxX43zDmQeD2E/e7XT5jXRlzF8D5ie/KC0NlcYVsUun1+2xFvHI3ucp
- oRIQv9KmdWm72MzW8FAVvRM9Ad2i9i7A4Xnqt7EFcnIbkFfXH6mrvkqxXnCVhheLzs4oMwCFeup
- 2yuQUffKv57AW3kfdVDJUqXwqBO0cuQOtPXKd+rw3duBSCM+u/rLiZWuOFZuiyJGyrePm9gSsAm
- LjN61dH3cOBBMPg0okMsLL4cWKMX6l71Dc4Dkj/G3d6VA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250927-imx-se-if-v19-0-d1e7e960c118@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The CTS GPIO is only evaluated when the CRTSCTS termios flag is enabled;
-it should be possible to enable the flag when only GPIO and no hardware-
-controlled RTS/CTS are available. UCR2_IRTS is kept enabled in this case,
-so the hardware CTS is ignored.
+Hi,
 
-Fixes: 58362d5be352 ("serial: imx: implement handshaking using gpios with the mctrl_gpio helper")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
----
- drivers/tty/serial/imx.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+On 25-09-27, Pankaj Gupta wrote:
+> Highlight:
+> 
+> There are long discussion at V18 with Marco Felsch.
+> https://lore.kernel.org/imx/AM9PR04MB8604F5A7DD8B1E41FDAD09039501A@AM9PR04MB
+> 8604.eurprd04.prod.outlook.com/
+> 
+> The key point is about using OP-TEE OS. 
+> 
+> Marco's questions:
+> =================
+> Q1. Both MU(s) from each world - Secure & Non-secure, cannot be used
+>     simultaneously. Why?
+> A1. ELE FW fix is available, where concurrent access to ELE from both the
+>     world is working. This fix is not required for the current patch-set for
+>     i.MX8ULP.
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 500dfc009d03e..4a54a689a0603 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -1117,8 +1117,8 @@ static void imx_uart_set_mctrl(struct uart_port *port, unsigned int mctrl)
- 			ucr2 |= UCR2_CTS;
- 			/*
- 			 * UCR2_IRTS is unset if and only if the port is
--			 * configured for CRTSCTS, so we use inverted UCR2_IRTS
--			 * to get the state to restore to.
-+			 * configured for hardware-controlled CRTSCTS, so we use
-+			 * inverted UCR2_IRTS to get the state to restore to.
- 			 */
- 			if (!(ucr2 & UCR2_IRTS))
- 				ucr2 |= UCR2_CTSC;
-@@ -1780,7 +1780,7 @@ imx_uart_set_termios(struct uart_port *port, struct ktermios *termios,
- 	if ((termios->c_cflag & CSIZE) == CS8)
- 		ucr2 |= UCR2_WS;
- 
--	if (!sport->have_rtscts)
-+	if (!sport->have_rtscts && !sport->have_rtsgpio)
- 		termios->c_cflag &= ~CRTSCTS;
- 
- 	if (port->rs485.flags & SER_RS485_ENABLED) {
-@@ -1794,7 +1794,7 @@ imx_uart_set_termios(struct uart_port *port, struct ktermios *termios,
- 		else
- 			imx_uart_rts_inactive(sport, &ucr2);
- 
--	} else if (termios->c_cflag & CRTSCTS) {
-+	} else if ((termios->c_cflag & CRTSCTS) && sport->have_rtscts) {
- 		/*
- 		 * Only let receiver control RTS output if we were not requested
- 		 * to have RTS inactive (which then should take precedence).
-@@ -1803,7 +1803,7 @@ imx_uart_set_termios(struct uart_port *port, struct ktermios *termios,
- 			ucr2 |= UCR2_CTSC;
- 	}
- 
--	if (termios->c_cflag & CRTSCTS)
-+	if ((termios->c_cflag & CRTSCTS) && sport->have_rtscts)
- 		ucr2 &= ~UCR2_IRTS;
- 	if (termios->c_cflag & CSTOPB)
- 		ucr2 |= UCR2_STPB;
--- 
-TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht München, HRB 105018
-Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-https://www.tq-group.com/
+According https://github.com/OP-TEE/optee_os/pull/7268/commits/83b516edc0270ca8300ce524a0c3d560e67a0f48#r1955899462
+there is no fix yet. Can you please point me to the fixed version?
 
+Also can you please outline why the fix is not required for i.MX8ULP?
+Unfortunately I can't remember.
+
+> Q2. How is the secure and non-secure world talk to the ELE if there is only
+>     one MU?
+> A2. From i.MX9x & onwards, SoC(s) has at least one dedicated ELE MU(s) for
+>     each world - Linux(one or more) and OP-TEE OS (one or more). Has updated
+>     the commit message of 3/7.
+
+Does apply to the i.MX8ULP SoC as well? The NXP name scheme isn't very
+easy to follow.
+
+> Q3. How exactly do the eFuse write access after the device was locked down,
+>     will be provided with single path; for the following case? 
+>     - For a verified boot setup, you need to burn an eFuse at some point,
+>     to tell the bootROM to boot only correct verified firmware images.
+>     - After this lockdown, it's no longer possible to burn eFuses from the
+>     REE, while the production line setup still requires the support.
+> A3. OP-TEE OS supports read fuses, currently as part of our quarterly release.
+>     Write fuse will be in coming release. Please note that the current patch-
+>     set does not contain any read/write eFuse feature.
+
+But one of your patches is mention it, right? So there will be still two
+paths.
+
+Also according your IOCTL docuementation you want to expose the whole
+device to the user-space?
+
+| What:          /dev/<se>_mu[0-9]+_ch[0-9]+
+| Date:          Mar 2025
+| KernelVersion: 6.8
+| Contact:       linux-imx@nxp.com, pankaj.gupta@nxp.com
+| Description:
+|                NXP offers multiple hardware IP(s) for secure enclaves like EdgeLock-
+|                Enclave(ELE), SECO. The character device file descriptors
+|                /dev/<se>_mu*_ch* are the interface between userspace NXP's secure-
+|                enclave shared library and the kernel driver.
+| 
+|                The ioctl(2)-based ABI is defined and documented in
+|                [include]<linux/firmware/imx/ele_mu_ioctl.h>.
+|                ioctl(s) are used primarily for:
+|                        - shared memory management
+|                        - allocation of I/O buffers
+|                        - getting mu info
+|                        - setting a dev-ctx as receiver to receive all the commands from FW
+|                        - getting SoC info
+|                        - send command and receive command response
+				^
+This is a rather uncommon approach. The kernel has interfaces to
+abstract hardware. You completely bypass this if you expose everything
+to the userspace.
+
+> Q4. What is the ELE behavior if the secure-world stresses the ELE? Is there
+>     a MU priority so the normal-world MU may get blocked (never addressed)
+>     or are both MUs scheduled in round-robin?
+> A4. ELE will pick the message from Both MU(s), based on FIFO.
+
+This doesn't answer my question. How gets the FIFO filled? If the one of
+both worlds aways keep the MU busy?
+
+> Q5. Why ELE performance matters?
+>     - On i.MX8M, which uses the CAAM (the ELE predecessor), It can be
+>     verified that the ARMv8 CE are much faster than the crypto-engine itself.
+>     Therefore the CAAM is mostly unused.
+> A5. User looks for both type of implementation based on their usecase:
+>     - Certain users still offload to CAAM, to save their ARM CPU cycles for
+>     other priority tasks.
+
+I have never seen such designs but okay.
+
+>     - While certain customer choose ARM-CE for the crypto offloads for better
+>     performance.
+>     As far as ELE is concerned, it is not a crypto accelerator like CAAM.
+>     Performance hungry crypto-ops are not recommended to be offloaded to ELE.
+
+I don't get this point. So NXP doesn't recommend to use the ELE for
+crypt-ops?
+
+> Q6. For the IOT-cases where real-time encrypted feed from sensors, will take
+>     latency hit, Does the ELE support inline en-/decryption?
+> A6. Yes, ELE support Inline Encryption Engine (IEE), starting i.MX95 onwards.
+
+May I ask, how is this connected and which interfaces are connected to
+the IEE? I would have checked it by myself but unfortunately NXP doesn't
+provide a TRM for the i.MX95 yet.
+
+> Marco's Suggestions/NXP response:
+> ================================
+> S1. Below listed ELE access requirements, can be done from OP-TEE OS in all
+>     the Life-Cycle states. then Why to use Linux?
+>     - eFuse access (done via  OP-TEE OS i.MX specific PTA): OTP eFuse R/W access
+>     after doing the LOCK_DOWN fuse is no longer possible without  OP-TEE OS. This
+>     involves general purpose (GP) eFuses too.
+>     - ELE ping every 1 day (kernel SMC WDG driver, OP-TEE OS wd driver).
+>     - HW-RNG (kernel HWRNG driver + OP-TEE OS HWRNG PTA).
+> R1. There are i.MX9* users, that are not using OP-TEE OS, but still want
+>     to use ELE features from Linux. So, these users are requesting for this
+>     driver in Linux.
+
+Which ELE features?
+
+>     As suggested by you, writing to eFuse after life-cycle closed state, the
+>     driver in OP-TEE OS is needed.
+>     Though there are other OP-TEE OS features too, that needs to be offloaded
+>     to HSM, for security reasons, like:
+>     - Hardware Unique Key(HUK) getting generated.
+>     - OP-TEE OS's ASLR seed generation.
+
+We're talking about features the normal world wants to have access too,
+since you said ".. but still want to use ELE feature from Linux ..". The
+HUK and the TEE ASLR seed is clearly not something Linux wants to have
+access too.
+
+> S2. Having one implementation is beneficial in the following ways:
+>     - Multiple paths also requires more maintain- and testing effort.
+>     - FW files with having +1 FW for the new i.MX9*, where there are plenty
+>       already eg.: bootloader, TF-A, ele-fw, scu-fw (i.MX95), increases the
+>       maintenance on both the paths.
+>     - TEE code could be reused by other OSes.
+>     - TEE is used anyway for new projects due to CRA and friends
+> R2. As conveyed in R1, there are Linux only users, that are dependent on SE
+>     Linux kernel driver.
+
+What difference does it make if these Linux-only users get the ELE
+access via OP-TEE? It's just one binary more.
+
+> S3. Having one implementation is beneficial in the following ways:
+>     - Adding the support for it to  OP-TEE OS do not requires ELE-FW.
+
+I never said that this requires no ELE FW! I said it requires no ELE-FW
+update! Was the update already rolled out?
+
+>     - Concurrent access handling is done by the TEE core.
+> R3. As already mentioned that ELE FW fix is available, for concurrent access.
+>     Please note that FW fix is not required for the current patch-set.
+
+Can you provide us a link to the fix please? The fix should fix the
+concurrent normal-world <-> secure-world MU access issue. Why is this
+fix not required if I have a running OP-TEE?
+
+> S4. This series causes more confusions till the ELE FW fix is available to
+>     allow concurrent access to ELE from both the worlds.
+> R4. FW fix is already available, and concurrent access is enabled by default
+>     in LF Q3'25, release. Please note that FW fix is not required for the
+>     current patch-set.
+
+Please provide a link to the new FW and why is the fix nor required for
+this patchset?
+
+> S5. Suggesting to add the  OP-TEE OS support for the required features e.g. eFuses,
+>     watchdog, HWRNG. The whole Linux part is mostly in place.
+> R5. Yes, the secure world features like eFuse read/write will be added
+>     to OP-TEE OS. Please note that this patch-set does not contain any read/write
+>     eFuse feature.
+
+I see, instead it expose the whole ELE to the userspace if I got it
+correct according your IOCTL documentation. This would be even worse.
+
+Regards,
+  Marco
