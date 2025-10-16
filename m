@@ -1,199 +1,149 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013070.outbound.protection.outlook.com [52.101.83.70])
+Received: from mout.web.de (mout.web.de [212.227.15.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1347D1527B4
-	for <imx@lists.linux.dev>; Thu, 16 Oct 2025 14:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760625519; cv=fail; b=LeGVUCBFa5wSrkeaS3d7t9tPGmUrAGHXy6bSsAJfjkQCN8DW3HRwdQKEdBzEvMLZOn0E8jo0X4VHmzRDure6JD39QJq+BscDMhwFF5WS2w5hjWqUWHVtlUa3vcIvjM0NUg4Io9Gr5rpvqFblxgyp6VUqhw0B8/en3YNuigtozTY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760625519; c=relaxed/simple;
-	bh=PdgZQPwm5IJWUTBNO8U6EeaxJAQy3kE/psTQx+GFpdQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=WQ9GYHVi2RH1dYNNZ5rYwhmcrjR0X06pL/mwj8kytlbocN0GVtNU8OsApj222en1Fw0FW/XgVDt4+C9z8Gl1mzoaPGmyluLPVVthadMLXDYVx3On7mmA9JzUJXYTqcKhGfkPKFDMCZq9GFUaC3ixQ8O8nn1XvEq/pwI70wV8R8M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=AA7WDiPk; arc=fail smtp.client-ip=52.101.83.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30716340DB1
+	for <imx@lists.linux.dev>; Thu, 16 Oct 2025 15:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760627270; cv=none; b=ZGIUh6w1eqbaBtVAyfcMfzzIleMxQ03fzGeRyVeOWdckaqkaWcYVe9kheEw4sxvtOyUCIyngNrmLlJRN31eSXoDuge0h+QeaCOgPjCQJiucwJovwu4m1Y+3TIjJ2fkN3Aq0WZDCL1sXCR+/dXLlvagU22wEvw42PPEyiUml8Brw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760627270; c=relaxed/simple;
+	bh=Bhhsv29N8UT2rTO98AuGMOntvyU3hzFZ1ai1AGnWL/o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=skX+dBaqAmbZjMpmkzrn6lx8FKEW9D9RN+pK/dlq7QMBFalKrwNcgPEz4zSbrMA+ojJvyUmv+CVGGHKCU1Xpa9bx8lMUCYp2+fcGS/JIxGtpilKYgpohwZ69LJVxotqddIJxP9oEq97X10KHCqyEqBu7gafvRr+hQTw3A8ettNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Uvu6OzjT; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="AA7WDiPk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R5bk730QhgFguzkWiuAaob6xWpHedwNtV7opuSoLQ9Ck1tVcxJCDQvK5sWaPFZfva2k9LV+IthhuzrhWvSfhlbeTdxixhpv5+nmn6QjU9w+zZZSY44SEJWj/EyRTmWlq159f8ljfou3/A/0W6iTVKnHjqltPUKPaO1XMMPvzJ9nEXHTOMUETDNG6sXJf4fVg7mR12cttzbC4AfBWp1ZzSVEz5ttd+RpDI73wf+w7/LxotN8OitopXvPiBWEEHeKIuc0ahifVOMwYw/ImJR/fNO1AhtiAvknOofvilWBPttxGmjZvYHH3zGGZ6m4qEpn80VxvjGjxtdelP+lPqRFZPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+ghXB2tMb7CmNLLhZjOMyxhDLehzwRKIVMOf4GHVTbQ=;
- b=CYfCkml5+J3K7a38FADkKymeXnJh2zJo/0oumlK6m5viHUj/pqhGVNOyZ21fyuvs7MUqaQET+pX3AipZXqSmEzvbkuMBycVAfrh3l9/yzgwrXh2y+ci59IGxxqnmQvDSofuZrRzg/31gCjGNgph9BShXFzpCfOWfltvD64nlWHAw/4q2lYobwgI26haczFu0ZzbUJSL8bdk9ilRn5Y4mZdTXNGLs0G7Vyxq48SdwBKzweWEEgP2DsXh3kBwL6uqTH6rwdsqQ9cwiSfX8jTrgcPAxhvmADPk1vyJ7zRrtq/qVqpCumjCYydSuy0p+5S3iRrbwfxWI4WxuOUOOyeo3rQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+ghXB2tMb7CmNLLhZjOMyxhDLehzwRKIVMOf4GHVTbQ=;
- b=AA7WDiPki9S6sV7BqBb9qyOPCbLJ1CTY8Whf/cLhia+l6ljfZ9ppf/ACFFcGtBk1pT75TsF2+kNouS6h/VOHchrGpXOvs7cTiC1HbM+s3DF8yTT3nsz8LH7J1HIrkdibuROLqLCuhCkw7G1q56yUD/0nAS72L2xuacYWXX/nIgtpWoWbC4yQHG758LWE3fzLbIBUkRddy3tRomhaEFVhvmXpF2FYuTZuGlFIkxT3wj1n/xWqdADPFQNH0PHgpArTf8YF+LU9xmORoBmBCBshAtt+ESKvkiSoXXkxNDKA22EVAS+kNpIqXQilFYdu7wcTypDG40jzy3G1D4B9t231Sw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by GVXPR04MB10271.eurprd04.prod.outlook.com (2603:10a6:150:1ba::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.11; Thu, 16 Oct
- 2025 14:38:32 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9228.010; Thu, 16 Oct 2025
- 14:38:31 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Boris Brezillon <bbrezillon@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-i3c@lists.infradead.org (moderated list:I3C SUBSYSTEM),
-	linux-kernel@vger.kernel.org (open list)
-Cc: markus.elfring@web.de,
-	imx@lists.linux.dev
-Subject: [PATCH v3 1/1] i3c: fix refcount inconsistency in i3c_master_register
-Date: Thu, 16 Oct 2025 10:38:13 -0400
-Message-Id: <20251016143814.2551256-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH7P220CA0034.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:32b::7) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Uvu6OzjT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1760627261; x=1761232061; i=markus.elfring@web.de;
+	bh=Bhhsv29N8UT2rTO98AuGMOntvyU3hzFZ1ai1AGnWL/o=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=Uvu6OzjT1j/zruuvTtCnekoIPJuV6+DanMy949Ljvi8+CsAfNma9a2fRXZRYOhHR
+	 XmYOSKrJGBGQAL9PissjvXf5ZnkdVipXGQXK88MeREdXOaDLzW8zonWSMSNZwoJxo
+	 wtkVU1ydVWtLDq9Tbfp3OLIFlhjNBsRsB47jKgyZ81Z5cxFs4ORNTZ3YY6ZdHFoUC
+	 SbYeKvpjH93ivq3qBG9mdryzXCZVrpchgUTcTvqW2Ghx2VEMYwR5PxazXWP/cKZZw
+	 +SrquEtZRpZgcIrfa/sInYQeeYr4HFxju5CGVbcM1bch6GDtzeiQbQVtbScUX3sLZ
+	 HguU90L3Vr+WDXexfw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.241]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MHEXc-1uwGPl1Tyy-00DZqf; Thu, 16
+ Oct 2025 17:07:41 +0200
+Message-ID: <8b9e079f-c119-4dc9-a489-9cfc8e322c27@web.de>
+Date: Thu, 16 Oct 2025 17:07:38 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|GVXPR04MB10271:EE_
-X-MS-Office365-Filtering-Correlation-Id: e922c0a6-e4eb-4e03-ebca-08de0cc1adcd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|52116014|1800799024|366016|13003099007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/H5uSzmNW0GBPLmTx4JTYh1wyhFI0avVvo59bbuAVI76OypVGN8iJ8Ca6DTT?=
- =?us-ascii?Q?XzhbBSNA/rzr17BGwbTIMsMq7SQLZAmkHdkBRK2+XN+me4T49mkv65YYNZzH?=
- =?us-ascii?Q?MmOPIBWA0GeNNS3+8B7GAIC/lnYAbGjU+0mabrFzL1HVW/diIAfQ4o4uWRHe?=
- =?us-ascii?Q?qEgOZLNJPsM46HjkAuc3OsQx1paaamBBUPPlIgGdUqPkbhC5d2oVxIjxhR7x?=
- =?us-ascii?Q?MrramoQCcgknDSUZWKhb3DHT2OdPgfn51Y/FPtJRp45Jw1ghYIZtKLfEBT21?=
- =?us-ascii?Q?umEUZMqchhwKDqkF55iI2g3cjERfqxyy4ms/oK9n37IXYSVzXR+gBpxCQlMd?=
- =?us-ascii?Q?rJqHSfLwTuHw24u0HsNdRXCU/wR5IHygHv1osKpsy5SIrF/dTgtvMs6A8xYy?=
- =?us-ascii?Q?hPkMenUhOdHUJlCTEzpz2VL2sRvDbKUniN2D+/3FD95F6SzzgoADVCszAb3M?=
- =?us-ascii?Q?mRjwrkYIEcsoiqti4yge2mlT3ZmOfwh9Ajnelfyo2vncAu6iBvLS05q3rQvn?=
- =?us-ascii?Q?eARuwxFFcvE14so7M6tc8dMrwMAFrKNWMMPIWoU2iHv1ZwMJZh3WDGBRX+VL?=
- =?us-ascii?Q?wS2qQxWB4+cA9P4KYHDZvVonD0FijRyZs48clD5qhdzwdVZ2jCv5izJAs6ZL?=
- =?us-ascii?Q?3ptRMmulnz0gQWuzKoiqIh3ii4mjkhAAlVXplFSHjJOAGzDYq3iJJ7xL0N3s?=
- =?us-ascii?Q?jsdqp+1N0n1/0Fa7DGDfrn8zIs5hY43nrjNwgOl2WPgV3Blf8ntoGMC9qSaw?=
- =?us-ascii?Q?54jn9pYOJj6shTvR/feP0ge7f5I+T4caSWHzNEIaCfRlRU73mcgYr6NLeabh?=
- =?us-ascii?Q?dXABtUA9CMbPWVOsDdQC7cQVzxUvcS5x2as/E+XBSMIIa/TD8+77fjreMoxS?=
- =?us-ascii?Q?XJ2q3zDIdjwPqbT76GlrdyQqMxWHkeodbhiPekR2vax0fLdgXbRwrdZgO1lG?=
- =?us-ascii?Q?ellffoDd6fksDH6M/M3CB5XsRY5S9Qi8zMS3Fv/4XR502xOIq06m41bvBsH4?=
- =?us-ascii?Q?mEaEqnGRq20jUMEh7mIJ4+c2rVkaQ1xqdevXXwwr73UvSfoiZ5I1O5CofzgP?=
- =?us-ascii?Q?jId6qwVRFDPF+nF1vcoZ2zxWZIMOnyLIxMXWojLlcvZ6BcqmupdSRxhsna7u?=
- =?us-ascii?Q?t3D6kHWdE+jY2Z1ylxFyarQ1PySq4ZPqTsotyQFslz5L+1JonbxDZs8tCscr?=
- =?us-ascii?Q?AeHjiT2I3g3vIyB9+HJEbZQ9CCCdgYsT3jG+IOxZrWpB9RIZYvP1ASQQwVeo?=
- =?us-ascii?Q?MjB7899vs6LnOlpQKUS2oL4MfyBk8EvdRCjd7sbNi94DV6NV5Evvqay56yS2?=
- =?us-ascii?Q?l4EkB0WA9D1bhtgy6R3yUrMsU5I71TDNLM2hfsF0mZA2lF1TnDdMcdhrGD0D?=
- =?us-ascii?Q?jcbkMHdgrXLxPcqkJbSACRHUfs8fi/S4qZMBsMHVQ4ztac7DmMYY19UkEyy4?=
- =?us-ascii?Q?U4yp24nkoe3TXOeUrmHyMYaXqK6UVrjfY5uFXM5oX0JwAEsfeDZ5hw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(52116014)(1800799024)(366016)(13003099007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1i/HApiTfmar/gaZf0IjiRKlDhXiMyjCA1hSY7SFcNOj+hLEDbuOmKUkOHqk?=
- =?us-ascii?Q?hGkk7M+23FrhPR9z2mfKJFM2p4w6meEkX1FK/Vk4Js5N9g9XZkjmA1nPyIOS?=
- =?us-ascii?Q?Cvqn/zuhrWz+7Y22GrJMFzTKEkdA0gIEHAltyNwQ3QFKxHRc8uCFD3KwwoXZ?=
- =?us-ascii?Q?T3u7iSXKIcqrWl8TrF9f86ifk8MGln/9IgP/y12PhmRQbH0pn0rDVFBrKeX5?=
- =?us-ascii?Q?FvS/1Go9P9uu8HlIFdBR6KeLDlRgRGC7xKZtU6M9lXRMqUBbxvT1ABQf3dT+?=
- =?us-ascii?Q?w4/V6QFUV/OPW+oXXxzqiIIeJXoNIp/z82i9bqgKpBzhLy6o6mFvsHJQUIfm?=
- =?us-ascii?Q?aupJup7tlnBLM2BcfWvjE4HTp+cjQFR8m4G2g1s/bEXmRDFCEVNxDSJaQypm?=
- =?us-ascii?Q?JzL1bxP969fQTJ9q82xtHMIzIFx5vUDgbHwZYFZTQ4jrxDPQN9/8Bul8DDke?=
- =?us-ascii?Q?mI0vQi45D8s61VDiV7Ffbkr1uVGvt2xHKt9AzD1LWVPXX3t1cu3s7YHKXHcE?=
- =?us-ascii?Q?3ii987tRMeOaOJ9K7k9EUOruufFOn11FeaBCuGmmbXYr7XHuhGXtNfk4cP94?=
- =?us-ascii?Q?2JadT1nej7i8aVaCR6SeRp+DPeEjecFGO9q6cQ8hce3o/rcuU56PKa1frAn1?=
- =?us-ascii?Q?/MMxCrd1mLbDTPR24I+1a1jQt8RqPD7dfBn/zNimNm045/zKAzpXeKvF/f5o?=
- =?us-ascii?Q?pzDrnwcJf6hugkImf5Fu7R5TjZFGAmeFSmyrSucM9fsBgjeWMbZFNcKbPNA/?=
- =?us-ascii?Q?ALSsGkpgJUqOxCMlxlp8CQaydqjEDPAqPil75XcvQ7GPSApBmIhEjh00uOHh?=
- =?us-ascii?Q?oCgmtv9zQ0UQTcRRhuGMAeCd7Rr4IrgUPcyYDSM7dhtdmYX9Dgdwur+wBKuw?=
- =?us-ascii?Q?/Qqw0UIR5zJEQStoQ1IiotV68f2pke7UpmsKzM6BcYFDaAv+AQLdkfNwb99y?=
- =?us-ascii?Q?hVb6JaXBsMvBW2dGgS4os4yZ16wH4EOYe5e0UQY2VogHpTa3PqSUJtaLgavM?=
- =?us-ascii?Q?XokjBJsZDjbu/q8aLURdfDbkbBVZMepFnXcjmTTPbz/QSlP3U1fgkKwoQNXK?=
- =?us-ascii?Q?aIGZ/VUBBVtIFuJKpSYgjFqebXi+FW9J6mW49yAEE2dVfMRTnZ/SE3w8s3nH?=
- =?us-ascii?Q?4LvB3R82t0uNIrQdImNGhtzZKdgV1IZ4HIskHOOa/6O78p45v2sV7OwCCyjM?=
- =?us-ascii?Q?A+2QjAT1TwYYNeR/ZVO7X1Ohfb8g8s9+D5HuExGSzpf/RmpesgPKlQn5wEX4?=
- =?us-ascii?Q?t+N1voLiezPZYLVOgzv1OQ1uUswBEp0sp70FU3WvIdqgAgOl5dk90sNi9Yte?=
- =?us-ascii?Q?nfrxCboE8TGA0Pd8OvOGpuM2YTXw+jv1oBLmAqj4x5pT9et+JlRJLeZ+oZ73?=
- =?us-ascii?Q?vjOJU18jNK2CxHIe6Qaae+EAQJkcSKRiNojjn3SMSmIU6+RxQu9dkprL60NS?=
- =?us-ascii?Q?Pz2ottAPkWUMyg4Z9+a3UkKpuISaq9OI1iEMByRe6qsCTU1sliaHGdszPhos?=
- =?us-ascii?Q?U85GBuC5tEG8RL1Ww7Djh4AIT02nRbqLnksCR44VaZ4O1swepc7GBKLS+Njk?=
- =?us-ascii?Q?1sIIb811F2MC0reXY+Q=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e922c0a6-e4eb-4e03-ebca-08de0cc1adcd
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 14:38:31.8975
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2jdatFfO6dFlf0lkLkeW6y3828TVgJh5HKrRXQfwpDCxT5ZpBctUF/nS1qI4rNeNKRZ2onAeifxaxHz4dVkqBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10271
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] i3c: fix refcount inconsistency in i3c_master_register
+To: Frank Li <Frank.Li@nxp.com>, linux-i3c@lists.infradead.org,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Arnd Bergmann <arnd@arndb.de>, Boris Brezillon <bbrezillon@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: imx@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>,
+ kernel-janitors@vger.kernel.org, Shuhao Fu <sfual@cse.ust.hk>
+References: <20251016143814.2551256-1-Frank.Li@nxp.com>
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20251016143814.2551256-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:BC4xs0imx959L5ImbTIPTPNJw0oZvReisz5nOYXi91Tc7NTBnLF
+ xZewTBDkmn1eYixfmln7NqQFXl8J4Zd6BTbVra02wtU3+bLkFbs6HNZuTpq7jS+Qai6A0cu
+ VsAI+bWNKj84JrUR37HNBE4Um4zJUggiThW8MoO9vV+T9VNNJBqI36psuyLjGvRhZ/PeJ/o
+ oFifg/3U/OBl3MmJigBmw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:k3RCl8+0Zcs=;7dGoSMsQD3IMI5a6eamSi+7KqO4
+ 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
+ 0gy2g==
 
-In `i3c_master_register`, a possible refcount inconsistency has been
-identified, causing possible resource leak.
+> In `i3c_master_register`, a possible refcount inconsistency has been
+> identified, causing possible resource leak.
+=E2=80=A6
 
-Function `of_node_get` increases the refcount of `parent->of_node`. If
-function `i3c_bus_init` fails, the function returns immediately without
-a corresponding decrease, resulting in an inconsistent refcounter.
+* Can it be preferred to refer to the term =E2=80=9Creference count=E2=80=
+=9D?
 
-Move call i3c_bus_init() after device_initialize() to let callback
-i3c_masterdev_release() release of_node.
+* Would it be helpful to append parentheses to function names at more plac=
+es?
 
-Reported-by: Shuhao Fu <sfual@cse.ust.hk>
-Closes: https://lore.kernel.org/linux-i3c/aO2tjp_FsV_WohPG@osx.local/T/#m2c05a982beeb14e7bf039c1d8db856734bf234c7
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Change in v3:
-- add fixes tags
 
-Change in v2:
-- use i3c_masterdev_release() to put of_node to align other error path
-
-v1 by Shuhao Fu <sfual@cse.ust.hk>
-
-https://lore.kernel.org/linux-i3c/aO2tjp_FsV_WohPG@osx.local/T/#m2c05a982beeb14e7bf039c1d8db856734bf234c7
----
- drivers/i3c/master.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 2ef898a8fd806..8efec085d396c 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2811,10 +2811,6 @@ int i3c_master_register(struct i3c_master_controller *master,
- 	INIT_LIST_HEAD(&master->boardinfo.i2c);
- 	INIT_LIST_HEAD(&master->boardinfo.i3c);
- 
--	ret = i3c_bus_init(i3cbus, master->dev.of_node);
--	if (ret)
--		return ret;
--
- 	device_initialize(&master->dev);
- 	dev_set_name(&master->dev, "i3c-%d", i3cbus->id);
- 
-@@ -2822,6 +2818,10 @@ int i3c_master_register(struct i3c_master_controller *master,
- 	master->dev.coherent_dma_mask = parent->coherent_dma_mask;
- 	master->dev.dma_parms = parent->dma_parms;
- 
-+	ret = i3c_bus_init(i3cbus, master->dev.of_node);
-+	if (ret)
-+		goto err_put_dev;
-+
- 	ret = of_populate_i3c_bus(master);
- 	if (ret)
- 		goto err_put_dev;
--- 
-2.34.1
-
+Regards,
+Markus
