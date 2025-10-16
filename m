@@ -1,242 +1,136 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA00932861A
-	for <imx@lists.linux.dev>; Thu, 16 Oct 2025 11:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009A132BF4E;
+	Thu, 16 Oct 2025 12:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760614929; cv=none; b=JHTzmaHMwRUkEIOAGlWDG1hs0Y0ipM/mhV2csPSl12e6WZrND0n1fYVvdhu6Gin4nkgVtDD2Tv7/QQOo7o1BQkYRZQj+D0cb16BH1fCXqFzQo6xhJIBWe/jLC8fIk3MpR26U6jOpObqSfA0H+2p5GwA5RlILplLOTdnQzPhwWJE=
+	t=1760616713; cv=none; b=EdA4v/uRIlZBZUUmZXFRK9g+Qk0Hxo0hPh66iRDEq9du5my8Wd979UiMPnFkWukNvPCUldWGafhrJjB2WZUj7LHqqD2MEVGUbSF9NY+h4tLF9N4kKTx8hP90YX9GoBRvX57vk6vjNbmAyHXxr0LxmZtFRnr5KPw8cSX9B1CTtDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760614929; c=relaxed/simple;
-	bh=ZH8anoDC/o0kaWH5bDY8yFuiOz5ptPX33dTSuj/Zqs4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ilmcl5a6QtvaWBGEBTLKRicm+TclCTMP8PzaWYFnH+lNByKPpvjMFATCYj+JSji7L5xtooRb4RLmNkJg29YOTAJva8Rwb7Y7H5C7NT8rJHtGFwPF9amkpqlaHff4lJwkaeDiobH5c2b586E9Bn1uZQghcRWpBjnwcdRiIgqnfaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1v9MMi-0002oB-Us; Thu, 16 Oct 2025 13:41:52 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1v9MMi-003sq4-06;
-	Thu, 16 Oct 2025 13:41:52 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1v9MMh-00HQPu-2x;
-	Thu, 16 Oct 2025 13:41:51 +0200
-Date: Thu, 16 Oct 2025 13:41:51 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-doc@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v19 0/7] firmware: imx: driver for NXP secure-enclave
-Message-ID: <20251016114151.jzmapaecsmmnkpt3@pengutronix.de>
-References: <20250927-imx-se-if-v19-0-d1e7e960c118@nxp.com>
+	s=arc-20240116; t=1760616713; c=relaxed/simple;
+	bh=fXQW5LlY3uriTrQKws57EZgohSd4auvpbv1xc5ox9X8=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=SQHIiPesggPqOvg+rEUZaY6CtQT0miG6dbMoq+7/ly42guBX93SuQC4lS8XiQLVDVcW4PV158y/KOf1R0edxAP/E96sirijKa+1hBtCO1lrmb5+ZFK44APvdjnEs+bY88CJPP8n5IEfUtlgPuNV3qXn6PxWlhpuGo4rGS2igGLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eCGlCg3K; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eCGlCg3K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B81FC116B1;
+	Thu, 16 Oct 2025 12:11:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760616712;
+	bh=fXQW5LlY3uriTrQKws57EZgohSd4auvpbv1xc5ox9X8=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=eCGlCg3KYMaFDE2I2HYQ7UC4kwzdvab0JbYJVvZAIfFSwgJmC0SB5HqFzEGD9ZZqp
+	 jb/4lrvvl2gEnH2Vghh5t2+K3E+ZRQGeKQucfabea2klGQZcznjEk6dzgAGmFPUTxJ
+	 VTI+W/ZI/mayVy6PKH65vrqZaaPD+aruuabmgxuQmi76C7T5OUyL0OcJZ9tngqCPhl
+	 3pYB3ttdZvDvWPoqfhueWGjBZXkYMCD4CHHM9+ZBFTI4MYxmHPp5JuZkhGv+GU/ojH
+	 VWGulZT4+pnvDgwrO8dYGkY0qwv+Yjb6Zpck1/Au5A+AowNEUEXA+VoCVqL60veqzz
+	 9gToVZtXMD6WQ==
+Date: Thu, 16 Oct 2025 07:11:51 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250927-imx-se-if-v19-0-d1e7e960c118@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: krzk+dt@kernel.org, davem@davemloft.net, richardcochran@gmail.com, 
+ Frank.Li@nxp.com, vladimir.oltean@nxp.com, andrew+netdev@lunn.ch, 
+ kuba@kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, claudiu.manoil@nxp.com, pabeni@redhat.com, 
+ edumazet@google.com, xiaoning.wang@nxp.com, netdev@vger.kernel.org, 
+ conor+dt@kernel.org
+To: Wei Fang <wei.fang@nxp.com>
+In-Reply-To: <20251016102020.3218579-1-wei.fang@nxp.com>
+References: <20251016102020.3218579-1-wei.fang@nxp.com>
+Message-Id: <176061621269.2563112.3282967985432898709.robh@kernel.org>
+Subject: Re: [PATCH net-next 0/8] net: enetc: Add i.MX94 ENETC support
 
-Hi,
 
-On 25-09-27, Pankaj Gupta wrote:
-> Highlight:
+On Thu, 16 Oct 2025 18:20:11 +0800, Wei Fang wrote:
+> i.MX94 NETC has two kinds of ENETCs, one is the same as i.MX95, which
+> can be used as a standalone network port. The other one is an internal
+> ENETC, it connects to the CPU port of NETC switch through the pseudo
+> MAC. Also, i.MX94 have multiple PTP Timers, which is different from
+> i.MX95. Any PTP Timer can be bound to a specified standalone ENETC by
+> the IERB ETBCR registers. Currently, this patch only add ENETC support
+> and Timer support for i.MX94. The switch will be added by a separate
+> patch set.
 > 
-> There are long discussion at V18 with Marco Felsch.
-> https://lore.kernel.org/imx/AM9PR04MB8604F5A7DD8B1E41FDAD09039501A@AM9PR04MB
-> 8604.eurprd04.prod.outlook.com/
+> ---
+> Note that the DTS patch (patch 8/8) is just for referenece, it will be
+> removed from this patch set when the dt-bindings patches have been
+> reviewed. It will be sent for review by another thread in the future.
+> ---
 > 
-> The key point is about using OP-TEE OS. 
+> Clark Wang (1):
+>   net: enetc: add ptp timer binding support for i.MX94
 > 
-> Marco's questions:
-> =================
-> Q1. Both MU(s) from each world - Secure & Non-secure, cannot be used
->     simultaneously. Why?
-> A1. ELE FW fix is available, where concurrent access to ELE from both the
->     world is working. This fix is not required for the current patch-set for
->     i.MX8ULP.
+> Wei Fang (7):
+>   dt-bindings: net: netc-blk-ctrl: add compatible string for i.MX94
+>     platforms
+>   dt-bindings: net: enetc: add compatible string for ENETC with pseduo
+>     MAC
+>   dt-bindings: net: ethernet-controller: remove the enum values of speed
+>   net: enetc: add preliminary i.MX94 NETC blocks control support
+>   net: enetc: add basic support for the ENETC with pseudo MAC for i.MX94
+>   net: enetc: add standalone ENETC support for i.MX94
+>   arm64: dts: imx94: add basic NETC nodes and properties
+> 
+>  .../bindings/net/ethernet-controller.yaml     |   1 -
+>  .../devicetree/bindings/net/fsl,enetc.yaml    |   1 +
+>  .../bindings/net/nxp,netc-blk-ctrl.yaml       |   1 +
+>  arch/arm64/boot/dts/freescale/imx94.dtsi      | 118 ++++++++++
+>  arch/arm64/boot/dts/freescale/imx943-evk.dts  | 100 +++++++++
+>  drivers/net/ethernet/freescale/enetc/enetc.c  |  28 ++-
+>  drivers/net/ethernet/freescale/enetc/enetc.h  |   8 +
+>  .../net/ethernet/freescale/enetc/enetc4_hw.h  |  32 ++-
+>  .../net/ethernet/freescale/enetc/enetc4_pf.c  |  37 ++--
+>  .../ethernet/freescale/enetc/enetc_ethtool.c  |  64 ++++++
+>  .../net/ethernet/freescale/enetc/enetc_hw.h   |   1 +
+>  .../freescale/enetc/enetc_pf_common.c         |   5 +-
+>  .../ethernet/freescale/enetc/netc_blk_ctrl.c  | 202 ++++++++++++++++++
+>  13 files changed, 574 insertions(+), 24 deletions(-)
+> 
+> --
+> 2.34.1
+> 
+> 
+> 
 
-According https://github.com/OP-TEE/optee_os/pull/7268/commits/83b516edc0270ca8300ce524a0c3d560e67a0f48#r1955899462
-there is no fix yet. Can you please point me to the fixed version?
 
-Also can you please outline why the fix is not required for i.MX8ULP?
-Unfortunately I can't remember.
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-> Q2. How is the secure and non-secure world talk to the ELE if there is only
->     one MU?
-> A2. From i.MX9x & onwards, SoC(s) has at least one dedicated ELE MU(s) for
->     each world - Linux(one or more) and OP-TEE OS (one or more). Has updated
->     the commit message of 3/7.
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-Does apply to the i.MX8ULP SoC as well? The NXP name scheme isn't very
-easy to follow.
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
 
-> Q3. How exactly do the eFuse write access after the device was locked down,
->     will be provided with single path; for the following case? 
->     - For a verified boot setup, you need to burn an eFuse at some point,
->     to tell the bootROM to boot only correct verified firmware images.
->     - After this lockdown, it's no longer possible to burn eFuses from the
->     REE, while the production line setup still requires the support.
-> A3. OP-TEE OS supports read fuses, currently as part of our quarterly release.
->     Write fuse will be in coming release. Please note that the current patch-
->     set does not contain any read/write eFuse feature.
+  pip3 install dtschema --upgrade
 
-But one of your patches is mention it, right? So there will be still two
-paths.
 
-Also according your IOCTL docuementation you want to expose the whole
-device to the user-space?
+This patch series was applied (using b4) to base:
+ Base: attempting to guess base-commit...
+ Base: tags/next-20251015 (exact match)
+ Base: tags/next-20251015 (use --merge-base to override)
 
-| What:          /dev/<se>_mu[0-9]+_ch[0-9]+
-| Date:          Mar 2025
-| KernelVersion: 6.8
-| Contact:       linux-imx@nxp.com, pankaj.gupta@nxp.com
-| Description:
-|                NXP offers multiple hardware IP(s) for secure enclaves like EdgeLock-
-|                Enclave(ELE), SECO. The character device file descriptors
-|                /dev/<se>_mu*_ch* are the interface between userspace NXP's secure-
-|                enclave shared library and the kernel driver.
-| 
-|                The ioctl(2)-based ABI is defined and documented in
-|                [include]<linux/firmware/imx/ele_mu_ioctl.h>.
-|                ioctl(s) are used primarily for:
-|                        - shared memory management
-|                        - allocation of I/O buffers
-|                        - getting mu info
-|                        - setting a dev-ctx as receiver to receive all the commands from FW
-|                        - getting SoC info
-|                        - send command and receive command response
-				^
-This is a rather uncommon approach. The kernel has interfaces to
-abstract hardware. You completely bypass this if you expose everything
-to the userspace.
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
 
-> Q4. What is the ELE behavior if the secure-world stresses the ELE? Is there
->     a MU priority so the normal-world MU may get blocked (never addressed)
->     or are both MUs scheduled in round-robin?
-> A4. ELE will pick the message from Both MU(s), based on FIFO.
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20251016102020.3218579-1-wei.fang@nxp.com:
 
-This doesn't answer my question. How gets the FIFO filled? If the one of
-both worlds aways keep the MU busy?
+arch/arm64/boot/dts/freescale/imx943-evk.dtb: system-controller@4ceb0000 (nxp,imx94-netc-blk-ctrl): 'anyOf' conditional failed, one must be fixed:
+	'clocks' is a required property
+	'#clock-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/clock/clock.yaml#
 
-> Q5. Why ELE performance matters?
->     - On i.MX8M, which uses the CAAM (the ELE predecessor), It can be
->     verified that the ARMv8 CE are much faster than the crypto-engine itself.
->     Therefore the CAAM is mostly unused.
-> A5. User looks for both type of implementation based on their usecase:
->     - Certain users still offload to CAAM, to save their ARM CPU cycles for
->     other priority tasks.
 
-I have never seen such designs but okay.
 
->     - While certain customer choose ARM-CE for the crypto offloads for better
->     performance.
->     As far as ELE is concerned, it is not a crypto accelerator like CAAM.
->     Performance hungry crypto-ops are not recommended to be offloaded to ELE.
 
-I don't get this point. So NXP doesn't recommend to use the ELE for
-crypt-ops?
 
-> Q6. For the IOT-cases where real-time encrypted feed from sensors, will take
->     latency hit, Does the ELE support inline en-/decryption?
-> A6. Yes, ELE support Inline Encryption Engine (IEE), starting i.MX95 onwards.
-
-May I ask, how is this connected and which interfaces are connected to
-the IEE? I would have checked it by myself but unfortunately NXP doesn't
-provide a TRM for the i.MX95 yet.
-
-> Marco's Suggestions/NXP response:
-> ================================
-> S1. Below listed ELE access requirements, can be done from OP-TEE OS in all
->     the Life-Cycle states. then Why to use Linux?
->     - eFuse access (done via  OP-TEE OS i.MX specific PTA): OTP eFuse R/W access
->     after doing the LOCK_DOWN fuse is no longer possible without  OP-TEE OS. This
->     involves general purpose (GP) eFuses too.
->     - ELE ping every 1 day (kernel SMC WDG driver, OP-TEE OS wd driver).
->     - HW-RNG (kernel HWRNG driver + OP-TEE OS HWRNG PTA).
-> R1. There are i.MX9* users, that are not using OP-TEE OS, but still want
->     to use ELE features from Linux. So, these users are requesting for this
->     driver in Linux.
-
-Which ELE features?
-
->     As suggested by you, writing to eFuse after life-cycle closed state, the
->     driver in OP-TEE OS is needed.
->     Though there are other OP-TEE OS features too, that needs to be offloaded
->     to HSM, for security reasons, like:
->     - Hardware Unique Key(HUK) getting generated.
->     - OP-TEE OS's ASLR seed generation.
-
-We're talking about features the normal world wants to have access too,
-since you said ".. but still want to use ELE feature from Linux ..". The
-HUK and the TEE ASLR seed is clearly not something Linux wants to have
-access too.
-
-> S2. Having one implementation is beneficial in the following ways:
->     - Multiple paths also requires more maintain- and testing effort.
->     - FW files with having +1 FW for the new i.MX9*, where there are plenty
->       already eg.: bootloader, TF-A, ele-fw, scu-fw (i.MX95), increases the
->       maintenance on both the paths.
->     - TEE code could be reused by other OSes.
->     - TEE is used anyway for new projects due to CRA and friends
-> R2. As conveyed in R1, there are Linux only users, that are dependent on SE
->     Linux kernel driver.
-
-What difference does it make if these Linux-only users get the ELE
-access via OP-TEE? It's just one binary more.
-
-> S3. Having one implementation is beneficial in the following ways:
->     - Adding the support for it to  OP-TEE OS do not requires ELE-FW.
-
-I never said that this requires no ELE FW! I said it requires no ELE-FW
-update! Was the update already rolled out?
-
->     - Concurrent access handling is done by the TEE core.
-> R3. As already mentioned that ELE FW fix is available, for concurrent access.
->     Please note that FW fix is not required for the current patch-set.
-
-Can you provide us a link to the fix please? The fix should fix the
-concurrent normal-world <-> secure-world MU access issue. Why is this
-fix not required if I have a running OP-TEE?
-
-> S4. This series causes more confusions till the ELE FW fix is available to
->     allow concurrent access to ELE from both the worlds.
-> R4. FW fix is already available, and concurrent access is enabled by default
->     in LF Q3'25, release. Please note that FW fix is not required for the
->     current patch-set.
-
-Please provide a link to the new FW and why is the fix nor required for
-this patchset?
-
-> S5. Suggesting to add the  OP-TEE OS support for the required features e.g. eFuses,
->     watchdog, HWRNG. The whole Linux part is mostly in place.
-> R5. Yes, the secure world features like eFuse read/write will be added
->     to OP-TEE OS. Please note that this patch-set does not contain any read/write
->     eFuse feature.
-
-I see, instead it expose the whole ELE to the userspace if I got it
-correct according your IOCTL documentation. This would be even worse.
-
-Regards,
-  Marco
