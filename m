@@ -1,74 +1,67 @@
 Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36401330B20
-	for <imx@lists.linux.dev>; Fri, 17 Oct 2025 15:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30ED0330B2D
+	for <imx@lists.linux.dev>; Fri, 17 Oct 2025 15:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760716228; cv=none; b=T+LtvCQQpker+minmbcZ98IhaLY60MsHSkwNHHE9+/IEzN/JIxxDM+uzEcePK4D27GG9mAWO7901VNdD/vBC5DT7Wh7lwzdyz+ujDdQkVfASivu+KJjJZNNiRUhrQFc8uV9eRbVO18vrAnxbZMe2Tx8VPyGyyBW3dQLRj15K6mk=
+	t=1760716777; cv=none; b=Bxc4I+mReuGl+1u86cO6ZqKnZcC9u2a7JZxHrRc66onQGGyEd9nKUj0+HXEXyxC7pm7cyUaZJtnRkbl2HXdfO//6yWZqjAY82XiDeaI3ThuUp+nWn3Kg0+h/XmCFgBLBb5ROb7zfTJurYOGGezH8ABVVXpjBc0auomyksYsTzyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760716228; c=relaxed/simple;
-	bh=kZFXgirDnFVfMgug9ztIUHUZy/8kzzUqjm0iBPlnxC4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mkNyWj6Qng3ZJzApLZQGWtwBFiS6M1HhRm3I3vbozjPk+dNKxMrQZJ2Q7n48RHBp0+ISHIstN3o9yBcMkWFoPFEhZCjPpVsOHpt4CqUN1Ft7scGX33c1kIW+npaUPRaLqOo3yfAouoNu5hgfdd43OiWjp6J7FlozlqMDF7X1V4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=iVr+wcSN; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=M2vdZSh1; arc=none smtp.client-ip=80.241.56.172
+	s=arc-20240116; t=1760716777; c=relaxed/simple;
+	bh=3rfRUOGwBTmBj8lA60AZVEwxCuWey8dCleZPXglv4TA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QA1a2YxmkASnfSMItZLzYI+ehHmqNryF95zVytTLwqZoooSY8yidPN3IpEOnAc4TdBKUgaUBDDVKieccqkTcCgiMRsHANsqANgeveYHkK2bElqmpjLwlOt32OTEYYoBLgGajACPb6btyahdcK8xQ5rAMsjaHaSyteI82Q5n4QuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=obDQn2Py; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=rnWa754R; arc=none smtp.client-ip=80.241.56.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="iVr+wcSN";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="M2vdZSh1"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="obDQn2Py";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="rnWa754R"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4cp8DJ5PL7z9stY;
-	Fri, 17 Oct 2025 17:40:48 +0200 (CEST)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4cp8dy37Fvz9t9f;
+	Fri, 17 Oct 2025 17:59:34 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760715648;
+	t=1760716774;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=0w+B/tCledBrlOq6HIpAHqdVg2SY76LtseeOT2jub/4=;
-	b=iVr+wcSNqhY0cAOxIloMmCqxI1pOJ6NLEZ4Ekr1cbwb00IZPv19HJPsVM1jGoQ1Xq/36eb
-	kyEYsc+tvacqMl2tVv4e6rE55SEuEL1yhF3zZZ7nsNEjA+c8m6XHEFXZWl60KJYhVKfZsh
-	Z50hgV2EyM3V4h3s7nzlqiYWbBd0k3mUmLwfB03j50uikADnf/1ux40m1Q/OKoRzhh7cbW
-	6j0eVPY3vbs/F12cYiHxpwz7706+76/RToU7NXXiqtQF8IGUBUs8I1V4domUB+DsKgjvzf
-	KERWlYXYUr8ovm3WpO580jWATqGlONbZomso9AiENEJXUuoJfj8RIMLkinpKxw==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=M2vdZSh1;
-	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
+	bh=J60ARZeoH6yHHNV1eYD4xYcbRcMiyJ2+7xTBX0Mu1kk=;
+	b=obDQn2Py2SUp9/20BiYE6hxzoR/hpzBb+6WjHyeoUma5diVDMdHg+lKkr3Fn9KWoSBDdhf
+	sk00/195YjqLXuWJPWz0PXxLT9ykvWfxySuxgAAzwERVzHI1d5Ww8qGOTG4+AqAAGMruiq
+	Qah6G+jhSSI1fZ0qXPXr5fAUN7pxJicwsLeDS56HJg9zxOx/8W2OgVILIzsKBQ2+C0GuXg
+	HqAUfGUvUa3OugT/QTTqjhiOd+jFKpnwM5jNEcjkwMqCPoxAsJdKzDxIH2KZ2PT1PhOtGt
+	1S7o16GZiUu1OgMSVstnFv5mmooPTZSVl7gGfGgVK02prc26wjlJxEgLwGXQRg==
 From: Marek Vasut <marek.vasut@mailbox.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760715646;
+	t=1760716772;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=0w+B/tCledBrlOq6HIpAHqdVg2SY76LtseeOT2jub/4=;
-	b=M2vdZSh1ah2zIbwb5jDUsDqLWG3Jj8lJ30k26oXZWEqPg0TCRJnst1D3GrdBFpgCd0plds
-	8a7rghvolSpA2X2nLu6XEv/GDyMHGt/l+0OSvLjOeLT0gsfrEE1S7E4sJHtqmT2CTYd13t
-	qSAlTGKLl2/85Te8WeNTr4hJ4JDLGj/6RQpEVmV48BN1hRccpiZemMGkiuNipSmrKxhT4o
-	Tc6vT+NvfEzG9wIxu2oNrvcpzONVm0Ova/fcseLkPaeT70YEcEAmCNWwZIexXAVZ99O5/e
-	xQph+CDk4t+aHxmuFr1IRP+G7VFeo5i9Sfry1clEYYvktMXPBWlPb2dp/GC+HA==
-To: dri-devel@lists.freedesktop.org
+	bh=J60ARZeoH6yHHNV1eYD4xYcbRcMiyJ2+7xTBX0Mu1kk=;
+	b=rnWa754RRvqAhRhWDfyzuzZs8RL91LnZBt/EjMHA6VzgKJKb8g2A6beVHFMZXaOTF6vYnQ
+	tTeFniD30BU3Hr8n2wArG+f/Opjv2/bBmQvKXFhdipNQyfWrZxHIHbcAmxc2ZyI14lbznu
+	YVBHRTx9NWzGGllt/ghjFpDDGnVM+ysQmpIh1M3TpWuX7Mj+PAw3lFwLfwCJKFscZFGAgg
+	bUfL1FzZySvILeMLM6btMeCJrTKE8h1lBj3TEuS6t1meRcWL5aQANlCFRU0hXqAD5SRYqe
+	TeGtO7pfJ0VSBk+w2A209/iB9kpv29rLHye9cktGV0A1NjmS5VNFsXQd7nA46g==
+To: linux-media@vger.kernel.org
 Cc: Marek Vasut <marek.vasut@mailbox.org>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Liu Ying <victor.liu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Peng Fan <peng.fan@nxp.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Mirela Rabulea <mirela.rabulea@nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH] drm/bridge: fsl-ldb: Parse register offsets from DT
-Date: Fri, 17 Oct 2025 17:39:33 +0200
-Message-ID: <20251017154029.105099-1-marek.vasut@mailbox.org>
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3 1/2] media: dt-bindings: nxp,imx8-jpeg: Document optional SRAM support
+Date: Fri, 17 Oct 2025 17:58:37 +0200
+Message-ID: <20251017155912.109454-1-marek.vasut@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,151 +69,53 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 03a1ed152bce17d94f4
-X-MBO-RS-META: pccptyfowt41qqwww3cqkzb3ibd7zxtd
-X-Rspamd-Queue-Id: 4cp8DJ5PL7z9stY
+X-MBO-RS-ID: 15328b960a1f61f18bf
+X-MBO-RS-META: oz5spw445857wu1tgyok8r1xu8tr74oq
 
-The DT binding for this bridge describe register offsets for the LDB,
-parse the register offsets from DT instead of hard-coding them in the
-driver. No functional change.
+Document optional phandle to mmio-sram, which can describe an SRAM
+region used for descriptor storage instead of regular DRAM region.
+Use of SRAM instead of DRAM for descriptor storage may improve bus
+access pattern and performance.
 
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
 ---
-Cc: Abel Vesa <abelvesa@kernel.org>
-Cc: Conor Dooley <conor+dt@kernel.org>
 Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-Cc: Liu Ying <victor.liu@nxp.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>
-Cc: Peng Fan <peng.fan@nxp.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Ming Qian <ming.qian@oss.nxp.com>
+Cc: Mirela Rabulea <mirela.rabulea@nxp.com>
+Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: devicetree@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
 Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-clk@vger.kernel.org
+Cc: linux-media@vger.kernel.org
 ---
- drivers/gpu/drm/bridge/fsl-ldb.c | 42 ++++++++++++++++++++------------
- 1 file changed, 26 insertions(+), 16 deletions(-)
+V2: - New patch
+V3: - Drop description: | and add RB from Frank
+---
+ Documentation/devicetree/bindings/media/nxp,imx8-jpeg.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fsl-ldb.c
-index 5c3cf37200bce..c54caea0b63fc 100644
---- a/drivers/gpu/drm/bridge/fsl-ldb.c
-+++ b/drivers/gpu/drm/bridge/fsl-ldb.c
-@@ -61,24 +61,16 @@ enum fsl_ldb_devtype {
- };
+diff --git a/Documentation/devicetree/bindings/media/nxp,imx8-jpeg.yaml b/Documentation/devicetree/bindings/media/nxp,imx8-jpeg.yaml
+index 4cba42ba7cf72..7340989489da3 100644
+--- a/Documentation/devicetree/bindings/media/nxp,imx8-jpeg.yaml
++++ b/Documentation/devicetree/bindings/media/nxp,imx8-jpeg.yaml
+@@ -55,6 +55,12 @@ properties:
+     minItems: 1               # Wrapper and all slots
+     maxItems: 5               # Wrapper and 4 slots
  
- struct fsl_ldb_devdata {
--	u32 ldb_ctrl;
--	u32 lvds_ctrl;
- 	bool lvds_en_bit;
- 	bool single_ctrl_reg;
- };
- 
- static const struct fsl_ldb_devdata fsl_ldb_devdata[] = {
- 	[IMX6SX_LDB] = {
--		.ldb_ctrl = 0x18,
- 		.single_ctrl_reg = true,
- 	},
--	[IMX8MP_LDB] = {
--		.ldb_ctrl = 0x5c,
--		.lvds_ctrl = 0x128,
--	},
-+	[IMX8MP_LDB] = { },
- 	[IMX93_LDB] = {
--		.ldb_ctrl = 0x20,
--		.lvds_ctrl = 0x24,
- 		.lvds_en_bit = true,
- 	},
- };
-@@ -90,6 +82,8 @@ struct fsl_ldb {
- 	struct clk *clk;
- 	struct regmap *regmap;
- 	const struct fsl_ldb_devdata *devdata;
-+	u32 ldb_ctrl;
-+	u32 lvds_ctrl;
- 	bool ch0_enabled;
- 	bool ch1_enabled;
- };
-@@ -204,7 +198,7 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *bridge,
- 		reg |=	(fsl_ldb->ch0_enabled ? LDB_CTRL_DI0_VSYNC_POLARITY : 0) |
- 			(fsl_ldb->ch1_enabled ? LDB_CTRL_DI1_VSYNC_POLARITY : 0);
- 
--	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->ldb_ctrl, reg);
-+	regmap_write(fsl_ldb->regmap, fsl_ldb->ldb_ctrl, reg);
- 
- 	if (fsl_ldb->devdata->single_ctrl_reg)
- 		return;
-@@ -212,7 +206,7 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *bridge,
- 	/* Program LVDS_CTRL */
- 	reg = LVDS_CTRL_CC_ADJ(2) | LVDS_CTRL_PRE_EMPH_EN |
- 	      LVDS_CTRL_PRE_EMPH_ADJ(3) | LVDS_CTRL_VBG_EN;
--	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, reg);
-+	regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, reg);
- 
- 	/* Wait for VBG to stabilize. */
- 	usleep_range(15, 20);
-@@ -220,7 +214,7 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *bridge,
- 	reg |=	(fsl_ldb->ch0_enabled ? LVDS_CTRL_CH0_EN : 0) |
- 		(fsl_ldb->ch1_enabled ? LVDS_CTRL_CH1_EN : 0);
- 
--	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, reg);
-+	regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, reg);
- }
- 
- static void fsl_ldb_atomic_disable(struct drm_bridge *bridge,
-@@ -231,12 +225,12 @@ static void fsl_ldb_atomic_disable(struct drm_bridge *bridge,
- 	/* Stop channel(s). */
- 	if (fsl_ldb->devdata->lvds_en_bit)
- 		/* Set LVDS_CTRL_LVDS_EN bit to disable. */
--		regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl,
-+		regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl,
- 			     LVDS_CTRL_LVDS_EN);
- 	else
- 		if (!fsl_ldb->devdata->single_ctrl_reg)
--			regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, 0);
--	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->ldb_ctrl, 0);
-+			regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, 0);
-+	regmap_write(fsl_ldb->regmap, fsl_ldb->ldb_ctrl, 0);
- 
- 	clk_disable_unprepare(fsl_ldb->clk);
- }
-@@ -296,7 +290,7 @@ static int fsl_ldb_probe(struct platform_device *pdev)
- 	struct device_node *remote1, *remote2;
- 	struct drm_panel *panel;
- 	struct fsl_ldb *fsl_ldb;
--	int dual_link;
-+	int dual_link, idx, ret;
- 
- 	fsl_ldb = devm_drm_bridge_alloc(dev, struct fsl_ldb, bridge, &funcs);
- 	if (IS_ERR(fsl_ldb))
-@@ -309,6 +303,22 @@ static int fsl_ldb_probe(struct platform_device *pdev)
- 	fsl_ldb->dev = &pdev->dev;
- 	fsl_ldb->bridge.of_node = dev->of_node;
- 
-+	idx = of_property_match_string(dev->of_node, "reg-names", "ldb");
-+	if (idx < 0)
-+		return idx;
++  sram:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      Optional phandle to a reserved on-chip SRAM regions. The SRAM can
++      be used for descriptor storage, which may improve bus utilization.
 +
-+	ret = of_property_read_u32_index(dev->of_node, "reg", 2 * idx, &fsl_ldb->ldb_ctrl);
-+	if (ret)
-+		return ret;
-+
-+	idx = of_property_match_string(dev->of_node, "reg-names", "lvds");
-+	if (idx < 0)
-+		return idx;
-+
-+	ret = of_property_read_u32_index(dev->of_node, "reg", 2 * idx, &fsl_ldb->lvds_ctrl);
-+	if (ret)
-+		return ret;
-+
- 	fsl_ldb->clk = devm_clk_get(dev, "ldb");
- 	if (IS_ERR(fsl_ldb->clk))
- 		return PTR_ERR(fsl_ldb->clk);
+ required:
+   - compatible
+   - reg
 -- 
 2.51.0
 
