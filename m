@@ -1,131 +1,290 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3697B2F12B0;
-	Fri, 17 Oct 2025 15:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB742335076
+	for <imx@lists.linux.dev>; Fri, 17 Oct 2025 15:18:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713958; cv=none; b=cebjW5IhSLFjSqmpa0Zgms8HTp0ZzJ5zds3Woh3kT0+rgQwN8e6HYxRpwmtFoZ1kLRBk05YzbrNR6uR1cycN2dKkFccTalf5Q+OcPUsJXtFvDwVDRA8MUQcqzpcd1zNvoi+LCy+XJLXP/dVtATLsVGmCXgMdM2cyMDAilVAso7s=
+	t=1760714292; cv=none; b=VAbskwFTPwV+tdRiAHS1I8r8nF0Y5y1hUOXRJfzbmfSvBYs2NWYKnYrkbANDCy1aqMT3NF4e2ECG4tBOju6pEK6sMmhiZthD5QBYG2lMYr7nKeV4oVw2uKi5SIhULwvO9fLY8VBk2G6//e5McVRsvj5NnBbm6NP7megtklnY6Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713958; c=relaxed/simple;
-	bh=1IuDydb9LVnh3/OC5wI1BZmlPhEFBAW9Ll+jAbKHxOM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ogAYsYGvimzHhOemM9kDvkfVQKsCbd0YYWoFBAQl8CXcgOUHdIePUX/yeEEPEbHBpUj5Q3js1Q4EqGxDaxo4ZXWZNFtmuyaT3eOe7xF72ch+/rOcaHkSIH7w6s0HX7GxobpZ8+RyKlAxeaUd7N/vFUbS9WDgqSnYIRDAVrAUf/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TqmvhnCx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760714292; c=relaxed/simple;
+	bh=qclgZwwjuqyhOy6ZAw5jPR0FrTNbp3TFmiad373sBM0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ulU5yeIFYP+iS1Em6XaDMVfP1NwJd6ve0t3kuH24Q5fSJDRZgQ9wWd46pw0N4LqMM+GBob4zTAT+9Fke5KpyATe/8WGJoesKgo3LzUv3yTFi8YiDtdGnxjg0NJLQhg6cGZCz+xyYDPVvAi+lpdpSCnzLjs0K/QG1mmai1SNBw+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xcSfxPPC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8X/LtTH4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xcSfxPPC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8X/LtTH4; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TqmvhnCx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F68C4CEF9;
-	Fri, 17 Oct 2025 15:12:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760713958;
-	bh=1IuDydb9LVnh3/OC5wI1BZmlPhEFBAW9Ll+jAbKHxOM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TqmvhnCx3DrRFih0Hvwau0ZVDoNCUJBx/O3sVu/j1ssqtkREF1YfTzvFlfcOU8RUF
-	 BvcqKmld1ZylivNmpGNRG+umisrT0IU0Hmhookb0+BazONDjWGtolHdNWRmyytUZoW
-	 GPo8oO/pz2i5AsSkGGDG57DxH6z572pZUF45xM7uT+RFmQ5YgDLC3/6jmzhGVOofP1
-	 V6RcGG4IADuHO9+fa3Ww81AX6nfzzaZw0saKuI5pfVW/e9vZNAefSIkgRcukNsv7cE
-	 nsOrylVfJ/ms0A/d1ED1auwPhg5lujqGB2UNjVyDThzlzJg7CK0GP7zbIOl9m06xet
-	 f9YIKqKW9isxg==
-Date: Fri, 17 Oct 2025 20:42:24 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Chester Lin <chester62515@gmail.com>, 
-	Matthias Brugger <mbrugger@suse.com>, Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
-	NXP S32 Linux Team <s32@nxp.com>, bhelgaas@google.com, jingoohan1@gmail.com, 
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, krzk+dt@kernel.org, 
-	Conor Dooley <conor+dt@kernel.org>, Ionut.Vicovan@nxp.com, Larisa Grigore <larisa.grigore@nxp.com>, 
-	Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>, ciprianmarian.costea@nxp.com, 
-	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>, Frank Li <Frank.li@nxp.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH 1/3 v2] dt-bindings: PCI: s32g: Add NXP PCIe controller
-Message-ID: <nzznoiri4n7krpid4lp4pax2dge6vwdj3eqyxqob4bzf6gmlzy@a6moyj74ehzp>
-References: <20250919155821.95334-2-vincent.guittot@linaro.org>
- <iom65w7amxqf7miopujxeulyiglhkyjszjc3nd4ivknj5npcz2@bvxej6ymkecd>
- <aOU0w5Brp6uxjZDr@lpieralisi>
- <4rghtk5qv4u7vx4nogctquu3skvxis4npxfukgtqeilbofyclr@nhkrkojv3syh>
- <eba7d968-209d-4acb-ba41-4bebf03e96ba@app.fastmail.com>
- <4143977f-1e70-4a63-b23b-78f87d9fdcde@app.fastmail.com>
- <2erycpxudpckmme3k2cpn6wgti4ueyvupo2tzrvmu7aqp7tm6d@itfj7pfrpzzg>
- <3d480f73-15b4-4fb8-8d2b-f9961c1736ca@app.fastmail.com>
- <4kvo2qg2til22hlssv7lt2ugo63emr5c4hfjur5m3vnxvpdekx@jcbhaxb2d2j2>
- <839e3878-ae62-4c8b-a74b-ac4f6f060d98@app.fastmail.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xcSfxPPC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8X/LtTH4";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xcSfxPPC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8X/LtTH4"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B817A1FF15;
+	Fri, 17 Oct 2025 15:18:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760714287; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=T3GLww76RJcsd2GjX3gg3/FMhdYzc0pTJwH6K/kNPXY=;
+	b=xcSfxPPCNp1TboryKAwOsxL7amZ4DE3ooNWWGwGmSRi6QXff7lfOzu2/fMvajzPRBssgCM
+	DO2w9O39uhMWldaDsH1L/Cfg9zCA4uo+u4RCSKXv5Cw+1ETeVuJqirIWQpMS1chMmmWHet
+	QokKLgjKJgc5CF6DYdq8LmVWwI+RXtw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760714287;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=T3GLww76RJcsd2GjX3gg3/FMhdYzc0pTJwH6K/kNPXY=;
+	b=8X/LtTH4djdAVrPyuc9fminwuQWQRNqlvrxfEsEdnv4TFrkHxocfqGsAHZD373TQ2xpQBy
+	Kl7aJnBffxynU4Bg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xcSfxPPC;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="8X/LtTH4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760714287; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=T3GLww76RJcsd2GjX3gg3/FMhdYzc0pTJwH6K/kNPXY=;
+	b=xcSfxPPCNp1TboryKAwOsxL7amZ4DE3ooNWWGwGmSRi6QXff7lfOzu2/fMvajzPRBssgCM
+	DO2w9O39uhMWldaDsH1L/Cfg9zCA4uo+u4RCSKXv5Cw+1ETeVuJqirIWQpMS1chMmmWHet
+	QokKLgjKJgc5CF6DYdq8LmVWwI+RXtw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760714287;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=T3GLww76RJcsd2GjX3gg3/FMhdYzc0pTJwH6K/kNPXY=;
+	b=8X/LtTH4djdAVrPyuc9fminwuQWQRNqlvrxfEsEdnv4TFrkHxocfqGsAHZD373TQ2xpQBy
+	Kl7aJnBffxynU4Bg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0253313A71;
+	Fri, 17 Oct 2025 15:18:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id w3EIOi5e8mgsCgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 17 Oct 2025 15:18:06 +0000
+Message-ID: <53982a5b-c3ac-4977-83cb-5b4e6d240f75@suse.de>
+Date: Fri, 17 Oct 2025 17:18:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <839e3878-ae62-4c8b-a74b-ac4f6f060d98@app.fastmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/imx: Add more RGB swizzling options
+To: Frank Li <Frank.li@nxp.com>, Marek Vasut <marek.vasut@mailbox.org>
+Cc: dri-devel@lists.freedesktop.org, Abel Vesa <abelvesa@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Liu Ying <victor.liu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>,
+ Peng Fan <peng.fan@nxp.com>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org
+References: <20251017144626.66918-1-marek.vasut@mailbox.org>
+ <aPJcXLcvX15A0HtA@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <aPJcXLcvX15A0HtA@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: B817A1FF15
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	URIBL_BLOCKED(0.00)[infradead.org:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,linux.dev:email,pengutronix.de:email,suse.de:dkim,suse.de:mid,suse.de:email,nxp.com:email,mailbox.org:email,lists.freedesktop.org:email,ideasonboard.com:email];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,kernel.org,gmail.com,ideasonboard.com,nxp.com,pengutronix.de,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[dt];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -3.01
 
-On Thu, Oct 09, 2025 at 11:16:02PM +0200, Arnd Bergmann wrote:
-> On Thu, Oct 9, 2025, at 20:47, Manivannan Sadhasivam wrote:
-> > On Wed, Oct 08, 2025 at 07:56:44PM +0200, Arnd Bergmann wrote:
-> >> On Wed, Oct 8, 2025, at 17:19, Manivannan Sadhasivam wrote:
-> >>
-> >> That is not my impression from reading the code: At least for
-> >> the case where both devices are on the same bridge and they
-> >> use map_type=PCI_P2PDMA_MAP_BUS_ADDR, I would expect the DMA
-> >> to use the plain PCI bus address, not going through the
-> >> dma-ranges+ranges translation that would apply when they are
-> >> on different host bridges.
-> >> 
-> >
-> > Right, but I don't get the overlap issue still. If the P2P client triggers a
-> > write to a P2P PCI address (let's assume 0x8000_0000), and if that address
-> > belongs to a an endpoint in a different domain, the host bridge should still
-> > forward it to the endpoint without triggering write to the RAM.
-> 
-> If 0x8000_0000 is an endpoint in a different domain, I would expect the
-> DMA transfer to go to the RAM at that address since the DMA has to leave
-> the PCI host bridge upstream by following its inbound windows.
-> 
-> This is not the problem I'm talking about though, since cross-domain
-> P2P is not particularly well-defined.
-> 
-> > Atleast, I don't see any concern from the outbound memory translation point of
-> > view.
-> >
-> > Please let me know if there is any gap in my understanding.
-> 
-> To clarify: I don't think that programming the output translation this
-> way is the problem here, but assigning memory resources to ambiguous
-> addresses is. The host bridge probe uses the 'ranges' both for
-> setting up the outbound window and the bus resources. 
-> 
-> If the PCI bus scan assigns address 0x8000_0000 to the memory BAR
-> of a device, and that device or any other one in the /same/
-> domain tries to DMA to DRAM at address 0x8000_0000, it would likely
-> reach the memory BAR instead of DRAM. If for some reason it does reach
-> DRAM after all, it would be unable to do a P2P DMA into the BAR when
-> it tries.
-> 
+Hi
 
-I tried to verify how the Root Port is supposed to behave in this scenario, but
-I couldn't conclude on anything. So it looks like this overlapping *might*
-create issues with P2PDMA and DRAM access. Thanks for spotting and also for
-persisting with my lack of understanding :)
+Am 17.10.25 um 17:10 schrieb Frank Li:
+> On Fri, Oct 17, 2025 at 04:45:38PM +0200, Marek Vasut wrote:
+>> Add additional buffer format swizzling options beyond XR24, the
+>> hardware is capable of sampling other formats, fill them in.
+>>
+>> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+>> ---
+>> Cc: Abel Vesa <abelvesa@kernel.org>
+>> Cc: Conor Dooley <conor+dt@kernel.org>
+>> Cc: Fabio Estevam <festevam@gmail.com>
+>> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+>> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+>> Cc: Liu Ying <victor.liu@nxp.com>
+>> Cc: Lucas Stach <l.stach@pengutronix.de>
+>> Cc: Peng Fan <peng.fan@nxp.com>
+>> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+>> Cc: Rob Herring <robh@kernel.org>
+>> Cc: Shawn Guo <shawnguo@kernel.org>
+>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> Cc: devicetree@vger.kernel.org
+>> Cc: dri-devel@lists.freedesktop.org
+>> Cc: imx@lists.linux.dev
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-clk@vger.kernel.org
+>> ---
+>> Liu, please test on MX8qxp , I do not have that hardware.
+>> ---
+>>   drivers/gpu/drm/imx/dc/dc-fu.c    | 40 +++++++++++++++++++++++++++++++
+>>   drivers/gpu/drm/imx/dc/dc-plane.c |  8 +++++++
+>>   2 files changed, 48 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/imx/dc/dc-fu.c b/drivers/gpu/drm/imx/dc/dc-fu.c
+>> index 1d8f74babef8a..397af0e9b0236 100644
+>> --- a/drivers/gpu/drm/imx/dc/dc-fu.c
+>> +++ b/drivers/gpu/drm/imx/dc/dc-fu.c
+>> @@ -65,6 +65,46 @@ static const struct dc_fu_pixel_format pixel_formats[] = {
+>>   		DRM_FORMAT_XRGB8888,
+>>   		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
+>>   		R_SHIFT(16) | G_SHIFT(8)  | B_SHIFT(0)  | A_SHIFT(0),
+>> +	}, {
+>> +		DRM_FORMAT_ARGB8888,
+>> +		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(8),
+>> +		R_SHIFT(16) | G_SHIFT(8)  | B_SHIFT(0)  | A_SHIFT(24),
+>> +	}, {
+>> +		DRM_FORMAT_ABGR8888,
+>> +		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(8),
+>> +		R_SHIFT(0)  | G_SHIFT(8)  | B_SHIFT(16) | A_SHIFT(24),
+>> +	}, {
+>> +		DRM_FORMAT_XBGR8888,
+>> +		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
+>> +		R_SHIFT(0)  | G_SHIFT(8)  | B_SHIFT(16) | A_SHIFT(0),
+>> +	}, {
+>> +		DRM_FORMAT_RGBA8888,
+>> +		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(8),
+>> +		R_SHIFT(24) | G_SHIFT(16) | B_SHIFT(8)  | A_SHIFT(0),
+>> +	}, {
+>> +		DRM_FORMAT_RGBX8888,
+>> +		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
+>> +		R_SHIFT(24) | G_SHIFT(16) | B_SHIFT(8)  | A_SHIFT(0),
+>> +	}, {
+>> +		DRM_FORMAT_BGRA8888,
+>> +		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(8),
+>> +		R_SHIFT(8)  | G_SHIFT(16) | B_SHIFT(24) | A_SHIFT(0),
+>> +	}, {
+>> +		DRM_FORMAT_BGRX8888,
+>> +		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
+>> +		R_SHIFT(8)  | G_SHIFT(16) | B_SHIFT(24) | A_SHIFT(0),
+>> +	}, {
+>> +		DRM_FORMAT_RGB888,
+>> +		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
+>> +		R_SHIFT(16) | G_SHIFT(8)  | B_SHIFT(0)  | A_SHIFT(0),
+>> +	}, {
+>> +		DRM_FORMAT_BGR888,
+>> +		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
+>> +		R_SHIFT(0)  | G_SHIFT(8)  | B_SHIFT(16) | A_SHIFT(0),
+>> +	}, {
+>> +		DRM_FORMAT_RGB565,
+>> +		R_BITS(5)   | G_BITS(6)   | B_BITS(5)   | A_BITS(0),
+>> +		R_SHIFT(11) | G_SHIFT(5)  | B_SHIFT(0)  | A_SHIFT(0),
+>>   	},
+>>   };
+>>
+>> diff --git a/drivers/gpu/drm/imx/dc/dc-plane.c b/drivers/gpu/drm/imx/dc/dc-plane.c
+>> index e40d5d66c5c1f..68d32b76fab95 100644
+>> --- a/drivers/gpu/drm/imx/dc/dc-plane.c
+>> +++ b/drivers/gpu/drm/imx/dc/dc-plane.c
+>> @@ -33,6 +33,14 @@ do {									\
+>>
+>>   static const uint32_t dc_plane_formats[] = {
+>>   	DRM_FORMAT_XRGB8888,
+>> +	DRM_FORMAT_ARGB8888,
+>> +	DRM_FORMAT_ABGR8888,
+>> +	DRM_FORMAT_XBGR8888,
+>> +	DRM_FORMAT_RGBA8888,
+>> +	DRM_FORMAT_RGBX8888,
+>> +	DRM_FORMAT_BGRA8888,
+>> +	DRM_FORMAT_BGRX8888,
+>> +	DRM_FORMAT_RGB565,
+> Is it posssible sort by name?
 
-> If the PCI scan already checks for overlap between the DT "ranges"
-> and other resources (DRAM or MMIO) before assigning a BAR, this may
-> be a non-issue, but I haven't found the code that does this.
-> Looking at pci_bus_allocate_dev_resources() it seems that it would
-> attempt to assign an overlapping address to a BAR but then fail
-> to claim it because of the resource conflict. If that is the
-> case, it would not actually have an ambiguous DMA routing
-> but instead the device would fail to be probed because of the
-> conflict.
-> 
+The plane-format arrays are (roughly) sorted by hardware preference.
 
-AFAICS, the existing resource checks only finds out the overlap between the
-resources assigned to the devices, not between the DRAM or MMIO. This is
-something we should do in devm_of_pci_get_host_bridge_resources() IMO.
+Best regards
+Thomas
 
-- Mani
+>
+> Frank
+>>   };
+>>
+>>   static const struct drm_plane_funcs dc_plane_funcs = {
+>> --
+>> 2.51.0
+>>
 
 -- 
-மணிவண்ணன் சதாசிவம்
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
+
