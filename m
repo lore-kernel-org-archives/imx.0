@@ -1,101 +1,147 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBDF2E8B87
-	for <imx@lists.linux.dev>; Fri, 17 Oct 2025 16:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CE3354AC2
+	for <imx@lists.linux.dev>; Fri, 17 Oct 2025 20:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760719881; cv=none; b=M1QbI2gOvW5WIoZmAZhG77a7oOcGVwtBJMnkyT58h18RfGbFY3F/nbfFOpPkbNPMmLe1oxp6TqocWh3X8fd/yV8ARP6AYIRSOW5vEkvlYem97E+Mzms83Hag3k7eyTlAhpCYDfvlAY3HZ+7sVLfXRrOROrQyZB+8lGe4umXt65Q=
+	t=1760733568; cv=none; b=hf0I704ql1DqL+IAbghueYBM/0ARBybDYy/40fyBhIPKrQe/dwYNIoDBHH664gbQzzAMJxWBA2gbYtRybnZN6AygpWi9m3UAdr6EZdx+pwGt9KIxcPS76U0mV0SDF+jSIasEO0ZP9H+eoJvwex6+8AoWrM9njoExSvP9mqJklAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760719881; c=relaxed/simple;
-	bh=hBS7zXpwgc06YApPZakDHwkP5KDcqLK2xOOP5lYVbh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uzKLVSgQkQwwfVluGjXjDTLkzzV1EUp2LzAJbS3/APN7JlLIS9aSfBagUvIp1DejfnluCd1kUsqe8avSt2s/1PhR1t9v/AdEF197Gj5qFPjkHD3K0C8hIGsU2CaQuc41MCfwVa4sxaTQZWW93Iqj4b8nflfCWHY9zI7nd7fnKKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=F9oG5Aad; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1760733568; c=relaxed/simple;
+	bh=pOdywwcuWxnM7fhmeK29h2b+NOU5yZObF+85taBlX14=;
+	h=Message-ID:Date:MIME-Version:Cc:From:Subject:To:Content-Type; b=NiH8h6FnrIL8gzo9XqAhG3npXTIrt6zi2hujZrj432HYOhXPDzGS/S7mFKvwNJPB7Wt1lIr/PKsvE6mX2t25amswDo2XlRBLZekhn2mbGTP5vz4HduyQyDyCcCijfQ4asR0BO8E2zQMMHO1C3BUxQvbWMl0bCnE4TlijaI8o+x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SFDvIa1s; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="F9oG5Aad"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4cp9nc4Zdtz9sSq;
-	Fri, 17 Oct 2025 18:51:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1760719876;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qnyRJyBxqqT6Z/vke/OGUHeBh7T7CM9FTOlPeQxkIbU=;
-	b=F9oG5AadMHujS4rxilXnq9aHT15NPwRYd0bRa+jQjBORkZi2yiwZRFiq7dMLwqrbEgtGnF
-	uVhQIpmLzP6MgJi2cdKVxACJC+lgTawa2grTfcPCTE74t1YJ3aC07XY1cLofvD7JL8HGlR
-	nEP4xvjIqp+KSA1RKCDRBwm2tvHLT7AkpWoudVKprnU5DQOt4dNGoR/02HOKlT5vGX7whu
-	5bYZetKhuYhZgGKCsGgQZzZLg6GR9J05mwTWHj7BK8Mw9Fi2xnkQ8B7UBiEy31GB+g55OL
-	XxzpVRn74A3h2UUBT39eg38rQ1yrGrICQKFpBHU/PesyL2D7HzyJZo6KXDDN+A==
-Message-ID: <85a35703-fc75-4fde-b9ca-a2ceb1214327@mailbox.org>
-Date: Fri, 17 Oct 2025 17:54:41 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SFDvIa1s"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-426fc536b5dso1305537f8f.3
+        for <imx@lists.linux.dev>; Fri, 17 Oct 2025 13:39:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760733565; x=1761338365; darn=lists.linux.dev;
+        h=content-transfer-encoding:to:autocrypt:subject:from:cc
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V+WQpTRfPlqj95XL4teQctqLR82Dt/i4sqVN+jGQCFI=;
+        b=SFDvIa1sepJTYOFp5AuqOlsi7xDYVG7gd+dXLEsqtm8VGpIf1mQgaw/Y4lCKgjD/eM
+         pPzSJXmLIpkV19oVmLio0UxADr3CW1R3UuI3JdPJYUbmMxCYlXfkSsU/pt/DnM/3dmX6
+         LBLeBkWuIXILVwVtNdwFxm9Tx0Ch0iH6JspzATXxYORUqxBwMi2q6dzU18VSII7RYkJb
+         7xnx5aUdhRCzTLSAA9hG64n5LUfhH3EXTyQ8C/5TdkQKlSr4qkZDYPMHo2d1eolPZBp1
+         Umc0XXlpHCsYKlpZKuCqVj4xRQxrmXic1iQFXlV6RAyHeq6Vc6E1cJoKhWGBrbrr/gmc
+         TiLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760733565; x=1761338365;
+        h=content-transfer-encoding:to:autocrypt:subject:from:cc
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V+WQpTRfPlqj95XL4teQctqLR82Dt/i4sqVN+jGQCFI=;
+        b=cF59CRJDy8sRAxckC/CZhbgHCMEDiwajMImlmQ3zbwRr8/nLDqz8GuEL3OBzgHN8Qb
+         9j/LCpqZaFU9hSkHSWOFcfMt3bMt/q8xKjnv4TzhgcwWkNtyb27slLClhXPk2eTbHdXu
+         icues1KIv+ePGt4KOt7QnsNBSep9jIeGSe7MJLjV/L5pUNcr50sAnByL8zS+DVrzXUwy
+         kojNv89GEKwhovx6WB7d2HpbKmaFj2yOy/dp158ibeaq8wLtupzxBvFCHkRQSy7kLCTz
+         v5n6myulBZrPaeLEf3yyWCDhdGWKbL7SFNx+8wqEPUHq93uV7/wyPLEujgqAx0JNuhHB
+         BsfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxYvB9P8ECTBARIYPWkIdMwHu3zBdXP1oOQ1QUK7VeTxjLUoSG82JeXZGWJUufLixWsw4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzecdL+kP1P9RaB/jC+ca6Pb8RZNmmHfVKbvKi6C7lWEfLfGuQ2
+	JLj6JUZMqMK/MS0trEdAEk51xAuUJ729K18vXTOqheb5KOGiAN/DZTQd
+X-Gm-Gg: ASbGncuwo1LScUG8wVTwzrBlOpvbnetVBeRHUDw+YmxkZ5rEBhrQ3PLTpQfoeZBhZ2Z
+	2ntg/5XvEdiy/uotxb6seVrl+G7pqhR1XQXxlK2XGgyPwdqQNc1vf2hKvYEV5tCyrH7vsjRHbUl
+	8xMafR81MOWsBuZN+SVpmULHTbZyHFWyxUurCpyGiGmkRBfNgVxcBufifXSszehig70fn2C6gtg
+	9sKsq+JEn5V71BSApt6A7Egfjp4BgcL6OV/bXPxreRvicbh97fFVVzOvoxkpaHBhXkwvyl7doM+
+	tYIPl6AkOTlvCzNrZQtqSsFl7+QwVH3CaIMInud6DpYzkBoP4cTLWjr8JGJkCml78HB9yuVupsh
+	pqZVHUgw+oXMUTTdwp21ABj8m1OgCjOeZgIBuSTZtx5EW4WjWiic0R5stffWW5WLtoj9RYZPa2k
+	fV6UmbH49EcVT3BWOSI4YFp6usp7hq2O+QGaLYKukanRlvIrqUaXh5oe0LtLffSYahmN9/RH5lU
+	SXkj1XzA5pNoRWUUiD4/xMk1a9zfb4HrhYqN1dxzD6l8VEC0mU=
+X-Google-Smtp-Source: AGHT+IGw1fqnps6rMZSvWDTg9UVcVtgj3c4YZD033GS5xD0FfEHqCJ67XztOm1sHe48Zzh/q+Dexpw==
+X-Received: by 2002:a05:6000:2586:b0:403:8cc:db6b with SMTP id ffacd0b85a97d-42704db4467mr3840604f8f.35.1760733564987;
+        Fri, 17 Oct 2025 13:39:24 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f33:9c00:f581:27c5:5f61:b9b? (p200300ea8f339c00f58127c55f610b9b.dip0.t-ipconnect.de. [2003:ea:8f33:9c00:f581:27c5:5f61:b9b])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-427ea5b3c65sm1072411f8f.15.2025.10.17.13.39.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Oct 2025 13:39:23 -0700 (PDT)
+Message-ID: <68a7779c-acc2-45fc-b262-14d52e929b01@gmail.com>
+Date: Fri, 17 Oct 2025 22:39:45 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH 00/39] Add i.MX95 DPU/DSI/LVDS support
-To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org
-Cc: Abel Vesa <abelvesa@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Lucas Stach <l.stach@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org
-References: <20251011170213.128907-1-marek.vasut@mailbox.org>
- <2a22c45e-5de4-49ee-af3e-002941a7e2d0@nxp.com>
- <bf451620-c917-4d4a-999d-32148fbcf11b@mailbox.org>
- <182271f2-4986-4401-a4c5-ca379a02e69b@nxp.com>
+User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <182271f2-4986-4401-a4c5-ca379a02e69b@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, imx@lists.linux.dev,
+ linux-omap@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH net-next 0/4] net: phy: add iterator phy_for_each
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ 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
+To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Siddharth Vadapalli
+ <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: 21f322bb393c42677d5
-X-MBO-RS-META: xow3qztriop681daecnza1kueomurrys
 
-On 10/15/25 12:09 PM, Liu Ying wrote:
+Add and use an iterator for all PHY's on a MII bus, and phy_find_next()
+as a prerequisite.
 
-Hello Liu,
+Heiner Kallweit (4):
+  net: phy: add iterator phy_for_each
+  net: fec: use new iterator phy_for_each
+  net: davinci_mdio: use new iterator phy_for_each
+  net: phy: use new iterator phy_for_each in mdiobus_prevent_c45_scan
 
->>> This has conflicts with my in-flight patch series for adding i.MX8QXP DC
->>> prefetch engine support(though i.MX95 SoC doesn't embed any display controller
->>> prefetch engine).  You probably want to take a look at it, just a heads up.
->>>
->>> https://lore.kernel.org/all/20250929-imx8-dc-prefetch-v3-0-c01d0608add2@nxp.com/
->>
->> Thank you for sharing that.
->>
->> Would it make sense to send 4 and 5 separately , so the fixes can land faster?
-> 
-> Maybe not, since there is no user(DT node is not enabled) so far.
-> But I'd like to have more review/ack for that patch series(it's kind of
-> hard to get sufficient review...).
+ drivers/net/ethernet/freescale/fec_main.c |  8 ++------
+ drivers/net/ethernet/ti/davinci_mdio.c    | 14 +++++---------
+ drivers/net/phy/mdio_bus_provider.c       | 13 ++++---------
+ drivers/net/phy/phy_device.c              | 14 +++++++-------
+ include/linux/phy.h                       | 11 ++++++++++-
+ 5 files changed, 28 insertions(+), 32 deletions(-)
 
-I could test on the MX95 if we can somehow ... figure this out. Then I 
-can provide RB/TB easily. I don't have MX8qxp device.
+-- 
+2.51.1.dirty
 
->> Also, could you please try and avoid the SCU dependency on patch 7 ,
->> and more in that direction , can the PRG be made a bit more optional, so the
-> 
-> Don't think there is any way to address them.
-> 
->> iMX95 can still be supported by the DC driver ?
-> 
-> SCU dependency and PRG(even more other reasons) make me opt to separate
-> modules for i.MX95/8qxp DCs.
-SCU is only a register accessor, PRG is another block in the DC, I think 
-those can be isolated. It seems the whole DC is a composition of 
-multiple reusable blocks, so we can compose them for both MX8qxp and 
-MX95 the right way and reuse most of the code, right ?
