@@ -1,285 +1,203 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013069.outbound.protection.outlook.com [52.101.72.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9046E2F12DC
-	for <imx@lists.linux.dev>; Fri, 17 Oct 2025 15:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713209; cv=fail; b=oA76j2ZXgTHBz0puI/r2q0CAjCLcdRrneAyWZv81QTjFqHYSh2jAYI9Q3/sHXcawpdkNBDSsWF6A4/KXOui6BbhFA/RnEKRWJLL7uyHdSasfnkI3asTK2XMCzn/sYapnZPkppsVulvYE5sD8646+vwRkgMX/xMPIxp0YQePQ+Qo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713209; c=relaxed/simple;
-	bh=M0zsPGF82hykh120SzaYs2kejNe1n2UrjM5EuN+alrY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nTUOQtfW3HdqabVC78fPba8ivMkSu1y8VHEUsIL+dXKX34oZJARs1sliIxxlC2+gywFvCFUg+oEoKbHiv2qJDrnwpCmPgmGoHb6xQ6ejG+wgma2xDsNqSIRVosewxapEooLBpKy2P7pcY966QpLYAZgpyHzjA1FR6r+UpUDCBHQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=U/uAIHQd; arc=fail smtp.client-ip=52.101.72.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9593208
+	for <imx@lists.linux.dev>; Fri, 17 Oct 2025 15:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760713270; cv=none; b=qmJtgVmpn5wj6jw34vPa8qOiUNGI7gqkIDYrlAusp6hDsNP51XQYPsall1U1hgMfWTCw4pf2I63nLTvk3Of4yUZt0xRMnpFBu3UApNIVQu1LeCDAVbEDazGqWATxeYhnjIF6wzYz5h5T1+Pqe2gZUrxLupVJvIb1p0TQubqzlGQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760713270; c=relaxed/simple;
+	bh=4R5c1bGrsnGkOOUnK1CszpzLqwKaTx6S7E1UKViMgWo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ALocMH8AYVFJvITnT808F92fSLqry69Q+88m8zAxuX78sbOFk9MAbXhGoSTwbFUKkMof81YqscZmIx6Vpi3Qan4QzQ020cPagF/TCCTOzvxrh/45GvE3GATxcEUCnP9ku/JLzoEn4KZo71sc15wk1qkaS9zSDE4mWe4roNIZluU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=huIUPnA3; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="U/uAIHQd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bb3cx4+DY97fcagb9/h+mvFwPTBrBk/cqXQwOctk9N30Bk37H7XBA7jfbG+WNoxNJQ3F557abX5mkRk2BCdsEzq2GjfBee9b/p+oS5cb9o7Lumih/5qOgyfhs9MYY8Ob/LL+Y6I/x5XAI6cMaL5asrTcXuS1wALUMya+K7RT2MAktmF8HgPVAr/28NzNjYy9Z3NOCr7CwNxvKLs18k57VeSRB6q5Z9x5sMtKer/29fgRb/lwJYBUsVygXXodIcWPLdZfMoikurVs6Wi8RKBskEUFa53HqVnajkM5iphxmsuyP+r0ZeGoNWpWOwVKyuF5M/nCbHjjKAPgTopybHg42Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=p1dcKcpVVLGTBkOUmuh0NmoX92wivO5TSnNxU/70zrA=;
- b=L5hWcciM9qN/S3LDmGzt92e/faXp6jUmVv5W9gkuj/2B83TaeJldBbvlw5Sjhvpzd8gzqeIWf0te7PftG99j7VLl4/TbMcy23nZHBSzRr5XmA44d3RSYQxvWCeFK7CshJ9W5jjr3xof/tYeiOK455DMgb3tqAFVmZjkhHTS5SH7h/OS+lNzD14L/7+Z/EdNC4x3pNfZRmYE3gWzu1LYtcMDTzk1EWN7pWj+w3Y1kC1wp8vCihPr4YnAuPR3Avp8CgQ9dJcMD8F+7b5nr7EgwfNY23aHkxsEN4teDFRELsMCUowtauAvRRwQH/J3fn0REnMOKJFR7EZVfBSZKgrBAZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p1dcKcpVVLGTBkOUmuh0NmoX92wivO5TSnNxU/70zrA=;
- b=U/uAIHQdYEIOGLr3Ypu+BesfWnq9l4PZUJL+LkQ+/c0u4B25y1Kv4dwpXJRNdYQA1w6Vrjs2/Z7iKVgecL8xiEtgiNlNF3V3V7ukeIKciHMs6j3QT8nDTAG57529Kta4EAGKU4tzsGz5jfZTt0cpZArVEsZII4NDL19OmwRAH4eEPHBX33FeaFX3bjumD/o2YLOHBbz7vCK3AsjEM/IvqJpmCrOfQrbpMhkNsMofKU8uMy4A+3OMy6+adpzLGBvIS13lxW1lPesFdFAT3OtUZbz4COgW2ZQ9wiGgFFbkuMWeUeBGk8opc9iHr6T6AyOneOaHpbIU62LQ5KvAPQ5CoQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by DB9PR04MB8395.eurprd04.prod.outlook.com (2603:10a6:10:247::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Fri, 17 Oct
- 2025 15:00:02 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9228.010; Fri, 17 Oct 2025
- 15:00:02 +0000
-Date: Fri, 17 Oct 2025 10:59:53 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-clk@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v2 2/8] dt-bindings: clock: document 8ULP's SIM LPAV
-Message-ID: <aPJZ6dDRyyl3Qg4o@lizhi-Precision-Tower-5810>
-References: <20251017112025.11997-1-laurentiumihalcea111@gmail.com>
- <20251017112025.11997-3-laurentiumihalcea111@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251017112025.11997-3-laurentiumihalcea111@gmail.com>
-X-ClientProxiedBy: SJ0PR05CA0076.namprd05.prod.outlook.com
- (2603:10b6:a03:332::21) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="huIUPnA3"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-63c0c9a408aso3532517a12.3
+        for <imx@lists.linux.dev>; Fri, 17 Oct 2025 08:01:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1760713265; x=1761318065; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pSuJ0ACXse9H5YfB3aq/7dIEkglg7Np8q6vNe0vp/Qg=;
+        b=huIUPnA3/1CK6b4S/UtBkkzcvPNX4AhlAeubYyCu2yIfr/E0SRNGTIojy2S6rjiswU
+         kaNc2YM4fuTiWq/fHVtxdEq9VELgZbD5qDBeyxNzEK97uN9zyH8HRbIXJ9Wrg86Nfuai
+         4i6p2f+wA8UKfQBGlFQlwjfW75NHA6FVX8gGvD5x61IVBJ24dNEXcRAvtyQfpmKVRPmu
+         j0jzkU7YZo07dcGnNd4JRzxZIPvMg7RkE2plAMP4LVhdjXZ4+Ak5+2UcwamL14Uj+vYL
+         //Dw58eGREzSxV9UZOfKip+ZQ3iM20LXRr2j1nVlp3bsOz/a0yZQCSGk0g4Wmn8/ZNnf
+         smww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760713265; x=1761318065;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pSuJ0ACXse9H5YfB3aq/7dIEkglg7Np8q6vNe0vp/Qg=;
+        b=l3w4BKKcy6yMUA/of6b8H5tdm25a4J8DxF5p/389lZ+iv03wMYkrdQbiSIHAi6Uc5L
+         BYlOPuoPcnEIMFycJpUDf67aXFXEebOvHdDb9P2MNAE66Y5hCUYex1U8uWy1dP0G7sh1
+         71iLxgoeqDTsbN5ZJi0qZWS2ud8fJug+WrLu1d/sMiY9if9vH7+n7lFFybB/OXT/Zc48
+         7qVhyH21H2PnemPa1EvmuMIzEr3ObMtogtAVzT67pwLSRwpIAsMVZqXu3K/iqpbzgPat
+         wegv8m1Ut0HMANq/S/FgJS7tyuqnpSoTw5VNVHBibQG4Db76o7aLXrzkk8XT8w0AinZz
+         V7Cg==
+X-Forwarded-Encrypted: i=1; AJvYcCXktDd1FTGKQQoxTCTL5bRCgrHpynqbAoUF0mSzso7elYVnZuoEi0aFJ6gyq2bAe6pE5m0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwmPcz6obpMI2qU6dJhWnCJ4jp76RHUq8cPxCRv9SsWsx3mVYxO
+	8dsqsXC7vE40GsKpqvj7QmW+XUJTg2KPEl1c6Hjr76lhhTy8cYIStVDJ8Rh7K321+tjlYchQ3jp
+	aDFdI
+X-Gm-Gg: ASbGncvVLp3azoDEV5zJRzppUO0HKjUAEWb0ptDxGbkq9mM4AkvAlpW6wn3okMS9F8X
+	BJBjkUtrIsEWe5q7q0PqeQUi8aH3lJ/FoJRl+7DyYCAbMywpQstuoQrj+lfIsKV4j7iQ6TJ0bh6
+	PFxVlSkG9K64DjHJjrswzqQt5xvUWBEGkzzop4pPsND/48Nw6qpFxe9E3a5hWdgo4nVXToAh2/B
+	aaxI2bgpqoGP1+F/e35yNhVTI9Eqr+gg1hs2bHnB+Cx9sRa78LAzO/FJ+fV6mVBrC4/AqeFZY1R
+	oDBJ3+RYWJ1ba4u8V1hNM44cISwWO20XeRVJgCFtmOJr1RVXcMKYWQRqdcWdRDFYDaGJT6xWIIL
+	sw1xiU3IEs5OXiuC7iXpUasIEzw5ns0Ru0/mhZqIbFYD7mBYM5HMvDY8aSvuLKjW6+FbfqPINnp
+	v+1oKKt+q27nHy/8g=
+X-Google-Smtp-Source: AGHT+IFDFe/2+iyA5FeI+RGuDLZ1H4kJaebU9REAfIID6sqcvriuQNr4F8M74Wd8OLwWVRFHd3xISQ==
+X-Received: by 2002:a05:6402:84d:b0:63c:4537:75c0 with SMTP id 4fb4d7f45d1cf-63c45377875mr654360a12.38.1760713264992;
+        Fri, 17 Oct 2025 08:01:04 -0700 (PDT)
+Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-63c0e77b34csm4048961a12.16.2025.10.17.08.01.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Oct 2025 08:01:03 -0700 (PDT)
+Date: Fri, 17 Oct 2025 17:01:00 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Jiri Slaby <jirislaby@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+Subject: Re: [PATCH] serial: imx: allow CRTSCTS with RTS/CTS GPIOs
+Message-ID: <cdkpp74ra2ltr7h46psutkwnzyvl4iegcicnhqqj7svm5trltm@w2egfj5nryjm>
+References: <20251016113730.245341-1-matthias.schiffer@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DB9PR04MB8395:EE_
-X-MS-Office365-Filtering-Correlation-Id: 70409378-ba3b-49c4-f51f-08de0d8dd96d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qhSeeiGbXZ6tVuPoUv7qEyEXzBkwUXP6On75/iJrljljGezHVu8diL4uVCYq?=
- =?us-ascii?Q?zJ70ww/i1rSGE74i+fxfmq+BfpfQbaSOFplinpbKdubGvBOduFStAoUmyeW1?=
- =?us-ascii?Q?lGwtbM5A/++oGlRryizhmMTufQINyRHED1G/tN/gMKai0R8DWmZnH+v6KpuF?=
- =?us-ascii?Q?0vLmuGy980mNnBknqhcStiY7PTXfVN9FVPnekUnbRn4b8oABJfx8Ev3U3FIi?=
- =?us-ascii?Q?1o7qieC2yvqaJHPCujcvAx/2+H4WyKWVlEOrPaAV58ozut+aXcYWqEDG49ll?=
- =?us-ascii?Q?qZmMdf+cji7lAjqWtB7ZHmBktIAKuq4nSwmbdfDTlYmP85Pn7r3i/OTWki0N?=
- =?us-ascii?Q?6450qJp1JPfVJDfrpHUhSHpEguytgmBBusJqIuSXkwvkMQLnli0mpr4zAWF6?=
- =?us-ascii?Q?cOFzWHjjggBkZfOeYbpY0lrh5rmxnIVJ2Z29DKjQ9g4mDGm8e8w4Rve2Z8O+?=
- =?us-ascii?Q?UPsmbktYNaxOctJp/nQli4+e3Kzrc3+Y7Xh3ZOKLA2rariWkWcKwgxsBIGjx?=
- =?us-ascii?Q?0TkW5MlPIJiW8oD8Z3SqE/RiIJ7DV62yeE8vTH/XQVRnR14M7pRwdjETplpz?=
- =?us-ascii?Q?NvGGa98a11CC81EyOh5jKoA9K5pOp6WJAkyc2pAZJoBt9HkryFmXl1zK56fZ?=
- =?us-ascii?Q?D4gyJEDrVWkq5Dde37pprF+QsAj4MRQDypFbqKzQxgupAEeXw+MC/jwrTM6o?=
- =?us-ascii?Q?FJbnEzTwjKyO0TYOd89rK2HiEf+vefYuDB73auggi3N+Ub64fQ80XZ0Aes6i?=
- =?us-ascii?Q?eXjQtfgKmqBp1pn/OczDyJSNqkJZtJsf753YssB/RoK/6/e59IwFY4ZW4bSv?=
- =?us-ascii?Q?fV1EoVRPWKbvc/WzKCBfGfek4mHcsukMuEU0jEGS0f8Gfx8Cs9oSF+94nlc8?=
- =?us-ascii?Q?ajAE6/1DbsqSTP0p5gtYDw8xlGzdjm5TAl8+4YJczXpW0+vsq/STeLLj2Yoz?=
- =?us-ascii?Q?MD+ziXur9sIy22zzR9d1Oga7wRx9sG/kGP7Y2pDVaseAvkEnXMVcV1Znxd+Z?=
- =?us-ascii?Q?mUxII7MnxBe/EdGqbo14vmkJSBkW3Mr6UycAd1aVaf7Tq+y6pKtS7uepnW8q?=
- =?us-ascii?Q?n60ZjNV6TrmHsSJA4CZuAZdI3QaBD8gQX8CHUnLUSZYotryWD0TjMeNqTGry?=
- =?us-ascii?Q?hwhZb73qX9nVgVVUTZfpb5aVnIP52MJOvrtnRo4jjhfIaBKLi7MQn49K191x?=
- =?us-ascii?Q?Sc7xCQ13sOV1Z79snC+YqxTqwHjSgDt8xnwK9eonUlmOo9kjUMYHEep9qRfg?=
- =?us-ascii?Q?W/9I3pTURKovGqXORZ1SzkqJMK4JmNPgHtbP7LwJSEbvzkuwTA3AS0S9HyUe?=
- =?us-ascii?Q?dh/hizyTtvkr1uvZAih5jt4paS4QgDm227DktMeIb9xFzZSZb2WbCocT6SdK?=
- =?us-ascii?Q?2a2MvWp8eZONTISHjyM4Q36DxC3dnXk356UCZI+PDIZuamo5HuSJiiPSCwR1?=
- =?us-ascii?Q?PjqVEMsPtzjj00mUVcpVh6F7lJUH17ad8fgi+nB2dE9km2gd+i/RcQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XS57Wb2GTBTGavpn+vC+H1l9rf0uInctymws5T2cfy67RUQsE78DkTEQGJ0s?=
- =?us-ascii?Q?ElAwaUDdtAkSyWjehr+ng/tV8/CnGMPQVUlO3fT1ZdL4J1pi8OKhicV4/ugh?=
- =?us-ascii?Q?84vTydv8tEHG5heWSfYUZR4RMgzaWD/gUf4WTDiGt5Sob2xYIRwOnPyhFLtt?=
- =?us-ascii?Q?mfR6U/umQr/VcBhdQ9qGho5+x1jiYBbYa0pgW09T9A/ZMrSXxxQKLbSMYWQn?=
- =?us-ascii?Q?I9JctowVa+rdylBbdEi3K3QX8aHwmipYaiZiqknzho0tKqtBGf+GrX00C8RE?=
- =?us-ascii?Q?MLyCO8f6OQMBrbGlrwQx1W2ztJcKRLPOkd3cbAsm0wOc1Sj6LI6sV1aNKhI7?=
- =?us-ascii?Q?j1/Slfklc+I+pi4N4Jhw6JEnCxoyjjk8SyAZfiV/b5CEs+L/CzIyR+1PO0xt?=
- =?us-ascii?Q?/sn3pHcIO2yJ9zQM2WiE9tRrSonrc2y6rZn5F9yAcaSjKV+mMLIBfCMeU95B?=
- =?us-ascii?Q?knjy3uMOOiod6b1W/LINifpKb+52lt9/DI0cc+XwPWxAEKWOO8oYZWpfxzbt?=
- =?us-ascii?Q?joaGZv0h/GeBl1AaDgscDzZkgr6qw3vE1ejk/8TFV6Mq5wOKQXXKL9JBgW46?=
- =?us-ascii?Q?49rtjY6sV4CTbEjfIELFk9eAyXpqe6sJWS3ef3D8ylrhnvxqPN2CuwQd4iMF?=
- =?us-ascii?Q?q6BOrLob8B/Acy4jQzZ58yuIm/p6qq/QdyLo8ebXdXfCk0usvWUNX3mcfhdX?=
- =?us-ascii?Q?bGwloaDZVz6PCiBhY3i4qBJbaBzpjoqHfLRSnBRz0lNfv8Te7coJ5UvjSCgW?=
- =?us-ascii?Q?bLsOuhUzcjXdHwapIQY0iRwBbfpHU8YDALG/zq1ExEsYqpFAuEPpb9b15nHH?=
- =?us-ascii?Q?3i4NdUUfailPnskMK37imOlj8Fd3wjpwbQ8lnsiJJaQXgEwY4Y1iUUUITYhm?=
- =?us-ascii?Q?Rjs+KXftWI03DiorJFMyMrfxpwxUAuK7CUof88oRUWYIvQY9xm/kqvlFd5nL?=
- =?us-ascii?Q?QReMmpS7NzTuc/Oy3L6MDkEOHU1OezLYAPU2MQNnYbwGegnnnOYRU1hSkF6n?=
- =?us-ascii?Q?s9BHUjIutQvpAktTjLQ3bdbrZjNWG5/8T7VZ241WqprxTixSNiP6oeVNacMz?=
- =?us-ascii?Q?EtztLAd+B6Ex4Hf7+IlC+WkXptS9uW93J6MvJtK6iC9VxGnso/cF4Q0IGcH2?=
- =?us-ascii?Q?7/g6rUI0ifCpDO3eZV8ep7qKlsvc6Hv+iPQCDVFIjs5gdnYQrJT1i/UM6+m/?=
- =?us-ascii?Q?T0ZZ/Km+fCiMRjYWHA8X3nX+G/0v1TYAsY341PmalEmk4Ukgjs4d1GVxap7T?=
- =?us-ascii?Q?dEntaPWqITwnBWd9q461p5n0wh7VO9ftp7GoA6ItEtz8bSK5+dC1J6UtaJiz?=
- =?us-ascii?Q?t78uYnyMlmlF0obaXB7MYuD2ZLKl9VnaXmyqBdFjvtmi+YKAYj6uM03k5Mfd?=
- =?us-ascii?Q?BtsQsGQKIQMZ/5pCHzv2ghgWyHNzvkj9nTv7OdNSLNOPTg0dpYuH1fKKCCV/?=
- =?us-ascii?Q?7cFSuqT4mBjOgY0QuIFJjVQiKRRB/xeZ85fPAe1GvpQ9sfHBNEa8NIGuHfge?=
- =?us-ascii?Q?PwEujPoMfHf1UvSNYlq7vYICPU4EPbs75Gy0WzccDWTIoAiTjvHU9xa8jimT?=
- =?us-ascii?Q?eCfpVEgiDoRHRNlw48I=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70409378-ba3b-49c4-f51f-08de0d8dd96d
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 15:00:02.3882
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l1/j2wx/Cu0wluxJLJWgzz+2C/VfrLQNUG9c+CuAzSDa568W5RVojKT11OlLmMjMOU5/qeo+NyjxTWmlYBZiZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8395
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="nxlujyqvbxqnez6y"
+Content-Disposition: inline
+In-Reply-To: <20251016113730.245341-1-matthias.schiffer@ew.tq-group.com>
 
-On Fri, Oct 17, 2025 at 04:20:19AM -0700, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->
-> Add documentation for i.MX8ULP's SIM LPAV module.
->
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+
+--nxlujyqvbxqnez6y
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] serial: imx: allow CRTSCTS with RTS/CTS GPIOs
+MIME-Version: 1.0
+
+On Thu, Oct 16, 2025 at 01:37:30PM +0200, Matthias Schiffer wrote:
+> The CTS GPIO is only evaluated when the CRTSCTS termios flag is enabled;
+> it should be possible to enable the flag when only GPIO and no hardware-
+> controlled RTS/CTS are available. UCR2_IRTS is kept enabled in this case,
+> so the hardware CTS is ignored.
+>=20
+> Fixes: 58362d5be352 ("serial: imx: implement handshaking using gpios with=
+ the mctrl_gpio helper")
+> Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 > ---
->  .../bindings/clock/fsl,imx8ulp-sim-lpav.yaml  | 72 +++++++++++++++++++
->  include/dt-bindings/clock/imx8ulp-clock.h     |  5 ++
->  .../dt-bindings/reset/fsl,imx8ulp-sim-lpav.h  | 16 +++++
->  3 files changed, 93 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/fsl,imx8ulp-sim-lpav.yaml
->  create mode 100644 include/dt-bindings/reset/fsl,imx8ulp-sim-lpav.h
->
-> diff --git a/Documentation/devicetree/bindings/clock/fsl,imx8ulp-sim-lpav.yaml b/Documentation/devicetree/bindings/clock/fsl,imx8ulp-sim-lpav.yaml
-> new file mode 100644
-> index 000000000000..fb3b9028a4c3
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/fsl,imx8ulp-sim-lpav.yaml
-> @@ -0,0 +1,72 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/clock/fsl,imx8ulp-sim-lpav.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP i.MX8ULP LPAV System Integration Module (SIM)
-> +
-> +maintainers:
-> +  - Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> +
-> +description:
-> +  The i.MX8ULP LPAV subsystem contains a block control module known as
-> +  SIM LPAV, which offers functionalities such as clock gating or reset
-> +  line assertion/de-assertion.
-> +
-> +properties:
-> +  compatible:
-> +    const: fsl,imx8ulp-sim-lpav
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 3
-> +
-> +  clock-names:
-> +    items:
-> +      - const: lpav_bus
-> +      - const: hifi_core
-> +      - const: hifi_plat
+>  drivers/tty/serial/imx.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> index 500dfc009d03e..4a54a689a0603 100644
+> --- a/drivers/tty/serial/imx.c
+> +++ b/drivers/tty/serial/imx.c
+> @@ -1117,8 +1117,8 @@ static void imx_uart_set_mctrl(struct uart_port *po=
+rt, unsigned int mctrl)
+>  			ucr2 |=3D UCR2_CTS;
+>  			/*
+>  			 * UCR2_IRTS is unset if and only if the port is
+> -			 * configured for CRTSCTS, so we use inverted UCR2_IRTS
+> -			 * to get the state to restore to.
+> +			 * configured for hardware-controlled CRTSCTS, so we use
+> +			 * inverted UCR2_IRTS to get the state to restore to.
+>  			 */
+>  			if (!(ucr2 & UCR2_IRTS))
+>  				ucr2 |=3D UCR2_CTSC;
+> @@ -1780,7 +1780,7 @@ imx_uart_set_termios(struct uart_port *port, struct=
+ ktermios *termios,
+>  	if ((termios->c_cflag & CSIZE) =3D=3D CS8)
+>  		ucr2 |=3D UCR2_WS;
+> =20
+> -	if (!sport->have_rtscts)
+> +	if (!sport->have_rtscts && !sport->have_rtsgpio)
+>  		termios->c_cflag &=3D ~CRTSCTS;
+> =20
+>  	if (port->rs485.flags & SER_RS485_ENABLED) {
 
-dt prefer use -
-lpav-bus, ...
+This hunk makes sense.
 
-> +
-> +  '#clock-cells':
-> +    const: 1
-> +
-> +  '#reset-cells':
-> +    const: 1
-> +
-> +  mux-controller:
-> +    $ref: /schemas/mux/reg-mux.yaml#
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - '#clock-cells'
-> +  - '#reset-cells'
-> +  - mux-controller
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/imx8ulp-clock.h>
-> +
-> +    clock-controller@2da50000 {
-> +        compatible = "fsl,imx8ulp-sim-lpav";
-> +        reg = <0x2da50000 0x10000>;
-> +        clocks = <&cgc2 IMX8ULP_CLK_LPAV_BUS_DIV>,
-> +                 <&cgc2 IMX8ULP_CLK_HIFI_DIVCORE>,
-> +                 <&cgc2 IMX8ULP_CLK_HIFI_DIVPLAT>;
-> +        clock-names = "lpav_bus", "hifi_core", "hifi_plat";
-> +        #clock-cells = <1>;
-> +        #reset-cells = <1>;
-> +
-> +        mux-controller {
-> +            compatible = "reg-mux";
-> +            #mux-control-cells = <1>;
-> +            mux-reg-masks = <0x8 0x00000200>;
-> +        };
-> +    };
-> diff --git a/include/dt-bindings/clock/imx8ulp-clock.h b/include/dt-bindings/clock/imx8ulp-clock.h
-> index 827404fadf5c..c62d84d093a9 100644
-> --- a/include/dt-bindings/clock/imx8ulp-clock.h
-> +++ b/include/dt-bindings/clock/imx8ulp-clock.h
-> @@ -255,4 +255,9 @@
->
->  #define IMX8ULP_CLK_PCC5_END		56
->
-> +/* LPAV SIM */
-> +#define IMX8ULP_CLK_SIM_LPAV_HIFI_CORE		0
-> +#define IMX8ULP_CLK_SIM_LPAV_HIFI_PBCLK		1
-> +#define IMX8ULP_CLK_SIM_LPAV_HIFI_PLAT		2
-> +
->  #endif
-> diff --git a/include/dt-bindings/reset/fsl,imx8ulp-sim-lpav.h b/include/dt-bindings/reset/fsl,imx8ulp-sim-lpav.h
-> new file mode 100644
-> index 000000000000..adf95bb26d21
-> --- /dev/null
-> +++ b/include/dt-bindings/reset/fsl,imx8ulp-sim-lpav.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-> +/*
-> + * Copyright 2025 NXP
-> + */
-> +
-> +#ifndef DT_BINDING_RESET_IMX8ULP_SIM_LPAV_H
-> +#define DT_BINDING_RESET_IMX8ULP_SIM_LPAV_H
-> +
-> +#define IMX8ULP_SIM_LPAV_HIFI4_DSP_DBG_RST	0
-> +#define IMX8ULP_SIM_LPAV_HIFI4_DSP_RST		1
-> +#define IMX8ULP_SIM_LPAV_HIFI4_DSP_STALL	2
-> +#define IMX8ULP_SIM_LPAV_DSI_RST_BYTE_N		3
-> +#define IMX8ULP_SIM_LPAV_DSI_RST_ESC_N		4
-> +#define IMX8ULP_SIM_LPAV_DSI_RST_DPI_N		5
-> +
-> +#endif /* DT_BINDING_RESET_IMX8ULP_SIM_LPAV_H */
-> --
-> 2.43.0
->
+> @@ -1794,7 +1794,7 @@ imx_uart_set_termios(struct uart_port *port, struct=
+ ktermios *termios,
+>  		else
+>  			imx_uart_rts_inactive(sport, &ucr2);
+> =20
+> -	} else if (termios->c_cflag & CRTSCTS) {
+> +	} else if ((termios->c_cflag & CRTSCTS) && sport->have_rtscts) {
+
+I agree to add the parens here and consider this more readable than the
+alternative
+
+	} else if (termios->c_cflag & CRTSCTS && sport->have_rtscts) {
+
+=2E Note there is no real win here. If the port doesn't have RTS/CTS it
+doesn't matter if it tries to control the RTS line. While you could
+argue it shouldn't set the line, it only makes an externally observable
+difference if one of the SoC's pads is muxed to its RTS function.
+I claim it's more robust in this case (i.e. no uart-has-rtscts property
+but a pinmux for the RTS line) to control the line according to the RTS
+setting. This is (at least IMO) better and more expected than driving
+this line to a constant level. So I oppose to this hunk.
+
+>  		/*
+>  		 * Only let receiver control RTS output if we were not requested
+>  		 * to have RTS inactive (which then should take precedence).
+> @@ -1803,7 +1803,7 @@ imx_uart_set_termios(struct uart_port *port, struct=
+ ktermios *termios,
+>  			ucr2 |=3D UCR2_CTSC;
+>  	}
+> =20
+> -	if (termios->c_cflag & CRTSCTS)
+> +	if ((termios->c_cflag & CRTSCTS) && sport->have_rtscts)
+>  		ucr2 &=3D ~UCR2_IRTS;
+>  	if (termios->c_cflag & CSTOPB)
+>  		ucr2 |=3D UCR2_STPB;
+
+Hmm, not sure. On one hand the same argument applies as above, but on
+the other if there are pins that are not explicitly configured but still
+in their CTS function this might affect operation in a bad way.
+Also this affects the (very usual) configuration where only RX, TX and
+RTS are used and CTS is not. In this case have_rtscts is true (right?)
+and then if there is an accidental CTS pin this is bad and not fixed by
+your change. Hmmm...
+
+So in sum the 2nd and 3rd code change is controversial. If the first one
+already fixes the problem you're facing, I suggest to go for only that.
+If you still think that the 3rd (and maybe even the 2nd) change is a
+good idea, I'd request to do that in a separate commit as this is a
+separate problem. Also the commit log only describes the first change,
+doesn't it?
+
+Best regards
+Uwe
+
+--nxlujyqvbxqnez6y
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmjyWikACgkQj4D7WH0S
+/k6wWAf/UxQyG6kZ2TILhgdrnIpfu84pODWejTX1lzvAjT7/3H/Qe8pJrRoNWf8e
+/iwaPdvVerhKNiekWTz4KPUE1rm7ITBLj3fwndHy/K2BNnZngBzXt+2s+WQ+fd6f
+hDZA/hvU5mimICspF0a1ZR3zFWD4VbcMqTrjs2nwFjikC77fJQHXhFAQDDt6vz1w
+nOWQ4ls8DPTKU6X3ELQRiExg1Vts1gmcP4IVr9NMGtwbAmchL0brLh+mgyYRv063
+enP5ezJ8VX2IV9/vb1yeSRMxN38bdLvRhmvImYwgALWjR93kiH5kbJkoy9r13fDR
+oquet7e0kA4duMdCrk/t/iT8vcR4hg==
+=8RNA
+-----END PGP SIGNATURE-----
+
+--nxlujyqvbxqnez6y--
