@@ -1,82 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF7F10F1;
-	Sat, 18 Oct 2025 00:00:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE63F208D0;
+	Sat, 18 Oct 2025 04:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760745629; cv=none; b=fPtumw+suU0aShdlncH97mpNaE2UZ6mfuBzBbEjMs5JIAp90j5Fz/eX6+8BLDsP7ZgJ4zYjxc1aIk7hwdvLj6y4aIBfx5sryEbUlBS4Fdob0HfHDCOLYarfNLl0aLEH8rxAle887XZldFBG3jEz80UQ4SNf488xHCiPYRcbYc9w=
+	t=1760760940; cv=none; b=SqUTY/59L238PCZf7vkYhDX1XEJADR/ipUbLYOEjz8VZDFT6iGtjTQ3nXPnr3plhn5vNM8CO9Uk3UgwZPOlwlPmDCR1ULgyt6lWdcOY1KDB4QOqhJPN8I0BEI0L6IkgMZ9x+z9hYhQxew5OrlueUh5PydXNOfJjvZfcrHjWLAW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760745629; c=relaxed/simple;
-	bh=YnM6EsfCCpRhahIOYEdZz+Cepq+/DrNPJAmLfhIdVdo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VTBxDU3byYtZOZZd4eAhZ/eHRZC8QTdyIB+9beOyuakQTa4vAp/D+TdzfFdZQ+n2YRr+BVm6fucKeZBhHYKYcqRrxElf613R/SEqncE86s4Gs53gd+OQlXfoEV1Q+dkvx9/PIhV+DpwbfHZuEynqiM227jLjLcJoL9j0QmV51LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p8Qyqzti; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760760940; c=relaxed/simple;
+	bh=xJ+JsUz4XbcP1v+4FsWXjV6AIbsUH9+FEb2iGeNwyHU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jvA0tIHH3/BJpT90N7HOhFEEWsykjSAl/22Ai4X9E4aSChm578Dis6qy2oFxMsudvnk79R1Wqq4QEXR4PE05w2ki8csRTXxjCtH6IOwkKwFdBYnkciKlI9xe4agOc33dUw8VJxY+s8xA7X9FaZqrxTSGFv6mNB1UNkqu10wDIbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g3FIrFGk; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p8Qyqzti"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77602C4CEE7;
-	Sat, 18 Oct 2025 00:00:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760745628;
-	bh=YnM6EsfCCpRhahIOYEdZz+Cepq+/DrNPJAmLfhIdVdo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=p8QyqztikcGDnt4V48n5bsdohG6hV9tAJn8wegNqi2hKOF5LLNGpxlPGFy5jE1xFd
-	 aAdnFqtZTFT7jTGCUKcN7u/cSrOcKHsadRGO0PyGOKu0t6xOA8T9jXiJG7E7NVMhhU
-	 zSvo42H6mIpROGLL/N17AMw65KJoWZuCXSesfDhehp0aNfm6Z6xbTBSlxdbTMK6n4U
-	 jgfX1G8578IBCKDllc5PV/SDwbIFLxLZxarYSMKZCKPePmlwKVBdgrJCobzP3qJZb3
-	 QvZ+ckzIowa+jn9iR2Iddf+CfJQNoguPaiNMltvuiP81qo9AgsI1Dh3segqeKGafBg
-	 T4R7SB/JqClFQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33EA839EFA61;
-	Sat, 18 Oct 2025 00:00:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g3FIrFGk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760760937; x=1792296937;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xJ+JsUz4XbcP1v+4FsWXjV6AIbsUH9+FEb2iGeNwyHU=;
+  b=g3FIrFGk98QcATYpI8cwSUmIe9plA6sLC3wn4pNX5crEXdi/kqMK9Fxb
+   bgq0i9HAMz667uFgvblObzYlruBIpgAEkuruRHbY+YEj64rSWTgAHBTte
+   k7bAZu39LzVkdpMbK8r8UMNyZQL92xytaZ8dT5sAL/sB7dEUN+4NJjdi9
+   aVEElEDoiBIBowQUvA7s7nqWY6moJD5IO2bnhOP4704OZeI7cHf0wIvTt
+   OkpgzRYr59iornyusa9Etjf2l03x5rkTr33DYEAwEjhaLWZHdmuy3clKg
+   nAQ/oxGv0LO9ekqvYlgjcKvGVWVSq1hqzVMX5tsIDX1bE39f2HmdkSTTi
+   A==;
+X-CSE-ConnectionGUID: jO/1vMLBQ2uvs6Hq7qHkfQ==
+X-CSE-MsgGUID: KEBYkfrSRJyatmL7LJqswA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11585"; a="62678528"
+X-IronPort-AV: E=Sophos;i="6.19,238,1754982000"; 
+   d="scan'208";a="62678528"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 21:15:36 -0700
+X-CSE-ConnectionGUID: vdSs8jYZR0+Zx8hwJkk8DQ==
+X-CSE-MsgGUID: AOaCem9pThybXB/LUZKBSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,238,1754982000"; 
+   d="scan'208";a="188197059"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 17 Oct 2025 21:15:31 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v9yLg-00083H-2m;
+	Sat, 18 Oct 2025 04:15:25 +0000
+Date: Sat, 18 Oct 2025 12:15:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
+	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-clk@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH v2 3/8] clk: imx: add driver for imx8ulp's sim lpav
+Message-ID: <202510181121.D3XVfMFh-lkp@intel.com>
+References: <20251017112025.11997-4-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] net: enetc: correct the value of
- ENETC_RXB_TRUESIZE
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176074561201.2830883.6352222282006424716.git-patchwork-notify@kernel.org>
-Date: Sat, 18 Oct 2025 00:00:12 +0000
-References: <20251016080131.3127122-1-wei.fang@nxp.com>
-In-Reply-To: <20251016080131.3127122-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, Frank.Li@nxp.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251017112025.11997-4-laurentiumihalcea111@gmail.com>
 
-Hello:
+Hi Laurentiu,
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+kernel test robot noticed the following build errors:
 
-On Thu, 16 Oct 2025 16:01:31 +0800 you wrote:
-> The ENETC RX ring uses the page halves flipping mechanism, each page is
-> split into two halves for the RX ring to use. And ENETC_RXB_TRUESIZE is
-> defined to 2048 to indicate the size of half a page. However, the page
-> size is configurable, for ARM64 platform, PAGE_SIZE is default to 4K,
-> but it could be configured to 16K or 64K.
-> 
-> When PAGE_SIZE is set to 16K or 64K, ENETC_RXB_TRUESIZE is not correct,
-> and the RX ring will always use the first half of the page. This is not
-> consistent with the description in the relevant kernel doc and commit
-> messages.
-> 
-> [...]
+[auto build test ERROR on pza/reset/next]
+[also build test ERROR on abelvesa/clk/imx abelvesa/for-next linus/master v6.18-rc1 next-20251017]
+[cannot apply to pza/imx-drm/next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Here is the summary with links:
-  - [v2,net] net: enetc: correct the value of ENETC_RXB_TRUESIZE
-    https://git.kernel.org/netdev/net/c/e59bc32df2e9
+url:    https://github.com/intel-lab-lkp/linux/commits/Laurentiu-Mihalcea/reset-imx8mp-audiomix-Fix-bad-mask-values/20251017-192620
+base:   https://git.pengutronix.de/git/pza/linux reset/next
+patch link:    https://lore.kernel.org/r/20251017112025.11997-4-laurentiumihalcea111%40gmail.com
+patch subject: [PATCH v2 3/8] clk: imx: add driver for imx8ulp's sim lpav
+config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20251018/202510181121.D3XVfMFh-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251018/202510181121.D3XVfMFh-lkp@intel.com/reproduce)
 
-You are awesome, thank you!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510181121.D3XVfMFh-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/clk/imx/clk-imx8ulp-sim-lpav.c:52:2: error: call to undeclared function 'kfree'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+      52 |         kfree(adev);
+         |         ^
+>> drivers/clk/imx/clk-imx8ulp-sim-lpav.c:65:32: error: use of undeclared identifier '__free_kfree'; did you mean '__free_pages'?
+      65 |         struct auxiliary_device *adev __free(kfree) = NULL;
+         |                                       ^
+   include/linux/cleanup.h:213:33: note: expanded from macro '__free'
+     213 | #define __free(_name)   __cleanup(__free_##_name)
+         |                                   ^
+   <scratch space>:30:1: note: expanded from here
+      30 | __free_kfree
+         | ^
+   include/linux/gfp.h:381:13: note: '__free_pages' declared here
+     381 | extern void __free_pages(struct page *page, unsigned int order);
+         |             ^
+>> drivers/clk/imx/clk-imx8ulp-sim-lpav.c:65:32: error: 'cleanup' function '__free_pages' must take 1 parameter
+      65 |         struct auxiliary_device *adev __free(kfree) = NULL;
+         |                                       ^
+   include/linux/cleanup.h:213:33: note: expanded from macro '__free'
+     213 | #define __free(_name)   __cleanup(__free_##_name)
+         |                                   ^
+   <scratch space>:30:1: note: expanded from here
+      30 | __free_kfree
+         | ^
+>> drivers/clk/imx/clk-imx8ulp-sim-lpav.c:68:9: error: call to undeclared function 'kzalloc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+      68 |         adev = kzalloc(sizeof(*adev), GFP_KERNEL);
+         |                ^
+>> drivers/clk/imx/clk-imx8ulp-sim-lpav.c:68:7: error: incompatible integer to pointer conversion assigning to 'struct auxiliary_device *' from 'int' [-Wint-conversion]
+      68 |         adev = kzalloc(sizeof(*adev), GFP_KERNEL);
+         |              ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   5 errors generated.
+
+
+vim +/kfree +52 drivers/clk/imx/clk-imx8ulp-sim-lpav.c
+
+    46	
+    47	#ifdef CONFIG_RESET_CONTROLLER
+    48	static void clk_imx8ulp_sim_lpav_aux_reset_release(struct device *dev)
+    49	{
+    50		struct auxiliary_device *adev = to_auxiliary_dev(dev);
+    51	
+  > 52		kfree(adev);
+    53	}
+    54	
+    55	static void clk_imx8ulp_sim_lpav_unregister_aux_reset(void *data)
+    56	{
+    57		struct auxiliary_device *adev = data;
+    58	
+    59		auxiliary_device_delete(adev);
+    60		auxiliary_device_uninit(adev);
+    61	}
+    62	
+    63	static int clk_imx8ulp_sim_lpav_register_aux_reset(struct platform_device *pdev)
+    64	{
+  > 65		struct auxiliary_device *adev __free(kfree) = NULL;
+    66		int ret;
+    67	
+  > 68		adev = kzalloc(sizeof(*adev), GFP_KERNEL);
+    69		if (!adev)
+    70			return -ENOMEM;
+    71	
+    72		adev->name = "reset";
+    73		adev->dev.parent = &pdev->dev;
+    74		adev->dev.release = clk_imx8ulp_sim_lpav_aux_reset_release;
+    75	
+    76		ret = auxiliary_device_init(adev);
+    77		if (ret) {
+    78			dev_err(&pdev->dev, "failed to initialize aux dev\n");
+    79			return ret;
+    80		}
+    81	
+    82		ret = auxiliary_device_add(adev);
+    83		if (ret) {
+    84			auxiliary_device_uninit(adev);
+    85			dev_err(&pdev->dev, "failed to add aux dev\n");
+    86			return ret;
+    87		}
+    88	
+    89		return devm_add_action_or_reset(&pdev->dev,
+    90						clk_imx8ulp_sim_lpav_unregister_aux_reset,
+    91						no_free_ptr(adev));
+    92	}
+    93	#else
+    94	static int clk_imx8ulp_sim_lpav_register_aux_reset(struct platform_device *pdev)
+    95	{
+    96		return 0;
+    97	}
+    98	#endif /* CONFIG_RESET_CONTROLLER */
+    99	
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
