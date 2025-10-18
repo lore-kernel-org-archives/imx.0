@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1344F354AC3;
-	Fri, 17 Oct 2025 23:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF7F10F1;
+	Sat, 18 Oct 2025 00:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760743824; cv=none; b=Byxt3+2s3ex9FlzD4FMR2+tvZ73x3VuFR3iRNBK3hCK8qbiWKNYwt32Z3IzAidTPCiQW0+nUQCSJQjsSiRUKMzFrM72fD1//PIrq+TH3PocVPTFsOz5m+tyA/lYvQReXYmsMeNy5dTBvud3FWZyWQ7yrWHG7vlYRa7MLxwkaHbQ=
+	t=1760745629; cv=none; b=fPtumw+suU0aShdlncH97mpNaE2UZ6mfuBzBbEjMs5JIAp90j5Fz/eX6+8BLDsP7ZgJ4zYjxc1aIk7hwdvLj6y4aIBfx5sryEbUlBS4Fdob0HfHDCOLYarfNLl0aLEH8rxAle887XZldFBG3jEz80UQ4SNf488xHCiPYRcbYc9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760743824; c=relaxed/simple;
-	bh=O43bnzlHzYWF3tohh8BdhIl4bku7eCG5WrTgzFJ6OQ0=;
+	s=arc-20240116; t=1760745629; c=relaxed/simple;
+	bh=YnM6EsfCCpRhahIOYEdZz+Cepq+/DrNPJAmLfhIdVdo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fTpH4N/Bay4DXQI+AUVkBjm3Vri4cCf2fOFC/JDDhlmzHlVf3c2cOHvHXXHvuAolAd5dvMpG6MpCFZ8k+GKzXJq+Gdwzt1X4abKy3baiyeRPu25RAaUC2h7RDSE8Xn4mrmZddC03wIGx98ogedyAbialoaR/ndiIfLW01rVyX5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pb1OVnQb; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=VTBxDU3byYtZOZZd4eAhZ/eHRZC8QTdyIB+9beOyuakQTa4vAp/D+TdzfFdZQ+n2YRr+BVm6fucKeZBhHYKYcqRrxElf613R/SEqncE86s4Gs53gd+OQlXfoEV1Q+dkvx9/PIhV+DpwbfHZuEynqiM227jLjLcJoL9j0QmV51LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p8Qyqzti; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pb1OVnQb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79501C4CEE7;
-	Fri, 17 Oct 2025 23:30:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p8Qyqzti"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77602C4CEE7;
+	Sat, 18 Oct 2025 00:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760743823;
-	bh=O43bnzlHzYWF3tohh8BdhIl4bku7eCG5WrTgzFJ6OQ0=;
+	s=k20201202; t=1760745628;
+	bh=YnM6EsfCCpRhahIOYEdZz+Cepq+/DrNPJAmLfhIdVdo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Pb1OVnQbUFYdrBvUhhnGQWX+KiAMzNE7WQEaZeNxlqLbIgqQKIRRVhoD/oknE5+at
-	 /GSEs3/KKeVHhH3OosMBCoWH3enT5XgxODaD+6h0oOfFGTryPQ+4/eFQ7Q6SHmqVCE
-	 xiK/BLpyNqn3qY77/eGZksFSAAkjFYudcnZm9et3QtGxi59fxpSH316lZHNr5BKglc
-	 0SoulIJEncLPxLUNYyLl7KNAe76TULCn0N3wfxvYkVncRPU0I+4dH0SnTep87MuRGY
-	 VWK1yOdzPlgLn6l4oY26FmgY4uNoKIo2OaM+mRkHWKgxfOvtJCfEqUuHI/PmRA7/8h
-	 I3vRMezMKuTFw==
+	b=p8QyqztikcGDnt4V48n5bsdohG6hV9tAJn8wegNqi2hKOF5LLNGpxlPGFy5jE1xFd
+	 aAdnFqtZTFT7jTGCUKcN7u/cSrOcKHsadRGO0PyGOKu0t6xOA8T9jXiJG7E7NVMhhU
+	 zSvo42H6mIpROGLL/N17AMw65KJoWZuCXSesfDhehp0aNfm6Z6xbTBSlxdbTMK6n4U
+	 jgfX1G8578IBCKDllc5PV/SDwbIFLxLZxarYSMKZCKPePmlwKVBdgrJCobzP3qJZb3
+	 QvZ+ckzIowa+jn9iR2Iddf+CfJQNoguPaiNMltvuiP81qo9AgsI1Dh3segqeKGafBg
+	 T4R7SB/JqClFQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 34B0D39EFA5D;
-	Fri, 17 Oct 2025 23:30:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33EA839EFA61;
+	Sat, 18 Oct 2025 00:00:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -37,47 +37,42 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [v4 PATCH net] net: enetc: fix the deadlock of enetc_mdio_lock
+Subject: Re: [PATCH v2 net] net: enetc: correct the value of
+ ENETC_RXB_TRUESIZE
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176074380701.2822953.14692637268674439157.git-patchwork-notify@kernel.org>
-Date: Fri, 17 Oct 2025 23:30:07 +0000
-References: <20251015021427.180757-1-jianpeng.chang.cn@windriver.com>
-In-Reply-To: <20251015021427.180757-1-jianpeng.chang.cn@windriver.com>
-To: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
- xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- alexandru.marginean@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <176074561201.2830883.6352222282006424716.git-patchwork-notify@kernel.org>
+Date: Sat, 18 Oct 2025 00:00:12 +0000
+References: <20251016080131.3127122-1-wei.fang@nxp.com>
+In-Reply-To: <20251016080131.3127122-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, Frank.Li@nxp.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 15 Oct 2025 10:14:27 +0800 you wrote:
-> After applying the workaround for err050089, the LS1028A platform
-> experiences RCU stalls on RT kernel. This issue is caused by the
-> recursive acquisition of the read lock enetc_mdio_lock. Here list some
-> of the call stacks identified under the enetc_poll path that may lead to
-> a deadlock:
+On Thu, 16 Oct 2025 16:01:31 +0800 you wrote:
+> The ENETC RX ring uses the page halves flipping mechanism, each page is
+> split into two halves for the RX ring to use. And ENETC_RXB_TRUESIZE is
+> defined to 2048 to indicate the size of half a page. However, the page
+> size is configurable, for ARM64 platform, PAGE_SIZE is default to 4K,
+> but it could be configured to 16K or 64K.
 > 
-> enetc_poll
->   -> enetc_lock_mdio
->   -> enetc_clean_rx_ring OR napi_complete_done
->      -> napi_gro_receive
->         -> enetc_start_xmit
->            -> enetc_lock_mdio
->            -> enetc_map_tx_buffs
->            -> enetc_unlock_mdio
->   -> enetc_unlock_mdio
+> When PAGE_SIZE is set to 16K or 64K, ENETC_RXB_TRUESIZE is not correct,
+> and the RX ring will always use the first half of the page. This is not
+> consistent with the description in the relevant kernel doc and commit
+> messages.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v4,net] net: enetc: fix the deadlock of enetc_mdio_lock
-    https://git.kernel.org/netdev/net/c/50bd33f6b392
+  - [v2,net] net: enetc: correct the value of ENETC_RXB_TRUESIZE
+    https://git.kernel.org/netdev/net/c/e59bc32df2e9
 
 You are awesome, thank you!
 -- 
