@@ -1,86 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FE71FDE01;
-	Sat, 18 Oct 2025 16:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207121EE019;
+	Sun, 19 Oct 2025 10:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760806467; cv=none; b=hbLL+HAsQxIy8JmkSoWz6vcVzTErJcjp47Ez2mJ/FvoO8giwncuOCDhh4NFPE7JDtPP6LLYmTfB3K75NOLUKOgCfDvybMqXIB5w+1UKtaw1JKKsWHm6xFunNUzodikc1z3C0jblgCTjZeW1rgogNAvyS8MyhiCiJYEOOHNZEuGw=
+	t=1760868239; cv=none; b=oV7gRY1Oex1w/Vw9s2YXtP+EHW7Vodwgt45hFYL1y1DCxHD0W9ZMiwHiqx6l+Jbg5bMK41/eYDGvCWoYZLO7MzO24OFrx1R0EwgtAjJTpyTEq/Qqkkk4jeVGqyAu392/VvAzlnLChc2M/NbvjcdQJ0CzGCXslhZFg/a66RdALX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760806467; c=relaxed/simple;
-	bh=9xCpoINAgwkfDm9boKe98rLyOvgdKQxkOpTeAJ69dXY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H9TN2jVV2Ngxpaxgnd6nExXkHrKh2IDeK0FXnN2jwXhrGZzzHGkVkQGMbbd81hjGjRnGikP1W2hlx/LMkTnfZIwX2BS5y2T+2/YfvPwhIbd4Ex9T1oblOG2KEPrAS/AMdZtmKaTJW1TsrgVZKZ76nr8LqaOIOz12Du/3A75fEQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XgKNSd5p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760868239; c=relaxed/simple;
+	bh=y6N4OVCBgMamWcwFizLrQmToD6eC9fiNXocvZf5m3CY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=arriiTMowwPbJQoJ+jQ4kJJQxz4AFj/jS2Gt/iJyfICTBKCjpWvB3zA1h+xZ+fiB6TmMAXC8Zu8pMca2JuPlgpcy2+DfwD/9YVY8elG4AFe5Pe59qT/PH4iB2kzAFvl5r8LEs9jFeoMPenettT87jb8APdg61uEA8kYrYOgRr4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=In29qi3z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XgKNSd5p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11A7C4CEF8;
-	Sat, 18 Oct 2025 16:54:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="In29qi3z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80702C4CEE7;
+	Sun, 19 Oct 2025 10:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760806467;
-	bh=9xCpoINAgwkfDm9boKe98rLyOvgdKQxkOpTeAJ69dXY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XgKNSd5pMfzDvdGWMTdY5LBJ2wBAm4wwQJ7roW1vNPCms93UkCiV+6dzxz+SE9+7w
-	 vMfP+bxk4jIT6kKPJzbviikporKbXjDMXiBiF0WfO2KQWfwwyNOlMemL+bKRVPP7rI
-	 CpK8UvBQGUD5VPQrryEO/MzoJfhrWAe5FiFLu4c+XRBSc69ljvsq4bzJs9E2i+4pEh
-	 dYmz8hOXhRdN+H+LA/rLRowUVrAeLhJ87X6O6sO1HqcelwcNveAxVzMJIeGc/watK5
-	 0k8pqb8uBozinERkxXNYmaIQUA7LaTxbrS92MIpmOhML8lZxpcrUhyaJSzJ7LpbZIa
-	 ajFBZ0VgB5wHA==
-Date: Sat, 18 Oct 2025 17:54:19 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
- devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>, Adrian
- Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v6 5/5] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <20251018175419.7a6242a3@jic23-huawei>
-In-Reply-To: <20251018175232.064a8aee@jic23-huawei>
-References: <20251014-i3c_ddr-v6-0-3afe49773107@nxp.com>
-	<20251014-i3c_ddr-v6-5-3afe49773107@nxp.com>
-	<20251018175232.064a8aee@jic23-huawei>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=k20201202; t=1760868238;
+	bh=y6N4OVCBgMamWcwFizLrQmToD6eC9fiNXocvZf5m3CY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=In29qi3z0rBMtHAkJwncS/drzsoqgYMQVyLcNJ1aYeFpGOv/QtnUujmASFqxvXMjW
+	 WIsZ2QR1q9EyuMq1z/K28VeHyI4xx+USHYrbY2Gki6minkGXQKieECU9r1oJ0OajZD
+	 4o9CxnyNLjMw4sEY8tWZ3ej9wrcnC/7RIXIan1IDCFsBwl48jYbMa2yW3k9ff7MjsT
+	 oaazzO9pDGbpGQEHmp/Q4HrDk9uUvQGvHaqtFvwRac2lgZ2NXE0RQB7iBBwoyAR7TP
+	 TUVwfDsYAxYqfX1PaeLuGYjJeDzNaF0sYn7ksLfoCOsNXkC/XUs+1zHLLtCHugq5ur
+	 r2ccp4TpkX1eQ==
+Message-ID: <f45b3490-0cb3-4a3f-88e1-1f5b462e8088@kernel.org>
+Date: Sun, 19 Oct 2025 12:03:52 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/8] dt-bindings: clock: document 8ULP's SIM LPAV
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
+ Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>
+References: <20251017112025.11997-1-laurentiumihalcea111@gmail.com>
+ <20251017112025.11997-3-laurentiumihalcea111@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251017112025.11997-3-laurentiumihalcea111@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Sat, 18 Oct 2025 17:52:32 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On 17/10/2025 13:20, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> 
+> Add documentation for i.MX8ULP's SIM LPAV module.
+> 
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> ---
 
-> On Tue, 14 Oct 2025 12:40:04 -0400
-> Frank Li <Frank.Li@nxp.com> wrote:
-> 
-> > Add mmc5633 sensor basic support.
-> > - Support read 20 bits X/Y/Z magnetic.
-> > - Support I3C HDR mode to send start measurememt command.
-> > - Support I3C HDR mode to read all sensors data by one command.
-> > 
-> > Co-developed-by: Carlos Song <carlos.song@nxp.com>
-> > Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> > Co-developed-by: Adrian Fluturel <fluturel.adrian@gmail.com>
-> > Signed-off-by: Adrian Fluturel <fluturel.adrian@gmail.com>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>  
-> LGTM.
-> 
-> So my ideal case (assuming i3c parts are good to go) is an immutable
-> branch in an appropriate tree that gets merged into both i3c and IIO trees
-> and has first 4 patches.  I'll then put the driver on top in the IIO tree.
-I can't count. First 3 patches.  Binding and driver would go on top in the IIO tree.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> 
-> I can spin one if that is useful.
-> 
-> Thanks,
-> 
-> Jonathan
-
+Best regards,
+Krzysztof
