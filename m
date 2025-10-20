@@ -1,241 +1,207 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023079.outbound.protection.outlook.com [40.107.159.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82594354AF2
-	for <imx@lists.linux.dev>; Mon, 20 Oct 2025 12:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760964513; cv=none; b=kTeHA/Bk6HZsS9KHc8olxttvsORCsbVtsH9LlRfe7FAn1DGcHKpDktlzQHXLGFlO+ByuHJ07eko1WI41icUkuZqwrJaJKNnmtqJ4To64lv78Qj8HAGbgzcxsIUp538HjXFgl+pNZatEsDkgz9/smLtC3+IT50V6Tdkte3tWzchw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760964513; c=relaxed/simple;
-	bh=BCK1R0tZ9dNFG0afBBj42c5t3HMFTlWQhHn7snNQLeA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ROyaaDmrqbGv5nHLoaN9WCwiE2FABJh5L3jBlRvoQgIOaUHDAqNLvQz6gjDkSHaBwFc01lfKeHvSlyTqa/QR2G5fTluGBUfU0TmtFAp3wlvvLKZ0nW2RZqYTapzK7ug0IGFqCqDu/qMmAHy0XlfyQsDhqgsJzCqQgQ+4XNBlGw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=GJNyNazG; arc=none smtp.client-ip=220.197.32.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960BD2F745B
+	for <imx@lists.linux.dev>; Mon, 20 Oct 2025 12:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760964575; cv=fail; b=O09PPMOPgL/TFSAkZXq+VmRCT/KpIJujIReSrPnMFtSOfegqy3keu050v9xLbgLJ6G7f7Vflv4mtdUx8/O0XP+IzDsZx4laJVL7S+nQ7/RS/Ou6+SMW/b+9AGHGOmYCtBRmTyK6X/6gYElosHNzasIBhLmcn818Zg9gKMibYNFE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760964575; c=relaxed/simple;
+	bh=fdk1jnlz/znn7bUzcA6531Op93iTsZJf8jgXxbHwJMA=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=lkhiBq9XPgFnAfWYjiqYecEQFKB7tn6KKWGzbaMzfVLhdaLvkljZG8gvpdKzpXc0KwczLuaskDXFm5srn9Xlc/OHtbuIIyqvF8ZfEd9DiX/VPP4U0Fdpxrzh9Wu33kUT/2n983XNooLW2DMpKalcl6Vscn8/8IIn0lpwX37ux9U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=B6tUWRa4; arc=fail smtp.client-ip=40.107.159.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="GJNyNazG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=qG38QouOAiJDe70jz6Us+02ZPOy6qlEZVBeSeQllsf4=;
-	b=GJNyNazGNH1J8Z23xlahfIB4N9k1UPOa5jeUmZ8DXTAMdQO1I67Jlq0Uk8toIZ
-	J1haK204p9moPdukvCA4NwSzmBDsujtNmXTsCMTvc3Wt/t6GCzCxrCVIbAQTBsUx
-	4V88hcHLLlhGEfIDbtMswv6J0CtRYphPBJ0yc1BYV1n9Y=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgD3X7GAL_ZocZNTAA--.29215S3;
-	Mon, 20 Oct 2025 20:48:02 +0800 (CST)
-Date: Mon, 20 Oct 2025 20:48:00 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Andreas Kemnade <akemnade@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alistair Francis <alistair@alistair23.me>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.li@nxp.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v3 3/3] ARM: dts: imx: e70k02: add sy7636
-Message-ID: <aPYvgKWNvr0RxOKQ@dragon>
-References: <20250917-sy7636-rsrc-v3-0-331237d507a2@kernel.org>
- <20250917-sy7636-rsrc-v3-3-331237d507a2@kernel.org>
+	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="B6tUWRa4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=exhH8YDf1MT8QiLYyqrLHjRE3uYnKL/Ye0rjFo+JGrOwqi38zGkEWnuNvjtdoBRop1TeW5zqIaQQE6A7CkTtZvmk0EXWLHlMAj0pZGxhTup2Jvlr74tGqKE6OFISACPsnz/IdIUB/8iZpTjnQW4vWJHUW4mEutx8eoLXpv1FqFtJegiC+u5uYBlAA3rUMxC/4zgYKrR5iuMELRhTx67TXIuzmjfHAPnJ3yrNHyRk+LJ83F990Sr+WTQSn3OngQdxj0Vk9AbL8INXq+orBaSaJdG7zsqCKwTZyeOymMts1AkPzB0KkNCfY1ky2A9v/MAdZENU8qjb3SMPkYlnxQRfxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=csAIk7//sYR1p81gMbDbfczeDfWqjm4M/KL+rcjlaBs=;
+ b=Y3svyYV3xzA5AyflcvVzTmDbVtenKXAMxFeLw6egLXOyi/n72YejpPhXf2UZV+nkQn+PHKNbS7bxvl4LBOnF23rWZfe3VByE4Png+tS4Z1sRubEzzERen5M0g/ikbk6xu4/9H8esk3r8YlddZOppiEkvVKaYnIYA/IRi/rLnEVCHs3f89apwE/THXN9zcjznfvHb5pm4dAPzz9etZqD/ycNSFk0/cdU5VWbMDYkR6MTcaAi/dPJC0VLGVFJK9ufrWJH1JJVeX1lRWvJG2z2Qdy36cR7EbnzM9L9QQq9m/wPMMsqi/5YkORnqOfvR4+uOv0QRtODq21+gVuD4to7KtQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 91.26.50.189) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=phytec.de;
+ dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
+ header.from=phytec.de; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=csAIk7//sYR1p81gMbDbfczeDfWqjm4M/KL+rcjlaBs=;
+ b=B6tUWRa4CBDPW9v18eiChFRfu5jTPPw755WtPhUHifEP8/fdx2g+9y6P6W8yW7+XeiHre1Ian/+4i6gavk/8cQF/SPUvS+NDb2iQkrW8AYqbnWx4WkatlmugWTy30MS/Lj/QXmLe3vD+5Y7znfsChgTZBgdPHZSpFVnlsrXTIvAK11YjXLmAOIfhuwWHDjGxpPN/bPkNh04xZ1nzc4w+B0ymTDsSHEBwnTBXQKJTSPaB/fth6cF+tPS+1spO0t/p8F5cIXlCQnanH01Qjfe81xUbbu/Cs7ntIRf3/1Wh62/BD18clxoomDZMFzPotStzqigcUoWDk3T2aLsbJaOJMA==
+Received: from AM6P195CA0029.EURP195.PROD.OUTLOOK.COM (2603:10a6:209:81::42)
+ by AM4P195MB3037.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:6eb::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.14; Mon, 20 Oct
+ 2025 12:49:29 +0000
+Received: from AM1PEPF000252DA.eurprd07.prod.outlook.com
+ (2603:10a6:209:81:cafe::4e) by AM6P195CA0029.outlook.office365.com
+ (2603:10a6:209:81::42) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9228.16 via Frontend Transport; Mon,
+ 20 Oct 2025 12:49:29 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 91.26.50.189)
+ smtp.mailfrom=phytec.de; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=phytec.de;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ phytec.de discourages use of 91.26.50.189 as permitted sender)
+Received: from Postix.phytec.de (91.26.50.189) by
+ AM1PEPF000252DA.mail.protection.outlook.com (10.167.16.52) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9253.7 via Frontend Transport; Mon, 20 Oct 2025 12:49:29 +0000
+Received: from [127.0.1.1] (172.25.39.168) by Postix.phytec.de (172.25.0.11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Mon, 20 Oct
+ 2025 14:49:28 +0200
+From: Yannic Moog <y.moog@phytec.de>
+Subject: [PATCH v6 0/4] Add display overlays for imx8mp-phyboard-pollux
+Date: Mon, 20 Oct 2025 14:49:23 +0200
+Message-ID: <20251020-imx8mp-pollux-display-overlays-v6-0-c65ceac56c53@phytec.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917-sy7636-rsrc-v3-3-331237d507a2@kernel.org>
-X-CM-TRANSID:M88vCgD3X7GAL_ZocZNTAA--.29215S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtr4kuw4Uuw4fCw1fGF1rZwb_yoW7WrWkpa
-	1Svrs5WrWxWF1fta43AasrCr1fCws2kr1v9w47uFy8Aa1qva4UJF4UKrn3Crn8XFs8Zw4Y
-	vrn5ury7W3Wqv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jezuAUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNALDKWj2L4I5uAAA3u
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANMv9mgC/4XNQW7DIBCF4atErEs1YAZwVr1HlAUYqJGc2DIps
+ hX57iVRVVnesBr9s/jekyQ/R5/I+fQks88xxfFeQn6cSNeb+7en0ZUmHDhCC5rG26JvE53GYfh
+ ZqItpGsxKx+znchO1wlgtWik7KUlBptmHuLwHLtfSfUyPcV7fe5m9vn80wxqdGQWKLYJ2qHSA8
+ DX168N3n86TF535juOiyvHCSYAA0iLTtj1yzT/HAFiVawqnVdCiCdJ6J4+c2HOqyonCKaU7yYw
+ QLXZHDncca6ocFi5Y5gLTyqPBPbdt2y9jwOtMCAIAAA==
+X-Change-ID: 20250908-imx8mp-pollux-display-overlays-b4ab84966c66
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+CC: <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<upstream@lists.phytec.de>, Teresa Remmet <t.remmet@phytec.de>, Yannic Moog
+	<y.moog@phytec.de>, Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: Postix.phytec.de (172.25.0.11) To Postix.phytec.de
+ (172.25.0.11)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM1PEPF000252DA:EE_|AM4P195MB3037:EE_
+X-MS-Office365-Filtering-Correlation-Id: 38ab2838-db65-48f7-2de7-08de0fd71bba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|36860700013|376014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VnhXTE9rN3VvcVZuMS9mNkVyaUl5MFM0WDZYTkJxeTBUcjNOc2RNa3RIWUVH?=
+ =?utf-8?B?TmhIOW96YWpEU2wrMFcyWkdTTzhKMFFiWDBYaDRsemhZdGtOaUpXN0xZTGd4?=
+ =?utf-8?B?V1RqTys2ZGwyT1JCbXNKMWNpNzJIS2JJYXN4U04vY1RDTm1sVUo2T1l3UFcr?=
+ =?utf-8?B?akI0VXUzd3FVbUV3U2x1M1ExVnBRUDFTaVc0ekZPSEd4RFpZWXJkNUVoMHBD?=
+ =?utf-8?B?THhYdWYzVVFKd0V2OWZlR0NQYVhtMU5pQ0ptMXZpcEFTNDlYazAyazVMVmxT?=
+ =?utf-8?B?YkRKR2lzQTFIOC9TQVltMjh5dFJhNTRWdVdvUFpZbDFHNjN1MW1pM3BsMWFh?=
+ =?utf-8?B?MndaZVJMZm1RS1ZmZHEvNlBML0NrNlRHVkI4Z2ZaSkNVVGNUNnArUEo1RTd3?=
+ =?utf-8?B?YmIxQjM1cUEvajQ0eXlKUXoyWGp2YlJ4cjBvNEQwSlRIejJCRjdMTDc0RFYy?=
+ =?utf-8?B?V1N6VHV1cFNXaHBiU0phSVI0QnFYU2xFSW1zcFhsbEJVeCtibWlZMDVrM3RB?=
+ =?utf-8?B?NlpPTGNaWmJFZUJlSXZsbExMRnZWVnZFSWVkSHFJZWc5NjNqaE1RUkZMbTFm?=
+ =?utf-8?B?b0h6SmZmYWlEQ2UxTU5sbE9vR1FRenIvUHpndlBFN0xXdUw2YXdGbW54SnM3?=
+ =?utf-8?B?TmZVaHVMRThsK1RvTk9rTHRHOW9BQUhtUEhub1MyTXk4UG5DMjhDbUsrMWZS?=
+ =?utf-8?B?VXpWQ0F0UFRoOWt4TW5OWTdsVjNXRUNUQzZudXY0cHpWa3dBSERJWldpQ24w?=
+ =?utf-8?B?SWxRNW5zMXNyNWlCZUhxY2xTUENadjhlelJMcjBTa1MxbXpZNSsrN29YZllF?=
+ =?utf-8?B?RFRtVjNnQ3ZOYVB5cm1Tck5uODJ5dnFvb0g1YlJwREdkOVZnRXVWUU8yVTNT?=
+ =?utf-8?B?TERxYmgrenBPRHhRYnRjWEVpeXRoVnZ3dlRYdHJaMzhZaFF6OVJPK3hUMFc3?=
+ =?utf-8?B?WGtVSUg1amhRblhTZVpjMDdMR0JENXJWNTllTFNCeGozWnpIdGlmK1dpMlhk?=
+ =?utf-8?B?OEZlMTVOZEpwQjFCZ2tEUFo0bm9NODZIODJUVit2UVhMRitNdnlUVWtnUXZH?=
+ =?utf-8?B?UjdHNXppZENTN0MzSXBqeUhjbmNvMjZOdzhUVlE3TStMT1VzNFBWT0cwY21r?=
+ =?utf-8?B?TjF0SlN6M1VqeDNyVE1PYmNMdVNXclRLaDFFakxRRFkveTZVcHJIN1VRbkpC?=
+ =?utf-8?B?OU5wcno5Sm9sYUc4c280ZVc2QlFrY01SNGVHaG54UDBFZTVhbUxPZmN1OFF6?=
+ =?utf-8?B?QnNRQmwrMC9UanFmY2V5VnI4UkZzdUx2UVpTOGQxWHU0UDVPRDJGdWRJa0t6?=
+ =?utf-8?B?L2dwVFpIUGhacnBLT0VnejVnU3Q4MnJmbjZvY1dqVUZXMlVib0o4eTEwdHJE?=
+ =?utf-8?B?TENUOWZ0ME1vbTJDSzQxMzBjNXZycE83V0hTNjVVUUwxM0lkVGZObm9tUStz?=
+ =?utf-8?B?ZWw3djJEaStsQ2xhaXpCaWVUSk0wMGV3WjAySGFjTXgrSVYyMllFOGkwOEdC?=
+ =?utf-8?B?NXlsOEN2ZHZFRjB4ekY1MVRJYk5GZmRDeCt3R0R5UCs1ZXFqU1RpNXIvNjNl?=
+ =?utf-8?B?WUd0QWt1NHMxTk5WVDhpam5WeGlYcTN4anptb0xxMnNPdlozTnRySWlHSUth?=
+ =?utf-8?B?QmlJWk1rbmlybkRITXNLWjQ2dFJYN2QyYS9COHlSNHZXbnZ2UHhNdVNOK1Vs?=
+ =?utf-8?B?UE9uMklWMnkzcGVVRHF0Q1FYY3NDdVdpQXdNczVUVmlGMDl0YnI1cU1QVWtN?=
+ =?utf-8?B?OEx6dkxaT2xRU1FuM0FjQUZPRSszbFUxOEMreFl3bDluQzlPTTkwWjlrZ3Zw?=
+ =?utf-8?B?YmsxeEJuL2pUMnBJL2tISU1qczhyV3FXUGY0WEhOUG1sZkxoZldLVTc2Qkcx?=
+ =?utf-8?B?L3Q3bWFQMHhCd0RSZUtQUkRXRytSZ3hEUnI3cmJUTWVDd2p2aEdUdy8yRGV5?=
+ =?utf-8?B?WjZzUnNCbmJzWThCWlhoQXdyVDBWWjdSd3RlckRyZnhES3JHdlQvNFF0K3E4?=
+ =?utf-8?B?ZmJjQWszdUdkQnE4Q3JEVDYwNi9XNGY4NHFyRmNUQWNocDdhRTlLdnFQbUp1?=
+ =?utf-8?B?dnNTNkhjZGhFa0QrdTlRd0UyR09zZ3dxZloydE9pZWVUQ3JyVXhBYmhNZnZ2?=
+ =?utf-8?Q?RCr5s4JkCCIhspff2VkF985xc?=
+X-Forefront-Antispam-Report:
+	CIP:91.26.50.189;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:Postix.phytec.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(36860700013)(376014)(13003099007);DIR:OUT;SFP:1102;
+X-OriginatorOrg: phytec.de
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 12:49:29.0250
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38ab2838-db65-48f7-2de7-08de0fd71bba
+X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e609157c-80e2-446d-9be3-9c99c2399d29;Ip=[91.26.50.189];Helo=[Postix.phytec.de]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM1PEPF000252DA.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM4P195MB3037
 
-On Wed, Sep 17, 2025 at 09:14:31AM +0200, Andreas Kemnade wrote:
-> Add the EPD PMIC for the e70k02 based devices as a step towards full EPD
-> support.
-> 
-> Acked-by: Alistair Francis <alistair@alistair23.me>
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
-> ---
->  arch/arm/boot/dts/nxp/imx/e70k02.dtsi              | 25 +++++++++++++++++++++-
->  .../arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts | 24 +++++++++++++++++++++
->  .../arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts | 24 +++++++++++++++++++++
->  3 files changed, 72 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-> index dcc3c9d488a88..b4f42f71c6c49 100644
-> --- a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-> @@ -69,6 +69,14 @@ memory@80000000 {
->  		reg = <0x80000000 0x20000000>;
->  	};
->  
-> +	epd_pmic_supply: regulator-epd-pmic-in {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "epd_pmic_supply";
-> +		gpio = <&gpio2 14 GPIO_ACTIVE_HIGH>;
-> +		startup-delay-us = <20000>;
-> +		enable-active-high;
+The phyBOARD-Pollux has an LVDS + backlight connector where one LVDS
+channel is routed through.
+Also, an expansion board (PEB-AV-10) may be connected to the baseboard
+where the other LVDS channel (of the imx8mp SoC LVDS display bridge) is
+routed to and there, too, an LVDS display may be connected.
+However, both LVDS channels must not be used simultaneously as this is
+not supported.
+Currently, 2 displays are supported. Both are 10" touch displays, where the
+edt is deprecated and kept for backward compatibility reasons. The powertip
+panel is the successor to the edt panel and the current panel of choice.
+The expansion board (PEB-AV-10) also has a 3.5 mm audio jack and thus
+the expansion board may also be used for audio purposes without
+displays.
 
-enable-active-high right after gpio = <... GPIO_ACTIVE_HIGH>, as it's a
-supplement description for "gpio" property.
+---
+Changes in v6:
+- re-add i2c4 properties as omission causes dtschema warnings
+- Link to v5: https://lore.kernel.org/r/20251013-imx8mp-pollux-display-overlays-v5-0-fb1df187e5a5@phytec.de
 
-Shawn
+Changes in v5:
+- revert to leave copyright dates unchanged (leave at inital puplication date)
+- remove redundant properties from i2c4
+- Link to v4: https://lore.kernel.org/r/20251007-imx8mp-pollux-display-overlays-v4-0-778c61a4495c@phytec.de
 
-> +	};
-> +
->  	reg_wifi: regulator-wifi {
->  		compatible = "regulator-fixed";
->  		regulator-name = "SD3_SPWR";
-> @@ -133,7 +141,22 @@ touchscreen@24 {
->  		vdd-supply = <&ldo5_reg>;
->  	};
->  
-> -	/* TODO: SY7636 PMIC for E Ink at 0x62 */
-> +	sy7636: pmic@62 {
-> +		compatible = "silergy,sy7636a";
-> +		reg = <0x62>;
-> +		enable-gpios = <&gpio2 8 GPIO_ACTIVE_HIGH>;
-> +		vcom-en-gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
-> +		epd-pwr-good-gpios = <&gpio2 13 GPIO_ACTIVE_HIGH>;
-> +		vin-supply = <&epd_pmic_supply>;
-> +
-> +		#thermal-sensor-cells = <0>;
-> +
-> +		regulators {
-> +			reg_epdpmic: vcom {
-> +				regulator-name = "vcom";
-> +			};
-> +		};
-> +	};
->  
->  };
->  
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
-> index a2534c422a522..f8709a9524093 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
-> @@ -26,6 +26,11 @@ / {
->  	compatible = "kobo,tolino-vision5", "fsl,imx6sl";
->  };
->  
-> +&epd_pmic_supply {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_epd_pmic_supply>;
-> +};
-> +
->  &gpio_keys {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_gpio_keys>;
-> @@ -59,6 +64,12 @@ MX6SL_PAD_FEC_RXD1__GPIO4_IO18          0x10059 /* TP_RST */
->  		>;
->  	};
->  
-> +	pinctrl_epd_pmic_supply: epd-pmic-supplygrp {
-> +		fsl,pins = <
-> +			MX6SL_PAD_EPDC_PWRWAKEUP__GPIO2_IO14    0x40010059
-> +		>;
-> +	};
-> +
->  	pinctrl_gpio_keys: gpio-keysgrp {
->  		fsl,pins = <
->  			MX6SL_PAD_FEC_CRS_DV__GPIO4_IO25	0x17059	/* PWR_SW */
-> @@ -159,6 +170,14 @@ MX6SL_PAD_KEY_COL2__GPIO3_IO28		0x1b8b1 /* ricoh619 bat_low_int */
->  		>;
->  	};
->  
-> +	pinctrl_sy7636_gpio: sy7636-gpiogrp {
-> +		fsl,pins = <
-> +			MX6SL_PAD_EPDC_VCOM0__GPIO2_IO03        0x40010059 /* VCOM_CTRL */
-> +			MX6SL_PAD_EPDC_PWRCTRL1__GPIO2_IO08     0x40010059 /* EN */
-> +			MX6SL_PAD_EPDC_PWRSTAT__GPIO2_IO13      0x17059 /* PWR_GOOD */
-> +		>;
-> +	};
-> +
->  	pinctrl_uart1: uart1grp {
->  		fsl,pins = <
->  			MX6SL_PAD_UART1_TXD__UART1_TX_DATA 0x1b0b1
-> @@ -329,6 +348,11 @@ &ricoh619 {
->  	pinctrl-0 = <&pinctrl_ricoh_gpio>;
->  };
->  
-> +&sy7636 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sy7636_gpio>;
-> +};
-> +
->  &uart1 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_uart1>;
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
-> index 660620d226f71..19bbe60331b36 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
-> @@ -36,6 +36,11 @@ &cpu0 {
->  	soc-supply = <&dcdc1_reg>;
->  };
->  
-> +&epd_pmic_supply {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_epd_pmic_supply>;
-> +};
-> +
->  &gpio_keys {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_gpio_keys>;
-> @@ -69,6 +74,12 @@ MX6SLL_PAD_GPIO4_IO18__GPIO4_IO18	0x10059 /* TP_RST */
->  		>;
->  	};
->  
-> +	pinctrl_epd_pmic_supply: epd-pmic-supplygrp {
-> +		fsl,pins = <
-> +			MX6SLL_PAD_EPDC_PWR_WAKE__GPIO2_IO14    0x40010059
-> +		>;
-> +	};
-> +
->  	pinctrl_gpio_keys: gpio-keysgrp {
->  		fsl,pins = <
->  			MX6SLL_PAD_GPIO4_IO25__GPIO4_IO25	0x17059	/* PWR_SW */
-> @@ -169,6 +180,14 @@ MX6SLL_PAD_KEY_COL2__GPIO3_IO28		0x1b8b1 /* ricoh619 bat_low_int */
->  		>;
->  	};
->  
-> +	pinctrl_sy7636_gpio: sy7636-gpiogrp {
-> +		fsl,pins = <
-> +			MX6SLL_PAD_EPDC_VCOM0__GPIO2_IO03       0x40010059 /* VCOM_CTRL */
-> +			MX6SLL_PAD_EPDC_PWR_CTRL1__GPIO2_IO08   0x40010059 /* EN */
-> +			MX6SLL_PAD_EPDC_PWR_STAT__GPIO2_IO13    0x17059 /* PWR_GOOD */
-> +		>;
-> +	};
-> +
->  	pinctrl_uart1: uart1grp {
->  		fsl,pins = <
->  			MX6SLL_PAD_UART1_TXD__UART1_DCE_TX 0x1b0b1
-> @@ -319,6 +338,11 @@ &ricoh619 {
->  	pinctrl-0 = <&pinctrl_ricoh_gpio>;
->  };
->  
-> +&sy7636 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_sy7636_gpio>;
-> +};
-> +
->  &uart1 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_uart1>;
-> 
-> -- 
-> 2.47.3
-> 
+Changes in v4:
+- remove author from copyright, fix copyright date
+- Link to v3: https://lore.kernel.org/r/20251001-imx8mp-pollux-display-overlays-v3-0-87f843f6bed6@phytec.de
+
+Changes in v3:
+- add patch which updates copyright and license
+- update license identifier according to proper SPDX syntax
+- explain in expansion board patch why a dtsi and dtso are introduced
+- Link to v2: https://lore.kernel.org/r/20250924-imx8mp-pollux-display-overlays-v2-0-600f06b518b9@phytec.de
+
+Changes in v2:
+- Change license identifier of pollux and peb-av overlays.
+- Link to v1: https://lore.kernel.org/r/20250915-imx8mp-pollux-display-overlays-v1-0-59508d578f0f@phytec.de
+
+---
+Yannic Moog (4):
+      arm64: dts: im8mp-phy{board,core}: update license
+      arm64: dts: imx8mp pollux: add display overlays
+      arm64: dts: imx8mp pollux: add expansion board overlay
+      arm64: dts: imx8mp pollux: add displays for expansion board
+
+ arch/arm64/boot/dts/freescale/Makefile             |  15 ++
+ .../imx8mp-phyboard-pollux-etml1010g3dra.dtso      |  44 +++++
+ ...mp-phyboard-pollux-peb-av-10-etml1010g3dra.dtso |  45 +++++
+ ...8mp-phyboard-pollux-peb-av-10-ph128800t006.dtso |  45 +++++
+ .../imx8mp-phyboard-pollux-peb-av-10.dtsi          | 198 +++++++++++++++++++++
+ .../imx8mp-phyboard-pollux-peb-av-10.dtso          |   9 +
+ .../imx8mp-phyboard-pollux-ph128800t006.dtso       |  45 +++++
+ .../dts/freescale/imx8mp-phyboard-pollux-rdk.dts   |  52 ++----
+ .../boot/dts/freescale/imx8mp-phycore-som.dtsi     |   3 +-
+ 9 files changed, 413 insertions(+), 43 deletions(-)
+---
+base-commit: e6b9dce0aeeb91dfc0974ab87f02454e24566182
+change-id: 20250908-imx8mp-pollux-display-overlays-b4ab84966c66
+
+Best regards,
+-- 
+Yannic Moog <y.moog@phytec.de>
 
