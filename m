@@ -1,150 +1,79 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A34254876
-	for <imx@lists.linux.dev>; Mon, 20 Oct 2025 10:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A681F5825;
+	Mon, 20 Oct 2025 11:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760957874; cv=none; b=Cwg+4tHZ1FUD2J9wpkwr6m9i9h7i9xcdRWsg0YwJy7hpWngWYqupgsA/rPxtwlbdCh4ZT02IbcgicNTQ8PrwDB5z0N6554xlBsdziyrHRY9UTZH6t6WN42J+o3kUgTzqIkzvYZOrpWVIOJBn/sdkDwnCmLzSh7fncNupDpakLUQ=
+	t=1760958968; cv=none; b=RdiOjGynddaAaB8Mf5PSl1pKTWVz82FkQ4lXgJn6+Li7+p/BNOb66dBowbImXwThNVUO7NMLtId0mt8TzpmTT3TSzlOGUJv+68Bq7NEQZhnaU+9/Pgf43dQcxPIOqPIHxVBv/nodRF1z2QKu9ybpuurLq4TlIs5VqxtVnNc12VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760957874; c=relaxed/simple;
-	bh=Bla6ToecjH8EIjNTcUj1wMY0Ir7o6x4mV6qZgP7BkbE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=StOpmkWR+hjWhL+vzRf/4iRP1r203GfFcRQazFWa+iju4Qh/Q5Nf2oR+JLcAVM4HcjBAaKZMfleLn86SiElD7m+Mh8qVnvNJGjU9MRixJ500PmCm76FeMQW5lWL/dKJR9cgkCukQ4x6z6CqHDl1VHhzURlwZ01zIrmt/haQsgWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UdxfAiZs; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760958968; c=relaxed/simple;
+	bh=X0eKZdFlSWj/hHX4OYGh6yBB3JhcwwktgIYdMBCdF7M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CCWPb18Vq5DUq7C5+Zzy9K7yeCEUObSZKz/p7nC92UPBxpmanrPo5pX7878JTluOxOmPL88w+O4g3UiHihuGMrE42kMvFsdCiYRiiLQYa0qBOrR2lLQQyC86swdVUOTDi00LsxwWevB+CDWFtgcZetee7Qaezp7WU7ALF84lvC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PlwDYxDL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UdxfAiZs"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b5a8184144dso690176766b.1
-        for <imx@lists.linux.dev>; Mon, 20 Oct 2025 03:57:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760957870; x=1761562670; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PufIutwJX/MUqRq87e43IN62sjFrJG1C0t3fcKqtI5s=;
-        b=UdxfAiZsQz3uT0U4fj2qvK6rtCSjdNbaXkA/lvHjHBdjcO0kakLa4/4lEM0LRmzBlg
-         zP2du066+Pcmea9GXwmSu3EygDzIXkR8z/ygJEZAV+eFloq42D+SHgr13DhMDydP9arG
-         wrvIX08RAXAVhzsittE203H5M0Pg5T+DnkOoBJl0dWgBGCVCoaRp77ViwuF4VY36bdaN
-         lqjrkNqb09nTiYcyjIRGB+E2G/J+stlaPEa3N2nkmZyTb44VsCsZBSC2WGjJBHRwiBRw
-         RWh6Nb2yhL50JVKxdJzfwMudqtkMSyAW8e7RdHWiIVPVywlL7lgMUCSojUSE0S6ELW7x
-         WSIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760957870; x=1761562670;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PufIutwJX/MUqRq87e43IN62sjFrJG1C0t3fcKqtI5s=;
-        b=EDvgEGTclsX3dLU9SGI58jmyATpmqA/HUxv1OrTFe++b84CH5qJVPEtNwDhN+YO9Cu
-         /CPh59oyOjQ5sIH4q4JYNvXxJv3/v86KoS2TMwv4jkrATClGlpk6jYSJ8iNyTfQhk9xe
-         d+kCdTY98vwNl5lejStXaq3odkPGdosCa/ESskiTLRy7cWMnGJGvzYMy/bTGWM9NcFLX
-         URaQZzLyDFALd3hOHSP5g+td8vkrTCyHM/aXCn+Kb8cQCr9vnEX8CqrZLLwvDbxbhKiT
-         OqIWMM1Z0akfGNgzSD5wYqf3jXoSfF7GuSIKZCfMC4KQRxpKPpyE5DZe7bRGf3sM8fvD
-         SedA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6nb3fHR11kx9FhDRDo1kHoTzebd7fQCuzgEqjDxMbzdNzEKaa36184k51lQKq9HdkUY8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwE+zTkeqeqjuw86tEv8ulDOffIpKlX7q7QunzsZcYdp0xELD+J
-	IjZf16Jwd6XqCu0/CXhRI1AjM3p4tWsntfrRPM+lDN5OuIuTn0abEDRI
-X-Gm-Gg: ASbGncsxvtHztA/4q/4pqUq/zqWV5m0uuk13nurr5aN2sQYgqzpEX01lQ3qc323kqm7
-	DV933i09iwCCqcGxudHnuO2aoF6nIuAYvPErj7wkG56AyslJf/L0cydA0Ij4Cpk2a/tT+8149gg
-	hgXdTlLQy8EExrEnEDRTp+omSsyAesTiY1SiK+TGhOZw3TftrhRKij0D/NjPX33W4qC3FKeTaxM
-	JfRKT41GX0ScTsWyRFFnbwOUsMqUrVX6Oj+lMTHmiayGY9ndTZ7hrcuiWSn/PuREMDSgTMjJUco
-	nSCLsiFnrwklP363C1eVQeRJbiHWlffaLAwfAW/sWUY8H5l3LE4YDi/Ya/OTd56A1PPd50PBbu7
-	c41nhSx/SIrRJQktawov5QuGZMUhfk1ppr1r4jFDIHmAej3iFE8fAQDXZgvMRm/220WhoPwlnVZ
-	hQHZJjSDat85hqaLMsCumGsjQStZ4SJGBy/MrqNo6BDKU=
-X-Google-Smtp-Source: AGHT+IEGNGRqyCA4oo2Whj2ekIc3ahNm9oAu93O5XQjpUk9MWXWOqPcdHqIk3lFTx8TLeoPA3wFzBw==
-X-Received: by 2002:a17:907:2687:b0:b57:78fa:db46 with SMTP id a640c23a62f3a-b64764d7dabmr1614004666b.43.1760957870288;
-        Mon, 20 Oct 2025 03:57:50 -0700 (PDT)
-Received: from [10.25.213.231] ([128.77.115.157])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b65e7e984f2sm749179166b.13.2025.10.20.03.57.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 03:57:49 -0700 (PDT)
-Message-ID: <26f1b9ef-2e90-476c-8f95-6bae08f69eb1@gmail.com>
-Date: Mon, 20 Oct 2025 03:57:46 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PlwDYxDL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDDEC4CEF9;
+	Mon, 20 Oct 2025 11:16:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760958967;
+	bh=X0eKZdFlSWj/hHX4OYGh6yBB3JhcwwktgIYdMBCdF7M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PlwDYxDLexHxuJDjsT8XRWxCtS0pSUGKNFz94TlQjAMaDGnqwlhisoJn3hON91lQO
+	 A1Vli/NxJi66rFDpFrj38VobB1qI8W6KaEJAFuh8Mxg7Sif4UqfIPGvbh4Stb3viEA
+	 gYVQr5zvgexIP0l9QqyInkJDC1sU3V8OHDwZhD6y5a2cpX59zJCi10pby8bJK5W5Zq
+	 lvAdkiE83Ajrg/CgkpS5X6M0aIqJ/Rsegbz1rBnev/nJXTbPU1gfsfISaJhY4a1a1o
+	 6PJO39w3sVjgOdqXMh+BDq2Z5jLgr47YchSGybYwQbk7HV7s0KH/gaKauob9fxJtRB
+	 q3EL/1llhA2MQ==
+Date: Mon, 20 Oct 2025 13:16:05 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] media: dt-bindings: video-interfaces: add
+ video-interfaces.h information
+Message-ID: <20251020-majestic-warm-barracuda-06acb3@kuoka>
+References: <20251014170043.2341146-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/8] reset: imx8mp-audiomix: Fix bad mask values
-To: Frank Li <Frank.li@nxp.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
- <shengjiu.wang@nxp.com>, linux-clk@vger.kernel.org, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20251017112025.11997-1-laurentiumihalcea111@gmail.com>
- <20251017112025.11997-2-laurentiumihalcea111@gmail.com>
- <aPJSk2spnihEEkas@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <aPJSk2spnihEEkas@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251014170043.2341146-1-Frank.Li@nxp.com>
 
+On Tue, Oct 14, 2025 at 01:00:43PM -0400, Frank Li wrote:
+> Add dt-bindings/media/video-interfaces.h informations to help avoid use
 
-On 10/17/2025 7:28 AM, Frank Li wrote:
-> On Fri, Oct 17, 2025 at 04:20:18AM -0700, Laurentiu Mihalcea wrote:
->> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>
->> As per the i.MX8MP TRM, section 14.2 "AUDIO_BLK_CTRL", table 14.2.3.1.1
->> "memory map", the definition of the EARC control register shows that the
->> EARC controller software reset is controlled via bit 0, while the EARC PHY
->> software reset is controlled via bit 1.
->>
->> This means that the current definitions of IMX8MP_AUDIOMIX_EARC_RESET_MASK
->> and IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK are wrong since their values would
->> imply that the EARC controller software reset is controlled via bit 1 and
->> the EARC PHY software reset is controlled via bit 2. Fix them.
->>
->> Fixes: a83bc87cd30a ("reset: imx8mp-audiomix: Prepare the code for more reset bits")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> Just curious, why previous version can work?
+"Mention dt-bindings/media/video-interfaces.h in descriptions to help..."
 
+> hardcode in dts.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/media/video-interfaces.yaml | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/video-interfaces.yaml b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> index 038e85b45befa..f96cc0e403ddd 100644
+> --- a/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> +++ b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> @@ -95,7 +95,7 @@ properties:
+>        - 6 # BT.656
+>        - 7 # DPI
+>      description:
+> -      Data bus type.
+> +      Data bus type. See dt-bindings/media/video-interfaces.h.
 
-good question. I assume this was never tested so I don't think the question
+Please use full path, so it can be validated by tools.
 
-of this working in previous versions or not is applicable here. I also looked for
+Best regards,
+Krzysztof
 
-the usages of these macros in the DTS and there seems to be no consumer.
-
-
-I discovered the issue while testing the patches from this series. As for testing,
-
-I used a dummy consumer driver/node and manually checked the register values
-
-after each reset assert/de-assert operation.
-
-
->
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->> ---
->>  drivers/reset/reset-imx8mp-audiomix.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
->> index 6b357adfe646..eceb37ff5dc5 100644
->> --- a/drivers/reset/reset-imx8mp-audiomix.c
->> +++ b/drivers/reset/reset-imx8mp-audiomix.c
->> @@ -14,8 +14,8 @@
->>  #include <linux/reset-controller.h>
->>
->>  #define IMX8MP_AUDIOMIX_EARC_RESET_OFFSET	0x200
->> -#define IMX8MP_AUDIOMIX_EARC_RESET_MASK		BIT(1)
->> -#define IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK	BIT(2)
->> +#define IMX8MP_AUDIOMIX_EARC_RESET_MASK		BIT(0)
->> +#define IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK	BIT(1)
->>
->>  #define IMX8MP_AUDIOMIX_DSP_RUNSTALL_OFFSET	0x108
->>  #define IMX8MP_AUDIOMIX_DSP_RUNSTALL_MASK	BIT(5)
->> --
->> 2.43.0
->>
