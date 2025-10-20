@@ -1,44 +1,41 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3770230264
-	for <imx@lists.linux.dev>; Mon, 20 Oct 2025 12:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3733126C7
+	for <imx@lists.linux.dev>; Mon, 20 Oct 2025 12:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760962346; cv=none; b=eDB4dC38Th3d8tObhnnf9ratXVuaCohNhvYczN8GcrTkbUJFOTwVtocBb3Eucd6SNyOo5nfFZmxdapRTX401IiURWm4WFDkwrYGmJVEYUhQHOpxq4RKvjUzbryoqyaVGz5OsJrA/wBGPIqf+JzZwFEw8sx9tuk3xMjOEkdtECYU=
+	t=1760962514; cv=none; b=cd9A2lA7JNHdkE7yTTRQydzaABYkIhrEVhl5lKe63eeec2V65cgUSJSkIdKbYogItiBvVfWqgi3A+3t9AvpqV2C/6iV/jngFtljQREDOvkGBJLN12g9YsecsmxSOqJy1XF0ishoEa7JpVvp1ZfBiBB9mSe7dqZwCrHoFhJzcTjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760962346; c=relaxed/simple;
-	bh=MkKQdDsYP+tI7FujBY/HKFKDArIAcjnc8c//TsyZKBc=;
+	s=arc-20240116; t=1760962514; c=relaxed/simple;
+	bh=A2PSBI9x4CIXLc0aeEqEAZ/iINPPAExtIVufP3XOUAI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kqYs68S8d+KLlHq/EvorutUPc0dzXnJY3f87wTaqjR2eGMnZ9FSvtaDXTV/bee8dtWAY2blNACt4/hPEznG4OZzvI+EJNAnm84yvqI7/R8mSNWk8fVh+ApwYezDvmOWIF1VfbIoLS7Cq9vjyc2ySxSGbikZsbeMHPCE/apuaeJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=RsZoBfFS; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=hoAAEPbyFlg0htyzjB7PiBcQxsYImXnSlRfFwyotWdwupaPniQuaD2ofPyLFc/fmgNGSKDabBT4qyrZP6vXQ6HhezMw3XTJsAZ2qGdp5YAnRDA+JRNqVj8PwAGkr7QuRTScxkD97wxrLZOn6oHyCKMLA5g5qAPbFocCHoDpj/sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=qYeqXXYY; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="RsZoBfFS"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="qYeqXXYY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ltyj1FS4gis+7LWdtGx1ofBO64mHrGOTJDhLLZcoo1Q=;
-	b=RsZoBfFSULMxuDGRzNdZ6yeAHhKdHnDbRwmQ720VL1Q3YexqnLILbCbWeQ5fw2
-	DcwQfwwPOgPGAKXk0qK08aCrEBDlYK8cQgLd/2Oizde2Eqx08MMSjY8yPMF5BApb
-	WmXpKm1i+c3YGrhWd5SxIVg/lJs1254wbQ88c25dvDAJw=
+	Content-Type; bh=/N8g8/qVoPBEKBIfIm1v+a1Lcy8fJnT8su5q5VehsW4=;
+	b=qYeqXXYYQ9oyJygq2euQbXLOD/A0TPfRtmR4ttWfL/y2fZtY7PUiRqjv2a2a3p
+	Kifv0uKPajfBm9T+nNHuLlJ56SODiMahQwuta3bRIyfs7eOSKrdPJrtxuE9dbpLx
+	L58Bki9UhcSF4x9xYkQSJg2AlC8UPGLGt3eLrPgeQ4pNk=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD316EQJ_Zo4qRTAA--.26839S3;
-	Mon, 20 Oct 2025 20:12:02 +0800 (CST)
-Date: Mon, 20 Oct 2025 20:11:59 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDn16CoJ_ZozapTAA--.27231S3;
+	Mon, 20 Oct 2025 20:14:34 +0800 (CST)
+Date: Mon, 20 Oct 2025 20:14:32 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Yannic Moog <y.moog@phytec.de>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, upstream@lists.phytec.de,
-	Teresa Remmet <t.remmet@phytec.de>, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v5 0/4] Add display overlays for imx8mp-phyboard-pollux
-Message-ID: <aPYnD25ljde33_tq@dragon>
-References: <20251013-imx8mp-pollux-display-overlays-v5-0-fb1df187e5a5@phytec.de>
+To: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
+Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, kernel@pengutronix.de,
+	festevam@gmail.com, l.stach@pengutronix.de,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: imx51-zii-rdu1: Fix audmux node names
+Message-ID: <aPYnqLvUt9672wYb@dragon>
+References: <20250915220655.143861-1-jihed.chaibi.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,64 +44,24 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251013-imx8mp-pollux-display-overlays-v5-0-fb1df187e5a5@phytec.de>
-X-CM-TRANSID:Mc8vCgD316EQJ_Zo4qRTAA--.26839S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtr15trW3JFy8Gr4fZFyUGFg_yoWxtryxpr
-	y3CryUur4S9r1xArnxXwsagrWqyws8Aan5uw13C34kKr43uFyDA3W7Grna9rWUZF4xtw4f
-	XF48Ary7Wr1UXF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07joeHDUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNBKlC2j2JxIThgAA32
+In-Reply-To: <20250915220655.143861-1-jihed.chaibi.dev@gmail.com>
+X-CM-TRANSID:Mc8vCgDn16CoJ_ZozapTAA--.27231S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUcGNtUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNwrLMWj2J6pTqgAA3t
 
-On Mon, Oct 13, 2025 at 08:25:05AM +0200, Yannic Moog wrote:
-> Yannic Moog (4):
->       arm64: dts: im8mp-phy{board,core}: update license
->       arm64: dts: imx8mp pollux: add display overlays
->       arm64: dts: imx8mp pollux: add expansion board overlay
->       arm64: dts: imx8mp pollux: add displays for expansion board
+On Tue, Sep 16, 2025 at 12:06:55AM +0200, Jihed Chaibi wrote:
+> Rename the 'ssi2' and 'aud3' nodes to 'mux-ssi2' and 'mux-aud3' in the
+> audmux configuration of imx51-zii-rdu1.dts to comply with the naming
+> convention in imx-audmux.yaml.
 > 
->  arch/arm64/boot/dts/freescale/Makefile             |  15 ++
->  .../imx8mp-phyboard-pollux-etml1010g3dra.dtso      |  44 +++++
->  ...mp-phyboard-pollux-peb-av-10-etml1010g3dra.dtso |  45 +++++
->  ...8mp-phyboard-pollux-peb-av-10-ph128800t006.dtso |  45 +++++
->  .../imx8mp-phyboard-pollux-peb-av-10.dtsi          | 196 +++++++++++++++++++++
->  .../imx8mp-phyboard-pollux-peb-av-10.dtso          |   9 +
->  .../imx8mp-phyboard-pollux-ph128800t006.dtso       |  45 +++++
->  .../dts/freescale/imx8mp-phyboard-pollux-rdk.dts   |  52 ++----
->  .../boot/dts/freescale/imx8mp-phycore-som.dtsi     |   3 +-
->  9 files changed, 411 insertions(+), 43 deletions(-)
+> This fixes the following dt-schema warning:
+> 
+>   imx51-zii-rdu1.dtb: audmux@83fd0000 (fsl,imx51-audmux): 'aud3', 'ssi2'
+>   do not match any of the regexes: '^mux-[0-9a-z]*$', '^pinctrl-[0-9]+$'
+> 
+> Fixes: ceef0396f367f ("ARM: dts: imx: add ZII RDU1 board")
+> Signed-off-by: Jihed Chaibi <jihed.chaibi.dev@gmail.com>
 
-Can we do something to avoid the warnings?
-
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:102.3-16: Warning (reg_format): /fragment@1/__overlay__/codec@18:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:117.3-16: Warning (reg_format): /fragment@1/__overlay__/eeprom@57:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtbo: Warning (pci_device_reg): Failed prerequisite 'reg_format'
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtbo: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtbo: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtbo: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:100.18-113.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/codec@18: Relying on default #address-cells value
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:100.18-113.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/codec@18: Relying on default #size-cells value
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:115.12-120.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/eeprom@57: Relying on default #address-cells value
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:115.12-120.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/eeprom@57: Relying on default #size-cells value
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:102.3-16: Warning (reg_format): /fragment@1/__overlay__/codec@18:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:117.3-16: Warning (reg_format): /fragment@1/__overlay__/eeprom@57:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10-etml1010g3dra.dtbo: Warning (pci_device_reg): Failed prerequisite 'reg_format'
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10-etml1010g3dra.dtbo: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10-etml1010g3dra.dtbo: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10-etml1010g3dra.dtbo: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:100.18-113.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/codec@18: Relying on default #address-cells value
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:100.18-113.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/codec@18: Relying on default #size-cells value
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:115.12-120.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/eeprom@57: Relying on default #address-cells value
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:115.12-120.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/eeprom@57: Relying on default #size-cells value
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:102.3-16: Warning (reg_format): /fragment@1/__overlay__/codec@18:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:117.3-16: Warning (reg_format): /fragment@1/__overlay__/eeprom@57:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10-ph128800t006.dtbo: Warning (pci_device_reg): Failed prerequisite 'reg_format'
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10-ph128800t006.dtbo: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10-ph128800t006.dtbo: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
-arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10-ph128800t006.dtbo: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:100.18-113.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/codec@18: Relying on default #address-cells value
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:100.18-113.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/codec@18: Relying on default #size-cells value
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:115.12-120.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/eeprom@57: Relying on default #address-cells value
-../arch/arm64/boot/dts/freescale/imx8mp-phyboard-pollux-peb-av-10.dtsi:115.12-120.4: Warning (avoid_default_addr_size): /fragment@1/__overlay__/eeprom@57: Relying on default #size-cells value
-
-Shawn
+Applied, thanks!
 
