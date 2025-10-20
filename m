@@ -1,194 +1,152 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011018.outbound.protection.outlook.com [40.107.130.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B8D26C39F
-	for <imx@lists.linux.dev>; Mon, 20 Oct 2025 15:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760974613; cv=fail; b=XYL8yffmWi4+mWF1F13bK1HKR9fGgxPvOzP95KZgYnQ9TpB53SttLLD/adeqs/aiE6x6PaD3waTIJHWasAfEIPstKytGk60YbmT/6ncQLeOeT6gPdcOenFM4XzRw7bGmZEQyuziXgK4DoF19He0/hFTOEDMGKHYONSDCYLAvzKk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760974613; c=relaxed/simple;
-	bh=NITujgVoAhGr4opbYfNheKlr3zm9OYbcnSVjxfEfKXs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Ih57Dzo2GI54gpPuCBujL4VUZ/5SLTqxK1WOz7FRgcEoqHU45jFKuacXoXtmCfhOe/byZ17CwmSyPGyQ6xQ/dwuxGoI0+c50bfExVEMOQQuGd7LRYAFmlwtC1W56GUx7dyE04y18Et+WOslHmv3YRXMaH2ww5nB46M7M59tVotk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=W//buRLC; arc=fail smtp.client-ip=40.107.130.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B680D26A0C7
+	for <imx@lists.linux.dev>; Mon, 20 Oct 2025 15:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760974652; cv=none; b=fXbfspUOOu4c4etU3WBFZJaz4etCJowhMlDSLZJr1isFX2+NfeESM0UFUddNi0NcbGyOmEMdA7R7iMqbahPcR8Lf66F1Nn9E9oCRwQrkFuoG9DSEXcZ0hgM4EcrNP7IQAKvg1LxFzC4/SR/i8rW7zCj3m1j3G4GxqBkL7JHvSHY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760974652; c=relaxed/simple;
+	bh=uvtKdw8fhD9Bm/d4sfVL5BsOH6AlqthiaBj+rlosuKg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=emuL04huXAy5FWG8m9WHCgVaXmp7B7xHKokXW2RVtDeCSRlOnqRL1U4Ufn5SAAtwqdbNYesr3nZc5egIImOJqAkaRxZWIlQxrmQtnicIfzYUiqqfa09Kk0+UOr+WR79Bmcf6+42wj+ToL1QTTDBdtTy2/MkipWb3K7Ah0HCFkM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eDuOHdf1; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="W//buRLC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PQui1TzNCEkKy0hTZzVQ0R4Ipjdi2gD+8zodiqsuyVKjO/074j3g4WoI5070g17ymKRtdd1//waTHGzvmv+M6HOFeEKCyi+tWBm50ywkqADoWsmtWFgBUIdvmiHwIxGKBR663tqLWb/XzXgSrI+GjiRcqLuTUqTLpCZXR7oRSMkeYoFxJD4XxldNWBLFPNYU0MXEeiKDF34Mo8Ir4Q/KCSaDvh1U8arWl/X/yFHm8WvYbopXmEvbQXOc6hAqp+h9rii0s9SAWog7yaylvOdcK9+BpSrQtTJQe+nKmk74Fo6KKMBPYpQ2nwRkjB8hB3L4lkCPRVpZd72QbdP2frHvSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gxy4T3gLHLl4cZ4T16goKf2BKNsohDQuq/0jbMKxLqM=;
- b=gU/TXLODkb8l001X/oUXRVNA4pwui37JZtNuZHWK21opomg4dNbRD9pSZJnYJWXb6M3iKBiAFg7qmXoNxv5pl5+LN8DMOgiGPpZFr0N/aJqKeTV4rmSxkkn4BVHOGBeBUwhK2H2qaRlCvx6zJrwRWRzA8YA/7fzZSQ4b8dzexhDLw2qQup6M/1VpLmK+qLIOanSbHsvEzwMPYXu/bvQzLEgLAyQanSR0eIysmAJ2EpTx8nDCgCsRIKFOlCjGzsppX69ia34CyFa9Ce74+537AAM3phg7OMVKHoMBTw9VmV7j0z33qp8aDKSXaGU/U4kUadwhi9yVyZU5WaxsXgsTfg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gxy4T3gLHLl4cZ4T16goKf2BKNsohDQuq/0jbMKxLqM=;
- b=W//buRLClfP4ip8vHoPrs6XzPa+xRRzEDe90Q/po7nWmpxSKSpkXHSOLz7C6RgX4PXUqi6IRSdOT0g5LyWfOhGYy6FIKDx7nIrXgLw25d5FpIxlvZr61XSVJgcq6+BzeTwJEF9jGdJHFo249V9OoqRuQchkKu8reMRCnt66D4U5A2E+E7WWGOkEz+GJf3+ci+npROvUSu9wGKBOpbMjldaGDmeWkaYnBp6X34DL40hgBr0z+OPqX8h1iaptaWqbleKpKWpeA3EFvNre+I8TnfDKIBp3CFOblk6EWnXAfEnJtiRKe+OYbfdfEASGu2FvQZHow2tzyO+/oUEE4068m0w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by PAXPR04MB8672.eurprd04.prod.outlook.com (2603:10a6:102:21f::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Mon, 20 Oct
- 2025 15:36:48 +0000
-Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
- ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9228.014; Mon, 20 Oct 2025
- 15:36:48 +0000
-Date: Mon, 20 Oct 2025 11:36:40 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Yannic Moog <y.moog@phytec.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eDuOHdf1"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-33067909400so3435094a91.2
+        for <imx@lists.linux.dev>; Mon, 20 Oct 2025 08:37:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1760974650; x=1761579450; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=An/szO/oyH3jWEETz4FjiP4MsyHyMfmUEnCotuUe/9s=;
+        b=eDuOHdf1pcGPEPm2i50v0lmkV8Dj1Oy2t4v9L/k3Lip63ebX4xtMpjxxwR2ZLQZafb
+         1YrNBQ6QxKTE4TTMfvyK4frzA+con7OOPz5SKQ5GknTBrXbT4MH/xR09hLeBNVCkOm3/
+         hUF5GN6T802EvwEMRL2ntETmF47Dj6TExFz6YewvQ+DVmX1ahbQ4hpInC+UbPsY60wa1
+         aCCt5+oGke8NODy7cVK/usi5WSlGmZXNsGrCRwEiFb2MbIO64Ex5QGO/9YqeWn9fncEl
+         iOyl1JOn5UGZ0GgVqa1MWTN0wccmzOMvtA5kOFpDIk6v4TeDIK+GBDt6zYv7R10IT5uJ
+         TwVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760974650; x=1761579450;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=An/szO/oyH3jWEETz4FjiP4MsyHyMfmUEnCotuUe/9s=;
+        b=ciatZPHE9VSmai/Mxb3JS1WKSOmBfFh/HjQ9unU90k1rX6e+8g86MogmvqAmZaDBKm
+         xdBGdIexqrwjIRsJDjhwK3twfrLUhHezM3BYelg4fi8uyjD6tXW7Eu+r1ggwkkTJBPz/
+         D7csIa3lCTQP8lHcTdImcVOti92d/ApmXpAqx8K8pxkJrGsjpyNDdmfyc4d9ZyqdKtHi
+         XoFBY4POfHwkCP8R1EntoTnkaLKl6ELjHYAuad8Kywtme78kMVc8JHqc4xMtpCq1OHH4
+         pHXIv+ItNIy/C0SNVkD3m1iOKz+edtiJamQmGL2OCQt5qSr3bbwfuQghaAdQk1ALbBGr
+         IfdA==
+X-Forwarded-Encrypted: i=1; AJvYcCV1DDk6sjOWMhpUDwU41nmMR52ZGfqOT0ig58MTqU/1YdKojoxdKKK/djIfu6RQXwvssaQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzkjThFjFkbnWfK2mdMvGr/6Bh0v2RqluDR8AmCY0ozvKOri0iQ
+	qBIlCplM8Nmg2HrxTPuKShZykf2lNQ8OxqMmgW8PfEhNxp0xdzcUQ9Pg5PcjfmZI67o=
+X-Gm-Gg: ASbGnctx13QTOEPX8gUjCYn+Wpi7zYp25KOhYpL2i7oVGChfaYYTNajZJNPZVty1LlD
+	5glXCG0BamQLkpWdw3vJYteSavdhWHgnwqPftZwZPjIhU9mnaNjBfW2A/hiBoHldV1BXhXUrejj
+	BqWcq88XxRwHE7rLP4ix4UOYYg1Qe9e93tnXaLqD6TbreQlRGSfDt/di93cS+yTkvyAw8VrquQd
+	sMSyDhw6RUFvDc6VsElylgLGjtCtfBPjq45UbjlZJnv+AY0BriM4jFX8aihz8CTlwHRPeplgrtG
+	mp+8FGfw7rwTZhXn6kHWKDC2jfHVzcGcTyo84T5ETFphV/9zb2QkErXcfef6CNyzKjvmE4ci8AB
+	53BZGl3USf1j5kb8b5X8mm7ZgMMT9RE/mGyr/sDuWrBsloHfBUldDBxKphDeUJcWCZdNMsgqFnx
+	4VIcLOAWIZBfqcyA==
+X-Google-Smtp-Source: AGHT+IEmsmD6amTLvHHE+2cwS/e0HUauPuXtYyoBUNl10cvdG4E4NSTe+f3ScOSD6PoiCIK82vESEA==
+X-Received: by 2002:a17:90a:d44f:b0:32e:96b1:fb70 with SMTP id 98e67ed59e1d1-33bcf880809mr18130535a91.12.1760974650080;
+        Mon, 20 Oct 2025 08:37:30 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:2360:6c8a:189d:ae5a])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33ba93cbb7asm6652052a91.1.2025.10.20.08.37.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Oct 2025 08:37:29 -0700 (PDT)
+Date: Mon, 20 Oct 2025 09:37:26 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <frank.li@nxp.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, upstream@lists.phytec.de,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] arm64: dts: imx8mp-phycore-som: add spi-nor supply
- vcc
-Message-ID: <aPZXCJZQaNnrxC7p@lizhi-Precision-Tower-5810>
-References: <20251020-imx8mp-dts-additions-v1-0-ea9ac5652b8b@phytec.de>
- <20251020-imx8mp-dts-additions-v1-2-ea9ac5652b8b@phytec.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251020-imx8mp-dts-additions-v1-2-ea9ac5652b8b@phytec.de>
-X-ClientProxiedBy: SJ0PR13CA0099.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::14) To AS4PR04MB9621.eurprd04.prod.outlook.com
- (2603:10a6:20b:4ff::22)
+Subject: Re: [PATCH v3 3/5] remoteproc: imx_rproc: Enable PM runtime support
+ unconditionally
+Message-ID: <aPZXNlY1MK4--Q_g@p14s>
+References: <20251015-imx-rproc-c3_1-v3-0-b4baa247358d@nxp.com>
+ <20251015-imx-rproc-c3_1-v3-3-b4baa247358d@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|PAXPR04MB8672:EE_
-X-MS-Office365-Filtering-Correlation-Id: 286a82de-f825-4942-8e25-08de0fee7bbf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|52116014|366016|19092799006|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kKfJAm2dj4kcEmU7of6QBuU59yKkTNAj99O439Cwhy8jKMHzUlS9MZyh731N?=
- =?us-ascii?Q?uQ72uobC38ORkhL8tQ3p+m5RmAeXJtpYhft9EFRiITcIjyX7DK2SUxwcUke+?=
- =?us-ascii?Q?jMGzfmwYZ1YQJTx9To7upPq+aNH+Nv/kwea3bucFSzDj5dT1P0nWyYV5UIGc?=
- =?us-ascii?Q?AC5TTT5/rMfMOypnw180NpJ1qOstf6Ot3BGfA5X9Rj+5Ln33WfCg380a4dEI?=
- =?us-ascii?Q?SY5rrS/++t6p0XmONR+KuOMdD8FUEG/FX+Wz/mFUfp/gmErE6LwPf4C6epi7?=
- =?us-ascii?Q?bJU1Kr4jPjmnGL3HujVorJIZnQbBYvRT7u+ny3AMEWEAt409KJGM3S4bsjKC?=
- =?us-ascii?Q?advkyOQznr3V2+pi1Hl4KLqZLHq6CtUG5Hv89RWtT4Ijp+gTF3ejTRpA7uM3?=
- =?us-ascii?Q?tusryb3PRK+zBGxcxXI+8jyZw55XBZOgg3ZB7mHb5tJeOKbUn9OxW4CvaG0E?=
- =?us-ascii?Q?/w45yz4tknn/RMFrtCq3LEewl8wHOFUk8RbftBR+ZC2gdXW17/iGqxzrUOsL?=
- =?us-ascii?Q?3/2loxGpRz3HkENeZHB+Ju9q7g8/kXn2lGD+nA5434cGzBg3lzhDVzqG8xaG?=
- =?us-ascii?Q?fOH+AqD0SBh/g0LD747f5C7EkrlvqkggdVOKDQuA493K7KDpNFGKrw0sAxwO?=
- =?us-ascii?Q?xMizdc64fT2Gur/4hcWDF2UdmevwzU1sk3G+H3zjscIiciyCve0Bhz5LqvpQ?=
- =?us-ascii?Q?F+7BNQOHlsLjAQVk072SV7mJMiyLJMZMNxPkHE7h8W9o/BWBOtxj9YKetBdI?=
- =?us-ascii?Q?XnOGdlj8Nf8nC4afafSErurq+QTydC0ZdwjlqMBeD/tDbbicNPB/XFe+GniL?=
- =?us-ascii?Q?JToTDPXP7P3pgUgZg8dZgayH5QrNEbASK7hQY9eQFc132UY/UoGzNrp5Cxx8?=
- =?us-ascii?Q?HnRD8vMbEqEXzyw7jzd1kWEkHNSRp/+3Tv3y0k0miAn0XaQ1AYRxM9dOeaM9?=
- =?us-ascii?Q?1ow3CWOC/bRCN553wXkpjX3jsGEpvSBDbC/xK5PxeuWzTsLN3uK0seiP635W?=
- =?us-ascii?Q?67tB3+ONqWrCBf0s5klI0/Bc6Mo2Znx8OvW6sasLGb4LUhKU4WgsUWual9FA?=
- =?us-ascii?Q?Sy+C7H82tuj0d5LMz6/8bZ9Z480fBxRixFpMtlmLILnRGJetL23eI3XU9Xmz?=
- =?us-ascii?Q?50OKDXjLu5JpnFoDG/E2dKZe5i2nB62+U4Aceg5WONgExje2zsWC38HmJz3K?=
- =?us-ascii?Q?D5zZN6My4RFPJfJaKfLX8te58hP2aH6eT8b6Exrnv5fZGcV0sqYTT4nNnfcH?=
- =?us-ascii?Q?9BQhMjVWF/dc5xxMsR6wOzIWlBO+vJ9RfiUfOu+0wyPUE/GcGMMSLuc98P+0?=
- =?us-ascii?Q?GnfF9KYhXyNEsGLgN6Vaww3owvTSYLPL9op9O3QUcvSPMmlSVKgqdiIMOQ/8?=
- =?us-ascii?Q?GmTFYcFVQt0aYUZR9kId9RvQ2zh/bqgaSJlPopSg/6YAOtOLKILrWSu7KmVZ?=
- =?us-ascii?Q?nvfMT7ak2cNgNVLRsRi4qf45QYJLG25bqbB8wjJnMm84P/0geeC0qNeSagE/?=
- =?us-ascii?Q?LqtB/BFLtcKAtsfKQGL8jLg/HnrS7rQ4JTCg?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(52116014)(366016)(19092799006)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/0gTLigrCHEGMcRHmRu7cfZqvkTPhKQaq7yYMQpCwK0UGAg7F0D3yAyeKqZQ?=
- =?us-ascii?Q?UNjTtF8B/Rb+OfRk+K/QckY3RfUNav+lGJMzyoflHla3fh+uRV0XIkVCrC4Y?=
- =?us-ascii?Q?jsImkAr+9yAVsuk463dTjb0lDiaIbou0eU+2JZrqSy+YIZiju2ghgjVA2AZc?=
- =?us-ascii?Q?n+4tcj/QptFmcsfFuYGrQWo7gzsGwi+J43gGjge0z/AOYkSCTEP/+cS5BWX7?=
- =?us-ascii?Q?/b3/5/0iE/XnuGS+/8fgDYb5IlU527IzKXuippQy66qMOhbsf0ZNYkpp4t7u?=
- =?us-ascii?Q?tjlfT9zHl10QpHbWtTbLulJCJXmNQ2tDNn1VJAB2Ty7nYSaVe0V1sisC899/?=
- =?us-ascii?Q?uJ10T7v+KPhCcKDVLSjephLDE854r0hCXVm2NvQMN3AMpCmNMo3Lt3aA4Oln?=
- =?us-ascii?Q?sP9XiHx/gxyKDpLQE0XxPJyhN7SxYUAymyfPWW5ZXpZKpxrtq4UO3v7ZM0cB?=
- =?us-ascii?Q?Xci3sJLOkhMpwDU0YHhEyzvODhLY6xphGevOLz3opvBu9Xx48OlUejSxNpCf?=
- =?us-ascii?Q?NGxYukuBLWwkBvE5oriak9rgFBQ9E5Kxa2psylqXC51ORv6Y+Kh3gknJ/a5h?=
- =?us-ascii?Q?D9MBRylw1jkUlAgUFTWx2mho4Zolqc4IkhcqK8he/Y/bsOLmBi38CrmjK74W?=
- =?us-ascii?Q?q+9EG11UzDkky6igOVy/eHz69nVsZzaF9ApcoIJDPJ3/EbmwR/ha3BEwLxPC?=
- =?us-ascii?Q?9cmIMmvjOzRA7RMx+cTryHjNKQD3etwXTeWAcGH79RQDyMvU1zU6XzKyw1yQ?=
- =?us-ascii?Q?E9tzUHdwSqJSBscTmabcpA3Gs2X1zC6ive05D4pn1fdxywz30rIE9cVgL0wF?=
- =?us-ascii?Q?JatcLq24q+j6/FnzGtHgV6P/6/fn0+QWgWpd2TJ+K1wsnZV+egOjqEP37JTi?=
- =?us-ascii?Q?GtdPrdfACwbDU7LtE0MPoL5wfQjHXEJIxpczxmRBD6aZOh0H8g3LI4eyVg6a?=
- =?us-ascii?Q?TcDjbmzq6GxxiReTdxRSmCPiJLZPIUUYr+wFXharSf+m9bxMQ5lbZCHvkrEG?=
- =?us-ascii?Q?5Ez6wLo5PgDCe8h6/2TeCIFAOTwlGT3ds0PRJZq69pBl4SdNs8sd9ESwminI?=
- =?us-ascii?Q?piJSx5y4a5ofsTmvCx9bNjK7gpXhTfp8lKVFXxuuKCq78MffZB/Ezhf0Z7nN?=
- =?us-ascii?Q?M8No7HozK0/rckvThVVUtgWjsIaG5WJ0Bi3GFSWtYVb0tcNty3Sgfj5pb6oO?=
- =?us-ascii?Q?LG7QrbG+IaPz+eC6z0iHE2c1IY5Fb+n0aXe/JcUOJtyf1AfXvKmSfhB3IBv9?=
- =?us-ascii?Q?Ma1c124CXfg6Cw8fOViVwzrG5llRnUUbxMDMWO4KZEvHtLPvYCmBW9Lg1sGZ?=
- =?us-ascii?Q?cX50xpjACbE26W7pdakkpaQl/3B9tEnEUqShwRuEoj79N7gK401RPBExeWhg?=
- =?us-ascii?Q?1V7ctRKrC58TZJLb1N7uh3PoBdGcYtQ+CiSmRAFcSSVDCW9HvKXU8R3zQsSq?=
- =?us-ascii?Q?Q3NK2Nv4AmPGqK1jOdvratMz1fc5oDXC5sy+aCuFYmTx9ckcHSMTq2xl2fWk?=
- =?us-ascii?Q?86NvmguknBTBZEwjdwSl8UXBfLjzgAJgNDe557jswE0kQLyhMRP4dA1F3yBF?=
- =?us-ascii?Q?mW8jPLv3lEEDnwlGic8v6sdpUrVwlbn2numIxzKw?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 286a82de-f825-4942-8e25-08de0fee7bbf
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 15:36:48.7371
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 03YFbNuosk+TN7hdLGJ4TLBm34BMJijTo2oQI4pxnIYzUbwzmRcU4Pm0adFtOYHYPcAd/Hv5kXQYBUCBgmXpig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8672
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015-imx-rproc-c3_1-v3-3-b4baa247358d@nxp.com>
 
-On Mon, Oct 20, 2025 at 03:11:23PM +0200, Yannic Moog wrote:
-> The spi flash on the SoM is missing its vcc supply definition. Add
-> missing regulator which supplies the flash with 1.8V.
->
-> Signed-off-by: Yannic Moog <y.moog@phytec.de>
+On Wed, Oct 15, 2025 at 09:52:57PM +0800, Peng Fan wrote:
+> PM runtime support is safe and applicable across all i.MX platforms, not
+> just those using the SCU API. Remove the conditional check and enable PM
+> runtime unconditionally to simplify the code and ensure consistent power
+> management behavior.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi
-> index 88831c0fbb7be3db18910385e4e15691b1c74ef2..d370e2a3a00c5e3e91a606ac0fbed30cf5e6f9b2 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp-phycore-som.dtsi
-> @@ -28,6 +28,15 @@ reg_vdd_io: regulator-vdd-io {
->  		regulator-min-microvolt = <3300000>;
->  		regulator-name = "VDD_IO";
->  	};
-> +
-> +	reg_vdd_1v8: regulator-vdd-1v8 {
-> +		compatible = "regulator-fixed";
-> +		regulator-always-on;
-> +		regulator-boot-on;
+>  drivers/remoteproc/imx_rproc.c | 22 ++++++++--------------
+>  1 file changed, 8 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index 820b0cd5adbb17ce5665e7ec2786bca23f1a67ea..25f5cb4d414eabed7a166eb2a8ae5e20b6b4f667 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -1119,12 +1119,10 @@ static int imx_rproc_probe(struct platform_device *pdev)
+>  			return dev_err_probe(dev, ret, "register restart handler failure\n");
+>  	}
+>  
+> -	if (dcfg->method == IMX_RPROC_SCU_API) {
+> -		pm_runtime_enable(dev);
+> -		ret = pm_runtime_resume_and_get(dev);
+> -		if (ret)
+> -			return dev_err_probe(dev, ret, "pm_runtime get failed\n");
+> -	}
+> +	pm_runtime_enable(dev);
+> +	ret = pm_runtime_resume_and_get(dev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "pm_runtime get failed\n");
+>  
+>  	ret = devm_rproc_add(dev, rproc);
+>  	if (ret) {
+> @@ -1135,10 +1133,8 @@ static int imx_rproc_probe(struct platform_device *pdev)
+>  	return 0;
+>  
+>  err_put_pm:
+> -	if (dcfg->method == IMX_RPROC_SCU_API) {
+> -		pm_runtime_disable(dev);
+> -		pm_runtime_put_noidle(dev);
+> -	}
+> +	pm_runtime_disable(dev);
+> +	pm_runtime_put_noidle(dev);
+>  
+>  	return ret;
+>  }
+> @@ -1148,10 +1144,8 @@ static void imx_rproc_remove(struct platform_device *pdev)
+>  	struct rproc *rproc = platform_get_drvdata(pdev);
+>  	struct imx_rproc *priv = rproc->priv;
+>  
+> -	if (priv->dcfg->method == IMX_RPROC_SCU_API) {
+> -		pm_runtime_disable(priv->dev);
+> -		pm_runtime_put_noidle(priv->dev);
+> -	}
+> +	pm_runtime_disable(priv->dev);
+> +	pm_runtime_put_noidle(priv->dev);
+>  }
 
-Needn't regulator-always-on and regulator-boot-on because it is refered
-by flash@0.
+Daniel - what is your take on this one?
 
-Frank
-
-> +		regulator-max-microvolt = <1800000>;
-> +		regulator-min-microvolt = <1800000>;
-> +		regulator-name = "VDD_1V8";
-> +	};
->  };
->
->  &A53_0 {
-> @@ -83,6 +92,7 @@ som_flash: flash@0 {
->  		spi-max-frequency = <80000000>;
->  		spi-rx-bus-width = <4>;
->  		spi-tx-bus-width = <1>;
-> +		vcc-supply = <&reg_vdd_1v8>;
->  	};
->  };
->
->
-> --
-> 2.51.0
->
+>  
+>  static const struct imx_rproc_plat_ops imx_rproc_ops_arm_smc = {
+> 
+> -- 
+> 2.37.1
+> 
