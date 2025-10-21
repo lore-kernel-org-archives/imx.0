@@ -1,195 +1,319 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013007.outbound.protection.outlook.com [52.101.83.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7163054CE
-	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 08:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF385323401
+	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 08:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761036210; cv=pass; b=hYo+BnPguTmeXVzAeKAqF8ywpxzBzX33650KgBCP88vwz9SkhBkAVR9J2+1Qy+ZqrM76UMX8PxAfy9aWjbslIs0cLKoNGsJCQg2kNfWJ+akqNJE61kCgtXO2M2MyaYe5CDcIW1rK038WPkkyHA3WnNoDSqUcL2QaWQd2Jmy8FTc=
+	t=1761036688; cv=fail; b=TiOayoOVZjfgXm6cQ4nssER9uNm2tclGVepe+j3/Ouh7e9R+zFkbgLUup3Q5CgM1u30s+40FWVlJoOPm0C6zzR1/BRZWHEMC02XJ8O90q4qhz1JWhtKZTSv0EIweLPj9lNezjBYZBDqJwrBkTXDMLHUHtQuQDX1h1vwrnbNF4yw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761036210; c=relaxed/simple;
-	bh=QNnCBOcY3yHr19UPu3nZg7aYzp3w9guPQWqSaxqQ3l4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J1nvJa51VkkUGv49ONMieX1b64vpCZD0GN8cQnA+Y4MOEjRnmQ7a4a+cKLAr+spjdoUyrPTvxMffFQPhAgwOavCAgMlkkkHKXivO+bCAF3gAc1CDapXx6FyuImWL913F6dWhqq17GyGtqVLMijinluHcwn38ytEgSWanNRL0BIQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=uRN1/4/r; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	s=arc-20240116; t=1761036688; c=relaxed/simple;
+	bh=83Lq7k/3wa/sZdg13cAzCoYQv+gn/2YqBKE2KgFzh4o=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=LrGD9RJ7LOZUKEzjsoFR3ZxRiA4crEZCuDs9Gbc4L4AgsSup0Cd5zIQF1qbsO03BGRM9ahIujnuKppK026lu0V8WxoMpP+Z9ybJvWHO77uWdeSRxEWEsAhjruwWtqqr9enh07wI27JHW1zmlmbKDnGLfDkTc085ThDoMqUliTpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XQqqyznn; arc=fail smtp.client-ip=52.101.83.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="uRN1/4/r"
-Received: from hillosipuli.retiisi.eu (91-158-51-183.elisa-laajakaista.fi [91.158.51.183])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sailus)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4crQmn2H8Dz49PvY;
-	Tue, 21 Oct 2025 11:43:21 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1761036201;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JyUGRQ6PJ1u2Lm1BLA85pJa1fVlOswvc3tUZzsrCrdg=;
-	b=uRN1/4/rGbbNYgdk2xKnZYZA7mcA4+7atkPJgSc1Wog6ZV5fbnOB7YjCo+cHd/MLQV2Usl
-	U3smYEFr8gsnU4z4Cbvo+U7oLR47YYu8tlgbVSHYEOnr+YUOW8vjpu9/f5R4rScV3Ld965
-	12v3Q46Py9nZx+iUn/pSqcUTthx73KeVuw9x41eccEVzd2Rwao3O9I82qklA/vNyUWCnTI
-	BiJqkq7bol51sugtl4YVRoaORXw8z8LUl7qHMv8pfWwuxV36wMnCGz43vJYWXVwOwxPKbL
-	6CyLARtxUfVh8bJNb2/+O0sZcVxt6RYT5XDpo+NvNdILcsgSm9itd0vTMI1SIg==
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1761036201; a=rsa-sha256;
-	cv=none;
-	b=iIph07gtLHPqINNfeZGDQZfYhC1XYF4a8OVJ488t1pef7vpCbWqxKz/cSZpT48EGB90PqM
-	rNRI8ZVBwG6NqyO+j8j0bDcs2NiRAPqxYAcQYD2gCogwVYdYzMXgUWBLGuxur5GzY6xQaP
-	BXhdKIM7SUJ2qARVEw7ls4v7Ohw15S67yBT5qBh9/IvmYxnOF8+rryT+xMKaAZhTT3q4SN
-	ECLphayXZJPmDQN+XmbhMO8WRW5ad1BWG6tGebCIYLPW/XGNCbJB/Ewn4w/EbqQxB9Ygjp
-	G83CXq8ER5zKynn7K2gxlLO1DrQRdsF3nB4BuVkCbbXUJDHc6v7DqxX0xcGjFg==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1761036201;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JyUGRQ6PJ1u2Lm1BLA85pJa1fVlOswvc3tUZzsrCrdg=;
-	b=I4H/OSphBn5ICfI4SkGBg/37ZrU31t8CKZbnPpQByqm8vaDSWQXb9fVoDYjL3heuFHKHyE
-	3DOv232zwYqknNUVNx+2FMf4zxBu1H8Ulc4x6g7sZ0qrMb7nn3bAF+GefCBIIhqt6tegP+
-	7Oin7MWqWQZ/ZAS/S42fEMggsC6sGytPJqMI/Fl/LywSb9YwaQATZogdxcHm08/itSBlcR
-	ELaF543Y3FOM9FT1VQbeW4NEHd8+HVHSqsiNyZZny+I5iUVHx1egW56gtM2bvBhhAPRTik
-	RcwdM9NjOyEBhsZNXQXD3p/etB6p3/TwMeowOW3syIC+wn8WXDzLH+DoSv5hqw==
-Received: from valkosipuli.retiisi.eu (valkosipuli.local [192.168.4.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id C42C7634C50;
-	Tue, 21 Oct 2025 11:43:20 +0300 (EEST)
-Date: Tue, 21 Oct 2025 11:43:20 +0300
-From: Sakari Ailus <sakari.ailus@iki.fi>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Nicholas Roth <nicholas@rothemail.net>,
-	"open list:OV2659 OMNIVISION SENSOR DRIVER" <linux-media@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] media: dt-bindings: move ovti,ov2659.txt into
- ovti,ov8858.yaml
-Message-ID: <aPdHqCWNdmVkch7S@valkosipuli.retiisi.eu>
-References: <20250912183003.1115957-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XQqqyznn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DZMzyPESXHq2bQshLgbYsKgHmj8bC/ljQuSKrBSpvmAHqEt+d5CGSTjinRvIXuEPO6KGDAX881jAcO5W641jf0xvXuR/9sc6IOi+aYS1TUYhfnyeA9rrk0HWi5SM19MSkk8pq7825A3MiMAOZrC2QpHjzLCorMnRxE616JR1Ht24gC8ARnAJZYE8ZSuvgCLMFmCUOCsyMmRA4Ukd+xRKmweRBP6URGzrm7N+dahummarskd90Ufo8KHCtz7mRTYZ5jDIg1Zo8LC6ZPWpAnXemUGvsQK5CR4w7iRaEErJKF/0WxC7DCvN8GpbLW5VM/Ao4E8Naw2r1qMFxRPtu2dj4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3qMzgdbhZ6dEGZbjIVWFEJiCSp7DP00W7ktrnKFQMPU=;
+ b=ryvB/HFXGONrFFOsymbZHLvPJcQyJV4Ky1Z+Zhl543gXh9S8sB58qkns5dgXtO6mR2R3tF3NaZDoub+/TEBEI4rsmhJi1xVJ7gD6/EVD4WhmVrJfS2kORGhAMw8JJOZYgSsSt293l1qp0sLYM9IYwVjsYaMPqqPyl0cn+Mmc23mTGtbkeuOqUyNoyKg8p+Pk+OTym2tucw6vVzihst5fAXLkvCEXMnwRhLMukWYIWaSkq/vYZtMRSkzv46VfcXSxeDUFddznxbKx7tEFnn7S5CkXDpk0uxG5wKHmoyhq04inyfpL5gwXDjPmYQF7nxJRMrm/U3BN/NE6WqnahR8Amw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3qMzgdbhZ6dEGZbjIVWFEJiCSp7DP00W7ktrnKFQMPU=;
+ b=XQqqyznn+NMaGjx47OUNyLwtnh/S1IqDC63aX7VRW/pHxWrDnXylYmw1ALcEL9vmRTg6eulo07q4qMFHOx6a6Br0MRrrZUO6/Z5KT3ZkwSesiKsJ+ngISxbhzGUgCkv4KK1dUaK0md31b+cUa4Qv73UlyhVmBbvAY5E4LpJwmjAGKhHFzqXlbJqjZAev4vHHznaZaikLpz0ZSjBlfBWnYPjrgCURd9CuKrLCVpVEqDoYu0yjnvPsfNdIek2YJCfBzFiGi2yoco1EjU0/QCT8u86HdC7gzOteOp4p2fO2NZtGMLb2jXazNEnJ+X5LEF/WGlmDIf4dZWYaK2UAZ5JNMw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by PAXPR04MB9024.eurprd04.prod.outlook.com (2603:10a6:102:20f::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.17; Tue, 21 Oct
+ 2025 08:51:21 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64%6]) with mapi id 15.20.9253.011; Tue, 21 Oct 2025
+ 08:51:21 +0000
+Message-ID: <7e0fb617-088b-4075-9631-e37645b4c40d@nxp.com>
+Date: Tue, 21 Oct 2025 16:51:40 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/7] dt-bindings: display: imx: add HDMI PAI for
+ i.MX8MP
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ lumag@kernel.org, dianders@chromium.org, cristian.ciocaltea@collabora.com,
+ luca.ceresoli@bootlin.com, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, p.zabel@pengutronix.de, devicetree@vger.kernel.org,
+ l.stach@pengutronix.de, shengjiu.wang@gmail.com, perex@perex.cz,
+ tiwai@suse.com, linux-sound@vger.kernel.org
+References: <20250923053001.2678596-1-shengjiu.wang@nxp.com>
+ <20250923053001.2678596-2-shengjiu.wang@nxp.com>
+ <aPc9-wYxGB1KYPyQ@phenom.ffwll.local>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <aPc9-wYxGB1KYPyQ@phenom.ffwll.local>
+Content-Type: text/plain; charset=UTF-8
+X-ClientProxiedBy: SI1PR02CA0051.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::6) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250912183003.1115957-1-Frank.Li@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|PAXPR04MB9024:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e051b51-b3a8-4103-4fe0-08de107f01d8
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|19092799006|7416014|376014|1800799024|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?R3AzVnc1Q0dvYUh5LzEwZnBUd2xOZXRKQ25VK3N1VDIwR1M4dFFqS1Jicmln?=
+ =?utf-8?B?QS9nUFN0cGx3Njd2b0o1Tk8ySEpPanJKYmRPQTF0MnNPZEk0NmNUbGE1WVY3?=
+ =?utf-8?B?cjBDT2gxL2pwQ0g1b0h3NFNkdnVtZUpJWVRwcm5RdWc0ZjN3OEJmVk1oMCtM?=
+ =?utf-8?B?NHNJcXNqMk9oMEhSUDlIdHozem41elRTZjAzMHBBSWltU2duNVllUWVjQzNF?=
+ =?utf-8?B?eTNLc1ZnZzhvWDZSUnFndkpRQUdaNExNREw1VnNyenB3Y1VqeEZadDdYQ25j?=
+ =?utf-8?B?TjMrVVJpclRtdVBhYkU2L2d3M3ZHb3JaaFBuclkyOEl3aTlEd2tvSEc3YnpW?=
+ =?utf-8?B?WnN0bkNhVUNNM2t6SFd4ZGhPUXB3WW05VnRDUWlnbXJjcU1wa05INDNKbGUv?=
+ =?utf-8?B?N2pGK3JtK25EZkt3VjM0Z3d2NC9pbFRLSlBhenczOWNydTJRLzFydmU0Zll4?=
+ =?utf-8?B?WFp4aWlueHNQK0diVVRVSFhTWEhWT0dDZk5KTTAzWVNSc1pwYUY2N1NMeElk?=
+ =?utf-8?B?aHVSUGE0NTl6aXdTUTlXdkI3WmdCeGZkekdOS2hoYUZBNDY2cGJNQzRZUnhw?=
+ =?utf-8?B?ZWorbVo2YnhuMFNOeGNtZWVxOVNueVdTbDNwK1dQMDJxTmlXUjhWb2JKY0kz?=
+ =?utf-8?B?SVphWno5THZySlFTVTJWYW1QUmI1NEV0Z2lJaytORFN2dTUrVWYwRGZWbG9w?=
+ =?utf-8?B?VTZka3VDU0MxSFFhMElHcE5OMlBDdlFCaXlpV0lWb1NER2tRU2pWSFdic0pZ?=
+ =?utf-8?B?QkZEOVpCZURzRHdxMEk2dUdMdTRPczRYNC9pTXpUQUdrc01vOWhhVHRaQk9N?=
+ =?utf-8?B?U1FzeWIxQnEvU0Z6Y0ZDRnRIZy9idlBoNEsvaWh1akxZUTFOS09uSlFuem5o?=
+ =?utf-8?B?Tkd5cHRFaWh6U3EzUWU0S1BPK3NYaFA3YnBPL1prU0hLRU9ZOUIxYThSZTQ0?=
+ =?utf-8?B?b1dSVkF5cit3TjFmMFFnYitOd1lYRmVhaUhyTjRWWFBQUVpTV0N0VmNnUFV2?=
+ =?utf-8?B?cm5WSXE0QlZZcGFwYTV0L3FYQXRmM3F1WmgrVU0zZmxhV05wWDFsUjFhZHdt?=
+ =?utf-8?B?ODdnYUJDRHhXWkpXMGlZc05ISFhNcFhsMENtNy9oT1dMSEJ5QStNSmVtODdQ?=
+ =?utf-8?B?Z1N2WEhrL1BCUDFVTEMwN25PN2FlNFBHMGdXazR3T0JneEJnRFk0Mk9paW0y?=
+ =?utf-8?B?MDdnODk0dUZWS1hvaXBjWkhDMEUzaHB4dDRIME0veG5Nc1FaY0ZqdFRyMmd0?=
+ =?utf-8?B?aC9NcFo1T3E2STdaUWZDdzBQNUdKT2c3SksrMWY5d3FsaGtOelZjMnk1dmt4?=
+ =?utf-8?B?UVozZmJoTGc0ZFMrZkdvdDQ4YlI2UW53Wk5RSGQwRkJJR0ZhYVVWTm1nV01i?=
+ =?utf-8?B?T3diK0xQRHhNTHRLMGt2NlNOenc1bVBZSHdWaW9vTkRWZ3hTQmRoNVZDWTR2?=
+ =?utf-8?B?RjNiYzcwR2Z2VFBMZm45Z1k3c1M0S0ZiZDJ3S1MxaUNSemFnMFJaL2FtL25N?=
+ =?utf-8?B?K3QzVW9YeGVGSTJkRFZzNFUwWmpGTnl4NGQzYXAwZzIvWmZkdkFXcU5idFN5?=
+ =?utf-8?B?djUxSktHaUFIaVBGdFRaZlFmcGFqeEM5Q2o2RkpqdmJFUGdyWlhrbUxWZ2pK?=
+ =?utf-8?B?cFpDQk0rNUd0SnM2R2ZsdFcrYTh4ZVdpTXRobFB5MDZNY0ZUWHo0Qk9aWEli?=
+ =?utf-8?B?MW9peFRyaWZ6cFRDK2gxKzA0aDVCZkdhbXFORm8zZ3JYYmR2QWdtUDR0cis2?=
+ =?utf-8?B?RktqTGtzUkJVM0hsRUZFM05TUktrTGNtQm4zTG12SFFmNHJtekhiTGlGRHc2?=
+ =?utf-8?B?ZUQ4b24yUUY4NklUZjFSOGxKcHFOVFg0Wm5aMjFIMThMWCtGcURUNUQ1cXEw?=
+ =?utf-8?B?QmtlWkV1SlF3d0I0ZHZuVFZMSGsyeUhFd1pVRkczZXNMYXlvL3NUUkRVdTJM?=
+ =?utf-8?B?ckpkb2xWdmI0VEhQYW5UUFFnSzlFQTdocGFsMmNPaUdGYm9KZHVMQmdia1lw?=
+ =?utf-8?B?YmIrNlQ2UXdRPT0=?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(1800799024)(366016)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?WE5YQVU1VzRHaGIzS09YbmtIcW16Vzk3U3ZndGh6dlR0MHdsaFBuTjZKY29z?=
+ =?utf-8?B?cnR3ZXJxRmZRczZhdk4zY29aUHp5RWlXUXE0S1RITjJpN1VSR0IzVFNwdFpZ?=
+ =?utf-8?B?WWZvS3I2QldEeXJkd0haUHhJNGVQTlFqdkd5WFdEazBGZkNkSkVaQVJUdk1j?=
+ =?utf-8?B?ZnlYaENSbFNiemEwemNaeXU1Q0Y4Q0dNR2dvZGxIMUJjU0FxQ2kwa2pIM0Vx?=
+ =?utf-8?B?Y2h3RHNnZUxKR1pwOGZoZVNPdjArd1FqOGRaaHhnbGs0N3JXbStmR3hqczE1?=
+ =?utf-8?B?LzNPZ1pmMVcxalY1Wk8rbW5tVEdOaU9Wd2pFRitVWGV1WllDZVhWcjEyT21V?=
+ =?utf-8?B?YWtpSS9aU05BdjlqU1BFL2RXN1RZRXhXMGF0YVlwazZzUC9oZ0JqazMvc29W?=
+ =?utf-8?B?eS9HTXJLYUxWbHFtK0JLTERxNElUeEluUWtxc0dDK1Vuc2VTWWhSUEh0QWF0?=
+ =?utf-8?B?L3JVREljRXZwMkEvNWU1cVViZ3RRcFFkSE11TjV3clU3QWY5dzJoQXRrWEJU?=
+ =?utf-8?B?SHpSZE51eVlEcnUrQ3dzNHg0NS9PWmNoT0gzNVp5d2hVbU5TQUFoMHhUKzVY?=
+ =?utf-8?B?V3RWU2hxRnpueE1XWnFjeDNjRXZLTkRnc0VvTzRDS0dTaSsxcU00dlVEc1Ir?=
+ =?utf-8?B?NFgyYXFiKzArNUJFMEE2OGttZzI2SEtTY09hZmRQdWtPdm5pcHU3MWJwOHBS?=
+ =?utf-8?B?RkhWbTh0OVl3Q1YvN25HajdxTlA5YW42VzVBdG81cFZBYWJFU2ZWWTRWcEJy?=
+ =?utf-8?B?NVdISTJmRHI0K1Z1aDFEazY5V0JJOWNkcGZDUWJsUmY3WGtZYUFDQm9vRmtT?=
+ =?utf-8?B?eWp2aWdqWkpjRWFWbko1UDdXY2hYZ3pxVEVFZEhCbldXUlZOYWsrNzZYelky?=
+ =?utf-8?B?clZHVTZTL1B3UzJJTDNCeWFkakJZM0syZW9renJ3NFFIQlo4VnQ5eExVb25q?=
+ =?utf-8?B?VUFBOUVxYVZTZlJuY1U2aHRVcHdPMDc1d3VCNUhwSUpDWkdZMmt2WnBsLzZs?=
+ =?utf-8?B?NEo1MlJnUGpFMG4wWlNXWUF4Ui9BWVRNZWZOMFd0dmQrQnBvTGRVeEYvQkJj?=
+ =?utf-8?B?RDZueTA5VjNBdEFPODVWZVYzZk9CS0JnWkFXMHdHL0k0WkZ4emc1M0JXZHFw?=
+ =?utf-8?B?ZkJiVWsyOGFlQ0RNdmJGY3pBV20rNkl3cTk3NC9YZzYzNlFWVmVDS1B1dnZC?=
+ =?utf-8?B?VER6VE0xL1ljdDJ6ME4xSDgzWFJBdDE3RWF1QnNXTWRrNndnZHJZTmtPeTVJ?=
+ =?utf-8?B?ZnFUUTJSV0g5MmJXdlR0cjNub0dEdVFhSWFLSFFpNUFERjlJeUs2V3ZjWnEy?=
+ =?utf-8?B?dFRmeFdQL3E1c0FqUTJKL1AwdjRQOTNMaHFzSmMyM1VvMHNkVkhZRHoyVmg0?=
+ =?utf-8?B?T3FoMXltcVkyTXhmVWRjR25PbGhOeFdPcGI0YlFwMkdMOSswa2ROczhITnJP?=
+ =?utf-8?B?bGsyQWI5cUdtLzhNTTlHTVNyTnl2N2Q4eGZJZCtnRHpmQ3NEeVdqV0Nxa3p5?=
+ =?utf-8?B?dVdEZEg2bVdFRW9aWlhyaGVvZ3pGRnhxeVB1OEQvV1h2VjZNdGN6cnVWK04w?=
+ =?utf-8?B?ai84UjUyeVdlS3pDdGVMaEt2d0hqVTA2eXkzYTd6R0tGY09tL1Y0Mm9PTGRS?=
+ =?utf-8?B?aGpoYnZ3c2FOUUMyLzNaN1lRK0tveVRGSVNyL0dwWWxUZGVCd3M1WE5KUHFS?=
+ =?utf-8?B?Rk12TWRWcTFzeEZKbGRZTm9saUVoT2swWk01RTZyNzJmRjJwOTBaVHNLenhI?=
+ =?utf-8?B?Zm12WUY0UkZQaEtaT0VRQmxXWTJhRnZZMFlsUWZxSHhQZGJ1aWdqcFYyL1pB?=
+ =?utf-8?B?SCs0dEVTSnl3ZGlRUzVhUWhCUm13VUFNYVg0S0V5UTdWa25EUFFid2NoK3dJ?=
+ =?utf-8?B?NUljZWIyNE5peFN6Q2dwNXE3eGUxbmtWQjFJaWcxN2lXY2F1cFJvcmlwSDRy?=
+ =?utf-8?B?MGl3bEUzNVpMb1VHdkZVYVZ5Y3F6TUh2YnNIaCthdm4rbFVHUjhEaGJmUGdL?=
+ =?utf-8?B?VkxOR3Y1c09Ld016NUlhRkpjWVk2MFNPWWhHR2tocDc4ODg2SVZIUHVTRXNR?=
+ =?utf-8?B?RXY4RlpxM3VCU1d0czk5S0NBYWlxZXd0eE1Md1JXaGJoS2VkRk12emR1eW9Y?=
+ =?utf-8?Q?IxP3Qg96cxrdmuZbUqK0icvfA?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e051b51-b3a8-4103-4fe0-08de107f01d8
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2025 08:51:21.3467
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YDjSfe84g3HM1OKFjFxMPKc6s5CC/UFZWyLLoiHhwqINUF0ZcH7ZJhvu+6m1zlKtPyXUtFH3i8iLQLjiETsnRw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9024
 
-Hi Frank,
+Hi Sima,
 
-Thanks for the patch.
-
-On Fri, Sep 12, 2025 at 02:30:02PM -0400, Frank Li wrote:
-> The properties in ovti,ov2659.txt are the same as ovti,ov8858. So move it
-> to this yaml file.
+On 10/21/2025, Simona Vetter wrote:
+> On Tue, Sep 23, 2025 at 01:29:55PM +0800, Shengjiu Wang wrote:
+>> Add binding for the i.MX8MP HDMI parallel Audio interface block.
+>>
+>> The HDMI TX Parallel Audio Interface (HTX_PAI) is a digital module that
+>> acts as the bridge between the Audio Subsystem to the HDMI TX Controller.
+>> This IP block is found in the HDMI subsystem of the i.MX8MP SoC.
+>>
+>> Aud2htx module in Audio Subsystem, HDMI PAI module and HDMI TX
+>> Controller compose the HDMI audio pipeline.
+>>
+>> In fsl,imx8mp-hdmi-tx.yaml, add port@2 that is linked to pai_to_hdmi_tx.
+>>
+>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../bindings/media/i2c/ovti,ov2659.txt        | 47 -------------------
->  .../bindings/media/i2c/ovti,ov8858.yaml       |  4 +-
->  2 files changed, 3 insertions(+), 48 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
+> dt patches need an ack from dt maintainers before you push them, please
+> make sure you follow that for the next changes.
+
+Just want to make sure I may follow that correctly in the future.
+As Krzysztof is one of DT binding maintainers and this patch has
+Krzysztof's R-b tag, need more ack from DT maintainers?
+
+> -Sima
 > 
-> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt b/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
-> deleted file mode 100644
-> index 92989a619f292..0000000000000
-> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
-> +++ /dev/null
-> @@ -1,47 +0,0 @@
-> -* OV2659 1/5-Inch 2Mp SOC Camera
-> -
-> -The Omnivision OV2659 is a 1/5-inch SOC camera, with an active array size of
-> -1632H x 1212V. It is programmable through a SCCB. The OV2659 sensor supports
-> -multiple resolutions output, such as UXGA, SVGA, 720p. It also can support
-> -YUV422, RGB565/555 or raw RGB output formats.
+>> ---
+>>  .../display/bridge/fsl,imx8mp-hdmi-tx.yaml    | 12 ++++
+>>  .../display/imx/fsl,imx8mp-hdmi-pai.yaml      | 69 +++++++++++++++++++
+>>  2 files changed, 81 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdmi-pai.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/display/bridge/fsl,imx8mp-hdmi-tx.yaml b/Documentation/devicetree/bindings/display/bridge/fsl,imx8mp-hdmi-tx.yaml
+>> index 05442d437755..6211ab8bbb0e 100644
+>> --- a/Documentation/devicetree/bindings/display/bridge/fsl,imx8mp-hdmi-tx.yaml
+>> +++ b/Documentation/devicetree/bindings/display/bridge/fsl,imx8mp-hdmi-tx.yaml
+>> @@ -49,6 +49,10 @@ properties:
+>>          $ref: /schemas/graph.yaml#/properties/port
+>>          description: HDMI output port
+>>  
+>> +      port@2:
+>> +        $ref: /schemas/graph.yaml#/properties/port
+>> +        description: Parallel audio input port
+>> +
+>>      required:
+>>        - port@0
+>>        - port@1
+>> @@ -98,5 +102,13 @@ examples:
+>>                      remote-endpoint = <&hdmi0_con>;
+>>                  };
+>>              };
+>> +
+>> +            port@2 {
+>> +                reg = <2>;
+>> +
+>> +                endpoint {
+>> +                    remote-endpoint = <&pai_to_hdmi_tx>;
+>> +                };
+>> +            };
+>>          };
+>>      };
+>> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdmi-pai.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdmi-pai.yaml
+>> new file mode 100644
+>> index 000000000000..4f99682a308d
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdmi-pai.yaml
+>> @@ -0,0 +1,69 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/display/imx/fsl,imx8mp-hdmi-pai.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Freescale i.MX8MP HDMI Parallel Audio Interface
+>> +
+>> +maintainers:
+>> +  - Shengjiu Wang <shengjiu.wang@nxp.com>
+>> +
+>> +description:
+>> +  The HDMI TX Parallel Audio Interface (HTX_PAI) is a bridge between the
+>> +  Audio Subsystem to the HDMI TX Controller.
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: fsl,imx8mp-hdmi-pai
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  interrupts:
+>> +    maxItems: 1
+>> +
+>> +  clocks:
+>> +    maxItems: 1
+>> +
+>> +  clock-names:
+>> +    const: apb
+>> +
+>> +  power-domains:
+>> +    maxItems: 1
+>> +
+>> +  port:
+>> +    $ref: /schemas/graph.yaml#/properties/port
+>> +    description: Output to the HDMI TX controller.
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - interrupts
+>> +  - clocks
+>> +  - clock-names
+>> +  - power-domains
+>> +  - port
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/clock/imx8mp-clock.h>
+>> +    #include <dt-bindings/power/imx8mp-power.h>
+>> +
+>> +    audio-bridge@32fc4800 {
+>> +        compatible = "fsl,imx8mp-hdmi-pai";
+>> +        reg = <0x32fc4800 0x800>;
+>> +        interrupt-parent = <&irqsteer_hdmi>;
+>> +        interrupts = <14>;
+>> +        clocks = <&clk IMX8MP_CLK_HDMI_APB>;
+>> +        clock-names = "apb";
+>> +        power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_PAI>;
+>> +
+>> +        port {
+>> +            pai_to_hdmi_tx: endpoint {
+>> +                remote-endpoint = <&hdmi_tx_from_pai>;
+>> +            };
+>> +        };
+>> +    };
+>> -- 
+>> 2.34.1
+>>
+> 
 
-I don't object merging this with the ov8858 bindings as such but the
-differences between the sensors should be taken into account. Something
-like the text above should be added to those bindings, which now describe
-the ov8858 only. Also, the number of lanes is probably different between
-the two.
-
-What about the regulators? The ov2659 doesn't control any right now, but
-that's probably an oversight (and whatever regulators connected on the
-platform used were hard-wired).
-
-Overall, it might be easier to keep the two bindings separate rather than
-have some number of ifs in the bindings.
-
-You can drop clock-names as there's just a single clock (the same goes for
-the driver naturally).
-
-> -
-> -Required Properties:
-> -- compatible: Must be "ovti,ov2659"
-> -- reg: I2C slave address
-> -- clocks: reference to the xvclk input clock.
-> -- clock-names: should be "xvclk".
-> -- link-frequencies: target pixel clock frequency.
-> -
-> -Optional Properties:
-> -- powerdown-gpios: reference to the GPIO connected to the pwdn pin, if any.
-> -  Active high with internal pull down resistor.
-> -- reset-gpios: reference to the GPIO connected to the resetb pin, if any.
-> -  Active low with internal pull up resistor.
-> -
-> -For further reading on port node refer to
-> -Documentation/devicetree/bindings/media/video-interfaces.txt.
-> -
-> -Example:
-> -
-> -	i2c0@1c22000 {
-> -		...
-> -		...
-> -		 ov2659@30 {
-> -			compatible = "ovti,ov2659";
-> -			reg = <0x30>;
-> -
-> -			clocks = <&clk_ov2659 0>;
-> -			clock-names = "xvclk";
-> -
-> -			powerdown-gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
-> -			reset-gpios = <&gpio6 15 GPIO_ACTIVE_LOW>;
-> -
-> -			port {
-> -				ov2659_0: endpoint {
-> -					remote-endpoint = <&vpfe_ep>;
-> -					link-frequencies = /bits/ 64 <70000000>;
-> -				};
-> -			};
-> -		};
-> -		...
-> -	};
-> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov8858.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov8858.yaml
-> index 491f2931e6bcd..d7059dbee7fca 100644
-> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov8858.yaml
-> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov8858.yaml
-> @@ -19,7 +19,9 @@ $ref: /schemas/media/video-interface-devices.yaml#
->  
->  properties:
->    compatible:
-> -    const: ovti,ov8858
-> +    enum:
-> +      - ovti,ov2659
-> +      - ovti,ov8858
->  
->    reg:
->      maxItems: 1
 
 -- 
-Kind regards,
-
-Sakari Ailus
+Regards,
+Liu Ying
