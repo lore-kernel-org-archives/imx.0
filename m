@@ -1,113 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3865E34C125;
-	Tue, 21 Oct 2025 17:25:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B31E34F248
+	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 18:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761067551; cv=none; b=clQLDmADRadX5s4CmKXrr9MCCv43+4MtD+ZPP72rpFsD3HsQeAZDK3TPUox5YgEsafDxxaCrlHPKT73AV0WTrAAujScnFV8hkAlrjcPESsAVuEtFJGCI+fym3Ojy+AXNZrSA7daYFQLpZ/oNKF2eNx2xIQC4hsBTwFFGrXZ4Hrw=
+	t=1761069887; cv=none; b=uKELhs45DW9BbXMWStMAmQhTZH4EaiFZP9F5NbsEeXL8E9LfHVccn/woZp84xLW9XkWIE++AX5epUtgrMz/RvdeYhcX6owa7gWP9Q2f/ts5zFTqbSLid6GKCIlgWUlzuBKNjXp1y24EZpo0sUsVSeaNgEE78EBbnDIE5eh4+xiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761067551; c=relaxed/simple;
-	bh=Yo2d8BmvVI13BXWvC99teKJSqgRJdMWLCDpoER2v3Zc=;
+	s=arc-20240116; t=1761069887; c=relaxed/simple;
+	bh=jhCcagVML83e1HP4dBy858O3DExVw2BUwBiMlSzW8y8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bydswRGKZothYnRYCIUJKZemuVXEqCB6jHKenOW0BPlm+D982V75N2QyBqpNtjwHoFsUsJjoNsttjB71i0TSXY1YLXUEa57ykaXaRzZ+AkXuALqXonQ4rtpM84pw8zXOWSXxMgxE0i5bTcp5L8Jd9U8j8ggZArqhLMbll4DunS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i4IH1Jzf; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ONNR7qKjFgeTwHb2m0Au2butWxviURachh37SZJ9uAy0Jg6/2GUT95dWXTaIYBzFp263a9XHBzZfqhjGrxDqA2KK/fwV75dvh2MbZbT4uih2UdSze7bGj4ZqyjqIXmDpmuZhin1h+BeJVK4ooDV5/zHl01BkRmCo8pmCcrI7UK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O0BSznI4; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i4IH1Jzf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C58EC4CEF7;
-	Tue, 21 Oct 2025 17:25:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761067551;
-	bh=Yo2d8BmvVI13BXWvC99teKJSqgRJdMWLCDpoER2v3Zc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i4IH1JzfOOHjChES92XubVNDo3V21W2oVfPiNul1oNL5LoGNB6VqU0uGa08m046rM
-	 CYcSeHNFevZVZQZUQRCsJ0vyHcV/kJod0zQA9TfTYs3l9+E/kJIclwmDCLkdt64/+8
-	 2m4yENiuUoF6uY6ITCGd4xLZIK0MLXcncjggJPUdogYcGdvOEdCNDey5yH1gZQlcXe
-	 qmU+Qkk+PtVNKdi0zqlfHmCMeJ8aMchRmzyO6NCUVw7fc9/IOAJz8jFAMvZAs5j+xi
-	 R4zKSbhIsYzlfDSbH5MG4fX2y9GS+NAz6fdXOcBchVllXyMjZ9VxxGZUXBeRcazt2p
-	 eJryhMEcrJh1A==
-Date: Tue, 21 Oct 2025 18:25:43 +0100
-From: Lee Jones <lee@kernel.org>
-To: samuel.kayode@savoirfairelinux.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>,
-	Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>,
-	Robin Gong <yibin.gong@nxp.com>,
-	Enric Balletbo i Serra <eballetbo@gmail.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [GIT PULL] Immutable branch between MFD, Input, Power and Regulator
- due for the v6.19 merge window
-Message-ID: <20251021172543.GL475031@google.com>
-References: <20251001-pf1550-v12-0-a3302aa41687@savoirfairelinux.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O0BSznI4"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b679450ecb6so4383186a12.2
+        for <imx@lists.linux.dev>; Tue, 21 Oct 2025 11:04:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761069885; x=1761674685; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2QNqcW6c5+Npg9ifV37H2IqLMfiz3SDiycbkwes6nzA=;
+        b=O0BSznI4nUsgzpEDI41sfGAViMrKuTnCZ5i+8F735X9wrGV+SK5wZIirfnDNEPGgwt
+         xZUP75OfFzmFI3R7VWR93zx/oyPxIVPn0/IwKCRiMfrfGSxXRj7IRU+xEHhoBT78SITS
+         yUPAL2Bc3iX6MSdTm/Fbvu9xUoXTOHZG6j6fGFjGp/nv4aBN3IdqCdDACyV8RvEX3RcR
+         Mu5RJbvw5YBvyE/Jed/UEDIWi40szOFxNhI38rCrUSfBmdYQuUuH4ARhdXKqTqpV9N4F
+         4I0YB799mRF/UgDBnKNufrSJ8wghCtb3+jn2bn+cTYuEXgaFWb6RPGJ/QGFnDRuge8kL
+         MYdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761069885; x=1761674685;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2QNqcW6c5+Npg9ifV37H2IqLMfiz3SDiycbkwes6nzA=;
+        b=TPldS0Y6MWm8gjuS+6PqoC6Bc8xZo9FU6JxMparFfsis82Zt6gFje8UzaQ7m8TdxZ8
+         LQzrCLdKnTX+R9VOkT/iqreHbRhyhOaRQhmfPJjpa7i0JBdfjiCx5ZHXYk7ysedgI5K2
+         xSK4FKwO4mz6u6bPfbMeyArc7mExVnytUzo1kZ3K1+Rnymp6olBTBcBUoxVIXFs8Mvx/
+         v2vmgGayB7ytWK0aytLiWhFwOi3vU3MIB2Yzx4pMTP5si/YelXKwmsgvNF1r+rqHwFN6
+         B5UZYgaQIsyXLIzP3HJP3t9a299TWIJQUbgWNi5BWdErcmuyW4gPEx+rBhzW317cTHF/
+         1NKg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRcls9tFqtMYgYlwhUcxtTEjdRODL0qs7U6uD0GhUFYNwyYdWa0sk3sttYDmg9ytcsD0Y=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzBCd4vEIcJ20o9g/HsBz84SIPfiuLH3TNfprQ189zMkd6cfJRu
+	Cb4EJgkQQ5+M05jFBJuVBhfG0kPTuV/OxhYMuRYx3mXm1ed6MDh8Hd/i
+X-Gm-Gg: ASbGnctOeVPYlIuy9j6vY6RukAWl0iv2pG91CXc9N1RJrRFomkOCB98lhd8Ip1j0IQU
+	sdf6qBuVRrkXZIP7olhwzujFUeemJJOqT01KJlwN+5jXo/ps+qsHJGc3d417faeSVjAHVwwVXlv
+	WqAVwWi12SfJYaUea3N7KqmGAOqRSEq2c4v2n3BJAzm0VITHxfKc3jAfciBE0wZFFUrfMZVCidP
+	Q+nAu10H6CGEalnXeJluBYgvJql4P7LTpuVMesrPxobpufnZ/mkdHB5efgipqFvqoPlmsdIavcI
+	RyKriOr1LU4ZqtlXSouSJXalk/IL2pAPFsXyzFg7Lfo5nVxjaCswb1zgyRMI8VihVleNoyDZCC+
+	969NHcL/2jmaunzVV9QfbMOSO8Lb7T3FzxWs6LM93v1LOKrrsfMnoE0gXZlpmaXgiCImPWT7MdY
+	tPHIoKyUJWB1Xaxdp8ppB4xB4XfP0sZ+b2RZ6DBqtVj3n5NPjgOCg=
+X-Google-Smtp-Source: AGHT+IFHxNyo0lIoDCYjMil0Lo93Z0LIGv1u7aWlc4Ygd62ZjbFDY0Z4GIqoMlga/4TZ2FuxfJzz1A==
+X-Received: by 2002:a17:902:e549:b0:28e:756c:707e with SMTP id d9443c01a7336-290caf846e1mr241889355ad.33.1761069885196;
+        Tue, 21 Oct 2025 11:04:45 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:bf44:8af2:4f63:3654])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29246fcc2bcsm115555635ad.33.2025.10.21.11.04.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Oct 2025 11:04:44 -0700 (PDT)
+Date: Tue, 21 Oct 2025 11:04:42 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v3 1/2] dt-bindings: touchscreen: rename
+ maxim,max11801.yaml to trivial-touch.yaml
+Message-ID: <opdzievwmkkos5wyohrl3gydfmllcrw35bhzqa2gfi4kj3573j@ghlb4nndm6id>
+References: <20251002164413.1112136-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251001-pf1550-v12-0-a3302aa41687@savoirfairelinux.com>
+In-Reply-To: <20251002164413.1112136-1-Frank.Li@nxp.com>
 
-Enjoy!
+Hi Frank,
 
-The following changes since commit 3a8660878839faadb4f1a6dd72c3179c1df56787:
+On Thu, Oct 02, 2025 at 12:44:04PM -0400, Frank Li wrote:
+> Rename maxim,max11801.yaml to trivial-touch.yaml for simple i2c touch
+> controller with one interrupt and common touch properties.
+> 
+> Add optional reset-gpios and wakeup-source properties.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v3
+> - add wakeup-source and reset-gpios optional properties
 
-  Linux 6.18-rc1 (2025-10-12 13:42:36 -0700)
+Sorry I already applied v2. Could you please rebase on top of the
+linux-next (or my next branch)?
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-input-power-regulator-v6.19
-
-for you to fetch changes up to a7d6255a0bf302c028ac680564633a6aac5f611d:
-
-  MAINTAINERS: Add an entry for PF1550 MFD driver (2025-10-21 16:59:07 +0100)
-
-----------------------------------------------------------------
-Immutable branch between MFD, Input, Power and Regulator due for the v6.19 merge window
-
-----------------------------------------------------------------
-Samuel Kayode (6):
-      dt-bindings: mfd: Add binding for the PF1550 PMIC
-      mfd: pf1550: Add core driver for the PF1550 PMIC
-      regulator: pf1550: Add support for regulator
-      Input: pf1550 - add onkey support
-      power: supply: pf1550: add battery charger support
-      MAINTAINERS: Add an entry for PF1550 MFD driver
-
- .../devicetree/bindings/mfd/nxp,pf1550.yaml        | 161 ++++++
- MAINTAINERS                                        |  11 +
- drivers/input/misc/Kconfig                         |  11 +
- drivers/input/misc/Makefile                        |   1 +
- drivers/input/misc/pf1550-onkey.c                  | 197 +++++++
- drivers/mfd/Kconfig                                |  16 +
- drivers/mfd/Makefile                               |   2 +
- drivers/mfd/pf1550.c                               | 367 ++++++++++++
- drivers/power/supply/Kconfig                       |  11 +
- drivers/power/supply/Makefile                      |   1 +
- drivers/power/supply/pf1550-charger.c              | 641 +++++++++++++++++++++
- drivers/regulator/Kconfig                          |   9 +
- drivers/regulator/Makefile                         |   1 +
- drivers/regulator/pf1550-regulator.c               | 429 ++++++++++++++
- include/linux/mfd/pf1550.h                         | 273 +++++++++
- 15 files changed, 2131 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mfd/nxp,pf1550.yaml
- create mode 100644 drivers/input/misc/pf1550-onkey.c
- create mode 100644 drivers/mfd/pf1550.c
- create mode 100644 drivers/power/supply/pf1550-charger.c
- create mode 100644 drivers/regulator/pf1550-regulator.c
- create mode 100644 include/linux/mfd/pf1550.h
+Thanks.
 
 -- 
-Lee Jones [李琼斯]
+Dmitry
