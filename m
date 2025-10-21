@@ -1,92 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B523491DA;
-	Tue, 21 Oct 2025 16:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3865E34C125;
+	Tue, 21 Oct 2025 17:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761064060; cv=none; b=W9RwmAGUHaIZjsRHtSPmsiq1MNVRwBJHj/xYgxDwaajvtIDdKsu5PDAb0p9S3rENP9D5fCoJ0CBJs0ZcaNlFzDPmcE9bvp33R4OnmyzSb/JWwud7GOBbFZbNSRygiUKteJ4P3gRDrRF3vpy817UTD/PibrlS6cIEEdxW0vXDCHw=
+	t=1761067551; cv=none; b=clQLDmADRadX5s4CmKXrr9MCCv43+4MtD+ZPP72rpFsD3HsQeAZDK3TPUox5YgEsafDxxaCrlHPKT73AV0WTrAAujScnFV8hkAlrjcPESsAVuEtFJGCI+fym3Ojy+AXNZrSA7daYFQLpZ/oNKF2eNx2xIQC4hsBTwFFGrXZ4Hrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761064060; c=relaxed/simple;
-	bh=kd69N002vmpOtiEZ/bz+Dv6wfmuq9EEiUSEIIPlzC/A=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=KmbU3XIgGJ9jad9Rf2qbStn8/X1pde+F0aNhgrwrBTZshuljZJNXtRXBdhh25stO7RZ0coHfvAhsCfIzPsp9U5ahpHJBpQA1qk94C/BYUcxM49NcsukyDVKrOADobmU+SeEVH5RnnYg0ejhlRGSizz3ua9d5WD95lpXCi8ScPzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EuurpcqY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761067551; c=relaxed/simple;
+	bh=Yo2d8BmvVI13BXWvC99teKJSqgRJdMWLCDpoER2v3Zc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bydswRGKZothYnRYCIUJKZemuVXEqCB6jHKenOW0BPlm+D982V75N2QyBqpNtjwHoFsUsJjoNsttjB71i0TSXY1YLXUEa57ykaXaRzZ+AkXuALqXonQ4rtpM84pw8zXOWSXxMgxE0i5bTcp5L8Jd9U8j8ggZArqhLMbll4DunS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i4IH1Jzf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EuurpcqY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56A6C4CEF1;
-	Tue, 21 Oct 2025 16:27:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i4IH1Jzf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C58EC4CEF7;
+	Tue, 21 Oct 2025 17:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761064059;
-	bh=kd69N002vmpOtiEZ/bz+Dv6wfmuq9EEiUSEIIPlzC/A=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=EuurpcqYQ6t3c0RJHYtFpQ96qi9D2nhzD1mshw+97vGzJVzXqT3Fsjsw4kuea/pFC
-	 4FL/5K7Db5TAWO8uRVOV8krL+nCPHc2xcKgEyRqWD0vgVqLGU5+napMl0uNycBMDoT
-	 Zq65JHxannPosBC+9KsBi62bLqZQd7zMftRtJJZP5lF1MeJ+QVlmPKMiEG+6DAt696
-	 XF7Ovh9rEzQq5ipuBedftxSHfQ+hTltnAX7YexgtqfH11aNYd4m4/5W/yghImzKHFR
-	 2UjONgnl1YQIyDTnGzdzukB/6vidtTkc+cuZn9q08xseXzVfzNeGrv4kNTR/uxLpFQ
-	 MeM4Ah23DvYUA==
+	s=k20201202; t=1761067551;
+	bh=Yo2d8BmvVI13BXWvC99teKJSqgRJdMWLCDpoER2v3Zc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i4IH1JzfOOHjChES92XubVNDo3V21W2oVfPiNul1oNL5LoGNB6VqU0uGa08m046rM
+	 CYcSeHNFevZVZQZUQRCsJ0vyHcV/kJod0zQA9TfTYs3l9+E/kJIclwmDCLkdt64/+8
+	 2m4yENiuUoF6uY6ITCGd4xLZIK0MLXcncjggJPUdogYcGdvOEdCNDey5yH1gZQlcXe
+	 qmU+Qkk+PtVNKdi0zqlfHmCMeJ8aMchRmzyO6NCUVw7fc9/IOAJz8jFAMvZAs5j+xi
+	 R4zKSbhIsYzlfDSbH5MG4fX2y9GS+NAz6fdXOcBchVllXyMjZ9VxxGZUXBeRcazt2p
+	 eJryhMEcrJh1A==
+Date: Tue, 21 Oct 2025 18:25:43 +0100
 From: Lee Jones <lee@kernel.org>
-To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>, 
- Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, 
- linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>, 
- Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>, 
- Robin Gong <yibin.gong@nxp.com>, 
- Enric Balletbo i Serra <eballetbo@gmail.com>, 
- Sean Nyekjaer <sean@geanix.com>, 
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
- Abel Vesa <abelvesa@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Frank Li <Frank.Li@nxp.com>, 
- Sebastian Reichel <sebastian.reichel@collabora.com>
-In-Reply-To: <20251001-pf1550-v12-0-a3302aa41687@savoirfairelinux.com>
+To: samuel.kayode@savoirfairelinux.com
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>,
+	Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>,
+	Robin Gong <yibin.gong@nxp.com>,
+	Enric Balletbo i Serra <eballetbo@gmail.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [GIT PULL] Immutable branch between MFD, Input, Power and Regulator
+ due for the v6.19 merge window
+Message-ID: <20251021172543.GL475031@google.com>
 References: <20251001-pf1550-v12-0-a3302aa41687@savoirfairelinux.com>
-Subject: Re: [PATCH v12 0/6] add support for pf1550 PMIC MFD-based drivers
-Message-Id: <176106405453.1328165.3892656646740462467.b4-ty@kernel.org>
-Date: Tue, 21 Oct 2025 17:27:34 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-52d38
+In-Reply-To: <20251001-pf1550-v12-0-a3302aa41687@savoirfairelinux.com>
 
-On Wed, 01 Oct 2025 11:42:36 -0400, Samuel Kayode wrote:
-> This series adds support for pf1550 PMIC. It provides the core driver and
-> sub-drivers for the regulator, power supply and input subsystems.
-> 
-> Patch 1 adds the DT binding document for the PMIC. Patches 2-5 adds the
-> pertinent drivers. Last patch adds a MAINTAINERS entry for the drivers.
-> 
-> The patches 3-5 depend on the core driver provided in patch 2.
-> 
-> [...]
+Enjoy!
 
-Applied, thanks!
+The following changes since commit 3a8660878839faadb4f1a6dd72c3179c1df56787:
 
-[1/6] dt-bindings: mfd: add pf1550
-      commit: 2391e1377e39a7ca8592257d6b17126bffd58d48
-[2/6] mfd: pf1550: add core driver
-      commit: ebaec90ec0b5850ab80ca017e7b63183adcca131
-[3/6] regulator: pf1550: add support for regulator
-      commit: 7320d41c29bbd80144bb89112b8bf0c8223b94a1
-[4/6] input: pf1550: add onkey support
-      commit: 9acb215cbebdce721af2219e2859ad17342c9084
-[5/6] power: supply: pf1550: add battery charger support
-      commit: 4b6b6433a97d5863b5340fc87f866d784fdf0783
-[6/6] MAINTAINERS: add an entry for pf1550 mfd driver
-      commit: a7d6255a0bf302c028ac680564633a6aac5f611d
+  Linux 6.18-rc1 (2025-10-12 13:42:36 -0700)
 
---
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-input-power-regulator-v6.19
+
+for you to fetch changes up to a7d6255a0bf302c028ac680564633a6aac5f611d:
+
+  MAINTAINERS: Add an entry for PF1550 MFD driver (2025-10-21 16:59:07 +0100)
+
+----------------------------------------------------------------
+Immutable branch between MFD, Input, Power and Regulator due for the v6.19 merge window
+
+----------------------------------------------------------------
+Samuel Kayode (6):
+      dt-bindings: mfd: Add binding for the PF1550 PMIC
+      mfd: pf1550: Add core driver for the PF1550 PMIC
+      regulator: pf1550: Add support for regulator
+      Input: pf1550 - add onkey support
+      power: supply: pf1550: add battery charger support
+      MAINTAINERS: Add an entry for PF1550 MFD driver
+
+ .../devicetree/bindings/mfd/nxp,pf1550.yaml        | 161 ++++++
+ MAINTAINERS                                        |  11 +
+ drivers/input/misc/Kconfig                         |  11 +
+ drivers/input/misc/Makefile                        |   1 +
+ drivers/input/misc/pf1550-onkey.c                  | 197 +++++++
+ drivers/mfd/Kconfig                                |  16 +
+ drivers/mfd/Makefile                               |   2 +
+ drivers/mfd/pf1550.c                               | 367 ++++++++++++
+ drivers/power/supply/Kconfig                       |  11 +
+ drivers/power/supply/Makefile                      |   1 +
+ drivers/power/supply/pf1550-charger.c              | 641 +++++++++++++++++++++
+ drivers/regulator/Kconfig                          |   9 +
+ drivers/regulator/Makefile                         |   1 +
+ drivers/regulator/pf1550-regulator.c               | 429 ++++++++++++++
+ include/linux/mfd/pf1550.h                         | 273 +++++++++
+ 15 files changed, 2131 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/nxp,pf1550.yaml
+ create mode 100644 drivers/input/misc/pf1550-onkey.c
+ create mode 100644 drivers/mfd/pf1550.c
+ create mode 100644 drivers/power/supply/pf1550-charger.c
+ create mode 100644 drivers/regulator/pf1550-regulator.c
+ create mode 100644 include/linux/mfd/pf1550.h
+
+-- 
 Lee Jones [李琼斯]
-
