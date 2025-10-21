@@ -1,255 +1,245 @@
-Received: from mail-m49220.qiye.163.com (mail-m49220.qiye.163.com [45.254.49.220])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C68B269AEE
-	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 07:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D3522579E
+	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 08:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761031999; cv=none; b=OcFYSgbocLXalOXxgWDRtd8F+QjbTumxzljEm+SF6MxNQVxn3y/Kl9ejTLzWx2khb1o9wcnzkvaY/Sw6fcwFpxKLF4g8aLc5094eRbspeexcBbM/SKy7mVKDXx+RwJ3g6zTE9xpzHJ0LeedTZVRAbgQAat66cSulNpJ1tct7emA=
+	t=1761033730; cv=none; b=TtP2mWCOJxjrwvhZZyJacGwsG8iFBPWtGOyaB8uJ7Jcyrd0mPKqD88O7+qRkJ0H8bWB5OEaer0s1Z/gfFww00v19uLatkjqDr3vYmpur1b+8RNEM5oy+QRjdx5ab9iyw3Si4mcUgCVx6kyTyc2fMyf78j5q1F4T0jOod/4WsSwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761031999; c=relaxed/simple;
-	bh=1QN0bEYipOkUKeklfF3558x99x71eghhFYDfUmZioqY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=somHKxsrIhmJwRO4u8EqlEu0hNeF36rZx7vyE/B1/t6hzkEDBg0Y7pnlEvwaDW4KFU/OqKqpsXoxB7GuhwEfsfsdsCy9P3kOZEVKe1c02e9lbbfY129mDWceA3LNapRrpKUb2sarIfa0e09tgsb2E2pWjw+vsJ/HQMa94oCrmO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=QIAutRYY; arc=none smtp.client-ip=45.254.49.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1761033730; c=relaxed/simple;
+	bh=hq8OhYoVjgMwCvfTsd84mhxUKz7zh9qPPjoUpGzRkNc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D34yu5zXV92bXaXWGWLov/y2PFYMwiVi8AAWqJZJetmWoN/MChX05Fnrh5ECvrnlxjJbJS7aLTThM48vgn7jEPB/4pwtLwOT/tMnwx+54zAwWU7C/dNSFqyuaNOTbUlsAIsTFMZVSkpOx+HE/nkLS4iYQSO92ZfdMny0gCB3WRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=XwjgrNrV; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="QIAutRYY"
-Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 26979c619;
-	Tue, 21 Oct 2025 10:57:12 +0800 (GMT+08:00)
-From: Damon Ding <damon.ding@rock-chips.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org
-Cc: Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	krzk@kernel.org,
-	alim.akhtar@samsung.com,
-	jingoohan1@gmail.com,
-	p.zabel@pengutronix.de,
-	hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com,
-	dmitry.baryshkov@oss.qualcomm.com,
-	dianders@chromium.org,
-	m.szyprowski@samsung.com,
-	luca.ceresoli@bootlin.com,
-	jani.nikula@intel.com,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v7 08/18] drm/exynos: exynos_dp: Apply of-display-mode-bridge to parse the display-timings node
-Date: Tue, 21 Oct 2025 10:56:54 +0800
-Message-Id: <20251021025701.1524229-1-damon.ding@rock-chips.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251021023130.1523707-1-damon.ding@rock-chips.com>
-References: <20251021023130.1523707-1-damon.ding@rock-chips.com>
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="XwjgrNrV"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-63c523864caso6742447a12.1
+        for <imx@lists.linux.dev>; Tue, 21 Oct 2025 01:02:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1761033726; x=1761638526; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mmJ3kbCZYasBy1tdyPRhi15Hy8S31f6BJlgZcjYUhfI=;
+        b=XwjgrNrVnzeI3CE0D57ko492HwA/jrR5KXYSFXUBCa6GFvh9ov7ODhL94Y372fU1MF
+         dg7F4Z7/6yr7I9X9pCzEZUQDGy29dDOppY0WX+Cx58G5gwkAUX0Yk/MWvznjbdQom14B
+         ZwXjQwpMdS/dAYpqpw3ZoEUD/QsUTENlxCMV4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761033726; x=1761638526;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mmJ3kbCZYasBy1tdyPRhi15Hy8S31f6BJlgZcjYUhfI=;
+        b=p3Xk+KmT0EhyEpm2P8+Znmr2+igK0Dchrn/OeU49xRe1R6hkz/nZK5SB70vbk5DeZe
+         U+oZh/eiEHp358dtHbnfSudD1X8ON/T6BawQ70jzaGqvryKVGHS/r3QkxN8ouSPPxEP2
+         GwvWJuSq2xucMVNIAiQXnbKQXqgv8XXDcvlo3LoEpe5RYSbVqyK3SWrBhJMu/YGWzkLd
+         KL+uWUBofQmf08qsDJPJDkVY+VpgvMW4rDIU6JOfe/4CHxnIQbYCLuy2JleTgtTjUx3t
+         +UT1iMJvagTW2mpoBhrjV9M9MlkrvNdrqVPGq+J1FJoY96g+60yc8xWHquouPbznhgc0
+         DXSw==
+X-Forwarded-Encrypted: i=1; AJvYcCX3ZdbizgbH1CCkdDvwbb+p5sjOYMpWts/8/W/ciAv3Hz7oNCyt9csNT30SIBiDv9kx1sY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwBlRpxNdZ6M9I4JsICkPtQP9A56pM3ILSDzrmqc+y5KPuTKo44
+	D3dUtZ7v/vbR7fsE120m2CCw5wCmKfLMYAck2FpSJxKZsRX8/S1av4GDCerKS45mkvM=
+X-Gm-Gg: ASbGncvLHl6bx/Dg2M/X4oBDtH/CvKNIGIpeZuaLHjWt/SSHME2gqVeyBwRH5ypdWfg
+	pkrzwdSvqIGdJdlxbesB8MnisDrgN0ZPzHtWH08JMVPbFUTyzUyMQPuMQAgj4BIRPOYd+tr4v4h
+	QrjrNnlv+n7BCQWjLKRHkEJtWBuEC3atBbgPT5AkY2lWe0pVk8YVfQP6hyuCZj2X57B1oMbFaYB
+	k0jRAQskmSZ4185X3yu0mZxo1ZPBZSPCz3mrsWrioFfZeIzX6Hse13knF4cnBjHPSU8MtcnntRx
+	ZmmBkRgDIP+K4RKVVMbw9LGp5AjbiPOwzGzfhZTo6TObxmAWSVM8K2YDUH1zgX9L0y3ElDMv6+V
+	DpaY7Hd8zb3LqvHgq8L0LUbMNBJGaxvcRrYQ+7xF+H6FGSr7zNb8izFNv24FNM7H0jEuOuaFH4V
+	FVW1WzOtm5praEB+95SWMu0w==
+X-Google-Smtp-Source: AGHT+IEQBbHU46zJp3I8qzuqYSyvo8c+5/g/4Db1HXzfzGIE1r78chLA2+YlpgeKvqwNE6fWnrQZTA==
+X-Received: by 2002:a05:6402:1471:b0:62e:e722:a3c7 with SMTP id 4fb4d7f45d1cf-63c1f6345ccmr16006744a12.9.1761033725994;
+        Tue, 21 Oct 2025 01:02:05 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63c494301aasm8934112a12.24.2025.10.21.01.02.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Oct 2025 01:02:05 -0700 (PDT)
+Date: Tue, 21 Oct 2025 10:02:03 +0200
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+	Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+	jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	simona@ffwll.ch, lumag@kernel.org, dianders@chromium.org,
+	cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	victor.liu@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de,
+	devicetree@vger.kernel.org, l.stach@pengutronix.de,
+	shengjiu.wang@gmail.com, perex@perex.cz, tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH v7 1/7] dt-bindings: display: imx: add HDMI PAI for
+ i.MX8MP
+Message-ID: <aPc9-wYxGB1KYPyQ@phenom.ffwll.local>
+Mail-Followup-To: Shengjiu Wang <shengjiu.wang@nxp.com>,
+	andrzej.hajda@intel.com, neil.armstrong@linaro.org,
+	rfoss@kernel.org, Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se, jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+	lumag@kernel.org, dianders@chromium.org,
+	cristian.ciocaltea@collabora.com, luca.ceresoli@bootlin.com,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	victor.liu@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de,
+	devicetree@vger.kernel.org, l.stach@pengutronix.de,
+	shengjiu.wang@gmail.com, perex@perex.cz, tiwai@suse.com,
+	linux-sound@vger.kernel.org
+References: <20250923053001.2678596-1-shengjiu.wang@nxp.com>
+ <20250923053001.2678596-2-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9a04b3047603a3kunmcdd3bf8c5a402a
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQkgfTVYfQh8aGkNDTUhNQ01WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEtNQk
-	tVSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=QIAutRYYHTvhVTgjC3uYoHP/QIXWTsU0vgvlk0wvkLxpZC2ae06FXyl0bVbZmtEwCHWn9pTwidsTlNHoyVBIdYJJxDBQaQO9YjizNS38xlFz8usiUYTSiMxcnhqVxn5ZTKipC+/rniAIq22E2N9GDu9hCcajGXHKC7FJnSLe1Y4=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=DLgwRoSZkiEzvN/zcPKGoFOzo9iVfJiXb9YkvPXxjaY=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250923053001.2678596-2-shengjiu.wang@nxp.com>
+X-Operating-System: Linux phenom 6.12.38+deb13-amd64 
 
-If there is neither a panel nor a bridge, the display timing can be
-parsed from the display-timings node under the dp node.
+On Tue, Sep 23, 2025 at 01:29:55PM +0800, Shengjiu Wang wrote:
+> Add binding for the i.MX8MP HDMI parallel Audio interface block.
+> 
+> The HDMI TX Parallel Audio Interface (HTX_PAI) is a digital module that
+> acts as the bridge between the Audio Subsystem to the HDMI TX Controller.
+> This IP block is found in the HDMI subsystem of the i.MX8MP SoC.
+> 
+> Aud2htx module in Audio Subsystem, HDMI PAI module and HDMI TX
+> Controller compose the HDMI audio pipeline.
+> 
+> In fsl,imx8mp-hdmi-tx.yaml, add port@2 that is linked to pai_to_hdmi_tx.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-In order to get rid of &analogix_dp_plat_data.get_modes() and make
-the codes more consistent, apply DRM of-display-mode-bridge to parse
-display timings.
+dt patches need an ack from dt maintainers before you push them, please
+make sure you follow that for the next changes.
+-Sima
 
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> ---
+>  .../display/bridge/fsl,imx8mp-hdmi-tx.yaml    | 12 ++++
+>  .../display/imx/fsl,imx8mp-hdmi-pai.yaml      | 69 +++++++++++++++++++
+>  2 files changed, 81 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdmi-pai.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/display/bridge/fsl,imx8mp-hdmi-tx.yaml b/Documentation/devicetree/bindings/display/bridge/fsl,imx8mp-hdmi-tx.yaml
+> index 05442d437755..6211ab8bbb0e 100644
+> --- a/Documentation/devicetree/bindings/display/bridge/fsl,imx8mp-hdmi-tx.yaml
+> +++ b/Documentation/devicetree/bindings/display/bridge/fsl,imx8mp-hdmi-tx.yaml
+> @@ -49,6 +49,10 @@ properties:
+>          $ref: /schemas/graph.yaml#/properties/port
+>          description: HDMI output port
+>  
+> +      port@2:
+> +        $ref: /schemas/graph.yaml#/properties/port
+> +        description: Parallel audio input port
+> +
+>      required:
+>        - port@0
+>        - port@1
+> @@ -98,5 +102,13 @@ examples:
+>                      remote-endpoint = <&hdmi0_con>;
+>                  };
+>              };
+> +
+> +            port@2 {
+> +                reg = <2>;
+> +
+> +                endpoint {
+> +                    remote-endpoint = <&pai_to_hdmi_tx>;
+> +                };
+> +            };
+>          };
+>      };
+> diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdmi-pai.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdmi-pai.yaml
+> new file mode 100644
+> index 000000000000..4f99682a308d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/imx/fsl,imx8mp-hdmi-pai.yaml
+> @@ -0,0 +1,69 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/imx/fsl,imx8mp-hdmi-pai.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Freescale i.MX8MP HDMI Parallel Audio Interface
+> +
+> +maintainers:
+> +  - Shengjiu Wang <shengjiu.wang@nxp.com>
+> +
+> +description:
+> +  The HDMI TX Parallel Audio Interface (HTX_PAI) is a bridge between the
+> +  Audio Subsystem to the HDMI TX Controller.
+> +
+> +properties:
+> +  compatible:
+> +    const: fsl,imx8mp-hdmi-pai
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    const: apb
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/properties/port
+> +    description: Output to the HDMI TX controller.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - clocks
+> +  - clock-names
+> +  - power-domains
+> +  - port
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/imx8mp-clock.h>
+> +    #include <dt-bindings/power/imx8mp-power.h>
+> +
+> +    audio-bridge@32fc4800 {
+> +        compatible = "fsl,imx8mp-hdmi-pai";
+> +        reg = <0x32fc4800 0x800>;
+> +        interrupt-parent = <&irqsteer_hdmi>;
+> +        interrupts = <14>;
+> +        clocks = <&clk IMX8MP_CLK_HDMI_APB>;
+> +        clock-names = "apb";
+> +        power-domains = <&hdmi_blk_ctrl IMX8MP_HDMIBLK_PD_PAI>;
+> +
+> +        port {
+> +            pai_to_hdmi_tx: endpoint {
+> +                remote-endpoint = <&hdmi_tx_from_pai>;
+> +            };
+> +        };
+> +    };
+> -- 
+> 2.34.1
+> 
 
-------
-
-Changes in v6:
-- Apply DRM legacy bridge to parse display timings instead of
-  implementing the same codes only for Exynos DP.
-
-Changes in v7:
-- Use temporary flag &exynos_dp_device.has_of_bridge, which will be
-  removed in the following patch, instead of applying API
-  drm_bridge_is_legacy().
-- Remove exynos_dp_legacy_bridge_init() and inline API
-  devm_drm_of_display_mode_bridge().
----
- drivers/gpu/drm/exynos/Kconfig     |  1 +
- drivers/gpu/drm/exynos/exynos_dp.c | 66 ++++++++----------------------
- 2 files changed, 17 insertions(+), 50 deletions(-)
-
-diff --git a/drivers/gpu/drm/exynos/Kconfig b/drivers/gpu/drm/exynos/Kconfig
-index 0d13828e7d9e..380d9a8ce259 100644
---- a/drivers/gpu/drm/exynos/Kconfig
-+++ b/drivers/gpu/drm/exynos/Kconfig
-@@ -72,6 +72,7 @@ config DRM_EXYNOS_DP
- 	select DRM_ANALOGIX_DP
- 	select DRM_DISPLAY_DP_HELPER
- 	default DRM_EXYNOS
-+	select DRM_OF_DISPLAY_MODE_BRIDGE
- 	select DRM_PANEL
- 	help
- 	  This enables support for DP device.
-diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
-index e20513164032..ac16138a22fe 100644
---- a/drivers/gpu/drm/exynos/exynos_dp.c
-+++ b/drivers/gpu/drm/exynos/exynos_dp.c
-@@ -19,6 +19,7 @@
- #include <video/videomode.h>
- 
- #include <drm/bridge/analogix_dp.h>
-+#include <drm/bridge/of-display-mode-bridge.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
- #include <drm/drm_crtc.h>
-@@ -38,9 +39,10 @@ struct exynos_dp_device {
- 	struct drm_device          *drm_dev;
- 	struct device              *dev;
- 
--	struct videomode           vm;
- 	struct analogix_dp_device *adp;
- 	struct analogix_dp_plat_data plat_data;
-+
-+	bool has_of_bridge;
- };
- 
- static int exynos_dp_crtc_clock_enable(struct analogix_dp_plat_data *plat_data,
-@@ -67,44 +69,20 @@ static int exynos_dp_poweroff(struct analogix_dp_plat_data *plat_data)
- 	return exynos_dp_crtc_clock_enable(plat_data, false);
- }
- 
--static int exynos_dp_get_modes(struct analogix_dp_plat_data *plat_data,
--			       struct drm_connector *connector)
--{
--	struct exynos_dp_device *dp = to_dp(plat_data);
--	struct drm_display_mode *mode;
--
--	if (dp->plat_data.panel)
--		return 0;
--
--	mode = drm_mode_create(connector->dev);
--	if (!mode) {
--		DRM_DEV_ERROR(dp->dev,
--			      "failed to create a new display mode.\n");
--		return 0;
--	}
--
--	drm_display_mode_from_videomode(&dp->vm, mode);
--	connector->display_info.width_mm = mode->width_mm;
--	connector->display_info.height_mm = mode->height_mm;
--
--	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
--	drm_mode_set_name(mode);
--	drm_mode_probed_add(connector, mode);
--
--	return 1;
--}
--
- static int exynos_dp_bridge_attach(struct analogix_dp_plat_data *plat_data,
- 				   struct drm_bridge *bridge,
- 				   struct drm_connector *connector)
- {
- 	struct exynos_dp_device *dp = to_dp(plat_data);
-+	enum drm_bridge_attach_flags flags = 0;
- 	int ret;
- 
- 	/* Pre-empt DP connector creation if there's a bridge */
- 	if (plat_data->next_bridge) {
--		ret = drm_bridge_attach(&dp->encoder, plat_data->next_bridge, bridge,
--					0);
-+		if (dp->has_of_bridge)
-+			flags = DRM_BRIDGE_ATTACH_NO_CONNECTOR;
-+
-+		ret = drm_bridge_attach(&dp->encoder, plat_data->next_bridge, bridge, flags);
- 		if (ret)
- 			return ret;
- 	}
-@@ -129,19 +107,6 @@ static const struct drm_encoder_helper_funcs exynos_dp_encoder_helper_funcs = {
- 	.disable = exynos_dp_nop,
- };
- 
--static int exynos_dp_dt_parse_panel(struct exynos_dp_device *dp)
--{
--	int ret;
--
--	ret = of_get_videomode(dp->dev->of_node, &dp->vm, OF_USE_NATIVE_MODE);
--	if (ret) {
--		DRM_DEV_ERROR(dp->dev,
--			      "failed: of_get_videomode() : %d\n", ret);
--		return ret;
--	}
--	return 0;
--}
--
- static int exynos_dp_bind(struct device *dev, struct device *master, void *data)
- {
- 	struct exynos_dp_device *dp = dev_get_drvdata(dev);
-@@ -151,12 +116,6 @@ static int exynos_dp_bind(struct device *dev, struct device *master, void *data)
- 
- 	dp->drm_dev = drm_dev;
- 
--	if (!dp->plat_data.panel && !dp->plat_data.next_bridge) {
--		ret = exynos_dp_dt_parse_panel(dp);
--		if (ret)
--			return ret;
--	}
--
- 	drm_simple_encoder_init(drm_dev, encoder, DRM_MODE_ENCODER_TMDS);
- 
- 	drm_encoder_helper_add(encoder, &exynos_dp_encoder_helper_funcs);
-@@ -223,6 +182,14 @@ static int exynos_dp_probe(struct platform_device *pdev)
- 	}
- 
- 	ret = drm_of_find_panel_or_bridge(dev->of_node, 0, 0, &panel, &bridge);
-+	if (ret == -ENODEV) {
-+		dp->plat_data.next_bridge = devm_drm_of_display_mode_bridge(dp->dev,
-+									dp->dev->of_node,
-+									DRM_MODE_CONNECTOR_eDP);
-+		ret = IS_ERR(dp->plat_data.next_bridge) ? PTR_ERR(dp->plat_data.next_bridge) : 0;
-+		if (!ret)
-+			dp->has_of_bridge = true;
-+	}
- 	if (ret)
- 		return ret;
- 
-@@ -233,7 +200,6 @@ static int exynos_dp_probe(struct platform_device *pdev)
- 	dp->plat_data.power_on = exynos_dp_poweron;
- 	dp->plat_data.power_off = exynos_dp_poweroff;
- 	dp->plat_data.attach = exynos_dp_bridge_attach;
--	dp->plat_data.get_modes = exynos_dp_get_modes;
- 	dp->plat_data.skip_connector = !!bridge;
- 
- out:
 -- 
-2.34.1
-
+Simona Vetter
+Software Engineer
+http://blog.ffwll.ch
