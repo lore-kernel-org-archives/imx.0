@@ -1,262 +1,201 @@
-Received: from mx-relay03-hz1.antispameurope.com (mx-relay03-hz1.antispameurope.com [94.100.132.203])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A776B2E6CA2
-	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 09:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.203
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761039548; cv=pass; b=d6K/9K/JXST5ROAk3eDzcimx37urV2fucIGZUB09//WHWZx407UFDkXWIttCD7ci3QKWeY7fSqhsJoWmd/+Ov/Vq6JEhaXmAppm4hpqrJjIZxiT7yWOJ0Cxw7bxd6I+gjpOYHRTaZIkqJlthGFqlydjS+UWPBQWdV4b72pi7K/Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761039548; c=relaxed/simple;
-	bh=eKhIEr2wdHZOdT7ow5a3AzpUQkJ0Ei2/IGrS1CI/pVM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=a9P4LMQW/pWBPd22wm2TwsPkEI+uqD3JstK+rI253RAoLMm528KjYP69Teqrmnq3tRn7JVJjhlOmip4tsqgaioTHRhlJJPXhnSTwbTSfBw/QEQ+ZZOdhtuprSS9sTtZThcwrPT+7WdSxtAVJIl4OYTNuxyoCyZjZ6On+ob3ZBus=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=GhuPK0AS; arc=pass smtp.client-ip=94.100.132.203
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="GhuPK0AS"
-ARC-Authentication-Results: i=1; mx-gate03-hz1.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=i9zmwlits19MWVeZiMnlveUvVwY/OpDAaLlQOnMopBQ=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1761039485;
- b=N9Uwco2kQOILf7p6DNd/Of/6DSRfSe8r1cUramy2UDeNc203+ezsBD/VyswnQQ89ZFwDAmcP
- aWYvpc+Y8JpeXfiymqos0zpYM77Yw/o7TFKbvmR9nzEwWHpgefCi7tXtjI2vd0FsR7AtJfNLd6O
- ///ojfBOhU0t7N1SIcF0ku1XuUmz1MQM/+og0YiL09mDlfbIjMbVq/qFXk5RMktIyGqDstuNRJu
- QrLexI2kGKtaJ8jilHIO1Mph5J6AH6UFyWvsdaq9bHwwpapRoKehMoT2jPEI8A2iQ8TkYwRU24j
- UZUT1E3EMDjkZ5Ov1VK+8odW3+DNcK2/8g09RA9FIdrdg==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1761039485;
- b=WjDkXFNTwk+iE2VhKCqwsOWnWLUWaF0uIH1My5QOUP4Ud0iF00Iatb6nEMd4Q/gTT9JYR3zX
- uC7VNsDGwyzGnJJs55U6YxNKpe9aqb4yGEdDZzmh0Lk99bFfqLV6lXcuqYMQYUZdd0HaL9R7A/1
- J1xNGkfd36ahCw5jnC6wQuStf/Ys3EDsmuCNTxZRU9pt60O1NsKFRtUiC04nePkYswImMV4AEpb
- 2URxNPYKGGaRRvJxNj2GunX3ZcGdEZO9n4oy7QtPpm8RMbOfXTJH9jcuVWlhiVIKbyXQHVRLGeD
- WFSoYmggg1sElx3UF+0p5Wy5Tw3teg0Di630yFwF48kew==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay03-hz1.antispameurope.com;
- Tue, 21 Oct 2025 11:38:04 +0200
-Received: from [192.168.153.128] (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: matthias.schiffer@ew.tq-group.com)
-	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 11E9CA41274;
-	Tue, 21 Oct 2025 11:37:38 +0200 (CEST)
-Message-ID: <1963351b2e50c537418293e6ab9293576a239c98.camel@ew.tq-group.com>
-Subject: Re: [PATCH] serial: imx: allow CRTSCTS with RTS/CTS GPIOs
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
- <jirislaby@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org,  imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
-Date: Tue, 21 Oct 2025 11:37:37 +0200
-In-Reply-To: <lgse44as4k6fpzarztfnfl7wbxq2bfg5k7m7l6xlsyx23pmem4@khal3tytgwjn>
-References: <20251016113730.245341-1-matthias.schiffer@ew.tq-group.com>
-	 <cdkpp74ra2ltr7h46psutkwnzyvl4iegcicnhqqj7svm5trltm@w2egfj5nryjm>
-	 <7d3df04c482e71760ccc941469c99412b608c92b.camel@ew.tq-group.com>
-	 <lgse44as4k6fpzarztfnfl7wbxq2bfg5k7m7l6xlsyx23pmem4@khal3tytgwjn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E219E29B239
+	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 09:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761040229; cv=none; b=mHL+W90gLiFKyi51MTvhpe4Z0uaB/M7LR7pt6ITjuq9JyIwbFytCTkNTwNCaHo4RB7NPETeBFa1PUo+8PaDvjw2veVhKMj7mEMmz7J+5pK6FLSenvw91uYRBrbzxFVYynF/FGEcl7ayL46SKYYsdl+adUTALpbEbgthiEzR6Zz0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761040229; c=relaxed/simple;
+	bh=U59wPa1kpEXASCCSExiRaG74dGhaSNDe85YYYgBTIEo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rNhLxsXYFcEQ7cdu/rfMnwElMyEThyya3DrGsa9sIGDZBAyJLdF5YNAaimbHOCR9ePzy01Kboe0OIx8H8UuOO35ZD23NWgGrn02+6h7mCUW3dBMxZmOZpuvT2pWEjSAGTC925UKj2L/q4RS/yrH6muHjtQBRHY7YQ4nM/0fJo6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vB90U-0007Cl-PC; Tue, 21 Oct 2025 11:50:18 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vB90S-004hSx-16;
+	Tue, 21 Oct 2025 11:50:16 +0200
+Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 087BF48BFEE;
+	Tue, 21 Oct 2025 09:50:16 +0000 (UTC)
+Date: Tue, 21 Oct 2025 11:50:13 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Primoz Fiser <primoz.fiser@norik.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	upstream@lists.phytec.de, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH 2/2] arm64: dts: freescale: Add phyBOARD-Segin-i.MX91
+ support
+Message-ID: <20251021-bright-brave-dolphin-906891-mkl@pengutronix.de>
+References: <20251021093704.690410-1-primoz.fiser@norik.com>
+ <20251021093704.690410-2-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-cloud-security-sender:matthias.schiffer@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: matthias.schiffer@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay03-hz1.antispameurope.com with 4crRzQ6tXCzdsVM
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:b6a1ef41415f75c94556ef2ddcc8cb65
-X-cloud-security:scantime:8.361
-DKIM-Signature: a=rsa-sha256;
- bh=i9zmwlits19MWVeZiMnlveUvVwY/OpDAaLlQOnMopBQ=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1761039484; v=1;
- b=GhuPK0ASxcKAWyBAZU8ceevenaEp8ilI3855X3cfsifl3ON5RVRgbSzWn/7kXFCify6zla73
- DwUAZ4JjDUgTrOinBOFC+WqCly+Z1plUGOQpjIfHDVlq4Y3bRt1fVPVUuBM6CaPErQDu4Ooid9h
- GIq6le+wfQ+k2zEg7LzYr3luKeXYg1hkAjDU6JskNxVV+5NeHmCoWKCSKGboylF6eutWkLvJPDU
- IFLmJw35dxJtei1OOK2XqB9miVIY8YG66Ha3aQpK03naBhX1N4mWHFSA1VHJEVRx6tdyZaAi7RN
- ZXLC58ViAl4bhIsoudj7R3dDoAFFVSfNJRo8xO8V6jSgw==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7y2hkmghfrzgq4ye"
+Content-Disposition: inline
+In-Reply-To: <20251021093704.690410-2-primoz.fiser@norik.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Tue, 2025-10-21 at 10:59 +0200, Uwe Kleine-K=C3=B6nig wrote:
-> Hello Matthias,
+
+--7y2hkmghfrzgq4ye
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 2/2] arm64: dts: freescale: Add phyBOARD-Segin-i.MX91
+ support
+MIME-Version: 1.0
+
+On 21.10.2025 11:37:04, Primoz Fiser wrote:
+> Add initial support for the PHYTEC phyBOARD-Segin-i.MX91 board [1] based
+> on the PHYTEC phyCORE-i.MX91 SoM (System-on-Module) [2].
 >=20
-> On Mon, Oct 20, 2025 at 10:09:29AM +0200, Matthias Schiffer wrote:
-> > On Fri, 2025-10-17 at 17:01 +0200, Uwe Kleine-K=C3=B6nig wrote:
-> > > On Thu, Oct 16, 2025 at 01:37:30PM +0200, Matthias Schiffer wrote:
-> > > > The CTS GPIO is only evaluated when the CRTSCTS termios flag is ena=
-bled;
-> > > > it should be possible to enable the flag when only GPIO and no hard=
-ware-
-> > > > controlled RTS/CTS are available. UCR2_IRTS is kept enabled in this=
- case,
-> > > > so the hardware CTS is ignored.
-> > > >=20
-> > > > Fixes: 58362d5be352 ("serial: imx: implement handshaking using gpio=
-s with the mctrl_gpio helper")
-> > > > Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com=
->
-> > > > ---
-> > > >  drivers/tty/serial/imx.c | 10 +++++-----
-> > > >  1 file changed, 5 insertions(+), 5 deletions(-)
-> > > >=20
-> > > > diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> > > > index 500dfc009d03e..4a54a689a0603 100644
-> > > > --- a/drivers/tty/serial/imx.c
-> > > > +++ b/drivers/tty/serial/imx.c
-> > > > @@ -1117,8 +1117,8 @@ static void imx_uart_set_mctrl(struct uart_po=
-rt *port, unsigned int mctrl)
-> > > >  			ucr2 |=3D UCR2_CTS;
-> > > >  			/*
-> > > >  			 * UCR2_IRTS is unset if and only if the port is
-> > > > -			 * configured for CRTSCTS, so we use inverted UCR2_IRTS
-> > > > -			 * to get the state to restore to.
-> > > > +			 * configured for hardware-controlled CRTSCTS, so we use
-> > > > +			 * inverted UCR2_IRTS to get the state to restore to.
-> > > >  			 */
-> > > >  			if (!(ucr2 & UCR2_IRTS))
-> > > >  				ucr2 |=3D UCR2_CTSC;
-> > > > @@ -1780,7 +1780,7 @@ imx_uart_set_termios(struct uart_port *port, =
-struct ktermios *termios,
-> > > >  	if ((termios->c_cflag & CSIZE) =3D=3D CS8)
-> > > >  		ucr2 |=3D UCR2_WS;
-> > > > =20
-> > > > -	if (!sport->have_rtscts)
-> > > > +	if (!sport->have_rtscts && !sport->have_rtsgpio)
-> > > >  		termios->c_cflag &=3D ~CRTSCTS;
-> > > > =20
-> > > >  	if (port->rs485.flags & SER_RS485_ENABLED) {
-> > >=20
-> > > This hunk makes sense.
-> > >=20
-> > > > @@ -1794,7 +1794,7 @@ imx_uart_set_termios(struct uart_port *port, =
-struct ktermios *termios,
-> > > >  		else
-> > > >  			imx_uart_rts_inactive(sport, &ucr2);
-> > > > =20
-> > > > -	} else if (termios->c_cflag & CRTSCTS) {
-> > > > +	} else if ((termios->c_cflag & CRTSCTS) && sport->have_rtscts) {
-> > >=20
-> > > I agree to add the parens here and consider this more readable than t=
-he
-> > > alternative
-> > >=20
-> > > 	} else if (termios->c_cflag & CRTSCTS && sport->have_rtscts) {
-> > >=20
-> > > . Note there is no real win here. If the port doesn't have RTS/CTS it
-> > > doesn't matter if it tries to control the RTS line. While you could
-> > > argue it shouldn't set the line, it only makes an externally observab=
-le
-> > > difference if one of the SoC's pads is muxed to its RTS function.
-> > > I claim it's more robust in this case (i.e. no uart-has-rtscts proper=
-ty
-> > > but a pinmux for the RTS line) to control the line according to the R=
-TS
-> > > setting. This is (at least IMO) better and more expected than driving
-> > > this line to a constant level. So I oppose to this hunk.
-> > >=20
-> > > >  		/*
-> > > >  		 * Only let receiver control RTS output if we were not requested
-> > > >  		 * to have RTS inactive (which then should take precedence).
-> > > > @@ -1803,7 +1803,7 @@ imx_uart_set_termios(struct uart_port *port, =
-struct ktermios *termios,
-> > > >  			ucr2 |=3D UCR2_CTSC;
-> > > >  	}
-> > > > =20
-> > > > -	if (termios->c_cflag & CRTSCTS)
-> > > > +	if ((termios->c_cflag & CRTSCTS) && sport->have_rtscts)
-> > > >  		ucr2 &=3D ~UCR2_IRTS;
-> > > >  	if (termios->c_cflag & CSTOPB)
-> > > >  		ucr2 |=3D UCR2_STPB;
-> > >=20
-> > > Hmm, not sure. On one hand the same argument applies as above, but on
-> > > the other if there are pins that are not explicitly configured but st=
-ill
-> > > in their CTS function this might affect operation in a bad way.
-> > > Also this affects the (very usual) configuration where only RX, TX an=
-d
-> > > RTS are used and CTS is not. In this case have_rtscts is true (right?=
-)
-> > > and then if there is an accidental CTS pin this is bad and not fixed =
-by
-> > > your change. Hmmm...
-> >=20
-> > I think it makes sense to always keep UCR2_IRTS set when have_rtscts is=
- unset,
-> > as otherwise there might be two separate CTS signals in the accidental =
-CTS pin
-> > case - the hardware + the GPIO one, both affecting the UART operation.
+> Supported features:
+> * Audio
+> * CAN
+> * eMMC
+> * Ethernet
+> * I2C
+> * RTC
+> * SD-Card
+> * UART
+> * USB
 >=20
-> With that change you break setups that have an RTS-GPIO but rely on the
-> HW pin for the CTS function. Not sure how common that is, but in this
-> case you only want the first code change. You could argue that in that
-> case have_rtscts should be set, but that's somewhat fuzzy.
-
-Such a setup should set have_rtscts IMO. In any case, my patch would not br=
-eak
-existing setups, as the CRTSCTS flag simply cannot be set for !have_rtscts
-without these changes.
-
+> For more details see the product pages for the development board and the
+> SoM:
 >=20
-> > If we keep this change (the 3rd), the 2nd should also be included for
-> > consistency in the code path where I just changed a comment - there, UC=
-R2_CTSC
-> > is set only when UCR2_IRTS is unset. The 2nd and 3rd change together ke=
-ep
-> > imx_uart_set_mctrl and imx_uart_set_termios aligned.
-> >=20
-> > >=20
-> > > So in sum the 2nd and 3rd code change is controversial. If the first =
-one
-> > > already fixes the problem you're facing, I suggest to go for only tha=
-t.
-> > > If you still think that the 3rd (and maybe even the 2nd) change is a
-> > > good idea, I'd request to do that in a separate commit as this is a
-> > > separate problem. Also the commit log only describes the first change=
-,
-> > > doesn't it?
-> >=20
-> > The commit message describes the first and third change; the second is =
-included
-> > to keep the setup consistent. I don't think these changes can be separa=
-ted well
-> > - the second and third change only affect a case that couldn't occur wi=
-thout the
-> > first (as (termios->c_cflag & CRTSCTS) && !sport->have_rtscts would nev=
-er have
-> > been true). My suggestion would be that I extend the commit message to =
-explain
-> > each change in detail.
+> [1] https://www.phytec.eu/en/produkte/development-kits/phyboard-segin-kit/
+> [2] https://www.phytec.eu/en/produkte/system-on-modules/phycore-imx-91-93/
 >=20
-> I'd still request to split the patch in at least two patches. The first
-> code change is to allow rts-gpios to work at all. The two later patches
-> change details about how HW pins are controlled in the presence of
-> rts-gpios
-
-Okay, will do.
-
-Best,
-Matthias
-
-
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
+>  .../dts/freescale/imx91-phyboard-segin.dts    | 344 ++++++++++++++++++
+>  .../boot/dts/freescale/imx91-phycore-som.dtsi | 304 ++++++++++++++++
+>  3 files changed, 649 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dts
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx91-phycore-som.dtsi
 >=20
-> Best regards
-> Uwe
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts=
+/freescale/Makefile
+> index 525ef180481d..34a81d34de39 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -344,6 +344,7 @@ dtb-$(CONFIG_ARCH_MXC) +=3D imx8qxp-tqma8xqps-mb-smar=
+c-2.dtb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx8ulp-9x9-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx8ulp-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx91-11x11-evk.dtb
+> +dtb-$(CONFIG_ARCH_MXC) +=3D imx91-phyboard-segin.dtb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx91-tqma9131-mba91xxca.dtb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-9x9-qsb.dtb
+> =20
+> diff --git a/arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dts b/arc=
+h/arm64/boot/dts/freescale/imx91-phyboard-segin.dts
+> new file mode 100644
+> index 000000000000..bb631439f9cf
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dts
+> @@ -0,0 +1,344 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright (C) 2025 PHYTEC Messtechnik GmbH
+> + * Author: Christoph Stoidner <c.stoidner@phytec.de>
+> + *
+> + * Product homepage:
+> + * phyBOARD-Segin carrier board is reused for the i.MX91 design.
+> + * https://www.phytec.eu/en/produkte/single-board-computer/phyboard-segi=
+n-imx6ul/
+> + */
+> +/dts-v1/;
+> +
+> +#include "imx91-phycore-som.dtsi"
+> +
+> +/{
+> +	model =3D "PHYTEC phyBOARD-Segin-i.MX91";
+> +	compatible =3D "phytec,imx91-phyboard-segin", "phytec,imx91-phycore-som=
+",
+> +		     "fsl,imx91";
+> +
+> +	aliases {
+> +		ethernet1 =3D &eqos;
+> +		gpio0 =3D &gpio1;
+> +		gpio1 =3D &gpio2;
+> +		gpio2 =3D &gpio3;
+> +		gpio3 =3D &gpio4;
+> +		i2c0 =3D &lpi2c1;
+> +		i2c1 =3D &lpi2c2;
+> +		mmc0 =3D &usdhc1;
+> +		mmc1 =3D &usdhc2;
+> +		rtc0 =3D &i2c_rtc;
+> +		rtc1 =3D &bbnsm_rtc;
+> +		serial0 =3D &lpuart1;
+> +	};
+> +
+> +	chosen {
+> +		stdout-path =3D &lpuart1;
+> +	};
+> +
+> +	flexcan1_tc: can-phy0 {
+> +		compatible =3D "ti,tcan1043";
+> +		#phy-cells =3D <0>;
+> +		max-bitrate =3D <1000000>;
+> +		pinctrl-names =3D "default";
+> +		pinctrl-0 =3D <&pinctrl_flexcan1_tc>;
+> +		enable-gpios =3D <&gpio4 16 GPIO_ACTIVE_HIGH>;
+> +	};
+
+I think the tcan1043 is a CAN-FD transceiver. According to the datasheet
+it support 2 MBit/s and 5 MBit/s in the "G" variant. However due to the
+board layout, etc, the actual bit rate might still be limited to 1
+MBit/s. Ask the HW engineers if in doubt.
+
+regards,
+Marc
 
 --=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-https://www.tq-group.com/
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--7y2hkmghfrzgq4ye
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmj3V1IACgkQDHRl3/mQ
+kZxWzAf/fxSz9NDY21Y3KxeV/w5epdWrucWsqqjsdEU0ACBO7vaDLgzQBWrWylM3
+SbMwTG47o3YVQKQN9VZAz+niqnsspW+Zd5rka7aOkKN0m7omFZ0WZOqiLlURa1Xb
+rXCDGM6ac6ZoCR9QBQkOvFjEEdPriF/nF5IUNiL+ks5846ZXclCTvoEjtDTuioxP
+3Hjb3c3QyssbVWhUaHrSqnhqasjk54wRXEpnJjylB/Q2Qp5uuaETw2X4J1bowuDf
+Z4GCVUwENM2y5kG7PW5Jz4fQgHc+AZJiMBPDQ3viDtZHBNlAJjybRdJE9k/p9ONq
+gjwagBiM9rNg3GWhkkg0k8VTAv+5mw==
+=pBli
+-----END PGP SIGNATURE-----
+
+--7y2hkmghfrzgq4ye--
