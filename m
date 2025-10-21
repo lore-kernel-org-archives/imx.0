@@ -1,128 +1,262 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from mx-relay03-hz1.antispameurope.com (mx-relay03-hz1.antispameurope.com [94.100.132.203])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566B6329C74
-	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 09:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A776B2E6CA2
+	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 09:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.203
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761037217; cv=pass; b=AQqqwXnGVcRwmx5zn+vh+sg6TRRtAs0BkY5yIO43ol/0XMM2oS2QyLoNanEJDTx67CMGkK96VmTdWfWwgvcvDIIGzRjIoYZAKAb2xuopAv1jxors4PG1hp5q96zWbWk0X0QqXoErxrQeJ61rt17WbqRpqon5sJlcgT7U6UvuEtE=
+	t=1761039548; cv=pass; b=d6K/9K/JXST5ROAk3eDzcimx37urV2fucIGZUB09//WHWZx407UFDkXWIttCD7ci3QKWeY7fSqhsJoWmd/+Ov/Vq6JEhaXmAppm4hpqrJjIZxiT7yWOJ0Cxw7bxd6I+gjpOYHRTaZIkqJlthGFqlydjS+UWPBQWdV4b72pi7K/Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761037217; c=relaxed/simple;
-	bh=Ery3wCWKUyPGPwDNSyS3Pks0jJfbeTvhsm/cOUBQB6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y+fm3QURbmLepk7mUhm6WhXby1YSXY1+y1XSBBCvx5LZJoDXfxyaV0pS9kSou8e3fUeCFaODSi53a11gv0zamuDmobwvu1x9uSTQ349EZ8qFRTj7qdTipfhAchmCHEmRfS4/3bm/Sj0bB5uni+vAo13JuNBhVsld010vjve0XlI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=Afhm0J56; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	s=arc-20240116; t=1761039548; c=relaxed/simple;
+	bh=eKhIEr2wdHZOdT7ow5a3AzpUQkJ0Ei2/IGrS1CI/pVM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=a9P4LMQW/pWBPd22wm2TwsPkEI+uqD3JstK+rI253RAoLMm528KjYP69Teqrmnq3tRn7JVJjhlOmip4tsqgaioTHRhlJJPXhnSTwbTSfBw/QEQ+ZZOdhtuprSS9sTtZThcwrPT+7WdSxtAVJIl4OYTNuxyoCyZjZ6On+ob3ZBus=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=GhuPK0AS; arc=pass smtp.client-ip=94.100.132.203
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="Afhm0J56"
-Received: from hillosipuli.retiisi.eu (91-158-51-183.elisa-laajakaista.fi [91.158.51.183])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sailus)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4crR8B2lPgz49Q3N;
-	Tue, 21 Oct 2025 12:00:10 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1761037210;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=piJWpdhM1u4toBOe7fZrGYz+sw0Os5Sq1JWEfMVwKy0=;
-	b=Afhm0J56blq6WOxEWdpqMJj8z2Bu3vxCY36jgycDJJifiEEXFaOvT4ziEK9j5aeRa4bpd6
-	iwOtHdNfS21Uly7lOHFAu7wtGbq4hZHwLvNLrAh2R0geP0hxU0fZQXC+0ZEGuYg/3MeOZE
-	pOeNx05/n/miyCqzGlvlzMecKdXQKsEp0O4zVO0qOxw5V5lJq95qciOdL281eNEShV8lA2
-	HlRUQz/MQZ+DaUdaSwsaqxtllZd5h3SicPQj1LJUIPxyZsvayrgLyUF07fXxW7DHD4PBE/
-	Gy0bpvrtlp5zVwVKiZV2YCoaAZ23gBQubpTk6qdsqfv5IDc8bBAx+bPQgntpTQ==
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1761037210; a=rsa-sha256;
-	cv=none;
-	b=Q/ghmEWI+UT6uAQO1tR5PJpcRSmhr2P9Y9QxiR839K7B1mOn26QxpsdmEAWxc7th1/JRHv
-	b316LtxhN/snPuT0ZsPBaMI8Phateb1fGXjQcqouk0kTR288s/WWGWjvgBjE6UmECNgy4S
-	ZY63vuG2sjiOcMai9wT6GdyD4uG1Wpz/NJsNpepbzPU9dVAZBgPdL8Zg6XVIbNjcyesP7T
-	51KuF6eHgRbXrbIX+zIE407rbiffqcd0z8oMqcN7XVvRYsHT0uQ8gy6BWOkvSyyq7EeTHl
-	gNGU5r21zEAwjWqtBrNoRiovuhGYOVsrXoYxc80Ant6fFrjaPGjnB2jsd8r4TA==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1761037210;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=piJWpdhM1u4toBOe7fZrGYz+sw0Os5Sq1JWEfMVwKy0=;
-	b=l0Wor7q9EfhpGTe/atzTtxJ79Kxu2o78QPbmol2nlUdweNm7uiNMs8uadSsPzDe7HpsKbr
-	Bddabdu7Mc9ga7vCiyC0YA9fuq9Vl+w7XANi107iBLDhDfdV6dzkOGVhDQqLWqFosrIRk0
-	kLWIYFycNu7jCMhuN5zHgrd+ztTCqlLkamgW/LSUqmrFqvMzGixi9SSvwl1bALY14uQ2hj
-	0ndmPZ1j8cPpvZe2S0Dedugb3FcGfE0UP6d/nzkxw7SBtyLQc6P/o5m44JC17lRp8BdF15
-	iwDof96I17ZCfyxMnOBIUbitfD21n41NEjF8DKR0RmGdoVXIVOm2Q4+bHhd85A==
-Received: from valkosipuli.retiisi.eu (valkosipuli.local [192.168.4.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 266D7634C50;
-	Tue, 21 Oct 2025 12:00:10 +0300 (EEST)
-Date: Tue, 21 Oct 2025 12:00:09 +0300
-From: Sakari Ailus <sakari.ailus@iki.fi>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>, Hans de Goede <hansg@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:OMNIVISION OV2680 SENSOR DRIVER" <linux-media@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] media: dt-bindings: ovti,ov2680: Use
- unevaluatedProperties for endpoint
-Message-ID: <aPdLmWM8a_ikhJfK@valkosipuli.retiisi.eu>
-References: <20250827194919.82725-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="GhuPK0AS"
+ARC-Authentication-Results: i=1; mx-gate03-hz1.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
+ dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=i9zmwlits19MWVeZiMnlveUvVwY/OpDAaLlQOnMopBQ=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1761039485;
+ b=N9Uwco2kQOILf7p6DNd/Of/6DSRfSe8r1cUramy2UDeNc203+ezsBD/VyswnQQ89ZFwDAmcP
+ aWYvpc+Y8JpeXfiymqos0zpYM77Yw/o7TFKbvmR9nzEwWHpgefCi7tXtjI2vd0FsR7AtJfNLd6O
+ ///ojfBOhU0t7N1SIcF0ku1XuUmz1MQM/+og0YiL09mDlfbIjMbVq/qFXk5RMktIyGqDstuNRJu
+ QrLexI2kGKtaJ8jilHIO1Mph5J6AH6UFyWvsdaq9bHwwpapRoKehMoT2jPEI8A2iQ8TkYwRU24j
+ UZUT1E3EMDjkZ5Ov1VK+8odW3+DNcK2/8g09RA9FIdrdg==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1761039485;
+ b=WjDkXFNTwk+iE2VhKCqwsOWnWLUWaF0uIH1My5QOUP4Ud0iF00Iatb6nEMd4Q/gTT9JYR3zX
+ uC7VNsDGwyzGnJJs55U6YxNKpe9aqb4yGEdDZzmh0Lk99bFfqLV6lXcuqYMQYUZdd0HaL9R7A/1
+ J1xNGkfd36ahCw5jnC6wQuStf/Ys3EDsmuCNTxZRU9pt60O1NsKFRtUiC04nePkYswImMV4AEpb
+ 2URxNPYKGGaRRvJxNj2GunX3ZcGdEZO9n4oy7QtPpm8RMbOfXTJH9jcuVWlhiVIKbyXQHVRLGeD
+ WFSoYmggg1sElx3UF+0p5Wy5Tw3teg0Di630yFwF48kew==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay03-hz1.antispameurope.com;
+ Tue, 21 Oct 2025 11:38:04 +0200
+Received: from [192.168.153.128] (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: matthias.schiffer@ew.tq-group.com)
+	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 11E9CA41274;
+	Tue, 21 Oct 2025 11:37:38 +0200 (CEST)
+Message-ID: <1963351b2e50c537418293e6ab9293576a239c98.camel@ew.tq-group.com>
+Subject: Re: [PATCH] serial: imx: allow CRTSCTS with RTS/CTS GPIOs
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
+ <jirislaby@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-serial@vger.kernel.org,  imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+Date: Tue, 21 Oct 2025 11:37:37 +0200
+In-Reply-To: <lgse44as4k6fpzarztfnfl7wbxq2bfg5k7m7l6xlsyx23pmem4@khal3tytgwjn>
+References: <20251016113730.245341-1-matthias.schiffer@ew.tq-group.com>
+	 <cdkpp74ra2ltr7h46psutkwnzyvl4iegcicnhqqj7svm5trltm@w2egfj5nryjm>
+	 <7d3df04c482e71760ccc941469c99412b608c92b.camel@ew.tq-group.com>
+	 <lgse44as4k6fpzarztfnfl7wbxq2bfg5k7m7l6xlsyx23pmem4@khal3tytgwjn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250827194919.82725-1-Frank.Li@nxp.com>
+X-cloud-security-sender:matthias.schiffer@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: matthias.schiffer@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay03-hz1.antispameurope.com with 4crRzQ6tXCzdsVM
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:b6a1ef41415f75c94556ef2ddcc8cb65
+X-cloud-security:scantime:8.361
+DKIM-Signature: a=rsa-sha256;
+ bh=i9zmwlits19MWVeZiMnlveUvVwY/OpDAaLlQOnMopBQ=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1761039484; v=1;
+ b=GhuPK0ASxcKAWyBAZU8ceevenaEp8ilI3855X3cfsifl3ON5RVRgbSzWn/7kXFCify6zla73
+ DwUAZ4JjDUgTrOinBOFC+WqCly+Z1plUGOQpjIfHDVlq4Y3bRt1fVPVUuBM6CaPErQDu4Ooid9h
+ GIq6le+wfQ+k2zEg7LzYr3luKeXYg1hkAjDU6JskNxVV+5NeHmCoWKCSKGboylF6eutWkLvJPDU
+ IFLmJw35dxJtei1OOK2XqB9miVIY8YG66Ha3aQpK03naBhX1N4mWHFSA1VHJEVRx6tdyZaAi7RN
+ ZXLC58ViAl4bhIsoudj7R3dDoAFFVSfNJRo8xO8V6jSgw==
 
-Hi Frank,
+On Tue, 2025-10-21 at 10:59 +0200, Uwe Kleine-K=C3=B6nig wrote:
+> Hello Matthias,
+>=20
+> On Mon, Oct 20, 2025 at 10:09:29AM +0200, Matthias Schiffer wrote:
+> > On Fri, 2025-10-17 at 17:01 +0200, Uwe Kleine-K=C3=B6nig wrote:
+> > > On Thu, Oct 16, 2025 at 01:37:30PM +0200, Matthias Schiffer wrote:
+> > > > The CTS GPIO is only evaluated when the CRTSCTS termios flag is ena=
+bled;
+> > > > it should be possible to enable the flag when only GPIO and no hard=
+ware-
+> > > > controlled RTS/CTS are available. UCR2_IRTS is kept enabled in this=
+ case,
+> > > > so the hardware CTS is ignored.
+> > > >=20
+> > > > Fixes: 58362d5be352 ("serial: imx: implement handshaking using gpio=
+s with the mctrl_gpio helper")
+> > > > Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com=
+>
+> > > > ---
+> > > >  drivers/tty/serial/imx.c | 10 +++++-----
+> > > >  1 file changed, 5 insertions(+), 5 deletions(-)
+> > > >=20
+> > > > diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> > > > index 500dfc009d03e..4a54a689a0603 100644
+> > > > --- a/drivers/tty/serial/imx.c
+> > > > +++ b/drivers/tty/serial/imx.c
+> > > > @@ -1117,8 +1117,8 @@ static void imx_uart_set_mctrl(struct uart_po=
+rt *port, unsigned int mctrl)
+> > > >  			ucr2 |=3D UCR2_CTS;
+> > > >  			/*
+> > > >  			 * UCR2_IRTS is unset if and only if the port is
+> > > > -			 * configured for CRTSCTS, so we use inverted UCR2_IRTS
+> > > > -			 * to get the state to restore to.
+> > > > +			 * configured for hardware-controlled CRTSCTS, so we use
+> > > > +			 * inverted UCR2_IRTS to get the state to restore to.
+> > > >  			 */
+> > > >  			if (!(ucr2 & UCR2_IRTS))
+> > > >  				ucr2 |=3D UCR2_CTSC;
+> > > > @@ -1780,7 +1780,7 @@ imx_uart_set_termios(struct uart_port *port, =
+struct ktermios *termios,
+> > > >  	if ((termios->c_cflag & CSIZE) =3D=3D CS8)
+> > > >  		ucr2 |=3D UCR2_WS;
+> > > > =20
+> > > > -	if (!sport->have_rtscts)
+> > > > +	if (!sport->have_rtscts && !sport->have_rtsgpio)
+> > > >  		termios->c_cflag &=3D ~CRTSCTS;
+> > > > =20
+> > > >  	if (port->rs485.flags & SER_RS485_ENABLED) {
+> > >=20
+> > > This hunk makes sense.
+> > >=20
+> > > > @@ -1794,7 +1794,7 @@ imx_uart_set_termios(struct uart_port *port, =
+struct ktermios *termios,
+> > > >  		else
+> > > >  			imx_uart_rts_inactive(sport, &ucr2);
+> > > > =20
+> > > > -	} else if (termios->c_cflag & CRTSCTS) {
+> > > > +	} else if ((termios->c_cflag & CRTSCTS) && sport->have_rtscts) {
+> > >=20
+> > > I agree to add the parens here and consider this more readable than t=
+he
+> > > alternative
+> > >=20
+> > > 	} else if (termios->c_cflag & CRTSCTS && sport->have_rtscts) {
+> > >=20
+> > > . Note there is no real win here. If the port doesn't have RTS/CTS it
+> > > doesn't matter if it tries to control the RTS line. While you could
+> > > argue it shouldn't set the line, it only makes an externally observab=
+le
+> > > difference if one of the SoC's pads is muxed to its RTS function.
+> > > I claim it's more robust in this case (i.e. no uart-has-rtscts proper=
+ty
+> > > but a pinmux for the RTS line) to control the line according to the R=
+TS
+> > > setting. This is (at least IMO) better and more expected than driving
+> > > this line to a constant level. So I oppose to this hunk.
+> > >=20
+> > > >  		/*
+> > > >  		 * Only let receiver control RTS output if we were not requested
+> > > >  		 * to have RTS inactive (which then should take precedence).
+> > > > @@ -1803,7 +1803,7 @@ imx_uart_set_termios(struct uart_port *port, =
+struct ktermios *termios,
+> > > >  			ucr2 |=3D UCR2_CTSC;
+> > > >  	}
+> > > > =20
+> > > > -	if (termios->c_cflag & CRTSCTS)
+> > > > +	if ((termios->c_cflag & CRTSCTS) && sport->have_rtscts)
+> > > >  		ucr2 &=3D ~UCR2_IRTS;
+> > > >  	if (termios->c_cflag & CSTOPB)
+> > > >  		ucr2 |=3D UCR2_STPB;
+> > >=20
+> > > Hmm, not sure. On one hand the same argument applies as above, but on
+> > > the other if there are pins that are not explicitly configured but st=
+ill
+> > > in their CTS function this might affect operation in a bad way.
+> > > Also this affects the (very usual) configuration where only RX, TX an=
+d
+> > > RTS are used and CTS is not. In this case have_rtscts is true (right?=
+)
+> > > and then if there is an accidental CTS pin this is bad and not fixed =
+by
+> > > your change. Hmmm...
+> >=20
+> > I think it makes sense to always keep UCR2_IRTS set when have_rtscts is=
+ unset,
+> > as otherwise there might be two separate CTS signals in the accidental =
+CTS pin
+> > case - the hardware + the GPIO one, both affecting the UART operation.
+>=20
+> With that change you break setups that have an RTS-GPIO but rely on the
+> HW pin for the CTS function. Not sure how common that is, but in this
+> case you only want the first code change. You could argue that in that
+> case have_rtscts should be set, but that's somewhat fuzzy.
 
-On Wed, Aug 27, 2025 at 03:49:18PM -0400, Frank Li wrote:
-> The endpoint ref to /schemas/media/video-interfaces.yaml#, so replace
-> additionalProperties with unevaluatedProperties to allow use common
-> properties.
-> 
-> Fix below CHECK_DTBS warnings:
->   arch/arm/boot/dts/nxp/imx/imx7s-warp.dtb: camera@36 (ovti,ov2680): port:endpoint: 'clock-lanes', 'data-lanes' do not match any of the regexes: '^pinctrl-[0-9]+$'
-> 	from schema $id: http://devicetree.org/schemas/media/i2c/ovti,ov2680.yaml
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-> index 634d3b821b8c7..ec5c40684b6bd 100644
-> --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-> @@ -58,7 +58,7 @@ properties:
->      properties:
->        endpoint:
->          $ref: /schemas/media/video-interfaces.yaml#
-> -        additionalProperties: false
-> +        unevaluatedProperties: false
+Such a setup should set have_rtscts IMO. In any case, my patch would not br=
+eak
+existing setups, as the CRTSCTS flag simply cannot be set for !have_rtscts
+without these changes.
 
-There are a lot more than just data-lanes in video-interfaces.yaml.
+>=20
+> > If we keep this change (the 3rd), the 2nd should also be included for
+> > consistency in the code path where I just changed a comment - there, UC=
+R2_CTSC
+> > is set only when UCR2_IRTS is unset. The 2nd and 3rd change together ke=
+ep
+> > imx_uart_set_mctrl and imx_uart_set_termios aligned.
+> >=20
+> > >=20
+> > > So in sum the 2nd and 3rd code change is controversial. If the first =
+one
+> > > already fixes the problem you're facing, I suggest to go for only tha=
+t.
+> > > If you still think that the 3rd (and maybe even the 2nd) change is a
+> > > good idea, I'd request to do that in a separate commit as this is a
+> > > separate problem. Also the commit log only describes the first change=
+,
+> > > doesn't it?
+> >=20
+> > The commit message describes the first and third change; the second is =
+included
+> > to keep the setup consistent. I don't think these changes can be separa=
+ted well
+> > - the second and third change only affect a case that couldn't occur wi=
+thout the
+> > first (as (termios->c_cflag & CRTSCTS) && !sport->have_rtscts would nev=
+er have
+> > been true). My suggestion would be that I extend the commit message to =
+explain
+> > each change in detail.
+>=20
+> I'd still request to split the patch in at least two patches. The first
+> code change is to allow rts-gpios to work at all. The two later patches
+> change details about how HW pins are controlled in the presence of
+> rts-gpios
 
-Could you instead drop data-lanes and clock-lanes from the bindings? They
-are redundant.
+Okay, will do.
 
->  
->          properties:
->            link-frequencies: true
+Best,
+Matthias
 
--- 
-Kind regards,
 
-Sakari Ailus
+>=20
+> Best regards
+> Uwe
+
+--=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+https://www.tq-group.com/
