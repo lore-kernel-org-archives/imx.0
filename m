@@ -1,183 +1,92 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010054.outbound.protection.outlook.com [52.101.84.54])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E722EE60F
-	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 16:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761062432; cv=fail; b=OW5B9zpqgl3HxrbEfaZ85FQ116QvijUu4oMY1ZNZ3FGPEjmZB5eVMuH/9N8zT8/oB07LTxf5+2Xt6mojOxhCIODbtCbSizdCeGsDFEb7nZ50LI2vbHUwYx3Uno1ZYzmnYRA4pjLyZjMN/w8QFVkpbpqn1XLnMxt646rr4x5tto8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761062432; c=relaxed/simple;
-	bh=0h9zHsYS9gxMIIOY1eFfnTbzP1c0JRt+j0AeSuZV1IQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=InyOiySLwops+zAo2QwknidXnblXRC5dSzMVT/iGoqtDW6JR2jbINl679NEtDRyxU7bXOuifT3kSKa6cDtH4XK6Ktwb/FFgSMFApCLQJ4xUqINmZB1hNEcfB6AqPPgGomXnGoDqWLkkoF5013Ba7ifPw4utV2uK+fdXvZnBRxIk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=V0okEMR3; arc=fail smtp.client-ip=52.101.84.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B523491DA;
+	Tue, 21 Oct 2025 16:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761064060; cv=none; b=W9RwmAGUHaIZjsRHtSPmsiq1MNVRwBJHj/xYgxDwaajvtIDdKsu5PDAb0p9S3rENP9D5fCoJ0CBJs0ZcaNlFzDPmcE9bvp33R4OnmyzSb/JWwud7GOBbFZbNSRygiUKteJ4P3gRDrRF3vpy817UTD/PibrlS6cIEEdxW0vXDCHw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761064060; c=relaxed/simple;
+	bh=kd69N002vmpOtiEZ/bz+Dv6wfmuq9EEiUSEIIPlzC/A=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=KmbU3XIgGJ9jad9Rf2qbStn8/X1pde+F0aNhgrwrBTZshuljZJNXtRXBdhh25stO7RZ0coHfvAhsCfIzPsp9U5ahpHJBpQA1qk94C/BYUcxM49NcsukyDVKrOADobmU+SeEVH5RnnYg0ejhlRGSizz3ua9d5WD95lpXCi8ScPzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EuurpcqY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="V0okEMR3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pv8VI7a2sjPnFWXUJsAkWRZE8wbpmKGVu7+ogFsxJOIeBvWlEaNCsGEX34x0rIWzCbEWBYGP3mjPz1RQhtzM2rYlcGhnETAxmdUenFnsermRVSAPaIpDuf1M9Vp51FPv4oXigqeOr3c2rUY0kpjoNGvuz/8YljJgDA67w5JCBb4Ot34FXN8B1k5+OQmwfso80xnVgYqeHQ79wuaeK+wbH2Sy/XvVNiSTMvpalUzczcXBSaiGjqAbxA70Aov66kFfgS5I6b8wcY+RGQF4RgJjdingvnFZBH3ucXVXxYp/BsGrsrb+PURVwCK94BstzPUO/gdLFT0Hkzd+B1aZ822ovg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BMFlpjk8pvUUMXLby9pCl6MCuI4MzdeYAktjVqMPacM=;
- b=XQPtD/GK8gvT/klpJ9/CkiE2B7VqrOUlxBz/CClYaET1Ux2EwwcMUJzlRDZRFazgFYoTCzfWAbZbkGsAdfDnNhytYx42n9UkpOKdSVr6UicJ2U4q6GxYlkRabcOylJZpMOxB9wuui/EiVdTaSX0zV70Ya1vn4oe6xNakzBRkRuDtt2wSwMvs9bPBLcvZ1bcxqeZcESdNXTpxbD+UTi0qLJH2XbZvjrIwL6y5K48z1cQUr4kDZqFcdLciTOhnf3U9EQsLtxKgBVxc+b5HgsNhuTUNaJCnVd4jpmYPQHmQBDeJmLQFdad721+fwWcqKv5EcfEPWgfvcx153EkHxD3MSw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BMFlpjk8pvUUMXLby9pCl6MCuI4MzdeYAktjVqMPacM=;
- b=V0okEMR3kCTJEn4XhtIb/i1gjS5ffyp2KZO3RdAuE86AUYocZI73qF8bLp5m87KnCVYOvoO7eVNnl2p1A/jURav0xEcT6MLuzqLz4Erap2v+vsZl0Fp3Gk2/sXfxrQimjuZEbFnPcwZ3YpizPReIZxGTiJV7+qbfcRpGdLrSBAdk10Rp3ms9Y6ClcXuhOUg4sdj/9jla06FEaQJqi/Jd2Ir5khTxe4LWdT2fWIBVbSctQK5+6RUJMmzowL/5hpPf3OzoX0FX2+PJkOQa67WKJqVEbgiSpA5zI+sFUVPgG6d1uHe4nmvXxlCh4qLfj31HgcCuJTJqS6Vs2QDdwVF40A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by DU4PR04MB11385.eurprd04.prod.outlook.com (2603:10a6:10:5d8::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Tue, 21 Oct
- 2025 15:49:38 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9253.011; Tue, 21 Oct 2025
- 15:49:38 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	linux-media@vger.kernel.org (open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] media: dt-bindings: video-interfaces: add video-interfaces.h information
-Date: Tue, 21 Oct 2025 11:49:22 -0400
-Message-Id: <20251021154922.2874390-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY3PR10CA0013.namprd10.prod.outlook.com
- (2603:10b6:a03:255::18) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EuurpcqY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56A6C4CEF1;
+	Tue, 21 Oct 2025 16:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761064059;
+	bh=kd69N002vmpOtiEZ/bz+Dv6wfmuq9EEiUSEIIPlzC/A=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=EuurpcqYQ6t3c0RJHYtFpQ96qi9D2nhzD1mshw+97vGzJVzXqT3Fsjsw4kuea/pFC
+	 4FL/5K7Db5TAWO8uRVOV8krL+nCPHc2xcKgEyRqWD0vgVqLGU5+napMl0uNycBMDoT
+	 Zq65JHxannPosBC+9KsBi62bLqZQd7zMftRtJJZP5lF1MeJ+QVlmPKMiEG+6DAt696
+	 XF7Ovh9rEzQq5ipuBedftxSHfQ+hTltnAX7YexgtqfH11aNYd4m4/5W/yghImzKHFR
+	 2UjONgnl1YQIyDTnGzdzukB/6vidtTkc+cuZn9q08xseXzVfzNeGrv4kNTR/uxLpFQ
+	 MeM4Ah23DvYUA==
+From: Lee Jones <lee@kernel.org>
+To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>, 
+ Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, 
+ linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>, 
+ Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>, 
+ Robin Gong <yibin.gong@nxp.com>, 
+ Enric Balletbo i Serra <eballetbo@gmail.com>, 
+ Sean Nyekjaer <sean@geanix.com>, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
+ Abel Vesa <abelvesa@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Frank Li <Frank.Li@nxp.com>, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>
+In-Reply-To: <20251001-pf1550-v12-0-a3302aa41687@savoirfairelinux.com>
+References: <20251001-pf1550-v12-0-a3302aa41687@savoirfairelinux.com>
+Subject: Re: [PATCH v12 0/6] add support for pf1550 PMIC MFD-based drivers
+Message-Id: <176106405453.1328165.3892656646740462467.b4-ty@kernel.org>
+Date: Tue, 21 Oct 2025 17:27:34 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DU4PR04MB11385:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23c4df6b-2f39-47fd-7833-08de10b970e6
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|52116014|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?dstzjHYMQweRJz55QkOn0yEKIevDNJSA7cbVgz9g3MgcRZcRfYhztDISagpg?=
- =?us-ascii?Q?Rnmk5uEX5z0nwwp4KWbXLwSiFvXSYVjCuLAVb8D5b/2ZyF7zcUGdk8LFbfEf?=
- =?us-ascii?Q?Orla5ekL0ko9/4bUruFEw77cq7NqqpobbuWv9xZ7OqH5Fls9XyS/f/BUp1KE?=
- =?us-ascii?Q?FK+CDSACnnj4DbASo9hYKEWT84oEFrJKhPfwtQoFd+hcvU0AZiLVbot6r85m?=
- =?us-ascii?Q?ts+gDTBrQKdVa1Oc7jRANZZbx9eWXhS5Qa2lR4OLrOhyiKRflgF6d+sUvEgd?=
- =?us-ascii?Q?hhg/8lvtCqDKOsvG4pI8ophCNZoSn5WiC2msIGB2oiMEXM+oOcar6tqexafa?=
- =?us-ascii?Q?MWvroLHi7TqWNbpHgqpj1hr3XwLaAe83ayOuC7pPONrJ6VRPkeexoeg9YqZQ?=
- =?us-ascii?Q?GE/h7yTrKVAo9KGEyaCJ0bK3yUCRqVlYyyS/rXEOriWoy+HHUDWqOy/GrSPv?=
- =?us-ascii?Q?FmumSH3WVhLaIYoc+6ZCK074cSVoNasS4N9JJyFCk72+sDnhPqsqwC01P5lF?=
- =?us-ascii?Q?hM6+28JsAD2VmNNgx4obSXIfHXmoY1/GewUniUWOaujtjsaRbrJ7Ka17LI6W?=
- =?us-ascii?Q?Me8L7WTJ+rdHvYOnxA8sUhMd0jGMKOULQLcNrLSEFohuS5rThYab8GH8eY2y?=
- =?us-ascii?Q?IHlNnu4QeLSHQy3HNEGFbYZHNuUDOLRJoEIZb319izVh4DyFIxUaR8FX0voJ?=
- =?us-ascii?Q?yGjYuGJ+fIneQoBTAPIgfqyLQwGZsHBdxEZmdig3puz4d6VvDW5WTsDDGP8O?=
- =?us-ascii?Q?OOze4Q1h1nE3WbvKNujI9wxGow0IGfToXKq0rOKwCaPDTrm1tGbEgguUeoIw?=
- =?us-ascii?Q?RU1nwvJClpVKvgcbC889wUA5BfSb5GUDHwUm9B6Y72Fw5jiUHothBaKLRu+/?=
- =?us-ascii?Q?sb/7zg8ciIawiwb+71I5gK/Sw+ksnJblFdMlrjAuCEvh2GMHXJjD9XrmvNyN?=
- =?us-ascii?Q?alsX3S1/VfOTNba9e8CBle0Q7zK8JGudXBZjpOjIZW7xz06I5JQTd3+N8kG2?=
- =?us-ascii?Q?Zqqsz6MV/t7pRmmBnF7003lkOvDm6FIVVe2YRVsQzobVszJZzpoiGmsLtX3a?=
- =?us-ascii?Q?rHtxllcvo2lh90aEvGkAXT5f4MbKluphHWAl3Vrg5pESSO3RNvXwi9txRQBT?=
- =?us-ascii?Q?oIZ8KSUZfeN9ayx/2QqnbwQuDoHQbj1QP0lOMyxchvdquwXZp7+7Kr1cLKpd?=
- =?us-ascii?Q?tIWowELQmE0RHxBxNu/eWuQ3a5h2VJbdGP5twv4kbY0KAVU8wHiiIew6BP8y?=
- =?us-ascii?Q?TWrdokjheT2uR7CHTOtXmm2NaNH7eRbyOcuSzz3Swf6nl5Q5DZeQrXOl20yC?=
- =?us-ascii?Q?VLCMVtUBLWq2kAvcu3fMhkex8W68GUJkl03tmuN1KByLsQ5ZTOCzmk1P6rsO?=
- =?us-ascii?Q?EkWxAU6UA2jqZmmD97l0raj/nkHCqk5Mc7K8lyzV/JvE8p6eCUe6Izj+hTFO?=
- =?us-ascii?Q?g6ROnpBMvqBENI8LMhPYTQw8TOb75cGeeV0N2jurV/vGA5MyUvo84gUMEZTi?=
- =?us-ascii?Q?TyvgobxL9BTJ62JEXxoIUU2sApc8vXvPx4TV?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(52116014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?mHzsEIFhrvyVLBU2OR6/RgUf9FT2wPXGDIB2EzKjfalmPY6mgnoMmfvxSBGh?=
- =?us-ascii?Q?PsXgWZdaUF5+ADqQ5m8uR1c0Xk9wMymh20iurSM9IeaCyktDRGGDD3kOC4cH?=
- =?us-ascii?Q?CFMgqlxp/eLD/f1JxnjtQYjSjL4ze8U8ygAHxkLSEH2SqEDp604HPlAvtbq+?=
- =?us-ascii?Q?DfwLsS9vxCSp8hhZ3XRy92lNde6FGLih5VBBNDZZLMWrVXcYxgs5qW+qVUTK?=
- =?us-ascii?Q?WErWfUnLQGRuRPOYz3ZuUQ2jCQ+X5q+2Iza8OF0BwMWwzz3a3uomoGDtsyW9?=
- =?us-ascii?Q?k2QFffuRPl/FQbssxOyHRaXqrNX/ohO1XJQkylQhPHRI0xYqyS5aJnemtKeB?=
- =?us-ascii?Q?T0YvU4oEgcbdNQcBA5jdRwiWH/moUbtfnv45SEAPlG8W7FhYvURfN2nOx/zw?=
- =?us-ascii?Q?7yQeUvi5FFeksFr5dUOQ423DVbT7MGJKC3ySFO/lAz8uTRUuEK37NHJhWYZR?=
- =?us-ascii?Q?kD4Xty9mOhOPYJUCEdCiiQ9YFzdPnMhJLf1NnwOf74vWeeouZe8mfVUVxtuS?=
- =?us-ascii?Q?xgIGB4VADt2yvFkuyMD8N4vcjXCxoq9UaErsAccUIYjqDx1g2tHy/FK8LQVc?=
- =?us-ascii?Q?QghaRc4t5wOpMPohlOu8PF/4IUrYDHG0Q7WNiBOWXY/Cq52hlTN3Xa/Q98eO?=
- =?us-ascii?Q?9AYB9BjkpUvBq7pY1GlKJpXPvqYr4SEiRwx+y0e3f0hHfpTfbLI5ltUbbjvc?=
- =?us-ascii?Q?8cJHYlhHH+J0OkYr0ZNoQOP9OewOs9c/CTPy7nuplmtRKSEd2S/yiSTskto8?=
- =?us-ascii?Q?h0tM77okwaw9SM6rbi1GRpUngXt7OhUUMKOHusroJM7dxXucL2Z3d1Dosy3e?=
- =?us-ascii?Q?gJbiEBxE+MajnwGFstQ+UaivJlASar+/gQaLkQW/bDmP9dw18FY/muoKUi/L?=
- =?us-ascii?Q?Uwl7Ox2IGPtVr/LzcQekPGC4IUdlBzMBbbCHkqUQ6DXGHEUXb3huh6fozFgX?=
- =?us-ascii?Q?GM1V1vZfCOvcLUMlSXBrq4uYU3niQYFRRO3LcG91lcgW7nU1aAaqrVsH86VT?=
- =?us-ascii?Q?QfgzMgPuUoXafgYfG1b9oAm5/323/A/0LIsF8p4uIlEUuwhhqNdJcFPwOwCq?=
- =?us-ascii?Q?TDVV8t3WDaLoh+bxdrp2xdr5+CY6hAKgi9QjQssMFKjLVE8tazO2F0osKGh8?=
- =?us-ascii?Q?Le7++FLrJ642LyVfHq4pqPXR40OOjtIL32HNRBgtnFr9fc/OwemocTDhHANa?=
- =?us-ascii?Q?tMUZbvhQuTh5Mf68MRWIpnL7aprf5oNaJQ4Tcy+6ylpTvrH9dccdibytriRS?=
- =?us-ascii?Q?1oK5gfEdaY3nBQubHN8zZPMPm9ZaQ7IGOm/LC46qmriKmxo7aulTW536N0lB?=
- =?us-ascii?Q?nIosJvrT1zuy6oVzlfz73wBI8Yp66T//gCTXm9m5Ea0dVm32TT6kgCIIetgG?=
- =?us-ascii?Q?VjsZ9QxPwHTmOdUvvtuD5WiMY+1OmXSPdAFBXxR29w/Bw+Z+Ysg0FqIshXev?=
- =?us-ascii?Q?7e+jpS+3TajC12SOh4G6eQv7UW95pcNkegEy4ddM7MzuypYOzOWJLVn/6q67?=
- =?us-ascii?Q?ghS4Xkc5lI/2HfrqweArlW6q+vidE2JcKtYh3PvddYKYSEDle4sgD34Be5Ua?=
- =?us-ascii?Q?Fh4xc+KwsMEOr4Fxl0BqFRA15XIvuMwN13fGia4q?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23c4df6b-2f39-47fd-7833-08de10b970e6
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2025 15:49:38.3966
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0qqEuC76/qMSuswyDu/PakSRuYt7MEXACG3oQa6jDuvSubyFvcWa86xnrLFD0uvyZxOUVx1R80x4Vu6+BFavJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11385
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-52d38
 
-Mention include/dt-bindings/media/video-interfaces.h in descriptions to
-help avoid use hardcode in dts.
+On Wed, 01 Oct 2025 11:42:36 -0400, Samuel Kayode wrote:
+> This series adds support for pf1550 PMIC. It provides the core driver and
+> sub-drivers for the regulator, power supply and input subsystems.
+> 
+> Patch 1 adds the DT binding document for the PMIC. Patches 2-5 adds the
+> pertinent drivers. Last patch adds a MAINTAINERS entry for the drivers.
+> 
+> The patches 3-5 depend on the core driver provided in patch 2.
+> 
+> [...]
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-changes in v2
-- update commit message "mention ..."
-- use full path include/dt-bindings/media/video-interfaces.h
----
- Documentation/devicetree/bindings/media/video-interfaces.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Applied, thanks!
 
-diff --git a/Documentation/devicetree/bindings/media/video-interfaces.yaml b/Documentation/devicetree/bindings/media/video-interfaces.yaml
-index 038e85b45befa..6ed4695cacf7e 100644
---- a/Documentation/devicetree/bindings/media/video-interfaces.yaml
-+++ b/Documentation/devicetree/bindings/media/video-interfaces.yaml
-@@ -95,7 +95,7 @@ properties:
-       - 6 # BT.656
-       - 7 # DPI
-     description:
--      Data bus type.
-+      Data bus type. See include/dt-bindings/media/video-interfaces.h.
- 
-   bus-width:
-     $ref: /schemas/types.yaml#/definitions/uint32
-@@ -229,7 +229,7 @@ properties:
-       Imaging. The length of the array must be the same length as the
-       data-lanes property. If the line-orders property is omitted, the value
-       shall be interpreted as 0 (ABC). This property is valid for CSI-2 C-PHY
--      busses only.
-+      busses only. See include/dt-bindings/media/video-interfaces.h.
- 
-   strobe:
-     $ref: /schemas/types.yaml#/definitions/uint32
--- 
-2.34.1
+[1/6] dt-bindings: mfd: add pf1550
+      commit: 2391e1377e39a7ca8592257d6b17126bffd58d48
+[2/6] mfd: pf1550: add core driver
+      commit: ebaec90ec0b5850ab80ca017e7b63183adcca131
+[3/6] regulator: pf1550: add support for regulator
+      commit: 7320d41c29bbd80144bb89112b8bf0c8223b94a1
+[4/6] input: pf1550: add onkey support
+      commit: 9acb215cbebdce721af2219e2859ad17342c9084
+[5/6] power: supply: pf1550: add battery charger support
+      commit: 4b6b6433a97d5863b5340fc87f866d784fdf0783
+[6/6] MAINTAINERS: add an entry for pf1550 mfd driver
+      commit: a7d6255a0bf302c028ac680564633a6aac5f611d
+
+--
+Lee Jones [李琼斯]
 
