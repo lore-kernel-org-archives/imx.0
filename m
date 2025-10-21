@@ -1,124 +1,161 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0347DA66
-	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 10:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76D523D7FB
+	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 10:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761041643; cv=none; b=O5Dk4Hcx9uInunaowEBmX2pupgKKpqrt/dSwNTlygCls8Zv0eGoKzxDz8uxI3OZDL5kxSs1ac30XZ/F+GJzilykvjnmqV7xEGurZ7pnZNipuN89kBQbTGNUYKRAwLh4+PLbIrA1vwwmciu7tPTm/QU05cwQ5xnc6pLawdYlzT50=
+	t=1761042720; cv=none; b=IibHnPHDh+FVjGKTrG7sAT6Ri6WohKnEZDjYdPSNIwuMud5LPiS8/gfPbTtULr+KrUeYfA9jx9yrkSbMeQP0KViblQo7jNNEMG+JplK+b4JnRkplGs38NYoXppPQMYbrsXilwnvV76LPyyau7n08IfkqT8hjcqKlW41/ZZQLM5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761041643; c=relaxed/simple;
-	bh=dsc5Kj6LTTA3wr4ulCsW6/BDuF9Of8ATjNvMm2GI0ss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QiyXkMavE73b/1qKbF8Rnh36LiVq5zPlvJy9u9W9kixA2WWkZ69PE9qJkApzgRNsohMkaOlwmazgxo8p2e4z+A48gtJFJ7X1hINcA2hr8M+Ox/tphmegvof4pJ//jAxJ0twycQwR1O1L17eh+MQyTlB9YttW02IlIEiTTbdIJBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vB9NJ-0002U2-Ke; Tue, 21 Oct 2025 12:13:53 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vB9NJ-004hl8-0p;
-	Tue, 21 Oct 2025 12:13:53 +0200
-Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id B872848C042;
-	Tue, 21 Oct 2025 10:13:52 +0000 (UTC)
-Date: Tue, 21 Oct 2025 12:13:52 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Primoz Fiser <primoz.fiser@norik.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
-	upstream@lists.phytec.de, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH 2/2] arm64: dts: freescale: Add phyBOARD-Segin-i.MX91
- support
-Message-ID: <20251021-elite-crab-of-spirit-744926-mkl@pengutronix.de>
-References: <20251021093704.690410-1-primoz.fiser@norik.com>
- <20251021093704.690410-2-primoz.fiser@norik.com>
- <20251021-bright-brave-dolphin-906891-mkl@pengutronix.de>
- <4979a32f-f938-4956-8293-eca5667bf1c4@norik.com>
+	s=arc-20240116; t=1761042720; c=relaxed/simple;
+	bh=Rv6B8AtJGjKvNQJhTVSXBcpvGM+PYPF74L5rDuuA9O0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=ethgKzjIqDXXTZVB8l3Kbx+XL8yeYV+I+JXI97lEJxu/yZVCs3Bv/2YsCBgouRKuTV1EFp6qsT1rBHgMpvEBThdrOE1YJU8pl8fM3IdVz/zxLEiUJDWFHMa+n++feZkCUINg4p4MyieEPU/yHmKkBvPWNsgnP73wYKeyAGPOKnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UAKVwMh6; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UAKVwMh6"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A8AA84E41235;
+	Tue, 21 Oct 2025 10:31:54 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6FBD860680;
+	Tue, 21 Oct 2025 10:31:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 050A6102F238A;
+	Tue, 21 Oct 2025 12:31:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1761042712; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=YuVVLdxM0un/2EVnLCzvPprS2wmsm9jt4ri10VpX44E=;
+	b=UAKVwMh67iPoBl4NTClw0ksLV00XODy/DIHEJ+Abr2eO5IqpQcehz/93nuSEIk1KNn1Bmg
+	alRZgs0hHh6R//b9Djv11rXnVg0M3E+zSIsxC47sYWAJyGtBqcFsIVJo+s20tNSMGbhOor
+	eyrx4hjsFi7ZY638H2w5XkfJ2MlT/Z227QFyUd5rEkIdAeesvlToC3vmxcoH4ehhF9PII8
+	zbM6HzvGFQmw1YC877GgY3McN5LwDhQmATKGTMlq8UENwmFokLOU0KtyQWXnW3mlO7fJAu
+	j9PCgp7hTfzSMz4K/v7Wh0IGkXn6qFI19aHgSoubt+UeSXbN8tO7oymiMdGsUQ==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="633ncal4gpk4csrw"
-Content-Disposition: inline
-In-Reply-To: <4979a32f-f938-4956-8293-eca5667bf1c4@norik.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
-
-
---633ncal4gpk4csrw
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 2/2] arm64: dts: freescale: Add phyBOARD-Segin-i.MX91
- support
-MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 21 Oct 2025 12:31:11 +0200
+Message-Id: <DDNXIYL494D2.2N8L1J7XTBT4S@bootlin.com>
+Cc: <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
+ <jernej.skrabec@gmail.com>, <maarten.lankhorst@linux.intel.com>,
+ <mripard@kernel.org>, <tzimmermann@suse.de>, <airlied@gmail.com>,
+ <simona@ffwll.ch>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
+ <kernel@pengutronix.de>, <festevam@gmail.com>, <inki.dae@samsung.com>,
+ <sw0312.kim@samsung.com>, <kyungmin.park@samsung.com>, <krzk@kernel.org>,
+ <alim.akhtar@samsung.com>, <jingoohan1@gmail.com>,
+ <p.zabel@pengutronix.de>, <hjc@rock-chips.com>, <heiko@sntech.de>,
+ <andy.yan@rock-chips.com>, <dmitry.baryshkov@oss.qualcomm.com>,
+ <dianders@chromium.org>, <m.szyprowski@samsung.com>,
+ <jani.nikula@intel.com>, <linux-kernel@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>,
+ <linux-samsung-soc@vger.kernel.org>, <linux-rockchip@lists.infradead.org>
+Subject: Re: [PATCH v7 01/18] drm/display: bridge_connector: Ensure last
+ bridge determines EDID/modes detection capabilities
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+To: "Damon Ding" <damon.ding@rock-chips.com>, <andrzej.hajda@intel.com>,
+ <neil.armstrong@linaro.org>, <rfoss@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20251021023130.1523707-1-damon.ding@rock-chips.com>
+ <20251021023130.1523707-2-damon.ding@rock-chips.com>
+In-Reply-To: <20251021023130.1523707-2-damon.ding@rock-chips.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 21.10.2025 12:07:13, Primoz Fiser wrote:
-> >> +	flexcan1_tc: can-phy0 {
-> >> +		compatible =3D "ti,tcan1043";
-> >> +		#phy-cells =3D <0>;
-> >> +		max-bitrate =3D <1000000>;
-> >> +		pinctrl-names =3D "default";
-> >> +		pinctrl-0 =3D <&pinctrl_flexcan1_tc>;
-> >> +		enable-gpios =3D <&gpio4 16 GPIO_ACTIVE_HIGH>;
-> >> +	};
-> >=20
-> > I think the tcan1043 is a CAN-FD transceiver. According to the datasheet
-> > it support 2 MBit/s and 5 MBit/s in the "G" variant. However due to the
-> > board layout, etc, the actual bit rate might still be limited to 1
-> > MBit/s. Ask the HW engineers if in doubt.
->=20
-> phyBOARD-Segin actually uses a TI SN65HVD234D CAN transceiver chip which
-> supports up to 1MBps. See [1].
->=20
-> However since there is no direct support for SN65HVD234D we model the
-> enable signal with the generic PHY driver and use "ti,tcan1043" jsut as
-> compatible. Suggested by Frank and you in [2].
+Hello Damon,
 
-hmmm, okay - I suggest to add a comment that mentions the actual
-transceiver and that it's a 1 MBit/s CAN-CC transceiver.
+On Tue Oct 21, 2025 at 4:31 AM CEST, Damon Ding wrote:
+> When multiple bridges are present, EDID detection capability
+> (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
+> (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities are
+> determined by the last bridge in the chain, we handle three cases:
+>
+> Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
+>  - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
+>    &drm_bridge_connector.bridge_edid to NULL and set
+>    &drm_bridge_connector.bridge_modes to the later bridge.
+>  - Ensure modes detection capability of the later bridge will not
+>    be ignored.
+>
+> Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
+>  - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
+>    &drm_bridge_connector.bridge_modes to NULL and set
+>    &drm_bridge_connector.bridge_edid to the later bridge.
+>  - Although EDID detection capability has higher priority, this
+>    operation is for balance and makes sense.
+>
+> Case 3: the later bridge declares both of them
+>  - Assign later bridge as &drm_bridge_connector.bridge_edid and
+>    and &drm_bridge_connector.bridge_modes to this bridge.
+>  - Just leave transfer of these two capabilities as before.
+>
+> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>
+> ---
+>
+> Changes in v7:
+> - As Luca suggested, simplify the code and related comment.
+> ---
+>  drivers/gpu/drm/display/drm_bridge_connector.c | 16 ++++++++++++----
+>  1 file changed, 12 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu=
+/drm/display/drm_bridge_connector.c
+> index baacd21e7341..7c2936d59517 100644
+> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
+> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
+> @@ -673,14 +673,22 @@ struct drm_connector *drm_bridge_connector_init(str=
+uct drm_device *drm,
+>  		if (!bridge->ycbcr_420_allowed)
+>  			connector->ycbcr_420_allowed =3D false;
+>
+> -		if (bridge->ops & DRM_BRIDGE_OP_EDID)
+> -			bridge_connector->bridge_edid =3D bridge;
+> +		/*
+> +		 * Ensure the last bridge declares OP_EDID or OP_MODES or both.
+> +		 */
+> +		if (bridge->ops & DRM_BRIDGE_OP_EDID || bridge->ops & DRM_BRIDGE_OP_MO=
+DES) {
+> +			bridge_connector->bridge_edid =3D NULL;
+> +			bridge_connector->bridge_modes =3D NULL;
+> +			if (bridge->ops & DRM_BRIDGE_OP_EDID)
+> +				bridge_connector->bridge_edid =3D bridge;
+> +			if (bridge->ops & DRM_BRIDGE_OP_MODES)
+> +				bridge_connector->bridge_modes =3D bridge;
+> +		}
+>  		if (bridge->ops & DRM_BRIDGE_OP_HPD)
+>  			bridge_connector->bridge_hpd =3D bridge;
+>  		if (bridge->ops & DRM_BRIDGE_OP_DETECT)
+>  			bridge_connector->bridge_detect =3D bridge;
+> -		if (bridge->ops & DRM_BRIDGE_OP_MODES)
+> -			bridge_connector->bridge_modes =3D bridge;
+> +
 
-regards,
-Marc
+This does not apply on current drm-misc-next, due to the patch I mentioned
+in a previous iteration, now applied as commit 2be300f9a0b6 ("drm/display:
+bridge_connector: get/put the stored bridges").
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+However I'm sorry I have to mention that patch turned out being buggy, so
+I've sent a series to apply a corrected version [0]. I suggest watching the
+disucssion about the fix series, and if that gets approved rebase on top of
+that and adapt your changes.
 
---633ncal4gpk4csrw
-Content-Type: application/pgp-signature; name="signature.asc"
+Sorry about the mess. :(
 
------BEGIN PGP SIGNATURE-----
+[0] https://lore.kernel.org/r/20251017-drm-bridge-alloc-getput-bridge-conne=
+ctor-fix-hdmi_cec-v2-0-667abf6d47c0@bootlin.com
 
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmj3XNwACgkQDHRl3/mQ
-kZy5jAgAs7oItdqTyJWADrxD5vFJF9S4BVEJ17u41fKIp+iMmT0qPT7dOZ20oVH6
-UjhrIJmT1goI0Skggzr0Fs4vnhLPA7bsLqMqZM6ZnbawW2+g4iKd13dvR3hHqRSV
-c2dE/r6/U+DjaPs+Ijz7zR7FVHd5jyKI83LsDSYBdqNC7QM3RfFYYPTVbURfdhUX
-1Es2zmH18iWgSBG3A+Url9o1sWuWQVFNDi6ogNFb8+94kk8YJLnSNyn18Us5p08j
-pRgH/U8mlYfziMPSjzvT4hFZNnK/g+Rvdp/VbTjtvY6T94CoQUtvAKod+CHkbcjd
-ldrScN+ZDNKPIH6DM0xe4PFTFD5l2Q==
-=CrZZ
------END PGP SIGNATURE-----
+Luca
 
---633ncal4gpk4csrw--
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
