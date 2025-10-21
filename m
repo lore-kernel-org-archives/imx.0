@@ -1,43 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866C5335BCC;
-	Tue, 21 Oct 2025 13:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847E92566F2
+	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 14:07:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761053466; cv=none; b=s0CrwKaxdA5Nx35AC4bihnpNmxmLeSUFqwOUlW/NsW6hzRtdY+ukWbfOpbvb4iJeWhblOSUNXO06qkkYBoP7XF7vZ7GEAfia9KROxltJpSu6iMKmAqSep65Q69V2JLUWDAKd2J/uYICF9y7FJM1RgBL9SLGN1MMP/06PGRJGQ+Q=
+	t=1761055673; cv=none; b=lq//gZakf2bAt3YTQxPyGBP8H6f5q8dhYcz6oAojwl7KHwK0z6Hd95dyxH5UZh5tlygJ7j+NGSFKoK/hESRBAfdbN5laSoEDb28Vg9TvmOqu299D/8AkB25x6XQHVgNOewGC9oO15ceMVQ2LvTyjIdFIn4+Am0cmMMirX/0lyQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761053466; c=relaxed/simple;
-	bh=EVEIgzylw5RGVggezBSR1+kz2XbEuZuqnwmtpd0lQes=;
+	s=arc-20240116; t=1761055673; c=relaxed/simple;
+	bh=MLoAqGWmWG0tS39BHCw04giIQ56RcWiSSu/4KePK/yY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=huktZOyErHbz++xmR1yg6uVErl3gQI9Z0EJws3MdY9k601xuOVmE/JC05HKT4BP5gzJ2ZKAqgeifYO2jZxXKBr1n1KaqOZsbDqICPAtIOZyBoqWatGq34wYKlAKOT8uXbs7d5ieH6oDnWjQSuF2GU8O6qSoo4Rp3VB0411zj/9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e8hSe5eE; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=sgmGlrKUdb4tksrHQsZ1HcjDvoKlG0Kh70mbQ0CCMcREOXY6c5yPSlsnUz3WslxCc7HQagKPneHaMhv7rcPcg8yhev8MuwPWxF6PfhwPEelNH4lkPTFC93dOGqIJpO72OgBcXakJxEuqunPYxXWscmxcAd8brb9ez0CQl8X+6BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W1n4fwyk; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e8hSe5eE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99BEC4CEF1;
-	Tue, 21 Oct 2025 13:31:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761053465;
-	bh=EVEIgzylw5RGVggezBSR1+kz2XbEuZuqnwmtpd0lQes=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e8hSe5eEssCv4zfaeiI0S1y+lqdicSy1tgJB2MH4XmG2YkjydKzH4o9I6oB/1qp7F
-	 e4C7U1PH26rFad9hEVzQFsE9qmDYu3MkJRl6W0zbq4zU2kDRkAiQNaZNPaLFKemEwG
-	 lgF6G0JLUkslxtM7pg4nCpaFN6F8FT1lFxOom67CwJpbXmxgmPri5b5i7Fz8aCPmXU
-	 mecM5tVLLRJ4jtRaGKBIuhw7WjW3NA1zw/HgifG2vj08cUdEgoPpvCLBy14z7+ZL3x
-	 NY8xuncsH2cbAcQSVAJ/ywxFzpmJMKziKyBS9D5jssgrCSXSt18gkwHomZMJwhrHYk
-	 rzlqozVSD5xRA==
-Date: Tue, 21 Oct 2025 08:31:04 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Support Opensource <support.opensource@diasemi.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W1n4fwyk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761055672; x=1792591672;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MLoAqGWmWG0tS39BHCw04giIQ56RcWiSSu/4KePK/yY=;
+  b=W1n4fwykbODAQboj8qQP9XN26rHwxGmzCxfvZvIKqt+vpSqHbZfc9QF1
+   FIvfrjCZc3IgrUevk/F06HA1qPJcMSiAVlQzxsj/gacmT1IBAuEDWk+bl
+   9tx5t730UlCnqLWtcA7hQL390CsGayib3nTLg81NPAMJeVZXTEzg0xhrD
+   JaOxbM+Cx0QTo3pbWeA2E0uRNItSKTfQQoZmd3VnEcqJc6lztHfbcQ7yk
+   oT8Kc8Jb1MOLD3C3473aYzKOiGWQvcmNf0oxNKJsp0lYwH87M3/XB/D4F
+   0PACfIivBiPNk3EEG/84fJqdD2ckVfQ8wTgiw7Lcr0WVyztOk93bO8Pm0
+   Q==;
+X-CSE-ConnectionGUID: s+NvkR1bT+Sl5WwScrHbng==
+X-CSE-MsgGUID: Pgsru4RYQMmy3Vg/8lfazg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63329740"
+X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
+   d="scan'208";a="63329740"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 07:07:51 -0700
+X-CSE-ConnectionGUID: OIuqUSuiRNiNI7aTyE6D3g==
+X-CSE-MsgGUID: pogwMQpnS7K/l603s2LfBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,245,1754982000"; 
+   d="scan'208";a="184081155"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.148])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 07:07:39 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1vBD1S-00000001VzY-2SRO;
+	Tue, 21 Oct 2025 17:07:34 +0300
+Date: Tue, 21 Oct 2025 17:07:34 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
-	Lee Jones <lee@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, Steve Twiss <stwiss.opensource@diasemi.com>
-Subject: Re: [PATCH 1/1] dt-bindings: mfd: dlg,da9063: allow wakeup-source
- property
-Message-ID: <176105346341.18749.2102779375239624179.robh@kernel.org>
-References: <20251014184114.2353199-1-Frank.Li@nxp.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
+	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 06/29] bus: Introduce simple-platorm-bus
+Message-ID: <aPeTppUgRC1wWQU9@smile.fi.intel.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-7-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,18 +107,80 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251014184114.2353199-1-Frank.Li@nxp.com>
+In-Reply-To: <20251015071420.1173068-7-herve.codina@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-
-On Tue, 14 Oct 2025 14:41:14 -0400, Frank Li wrote:
-> Allow wakeup-source property to below CHECK_DTBS warnings:
->   arch/arm/boot/dts/nxp/imx/imx6dl-emcon-avari.dtb: pmic@58 (dlg,da9063): onkey: 'wakeup-source' does not match any of the regexes: 'pinctrl-[0-9]+'
+On Wed, Oct 15, 2025 at 09:13:53AM +0200, Herve Codina wrote:
+> The simple-pm-bus driver handles several simple busses. When it is used
+> with busses other than a compatible "simple-pm-bus", it doesn't populate
+> its child devices during its probe.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/mfd/dlg,da9063.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+> This confuses fw_devlink and results in wrong or missing devlinks.
 > 
+> Once a driver is bound to a device and the probe() has been called,
+> device_links_driver_bound() is called.
+> 
+> This function performs operation based on the following assumption:
+>     If a child firmware node of the bound device is not added as a
+>     device, it will never be added.
+> 
+> Among operations done on fw_devlinks of those "never be added" devices,
+> device_links_driver_bound() changes their supplier.
+> 
+> With devices attached to a simple-bus compatible device, this change
+> leads to wrong devlinks where supplier of devices points to the device
+> parent (i.e. simple-bus compatible device) instead of the device itself
+> (i.e. simple-bus child).
+> 
+> When the device attached to the simple-bus is removed, because devlinks
+> are not correct, its consumers are not removed first.
+> 
+> In order to have correct devlinks created, make the simple-bus driver
+> compliant with the devlink assumption and create its child devices
+> during its probe.
+> 
+> Doing that leads to other issues due to the fact that simple-bus is
+> closely related to of_platform_populate().
+> 
+> Indeed, of_platform_populate() can probe child devices if a simple-bus
+> compatible node is detected. This behavior is expected by some drivers
+> such as some MFD drivers. Those drivers perform some operations in their
+> probe() but rely on the core (simple-mfd, simple-bus compatible) to
+> populate child devices [1].
+> 
+> Avoiding recursive probing in of_platform_populate() and let the
+> simple-bus driver probe its child devices will break some system.
+> 
+> For this reason, keep the current behavior of the simple-bus driver and
+> of_platform_populate() as they are and introduce simple-platform-bus
+> driver.
+> 
+> This driver doesn't interfere with of_platform_populate() and populates
+> child devices during its probe() as expected by fw_devlink.
+> 
+> [1] https://lore.kernel.org/all/20250715095201.1bcb4ab7@bootlin.com/
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Link tag?
+
+...
+
+The below is simply wrong. The luck that you got no errors is due to CONFIG_OF
+being bool and not tristate in Kconfig. I dunno if this driver ever gets the
+'m' capability, but currently it uses tons of dead code (such as MODULE_*()
+macros). Disregard of that, the proposed change should go to the separate
+compilation unit at bare minimum.
+
+...
+
+>  module_platform_driver(simple_pm_bus_driver);
+
+> +module_platform_driver(simple_platform_bus_driver);
+
+^^^ WRONG!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
