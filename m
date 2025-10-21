@@ -1,197 +1,223 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013067.outbound.protection.outlook.com [52.101.83.67])
+Received: from mail-m49251.qiye.163.com (mail-m49251.qiye.163.com [45.254.49.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08C2333456
-	for <imx@lists.linux.dev>; Mon, 20 Oct 2025 21:07:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760994446; cv=fail; b=C/aPOWdalj1XNGMQJYzpIvQg/t2dOS4ENStWRzABYhI30GtkbwkqfDjH8Xct4oPYhu+ZClQegtlfkA0CwHu+7V+FaIw1OSstAYknzKMe725ubEN/Kb8poQcwOBYa9zuI5t77XfHcPc43IeHK/KeIpwNJiZcqj+XrBttVyz/vzC8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760994446; c=relaxed/simple;
-	bh=pyQD8YyF9CeOnUCkIs4QWTW5456EiPnOKua/sTX9ip0=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=CIX9xe1rWWtSBZaZHuV5eLG6VHHI33rx61vfJDrKPJlmo2TGThDDTAau4WsctbSb6oC8Va6z95cwSjzLWyAlZVBAD2w0d0QzTvkyPFsSI4Q1mHHS1puldisDwdZNIO1hi79Zdwa8sxlILp/YITYjA47tNStA8/zXWzzVwInW5/k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eZywaLoc; arc=fail smtp.client-ip=52.101.83.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DDD17736
+	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 02:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.251
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761013921; cv=none; b=S6Vv3LdD1USxyTdHEabb73APNk69iomA8wmMHF3uzuyWK8iypqwOBnP6xciVNjTGHDyqPLVrQyV/7iBsMQCR/RLgcwS1CE3Qd84VEm6aCcJt5jYmGpWpm0OAXrY/7gBahTQ19QYXtZ/ZRFyuqa436I9ug9qfaJaZLw0FElZDdpA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761013921; c=relaxed/simple;
+	bh=wSXfPROuWd2bef5PPW3TVgrRA+8BlpNygQW4ihfLYXA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uYRMNK/TP44mlnMStRdhm3JODxHzoSLRTTtLKUzWQjo+YTogqm0wYcC0ERGnD80FZrt8/41XbMejh1vXeMUyNUdH9h+Nan0lZO87IBJtPLz6krKDh1P73tQqT8Xfl6rxiQtFT0VpcH+IuHcjRSIxvFdiAmI2tzhB/trxmF7kW2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=CnpRpl9f; arc=none smtp.client-ip=45.254.49.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eZywaLoc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GKj3a4+dqqD5dK4+EHNLhuqn7/L9syY3QhO64GuDuBvJYjN1SMluPz3j7ZfFSW96W7MlzvOZPX50KzO6IVDO6ViJQiIVjMdfQlBQslfCmiDH6NkVKLkW87Vt522veI0YclzWPQJuR+cs1cobCjLx5WUnDr7EbGIQ60o01pOCc9x3KqQcQWMD6VwHd32Fg6e1GidstFuLg1B25nDtk7gw1FoIQ+nfkZYvOgSq+JffqoPOw76ZmMtn5Swh8NCsPhXjm3QxAB74EKgTxnO1fDEABAXXLdo34TDkNFr+6Mdm/IQbbQ+bC+yooIEkcnMAxPjjvzY8vxeRQRxZgPMRDj/h/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P3GUMumh+teZWTZ4vudZ6NTEHXfTx6NCYw/vq349eRA=;
- b=HjhjDps/5k+Oz94X4e2xdby+dEPeq0Is/c1UqtDfBzJ0OwxzNlQ3C/7W1hPoc75NuwS7AAz6uVsR/CJz00r7AhN0BovMjt5Trv3sOxCoOBL4+PfPOz7Zu0WVhWje3MUzBVS+LDH7sWpa36KEOIUSFJC6SBhHhlwE33wEJ7V+AGAPvKiChrYnfvbGvLXKn9CaxhjO3RbYlliiKTVvFLqXpxE+PIr7qOOmr7MBI0yFqN6BDdP5tzKQeXP4b9s1bX3N/KKwqHAGBAzNSOYkTUckD2XTMqHVpBHg9mXiICsXMe/rinxXatJsKR7P9/1lHcbpVEL3O59tKOKNbujnuGBgeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P3GUMumh+teZWTZ4vudZ6NTEHXfTx6NCYw/vq349eRA=;
- b=eZywaLocFgu7j/5lNDxlfZ/1gKZZd1+41XhqWRw/LMsfAG1ny+W4ShEP0IKVd2AwruJFkCytjHreLgix4MAn8rG6fPv4iebZ/IMmkNebalkFm4C1p3WElzE4KtG8hDzi7Kh+HXKcn1SPfQRs55E5QMg0KdbzzDCpClZvsSZky2jHh4aKGtM51Xz7xr9o42vjoGCV3VcdM3SdT/C86/F7RzSzTTknJyj5DogpQPMtaPxTVpV1syGPl7a6rfTAAg5MVc2ht61Hz/jlkDZmoqqY5Zg7+qZldlyeYgKVt4Jmc8U0XZTbQ88muZU33xPqCQU3sNlMkOxtiYkBkEB+azTyXQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by DB9PR04MB8105.eurprd04.prod.outlook.com (2603:10a6:10:24a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.17; Mon, 20 Oct
- 2025 21:07:23 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd%4]) with mapi id 15.20.9228.015; Mon, 20 Oct 2025
- 21:07:23 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Mon, 20 Oct 2025 17:06:43 -0400
-Subject: [PATCH v2 9/9] ARM: dts: imx7ulp: remove bias-pull-up
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251020-imx6_dts_clean_2-v2-9-3c12ead5094c@nxp.com>
-References: <20251020-imx6_dts_clean_2-v2-0-3c12ead5094c@nxp.com>
-In-Reply-To: <20251020-imx6_dts_clean_2-v2-0-3c12ead5094c@nxp.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Christoph Niedermaier <cniedermaier@dh-electronics.com>, 
- Marek Vasut <marex@denx.de>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- kernel@dh-electronics.com, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760994408; l=901;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=pyQD8YyF9CeOnUCkIs4QWTW5456EiPnOKua/sTX9ip0=;
- b=ezu7rfwUBZrMiYjn82LYlqSO+Bi3dwV2LCMUO/k1uB+aBvqfXVUmYhuk0Zi6BX/vxnPCGamOL
- YqaTTyvVIQwByseObAZeW2YpbVaXbdNBLkie1rg3wSSFIy+KH6pAI/M
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: PH7PR17CA0035.namprd17.prod.outlook.com
- (2603:10b6:510:323::16) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="CnpRpl9f"
+Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 26966e4e4;
+	Tue, 21 Oct 2025 10:31:45 +0800 (GMT+08:00)
+From: Damon Ding <damon.ding@rock-chips.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org
+Cc: Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	krzk@kernel.org,
+	alim.akhtar@samsung.com,
+	jingoohan1@gmail.com,
+	p.zabel@pengutronix.de,
+	hjc@rock-chips.com,
+	heiko@sntech.de,
+	andy.yan@rock-chips.com,
+	dmitry.baryshkov@oss.qualcomm.com,
+	dianders@chromium.org,
+	m.szyprowski@samsung.com,
+	luca.ceresoli@bootlin.com,
+	jani.nikula@intel.com,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Damon Ding <damon.ding@rock-chips.com>
+Subject: [PATCH v7 00/18] Apply drm_bridge_connector and panel_bridge helper for the Analogix DP driver
+Date: Tue, 21 Oct 2025 10:31:12 +0800
+Message-Id: <20251021023130.1523707-1-damon.ding@rock-chips.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DB9PR04MB8105:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4a817cad-0040-47e9-5b34-08de101ca9e4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|19092799006|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VkdDQlJJTzV2VzNNQ1JheFptdDlBODJ0QytydVloWDhJdVRUL3p2OHUvL29H?=
- =?utf-8?B?aGR4ZDFqbi9DeUkzUkc4QzZLOU02N3JlVGR4VEhXb2RYR2toeFIrc2F6eU5k?=
- =?utf-8?B?bXZ3NzFRR3d3Q1BFSllvTGxJbmhkNThIVWdqK2dKYnVGYlV4S3J6c3g5SVdl?=
- =?utf-8?B?cWlJOTZPdnZ5OFJuWHV3S3BwMEZtQllobzlxNjlWbDNBazBSVEFjbUVSQkl4?=
- =?utf-8?B?MjRZdGVYOEV2OEZtY3B3RFBnN2R3SWhJaDRVMEFycy9ldWZuR2pzcnBRSE1B?=
- =?utf-8?B?Y2drVlJ1MnFlS1M2YzBsREJFdzVMMkJSVmpTSS8vUVB6WWZlcnBtUDBEMEdE?=
- =?utf-8?B?OXliRzR5VGZsTWJZemxoMUNNczhuMndVWWFuMDNId0QwQWgvRWg4Z3BWaUpY?=
- =?utf-8?B?TkZoMnk5UTFwOGNOTWFpR0xUdWVmTFpubXNGaGg0K0NMaVdZenV4RlBJWERD?=
- =?utf-8?B?WU1vVm1BaTMyZVozazFnZmMrLzdZL0pnellabEhWZ2pvR291ZDZheklhMjRw?=
- =?utf-8?B?VU5PclA5MVVVTkNjeGw0UjdMaTdLaEpuL2o1RzVaNWRBc3JMcU5OSlZ4YkFG?=
- =?utf-8?B?TENma0ptdVl1Y29aL1kxUDRaS0UyZEprQ2hGdGFab3VTZHRJZ3d2ZTJZVE5G?=
- =?utf-8?B?anB6ZWxKK256TDVabHFuUGRia3VNK3hHcUVZRkE2QSt3cHVMbjhuOFFtMHZm?=
- =?utf-8?B?MHp0QzZkNnZ5UlBxdC9IK0pJaC9MYVVnb2FmRlNOTUZETldDcU5SbnV1WE5V?=
- =?utf-8?B?UHVBUDlQbzVZdDhwdXB4VmJlN2RzMCtrTHlUcjViaWtTN0IzMENZTUV6alB2?=
- =?utf-8?B?ZHFMRUQzVmF0Z3QreTNSejNiTVVmNUcwdDBvcUlYemtJK3Y2NnQwM2czaHFn?=
- =?utf-8?B?WTExdWx2SEpWNzRmY2RWRVZhOEcrY1lNNjEydm1hcUtiaVRBRUxIanJFcnVi?=
- =?utf-8?B?N3Fpdkt1RDRlV2xkVEUxQmIrTUczVEFTODNXQ3cwaG5Sa1JsT0lKUm5iSEZO?=
- =?utf-8?B?dkZmMEt1cElHRHZ0cUoxbW8xZHpmZXV5dVdVelREeDl2dThiVVY4eHNBUHA1?=
- =?utf-8?B?Z2d3U3VWNS96NDQzZHFVeW11Wmo0a09jSWZYMnMvYm1xemFGRHN6ZDVkNTNQ?=
- =?utf-8?B?bnA4ZGFwWTFIQ2pJMTRzZDFiVzg1SEo0SGlCWC8xOU9YT2NtdmdTaUtnTVY4?=
- =?utf-8?B?cHBFNDRUSmgvbWdyTjRlemZJdzFKNndtZ0pydHNqaUVwOXdCbVJvVVJxT2d5?=
- =?utf-8?B?RU1nUjQ2MkIwY0lKZ1MyWENTRU1CTFBUbTdHemlWUWoxUEN3K201a1k5ek15?=
- =?utf-8?B?UFcvNnhOUlNKTFJZTFJHMW85N2RlakxwZ295cWhQOExXU3RIQjNYRXVGL1ZT?=
- =?utf-8?B?V01uRUkreDIzdGpvdHk4d1QxbUFndklaQjkyYlp5T3VIQzYvS1dkK1lYSkla?=
- =?utf-8?B?bGxFT0wyUU5IbXo4bW5xTFpWZ3grYmVsRkxHUHpPSU5ldTVCaUhQNnlRNkQ1?=
- =?utf-8?B?YVN0K3FUaGczL1AveWZoNlFrK1N1VjZEM09QTEFYNjZGYkpjUWpWTVNKM3A3?=
- =?utf-8?B?N2VLUXpDN1F2V1NJNUNqU0RwRDBsQXpNckQwSFRZZllIekZmM0tHS0RGdTgv?=
- =?utf-8?B?RkxuaFFQQ3NBVWZjN2t3NG1OUGY0RjNpWTkzN2N3eGg3eXNnWVQ3ZHlqMTdp?=
- =?utf-8?B?RG8wNUpMclRWQS9tQUJVZnkrNWcydzBTWHZBVUp2YW5nK1Exem12WDdiUm1Z?=
- =?utf-8?B?bk91b2Nsa2tlMjY1RFEvZUZZZnE2d0o5SER1MXJzcGRFYkdnb25oQk5teFBM?=
- =?utf-8?B?QzhtTldpci91VXo4WlorazdxMXR1bitZaFhTZkpwZCs5Y3o2c0FkYU41M1Nk?=
- =?utf-8?B?UEg4Rm9jdy9heHJyZTN1c3k3MnhJWTliTXV1eUIydzlIRDNqa2pqOE9vOTNL?=
- =?utf-8?B?ZmY0ZFFuditJand5Y2pkclB5bEJzYlYzbW9nQTBRTkVPMWVRWVZnUTZiRkpj?=
- =?utf-8?B?OWtIOGdCcmFUNDNrTk9HWGxzdTdJaTg4NkFpNHpxTlc2clN4VDl0UzlkcWFs?=
- =?utf-8?Q?lBS+Kp?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(19092799006)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?L082TlJKUkJDbEllZTdNU0Y5dmViYlY0K1dIOHAxa1Nyd0RXNlFQaDEzdHJB?=
- =?utf-8?B?czZ5QkdEN0NVSUFvZzh2MXJDZXVCMUhVam9sRllJNmFmUkVCUmJxTEsybzRI?=
- =?utf-8?B?NFIyRUI5N1lwNi8raFhSVHN3eFNIWWVGUkM3YldBbTRIZytOZFJrQ3VMdVVV?=
- =?utf-8?B?VE43NThGVUFCSzJVY2FPZmVyVVJya1Zndm8rZlFDdnJ0bUE2ckRWa3Z5ZFJr?=
- =?utf-8?B?Skh5RVRSblJWUnB3TWx0ZWhpME0vSGlCTG1BK2lXS3U0cFV3Tk9IUGxwS3BN?=
- =?utf-8?B?OXUrYjUyMWlnVlNyMk5oQ1J0cGJzRUJUa01majlSSzcxN0pnNmI1K2k1RkVL?=
- =?utf-8?B?a1hSa0hPeHZMamlqMWloZk1rUG1EbVNKTjJGZzBzdTJZNStsdENOT3EzNkh6?=
- =?utf-8?B?K0pRS1hTSFNzdDNtbWZZYzRCVTBZc3l2VFExTDJFVDlIb1diNE9JVGI1VEtt?=
- =?utf-8?B?ODMvT0szWDdaZk1hNXJxQkpQb1ZnMFM1bHR0SW9HeGRUS0I2QkxlUjJVWFR5?=
- =?utf-8?B?bW1BQ0oydnhtb0dhRjcyemdUelVDa0tUUXBXTE9PWERid3hzSUZUZW9xN1Zt?=
- =?utf-8?B?b1NOZngzY3E5d09VK0dMa213YjI5QXZ6VjRlVVdnNDNCRlZYYnZpeVNGMzJY?=
- =?utf-8?B?MFZSS2ZRR0UzNzEyaVVqa1R6aGx5TG54TG1vSFk3NXZnNno5NmUxUUtxamxU?=
- =?utf-8?B?WGZHOGNheTRTVGY1bWg0dDh0ekk3WEZKMkhqUWtEc2YvVTBqUW0xZjV2Q2la?=
- =?utf-8?B?cTQzKzFYWERHcmNZaWk3M0E4ZjYrRy9iejI4bk1neFFQNHRTSDZiRkpXK0xn?=
- =?utf-8?B?VXdMSDUvcnVxaHZqV1pJNEJRNVE2Q2hxeW40dlY4NUU4SktybVRtbHlJVndJ?=
- =?utf-8?B?VDFtdC9nOFloL29ISGtSTUN6cHJHamxndEQrOCtkTWEycFpPWGw3VlFJWkU2?=
- =?utf-8?B?SFNKVWJ2RDVQN0tKd1dXOGk1anJFbEpLTTgzcE1wN2RFdVZrdVpmOERoRkJG?=
- =?utf-8?B?U0hhNGNLTWFDSW1NMXh2ZEt3VXphNEFnaU5BWTBCem5tZUVNcXpwSkpxamlI?=
- =?utf-8?B?QlV6UWFsa2ZYWU1qbE9rTjRTMEFLQVdKZEZ6TnFTTmFBZThGZ2pKZlRyK1h5?=
- =?utf-8?B?OTlBcThITmdLSk8rWDRDZGp6eGZOVG9sWEQvQVhkRHdnMm1NQ3RoV1hzQTZr?=
- =?utf-8?B?bWswVlZ4WUFrR1d2OTFEaGdRSWhicG05VW1yMFVmSlFveUNCUjh5dk9ob0JP?=
- =?utf-8?B?a29xRTFjOVF4eG9CYTRNakFWakhXeC9RUGNZS2djTFgvSXdGMEpQUkpxRmM2?=
- =?utf-8?B?eFZOUGtuNWJGUUdJZmluc01kRWdTRlN6S0MxVjhsMTVWUW51TWpTRk9OaUZM?=
- =?utf-8?B?SWZZRGFVU2w2amkwOEt2eUlrNTRIRmdPMC9HcjVPMjZlYVBwOEhrQ2dwQndj?=
- =?utf-8?B?Z2hIWXdyYS9NRUhzWm5OR3ZjUm82STRRYmVGek5zY25lY0FBTUZhb0VsbktK?=
- =?utf-8?B?UldiVTJ5Q3JDbmJGVERZK3ZmKzQ5K2pBc3QxT1Q3OEZKZ3czbWRieWtETitF?=
- =?utf-8?B?Y1p1T3l4a2p6K2JOQkZGQnZiS0Vrc01CMzd0RDNDWS9sUDR0NE1xdHJuT0pG?=
- =?utf-8?B?Z09JWFpuMDh0NFVQdVF0bG1hWDY0TnJpZW9QbVVBK3NXbmg5elBkYlRPV0tU?=
- =?utf-8?B?cTBUWGRlZjR6TFRyVHBFaFNYdkFocVhXeEpNRDQ5MkcxTWVtd1BQZ0w0RDFB?=
- =?utf-8?B?dFFQRk5xRVprTnp6MVg4aE1xR082cXFJclhCT1FZZGQ5TTg4MVNJZTJMSEd5?=
- =?utf-8?B?MlBSdzEwTEk3dkhZb0hvY0l0ZVBqeEdKYnlWK2RvTXVsU1REanovOThoUGk3?=
- =?utf-8?B?UzEyUDBVbm1FclpGVGExREZMRVFqemFnN0owVFEvNHlmSktZWVcvT1FsUjRv?=
- =?utf-8?B?TWxNNTVXdWo3UkQwN2t1T3RCazhPeGRQY1FEbHlIbnBkQlNGVGVCeDRheG1s?=
- =?utf-8?B?cmhFZ1g5cHloK2grb2RwbW5jMm5GZlJ3NjhwYjZQdlNPczJBTUN1TlR3djg4?=
- =?utf-8?B?WmFCbjBmelNhOGdoTVRtUTFVNGtHZitqVXlEUm1FQU9ZR3hNTjBwM3BIMXVo?=
- =?utf-8?Q?BjxncbMlJAPEUDCQzvmt5trpv?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a817cad-0040-47e9-5b34-08de101ca9e4
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 21:07:23.5610
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y07sPNu5SQo64qOQQtbO6ZPpfy6zVh9sKlMZnvid2WmyadWD+EVbUOhnq8diTYNi8e42tfgw6r/xB6pala3hBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8105
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9a049bb96503a3kunm42a8e83d59a061
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ0IdGVZMH0tOHRofTU8dTklWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=CnpRpl9fNYikwvmxsHLj6ua6I/hqLLJUEXpU65WZNnJXSmaY1m+U34y46qRJGQ70Q1gLgEoBvzXM0TIzbC87gqufOgVXsUKKFNkPTIgXY/rgJiVGBUUNOlVVZI5OA8Wb2LGqTrUXGoq1WjL9espkniEknj0d7TixNjz4vUioOP4=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=h2UBCcvP5reAyJrbhsaM6gHlBuq8fElDbwtCQt0bfGo=;
+	h=date:mime-version:subject:message-id:from;
 
-i.MX7ULP pinctrl don't support bias-pull-up property. So remove it to fix
-below CHECK_DTBS warnings:
-  arch/arm/boot/dts/nxp/imx/imx7ulp-evk.dtb: pinctrl@40ac0000 (fsl,imx7ulp-iomuxc1): lpuart4grp: 'bias-pull-up' does not match any of the regexes: '^pinctrl-[0-9]+$'
+PATCH 1 is to ensure the last bridge declares OP_EDID or OP_MODES or both.
+PATCH 2 is a small format optimization for struct analogid_dp_device.
+PATCH 3 is to perform mode setting in &drm_bridge_funcs.atomic_enable.
+PATCH 4 is to add a new parameter to store the point of next bridge.
+PATCH 5 is to make legacy bridge driver more universal.
+PATCH 6-11 are preparations for apply drm_bridge_connector helper.
+PATCH 12 is to apply the drm_bridge_connector helper.
+PATCH 13-15 are to move the panel/bridge parsing to the Analogix side.
+PATCH 16 is to attach the next bridge on Analogix side uniformly.
+PATCH 17-18 are to apply the panel_bridge helper.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+The following reviewed commits, which to make codes more concise, are
+rebased to the front of this patch series:
+
+https://lore.kernel.org/all/20250911112756.4008435-1-damon.ding@rock-chips.com/
+https://lore.kernel.org/all/20250928104607.4007586-1-damon.ding@rock-chips.com/
+
+Damon Ding (18):
+  drm/display: bridge_connector: Ensure last bridge determines
+    EDID/modes detection capabilities
+  drm/bridge: analogix_dp: Formalize the struct analogix_dp_device
+  drm/bridge: analogix_dp: Move &drm_bridge_funcs.mode_set to
+    &drm_bridge_funcs.atomic_enable
+  drm/bridge: analogix_dp: Add &analogix_dp_plat_data.next_bridge
+  drm/bridge: Move legacy bridge driver out of imx directory for
+    multi-platform use
+  drm/exynos: exynos_dp: Remove &exynos_dp_device.ptn_bridge
+  drm/exynos: exynos_dp: Remove unused &exynos_dp_device.connector
+  drm/exynos: exynos_dp: Apply of-display-mode-bridge to parse the
+    display-timings node
+  drm/bridge: analogix_dp: Remove redundant
+    &analogix_dp_plat_data.skip_connector
+  drm/bridge: analogix_dp: Move the color format check to
+    .atomic_check() for Rockchip platforms
+  drm/bridge: analogix_dp: Remove unused
+    &analogix_dp_plat_data.get_modes()
+  drm/bridge: analogix_dp: Apply drm_bridge_connector helper
+  drm/bridge: analogix_dp: Add new API analogix_dp_finish_probe()
+  drm/rockchip: analogix_dp: Apply analogix_dp_finish_probe()
+  drm/exynos: exynos_dp: Apply analogix_dp_finish_probe()
+  drm/bridge: analogix_dp: Attach the next bridge in
+    analogix_dp_bridge_attach()
+  drm/bridge: analogix_dp: Remove bridge disabing and panel unpreparing
+    in analogix_dp_unbind()
+  drm/bridge: analogix_dp: Apply panel_bridge helper
+
+ drivers/gpu/drm/bridge/Kconfig                |  10 +
+ drivers/gpu/drm/bridge/Makefile               |   1 +
+ drivers/gpu/drm/bridge/analogix/Kconfig       |   1 +
+ .../drm/bridge/analogix/analogix_dp_core.c    | 395 +++++++++---------
+ .../drm/bridge/analogix/analogix_dp_core.h    |   5 +-
+ drivers/gpu/drm/bridge/imx/Kconfig            |  10 -
+ drivers/gpu/drm/bridge/imx/Makefile           |   1 -
+ .../gpu/drm/bridge/imx/imx-legacy-bridge.c    |  91 ----
+ .../gpu/drm/bridge/of-display-mode-bridge.c   |  93 +++++
+ .../gpu/drm/display/drm_bridge_connector.c    |  16 +-
+ drivers/gpu/drm/exynos/Kconfig                |   2 +
+ drivers/gpu/drm/exynos/exynos_dp.c            | 110 ++---
+ drivers/gpu/drm/imx/ipuv3/Kconfig             |   4 +-
+ drivers/gpu/drm/imx/ipuv3/imx-ldb.c           |   6 +-
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c  |   5 +-
+ drivers/gpu/drm/rockchip/Kconfig              |   1 +
+ .../gpu/drm/rockchip/analogix_dp-rockchip.c   |  67 +--
+ include/drm/bridge/analogix_dp.h              |   8 +-
+ include/drm/bridge/imx.h                      |  17 -
+ include/drm/bridge/of-display-mode-bridge.h   |  17 +
+ 20 files changed, 391 insertions(+), 469 deletions(-)
+ delete mode 100644 drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c
+ create mode 100644 drivers/gpu/drm/bridge/of-display-mode-bridge.c
+ delete mode 100644 include/drm/bridge/imx.h
+ create mode 100644 include/drm/bridge/of-display-mode-bridge.h
+
 ---
- arch/arm/boot/dts/nxp/imx/imx7ulp-evk.dts | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7ulp-evk.dts b/arch/arm/boot/dts/nxp/imx/imx7ulp-evk.dts
-index eff51e113db4f947b7532e2e1fca538da6d74f6c..88d7dc005fa0ea1d91fa561c0c3e4963c1459481 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7ulp-evk.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx7ulp-evk.dts
-@@ -92,7 +92,6 @@ pinctrl_lpuart4: lpuart4grp {
- 			IMX7ULP_PAD_PTC3__LPUART4_RX	0x3
- 			IMX7ULP_PAD_PTC2__LPUART4_TX	0x3
- 		>;
--		bias-pull-up;
- 	};
- 
- 	pinctrl_pwm0: pwm0grp {
+Changes in v2:
+- Update Exynos DP driver synchronously.
+- Move the panel/bridge parsing to the Analogix side.
+
+Changes in v3:
+- Rebase for the existing devm_drm_bridge_alloc() applying commit.
+- Fix the typographical error of panel/bridge check in exynos_dp_bind().
+- Squash all commits related to skip_connector deletion in both Exynos and
+  Analogix code into one.
+- Apply panel_bridge helper to make the codes more concise.
+- Fix the handing of bridge in analogix_dp_bridge_get_modes().
+- Remove unnecessary parameter struct drm_connector* for callback
+  &analogix_dp_plat_data.attach().
+- In order to decouple the connector driver and the bridge driver, move
+  the bridge connector initilization to the Rockchip and Exynos sides.
+
+Changes in v4:
+- Rebase for the applied &drm_bridge_funcs.detect() modification commit.
+- Rename analogix_dp_find_panel_or_bridge() to analogix_dp_finish_probe().
+- Drop the drmm_encoder_init() modification commit.
+- Rename the &analogix_dp_plat_data.bridge to
+  &analogix_dp_plat_data.next_bridge.
+
+Changes in v5:
+- Add legacy bridge to parse the display-timings node under the dp node
+  for Exynos side.
+- Move color format check to &drm_connector_helper_funcs.atomic_check()
+  in order to get rid of &analogix_dp_plat_data.get_modes().
+- Remove unused callback &analogix_dp_plat_data.get_modes().
+- Distinguish the &drm_bridge->ops of Analogix bridge based on whether
+  the downstream device is a panel, a bridge or neither.
+- Select DRM_DISPLAY_DP_AUX_BUS for DRM_ANALOGIX_DP, and remove it for
+  ROCKCHIP_ANALOGIX_DP.
+- Apply rockchip_dp_attach() to support the next bridge attachment for
+  the Rockchip side.
+- Move next_bridge attachment from Analogix side to Rockchip/Exynos sides.
+
+Changes in v6:
+- Move legacy bridge driver out of imx directory for multi-platform use.
+- Apply DRM legacy bridge to parse display timings intead of implementing
+  the same codes only for Exynos DP.
+- Ensure last bridge determines EDID/modes detection capabilities in DRM
+  bridge_connector driver.
+- Remove unnecessary drm_bridge_get_modes() in
+  analogix_dp_bridge_get_modes().
+- Simplify analogix_dp_bridge_edid_read().
+- If the next is a bridge, set DRM_BRIDGE_OP_DETECT and return
+  connector_status_connected in analogix_dp_bridge_detect().
+- Set flag DRM_BRIDGE_ATTACH_NO_CONNECTOR for bridge attachment while
+  binding. Meanwhile, make DRM_BRIDGE_ATTACH_NO_CONNECTOR unsuppported
+  in analogix_dp_bridge_attach().
+- Move the next bridge attachment to the Analogix side rather than
+  scattered on Rockchip and Exynos sides.
+- Remove the unnecessary analogix_dp_bridge_get_modes().
+- Squash [PATCH v5 15/17] into [PATCH v5 17/17].
+- Fix the &drm_bridge->ops to DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT.
+
+Changes in v7:
+- As Luca suggested, simplify the code and related comment for bridge_connector
+  modifications. Additionally, move the commit related to bridge_connector to
+  the top of this patch series.
+- Rename legacy-bridge driver to of-display-mode-bridge driver.
+- Remove unnecessary API drm_bridge_is_legacy() and apply a temporary flag
+  &exynos_dp_device.has_of_bridge instead, which will be removed finally.
+- Remove exynos_dp_legacy_bridge_init() and inline API
+  devm_drm_of_display_mode_bridge().
 
 -- 
 2.34.1
