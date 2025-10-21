@@ -1,218 +1,124 @@
-Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D845F2D5C97
-	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 10:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0347DA66
+	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 10:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761041237; cv=none; b=n6k6HTFJKK37jFpWfIacGgweHBbI0ZxrTpSj39cnzZujqd5f79rnne1F466YfFGfJrp9BRYsCQEFvd8rjWslwluaRSSkmTbmMcmL6J1xbpvyDPgVguzoTKhSpBI8vGCgvItwldLGipl/EyQsyWTD4sGZecsGi3VH/0ITjUPRiHQ=
+	t=1761041643; cv=none; b=O5Dk4Hcx9uInunaowEBmX2pupgKKpqrt/dSwNTlygCls8Zv0eGoKzxDz8uxI3OZDL5kxSs1ac30XZ/F+GJzilykvjnmqV7xEGurZ7pnZNipuN89kBQbTGNUYKRAwLh4+PLbIrA1vwwmciu7tPTm/QU05cwQ5xnc6pLawdYlzT50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761041237; c=relaxed/simple;
-	bh=gLPZsHaAMIsi+aNMg+ASOcMcbOHSebKSOY9bm4cCz4I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=roZeHrhxGOzOvtnIvX6ADDwylb94wkqt/UCJHYAjgxpX3f2jOnKb3Tc50G8AybzCsdt3f7TuOC9/3zGi9ZRj/KszDzGQqFGh+MoCWmZ913GW8BjQJ+KWX7F9GfjPoIvk45Zrm69staoiNJlBu5bNLYAh+s0k5NTEhv669UzbReE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=fide4FWO; arc=none smtp.client-ip=46.19.12.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="fide4FWO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=z19yKbO3LCKIzQcz2PHHAI/22TUE4jSnaLNrPGkt5ME=; b=fide4FWO8OBpK3HmHLqFwieuP+
-	F5boLy0JKRmGFRUd7DrV9XMBjKFKErS0xtQ46xaUxjaplqFJxnHsqZfafGZ+uWUTo26+4peQR5r+A
-	Ly+5W/GZx9u+Ta6fdSQz/dyDiS1lXPUdHyqs4bRvcOpOaAv/oC5XPh/vkmkwz402GOamO7ji3yFdz
-	FMzaNUJeyBsEN4mPzc4PBxZdtflMIlIVoSNX8XOq0+in+bJMipZrGnzrfyfdh2OVsV3LQqrncG56M
-	w1wywUU+faxTQvsuZkFmjYHYVsRJgojlb4pJDntsIWFl95xKkXY0wu9rvdArgaXyXSqTOkvDR52+C
-	04I7BzVg==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:48078 helo=[192.168.69.116])
-	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1vB9Gu-00000004MzS-34CR;
-	Tue, 21 Oct 2025 12:07:14 +0200
-Message-ID: <4979a32f-f938-4956-8293-eca5667bf1c4@norik.com>
-Date: Tue, 21 Oct 2025 12:07:13 +0200
+	s=arc-20240116; t=1761041643; c=relaxed/simple;
+	bh=dsc5Kj6LTTA3wr4ulCsW6/BDuF9Of8ATjNvMm2GI0ss=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QiyXkMavE73b/1qKbF8Rnh36LiVq5zPlvJy9u9W9kixA2WWkZ69PE9qJkApzgRNsohMkaOlwmazgxo8p2e4z+A48gtJFJ7X1hINcA2hr8M+Ox/tphmegvof4pJ//jAxJ0twycQwR1O1L17eh+MQyTlB9YttW02IlIEiTTbdIJBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vB9NJ-0002U2-Ke; Tue, 21 Oct 2025 12:13:53 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vB9NJ-004hl8-0p;
+	Tue, 21 Oct 2025 12:13:53 +0200
+Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id B872848C042;
+	Tue, 21 Oct 2025 10:13:52 +0000 (UTC)
+Date: Tue, 21 Oct 2025 12:13:52 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Primoz Fiser <primoz.fiser@norik.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	upstream@lists.phytec.de, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH 2/2] arm64: dts: freescale: Add phyBOARD-Segin-i.MX91
+ support
+Message-ID: <20251021-elite-crab-of-spirit-744926-mkl@pengutronix.de>
+References: <20251021093704.690410-1-primoz.fiser@norik.com>
+ <20251021093704.690410-2-primoz.fiser@norik.com>
+ <20251021-bright-brave-dolphin-906891-mkl@pengutronix.de>
+ <4979a32f-f938-4956-8293-eca5667bf1c4@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="633ncal4gpk4csrw"
+Content-Disposition: inline
+In-Reply-To: <4979a32f-f938-4956-8293-eca5667bf1c4@norik.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
+
+
+--633ncal4gpk4csrw
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 Subject: Re: [PATCH 2/2] arm64: dts: freescale: Add phyBOARD-Segin-i.MX91
  support
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- upstream@lists.phytec.de, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-References: <20251021093704.690410-1-primoz.fiser@norik.com>
- <20251021093704.690410-2-primoz.fiser@norik.com>
- <20251021-bright-brave-dolphin-906891-mkl@pengutronix.de>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-Autocrypt: addr=primoz.fiser@norik.com; keydata=
- xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
- JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
- ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
- gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
- jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
- 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
- TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
- AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
-Organization: Norik systems d.o.o.
-In-Reply-To: <20251021-bright-brave-dolphin-906891-mkl@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cp2.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+MIME-Version: 1.0
 
-Hi Marc,
+On 21.10.2025 12:07:13, Primoz Fiser wrote:
+> >> +	flexcan1_tc: can-phy0 {
+> >> +		compatible =3D "ti,tcan1043";
+> >> +		#phy-cells =3D <0>;
+> >> +		max-bitrate =3D <1000000>;
+> >> +		pinctrl-names =3D "default";
+> >> +		pinctrl-0 =3D <&pinctrl_flexcan1_tc>;
+> >> +		enable-gpios =3D <&gpio4 16 GPIO_ACTIVE_HIGH>;
+> >> +	};
+> >=20
+> > I think the tcan1043 is a CAN-FD transceiver. According to the datasheet
+> > it support 2 MBit/s and 5 MBit/s in the "G" variant. However due to the
+> > board layout, etc, the actual bit rate might still be limited to 1
+> > MBit/s. Ask the HW engineers if in doubt.
+>=20
+> phyBOARD-Segin actually uses a TI SN65HVD234D CAN transceiver chip which
+> supports up to 1MBps. See [1].
+>=20
+> However since there is no direct support for SN65HVD234D we model the
+> enable signal with the generic PHY driver and use "ti,tcan1043" jsut as
+> compatible. Suggested by Frank and you in [2].
 
-On 21. 10. 25 11:50, Marc Kleine-Budde wrote:
-> On 21.10.2025 11:37:04, Primoz Fiser wrote:
->> Add initial support for the PHYTEC phyBOARD-Segin-i.MX91 board [1] based
->> on the PHYTEC phyCORE-i.MX91 SoM (System-on-Module) [2].
->>
->> Supported features:
->> * Audio
->> * CAN
->> * eMMC
->> * Ethernet
->> * I2C
->> * RTC
->> * SD-Card
->> * UART
->> * USB
->>
->> For more details see the product pages for the development board and the
->> SoM:
->>
->> [1] https://www.phytec.eu/en/produkte/development-kits/phyboard-segin-kit/
->> [2] https://www.phytec.eu/en/produkte/system-on-modules/phycore-imx-91-93/
->>
->> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
->> ---
->>  arch/arm64/boot/dts/freescale/Makefile        |   1 +
->>  .../dts/freescale/imx91-phyboard-segin.dts    | 344 ++++++++++++++++++
->>  .../boot/dts/freescale/imx91-phycore-som.dtsi | 304 ++++++++++++++++
->>  3 files changed, 649 insertions(+)
->>  create mode 100644 arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dts
->>  create mode 100644 arch/arm64/boot/dts/freescale/imx91-phycore-som.dtsi
->>
->> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
->> index 525ef180481d..34a81d34de39 100644
->> --- a/arch/arm64/boot/dts/freescale/Makefile
->> +++ b/arch/arm64/boot/dts/freescale/Makefile
->> @@ -344,6 +344,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqps-mb-smarc-2.dtb
->>  dtb-$(CONFIG_ARCH_MXC) += imx8ulp-9x9-evk.dtb
->>  dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb
->>  dtb-$(CONFIG_ARCH_MXC) += imx91-11x11-evk.dtb
->> +dtb-$(CONFIG_ARCH_MXC) += imx91-phyboard-segin.dtb
->>  dtb-$(CONFIG_ARCH_MXC) += imx91-tqma9131-mba91xxca.dtb
->>  dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb.dtb
->>  
->> diff --git a/arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dts b/arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dts
->> new file mode 100644
->> index 000000000000..bb631439f9cf
->> --- /dev/null
->> +++ b/arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dts
->> @@ -0,0 +1,344 @@
->> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->> +/*
->> + * Copyright (C) 2025 PHYTEC Messtechnik GmbH
->> + * Author: Christoph Stoidner <c.stoidner@phytec.de>
->> + *
->> + * Product homepage:
->> + * phyBOARD-Segin carrier board is reused for the i.MX91 design.
->> + * https://www.phytec.eu/en/produkte/single-board-computer/phyboard-segin-imx6ul/
->> + */
->> +/dts-v1/;
->> +
->> +#include "imx91-phycore-som.dtsi"
->> +
->> +/{
->> +	model = "PHYTEC phyBOARD-Segin-i.MX91";
->> +	compatible = "phytec,imx91-phyboard-segin", "phytec,imx91-phycore-som",
->> +		     "fsl,imx91";
->> +
->> +	aliases {
->> +		ethernet1 = &eqos;
->> +		gpio0 = &gpio1;
->> +		gpio1 = &gpio2;
->> +		gpio2 = &gpio3;
->> +		gpio3 = &gpio4;
->> +		i2c0 = &lpi2c1;
->> +		i2c1 = &lpi2c2;
->> +		mmc0 = &usdhc1;
->> +		mmc1 = &usdhc2;
->> +		rtc0 = &i2c_rtc;
->> +		rtc1 = &bbnsm_rtc;
->> +		serial0 = &lpuart1;
->> +	};
->> +
->> +	chosen {
->> +		stdout-path = &lpuart1;
->> +	};
->> +
->> +	flexcan1_tc: can-phy0 {
->> +		compatible = "ti,tcan1043";
->> +		#phy-cells = <0>;
->> +		max-bitrate = <1000000>;
->> +		pinctrl-names = "default";
->> +		pinctrl-0 = <&pinctrl_flexcan1_tc>;
->> +		enable-gpios = <&gpio4 16 GPIO_ACTIVE_HIGH>;
->> +	};
-> 
-> I think the tcan1043 is a CAN-FD transceiver. According to the datasheet
-> it support 2 MBit/s and 5 MBit/s in the "G" variant. However due to the
-> board layout, etc, the actual bit rate might still be limited to 1
-> MBit/s. Ask the HW engineers if in doubt.
+hmmm, okay - I suggest to add a comment that mentions the actual
+transceiver and that it's a 1 MBit/s CAN-CC transceiver.
 
-phyBOARD-Segin actually uses a TI SN65HVD234D CAN transceiver chip which
-supports up to 1MBps. See [1].
+regards,
+Marc
 
-However since there is no direct support for SN65HVD234D we model the
-enable signal with the generic PHY driver and use "ti,tcan1043" jsut as
-compatible. Suggested by Frank and you in [2].
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-[1]
-https://lore.kernel.org/all/20250415043311.3385835-12-primoz.fiser@norik.com/
+--633ncal4gpk4csrw
+Content-Type: application/pgp-signature; name="signature.asc"
 
-[2]
-https://lore.kernel.org/all/1571414e-5e7d-4c9e-b69d-11a6fdf454e2@norik.com/
+-----BEGIN PGP SIGNATURE-----
 
-BR,
-Primoz
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmj3XNwACgkQDHRl3/mQ
+kZy5jAgAs7oItdqTyJWADrxD5vFJF9S4BVEJ17u41fKIp+iMmT0qPT7dOZ20oVH6
+UjhrIJmT1goI0Skggzr0Fs4vnhLPA7bsLqMqZM6ZnbawW2+g4iKd13dvR3hHqRSV
+c2dE/r6/U+DjaPs+Ijz7zR7FVHd5jyKI83LsDSYBdqNC7QM3RfFYYPTVbURfdhUX
+1Es2zmH18iWgSBG3A+Url9o1sWuWQVFNDi6ogNFb8+94kk8YJLnSNyn18Us5p08j
+pRgH/U8mlYfziMPSjzvT4hFZNnK/g+Rvdp/VbTjtvY6T94CoQUtvAKod+CHkbcjd
+ldrScN+ZDNKPIH6DM0xe4PFTFD5l2Q==
+=CrZZ
+-----END PGP SIGNATURE-----
 
-> 
-> regards,
-> Marc
-> 
-
--- 
-Primoz Fiser
-phone: +386-41-390-545
-email: primoz.fiser@norik.com
---
-Norik systems d.o.o.
-Your embedded software partner
-Slovenia, EU
-phone: +386-41-540-545
-email: info@norik.com
-
+--633ncal4gpk4csrw--
