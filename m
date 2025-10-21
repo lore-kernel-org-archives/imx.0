@@ -1,135 +1,255 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-m49220.qiye.163.com (mail-m49220.qiye.163.com [45.254.49.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EEA24678F
-	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 07:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C68B269AEE
+	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 07:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761031616; cv=none; b=dtYH3WXGLSQfG5+FOzHNTsY7/yW78aq6+2/ngTM5TeueHl8fkpDzpbjp+vgloYhHCbleqktYhzuelb728SiJzJaMXZAi/89X4PQuMlj2O8RCVK2yT8mvrEd2q4D/BlBP0SxCUc6DlV09ggSt3G5iH2aM5xCGmHpnO6wJq3mT904=
+	t=1761031999; cv=none; b=OcFYSgbocLXalOXxgWDRtd8F+QjbTumxzljEm+SF6MxNQVxn3y/Kl9ejTLzWx2khb1o9wcnzkvaY/Sw6fcwFpxKLF4g8aLc5094eRbspeexcBbM/SKy7mVKDXx+RwJ3g6zTE9xpzHJ0LeedTZVRAbgQAat66cSulNpJ1tct7emA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761031616; c=relaxed/simple;
-	bh=8fNE3NX1DUD2apr4HvgC0SPEdbANrnlUs0eoTh5oeGk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SxwLSsd0nbNS0d1FmaDlvaXCsg5xRpUMZzDFmRnVFQDIlZ1QWq+BmM/Xudn0OCBrZk2AtQkJsjg+loYw7ec0dQp83QPTCZkSpEwDXKw+L+gvhU1K3MzTLbyvReNFX8WN7qu8sa926QjB0JeKwCplDbmyFgC3OMToUELxnFc+sLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UcsjzlrZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1761031999; c=relaxed/simple;
+	bh=1QN0bEYipOkUKeklfF3558x99x71eghhFYDfUmZioqY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=somHKxsrIhmJwRO4u8EqlEu0hNeF36rZx7vyE/B1/t6hzkEDBg0Y7pnlEvwaDW4KFU/OqKqpsXoxB7GuhwEfsfsdsCy9P3kOZEVKe1c02e9lbbfY129mDWceA3LNapRrpKUb2sarIfa0e09tgsb2E2pWjw+vsJ/HQMa94oCrmO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=QIAutRYY; arc=none smtp.client-ip=45.254.49.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UcsjzlrZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761031613;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EJDvXzMxMi1pDcKxo2a9jJgMq2W5icRpzq+zghF2eEk=;
-	b=UcsjzlrZWP3ufrKMor2LAbQQw1a4afoFb6en2t/aSd8r++azVRGPZkjOZeXijV2w1NIBQN
-	ZY1wb5DaqE/gxSwIasDG5bqIUvXLAtSFeQmbaORA5RGXxCaA0escpCpTdHCA8HuGOQzcWO
-	GxhCZHLtQHdp9Qhr/DGnjQeO0AjhnJ4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-31-HYcapH6kPuaRQBclbTg_7A-1; Tue, 21 Oct 2025 03:26:52 -0400
-X-MC-Unique: HYcapH6kPuaRQBclbTg_7A-1
-X-Mimecast-MFC-AGG-ID: HYcapH6kPuaRQBclbTg_7A_1761031611
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-47113dfdd20so16385505e9.1
-        for <imx@lists.linux.dev>; Tue, 21 Oct 2025 00:26:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761031611; x=1761636411;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EJDvXzMxMi1pDcKxo2a9jJgMq2W5icRpzq+zghF2eEk=;
-        b=kAo3G+4qcxKEceFlfOgwu7Q11aAm8CHSMDtjVq7n8oOMqKptppeiqhnJQgtXUP61YM
-         iLDIKa0wi7hcxD6VmwFTR0PyDbzhgBkkiFZYUWzquSDEvQN/bWv5b4Ry2Dz7VwdP6S/z
-         UT3LdjV69oQRwfCLWH9TKDJhZkMKuv+rt+rmdtoij5oBzzUhFOH1NuBFiwS6KlBgw8Ls
-         XIrn9JHuH8fdkdXbQVbaRQmEcAgrv87xQPp4mLQdfIB5i5ZetZtJZh0n82M20vBVmPSf
-         4jbIe2l0k/qLP3DYJz/nxTTuOwqEmRKeojqnVGZ2fmSZeuR27IEycbnSbxuZ/xGHi3wB
-         JANg==
-X-Gm-Message-State: AOJu0YwXsvtYhYLnrXWc56cdaQlkhqzJmFJjb8G7+Ti13PB3zIBO464m
-	SOHyMbGSYq10AGZ9QEhF2WnpdLXD0uwx9TV8DIE3jyBq5WesW7qDs620tbuTOyO1BdY5fH4Qo+N
-	iQauFqicX3k/0TnL2+UGfO61CGRcUQFBqPJtT5yh/uZuStdoZWkxI9A==
-X-Gm-Gg: ASbGncte8zVASC/Pi1JzV1vyHliEuC4MJwmM2VCEmpyDI/80NlZaiXihRBFrEoTmqH7
-	F6IFFm+evUfSlD8dpQSVHKJWcIM+3UihTBVo7Ll3au+kzDul25ukQXoAc0oudPhNVeuRuSy//bj
-	WtySMY+f7v9XFKQe0ZONJaEhDJymkH+HQiSXsoo73B6yf/1jyik4z2Y7i+zFZ6XqasptGkUBBP2
-	1nu4FfKAphidmioDay5qoha36Kjzrlaz7EeZ1lMBV3dreavADRrutUyq8bPX18E7e9PU399dQF3
-	gbcses+p/D+rnAUrsW2VDIwohWNOGw/f8hTN7tbZJKLghpEZbKAQ1uDlqFmKGzd9aJ8JWGiS/Wi
-	tcobLVG9MbCzpVDDsTpsCwcBGdThAaoxFP7C2EB7OyvkH9ns=
-X-Received: by 2002:a05:600c:540c:b0:471:12be:743 with SMTP id 5b1f17b1804b1-471178a3f93mr118161475e9.15.1761031610902;
-        Tue, 21 Oct 2025 00:26:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFkWSWmUORa+H15T+v49lrEDk0detT0U6yn7DgHaIoUivTMeJ3869JPfks9PXOdp64Mjfcqeg==
-X-Received: by 2002:a05:600c:540c:b0:471:12be:743 with SMTP id 5b1f17b1804b1-471178a3f93mr118161325e9.15.1761031610532;
-        Tue, 21 Oct 2025 00:26:50 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4715257d916sm176481805e9.4.2025.10.21.00.26.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 00:26:49 -0700 (PDT)
-Message-ID: <11ffb7d0-4e52-496e-84c7-0d93bf03e4cf@redhat.com>
-Date: Tue, 21 Oct 2025 09:26:48 +0200
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="QIAutRYY"
+Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 26979c619;
+	Tue, 21 Oct 2025 10:57:12 +0800 (GMT+08:00)
+From: Damon Ding <damon.ding@rock-chips.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org
+Cc: Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	krzk@kernel.org,
+	alim.akhtar@samsung.com,
+	jingoohan1@gmail.com,
+	p.zabel@pengutronix.de,
+	hjc@rock-chips.com,
+	heiko@sntech.de,
+	andy.yan@rock-chips.com,
+	dmitry.baryshkov@oss.qualcomm.com,
+	dianders@chromium.org,
+	m.szyprowski@samsung.com,
+	luca.ceresoli@bootlin.com,
+	jani.nikula@intel.com,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Damon Ding <damon.ding@rock-chips.com>
+Subject: [PATCH v7 08/18] drm/exynos: exynos_dp: Apply of-display-mode-bridge to parse the display-timings node
+Date: Tue, 21 Oct 2025 10:56:54 +0800
+Message-Id: <20251021025701.1524229-1-damon.ding@rock-chips.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251021023130.1523707-1-damon.ding@rock-chips.com>
+References: <20251021023130.1523707-1-damon.ding@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 6/8] net: enetc: add basic support for the ENETC
- with pseudo MAC for i.MX94
-To: Wei Fang <wei.fang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
- xiaoning.wang@nxp.com, Frank.Li@nxp.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- richardcochran@gmail.com
-Cc: imx@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20251016102020.3218579-1-wei.fang@nxp.com>
- <20251016102020.3218579-7-wei.fang@nxp.com>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20251016102020.3218579-7-wei.fang@nxp.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6lALYjzw6WbfSK8HzZoEIC2X5BDQuUz4z9B1vKXRadc_1761031611
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9a04b3047603a3kunmcdd3bf8c5a402a
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQkgfTVYfQh8aGkNDTUhNQ01WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEtNQk
+	tVSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=QIAutRYYHTvhVTgjC3uYoHP/QIXWTsU0vgvlk0wvkLxpZC2ae06FXyl0bVbZmtEwCHWn9pTwidsTlNHoyVBIdYJJxDBQaQO9YjizNS38xlFz8usiUYTSiMxcnhqVxn5ZTKipC+/rniAIq22E2N9GDu9hCcajGXHKC7FJnSLe1Y4=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=DLgwRoSZkiEzvN/zcPKGoFOzo9iVfJiXb9YkvPXxjaY=;
+	h=date:mime-version:subject:message-id:from;
 
-On 10/16/25 12:20 PM, Wei Fang wrote:
-> @@ -635,28 +649,10 @@ static void enetc4_pl_mac_config(struct phylink_config *config, unsigned int mod
->  
->  static void enetc4_set_port_speed(struct enetc_ndev_priv *priv, int speed)
->  {
-> -	u32 old_speed = priv->speed;
-> -	u32 val;
-> -
-> -	if (speed == old_speed)
-> -		return;
-> -
-> -	val = enetc_port_rd(&priv->si->hw, ENETC4_PCR);
-> -	val &= ~PCR_PSPEED;
-> -
-> -	switch (speed) {
-> -	case SPEED_100:
-> -	case SPEED_1000:
-> -	case SPEED_2500:
-> -	case SPEED_10000:
-> -		val |= (PCR_PSPEED & PCR_PSPEED_VAL(speed));
-> -		break;
-> -	case SPEED_10:
-> -	default:
-> -		val |= (PCR_PSPEED & PCR_PSPEED_VAL(SPEED_10));
-> -	}
-> +	u32 val = enetc_port_rd(&priv->si->hw, ENETC4_PCR);
->  
->  	priv->speed = speed;
-> +	val = u32_replace_bits(val, PCR_PSPEED_VAL(speed), PCR_PSPEED);
->  	enetc_port_wr(&priv->si->hw, ENETC4_PCR, val);
->  }
+If there is neither a panel nor a bridge, the display timing can be
+parsed from the display-timings node under the dp node.
 
-The above chunk looks unrelated from the rest of this patch. Perhaps
-worth moving to a separate patch in this series? Or add some comments
-explaining why it's needed.
+In order to get rid of &analogix_dp_plat_data.get_modes() and make
+the codes more consistent, apply DRM of-display-mode-bridge to parse
+display timings.
 
-Thanks,
+Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
 
-Paolo
+------
+
+Changes in v6:
+- Apply DRM legacy bridge to parse display timings instead of
+  implementing the same codes only for Exynos DP.
+
+Changes in v7:
+- Use temporary flag &exynos_dp_device.has_of_bridge, which will be
+  removed in the following patch, instead of applying API
+  drm_bridge_is_legacy().
+- Remove exynos_dp_legacy_bridge_init() and inline API
+  devm_drm_of_display_mode_bridge().
+---
+ drivers/gpu/drm/exynos/Kconfig     |  1 +
+ drivers/gpu/drm/exynos/exynos_dp.c | 66 ++++++++----------------------
+ 2 files changed, 17 insertions(+), 50 deletions(-)
+
+diff --git a/drivers/gpu/drm/exynos/Kconfig b/drivers/gpu/drm/exynos/Kconfig
+index 0d13828e7d9e..380d9a8ce259 100644
+--- a/drivers/gpu/drm/exynos/Kconfig
++++ b/drivers/gpu/drm/exynos/Kconfig
+@@ -72,6 +72,7 @@ config DRM_EXYNOS_DP
+ 	select DRM_ANALOGIX_DP
+ 	select DRM_DISPLAY_DP_HELPER
+ 	default DRM_EXYNOS
++	select DRM_OF_DISPLAY_MODE_BRIDGE
+ 	select DRM_PANEL
+ 	help
+ 	  This enables support for DP device.
+diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
+index e20513164032..ac16138a22fe 100644
+--- a/drivers/gpu/drm/exynos/exynos_dp.c
++++ b/drivers/gpu/drm/exynos/exynos_dp.c
+@@ -19,6 +19,7 @@
+ #include <video/videomode.h>
+ 
+ #include <drm/bridge/analogix_dp.h>
++#include <drm/bridge/of-display-mode-bridge.h>
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_bridge.h>
+ #include <drm/drm_crtc.h>
+@@ -38,9 +39,10 @@ struct exynos_dp_device {
+ 	struct drm_device          *drm_dev;
+ 	struct device              *dev;
+ 
+-	struct videomode           vm;
+ 	struct analogix_dp_device *adp;
+ 	struct analogix_dp_plat_data plat_data;
++
++	bool has_of_bridge;
+ };
+ 
+ static int exynos_dp_crtc_clock_enable(struct analogix_dp_plat_data *plat_data,
+@@ -67,44 +69,20 @@ static int exynos_dp_poweroff(struct analogix_dp_plat_data *plat_data)
+ 	return exynos_dp_crtc_clock_enable(plat_data, false);
+ }
+ 
+-static int exynos_dp_get_modes(struct analogix_dp_plat_data *plat_data,
+-			       struct drm_connector *connector)
+-{
+-	struct exynos_dp_device *dp = to_dp(plat_data);
+-	struct drm_display_mode *mode;
+-
+-	if (dp->plat_data.panel)
+-		return 0;
+-
+-	mode = drm_mode_create(connector->dev);
+-	if (!mode) {
+-		DRM_DEV_ERROR(dp->dev,
+-			      "failed to create a new display mode.\n");
+-		return 0;
+-	}
+-
+-	drm_display_mode_from_videomode(&dp->vm, mode);
+-	connector->display_info.width_mm = mode->width_mm;
+-	connector->display_info.height_mm = mode->height_mm;
+-
+-	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
+-	drm_mode_set_name(mode);
+-	drm_mode_probed_add(connector, mode);
+-
+-	return 1;
+-}
+-
+ static int exynos_dp_bridge_attach(struct analogix_dp_plat_data *plat_data,
+ 				   struct drm_bridge *bridge,
+ 				   struct drm_connector *connector)
+ {
+ 	struct exynos_dp_device *dp = to_dp(plat_data);
++	enum drm_bridge_attach_flags flags = 0;
+ 	int ret;
+ 
+ 	/* Pre-empt DP connector creation if there's a bridge */
+ 	if (plat_data->next_bridge) {
+-		ret = drm_bridge_attach(&dp->encoder, plat_data->next_bridge, bridge,
+-					0);
++		if (dp->has_of_bridge)
++			flags = DRM_BRIDGE_ATTACH_NO_CONNECTOR;
++
++		ret = drm_bridge_attach(&dp->encoder, plat_data->next_bridge, bridge, flags);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -129,19 +107,6 @@ static const struct drm_encoder_helper_funcs exynos_dp_encoder_helper_funcs = {
+ 	.disable = exynos_dp_nop,
+ };
+ 
+-static int exynos_dp_dt_parse_panel(struct exynos_dp_device *dp)
+-{
+-	int ret;
+-
+-	ret = of_get_videomode(dp->dev->of_node, &dp->vm, OF_USE_NATIVE_MODE);
+-	if (ret) {
+-		DRM_DEV_ERROR(dp->dev,
+-			      "failed: of_get_videomode() : %d\n", ret);
+-		return ret;
+-	}
+-	return 0;
+-}
+-
+ static int exynos_dp_bind(struct device *dev, struct device *master, void *data)
+ {
+ 	struct exynos_dp_device *dp = dev_get_drvdata(dev);
+@@ -151,12 +116,6 @@ static int exynos_dp_bind(struct device *dev, struct device *master, void *data)
+ 
+ 	dp->drm_dev = drm_dev;
+ 
+-	if (!dp->plat_data.panel && !dp->plat_data.next_bridge) {
+-		ret = exynos_dp_dt_parse_panel(dp);
+-		if (ret)
+-			return ret;
+-	}
+-
+ 	drm_simple_encoder_init(drm_dev, encoder, DRM_MODE_ENCODER_TMDS);
+ 
+ 	drm_encoder_helper_add(encoder, &exynos_dp_encoder_helper_funcs);
+@@ -223,6 +182,14 @@ static int exynos_dp_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ret = drm_of_find_panel_or_bridge(dev->of_node, 0, 0, &panel, &bridge);
++	if (ret == -ENODEV) {
++		dp->plat_data.next_bridge = devm_drm_of_display_mode_bridge(dp->dev,
++									dp->dev->of_node,
++									DRM_MODE_CONNECTOR_eDP);
++		ret = IS_ERR(dp->plat_data.next_bridge) ? PTR_ERR(dp->plat_data.next_bridge) : 0;
++		if (!ret)
++			dp->has_of_bridge = true;
++	}
+ 	if (ret)
+ 		return ret;
+ 
+@@ -233,7 +200,6 @@ static int exynos_dp_probe(struct platform_device *pdev)
+ 	dp->plat_data.power_on = exynos_dp_poweron;
+ 	dp->plat_data.power_off = exynos_dp_poweroff;
+ 	dp->plat_data.attach = exynos_dp_bridge_attach;
+-	dp->plat_data.get_modes = exynos_dp_get_modes;
+ 	dp->plat_data.skip_connector = !!bridge;
+ 
+ out:
+-- 
+2.34.1
 
