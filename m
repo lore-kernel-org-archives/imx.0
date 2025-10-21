@@ -1,75 +1,69 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011042.outbound.protection.outlook.com [52.101.70.42])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012063.outbound.protection.outlook.com [52.101.66.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960AE337BA8
-	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 15:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DC636B
+	for <imx@lists.linux.dev>; Tue, 21 Oct 2025 15:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761059458; cv=fail; b=fZijVOIbA6kH4lRGSw4yIt67HmmHpCjy2NpAyDmI6AbXRM/8e255VIXKHswMkIwrh3ITlTdi8lde+oX9HF4ro5dlLYS51/GZMIZGjgEoH41WGoXpj+6TKOHbgqXdO0JVkUKaARA0+6FXuqUoGXwYc0duRa0b3sqDW5lweJ6zTb0=
+	t=1761060024; cv=fail; b=vFHUid6KNwLeAc+v0TWA8X3EpNKyhHdTX1FBcHas7oJqiAtFEHuUoXZGUdkxu6e5wK7vfjd+DLOWq7XDcqQ81JADSthjiWuuN/mZCXMuHgn/1EXj/Zp5G2eP6DE4KV51PcNMzRnQiNj8tyNTSsOHmaVS+8XPf/YYwvCZiLyZkfQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761059458; c=relaxed/simple;
-	bh=GQQsfv57fDbLoUpBZnj3Pgw6HwvBT4nnuPQPPGZjibs=;
+	s=arc-20240116; t=1761060024; c=relaxed/simple;
+	bh=jhiRx3nje14MvBCGOsknp3COtXiv5UjVBxWK7npQSns=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Ho7B0rlFyvFXUNnFs2qtYkcMQUeeKFcIlxwwSDCD8sgnjD24Do9Rp8iMaAT/y0Fzsr8rOeWBYxKvNYbvO430j0W7yutnCjcpXaViCy/mfRGZ8h+AOe8pDesxWb+r2YUBKK2xWYBH+hG4LgwUv0hqTjdVRW917w4C6ibrUuBQNh8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WuMIrXbi reason="signature verification failed"; arc=fail smtp.client-ip=52.101.70.42
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RFEY9YMl3muho+/NS3LBWE+MEarEp8GfQnsfrvcJLzVdKdyHdth7HhuknJ9CfSr7hU1pG+/WMIJgGMkzMtYjoJot5tFLRZ1C6TEDbK3Jg/7C+V+IEj/B5bY1JsDl80G1puG6vosw8EbYEa8QlxUTjSw9v2Rv3XEkHCwWlWOfv4Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZP54ory7; arc=fail smtp.client-ip=52.101.66.63
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WuMIrXbi"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZP54ory7"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OyJpaI3JL0aqtEcMag4Vm9CXR2bvccuehELAldsOi/IQ8DHAgxanhgcJMLp2elxQlqHMbBSeOYWiD6Uyfm0v6l9zflUn501okWoxWWiyMbaksaXVdQDYkbMkX4QNot6Rh5bDHc8QptlRXAD6eofxKz5dJsjFs7mcbUQNJIaR43LIlk2oksQPjasSF6/NUKv+UVHmlBiNhCjO0+11EzzogjW2xWZH9F8YMMIAVaFQr3Fv6rXLFvZGnE1SJtAzEmVlDcrfK+vQWvU7laYO6CFlYoTE2Z/OcLVLofoS/7Z7mGqXrOb/vMpN0oPq2TJZKVQeeTkNN1LPCRg60T9YamQlMA==
+ b=utMCR+222VC5B1fk/n/R1aKKbiuLFRtRurYMT7XAxmUb2Den+cNOcQlCVw5tlWmd6YTC5jcI9ir04RvheC/wcQfDIDsAJXL3fySC3GfEvikVumsz54mEHpmR685C3VQ4NWHFAIfxtA/L4rb1TWkUaMwZpWnRFcme/HyN34BMY52R06NAdiSwULDqpT4uGrUCarcXe215+g0IjTD41o1ii58kJqjlYjEtETnKaO9keiKM/n7dvabxtaxUAfwUidW816ekoMmkxXjJE8h7cKcUYmvPcaylSIDtbiB+d2HBbB3hsDAFWYAdzYVw6Rkd7Mu4ATRVzOOJRSvmxEhiTudGrg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CujnjVsyA7cFJcroU/OmPrwANNRYYaoVFRkJRveBLNY=;
- b=DlDdC1Hg128liOzPgWQdJpl/mcUQ7wa8cG+UeqIH7V6U1F7zScy+K/m9ojV6AfJxAJVzauHXO9h9ZX0CMZKNi0werX3FA/2RL9lRRUTxnTafIaf7mHp7Ii9+in31YMGVEvXbm2cjgouTlQUzPFPOj/W8MLlZD4ofUPK8QwJvJkcT4Euk4PP3ANbMqrTVsLbQ93baSVECEFqhFLKGypxpDpCB6ixiHQCCC98gxVmhMFXj28mnLcUE96/rgzduzx2+BtztGE9+ITqeJTfu+aOoMtmHtMgPfHx1MvnHEWJdE8Zta4XPFznPX4lHEhgnLVkhJOSRpEP388SpyizyrgGbiA==
+ bh=RaVLSy3wyIJ0EN+R1XDHSBOfswRUBnefXIlXmgmY3OM=;
+ b=abiXkR2WyHuUIEceDkXkZzJNR3o+MfTTAbAd8ayIUEiydXcGObYPUqJ0HNz/hTYFiCZ4ScCX9iCvy2zsO8Mcz9PBcD98r2WB8Dvm5w3KyMb7XTYLxQpHmdHVmw0V485KSlg0KKApRYm3FJabwhk6nakO7hK05coLEWynThjaLSBGdg5plhO1Uez1mpLAQq7eO8fiSNxuTiPAaRcmkIeC6rqjrZcK3Axn7cYNzNUe0uYZHSrFRP41hGiUspFUdF8HiJQer0OnVc+XG9fVljGTUufNsATBZfMhT8jqmNKco6aoYwVde5FmZDh45YgdWrMU5E16q4sZWn9ZWKaEIJLklA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CujnjVsyA7cFJcroU/OmPrwANNRYYaoVFRkJRveBLNY=;
- b=WuMIrXbiE6MQIpDYnQruk8YNFUc60/PGFzkKEboPaMVQLXmyFzbZUHCYwCNa5aPMoW61OoQb4duCXTZOph701AUil7jLzLpQGwWo6n8+U3ZQlQJKwqm/495zlbViu2JQuqI2ONW0dRM2T449/KH02CfO7WuKpLcX9ZqwaJgAL994bNJLdpxZj3Vb5L4xY1YLkj2eH/Tk4srWKFd3JBI8CagCBlN+BehcXxFbacrCcW38t9k0zqlRSeC+Fn4sDki38lbThhipaakpZ4/3MC8xkXG94IctXtO4fDS4jIomBNZZ6guNuq+0J4k676aqB14S0h8j3uKdA8elTSq5hMPEhg==
+ bh=RaVLSy3wyIJ0EN+R1XDHSBOfswRUBnefXIlXmgmY3OM=;
+ b=ZP54ory7Dr03UxqiEIhBgTmnHP8YBtYkU8WWdx0TnJBvo/f7Ef+SlAR+QsoVQeZtJHhLDo76nif0FFU3gHqIKqC9UQ9bMbhH0gUsnonZ0ABaJBCuFIfUVmo7qEhIINGtNxL0pQ1vFiHNrerFksfyNopxPW2xhTYTUtGYpikyOyUFydyyhI/QQFzNwK0c4pQI+eSARwODu7Z5hDZLW9Bv3pq+biF6Xw7a/kHaWhM7Grw/B1qKbuNBoMYq4Kp7xbjplJkw4o53CAQu+OvJipLTdpM/468cDIYP6ozD2aKDH2RqF+5vx4HZyLmkbhrkJ0Utfi6UUZ30Z1xnT2CjtBWmXw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by DU2PR04MB9211.eurprd04.prod.outlook.com (2603:10a6:10:2fa::16) with
+ by AS8PR04MB7496.eurprd04.prod.outlook.com (2603:10a6:20b:29d::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.11; Tue, 21 Oct
- 2025 15:06:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Tue, 21 Oct
+ 2025 15:20:19 +0000
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9253.011; Tue, 21 Oct 2025
- 15:06:48 +0000
-Date: Tue, 21 Oct 2025 11:06:36 -0400
+ 15:20:19 +0000
+Date: Tue, 21 Oct 2025 11:20:11 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+To: Sakari Ailus <sakari.ailus@iki.fi>
+Cc: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-clk@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v2 7/8] reset: imx8mp-audiomix: Support i.MX8ULP SIM LPAV
-Message-ID: <aPehfKuDCnW5sEcn@lizhi-Precision-Tower-5810>
-References: <20251017112025.11997-1-laurentiumihalcea111@gmail.com>
- <20251017112025.11997-8-laurentiumihalcea111@gmail.com>
- <aPJZdAQwdoOP3cqN@lizhi-Precision-Tower-5810>
- <64b28a11-337a-42ba-8765-d94b19070d66@gmail.com>
- <aPZMJb9VwylTIiCM@lizhi-Precision-Tower-5810>
- <f1bbd303-2798-4476-921a-62b45fdb67ea@gmail.com>
-Content-Type: text/plain; charset=iso-8859-1
+	Conor Dooley <conor+dt@kernel.org>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Nicholas Roth <nicholas@rothemail.net>,
+	"open list:OV2659 OMNIVISION SENSOR DRIVER" <linux-media@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] media: dt-bindings: move ovti,ov2659.txt into
+ ovti,ov8858.yaml
+Message-ID: <aPekq38Sr5KvXvKw@lizhi-Precision-Tower-5810>
+References: <20250912183003.1115957-1-Frank.Li@nxp.com>
+ <aPdHqCWNdmVkch7S@valkosipuli.retiisi.eu>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f1bbd303-2798-4476-921a-62b45fdb67ea@gmail.com>
-X-ClientProxiedBy: SJ0PR13CA0163.namprd13.prod.outlook.com
- (2603:10b6:a03:2c7::18) To PAXSPRMB0053.eurprd04.prod.outlook.com
+In-Reply-To: <aPdHqCWNdmVkch7S@valkosipuli.retiisi.eu>
+X-ClientProxiedBy: SJ0PR05CA0139.namprd05.prod.outlook.com
+ (2603:10b6:a03:33d::24) To PAXSPRMB0053.eurprd04.prod.outlook.com
  (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -78,219 +72,196 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DU2PR04MB9211:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7aa0e7f4-bdbc-4047-930b-08de10b374f5
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS8PR04MB7496:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99c0d1dc-49ec-4b60-bf82-08de10b5589d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|52116014|376014|7416014|366016|19092799006|38350700014;
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|7416014|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
- =?iso-8859-1?Q?UBdltsgaXAatNOcEIM5+dJntMcoIgb7lmvfzLWUxBemZNjazGZTeBFtLjz?=
- =?iso-8859-1?Q?sBalZqgVRLAMNRGjIqIwqlM7R2bxF1hfuXT9lZRFg61F61H3wyj7gtHH31?=
- =?iso-8859-1?Q?o3vNpTXcP2zraJ1HmGC4RdmS73SgRqYkJQLueXj1Opb4J0i4cwr5aP38MT?=
- =?iso-8859-1?Q?rplbBy2HCRnnbjyRQ02TPFK7j4vQ62pX7qLOM6yA4sfIMYGJ1J5xdp9osG?=
- =?iso-8859-1?Q?gIefO7T+MM4aOI4UL1FjaHAk0sQ33e4P6MScCP02Mv5VirRFO3sjh8tGji?=
- =?iso-8859-1?Q?5Mu5f2owUuj/dbqUziulxqSV8rTCcXGoZaeLEA1QiQM+4STQwbIVB0AlO7?=
- =?iso-8859-1?Q?ukzFUatsIdiwLwr8LXhrXoViRvz2wdOzpW9BZiKrir8Pr1d+dk3oznz4td?=
- =?iso-8859-1?Q?08g5p0ISwZjEtxzCGLsbA/rmakEu2qVG8rXCiSAS4LxoeuLLeH64IWHTjB?=
- =?iso-8859-1?Q?KVTbyO/vGPAT8haHN+u9mEV3D5hqVXWt2E026REiqkIl5CdOfhPvgrG/EN?=
- =?iso-8859-1?Q?aEl3APU+ATG79o7v5k+E8DzTCNMYmXpf2xgvvd9lJfFgb6VysQYg6pToqZ?=
- =?iso-8859-1?Q?FrCuiJv4+/8vukoLYDfeB59ZZmZ4nRrECxrh4WW9xDYxkePVXdK2RI7x3S?=
- =?iso-8859-1?Q?jV6q9KFaDlALbC/OIH+F10ULzaNcv1s0NEfKaY1O3UqXaGOn7DDHMNdADJ?=
- =?iso-8859-1?Q?SvIEizEVlHn2FlelyfydijWCoLXKTn1ssfFHIemDlYGpNGoM31DIt1Mvyg?=
- =?iso-8859-1?Q?U37rawJ3y+1nqZymNakSesW2ZYzZ6iuUmHcN4KvHZlL02TnTKTrhDGVZoq?=
- =?iso-8859-1?Q?9mSy+2iBkyv7+TWTGi+qHrd4uct9kfRObutPkKkzchIfkKXetEpcPxbdL8?=
- =?iso-8859-1?Q?3has+ifZ+sbmvhmGuuLgS7RQIgGH7J6T6iQrkgSIe0dCom7cNguGk1bJkJ?=
- =?iso-8859-1?Q?D8eJ/lQ8cudGzEi2Jp3R42Cil34B/cSeQkz2528gHpuoGKC830PTsf0fQd?=
- =?iso-8859-1?Q?CMQSuqAle2H6WnxBnAFV0kWOpKdT+Vg3+sDsLeKNlrAqktThgvJ0euHJ2u?=
- =?iso-8859-1?Q?mFJi/9fcIUgCM6wzkC7aInc1JjqUX8JJ0/HluYwoFBAfgHQU+kZ8rcanM0?=
- =?iso-8859-1?Q?Vfz09jha23J7L5x7KNVrYGEnDvcCkRklRWNLE/VcMkq6GNh+0d7MEZc0tk?=
- =?iso-8859-1?Q?rCAkyrPhtADPqhWxgbFteIjK6TigN5jbHkqBFudUnou36WCDB+pBonxWhy?=
- =?iso-8859-1?Q?JHyJvphEzyiLZd9TWg5OqILJ2UCTaWNNV0raswDzjto+y71+Cmi5bzJQeT?=
- =?iso-8859-1?Q?KwLrNw+mCu+tmOgcujCJdWEF0nmmPMpfZrgSQYp3REXQamuPp/kqJPeN3K?=
- =?iso-8859-1?Q?c7NKogfzIs37KrV6qjdT6jmPCeYAuMdR821wmJbQ2P5OUQhYctw0cZxV7r?=
- =?iso-8859-1?Q?smDFCFrgl2rieq/l5qScKZudlPgzxE4A+NdqoFyIMWpq5FSuzqpOELXZhB?=
- =?iso-8859-1?Q?ERimLuPhnAvq6PGBaSgRGYbEwoj7iT9FpgIe2fGBzSUePq6mKdWqKHetQR?=
- =?iso-8859-1?Q?xf1GmOB0hnBUEEWMrQKdyaE2H5ga?=
+	=?us-ascii?Q?3q5iVHwjSTZcIbGN1G7SyAHq0ggRKDj2amNCmLpPAiLpcDYOOq4wAfrDzjls?=
+ =?us-ascii?Q?mImuKrSp0fI+uyuNdpRr7fPXTYGorGTccMHTU6pJfntle2/8JpG3Msxuwtzt?=
+ =?us-ascii?Q?WnSuUWvZO72lCyWjto9RK8B3YtoCIJTZ/a8GBINtvjtogmSb9C3dUaHuHHCb?=
+ =?us-ascii?Q?9RjAcZnwMOt4hpypxe3aW3VJwrGgxD3nNol8jZrlcPoh/HpOE1ix0n9Dpw/j?=
+ =?us-ascii?Q?xStbvYz1+g3pTWcD9OA0n+4idtpDP97021D4SjnF1CJ9M1hfdVs4Pe/+ZKK1?=
+ =?us-ascii?Q?4bLsCU/icwzAv/Tmbl2+BGojTXZOnwWqLv10f0bf5SgsGy1Y9aKkFWTtArTo?=
+ =?us-ascii?Q?n3qawT503biml+UdU+o7eTWv324gGL3X+x8jtyFfe4+GeoPF88i9IAt9988+?=
+ =?us-ascii?Q?lR34KV8JZejf49PkMO4TKZ93KoZryrOVEoBXHX/WsFd7Qxo7mrkWUckv5KXl?=
+ =?us-ascii?Q?F3jt1COkLHV/Io7JDLQ3wUxSv2Xrc3teZqhYevNgL97hAvQJY7D8zbYkJIoo?=
+ =?us-ascii?Q?/g7tsuz88oNjhRq0YL1c6PtEwcJ44iW8I0R9Jw4mPxnv0qDJ6eKwAnvHi73X?=
+ =?us-ascii?Q?apY5mk+ubUnHHXvIRjiQcShiHJKaesdoo45sVTgj10XLPzux22DK3dOs0LQm?=
+ =?us-ascii?Q?9Ov2PQuwpay8dJ0sogSWC13RsJkG5ggmSTdbBCpy464Lq53xLx8znM5pDUfy?=
+ =?us-ascii?Q?qTmFok2K8izKconqiX3rE/l6HMsuq4lMo0X0GLryfT22edKRfSVpNze/snl0?=
+ =?us-ascii?Q?i512yDmkeomd/oiRlkoWduN7p30g2bpVglpY0leiT8LAvlavrbEgGCQIMD2S?=
+ =?us-ascii?Q?NCeipwiBpTpfN1Dufvom8k5A8d7RmWnlPbPBXKjpPUTHPd9u4Kvz+3t842mI?=
+ =?us-ascii?Q?TRMnA3/t3uMqtjYlac3U+2jzRqYCMx2C8FOJ9wAPN6ktYLE+2rcMLj2GEO4+?=
+ =?us-ascii?Q?AO93kH1Zs/Q2Yun0tewMNY/rQler1b73DcOmHI36vtjDe/PVdhyoohzW4jds?=
+ =?us-ascii?Q?+V7QisxySNPh5BdY3OQUUygir2+CMlZ7mGJFsUmWW0dCj1Iisyxl1FpvFpZu?=
+ =?us-ascii?Q?qAI5IoSzqWa4e04ZhShp3NNHxe24LLzuxsCucIB70VqSDMcNJDL8pi23VNjH?=
+ =?us-ascii?Q?7EBtBnnegzZJZouGPPWulHkWTufcd5rzP32LXRSKbj+ZejjUxHredeelVazc?=
+ =?us-ascii?Q?kUbO52OfRygqjkacBzTa1zUYfrSOaYd7n6fk7v4A/NIXbrb1g8of3SFP4cEl?=
+ =?us-ascii?Q?zDV/Zm4IeVqFedLqvJj1KAhaF2Qq582R8iAQf9MQKs415TEgOva/KK0dwcnO?=
+ =?us-ascii?Q?2VKNvVNCWpxJBVHpyt3FYu5HlqaahAIc8VZBcHH9vj+g8Yv7JKOwXWh9AZZ+?=
+ =?us-ascii?Q?q91Tb6ILjJQxXXPVmvlES/3kjMGecch3MUw6rUtNKpEZ3Siz858mOZg0RcsN?=
+ =?us-ascii?Q?G55ONe5QA52+A6TxwF+sDnygD0r3frSLoPR5w2hqVuW69hH0xeWN+wQgsu1u?=
+ =?us-ascii?Q?9WECf1VbHf6hapclkxmLoQRWFHEp2CCr1jWH?=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(7416014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?iso-8859-1?Q?aq9NJNabPJB/t9aDNsCWhw+Zs8pJSd36QT33jcCT1ZOBBQiqrmUWFY8VV4?=
- =?iso-8859-1?Q?iKGVAeU0/p42vsstSD5o89/u/jHAiGDPWaPvibaeGDBxus5ApIZuBs4Jef?=
- =?iso-8859-1?Q?YmHkAvbaGX5esuPJx0iYEAeQ4VLAcL+iZXkY0qIRRJ19KiniMevTiHGy5X?=
- =?iso-8859-1?Q?Cal1Ofp3H/VzAaEqoxzFNYw4mRExf3JAaPOq8wh2Z53MRjV3biJYs2zbSc?=
- =?iso-8859-1?Q?nQFeYa84pwb/GXag++wA4Gz2B1NZK+kKxytfPX1djJPcbWT8H3bEFaYwow?=
- =?iso-8859-1?Q?PpIf736++pq19NeuMIabicnP4FGGalWUngrh0jtsOLITpJeSVUcwtcDjFd?=
- =?iso-8859-1?Q?cUk1KnQwrT7Co3KL0P4XkmvCtUTU/LC3ZcD0XXNndqF49eSKP9yhEBK/H3?=
- =?iso-8859-1?Q?jByHCiXntw2OWS/JqhDKJdYlK/BnT8KY2cNq4D3JUK9rzfWp/plEvje2X4?=
- =?iso-8859-1?Q?PRwJtX+4JWjGq9rotjMMd7iL7ZL3i/ckad2MUDm68IInewAjmgPRTbi4PZ?=
- =?iso-8859-1?Q?FMLf6O66OJ3Wtjjt7VYkEhqV4tYWkA+lK9r0rh2vTKfjWmXdtpASytMjuK?=
- =?iso-8859-1?Q?4rq9l8nfH23Ria3hmaLmsRkhAOzxw4TodPzqPjHwsPCcpGFxIuHMRhTbQt?=
- =?iso-8859-1?Q?/sjEan27RBxK8z8UFxziNMSgSox4AisO3kZ1TQsB2k1JLHVVPrA2Hqi32t?=
- =?iso-8859-1?Q?ZEjjYhrTm+4vhImbjrYZXJJN4wVHGHwNnH4MmtUDQs8m+vkjGw2AO3MpSx?=
- =?iso-8859-1?Q?4Zgnupq8cNVYzvZHDyudfk4Vi0Ibnagubmm3kD4HDwdIn2sw71pMakVr85?=
- =?iso-8859-1?Q?kmzs6eoiexhpdEhSXgBA2NqSZrLDMXs+3ocARgXh7MnMmoQzx9nMk8tKE2?=
- =?iso-8859-1?Q?ENjCzVH2Slc6sDRTjcQ7pu41bctS5tM3SSdqAfhQosdSql9JVUOXFwcaPz?=
- =?iso-8859-1?Q?8pQj85Jqb/ODYoIxYozNzym5/IMq2qVCzCKMpsC5ObKmd0wam9hgkejHmK?=
- =?iso-8859-1?Q?vJTYjDzJqf8claFXmhF1BUkQXKIpXo3mETtzCUM5uXgoOed3A37RaXRkHu?=
- =?iso-8859-1?Q?C5KAZeYr+NGEv0KMlvpCaT5rz2u8jiC0T9s+UqbsjxiUm/KowX3x8+NWfD?=
- =?iso-8859-1?Q?Si3OQpPMflsTNQ+OwHyESn4WG28e828cmbb8CBukcieiqm/YfBOJq1kwaS?=
- =?iso-8859-1?Q?5Q9N0Qsmm2A74o2aIeLHMZVZ2u9oeaXOjRWUntHzKaBvHfc3OiM74cI5vH?=
- =?iso-8859-1?Q?emKaSo7hrt5VMD/4lW+gz6mL4Zl3HJyFpQ1NO0mWoSggS+9Ighqcs7g38c?=
- =?iso-8859-1?Q?KVXHH4sthOYcPFhgswgRXiOG/HAqi3ZWNMuWiQztCyYkIk+ZLF2hBbGjt0?=
- =?iso-8859-1?Q?CGQxfBu9xlXPSSFu9kpVkldPm+VkvmTAtLsVaXn7Yrp48p++kz7GvBs3R5?=
- =?iso-8859-1?Q?apjbWsw1NxBfgCapFrQtsx4lpq+nHhKqn6ZmTwWRIl3nCcyMCS5dfb4rmj?=
- =?iso-8859-1?Q?1RSlPKnA3d3TaU0JxyC0HcEd37KcZh5goC+i0be200dfk9HO4qi/LtxaGZ?=
- =?iso-8859-1?Q?ljaOY7cpjisr5A4t+W/Phc1rtLtEpmvlV+gAypCUlEGOZ4p9eJ1ppk3x6V?=
- =?iso-8859-1?Q?YV2UEk71dYGZ0fRUXqqdxj/c6N1xf70tXe?=
+	=?us-ascii?Q?sl6GhWstEq+jqkZUDIsiJ/R1bDP5tIYo389B4Dl45rUmH6pdbtUwVc3uV7MC?=
+ =?us-ascii?Q?lXTjb8n/F/Y0GqpZ3fSwNc+q8jcsJNEkLjPLLbmLmPK2mg51DHIBnzq7Sbhl?=
+ =?us-ascii?Q?+wfK5Qv85/HzsjObkEyLLn5ovfdka8rtVszDcRxYHmsSio2LCrDYPUilLcSh?=
+ =?us-ascii?Q?2zZnSaFyeTysv0Oa/BN1NgluQosr/mDNQ3crd3VTJdpvX4o5DL3lCdihtCA3?=
+ =?us-ascii?Q?MY3UF+GGnWkjqnE/L7tLq8tkIplGqOGsAgRTMZBI+0og4QpIrpqX3VwDsYgj?=
+ =?us-ascii?Q?YToOV2YaK4WRDzF8Y2WOLoQR7jGr98l0EhltAXPMIrCjxf8haNx0MUq8YwuZ?=
+ =?us-ascii?Q?fLJj1A/5Vnua8473W5igg76/tISAJYF3nF+Nt5vAC2MBJAM48/VluqKwVeF/?=
+ =?us-ascii?Q?dI2rKtuWBy1H3L4aTIDXP2/BKkabqy77Bzu8GCWkcmzpvq+zTfEAdl575UGP?=
+ =?us-ascii?Q?mK8zaz99XaXUcS5diW6o3oPWdZhDs1HayxzZpgSn2buFLadsfLiAgv1/Hzaq?=
+ =?us-ascii?Q?YC4SPv84q0tdeAjQ+MP069zJSltbXXTJreM5DpoFBcjV+ZH2Pyeejoy68g+B?=
+ =?us-ascii?Q?p9+vfnGi7xj7cUxi8zn2kNYGB0IOETSojUr9yC+HDbvF9rHBsXwnVwVNHZfH?=
+ =?us-ascii?Q?5AvImsueRDRp1UcZUG+x9mW4BekWN0w2S+GhOS9XeXGJ6aV+nR4kbDFQV0Lu?=
+ =?us-ascii?Q?D51wcvFjry2/C7ETWlNM+WA0OceekHCyCvDEIhVgCBq96zuf+Ds7dsNLMTmD?=
+ =?us-ascii?Q?1xmas/q3otW5eTyF9XQWkqq3x8Iknb72Pa7FUSD21Ja9cikT2QZm6W8ToyzD?=
+ =?us-ascii?Q?a7dKSSonlOqgyVn3G8+9ATNnqKwkHvmet9Qcm+MgQgpSpnSyshKHTnk4cvYL?=
+ =?us-ascii?Q?7aIzUM8NG+Gkaw7pEFYizr0e+D1hDUGfWNZZh1T/UhBZ3lwlJSf1pBxC6Uwp?=
+ =?us-ascii?Q?F8xX7f7pcH7vk0yXGr9L39uBj9ZhYqQucmeSEL+lzne+Oktggqu6tFzSCkQ9?=
+ =?us-ascii?Q?Sszfd9WQfvWcNIvJ3lUSHRYtmAWWIuuhgJTl2kWvMcxCc+z70bx1g3oSQPDV?=
+ =?us-ascii?Q?ANA/eCzdiWmWpXBUG0V0hGp19DcRTpn8ekIdBzrYSKVSYo6l5vTL1TS8DAiY?=
+ =?us-ascii?Q?RAzUt80JI2DGyyi75oSxLHXqYIEpc3WsjH0c57tIjfLqAlwpjtBzqIKmtr3W?=
+ =?us-ascii?Q?dN7EobMMkiZzR071rsRrUqjQFpZ5IE4R0Qij7r2C20MBiNG8xO4lQw6L7flF?=
+ =?us-ascii?Q?TaivjQbvY/VCa90Uhp1IQYNCdQ5ZoIwmZfMsWlQIU/jXZ8OHbwXoFz7TYU+z?=
+ =?us-ascii?Q?O5nHY+BqJC1iTbSLLhwj18OXFQ1rPFx0PSUrtkiawobpmKVFVPDOrJ//gS1W?=
+ =?us-ascii?Q?85Lz5iQg654KtguyHv+D0NkuGTpbW/6Md79lbHmSxPs38YFHozA97nVSXWd3?=
+ =?us-ascii?Q?se5UXORTbudGEr92gJnZ0r5umuDqiLzAtlLy2HEqDjIBIFbnockFQFdbw5b5?=
+ =?us-ascii?Q?0dC0wlEckevJqGWud8hsQ1PWKs6X5aq5C7ijjO8lDFn7nFMRJFwlIIsKN6qM?=
+ =?us-ascii?Q?rN4wlJYuJnUrx8Snkc8RCnpz7sLCKaGsEQpkJa+/?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7aa0e7f4-bdbc-4047-930b-08de10b374f5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99c0d1dc-49ec-4b60-bf82-08de10b5589d
 X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2025 15:06:48.1983
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2025 15:20:19.6450
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IDTf3w5KVxdWm3sFy1lLesyeq+7PNppVvWENLRjKO2r5T4Pcr5k67r0uy+igmXPcFNMBbv27xlNOCnf4VORxIg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9211
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5t1Y59Ak5UPNTOT8frKzJoOOzBX4eg4MF/OOQAkomTVbB8qk/iKf3bsoyqIA2CJkw0GqCFpfoaJm+AsUbzPzxQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7496
 
-On Tue, Oct 21, 2025 at 06:16:41AM -0700, Laurentiu Mihalcea wrote:
+On Tue, Oct 21, 2025 at 11:43:20AM +0300, Sakari Ailus wrote:
+> Hi Frank,
 >
-> On 10/20/2025 7:50 AM, Frank Li wrote:
-> > On Mon, Oct 20, 2025 at 07:29:28AM -0700, Laurentiu Mihalcea wrote:
-> >> On 10/17/2025 7:57 AM, Frank Li wrote:
-> >>> On Fri, Oct 17, 2025 at 04:20:24AM -0700, Laurentiu Mihalcea wrote:
-> >>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> >>>>
-> >>>> Support i.MX8ULP's SIM LPAV by adding its reset map definition.
-> >>>>
-> >>>> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-> >>>> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> >>>> ---
-> >>>>  drivers/reset/reset-imx8mp-audiomix.c | 51 +++++++++++++++++++++++++++
-> >>>>  1 file changed, 51 insertions(+)
-> >>>>
-> >>>> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
-> >>>> index c370913107f5..b333d7c1442a 100644
-> >>>> --- a/drivers/reset/reset-imx8mp-audiomix.c
-> >>>> +++ b/drivers/reset/reset-imx8mp-audiomix.c
-> >>>> @@ -3,6 +3,7 @@
-> >>>>   * Copyright 2024 NXP
-> >>>>   */
-> >>>>
-> >>>> +#include <dt-bindings/reset/fsl,imx8ulp-sim-lpav.h>
-> >>>>  #include <dt-bindings/reset/imx8mp-reset-audiomix.h>
-> >>>>
-> >>>>  #include <linux/auxiliary_bus.h>
-> >>>> @@ -17,6 +18,8 @@
-> >>>>  #define IMX8MP_AUDIOMIX_EARC_RESET_OFFSET	0x200
-> >>>>  #define IMX8MP_AUDIOMIX_DSP_RUNSTALL_OFFSET	0x108
-> >>>>
-> >>>> +#define IMX8ULP_SIM_LPAV_SYSCTRL0_OFFSET	0x8
-> >>>> +
-> >>>>  struct imx8mp_reset_map {
-> >>>>  	unsigned int offset;
-> >>>>  	unsigned int mask;
-> >>>> @@ -55,6 +58,50 @@ static const struct imx8mp_reset_info imx8mp_reset_info = {
-> >>>>  	.num_lines = ARRAY_SIZE(imx8mp_reset_map),
-> >>>>  };
-> >>>>
-> >>>> +static const struct imx8mp_reset_map imx8ulp_reset_map[] = {
-> >>>> +	[IMX8ULP_SIM_LPAV_HIFI4_DSP_DBG_RST] = {
-> >>>> +		.offset = IMX8ULP_SIM_LPAV_SYSCTRL0_OFFSET,
-> >>>> +		.mask = BIT(25),
-> >>> Register defination still perfer use macro. If not, let me know.
-> >> I see no value in adding defines for the masks (see patch 4 commit message)
-> >>
-> >> in this particular scenario.
-> >>
-> >>
-> >> Is the assignment of the "mask" field for the "struct imx8mp_reset_map" item found
-> >>
-> >> at index  IMX8ULP_SIM_LPAV_HIFI4_DSP_DBG_RST not enough to deduce that the
-> >>
-> >> constant we're using is the mask for the DSP_DBG_RST bit?
-> > This bit is NOT software choose bit, which must be align hardware spec.
-> > Define macro help map name to spec and easy to look for spec by use macro.
+> Thanks for the patch.
 >
+> On Fri, Sep 12, 2025 at 02:30:02PM -0400, Frank Li wrote:
+> > The properties in ovti,ov2659.txt are the same as ovti,ov8858. So move it
+> > to this yaml file.
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  .../bindings/media/i2c/ovti,ov2659.txt        | 47 -------------------
+> >  .../bindings/media/i2c/ovti,ov8858.yaml       |  4 +-
+> >  2 files changed, 3 insertions(+), 48 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
+> >
+> > diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt b/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
+> > deleted file mode 100644
+> > index 92989a619f292..0000000000000
+> > --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2659.txt
+> > +++ /dev/null
+> > @@ -1,47 +0,0 @@
+> > -* OV2659 1/5-Inch 2Mp SOC Camera
+> > -
+> > -The Omnivision OV2659 is a 1/5-inch SOC camera, with an active array size of
+> > -1632H x 1212V. It is programmable through a SCCB. The OV2659 sensor supports
+> > -multiple resolutions output, such as UXGA, SVGA, 720p. It also can support
+> > -YUV422, RGB565/555 or raw RGB output formats.
 >
-> yeah, we already have the DT binding macros for that which perfectly match the name
+> I don't object merging this with the ov8858 bindings as such but the
+> differences between the sensors should be taken into account. Something
+> like the text above should be added to those bindings, which now describe
+> the ov8858 only. Also, the number of lanes is probably different between
+> the two.
 >
-> of the corresponding bit in the SYSCTRL0 register. I don't see how adding 6 more macros
+> What about the regulators? The ov2659 doesn't control any right now, but
+> that's probably an oversight (and whatever regulators connected on the
+> platform used were hard-wired).
 >
-> with the SAME name as the DT binding macros and the "_MASK" suffix would help you in
->
-> this regard?
+> Overall, it might be easier to keep the two bindings separate rather than
+> have some number of ifs in the bindings.
 
-Okay, make sense.
+The key is what's differences between two bindings. Most ov sensors use
+similar properties. Duplicate these information at bunch binding files is
+more difficult to maintain it. It is more hard to standardize if use
+difference files because seldom check other files when add new one.
+
+For example: clock-names, some use xvclk, some use xclk, but it points to
+the same things.
 
 Frank
+
 >
+> You can drop clock-names as there's just a single clock (the same goes for
+> the driver naturally).
 >
+> > -
+> > -Required Properties:
+> > -- compatible: Must be "ovti,ov2659"
+> > -- reg: I2C slave address
+> > -- clocks: reference to the xvclk input clock.
+> > -- clock-names: should be "xvclk".
+> > -- link-frequencies: target pixel clock frequency.
+> > -
+> > -Optional Properties:
+> > -- powerdown-gpios: reference to the GPIO connected to the pwdn pin, if any.
+> > -  Active high with internal pull down resistor.
+> > -- reset-gpios: reference to the GPIO connected to the resetb pin, if any.
+> > -  Active low with internal pull up resistor.
+> > -
+> > -For further reading on port node refer to
+> > -Documentation/devicetree/bindings/media/video-interfaces.txt.
+> > -
+> > -Example:
+> > -
+> > -	i2c0@1c22000 {
+> > -		...
+> > -		...
+> > -		 ov2659@30 {
+> > -			compatible = "ovti,ov2659";
+> > -			reg = <0x30>;
+> > -
+> > -			clocks = <&clk_ov2659 0>;
+> > -			clock-names = "xvclk";
+> > -
+> > -			powerdown-gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
+> > -			reset-gpios = <&gpio6 15 GPIO_ACTIVE_LOW>;
+> > -
+> > -			port {
+> > -				ov2659_0: endpoint {
+> > -					remote-endpoint = <&vpfe_ep>;
+> > -					link-frequencies = /bits/ 64 <70000000>;
+> > -				};
+> > -			};
+> > -		};
+> > -		...
+> > -	};
+> > diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov8858.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov8858.yaml
+> > index 491f2931e6bcd..d7059dbee7fca 100644
+> > --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov8858.yaml
+> > +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov8858.yaml
+> > @@ -19,7 +19,9 @@ $ref: /schemas/media/video-interface-devices.yaml#
 > >
-> > There are over thousand result to seach bit 25.
+> >  properties:
+> >    compatible:
+> > -    const: ovti,ov8858
+> > +    enum:
+> > +      - ovti,ov2659
+> > +      - ovti,ov8858
 > >
-> > eventhough search SYSCTRL0, may have many SYSCTRL0 in RM.
-> >
-> > Frank
-> >>
-> >>> Frank
-> >>>> +		.shift = 25,
-> >>>> +		.active_low = false,
-> >>>> +	},
-> >>>> +	[IMX8ULP_SIM_LPAV_HIFI4_DSP_RST] = {
-> >>>> +		.offset = IMX8ULP_SIM_LPAV_SYSCTRL0_OFFSET,
-> >>>> +		.mask = BIT(16),
-> >>>> +		.shift = 16,
-> >>>> +		.active_low = false,
-> >>>> +	},
-> >>>> +	[IMX8ULP_SIM_LPAV_HIFI4_DSP_STALL] = {
-> >>>> +		.offset = IMX8ULP_SIM_LPAV_SYSCTRL0_OFFSET,
-> >>>> +		.mask = BIT(13),
-> >>>> +		.shift = 13,
-> >>>> +		.active_low = false,
-> >>>> +	},
-> >>>> +	[IMX8ULP_SIM_LPAV_DSI_RST_BYTE_N] = {
-> >>>> +		.offset = IMX8ULP_SIM_LPAV_SYSCTRL0_OFFSET,
-> >>>> +		.mask = BIT(5),
-> >>>> +		.shift = 5,
-> >>>> +		.active_low = true,
-> >>>> +	},
-> >>>> +	[IMX8ULP_SIM_LPAV_DSI_RST_ESC_N] = {
-> >>>> +		.offset = IMX8ULP_SIM_LPAV_SYSCTRL0_OFFSET,
-> >>>> +		.mask = BIT(4),
-> >>>> +		.shift = 4,
-> >>>> +		.active_low = true,
-> >>>> +	},
-> >>>> +	[IMX8ULP_SIM_LPAV_DSI_RST_DPI_N] = {
-> >>>> +		.offset = IMX8ULP_SIM_LPAV_SYSCTRL0_OFFSET,
-> >>>> +		.mask = BIT(3),
-> >>>> +		.shift = 3,
-> >>>> +		.active_low = true,
-> >>>> +	},
-> >>>> +};
-> >>>> +
-> >>>> +static const struct imx8mp_reset_info imx8ulp_reset_info = {
-> >>>> +	.map = imx8ulp_reset_map,
-> >>>> +	.num_lines = ARRAY_SIZE(imx8ulp_reset_map),
-> >>>> +};
-> >>>> +
-> >>>>  struct imx8mp_audiomix_reset {
-> >>>>  	struct reset_controller_dev rcdev;
-> >>>>  	void __iomem *base;
-> >>>> @@ -183,6 +230,10 @@ static const struct auxiliary_device_id imx8mp_audiomix_reset_ids[] = {
-> >>>>  		.name = "clk_imx8mp_audiomix.reset",
-> >>>>  		.driver_data = (kernel_ulong_t)&imx8mp_reset_info,
-> >>>>  	},
-> >>>> +	{
-> >>>> +		.name = "clk_imx8ulp_sim_lpav.reset",
-> >>>> +		.driver_data = (kernel_ulong_t)&imx8ulp_reset_info,
-> >>>> +	},
-> >>>>  	{ }
-> >>>>  };
-> >>>>  MODULE_DEVICE_TABLE(auxiliary, imx8mp_audiomix_reset_ids);
-> >>>> --
-> >>>> 2.43.0
-> >>>>
+> >    reg:
+> >      maxItems: 1
+>
+> --
+> Kind regards,
+>
+> Sakari Ailus
