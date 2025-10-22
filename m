@@ -1,129 +1,163 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBCA2D5941
-	for <imx@lists.linux.dev>; Wed, 22 Oct 2025 17:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1F62D73BD
+	for <imx@lists.linux.dev>; Wed, 22 Oct 2025 17:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761154893; cv=none; b=YSkTDjVB5i/RkNzf7QEsblytwCUD7pIC8T8O+SKaqDwSY7MZq8fyeNxIdwdpNIJ8McycWWbp+TVjttpJyD3367+LhhboSER7quc2fM4ieNiRhNW0ql1FuxT2IYzsohm6dhru1kP+E48yr+Q5Zx8H+N/V6rCbCpXEeTz5qvG0dtc=
+	t=1761154994; cv=none; b=AzPQEO5LjB/K3FWkzBbPi7E2YgWJmW1icQ3Zmc54aTYooGORlQ6m39izbVuBH3Dbtc6tO/e1SUXT23iB1LxOjQ3px7yIGu8cribEucEoRcnX+c5fsd/Ez3EjJ1TZ+Fe8WuTzytFmJ8mSKA3ziMKbEXegY4qeuXFuAy6UuNtUi6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761154893; c=relaxed/simple;
-	bh=HLBPhheU6Sdkv+wRlRlVzbDRgyBTZMrIiQW9rt4vggY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=II5roxtH+RPEzD3V1YApGSQxreKbabFCEwpD9n1qcsTh/KQsR2b3xKeZlaBPqTMz4pxVgtXNAnIsHtE1OC8l/PMoVeJ96PSXa9GCMi+dZRK7KZf8WlnYarFSYJuNWqdfm5ENu/kJzWmkxFT2mvdyEDX3YnoCtIdxKxeXlMsnnhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mvW+bi+z; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1761154994; c=relaxed/simple;
+	bh=x4lBM6MALnsKTkLEdOEjnhf0UotUJbGi2ScacjBBP/Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Lixl4TEt5syHPt5r3nWEgOs6Hh5a9r6uGfzbUEBbK7hNp4nS9qLkksMWWgamLH5KK5yjg+Sy5StU8U69sd0BLPmQXiK9w93Rv3589/sy3988rVvI9SiEkqj8FILRdr46INQuo+k9Yu1Gzc2CytEs5I+83/sIX2TReZbyChASwbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TbqpdYiW; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mvW+bi+z"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-77f67ba775aso9171308b3a.3
-        for <imx@lists.linux.dev>; Wed, 22 Oct 2025 10:41:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TbqpdYiW"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4711810948aso50972495e9.2
+        for <imx@lists.linux.dev>; Wed, 22 Oct 2025 10:43:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761154891; x=1761759691; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=H/yVbcNYBKxI7HZmam8giV90V8J7uwfsDvse/7ETWpU=;
-        b=mvW+bi+zBxvy+9zo0mLoEdM5W+s34Apxk0oCLGL0/8Yz1M/qmxTTaK7Hu/OEWra9Po
-         lKc3HNTEwRsCQJLrMBAaxml8grqbOhOs4qRBrmhx1cD0F2VOoAzAfCFTl00HCu+z0RcB
-         Xn3F6VQ9Kt4eyA0u26LsgQ90/7uBfYD+JExy834R1/iG7v4pbHApXIj9DhM85vw0tEPW
-         xC6vS5LltcLUwpGI8Hw4IWgt6J3r4nFtQrcL1cOORk9SwPOG84OzwMkamlGJCAA+RD4u
-         n0SkJjf+OKfY03M5+9COCxWSuw0XYH1eTQpq89XQuoErE9iuthifQh8E/HyIL201gRMk
-         VZUQ==
+        d=linaro.org; s=google; t=1761154991; x=1761759791; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EEGDYb1h2mzgB0PmHyauQaDh/tQllsTXIY8VSU+TUKM=;
+        b=TbqpdYiWKTXIBHJItDRFLR3TA1rk1fS0U+6tdc4LqpByw27d9pK6CSaCqM2ZCSprMq
+         JAKgP998FS3ZBzlFWSb4nXOWNDY6rGMCbBl0ajerpPa/REpwE1k+5eWG4G3FHaBrZVRM
+         qUAxQ8fyrv16WGdJ+EVSyKNJoCjzn4MqOITsaPhMlG0wPIqa3EktYwge2DXtz/q6PmS1
+         0kw5hq93Q6x+O58bnjh7ZZhCywG1YLcFrL8iE48x1Z9xPPV+hpS/PPTsakFdOu6kjjVz
+         XFeeBU+D1tnsm7B5u0rxPtFZOLIZvyKFiRzHPUB2bHpRF1s0o/Ur0y6cYCHfY1ZuoGep
+         xqcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761154891; x=1761759691;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H/yVbcNYBKxI7HZmam8giV90V8J7uwfsDvse/7ETWpU=;
-        b=nzzU9ZfqqSdXMaIB0Oq5355apFPEJeqUt6FtsZaHcg0jdJUbDqOonUT9kvSg7UGP7N
-         S/NtVEB0kLnsCq/oTGEfidxBXUGzRKugSiRud+KoEH+5HZHz6SrWSh50NSdbhH9m0OkF
-         tbgny+QSWbpI4k71tWGExBUWkDMerfNlC3DUbO6YBXmWXyGLVaheTNYU3Xqu0ezmg30F
-         6vl8gUyBWrvToUdMmvgur443TCUWi3QpzIH6NFdDszy1ER+WAwb3uvuhT+dgKrjS4VSy
-         44Ehw3avNvTFWxzvYO8bTW11nGuJOIBiEzv+/2PtUBGEk5FigoSUX7cMy4Tt/S6oZ4FK
-         deEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUj6JGCz6TMu6wvjN5PWrktDa5eRYfQba3ovIy2IZRLYH133XtH2HsIKJXMdrfmO4zZjyo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwLUwpBxRSQAI9VNwfQn8YhSX3wOaSGQGbszM573PHAe+3t6e1G
-	tnsejXY9ui/Du5Vr9Sig1zelp41J5XG7YcRo6Dp5mahGTz3TcEGMA+v8RszkC2dsCjk=
-X-Gm-Gg: ASbGncsbva/UralLlhsA4gHIvPYHoneBYdDUnAcm64ESnNGki44kld0yvIcsS1p2xjx
-	NH1GklROxrWd3zSyBTy5ytHg3QmQcEagIrSJ8KbvZp4b3KZsKIU78pXYEGB0dlbZZdTpvYhJ2tn
-	3vKyaElkeeFimaBAcJLaEkmlXFRBa1iWBaZU+0zgdVnaDx3rOKyzvDlzPTvCZngqKtDFkbS5TMh
-	H6ioVXyOC92bxv4nFO1GLIS8uzP4LoITPBHhX58+XAK/Vja2bEbih7QOKsKbbdmRbZhToDJeuub
-	G8R2NihEJ8zVqCMbu3kw3/zRmniVaIESSYIgZ7O4Sf674tITvtOkTGBTfXJ+wQoUtJWEuqQqclm
-	WeN9erjA8mXrhzhnS8Zk503R8oTQkq3LBrV7epUxci6oVJ6sqnKFLtoCQ5D8lqxBdWm3z7ASo79
-	TlZgaNZT+nf7E3BQ==
-X-Google-Smtp-Source: AGHT+IHjwdJFhyPffGM4FBkB+w0a69ezxil2LnB/hHwjzMGVo9Ioll+93XMe3fLrl1LPLka9UTkijg==
-X-Received: by 2002:a05:6a00:9a0:b0:771:ead8:dcdb with SMTP id d2e1a72fcca58-7a220a7e712mr26747780b3a.8.1761154890617;
-        Wed, 22 Oct 2025 10:41:30 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:7843:84f1:e4ca:d99d])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a22ff39654sm14983897b3a.31.2025.10.22.10.41.29
+        d=1e100.net; s=20230601; t=1761154991; x=1761759791;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EEGDYb1h2mzgB0PmHyauQaDh/tQllsTXIY8VSU+TUKM=;
+        b=vIANYP9GD6xaDmOsj60vdBTjrlcn+kG20uZpCYVpy/rB99xPiyVI60cPh9YyUPfeJb
+         WO/RFq49+GWm3XpHqdO2L9upmOSICoLJWbV3L7tmaqTYZJgaV6lYVFviK5Kng6rf4NU8
+         OP6toqZa3vDW4WXkZjxn/qvwsuYDfCdAMyNrfpvZXhbaFEKXrScy+0PJh1eMbdt5udvT
+         +PIvP7tFvs5KK1xm9qkAc0vetsK3nPruRux9xnOkuWh+AQX9DraAKbvD+EJSkCS/Xb0r
+         J9hidbb0Vs1SmXh/WbSg0NWvRk1W1Lro2cNQ7WCvV63+0IqmypcRdJbFipJV0fUhzxvg
+         VtpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUNTeH7wUPzZLrpc90exDlUB8OCN19PXL28S3Br1EX5yGv3EJmu61mZSVYe7A2cZl6KYlQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyGy2qtrKKLlKAF2ndtI4rRinFaDlEUnQNrGs0wugi8L/xwxFh8
+	Qd8HoIpOOIMcfhhQqapONRkoqobB++lYGoJTn14jwTmK4r6hbIimimGqko1IC7mS72o=
+X-Gm-Gg: ASbGncu87XEsvTIilSSwdOkY51jfDpYgQZoQQleIBPq2XLaCfz7eyVAgqLIleHQpMcQ
+	2mmLZdQCXuv0VDt/qOpaRrnwmofy50LXLCCDU+PXOmoVx7GRZ85x6kdcFaw789hBu6uQFmLcop4
+	HXri3krnYlgTM5uq/dSNuDXV/LDDWIAYMiujGQxa7jYySH1xxeHsOyYJl18VXHFvu0OvocAeL5f
+	pm+AW2hTHfEov3WVrxREiRy1sOOSiKTvZxL+sq0GvjXs+19Lhe8Po4uX3fzanR3DWDFYG05HLxC
+	YSrnqYTey464KuOEgYCLhn5v8o8idq60XDSaIF4MZLUrEdN9AzhrWqLUCSH++V6WFLyiu9ZAkXp
+	PhveFU1fcohAfio1hyi4Xcg8jMEkbowO52VfDEjKpLgbRS+2eTlmzXHfCm9pLVQo33UcS0//btS
+	+WD3Y6wO88gOWf82MO1+E=
+X-Google-Smtp-Source: AGHT+IEMDLmd+T9rXjtLSXLZLP4aZjdA4r3I2RlDm4L8/0x4vSRk561EjNsJMCQhfMdzzPOvzd0FsA==
+X-Received: by 2002:a05:600c:3b05:b0:471:d13:5762 with SMTP id 5b1f17b1804b1-471178761bemr151131135e9.4.1761154990718;
+        Wed, 22 Oct 2025 10:43:10 -0700 (PDT)
+Received: from vingu-cube.. ([2a01:e0a:f:6020:edfc:89e3:4805:d8de])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47494aad668sm43434755e9.2.2025.10.22.10.43.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 10:41:30 -0700 (PDT)
-Date: Wed, 22 Oct 2025 11:41:27 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <frank.li@nxp.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 5/5] MAINTAINERS: Add an entry for i.MX remoteproc
- driver
-Message-ID: <aPkXRy7TsPCrq_s-@p14s>
-References: <20251015-imx-rproc-c3_1-v3-0-b4baa247358d@nxp.com>
- <20251015-imx-rproc-c3_1-v3-5-b4baa247358d@nxp.com>
+        Wed, 22 Oct 2025 10:43:10 -0700 (PDT)
+From: Vincent Guittot <vincent.guittot@linaro.org>
+To: chester62515@gmail.com,
+	mbrugger@suse.com,
+	ghennadi.procopciuc@oss.nxp.com,
+	s32@nxp.com,
+	bhelgaas@google.com,
+	jingoohan1@gmail.com,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Ionut.Vicovan@nxp.com,
+	larisa.grigore@nxp.com,
+	Ghennadi.Procopciuc@nxp.com,
+	ciprianmarian.costea@nxp.com,
+	bogdan.hamciuc@nxp.com,
+	Frank.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Cc: cassel@kernel.org
+Subject: [PATCH 0/4 v3] PCI: s32g: Add support for PCIe controller
+Date: Wed, 22 Oct 2025 19:43:05 +0200
+Message-ID: <20251022174309.1180931-1-vincent.guittot@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251015-imx-rproc-c3_1-v3-5-b4baa247358d@nxp.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 15, 2025 at 09:52:59PM +0800, Peng Fan wrote:
-> Add an entry for the i.MX remoteproc driver
-> 
-> Acked-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  MAINTAINERS | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c9cdb95dc150a55df405adc3cb853c61f4c2b467..02dea709a5a5d591f156becd35640dfd93fe62e0 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -18610,6 +18610,15 @@ F:	Documentation/devicetree/bindings/clock/*imx*
->  F:	drivers/clk/imx/
->  F:	include/dt-bindings/clock/*imx*
->  
-> +NXP i.MX REMOTEPROC DRIVERS
-> +M:	Peng Fan <peng.fan@nxp.com>
-> +M:	Daniel Baluta <daniel.baluta@nxp.com>
-> +M:	Shengjiu Wang <shengjiu.wang@nxp.com>
-> +L:	linux-remoteproc@vger.kernel.org
-> +L:	imx@lists.linux.dev
-> +S:	Maintained
-> +F:	drivers/remoteproc/imx*
-> +
+The S32G SoC family has 2 PCIe controllers based on Designware IP.
 
-Here I am suggesting:
+Add the support for Host mode.
 
-M:	Daniel Baluta <daniel.baluta@nxp.com>
-R:	Peng Fan <peng.fan@nxp.com>
-R:	Shengjiu Wang <shengjiu.wang@nxp.com>
+Change since v2:
+
+- More cleanup on DT binding to comply with schemas/pci/snps,dw-pcie.yaml
+- Added new reg and bit fields in pcie-designware.h 
+- Rename Kconfig PCIE_NXP_S32G and files to use pcie-nxp-s32g prefix
+- Prefixed s32G registers with PCIE_S32G_ and use generic regs otherwise
+- Use memblock_start_of_DRAM to set coherency boundary and add comments
+- Fixed suspend/resume sequence by adding missing pme_turn_off function
+- Added .probe_type = PROBE_PREFER_ASYNCHRONOUS to speedup probe
+- Added pm_runtime_no_callbacks() as device doesn't have runtime ops
+- Use writel/readl in ctrl function instead of dw_pcie_write/read
+- Move Maintainer section in a dedicated entry
+
+Change since v1:
+
+- Cleanup DT binding
+  - Removed useless description and fixed typo, naming and indentation.
+  - Removed nxp,phy-mode binding until we agreed on a generic binding.
+    Default (crnss) mode is used for now. Generic binding wil be discussed
+    in a separate patch.
+  - Removed max-link-speed and num-lanes which are coming from
+    snps,dw-pcie-common.yaml. They are needed only if to restrict from the
+    the default hw config.
+  - Added unevaluatedProperties: false
+  - Keep Phys in host node until dw support Root Port node.
+
+- Removed nxp-s32g-pcie-phy-submode.h until there is a generic clock and
+  spectrum binding.
+
+- Rename files to start with pcie-s32g instead of pci-s32g
+
+- Cleanup pcie-s32-reg.h and use dw_pcie_find_capability()
+
+- cleanup and rename in s32g-pcie.c in addtion to remove useless check or
+  duplicate code.
+
+- dw_pcie_suspend/resume_noirq() doesn't woork, need to set child device
+  to reach lowest state.
+
+- Added L: imx@lists.linux.dev in MAINTAINERS
 
 
->  NXP NETC TIMER PTP CLOCK DRIVER
->  M:	Wei Fang <wei.fang@nxp.com>
->  M:	Clark Wang <xiaoning.wang@nxp.com>
-> 
-> -- 
-> 2.37.1
-> 
+Vincent Guittot (4):
+  dt-bindings: PCI: s32g: Add NXP PCIe controller
+  PCI: dw: Add more registers and bitfield definition
+  PCI: s32g: Add initial PCIe support (RC)
+  MAINTAINERS: Add MAINTAINER for NXP S32G PCIe driver
+
+ .../bindings/pci/nxp,s32g-pcie.yaml           | 102 ++++
+ MAINTAINERS                                   |   9 +
+ drivers/pci/controller/dwc/Kconfig            |  10 +
+ drivers/pci/controller/dwc/Makefile           |   1 +
+ drivers/pci/controller/dwc/pcie-designware.h  |   8 +
+ .../pci/controller/dwc/pcie-nxp-s32g-regs.h   |  37 ++
+ drivers/pci/controller/dwc/pcie-nxp-s32g.c    | 439 ++++++++++++++++++
+ 7 files changed, 606 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+ create mode 100644 drivers/pci/controller/dwc/pcie-nxp-s32g-regs.h
+ create mode 100644 drivers/pci/controller/dwc/pcie-nxp-s32g.c
+
+-- 
+2.43.0
+
