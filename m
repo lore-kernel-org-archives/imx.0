@@ -1,159 +1,63 @@
-Received: from mail-m49228.qiye.163.com (mail-m49228.qiye.163.com [45.254.49.228])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3B11D63C7
-	for <imx@lists.linux.dev>; Wed, 22 Oct 2025 01:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54BE225D6;
+	Wed, 22 Oct 2025 01:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761095764; cv=none; b=pT9/vBrLGn91DQCviN100FL1ZJx11Fa6DUEgyD/4yvMfjrjmjJDqmArY1i+97S1VjS/LIWcR4miYWyBbH0b2xiZXDR1PC4QeSOQ4jviRh+oySC6GhSGcb+lCv7ynWyRty5OE0RLSeXOUhwp/XrrEKch/nkJzXjdrsCGcqFaxJzM=
+	t=1761096293; cv=none; b=PwDagooNZAEtHf3ysVwNGdnS3ob+V0PafywlEMEQ08bBGzogq8g9O+eNOq20nMbDkjjuVslCvdu36H1LGV0pL3KcI/Wv48jSGs7qd5vNSWh5OcgDNY/Rd31H1At20r12N9T3DsjqQPJnaOunDO2kIYR3Zdnx1c1ucv1xMK0IqIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761095764; c=relaxed/simple;
-	bh=cBRz0RRJDinH4NIFc2MNyQ84IjGm7KmyCTz8GUuWGOk=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=f+yJwtTFIfD3IuOsDQl3/4K/Rw5gQnEgTCSabiz+NAHoRVZIKh8cJY9BwJ/WNAHCqAx873e+0oDrM4KpB9Q/6z1bpjhGqr/nIKyArET05Bk8CKjaBkey/n+I7cd06GwGYoe1qvqKIm5ejVzYSeSmq8PjnR7QpayjtuO+ROWHaYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=G3IBa/UR; arc=none smtp.client-ip=45.254.49.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1761096293; c=relaxed/simple;
+	bh=ImvvdbfzB6HTGA12tfQTbRUeE+HdGp/ZNkyQny1llug=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mHCX2w04e1mu7kod/5KxxHkHq6cOeIyR3tIby/2UQIv15HEioGkXW+8UidV1AzIAvugyzUa4G+MzgrY5fafXKXmffQAy8CvpI1LfBZ4lo1yL5dtMG/28IIWWwI6gG1fvMjVc8E2KXGb3o7jOLFJ0RAu6TWih5CpyfMVen0IwY3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VGZ5zzxY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="G3IBa/UR"
-Received: from [172.16.12.26] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 26b816b55;
-	Wed, 22 Oct 2025 09:15:54 +0800 (GMT+08:00)
-Message-ID: <ff65f453-68a9-41fc-b9e3-02733bba96e3@rock-chips.com>
-Date: Wed, 22 Oct 2025 09:15:52 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VGZ5zzxY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEDDC4CEF1;
+	Wed, 22 Oct 2025 01:24:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761096293;
+	bh=ImvvdbfzB6HTGA12tfQTbRUeE+HdGp/ZNkyQny1llug=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=VGZ5zzxYZvPAtVrAWFsClaxYAeADA/Uhr2baEI4iJxb9HWHEd0qIJP3IWqDSJIv0E
+	 kKzQ6JSIkJBiB/SwhshQEPg98WpuIqUzl2KGbUfL/ejuKMqLDlEE/4Hn5tHjxBYdoj
+	 WbiuVZxlVapHplXRCQc7k+tfHrWp7GS/TFxZuEaYRj9QO6/e8bRf2fbh6hlrqGXmAT
+	 rDBbP1FkjiYdPx+I06NYiYbGO91Wf5MKdlNAobfrcPksGrVlycp8hkeVCUrpUs+vlO
+	 MlhuN+AeQjB03VipQTpXTvPHARMAjWwN2a/C3fOcwP2fz8dFMMZdF3L48+df72QPdD
+	 WzyUMni9dPiEg==
+Date: Tue, 21 Oct 2025 18:24:51 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, Siddharth Vadapalli <s-vadapalli@ti.com>,
+ Roger Quadros <rogerq@kernel.org>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, imx@lists.linux.dev, linux-omap@vger.kernel.org,
+ Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, Russell
+ King - ARM Linux <linux@armlinux.org.uk>, Paolo Abeni <pabeni@redhat.com>,
+ Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>
+Subject: Re: [PATCH net-next 1/4] net: phy: add iterator phy_for_each
+Message-ID: <20251021182451.33de59e8@kernel.org>
+In-Reply-To: <7d33ee44-8558-40d9-b258-2942b2caf95f@gmail.com>
+References: <68a7779c-acc2-45fc-b262-14d52e929b01@gmail.com>
+	<7d33ee44-8558-40d9-b258-2942b2caf95f@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Damon Ding <damon.ding@rock-chips.com>
-Subject: Re: [PATCH v7 01/18] drm/display: bridge_connector: Ensure last
- bridge determines EDID/modes detection capabilities
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
- neil.armstrong@linaro.org, rfoss@kernel.org
-Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
- kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
- jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
- heiko@sntech.de, andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com,
- dianders@chromium.org, m.szyprowski@samsung.com, jani.nikula@intel.com,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
-References: <20251021023130.1523707-1-damon.ding@rock-chips.com>
- <20251021023130.1523707-2-damon.ding@rock-chips.com>
- <DDNXIYL494D2.2N8L1J7XTBT4S@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <DDNXIYL494D2.2N8L1J7XTBT4S@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-HM-Tid: 0a9a097ca16b03a3kunm40777dd76b3afa
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGU5NTVZIGRkYGB1CSENNHk5WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=G3IBa/UR/LuPN+iUHG5BfBsR0wakY08fMpbIcc22chg3Yl2mDJuP3hApodwjF7Dp3I5RcHlsanrTg0887GoJUZgyuAx5TMRcyEawoDSmH9l/4xI5P1euGxlyg400GezPKB85JhtiTT1ZShmJwtVe+NOdaGsfV+2hDV4p/3K+h9E=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=zauBUVRHLTtxfE8FEqH72ce8GCghwo6SRo4GbUPwtY0=;
-	h=date:mime-version:subject:message-id:from;
 
-Hi Luca,
+On Fri, 17 Oct 2025 22:41:12 +0200 Heiner Kallweit wrote:
+> +#define phy_for_each(_bus, _phydev)			\
+> +	for (_phydev = phy_find_first(_bus); _phydev;	\
+> +	     _phydev = phy_find_next(_bus, _phydev))
 
-On 10/21/2025 6:31 PM, Luca Ceresoli wrote:
-> Hello Damon,
-> 
-> On Tue Oct 21, 2025 at 4:31 AM CEST, Damon Ding wrote:
->> When multiple bridges are present, EDID detection capability
->> (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
->> (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities are
->> determined by the last bridge in the chain, we handle three cases:
->>
->> Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
->>   - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
->>     &drm_bridge_connector.bridge_edid to NULL and set
->>     &drm_bridge_connector.bridge_modes to the later bridge.
->>   - Ensure modes detection capability of the later bridge will not
->>     be ignored.
->>
->> Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
->>   - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
->>     &drm_bridge_connector.bridge_modes to NULL and set
->>     &drm_bridge_connector.bridge_edid to the later bridge.
->>   - Although EDID detection capability has higher priority, this
->>     operation is for balance and makes sense.
->>
->> Case 3: the later bridge declares both of them
->>   - Assign later bridge as &drm_bridge_connector.bridge_edid and
->>     and &drm_bridge_connector.bridge_modes to this bridge.
->>   - Just leave transfer of these two capabilities as before.
->>
->> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
->> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
->>
->> ---
->>
->> Changes in v7:
->> - As Luca suggested, simplify the code and related comment.
->> ---
->>   drivers/gpu/drm/display/drm_bridge_connector.c | 16 ++++++++++++----
->>   1 file changed, 12 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu/drm/display/drm_bridge_connector.c
->> index baacd21e7341..7c2936d59517 100644
->> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
->> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
->> @@ -673,14 +673,22 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
->>   		if (!bridge->ycbcr_420_allowed)
->>   			connector->ycbcr_420_allowed = false;
->>
->> -		if (bridge->ops & DRM_BRIDGE_OP_EDID)
->> -			bridge_connector->bridge_edid = bridge;
->> +		/*
->> +		 * Ensure the last bridge declares OP_EDID or OP_MODES or both.
->> +		 */
->> +		if (bridge->ops & DRM_BRIDGE_OP_EDID || bridge->ops & DRM_BRIDGE_OP_MODES) {
->> +			bridge_connector->bridge_edid = NULL;
->> +			bridge_connector->bridge_modes = NULL;
->> +			if (bridge->ops & DRM_BRIDGE_OP_EDID)
->> +				bridge_connector->bridge_edid = bridge;
->> +			if (bridge->ops & DRM_BRIDGE_OP_MODES)
->> +				bridge_connector->bridge_modes = bridge;
->> +		}
->>   		if (bridge->ops & DRM_BRIDGE_OP_HPD)
->>   			bridge_connector->bridge_hpd = bridge;
->>   		if (bridge->ops & DRM_BRIDGE_OP_DETECT)
->>   			bridge_connector->bridge_detect = bridge;
->> -		if (bridge->ops & DRM_BRIDGE_OP_MODES)
->> -			bridge_connector->bridge_modes = bridge;
->> +
-> 
-> This does not apply on current drm-misc-next, due to the patch I mentioned
-> in a previous iteration, now applied as commit 2be300f9a0b6 ("drm/display:
-> bridge_connector: get/put the stored bridges").
-> 
-> However I'm sorry I have to mention that patch turned out being buggy, so
-> I've sent a series to apply a corrected version [0]. I suggest watching the
-> disucssion about the fix series, and if that gets approved rebase on top of
-> that and adapt your changes.
-> 
-> Sorry about the mess. :(
-> 
-> [0] https://lore.kernel.org/r/20251017-drm-bridge-alloc-getput-bridge-connector-fix-hdmi_cec-v2-0-667abf6d47c0@bootlin.com
-> 
-> 
+Wouldn't this better be called mii_for_each_phy() or
+mii_bus_for_each_phy() ?
 
-I saw your fix patches before sending this series. I think your patches 
-will likely be merged relatively quickly, so I plan to wait until the 
-other patches in my patch series are confirmed to be fine, then submit 
-v8 version based on the latest bridge_connector driver. :-)
-
-Best regards,
-Damon
-
+To an outsider and with PHY typologies it may not be
+sufficiently obvious that this helper is used to iterate
+a all addresses on a MII bus.
