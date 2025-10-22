@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529AD2F60CD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A302F616A;
 	Wed, 22 Oct 2025 07:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761117765; cv=none; b=Pfzkg1K88Fgh/coDjl5UVFjqQgHNrw4kylZie2CQC8Ey5eI/Y5edKUJYwo4rkac1nhc6B16zOzNLadnf5HhzjweXakwRWfSDEgLrp55S+WMQa7s6n+Qf/Dro1zdnpTf6rOZmoYuPxh8w8GrKa/rSUBeTLxE3jsyqPnAg1KT56q4=
+	t=1761117765; cv=none; b=XueliUmCtI5nkOdZq64kTjVC9nycOVVMpJ3tudbGwhQ8EwxomtxeL7TE3pt4+pQZ/A+N77QShU9e7kN5KmHMLPqoPKQADqsXJ+vEpjSVxdMp+5vR5a0Swf0fjZaPefC+Y8/YqdwRcIsUncX5C3lBYnhavy8am+UGDZnoBWGBDuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761117765; c=relaxed/simple;
-	bh=E8/kihkhTiu168XMirf3dOLHmK8izSyrje/VlWah0zs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=j6VA5piV5em5Kkb2rfXR759PSE+5la19gAEdQ7Q6TTFofRVGsaq1QrB2w/sZtEaQXYy1T5MrYlONTUfi20cQpVcYWB0AHThw7Otj8FXXCOKtAPJmaNEOWrzsivDVBgb9myNjC4mQFgp/3JKpYMdVe+2uwcaktyhMgwrn8iNKtBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vHNTd8Dn; arc=none smtp.client-ip=10.30.226.201
+	bh=6MxoejU7iKxp9mf2s8THn5c4jDLFtHOP5ivmjYnDox0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=C29Re8NP/fFdU9x8W83Mjnou5N4HTfeID4unScWmZLszvc3yS+10lljukyaFhG9jBSmDes1Ls1c/TTvc0iBTpO6dYbetwWZnvlKvUQzkQvRakynAPE6oy+fDSPMoD1Q5KwWlOrJyN9FVhKiYzIuy0r08nbVrHlC3Xv4I+sUEgcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tCDAuass; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vHNTd8Dn"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EB065C4CEF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tCDAuass"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DF02EC4CEF7;
 	Wed, 22 Oct 2025 07:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761117765;
-	bh=E8/kihkhTiu168XMirf3dOLHmK8izSyrje/VlWah0zs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=vHNTd8Dnh6AOFAzLShHOGLutF/C2YYTJyRKnwdMBT1CQKASjadSocrqA/5aUmfQ5s
-	 jjQeTaiktHe7E87KeUAQ2MNzPtsDnGmn1WavFG5M1x6xlh9eTJ7KgZgjc+HuS3QhZq
-	 DxiyVdcprdUc/xCUg92Q1rApL2rTM1buGoyGzqwijJaHHiCFQe5tPG1687Iq58DyRs
-	 SBvLU26pV2HDKM3qiNLTNWjzRYEXpZmaYk9+ff+vCpTBeGHd4reXq8MbzwrB3kIoaF
-	 XXg49JKhRrGBlqKbsV8DJCKqpD0VTt00++xAIDPUxM3Z7LQHNq1tUsuH93AE0CndD8
-	 cRqI9sf36q4nw==
+	s=k20201202; t=1761117764;
+	bh=6MxoejU7iKxp9mf2s8THn5c4jDLFtHOP5ivmjYnDox0=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=tCDAuass2USKptSp3Urz8RFIJHosHnDRCL4O9vUQ3W3xWunIvmY5E8wNzeUr9cdXp
+	 2Aq822wED1ySumLmTyB04CNMJLDr+pV/bD7yCddj6zLV6PZh29zYSOTJCsvpg9b0Lt
+	 92k4Y2sL7b0dgHcWJt01DN4MWEPOnaPvWQlqmGBJlwitgEk2ACamqmFURB5qU2DNnv
+	 lmBDWIsK35ebK1ILK2favwL67F6tdq1OaD0dURQvaZwNpbGeyc+3R+f9H+zwzTZq/F
+	 BVC0RNq/gtS9wWUfNBcZsofpLWW8AlVhcqMe/RazTNBroARP1E9iyA4VI1Y3kxVppy
+	 IbWISFKwt97eA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DDBCBCCD1AB;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE4D7CCD195;
 	Wed, 22 Oct 2025 07:22:44 +0000 (UTC)
 From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Wed, 22 Oct 2025 09:22:37 +0200
-Subject: [PATCH v2 1/5] dt-bindings: arm: fsl: Add GOcontroll Moduline
- IV/Mini
+Subject: [PATCH v2 0/5] arm64: dts: freescale: add support for the
+ GOcontroll Moduline IV/Mini
+Date: Wed, 22 Oct 2025 09:22:36 +0200
+Message-Id: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,9 +41,10 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251022-mini_iv-v2-1-20af8f9aac14@gocontroll.com>
-References: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
-In-Reply-To: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
+X-B4-Tracking: v=1; b=H4sIADyG+GgC/2XMQQqDMBCF4avIrJuSjIZqV71HkSLpqAOaKYmEF
+ sndm7rt8n88vh0iBaYI12qHQIkjiy+BpwrcPPiJFD9LA2q0RutOrez5wUkN2pJ16AxiDeX9CjT
+ y+5DufemZ4ybhc8DJ/NZ/Ixml1Vi3beeaDht7uU3ixG9BluXsZIU+5/wFvo3v0aMAAAA=
+X-Change-ID: 20251009-mini_iv-a05e5c2c1223
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -54,11 +55,11 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  Maud Spierings <maudspierings@gocontroll.com>, 
  Conor Dooley <conor.dooley@microchip.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761117763; l=1088;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761117763; l=1486;
  i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=xk1QHN6fEYu7dupAJB/GRXJerfPV6Gc/qAkprGWhb0I=;
- b=DF9KIyEso7Uhu/qgM5d8/mlZde9Vl+UPpGZJREQwlvEpGDdmgps97PtJZm0tPpZFYXmO9GqIe
- RarkcCwKj3jDYPSfSneQdEwvbojtCS+jh1Wogpfc2P/OgXKc0WDSY5t
+ bh=6MxoejU7iKxp9mf2s8THn5c4jDLFtHOP5ivmjYnDox0=;
+ b=8EDC4BIHHluETyJsGoyj3Ub5ZCMaVm7eZYUrj9HEkXC3ILQwIrUDvDuWDi3lD+10vmAFhAPht
+ fbrq37zJBZJCz9pkBRodQSo996DWROXX/di837e4v0DP/zUj/N4dKZ4
 X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
  pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
 X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
@@ -66,31 +67,41 @@ X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
 X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
 Reply-To: maudspierings@gocontroll.com
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+Add initial support for the Moduline IV and Moduline Mini embedded
+controllers.
 
-Document the compatible strings for the Moduline IV and Mini.
+These systems are powered by the Ka-Ro Electronics tx8m-1610 COM, which
+features an imx8mm SoC.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
- Documentation/devicetree/bindings/arm/fsl.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+Changes in v2:
+- Fix allignment issue in imx8mm-tx8m-1610.dtsi (fec1)
+- Move phy-reset into fec (works better in barebox)
+- Make the gpio-line-names groups of four on every line
+- Link to v1: https://lore.kernel.org/r/20251009-mini_iv-v1-0-f3889c492457@gocontroll.com
 
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index 00cdf490b0620..41eb19e3530da 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -963,6 +963,8 @@ properties:
-               - fsl,imx8mm-evkb           # i.MX8MM EVKB Board
-               - gateworks,imx8mm-gw75xx-0x # i.MX8MM Gateworks Board
-               - gateworks,imx8mm-gw7904
-+              - gocontroll,moduline-iv
-+              - gocontroll,moduline-mini
-               - gw,imx8mm-gw71xx-0x       # i.MX8MM Gateworks Development Kit
-               - gw,imx8mm-gw72xx-0x       # i.MX8MM Gateworks Development Kit
-               - gw,imx8mm-gw73xx-0x       # i.MX8MM Gateworks Development Kit
+---
+Maud Spierings (5):
+      dt-bindings: arm: fsl: Add GOcontroll Moduline IV/Mini
+      arm64: dts: imx8mm: Add pinctrl config definitions
+      arm64: dts: freescale: add Ka-Ro Electronics tx8m-1610 COM
+      arm64: dts: freescale: Add the GOcontroll Moduline IV
+      arm64: dts: freescale: Add the GOcontroll Moduline Mini
 
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   2 +
+ arch/arm64/boot/dts/freescale/Makefile             |   3 +
+ arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h     |  33 +
+ .../imx8mm-tx8m-1610-moduline-iv-306-d.dts         | 801 +++++++++++++++++++++
+ .../imx8mm-tx8m-1610-moduline-mini-111.dts         | 691 ++++++++++++++++++
+ .../arm64/boot/dts/freescale/imx8mm-tx8m-1610.dtsi | 439 +++++++++++
+ 6 files changed, 1969 insertions(+)
+---
+base-commit: 7c3ba4249a3604477ea9c077e10089ba7ddcaa03
+change-id: 20251009-mini_iv-a05e5c2c1223
+
+Best regards,
 -- 
-2.51.1
+Maud Spierings <maudspierings@gocontroll.com>
 
 
