@@ -1,181 +1,288 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013046.outbound.protection.outlook.com [52.101.72.46])
+Received: from mx-relay102-hz1.antispameurope.com (mx-relay102-hz1.antispameurope.com [94.100.133.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E30343D8D
-	for <imx@lists.linux.dev>; Wed, 22 Oct 2025 12:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F404A347BDA
+	for <imx@lists.linux.dev>; Wed, 22 Oct 2025 13:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.89
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761137797; cv=fail; b=Ph/OGdeqGhhZvwayi0VZYiiU+miUqP4eB0HEWeGlrGhlYo7Hgah6kRV/hUipukR1oFh8hWaZqcYaDjfOFWCd4prGdmuPuIMbonFeeohtQRtzpjFk4JEt1w3uKKb4kMxY+xdZSjultpb2rd+9/zTc9CR8rOn4e3OY459tefm3qsM=
+	t=1761140288; cv=pass; b=jUk3DYIlfRBHldRyi5r9RNBOTY9usrl1l5/z8aTM26r7LDB7y9FYDUh9t4Qq0mEPySWQLqHGIYCKlbZDQ4IE1/lfXJ/i8coWzSyTTTyaY4R/XVpklBFPSGNmTQtumuGoeDnQ4ZZWYANXRFA9VedR5rReHFKBnp74lTGdZDdj2VM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761137797; c=relaxed/simple;
-	bh=x+7Z3iaynrbJAEile5xJ7OLlTzeO25NDwMhFhg1xiiE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=TCtIuyaPIe7jInnFZSzEr8IPjPoAxpA6bI7zF03RLea3+nMXGXVsAUaYZIAE6wk1hue714GAE9ljEF8bOFu1gQKICTvaE7lx+BmPtFwI3V8pq8dUGzMtOY5f8Y4opVbkRBE1F5/GcjLa/Y47lmznN4Z2mOFrfwIuqBD0IGQHqUI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=rDb1SJD4; arc=fail smtp.client-ip=52.101.72.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1761140288; c=relaxed/simple;
+	bh=jfmq/xxFUjoorgJj8DOsAfY/DMuLUG+cxIPyCkVDlLc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=E5MaV/8vfL/8mB/JOnJADSG5aNJuOAIZN+wXBFs9PVBZ/RPBpN5Wpm2M/pgYs6yl1QUh/g2EXu4dt85SvkW0Z9V1itEsb/WOB+Oh9gBXF5xwPPcbzaWUp52/PF5lYmPR/bs7cAzU/Tbygm3+957QLayo4oJqi+5rJAJ0IoEkIxM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=hL/9MHen; arc=pass smtp.client-ip=94.100.133.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="rDb1SJD4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NkgPyD0Hh9TzfORRO8BUz9o7tqGUrD0D8gFUYsj6H/D5o/ZTsiMlzMiOD9YPx/SWK7A7cLvtKL51QOBpXCfaqKSaapzJu1QHEFzqJjvy5z6VfdgmBxLYpQm/1NU4VB+gyfNBlXcNUrHpp6m0qjnMjco7cWL6rjl60OQFMg3XoAW2VX86v0Kj8YQh25imIKsQS0PLzpj4pZNHzeZdVziKdqN1fr3BAOPhOpJ67VmzfIbR3S7NG8nmGbUg+ZOW4GXqbmqyKmcuAbNIO/ao5/dhDuQ4tNhDLn2MwGKLK8bG1iVvLfo4/Q9GWvg7WXNJxx2jdfff4uQRRcbJn5SAkG8eAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gK9gMw0tq8GSwmEVT7IN2PN5lAbDLA8eTkkW+xFntNw=;
- b=pUWbdg+L1CSrjFtC6cnhSdPzYjkwspSHu6muwNr/vFWIEQQgmrFB27PW8ipEjyySNDTNWXRZ8BiyPjzKdt9Dl0rIhdTJHr/snWwbDAcMdtZTdUCFr9Z7uSW0/pmFdAQqD0Hj2DkeceKIruR1ubdJrLyTsYVHHPBRt/wut4bppZXuI6yhEIlXGHo5tVaVC2JQfKqMzPXNOUT+PnfBzECpS/wY5w0HDAbZNmsxxAlxR+X3yMqZZpXgx0vtsazU3LAwxn4/08IyYDbaEV2zrcrF/G9HMAhJXqtve0zBAVOcEAre7L48LDHKn5lN/mSZfL0f4NuSfr3Lh0RtbW67jldudg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gK9gMw0tq8GSwmEVT7IN2PN5lAbDLA8eTkkW+xFntNw=;
- b=rDb1SJD44WIw19D+eqBaaMr6ju5f4kApu15aliG7+RA6fUTe8uakebW6NKhn8By7Imq+rCp8geUQR9yr+JAlfyl4RELXADkElKl5rLhZIhwDCw6TjB9zlsW7BDlTFD+lwb9ySsXniTAz2Ax4JTqQh75ONnDe5Oi6ahx7dXBygWCSIkKV0YXrjESujqM4+m5scHL1dz3Z8H2y3Fn/clA4ZwH8W09AuXm5Trz29nQ8tWbX/GO8od2Y3gZBL4hufwP0GVkZZm6cKs13wc4XApMTQKWrskoaYXCdmUA75bgS3EIKvoDVPRNykuK10u+7YaHBoenhPB/sZxOHPXHhzt4RWw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PA1PR04MB11530.eurprd04.prod.outlook.com (2603:10a6:102:4e1::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Wed, 22 Oct
- 2025 12:56:30 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9253.011; Wed, 22 Oct 2025
- 12:56:30 +0000
-Date: Wed, 22 Oct 2025 22:08:41 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-clk@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v2 2/8] dt-bindings: clock: document 8ULP's SIM LPAV
-Message-ID: <20251022140841.GB11174@nxa18884-linux.ap.freescale.net>
-References: <20251017112025.11997-1-laurentiumihalcea111@gmail.com>
- <20251017112025.11997-3-laurentiumihalcea111@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251017112025.11997-3-laurentiumihalcea111@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SG2PR02CA0044.apcprd02.prod.outlook.com
- (2603:1096:3:18::32) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="hL/9MHen"
+ARC-Authentication-Results: i=1; mx-gate102-hz1.hornetsecurity.com 1;
+ spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=1DebWUerm1P3b92vVeQv2ZKMa4RczUkTUoAChT1TsvQ=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1761140220;
+ b=ZRpygTJcz3F1+3ijA8cBuZMLeYnEsDQ29tPbM9MuNi/4sWvRDQDilyg9INiWCY/uBcufRmnE
+ zvIcLjcZpnsOlrnBc16kIJzQpk3ohikNZ8fdinhOX9gkBsTcWT/PNwn3B6AVZ72z8Ss/SRq/svo
+ owAaiK0y2XSL0hTSvQh6eKWeA3W5XwN2g+nRncC6XSxCXCbXhN8zYbTORu8PLz+FsjqpYtbyzzZ
+ mBgsQp4iQo71ZoOEzdeS4rMyvb08KffDX1p716yZKfOGJTeIW2XKOZ5CwYGzjTJi86YnGebVX62
+ vviD48jEvSXQJvLD61yTe7BlaMy6hwwrUQor+NVTz927A==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1761140220;
+ b=B+cApKgMcb9IRAb9o4kSdOmd3f06yK//DMh8kLkaFGLJv7OA5LHHuqNHptc40hEw5ZXAnr3c
+ G4YaJpsm/v3Fmp6QUZKCLVnW0shm9/rtZSe9PFBm7ejCricn16kr0sUHPzZTO5H18cO+Wqi92HJ
+ aR7YlqmKt6u8BW0zyR3ImUedkvO9/dFvXB7bcaVpPDPcph0VgNYKO0TfvHFh8ZOx1Y+EBKKcAhm
+ EDv/FWoe06ZWnb9Wxfz81oSToOyJzCLUZREOiAaHbv3XxDTth6mkyVvkr7s4QG9FUHsTbLnFY+D
+ NPwrB0plcQenJdr1p4XYv3Z7sSTf3RYiaU/dNeV3jbDAA==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay102-hz1.antispameurope.com;
+ Wed, 22 Oct 2025 15:37:00 +0200
+Received: from [192.168.153.128] (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: matthias.schiffer@ew.tq-group.com)
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 14121220C57;
+	Wed, 22 Oct 2025 15:36:52 +0200 (CEST)
+Message-ID: <d46d07858a3b5cc9134e17509617901e2215122f.camel@ew.tq-group.com>
+Subject: Re: [PATCH] serial: imx: allow CRTSCTS with RTS/CTS GPIOs
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
+ <jirislaby@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-serial@vger.kernel.org,  imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+Date: Wed, 22 Oct 2025 15:36:51 +0200
+In-Reply-To: <1963351b2e50c537418293e6ab9293576a239c98.camel@ew.tq-group.com>
+References: <20251016113730.245341-1-matthias.schiffer@ew.tq-group.com>
+	 <cdkpp74ra2ltr7h46psutkwnzyvl4iegcicnhqqj7svm5trltm@w2egfj5nryjm>
+	 <7d3df04c482e71760ccc941469c99412b608c92b.camel@ew.tq-group.com>
+	 <lgse44as4k6fpzarztfnfl7wbxq2bfg5k7m7l6xlsyx23pmem4@khal3tytgwjn>
+	 <1963351b2e50c537418293e6ab9293576a239c98.camel@ew.tq-group.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PA1PR04MB11530:EE_
-X-MS-Office365-Filtering-Correlation-Id: c1eb435d-85ae-4401-3ca6-08de116a6b81
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|52116014|1800799024|7416014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WmuXzur68/2+FDRshHflJWfWcWSp7byPiovJpAMedE6GsDJtQrfiS5pwMcEq?=
- =?us-ascii?Q?CY+B6Oek3rnZk+Y/92ymMRZv5KMYS+o2MfQJxZuVNhu2iJPljPvcbccKzcdN?=
- =?us-ascii?Q?ypAuEwWb5slm541wuQZ8TABdWeYqMFfPpWPM12AO0xYCR9UyUM9MtAZ9+dVY?=
- =?us-ascii?Q?FoXXFygXiWgYeiyZrwgdarkl03pBZMTmLotsokxM00OQRAA2kyg4k6m2SmaV?=
- =?us-ascii?Q?/R7EHuGVTL5Fx9Qe+jSLruCdoAuNIfH70NWncxN+cGyVz4onBprAGWZ8fVMt?=
- =?us-ascii?Q?MTJ7iWUJjfo9CZgglAQ0ddKzio/d6a1cv6sNNYXEEZmREY6c+JVjHUgDYqGn?=
- =?us-ascii?Q?YqsHWPjhDgbRuVsnCRrsgCQk33VTWgLT9aNHJVFwOXLqO5BbYslC4dftnLyV?=
- =?us-ascii?Q?W2+ZfszOtDH98aKk/zr5LUJKiwLJM2LcJFurQu61a+CtIyY5+73estmAs1iA?=
- =?us-ascii?Q?FM3wVLJUJ8+Uy9l5Mbh1ZIm5+FYIOgS35hOzCDcdb+d2M8MEZJ9nIMhzb11F?=
- =?us-ascii?Q?oCPU4ZBYj0iQazuAoxThmSCVm5BCds9UEDP0GQPFK8IV0eW8JVxVRBMbQNGT?=
- =?us-ascii?Q?00DR48PMHw05h7E/9jWyAiKbF9xISqd7A9UWEUQGRcleK3AI1b5dU6n2I/VT?=
- =?us-ascii?Q?MAnzjDJSwIcey0wCZZTiSlQQ7YDxfk7WMvDXPBLRgZvP0xD0RBGeW8x1WOjN?=
- =?us-ascii?Q?zS2tTQegEz5RBRE1nHS/aj54VTF3wYXaYB3BUoFl8FXhB80/boO7J65HeG0J?=
- =?us-ascii?Q?AsZRXwe3E5GTEwK/IeMFXPia5umYiDJAukKsI+LNkuLO/b66ZgprnHrlkM7E?=
- =?us-ascii?Q?4xuirr1T8FdqMzJzt4Ls6FjZ3OVggCg1+PFQmGlNxJw/fb7bVQXpwnsMsUa1?=
- =?us-ascii?Q?5JwgN+rhImtqEDaYRCx//nzVbBoi7nUGz5CancAmdfVzsfr0rhQMBw2pRZhI?=
- =?us-ascii?Q?eiPPU/snSp2H1uRJVurOWlQh0Yvom+AmLIlkSs1uTMtxTBIcduENGfqQmz9W?=
- =?us-ascii?Q?/PScaAKYDFxRwfN8GbQWk7THXKJ6bUywIYlzZB51QzonK4PSOEPXB2aGyU3f?=
- =?us-ascii?Q?swiJlbbo58f39Ap76gjFXKRwqShrMFrZY/To8643MeRjFiPMuqxWS6Fh0QW+?=
- =?us-ascii?Q?znMXuIIgezECEtnrjqdrwbK6td+Jp8XzMiViWBm5R3vuHiotMvmCmLyDr4Hv?=
- =?us-ascii?Q?+B722qNNiLHGym5eHfSnBUNXiy5A+bCwU8xYwTjUi2BNs/4oAjZLHgQVWoup?=
- =?us-ascii?Q?YWQqdnlwjZ34ogLBiWAJta71uHZr6UQTMFX9hB1jL+rUpOJnI795jzJ3u5Q8?=
- =?us-ascii?Q?Pm7OYxTVySGQGoULLAwZNG2qwrTNHHeG0DC88fXSdl3J4guuOCIFmmXaMpM+?=
- =?us-ascii?Q?3nncNlRWIG4tA2cg7iI6Pt0jEoq5AGT7U4ykC+HSXtdFC1XNuec1myFIy+6p?=
- =?us-ascii?Q?aarMiUv1yFYhqJOucsIYePEYBbnkIq1UDeaBeWoT58BAFtJkcLb6W5JSatXY?=
- =?us-ascii?Q?I3iLwST0nngwIlH2xPaJrCjrGwdOdU+zmSPV?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(52116014)(1800799024)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?UKwXkqpRtdMOcfbqIVDtb5QvuZlX7fk92Gd4+hetbTqz5N2fCl5mZ3qiRAfV?=
- =?us-ascii?Q?+NUHSbsTeEC9nnMfOaMBdmJpHQ1s744B7mG5Y3/FzOcNUcSoRB2TJuvgDXh0?=
- =?us-ascii?Q?KX75Jx6/IltfqeH4i0CL0EXj2cAuA968w1jJDNEfz9pgIX8idPGASXgk7r2r?=
- =?us-ascii?Q?wMr6PXfMZRPFGYGv0y4OQ1Jd5aj6OnXYkWL2vO8pk/lk7P/2LBaMLlyPlc6F?=
- =?us-ascii?Q?Q0yFbX4uzweDhXlnk2//l5Jk5JlOuCdl7J6LaiE6PGCTs7b1I+YsMT7cz2aU?=
- =?us-ascii?Q?WubT9Q26vtleJVzKjK4ITYDlzgnjNRnZlQVAfQHfmXzShjKMSCwc1JIpcoxr?=
- =?us-ascii?Q?i3dLvcwkzxqxH+soGZ2tO4lRzXGHvpFdAVsSYQ28S4+l6uI6TUYVdHbBHwrE?=
- =?us-ascii?Q?ZCW+iR9tLUNMpPpsYHueISpC4U4UoqzMOXHaCNPCTUf36NC8WUuoHn/fs0Nw?=
- =?us-ascii?Q?JuuLdQ/oLgvFaZYHA5r/YmpN0zH0FgVCLtycIZVTwQstBVY2ZJ93WptlN3fr?=
- =?us-ascii?Q?Kv5bkOhXsEUyDJi5TgiiyeNghznytrxYLwr6O8840AA73u1QapajQKGsYq26?=
- =?us-ascii?Q?WuhS5KvHmxfQChsjxNu/oGlWUpPLo4Wqb9LJhze2yi48wVvxQlK4GF1SKtnv?=
- =?us-ascii?Q?DdTdzGuQ11uOkPuZAVZnJQR46J/MNz7T2smIGv8eu0JOaOPem/DylrLb3N6n?=
- =?us-ascii?Q?am3kI1u20G5/gN9qQpMCP3347Quk1UWQRDJRPJx4fpy2XrXeWDtLQ3ofz09u?=
- =?us-ascii?Q?DadUdSA767pcXQMUYwOauebF3tfOX9DLdWQBvfXh6yVfwY8AwxjNN/O72Ch4?=
- =?us-ascii?Q?nnlVGcCnHw2BwypAzOGLJvBF4+TM2KPAn9L2LG8pmQ7Cfq30PDxXU54JqhPE?=
- =?us-ascii?Q?DcsCuKq9GGwfkP4c5Yg1d3u5GGJeKKtxpLT7vAFAZq6zEviKE/CrqQ3xJpLE?=
- =?us-ascii?Q?v6z83Hu+CqG4sjExhdN8+kBFZP8B0QdKFoxHK6TIaZvGhSYQ1mrF4h83QX5o?=
- =?us-ascii?Q?tkxhEc8SFkX7l1N9/kMKFV6mHQTKR4vCwDHzIiIiCOgmYbHD4QfA7GrapkO5?=
- =?us-ascii?Q?Fgd0Y2+3r7oATtZH2ndichoqZeIJsJuYXG1x/DbLQ9F7LhLM1/wPJ70HpiA6?=
- =?us-ascii?Q?RhyVhPk/NCx3mUUdvTva+2L5PHde7KPRG5N4nfarGQzhoF8vi4A6gS/wjF7S?=
- =?us-ascii?Q?3T5vUu7B6LhSa1rlI5/k7ZWUPKSiYJ7gkPLGVPBa3/8mfcFbqCGj74Kbi52e?=
- =?us-ascii?Q?NOG+zfBoC05Pq2zClibQ9I8zXEh9LZraRMx5oRzUeaXH7QAqikRH9c7e4Z/+?=
- =?us-ascii?Q?lrgDCswxon/dBN5ESjqGuwgdLFVqLdQ5S2aqkBBZiuQRjaUjBccFLzlBXvNZ?=
- =?us-ascii?Q?APBeUllhKERW2g77aDv3wdqTEafjp+iaJjFrtJIYUTF8tQkB7ZKNcNOzI9E4?=
- =?us-ascii?Q?ZGMtoST8SsP1kqIQ508ieSdGrGMUlNHdbAPYFxo6pK39X1eJwIRs9LvmZPM2?=
- =?us-ascii?Q?RbGO7qmJ/0iGYMQl7MkXGPoVPPv4ZRGTosfdIYgREPBPOR3luBwEX3uvx7Ah?=
- =?us-ascii?Q?Ir+EchDDsoJGChNtIQ4vsyykKyMT9Vxw/rjnS4bE?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c1eb435d-85ae-4401-3ca6-08de116a6b81
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2025 12:56:30.3615
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IFo/8isqWJ59HmuQTcRQloDQKSzWlCtZoSGv4P39NpkrWjFEG1H0g1En9CsMEna3/r4QcENWJYpVm1twQ8UE+w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11530
+X-cloud-security-sender:matthias.schiffer@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: matthias.schiffer@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay102-hz1.antispameurope.com with 4cs9F04rnBz1H2R
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:2922bd59ae7bb4f5e6d1e8192f878683
+X-cloud-security:scantime:1.834
+DKIM-Signature: a=rsa-sha256;
+ bh=1DebWUerm1P3b92vVeQv2ZKMa4RczUkTUoAChT1TsvQ=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1761140219; v=1;
+ b=hL/9MHenQdcsYpbRkQp6Un7njjRbiJW0insOGBu65XRDRIV0s6vbgk/czzXxwFvUlwy6bWyj
+ WZrIQyS+hN8m5waP9rXeLj+bTQ3ciZmzTe+v0Ckdp02uGKBRePrezJ0enEETiL8/5/O952PadH8
+ I4gALx41mmvKNx+Ih1qQLD8boNQJrTWzyAdVO/v6P3Tg0MGtPj5n1MkQLBcQz1ECgomNGfvbuj5
+ bKJLuw9hyqIgbabt5qCxpu0l7pb69cNje9gWc16fCHK3GuRWUZoPnK+vgZiEP55coOMIHpMzPJ/
+ arng5xSIw048aVgrz7ovwHucYqPzsT3vy6MOEEnjirGgg==
 
-Hi Laurentiu,
+On Tue, 2025-10-21 at 11:37 +0200, Matthias Schiffer wrote:
+> On Tue, 2025-10-21 at 10:59 +0200, Uwe Kleine-K=C3=B6nig wrote:
+> > Hello Matthias,
+> >=20
+> > On Mon, Oct 20, 2025 at 10:09:29AM +0200, Matthias Schiffer wrote:
+> > > On Fri, 2025-10-17 at 17:01 +0200, Uwe Kleine-K=C3=B6nig wrote:
+> > > > On Thu, Oct 16, 2025 at 01:37:30PM +0200, Matthias Schiffer wrote:
+> > > > > The CTS GPIO is only evaluated when the CRTSCTS termios flag is e=
+nabled;
+> > > > > it should be possible to enable the flag when only GPIO and no ha=
+rdware-
+> > > > > controlled RTS/CTS are available. UCR2_IRTS is kept enabled in th=
+is case,
+> > > > > so the hardware CTS is ignored.
+> > > > >=20
+> > > > > Fixes: 58362d5be352 ("serial: imx: implement handshaking using gp=
+ios with the mctrl_gpio helper")
+> > > > > Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.c=
+om>
+> > > > > ---
+> > > > >  drivers/tty/serial/imx.c | 10 +++++-----
+> > > > >  1 file changed, 5 insertions(+), 5 deletions(-)
+> > > > >=20
+> > > > > diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> > > > > index 500dfc009d03e..4a54a689a0603 100644
+> > > > > --- a/drivers/tty/serial/imx.c
+> > > > > +++ b/drivers/tty/serial/imx.c
+> > > > > @@ -1117,8 +1117,8 @@ static void imx_uart_set_mctrl(struct uart_=
+port *port, unsigned int mctrl)
+> > > > >  			ucr2 |=3D UCR2_CTS;
+> > > > >  			/*
+> > > > >  			 * UCR2_IRTS is unset if and only if the port is
+> > > > > -			 * configured for CRTSCTS, so we use inverted UCR2_IRTS
+> > > > > -			 * to get the state to restore to.
+> > > > > +			 * configured for hardware-controlled CRTSCTS, so we use
+> > > > > +			 * inverted UCR2_IRTS to get the state to restore to.
+> > > > >  			 */
+> > > > >  			if (!(ucr2 & UCR2_IRTS))
+> > > > >  				ucr2 |=3D UCR2_CTSC;
+> > > > > @@ -1780,7 +1780,7 @@ imx_uart_set_termios(struct uart_port *port=
+, struct ktermios *termios,
+> > > > >  	if ((termios->c_cflag & CSIZE) =3D=3D CS8)
+> > > > >  		ucr2 |=3D UCR2_WS;
+> > > > > =20
+> > > > > -	if (!sport->have_rtscts)
+> > > > > +	if (!sport->have_rtscts && !sport->have_rtsgpio)
+> > > > >  		termios->c_cflag &=3D ~CRTSCTS;
+> > > > > =20
+> > > > >  	if (port->rs485.flags & SER_RS485_ENABLED) {
+> > > >=20
+> > > > This hunk makes sense.
+> > > >=20
+> > > > > @@ -1794,7 +1794,7 @@ imx_uart_set_termios(struct uart_port *port=
+, struct ktermios *termios,
+> > > > >  		else
+> > > > >  			imx_uart_rts_inactive(sport, &ucr2);
+> > > > > =20
+> > > > > -	} else if (termios->c_cflag & CRTSCTS) {
+> > > > > +	} else if ((termios->c_cflag & CRTSCTS) && sport->have_rtscts) =
+{
+> > > >=20
+> > > > I agree to add the parens here and consider this more readable than=
+ the
+> > > > alternative
+> > > >=20
+> > > > 	} else if (termios->c_cflag & CRTSCTS && sport->have_rtscts) {
+> > > >=20
+> > > > . Note there is no real win here. If the port doesn't have RTS/CTS =
+it
+> > > > doesn't matter if it tries to control the RTS line. While you could
+> > > > argue it shouldn't set the line, it only makes an externally observ=
+able
+> > > > difference if one of the SoC's pads is muxed to its RTS function.
+> > > > I claim it's more robust in this case (i.e. no uart-has-rtscts prop=
+erty
+> > > > but a pinmux for the RTS line) to control the line according to the=
+ RTS
+> > > > setting. This is (at least IMO) better and more expected than drivi=
+ng
+> > > > this line to a constant level. So I oppose to this hunk.
+> > > >=20
+> > > > >  		/*
+> > > > >  		 * Only let receiver control RTS output if we were not request=
+ed
+> > > > >  		 * to have RTS inactive (which then should take precedence).
+> > > > > @@ -1803,7 +1803,7 @@ imx_uart_set_termios(struct uart_port *port=
+, struct ktermios *termios,
+> > > > >  			ucr2 |=3D UCR2_CTSC;
+> > > > >  	}
+> > > > > =20
+> > > > > -	if (termios->c_cflag & CRTSCTS)
+> > > > > +	if ((termios->c_cflag & CRTSCTS) && sport->have_rtscts)
+> > > > >  		ucr2 &=3D ~UCR2_IRTS;
+> > > > >  	if (termios->c_cflag & CSTOPB)
+> > > > >  		ucr2 |=3D UCR2_STPB;
+> > > >=20
+> > > > Hmm, not sure. On one hand the same argument applies as above, but =
+on
+> > > > the other if there are pins that are not explicitly configured but =
+still
+> > > > in their CTS function this might affect operation in a bad way.
+> > > > Also this affects the (very usual) configuration where only RX, TX =
+and
+> > > > RTS are used and CTS is not. In this case have_rtscts is true (righ=
+t?)
+> > > > and then if there is an accidental CTS pin this is bad and not fixe=
+d by
+> > > > your change. Hmmm...
+> > >=20
+> > > I think it makes sense to always keep UCR2_IRTS set when have_rtscts =
+is unset,
+> > > as otherwise there might be two separate CTS signals in the accidenta=
+l CTS pin
+> > > case - the hardware + the GPIO one, both affecting the UART operation=
+.
+> >=20
+> > With that change you break setups that have an RTS-GPIO but rely on the
+> > HW pin for the CTS function. Not sure how common that is, but in this
+> > case you only want the first code change. You could argue that in that
+> > case have_rtscts should be set, but that's somewhat fuzzy.
+>=20
+> Such a setup should set have_rtscts IMO. In any case, my patch would not =
+break
+> existing setups, as the CRTSCTS flag simply cannot be set for !have_rtsct=
+s
+> without these changes.
+>=20
+> >=20
+> > > If we keep this change (the 3rd), the 2nd should also be included for
+> > > consistency in the code path where I just changed a comment - there, =
+UCR2_CTSC
+> > > is set only when UCR2_IRTS is unset. The 2nd and 3rd change together =
+keep
+> > > imx_uart_set_mctrl and imx_uart_set_termios aligned.
+> > >=20
+> > > >=20
+> > > > So in sum the 2nd and 3rd code change is controversial. If the firs=
+t one
+> > > > already fixes the problem you're facing, I suggest to go for only t=
+hat.
+> > > > If you still think that the 3rd (and maybe even the 2nd) change is =
+a
+> > > > good idea, I'd request to do that in a separate commit as this is a
+> > > > separate problem. Also the commit log only describes the first chan=
+ge,
+> > > > doesn't it?
+> > >=20
+> > > The commit message describes the first and third change; the second i=
+s included
+> > > to keep the setup consistent. I don't think these changes can be sepa=
+rated well
+> > > - the second and third change only affect a case that couldn't occur =
+without the
+> > > first (as (termios->c_cflag & CRTSCTS) && !sport->have_rtscts would n=
+ever have
+> > > been true). My suggestion would be that I extend the commit message t=
+o explain
+> > > each change in detail.
+> >=20
+> > I'd still request to split the patch in at least two patches. The first
+> > code change is to allow rts-gpios to work at all. The two later patches
+> > change details about how HW pins are controlled in the presence of
+> > rts-gpios
+>=20
+> Okay, will do.
 
-On Fri, Oct 17, 2025 at 04:20:19AM -0700, Laurentiu Mihalcea wrote:
->From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->
->Add documentation for i.MX8ULP's SIM LPAV module.
->
->Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->---
->+description:
->+  The i.MX8ULP LPAV subsystem contains a block control module known as
->+  SIM LPAV, which offers functionalities such as clock gating or reset
->+  line assertion/de-assertion.
->+
->+properties:
->+  compatible:
->+    const: fsl,imx8ulp-sim-lpav
+Hmm, thinking about this again, I'm not sure how to assign Fixes tags if we=
+ do
+it like this. Depending on our decision on the correct handling of hardware=
+-
+controlled RTS/CTS in the presence of the GPIOs, the first patch might intr=
+oduce
+"wrong" code which is then fixed by the second (but the second patch could =
+not
+have a Fixes tag for the first patch of the same series).
 
-This block also contains QoS registers, General purpose registers, HIFI
-general purpose registers, and others.
+As it seems preferable not to introduce the wrong code in the first place, =
+I
+would propose to change the order of patches: The first one would update th=
+e
+handling of CTSC and IRTS with CRTSCTS in the absence of have_rtscts (witho=
+ut
+functional change, as CRTSCTS can't be set without have_rtscts), with the f=
+inal
+patch of the series allowing CRTSCTS with just have_rtsgpio.
 
-I am not sure whether need to add a syscon fallback here. dt maintainer may
-help comment.
+Best,
+Matthias
 
-Regards,
-Peng
+--=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+https://www.tq-group.com/
