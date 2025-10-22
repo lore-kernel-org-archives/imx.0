@@ -1,80 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65472D481C;
-	Wed, 22 Oct 2025 17:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBCA2D5941
+	for <imx@lists.linux.dev>; Wed, 22 Oct 2025 17:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761154774; cv=none; b=JTqcgaiYKU+cYp5JzpkI8uHCCPb7XA3b4bxVQCI6XqjsFsH6+FNolGwHotf2zHIFdl8NE8u4LSkeRCOoeKT3DzIFvcRpJdDSif+9zpAdwyVJEC4zErOubdt561RWF4nSQGnO+qJUFQazfldNawIzbKXW38EDr7dI845d78CoIrk=
+	t=1761154893; cv=none; b=YSkTDjVB5i/RkNzf7QEsblytwCUD7pIC8T8O+SKaqDwSY7MZq8fyeNxIdwdpNIJ8McycWWbp+TVjttpJyD3367+LhhboSER7quc2fM4ieNiRhNW0ql1FuxT2IYzsohm6dhru1kP+E48yr+Q5Zx8H+N/V6rCbCpXEeTz5qvG0dtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761154774; c=relaxed/simple;
-	bh=24OkgosBerV7T+lgYIYHuKbrujn61EaFVukeV2kjpwI=;
+	s=arc-20240116; t=1761154893; c=relaxed/simple;
+	bh=HLBPhheU6Sdkv+wRlRlVzbDRgyBTZMrIiQW9rt4vggY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UJgk5gw5Q8tm/oU8ESq+2YPnefyM1PgLw3g0fU+0U2FokicKJ8DXmvQyCgr6ZhX2pDfvsTnFhBtwJJdcTLXB/TgT4KStsa+kRpwgJp4VHLH+R+wJabN0i9NchUsjm6eVSL9qstgW3v35z1ceVf1HlPwSBR9qN+OpwN300Nb1Gsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNk+wK5/; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=II5roxtH+RPEzD3V1YApGSQxreKbabFCEwpD9n1qcsTh/KQsR2b3xKeZlaBPqTMz4pxVgtXNAnIsHtE1OC8l/PMoVeJ96PSXa9GCMi+dZRK7KZf8WlnYarFSYJuNWqdfm5ENu/kJzWmkxFT2mvdyEDX3YnoCtIdxKxeXlMsnnhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mvW+bi+z; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNk+wK5/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5DFC4CEE7;
-	Wed, 22 Oct 2025 17:39:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761154774;
-	bh=24OkgosBerV7T+lgYIYHuKbrujn61EaFVukeV2kjpwI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BNk+wK5/F5AARFiynLtMZjhIK0/T/uIjd66vNx6B9TgIlKTHJWNVpcEnYlevf/Wb0
-	 WqSJW45hV8z2EC4oTCKgxUUk+PmS4cHKStL6T8i3PFZGHJukcU1qwPh9EyjnvhxGf1
-	 RrFb3JPiGn/Z1+uI8JTdPNQe5vp5s4pRSVK4UaGYs4tCOsf63TBoWkru2riYNbyNU7
-	 0AUfrIDEyn3nN+vdxQZPzMccFMWL7yJCWGAWN8AxUgDevs6J2P5ks3ZXBOjf4pKlbf
-	 ZXxYF/9Zs98v+u2YFW+0wDtgZaz9u2OhWX1c1+9r/pbXDRNekzJHlydj04fwN06Pe8
-	 nBpsBHDsEHTAw==
-Date: Wed, 22 Oct 2025 18:39:29 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Primoz Fiser <primoz.fiser@norik.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mvW+bi+z"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-77f67ba775aso9171308b3a.3
+        for <imx@lists.linux.dev>; Wed, 22 Oct 2025 10:41:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761154891; x=1761759691; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=H/yVbcNYBKxI7HZmam8giV90V8J7uwfsDvse/7ETWpU=;
+        b=mvW+bi+zBxvy+9zo0mLoEdM5W+s34Apxk0oCLGL0/8Yz1M/qmxTTaK7Hu/OEWra9Po
+         lKc3HNTEwRsCQJLrMBAaxml8grqbOhOs4qRBrmhx1cD0F2VOoAzAfCFTl00HCu+z0RcB
+         Xn3F6VQ9Kt4eyA0u26LsgQ90/7uBfYD+JExy834R1/iG7v4pbHApXIj9DhM85vw0tEPW
+         xC6vS5LltcLUwpGI8Hw4IWgt6J3r4nFtQrcL1cOORk9SwPOG84OzwMkamlGJCAA+RD4u
+         n0SkJjf+OKfY03M5+9COCxWSuw0XYH1eTQpq89XQuoErE9iuthifQh8E/HyIL201gRMk
+         VZUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761154891; x=1761759691;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H/yVbcNYBKxI7HZmam8giV90V8J7uwfsDvse/7ETWpU=;
+        b=nzzU9ZfqqSdXMaIB0Oq5355apFPEJeqUt6FtsZaHcg0jdJUbDqOonUT9kvSg7UGP7N
+         S/NtVEB0kLnsCq/oTGEfidxBXUGzRKugSiRud+KoEH+5HZHz6SrWSh50NSdbhH9m0OkF
+         tbgny+QSWbpI4k71tWGExBUWkDMerfNlC3DUbO6YBXmWXyGLVaheTNYU3Xqu0ezmg30F
+         6vl8gUyBWrvToUdMmvgur443TCUWi3QpzIH6NFdDszy1ER+WAwb3uvuhT+dgKrjS4VSy
+         44Ehw3avNvTFWxzvYO8bTW11nGuJOIBiEzv+/2PtUBGEk5FigoSUX7cMy4Tt/S6oZ4FK
+         deEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUj6JGCz6TMu6wvjN5PWrktDa5eRYfQba3ovIy2IZRLYH133XtH2HsIKJXMdrfmO4zZjyo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwLUwpBxRSQAI9VNwfQn8YhSX3wOaSGQGbszM573PHAe+3t6e1G
+	tnsejXY9ui/Du5Vr9Sig1zelp41J5XG7YcRo6Dp5mahGTz3TcEGMA+v8RszkC2dsCjk=
+X-Gm-Gg: ASbGncsbva/UralLlhsA4gHIvPYHoneBYdDUnAcm64ESnNGki44kld0yvIcsS1p2xjx
+	NH1GklROxrWd3zSyBTy5ytHg3QmQcEagIrSJ8KbvZp4b3KZsKIU78pXYEGB0dlbZZdTpvYhJ2tn
+	3vKyaElkeeFimaBAcJLaEkmlXFRBa1iWBaZU+0zgdVnaDx3rOKyzvDlzPTvCZngqKtDFkbS5TMh
+	H6ioVXyOC92bxv4nFO1GLIS8uzP4LoITPBHhX58+XAK/Vja2bEbih7QOKsKbbdmRbZhToDJeuub
+	G8R2NihEJ8zVqCMbu3kw3/zRmniVaIESSYIgZ7O4Sf674tITvtOkTGBTfXJ+wQoUtJWEuqQqclm
+	WeN9erjA8mXrhzhnS8Zk503R8oTQkq3LBrV7epUxci6oVJ6sqnKFLtoCQ5D8lqxBdWm3z7ASo79
+	TlZgaNZT+nf7E3BQ==
+X-Google-Smtp-Source: AGHT+IHjwdJFhyPffGM4FBkB+w0a69ezxil2LnB/hHwjzMGVo9Ioll+93XMe3fLrl1LPLka9UTkijg==
+X-Received: by 2002:a05:6a00:9a0:b0:771:ead8:dcdb with SMTP id d2e1a72fcca58-7a220a7e712mr26747780b3a.8.1761154890617;
+        Wed, 22 Oct 2025 10:41:30 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:7843:84f1:e4ca:d99d])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a22ff39654sm14983897b3a.31.2025.10.22.10.41.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Oct 2025 10:41:30 -0700 (PDT)
+Date: Wed, 22 Oct 2025 11:41:27 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <frank.li@nxp.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, upstream@lists.phytec.de
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Add PHYTEC
- phyBOARD-Segin-i.MX91 board
-Message-ID: <20251022-eraser-latticed-6d0291a07589@spud>
-References: <20251021093704.690410-1-primoz.fiser@norik.com>
+	Fabio Estevam <festevam@gmail.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 5/5] MAINTAINERS: Add an entry for i.MX remoteproc
+ driver
+Message-ID: <aPkXRy7TsPCrq_s-@p14s>
+References: <20251015-imx-rproc-c3_1-v3-0-b4baa247358d@nxp.com>
+ <20251015-imx-rproc-c3_1-v3-5-b4baa247358d@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kvtMwzI9nOsPH2Aq"
-Content-Disposition: inline
-In-Reply-To: <20251021093704.690410-1-primoz.fiser@norik.com>
-
-
---kvtMwzI9nOsPH2Aq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20251015-imx-rproc-c3_1-v3-5-b4baa247358d@nxp.com>
 
-On Tue, Oct 21, 2025 at 11:37:03AM +0200, Primoz Fiser wrote:
-> Add device-tree bindings for PHYTEC phyBOARD-Segin-i.MX91 board based on
-> the PHYTEC phyCORE-i.MX91 SoM (System-on-Module).
->=20
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+On Wed, Oct 15, 2025 at 09:52:59PM +0800, Peng Fan wrote:
+> Add an entry for the i.MX remoteproc driver
+> 
+> Acked-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  MAINTAINERS | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c9cdb95dc150a55df405adc3cb853c61f4c2b467..02dea709a5a5d591f156becd35640dfd93fe62e0 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18610,6 +18610,15 @@ F:	Documentation/devicetree/bindings/clock/*imx*
+>  F:	drivers/clk/imx/
+>  F:	include/dt-bindings/clock/*imx*
+>  
+> +NXP i.MX REMOTEPROC DRIVERS
+> +M:	Peng Fan <peng.fan@nxp.com>
+> +M:	Daniel Baluta <daniel.baluta@nxp.com>
+> +M:	Shengjiu Wang <shengjiu.wang@nxp.com>
+> +L:	linux-remoteproc@vger.kernel.org
+> +L:	imx@lists.linux.dev
+> +S:	Maintained
+> +F:	drivers/remoteproc/imx*
+> +
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+Here I am suggesting:
 
---kvtMwzI9nOsPH2Aq
-Content-Type: application/pgp-signature; name="signature.asc"
+M:	Daniel Baluta <daniel.baluta@nxp.com>
+R:	Peng Fan <peng.fan@nxp.com>
+R:	Shengjiu Wang <shengjiu.wang@nxp.com>
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaPkW0QAKCRB4tDGHoIJi
-0pJqAP0RqklqLO4Tj2pIuOr/1kpPnRUHFAdHRi7L4FSO4wfjMwD+IHHxz9L47553
-PrSJhvtbBG2KwrOsGRDYOkUzyGz2Tw4=
-=ZqaT
------END PGP SIGNATURE-----
-
---kvtMwzI9nOsPH2Aq--
+>  NXP NETC TIMER PTP CLOCK DRIVER
+>  M:	Wei Fang <wei.fang@nxp.com>
+>  M:	Clark Wang <xiaoning.wang@nxp.com>
+> 
+> -- 
+> 2.37.1
+> 
