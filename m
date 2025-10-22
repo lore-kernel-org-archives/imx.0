@@ -1,137 +1,96 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09982F290E
-	for <imx@lists.linux.dev>; Wed, 22 Oct 2025 06:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761116397; cv=pass; b=CYRVsuizEwD3r6S1YoFcorsqiViqJIYf78EatHxmzhonc/tFaY220e1e5mktqNuJtQ/7jkBh7UQf2eWq5smOEMBTDTmA6IBb4m1GnVNlEUf3wLFKPDOybOgZdcFqLrpN7w8UbfyqfBYsNoM8InY11HL/wvTUKayCr0exx9Nd7mo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761116397; c=relaxed/simple;
-	bh=RsWchHbELTivadR+0rIWFwyZFY5yk9Z2SlOJZ7YoLlo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iSDRU53nu7DmHc1HPzKYdirwuZP6G1ZQ9iCSDVRb2KZa3I6Mq0FdVTZJkCtsEUsxinZkFcr8HQ2aGddK46G5oOA2Hz7RvMhvhXBTpX/xri+wVh9KgTWYHRUBznGGNOAGaeXJzpyZkVDLMAcc22waGTDiIjsQpvTyrFTSTwRbceA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=OuGmIJ8O; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529AD2F60CD;
+	Wed, 22 Oct 2025 07:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761117765; cv=none; b=Pfzkg1K88Fgh/coDjl5UVFjqQgHNrw4kylZie2CQC8Ey5eI/Y5edKUJYwo4rkac1nhc6B16zOzNLadnf5HhzjweXakwRWfSDEgLrp55S+WMQa7s6n+Qf/Dro1zdnpTf6rOZmoYuPxh8w8GrKa/rSUBeTLxE3jsyqPnAg1KT56q4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761117765; c=relaxed/simple;
+	bh=E8/kihkhTiu168XMirf3dOLHmK8izSyrje/VlWah0zs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=j6VA5piV5em5Kkb2rfXR759PSE+5la19gAEdQ7Q6TTFofRVGsaq1QrB2w/sZtEaQXYy1T5MrYlONTUfi20cQpVcYWB0AHThw7Otj8FXXCOKtAPJmaNEOWrzsivDVBgb9myNjC4mQFgp/3JKpYMdVe+2uwcaktyhMgwrn8iNKtBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vHNTd8Dn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="OuGmIJ8O"
-Received: from hillosipuli.retiisi.eu (91-158-51-183.elisa-laajakaista.fi [91.158.51.183])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sailus)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4cs0Qj2FTnz49Q6J;
-	Wed, 22 Oct 2025 09:59:41 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1761116381;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5s9tZ0plDw04XwnJ5ZHGqexlhG4hJB0+iwmd9AJaK6w=;
-	b=OuGmIJ8O0bNLXyfl/DOR87mbWDaGq8s7nrUYgaZdUNx+S2t0ROBOcgxdwOn8gD9jNLtGYm
-	FhWtHLm7XvXW+zrnoGmC9O9QQxaGCnesp5vBwOUZeJmHPiZgIILHYkKjlpRmyRIotkVv0N
-	ZU47G0eHkhD7Y/6iQNXWfi2Lugw2UR+bOmxqqtN1VG1bnr2/m7iLHiY5QjD2lda9a7mtXW
-	xkalyMPp4MRRbpho5Ka0MGoTEt4jNzRpvZDzOXJLP4K8VgR3lGk/gpeNazM/Fy1EeyMh5e
-	ImT5plat6EHVohgjDaY/juuTwc86ECUmwqr88iuizFi6foWRl5mvcYC0MsEtew==
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1761116381; a=rsa-sha256;
-	cv=none;
-	b=AsLWqzwwpeSWK7s89tLugPc5/LYNXM8zDE5kJ7H9uLCl36VRGwO25QswhfQSsg5PejbWk4
-	T5xqk7oVZj3l5vheEyvY3+S6t2VXLGTkBKXL/6iJgHyyTj01nbI5gJc+4actapHD1F/ymI
-	yQvW/Wf0YJEdiNXwtOFmwg0qgBsN3wRN58NpYAkI+XfbxEx0OmHNdH+vDRUmUHCsoWQu5l
-	ae9Le61iS3vSQ0tpEyyICym2lNxgD1KJGrUIQRMd6z8Rx2ZuSzwV8b/u0VosObXmF6THOS
-	452ahEM1gqB9Ve6lE2tpb7hZvCUa9LJrN7v4OwXt22SePD4xZpchI+MyBv5acg==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1761116381;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5s9tZ0plDw04XwnJ5ZHGqexlhG4hJB0+iwmd9AJaK6w=;
-	b=UrwaRpOdekIoCIzNLX/haEcKkfIGnlHb3Arz6cIjfgonkRGB13JVMsfFDiygkN1L3hTuuc
-	OcOJ7TZ+MdLj/H7b45z5TopCkIiWEc2gYH+09VEigvGBOIFneWVkzJO3kltYdZfPDW2uRJ
-	3JBCHc9bgaI/baCgMMGYAxYPqITTJ8S/QdBI4+lOxyuoxfKEhxcun+dEH/8EOSYODWJE4E
-	tHcd487GFCiNJV73gwhU98LS7/oMCYPu98yLfTv8QStULq3tYWToZAt+gCvIBbFUmt/965
-	SAGIzPBceOMRyJLKd8TYKXfhzRdjRWcgVKaSimjGvJ8ZMjTzJUbOajSm1+xgPA==
-Received: from valkosipuli.retiisi.eu (valkosipuli.local [192.168.4.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id E5D6F634C50;
-	Wed, 22 Oct 2025 09:59:40 +0300 (EEST)
-Date: Wed, 22 Oct 2025 09:59:40 +0300
-From: Sakari Ailus <sakari.ailus@iki.fi>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>, Hans de Goede <hansg@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:OMNIVISION OV2680 SENSOR DRIVER" <linux-media@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] media: dt-bindings: ovti,ov2680: Use
- unevaluatedProperties for endpoint
-Message-ID: <aPiA3G9x_RsTL9Mv@valkosipuli.retiisi.eu>
-References: <20250827194919.82725-1-Frank.Li@nxp.com>
- <aPdLmWM8a_ikhJfK@valkosipuli.retiisi.eu>
- <aPepRZOL1Ys4PH/u@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vHNTd8Dn"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EB065C4CEF5;
+	Wed, 22 Oct 2025 07:22:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761117765;
+	bh=E8/kihkhTiu168XMirf3dOLHmK8izSyrje/VlWah0zs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=vHNTd8Dnh6AOFAzLShHOGLutF/C2YYTJyRKnwdMBT1CQKASjadSocrqA/5aUmfQ5s
+	 jjQeTaiktHe7E87KeUAQ2MNzPtsDnGmn1WavFG5M1x6xlh9eTJ7KgZgjc+HuS3QhZq
+	 DxiyVdcprdUc/xCUg92Q1rApL2rTM1buGoyGzqwijJaHHiCFQe5tPG1687Iq58DyRs
+	 SBvLU26pV2HDKM3qiNLTNWjzRYEXpZmaYk9+ff+vCpTBeGHd4reXq8MbzwrB3kIoaF
+	 XXg49JKhRrGBlqKbsV8DJCKqpD0VTt00++xAIDPUxM3Z7LQHNq1tUsuH93AE0CndD8
+	 cRqI9sf36q4nw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DDBCBCCD1AB;
+	Wed, 22 Oct 2025 07:22:44 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Date: Wed, 22 Oct 2025 09:22:37 +0200
+Subject: [PATCH v2 1/5] dt-bindings: arm: fsl: Add GOcontroll Moduline
+ IV/Mini
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aPepRZOL1Ys4PH/u@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251022-mini_iv-v2-1-20af8f9aac14@gocontroll.com>
+References: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
+In-Reply-To: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Maud Spierings <maudspierings@gocontroll.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761117763; l=1088;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=xk1QHN6fEYu7dupAJB/GRXJerfPV6Gc/qAkprGWhb0I=;
+ b=DF9KIyEso7Uhu/qgM5d8/mlZde9Vl+UPpGZJREQwlvEpGDdmgps97PtJZm0tPpZFYXmO9GqIe
+ RarkcCwKj3jDYPSfSneQdEwvbojtCS+jh1Wogpfc2P/OgXKc0WDSY5t
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-Hi Frank,
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-On Tue, Oct 21, 2025 at 11:39:49AM -0400, Frank Li wrote:
-> On Tue, Oct 21, 2025 at 12:00:09PM +0300, Sakari Ailus wrote:
-> > Hi Frank,
-> >
-> > On Wed, Aug 27, 2025 at 03:49:18PM -0400, Frank Li wrote:
-> > > The endpoint ref to /schemas/media/video-interfaces.yaml#, so replace
-> > > additionalProperties with unevaluatedProperties to allow use common
-> > > properties.
-> > >
-> > > Fix below CHECK_DTBS warnings:
-> > >   arch/arm/boot/dts/nxp/imx/imx7s-warp.dtb: camera@36 (ovti,ov2680): port:endpoint: 'clock-lanes', 'data-lanes' do not match any of the regexes: '^pinctrl-[0-9]+$'
-> > > 	from schema $id: http://devicetree.org/schemas/media/i2c/ovti,ov2680.yaml
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-> > > index 634d3b821b8c7..ec5c40684b6bd 100644
-> > > --- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-> > > +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2680.yaml
-> > > @@ -58,7 +58,7 @@ properties:
-> > >      properties:
-> > >        endpoint:
-> > >          $ref: /schemas/media/video-interfaces.yaml#
-> > > -        additionalProperties: false
-> > > +        unevaluatedProperties: false
-> >
-> > There are a lot more than just data-lanes in video-interfaces.yaml.
-> >
-> > Could you instead drop data-lanes and clock-lanes from the bindings? They
-> > are redundant.
-> 
-> What's your means?  drop data-lanes and clock-lanes from the dts file?
-> 
-> The board design may use less data-lanes, why it is reduntant?
+Document the compatible strings for the Moduline IV and Mini.
 
-That would be no data lanes at all then. The sensor supports a single lane
-only, which is why data-lanes isn't listed as a property in bindings.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 00cdf490b0620..41eb19e3530da 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -963,6 +963,8 @@ properties:
+               - fsl,imx8mm-evkb           # i.MX8MM EVKB Board
+               - gateworks,imx8mm-gw75xx-0x # i.MX8MM Gateworks Board
+               - gateworks,imx8mm-gw7904
++              - gocontroll,moduline-iv
++              - gocontroll,moduline-mini
+               - gw,imx8mm-gw71xx-0x       # i.MX8MM Gateworks Development Kit
+               - gw,imx8mm-gw72xx-0x       # i.MX8MM Gateworks Development Kit
+               - gw,imx8mm-gw73xx-0x       # i.MX8MM Gateworks Development Kit
 
 -- 
-Regards,
+2.51.1
 
-Sakari Ailus
+
