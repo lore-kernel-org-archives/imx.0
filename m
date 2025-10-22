@@ -1,88 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m49228.qiye.163.com (mail-m49228.qiye.163.com [45.254.49.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9240274666;
-	Tue, 21 Oct 2025 20:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3B11D63C7
+	for <imx@lists.linux.dev>; Wed, 22 Oct 2025 01:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761079848; cv=none; b=JkGRew9SKqQpRS7+UA0YQN9PQOkt9h30/DzPBuMZ8DvYAy8g6m5XTsl/nHqI2DP8fdgfwWShL4ejuq0I1pH35Fp3JNlT2tEdAyLHDRrBseowww8KkDwerrKUsRk31Blg+47vwz0mLeKsB4DznEwV05FJPAXnB/upCbB5qgjTZS4=
+	t=1761095764; cv=none; b=pT9/vBrLGn91DQCviN100FL1ZJx11Fa6DUEgyD/4yvMfjrjmjJDqmArY1i+97S1VjS/LIWcR4miYWyBbH0b2xiZXDR1PC4QeSOQ4jviRh+oySC6GhSGcb+lCv7ynWyRty5OE0RLSeXOUhwp/XrrEKch/nkJzXjdrsCGcqFaxJzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761079848; c=relaxed/simple;
-	bh=dxE7+bbsxi5QIGwvY2JoID7QprUOO5jJg+PQtEckxAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fazwJsaxlMYyP/41bOTjoI5XDUGveNgkwTy80S96M8CESDEaERFUvrP+Zs085cQF7AYODaRvCb6mYH2X527/PIcEF05kodenp8A8fvSLoVI6ILqj3ugvKFfTj1rxecOMNFRahGrrFcizlR/YX8C2koAzXNWbIWXQ67duUeFgKug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uy0GgF99; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761095764; c=relaxed/simple;
+	bh=cBRz0RRJDinH4NIFc2MNyQ84IjGm7KmyCTz8GUuWGOk=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=f+yJwtTFIfD3IuOsDQl3/4K/Rw5gQnEgTCSabiz+NAHoRVZIKh8cJY9BwJ/WNAHCqAx873e+0oDrM4KpB9Q/6z1bpjhGqr/nIKyArET05Bk8CKjaBkey/n+I7cd06GwGYoe1qvqKIm5ejVzYSeSmq8PjnR7QpayjtuO+ROWHaYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=G3IBa/UR; arc=none smtp.client-ip=45.254.49.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uy0GgF99"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B8FC4CEF1;
-	Tue, 21 Oct 2025 20:50:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761079846;
-	bh=dxE7+bbsxi5QIGwvY2JoID7QprUOO5jJg+PQtEckxAE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uy0GgF99hy3KCeJN56y/YReAHPTHDdo3bYZCUcnjYlnj7KtCj4/p8T0W52k6tN+gW
-	 4WEK+rld2szHliBsx60NKzLDdVVlffoKhQTsoubQsfGNA2C5od1W0eSOAr2w+t4SHY
-	 MSlKgYlZNLMXIz8Xrgls3/Ty5PVfZ233FyyhnjelHmwYAQZvFptO2+65VwjIGx2yUl
-	 nMaY94srD3+pJSb2LsEisEaFQeBmwz5jiT14fWwwUeg47sEwOBm4SE5TiMK0Rli2Go
-	 NmxrXrqvn6NNK56wAuaRkcs1buc0I4W5kz7IPkjLDbtREzgkjpp7ysklNU+dGI9OEz
-	 G4uqP1XdVuVXg==
-Date: Tue, 21 Oct 2025 15:50:44 -0500
-From: Rob Herring <robh@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: krzk+dt@kernel.org, conor+dt@kernel.org, claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 3/8] dt-bindings: net: ethernet-controller:
- remove the enum values of speed
-Message-ID: <20251021205044.GA776699-robh@kernel.org>
-References: <20251016102020.3218579-1-wei.fang@nxp.com>
- <20251016102020.3218579-4-wei.fang@nxp.com>
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="G3IBa/UR"
+Received: from [172.16.12.26] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 26b816b55;
+	Wed, 22 Oct 2025 09:15:54 +0800 (GMT+08:00)
+Message-ID: <ff65f453-68a9-41fc-b9e3-02733bba96e3@rock-chips.com>
+Date: Wed, 22 Oct 2025 09:15:52 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251016102020.3218579-4-wei.fang@nxp.com>
+User-Agent: Mozilla Thunderbird
+From: Damon Ding <damon.ding@rock-chips.com>
+Subject: Re: [PATCH v7 01/18] drm/display: bridge_connector: Ensure last
+ bridge determines EDID/modes detection capabilities
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org
+Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
+ kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
+ jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
+ heiko@sntech.de, andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com,
+ dianders@chromium.org, m.szyprowski@samsung.com, jani.nikula@intel.com,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
+References: <20251021023130.1523707-1-damon.ding@rock-chips.com>
+ <20251021023130.1523707-2-damon.ding@rock-chips.com>
+ <DDNXIYL494D2.2N8L1J7XTBT4S@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <DDNXIYL494D2.2N8L1J7XTBT4S@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-HM-Tid: 0a9a097ca16b03a3kunm40777dd76b3afa
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGU5NTVZIGRkYGB1CSENNHk5WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=G3IBa/UR/LuPN+iUHG5BfBsR0wakY08fMpbIcc22chg3Yl2mDJuP3hApodwjF7Dp3I5RcHlsanrTg0887GoJUZgyuAx5TMRcyEawoDSmH9l/4xI5P1euGxlyg400GezPKB85JhtiTT1ZShmJwtVe+NOdaGsfV+2hDV4p/3K+h9E=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=zauBUVRHLTtxfE8FEqH72ce8GCghwo6SRo4GbUPwtY0=;
+	h=date:mime-version:subject:message-id:from;
 
-On Thu, Oct 16, 2025 at 06:20:14PM +0800, Wei Fang wrote:
-> Some fixed-link devices have uncommon link speeds. For example, the CPU
-> port of NXP NETC switch is connected to an ENETC (Ethernet Controller),
-> they are fully integrated into the NETC IP and connected through the
-> 'pseudo link'. The link speed varies depending on the NETC version. For
-> example, the speed of NETC v4.3 is 2680 Mbps, other versions may be 8
-> Gbps or 12.5 Gbps or other speeds. There is no need and pointless to add
-> these values to ethernet-controller.yaml. Therefore, remove these enum
-> values so that when performing dtbs_check, no warnings are reported for
-> the uncommon values.
+Hi Luca,
 
-Every binding that used this was relying on these constraints. So you've 
-got to move them into the individual bindings. I'd leave a minimum and 
-maximum here.
+On 10/21/2025 6:31 PM, Luca Ceresoli wrote:
+> Hello Damon,
+> 
+> On Tue Oct 21, 2025 at 4:31 AM CEST, Damon Ding wrote:
+>> When multiple bridges are present, EDID detection capability
+>> (DRM_BRIDGE_OP_EDID) takes precedence over modes detection
+>> (DRM_BRIDGE_OP_MODES). To ensure the above two capabilities are
+>> determined by the last bridge in the chain, we handle three cases:
+>>
+>> Case 1: The later bridge declares only DRM_BRIDGE_OP_MODES
+>>   - If the previous bridge declares DRM_BRIDGE_OP_EDID, set
+>>     &drm_bridge_connector.bridge_edid to NULL and set
+>>     &drm_bridge_connector.bridge_modes to the later bridge.
+>>   - Ensure modes detection capability of the later bridge will not
+>>     be ignored.
+>>
+>> Case 2: The later bridge declares only DRM_BRIDGE_OP_EDID
+>>   - If the previous bridge declares DRM_BRIDGE_OP_MODES, set
+>>     &drm_bridge_connector.bridge_modes to NULL and set
+>>     &drm_bridge_connector.bridge_edid to the later bridge.
+>>   - Although EDID detection capability has higher priority, this
+>>     operation is for balance and makes sense.
+>>
+>> Case 3: the later bridge declares both of them
+>>   - Assign later bridge as &drm_bridge_connector.bridge_edid and
+>>     and &drm_bridge_connector.bridge_modes to this bridge.
+>>   - Just leave transfer of these two capabilities as before.
+>>
+>> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+>> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+>> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>>
+>> ---
+>>
+>> Changes in v7:
+>> - As Luca suggested, simplify the code and related comment.
+>> ---
+>>   drivers/gpu/drm/display/drm_bridge_connector.c | 16 ++++++++++++----
+>>   1 file changed, 12 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/display/drm_bridge_connector.c b/drivers/gpu/drm/display/drm_bridge_connector.c
+>> index baacd21e7341..7c2936d59517 100644
+>> --- a/drivers/gpu/drm/display/drm_bridge_connector.c
+>> +++ b/drivers/gpu/drm/display/drm_bridge_connector.c
+>> @@ -673,14 +673,22 @@ struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
+>>   		if (!bridge->ycbcr_420_allowed)
+>>   			connector->ycbcr_420_allowed = false;
+>>
+>> -		if (bridge->ops & DRM_BRIDGE_OP_EDID)
+>> -			bridge_connector->bridge_edid = bridge;
+>> +		/*
+>> +		 * Ensure the last bridge declares OP_EDID or OP_MODES or both.
+>> +		 */
+>> +		if (bridge->ops & DRM_BRIDGE_OP_EDID || bridge->ops & DRM_BRIDGE_OP_MODES) {
+>> +			bridge_connector->bridge_edid = NULL;
+>> +			bridge_connector->bridge_modes = NULL;
+>> +			if (bridge->ops & DRM_BRIDGE_OP_EDID)
+>> +				bridge_connector->bridge_edid = bridge;
+>> +			if (bridge->ops & DRM_BRIDGE_OP_MODES)
+>> +				bridge_connector->bridge_modes = bridge;
+>> +		}
+>>   		if (bridge->ops & DRM_BRIDGE_OP_HPD)
+>>   			bridge_connector->bridge_hpd = bridge;
+>>   		if (bridge->ops & DRM_BRIDGE_OP_DETECT)
+>>   			bridge_connector->bridge_detect = bridge;
+>> -		if (bridge->ops & DRM_BRIDGE_OP_MODES)
+>> -			bridge_connector->bridge_modes = bridge;
+>> +
+> 
+> This does not apply on current drm-misc-next, due to the patch I mentioned
+> in a previous iteration, now applied as commit 2be300f9a0b6 ("drm/display:
+> bridge_connector: get/put the stored bridges").
+> 
+> However I'm sorry I have to mention that patch turned out being buggy, so
+> I've sent a series to apply a corrected version [0]. I suggest watching the
+> disucssion about the fix series, and if that gets approved rebase on top of
+> that and adapt your changes.
+> 
+> Sorry about the mess. :(
+> 
+> [0] https://lore.kernel.org/r/20251017-drm-bridge-alloc-getput-bridge-connector-fix-hdmi_cec-v2-0-667abf6d47c0@bootlin.com
+> 
+> 
 
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
->  Documentation/devicetree/bindings/net/ethernet-controller.yaml | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/ethernet-controller.yaml b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> index 1bafd687dcb1..7fa02d58c208 100644
-> --- a/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> +++ b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
-> @@ -177,7 +177,6 @@ properties:
->              description:
->                Link speed.
->              $ref: /schemas/types.yaml#/definitions/uint32
-> -            enum: [10, 100, 1000, 2500, 5000, 10000]
->  
->            full-duplex:
->              $ref: /schemas/types.yaml#/definitions/flag
-> -- 
-> 2.34.1
-> 
+I saw your fix patches before sending this series. I think your patches 
+will likely be merged relatively quickly, so I plan to wait until the 
+other patches in my patch series are confirmed to be fine, then submit 
+v8 version based on the latest bridge_connector driver. :-)
+
+Best regards,
+Damon
+
