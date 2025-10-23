@@ -1,50 +1,77 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A05259CBC
-	for <imx@lists.linux.dev>; Thu, 23 Oct 2025 20:05:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7221718FDDE
+	for <imx@lists.linux.dev>; Thu, 23 Oct 2025 20:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761249925; cv=none; b=hS1GoJszlDnX+txTdk+kZ48R3HoGHO42fMNGl1ZP059m9t7zVKI7aFkDF2lT6b9YGZ5MYg9Mz96mvfaFb9RFAteTR2hQlYTSlPZK2F/NNC3+UBs2RNABNpW1YEdBLRU/W1WBsWPI88rPqMJLby8RRaojYsteofVUYEvBRdZDeXo=
+	t=1761250601; cv=none; b=hp+Cv2NcPJiEpTCTTK1nB0qxLC/BNMbbm1KC9GM1NWCxK6cRyB62ZZ6azonV6yUEiXo3Xse9yWv4hxeF8+7o8YxF1RHwaIfpPmawXwcfdAjxpu6pVvDqq8bREQRfVbaftj/viUiqUrnW0wj2bGtp4PxNLSVSPIlebraJ/8+TTL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761249925; c=relaxed/simple;
-	bh=oUYjDQBHUDFlbuuvZWTZCt/mx5zlXM/RUgOxcWVsZ7Q=;
+	s=arc-20240116; t=1761250601; c=relaxed/simple;
+	bh=fr+n8Ww5AbeMinkrbVJ0IIZGzI37BKWE2kT8u6n1VAI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MHDMmLSyOObqYcbSFqGyG66fUJoZ45WQYVfDEe0BnJqwvqt/7R2uNCGcuq1oUnZ0vfwCqXAMFO18J6kKDjK+WbmohdeyexJ0+wmgfXchrFR/6kxAqykMBomwiZsxfpahM7wMEfIMuiCMNIrkwtRwjNaIVw2ila38bpvqcBjxDn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=FOukngX7; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	 In-Reply-To:Content-Type; b=GJcWV30c7WIg6SmMQjLpIXyPiveBO8laOLNJuAzvuUBTvRWtATtNpUWKHKtUTXYUzjU19AGQpX1KGXKJdqpKOe37OVoD31gEky/bj8IfRzFfAyNnyM8EDdm3MBjhvdzPhnHhso9QcYZN0Kod0Y7XeWWUrBA+3xA6nHfBA2NOsuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xH+d5OYU; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="FOukngX7"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4csxpl6xZkz9syZ;
-	Thu, 23 Oct 2025 22:05:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1761249920;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZTu1GyMmRr5jRVz3DxG2pC8vNPi+HgdHRimaAWFOClw=;
-	b=FOukngX7r7iiiyjKQaWF+xeMU6eorFJkpXuQAGHeAy7lMzPkiiBO7lc7AvmEptwd53qNHd
-	stm4w7abAp7fMiEYiOUB9Il0lQa5U0esQ3/Sq66GBGbo9mwpa2K5CNBCgEOJgRmYgvXVRu
-	HLmeuW15nyu2Mr+kpwDDFvuMOq0deK9bHCUnsq1ObQJKOOlmpb6ma90tDUN+WbLIMMkRDg
-	yPDIZKXFgRuiuFTsduUHWOqb/M83CmNtpHj1HLeaCVGDOBi5D8wPCuQACaVv7Sl8cBwzst
-	nuefnVKjbsuu3VQm4SrsNgkL627ZSNqU88q6k261FgLjGrT2C14UXg0D73KLzA==
-Message-ID: <656164be-5ce7-4f9e-b6cd-0eb1b9305132@mailbox.org>
-Date: Thu, 23 Oct 2025 22:05:16 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xH+d5OYU"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4270a072a0bso225235f8f.0
+        for <imx@lists.linux.dev>; Thu, 23 Oct 2025 13:16:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761250597; x=1761855397; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=kR18xZLkIBD/v+YYlolu57R5lqheAjboSLyrb0PLlFA=;
+        b=xH+d5OYUUrgjiwPohXeC4+KKEigSXsI0Nz1l7FzkYIDLbFcqWWCJnb0CN05OeaYAe2
+         MnGY/QqAuaUnrzowUDCctsk2kTM8K0OLNgtY9Ck1iYdWbSBYsYAluWlGSVJBE4dIFgd5
+         D/NqAQYaA5yhzZpOsnOzeuclYMafllnV3xJ73WfUx12zVO30GJBkjlGeOE9q1mznRJcW
+         DPy04tHxhoIly3bIiwxwvIG2l7WJ2tbsQ0PcglcfpJADGkZ7s/rMxm/FgHMzCWufLGFm
+         F6OptoDip9vsBVlr22o027O9zE86nVdCnulq2PqTtlj0L2lihGbe/Fi73o0MHdg6HAPL
+         ZCcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761250597; x=1761855397;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kR18xZLkIBD/v+YYlolu57R5lqheAjboSLyrb0PLlFA=;
+        b=sAbDd9LW3QU4eBWvqFeMGltW02sOgeW2iJSRYpHhsa6/EcrwESl8J11ET4yaAKD+K1
+         TN9kFArlpyxZFJv9MMDXCsqfKBKNG6IvYjdqOXFO05tHwThtjRe6xxWUHieTYyHY+uHK
+         +CiPPiBU5SEM2LMBGj5JLmlCzBdt8algZb9m1bMLEAjNY4GdFrGuobK1m6xHO3octOJ8
+         uCp0hwyavpEWdU/rWo0yAHxYnrTCwqZRZf1PyPllcQT5sxFtJFjh7LqedEAxtRjNA7zb
+         k5CrBIiT/eqFTYgoWZau2fxEhmIbWEiRNF4fZjNRCHPtAUFFjnHfpDotsG2HviZHO115
+         adZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWfZrKU3xdSk6qJL1nqQSFMxaHEoxbbXuLYarDlASNLSWmF1a0vRCcCM/iruBf2NDka+Ew=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwSgG+y/WAqUHDoDgwJC0uF6zhc7MsDEwuF8miHEB9jd7SNFim2
+	DArI5RWJVxpkFRo4URZfsHoLvKhjM0O8qFt2pLvexgmW1tVkwXCiFKG0N8BfVvorlaI=
+X-Gm-Gg: ASbGncvI+MWaPpkgV/o9mkGc7Q6uZGKMPOT8/6tMg/6PjiwceWCA37GpGzqFY+vb2qz
+	1DSkpMzugqENLcoylDYM0xK2FHC+LrkOH7WwFVyWeYGskVaYdp+pHsYW4h4htJ2NPvCDfMaH/YQ
+	G+FZsy9+0CL37H7iERk2VsNjMHzpggAweRVzhSh7oG7T1PdwrYSlHlydjMhCdXPMHZTU6V/viHi
+	gtMdiFTTiW16UltC2tXPBSKVyE9B9Jp30wktMOuQMYgr7kZR9pvKVu3iJO4Vjaa9gt7Yg0cv3ou
+	ztcsQt9KuZzbtiNPGQJlfo5ueyzup2/UV4F5RvFTwqfK9ASyRvL/M/Ua7swfzhvLn6cPAzR6USn
+	4zgq1mjAJ4/ZkP6jmBIXgpApf3eSaqGWwdkO9yD9QaJjQvCZq7CMerU+AQsDd+Gpfl2CgYc+wph
+	bzdpePAI3vDi+gxBfSYUVn
+X-Google-Smtp-Source: AGHT+IGDdj2clyde62LaWC85mqGvgAg4Mcphg+WaGFRuMk1QFzv1PKO3ZTThd0ZWB4kpfNj4J8wWgw==
+X-Received: by 2002:a05:6000:2681:b0:429:8c97:f9c2 with SMTP id ffacd0b85a97d-4298c97fb46mr917173f8f.10.1761250596713;
+        Thu, 23 Oct 2025 13:16:36 -0700 (PDT)
+Received: from [192.168.1.29] ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898ec1dfsm5702040f8f.43.2025.10.23.13.16.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Oct 2025 13:16:36 -0700 (PDT)
+Message-ID: <82770e98-a9f7-4a89-a076-01394cf6b880@linaro.org>
+Date: Thu, 23 Oct 2025 22:16:34 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1] arm64: defconfig: Enable i.MX95 configs for booting
  and Ethernet
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+To: Marek Vasut <marek.vasut@mailbox.org>,
  Alexander Stein <alexander.stein@ew.tq-group.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
@@ -59,79 +86,137 @@ References: <20251023-upstream-imx95-smarc-defconfig-v1-1-62c6e6f5b315@toradex.c
  <00555ed7-1aee-459a-ae60-0242809d7b85@linaro.org>
  <07aba8d4-533d-40f7-bcd3-548704d7d228@mailbox.org>
  <f1bc82c0-8800-42e5-8a4d-aea209acd0f2@linaro.org>
+ <656164be-5ce7-4f9e-b6cd-0eb1b9305132@mailbox.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <f1bc82c0-8800-42e5-8a4d-aea209acd0f2@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ 2+47PN9NZAOyb771QoVr8A==
+In-Reply-To: <656164be-5ce7-4f9e-b6cd-0eb1b9305132@mailbox.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: fa78ef5ec364d2144c7
-X-MBO-RS-META: bjh1abmyap9ebgkw866c7oyit4s7fefu
 
-On 10/23/25 6:01 PM, Krzysztof Kozlowski wrote:
-> On 23/10/2025 17:53, Marek Vasut wrote:
->> On 10/23/25 5:32 PM, Krzysztof Kozlowski wrote:
->>> On 23/10/2025 17:27, Marek Vasut wrote:
->>>> On 10/23/25 5:22 PM, Krzysztof Kozlowski wrote:
->>>>> On 23/10/2025 16:03, Alexander Stein wrote:
->>>>>> Hi,
+On 23/10/2025 22:05, Marek Vasut wrote:
+> On 10/23/25 6:01 PM, Krzysztof Kozlowski wrote:
+>> On 23/10/2025 17:53, Marek Vasut wrote:
+>>> On 10/23/25 5:32 PM, Krzysztof Kozlowski wrote:
+>>>> On 23/10/2025 17:27, Marek Vasut wrote:
+>>>>> On 10/23/25 5:22 PM, Krzysztof Kozlowski wrote:
+>>>>>> On 23/10/2025 16:03, Alexander Stein wrote:
+>>>>>>> Hi,
+>>>>>>>
+>>>>>>> Am Donnerstag, 23. Oktober 2025, 14:19:15 CEST schrieb João Paulo Gonçalves:
+>>>>>>>> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+>>>>>>>>
+>>>>>>>> Enable the necessary missing configs for the i.MX95 to boot and also
+>>>>>>>> have Ethernet working:
+>>>>>>>>
+>>>>>>>> * CONFIG_NXP_ENETC4 for the network controller driver
+>>>>>>>> * CONFIG_NXP_NETC_BLK_CTRL for the NETC hardware domain controller
+>>>>>>>> * CONFIG_PINCTRL_IMX_SCMI for the pinctrl driver
+>>>>>>>> * CONFIG_CLK_IMX95_BLK_CTL for the shared hardware domain controller
+>>>>>>>>
+>>>>>>>> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+>>>>>>>> ---
+>>>>>>>>     arch/arm64/configs/defconfig | 4 ++++
+>>>>>>>>     1 file changed, 4 insertions(+)
+>>>>>>>>
+>>>>>>>> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+>>>>>>>> index e3a2d37bd10423b028f59dc40d6e8ee1c610d6b8..787d3ae3f5afeac486a905e0943e7b0e1dcee3a9 100644
+>>>>>>>> --- a/arch/arm64/configs/defconfig
+>>>>>>>> +++ b/arch/arm64/configs/defconfig
+>>>>>>>> @@ -354,8 +354,10 @@ CONFIG_FSL_FMAN=y
+>>>>>>>>     CONFIG_FSL_DPAA_ETH=y
+>>>>>>>>     CONFIG_FSL_DPAA2_ETH=y
+>>>>>>>>     CONFIG_FSL_ENETC=y
+>>>>>>>> +CONFIG_NXP_ENETC4=m
+>>>>>>>>     CONFIG_FSL_ENETC_VF=y
+>>>>>>>>     CONFIG_FSL_ENETC_QOS=y
+>>>>>>>> +CONFIG_NXP_NETC_BLK_CTRL=m
+>>>>>>>
+>>>>>>> Are you sure this should be module? Shouldn't NFS boot be supported by
+>>>>>>> default? I might be wring here though.
 >>>>>>
->>>>>> Am Donnerstag, 23. Oktober 2025, 14:19:15 CEST schrieb João Paulo Gonçalves:
->>>>>>> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
->>>>>>>
->>>>>>> Enable the necessary missing configs for the i.MX95 to boot and also
->>>>>>> have Ethernet working:
->>>>>>>
->>>>>>> * CONFIG_NXP_ENETC4 for the network controller driver
->>>>>>> * CONFIG_NXP_NETC_BLK_CTRL for the NETC hardware domain controller
->>>>>>> * CONFIG_PINCTRL_IMX_SCMI for the pinctrl driver
->>>>>>> * CONFIG_CLK_IMX95_BLK_CTL for the shared hardware domain controller
->>>>>>>
->>>>>>> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
->>>>>>> ---
->>>>>>>     arch/arm64/configs/defconfig | 4 ++++
->>>>>>>     1 file changed, 4 insertions(+)
->>>>>>>
->>>>>>> diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
->>>>>>> index e3a2d37bd10423b028f59dc40d6e8ee1c610d6b8..787d3ae3f5afeac486a905e0943e7b0e1dcee3a9 100644
->>>>>>> --- a/arch/arm64/configs/defconfig
->>>>>>> +++ b/arch/arm64/configs/defconfig
->>>>>>> @@ -354,8 +354,10 @@ CONFIG_FSL_FMAN=y
->>>>>>>     CONFIG_FSL_DPAA_ETH=y
->>>>>>>     CONFIG_FSL_DPAA2_ETH=y
->>>>>>>     CONFIG_FSL_ENETC=y
->>>>>>> +CONFIG_NXP_ENETC4=m
->>>>>>>     CONFIG_FSL_ENETC_VF=y
->>>>>>>     CONFIG_FSL_ENETC_QOS=y
->>>>>>> +CONFIG_NXP_NETC_BLK_CTRL=m
 >>>>>>
->>>>>> Are you sure this should be module? Shouldn't NFS boot be supported by
->>>>>> default? I might be wring here though.
->>>>>
->>>>>
->>>>> NFS root is supported already with this being module. Yes, it must be a
->>>>> module, cannot be built in.
->>>> It seems I am using it as built-in on MX95 Verdin (patch is posted on
->>>> the ML), and yes, I do boot from NFS root without any initrd/initramfs.
->>>> It has to be built-in for that use case to work.
+>>>>>> NFS root is supported already with this being module. Yes, it must be a
+>>>>>> module, cannot be built in.
+>>>>> It seems I am using it as built-in on MX95 Verdin (patch is posted on
+>>>>> the ML), and yes, I do boot from NFS root without any initrd/initramfs.
+>>>>> It has to be built-in for that use case to work.
+>>>>
+>>>>
+>>>> Every arm64 platform is supposed to use initramfs and we already use all
+>>>> over the place.
 >>>
->>>
->>> Every arm64 platform is supposed to use initramfs and we already use all
->>> over the place.
+>>> Shouldn't the platform also be at least bootable with the defconfig ? If
+>>> yes, then initramfs is a mandatory requirement for a NFS root boot (not
+>>> a ... supposed to ... optional one), which does not seem to be the case
+>>> until now.
 >>
->> Shouldn't the platform also be at least bootable with the defconfig ? If
->> yes, then initramfs is a mandatory requirement for a NFS root boot (not
->> a ... supposed to ... optional one), which does not seem to be the case
->> until now.
+>> It always was a requirement, nothing new here.
 > 
-> It always was a requirement, nothing new here.
+> Is this requirement documented anywhere then ?
 
-Is this requirement documented anywhere then ?
 
->> I would argue the ethernet MAC support should be built-in to achieve
->> maximum utility with the defconfig.
+Dunno, just dozen of emails.
+
 > 
-> No, you missed my earlier point - all decent platforms already use
-> initramfs since it is really not complicated.
+>>> I would argue the ethernet MAC support should be built-in to achieve
+>>> maximum utility with the defconfig.
+>>
+>> No, you missed my earlier point - all decent platforms already use
+>> initramfs since it is really not complicated.
+> 
+> Is my understanding correct, that the in-kernel defconfig is not meant 
+> for practical use and is meant mainly for build-testing/build-coverage ?
 
-Is my understanding correct, that the in-kernel defconfig is not meant 
-for practical use and is meant mainly for build-testing/build-coverage ?
+
+It is 100% practical use - we all test our boards on defconfig. It is
+not build testing, but actual runtime usage and testing. And as
+mentioned many times - being able to only toggle KASAN for defconfig and
+still fit in boot partition size is pretty useful.
+
+
+Best regards,
+Krzysztof
