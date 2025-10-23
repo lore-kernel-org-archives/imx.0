@@ -1,173 +1,141 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F3330FF36
-	for <imx@lists.linux.dev>; Thu, 23 Oct 2025 12:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5222C3128A2
+	for <imx@lists.linux.dev>; Thu, 23 Oct 2025 12:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761220894; cv=none; b=N7hj2IbC8jaNxyivoJ9J9zGBFEVS/GCweWGNEleBpkk7FX13MpFhWsSIpeMUHk4avBpLsERPtjGcqcDKqCxP3XN5Z8uHBGlv5UoiZMOIWZhcE+VFhdvMAoxTqBlk52mb15O2hCS8bodXgsZycKzR4WxATn0lkm6HVyVhpsJQZTk=
+	t=1761221971; cv=none; b=aNpHCnyzuczsNq8vSEwCQjYqgEtawnwbRasCuRTPWdMBumbPVz36zew927mYY1j8p7tWQcPHUUqQr6hEIegmAdsoMRD0sA/bAuVCqEyz0Uyun1aia3eaAme81F5aw2iUgDxgFy1VevwO06ZJ7o5/0kAN5Gdw/ZL76jH/jIwLJy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761220894; c=relaxed/simple;
-	bh=6/J4qfTtgniftwPSX2ZpnWqlVt5mOYJfR7RfUzo0A7o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PLjUyxEdtb+D+bogAy0U5DN/xanikAfLTeH+0Nekml375/n6NWBlETB5Sz4JxVo9tYccITClpNLP50MmnaOGy+a+l8MNxM8fjuFgNOGS+6XngI0HjkRrnABj6vBsYZtsGbGZXC8YwkDhrvjCSNIZrxyq3M8z0Iv6jLhyYFLIuuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vBtzs-00057X-KQ; Thu, 23 Oct 2025 14:00:48 +0200
-Message-ID: <56075d3e-30ac-4501-bd77-2a84d0d124bd@pengutronix.de>
-Date: Thu, 23 Oct 2025 14:00:46 +0200
+	s=arc-20240116; t=1761221971; c=relaxed/simple;
+	bh=j2RY7WVYLSN+jWxemj2+54D8zSqqYRLj140qaFpBs2U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E7D43KG9slgmz+9rC2ZUBcGHeWApYC6At7TlNkM1LpALeHPgZDn0msQLtuvB+9xhawSrHhnQacfNyWJyls8pkcqnQcWDEOE+SEPSvfXIBX/JWDryz48Dk4UbEXNHHeyuu1PJMiLJhdFWOO0c/8I6ifJy7e0lgq0G9yxJYno/jtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eCbsV78x; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eCbsV78x"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-330b4739538so719644a91.3
+        for <imx@lists.linux.dev>; Thu, 23 Oct 2025 05:19:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761221967; x=1761826767; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=H2q0viC1oKDoybdxIdGnsDv0XEKPZJRHKvcrkOAaotk=;
+        b=eCbsV78xwSbms4GgxaOJYfxcrJwvA6a7KV9MsuT6Y0zj7DeTFRp8GQMDn4qeQUKZRk
+         avJEyMunyrIwC8+tvt+TCySpQmD+aqNYoWy4Xa1MotnAxrYdhHXSGEoMqTaPmf5NlU01
+         NYjcjrI0rcl3Z2SfMTz6VN81z2FoIemCOVd4odrX2WO6qwho3FWgfPU7GVg6qj3VnJdX
+         Lb5nAI+sjyCq+jxW4yMCVeXPJifoA8JtaHTi4UzVYMHzfgUMkByxJSN0dTUOmAhp3bs6
+         yfKyuE8rFFKeM5yeqvetcUai1uvrfr1iAU235myYGM+6AgRKEKukXswr/tUzHmHHThaa
+         VusQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761221967; x=1761826767;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H2q0viC1oKDoybdxIdGnsDv0XEKPZJRHKvcrkOAaotk=;
+        b=GXtjusagqmcCL1VHzprk+Rbp9CPK7NPnmfdCGB9y9kBJxiT4mNQ1JunAWBp0k1/GyZ
+         62joYR+4ao19PfnHOz5i9jx+d8z9wCa/jDo+3z6Hge2C0myj4tIttGDIFVj3N2u0QEB8
+         11VNy9i4rGGFChUMmiT4MuGXCnTc4nBxsD9g5QRr8mFICTwxLfpmMSeCr0fE32XWPGyM
+         z0A/zWMlrpQW8Z1XFCaQ/DIsDktyKMQIrlDQI+ndYddVLwWg0+q4Fnw+CwkNeIFLqy/b
+         JN53xbLlvhp4zx+5lt+1O0rwV3HVnpKpCf4Qd6tFDStyy+Tfna8pT89jZ1jJdI5mSmFy
+         hLFA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvneIZGlZa6pKfJN+0t7xcmQONF/L600W+8NOmvxALghp32sPJTu3ON+b716ov8JY2XFY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxwSFkEUbJH3/wzBwc6XzHHrekxoUlOsqLWYb4K5TVjR9wcL1Sa
+	uGgEoTXLj00acg2wc+yhTGfNbkyJKLEc9a3V2uNKIC+EkLDKnfalfcl6
+X-Gm-Gg: ASbGnctIQLY0G6hu/gW7TqNqiCnFZzKZJ/O3iekCdGGTUw57JZ+ltygTpDxwcU/tqGG
+	VT2mCezx6RpaxYeVsENEF1xUvp0sEj7/bmM9dwINNzreS3r6Y9j+QEWsA5NhSXJua6FdEdecSSG
+	EvgTSQSBuBBz3OudkWLeopMvSgmmZhA29jP0pv+G4F3LVb/4gntzanHzuCkfwhlkfzwJUuJZbLA
+	tJzlBPCukBoc3gJNtmaXdtY96c/5ewnCxyirW5Vn+Egkc0Z14+/cReNoRbwjRzCHUIrNc2oDeDZ
+	iG0Q6FLi/75uzCFycULsrI59T4WeeKGbYLDB4A8lfY4Ou1qaHPErB4E0ULH3JCrP3mKohEWn4Jd
+	emW5d6hJ+RW5ZkeUZ+tPTvwDLDZYCaOoKb3Y+XqrDzFsShsJ0ONuM+1o7l5MVYOxOcf84ZvGCsG
+	q8zZfI+29fsDz983mVuZ5rmDeKmr/nde1oiw==
+X-Google-Smtp-Source: AGHT+IGJ23GsrNILCdW/8gbVtgjCsaLah5E0mTNdpSVoeuNI9VqG0QCaBp4Eb7N3Z7ssAPYGjAzlmA==
+X-Received: by 2002:a17:90b:2403:b0:33e:2d0f:478e with SMTP id 98e67ed59e1d1-33e2d0f5967mr4230135a91.3.1761221966488;
+        Thu, 23 Oct 2025 05:19:26 -0700 (PDT)
+Received: from joaog-nb.corp.toradex.com ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33faff37c14sm2277474a91.2.2025.10.23.05.19.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 05:19:25 -0700 (PDT)
+From: =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>
+Date: Thu, 23 Oct 2025 09:19:15 -0300
+Subject: [PATCH v1] arm64: defconfig: Enable i.MX95 configs for booting and
+ Ethernet
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: freescale: imx93-phy{core, board}: Add i2c
- bus recovery
-To: Primoz Fiser <primoz.fiser@norik.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, upstream@lists.phytec.de,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev
-References: <20251023103426.3606647-1-primoz.fiser@norik.com>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20251023103426.3606647-1-primoz.fiser@norik.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20251023-upstream-imx95-smarc-defconfig-v1-1-62c6e6f5b315@toradex.com>
+X-B4-Tracking: v=1; b=H4sIAEId+mgC/x3NQQqDMBBA0avIrDtgIqHGq5Qu0mSis0iUmSqCe
+ PeGLt/m/wuUhElh6i4QOlh5rQ3m0UFcQp0JOTWD7a0zvR1w3/QrFApyOb1DLUEiJspxrZlnHP3
+ Tpo8bnDcjtMgmlPn8D15wGHjf9w9b8i5+dAAAAA==
+X-Change-ID: 20251023-upstream-imx95-smarc-defconfig-8972db535918
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Fabio Estevam <festevam@gmail.com>, Marek Vasut <marex@denx.de>, 
+ Peng Fan <peng.fan@nxp.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ imx@lists.linux.dev, 
+ =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>
+X-Mailer: b4 0.14.2
 
-Hi,
+From: João Paulo Gonçalves <joao.goncalves@toradex.com>
 
-On 10/23/25 12:34 PM, Primoz Fiser wrote:
-> Add bus recovery feature for I2C buses on the PHYTEC phyCORE-i.MX93 SoM
-> based boards (that is phyBOARD-Nash-i.MX93 and phyBOARD-Segin-i.MX93).
-> This enables the i2c-imx-lpi2c driver to recover the stuck I2C bus by
-> switching the SCL and SDA pinmuxing and do the I2C bus bit-banging.
-> 
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-> ---
->  .../arm64/boot/dts/freescale/imx93-phyboard-nash.dts | 12 +++++++++++-
->  .../boot/dts/freescale/imx93-phyboard-segin.dts      | 12 +++++++++++-
->  arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 12 +++++++++++-
->  3 files changed, 33 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
-> index 5599e296919f..96c58cf13754 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
-> @@ -128,8 +128,11 @@ &flexcan1 {
->  /* I2C2 */
->  &lpi2c2 {
->  	clock-frequency = <400000>;
-> -	pinctrl-names = "default";
-> +	pinctrl-names = "default", "gpio";
->  	pinctrl-0 = <&pinctrl_lpi2c2>;
-> +	pinctrl-1 = <&pinctrl_lpi2c2_gpio>;
-> +	scl-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	sda-gpios = <&gpio1 3 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
->  	status = "okay";
->  
->  	/* RTC */
-> @@ -253,6 +256,13 @@ MX93_PAD_I2C2_SDA__LPI2C2_SDA		0x40000b9e
->  		>;
->  	};
->  
-> +	pinctrl_lpi2c2_gpio: lpi2c2gpiogrp {
-> +		fsl,pins = <
-> +			MX93_PAD_I2C2_SCL__GPIO1_IO02		0x31e
+Enable the necessary missing configs for the i.MX95 to boot and also
+have Ethernet working:
 
-I haven't worked with imx93 myself yet, but does this not need the SION
-bit set?
+* CONFIG_NXP_ENETC4 for the network controller driver
+* CONFIG_NXP_NETC_BLK_CTRL for the NETC hardware domain controller
+* CONFIG_PINCTRL_IMX_SCMI for the pinctrl driver
+* CONFIG_CLK_IMX95_BLK_CTL for the shared hardware domain controller
 
-Cheers,
-Ahmad
+Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+---
+ arch/arm64/configs/defconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> +			MX93_PAD_I2C2_SDA__GPIO1_IO03		0x31e
-> +		>;
-> +	};
-> +
->  	pinctrl_lpspi6: lpspi6grp {
->  		fsl,pins = <
->  			MX93_PAD_GPIO_IO00__GPIO2_IO00		0x386
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
-> index 802d96b19e4c..1850a93dbaa4 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
-> @@ -132,8 +132,11 @@ &flexcan1 {
->  /* I2C2 */
->  &lpi2c2 {
->  	clock-frequency = <400000>;
-> -	pinctrl-names = "default";
-> +	pinctrl-names = "default", "gpio";
->  	pinctrl-0 = <&pinctrl_lpi2c2>;
-> +	pinctrl-1 = <&pinctrl_lpi2c2_gpio>;
-> +	scl-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	sda-gpios = <&gpio1 3 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
->  	status = "okay";
->  
->  	/* Codec */
-> @@ -238,6 +241,13 @@ MX93_PAD_I2C2_SDA__LPI2C2_SDA		0x40000b9e
->  		>;
->  	};
->  
-> +	pinctrl_lpi2c2_gpio: lpi2c2gpiogrp {
-> +		fsl,pins = <
-> +			MX93_PAD_I2C2_SCL__GPIO1_IO02		0x31e
-> +			MX93_PAD_I2C2_SDA__GPIO1_IO03		0x31e
-> +		>;
-> +	};
-> +
->  	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
->  		fsl,pins = <
->  			MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x31e
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-> index 3f069905cf0b..ebc57841f27f 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-> @@ -93,8 +93,11 @@ ethphy1: ethernet-phy@1 {
->  /* I2C3 */
->  &lpi2c3 {
->  	clock-frequency = <400000>;
-> -	pinctrl-names = "default";
-> +	pinctrl-names = "default", "gpio";
->  	pinctrl-0 = <&pinctrl_lpi2c3>;
-> +	pinctrl-1 = <&pinctrl_lpi2c3_gpio>;
-> +	scl-gpios = <&gpio2 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-> +	sda-gpios = <&gpio2 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
->  	status = "okay";
->  
->  	pmic@25 {
-> @@ -234,6 +237,13 @@ MX93_PAD_GPIO_IO29__LPI2C3_SCL		0x40000b9e
->  		>;
->  	};
->  
-> +	pinctrl_lpi2c3_gpio: lpi2c3gpiogrp {
-> +		fsl,pins = <
-> +			MX93_PAD_GPIO_IO28__GPIO2_IO28		0x31e
-> +			MX93_PAD_GPIO_IO29__GPIO2_IO29		0x31e
-> +		>;
-> +	};
-> +
->  	pinctrl_pmic: pmicgrp {
->  		fsl,pins = <
->  			MX93_PAD_ENET2_RD3__GPIO4_IO27		0x31e
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index e3a2d37bd10423b028f59dc40d6e8ee1c610d6b8..787d3ae3f5afeac486a905e0943e7b0e1dcee3a9 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -354,8 +354,10 @@ CONFIG_FSL_FMAN=y
+ CONFIG_FSL_DPAA_ETH=y
+ CONFIG_FSL_DPAA2_ETH=y
+ CONFIG_FSL_ENETC=y
++CONFIG_NXP_ENETC4=m
+ CONFIG_FSL_ENETC_VF=y
+ CONFIG_FSL_ENETC_QOS=y
++CONFIG_NXP_NETC_BLK_CTRL=m
+ CONFIG_HIX5HD2_GMAC=y
+ CONFIG_HNS_DSAF=y
+ CONFIG_HNS_ENET=y
+@@ -615,6 +617,7 @@ CONFIG_PINCTRL_IMX8DXL=y
+ CONFIG_PINCTRL_IMX8ULP=y
+ CONFIG_PINCTRL_IMX91=y
+ CONFIG_PINCTRL_IMX93=y
++CONFIG_PINCTRL_IMX_SCMI=y
+ CONFIG_PINCTRL_MSM=y
+ CONFIG_PINCTRL_IPQ5018=y
+ CONFIG_PINCTRL_IPQ5332=y
+@@ -1349,6 +1352,7 @@ CONFIG_CLK_IMX8MQ=y
+ CONFIG_CLK_IMX8QXP=y
+ CONFIG_CLK_IMX8ULP=y
+ CONFIG_CLK_IMX93=y
++CONFIG_CLK_IMX95_BLK_CTL=y
+ CONFIG_TI_SCI_CLK=y
+ CONFIG_COMMON_CLK_MT8192_AUDSYS=y
+ CONFIG_COMMON_CLK_MT8192_CAMSYS=y
 
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251023-upstream-imx95-smarc-defconfig-8972db535918
+
+Best regards,
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+João Paulo Gonçalves <joao.goncalves@toradex.com>
 
