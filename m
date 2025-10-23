@@ -1,492 +1,252 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011000.outbound.protection.outlook.com [52.101.70.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10612FFDF4
-	for <imx@lists.linux.dev>; Thu, 23 Oct 2025 08:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761209212; cv=none; b=F130Dv4EW74d62I5Bgib9J2cOfLLUBjS4aQkBpqJoeQ4RSzL07hy6j88McToogsXRET0zfSmTqyaMKU9TZh5sm3wMc1L873XOkSI5SZccbuGghL+srGlqIUGLbHlDP6/KF9BtanQajI6STFr+0bfQVgsQbQnzaZVhVqNUXZHuyA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761209212; c=relaxed/simple;
-	bh=rewCY3koomIClorOda9EO46YEMXqpxYEnh31NtOGVa8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RXeqfL4MbX3cmKWd7189ydFWAwY1yuJgkKUNA5IO9UEgyJKJpLk3V9Y9DF782WYrK0JzUSMr4ENsyBncgrtrlajGDCkvblXjMaD3A310wgXIqplbmB/owrU8JbPxB0HIrNE1k0sADkRlbA9JIU+Btnjliy25xsIhZV21PPQEPK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V4gf/VT0; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5EA2F1FD2
+	for <imx@lists.linux.dev>; Thu, 23 Oct 2025 09:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761211170; cv=fail; b=rlYmx6WiIUTzinqOmFlhUyBvmTM6hfoThF768GE/rRBKRylHqyxS6iYcQY4JssSWEbPNTH/JC0UFqfPL4VRs2z/NRGVLWxgk6G+ZL3+J6qRSjVyvJujcEciLRplpFLCRagxZUAUSyJPhhVQxRXRvlhH8jOt+obyIqsauc4RvLz4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761211170; c=relaxed/simple;
+	bh=W210yvxgT8CXTcovjCjC1QQNu3yaXu1HzprMuyvqEtw=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=h6K/yd2QTh/2Z6Nt8CZoPUa7q8wLsOtqYMtqAqcz5kljyiP9ND8eMc7nz/g2EknyZfM4qvUDn0y4M2MtLMxvnYuFZOTlZ7RBqLWugcmRtsmgcLIu+d0isyexFr27wK2u1z1h8j4RDDw3OLIdL7gU81a/Xm/nm+Z8qHxAnhL/ETc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ocu75XEK; arc=fail smtp.client-ip=52.101.70.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V4gf/VT0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761209210; x=1792745210;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rewCY3koomIClorOda9EO46YEMXqpxYEnh31NtOGVa8=;
-  b=V4gf/VT0uRQKUAslu/KaBkPpDUPApKOgyM8kpPIRFBYiG8lYW4QI0Yu4
-   QEi/djNV9g3G0HmreuRL7UbQyzSCp18kEGhMyKFUV1fN/1ZO6xZMSqXCk
-   4Wb107pjsnfdmHwCv8kna/ryaqHYvD3HNlh58sctnKnHk1DTEtG5vnQw7
-   +4O4nY5elN9asSJZd5W6wKuiSJHIzXqGPGh2QiOVCpNQmToeu45VwW+sZ
-   W92zrARCnkDZt7PnsPCtxRBulJ8Xna1k4OLeCowSdgHrsIv8BC/gc/9V4
-   I46ECbA81iXkjAr8E3RWmFgq7kCFNRx7SBQ9vR5rSNVgToY2F0nsaoF73
-   A==;
-X-CSE-ConnectionGUID: kjDsfIgPR9OifXnYcV4MdA==
-X-CSE-MsgGUID: tPkA3co5RHmiHggBz4tcJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63280839"
-X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; 
-   d="scan'208";a="63280839"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 01:46:50 -0700
-X-CSE-ConnectionGUID: Be3E+UtjQHyxw+5QccHYvw==
-X-CSE-MsgGUID: gQaKyS2VTbyyxLDQfSa6MQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; 
-   d="scan'208";a="215029445"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.163])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 01:46:46 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vBqy3-00000001tjU-2RIT;
-	Thu, 23 Oct 2025 11:46:43 +0300
-Date: Thu, 23 Oct 2025 11:46:43 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v6 5/5] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <aPnrc-Z5WVJorGr7@smile.fi.intel.com>
-References: <20251014-i3c_ddr-v6-0-3afe49773107@nxp.com>
- <20251014-i3c_ddr-v6-5-3afe49773107@nxp.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ocu75XEK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NkJVZXb4RxJHvfCnTbPScMBcH5g8s7N1LqDt6GrcOVzIZ5uIslYlQvehccPMtiR+hsfibA7doHekDxfhcGcYSgOM5rWxeMnAYzfAB4BmNXB6c4aBTCjLtaQbRQ6VFAoCoOhyApAIVnfoU0YlL6RwWQXYu/5t45doPei205z50S7zJcmTLmSEsM/HO25IsknDujVYk5mCgBRmC37yMDdB6ZEm+lDw0/FbXBPr45Yj8FYQmaxt5tAQln9f53mIdZo5liDw6Nanbg2uwIPdXSr56Snl7VeKTXHI5v5IswWbN4QdjRnLEjd4kvHyVBeOBcf6tjoA0eRcL6JayLMWUm1FVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nl0jSy4Z3VzK7MtGN7lUzvL80Dco2juySfwPtB9LE1c=;
+ b=V6LLuK0LQQfs42p3m5hFiG44ocrNB6d7VpA0SJ83J347w47NvLOIqSk4L/jJEF2ZTWWupviQYo8DUTuREbOlAfchYO5NcHE9K+9MzpZ9R8EhQBTplwxsRYb1BL29VOgXSSjQs2RrhkM4ScrXMNYxaQik8ETr60W0LtORRq4aer9AlkI0lFHB4s+y5k8jsEcOHGHyi0gK7Ni2gbcRRHK8s1fVO3kfQ0NBSqzAu4UJVu5c6af/xUceuc1KhNw17A6N7l6u0kx6ivuiguDftQIgnRo1Nsell3XK+89/J9EXcfJ33vP+bMhlh3WwgOsiXeruAfc5bV5EV0Ufsi8PyvQs7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nl0jSy4Z3VzK7MtGN7lUzvL80Dco2juySfwPtB9LE1c=;
+ b=ocu75XEKvDCl8Gwt3oKsYQ+I2TtQvudK3CRMrIjIWyKRUznz20uDJ1Q6m7WxR99WJ8AvnmIr8MFxvv9ykxblk7XBqa8GetkSpwC/fEauzcTaguRlS0BqistpebjYHNI4xnz5wxtCxzIqjsJ9/iX1el9/9Myj3pwbR2IFaLTX/Lx659/elL+cb69oSdF4wH/eKXdehMxD5Ds5KguYgSlt1Czmdcth1emv1Yfm+AoieXwqUYaM8ANaPaa6wHL9iUGn/gA5YBV6tYD2B1wihPhp+yaUGKiCEYtScj5/5S3M7IituroYQWfKJzSEDNtZu2ZJUL95Touc7cCqhzCKnSJvEg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS8SPRMB0023.eurprd04.prod.outlook.com (2603:10a6:20b:44e::21)
+ by PA1PR04MB10556.eurprd04.prod.outlook.com (2603:10a6:102:48e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.13; Thu, 23 Oct
+ 2025 09:19:24 +0000
+Received: from AS8SPRMB0023.eurprd04.prod.outlook.com
+ ([fe80::1394:27d9:e69a:1798]) by AS8SPRMB0023.eurprd04.prod.outlook.com
+ ([fe80::1394:27d9:e69a:1798%5]) with mapi id 15.20.9253.011; Thu, 23 Oct 2025
+ 09:19:24 +0000
+From: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Subject: [PATCH v7 0/5] Add MIPI CSI-2 support for i.MX8ULP
+Date: Thu, 23 Oct 2025 17:19:41 +0800
+Message-Id: <20251023-csi2_imx8ulp-v7-0-5ecb081ce79b@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAC3z+WgC/13P326DIBTH8VdpuB5GDn+EXvU9lmUBgUqyioFq3
+ BrffdhsqXp5Lj7f/M4DZZeCy+h8eqDkppBD7MvRvJ1Q2+n+6nCw5UZQA68lUbjNAT7DbZbj14C
+ VNVQKa4WxHhUyJOfD/My9f5Tbp3jD9y45vY3AGgJakZooyjgm+DrGPozVTxfHS8y56uehauNtT
+ XYh32P6fg6cYA3/ZQD2WybANQahGWNUMSX45b+yLpnolvIDpYVSLiXXRgsw7Z6yLZUHygrV4FV
+ jCDdGyT3lL6pqcqC8UNEowSxhDfF0T8WGkuZAxfor1ZRzJcF5/6LLsvwCRjKjANUBAAA=
+X-Change-ID: 20250819-csi2_imx8ulp-9db386dd6bdf
+To: Rui Miguel Silva <rmfrfs@gmail.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761211202; l=3019;
+ i=guoniu.zhou@nxp.com; s=20250815; h=from:subject:message-id;
+ bh=W210yvxgT8CXTcovjCjC1QQNu3yaXu1HzprMuyvqEtw=;
+ b=7l8fH3vcjKPHdOqkiHpbN8+2tyCmVAsQN/yUf8NPip/mYJfk+jhAC5ovyHqBWA2lCTMj2c3AW
+ Sv47Ntz78SEDx8K3Js8MaXDetDMDgfXBRbkIWZJzmy5+xWGxzPS0azY
+X-Developer-Key: i=guoniu.zhou@nxp.com; a=ed25519;
+ pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
+X-ClientProxiedBy: SI2PR04CA0008.apcprd04.prod.outlook.com
+ (2603:1096:4:197::20) To AS8SPRMB0023.eurprd04.prod.outlook.com
+ (2603:10a6:20b:44e::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251014-i3c_ddr-v6-5-3afe49773107@nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-
-On Tue, Oct 14, 2025 at 12:40:04PM -0400, Frank Li wrote:
-> Add mmc5633 sensor basic support.
-> - Support read 20 bits X/Y/Z magnetic.
-> - Support I3C HDR mode to send start measurememt command.
-> - Support I3C HDR mode to read all sensors data by one command.
-
-...
-
-> +#include <linux/delay.h>
-> +#include <linux/i2c.h>
-> +#include <linux/i3c/device.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/init.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/pm.h>
-> +#include <linux/regmap.h>
-> +#include <linux/unaligned.h>
-
-Follow IWYU principle, many are missing.
-
-...
-
-> +#define MMC5633_STATUS1_MEAS_T_DONE_BIT	BIT(7)
-> +#define MMC5633_STATUS1_MEAS_M_DONE_BIT	BIT(6)
-
-+ bits.h
-
-...
-
-> +#define MMC5633_WAIT_SET_RESET_US	1000
-
-Perhaps (1 * MSEC_PER_USEC) ?
-
-...
-
-> +#define MMC5633_HDR_CTRL0_MEAS_M	0x01
-> +#define MMC5633_HDR_CTRL0_MEAS_T	0x03
-> +#define MMC5633_HDR_CTRL0_SET		0X05
-
-Keep the style of the values consistent.
-
-> +#define MMC5633_HDR_CTRL0_RESET		0x07
-
-...
-
-> +struct mmc5633_data {
-> +	struct device *dev;
-> +	struct i3c_device *i3cdev;
-> +	struct mutex mutex; /* protect to finish one whole measurement */
-
-+ mutex.h
-
-> +	struct regmap *regmap;
-> +};
-
-...
-
-> +static int mmc5633_get_samp_freq_index(struct mmc5633_data *data,
-> +				       int val, int val2)
-> +{
-> +	int i;
-
-Why signed?
-
-> +	for (i = 0; i < ARRAY_SIZE(mmc5633_samp_freq); i++)
-
-+ array_size.h
-
-> +		if (mmc5633_samp_freq[i].val == val &&
-> +		    mmc5633_samp_freq[i].val2 == val2)
-> +			return i;
-> +	return -EINVAL;
-> +}
-
-...
-
-> +static int mmc5633_init(struct mmc5633_data *data)
-> +{
-> +	unsigned int reg_id, ret;
-
-Have you ever compiled this?
-Why ret is unsigned?
-
-> +	ret = regmap_read(data->regmap, MMC5633_REG_ID, &reg_id);
-> +	if (ret < 0)
-> +		return dev_err_probe(data->dev, ret,
-> +				     "Error reading product id\n");
-
-+ dev_printk.h
-
-> +	/*
-> +	 * Make sure we restore sensor characteristics, by doing
-> +	 * a SET/RESET sequence, the axis polarity being naturally
-> +	 * aligned after RESET.
-> +	 */
-> +	ret = regmap_write(data->regmap, MMC5633_REG_CTRL0, MMC5633_CTRL0_SET);
-> +	if (ret < 0)
-> +		return ret;
-
-> +	fsleep(MMC5633_WAIT_SET_RESET_US);
-
-Do you have a reference to a datasheet? Perhaps add a small comment with it.
-
-> +	ret = regmap_write(data->regmap, MMC5633_REG_CTRL0, MMC5633_CTRL0_RESET);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* set default sampling frequency */
-> +	return regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
-> +				  MMC5633_CTRL1_BW_MASK,
-> +				  FIELD_PREP(MMC5633_CTRL1_BW_MASK, 0));
-> +}
-
-...
-
-> +static int mmc5633_take_measurement(struct mmc5633_data *data, int address)
-> +{
-> +	unsigned int reg_status;
-> +	int ret;
-> +	int val;
-> +
-> +	val = (address == MMC5633_TEMPERATURE) ? MMC5633_CTRL0_MEAS_T : MMC5633_CTRL0_MEAS_M;
-> +	ret = regmap_write(data->regmap, MMC5633_REG_CTRL0, val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	val = (address == MMC5633_TEMPERATURE) ?
-> +	      MMC5633_STATUS1_MEAS_T_DONE_BIT : MMC5633_STATUS1_MEAS_M_DONE_BIT;
-> +	ret = regmap_read_poll_timeout(data->regmap, MMC5633_REG_STATUS1, reg_status,
-> +				       reg_status & val, 10000, 10000 * 100);
-
-10 * MSEC_PER_USEC, 100 * 10 * MSEC_PER_USEC
-
-> +	if (ret) {
-> +		dev_err(data->dev, "data not ready\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-
-...
-
-> +static int mmc5633_read_measurement(struct mmc5633_data *data, int address, void *buf, size_t sz)
-> +{
-> +	u8 data_cmd[2], status[2];
-> +	int ret, val, ready;
-> +
-> +	if (mmc5633_is_support_hdr(data)) {
-> +		struct i3c_xfer xfers_wr_cmd[] = {
-> +			{
-> +				.cmd = 0x3b,
-> +				.len = 2,
-> +				.data.out = data_cmd,
-> +			}
-> +		};
-
-> +
-
-Redundant blank line.
-
-> +		struct i3c_xfer xfers_rd_sta_cmd[] = {
-> +			{
-> +				.cmd = 0x23 | BIT(7), /* RDSTA CMD */
-> +				.len = 2,
-> +				.data.in = status,
-> +			},
-> +		};
-> +
-
-Ditto.
-
-> +		struct i3c_xfer xfers_rd_data_cmd[] = {
-> +			{
-> +				.cmd = 0x22 | BIT(7), /* RDLONG CMD */
-> +				.len = sz,
-> +				.data.in = buf,
-> +			},
-> +		};
-> +
-> +		data_cmd[0] = 0;
-> +		data_cmd[1] = (address == MMC5633_TEMPERATURE) ?
-> +			      MMC5633_HDR_CTRL0_MEAS_T : MMC5633_HDR_CTRL0_MEAS_M;
-> +
-> +		ret = i3c_device_do_xfers(data->i3cdev, xfers_wr_cmd, 1, I3C_HDR_DDR);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ready = (address == MMC5633_TEMPERATURE) ?
-> +			MMC5633_STATUS1_MEAS_T_DONE_BIT : MMC5633_STATUS1_MEAS_M_DONE_BIT;
-> +		ret = read_poll_timeout(i3c_device_do_xfers, val,
-> +					val ||
-> +					status[0] & ready,
-> +					10000, 10000 * 100, 0,
-
-Use MSEC_PER_USEC as per above.
-
-> +					data->i3cdev, xfers_rd_sta_cmd, 1, I3C_HDR_DDR);
-
-> +
-
-Redundant blank line, and instead...
-
-> +		if (ret || val) {
-> +			dev_err(data->dev, "data not ready\n");
-> +			return ret ? ret : -EIO;
-> +		}
-
-...split this conditional to the linear ones.
-
-> +		return i3c_device_do_xfers(data->i3cdev, xfers_rd_data_cmd, 1, I3C_HDR_DDR);
-> +	}
-> +
-> +	/* Fallback to use SDR/I2C mode */
-> +	ret = mmc5633_take_measurement(data, address);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (address == MMC5633_TEMPERATURE)
-> +		/*
-> +		 * Put tempeature to last byte of buff to align HDR case.
-> +		 * I3C will early terminate data read if previous data is not
-> +		 * available.
-> +		 */
-> +		return regmap_bulk_read(data->regmap, MMC5633_REG_TOUT, buf + sz - 1, 1);
-
-
-> +	return regmap_bulk_read(data->regmap, MMC5633_REG_XOUT_L, buf, sz);
-> +}
-
-...
-
-> +#define MMC5633_ALL_SIZE (3 * 3 + 1) /* each channel have 3 byte and TEMP */
-
-have --> has and put comment on top of the definition.
-
-...
-
-> +	char buf[MMC5633_ALL_SIZE];
-> +	unsigned int reg;
-> +	int ret, i;
-
-Why is 'i' signed?
-
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		scoped_guard(mutex, &data->mutex) {
-
-+ cleanup.h
-
-> +			ret = mmc5633_read_measurement(data, chan->address, buf, MMC5633_ALL_SIZE);
-> +			if (ret < 0)
-> +				return ret;
-> +		}
-> +
-> +		ret = mmc5633_get_raw(data, chan->address, buf, val);
-> +		if (ret < 0)
-> +			return ret;
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		if (chan->type == IIO_MAGN) {
-> +			*val = 0;
-> +			*val2 = 62500;
-> +		} else {
-> +			*val = 0;
-> +			*val2 = 800000000; /* 0.8C */
-> +		}
-> +		return IIO_VAL_INT_PLUS_NANO;
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		if (chan->type == IIO_TEMP) {
-> +			*val = -75;
-> +			return IIO_VAL_INT;
-> +		}
-> +		return -EINVAL;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		scoped_guard(mutex, &data->mutex) {
-> +			ret = regmap_read(data->regmap, MMC5633_REG_CTRL1, &reg);
-> +			if (ret < 0)
-> +				return ret;
-> +		}
-> +
-> +		i = FIELD_GET(MMC5633_CTRL1_BW_MASK, reg);
-
-+ bitfield.h
-
-> +		if (i >= ARRAY_SIZE(mmc5633_samp_freq))
-> +			return -EINVAL;
-> +
-> +		*val = mmc5633_samp_freq[i].val;
-> +		*val2 = mmc5633_samp_freq[i].val2;
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	default:
-> +		return -EINVAL;
-> +	}
-
-...
-
-> +static bool mmc5633_is_writeable_reg(struct device *dev, unsigned int reg)
-> +{
-> +	switch (reg) {
-> +	case MMC5633_REG_CTRL0:
-> +	case MMC5633_REG_CTRL1:
-> +		return true;
-> +	default:
-> +		return false;
-> +	}
-> +}
-
-+ types.h
-
-...
-
-> +static int mmc5633_common_probe(struct device *dev, struct regmap *regmap,
-> +				char *name, struct i3c_device *i3cdev)
-> +{
-> +	struct mmc5633_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-
-+ errno.h
-
-> +	dev_set_drvdata(dev, indio_dev);
-
-+ device.h
-
-> +	data = iio_priv(indio_dev);
-> +
-> +	data->regmap = regmap;
-> +	data->i3cdev = i3cdev;
-> +	data->dev = dev;
-> +
-> +	ret = devm_mutex_init(dev, &data->mutex);
-> +	if (ret)
-> +		return ret;
-> +
-> +	indio_dev->info = &mmc5633_info;
-> +	indio_dev->name = name;
-> +	indio_dev->channels = mmc5633_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(mmc5633_channels);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	ret = mmc5633_init(data);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "mmc5633 chip init failed\n");
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-
-...
-
-> +static DEFINE_SIMPLE_DEV_PM_OPS(mmc5633_pm_ops, mmc5633_suspend,
-> +				mmc5633_resume);
-
-One line (despite of being longer than 80).
-
-...
-
-> +static const struct of_device_id mmc5633_of_match[] = {
-> +	{ .compatible = "memsic,mmc5603", },
-> +	{ .compatible = "memsic,mmc5633", },
-
-Remove inner commas.
-
-> +	{ }
-> +};
-
-...
-
-> +static int mmc5633_i3c_probe(struct i3c_device *i3cdev)
-> +{
-> +	struct device *dev = i3cdev_to_dev(i3cdev);
-> +	struct regmap *regmap;
-> +
-> +	regmap = devm_regmap_init_i3c(i3cdev, &mmc5633_regmap_config);
-> +	if (IS_ERR(regmap))
-
-+ err.h
-
-> +		return dev_err_probe(dev, PTR_ERR(regmap),
-> +				     "Failed to register i3c regmap\n");
-> +
-> +	return mmc5633_common_probe(dev, regmap, "mmc5633_i3c", i3cdev);
-> +}
-
-...
-
-> +static struct i3c_driver mmc5633_i3c_driver = {
-> +	.driver = {
-> +		.name = "mmc5633_i3c",
-> +	},
-> +	.probe = mmc5633_i3c_probe,
-> +	.id_table = mmc5633_i3c_ids,
-> +};
-
-> +
-
-Redundant blank line.
-
-> +module_i3c_i2c_driver(mmc5633_i3c_driver, &mmc5633_i2c_driver)
-
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8SPRMB0023:EE_|PA1PR04MB10556:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96e9bc08-b538-4757-cb36-08de121541ec
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|19092799006|1800799024|52116014|7416014|376014|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?YVJ1UjdPYSt3citkZmpRTDhhV3lpRGlVaDU3SklJTkhod2pscGh2WkpWOVpi?=
+ =?utf-8?B?ajVkaStDaSs4OXM2bEhTMmRmcU1VN0NidEJNUklvM2VEWkdMSzZoWlBybnpp?=
+ =?utf-8?B?cnIrNWRMUUxnT2xpa2RwOXhkZHFCaUVzZVRiUFR1T0V4T0duT0taN1E3N2Z4?=
+ =?utf-8?B?QTVLTEdZaVlVUG9DRGgzRzJvZ1NGMlIzb2NKNW5pK20vTzlNRDZUQ2w5WjBa?=
+ =?utf-8?B?NUtBRDVHMnJaMWowTW1UbmtTMEtQdThtUDBrY2t4SDVTZlNvNTlzZFhhQ1ZK?=
+ =?utf-8?B?YXdkdFNnQUdjcHZyTEsrQTJCbWRKV3JVWFVuYjJ3Y3Zoek0yS1hqcUFWRWxt?=
+ =?utf-8?B?dnQwR29lT0paWU16MmNlalVZUlJnVG9nQU9Bb01yRmprWmhwNE5XUTUxZGVj?=
+ =?utf-8?B?dVJLbmhzdEtwbC9CTkJxYzBEYUNnenRIVkxDdFRGMnJpUVVPb1g3bEpyN0xN?=
+ =?utf-8?B?R3J3dWpZYnozOVorSUpabDhkdEdESWhiTmRqVG5Sb1ZvWWNZY05jRjdCcnJ1?=
+ =?utf-8?B?Y2VHaWRrdkNFUW9oRG1OS2xxcnQ5OExsWVJ3L1BoVVR5ZVE1Ym5xQzY4bnVE?=
+ =?utf-8?B?MXVsR2NDU05SdHZKLzVEMmdubmJlaktWcHVwU3k2cWNiVVNjUHdvTmk1akVa?=
+ =?utf-8?B?RlhDNThxUU03QXo4T0xkbnBqUnV1ZzBISVRmbWEyS1doODdaSlJGaXJoN0c5?=
+ =?utf-8?B?eGVFajNXVzRtRTR0TGtYRzJBSk1Wa1Q0RWdiL2NtOEhDcE5abVhBbi9DdGdk?=
+ =?utf-8?B?ZDk3ZUdQWk9JczJ5VjJ3RW55L0pUS3BoWXR3RWNGMjNFdXk5MS94WlpjaUls?=
+ =?utf-8?B?NXZYVzM1YlRlL2pjSDdoeEQ0d1dKOURWQ1pDYmRDclFNQkVyajZwNElMZm9Q?=
+ =?utf-8?B?UWZFTEVaeXZWS0ZIZ0xQVEhTeVlwSHdBRTh2b0o3TWdwamE0OFltWis1aElv?=
+ =?utf-8?B?SmFseVVaalMxYk5LaHUzYkV0TnVZbk9RWEFWcHJ6VXExQUd6TngveksrK1lJ?=
+ =?utf-8?B?YUpqQ1RrcS9rM1VmZmtaeFhDOU9tSVFWa0JqeFlEKy9UMk9pYnd0NHZ6QnlQ?=
+ =?utf-8?B?NmxKWnJQZTF5b3Q1VGVGaHkwN29mZTBNcG9zQkEvVlFFTk1JWUNSOW9ScUsz?=
+ =?utf-8?B?NGZlTVVKZGw1ZVNnWVRya3M4QTFUeTJwNU5WazJscUcrako1Tm1ycFhtM2ZS?=
+ =?utf-8?B?R2dMdTZLQXNrc0lzTVd0clErZnBSbVBRL2p0N0tEeHdkWW1QandxeXJFaGZl?=
+ =?utf-8?B?Wnh5NDRNWGFNd0NvT08xaDN5cVpkdXdsQnJZTUtWeVBGc3JQalFUZkhwMkhC?=
+ =?utf-8?B?QnhDRGRQQ2pKa1dOK2s4QUdzVUR3M2xML0FUZ3JZbGovT2VkQXdWS2tReHk3?=
+ =?utf-8?B?RytyL1pXRDVFK2IvUWlGZUhHVXduQkpRZXE4V1BOVUJTUTRLNkFUYThqZ285?=
+ =?utf-8?B?MEszQVFtVzNOcHpER0VtRWdhMEpvV3FrVFVENTgrdG01cGxwU3F3S3BBTytK?=
+ =?utf-8?B?cDhGNWtNWkFyTEUwbUxXUkY4YURzYWVUVml3Z2lIc2g3M256bytNK1VVbEt5?=
+ =?utf-8?B?QVNpSmRLZGtFaEV3MENzdDdjOTFlTldtNG5id3h1WUdhdHdZOWtCUDJKZ1dm?=
+ =?utf-8?B?bSthZy9Ja0NhUUdHRmtIMU9DQjVlQXRrd1VtTnhobUdoMkxhbUZid282S2lt?=
+ =?utf-8?B?VVlkK0gyVDlTanBGdTFrR3MrYkFBMEhrVGRhaUlibDZDOUNyR3g2NkNmS3or?=
+ =?utf-8?B?T2FoNS9VNk5GRit2YndNTkE5ZWxhV1EzWjZvMmN0dnA4UndrT0plOGt0R3FN?=
+ =?utf-8?B?YThyQ2VydWhzTUw4SnRnYWhnYnRIR0FpSU1CTmdnbG5OMmViNDhqYzU4ZlNY?=
+ =?utf-8?B?SHYzY20ySmdaTGRETFVXaVRHWDV2N1ljNVBrQWxhcVArT2V5bks4QUJqYzNZ?=
+ =?utf-8?B?RXRaUGxveThocFYzenI4YjZDTXpZMWZmV1lieVNtbmFnMHhlV3hSUlBCU1FG?=
+ =?utf-8?B?Y2Y2Nnh6UlZLY1VWL3NVei85c015YWRLR0VVbWxZL1dFOVJ5Y3ZQL1VINDFK?=
+ =?utf-8?B?MmIrRFVOSTZFNHpNSTJlSEd0dnYrZU13ODNFQT09?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8SPRMB0023.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(52116014)(7416014)(376014)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?V0lwWjlESVFBNXAxTFpWbWdVdW1LT2RGRzBpNmoyNmF4MlI4Mi9KeU1ZVnpT?=
+ =?utf-8?B?eHFhSXBjUU9lY0U3SnFFbU5yeG05SW5Jd2RaUmNxbGx6L3p3M01vcXNUb2pB?=
+ =?utf-8?B?aHdpZDlCRVNydjFZNTZReCtDUVcxM1p5R0wzWmtpWkI0RVBsb0lmb05PWXdr?=
+ =?utf-8?B?d0xkYWtYdkNvVGJhWHpiTWwyMFRhRFJmWUNQUmZ1dHY2QmRaWTNTaFFDeXlP?=
+ =?utf-8?B?UWVCQ3RKYjFnUHhMcjY0eUtLUXY1ZnZYR05jNFRFMVA0VlJha0VjWDZZNXcx?=
+ =?utf-8?B?VUhDWWpEWFZSaTBzTjVpSzRNOHB3VGQxbktMWDdNanBVeUV0clNORFpKVG41?=
+ =?utf-8?B?YTcxU29tN1k0NlhhMlhBa3lNZENFTkFFWnRJQ3Fqc1FWUnFrc0tnNmF6ZVg0?=
+ =?utf-8?B?dTJCMFdueWlTaEFFL3RHTXJ6UmZHb1VtYlEvemdVRW1ZYlZKR0Qzd09zZ2VW?=
+ =?utf-8?B?Wis4M3lhbnhDbXJ6eGh4VStsbTZuOUE2aHozNzdrSW1Yc1JWVjM0VnFFck1n?=
+ =?utf-8?B?c3NBR2tMQ3dNRkFtQzFHZnRIZnJ6YnVGY2RGTnZYaHltclZuMU9VeXhMbXpn?=
+ =?utf-8?B?d2dmbWNEdTE2czA4V0dhQjJ0cjZFbXJGYWlkTXorY1RkeUN5akJ5UFB2NDho?=
+ =?utf-8?B?S284d3RVQU15SDZKb0s1Vm9Ycnp4ZzZ6N0w1Yk5SNUpmSkZEdzR6ZFVBRVVB?=
+ =?utf-8?B?YThRa3ZEcTh6WmVQY2FjUDBleUR5RmtoYmdzZE1qRW5hUEFHMzlSUTFobHEw?=
+ =?utf-8?B?L3liRi9jUUVOYnVsalp5bStWOHNNeWI3ZlU1MVdWc2R0dUtrUk1PdHFwU1Nx?=
+ =?utf-8?B?UUlaNTdpeHFnRitkWmZ1ZUsxcWkybHlxWTNySG15NStRbWpJSVlUZ3oyMVk5?=
+ =?utf-8?B?UDkzRWxjdGYwM3g2bDdkNkNWMDJUeFVDdHBjWTQyYzIxNm5EckxmWnhtMFA4?=
+ =?utf-8?B?cDBQY0lzL3Njb1FXZytIT3pqNG1hT0FpS2Z3VWYyNnNpL0p1bWVidGZ6cS9H?=
+ =?utf-8?B?U3ZMcXdzM2tXUzV1QnNkODRwRzFIejN2Nko2TEQ5UkpzcktQSUJQUDZzL3NZ?=
+ =?utf-8?B?MkZrRThhMDhNTTA5Tk9mWHQ2S0R3cTBVYmlNNEs2MkxEd254dmY4VW03cm45?=
+ =?utf-8?B?NmZaTy9TRWc3cmdIc3IvZGN5RU9HMVNibnkzeUZjZlh3YSs4Z1g0eUxzSE9k?=
+ =?utf-8?B?Q09rOXhhbnhBcGpJNitkMGtTZU9TYkJENjdIdmNLdjcrM1VFQnRwVFcwOXVw?=
+ =?utf-8?B?Nko1aG1yYTVZbG1JdGUwVW1RZ2Z2c2QyRm9Jbkl5c2hQckh3cS9icUJYZmZa?=
+ =?utf-8?B?N2FhQU1VMUQzaVpUczhCVUg1SHRJZ2x0a3RYT3A3dHhnN3o4VnRMdmV5dHF4?=
+ =?utf-8?B?Y3M2TXpsS284UEI2K0prWkZvbEZjUFpMcFBBazhCdVdMNzM4a2VzZW1lWml4?=
+ =?utf-8?B?VmdKc2FreHI4SW1SVUsyMjlJOXdCc0FEUnpCSTlGNWxkR1JpMlNZS3VsTm8r?=
+ =?utf-8?B?blM0dFFSdlNCMDlXK1FhaGNUc0hvZXMyRkZ5MDFnbWI1SUdTbUN3MlJrR1lJ?=
+ =?utf-8?B?UHRtMjFZLy9ncmhTY0Z1VWUzSnlmRThqUlIyL1BKZHdkRnBjZnFaVW91Q3N0?=
+ =?utf-8?B?KzVzQUg5dko1TWx2b0k1bVozM3RsLy9BcjNNdVZSLzRqNS9kSDYyOGE2dlQz?=
+ =?utf-8?B?TmhWYm9IOERVYjlnR3VCN3ZlbzlkWGUvTi96SmdiVVdTcGhsSVNJaUU3ZlQr?=
+ =?utf-8?B?a2ZUVWpXOGs0UitrcDQvOVhpbnEwY1ZJaFl2b1JxS29XWlNnWG9ndEgxZUdv?=
+ =?utf-8?B?UjdFMnhZaFl5NytIOUV3V3FjWWZ6RlVUNWNYK3BRQmovZkNIdTRPamsxNzBS?=
+ =?utf-8?B?T3BTZDkwZ2FkeGVGL3VpN2d4OEdqdmJadUQyMEhrVDZiU1dIWXJwK3E5UzQ4?=
+ =?utf-8?B?M21YaWZpdWd0Wll4TlFPRnAwRnBVaTMyQlZZMGJBQ1E4YWdSR2FHVHBzTGhN?=
+ =?utf-8?B?VkFvY2hpaTM1YUV0UDR0ZEdJUkZlVmtDall5aVRCdWNWNURtK1RDZ0h5SW9v?=
+ =?utf-8?B?bFZFZ2pzZjc3VjFLLzVPU2RaN3hGRmxrRWU1T2VvYnorayt2MGJmK3l3MWQ5?=
+ =?utf-8?Q?igBr6JIgz8Wh3hUnRr+TpBf2e?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96e9bc08-b538-4757-cb36-08de121541ec
+X-MS-Exchange-CrossTenant-AuthSource: AS8SPRMB0023.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2025 09:19:24.4273
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4Ac+UR4k/hnBDUvZae4WKnaM3hTk8SbQ72WD5ZVKh0R7ItHN4yDcAP1/eigJ5SQqQcIIeoypmomHiP9+qyVeDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10556
+
+The serial adds MIPI CSI-2 support for i.MX8ULP.
+
+Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+---
+Changes in v7:
+- No functional changes, only move patch 2 after patch 4 to avoid dependency issues.
+- Rebased on latest media/next
+- Link to v6: https://lore.kernel.org/r/20250917-csi2_imx8ulp-v6-0-23a355982eff@nxp.com
+
+Changes in v6:
+- s/existed/existing/ in patch 1 commit log.
+- Delete the compatible between 8ulp and 8qxp since 8ulp need one more clock.
+- Update compatible string in dts for csi node.
+- Add one new patch to handle 8ulp in driver.
+    media: imx8mq-mipi-csi2: Add support for i.MX8ULP
+- Link to v5: https://lore.kernel.org/r/20250901-csi2_imx8ulp-v5-0-67964d1471f3@nxp.com
+
+Changes in v5:
+- Delete else: block and move clock constrains to each case.
+- List exact cases, but put imx8qxp/qm in one if:then: block to avoid
+  repetitive code since they are same.
+- Link to v4: https://lore.kernel.org/all/20250828-csi2_imx8ulp-v4-0-a2f97b15bb98@nxp.com
+
+Changes in v4:
+- Change csr clock name to pclk which is more readability.
+- Add restriction to i.MX8ULP and the other variants remain the same as previous versions.
+- Update commit log in patch 1 to describe why add new compatible string for i.MX8ULP.
+- Link to v3: https://lore.kernel.org/all/20250825-csi2_imx8ulp-v3-0-35885aba62bc@nxp.com
+
+Changes in v3:
+- Correct the order of "fsl,imx8qm-mipi-csi2","fsl,imx8qm-mipi-csi2".
+- Correct the order of minItems and maxItems.
+- Restict all variants.
+- Change pclk clock name to csr to match IP port name.
+- Align description about csr clock with IP datasheet.
+- Add reasons for adding a fourth clock(csr) in patch 1 commit log.
+- Link to v2: https://lore.kernel.org/all/20250822-csi2_imx8ulp-v2-0-26a444394965@nxp.com
+
+Changes in v2:
+- Add more description about pclk clock.
+- Change minItems/maxItems to 2 for resets property.
+- Better to handle "fsl,imx8ulp-mipi-csi2" variant.
+- Move comment to the top of reset_control_deassert().
+- Move dts patch as the last one.
+- Add "fsl,imx8qxp-mipi-csi2" to compatible string list of csi node.
+- Remove patch 5 in v1.
+- Link to v1: https://lore.kernel.org/all/20250812081923.1019345-1-guoniu.zhou@oss.nxp.com
+
+---
+Guoniu Zhou (5):
+      media: dt-bindings: nxp,imx8mq-mipi-csi2: Add i.MX8ULP compatible string
+      media: imx8mq-mipi-csi2: Use devm_clk_bulk_get_all() to fetch clocks
+      media: imx8mq-mipi-csi2: Explicitly release reset
+      media: imx8mq-mipi-csi2: Add support for i.MX8ULP
+      arm64: dts: imx8ulp: Add CSI and ISI Nodes
+
+ .../bindings/media/nxp,imx8mq-mipi-csi2.yaml       | 41 ++++++++++++-
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi         | 67 ++++++++++++++++++++++
+ drivers/media/platform/nxp/imx8mq-mipi-csi2.c      | 61 ++++++--------------
+ 3 files changed, 124 insertions(+), 45 deletions(-)
+---
+base-commit: 1fdb55ed40fa5ebe6934bd6b93036c714ebb5ef8
+change-id: 20250819-csi2_imx8ulp-9db386dd6bdf
+
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Guoniu Zhou <guoniu.zhou@nxp.com>
 
