@@ -1,67 +1,41 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813F72FD1DA
-	for <imx@lists.linux.dev>; Thu, 23 Oct 2025 12:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BDB3009F0
+	for <imx@lists.linux.dev>; Thu, 23 Oct 2025 13:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761222168; cv=none; b=MJkB5bu5g6PvYkddDu183armIqq9SLdJgS2hhs+cuUhgxPGUkgE9tFtG+OshsziEQrBPUlKCIoI6Zf6BoxYoq2Os6rvvXIXgiNq1bPncxQQJD6axYPfYzu4yAfUK0n2bLV4LjQ/+k2qVZzSuaEaRmqG5IW3kAeH6/mNTD7PFmqA=
+	t=1761225495; cv=none; b=T5U5lwoELBxj/a1LGe4zEGGd1yCinqAPxwmtPnoLIycxtcshH01nPoeL83y+3vH8fhzI0Xu3HcbjPS+T0h/lR4CCaV0ER52OsnWlUBC+HNG4fJqvD7f1gJaO6X52vXsrs3b4DV7EPUjbZnQH8h3da6+j3AWseyBwuMU5o5DGkaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761222168; c=relaxed/simple;
-	bh=xiPiUZN+6HW8JFz8oh0e6yzQqMKGsrI5+W0KXzokEGg=;
+	s=arc-20240116; t=1761225495; c=relaxed/simple;
+	bh=dH6+0t87/gGCT1KQTBP2xplKf5Gtdcl93ydPNXQ+/Hw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pumqqhyWEBr0isZw6zV7wboJMbj613NmCu0C6elVeD2/F08q1HfUGZJXAVZVDngWZY8Q+mz805RtwPAuz2GeewbFnupIz2UBo1sFYyR07qug1j84cSj5jV+epQATyCTM5JxEU+UwelMcgWhxD9oBZP9uoNHY0IqZSKkDA8ZYxWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Jv9P5rLS; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=P3Iu02jsrwQlhSxdIptqgo4N/mk1uoHCdALnRwQwMt7ppK+Oc4aZGYFSLTDbhfsLi4/8KYjAg41TpjYCQZzw8YJGQhHYBD9cOpofF7Df0nbWFoK5ABBVunJ0oYCoV6VobEOPqE7kUOxDhmLqtL/hgEazJA02r+zia2u9vt+WArk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=FUHb1DW7; arc=none smtp.client-ip=46.19.12.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Jv9P5rLS"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-46e33cec8edso175475e9.2
-        for <imx@lists.linux.dev>; Thu, 23 Oct 2025 05:22:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761222163; x=1761826963; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ng0p3rzhbCe/bm8WuWNgEWBVBz/1DYFIUGKbuqDxdLg=;
-        b=Jv9P5rLSsVZtrDIJRw8yaRCX9ywTT6HvywgGk/bX4pzCFy+Um9LAa+m8p1/0JWUs21
-         C+RAKSizbzVolLT8sInWsTnaEflV4R4+97iP8z50Ta4Jw53kfPcZsVv4ln9r8OTSromR
-         jn3z3Nm9DL/wnWJbmWCXb6eGNhNw7dSjmJM4EDnm9q1GHBtNi3Zsb9Mpo9AwdN5DBCzd
-         +N1pjkZl/uBJARWbuyXtUrxRb+z/gzTborNzrjGVfuGDvzl2eRc9nmGBl1urgzKldZ8Y
-         a9AQ19ey6WKPPaOGxGBKR/AhaYi2kpje+GBLsKHtV6aX2iLoUM1SAClwBTP3mNFyj9TV
-         blZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761222163; x=1761826963;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ng0p3rzhbCe/bm8WuWNgEWBVBz/1DYFIUGKbuqDxdLg=;
-        b=FFDkePtjyAtkWxENfN0IEjl9gVvrJkmRbnjwTDJzcSCmI1ZG7NIvk2oUzUrjlz7Yh7
-         oJsiZElDn2m48C+sLDJNGUMuH51ctfd0TOMiUG9WbtrYRBmP/C38YVwqygNCT6ASPPV+
-         z1S/+QhjVtoXYz9m28ivkNWr0CR6lc9csHHOindQTkwOTnV7ap98WvZGdtzpPhmJ/0/X
-         Y762f/Nq0wtf0gFSqIaJnbqOZDR3gfM888/3tajsHxu/s41HqiEA6WfqLffxe2LqPnxC
-         9z1OhqCnju7Ol7OSndc4B4JsDbGCJIoA3XISNH4t6kEs2iyVQ/G9kEyuTAqHWxFOnhiJ
-         NO6g==
-X-Forwarded-Encrypted: i=1; AJvYcCXua4iH2WVaC5RWIYPouaHqCUtllQlMOOocZ9FWeVMc1Edus/6hdMld8kRqITIrpV1X9wo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzlyPRtYhi16oMy0zswQ0qOHUdpw2FR1bhC3ROqcrDwSvIilQR7
-	CV68rmxHKRx4zZAH7LAOINE+Fqwin5G0AOCwnSpEZkGJNuDnNdKBU+BAsJadESzpRdU=
-X-Gm-Gg: ASbGncvL5dD2lepmBTg1EUvBJAE6hJq9CCf/Dm3+xItHlWTtmNfhZQN5/frinLmz7C+
-	p0detzpG5/9uc/boFJwLDdvEZ+W5h8ztQISs5SLT8Gup4n0lxsWfjsEbupV9BdkQS9bAgBd1GQn
-	9SbdOoyFtwF07B0D1Iui+/+3y5YKB3SbMHdkpFyijJoSnoC1OlWD6/OnCjG6+wwGdX04nTUV3Dj
-	5LIb5KURzITgeyFITPQgZ4PM6jUI+L7X7wvCs4t5Rl5YwiNiKg9oyVyyyvvQGi/1urPr01UVRv8
-	qf8qfG2JT3gqaXHeAEvc/EnM5q/hdQ2F/aIt74LvZB7MUfN+X2bTENHilgJm3XT8H+/YG8DxYl/
-	IrX4Hl3voD18xYvtlcUSJsaoQzl8DgoSILglNCDV7dcvjAxmhFG51uNfKwGE5Y0MHEVVqz7NK9T
-	CJ8lPx/YceOdzl5+HhhJEr4DIvYr7FJH+37WtRtiBDsg==
-X-Google-Smtp-Source: AGHT+IHn9Jc9tXr8TF9Sn6KIpzgp4yHxdt9b5RD5u8Yb6ZrVqAyZQpOL9VO2GV+WOPSTnrPzeUkpgA==
-X-Received: by 2002:a05:600c:1d25:b0:471:152a:e574 with SMTP id 5b1f17b1804b1-474942c4fa0mr55655555e9.2.1761222162514;
-        Thu, 23 Oct 2025 05:22:42 -0700 (PDT)
-Received: from [192.168.1.29] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429897e7622sm3705393f8f.8.2025.10.23.05.22.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 05:22:41 -0700 (PDT)
-Message-ID: <cacc9439-2cf0-42bd-b6c5-13d1e75642d8@linaro.org>
-Date: Thu, 23 Oct 2025 14:22:40 +0200
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="FUHb1DW7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=c/jmxjXdmq0SXF1W7GJIW60cMtCZ5BeVt+jY+t/MAbo=; b=FUHb1DW7/ZzXUhEY9ucRst9OyP
+	onHMgaSnAbYskDmFbnRi8XDTGWqqxyvHPfr5FsoVGssCYpvxEXW8xScnsIUGOEbO1iwm1IDYC8a9g
+	dePMD+2PDK3a4nugYHrSjbB4PwC+BR2mV9CRklkqoXE858v06GzwydwjNsClnWz92nhoJ6DvLgL4f
+	/w5JGzdlobEC6HGtU0SS2BO1Z2lUFumV9So3RnYKWruXBC5UsuzJDs5s+Ni1/EUCejaGerx1Huu/+
+	Ng0uRVK8/PCER1pAByIyQzoTn/LgevQ+7pW02VnK7J9aH6ZZUzr9o7mSnnsm6cRtiNs0L5Ep3H6Jm
+	n4xW0ajQ==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:42024 helo=[192.168.69.116])
+	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1vBvCo-00000005yL2-3HDU;
+	Thu, 23 Oct 2025 15:18:11 +0200
+Message-ID: <12603435-02c5-4e85-8fd3-53cb65c9159a@norik.com>
+Date: Thu, 23 Oct 2025 15:18:10 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,84 +43,193 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] arm64: defconfig: Enable i.MX95 configs for booting
- and Ethernet
-To: =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
- <jpaulo.silvagoncalves@gmail.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
- <joao.goncalves@toradex.com>
-References: <20251023-upstream-imx95-smarc-defconfig-v1-1-62c6e6f5b315@toradex.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH] arm64: dts: freescale: imx93-phy{core, board}: Add i2c
+ bus recovery
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, upstream@lists.phytec.de,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev
+References: <20251023103426.3606647-1-primoz.fiser@norik.com>
+ <56075d3e-30ac-4501-bd77-2a84d0d124bd@pengutronix.de>
 Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- 2+47PN9NZAOyb771QoVr8A==
-In-Reply-To: <20251023-upstream-imx95-smarc-defconfig-v1-1-62c6e6f5b315@toradex.com>
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <56075d3e-30ac-4501-bd77-2a84d0d124bd@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp2.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On 23/10/2025 14:19, João Paulo Gonçalves wrote:
-> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+Hi Ahmad,
+
+On 23. 10. 25 14:00, Ahmad Fatoum wrote:
+> Hi,
 > 
-> Enable the necessary missing configs for the i.MX95 to boot and also
-> have Ethernet working:
+> On 10/23/25 12:34 PM, Primoz Fiser wrote:
+>> Add bus recovery feature for I2C buses on the PHYTEC phyCORE-i.MX93 SoM
+>> based boards (that is phyBOARD-Nash-i.MX93 and phyBOARD-Segin-i.MX93).
+>> This enables the i2c-imx-lpi2c driver to recover the stuck I2C bus by
+>> switching the SCL and SDA pinmuxing and do the I2C bus bit-banging.
+>>
+>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+>> ---
+>>  .../arm64/boot/dts/freescale/imx93-phyboard-nash.dts | 12 +++++++++++-
+>>  .../boot/dts/freescale/imx93-phyboard-segin.dts      | 12 +++++++++++-
+>>  arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 12 +++++++++++-
+>>  3 files changed, 33 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
+>> index 5599e296919f..96c58cf13754 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
+>> +++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
+>> @@ -128,8 +128,11 @@ &flexcan1 {
+>>  /* I2C2 */
+>>  &lpi2c2 {
+>>  	clock-frequency = <400000>;
+>> -	pinctrl-names = "default";
+>> +	pinctrl-names = "default", "gpio";
+>>  	pinctrl-0 = <&pinctrl_lpi2c2>;
+>> +	pinctrl-1 = <&pinctrl_lpi2c2_gpio>;
+>> +	scl-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+>> +	sda-gpios = <&gpio1 3 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+>>  	status = "okay";
+>>  
+>>  	/* RTC */
+>> @@ -253,6 +256,13 @@ MX93_PAD_I2C2_SDA__LPI2C2_SDA		0x40000b9e
+>>  		>;
+>>  	};
+>>  
+>> +	pinctrl_lpi2c2_gpio: lpi2c2gpiogrp {
+>> +		fsl,pins = <
+>> +			MX93_PAD_I2C2_SCL__GPIO1_IO02		0x31e
 > 
-> * CONFIG_NXP_ENETC4 for the network controller driver
-> * CONFIG_NXP_NETC_BLK_CTRL for the NETC hardware domain controller
+> I haven't worked with imx93 myself yet, but does this not need the SION
+> bit set?
+
+That's a good question.
+
+It seems other in-tree platforms using imx7ulp-lpi2c driver like imx7,
+imx8q, imx8mp are setting the SION bit indeed.
+
+However, since we are using the generic I2C GPIO recovery routine, SION
+bit probably doesn't need to be set because recovery routine will apply
+"gpio" pinctrl via the pinctrl_select_state(), toggle the SDA/SCL lines
+now muxed as gpios and lastly apply back the original "i2c" pinctrl.
+
+So I would assume SION bit would need to be set if driver would try to
+recover the bus while keeping the original i2c pad muxing?
+
+For which platform was SION bit necessary in your case?
+
+BR,
+Primoz
 
 
-These do not carry any IMX95 compatibles, so I have doubts you described
-the issue correctly. You claim that SoC needs them, not the board.
+> 
+> Cheers,
+> Ahmad
+> 
+>> +			MX93_PAD_I2C2_SDA__GPIO1_IO03		0x31e
+>> +		>;
+>> +	};
+>> +
+>>  	pinctrl_lpspi6: lpspi6grp {
+>>  		fsl,pins = <
+>>  			MX93_PAD_GPIO_IO00__GPIO2_IO00		0x386
+>> diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+>> index 802d96b19e4c..1850a93dbaa4 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+>> +++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+>> @@ -132,8 +132,11 @@ &flexcan1 {
+>>  /* I2C2 */
+>>  &lpi2c2 {
+>>  	clock-frequency = <400000>;
+>> -	pinctrl-names = "default";
+>> +	pinctrl-names = "default", "gpio";
+>>  	pinctrl-0 = <&pinctrl_lpi2c2>;
+>> +	pinctrl-1 = <&pinctrl_lpi2c2_gpio>;
+>> +	scl-gpios = <&gpio1 2 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+>> +	sda-gpios = <&gpio1 3 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+>>  	status = "okay";
+>>  
+>>  	/* Codec */
+>> @@ -238,6 +241,13 @@ MX93_PAD_I2C2_SDA__LPI2C2_SDA		0x40000b9e
+>>  		>;
+>>  	};
+>>  
+>> +	pinctrl_lpi2c2_gpio: lpi2c2gpiogrp {
+>> +		fsl,pins = <
+>> +			MX93_PAD_I2C2_SCL__GPIO1_IO02		0x31e
+>> +			MX93_PAD_I2C2_SDA__GPIO1_IO03		0x31e
+>> +		>;
+>> +	};
+>> +
+>>  	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+>>  		fsl,pins = <
+>>  			MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x31e
+>> diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>> index 3f069905cf0b..ebc57841f27f 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>> +++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>> @@ -93,8 +93,11 @@ ethphy1: ethernet-phy@1 {
+>>  /* I2C3 */
+>>  &lpi2c3 {
+>>  	clock-frequency = <400000>;
+>> -	pinctrl-names = "default";
+>> +	pinctrl-names = "default", "gpio";
+>>  	pinctrl-0 = <&pinctrl_lpi2c3>;
+>> +	pinctrl-1 = <&pinctrl_lpi2c3_gpio>;
+>> +	scl-gpios = <&gpio2 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+>> +	sda-gpios = <&gpio2 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+>>  	status = "okay";
+>>  
+>>  	pmic@25 {
+>> @@ -234,6 +237,13 @@ MX93_PAD_GPIO_IO29__LPI2C3_SCL		0x40000b9e
+>>  		>;
+>>  	};
+>>  
+>> +	pinctrl_lpi2c3_gpio: lpi2c3gpiogrp {
+>> +		fsl,pins = <
+>> +			MX93_PAD_GPIO_IO28__GPIO2_IO28		0x31e
+>> +			MX93_PAD_GPIO_IO29__GPIO2_IO29		0x31e
+>> +		>;
+>> +	};
+>> +
+>>  	pinctrl_pmic: pmicgrp {
+>>  		fsl,pins = <
+>>  			MX93_PAD_ENET2_RD3__GPIO4_IO27		0x31e
+> 
 
-> * CONFIG_PINCTRL_IMX_SCMI for the pinctrl driver> * CONFIG_CLK_IMX95_BLK_CTL for the shared hardware domain controller
+-- 
+Primoz Fiser
+phone: +386-41-390-545
+email: primoz.fiser@norik.com
+--
+Norik systems d.o.o.
+Your embedded software partner
+Slovenia, EU
+phone: +386-41-540-545
+email: info@norik.com
 
-
-BTW standard comment applies - explain which upstream boards have all these.
-
-Best regards,
-Krzysztof
