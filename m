@@ -1,108 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B512749EA
-	for <imx@lists.linux.dev>; Thu, 23 Oct 2025 18:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB673295516;
+	Thu, 23 Oct 2025 18:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761243910; cv=none; b=UPSfPjPRVDvN1Exq3bFEBDliiOD+n9DbOY7tFIfxhWhVnyEWE4DayPvLfWPvMd4yDbVecMJNYmVW/uC/QphBSdOdH1AP2QgiZVXyKUjhRhf1wBGnx8uduHYews7Gkw3F7ZMGpFNLJMbq0GXlL4t2lwVekoNup+AXSzaFJlarE0I=
+	t=1761245521; cv=none; b=mBTlHp76uVozFrcp3hGK3vS4AP8maIiUXik4ItHU64uxKRJcMglwVmqE4EWSlxJpQFMa3Ry6SwXpeIwP3JER/frMKiDMdXt8V662O7cGPhd9N1BBrlIuuiOWiiUf91kjzGKcM1SGjX5WImSBYXQzIB83tgPBMyc4Uv6ZjTP3Zr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761243910; c=relaxed/simple;
-	bh=zwCmN86sqMbHXrITH7YOhA0fPI1EnrI6nXVZagQBh7I=;
+	s=arc-20240116; t=1761245521; c=relaxed/simple;
+	bh=eESPCSSOXsamdSuHXgJXCQrhot0/CQd3pgItLPG55rw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GMQmKbVv2BQ9FDzfzDkOnQt1yT9RnWJtwGou+o2x+hCOknsei1e0ZPFGecQt/FnMFnoel3+WkjHL1QU/vC492qOCESLl4rbzCQw9rWpG+z0TPz00SBYx5JNmSDvod6bk4b/LkLct/3QHDdWvfPbAFCax8PakYI1qsy5xsy7z4H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cyxVmd0w; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=hGEBNlXcIC8ycB7brX+edIaYePweofS2zdlfPl3gSIRC/z5A56sPh9N1OoCMLMhepOVNJo5orhr/eV6wyNEX8jr8tzQzCbU+15OnlME4/r51CW4af+nGN+nP8/VMJhuaNOlygmyeiZ5xh+V1wOU4YmFy3ic3rDpYEos4xCtxf0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bA3b2DEt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cyxVmd0w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761243909; x=1792779909;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zwCmN86sqMbHXrITH7YOhA0fPI1EnrI6nXVZagQBh7I=;
-  b=cyxVmd0wnxAeY2o5Ao4cRe2A3PCFaQ7FtaKIbnwaPbro5t5fXGaPTsTt
-   IAM10u+C3+UNeDtAzlz8Xgcyw4Wqpeue4hK6NKhiRHkLEH32cluVDG0Rd
-   FjG4+pqbAl+hmg5UTsOr+rCZx2dnTOkDkhKnhlyiDTpLse1UzN1i00Q57
-   WAZobOrymrqz5YxwdRYn06+A0pF79kuP1JVxYNpOGiF4KiPaJpbpPtgbz
-   YppahVxdWQ6bFpYGa1jvvmBAe5LWl5EL7KSElY2sUmea7wQdN9lTIjdBV
-   G7/pwQ/4z6y0KUwIpMbUApbkQ6bAqU2PTHPFTsOWk1aBOLkzFmx+qu+iS
-   g==;
-X-CSE-ConnectionGUID: p2Hf0V12SU6m9XZU1mgHJQ==
-X-CSE-MsgGUID: PRkcx5GjTmero5TkZTODeg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63461193"
-X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
-   d="scan'208";a="63461193"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 11:25:08 -0700
-X-CSE-ConnectionGUID: rZGXvA+rTRisloNEidpLPA==
-X-CSE-MsgGUID: 4eRJcodlREGrhOmUXQuDVw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
-   d="scan'208";a="214884102"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.163])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 11:25:04 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vBzzg-000000020qc-1HGR;
-	Thu, 23 Oct 2025 21:25:00 +0300
-Date: Thu, 23 Oct 2025 21:25:00 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>
-Subject: Re: [PATCH v6 3/5] i3c: master: svc: Add basic HDR mode support
-Message-ID: <aPpy_FNh0DB_1x-w@smile.fi.intel.com>
-References: <20251014-i3c_ddr-v6-0-3afe49773107@nxp.com>
- <20251014-i3c_ddr-v6-3-3afe49773107@nxp.com>
- <aPnngQdwEqHgPc7R@smile.fi.intel.com>
- <aPpIkqjeWsi7xAAn@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bA3b2DEt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A0DC4CEE7;
+	Thu, 23 Oct 2025 18:51:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761245519;
+	bh=eESPCSSOXsamdSuHXgJXCQrhot0/CQd3pgItLPG55rw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bA3b2DEt1Qj9qdsRfH8GCJ5h0s/H+acgjn84ZW3oj9j5P3DZqMYlP4KXOQELIoOyJ
+	 pntbvPcNso9/wMaH8FA1GkPYMHXL+kUQjiS0Wh/HQXLlAllv0Fq7/AANwXg0r7j3LV
+	 oKy0N+6zDNkN74OEltqsVPXqKNFR8P93zL3FxGyWYC1CLXkpaCtofUJaprqS6Mi7RV
+	 zCRs0AYDKzez8eVjNxDKiVOLwiDQxtVa54yw640Q3XXkNn6DTTOMyrl7b4JCCSeN5R
+	 4MiJzsVSsvvNw5ulxutifgawh2Uve19vLrs398gq9xKBGaKkz8Tl7vAAn8fra+y3pZ
+	 4IIozRWIUa6gA==
+Date: Thu, 23 Oct 2025 19:51:54 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Alex Elder <elder@riscstar.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	han.xu@nxp.com, broonie@kernel.org, dlan@gentoo.org,
+	Frank.li@nxp.com, guodong@riscstar.com, devicetree@vger.kernel.org,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	spacemit@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/9] dt-bindings: spi: fsl-qspi: support SpacemiT K1
+Message-ID: <20251023-finlike-outline-86e62afa4bd7@spud>
+References: <20251023175922.528868-1-elder@riscstar.com>
+ <20251023175922.528868-2-elder@riscstar.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TUrEZvgml7CQLLIf"
+Content-Disposition: inline
+In-Reply-To: <20251023175922.528868-2-elder@riscstar.com>
+
+
+--TUrEZvgml7CQLLIf
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aPpIkqjeWsi7xAAn@lizhi-Precision-Tower-5810>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 23, 2025 at 11:24:02AM -0400, Frank Li wrote:
-> On Thu, Oct 23, 2025 at 11:29:53AM +0300, Andy Shevchenko wrote:
-> > On Tue, Oct 14, 2025 at 12:40:02PM -0400, Frank Li wrote:
+On Thu, Oct 23, 2025 at 12:59:13PM -0500, Alex Elder wrote:
+> Add the SpacemiT K1 SoC QSPI IP to the list of supported hardware.  This
+> is the first non-Freescale device represented here.  It has a nearly
+> identidal register set, and this binding correctly describes the hardware.
+>=20
+> Signed-off-by: Alex Elder <elder@riscstar.com>
+> ---
+> v2: - Point out that this is the first non-Freescale device used here
 
-...
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-> > > +	readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
-> > > +			   SVC_I3C_MSTATUS_MCTRLDONE(reg), 0, 1000);
-> >
-> > No error checks? Why is it okay?
-> > Why is the first parameter 0 while it's not an _atomic() call?
-> >
-> > > +	udelay(1);
-> >
-> > No explanations given. Also is it really need to be atomic? If not, use
-> > fsleep() and it will choose the best suitable API under the hood.
-> 
-> It is in atomic context. I will add comments.
+--TUrEZvgml7CQLLIf
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Not only, the call that's used in the code from iopoll.h is wrong in such a
-case. Haven't you tested this with debug atomic context?
+-----BEGIN PGP SIGNATURE-----
 
--- 
-With Best Regards,
-Andy Shevchenko
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaPp5SgAKCRB4tDGHoIJi
+0hS8AQDYMRazoABNlKH/b+Mygp/zkDAWNQf1cbEZnLpyMl7Y4wD/Re8aUdx97KFQ
+e82V6/zj8gHJG/3k0oy3joGkFupZOg0=
+=OZe3
+-----END PGP SIGNATURE-----
 
-
+--TUrEZvgml7CQLLIf--
