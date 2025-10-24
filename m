@@ -1,165 +1,198 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013017.outbound.protection.outlook.com [40.107.159.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5182FF152
-	for <imx@lists.linux.dev>; Fri, 24 Oct 2025 21:12:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761340347; cv=none; b=XL3cXWVteQ/cBU1os0+jjLZQn+7IteZEajvn0UtjF4lbJSMyaEbVXWjSD5+qvOHzsJANJD8EPBGqS8Jd6II4Kp1KcirtSYRxwn4ZQIN5dajlA1a238/rrhQiSrjU4CmgtxAWVZ6uWd3SV6oHn5a8GUVUY+jRtqFi7xRBeObtQaE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761340347; c=relaxed/simple;
-	bh=XapeQpNiVnOZWKHzPMxALSxZqbbB82+/0jrRk+Be5o0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C3QVULbg8Uu4NmVKIAeFyk93kzCHBYsqgh/wbBGaEpyp1SDnieAMpFpRcajnVBDn7lXIguuigp6RhklV5Eoo4HOO7vZxaoKYuXy+92TMNSCDoY7CQ1rGvG6F2nBAyZJ1SeDIEsi/J5aZ+88rlMI8344jh3BF02uDTTgheAW5ICE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OZVY0rw1; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4679A302CA2;
+	Fri, 24 Oct 2025 21:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761341008; cv=fail; b=oDHmHwvah/MUrUYD5KaVXzwKPh3VBxNA20TRrka/h5GOGozcPOq6FkJfnJnqWj2+MRxpyhaNV6se9gkvukQhoy56adNEbUc0uWlkh7XAh0zB1XLsEJxNMVOF9WzMMSJop4bIZ2UeQ2nvKyEB40mOTmKEEumv3HRJnl+ycpc+ogg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761341008; c=relaxed/simple;
+	bh=m0YOK/vb7Fpx0NGJ2tl9c7nWVX4XNyPibeBUKOtzwNY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Tqk+5nfRRm9yjiIoeP65ssRaCPYRUDdW8kbDPePlDedTNFoamMZCkhZrdD64D8MOWVW+hA8rB4HtR7uO96J6Y8ypsaCOxq+LasA4k8jV/7ESoEzK5V+69vZ8uEyAOU6kGBCTvCehg5sNmDBD4ql7ilO1EbRyg0OiSj3BEuIsw48=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aoNNbUVc; arc=fail smtp.client-ip=40.107.159.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OZVY0rw1"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id CD5DEC0C43F;
-	Fri, 24 Oct 2025 21:11:57 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7A4CD60703;
-	Fri, 24 Oct 2025 21:12:17 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D37E7102F22B5;
-	Fri, 24 Oct 2025 23:12:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761340335; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=f1MDeUalmO2MBuHBwgqnu8xSGd9CwkEHdnrfQWRAgQ8=;
-	b=OZVY0rw1nmczW237v6np6WNDFGQ6eR2zd3znpqkEWDafR9sNuuOUqwUVUhzR+5csGyUMqu
-	ij3T6l9saudJiYUTmnsvl2Xi5nlZq3J0kyPd8Tql/Ns82Z9NGh90a4Lm+MlCnCxLryVh8S
-	KBrrsGTu+0hpPp8k7pi1WG/zaRKG0oV5q3tjdi8KXdZ2QnaTa26nokWcHF+Ue5dLwX5yMF
-	kIiunQ8OqPITEpQBqZaocyh3urX8kuNaPawctzTyBc18pfcZsr0EFHb1YzbfrQU9d6ZM1L
-	cPBxprhTwc75j+aoy6sLKLnLsQZpfGsGAAh9hj0K8ziOSun3hTEywQcPLKJ2PQ==
-Date: Fri, 24 Oct 2025 23:12:05 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] i3c: Add HDR API support
-Message-ID: <20251024211205055af5b3@mail.local>
-References: <20251014-i3c_ddr-v6-0-3afe49773107@nxp.com>
- <20251014-i3c_ddr-v6-1-3afe49773107@nxp.com>
- <aPnmCwwZVZ5egqkP@smile.fi.intel.com>
- <aPpHTej/vKfiN68k@lizhi-Precision-Tower-5810>
- <aPpyf1xPmU_koEXH@smile.fi.intel.com>
- <aPq/6/+63sHuq/qy@lizhi-Precision-Tower-5810>
- <aPsZB44qXR77jNHF@smile.fi.intel.com>
- <aPuHKs3u344zoI2+@lizhi-Precision-Tower-5810>
- <aPujXUO2h5zHy2fj@smile.fi.intel.com>
- <aPupaHEZM20Q8aJu@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aoNNbUVc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XpMiv1CF3mEvYNw//pubaukbJgOaSfIOMkP8EZXV2adw8gKaLCTdqaaSVvCxWYYOK3TH0lA9tCVLbgRoNr3Sm0WCjuOYFzXLMBz02VfgdRmfJB9fqlymK8rvMVrRl4px8CETHcbuqGM7cQ1cnT2QHBm3mUUtsTqzb7TxPfaM/U6OU2QaK89AhyUyZQPkZFMaEZQTeWGtv7v8Xb0gNtO+cFd9Q2lqMGG/Asdc1xlS4CYcR0oTsW+U6DI69/qtgBhMqsudpB95+xzqQgviS7jI5yvUkgoJ9XI+FviplrZ84fZse4HyIh60qzIlaJTO26pnMq1776wMB4DuBktZ4QpGjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9PBes6iBaybeUrTOuP8mfojMQcAlgv33kILG+c6PHZg=;
+ b=mAsxMaMtOmmCS+af68Cj4DJeq811+YvNCIFS4yk5uuEauaRKyNJCSlmiP60WOVauE7DBXf/mkeykXoJOlMSgFb10x9unIIQUTEaBzs9nbtlT85e8l7rQeHRWGEeXR5FP4aw6u/p0Hva/17o7fOMP7PLLsIuaKC1ddAnCXyx+26GoYJnHUOA7xoDbhIOdrcb7VtJh6Z8G/XsmkllfXJHbiX7wJGwcCq9cTH9kQFRYdKkl1Hr8/DqyYUcmALn3eyAH/bw/fQDy2/YCWghBKKs/oL7CVSJglb9JefvxE61DZBGOe7RoDaI/EGsr7lvSylEdfK94MX9zOn8bHb3AVB6u1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9PBes6iBaybeUrTOuP8mfojMQcAlgv33kILG+c6PHZg=;
+ b=aoNNbUVcgBdqxu8l0s8h0OpgmcqHZtPo9587KJibXodqkaH2ZY8z3d/rkVaoCGEAzgB7FkSHpNO47RHmOLAaAGXrH7cDQhE1s7Wn9dEku0C52xkVddHi8mm+zIVbZ+DYA+WyfgXx0rzwNpM9CyylcdW1y7cWPSeu4clcp/NWO07JBI53KAvCqxJbl1RswO24leOs4MQNNTTUI5HTwIJ3ayJuUEIkxer+Sav1uDSB8W3AQc1eUproeRIPpMwxDewVQ6kyhL0yKqH5Kt83JZG3zlseKjHFIlofyyYe+G8W60V3ELQxiUYBCqGulNvscKhkYjvDIdobiL9xNU2wNm1cAg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by AS8PR04MB8465.eurprd04.prod.outlook.com (2603:10a6:20b:348::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.13; Fri, 24 Oct
+ 2025 21:23:21 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::55ef:fa41:b021:b5dd%4]) with mapi id 15.20.9253.011; Fri, 24 Oct 2025
+ 21:23:21 +0000
+Date: Fri, 24 Oct 2025 17:23:11 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Alex Elder <elder@riscstar.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	han.xu@nxp.com, broonie@kernel.org, dlan@gentoo.org,
+	guodong@riscstar.com, linux-spi@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	spacemit@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v3 2/9] dt-bindings: spi: fsl-qspi: add optional resets
+Message-ID: <aPvuPyEg0RtZWudL@lizhi-Precision-Tower-5810>
+References: <20251024191550.194946-1-elder@riscstar.com>
+ <20251024191550.194946-3-elder@riscstar.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251024191550.194946-3-elder@riscstar.com>
+X-ClientProxiedBy: SJ0PR03CA0297.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::32) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aPupaHEZM20Q8aJu@lizhi-Precision-Tower-5810>
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AS8PR04MB8465:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3646669-fceb-4acf-a779-08de13438e89
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|376014|19092799006|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ldfCkn+Wwad/RThjOMx0GmxCFw6RyviG0W8ZwoE52oso7MvwoxTAo7Slsgk9?=
+ =?us-ascii?Q?LVNltlAGFTMDwUWob9pImbKYG51Mzm1n07ApGDIiQm2A4p/XtNlT34r9iRPq?=
+ =?us-ascii?Q?mnflLIKGTlv7QEVjOj2OAWuiM5IiuKthY9cWmgcS4DpUZ9RJ2UtQeRrXhmqI?=
+ =?us-ascii?Q?PxXHJsQwviteCiWLlbxp124YbfZLGKpSB0rOUEahVUo/z+tnGv+JZxdffKfG?=
+ =?us-ascii?Q?8JD+59tO6MMt5CHE85WzRnhncBUUA/zULn/xlsyyTi3GkePGdqT3ttVrJKxA?=
+ =?us-ascii?Q?dC7g6tpp5rd/3Y6xrLA9nOOG1dDB3V7/bd/f/3DX+zdjic5QB3jME144ascP?=
+ =?us-ascii?Q?J/vE1wpFm09kRQJFDLixEH5b7QQfe8hTGkStGwql/MKHRY8JEK80dN3JiixE?=
+ =?us-ascii?Q?EIWC56BSxdQ53tIrv71e23lnR+VbFZZDQiow/6A3xbykTTOj2pgkOsP85jJm?=
+ =?us-ascii?Q?j+xWESHvxubnTE/a1nPczUt9H58IowoaR3GE/X0uR12+fNcSeE8RCGV7C0ON?=
+ =?us-ascii?Q?5Na5Q7Usgp/yyt6Wt+bVtp3P52c3MTQfgJn9VRZIOOL/LbkkYnmqWP9OTYO1?=
+ =?us-ascii?Q?A2AMpMaIWZpZMXP2dJpNRxyAVLwBLFAMX9jGNILY6gI6o9dgCUihdTQemuYc?=
+ =?us-ascii?Q?ZzWq/IKqj+phuyZysPsEaobSPiuowE5fR4J/iqj4sgMeQ6itWIK3GyOFUT1w?=
+ =?us-ascii?Q?DyZMOnw3BcSp16PZMPLyT40TsNXDCZsvd7kczTpuiCOrjGf/1bgmRuQ9/VLt?=
+ =?us-ascii?Q?z7IM4kuRHR8UcqI2HUsgkSAtKtaLHjGnnUSCbXQuJtBgsvGCZ5s1P4EJf60B?=
+ =?us-ascii?Q?abdk3TyhaHsND3NkNg5+mCK0Cg1ogTH00J3rU+bBG2fvXENUio/j5L3YSB8u?=
+ =?us-ascii?Q?m1Moj9EkMTDWUtN05FNv8Lzzn3lz3ueC7UErRNqJXv7wBoKVH9du/ubJPkss?=
+ =?us-ascii?Q?eVKk+TyJQdbMVhbs6JzqnIl8OHV39YYbl4hwIO2NErqW6J3ACC5bWrvlNF0r?=
+ =?us-ascii?Q?/1JoaWEUtSNYa0b6kNrgYXvJ9yBiySiPfeVQygjONhEeAWnECs8VJO0jt7I9?=
+ =?us-ascii?Q?tPrF3MzC7VOg6heQt80CtlchPPdXmi3wCgtSPbsgxFLuhlxDJHcwCI4RcJPx?=
+ =?us-ascii?Q?QMgACskg2npZgFrnyC5TwnubF/ltXtZSVoek0V61O0jmK3YxbV9wwqiuGCHy?=
+ =?us-ascii?Q?EpXMJWz2cfekIB3yXyExe0mTcwAL02h55KFabCZsPz3V45yuXgNNJnum4Cys?=
+ =?us-ascii?Q?67HLRMBEJKlBSaMN0CWEZu/iKRFj7ctQeW3QFKeHEd9yBuq8S/x5JNVWrHxC?=
+ =?us-ascii?Q?6Sil+FAIcIi3z7p7NN9HLQmPOIs3VTQCsEfUJl/gsDTjfnxCDTEbKBvqD5Yl?=
+ =?us-ascii?Q?t7tGBWQgCM9ZAUtI2ZR7dv0Jz+zr3R17TPLwtewXSM7TXKMe8axTsN16C2v8?=
+ =?us-ascii?Q?ggzNj8pTO4hMHaaOggI4lYYkk5wfQ7caGDY0gFW/HJI/fRlWo3EeAGr4kJlT?=
+ =?us-ascii?Q?AdmfSOu0oTW7bEZpz4/RZ18fmZ8GCTz0DmTX?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(376014)(19092799006)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?uQmymX65mpF4gtH+ILVAbrPZUg6Oxi+iVusQQa1EYoijo/ifpmHXHSXeBsfj?=
+ =?us-ascii?Q?uV+cEKIo//B9q5Uo4PaoPav4wTjcW/x/gfYbGPoCES31N+ZeBA2LXCZqp+84?=
+ =?us-ascii?Q?OJMlnJTUeIOzm99OXrE4xK5kMK22/Ql547MlG+NuLFVQTA30C/P5IBU1KJvm?=
+ =?us-ascii?Q?C5f74HD2WYJ7p3btsIa+G6cpjCa4dgZJczCbRTVaSs9S6VQKey2MY0O8wRjj?=
+ =?us-ascii?Q?fwSx9LFpkadi8J1Iozux28gJKRywjiri58ekPjgwTuvS1bJUBdjZC3I75rST?=
+ =?us-ascii?Q?uLIi5XP5PFb2ctCUKQ3oatTo09KSAbpf34jL0JZ8gxCdkApMLbmBB16fXlEC?=
+ =?us-ascii?Q?x3qlO5uK9MWNtOhyWjr4b2owLRSL84ExjX6mnMI/R/0nUACvswBUL/oNNzoo?=
+ =?us-ascii?Q?yYCo1ad85+5SeKWKDtH925yYiVreKP/zRkk/41R4c5OhNvjzOXlctpT9MjUU?=
+ =?us-ascii?Q?p8uTY9PKyf2nXDqy+92a85Xc/TP0s2ESHO6B6aun7p7LsUJweeK8T/xC+x2d?=
+ =?us-ascii?Q?7UslIEblg7eSwNAFjmMhLHbEoPNLEIoHu1kri5BtUjHigaLrq5bXTySvhlTq?=
+ =?us-ascii?Q?VRipThBaRAmGzjKLeq4F4/ikgn0f6ejZuToHwjnZ1BFFkUf3ggpEP4gStBJ1?=
+ =?us-ascii?Q?yksShtuopgLavB9gvZ03cNP2J7XKYy2t6hM0DF3IRLQk4jdgWS6SqGl9cWgs?=
+ =?us-ascii?Q?YQiLe0uefvKhJsgqVq/jcbBSpbiERvh9lVWS5rrU2Ov90ghcTf6bgnqQMOGn?=
+ =?us-ascii?Q?C+whRyXTKxTWP/MpHGWVX7JGbHdAHRRhJtfvahyccthzyzHXGqJkHyL4j/LS?=
+ =?us-ascii?Q?9wTAzq2Nkocywra2FOjHGBvut4bJtGwX9I8v2pUc+S1qUBi2h21fSLCRDW5U?=
+ =?us-ascii?Q?PK6KuWN+2oa/iVTwrlClgnI49U+dIjc6iuUEosGDq/crL2alOw+YoQ3zxYOr?=
+ =?us-ascii?Q?/Y526x7suFZOOw4dHSKiYBVPEUIH7fzORnSi393GMEn4zSP5ChG9qUEKXBxG?=
+ =?us-ascii?Q?/RJRhznQMViSezIWq5KqKJX+/Lt0J6FzKY27TKcTCw/PQi4KEuogaoqGynWn?=
+ =?us-ascii?Q?tYIG7xeDv9OzeECQdRLEBKCWLUV6HPpPqNA1LjbwiujDHiVRnrMCNc73S3mv?=
+ =?us-ascii?Q?FDvaCAzaMpGDY9cIhFcb5zgmb0c1FQcs1j78R09AqCmnYmiecPIlkgSkhvYR?=
+ =?us-ascii?Q?JJpiE2FnaQJPXbQLHsYCjkC4m1V2gz0GViFKY49AIYJj9mGTzsgbuUlVMYKO?=
+ =?us-ascii?Q?ebFvMKwT4BeI+oCMmJo0StD8pVqQcyaTyNDdqBnJrAgoqDRZ8CqNCQCg0ZGw?=
+ =?us-ascii?Q?urY1Zo4UxMp00RtfypB3xZ/N87w4OIdUMls1tg3ivzXTW4a1SygfcavALq75?=
+ =?us-ascii?Q?sNgCQMTi0DZlJaCcI7Kz1Mh6v5mmWIgvsjoKxTfm/lrZVgMJnSI+lXGkFQQo?=
+ =?us-ascii?Q?6RwIXuyzPq6vobS441S+7Vst+in4QxJLPTZEWtk8zENAQkK6OqfNIT3lWnNA?=
+ =?us-ascii?Q?+A2kvWOs8mF++Zz0tWklS17/RX0ce9/68H5S0kuweQARJnfyW2/9MTyRQuPF?=
+ =?us-ascii?Q?ZrwNoo+kAxqcKGAl1ps=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3646669-fceb-4acf-a779-08de13438e89
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2025 21:23:21.0487
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4nSE40DW2+Nfi0R1sY2XuZMrJ14KcejLfhBtBfqw6H5YjXqSRc8tKypT1V2jJtBgS8Oz3XQ5vbe7fMFQdAwUzA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8465
 
-On 24/10/2025 12:29:28-0400, Frank Li wrote:
-> On Fri, Oct 24, 2025 at 07:03:41PM +0300, Andy Shevchenko wrote:
-> > On Fri, Oct 24, 2025 at 10:03:22AM -0400, Frank Li wrote:
-> > > On Fri, Oct 24, 2025 at 09:13:27AM +0300, Andy Shevchenko wrote:
-> > > > On Thu, Oct 23, 2025 at 07:53:15PM -0400, Frank Li wrote:
-> > > > > On Thu, Oct 23, 2025 at 09:22:55PM +0300, Andy Shevchenko wrote:
-> > > > > > On Thu, Oct 23, 2025 at 11:18:37AM -0400, Frank Li wrote:
-> > > > > > > On Thu, Oct 23, 2025 at 11:23:39AM +0300, Andy Shevchenko wrote:
-> > > > > > > > On Tue, Oct 14, 2025 at 12:40:00PM -0400, Frank Li wrote:
-> >
-> > ...
-> >
-> > > > > > > > > +/* keep back compatible */
-> > > > > > > > > +#define i3c_priv_xfer i3c_xfer
-> > > > > > > >
-> > > > > > > > How many of the current users do this? Can't we just rename treewide?
-> > > > > > >
-> > > > > > > git grep -r priv_xfer drivers/
-> > > > > >
-> > > > > > `git grep -lw ...` is a better approach :-)
-> > > > > >
-> > > > > > > drivers/base/regmap/regmap-i3c.c:       struct i3c_priv_xfer xfers[] = {
-> > > > > > > drivers/base/regmap/regmap-i3c.c:       return i3c_device_do_priv_xfers(i3c, xfers, 1);
-> > > > > > > drivers/base/regmap/regmap-i3c.c:       struct i3c_priv_xfer xfers[2];
-> > > > > > > drivers/base/regmap/regmap-i3c.c:       return i3c_device_do_priv_xfers(i3c, xfers, 2);
-> > > > > > > drivers/hwmon/lm75.c:   struct i3c_priv_xfer xfers[] = {
-> > > > > > > drivers/hwmon/lm75.c:   ret = i3c_device_do_priv_xfers(i3cdev, xfers, 2);
-> > > > > > > drivers/hwmon/lm75.c:   struct i3c_priv_xfer xfers[] = {
-> > > > > > > drivers/hwmon/lm75.c:   return i3c_device_do_priv_xfers(i3cdev, xfers, 1);
-> > > > > > > drivers/i3c/device.c:int i3c_device_do_xfers(struct i3c_device *dev, struct i3c_priv_xfer *xfers,
-> > > > > > > drivers/i3c/master.c:   if (!ops->priv_xfers && !ops->i3c_xfers)
-> > > > > > > drivers/i3c/master.c:   if (!master->ops->priv_xfers)
-> > > > > > > drivers/i3c/master.c:   return master->ops->priv_xfers(dev, xfers, nxfers);
-> > > > > > > drivers/i3c/master/dw-i3c-master.c:static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
-> > > > > > > drivers/i3c/master/dw-i3c-master.c:                                 struct i3c_priv_xfer *i3c_xfers,
-> > > > > > > drivers/i3c/master/dw-i3c-master.c:     .priv_xfers = dw_i3c_master_priv_xfers,
-> > > > > > > drivers/i3c/master/i3c-master-cdns.c:static int cdns_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
-> > > > > > > drivers/i3c/master/i3c-master-cdns.c:                                 struct i3c_priv_xfer *xfers,
-> > > > > > > drivers/i3c/master/i3c-master-cdns.c:   .priv_xfers = cdns_i3c_master_priv_xfers,
-> > > > > > > drivers/i3c/master/mipi-i3c-hci/core.c:static int i3c_hci_priv_xfers(struct i3c_dev_desc *dev,
-> > > > > > > drivers/i3c/master/mipi-i3c-hci/core.c:                       struct i3c_priv_xfer *i3c_xfers,
-> > > > > > > drivers/i3c/master/mipi-i3c-hci/core.c: .priv_xfers             = i3c_hci_priv_xfers,
-> > > > > > > drivers/i3c/master/renesas-i3c.c:static int renesas_i3c_priv_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *i3c_xfers,
-> > > > > > > drivers/i3c/master/renesas-i3c.c:       .priv_xfers = renesas_i3c_priv_xfers,
-> > > > > > > drivers/i3c/master/svc-i3c-master.c:    struct i3c_priv_xfer *xfer;
-> > > > > > > drivers/i3c/master/svc-i3c-master.c:     * at svc_i3c_master_priv_xfers().
-> > > > > > > drivers/i3c/master/svc-i3c-master.c:static int svc_i3c_master_i3c_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *xfers,
-> > > > > > > drivers/net/mctp/mctp-i3c.c:    struct i3c_priv_xfer xfer = { .rnw = 1, .len = mi->mrl };
-> > > > > > > drivers/net/mctp/mctp-i3c.c:    rc = i3c_device_do_priv_xfers(mi->i3c, &xfer, 1);
-> > > > > > > drivers/net/mctp/mctp-i3c.c:    struct i3c_priv_xfer xfer = { .rnw = false };
-> > > > > > > drivers/net/mctp/mctp-i3c.c:    rc = i3c_device_do_priv_xfers(mi->i3c, &xfer, 1);
-> > > > > > >
-> > > > > > > After this patch merged, I can clean up it at difference subsytem. After
-> > > > > > > all cleanup done, we can safely remove this define.
-> > > > > >
-> > > > > > I counted 9. I think it's not a big deal to convert all of them at once without
-> > > > > > leaving an intermediate state. But this is a call for the I³C subsystem maintaiiner.
-> > > > >
-> > > > > There also are other cleanup works. The key point is that everyone agree my
-> > > > > HDR solution. Cleanup these is not big deal. I am not sure how to avoid
-> > > > > build broken at difference subsystem.
-> > > > >
-> > > > > After this patch merge, cleanup will be easier and safer.
-> > > >
-> > > > Then leave that renaming to the cleanup series. No need to use a define, just
-> > > > use the old function name.
-> > >
-> > > Using old function name for HDR will be very strange and conflict with
-> > > spec's name convention.
-> > >
-> > > The term 'private' transfer in i3c spec is specific for SDR transfer. It
-> > > is neccessary steps to complete whole naming switches.
-> >
-> > Right, but this out of scope OR a prerequisite to this series. My point that
-> > these two shouldn't be mixed and one left half-baked.
-> 
-> It doesn't make sense that the new iio driver still use old interface, then
-> replace new one later.
-> 
-> Is it okay I create new patch serial, which switch to new interface, but
-> it's depend on this one. Let each maintainers decide how/when merge it?
-> 
+On Fri, Oct 24, 2025 at 02:15:42PM -0500, Alex Elder wrote:
+> Allow two resets to be defined to support the SpacemiT K1 SoC QSPI IP.
+>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Alex Elder <elder@riscstar.com>
+> ---
+> v3: - The reset property conditional is now under allOf
+>
+>  .../devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml  | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml b/Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml
+> index 5e6aff1bc2ed3..46e5db25fb107 100644
+> --- a/Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml
+> +++ b/Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml
+> @@ -11,6 +11,15 @@ maintainers:
+>
+>  allOf:
+>    - $ref: spi-controller.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          not:
+> +            contains:
+> +              const: spacemit,k1-qspi
+> +    then:
+> +      properties:
+> +        resets: false
 
-I'm fine with the define as I believe you are going to send the series
-switching to the new name quickly enough.
-I'll provide an immutable branch so the various subsystem maintainers
-can apply that on their own.
+I am fine here now. If have next version, move it after required. More
+if-else may be added in future.
 
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+>
+>  properties:
+>    compatible:
+> @@ -55,6 +64,11 @@ properties:
+>        - const: qspi_en
+>        - const: qspi
+>
+> +  resets:
+> +    items:
+> +      - description: SoC QSPI reset
+> +      - description: SoC QSPI bus reset
+> +
+>  required:
+>    - compatible
+>    - reg
+> --
+> 2.48.1
+>
