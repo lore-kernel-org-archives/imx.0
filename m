@@ -1,173 +1,165 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD732EDD78
-	for <imx@lists.linux.dev>; Fri, 24 Oct 2025 20:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5182FF152
+	for <imx@lists.linux.dev>; Fri, 24 Oct 2025 21:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761337471; cv=none; b=on3GMWPPxXRaIEoT4uecAGIQ98MwtUelxBEqKmEwu0tlhm8BpTKr6+fx38v26mPEs94BRU8cYUJtVNU544CS90smB6OBSqy1w9cmv3nmDb/ycsP3HXzmXS/fReHf8WSMG8jHovL9kDsDuyEhur4o3CavwfnjWotkU0Eq4agxr7Y=
+	t=1761340347; cv=none; b=XL3cXWVteQ/cBU1os0+jjLZQn+7IteZEajvn0UtjF4lbJSMyaEbVXWjSD5+qvOHzsJANJD8EPBGqS8Jd6II4Kp1KcirtSYRxwn4ZQIN5dajlA1a238/rrhQiSrjU4CmgtxAWVZ6uWd3SV6oHn5a8GUVUY+jRtqFi7xRBeObtQaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761337471; c=relaxed/simple;
-	bh=++qhl4KSNWgMDQx7EKaOxJp4oYwDNeFiiI+BE3om2D0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=CZ/d+GlcoINyaAs1cLdt0xyzyTZMDTcvyMdYx3HjeSVOumv92mcr9n0+r2QinCNMCPUV7msof0xPaywaOSwu2lF1n91iw9GU8V0HmlMCZ3PUS+HpjUz1LiKPVSQZfJoNPrIJtd8CclLhDc91Ug89DiRTH39GdoPRrBZ1mQxH+QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UFAzHgGT; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761340347; c=relaxed/simple;
+	bh=XapeQpNiVnOZWKHzPMxALSxZqbbB82+/0jrRk+Be5o0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C3QVULbg8Uu4NmVKIAeFyk93kzCHBYsqgh/wbBGaEpyp1SDnieAMpFpRcajnVBDn7lXIguuigp6RhklV5Eoo4HOO7vZxaoKYuXy+92TMNSCDoY7CQ1rGvG6F2nBAyZJ1SeDIEsi/J5aZ+88rlMI8344jh3BF02uDTTgheAW5ICE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OZVY0rw1; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UFAzHgGT"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47117f92e32so23119195e9.1
-        for <imx@lists.linux.dev>; Fri, 24 Oct 2025 13:24:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761337468; x=1761942268; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=rioMXLIytYS2vDdWj/lGi+EnzevNN/0HrVqMOMW5YCw=;
-        b=UFAzHgGTPyca0EvLxLuNVmQsj+0/pIio07CxUt45ceaz+7auwvTJzj8qgr6xl5CY+Q
-         H43GYzgMVHZNGMJ9uwyfHdIXuVQpfjnH2dvAjR6YDf5CV5ScoBgwxJAfUbkn6WVfx9gN
-         AWvuKx2/vvhDjTyJw2OyHxaDNML4mdvsw2Ob3AxlZkVukQ72N/JmvA/+2rNdh3x+tggq
-         db3do08BU7uhUQs1dRhU58e84RDvmOCDVykbpfUWk4EhPvZSvcPLSyhrWjvtPy4STEYg
-         LmruNWbwf+4YRDj0//KbaNrx3yETKV2nXcoCMxOAUEB0rLaqkDEcNct9zMierIevl2D8
-         C47A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761337468; x=1761942268;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rioMXLIytYS2vDdWj/lGi+EnzevNN/0HrVqMOMW5YCw=;
-        b=uUymL61gEHc/mvQSqczWFSqAf39C1dlEr8UkxXBnerwN4BtNjIYQ+o24o9ma2GkYr+
-         fOErdDV4W+WJrWvwXibeRqJD8iUWPMrbJGYNG4KvHg9LfszO0M48o6SHtykrCS5TEZMI
-         mUAqcsD3O8wEUGQ8JbnXVFcelPIHvUIKDF6JDt4HYaieRUBWU9+rJDwMEGYo/Nqz5zUA
-         VfOb9PP3XdPdDKHti+/6J+6+bYydXiBbhRLzv6biAHNSvY/lc4IHhJmdIe0PFZP8w6xA
-         HtiC0Z65ECF1fSfdeIQL3269J9Q5ws0WrwL7iKNpa5a7+rjFbQPiupnJ0TDDKIMXQT/O
-         fzrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEJYwIoALw4EngR59Tk3okiz4rPvAhOUA1Cz+fYIY/p5qg1/zkjBq/lgHMIwLGT5xdrWg=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyv/+9U8isYbZIP5IiqrdcBrIRQjAatfy3LAODw30GZ5Ox+xQwX
-	p0Ip5WijPkCOCE4QAQ/eolIc2YuFZPLnhOGwuaT65s1W1Q+JkGciil4P
-X-Gm-Gg: ASbGncukQSZmpq+kj8YfZME6HCMMKypC/so6l4cmHvavXjifP0Ji8jwb9VUZR+q7E+A
-	gr/wf3bqItmOJSpY4vmPF3tYJX3dLW54B1TXKmdkGr1IssTPLe5F8JhCHdAh0FMNn3JSjinpkfS
-	pLt0nAmhpyrETuhhUnfpiKGn2wp9rARqjT7GdK7Cr1Q48X6bLFJeobAL5SJjyq9rQ/5Zp4pxhRh
-	UUe+yLeX+K+JP63RrskGZpIhiGMKtoo5RaqZ7z7o0UwRJDqeWC1qaWrvHYZdxRahj5ii69RsIpo
-	3jOhpKa4yDmTrfB0CWaT/TwCDDCF07tnV4QbWd6ZaPVaJ+iSpYi0HWE0UtUHr2SlmuNAtftaFkH
-	+jKCY+nyKAeIo211zPlvP9J6OGZ2pk/cE0Y5E8ItuHD3AoWzJrGREMqWPXbHPZ149aDyP+2SOqR
-	+VwnhRoNBTYS22yKuckfQmutopc9XIonHSXZLpaihkWI6dVdWIoKMTpgpiFsCXYdEB+ft+8XNhO
-	Rx3C9I+E0Uy3lw5mnW7HQwYyCvnPsGvQUL1Dgz6o3ztLuDJ8q+W5g==
-X-Google-Smtp-Source: AGHT+IFvkMy9ImiLMjxrS/vtOqh/phODRx7SpqbTlevH9/NaywagA6Pk9+aMessugMQEw6aFP7tbog==
-X-Received: by 2002:a05:600c:870b:b0:46e:3709:d88a with SMTP id 5b1f17b1804b1-4711791cb7amr244732645e9.33.1761337468408;
-        Fri, 24 Oct 2025 13:24:28 -0700 (PDT)
-Received: from ?IPV6:2003:ea:8f20:af00:7cba:4f15:bb68:cf78? (p200300ea8f20af007cba4f15bb68cf78.dip0.t-ipconnect.de. [2003:ea:8f20:af00:7cba:4f15:bb68:cf78])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-475dd035dc2sm317515e9.5.2025.10.24.13.24.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Oct 2025 13:24:27 -0700 (PDT)
-Message-ID: <39ea8bae-e9d0-42f0-be4f-cc3f75e4b2a1@gmail.com>
-Date: Fri, 24 Oct 2025 22:24:38 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OZVY0rw1"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id CD5DEC0C43F;
+	Fri, 24 Oct 2025 21:11:57 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7A4CD60703;
+	Fri, 24 Oct 2025 21:12:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D37E7102F22B5;
+	Fri, 24 Oct 2025 23:12:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1761340335; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=f1MDeUalmO2MBuHBwgqnu8xSGd9CwkEHdnrfQWRAgQ8=;
+	b=OZVY0rw1nmczW237v6np6WNDFGQ6eR2zd3znpqkEWDafR9sNuuOUqwUVUhzR+5csGyUMqu
+	ij3T6l9saudJiYUTmnsvl2Xi5nlZq3J0kyPd8Tql/Ns82Z9NGh90a4Lm+MlCnCxLryVh8S
+	KBrrsGTu+0hpPp8k7pi1WG/zaRKG0oV5q3tjdi8KXdZ2QnaTa26nokWcHF+Ue5dLwX5yMF
+	kIiunQ8OqPITEpQBqZaocyh3urX8kuNaPawctzTyBc18pfcZsr0EFHb1YzbfrQU9d6ZM1L
+	cPBxprhTwc75j+aoy6sLKLnLsQZpfGsGAAh9hj0K8ziOSun3hTEywQcPLKJ2PQ==
+Date: Fri, 24 Oct 2025 23:12:05 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] i3c: Add HDR API support
+Message-ID: <20251024211205055af5b3@mail.local>
+References: <20251014-i3c_ddr-v6-0-3afe49773107@nxp.com>
+ <20251014-i3c_ddr-v6-1-3afe49773107@nxp.com>
+ <aPnmCwwZVZ5egqkP@smile.fi.intel.com>
+ <aPpHTej/vKfiN68k@lizhi-Precision-Tower-5810>
+ <aPpyf1xPmU_koEXH@smile.fi.intel.com>
+ <aPq/6/+63sHuq/qy@lizhi-Precision-Tower-5810>
+ <aPsZB44qXR77jNHF@smile.fi.intel.com>
+ <aPuHKs3u344zoI2+@lizhi-Precision-Tower-5810>
+ <aPujXUO2h5zHy2fj@smile.fi.intel.com>
+ <aPupaHEZM20Q8aJu@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH v2 net-next 4/4] net: phy: use new iterator
- mdiobus_for_each_phy in mdiobus_prevent_c45_scan
-From: Heiner Kallweit <hkallweit1@gmail.com>
-To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
- Clark Wang <xiaoning.wang@nxp.com>, Siddharth Vadapalli
- <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, imx@lists.linux.dev,
- linux-omap@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>
-References: <9c6aeec5-f651-4cf0-8cca-d2455048e89e@gmail.com>
-Content-Language: en-US
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-In-Reply-To: <9c6aeec5-f651-4cf0-8cca-d2455048e89e@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aPupaHEZM20Q8aJu@lizhi-Precision-Tower-5810>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Use new iterator mdiobus_for_each_phy() to simplify the code.
+On 24/10/2025 12:29:28-0400, Frank Li wrote:
+> On Fri, Oct 24, 2025 at 07:03:41PM +0300, Andy Shevchenko wrote:
+> > On Fri, Oct 24, 2025 at 10:03:22AM -0400, Frank Li wrote:
+> > > On Fri, Oct 24, 2025 at 09:13:27AM +0300, Andy Shevchenko wrote:
+> > > > On Thu, Oct 23, 2025 at 07:53:15PM -0400, Frank Li wrote:
+> > > > > On Thu, Oct 23, 2025 at 09:22:55PM +0300, Andy Shevchenko wrote:
+> > > > > > On Thu, Oct 23, 2025 at 11:18:37AM -0400, Frank Li wrote:
+> > > > > > > On Thu, Oct 23, 2025 at 11:23:39AM +0300, Andy Shevchenko wrote:
+> > > > > > > > On Tue, Oct 14, 2025 at 12:40:00PM -0400, Frank Li wrote:
+> >
+> > ...
+> >
+> > > > > > > > > +/* keep back compatible */
+> > > > > > > > > +#define i3c_priv_xfer i3c_xfer
+> > > > > > > >
+> > > > > > > > How many of the current users do this? Can't we just rename treewide?
+> > > > > > >
+> > > > > > > git grep -r priv_xfer drivers/
+> > > > > >
+> > > > > > `git grep -lw ...` is a better approach :-)
+> > > > > >
+> > > > > > > drivers/base/regmap/regmap-i3c.c:       struct i3c_priv_xfer xfers[] = {
+> > > > > > > drivers/base/regmap/regmap-i3c.c:       return i3c_device_do_priv_xfers(i3c, xfers, 1);
+> > > > > > > drivers/base/regmap/regmap-i3c.c:       struct i3c_priv_xfer xfers[2];
+> > > > > > > drivers/base/regmap/regmap-i3c.c:       return i3c_device_do_priv_xfers(i3c, xfers, 2);
+> > > > > > > drivers/hwmon/lm75.c:   struct i3c_priv_xfer xfers[] = {
+> > > > > > > drivers/hwmon/lm75.c:   ret = i3c_device_do_priv_xfers(i3cdev, xfers, 2);
+> > > > > > > drivers/hwmon/lm75.c:   struct i3c_priv_xfer xfers[] = {
+> > > > > > > drivers/hwmon/lm75.c:   return i3c_device_do_priv_xfers(i3cdev, xfers, 1);
+> > > > > > > drivers/i3c/device.c:int i3c_device_do_xfers(struct i3c_device *dev, struct i3c_priv_xfer *xfers,
+> > > > > > > drivers/i3c/master.c:   if (!ops->priv_xfers && !ops->i3c_xfers)
+> > > > > > > drivers/i3c/master.c:   if (!master->ops->priv_xfers)
+> > > > > > > drivers/i3c/master.c:   return master->ops->priv_xfers(dev, xfers, nxfers);
+> > > > > > > drivers/i3c/master/dw-i3c-master.c:static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+> > > > > > > drivers/i3c/master/dw-i3c-master.c:                                 struct i3c_priv_xfer *i3c_xfers,
+> > > > > > > drivers/i3c/master/dw-i3c-master.c:     .priv_xfers = dw_i3c_master_priv_xfers,
+> > > > > > > drivers/i3c/master/i3c-master-cdns.c:static int cdns_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+> > > > > > > drivers/i3c/master/i3c-master-cdns.c:                                 struct i3c_priv_xfer *xfers,
+> > > > > > > drivers/i3c/master/i3c-master-cdns.c:   .priv_xfers = cdns_i3c_master_priv_xfers,
+> > > > > > > drivers/i3c/master/mipi-i3c-hci/core.c:static int i3c_hci_priv_xfers(struct i3c_dev_desc *dev,
+> > > > > > > drivers/i3c/master/mipi-i3c-hci/core.c:                       struct i3c_priv_xfer *i3c_xfers,
+> > > > > > > drivers/i3c/master/mipi-i3c-hci/core.c: .priv_xfers             = i3c_hci_priv_xfers,
+> > > > > > > drivers/i3c/master/renesas-i3c.c:static int renesas_i3c_priv_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *i3c_xfers,
+> > > > > > > drivers/i3c/master/renesas-i3c.c:       .priv_xfers = renesas_i3c_priv_xfers,
+> > > > > > > drivers/i3c/master/svc-i3c-master.c:    struct i3c_priv_xfer *xfer;
+> > > > > > > drivers/i3c/master/svc-i3c-master.c:     * at svc_i3c_master_priv_xfers().
+> > > > > > > drivers/i3c/master/svc-i3c-master.c:static int svc_i3c_master_i3c_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *xfers,
+> > > > > > > drivers/net/mctp/mctp-i3c.c:    struct i3c_priv_xfer xfer = { .rnw = 1, .len = mi->mrl };
+> > > > > > > drivers/net/mctp/mctp-i3c.c:    rc = i3c_device_do_priv_xfers(mi->i3c, &xfer, 1);
+> > > > > > > drivers/net/mctp/mctp-i3c.c:    struct i3c_priv_xfer xfer = { .rnw = false };
+> > > > > > > drivers/net/mctp/mctp-i3c.c:    rc = i3c_device_do_priv_xfers(mi->i3c, &xfer, 1);
+> > > > > > >
+> > > > > > > After this patch merged, I can clean up it at difference subsytem. After
+> > > > > > > all cleanup done, we can safely remove this define.
+> > > > > >
+> > > > > > I counted 9. I think it's not a big deal to convert all of them at once without
+> > > > > > leaving an intermediate state. But this is a call for the I³C subsystem maintaiiner.
+> > > > >
+> > > > > There also are other cleanup works. The key point is that everyone agree my
+> > > > > HDR solution. Cleanup these is not big deal. I am not sure how to avoid
+> > > > > build broken at difference subsystem.
+> > > > >
+> > > > > After this patch merge, cleanup will be easier and safer.
+> > > >
+> > > > Then leave that renaming to the cleanup series. No need to use a define, just
+> > > > use the old function name.
+> > >
+> > > Using old function name for HDR will be very strange and conflict with
+> > > spec's name convention.
+> > >
+> > > The term 'private' transfer in i3c spec is specific for SDR transfer. It
+> > > is neccessary steps to complete whole naming switches.
+> >
+> > Right, but this out of scope OR a prerequisite to this series. My point that
+> > these two shouldn't be mixed and one left half-baked.
+> 
+> It doesn't make sense that the new iio driver still use old interface, then
+> replace new one later.
+> 
+> Is it okay I create new patch serial, which switch to new interface, but
+> it's depend on this one. Let each maintainers decide how/when merge it?
+> 
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
----
- drivers/net/phy/mdio_bus_provider.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+I'm fine with the define as I believe you are going to send the series
+switching to the new name quickly enough.
+I'll provide an immutable branch so the various subsystem maintainers
+can apply that on their own.
 
-diff --git a/drivers/net/phy/mdio_bus_provider.c b/drivers/net/phy/mdio_bus_provider.c
-index a2391d4b7..4b0637405 100644
---- a/drivers/net/phy/mdio_bus_provider.c
-+++ b/drivers/net/phy/mdio_bus_provider.c
-@@ -249,20 +249,15 @@ static int mdiobus_scan_bus_c45(struct mii_bus *bus)
-  */
- static bool mdiobus_prevent_c45_scan(struct mii_bus *bus)
- {
--	int i;
-+	struct phy_device *phydev;
- 
--	for (i = 0; i < PHY_MAX_ADDR; i++) {
--		struct phy_device *phydev;
--		u32 oui;
--
--		phydev = mdiobus_get_phy(bus, i);
--		if (!phydev)
--			continue;
--		oui = phydev->phy_id >> 10;
-+	mdiobus_for_each_phy(bus, phydev) {
-+		u32 oui = phydev->phy_id >> 10;
- 
- 		if (oui == MICREL_OUI)
- 			return true;
- 	}
-+
- 	return false;
- }
- 
 -- 
-2.51.1
-
-
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
