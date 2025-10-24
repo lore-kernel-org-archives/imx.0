@@ -1,165 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8F32153C1
-	for <imx@lists.linux.dev>; Fri, 24 Oct 2025 16:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4992334394;
+	Fri, 24 Oct 2025 16:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761321831; cv=none; b=rW6IC9WphaY5Y/2e/tvy7BOpu8vr2D8ccv4ymofQHq+7DUof2WzEd7tnACQqcIiwKZZpsIVKM9jhOpWrJvZGK01X7YpqtzksxlCF2Q2ipAEP5CpaXC/IQK0xdsZ6Q63n0l9+r+9aAishh18O3NRAEcYamTAhgRFMpfdS7O6P7b8=
+	t=1761322241; cv=none; b=eEDjgv8NMkyL9j7QZ+xqGav2Y056t94BhAAsdEN1a2fSXGibKHuhSBNAEN4wyrtv/WJZEtso3oeP0FE9VsNLMtyNRpi6iqm5Jp91fJbk+xnLgfC5SfrpKPtITOLdPiMjROS0MG6oKj3mHfAZX6QZE5XIRHdbi+Y9Sc4WrY+ljBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761321831; c=relaxed/simple;
-	bh=4rQ06hcRDPh06TcIr4Hhsm2kdiwKuNYxumRXFNrUjJA=;
+	s=arc-20240116; t=1761322241; c=relaxed/simple;
+	bh=4SoTri5W3H54+3tKwwPWDSe9QCJbhHeD6Hnf3WTJiIY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=joe6FQClezer77/ddQFVWihMr9QQf/SK2UBSonJanoe4W7c54VzfgaZ/r+06DMFgGEjvftc9lHNukK8Oo3VKd8+Xt1ysUQQEYGWu8gltBUtF+pitsouX3Lzo+QWNSDXqSk2dIIkkwPK4LhErwYuPrNb+VCFyM1GakzJhUT59BAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D2uYRx1h; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=FlmeNKnxQMAvtbqtFyWOCmZuTsYvKqxEXfHCHB5fBFrXx/O0JBGfSJZlpnadlpt1W40KnGFmnrRr2NB5nRMoOWImmAmE3pBUrPtRjZ92tA0J7mkVwJyt3F5CeTaEcrCbUtq6nXUTnf7SVZ7xhCWlXccVT61IO0mEHRqgZIpzDsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D8OKaKEx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D2uYRx1h"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761321829; x=1792857829;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=4rQ06hcRDPh06TcIr4Hhsm2kdiwKuNYxumRXFNrUjJA=;
-  b=D2uYRx1hfDysVVfPIVU9Ny2dvhk7A44UUJsD4sG6HaNhqZEPPhcEspHQ
-   gMqI87RRh6N9kXYlq5eanAs55luYOaZDCzw0lNEkTJ/DyrRPviEIHXtbW
-   iz7RnxQJjj1mRzl5WPmdZhiat6goRfv/6DKK6sAdvVUaWBMomjgJXA9iM
-   Fl1C+8Wj+u+J32J4DfuMyFIK7zRfDIeiUClWVHRt7E4fe0DUciH6buxsQ
-   2pOFrw6nkL6+7GK57Y0pAY70LufdHoiMOS2DF0DkHOFyA5u2bz5pn01y3
-   M0OUCozi2rC3aqM9vhs2FoudenkUv4+k4GsXK7wwU7wLhCVWrcEZp1M00
-   A==;
-X-CSE-ConnectionGUID: sHJuIaEpSnKGaNThlHAtxw==
-X-CSE-MsgGUID: 78prEfOxRdGBJr/Uq3Lgag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="73794039"
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; 
-   d="scan'208";a="73794039"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 09:03:48 -0700
-X-CSE-ConnectionGUID: oM1QeLgRR2izo7nsOkSYWQ==
-X-CSE-MsgGUID: nRGZyRpfSYK4S0x3HQThpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; 
-   d="scan'208";a="215117928"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.147])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 09:03:45 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vCKGT-00000002Cpo-42le;
-	Fri, 24 Oct 2025 19:03:41 +0300
-Date: Fri, 24 Oct 2025 19:03:41 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] i3c: Add HDR API support
-Message-ID: <aPujXUO2h5zHy2fj@smile.fi.intel.com>
-References: <20251014-i3c_ddr-v6-0-3afe49773107@nxp.com>
- <20251014-i3c_ddr-v6-1-3afe49773107@nxp.com>
- <aPnmCwwZVZ5egqkP@smile.fi.intel.com>
- <aPpHTej/vKfiN68k@lizhi-Precision-Tower-5810>
- <aPpyf1xPmU_koEXH@smile.fi.intel.com>
- <aPq/6/+63sHuq/qy@lizhi-Precision-Tower-5810>
- <aPsZB44qXR77jNHF@smile.fi.intel.com>
- <aPuHKs3u344zoI2+@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D8OKaKEx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29727C4CEF1;
+	Fri, 24 Oct 2025 16:10:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761322239;
+	bh=4SoTri5W3H54+3tKwwPWDSe9QCJbhHeD6Hnf3WTJiIY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D8OKaKExojQJsNa3/9XyDn/+qFCxUG4IW3oOapovBVahDQXpSGGiUn/3TY8C3U8Qj
+	 yjAsT0gYQja4onOmMGtoUHTuJ09qyX8rRJtRdrnF4jAk3j07yIjC7jxegqXF2wkw2r
+	 8Z1Ww/kgAB0hk5FZPZ9MTdqSCxMGf/RZDvS0aUnI0AQ8XnjonowgkyU8tmJPLK3+/b
+	 ESx8BtMI9RTPuj7nSWTCJnxGD1EnHET4MuaSDgmS7YAQQaKlwqbp4arphUtbHi2mQk
+	 AJWSzXWXo/Y8byU3465DdeUlLGrayDqWqJq09G9lusDJfdjAb6mZgJ2CRGb8qM3Fej
+	 jNVRjCyg8tp6g==
+Date: Fri, 24 Oct 2025 17:10:33 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v1 1/2] dt-bindings: arm: fsl: add Toradex SMARC iMX95
+Message-ID: <20251024-stardom-salsa-8e52d241fbf2@spud>
+References: <20251024144921.77714-1-francesco@dolcini.it>
+ <20251024144921.77714-2-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="UrG/VOuGoe/anPA6"
+Content-Disposition: inline
+In-Reply-To: <20251024144921.77714-2-francesco@dolcini.it>
+
+
+--UrG/VOuGoe/anPA6
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aPuHKs3u344zoI2+@lizhi-Precision-Tower-5810>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 24, 2025 at 10:03:22AM -0400, Frank Li wrote:
-> On Fri, Oct 24, 2025 at 09:13:27AM +0300, Andy Shevchenko wrote:
-> > On Thu, Oct 23, 2025 at 07:53:15PM -0400, Frank Li wrote:
-> > > On Thu, Oct 23, 2025 at 09:22:55PM +0300, Andy Shevchenko wrote:
-> > > > On Thu, Oct 23, 2025 at 11:18:37AM -0400, Frank Li wrote:
-> > > > > On Thu, Oct 23, 2025 at 11:23:39AM +0300, Andy Shevchenko wrote:
-> > > > > > On Tue, Oct 14, 2025 at 12:40:00PM -0400, Frank Li wrote:
+On Fri, Oct 24, 2025 at 04:49:20PM +0200, Francesco Dolcini wrote:
+> From: Jo=E3o Paulo Gon=E7alves <joao.goncalves@toradex.com>
+>=20
+> Add DT compatible strings for Toradex SMARC iMX95 SoM and
+> Toradex SMARC Development carrier board.
+>=20
+> Link: https://www.toradex.com/computer-on-modules/smarc-arm-family/nxp-im=
+x95
+> Link: https://www.toradex.com/products/carrier-board/smarc-development-bo=
+ard-kit
+> Signed-off-by: Jo=E3o Paulo Gon=E7alves <joao.goncalves@toradex.com>
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-...
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-> > > > > > > +/* keep back compatible */
-> > > > > > > +#define i3c_priv_xfer i3c_xfer
-> > > > > >
-> > > > > > How many of the current users do this? Can't we just rename treewide?
-> > > > >
-> > > > > git grep -r priv_xfer drivers/
-> > > >
-> > > > `git grep -lw ...` is a better approach :-)
-> > > >
-> > > > > drivers/base/regmap/regmap-i3c.c:       struct i3c_priv_xfer xfers[] = {
-> > > > > drivers/base/regmap/regmap-i3c.c:       return i3c_device_do_priv_xfers(i3c, xfers, 1);
-> > > > > drivers/base/regmap/regmap-i3c.c:       struct i3c_priv_xfer xfers[2];
-> > > > > drivers/base/regmap/regmap-i3c.c:       return i3c_device_do_priv_xfers(i3c, xfers, 2);
-> > > > > drivers/hwmon/lm75.c:   struct i3c_priv_xfer xfers[] = {
-> > > > > drivers/hwmon/lm75.c:   ret = i3c_device_do_priv_xfers(i3cdev, xfers, 2);
-> > > > > drivers/hwmon/lm75.c:   struct i3c_priv_xfer xfers[] = {
-> > > > > drivers/hwmon/lm75.c:   return i3c_device_do_priv_xfers(i3cdev, xfers, 1);
-> > > > > drivers/i3c/device.c:int i3c_device_do_xfers(struct i3c_device *dev, struct i3c_priv_xfer *xfers,
-> > > > > drivers/i3c/master.c:   if (!ops->priv_xfers && !ops->i3c_xfers)
-> > > > > drivers/i3c/master.c:   if (!master->ops->priv_xfers)
-> > > > > drivers/i3c/master.c:   return master->ops->priv_xfers(dev, xfers, nxfers);
-> > > > > drivers/i3c/master/dw-i3c-master.c:static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
-> > > > > drivers/i3c/master/dw-i3c-master.c:                                 struct i3c_priv_xfer *i3c_xfers,
-> > > > > drivers/i3c/master/dw-i3c-master.c:     .priv_xfers = dw_i3c_master_priv_xfers,
-> > > > > drivers/i3c/master/i3c-master-cdns.c:static int cdns_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
-> > > > > drivers/i3c/master/i3c-master-cdns.c:                                 struct i3c_priv_xfer *xfers,
-> > > > > drivers/i3c/master/i3c-master-cdns.c:   .priv_xfers = cdns_i3c_master_priv_xfers,
-> > > > > drivers/i3c/master/mipi-i3c-hci/core.c:static int i3c_hci_priv_xfers(struct i3c_dev_desc *dev,
-> > > > > drivers/i3c/master/mipi-i3c-hci/core.c:                       struct i3c_priv_xfer *i3c_xfers,
-> > > > > drivers/i3c/master/mipi-i3c-hci/core.c: .priv_xfers             = i3c_hci_priv_xfers,
-> > > > > drivers/i3c/master/renesas-i3c.c:static int renesas_i3c_priv_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *i3c_xfers,
-> > > > > drivers/i3c/master/renesas-i3c.c:       .priv_xfers = renesas_i3c_priv_xfers,
-> > > > > drivers/i3c/master/svc-i3c-master.c:    struct i3c_priv_xfer *xfer;
-> > > > > drivers/i3c/master/svc-i3c-master.c:     * at svc_i3c_master_priv_xfers().
-> > > > > drivers/i3c/master/svc-i3c-master.c:static int svc_i3c_master_i3c_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *xfers,
-> > > > > drivers/net/mctp/mctp-i3c.c:    struct i3c_priv_xfer xfer = { .rnw = 1, .len = mi->mrl };
-> > > > > drivers/net/mctp/mctp-i3c.c:    rc = i3c_device_do_priv_xfers(mi->i3c, &xfer, 1);
-> > > > > drivers/net/mctp/mctp-i3c.c:    struct i3c_priv_xfer xfer = { .rnw = false };
-> > > > > drivers/net/mctp/mctp-i3c.c:    rc = i3c_device_do_priv_xfers(mi->i3c, &xfer, 1);
-> > > > >
-> > > > > After this patch merged, I can clean up it at difference subsytem. After
-> > > > > all cleanup done, we can safely remove this define.
-> > > >
-> > > > I counted 9. I think it's not a big deal to convert all of them at once without
-> > > > leaving an intermediate state. But this is a call for the I³C subsystem maintaiiner.
-> > >
-> > > There also are other cleanup works. The key point is that everyone agree my
-> > > HDR solution. Cleanup these is not big deal. I am not sure how to avoid
-> > > build broken at difference subsystem.
-> > >
-> > > After this patch merge, cleanup will be easier and safer.
-> >
-> > Then leave that renaming to the cleanup series. No need to use a define, just
-> > use the old function name.
-> 
-> Using old function name for HDR will be very strange and conflict with
-> spec's name convention.
-> 
-> The term 'private' transfer in i3c spec is specific for SDR transfer. It
-> is neccessary steps to complete whole naming switches.
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
+on/devicetree/bindings/arm/fsl.yaml
+> index 00cdf490b062..44dd93f1c674 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -1439,6 +1439,12 @@ properties:
+>            - const: phytec,imx95-phycore-fpsc  # phyCORE-i.MX 95 FPSC
+>            - const: fsl,imx95
+> =20
+> +      - description: Toradex Boards with SMARC iMX95 Modules
+> +        items:
+> +          - const: toradex,smarc-imx95-dev # Toradex SMARC iMX95 on Tora=
+dex SMARC Development Board
+> +          - const: toradex,smarc-imx95     # Toradex SMARC iMX95 Module
+> +          - const: fsl,imx95
+> +
+>        - description: i.MXRT1050 based Boards
+>          items:
+>            - enum:
+> --=20
+> 2.39.5
+>=20
 
-Right, but this out of scope OR a prerequisite to this series. My point that
-these two shouldn't be mixed and one left half-baked.
+--UrG/VOuGoe/anPA6
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-With Best Regards,
-Andy Shevchenko
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaPuk9gAKCRB4tDGHoIJi
+0oZGAP9MOTTaex3xtSgbAsqJCkx1oR8NC4KeZ1bRCfJdAhnhvQEAknH3HKjjcz1m
+37Ble1U8GN0RBpbqJOzKd/5m34WT0gU=
+=w/oi
+-----END PGP SIGNATURE-----
 
+--UrG/VOuGoe/anPA6--
