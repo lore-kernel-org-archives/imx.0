@@ -1,203 +1,152 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013021.outbound.protection.outlook.com [40.107.162.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8EF23FC5A
-	for <imx@lists.linux.dev>; Fri, 24 Oct 2025 05:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761285225; cv=fail; b=tU4mOUSJzdJv7iDzThIlmjqdZQh+gA2Be3/I6BCVbfRppzzk+QjRateRJZvngIlUNvMQg2lYjLAiqLrVds/HNQ2t7Nmy851Vlua6n/QTnskBwLn+EPyXNuDLeW46nnfu4lEbhisGA6B/Qi1Ce+NCWl4xjw3XzGD0dVgqyeV/rRE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761285225; c=relaxed/simple;
-	bh=YUsLBd4i/BFDZzUtBSy0WXp5Mr/Ub7urXVfongJvGAA=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=vDZVrFb11JMjDc2H2YsBsPxyiSMGDy9U/tnwww5ukeAvjDX6BYNexAykiFtGaW6ze+mKDEq2CQ2WwBUdYYtmKsjgUaFbPZgkQyf5DnzcVka4NRpbbackpiiQkwgDB9WX4GNxBGQscCrxaPpYiTH+xsXpiMRiKL5UBzlMsLcXTEg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FTvxOi7R; arc=fail smtp.client-ip=40.107.162.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA58C141
+	for <imx@lists.linux.dev>; Fri, 24 Oct 2025 06:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761286416; cv=none; b=KJjJbmbb2ueL3MLuWL7xYMnW8w8B5yIXDe+Ay6aDun8V6ymoSyDZNO1zUZbS35aiLcNwLwzLoo8Fj2og2SD5VF9YN9k6Gy2J8Oflc543DALnJ4c9qjJ0N2SMc5gdMcqFHgGvxcv5E7+jAgUD/HjetTEyQfgBv4d1qFwVRoD+ZPw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761286416; c=relaxed/simple;
+	bh=pPg4tGMDdSKgzOhv/19H1ClKHTpBCPpph/N7jY8PuY0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k1ZKmtc3EDNxmQRjF3YU9ylBu+hvHDKe1zpmNxNqyZdPrpRVH2m+HgmT2rmwRKJtgriL8MtgffbUF14SqECTzg1J3w2LwBcxHx/Ts+OYDbiiy46bqbge2k66+5IYWBHTAtQ0m6xl7onqrulFsW58BdnVkEb83pIrKi6W65N4VHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EPv2pniG; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FTvxOi7R"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KuoAO3l6QjqxnOh0e0iuowgx3+JOnv9hpYQjp10RPWm0ctsZJArZmXZadxrrnE3XmnefcSqe5ZKZMrNPJr0U7bKcR8p609U7EObI4zcgyKnJ4Jmbpl2Q5p2tPJsmGDGLEXFt+Up6Lcixt8UZyo9kfurLz9fLhibwfqLfScbPHDOMvW1jCpMvvH3AMZlTZuzza6LJvboa8AgI2y/ULP5nsrVbRt4GFzJedgLxBxPOk2/fpq6TLiI58o1n4yOsxQDkt1UZA+qjipZocNTpVDRdPQbIaft5nFQxBkccbHRhRu+C8P8/UnewDdN1397eJcMhVOj6nej0GbqKpr9CCyhnoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D/Fwo1WuMUMmF3MnrYOSW7PjfQmGS/j4jUA24sJTmhM=;
- b=wMr9KX4Tx73JizOHHxHfkgOmSYyOuMHLHYHTQI20Ackqby09Gr1wKsehxoqm7QIKpYld2Opv3oBaul08GiNkhKsvDNVEx7wZvqACmEUBZSXhYHnw3Okw+Uy4yT0Psm+w2BTB3Oala6j9XwuSNLXGFoakK9zpE2DNFR2tIcifW2zYlZI8wlyGBMAIRqm4wrvdG+Yr1Lid4LSekwUfgL290EBeXjf9jEjyoKUDSUsoiMWVupDcjl85W2tZcTJxzy3fEfOII8FrL61a6xQdkyEiofkTRpUdrMdq+0MjaK4oo3WuFvhgCIXAjJdO418AAlIGnhhO5cM5ONot+W5/Cwv43A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D/Fwo1WuMUMmF3MnrYOSW7PjfQmGS/j4jUA24sJTmhM=;
- b=FTvxOi7RdufNhzXdMPEpyuhOVOuJghuytWp1b/c4UZ2W/+IzAn/v2nQ9rnMDrz4TfY7MCPk34zoCCAHjxnZwmJA9Sza9bOqQkVvwPHav6xUL8Vnm3yoF0+NnoVpIHbNhAK5V4JgYUjWqCMQKfXL3Lc3Pzz/BYcFlsCzIhbUKG+tn5n50nh0/kyKaPi42FOmRND3cFGKQOeeyQKUgHbv+RmxEx8uw8ZI7tpJwFRB7BETbhN++FzjWKh6GFfTr1Rs9DKBry/AIJC49jHUHe1UM8Nf1J6lviiHdlWtlGlRX6hV9/ZPI1g14NC7BCklanK1ru+0HW3chM4Hcu4/1/qh8Hg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- (2603:10a6:800:293::14) by GVXPR04MB9758.eurprd04.prod.outlook.com
- (2603:10a6:150:110::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.13; Fri, 24 Oct
- 2025 05:53:41 +0000
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687]) by VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687%6]) with mapi id 15.20.9253.011; Fri, 24 Oct 2025
- 05:53:40 +0000
-From: carlos.song@nxp.com
-To: frank.li@nxp.com,
-	broonie@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] spi: imx: keep dma request disabled before dma transfer setup
-Date: Fri, 24 Oct 2025 13:53:20 +0800
-Message-Id: <20251024055320.408482-1-carlos.song@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM0PR03CA0061.eurprd03.prod.outlook.com (2603:10a6:208::38)
- To VI2PR04MB11147.eurprd04.prod.outlook.com (2603:10a6:800:293::14)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EPv2pniG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761286414; x=1792822414;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=pPg4tGMDdSKgzOhv/19H1ClKHTpBCPpph/N7jY8PuY0=;
+  b=EPv2pniG8MvQyRz6fGu3jLmgcv1lm0ibkZOw3OiHYa90SiZk38MnYhiX
+   h+H86VIJHsXiM8FppuW09A2cPlN4aQY7CBJHSHetLuD+EguY3VtNmrAuT
+   /BKnlFW7u8m55RFGDuK2e3DKSKCfsInnBPtV71qop5pZp2Km6rNIPsUFq
+   LeCwTtkUhMLEQP8rcDBwH0B8l3ZROSXWlNR3sUSabuY+h4z+aiKBvE7Ye
+   CSWq+hKt/cslETjg3s/RdabexkCPzPCKH8vOo6i29lSFOR9A4Bd9zC/vO
+   mfal3a4udwt5f7eyetcpj7DIKCorL6zdHsDUVK/5ONPGAG/3vg5Q+pBZB
+   w==;
+X-CSE-ConnectionGUID: KGUqbexOSJiT6PXDGJxNFw==
+X-CSE-MsgGUID: Kodr57jYQTCBIuT8+u655A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62674529"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; 
+   d="scan'208";a="62674529"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 23:13:34 -0700
+X-CSE-ConnectionGUID: EDZuUWOTS7iZKdMy7RFhHw==
+X-CSE-MsgGUID: zgPfV1+5TsCKMukpOqL70Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; 
+   d="scan'208";a="188740617"
+Received: from opintica-mobl1 (HELO ashevche-desk.local) ([10.245.245.60])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 23:13:31 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vCB3H-000000024n3-3VVz;
+	Fri, 24 Oct 2025 09:13:27 +0300
+Date: Fri, 24 Oct 2025 09:13:27 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] i3c: Add HDR API support
+Message-ID: <aPsZB44qXR77jNHF@smile.fi.intel.com>
+References: <20251014-i3c_ddr-v6-0-3afe49773107@nxp.com>
+ <20251014-i3c_ddr-v6-1-3afe49773107@nxp.com>
+ <aPnmCwwZVZ5egqkP@smile.fi.intel.com>
+ <aPpHTej/vKfiN68k@lizhi-Precision-Tower-5810>
+ <aPpyf1xPmU_koEXH@smile.fi.intel.com>
+ <aPq/6/+63sHuq/qy@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI2PR04MB11147:EE_|GVXPR04MB9758:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6fd340da-abc5-4304-6913-08de12c1aebd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|52116014|376014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?m/GVqbjojJQPkSOho2fCZCJoY72jbGryWuSJAFFyZyRXN6bMGOyCJvOL6lNe?=
- =?us-ascii?Q?5MIRvBy2bpnJcmhwThA3/pDvGqlMQOANGf87pUWiDUXZvMNB14JYaxu99Enz?=
- =?us-ascii?Q?5FkMQiMyZRWZGsQRyK/e6/X8aQ01niv5K5YriCYBDrD9WZ7xJVWScEuHos5a?=
- =?us-ascii?Q?qJ2ec5VDLzYHzQKA0hmAHbv4g+H5dj2oqpc+WKGZUr3v8ApIkZTMVXP533EQ?=
- =?us-ascii?Q?Sub0FTXwgra+RYUuBypc0EnSSNNohK+T1leoDlR7e8gt7Im0NlQUgAx6WxbH?=
- =?us-ascii?Q?WY/4pDXIPZ/DQEDtVzVXjlkflntHuSRFEWpfGO9kby8p3bAT7hqFCcFf3kkl?=
- =?us-ascii?Q?bU5ecB/H8G1BbkPPmY01KYK18LVhNsFzGXRDktuQPdgm7Ij+Q/00EedC9T8+?=
- =?us-ascii?Q?LRvivG6jmhMri9U/E7cWAGzwIyzolW3ndzR4fIIT4P6fnhWNFcpTJNXm2FVO?=
- =?us-ascii?Q?LCGY1M41qbh4cgbk7Sk4WKEdY2/cBlIRtFBNN1glAUCW/DyAXBa7emd29c2L?=
- =?us-ascii?Q?8eVkQRLu1Ue6etmWAWrHTGyL3lwzVwu87B1Qdz9rZJZdz3fyBo8U098kiy7n?=
- =?us-ascii?Q?RdQVwaG7ewxjfLEtbr+K/SbAfhIReWnZrQLx09n6dxSnyShnMCceWP8+Hb6n?=
- =?us-ascii?Q?TCDKzlzddBbQ/+gxViqfHGClGjOCgxCHV8nOimvC9SGQJJzfiPGukeoh/nHn?=
- =?us-ascii?Q?uJNY+J48jIrCUAx8n/hT/52Cs3jVf2hPEE8AqvDJFkNjIPKUUYi1TTlb2l30?=
- =?us-ascii?Q?FSM7Z7znUmW64wHx4WuxOVir9rNn08m8jMvgGhFR6wxkZ+mZAhXQ5g6fhaQX?=
- =?us-ascii?Q?UMu1/Zlhhm8w/uiaYJkKyfKnW37OnfUeQMTqlkK/a1ZaUACjCPqLe4fdIKiL?=
- =?us-ascii?Q?4CeQ2WIwjDNFm347iRv+NRVo4LqX3F/y49LVt3L6Nmh8oiHR4TRYmEpEVsZi?=
- =?us-ascii?Q?5LGZEn5ovrTzLVv/oIeu4P/CDf3icVldWQl3qPjzA8VBNI/qYEUpNxMmr0cT?=
- =?us-ascii?Q?8gJBF/T0G/GR8r5sxU1Efie9qMI4sXWoAdou4wUPQjKpzqx7glTeH5pFJ6/4?=
- =?us-ascii?Q?Tzd2R0TQS5WK71jD94TxxjYF/wpTB4knjUw9UvVEGcZhEChDDunJk6V2C2HL?=
- =?us-ascii?Q?kHTufWvJlrpjsY2lKw4UazJFrt7JV3mDX53WvYq8vC7vtah2DCkUHPlzmh3k?=
- =?us-ascii?Q?iiWyRrHXtGeHCIuQsw/VWwB+nr5QdDG4zmqf5HZWp/lPAave7kjvjcp6SqyS?=
- =?us-ascii?Q?6ro1dLijGy25DLrLKVDFm8QT1+/WUIYgrRBxi3yJ39PtBpXs43h1FodR3hbj?=
- =?us-ascii?Q?d7VgEFBQbCiIpU7KYtj7ShPTf57gQux/zaifBcbBkMeIyG4RKssDD2Yd5hL0?=
- =?us-ascii?Q?bAyjkYIRz0WQM5tzfYZ0BvCBF9qQvr2/sqreMAtJHUFONPaY/Jk0l2B5CNUc?=
- =?us-ascii?Q?pFvA2bgEg9sAzVMDkQmRu9MhTN3GNZ+woOnvzNTup7W5ZYtLBT6D2FV3oX5R?=
- =?us-ascii?Q?EQ64Cvam8FG0IIYHYooB0gHJ9/t1fhqu5zyc?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11147.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?FvQWOiKSU8VFCmKScxtyqgkCqxDyw2lFE/bOQtdYBgdr86FH3TOjZKYODuoN?=
- =?us-ascii?Q?TMEigmOG2H9eINhjOBtBN+vOIaVbZtzBfGbrL0xfOcWk++jjUXXzVFzMfn4a?=
- =?us-ascii?Q?XjEjuxUWpQwOxjk4oCty4Ld0W9SC0/wa06u/t+tNRs5fD8wA9JOecQ7EDTOd?=
- =?us-ascii?Q?9YZK+L9XKNG+sXSQZymMkZr7Ddz+9p3mmlngqc+PqaeUsbRf0LqHsp9VVO8U?=
- =?us-ascii?Q?WWWqQeeDU05KJ4OaPIGZ6BRC7OAI63/NPtRg6L3KT6xtq3gPJ8d1uCiH3/5A?=
- =?us-ascii?Q?9bQ8IN2NLT4EKE1/SoFjDFxrHHi/u4JiBUNHTGcOzSAJKz8XqenNl/QsyfUi?=
- =?us-ascii?Q?picS8sbhQ8GnyNId8sj8qsPZ+Br/wr9Qvj1RG5plkI8UUxDtNxJxeIUREFaQ?=
- =?us-ascii?Q?siZTNpT6ielhfymx9apPutWOllIZXCQBksX8A6HFcs7vohlYPF6AsqzTIzKt?=
- =?us-ascii?Q?yKiIaYO9ty0Ake+Fcan8FL3YfyHuHJIvXTbX0QPHx44491kfZMSrWkeIPEym?=
- =?us-ascii?Q?QPz18zwIhyCQGCuQW0LQf61KLSHSGnYyFBSSI7buKkGybVnv5QnaqtU+A+xg?=
- =?us-ascii?Q?BAyUqEV/MTUbCGlsFPXYCzjyw9A9mkAZrXoqoNOgkk+gvNz5c2YZGv8cJjXf?=
- =?us-ascii?Q?NXTeHCgl0FwnTp8HcUlc+xQpnkOLHD/UkPO3AiD8aSYmIIjq6ydeXLXjWmJP?=
- =?us-ascii?Q?vwzVTGdsTaVXL6dT65r7ji+y1vvOdHmmuMwfCFaEhGuoyyVI8463P6s7znDp?=
- =?us-ascii?Q?FSCNfJP3P+mAhg1uV2dj3PF+jk0nP7HqT/hnqPjCZxyvtrNpA5ZFNJRm5iZc?=
- =?us-ascii?Q?2TS7RiP/P7kvCEa40I7E6RSCebhMOsr8ptN/kX+KWhNkJUu16PdCPosi23wJ?=
- =?us-ascii?Q?og9rBSuL1T0Z5V9DoLlFlkvDfsRfmZcatzDDXWzgPs7zN9VYkhUSCTBfGuk0?=
- =?us-ascii?Q?iX1zoT6AguGDtpnc60ymlneWkWuv+SI2KkYWaE+TY+LP7cbzfiRpqTyQLiyh?=
- =?us-ascii?Q?Z75vmgLd/vERPMyr8LqtHfbnDiGkpIat5VEJLh8buVYcgXRr7HGg1IsSx2C5?=
- =?us-ascii?Q?OlcXowHjQX4l6uB34oQ7tIwgCq46ZKFXNpPWRO3vM+zP+UswsvK14YLl+wpX?=
- =?us-ascii?Q?AyPlpz2eoGV+0eaCqc52TMGzxRKXGZQnQVBgm1HvxjoUXwpDwFZ9ODE39H0g?=
- =?us-ascii?Q?u/zQ5Rt31MH7b1BDYe1+PuB12c3/WnvjD5RNn0PGELSc0AFLb4dRTkKDL997?=
- =?us-ascii?Q?gdq4BXxlOr0A7IN/SFI8TcmADw+WB9dDh12qgvdsLGH3RnHeTMPBImFriB37?=
- =?us-ascii?Q?ybptgFsCr78kkHaKmU22icry18uVv55hobKFl7ijgzWATcufms9ulbqsmFyk?=
- =?us-ascii?Q?iqa7DrVGtI1vazZIoJcC5ZbmN0bVWF83xDbL0ZC9YRblFcHXhlUaeZSKVZAi?=
- =?us-ascii?Q?nE8c/KeaphN0Cl/o9iqtkF/a+1hJwj0JdxPXIGZpfuTB+/SHkXPYSvFOS3nc?=
- =?us-ascii?Q?3+AnyzbbQcpdbVf2Vn0sx3CQF+guOoXO2dY5SXPATu+RM4dB2Gc2ei5if5vn?=
- =?us-ascii?Q?EqVzUP5qU3VqeXiGzL15KO6tEn+VpAbwNcl3LbKi?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6fd340da-abc5-4304-6913-08de12c1aebd
-X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11147.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2025 05:53:40.8508
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UkkM77dtT7Eq7DjBjOghVzXtnOLKe+lOzig+x7C4A5PM13vp0Xxyv3M3gzTLLToDamfoukLaR4fJJb/CDp+/gg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9758
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aPq/6/+63sHuq/qy@lizhi-Precision-Tower-5810>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: Robin Gong <yibin.gong@nxp.com>
+On Thu, Oct 23, 2025 at 07:53:15PM -0400, Frank Li wrote:
+> On Thu, Oct 23, 2025 at 09:22:55PM +0300, Andy Shevchenko wrote:
+> > On Thu, Oct 23, 2025 at 11:18:37AM -0400, Frank Li wrote:
+> > > On Thu, Oct 23, 2025 at 11:23:39AM +0300, Andy Shevchenko wrote:
+> > > > On Tue, Oct 14, 2025 at 12:40:00PM -0400, Frank Li wrote:
 
-Since sdma hardware configure postpone to transfer phase, have to disable
-dma request before dma transfer setup because there is a hardware
-limitation on sdma event enable(ENBLn) as below:
+...
 
-"It is thus essential for the Arm platform to program them before any DMA
- request is triggered to the SDMA, otherwise an unpredictable combination
- of channels may be started."
+> > > > > +/* keep back compatible */
+> > > > > +#define i3c_priv_xfer i3c_xfer
+> > > >
+> > > > How many of the current users do this? Can't we just rename treewide?
+> > >
+> > > git grep -r priv_xfer drivers/
+> >
+> > `git grep -lw ...` is a better approach :-)
+> >
+> > > drivers/base/regmap/regmap-i3c.c:       struct i3c_priv_xfer xfers[] = {
+> > > drivers/base/regmap/regmap-i3c.c:       return i3c_device_do_priv_xfers(i3c, xfers, 1);
+> > > drivers/base/regmap/regmap-i3c.c:       struct i3c_priv_xfer xfers[2];
+> > > drivers/base/regmap/regmap-i3c.c:       return i3c_device_do_priv_xfers(i3c, xfers, 2);
+> > > drivers/hwmon/lm75.c:   struct i3c_priv_xfer xfers[] = {
+> > > drivers/hwmon/lm75.c:   ret = i3c_device_do_priv_xfers(i3cdev, xfers, 2);
+> > > drivers/hwmon/lm75.c:   struct i3c_priv_xfer xfers[] = {
+> > > drivers/hwmon/lm75.c:   return i3c_device_do_priv_xfers(i3cdev, xfers, 1);
+> > > drivers/i3c/device.c:int i3c_device_do_xfers(struct i3c_device *dev, struct i3c_priv_xfer *xfers,
+> > > drivers/i3c/master.c:   if (!ops->priv_xfers && !ops->i3c_xfers)
+> > > drivers/i3c/master.c:   if (!master->ops->priv_xfers)
+> > > drivers/i3c/master.c:   return master->ops->priv_xfers(dev, xfers, nxfers);
+> > > drivers/i3c/master/dw-i3c-master.c:static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+> > > drivers/i3c/master/dw-i3c-master.c:                                 struct i3c_priv_xfer *i3c_xfers,
+> > > drivers/i3c/master/dw-i3c-master.c:     .priv_xfers = dw_i3c_master_priv_xfers,
+> > > drivers/i3c/master/i3c-master-cdns.c:static int cdns_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+> > > drivers/i3c/master/i3c-master-cdns.c:                                 struct i3c_priv_xfer *xfers,
+> > > drivers/i3c/master/i3c-master-cdns.c:   .priv_xfers = cdns_i3c_master_priv_xfers,
+> > > drivers/i3c/master/mipi-i3c-hci/core.c:static int i3c_hci_priv_xfers(struct i3c_dev_desc *dev,
+> > > drivers/i3c/master/mipi-i3c-hci/core.c:                       struct i3c_priv_xfer *i3c_xfers,
+> > > drivers/i3c/master/mipi-i3c-hci/core.c: .priv_xfers             = i3c_hci_priv_xfers,
+> > > drivers/i3c/master/renesas-i3c.c:static int renesas_i3c_priv_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *i3c_xfers,
+> > > drivers/i3c/master/renesas-i3c.c:       .priv_xfers = renesas_i3c_priv_xfers,
+> > > drivers/i3c/master/svc-i3c-master.c:    struct i3c_priv_xfer *xfer;
+> > > drivers/i3c/master/svc-i3c-master.c:     * at svc_i3c_master_priv_xfers().
+> > > drivers/i3c/master/svc-i3c-master.c:static int svc_i3c_master_i3c_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *xfers,
+> > > drivers/net/mctp/mctp-i3c.c:    struct i3c_priv_xfer xfer = { .rnw = 1, .len = mi->mrl };
+> > > drivers/net/mctp/mctp-i3c.c:    rc = i3c_device_do_priv_xfers(mi->i3c, &xfer, 1);
+> > > drivers/net/mctp/mctp-i3c.c:    struct i3c_priv_xfer xfer = { .rnw = false };
+> > > drivers/net/mctp/mctp-i3c.c:    rc = i3c_device_do_priv_xfers(mi->i3c, &xfer, 1);
+> > >
+> > > After this patch merged, I can clean up it at difference subsytem. After
+> > > all cleanup done, we can safely remove this define.
+> >
+> > I counted 9. I think it's not a big deal to convert all of them at once without
+> > leaving an intermediate state. But this is a call for the I³C subsystem maintaiiner.
+> 
+> There also are other cleanup works. The key point is that everyone agree my
+> HDR solution. Cleanup these is not big deal. I am not sure how to avoid
+> build broken at difference subsystem.
+> 
+> After this patch merge, cleanup will be easier and safer.
 
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Signed-off-by: Robin Gong <yibin.gong@nxp.com>
----
- drivers/spi/spi-imx.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+Then leave that renaming to the cleanup series. No need to use a define, just
+use the old function name.
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index cd40db61d8d1..765ea507dd8d 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -529,9 +529,15 @@ static void mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
- {
- 	u32 reg;
- 
--	reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
--	reg |= MX51_ECSPI_CTRL_XCH;
--	writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
-+	if (spi_imx->usedma) {
-+		reg = readl(spi_imx->base + MX51_ECSPI_DMA);
-+		reg |= MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN;
-+		writel(reg, spi_imx->base + MX51_ECSPI_DMA);
-+	} else {
-+		reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
-+		reg |= MX51_ECSPI_CTRL_XCH;
-+		writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
-+	}
- }
- 
- static void mx51_ecspi_disable(struct spi_imx_data *spi_imx)
-@@ -772,7 +778,6 @@ static void mx51_setup_wml(struct spi_imx_data *spi_imx)
- 	writel(MX51_ECSPI_DMA_RX_WML(spi_imx->wml - 1) |
- 		MX51_ECSPI_DMA_TX_WML(tx_wml) |
- 		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
--		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
- 		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
- }
- 
-@@ -1539,6 +1544,8 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	reinit_completion(&spi_imx->dma_tx_completion);
- 	dma_async_issue_pending(controller->dma_tx);
- 
-+	spi_imx->devtype_data->trigger(spi_imx);
-+
- 	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
- 
- 	/* Wait SDMA to finish the data transfer.*/
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
