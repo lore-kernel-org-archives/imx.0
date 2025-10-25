@@ -1,205 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBD530ACE8;
-	Sat, 25 Oct 2025 16:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B84158538
+	for <imx@lists.linux.dev>; Sat, 25 Oct 2025 18:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761409000; cv=none; b=b5MQn6+eFS3UTbqRmxZVA4ktPmtQ8yK98YyIcIcBsjHjBW6qgrEVXhpaC3US+vURUbOVBN5ydy2uRa2raZceASBYt7YUNKPFS2vH1QtqpaNaCyS3Dh578hNpkRbxqM6kRM/BcBEB9G/CpZKys+3EOF/8e4RzHE/6pu5OD1358fE=
+	t=1761417809; cv=none; b=gfY+kwgjAiTxocIvyPONm1KswaMCyRAMdEwtgAYW/rBJTQdlfGiq7dhrxpX8hMP72YTmQkYVE7lumf8Fwd9aYz+XhHQxMi9xMBH37Wm2BXNb4gmJbKvvFSB8ti67mFkRVG1JruUgAhsXO3buh9TYoSdMq2jJmdDE0PiwlnR5CNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761409000; c=relaxed/simple;
-	bh=BJNj1AKX4x8khA3V2BuAeQsKGL0gnc5G62vc3d98SzI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NfTRud16jVMB+BLB3iwhQpbcA06Gw2miSJq9DbDcanEJmTlXEagZiE6y6eyfZ8I20lIa4iVtzGRVJ/N5nir2H187M7MHksW1TIARNvk5hcqvse1+SFEbMcfZPFCypwjsgGDGyZKnCR67/YT20+FEtbCSEasJyDbFOsfGWuTqWsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CPIYGQit; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761417809; c=relaxed/simple;
+	bh=dxk8GxWYmXoS/kR/2B6MJ5d695nLp/wTtHjmfAoCuxk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=VBqE3XoExPD7hdbdYRrXNi6kv0aqmEfxSeEETjR5asGwskCEF8Toiudcy5wiXmuh15lboW9KsbNJB1eQPOi78YVkWjFUwU+yhJmkw4fazZTUlJ4SeBRxdMMPL5raUKUGQxE6T4eSNRPBIdJQC8h9o55IOBAN8MzYnThLHHGO6Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DGlaLEDX; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CPIYGQit"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB9AC4CEFB;
-	Sat, 25 Oct 2025 16:16:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761409000;
-	bh=BJNj1AKX4x8khA3V2BuAeQsKGL0gnc5G62vc3d98SzI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CPIYGQitIuGVOHLExI6hVPNjCjoZxtNmL067vCxYnarugMoytfXI2cTRALvaAG3Yd
-	 w12SYStShAxlvt0WeIlPhhFmowsu3/b8WsSLG+IEUjibgU44RnhrfLXtumemy9PMtN
-	 n9AW0cP4ExuXYrYPAsNBiUVmh3n1xD2T0o2X25GqpFogkvK9OyguXYGfTjSistyawa
-	 8hALd0rcZEi2gRhZdaqVroO6F9e6XGmc8p+ZClKLVw0EVTVE7RW4i1CGOVpr63ZSww
-	 2BYDz83IWHUBGlIt5Jzb7qNvmCI33qv9v9KWfmeZDxjXbZ4HDpArL7v9TeFk6b9ckN
-	 EzGH4o7tC2aRw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	rmfrfs@gmail.com,
-	shawnguo@kernel.org,
-	linux-media@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.17] media: imx-mipi-csis: Only set clock rate when specified in DT
-Date: Sat, 25 Oct 2025 11:56:40 -0400
-Message-ID: <20251025160905.3857885-169-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
-References: <20251025160905.3857885-1-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DGlaLEDX"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47117f92e32so28815635e9.1
+        for <imx@lists.linux.dev>; Sat, 25 Oct 2025 11:43:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761417807; x=1762022607; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=CWNok4IQiL53qK04RvlXuFVO8RcguXVZm8vK7lpoxs4=;
+        b=DGlaLEDX5abxFG+aILSrPSSBC9kowlKWQc6I4oiDYgJKYAi6JGuiOYGB0bqs0pvVIo
+         vTbW9uJ8zfcaGIfMEHv4GdTiBxcMItM5LtAeLGtquuDdm3NS1eQ4utRrz3w3N1YbNY3P
+         v9mSU6q7iF0M9KpdNjXum9Zx6r8ubsyk/qmKbOr+ARzkqn6pm53giLTh2Gjta/c+Q2Yu
+         2fomDUbmzbk4V9KsJicca9FuHngHbyE/DxbZcDwbs6ghISNQnAIHVSqTTPJ0aTagB7AR
+         muo7FAeVW7DlVDC2hW5Q3MEuWzK4GEJWIORg6V65PpQUin+phiNyF8jR/VF1tNVEpTho
+         729g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761417807; x=1762022607;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CWNok4IQiL53qK04RvlXuFVO8RcguXVZm8vK7lpoxs4=;
+        b=IM8zrk2kw28XXJMCw+1Qq8GmoeF8VlhCBkMPqdxh4hV5Au1BumoePIXlf2D2VVnmh5
+         c2zCNdIsBrKYVOsWbWGk7u96yLzoXv5WCvboAPF5WCQWRubViqOF2ySEHzpAveXvJZ7x
+         uW3MxydQvx07riplSYCR2b/K3/Ocpu9MEkPItmYcu/TcLqkCCb0eCzchQqMYjR/nS1qn
+         PSh+tRx/jBo93bS8cqDour5bTzansO6l4rpYVNGKMSjI6gY2JT1fHzxbA44YgeKOYOid
+         SGcMaZMdsjvTx6AZ65CEobtAu618Mj0ssb1gcEobzuzQS8U2e1ihPSbXgsxi4FhdXMrb
+         gQuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUtlbkLyel8/r/DTRrVMFj2RebAG5W2GCtLVQKL5p15DRerCdghfY+707mhpskMos7ZiEg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzRxnIaBHoGztjBA8HedPknWHNBuW4PaYIjXcl1Wesp5QxKNJgn
+	6P6FWabFewSPpR+SlzBxycbKXv6wr3abytRyklKZUGCZURWOrTGXwyin
+X-Gm-Gg: ASbGncvqlTM9X1f9EuY3LfL3LmgfqaDfEhFcPE0InjzurFSAr8zIXdjBrEk3jyMCUyv
+	VvTA759j7ZWjbPIbSvB0V98TNsloWkHQ9LPxQ2D3miYXyRQZIW5HBaQDI+ca0Jeo+WXB5JC6xol
+	XSs0I0MTApHcBRbBv3EdPjUX4ZKSY99NOXxE0iPU9bxxqcJJMuC48Z2Y6RrK3dcwB8J/SjXUj0j
+	rOX9NIcHJR8NM8pHqiDwGSUHWnpj0Jc7Dazr6HC5f04fkBdpU21wCj5LR0In9+KjC6SQoGgo4NR
+	WAwtw77AUCqnm4IfjsHZKjrcPfF6PjqQynHgFNiwGSm3l5yibGNBS/zNnnn0N8DSoGNuGSOhc/5
+	OXSCS+fxHTaEhaqjVCPSbjPfXGJyRQd5jBSQMa8ARACfcGQ3OZuiHG8v+ko25eDKdnIrg0iM1Jy
+	f47Ao8p1LANjAbMjTr1i1+JrVSUPk9lOoxWU99pCezfW7MtKJvMeCvdQN4S9VF59ljLd78jNe8o
+	pDCFWvAU6cAAplFHI+kOkaYv/fCrOgOT7EhnrDWZZNp1XY+mbaCNw==
+X-Google-Smtp-Source: AGHT+IFk7dWmaGE9WDxnUoXGPQ/MaTOVi43Jwup+53sRtb28ew+/Wwb+XiqmvooubqMbrhcWmLx9dA==
+X-Received: by 2002:a05:6000:645:b0:429:8b94:b8d6 with SMTP id ffacd0b85a97d-4298b94bd76mr6021211f8f.57.1761417806671;
+        Sat, 25 Oct 2025 11:43:26 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f39:8b00:d401:6211:9005:e76e? (p200300ea8f398b00d40162119005e76e.dip0.t-ipconnect.de. [2003:ea:8f39:8b00:d401:6211:9005:e76e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952de5f9sm5006487f8f.38.2025.10.25.11.43.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 25 Oct 2025 11:43:25 -0700 (PDT)
+Message-ID: <7eb1a046-aa14-4874-b03c-361ac6f8ffa7@gmail.com>
+Date: Sat, 25 Oct 2025 20:43:24 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.17.5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net-next 0/4] net: phy: add iterator
+ mdiobus_for_each_phy
+From: Heiner Kallweit <hkallweit1@gmail.com>
+To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Siddharth Vadapalli
+ <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, imx@lists.linux.dev,
+ linux-omap@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>
+References: <9c6aeec5-f651-4cf0-8cca-d2455048e89e@gmail.com>
+Content-Language: en-US
+In-Reply-To: <9c6aeec5-f651-4cf0-8cca-d2455048e89e@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-[ Upstream commit 65673c6e33cf46f220cc5774166b373b3c087739 ]
-
-The imx-mipi-csis driver sets the rate of the wrap clock to the value
-specified in the device tree's "clock-frequency" property, and defaults
-to 166 MHz otherwise. This is a historical mistake, as clock rate
-selection should have been left to the assigned-clock-rates property.
-
-Honouring the clock-frequency property can't be removed without breaking
-backwards compatibility, and the corresponding code isn't very
-intrusive. The 166 MHz default, on the other hand, prevents
-configuration of the clock rate through assigned-clock-rates, as the
-driver immediately overwrites the rate. This behaviour is confusing and
-has cost debugging time.
-
-There is little value in a 166 MHz default. All mainline device tree
-sources that enable the CSIS specify a clock-frequency explicitly, and
-the default wrap clock configuration on supported platforms is at least
-as high as 166 MHz. Drop the default, and only set the clock rate
-manually when the clock-frequency property is specified.
-
-Link: https://lore.kernel.org/r/20250822002734.23516-10-laurent.pinchart@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-YES
-
-Why this is a bug fix
-- The driver unconditionally forced the wrap clock to 166 MHz when the
-  DT lacked a clock-frequency property, which overrides DT-assigned
-  clock rates. That breaks the expected DT model where `assigned-clock-
-  rates` controls rates, leading to misconfiguration and hard-to-debug
-  behavior.
-- This change stops overriding the clock unless the DT explicitly
-  requests it, restoring correct DT semantics.
-
-What changed (code references)
-- Set rate only when explicitly requested:
-  - `drivers/media/platform/nxp/imx-mipi-csis.c:744` now guards
-    `clk_set_rate()` with `if (csis->clk_frequency) { ... }`, meaning
-    the driver only sets the rate when the DT provided `clock-
-    frequency`.
-- Drop the 166 MHz fallback:
-  - `drivers/media/platform/nxp/imx-mipi-csis.c:1483` now reads `clock-
-    frequency` without assigning a default if the property is absent,
-    removing the prior implicit 166 MHz default.
-- The removal of the default macro and fallback behavior eliminates the
-  unconditional override while preserving backward compatibility for DTs
-  that do specify `clock-frequency`.
-
-Why it matters (user impact)
-- Systems using `assigned-clock-rates` in DT were previously ignored by
-  the driver due to the unconditional 166 MHz set, causing unexpected
-  clock rates and potential functional issues.
-- With this patch, DT-provided assigned rates take effect unless a
-  legacy DT explicitly uses `clock-frequency`, which is retained for
-  compatibility.
-
-Risk and compatibility
-- Scope is small and contained to one driver; no core or architectural
-  changes.
-- Backward compatibility is preserved for legacy DTs that specify
-  `clock-frequency` (the driver still sets the rate in that case).
-- For DTs without `clock-frequency`, the driver no longer forces 166 MHz
-  and leaves the rate to the clock framework/DT assignments. The commit
-  rationale notes that all mainline DTs enabling CSIS already specify
-  `clock-frequency`, and default platform wrap clock configurations are
-  at least as high as 166 MHz, reducing regression risk.
-- The only functional behavior change is the removal of an incorrect
-  default that masked DT configuration.
-
-Stable criteria assessment
-- Fixes a real misbehavior that affects users (DT `assigned-clock-rates`
-  ignored).
-- Minimal, well-contained change in a single driver file.
-- No new features or architectural changes.
-- Low regression risk with explicit consideration for legacy DT
-  compatibility.
-- No explicit “Cc: stable” or “Fixes” tag, but technically aligns with
-  stable policy as a correctness fix that removes a problematic default
-  override.
-
-Conclusion
-- This is a clear, low-risk bug fix that restores proper DT semantics
-  and prevents the driver from clobbering assigned clock rates. It
-  should be backported to stable.
-
- drivers/media/platform/nxp/imx-mipi-csis.c | 23 +++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-index 2beb5f43c2c01..cea017a2b14ec 100644
---- a/drivers/media/platform/nxp/imx-mipi-csis.c
-+++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-@@ -228,8 +228,6 @@
- #define MIPI_CSIS_PKTDATA_EVEN			0x3000
- #define MIPI_CSIS_PKTDATA_SIZE			SZ_4K
- 
--#define DEFAULT_SCLK_CSIS_FREQ			166000000UL
--
- struct mipi_csis_event {
- 	bool debug;
- 	u32 mask;
-@@ -704,12 +702,17 @@ static int mipi_csis_clk_get(struct mipi_csis_device *csis)
- 	if (ret < 0)
- 		return ret;
- 
--	/* Set clock rate */
--	ret = clk_set_rate(csis->clks[MIPI_CSIS_CLK_WRAP].clk,
--			   csis->clk_frequency);
--	if (ret < 0)
--		dev_err(csis->dev, "set rate=%d failed: %d\n",
--			csis->clk_frequency, ret);
-+	if (csis->clk_frequency) {
-+		/*
-+		 * Set the clock rate. This is deprecated, for backward
-+		 * compatibility with old device trees.
-+		 */
-+		ret = clk_set_rate(csis->clks[MIPI_CSIS_CLK_WRAP].clk,
-+				   csis->clk_frequency);
-+		if (ret < 0)
-+			dev_err(csis->dev, "set rate=%d failed: %d\n",
-+				csis->clk_frequency, ret);
-+	}
- 
- 	return ret;
- }
-@@ -1413,9 +1416,7 @@ static int mipi_csis_parse_dt(struct mipi_csis_device *csis)
- {
- 	struct device_node *node = csis->dev->of_node;
- 
--	if (of_property_read_u32(node, "clock-frequency",
--				 &csis->clk_frequency))
--		csis->clk_frequency = DEFAULT_SCLK_CSIS_FREQ;
-+	of_property_read_u32(node, "clock-frequency", &csis->clk_frequency);
- 
- 	return 0;
- }
--- 
-2.51.0
-
+On 10/24/2025 10:20 PM, Heiner Kallweit wrote:
+> Add and use an iterator for all PHY's on a MII bus, and phy_find_next()
+> as a prerequisite.
+> 
+> v2:
+> - rename iterator to mdiobus_for_each_phy
+> 
+> Heiner Kallweit (4):
+>   net: phy: add iterator mdiobus_for_each_phy
+>   net: fec: use new iterator mdiobus_for_each_phy
+>   net: davinci_mdio: use new iterator mdiobus_for_each_phy
+>   net: phy: use new iterator mdiobus_for_each_phy in
+>     mdiobus_prevent_c45_scan
+> 
+>  drivers/net/ethernet/freescale/fec_main.c |  8 ++------
+>  drivers/net/ethernet/ti/davinci_mdio.c    | 14 +++++---------
+>  drivers/net/phy/mdio_bus_provider.c       | 13 ++++---------
+>  drivers/net/phy/phy_device.c              | 14 +++++++-------
+>  include/linux/phy.h                       | 11 ++++++++++-
+>  5 files changed, 28 insertions(+), 32 deletions(-)
+> 
+CI complains about a missing return value description in kdoc.
+I'll send a v3.
