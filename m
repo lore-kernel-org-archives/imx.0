@@ -1,50 +1,48 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B671F30C3
-	for <imx@lists.linux.dev>; Sun, 26 Oct 2025 22:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C401FB1
+	for <imx@lists.linux.dev>; Sun, 26 Oct 2025 23:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761517724; cv=none; b=r3KbZFuzNlfqE/5NRusdh51u0TU5IS5iL86vVRm2U3cEW0hrzGFhMjb+dNihS4Boxqvd0joQRyE9Ec5XNy8zRv3GC9/B/LTSqWefop0wCeRHKMouNFVrW1Z1yKb5amGD2jqgAyWx/82P2p9tZrsEQKmxjnfZ0CTBJTuJ8Wm42j8=
+	t=1761522624; cv=none; b=bWNgQ72OrjxfIoyjl2FLONKv6TZGfZm2nD1s8Aol+6X9MP7TMLse23k1icNIsHhXFTmP8XS5mGBcP6GVVJ5RRjfP8/tutQA/dJDk2yCqCrW8GeMYNjb7awcCOhZULYUz8CQhwOZkkJpSwIeo4gmCuLOeg42IWhuXyIjczOpjQnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761517724; c=relaxed/simple;
-	bh=VKQFo2wPNIL18CuB3qiB0jANg2tkXXNSpvhyiVgRsMc=;
+	s=arc-20240116; t=1761522624; c=relaxed/simple;
+	bh=8Ka4KDuKSKR42vpWKdt7GFbxhPMHhPwGK1RFzHHs4nk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tTFP3LlA+oS4EN+SOq3u5Hiygmgw0EJIuAY4qQmtCMABnvW8imp3HANHv3jbls63SOdCA6Ot+cBZbHJlqUkUt3a5huLwyzGrDirab7feJkIka6j/tWDPjcWnQxlK+CHYCubImN9EP/MzTNEd3gh4Zo0sU1j1k1451jCbHAMno5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=razqeGsB; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=SmwCRkjdoFp33VJNF/SCJzqOMmkHyIw4sLUHoXAB5LrjqSyHZKZy9lDEyOCK/n4xEep8Cpv5YlX5ujMcYsWK+pWwu7XUzSPbdAwiJdmpb4pKAViOlho12XljrRGUngwidH16hwyqjum/7rs0n7YMECLxZ48Va3ioGTJMY9c+rHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=qPigjbWl; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="razqeGsB"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="qPigjbWl"
 Received: from pendragon.ideasonboard.com (82-203-161-16.bb.dnainternet.fi [82.203.161.16])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id C0CFF1F0E;
-	Sun, 26 Oct 2025 23:26:53 +0100 (CET)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 46579E77;
+	Mon, 27 Oct 2025 00:48:33 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1761517614;
-	bh=VKQFo2wPNIL18CuB3qiB0jANg2tkXXNSpvhyiVgRsMc=;
+	s=mail; t=1761522513;
+	bh=8Ka4KDuKSKR42vpWKdt7GFbxhPMHhPwGK1RFzHHs4nk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=razqeGsBxSglcceb1F4Gdb98xf7ZRp6vHkqCOab9W65FnNoegiSim+m2Fk8fj/49C
-	 MrM6YyoR7BoGpLT0pWLToks4e4XLehxL1gMaMbf2ifuo7vwxdXtfqEk5x0cK7Xt1FF
-	 Th5s1naHJYqOzkVLYsfVdGGHKcErOyyYxSKhqZ8U=
-Date: Mon, 27 Oct 2025 00:28:26 +0200
+	b=qPigjbWltVZE8/Mr7XP81ImDEVEkv8Z+Pgr0VaS2RBysqHPXxaPl/ZpRVMKHbajTv
+	 CkHbISjneiKi9JInf+q9Vd8m70MJDYog2uvC1AfNO9QciMrPppNz6STNKoWUkTxy3M
+	 B5irh0C5gKbUrWHWgKHJvdynxS6sJVahxgFUVEB4=
+Date: Mon, 27 Oct 2025 01:50:06 +0200
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Guoniu Zhou <guoniu.zhou@nxp.com>, Rui Miguel Silva <rmfrfs@gmail.com>,
+To: Guoniu Zhou <guoniu.zhou@nxp.com>
+Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
 	Martin Kepplinger <martink@posteo.de>,
 	Purism Kernel Team <kernel@puri.sm>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/4] media: imx8mq-mipi-csi2: Add output filed in
- csi2_pix_format
-Message-ID: <20251026222826.GJ13023@pendragon.ideasonboard.com>
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/4] media: imx8mq-mipi-csi2: Add RGB format support
+Message-ID: <20251026235006.GK13023@pendragon.ideasonboard.com>
 References: <20250820-csi2_imx8mq-v5-0-e04a6fc593bd@nxp.com>
- <20250820-csi2_imx8mq-v5-2-e04a6fc593bd@nxp.com>
- <aKXcPVQnQzCx6C5z@lizhi-Precision-Tower-5810>
+ <20250820-csi2_imx8mq-v5-3-e04a6fc593bd@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,56 +51,43 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aKXcPVQnQzCx6C5z@lizhi-Precision-Tower-5810>
+In-Reply-To: <20250820-csi2_imx8mq-v5-3-e04a6fc593bd@nxp.com>
 
-On Wed, Aug 20, 2025 at 10:31:25AM -0400, Frank Li wrote:
-> On Wed, Aug 20, 2025 at 07:04:57PM +0800, Guoniu Zhou wrote:
-> > Add output filed in csi2_pix_format since the format on the
-> > source pad might change due to unpacking.
+On Wed, Aug 20, 2025 at 07:04:58PM +0800, Guoniu Zhou wrote:
+> Add format RGB565 and RGB24 support.
 > 
-> Nit: wrap at 75 chars position
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> ---
+>  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> Add output filed in csi2_pix_format since the format on the source pad
+> diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> index ad7adc677e389e0f35b0cf63195279e197907f8c..529928b94a193e02177f8773a0e68375b59b0a08 100644
+> --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> @@ -306,6 +306,13 @@ static const struct csi2_pix_format imx8mq_mipi_csi_formats[] = {
+>  	}, {
+>  		.code = MEDIA_BUS_FMT_UYVY8_1X16,
+>  	},
+> +	/* RGB formats */
+> +	{
+> +		.code = MEDIA_BUS_FMT_RGB565_1X16,
 
-s/filed/field/
+There's ongoing discussions regarding what format is appropriate for
+CSI-2 RGB565, see
+https://lore.kernel.org/all/20251013-csi-bgr-rgb-v4-0-55eab2caa69f@kernel.org/.
+Let's see what the outcome will be.
 
-> might change due to unpacking.
-> 
-> Treat 0 as meaning the output uses the same format as the input.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> 
-> > Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-> > ---
-> >  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > index 85700655ecad334c61e9b5f9f073e10b6db2618f..ad7adc677e389e0f35b0cf63195279e197907f8c 100644
-> > --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > @@ -139,6 +139,7 @@ struct csi_state {
-> >
+> +	}, {
+> +		.code = MEDIA_BUS_FMT_BGR888_1X24,
+> +		.output = MEDIA_BUS_FMT_RGB888_1X24,
 
-A kerneldoc block would be good here to document the fields, it's not
-very clear from the name what the output field is.
+This looks right.
 
-> >  struct csi2_pix_format {
-> >  	u32 code;
-> > +	u32 output;
-> >  };
-> >
-> >  /* -----------------------------------------------------------------------------
-> > @@ -634,6 +635,9 @@ static int imx8mq_mipi_csi_set_fmt(struct v4l2_subdev *sd,
-> >  	fmt = v4l2_subdev_state_get_format(sd_state, MIPI_CSI2_PAD_SOURCE);
-> >  	*fmt = sdformat->format;
-> >
-> > +	/* The format on the source pad might change due to unpacking. */
-> > +	fmt->code = csi2_fmt->output ? : csi2_fmt->code;
-> > +
-> >  	return 0;
-> >  }
-> >
+> +	},
+>  };
+>  
+>  static const struct csi2_pix_format *find_csi2_format(u32 code)
 
 -- 
 Regards,
