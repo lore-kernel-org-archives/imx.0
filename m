@@ -1,95 +1,115 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443B31F63D9
-	for <imx@lists.linux.dev>; Sun, 26 Oct 2025 12:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5BF1DF738
+	for <imx@lists.linux.dev>; Sun, 26 Oct 2025 18:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761481762; cv=none; b=WtZ3cQubqME3MJR/XjC4p9dIZmtWNzcEYKSJbrZBHEn9+8a4QtV9sE3ZCy5/pizOL4zhzxUyC+FPrPnazHLQ2HXpUrXUUSOgoDdsmry7DwZfPGsx+HwUcF4EsH0kMDOrIOWiuNAFzgHDR1XGaI9/6pdL//x3c0Jk5PgKjdGmHzo=
+	t=1761504592; cv=none; b=iHjc1KOGU9QS/SbVqaoBzvQJSo1FExI7Bt1ZUxiKf1Qmx8geYMBq+RwNDjrRLqxOUczd8VC+rlXHrqOJiqIc7fOSuRQHgF23Up1ZxZD7dWHZ6E1RsJfQYEevuNRc5XxFQ/E4vdbcfLky409/UOE/u3Y9x2k2RtCFvwcqGE/o23k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761481762; c=relaxed/simple;
-	bh=pzVG8b6JUQj2Bt9sXSZDDeW26gA2PpIPU+wUY7d6Xsk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NYQE13oFVbvsHjwTPM4m4eiuRgK3xpjKKhOnRMwnkEPZVwAPE6YYiv4vCVJMSdttK5pCmAKQLuvN3SosowNVuu9+4RFEcjjTbCewi+odgppIABvi8CStVwBaqA1pMw0n4oFSAAmLc34Ip3/gn5PU7yeT1dVH5U9xK+BT+2hx7js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=GW/HxhpZ; arc=none smtp.client-ip=213.167.242.64
+	s=arc-20240116; t=1761504592; c=relaxed/simple;
+	bh=SBAlHQr01XhpEUC4KPUxRR+yFK/fqz9GLMF8BAiidW0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qyPz5kHIv4SstnxFAOZe3/N/xSPUdzrqTo+0JVU9MxaJvLmJ4gMQnvta4NQ+I0dKSM3ao8LsvIxCme0S3tGvOMIiHBL7X5AvhktccR9AiBAEWhP92eEVpnNWFYXD+fVPlEExGDwPma4ybp1glLFC9PsPF6tgEgS+3nRDxmARxvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=KAEKu/pz; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="GW/HxhpZ"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="KAEKu/pz"
 Received: from pendragon.ideasonboard.com (82-203-161-16.bb.dnainternet.fi [82.203.161.16])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 276F1AB4;
-	Sun, 26 Oct 2025 13:27:32 +0100 (CET)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 9F9C51BA0;
+	Sun, 26 Oct 2025 19:48:00 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1761481652;
-	bh=pzVG8b6JUQj2Bt9sXSZDDeW26gA2PpIPU+wUY7d6Xsk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=GW/HxhpZ225i9Tvtsc4U23VNmiAhwLYsTJ3RjLrnvkhZbEUkjAmNKDNwXOWW5j3ef
-	 KheSpcpvBNMuK25qlcmu/lCiZqRQRba0bz3fp70o+uCfdU86P1GS+vnASzsLoR6ysW
-	 wps6oAsvkagbrnHgvcNoLJgc4wHI0nsxcEknZUIY=
+	s=mail; t=1761504480;
+	bh=SBAlHQr01XhpEUC4KPUxRR+yFK/fqz9GLMF8BAiidW0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KAEKu/pzrR2WdA3jwWhEjVL5n1ck+bdI13daW2T+hf2IXSz4lp7mK6bjk87D95lTY
+	 ojJ51hPyK2y5agMIOYGPVh3hZZYDdsKJZXbwSbvFUSECqEWIJpbHKYKhM8SQHlzmEP
+	 mTa3Ie507Yen15YtA1S2ELcEXk7ASSQn0EhXFrZM=
+Date: Sun, 26 Oct 2025 20:49:33 +0200
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Cc: Daniel Scally <dan.scally@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Date: Sun, 26 Oct 2025 14:29:04 +0200
-Message-ID: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
-X-Mailer: git-send-email 2.51.0
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] media: dt-bindings: video-interfaces: add
+ video-interfaces.h information
+Message-ID: <20251026184933.GB1025@pendragon.ideasonboard.com>
+References: <20251021154922.2874390-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251021154922.2874390-1-Frank.Li@nxp.com>
 
-Energy Efficient Ethernet (EEE) is broken at least for 1000T on the EQOS
-(DWMAC) interface. When connected to an EEE-enabled peer, the ethernet
-devices produces an interrupts storm. Disable EEE support to fix it.
+Hi Frank,
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
----
-The exact reason for the interrupt storm is unknown, and my attempts to
-diagnose it was hindered by my lack of expertise with DWMAC. As far as I
-understand, the DWMAC implements EEE support, and so does the RTL8211E
-PHY according to its datasheet. What each side does exactly is unknown
-to me. One theory I've heard to explain the issue is that the two
-implementations conflict. There is no register in the RTL8211E PHY to
-disable EEE on the PHY side while still advertising its support to the
-peer and relying on the implementation in the DWMAC (if this even makes
-sense), so disabling EEE is the only viable option.
+Thank you for the patch.
 
-This patch is likely a workaround, but it fixes ethernet usage on the
-board, so it's in my opinion worth being merged. If someone with better
-knowledge of EEE and DWMAC, as well as an interest in getting it working
-properly on the Debix board, wants to submit additional patches to drop
-eee-broken-1000t, I will be happy to test them.
----
- arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts | 1 +
- 1 file changed, 1 insertion(+)
+On Tue, Oct 21, 2025 at 11:49:22AM -0400, Frank Li wrote:
+> Mention include/dt-bindings/media/video-interfaces.h in descriptions to
+> help avoid use hardcode in dts.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> changes in v2
+> - update commit message "mention ..."
+> - use full path include/dt-bindings/media/video-interfaces.h
+> ---
+>  Documentation/devicetree/bindings/media/video-interfaces.yaml | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/video-interfaces.yaml b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> index 038e85b45befa..6ed4695cacf7e 100644
+> --- a/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> +++ b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> @@ -95,7 +95,7 @@ properties:
+>        - 6 # BT.656
+>        - 7 # DPI
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-index 9422beee30b2..4aa47f71425b 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-@@ -102,6 +102,7 @@ ethphy0: ethernet-phy@1 { /* RTL8211E */
- 			reset-gpios = <&gpio4 18 GPIO_ACTIVE_LOW>;
- 			reset-assert-us = <20>;
- 			reset-deassert-us = <200000>;
-+			eee-broken-1000t;
- 		};
- 	};
- };
+I wondered if we should reference the macros here as well:
+
+    enum:
+      - 1 # MEDIA_BUS_TYPE_CSI2_CPHY
+      - 2 # MEDIA_BUS_TYPE_CSI1
+      - 3 # MEDIA_BUS_TYPE_CCP2
+      - 4 # MEDIA_BUS_TYPE_CSI2_DPHY
+      - 5 # MEDIA_BUS_TYPE_PARALLEL
+      - 6 # MEDIA_BUS_TYPE_BT656
+      - 7 # DPI
+
+(Annoyingly we don't have a macro for DPI.)
+
+This can be done separately if desired, so
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+>      description:
+> -      Data bus type.
+> +      Data bus type. See include/dt-bindings/media/video-interfaces.h.
+>  
+>    bus-width:
+>      $ref: /schemas/types.yaml#/definitions/uint32
+> @@ -229,7 +229,7 @@ properties:
+>        Imaging. The length of the array must be the same length as the
+>        data-lanes property. If the line-orders property is omitted, the value
+>        shall be interpreted as 0 (ABC). This property is valid for CSI-2 C-PHY
+> -      busses only.
+> +      busses only. See include/dt-bindings/media/video-interfaces.h.
+>  
+>    strobe:
+>      $ref: /schemas/types.yaml#/definitions/uint32
+
 -- 
 Regards,
 
 Laurent Pinchart
-
