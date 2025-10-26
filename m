@@ -1,46 +1,45 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5BF1DF738
-	for <imx@lists.linux.dev>; Sun, 26 Oct 2025 18:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CF221254B
+	for <imx@lists.linux.dev>; Sun, 26 Oct 2025 21:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761504592; cv=none; b=iHjc1KOGU9QS/SbVqaoBzvQJSo1FExI7Bt1ZUxiKf1Qmx8geYMBq+RwNDjrRLqxOUczd8VC+rlXHrqOJiqIc7fOSuRQHgF23Up1ZxZD7dWHZ6E1RsJfQYEevuNRc5XxFQ/E4vdbcfLky409/UOE/u3Y9x2k2RtCFvwcqGE/o23k=
+	t=1761512748; cv=none; b=rZiZYoAqO2cGuyEwBE5kmg3lj5qU0BWs3Zo+kW/0EDxsxUTaH1AkgjeSbuYpIKdDZH8ZCTgob/vmfMpiD5aIf7OBcSjIKbYqiOzkgBfEf0C9ZQNdgEGLQ14fUc/QLDBT3/w/mFEfMy6TPJPYGZPLcCNOZxbBNcVwCWds2iuIBBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761504592; c=relaxed/simple;
-	bh=SBAlHQr01XhpEUC4KPUxRR+yFK/fqz9GLMF8BAiidW0=;
+	s=arc-20240116; t=1761512748; c=relaxed/simple;
+	bh=xTj7C6WHH0BI7SqvDLyoTT6OhQ/FzKwl1zNN0hIXilQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qyPz5kHIv4SstnxFAOZe3/N/xSPUdzrqTo+0JVU9MxaJvLmJ4gMQnvta4NQ+I0dKSM3ao8LsvIxCme0S3tGvOMIiHBL7X5AvhktccR9AiBAEWhP92eEVpnNWFYXD+fVPlEExGDwPma4ybp1glLFC9PsPF6tgEgS+3nRDxmARxvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=KAEKu/pz; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=mJA8QwuaABfq3WVw1fAQNi7r6yHlS/KT6BMgaE9VYY5uGQDLNBdPRdaEz7c++fHYCx6mPoDb4pB7nsYmXKOSJgz+RyjePUdTYINLxu61JWDBflmTtMWKyqREsfKv3FpZOEBRmD0KUSI3LbCVB7Ro4AaGSGMWUrVS1ZqF7gT1MH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=kVLf5p/x; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="KAEKu/pz"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="kVLf5p/x"
 Received: from pendragon.ideasonboard.com (82-203-161-16.bb.dnainternet.fi [82.203.161.16])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 9F9C51BA0;
-	Sun, 26 Oct 2025 19:48:00 +0100 (CET)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id BA7FC21B1;
+	Sun, 26 Oct 2025 22:03:57 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1761504480;
-	bh=SBAlHQr01XhpEUC4KPUxRR+yFK/fqz9GLMF8BAiidW0=;
+	s=mail; t=1761512638;
+	bh=xTj7C6WHH0BI7SqvDLyoTT6OhQ/FzKwl1zNN0hIXilQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KAEKu/pzrR2WdA3jwWhEjVL5n1ck+bdI13daW2T+hf2IXSz4lp7mK6bjk87D95lTY
-	 ojJ51hPyK2y5agMIOYGPVh3hZZYDdsKJZXbwSbvFUSECqEWIJpbHKYKhM8SQHlzmEP
-	 mTa3Ie507Yen15YtA1S2ELcEXk7ASSQn0EhXFrZM=
-Date: Sun, 26 Oct 2025 20:49:33 +0200
+	b=kVLf5p/xQFj9mU76DCtLwHZIGUUY97M91qW3pyyHielFFD1/woCia5P227FV+CFCt
+	 dmwAMdKjaYFx5WRqCuEWgGSUzssbRePFV2QF94sFM0EhelsueX9BEDGYiHfGYZG0VY
+	 He7B8z5iPAEcPA9HWciuu/0Ry3ltkfSr9g4AeWhQ=
+Date: Sun, 26 Oct 2025 23:05:30 +0200
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] media: dt-bindings: video-interfaces: add
- video-interfaces.h information
-Message-ID: <20251026184933.GB1025@pendragon.ideasonboard.com>
-References: <20251021154922.2874390-1-Frank.Li@nxp.com>
+To: Isaac Scott <isaac.scott@ideasonboard.com>
+Cc: mchehab@kernel.org, rmfrfs@gmail.com, martink@posteo.de, kernel@puri.sm,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, sakari.ailus@linux.intel.com,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Frank.Li@nxp.com
+Subject: Re: [PATCH v5 2/4] media: imx-mipi-csis: Move redundant debug print
+ in probe
+Message-ID: <20251026210530.GD1025@pendragon.ideasonboard.com>
+References: <20251022102228.275627-1-isaac.scott@ideasonboard.com>
+ <20251022102228.275627-3-isaac.scott@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,65 +48,54 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251021154922.2874390-1-Frank.Li@nxp.com>
+In-Reply-To: <20251022102228.275627-3-isaac.scott@ideasonboard.com>
 
-Hi Frank,
+Hi Isaac,
 
 Thank you for the patch.
 
-On Tue, Oct 21, 2025 at 11:49:22AM -0400, Frank Li wrote:
-> Mention include/dt-bindings/media/video-interfaces.h in descriptions to
-> help avoid use hardcode in dts.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> changes in v2
-> - update commit message "mention ..."
-> - use full path include/dt-bindings/media/video-interfaces.h
-> ---
->  Documentation/devicetree/bindings/media/video-interfaces.yaml | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/video-interfaces.yaml b/Documentation/devicetree/bindings/media/video-interfaces.yaml
-> index 038e85b45befa..6ed4695cacf7e 100644
-> --- a/Documentation/devicetree/bindings/media/video-interfaces.yaml
-> +++ b/Documentation/devicetree/bindings/media/video-interfaces.yaml
-> @@ -95,7 +95,7 @@ properties:
->        - 6 # BT.656
->        - 7 # DPI
+On Wed, Oct 22, 2025 at 11:22:26AM +0100, Isaac Scott wrote:
+> The number of data lanes is already printed as part of
+> mipi_csis_async_register(), making the first part of this print
+> redundant. Remove the redundant print, and move the debug print for
+> clock frequency to mipi_csis_parse_dt().
 
-I wondered if we should reference the macros here as well:
+There's a bit of room for improvement in the commit message. If you read
+it in isolation, without looking at the code change first, you'll see
+things like "this print" being quite unclear. No need to change it, just
+keep it in mind for your next patch series :-)
 
-    enum:
-      - 1 # MEDIA_BUS_TYPE_CSI2_CPHY
-      - 2 # MEDIA_BUS_TYPE_CSI1
-      - 3 # MEDIA_BUS_TYPE_CCP2
-      - 4 # MEDIA_BUS_TYPE_CSI2_DPHY
-      - 5 # MEDIA_BUS_TYPE_PARALLEL
-      - 6 # MEDIA_BUS_TYPE_BT656
-      - 7 # DPI
-
-(Annoyingly we don't have a macro for DPI.)
-
-This can be done separately if desired, so
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
 
 Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
->      description:
-> -      Data bus type.
-> +      Data bus type. See include/dt-bindings/media/video-interfaces.h.
+> ---
+>  drivers/media/platform/nxp/imx-mipi-csis.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+> index d5de7854f579..7c2a679dca2e 100644
+> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> @@ -1481,6 +1481,7 @@ static int mipi_csis_parse_dt(struct mipi_csis_device *csis)
+>  	struct device_node *node = csis->dev->of_node;
 >  
->    bus-width:
->      $ref: /schemas/types.yaml#/definitions/uint32
-> @@ -229,7 +229,7 @@ properties:
->        Imaging. The length of the array must be the same length as the
->        data-lanes property. If the line-orders property is omitted, the value
->        shall be interpreted as 0 (ABC). This property is valid for CSI-2 C-PHY
-> -      busses only.
-> +      busses only. See include/dt-bindings/media/video-interfaces.h.
+>  	of_property_read_u32(node, "clock-frequency", &csis->clk_frequency);
+> +	dev_dbg(csis->dev, "clock frequency: %u\n", csis->clk_frequency);
 >  
->    strobe:
->      $ref: /schemas/types.yaml#/definitions/uint32
+>  	csis->num_channels = 1;
+>  	of_property_read_u32(node, "fsl,num-channels", &csis->num_channels);
+> @@ -1566,9 +1567,6 @@ static int mipi_csis_probe(struct platform_device *pdev)
+>  			goto err_unregister_all;
+>  	}
+>  
+> -	dev_info(dev, "lanes: %d, freq: %u\n",
+> -		 csis->bus.num_data_lanes, csis->clk_frequency);
+> -
+>  	return 0;
+>  
+>  err_unregister_all:
 
 -- 
 Regards,
