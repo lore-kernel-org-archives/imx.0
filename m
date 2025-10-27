@@ -1,65 +1,65 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCD32F1FD0
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 09:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEA72F28E6
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 09:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761557550; cv=none; b=sYKNuMIP4cDiGz5X0jVVGZHTXHCNea7NaL4Akz+nf0k+OQSEfV73qZYN5AVSy+wA1w5KAeaHIiqM7nrkLUyIXhtu1d9EmF6j4vXSFoHncwJMrDh+L3eIhjOBoKP9JkoNvWEQXfVzuE3wfS1OGyz3dYniXdRNO2lKL3jHZfO6NHY=
+	t=1761557551; cv=none; b=LLufEaphm8Q1J7WP4FHOiZ/g8bGABfROohWD+J3tIVwUv4WbIpU6GCSDooQlRugm1g87lQMicb208CZkomwPebD/NwPF0LFQwoXQPM5EEl2ayehc50RyjWACx+PPyl5t+LtSvzcB97JOqg4iZ17b5Kv/DV789u361qdMVDmFHyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761557550; c=relaxed/simple;
-	bh=I+vPrkGtVY1KgrH1yltmYPBQNdvYIVKIbmnLGF2Vio4=;
+	s=arc-20240116; t=1761557551; c=relaxed/simple;
+	bh=tOevcamH4dU12q4fMfHEnmz2A1COeCliFA26VQizE1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DM9Io5la2c++zuKnokpS49ofdQo47+R5Fxl1pqQ1ViB2OaItQlWV4/8I37tW49PXX6LC2B/Dsq2jghnkr9k0PgayniNQPniWI41kv6JniQokOxmUGzp55BuLVie9W9oF/io7A0EiGlmjKvz17OopUmG8MODVd1fRmpwRQCl5e44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BlgoeuqX; arc=none smtp.client-ip=209.85.208.49
+	 MIME-Version; b=EBnUAw1d0p124B3TcWtorXlFaJHjK4FaWZ1wujO1sZCFPygQqJ6/TNWAaOziz9DURQebizR1HkrEWWUxWJAnGOSeZlUxv9Kx0rquhelsTb/Sij/wf4VpTf67YnEcTzRxdJUYC+mXtlKHx/1+S13jOMb/tWPKFGChpqGpeXWUhKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mDenkZZw; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BlgoeuqX"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-63c4c346bd9so8639348a12.0
-        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 02:32:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mDenkZZw"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b3c2c748bc8so562350566b.2
+        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 02:32:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761557547; x=1762162347; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1761557548; x=1762162348; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=c6jnR1l/knmmCE7j64ceFOiYUTsDgn50GkewewG1O2A=;
-        b=BlgoeuqXLdgZzJfytOpFMIBj6S0//EBmHUd4JEDIrpFQQlL4bRLU3HD2JdmoUy1yrD
-         oilKBVXEkgiOpt1nVEXtbbeK0MpbytkJe38me6OO7nPSlPyXvyaqjVv6RlSFESD6d2bV
-         ue31AASJKlDo9ujrRd9uKUNd/uzgcsNTe2q+fjjFhE4s7DaCQLvBZGxXV/N7WPDebUAH
-         6shNOKzvU5PX4/hxB4oSnwi+v18Jz+sh33JLuADmny6w9/OIuszBJCc1vv92x70/hlL6
-         OnBZRRmUYkdW7BPTFO0zhF7j7+AEpyz3bLypy7HxLTRNUf+hqWoFu+CpOG2EgKKe2fWi
-         ZgUg==
+        bh=Kb+oCJFy28PNmi6e8yrO96eaDIYbCEFfqpsOTMY4zgQ=;
+        b=mDenkZZwQjtJ/B9VlVZc1jx/RB5vBnf4ZMGRyRDoeQ/XKw/0UsrZRwlsf/bDssBZn7
+         QcLT5Vpf5IAdoWkkFdYFxIZg3WnJebF5X9HTN19Kc6kJ0g7McK1p31WtIBNuHw0Sy1a4
+         ZxUIxlnyJb5dXnBb2oAzLD0438tjQXWC6/xUDG5jElg/6xyT4D9cE0/Xp72c+mudalq7
+         9w8LFPxVahGfXy7e7tK4CTGGoC0f93HwTcgPjQs3mviYQHuH5VfVtZqDURU6n2nDGgRG
+         3KrzNDj3xuZ7LzbDxsW2Ra2+yS4EhmyOm31s3O7CY0WQcij9fK61QnNze8o16Uly9A58
+         Vb4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761557547; x=1762162347;
+        d=1e100.net; s=20230601; t=1761557548; x=1762162348;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=c6jnR1l/knmmCE7j64ceFOiYUTsDgn50GkewewG1O2A=;
-        b=v9EdapBTibEIhtGgKVGyPyn6T/29YfK6bos70+9AAuzbO1swLs+CTND45z+YWBEMcw
-         w33/1Q2dAljueK8pont3aHLKQugrt6b2/IhPTvjN4ajzYeT29aSFBxt5zI1rLkFtdfaj
-         QqRj2fGfH4STpMtrAp2pBN4EnrSkj4a+Nkmx/AS4eKYNm/Szo3tY0K8flYJZkw1XTEbo
-         5jYnsDtSO0ctT8Wl4YMgBGnTGguPue4kUOC2K6BHigzPICGtr2yIQLvCGLPhMerH4whN
-         oXNaLh75P7l1FhlfePnEZh/Cl12CO4n47w1/ZZXujUwzPNKLv4wpMufqeqysZpE/VNLJ
-         1+KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXleiXwvXMq35wkfioz6/DJe69xYVEzmVt0tHnwdrJXg5eGKegFcKyLcn+/+CQHvU0FaJ0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzdGYr+iaguMIdZjlSFD5EI088lxWM7PfP1RUJOETwleBLvLWta
-	4GEq1n7qGG/hHuCO6hV4su3RSPf29dDp6aNZiewBx7I1KVdKscE7O/uM
-X-Gm-Gg: ASbGncuGyiPX/QHENsE9sLHRWbPUriE3mtrc8h1aDJn5Fgk5/N51w/QZi3tiSL6d+dU
-	pHhaNMzz8+JD8Iw8b0JET+aYaFxiSuLcUrDkqwJdpiScLu25SyavjyOUcdMn6Lu+UQBYANe7u3R
-	0PukJgBqDok2EXfgyKaXQcjbQQBGgAA9LVqQdhB0soSUfh+drH8cA9jmisby4Rti6iQv+mIRzii
-	PiY04OcKz/21O6qaLSlOpjM3Zs4gkhr1ZAm2r8ODkf9peB6XPaK3HmZE/4FVT+3zkh+HjSakhGc
-	pZk33iohMcpjyAsvrP6SMDmzpIHH5IqCBRl4ZzQL21QWQjh75UoJB9uiilPx7M2hXfZ02sV8g2d
-	0IAhh9kKroyzaWUZXoSPyJS7C8/AGkqo9JuYCBQe4tLnn/5TNlo9VlNlE5ms9JY8eeK2Em/AiQR
-	gFdFkTziH4Wn61D2LVrRauuQoA0V9BOMDywmKqpsvAGMb38qs9h0uRxTq4QtHbpGGN2hJ69KTep
-	jZDpWoE6BrErwtW
-X-Google-Smtp-Source: AGHT+IGo4pfv6hPnOdMTXONgc4qw1GUfLg7rVGlLeAbdxBQfM+FdGB1kbkQsXhoL+4Azs4JdFAml5Q==
-X-Received: by 2002:a05:6402:1443:b0:63c:84e:614f with SMTP id 4fb4d7f45d1cf-63c1f6b0b87mr34969695a12.18.1761557546755;
-        Mon, 27 Oct 2025 02:32:26 -0700 (PDT)
+        bh=Kb+oCJFy28PNmi6e8yrO96eaDIYbCEFfqpsOTMY4zgQ=;
+        b=BCYS36Fi+yKL2oovUWGLsOYmN23bYHVPKEQd98OZOjkOFMrhN9hHEMF7pSrXIpwGfx
+         SiZFhOkt0gRICFipHCOi2QduLI0W7bqoZyuAoh4nRzYqFr5T+5cHn1os7kBgHYqDRQ4Z
+         GC+LeQ7r3eevlAfQNdSy1juO7IgoqgmfQg9zff/SkP/2beRSpMq3RQH989fEg0aUqg0Z
+         ewZS7M1dAqCOZxLBqdbLsHb1MpHtEJMiZlEfTSfOkvJFUzIRSkV4yGUvJoAnqsqdFzEE
+         LpFjkrHQ/khgGXFuJFfPfEXKeq+PRCk1AbpOb+0c1OokclqQ6PIVvRPNYo2UhDP75Lcs
+         xOhg==
+X-Forwarded-Encrypted: i=1; AJvYcCVg0VMWnY6gcQpxmUT9/FLs78PVjVMyPXDWm4VjNZl0goykMbO9PF7j7AMd2T+TkDNbTRA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxc6BSy+WsspAqolbpL62pTC4rsxbzlhGqJjo8u95gDN4pJhPrQ
+	xDFxXlJeNkidGCdLfoWTnaIhz4SNfTKauYCnkPXYc4gjf6GCh8O8IivJ
+X-Gm-Gg: ASbGncvoIbnLPPpvIcma8sRfKmCVhDPpzoW5gycKyvx1WeWijY/QVNrIiSq7BnStuRc
+	MrIwFrZUq/B9Gz4CFSNumhXCcuAPusAKUggU3ALhZ1wwf0xQ6EhuXQb+dY5OF8ccFhWMvfglzbq
+	pMtR36UaSeFlPTHyA+m1CL8Hc9zD+z8cZA1Q+7FCL6NqgNQMuRp100p+Q+F7PpoiFfnSc+IN8gE
+	07I3cYS5qg+46oM4SG6UafHAN9BKGzTVJ2yoGpC2wSHFLpe2gKKguqGYky51oFkYvfQawk06lM/
+	YG4Qc37fiwmS6qUqlxtjI5aA+xWRf4GQFAu5j0LyDVc0wa0tsq4bqAvbxELP65PkGzzvHR5dSjM
+	P2+zeVjdHW84xufOYSlAQWnbMchvUP6Feqn7PlzEudfjVmzBAAmwDXWelrObWmsHetxwQQk2A2J
+	wyOTSNV19Sv2cVceVYWUU9xwzKQOHowFVZlqxKsapTIHy4AAfd+85nhNJP9DCYx6I4/W4V1iSVG
+	4p8UzX4GvThGV8K
+X-Google-Smtp-Source: AGHT+IHTgGv4G/+wFJOtkWMD7ZAhCWVQTDxphKQmll9bPxy5C1Umq1JWKsBdZD1UJY74GedfpKzDzw==
+X-Received: by 2002:a17:907:da1:b0:b6d:5e64:c36b with SMTP id a640c23a62f3a-b6d6fe9fac7mr988112866b.29.1761557547697;
+        Mon, 27 Oct 2025 02:32:27 -0700 (PDT)
 Received: from toolbox.int.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e7ef6be28sm5681014a12.2.2025.10.27.02.32.26
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e7ef6be28sm5681014a12.2.2025.10.27.02.32.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 02:32:26 -0700 (PDT)
+        Mon, 27 Oct 2025 02:32:27 -0700 (PDT)
 From: max.oss.09@gmail.com
 To: Max Krummenacher <max.krummenacher@toradex.com>,
 	Stefan Eichenberger <stefan.eichenberger@toradex.com>
@@ -74,9 +74,9 @@ Cc: Conor Dooley <conor+dt@kernel.org>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 3/5] arm64: dts: imx8-apalis: specify adc reference voltage regulator
-Date: Mon, 27 Oct 2025 10:30:09 +0100
-Message-ID: <20251027093133.2344267-4-max.oss.09@gmail.com>
+Subject: [PATCH v1 4/5] arm64: dts: imx8-apalis: rename wifi regulator
+Date: Mon, 27 Oct 2025 10:30:10 +0100
+Message-ID: <20251027093133.2344267-5-max.oss.09@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20251027093133.2344267-1-max.oss.09@gmail.com>
 References: <20251027093133.2344267-1-max.oss.09@gmail.com>
@@ -88,35 +88,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Max Krummenacher <max.krummenacher@toradex.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-This sets in_voltage_scale to calculate the measured voltage from the
-raw digital value of the ADC.
+Rename the wifi regulator to what is the net name in the schematic.
 
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
 ---
 
- arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-index 686fce7443bb..abf6d543380c 100644
+index abf6d543380c..4234289d4012 100644
 --- a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-@@ -284,11 +284,13 @@ &asrc0 {
- &adc0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_adc0>;
-+	vref-supply = <&reg_vref_1v8>;
- };
+@@ -77,7 +77,7 @@ reg_module_wifi: regulator-module-wifi {
+ 		gpio = <&lsio_gpio1 28 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
+ 		regulator-always-on;
+-		regulator-name = "wifi_pwrdn_fake_regulator";
++		regulator-name = "Wi-Fi_POWER_DOWN"; /* Wi-Fi module PDn */
+ 		regulator-settling-time-us = <100>;
+ 	};
  
- &adc1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_adc1>;
-+	vref-supply = <&reg_vref_1v8>;
- };
- 
- &cpu_alert0 {
 -- 
 2.42.0
 
