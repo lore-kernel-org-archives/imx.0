@@ -1,364 +1,103 @@
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE95D19ADBA
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 12:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1492FF658
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 12:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761566772; cv=none; b=u/sNLhM6LKgCdl3TJlpBuoHXpX8LSrG71cKuv6gXPtdt4ptDJYbILCcfTRs7mi6XVBXzbhTe6WWPG+BPrtZ2e0WYQgKGVFUilgv16M0qOUBaSlGhLc2qQq7l3F8HiwzFrI1+FRIKy0vm1eCwUUYWBnBr5w48WkMFY/oZMP2MACg=
+	t=1761567204; cv=none; b=TM6Qfd2J6B3FrAJd7cnHGdPBv+etxaSUYxtAxHdOJZNVcSHVfGsIH287RfAuk4TSgXyHpaTxZaEYt84YI6Mb7f/EYLheT21ma6Y81AQ7A977nuLuhghYstx2tWXrDZ/yqhba1O+D6OVeSi0Eod/J8JvS/BRx49bF2DW113JHCpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761566772; c=relaxed/simple;
-	bh=xlvgYppU6vrWbDkOre9VGjPhmY41zEzjFJehkuY0Ya4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=auFdVSEtRcZF81AjOfDsOLwxAlEobjddOW7uE41rrPvsptnk6+1NgyeBZ8cvWaPawsOrZBfEeLppyLKp7pZ8FvSl3684xJhUfZGbBnFG3MHsF6pZDBVxzbhdtrKUbvREriYXXXxR7LB67zpg3/uUe1sj2md1q1GZK49fdxnq7Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=cjNBp01g; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iRwdVSof; arc=none smtp.client-ip=103.168.172.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+	s=arc-20240116; t=1761567204; c=relaxed/simple;
+	bh=wRnjBnuhyqMXvpQh9LLMBSoQASKq7nZHyQViUHKVz1M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lJZNRspfCnVOgxrJfVnR2ahIV+lAA17tcQQgpHbTdg5zWSsr4z5A0YJ2VP7tzJTTdAhONqoH4JzMVgS/9oBUvdIxHbuatarvrr+2JCg7EM7A3MP1Vajt7UWIgGETY2jtaKcAt9L8qOc9BrwbVN+LBQAam1p3uexqD1EJykASTuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JtsX71EM; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="cjNBp01g";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iRwdVSof"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.phl.internal (Postfix) with ESMTP id DA2B81380433;
-	Mon, 27 Oct 2025 08:06:08 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 27 Oct 2025 08:06:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1761566768;
-	 x=1761573968; bh=obydwKRf78xq6p+vbhUIwD78jMX6wxjnOG1pdFgCN10=; b=
-	cjNBp01gixuCQodlMTPqWVqxTwnPRoNY/DB2R25etvVgxgR1/APK38Lw+AZ1Zndp
-	DqCV9nYsiaeR8MbQTwIHK6I14UFNKI6k2xBzvEVRRn8L50eV7AhnE4HhJsfonXBz
-	+o2t58cF7O7vnZWsSF787D8zmKjo6e1z0Q4c9luGeJtC++7mXlkQEnrQqQ6i+cXT
-	eFiyEfT6UE6nMXmLMTkPzAwp6/kCzRD0bgUkfdGkOkc+tOtc00zpNajUSYC5YqNA
-	VdrVgelODIV6QsQDj70kL2x/sG5lfH3fXz2cIuRZWzbTF2POiv+G0jFFlZx6LmLj
-	BmSwk+2bEog8Ac9SBH9B+Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1761566768; x=
-	1761573968; bh=obydwKRf78xq6p+vbhUIwD78jMX6wxjnOG1pdFgCN10=; b=i
-	RwdVSofLwUMzMTqcIVwD/mF0uXOT/AO834mxca5Ti2J7H6DBwzQCSca06TRreXTo
-	4xlZF+xK8Q4JtncDawNYybAlT7PndY5WVchPdwvezEK2WrfNmzC/s38XcvatRrwQ
-	qHgTfYUrQVaNwYGoEKsrO9etxerxbYJQxLiZixxSmQSoxItP2BfNS5pnkYPFJWP5
-	lXUzwWEFmYf7o5PZRXc1Iwv2S0bBwQQi488u/XqnWFZYPCp/5i+SD2PJFYAwfdt8
-	Okgh7IbR1lJMFEE+JU5igtcCHBBx5sCY1yzyXADZUqNDk9HIDdREi+oFN7Mp0KF8
-	4C8DJeBziatinymCdTOsQ==
-X-ME-Sender: <xms:LmD_aGysJ_U_9H29oPZYjT1NybZPSL2ElDxgLRbCUM7W_DwciI6Sow>
-    <xme:LmD_aP78Er8xJPMjiJttIsTm4eo-oGnRrRkT2Kfg-Wkreu73Yy3lTeT0Wats7uXub
-    u9GG6tpnCSMobNqpXBn8UXXYJJMFkDQuXLujDF9a5nU77tYgMIFWT0>
-X-ME-Received: <xmr:LmD_aN6xAEBpHuwSyVm7JJ2whkZwq_oO6tkOFkj-0haRaam9BI0SLHKocIXfa0tFSP7me4bj-w-jF8fat09mqfW2Hlo7ZWM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduheejleefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefpihhklhgr
-    shcuufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhnrg
-    htvggthhdrshgvqeenucggtffrrghtthgvrhhnpeevteegtddvvdfhtdekgefhfeefheet
-    heekkeegfeejudeiudeuleegtdehkeekteenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhnugesrhgrghhn
-    rghtvggthhdrshgvpdhnsggprhgtphhtthhopeeggedpmhhouggvpehsmhhtphhouhhtpd
-    hrtghpthhtohepshgrkhgrrhhirdgrihhluhhssehlihhnuhigrdhinhhtvghlrdgtohhm
-    pdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepnhhitgholhgrshdrfhgvrhhrvgesmhhitghrohgthhhiphdrtghomhdprhgtphht
-    thhopegtlhgruhguihhurdgsvgiinhgvrgesthhugihonhdruggvvhdprhgtphhtthhope
-    grnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhes
-    uggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglh
-    gvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehprggsvghnihesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:LmD_aAJDnhPSOc7gPdVVw2jhRYyu-VX8gktGoXUSJAorWl7cqhcP3Q>
-    <xmx:LmD_aHGjujAE5x9F7a6WKdoBc1THfcZwbU-4VfC_kubY6XtsvtD40g>
-    <xmx:LmD_aF05Qto5ySZM3PAfaz_PjA9iCBoPDERvkxnW7aWEtMJ9PWGvjw>
-    <xmx:LmD_aByJkKrdTdqyhoxWN8s3inA-YszNn9W7eQ4MMYgVvaW20EAa5A>
-    <xmx:MGD_aDs_4bhiPgTqn0gze5FcQ9Os22-HmZQOY-qBzZHFiXeYQBKf_Fb_>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Oct 2025 08:06:06 -0400 (EDT)
-Date: Mon, 27 Oct 2025 13:05:59 +0100
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: netdev@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,	Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,	Wei Fang <wei.fang@nxp.com>,
- Shenwei Wang <shenwei.wang@nxp.com>,	Clark Wang <xiaoning.wang@nxp.com>,
- Paul Barker <paul@pbarker.dev>,	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Roger Quadros <rogerq@kernel.org>, Alex Elder <elder@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-	Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
-	Liu Haijun <haijun.liu@mediatek.com>,
-	Ricardo Martinez <ricardo.martinez@linux.intel.com>,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Ingo Molnar <mingo@kernel.org>,	Thomas Gleixner <tglx@linutronix.de>,
-	Michael Nemanov <michael.nemanov@ti.com>,	Kalle Valo <kvalo@kernel.org>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Roopni Devanathan <quic_rdevanat@quicinc.com>,
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,	imx@lists.linux.dev,
- linux-renesas-soc@vger.kernel.org,	linux-omap@vger.kernel.org,
- linux-wireless@vger.kernel.org,	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH RESEND 1/4] net: ethernet: Remove redundant
- pm_runtime_mark_last_busy() calls
-Message-ID: <20251027120559.GA365372@ragnatech.se>
-References: <20251027115022.390997-1-sakari.ailus@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JtsX71EM"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-378e603f7e4so35753081fa.0
+        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 05:13:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761567200; x=1762172000; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wRnjBnuhyqMXvpQh9LLMBSoQASKq7nZHyQViUHKVz1M=;
+        b=JtsX71EM9NoL1LzIptJm6X7Pn6yYymFoPdz3mC+iWeCl3Qmw1ZnVnWVsvutko61K4x
+         CExhqdnsoY4xBChPyglTxnUPzKEs/hQMwqc0VGcx+Ut/Q/Z167ZjwUSOHr2kOePahxx6
+         Y//Dsg7H8wku5hnlHO1O6VQnwfY45L7oVPLYAIBt+w61TJ6kVV46v5vS5p71I0R7x/x/
+         97llhWSVZcj/wmEA9xpLbJIZ4ucHezTRcvhJyTExurYSZcz/cvMcVkTGAhi7CsxBEMz7
+         q4szJSK0dNn7t4AIQFNhPRtiuyN6aBNO8JvBE6n5kBIW96QXso3d5ZvS1JzVNxFgORdI
+         PESA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761567200; x=1762172000;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wRnjBnuhyqMXvpQh9LLMBSoQASKq7nZHyQViUHKVz1M=;
+        b=SJIN8j8Wd6ocdy79uqf14UnMUcszdlOMgHFLnHXrDtKaYwCxdtWdpWHp78cBgmdROC
+         BW81ZzhiEjeGz+XCbHksNcW1JlqH/3t16jUUwVHvYYfAI5PJgqPDcPbKWMjFuYJtyRDF
+         6thNMyjT0+GC/Y5WhqIcpm623YbYBEGDfR6gqbYSQ+3EIHZrNhq8t8KhPGEeEVI5pvB0
+         ZW5B9zyLjZImGV589CPxO0y5dwG0oIeR7sfk8hD8zCrkLFaG3gEC+UQOLSAJsSTxkYVM
+         OvQrfcxOsVQT5QNGZkcbd0jYIM1Tw3+Ro13ugtkNOAi67LDzxS26hd0aU8yAlJ9ZyIaG
+         EdAg==
+X-Forwarded-Encrypted: i=1; AJvYcCWSeWvDnVsMG3+ZwkNHua7h7+O5dzscvQZ7wv1Bum+tMpABjsmDibLBifXOnUDNfeTrP1E=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzkPYLos0GqCMFSAoO/2hHsyjGKSwQlB1GRRc4PULbsfnvVuw+2
+	QKd+RCUrZp4MYlemT4X+7kAk0Cu+Gfj+C9hJFZpcT5CsyIBJQnSTx5nXSW6DEyizB8coHZA62JO
+	adB8VvDhduMqNLU+NZuvzLnLqiHv2bOY=
+X-Gm-Gg: ASbGncsJXvQ+ZTjIuH/NRfPCLzRKHPYsQDlDoIMngK34BMw9omPC/iUvf4vBgxlSrD4
+	ccnwF0ho97uglJevz2+DH70aQE1OGkiYewJR20mMrgZXvMHswZgCgeKYmlu+MAqbPUeQc8R/nGa
+	ZXN0PZ9/9vLKp1YV63QPSl7cKEDxramdQGRDrxbwtT2QkFm85AstdSrXoN6C1vbU/f4jpE0hqCw
+	QBUR+qeH6szh8BCwbAzHT3eMshfTGL9Q7yKIVrTbXNAro6a65qmiou+FIvBQB4FjYiQ2kuoLXMm
+	RTszS7rVsSsFGonxU9qKdLxSEfo=
+X-Google-Smtp-Source: AGHT+IFFfKN+siPeEk510LCYlRaBchkOKpAuwWhbm3bWGz56uyRA9KKdEl3XVRQWOc57AU14oMs/9BA7nmAnn1K3lvg=
+X-Received: by 2002:a2e:be09:0:b0:372:8c4b:8065 with SMTP id
+ 38308e7fff4ca-37797a2cb95mr104193231fa.26.1761567199979; Mon, 27 Oct 2025
+ 05:13:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251027115022.390997-1-sakari.ailus@linux.intel.com>
+References: <20251027110406.543370-1-carlos.song@nxp.com>
+In-Reply-To: <20251027110406.543370-1-carlos.song@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 27 Oct 2025 09:13:08 -0300
+X-Gm-Features: AWmQ_bkk_6yx_Hjl3n22lrPiupz3ujJbjohrrhluMrC5cpjjXVzvvJEhkBoNxhs
+Message-ID: <CAOMZO5DM5NyGdyz4_6WF7qcsMmjAdQvfK0AKxZprUfhC=882pg@mail.gmail.com>
+Subject: Re: [PATCH v2] spi: imx: keep dma request disabled before dma
+ transfer setup
+To: carlos.song@nxp.com
+Cc: frank.li@nxp.com, broonie@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, linux-spi@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Sakari,
+On Mon, Oct 27, 2025 at 8:04=E2=80=AFAM <carlos.song@nxp.com> wrote:
+>
+> From: Robin Gong <yibin.gong@nxp.com>
+>
+> Due to a hardware limitation on SDMA event enable (ENBLn), the DMA reques=
+t
+> must remain disabled until the DMA transfer setup is complete.
+>
+> Refer SDMA 2.6.28 Channel Enable RAM (SDMAARMx_CHNENBLn) section:
+>
+> "
+> It is thus essential for the Arm platform to program them before any DMA
+> request is triggered to the SDMA, otherwise an unpredictable combination
+> of channels may be started.
+> "
+>
+> SDMA hardware configuration is postponed to transfer phase, so enabling
+> the DMA request too early may cause unpredictable channel activation.
+> Then keep dma request disabled before dma transfer setup.
+>
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
 
-Thanks for your work cleaning this up!
-
-On 2025-10-27 13:50:19 +0200, Sakari Ailus wrote:
-> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-> pm_runtime_mark_last_busy().
-> 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
->  drivers/net/ethernet/cadence/macb_main.c  | 5 -----
->  drivers/net/ethernet/freescale/fec_main.c | 8 --------
->  drivers/net/ethernet/renesas/ravb_main.c  | 4 ----
->  drivers/net/ethernet/ti/davinci_mdio.c    | 7 -------
->  4 files changed, 24 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index 39673f5c3337..847c4ab9df23 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -327,7 +327,6 @@ static int macb_mdio_read_c22(struct mii_bus *bus, int mii_id, int regnum)
->  	status = MACB_BFEXT(DATA, macb_readl(bp, MAN));
->  
->  mdio_read_exit:
-> -	pm_runtime_mark_last_busy(&bp->pdev->dev);
->  	pm_runtime_put_autosuspend(&bp->pdev->dev);
->  mdio_pm_exit:
->  	return status;
-> @@ -373,7 +372,6 @@ static int macb_mdio_read_c45(struct mii_bus *bus, int mii_id, int devad,
->  	status = MACB_BFEXT(DATA, macb_readl(bp, MAN));
->  
->  mdio_read_exit:
-> -	pm_runtime_mark_last_busy(&bp->pdev->dev);
->  	pm_runtime_put_autosuspend(&bp->pdev->dev);
->  mdio_pm_exit:
->  	return status;
-> @@ -405,7 +403,6 @@ static int macb_mdio_write_c22(struct mii_bus *bus, int mii_id, int regnum,
->  		goto mdio_write_exit;
->  
->  mdio_write_exit:
-> -	pm_runtime_mark_last_busy(&bp->pdev->dev);
->  	pm_runtime_put_autosuspend(&bp->pdev->dev);
->  mdio_pm_exit:
->  	return status;
-> @@ -451,7 +448,6 @@ static int macb_mdio_write_c45(struct mii_bus *bus, int mii_id,
->  		goto mdio_write_exit;
->  
->  mdio_write_exit:
-> -	pm_runtime_mark_last_busy(&bp->pdev->dev);
->  	pm_runtime_put_autosuspend(&bp->pdev->dev);
->  mdio_pm_exit:
->  	return status;
-> @@ -5564,7 +5560,6 @@ static int macb_probe(struct platform_device *pdev)
->  		    macb_is_gem(bp) ? "GEM" : "MACB", macb_readl(bp, MID),
->  		    dev->base_addr, dev->irq, dev->dev_addr);
->  
-> -	pm_runtime_mark_last_busy(&bp->pdev->dev);
->  	pm_runtime_put_autosuspend(&bp->pdev->dev);
->  
->  	return 0;
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index 1edcfaee6819..4875101c4f3f 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -2231,7 +2231,6 @@ static int fec_enet_mdio_read_c22(struct mii_bus *bus, int mii_id, int regnum)
->  	ret = FEC_MMFR_DATA(readl(fep->hwp + FEC_MII_DATA));
->  
->  out:
-> -	pm_runtime_mark_last_busy(dev);
->  	pm_runtime_put_autosuspend(dev);
->  
->  	return ret;
-> @@ -2280,7 +2279,6 @@ static int fec_enet_mdio_read_c45(struct mii_bus *bus, int mii_id,
->  	ret = FEC_MMFR_DATA(readl(fep->hwp + FEC_MII_DATA));
->  
->  out:
-> -	pm_runtime_mark_last_busy(dev);
->  	pm_runtime_put_autosuspend(dev);
->  
->  	return ret;
-> @@ -2312,7 +2310,6 @@ static int fec_enet_mdio_write_c22(struct mii_bus *bus, int mii_id, int regnum,
->  	if (ret)
->  		netdev_err(fep->netdev, "MDIO write timeout\n");
->  
-> -	pm_runtime_mark_last_busy(dev);
->  	pm_runtime_put_autosuspend(dev);
->  
->  	return ret;
-> @@ -2356,7 +2353,6 @@ static int fec_enet_mdio_write_c45(struct mii_bus *bus, int mii_id,
->  		netdev_err(fep->netdev, "MDIO write timeout\n");
->  
->  out:
-> -	pm_runtime_mark_last_busy(dev);
->  	pm_runtime_put_autosuspend(dev);
->  
->  	return ret;
-> @@ -2839,7 +2835,6 @@ static void fec_enet_get_regs(struct net_device *ndev,
->  		buf[off] = readl(&theregs[off]);
->  	}
->  
-> -	pm_runtime_mark_last_busy(dev);
->  	pm_runtime_put_autosuspend(dev);
->  }
->  
-> @@ -3616,7 +3611,6 @@ fec_enet_open(struct net_device *ndev)
->  err_enet_alloc:
->  	fec_enet_clk_enable(ndev, false);
->  clk_enable:
-> -	pm_runtime_mark_last_busy(&fep->pdev->dev);
->  	pm_runtime_put_autosuspend(&fep->pdev->dev);
->  	pinctrl_pm_select_sleep_state(&fep->pdev->dev);
->  	return ret;
-> @@ -3647,7 +3641,6 @@ fec_enet_close(struct net_device *ndev)
->  		cpu_latency_qos_remove_request(&fep->pm_qos_req);
->  
->  	pinctrl_pm_select_sleep_state(&fep->pdev->dev);
-> -	pm_runtime_mark_last_busy(&fep->pdev->dev);
->  	pm_runtime_put_autosuspend(&fep->pdev->dev);
->  
->  	fec_enet_free_buffers(ndev);
-> @@ -4616,7 +4609,6 @@ fec_probe(struct platform_device *pdev)
->  
->  	INIT_WORK(&fep->tx_timeout_work, fec_enet_timeout_work);
->  
-> -	pm_runtime_mark_last_busy(&pdev->dev);
->  	pm_runtime_put_autosuspend(&pdev->dev);
->  
->  	return 0;
-> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> index c3fc15f9ec85..21a45583e7e1 100644
-> --- a/drivers/net/ethernet/renesas/ravb_main.c
-> +++ b/drivers/net/ethernet/renesas/ravb_main.c
-> @@ -1975,7 +1975,6 @@ static int ravb_open(struct net_device *ndev)
->  out_set_reset:
->  	ravb_set_opmode(ndev, CCC_OPC_RESET);
->  out_rpm_put:
-> -	pm_runtime_mark_last_busy(dev);
->  	pm_runtime_put_autosuspend(dev);
->  out_napi_off:
->  	if (info->nc_queues)
-> @@ -2404,7 +2403,6 @@ static int ravb_close(struct net_device *ndev)
->  	if (error)
->  		return error;
->  
-> -	pm_runtime_mark_last_busy(dev);
->  	pm_runtime_put_autosuspend(dev);
->  
->  	return 0;
-> @@ -3116,7 +3114,6 @@ static int ravb_probe(struct platform_device *pdev)
->  	netdev_info(ndev, "Base address at %#x, %pM, IRQ %d.\n",
->  		    (u32)ndev->base_addr, ndev->dev_addr, ndev->irq);
->  
-> -	pm_runtime_mark_last_busy(&pdev->dev);
->  	pm_runtime_put_autosuspend(&pdev->dev);
->  
->  	return 0;
-> @@ -3301,7 +3298,6 @@ static int ravb_resume(struct device *dev)
->  
->  out_rpm_put:
->  	if (!priv->wol_enabled) {
-> -		pm_runtime_mark_last_busy(dev);
->  		pm_runtime_put_autosuspend(dev);
->  	}
-
-You could drop the { } here. With this fixed for RAVB,
-
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-
->  
-> diff --git a/drivers/net/ethernet/ti/davinci_mdio.c b/drivers/net/ethernet/ti/davinci_mdio.c
-> index 68507126be8e..9f049ebbf107 100644
-> --- a/drivers/net/ethernet/ti/davinci_mdio.c
-> +++ b/drivers/net/ethernet/ti/davinci_mdio.c
-> @@ -234,7 +234,6 @@ static int davinci_mdiobb_read_c22(struct mii_bus *bus, int phy, int reg)
->  
->  	ret = mdiobb_read_c22(bus, phy, reg);
->  
-> -	pm_runtime_mark_last_busy(bus->parent);
->  	pm_runtime_put_autosuspend(bus->parent);
->  
->  	return ret;
-> @@ -251,7 +250,6 @@ static int davinci_mdiobb_write_c22(struct mii_bus *bus, int phy, int reg,
->  
->  	ret = mdiobb_write_c22(bus, phy, reg, val);
->  
-> -	pm_runtime_mark_last_busy(bus->parent);
->  	pm_runtime_put_autosuspend(bus->parent);
->  
->  	return ret;
-> @@ -268,7 +266,6 @@ static int davinci_mdiobb_read_c45(struct mii_bus *bus, int phy, int devad,
->  
->  	ret = mdiobb_read_c45(bus, phy, devad, reg);
->  
-> -	pm_runtime_mark_last_busy(bus->parent);
->  	pm_runtime_put_autosuspend(bus->parent);
->  
->  	return ret;
-> @@ -285,7 +282,6 @@ static int davinci_mdiobb_write_c45(struct mii_bus *bus, int phy, int devad,
->  
->  	ret = mdiobb_write_c45(bus, phy, devad, reg, val);
->  
-> -	pm_runtime_mark_last_busy(bus->parent);
->  	pm_runtime_put_autosuspend(bus->parent);
->  
->  	return ret;
-> @@ -332,7 +328,6 @@ static int davinci_mdio_common_reset(struct davinci_mdio_data *data)
->  	data->bus->phy_mask = phy_mask;
->  
->  done:
-> -	pm_runtime_mark_last_busy(data->dev);
->  	pm_runtime_put_autosuspend(data->dev);
->  
->  	return 0;
-> @@ -441,7 +436,6 @@ static int davinci_mdio_read(struct mii_bus *bus, int phy_id, int phy_reg)
->  		break;
->  	}
->  
-> -	pm_runtime_mark_last_busy(data->dev);
->  	pm_runtime_put_autosuspend(data->dev);
->  	return ret;
->  }
-> @@ -478,7 +472,6 @@ static int davinci_mdio_write(struct mii_bus *bus, int phy_id,
->  		break;
->  	}
->  
-> -	pm_runtime_mark_last_busy(data->dev);
->  	pm_runtime_put_autosuspend(data->dev);
->  
->  	return ret;
-> -- 
-> 2.47.3
-> 
-
--- 
-Kind Regards,
-Niklas Söderlund
+Should this contain a Fixes tag?
