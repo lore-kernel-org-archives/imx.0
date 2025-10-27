@@ -1,52 +1,47 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA53E19C560
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 01:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E3628EB
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 01:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761526996; cv=none; b=JQkkz1ZQVWsoz9QOClHMaM8NuKdmZmHL3qM+vrU/0EWTVDlsiNNsftEN+ttKNUcpNExhdwvk/zApOfX7EC0A9vrWI7XzSEAmiRchzWRhMVPtOW5fzmISzBEDEz4JeWqWZHdAdOPVfXFzkLtKg+X7b1Ggs1sq5ynSwr30Ul5ER44=
+	t=1761527481; cv=none; b=F5D/5+HxFIBDONO1Nqg895hM/TzFXrJTnwjHXauYqDBRNhuNzeKbK+CdFR8CnIzrjoPnD9dusX0j9c2y7UXra0uHDxbAcQHyuw+QbJAzktyi5Pb5CMMf20Hib15YgkBcAGXOxlHkJGka782HWvhxsW+IYJK68lXyx4k9Vfq9/bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761526996; c=relaxed/simple;
-	bh=TRf7E6Wmq0Mv8cybHM8FwxOjKlKmGcf5vNcSFqxCThQ=;
+	s=arc-20240116; t=1761527481; c=relaxed/simple;
+	bh=wDAHYZ2XDq9G1bNOJF4J3PL4MjpM9SKkBVwAR7etS9I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sNIbjwT6vpMIaWYiN1P1qTFZ1sin3BJJnXPELiGQDlO719EbYoK/v2Dscf7YGdrPwrreYHHink5kVVDTRUckanytdV0vWFYrrOlAsXZmKtIvlzSgRa9lvmAUn/2UDfSnVslqvH/63ZWgeMOfPB/4h1Asm0z/MUy2hvwkBhpxfBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=RCfMUIpo; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=m2LBZ7A5Du2KCEuRFNC3rmlo7hCuKaVNI3TCsAHsNMKgdd+icsGACpT9YApysYQN2YL6rH85+hCL6CZyQ/M4IY02jn2nStQoippwwr6YdBbOU00Fjz/VtuBXKa9OZHLe41mRWgK0t9zRANJb5J9pbuzJ7baXZBnYaB5HSN8V3sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=mjG63zty; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="RCfMUIpo"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="mjG63zty"
 Received: from pendragon.ideasonboard.com (82-203-161-16.bb.dnainternet.fi [82.203.161.16])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 58884E1F;
-	Mon, 27 Oct 2025 02:01:24 +0100 (CET)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id B938B666;
+	Mon, 27 Oct 2025 02:09:29 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1761526884;
-	bh=TRf7E6Wmq0Mv8cybHM8FwxOjKlKmGcf5vNcSFqxCThQ=;
+	s=mail; t=1761527370;
+	bh=wDAHYZ2XDq9G1bNOJF4J3PL4MjpM9SKkBVwAR7etS9I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RCfMUIpoNetOTMMslAZo8oCNJc6hYAi95o22PZvksxmAUO19SFB+PB07bK1H/R2LB
-	 JoeoFI4mfyf22ZCFddAV/tPcpMTPMntNVNMXZpHnO8aEdAHzphDoacWleOlqImVTax
-	 JVA+qtIU7pdO/71BuxqZVjEiCLRvaHln3uEiqSGg=
-Date: Mon, 27 Oct 2025 03:02:57 +0200
+	b=mjG63zty12ng3dohZnH7VMI9WGMBDwHQaQjSBDAlq4Gky9yqB9GNG9u2SonxF/mtV
+	 3XQaQ2mRydgaXAjfrjcsya5qOrE3t6u7KcaOmp4NVv9V68HSi+OcPXTfyYvTvuu+Gl
+	 sTKzxc5CSXh5A14ko9mvKra4w1Zy3UG1oE3pGrho=
+Date: Mon, 27 Oct 2025 03:11:03 +0200
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Frank Li <Frank.li@nxp.com>
+Cc: Marco Felsch <m.felsch@pengutronix.de>, robh@kernel.org,
+	Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	Jiada Wang <jiada_wang@mentor.com>, dmaengine@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
-Subject: Re: [PATCH v7 5/5] arm64: dts: imx8ulp: Add CSI and ISI Nodes
-Message-ID: <20251027010257.GQ13023@pendragon.ideasonboard.com>
-References: <20251023-csi2_imx8ulp-v7-0-5ecb081ce79b@nxp.com>
- <20251023-csi2_imx8ulp-v7-5-5ecb081ce79b@nxp.com>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dmaengine: add device_link support
+Message-ID: <20251027011103.GR13023@pendragon.ideasonboard.com>
+References: <20250912-v6-16-topic-dma-devlink-v1-0-4debc2fbf901@pengutronix.de>
+ <20250912-v6-16-topic-dma-devlink-v1-1-4debc2fbf901@pengutronix.de>
+ <aNVufDmHjLRauKYo@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,110 +50,117 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251023-csi2_imx8ulp-v7-5-5ecb081ce79b@nxp.com>
+In-Reply-To: <aNVufDmHjLRauKYo@lizhi-Precision-Tower-5810>
 
-On Thu, Oct 23, 2025 at 05:19:46PM +0800, Guoniu Zhou wrote:
-> From: Guoniu Zhou <guoniu.zhou@nxp.com>
-> 
-> The CSI-2 in the i.MX8ULP is almost identical to the version present
-> in the i.MX8QXP/QM and is routed to the ISI. Add both the ISI and CSI
-> nodes and mark them as disabled by default since capture is dependent
-> on an attached camera.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+On Thu, Sep 25, 2025 at 12:31:56PM -0400, Frank Li wrote:
+> On Fri, Sep 12, 2025 at 12:00:41AM +0200, Marco Felsch wrote:
+> > Shift the device dependency handling to the driver core by adding
+> > support for devlinks.
+> >
+> > The link between the consumer device and the dmaengine device is
+> > established by the consumer via the dma_request_chan() automatically if
+> > the dmaengine driver supports it (create_devlink flag set).
+> >
+> > By adding the devlink support it is ensured that the supplier can't be
+> > removed while the consumer still uses the dmaengine. Furthermore it
+> > ensures that the supplier driver is present and actual bound before the
+> > consumer is uses the supplier.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+How is the latter ensured by this patch ? The link is created in
+dma_request_chan() (which is called by the consumer), after successfully
+obtaining the channel. I don't see how the link improves that mechanism.
 
-> ---
->  arch/arm64/boot/dts/freescale/imx8ulp.dtsi | 67 ++++++++++++++++++++++++++++++
->  1 file changed, 67 insertions(+)
+> >
+> > Additional PM and runtime-PM dependency handling can be added easily too
+> > by setting the required flags (not implemented by this commit).
+
+I've long thought that the DMA engine API should offer calls to "prepare"
+and "unprepare" (names subject to bikeshedding) a DMA engine channel, so
+that consumers can explicitly indicate when they are getting ready to
+use DMA, and when they stop.
+
+> >
+> > The new create_devlink flag controlls the devlink creation to not cause
+> > any regressions with existing dmaengine drivers. This flag can be
+> > removed once all drivers are successfully tested to support devlinks.
+> >
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > ---
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> index 13b01f3aa2a4950c37e72e04f6bfb5995dc19178..99271d55dfb60ed2cbfe664d928be179eb257674 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-> @@ -7,6 +7,7 @@
->  #include <dt-bindings/gpio/gpio.h>
->  #include <dt-bindings/interrupt-controller/arm-gic.h>
->  #include <dt-bindings/power/imx8ulp-power.h>
-> +#include <dt-bindings/reset/imx8ulp-pcc-reset.h>
->  #include <dt-bindings/thermal/thermal.h>
->  
->  #include "imx8ulp-pinfunc.h"
-> @@ -842,6 +843,72 @@ spdif: spdif@2dab0000 {
->  				dma-names = "rx", "tx";
->  				status = "disabled";
->  			};
-> +
-> +			isi: isi@2dac0000 {
-> +				compatible = "fsl,imx8ulp-isi";
-> +				reg = <0x2dac0000 0x10000>;
-> +				interrupts = <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&pcc5 IMX8ULP_CLK_ISI>,
-> +					 <&cgc2 IMX8ULP_CLK_LPAV_AXI_DIV>;
-> +				clock-names = "axi", "apb";
-> +				power-domains = <&scmi_devpd IMX8ULP_PD_ISI>;
-> +				status = "disabled";
-> +
-> +				ports {
-> +					#address-cells = <1>;
-> +					#size-cells = <0>;
-> +
-> +					port@0 {
-> +						reg = <0>;
-> +						isi_in: endpoint {
-> +							remote-endpoint = <&mipi_csi_out>;
-> +						};
-> +					};
-> +				};
-> +			};
-> +
-> +			mipi_csi: csi@2daf0000 {
-> +				compatible = "fsl,imx8ulp-mipi-csi2";
-> +				reg = <0x2daf0000 0x10000>,
-> +				      <0x2dad0000 0x10000>;
-> +				clocks = <&pcc5 IMX8ULP_CLK_CSI>,
-> +					 <&pcc5 IMX8ULP_CLK_CSI_CLK_ESC>,
-> +					 <&pcc5 IMX8ULP_CLK_CSI_CLK_UI>,
-> +					 <&pcc5 IMX8ULP_CLK_CSI_REGS>;
-> +				clock-names = "core", "esc", "ui", "pclk";
-> +				assigned-clocks = <&pcc5 IMX8ULP_CLK_CSI>,
-> +						  <&pcc5 IMX8ULP_CLK_CSI_CLK_ESC>,
-> +						  <&pcc5 IMX8ULP_CLK_CSI_CLK_UI>,
-> +						  <&pcc5 IMX8ULP_CLK_CSI_REGS>;
-> +				assigned-clock-parents = <&cgc2 IMX8ULP_CLK_PLL4_PFD1_DIV1>,
-> +							 <&cgc2 IMX8ULP_CLK_PLL4_PFD1_DIV2>,
-> +							 <&cgc2 IMX8ULP_CLK_PLL4_PFD0_DIV1>;
-> +				assigned-clock-rates = <200000000>,
-> +						       <80000000>,
-> +						       <100000000>,
-> +						       <79200000>;
-> +				power-domains = <&scmi_devpd IMX8ULP_PD_MIPI_CSI>;
-> +				resets = <&pcc5 PCC5_CSI_SWRST>,
-> +					 <&pcc5 PCC5_CSI_REGS_SWRST>;
-> +				status = "disabled";
-> +
-> +				ports {
-> +					#address-cells = <1>;
-> +					#size-cells = <0>;
-> +
-> +					port@0 {
-> +						reg = <0>;
-> +					};
-> +
-> +					port@1 {
-> +						reg = <1>;
-> +
-> +						mipi_csi_out: endpoint {
-> +							remote-endpoint = <&isi_in>;
-> +						};
-> +					};
-> +				};
-> +			};
->  		};
->  
->  		gpiod: gpio@2e200000 {
+> Add previous discussion link:
+> https://lore.kernel.org/all/aLhUv+mtr1uZTCth@lizhi-Precision-Tower-5810/
+> 
+> Another thread
+> https://lore.kernel.org/dmaengine/20250801120007.GB4906@pendragon.ideasonboard.com/
+> 
+> Add Laurent Pinchart, who may instest this topic also.
+> 
+> Add Rob Herring, who may know why dma engine can't create dev_link default
+> like other provider (clk, phy, gpio ...)
+> 
+> 
+> >  drivers/dma/dmaengine.c   | 15 +++++++++++++++
+> >  include/linux/dmaengine.h |  3 +++
+> >  2 files changed, 18 insertions(+)
+> >
+> > diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+> > index 758fcd0546d8bde8e8dddc6039848feeb1e24475..e81985ab806ae87ff3aa4739fe6f6328b2587f2e 100644
+> > --- a/drivers/dma/dmaengine.c
+> > +++ b/drivers/dma/dmaengine.c
+> > @@ -858,6 +858,21 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
+> >  	/* No functional issue if it fails, users are supposed to test before use */
+> >  #endif
+> >
+> > +	/*
+> > +	 * Devlinks between the dmaengine device and the consumer device
+> > +	 * are optional till all dmaengine drivers are converted/tested.
+> > +	 */
+> > +	if (chan->device->create_devlink) {
+> > +		struct device_link *dl;
+> > +
+> > +		dl = device_link_add(dev, chan->device->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
+> 
+> I suggest link to per channel device, instead dma engine devices.
+> chan->dev->device like phy drivers because some dma-engine have per channel
+> resources, like power domain and clocks.
+> 
+> Frank
+> 
+> > +		if (!dl) {
+> > +			dev_err(dev, "failed to create device link to %s\n",
+> > +					dev_name(chan->device->dev));
+> > +			return ERR_PTR(-EINVAL);
+> > +		}
+> > +	}
+> > +
+> >  	chan->name = kasprintf(GFP_KERNEL, "dma:%s", name);
+> >  	if (!chan->name)
+> >  		return chan;
+> > diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+> > index bb146c5ac3e4ccd7bc0afbf3b28e5b3d659ad62f..c67737a358df659f2bf050a9ccb8d23b17ceb357 100644
+> > --- a/include/linux/dmaengine.h
+> > +++ b/include/linux/dmaengine.h
+> > @@ -817,6 +817,8 @@ struct dma_filter {
+> >   *	DMA tansaction with no software intervention for reinitialization.
+> >   *	Zero value means unlimited number of entries.
+> >   * @descriptor_reuse: a submitted transfer can be resubmitted after completion
+> > + * @create_devlink: create a devlink between a dma_chan_dev supplier and
+> > + *	dma-channel consumer device
+> >   * @residue_granularity: granularity of the transfer residue reported
+> >   *	by tx_status
+> >   * @device_alloc_chan_resources: allocate resources and return the
+> > @@ -894,6 +896,7 @@ struct dma_device {
+> >  	u32 max_burst;
+> >  	u32 max_sg_burst;
+> >  	bool descriptor_reuse;
+> > +	bool create_devlink;
+> >  	enum dma_residue_granularity residue_granularity;
+> >
+> >  	int (*device_alloc_chan_resources)(struct dma_chan *chan);
+> >
+> > --
+> > 2.47.3
+> >
 
 -- 
 Regards,
