@@ -1,176 +1,138 @@
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424E230275F
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 13:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00EB224AEB
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 13:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761571831; cv=none; b=Kr6InVg4aSns6ei1eu1N04g8mV7zG3Kqvixcwg86fTZeeqWN6TVByFN6oRjwOkpgyPFeH9Tb7/u77wGulx9aeJZ3fodF6IRXIYGdQbEj6P7it9mXFi7NLPQx9AxF5NB5eWC/sOET91O4o20xro+iXK6BI9pEXDUBuUlJp0vjHQs=
+	t=1761572025; cv=none; b=SWSLyRpG7kkBGxaKMezpoYmvvndk2vh8SzhM69+wptPcerqTd+N+ukmOXI6FS0TitXIuxVDqitUAvHm68CRrbFI315k4xFMlVzhoHpI4y3AhR76nj2S51fETkwYXz12VhGQ43lv5i7WlV3a7he1ZObgCzr/W25jIASVb6DW9oto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761571831; c=relaxed/simple;
-	bh=BzKRuhxyonoQsuopPQdi/8jOGmwxXgdxHX/BXxXKdik=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u1e5+vLyDFrFPF/XEM/OHG1cwRxL52UsxiSoiKxrd728XIR9rYkY3/3H7Ef5A/hjQN9lFOaGtZ7R2n4a1kksn6nX/JeIF129gt/Og0dk6B4eZb78wjppHecqnX2dretKSSS9rGFugj3fIS6tO8cpWnRaiV8yXKAoTeTcj2Mh5j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=Ifrggozj; arc=none smtp.client-ip=209.85.166.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1761572025; c=relaxed/simple;
+	bh=wZV9rHqjFmCKE6342LhgpDNYUqatE29bXLix3KtUghU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f40A0L8DP5amv0kxK1u7/Sa61tRRAkwdCzHdEABqvi7Tmn7gjUFEXktyiR/amU6ACw3Dz1IE8pUJpUCjjXPdSrweQZw5z8W0Joyn7MJLFEG5I/HZvxajbnAzsteis94369mV3bW9tzOuAfq/Jzt3jvwL7jaHUN1gaJFmV7gCAzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=DHPcyJSk; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="Ifrggozj"
-Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-945a5731dd3so53379639f.0
-        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 06:30:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1761571828; x=1762176628; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CdMeTbCiZFImBLpdSseleACrRi7JJpgsujeJgyCXmeA=;
-        b=Ifrggozjz/d+iIHnis8abtrsjGMs3QXz6YscQpG0fefIcLjilETLkMj/kKp49icIN5
-         Nn1u4mpuUOf7GvKq7nzz0pWEECZ4EgSl0ojNUi7NvA575CMiPrlY6RZr8TjZQYnwJb26
-         cdwX7GvxBYVGZRGxOU+5Kl+F/imnTozi16gXajmC/azIE48f4QeGQFV04aI0zmGWmVLa
-         ymm3Gy747k1Fp8BjA+YX3LTkwZNGfzyDzzI9W27Q/IG9X5srMkccEe/9As81/h2jVlBr
-         k9IlrNXANpuMn25cns7upXFNJi3P+l+GLQcLQx1xMZ3yiVe5/n9l4I2AMELk6LS4xy7v
-         CypA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761571828; x=1762176628;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CdMeTbCiZFImBLpdSseleACrRi7JJpgsujeJgyCXmeA=;
-        b=GvhJ2XRfNP4zqwNySNRAlFjuSKpaDhlvcRqCZ/JlQ5A3IZQgWu/tFAU5yupW5STSpm
-         iB1f7XU5dp5tpp4ynX7+EIB33rM/Z851paCJ48Xto0aakbtRzIsOOAtjJ9c8RjxEAfcM
-         NnduPk1EzFVorpQCoRsPcVj6V4e8P44KsmHXosTygXLGjNEoF9AsfVzqOxys38KJmcky
-         7wuNqOj4ihaE0qykh2XvVeTdlN9CCvk73PTAaJPXjgqwO1Hbrakb9QYbYgbsde75XpNz
-         1I2KOXzKQFw0t4oIiAmbtA3IW6rhDpiCqdMGoxIOHsVyyXoN5a/rkH6n8+zvGbR9deBm
-         dcgw==
-X-Forwarded-Encrypted: i=1; AJvYcCWNBrdeDdkWYo6rtDDn4boZTn+PMRtdRWqxMl9ghAU5nKJ6IYiEAK8tL+CFhp3gf2HGVUE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyixO9EiwQdOLza1d7ENgpPUNHXzShA8S7PajpALoSXEBknZXaX
-	NKhDlFSuc+7Ij2vBYGQCzkxmntd+TcxkoAlwEIkPQJ/iTD43RNMvxE5ijbEPPwa2Q7FZhkDcJpk
-	WXw6hqB4=
-X-Gm-Gg: ASbGncuNDhodRXdHgwPo7poitpryBqA/3igVIfrAlojz2yy/vEB0OMDgAY+HGT7oa1K
-	I326yzliawgq7Nwc0dQZlP8cmm4cYImCR1SMnOHACi2wXi2ruIS0XHKwSpgiGGzK0oSqWC01qxp
-	iMzN3QWuEuTBmAGZu0bYKIdmkYj7uJkYU0bJZk3PVwTwd6hri2rGuicHl23ZaFfw1fVRVaXkXvq
-	AKDh0GFqKMYlh2fbKh7rOkp+bs4Mh4q7TyqTbpTaU2wmFCekzeLJTEpRTg8OT8VgSIdHhpy7XXi
-	hxAav9l/tpbVJSus6PYB42yEdugBLUQXTBhKB8MsKuBJ8q6J18hS9NDA1KKFrjTbq7PVM8v/f16
-	JxcY9LDWPDFN0N4GOPcX+sdx6yVs07FYwT0lxjKKPPfYQTozleLKymTRlUop4mKPyAMqRCZhTRG
-	sQT2s5JujnpY9OPsZS5IHxrB0jNhRotp/9j4z5C5S0+vo=
-X-Google-Smtp-Source: AGHT+IEwi0+D29qzwfaIeFc/gnHZPerYoM3xz0awvDXq4gN/Y7hOOLjB+JgF5YW9xp73OHzxinZJ2g==
-X-Received: by 2002:a05:6e02:1848:b0:42f:9847:15bd with SMTP id e9e14a558f8ab-4320f860164mr590635ab.26.1761571828284;
-        Mon, 27 Oct 2025 06:30:28 -0700 (PDT)
-Received: from zippy.localdomain (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5aea78e2fd4sm3093057173.26.2025.10.27.06.30.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 06:30:27 -0700 (PDT)
-From: Alex Elder <elder@riscstar.com>
-To: dlan@gentoo.org,
-	broonie@kernel.org,
-	han.xu@nxp.com
-Cc: Frank.li@nxp.com,
-	guodong@riscstar.com,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	spacemit@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 8/9] riscv: dts: spacemit: enable K1 SoC QSPI on BPI-F3
-Date: Mon, 27 Oct 2025 08:30:06 -0500
-Message-ID: <20251027133008.360237-9-elder@riscstar.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251027133008.360237-1-elder@riscstar.com>
-References: <20251027133008.360237-1-elder@riscstar.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="DHPcyJSk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jdru/g1UDfmEH8Ssu1G/uWYFsLY+kwVhWPET9PZ9Xs0=; b=DHPcyJSk6sjzs7WSFEoWbKk0kY
+	q0u6hTxBXjylBWdZ4mUpAPChK/JLqlU1lRbRDru6tToO6DUyrYQOxEOmhGBLw0/T/+dTamGDbnU/x
+	S/9odHu07HjB6uoprKTHP/MT12z0HLcgKENeOGmHD+FhoTIhWNpCgemdCyT9aLkoXkI4k9h/Q5eRE
+	1YQgwyaVCco8ZcrhF58yMEFzHzSMUyJzpJtCuo0WaNaNJJ5WeuzFG5u0YBYA1sp3xv6VHwTskP2PE
+	/UluW7RwKMBMgCh8A7zhwi44CzoTkW/jpj8JA5Mqq/QrEajf9qHKA6jT5SUoUMTNCXvMZeJpXkyXJ
+	Vk4k0USA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48776)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vDNLv-000000001uq-0oOg;
+	Mon, 27 Oct 2025 13:33:39 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vDNLt-000000005cR-1q37;
+	Mon, 27 Oct 2025 13:33:37 +0000
+Date: Mon, 27 Oct 2025 13:33:37 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
+Message-ID: <aP90sT5c-_xajH8S@shell.armlinux.org.uk>
+References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
+ <aP82VEjNDgrNAZzy@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aP82VEjNDgrNAZzy@shell.armlinux.org.uk>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Define DTS nodes to enable support for QSPI on the K1 SoC, including the
-pin control configuration used.  Enable QSPI on the Banana Pi BPI-F3 board.
+On Mon, Oct 27, 2025 at 09:07:32AM +0000, Russell King (Oracle) wrote:
+> The changes to stmmac have been tested on nVidia Jetson Xavier NX,
+> which uses RGMII with dwmac4 and a RTL8211F PHY, connected to a Netgear
+> GS108 switch. It seems to be the same that your board is using similar.
+> 
+> I will re-test today.
 
-Signed-off-by: Alex Elder <elder@riscstar.com>
----
- .../boot/dts/spacemit/k1-bananapi-f3.dts      |  6 ++++++
- arch/riscv/boot/dts/spacemit/k1-pinctrl.dtsi  | 21 +++++++++++++++++++
- arch/riscv/boot/dts/spacemit/k1.dtsi          | 16 ++++++++++++++
- 3 files changed, 43 insertions(+)
+I just booted net-next on this platform.
 
-diff --git a/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts b/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts
-index 33ca816bfd4b3..02f218a16318e 100644
---- a/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts
-+++ b/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts
-@@ -113,6 +113,12 @@ &pdma {
- 	status = "okay";
- };
- 
-+&qspi {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&qspi_cfg>;
-+	status = "okay";
-+};
-+
- &i2c2 {
- 	pinctrl-0 = <&i2c2_0_cfg>;
- 	pinctrl-names = "default";
-diff --git a/arch/riscv/boot/dts/spacemit/k1-pinctrl.dtsi b/arch/riscv/boot/dts/spacemit/k1-pinctrl.dtsi
-index 4eef81d583f3d..e922e05ff856d 100644
---- a/arch/riscv/boot/dts/spacemit/k1-pinctrl.dtsi
-+++ b/arch/riscv/boot/dts/spacemit/k1-pinctrl.dtsi
-@@ -73,6 +73,27 @@ i2c8-0-pins {
- 		};
- 	};
- 
-+	qspi_cfg: qspi-cfg {
-+		qspi-pins {
-+			pinmux = <K1_PADCONF(98, 0)>,    /* QSPI_DATA3 */
-+				 <K1_PADCONF(99, 0)>,    /* QSPI_DATA2 */
-+				 <K1_PADCONF(100, 0)>,   /* QSPI_DATA1 */
-+				 <K1_PADCONF(101, 0)>,   /* QSPI_DATA0 */
-+				 <K1_PADCONF(102, 0)>;   /* QSPI_CLK */
-+
-+			bias-disable;
-+			drive-strength = <19>;
-+			power-source = <3300>;
-+		};
-+
-+		qspi-cs1-pins {
-+			pinmux = <K1_PADCONF(103, 0)>;   /* QSPI_CS1 */
-+			bias-pull-up = <0>;
-+			drive-strength = <19>;
-+			power-source = <3300>;
-+		};
-+	};
-+
- 	/omit-if-no-ref/
- 	uart0_0_cfg: uart0-0-cfg {
- 		uart0-0-pins {
-diff --git a/arch/riscv/boot/dts/spacemit/k1.dtsi b/arch/riscv/boot/dts/spacemit/k1.dtsi
-index af35f9cd64351..47f97105bff0b 100644
---- a/arch/riscv/boot/dts/spacemit/k1.dtsi
-+++ b/arch/riscv/boot/dts/spacemit/k1.dtsi
-@@ -823,6 +823,22 @@ uart9: serial@d4017800 {
- 				status = "disabled";
- 			};
- 
-+			qspi: spi@d420c000 {
-+				compatible = "spacemit,k1-qspi";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				reg = <0x0 0xd420c000 0x0 0x1000>,
-+				      <0x0 0xb8000000 0x0 0xc00000>;
-+				reg-names = "QuadSPI", "QuadSPI-memory";
-+				clocks = <&syscon_apmu CLK_QSPI_BUS>,
-+					 <&syscon_apmu CLK_QSPI>;
-+				clock-names = "qspi_en", "qspi";
-+				resets = <&syscon_apmu RESET_QSPI>,
-+					 <&syscon_apmu RESET_QSPI_BUS>;
-+				interrupts = <117>;
-+				status = "disabled";
-+			};
-+
- 			/* sec_uart1: 0xf0612000, not available from Linux */
- 		};
- 
+# ethtool -S eth0 | grep lpi_mode_n
+     irq_tx_path_in_lpi_mode_n: 24
+     irq_tx_path_exit_lpi_mode_n: 23
+     irq_rx_path_in_lpi_mode_n: 201
+     irq_rx_path_exit_lpi_mode_n: 200
+# ethtool --show-eee eth0
+EEE Settings for eth0:
+        EEE status: enabled - active
+        Tx LPI: 1000000 (us)
+        Supported EEE link modes:  100baseT/Full
+                                   1000baseT/Full
+        Advertised EEE link modes:  100baseT/Full
+                                    1000baseT/Full
+        Link partner advertised EEE link modes:  100baseT/Full
+                                                 1000baseT/Full
+
+So it looks like everything is working as it should here.
+
+stmmac was converted to phylink managed EEE in v6.14-rc1. I've built
+v6.13 to check that my assertions w.r.t. EEE defaulting to being
+enabled are correct, and:
+
+# # ethtool -S eth0 | grep lpi
+     irq_tx_path_in_lpi_mode_n: 15
+     irq_tx_path_exit_lpi_mode_n: 14
+     irq_rx_path_in_lpi_mode_n: 0
+     irq_rx_path_exit_lpi_mode_n: 0
+# ethtool --show-eee eth0
+EEE Settings for eth0:
+        EEE status: enabled - active
+        Tx LPI: disabled
+        Supported EEE link modes:  100baseT/Full
+                                   1000baseT/Full
+        Advertised EEE link modes:  100baseT/Full
+                                    1000baseT/Full
+        Link partner advertised EEE link modes:  100baseT/Full
+                                                 1000baseT/Full
+
+So, as I have asserted in response to Emanuele, the conversion of
+stmmac to phylink-managed EEE hasn't changed whether EEE is enabled
+by default. It was enabled by default before phylink-managed EEE, and
+as I always try to do, I try to avoid introducing different behaviours
+when converting drivers to a new implementation. That point holds up
+here w.r.t. whether EEE is enabled by default. Hence, blaming these
+problems on the phylink conversion enabling EEE by default is
+incorrect - and I wish people would *stop* jumping to false conclusions
+without evidence. As phylink maintainer, it is extremely disheartening
+to keep having problems falsely levelled at phylink.
+
+Note that the difference here is the receive path at the MAC doesn't
+enter LPI mode. This is because PHY-mode EEE is enabled, which prevents
+the LPI state on the receive side being forwarded to the MAC. I fixed
+via commit bfc17c165835 ("net: phy: realtek: disable PHY-mode EEE") for
+RTL8211F PHYs merged in v6.15-rc1.
+
 -- 
-2.48.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
