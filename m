@@ -1,68 +1,72 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013058.outbound.protection.outlook.com [40.107.162.58])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010042.outbound.protection.outlook.com [52.101.84.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FA13328E2
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 18:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094F72EDD62
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 19:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761591578; cv=fail; b=Yw3D3l9pjo1oKVXRsrKMLxtS5R7GP30mgDqZh/xYmQJjf8tvq30r8KIM4mmKDeI5wWJziMuk2+dG8DxaNhbR7s7ZY3tgk2ZMPfVzdVB5T0Mmr0X5MdBjOzp4nxkf1o88DfVM50UBG5WFPm/eBlU1ES/wpr6IsJgrWbiqtE7nV0A=
+	t=1761592816; cv=fail; b=Iiyw87Y4ToeVjBtj5Cb0b/FgTNTY0aDNq5Dzr97L61ebkmyQGz0Lu0rwWYkoSjyyl38vwKGQry9eDWgJBPmnFFakRr4mK0Ih7xIBFsX9QQV7Py5ADJIhiYZX7zBQL6NpR8yTpxlqWw43UJHc8XqH+mAiCD2JkrFxXbNq1lP+axw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761591578; c=relaxed/simple;
-	bh=GWlqaXFcm3TnLF/iQehewMVjohq0NUFujVdvKkRKXgw=;
+	s=arc-20240116; t=1761592816; c=relaxed/simple;
+	bh=rbU4JtyP6Hq1xM5FDoqAvN9TNjGmVxV91tdS0pLUCFQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Gw4pbhEt7CSgweVdjaRz+RFRZrN84dHhOTNLDhU0p2kpmgcONm49DMIypFGAXZAjy9+bRVMTWraBTQISNhk4BRVtmODMY+BLVUzncDZVSB+1uGwrCPpCpDK/tPsRN6Z8ycEMT82HcMxvl7MSQghays2A9we5FiltsvC1bFGN1I4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ixh1XGep; arc=fail smtp.client-ip=40.107.162.58
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jZea9fTkHO9e47tVFYNJLrVllBqUeJ5Kwkg+cXEJlt6e+HQb6h0bDFbiuirnao8MNyFipyKEoqoCNG0VMZIspQa9bQV0Nr53zeLgnH63ras5gbkvlpPHSKbN/QdekKWpsnZTfWFH+Hqq2hZJEBnmgaQ94ckOqe16VUZ1jux6QbY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jk9yS0QL; arc=fail smtp.client-ip=52.101.84.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ixh1XGep"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jk9yS0QL"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gTzKig58gvo/VTpoXtwBipkQPaTUZ5ScrrkhRkVvf2vvc4ate0GlmhcuawA+zU/Tc3fTzcnB2AzA6lvWmbWG2EGrR+/bbJ2PPQyDiZoZcvlmIGwRtZ/2zuwLv4+6ts7OlVkuZ7rdzjg5LbxTbflW37594wpCaGaUceKKWEurBxbJzdbjcxQZkqgOOtewbcxjGuWRwoLfDd4ue2/Yg0W38jedldIOagsLSq2EsVAHB8umrk9D+Rifm4CvdX4DCpItFgD1lXvuFXgW7F5N+GhMXgmo2o/Er8NhspsGQ3FEal4z9ieXFFVCYzzeCzQDl7aEd2eJld7bWfF+wP1b++cVnA==
+ b=Vpm+LVNaLfZd5HrZTeCwwLOuyM0QCWqrKWaAqd4z7U37cTnecdV10aBGyXEpt6bmQhX+ohFEbs3YsxCV4Kt8y4TgzMI23EIif5077JwVBd2bGnohIpXwWoZ002faDMb5oOk1l1EUUu4XXTQWHet91S26xAn6zaixXd3MRop9h9MT2qysqKkw8PZEvTld4L1PHF4vaAToFOIDdbhWGXFap+lLyFTW9tAFpm1/ZNV6xcvhY8+L0S9J02/DXy1djTPvMo3ctvZGuOS+c0qtGdcvgToh3m/AuTy86taMRLC54kA7vitMcvtP8jShckk/LHCRzilMFpEnP+zT4LOhUMZMbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KvJX+cRkHrE5VuEbPfwgyJJ4+rBkv1qtDiKvgRi7kfo=;
- b=mWNXDoUXpdmj2+TGMha9xVtyI1QdHgOZULSpL9t0GJEhgsfs/2U06BFYQBp/jaByZMcUVyP9tQhtLsAjSGzGb+dSSSi8y4D7rl+8rmO5/68a8mvvm4JeR9Dpnt0DulwL7RCLR1MfQtjSogMBy4+wSUE3C5w7MRmMTRPbesOQzGBbZHDxrXYF3YYkI2x5nf6Lr8CDkYXOgcGTfGbQQRPO48hz5ghulg5H7+KNAXVAEvwEKl2tjf1J3UAyCzICpsIv0yIeIiQ+/33UwzeMPOagE9imdJpUB8WueboR79hXc+dGmqKYy5kaAXYZKsdxgwHiSwbK9i0oj3XdwkROWALTGw==
+ bh=fhsldWWK4ehTu+bx2aO95bDxHJz5yw4JL7JJfOA1uwk=;
+ b=qyf91gM6xbmllmgoxQ1ZoV2dIj0SDtB2Fi8mpW37Jx0NgyHHUg+BUJUxW9h+8xBtWL2CLRlnmz0SeM4tCMGnBwf3zbUqU3gt+RNDD/TuBQzS+o7yBjNVTr+SXHCAKXy+fX5XeeXvUcYdwLQClemExrUhNXBc7p2nuqS5SJgqCQIj+DYDrB3k/x7U6Eeb5a1TbShdbhks0MWl6b8hCeLgtjsFaCCPpnHqszAY1OVKIMMRBIVq543NN4ZYxAT94GNSbl22YoIvZZC5hDSzwawibw+J6WJXopnCamYDK8cLNjnd9MTq/Quf6LNIuh+ceDRpCtn8t9GgUTHAP51vwY3jfA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KvJX+cRkHrE5VuEbPfwgyJJ4+rBkv1qtDiKvgRi7kfo=;
- b=Ixh1XGepENlHYhAiwByYXReljlc6qNLOZC3PAS6rjf0WAiRZqjiOCv5x97Upl20bebeIe8Gc0kJVRkyHwDfDROWR8GXgvlcRhAkv7C40fgXeiP1FMupUw76/GOI8u5Rymn5eFgryTOwuW2YB/iwBFb5a780FvE7EIDZm+78Zhbm+t2gBe2QAkSpJmuyXBEa4ydGY28ZHtBxrpQjoaZbApvck5Jx4D8ly5CSu93pivrfDxobcdYGKnNFa1oikn3lFuDsEM32qFftBF2de89xiDXU3UqF90RMA0Yvvh5lakqchkDqNttvFNkOZ/J1QY60JL0iKd82HpiIyQ5f/XVYpig==
+ bh=fhsldWWK4ehTu+bx2aO95bDxHJz5yw4JL7JJfOA1uwk=;
+ b=jk9yS0QLyCRu2uCtShOlM6cq//QUmoDwVj1+WuXIKWlSg+4z6sisueN9XMaVaUXBnli6hSh9XBudrCq0BDr5IrPzUVRMAxqNyw/GwWmhyln9DI+2Tjq3PGrJ4cNHayzhgb81PeKMn+Lxvx17gWD4ls6qozLCe68557PrSHbdT+MlefM1YoMd7FXpGv/zSIFiYNApfcFSwGlB1Py5jXPp+ggV62w7HBu7yoCD/+REcvWzbd+Jy1FOJRwDqFuFdaNWRlUj+2VOK+Zbp45N6Nz/DorYuL2C35WpFhlSCnIE3Iv6gRSGg6Bgq1b1lAQMBm+ttAgHJtZ4ePzJgzJrPhguFA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
- by VI0PR04MB10096.eurprd04.prod.outlook.com (2603:10a6:800:24c::20) with
+ by FRWPR04MB11248.eurprd04.prod.outlook.com (2603:10a6:d10:172::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Mon, 27 Oct
- 2025 18:59:29 +0000
+ 2025 19:20:08 +0000
 Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
  ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
  ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9253.017; Mon, 27 Oct 2025
- 18:59:29 +0000
-Date: Mon, 27 Oct 2025 14:59:21 -0400
+ 19:20:08 +0000
+Date: Mon, 27 Oct 2025 15:19:58 -0400
 From: Frank Li <Frank.li@nxp.com>
 To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Marco Felsch <m.felsch@pengutronix.de>, robh@kernel.org,
-	Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+Cc: Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jiada Wang <jiada_wang@mentor.com>, dmaengine@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dmaengine: add device_link support
-Message-ID: <aP/BCfg2NnPut5IG@lizhi-Precision-Tower-5810>
-References: <20250912-v6-16-topic-dma-devlink-v1-0-4debc2fbf901@pengutronix.de>
- <20250912-v6-16-topic-dma-devlink-v1-1-4debc2fbf901@pengutronix.de>
- <aNVufDmHjLRauKYo@lizhi-Precision-Tower-5810>
- <20251027011103.GR13023@pendragon.ideasonboard.com>
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Guoniu Zhou <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH 1/3] media: dt-bindings: nxp,imx8-isi: Add i.MX95 ISI
+ compatible string
+Message-ID: <aP/F3joJ0RnL0G1z@lizhi-Precision-Tower-5810>
+References: <20251024-isi_imx95-v1-0-3ad1af7c3d61@nxp.com>
+ <20251024-isi_imx95-v1-1-3ad1af7c3d61@nxp.com>
+ <aPuAVqVUHjrPCbIH@lizhi-Precision-Tower-5810>
+ <20251026220438.GG13023@pendragon.ideasonboard.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251027011103.GR13023@pendragon.ideasonboard.com>
-X-ClientProxiedBy: PH7PR02CA0028.namprd02.prod.outlook.com
- (2603:10b6:510:33d::32) To AS4PR04MB9621.eurprd04.prod.outlook.com
+In-Reply-To: <20251026220438.GG13023@pendragon.ideasonboard.com>
+X-ClientProxiedBy: BYAPR07CA0037.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::14) To AS4PR04MB9621.eurprd04.prod.outlook.com
  (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,203 +75,188 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|VI0PR04MB10096:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7bf75330-0ce4-460f-19d4-08de158af500
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|FRWPR04MB11248:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43386765-6228-4ea2-9b92-08de158dd71d
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|19092799006|38350700014;
+ BCL:0;ARA:13230040|19092799006|52116014|7416014|376014|366016|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?FSWyqdhaGnp5AKyLJwyCanud81LkBueXeU3IEFvIqecGtf1ef/Ocnk0Ub/PY?=
- =?us-ascii?Q?qOSE/panZJhJXcc3qczHQUu5FUESQIp0oNb8zlYQHnWSoQlKfWFporzaqGhA?=
- =?us-ascii?Q?+2Lp9gyVELITgFoCoKYmYbyTKYZF65AfYkBqbQklJpuyKvMrT0H+L7ripNeB?=
- =?us-ascii?Q?PnKuhXC5mXPq701djdjYYvtycrHo7JsyQcfLLRtFUscKHPOdN8g4GDPth9nP?=
- =?us-ascii?Q?8WjK09rH4tRn7zjs/TO3wuuGt7NrZPztxGSBEVbgPlrU0nlJS1UtFmJxnjQa?=
- =?us-ascii?Q?VLATJ4185LKNXwPljZhsA+uzljw/cUoHRn4Br5CcYfNFlE24ZQQ1Tf/TLinW?=
- =?us-ascii?Q?qOEHzlFUQ1LpUZGbijv2swVFkKTH4ZkBu8ztKWobkEhjsTh7UYje8/SpUOZ/?=
- =?us-ascii?Q?o253qC1pUcKPQQ9wCjeq40orwgvV1yuciLUQmJ9zjWQYTkvnKTw0KLB2m4hi?=
- =?us-ascii?Q?WlQc1zBazesWnwmpkDW5oOvesYoO6SLmCS5MKzUQ/5OlbyHLY5bfx4J/Ay1j?=
- =?us-ascii?Q?aE3b6TsGYkhCQ5fsGaBiZ8/dS3JB+8ux3on8YKRiG+A8GE9mDwrdj06WRgm1?=
- =?us-ascii?Q?L04+I9erVW9/ImwSBao2G5Kv53asn4vlmatCLrIO8UxQbYEZRIf7fQFtVI0r?=
- =?us-ascii?Q?1yZTmkiRuuGSnNdwow6ZHkpYsK1FHxp8Rq+JdWHULEaChagMRe4cMXo6uC2T?=
- =?us-ascii?Q?3zoTX+NH9wEmkWqLnpwgY8lSK4Fg7q2zxi/inkkp3CHBzCbb63oETWSwb7io?=
- =?us-ascii?Q?+F9XRo7++2+WhBJNoViTZ6ZJZL8mI+rJqF7ZTsNCnPhJfM1guLRWks8eTK1I?=
- =?us-ascii?Q?q0NiyDUtxcfp0gn4Z5W2IGNga7yDQjLIa6GSHLwKTQ2x9HM+Mt6VPUZy389r?=
- =?us-ascii?Q?glYiuziTCxSVnX83XjP8+5d37LTh93WrVWoyrXPy08tuKggFv9Tir5xQWBps?=
- =?us-ascii?Q?nf56Kj3HHQ9d+9AzK/IezCNDS0+E1kkIQ+DDj9s40IOBQEv7vcXiQdA1DbTS?=
- =?us-ascii?Q?hXEEvJBZ7yGl8lXu8ooRvq8BYav1NN6lcycdKvW2lMclopGyrMHBeVeNg9zj?=
- =?us-ascii?Q?AMKOdyjrL8ytKNCer2uYnoI1rxNl0sCwBjovK2pn85LNmj8YE2tcLUYPBphH?=
- =?us-ascii?Q?Iq9twY0EA8h1UHsJ9WvciRaGERK5HFsV0yQTSNaQOchd4Ul66YH9n5QlmWc+?=
- =?us-ascii?Q?NL8c4ZBCipuc/IPUJiA1fKa3yzvr7k5bRU1ao0j0hTJQ1CDLokMC2khb3bRg?=
- =?us-ascii?Q?tgNRsV+eYzv04Q2ESR79Sop+JNS++jMNtKMMhOctlOuUtib0tw4kuVaBjPlQ?=
- =?us-ascii?Q?904+DfCBDobBW0JnRmOwMwdsP8j+Xm1PETbpdgYLBtzEqRLk3CSiufx/khbq?=
- =?us-ascii?Q?zz6ghMXWM/xN4r4v3mNBgqiHf4Uvp8WgX8XjOYaEIxO0z+5A7oXJ2QkpRWPA?=
- =?us-ascii?Q?k2L5q5PL3yJ2eRg+DYqmcIm4RPluqFK3QS5onmnMEsW3N7oRRbs5Bw=3D=3D?=
+ =?us-ascii?Q?VkAFPeTHTHufVagJ4Ncix2yxWx9e8x5rjKfb9W0+UPdfeJUz89Y1H/X3wr27?=
+ =?us-ascii?Q?WKpHSABok4p0bkGjJQqsctknsuvLOahixRujc0ZAkgP1F3xwDeUWxXPbT4k2?=
+ =?us-ascii?Q?6mHdR46pkeaqRogNALkEwGdrWeBX3QOZ2Lu2O2a1abBmwB8No07q/kwSaPzu?=
+ =?us-ascii?Q?5QhT8Z1ZXDx8roBMy/wqWnl166SWGjY5XI1iwS8ty92NRyMlps0BlwRiRQXJ?=
+ =?us-ascii?Q?Wu5aWpg3yXBHDKpr79FEjRVxRe2QzxVNRfr0D6EXoBdivs1dxOX/ASyRhy5R?=
+ =?us-ascii?Q?9CfLvOEp1NUy2jTi2/Q0p2sc7gWyaBGYdZxNC6kSPyyYPO8mxMHYyVkeUlXV?=
+ =?us-ascii?Q?kFcSf3yO3jp4qnPeT5bSmQKxSE0ApFH+IfCmlUJgrO1AdCs9emptKeAly6Ck?=
+ =?us-ascii?Q?z9pm5WJ65pxL+yyPACXSsiKvZ0hsWBydBPLlaKzzpWCgUkpNK9z0QN/6tmBU?=
+ =?us-ascii?Q?jwypzhvhfyTIZ9BKpZR/QHFrItoZ3V6mRUUeO1pEV9qpnSPBlxFZCc+j/2V3?=
+ =?us-ascii?Q?DSVX9kfofyV7PoLzKng5RR0iE1UAovuoxxtyDelhobtDKjokrEaHbJ7w3Urx?=
+ =?us-ascii?Q?EPlU8aYelTa2wFLeqmtHq6EYmSpEjBNO8uZUbPPxNKzOFwZKGPilxUGtlVex?=
+ =?us-ascii?Q?NVpQAKxxSPwLxFfxkW6uWCP0J1L/HKKP+TuDrPWfvEPwjLt0NNi+bd483TDX?=
+ =?us-ascii?Q?OGokia+zHy47XZ+I1w5skGfsACcxkDt8wXV6u7EK9O+/vC204DMK86TSKG0C?=
+ =?us-ascii?Q?qqmJechEpmi5IQGzABDheNVsWb10eyYb26IbEXGawHzy38zp10lw33XI7Es/?=
+ =?us-ascii?Q?wiBTrs7fyDfDLcd9JKs1pYRSZOW9ZQoOl8TUnk94wFfO7ew5NHQbmnJNokc7?=
+ =?us-ascii?Q?cbtH4Mmjhly8DtMas7/kqIt9Pf5cfZ2o0ipGsj9SAz+lFdLm7siaP/KvLP8j?=
+ =?us-ascii?Q?XJde3mtbM8XuVeDLII86VVjgKc0GNSa3tVCeWDF6BbpGTspBn7fBVNYgyaZ/?=
+ =?us-ascii?Q?NpCNiHXQOAZea+X72kCfoy9XWWM2n/12Am4dypeEMq1uJcpwHn05eUZ84PzA?=
+ =?us-ascii?Q?1Ocx43TtDF+rnxEW9FQY/PgNLYOAauKZ+yZTFXUcxRStF3IWIeUEFpwZ0QOC?=
+ =?us-ascii?Q?C53Rz9ZdVKWdvA4a3KSK78n7pPDTcPyNElV9DtdAXKG/ugWLcdvLLmJH9bcS?=
+ =?us-ascii?Q?u8mw7uZhBkCWlrg8zqAZOMzFlvhpLAOpdBH2iZKxnwuMc7ILWv6inMo5GFpC?=
+ =?us-ascii?Q?Hfd2qHGH4SfgcPxNefIqDsUrHN2WQKZM847tNEbjyhGCYm2fNILfu223qncW?=
+ =?us-ascii?Q?54WL/Ev+SocOcOafCU2kniyr9YliV9P6xd1rXdghUJ4XjM0611sdZcpBUbzy?=
+ =?us-ascii?Q?y4l4aHdartp3r/gmQxSWmTRovngpCRawd1sSRsgZBb/PWQwF8upffIDDHbNk?=
+ =?us-ascii?Q?fWCaX8ESRqCjc61Ybj3tJ2q1Dg5TskX4YfPEQKZi86IR6MrwVBgFoCkVyVjB?=
+ =?us-ascii?Q?HwPIxBtppAGxGcgoppJqB8yp1R8wHwgVVdhS?=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(7416014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?6sluUhvg+rGSgO/PKdRh6PJJZbjNW2WvwowweBw/eilfMqBQ6fsU1livRSU9?=
- =?us-ascii?Q?MnQSJIAfqcVCJ3USeyqJpLjey3ExxJV7jFAaU2vrIOzUrWCREAyu5XBhmYEX?=
- =?us-ascii?Q?1QiSnG/WGCZRUuQSyS71mMyB2yZGqlgOVLhVUAK6UDQYxCQKxb9nu3/eZM7w?=
- =?us-ascii?Q?NiC/uIl5x2QUUpSckQpeZOjhv1JP17v1FiAn/yRx3my38SiT81fng02cyvfM?=
- =?us-ascii?Q?YCDKOw8/AYqjys9PDCb+dLCDLAZ63oNuPRZnKy6TqnhTSXe84zhKZIqBOqSX?=
- =?us-ascii?Q?MuClSFyRWuYB6001XTMhiAjMwMQlc5ZmEZ/kjmngUKyiYPdzGhFq8qX2aDE8?=
- =?us-ascii?Q?RbyNj3oCa50evpYT0kq8EA5RKO44P46H5dMNlxWl6I3q62hu/sMqX3w0gc0B?=
- =?us-ascii?Q?/mOlmfzecERpJSyCpX4Bf2tn9wiPvsTZyRR6LIVtfFvEtaVKMWJpc8+XM7Wt?=
- =?us-ascii?Q?XJ0iowHwJayci+lJ9kWcaMqt7NyRBLOXr7Iwh0CHByDIAGoMs6zFUsYn75qb?=
- =?us-ascii?Q?WTwnl+XvqtenQXdxUO6ZNgk8KkX5eCuaVylK9y24C9khtENIzqa8a/pPNe88?=
- =?us-ascii?Q?cl3Q4hLGyTPQ3FqGTm7hnFh632rUjcqH5g5jXuyznF0dXEN/rtjjQjot383i?=
- =?us-ascii?Q?REgyd3EZRJKd33BZdpvPHu3ReFRNGgNZYFYeCi3Vp5Ccut+ww6dkFiN1R5Wy?=
- =?us-ascii?Q?4o/GfEkGF92T97Xnz3cHHlIRjQ4aT1TUwYsiNbBWPVYRbYsiKwUBqFNYNeXu?=
- =?us-ascii?Q?xPc7xrlMzJEZVHEYr9wXFjk2aS01xSEHu8st/5LOOvijakCagW75Qkrnkw0H?=
- =?us-ascii?Q?VR5mCw0cOBPvaJNjbkPVjofREYlhzkc799AXmy2s28d2l5YQ1zKCL7Z+nmEj?=
- =?us-ascii?Q?SXKumlEtc5oS8CS3rpDevFWCbxQAltx66f+Ti6tXWdNwcnc8CIz4td8YGFX2?=
- =?us-ascii?Q?EC9mZgYc+TMCSeIKSfkH0ElSz1ldE1kWci2ax1fxIycelrCJf5b7qdBsos/s?=
- =?us-ascii?Q?o1/6LkJTIWdrBQNqIKG/76w0deNy/kPTXhCmCbpvoDYfoBhp4QxuhMf5CyFi?=
- =?us-ascii?Q?WwJ7d+C15bAmDmHZRtESvUurfvCiYjqydQ+Sr0vsRoiIX06UwycL+ylTs+kK?=
- =?us-ascii?Q?P2S7MRKI+zOBs5/PURzNZQEt4I2VPRZ4uLBgEWTo4PfWRC+u0PrGASeC52t3?=
- =?us-ascii?Q?aX7pXZKQGag5ahWIVyf1iOvN6tXTa71+3TjtWkw8XlRL0jkqTD+QdHPDcCpC?=
- =?us-ascii?Q?U7fSp5dWPbUEAvuHAcrc4UXG99QyMsdwVFkCAGBpKsPDRBSzotpc1BvkKuKz?=
- =?us-ascii?Q?IAhHZdgddgegCthS1le43Xa5q9T/MBfzFRiLaMrwC8nX2wdz/xGQKJncojWJ?=
- =?us-ascii?Q?VI56L34YZX4UA6/Tcm0YyKMX/20LN1kzdh4K9jxKeAhj5Em3fp9fzi+OGmYW?=
- =?us-ascii?Q?GYZQlabAENIuJ922i1NXDgTwqf0RmvfhJWEREJMSS1E/PmQQqwXg+gxQzv9Q?=
- =?us-ascii?Q?cvUByiEMy0n6gAcdXOMrFSrGaWX9+IjrMCsgtxWd+sjNQDd5o//7QBVi6gxP?=
- =?us-ascii?Q?i2B9FcOcmgfuk2eIJctIdkbCqrdWgsmnxaGx8y9y?=
+ =?us-ascii?Q?17iDAdFsPawUYOExu6eqSHVAVRGpxT+i8Dki9Qcd5fOHAlvAoqkrDYgoZy0L?=
+ =?us-ascii?Q?/HOVVmkupm4Mk1uYttXQLMRUS8wzbo9DYuZu/MpSRQdFTZzxmYCx4H4Lj9VN?=
+ =?us-ascii?Q?9qpbPRmZUJ4rPFIDIyRWkj8APh5gR0sXMEVG9mrMPXjIBClrTm93ABWUuJ/K?=
+ =?us-ascii?Q?V/ZtUhZNqXDLilTipiOVEmJuMHqafhA4dL9XcWIZ4SoxdKkW4LuUJP2BUN1+?=
+ =?us-ascii?Q?1WT3a+T84DL0QZycm8W3dTssNyqIOTe0kiQopYtf71/kDlrN7NN6t+bqn7X0?=
+ =?us-ascii?Q?mQnxEjySfD3buN5Deo28FC+2I2XWp4glYfiYV9/1qiYq9hGY3ztEnu/0oafk?=
+ =?us-ascii?Q?hZOVOiW3OxPH9CufjCSLquVw60IB5ad/WUQJAGaYyZm9zoR98DMKlyxTyg2J?=
+ =?us-ascii?Q?epMI4Ym1Zrpl0gHmXAMo1yi4uWc+hv8A4A0Hlh1zyCsempiZuLaulEFBfZDI?=
+ =?us-ascii?Q?DAX+WIbOYm1AKGCEiVWcF1Vo7bqeTqZhYPzm7DHrHd0ITrfYLE7d6W58jDMd?=
+ =?us-ascii?Q?AYBNM7EcX4xJM9Q7IYhwnR2jMYBY+7W5DVooqn2VnJZWWi8Rd5+bCpzkq0Iw?=
+ =?us-ascii?Q?GDMhfFjLjtqHUfV2Sm/U46rkkXVACSTiUEdIqFGHPD/vhQH8hAcTFskDCL5h?=
+ =?us-ascii?Q?f/L+kyxx6o0cMnDOdnX/thPmzK5JCg/UAZe8wsW2sIIfOpnnRpnvVvBnDqKA?=
+ =?us-ascii?Q?D5+xHGFfUuTb31bwwWTF2HNHnHa4DLTAPgR2X8IHt7bSzaSfwL1JYjGCSYg0?=
+ =?us-ascii?Q?LbB50iEhgxzdpzqu+G/JVbqZqV/kfh5OaV3YBlVE0YZ+So3p7xb88M5gi9+u?=
+ =?us-ascii?Q?pGYBQiteZJK2bLe0jw+CGQgWMg0w594EUsuAgA6qU/qcODYoB4sSgSj71jxD?=
+ =?us-ascii?Q?qMDwYitM2WpWZneLgnAx8OkiqBoKJJJiB3qWxGupB+NHo2csACLNyIE5Fry/?=
+ =?us-ascii?Q?S1pLv3UUwB+j0AWSUREAg9g2AtR5Tcf4e4zAgIv/tsnMLwAqBsDaINKetibr?=
+ =?us-ascii?Q?+bvbjR8S80x1y50gOVRVJQlWZYcY0cNZN1jez8hcFVVsLiS5Hewvi9fZ4i6M?=
+ =?us-ascii?Q?jh/H+K5rFi0UIPRH3Av/I4ojjDOYS5R9/ENSdojbHxP9pV6I8y2ZMhceU/lX?=
+ =?us-ascii?Q?MAwfksw1B1qbfi79rZb+70LNMZFAQrjVTzMLcaJJtDZXdp6AlnyYAyaXpfaO?=
+ =?us-ascii?Q?D3xJZwI9py9+Ix+abeFSgdeQBYcVwG8kFf0bsudFXXnuZy5aE+GnQkQ8VEJ1?=
+ =?us-ascii?Q?8xeF7SJJhVT5OFG7liRL20EKQJwUfIUi/vWhP4m5MbRhMMbBRHI6Q4Gpd6pR?=
+ =?us-ascii?Q?2mjmc5o+3cdCJow4/KdHlTpHNdMngw4I/uVFMduaZheelS3D8Pfn4QnRscjb?=
+ =?us-ascii?Q?dL4d8+BX8mDFgnb3ydf3KKIdyNrQW9bZqSaMP9eSFHRuLR2GBWnOoGfUFyuK?=
+ =?us-ascii?Q?6L9PPBJMER4hhRId0TK8MWskZrOXNOWp3hiESTmkGhGQOCZEgbgICF8emU/7?=
+ =?us-ascii?Q?DUMaVfwAjUzPfgULO8bO90Qzjyt8ETTfRVUgNsENjEJKwkNX7pZ2B/NJOJzJ?=
+ =?us-ascii?Q?bWOobt+V5sLdughQF7w=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bf75330-0ce4-460f-19d4-08de158af500
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43386765-6228-4ea2-9b92-08de158dd71d
 X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 18:59:29.7222
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 19:20:07.8684
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +3GS3ydvNajkxBNP2ZeYdYZqVX0v9ZVPMeqxYdYZkClMfMOoVzv+YoLQXUmmdzkGvFCiHRBgT7fCtGeU1dtrTA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10096
+X-MS-Exchange-CrossTenant-UserPrincipalName: dYsQYHl0CGr6vNMPOhNGzD6SqCC8YQ/zrhV1XnzPad2kHpLSKqzJ3GUOXH2ildlpz4fwHsK8dJYxYlOedm28Kg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRWPR04MB11248
 
-On Mon, Oct 27, 2025 at 03:11:03AM +0200, Laurent Pinchart wrote:
-> On Thu, Sep 25, 2025 at 12:31:56PM -0400, Frank Li wrote:
-> > On Fri, Sep 12, 2025 at 12:00:41AM +0200, Marco Felsch wrote:
-> > > Shift the device dependency handling to the driver core by adding
-> > > support for devlinks.
+On Mon, Oct 27, 2025 at 12:04:38AM +0200, Laurent Pinchart wrote:
+> On Fri, Oct 24, 2025 at 09:34:14AM -0400, Frank Li wrote:
+> > On Fri, Oct 24, 2025 at 05:46:52PM +0800, Guoniu Zhou wrote:
+> > > From: Guoniu Zhou <guoniu.zhou@nxp.com>
 > > >
-> > > The link between the consumer device and the dmaengine device is
-> > > established by the consumer via the dma_request_chan() automatically if
-> > > the dmaengine driver supports it (create_devlink flag set).
+> > > The ISI module on i.MX95 supports up to eight channels and four link
+> > > sources to obtain the image data for processing in its pipelines. It
+> > > can process up to eight image sources at the same time.
 > > >
-> > > By adding the devlink support it is ensured that the supplier can't be
-> > > removed while the consumer still uses the dmaengine. Furthermore it
-> > > ensures that the supplier driver is present and actual bound before the
-> > > consumer is uses the supplier.
->
-> How is the latter ensured by this patch ? The link is created in
-> dma_request_chan() (which is called by the consumer), after successfully
-> obtaining the channel. I don't see how the link improves that mechanism.
->
+> > > Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> > > ---
+> > >  .../devicetree/bindings/media/nxp,imx8-isi.yaml    | 26 +++++++++++++++++++++-
+> > >  1 file changed, 25 insertions(+), 1 deletion(-)
 > > >
-> > > Additional PM and runtime-PM dependency handling can be added easily too
-> > > by setting the required flags (not implemented by this commit).
+> > > diff --git a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> > > index f43b91984f0152fbbcf80db3b3bbad7e8ad6c11e..eaab98ecf343a2cd3620f7469c016c3955d37406 100644
+> > > --- a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> > > +++ b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> > > @@ -23,6 +23,7 @@ properties:
+> > >        - fsl,imx8mp-isi
+> > >        - fsl,imx8ulp-isi
+> > >        - fsl,imx93-isi
+> > > +      - fsl,imx95-isi
+> > >
+> > >    reg:
+> > >      maxItems: 1
+> > > @@ -49,7 +50,7 @@ properties:
+> > >    interrupts:
+> > >      description: Processing pipeline interrupts, one per pipeline
+> > >      minItems: 1
+> > > -    maxItems: 2
+> > > +    maxItems: 8
+> > >
+> > >    power-domains:
+> > >      maxItems: 1
+> > > @@ -109,6 +110,29 @@ allOf:
+> > >              - port@0
+> > >              - port@1
+> > >
+> > > +  - if:
+> > > +      properties:
+> > > +        compatible:
+> > > +          contains:
+> > > +            const: fsl,imx95-isi
+> > > +    then:
+> > > +      properties:
+> > > +        interrupts:
+> > > +          maxItems: 8
+> >
+> > should minItems: 8 because you already limit maxItems at top;
 >
-> I've long thought that the DMA engine API should offer calls to "prepare"
-> and "unprepare" (names subject to bikeshedding) a DMA engine channel, so
-> that consumers can explicitly indicate when they are getting ready to
-> use DMA, and when they stop.
+> As far as I understand, when no "items" are specified, minItems defaults
+> to 1, and maxItems defaults to minItems (if specified) or 0 (if minItems
+> is not specified). This is implemented in dtschema/lib.py of
+> https://github.com/devicetree-org/dt-schema.git.
+>
+> Then, in dtschema/fixups.py, if only one of minItems or maxItems is
+> specified, the other one is set to the same value. I believe relying on
+> this is frowned upon by the DT maintainers.
+>
+> We could specify minItems only here, as the top-level constraint will
+> ensure we don't go over 8. That's not very future-proof though, so I
+> think specifying both minItems and maxItems would be best. Confirmation
+> from a DT maintainer would be appreciated.
 
-This is one validate method. Maybe we set flags in dma_request_chan() to
-indicate auto prepare when request chan to keep compatiblity with existed
-drivers.
-
-consumers who support prepare/unprepare can clean this flags at
-dma_request_chan(). So we can smooth switch each consumer and dma-engine
-driver to support this prepare/unprepare.
+I pretty sure I am correct. please below thread, I met many similar cases
+before.
+https://lore.kernel.org/imx/72c29785-eb7a-4cc8-a74c-3aad50129a23@kernel.org/
 
 Frank
 
 >
-> > >
-> > > The new create_devlink flag controlls the devlink creation to not cause
-> > > any regressions with existing dmaengine drivers. This flag can be
-> > > removed once all drivers are successfully tested to support devlinks.
-> > >
-> > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > > ---
-> >
-> > Add previous discussion link:
-> > https://lore.kernel.org/all/aLhUv+mtr1uZTCth@lizhi-Precision-Tower-5810/
-> >
-> > Another thread
-> > https://lore.kernel.org/dmaengine/20250801120007.GB4906@pendragon.ideasonboard.com/
-> >
-> > Add Laurent Pinchart, who may instest this topic also.
-> >
-> > Add Rob Herring, who may know why dma engine can't create dev_link default
-> > like other provider (clk, phy, gpio ...)
-> >
-> >
-> > >  drivers/dma/dmaengine.c   | 15 +++++++++++++++
-> > >  include/linux/dmaengine.h |  3 +++
-> > >  2 files changed, 18 insertions(+)
-> > >
-> > > diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-> > > index 758fcd0546d8bde8e8dddc6039848feeb1e24475..e81985ab806ae87ff3aa4739fe6f6328b2587f2e 100644
-> > > --- a/drivers/dma/dmaengine.c
-> > > +++ b/drivers/dma/dmaengine.c
-> > > @@ -858,6 +858,21 @@ struct dma_chan *dma_request_chan(struct device *dev, const char *name)
-> > >  	/* No functional issue if it fails, users are supposed to test before use */
-> > >  #endif
-> > >
-> > > +	/*
-> > > +	 * Devlinks between the dmaengine device and the consumer device
-> > > +	 * are optional till all dmaengine drivers are converted/tested.
-> > > +	 */
-> > > +	if (chan->device->create_devlink) {
-> > > +		struct device_link *dl;
+> The fsl,imx8mp-isi block above should then be fixed. It currently only
+> has maxItems set, minItems should be set to 2 as well.
+>
+> > > +        ports:
+> > > +          properties:
+> > > +            port@0:
+> > > +              description: Pixel Link Slave 0
+> > > +            port@1:
+> > > +              description: Pixel Link Slave 1
+> > > +            port@2:
+> > > +              description: MIPI CSI-2 RX 0
+> > > +            port@3:
+> > > +              description: MIPI CSI-2 RX 1
+> > > +          required:
+> > > +            - port@2
+> > > +            - port@3
 > > > +
-> > > +		dl = device_link_add(dev, chan->device->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
 > >
-> > I suggest link to per channel device, instead dma engine devices.
-> > chan->dev->device like phy drivers because some dma-engine have per channel
-> > resources, like power domain and clocks.
+> >      else
+> >        properties:
+> >          interrupts:
+> >            maxItem: 2
 > >
-> > Frank
-> >
-> > > +		if (!dl) {
-> > > +			dev_err(dev, "failed to create device link to %s\n",
-> > > +					dev_name(chan->device->dev));
-> > > +			return ERR_PTR(-EINVAL);
-> > > +		}
-> > > +	}
-> > > +
-> > >  	chan->name = kasprintf(GFP_KERNEL, "dma:%s", name);
-> > >  	if (!chan->name)
-> > >  		return chan;
-> > > diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
-> > > index bb146c5ac3e4ccd7bc0afbf3b28e5b3d659ad62f..c67737a358df659f2bf050a9ccb8d23b17ceb357 100644
-> > > --- a/include/linux/dmaengine.h
-> > > +++ b/include/linux/dmaengine.h
-> > > @@ -817,6 +817,8 @@ struct dma_filter {
-> > >   *	DMA tansaction with no software intervention for reinitialization.
-> > >   *	Zero value means unlimited number of entries.
-> > >   * @descriptor_reuse: a submitted transfer can be resubmitted after completion
-> > > + * @create_devlink: create a devlink between a dma_chan_dev supplier and
-> > > + *	dma-channel consumer device
-> > >   * @residue_granularity: granularity of the transfer residue reported
-> > >   *	by tx_status
-> > >   * @device_alloc_chan_resources: allocate resources and return the
-> > > @@ -894,6 +896,7 @@ struct dma_device {
-> > >  	u32 max_burst;
-> > >  	u32 max_sg_burst;
-> > >  	bool descriptor_reuse;
-> > > +	bool create_devlink;
-> > >  	enum dma_residue_granularity residue_granularity;
+> > to keep the same restriction for existed compatible string.
+>
+> We already specify the number of interrupts in two separate conditional
+> blocks above, with any else statement (for all but fsl,imx8mp-isi first,
+> and then for fsl,imx8mp-isi). Both specify maxItems, so I think we're
+> fine.
+>
+> > >  additionalProperties: false
 > > >
-> > >  	int (*device_alloc_chan_resources)(struct dma_chan *chan);
-> > >
-> > > --
-> > > 2.47.3
-> > >
+> > >  examples:
 >
 > --
 > Regards,
