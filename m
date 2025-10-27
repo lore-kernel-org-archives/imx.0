@@ -1,63 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B641D5151;
-	Mon, 27 Oct 2025 13:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DC321C9E1
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 14:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761572209; cv=none; b=jO1ASytNDmVmndb+PzHDNOkKaQIYz2Jaxug/s4vxNnMUQuukLQqJ0k2mWGvoFMZ/BgNg1f0ugLOf8B+dyVLxmOyxmvP2E49T6GyM1lqOHWmzR+0gwHDQDGDBds2GSk779TCcHgg4lAypTYk4w4b/ldn57CREX/+fPGAmBofRF8w=
+	t=1761576660; cv=none; b=bPR/acKu0eMM1FYvf2ftCT9R4Ft52lwkCSR8QN4ie0XRlkALSYxcJ+k5U2p22PC4Ynqiez4eLNDjsbOmzMQ8n7w1IyQRqCTkJyu0zb4hZiJZwVzu05xMkDha8xpXKH1nZG+O1srO78ga1IDT2hu2BUmSigRhs+fylFoaPZ+4euM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761572209; c=relaxed/simple;
-	bh=GY/aL2AMd0H3eUL8uupIyL85eFW25cFDmkyRed3//1M=;
+	s=arc-20240116; t=1761576660; c=relaxed/simple;
+	bh=YnYr+2uN9p8Wy5e6baDAXbycSnvRdc+rm4lMHQd2wCQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=unhkFqbl/qUJ76lmqK228+q2bTjR21qG5sHAAaSnl9Hq3OpwlbXH/l4MtPKleDtHFIugxFEqdKDMT2q066p8E1xwRas9EaZt8HGeH9ZQ+64OhjW9Sie1g9Dkk1u3Si0rCiT3pV01Fz39zNQyHOaFr0f4T/ndStbrqEQ6BA5JqU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXFmk6M9; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXFmk6M9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7D0C4CEF1;
-	Mon, 27 Oct 2025 13:36:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761572207;
-	bh=GY/aL2AMd0H3eUL8uupIyL85eFW25cFDmkyRed3//1M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AXFmk6M9lLvDV7HCzeNoS9jNleVWkInzV6Qgo+oLrGiYl74g7CS/7xZaFm8NZ2xXk
-	 xoLNIf8/uKJwtKKScYkc+pXJx3BdX8txLtv2taSHsUWLW+GfHXtpgtpNkQWseuc6AU
-	 PCLO9QrjPBVBISy6+ouKzYa+sR02/SCC9nEPWgY4iDG7VLGUDvcW3ax8GXyN16Gmnz
-	 JSAxaeFHuPh+BXgWHyexxFNsG99gLbSn+sygaXO565Sv4EdOBwsvvYIIHyqtB4PaET
-	 b3fAc8ftulXe55pClawDKlvoF9yhGV+aPhoxN55prclePimbVIU9QWIoSYPDVoJ3Zc
-	 XiGZMgJc3Ftnw==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vDNP1-000000000J0-1NJ5;
-	Mon, 27 Oct 2025 14:36:51 +0100
-Date: Mon, 27 Oct 2025 14:36:51 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=fFSVA1riI2HYPdlPexroY+6dizsgOz3t7ws7E6aSRZgELOrTM2+EeBmuHwpzaalT14UjNvdbxiTdEb6TMgLYIE0hP3qvov4slufpCzgQWqob7s8i1/Eb0yf+D1KLCIPmB91RKZMKo1LOkMSP3AGazCuS+h25ZQkz/pGuYHJm2vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDOYg-0003Tf-0O; Mon, 27 Oct 2025 15:50:54 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDOYf-005j1D-1r;
+	Mon, 27 Oct 2025 15:50:53 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDOYf-003DTB-1K;
+	Mon, 27 Oct 2025 15:50:53 +0100
+Date: Mon, 27 Oct 2025 15:50:53 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	imx@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] drm/imx: drop unused module aliases
-Message-ID: <aP91c2uZN7fBxtAv@hovoldconsulting.com>
-References: <20250924092643.26113-1-johan@kernel.org>
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
+Message-ID: <aP-GzR_pVvXvCIn-@pengutronix.de>
+References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
+ <e87ff7f2-d16f-41f2-b781-b175cfb84b21@lunn.ch>
+ <aP83bMDWCre7-Sjw@pengutronix.de>
+ <20251027100227.GE1544@pendragon.ideasonboard.com>
+ <aP9IB4y5_gyfJGMW@pengutronix.de>
+ <20251027103107.GF1544@pendragon.ideasonboard.com>
+ <aP9Kuyndws_dYFna@shell.armlinux.org.uk>
+ <aP9NJHtbAEmsd89r@pengutronix.de>
+ <aP9N9tCdlAbBgovC@shell.armlinux.org.uk>
+ <f66d181d-7dd9-4955-bad5-478db2876e47@lunn.ch>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250924092643.26113-1-johan@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f66d181d-7dd9-4955-bad5-478db2876e47@lunn.ch>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Wed, Sep 24, 2025 at 11:26:39AM +0200, Johan Hovold wrote:
-> When fixing up a device reference leak in the tve drivers I noticed it
-> had an unused platform alias. This series drops unused aliases from the
-> imx drm drivers.
+On Mon, Oct 27, 2025 at 01:50:21PM +0100, Andrew Lunn wrote:
+> > > Ack. With comment in the code, why we prefer this way, in case some one
+> > > wont to spend time on making it work. Probably SmartEEE or some other
+> > > word should be used.
+> > 
+> > So we have options.
+> > 
+> > However, we need to get to the bottom of what caused the change of
+> > behaviour before we start throwing solutions at this.
+> 
+> It also seems like the PHY is FUBAR. If the standard 802.3 EEE
+> registers are being used, a management plane is using them to
+> negotiate EEE with the link partner, the PHY firmware should disable
+> SmartEEE and only provide 802.3 EEE.
+> 
+> It sounds like this PHY is not 802.3 compatible.
 
-Can these be picked up for 6.19?
+I do not know better place to post it, so I add it here for archive.
+At least, it explains a reason why EEE fails. Something like this is not
+possible to handle on the MAC side. At same time it is hard to
+diagnose:
 
-Johan
+In 100BASE-TX EEE mode, the link partner may drop link or loss packet
+when the local MAC/PHY (device) starts to transmit the “Wake” signal
+immediately following the “Sleep”/“Refresh” signal to exit Low-Power
+Idle mode and return to Active mode.
+
+Many EEE PHY link partners require a short “Quiet” (Tq) duration after
+receiving the “Sleep”/“Refresh” signal. Without this short Tq wait time,
+that is not specified in the IEEE 802.3az Standard, link drop or packet
+loss can occur.
+
+https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/Errata/80000708B.pdf
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
