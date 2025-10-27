@@ -1,130 +1,184 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013070.outbound.protection.outlook.com [40.107.162.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C342E54B3
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 08:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761552528; cv=none; b=fEfM1kv0zDGLfsMbrD/TIYvC8QBOZxW2eTctsDcLJiECoQVuixhjsWwL9eqckL2/mXIf99fLXYVazF1G0fHXJjoJXk/t3AUXRsCRy2l8dYvhcWD8cFWOH+b9EvFEkRAxw4FkuoO+M6UrFlriTBGRF5RGgyIPzc0XVoi+3GqijZQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761552528; c=relaxed/simple;
-	bh=YcQY+sb9by68e/ghelh68UmYn8yBJemTa+gthGrgaWo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KVx3zRH3FMTLNrq31YFgawhPNYIyN/3+iCT6oRw4Ik96ImvFr9RImyQv8AcOO7VofKmY8eOktvEovG3OHlExBca9fvZZdUpueN38/bDcqXFNnEiOysv+haNah2JAgxOvEETGmjIuntAtMCWEb9EzMfrMsSXAO4xv9MCABz0bm4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W7xw1EM4; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89BA2E7BA3
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 08:27:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761553622; cv=fail; b=dg6ZdNjxm+VahFHnWOFJkPi/r14yQL61n7snySUzKmWFFAwExH17RmPNtEhbV+jaoTt7ZxNd8y1lO9afxE1+E/HjwIntBYd2aKBmFrIm7AlmyeD0sKB/ExObvH8cnydOSpGO0a2xjQEFj2X/mQhuvMHtP8Ltpcg3qiE/zDGc8OM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761553622; c=relaxed/simple;
+	bh=cLbtnLL9v8a1mnEbZ+/1NupB+BOTb7elAMWn7UUSPbg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bhx04f5iEYmZU9PmkXLSR4X/ME2mPZSVGOJUFIEJwPjYtfugLILwzrnVH+egiyyLCPLdMEta9rt8ZmBu42iTB5FlpiO7IRb+UwzvuKqpL1ni/FJU6cTQRa0ikIlh0vq6fYMtmaKeHFZn2crq8XW5GJ5+xf8lttMYYQrgdgP8uaQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iFmn4Lik; arc=fail smtp.client-ip=40.107.162.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W7xw1EM4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761552526; x=1793088526;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YcQY+sb9by68e/ghelh68UmYn8yBJemTa+gthGrgaWo=;
-  b=W7xw1EM4wkpi75F/qKhBEOYsWMbtgrqTQPCPCj0NS8otAfgjALPv7PGk
-   baV8L2dAAdWur3EmTWzHlNeO3u2kd6jiYrsYYMJQrO4FfLKlcH04PPBjj
-   uNMepNm1aqX/hTsL7Y4BtGJtnZ0WaVk2E2Ni1bf3sluu9T9QDJ3ZEaa3t
-   uQ7zo8Dm6bIhANVwgRcPWDCo+yQ+pJsRpF6yh5FtSFRCI3AC6Vlb9T50n
-   9OMfltTeRLVdM0EX1VT+vzc+3dS3IfreT82rJdq9h9JCy9/ER/68j1H/H
-   7Z5mUgcAMBX2JRrh/+eOHUammEVOxT2y66lr1AWitvA6rklNf43coHOiZ
-   A==;
-X-CSE-ConnectionGUID: qJ4YPfJtQdaXhP8D1RwMGg==
-X-CSE-MsgGUID: 3GRPzEL3R9K9QV+dMrlQ8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63664642"
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="63664642"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 01:08:46 -0700
-X-CSE-ConnectionGUID: UTU4X3wrToybhy/mbYBciA==
-X-CSE-MsgGUID: VBcxquuMQOmdnpja3yEBKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="185067813"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.253])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 01:08:44 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 220F2121E4A;
-	Mon, 27 Oct 2025 10:08:41 +0200 (EET)
-Date: Mon, 27 Oct 2025 10:08:41 +0200
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] media: dt-bindings: video-interfaces: add
- video-interfaces.h information
-Message-ID: <aP8oibCu-UsOFtNX@kekkonen.localdomain>
-References: <20251021154922.2874390-1-Frank.Li@nxp.com>
- <20251026184933.GB1025@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iFmn4Lik"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DyD9FxeCuxR59GePEBW+L/7aCaSiG8lubcs6eNmlW6+WRwJjH3nsGBRPXdsXahe8g/fu6a6egBOXDeI9Wdhd9/NlamqMO60RBppoy2MO+zzaGt5p802O39RiZAPGe+JNI/uZ7lon/PQxNfgKgYzxs0/XiBHFttclmV4EMEAXZ1Wx8ijPd+JSRZuEgZZxjHKWtJrxq89XHn/5O/ZOyLY5mOFuzXdhoi7gPUsrn5u2tH5nlkyq9/c8+QOVkgEBJDTIKAgzZztfR9YaJsVeTZ+6DC8Tf/f9G4bgqJcBth3SKsBiqpaXB1ee/xrbQTL6cjPyQgIUezvyUK6cJf/FoVdL7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cLbtnLL9v8a1mnEbZ+/1NupB+BOTb7elAMWn7UUSPbg=;
+ b=isYulcDVJMwA+JnRx2QALcdcVA/be70xT2i0mh3LRZExPl2Ds5i4LwANzy0GVGjY78p/Z0/lBEiEsyfccM9q5nGa9Wwn4Kpzo8+nJySFRpUF5JMD2G80jic932B+qj8PUY4IlGcM879dWlRs1E9Uxlh/PlS0BzqgIXCmHCyIOeVhEbmHLhPmTQoKcKrqXMv+S2UTQ0Tm0ORolemIHXgXDRd96278cPevXa0c57jue8x0EFNnJmXOokfrvW1M/gby+DxxKSwRmCtLGYNuH3s2liJ0VK1DiWDrrnuQvKz4bKW5xnrJssGI2XA2Qhyn0BZHRwRkudmViyLgl8/hrZ7Qiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cLbtnLL9v8a1mnEbZ+/1NupB+BOTb7elAMWn7UUSPbg=;
+ b=iFmn4LikpAcAWZDv2JclwpQh5xMgfehRrk7fzoIVKyZDdi2c3MelNmfNLIK9LGYWO9VJnq9H+b4wVpT/cBdDdkgDLf9Cnf3K5srAvajI3l+Narh3XTZ8747ZbcTQu8YqJjD3geSV60PLHySItdgWJJixs4GbRX3KjQExi5rJsx/duNfxcXfJ8c12/zTVWzJw2eyIXk0wU6KwwuA+WjkIF6HGf4MR+TG6buQ/sT7LyG0tTQ1GU/vlERyNgbBOajlxFEOhwWB28rP4/NMSaL4rPMzGdOuUOBvA9nDDEkee0m2Dgmj3Cfp/wtE6idLsSspY4MNiWtiOZLXWcfc2Au4Ohw==
+Received: from AM7PR04MB7142.eurprd04.prod.outlook.com (2603:10a6:20b:113::9)
+ by DB8PR04MB6907.eurprd04.prod.outlook.com (2603:10a6:10:119::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Mon, 27 Oct
+ 2025 08:26:56 +0000
+Received: from AM7PR04MB7142.eurprd04.prod.outlook.com
+ ([fe80::6247:e209:1229:69af]) by AM7PR04MB7142.eurprd04.prod.outlook.com
+ ([fe80::6247:e209:1229:69af%6]) with mapi id 15.20.9253.017; Mon, 27 Oct 2025
+ 08:26:55 +0000
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, Frank Li <frank.li@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>
+Subject: RE: [PATCH v3 net-next 5/6] net: enetc: add basic support for the
+ ENETC with pseudo MAC for i.MX94
+Thread-Topic: [PATCH v3 net-next 5/6] net: enetc: add basic support for the
+ ENETC with pseudo MAC for i.MX94
+Thread-Index: AQHcRuaDYWINwDLAukOlcUFMrdP/NLTVqLKA
+Date: Mon, 27 Oct 2025 08:26:55 +0000
+Message-ID:
+ <AM7PR04MB71421B44BFAD7BA1C96A60EB96FCA@AM7PR04MB7142.eurprd04.prod.outlook.com>
+References: <20251027014503.176237-1-wei.fang@nxp.com>
+ <20251027014503.176237-6-wei.fang@nxp.com>
+In-Reply-To: <20251027014503.176237-6-wei.fang@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM7PR04MB7142:EE_|DB8PR04MB6907:EE_
+x-ms-office365-filtering-correlation-id: 78b7db89-0818-437c-6f5f-08de153296f8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|1800799024|7416014|376014|366016|921020|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?NRn0zz7oJSMWsL0cZRhhWK/mGfc4ppm3W2nEHCSq+2dArt3SCeqs14uYUu/N?=
+ =?us-ascii?Q?mA++/L/YIUdgutZVTcYXAY8inQjJqDFYlP3MraEcdKa1ZPXkOCWL9NDeTxXC?=
+ =?us-ascii?Q?aVOlsD5PBn/LiexAL0uW2INHsRdXHPaCFl8H3WCToVWSsGBUHP1bVomDxxNC?=
+ =?us-ascii?Q?yIhPH0iO+s8BNOU91dav9tK5WtsQ/dyxrKwFSD2v29uodL1lSn2g/7ZvOj2U?=
+ =?us-ascii?Q?aiqeMfWzNoHp/NrKH6w/CbdYVmmiWw79hmtczNHeRfBq85apL9CxEoHNlbHp?=
+ =?us-ascii?Q?9oWB03FcfzLe4wdH8I1G7bsKpzzmLwaAFzPbujU3A3jmtaWx/hbS1Pbk15I3?=
+ =?us-ascii?Q?Hla3h2mC7DJvE4M3nNELOo1TIpo+CyK/cwGJjJv3ll4F2AMWyN9c/SzyI1cB?=
+ =?us-ascii?Q?sczLmZt9CpmkfFloLIfBOw8Qb6R3DDer+oxPdBwcx4zTl3W7pgrZ5LO+3sHW?=
+ =?us-ascii?Q?WShTuusRfcSH6szOjfibJo5fnObpWGzt1d2cKuS+X5aDIp1s3gkwjjBvSalX?=
+ =?us-ascii?Q?zICIUhkuTcZd53UrEoO5mcxd/4WXdXzZygzLMBMfhku2pR+u0vg54IIjx7qT?=
+ =?us-ascii?Q?U9ggYVj7l7k1GY/0YsHSY1CLvD9XqwlOBJZiAtATGpzNXzkUH1EGDjFlkFw6?=
+ =?us-ascii?Q?LYtcvdMyeQ0n6F/hUNgK00QElW8pBxEzhtha+E8n+IqAktlj0u+bB81ppgyo?=
+ =?us-ascii?Q?2vNDmJZb9v06kXlf3Z4KKzWrZPvgbz5bLu2r3iB4P0b6fkb3Os8Ka3z12Plu?=
+ =?us-ascii?Q?iOl9WlvIsFdyifiaQe/aemiKCuwtiEEn3k44VAmiVrjk5GtGunsO7h+3ZXsH?=
+ =?us-ascii?Q?6PQu2hwgYGIEEMPSiOtYvJlv91LDpjt4fp9bIZyA9pJFM7y7rnXeEP5XFWaE?=
+ =?us-ascii?Q?RZYAHsW6SUfiFgHVG8t4C8jPyzCRqBHzIQVOHo/2cmwUN38XcWvRk9/OZfFr?=
+ =?us-ascii?Q?hwpvhFWnVStZH/LwNrK/bqUxnplLBdVlnyVanPm8GotJ8bJ8H+4Q3j5WbBEP?=
+ =?us-ascii?Q?8LfQ2yJnm1NPCVSA1xNni+2rz9OYlgqJEqntUYTTzg3yZJsIiiO2hNGWG9NB?=
+ =?us-ascii?Q?CZRSqwCpqVx/jBnoz69Q//SxziadMnR3MpIBV9JrXehE07cTpQYNxKPLPdIN?=
+ =?us-ascii?Q?aUp/jBCBdM3zsa8lwi6AMzMajD8MTPgKzwdAsR5X13eGTdLwA+c0peeyrnFm?=
+ =?us-ascii?Q?bbac82Y0tKzn5yL3kteLBV3rx91c36Qqdgz0BPZYI+ehzaBo/hLQAB8Zq3mw?=
+ =?us-ascii?Q?vGQsIeOujOu9rPbbqjzgzCJHRUU1lJXlnb68SO/oYRMbRjJL3dJd6K9U1vy9?=
+ =?us-ascii?Q?QTTlq2cNxPNpqdZ4Y1Hg2Ubxf3RgRrLYuExW4Zx3ZbgzXcOnCSUzryVJyKeL?=
+ =?us-ascii?Q?lJoQK4zu+FOiDubpsSzgvmHqAw8JE3hbdayq2AnemBJ7ue+VjyJJ6fH0swRQ?=
+ =?us-ascii?Q?ceeaifdG0FjEqkttJ2ePOJf0SNSN+V4tw2sqNja33Et1cCaD5kjPa3cHRMzg?=
+ =?us-ascii?Q?SWY9zgKjp42xQCoIFf3VaFLvFcudf2oZ/Hyf?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7142.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(7416014)(376014)(366016)(921020)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?bWWbVJf+rvBLpydpKcjHqbnwXvz00U7onp1H7FZSr/0ONKRbVcKiHuTuPv+D?=
+ =?us-ascii?Q?1IF/ytzVkvOQn8897xSqZ7pQER/OnkHnIslAZuZ5L1zR/QilWsBtdXTI/miY?=
+ =?us-ascii?Q?rRbSBT2rL/0innd5vucggisxEfRZEo4m1/hZGd0c5QamdMIv4oFyMnNMm1Wv?=
+ =?us-ascii?Q?EVsUAI2o4SfNsVhBeN7KvieyOI0Peo8CCq2zHibbe7zRXGFABpHXYREI6BNd?=
+ =?us-ascii?Q?ngFXB27Cj0XEtg3E5CYDLFpMufOSnGa4PQqT/fj8gPs443bgTeTtisyVUK4q?=
+ =?us-ascii?Q?83wPQTfA8ZulUXJVXJi/TUg8LFS2cUuu5Kv2byg/3MmZdB+uPUDCLyT0Vr5n?=
+ =?us-ascii?Q?3x7ic+3dVsVY+ryTHzz9/S28v+yU6IUMZJ9pOo+4TQo3KkfPlR2+pZAPv7Gl?=
+ =?us-ascii?Q?MN8ICHallBUBfLoxyKEHe/l7Y8NtCael0l5YtrOpAWAlaMx8LM7DK06Dlyl4?=
+ =?us-ascii?Q?z60lQJMUqHxs5zwnZWdVZdwPrmKbM4HEO6j5dodBwaT2mFjsMUK5SKIev/ME?=
+ =?us-ascii?Q?hO5XaFLG/FAQlu3u8WaM70FtnIGkMrbJ/FdmndoPIapSlx8NP12OtpaYk7Zm?=
+ =?us-ascii?Q?N2v85MphdZnZFbos+au7qDod/Uvr/u66G0ffB9YueB+S7onN2opGEmng0qlH?=
+ =?us-ascii?Q?d1Tqh4jn+EWMIhHkg7fP+W0ufuUdO+cNlMmqa1PkqVGnfYLc34RLu7ygnbJN?=
+ =?us-ascii?Q?tiKscQU3kIbRq/SWghkcmpPaoHS0YYFy1XkIntxUyS30fo5eoTpAJ1NIyfan?=
+ =?us-ascii?Q?UFyUqByqcD3P+OEXP/jJyy5jv6+Y0xhKtv7WR4Dzh+4rm+uyuazpOXZHl7BF?=
+ =?us-ascii?Q?2m1WK9TE73JY4Qmgh5bQxorNuH+0RA3UmJl3Jm13scHlqjH6+6TrcsAaFR5d?=
+ =?us-ascii?Q?WCHSoJIuvjLw7F4fzvSmVQ+mrZ6NEcI23zvHKSYNLwrrJ1P5ZyPXOiys6jIb?=
+ =?us-ascii?Q?/PT3Wj5g+8oDWzNWqUJ8chr5pOUeakdGtgoytqxuWOI/IVUTaswVcgAa8Jgt?=
+ =?us-ascii?Q?QwrIpvL7lWD61o0CwNHInPwfSa+xMmd+9amwbeyags+BX63O5klX0NQnaYDi?=
+ =?us-ascii?Q?GfRakhXB5o/S5NqyTq94i035s5+k/dd8yJckC/7owesgPLlu6DVeNhR/IwjY?=
+ =?us-ascii?Q?tubCWCWqlEMYGm/R1MMAAEplrBj6HHsOm8QzMEXDHc84WvJX1DU/8uey9MSo?=
+ =?us-ascii?Q?vLIZ2QQrMDS7Df8sF4+EJozTBLVWbJMZZyIFCo9P/TRchhLoU7ZL2XGRhSIM?=
+ =?us-ascii?Q?W2Qoueu8t29nUWk3R1AtKYz7/4S/RRH4RCWb+YqY2cUcMOsT7+GU40aKFRLC?=
+ =?us-ascii?Q?eHQnpf+hcqaFEpUWt7/lXdnMSvP14CsrC24mSAdYJnFK++cJTJ20074erCO+?=
+ =?us-ascii?Q?ass48hKnN6b1sOCWPD//gsM+tUT1UyprVJ9k27RWoOdMJc3XK2PKmrd5zU3S?=
+ =?us-ascii?Q?hQV7BI7DnTOsGIUlQjqjnicvNNVkOuOpD8boDfegyMVoBtilDHHFMH+LgFWH?=
+ =?us-ascii?Q?17glwDO4w0J5oVJtc92jKXmiaIQxijCGnR4lS9IQD5QqV2vBn2kEkamR+pU5?=
+ =?us-ascii?Q?4uPtPmNopMh6EDui0iNEiv0AIK1QQix0kiaoJH/8?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251026184933.GB1025@pendragon.ideasonboard.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7142.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78b7db89-0818-437c-6f5f-08de153296f8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Oct 2025 08:26:55.7706
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CVxSiLuhQi8e9l8kM423udIheYJLxFBk91NoVgX6Xnh3XV80SbOWsLbwMSKjwNSLAHjuF7AEJChpngemX+JveQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6907
 
-Hi Laurent,
+> -----Original Message-----
+> From: Wei Fang <wei.fang@nxp.com>
+> Sent: Monday, October 27, 2025 3:45 AM
+[...]
+> Subject: [PATCH v3 net-next 5/6] net: enetc: add basic support for the EN=
+ETC
+> with pseudo MAC for i.MX94
+>=20
+> The ENETC with pseudo MAC is an internal port which connects to the CPU
+> port of the switch. The switch CPU/host ENETC is fully integrated with
+> the switch and does not require a back-to-back MAC, instead a light
+> weight "pseudo MAC" provides the delineation between switch and ENETC.
+> This translates to lower power (less logic and memory) and lower delay
+> (as there is no serialization delay across this link).
+>=20
+> Different from the standalone ENETC which is used as the external port,
+> the internal ENETC has a different PCIe device ID, and it does not have
+> Ethernet MAC port registers, instead, it has a small number of pseudo
+> MAC port registers, so some features are not supported by pseudo MAC,
+> such as loopback, half duplex, one-step timestamping and so on.
+>=20
+> Therefore, the configuration of this internal ENETC is also somewhat
+> different from that of the standalone ENETC. So add the basic support
+> for ENETC with pseudo MAC. More supports will be added in the future.
+>=20
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 
-On Sun, Oct 26, 2025 at 08:49:33PM +0200, Laurent Pinchart wrote:
-> Hi Frank,
-> 
-> Thank you for the patch.
-> 
-> On Tue, Oct 21, 2025 at 11:49:22AM -0400, Frank Li wrote:
-> > Mention include/dt-bindings/media/video-interfaces.h in descriptions to
-> > help avoid use hardcode in dts.
-> > 
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > changes in v2
-> > - update commit message "mention ..."
-> > - use full path include/dt-bindings/media/video-interfaces.h
-> > ---
-> >  Documentation/devicetree/bindings/media/video-interfaces.yaml | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/media/video-interfaces.yaml b/Documentation/devicetree/bindings/media/video-interfaces.yaml
-> > index 038e85b45befa..6ed4695cacf7e 100644
-> > --- a/Documentation/devicetree/bindings/media/video-interfaces.yaml
-> > +++ b/Documentation/devicetree/bindings/media/video-interfaces.yaml
-> > @@ -95,7 +95,7 @@ properties:
-> >        - 6 # BT.656
-> >        - 7 # DPI
-> 
-> I wondered if we should reference the macros here as well:
-> 
->     enum:
->       - 1 # MEDIA_BUS_TYPE_CSI2_CPHY
->       - 2 # MEDIA_BUS_TYPE_CSI1
->       - 3 # MEDIA_BUS_TYPE_CCP2
->       - 4 # MEDIA_BUS_TYPE_CSI2_DPHY
->       - 5 # MEDIA_BUS_TYPE_PARALLEL
->       - 6 # MEDIA_BUS_TYPE_BT656
->       - 7 # DPI
-> 
-> (Annoyingly we don't have a macro for DPI.)
-
-I'd actually add one: there's certainly no harm from doing so even though
-it's for display, not for cameras (or receivers alike).
-
-This patch is already in my tree so the macro name comments should go to a
-new one.
-
-> 
-> This can be done separately if desired, so
-> 
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-Thanks!
-
--- 
-Sakari Ailus
+Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
