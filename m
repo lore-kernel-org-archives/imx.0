@@ -1,34 +1,46 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14DF2652BD
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 09:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4062E62CF
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 09:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761557643; cv=none; b=GqgmR1icBlZxS6qstxWIuhozO3yZ90LYE5X+CP2+xz2UD8+ZXYyljw9PE68wv+9Ym00ex4rxRQHGv2EJ69n/7oy25moFmCub85JfB2yacS/IbISUkp3QNejt5K7Nla6KMnVtkTOuSVP8l5JkhM/54uNu2bhP9b77mRWf0y6bBJk=
+	t=1761558359; cv=none; b=KnEga/nb+D77lUwsUEtHjkSOBH5vWJj3xTteSKjSHEZRmGgKQhifNbYZXTSOOpdWRKLh+D0CP3bAMMPxGhx8zljlLYJfnhflsohqi9nkc/v67seSzSt6jbovQ0Unxl66tRaQhY0vmCZ1bbCOHi/Qot+yowjx/rxk1Ah6sPg9lJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761557643; c=relaxed/simple;
-	bh=JWOTEzsnqe2ZVX69WMnwkdkU+ZQ82vlW3C/Ncaoe77o=;
+	s=arc-20240116; t=1761558359; c=relaxed/simple;
+	bh=ftSUN3i0A4AKZy9QZQGbnqI1IJrNS2SGMXKdUYQOXUA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UiG9fFUWYLquEmK2wzxPRWlpiQgS4E5nUiIj6fmDLDA8TOZwMQJZ4Bi6sldXRnIdswjCtTDxSF9uOQaJ6bivsHSqb22dmi1Urw8K1ISQ9bn3eAfZ9PrFk4qWVsmugzTaYO1x812+GegTa3RKfxsIhk9z596T8vsOJpHFWE4CRvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=RfpAy3rG; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=YvQo3/ImUnCBj3uFeCQIwMhVBM2nfuJGrjiFsx7dvkYqnMfp4RnFmdIi3mDUIm4uABHiFMS709ksODTCOqRGF6rX8qmiRhzKkbrkVLQJXdE8SAHeL2MyafgA8pqDCkEvyCDyh4OMEjrVkTM9i0J2pIW33jLijRBHOvYP9xsEkyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=s3AjK7vO; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="RfpAy3rG"
-Received: from pendragon.ideasonboard.com (unknown [193.209.96.36])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id E04621661;
-	Mon, 27 Oct 2025 10:32:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1761557532;
-	bh=JWOTEzsnqe2ZVX69WMnwkdkU+ZQ82vlW3C/Ncaoe77o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RfpAy3rGzg7hBJpFqUe7Fcpd2joSB2//BoH9daa4FQ+HnQfqX8G+sj8/R00TFllqI
-	 cQMwAYuX5R2+RasSArIE2mwNRaD6Kf/eEFGu/laS4ld6sJh9OnTie2QTLPbOQUxlDQ
-	 FTH363BCa5sL1N+W5wxr8+ivFHTA2jiaswQSmNyg=
-Date: Mon, 27 Oct 2025 11:33:46 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="s3AjK7vO"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=dOijxY4yU1FSMyaDhxn4I+Okufrw4ljdJUN2JDfS9Dc=; b=s3AjK7vOVdO9yapjAJKe+t7cO5
+	hKRBh4UX2ixS+KVr3oM7uZ0w9zIVqT5eyfWWO3eQjkuxxlmAp9vI44Jor5doPNB73OPp+AINp9q3A
+	/8WKoJxjH9kW5Mqg5xWaNXtJs/5rwSBJuLlN7cUrV7MM3sj8zSqSAVWGramQB6uYWuAgdr682h5gT
+	F+9Uzl0fs3nmDEXGrCRn68gNtT/H9ytgtrpvdugyeNyerBu3vkX4sRCcMIBfAJUn0F5o07V+HlO+m
+	Au7krtZJ4v+r2Y1/Xk9CpoWAkV5kVymx98KEtfdib8QA/7QlsLcQmfJh6qsCKnI8t0209n/QIXtV7
+	FNz6hYtg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56120)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vDJnX-000000001bf-3JsR;
+	Mon, 27 Oct 2025 09:45:55 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vDJnW-000000005UD-1dSd;
+	Mon, 27 Oct 2025 09:45:54 +0000
+Date: Mon, 27 Oct 2025 09:45:54 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	Daniel Scally <dan.scally@ideasonboard.com>,
@@ -43,73 +55,51 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
 	Shawn Guo <shawnguo@kernel.org>,
 	Emanuele Ghidoli <ghidoliemanuele@gmail.com>
 Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <20251027093346.GB1544@pendragon.ideasonboard.com>
+Message-ID: <aP8_UjqvCHbrP3lH@shell.armlinux.org.uk>
 References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
  <aP82VEjNDgrNAZzy@shell.armlinux.org.uk>
+ <20251027093346.GB1544@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aP82VEjNDgrNAZzy@shell.armlinux.org.uk>
+In-Reply-To: <20251027093346.GB1544@pendragon.ideasonboard.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Russell,
-
-On Mon, Oct 27, 2025 at 09:07:32AM +0000, Russell King (Oracle) wrote:
-> On Sun, Oct 26, 2025 at 02:29:04PM +0200, Laurent Pinchart wrote:
-> > Energy Efficient Ethernet (EEE) is broken at least for 1000T on the EQOS
-> > (DWMAC) interface. When connected to an EEE-enabled peer, the ethernet
-> > devices produces an interrupts storm. Disable EEE support to fix it.
+On Mon, Oct 27, 2025 at 11:33:46AM +0200, Laurent Pinchart wrote:
+> Hi Russell,
 > 
-> As this is the second problem that has been reported recently, please
-> bisect the conversion of stmmac to phylink managed EEE support and see
-> whether there is anything in that which is causing this.
-
-Emanuele Ghidoli has bisected this to commit 2c81f3357136 ("net: stmmac:
-convert to phylink PCS support"), as reported in [1]. I can test that
-commit and the commit just before tonight.
-
-[1] https://lore.kernel.org/all/341f56de-9dde-4c44-9542-b523e1917dcb@gmail.com/
-
-> Please also confirm that EEE was enabled (as soon through ethtool)
-> prior to stmmac's conversion (I believe it was due to this code that
-> was present in stmmac_init_phy():
-> 
-> -               if (priv->dma_cap.eee)
-> -                       phy_support_eee(phydev);
-> -
->                 ret = phylink_connect_phy(priv->phylink, phydev);
-> 
-> > The exact reason for the interrupt storm is unknown, and my attempts to
-> > diagnose it was hindered by my lack of expertise with DWMAC. As far as I
-> > understand, the DWMAC implements EEE support, and so does the RTL8211E
-> > PHY according to its datasheet. What each side does exactly is unknown
-> > to me. One theory I've heard to explain the issue is that the two
-> > implementations conflict. There is no register in the RTL8211E PHY to
-> > disable EEE on the PHY side while still advertising its support to the
-> > peer and relying on the implementation in the DWMAC (if this even makes
-> > sense), so disabling EEE is the only viable option.
+> On Mon, Oct 27, 2025 at 09:07:32AM +0000, Russell King (Oracle) wrote:
+> > On Sun, Oct 26, 2025 at 02:29:04PM +0200, Laurent Pinchart wrote:
+> > > Energy Efficient Ethernet (EEE) is broken at least for 1000T on the EQOS
+> > > (DWMAC) interface. When connected to an EEE-enabled peer, the ethernet
+> > > devices produces an interrupts storm. Disable EEE support to fix it.
 > > 
-> > This patch is likely a workaround, but it fixes ethernet usage on the
-> > board, so it's in my opinion worth being merged. If someone with better
-> > knowledge of EEE and DWMAC, as well as an interest in getting it working
-> > properly on the Debix board, wants to submit additional patches to drop
-> > eee-broken-1000t, I will be happy to test them.
+> > As this is the second problem that has been reported recently, please
+> > bisect the conversion of stmmac to phylink managed EEE support and see
+> > whether there is anything in that which is causing this.
 > 
-> The changes to stmmac have been tested on nVidia Jetson Xavier NX,
-> which uses RGMII with dwmac4 and a RTL8211F PHY, connected to a Netgear
-> GS108 switch. It seems to be the same that your board is using similar.
+> Emanuele Ghidoli has bisected this to commit 2c81f3357136 ("net: stmmac:
+> convert to phylink PCS support"), as reported in [1]. I can test that
+> commit and the commit just before tonight.
+> 
+> [1] https://lore.kernel.org/all/341f56de-9dde-4c44-9542-b523e1917dcb@gmail.com/
 
-Very similar indeed, with a RTL8211E instead of the RTL8211F.
+As you will notice in that thread, I have responded to it last week, so
+I am well aware of it. I am also well aware of the claims Emanuele made
+in his commit description are demonstrably false.
 
-> I will re-test today.
+That's not to say the commit isn't a problem, but the explanation of
+why it's a problem doesn't make sense right now, and thus what needs to
+be done to fix it is unknown.
 
-Thank you.
+I don't think going around disabling EEE on individual platforms is the
+right approach.
 
 -- 
-Regards,
-
-Laurent Pinchart
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
