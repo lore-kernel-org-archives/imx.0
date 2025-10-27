@@ -1,165 +1,158 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA4F2FF16D
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 12:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8F03101C8
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 12:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761567769; cv=none; b=AoYbV0Gsb2U6dVEDcFP68wzdzj/aF+xnSrQdzWfQZG+gSshC16CfV3CSMzSVWjaWDR8bZ0wwF9yXPjVIY9d51XVWtp3B4PNINOv/90/sabhDmwx5gvZSUzSrtt+TX6zw4wu01tPvKz3gSgQoPvc6UcqyIAcjogP9iqQHQVoOZik=
+	t=1761568738; cv=none; b=AQ0ccmkI9m+pST61Ga5vZ6DZbFwRauZ/xF5UOKVuS8v/cE08oM2AkGPTNfSoOT+ZUAR/qaSV0xH5KBXeRAxaSAnNADIcWL0lzOGS5ypt3rJLLRqRY67I34m6X9s5nnvai/l57zunYEMOvdiyH6Ah/JTTNB3Ixb1a2oDRw0Zycco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761567769; c=relaxed/simple;
-	bh=3muxG6MPxyrW/HfGoVTrDpf0zTKrmjAvX4xRLEsxaLs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rEGdSnwm47aDAjbe8oLO7nqHctwVKfMzkRn9bPw4qJJk7lpJ7CdmkazCyBh6J3NbI1uwJDEK4UMRPAvhoTZ2Z4YaNq3QceV/ztj4lJHzkdTx5mXmuaft57jb1Olld7dte/TFn3lde8HLcD0FILWdXU2bgAZyzUZWYY/vcE4boRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hQQFjcNu; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1761568738; c=relaxed/simple;
+	bh=4aoKoN5RbG7AvfZ2MgAIZ3SKeXxBVSUKkFoVfsWrXxw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jt/HqQEyabN8yuhGIFcGGl7CNMRcmrhx9YXFl2A7th89k0qOnP9IYbWpj6dQxsxa2Wratq1wGvITNHXdLtPj56od9g18JCASMkU73AVJPWkBRCeGkiripjSxK3Q13/m/0S1FZ5Sc+q60+4Wse1oQlBAR7eoCF27UCn1q1t0eoMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b80U3O5R; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hQQFjcNu"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59R84pg32232279
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 12:22:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=JncXzot9W1gow8/tUDBTV3mA
-	gpfqF8x82foGvNCR8u8=; b=hQQFjcNu2DH5Lw59o1W3SMNAFQY0QXjO/ktVuC40
-	hzC7YzQhGKGkCh1lCcdb/C/niKl0YCCv4pxGe/CTro0PzN3sR8SCaf+bRb1G1SzN
-	q+VuVqXq66xW1wvCMEun5HJ81BTKuCA3TxV612EXGGbQdvrskchdpi2h51F/OUc0
-	NSqKEbYWk4av6IrCCZHgQNu/VoFWqFXK3rMMy9vmJNTSf4zHBpVxvjY5YwkyfErW
-	3Ps46xiotXAIzJnryRT7QeUNOyGxvZKYB+by7tQ7mfvn5y+2l69ZVBj3vtenKmSR
-	dxdsKS6jQdPufQELxCcW3VKJ+HXMXz8y5LsPIIwe11cxCQ==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a24wn8qen-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 12:22:47 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4ecf72a45f5so38793161cf.2
-        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 05:22:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b80U3O5R"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47714bb5c49so642455e9.2
+        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 05:38:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761568735; x=1762173535; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=2m2cwzlH5wpE3kdOpcqs/uIBHJrsaPfS9kVRJa4lNf8=;
+        b=b80U3O5R7KlrbMazquZTzcAcwOTlAaafnE4cvTGCUau94XVo0QrAVpbjL5h6zcMGnc
+         XSicQBYG8ZM9oFQF8U+5DKgy/4uF0pbqQO0ZnBAlA8VMS5MhTt2FLpY27iCg3qkjvgxM
+         mBEAqGa7n6+LSO3XVdUKbW87e2GokPkzofv29+9SUa1T6MaKoApSYfetWz/1uli/xEQF
+         6a/SYqRTfCb9u50UZVuyxgY8ERRcx3oaqcAM/swIehOGIrXJMqXUEW6e3YJh+JhPYwvo
+         X9Pbmp9g748u2DYf+dPPcZKz8k3HYBm+RFv56+E1J64gOEXFQUwEd6k7nnhVR8/TlQiG
+         j39A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761567766; x=1762172566;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JncXzot9W1gow8/tUDBTV3mAgpfqF8x82foGvNCR8u8=;
-        b=B0LBs8a34XhZNBu55Mt2WU/3N2E19Ha7hEBeGtq+p5xf5fbUNZEJmkttpV7wr3fxtb
-         9DKuSwi2R6AxBGxMufVqcH+7vsTNXeRhfvItlpGYgE2uqa8DBvnXiHjxQVAIpqgZ+CWO
-         YJ6v5glaHMeM+YLQa3/dyX22T6MCuM/ZDhFMH6aN5YcOjiUKavZY8A+2bT4ImQ1F7QAg
-         Z7IBdpSn6DQdiEehkf0o/seeG3ha/XOzWJ+jODTKzQVj9IjYlbp/1aRt1u73uhETuh3b
-         xnQy/YL2kgJbqXyySZl4piO09K5VyHT5HsrRzDtNeXUoBc5+R81ICZYrBBPkDTIwAzhW
-         IKPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0iEblE7tM6HfUaOW4IJj47jFnCdOt8L615wJh3xgdQLFONLKknQTSWoIPxGsj5tqLZyM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzMhR2lAf3p2PmclghklAlV4ro8oqA/xC8TCgROS1n95qZjdTHk
-	nOFi7UzwsQLhI/p+dKRt0/iSxr125hcLgXGeF7wGwoA3ouLhZRKxZ0UbmPBbpT8+PiTonuol1AL
-	xwm5dni333SBqY6KK5q8ViTPtjzng5u7q6Q8wdSXlexMeOdKIkwxqY+Q=
-X-Gm-Gg: ASbGnctRnjQ068mWOUyqRi6lG+880aVompIiEd77P/WXlhog9DrNtswDHDmH4kM8eU6
-	snTy9a5o5Um2MjG8zXh59q5Psw1B68b1Z3LPf0A03EBSOR9Ntr25vTiV4YK2Ts1w4kmUfE+La1J
-	8ezrE7qxD0/fo59TsxDjKdJpsRg/IJdLkWjVYVwdftZfxf42a3xgQ5nyn0WI8xWVO9uXL3okg+s
-	nIbdQQnwCz5NiNq66TiyREj/Se7GIon5XsdBpyo2/mqHF9wdNpSH5lAl5IY1yTM41QiusZw6SuI
-	pZI97Ysz13RXTSA1LrOBOfr3ck8Lf2MeLf2XgtCXrEnSdjFMYsISGpWTJqN9ow/eZBTaXDowIfQ
-	94yNUrFzJt9dIq4aa9dIzt+jAjekCpiUFx/uTUGcy65V0BzTZT91af/6Ot5kNNRI2pA1H/34Kv8
-	+r2kqFiPKjUSr2
-X-Received: by 2002:a05:622a:353:b0:4e8:9f87:1f42 with SMTP id d75a77b69052e-4eb94922adcmr152956021cf.69.1761567766312;
-        Mon, 27 Oct 2025 05:22:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH79d7Do90KoVZ1tYBoBY55fSIjzc3SaetN68K8JqBrkVyDzQwzXI4DnjU4YyJIchWS9APnNA==
-X-Received: by 2002:a05:622a:353:b0:4e8:9f87:1f42 with SMTP id d75a77b69052e-4eb94922adcmr152954761cf.69.1761567765265;
-        Mon, 27 Oct 2025 05:22:45 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-378ee0e0246sm19655221fa.49.2025.10.27.05.22.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 05:22:44 -0700 (PDT)
-Date: Mon, 27 Oct 2025 14:22:42 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: netdev@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Wei Fang <wei.fang@nxp.com>,
-        Shenwei Wang <shenwei.wang@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-        Paul Barker <paul@pbarker.dev>,
-        Siddharth Vadapalli <s-vadapalli@ti.com>,
-        Roger Quadros <rogerq@kernel.org>, Alex Elder <elder@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
-        Liu Haijun <haijun.liu@mediatek.com>,
-        Ricardo Martinez <ricardo.martinez@linux.intel.com>,
-        "Dr. David Alan Gilbert" <linux@treblig.org>,
-        Ingo Molnar <mingo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-        Michael Nemanov <michael.nemanov@ti.com>,
-        Kalle Valo <kvalo@kernel.org>, Andreas Kemnade <andreas@kemnade.info>,
-        Roopni Devanathan <quic_rdevanat@quicinc.com>,
-        Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-        linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH RESEND 2/4] net: ipa: Remove redundant
- pm_runtime_mark_last_busy() calls
-Message-ID: <g4ryfonkdpnsgqo4brx2dymo7o35jkndc5kkhdybhyvwo5rust@jwsivdbievvi>
-References: <20251027115022.390997-1-sakari.ailus@linux.intel.com>
- <20251027115022.390997-2-sakari.ailus@linux.intel.com>
+        d=1e100.net; s=20230601; t=1761568735; x=1762173535;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2m2cwzlH5wpE3kdOpcqs/uIBHJrsaPfS9kVRJa4lNf8=;
+        b=WHNmONaXiF8jCXByTcAFRYYKILE/AUAHywo68hABAr4qmGs3LRXPoJaYUjWw4VJS2l
+         tyjcftAbmwc2vBU+NZWt21iBzPpeMaeUkM1Va8QYHugNOArawUmjRB+NpTlsu0gG+s/0
+         PlIJStduEbVoQx1MOQtto/8TKyHJFiwn7O3gJfow60sHp2qATGrB048s6P3mECCnffhV
+         IvooHdQxddATVILV+c/u10hF7QPZ1YCZbrXr7J0Ru2MWNCxQOL58yiZFnUgCtapRR1NW
+         3XAo+3UJ4iiGQR/N5FsTD6YUWRoHqLESgKOYyyBM6gk4qh88c3cmcS/B7RCbDoJOLpV3
+         r6ug==
+X-Forwarded-Encrypted: i=1; AJvYcCWqmDNZQPKiD3X0IZztGcXJlz8l9Rr0Owk0atLgd5wZvToqViBWMLbToGpYvdQoy2VTXT0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwIG/f2Rmj7TqhKiwz/7CIoV+ejrrzf1pujjP5Tf4a1SDPZ4oUS
+	+WMEuIywv/pqyQVFZswJ8s9bqlZ0iyquwqUI/7PeXErQ2UoajzIqaEHO+UwNqFVGFUY=
+X-Gm-Gg: ASbGncvn1iIieIZgJt0TMB7fDMx+hjA89wgGfp5ubiZFx8eBzpFE3VLsPy3Hjl2ROfM
+	mskIZEczfccz0bm0L/uJE7Zhu09MKwFTMHDZtqfRB06o3Dw825mkWrCjE0iMlkErKIsdEUYxm9H
+	R+wzfdZB39w/O8Ox/cQGAbiJGVUWQvIoTzSFXl57L1dERyxWImTUxizSnzFJlm+91QiRZS4qWN1
+	tb2mupnzAxBVR5GJ54ePHRSKtzdce1u2AbtndD3UOUVXPaMe46xTGDncjTXmtKdSxoAeKEyBgd4
+	I/GAHVaA75FdNnKbp5XGF3ZsRYEMK5ThBBZmTJh/SBOmo1ZJFWfOjMco2KQqaPNaLZuNf6hXrQy
+	fxX5okHHYM6F7VEkckF/X2c35vaDZ9mXwfiXlftY38kZ0TmAPZwN7u7elPMu4REmV2XZo9/s3xf
+	iwOjMnjHa+hZtABvPeezj6
+X-Google-Smtp-Source: AGHT+IGnHN2+LGUXtGZpCqzNe4bVcec3o9TIo+eb2g4z7PQMElWw3oVzoXNocGieyNl5ZXcDJZ9cgA==
+X-Received: by 2002:a05:600c:350d:b0:471:3b6:e24 with SMTP id 5b1f17b1804b1-474944c2050mr86946005e9.8.1761568735253;
+        Mon, 27 Oct 2025 05:38:55 -0700 (PDT)
+Received: from [192.168.1.29] ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd37467esm139395695e9.10.2025.10.27.05.38.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Oct 2025 05:38:54 -0700 (PDT)
+Message-ID: <d97899d2-ce6c-4ef3-99f8-946a3c9ab74c@linaro.org>
+Date: Mon, 27 Oct 2025 13:38:53 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251027115022.390997-2-sakari.ailus@linux.intel.com>
-X-Authority-Analysis: v=2.4 cv=XIY9iAhE c=1 sm=1 tr=0 ts=68ff6417 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=QyXUC8HyAAAA:8 a=EUspDBNiAAAA:8
- a=QXDDecBx9f-8Df5VMo8A:9 a=CjuIK1q_8ugA:10 a=kacYvNCVWA4VmyqE58fU:22
-X-Proofpoint-GUID: EcNOe36srfTJaGJPVP5Sc50lAvJS3uC-
-X-Proofpoint-ORIG-GUID: EcNOe36srfTJaGJPVP5Sc50lAvJS3uC-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI3MDExNSBTYWx0ZWRfXyNwM4QhOmueP
- SyfNSSPQqEhON12ryxPL77Jl/w929wlGp+HPXZ6oe71jae8ECL06q/K8AmPSD+CwTiM/Zg0UeBq
- kOOcVa8flg0jIRngMux4uTvU0dk0UKJ+cbzU6M7P9UrE+RM8PjNINbMt6tNqgdf+JvVC3/PPch8
- Zo547iCnN03hxL/4mOLfvoabY3Nmu1DOl4BUPIy26zQlXwXPvQPj3ww5lXTWEArzr0pJdMvXRfh
- XMoa+CS22fm28C9Jz4UQf9eYYp1KzQ6zwwR/X+BZ0pKUSHP1gV7fDjZVkwl85UVK3nbsC01xGMa
- vUiHdk5PdYZv/wOFyvaTArPL7mTofqs5pW54MxxtRyjKk379objEqhYtNq0ZFBJ3oHqrDf+S1ng
- 0pwCEKa6dICiGYHdw9dNVS+mK5QQEQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-27_05,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
- clxscore=1015 impostorscore=0 adultscore=0 spamscore=0 malwarescore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510020000
- definitions=main-2510270115
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64: defconfig: Enable i.MX95 drivers for pinctrl,
+ Ethernet and PCIe
+To: =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
+ <jpaulo.silvagoncalves@gmail.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
+ <joao.goncalves@toradex.com>
+References: <20251027-upstream-imx95-smarc-defconfig-v2-1-0f664b08d553@toradex.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ 2+47PN9NZAOyb771QoVr8A==
+In-Reply-To: <20251027-upstream-imx95-smarc-defconfig-v2-1-0f664b08d553@toradex.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 27, 2025 at 01:50:20PM +0200, Sakari Ailus wrote:
-> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-> pm_runtime_mark_last_busy().
+On 27/10/2025 13:17, João Paulo Gonçalves wrote:
+> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
 > 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Enable i.MX95 pinctrl driver necessary for booting. Also enable the
+> missing drivers required for Ethernet and PCIe functionality. These
+> drivers are used on i.MX95 boards, including the NXP i.MX95 19x19 EVK.
+> 
+> The below configurations were enabled (listed with their DT nodes on
+> imx95.dtsi):
+> 
+> * CONFIG_PINCTRL_IMX_SCMI for the `scmi_iomuxc` pinctrl.
+> * CONFIG_CLK_IMX95_BLK_CTL for the HSIO domain clock controller
+>   (`hsio_blk_ctl`) used by the PCIe controller.
+> * CONFIG_NXP_NETC_BLK_CTRL for the NETC hardware domain controller
+>   (`netc_blk_ctrl`).
+> * CONFIG_NXP_ENETC4 for the Ethernet controller (`enetc_port*`).
+> 
+> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
 > ---
->  drivers/net/ipa/ipa_interrupt.c | 1 -
->  drivers/net/ipa/ipa_main.c      | 1 -
->  drivers/net/ipa/ipa_modem.c     | 4 ----
->  drivers/net/ipa/ipa_smp2p.c     | 2 --
->  drivers/net/ipa/ipa_uc.c        | 2 --
->  5 files changed, 10 deletions(-)
-> 
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
 
--- 
-With best wishes
-Dmitry
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
