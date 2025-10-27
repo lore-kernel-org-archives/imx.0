@@ -1,132 +1,89 @@
-Received: from mx-relay170-hz1.antispameurope.com (mx-relay170-hz1.antispameurope.com [94.100.132.162])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB32F2F99BD
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 11:06:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.162
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761563168; cv=pass; b=q0UZNuUOw9421A5kkk2ue6T8RBb3bqRviNN7AzBNsvv+YiG8c2OZ/AC/KpPWzWtKgeprUzhfNGWV3rvJBAW1Il5q2eenMdkS0Ub9DO4h/8UfYs7I2xUQtu7DD+Fq/YSm3IJN97evX3cEOGxbdiESr1d0Oi9oUVqlSrsz7mhpmZU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761563168; c=relaxed/simple;
-	bh=YZGQd8jI9Vellkzt/s6sS4bgFKhEBKH1fIQjG2qUnFM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rSDNGefN4xgzDAbI4YJ5j4vyaORVDAVk/1zbApG2g3JWGH2GYpFT1z0CN1ROUqgT5xVgxJl1aXIFwGvrt3fz8wrDIKEh0CQbTZ3aXpV8ZtFWGzvsnwoWIN4c0x0bynFuohuqgdPdAu07DQmew0ZrqT51Eq2U8Jxhw+UpKkC2yY4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=oPfkdECx; arc=pass smtp.client-ip=94.100.132.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77352E613B
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 11:22:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761564161; cv=none; b=XWejVUJiwA99YLSQ9nnYAe0Ohs71szEv7hKNek3RJnYtRjT4NL8D/lHeiIXbVpkHShnL3J2G1bWxt7PZ9DmWxQVaxvaYvu91qZJUAX67MAxvUvbzs3kJ9IjT3iic7wf02ab1ZDDsKsSNmwql069gKHtA2Fl1kPSeCCmu1M5J7Fg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761564161; c=relaxed/simple;
+	bh=5nj6uvg21fnZ5JPC8KKJWuYSYbG5S54UifaAttUkc0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kPvN7imeZTO/Gwv5ejeO7IbEQFwanuBlu998hYqgYIWpz+HJNHBkr+ynRkI1RR6Y8EI+i/KxnToOBfW+Uib8j8Q6gZ5YdOh9D514LiCjxAM4qaRnEHvZDok7R/CXmk6dS3Drrq2EQiwoOEyhg9LPnnQAvNWNMEVJSsjdLsSAT6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=OQbvNXOg; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="oPfkdECx"
-ARC-Authentication-Results: i=1; mx-gate170-hz1.hornetsecurity.com 1;
- spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=87X5R6vjtDdJY60KYPFY+Q7PYLNtQIh/pXfTLhBqd68=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1761563125;
- b=Qh3QYsITGolYJwAHG0FZZn1wQGI+a+j6UxrwTDSz5d8cI0nSUORjn4vzKwCbI8lNzY50OivN
- GgJ5vDbf0RqBcamPCTf0teQ1rGpC2GPIW+KAfD0/dfUw1TRHadUuj1IM5ePeb+9Efcaa12WU4qD
- GfcxsS8zRh+lGBjoE8x7q3PytAQXNW94scw8ak34KSo1lCOUL9TZxmM0jlUrMrjE+Wen8pJS3Lc
- 3Vi00EpopZaaLvTuYqrh3ls65Yr16U3yrT2cVDvxmJzYLxZFIcrg6ZHMGl6Z1NVc0ItvZWmnwRU
- eZqvLNn6e+LN2rLdoTbGRuuwS1uOPTzPz2+6qzKytY/4Q==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1761563125;
- b=qJy6mvpOvFXAPOqY/6o/pC5mB/Ynnh+uxcbjKmikE78CsWA3UtCZUvtnDe/+rTgbGNwalJYe
- V527CH8ngCOPPDRSFRcvi+b3GmztuMiBKPaXgxmyxEZS6eTzqSp56IdFaB1dUilsBQCBlBm4U5b
- 5uLebL3c8WMtvWhEOLLi3eDetDQtExdmUvZ10jjyNL8zqkMTLSWrTgsjiZxnQJO8WoWptuPWibY
- dOEVSYNxCjmA065azo7YHFrJ2QYI+YfvazUnMnvhB2VJp115LA7Msln42ZoQYVsh9qXA+dGjWCa
- uuLbcxoorY09f3AfhyYopOf5zIZ20AoJB46SwfBj1dNiA==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay170-hz1.antispameurope.com;
- Mon, 27 Oct 2025 12:05:24 +0100
-Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 5FCB6A4127F;
-	Mon, 27 Oct 2025 12:05:10 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="OQbvNXOg"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=hgddpgXXdpWRrOCO4kQaM3CnBjKkRhnDW13T+vqMRLM=; b=OQbvNXOgYgjq3OEgqECQuxj/rU
+	Gd0YDsGDJu2bW1LKLAs1bG1BF0SymVgBxcwV4WY8J9GTGfjELv/Vvz4Vz8KuBVTU2/peQC5gjWgQ9
+	DeDh6hiWz4CnAnH2WdGDyCoLFzFdjDRs33CldLJmuA1D63ywul7e4M7sNjIGWAZT0jZGF2RrzgIzC
+	S6wKx4jgg4D/5gT2AV6nURlldDThPwr2VKhAcLviUB9PVYvtSfnec+K10fo6NoYZsc67zVB7JeUC2
+	n3sEthjKkS7kGsapk5fTCxMjkL1x9DF7qEtc7BHSEelek9I2Ptk6qQAsFPTiuTPfvLs7eFFVxN+QJ
+	PbdL5Hzw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35864)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vDLJ6-000000001jm-3RHy;
+	Mon, 27 Oct 2025 11:22:36 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vDLJ5-000000005Xs-0wS5;
+	Mon, 27 Oct 2025 11:22:35 +0000
+Date: Mon, 27 Oct 2025 11:22:35 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Matthias Schiffer <matthias.schiffer@tq-group.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH v3 1/2] dt-bindings: arm: fsl: add TQ-Systems boards MBLS1028A and MBLS1028A-IND
-Date: Mon, 27 Oct 2025 12:04:55 +0100
-Message-ID: <20251027110459.420857-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
+Message-ID: <aP9V-zosjg7rY5vZ@shell.armlinux.org.uk>
+References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
+ <e87ff7f2-d16f-41f2-b781-b175cfb84b21@lunn.ch>
+ <20251027072749.GA7811@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay170-hz1.antispameurope.com with 4cw9dg19t5z3WpYc
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:f3fe413255b5fec6c4a2399235bbca65
-X-cloud-security:scantime:2.082
-DKIM-Signature: a=rsa-sha256;
- bh=87X5R6vjtDdJY60KYPFY+Q7PYLNtQIh/pXfTLhBqd68=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1761563124; v=1;
- b=oPfkdECxGG4Erk+3NBMiFt0bn/5qHCrJta1NYHG55MgbjiBs9dDQVFqgu7CbbrckY2ltlpmN
- x5q76hxTLwYBHRmsZuqygVQOcApu41aMy1E2i2n7dbgMJ1CX4Xj9ivDPlfz3GPs+eBQCrg+L8AW
- zW+adtp3kA63vwA0IhKbFMoZHK+v3PnT3OqgZOTvML/VmdmhulY/cJLTjCBZOCSzHEf0yftED1+
- QWbOvdsugdwjgD3MmU0CGkpXdNBe6+3rhdE9Jg8exL7Chwv7DutBLkourkgaf+/TNqZhFsNAUIj
- UnaDcPSa91PNl20wEXcwULEo8QkyETUEkZId1IwijoqtA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027072749.GA7811@pendragon.ideasonboard.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-From: Matthias Schiffer <matthias.schiffer@tq-group.com>
+On Mon, Oct 27, 2025 at 09:27:49AM +0200, Laurent Pinchart wrote:
+> I've tried to diagnose the issue by adding interrupt counters to
+> dwmac4_irq_status(), counting interrupts for each bit of GMAC_INT_STATUS
+> (0x00b0). Bit RGSMIIIS (0) is the only one that seems linked to the
+> interrupts storm, increasing at around 10k per second. However, the
+> corresponding bit in GMAC_INT_EN (0x00b4) is *not* set.
 
-Add two mainboards for the TQ-Systems TQMLS1028A SoM, based on the NXP
-Layerscape LS1028A.
+I'll add to my comments earlier, because it may help you work out
+what's going on.
 
-Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Changes in v3:
-* Add Frank's R-b
+RGSMIIS will be set when the LNKSTS bit (bit 19) of 0xf8 changes
+state. RGSMIIS is only cleared by reading this register. So, something
+else to test would be to do a dummy read of this register and see
+whether the interrupt storm still has the RGSMIIS bit set.
 
-Changes in v2:
-* Fix indentation
-
- Documentation/devicetree/bindings/arm/fsl.yaml | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index c5d81e3f8bd17..fbffb1a536ba3 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -1656,6 +1656,15 @@ properties:
-           - const: kontron,sl28
-           - const: fsl,ls1028a
- 
-+      - description:
-+          TQ-Systems TQMLS1028A SoM on MBLS1028A/MBLS1028A-IND board
-+        items:
-+          - enum:
-+              - tq,ls1028a-tqmls1028a-mbls1028a
-+              - tq,ls1028a-tqmls1028a-mbls1028a-ind
-+          - const: tq,ls1028a-tqmls1028a
-+          - const: fsl,ls1028a
-+
-       - description: LS1043A based Boards
-         items:
-           - enum:
 -- 
-2.43.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
