@@ -1,92 +1,170 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAB21D86DC
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 00:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF731E503D
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 00:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761525862; cv=none; b=SwU9uAmza1UPR122A+lGHhf4jchnamvRJX+6R44FFkaRUw4jzOAe99fuWoova/Jq7gT45H1RFYhD16gTQUeMOHxAgd5ZgNwZKhIK3WVhXSZ968GN1v5zMPLCshY0mBE4SP49Q6ND5DiI4qXWg1l42i1CXGfwkn75yyttYn5eHVY=
+	t=1761526271; cv=none; b=eWLT4VqsZKHE1qrbTBC7Pm9Ovt74xlmrnjmo53ahOITe3eJez3acZzOoNfvjdx7m6sSj7j772/8fAY11LrpH9ed3wn6F11vcuyUNSx4Ljz3BLn4lE4kfhSwh0wxuGxf82sJuv7iO5Lqjj5TLDaGSlRhleWCQM2TYbR0QF4tAl9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761525862; c=relaxed/simple;
-	bh=oGBJ70fWGuRrs7V1TNX5HTXmxCDYsiN9FlE25l3M+Bg=;
+	s=arc-20240116; t=1761526271; c=relaxed/simple;
+	bh=ICOtlUgV56LEePKk9OLdGgoIx0Fxoy0iWhPefk7duTA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EZUxb2iOcGzVn/HHbC1npjm/W2dKMPEdPqD8FMHof2/30QySlk6iity+198Y5FoPzdD3tu4eZCOqY5zlbkuGlg+EZ1zTDfb8hYhnh4Rh5ul3bvIntxInJEcTShf7gMx36SIkJamcCoWsl+WyGK72+XJHddZcwBCkU1r2ldKJjt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WbMhkCGB; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=pohWW3oktTY3/4akKdRdvLCt3sdKkuYVJeIk1m+tsdRcrCZUWf6H7xLgsYMBc6qp7XMwGWwxnN2Z+werRXgZv36Fz1Wwl18nQa416ycxWYusg9peLgXbEKZnMeias6BqdpFRCL/MPMWgak2skWGYW+55c6yJw3OyZ3jKGbY8hKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=lQjAA7Fl; arc=none smtp.client-ip=220.197.32.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WbMhkCGB"
-Received: from pendragon.ideasonboard.com (82-203-161-16.bb.dnainternet.fi [82.203.161.16])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 9014D16AE;
-	Mon, 27 Oct 2025 01:42:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1761525752;
-	bh=oGBJ70fWGuRrs7V1TNX5HTXmxCDYsiN9FlE25l3M+Bg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WbMhkCGBzud5YNDDtv2InQzvhXDW+1cRob5q2lKZbeYAgBbenRdiU09GHOzZNeyh9
-	 yjVcx/S4Sbt/1cq2UWOh4BGcQoMD6yeraACi8w2RX2YzYdJrmRI0a9GenptR6hN9RW
-	 QTS2l7Mqa/no3gJcRHSJM2Phb/9zwWnpTfvgx4Ds=
-Date: Mon, 27 Oct 2025 02:44:06 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="lQjAA7Fl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=Mfe/m5mRhKga9zLtu31a/sVqXTyfvHsMKaxlczQ85zs=;
+	b=lQjAA7Flm3b7icS0LXV5lqPBu2tMioIDSh+mHMhH7vxjSynDEwGF0MZmsVi0UC
+	o9yNOxpmkRMmM8pAPWW5iMFNNURoqVxpSOncm1I9rIVQd3XRR/QzDjYjxI+ZLdsU
+	5N81f86PIssO//es7FueWFSvZH7sLuiEhKgBSXRf2pjt4=
+Received: from dragon (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgDn94u0wf5o7MO1AA--.46675S3;
+	Mon, 27 Oct 2025 08:49:58 +0800 (CST)
+Date: Mon, 27 Oct 2025 08:49:56 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, Mark Brown <broonie@kernel.org>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
-Subject: Re: [PATCH v7 4/5] media: imx8mq-mipi-csi2: Add support for i.MX8ULP
-Message-ID: <20251027004406.GP13023@pendragon.ideasonboard.com>
-References: <20251023-csi2_imx8ulp-v7-0-5ecb081ce79b@nxp.com>
- <20251023-csi2_imx8ulp-v7-4-5ecb081ce79b@nxp.com>
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [RESEND PATCH 2/3] ARM: dts: imx28-amarula-rmm: add I2S audio
+Message-ID: <aP7BtHVgigfcdtcE@dragon>
+References: <20250924130749.3012071-1-dario.binacchi@amarulasolutions.com>
+ <20250924130749.3012071-2-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251023-csi2_imx8ulp-v7-4-5ecb081ce79b@nxp.com>
+In-Reply-To: <20250924130749.3012071-2-dario.binacchi@amarulasolutions.com>
+X-CM-TRANSID:M88vCgDn94u0wf5o7MO1AA--.46675S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAFWkury8ur4ftFy7CFyrXrb_yoW5Cr47pr
+	1vkw4fCry8Aw18J34rJa4DGFs3G3yDGrWq9rnaqr1UAF9Iv34UXrW0kw15uF93XrZ3Aw4a
+	gF98ZFyIkws8t37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U7UUUUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNRZ33Gj+wbZOVwAA3w
 
-On Thu, Oct 23, 2025 at 05:19:45PM +0800, Guoniu Zhou wrote:
-> From: Guoniu Zhou <guoniu.zhou@nxp.com>
+On Wed, Sep 24, 2025 at 03:07:45PM +0200, Dario Binacchi wrote:
+> Add support for I2S audio on Amarula rmm board. Audio codec
+> TLV320AIC3X is connected as slave to SAIF0, which provides
+> bitclock, frame and MCLK.
 > 
-> The CSI-2 receiver in i.MX8ULP is almost same as i.MX8QXP/QM except
-> clocks and resets, so add compatible string for i.MX8ULP to handle
-> the difference and reuse platform data of i.MX8QXP/QM.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
+> Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
+> Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 > ---
->  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 1 +
->  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> index fd788a7f48e5feeff658e3d2347db6fefca5d0cf..d8fadb0f1b6b670110ee98a74cffd56a6c96592b 100644
-> --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> @@ -1069,6 +1069,7 @@ static void imx8mq_mipi_csi_remove(struct platform_device *pdev)
->  static const struct of_device_id imx8mq_mipi_csi_of_match[] = {
->  	{ .compatible = "fsl,imx8mq-mipi-csi2", .data = &imx8mq_data },
->  	{ .compatible = "fsl,imx8qxp-mipi-csi2", .data = &imx8qxp_data },
-> +	{ .compatible = "fsl,imx8ulp-mipi-csi2", .data = &imx8qxp_data },
->  	{ /* sentinel */ },
+>  .../boot/dts/nxp/mxs/imx28-amarula-rmm.dts    | 51 +++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts b/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
+> index af59211842fb..0c5b52f67178 100644
+> --- a/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
+> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
+> @@ -112,6 +112,29 @@ reg_usb1_vbus: regulator-usb1-vbus {
+>  		enable-active-high;
+>  		regulator-always-on;
+>  	};
+> +
+> +	sound {
+> +		compatible = "simple-audio-card";
+> +		simple-audio-card,name = "imx28-mrmmi-tlv320aic3x-audio";
+> +		simple-audio-card,format = "i2s";
+> +		simple-audio-card,bitclock-master = <&cpu_dai>;
+> +		simple-audio-card,frame-master = <&cpu_dai>;
+> +		simple-audio-card,widgets =
+> +			"Headphone", "Headphone Jack";
+> +		simple-audio-card,routing =
+> +			"Headphone Jack", "HPROUT",
+> +			"Headphone Jack", "HPRCOM";
+> +		simple-audio-card,mclk-fs = <512>;
+> +
+> +		cpu_dai: simple-audio-card,cpu {
+> +			sound-dai = <&saif0>;
+> +			clocks = <&saif0>;
+> +		};
+> +
+> +		codec_dai: simple-audio-card,codec {
+> +			sound-dai = <&tlv320aic3x>;
+> +		};
+> +	};
 >  };
->  MODULE_DEVICE_TABLE(of, imx8mq_mipi_csi_of_match);
+>  
+>  &auart0 {
+> @@ -154,6 +177,20 @@ &i2c0 {
+>  	pinctrl-0 = <&i2c0_pins_a>;
+>  	status = "okay";
+>  
+> +	tlv320aic3x: tlv320aic3x@18 {
 
--- 
-Regards,
+Can we use a generic node name?
 
-Laurent Pinchart
+> +		compatible = "ti,tlv320aic3x";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&tlv320aic3x_pins>;
+> +		reg = <0x18>;
+> +		reset-gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
+> +		#sound-dai-cells = <0>;
+> +
+
+Nitpick: unnecessary newline
+
+Shawn
+
+> +		DVDD-supply = <&reg_1v8>;
+> +		IOVDD-supply = <&reg_3v3>;
+> +		AVDD-supply = <&reg_3v3>;
+> +		DRVDD-supply = <&reg_3v3>;
+> +	};
+> +
+>  	touchscreen: touchscreen@38 {
+>  		compatible = "edt,edt-ft5306";
+>  		reg = <0x38>;
+> @@ -246,6 +283,14 @@ MX28_PAD_PWM1__GPIO_3_17
+>  		fsl,voltage = <MXS_VOLTAGE_HIGH>;
+>  	};
+>  
+> +	tlv320aic3x_pins: tlv320aic3x-pins@0 {
+> +		reg = <0>;
+> +		fsl,pinmux-ids = <MX28_PAD_SSP0_DATA4__GPIO_2_4>;
+> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
+> +		fsl,pull-up = <MXS_PULL_ENABLE>;
+> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
+> +	};
+> +
+>  	usb0_vbus_enable_pin: usb0-vbus-enable@0 {
+>  		reg = <0>;
+>  		fsl,pinmux-ids = <MX28_PAD_SSP0_DATA5__GPIO_2_5>;
+> @@ -269,6 +314,12 @@ &pwm {
+>  	status = "okay";
+>  };
+>  
+> +&saif0 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&saif0_pins_a>;
+> +	status = "okay";
+> +};
+> +
+>  /* microSD */
+>  &ssp0 {
+>  	compatible = "fsl,imx28-mmc";
+> -- 
+> 2.43.0
+> 
+> base-commit: cec1e6e5d1ab33403b809f79cd20d6aff124ccfe
+> branch: microgea-rmm-audio
+
