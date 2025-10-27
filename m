@@ -1,60 +1,62 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7186330FC10
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 16:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AE92BE7CC
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 16:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761581453; cv=none; b=KdJlygjuKB3Th3cgvueCmHPPjL/+yppIuKyuMnAONMjWY1oSQPgyFHxzsdlciqz39LL5KuEqdKiWtTE3hud20HHKft1oj3W0sBWjW7RZD4IhWMyMTJe9/FJaTg0ftU1a7+lH+oJVgGOyq77UHhRSV+S/hOFIjDcKkdQIHAsdmM4=
+	t=1761581453; cv=none; b=AhxVR3vrinnQbMk2b8nenAUPc2iZCVAzU9JYyvAjZxxrlP/Ax1UXKcK5X8bsOfGHGvjGj4McP2h0s9VPBe/8ndKbELxLCF00K3K6SHqCUPEhGiFMnKmmRdkR/mWHMKB+CkPvxpWQoQspBNlK3jUnEIZftaEQsyagg53KXOegB2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761581453; c=relaxed/simple;
-	bh=q0KsMgAElv0vgdV5eooiTkRZl79F0ej2oBY71GeUUCI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k+vki7D59T2gmSw63XNxWJRLHifJOulTmdKmzXomXiS4cwCoZprUGQ0I43nijh4Vy0YW1UvLsMGii24IWsxe+KHWz+idoZRF1AdcDinULHGD6BCmKIkGiqW4R8SzcthtpUoZMuLQUYVxOajCPIK34gNArkdaExSFRFgtZfokkAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=YpAvPu6c; arc=none smtp.client-ip=209.85.218.53
+	bh=cT+JbXkJCjUndBEl4/KvRhHpw6r6Ue8YLOgh13Ob7jo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tZwP9c+B7nFRpPpAs4OjDAhXBJwso/VmnTKvRMKsg2AqI+i71CCjsxrt7asjFxNVwD0X5nhyKHkxi2twyBc+sU+QFHDAbu9VtLK4vJdyWW6jDAJ/0klwuIuufdtP3qGYpvGfjTp8N3+YBzS6H9j7a5jkCfkaLa18etU6ANFtA1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=LwRqPXHr; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="YpAvPu6c"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b6d53684cfdso1087720366b.0
-        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 09:10:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="LwRqPXHr"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b6d4e44c54aso856416966b.2
+        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 09:10:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1761581449; x=1762186249; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Veu3Rsq4FjpOJipbhAFeCCYDWDFK0CBkfMfLFx9DhXQ=;
-        b=YpAvPu6c8fKzDiNXy+xLpYOr+Evll6ADhcS8N2FLkE+34hc5Hi8cj9fvYk8B0VGED/
-         DcKEncr1OJRVtYJARPd/E4KneYedntfMBW7/Czp5W9fKsRmkRA7vFdZKqttZOCwMzyTe
-         HAHODkl5kMnukY2lAgyXXi9QZ4U+X5zElnQFo=
+        d=amarulasolutions.com; s=google; t=1761581450; x=1762186250; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kT3v2aN8EQq8AgHMNf1v3TkZG4Dh+2CDgf66x9dYHZg=;
+        b=LwRqPXHr/4uq3D6BSSBO1lemTjlvk6NJLUlNqn7HXMm1NOC2z4ywofQS9zcQ0m9Aqe
+         0z46vNxOHFRcweCvrO7Aqqq/TRoe6VtGuekoc1W02H0d9kOfvxnrSJaAViDN8Vzfjzlq
+         Jcep1rk24Lckxes9ufGIF2uJgPHuncBhQLKvs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761581449; x=1762186249;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Veu3Rsq4FjpOJipbhAFeCCYDWDFK0CBkfMfLFx9DhXQ=;
-        b=SmElS47YOnGNYm2kPHx71lUC37W+Uqd7MEnxy0ToeR1I/eAJq5ltEsKiens8lhkAVh
-         LjSO34SutNbpG5MhH/mstCK5WlcjLztBrqtJK7qbEiKYvxTHepFOpMO6+WnDL6vW7U3C
-         5FAo6cIIgK4848vXLAn2nz3fIbeAyOUCgsR7EvDMbFVv5WnSVrkPWoWBgtBUqjI7rfjw
-         7DwtOk5e3r/LTZ7VklAWiu4rvJNeCzXJchJ4fMOLWUT661Sl+ahBABLrVQGSkmWirK6M
-         FDwOo4hY5d8FSY29jup8lBjw9xhn9KfM+k/H8Pe9MhYVhNqD0SvbdJskBP2qMWGvkZX1
-         JQJg==
-X-Forwarded-Encrypted: i=1; AJvYcCV6UdqcoLcXHpkV41YlRFoD+7WMuV8irV5ED/kAcdzRRh4WeCjIsBMm+kIsD+gukK4prvc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxE3xeXhUbgyPhp18FO4F/DOR0w/WLuZxOPn65Frpq9E3K6D9GT
-	XktnVC/XCFpNqPyuO8SHvoYAHcz+TcnElFe7PlKwZBXFbSsKxOzzBoqWeaDCFEFMlWw=
-X-Gm-Gg: ASbGnctBTpACygNoeiteBW/8mz7vEMj9mERfUlUSg9/AiazciTbq9ZPGkL4BBhVUKOn
-	dWLDSDMiZc9vMUKtD6pKDqobQXiknYEWjJphzMZ4PwqvPOZWLkjp8twz4KsOkHO/aJ0UFVkNNAQ
-	YaPT7y2t7I9QW1ZBwxulQtDNUV24oeM3cAzG39qbuIvduDemBL6a0e8kdMMkX3UHLWXmukuPo5F
-	X7EwvKVICxGh7e2USqslT2i3ZJ0rey/fkI7zRoyPcNVCmjT5FGHm2iMJbrmI+Gtpz2yC4+t6FJi
-	dMgarxGll1rSenkrf1MhB7Jh2zBSgsKK3XQ+B+iiqKsjwgF++IFPLKfEhdREXyCwHYKlhRayE6b
-	9D6TN2Wlw+Hdq4HNPQzHo0lc08t4WX4v2n6z1ZVyvM4T39f/SZKCw7LZFBCUiSPffhh2WmrcdAD
-	MM/xg+O/Mtwku8QycKjbckJULaopIpgCLGV90Gdzh7LaHQpDU3hpaU41pOyCLQnctgkKegjfNWp
-	gPAsh0aM6dVM2flv0c8Pm0QAC169xbXl3iqOV1MpOgm20+/f7NBjt8=
-X-Google-Smtp-Source: AGHT+IHNVBcPF4r1uhIP+zj56hLjLDUq4AexzJeI5WwqZEYSfzmRjyop2h3ZCez24VELoNyVU95XiQ==
-X-Received: by 2002:a17:907:86a0:b0:b0b:f228:25a with SMTP id a640c23a62f3a-b6dba5f0b7cmr39405266b.64.1761581448554;
-        Mon, 27 Oct 2025 09:10:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761581450; x=1762186250;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kT3v2aN8EQq8AgHMNf1v3TkZG4Dh+2CDgf66x9dYHZg=;
+        b=Ml7euKCwjBzzGx+RlLuhOQr0l+cMXmM/iGYuuzEa8cDKAo6GzfrIzMv5UbPy6Mf3gE
+         lWQEkbpKQ/KeHXwa4MVezIsEmcnlKEj8bSVAUPdfd6vHYdVAl5O/6haSzBNSnN+vdmfT
+         YUqPN1GN/0Ba6Yd7Xn0VAAjAh3tZUA2IzdkEO6J3TkIc6QhWwiZIzqpcjNV9rclNrz+e
+         St2ko9DKGTjbMQFsFr9yOTzWY5PstPcXVLyb4U6HVqet+Yr0IWqvUV+Bac+722fETSyx
+         48IiHFg6NhPEPctiY1+vDXURfkcqr/+debgjphJnuics/+ShJOaJouvbd4+7Svt7wMtk
+         zIUA==
+X-Forwarded-Encrypted: i=1; AJvYcCWjXsDLuCKN3Ur23cciRCbWBP0QfMub3StuiflYi/+/H1Je1J/Z5r+WyDnZonF/J7ZqeH8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxcUSyVLA6Ysi5jUZilgJ5jA2L0Qjp7MBN5CESDodPHrDZlQZLX
+	MYTsotbrd+xL2cQKqHMy2GzLxM3uGrMGi0jf7E2M51hc0Ipnjk4OaOqVEUjIAxoXmJs=
+X-Gm-Gg: ASbGnct4OKf/KX0IWwSrpWbZwm0r5gzrhptL0UneWu0Li+2H1385sG45RrREH0SeLMy
+	oF634rOhqXNCMI2Is49qPOOHPKmeX7LaXTPy74qobBeJF00wOXJ4/FrIMPBYeq3l0RYouXm+lz8
+	Ko771LaAY8Ax8aHDRoTR8f9+ToDDRup92PgtB5Bv7pOQL/6KWVMMYMz3A7jWk6ZtOFX9Thv5geD
+	3SIEYw/ewcZVbMohpB02ZrfV/8yi0kapN4bkrRUsBdIimLNbNb6DALKXzURGUudULF/rCtZO3uR
+	4LFSKz0puJeiEZAaAriIVzFfWfZg+/yNeUWl3crXEll/WuzUH8c2vOsxS7d2BWd1/iIoB82XdID
+	wri6y501cH1Nv18TGyx0+FXWuozS0c5Km2AtGZWTHsgloxElKfIQKo1Bj0CGKLTOmrj67iziDq1
+	shKHqy/hf+7xylWtVQqw5IVKC+7HqLBKNST5+0pMVoEem1OsVrsWqAOqZMl55PiMm1mHCUPaWql
+	NiZosEDuB/FzzhXh7Ra4S+d1bkqEM+pHOG22DFqtpp9940vP3lvjmY=
+X-Google-Smtp-Source: AGHT+IGpgYAzuEZ5slMssED+lqV263t1SAtoTQLAQnIGqZGLNwmT1wHA5r73stv598+NcofTsL2dCA==
+X-Received: by 2002:a17:906:4787:b0:afe:cbee:7660 with SMTP id a640c23a62f3a-b6dba487ad0mr49506766b.21.1761581450341;
+        Mon, 27 Oct 2025 09:10:50 -0700 (PDT)
 Received: from dario-ThinkPad-P14s-Gen-5.homenet.telecomitalia.it (host-82-50-34-170.retail.telecomitalia.it. [82.50.34.170])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d8ceeaffasm742437466b.45.2025.10.27.09.10.47
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d8ceeaffasm742437466b.45.2025.10.27.09.10.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 09:10:48 -0700 (PDT)
+        Mon, 27 Oct 2025 09:10:49 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: Shawn Guo <shawnguo@kernel.org>,
@@ -63,19 +65,20 @@ Cc: Shawn Guo <shawnguo@kernel.org>,
 	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Michael Trimarchi <michael@amarulasolutions.com>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	devicetree@vger.kernel.org,
+	Russell King <linux@armlinux.org.uk>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 1/2] ARM: dts: imx28-amarula-rmm: add I2S audio
-Date: Mon, 27 Oct 2025 17:10:23 +0100
-Message-ID: <20251027161040.2020623-1-dario.binacchi@amarulasolutions.com>
+Subject: [PATCH v2 2/2] ARM: mxs_defconfig: enable sound drivers for imx28-amarula-rmm
+Date: Mon, 27 Oct 2025 17:10:24 +0100
+Message-ID: <20251027161040.2020623-2-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251027161040.2020623-1-dario.binacchi@amarulasolutions.com>
+References: <20251027161040.2020623-1-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -84,105 +87,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for I2S audio on Amarula rmm board. Audio codec
-TLV320AIC3X is connected as slave to SAIF0, which provides
-bitclock, frame and MCLK.
+Enable TLV320AIC3X I2C codec and simple-card support used on Amarula
+rmm board.
 
-Co-developed-by: Michael Trimarchi <michael@amarulasolutions.com>
-Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
 ---
 
 Changes in v2:
-- Rename the codec node to audio-codec@18
-- Drop an unnecessary newline
+- Drop 1/3 patch "ASoC: mxs-saif: support usage with simple-audio-card"
+  because merged in linux-next.
 
- .../boot/dts/nxp/mxs/imx28-amarula-rmm.dts    | 50 +++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ arch/arm/configs/mxs_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts b/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
-index af59211842fb..ddb64f3d0471 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
-@@ -112,6 +112,29 @@ reg_usb1_vbus: regulator-usb1-vbus {
- 		enable-active-high;
- 		regulator-always-on;
- 	};
-+
-+	sound {
-+		compatible = "simple-audio-card";
-+		simple-audio-card,name = "imx28-mrmmi-tlv320aic3x-audio";
-+		simple-audio-card,format = "i2s";
-+		simple-audio-card,bitclock-master = <&cpu_dai>;
-+		simple-audio-card,frame-master = <&cpu_dai>;
-+		simple-audio-card,widgets =
-+			"Headphone", "Headphone Jack";
-+		simple-audio-card,routing =
-+			"Headphone Jack", "HPROUT",
-+			"Headphone Jack", "HPRCOM";
-+		simple-audio-card,mclk-fs = <512>;
-+
-+		cpu_dai: simple-audio-card,cpu {
-+			sound-dai = <&saif0>;
-+			clocks = <&saif0>;
-+		};
-+
-+		codec_dai: simple-audio-card,codec {
-+			sound-dai = <&tlv320aic3x>;
-+		};
-+	};
- };
- 
- &auart0 {
-@@ -154,6 +177,19 @@ &i2c0 {
- 	pinctrl-0 = <&i2c0_pins_a>;
- 	status = "okay";
- 
-+	tlv320aic3x: audio-codec@18 {
-+		compatible = "ti,tlv320aic3x";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&tlv320aic3x_pins>;
-+		reg = <0x18>;
-+		reset-gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
-+		#sound-dai-cells = <0>;
-+		DVDD-supply = <&reg_1v8>;
-+		IOVDD-supply = <&reg_3v3>;
-+		AVDD-supply = <&reg_3v3>;
-+		DRVDD-supply = <&reg_3v3>;
-+	};
-+
- 	touchscreen: touchscreen@38 {
- 		compatible = "edt,edt-ft5306";
- 		reg = <0x38>;
-@@ -246,6 +282,14 @@ MX28_PAD_PWM1__GPIO_3_17
- 		fsl,voltage = <MXS_VOLTAGE_HIGH>;
- 	};
- 
-+	tlv320aic3x_pins: tlv320aic3x-pins@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <MX28_PAD_SSP0_DATA4__GPIO_2_4>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,pull-up = <MXS_PULL_ENABLE>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+	};
-+
- 	usb0_vbus_enable_pin: usb0-vbus-enable@0 {
- 		reg = <0>;
- 		fsl,pinmux-ids = <MX28_PAD_SSP0_DATA5__GPIO_2_5>;
-@@ -269,6 +313,12 @@ &pwm {
- 	status = "okay";
- };
- 
-+&saif0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&saif0_pins_a>;
-+	status = "okay";
-+};
-+
- /* microSD */
- &ssp0 {
- 	compatible = "fsl,imx28-mmc";
+diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defconfig
+index 3b08c63b6de4..603fb003b223 100644
+--- a/arch/arm/configs/mxs_defconfig
++++ b/arch/arm/configs/mxs_defconfig
+@@ -100,6 +100,8 @@ CONFIG_SND=y
+ CONFIG_SND_SOC=y
+ CONFIG_SND_MXS_SOC=y
+ CONFIG_SND_SOC_MXS_SGTL5000=y
++CONFIG_SND_SOC_TLV320AIC3X_I2C=y
++CONFIG_SND_SIMPLE_CARD=y
+ CONFIG_USB=y
+ CONFIG_USB_EHCI_HCD=y
+ CONFIG_USB_STORAGE=y
 -- 
 2.43.0
 
