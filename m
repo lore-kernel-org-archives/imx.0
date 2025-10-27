@@ -1,66 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE051FF1AD
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 11:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7F32FF169
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 11:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761565238; cv=none; b=tkWcR8gBKEV/yn2n4B2JDjgcO44gOiBOhCVu0yM9XZZ8HmJkLRg1qHVqow0c7lkU3wKYFIS0xRYSR2z4eRThtNe3FRf/4ZPS/5UIHGXqy9ej8VK8fS8HMNk8U1rntZWcWlz6q6rLV8cvSiPm5DuxoeTnHYCYzZjU5hFF8YRCWw8=
+	t=1761565835; cv=none; b=N5orfrL4Og6+xJ70F8B47ds7u+zSZDZmXfnsVVDaY6QM1z3IIxDqskptMW3ypXZ28tqR/eIyEWft6Ns63nc364X9Py29bwVOHUPWmhpxnBXXri5PAALVQ9gvIRb6xypFH3pmJsHPeGeSbrqmmkemG4NC9U2/M/YMupmPGiGBeg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761565238; c=relaxed/simple;
-	bh=1Y803tfH++q3iTQw4K8OppCnXwDpAUwOBj5XmSPZLxw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NknFjIk5J5KHFQlmtIijF59B7yNf5hI7KX8FdlwYuM+EDuov4S37uqZLVtwohVJvLTh8MMNk5mKAbFTQh5rtRc/UDDNDKXQmtDe2HP0aNDMJT/5ujwKEH702cYCaeOTk46bV+9Cd6U+TBv5sM0dYgeFtxJo3ubKdu9FTvf73Z3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lxEwv3bI; arc=none smtp.client-ip=192.198.163.10
+	s=arc-20240116; t=1761565835; c=relaxed/simple;
+	bh=1Nq4OsIRGvzLFnYkMUeCuaM3aAF/kNBZikR/j5G0pus=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YjcRQCJ/le4OmMlM9ml7YZbJSxOZ5cH2ieo9/SKTo8RWauMJfLmOWrIis747gThXfxE4PwgbfD+CVzmsWMadh2AbF/E2zCI1gIUVupsPiKbufarp3bfowWk6l4hyKV7T5iwE8tUZ62MyzC13AxxLFDGarP2v1SauqEPm2OLGml0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Eony2c0w; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lxEwv3bI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Eony2c0w"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761565237; x=1793101237;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=1Y803tfH++q3iTQw4K8OppCnXwDpAUwOBj5XmSPZLxw=;
-  b=lxEwv3bIcPYHHX8By9eJYHN8a8pSTE9G6GB+A9QeSAXsN0ErBaV/zAzW
-   4YzIBuGYcJzWxQGR4HYxD/PrdOGtqgrmcLDZH2WPg/9wLG6JULiiVV4sN
-   ak/pUeoKFuDkeDaPoa7b/UU4HD95XEk15q6LgiQlcA6gcN6yWmJmmrPns
-   c9/CGmVAG3gbvJ8o2Lr10HuWd2hs99Ympp4NmB569GLC4X4vT26MFXUuF
-   pT2skOGoeDezQb9wb1dQ7K3p+4ghxmXYOrzMwzaCbBCuzGZ3Za4FptcKp
-   3+/gclGlu/cDMhXHvtiNwZy+rYn9C9e79J1JwJitVOOtIX2cZtiCqngUn
+  t=1761565835; x=1793101835;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=1Nq4OsIRGvzLFnYkMUeCuaM3aAF/kNBZikR/j5G0pus=;
+  b=Eony2c0w/veRCl5dwW7eEfqY0Vwop9kdXFG6XBSPBcknG6rk5aP+yw+4
+   fUNkpR8zsA2bUhKxSc061DRlRRDyokWZlwJOjbPQwKbFU7ODAmV9PMoYn
+   esO6YC/5VmSLokCYdW3/zrOMZVR8qekor0GJJfMCKdUzSfbmcXHjq0j/q
+   G1JihvuJwZJ5+Tkm0Sbug+zxT//Q/rm7a3ekjrDNBmSU3/xdg6e/jDvd+
+   9cKxWDqjfo0xeNiRn1aKMqyBFE6jlELTgITm5SV/4OJAkgj/xy1N2YYzF
+   mi/I56iPZibK6JJAya1T8Y/D92zbMN60tgzUtaCJ45IoIMmumV9PubdBC
    Q==;
-X-CSE-ConnectionGUID: MXM3wAvfR1GVVXrvEK5wuA==
-X-CSE-MsgGUID: LP3PJSjfTjqLZe7CeGn6Rw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74984225"
+X-CSE-ConnectionGUID: /lno+UH6RiGOOO/x7D2UVQ==
+X-CSE-MsgGUID: Mcdo5c/kQUK/F5wrpjQKmA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="81066383"
 X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="74984225"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 04:40:36 -0700
-X-CSE-ConnectionGUID: LHkXLvlYSzqMZvlILnyZRw==
-X-CSE-MsgGUID: ea//5+ppTnmJyF7SbDmzUQ==
+   d="scan'208";a="81066383"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 04:50:34 -0700
+X-CSE-ConnectionGUID: yf4hwXKdT0u1qNVHr+E5xA==
+X-CSE-MsgGUID: S5tKJIZWSy+k3nbfHateeQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="184719428"
+   d="scan'208";a="185370930"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.31])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 04:40:34 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 04:50:25 -0700
 Received: from punajuuri.localdomain (unknown [192.168.240.130])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 906A5121E63;
-	Mon, 27 Oct 2025 13:40:32 +0200 (EET)
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id E4FCC121EC5;
+	Mon, 27 Oct 2025 13:50:22 +0200 (EET)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.98.2)
 	(envelope-from <sakari.ailus@linux.intel.com>)
-	id 1vDLaS-00000001deg-2GDC;
-	Mon, 27 Oct 2025 13:40:32 +0200
+	id 1vDLjy-00000001dik-3coj;
+	Mon, 27 Oct 2025 13:50:22 +0200
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: linux-mtd@lists.infradead.org
-Cc: Han Xu <han.xu@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	imx@lists.linux.dev
-Subject: [PATCH 1/1] mtd: rawnand: gpmi: Remove redundant pm_runtime_mark_last_busy() calls
-Date: Mon, 27 Oct 2025 13:40:32 +0200
-Message-ID: <20251027114032.390754-1-sakari.ailus@linux.intel.com>
+To: netdev@vger.kernel.org
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Paul Barker <paul@pbarker.dev>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Alex Elder <elder@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+	Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
+	Liu Haijun <haijun.liu@mediatek.com>,
+	Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Michael Nemanov <michael.nemanov@ti.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Roopni Devanathan <quic_rdevanat@quicinc.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	imx@lists.linux.dev,
+	linux-renesas-soc@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH RESEND 2/4] net: ipa: Remove redundant pm_runtime_mark_last_busy() calls
+Date: Mon, 27 Oct 2025 13:50:20 +0200
+Message-ID: <20251027115022.390997-2-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251027115022.390997-1-sakari.ailus@linux.intel.com>
+References: <20251027115022.390997-1-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,37 +117,113 @@ pm_runtime_mark_last_busy().
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
- drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/ipa/ipa_interrupt.c | 1 -
+ drivers/net/ipa/ipa_main.c      | 1 -
+ drivers/net/ipa/ipa_modem.c     | 4 ----
+ drivers/net/ipa/ipa_smp2p.c     | 2 --
+ drivers/net/ipa/ipa_uc.c        | 2 --
+ 5 files changed, 10 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-index a750f5839e34..51f595fbc834 100644
---- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-+++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-@@ -191,7 +191,6 @@ static int gpmi_init(struct gpmi_nand_data *this)
- 	       r->gpmi_regs + HW_GPMI_CTRL1_SET);
+diff --git a/drivers/net/ipa/ipa_interrupt.c b/drivers/net/ipa/ipa_interrupt.c
+index 245a06997055..8336596b1247 100644
+--- a/drivers/net/ipa/ipa_interrupt.c
++++ b/drivers/net/ipa/ipa_interrupt.c
+@@ -149,7 +149,6 @@ static irqreturn_t ipa_isr_thread(int irq, void *dev_id)
+ 		iowrite32(pending, ipa->reg_virt + reg_offset(reg));
+ 	}
+ out_power_put:
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
  
- err_out:
--	pm_runtime_mark_last_busy(this->dev);
- 	pm_runtime_put_autosuspend(this->dev);
- 	return ret;
+ 	return IRQ_HANDLED;
+diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
+index 25500c5a6928..95a61bae3124 100644
+--- a/drivers/net/ipa/ipa_main.c
++++ b/drivers/net/ipa/ipa_main.c
+@@ -903,7 +903,6 @@ static int ipa_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_deconfig;
+ done:
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 
+ 	return 0;
+diff --git a/drivers/net/ipa/ipa_modem.c b/drivers/net/ipa/ipa_modem.c
+index 8fe0d0e1a00f..9b136f6b8b4a 100644
+--- a/drivers/net/ipa/ipa_modem.c
++++ b/drivers/net/ipa/ipa_modem.c
+@@ -71,7 +71,6 @@ static int ipa_open(struct net_device *netdev)
+ 
+ 	netif_start_queue(netdev);
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 
+ 	return 0;
+@@ -102,7 +101,6 @@ static int ipa_stop(struct net_device *netdev)
+ 	ipa_endpoint_disable_one(priv->rx);
+ 	ipa_endpoint_disable_one(priv->tx);
+ out_power_put:
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 
+ 	return 0;
+@@ -175,7 +173,6 @@ ipa_start_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 
+ 	ret = ipa_endpoint_skb_tx(endpoint, skb);
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 
+ 	if (ret) {
+@@ -432,7 +429,6 @@ static void ipa_modem_crashed(struct ipa *ipa)
+ 		dev_err(dev, "error %d zeroing modem memory regions\n", ret);
+ 
+ out_power_put:
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
  }
-@@ -761,7 +760,6 @@ static int bch_set_geometry(struct gpmi_nand_data *this)
  
- 	ret = 0;
- err_out:
--	pm_runtime_mark_last_busy(this->dev);
- 	pm_runtime_put_autosuspend(this->dev);
+diff --git a/drivers/net/ipa/ipa_smp2p.c b/drivers/net/ipa/ipa_smp2p.c
+index fcaadd111a8a..420098796eec 100644
+--- a/drivers/net/ipa/ipa_smp2p.c
++++ b/drivers/net/ipa/ipa_smp2p.c
+@@ -171,7 +171,6 @@ static irqreturn_t ipa_smp2p_modem_setup_ready_isr(int irq, void *dev_id)
+ 	WARN(ret != 0, "error %d from ipa_setup()\n", ret);
  
- 	return ret;
-@@ -2667,7 +2665,6 @@ static int gpmi_nfc_exec_op(struct nand_chip *chip,
- 	this->bch = false;
+ out_power_put:
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
  
- out_pm:
--	pm_runtime_mark_last_busy(this->dev);
- 	pm_runtime_put_autosuspend(this->dev);
+ 	return IRQ_HANDLED;
+@@ -213,7 +212,6 @@ static void ipa_smp2p_power_release(struct ipa *ipa)
+ 	if (!ipa->smp2p->power_on)
+ 		return;
  
- 	return ret;
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 	ipa->smp2p->power_on = false;
+ }
+diff --git a/drivers/net/ipa/ipa_uc.c b/drivers/net/ipa/ipa_uc.c
+index 2963db83ab6b..dc7e92f2a4fb 100644
+--- a/drivers/net/ipa/ipa_uc.c
++++ b/drivers/net/ipa/ipa_uc.c
+@@ -158,7 +158,6 @@ static void ipa_uc_response_hdlr(struct ipa *ipa)
+ 		if (ipa->uc_powered) {
+ 			ipa->uc_loaded = true;
+ 			ipa_power_retention(ipa, true);
+-			pm_runtime_mark_last_busy(dev);
+ 			(void)pm_runtime_put_autosuspend(dev);
+ 			ipa->uc_powered = false;
+ 		} else {
+@@ -203,7 +202,6 @@ void ipa_uc_deconfig(struct ipa *ipa)
+ 	if (!ipa->uc_powered)
+ 		return;
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ }
+ 
 -- 
 2.47.3
 
