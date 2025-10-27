@@ -1,37 +1,34 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF9F1DF252
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 10:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5867733F9
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 10:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761560590; cv=none; b=nEtq9OexQe2P4yZ71nVMzyOwftwWbmHKdAP6nsfXWT3F5H6OulHolgHMBu8PyJkLUflCfIUQZB2reHbks2VwqWgKtxgiYc0l20/RZhAWbcZeccF3HzJDkdBvokqIVy8Hj9YFMC6/90fLk8wRjirHb1Lx15pXPv9TdQRYhRd32M0=
+	t=1761561085; cv=none; b=lzUcrjszFMdksDnx3c3B9hJjPbB1M485oPJCGJs9c4+RWFPz1vrO5hvnt1T7WFXmOM/5+SUF/1C7mkO7GJ3Zplqg4+izH53VPHLHwXwVZKzcRnX+Tb6MpNer0GPafh4Q2/eMHgRVkklmyWfSYfKprVjBAOZghBKxHhPDXP24To8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761560590; c=relaxed/simple;
-	bh=LPluyef4kypBSKGZCsUxRCFOggWHW4MJxhkKdQ37kTM=;
+	s=arc-20240116; t=1761561085; c=relaxed/simple;
+	bh=woR0YkWOLoOVnkusOQvb+uOUj+GPQRpu6GLsFacG4SU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L2r2EjXTr7mwAhQyss6L8OLK3QCzEx7eZlYwsKtcWCvYpXS2K2B7pdPAVkL1GLkrYWMD82EDgZh1m1DrnYVVqlnJHxHs+nMmPn4k+4VFhddOx0iTKX4767jZE1MMJT8B4niu0vQHm8KTjcPCkg2UU7CNMaRdkDfQYPl8Bk/keX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vDKNU-00047j-JW; Mon, 27 Oct 2025 11:23:04 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vDKNU-005gi3-0X;
-	Mon, 27 Oct 2025 11:23:04 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vDKNU-00394G-07;
-	Mon, 27 Oct 2025 11:23:04 +0100
-Date: Mon, 27 Oct 2025 11:23:03 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=YXdSQhuZMB1JIc9/8wabRQovSNW2nwDfrKUztkBhHkH6ov+GhuWy+GNURtPou91tKzhOM/DblEI+zhEIf7hkFkCuXR6embTfovRmV/Qu7mtrKLJTP/4byKD5UDJYgXbKRPrwvP8vlpofgy0LPMRm9/sxYwgrYFOoi3aT3VP45UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=sbnFY7w1; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="sbnFY7w1"
+Received: from pendragon.ideasonboard.com (unknown [193.209.96.36])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 05415E1F;
+	Mon, 27 Oct 2025 11:29:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1761560973;
+	bh=woR0YkWOLoOVnkusOQvb+uOUj+GPQRpu6GLsFacG4SU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sbnFY7w1nY83x7Yfrg65qDDjoOFXFj29h8KBE/qIKqEQ2DR3hTiOM4IIhnH8GQB8f
+	 LXqClKaF1LarrQ6Mpd7Ekda+u/bgkFr7pkBrFVM1rxJTD1wL7Z8IYxLG9LcIBlMnsM
+	 FaNVPYUv0Mj0/7F9HRMlQYSQnRaetAbKQpjllrnQ=
+Date: Mon, 27 Oct 2025 12:31:07 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: Andrew Lunn <andrew@lunn.ch>, Russell King <rmk+kernel@armlinux.org.uk>,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -46,11 +43,12 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Russell King <rmk+kernel@armlinux.org.uk>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>
 Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <aP9IB4y5_gyfJGMW@pengutronix.de>
+Message-ID: <20251027103107.GF1544@pendragon.ideasonboard.com>
 References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
  <e87ff7f2-d16f-41f2-b781-b175cfb84b21@lunn.ch>
  <aP83bMDWCre7-Sjw@pengutronix.de>
  <20251027100227.GE1544@pendragon.ideasonboard.com>
+ <aP9IB4y5_gyfJGMW@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,36 +57,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251027100227.GE1544@pendragon.ideasonboard.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <aP9IB4y5_gyfJGMW@pengutronix.de>
 
-Hi Laurent,
-
-On Mon, Oct 27, 2025 at 12:02:27PM +0200, Laurent Pinchart wrote:
-> Hi Oleksij,
-> > Please note, RTL8211E PHY do use undocumented SmartEEE mode by default.
-> > It ignores RGMII LPI opcodes and doing own thing. It can be confirmed by
-> > monitoring RGMII TX and MDI lines with oscilloscope and changing
-> > tx-timer configurations. I also confirmed this information from other
-> > source. To disable SmartEEE and use plain MAC based mode, NDA documentation
-> > is needed.
+On Mon, Oct 27, 2025 at 11:23:03AM +0100, Oleksij Rempel wrote:
+> On Mon, Oct 27, 2025 at 12:02:27PM +0200, Laurent Pinchart wrote:
+> > Hi Oleksij,
+> > > Please note, RTL8211E PHY do use undocumented SmartEEE mode by default.
+> > > It ignores RGMII LPI opcodes and doing own thing. It can be confirmed by
+> > > monitoring RGMII TX and MDI lines with oscilloscope and changing
+> > > tx-timer configurations. I also confirmed this information from other
+> > > source. To disable SmartEEE and use plain MAC based mode, NDA documentation
+> > > is needed.
+> > 
+> > That's useful information, thank you. Would you by any chance to know if
+> > such NDA would allow contributing the feature upstream ?
 > 
-> That's useful information, thank you. Would you by any chance to know if
-> such NDA would allow contributing the feature upstream ?
+> Good question, but the NDA process was actually aborted. We didn't move
+> forward due to a lack of time and ultimately, a lack of commercial
+> interest from any projects or customers for this PHY.
 
-Good question, but the NDA process was actually aborted. We didn't move
-forward due to a lack of time and ultimately, a lack of commercial
-interest from any projects or customers for this PHY.
+Fair enough. I've tried :-)
+
+If we can't disable SmartEEE in the PHY, does it mean we need to somehow
+disable EEE in the MAC, but still program the PHY to advertise EEE to
+the link partner ?
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Regards,
+
+Laurent Pinchart
