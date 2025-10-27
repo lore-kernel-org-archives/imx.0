@@ -1,143 +1,130 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECDD2DEA62
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 07:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C342E54B3
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 08:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761550089; cv=none; b=YAaIwqbaqtxTAzaX57bC2NRWyc6WScoEHyJU/ax7KKeRHoQkXEmgmrd3Lz6NsxgGTGdSQWwspu0RVrPgcZtuU2jhNZAD+Uk8mlQhGoRWyWaKrBsaeflQapknBLoipOH8NCbDJJxAYVfTwaMr2e1dExHa9A4eEkPAvNHVLUy53Mw=
+	t=1761552528; cv=none; b=fEfM1kv0zDGLfsMbrD/TIYvC8QBOZxW2eTctsDcLJiECoQVuixhjsWwL9eqckL2/mXIf99fLXYVazF1G0fHXJjoJXk/t3AUXRsCRy2l8dYvhcWD8cFWOH+b9EvFEkRAxw4FkuoO+M6UrFlriTBGRF5RGgyIPzc0XVoi+3GqijZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761550089; c=relaxed/simple;
-	bh=nV6mjljtSiqp1HDPBtXcTVzwk2D3tvRV9nQU+7XBJ2w=;
+	s=arc-20240116; t=1761552528; c=relaxed/simple;
+	bh=YcQY+sb9by68e/ghelh68UmYn8yBJemTa+gthGrgaWo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AtGTndPO30xc/KMJc+WIDVZLQS2gT08M/QMwxz7AncHF364qOk6ejRk009aOfbzLgx6vD93WaE1FqEal+PW3BQNvH+SvT3itN1/HUKY6xBTXX4krOOAtxQqzeRPLJRDNmkpLpHxRMPrRySU+GTK8BtOMcaKvvvtQ38K9QqSB6P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=i/ZdOlT5; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=KVx3zRH3FMTLNrq31YFgawhPNYIyN/3+iCT6oRw4Ik96ImvFr9RImyQv8AcOO7VofKmY8eOktvEovG3OHlExBca9fvZZdUpueN38/bDcqXFNnEiOysv+haNah2JAgxOvEETGmjIuntAtMCWEb9EzMfrMsSXAO4xv9MCABz0bm4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W7xw1EM4; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="i/ZdOlT5"
-Received: from pendragon.ideasonboard.com (unknown [193.209.96.36])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 962CE1122;
-	Mon, 27 Oct 2025 08:26:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1761549975;
-	bh=nV6mjljtSiqp1HDPBtXcTVzwk2D3tvRV9nQU+7XBJ2w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i/ZdOlT5pqjrSSr8mGMqlLVyFDVB8mvVJmQNs0n4GGcTLtszoJp1/WUvmltIeLksE
-	 BZg1RRavIm2Q4tFIonaQil3eJqc7ui+MiSAry9TAM1N2RevWiGsNWNxioBhcMHqnJX
-	 LP5ln83vjsBB3j31BV2BB5IRbp4lKG2jc6oZAL7Q=
-Date: Mon, 27 Oct 2025 09:27:49 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Russell King <rmk+kernel@armlinux.org.uk>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W7xw1EM4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761552526; x=1793088526;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YcQY+sb9by68e/ghelh68UmYn8yBJemTa+gthGrgaWo=;
+  b=W7xw1EM4wkpi75F/qKhBEOYsWMbtgrqTQPCPCj0NS8otAfgjALPv7PGk
+   baV8L2dAAdWur3EmTWzHlNeO3u2kd6jiYrsYYMJQrO4FfLKlcH04PPBjj
+   uNMepNm1aqX/hTsL7Y4BtGJtnZ0WaVk2E2Ni1bf3sluu9T9QDJ3ZEaa3t
+   uQ7zo8Dm6bIhANVwgRcPWDCo+yQ+pJsRpF6yh5FtSFRCI3AC6Vlb9T50n
+   9OMfltTeRLVdM0EX1VT+vzc+3dS3IfreT82rJdq9h9JCy9/ER/68j1H/H
+   7Z5mUgcAMBX2JRrh/+eOHUammEVOxT2y66lr1AWitvA6rklNf43coHOiZ
+   A==;
+X-CSE-ConnectionGUID: qJ4YPfJtQdaXhP8D1RwMGg==
+X-CSE-MsgGUID: 3GRPzEL3R9K9QV+dMrlQ8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63664642"
+X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
+   d="scan'208";a="63664642"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 01:08:46 -0700
+X-CSE-ConnectionGUID: UTU4X3wrToybhy/mbYBciA==
+X-CSE-MsgGUID: VBcxquuMQOmdnpja3yEBKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
+   d="scan'208";a="185067813"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.253])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 01:08:44 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 220F2121E4A;
+	Mon, 27 Oct 2025 10:08:41 +0200 (EET)
+Date: Mon, 27 Oct 2025 10:08:41 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <20251027072749.GA7811@pendragon.ideasonboard.com>
-References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
- <e87ff7f2-d16f-41f2-b781-b175cfb84b21@lunn.ch>
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] media: dt-bindings: video-interfaces: add
+ video-interfaces.h information
+Message-ID: <aP8oibCu-UsOFtNX@kekkonen.localdomain>
+References: <20251021154922.2874390-1-Frank.Li@nxp.com>
+ <20251026184933.GB1025@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e87ff7f2-d16f-41f2-b781-b175cfb84b21@lunn.ch>
+In-Reply-To: <20251026184933.GB1025@pendragon.ideasonboard.com>
 
-Hi Andrew,
+Hi Laurent,
 
-Thank you for your quick reply.
-
-On Mon, Oct 27, 2025 at 04:08:42AM +0100, Andrew Lunn wrote:
-> Adding Russell King
+On Sun, Oct 26, 2025 at 08:49:33PM +0200, Laurent Pinchart wrote:
+> Hi Frank,
 > 
-> On Sun, Oct 26, 2025 at 02:29:04PM +0200, Laurent Pinchart wrote:
-> > Energy Efficient Ethernet (EEE) is broken at least for 1000T on the EQOS
-> > (DWMAC) interface. When connected to an EEE-enabled peer, the ethernet
-> > devices produces an interrupts storm. Disable EEE support to fix it.
+> Thank you for the patch.
+> 
+> On Tue, Oct 21, 2025 at 11:49:22AM -0400, Frank Li wrote:
+> > Mention include/dt-bindings/media/video-interfaces.h in descriptions to
+> > help avoid use hardcode in dts.
 > > 
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > > ---
-> > The exact reason for the interrupt storm is unknown, and my attempts to
-> > diagnose it was hindered by my lack of expertise with DWMAC. As far as I
-> > understand, the DWMAC implements EEE support, and so does the RTL8211E
-> > PHY according to its datasheet.
+> > changes in v2
+> > - update commit message "mention ..."
+> > - use full path include/dt-bindings/media/video-interfaces.h
+> > ---
+> >  Documentation/devicetree/bindings/media/video-interfaces.yaml | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/media/video-interfaces.yaml b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> > index 038e85b45befa..6ed4695cacf7e 100644
+> > --- a/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> > +++ b/Documentation/devicetree/bindings/media/video-interfaces.yaml
+> > @@ -95,7 +95,7 @@ properties:
+> >        - 6 # BT.656
+> >        - 7 # DPI
 > 
-> I believe for DWMAC it is a synthesis option. However, there is a bit
-> indicating if the hardware supports it.
+> I wondered if we should reference the macros here as well:
 > 
-> The PHY should not be able to trigger an interrupt storm in the
-> MAC. So this is likely to be an DWMAC issue.
+>     enum:
+>       - 1 # MEDIA_BUS_TYPE_CSI2_CPHY
+>       - 2 # MEDIA_BUS_TYPE_CSI1
+>       - 3 # MEDIA_BUS_TYPE_CCP2
+>       - 4 # MEDIA_BUS_TYPE_CSI2_DPHY
+>       - 5 # MEDIA_BUS_TYPE_PARALLEL
+>       - 6 # MEDIA_BUS_TYPE_BT656
+>       - 7 # DPI
 > 
-> Which interrupt bit is causing the storm?
+> (Annoyingly we don't have a macro for DPI.)
 
-That's where I hit my first wall :-)
+I'd actually add one: there's certainly no harm from doing so even though
+it's for display, not for cameras (or receivers alike).
 
-I've tried to diagnose the issue by adding interrupt counters to
-dwmac4_irq_status(), counting interrupts for each bit of GMAC_INT_STATUS
-(0x00b0). Bit RGSMIIIS (0) is the only one that seems linked to the
-interrupts storm, increasing at around 10k per second. However, the
-corresponding bit in GMAC_INT_EN (0x00b4) is *not* set.
+This patch is already in my tree so the macro name comments should go to a
+new one.
 
-The ENET_EQOS interrupt on the i.MX8MP is an OR'ed signal that combines
-four interrupt sources:
-
-- ENET QOS TSN LPI RX exit Interrupt
-- ENET QOS TSN Host System Interrupt
-- ENET QOS TSN Host System RX Channel Interrupts
-- ENET QOS TSN Host System TX Channel Interrupts
-
-The last two interrupt sources are themselves local OR of channels[4:0].
-
-I ould suspect that the LPI RX exit interrupt is the one that fires
-constantly given its name, but I'm not sure how to test that.
-
-> > What each side does exactly is unknown
-> > to me. One theory I've heard to explain the issue is that the two
-> > implementations conflict. There is no register in the RTL8211E PHY to
-> > disable EEE on the PHY side while still advertising its support to the
-> > peer and relying on the implementation in the DWMAC (if this even makes
-> > sense)
 > 
-> It does not make sense. EEE is split into two major parts. The two
-> PHYs communicate with each other to negotiate the feature, if both
-> ends support it and both ends want to use it. The result of this
-> negotiation is then passed to the MACs.
+> This can be done separately if desired, so
 > 
-> It is then the MAC who decides when to send a Low Power Indication to
-> the PHY to tell the PHY to enter low power mode. The MAC also wakes
-> the PHY when it has packets to send.
-> 
-> A quick look at the data sheet for the RTL8211E suggests this is what
-> is supports.
-> 
-> There are a few PHYs which implement SmartEEE, or some other similar
-> name. They operate differently, the PHY does it all, and the MAC is
-> not even aware EEE is happening. Such PHYs should really only be
-> paired with MACs which do not support EEE. An EEE capable MAC paired
-> with a SmartEEE PHY could have problems, but hopefully the EEE
-> abilities and negotiation registers in the PHY would be sufficient to
-> dissuade the MAC from doing EEE. But i would not expect a setup like
-> this to trigger an interrupt storm.
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-Thanks for the explanation, I read documents to try and figure out how
-it worked and didn't find such a clear and concise high-level summary.
-
-I'm not very experienced with ethernet, but I can easily test patches or
-even rough ideas on hardware.
+Thanks!
 
 -- 
-Regards,
-
-Laurent Pinchart
+Sakari Ailus
