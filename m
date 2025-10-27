@@ -1,158 +1,82 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8F03101C8
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 12:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D5C23BCFD;
+	Mon, 27 Oct 2025 12:50:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761568738; cv=none; b=AQ0ccmkI9m+pST61Ga5vZ6DZbFwRauZ/xF5UOKVuS8v/cE08oM2AkGPTNfSoOT+ZUAR/qaSV0xH5KBXeRAxaSAnNADIcWL0lzOGS5ypt3rJLLRqRY67I34m6X9s5nnvai/l57zunYEMOvdiyH6Ah/JTTNB3Ixb1a2oDRw0Zycco=
+	t=1761569427; cv=none; b=I0ukZ+xOK6tFVFC3ZgqjIvnswjfzo6vAZd110AROtUA25q2QxLesXzCbbZpmbZsdAZ6VapA4TkG54UO1RXUw0bjrQwVqQdL1+UWBClSXycc7QWPAui/ipvnP8tbXpGv9uO/BkoBUEtC0S2yV4FeeQ48j+10PhRdY7Jtd2TYoy/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761568738; c=relaxed/simple;
-	bh=4aoKoN5RbG7AvfZ2MgAIZ3SKeXxBVSUKkFoVfsWrXxw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jt/HqQEyabN8yuhGIFcGGl7CNMRcmrhx9YXFl2A7th89k0qOnP9IYbWpj6dQxsxa2Wratq1wGvITNHXdLtPj56od9g18JCASMkU73AVJPWkBRCeGkiripjSxK3Q13/m/0S1FZ5Sc+q60+4Wse1oQlBAR7eoCF27UCn1q1t0eoMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b80U3O5R; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1761569427; c=relaxed/simple;
+	bh=m0IptN6d8/xSAvrYqsLrY528kDwnFNnoYBY5GhEv4lU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PCGUzU2nbf2js8QkSvjB+4XqspOikUBPUPbFR84WQWNynK8bmJyExRe/sXicPcJtsOSIwRXh5UGDO7+3mBFfra5h6a+dRg398B+sBXho65C4dY245iN/8y3jHmPun1b9aGMS7DGMbqCRgcW0rajUSNcZEXBPhNCNVMNIl7XcV+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=YMVoSKxV; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b80U3O5R"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47714bb5c49so642455e9.2
-        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 05:38:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761568735; x=1762173535; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=2m2cwzlH5wpE3kdOpcqs/uIBHJrsaPfS9kVRJa4lNf8=;
-        b=b80U3O5R7KlrbMazquZTzcAcwOTlAaafnE4cvTGCUau94XVo0QrAVpbjL5h6zcMGnc
-         XSicQBYG8ZM9oFQF8U+5DKgy/4uF0pbqQO0ZnBAlA8VMS5MhTt2FLpY27iCg3qkjvgxM
-         mBEAqGa7n6+LSO3XVdUKbW87e2GokPkzofv29+9SUa1T6MaKoApSYfetWz/1uli/xEQF
-         6a/SYqRTfCb9u50UZVuyxgY8ERRcx3oaqcAM/swIehOGIrXJMqXUEW6e3YJh+JhPYwvo
-         X9Pbmp9g748u2DYf+dPPcZKz8k3HYBm+RFv56+E1J64gOEXFQUwEd6k7nnhVR8/TlQiG
-         j39A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761568735; x=1762173535;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2m2cwzlH5wpE3kdOpcqs/uIBHJrsaPfS9kVRJa4lNf8=;
-        b=WHNmONaXiF8jCXByTcAFRYYKILE/AUAHywo68hABAr4qmGs3LRXPoJaYUjWw4VJS2l
-         tyjcftAbmwc2vBU+NZWt21iBzPpeMaeUkM1Va8QYHugNOArawUmjRB+NpTlsu0gG+s/0
-         PlIJStduEbVoQx1MOQtto/8TKyHJFiwn7O3gJfow60sHp2qATGrB048s6P3mECCnffhV
-         IvooHdQxddATVILV+c/u10hF7QPZ1YCZbrXr7J0Ru2MWNCxQOL58yiZFnUgCtapRR1NW
-         3XAo+3UJ4iiGQR/N5FsTD6YUWRoHqLESgKOYyyBM6gk4qh88c3cmcS/B7RCbDoJOLpV3
-         r6ug==
-X-Forwarded-Encrypted: i=1; AJvYcCWqmDNZQPKiD3X0IZztGcXJlz8l9Rr0Owk0atLgd5wZvToqViBWMLbToGpYvdQoy2VTXT0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwIG/f2Rmj7TqhKiwz/7CIoV+ejrrzf1pujjP5Tf4a1SDPZ4oUS
-	+WMEuIywv/pqyQVFZswJ8s9bqlZ0iyquwqUI/7PeXErQ2UoajzIqaEHO+UwNqFVGFUY=
-X-Gm-Gg: ASbGncvn1iIieIZgJt0TMB7fDMx+hjA89wgGfp5ubiZFx8eBzpFE3VLsPy3Hjl2ROfM
-	mskIZEczfccz0bm0L/uJE7Zhu09MKwFTMHDZtqfRB06o3Dw825mkWrCjE0iMlkErKIsdEUYxm9H
-	R+wzfdZB39w/O8Ox/cQGAbiJGVUWQvIoTzSFXl57L1dERyxWImTUxizSnzFJlm+91QiRZS4qWN1
-	tb2mupnzAxBVR5GJ54ePHRSKtzdce1u2AbtndD3UOUVXPaMe46xTGDncjTXmtKdSxoAeKEyBgd4
-	I/GAHVaA75FdNnKbp5XGF3ZsRYEMK5ThBBZmTJh/SBOmo1ZJFWfOjMco2KQqaPNaLZuNf6hXrQy
-	fxX5okHHYM6F7VEkckF/X2c35vaDZ9mXwfiXlftY38kZ0TmAPZwN7u7elPMu4REmV2XZo9/s3xf
-	iwOjMnjHa+hZtABvPeezj6
-X-Google-Smtp-Source: AGHT+IGnHN2+LGUXtGZpCqzNe4bVcec3o9TIo+eb2g4z7PQMElWw3oVzoXNocGieyNl5ZXcDJZ9cgA==
-X-Received: by 2002:a05:600c:350d:b0:471:3b6:e24 with SMTP id 5b1f17b1804b1-474944c2050mr86946005e9.8.1761568735253;
-        Mon, 27 Oct 2025 05:38:55 -0700 (PDT)
-Received: from [192.168.1.29] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd37467esm139395695e9.10.2025.10.27.05.38.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 05:38:54 -0700 (PDT)
-Message-ID: <d97899d2-ce6c-4ef3-99f8-946a3c9ab74c@linaro.org>
-Date: Mon, 27 Oct 2025 13:38:53 +0100
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="YMVoSKxV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=hKaaHV2NST1VuzXBfc6VQU/jhNrAzykCq1FQtjK/evA=; b=YMVoSKxVmOBII8dLdRmBG6fWwB
+	AsarXFDeYQj4nAHcnPas0cq9acQUKIhXjC+Ln4PI8dOFWtDhahRYh9SJMrPaY0nypYfD1IQCuvz0U
+	/ZZmbN26xi0kZWSbFyRrS3YepU4hTKr4HhwNSOA3qbkSz6QWVDiclQnAxK3fJdS8vGyk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vDMg1-00CBuN-58; Mon, 27 Oct 2025 13:50:21 +0100
+Date: Mon, 27 Oct 2025 13:50:21 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	imx@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
+Message-ID: <f66d181d-7dd9-4955-bad5-478db2876e47@lunn.ch>
+References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
+ <e87ff7f2-d16f-41f2-b781-b175cfb84b21@lunn.ch>
+ <aP83bMDWCre7-Sjw@pengutronix.de>
+ <20251027100227.GE1544@pendragon.ideasonboard.com>
+ <aP9IB4y5_gyfJGMW@pengutronix.de>
+ <20251027103107.GF1544@pendragon.ideasonboard.com>
+ <aP9Kuyndws_dYFna@shell.armlinux.org.uk>
+ <aP9NJHtbAEmsd89r@pengutronix.de>
+ <aP9N9tCdlAbBgovC@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: defconfig: Enable i.MX95 drivers for pinctrl,
- Ethernet and PCIe
-To: =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
- <jpaulo.silvagoncalves@gmail.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
- <joao.goncalves@toradex.com>
-References: <20251027-upstream-imx95-smarc-defconfig-v2-1-0f664b08d553@toradex.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+AhsD
- BQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEEm9B+DgxR+NWWd7dUG5NDfTtBYpsFAmgXUEoF
- CRaWdJoACgkQG5NDfTtBYpudig/+Inb3Kjx1B7w2IpPKmpCT20QQQstx14Wi+rh2FcnV6+/9
- tyHtYwdirraBGGerrNY1c14MX0Tsmzqu9NyZ43heQB2uJuQb35rmI4dn1G+ZH0BD7cwR+M9m
- lSV9YlF7z3Ycz2zHjxL1QXBVvwJRyE0sCIoe+0O9AW9Xj8L/dmvmRfDdtRhYVGyU7fze+lsH
- 1pXaq9fdef8QsAETCg5q0zxD+VS+OoZFx4ZtFqvzmhCs0eFvM7gNqiyczeVGUciVlO3+1ZUn
- eqQnxTXnqfJHptZTtK05uXGBwxjTHJrlSKnDslhZNkzv4JfTQhmERyx8BPHDkzpuPjfZ5Jp3
- INcYsxgttyeDS4prv+XWlT7DUjIzcKih0tFDoW5/k6OZeFPba5PATHO78rcWFcduN8xB23B4
- WFQAt5jpsP7/ngKQR9drMXfQGcEmqBq+aoVHobwOfEJTErdku05zjFmm1VnD55CzFJvG7Ll9
- OsRfZD/1MKbl0k39NiRuf8IYFOxVCKrMSgnqED1eacLgj3AWnmfPlyB3Xka0FimVu5Q7r1H/
- 9CCfHiOjjPsTAjE+Woh+/8Q0IyHzr+2sCe4g9w2tlsMQJhixykXC1KvzqMdUYKuE00CT+wdK
- nXj0hlNnThRfcA9VPYzKlx3W6GLlyB6umd6WBGGKyiOmOcPqUK3GIvnLzfTXR5DOwU0EVUNc
- NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
- hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
- oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
- H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
- yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
- 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
- 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
- +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
- FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
- 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
- DFH41ZZ3t1Qbk0N9O0FimwUCaBdQXwUJFpZbKgAKCRAbk0N9O0Fim07TD/92Vcmzn/jaEBcq
- yT48ODfDIQVvg2nIDW+qbHtJ8DOT0d/qVbBTU7oBuo0xuHo+MTBp0pSTWbThLsSN1AuyP8wF
- KChC0JPcwOZZRS0dl3lFgg+c+rdZUHjsa247r+7fvm2zGG1/u+33lBJgnAIH5lSCjhP4VXiG
- q5ngCxGRuBq+0jNCKyAOC/vq2cS/dgdXwmf2aL8G7QVREX7mSl0x+CjWyrpFc1D/9NV/zIWB
- G1NR1fFb+oeOVhRGubYfiS62htUQjGLK7qbTmrd715kH9Noww1U5HH7WQzePt/SvC0RhQXNj
- XKBB+lwwM+XulFigmMF1KybRm7MNoLBrGDa3yGpAkHMkJ7NM4iSMdSxYAr60RtThnhKc2kLI
- zd8GqyBh0nGPIL+1ZVMBDXw1Eu0/Du0rWt1zAKXQYVAfBLCTmkOnPU0fjR7qVT41xdJ6KqQM
- NGQeV+0o9X91X6VBeK6Na3zt5y4eWkve65DRlk1aoeBmhAteioLZlXkqu0pZv+PKIVf+zFKu
- h0At/TN/618e/QVlZPbMeNSp3S3ieMP9Q6y4gw5CfgiDRJ2K9g99m6Rvlx1qwom6QbU06ltb
- vJE2K9oKd9nPp1NrBfBdEhX8oOwdCLJXEq83vdtOEqE42RxfYta4P3by0BHpcwzYbmi/Et7T
- 2+47PN9NZAOyb771QoVr8A==
-In-Reply-To: <20251027-upstream-imx95-smarc-defconfig-v2-1-0f664b08d553@toradex.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aP9N9tCdlAbBgovC@shell.armlinux.org.uk>
 
-On 27/10/2025 13:17, João Paulo Gonçalves wrote:
-> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+> > Ack. With comment in the code, why we prefer this way, in case some one
+> > wont to spend time on making it work. Probably SmartEEE or some other
+> > word should be used.
 > 
-> Enable i.MX95 pinctrl driver necessary for booting. Also enable the
-> missing drivers required for Ethernet and PCIe functionality. These
-> drivers are used on i.MX95 boards, including the NXP i.MX95 19x19 EVK.
+> So we have options.
 > 
-> The below configurations were enabled (listed with their DT nodes on
-> imx95.dtsi):
-> 
-> * CONFIG_PINCTRL_IMX_SCMI for the `scmi_iomuxc` pinctrl.
-> * CONFIG_CLK_IMX95_BLK_CTL for the HSIO domain clock controller
->   (`hsio_blk_ctl`) used by the PCIe controller.
-> * CONFIG_NXP_NETC_BLK_CTRL for the NETC hardware domain controller
->   (`netc_blk_ctrl`).
-> * CONFIG_NXP_ENETC4 for the Ethernet controller (`enetc_port*`).
-> 
-> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
-> ---
+> However, we need to get to the bottom of what caused the change of
+> behaviour before we start throwing solutions at this.
 
+It also seems like the PHY is FUBAR. If the standard 802.3 EEE
+registers are being used, a management plane is using them to
+negotiate EEE with the link partner, the PHY firmware should disable
+SmartEEE and only provide 802.3 EEE.
 
+It sounds like this PHY is not 802.3 compatible.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+	Andrew
