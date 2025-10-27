@@ -1,64 +1,65 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0862D6E4B
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 05:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDC22D77EF
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 05:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761544491; cv=none; b=NrHUiyErXCwukxKYwiHqtJdZ2ioh/vllo6nc3OhdtpwVjHX36BET5fWJemWEsFUyV88FghJZbhueWDL1LfllVhVHiUYhEo9808v8UQy//ICg6ChSfaaPFl054TUe/ayAyS8M2O9BX7HedkmDcqiWIWAzjatsa68GHpBGAoHWHgQ=
+	t=1761544538; cv=none; b=nS4NOFfqQewp7rh104leUD0PjTO08RhaNPn7fiwfY13oLYhBej3MoxqqcBivTwXOAPP9PBtwQwgTzpx6dkJIQ6A5OIpbgqelBTPzLlMYHv/Auh1fRsW5ciadD4dCct7mj/lsQZgAS3mIUW01bnHTVaQDCE5lQW7TO+qcXT4ni4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761544491; c=relaxed/simple;
-	bh=lwP5FYAMG+CA6PuikcdMmjSwA1h02EAFkhcU1pe2kaE=;
+	s=arc-20240116; t=1761544538; c=relaxed/simple;
+	bh=EfIQEjHO0SC7Aqmqkbs2O93BEaGxsZvcg/d6WWIvSz4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C14cOA4xqfhhP5JdY8td9TTVZ49OOcFs1C0KSl9SiM9VnF6AWI4V0rMzHaO4ua/ZdKVOrmxtxqEua0k+0zh+7zc0NJoyHHH07xCQkWHStDekwvQlS6TlImfrHam3uTCxUUNOEWB+ceFL1QmMveppCUSPcuTkpPWuKzXOkXycRZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=EPgcQSvS; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=FAjUqCYpBhRxth1W8L8Zm0oiCO7ADWKcfDm5iFhhdiV5XAhcQVza8SuCg0je6uwIFjHmOTVJ73ixA7egpB+XK8mH5uTLIq7Pnufs1XDSfImKS2le6IXPGqNJjTmMbKUfKAgZ2NVN7zSxRJPPke+edhRxl/c26yPaSwVHNRHs4ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=UGln7ZOV; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="EPgcQSvS"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="UGln7ZOV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=9JD8XR0rMxrds3N4D+/LhBdcJlCyVkkK883MJ9eIDgs=;
-	b=EPgcQSvShWq7imV9BCWPHd9qQa2e8o8GJVLiQs+Jg7ox33hUKaJgfvHtt6/LQW
-	V/nFlr+f04/BLnZFz+9NLsKikk89T6+E1f+pL+R0QNMBZi6lSwgPPhVydYyWQR6x
-	SLafhlxzl56UEJUnXi56d1yT1sOCU+Vw7pdvEJkesb3B4=
+	Content-Type; bh=Ljd/GfWV/LpuXLPWohOtAse3dPFW/ARWxabMfHqOTJA=;
+	b=UGln7ZOVacTnbhninps24IXqlFlyB0RG1OMwWhYRwl2Q66TfPUDvmZ5zqU+Ilg
+	lNSBDdkaX1WkqhLbbZh8cgtFdvdjG4N5XkL+WgoMa3UABxpAZEPfBkBM+F+FvST4
+	Yut2bKfEvDVSHfm5iBPGs3QSKtbfZBAAJYc6aGGunIoGU=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDX_1nCCP9ojEW+AA--.29661S3;
-	Mon, 27 Oct 2025 13:53:08 +0800 (CST)
-Date: Mon, 27 Oct 2025 13:53:05 +0800
+	by gzsmtp1 (Coremail) with UTF8SMTPSA id Mc8vCgD3371JCf9o49s+AA--.49824S3;
+	Mon, 27 Oct 2025 13:55:23 +0800 (CST)
+Date: Mon, 27 Oct 2025 13:55:21 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: linux@armlinux.org.uk, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, ebiggers@google.com,
-	ardb@kernel.org, dario.binacchi@amarulasolutions.com,
-	martin.petersen@oracle.com, alexander.stein@ew.tq-group.com,
-	stefan.eichenberger@toradex.com, lukas.bulwahn@redhat.com,
-	tytso@mit.edu, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm: imx_v6_v7_defconfig: enable ext4 directly
-Message-ID: <aP8IwcTzRuj542A5@dragon>
-References: <20251013121709.104546-1-andreas@kemnade.info>
+To: Martin =?utf-8?Q?Kepplinger-Novakovi=C4=87?= <martink@posteo.de>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] arm64: dts: imx8mp: add idle cooling devices to
+ cpu core
+Message-ID: <aP8JScVXZo9nj4MY@dragon>
+References: <20251013065903.35216-1-martink@posteo.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251013121709.104546-1-andreas@kemnade.info>
-X-CM-TRANSID:Ms8vCgDX_1nCCP9ojEW+AA--.29661S3
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251013065903.35216-1-martink@posteo.de>
+X-CM-TRANSID:Mc8vCgD3371JCf9o49s+AA--.49824S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU5mhFUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIQRNsmj-CMRJcAAA34
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUz8nYUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIQtu02j-CUtMEwAA3d
 
-On Mon, Oct 13, 2025 at 02:17:09PM +0200, Andreas Kemnade wrote:
-> In former times, ext4 was enabled implicitely by enabling ext3 but with
-> the ext3 fs gone, it does not get enabled, which lets devices fail to
-> mount root on non-initrd based boots with an ext4 root.
+On Mon, Oct 13, 2025 at 06:59:19AM +0000, Martin Kepplinger-Novaković wrote:
+> The thermal framework can use the cpu-idle-states as
+> described for imx8mp as an alternative or in parallel to
+> cpufreq.
 > 
-> Fixes: d6ace46c82fd ("ext4: remove obsolete EXT3 config options")
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> Add the DT node to the cpu so the cooling devices will be present
+> and the thermal zone descriptions can use them.
+> 
+> Signed-off-by: Martin Kepplinger-Novaković <martink@posteo.de>
 
-Applied, thanks!
+Applied both, thanks!
 
