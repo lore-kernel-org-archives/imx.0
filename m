@@ -1,199 +1,197 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013055.outbound.protection.outlook.com [52.101.83.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3681A31A55F
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 08:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761554876; cv=fail; b=PboZdiPCtLBw2ujHokEbdGao8tYIydp5qbySVnv4kh1KHeNDA+ABMqya5Hf2J1ii61LQ7dXei82Btl+PxSD1a+gY0wL1TgfmfsEgYlQlAxcXmm2nd7LIXRU3aFWvDFDMa6xKA5kjuMdk5O8BwkiR/RKbzybAwL85I+2oWhs1bQw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761554876; c=relaxed/simple;
-	bh=3L1uwB4Zst5ws0NzRYHOg1twIv5sXEDpIdc6T+QyEZQ=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=D5VkRF2A60TFKWjC6t3xrz+5zYZjIRbWGgYmkDnilPM9WksR8PeWJr3VGHmLSWIkNJnlk0mJPgZbClBY4Oi7suxxMHCO8jZrHrWB9jpINrQk6M05EsMkuPOWG9/zbDcuLg53NJxwZa+59vJ8VVWv86Yz/1T98kQKyodTJ/6STD0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YZehk/3e; arc=fail smtp.client-ip=52.101.83.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7E731A7E1
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 08:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761554879; cv=none; b=YXMYWF+tSfIRgcludZpseiWPDbD0eEANJYHOBXJSEPZK+cNboo29nRXZS7O8W/5RphB9EVbtw927e0x5/tcSWELGCc9Jm44YPAPXUoDQoy1VkUVxlXrVGbdPojnTkfuiVDlm/DAnRJP69SCTLJu2pDgqYOay54JSleXW/gtlnRg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761554879; c=relaxed/simple;
+	bh=6R3g76kmH8nUka8kU56TR1o+wy0tyxyUH/+Au5/EThU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jrLgUuL8DSYKpa0Tk8dIXIDEfod14vAEmlPX7HcwHOij2KF2py/5/ugvo9+R9ik4Z7/4Eh6cgUdz7IqU5UQZzYm8lB+On/1Nzul2LB2pUaK52cN0ysu57cBF5rAkpVdzRyt2Fm1hXKxf+FuMMyVjver24iJ5ubWnrMNlZHTVAA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H7Y908Qk; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YZehk/3e"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v33R7L3TajV/oUkdzTeNO5wUisSF537UgqO6VRAFNSTtZr1atVt7yNayPnDVnBzg+h8B1KxViElOramLnGCzPyrXEdboaFVjnATb7WdqYm/t9wu4tHhqtw9A1nxY+QS/OS4jSVeWXXQAORf+/Pg8svAFLSxDbCT2FS5cvjTj9feaj7zVF+7QR1HnxwGRG/OwJJfyCwb7svdK2KO3g4B9UZFTfhqp/Be/E43qxA3lS9EeJRR+QxGKXSE9xSJnC4na29tz7LG06AiThK6f/Blx0KayzrBBPzNuBlAA+PxEJeZch4fMvpbU7mSDXJmL8xroChaTSfTtL/9yzxOC9RRJ6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uwDaYv5/cMfGnFFRJ90QjTnkksikVmdb3TO2/4Ta+/M=;
- b=fUDXBLFAqLRfjxlNHcgbnpFztE9Rkebg4aO9bhcJs09NXmamGsVF76Hdd0WWnkI3t15Ux3Yi7kwYq3ZTugTBkRDZOqkCu2yZaro68zTrXumwHPfQvjHyx3ArqzZPYg3nilnyrTaIRx06ZRpBiNjKFhiigRDPJo7XLGS4tdtQOEC3Fbi/b64jn5xc0w4Lo5/e8A9fcxDBHDdkXkwgWPuz1/w/xr/YVkty+ZrV3vhvxWdHmK26H6uLJZgbEip7e5CSuXj4DFbCQT5OHQs3dzEzz5mBoLZ9U4FUbNThBTmzTb+AyusuHKfqQri0skC90Hh9sEYqJbSlszOdITbNYPTAjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uwDaYv5/cMfGnFFRJ90QjTnkksikVmdb3TO2/4Ta+/M=;
- b=YZehk/3ec6WIl3YBSJA1p97B1czzaDfkrIMBiTafR9k+VDIv9o/vSKGqg8gOT3rWW5+xBEb4ZVZTr+SJaUbgBGpxJbEhBZzufoG+AwOGfqKGttNrVJ0yy6yOJi7Kn+z3o62SHSVmorTyAkZP6eJ3pne8k2e7GOq9uTL52kElqJhLbVqzVH3p+G0UkejdOVbbm2j2f4uBi+RIWy9MnLT9SeX2nzgbWyvJzWGqXlx1x1xe1bwVr8VYkurNxO+pkxV93hMtAGGLk6upZGKpsKFXyYjHF8mzFlkoGY98KYo5moeNtxFivAYamh2ew6S2UUNJ6fVywakYnz7rug3fwC8KAg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by DB9PR04MB8432.eurprd04.prod.outlook.com (2603:10a6:10:243::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Mon, 27 Oct
- 2025 08:47:50 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64%6]) with mapi id 15.20.9253.017; Mon, 27 Oct 2025
- 08:47:50 +0000
-From: Liu Ying <victor.liu@nxp.com>
-Date: Mon, 27 Oct 2025 16:47:00 +0800
-Subject: [PATCH v5 10/13] drm/imx: dc-ed: Drop initial source selection
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251027-imx8-dc-prefetch-v5-10-4ecb6c6d4941@nxp.com>
-References: <20251027-imx8-dc-prefetch-v5-0-4ecb6c6d4941@nxp.com>
-In-Reply-To: <20251027-imx8-dc-prefetch-v5-0-4ecb6c6d4941@nxp.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Dmitry Baryshkov <lumag@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Marek Vasut <marek.vasut@mailbox.org>, 
- Liu Ying <victor.liu@nxp.com>, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: SI2PR02CA0041.apcprd02.prod.outlook.com
- (2603:1096:4:196::20) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H7Y908Qk"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-63c523864caso10034408a12.1
+        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 01:47:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761554875; x=1762159675; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BGZz4VWs/JC+aNmL95YeIOEFAldikWyWA5RKgIlO5FE=;
+        b=H7Y908QkCYUSbIk0DtIzynickdLrSdsBCTq8M8ORo6tjfF//X+iAiEVsOISaxvNtdQ
+         xFWUd7cVEhgJdtZszzCgqfXLPUsnlBrLNXvj3Zs+ePkbqcBPfHdPqvvbzd/dvxkmcdyH
+         v/ZxLbhSqNUm/YD4dmCwXEf0xUbIufkmeP9DC2Lym7d8bbcITuApjhOK6TLVhoN0pmLD
+         rPCT0oN8BXD2ZUJYzYeWJ/EhBmZAhzvybShzf9pbi7ltZHh6Gp3Y9ix6W3/SkHHKtLva
+         ZYhIaki7ELIbDaLrvXoH7dvWVlgWWV5mhjxrxw+ycjH1O14Xc4x5WEyNsdtj9WDyYyaw
+         1fTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761554875; x=1762159675;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BGZz4VWs/JC+aNmL95YeIOEFAldikWyWA5RKgIlO5FE=;
+        b=T/AlMkRN1NAZ5uL0E+wvTGZmhLGkwRTiO0sS1F5sOKK36ARnSc7o9BND74efgCEj1o
+         YaU6inabW9tom6coysfOf8PXHjddsYKE4lmQgWKOhASkx/+KTvNyzMvXzZk7Xk7qYn99
+         HpS8xDgkqRqMaIkpY5x5nMZz7dbB8K2im6F/vNK7IOrKKuEUs61qYi94Yjz/0qKbzx7H
+         zHSVy4lrpUz02xS/Q86MQ5ljJ/Xveml4Kn2RKVCcZo9MjTY4FiNdMPhUGmtzBRanZkkx
+         Gp7BuTQKD7wxMBJW7GihkWrD7O7QZtKb+ME625vXGH/jnKY4B3STxptzD2JIrumaXiDt
+         Bejg==
+X-Forwarded-Encrypted: i=1; AJvYcCWem44Cxm4MeyF5yoiAHwb0ab2v/zvdFd1peTtdmCQq+mZt6+0tqTT9en1bsf4dQ4hqWj4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzg5Vi5solFreoOEW5RjDhX6ezFjo1P+1lPXsb1dO7FOJqAqlqh
+	stnF6SMBdnImzG87hcTZWLYcZlqz611chFHIv/owZEt8louYgt4k+uAH
+X-Gm-Gg: ASbGncuiGg6QWe5bYZYeWdeK270aaMfkNgEzdH47OjtBNkN5QmcNUN5h1wexPMmSeLr
+	37BjK6N1907LLMlibqY4flsggWRijKvA2Vvc70aZZxEg6mXzKFAGtqA2dMklMLQEmsAoBxNnlYH
+	YHkBMzScUViCmHDISL0TLC89G8fx/dBhLvYtIajGNJbVbfZ+i4Wvc9yEc8Z6F2Ersp2CsG6Xacu
+	a5RQUEaf4nx9vK21KTlbUpmV34EQ+Zfo0qRuXsJ73WnEi41cGpUF6dhd2Q/PpMtEIq5E0Rnrpxf
+	2GfgXhCKvki9bK2YjLiFqY65TUtjTcvpVneIQZCcjiBQkn8SJYteompYqrYmzP4a8siRLJOmLDt
+	/CFFe09VnyYKfVXiiB+3s2DVPMUFQnorx3R1GX8XmYj8HeCOZ6PMql3/gUfAAut//+9BWKNRy8o
+	/QVPK05n7GCWFTTrhBIIGMOq0PXN1UInS0lm8PsSOxX0y4MqLvV7q/s0MAtCuSn5cAtAPWw+Iju
+	FpvlgE=
+X-Google-Smtp-Source: AGHT+IHI/dPLHOEXbAgh9incjnpJfjqNEb+KRQ5szvPQKR2/DbuucHSelag9VvNOHA5WUfOKDq1CeA==
+X-Received: by 2002:a05:6402:430d:b0:63e:142e:4b18 with SMTP id 4fb4d7f45d1cf-63e600843bamr9053952a12.7.1761554875180;
+        Mon, 27 Oct 2025 01:47:55 -0700 (PDT)
+Received: from [10.0.1.60] (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e7ef8288asm5688230a12.10.2025.10.27.01.47.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Oct 2025 01:47:54 -0700 (PDT)
+Message-ID: <341f56de-9dde-4c44-9542-b523e1917dcb@gmail.com>
+Date: Mon, 27 Oct 2025 09:47:53 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DB9PR04MB8432:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d9082e3-5a8a-4d85-ca70-08de153582dd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|7416014|52116014|366016|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?K3BERFBpZVBlbGNVd0ZlanFoL0tNdGdPdndPSDdmRXYzRnBTMGFwZm5FSGhZ?=
- =?utf-8?B?akxSZjNMeWFKVDBFcDM0dW9LclJraFprdThKTmRZaHVFUFdiazF3bnYyTkNE?=
- =?utf-8?B?TlVlR09SczNmUVc0TWg1QXpOMjVnVkFJL3U3SDlpY0VROW5POXk5Mmc1S0pJ?=
- =?utf-8?B?ZlhidG00T3VpL1c4Vnl2U0RpNXE1Sk50eENoanJaTnRuSXMyZ3hoUGtiZjJH?=
- =?utf-8?B?TjlEa2tGVFlXUVczODlYeC8wZEFlejQyMGZEbmZ2WUVaSjZWTG94eFB4amx2?=
- =?utf-8?B?OTRpWWRGSmFOZkF4K2NkK0F6NlBlWUxneDR2eWNIM2hNeGhzRm1MNnhvL2VS?=
- =?utf-8?B?MjlUM2YxN0IzRGhkNUJsYVBaZHUzdWNBS04wTGY3U20wREdjcCsxNmI0ci9J?=
- =?utf-8?B?blp1VEVEYjVnYWJhbzQwT0ZYVTFlelZiUkhtS0xaSmI4a0diMnYzREFsbCtk?=
- =?utf-8?B?QlJoMjl5MVMvbEdWZzZmOWx6RDBhTWpmUDY0L29uVkszZFQvVTFBR1I1Zkow?=
- =?utf-8?B?RkY4aDNzZmhDUStwQ2lsMGFzVWFlRGhPTGdKR3Z2dWdpdEZxY1EvVENvTjdD?=
- =?utf-8?B?NDBRMlVGb25OQTRHRGxUTlovZkpSVDJxQ3lPczNyeTJSRWx5dDhlOUJodjc0?=
- =?utf-8?B?Yzc2VjdHTnZmRWhzUHlrQ2xiT0J1cTR5L0ZlbjNyUlozTVdvVFhibmZjU0xp?=
- =?utf-8?B?c2V2d2FlWm00TXpocHZxVUg0alJPM0Raamp3UTFoTFVGRndjVXlqM2c2SGFV?=
- =?utf-8?B?bWNndFM0b3MvektIOVkybnV2YitZdXk3cW9Ga3Nvc085K21rdWVLNnFOeFlu?=
- =?utf-8?B?NjRXWGdtWG45Wmx6YWU5b2FLSFBsS0FlaHJQRzI5RjQ3VVhMZmMyaTQzQ000?=
- =?utf-8?B?ZS9nKzhINHd1eGtVK3RTY0t2SGFEQzN1NHpOdjkycFNRTGJVMS81Wmp6TFda?=
- =?utf-8?B?NUhIUDRlcG4rWWhsbzB4RkhHcVl4bmRJamhhSGdFUnZtMWxNaHJUMlc2ZDdq?=
- =?utf-8?B?TFJKSkFMcVFpc3JJaGptdWdmbW9CeTNFeDNiMjFoZVNUSHJ6MVc5b1ovL3Vp?=
- =?utf-8?B?VmhJWnExa0ozTWxVRkJNYkg4N084d25peFlUcm82b3RFWTRXL1RRcXhLUXU2?=
- =?utf-8?B?NGhPRm1NbjIraWloMHVhZW5vbmJHL3VpVWdOR2haV2tUT0ZPR2s0eFdFc0l5?=
- =?utf-8?B?cXJNOEEzcUlwb1NPbjFLaHJpTlIwS1ppZE5tVjBYY1BnMDZpek8rTmxxYXNW?=
- =?utf-8?B?TDJlSUJvaXJucGltcUFJV0JnUFhjVmlxNHIzT0tpR1dIK0ZPUlpRK25acDBM?=
- =?utf-8?B?V09ZemhPUFhGYU9aUGx4cUtETU1JZjdUVGVPVXE1QXc2VzVsK0V0bHBrOGdx?=
- =?utf-8?B?Zm14NlU0RVRNZkNDeVBQM25uWmRhQUFuenNDdjMrTGNkMm9SVUphSjk2NmZI?=
- =?utf-8?B?R2g0a1lNRHZhc01rVjNPeExLNlZaYm9JYllNMTFRYmFiVXpMZ0F0d3k0THVT?=
- =?utf-8?B?ZVc2bGp0cWtPazdaY29xemEvUnZMZyt6d0xoM0JXUmxUTXc0ZHlrQ0IvcnVr?=
- =?utf-8?B?NEY2dHhCeEFTWEdLQWZNRjZTcmJlQ0ppMjhHQ1RLeUVWa1BNV3Z3Mk0yaElE?=
- =?utf-8?B?UVZSNG1mZ0pqdWtwYXFCK2lZM0lIT1BqT2tzWUNNM0tpMTZRNHo3SWhibnUw?=
- =?utf-8?B?S1Blci9FUmhGVm1mNEw0SHlMWEZZUnlJNnkrekZ5L0JNcC95SW1HSUtRRnlh?=
- =?utf-8?B?MnBFR01DWXdmcmxGVXZvb2V2WUtJRGtwc3poU05jUExHVkhiQVlLV0x5OXpT?=
- =?utf-8?B?LzRyUng5UHZyTlAzUXdBSmtuSmlNZkRNUS84R05WWVpZbFVRT09DOTVpbDRk?=
- =?utf-8?B?eGRXSHFSc0dJU0ZDdlI3ZmhTWnplVW9kWjc3bU5qeTRnK2lkeWxueS9sU3RO?=
- =?utf-8?B?QVRDeGJORDIyYW9DL0JlNlc4cER1WFRBclh2RVhVN083dTZGWFB3dTlvR0ZD?=
- =?utf-8?B?K1owT3NPQk5IL2Y5c1N2RDk0eU42M2hGRWNXQ0kxYTlLdm5vUm9RSzF6em91?=
- =?utf-8?B?Rk5zK3ZRdXBFYTluL3RWWnlPdFZJcStZWkN6QT09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(52116014)(366016)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S2VpcmxnZnZwSWl3ZElBR0dzcUs5SjhoUTlwV21mNmlUNUtFTXRtdlc4b2Q3?=
- =?utf-8?B?V2thR1o4Q21id0ovSTJjaTZFZ09DMm01aW43WUtpa04zdmcvbGtTTVNjVG1i?=
- =?utf-8?B?VHZzUCtKWlQ5dlBhcUxFVUxmSVBjVHNWNHNXNjZKWDgxU3EvZ2gycVg0MzNK?=
- =?utf-8?B?T0J0cWRNUGN4eWpDb05WVmQwYStqUllHRkNyV2I1WE1xcFVoSmFJNk9KazN0?=
- =?utf-8?B?WEQwclRhMVc4cWMwYldVWWhUWDZRV1lwS29XaUtUclQ0UFZBeHh6NFllOVY5?=
- =?utf-8?B?bDFIUG5aNk9ZNi9mdDFuUHErTXJKM2hucTMwZkFhVkNEWU1SbDBrV2JjOC9I?=
- =?utf-8?B?S3JTUmVaYzFxUTVpZUo3WnVJdHduK0RabnJtQ1AvM0Q3anllMDV5a3ZtaExH?=
- =?utf-8?B?QUcvVnUzSzlmWWlhcHVCc21lUk4xL1FVdlRhVFZVam11Z2kzdWpuWEdHamc3?=
- =?utf-8?B?NGE0bzhZaEMvZ053OThjamVJUW84S2oyMys1cGpjcExyWDlKc24vV0ZFd1RT?=
- =?utf-8?B?cFZuc0taQSszS2p1SWM2SGFuenIreFlDSUlCb1VHOWFLZkZKYTNSSmUyZ1JT?=
- =?utf-8?B?cEk3aktia3Z6bUtuRUtXQlhvQ2VDS1VkUzNEc3hlUTRQcnI1TExoWnQvVVQ4?=
- =?utf-8?B?NzlBUnpIU1I0cCtOb1F1d1Z0aEpKUVdTYnRnOXJOSlpGYXo0ODlzcUpnbUxF?=
- =?utf-8?B?ZmtTYUNVaW5IajJmU0FSSDJJZzBWbnI3bXQxTzVMeFEzeWtkMi94eURkUkVT?=
- =?utf-8?B?Yyt0WmhEWTdzR2o4OGtKU3k3ZFhqS3FYbDRCenVMaGs1dWF1Y2tsVTlPS2pP?=
- =?utf-8?B?UXZ2L1dWQ0h0Zyt0T0R6Z2prekFrTTN5Rm1peXUyWjNzTlVHbFlqV01pUUlC?=
- =?utf-8?B?WXZaZ0wvZThQWEloSVZiV0JWWHVBQWJVdTVuWHBtQkZid1RpS0xtMmJYbmxR?=
- =?utf-8?B?eDZCUUJKVkc2dzFlTCtkUGJKTEg2NXE0K3Zid20xZFd2dGlyRTBQRlMzTE8r?=
- =?utf-8?B?VVhKeTZMNVVuaEJkd3J3eFFVMStOM1dnWVF3aWYwcTRVbWJCWGR5d0lqdmZH?=
- =?utf-8?B?RW8zQjlPZ3ZqOEJuRFlPQVBDWFVuTTZUbUFoQ2I1WmJzdFZYdlFvSFNONkNB?=
- =?utf-8?B?YmZoVE10N1pNMzhpRGtJZ2hSS2UzUzgvYnhjdEFZQ1FiZlU3eHI1aVNwdS9p?=
- =?utf-8?B?cnV5R3orcG1QbkZLUVFVSFF5eHdsWUV4WTBQMW9tKzRPaXl1amVuZlhCVzZI?=
- =?utf-8?B?U01XU0xBZitNTDMvUVFvRDI2b003OFp3WXdrVytwRUJkekN2aUlpQXoxdldt?=
- =?utf-8?B?RWlLL0xUMXc2dVNnald1WldtTUs2VCsrTGZiM1JNSnUwamdGeStCOFFhZGI1?=
- =?utf-8?B?N0NSdGg2Sm9lOGJ2SWNlLzAwS1loK3NsR0IyWHEvejhZbWphY0s5VVN0M2lN?=
- =?utf-8?B?dFRXOTgrTzFqbmZWcjdYUTZmZVNDbTJqeHNsNCt2R0xCMSs3WVB3eDBFdC82?=
- =?utf-8?B?YTNoekFhUU0wK0dvcE9wb0ZaQ2RvMlFwOUhZb0hjT05mZTRaUEtXNGJxTlNO?=
- =?utf-8?B?TzhvYTBLQ1lvd2FmZlpzdFp3K0tIT3lsR016Y1BaWEhRY1RmbEpDb0xTbGU0?=
- =?utf-8?B?NWdFR1FSTDY0QmsvY3hobTBNTGtRbjA1T3JuZllVaitIRDlueGIrbFVtVlJi?=
- =?utf-8?B?bGRqa2hXTzlSYlpUelptT3piTmJkSko3OGZVZ2lvbzJDc1hRclFmZ3ZpNUJ3?=
- =?utf-8?B?RStONUs3b3Q1cGJRenlja0x6b3RreTdFRi9NSFdNSy9CbHpZemNUVW5ONGdX?=
- =?utf-8?B?eHB0RzR4TktiMXJ1ZXk4T0tLcWZ2R1gvcFJ0V0tqaGUzazN6MHI2UkgyNEVY?=
- =?utf-8?B?Mzhud3J3NjFLNWpFNGFiZVoyL0UwVWFhMGdHSVlkR0FxRGo2eGJzbVd1bUVa?=
- =?utf-8?B?cFV2Vzk5SHkyWEdPSXpuVEZ3dHR6MUxGOHVrWVE4TS9qSkNXa0EwZjdyNGor?=
- =?utf-8?B?bE5tK3JQeWp3QXlSeTJIZUxHcUEwOUx3THR3ZnpTYkFSYW5NK2JvMGcyWjQ5?=
- =?utf-8?B?bkpsWm5OTUVsWXlkMUR6eWVUVUV2N2tsOFZRaTBkdVF0MDBOMjQzU0t2bWo2?=
- =?utf-8?Q?CLKkXSnF7uYqiJcb6atuaHdPs?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d9082e3-5a8a-4d85-ca70-08de153582dd
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 08:47:50.7756
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6UyqSThaDccaexPeYCDuSLQJDoRuGRMKUntua8K1aSTDkG+jLNZIjRXMhMGrYl5sRhJC/LyvVsprhdnPEFVqDw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8432
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Andrew Lunn <andrew@lunn.ch>
+Cc: Russell King <rmk+kernel@armlinux.org.uk>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Daniel Scally <dan.scally@ideasonboard.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Stefan Klug <stefan.klug@ideasonboard.com>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>,
+ Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
+ <e87ff7f2-d16f-41f2-b781-b175cfb84b21@lunn.ch>
+ <20251027072749.GA7811@pendragon.ideasonboard.com>
+Content-Language: en-US
+From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+In-Reply-To: <20251027072749.GA7811@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-It's unnecessary to set initial ExtDst source selection because KMS
-driver would do that when doing atomic commits.  Drop the selection.
-This is needed as a preparation for reading ExtDst source selection
-when trying to disable CRTC at boot in an upcoming commit.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
----
-v2:
-- Collect Frank's R-b tag.
----
- drivers/gpu/drm/imx/dc/dc-ed.c | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/dc/dc-ed.c b/drivers/gpu/drm/imx/dc/dc-ed.c
-index c8cd15f9e32de4d86c2acb8764146af1c3663c1d..7ea305e81ad651d4f80a629a62075f80c5a25f58 100644
---- a/drivers/gpu/drm/imx/dc/dc-ed.c
-+++ b/drivers/gpu/drm/imx/dc/dc-ed.c
-@@ -203,7 +203,6 @@ static inline void dc_ed_disable_gamma_apply(struct dc_ed *ed)
- 
- void dc_ed_init(struct dc_ed *ed)
- {
--	dc_ed_pec_src_sel(ed, LINK_ID_NONE);
- 	dc_ed_pec_enable_shden(ed);
- 	dc_ed_pec_poweron(ed);
- 	dc_ed_pec_sync_mode_single(ed);
+On 27/10/2025 08:27, Laurent Pinchart wrote:
+> Hi Andrew,
+> 
+> Thank you for your quick reply.
+> 
+> On Mon, Oct 27, 2025 at 04:08:42AM +0100, Andrew Lunn wrote:
+>> Adding Russell King
+>>
+>> On Sun, Oct 26, 2025 at 02:29:04PM +0200, Laurent Pinchart wrote:
+>>> Energy Efficient Ethernet (EEE) is broken at least for 1000T on the EQOS
+>>> (DWMAC) interface. When connected to an EEE-enabled peer, the ethernet
+>>> devices produces an interrupts storm. Disable EEE support to fix it.
+>>>
+>>> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+>>> ---
+>>> The exact reason for the interrupt storm is unknown, and my attempts to
+>>> diagnose it was hindered by my lack of expertise with DWMAC. As far as I
+>>> understand, the DWMAC implements EEE support, and so does the RTL8211E
+>>> PHY according to its datasheet.
+>>
+>> I believe for DWMAC it is a synthesis option. However, there is a bit
+>> indicating if the hardware supports it.
+>>
+>> The PHY should not be able to trigger an interrupt storm in the
+>> MAC. So this is likely to be an DWMAC issue.
+>>
+>> Which interrupt bit is causing the storm?
+> 
+> That's where I hit my first wall :-)
+> 
+> I've tried to diagnose the issue by adding interrupt counters to
+> dwmac4_irq_status(), counting interrupts for each bit of GMAC_INT_STATUS
+> (0x00b0). Bit RGSMIIIS (0) is the only one that seems linked to the
+> interrupts storm, increasing at around 10k per second. However, the
+> corresponding bit in GMAC_INT_EN (0x00b4) is *not* set.
+> 
+> The ENET_EQOS interrupt on the i.MX8MP is an OR'ed signal that combines
+> four interrupt sources:
+> 
+> - ENET QOS TSN LPI RX exit Interrupt
+> - ENET QOS TSN Host System Interrupt
+> - ENET QOS TSN Host System RX Channel Interrupts
+> - ENET QOS TSN Host System TX Channel Interrupts
+> 
+> The last two interrupt sources are themselves local OR of channels[4:0].
+> 
+> I ould suspect that the LPI RX exit interrupt is the one that fires
+> constantly given its name, but I'm not sure how to test that.
+> 
+>>> What each side does exactly is unknown
+>>> to me. One theory I've heard to explain the issue is that the two
+>>> implementations conflict. There is no register in the RTL8211E PHY to
+>>> disable EEE on the PHY side while still advertising its support to the
+>>> peer and relying on the implementation in the DWMAC (if this even makes
+>>> sense)
+>>
+>> It does not make sense. EEE is split into two major parts. The two
+>> PHYs communicate with each other to negotiate the feature, if both
+>> ends support it and both ends want to use it. The result of this
+>> negotiation is then passed to the MACs.
+>>
+>> It is then the MAC who decides when to send a Low Power Indication to
+>> the PHY to tell the PHY to enter low power mode. The MAC also wakes
+>> the PHY when it has packets to send.
+>>
+>> A quick look at the data sheet for the RTL8211E suggests this is what
+>> is supports.
+>>
+>> There are a few PHYs which implement SmartEEE, or some other similar
+>> name. They operate differently, the PHY does it all, and the MAC is
+>> not even aware EEE is happening. Such PHYs should really only be
+>> paired with MACs which do not support EEE. An EEE capable MAC paired
+>> with a SmartEEE PHY could have problems, but hopefully the EEE
+>> abilities and negotiation registers in the PHY would be sufficient to
+>> dissuade the MAC from doing EEE. But i would not expect a setup like
+>> this to trigger an interrupt storm.
+> 
+> Thanks for the explanation, I read documents to try and figure out how
+> it worked and didn't find such a clear and concise high-level summary.
+> 
+> I'm not very experienced with ethernet, but I can easily test patches or
+> even rough ideas on hardware.
+> 
 
--- 
-2.34.1
+Hi Laurent,
+I had the same problem, interrupt storm plus link instability with dwmac.
 
+I found out that 2c81f3357136 ("net: stmmac: convert to phylink PCS support")
+commit is the one causing the problem to me.
+
+But the phy used by our board clearly do not support EEE, so I disabled
+directly in the driver.
+
+I’m very interested in your investigation, as I’d like to understand why that
+commit causes a regression, given that it supposedly just switches to using
+phylink for EEE management.
+
+See https://lore.kernel.org/all/20251023144857.529566-1-ghidoliemanuele@gmail.com/
+
+Thanks and regards,
+Emanuele
