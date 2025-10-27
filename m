@@ -1,195 +1,213 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013009.outbound.protection.outlook.com [40.107.159.9])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265E029BD96
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 01:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761529417; cv=fail; b=XIf6g6EDDaH4gT0KB+BL/2IA5xnComD59bLB9sk8A3S3DFwsDDioy1e9ny1Ter0FwfHqcB4R0QTLrAXo1yUIKRTmXc8qrkPxHUqup+sW9V3vBaFR2n0O3UJZdl16XJ3xRiyiFgqxbI1+OCM1fpGCqcnZL7BN826l0G1cBmg7aFY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761529417; c=relaxed/simple;
-	bh=ZRmCRqZq7lSzd/OL9K5H24ztVXsinWhb9BTAfJEAGys=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nWznoPUj0TvdtMDZc3yh81UlSZZ9gNPO74DLeTQvtCkNnVSBojIEN+HADX2R78JaQeDmecnbBUOx3nhsgDnjEPjRz1o6QGySD5DA7EF6zCd/zYQCtcIzTRPtBsUjOK+SYRqMMCsG6U6bqeRqWRK4Q7ppyApCpgll3J5iry1X3Fc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nRdJnHz/; arc=fail smtp.client-ip=40.107.159.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD1C29E0E8;
+	Mon, 27 Oct 2025 01:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761529505; cv=none; b=slE0ZYAYdYEvOyuZS1P+oZMSBC/vkRPPk1dgAhVffzTmsP/QrHdnUq+pFlVyZvcwTPIndZ/1BpNpG6ynVMuMqGHBLkZQPLWYYEovQMT+/T0Q+rlqTJPOgbsA1ouK5dxdAJidKjaCG9mIUT8t9dv40Dno5cwfYpqGqSweBe4eqHo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761529505; c=relaxed/simple;
+	bh=Hk/Cv0JH4I2/bc25Mtk3P330bEAkbyQwBrU4iJ+LcR0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m39I73rQpxI00TNR38RiIB02btU0PPHZd2kmKCYSGRY2HLy4GqLn8EKF+uCL4TwYcMVzWOMDLrwxfKRWYDyPekXPvEuZfr5s7CsRa0cdaJ6bnbnmqu7GlC0VsEiUmV0wUImhqbiItobyGdsMPajPFgYrzJ7UWSE735ImzFi3qfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=DmTIN/95; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nRdJnHz/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YPeTJW3xPaZ+pZoqk1pAHF4fIexCMB/lOSF/BoZ6aN0fY3BG1hVmqNCpCAcdTxFsfDDkRbUex8CsDBZnjOBYd8ByZm8wR4ZcQh6hkAImAeuiZEGsYtHnJZRX5CePkBFdHHmXz7l38F5sFqzsn22vyfEA8EZYpgAwl0L7281cZt9rNr1OeN+zw/JR6Sln/VC+s89NNtqpFiAWi92SEWZ3J1Yv/ceCROONnQX1w7ZRf8t75jJZujxagxWfoMRKr4KscT8j/QlFP7tHMrdTc2qbJCkGADdrqRdBRpEF7VXvUuSmRCWaJslqhmwqjPg33NSBBI0SP6/QdEdM53qy8owIgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZRmCRqZq7lSzd/OL9K5H24ztVXsinWhb9BTAfJEAGys=;
- b=C5GBGduQ317YuIP9HxSPDU6vOZmgNr0DpkRuJ3rizqqsIqwCxXfzeWr1+0jba/vsZrm7nTaKnysDB6li4sRCiqxF/oca9h0EaDmjW8RbQgo/P83hjPmqczMHpEOq5FaVJyVF8fUmNuy18raGhan82oXU+oRG8DYaeKN6uih1JqgbD968l3oji5KZ1xpAywFgRFlH6naN7Ot9cmeUlsGHj/3ECWCxIb7CnrMgW2R4FpCdl5wB8x050Oj0ahMDEAdS8WkhPH7iBYo1zVM/PPtZZZsyS/UAqKs7yqkPEM4Cxpuf0vqxHOcsRk13plwDjPOnDXthEF00CdfdoA6sDa9mdA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZRmCRqZq7lSzd/OL9K5H24ztVXsinWhb9BTAfJEAGys=;
- b=nRdJnHz/36jLotiofXJHSai1coh8zI7cIU3byxZpu0wTRFCFP3O/DQaYHTnmU+m6SXuVHsW+KgD87cBLCCnmHyFtqCxZl2OU9f4sxoDoiw9R6/ttb/ERKpsmPuiPhaR+HwNygKN8B+5cOP/KW/9f9cTQlID7r55mcR+B8Z2isOZ3CERJ7f3Gnj7SLFoxyNNhMqfsUgR33BZ91/r1RaCkv+xRBkayA0vd7z5UfT9CqNbInaZB5iR8mPjmOGHIUW734tdZ3r9K0cZbKd60bG9FbOFDRR2byID/LrOlPYKshmmzG7cG25wyGODep35jXiUZGGYaKdxVrE0c4b/j3sU2uw==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AM7PR04MB6886.eurprd04.prod.outlook.com (2603:10a6:20b:106::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.17; Mon, 27 Oct
- 2025 01:43:32 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9253.017; Mon, 27 Oct 2025
- 01:43:32 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Siddharth
- Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, Andrew
- Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, Russell King -
- ARM Linux <linux@armlinux.org.uk>, Paolo Abeni <pabeni@redhat.com>, Jakub
- Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, David Miller
-	<davem@davemloft.net>
-Subject: RE: [PATCH v3 net-next 2/4] net: fec: use new iterator
- mdiobus_for_each_phy
-Thread-Topic: [PATCH v3 net-next 2/4] net: fec: use new iterator
- mdiobus_for_each_phy
-Thread-Index: AQHcReBGrZIygDrS/kOKwPNvlYk4b7TVOlOA
-Date: Mon, 27 Oct 2025 01:43:31 +0000
-Message-ID:
- <PAXPR04MB8510C423FA075EBC32FFABBB88FCA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <07fc63e8-53fd-46aa-853e-96187bba9d44@gmail.com>
- <65eb9490-5666-4b4a-8d26-3fca738b1315@gmail.com>
-In-Reply-To: <65eb9490-5666-4b4a-8d26-3fca738b1315@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AM7PR04MB6886:EE_
-x-ms-office365-filtering-correlation-id: ec7926b9-5f1d-401f-e63e-08de14fa3c5a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|19092799006|38070700021;
-x-microsoft-antispam-message-info:
- =?utf-8?B?RXgzb0hUMUVSdlZNUTY2Ujc2UFpKamwwOFhqUncxb1pNTGZic3BtNG1jem1o?=
- =?utf-8?B?QkpJVGRaQ1ZOOHZuazV6ZkdzcjFuRjFKemlIOUk2N0UyVzVuNEhtYWRyZjFh?=
- =?utf-8?B?Vjhrc1RCVS9MN2Nld1J5QlJwUkVDVlR4QjdmcVpLaXo2VVlIZ3pvNFhMand6?=
- =?utf-8?B?TUxBN1p3N0d6aUVYb20rL3h1Q1BtVFpOalpXOCsreUYxVGUwWmlNQWk1VWVC?=
- =?utf-8?B?VUlsdUlFVzdGTUNlbjNIRWkydFhaclgrd3dxWUtWZE5RVEhwQlppVnNGYjk1?=
- =?utf-8?B?K1c1V2ltNGw4blJtOE9CeVFYUzJGT3lBVTR3Vjl2bHlFVkRmTHRLS1ZYektH?=
- =?utf-8?B?SFljdThiRkNZcFk4RUs4SlVOQ2RMSFkwQVVjMnRsUityQklyWWpUQTkyeWFT?=
- =?utf-8?B?dFVldUZ5Y0oxMUpyd201bVBObVRFRHBoTGQ1UW9kUkpTcXFNalFoRG50VE02?=
- =?utf-8?B?MlZJcTNuQ2NJSFRSakV5UUFXRFJNVS9vclpCYUZSR3lLcXBNREg4WGw3WVBq?=
- =?utf-8?B?WVg3eXU1eE9iN2VUUWU5K0VaNW41aHUyK1RiektLWElkRUorRE1LSEVEdDJR?=
- =?utf-8?B?WUNsOTBmOElwLzdWck1YaTJ3YmZGMzYwUkt0MlA3MU5PNks1em41bzlCaG02?=
- =?utf-8?B?NWhnVjdKODVHS3ZjY0FhN25kQXljckMzdXpuZVp5SWNuN1JnZDdwMUhpMGZv?=
- =?utf-8?B?Ni9DeFhJbmpOa00wZmRLN2NuV2o5TmV5b0RuUWRxUTZMTGRkdG44QTNPTzQw?=
- =?utf-8?B?cmFSZ2hmUGdGSjRFY01PSHhMOTdwYk1KNmQ1TUErMWFvRHlWcENaRnZzUm1E?=
- =?utf-8?B?UlJhY1haVWYyb0grUkwyZllMbVdyTmF3QTJUQUxFNU5qaGhmdWxhbGxhai9t?=
- =?utf-8?B?MGtrcEhJT2RhRmFBKzRUY1VTYjlVS0JJSkRieE04L3J4bXdKdjhKbU94K3hY?=
- =?utf-8?B?QUxqQ2xuUDlhcCtQVXFrZWFML3U1bGY0aFExNVNZRWZOR2t5dlRQTUdqSXlV?=
- =?utf-8?B?cFdDTytTK3R0TzVkNkdaeEpxNHpKMUdiN3NZSEx0NFdtUnB1UEgwSG1KMHZT?=
- =?utf-8?B?d2JlRGsyMEZNQzBXL0dFK0dEb0p6dE9TcWxzZlRHZjVpMHpCY2xWcUVqbCtx?=
- =?utf-8?B?RFhuVnZjemNCVmwvRkpWaWZWUHNBb3hLNGNxODFjYWkyZE9kSVdReXRITThC?=
- =?utf-8?B?WUQxN2NDTm5sOW1XMGZSWTIrWUhCc3NucGpYQklyV1poQnU5SjRMMWFWNi9q?=
- =?utf-8?B?TWN0OTVXWnhtSmc0YUwxRGxFT1JqMlg4QS9TeGd4UXcrb2doTXloTW5tK1ZW?=
- =?utf-8?B?aHNKcjRQTmhXcEtrOG5QOGtyb2VRU3ZGL1RWR0VQRlZUTlRaRHFyTFpTUWVF?=
- =?utf-8?B?UzhSNWFRTjdjVVlGSmIzYU1yb1pwVUpLM2hGSEVwbkJCenVhZWFWNDl5Tmw1?=
- =?utf-8?B?a2xxbjI5YWFtWGU3TnN3cllBdkU5eHpCa3RWNEc3TnVWcnoyTW9UR3hBS0VV?=
- =?utf-8?B?ZmVEdkJHMW5VUVFCdFNLQkQyRG5mYms2eDN0RkI0RWtpZkk0YlJMTzJiVmRK?=
- =?utf-8?B?VlhsQlBLa3cyZUFyLytqb1hUN2JVdVZRVm5NK3VrMFdGeXpBUFBacmxrNVl6?=
- =?utf-8?B?ZUxFTnYzNS84Z055NFhnc1o5UXhHdGtRL29kNFhlbnBmTERtZVNrbytldHlT?=
- =?utf-8?B?aEJLaVF2L09hdHNQK1FXcmFFbW9aZlNIN3MvUTFOQXNWOGFMRmtSUHdzdWJL?=
- =?utf-8?B?SndJK1ZOZ25NVnJEc2ljc2JiR1c0NXhPQmN3OFRNZVpYVFZ1dGg3Q3FGa1lH?=
- =?utf-8?B?T0dCdUhrMUVvTzJWR1NHWmVVRTArSlcyMHlaWjE1cGltWlNUNjVlNEJwckR0?=
- =?utf-8?B?NVZvQVpzRm9Gb1ZCY2hXKzhQVi9pUjdwRVlOeVg2VDRyRWk4L2N5c3RQL1Ew?=
- =?utf-8?B?TmJ2Zi9EbGV6Q2VKRmpEZ2R4OUpmMTF0WlUvVXoxQ05ta2JnRVVuRXNpbzN4?=
- =?utf-8?B?L3VWZENobG16c2xKTFNQVzZteHZKL0RIOTVRaHNab1YvUHFEb05OS2RiYXU0?=
- =?utf-8?Q?Gv3Kz/?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(19092799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?SHRIbnF6VVZ0QldzZkFMb3l5NWp1SURtN1JETURyMC92QWtjNngyU3pYc2wv?=
- =?utf-8?B?eC9BNnZXeWUzKzRrdjlBVWUrSUx0dks2d1NNZ1MwbDhwUjIrTTd6L1k3TWJ2?=
- =?utf-8?B?Uk5LckNId2R0RDEwQm5KSzZHMmFvTmR6WTFPNEVLQjJRbXBzTHpXdVNodVhl?=
- =?utf-8?B?SEhZL1c4WEFaYXRNamJqTVNyRFd2UmtCWlJieDZTSDlWd1h6WTNyVXl2Q01V?=
- =?utf-8?B?cnRNWk5qS0FDZ1BCRzkyT3QyblRSclF1dlh0V1EyeTR6RTVzRG8rVGhzZFFt?=
- =?utf-8?B?ZHhGRUtxTGpCT2dqd0NVSFlVTkJPVFEzY3ZjL3ZXNkRodm0vTE1lbEN1ZjdM?=
- =?utf-8?B?STl2czdkN3o2djRDemYyZVVKWFBPYXpBTlFGZkdNTURtbXlqQU5kNzlqYzVv?=
- =?utf-8?B?Qm1NYUxJRkpQQVd4QzdOZnJrbjJ1NUhIZzgxZ0dza0VpYW0yNXV4NnNiRkk1?=
- =?utf-8?B?Vy9XQlFHS29YUG1hclQ1QUxhV0VMaEY3S3NLcUZRaXc2L0paSW9WZGJubGds?=
- =?utf-8?B?N2laa2NnWEg0UFBWa01TZU45dHB5RVhnaHB1TjR1czhPQW1heHdYaXZZbjZa?=
- =?utf-8?B?WVJkTU8zY1dPV1pFaVlQWVd3bXRjV1ZTVU4xTys3ZjlzNUJ3T3h0OHk2Skhr?=
- =?utf-8?B?b0JGdkRDYkZaRGJBMzR5Z055QnIvd2UyOExsLzdYUG1nZloyWFNRRHJYMzhp?=
- =?utf-8?B?aUx2NEd3YnFkNWh5aUZrV2dwNHJ2anBKV3ZDOTMrQlE5akFlNEFtdXFXSVZz?=
- =?utf-8?B?Zzd2dVI0dmxCZUJvbElEanVLejljUkIvcUF0SHFLUjVlNDRSb053TkgybDlj?=
- =?utf-8?B?VHRyYXlvOXJxdEN5emVkTURWQWdZTWQzTjViejh0RmpZckdRUVh5TjhnZk1B?=
- =?utf-8?B?T3ZGTE5CbEs5V0h0dlhLUmVTWGpldTVvT0VJNVRzaGVLdG1HREY3WXpITDVZ?=
- =?utf-8?B?bVBTbnZHK3hZMXJvSi9yMEwvUitHZFZtc2J6Z0RDSXc5bVpTM21PR1krdi9l?=
- =?utf-8?B?ZktyNWpnM0l6U0F1MnhQRWxRZWdJbCs3L0p2VVg5ZmtzV3R6MC9HSDNlekV1?=
- =?utf-8?B?K1ltTGl4dVJ6a3djQklJWStLM1oxTHpybDYwVDVzQjF3Q2t1MXhHNU94WXpH?=
- =?utf-8?B?V3B6Q08zVSsvblJTbE1NaUJtdjlIZm1neXFkU2ljWmMzRHdJbnNOUWhMaU4z?=
- =?utf-8?B?UHZhSmxrZmszN2xvWlFqcTJWbU1vbEU1RzlRY3hRVlpUQVdyRGdPVUdKMERw?=
- =?utf-8?B?d2tyVDM3NUxobjVlWnErZkVDcS9kZ1NPRzc0Q0QyVDZiWDlFY3N4aUxUc21O?=
- =?utf-8?B?OVlPV0ZPT3pCc3VKRG9tZ21mS1Bkckx6K2RhSHVPN3JrWmd3M1VSVC9uY1pK?=
- =?utf-8?B?L05xd3Zack5LbEx1N1QxZ3FsOVd0OTFxbFlRMlVtMk53MjQ5emY2b1NPVSs2?=
- =?utf-8?B?YTR1b0FwVHo0clZHZ3U4dGQxK0pIL05KUnZ0M0UvNmF4TzFDU0dNSHhjS2J4?=
- =?utf-8?B?SWZUYkxLY1hPV3ovbTVWM0dhKzBWR3dXZUY3bDR1a0lJYTJWT3dwQ3gzaWhD?=
- =?utf-8?B?QXMxaDhNcTliK0lLb1hkOGxiVXdGN3lrcWc1S2NkR0RiOFc4SGNsK2J2UGRW?=
- =?utf-8?B?RjFUL1M3c1ZPdWhnMTBzMkd5cWYvemNyU2NiZnJXMU9rL0R1cjg3TVVKUVZU?=
- =?utf-8?B?b1FVL0ovRjcrWjJuRnZnTlFxVkV0RDN5Q2JGWkt1Z0xlTU5HVUxCK2xtR2p0?=
- =?utf-8?B?a2JWRk9vNkdzN1c5U3hwNm5FS0Y4cnlwZllEdjkrMVVPVk40Rmt2VkRwVlFY?=
- =?utf-8?B?NFVpRjlGNzJ2b3VsY0UrOGZpT1ZoNytONXpNZzZWYzhlZEdxci9HQTA5SGFk?=
- =?utf-8?B?RERyUXJMcjN2SUlCTUp2cWVnZkY3azdtRy84OUpaTjF4MXZoaFBYd0Q5VGtQ?=
- =?utf-8?B?S1NPd1dOckQybjcxWVZmL2tCUVhhOUgrcHh1Z1FpWXBxd2RxKytzM2M1Z2Ew?=
- =?utf-8?B?Z1F2Y1JmUEI1bmVXaUZ0VkRlTjVtbGRma0hFRmRqa3BlUDhzbnFaVWhsdkpB?=
- =?utf-8?B?UEo2NkZtSUU1M3BHaHdzTWd5c0lldlZPdVd3c0xubjFYMEpoK3NXd1VQdCtn?=
- =?utf-8?Q?K4Ow=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="DmTIN/95"
+Received: from pendragon.ideasonboard.com (82-203-161-16.bb.dnainternet.fi [82.203.161.16])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id A6FF01661;
+	Mon, 27 Oct 2025 02:43:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1761529394;
+	bh=Hk/Cv0JH4I2/bc25Mtk3P330bEAkbyQwBrU4iJ+LcR0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DmTIN/959mBfIT+SM6ajcFq7f1gtKFOU1XBpuVR9S5nMNJAfTME+ec9eVlp/IrWpZ
+	 jnhQpBCdBl3dBL2OQsmBcFjLIrAAgHT11G0ROsI9kpfcxBJ+5LGmQv5Ksyhy9cRwGw
+	 ldoeuI7N0ZfgwF0zLYsD1QT3Cmqwr3+/+ocVbQlc=
+Date: Mon, 27 Oct 2025 03:44:48 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Alice Yuan <alice.yuan@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	linux-staging@lists.linux.dev
+Subject: Re: [PATCH v3 12/31] media: staging: media: imx6-mipi-csi2: move sd
+ imx6's specific initialization into imx6-sci2.c
+Message-ID: <20251027014448.GV13023@pendragon.ideasonboard.com>
+References: <20250821-95_cam-v3-0-c9286fbb34b9@nxp.com>
+ <20250821-95_cam-v3-12-c9286fbb34b9@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec7926b9-5f1d-401f-e63e-08de14fa3c5a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Oct 2025 01:43:31.9855
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pY6B9z2s06JfjuiHRvrFEvfEchxchfsppy0kPtYxlg5FVoX2cg8iRS/336gY+6uenRuVKJPOjT+EyRJZfmoDEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6886
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250821-95_cam-v3-12-c9286fbb34b9@nxp.com>
 
-PiBVc2UgbmV3IGl0ZXJhdG9yIG1kaW9idXNfZm9yX2VhY2hfcGh5KCkgdG8gc2ltcGxpZnkgdGhl
-IGNvZGUuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBIZWluZXIgS2FsbHdlaXQgPGhrYWxsd2VpdDFA
-Z21haWwuY29tPg0KPiAtLS0NCj4gIGRyaXZlcnMvbmV0L2V0aGVybmV0L2ZyZWVzY2FsZS9mZWNf
-bWFpbi5jIHwgOCArKy0tLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwg
-NiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9m
-cmVlc2NhbGUvZmVjX21haW4uYw0KPiBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ZyZWVzY2FsZS9m
-ZWNfbWFpbi5jDQo+IGluZGV4IDFlZGNmYWVlNi4uYzYwZWQ4YmFjIDEwMDY0NA0KPiAtLS0gYS9k
-cml2ZXJzL25ldC9ldGhlcm5ldC9mcmVlc2NhbGUvZmVjX21haW4uYw0KPiArKysgYi9kcml2ZXJz
-L25ldC9ldGhlcm5ldC9mcmVlc2NhbGUvZmVjX21haW4uYw0KPiBAQCAtMjU1Miw3ICsyNTUyLDYg
-QEAgc3RhdGljIGludCBmZWNfZW5ldF9taWlfaW5pdChzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlDQo+
-ICpwZGV2KQ0KPiAgCWludCBlcnIgPSAtRU5YSU87DQo+ICAJdTMyIG1paV9zcGVlZCwgaG9sZHRp
-bWU7DQo+ICAJdTMyIGJ1c19mcmVxOw0KPiAtCWludCBhZGRyOw0KPiANCj4gIAkvKg0KPiAgCSAq
-IFRoZSBpLk1YMjggZHVhbCBmZWMgaW50ZXJmYWNlcyBhcmUgbm90IGVxdWFsLg0KPiBAQCAtMjY2
-NywxMSArMjY2Niw4IEBAIHN0YXRpYyBpbnQgZmVjX2VuZXRfbWlpX2luaXQoc3RydWN0IHBsYXRm
-b3JtX2RldmljZQ0KPiAqcGRldikNCj4gIAlvZl9ub2RlX3B1dChub2RlKTsNCj4gDQo+ICAJLyog
-ZmluZCBhbGwgdGhlIFBIWSBkZXZpY2VzIG9uIHRoZSBidXMgYW5kIHNldCBtYWNfbWFuYWdlZF9w
-bSB0byB0cnVlICovDQo+IC0JZm9yIChhZGRyID0gMDsgYWRkciA8IFBIWV9NQVhfQUREUjsgYWRk
-cisrKSB7DQo+IC0JCXBoeWRldiA9IG1kaW9idXNfZ2V0X3BoeShmZXAtPm1paV9idXMsIGFkZHIp
-Ow0KPiAtCQlpZiAocGh5ZGV2KQ0KPiAtCQkJcGh5ZGV2LT5tYWNfbWFuYWdlZF9wbSA9IHRydWU7
-DQo+IC0JfQ0KPiArCW1kaW9idXNfZm9yX2VhY2hfcGh5KGZlcC0+bWlpX2J1cywgcGh5ZGV2KQ0K
-PiArCQlwaHlkZXYtPm1hY19tYW5hZ2VkX3BtID0gdHJ1ZTsNCj4gDQo+ICAJbWlpX2NudCsrOw0K
-PiANCj4gLS0NCj4gMi41MS4xDQo+IA0KPiANCg0KUmV2aWV3ZWQtYnk6IFdlaSBGYW5nIDx3ZWku
-ZmFuZ0BueHAuY29tPg0KDQo=
+On Thu, Aug 21, 2025 at 04:15:47PM -0400, Frank Li wrote:
+> Move imx6's specific sd's owner, name, csi2_internal_ops, grp_id into
+
+grp_id needs to go. It's specific to the i.MX6 IPUv3 framework, and is
+the main part hindering splitting the CSI-2 receiver driver from the
+rest of the code.
+
+> imx6-sci2.c.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/staging/media/imx/imx6-csi2.c      | 23 +++++++++++++++++++++++
+>  drivers/staging/media/imx/imx6-mipi-csi2.c | 29 ++++++-----------------------
+>  include/media/dw-mipi-csi2.h               |  4 ++++
+>  3 files changed, 33 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/staging/media/imx/imx6-csi2.c b/drivers/staging/media/imx/imx6-csi2.c
+> index 72eff685fad99b3def46cf2866565191b7de9a8b..66274d8d73b67b35682bb82a9eb745bb24da7ae4 100644
+> --- a/drivers/staging/media/imx/imx6-csi2.c
+> +++ b/drivers/staging/media/imx/imx6-csi2.c
+> @@ -19,6 +19,29 @@ struct imx6_csi2 {
+>  	struct dw_mipi_csi2_dev dw;
+>  };
+>  
+> +static int csi2_registered(struct v4l2_subdev *sd)
+> +{
+> +	struct dw_mipi_csi2_dev *csi2 = sd_to_dw_mipi_csi2_dev(sd);
+> +
+> +	/* set a default mbus format  */
+> +	return imx_media_init_mbus_fmt(&csi2->format_mbus,
+> +				      IMX_MEDIA_DEF_PIX_WIDTH,
+> +				      IMX_MEDIA_DEF_PIX_HEIGHT, 0,
+> +				      V4L2_FIELD_NONE, NULL);
+> +}
+> +
+> +static const struct v4l2_subdev_internal_ops csi2_internal_ops = {
+> +	.init_state = imx_media_init_state,
+> +	.registered = csi2_registered,
+> +};
+> +
+> +static const struct dw_mipi_csi2_config imx6_config = {
+> +	.module = THIS_MODULE,
+> +	.name = "imx6-mipi-csi2",
+> +	.internal_ops = &csi2_internal_ops,
+> +	.grp_id = IMX_MEDIA_GRP_ID_CSI2,
+> +};
+> +
+>  static int csi2_probe(struct platform_device *pdev)
+>  {
+>  	struct imx6_csi2 *csi2;
+> diff --git a/drivers/staging/media/imx/imx6-mipi-csi2.c b/drivers/staging/media/imx/imx6-mipi-csi2.c
+> index b5911a37972be868e10c115ada1910fa04b2765c..ff06a739b957b305625d145c04c06999d0c13cae 100644
+> --- a/drivers/staging/media/imx/imx6-mipi-csi2.c
+> +++ b/drivers/staging/media/imx/imx6-mipi-csi2.c
+> @@ -15,11 +15,11 @@
+>  #include <linux/platform_device.h>
+>  #include <media/dw-mipi-csi2.h>
+>  #include <media/v4l2-common.h>
+> +#include <media/v4l2-ctrls.h>
+>  #include <media/v4l2-device.h>
+>  #include <media/v4l2-fwnode.h>
+>  #include <media/v4l2-mc.h>
+>  #include <media/v4l2-subdev.h>
+> -#include "imx-media.h"
+>  
+>  /*
+>   * The default maximum bit-rate per lane in Mbps, if the
+> @@ -44,8 +44,6 @@ struct dw_csi2_regs {
+>  	u32	phy_tst_ctrl1;
+>  };
+>  
+> -#define DEVICE_NAME "imx6-mipi-csi2"
+> -
+>  /* Help check wrong access unexisted register at difference IP version */
+>  #define DW_REG_EXIST		0x80000000
+>  #define DW_REG(x)		(DW_REG_EXIST | (x))
+> @@ -544,17 +542,6 @@ static int csi2_set_fmt(struct v4l2_subdev *sd,
+>  	return 0;
+>  }
+>  
+> -static int csi2_registered(struct v4l2_subdev *sd)
+> -{
+> -	struct dw_mipi_csi2_dev *csi2 = sd_to_dev(sd);
+> -
+> -	/* set a default mbus format  */
+> -	return imx_media_init_mbus_fmt(&csi2->format_mbus,
+> -				      IMX_MEDIA_DEF_PIX_WIDTH,
+> -				      IMX_MEDIA_DEF_PIX_HEIGHT, 0,
+> -				      V4L2_FIELD_NONE, NULL);
+> -}
+> -
+>  /* --------------- CORE OPS --------------- */
+>  
+>  static int csi2_log_status(struct v4l2_subdev *sd)
+> @@ -605,11 +592,6 @@ static const struct v4l2_subdev_ops csi2_subdev_ops = {
+>  	.pad = &csi2_pad_ops,
+>  };
+>  
+> -static const struct v4l2_subdev_internal_ops csi2_internal_ops = {
+> -	.init_state = imx_media_init_state,
+> -	.registered = csi2_registered,
+> -};
+> -
+>  static int csi2_notify_bound(struct v4l2_async_notifier *notifier,
+>  			     struct v4l2_subdev *sd,
+>  			     struct v4l2_async_connection *asd)
+> @@ -709,14 +691,15 @@ int dw_mipi_csi2_init(struct platform_device *pdev, struct dw_mipi_csi2_dev *csi
+>  	csi2->regs = &dw_csi2_v0;
+>  	v4l2_subdev_init(&csi2->sd, &csi2_subdev_ops);
+>  	v4l2_set_subdevdata(&csi2->sd, &pdev->dev);
+> -	csi2->sd.internal_ops = &csi2_internal_ops;
+>  	csi2->sd.entity.ops = &csi2_entity_ops;
+>  	csi2->sd.dev = &pdev->dev;
+> -	csi2->sd.owner = THIS_MODULE;
+>  	csi2->sd.flags = V4L2_SUBDEV_FL_HAS_DEVNODE;
+> -	strscpy(csi2->sd.name, DEVICE_NAME, sizeof(csi2->sd.name));
+>  	csi2->sd.entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
+> -	csi2->sd.grp_id = IMX_MEDIA_GRP_ID_CSI2;
+> +
+> +	csi2->sd.owner = config->module;
+> +	strscpy(csi2->sd.name, config->name, sizeof(csi2->sd.name));
+> +	csi2->sd.internal_ops = config->internal_ops;
+> +	csi2->sd.grp_id = config->grp_id;
+>  
+>  	for (i = 0; i < CSI2_NUM_PADS; i++) {
+>  		csi2->pad[i].flags = (i == CSI2_SINK_PAD) ?
+> diff --git a/include/media/dw-mipi-csi2.h b/include/media/dw-mipi-csi2.h
+> index 4e656f09c81db9dc9f232ed061f70803a5478c85..dfd25e23ea93fd53b064471b6a9557ef9c070fe7 100644
+> --- a/include/media/dw-mipi-csi2.h
+> +++ b/include/media/dw-mipi-csi2.h
+> @@ -10,6 +10,10 @@
+>  #include <media/v4l2-subdev.h>
+>  
+>  struct dw_mipi_csi2_config {
+> +	struct module *module;
+> +	const char *name;
+> +	int grp_id;
+> +	const struct v4l2_subdev_internal_ops *internal_ops;
+>  };
+>  
+>  /*
+
+-- 
+Regards,
+
+Laurent Pinchart
