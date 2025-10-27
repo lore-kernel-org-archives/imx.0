@@ -1,92 +1,94 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2618A2EF660
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 10:06:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF9F1DF252
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 10:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761559593; cv=none; b=OBaIVKjO8wOuoZloKfPZ1R+RpCn0pTtDMMl/1U3Jf09yezcVxth1C5yiM4O+nKnfLId8MzKXmniSpq81wSjYUhjUBqqQh2hNfmyY/jYZZ1dOhTSa8o4x+GhLhFyk/hVjcunJE6qSIjVY1VtORJleagzWoxFfXTDCrftab6dhKOo=
+	t=1761560590; cv=none; b=nEtq9OexQe2P4yZ71nVMzyOwftwWbmHKdAP6nsfXWT3F5H6OulHolgHMBu8PyJkLUflCfIUQZB2reHbks2VwqWgKtxgiYc0l20/RZhAWbcZeccF3HzJDkdBvokqIVy8Hj9YFMC6/90fLk8wRjirHb1Lx15pXPv9TdQRYhRd32M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761559593; c=relaxed/simple;
-	bh=l5doOeAnSYSQI+MnlDBwnrzy87dYaAS/wZNmV4aDiaM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WY2Ts/R4PcIZrr8vLcgZB/WMi4uixEfrd/S4+Y/p8H0JjNVdrY+LSsUMDtbFfinwlmCLYAzCYGZ3r/j4PnH84VqM3jftNK71MmLpFOLpVnVNPfqjYpCed2/s5/eAOn6vibfKNJiQW222Kq2Z/RFPe/5oxKCkadAM64Yb00Z7ClI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VfcERDLZ; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VfcERDLZ"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-290ac2ef203so40991305ad.1
-        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 03:06:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761559591; x=1762164391; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l5doOeAnSYSQI+MnlDBwnrzy87dYaAS/wZNmV4aDiaM=;
-        b=VfcERDLZx6RZ1PASCWRStU+y++UeKVhq7+b6BDYkAu3wFi8wfheTx81AZ2k+4N0JVW
-         K2QAbt/vmA36AoINKqa1gx1jk/0w/WEbR/jRHjGnqNrevglV8hZDuj3Er/1G+jVqfozx
-         mPTNMp5CBaYq9cVtNcTQezR6wZHpVfV5o2YdzvtbvJImTCPbvqHGc3Z5pa2SCIlSffug
-         FikQjQqWuivWfLZVZ4mD+lx8kELupJrBOTx3s36JMePXNqEtkmkANe8rW8h0lUCXAHcD
-         oNw9xudKFu7dTRKsyFApgkKBq0mngOoFc9i4be5mnFSAFgFGWokTdQa8pT6mGWGzz2Lr
-         Li3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761559591; x=1762164391;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l5doOeAnSYSQI+MnlDBwnrzy87dYaAS/wZNmV4aDiaM=;
-        b=l0ZBEL5hc0MQycFAYqKZG30NhezBHhhnXqXguzULtZvpGhyxi4p4alwT1StVSY6XvR
-         KjMe7go6MOdgTHrFqpQuexX4aEwP4WEGav1NubBn7CvWwOcgrdQbL1n9RNDA4iYo7Mwv
-         VphcU7XJpish2VRaq8PM/tv3af6OWC2YuNlxFW+FljlKDjzR1lL0VMWxL0eIdJD8FZ41
-         m30dHY3vbujWpEkVnGYxtm4DYuUh5zChz+y2tHTPgC2QDg6/bRKQ5N3M2t9sOgc1xiOu
-         Ay3QFY+YpG9AtTpKHqgyHwHchbljoKXA5lx73K9eQeIoQ9x591rLEZQa5KNM6i1yEVuB
-         +OJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWEw+uQL1UFSNV8rdVFFtx4URe7k6e5VwzAOKQlx81Omxif/eaPaqg5pBUmwiroxqnZnj4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzh5uNYDrP3VrhZfJb1GDBvPMni6cY/FN2hD48ei/4hRkevi7Qb
-	fknLtN3dNQaeaQEvKbB4ANrXLnb8juLHxY/PTHDWtvGaZABwsixRBMsuW9pGfy63XIuz9hkmwZP
-	103K95OIa7Up2a72QTLv9AdHDkUGyPzo=
-X-Gm-Gg: ASbGncsjkm+edsiPT55VYYgHEonnFKm1mlpF+ph0J2ddC7mteNojcN2KJYvdZqrKG7T
-	DsRF1948riBrWObvK64lIVLVW1EMryPW9esZaOkMUxCrIkxaYgedRBHjBvuBk/Qljg/ssUwdWC7
-	juCWJUMfeZvhjQYcXm6DaxLcj1F9Y7RFONTESeTq24mDHEn2lTpknXd732zvzmaeo20CiitIDV9
-	LPJenrrVVAcVgTUKh8B57YDl+JvIiBHKOAvxJCmspOLWJpr/o89wg2oYMtY70WTFo7sZDBri71u
-	Y1kQWhx6Z9yBOA==
-X-Google-Smtp-Source: AGHT+IHRpB86RXroRDzzRdYSB7oYFAv4dqfXwWvXOZ++yIISCsXtN6hFohYhh9Tmy4ZRUzQ+j+Lng2VlTrE5kMPFzuc=
-X-Received: by 2002:a17:902:e5cc:b0:270:4964:ad82 with SMTP id
- d9443c01a7336-2948ba0d9a1mr120199225ad.38.1761559591357; Mon, 27 Oct 2025
- 03:06:31 -0700 (PDT)
+	s=arc-20240116; t=1761560590; c=relaxed/simple;
+	bh=LPluyef4kypBSKGZCsUxRCFOggWHW4MJxhkKdQ37kTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L2r2EjXTr7mwAhQyss6L8OLK3QCzEx7eZlYwsKtcWCvYpXS2K2B7pdPAVkL1GLkrYWMD82EDgZh1m1DrnYVVqlnJHxHs+nMmPn4k+4VFhddOx0iTKX4767jZE1MMJT8B4niu0vQHm8KTjcPCkg2UU7CNMaRdkDfQYPl8Bk/keX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDKNU-00047j-JW; Mon, 27 Oct 2025 11:23:04 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDKNU-005gi3-0X;
+	Mon, 27 Oct 2025 11:23:04 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDKNU-00394G-07;
+	Mon, 27 Oct 2025 11:23:04 +0100
+Date: Mon, 27 Oct 2025 11:23:03 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Russell King <rmk+kernel@armlinux.org.uk>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
+Message-ID: <aP9IB4y5_gyfJGMW@pengutronix.de>
+References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
+ <e87ff7f2-d16f-41f2-b781-b175cfb84b21@lunn.ch>
+ <aP83bMDWCre7-Sjw@pengutronix.de>
+ <20251027100227.GE1544@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251027093133.2344267-1-max.oss.09@gmail.com> <20251027093133.2344267-2-max.oss.09@gmail.com>
-In-Reply-To: <20251027093133.2344267-2-max.oss.09@gmail.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Mon, 27 Oct 2025 12:08:57 +0200
-X-Gm-Features: AWmQ_bmTfGXGF5x3XTOBQj8jm2eoTyHs4EQJMNTtCvVM7Dk1SHwZVtKvKWhTgLA
-Message-ID: <CAEnQRZDrqKFmenTiNi4U==X-xE0pv0Qt=qpXJAVi4sGvnBL4cg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/5] arm64: dts: imx8-apalis: cleanup todo
-To: max.oss.09@gmail.com
-Cc: Max Krummenacher <max.krummenacher@toradex.com>, 
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>, Conor Dooley <conor+dt@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251027100227.GE1544@pendragon.ideasonboard.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Mon, Oct 27, 2025 at 11:32=E2=80=AFAM <max.oss.09@gmail.com> wrote:
->
-> From: Max Krummenacher <max.krummenacher@toradex.com>
->
-> Functionality has been added without removing the associated TODO
-> comments.
-> Clean that up by removing TODOs no longer applicable.
->
-> Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+Hi Laurent,
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+On Mon, Oct 27, 2025 at 12:02:27PM +0200, Laurent Pinchart wrote:
+> Hi Oleksij,
+> > Please note, RTL8211E PHY do use undocumented SmartEEE mode by default.
+> > It ignores RGMII LPI opcodes and doing own thing. It can be confirmed by
+> > monitoring RGMII TX and MDI lines with oscilloscope and changing
+> > tx-timer configurations. I also confirmed this information from other
+> > source. To disable SmartEEE and use plain MAC based mode, NDA documentation
+> > is needed.
+> 
+> That's useful information, thank you. Would you by any chance to know if
+> such NDA would allow contributing the feature upstream ?
+
+Good question, but the NDA process was actually aborted. We didn't move
+forward due to a lack of time and ultimately, a lack of commercial
+interest from any projects or customers for this PHY.
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
