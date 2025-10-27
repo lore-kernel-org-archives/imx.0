@@ -1,104 +1,109 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A9C28A1E6
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 10:34:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4A42F6561
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 10:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761561282; cv=none; b=jgE1SHqo4vEUAs/kAVxdNisRORIscFqQsFc1rCCvQc+fUUnFmY6rGa/uN9RAPDooq9t71N6/eK1/yYxc18PokaUv04lGX9wJ+q4FLNLje4u6tGHePAYc9Al2s3aEfNd5b4eHFMiH3tv3uK0AsW8ft4jYMtkG4ruCCM0p4rUOCto=
+	t=1761561898; cv=none; b=SNZTyrnzV2lr2lmu2DWCVxfScqC/RkeJJGyN2GPKiAjms6kV7RarMQ70s4zy7wTmOwgsCBjSKR8nBA7AMXblIKmc9MSN/vAdDG4ZzjFYOrMfQazuhp/cPyy2+SXXSKBCzWpJn8oyDk3RsUoFzyJH5OJNCmwgol57prC37KrG7Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761561282; c=relaxed/simple;
-	bh=I+Zzw7SEY9aWnPNX1KmXCsVQedweHR+1O6G10vwrA/U=;
+	s=arc-20240116; t=1761561898; c=relaxed/simple;
+	bh=Ubcj3waXWImVhuNpCT/SGdfySsuwAGjNz/1ztlKhhZ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MPy4BYNjlabls6iMbuPBqKKjFowB4hkr1ReLuIMOsZhYK6yOT53o8brLuoqoUNiWYysIAtfzZBLt76A9ZRjkWIdH0Lh+k2phjNbH4BVlWpAc3WBOTtxOJOuj40j9jz6A/77BXVo5/CHtADwWX8Wz1qYgbRmAVET+8WxVUW2WqNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=VkGJT2xM; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="VkGJT2xM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=2pv8A1uaol1pXhXlEzwlZylOOOHmbfINSrfrlQpNBrE=; b=VkGJT2xMm4mV63P3Z5APqJBmUK
-	5SmgKPNHcNUllwMtYaHt+EjjEgMiqbw4GlAYrlxrqCfzxEGd0NMdiPukDzUimg2i7aILfivL0PlaR
-	h/XkraUjkU6K/IclhcD2TJ65YP9ap7KH2sSAcle4R7TTaX6iIg04PkrdjQBBcmdp/hrmYPGeuTxvD
-	C737tp8IOQq961DZCwJlja9FaDlg7KRyIGEgrD5np6mE8svwmAwGo+wmDlU/GFBQ00YBsKJWseHKT
-	2dktN116tmP5OSHvidk4IIZ5yLv/5Rie1scHImvxijZpAa+mg7DGvgYYxeCOJa7hAcYwwNFbcHYbM
-	sQgZDm/A==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54936)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vDKYf-000000001fT-20pN;
-	Mon, 27 Oct 2025 10:34:37 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vDKYd-000000005VL-3cpb;
-	Mon, 27 Oct 2025 10:34:35 +0000
-Date: Mon, 27 Oct 2025 10:34:35 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=AF/mn94FJABYXycwQze2JCzlUQ8/kH3KlYEtTzXn87GHl+Ip5pGFLpTLbIJg4ptYGJ66OBtTIo9c5urzjMqqr44XCWT4z07DhwXPVnzgvIX0MVluVlVnMhFsRvlsZLbSZ9QjosN7NeQqAr7Bz6zyMXeSgJuw+uykUKC34g3bBdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDKia-0006rM-Tt; Mon, 27 Oct 2025 11:44:52 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDKia-005gp8-28;
+	Mon, 27 Oct 2025 11:44:52 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDKia-0039Jo-1h;
+	Mon, 27 Oct 2025 11:44:52 +0100
+Date: Mon, 27 Oct 2025 11:44:52 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	imx@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	linux-arm-kernel@lists.infradead.org
 Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <aP9Kuyndws_dYFna@shell.armlinux.org.uk>
+Message-ID: <aP9NJHtbAEmsd89r@pengutronix.de>
 References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
  <e87ff7f2-d16f-41f2-b781-b175cfb84b21@lunn.ch>
  <aP83bMDWCre7-Sjw@pengutronix.de>
  <20251027100227.GE1544@pendragon.ideasonboard.com>
  <aP9IB4y5_gyfJGMW@pengutronix.de>
  <20251027103107.GF1544@pendragon.ideasonboard.com>
+ <aP9Kuyndws_dYFna@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251027103107.GF1544@pendragon.ideasonboard.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <aP9Kuyndws_dYFna@shell.armlinux.org.uk>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Mon, Oct 27, 2025 at 12:31:07PM +0200, Laurent Pinchart wrote:
-> On Mon, Oct 27, 2025 at 11:23:03AM +0100, Oleksij Rempel wrote:
-> > On Mon, Oct 27, 2025 at 12:02:27PM +0200, Laurent Pinchart wrote:
-> > > Hi Oleksij,
-> > > > Please note, RTL8211E PHY do use undocumented SmartEEE mode by default.
-> > > > It ignores RGMII LPI opcodes and doing own thing. It can be confirmed by
-> > > > monitoring RGMII TX and MDI lines with oscilloscope and changing
-> > > > tx-timer configurations. I also confirmed this information from other
-> > > > source. To disable SmartEEE and use plain MAC based mode, NDA documentation
-> > > > is needed.
+On Mon, Oct 27, 2025 at 10:34:35AM +0000, Russell King (Oracle) wrote:
+> On Mon, Oct 27, 2025 at 12:31:07PM +0200, Laurent Pinchart wrote:
+> > On Mon, Oct 27, 2025 at 11:23:03AM +0100, Oleksij Rempel wrote:
+> > > On Mon, Oct 27, 2025 at 12:02:27PM +0200, Laurent Pinchart wrote:
+> > > > Hi Oleksij,
+> > > > > Please note, RTL8211E PHY do use undocumented SmartEEE mode by default.
+> > > > > It ignores RGMII LPI opcodes and doing own thing. It can be confirmed by
+> > > > > monitoring RGMII TX and MDI lines with oscilloscope and changing
+> > > > > tx-timer configurations. I also confirmed this information from other
+> > > > > source. To disable SmartEEE and use plain MAC based mode, NDA documentation
+> > > > > is needed.
+> > > > 
+> > > > That's useful information, thank you. Would you by any chance to know if
+> > > > such NDA would allow contributing the feature upstream ?
 > > > 
-> > > That's useful information, thank you. Would you by any chance to know if
-> > > such NDA would allow contributing the feature upstream ?
+> > > Good question, but the NDA process was actually aborted. We didn't move
+> > > forward due to a lack of time and ultimately, a lack of commercial
+> > > interest from any projects or customers for this PHY.
 > > 
-> > Good question, but the NDA process was actually aborted. We didn't move
-> > forward due to a lack of time and ultimately, a lack of commercial
-> > interest from any projects or customers for this PHY.
+> > Fair enough. I've tried :-)
+> > 
+> > If we can't disable SmartEEE in the PHY, does it mean we need to somehow
+> > disable EEE in the MAC, but still program the PHY to advertise EEE to
+> > the link partner ?
 > 
-> Fair enough. I've tried :-)
-> 
-> If we can't disable SmartEEE in the PHY, does it mean we need to somehow
-> disable EEE in the MAC, but still program the PHY to advertise EEE to
-> the link partner ?
+> Or maybe the PHY needs to have EEE capability disabled?
 
-Or maybe the PHY needs to have EEE capability disabled?
+Ack. With comment in the code, why we prefer this way, in case some one
+wont to spend time on making it work. Probably SmartEEE or some other
+word should be used.
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
