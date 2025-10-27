@@ -1,105 +1,208 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4062E62CF
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 09:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA4D2FB0AF
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 09:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761558359; cv=none; b=KnEga/nb+D77lUwsUEtHjkSOBH5vWJj3xTteSKjSHEZRmGgKQhifNbYZXTSOOpdWRKLh+D0CP3bAMMPxGhx8zljlLYJfnhflsohqi9nkc/v67seSzSt6jbovQ0Unxl66tRaQhY0vmCZ1bbCOHi/Qot+yowjx/rxk1Ah6sPg9lJo=
+	t=1761558666; cv=none; b=OXI1n6UlYf16LWTMlTNQB/rKTzvdPhA/xf+MJWDC/2hARRBhUNu6HP/uYvpUjvlB+klczXCItCyR579qqyLjcxfujbpUBgQyTxatV53dzrwkqMnkLpZXXLz9VkKd3N5VXVQGfNThu4mXY+prcQs8zF4LHpmtOhZ77gF/0MaFWC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761558359; c=relaxed/simple;
-	bh=ftSUN3i0A4AKZy9QZQGbnqI1IJrNS2SGMXKdUYQOXUA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YvQo3/ImUnCBj3uFeCQIwMhVBM2nfuJGrjiFsx7dvkYqnMfp4RnFmdIi3mDUIm4uABHiFMS709ksODTCOqRGF6rX8qmiRhzKkbrkVLQJXdE8SAHeL2MyafgA8pqDCkEvyCDyh4OMEjrVkTM9i0J2pIW33jLijRBHOvYP9xsEkyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=s3AjK7vO; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1761558666; c=relaxed/simple;
+	bh=9KuN2Xm5jw7TgRZXPSk3P9TAJLH7k2ZyHKs1la0a+4k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AVgqyKDC4Ol0iRSiWtIodKtQdptVNRLpdJCM1U56lKCsl60NxsF6AeYV+dHrfYuRoFiI0NcrZBor2URPPBwYETHP4iou0x8MhEYXJjIjp4111ncRJ4NylQaSxOp2B5E+dza6HhE1mfYhfnlj0imL6+Z8JIRDo94Vtvq5qZOLIWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gq2FUEh8; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="s3AjK7vO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=dOijxY4yU1FSMyaDhxn4I+Okufrw4ljdJUN2JDfS9Dc=; b=s3AjK7vOVdO9yapjAJKe+t7cO5
-	hKRBh4UX2ixS+KVr3oM7uZ0w9zIVqT5eyfWWO3eQjkuxxlmAp9vI44Jor5doPNB73OPp+AINp9q3A
-	/8WKoJxjH9kW5Mqg5xWaNXtJs/5rwSBJuLlN7cUrV7MM3sj8zSqSAVWGramQB6uYWuAgdr682h5gT
-	F+9Uzl0fs3nmDEXGrCRn68gNtT/H9ytgtrpvdugyeNyerBu3vkX4sRCcMIBfAJUn0F5o07V+HlO+m
-	Au7krtZJ4v+r2Y1/Xk9CpoWAkV5kVymx98KEtfdib8QA/7QlsLcQmfJh6qsCKnI8t0209n/QIXtV7
-	FNz6hYtg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56120)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vDJnX-000000001bf-3JsR;
-	Mon, 27 Oct 2025 09:45:55 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vDJnW-000000005UD-1dSd;
-	Mon, 27 Oct 2025 09:45:54 +0000
-Date: Mon, 27 Oct 2025 09:45:54 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <aP8_UjqvCHbrP3lH@shell.armlinux.org.uk>
-References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
- <aP82VEjNDgrNAZzy@shell.armlinux.org.uk>
- <20251027093346.GB1544@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gq2FUEh8"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-63e076e24f2so345737a12.3
+        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 02:51:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761558661; x=1762163461; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Mw12YdzTi9NB3y1kJkoK+Kxt9YSNjct8ry46vaendzw=;
+        b=gq2FUEh8pk9YFVKKfMoO/t1SH8RCUXn8cQqkSWXk+jTefOU4hYHYtV8WGUMFKxKWw9
+         SOPj0di7mY61Ofsn/tmUsh1enIgbYO1R2zrusUiC4FzHGru6YcuK8Wn9HODX3PRRHSXW
+         cepdt5lX7Lvz4ndmJE5i2oDeaV1hClRVZfvFHPewXQkT11bKDtQjqVcQ26k/HO8tp38u
+         sRt+fDDDSsj2AMybPi73A05OUlse4PJdvDxUGjiwlFnbIMtOy7l0HqJxl2otmcyQ0wco
+         tTCRtFF/oYovAD7hnIHqpRJu3e7x9ppi9ozfsewmJ6hjKxQzTZRZl8sn114h8177K3ur
+         v6dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761558661; x=1762163461;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mw12YdzTi9NB3y1kJkoK+Kxt9YSNjct8ry46vaendzw=;
+        b=hOhBcJOg42Nh4tWCFsvm53mPmLq6ruxvhB6NeRld5wzMjR0n4mGF171Sdmzf5VaZ68
+         YKScSrPUxSxqc7Gt89+e2i95hcYepo+SnLVVEj1BEPrqVoqcD1lTSigeZVha4gYdH2j+
+         wz520k6Q/rsjLe5z2iZaj/HvNym8Ed1qRPli9ZxLIPII4BusRvacYLhn1QvqpvWu0ZtR
+         wh8jtEzD0aiPy5i1sODldJYxG2+/hUiivJS6XXuhx4glulKOG2Uf+5hQcFBrrByZl0NL
+         0Qngl+Ko66+j+Lk5b8oNdof/jOnEkgpYhfQoCp428K/PElO8dVJZWbVpjX8wllVeFtka
+         7OMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDEyYTjKVRRfJY/Uqm0mXJl0am8VJEJL5XDv99B2LUGMz9XvO6BEcGlTISQnly9VzW9Ao=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyIKT9lt/IfsLzibH8UsgUMazmmXSZ5mWbi2omMXbaaiMDote1O
+	iaRwvYkG8zpjbUC9ighfI3ka9If6Iq14FDINBFlOp4kWUicofGd7dW/I
+X-Gm-Gg: ASbGncsqEoI+vTGzkdPEjebzN5EtVq4rHmWIo8obYN9uCJc37HzkFiwKf0KWkJxdetD
+	QL8KxAsvkzRxHrfFK0Fn3PnXPooKxxamDd702Co5fv2jS3nILMQfS1krFiVWPokN3QeaK/cjsAO
+	ZnzvM4aTB+D2RSARZ97IK7XPIgtMYWUjgA9dM+yE7hZHk+L238r1VA9TFKRfIoiBJjraqU5NpFa
+	BtcET6KE/BQ7fsX5zCTI6SPIv5oQEjsxnaDDd8bBhJOyPDsh02MYa1So2Ez0vege9askB+rO80h
+	2vEmbxKAhcZ13WpyEx0Tsfz3mNyBkQzLmjQ+nnwBpUnWGeO+2xanUJnPHJz3/wyKnfMQdIi8A53
+	sk6MnzkpDZkUdZmHbwTRM/CtK+M46W5mHsc83xMiZvJOwis2NON3UTSmNvs7W4KEQmKWqDRrNWX
+	jSU3viA6CxIOr5TL2UKwCltgUOx9pxmg==
+X-Google-Smtp-Source: AGHT+IERBzNr1pRW9aQQMHx51xdoW3UzXmbId6nlUYrZzGZ0Z6AgDbAWku/q0c+3JyA6dFoSGcQW5w==
+X-Received: by 2002:a05:6402:2787:b0:63b:d7f0:d940 with SMTP id 4fb4d7f45d1cf-63c1f6300fbmr32209099a12.1.1761558661210;
+        Mon, 27 Oct 2025 02:51:01 -0700 (PDT)
+Received: from [10.25.208.2] ([128.77.115.157])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e7ef82907sm5888719a12.12.2025.10.27.02.50.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 02:51:00 -0700 (PDT)
+Message-ID: <9e5f5166-75c3-4c7c-804a-8cb24c67f416@gmail.com>
+Date: Mon, 27 Oct 2025 02:50:58 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251027093346.GB1544@pendragon.ideasonboard.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/8] clk: imx: add driver for imx8ulp's sim lpav
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
+ <shengjiu.wang@nxp.com>, linux-clk@vger.kernel.org, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>
+References: <20251017112025.11997-1-laurentiumihalcea111@gmail.com>
+ <20251017112025.11997-4-laurentiumihalcea111@gmail.com>
+ <20251022140315.GA11174@nxa18884-linux.ap.freescale.net>
+Content-Language: en-US
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+In-Reply-To: <20251022140315.GA11174@nxa18884-linux.ap.freescale.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 27, 2025 at 11:33:46AM +0200, Laurent Pinchart wrote:
-> Hi Russell,
-> 
-> On Mon, Oct 27, 2025 at 09:07:32AM +0000, Russell King (Oracle) wrote:
-> > On Sun, Oct 26, 2025 at 02:29:04PM +0200, Laurent Pinchart wrote:
-> > > Energy Efficient Ethernet (EEE) is broken at least for 1000T on the EQOS
-> > > (DWMAC) interface. When connected to an EEE-enabled peer, the ethernet
-> > > devices produces an interrupts storm. Disable EEE support to fix it.
-> > 
-> > As this is the second problem that has been reported recently, please
-> > bisect the conversion of stmmac to phylink managed EEE support and see
-> > whether there is anything in that which is causing this.
-> 
-> Emanuele Ghidoli has bisected this to commit 2c81f3357136 ("net: stmmac:
-> convert to phylink PCS support"), as reported in [1]. I can test that
-> commit and the commit just before tonight.
-> 
-> [1] https://lore.kernel.org/all/341f56de-9dde-4c44-9542-b523e1917dcb@gmail.com/
 
-As you will notice in that thread, I have responded to it last week, so
-I am well aware of it. I am also well aware of the claims Emanuele made
-in his commit description are demonstrably false.
+On 10/22/2025 7:03 AM, Peng Fan wrote:
+> Hi Laurentiu,
+>
+> On Fri, Oct 17, 2025 at 04:20:20AM -0700, Laurentiu Mihalcea wrote:
+>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>>
+>> The i.MX8ULP System Integration Module (SIM) LPAV module is a block
+>> control module found inside the LPAV subsystem, which offers some clock
+>> gating options and reset line assertion/de-assertion capabilities.
+>>
+>> Therefore, the clock gate management is supported by registering the
+>> module's driver as a clock provider, while the reset capabilities are
+>> managed via the auxiliary device API to allow the DT node to act as a
+>> reset and clock provider.
+>>
+>> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>> ---
+> ....
+>> +struct clk_imx8ulp_sim_lpav_data {
+>> +	void __iomem *base;
+>> +	struct regmap *regmap;
+>> +	spinlock_t lock; /* shared by MUX, clock gate and reset */
+>> +	unsigned long flags; /* for spinlock usage */
+> This does not need to be here, put it as function local variable should
+> be fine.
+>
+>> +	struct clk_hw_onecell_data clk_data; /*  keep last */
+>> +};
+>> +
+>> +struct clk_imx8ulp_sim_lpav_gate {
+>> +	const char *name;
+>> +	int id;
+>> +	const struct clk_parent_data parent;
+>> +	u8 bit;
+>> +};
+>> +
+>> +static struct clk_imx8ulp_sim_lpav_gate gates[] = {
+>> +	IMX8ULP_HIFI_CLK_GATE("hifi_core", CORE, "hifi_core", 17),
+>> +	IMX8ULP_HIFI_CLK_GATE("hifi_pbclk", PBCLK, "lpav_bus", 18),
+>> +	IMX8ULP_HIFI_CLK_GATE("hifi_plat", PLAT, "hifi_plat", 19)
+> For the parent name, my understanding is they should be the one
+> from clk-imx8ulp.c, but I not find them, or may I miss something?
 
-That's not to say the commit isn't a problem, but the explanation of
-why it's a problem doesn't make sense right now, and thus what needs to
-be done to fix it is unknown.
 
-I don't think going around disabling EEE on individual platforms is the
-right approach.
+we want to use parent names local to the SIM LPAV provider (i.e. names specified via clock-names)
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+instead of the global ones. See definition of "struct clk_parent_data".
+
+
+while we're at it, maybe it would be a good idea to drop the ".name = pname" assignment bit
+
+as that won't work anyways since we're relying on local parent names?
+
+
+>
+>> +};
+>> +
+>> +#ifdef CONFIG_RESET_CONTROLLER
+>> +static void clk_imx8ulp_sim_lpav_aux_reset_release(struct device *dev)
+>> +{
+>> +	struct auxiliary_device *adev = to_auxiliary_dev(dev);
+>> +
+>> +	kfree(adev);
+>> +}
+>> +
+>> +static void clk_imx8ulp_sim_lpav_unregister_aux_reset(void *data)
+>> +{
+>> +	struct auxiliary_device *adev = data;
+>> +
+>> +	auxiliary_device_delete(adev);
+>> +	auxiliary_device_uninit(adev);
+>> +}
+>> +
+>> +static int clk_imx8ulp_sim_lpav_register_aux_reset(struct platform_device *pdev)
+>> +{
+>> +	struct auxiliary_device *adev __free(kfree) = NULL;
+>> +	int ret;
+>> +
+>> +	adev = kzalloc(sizeof(*adev), GFP_KERNEL);
+>> +	if (!adev)
+>> +		return -ENOMEM;
+>> +
+>> +	adev->name = "reset";
+>> +	adev->dev.parent = &pdev->dev;
+>> +	adev->dev.release = clk_imx8ulp_sim_lpav_aux_reset_release;
+>> +
+>> +	ret = auxiliary_device_init(adev);
+>> +	if (ret) {
+>> +		dev_err(&pdev->dev, "failed to initialize aux dev\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	ret = auxiliary_device_add(adev);
+>> +	if (ret) {
+>> +		auxiliary_device_uninit(adev);
+>> +		dev_err(&pdev->dev, "failed to add aux dev\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	return devm_add_action_or_reset(&pdev->dev,
+>> +					clk_imx8ulp_sim_lpav_unregister_aux_reset,
+>> +					no_free_ptr(adev));
+> clk_imx8ulp_sim_lpav_unregister_aux_reset() clean up the resources, if
+> moving this before auxiliary_device_add(), then no need
+> auxiliary_device_uninit() when add fails?
+
+
+the whole chunk guarded by the #ifdef CONFIG_RESET_CONTROLLER should go away
+
+anyways once I switch to devres as Frank suggested
+
+
+>
+>> +}
+> Regards
+> Peng
