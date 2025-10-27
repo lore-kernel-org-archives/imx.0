@@ -1,74 +1,75 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9B82C027A
-	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 05:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B72F2D97B8
+	for <imx@lists.linux.dev>; Mon, 27 Oct 2025 06:06:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761544758; cv=none; b=cPG54VbZ6bAi71xpAArR64QmZA4RZT4UZgDeya0Xs6IVfeaBbKRaQSmyMcKUCU3XOk/S1vIQb3tj5EbIlWQ1pLFH7hRb8LMR2wQBbB9paj9zJoSliUVDv5U0+bDGEMcG98YZRDSsybIx/gR9sD1CyJjf3gksdqCrK71mKAJq3Nk=
+	t=1761545219; cv=none; b=qLX3IUyAY8z5JZ885l4y+4cHkaHA9OInZOQSMWR+nZlCGYgP97szUVZfi72QPSMPp3qkHHeHKq/mLkdrn1Hps6ealHroW1hLdC3etmjneZA9i1iTfqoZVyiYY4/Z//8xtLyiIoHNJgpBQF7x8TBrnu/QHhYg/LB1zRLVyYgmyag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761544758; c=relaxed/simple;
-	bh=93Zp0d73yElyssTl11o4xqnsQNybTnAya+0hGW33ZC4=;
+	s=arc-20240116; t=1761545219; c=relaxed/simple;
+	bh=avkOs55f7P9lPmiFz2OLaiSF7OlFmzbNHKp1T2Jv8LA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M3Z/UA2GN3oQItpv+Jkz/IEy/Ok9EMJm0J6MvA63qETATi8Q61RIar0oyZR2rydFz57gh2bbCaHdPWOagxIu1oR2NQNlhC2f/cJmwtMhwk/WmS5n5626W865tQvfBefXAC7/Ko3FGaT9+8pvuEMRehaf4gSlnHNpA0AH8crSd/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=KuNZD907; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=dsB2SRjFwrKpgRgku6u1hPX7Nd83dwYAgOj9hdsYS/HtkBqQDYXGPnd5Hns2GXSxlXRgCDJrfkQTvFWlKh7Jvqp+G7Ufdtd8ToLI+rVG+w65nr3imZh/qeCHBUw3yLnPdd8by3Cb4kdBfj2VSElhPkM4tjBXFeLLHedvZM75epw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=NUu4nwSv; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="KuNZD907"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="NUu4nwSv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=06tZjU29VwqByqyIrPkQHEnCjRdvf/czRzQRFH3f6Es=;
-	b=KuNZD90719RC4PCN7bHia9QNSl/2bCZTq17vXE0WAnM8BXAykaYGV7Qu4Fl3cg
-	SqmO9LabkeKZXrHWfntfe6ejdjxNi91Y3WKOhAKzBGdu964e3XXVPDe3F4wPpxDL
-	bc19wccwDo5ARVg55yIj854uaCR+zboGPrpCc/BgaOz98=
+	Content-Type; bh=SSnBpXFr6UaDyoCUOpqPlNQbbbgbwumFKZey7Ajea30=;
+	b=NUu4nwSvx0K7ohAoRZemwdB0PwhVz2iSweBvNEbGOCpbKNqgmn+DKtm19AQwAQ
+	do3KElpdwMi6IITro1AMmKKQG7d1B85lmvJ0/u005vFc1gtzJHDtWWcU+NEbcm6f
+	EEnQ+eK5nzeZgk0DpYKmfFewg+U+AfQY9A0negkNE3vHY=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD3_1YeCv9oMlm+AA--.27868S3;
-	Mon, 27 Oct 2025 13:58:56 +0800 (CST)
-Date: Mon, 27 Oct 2025 13:58:54 +0800
+	by gzsmtp1 (Coremail) with UTF8SMTPSA id Mc8vCgCnr3jcC_9o9QE_AA--.49326S3;
+	Mon, 27 Oct 2025 14:06:23 +0800 (CST)
+Date: Mon, 27 Oct 2025 14:06:20 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: =?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Jonas Rebmann <jre@pengutronix.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>
-Subject: Re: [PATCH v1] arm64: dts: imx8-ss-img: Avoid gpio0_mipi_csi GPIOs
- being deferred
-Message-ID: <aP8KHmFbGFRmgtQz@dragon>
-References: <20251014-imx8-gpio-csi-deferred-probe-v1-1-62dd1b949731@toradex.com>
+	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Peng Fan <peng.fan@oss.nxp.com>, David Jander <david@protonic.nl>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH v4 0/2] Mainline Protonic PRT8ML board
+Message-ID: <aP8L3JkMGzHsVPId@dragon>
+References: <20251014-imx8mp-prt8ml-v4-0-88fed69b1af2@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251014-imx8-gpio-csi-deferred-probe-v1-1-62dd1b949731@toradex.com>
-X-CM-TRANSID:Ms8vCgD3_1YeCv9oMlm+AA--.27868S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWruFWDKFy5Wr4rWr4kKFW3KFg_yoWxtrg_AF
-	yvgr4kCw4DGrn7Jr4YvF42gFWFkF9xW34UKws3Jr43AFySqw4rAF47tr4rAry3Wrs0qry7
-	JFZIyw43Jw1Y9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjOVy7UUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNQCkCmj-CiBa0AAA3s
+In-Reply-To: <20251014-imx8mp-prt8ml-v4-0-88fed69b1af2@pengutronix.de>
+X-CM-TRANSID:Mc8vCgCnr3jcC_9o9QE_AA--.49326S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU8hL0UUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNh8UeWj-C98t-AAA3W
 
-On Tue, Oct 14, 2025 at 09:56:43AM -0300, João Paulo Gonçalves wrote:
-> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
-> 
-> The gpio0_mipi_csi DT nodes are enabled by default, but they are
-> dependent on the irqsteer_csi nodes, which are not enabled. This causes
-> the gpio0_mipi_csi GPIOs to be probe deferred. Since these GPIOs can be
-> used independently of the CSI controller, enable irqsteer_csi by default
-> too to prevent them from being deferred and to ensure they work out of
-> the box.
-> 
-> Fixes: 2217f8243714 ("arm64: dts: imx8: add capture controller for i.MX8's img subsystem")
-> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+On Tue, Oct 14, 2025 at 03:09:30PM +0200, Jonas Rebmann wrote:
+> Jonas Rebmann (2):
+>       dt-bindings: arm: fsl: Add Protonic PRT8ML
+>       arm64: dts: add Protonic PRT8ML board
 
-Applied, thanks!
+Applied both, thanks!
 
