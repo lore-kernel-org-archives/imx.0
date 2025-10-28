@@ -1,109 +1,113 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102FE20297E
-	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 00:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A6717C21E
+	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 03:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761613083; cv=none; b=dKHFKgV9eng1YYm719aXpxec0y1VOYYNRGuf8Wg80WOeTdvWirHft8L0tiLfuFlYlK0NModEa0ynFwNwLjDWN7PvAXSRtXCBnpA2PgjKJtlnMKbSBw2yJbKaaKIiccvvpwaNha5EWyxp1lmzGW/5kGvXchM8zT81EW0TZ0GeIgU=
+	t=1761621402; cv=none; b=nFP1JouMMlKYls9u3Y6yOk3R2QpV5k9zC4K9RDDWbxQybf/FtY6x6fAuo+BtC44tERQ4oMN+DhjW5FDv+CeFFRttRocVlaYI+UGkPsPX+rf4z3lAXlrVqbWbEEVNaeUY6aByHx18QSqe+6KbXqKFSyjk2fprZlHNecNh3B4iyro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761613083; c=relaxed/simple;
-	bh=Pu5kqYu+8gpM71WXhfUOgdtRRnjxllEImtX1gx/QT1Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OL5JTfMhFlhxHgP9gE6+Ed+149/jMLhmQuhidk3WmIPuqqrj5/AmiKmHNLhgctSiK8KT4Y2RaRpNj9LTeqtzhN2VbA5oYUFu4mwFUbc4odGCAy88Y18SAWGTBLuK9Dyvj+GZjEd+IRflSfm85kRV3aa6noumI2Ul8fEekGFr+sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=DnK6ADmm; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1761621402; c=relaxed/simple;
+	bh=cHHkD30AaxNGfUjFD9KtWlH0G5zDyjXDYQiWrVKJSIE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WHHU8SOlncODCgB/AFUeii+amY5X+Uw6z3ir8Sm1pwDE2zOGXTO/srsD7SFGvR/thAKi12qBvLMosSLsxL2ILkX/cMb9ihcP2ZcOYYcFTkExbNsQIn74cRTWp6G/UXaGi4hxg/bfZLYLNJI9VwnUHBIWs+QzVXmQfZNdv7tE+dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NglHi4t3; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="DnK6ADmm"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=clpdrlOLu93rHtL/L9HiL9Is9OjufJxhxUPrU3Iy0XI=; b=DnK6ADmmspY4FAXcwDQ0Ysdv6z
-	3S4CPo2pihH5GZTA/oVF2y5e34bRyMhblv53WeQELRwkUO2BT5BmjkopFJJqVTZxkBuTjDsmNoWXa
-	6XPyCx0W3NSnUXXhnjbn+eZ7nLzC3iB7gQw9RFsMisCbk+om0sEEwp8A4bUacT7hTANRJoFNDfAAW
-	+KjQqHc52E4TUodg2IqcIY1/cQ543DC8JYYgGT5fuySvCJFGxqVK3+VzqhYDJpjXGF5SYw8X8jlHp
-	mp7PK+QbVNpLyXwif4OOcB3rHRfO7xpcd+7J7mOURBAHa3GZOsiCoIzMvOgzoSBslDz16MMQSadND
-	JXrThypQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49596)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vDY29-000000002YH-25XH;
-	Tue, 28 Oct 2025 00:57:57 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vDY27-0000000064p-3UG9;
-	Tue, 28 Oct 2025 00:57:55 +0000
-Date: Tue, 28 Oct 2025 00:57:55 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NglHi4t3"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7a26b04bfc8so6029516b3a.2
+        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 20:16:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761621399; x=1762226199; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=q7Dr88n0rsMeY0SbLXIpFyJggBzx8goTlgYQ7zbZXXM=;
+        b=NglHi4t3S4ZPvzAASVOD7OG8TgtQBCRO7LJ0wEgegWLMur4IChiqg2zoDLb2DwxuqI
+         ggQpyk0e8Jt0PKlQcKIHr3ioCbHukThESqw1+7YPYf6bnoIpHUoLWIxjOZej5OrD3Bfi
+         cayj4fGgAC0EgUKzxuMXCtfNbtuDVsWZHJEFVp9BWxNtXios7ffEjoWPpjLJSICSng4e
+         v1ZJebtAnMudu8OwrQf5gHkiZ86F3jJNoj+pQSkJpHOVCzscVblCvGQSKkVahhsqxZGf
+         BhEFieNn2QO+mWO4xkKeEyI79LywfNw2ENczCTxPA/C3R3Pxhtujsjv9bpSHTnbC3ETJ
+         srow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761621399; x=1762226199;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=q7Dr88n0rsMeY0SbLXIpFyJggBzx8goTlgYQ7zbZXXM=;
+        b=WkdWk4adXSiIBS3eoXBfEs0A2UikXWHK3T5MGjDxS6XPWvGRnXP+pQMZcPqFB3Oh0U
+         amcodN61h45dGvbG6f8wgZCSt2MlvSwIWvwCyj8PR/DXV5mepHnMoLRVShTKmZTbg6ds
+         hatunm/KKOaRNWpjJLoe+KHQ6U/5/s7XH5V+QPcrivq2xYAAtLPKy4aoHsMZ9PXBIX0d
+         KOt5N5kHJM7st1ioZPfflT12OtNSpAlSpkeFvkLJC8qbZnhAyXa0mMbrcWrRzAsFKNkL
+         VoVgwnhb5xYGaJdu259wtUIz4ckn/iqCmToz05QNaKASXiLHv2ulWlJUYSZ30eltYdxY
+         xf7w==
+X-Forwarded-Encrypted: i=1; AJvYcCV0UtEQ4fga05RDidBKMaoD3gkQtbpvw40UNb2MIOENX42vUEPfzVIF+v1mfVZkzlv7Fng=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxwCUSCNRYUV01AekRZtiDo0TTBR9/WONLBNZjZ4xdT+acorN6M
+	PAnZrhK5aFQ/kLx4LZ0Q1F3NmJhJ62wRAkmpZbVwkwF+4JIm57J/VQI3
+X-Gm-Gg: ASbGncujlwTldZWVpv0GSaGKApI8zRTssHLBn1CS04U4f5USyoPEDo7UQwC+eEF9pUX
+	J3S+iIhF3LzEJmkYl8QkrqAqsoRZHF5SMMWFtDDj4NnwtImMDyqoXlnLhivU9L2eZ/lMbmGgrMm
+	W/J0oIai7v6zAt5rmzbqHhvovUcYPpRPTNmXpDM2AcAp+5mUNz4WMfkwIQPteNpPZsJ4RGQBPfc
+	TxFbUg8CkR3PzAoj9XQBMMRJrSCvBNB5RCkRtrQrOVwGJXiFypOoMPFZ16lXAvEoLyvEHsrmCPD
+	rh3fSeUYfuPOqyKm8HjlOF2ycIwYiOq2MfTMe94Vq3mivCyjS0/2nYtQGqAnpaOOm95IRsFbkGn
+	Rc7QIXm+4cwCXGoBI+x98tslWHr64Psn78Cuk+QGLQTVLNhrr4324KjuLzoFCobwKOTlJzERRRj
+	VumFMeZL/9NLOk927cUJhpRg==
+X-Google-Smtp-Source: AGHT+IGeeElAGdz52QvzDON6TZ6X2VN+9KdN3tRsb9MvpzKrX+azsLuImQoCuSHnyIB4CWg/XHY7mQ==
+X-Received: by 2002:a05:6a00:c8d:b0:7a2:6b48:5359 with SMTP id d2e1a72fcca58-7a441c46a7cmr2594121b3a.24.1761621399271;
+        Mon, 27 Oct 2025 20:16:39 -0700 (PDT)
+Received: from localhost.localdomain ([124.77.218.104])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7a41408c4dfsm9818276b3a.65.2025.10.27.20.16.36
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 27 Oct 2025 20:16:38 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <aQAVE96NAD4Z4lgt@shell.armlinux.org.uk>
-References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
- <aP-ML-A_h13pXY2d@shell.armlinux.org.uk>
- <20251027234648.GC24987@pendragon.ideasonboard.com>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] soc: imx: gpc: fix reference count leak in imx_gpc_remove
+Date: Tue, 28 Oct 2025 11:16:20 +0800
+Message-Id: <20251028031623.43284-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251027234648.GC24987@pendragon.ideasonboard.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 28, 2025 at 01:46:48AM +0200, Laurent Pinchart wrote:
-> On Mon, Oct 27, 2025 at 03:13:51PM +0000, Russell King (Oracle) wrote:
-> > On Sun, Oct 26, 2025 at 02:29:04PM +0200, Laurent Pinchart wrote:
-> > > Energy Efficient Ethernet (EEE) is broken at least for 1000T on the EQOS
-> > > (DWMAC) interface. When connected to an EEE-enabled peer, the ethernet
-> > > devices produces an interrupts storm. Disable EEE support to fix it.
-> > 
-> > We've finally got to the bottom of what's going on here. Please try
-> > this patch (it's building locally, but will take some time because
-> > I'd wound the tree back to 6.13 and 6.14, so it's going to be a full
-> > rebuild.) Thus, there may be compile bugs remaining.
-> 
-> I've applied it on top of 
-> 
-> I've started with a branch based on v6.18-rc3 plus "[PATCH net-next 0/5]
-> net: stmmac: more cleanups" ([1]) and "[PATCH net-next v2 0/6] net: add
-> phylink managed WoL and convert stmmac" ([2]) to make the patch apply
-> cleanly.
-> 
-> [1] https://lore.kernel.org/all/aO_HIwT_YvxkDS8D@shell.armlinux.org.uk/
-> [2] https://lore.kernel.org/all/aPnyW54J80h9DmhB@shell.armlinux.org.uk/
-> 
-> The base branch exhibits the interrupt storm issue. The patch
-> unfortunately doesn't fix it.
+of_get_child_by_name() returns a node pointer with refcount
+incremented, we should use of_node_put() on it when not need anymore.
+Add missing of_node_put() to avoid refcount leak.
 
-So it's highly unlikely that your problem is the same as Emanuele's.
+Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/pmdomain/imx/gpc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Do you know when the interrupt storm behaviour started? If not, I'd
-suggest testing 6.13 and 6.14 as a starting point to see whether
-the phylink-managed EEE conversion is involved.
-
-Thanks.
-
+diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+index 33991f3c6b55..a34b260274f7 100644
+--- a/drivers/pmdomain/imx/gpc.c
++++ b/drivers/pmdomain/imx/gpc.c
+@@ -536,6 +536,8 @@ static void imx_gpc_remove(struct platform_device *pdev)
+ 			return;
+ 		}
+ 	}
++
++	of_node_put(pgc_node);
+ }
+ 
+ static struct platform_driver imx_gpc_driver = {
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.39.5 (Apple Git-154)
+
