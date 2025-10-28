@@ -1,267 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013011.outbound.protection.outlook.com [40.107.162.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E7C170A11;
-	Tue, 28 Oct 2025 15:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761663652; cv=none; b=Elif+dL4cY35o8rFQdpQKXv3OBGjAFHW99w1IfAW0c20j807Y1vZJtJr3KF/u5iPkX9e6LJc36omYNpVEf3LRLyNMPmMRVOtFK8AlWuQX6jNUezlz2E+zW3QvFBZDnEAOoCbIPncfJE+KnkWB9oNWOe5EA/5E/xBz0Fo37RDxgM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761663652; c=relaxed/simple;
-	bh=NqtS/vo6GQ9GLxrmrNCvwi9dCjnitvmWTlCDHG2vFA8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uezIC94TY5pO+KWD3cQ+M0qjeYXSpTVtAt358DSHkFfftOJW+Gobp9E5Lx49B6AkF2xO7ZFFdRyPkYq4V+H04dw824RYDt6xBeTPC2pW0meiTdJoVpSOlrmQif9yuB6CK+cXpnGTwibW09au+VZq378F7wHVvs2R/dCm4qD0YH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rMEBgbxb; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9375274B27
+	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 15:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761663796; cv=fail; b=Sjwt+NRZu3SV3uTo9QbrHggxYXb4H0cPzznFS6JoWgl1g0t1Z0fepPixqCSD4JwugQiIQsWRA1WuUPJTSt+3Qr0HXznKCkHT0tWJr/0OFcl195CMUfMbbx6bNaPREBWq8qjJ9jhu6osQIi8IU07Z6mkGC5G7B9QDbUDJ6i4kUws=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761663796; c=relaxed/simple;
+	bh=W7h1xzHerdMxlHUIJYGiADXISB1q3uyUuA/1GMc7Qwo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=MGg5/W07WtRoOviyltB5kzOGTvySEuyp+ZvmMGOl2jOrv2GJQaiUwQL48e1cabJ3euXd3w5V4HzXb1Oj+El1ItgQLXpzFUt3Yo8Jmu2fES/8QmRdgorNl7c8HaOT8srGmiZwzMQyP7HoPXyLjpzYYLsGK1b0VvhYL4RRCrOYpes=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hbEpxAl8; arc=fail smtp.client-ip=40.107.162.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rMEBgbxb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F31C4CEE7;
-	Tue, 28 Oct 2025 15:00:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761663652;
-	bh=NqtS/vo6GQ9GLxrmrNCvwi9dCjnitvmWTlCDHG2vFA8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=rMEBgbxbusNwEbZInt9zjNooDq+meSxtgQ68h+Jkz78I2Ubtptzeti7HdQOwvAm1n
-	 RDw3ygBUsUEA6+64+Dgt8sd9jTO4LojiEoq4FybTCQrGsWSjMiLjErLZr2VCHxgsCM
-	 G++aqXA7WQOQxpDeD5k2rU5yDHu1miBucR7BvfGRnSzp8wc0MA0+fkS4GTv55dZvgV
-	 ySxDV3hmPrgqhkVjfZdcCQvnYCo3bliGtsF3n533HXQiIeYE9XkKjXoLkJhVuPu/Zc
-	 TPyHurEXjQkzoWqTIDBrVGxy/kboYz505zk5LsYsDpKwzI7fTft9PBlSSEbcEfzo7c
-	 6PugmvGO6srKA==
-From: Andreas Kemnade <akemnade@kernel.org>
-Date: Tue, 28 Oct 2025 16:00:36 +0100
-Subject: [PATCH v4] ARM: dts: imx: e70k02: add sy7636
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hbEpxAl8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Dr6EwqA/zUhbYGsLCC8P4E4yFfG6cMjlfFfOmi9Y13gmoV6o0d6ll75gqgiOgvX9A9YHrzM+sX4acvMd/fQpGyDKTpAerfAo838DS4E0G0Ck6U0MWNeFt4bK5hBwlE9skKOR9GEKoN2hqaoU21ZmNrYM0u1ghTlU/jSw4WCXR0bZRLeIC3riBrSLy3CJYakC7CpPNQ5G08fXWbqPYZVI439A3/PWInW5VO/rRJJ4JSbNPhrR/ZvbDt8KGyBlsyn7YeFmUMX2Y4AO7qQAm9CzUeMQXJ3IdWfxbUTkAvAOpS6Z3zdSMEkSUDGLJ+oej3QsN56mtmDAx4dExBUwEwLcJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W7h1xzHerdMxlHUIJYGiADXISB1q3uyUuA/1GMc7Qwo=;
+ b=qASFcx7qk4XSYkDIBD380q3jTFVG/qCS+DMLI591r9YhTJJ+S9ZIQv99tJHdQf26BAhMlqQdrKLkwMvg1gl8VWTDvBIushGfp0a8KmCzW/Mfx13GdU0EVmroRpXEzwc5Um1aTJNe+I4VPDuI4TolV6bVr08tDx2RmoxFNAsAggfrurlSEFug0cFmXnf5D5U32g/fACnDHbufVEwztk6rmu5aX5gFJaqRRkCJ3jPHfrBEUOqrG7Lg9kW9knnrFm18lmw6qDNTVjLi3YChWodh3pt1HltxfHd2uMho2rJavdEP8SAtIx9Vp1SBtJZfOcyTFguT+fWUh1Wi/o/OINCOCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W7h1xzHerdMxlHUIJYGiADXISB1q3uyUuA/1GMc7Qwo=;
+ b=hbEpxAl8C2bjSZ4lnmIyX0RQpavu41d0496kxe1ra08Q5kKQ4DON3dGdwXRQnoY2vU3fVTyiprh+LsME+uuEyh/AxJfJAXs7Yz/kqa5TJxPvU66Ke2Xz4gUmhOVn8r8HCR+J8KKV17zSsEh83SSNub7ZgZpd8F03oY2kfGXyEuwBuLMxjpNqtD6KEbajG3Ba4DbT8AAjojTMUVrTrgsgnIIwiGpW2b22DPk0q3jwWeWBoigOP89RPtjpl2OiPCrZXp0oGvuPNupVgUhw4zwjfN2PfPP/AvOx0pfR/9lU/hRN4I5InSFjYBX3lyQbTqY7Z+63mi6NuX1RydeLuMr5FA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by DU2PR04MB9097.eurprd04.prod.outlook.com (2603:10a6:10:2f0::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Tue, 28 Oct
+ 2025 15:03:08 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9275.011; Tue, 28 Oct 2025
+ 15:03:08 +0000
+Date: Tue, 28 Oct 2025 11:02:59 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
+	Adrian Fluturel <fluturel.adrian@gmail.com>
+Subject: Re: [PATCH v8 6/6] iio: magnetometer: Add mmc5633 sensor
+Message-ID: <aQDbI6hving7xzep@lizhi-Precision-Tower-5810>
+References: <20251028-i3c_ddr-v8-0-795ded2db8c2@nxp.com>
+ <20251028-i3c_ddr-v8-6-795ded2db8c2@nxp.com>
+ <aQDY-9CEOlA74A-N@smile.fi.intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQDY-9CEOlA74A-N@smile.fi.intel.com>
+X-ClientProxiedBy: PH7PR17CA0039.namprd17.prod.outlook.com
+ (2603:10b6:510:323::18) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251028-sy7636-rsrc-v4-1-242ccfd3bc10@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAJPaAGkC/23MQQ7CIBRF0a0YxmLoh0Jx5D6MA4RPSzStAUNsm
- u5d2lEbHb6XnDuRhDFgIufDRCLmkMLQlyGOB2I707dIgyubAIOaaSZpGpXkksYULbXAjJF3Y8A
- KUsQrog+ftXa9ld2F9B7iuMZztbz/O7mijCI0jTS6vEZdHhh7fJ6G2JIllGGL9R5DwdY77YXwD
- mr9g/kGV2qPecGcV8CVq5kysMPzPH8BeUugNyEBAAA=
-X-Change-ID: 20250906-sy7636-rsrc-c20aa6baa2c4
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Alistair Francis <alistair@alistair23.me>, 
- Liam Girdwood <lgirdwood@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.li@nxp.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Peng Fan <peng.fan@nxp.com>, Andreas Kemnade <akemnade@kernel.org>
-X-Mailer: b4 0.15-dev-50721
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6304; i=akemnade@kernel.org;
- h=from:subject:message-id; bh=NqtS/vo6GQ9GLxrmrNCvwi9dCjnitvmWTlCDHG2vFA8=;
- b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJkMtxZUrd0wLUxqM4v+x1T1F68ObOl+dOGBWgqfpuHGm
- Owyh75XHaUsDGJcDLJiiiy/rBXcPqk8yw2eGmEPM4eVCWQIAxenAEzktAzDP+2u4u/9V+J5DB1P
- uHJptmzvvG9772P21nr1C98um96xsGZkuHX+UOhis0f9eQ1TH3QcuX159hXLyKtpqxuF2hfq/Ju
- 3jA8A
-X-Developer-Key: i=akemnade@kernel.org; a=openpgp;
- fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DU2PR04MB9097:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66b73185-17e8-4abe-2bc0-08de16331aa3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|19092799006|52116014|1800799024|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?xGHg3SHS7X7/19Uml2knUMlaHLeEWtvHcELWRM5BfxviLnyQ1RnwjOEYyTTX?=
+ =?us-ascii?Q?6buISDdL3nq4qu/21E640zxES3IeBMwx5GqFE8u15mjhbaanIHXLx0spVh/Z?=
+ =?us-ascii?Q?XzsEYp1Yj+YHWKN/PfZ4x89VpgBi3orheoFrT3i/hD42TVyBlDe74VFZLvPG?=
+ =?us-ascii?Q?/dXB3roVNcrMse8I34ozbtf3wNgrx4hzuHHMzD+Hu/XL8tbKL2AAFvBlbnt/?=
+ =?us-ascii?Q?+a8/BHfju2icWihAZrsGIRc8+QmL6XX0+k7maQ1RcOqdZBp3/DSoTUhs0pom?=
+ =?us-ascii?Q?6vpKEFuRzPlB22L6MrzMTg790oVC3nfH3aYMnx7N89GHfcGQqe2LLzWf6vDt?=
+ =?us-ascii?Q?wBz3YYo0gh3l/Fa4RIrRanIl40VgqtrbdmTLmFgZ110M7gOdE1ZL3oPl+Lwm?=
+ =?us-ascii?Q?nsgI4D/Tw7E6ESG52ISUd7Q0MMePXg47MbuRS2jXRl3utE09AS8WgAuMtNnN?=
+ =?us-ascii?Q?Uj6EcXoAFJOWWt9x6ieWJC6Q1jx5QY8sAkqJbmSfuYQEgAF0Pzp6kwJSOdah?=
+ =?us-ascii?Q?jNvw77GgpphzRXWDqyqZ+n+8DYaklpa+oixFTVysOHs2RqCgkiNOUxELwPd6?=
+ =?us-ascii?Q?Hw+Y+Wzr7SNrV4vzEyRpjp+gYjclm+dHoSLMp/+TDh2RuMk77OyQBYsZ4qGf?=
+ =?us-ascii?Q?G1n2JPK8XGFGAUQoNjJ3/KA2Otfu/RHg8DFU7le8OhjV5FO0JG5gHGtUENrf?=
+ =?us-ascii?Q?6otKSl1cZaPzwibJ/jfhXSjPu4E+BoTADTIGqA9dCkpoXgOlZ5HQnFEo9joI?=
+ =?us-ascii?Q?gAL859JXPuSRFmMIDf4/bMKquTsZgfBb5w1TqEzg81HasFWQu4P0KTCDPKxX?=
+ =?us-ascii?Q?xjAJYNMj/gndjM0EY3HRe91NP5Qdy5JlwjEOYj3pkDn/7lPQB6mSmZRBaSGW?=
+ =?us-ascii?Q?4dSsG9NpKbm8MJUWHo+qxJum60N/jK/JOLAwP1aDSQTAzIHLFj49deHRBYlm?=
+ =?us-ascii?Q?Yr5OzjYWG4s6ytkcwnxdhzxTb+Yphzr0LCFSw+fhrBT9IFAvKZPbYob41Mzw?=
+ =?us-ascii?Q?Csm/PWn4RBoEUfnupTV4PW4BJdT9QH+9kq3WCPqqddbbOvjQmODfPgpHrnbk?=
+ =?us-ascii?Q?rTFKQemqI3oztH78Rdpejt++AcnJmHAkAGbs/AZtWoRg8/ufwCCZQ+iSxObR?=
+ =?us-ascii?Q?+GW06hB1yhUZRLKDexBC6oRdcVJiLAxZpLl4Wh/DOc2389In3xsNlZQLlvcB?=
+ =?us-ascii?Q?ZPiENC6/UMy0pQhvMuIbHYwciF+zsM71k0qguWVhSvXqPgZVVn4sZbjy1gxq?=
+ =?us-ascii?Q?pF6NhfzBQ5ITyQzRGOUsBUFC+LmZfE3Lr1O6DDO8JvYyJkStWxXOjbDlqKhR?=
+ =?us-ascii?Q?YHBe+pBVtuQbnhYpwSSX+VyNSh/aP6OpFKGS09KdMr9IXcD77zvh4ssHBHvJ?=
+ =?us-ascii?Q?wJVSMThLm9+Wq1It4Z53j5bI/guUftwQwpqaEGxOX32NQa40s5WkK43pHtat?=
+ =?us-ascii?Q?MecC5VsTZX58sH7WUbotVya3mRWYfA/lfXMr3MdmcXomOQX3DI1t5Ex/s/CN?=
+ =?us-ascii?Q?h7zjDQR8CZwSTLC8nYJOO9KCqTvr4OIYnTwI?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(52116014)(1800799024)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?s5+MjBuEOqXjX7ZxPs7lAKr2SvclB0YiVZWpckdaupqvs+CEfcfCLUPmzuZu?=
+ =?us-ascii?Q?iH6Wl+5vhYiN7dtf/3OdO698unwu2eaURQeoYfQbxYn171U5mpR3nP5OSG8j?=
+ =?us-ascii?Q?YLiV2T1TppznYpEMGYr3gyIqAZWYJw789z3lXWqmpMbEkl9czfqNJqYb3iti?=
+ =?us-ascii?Q?Yw7TyW421DfkAZstgk1nbC22/JlKx3NFQF4bE6LWKY53jHwlHTyiuKJoE+mq?=
+ =?us-ascii?Q?QegyVxUM5sl0GgNAeShHVQG2uXQ/3Vh4pTpIsVh0FgXHx5P0NB8QwzO0xq41?=
+ =?us-ascii?Q?313SAcy/5M4mThE8DFXIZkFqnILaVKbTZGEIjZsCIAmPcmD7DVG0siNw5IB1?=
+ =?us-ascii?Q?yYnf6M/Ll2OZefmOwNRPr88ueu3hi0Cez5KLcjh+Vznr3wlqs+yEGxiMOZ/Q?=
+ =?us-ascii?Q?ceYLKrEBAZpxwuexjD/NbcBXXMJARfBsuZfl0JSJ1tQN33AJsM2ucaqi8qQ7?=
+ =?us-ascii?Q?v8j7D9QxdKS6/MBDvWiIrXoPbY8H8W7aeElZMxPc2yZR35dTkBMbQ2PU46iD?=
+ =?us-ascii?Q?4qB6ixhs2wSuuw/iqXcx8+0oC+CwNJ0vKuQaCBiWvGQf1bRZJS8he0MaVFOZ?=
+ =?us-ascii?Q?ukGI+ruMpGNrUSKifK1fC+PlF8s/4NpdV/EE4b4abnhjwJojasvCxXtyEzaS?=
+ =?us-ascii?Q?7Z6qpeOdwYY2uwGuDOOaiLJr8R1t1bXjGRYBmVxxbU95kthKjpcteTXOO/2j?=
+ =?us-ascii?Q?PO006PaMTXSMXJMJG49PJSuqxUUrayHybNyzBqKRjX7R13Cl/zVVMIHCSfOR?=
+ =?us-ascii?Q?hwWzdyh1qixZiY3ZJUMkH/VQeyjNZMXuQeJFiGrrJ7x0WKGzRXt9H79uNGGT?=
+ =?us-ascii?Q?o3sZMalHvO4F8s47CjaLcvvrUvmDgLobeJSuX2/KGjcNvatI2VUA5z5f5H6D?=
+ =?us-ascii?Q?K88E+g0sl6p0klco+dChd2nldgnEe6UfhmS6ocwKziWMGPCY70qennvDA01m?=
+ =?us-ascii?Q?xPPCX4tC5mF0ziWZYBQxItaqNnLW6HMHDH7sLx8SjxyldvqBejaWzNW1FJi+?=
+ =?us-ascii?Q?GIfJ7x7nIPNGrTOl/ps/z/vUTPnXaeKzxKxS4MZhYhoJi8DY7CdaPy3QNdpL?=
+ =?us-ascii?Q?4PlOusOWM2EW4na+Ph9eV9XMj+NIrYJAMYtTcN7DYFBIW9Ga0RJcPoJPMpdB?=
+ =?us-ascii?Q?J8MbmKIeY5MDft5camuQfpTFWp1gWmXxvfI97AwR/zzimzI55nVcuGvJBEWK?=
+ =?us-ascii?Q?hp4xm1FGU4GB6/lpdFYzhvzkEddb2d8CMKbtn/x42rqXT6j4N4Ac4Vp2VRm3?=
+ =?us-ascii?Q?RHjumjT2Sts9jg5FPaM1CW3N1tlshD6PuJbmwcMnigxVG445LD9mqnXOnHwX?=
+ =?us-ascii?Q?EMi6xmETA6AXXweWAyJKHptr+dHwiw32n5pmXzZnNYGaXNGkfW+Ab3PR2nMh?=
+ =?us-ascii?Q?oPqRMDnZ67Aj2/Gdnp7uxXpu2fsB5soUHgpBwkks4jIOrLDyEana20X19neb?=
+ =?us-ascii?Q?mV1YPr62xWifkcKJRbmEt/mtfRtlaCTUhObuOawvrQ+/OeeuagNXXSoK0JlJ?=
+ =?us-ascii?Q?pXoSYGUnD7peqDz8IAKoesDIw62IRiuZID6ywrEO4zngOGaZrW4NThE7Cqyf?=
+ =?us-ascii?Q?jv6I39s3yurGZ/tc+WST6RMq8Tvx0FAmh01ZFxLf?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66b73185-17e8-4abe-2bc0-08de16331aa3
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 15:03:08.0446
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m0SlRSCfIm+wy0CkQag1UdZoWcr3hInDgDkcu95IVlorr6giIYApXLJjD+lJmCbli9VimftVabeQvJcw7ijESA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9097
 
-Add the EPD PMIC for the e70k02 based devices as a step towards full EPD
-support.
+On Tue, Oct 28, 2025 at 04:53:47PM +0200, Andy Shevchenko wrote:
+> On Tue, Oct 28, 2025 at 10:49:02AM -0400, Frank Li wrote:
+> > Add mmc5633 sensor basic support.
+> > - Support read 20 bits X/Y/Z magnetic.
+> > - Support I3C HDR mode to send start measurememt command.
+> > - Support I3C HDR mode to read all sensors data by one command.
+>
+> Seems you missed my comments against v7
+> https://lore.kernel.org/linux-iio/20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com/T/#m377b66850dc0205c3b8723d09c647b545b029fbd
 
-Acked-by: Alistair Francis <alistair@alistair23.me>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Andreas Kemnade <akemnade@kernel.org>
----
-The SY7636A has some pins which can be hardwired or used to have more
-more advanced power management available. As several devices containing
-this regulator have these pins not hardwired, but instead connected to some
-GPIO, enhance the driver to have them defined and initialized.
-Also add the ability to power off the chip completely by defining some
-input power supply.
+Sorry, I missed it since I am preparing other cleanup patches and have not
+checked email before sent-out v8.
 
-Actually implementing better power management is planned to be
-implemented as a second step. The regulators in the SY7636A should only
-be on for a short time during display refresh, but currently they are
-unconditionally forcefully enabled by the hwmon part of this chip.
----
-Changes in v4:
-- reorder enable-active-high property
-- Link to v3: https://lore.kernel.org/r/20250917-sy7636-rsrc-v3-0-331237d507a2@kernel.org
+Frank
 
-Changes in v3:
-- shorten descriptions in binding
-- Link to v2: https://lore.kernel.org/r/20250909-sy7636-rsrc-v2-0-cfd9f44fd259@kernel.org
-
-Changes in v2:
-- en[-gpios] -> enable[-gpios] in yaml/dts/driver
-- fix en vs vcom_en in error handling
-- comment delay
-- drop applied commit (rebased to regulator/for-linus)
-- Link to v1: https://lore.kernel.org/r/20250906-sy7636-rsrc-v1-0-e2886a9763a7@kernel.org
----
- arch/arm/boot/dts/nxp/imx/e70k02.dtsi              | 25 +++++++++++++++++++++-
- .../arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts | 24 +++++++++++++++++++++
- .../arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts | 24 +++++++++++++++++++++
- 3 files changed, 72 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-index dcc3c9d488a8..3bb11c5a6353 100644
---- a/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/e70k02.dtsi
-@@ -69,6 +69,14 @@ memory@80000000 {
- 		reg = <0x80000000 0x20000000>;
- 	};
- 
-+	epd_pmic_supply: regulator-epd-pmic-in {
-+		compatible = "regulator-fixed";
-+		regulator-name = "epd_pmic_supply";
-+		gpio = <&gpio2 14 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		startup-delay-us = <20000>;
-+	};
-+
- 	reg_wifi: regulator-wifi {
- 		compatible = "regulator-fixed";
- 		regulator-name = "SD3_SPWR";
-@@ -133,7 +141,22 @@ touchscreen@24 {
- 		vdd-supply = <&ldo5_reg>;
- 	};
- 
--	/* TODO: SY7636 PMIC for E Ink at 0x62 */
-+	sy7636: pmic@62 {
-+		compatible = "silergy,sy7636a";
-+		reg = <0x62>;
-+		enable-gpios = <&gpio2 8 GPIO_ACTIVE_HIGH>;
-+		vcom-en-gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
-+		epd-pwr-good-gpios = <&gpio2 13 GPIO_ACTIVE_HIGH>;
-+		vin-supply = <&epd_pmic_supply>;
-+
-+		#thermal-sensor-cells = <0>;
-+
-+		regulators {
-+			reg_epdpmic: vcom {
-+				regulator-name = "vcom";
-+			};
-+		};
-+	};
- 
- };
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
-index a2534c422a52..f8709a952409 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sl-tolino-vision5.dts
-@@ -26,6 +26,11 @@ / {
- 	compatible = "kobo,tolino-vision5", "fsl,imx6sl";
- };
- 
-+&epd_pmic_supply {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_epd_pmic_supply>;
-+};
-+
- &gpio_keys {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_gpio_keys>;
-@@ -59,6 +64,12 @@ MX6SL_PAD_FEC_RXD1__GPIO4_IO18          0x10059 /* TP_RST */
- 		>;
- 	};
- 
-+	pinctrl_epd_pmic_supply: epd-pmic-supplygrp {
-+		fsl,pins = <
-+			MX6SL_PAD_EPDC_PWRWAKEUP__GPIO2_IO14    0x40010059
-+		>;
-+	};
-+
- 	pinctrl_gpio_keys: gpio-keysgrp {
- 		fsl,pins = <
- 			MX6SL_PAD_FEC_CRS_DV__GPIO4_IO25	0x17059	/* PWR_SW */
-@@ -159,6 +170,14 @@ MX6SL_PAD_KEY_COL2__GPIO3_IO28		0x1b8b1 /* ricoh619 bat_low_int */
- 		>;
- 	};
- 
-+	pinctrl_sy7636_gpio: sy7636-gpiogrp {
-+		fsl,pins = <
-+			MX6SL_PAD_EPDC_VCOM0__GPIO2_IO03        0x40010059 /* VCOM_CTRL */
-+			MX6SL_PAD_EPDC_PWRCTRL1__GPIO2_IO08     0x40010059 /* EN */
-+			MX6SL_PAD_EPDC_PWRSTAT__GPIO2_IO13      0x17059 /* PWR_GOOD */
-+		>;
-+	};
-+
- 	pinctrl_uart1: uart1grp {
- 		fsl,pins = <
- 			MX6SL_PAD_UART1_TXD__UART1_TX_DATA 0x1b0b1
-@@ -329,6 +348,11 @@ &ricoh619 {
- 	pinctrl-0 = <&pinctrl_ricoh_gpio>;
- };
- 
-+&sy7636 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sy7636_gpio>;
-+};
-+
- &uart1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart1>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
-index 660620d226f7..19bbe60331b3 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sll-kobo-librah2o.dts
-@@ -36,6 +36,11 @@ &cpu0 {
- 	soc-supply = <&dcdc1_reg>;
- };
- 
-+&epd_pmic_supply {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_epd_pmic_supply>;
-+};
-+
- &gpio_keys {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_gpio_keys>;
-@@ -69,6 +74,12 @@ MX6SLL_PAD_GPIO4_IO18__GPIO4_IO18	0x10059 /* TP_RST */
- 		>;
- 	};
- 
-+	pinctrl_epd_pmic_supply: epd-pmic-supplygrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_EPDC_PWR_WAKE__GPIO2_IO14    0x40010059
-+		>;
-+	};
-+
- 	pinctrl_gpio_keys: gpio-keysgrp {
- 		fsl,pins = <
- 			MX6SLL_PAD_GPIO4_IO25__GPIO4_IO25	0x17059	/* PWR_SW */
-@@ -169,6 +180,14 @@ MX6SLL_PAD_KEY_COL2__GPIO3_IO28		0x1b8b1 /* ricoh619 bat_low_int */
- 		>;
- 	};
- 
-+	pinctrl_sy7636_gpio: sy7636-gpiogrp {
-+		fsl,pins = <
-+			MX6SLL_PAD_EPDC_VCOM0__GPIO2_IO03       0x40010059 /* VCOM_CTRL */
-+			MX6SLL_PAD_EPDC_PWR_CTRL1__GPIO2_IO08   0x40010059 /* EN */
-+			MX6SLL_PAD_EPDC_PWR_STAT__GPIO2_IO13    0x17059 /* PWR_GOOD */
-+		>;
-+	};
-+
- 	pinctrl_uart1: uart1grp {
- 		fsl,pins = <
- 			MX6SLL_PAD_UART1_TXD__UART1_DCE_TX 0x1b0b1
-@@ -319,6 +338,11 @@ &ricoh619 {
- 	pinctrl-0 = <&pinctrl_ricoh_gpio>;
- };
- 
-+&sy7636 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sy7636_gpio>;
-+};
-+
- &uart1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart1>;
-
----
-base-commit: f7d2388eeec24966fc4d5cf32d706f0514f29ac5
-change-id: 20250906-sy7636-rsrc-c20aa6baa2c4
-
-Best regards,
---  
-Andreas Kemnade <akemnade@kernel.org>
-
+>
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
