@@ -1,49 +1,68 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013011.outbound.protection.outlook.com [40.107.162.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9375274B27
-	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 15:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761663796; cv=fail; b=Sjwt+NRZu3SV3uTo9QbrHggxYXb4H0cPzznFS6JoWgl1g0t1Z0fepPixqCSD4JwugQiIQsWRA1WuUPJTSt+3Qr0HXznKCkHT0tWJr/0OFcl195CMUfMbbx6bNaPREBWq8qjJ9jhu6osQIi8IU07Z6mkGC5G7B9QDbUDJ6i4kUws=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761663796; c=relaxed/simple;
-	bh=W7h1xzHerdMxlHUIJYGiADXISB1q3uyUuA/1GMc7Qwo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MGg5/W07WtRoOviyltB5kzOGTvySEuyp+ZvmMGOl2jOrv2GJQaiUwQL48e1cabJ3euXd3w5V4HzXb1Oj+El1ItgQLXpzFUt3Yo8Jmu2fES/8QmRdgorNl7c8HaOT8srGmiZwzMQyP7HoPXyLjpzYYLsGK1b0VvhYL4RRCrOYpes=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hbEpxAl8; arc=fail smtp.client-ip=40.107.162.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9FC340DBF
+	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 15:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761665436; cv=none; b=RFYeo2Nxgk5w521yZZOu1j7F56uRvuKyi40VY4HffIZ10SwQxQlLftxLJnCcmGVMylWQ0cZ+Q3xaF7NUmj2Zc/sXb6n0hpiiihHUnkTxa5FO6Mj4oSVwyaG5E48saca8w6y+TFdKNgB0VtqLwgsa1KzOYcUmL8dkaTKzI48F8ko=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761665436; c=relaxed/simple;
+	bh=omCv2xt9sfDV1Sj6ZTG7T9nKYAOrU+rkJnFSocGZeR0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HBh1se+Y0SYaENXCWmVWozSsjxQc7HJ653bcZSS7BwyDHLla+ifx+87T4LE3oT2nHV+LTX5bMY48UcR7YDOvefBn7yg2TkLy7BL25D9qPYZspcdF+PPYFyqH7trC7OoQBXKOcdPUAIoo9vmaW7XV/XSRX+KMfX6Q/XZxeBXIw9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YlpECMRJ; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hbEpxAl8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Dr6EwqA/zUhbYGsLCC8P4E4yFfG6cMjlfFfOmi9Y13gmoV6o0d6ll75gqgiOgvX9A9YHrzM+sX4acvMd/fQpGyDKTpAerfAo838DS4E0G0Ck6U0MWNeFt4bK5hBwlE9skKOR9GEKoN2hqaoU21ZmNrYM0u1ghTlU/jSw4WCXR0bZRLeIC3riBrSLy3CJYakC7CpPNQ5G08fXWbqPYZVI439A3/PWInW5VO/rRJJ4JSbNPhrR/ZvbDt8KGyBlsyn7YeFmUMX2Y4AO7qQAm9CzUeMQXJ3IdWfxbUTkAvAOpS6Z3zdSMEkSUDGLJ+oej3QsN56mtmDAx4dExBUwEwLcJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W7h1xzHerdMxlHUIJYGiADXISB1q3uyUuA/1GMc7Qwo=;
- b=qASFcx7qk4XSYkDIBD380q3jTFVG/qCS+DMLI591r9YhTJJ+S9ZIQv99tJHdQf26BAhMlqQdrKLkwMvg1gl8VWTDvBIushGfp0a8KmCzW/Mfx13GdU0EVmroRpXEzwc5Um1aTJNe+I4VPDuI4TolV6bVr08tDx2RmoxFNAsAggfrurlSEFug0cFmXnf5D5U32g/fACnDHbufVEwztk6rmu5aX5gFJaqRRkCJ3jPHfrBEUOqrG7Lg9kW9knnrFm18lmw6qDNTVjLi3YChWodh3pt1HltxfHd2uMho2rJavdEP8SAtIx9Vp1SBtJZfOcyTFguT+fWUh1Wi/o/OINCOCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W7h1xzHerdMxlHUIJYGiADXISB1q3uyUuA/1GMc7Qwo=;
- b=hbEpxAl8C2bjSZ4lnmIyX0RQpavu41d0496kxe1ra08Q5kKQ4DON3dGdwXRQnoY2vU3fVTyiprh+LsME+uuEyh/AxJfJAXs7Yz/kqa5TJxPvU66Ke2Xz4gUmhOVn8r8HCR+J8KKV17zSsEh83SSNub7ZgZpd8F03oY2kfGXyEuwBuLMxjpNqtD6KEbajG3Ba4DbT8AAjojTMUVrTrgsgnIIwiGpW2b22DPk0q3jwWeWBoigOP89RPtjpl2OiPCrZXp0oGvuPNupVgUhw4zwjfN2PfPP/AvOx0pfR/9lU/hRN4I5InSFjYBX3lyQbTqY7Z+63mi6NuX1RydeLuMr5FA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by DU2PR04MB9097.eurprd04.prod.outlook.com (2603:10a6:10:2f0::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Tue, 28 Oct
- 2025 15:03:08 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9275.011; Tue, 28 Oct 2025
- 15:03:08 +0000
-Date: Tue, 28 Oct 2025 11:02:59 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YlpECMRJ"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7a27bf4fbcbso5211436b3a.1
+        for <imx@lists.linux.dev>; Tue, 28 Oct 2025 08:30:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761665433; x=1762270233; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NxRG+6Pho2gqh+4Q9HbMHt6ljAWQLQ6AqeZiXpRBEU8=;
+        b=YlpECMRJCZE0dZKna67K99KzPB81jM+zYhYkbrJW/+4bglEGBdGq0OaXyI6M0iiwOi
+         TFdiewirm4cP7RKe/8m0lcWBGL5J4/2+Oxd0gkh6PJYbzPbMHbJ70qgPFWijAD3KzwBB
+         Uf6dNMY7e3Jswy1bW4XdrjmP6HMMQGUsXRfhGV44nbYK3B+QKsSyButDbxUvGK7DkkQ9
+         6M59FKFBbjJZHSs+M55SIRnTUJ23tbJtXF0w48QPEJkPRoKseBwk7hzRWB2bXtTv5Drm
+         rYOcFkbEdzf+16Y59yIMotJ5NP0jkgRcvrWBHF+C5PeNswwTt/54tdO5aYidaSPFbtEW
+         OOnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761665433; x=1762270233;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NxRG+6Pho2gqh+4Q9HbMHt6ljAWQLQ6AqeZiXpRBEU8=;
+        b=MH8buqexO0c4TyF5bC9DXALjed1O6vCelxG/6WKJ+5Ep1Q4uBwzaU2A/bpsFly64rj
+         CfMq5SD984Jc6HkR7gtIt2wnA4ZxuLWWdU5DpGVmTY7fvK63ixgle/W6hlnYrifrHckP
+         kXsnPA8D8xdfNXx6MB2QtdhLFAF2oi495Aui/IYe36wRq8pPinI+YpHlC0hQan53nkK0
+         5V1tF5Cl9pFmMILq/HJOKUg97AC2ZjoqKTkjKRgkFnw79VPdrDc9sqJa8u1RxnezOjfS
+         9n+Dd2bhxFlSWyYDDs+agBaB582+WOaWVk468Jpntmt+uS91BrJ5dr3opynOc9CuS29k
+         PLLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUe8dOJhOoovJUeUSQeiJUG1CMeuh/kj9FtoHhFIBXUfZRXAhFvLmqSzqCtHuUfffuhdIw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwdiwxaqnoAS+eCS1Zci+EX3R+V2AktGMt5zXipK0gfPVKv3Msm
+	xG8lbcfSZIgXe2l7P421W8SA36+DF4k1Y0mbeNR1UI+qrgJOXVOvXrcq
+X-Gm-Gg: ASbGncsuDKPJZp3gdC3kJ157IlDQNvg3pzM7DL0VRDu7iRL+lemfmGYZUtrWWPgRyKv
+	d4xPRid2Pq1Ii3M1VnkafRxACnVwTaKGidcoCoCFuCzzGa0ikadofYE+Lm/8glLUJTGN0dO1AID
+	YGrDXD0IssxpK6G0OK99kRpd+ooT8AY/TNt4QhMeTPU8imD/0BjaYw38pM5AX0s7JhjkD5eDdQT
+	s/pPa6t+bYfIjgvbML+pxzGlxUtFfyW0qiGMMBkM9mS5zSLBSgZeN4sQDzTEWZgDQRWph2qHJTi
+	4uWuivqtTpkdLFztrPbP35NaT7QKSOMNR8F5+tzssVv4JYlmaZSREAShmKHfpw96Uon+eb5woDO
+	CR5a13RakNQ+9xd2NNN1UMHJxdQ09BH/lZBKldzpzHFHEVEBuHeP4M6AJgTzT33pdVyvDuOYMnB
+	BVJJkpyqc82a90
+X-Google-Smtp-Source: AGHT+IGPgJpaXpS+qGfCVwjy5qKW3g9pioh78AOdOiTvXDrTwpjB0TQBFCGFxXT+WLbv0GqTWaiN5w==
+X-Received: by 2002:a05:6a00:3926:b0:7a2:8111:780a with SMTP id d2e1a72fcca58-7a441bbe4a5mr4578185b3a.2.1761665433210;
+        Tue, 28 Oct 2025 08:30:33 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414011acdsm11958328b3a.13.2025.10.28.08.30.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 08:30:32 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Tue, 28 Oct 2025 08:30:31 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Frank Li <Frank.Li@nxp.com>
 Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -54,121 +73,142 @@ Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
 	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
 	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v8 6/6] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <aQDbI6hving7xzep@lizhi-Precision-Tower-5810>
-References: <20251028-i3c_ddr-v8-0-795ded2db8c2@nxp.com>
- <20251028-i3c_ddr-v8-6-795ded2db8c2@nxp.com>
- <aQDY-9CEOlA74A-N@smile.fi.intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQDY-9CEOlA74A-N@smile.fi.intel.com>
-X-ClientProxiedBy: PH7PR17CA0039.namprd17.prod.outlook.com
- (2603:10b6:510:323::18) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v7 1/5] i3c: Add HDR API support
+Message-ID: <c0ee9047-691c-4f5d-a273-333a6bbcd5a8@roeck-us.net>
+References: <20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com>
+ <20251027-i3c_ddr-v7-1-866a0ff7fc46@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DU2PR04MB9097:EE_
-X-MS-Office365-Filtering-Correlation-Id: 66b73185-17e8-4abe-2bc0-08de16331aa3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|19092799006|52116014|1800799024|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xGHg3SHS7X7/19Uml2knUMlaHLeEWtvHcELWRM5BfxviLnyQ1RnwjOEYyTTX?=
- =?us-ascii?Q?6buISDdL3nq4qu/21E640zxES3IeBMwx5GqFE8u15mjhbaanIHXLx0spVh/Z?=
- =?us-ascii?Q?XzsEYp1Yj+YHWKN/PfZ4x89VpgBi3orheoFrT3i/hD42TVyBlDe74VFZLvPG?=
- =?us-ascii?Q?/dXB3roVNcrMse8I34ozbtf3wNgrx4hzuHHMzD+Hu/XL8tbKL2AAFvBlbnt/?=
- =?us-ascii?Q?+a8/BHfju2icWihAZrsGIRc8+QmL6XX0+k7maQ1RcOqdZBp3/DSoTUhs0pom?=
- =?us-ascii?Q?6vpKEFuRzPlB22L6MrzMTg790oVC3nfH3aYMnx7N89GHfcGQqe2LLzWf6vDt?=
- =?us-ascii?Q?wBz3YYo0gh3l/Fa4RIrRanIl40VgqtrbdmTLmFgZ110M7gOdE1ZL3oPl+Lwm?=
- =?us-ascii?Q?nsgI4D/Tw7E6ESG52ISUd7Q0MMePXg47MbuRS2jXRl3utE09AS8WgAuMtNnN?=
- =?us-ascii?Q?Uj6EcXoAFJOWWt9x6ieWJC6Q1jx5QY8sAkqJbmSfuYQEgAF0Pzp6kwJSOdah?=
- =?us-ascii?Q?jNvw77GgpphzRXWDqyqZ+n+8DYaklpa+oixFTVysOHs2RqCgkiNOUxELwPd6?=
- =?us-ascii?Q?Hw+Y+Wzr7SNrV4vzEyRpjp+gYjclm+dHoSLMp/+TDh2RuMk77OyQBYsZ4qGf?=
- =?us-ascii?Q?G1n2JPK8XGFGAUQoNjJ3/KA2Otfu/RHg8DFU7le8OhjV5FO0JG5gHGtUENrf?=
- =?us-ascii?Q?6otKSl1cZaPzwibJ/jfhXSjPu4E+BoTADTIGqA9dCkpoXgOlZ5HQnFEo9joI?=
- =?us-ascii?Q?gAL859JXPuSRFmMIDf4/bMKquTsZgfBb5w1TqEzg81HasFWQu4P0KTCDPKxX?=
- =?us-ascii?Q?xjAJYNMj/gndjM0EY3HRe91NP5Qdy5JlwjEOYj3pkDn/7lPQB6mSmZRBaSGW?=
- =?us-ascii?Q?4dSsG9NpKbm8MJUWHo+qxJum60N/jK/JOLAwP1aDSQTAzIHLFj49deHRBYlm?=
- =?us-ascii?Q?Yr5OzjYWG4s6ytkcwnxdhzxTb+Yphzr0LCFSw+fhrBT9IFAvKZPbYob41Mzw?=
- =?us-ascii?Q?Csm/PWn4RBoEUfnupTV4PW4BJdT9QH+9kq3WCPqqddbbOvjQmODfPgpHrnbk?=
- =?us-ascii?Q?rTFKQemqI3oztH78Rdpejt++AcnJmHAkAGbs/AZtWoRg8/ufwCCZQ+iSxObR?=
- =?us-ascii?Q?+GW06hB1yhUZRLKDexBC6oRdcVJiLAxZpLl4Wh/DOc2389In3xsNlZQLlvcB?=
- =?us-ascii?Q?ZPiENC6/UMy0pQhvMuIbHYwciF+zsM71k0qguWVhSvXqPgZVVn4sZbjy1gxq?=
- =?us-ascii?Q?pF6NhfzBQ5ITyQzRGOUsBUFC+LmZfE3Lr1O6DDO8JvYyJkStWxXOjbDlqKhR?=
- =?us-ascii?Q?YHBe+pBVtuQbnhYpwSSX+VyNSh/aP6OpFKGS09KdMr9IXcD77zvh4ssHBHvJ?=
- =?us-ascii?Q?wJVSMThLm9+Wq1It4Z53j5bI/guUftwQwpqaEGxOX32NQa40s5WkK43pHtat?=
- =?us-ascii?Q?MecC5VsTZX58sH7WUbotVya3mRWYfA/lfXMr3MdmcXomOQX3DI1t5Ex/s/CN?=
- =?us-ascii?Q?h7zjDQR8CZwSTLC8nYJOO9KCqTvr4OIYnTwI?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(52116014)(1800799024)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?s5+MjBuEOqXjX7ZxPs7lAKr2SvclB0YiVZWpckdaupqvs+CEfcfCLUPmzuZu?=
- =?us-ascii?Q?iH6Wl+5vhYiN7dtf/3OdO698unwu2eaURQeoYfQbxYn171U5mpR3nP5OSG8j?=
- =?us-ascii?Q?YLiV2T1TppznYpEMGYr3gyIqAZWYJw789z3lXWqmpMbEkl9czfqNJqYb3iti?=
- =?us-ascii?Q?Yw7TyW421DfkAZstgk1nbC22/JlKx3NFQF4bE6LWKY53jHwlHTyiuKJoE+mq?=
- =?us-ascii?Q?QegyVxUM5sl0GgNAeShHVQG2uXQ/3Vh4pTpIsVh0FgXHx5P0NB8QwzO0xq41?=
- =?us-ascii?Q?313SAcy/5M4mThE8DFXIZkFqnILaVKbTZGEIjZsCIAmPcmD7DVG0siNw5IB1?=
- =?us-ascii?Q?yYnf6M/Ll2OZefmOwNRPr88ueu3hi0Cez5KLcjh+Vznr3wlqs+yEGxiMOZ/Q?=
- =?us-ascii?Q?ceYLKrEBAZpxwuexjD/NbcBXXMJARfBsuZfl0JSJ1tQN33AJsM2ucaqi8qQ7?=
- =?us-ascii?Q?v8j7D9QxdKS6/MBDvWiIrXoPbY8H8W7aeElZMxPc2yZR35dTkBMbQ2PU46iD?=
- =?us-ascii?Q?4qB6ixhs2wSuuw/iqXcx8+0oC+CwNJ0vKuQaCBiWvGQf1bRZJS8he0MaVFOZ?=
- =?us-ascii?Q?ukGI+ruMpGNrUSKifK1fC+PlF8s/4NpdV/EE4b4abnhjwJojasvCxXtyEzaS?=
- =?us-ascii?Q?7Z6qpeOdwYY2uwGuDOOaiLJr8R1t1bXjGRYBmVxxbU95kthKjpcteTXOO/2j?=
- =?us-ascii?Q?PO006PaMTXSMXJMJG49PJSuqxUUrayHybNyzBqKRjX7R13Cl/zVVMIHCSfOR?=
- =?us-ascii?Q?hwWzdyh1qixZiY3ZJUMkH/VQeyjNZMXuQeJFiGrrJ7x0WKGzRXt9H79uNGGT?=
- =?us-ascii?Q?o3sZMalHvO4F8s47CjaLcvvrUvmDgLobeJSuX2/KGjcNvatI2VUA5z5f5H6D?=
- =?us-ascii?Q?K88E+g0sl6p0klco+dChd2nldgnEe6UfhmS6ocwKziWMGPCY70qennvDA01m?=
- =?us-ascii?Q?xPPCX4tC5mF0ziWZYBQxItaqNnLW6HMHDH7sLx8SjxyldvqBejaWzNW1FJi+?=
- =?us-ascii?Q?GIfJ7x7nIPNGrTOl/ps/z/vUTPnXaeKzxKxS4MZhYhoJi8DY7CdaPy3QNdpL?=
- =?us-ascii?Q?4PlOusOWM2EW4na+Ph9eV9XMj+NIrYJAMYtTcN7DYFBIW9Ga0RJcPoJPMpdB?=
- =?us-ascii?Q?J8MbmKIeY5MDft5camuQfpTFWp1gWmXxvfI97AwR/zzimzI55nVcuGvJBEWK?=
- =?us-ascii?Q?hp4xm1FGU4GB6/lpdFYzhvzkEddb2d8CMKbtn/x42rqXT6j4N4Ac4Vp2VRm3?=
- =?us-ascii?Q?RHjumjT2Sts9jg5FPaM1CW3N1tlshD6PuJbmwcMnigxVG445LD9mqnXOnHwX?=
- =?us-ascii?Q?EMi6xmETA6AXXweWAyJKHptr+dHwiw32n5pmXzZnNYGaXNGkfW+Ab3PR2nMh?=
- =?us-ascii?Q?oPqRMDnZ67Aj2/Gdnp7uxXpu2fsB5soUHgpBwkks4jIOrLDyEana20X19neb?=
- =?us-ascii?Q?mV1YPr62xWifkcKJRbmEt/mtfRtlaCTUhObuOawvrQ+/OeeuagNXXSoK0JlJ?=
- =?us-ascii?Q?pXoSYGUnD7peqDz8IAKoesDIw62IRiuZID6ywrEO4zngOGaZrW4NThE7Cqyf?=
- =?us-ascii?Q?jv6I39s3yurGZ/tc+WST6RMq8Tvx0FAmh01ZFxLf?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 66b73185-17e8-4abe-2bc0-08de16331aa3
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 15:03:08.0446
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m0SlRSCfIm+wy0CkQag1UdZoWcr3hInDgDkcu95IVlorr6giIYApXLJjD+lJmCbli9VimftVabeQvJcw7ijESA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9097
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027-i3c_ddr-v7-1-866a0ff7fc46@nxp.com>
 
-On Tue, Oct 28, 2025 at 04:53:47PM +0200, Andy Shevchenko wrote:
-> On Tue, Oct 28, 2025 at 10:49:02AM -0400, Frank Li wrote:
-> > Add mmc5633 sensor basic support.
-> > - Support read 20 bits X/Y/Z magnetic.
-> > - Support I3C HDR mode to send start measurememt command.
-> > - Support I3C HDR mode to read all sensors data by one command.
->
-> Seems you missed my comments against v7
-> https://lore.kernel.org/linux-iio/20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com/T/#m377b66850dc0205c3b8723d09c647b545b029fbd
+On Mon, Oct 27, 2025 at 04:08:29PM -0400, Frank Li wrote:
+> Rename struct i3c_priv_xfer to struct i3c_xfer, since private xfer in the
+> I3C spec refers only to SDR transfers. Ref: i3c spec ver1.2, section 3,
+> Technical Overview.
+> 
+> i3c_xfer will be used for both SDR and HDR.
+> 
+> Rename enum i3c_hdr_mode to i3c_xfer_mode. Previous definition need match
+> CCC GET_CAP1 bit position. Use 31 as SDR transfer mode.
+> 
+> Add i3c_device_do_xfers() with an xfer mode argument, while keeping
+> i3c_device_do_priv_xfers() as a wrapper that calls i3c_device_do_xfers()
+> with I3C_SDR for backward compatibility.
+> 
+> Introduce a 'cmd' field in struct i3c_xfer as an anonymous union with
+> 'rnw', since HDR mode uses read/write commands instead of the SDR address
+> bit.
+> 
+> Add .i3c_xfers() callback for master controllers. If not implemented, fall
+> back to SDR with .priv_xfers(). The .priv_xfers() API can be removed once
+> all controllers switch to .i3c_xfers().
+> 
+> Add 'mode_mask' bitmask to advertise controller capability.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Why not add hdr mode in struct i3c_priv_xfer because mode can't be mixed in
+> one i3c transfer. for example, can't send a HDR follow one SDR between
+> START and STOP.
+> 
+> i3c_priv_xfer should be treat as whole i3c transactions. If user want send
+> HDR follow SDR, should be call i3c_device_do_priv_xfers_mode() twice,
+> instead put into a big i3c_priv_xfer[n].
+> 
+> change in v7
+> - explicit set enum I3C_HDR_* to value, which spec required.
+> - add comments about check priv_xfers and i3c_xfers
+> 
+> change in v5-v6
+> - none
+> 
+> change in v4
+> - Rename enum i3c_hdr_mode to i3c_xfer_mode.
+> 
+> change in v3
+> - Add Depreciated comment for priv_xfers.
 
-Sorry, I missed it since I am preparing other cleanup patches and have not
-checked email before sent-out v8.
+Deprecated
 
-Frank
+> 
+> change in v2
+> - don't use 'priv_' since it is refer to sdr mode transfer in spec.
+> - add 'mode_mask' indicate controller's capibility.
+> - add helper function to check master's supported transfer mode.
+> ---
+...
+> --- a/drivers/i3c/master.c
+> +++ b/drivers/i3c/master.c
+> @@ -2821,10 +2821,14 @@ EXPORT_SYMBOL_GPL(i3c_generic_ibi_recycle_slot);
+>  
+>  static int i3c_master_check_ops(const struct i3c_master_controller_ops *ops)
+>  {
+> -	if (!ops || !ops->bus_init || !ops->priv_xfers ||
+> +	if (!ops || !ops->bus_init ||
+>  	    !ops->send_ccc_cmd || !ops->do_daa || !ops->i2c_xfers)
+>  		return -EINVAL;
+>  
+> +	/* Must provide one of priv_xfers (SDR only) or i3c_xfers (all modes) */
+> +	if (!ops->priv_xfers && !ops->i3c_xfers)
+> +		return -EINVAL;
+> +
+>  	if (ops->request_ibi &&
+>  	    (!ops->enable_ibi || !ops->disable_ibi || !ops->free_ibi ||
+>  	     !ops->recycle_ibi_slot))
+> @@ -3014,9 +3018,8 @@ int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev)
+>  						dev->boardinfo->init_dyn_addr);
+>  }
+>  
+> -int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+> -				 struct i3c_priv_xfer *xfers,
+> -				 int nxfers)
+> +int i3c_dev_do_xfers_locked(struct i3c_dev_desc *dev, struct i3c_xfer *xfers,
+> +			    int nxfers, enum i3c_xfer_mode mode)
+>  {
+>  	struct i3c_master_controller *master;
+>  
+> @@ -3027,9 +3030,18 @@ int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+>  	if (!master || !xfers)
+>  		return -EINVAL;
+>  
+> +	if (mode != I3C_SDR && !(master->this->info.hdr_cap & BIT(mode)))
+> +		return -EOPNOTSUPP;
+> +
+> +	if (master->ops->i3c_xfers)
+> +		return master->ops->i3c_xfers(dev, xfers, nxfers, mode);
+> +
+>  	if (!master->ops->priv_xfers)
+>  		return -EOPNOTSUPP;
 
->
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+i3c_master_check_ops() already ensures that either i3c_xfers or priv_xfers
+is not NULL. The above check is therefore unnecessary.
+
+That is not a new issue, though. Maybe there was/is a reason for the
+additional check, but I don't see it.
+
+>  
+> +	if (mode != I3C_SDR)
+> +		return -EINVAL;
+> +
+>  	return master->ops->priv_xfers(dev, xfers, nxfers);
+>  }
+>  
+...
+> diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+> index c52a82dd79a63436c1de6a01c11df9e295c1660e..7e22f9d2a2ca3f4ab808db50f809efd192c795cd 100644
+> --- a/include/linux/i3c/master.h
+> +++ b/include/linux/i3c/master.h
+> @@ -474,9 +474,13 @@ struct i3c_master_controller_ops {
+>  				 const struct i3c_ccc_cmd *cmd);
+>  	int (*send_ccc_cmd)(struct i3c_master_controller *master,
+>  			    struct i3c_ccc_cmd *cmd);
+> +	/* Depreciated, please use i3c_xfers() */
+
+Deprecated
