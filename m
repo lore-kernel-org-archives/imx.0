@@ -1,72 +1,85 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013011.outbound.protection.outlook.com [52.101.83.11])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013008.outbound.protection.outlook.com [40.107.159.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8299F343D61
-	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 15:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1B03451CC;
+	Tue, 28 Oct 2025 15:46:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761666223; cv=fail; b=hpJPCJBYQt1CXIlEfUp8Z/K1phYUXtnKvGrHdQqfOsLFLIN7NbtZB2Kd+8frqqlsghit0wDULda5j9vnniWfJdmC+RuxkcFKzQDTkADmFYQ5HVFjVCd3kFys0i42L7qGbgWzZWz+BP7YAZ5fVWdjJbYTqJeHe2hyr0EmsbRFx0Y=
+	t=1761666373; cv=fail; b=V6Uoy1pJUDOweai34Cs99NBngL+6gGJJlrm4B1GSgPJqsjBXaQ0HIPr1EZVqNaOzc9oQhIFH3vMM9tMiWOvhYC/LTRauR+2xxZS8Soa9Q0NyocUIDI+6WxQwpL7sEFP8HJBxnMCetYskVGO/Oz4Dbb1+cJxYhhVcUQbqNkrWjvc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761666223; c=relaxed/simple;
-	bh=5R2leiVlA87E2YqJbfwFcyJOnBW+XdpZO1UKKhIh6Zw=;
+	s=arc-20240116; t=1761666373; c=relaxed/simple;
+	bh=JlQeDQyi7CAGFuM3N8BKgarX63agsaPzvpD7X3iMgss=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sED2nWpdoRLggS2ivBPwShh6Ie9u61Z88jnGRyf8oZiT0MLZH8lIYcwi3ViI9LGkgEPFxrL2sShtUr00a84hhGBfHP86j78oo2K1qlU7tn+tQIZOU2idoX/IOw3/p4JVR12gA4MUUOUhKWXf8B4fxFUXFejBVK5JRcZrtcSgKC4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ngth1kIU; arc=fail smtp.client-ip=52.101.83.11
+	 Content-Disposition:In-Reply-To:MIME-Version; b=a1qgy8sEkYqxB8OVzKMYZp9PX9cR1MQR4IQ5l6wP+wr+oiMVXG3QYGc7V6RRZGUXYgwu6dTS5hFEi6t+uJZj4oBsWTNOLmBrvFHRy/I3ONfg0d3SdnrPgpsn/fp5yWFwrcIUk4SeBlLdFZdPUPZUTWw6JwI7/3J/YTmwUBPTFYA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EfpIkGUy; arc=fail smtp.client-ip=40.107.159.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ngth1kIU"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EfpIkGUy"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mYhhFnyAGBXQ2NlJDa/snv9FWb+893p2cJxn+CPcf6+0sstI7naCBxdZrwE9ZBgYswzZbULpW7pBcqFNjS+Ol2555juEJRtKI4iCy7S62OsqbpjVu6ivEt+c9KFCbC1pxtAaj6IWYqqdidnE0X/OzpMng/ET6yLyzpoHVw7KHmEhsFq8EvwZJkh5vhBqSQqR5xVqzw7z7es7F5aYOGDHeUrUxy8hSkeCJTu+7dUPZ9yZVr7qYBMkMrGik6a2wfQDMimBCtcdb0L+MPXdyJMBlmCDiONWcMK53SwF26laDWJXFLBmYhUWSvpSl/v5L0ng8Ly5WZw8VO3ZcrXRZ0Qcvg==
+ b=GpL9G94NQFPm5sgd42r1W3a3QBjP6VgIcJoUYIYUDWM32uCBboZ8oZmWTATTb940kDWf3KXeXIFd+ojEkn1hy0ZvYFtzB3XJOu+vgv7hNFYPmup8SQ9DR1vBDwpClWfHp+7YlVLuM3CnXVT49YJg2JheQtukZxfZL8BzM3ayjlkkK8kB6f5DKNqWCqpXjV41ryZ3LFcRy95tGUCM2TTcJH/jkFU7GxPhhDkqkYP5hXassSLegilqLLGLO2IpzsgI3R/LIS7vD04oLcgwwkut9s7p5Jm6Rj8ZP7q8oR69rn07PjcMN9lpUyxgKBGOiLzsGW1zuDLXhGjuJCTdJhhFWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aLzgqt9BJ8ROBu1ytd8NRk8G5nhO+d5g2MyNEPanXaA=;
- b=LRtWCAo/EvGX9b0aKuj11wSR5o9hzn975G6/IjnG3csNJdMAqFaRBvYR/dLk4eky3x/A1iidXDOgH5Usll7yfxNHAcS0I/FZgaAZ2KHXTwlB+Ak9fNLV+euCAgnzdsSWMwqvy39xcNjnO636DP2Q7aFMCEPTyUPqXbdoo5BY9kh4Iq1/ybzfp3Bk2QsBD+EjWStKIVQrJ0y+a851xyX+zcB7c2jOTiSPE6AOzndFYcJQCuagTJnYCbq4B/HYEzPxjr3QnccgSST+8m+bXkEz7yTqEbw5uMrm++HxyKe2f7JG/S9fHf4WydWenwO7SoBW/h04bSFNEPXQTi0E+L2XKw==
+ bh=8iLXANqp5GLRVSl9BAqSbFY/ygfcL5MH5h+BFeV7LU0=;
+ b=k2f3kbHtRb02bR4TjQFOUD3bzyXeWkjwoAYM+xapdIeVRccHzTWLpIZxh9bxTRA8WK6Zffi9dXJkKUXjLeC4xIKCB8UFoJ1DBhQfi6qedpHI39FrPoD7BtCEXVdWfgU+BBj/bwrmyPNuRDpneFY04OEMb9vFIXVk50t5D+A8yf8ZT+HFNTGb3Nz9u5lt7VsoFhSN6Ue1F/F+vKaYDmGL6ZvDnaBGc/KdEoDYOtTF0WkGo0dDVA6ARCzsSM5bhVUR6Y/qRhwdx09VR8pggD3t0PPi1OHllBjf1jllsy3v7I3F/8iAxfZ/uDK5Hn0Q42jeYTZFGseHtELCmxXUaTj3tQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aLzgqt9BJ8ROBu1ytd8NRk8G5nhO+d5g2MyNEPanXaA=;
- b=Ngth1kIU07pN/U4JHAeMUgdbxEJJfQZIR5zA0vSg+RAQOIdNKQvGhAyQljBOsEIU+cWJ9h2kHGpn0Kx8kzWFAyZEc8c1mnXyplxi+OImfbGKWhFAu6KGbX3n7D5ZYLj2kMpByGt+MKx00Gj1xWwjk8hxdnbXj3JTon+dFok+Pd1+msDHZWLz2l0l+ja0gpqhfiAsrld8xrtn+EL8LyaV+hFvs8IePEfOjVOCGzAE4cHccS7UlvpG9xQdDFpiUzpnAXHGf4uAXnlrYR4qtCFi4NHHx/6aGrp3Tv6WTF8Mr3sK1YxVUvUBrorEwJehQUNr9j/VCwEhyjsmaMf50TNRcg==
+ bh=8iLXANqp5GLRVSl9BAqSbFY/ygfcL5MH5h+BFeV7LU0=;
+ b=EfpIkGUyJBgWAdw7m/CgvvoOgWlmr8l5mvINB0LkvSF6xUbuzebvR5GkR8dWyPvqWNngvpxgbNUd9tckRAaD6VT8Kxe3QKMKBsHdk09wN55ufnUGJRnB0bFjEd2j/REyOlAk5iI/j1N4c4IFqF/IrP00ri6ezqDSQkRbKO7ncWEcOQar5twpoo+uc5NpOh4WfvfLWABHunSqizf9XYaO8/i3j5aBmolNQ+sfy6J+YBeG60LA2YGFEnjJofpR8I/edjCHNuvZlsoTy7CAzodDcvXFMW0eqy1rBNYyJJtAWG0pnxTPe6XJX/77noMVrPIidMAwbOTAWJfXVi3+5VDF3A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
  by AS5PR04MB9970.eurprd04.prod.outlook.com (2603:10a6:20b:67e::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.19; Tue, 28 Oct
- 2025 15:43:38 +0000
+ 2025 15:46:06 +0000
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9275.011; Tue, 28 Oct 2025
- 15:43:38 +0000
-Date: Tue, 28 Oct 2025 11:43:31 -0400
+ 15:46:06 +0000
+Date: Tue, 28 Oct 2025 11:45:54 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: "mkl@pengutronix.de" <mkl@pengutronix.de>,
-	"broonie@kernel.org" <broonie@kernel.org>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PACTH v2] spi: imx: add 16/32 bits per word support for target
- mode
-Message-ID: <aQDko60j5lB1ngCl@lizhi-Precision-Tower-5810>
-References: <20251024113107.513604-1-carlos.song@nxp.com>
- <aPt+JJhaB9dUOwL8@lizhi-Precision-Tower-5810>
- <VI2PR04MB11147AB20690F99BB6CEE2300E8FCA@VI2PR04MB11147.eurprd04.prod.outlook.com>
- <aP++6ghId1LvQ1NF@lizhi-Precision-Tower-5810>
- <VI2PR04MB1114746F42268876E27C1B93FE8FDA@VI2PR04MB11147.eurprd04.prod.outlook.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Sakari Ailus <sakari.ailus@iki.fi>, Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Alice Yuan <alice.yuan@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	linux-staging@lists.linux.dev, Luis Oliveira <lolivei@synopsys.com>
+Subject: Re: [PATCH v3 01/31] dt-bindings: media: add DW MIPI CSI-2 Host
+ support
+Message-ID: <aQDlMpKgRkeSIx0y@lizhi-Precision-Tower-5810>
+References: <20250821-95_cam-v3-0-c9286fbb34b9@nxp.com>
+ <20250821-95_cam-v3-1-c9286fbb34b9@nxp.com>
+ <aP8t3YClrZxOnHea@valkosipuli.retiisi.eu>
+ <aP+enPOHPkvZAkzS@lizhi-Precision-Tower-5810>
+ <aP_bSQUIle_9-L-7@valkosipuli.retiisi.eu>
+ <aP/ehdkppeVr5G6H@lizhi-Precision-Tower-5810>
+ <20251028082753.GZ13023@pendragon.ideasonboard.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <VI2PR04MB1114746F42268876E27C1B93FE8FDA@VI2PR04MB11147.eurprd04.prod.outlook.com>
-X-ClientProxiedBy: PH7PR10CA0021.namprd10.prod.outlook.com
- (2603:10b6:510:23d::20) To PAXSPRMB0053.eurprd04.prod.outlook.com
+In-Reply-To: <20251028082753.GZ13023@pendragon.ideasonboard.com>
+X-ClientProxiedBy: BY3PR04CA0008.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::13) To PAXSPRMB0053.eurprd04.prod.outlook.com
  (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -76,272 +89,247 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS5PR04MB9970:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2aecf1e8-72fb-4725-7649-08de1638c2fd
+X-MS-Office365-Filtering-Correlation-Id: b6268eb5-935a-4739-4c40-08de16391b7f
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|7416014|52116014|376014|366016|1800799024|38350700014|7053199007;
+ BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|366016|19092799006|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dFf6O9/7G0KmtozUhEWMETCp7/sgXTin1zgSx6C92VuIJZPuIkRi1jc2aJx9?=
- =?us-ascii?Q?ZZ+2p1IPztE+KORgbb2HTJ5Cdj3/avrzMf90aLt7LmCJrhsGYONWC6pbj5H5?=
- =?us-ascii?Q?uvhCFaEYB9XJl7/zjj8KJhgFQMflIbMYAzLtD0aCYJOpQu4NSreII2Ut59Z/?=
- =?us-ascii?Q?+2I1sGfMw4cQLxVUartGA/jbPKi8FcCLOvlp+MLf7cWXHTqav9ibtQpSARrw?=
- =?us-ascii?Q?kaJttv4jBnVxc185MP6tQKY2z/sDWrUoNV9jhy3WEkMxyAkwcxUu7I2m33LN?=
- =?us-ascii?Q?ZvgPyglyyvCXb48XL+W4ovuTMK86bQaSZ46WgExQAU76mPA4W3l7tM6psee3?=
- =?us-ascii?Q?q/58IGbfVIoNOubM08KmSf6WexPp8XwM4vJxC6JnWDZc/W0Juc9bL+AXi4la?=
- =?us-ascii?Q?R8aaHNDJ8u3sKJXWjn5Yf3ybs79WaBYA9PWJ6FBD2o5vQyh2JgijbG4LJlhT?=
- =?us-ascii?Q?+aMDoRA3YGhsRSw7U2WXEXpAUgwnAIfKBpPW0Mj7mzvcB1E6QGCgSKMUdvwY?=
- =?us-ascii?Q?HqRLWH+OGMp/+baRoVLcw9eXpr7gJCv8GmM0ywipLEvU2++8lS0GPMerFmPo?=
- =?us-ascii?Q?ZKIWo4o6UlOxhR/fBJahPF2eShSI2gO7TrsKaYx7PGHPkrmb1fqBH5gOAzQo?=
- =?us-ascii?Q?n1byx9IsWlpx5e/OfmJHhOrs3Gng2MBEO7sMqdfeLQrjDkohii9Rnn4vAHlH?=
- =?us-ascii?Q?WgB9n/JwkCx8YDcOQ/8pj/gCRr8+82A6Inhf7qlLhN8zLElWBARoxnXdIjKV?=
- =?us-ascii?Q?gBYGDULywRWt74K88ezR0HTBv1HtJyTgbqi/1JyCT1zu8vOr4E2qzQ3l4Xym?=
- =?us-ascii?Q?3HMXnSOTLTJdWr7AaO1BrcRGBGLl1c1yYUnQgGnSNo6ibx182U3mhxiuZe9l?=
- =?us-ascii?Q?wruT1iLTYq47V3tsWt32ErAH2PmFGSYZnCIATw4dyEx+SQZk/tGqhCLaazyQ?=
- =?us-ascii?Q?ZC9cpF3Sao2UYz0HoRC4Z5tL1CiUl6OobALmZQA0WYsgvG+u6ILLI0t0Zvmn?=
- =?us-ascii?Q?Vsg9gBG1wvCloblH85OhyXJ0whLbTQg+qETbKRoqSFBJYMDp0abXwi7vT3nn?=
- =?us-ascii?Q?WBBDOz6PbGgaOB+Jmnt7umn9Oux8pPMkwZ80WhOFriUNMwlWFA/M1dA/kgR/?=
- =?us-ascii?Q?MKOnmg6eHE2Wr+uwjdB7CRPstZ4OOH57aKWc2Kb3E9jFi2rQaGnCrrt7PFNc?=
- =?us-ascii?Q?vFs29BKvJPiwbfUUYCco3l1pinShsckPHYltNsAUeop/5qhtM5YuQEwknI3A?=
- =?us-ascii?Q?eeYdJsYRqJD8RB/Pf9CJ42Y3aLMdEF4CeCmmm9SxQZISR86GasSGS7henEiO?=
- =?us-ascii?Q?9Rxeq1I6hrxTomj94IxgO650qcf1Meq8wtzTs3pwR94D80Wr9luDNF//19SZ?=
- =?us-ascii?Q?8XsN1NZp42CArWrb7+DmabLo0l/vtjpr5fsFzjYo59IVY/w+mG2XF1mMm/+j?=
- =?us-ascii?Q?r0Zc3iSeAvKeHsyCawNs52mkIbNwW/H1WQKrXuAu2lFemIuG0SpyY2rKWpBR?=
- =?us-ascii?Q?XLeaO/F781ecbJSP3dxKBpAVDP/8vdYlWAWm?=
+ =?us-ascii?Q?9jsCGDRgqJHodEj/bKwa+HqwkBGnOUydEnefeQyZi8OKThAZJF26tilwzIBd?=
+ =?us-ascii?Q?7C/B9y0X7FhL573SyP5276UBauHmIv2UFdb6HuTCUqr+maRY4Arbwn727j8p?=
+ =?us-ascii?Q?6vCvyvMRr9y4r0aa677PUQHJ9NBaR0oqYnYDrUHQsDP34gSKDWN3KyONmpVu?=
+ =?us-ascii?Q?MRUFFahMF4maF2o4MRP8ZEylrHJDBtEwLLHUZbrqYStslUxqFGisahGElayu?=
+ =?us-ascii?Q?vS47Dpk+ToCj/vh19KfSynaAEj995YUxpbYAzcUumFxQchccGB3Po+86dT1n?=
+ =?us-ascii?Q?ZLy8D61D40HkJnQ9Q9qp+8C1ZHOCju67uqOP5okB91GdhKxTIM/dvKcL0P9P?=
+ =?us-ascii?Q?3kYcUWdC5DByidH0I57xtXKc9Z2A+oFGdtTVU/xw3c4cIQCPPH+Kq+flskE7?=
+ =?us-ascii?Q?KN73xSqS5Asu8RWrLmdVrYAFBWYbvnxhzEgLILejgNcuoVKAujT/qndWfuCT?=
+ =?us-ascii?Q?/ugp+fHRF6wcxtF1AdCTs8di1c4jZQZadjDsYkDRHlqp2t7HiHNh032tN9f5?=
+ =?us-ascii?Q?QCEmPhYcUlLxRef80u4yQ9OLEehpr76wAI5wrBjzvyVxtWKSapO6AGvShQVQ?=
+ =?us-ascii?Q?D32eTyDn7lqN9ancOLQ+ekc7w16VmoudEG7NzuJ+qZsBcWPDdKK65AP8gnc1?=
+ =?us-ascii?Q?zT8evGX+oS1xSv/xlSEJtzsOgDk4giYbscfYpDzWHEEot31lxK9KOpd9DzPt?=
+ =?us-ascii?Q?Z5lbJJ0SgYZe9/UibaxkZPgMX6Y1P34tXjjCHglQmR87xLf6ofaBC0v4KqPS?=
+ =?us-ascii?Q?CkTLtO+1ejzLQn7m+1dCupMUpXLOTnvnHywVKl0wuMYVC+Q8qR41umONSWH0?=
+ =?us-ascii?Q?px8f5D9KGRhlAkVCTjJNUg/NfZtNtz5/A5FC944FqBFTUNGzwtS3R6qjVReQ?=
+ =?us-ascii?Q?dPsq5yi9hLEoAIvxVusiL0LjA1vFu6ItgAgCqHckGeVX1kgqRntMtbfsPOYy?=
+ =?us-ascii?Q?XDoa8V8lmk+1M7oDOWZz48LwP3jobG+iH9PDDfuaWBXB/cplHsQCgE8zTNBh?=
+ =?us-ascii?Q?F+kLZRyQ4v32jkwD11cMIKVbYU3BT10ECMerUoiO90mnt3OHOHw9rr6+eW5T?=
+ =?us-ascii?Q?vfLr1jrl3d2p8OkRJ7fKaT/cSGO0uGF+bUQaW0LwCJW7Dr+l4ISL6uJ+u6Sl?=
+ =?us-ascii?Q?3YUcAq5ZWTvhLE9Lkl4PtIp9+pTTCyeLohAudWdpJpkr99LEqe8/V2SeeAQN?=
+ =?us-ascii?Q?hMG6AXiPD2lFv4WGJJjhItgsJKtVbiRu3jKXzTtfpNICVHRAEp14m9j9YRgf?=
+ =?us-ascii?Q?ksciI9ZNQaJQTmN4WjqRDetUCWEukxRxOYDC6OCadNvCayt0dqHPbpUCPHdd?=
+ =?us-ascii?Q?T/Ic7PYxv8b2dvDICg5WwErYk8DCzBse+xRg5DnbmsoGNnl3WHvXUSFuciTO?=
+ =?us-ascii?Q?fIsb/YErz/hWYRkVSIOmlAfYzX6WKPmGibeJxzjQiJyaXpighECKSVzcw9pn?=
+ =?us-ascii?Q?KQaSbnEvPwniojw44QYhDJRUYKdFo5r/4/QIbX1BnYa4W4kb6yc42w=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8NKERhosz3h1ePM9/ox82p9pAGExFydkZCHZpHJZgMt9yGZe5eQ0S4CSqi4z?=
- =?us-ascii?Q?oDbEkZ/Gw1r67tVk0K5ko0ENGPRi5wC7CliESYV6RaBCDYIECBg2DKuGo1wp?=
- =?us-ascii?Q?8hBdFORWyTHTbTtzOlDxvfO1KPFOyU5nkirp0RauJ6MDIXbLAu5USvbB2Ng5?=
- =?us-ascii?Q?n5zgAihmBvN0ehcLZwjwyEkb5N8HnIqQnrE6JSdx4meiXUnJympnb5a2zoM5?=
- =?us-ascii?Q?wQQCVA0MUCn5U/UzQmhFuoDLHJHPxl+rrcVaFGLe00ihsbezxXNEU+v7SvSm?=
- =?us-ascii?Q?/JcLY6Q5Y+F5P1wPb0noSlE2p/GK6aBjNChAl9fjmN6nBga+3lQFPRz6iEr3?=
- =?us-ascii?Q?qWDTIv/iR2HdGRatcnIwPoJ/RY4pq9mK3/qnFE3o+Vib3/UQj3J3GEpe+g5j?=
- =?us-ascii?Q?7EwKMq7et0U4uVVZ/yAkaCPhqlujiPRr2arasSYaqiWmncuIg6EUZrDp80vV?=
- =?us-ascii?Q?PkAoCPyXjbOSS54UsLhIVQbQEsr/MDfNjyiGEUEV1W4hOgxT7kRPrmn94/bG?=
- =?us-ascii?Q?aGmQ/tWgPRakxsUaI3sMOV0g0ez2xkkFO06OKWnAic2gm+sI779NHERXEOV9?=
- =?us-ascii?Q?v/2G0keIknrcaRnWs9YLfHO5RB03OobP4Dh8bC2ypoPAsuoS0tmRJwa0ikht?=
- =?us-ascii?Q?8L3HOSZ2Tx7AGO2bmuja+9Z4Tqlb8OxBcW6OLOd7FC7+Ua6/IIUhUR60U9H7?=
- =?us-ascii?Q?+d8q3YzDqI6eSgRVUznVBTocxMyf4zJRgnm9g3ethgYM/NoV0LbW4pCqzMVn?=
- =?us-ascii?Q?bpw196XlIqly2NwRBSazXGIFnhBY1wiQI9+f/SpjfQNpKlTZ7RGKW5X9yiMn?=
- =?us-ascii?Q?DcGeDLM7zQpTO20RbPioPFEqK9DzRmoXnMA+ywM1NT5uCv8YYaSmP/WtUk1Y?=
- =?us-ascii?Q?2CoDsaBpjDhB9lh8kGmsOyqF9bNy8rpAydjUH9AD3+G4PHUEtEkhGSjXAKSk?=
- =?us-ascii?Q?vpL1r4BesVqyYBaiONYdfyQUIQfLgXsgnHOchXpjC51B6OaQgWiRbvq/Wx13?=
- =?us-ascii?Q?OQJhMXlljBDRsgc28QAgrupdfjDk4bxNV+U8VWridup4WsdwZNjpXhYn2ynm?=
- =?us-ascii?Q?JTMaIaK1mjxqdNotNJ/sb6I1H7N7iNnouoYhz01anKEZ9wvm4dxyn5pzlCg3?=
- =?us-ascii?Q?j8nN2D+ftHRxOzfJyt5FMpMo12LzlJdlkWGudQvPtf4C1MsCoxTcustrMNW5?=
- =?us-ascii?Q?CK1XRD/SSjDSzPkpgqvLJOv2Kxzfr5zMg0DgnJO/08j9PG1ZfKwQgucNyb1J?=
- =?us-ascii?Q?hbB9d3x7Rg2LxJR/s6mBDf0l4OVN0f8okU0wsVLhXet8WX7SVGFUXhryEKSE?=
- =?us-ascii?Q?LC74pF3KQpiqHpkck6cAtGOusNfEtbTgx/tb3rY36yysDXKpT7TB7uz7WVRJ?=
- =?us-ascii?Q?ipTFN4y0L9ylzks9CgxZRuLAtnkU9BQq57na8hF0vq/uRIAQKxOEeG2Z2nee?=
- =?us-ascii?Q?1YhssB1e0c9c0mC1knF+3wm1Ty5OBtNf3RH8PPwvv9OGTlO17B7fIuP2pfmP?=
- =?us-ascii?Q?DHU0t794QkpqG2ubjZEaNcchktC8xXloobSX5lNGjTJS9Z8/pnhm9hywwVQX?=
- =?us-ascii?Q?j+0nxgtRMIxsWDQyvaQ3BmDs/jx59J5btyG0BZXh?=
+ =?us-ascii?Q?O5j522nm/9kSQ4nT0squtWAP+05jH2J9D4m9g2NmuJFrbvvQJMax8IT8FYKC?=
+ =?us-ascii?Q?mgzjqI6jZkBT8K6UW/gsZulSyvIapJguZZH6LIdu/aHTFsxo6cJ3NS7cgYpK?=
+ =?us-ascii?Q?0XvuOVpT10baQaHAnxNw6mbEsLJx6UhXLZ7xf9bXKK3NaBmmO766oWw5Bqa2?=
+ =?us-ascii?Q?mz4enPCkE9YaivfzizV31NF8ZNOSVgcc8FDEzgKIB6ibwguoecOrjE068A8Q?=
+ =?us-ascii?Q?arihS0lrictePFU+ogX+2zGCyC8oGtIdGk/cbeLmGgfnW2WW8DWNRB7h6YWv?=
+ =?us-ascii?Q?A+vvEyyzS5ABjvgsN9AO1oMC2lUShzYppbMEnKHQsdz2VbW7AzXwkDw/ELs8?=
+ =?us-ascii?Q?yvvd0qGXmrquaT9CKwI27Ahk1RQAp3VBjoxyGlwaKX5QaVBgVpNQwIS8x/1Y?=
+ =?us-ascii?Q?wH6kb8aB8xNyXOdS/LeU73PC7IDSirblDzrmdWq1010PKqK3lwbNzqcHxSgv?=
+ =?us-ascii?Q?r5M8wav9DbwDPeYHNBuJNLCyy9J3n5T6x7i7m5IUkjrzwmMi2Yd6SyscF9PM?=
+ =?us-ascii?Q?ayNXCp7jtBH3/lTmvPWpV04GG7poVbjwmnm5YEOe/6x1lJ7QIHtCXgoFuqsE?=
+ =?us-ascii?Q?DbF8PwNNXonEos1McD3zVhw83/wKPKgbfOzvcORul/ZUogIWuyHVGWBhRu1T?=
+ =?us-ascii?Q?yM6ghyL8hUhUKIxjE9tfKtuAHEaBU9zcC6XqWnS+6M9SnRVnPyDvwhyqeG9W?=
+ =?us-ascii?Q?IOLXYrsUq/x3tn187EJlKkVRc/mR9ZbIV1YSbm9r8WUqkR8zXPQmuUTCD1vQ?=
+ =?us-ascii?Q?Ey3ctygJDTkU21j5E9W4gHzBhyybsr9q54Vx4gT3WaTEFwBIyJJz0tRAfc6t?=
+ =?us-ascii?Q?KG/xsl/Jf7faSQ+d7Ri9OhTa7MaLat5cg7Bvs9BhZ/4OGNfsVqoNkI1kHuWQ?=
+ =?us-ascii?Q?2stdTfrUetL6qG9RSnD58xJxt5jbim/q/k03FRsgwGeuXBZGL1rSF4eXLvW/?=
+ =?us-ascii?Q?k5sAKwb4wbwT8LB8EerM1MY067RNNKEVC1c780iWmbKrlYM4FOZXM0Q4rFS4?=
+ =?us-ascii?Q?NJ9B1zbaRHEGpDt8ad++CJd5FfufOgOzvwHOzaqL/UIy0Ggc0xJGNjJR8O68?=
+ =?us-ascii?Q?p05QReRViB+hMwxbUmsQRaxS4rS4CO85hRTY5W+QgGM8O53CNII5XLN0vxa0?=
+ =?us-ascii?Q?DPItr+t9yvh7tbl6GOI6+u+IyzAZDpqxswOtblOMAvezJPJ7v1bmp76uUOSm?=
+ =?us-ascii?Q?w9VJgGBDOE/eiEJ8CAI1V6baihf/yBaQRb6SXYskjN5YJj2y5/FhbnH3DYST?=
+ =?us-ascii?Q?47yIvfQDgr2w/WFxgcv7wcfmYy4wnf2Zua3vS1Mj5QuRTECob1zrTffD62vL?=
+ =?us-ascii?Q?AGxYx/yX8Ouvp8TU2QqAS9egC/Are2COOTaKDL9ZQ2UY+L8EfmqwoS71r99o?=
+ =?us-ascii?Q?b0TDSzSApOwr4xYhjPBHSvgMa89WyGeNAu4f/xOo5+HntIx9OeayLTLlhuwK?=
+ =?us-ascii?Q?/ezWxiFyfOmsu6VZpSCWfyebwkHuFIPQbSCFDf45dVku1TyMem/s63/kyN1p?=
+ =?us-ascii?Q?G2Q3Kx/W4fElw2wOHgJQSNZeH0TlNrnNYwZIPOriW1+IhaWpFDpXE5s5ZUOA?=
+ =?us-ascii?Q?/W56W9dpir6kqfU7ow4=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2aecf1e8-72fb-4725-7649-08de1638c2fd
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6268eb5-935a-4739-4c40-08de16391b7f
 X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 15:43:37.9586
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 15:46:06.5688
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X/980zArF9X7s5AdTBjOoTjpbviBiyfXyNrnjg7ROMVWL9Qnadq7ajfvlYQyrGU1qpL/pHivAVEUj7BfhflaEA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: NlDLsZW3iZzUIT893GQG18JegW7e2NfAe4SxswNVno3NGMtPRhZy3rRLpQm1Chp/UUk5ksFOOV6C+QENWN6d0w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9970
 
-On Tue, Oct 28, 2025 at 09:29:02AM +0000, Carlos Song wrote:
->
->
-> > -----Original Message-----
-> > From: Frank Li <frank.li@nxp.com>
-> > Sent: Tuesday, October 28, 2025 2:50 AM
-> > To: Carlos Song <carlos.song@nxp.com>
-> > Cc: mkl@pengutronix.de; broonie@kernel.org; shawnguo@kernel.org;
-> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> > linux-spi@vger.kernel.org; imx@lists.linux.dev;
-> > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> > Subject: Re: [PACTH v2] spi: imx: add 16/32 bits per word support for target
-> > mode
-> >
-> > On Mon, Oct 27, 2025 at 03:39:36AM +0000, Carlos Song wrote:
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Frank Li <frank.li@nxp.com>
-> > > > Sent: Friday, October 24, 2025 9:25 PM
-> > > > To: Carlos Song <carlos.song@nxp.com>
-> > > > Cc: mkl@pengutronix.de; broonie@kernel.org; shawnguo@kernel.org;
-> > > > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> > > > linux-spi@vger.kernel.org; imx@lists.linux.dev;
-> > > > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> > > > Subject: Re: [PACTH v2] spi: imx: add 16/32 bits per word support
-> > > > for target mode
+On Tue, Oct 28, 2025 at 10:27:53AM +0200, Laurent Pinchart wrote:
+> On Mon, Oct 27, 2025 at 05:05:09PM -0400, Frank Li wrote:
+> > On Mon, Oct 27, 2025 at 10:51:21PM +0200, Sakari Ailus wrote:
+> > > On Mon, Oct 27, 2025 at 12:32:28PM -0400, Frank Li wrote:
+> > > > On Mon, Oct 27, 2025 at 10:31:25AM +0200, Sakari Ailus wrote:
+> > > > > On Thu, Aug 21, 2025 at 04:15:36PM -0400, Frank Li wrote:
+> > > > > > From: Eugen Hristev <eugen.hristev@linaro.org>
+> > > > > >
+> > > > > > Add bindings for Synopsys DesignWare MIPI CSI-2 host, which used at i.MX93
+> > > > > > and i.MX95 platform.
+> > > > > >
+> > > > > > Signed-off-by: Luis Oliveira <lolivei@synopsys.com>
+> > > > > > Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
+> > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > ---
+> > > > > > Change in v3
+> > > > > > - drop remote-endpoint: true
+> > > > > > - drop clock-lanes
+> > > > > >
+> > > > > > Change in v2
+> > > > > > - remove Eugen Hristev <eugen.hristev@microchip.com> from mantainer.
+> > > > > > - update ugen Hristev's s-o-b tag to align original author's email address
+> > > > > > - remove single snps,dw-mipi-csi2-v150 compatible string
+> > > > > > - move additionalProperties after required
+> > > > > > ---
+> > > > > >  .../bindings/media/snps,dw-mipi-csi2-v150.yaml     | 151 +++++++++++++++++++++
+> > > > > >  MAINTAINERS                                        |   1 +
+> > > > > >  2 files changed, 152 insertions(+)
+> > > > > >
+> > > > > > diff --git a/Documentation/devicetree/bindings/media/snps,dw-mipi-csi2-v150.yaml b/Documentation/devicetree/bindings/media/snps,dw-mipi-csi2-v150.yaml
+> > > > > > new file mode 100644
+> > > > > > index 0000000000000000000000000000000000000000..d950daa4ee9cfd504ef84b83271b2a1b710ffd6b
+> > > > > > --- /dev/null
+> > > > > > +++ b/Documentation/devicetree/bindings/media/snps,dw-mipi-csi2-v150.yaml
+> > > > > > @@ -0,0 +1,151 @@
+> > > > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > > > > +%YAML 1.2
+> > > > > > +---
+> > > > > > +$id: http://devicetree.org/schemas/media/snps,dw-mipi-csi2-v150.yaml#
+> > > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > > > +
+> > > > > > +title: Synopsys DesignWare CSI-2 Host controller (csi2host)
+> > > > > > +
+> > > > > > +maintainers:
+> > > > > > +  - Frank Li <Frank.Li@nxp.com>
+> > > > > > +
+> > > > > > +description:
+> > > > > > +  CSI2HOST is used to receive image coming from an MIPI CSI-2 compatible
+> > > > > > +  camera. It will convert the incoming CSI-2 stream into a dedicated
+> > > > > > +  interface called the Synopsys IDI (Image Data Interface).
+> > > > > > +  This interface is a 32-bit SoC internal only, and can be assimilated
+> > > > > > +  with a CSI-2 interface.
+> > > > > > +
+> > > > > > +properties:
+> > > > > > +  compatible:
+> > > > > > +    items:
+> > > > > > +      - enum:
+> > > > > > +          - fsl,imx93-mipi-csi2
+> > > > > > +      - const: snps,dw-mipi-csi2-v150
+> > > > > > +
+> > > > > > +  reg:
+> > > > > > +    items:
+> > > > > > +      - description: MIPI CSI-2 core register
+> > > > > > +
+> > > > > > +  reg-names:
+> > > > > > +    items:
+> > > > > > +      - const: core
+> > > > > > +
+> > > > > > +  clocks:
+> > > > > > +    maxItems: 2
+> > > > > > +
+> > > > > > +  clock-names:
+> > > > > > +    items:
+> > > > > > +      - const: per
+> > > > > > +      - const: pixel
+> > > > > > +
+> > > > > > +  phys:
+> > > > > > +    maxItems: 1
+> > > > > > +    description: MIPI D-PHY
+> > > > > > +
+> > > > > > +  phy-names:
+> > > > > > +    items:
+> > > > > > +      - const: rx
+> > > > > > +
+> > > > > > +  resets:
+> > > > > > +    maxItems: 1
+> > > > > > +
+> > > > > > +  interrupts:
+> > > > > > +    maxItems: 1
+> > > > > > +
+> > > > > > +  power-domains:
+> > > > > > +    maxItems: 1
+> > > > > > +
+> > > > > > +  ports:
+> > > > > > +    $ref: /schemas/graph.yaml#/properties/ports
+> > > > > > +
+> > > > > > +    properties:
+> > > > > > +      port@0:
+> > > > > > +        $ref: /schemas/graph.yaml#/$defs/port-base
+> > > > > > +        unevaluatedProperties: false
+> > > > > > +        description:
+> > > > > > +          Input port node, single endpoint describing the input port.
+> > > > > > +
+> > > > > > +        properties:
+> > > > > > +          endpoint:
+> > > > > > +            $ref: video-interfaces.yaml#
+> > > > > > +            unevaluatedProperties: false
+> > > > > > +            description: Endpoint connected to input device
+> > > > > > +
+> > > > > > +            properties:
+> > > > > > +              bus-type:
+> > > > > > +                const: 4
+> > > > >
+> > > > > If 4 is the only value supported, you can drop the property altogether.
 > > > >
-> > > > On Fri, Oct 24, 2025 at 07:31:07PM +0800, carlos.song@nxp.com wrote:
-> > > > > From: Carlos Song <carlos.song@nxp.com>
-> > > > >
-> > > > > Now for ECSPI only support 8 bits per word in target mode.
-> > > > > Enable 16/32 bits per word support for spi-imx target mode.
-> > > > >
-> > > > > Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> > > > > Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> > > > > ---
-> > > > >  drivers/spi/spi-imx.c | 12 ++++++++++--
-> > > > >  1 file changed, 10 insertions(+), 2 deletions(-)
-> > > > >
-> > > > > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c index
-> > > > > 155ddeb8fcd4..017f83f5dfdf 100644
-> > > > > --- a/drivers/spi/spi-imx.c
-> > > > > +++ b/drivers/spi/spi-imx.c
-> > > > > @@ -424,8 +424,12 @@ static void spi_imx_buf_tx_swap(struct
-> > > > > spi_imx_data *spi_imx)
-> > > > >
-> > > > >  static void mx53_ecspi_rx_target(struct spi_imx_data *spi_imx)  {
-> > > > > -	u32 val = ioread32be(spi_imx->base + MXC_CSPIRXDATA);
-> > > > > +	u32 val = readl(spi_imx->base + MXC_CSPIRXDATA);
-> > > > >
-> > > > > +	if (spi_imx->bits_per_word <= 8)
-> > > > > +		swab32s(&val);
-> > > > > +	else if (spi_imx->bits_per_word <= 16)
-> > > > > +		swahw32s(&val);
-> > > >
-> > > > Needn't swap when bits_per_word > 24, like 32? or our hardware max
-> > > > support to 16?
-> > > >
-> > > > Frank
+> > > > Sorry, What's your means here? There are more options in video-interfaces.yaml.
+> > > > here just add restriction for bus-type. otherwise other value can be
+> > > > provide in dts file.
 > > >
-> > > I think we don't need. We are reading/writing FIFO by 32-bits word. In
-> > > this case, we just need keep the default byte order.
-> > >
-> > > Is it more reasonable only support bits per word=8/16/32 for target mode?
-> > > -b 8/16/32 can cover most use case.
+> > > It could, but wouldn't any other value be incorrect?
 > >
-> > yes, I only can't understand why needn't swap at 32bits workds, but other
-> > needs.
-> >
-> > FIFO 31..24  23..16  15..8  7..0
-> >       B0      B1     B2      B3
-> >
-> > next you
-> >
-> > in memory val is
-> >
-> > 0x0: B3
-> > 0x1: B2
-> > 0x2: B1
-> > 0x3: B0
-> >
-> > swab32s() to  bits_per_work 8
-> >
-> > 0x0: B0
-> > 0x1: B1
-> > 0x2: B2
-> > 0x3: B3
-> >
-> > if bits per_word 16
-> >
-> > val
-> >
-> > 0x0: X
-> > 0x1: X
-> > 0x2: B1
-> > 0x3: B0
-> >
-> > after swahw32s change to
-> >
-> > 0x0: B1
-> > 0x1: B0
-> > 0x2: x
-> > 0x3: x
-> >
-> > B0 and B1 still be swapped.
-> >
-> > Does SPI defined term word fixed big-endian?
-> >
-> > Frank
-> >
+> > at least that 5 # Parallel doesn't make sense for CSI2's input.
 >
-> No, SPI doesn't define this. This swap is caused by the SPI-IMX FIFO design.
-> SPI-IMX FIFO is fixed little-endian.
->
-> One example to easy understand:
->
-> If buf is:
->
-> 0XB0B1B2B3
->
-> So data in TXFIFO is:
-> FIFO 31..24  23..16  15..8  7..0
->   B0        B1		B2   B3
->
-> So we can always see data on SPI bus:
-> 0xB3B2B1B0
->
-> For this patch:
-> bits per word= 8: it means one byte is one word, so it should not effect by big endian or little endian, so every bytes should keep the same order between memory and SPI bus.
-> We write FIFO by 32 bits word, So we should swap every bytes in this word from 0XB0B1B2B3 to 0XB3B2B1B0
->
-> Data in TXFIFO is
-> FIFO 31..24  23..16  15..8  7..0
->   B3        B2		B1  B0
-> Then we can see data on SPI bus is
-> 0XB0B1B2B3
->
-> For bits per word = 16, it means two bytes in one word, so every 2 bytes is one word, the word should be a little endian word,
->
-> so we should swap half word from
-> 0XB0B1B2B3 to 0XB2B3B0B1
->
-> Then data in TXFIFO is:
-> FIFO 31..24  23..16  15..8  7..0
->   B2        B3		B0  B1
-> Then we can see data on SPI bus is
-> 0XB1B0B3B2
->
-> For bis per word =32, it means for bytes in one word, so every 4 bytes is one word. The whole word is a little endian.
-> So we keep the default order.
-> 0XB0B1B2B3
->
-> FIFO 31..24  23..16  15..8  7..0
->   B0        B1		B2  B3
->
-> So we can see the data on bus is:
-> 0xB3B2B1B0
+> The point is that, if the only valid value is CSI-2 DPHY (4), then
+> there's no need to specify it in DT. The driver would know the input bus
+> is CSI-2 DPHY, so there's no need to convey that information in the
+> device tree.
 
-Does SPI require send MSB/LSB first of a CPU's word?
+Make sense.
 
 Frank
-
 >
-> The RX handle is the same with TX. From bus to FIFO is a little word, so swap in memory.
+> > > In other words, this property is redundant and should be dropped.
+> > >
+> > > > > > +
+> > > > > > +              data-lanes:
+> > > > > > +                minItems: 1
+> > > > > > +                maxItems: 4
+> > > > > > +                items:
+> > > > > > +                  maximum: 4
+> > > > > > +
+> > > > > > +      port@1:
+> > > > > > +        $ref: /schemas/graph.yaml#/$defs/port-base
+> > > > > > +        unevaluatedProperties: false
+> > > > > > +        description:
+> > > > > > +          Output port node, single endpoint describing the output port.
+> > > > > > +
+> > > > > > +        properties:
+> > > > > > +          endpoint:
+> > > > > > +            unevaluatedProperties: false
+> > > > > > +            $ref: video-interfaces.yaml#
+> > > > > > +            description: Endpoint connected to output device
+> > > > > > +
+> > > > > > +            properties:
+> > > > > > +              bus-type:
+> > > > > > +                const: 4
+> > > > >
+> > > > > Are both input and output of this block CSI-2 with D-PHY?
+> > > >
+> > > > Yes, input from camera sensor, output to others image processors to do data
+> > > > transfer or format convert.
+> > >
+> > > The description appears to be saying this is "Synopsys IDI", not CSI-2 with
+> > > D-PHY. We don't have a bus-type for IDI. Couldn't you simply drop it?
 >
-> Carlos
+> --
+> Regards,
 >
-> > > Carlos
-> > > > >  	if (spi_imx->rx_buf) {
-> > > > >  		int n_bytes = spi_imx->target_burst % sizeof(val);
-> > > > >
-> > > > > @@ -453,12 +457,16 @@ static void mx53_ecspi_tx_target(struct
-> > > > spi_imx_data *spi_imx)
-> > > > >  	if (spi_imx->tx_buf) {
-> > > > >  		memcpy(((u8 *)&val) + sizeof(val) - n_bytes,
-> > > > >  		       spi_imx->tx_buf, n_bytes);
-> > > > > +		if (spi_imx->bits_per_word <= 8)
-> > > > > +			swab32s(&val);
-> > > > > +		else if (spi_imx->bits_per_word <= 16)
-> > > > > +			swahw32s(&val);
-> > > > >  		spi_imx->tx_buf += n_bytes;
-> > > > >  	}
-> > > > >
-> > > > >  	spi_imx->count -= n_bytes;
-> > > > >
-> > > > > -	iowrite32be(val, spi_imx->base + MXC_CSPITXDATA);
-> > > > > +	writel(val, spi_imx->base + MXC_CSPITXDATA);
-> > > > >  }
-> > > > >
-> > > > >  /* MX51 eCSPI */
-> > > > > --
-> > > > > 2.34.1
-> > > > >
+> Laurent Pinchart
