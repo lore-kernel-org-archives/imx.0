@@ -1,195 +1,120 @@
-Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA960261581
-	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 06:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EFE14A60C
+	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 07:18:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761632642; cv=none; b=snb8odlHRwICkLMuPO6CYusAoualZ4TIVq458Ih9/YkizSy4fIPQGQ9CJnvWVa3Ht8T0bdF2yUe83nGX4BP3NrNu0JutEcsVX0i3WnLmAcLj7scFc8VmDxaSaF/wcmI+NSfZRL5i751+xFq4PbSHuwjPElTTu+Rsws8eTiXxdxk=
+	t=1761635916; cv=none; b=bsIeM+1bxND0AHuyLUPLoDta9p49goS57bbr611zR7Kq4PD9+QEsHyD3Gby7v9yU7tvrkPUlLeqzR4NkVOpVH9CNa7YnNqKxG5L8wSJ9A02V1pvKF9BaVaShXBP69NKP/mt4tR9hbCKkBBloOZh69EP+spSDjURgL0X3IXWuxts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761632642; c=relaxed/simple;
-	bh=qF862YQMhxHIqNRrfdOcFjxmmmh3u96he0/heE39e9M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IrEXllt4DV0eDy8ny5w4BTJ/mN0picNkgF9TePv9BUbaqTjz/FVZwebjDy0ysg79C4xYawtgjJC0rui6SWUJ/IviCk3uL9dJkm3dEZIKQQPqLmKGk7C4/ESGoQ1UsMnCky5HAiFYa7BfPEdGlBSRaDhTTCN42+OW63BFicldH90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=DzpX4aL2; arc=none smtp.client-ip=46.19.12.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1761635916; c=relaxed/simple;
+	bh=uwl4S+0VVmxOF+41YWBs/pcpifL5J3z3aL5XY8xuVBs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dun56Z0GSAfRhdGani8KyU2edm8rUGZWlSPptuIONlQA714YvnH8W3pFpRJkdZjRNjUu7v2ZJEWr5wWPdTWRRPLCPRoqiNxsJLTTWTlAvYkGrLgTnJ/037RQSybSj2SgGLNsS2xamW2QCgm9YXuRVJFiOJ09mD7c98103PEEfnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=AfcXcfvk; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="DzpX4aL2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=/bwZX8NaNeCjNz5xtFo8tTrg/X/6uhvhX7RQ2Ckv/pw=; b=DzpX4aL2ITM/2aTmP4HaOK3Skk
-	wTcJ89CRbii5D/gvPXFoKNH5Ab8K7X8773FNTdXsHUY7Drthck2gkZIFWLJO9pNh+z0wZJZqm4Cuh
-	E3iUhLZiFJQ8xQysNymfEPT96bzPdRhOU0dd3Nuut8Z459Zz0xLn+OQID2z0MtFXFJflKKQXRt3UT
-	M1WxICLWC3tkgyuohcLxdPpSzwLOChJ0inZiXFu1isLMkEWE/D3kN31ytbxWXMiRnMC+RVBwm3s/f
-	Etbagn0/Unb064upBEmBd5HffwW3zmgeZnkLKunyWs6NiF8JmF1UY1Qv+9tB2yobUfGrHssH9SlwT
-	1avj86Ew==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:46904 helo=[192.168.69.116])
-	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1vDd7h-00000009FJT-023f;
-	Tue, 28 Oct 2025 07:23:59 +0100
-Message-ID: <658fa62e-cc80-436a-9812-c67b0dc8de03@norik.com>
-Date: Tue, 28 Oct 2025 07:23:57 +0100
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="AfcXcfvk"
+Received: from pendragon.ideasonboard.com (unknown [193.209.96.36])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 3FEB713BE;
+	Tue, 28 Oct 2025 08:16:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1761635802;
+	bh=uwl4S+0VVmxOF+41YWBs/pcpifL5J3z3aL5XY8xuVBs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AfcXcfvk823pXMB/CidGYHN1+aUyWZMHnwW+YXHN7FtGrmtU7EpVsZ8we+lcYbbDT
+	 FlZGTyDd5lcEsVTYojCsUFJAhGR/5nAoG6nIL5u6Y+Ab8HFNd0e5xzzr/3/qkhz4P+
+	 QdnRfbLjLaCVJ/fb+VmHF6JC8R8x/Yiuq+45APwU=
+Date: Tue, 28 Oct 2025 09:18:17 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Catalin Popescu <catalin.popescu@leica-geosystems.com>
+Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
+Message-ID: <20251028071817.GX13023@pendragon.ideasonboard.com>
+References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
+ <aP-ML-A_h13pXY2d@shell.armlinux.org.uk>
+ <20251027234648.GC24987@pendragon.ideasonboard.com>
+ <aQAVE96NAD4Z4lgt@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] arm64: dts: freescale: imx93-phyboard-nash: Add jtag
- overlay
-To: Frank Li <Frank.li@nxp.com>, Alberto Merciai <alb3rt0.m3rciai@gmail.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, upstream@lists.phytec.de
-References: <20251007084028.1125185-1-primoz.fiser@norik.com>
- <aPt/d9svTeUIRljW@lizhi-Precision-Tower-5810>
- <aPuO+FCeeIFv3bQm@alb3rt0-ThinkPad-P15-Gen-1>
- <aPuvYwwG5N84MwGA@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-Autocrypt: addr=primoz.fiser@norik.com; keydata=
- xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
- JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
- ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
- gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
- jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
- 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
- TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
- AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
-Organization: Norik systems d.o.o.
-In-Reply-To: <aPuvYwwG5N84MwGA@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cp2.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aQAVE96NAD4Z4lgt@shell.armlinux.org.uk>
 
-Hi both,
+(CC'ing Catalin)
 
-On 24. 10. 25 18:54, Frank Li wrote:
-> On Fri, Oct 24, 2025 at 04:36:40PM +0200, Alberto Merciai wrote:
->> On Fri, Oct 24, 2025 at 09:30:31AM -0400, Frank Li wrote:
->>> On Tue, Oct 07, 2025 at 10:40:27AM +0200, Primoz Fiser wrote:
->>>> Add overlay to enable JTAG pins on the board's JTAG (X41) connector.
->>>>
->>>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
->>>> ---
->>>>  arch/arm64/boot/dts/freescale/Makefile        |  2 ++
->>>>  .../freescale/imx93-phyboard-nash-jtag.dtso   | 26 +++++++++++++++++++
->>>>  2 files changed, 28 insertions(+)
->>>>  create mode 100644 arch/arm64/boot/dts/freescale/imx93-phyboard-nash-jtag.dtso
->>>>
->>>> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
->>>> index 525ef180481d..c72a6fdc5412 100644
->>>> --- a/arch/arm64/boot/dts/freescale/Makefile
->>>> +++ b/arch/arm64/boot/dts/freescale/Makefile
->>>> @@ -356,10 +356,12 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-bl-osm-s.dtb
->>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
->>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
->>>>
->>>> +imx93-phyboard-nash-jtag-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-nash-jtag.dtbo
->>>>  imx93-phyboard-nash-peb-wlbt-07-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-nash-peb-wlbt-07.dtbo
->>>>  imx93-phyboard-segin-peb-eval-01-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-eval-01.dtbo
->>>>  imx93-phyboard-segin-peb-wlbt-05-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-wlbt-05.dtbo
->>>>  imx93-phycore-rpmsg-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-segin.dtb imx93-phycore-rpmsg.dtbo
->>>> +dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash-jtag.dtb
->>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash-peb-wlbt-07.dtb
->>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-eval-01.dtb
->>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-wlbt-05.dtb
->>>> diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash-jtag.dtso b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash-jtag.dtso
->>>> new file mode 100644
->>>> index 000000000000..4744eabf95f3
->>>> --- /dev/null
->>>> +++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash-jtag.dtso
->>>> @@ -0,0 +1,26 @@
->>>> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->>>> +/*
->>>> + * Copyright (C) 2025 PHYTEC Messtechnik GmbH
->>>> + * Author: Primoz Fiser <primoz.fiser@norik.com>
->>>> + */
->>>> +
->>>> +#include "imx93-pinfunc.h"
->>>> +
->>>> +/dts-v1/;
->>>> +/plugin/;
->>>> +
->>>> +&gpio2 {
->>>> +	pinctrl-names = "default";
->>>> +	pinctrl-0 = <&pinctrl_jtag>;
->>>> +};
->>>
->>> Use gpio to set pinctrl to no-gpio mode is strange. I am not sure if there
->>> are better method, but at need comments here to show why have to do that.
->>>
->>
->> In old imx6 platform we use pinctrl_hog for that purpose, is not?
+On Tue, Oct 28, 2025 at 12:57:55AM +0000, Russell King (Oracle) wrote:
+> On Tue, Oct 28, 2025 at 01:46:48AM +0200, Laurent Pinchart wrote:
+> > On Mon, Oct 27, 2025 at 03:13:51PM +0000, Russell King (Oracle) wrote:
+> > > On Sun, Oct 26, 2025 at 02:29:04PM +0200, Laurent Pinchart wrote:
+> > > > Energy Efficient Ethernet (EEE) is broken at least for 1000T on the EQOS
+> > > > (DWMAC) interface. When connected to an EEE-enabled peer, the ethernet
+> > > > devices produces an interrupts storm. Disable EEE support to fix it.
+> > > 
+> > > We've finally got to the bottom of what's going on here. Please try
+> > > this patch (it's building locally, but will take some time because
+> > > I'd wound the tree back to 6.13 and 6.14, so it's going to be a full
+> > > rebuild.) Thus, there may be compile bugs remaining.
+> > 
+> > I've applied it on top of 
+> > 
+> > I've started with a branch based on v6.18-rc3 plus "[PATCH net-next 0/5]
+> > net: stmmac: more cleanups" ([1]) and "[PATCH net-next v2 0/6] net: add
+> > phylink managed WoL and convert stmmac" ([2]) to make the patch apply
+> > cleanly.
+> > 
+> > [1] https://lore.kernel.org/all/aO_HIwT_YvxkDS8D@shell.armlinux.org.uk/
+> > [2] https://lore.kernel.org/all/aPnyW54J80h9DmhB@shell.armlinux.org.uk/
+> > 
+> > The base branch exhibits the interrupt storm issue. The patch
+> > unfortunately doesn't fix it.
 > 
-> It'd better than gpio, but I am not sure if pinctrl_hog still be supported
-> because I have not seen it for the long time.
+> So it's highly unlikely that your problem is the same as Emanuele's.
 > 
+> Do you know when the interrupt storm behaviour started? If not, I'd
+> suggest testing 6.13 and 6.14 as a starting point to see whether
+> the phylink-managed EEE conversion is involved.
 
-I am OK with both suggestions:
+I can't test it right now (no access to hardware during daytime for this
+week), but if I recall correctly my colleague Stefan Klug bisected the
+issue to
 
-1) adding an explanation comment
-2) Using pinctrl_hog method
+commit dda1bc1d8ad13672c2728eedee0dd02d27a5314a
+Author: Catalin Popescu <catalin.popescu@leica-geosystems.com>
+Date:   Mon Oct 7 15:44:24 2024 +0200
 
-Personally however, I would prefer method 1) since it would be better in
-this case because base customer dts can already contain default
-pinctrl_hog which would be overwritten by this overlay.
+    arm64: dts: imx8mp: add cpuidle state "cpu-pd-wait"
 
-Not that common, but can still happen.
+    So far, only WFI is supported on i.MX8mp platform. Add support for
+    deeper cpuidle state "cpu-pd-wait" that would allow for better power
+    usage during runtime. This is a port from NXP downstream kernel.
 
-What do you suggest for v2?
+    Signed-off-by: Catalin Popescu <catalin.popescu@leica-geosystems.com>
+    Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 
-BR,
-Primoz
-
-> Frank
->>
->>> Frank
->>>> +
->>>> +&iomuxc {
->>>> +	pinctrl_jtag: jtaggrp {
->>>> +		fsl,pins = <
->>>> +			MX93_PAD_GPIO_IO24__JTAG_MUX_TDO	0x31e
->>>> +			MX93_PAD_GPIO_IO25__JTAG_MUX_TCK	0x31e
->>>> +			MX93_PAD_GPIO_IO26__JTAG_MUX_TDI	0x31e
->>>> +			MX93_PAD_GPIO_IO27__JTAG_MUX_TMS	0x31e
->>>> +		>;
->>>> +	};
->>>> +};
->>>> --
->>>> 2.34.1
->>>>
->>>
+I didn't notice it at the time because my board was connected to a
+switch that didn't support EEE.
 
 -- 
-Primoz Fiser
-phone: +386-41-390-545
-email: primoz.fiser@norik.com
---
-Norik systems d.o.o.
-Your embedded software partner
-Slovenia, EU
-phone: +386-41-540-545
-email: info@norik.com
+Regards,
 
+Laurent Pinchart
