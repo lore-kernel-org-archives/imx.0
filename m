@@ -1,72 +1,82 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9215F2D5C61
-	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 08:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C66262FC7;
+	Tue, 28 Oct 2025 09:00:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761641920; cv=none; b=Zmi//vzWPPblxLsRy4IMgjF9hT7WNb/LXYOPwR/Hf0KBQ79XulV9kirQepUr2qgw2jL2tdkknGgEder6OvQ7FHgUKLQ9wiCZNH8+muV71zpCpHyVrn2jcDIgf5OBwK9R9VJrGUHKfW7tL3C9evQ/ZwoqQVAM4dRlyOsD7LKT/jU=
+	t=1761642034; cv=none; b=hiCa0qbGADMgYPHT9aON5yidjGDxkheoAutKjVOL10uum0w9xM79Af97lTrQ3N2bmGmr2MaOw8oBgjQBsfOiGA9wRGoSgOVKVpYsGQGcASVJzaHyfdlx06c9sKfeFev92QdX3F65x+VUT2zFVqFD5GCak52xuy+PcseatA57lPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761641920; c=relaxed/simple;
-	bh=YBe5bROSGpZ12p06h/UvpBqwWi3bXnQ9j9Vl7E3IFUE=;
+	s=arc-20240116; t=1761642034; c=relaxed/simple;
+	bh=rZ4NQKQCLrbiX4zUi8bRocWHIWn3QwuUM+myMdN/DI4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IcvMRYwtg5h+ACQnJ5ZNYsBy/S3vC/DDFpdyAR9SqPBvKb0Jh1zmGNYVS7AE3wpmYWchRKq4Nc+ObRckhWnXFaqLVSZraeO/CRFFS66PGulTMrO8igi6BQw6/crBm4rMhUU3UHB0aMg6pClIEM4hvfTUa3n6qIkU4npsPpKctS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=V+lOghLh; arc=none smtp.client-ip=1.95.21.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=JnOKtWpWytyAd0HDEuAEEZgkDGKqJVogbbZzz3+fmvNup8CPAYLF0MGftIdFCllAPdLd9mKWAFuk2C9C7Uv9uy6Uptq3yqFAQXrYJgujyw1evl0e2I8j1xO0RliZpJMD97UZg3Ero+uczQPNnYP/qnMXMTKYJpKc5kvEmfmv5VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fWKmH91f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="V+lOghLh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=9bK3jiDst9EuMzVRY6Pg60RWEks+MLAKHwEmu72HbS8=;
-	b=V+lOghLh5Yppr8qc0mSRZOKZ/ACHLi4IuqKbExuzl9Euk3xTKOmGEdldK0M7lu
-	7lLVWkzbx9XPna/o4nWCjlG7aEMKoALvpEO7pqlNUu1Dv+VwnYzr+MTe4E1MtEKV
-	38HN1frJ2LhoMN+jqTx6aTL29+urqAUHP6feEeSUrRGXQ=
-Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgB3zxWOhQBpGivTAA--.44629S3;
-	Tue, 28 Oct 2025 16:57:52 +0800 (CST)
-Date: Tue, 28 Oct 2025 16:57:50 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Shawn Guo <shawnguo@kernel.org>, linux-usb@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	bjorn.andersson@oss.qualcomm.com, imx@lists.linux.dev,
-	Ze Huang <huang.ze@linux.dev>
-Subject: Re: [PATCH v5 4/4] arm64: dts: layerscape: add dma-coherent for usb
- node
-Message-ID: <aQCFjuyMCTM9qQcd@dragon>
-References: <20250929-ls_dma_coherence-v5-0-2ebee578eb7e@nxp.com>
- <20250929-ls_dma_coherence-v5-4-2ebee578eb7e@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fWKmH91f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AD3C4CEE7;
+	Tue, 28 Oct 2025 09:00:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761642033;
+	bh=rZ4NQKQCLrbiX4zUi8bRocWHIWn3QwuUM+myMdN/DI4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fWKmH91fKqGtdl9lsayw35svBXtixc0YgYQVpuIVL9pV3DyVI4ORJsSFIQJ6+TAjL
+	 mwtHeqgdSesSUYZPa8eQPhQ+WLFLpDNuRwGR8zjohAwM4FDUvR4zwfjjk5WqMkrMfP
+	 /0ie3QweE1xAT7iov3Jl8fEMazj1vSI85Km1nxoi18ebyoueCbsmN+3FFRYPiDwguS
+	 Es/Vka2CmLvy5ZsCb90LXqp7lTuXfy5lscQa8tnB5hkoRnt3II2VVOouuHkmVfzB0e
+	 wU4QETD4dROrAf25zaUsYknU6tnD4fPGfXr03WMdBuJJlyVF4HPXCnfGPcVxDl5BX5
+	 vSHxEvZG/OzvQ==
+Date: Tue, 28 Oct 2025 10:00:31 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Josua Mayer <josua@solid-run.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Jessica Zhang <jessica.zhang@oss.qualcomm.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Jon Nettleton <jon@solid-run.com>, Mikhail Anikin <mikhail.anikin@solid-run.com>, 
+	Yazan Shhady <yazan.shhady@solid-run.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 01/10] dt-bindings: arm: fsl: Add binding for various
+ solidrun imx8 boards
+Message-ID: <20251028-truthful-dexterous-hyena-d3d4c5@kuoka>
+References: <20251027-imx8mp-hb-iiot-v1-0-683f86357818@solid-run.com>
+ <20251027-imx8mp-hb-iiot-v1-1-683f86357818@solid-run.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250929-ls_dma_coherence-v5-4-2ebee578eb7e@nxp.com>
-X-CM-TRANSID:Ms8vCgB3zxWOhQBpGivTAA--.44629S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUwmiiUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNBDfRWkAhZCs7wAA3B
+In-Reply-To: <20251027-imx8mp-hb-iiot-v1-1-683f86357818@solid-run.com>
 
-On Mon, Sep 29, 2025 at 10:24:17AM -0400, Frank Li wrote:
-> Add SOC special compatible string, remove fallback snps,dwc3 to let flatten
-> dwc3-layerscape driver to be probed and enable dma-coherence for usb node
-> since commit add layerscape dwc3 support, which set correct gsbustcfg0
-> value.
+On Mon, Oct 27, 2025 at 06:48:10PM +0100, Josua Mayer wrote:
+> Add bindings for various SolidRun boards:
 > 
-> Add iommus property to run at old uboot, which use fixup add iommus by
-> check compatible string snsp,dwc3 compatible string.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Applied, thanks!
+A nit, subject: drop second/last, redundant "binding for". The
+"dt-bindings" prefix is already stating that these are bindings.
+See also:
+https://elixir.bootlin.com/linux/v6.17-rc3/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+
+> - i.MX8MP HummingBoard IIoT - based on the SolidRun i.MX8M Plus SoM
+> - SolidSense N8 - single-board design with i.MX8M Nano
+> - i.MX8M Mini System on Module
+> - i.MX8M Mini HummingBoard Ripple
+> 
+> Signed-off-by: Josua Mayer <josua@solid-run.com>
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
