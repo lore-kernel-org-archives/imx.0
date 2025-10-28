@@ -1,235 +1,72 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DF9221F20;
-	Tue, 28 Oct 2025 08:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9215F2D5C61
+	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 08:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761640089; cv=none; b=HiuwpSfDYVYwOoR0IhZtybBd7zKxtcDQ/KEZ9P+Ww4IJplT+PUnsNdf0jft5A4XlQPN3JN/kvWg/349xjnHTRRtCIV9Karl0Sw5y22wzdey4o4JBNZq4UFyHB6IyxNVclisnL5RigI3+fcUeDj2z1bvROxaFy0y54wTuSzytyNg=
+	t=1761641920; cv=none; b=Zmi//vzWPPblxLsRy4IMgjF9hT7WNb/LXYOPwR/Hf0KBQ79XulV9kirQepUr2qgw2jL2tdkknGgEder6OvQ7FHgUKLQ9wiCZNH8+muV71zpCpHyVrn2jcDIgf5OBwK9R9VJrGUHKfW7tL3C9evQ/ZwoqQVAM4dRlyOsD7LKT/jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761640089; c=relaxed/simple;
-	bh=oNlpkQO5cst6KsAukF9U7bQZ+Sa47oF2EkKRJDLHMeI=;
+	s=arc-20240116; t=1761641920; c=relaxed/simple;
+	bh=YBe5bROSGpZ12p06h/UvpBqwWi3bXnQ9j9Vl7E3IFUE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ghEXPn/NNtewutQJv1uxNHrlmjbss9Kx6mcvi3R4tNoED8Znqou1a/bEVo50uY9XqaqcANk2lsg61wopiIbC6rFgnVIHR7J81FnLftP5RsDfoEQgrSMkln0TPgj2f64i1jjMB03cDsYne0aq1zD9oE44auloqeaGHwCDS3r3N4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=jIKURGR5; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=IcvMRYwtg5h+ACQnJ5ZNYsBy/S3vC/DDFpdyAR9SqPBvKb0Jh1zmGNYVS7AE3wpmYWchRKq4Nc+ObRckhWnXFaqLVSZraeO/CRFFS66PGulTMrO8igi6BQw6/crBm4rMhUU3UHB0aMg6pClIEM4hvfTUa3n6qIkU4npsPpKctS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=V+lOghLh; arc=none smtp.client-ip=1.95.21.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="jIKURGR5"
-Received: from pendragon.ideasonboard.com (unknown [193.209.96.36])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id E545116CD;
-	Tue, 28 Oct 2025 09:26:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1761639978;
-	bh=oNlpkQO5cst6KsAukF9U7bQZ+Sa47oF2EkKRJDLHMeI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jIKURGR5U/AmwLf+zhFNmroQF9QQUBrT0sjXi/qZVnGFcfUdImrsM2j8NnW9HLYXZ
-	 gcATKbqYBMHtB0VeGe2ohVjfTiTypIovnOmECF9Un2qglKWztUtcfYYxECAvEG3R3z
-	 7BUVyheYs5jGK5m14Z1JQbpUiQLyX6EuiMkr8t4w=
-Date: Tue, 28 Oct 2025 10:27:53 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Sakari Ailus <sakari.ailus@iki.fi>, Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="V+lOghLh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=9bK3jiDst9EuMzVRY6Pg60RWEks+MLAKHwEmu72HbS8=;
+	b=V+lOghLh5Yppr8qc0mSRZOKZ/ACHLi4IuqKbExuzl9Euk3xTKOmGEdldK0M7lu
+	7lLVWkzbx9XPna/o4nWCjlG7aEMKoALvpEO7pqlNUu1Dv+VwnYzr+MTe4E1MtEKV
+	38HN1frJ2LhoMN+jqTx6aTL29+urqAUHP6feEeSUrRGXQ=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgB3zxWOhQBpGivTAA--.44629S3;
+	Tue, 28 Oct 2025 16:57:52 +0800 (CST)
+Date: Tue, 28 Oct 2025 16:57:50 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Alice Yuan <alice.yuan@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
-	linux-staging@lists.linux.dev, Luis Oliveira <lolivei@synopsys.com>
-Subject: Re: [PATCH v3 01/31] dt-bindings: media: add DW MIPI CSI-2 Host
- support
-Message-ID: <20251028082753.GZ13023@pendragon.ideasonboard.com>
-References: <20250821-95_cam-v3-0-c9286fbb34b9@nxp.com>
- <20250821-95_cam-v3-1-c9286fbb34b9@nxp.com>
- <aP8t3YClrZxOnHea@valkosipuli.retiisi.eu>
- <aP+enPOHPkvZAkzS@lizhi-Precision-Tower-5810>
- <aP_bSQUIle_9-L-7@valkosipuli.retiisi.eu>
- <aP/ehdkppeVr5G6H@lizhi-Precision-Tower-5810>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Shawn Guo <shawnguo@kernel.org>, linux-usb@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	bjorn.andersson@oss.qualcomm.com, imx@lists.linux.dev,
+	Ze Huang <huang.ze@linux.dev>
+Subject: Re: [PATCH v5 4/4] arm64: dts: layerscape: add dma-coherent for usb
+ node
+Message-ID: <aQCFjuyMCTM9qQcd@dragon>
+References: <20250929-ls_dma_coherence-v5-0-2ebee578eb7e@nxp.com>
+ <20250929-ls_dma_coherence-v5-4-2ebee578eb7e@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aP/ehdkppeVr5G6H@lizhi-Precision-Tower-5810>
+In-Reply-To: <20250929-ls_dma_coherence-v5-4-2ebee578eb7e@nxp.com>
+X-CM-TRANSID:Ms8vCgB3zxWOhQBpGivTAA--.44629S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUwmiiUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNBDfRWkAhZCs7wAA3B
 
-On Mon, Oct 27, 2025 at 05:05:09PM -0400, Frank Li wrote:
-> On Mon, Oct 27, 2025 at 10:51:21PM +0200, Sakari Ailus wrote:
-> > On Mon, Oct 27, 2025 at 12:32:28PM -0400, Frank Li wrote:
-> > > On Mon, Oct 27, 2025 at 10:31:25AM +0200, Sakari Ailus wrote:
-> > > > On Thu, Aug 21, 2025 at 04:15:36PM -0400, Frank Li wrote:
-> > > > > From: Eugen Hristev <eugen.hristev@linaro.org>
-> > > > >
-> > > > > Add bindings for Synopsys DesignWare MIPI CSI-2 host, which used at i.MX93
-> > > > > and i.MX95 platform.
-> > > > >
-> > > > > Signed-off-by: Luis Oliveira <lolivei@synopsys.com>
-> > > > > Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
-> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > ---
-> > > > > Change in v3
-> > > > > - drop remote-endpoint: true
-> > > > > - drop clock-lanes
-> > > > >
-> > > > > Change in v2
-> > > > > - remove Eugen Hristev <eugen.hristev@microchip.com> from mantainer.
-> > > > > - update ugen Hristev's s-o-b tag to align original author's email address
-> > > > > - remove single snps,dw-mipi-csi2-v150 compatible string
-> > > > > - move additionalProperties after required
-> > > > > ---
-> > > > >  .../bindings/media/snps,dw-mipi-csi2-v150.yaml     | 151 +++++++++++++++++++++
-> > > > >  MAINTAINERS                                        |   1 +
-> > > > >  2 files changed, 152 insertions(+)
-> > > > >
-> > > > > diff --git a/Documentation/devicetree/bindings/media/snps,dw-mipi-csi2-v150.yaml b/Documentation/devicetree/bindings/media/snps,dw-mipi-csi2-v150.yaml
-> > > > > new file mode 100644
-> > > > > index 0000000000000000000000000000000000000000..d950daa4ee9cfd504ef84b83271b2a1b710ffd6b
-> > > > > --- /dev/null
-> > > > > +++ b/Documentation/devicetree/bindings/media/snps,dw-mipi-csi2-v150.yaml
-> > > > > @@ -0,0 +1,151 @@
-> > > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > > > +%YAML 1.2
-> > > > > +---
-> > > > > +$id: http://devicetree.org/schemas/media/snps,dw-mipi-csi2-v150.yaml#
-> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > > +
-> > > > > +title: Synopsys DesignWare CSI-2 Host controller (csi2host)
-> > > > > +
-> > > > > +maintainers:
-> > > > > +  - Frank Li <Frank.Li@nxp.com>
-> > > > > +
-> > > > > +description:
-> > > > > +  CSI2HOST is used to receive image coming from an MIPI CSI-2 compatible
-> > > > > +  camera. It will convert the incoming CSI-2 stream into a dedicated
-> > > > > +  interface called the Synopsys IDI (Image Data Interface).
-> > > > > +  This interface is a 32-bit SoC internal only, and can be assimilated
-> > > > > +  with a CSI-2 interface.
-> > > > > +
-> > > > > +properties:
-> > > > > +  compatible:
-> > > > > +    items:
-> > > > > +      - enum:
-> > > > > +          - fsl,imx93-mipi-csi2
-> > > > > +      - const: snps,dw-mipi-csi2-v150
-> > > > > +
-> > > > > +  reg:
-> > > > > +    items:
-> > > > > +      - description: MIPI CSI-2 core register
-> > > > > +
-> > > > > +  reg-names:
-> > > > > +    items:
-> > > > > +      - const: core
-> > > > > +
-> > > > > +  clocks:
-> > > > > +    maxItems: 2
-> > > > > +
-> > > > > +  clock-names:
-> > > > > +    items:
-> > > > > +      - const: per
-> > > > > +      - const: pixel
-> > > > > +
-> > > > > +  phys:
-> > > > > +    maxItems: 1
-> > > > > +    description: MIPI D-PHY
-> > > > > +
-> > > > > +  phy-names:
-> > > > > +    items:
-> > > > > +      - const: rx
-> > > > > +
-> > > > > +  resets:
-> > > > > +    maxItems: 1
-> > > > > +
-> > > > > +  interrupts:
-> > > > > +    maxItems: 1
-> > > > > +
-> > > > > +  power-domains:
-> > > > > +    maxItems: 1
-> > > > > +
-> > > > > +  ports:
-> > > > > +    $ref: /schemas/graph.yaml#/properties/ports
-> > > > > +
-> > > > > +    properties:
-> > > > > +      port@0:
-> > > > > +        $ref: /schemas/graph.yaml#/$defs/port-base
-> > > > > +        unevaluatedProperties: false
-> > > > > +        description:
-> > > > > +          Input port node, single endpoint describing the input port.
-> > > > > +
-> > > > > +        properties:
-> > > > > +          endpoint:
-> > > > > +            $ref: video-interfaces.yaml#
-> > > > > +            unevaluatedProperties: false
-> > > > > +            description: Endpoint connected to input device
-> > > > > +
-> > > > > +            properties:
-> > > > > +              bus-type:
-> > > > > +                const: 4
-> > > >
-> > > > If 4 is the only value supported, you can drop the property altogether.
-> > >
-> > > Sorry, What's your means here? There are more options in video-interfaces.yaml.
-> > > here just add restriction for bus-type. otherwise other value can be
-> > > provide in dts file.
-> >
-> > It could, but wouldn't any other value be incorrect?
+On Mon, Sep 29, 2025 at 10:24:17AM -0400, Frank Li wrote:
+> Add SOC special compatible string, remove fallback snps,dwc3 to let flatten
+> dwc3-layerscape driver to be probed and enable dma-coherence for usb node
+> since commit add layerscape dwc3 support, which set correct gsbustcfg0
+> value.
 > 
-> at least that 5 # Parallel doesn't make sense for CSI2's input.
+> Add iommus property to run at old uboot, which use fixup add iommus by
+> check compatible string snsp,dwc3 compatible string.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-The point is that, if the only valid value is CSI-2 DPHY (4), then
-there's no need to specify it in DT. The driver would know the input bus
-is CSI-2 DPHY, so there's no need to convey that information in the
-device tree.
+Applied, thanks!
 
-> > In other words, this property is redundant and should be dropped.
-> >
-> > > > > +
-> > > > > +              data-lanes:
-> > > > > +                minItems: 1
-> > > > > +                maxItems: 4
-> > > > > +                items:
-> > > > > +                  maximum: 4
-> > > > > +
-> > > > > +      port@1:
-> > > > > +        $ref: /schemas/graph.yaml#/$defs/port-base
-> > > > > +        unevaluatedProperties: false
-> > > > > +        description:
-> > > > > +          Output port node, single endpoint describing the output port.
-> > > > > +
-> > > > > +        properties:
-> > > > > +          endpoint:
-> > > > > +            unevaluatedProperties: false
-> > > > > +            $ref: video-interfaces.yaml#
-> > > > > +            description: Endpoint connected to output device
-> > > > > +
-> > > > > +            properties:
-> > > > > +              bus-type:
-> > > > > +                const: 4
-> > > >
-> > > > Are both input and output of this block CSI-2 with D-PHY?
-> > >
-> > > Yes, input from camera sensor, output to others image processors to do data
-> > > transfer or format convert.
-> >
-> > The description appears to be saying this is "Synopsys IDI", not CSI-2 with
-> > D-PHY. We don't have a bus-type for IDI. Couldn't you simply drop it?
-
--- 
-Regards,
-
-Laurent Pinchart
