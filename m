@@ -1,52 +1,53 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022074.outbound.protection.outlook.com [52.101.66.74])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020121.outbound.protection.outlook.com [52.101.69.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4247C2DE1E2
-	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 12:43:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64B230C600
+	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 13:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.121
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761655420; cv=fail; b=ctdu2eoNIocKbi7myGA1ogwh344JC18EsHFg7TO+HrAAh15zatj0yXhPDwJEDLjJcRQ54r/teEnRuUBqr1zdF1wP/+QG6NCDV1qr1GUCWCNKGF6tC1Li+yIRmFhiUNQ7pXJh0O7LCc1BGMyeaQ0UjGC7q1MpsvYZ4DhJa5fJhK8=
+	t=1761657096; cv=fail; b=qfj0rPbfZ4A616srvhQZCEWy6B+oePoVLowg9LhujzJuNtVIt3b0D2HM7mMgl4WJ5HcCXFeo46Ty3TDYpTgcxyPCBiTPPqJiRf6JhqekfK6vQ/uuBZTTNNC6k+MpL9HKg3u5VEJXC+FbMKUSmlBlEX9I/iLMSxrhXkZLjBE1PGs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761655420; c=relaxed/simple;
-	bh=ugOgjXNVbAbx70/ZQcfuuHWLFQAZa2IAcTaQ+q8dePU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=gRgVjFadEbDo9erw+z8yIKOZEQhKZLrOeV2hp3BA4B7Adz0GwmcfZoA6nsldFSSKZyzIk5xbHt8aJ34ihoGq9/nRIWzFT4k2lk2stGJl/N6AJQglkc3EM4+XdpUveK9oGWg81pHzMZNIIVzVC4KgK5f526nnYSCrbXhXu/a4Gak=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com; spf=pass smtp.mailfrom=gocontroll.com; dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b=r0z/BlY0; arc=fail smtp.client-ip=52.101.66.74
+	s=arc-20240116; t=1761657096; c=relaxed/simple;
+	bh=frPMziPl+S34vuk1f3KcCe1EIbDAxNli0YDAbWa3zP0=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZD+sevnLS0H9tLj+wSkJIbRXQB7ZtzEVLHKRayuRska1R2qzpKecebpyIwXEpQdtPpn2nw/xHyK2yXifh4JLBC3JWrdWJuihv0WR37Hgdn9Yw86QWTCgYWK0MWU9V3ttF9Q3KJj7Qb+SDRQgNLn5Fw45UjiJjfRFrxTkwjWT6aY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com; spf=pass smtp.mailfrom=gocontroll.com; dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b=8Udb5EXX; arc=fail smtp.client-ip=52.101.69.121
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gocontroll.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b="r0z/BlY0"
+	dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b="8Udb5EXX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lURdpZAYICGJzhPQfD3qoeFz3klWG4ZBvq4NXCi9/hF0AFAVy8LFtZPx6OE1Z2V/XXYlyIkBhsSem0JBNPmgNmH9MW42jVVS6uniZLQJ7Zf/qECtkUGM6PTeAbBgbgLQz1eDZHjuCsYQ0fh0GLW49R7yUn7ok1SNCp7110PAO/SyM3nqd/27rMojbq60IU7Y2+lMteGYe3JCAk4rWZOLt0cpqHVT8czL3p44bWTmcRidAh87KmvuqCrzuhDsEF1CUP1allqHA4YvfC/g4h00URHjE70BjIbvrQ01iHOe1P1xPigAZCexO4HJdIC0eHIJ6OndVF17XeyXJIxdFGGD5A==
+ b=SPy6zLphcHu5+BL7XfoPXIN+KYlOMO5i8EC8pIlPmyix9mv8PD01+RNZx408xTNIhahKMP2TTIA4jrRNJwYTFdMKq40EJBD1rulI7tL/0kbvzBD9vss0K29N4mkDSaFzfh3vAtCjlmSGtzekSRW751rGRDiWq0saNERR89Mv+PltbUjVRvVhBVhz4irU9li91HkW3St+M25ieCYvFcKMoG2xqzAbXlYQgg5Ma72iFnBQK6lrGcGPS5vhkX7UTKihvvZ8G3M7sgpJASpWlukCsmrAGFl9iBtC64ETk94zkIiN+qklIFnAkcmbTMtZEZRveemhA3GzTmcerdld1/8K/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Kn0NkZPy6tdSybcs/tuLwnQLewfxRgO3CbHBxH9kTaU=;
- b=i3jqDkbpVm6nhfkpIleM0+qZyAeZBZLFGEifu3Hqc4FcVNsV+LRGttCuNU9IGHa9XMAB4/SwmXXLtzAWKOQhj47nwwUYOr0dNUxzKvefufpdOJDZ35lN22ATRRCM62TANucMNyhTZAQbI3f8+1S9xOWif7osdh0eQP4Sy0ogU6H9OuyKkXuaXFj0qoFMm5Dp1s/t3Ftn0rzyhtjMxPu4upIMR0hrhqwTrb5ZzRSMhcMMqEtUDPevt/LNYEffUTFAhMq4/rVnUpR6E1CFO5XFWcuWB2O2EuQYfINvmRsCxS1Mo5KnHLaacjQaHkQsIf44+mbTrhm8AEDKuXP4X0q7Yg==
+ bh=5lBFadlSkvZnEEehHr2LBcA47Jw0MHCMBx7fxzT8BbI=;
+ b=OZTZeGMb/s2mEcmSrc6hMTyW5ss4NGSTWL+ur+Y8QLJ2bmHwN1vNFaofPIyFvfA/4feuy5Ov3eoky+3tPpYrciBFg6Pkzm6ygS2aQ46hP96yE78MYhR76NpjF0FVAusRwSmIjISHaw1nfyK05+/qHdBwykY8AdsjZ/dKBV2LJ8sNnwNotZmHfIeqr6XDySexFmX8NbWlys0flx6YB0UgHLoHiqY3+wmeaZPSEJEWP9OWBmWJAJbWQIdNfLJRaCXShEeStJ2JxEHngdAQSznBm3RTEgGELArpmE8UWm7qmdFGEnpWLUJKbPHXO1AazxDgl12U5OqcdpnsEd9Oh/fm5Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=gocontroll.com; dmarc=pass action=none
  header.from=gocontroll.com; dkim=pass header.d=gocontroll.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gocontrollcom.onmicrosoft.com; s=selector1-gocontrollcom-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Kn0NkZPy6tdSybcs/tuLwnQLewfxRgO3CbHBxH9kTaU=;
- b=r0z/BlY0icCaJTCoE03oMKpgboeVdYbZU6PEfmom2peG2VRE+CJXVKRUI2jCJLV9Jk7NzTMeDaUHSUewGv2WtnM7LCsCYx7I1kMpPyhtL8JXk+CHeXNcayG1sN62653NyFereVgBbdwJ4meYNbkoLHb1C6fZE1zBOPplexntPb7DCaIUtFYoMnXGdvmTOHBMSAg1lL7Odt1G0lNvOjZz5oqnSS8HXhp2MIQQFO7RxL9MruWvhXeL2jT3mRixoQGQkuJT30DCvSLYWU6j0wsSKaKLFc5k6FVa6SEUvZTusI2bMI5YH9x5ksPZ+EZGcx9GMrCZhXNxqaXaSppO6gwqNw==
+ bh=5lBFadlSkvZnEEehHr2LBcA47Jw0MHCMBx7fxzT8BbI=;
+ b=8Udb5EXXetHfp5Lo+7nIM7OA3Q/0FyWal0vEEuaJ84OPmeyN6YTTCr3zEmXFdE0BAmu4+TngCKDafoJ3pja+0vZTOPsqUy+BBrBsph4VRgTZ3p2o9m1AtZcW/uw73UxQ52ZqOcsZSI55DNnqI451JiqAE8GoyMR9HF8d8jXOOFo9S/r5gH4Y/u5YYUCTwzV5uLQXHcQ4o4CmT5MUozjVfBj9ZXOdifPqNmgBHxCU8t/EBIw61jIdZ4YRSZQQAKR+Ip99C2UWN1T1+/9ZUG4inVDRNKB2bn7UF3V0HTJWA5qWSvWP3rU9O7GIpQkEOnSp259S9dYT1ORsKoWQNrXCgQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=gocontroll.com;
 Received: from PA4PR04MB7630.eurprd04.prod.outlook.com (2603:10a6:102:ec::16)
- by DB9PR04MB9818.eurprd04.prod.outlook.com (2603:10a6:10:4ef::12) with
+ by DU0PR04MB11259.eurprd04.prod.outlook.com (2603:10a6:10:5dd::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Tue, 28 Oct
- 2025 12:43:32 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.13; Tue, 28 Oct
+ 2025 13:11:30 +0000
 Received: from PA4PR04MB7630.eurprd04.prod.outlook.com
  ([fe80::311b:ad3a:4a62:7b5f]) by PA4PR04MB7630.eurprd04.prod.outlook.com
  ([fe80::311b:ad3a:4a62:7b5f%6]) with mapi id 15.20.9253.018; Tue, 28 Oct 2025
- 12:43:32 +0000
-Message-ID: <65202d1f-6c4f-4d4e-9fef-85cfb74ec768@gocontroll.com>
-Date: Tue, 28 Oct 2025 13:42:17 +0100
+ 13:11:28 +0000
+Message-ID: <938f85b0-4c9b-463a-960a-f5f4e4092480@gocontroll.com>
+Date: Tue, 28 Oct 2025 14:10:04 +0100
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 3/5] arm64: dts: freescale: add Ka-Ro Electronics
  tx8m-1610 COM
+From: Maud Spierings <maudspierings@gocontroll.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>, Rob Herring
  <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -54,17 +55,18 @@ To: Matti Vaittinen <mazziesaccount@gmail.com>, Rob Herring
  Pengutronix Kernel Team <kernel@pengutronix.de>,
  Fabio Estevam <festevam@gmail.com>
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ LW@KARO-electronics.de
 References: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
  <20251022-mini_iv-v2-3-20af8f9aac14@gocontroll.com>
  <a7012995-c2a8-48a3-abe1-5c227272f21c@gmail.com>
+ <65202d1f-6c4f-4d4e-9fef-85cfb74ec768@gocontroll.com>
 Content-Language: en-US
-From: Maud Spierings <maudspierings@gocontroll.com>
-In-Reply-To: <a7012995-c2a8-48a3-abe1-5c227272f21c@gmail.com>
+In-Reply-To: <65202d1f-6c4f-4d4e-9fef-85cfb74ec768@gocontroll.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P192CA0037.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:658::28) To PA4PR04MB7630.eurprd04.prod.outlook.com
+X-ClientProxiedBy: AM8P190CA0027.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:219::32) To PA4PR04MB7630.eurprd04.prod.outlook.com
  (2603:10a6:102:ec::16)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,214 +75,297 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB7630:EE_|DB9PR04MB9818:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5454b1ac-a8a6-4071-8600-08de161f9a30
+X-MS-TrafficTypeDiagnostic: PA4PR04MB7630:EE_|DU0PR04MB11259:EE_
+X-MS-Office365-Filtering-Correlation-Id: b60b657b-508e-4c12-ec0f-08de16238135
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TUVKYjFxN1EvdzkwNENCb2hYMmUvQWU4R1hOQVltbnFrSGt5NU5QK1pJQnRv?=
- =?utf-8?B?ajFXaTlOOEZBbkNXSG5nc3dtUzJxeCtPZVYrN0RFOVBlQnJlS0dmVEF2Zm5D?=
- =?utf-8?B?eEptODlKaVNFa2FiV2djcUZSRS8yK1doSnNwQnp0eWUxMjhWTGNEOUpGZnkz?=
- =?utf-8?B?cGNwTVhNZkYwVmpCMFVlT1d5dlBBV1ZqNGdpOFdnSW5JNk9jZGtmeW0vTjdq?=
- =?utf-8?B?N3R0cGM3aWhHZGF1RWRFVEthS09CeHRMaEIxM256RUZtZ3ptaWFCYnhGQU9k?=
- =?utf-8?B?eUdIUjFXTVFmT3MvNWVxeUs3Qkx4bm41TnRFU0pzb3BKSloyWWlhYkhHa3Ex?=
- =?utf-8?B?cTNBRHk1Nmt5UEFXQWdGUjFMODhsTFBma1NOSldXbnFkL1hvRG9sYlpEUXZs?=
- =?utf-8?B?RVFleU5Wbmc3aDlmZGdSNnBJaEFoTEkyUUpkVVNVa0FYZ2dDRTVLbC96ak1m?=
- =?utf-8?B?YkRSNW9qSTNtYWtWSEF0UFZyalIzTW5uQ0lnanEvcDBESU1qalJHRnkvRkdC?=
- =?utf-8?B?Nkg4MVRSUXNUazZKVlpCdVBNaFJoTFoyOFhRa2E4T04vQkUwalBkL0M5RVE5?=
- =?utf-8?B?SUNzeGNpRENlL3B6U09tM1I1b3hXLzZYNG1TZEphcDdWL29vSU1VR3pzcTln?=
- =?utf-8?B?dkNIQ1BLQm9mNjFENzVUQUNtMEp4ZTJ3SldlbTZZU0w3V1VUUzdKeWZxNGV0?=
- =?utf-8?B?dFdjTktNRFlwZjRSdHlHb0U2cGFPQ0g1NDNZQUJPUFpsVG9hekk0WWl1anI3?=
- =?utf-8?B?MHd2aERwNDJXRnRCbzA3VlgzWUYyR2daYms2a055RENLVVJJSnpsQmxqYk44?=
- =?utf-8?B?RzV0eitCS25GcGRIQnlMd25qQk9hZm1NTGxqT0FWZTc2R3VONWhDbURWazZy?=
- =?utf-8?B?dEJRWEJlZGlLdVg3ZDMva3JLN1ZIT0pwK3kzRWdWMk54Z0FPRGd2U013Zlox?=
- =?utf-8?B?dWNNVXlyL2ljdTJwbUVXZFpaR3pyRlduZHpvNE1yMlo3SUhIekFoRGpQNnFo?=
- =?utf-8?B?VkNWemQwSnczbUM0QzZuWEhSVWh3OXhUaU93M2xVWWZKM2JNM0l4ZENFVWZF?=
- =?utf-8?B?L3FUdHhCY0cvWkw4NFBXUk5FS3NNcHBvS0FjaVRUQkdQRFl3L0dhczA3S052?=
- =?utf-8?B?TDdCZE45VGk4T0syRCtxRnhDbk9Nc3dPM1hoYjJpL2NKdjFaTW8xQ1NJaFBv?=
- =?utf-8?B?cUo5VFdndlJXSkREcUo1ZU5KbzZTaTFDYUlBKzBRc1BSVHRudGVEeXFTQlp0?=
- =?utf-8?B?eU1kQUlvL3BSY2FBL0VFTFd5ZDZndUlwUE4rditSbXpTU2JFWkVaUUxKbE1K?=
- =?utf-8?B?aEdyajJxMWhBS0ZacktqOG1wV0VKSkJNdXFHYTVzTU5EcmdJeDBqUjRRMy9u?=
- =?utf-8?B?NTY0VS9EZmYzMGtKcmhIbFMxM0luLzZ1RWk4N1RhUGdKdEI0REtCaGpPOWxu?=
- =?utf-8?B?Z2NwaGQzcldhVmdIbHBwS0pQTU1BSHBiN3k3YjYwODkvQVZuNTRhd0RYYVo5?=
- =?utf-8?B?R0tybFlVcFlNNHJnQ1BMc1pjaEZNNXgxUEllYmlETkJudzhtWkpKZ0orOHBH?=
- =?utf-8?B?VjhHMzhDV0pUMkZVRk4rcURremFFVjl2elBMOEpRNlFDQTdyQ2pYY1NyTUxC?=
- =?utf-8?B?U0NPWlNqQkpOSU55WmNwcnIzQlRuQXBKM1RaZ2ErM2UyaE01OS9BdjhYc1ZX?=
- =?utf-8?B?dkVMajhQN2RXM0l3Q1MydE1yVzgzaUxLMmVmcHNCOUJ1NzFyYzNaUDBMMlRO?=
- =?utf-8?B?ekZFMGcveTRHNjJRelNoMWdCdFNTN0d3N2hqdHg4YlNwK1h0RmVIdTRGSlk2?=
- =?utf-8?B?Z010VHNucmlJaXQ5Y3BwdWMzTmFSc2VHaE82bnpzWGNxWEUwVmRGZHkxRWlZ?=
- =?utf-8?B?UC9VTTJWMm1Ub2tOL3MzQnhHc3hRQVV3Y05JN09ZaDArM09kZ241MTNmQ2tW?=
- =?utf-8?Q?S5HpYM6azINGaHJW+31RYizxxnmBZJOf?=
+	=?utf-8?B?S1BINlF4T3FHaFFzRjJvWmoxZ3AyZ3laVEQ4MndrdXV5RFU4Z1dObVJSaWZU?=
+ =?utf-8?B?aVJRVTE0RXYzTzVSeUZBdFF1R0lYMVpLVnBkNGhiYSt4YUNzcUtNc2ljZmVH?=
+ =?utf-8?B?R01VYVlkbno1elgzdUc1emd2ZnN4U3k3WWxUY2NXb1NjSFVZbTZEMHhiTjl4?=
+ =?utf-8?B?TGkvNXpTSTdGaUMxTWdKd0FpMHdLbFJFS1NQeWIrb1FCOFNnME9HZTQzZGRH?=
+ =?utf-8?B?Uy9NQkZKWVA2SGp5eGZBa0txeFMvbC9Oc1hhbXlHT3prSmxhMVVtOGFydkIr?=
+ =?utf-8?B?blFJWHBybGRWTnIyYzNoUWh1V0lKbVpBcmZNMFU0UktsTG93RzV0VGFhaGdB?=
+ =?utf-8?B?Tzd3SkVVZkhJaW53Zm00dkhYNEtiQUFMdlpBaGhIZk5QbFhseTAxVTVxUU1j?=
+ =?utf-8?B?NzRCTld5V1BSUFFQT0dMQzBhNm1oY1dKclBscFVGa215M0hzM2EyaWN4TlRO?=
+ =?utf-8?B?QkJwMWdKdDdZY1F1Z3pkR1ZBVWFyb3ZKeXJNZ3l2VGNkcUpKTCtCZ1VLenpj?=
+ =?utf-8?B?ZlVDek1KemVUUlNJeGhSTnpSL25HNUZvTHlwUGR2NjRPSkdqMm04VXVoNDhq?=
+ =?utf-8?B?cmNyZ1d3dGU4VVM1VUNHR0x5TDBacmdyYlBFSTNwSmY4bFFlMURYYlgvcnlr?=
+ =?utf-8?B?U2R5ajRXWEJ0eVUyRmtBaUdCQUhXdDRMQUpFRTVsbWpBVXZObVhkVGpYWGgv?=
+ =?utf-8?B?U3E0bmkzS0hxNmZLc3pzWlQ3ZGZwRWNUQXJabjNHenp3THRNUVhTSTN6cUMy?=
+ =?utf-8?B?cGdPdEdDaDB5ZkxIRHU4d05xcEVYM0Y0K0R2ZmZJTEF3SmV2K3BKem1GTytw?=
+ =?utf-8?B?WWFtV2NLbnZMci9oTnhHOEZ5azlZcThRVUVnYmpHRm1PZ25wUnBFVEJsUGJH?=
+ =?utf-8?B?M2tNYktWcWhFbFBiREtZV0FrSnFaZVFxdzJmUkk4UUlkd2RwTVJxcEF4T0hL?=
+ =?utf-8?B?bWFBdzltenhoNVNNZ1dCUGxtdzhJTnNZL1VRbGU4dnAyVGVmWTZpbUlsay9B?=
+ =?utf-8?B?TWNHR2Y2MlFwZUZFeWxhYzExU3dmRzdPRGE3RlpwdzZGWnFwSGFvZEYzbzdS?=
+ =?utf-8?B?MUdrL09oZCttUDgyOWxIRzAwVm1IUm5VVkhUN0JxU3ZKODVYT3NWeGhMNjZ2?=
+ =?utf-8?B?Rm53M054STREK0VCYnI4QmV6b0pMQjA1YzlBTWJrcnlvTDZVdjVkWUNnODdF?=
+ =?utf-8?B?MFlvRnVWNTJiSjNpTGhNdnBnTGZsN2Zma0dnQWlieVAvdlNXbzdVZGJUNzF6?=
+ =?utf-8?B?WEJhbU1ORkxMc1ozS3ZRSXJUS0t2NjBuYlV3cEJXM1YrTlhHNXkvcERDTGNy?=
+ =?utf-8?B?NGx2K21ub3NPWHNRcENNWU15OWo4TDRoSzhURUUvanFDZ28xYnZ4a1BpTk9Q?=
+ =?utf-8?B?dnNtQTlSTk1MKzArSHBMSFhJdDBLMGFJU0xaWktadWRyL2xXS3FOQkFFbWNJ?=
+ =?utf-8?B?K01LTExXbEluOG44M3VoNTB3Z0sxeHdkb1BsZVdIMFBlWEYrRVpGcWFwS09q?=
+ =?utf-8?B?dFpXWnIvdFMreFI2VVgrS2NuczVHaXlpTFc5YStNbTFxbTlhajF1d0JqMVpJ?=
+ =?utf-8?B?NWUyOWxLYk5vYzAyTjcwWmdELzRQbCtneWNjR2pJd3licmpaTDl5a1hMZDgz?=
+ =?utf-8?B?d2lza1dXNEZFa0c0K2o4ei9FRFVQZThpL2VuL2JhdmRneXVSanRsZlc4SDhF?=
+ =?utf-8?B?Z3dLTXRsblJOTTNtV0xJSUVZZFZ4TGh0TUtyWi85ZzBGV0JFbHBmMWdzS2t6?=
+ =?utf-8?B?QlFCV1Z5bnRoNjFZajBoczU4YjZ3M1gzSFpVNGZFSGIzRTJ3eU85WVoydGts?=
+ =?utf-8?B?TUZDb29PRHl2SEFPcnMxOFZWcEdheFdGSHhOUzVsdDdlL1RjUERFRW5EZGly?=
+ =?utf-8?B?QTJ4Y3lYejZTVzUzWHc0NzFCbzFJL2dJcUR2NjhqSkZuNkgwWDRHUHBkaHZa?=
+ =?utf-8?Q?xK1w/uwM+O9mR9pVjAjX5oylTpDhbx0n?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7630.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7630.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z3BmbVVnSXl0ZExmU0Zud2p2ZEo0bUwxRGZhUHJYOXJPTXhUQkMwVXUxSzZP?=
- =?utf-8?B?aElYbE5EaUtEQlZVMXJZbG1iZEtEVEhVeTJkZWFRZEllbkcxNEo3VE14U2o4?=
- =?utf-8?B?WlRCN2FYZkl0SnRzWStlV0RxanpCQnBSaGRFWlJvMjlMMlZSMGNBWFR3L2dI?=
- =?utf-8?B?T0RwRW5hMmlsU1F6bVdkdEpieUh5RE1XRUlMTWJ2UTZqYk8xeGExT2k4djJj?=
- =?utf-8?B?SHp3cXc1eEVLOGc2c1c2ZTEwNWhxYVovWXM2dC9Tem9jc1RaQnI4Z0F4bzFu?=
- =?utf-8?B?NXpMVnRnbk12UlFpSnoxT3VjSnczREM3d2NyczlBUHdjeG4zYkk1eVlEME1F?=
- =?utf-8?B?c2ZCK0VEbll2eEM5TG9helJFRWlsVkUvY09Dak5qMElXQkpWSEQwbkVYMzhI?=
- =?utf-8?B?QVAzWTYvamNWUnZ6K0pUMlgrb09PTDNSZjQ0OVFqYzFyM0VMUjRXR1l4cjNT?=
- =?utf-8?B?a3FlSlYrVFBNMDBzems0b0FvVlFSTWpYV1psejhLaTFhTFdoT2dHaVY2bDFo?=
- =?utf-8?B?U3Z2MjR4djd4L1NQQi9veVFpV0xTVU83eDljMGN1MEIrMXU0UXFmblJtK3Vr?=
- =?utf-8?B?Q3JrWUhvSnlTY2dmclJIT09ZVXR0bm1NTGtJaThKeG9VL3VVOURwZkJrb0Rj?=
- =?utf-8?B?Z2YwS2krN3RHNzhmUWR0ZjRUVGpUdWlpYkl3SDdFaW5VaFo5cDA2RFZ2enVJ?=
- =?utf-8?B?aDJwL3FMNGRJYlVTME9jZXNHbDdVaW5HakhnaU9QTG5YeXluVlJ5NThFd3l4?=
- =?utf-8?B?U0ZobnJYSlFFZ3FHaWpyYSt6SldQVHZHK09jL2U5ZUpFMjdJeVV2bG5DUHQ0?=
- =?utf-8?B?bXRYOE9LSUIrU0V0U2tHYnh1MmkvZmMraklNUS9LMjBCWTRCbzJjQ3Fxc0pU?=
- =?utf-8?B?RHRTK012aXhuQ2hZNVg3ZStHRmp6VjYyTEQ1RWhHRlJwUXZ5MWVaZEtiazNa?=
- =?utf-8?B?ZWNFdEwvS25ibStoRHZNUTNEd3d3WThtU0lOcW5uZW1TS2htUHJrdDg5d3Np?=
- =?utf-8?B?WTBvaDNMRVVra1cxQnJQWjlOSzNIbmhxU0t0enpKc3NxSXRCRk5hdDlONUhW?=
- =?utf-8?B?N3N5RHBXTlNzUjBLcSs3L2lSbVNuQnNxNUpvVHZhcjU0TE1vbXBWUVRtWWxS?=
- =?utf-8?B?SmhLQVZram9rWHNxTDhpZUpaTUZob01GZ0xKRFkzQytiT1NCcU4vaktoc3gr?=
- =?utf-8?B?SGN5QUM3UUsxTjhmRVUvVGVBcXQ3UkZiV3l3eVVYa0VIMi9UYk1pQ3RaZEpz?=
- =?utf-8?B?U24ralNGLzQyTkpuNTJsalZnYjJPdGdqc05PZUFKRE51Z2hNMmFYNGthRS9l?=
- =?utf-8?B?Qml2U3MrbTY1VTN6YW04U1VCcnlldUloT0tvb3RhZjdjNVRNZUVTUzl2NldY?=
- =?utf-8?B?clQ3SGhpU3BOcFU2RDBnZUFsUEJsMy8yekQyeHc4OE9nNmtsMUw0UGNZdUpE?=
- =?utf-8?B?a0ZYcjV3VDhtWXY0d1NJZVVVcGk3Z3pVU0krck4wblZxazExTGFRQyttTzdy?=
- =?utf-8?B?d0E0NHVtOGZkK1U4NnR6V2JoNVd6bUs3c012bFRNWGR6eFZJTEdUU3Z1N0Jm?=
- =?utf-8?B?STJaVER2ak5ySVNwU255L3ZXcEdHTlN3S1d3dXNpeDFPMTBiV2p2OHQ3bGRL?=
- =?utf-8?B?M1VtQnpwZWk0QmMzU3dEa3N4dncrV2c0YUpWNEFaUXVpRHI1dUliR3hxS0Nj?=
- =?utf-8?B?UG5kY1BPUWtmbUNHYkxJQ2I1cVdkQzBuakZUWHQzU1ZYVk5MYktQOWcwYnpP?=
- =?utf-8?B?Ym5SKzRnWktnUWFWb21XbFdGcElELzg2b0RQMHZUUFg0clJNNC9qbm9ONmpN?=
- =?utf-8?B?SFJpSEJPV0NVc0tXUHhnSENNc1pVbFNrN056enp3bTRTTlV0S0FDOUh5OHhE?=
- =?utf-8?B?UXRNNUNudWtuV1UyL1RvNW9KaDNtYUdrMmF1YzZtMVFINUk1dW01S3F6Z1VM?=
- =?utf-8?B?YlZkUlp1SjltOVZSOU9weGRkMVFMZmpyejEzanFtdE9icjcxSEFDY0c3cmlP?=
- =?utf-8?B?ZVQwN0pRSVlrSXFRMkJabzFRZmRza1pBck5YL0Npcy9TaDFSV001bFFCRSs4?=
- =?utf-8?B?UEVnK0E0eWhDQ3U1eHVtMG1ZQUVMN24yWjUxalFmTkc4Vy9saUJ5eWZBQURq?=
- =?utf-8?B?dmxMUCtFOXJJNWNVUW0vRmM4VmlMakZUR0ZsZnNGOHNuNkZtQ0M1L0tWTzlv?=
- =?utf-8?B?SjZIR1ZDZEJBbU9UR3NQSkVwMk95Y0t4dTFMSE5SQUdpcUxTY2RUUmkvbXJz?=
- =?utf-8?B?cWpXZDBWZUJEdnFONi81TTkxelRRPT0=?=
+	=?utf-8?B?UUpURWM4Tm5HNkV6b2pPQWxXY3pKb2hGSHlIRTIwNVFzSTRCRmpqSHZQdjF0?=
+ =?utf-8?B?RmUxQjdtcWE0UUs5RmQ5bE1ENTVJY1k5Nkd4a1oxN3pzWkR5SXU1YVFySEli?=
+ =?utf-8?B?U0gwUXdPbG1QTGorY0V3d2hSdUQ0eDVJTlpnQlpqWU02b2U1Zyt3ZVJhdFlC?=
+ =?utf-8?B?WUFSbS9BckloUXFwMER2bEdmN0NTZU9wOElLZVh2ajllUFFhOWNaZUpibTNu?=
+ =?utf-8?B?RzlRTmw0ZzlOK3hpVDhCWjdQdGVHWTVqc3o2dEV6bFlBYm5RTWNNTkg0Nmdv?=
+ =?utf-8?B?NDR1ckc2dUxRVFFkRCtSelNTMTl0U1dUeG8yNzdrKy9zWFFZa0dtQ1N2eWE0?=
+ =?utf-8?B?eFVMdlZUTXIxb2hBK1BLcDBsMjF3MC8wV29PTHQya1VwWFVuRlkxZllQTk1N?=
+ =?utf-8?B?L0dNd3JQV1RiZVc4VXBCY0k0SGFkRjBhY3BmaWJUR3FFTGtJWjFUdWZpTUd3?=
+ =?utf-8?B?ZW5qb2liYVc1ODhqd0dHNWVQajAwU1hsOXA0TU5vazZITDY2clZEOGdvb3Yz?=
+ =?utf-8?B?Q0wxVkc2clFkcDAxOHBhSGZScjZQZzFpTFkwUWdzR3BIa2UzdGFWY2lLeTdN?=
+ =?utf-8?B?QlR1cmkvdzRYVDdadWQ2VUkvVkRTcjBRKzQvVjVIZGt5ZlE1K2hGSEFkK1JZ?=
+ =?utf-8?B?OWJSb3huMGFHajVtUk5vSDhNUG5ncnM5QVhqNDJiZDZmRDBPVldFODFCcTRR?=
+ =?utf-8?B?TXFsSWpXWFhYQmp5S09nSUdtWjh0ZE1oS1pheDhPL1BDdmwyakNWU21oMDhv?=
+ =?utf-8?B?cFFWL3F4Vk9EMndybFR5MEh6S1JFNHVET0E1MFdTTDU2WFZscUMrWmxTdHR2?=
+ =?utf-8?B?bTJ3WTFqaDlKZmoydVM3b0hOOU1vTjhOVCtiOXd6Y1U3a1NzUTU3ZDZOK0xz?=
+ =?utf-8?B?cEtaMkx3bXEyMzF4Y0NRNUZCNkVIOER1NVBrczI5dXVCYWJDSjNJbnNxR0k4?=
+ =?utf-8?B?a1crTnhDMzExdk5UTzE4azVPT2NkQnZQYTduS080YzBBQ2JQWkorc1BqS3Y5?=
+ =?utf-8?B?Q1NGbWlJTGlOV3lkcXd1K0s0VzhxdlNRS2loVGF5U2t5bXQrcmE2c1V2NU84?=
+ =?utf-8?B?dmFaK1VmS3laWm5uRzVhNW0wZWFYdUhIYzBhTWw1T29PNjNlOUM2V2R0MExW?=
+ =?utf-8?B?Q1pWaGYvQmhiN3NZT0c1RG5jcHE5aURnamgzM0hLMWRIMU5vUFVpVzFwMVpn?=
+ =?utf-8?B?M1UrbTEyTWlQKzlyWitoM2VDSkMxWDBKYnBWWklkbXdEcVFFOE9MdUxKakxz?=
+ =?utf-8?B?NUtrdDhXekVtSUlyZHR0elB1UllGMlJ1TDdqMnJ0dDZsL2hsM2dYYlNkRUdk?=
+ =?utf-8?B?WXM0RFgxNlk0a1FWbWxhOTlnckRXeHBNcjZ3UjdYc3R2bHgyWFRSZW5rSkJ0?=
+ =?utf-8?B?VzRXRXZreGNEWmdqdEEwVDVlNngzaW1YT0ovdk1tOVF1blRTdlQ1YXE5elZZ?=
+ =?utf-8?B?cFROaVNVa01lVmI4d2dycjNJbmg2VG4yZElsZHFQSmVXb3hndXI4TCsyQTda?=
+ =?utf-8?B?ck1yZm9vUDB1bkFCTEJIb1lWZTQxSkxUU3kvTlJaL0YrVTNXYkN4YXk2MXJX?=
+ =?utf-8?B?TVlhaWI0UnpZYTkyVURQNDRKaklNK1lBdzZqaFA0akp6UVB0cWMwZ282Snlj?=
+ =?utf-8?B?Zk5EKzk4aWtQd0F4YlBVVU9xbllZYTM1N3IwaU0vV003NnE5SkFmdUlHYUxs?=
+ =?utf-8?B?V21xUzZPdXZOY0tZbWEzeEwvZ3lnb1VpWVpqaDNGcUNicXJKNm51ZXU1SFM2?=
+ =?utf-8?B?RWtJSndOa0JtNXozdWF1bGVRWDhPMWs4RldrNi9WSUdWTFlHQlEweklmSFRS?=
+ =?utf-8?B?NHU4RUJuUnpjOWJGeVFKTUhjR0dKdVFaUW4vSGtuM1ltb3hQY3pQcVYxb25S?=
+ =?utf-8?B?Vk5hdFI5aFdNWDZHMFBEY3AwU3FnaklxclJiQTJOaEdjYkRTSTJpY3VLK2dX?=
+ =?utf-8?B?R3JIYzF4czZ2bGRKc1ZhZm1NelpwbXIvM3pUQ0JLaVVJSFBaK254bWhQak1j?=
+ =?utf-8?B?cVFSRWRkOXhWMGo2WWhEdjlXTEZPQjIvRWtjR0JQa1ZqR1BsaGFDcEFBMi9k?=
+ =?utf-8?B?UWlvZ09iNWc4N29Uc3RjUHZkUG0zWGdjL1JlU0NQcHhLTmZycGVsZ1NUaHBy?=
+ =?utf-8?B?N3NxL1hoM1pEc0lhTUNXSGozcVUzdTFqS2cvVXY5MVo2MHJUcmd3REpBRTA1?=
+ =?utf-8?B?NjZrV1FFLzNFanFlOEFiOFNpd21zenBlWGFYSzhyWmppdVVrVExqd2lCVTFt?=
+ =?utf-8?B?cjY2VnM0elREdi9wYjJhOHZYUWhRPT0=?=
 X-OriginatorOrg: gocontroll.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5454b1ac-a8a6-4071-8600-08de161f9a30
+X-MS-Exchange-CrossTenant-Network-Message-Id: b60b657b-508e-4c12-ec0f-08de16238135
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7630.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 12:43:32.1644
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 13:11:28.2063
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4c8512ff-bac0-4d26-919a-ee6a4cecfc9d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Kltk6ew1TjkkEAVklRrXeavXLkbont2FLLGzAJyUXDnt9Jgi08THPwKrEABtrgD3ixZxxWKW2PpdbShta/nYfkjHs3X48nsNj/TOnoArFgA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9818
+X-MS-Exchange-CrossTenant-UserPrincipalName: efvovRpLxm4yn1B5q7Q83lB+0NS30ZMnL5kU3lEMDTC+2vIgx/KyRWXZv+22Vf4jEbjvSDh1VF25XkyzIPSjDslH1FdM2q4qXcF6sViyhoE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB11259
 
-On 10/28/25 13:15, Matti Vaittinen wrote:
-> Hi Maud,
-> 
-> Thanks for the upstreaming work! :)
-> 
-> On 22/10/2025 10:22, Maud Spierings via B4 Relay wrote:
->> From: Maud Spierings <maudspierings@gocontroll.com>
+On 10/28/25 13:42, Maud Spierings wrote:
+> On 10/28/25 13:15, Matti Vaittinen wrote:
+>> Hi Maud,
 >>
->> The Ka-Ro Electronics tx8m-1610 is a COM based on the imx8mm SOC. It has
->> 1 GB of ram and 4 GB of eMMC storage on board.
+>> Thanks for the upstreaming work! :)
 >>
->> Add it to enable boards based on this module
+>> On 22/10/2025 10:22, Maud Spierings via B4 Relay wrote:
+>>> From: Maud Spierings <maudspierings@gocontroll.com>
+>>>
+>>> The Ka-Ro Electronics tx8m-1610 is a COM based on the imx8mm SOC. It has
+>>> 1 GB of ram and 4 GB of eMMC storage on board.
+>>>
+>>> Add it to enable boards based on this module
+>>>
+>>> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+>>> ---
+>>>   .../arm64/boot/dts/freescale/imx8mm-tx8m-1610.dtsi | 439 ++++++++++ 
+>>> + ++++++++++
+>>>   1 file changed, 439 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610.dtsi b/ 
+>>> arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610.dtsi
+>>> new file mode 100644
+>>> index 0000000000000..46d3ad80942cc
+>>> --- /dev/null
+>>> +++ b/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610.dtsi
+>>> @@ -0,0 +1,439 @@
+>>> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+>>> +/*
+>>> + * Copyright (C) 2021 Lothar Waßmann <LW@KARO-electronics.de>
+>>> + * 2025 Maud Spierings <maudspierings@gocontroll.com>
+>>> + */
+>>> +
+>>> +#include "imx8mm.dtsi"
+>>> +
 >>
->> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
->> ---
->>   .../arm64/boot/dts/freescale/imx8mm-tx8m-1610.dtsi | 439 +++++++++++ 
->> ++++++++++
->>   1 file changed, 439 insertions(+)
+>> // snip
 >>
->> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610.dtsi b/ 
->> arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610.dtsi
->> new file mode 100644
->> index 0000000000000..46d3ad80942cc
->> --- /dev/null
->> +++ b/arch/arm64/boot/dts/freescale/imx8mm-tx8m-1610.dtsi
->> @@ -0,0 +1,439 @@
->> +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
->> +/*
->> + * Copyright (C) 2021 Lothar Waßmann <LW@KARO-electronics.de>
->> + * 2025 Maud Spierings <maudspierings@gocontroll.com>
->> + */
->> +
->> +#include "imx8mm.dtsi"
->> +
+>>> +    pmic: pmic@4b {
+>>> +        compatible = "rohm,bd71847";
+>>> +        reg = <0x4b>;
+>>> +        interrupt-parent = <&gpio1>;
+>>> +        interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+>>> +        pinctrl-0 = <&pinctrl_pmic>;
+>>> +        pinctrl-names = "default";
+>>> +        rohm,reset-snvs-powered;
+>>> +
+>>> +        regulators {
+>>> +            reg_vdd_soc: BUCK1 {
+>>> +                regulator-always-on;
+>>> +                regulator-boot-on;
+>>> +                regulator-max-microvolt = <900000>;
+>>> +                regulator-min-microvolt = <780000>;
+>>> +                regulator-name = "buck1";
+>>> +                regulator-ramp-delay = <1250>;
+>>> +            };
+>>> +
+>>> +            reg_vdd_arm: BUCK2 {
+>>> +                regulator-always-on;
+>>> +                regulator-boot-on;
+>>> +                regulator-max-microvolt = <950000>;
+>>> +                regulator-min-microvolt = <805000>;
+>>> +                regulator-name = "buck2";
+>>> +                regulator-ramp-delay = <1250>;
+>>> +                rohm,dvs-run-voltage = <950000>;
+>>> +                rohm,dvs-idle-voltage = <810000>;
+>>> +            };
+>>> +
+>>> +            reg_vdd_dram: BUCK3 {
+>>> +                regulator-always-on;
+>>> +                regulator-boot-on;
+>>> +                regulator-max-microvolt = <900000>;
+>>> +                regulator-min-microvolt = <805000>;
+>>> +                regulator-name = "buck3";
+>>> +            };
+>>> +
+>>> +            reg_vdd_3v3: BUCK4 {
+>>> +                regulator-always-on;
+>>> +                regulator-boot-on;
+>>> +                regulator-max-microvolt = <3300000>;
+>>> +                regulator-min-microvolt = <3300000>;
+>>> +                regulator-name = "buck4";
+>>> +            };
+>>> +
+>>> +            reg_vdd_1v8: BUCK5 {
+>>> +                regulator-always-on;
+>>> +                regulator-boot-on;
+>>> +                regulator-max-microvolt = <1950000>;
+>>> +                regulator-min-microvolt = <1700000>;
+>>> +                regulator-name = "buck5";
+>>> +            };
+>>> +
+>>> +            BUCK6 {
+>>> +                regulator-always-on;
+>>> +                regulator-boot-on;
+>>> +                /*
+>>> +                 * The default output voltage is 1.1V, bumped
+>>> +                 * to 1.35V in HW by a 499R/2.2K voltage divider in the
+>>> +                 * feedback path.
+>>> +                 */
+>>
+>> Could/Should this be described using the:
+>> 'rohm,feedback-pull-up-r1-ohms' and
+>> 'rohm,feedback-pull-up-r2-ohms'? If I understand the comment 
+>> correctly, that might allow the driver to be able to use correctly 
+>> scaled voltages.
+>>
+>> https://elixir.bootlin.com/linux/v6.18-rc1/source/Documentation/ 
+>> devicetree/bindings/regulator/rohm,bd71837-regulator.yaml#L108
+>>
 > 
-> // snip
+> Ah I didn't know those existed, should've checked the bindings in more 
+> detail, thanks for the hint!
 > 
->> +    pmic: pmic@4b {
->> +        compatible = "rohm,bd71847";
->> +        reg = <0x4b>;
->> +        interrupt-parent = <&gpio1>;
->> +        interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
->> +        pinctrl-0 = <&pinctrl_pmic>;
->> +        pinctrl-names = "default";
->> +        rohm,reset-snvs-powered;
->> +
->> +        regulators {
->> +            reg_vdd_soc: BUCK1 {
->> +                regulator-always-on;
->> +                regulator-boot-on;
->> +                regulator-max-microvolt = <900000>;
->> +                regulator-min-microvolt = <780000>;
->> +                regulator-name = "buck1";
->> +                regulator-ramp-delay = <1250>;
->> +            };
->> +
->> +            reg_vdd_arm: BUCK2 {
->> +                regulator-always-on;
->> +                regulator-boot-on;
->> +                regulator-max-microvolt = <950000>;
->> +                regulator-min-microvolt = <805000>;
->> +                regulator-name = "buck2";
->> +                regulator-ramp-delay = <1250>;
->> +                rohm,dvs-run-voltage = <950000>;
->> +                rohm,dvs-idle-voltage = <810000>;
->> +            };
->> +
->> +            reg_vdd_dram: BUCK3 {
->> +                regulator-always-on;
->> +                regulator-boot-on;
->> +                regulator-max-microvolt = <900000>;
->> +                regulator-min-microvolt = <805000>;
->> +                regulator-name = "buck3";
->> +            };
->> +
->> +            reg_vdd_3v3: BUCK4 {
->> +                regulator-always-on;
->> +                regulator-boot-on;
->> +                regulator-max-microvolt = <3300000>;
->> +                regulator-min-microvolt = <3300000>;
->> +                regulator-name = "buck4";
->> +            };
->> +
->> +            reg_vdd_1v8: BUCK5 {
->> +                regulator-always-on;
->> +                regulator-boot-on;
->> +                regulator-max-microvolt = <1950000>;
->> +                regulator-min-microvolt = <1700000>;
->> +                regulator-name = "buck5";
->> +            };
->> +
->> +            BUCK6 {
->> +                regulator-always-on;
->> +                regulator-boot-on;
->> +                /*
->> +                 * The default output voltage is 1.1V, bumped
->> +                 * to 1.35V in HW by a 499R/2.2K voltage divider in the
->> +                 * feedback path.
->> +                 */
-> 
-> Could/Should this be described using the:
-> 'rohm,feedback-pull-up-r1-ohms' and
-> 'rohm,feedback-pull-up-r2-ohms'? If I understand the comment correctly, 
-> that might allow the driver to be able to use correctly scaled voltages.
-> 
-> https://elixir.bootlin.com/linux/v6.18-rc1/source/Documentation/ 
-> devicetree/bindings/regulator/rohm,bd71837-regulator.yaml#L108
+> I will have to investigate this carefully, since I don't have access to 
+> the actual design of the COM, so I don't know exactly what is there.
 > 
 
-Ah I didn't know those existed, should've checked the bindings in more 
-detail, thanks for the hint!
+So I am not yet entirely sure if this works out, I used the calculation 
+in the driver:
 
-I will have to investigate this carefully, since I don't have access to 
-the actual design of the COM, so I don't know exactly what is there.
+/*
+  * Setups where regulator (especially the buck8) output voltage is scaled
+  * by adding external connection where some other regulator output is 
+connected
+  * to feedback-pin (over suitable resistors) is getting popular amongst 
+users
+  * of BD71837. (This allows for example scaling down the buck8 voltages 
+to suit
+  * lover GPU voltages for projects where buck8 is (ab)used to supply power
+  * for GPU. Additionally some setups do allow DVS for buck8 but as this do
+  * produce voltage spikes the HW must be evaluated to be able to 
+survive this
+  * - hence I keep the DVS disabled for non DVS bucks by default. I 
+don't want
+  * to help you burn your proto board)
+  *
+  * So we allow describing this external connection from DT and scale the
+  * voltages accordingly. This is what the connection should look like:
+  *
+  * |------------|
+  * |	buck 8  |-------+----->Vout
+  * |		|	|
+  * |------------|	|
+  *	| FB pin	|
+  *	|		|
+  *	+-------+--R2---+
+  *		|
+  *		R1
+  *		|
+  *	V FB-pull-up
+  *
+  *	Here the buck output is sifted according to formula:
+  *
+  * Vout_o = Vo - (Vpu - Vo)*R2/R1
+  * Linear_step = step_orig*(R1+R2)/R1
+  *
+  * where:
+  * Vout_o is adjusted voltage output at vsel reg value 0
+  * Vo is original voltage output at vsel reg value 0
+  * Vpu is the pull-up voltage V FB-pull-up in the picture
+  * R1 and R2 are resistor values.
+  *
+  * As a real world example for buck8 and a specific GPU:
+  * VLDO = 1.6V (used as FB-pull-up)
+  * R1 = 1000ohms
+  * R2 = 150ohms
+  * VSEL 0x0 => 0.8V – (VLDO – 0.8) * R2 / R1 = 0.68V
+  * Linear Step = 10mV * (R1 + R2) / R1 = 11.5mV
+  */
+
+Because I do not know the pull up voltage, and I am not sure if it is a 
+pull up.
+
+So:
+Vout_o = 1.35V
+Vo = 1.1V
+Vpu = unknown
+R2 = 499 Ohm
+R1 = 2200 Ohm
+Gives:
+Vpu = ~0V
+
+And:
+Vout_o = 1.35V
+Vo = 1.1V
+Vpu = unknown
+R2 = 2200 Ohm
+R1 = 499 Ohm
+Gives:
+Vpu = ~1.04V
+
+I am not quite sure which resistor is R1 and which is R2 but having 
+there be a pull down to 0V seems the most logical answer?
+
+I am adding Lothar from Ka-Ro to the CC maybe he can shed some light on 
+this setup.
 
 Kind regards,
 Maud
