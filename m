@@ -1,391 +1,266 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023079.outbound.protection.outlook.com [40.107.159.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F9C2F1FC7
-	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 10:51:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761648667; cv=none; b=l5kLL+Cc9xWx7qmeTDApw01VD/R3hT5XikLTEaOhFBPBHznndBcnOS6bbR0z4Gd2fy5OYjLoS4InK1Wum6uKNv3rx8oLiFBKR9G5lwSMPE1SsVeZOoAIVoobBLgbVNgMZoRPwpIYH4RG1yn8rnyXLo4s9ssBEApbBigW8KAi19I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761648667; c=relaxed/simple;
-	bh=DDhNlvzKMkJquFS7Dfuj4GY/hVUlxRX3nTDoyxMG6wI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rY0vjTg0oFHIHXc4Loab9v0GeZhEaZDzHY39mCScJvBoB1+VvjzA/mNrfUbH4B3wgXQkgbamU2UUglrooRu0QKBCjXkyI4zvdp2FF+cjqT5IFlPIYr/sAL8ixr6EzVZ1VDX4VTgV5BzWnBrYLYOmLAuRYmeGbgtuiqWSDIwaXg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WatLz84Z; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3762E6127
+	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 11:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.79
+ARC-Seal:i=4; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761651746; cv=fail; b=qj2CAMNF+qH8uPI5sT8Sx8NvHu40qf/Mks5li0AtMo4uo4Em0GJhmH7aCqqEFXjZgSd3/cqX7u/8sTQxwJ9N8WF/Yeqe1PPdTE79OK1AoVazn0tPduQef0riBK7YARgeQbjyvtJvM93h51PCl8+qCXJz9rdDQZSKtkYJEySMd4Q=
+ARC-Message-Signature:i=4; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761651746; c=relaxed/simple;
+	bh=fWja487z8KG0hO8EGXK+c0rj3MtZujG45rmZaSfHkLg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=VmdiN2iJO3fFzkWBbcKiGwYyRCMdmIK9arZs003oa4HErsQoMgx+RRZkdLSQCJP02HAdO9+nJvOh1t8RKaVD5HHgD/TliDDExd1lPbM9xkgRlOBCsdVBNcaQdv/selrpzuog5MjbcdWEtZLSJioDDgshTcJFlqkz6OmgQ9WZqtA=
+ARC-Authentication-Results:i=4; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=solid-run.com; spf=pass smtp.mailfrom=solid-run.com; dkim=pass (1024-bit key) header.d=solidrn.onmicrosoft.com header.i=@solidrn.onmicrosoft.com header.b=epzoM7XY; dkim=pass (1024-bit key) header.d=solidrn.onmicrosoft.com header.i=@solidrn.onmicrosoft.com header.b=epzoM7XY; arc=fail smtp.client-ip=40.107.159.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=solid-run.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=solid-run.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WatLz84Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761648665; x=1793184665;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DDhNlvzKMkJquFS7Dfuj4GY/hVUlxRX3nTDoyxMG6wI=;
-  b=WatLz84ZIgSZmJgSk6NiVSlad+laqGAZhl00lznIPYI7a8x6mJwrgMNy
-   /x3mwXJ7DrgKW3lSOIRMyVBJrCbOwRoAh0dPHcBJRZic5dcXl600vtE3t
-   LA4UKudvyfhMEUzGggDhV+ZkEygoMtcjJOPXPm4gqYLshiUbK40JXMeR2
-   0Z4h+XEat+hnhkeex5S1tF4U52Srwqi4m5ghmg15SL4+Npbp5o68t/L6u
-   f6Dqe4pi/sN7MCaQ/fRezOMkxWhUQKV+jEPtpUIU5J/CSJIEGaKnB3rZv
-   kJz2PmTp7mJ/Goidv8br1inWZdDlIzT17tNvX0zY5BK0yaDo33dQk9y9/
-   w==;
-X-CSE-ConnectionGUID: u7XY93ezQYqk8kbhyk5l3w==
-X-CSE-MsgGUID: oRY+ktJJR42OoIDBEx5iEQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63652156"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="63652156"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 03:51:02 -0700
-X-CSE-ConnectionGUID: 7/vD61a0RPifdfZOkT98bw==
-X-CSE-MsgGUID: UCWqVhH5SYe9HCyiQ1fGRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="189670343"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 03:50:59 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vDhHz-00000003Hq9-3vuo;
-	Tue, 28 Oct 2025 12:50:55 +0200
-Date: Tue, 28 Oct 2025 12:50:55 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v7 5/5] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <aQCgD3iVOXoNr7uY@smile.fi.intel.com>
-References: <20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com>
- <20251027-i3c_ddr-v7-5-866a0ff7fc46@nxp.com>
+	dkim=pass (1024-bit key) header.d=solidrn.onmicrosoft.com header.i=@solidrn.onmicrosoft.com header.b="epzoM7XY";
+	dkim=pass (1024-bit key) header.d=solidrn.onmicrosoft.com header.i=@solidrn.onmicrosoft.com header.b="epzoM7XY"
+ARC-Seal: i=3; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=GJDZG2UfUusBD89FEOpb9gX4VlYKfIWPNRqKPOTH0EAhuiUssdVHK5pDEyqy4qk2OD39M0erwNrDwkkcIe6PGBy5sArFut+0gQ3BQ3aOsZPJlc6RA08hvk+CIP6g50ZIlhH4t9mEb9FMxmkRWZBdDX4seSNGtNCQgHFWMq9FqsuDaWWvzhMrWBjryT4Ux3CoX4YcfXyNOluYaueJR1i8L2a52EEi+OcChQSmH9au9uX8DtvpjR4TOBZ/PxepV7NGYBBNGYXmmceVDvGc1zWUHh7kEVWOq9c+IcC++0eg9Eeaup62y+/FMiT99aMd9Z8IaZoQ6I2iYu+qs3bqk1OJFA==
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fWja487z8KG0hO8EGXK+c0rj3MtZujG45rmZaSfHkLg=;
+ b=qUHdkUuH+W8CRhC6jyjkYW0mem7ie3P5TIS4r9S0ehKpiIw9C5KgQHH6m5VrOZB2pK5lpRXB4nQqNt22QA1lg/9k9uerdXiab1TQWnvZyAvlxvJgzl4h13Y/PdnYUlLCh4h96bmWnkjTFPXMzjQ9DScKlX9n4rXEIW94X7X9dtbg9IaumU+RvPq138YL9mouoZyCDkqfl/AA5HjiUtGyrCUXo0JbFZ4X6m2umzT95DRG9OcdLBUg374sIRYJ2k/qnQqnkFy8SH4sGCmsm5Htd9Dw/Rmnrg3Ats0YEURXIkyXvz7kWKcPNobo0k2ab9G2LjrFNoOixYv1OxwR9iXnIA==
+ARC-Authentication-Results: i=3; mx.microsoft.com 1; spf=fail (sender ip is
+ 52.17.62.50) smtp.rcpttodomain=ffwll.ch smtp.mailfrom=solid-run.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=solid-run.com;
+ dkim=pass (signature was verified) header.d=solidrn.onmicrosoft.com; arc=pass
+ (0 oda=1 ltdi=1 spf=[1,1,smtp.mailfrom=solid-run.com]
+ dkim=[1,1,header.d=solid-run.com] dmarc=[1,1,header.from=solid-run.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=solidrn.onmicrosoft.com; s=selector1-solidrn-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fWja487z8KG0hO8EGXK+c0rj3MtZujG45rmZaSfHkLg=;
+ b=epzoM7XYUX/4Q240+4x8Q0yY9hebxL7HX4ziUqXC5zETmaxQfRY9UsaPMIaGYb9rNp0hstelPEpTVS9+SfiirF7yIcZanRWnLySf7ugnj8BCeWrONGz0yVpXIB/KPPxD+JEMCJZk82Xo67Koe+DwsBb/ySqH2Z+DMgsl+RwheVY=
+Received: from DUZPR01CA0122.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4bc::26) by PA4PR04MB9461.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.17; Tue, 28 Oct
+ 2025 11:42:20 +0000
+Received: from DB5PEPF00014B95.eurprd02.prod.outlook.com
+ (2603:10a6:10:4bc:cafe::3c) by DUZPR01CA0122.outlook.office365.com
+ (2603:10a6:10:4bc::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9253.19 via Frontend Transport; Tue,
+ 28 Oct 2025 11:42:47 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 52.17.62.50)
+ smtp.mailfrom=solid-run.com; dkim=pass (signature was verified)
+ header.d=solidrn.onmicrosoft.com;dmarc=fail action=none
+ header.from=solid-run.com;
+Received-SPF: Fail (protection.outlook.com: domain of solid-run.com does not
+ designate 52.17.62.50 as permitted sender) receiver=protection.outlook.com;
+ client-ip=52.17.62.50; helo=eu-dlp.cloud-sec-av.com;
+Received: from eu-dlp.cloud-sec-av.com (52.17.62.50) by
+ DB5PEPF00014B95.mail.protection.outlook.com (10.167.8.233) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9275.10
+ via Frontend Transport; Tue, 28 Oct 2025 11:42:20 +0000
+Received: from emails-5661497-12-mt-prod-cp-eu-2.checkpointcloudsec.com (ip-10-20-5-121.eu-west-1.compute.internal [10.20.5.121])
+	by mta-outgoing-dlp-431-mt-prod-cp-eu-2.checkpointcloudsec.com (Postfix) with ESMTPS id E9D0A8040A;
+	Tue, 28 Oct 2025 11:42:19 +0000 (UTC)
+ARC-Authentication-Results: i=2; mx.checkpointcloudsec.com; arc=pass;
+  dkim=none header.d=none
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
+ d=checkpointcloudsec.com; s=arcselector01; t=1761651739; h=from : to :
+ subject : date : message-id : content-type : mime-version;
+ bh=fWja487z8KG0hO8EGXK+c0rj3MtZujG45rmZaSfHkLg=;
+ b=MpsvKIofTv9WzNFheqwqsGeD64ISL56atNSuMsLGXHCGOBt51d94rZAbK3uWPYaJiJPIk
+ MKLwj4dPDTiqzkqsZOOaow2EpVfCY7n1gqEe7wgNI1iNirMSM+/QrpgL594amHnqIuLgxsM
+ 8DyNt9CKMMVjMgbeh9wE0WFiapO3MYw=
+ARC-Seal: i=2; cv=pass; a=rsa-sha256; d=checkpointcloudsec.com;
+ s=arcselector01; t=1761651739;
+ b=bz2jNhRbWXiUbTEfgHpwYrvS7JyFiGdpTkjE10JrfFic9A62OZ2Q0F6M/5mkpEKXH1Abk
+ SVMBgYLxZwX18O/t0+yTdFiyJTjX7W1PQwv5wPW+w/KG+SP/ohAfzN4Mneqz0MlJqfuOHnS
+ zY7uE2b8DCHQbB1zjNk1oGbozVf1sLk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dXqPOSjMe9K2j4eUakzaMgOxJuX4JftQMPCx5Kt3g2v/zOQE/dmPL00R71LzBwbo26wC/1PhZ9tzdmBsh0bORNja6m1JDfkK23xGm+T8AjrwvwydQJ//1aLtdljDQjX8pk1lNWl6zwIFG48ePkEOMn6gDh5mnXF7jstjmRTZn/T9YSZL7dg46BcMq9PMO0yG7dVdPOBfs+9A27RQOOxN4jCDg2jRAju642U8GBtM3o/haHlCrTQ/fcIjvlZZFY/AzZ6nrqgKD7YBIBUJ7MzcgCsZoqWAPZxxdVkFn0IyjzqsP/VAtjAq3BNTmtzk74NML3Wn0s35rTgFmtjCOb405Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fWja487z8KG0hO8EGXK+c0rj3MtZujG45rmZaSfHkLg=;
+ b=nN1eEiG2gwcyltL1vN4NZnLMm/Gm2KDtLHomRNEUm1OArIZgVtT5eh+Sndx0M1hVB6riHw3UIYQyETzHgJKpSrWMq6kh4v5CeyWDnta1o9FJHCO17vSyVy4ParprhJAe6Stx/iZ2CdIyMPLoTD9AhkiT5CuxmxUxr07Q28SyiRrJ1P1hI6aENnBvCfTaieVO3VYIoOD2smUazlGy2HFgWE4luXELpgARYHICF8XKsRef+ne8FhQkJFmiC4M6T3ruOCFxKcBYiC5wyY8UxqokPFkTtRNgvDgwK/owI7dyOoJxFMHrUnSiCLGvXx4i+N7kw1QXH3alrjY5G+K07/Sbbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=solid-run.com; dmarc=pass action=none
+ header.from=solid-run.com; dkim=pass header.d=solid-run.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=solidrn.onmicrosoft.com; s=selector1-solidrn-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fWja487z8KG0hO8EGXK+c0rj3MtZujG45rmZaSfHkLg=;
+ b=epzoM7XYUX/4Q240+4x8Q0yY9hebxL7HX4ziUqXC5zETmaxQfRY9UsaPMIaGYb9rNp0hstelPEpTVS9+SfiirF7yIcZanRWnLySf7ugnj8BCeWrONGz0yVpXIB/KPPxD+JEMCJZk82Xo67Koe+DwsBb/ySqH2Z+DMgsl+RwheVY=
+Received: from PAXPR04MB8749.eurprd04.prod.outlook.com (2603:10a6:102:21f::22)
+ by PA4PR04MB9296.eurprd04.prod.outlook.com (2603:10a6:102:2a7::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Tue, 28 Oct
+ 2025 11:42:11 +0000
+Received: from PAXPR04MB8749.eurprd04.prod.outlook.com
+ ([fe80::aa83:81a0:a276:51f6]) by PAXPR04MB8749.eurprd04.prod.outlook.com
+ ([fe80::aa83:81a0:a276:51f6%4]) with mapi id 15.20.9253.017; Tue, 28 Oct 2025
+ 11:42:10 +0000
+From: Josua Mayer <josua@solid-run.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Neil
+ Armstrong <neil.armstrong@linaro.org>, Jessica Zhang
+	<jessica.zhang@oss.qualcomm.com>, David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, Dmitry Torokhov
+	<dmitry.torokhov@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Jon Nettleton <jon@solid-run.com>, Mikhail Anikin
+	<mikhail.anikin@solid-run.com>, Yazan Shhady <yazan.shhady@solid-run.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 01/10] dt-bindings: arm: fsl: Add binding for various
+ solidrun imx8 boards
+Thread-Topic: [PATCH 01/10] dt-bindings: arm: fsl: Add binding for various
+ solidrun imx8 boards
+Thread-Index: AQHcR2ngHAXhUvqfzkCW8b5pOviz+LTXQ8yAgAAtKgA=
+Date: Tue, 28 Oct 2025 11:42:10 +0000
+Message-ID: <76635f9e-c622-4700-afb8-97afc996ca76@solid-run.com>
+References: <20251027-imx8mp-hb-iiot-v1-0-683f86357818@solid-run.com>
+ <20251027-imx8mp-hb-iiot-v1-1-683f86357818@solid-run.com>
+ <20251028-truthful-dexterous-hyena-d3d4c5@kuoka>
+In-Reply-To: <20251028-truthful-dexterous-hyena-d3d4c5@kuoka>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-traffictypediagnostic:
+	PAXPR04MB8749:EE_|PA4PR04MB9296:EE_|DB5PEPF00014B95:EE_|PA4PR04MB9461:EE_
+X-MS-Office365-Filtering-Correlation-Id: 609bcf55-6ef2-4032-23fd-08de16170da0
+x-cloud-sec-av-info: solidrun,office365_emails,sent,inline
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700021;
+X-Microsoft-Antispam-Message-Info-Original:
+ =?utf-8?B?NTVZdnk5Uis4cUd4VjNlTDRHWTJmUUg2SnBTRS80cElHek5FVWkxY0wwWm1h?=
+ =?utf-8?B?NzNoZll5am45OER2bi9PSWxBcHN3YmpzNWpDY3dLM0JZOHc5R1JuYjVHSDZM?=
+ =?utf-8?B?cnYzSHpKeXNidWFBWVVoYlRCTW1DK0VXSHdqcXNPUDcvSVZXNVR2MnJaclZH?=
+ =?utf-8?B?QkNQcUY2d2x1MllnNTUwTDdhYXF0NXhJMTMyUWlUd01qeFpuRUxEZHhhaDNW?=
+ =?utf-8?B?WlpKL3l3YytZb0wxK1ZJL2taYzY1cE9xaERtdERwMzhlWElCVEtiUDJkT0F3?=
+ =?utf-8?B?Qmh0Ujd0d0JvakZJaUd6d3hqdWo4K2l3TEFWVnNqYUV2WTZORURsV1l0SWpt?=
+ =?utf-8?B?aVB1YSs4S3grR3pMOTNKWnZDWWxsNFBXSmd2UzdSU094Um13d0NnbU10ZDdm?=
+ =?utf-8?B?ZzM4VGVwUEduWE9oSUxpZzdtY1h2MkY2MDUyakw4SzJzK0RFanNjZ1dKem9u?=
+ =?utf-8?B?MjFTMGsrUkk1c2kwSXNRZ3hsdyt6WlJuMUVVVGVlOWQ3OEhQZFZTTzA5Lzg1?=
+ =?utf-8?B?b0NKcDdjTExGc3Y1RVpyWkp0NXF2c3ZtUjVMQklBOFVYWU0vZGsvSzM4Rk9h?=
+ =?utf-8?B?SFJaVkJjQ2pMaWlvTFZmS1U0NTJpdi9rVjVUMkhETlptOG13OHRpRzRIamY5?=
+ =?utf-8?B?aEdIUnJlc3R5YndPNE9SMzJOSW50Sm1nZmgvbHRWcllRTThuT3ZkdTQwRDRJ?=
+ =?utf-8?B?UE5xcSt0OVZzaTFXY2FEVUNGNm1Sajd4bVA0akF4UGNBUkdBdytDZUVFakxF?=
+ =?utf-8?B?YkQyQi94S1pFcy9BS3VlMTBzUXZ3K3Q3YmcrbExPQ1ZRSC9CS2FJZnc1TzVJ?=
+ =?utf-8?B?RnpaaE16aFo4YmZxQUhZYmlvbzJkcHZHa3RacmxhNmRoWFhxTUVFWTBTekF0?=
+ =?utf-8?B?WnZKV1E4QTFrcTkrdHRxdkZCQW5sQ05TZXpFakpjdWE3Tk9qZGttS09PZDkz?=
+ =?utf-8?B?VnQxWitVZXpTc3YzM3FMRm50VUplaWNTQW52Ty9vS0ZNRnpZQWxUcHZCNDlF?=
+ =?utf-8?B?WjJXdUF4S3lQNStMa0p4MGQyZGo3dUhxSnRyMDI0Ung4d2MvVzJiYkx5cTYy?=
+ =?utf-8?B?TE0zOHVxNXJucFBlNXQ0aVlISDlGNVdyRWw3NExTUlZxeldyNUZIOEZEZnp1?=
+ =?utf-8?B?NGIzZ1E4NU4ycU1yL2VLYUkxVysrdk1wczNMRnkwRm0vZEt3S3U5emJ2TGtV?=
+ =?utf-8?B?RHdxd2pUN1JVRzE1K0I2S1lBQW9USzZZVmxMbjJNaElWeEZWRnMzVkYvTlhw?=
+ =?utf-8?B?S01CNXcyY2Mzck1YVHp6bEZhaXR1Ni90Y0VEb0t5ZWlMTW93MTZlUitNdUI3?=
+ =?utf-8?B?MSthODZBRDVvRGE0N2VxNm1waHR0b3M4L1MwYSt4Y0FDUUxBRFY2cVhzSm9h?=
+ =?utf-8?B?RjNMY09UaERXaVVNKyt2a0wwT3VLVFM0MGluZUY5aWt2eEEza3ZtaE5XOFhI?=
+ =?utf-8?B?MkFTMFZLOUl4bEFveElkckpvOWRrbHVlbUpoSSs1QzJCRGxJdEtDbHZhVU8v?=
+ =?utf-8?B?dE03ME1LODBYa1UxSW1ueU8zdGY5SS9YQ3krYVZoZkN5clZyeWs5UlVPOGRR?=
+ =?utf-8?B?emhJZld5eklyS3pTOXY1cEhZZHJOZUlWRmJUUEZvUkQwQnVvY0NIaDV2VG5R?=
+ =?utf-8?B?c3Z6T0pYcE8wbDBmdDNQUzVnRUhuSG9YaUJFdzVkcnp2TnNuMXFGcUNhZlp3?=
+ =?utf-8?B?Y1M0SW8rNko5cVVwS3V6UGF2SVFLMXdGRFExS0JyZmJuOFVJMWhiMDk4dTFt?=
+ =?utf-8?B?amt3bWlJWEt5djYwMDRHUmhHK2UxOTBtWGlKRGhzOXFPYlIzYVB6VHNZN2pX?=
+ =?utf-8?B?eXVpWGVBa0prNXJmTVIrOGZOUjl6ci9SckFUUzM1ci9TL0ljREdjNEtpaUJ6?=
+ =?utf-8?B?azhlOTF0OFF2UVJPZTluNEpWd1VGSUI2eDA5TlBSZFE5NTRYRmY5NDJEcGUx?=
+ =?utf-8?Q?34A2ynLymW7GWPgamZA9wNUCvCd9H/BU?=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8749.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1102;
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D3D44D430BA1FB4DB128D66FCEE02095@eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251027-i3c_ddr-v7-5-866a0ff7fc46@nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9296
+X-CLOUD-SEC-AV-INT-Relay: sent<mta-outgoing-dlp-mt-prod-cp-eu-2.checkpointcloudsec.com>
+X-CLOUD-SEC-AV-UUID: 9bbe48a3c0ab46ee9f307fe1873fb835:solidrun,office365_emails,sent,inline:76fa2e8c87864c9bea8ab77815420b07
+Authentication-Results-Original: mx.checkpointcloudsec.com; arc=pass;
+ dkim=none header.d=none
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB5PEPF00014B95.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	823a34d8-5195-4eb7-b4d7-08de16170800
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|14060799003|7416014|82310400026|35042699022;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SG1WTTRiZ0JKbkE4T3kwU3gxSmF2QUtHS3ByRzVYY2xQSkxvZ2EwbGM2bTVY?=
+ =?utf-8?B?ZXFwYlZlSyt6bE5sN1RhTnhnSE01TWlOV1dnY0hBQ0FabThIVHl2U3RQMldp?=
+ =?utf-8?B?N3pYOTRZbG44MVJvSFlvdFdPVmxhd3dvYzFOSFRTd0xJb1k4SlU2NFgyVEFM?=
+ =?utf-8?B?b3A5SFU0K0tIYm9FMHJsK2VzeHRmYy8zTm14bmtlQTdzcUlRZ041LzlHUWZM?=
+ =?utf-8?B?NFVRVHdLbTlwa3lqdGlyUEl5aWtRYzBQQWFHd3V5VUp1YjhYSzU2VkpqZ0hp?=
+ =?utf-8?B?R0oyR20wcEpIOGlMY21EOXZocUZubDlBNktRTStUWkFQM0g5QUU4TDVQejBx?=
+ =?utf-8?B?aEE0azZLUFZmcjh3ZDZkZ2VuMUQyTmRCa2FrOWZqVnRQYWFUNm5EYTZPU20r?=
+ =?utf-8?B?eW9EcWVzdVZnS2lBeVNrL2RxTEkyZjVmdjBoZnowdW5vSG5nNlBXSVJYWGF1?=
+ =?utf-8?B?bnhhQWZ6ZTdHOFZLeXNVQW1aSGFyV0M2bGpGdVhOejcwM3djL2NjdGNtUzBi?=
+ =?utf-8?B?cnhlbzhxaDdMT3N5YXZhVHd4eGtNbVl6dnYwSi9Va2hMa081bGlTNFh0ZmpH?=
+ =?utf-8?B?L1RSV0U3eFd0SEZOZmh1ckFkc0lTTTN2ZGV4MFJIMEFBMnhQaDR4THd4NnhF?=
+ =?utf-8?B?L0ZMdldDb3VadDBjc2RFTHZ3YWNXRS9HOVFHRHhDazFhSEVsYmFLa1BoK3dJ?=
+ =?utf-8?B?THpEMEhnc2NrUTVSV0JKQ3JLbHk3RlVRUlZZUXVZSGNnN0djR0V6UEREMGNC?=
+ =?utf-8?B?NFdNOHRhV2x5M3ZtaCtDaklmMGw2aXlOR2xYOElSc3d6bnVkRkRjdWp6bWM0?=
+ =?utf-8?B?MStXVEMvdm11RkthOFJOYWNIcjBOaDE5V3VkMTR6dGV6TGFaejNWa0lkTG82?=
+ =?utf-8?B?eldlMEYvNktnRVNTdzJoaGVNTHBBOG42V1NLT1ZINEdvdjZlZlhWZUNHQVEy?=
+ =?utf-8?B?VWI3WWQ5WnlIVmZEWWVOcFkwMjdVb2xPditTQW1vS3duVmRPNmVlQnArYSts?=
+ =?utf-8?B?QmpmcCtCM29aN1lzcUQxcElOTEgwcmFrVHNtSWlVcVk0SzVyK0RlQ3YyVktL?=
+ =?utf-8?B?UTQzOEx1MjRGUU5aYWd4UThNajh1ZUw4bHN3Qlo4UTRTdEhWL1NRMSszeFBu?=
+ =?utf-8?B?SkdrT2JjT2cvbUcrWWVaUXZzOG9sUFNIeHNORXAwUkVSNnRUaXRmL09BU0Ft?=
+ =?utf-8?B?L0J0NWJWcDhkc0oyckVyd2ZSYUl1aGZGOFJtRlNiQ3Q3VXk5TVJYa1B4QkRx?=
+ =?utf-8?B?Z2hNdy9SdFhOR1lQM3FEZnZ2dGs4L09NK2VMRXlGNVpUM2U5TXZ6Unk1YUkr?=
+ =?utf-8?B?R1l5dXlWYmEwQTFWNm1kUzdLQ0dUYWlBcTFqUFF0TXppVmRPZUhlL0Q5ZEdk?=
+ =?utf-8?B?amtHOUdDS1cxZzFHelU4SFU0K3FLL2Vtd29KN2lKZGpMWVlhblZzempyNnhw?=
+ =?utf-8?B?akFWOVN1bHBFMlVyNG5lNlNEK1hvVDdRYnFSRWpsR2FRSDZSTWlWakJlcEVJ?=
+ =?utf-8?B?TnMrekx2dHhUd0ROd2toZ2x5T055dHNGb3krbU9oWHhOa1lIZFdKRHlXbzZ0?=
+ =?utf-8?B?LzQxaEg3b0hFMTh2RFRWWGFCNDlnTmltZE9BQmFWeVBYZTNOaDVxTUFyeDFG?=
+ =?utf-8?B?VlB0YjQ1RXRjb0tNRnJoejFiWlhPZXFFN1pYeEJtUFQrZEpQb1B3aUZiVVlN?=
+ =?utf-8?B?VVBJRGhUWWRndWZrSStlaklIa3N4SlB5ZmJ0NjdsNWJNUFhhOXltc2pUY3BC?=
+ =?utf-8?B?ajViR29KdlpwSjVwL1NSN1NiREdtTlFzaHJWd20zRjZJUVBsQms1Y0lqTTdJ?=
+ =?utf-8?B?MitnZWhzVDFEb2V5OXVGVWJLeU41K1E1Wms0MlR0eXhuV1N5R0oxRk12VS9x?=
+ =?utf-8?B?Tk5kQVdMZldRSVRLOEc3c3Y0UlFaZnhxTWU4T0NxcFhKOUpMdFBHSlhMaXlO?=
+ =?utf-8?B?Z250Y0VOL3g1ak1oaXlZa1kram5WbGVPRk1DeXdlNVFMZ3NMc012UmJqM2Yv?=
+ =?utf-8?Q?G1uSJlUMzWxJLysWwdMdJMRIB2IVJA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:52.17.62.50;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:eu-dlp.cloud-sec-av.com;PTR:eu-dlp.cloud-sec-av.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(14060799003)(7416014)(82310400026)(35042699022);DIR:OUT;SFP:1102;
+X-OriginatorOrg: solid-run.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 11:42:20.0375
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 609bcf55-6ef2-4032-23fd-08de16170da0
+X-MS-Exchange-CrossTenant-Id: a4a8aaf3-fd27-4e27-add2-604707ce5b82
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=a4a8aaf3-fd27-4e27-add2-604707ce5b82;Ip=[52.17.62.50];Helo=[eu-dlp.cloud-sec-av.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB5PEPF00014B95.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9461
 
-On Mon, Oct 27, 2025 at 04:08:33PM -0400, Frank Li wrote:
-> Add mmc5633 sensor basic support.
-> - Support read 20 bits X/Y/Z magnetic.
-> - Support I3C HDR mode to send start measurememt command.
-> - Support I3C HDR mode to read all sensors data by one command.
-
-...
-
-+ time.h // for time constants
-
-...
-
-> +struct mmc5633_data {
-> +	struct device *dev;
-> +	struct i3c_device *i3cdev;
-> +	struct mutex mutex; /* protect to finish one whole measurement */
-> +	struct regmap *regmap;
-
-regmap has struct device, i3c_device presumable also, and here is struct
-device. Don't we have some overhead?
-
-> +};
-
-...
-
-> +static const struct {
-> +	int val;
-> +	int val2;
-
-No need. Just
-
-> +} mmc5633_samp_freq[] = {
-
-static const int mmc5633_samp_freq[][2] = {
-
-> +	{ 1, 200000 },
-> +	{ 2, 0 },
-> +	{ 3, 500000 },
-> +	{ 6, 600000 },
-> +};
-
-...
-
-> +static int mmc5633_get_samp_freq_index(struct mmc5633_data *data,
-> +				       int val, int val2)
-> +{
-> +	u32 i;
-
-unsigned int is enough. uXX rather would suggest we use it as a such, but here
-you compare with size_t and return an int.
-
-> +
-> +	for (i = 0; i < ARRAY_SIZE(mmc5633_samp_freq); i++)
-> +		if (mmc5633_samp_freq[i].val == val &&
-> +		    mmc5633_samp_freq[i].val2 == val2)
-> +			return i;
-> +	return -EINVAL;
-> +}
-
-...
-
-> +static int mmc5633_init(struct mmc5633_data *data)
-> +{
-> +	unsigned int reg_id;
-> +	int ret;
-> +
-> +	ret = regmap_read(data->regmap, MMC5633_REG_ID, &reg_id);
-> +	if (ret < 0)
-
-These ' < 0' have an explanation? Or do we expect regmap_*() return positive
-numbers here? If the latter, it would be a least problem here.
-
-> +		return dev_err_probe(data->dev, ret,
-> +				     "Error reading product id\n");
-> +
-> +	/*
-> +	 * Make sure we restore sensor characteristics, by doing
-> +	 * a SET/RESET sequence, the axis polarity being naturally
-> +	 * aligned after RESET.
-> +	 */
-> +	ret = regmap_write(data->regmap, MMC5633_REG_CTRL0, MMC5633_CTRL0_SET);
-> +	if (ret < 0)
-> +		return ret;
-
-Ditto and so on...
-
-> +	/*
-> +	 * Minimum time interval between SET or RESET to other operations is
-> +	 * 1ms according to Operating Timing Diagram in datasheet.
-> +	 */
-> +	fsleep(MMC5633_WAIT_SET_RESET_US);
-> +
-> +	ret = regmap_write(data->regmap, MMC5633_REG_CTRL0, MMC5633_CTRL0_RESET);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* set default sampling frequency */
-> +	return regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
-> +				  MMC5633_CTRL1_BW_MASK,
-> +				  FIELD_PREP(MMC5633_CTRL1_BW_MASK, 0));
-> +}
-
-...
-
-> +static int mmc5633_read_measurement(struct mmc5633_data *data, int address, void *buf, size_t sz)
-> +{
-> +	u8 data_cmd[2], status[2];
-> +	int ret, val, ready;
-> +
-> +	if (mmc5633_is_support_hdr(data)) {
-> +		struct i3c_xfer xfers_wr_cmd[] = {
-> +			{
-> +				.cmd = 0x3b,
-> +				.len = 2,
-> +				.data.out = data_cmd,
-> +			}
-> +		};
-> +		struct i3c_xfer xfers_rd_sta_cmd[] = {
-> +			{
-> +				.cmd = 0x23 | BIT(7), /* RDSTA CMD */
-> +				.len = 2,
-> +				.data.in = status,
-> +			},
-> +		};
-> +		struct i3c_xfer xfers_rd_data_cmd[] = {
-> +			{
-> +				.cmd = 0x22 | BIT(7), /* RDLONG CMD */
-> +				.len = sz,
-> +				.data.in = buf,
-> +			},
-> +		};
-> +
-> +		data_cmd[0] = 0;
-> +		data_cmd[1] = (address == MMC5633_TEMPERATURE) ?
-> +			      MMC5633_HDR_CTRL0_MEAS_T : MMC5633_HDR_CTRL0_MEAS_M;
-> +
-> +		ret = i3c_device_do_xfers(data->i3cdev, xfers_wr_cmd, 1, I3C_HDR_DDR);
-
-1 --> ARRAY_SIZE(), but TBH I do not see the point them to be an array to begin
-with. Any elaboration on the data type choice?
-
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ready = (address == MMC5633_TEMPERATURE) ?
-> +			MMC5633_STATUS1_MEAS_T_DONE_BIT : MMC5633_STATUS1_MEAS_M_DONE_BIT;
-> +		ret = read_poll_timeout(i3c_device_do_xfers, val,
-> +					val ||
-> +					status[0] & ready,
-> +					10 * USEC_PER_MSEC,
-> +					100 * 10 * USEC_PER_MSEC, 0,
-> +					data->i3cdev, xfers_rd_sta_cmd, 1, I3C_HDR_DDR);
-> +		if (ret) {
-> +			dev_err(data->dev, "data not ready\n");
-> +			return ret;
-> +		}
-> +		if (val) {
-> +			dev_err(data->dev, "i3c transfer error\n");
-> +			return val;
-> +		}
-> +		return i3c_device_do_xfers(data->i3cdev, xfers_rd_data_cmd, 1, I3C_HDR_DDR);
-> +	}
-> +
-> +	/* Fallback to use SDR/I2C mode */
-> +	ret = mmc5633_take_measurement(data, address);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (address == MMC5633_TEMPERATURE)
-> +		/*
-> +		 * Put tempeature to last byte of buff to align HDR case.
-> +		 * I3C will early terminate data read if previous data is not
-> +		 * available.
-> +		 */
-> +		return regmap_bulk_read(data->regmap, MMC5633_REG_TOUT, buf + sz - 1, 1);
-> +
-> +	return regmap_bulk_read(data->regmap, MMC5633_REG_XOUT_L, buf, sz);
-> +}
-
-...
-
-> +static int mmc5633_write_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan, int val,
-> +			     int val2, long mask)
-> +{
-> +	struct mmc5633_data *data = iio_priv(indio_dev);
-> +	int i, ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		i = mmc5633_get_samp_freq_index(data, val, val2);
-> +		if (i < 0)
-> +			return -EINVAL;
-
-Hmm... Can't that return already an error and we just pass it to the caller?
-
-> +		scoped_guard(mutex, &data->mutex) {
-> +			ret = regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
-> +						 MMC5633_CTRL1_BW_MASK,
-> +						 FIELD_PREP(MMC5633_CTRL1_BW_MASK, i));
-> +			if (ret)
-> +				return ret;
-> +		};
-> +		return 0;
-
-I didn't get why scoped_guard() is used when simple guard()() will do in
-shorter all this.
-
-		guard(mutex)(&data->mutex);
-
-		return regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
-					  MMC5633_CTRL1_BW_MASK,
-					  FIELD_PREP(MMC5633_CTRL1_BW_MASK, i));
-
-With that you may drop 'int i' part and use ret in the above.
-
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-
-...
-
-> +static int mmc5633_common_probe(struct device *dev, struct regmap *regmap,
-> +				char *name, struct i3c_device *i3cdev)
-> +{
-> +	struct mmc5633_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-
-> +	dev_set_drvdata(dev, indio_dev);
-
-If you use regmap stored device this won't be needed. See below.
-
-> +	data = iio_priv(indio_dev);
-> +
-> +	data->regmap = regmap;
-> +	data->i3cdev = i3cdev;
-> +	data->dev = dev;
-> +
-> +	ret = devm_mutex_init(dev, &data->mutex);
-> +	if (ret)
-> +		return ret;
-> +
-> +	indio_dev->info = &mmc5633_info;
-> +	indio_dev->name = name;
-> +	indio_dev->channels = mmc5633_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(mmc5633_channels);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	ret = mmc5633_init(data);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "mmc5633 chip init failed\n");
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-> +
-> +static int mmc5633_suspend(struct device *dev)
-> +{
-> +	struct mmc5633_data *data = iio_priv(dev_get_drvdata(dev));
-
-Than regmap will be derived directly from a device.
-
-> +	regcache_cache_only(data->regmap, true);
-> +
-> +	return 0;
-> +}
-> +
-> +static int mmc5633_resume(struct device *dev)
-> +{
-
-Ditto.
-
-> +	struct mmc5633_data *data = iio_priv(dev_get_drvdata(dev));
-> +	int ret;
-> +
-> +	regcache_mark_dirty(data->regmap);
-> +	ret = regcache_sync_region(data->regmap, MMC5633_REG_CTRL0,
-> +				   MMC5633_REG_CTRL1);
-> +	if (ret < 0)
-> +		dev_err(dev, "Failed to restore control registers\n");
-> +
-> +	regcache_cache_only(data->regmap, false);
-> +
-> +	return 0;
-> +}
-
-...
-
-> +	return mmc5633_common_probe(dev, regmap, client->name, NULL);
-
-dev can be derived from regmap.
-
-...
-
-
-> +	return mmc5633_common_probe(dev, regmap, "mmc5633_i3c", i3cdev);
-
-Ditto.
-
-struct i3c_device doesn't have a name, does it?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+DQpBbSAyOC4xMC4yNSB1bSAxMDowMCBzY2hyaWViIEtyenlzenRvZiBLb3psb3dza2k6DQo+IE9u
+IE1vbiwgT2N0IDI3LCAyMDI1IGF0IDA2OjQ4OjEwUE0gKzAxMDAsIEpvc3VhIE1heWVyIHdyb3Rl
+Og0KPj4gQWRkIGJpbmRpbmdzIGZvciB2YXJpb3VzIFNvbGlkUnVuIGJvYXJkczoNCj4+DQo+IEEg
+bml0LCBzdWJqZWN0OiBkcm9wIHNlY29uZC9sYXN0LCByZWR1bmRhbnQgImJpbmRpbmcgZm9yIi4g
+VGhlDQo+ICJkdC1iaW5kaW5ncyIgcHJlZml4IGlzIGFscmVhZHkgc3RhdGluZyB0aGF0IHRoZXNl
+IGFyZSBiaW5kaW5ncy4NCj4gU2VlIGFsc286DQo+IGh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29t
+L2xpbnV4L3Y2LjE3LXJjMy9zb3VyY2UvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdz
+L3N1Ym1pdHRpbmctcGF0Y2hlcy5yc3QjTDE4DQpBY2suIEknbGwgdXNlIGJlbG93IGZvciB2MjoN
+Cg0KZHQtYmluZGluZ3M6IGFybTogZnNsOiBBZGQgdmFyaW91cyBzb2xpZHJ1biBpLm14OG0gYm9h
+cmRzDQoNCj4NCj4+IC0gaS5NWDhNUCBIdW1taW5nQm9hcmQgSUlvVCAtIGJhc2VkIG9uIHRoZSBT
+b2xpZFJ1biBpLk1YOE0gUGx1cyBTb00NCj4+IC0gU29saWRTZW5zZSBOOCAtIHNpbmdsZS1ib2Fy
+ZCBkZXNpZ24gd2l0aCBpLk1YOE0gTmFubw0KPj4gLSBpLk1YOE0gTWluaSBTeXN0ZW0gb24gTW9k
+dWxlDQo+PiAtIGkuTVg4TSBNaW5pIEh1bW1pbmdCb2FyZCBSaXBwbGUNCj4+DQo+PiBTaWduZWQt
+b2ZmLWJ5OiBKb3N1YSBNYXllciA8am9zdWFAc29saWQtcnVuLmNvbT4NCj4+IC0tLQ0KPj4gIERv
+Y3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9hcm0vZnNsLnlhbWwgfCA5ICsrKysrKysr
+Kw0KPj4gIDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKykNCj4gQWNrZWQtYnk6IEtyenlz
+enRvZiBLb3psb3dza2kgPGtyenlzenRvZi5rb3psb3dza2lAbGluYXJvLm9yZz4NCj4NCj4gQmVz
+dCByZWdhcmRzLA0KPiBLcnp5c3p0b2YNCj4NCg==
