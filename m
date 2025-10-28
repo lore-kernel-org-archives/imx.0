@@ -1,229 +1,197 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013036.outbound.protection.outlook.com [52.101.72.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE31C270542
-	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 16:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761668539; cv=fail; b=KAXG99KS7Js3c5lB0x/Cs07rfuN4J3EJ4mZfoPe5kAsQgKRedFR4DyamCBACUJvHbXpH/PG68k5ODC+kNFHIc8ADdbslvfRtNc+Qn7DuGBp6NGoEDjiMYHjYszJ1StBM7fL1RGA43D75sJX1LkinOAMAvx4zENUvSroOJDkawfI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761668539; c=relaxed/simple;
-	bh=7qSKTEvQbzEe6Cyq2s3RLGyX7Z3RvMsc8ZQcNPk3vU8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MrWb8uLcWAzABTJg18NVibI8fKDeU/Xlsik7xP1EySi28mngO4qIhXmBHLWV6lRmtl2fv7MSJLP3Bx5lCvgVwFyeJ2awwK26sKuxLuCHL5CIGTxGO4avyyuN0NuYihH9LzT+82Rk8bshvhDDoEej91hSD1Sbb9ygKMH2a5syfFc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Haci8Xnj; arc=fail smtp.client-ip=52.101.72.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D3C24503C;
+	Tue, 28 Oct 2025 16:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761668633; cv=none; b=VSseDfBggzigBbq1YPwpVdTuvYCcM3GWoih2r6JygnaeXay3lrk6UkYckLOH0HNINHL7+G8QHUwhxY5iosHPQTIt+t7zG5Qd5UXZ8Ca3ZDG/jw29i62IkO+4EVyWEhV3yF/pZCBv6fY5vFfE/xnVOHu36314FIKuUe2QX6M7ujo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761668633; c=relaxed/simple;
+	bh=W/FEnj9VxOYcqmIZ+DDA0xkXzU5i3PtKbUPkgrRzNI8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ohDXDpC4H/tJsLLjo083bGBAMSWLyFQQ1Y6M6c2/EzMJpkd4Lz/VV6LzIiAN6Sx9VA4q0FfX16w8mXlX3PFUl9Q9A4UXEFK62ZI6Pq/Np8i+BG7Fytkj3yQOJmi9KY2U/PjAjdlSRzzx/mm5B6GjtSA1dQC/kIHlte1eLlteWio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C6SeNnSG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Haci8Xnj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Hq9AoLGU3F88Nzp0RaOwmyJeaZjz3hjJGSUO7gpa/jNtFvULf3ensBSPOzSJmyQjo/6mwkJ3U+em3sChKJFLWg5qHS1nxk0m5dN/YnUKN+9tCT8hlgNoueVFjLhNC3ZgHFZRkafq8NV2x0EVA+/DHgYAkXQZXGlifSZaITTs+whJHnjQUi84PKh5jRHmIoxOpeGbwAMTeqdsiv8GDO/6runhRB7OKaAlhlY8r63ht8gy8UhEBpPG0aPn9iaOI6s8PeBUi70TvKHZz/0TV8JFcJOBhl5LnMbsnppgpgAmFjWXqvGP4z8SzJHTZmnAynL6H3D1LfS8r052YNJQvSLiJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VfCzmifD2gI6DqXBuuvrTPAoM0UdjpNExZiVyd+TV3E=;
- b=pI5FnD+vl38wxhH1b5GUGeYIXEKzJxUR51r0ZYJ1sbd2sOovqwnRB8DOFeH+lwanmqCjriCuBnboz1yKPiSsdWTL5DptHnTgen1+ITxKbD9bdgbtfzZVVOP2xG7DfuHSynOAtUFwe4kah2lIWFkvvRcBEsS5ySR++NKIerwXaPVgFXNvsZHLlDrkubCjjz3HWxesgslkV9nkCX89Ahfh7qK9BVxIyKJI5hTXDSX42ab6izvjgDB+22Xbw2DA9QfPZrgsiN1MkM0c9b3lVvBUlNlD82jMp+NUqVFiSSym0ylGcBFF8oq/EU3vmHqr2a3X+j/SUadWC1DyCPOSCCyHpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VfCzmifD2gI6DqXBuuvrTPAoM0UdjpNExZiVyd+TV3E=;
- b=Haci8XnjNrd3NMXzX+JjC0qU9hyUrHKHIW6y/gwUt4LKrBX82wlFFQXWOOMkF4pkrzuYYDwGdODpoq2DMChN94fNEK+9u/8j8Y+j8ne8K+4ftophYcdVfG4S0fKV4qtP5Dv1u4Y4Rgmiuyd7KOXwezAxf8thrXbG0/4gzk6wCRAqlzWzHp3dmCHTgGUppqphumbAtDBla2fMxCCqPVP4w2CE4VlmYhqb6KMpJ4AaEFc6+HcOZ60y2e/6kOk1knYzgj90ZmenufzwhICyNX20HGt91MYoq660bsD0GWYK1iT+CHTyrji4yfWm/b7ZzM8lBHDoeXpdPfX9bKoYa7cdfA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by AM0PR04MB7076.eurprd04.prod.outlook.com (2603:10a6:208:19a::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.12; Tue, 28 Oct
- 2025 16:22:11 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9275.011; Tue, 28 Oct 2025
- 16:22:11 +0000
-Date: Tue, 28 Oct 2025 12:22:02 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] remoteproc: imx_rproc: Add support for i.MX95
-Message-ID: <aQDtqounSfCqPGek@lizhi-Precision-Tower-5810>
-References: <20251028-imx95-rproc-2025-10-28-v1-0-ce9e7db9edcb@nxp.com>
- <20251028-imx95-rproc-2025-10-28-v1-4-ce9e7db9edcb@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251028-imx95-rproc-2025-10-28-v1-4-ce9e7db9edcb@nxp.com>
-X-ClientProxiedBy: BYAPR05CA0106.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::47) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C6SeNnSG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33A0C4CEE7;
+	Tue, 28 Oct 2025 16:23:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761668633;
+	bh=W/FEnj9VxOYcqmIZ+DDA0xkXzU5i3PtKbUPkgrRzNI8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=C6SeNnSGD+55bP4czAwMBmIYvjYQ74bgJnrP9sHnJv0CRjRUam9OxVbozOQNMHsKb
+	 yi4GWSQkQYH2ts4476SpOCGYSWzempXK5e3MzQ+hKeXVvhH19dgGyLguAr1Ojb8AYF
+	 aQYH+xzUQC0UbrzsJ/kxgLHUIUuZQaEshgsZTkXSj+80rGfs3AeEApLfJ0Y6n1h4KE
+	 UYNXqyTUNXwM2qooCEw5TaIMp/IkErey4/tknYAlAGPsYS8eQqAHTY94b6T2nACAB7
+	 TWrzUiUGhzw2pGN0qxChVTjvboBtIrPb5CX9XQiw4NTCvOe3HeiIGk4dlpppqmINVp
+	 e2yQtNQdVodcA==
+Message-ID: <a5e9f1ec-69f0-4f91-9dd1-387b3e4ace5b@kernel.org>
+Date: Tue, 28 Oct 2025 17:23:45 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AM0PR04MB7076:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3adb4082-0624-4f0e-de88-08de163e25ef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|52116014|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TOr6purMs9+fZJVGn0gc4wW0HXdTkLp1ZCpQshpoQ+WDgL2CDf0aJN9DHxp1?=
- =?us-ascii?Q?vhCCLR6B/VcJi5JfGbZcQcb45eJUKkZsFuuz+padqpy8vB1zy2UFNdKRf/tg?=
- =?us-ascii?Q?eUIP62LGo6hxAkdOkqaZBg8hJAtz2W2ybeIRv1Dp0vOJ64E4f37kyfUuM/7T?=
- =?us-ascii?Q?fqVs1I2EfAKE8+3RB5z/qiwphbKPcxI7ZJEJQA9oeCuZbKkaA5ye+I+njYp7?=
- =?us-ascii?Q?qaIMEH2OAL01zGZuy91Etsd9nTdQFjibSUsifsjfqJGIGLuaRmYqUkb4+9Kg?=
- =?us-ascii?Q?D9G45+4E+A1ap7x0ML2Gh5jWuD8F+xK+dG9Ed6Niwf8knPsWBCnmDxjdmCIj?=
- =?us-ascii?Q?x7Fs5zkzabjcMUEt6ln/F5Eml96VLxq3lgGf9SMwB5RV9ctNTqgDwXJO5rev?=
- =?us-ascii?Q?FBTGe6gooOTNLVIR3I5IOGTrVVo0Rza2xoPP0eh/1BvEr5z5nfqqDOC7qJOb?=
- =?us-ascii?Q?czGf0gTHzxqGmFE2RbvoavGI0zjPsXsiYsJtnOV3271aS0gvHZYS9HS/8KUe?=
- =?us-ascii?Q?6LCkAcZ2VqfHOWEyPr+Gr6lLk8L1uByhankqyhmbdUf64a7qLTF0iPMIJX4d?=
- =?us-ascii?Q?HX2CYEQvFjN3K0LnhV0GFiZQP206y+tSQv43+L/XuKXQrQpoDIozMKDC6CVF?=
- =?us-ascii?Q?o7BGvJmdO2SjGU1aoF+6gJ6vec8cIGwMrzzJj8AlWtqPF5Yk4jXAlHbYBQk5?=
- =?us-ascii?Q?8zHib7wPCElpRN0y+j/A9GKOuyNCDquXQSRU0T0/pbc7RDEitUbJ0PmASPfx?=
- =?us-ascii?Q?cdUyhd1/0LZNX01VvxRnoNFKeZk7G34DzAxaK9rsDPzmuC/KRDHAu/Ogg/zk?=
- =?us-ascii?Q?jf8F9WkVIMPz+z9O18UzPX9Cf16HZBJzlbIcsQOM1SnyV14FsS9it+OZSxRm?=
- =?us-ascii?Q?EklmONWOXgU6f4vcNQkkEv/WhL6jdtQwj11ktRTce7+utrk6r2wEibAmHK8w?=
- =?us-ascii?Q?1nTtME4/rZVcgQLO0y2fh1IUTV5CNmynlIlFTH1DIZyLSFxBc7axwEwX4wnR?=
- =?us-ascii?Q?Ry23AUBlu7d6jfIZuUnHDR13BN5yygblrITL2cHh+3ne4SDmJ5F2iBW7p9vM?=
- =?us-ascii?Q?CKcV50b9hBAGoNZV0GjAPNjcxlifaji8w/9pPwSe98aTOL8p29IdrnMD8pgm?=
- =?us-ascii?Q?RHzaqHqk1RwE93MtvJOMz9/vymSfgz5WrHL1je/43CGAiKsRix1zPsgEzs4I?=
- =?us-ascii?Q?z2fWe45rff/z0yd82gM1mebqPO6mTIUrswZaO10jF32npgg7ZCrrauWJ4g15?=
- =?us-ascii?Q?pcxdy9RTCY9/EDIe0hG9ik4NX7UI3kablEJzsSD/ECG3ZlRyrJw1uo6HyeZr?=
- =?us-ascii?Q?Mtfk9LZL6XjhQztTQyInq/d0QtON8wyXkmcjYVvAYdHBuV13YdwsMa7+GwSP?=
- =?us-ascii?Q?CCGB4VQZguJmNB3oXB/OYqme5WjGIo5b3ht2rIJbV9u/T5ohVcCqRPhr1Fzh?=
- =?us-ascii?Q?cm2OCFRK8oRA0btNKTp6CY0CXcxmp84+eDk2eOOGjW5zF8B0uHR4op0AjB4/?=
- =?us-ascii?Q?9OaZUhDmbdsi/L1tV64vFkBOjw6eUvwliueP?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RFiWeElQCYNqWyNPRtfQbCPULMtQMcmyY9NomGIErIDe49G17tlqpKo9AQXc?=
- =?us-ascii?Q?KYwCRLNk0T/8qVSAg4YBykgJuZ7/8v/CndPg1JSN0NVq68fIPWP+cRqjTsdE?=
- =?us-ascii?Q?MDdGTFxsh6J0jWLvzIAmQe7NW+d8dzz/Z8zkXHn27hz6aoZLOGq7/Ux+f6kU?=
- =?us-ascii?Q?hnkj+cuTEjWvKOMzzU/MBnjHxwTPUfalLbOyiJTtU1wi4Y0riVA1MlAtE2tB?=
- =?us-ascii?Q?p8utV8bbx4a8OLl3G5iRZmVnZpM/A7Kw7267o1kmLzL/DCzxfmYRHMh8aXhe?=
- =?us-ascii?Q?besWQW9g5NSUMv5rcIgghIlbTDNW2hV4SA693Qd/W8Li2NqTr5YIKHxMxHs7?=
- =?us-ascii?Q?6sNnoQHs9og+k6QLRwkLGroT2DUmw/kVKv71dbW4O2hg2atltKJszTh4XreF?=
- =?us-ascii?Q?EZFgQA7HOEDCnpdkAODO2ig/qlTAVTB4dv4+4xat89EbBLAo87AL3vWhDnOm?=
- =?us-ascii?Q?XW8rBVuYzI//+J0QpBBj5NpKMNRCg1jW3dpZHNgtC/x8RN30RnZwwc23Q81T?=
- =?us-ascii?Q?okxSWv/odjmfNPp7fw25nbUJ5W3ydWYIAPkeDLSrfMJ4lwLkx4MvWVtEND3H?=
- =?us-ascii?Q?9KoAvIEwNvVLDuS09P8pT3UXJTUm6leVZ64f27PYbj770piMhh+gNZKcsCLK?=
- =?us-ascii?Q?xaP/+U39NTyFC+qh+Ys0zk5XdH29Rt00JnTeK0GbQ/rIfZik5BuOwHDdmf/q?=
- =?us-ascii?Q?TvLmzx+8DbvSY1qqVY5nG5Ct9RlqgLgiYqDbyfwtAtmKWWHqeOXBfCBhiMFf?=
- =?us-ascii?Q?6/6dW+5QOMpHZyBTIiG7KwNSFfdjHb1gQZQXQr6aV2+jjAc4vdVUvvtLb8j5?=
- =?us-ascii?Q?fJEqF+VyKHyxhrwb7Y3GkI+Qv9MnBKo701npWVwj/PocYa0wxyqRjdUsCs+E?=
- =?us-ascii?Q?/oITkbIoIXTCETVxofdR5LxebmkPSzRoegCJJ+OuhQsGV4ZxVG1A4jevAZLa?=
- =?us-ascii?Q?2+R+p9vjg77YGu8f1ktu9ZoxO8ic0ZN/FWWdnmr+WJIj/y/VungZ91lCsfG4?=
- =?us-ascii?Q?DU1317V9IBG29g2VgIFE83caVi+3ewooHalkbdlgmZ1FtqGmdOVNV/KZf1Ln?=
- =?us-ascii?Q?2mqYc79PBFsDGFXZp96/tgZRWjkMx1nSOYnA6cgXbEe4jYlyy6cdVZXC0699?=
- =?us-ascii?Q?4N1A/yy66HDSFavQD9DbJ35bBpuyI9CczIoFMkjBVFEygUp7I4fWejlySXdj?=
- =?us-ascii?Q?NdUaDIXEQFhKOGp9J6tL3eyVdFR+orn10EYyMECoO5qfXmuvP61lETSjisrB?=
- =?us-ascii?Q?1NnS/kVHH/gPnGNQnv/4LC67BGqXc0VVmyHVFn9RWqI+Te8hQaYEgk/gzsq/?=
- =?us-ascii?Q?ifiu03s0ZUV57TlnrEElJ7xQn4iKSGZNA0/AakbaEn3G6CUsYHETaGlzm4kE?=
- =?us-ascii?Q?TGoftP4YRJQvTbTpkuCUEL7MkFWFankbTfVlMRUNgQy7VAiMLN7YV5MX7FVW?=
- =?us-ascii?Q?kmPlej1UlscunaGbrm1HQEcaP9e3JmtYYlAGiuA5xpiGYUhR7yDedD40zJRz?=
- =?us-ascii?Q?GeD3iIXJJjuqCIL4eAMSKmp4eP07PYPPfp8J4NqUVuQVYUcL4cesMH/djPw/?=
- =?us-ascii?Q?efI3V0R2MFTRoTWgcvgJu5Gsk2xOve6j1P6rARjW?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3adb4082-0624-4f0e-de88-08de163e25ef
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 16:22:11.4713
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bvU7/oOFisqgpWJb8AHY2WyU0c0xbc3OlbzXImGR9x0lmmUXL0ftskWOsQwDzj/74n43yMyQU0u/2PfW15HYaA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7076
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/10] dt-bindings: display: panel: ronbo,rb070d30: add
+ port property
+To: Josua Mayer <josua@solid-run.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Jon Nettleton <jon@solid-run.com>,
+ Mikhail Anikin <mikhail.anikin@solid-run.com>,
+ Yazan Shhady <yazan.shhady@solid-run.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+References: <20251027-imx8mp-hb-iiot-v1-0-683f86357818@solid-run.com>
+ <20251027-imx8mp-hb-iiot-v1-2-683f86357818@solid-run.com>
+ <20251028-premium-sunfish-of-feminism-2bc6ab@kuoka>
+ <5e055ce8-e30c-45b7-993a-3ea8f8a796d2@solid-run.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <5e055ce8-e30c-45b7-993a-3ea8f8a796d2@solid-run.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 28, 2025 at 04:18:04PM +0800, Peng Fan wrote:
-> Add imx_rproc_cfg_imx95_m7 and address(TCM and DDR) mapping.
-> Add i.MX95 of_device_id entry.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  drivers/remoteproc/imx_rproc.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
->
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 8ecf95c81b598bbe38b721808878e5427339a08e..45eeb5d61d43c9ce72e840611e93af067a4296e7 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -74,6 +74,10 @@
->
->  #define IMX_SC_IRQ_GROUP_REBOOTED	5
->
-> +/* Must align with System Manager Firmware */
-> +#define IMX95_M7_CPUID			1
-> +#define IMX95_M7_LMID			1
-> +
+On 28/10/2025 13:01, Josua Mayer wrote:
+> Am 28.10.25 um 10:03 schrieb Krzysztof Kozlowski:
+>> On Mon, Oct 27, 2025 at 06:48:11PM +0100, Josua Mayer wrote:
+>>> port property is used for linking dsi ports with dsi panels.
+>>> Add port property to ronbo dsi panel binding.
+>>>
+>>> Signed-off-by: Josua Mayer <josua@solid-run.com>
+>>> ---
+>>>  Documentation/devicetree/bindings/display/panel/ronbo,rb070d30.yaml | 1 +
+>>>  1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/display/panel/ronbo,rb070d30.yaml b/Documentation/devicetree/bindings/display/panel/ronbo,rb070d30.yaml
+>>> index 04f86e0cbac91..a2dc67a87fa3b 100644
+>>> --- a/Documentation/devicetree/bindings/display/panel/ronbo,rb070d30.yaml
+>>> +++ b/Documentation/devicetree/bindings/display/panel/ronbo,rb070d30.yaml
+>>> @@ -13,6 +13,7 @@ properties:
+>>>    compatible:
+>>>      const: ronbo,rb070d30
+>>>  
+>>> +  port: true
+>> Port is never the second property. Please look at other bindings.
+> 
+> Some places did that ...., e.g.:
 
-Only use once, you can put 1 to imx_rproc_cfg_imx95_m7
+Yes, finding few outliers is not a good argument. Especially binding
+from 2020 where many conventions did not exist.
 
-     /* Must align with System Manager Firmware */
-     .cpuid          = 1,
-     .lmid           = 1,
+Look at the most of the bindings or the recently reviewed.
 
-Frank
->  /**
->   * struct imx_rproc_mem - slim internal memory structure
->   * @cpu_addr: MPU virtual address of the memory region
-> @@ -131,6 +135,18 @@ struct imx_rproc {
->  	u32				flags;
->  };
->
-> +static const struct imx_rproc_att imx_rproc_att_imx95_m7[] = {
-> +	/* dev addr , sys addr  , size	    , flags */
-> +	/* TCM CODE NON-SECURE */
-> +	{ 0x00000000, 0x203C0000, 0x00040000, ATT_OWN | ATT_IOMEM },
+> 
+> Documentation/devicetree/bindings/display/panel/mantix,mlaf057we51-x.yaml-  compatible:
+> Documentation/devicetree/bindings/display/panel/mantix,mlaf057we51-x.yaml-    enum:
+> Documentation/devicetree/bindings/display/panel/mantix,mlaf057we51-x.yaml-      - mantix,mlaf057we51-x
+> Documentation/devicetree/bindings/display/panel/mantix,mlaf057we51-x.yaml-      - ys,ys57pss36bh5gq
+> Documentation/devicetree/bindings/display/panel/mantix,mlaf057we51-x.yaml-
+> Documentation/devicetree/bindings/display/panel/mantix,mlaf057we51-x.yaml:  port: true
+> Documentation/devicetree/bindings/display/panel/mantix,mlaf057we51-x.yaml-  reg:
+> 
+>>
+>> Also, missing blank line
+> Okay
+>>  and missing top-level ref for panel-common.
+> 
+> Does this impact which properties are considered required / valid?
+> 
+> Ronbo panel has different gpios / names from panel-common:
+> 
+> power-gpios: similar to panel-common enable-gpios
+> reset-gpios: common to panel-common
+> shlr-gpios: special to ronbo
+> updn-gpios: special to ronbo
+> vcc-lcd-supply: similar to panel-common power-supply
+> backlight: common to panel-common
+> 
+> There are some other gpios in panel-common that ronbo panel does not use.
+
+Just use the properties from the common schema where applicable.
+
+> 
+> Is the above relevant?
+> Would it be correct adding the below?:
+> 
+>  maintainers:
+>    - Maxime Ripard <mripard@kernel.org>
+>  
+> +allOf:
+> +  - $ref: panel-common.yaml#
 > +
-> +	/* TCM SYS NON-SECURE*/
-> +	{ 0x20000000, 0x20400000, 0x00040000, ATT_OWN | ATT_IOMEM },
-> +
-> +	/* DDR */
-> +	{ 0x80000000, 0x80000000, 0x50000000, 0 },
-> +};
-> +
->  static const struct imx_rproc_att imx_rproc_att_imx93[] = {
->  	/* dev addr , sys addr  , size	    , flags */
->  	/* TCM CODE NON-SECURE */
-> @@ -1440,6 +1456,14 @@ static const struct imx_rproc_dcfg imx_rproc_cfg_imx93 = {
->  	.flags		= IMX_RPROC_NEED_CLKS,
->  };
->
-> +static const struct imx_rproc_dcfg imx_rproc_cfg_imx95_m7 = {
-> +	.att		= imx_rproc_att_imx95_m7,
-> +	.att_size	= ARRAY_SIZE(imx_rproc_att_imx95_m7),
-> +	.ops		= &imx_rproc_ops_sm,
-> +	.cpuid		= IMX95_M7_CPUID,
-> +	.lmid		= IMX95_M7_LMID,
-> +};
-> +
->  static const struct of_device_id imx_rproc_of_match[] = {
->  	{ .compatible = "fsl,imx7ulp-cm4", .data = &imx_rproc_cfg_imx7ulp },
->  	{ .compatible = "fsl,imx7d-cm4", .data = &imx_rproc_cfg_imx7d },
-> @@ -1454,6 +1478,7 @@ static const struct of_device_id imx_rproc_of_match[] = {
->  	{ .compatible = "fsl,imx8qm-cm4", .data = &imx_rproc_cfg_imx8qm },
->  	{ .compatible = "fsl,imx8ulp-cm33", .data = &imx_rproc_cfg_imx8ulp },
->  	{ .compatible = "fsl,imx93-cm33", .data = &imx_rproc_cfg_imx93 },
-> +	{ .compatible = "fsl,imx95-cm7", .data = &imx_rproc_cfg_imx95_m7 },
->  	{},
->  };
->  MODULE_DEVICE_TABLE(of, imx_rproc_of_match);
->
-> --
-> 2.37.1
->
+>  properties:
+>    compatible:
+>      const: ronbo,rb070d30
+> 
+> @@ -48,5 +50,6 @@ required:
+>    - shlr-gpios
+>    - updn-gpios
+>    - vcc-lcd-supply
+> +  - port
+>  
+>  additionalProperties: false
+
+unevaluatedProperties:false now.
+
+
+Best regards,
+Krzysztof
