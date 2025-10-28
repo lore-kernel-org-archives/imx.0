@@ -1,81 +1,55 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A6717C21E
-	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 03:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7982AEF5
+	for <imx@lists.linux.dev>; Tue, 28 Oct 2025 04:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761621402; cv=none; b=nFP1JouMMlKYls9u3Y6yOk3R2QpV5k9zC4K9RDDWbxQybf/FtY6x6fAuo+BtC44tERQ4oMN+DhjW5FDv+CeFFRttRocVlaYI+UGkPsPX+rf4z3lAXlrVqbWbEEVNaeUY6aByHx18QSqe+6KbXqKFSyjk2fprZlHNecNh3B4iyro=
+	t=1761625976; cv=none; b=L74vRtVB/YDyrgKZeJsRP2O6RwTchl8FIn4q6vP6N0puPN1GA/y4bGJGyRCqd1E75hCIyT8tKw/y3m9d5MCxX+pQ67gQxI+E5QpYeRLA/+umlzJqTYXArF+hjADd2H5hH/2/bV9jxDjoKUGUE0kqRaHJYKcLwvjpZ+HCNpo0Boc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761621402; c=relaxed/simple;
-	bh=cHHkD30AaxNGfUjFD9KtWlH0G5zDyjXDYQiWrVKJSIE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WHHU8SOlncODCgB/AFUeii+amY5X+Uw6z3ir8Sm1pwDE2zOGXTO/srsD7SFGvR/thAKi12qBvLMosSLsxL2ILkX/cMb9ihcP2ZcOYYcFTkExbNsQIn74cRTWp6G/UXaGi4hxg/bfZLYLNJI9VwnUHBIWs+QzVXmQfZNdv7tE+dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NglHi4t3; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761625976; c=relaxed/simple;
+	bh=OuDtOT5tw8r53N1ZORqGAJM8l0j+UaK4SsmFIS3gR2U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NUoupz7xVFRfn30M+XCJAwshQemnOzWKX38alPpdciCtbpvayiMIJ+es4bSy9TFHCDbVIjUudbJ9R9uUVDZVUZ53tEEVrvrpRfFV+X4+qDAWpwx+B2Rfm7rSTGpCNCashzbbRH8tROP+M87sxVGCwTg5BiUY5BSxCKJmh4us3EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=lRcp1Srp; arc=none smtp.client-ip=46.19.12.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NglHi4t3"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7a26b04bfc8so6029516b3a.2
-        for <imx@lists.linux.dev>; Mon, 27 Oct 2025 20:16:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761621399; x=1762226199; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=q7Dr88n0rsMeY0SbLXIpFyJggBzx8goTlgYQ7zbZXXM=;
-        b=NglHi4t3S4ZPvzAASVOD7OG8TgtQBCRO7LJ0wEgegWLMur4IChiqg2zoDLb2DwxuqI
-         ggQpyk0e8Jt0PKlQcKIHr3ioCbHukThESqw1+7YPYf6bnoIpHUoLWIxjOZej5OrD3Bfi
-         cayj4fGgAC0EgUKzxuMXCtfNbtuDVsWZHJEFVp9BWxNtXios7ffEjoWPpjLJSICSng4e
-         v1ZJebtAnMudu8OwrQf5gHkiZ86F3jJNoj+pQSkJpHOVCzscVblCvGQSKkVahhsqxZGf
-         BhEFieNn2QO+mWO4xkKeEyI79LywfNw2ENczCTxPA/C3R3Pxhtujsjv9bpSHTnbC3ETJ
-         srow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761621399; x=1762226199;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=q7Dr88n0rsMeY0SbLXIpFyJggBzx8goTlgYQ7zbZXXM=;
-        b=WkdWk4adXSiIBS3eoXBfEs0A2UikXWHK3T5MGjDxS6XPWvGRnXP+pQMZcPqFB3Oh0U
-         amcodN61h45dGvbG6f8wgZCSt2MlvSwIWvwCyj8PR/DXV5mepHnMoLRVShTKmZTbg6ds
-         hatunm/KKOaRNWpjJLoe+KHQ6U/5/s7XH5V+QPcrivq2xYAAtLPKy4aoHsMZ9PXBIX0d
-         KOt5N5kHJM7st1ioZPfflT12OtNSpAlSpkeFvkLJC8qbZnhAyXa0mMbrcWrRzAsFKNkL
-         VoVgwnhb5xYGaJdu259wtUIz4ckn/iqCmToz05QNaKASXiLHv2ulWlJUYSZ30eltYdxY
-         xf7w==
-X-Forwarded-Encrypted: i=1; AJvYcCV0UtEQ4fga05RDidBKMaoD3gkQtbpvw40UNb2MIOENX42vUEPfzVIF+v1mfVZkzlv7Fng=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxwCUSCNRYUV01AekRZtiDo0TTBR9/WONLBNZjZ4xdT+acorN6M
-	PAnZrhK5aFQ/kLx4LZ0Q1F3NmJhJ62wRAkmpZbVwkwF+4JIm57J/VQI3
-X-Gm-Gg: ASbGncujlwTldZWVpv0GSaGKApI8zRTssHLBn1CS04U4f5USyoPEDo7UQwC+eEF9pUX
-	J3S+iIhF3LzEJmkYl8QkrqAqsoRZHF5SMMWFtDDj4NnwtImMDyqoXlnLhivU9L2eZ/lMbmGgrMm
-	W/J0oIai7v6zAt5rmzbqHhvovUcYPpRPTNmXpDM2AcAp+5mUNz4WMfkwIQPteNpPZsJ4RGQBPfc
-	TxFbUg8CkR3PzAoj9XQBMMRJrSCvBNB5RCkRtrQrOVwGJXiFypOoMPFZ16lXAvEoLyvEHsrmCPD
-	rh3fSeUYfuPOqyKm8HjlOF2ycIwYiOq2MfTMe94Vq3mivCyjS0/2nYtQGqAnpaOOm95IRsFbkGn
-	Rc7QIXm+4cwCXGoBI+x98tslWHr64Psn78Cuk+QGLQTVLNhrr4324KjuLzoFCobwKOTlJzERRRj
-	VumFMeZL/9NLOk927cUJhpRg==
-X-Google-Smtp-Source: AGHT+IGeeElAGdz52QvzDON6TZ6X2VN+9KdN3tRsb9MvpzKrX+azsLuImQoCuSHnyIB4CWg/XHY7mQ==
-X-Received: by 2002:a05:6a00:c8d:b0:7a2:6b48:5359 with SMTP id d2e1a72fcca58-7a441c46a7cmr2594121b3a.24.1761621399271;
-        Mon, 27 Oct 2025 20:16:39 -0700 (PDT)
-Received: from localhost.localdomain ([124.77.218.104])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7a41408c4dfsm9818276b3a.65.2025.10.27.20.16.36
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 27 Oct 2025 20:16:38 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>,
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="lRcp1Srp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=tiO4gsYvAQbC6JLiDRJnzC66h7WdHdCwGJ5rnwniCq4=; b=lRcp1SrpJPghipfol7gRvgYGfG
+	1l0kvl7u1frab8bYdTZWfGMaZ9LkOybjotzexh8V4eKZKK4G3W3ZhsXzhLzV3QPgt32mdvygiK38K
+	zHPgEe2YrkBMHfcGKxeNl1xYWWLV7B1RyO8ASEcUkEL7JwiwgMpoZVcgJfC1/oU6QD3g5t/LSHVzF
+	5KUFvcLOuxdZfQ7aAbFYUXE9NnaATt7eCnXOFrQ1zMuLYdM4uciKl1Jm08buBuglEkgf14GWcxtVt
+	lxQ/H5Br/od2x9gG5FkJDheIJdFmyjlFQlJhatB71f5birsvyUnXZSwDjjqhbam5ePQ5aLVCC7qTy
+	Uhace4vQ==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:36546 helo=localhost.localdomain)
+	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1vDbO3-000000099zL-25FI;
+	Tue, 28 Oct 2025 05:32:46 +0100
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	linux-pm@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] soc: imx: gpc: fix reference count leak in imx_gpc_remove
-Date: Tue, 28 Oct 2025 11:16:20 +0800
-Message-Id: <20251028031623.43284-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH v2 1/2] dt-bindings: arm: fsl: Add PHYTEC phyBOARD-Segin-i.MX91 board
+Date: Tue, 28 Oct 2025 05:32:43 +0100
+Message-Id: <20251028043244.496662-1-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,31 +57,49 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp2.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-of_get_child_by_name() returns a node pointer with refcount
-incremented, we should use of_node_put() on it when not need anymore.
-Add missing of_node_put() to avoid refcount leak.
+Add device-tree bindings for PHYTEC phyBOARD-Segin-i.MX91 board based on
+the PHYTEC phyCORE-i.MX91 SoM (System-on-Module).
 
-Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- drivers/pmdomain/imx/gpc.c | 2 ++
- 1 file changed, 2 insertions(+)
+Changes in v2:
+- Add tag Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-index 33991f3c6b55..a34b260274f7 100644
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -536,6 +536,8 @@ static void imx_gpc_remove(struct platform_device *pdev)
- 			return;
- 		}
- 	}
-+
-+	of_node_put(pgc_node);
- }
+Link to v1: https://lore.kernel.org/all/20251021093704.690410-1-primoz.fiser@norik.com/
+
+ Documentation/devicetree/bindings/arm/fsl.yaml | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 00cdf490b062..73987ba1d16a 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1492,6 +1492,13 @@ properties:
+           - const: tq,imx93-tqma9352        # TQ-Systems GmbH i.MX93 TQMa93xxCA/LA SOM
+           - const: fsl,imx93
  
- static struct platform_driver imx_gpc_driver = {
++      - description: PHYTEC phyCORE-i.MX91 SoM based boards
++        items:
++          - enum:
++              - phytec,imx91-phyboard-segin # phyBOARD-Segin with i.MX91
++          - const: phytec,imx91-phycore-som # phyCORE-i.MX91 SoM
++          - const: fsl,imx91
++
+       - description: PHYTEC phyCORE-i.MX93 SoM based boards
+         items:
+           - enum:
 -- 
-2.39.5 (Apple Git-154)
+2.34.1
 
