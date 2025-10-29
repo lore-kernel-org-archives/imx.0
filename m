@@ -1,64 +1,64 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EEA3559DB
-	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 13:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341983559F0
+	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 13:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761746173; cv=none; b=gM8/db0aKFfxMecOy57heCC/KImG4XDCiIGZha1B2KIz8Fm+YsdoSyeBV/Cc1knAtaM65YdYVEuq3WDlySFWuEepXboiDNlb58BoAfRaJRunodjRXzXSiCzdSuxxwcfZdFo0PoVIft8Jptqu4qyiraZW3ao4Q+MDZxhzuiqFz20=
+	t=1761746176; cv=none; b=g7TexNpTQ2PV5HGx7VKUcP7P4mZ83uORr8qJvFFdSVq0CHTKOoA2wTBaibKtCwIGPcYDjAEKfclFjbYJGOoUpyQZuxexnR3iEcV1wkoKhISb57gd0IDbY32EDKJmUh1XaGYA+5J3G0pzkTMIx7bFJn7kjPz8FFfJALFhREAXlXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761746173; c=relaxed/simple;
-	bh=v5ahFBmmoGFzUch7/2SvprVd1+ErqpD5A4vWmS2SEcU=;
+	s=arc-20240116; t=1761746176; c=relaxed/simple;
+	bh=jQqYazffawvob92GlM5kKbR1nnskRDKAjAEl8i3gy7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmQwql3BkTt8JMBI6Xl/VnMoApIGJ5lFmB5BqeCwaaYQWPqJlM0fNCZMwXH7K1Vg6z6gH0rX4zhvjZS3wWav/y5toKXZVY+INaYsKaihqkpJXL2ze2y90NL6Lh4qUoXNSSC195cxX7oG8wA1q2ArL1AGugmpuZpD4p/R2hsiE7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aFcYqHlQ; arc=none smtp.client-ip=209.85.218.41
+	 MIME-Version; b=Jyk+50ZYzZXJHIZ9a/l8sXwACDYgtNICI9dzNYBKnzIAc6xnv6ZuJAOO3bdTjYl9xP/bB+7fv+p1tNCjFVVxK523sNEwqQ6wzL8/SbAslutNHDvf2FSIDyaxNLKtbwpLNHJpJKvkF1IR7aZ5tTzJn8XWP8iOJef8fIVlSz9Ti6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IhayeWpR; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aFcYqHlQ"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b7042e50899so165064366b.0
-        for <imx@lists.linux.dev>; Wed, 29 Oct 2025 06:56:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IhayeWpR"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b7042e50899so165074666b.0
+        for <imx@lists.linux.dev>; Wed, 29 Oct 2025 06:56:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761746170; x=1762350970; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1761746172; x=1762350972; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DWLsbyIMgrO4Anjvx4doEaIEZAGpDh1hvTWQGxqxKac=;
-        b=aFcYqHlQjtpNM0tdxU+qFC9iuz5p3jUtJrsONWvbuMhQraycF1ZXHxnN8F/aJW8kqB
-         UJMiYbmimWYYehOyZu+h5rcftwCWj3i4BuIjTQkbjk8jujJEuWpLgUP7ePjdcfkQy4MC
-         Za5aqFmzFIViLT5v6bt04yJwvfi1eAeek7fgoHpub6uCt6E+4RS2HYI5rZn4JBahbxM/
-         13PlkU1r7+sNQSmP+NVlVvaWsCVj88YIl8WpZhA1wzYTVQgCHeqwsfx6EJs+io8b6+0J
-         ZXu+3cyl2QXpVJqkRbYG3RY1fW3F8NQuoYBq5q4Fy7PU/kc3fj0HyZeICBlKqlkhtKlj
-         dpOw==
+        bh=N0zuCkqo/yYV3kQ7MqBUgd3ahReWAttM1hFVGag3dBs=;
+        b=IhayeWpRwVs1f46Bz36VdsxCgHzV33mAEQtqm8P3y5+dBubJhoyadQBNjkCV0whHqD
+         xpZpSQfc5oCep1S8JizNgSWWF6AlrNY7cpQqWzVyy+6FNj/KgaseF7SDwfsf034Aym4F
+         aVhpIhhsTS1fC1brOrIHQUA8cGClHmW29D2eFnMVUl9qpA08nb7hwikYYVlqD+7iTTBg
+         kLkwmdZ9yBRAIZUlE4OJ7g2XcnHfXqQSVAM93f1gXoN4WP8RW4YZAITTT9NjTnhy8VjH
+         Pl7CHajyNDrQ6Hik69+j9dAnIRlRL7kb7YWX0oUZngSe8k+px+G6Lgp3TgBqo3gX3oML
+         DZUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761746170; x=1762350970;
+        d=1e100.net; s=20230601; t=1761746172; x=1762350972;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DWLsbyIMgrO4Anjvx4doEaIEZAGpDh1hvTWQGxqxKac=;
-        b=REIK/SWIZkJnGCedBCK6ZvzJIFun0lDZ0dO3Jp78tFM5YVIuhZjCHJfSrsAOCp2t8u
-         N3LvXMa3u8pz7wykDEFUWxU4hy/y5SYVvXKHxcdRTC5UP4HK7kTtPCZO5bHHJ+nddQVJ
-         kwnmPmD6QoQ5bQaDWWrPmWp6DgCsg3GvXNnv2w3NJwWjbOIizpXIWi8hmp6l92VRzMr9
-         3qSPmDprX2qLziS/cjJAKRd+yO2WX0Ek6iN8g2GDlJUrqGs0IQ5R1nc5LFfcEpd79lmr
-         a2Zn7J432EV8nz4Y8XKMcpg2DvHP8Vd+Qdq4n3jxiX4axUGztB0/PM0T405LOmuTFvnn
-         kjUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUE6hI7G2XFaFiufnoZbg57TftTq9ZkR8Xl38aTWZUkB+43LK5xs0V/daKAnsQhzPPJmzs=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyw9wo4/2BBlIPa3Mi8cjP78iVCnnpnrRLIFQwPTTIxbccbcxrE
-	OGG9hC5h4//h0TWYbv/G1zLjgUY2F21ed6vY9TzD1dLCN+cKstT8p1ZE
-X-Gm-Gg: ASbGnctxNkNNXx/Cdf1FS1R5/sZyAEpUq6oBNEbN1O6K+uct0dSHPJd+Q6aq2dKTnIm
-	FG2BNq+2yzkFQuaDaZWvB3vAUHFKGDq5L3hZD2DzaaE3c5CDVPWx255/MLb9FP6c7TxFWvQxUnZ
-	mc7k2EQ5nGrVVGwcQXGpMfD25sGDEZcb07wHcVyKxrlPlPRNmAKkAATs8TOX6C9GBq/tfjNImnS
-	wGr+LcT2IZr5gIrBbP9PjlYynwxch9IwoAye++PbFp9laf1ay+66bQxdf/ZGgiKgH9BuU8ETt42
-	Ac/bcVTG8fmYrU1ivgEq+so9QvPvsPQKxbV4FJi/rcevRPPpzJ01VotGUNN4ZQP0kyY3l4rpvD+
-	+uTVHAp5lRmS7mUDyVCM39WXhNNghcuXQC4FUMLOF3BOemeh77Eq6UIo1qFhdpYiT7Z/Nu0GW0L
-	ppFsW8hsIW5prLe795thjrFA1RsQ==
-X-Google-Smtp-Source: AGHT+IHsIhczBnvh9jDdmQP7dI7sF9RIy0mdsWyOBSP3lJT3RdO+FroC0QNH4bBEw0VRWYxAQ/wuNg==
-X-Received: by 2002:a17:907:1c93:b0:b55:e023:5e79 with SMTP id a640c23a62f3a-b703d55cd84mr342463066b.51.1761746170153;
-        Wed, 29 Oct 2025 06:56:10 -0700 (PDT)
+        bh=N0zuCkqo/yYV3kQ7MqBUgd3ahReWAttM1hFVGag3dBs=;
+        b=qCoew5YtD8fj5DaWAUXz4kuX84qD6Ziqfxyy/SqwIst4VJKYYI55rHsWt3IA6LsSqD
+         maTdBpc3CO9DxSKllKYfouxY7IY3mZ/AL8xaVwZ7L3ibMWNCOHU5OGcrUm4vFPsr0OG2
+         tAQE1CTvQl34g9TwMd8hUUqV+tbHefuPIUuxu2S1c24x4PXx5UvW89nYagQl8dKwrJfj
+         oaro50LyDkJtRh85SHG2cg0oldRksIJLD4ckl50HwrxM6rbnZEdTlQuqxvASy7FhKvlX
+         Uwu8vPmtO5UcLCVe/zEMxU8j/eFa6oFA/eThCjOw+cBfeTWqtR2YyMt6lDx1jQ3ayjh9
+         W9+w==
+X-Forwarded-Encrypted: i=1; AJvYcCWEFuYagHMIjaA+3ap/wGFLM8nRui8jiKNovgC8oHfFW2tfsw8UDkf64Adxb0cdCh/13OI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyRX9NzWBjjpTvWvlxFB7Sx+UXwVAWrHwIT7aWf4OOsASlbXJWX
+	v/w8HBo2O7K3JgPcVwG0MeqA/ZlU8j/lgPVtYSn0OIZY82PqAykBRKsPQTtNuhmInuI=
+X-Gm-Gg: ASbGncv2X9xxaq2qEXKaOD9HLwUtsXN1hgNw1F3s4E/YaFHhSePisT1XPy4GvsgeeVq
+	52Sn4Lhnh+TBzaCAIEKJmP7n7gFrLup5fUuhCHxrQY0E5W57xbXOrLQiqA5hShM1C1t3VFXnKRw
+	Jt8M+9vzuDH9pJlU4rHRdwZ7RfjXFGDF91WQnFkG57zMKOuTJMS+7ukn/kj6jiOv0fgscJgEY8V
+	JxhmLm6wxjrggONRkd1mpMPb7K9bJSqRq+kq8uJsYdPv3AMsOP9O4BJhf6q+U3oDBcP2puzmIId
+	szt7A4hV81infxLuCx9+VQQW4MbciaMJhfzvDTkuErECkqqCtO9WzTBnIMSn/LAuzcXfLZM9WC2
+	ikp+m8nr2Ezy1cXwepg1/VkGAH+ysY+0Ku+fx7/baS47+mm4ZwNgBtt6rG7NoxiyiorGju//Fei
+	Fdth6MZKAwG1wlCnDBFDBhatOybw==
+X-Google-Smtp-Source: AGHT+IGpy31yKKECPj1bORsOgXUH7I+UUx6roxhBJ/s8FggZAtznwZBysb24BP9NWSkwCSGcK2OCoA==
+X-Received: by 2002:a17:907:96ab:b0:b46:8bad:6972 with SMTP id a640c23a62f3a-b703d492f2cmr271816166b.38.1761746172314;
+        Wed, 29 Oct 2025 06:56:12 -0700 (PDT)
 Received: from SMW024614.wbi.nxp.com ([128.77.115.157])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d8534d99dsm1444960766b.21.2025.10.29.06.56.08
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d8534d99dsm1444960766b.21.2025.10.29.06.56.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 06:56:09 -0700 (PDT)
+        Wed, 29 Oct 2025 06:56:12 -0700 (PDT)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Abel Vesa <abelvesa@kernel.org>,
 	Peng Fan <peng.fan@nxp.com>,
@@ -78,9 +78,9 @@ Cc: linux-clk@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH v3 4/8] reset: imx8mp-audiomix: Drop unneeded macros
-Date: Wed, 29 Oct 2025 06:52:25 -0700
-Message-ID: <20251029135229.890-5-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v3 5/8] reset: imx8mp-audiomix: Switch to using regmap API
+Date: Wed, 29 Oct 2025 06:52:26 -0700
+Message-ID: <20251029135229.890-6-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251029135229.890-1-laurentiumihalcea111@gmail.com>
 References: <20251029135229.890-1-laurentiumihalcea111@gmail.com>
@@ -94,57 +94,203 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-The macros defining the mask values for the EARC, EARC PHY resets,
-and the DSP RUN_STALL signal can be dropped as they are not and will
-not be used anywhere else except to set the value of the "mask" field
-from "struct imx8mp_reset_map". In this particular case, based on the
-name of the "mask" field, you can already deduce what these values are
-for, which is why defining macros for them doesn't offer any new
-information, nor does it help with the code readability.
+As far as the Linux kernel is concerned, block devices such as i.MX8MP's
+AUDIOMIX block control or i.MX8ULP's SIM LPAV can simultaneously act as
+clock controllers, reset controllers or mux controllers. Since these IPs
+offer different functionalities through different subsystem APIs, it's
+important to make sure that the register R-M-W cycles are performed under
+the same lock across all subsystem APIs. This will ensure that registers
+will not end up with the wrong values because of race conditions (e.g.
+clock consumer tries to update block control register A, while, at the
+same time, reset consumer tries to update the same block control register).
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+However, the aforementioned race conditions will only impact block control
+IPs which use the same register for multiple functionalities. For example,
+i.MX8MP's AUDIOMIX block control IP provides clock gating functionalities
+and reset control functionalities through different registers. This is why
+the current approach (i.e. clock control and reset control work using
+different locks) has worked well so far.
+
+Since we want to extend this driver to be usable for i.MX8ULP's SIM LPAV
+block control IP, we need to make sure that clock control, reset control,
+and mux control APIs use the same lock since all of these functionalities
+are performed using the SYSCTRL0 register.
+
+To do so, we need to switch to the regmap API and, if possible, use the
+parent device's regmap, which, in the case of i.MX8ULP, will be the clock
+controller. This way, we can make sure that the clock gates and the reset
+controller will use the same lock to perform the register R-M-W cycles.
+
+This change will also work fine for cases where we don't really need to
+share the lock across multiple APIs (e.g. i.MX8MP's AUDIOMIX block
+control) since regmap will take care of the locking we were previously
+explicitly performing in the driver.
+
+The transition to the regmap API also involves some cleanup. Specifically,
+we can make use of devres to unmap the device's memory and get rid of the
+memory mapping-related error paths and the remove() function altogether.
+
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- drivers/reset/reset-imx8mp-audiomix.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/reset/reset-imx8mp-audiomix.c | 91 +++++++++++++++++----------
+ 1 file changed, 57 insertions(+), 34 deletions(-)
 
 diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
-index eceb37ff5dc5..e9643365a62c 100644
+index e9643365a62c..3f6d11270918 100644
 --- a/drivers/reset/reset-imx8mp-audiomix.c
 +++ b/drivers/reset/reset-imx8mp-audiomix.c
-@@ -14,11 +14,7 @@
+@@ -11,6 +11,7 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
++#include <linux/regmap.h>
  #include <linux/reset-controller.h>
  
  #define IMX8MP_AUDIOMIX_EARC_RESET_OFFSET	0x200
--#define IMX8MP_AUDIOMIX_EARC_RESET_MASK		BIT(0)
--#define IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK	BIT(1)
--
- #define IMX8MP_AUDIOMIX_DSP_RUNSTALL_OFFSET	0x108
--#define IMX8MP_AUDIOMIX_DSP_RUNSTALL_MASK	BIT(5)
+@@ -42,8 +43,8 @@ static const struct imx8mp_reset_map reset_map[] = {
  
- struct imx8mp_reset_map {
- 	unsigned int offset;
-@@ -29,17 +25,17 @@ struct imx8mp_reset_map {
- static const struct imx8mp_reset_map reset_map[] = {
- 	[IMX8MP_AUDIOMIX_EARC_RESET] = {
- 		.offset	= IMX8MP_AUDIOMIX_EARC_RESET_OFFSET,
--		.mask	= IMX8MP_AUDIOMIX_EARC_RESET_MASK,
-+		.mask = BIT(0),
- 		.active_low = true,
- 	},
- 	[IMX8MP_AUDIOMIX_EARC_PHY_RESET] = {
- 		.offset	= IMX8MP_AUDIOMIX_EARC_RESET_OFFSET,
--		.mask	= IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK,
-+		.mask = BIT(1),
- 		.active_low = true,
- 	},
- 	[IMX8MP_AUDIOMIX_DSP_RUNSTALL] = {
- 		.offset	= IMX8MP_AUDIOMIX_DSP_RUNSTALL_OFFSET,
--		.mask	= IMX8MP_AUDIOMIX_DSP_RUNSTALL_MASK,
-+		.mask = BIT(5),
- 		.active_low = false,
- 	},
+ struct imx8mp_audiomix_reset {
+ 	struct reset_controller_dev rcdev;
+-	spinlock_t lock; /* protect register read-modify-write cycle */
+ 	void __iomem *base;
++	struct regmap *regmap;
  };
+ 
+ static struct imx8mp_audiomix_reset *to_imx8mp_audiomix_reset(struct reset_controller_dev *rcdev)
+@@ -55,26 +56,15 @@ static int imx8mp_audiomix_update(struct reset_controller_dev *rcdev,
+ 				  unsigned long id, bool assert)
+ {
+ 	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
+-	void __iomem *reg_addr = priv->base;
+-	unsigned int mask, offset, active_low;
+-	unsigned long reg, flags;
++	unsigned int mask, offset, active_low, shift, val;
+ 
+ 	mask = reset_map[id].mask;
+ 	offset = reset_map[id].offset;
+ 	active_low = reset_map[id].active_low;
++	shift = ffs(mask) - 1;
++	val = (active_low ^ assert) << shift;
+ 
+-	spin_lock_irqsave(&priv->lock, flags);
+-
+-	reg = readl(reg_addr + offset);
+-	if (active_low ^ assert)
+-		reg |= mask;
+-	else
+-		reg &= ~mask;
+-	writel(reg, reg_addr + offset);
+-
+-	spin_unlock_irqrestore(&priv->lock, flags);
+-
+-	return 0;
++	return regmap_update_bits(priv->regmap, offset, mask, val);
+ }
+ 
+ static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcdev,
+@@ -94,6 +84,50 @@ static const struct reset_control_ops imx8mp_audiomix_reset_ops = {
+ 	.deassert = imx8mp_audiomix_reset_deassert,
+ };
+ 
++static const struct regmap_config regmap_config = {
++	.reg_bits = 32,
++	.val_bits = 32,
++	.reg_stride = 4,
++};
++
++/* assumption: registered only if not using parent regmap */
++static void imx8mp_audiomix_reset_iounmap(void *data)
++{
++	struct imx8mp_audiomix_reset *priv = dev_get_drvdata(data);
++
++	iounmap(priv->base);
++}
++
++/* assumption: dev_set_drvdata() is called before this */
++static int imx8mp_audiomix_reset_get_regmap(struct device *dev)
++{
++	struct imx8mp_audiomix_reset *priv;
++	int ret;
++
++	priv = dev_get_drvdata(dev);
++
++	/* try to use the parent's regmap */
++	priv->regmap = dev_get_regmap(dev->parent, NULL);
++	if (priv->regmap)
++		return 0;
++
++	/* ... if that's not possible then initialize the regmap right now */
++	priv->base = of_iomap(dev->parent->of_node, 0);
++	if (!priv->base)
++		return dev_err_probe(dev, -ENOMEM, "failed to iomap address space\n");
++
++	ret = devm_add_action_or_reset(dev, imx8mp_audiomix_reset_iounmap, dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to register action\n");
++
++	priv->regmap = devm_regmap_init_mmio(dev, priv->base, &regmap_config);
++	if (IS_ERR(priv->regmap))
++		return dev_err_probe(dev, PTR_ERR(priv->regmap),
++				     "failed to initialize regmap\n");
++
++	return 0;
++}
++
+ static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
+ 				       const struct auxiliary_device_id *id)
+ {
+@@ -105,36 +139,26 @@ static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+-	spin_lock_init(&priv->lock);
+-
+ 	priv->rcdev.owner     = THIS_MODULE;
+ 	priv->rcdev.nr_resets = ARRAY_SIZE(reset_map);
+ 	priv->rcdev.ops       = &imx8mp_audiomix_reset_ops;
+ 	priv->rcdev.of_node   = dev->parent->of_node;
+ 	priv->rcdev.dev	      = dev;
+ 	priv->rcdev.of_reset_n_cells = 1;
+-	priv->base            = of_iomap(dev->parent->of_node, 0);
+-	if (!priv->base)
+-		return -ENOMEM;
+ 
++	/* keep before call to imx8mp_audiomix_reset_init_regmap() */
+ 	dev_set_drvdata(dev, priv);
+ 
++	ret = imx8mp_audiomix_reset_get_regmap(dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to get regmap\n");
++
+ 	ret = devm_reset_controller_register(dev, &priv->rcdev);
+ 	if (ret)
+-		goto out_unmap;
++		return dev_err_probe(dev, ret,
++				     "failed to register reset controller\n");
+ 
+ 	return 0;
+-
+-out_unmap:
+-	iounmap(priv->base);
+-	return ret;
+-}
+-
+-static void imx8mp_audiomix_reset_remove(struct auxiliary_device *adev)
+-{
+-	struct imx8mp_audiomix_reset *priv = dev_get_drvdata(&adev->dev);
+-
+-	iounmap(priv->base);
+ }
+ 
+ static const struct auxiliary_device_id imx8mp_audiomix_reset_ids[] = {
+@@ -147,7 +171,6 @@ MODULE_DEVICE_TABLE(auxiliary, imx8mp_audiomix_reset_ids);
+ 
+ static struct auxiliary_driver imx8mp_audiomix_reset_driver = {
+ 	.probe		= imx8mp_audiomix_reset_probe,
+-	.remove		= imx8mp_audiomix_reset_remove,
+ 	.id_table	= imx8mp_audiomix_reset_ids,
+ };
+ 
 -- 
 2.43.0
 
