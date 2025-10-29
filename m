@@ -1,67 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dd54918.kasserver.com (dd54918.kasserver.com [85.13.167.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1F2DDAB;
-	Wed, 29 Oct 2025 06:54:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26E630F937
+	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 07:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.13.167.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761720879; cv=none; b=VpvUM0qzF9qon2bYhlNK70YFQUw8cvo/b0v+fGqjssXBla7CtddE8hLTWYGp6AtLuPxcjOygFsEhi8Ik5YmkKcVcYK5/Npy2VuPDkghV8YxgT7cvHZdQtlrqNLvFdyy/MY2w4HNjSVzR1ocSgbl7UWq9vBoPRYdyrOPWA95lYac=
+	t=1761722468; cv=none; b=qdUYWPRGeiuqjS8DDIi6XIGzexACuO6tMVbAg7yb2kRYhdQhjTqP2zpk7Ifp+XcaeUnDHCupBa8r/CNfx2Zdi3CZpPru4RhbRwiyHT59XqntJ72RnJwLZKfEYk4INgzwyA7Fa6fStjzRpYRYOqfGgXZIhadd04k8DWRAIEOD9Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761720879; c=relaxed/simple;
-	bh=4R0KWm5wenARfob6/8rdlFzK0JPGL4SK/5QXUbNr0fo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kSoLJEjF9UnWbOGU1KtQCHs60yoppVnLl7ingYsVBGEkGDiBBix3zatY+g69wU2/9gLM/ZVku3MV3ETB0ubDSE7tBlLcwqaaz3ZNoBIThKASGpBeFF71T+CIDXgZo9sll2fmLilpf/h+MZYtnbRiOhk19AFuO1UXXOgzzqfP9ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IoOGCBX/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761722468; c=relaxed/simple;
+	bh=Ep9YwSgs0Aw5mqUfs23xGd+sVMID51I+Lkb//qQB47w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eJ4lv2mKtc8QbPZJB9Ph53mJTIUlT7yrkfS5fT0GyRahgsBz+3RUV3CdXP5SAR2rPOcVub9CZGq52WTAQhYYMUZsRdKCrnCmh9uZvqoCSO2wfBnzMtF1oS+ZuaA9W4jte8Arh/A9BkWSfkRvM6WFH34MLRbgUTgsT+3S6/DB/vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=KARO-electronics.de; spf=pass smtp.mailfrom=KARO-electronics.de; dkim=pass (2048-bit key) header.d=karo-electronics.de header.i=@karo-electronics.de header.b=bznq++z1; arc=none smtp.client-ip=85.13.167.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=KARO-electronics.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=KARO-electronics.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IoOGCBX/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92D6C4CEF7;
-	Wed, 29 Oct 2025 06:54:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761720877;
-	bh=4R0KWm5wenARfob6/8rdlFzK0JPGL4SK/5QXUbNr0fo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IoOGCBX/cw6SLW8xwKj6s01nFBcLcomcPVoM2OCePKFLKmx38aIFcU1CIuso7MS+m
-	 /Cmi9FsnGoqGEeyJMKDGQHmzLOjiQgfexcXhFpN3d8wUqBz+4lQj7XkLpNRdcecD1f
-	 eSgwSGIsdfibYJNUUWDFojMQ9UPAXeYlNPFiMKgbWfUQciuwwClV9M6sYPQvtgqT6/
-	 5BnOGo4AgVNK2/JKflC8uu84rRrOuM2lGN2qEo/EU6DsXgsH+The4yXA+pwWY970Ql
-	 isj9F7T3FwHzq23WXIRVxHxVJufFjViSx6jXr96BeAzRhUUS4jqXL9FxcUSs0tJfYx
-	 +ojU0IIsV3jWQ==
-Date: Wed, 29 Oct 2025 07:54:34 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-input@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] dt-bindings: input: fsl,scu-key: Add compatible
- string fsl,imx8qm-sc-key
-Message-ID: <20251029-nickel-lorikeet-of-conversion-ea447d@kuoka>
-References: <20251028-b4_qm_scu_key-v1-0-9732e92a5e83@nxp.com>
- <20251028-b4_qm_scu_key-v1-1-9732e92a5e83@nxp.com>
+	dkim=pass (2048-bit key) header.d=karo-electronics.de header.i=@karo-electronics.de header.b="bznq++z1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=karo-electronics.de;
+	s=kas202509031142; t=1761721899;
+	bh=p4QsNcOQhnUQw6VKEs7EI/wgC6PCFii9ExA5HZIUu54=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=bznq++z1b8rF88YPcJ6xYK7ARpc5BTe4nHGirZoOAmRxuOpP6qsWpbhDl+YJIo4Sa
+	 1xp7tRIrE6inZOQEh7tLtORenFq22DazEDbm72wtHcPpMHPdGOW0RR2As/KtzRm6hm
+	 h+ggStXDiMT8tKoPcI+oWGccGbYV8+Kd4sX6W98RnzhBdJk07WsloMsyICnrKkcmMi
+	 EvlCHhmUsG9z1w9HNONCrZ2sOgjqR8SEyv4PQCn9bxIGKZcGgNH4cnOgTPi3ntgGil
+	 SNXjBfuIY1n+xEoCYcstKwVb4ZhjLy9ZQZUnzWrMnYAkzTPejA2GAuwMacrThsSEL7
+	 XVV8ou4/lOLgQ==
+Received: from karo-electronics.de (unknown [89.1.81.74])
+	by dd54918.kasserver.com (Postfix) with ESMTPSA id 4A289772C311;
+	Wed, 29 Oct 2025 08:11:39 +0100 (CET)
+Date: Wed, 29 Oct 2025 08:11:38 +0100
+From: Lothar =?UTF-8?B?V2HDn21hbm4=?= <LW@KARO-electronics.de>
+To: Maud Spierings <maudspierings@gocontroll.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 3/5] arm64: dts: freescale: add Ka-Ro Electronics
+ tx8m-1610 COM
+Message-ID: <20251029081138.2161a92a@karo-electronics.de>
+In-Reply-To: <938f85b0-4c9b-463a-960a-f5f4e4092480@gocontroll.com>
+References: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
+	<20251022-mini_iv-v2-3-20af8f9aac14@gocontroll.com>
+	<a7012995-c2a8-48a3-abe1-5c227272f21c@gmail.com>
+	<65202d1f-6c4f-4d4e-9fef-85cfb74ec768@gocontroll.com>
+	<938f85b0-4c9b-463a-960a-f5f4e4092480@gocontroll.com>
+Organization: Ka-Ro electronics GmbH
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251028-b4_qm_scu_key-v1-1-9732e92a5e83@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Bar: +
 
-On Tue, Oct 28, 2025 at 04:01:28PM -0400, Frank Li wrote:
-> Add compatible string fsl,imx8qm-sc-key for i.MX8QM and fallback to
-> fsl,imx-sc-key.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/input/fsl,scu-key.yaml | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+Hi,
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+On Tue, 28 Oct 2025 14:10:04 +0100 Maud Spierings wrote:
+> On 10/28/25 13:42, Maud Spierings wrote:
+> > On 10/28/25 13:15, Matti Vaittinen wrote: =20
+[...]
+> >> Could/Should this be described using the:
+> >> 'rohm,feedback-pull-up-r1-ohms' and
+> >> 'rohm,feedback-pull-up-r2-ohms'? If I understand the comment=20
+> >> correctly, that might allow the driver to be able to use correctly=20
+> >> scaled voltages.
+> >>
+> >> https://elixir.bootlin.com/linux/v6.18-rc1/source/Documentation/=20
+> >> devicetree/bindings/regulator/rohm,bd71837-regulator.yaml#L108
+> >> =20
+> >=20
+> > Ah I didn't know those existed, should've checked the bindings in more=
+=20
+> > detail, thanks for the hint!
+> >=20
+> > I will have to investigate this carefully, since I don't have access to=
+=20
+> > the actual design of the COM, so I don't know exactly what is there.
+> >  =20
+>=20
+> So I am not yet entirely sure if this works out, I used the calculation=20
+> in the driver:
+>=20
+> /*
+>   * Setups where regulator (especially the buck8) output voltage is scaled
+>   * by adding external connection where some other regulator output is=20
+> connected
+>   * to feedback-pin (over suitable resistors) is getting popular amongst=
+=20
+> users
+>   * of BD71837. (This allows for example scaling down the buck8 voltages=
+=20
+> to suit
+>   * lover GPU voltages for projects where buck8 is (ab)used to supply pow=
+er
+>   * for GPU. Additionally some setups do allow DVS for buck8 but as this =
+do
+>   * produce voltage spikes the HW must be evaluated to be able to=20
+> survive this
+>   * - hence I keep the DVS disabled for non DVS bucks by default. I=20
+> don't want
+>   * to help you burn your proto board)
+>   *
+>   * So we allow describing this external connection from DT and scale the
+>   * voltages accordingly. This is what the connection should look like:
+>   *
+>   * |------------|
+>   * |	buck 8  |-------+----->Vout
+>   * |		|	|
+>   * |------------|	|
+>   *	| FB pin	|
+>   *	|		|
+>   *	+-------+--R2---+
+>   *		|
+>   *		R1
+>   *		|
+>   *	V FB-pull-up
+>   *
+>   *	Here the buck output is sifted according to formula:
+>   *
+>   * Vout_o =3D Vo - (Vpu - Vo)*R2/R1
+>   * Linear_step =3D step_orig*(R1+R2)/R1
+>   *
+>   * where:
+>   * Vout_o is adjusted voltage output at vsel reg value 0
+>   * Vo is original voltage output at vsel reg value 0
+>   * Vpu is the pull-up voltage V FB-pull-up in the picture
+>   * R1 and R2 are resistor values.
+>   *
+>   * As a real world example for buck8 and a specific GPU:
+>   * VLDO =3D 1.6V (used as FB-pull-up)
+>   * R1 =3D 1000ohms
+>   * R2 =3D 150ohms
+>   * VSEL 0x0 =3D> 0.8V =E2=80=93 (VLDO =E2=80=93 0.8) * R2 / R1 =3D 0.68V
+>   * Linear Step =3D 10mV * (R1 + R2) / R1 =3D 11.5mV
+>   */
+>=20
+> Because I do not know the pull up voltage, and I am not sure if it is a=20
+> pull up.
+>=20
+> So:
+> Vout_o =3D 1.35V
+> Vo =3D 1.1V
+> Vpu =3D unknown
+> R2 =3D 499 Ohm
+> R1 =3D 2200 Ohm
+> Gives:
+> Vpu =3D ~0V
+>=20
+> And:
+> Vout_o =3D 1.35V
+> Vo =3D 1.1V
+> Vpu =3D unknown
+> R2 =3D 2200 Ohm
+> R1 =3D 499 Ohm
+> Gives:
+> Vpu =3D ~1.04V
+>=20
+> I am not quite sure which resistor is R1 and which is R2 but having=20
+> there be a pull down to 0V seems the most logical answer?
+>=20
+> I am adding Lothar from Ka-Ro to the CC maybe he can shed some light on=20
+> this setup.
+>
+R2 is connected to GND, so Vpu =3D 0.
+With:
+	regulator-min-microvolt =3D <1350000>;
+	regulator-max-microvolt =3D <1350000>;
+	rohm,fb-pull-up-microvolt =3D <0>;
+	rohm,feedback-pull-up-r1-ohms =3D <2200>;
+	rohm,feedback-pull-up-r2-ohms =3D <499>;
+the correct voltage should be produced on the BUCK8 output, but a quick
+test with these parameters led to:
+|failed to get the current voltage: -EINVAL
+|bd718xx-pmic bd71847-pmic.3.auto: error -EINVAL: failed to register buck6 =
+regulator
+|bd718xx-pmic: probe of bd71847-pmic.3.auto failed with error -22
 
-Best regards,
-Krzysztof
+Apparently noone has ever tested this feature in real life.
 
+
+Lothar Wa=C3=9Fmann
