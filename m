@@ -1,93 +1,93 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.10])
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A72822126C
-	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 12:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99A8223DCF
+	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 13:02:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761742724; cv=pass; b=NYwRlcxyZOHrR1NfvXZaopXheG/EXBV4D/DGxchcSjcmA4Tm6TAQ1ZjUEOExEswiwe3lUnIm9KPKNW+jPk45ijduDreaS7ZFMiu93Sjh13mm4W0GiAqArKBvV6eg/bjcr3heTJicvNkiIs7YIWRl4l3qqN4mzHksPqoz1CDZiFo=
+	t=1761742928; cv=pass; b=rufadz8diEvcNEX7aOROHu+GViWTYtFO2UvgHgzo/FEDvImVrBykLXzEVsYfoHuJlM4bZeOi+c2odeUS7vz/Cfta6i2I3OtKcnzfxvQ19ftb/C2EDRtRzSHygyN6wz+MY1qkrYprIHgRyJLMp4Edm//pYBWLuYLByn1P0Nf3olM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761742724; c=relaxed/simple;
-	bh=qqXZpmRAdwZJbQzpBZ9hVLXtxfiYzD2nZK2ZSYHeI54=;
+	s=arc-20240116; t=1761742928; c=relaxed/simple;
+	bh=nxJ0l8pFIkUd1XOOatN08dN48GI7BMxEKiJskrqIjPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jY6+1grwVs+TRlpGRpFfG8wfoNVAKsuBb4CIB6250rHruf7cGChLI8cChzj/JYqxk6iw/wmX5xmIzYFXmkg+WAUbJyj/A8+LuU7iTEjvy9aD35NI5HsiInXHpLIfdOSX+2/hMk/Cq32r7J3utU935VkvQJu+jlwFdUOxw1JW+PI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=L5L5Gk0V; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=DdRe5bk6; arc=pass smtp.client-ip=185.56.87.10
+	 MIME-Version:Content-Type; b=mRzQN9C/65aUrnon3tG0b/8OfkFeH+dIHZi3FGGvpeZHa0cwQK8LY+K8cSZ3gXPlP9a8iJHorMWzFx3yYlmSs6FxxtgoSp/BO1lK22b2/fEdAM6bV3cbBjM1EIkoso4T3AVr8jxazfITsfQedEqkawWjxc0zFSvzSmdjqfo5Kms=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=Ns5WBBOn; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=H0xwOUXl; arc=pass smtp.client-ip=185.56.87.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="L5L5Gk0V";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="DdRe5bk6"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-vzr5.prod.antispam.mailspamprotection.com; s=arckey; t=1761742722;
-	 b=Y2IidWaRwjidlMd/XP6A81tBK4E9fiRC7rgQiF8hGyk09eUeGrnovrG6jmItU85Ho9n0unXp9N
-	  Thek/CGpRfmw+nq6bBvoyx6b/kPJLr1jXPnNsT7h0eXUKebCr7MKC9KIGoAKgnTPxs8q3QC7sc
-	  WvWX5OxClmqtTgpnaz5KAyQOlylcg/ZpalHb9+xE3OQGR7Ttw6RVQ7b4rVRx2J20eRHfUMUyIX
-	  d5g2uBsd+wkL1wmiD0mj7wqyQO+9mAqT6q8d+tC+ST5AnlU08T7PoqVrBO1vA/vbhmW/ZB97kb
-	  u/Ap/TsUiB2OKOspT7rofMPL2nntmOaXT6kYXXxBYa6rmA==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-vzr5.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="Ns5WBBOn";
+	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="H0xwOUXl"
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-q1dl.prod.antispam.mailspamprotection.com; s=arckey; t=1761742926;
+	 b=XsdYMY7I+p9Gg0WBdSHaK8+4+bWTe85jeyqSt6aUJELCQyLZuhN89EYZYsppQGONs7ci8dSuwT
+	  ZiNuAnk884pVoDmBcU0x3JhWmASTtMvyECsq1j2YLLiCQq5mUBakrRN4YElJyDdLSMArSwSm2u
+	  b0Q0p54pY3gn+5VslGnxGb4rZTu/ZWLcfAzd4/EV30PKUhwJRwzJE6WhHxw90gLL+Y5L7tS5+w
+	  f897gyAs9AYzN7qa6SEpHeyS8UtQXWmhNrIfW+vo497nPidJuLf2TniZLqOY0i3FcKgvQx+QjX
+	  pqRTtj1Zlb5tP+JG1XMCmr50P8DxIwa2wnQHEWOKyaUpgA==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-q1dl.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
 	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
 	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
 	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
 	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-vzr5.prod.antispam.mailspamprotection.com; s=arckey; t=1761742722;
-	bh=qqXZpmRAdwZJbQzpBZ9hVLXtxfiYzD2nZK2ZSYHeI54=;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-q1dl.prod.antispam.mailspamprotection.com; s=arckey; t=1761742926;
+	bh=nxJ0l8pFIkUd1XOOatN08dN48GI7BMxEKiJskrqIjPs=;
 	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	  To:From:DKIM-Signature:DKIM-Signature;
-	b=ajHYL5Ymmxsbq3WQcPK+WjrrKrGYpbpsAdKH9Uxb3vkeroH1Pf256KE0qKPDfnSp8IR41y6E6v
-	  mNUZh+O/0r+gusMByoPRCquEKoIsubAyzoJqp4N2ruJCTlkLXkAjC/rAgCxlCFsYgxYPrY8BNo
-	  uQtlyP0u2fGjwxHcoiRX0TlPjpAgqeJYGhm1vGr6uXf8NzbdlaWWumNHcZ4N8mblqPglV6m6zi
-	  aBaHqemCP8A5jH+IwGYuH12MR+U28RT0JsyoypJTmLHGWPOvJi1iJOMslrvje3wzHNF+k37gzo
-	  MCiHsff+5gu1HMN/plhbqrJ2GXRLaaRi1P194vFr12q5bw==;
+	b=0ItO1XA621PWP+X5mSfUBuFgwrbJBOS+AqN/FCLXKFhQ1ruDv/xAytGBCS+wsYZ6rydVhcC6MJ
+	  M4uTb/U1EUw1q4G1ssRoMAec24A6D+SgA59HiPgUNrR5IT2YEH0mvjdx7rWDyfd1eO54yDEppN
+	  zTJcisnx4IZSxXTtQKfcHaWyfOZucjIGDUD3F61P6A/74kRyK3J4pJfeh0FHszHpal6sq1L+df
+	  FqZdTdSjSqL2PJE7e1aDpFRbMGgYbO6YI7/DS3IsZ8BdX5z/R4uLFCApZamdh0/384j0O/n+t+
+	  l2xE4K1DI0hp/Nv4GXL/VvaNlAzr168xjcwgpAuC4FsyMA==;
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
 	:Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
 	List-Unsubscribe:Content-Transfer-Encoding;
-	bh=3oSppA+afvyqUxNHhPIkWdr61ZGsrwZwGDBFFJQIi6Q=; b=L5L5Gk0VIBcIR7Rs7vx+UWGHGr
-	1uX/JaIdwEeSoj/EjFEY9PfTqeKS8el2YH3jOiV6CLqeb2qTYS4Vz4hh/+/LT7mFVjTjUTfPQMzPS
-	C5/zPLY3oGabSPsQcVn2bsv7Z64Nxwf0LyXA2n1VzcZRCtYQ2ffn6y7rpj2DTZbDdhqI=;
+	bh=3vbMUDHqHdbLF0JamSxILfazqzvKVxLGjQW/n+lyM2g=; b=Ns5WBBOn1MDxeRptkRx340Rzsp
+	xULgYCpcfCM5UUsVm7P0nBhXAPrGOppMqCjT4+6pFVSaz/BcQad2JuOGvUVaasVT/3HP6NfdEE/cj
+	xw/NdQrtxwmM9B6njdDWsW4dtM8VMcx8kklYnM7MysL7RSI3PuBEVYKifPjih1cxLOY4=;
 Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-vzr5.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	by instance-europe-west4-q1dl.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.1)
 	(envelope-from <francesco@valla.it>)
-	id 1vE5l8-00000006xJC-0t8G
+	id 1vE5oK-00000006WtB-20Gr
 	for imx@lists.linux.dev;
-	Wed, 29 Oct 2025 12:58:40 +0000
+	Wed, 29 Oct 2025 13:01:58 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
 	s=default; h=Date:Subject:Cc:To:From:list-help:list-unsubscribe:
 	list-subscribe:list-post:list-owner:list-archive;
-	bh=3oSppA+afvyqUxNHhPIkWdr61ZGsrwZwGDBFFJQIi6Q=; b=DdRe5bk6zHEGKn06FFuSn8vLai
-	gOfhjPA/iOu0RxB4imGfGZyjzmqBZzS8mNaAiMMhNRUVBJdllLCWS4IHvuzCSBzbNl2XBRlejr2dm
-	awE0AYwn5f4hU+XkXqwGN00y4MdlnIhla834mpoOz7TaYBCtVykxqVSAn07lTJRGK1FI=;
-Received: from [95.75.8.65] (port=19426 helo=fedora.localnet)
+	bh=3vbMUDHqHdbLF0JamSxILfazqzvKVxLGjQW/n+lyM2g=; b=H0xwOUXlsVJKBjrSJwFCyxItJe
+	4q8UpJeUIFhDmIEzqQSDJzAaTmZ7QpfDX0WA2kzQTqHXmYrss0fEHSs8p5elLMVRAE2EVCoKfPlY0
+	xq3pn6P1tgyPf6bHega40w7ggju/lDPR8FmN0PA/eoddE+78s1XXruwK7Agajd3LsSaw=;
+Received: from [95.75.8.65] (port=19648 helo=fedora.localnet)
 	by esm19.siteground.biz with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.1)
 	(envelope-from <francesco@valla.it>)
-	id 1vE5l0-00000000CSz-20fj;
-	Wed, 29 Oct 2025 12:58:30 +0000
+	id 1vE5nq-00000000FE6-0Uqj;
+	Wed, 29 Oct 2025 13:01:26 +0000
 From: Francesco Valla <francesco@valla.it>
-To: imx@lists.linux.dev, Andrzej Hajda <andrzej.hajda@intel.com>,
+To: Marek Vasut <marex@denx.de>, Andrzej Hajda <andrzej.hajda@intel.com>,
  Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
  Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
  Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: dri-devel@lists.freedesktop.org, Liu Ying <victor.liu@nxp.com>,
- Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/9] drm/bridge: fsl-ldb: Get the next non-panel bridge
-Date: Wed, 29 Oct 2025 13:58:14 +0100
-Message-ID: <2192154.9o76ZdvQCi@fedora>
-In-Reply-To: <20250911-dcif-upstreaming-v5-2-a1e8dab8ae40@oss.nxp.com>
+ Liu Ying <victor.liu@nxp.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Fabian Pflug <f.pflug@pengutronix.de>, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/bridge: ldb: add support for an external bridge
+Date: Wed, 29 Oct 2025 14:01:24 +0100
+Message-ID: <2756377.lGaqSPkdTl@fedora>
+In-Reply-To: <1a52c081-ebb7-487b-850f-e50fb36b739a@nxp.com>
 References:
- <20250911-dcif-upstreaming-v5-0-a1e8dab8ae40@oss.nxp.com>
- <20250911-dcif-upstreaming-v5-2-a1e8dab8ae40@oss.nxp.com>
+ <20251028-imx93_ldb_bridge-v1-1-fca2e7d60e0a@valla.it>
+ <1a52c081-ebb7-487b-850f-e50fb36b739a@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2765006.vuYhMxLoTh";
+Content-Type: multipart/signed; boundary="nextPart2568054.XAFRqVoOGU";
  micalg="pgp-sha512"; protocol="application/pgp-signature"
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - esm19.siteground.biz
@@ -97,162 +97,76 @@ X-AntiAbuse: Sender Address Domain - valla.it
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-SGantispam-id: c1f7916853dfdea3a06919b43b9f1700
+X-SGantispam-id: 399e7702e13b7888b09f7d479724526c
 AntiSpam-DLS: false
 AntiSpam-DLSP: 
 AntiSpam-DLSRS: 
 AntiSpam-TS: 1.0
 CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1vE5l8-00000006xJC-0t8G-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-vzr5.prod.antispam.mailspamprotection.com;
+CFBL-Feedback-ID: 1vE5oK-00000006WtB-20Gr-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-q1dl.prod.antispam.mailspamprotection.com;
 	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
 	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
 	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
 	arc=none
 
---nextPart2765006.vuYhMxLoTh
+--nextPart2568054.XAFRqVoOGU
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
 From: Francesco Valla <francesco@valla.it>
-Date: Wed, 29 Oct 2025 13:58:14 +0100
-Message-ID: <2192154.9o76ZdvQCi@fedora>
-In-Reply-To: <20250911-dcif-upstreaming-v5-2-a1e8dab8ae40@oss.nxp.com>
+Date: Wed, 29 Oct 2025 14:01:24 +0100
+Message-ID: <2756377.lGaqSPkdTl@fedora>
+In-Reply-To: <1a52c081-ebb7-487b-850f-e50fb36b739a@nxp.com>
 MIME-Version: 1.0
 
 Hi,
 
-On Thursday, 11 September 2025 at 13:37:02 Laurentiu Palcu <laurentiu.palcu@oss.nxp.com> wrote:
-> From: Liu Ying <victor.liu@nxp.com>
+On Wednesday, 29 October 2025 at 04:41:51 Liu Ying <victor.liu@nxp.com> wrote:
+> On 10/28/2025, Francesco Valla wrote:
+> > I was trying to add display support for the i.MX93 FRDM on top of the
+> > patch sent some time ago by Fabian Pflug [1], using some of the work
+> > already done by Alexander Stein but not yet merged [2], but then I
+> > noticed that the support for LVDS-HDMI converter bridges was missing
+> > from the LDB driver already present for the i.MX93.
+> > 
+> > Not a fail of the driver itself, obviously, but I wonder if/how the
+> > existing i.MX8MP setups (e.g.: [3]), which use the same driver, work
+> > correclty. Unfortunately I don't have the i.MX8MP hardware to test them.
 > 
-> The next bridge in bridge chain could be a panel bridge or a non-panel
-> bridge.  Use devm_drm_of_get_bridge() to replace the combination
-> function calls of of_drm_find_panel() and devm_drm_panel_bridge_add()
-> to get either a panel bridge or a non-panel bridge, instead of getting
-> a panel bridge only.
+> [3] was in my previous patch series[a].  Only patch 6&7 of [a] are applied,
+> so for now [3] doesn't actually work with i.MX8MP.
 > 
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/gpu/drm/bridge/fsl-ldb.c | 31 +++++++++++--------------------
->  1 file changed, 11 insertions(+), 20 deletions(-)
+> And, patch 3 of [a] supports the external bridge this patch tries to support.
 > 
-> diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fsl-ldb.c
-> index 5c3cf37200bcee1db285c97e2b463c9355ee6acb..665053d0cb79d2b4f50e69c397863ab024553867 100644
-> --- a/drivers/gpu/drm/bridge/fsl-ldb.c
-> +++ b/drivers/gpu/drm/bridge/fsl-ldb.c
-> @@ -15,7 +15,6 @@
->  #include <drm/drm_atomic_helper.h>
->  #include <drm/drm_bridge.h>
->  #include <drm/drm_of.h>
-> -#include <drm/drm_panel.h>
->  
->  #define LDB_CTRL_CH0_ENABLE			BIT(0)
->  #define LDB_CTRL_CH0_DI_SELECT			BIT(1)
-> @@ -86,7 +85,7 @@ static const struct fsl_ldb_devdata fsl_ldb_devdata[] = {
->  struct fsl_ldb {
->  	struct device *dev;
->  	struct drm_bridge bridge;
-> -	struct drm_bridge *panel_bridge;
-> +	struct drm_bridge *next_bridge;
->  	struct clk *clk;
->  	struct regmap *regmap;
->  	const struct fsl_ldb_devdata *devdata;
-> @@ -118,7 +117,7 @@ static int fsl_ldb_attach(struct drm_bridge *bridge,
->  {
->  	struct fsl_ldb *fsl_ldb = to_fsl_ldb(bridge);
->  
-> -	return drm_bridge_attach(encoder, fsl_ldb->panel_bridge,
-> +	return drm_bridge_attach(encoder, fsl_ldb->next_bridge,
->  				 bridge, flags);
->  }
->  
-> @@ -292,9 +291,7 @@ static const struct drm_bridge_funcs funcs = {
->  static int fsl_ldb_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
-> -	struct device_node *panel_node;
->  	struct device_node *remote1, *remote2;
-> -	struct drm_panel *panel;
->  	struct fsl_ldb *fsl_ldb;
->  	int dual_link;
->  
-> @@ -317,33 +314,27 @@ static int fsl_ldb_probe(struct platform_device *pdev)
->  	if (IS_ERR(fsl_ldb->regmap))
->  		return PTR_ERR(fsl_ldb->regmap);
->  
-> -	/* Locate the remote ports and the panel node */
-> +	/* Locate the remote ports. */
->  	remote1 = of_graph_get_remote_node(dev->of_node, 1, 0);
->  	remote2 = of_graph_get_remote_node(dev->of_node, 2, 0);
->  	fsl_ldb->ch0_enabled = (remote1 != NULL);
->  	fsl_ldb->ch1_enabled = (remote2 != NULL);
-> -	panel_node = of_node_get(remote1 ? remote1 : remote2);
->  	of_node_put(remote1);
->  	of_node_put(remote2);
->  
-> -	if (!fsl_ldb->ch0_enabled && !fsl_ldb->ch1_enabled) {
-> -		of_node_put(panel_node);
-> -		return dev_err_probe(dev, -ENXIO, "No panel node found");
-> -	}
-> +	if (!fsl_ldb->ch0_enabled && !fsl_ldb->ch1_enabled)
-> +		return dev_err_probe(dev, -ENXIO, "No next bridge node found");
->  
->  	dev_dbg(dev, "Using %s\n",
->  		fsl_ldb_is_dual(fsl_ldb) ? "dual-link mode" :
->  		fsl_ldb->ch0_enabled ? "channel 0" : "channel 1");
->  
-> -	panel = of_drm_find_panel(panel_node);
-> -	of_node_put(panel_node);
-> -	if (IS_ERR(panel))
-> -		return PTR_ERR(panel);
-> -
-> -	fsl_ldb->panel_bridge = devm_drm_panel_bridge_add(dev, panel);
-> -	if (IS_ERR(fsl_ldb->panel_bridge))
-> -		return PTR_ERR(fsl_ldb->panel_bridge);
-> -
-> +	fsl_ldb->next_bridge = devm_drm_of_get_bridge(dev, dev->of_node,
-> +						      fsl_ldb->ch0_enabled ? 1 : 2,
-> +						      0);
-> +	if (IS_ERR(fsl_ldb->next_bridge))
-> +		return dev_err_probe(dev, PTR_ERR(fsl_ldb->next_bridge),
-> +				     "failed to get next bridge\n");
->  
->  	if (fsl_ldb_is_dual(fsl_ldb)) {
->  		struct device_node *port1, *port2;
+> [b] is another patch series which includes my patch.
 > 
+> [a] https://patchwork.freedesktop.org/series/139266/#rev7
+> [b] https://patchwork.freedesktop.org/series/154381/
 > 
 
-Reviewed-by: Francesco Valla <francesco@valla.it>
+Thank you for your answer, it's much clearer now.
 
-This is also required to complete support for some of the i.MX8MP
-platforms for which a DTS already exists, as well as for upcoming i.MX93
-work (see [2]).
-
-[1] https://elixir.bootlin.com/linux/v6.17.5/source/arch/arm64/boot/dts/freescale/imx8mp-evk-lvds0-imx-dlvds-hdmi-channel0.dtso
-[2] https://lore.kernel.org/all/20251028-imx93_ldb_bridge-v1-1-fca2e7d60e0a@valla.it/
+I'll drop this one and wait for [b], then.
 
 
-Thank you!
-
+BR,
 Francesco
 
 
---nextPart2765006.vuYhMxLoTh
+--nextPart2568054.XAFRqVoOGU
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part.
 Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRUrtjevJ039mawAeLir2xSXEi5AAUCaQIPZgAKCRDir2xSXEi5
-AMbCAP42EvVfJ0roztG8NupiiGaTkb86WaCv99Prrby9Vkr0SwD+K9vUyxfRtmxI
-8VKWhxQWZp0tPzFGBEz88OWVOOp7fAU=
-=BQyw
+iHUEABYKAB0WIQRUrtjevJ039mawAeLir2xSXEi5AAUCaQIQJAAKCRDir2xSXEi5
+AH56APwKzsvlloyWlfPnMHnak/8E8bYBfPmKrRKeQQQedjSq8wEAg3BhwGYJnq5+
+NGhnp06M8E4EpL9w3NYZ4PZVND0UWQo=
+=PUAv
 -----END PGP SIGNATURE-----
 
---nextPart2765006.vuYhMxLoTh--
+--nextPart2568054.XAFRqVoOGU--
 
 
 
