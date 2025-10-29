@@ -1,342 +1,125 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013049.outbound.protection.outlook.com [52.101.72.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD5E2D0C70
-	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 02:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761705605; cv=fail; b=s3i4skvtxaxDXmnw7+tPvK7eS3FJtzuCykUqFdZE7YO8TAiaIPji/wI8E7ZYVmDvgj2h0ER3BkNC/TE1naXhDXzvOlZJU6qMeyVfoAhaPvjzLr88+vvY0/ZCZnNunZJ1kVs5eL2GGZQ2CpkfStHGo6x0aDquGx4OlqGKIcC8UiA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761705605; c=relaxed/simple;
-	bh=K8GrQh4HaMHU9XJs2rLtUQ0PmQhbU1L9H4pewmlg8cI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=LIrpCjhl8RyxPd9UGnmBPi3QOOCU3gQhLLwdI9Y57bexZwaMOzbQWJAguxA9OY+ojPOBQFuFsOVQhqlSvFcMbniLr1XY7b1BfYGWywzQCBFHj7+sUUHluGv9D7N6fNZqQB0J2qndBXi+5Q0MYwOS77zeCCsGzrrcm0opO0UZ9dw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=eDmJumEQ; arc=fail smtp.client-ip=52.101.72.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8EE2EC56E
+	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 03:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761706802; cv=none; b=YI0HG6mgb0vj8OATGosc8quZLAWJRUa6SRL654w7Bk0Nra/JlkmwKsxglRRWboJUdCk7ZThqd78cW6mhtU0CTsfoXuWyooY7gOUbF+gJQ6H4yfdBHOIWMZoBVx0wR56rPSPbJkwryi8mr7vZSc2/p3NRukC6T3n5qQ1/t/rrwsY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761706802; c=relaxed/simple;
+	bh=uvWxTYSvYRprQ1ZW3Euflh2mgClxsjMln7S5s7l2A4k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tvFLNIsTo3oRnfRHUj7VFiZ48WuYZlcWZNPtz2T1zvr3Fso+k6GJUeSfYp+7cCpMKrpHHi6OP5/iABlEZJasxFVQO/JLMVA2lDz/W0DISjnWLED4DSr2qQU3adY7ql5Y+op05I4GMRcI8yxjogtpP/D4e5nZTZfPQXt8JZwuEvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eYqpg+/X; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="eDmJumEQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KFxJPNMnTXlLlrYkPiHgDCY9nTrVqL/hsB4Q+ICyb78zyUsXbEA8HCbqtekSvlDbRH4umeEu7yY+1Bga1Q+2wfVC4oEj7KBrH1dT9Efrj9aMyGSlSIg8MyxGI3XwGaFING6PrAV3YGEBP0mhUZZkeDkq5XWeKJEZLqA5zts1tCw/Myx7Dn2RprchTh+ryRDy4Xk0bFtOAQcNaZnDLmJqvBvjmTiShsv+Wd7gkJ8hZl1fgsI9qMcb4gP+6j0PShJ3ga5mPU3gIm85H9iZA4Vfx3DdPSBjTy+V5d5JT4TJtzJGz6yxUdIjz/Jvto5sQecOf1oP3q22FbjeTBZZkcW/bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UlCPBzYsq+pknKgQ9HE85GjYOETHfPJCU/JX+aBt6Fs=;
- b=iO9bcCc6hwW/Sx0qXf/sZPy8ImKCqLZ04MylUexuLdzTDJjYCZPeHW2h6RSl/DhW7AXKCiCvI2fXwcNoUYKyX77xPtjrDKG4MGMZqE9togcbQlTrVL4GtpEe56GWlYLrIDOwPY0G48Iz2tirLHlyRaXcdYMhpqEkpWo8KWw3b2oHpDG6Vt4P3CGmtIxUiwNER6KDopj8fTgWVzCUWMlZFEmGaQQ9YjmONrkhtaGCtheqVk8qfq9Q1+Jo4elOdrLl2QZMx+BFiJEg6wS1ErgU92VepBFKNFBVjLUqAi309+JSuBZ+b68qqlxLQAeCFMeO0yCRilcHoBAb97m2uBYT6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UlCPBzYsq+pknKgQ9HE85GjYOETHfPJCU/JX+aBt6Fs=;
- b=eDmJumEQoU2+H6G3Silh5two2E/x1MTTrHRGhvlQ2b64W0B4xjy6jy95q4MhLUG26rBUxG8XMUOCzjj0DpYUzORaDLHqclSnPhWEiUMFZrT2R6SX5IcU0IF2eILuxlXBLB5rLWU3Eb28XnEoPIfClU8uZmcPXkhwN8so0arFFVgDY1zYZu6XJTgS3JUh4Nu/Hdd9xuN2qVLBrbafIbNGAqcyOHWb5NrHgPj43xB7mwkXDdDqGEjvlzE1EvduKxC+Ei2FsVfsd2dx2QO6DuR58LMp3jsETEH2ByHPXWfwhRrY9ujsnFomIxI7eZ6zHOSfi21xOGaMLDvGYYom4vww2Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PAXPR04MB8159.eurprd04.prod.outlook.com (2603:10a6:102:1c1::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.20; Wed, 29 Oct
- 2025 02:39:57 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9253.018; Wed, 29 Oct 2025
- 02:39:57 +0000
-Date: Wed, 29 Oct 2025 11:52:21 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>, Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] remoteproc: imx_rproc: Add support for System
- Manager API
-Message-ID: <20251029035221.GB7297@nxa18884-linux.ap.freescale.net>
-References: <20251028-imx95-rproc-2025-10-28-v1-0-ce9e7db9edcb@nxp.com>
- <20251028-imx95-rproc-2025-10-28-v1-3-ce9e7db9edcb@nxp.com>
- <aQDseAYDhvZ01NI8@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQDseAYDhvZ01NI8@lizhi-Precision-Tower-5810>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI1PR02CA0004.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::12) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eYqpg+/X"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4eb9fa69fb8so55423981cf.1
+        for <imx@lists.linux.dev>; Tue, 28 Oct 2025 20:00:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761706799; x=1762311599; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ikVE0ssZ8PILuEq4k6Un4Yxlye8b1lZqi+jy3bbKHWs=;
+        b=eYqpg+/XNQ2Y+to2qygIDUNVfDtPNEZSeKoKCZAlFX1i5dR9kUndX6OqeNrugESd5+
+         rwMq6bA52W5xYYpRa8VcbrBeZVHvbh13oi5OskoAf/SC0OdW3XlutryK1uKsKZKXWXCf
+         GgC8JJEb5b/vdmHYN8fl9cRoaTZ7mahx7e19ggv6Q/fNVggJ1CW3orDTMGWPol/W62lT
+         js5+oDA4/p49H0zHpmyyDJGTH0tXKTCVE3PATCursHAqbxhkLrH1LFWiVh2rBld8fS9x
+         m9u/NivaEz7mRfHsPnZRFrVH6PE58yrfJI9GPi8cG6CI6ELaiAbYAXfoaQ08ZYU4QWcb
+         KljQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761706799; x=1762311599;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ikVE0ssZ8PILuEq4k6Un4Yxlye8b1lZqi+jy3bbKHWs=;
+        b=I+Gmp9iAjv+JhaFEF8GPLxIrM2ukakxvtm5tUOTEb7CDXoF6mzj/dJ5kPJ0TkzZV+9
+         etKSU822Eeqm7mZx+GQHXQWXLrHxRzu2wzMjU28fTYwCRPKXzz0xEiMH75oUaEEHXgRT
+         mZrw6Fc3g73GfMc3G83fgoVmZXD3ppK/9MQMesMTYdWfY1tDo3f6013tlhoUuOVju8+I
+         CTKWj44H4U8fgqqwV/Yvrl91cI9ChrfSDPbC7kzu/cD9s8TutmbMzT10p/3RaYXW56mi
+         6kvJ6xAMR/UAYCojAcavEj7FifCQLM3tyFee42X79+l/unKALi6KDBfT55ZftFwlsw/F
+         PS0w==
+X-Forwarded-Encrypted: i=1; AJvYcCW9NubYgx9odqJKoxcmekBQNxj9o1QbOzhlhnid7J0W3LBvODfe4zHUd53yocBdLB2E62s=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxnw/PCAM1JYyBlYMmHJpuy4Ln3m0D66lzl5Inj7qKcQPgWu4bL
+	kCVO0qAfxHp4VFLoC1kI2ric+CbC8v8DI3Vw9am88uQlIss0KGeF/GG3qmhTGR+9
+X-Gm-Gg: ASbGncsO7xwL+hDtP3wCI9sbVdImTSdMQmqMCbqpf9Vsc5D9vInMUhtB9NzD5v4M/gM
+	Kz4OY4COZMwPcMi76GkxpBKoUQeUcUXDQIE9FjZMtau1mUhR0fKvh5qDaw2CFnjtEBAP3NODH3C
+	6je926J6JDLnSHWvf5lhpyKGSOfFrENRHY7wFXuOIa9q65VnvDOuJXRJYQBHjbQySinBICEJrE3
+	UZCNTCkZ3psrAkMBVlNs8d10/u3mzty9XdLH772xUpWaAH93ZH+4Wi4sQ16P5Gs0yCs/Vl8b2LL
+	WxzfPYDfosVN+IoI9tBxuG0GWHh3OOWPhy59KpSpx/Hx1nuEEZnehjpbaVpmCMzXqKov0idRDwy
+	lcVMy70j8cDjpqt7Zng9eMgL7eWQHqnZw3WnCpf+8NbBK2MhXWM8eP7Uc7AmELSRbk9EheXlSjT
+	+n8fLVXNY=
+X-Google-Smtp-Source: AGHT+IEvOug73vtl4ROvl4ozZsUcProXlbhk8qKycNCnxdG+O+1krran8kKir/F0sNEdEd48ksbtCQ==
+X-Received: by 2002:a05:622a:4089:b0:4d3:3ecd:efd0 with SMTP id d75a77b69052e-4ed15b32dafmr19732431cf.6.1761706799473;
+        Tue, 28 Oct 2025 19:59:59 -0700 (PDT)
+Received: from [192.168.90.162] ([142.182.130.176])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87fc49783eesm91505776d6.44.2025.10.28.19.59.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 19:59:58 -0700 (PDT)
+From: Samuel Kayode <samkay014@gmail.com>
+Date: Tue, 28 Oct 2025 22:59:35 -0400
+Subject: [PATCH] input: pf1550: Replace deprecated PM_OPS define
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|PAXPR04MB8159:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51412a43-c085-410c-2e85-08de169472e3
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|1800799024|19092799006|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bLsTNH3A3ZOrLXOTbR/hMJkf9bDKKxc2YRUHeH1PjNx3yj+HMTSoP9+jH/1r?=
- =?us-ascii?Q?wpsI2gG4jg0kpeWlbu5FuaSbTdoyfVvY+0hcRkhqZ+C9oaU1Hy2f+qliqJ56?=
- =?us-ascii?Q?zmFsssshfaN6K4jKKblShsJ3n4zRzvXMj9pRGK6pkm79+bO4os9eTfKZkbOw?=
- =?us-ascii?Q?0wuoJRZ1aZG2d2yhDgvXzF/NOdc/vEbgUyzuUphsi5I4GSHBtxhDsOXkcylm?=
- =?us-ascii?Q?xkH6daDr0UH0sYDWZ+Incz01EW2UQ9KtLW4SLdO2Qylxg1FTn9OX2U1I4/KV?=
- =?us-ascii?Q?IgC6fdD88yhw9/nN27wMlqzeH8r8mStmky+RKNH+ziiQacpZEK1Z3d2X2Agz?=
- =?us-ascii?Q?dIEw9zSNqmKe8IVU13rjNzo4A+YTqPo1plf+NGYdf04d5Xa561rvUKJ9sxJp?=
- =?us-ascii?Q?4H3MxxqoOypOwqv0ihHI+f3yad83VUj8b+j0fPeGvqTGgDJvhc+aGIbjG1J+?=
- =?us-ascii?Q?wVOYS5KR1wScGcvKts1FYkEmrnPnkBW5dnlImFW+buRsdpagWxqQA7+u7uWb?=
- =?us-ascii?Q?3nv+FeXwMshJh+4+lTzbUxIaURosguuZi2HuCNJYY2fRoacjuirCt2qaofMg?=
- =?us-ascii?Q?9A4er9KESeznYt/kc6XaLYJRT2aO/AKN0y+ZuK1kD1Xou+XvGnSn7AGxbocf?=
- =?us-ascii?Q?6SCV9xQXQ/uN+tz7aIcTkxfH9CRkNmAK0+xVtZRNtbET+2SsPnCdi93IJ6j5?=
- =?us-ascii?Q?Na19cwQFskYrApyAeZUvkxKjyH/7msAF0VUbzITXZyciTeK/Dutb1trjMw6o?=
- =?us-ascii?Q?lczJ0gt1f0zYdX7awFmYqeoU0mp+YW58penFc+lYsQgZfUMjQA/clJ1a0IZz?=
- =?us-ascii?Q?jLAqJ+9Sg0QOMwxvkwUr8H3cLs0YKnDi3z599zNxG6z/Cw8ZP7eZ6EW2YWKr?=
- =?us-ascii?Q?2k2NROMFsy5auPLAYhIqOo1SAXtMwpeqXwHX2I05G7sM6hJujMoIcEy7CZUD?=
- =?us-ascii?Q?5ss/xAyvQZe2tZEgkIyJ8PN8TKyrkHgYzTA37KnSH61magczWx+cfod5fiJw?=
- =?us-ascii?Q?iU4Yy0IXc+62BkxCUmfaBKxMSxw1Tlpp4y2P6UBaPOlRtwZWEB2kzwlvIrBC?=
- =?us-ascii?Q?XNMFLt15W+Gj9/igbbzpywko93Y/0/zzggaAaVxw0N0qQKhB6WunukLFp0Lw?=
- =?us-ascii?Q?/GAyqIODwsgCpY8mezEen42IgtMX87MYJw/ZbK/c0azdZ1/hvr6+Pmy/2Al9?=
- =?us-ascii?Q?aIzyzwTfi/N3xP/8L1owSUM9lGA9y1isl0pNJB8LYdUop2t71nvFN4nXSD+w?=
- =?us-ascii?Q?DRxF4nWrP2bdN2c6DSULE/nm7oUJHd6Jf/XZZM9GZ8T0XRYFoHAjHaokX0eh?=
- =?us-ascii?Q?p0Id1X98lIrPR4ckISFJjhBrJtTZpj9JdBN4DM7TM/YbA6jGIf7yKp1a3QOV?=
- =?us-ascii?Q?pbXIcSdYY83RXic8xWIkbwqTo4Di4KI8oxHO2dYJLYObt/6eKtDyrNtUqncS?=
- =?us-ascii?Q?pW0uJZRJhsRpyLZjzdgLSNS9DK4HXAN7+DtdGvyHP/UoUnOG+W7tVx8Bo7HL?=
- =?us-ascii?Q?rBJOP1/fD9WvsAi5Vr+OR/g8OvQ9ksfSGUZr?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(1800799024)(19092799006)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?odlczR5s3qnxWzD+f5+pzokdMomCF3aMcoaxyjIMo3RLy5L0LnONOHJXJyje?=
- =?us-ascii?Q?Ikz/pCwJtRunugfzZn9CJjGb1KjWpggiNRumXYBFm43yeB+G2RICZhzXA1ih?=
- =?us-ascii?Q?an8Tx1pE2d1qXplpXdY3oDCBbx4tupmC6bYpEg+28m1VUH0JFe4HLi0enrim?=
- =?us-ascii?Q?pwCw1wOXGgOOfHfFQERkOBc29biK/OJh50T/SZin2yOVEOYQQAfNw7UPxnMq?=
- =?us-ascii?Q?tOlwpfW+ceH/1DgrVRG/VWh0fXqsEGZN3FQcCp6DIH34KL4086SVai2WhwmJ?=
- =?us-ascii?Q?8mjalJzbla65vsENYGy4umF2/qlvwCh51FrjcJU2hjpfZEJAdJqgcDc3VWEc?=
- =?us-ascii?Q?ZWB2HU1zbAL1qxjUgv1SoJyRIIBlmtGY5znOOSezwZl9lR6ZHjNysLujT467?=
- =?us-ascii?Q?So0onwGqYBTjtCpXk54TWDcoFDmRMGvIbdTr/FpUJv2y2wk+insI2w5jZdhl?=
- =?us-ascii?Q?1hSiOotCAHOHBJalfklFC20zwQU2EcwCp17Y4d/7kir0bJ2jF//2CTwf28g7?=
- =?us-ascii?Q?j5fynKno99OhBNbz18cmlc12gfH3zoUEb/CHo7ONpWuBY+KhZhxpyHirfmuG?=
- =?us-ascii?Q?jnKnUW8SDtfxfXl6llInNxmgBO5Qp+1eMQ4NBVJoYtBFXgTk/U1luvyJ89Mj?=
- =?us-ascii?Q?K2WBtqxywdLGXBtUfgNg68/ud3TL2XK+bcuXcl3fkTgTtPxhgGLIO8PioIIU?=
- =?us-ascii?Q?g9YXni+fmRYOVMq/aQrvQCd9RhaVTkowNs/p1rh1LDrFkrHw4RgwihsmpXqM?=
- =?us-ascii?Q?RMFWqZHyagg1DDEGyLGlkNnSZjQ8R9ykr1/h9lqguD8unqYYp5BOqcvWeI+T?=
- =?us-ascii?Q?AL7BUitpjo/J8yl8NzDo9+glRopDQ2QQYmKVnbIzBHsYtmNKHlOSjkJHHgT+?=
- =?us-ascii?Q?X11UkaJoINiDrVu4fEPmAEJOYk+2XStgsXKV0RrwE4VUZPXtAy6ywkDYkxLf?=
- =?us-ascii?Q?wCQMjj7ui3T6P339wzXym+ZNQVYIG2oAeEV3xeQktW4lITgj4xWQF0Y1UCuj?=
- =?us-ascii?Q?y1Klpj5IQ6kJKWPL9KxL/2X+MXvMGqE5C48FRjdPNGoZwCi+sus30GWZ0hRi?=
- =?us-ascii?Q?Yd3u1lBh9O3FVYUQX3/ty++Vg4JV4wOqyoXJrFTMLG9aq++Km1YFAeWEFQ60?=
- =?us-ascii?Q?DqCia+BMR1JDhfbIYdQ+bzTganCrsbqGdglFmvmDyR8tEYxRRDTwMjR1Rzqs?=
- =?us-ascii?Q?5ZE6N3OWNXVeB/mJN8VHaRMjAGsYKiS15GpbvykG/zp8gujcRLL5IfiPNQuQ?=
- =?us-ascii?Q?q2ySN4lZmbUQe8gp/WfL/fWuMiQt9SybyjTUVHZlEthg1+wRC/uRGBcXWUd6?=
- =?us-ascii?Q?C7ZiLji6RXTey8vFnkGa/hzqB3m8NsbgZQxXE/pRy2r+ImLAwuKxURp5jwaF?=
- =?us-ascii?Q?al6gnVrPob8RStDlWfh0MrQydGcRYTLe6vg1y1MHRce6pQEwSIQAVIFuFvzB?=
- =?us-ascii?Q?n/t9W6kU8BCXAHKSB0KlziUdb9Mjim6IXeA9M4Kx8o9kS0ZRpVNzbh9arSIL?=
- =?us-ascii?Q?S80Ozk5xrCXrWFt+tmf3MvoPWWJ2yCOW9Ncx+cjOSGp/YI+7rD6jf2UJIHBG?=
- =?us-ascii?Q?eSkBEtrUFD/iNQGKA0iOvX8PhA2g13JDvAceVy1c?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51412a43-c085-410c-2e85-08de169472e3
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2025 02:39:57.4032
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vmt2ftGMdYxjTz0YH3ODHH2Jx139wqxHSYvAiB0cFXBLrsXr2Ojd7IjTYAgjb0mDNmhYmL9hTOHAcc9dyrrUhA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8159
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251028-pf1550-v1-1-c50fae56b9b1@gmail.com>
+X-B4-Tracking: v=1; b=H4sIABaDAWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDAyML3YI0Q1NTA11zw+TURGPTRINkSwMloOKCotS0zAqwQdGxtbUAZM+
+ jM1gAAAA=
+X-Change-ID: 20251028-pf1550-71cea35a0c90
+To: Jerome Oufella <jerome.oufella@savoirfairelinux.com>, 
+ naresh.kamboju@linaro.org, maddy@linux.ibm.com, mpe@ellerman.id.au, 
+ lee@kernel.org, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Frank Li <Frank.Li@nxp.com>, Sean Nyekjaer <sean@geanix.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-input@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Samuel Kayode <samkay014@gmail.com>, 
+ imx@lists.linux.dev
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761706797; l=1053;
+ i=samkay014@gmail.com; s=20251028; h=from:subject:message-id;
+ bh=uvWxTYSvYRprQ1ZW3Euflh2mgClxsjMln7S5s7l2A4k=;
+ b=4fOl76a+CJsXMrMz+3jonDtJ6NY+vU6ExNNoQfFuEd/1lba8UY1jfJ+UsD9eN1tHk4G1uPX5R
+ 14VlvMCGU0DDnq7Zctg0xOZZ6d15Bc2fsqI4Bw14sECTQ5Ysid+PEw+
+X-Developer-Key: i=samkay014@gmail.com; a=ed25519;
+ pk=favoK08ilD1j62PrGf+RHihBzbqJGWMC6f2nszR5UIc=
 
-Hi Frank,
+Replace SIMPLE_DEV_PM_OPS with DEFINE_SIMPLE_DEV_PM_OPS as the former is
+deprecated.
 
-On Tue, Oct 28, 2025 at 12:16:56PM -0400, Frank Li wrote:
->On Tue, Oct 28, 2025 at 04:18:03PM +0800, Peng Fan wrote:
->> i.MX95 features a Cortex-M33 core, six Cortex-A55 cores, and
->> one Cortex-M7 core. The System Control Management Interface(SCMI)
->> firmware runs on the M33 core. The i.MX95 SCMI firmware named System
->> Manager(SM) includes vendor extension protocols, Logical Machine
->> Management(LMM) protocol and CPU protocol and etc.
->>
-...
->> +	depends on IMX_SCMI_CPU_DRV || !IMX_SCMI_CPU_DRV
->> +	depends on IMX_SCMI_LMM_DRV || !IMX_SCMI_LMM_DRV
->
->what's means IMX_SCMI_LMM_DRV || !IMX_SCMI_LMM_DRV here, which is the same
->config
+Signed-off-by: Samuel Kayode <samkay014@gmail.com>
+---
+ drivers/input/misc/pf1550-onkey.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This is to make sure when IMX_SCMI_CPU_DRV or IMX_SCMI_LMM_DRV is module built,
-imx_rproc should also be built as module.
+diff --git a/drivers/input/misc/pf1550-onkey.c b/drivers/input/misc/pf1550-onkey.c
+index 9be6377151cb3be824ab34ff37f983196b909324..a636ceedfc04f0946e002a0b1be4586138429f12 100644
+--- a/drivers/input/misc/pf1550-onkey.c
++++ b/drivers/input/misc/pf1550-onkey.c
+@@ -173,8 +173,8 @@ static int pf1550_onkey_resume(struct device *dev)
+ 	return 0;
+ }
+ 
+-static SIMPLE_DEV_PM_OPS(pf1550_onkey_pm_ops, pf1550_onkey_suspend,
+-			 pf1550_onkey_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(pf1550_onkey_pm_ops, pf1550_onkey_suspend,
++				pf1550_onkey_resume);
+ 
+ static const struct platform_device_id pf1550_onkey_id[] = {
+ 	{ "pf1550-onkey", },
 
->
->>  	select MAILBOX
->>  	help
-...
->> +	 */
->> +	if (priv->flags & IMX_RPROC_FLAGS_SM_CPU_OP)
->> +		return 0;
->
->You already have imx_rproc_sm_lmm_stat[stop](),
->why not use imx_rproc_sm_lmm_prepare();
->
->imx_rproc_sm_cpu_prepare() should be empty. So needn't check
->IMX_RPROC_FLAGS_SM_CPU_OP.
+---
+base-commit: a7d6255a0bf302c028ac680564633a6aac5f611d
+change-id: 20251028-pf1550-71cea35a0c90
 
-I will add below in detect_mode(), and no need imx_rproc_sm_cpu_prepare.
+Best regards,
+-- 
+Samuel Kayode <samkay014@gmail.com>
 
-priv->ops.prepare = &imx_rproc_sm_lmm_prepare;
-
->
->> +
->> +	/*
->>  static int imx_rproc_prepare(struct rproc *rproc)
->>  {
->>  	struct imx_rproc *priv = rproc->priv;
->> @@ -532,7 +639,10 @@ static int imx_rproc_prepare(struct rproc *rproc)
->>  		rproc_add_carveout(rproc, mem);
->>  	}
->>
->> -	return  0;
->> +	if (priv->ops.detect_mode == imx_rproc_sm_detect_mode)
->> +		return imx_rproc_sm_prepare(rproc);
-
-Here I will change to:
-if (priv->ops.prepare)
-    return priv->ops.prepare();
-
->> +
->> +	return 0;
->>  }
->>
->>  static int imx_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
->> @@ -991,6 +1101,83 @@ static int imx_rproc_scu_api_detect_mode(struct rproc *rproc)
->>  	return 0;
->>  }
->>
->> +	 */
->> +	if (dcfg->lmid == info.lmid) {
->> +		priv->ops.start = &imx_rproc_sm_cpu_start;
->> +		priv->ops.stop = &imx_rproc_sm_cpu_stop;
->
->you have switch callback here, also swtich imx_rproc_sm_prepare()
-
-Yes, as above.
-priv->ops.prepare = &imx_rproc_sm_lmm_prepare;
-
->
->> +		priv->flags |= IMX_RPROC_FLAGS_SM_CPU_OP;
->> +		dev_info(dev, "Using CPU Protocol OPS\n");
->> +
->> +		return 0;
->> +	}
->> +
->> +	dev_info(dev, "Using LMM Protocol OPS\n");
->> +	priv->ops.start = &imx_rproc_sm_lmm_start;
->> +	priv->ops.stop = &imx_rproc_sm_lmm_stop;
->> +	priv->flags |= IMX_RPROC_FLAGS_SM_LMM_OP;
->
->Most likely
->
->	bool b = (dcfg->lmid == info.lmid);
->	priv->ops.start = b ? &imx_rproc_sm_cpu_start : &imx_rproc_sm_lmm_start;
->	...
->or
->	if (b)	{
->	} else {
->	}
->
->	to do ops switch.
-
-ok.
-
->
->> +
->> +	/*
->> +	 * Use power on to do permission check. If rproc is in different Logical Machine,
->> +	 * and linux has permission to handle the Logical Machine, set
->> +	 * IMX_RPROC_FLAGS_SM_LMM_AVAIL.
->> +	 */
->> +	ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_POWER_ON, 0);
->> +	if (ret != 0) {
->> +		if (ret == -EACCES) {
->> +			/* Not under Linux Control, so only do IPC between rproc and Linux */
->> +			dev_info(priv->dev, "lmm(%d) not under Linux Control\n", dcfg->lmid);
->> +			return 0;
->> +		}
->> +
->> +		dev_info(priv->dev, "power on lmm(%d) failed: %d\n", dcfg->lmid, ret);
->> +		return ret;
->> +	}
->> +
->> +	priv->flags |= IMX_RPROC_FLAGS_SM_LMM_AVAIL;
->> +
->> +	/* rproc is started before boot Linux, so do NOT shutdown the LM */
->> +	if (started)
->> +		return 0;
->> +
->> +	/* Permission check finished, shutdown the LM to save power */
->> +	ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_SHUTDOWN, 0);
->> +	if (ret) {
->> +		dev_err(priv->dev, "shutdown lmm(%d) failed: %d\n", dcfg->lmid, ret);
->> +		return ret;
->> +	}
->
->look like this block should be in imx_rproc_sm_prepare()?
-
-This should be kept here. permission check flow:
-
-power on m7 lm
-  |
-  | success(indicating linux control rproc LM)
-         -> check m7 booted by U-Boot
-	              |-> If yes, keep power.
-		      |-> If no, shutdown to save power.
-                                                     
-Thanks,
-Peng
-
->
->Frank
->> +
->> +	return 0;
->> +}
->> +
->>  static int imx_rproc_detect_mode(struct imx_rproc *priv)
->>  {
->>  	/*
->> @@ -1166,6 +1353,10 @@ static const struct imx_rproc_plat_ops imx_rproc_ops_scu_api = {
->>  	.detect_mode	= imx_rproc_scu_api_detect_mode,
->>  };
->>
->> +static const struct imx_rproc_plat_ops imx_rproc_ops_sm = {
->> +	.detect_mode	= imx_rproc_sm_detect_mode,
->> +};
->> +
->>  static const struct imx_rproc_dcfg imx_rproc_cfg_imx8mn_mmio = {
->>  	.src_reg	= IMX7D_SRC_SCR,
->>  	.src_mask	= IMX7D_M4_RST_MASK,
->> diff --git a/drivers/remoteproc/imx_rproc.h b/drivers/remoteproc/imx_rproc.h
->> index aeed08bdfb5619c7afd7201589f417cfd6745818..b8a30df92d3bdeb915e33551235d555b947d0b16 100644
->> --- a/drivers/remoteproc/imx_rproc.h
->> +++ b/drivers/remoteproc/imx_rproc.h
->> @@ -51,6 +51,9 @@ struct imx_rproc_dcfg {
->>  	enum imx_rproc_method		method;
->>  	u32				flags;
->>  	const struct imx_rproc_plat_ops	*ops;
->> +	/* For System Manager(SM) based SoCs, the IDs are from SM firmware */
->> +	u32				cpuid;
->> +	u32				lmid;
->>  };
->>
->>  #endif /* _IMX_RPROC_H */
->>
->> --
->> 2.37.1
->>
