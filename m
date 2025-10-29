@@ -1,351 +1,196 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010001.outbound.protection.outlook.com [52.101.84.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CC02F656F
-	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 19:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761764689; cv=none; b=fekSfIPbeoY/16ZjJygw2+vOLOwX8TtGBYnBiYvxafSoO8G/356zkL/RqW0AoclKCbbud+EZi0LlurI/jvIMj4ywdUCrLla9j1qDdirhG0b8dEPxvYasSEpOBtuWvmy2+LKxT5jJGeGkN8Ic0gaeLtfRFc43QQopqejx1ZEzR1w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761764689; c=relaxed/simple;
-	bh=ILrBrsQU1LXNylD5t56dKuiGC5knG7DR8D7Ovf3f2Sg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d6TrmMn9M3FX8V9hFLbIbbniK0j/Cb4/ZY5q1H6PIJ2HBVaN5D3bYfbjo95JgSKRbzS+EtYl0wLibY+upf2dOB0b4i+a3xRW460NAYKx3C2ej5Q5HqdNl0g0bXhsBtlujfunX4wz1BWUe6hSHVHC28qDv5kb9L17cLp1b1uqRSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W5mYFCvU; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF1628A704
+	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 19:27:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761766058; cv=fail; b=fTjTA0tSE8lBhS5nwOEXBhdn2pJWrfj+3gRODyWVGRIYpsJfo2NsUadXMY+NbpT46XUZ40iSjF78XbIf7p5EFsmKfEl01+1Vgwo4wHsQuYd9PLjlD5RQ7KarslZXuOHIBU/NzX66dAxlk+u34hvzTE/tkz/2fl3DfUlxjvhmCFs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761766058; c=relaxed/simple;
+	bh=NF9ALCpGY7sUBYF+lKTFk6herS3lj4tuEOcDiZcpCF8=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=Om77xlAR2UvaRJD+WWXJrB5fEsUgbdCux3r32lPDp79pLzBMX/2CQhNbQL4L3hem4ZogQaPIA0lne+pJNA+pxRjE03Z8LqHoT5+LJ1CnPQOSbGtmphBQiwf2aUDex4DczLcRLpTijACvsz7bF++XTtPy/ZjO0bVF8aIzr/KzEVY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nAN795xD; arc=fail smtp.client-ip=52.101.84.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W5mYFCvU"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-591ec7af7a1so172438e87.3
-        for <imx@lists.linux.dev>; Wed, 29 Oct 2025 12:04:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761764685; x=1762369485; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MADp8JCGJDJpbQCdc3g1O92CBRZChcx+mPxGU0zSLXM=;
-        b=W5mYFCvUzlIX5kd/JLLF2T255MnAaXkfkiXr9AC97o09KFJj1vPixasjd4ihTUUzq2
-         Odqaz3ENw5DCrlOpf/M2Br5pXxl9TdpD0GFSEh+3j0byiAKjEWOG4/KiTVl8JHl8M+uu
-         6J2MNEJ3eEB2ncBXkU56fEKqrTKWs5oE1acp/lBijCQ/g5HwECEyY6imZBdutx437GfO
-         dO8qIgJIUzAS5+H8gBX0sucDs218QTcXRUCyyC1H+V149WlcBxSu39MErnHa48zligRx
-         qyVnv/3IqRdRfZAYLNUomj0MEJ+gBhS7S6KFMq8+SrMtpudMO6dOIOz1Ikb8JTltA/iV
-         y/EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761764685; x=1762369485;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MADp8JCGJDJpbQCdc3g1O92CBRZChcx+mPxGU0zSLXM=;
-        b=R6VOSndtI6L698QtCCavkiLUccR9qVeeJ1tDIFlfDqDpgLrMKfMYZTWNmewITuzFAQ
-         M1nRreukW79DduhAVGCdI1AwDY0l3tsAW1q2AvFXdL83juk/4WJMd8S9E2q9v/ggQ6f1
-         U6UfTEzBjV3JJVIxyXtA9BZJt0UJ9LTjh8KnjCYpcCYIMpZ0suzhBR4yb9Nk9jvYvgvH
-         7BZNNQq9RVUYwW08WT4Kw5N9i5OqKoYRvHQHWvrXtAv9V4J/UvpnNnGgZXVjRu/q3JhX
-         563oe5YH7pi8pTjgAs+cKpKoGyPvwxZUFFbQ55vbgxkBzcqHp64YS83KKUihgT2THKS1
-         zC1g==
-X-Forwarded-Encrypted: i=1; AJvYcCXwaZGFDOKUq0KnDQ2V2pNyZJgU22duZMwbcognm5qkEDcTScrJXYzD1TO6CgENjbFT7oY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwbS+11lchhAyNXuvXev5Ga4Hso3liuyraR0BZ22/8ZtZiCWzK6
-	4FzRQ/oO+2QX+Fact0QG67b7/L6vgbta+iNvAYjSc2mLrMYW95NSIE7k
-X-Gm-Gg: ASbGnctUJkrxv5rjXC6D+JfNUrIZcod4yusDEq82vLHdorXcaX5KR6F7sStapZpOf+r
-	vUzGWQb/yW8hkQBdTTdHmlCH2SS0YE0RSyIZ9422ZmFDctRJ2DILEtgvOm+xYwc5Dux3pV+vRjX
-	HgMi3HLjpF6OCbdbXB5pGt/jqnK6dcUXmris6xwkD5SaB6izfODNqF5oS/kOlvD/6sbOMRJZ/oB
-	B+KnrmihC0Pw6t8UdBQpry6WoSk8klEIaRZiXnirAmax4isOSOq1l+Qo8EMVTJcy9ZPFArEBolC
-	zC7EK7xTNuPNb0cZjRIAdG/kzKuyTl1a6XQ9gce3kASQlCfjtRtjzFIGRUwLfW/48cFDUyTcxvh
-	mJDELvFORdAzTqPAM2MQ5XT/SxPU1rbzFVApQqC9XVLlHmOBx/csd6xEkFaWBIf9R68pNXqlKCX
-	CgZnt4tPCb+aY+KazdTLb5s4k0cZNH175n6RxtV0k6Pukd4F+zbyB10RRMdA==
-X-Google-Smtp-Source: AGHT+IE5BcxhvI597RfEprglxbVp/g/p8XgtmT0Jr/Tdtka5w1yu1s5vmXW5Ea/wqRujMOvi3aXxeQ==
-X-Received: by 2002:a05:6512:33d4:b0:592:f31d:da18 with SMTP id 2adb3069b0e04-59416e9f0e9mr181566e87.14.1761764684935;
-        Wed, 29 Oct 2025 12:04:44 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59301f55739sm4044356e87.49.2025.10.29.12.04.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 12:04:44 -0700 (PDT)
-Message-ID: <b3d810f1-ebf7-4859-8f57-bfe3c094dcc0@gmail.com>
-Date: Wed, 29 Oct 2025 21:04:43 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nAN795xD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IoSmd/Q7mP7Iyl3ynUsFKLkVW1aVczdRXC59LnLa5DBErhwWONrw6QudWW77l+TNXqaOJEv3C1Ewc13Ft3l+1Hmasp9xgZKLoTAzzpRo94/9F78N6diD9L0hS54HzaA6z9JgvMT39IJSfSQnVTMuoVSeJ4tU8uiMRlEEM+t25d8s1fWMyBzL9OXFQGTOc3ZTJvLggEhB/IOj0nmIbpoxbYkSqNTuk+dpV7+yh7gM2NkxjsCi3uNyK4gnez2ijDugBcKq+QgRAbIEad4MV7v6DWXMKNWNW+/xwNBh2ljhSaOf3+0/aiH49HZGYyKV7lgLtBCQha7ONIXXpHm+k7A5ZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gnrq76kzmGTQTXvCnLCB97F876HkabMj0YGGADOyrAM=;
+ b=fphA3iZ9nNq5OzkwQhZdkH7TY/YURtzwhehR61BYbiPo+78aFEZaI/lT4Xvam4hbmHbl62qwmC43jtGJoFNo0dPVfFPuzXHIO+ewV55nuUQ2i5LDkILiWuexoSVMj513y0QPcHjnQxcTrXBy3oSANOc2LcGL6wcdJOt9Dgi09h/3ARBP8N2bVzRiFCyhvnaZjFfynCm+mdBtVwLpjyFIbf+yg2ZOChuqCQ2WdMlijiK6LzXgc53COyHTQEjuANisUs8HPWqbSZ5iq3AbUhusgGyGU7T75YphZ1uT9BNXYtAqPBTMht2nBSPaVUMXnhP1kYZy1oONwKOPi7c8It1ewA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gnrq76kzmGTQTXvCnLCB97F876HkabMj0YGGADOyrAM=;
+ b=nAN795xDHEFswdWA6e3GIwvSZ1nI2qlE6C4+QOtwqLAKj8DrHGzELiSnQVLvH182/tvLy7qTnq+VEnRhd7PvH6gnivpiuFSQaw96A/u10GGENy2Q018wYTHvFO5Ip413zpRSW3aRF/eTE+9Fbu/LkA9k0Fi6u+8rZdj+F3XFXXCjtl3l5EiTHxvG4S67SO2x3qDkjUGVAw8WVToKqb1PwlnaAHFJtcN/pSWC2URJ6MtExkWAAOK8MMCTD00FB7ZurF1TplqZw0Gc59idbVR1jUm41/Xl+8P9/g2xIaHrtQwvBhjegIFf5NPqgEWrDbjCIA4OTM3p7bNR1NE5A1sh+A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by AM8PR04MB8019.eurprd04.prod.outlook.com (2603:10a6:20b:24b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Wed, 29 Oct
+ 2025 19:27:33 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9275.011; Wed, 29 Oct 2025
+ 19:27:31 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 0/2] arm64: dts: imx8qxp-mek: Add i2c1 sensors
+Date: Wed, 29 Oct 2025 15:27:17 -0400
+Message-Id: <20251029-qxp_sensor-v1-0-e97ee1de96d8@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJVqAmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDAyNL3cKKgvji1Lzi/CJdCzPD1DQj02QTQxNLJaCGgqLUtMwKsGHRsbW
+ 1AOrp5GtcAAAA
+X-Change-ID: 20251029-qxp_sensor-861ef25c4149
+To: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761766047; l=666;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=NF9ALCpGY7sUBYF+lKTFk6herS3lj4tuEOcDiZcpCF8=;
+ b=4RajtEh0bKZ2IEfUNXjTZWtZpGp7riXFvDU+awhf7pZDYGzMmn4HzGsOljoxt++YZWwSgCXvX
+ drHlZCBmOt6CIrXh5oMRv/12NZD9kO/1tw2EYAa2lxxwzKJAyOvXGrY
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: PH7P221CA0033.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:33c::25) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] arm64: dts: freescale: add Ka-Ro Electronics
- tx8m-1610 COM
-To: Maud Spierings <maudspierings@gocontroll.com>,
- =?UTF-8?Q?Lothar_Wa=C3=9Fmann?= <LW@KARO-electronics.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
- <20251022-mini_iv-v2-3-20af8f9aac14@gocontroll.com>
- <a7012995-c2a8-48a3-abe1-5c227272f21c@gmail.com>
- <65202d1f-6c4f-4d4e-9fef-85cfb74ec768@gocontroll.com>
- <938f85b0-4c9b-463a-960a-f5f4e4092480@gocontroll.com>
- <20251029081138.2161a92a@karo-electronics.de>
- <4a47b9b5-f482-41b6-a441-7728572c5a0c@gmail.com>
- <20251029104838.44c5adcf@karo-electronics.de>
- <d05c62c9-7ed7-46e4-aa4d-27172741b5ee@gmail.com>
- <0667e026-99f3-4233-b3f6-e38273961d49@gocontroll.com>
- <7aaa736c-2390-44b6-913c-0ecb63393ee5@gocontroll.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <7aaa736c-2390-44b6-913c-0ecb63393ee5@gocontroll.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AM8PR04MB8019:EE_
+X-MS-Office365-Filtering-Correlation-Id: aea313ff-9785-4e7e-3a47-08de17213475
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|52116014|7416014|366016|376014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M1RDRUJ2L1g1ZGJCUnhsVlJoTkhHY0Y2bEdxMm94WXA4UEoyV1hTb0RKSnZK?=
+ =?utf-8?B?WWRhVXJmRHV4NHZNN1ptSkRDSncxMCt1V0xjTG1sQU9VTnIxWFBpR200dDRM?=
+ =?utf-8?B?UGRxNFBkTEdhQ2NXYS9XVnpNYlpXNmowYjBsSGJJMXMvN3JBV0owODdld2I2?=
+ =?utf-8?B?ZElWY3U3TGxJNEhER2JDZ0hlRnFRN2tMSnZTcTBuK0hvakhYU0JDdDhHVHFG?=
+ =?utf-8?B?R3o5RUFPSlY5WHlscTZTRklUaEhWOW15QlREWkJrcy9nMGtuSFdZb3czL0pD?=
+ =?utf-8?B?UGQzS0hGajZpS0p4WnhWaXZPcHIrMThJTW15TndNWFczOTZySVoyRjVWZjA1?=
+ =?utf-8?B?UnNQbk9sRXdWeXE3MTUweHFZZUtnYlpMb1lkdk9sWkRUbEx3MFpBcWphM2Ey?=
+ =?utf-8?B?TEN1cjFBOVhqRHhHVXE2Y1IwbDVNb0JINlNrdnIvcW5xdlhxUGhDdW9zTmFm?=
+ =?utf-8?B?a3RwNWZleVZxS0x1UG5yNTZNeVNhT09QQWhYNStXbWNUYjcwdVhpVXdoS0Zy?=
+ =?utf-8?B?SHgyc3JUYjRyZkwwSFZpSnh5N0FCOXJoVzdXQWtQVXZYTU5WVjJlTzRxK29L?=
+ =?utf-8?B?MVBmdzM5ZEI2eWQ2VlRsd0Q0aWFjRHRtN3BFakJsV3VPMGh5QTl3SmNWbW45?=
+ =?utf-8?B?S05hMm1jNFNKQnd0MFdUcXM4Y0xSRm1pSmdWTzhCOFI1VkV1Zkx0UWhrOElJ?=
+ =?utf-8?B?NkEwakpucmpsT3BPQUUrTHFOZm1zc2lmZXpqWDVnblZpb1V6SFgwejFJVWsv?=
+ =?utf-8?B?WFd4Y3dVc3pPV1lBNjdrRjNsRnlCZFphV1BjRGlLdC9paUR6ZHJhTXMrWVF2?=
+ =?utf-8?B?QXNyWTlrVzA4VHAwYUxWSDhHbXlEU01jVG5MbnNWdFZxUGtOR0VSZitjR2Uz?=
+ =?utf-8?B?Y3JPMFpld21RSTdLdjJENXJxanlGV1BYOXdNVFFHaXpzRGlHOFR4U25JN2gz?=
+ =?utf-8?B?bmZRejZuTkxkWXBiSG9ZMkVDOUdJMU1hdGptZmZTUDV2WjlrVWVNSEZRemQr?=
+ =?utf-8?B?bWxrd28rWmQ2MDBIZlllaUUwNTZ5U3Jhb2MrQWI1UGhmM3FBQkNSa0hETFg4?=
+ =?utf-8?B?QjZGWHo3V1ZSUE05MEdjaFo5eDVzcFRsQ1dObFJLbXNveEpmR2x2UWVTSTJr?=
+ =?utf-8?B?OGgwdTBUSUc4UXFjeXhrZWZiMlVSTklGblJQczM0QlN0NFdHY2t0VThkbkVl?=
+ =?utf-8?B?MzI0cm5wWkFZdnA1TUlKSHVLOWw0WHJPa3dOcm0wTWZWTlJ5WDlEUm95OURC?=
+ =?utf-8?B?UUZ1RVhHTndxeWRMdGlpcVBrKzBHMzZQQ0NlVWVHM1lWbWRteWdLeDRPVG5O?=
+ =?utf-8?B?blhzSE50SjZ6bldjREZmN3hpYUYwUkFNZGRGSm9CeXlEcSs2SUpsZWc5ekNw?=
+ =?utf-8?B?bkI0enVnNUhUbWxkZ1BXTUNoTmphMUhUQnFCT2k2blNhZ0RkcU84c0NUN2NR?=
+ =?utf-8?B?UU9aWnhvd0JabHcvaC9XSEJNTHFEb2xpY2lOVjQ5ekJsd1FhZGZYaVV2M3FZ?=
+ =?utf-8?B?Ri8yTi82aTk3WDVTa05XNWFUQkhwL2dDSzlHaSt3MXkxN21rckVjSzVWZ2xR?=
+ =?utf-8?B?a2IwLzdUQkFQYjhsYnRsS3FmaFl1T0p4SDd1cjRjcG1RL21BMkdHNFE1d1d5?=
+ =?utf-8?B?ZXQxQytVcGZlWUg1OUZSYTZwQ1o4SFlZT1N2Zm4ybitQdFA4TFNtLzF3NUw2?=
+ =?utf-8?B?OWRYYmFpQ201SEdCMVhwdVE0dzVnbzNuMmR6RWlzL0twbWFiWGVJWjJGSURX?=
+ =?utf-8?B?aFJRYVBqaGlQSXNEWXBGMFZVQm1EeEsyRXlkdHA1djRXeWs4SGdLTlVBOVVP?=
+ =?utf-8?B?S1BZZ0syR25GcXNCZVJkWmtRKzBKZEFqREJoRjU4aVdSem9JeGFXMEprd2Z5?=
+ =?utf-8?B?WGZVTzV3RUpKOHZNNXVQbDVrN2ZJbWRNRHcvd25mbGFFdDYvVEt6WkFPTEwy?=
+ =?utf-8?B?THdITnBGeFc5dGFRby9XdVFmbHpLQlZ6Y1Vtak9QTkJMYlovN1huMXdpSkVQ?=
+ =?utf-8?B?dFYyUmJLMytKWUhSWENmZW5LZi81WVFrTkdFcjg4NjNSMEhJV3VqSndvYVJ6?=
+ =?utf-8?B?emxWb2JpVEhibmhJZmFSSUNaaTRGWG14NkhFQT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(52116014)(7416014)(366016)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T1A4SlN6cU5la0pKbllMeVUzYjBwUlFmMHN0SUVqdE1jdFlURW5hUXVnaDVI?=
+ =?utf-8?B?Ly85Wlc4cnFWZzVGbVV2NG96UkI5bVpjckRKTDBkZGNJRzZQZ1RtWktobzVH?=
+ =?utf-8?B?a0YzVmRKVFRCTGt3c1VKWW45SDVJMzA0NDMybWx0TXQ3VkV6cGd5c2JWK0dG?=
+ =?utf-8?B?YncvV3VDZmFueFZQcG5CUUJVd1JGS0xyeWxJN25qR3hpUE5iMXBWc2xlTW5s?=
+ =?utf-8?B?VVMwckVkNk1pZ21zTHJEa0YwaVhFckV5RDlaTlAxZWVMTmlRV3crU0kyUU5F?=
+ =?utf-8?B?blp0M3puZFJzOVJtWWNOcGZYWHRXck0yOFRVNnZJMWpKazRHa0RDWTh0T1dG?=
+ =?utf-8?B?RWQzeW9ZMDhsaklyUWxxMEtTMGlmOUZhZEQrWkQzUmZjUndGK0NqNHAzQkFk?=
+ =?utf-8?B?bXovQkwrWjNOSXRqWUc4WThnRXZSb0RZcjh1a0VlZVdzYXlnWnpVY1lsbVpO?=
+ =?utf-8?B?MVhjQ2ZuZTBmclJ5L3lBNGN5OG9sSHhpcWdVdFBxQWFVVnZrTDgvWlVJdXJ0?=
+ =?utf-8?B?VXNadW9wVzZ0MnBqK1E3UDAxSmY4c2p3cDVEODRGUndKbnlmdi9JOW1UZWhV?=
+ =?utf-8?B?angzYUJYZis5ZG94cmNXeUl1Tmhoa0lmWGFxRmNiZDdSSTNPK1c4bFdHUGRl?=
+ =?utf-8?B?RGZXL05XVlJjdUlVSWFuSVVVV0RqVkJWTlBNSml0REJuSDRBSGJ0WSsvTDNP?=
+ =?utf-8?B?cWNqYk1OOUk3aE82UUY3UHA2UFdSa05jL0FtYU1VNlFBRG1ubm5XeVJhdjk0?=
+ =?utf-8?B?SHVleS9GRkQxcmlTcGMvYjhvQWdkM1ZXNHl2T0FGc2ZSMTN1YmhETFdxdjZT?=
+ =?utf-8?B?Snh6VmFjMmNMcW54Q3JmTVQ5amMrYk9DQ1cwTERMeSswdmJqaEs1Nmx3NEpI?=
+ =?utf-8?B?ejZNbjJsYXJLNnVqRWRGT0pWZE1aUGZxWXZHT3NhSlk4YndmbmNtNFcyWFpX?=
+ =?utf-8?B?NzJNQkhxODhwRWZacWd5T3FVMzhvaVRlam85MmNJZW9pV0dUMGg2Mkl0WEF6?=
+ =?utf-8?B?eVBnZmw2aDdibzc1dmRPNFJIeFg0Zm5aV3FoY0x5UEVjdXpMQVJtMkRvNDFx?=
+ =?utf-8?B?S0FkWmFNeEtkenJJQWgvWEpBR1R6OWozMXNRbVJtMmFaR0lHRmlOZXZkb3Bn?=
+ =?utf-8?B?b3NRYTFrQ2FBbWpPT1BnTlZGS1h0aUt1ckU3dVQ3VW1zNXExeW5idHM3MFFk?=
+ =?utf-8?B?dGR5RnJ5N0h3MlQ5NXNxbzVvSnVQemdNMXBLSmszdTVMSElINHVMb0oxUlVP?=
+ =?utf-8?B?blQwN1JOQmh3RGNGdGpJRm0zSWRpR0JBRWlrSFpSN2IzVkpCNzczWE95bk4v?=
+ =?utf-8?B?RGc3ajNYMUxMTktJSlVBUWE3bXI1UlRnSG9FdjNENGZVQmtjcW0reVRIVzVT?=
+ =?utf-8?B?S1F4Q2cwc3ZNRlBHTzVHa3NHRXZ5U2wzYUF5U2EyaUhHT2NiR2d2Z1B6NHZz?=
+ =?utf-8?B?Uy90NEttRDhCKzUyek1sMWcyWXlUb2UydXRIK0JORmFiZ3VxdEZVL1h3T0dD?=
+ =?utf-8?B?aDV6YXJYZHFtS0hmbEcrMGYzMzJ4ZUphekxjM3E2a3o2dHpmSzBzWHMwQ1Vv?=
+ =?utf-8?B?K1RYVG1TWjlINGEyVVJkSC9iUXZoc0xTMVljUHVrcENZLzdhU28ya3lINjZz?=
+ =?utf-8?B?YW5YRkRCSElyZTlzSWJHSFVrWHNGMDNBV0R0YXJoME0ybXFjSWt0K2Vwd3BK?=
+ =?utf-8?B?bkFSMTB6L0dFaXpjSTZBc0lCN25uTXJuZ0VjMkUvdURkSHFMZ05yRWdLK2dJ?=
+ =?utf-8?B?cGFITEd4WkVCWmtSU0NnYUlnU1UwaXdoT1hKWjZNZXMyTG9GYmNJS1FFZnVN?=
+ =?utf-8?B?cDBSQlpjbWtlQjJGTzcwdkF2RWJ1QmhSeWpCR0VXOUdTa3A0UFlMck1GaFBr?=
+ =?utf-8?B?T0dML3hJQ1p1dGxvbDV2cTBXQ0pjT0cxUnpRT0s4MWFDN0Q2OVBwVkc5S2E5?=
+ =?utf-8?B?UmRBbThDanY1cDRBMVlMTHFXVnd1SlIzRUZ5d0xOUkhBbi9YeFZyYW5NS0Qz?=
+ =?utf-8?B?bzlNYVRrc1VoYzdEVEx3MmJvT3FNQUROVVNIVXBlNHNvNTlNckR0aUxPWlhm?=
+ =?utf-8?B?aEd1YWVJblRiZUdOM0lWb1lNcGFFc2RocUpxR2l1THJNL1lpMVh2N2toZXJH?=
+ =?utf-8?Q?QY6I=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aea313ff-9785-4e7e-3a47-08de17213475
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2025 19:27:31.5895
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aUndKoMWc6uzGUzuyi8n8WszGgwZA17hfATEEfIA/bS3dIpxyKeLG+LbGz5nFffPNO9fMWpC42J6BVn7QTJn5w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB8019
 
-On 29/10/2025 17:51, Maud Spierings wrote:
-> 
-> 
-> On 10/29/25 16:35, Maud Spierings wrote:
->> Hi Matti,
->>
->> On 10/29/25 11:05, Matti Vaittinen wrote:
->>> On 29/10/2025 11:48, Lothar Waßmann wrote:
->>>> Hi,
->>>>
->>>> On Wed, 29 Oct 2025 10:42:17 +0200 Matti Vaittinen wrote:
->>>>> On 29/10/2025 09:11, Lothar Waßmann wrote:
->>>>>> Hi,
->>>>>>
->>>>>> On Tue, 28 Oct 2025 14:10:04 +0100 Maud Spierings wrote:
->>>>>>> On 10/28/25 13:42, Maud Spierings wrote:
->>>>>>>> On 10/28/25 13:15, Matti Vaittinen wrote:
->>>>>> [...]
->>>>>>>>> Could/Should this be described using the:
->>>>>>>>> 'rohm,feedback-pull-up-r1-ohms' and
->>>>>>>>> 'rohm,feedback-pull-up-r2-ohms'? If I understand the comment
->>>>>>>>> correctly, that might allow the driver to be able to use correctly
->>>>>>>>> scaled voltages.
->>>>>>>>>
->>>>>>>>> https://elixir.bootlin.com/linux/v6.18-rc1/source/Documentation/
->>>>>>>>> devicetree/bindings/regulator/rohm,bd71837-regulator.yaml#L108
->>>>>>>>
->>>>>>>> Ah I didn't know those existed, should've checked the bindings 
->>>>>>>> in more
->>>>>>>> detail, thanks for the hint!
->>>>>>>>
->>>>>>>> I will have to investigate this carefully, since I don't have 
->>>>>>>> access to
->>>>>>>> the actual design of the COM, so I don't know exactly what is 
->>>>>>>> there.
->>>>>>>
->>>>>>> So I am not yet entirely sure if this works out, I used the 
->>>>>>> calculation
->>>>>>> in the driver:
->>>>>>>
->>>>>>> /*
->>>>>>>     * Setups where regulator (especially the buck8) output 
->>>>>>> voltage is scaled
->>>>>>>     * by adding external connection where some other regulator 
->>>>>>> output is
->>>>>>> connected
->>>>>>>     * to feedback-pin (over suitable resistors) is getting 
->>>>>>> popular amongst
->>>>>>> users
->>>>>>>     * of BD71837. (This allows for example scaling down the buck8 
->>>>>>> voltages
->>>>>>> to suit
->>>>>>>     * lover GPU voltages for projects where buck8 is (ab)used to 
->>>>>>> supply power
->>>>>>>     * for GPU. Additionally some setups do allow DVS for buck8 
->>>>>>> but as this do
->>>>>>>     * produce voltage spikes the HW must be evaluated to be able to
->>>>>>> survive this
->>>>>>>     * - hence I keep the DVS disabled for non DVS bucks by 
->>>>>>> default. I
->>>>>>> don't want
->>>>>>>     * to help you burn your proto board)
->>>>>>>     *
->>>>>>>     * So we allow describing this external connection from DT and 
->>>>>>> scale the
->>>>>>>     * voltages accordingly. This is what the connection should 
->>>>>>> look like:
->>>>>>>     *
->>>>>>>     * |------------|
->>>>>>>     * |    buck 8  |-------+----->Vout
->>>>>>>     * |        |    |
->>>>>>>     * |------------|    |
->>>>>>>     *    | FB pin    |
->>>>>>>     *    |        |
->>>>>>>     *    +-------+--R2---+
->>>>>>>     *        |
->>>>>>>     *        R1
->>>>>>>     *        |
->>>>>>>     *    V FB-pull-up
->>>>>>>     *
->>>>>>>     *    Here the buck output is sifted according to formula:
->>>>>>>     *
->>>>>>>     * Vout_o = Vo - (Vpu - Vo)*R2/R1
->>>>>>>     * Linear_step = step_orig*(R1+R2)/R1
->>>>>>>     *
->>>>>>>     * where:
->>>>>>>     * Vout_o is adjusted voltage output at vsel reg value 0
->>>>>>>     * Vo is original voltage output at vsel reg value 0
->>>>>>>     * Vpu is the pull-up voltage V FB-pull-up in the picture
->>>>>>>     * R1 and R2 are resistor values.
->>>>>>>     *
->>>>>>>     * As a real world example for buck8 and a specific GPU:
->>>>>>>     * VLDO = 1.6V (used as FB-pull-up)
->>>>>>>     * R1 = 1000ohms
->>>>>>>     * R2 = 150ohms
->>>>>>>     * VSEL 0x0 => 0.8V – (VLDO – 0.8) * R2 / R1 = 0.68V
->>>>>>>     * Linear Step = 10mV * (R1 + R2) / R1 = 11.5mV
->>>>>>>     */
->>>>>>>
->>>>>>> Because I do not know the pull up voltage, and I am not sure if 
->>>>>>> it is a
->>>>>>> pull up.
->>>>>>>
->>>>>>> So:
->>>>>>> Vout_o = 1.35V
->>>>>>> Vo = 1.1V
->>>>>>> Vpu = unknown
->>>>>>> R2 = 499 Ohm
->>>>>>> R1 = 2200 Ohm
->>>>>>> Gives:
->>>>>>> Vpu = ~0V
->>>>>>>
->>>>>>> And:
->>>>>>> Vout_o = 1.35V
->>>>>>> Vo = 1.1V
->>>>>>> Vpu = unknown
->>>>>>> R2 = 2200 Ohm
->>>>>>> R1 = 499 Ohm
->>>>>>> Gives:
->>>>>>> Vpu = ~1.04V
->>>>>>>
->>>>>>> I am not quite sure which resistor is R1 and which is R2 but having
->>>>>>> there be a pull down to 0V seems the most logical answer?
->>>>>>>
->>>>>>> I am adding Lothar from Ka-Ro to the CC maybe he can shed some 
->>>>>>> light on
->>>>>>> this setup.
->>>>>> R2 is connected to GND, so Vpu = 0.
->>>>>> With:
->>>>>>     regulator-min-microvolt = <1350000>;
->>>>>>     regulator-max-microvolt = <1350000>;
->>>>>>     rohm,fb-pull-up-microvolt = <0>;
->>>>>>     rohm,feedback-pull-up-r1-ohms = <2200>;
->>>>>>     rohm,feedback-pull-up-r2-ohms = <499>;
->>>>>> the correct voltage should be produced on the BUCK8 output, but a 
->>>>>> quick
->>>>>> test with these parameters led to:
->>>>>> |failed to get the current voltage: -EINVAL
->>>>>> |bd718xx-pmic bd71847-pmic.3.auto: error -EINVAL: failed to 
->>>>>> register buck6 regulator
->>>>>> |bd718xx-pmic: probe of bd71847-pmic.3.auto failed with error -22
->>>>>>
->>>>>> Apparently noone has ever tested this feature in real life.
->>>>>
->>>>> Thanks for trying it out Lothar. I am positive this was tested - but
->>>>> probably the use-case has been using a pull-up. I assume having the 
->>>>> zero
->>>>> pull-up voltage causes the driver to calculate some bogus values. I
->>>>> think fixing the computation in the driver might not be that big of a
->>>>> task(?) The benefit of doing it would be that the correct voltages 
->>>>> would
->>>>> be calculated by the driver.
->>>>>
->>>>> If real voltages aren't matching what is calculated by the driver, 
->>>>> then
->>>>> the voltages requested by regulator consumers will cause wrong 
->>>>> voltages
->>>>> to be applied. Debug interfaces will also show wrong voltages, and the
->>>>> safety limits set in the device-tree will not be really respected.
->>>>>
->>>>> I think this would be well worth fixing.
->>>>>
->>>> Before doing the real-life test I did the same calculation that's done
->>>> in the driver to be sure that it will generate the correct values:
->>>> bc 1.07.1
->>>> Copyright 1991-1994, 1997, 1998, 2000, 2004, 2006, 2008, 2012-2017 
->>>> Free Software Foundation, Inc.
->>>> This is free software with ABSOLUTELY NO WARRANTY.
->>>> For details type `warranty'.
->>>> fb_uv=0
->>>> r1=2200
->>>> r2=499
->>>> min=800000
->>>> step=10000
->>>> # default voltage without divider
->>>> min+30*step
->>>> 1100000
->>>> min=min-(fb_uv-min)*r2/r1
->>>> step=step*(r1+r2)/r1
->>>> min
->>>> 981454
->>>> step
->>>> 12268
->>>> # default voltage with divider
->>>> min+30*step
->>>> 1349494
->>>>
->>>> Probably we need to use this value rather than the nominal 135000 as
->>>> the target voltage in the DTB.
->>>
->>> Yes. When the driver calculates the voltages which match the actual 
->>> voltages, then you should also use the actual voltages in the device- 
->>> tree.
->>>
->>
->> Think I've got it:
->>
->> diff --git a/drivers/regulator/bd718x7-regulator.c b/drivers/ 
->> regulator/ bd718x7-regulator.c
->> index 022d98f3c32a2..ea9c4058ee6a5 100644
->> --- a/drivers/regulator/bd718x7-regulator.c
->> +++ b/drivers/regulator/bd718x7-regulator.c
->> @@ -1613,6 +1613,8 @@ static int setup_feedback_loop(struct device 
->> *dev, struct device_node *np,
->>                                  step /= r1;
->>
->>                                  new[j].min = min;
->> +                               new[j].min_sel = desc- 
->>  >linear_ranges[j].min_sel;
->> +                               new[j].max_sel = desc- 
->>  >linear_ranges[j].max_sel;
->>                                  new[j].step = step;
->>
->>                                  dev_dbg(dev, "%s: old range min %d, 
->> step %d\n",
->>
->>
->> the min_sel and max_sel fields were uninitialized in the new 
->> linear_range, copying them over from the old one (they refer to the 
->> register range if I understand correctly so they should not change) 
->> initializes them.
+update iio binding to remove interrupts from required list.
+update imx8qxp-mek to support all sensors under i2c1.
 
-Ah, indeed. Well spotted! Thanks for debugging it :)
->> Then setting 1349494 as the actual voltage makes it fully work. 
->> Otherwise it complains:
->> buck6: failed to apply 1350000-1350000uV constraint: -EINVAL
->>
->> Final debug output now:
->> [    0.327807] rohm-bd718x7 0-004b: buck6: old range min 800000, step 
->> 10000
->> [    0.327813] rohm-bd718x7 0-004b: new range min 981454, step 12268
->> [    0.327819] rohm-bd718x7 0-004b: regulator 'buck6' has FB pull-up 
->> configured
->>
->> I will add this fix to the next version of this patchset and include 
->> your requested change in the dts.
-> 
-> New idea, why don't we just change the values of the original 
-> linear_range? Do away with the allocation there entirely.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Frank Li (2):
+      dt-bindings: iio: imu: mpu6050: remove interrupts from required list
+      arm64: dts: imx8qxp-mek: Add sensors under i2c1 bus
 
-I kind of like to keep the global structs const, and allocate new memory 
-for anything we need to change. That should help us if we ever need to 
-support more than 1 instance of the driver (Eg, on a system with 
-multiple PMICs) - although that's not likely, and AFAIR, the driver is 
-currently not written to work in such use-case.
+ .../bindings/iio/imu/invensense,mpu6050.yaml       |  1 -
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts      | 32 ++++++++++++++++++++++
+ 2 files changed, 32 insertions(+), 1 deletion(-)
+---
+base-commit: faae091652fd52f662e1fbc6b9d922b3d6e33641
+change-id: 20251029-qxp_sensor-861ef25c4149
 
-Anyways, the selectors won't change when voltage gets scaled. Maybe just 
-allocate with kmemdup, update the min and step, and be done with it(?)
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
 
-Well, hard to say what's the best approach without seeing it :) I'd 
-suggest you consider what you think is the best solution, write a patch 
-and let's see how it looks like (and, at the end of the day, what Mark 
-thinks of it).Yours,	-- Matti
