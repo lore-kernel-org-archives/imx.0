@@ -1,324 +1,220 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013057.outbound.protection.outlook.com [52.101.83.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AD330B511
-	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 20:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761771084; cv=none; b=Y2LTSNyp0RRKVwEUvLAgldlnBscuQ0GtQvimcnd1vS/7v3ihgyhllYLCq6wS+bToYTz9NgGRcx3E6N7P+baQvjt/4heF2eXVtL7OIXYpBnmghmlDdanTfNlFgpjyYGD3wBUK+0Ygaoxw5dIGv+thv2eSU2uKlgViMEMOuD4Vits=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761771084; c=relaxed/simple;
-	bh=vYGQTNXu/pUrR4RRZ9S3jUSTz+VGSBn4Ky9Tk38U6eI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gbAR3ZYP1iNVLJYDFCgXNznpK3L8ARQqGrZzgYHpCB6xYecQWD32I7Xs2Sax6/GsIHCYYxMtlQlAivjH8/mqr4s/P7RNmHbzRi+W1jvSR2+MnD8Rx9gbYmxhru4YYvpGZgzdxe08+508HFHHqG4mXYh1kfhf6uwUY8JAfWq5jnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YztWfGm5; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F41312829
+	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 20:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761771147; cv=fail; b=eBeK9Dq0cauIUR3+SN8/dkT68/AGAjemDD8abeH/53veZt1CEpVq6F2gHa/c0XariUsA6mRbZlbBnMYfIbes3XdD0GkeD5LWNv5uZHGSJYaUIMEcAovIPE7no8NL54NINJXPFOuOe6QEZByf2GgVQO0y6c91Jj5NlaeJnz0yeko=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761771147; c=relaxed/simple;
+	bh=blakPIgysbjjhpioqR7ve71uJAS0svQcbARnkS3vHqA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=c21BdF58WKs8638gGSSePtGKcqWPvtLtjxYr43WRNhvf0Ab96uedvqK6EzDBooCmKLPLGgGFl3XG8VI6CgrM559deijB+5edQmCC76f6OWcYhKIS9G5UB7/Av4VhbB+LkgbsMtN/mAjEGC4cIlOS+KF9ZYPIgfdqUr920ZtmF9s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cv7CPLfd; arc=fail smtp.client-ip=52.101.83.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YztWfGm5"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4298a028de6so996920f8f.0
-        for <imx@lists.linux.dev>; Wed, 29 Oct 2025 13:51:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761771080; x=1762375880; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HUleLLa8ND574xXra2RGEF6RaI7Xj9xpL5ZJVlCE2lI=;
-        b=YztWfGm5Uqd0aA56pZjCb5EVTH44fmW/gavkY4vvHtzPiWCCIIgqpYYz+50vAu9nC9
-         oypLg5BxoqsT3hC6EOTGAW/NZqJosN8EFolkVLG2juyEo8aUT9ttwMlyz/yD/7FL3Nhc
-         BqtvW6ET3TRVbCBRulGWpeQwtN2SZOPOtgXaPG5Ae7y9LjQ+PtJgZtT+sVu4bo1A7zyi
-         tHOeSNRKphNJbrNbfB4ctSDWCnZa93M4VpQhz7jZf3WyMe2uGhxwudInn7vuI6IEKJ2T
-         n/Jr8Caua2fKs8PIlpUT8b6UkQ4UvcTPX/s5W2LzFsDB4OoLjMx0pGpjdorCuQy/XMOp
-         X3Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761771080; x=1762375880;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HUleLLa8ND574xXra2RGEF6RaI7Xj9xpL5ZJVlCE2lI=;
-        b=U7dyld0kE/75nmDwIy9gix63YN7zheI+r7PPeeFxxTR1JVtR06eP/Fv/NqXeO6VwRG
-         kxrKBieuWRlKW1YlRGEpjxP1Pme56CJE5e1YleVJZnd+MzfnwNH3Q85/bOfeBCNTjPGO
-         nvg368YeMlqgHeF5AF09qmsEL2RMo+LgGmUBnksz2u6Kr29nWBtTenAwSkHesobbyQ5x
-         n+aDUmFsoWIrPQblhGZXYro6+vbuEThk/Q/Hl8ceEC4kFsVnPa+/uDGdEyKQcXk9v+BR
-         iHAyj4SrV2rkGVACdmZg7Brfc9PwxdGW5nua4PVEf2VOJkKvTMa3ATjsU0cWfCgEH66r
-         g7uw==
-X-Forwarded-Encrypted: i=1; AJvYcCWP44ccVcs80bBjc1kRVv7GsvAZoYqMiJaWkdKJMS+pZO4lYQU80Cel9ybD+U4FhZgdW+8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8XRbwNJhgxtco37kmi2enHSXMOlmTEQCQiiVkoWsJdpXmCT4M
-	Ar/zbETVpSo5wegDSRhbOqAh5Tj1MuYGzcoySpfcfGSOrgR80u9TU6iz
-X-Gm-Gg: ASbGnctZJD0Iky5Sj/VMwAecCkK5peHn4N/Jvbga5hZcgbS7TQNjlqVz5pE4zzldWRJ
-	nFa8pJe6VcWsDT2D0/YOlsg6hgh64AHINxp+dyQaGwzmJj0TjxeZEcyHDvARuKxkjufBuQ0CCoh
-	LGoUxf+Lc+dMOkX+ZN8MOCHsPuWC6JMxpp1f8b3iCwP6w0nFm59qPyaMwsGp6PhmcKeRMRHb3r9
-	11+qy1Xuz9lG8lGnDrrDj3vOCKBKQCOKZRBnW7OH3yL9gbaisuAyF/lnHsq2MhiY/H9Hpdk/yon
-	7SJh9RG7d8CCeX2nhqufetqYcm+Im1NNNYzARck/eMJMNDgQCkUlxDRlmdRF/ut8xEKOoRyIzOJ
-	8NcdLKCwEdVv9ZbWjh4pNcFjTAhOO6n94xeNW0LMOpA2506I8a8aNXdOHNerqTAgwpLSUsD+srl
-	DA7IwaxwOdyR7u7yTmRwKQbs4Tq6vSSIo=
-X-Google-Smtp-Source: AGHT+IFeQbHeDjZUFHA43UkkMBSaS+cIVCuepwH/xR58asrUxhv9+gT0KhY234gaLSA+Vobfb3QPkw==
-X-Received: by 2002:a05:6000:3110:b0:426:ff91:2f25 with SMTP id ffacd0b85a97d-429b4c81d13mr953533f8f.21.1761771079656;
-        Wed, 29 Oct 2025 13:51:19 -0700 (PDT)
-Received: from [192.168.1.129] ([82.79.237.20])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477289b3956sm2680805e9.10.2025.10.29.13.51.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 13:51:19 -0700 (PDT)
-Message-ID: <c8fdbb57-d152-4c85-be06-cfbc7e0b1550@gmail.com>
-Date: Wed, 29 Oct 2025 22:51:17 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cv7CPLfd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EXWPjTc3qVmn8hD/8nEHsSXLxhYR9MJcabZzX92sxkytbLKRmaUOzD9Ye0k4NmIzQY9HKKp6EuUqw0UZhLSuwpEWq/bEvNSSSTwdJKEwuM1LefylzYDp8Zzs/C0cG2x9lGFFCWeE8B8OVSDU3TW5ZWpHv+Ay5cG1zJFHPszDai4IBvPD65xfMTkrC8cfKz+/FPNn+phALgyUzv8/7nEFMGgvBDIit53w4jrRvbL0JWKSWTc9Th54WYYmlho82Xj4PFBGpp0Vy0jhNpy8fw4yMiALwOh13lYwGEE0Dgo6wTP2u3O3Uk8T7/gRPBx8vkZUNIhVAJPyKigpmvFhhBUf7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=blakPIgysbjjhpioqR7ve71uJAS0svQcbARnkS3vHqA=;
+ b=EaqLALUrkwXCF3SGav1e4JAmvFU9A+10evXl8vgjwT82hCQFV8j+SQPY1Bqz4jKsIoIrRUMMmemy9U64iygXOR//o2hWgmark3hckkpbBCsmVs4Nvmv+sgfBJP676457FQ6fyZiUgdb+/UyZWW0etCj95+DwPap/ByiSevnw3iKkR0JatjUHniasJe2S8Ih2W+APADopjdSWPrakTMcwFBHCFWsxGugLESvV0RWgPkuTesjqI4oimOlPGvPmTUBpAqlb3Z13XVB7yCoCNIIckZmL9RipUcdhks1c2Zi/ZREhQrUdzypcZniHJmC2L7GqT1o4Ns/fm8iLB+Hyd8co7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=blakPIgysbjjhpioqR7ve71uJAS0svQcbARnkS3vHqA=;
+ b=cv7CPLfdKrP6NiGJH7uGjvsp/AatMx2SSXQkBe4xNFci8c5ez4W58nAU0HjWIBoJZ0M/vEl6Jouev/yOjjwO+bybTiBvBMI9YgOIMAgaJUSOpR0anTNGa9WmD3Renw1Sl7AcyprYPCwdNHFw+axgMG2x3Q8LdkxnNMV5oaqIhfNl5Rd5zF3XOO9dNpojDioGBy69tSMNflcTbsl6Kqa1mk15vnMIAFNfgGrFsAinABBC1yBcFnwR/ExHjS0pyvlyfWHaZMnKDqVhmoq51vOF2s9ClugnxWswDSlg4ECYnUnhuVzs0JHilqw6knFiMfXaKfyNvOKBAfnwDD01hfRaPA==
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by AM9PR04MB8275.eurprd04.prod.outlook.com (2603:10a6:20b:3ec::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.13; Wed, 29 Oct
+ 2025 20:52:20 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612%5]) with mapi id 15.20.9253.018; Wed, 29 Oct 2025
+ 20:52:20 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Randy Dunlap <rdunlap@infradead.org>, Linus Walleij
+	<linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Jonathan
+ Corbet <corbet@lwn.net>, Bjorn Andersson <andersson@kernel.org>, Mathieu
+ Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
+CC: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, dl-linux-imx <linux-imx@nxp.com>
+Subject: Re: [PATCH v4 3/5] docs: admin-guide: gpio: rpmsg: gpio over rpmsg
+ bus
+Thread-Topic: [PATCH v4 3/5] docs: admin-guide: gpio: rpmsg: gpio over rpmsg
+ bus
+Thread-Index: AQHcSRXrCJ0/oV8BDkCkXGMWmNXxMA==
+Date: Wed, 29 Oct 2025 20:52:20 +0000
+Message-ID:
+ <PAXPR04MB918593CC07C246CADA458E4689FAA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20251029195619.152869-1-shenwei.wang@nxp.com>
+ <20251029195619.152869-4-shenwei.wang@nxp.com>
+ <0b5feeb5-87b6-4f26-b9df-a23159b977e7@infradead.org>
+In-Reply-To: <0b5feeb5-87b6-4f26-b9df-a23159b977e7@infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|AM9PR04MB8275:EE_
+x-ms-office365-filtering-correlation-id: c57419b6-1cb8-4a3c-5c2d-08de172d0dd1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|19092799006|1800799024|366016|38070700021|921020;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?dGMyZnBTTHozUzZVL0xJdnFnTDhWSTYyZWxHbTN3UFgyUDF5Z0JVcGxWRE9h?=
+ =?utf-8?B?WEpCcnppQjJiSlRQZmxNaVdVVDQ4Vk5YUGJkYW5SNVlBYkhEbW1zR2JvR0xW?=
+ =?utf-8?B?L0NFbmpyNGJITVVVZDF0R0F0cFM3Q3dJRkFkeVRoNXg3UjBrSTg2a2VCVVZ2?=
+ =?utf-8?B?eE5YbFU4VHd4OURXZzRIalpDVDdHZmpEdzMrQjFPQVdQM1BHOXdwekF3OGpj?=
+ =?utf-8?B?ZHlzTnZPSndMdVFtb3gybENVRDZ0R3FUa0szZkRWcjF2ZFhSZGphWldFc0Qy?=
+ =?utf-8?B?dUx1ckZqOHVQT1pycmVFd2RYNXRaNEpOVXFTVWMrUGpOejBmN0s0bjgyT29N?=
+ =?utf-8?B?bDlMaHgvS0Z1empEbzdIc2FxQlFTc0xCUFVvbzFxUjMrZzBZVDBZNFFHcEpv?=
+ =?utf-8?B?bUd1TGFVRUdnK1BYMzRMekZNOEN2OHA5OVdabmE1WGQ1QkFjdzk0dy9nYjJl?=
+ =?utf-8?B?WTBXSUQ1U0dlc1BKL0ppTzNtUzVDanFaajdRWEJ6bXh6TXQyK29qNDhWTjhJ?=
+ =?utf-8?B?L2UySDg4ckpEZkJ5a25oalpmQUM5Q2NmbS9NMkZlNDlBQzFEMHdLNXpmcGxK?=
+ =?utf-8?B?bWZRTHIzck5ocFlRYzQxWTVUWThsU05IdENCam94VHZyOUJLc1lDQUR2UmU2?=
+ =?utf-8?B?K0JUWU1pcmx0WU9XTHlGRlNvTkFwSElURGRrR01ybUxidTY3OFlQV0tLbnlt?=
+ =?utf-8?B?ay84bnFmZTZWVmZsQVhRbXhIb2dsMHVyWE9NeWFIdFVjTGs0WExGZU9DeC9u?=
+ =?utf-8?B?TlFUK00rWmlzdGdRa0c2WnVFZDIrZTRBRTdDVGpSM1VZM3N6YXd1cG9VL0xH?=
+ =?utf-8?B?R1M5ZUtZTk5TdjczNUhtN1BSeGRvZWhtcDcwUGtEdmo3ekdpT3NFQzRFR2Mw?=
+ =?utf-8?B?T3pOMWhTdmNLY1M5c29CTG04dFMwSjY5RkZyK2k5TWRTY1VaeENXWi9ZOHdG?=
+ =?utf-8?B?QmJVd2lOWWRJSWE0ajlmckJCUlNHeHVJUTZDMUJucDVTSTN1TE9yLzdPWFFG?=
+ =?utf-8?B?UTNiTG9hK1I2Y2JKYmJVNUFyTnZ2MCszbHdiU21aNStCanR5SlJUbzlBSlZY?=
+ =?utf-8?B?WVZUUDgvV0F0TTFjd0FGdXQvZkJxK1VtdFFHTmdNSGpob0RwdnJuakpocHp2?=
+ =?utf-8?B?V1VIc3U2eWdxbjJyMkV2SHUzODV3c3k2L3l2eGFjVjlIQm94SnhLdENHUEZB?=
+ =?utf-8?B?cjF6eVpXckdQQmRxWUlHQzkvKzlEYVFQcDBQN3BlUThUYmJ2SFZXY0NCcGRy?=
+ =?utf-8?B?Z1hGMnZyQXNUVEtqUU0wTS9jRzRSaTJMT3UzV3I4dHR4LzRBQTZBbXVpTlN5?=
+ =?utf-8?B?Yi9mZjhvZkNhSEVVZ1NGbTNCRjlnZzNqSzBuQkc1WWlFR0NIYXNXY2xsVktI?=
+ =?utf-8?B?WlZqMjFYb3RHUytBaTFGNzV5dXBaVkJiU0hRSm1zT0lWQ09IMWNvNHFIOXVP?=
+ =?utf-8?B?WnZrTVY5c0twK0MweFVkYUdZVWtiQW5PdWhUSHRURHZuN2lUcXlSeVlUME4w?=
+ =?utf-8?B?elo3VnI1TEp5K0ZML053T2ttYkM5SHBYd043ck9ZMFNrcEc2ZXV0SVN1cnpD?=
+ =?utf-8?B?VzZXRVhWd2xYc21EV0dwMmNYQTNxU05ZaU4yOElqZXc0bjQvaXBjT0cyUVRG?=
+ =?utf-8?B?bGYrc1J5U0ZyeTYzSlp3RWlXRFpzSnpWa3k2TlVLM0lyMUdQMENkMHl5bGpI?=
+ =?utf-8?B?R2o3MWplSEcwODlEdklTY0xTMm42bERnV1VuNVRoclZ0WnhuVFZiSEcwZ2Zj?=
+ =?utf-8?B?Vm9Ya3FLMFJYcXg5S0liMlk2RnkwWUNSTG1UN2ZBUFBDUGlhejc2QklXenFm?=
+ =?utf-8?B?eEZEdkRxdXByS0o0b1FvOW5oSGdvR1JFcUY4SEJEUlF0VndPRVJYN1FvSHFE?=
+ =?utf-8?B?bTgyRnMwSnJkSkNBalpsdElMdmtRdXZjMlFjdGEyUlgyQzRPSk0wa0NlTHF0?=
+ =?utf-8?B?eFZqcmxUMUZ4eDFnODJMZVlLZ1RPaytNdzZwdXd5NDV2SXhkTnk1bXRjMm1t?=
+ =?utf-8?B?TzJsYm1jbVhXRHFvcDA0Tll2WUZqWUxJZDd0NTRYZDYzaFBvbVV3ck44d2pk?=
+ =?utf-8?B?eks0cGJqOWI4blc0SGtnRlBHbnVjNFY4REpqQT09?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(1800799024)(366016)(38070700021)(921020);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?MWlOMXE0eU9SbFlOcy9kcUl4b0FvRnMxOXJVbmhTbnBKNXNjT0lCM0dlODdO?=
+ =?utf-8?B?U0lqQ0ZNVkxseFdNWFlES3BOUWRNSm02SFBvYzN3SmxoVXpYZXRkSzJDZlhy?=
+ =?utf-8?B?MFA4bEtIQUd5d092bS9WeGo1WXBqanJlWUhKM1JIUjU1Ums2SVdsTGZjSGlN?=
+ =?utf-8?B?Y3BUbG8yVEl6NFJzVXlnVzFlSDlwRlJ2SE9SVytqNUgyOVBUa3FRRW15ODhP?=
+ =?utf-8?B?eTZ0VllCZGhoT3JVTzVUcGFWYVRvUnBCNnF0RUtKdzYyaXh6VWRrZ0tOMDhr?=
+ =?utf-8?B?VW1YRnpOZGRva0ZDS0V0RDhnbENaVHA3Z0ljYm9qY1VCTUIwQ1hPMUlvRUU5?=
+ =?utf-8?B?eGRWSWpWWFVLbHlPaHhHUHN1aFc4SWk2M2h5QklqWDc2NExjS053aXNoV205?=
+ =?utf-8?B?UW82M0RHWndaOE9aMGNJNXpMVTZGSjFKM3huVEdYeFRWa3ptc01VQ2JCK21F?=
+ =?utf-8?B?dFZLWmZPZnd3ZzVBWXdxcDMxWXRqeW1DcnFVejVCZWRuWDFJTENSVVQvamNo?=
+ =?utf-8?B?Vm8wMmozRHk1R1psZ092bWx6aS9VVTFPYmVHZ2lLLzFFSTc5N0M2VkNXOXph?=
+ =?utf-8?B?N1BNN2FtQUI2eWtRRmVXK01FYzBsNS9KdURkWGtXWnJwSGMxSHpuSWxjd2V0?=
+ =?utf-8?B?enJWdTNEd2liYVlmRGdhNmVYaDMvS2lnRzRLcVdPUVVUd2FKKzJCdWFyV3Bn?=
+ =?utf-8?B?STUwV1RvSXJEZXNDc280RzN2MURsYjlVVHZaTi9NTXJBcmFMTXhoMkcyaEJr?=
+ =?utf-8?B?MXpuTzFsMGtNWlp5NWpGVkNZUnRWd0NNMmVCRUhRajdTZ0QzTWtKUGlmR3pL?=
+ =?utf-8?B?K0MyckFBckJEL1BtNXljNlJlZjlOOG0wUzhwWDU1TGNzaDA3a2I1cW5CK25h?=
+ =?utf-8?B?TURIU3lmNzlreGF3QnJobXlXWm5qSGxCWVFjRWc4dHRsZnE1OG9WYjJzcE14?=
+ =?utf-8?B?M0craEtraDExWVFiUUw4V29tb3FiRnhXKzRiZ1p0dTQ3a2wxcWcraEtGTk9B?=
+ =?utf-8?B?N0dZczRoWmhoSjZCT0czL1BQb0gvWW5JNmdwc0RpTHNLUjEweWxwTmRzcC9V?=
+ =?utf-8?B?VGtqMThLT2d5QTZCbithMUM5bDNRT0RjMkY3TVVlUkJsMzlSNDNZeFJUeTJs?=
+ =?utf-8?B?U3RaV3NGM1lEMjhwa3c5VFV5eFNmT0d0NE83cmhEeFo1dzhOQkJuZ05MY3Yx?=
+ =?utf-8?B?M1JpazFXN1JtWTdldnN4WkdmcUN2a3pMcjh0eVRqeERLVWt5ZVVKSzU4UzYy?=
+ =?utf-8?B?WkxZZ1ZjUWkrM1JzVzlwVnFBZW5GUG1VVnJTZkx3cTlSZjFOa3Q3QkRBYTZ4?=
+ =?utf-8?B?cW1hbnVOb3ZNYVhZeVRsUG95YW1XU3RBSFN1YmY4eENiRHk5L3R1a0F2Z0hW?=
+ =?utf-8?B?M2c1NVVrd2pJUUVuOStSWEowM0IyZTVadEJla3dsaFBqSExDVjB3enVLWUVu?=
+ =?utf-8?B?ZnR1OE94dkk3QVYrYTdwd08xYVZNSC9QT1dKbTZJRDRXVzJPbzB2bVBHckVo?=
+ =?utf-8?B?YnlQVmM5ekpJTjdiRWRwMUlqWU9YRWZLV0h0cUtDWkFUdXVnSURFeWdOcGpM?=
+ =?utf-8?B?VEhmbGMyYkNpbWYwdllGaFRvZi9rUU1NOTVoc3puNWVOdEM2VjI1ZWhUOXBt?=
+ =?utf-8?B?SjkvZGpBNHl6ZnV6amx1dmYrYUY2UXdmSk9ndkdhR0lhQjdpZmlaR05wUHB2?=
+ =?utf-8?B?UndFWjV4M2xPTWJvRkd4T2NmeWZkNUltTDlBRDNDT0JTUnQzYmxuVUk2OFk1?=
+ =?utf-8?B?OVBXbXNTWDdDcFE5T29KQjNSTnNNekVaT1paU0VzUnhobzNWamVFRk1PL0c5?=
+ =?utf-8?B?aDJmK0orMUR3MTg4enRESmwyN3FYVC93UGtRWlF2bGNvVzQveGRRZTFuNXRu?=
+ =?utf-8?B?TytEc243Y3RRbXYvVHJhRDR6VFRoSjZYcG13Z1JUOVh4MGZBcUlWdllIUEM1?=
+ =?utf-8?B?bFpDdkJqUGFOdXNpRFpxdTl4Mit4Wm9iOXpKay80dVZDRWgzb2Q4NmxvSnVl?=
+ =?utf-8?B?TEFzcmZ6Ulc5N1NDS2dVMUgvN3hBd1VUSVNHV1Q4Y1NMUTlHQWErS1UwY0ls?=
+ =?utf-8?B?MWhPdHBYMlIzVWhsQWVhYktEV3ZWN09WOUhHcEhlTkhaUkhmWUxzTG1Sd2NJ?=
+ =?utf-8?Q?PPig=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/8] reset: imx8mp-audiomix: Switch to using regmap API
-To: Frank Li <Frank.li@nxp.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
- <shengjiu.wang@nxp.com>, linux-clk@vger.kernel.org, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20251029135229.890-1-laurentiumihalcea111@gmail.com>
- <20251029135229.890-6-laurentiumihalcea111@gmail.com>
- <aQJCtZjAGiQdzfDz@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <aQJCtZjAGiQdzfDz@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c57419b6-1cb8-4a3c-5c2d-08de172d0dd1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Oct 2025 20:52:20.5471
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: AZV3tOO33gordi1JPYJgZR3t6z+yBBu9GO3r8iLoRiQY1a+wjhAjMJjD/4IetktJjnxceFv1tqfzFJJsfkCNLA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8275
 
-
-On 10/29/2025 6:37 PM, Frank Li wrote:
-> On Wed, Oct 29, 2025 at 06:52:26AM -0700, Laurentiu Mihalcea wrote:
->> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>
->> As far as the Linux kernel is concerned, block devices such as i.MX8MP's
->> AUDIOMIX block control or i.MX8ULP's SIM LPAV can simultaneously act as
->> clock controllers, reset controllers or mux controllers. Since these IPs
->> offer different functionalities through different subsystem APIs, it's
->> important to make sure that the register R-M-W cycles are performed under
->> the same lock across all subsystem APIs. This will ensure that registers
->> will not end up with the wrong values because of race conditions (e.g.
->> clock consumer tries to update block control register A, while, at the
->> same time, reset consumer tries to update the same block control register).
->>
->> However, the aforementioned race conditions will only impact block control
->> IPs which use the same register for multiple functionalities. For example,
->> i.MX8MP's AUDIOMIX block control IP provides clock gating functionalities
->> and reset control functionalities through different registers. This is why
->> the current approach (i.e. clock control and reset control work using
->> different locks) has worked well so far.
->>
->> Since we want to extend this driver to be usable for i.MX8ULP's SIM LPAV
->> block control IP, we need to make sure that clock control, reset control,
->> and mux control APIs use the same lock since all of these functionalities
->> are performed using the SYSCTRL0 register.
->>
->> To do so, we need to switch to the regmap API and, if possible, use the
->> parent device's regmap, which, in the case of i.MX8ULP, will be the clock
->> controller. This way, we can make sure that the clock gates and the reset
->> controller will use the same lock to perform the register R-M-W cycles.
->>
->> This change will also work fine for cases where we don't really need to
->> share the lock across multiple APIs (e.g. i.MX8MP's AUDIOMIX block
->> control) since regmap will take care of the locking we were previously
->> explicitly performing in the driver.
->>
->> The transition to the regmap API also involves some cleanup. Specifically,
->> we can make use of devres to unmap the device's memory and get rid of the
->> memory mapping-related error paths and the remove() function altogether.
-> Can you simpifly commit message? The key points are 1: lock, 2: nice API.
-> like regmap_update_bits().
->
-> Switch to using the regmap API to simplify register access. The regmap
-> infrastructure provides synchronized register access and richer helpers
-> such as regmap_update_bits().
-
-
-this change isn't about simplifying the register access, nor is it about synchronizing
-
-the register access. Previous version was already doing that.
-
-
-the key takeaway here is we want to have the SAME lock used across different APIs.
-
-regmap is a way to do that.
-
-
->
->> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->> ---
->>  drivers/reset/reset-imx8mp-audiomix.c | 91 +++++++++++++++++----------
->>  1 file changed, 57 insertions(+), 34 deletions(-)
->>
->> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
->> index e9643365a62c..3f6d11270918 100644
->> --- a/drivers/reset/reset-imx8mp-audiomix.c
->> +++ b/drivers/reset/reset-imx8mp-audiomix.c
->> @@ -11,6 +11,7 @@
->>  #include <linux/module.h>
->>  #include <linux/of.h>
->>  #include <linux/of_address.h>
->> +#include <linux/regmap.h>
->>  #include <linux/reset-controller.h>
->>
->>  #define IMX8MP_AUDIOMIX_EARC_RESET_OFFSET	0x200
->> @@ -42,8 +43,8 @@ static const struct imx8mp_reset_map reset_map[] = {
->>
->>  struct imx8mp_audiomix_reset {
->>  	struct reset_controller_dev rcdev;
->> -	spinlock_t lock; /* protect register read-modify-write cycle */
->>  	void __iomem *base;
->> +	struct regmap *regmap;
->>  };
->>
->>  static struct imx8mp_audiomix_reset *to_imx8mp_audiomix_reset(struct reset_controller_dev *rcdev)
->> @@ -55,26 +56,15 @@ static int imx8mp_audiomix_update(struct reset_controller_dev *rcdev,
->>  				  unsigned long id, bool assert)
->>  {
->>  	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
->> -	void __iomem *reg_addr = priv->base;
->> -	unsigned int mask, offset, active_low;
->> -	unsigned long reg, flags;
->> +	unsigned int mask, offset, active_low, shift, val;
->>
->>  	mask = reset_map[id].mask;
->>  	offset = reset_map[id].offset;
->>  	active_low = reset_map[id].active_low;
->> +	shift = ffs(mask) - 1;
->> +	val = (active_low ^ assert) << shift;
->>
->> -	spin_lock_irqsave(&priv->lock, flags);
->> -
->> -	reg = readl(reg_addr + offset);
->> -	if (active_low ^ assert)
->> -		reg |= mask;
->> -	else
->> -		reg &= ~mask;
->> -	writel(reg, reg_addr + offset);
->> -
->> -	spin_unlock_irqrestore(&priv->lock, flags);
->> -
->> -	return 0;
->> +	return regmap_update_bits(priv->regmap, offset, mask, val);
->>  }
->>
->>  static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcdev,
->> @@ -94,6 +84,50 @@ static const struct reset_control_ops imx8mp_audiomix_reset_ops = {
->>  	.deassert = imx8mp_audiomix_reset_deassert,
->>  };
->>
->> +static const struct regmap_config regmap_config = {
->> +	.reg_bits = 32,
->> +	.val_bits = 32,
->> +	.reg_stride = 4,
->> +};
->> +
->> +/* assumption: registered only if not using parent regmap */
->> +static void imx8mp_audiomix_reset_iounmap(void *data)
->> +{
->> +	struct imx8mp_audiomix_reset *priv = dev_get_drvdata(data);
->> +
->> +	iounmap(priv->base);
->> +}
->> +
->> +/* assumption: dev_set_drvdata() is called before this */
->> +static int imx8mp_audiomix_reset_get_regmap(struct device *dev)
->> +{
->> +	struct imx8mp_audiomix_reset *priv;
->> +	int ret;
->> +
->> +	priv = dev_get_drvdata(dev);
->> +
->> +	/* try to use the parent's regmap */
->> +	priv->regmap = dev_get_regmap(dev->parent, NULL);
->> +	if (priv->regmap)
->> +		return 0;
->> +
->> +	/* ... if that's not possible then initialize the regmap right now */
->> +	priv->base = of_iomap(dev->parent->of_node, 0);
-> Not sure why need map parent devices's ioresource here. You'd better use
-> regmap_attach_dev() at parent devices, so dev_get_regmap() will get it.
-
-
-why would we want to force the parent device to use regmap if it doesn't need to?
-
-
->
-> Frank
->
->> +	if (!priv->base)
->> +		return dev_err_probe(dev, -ENOMEM, "failed to iomap address space\n");
->> +
->> +	ret = devm_add_action_or_reset(dev, imx8mp_audiomix_reset_iounmap, dev);
->> +	if (ret)
->> +		return dev_err_probe(dev, ret, "failed to register action\n");
->> +
->> +	priv->regmap = devm_regmap_init_mmio(dev, priv->base, &regmap_config);
->> +	if (IS_ERR(priv->regmap))
->> +		return dev_err_probe(dev, PTR_ERR(priv->regmap),
->> +				     "failed to initialize regmap\n");
->> +
->> +	return 0;
->> +}
->> +
->>  static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
->>  				       const struct auxiliary_device_id *id)
->>  {
->> @@ -105,36 +139,26 @@ static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
->>  	if (!priv)
->>  		return -ENOMEM;
->>
->> -	spin_lock_init(&priv->lock);
->> -
->>  	priv->rcdev.owner     = THIS_MODULE;
->>  	priv->rcdev.nr_resets = ARRAY_SIZE(reset_map);
->>  	priv->rcdev.ops       = &imx8mp_audiomix_reset_ops;
->>  	priv->rcdev.of_node   = dev->parent->of_node;
->>  	priv->rcdev.dev	      = dev;
->>  	priv->rcdev.of_reset_n_cells = 1;
->> -	priv->base            = of_iomap(dev->parent->of_node, 0);
->> -	if (!priv->base)
->> -		return -ENOMEM;
->>
->> +	/* keep before call to imx8mp_audiomix_reset_init_regmap() */
->>  	dev_set_drvdata(dev, priv);
->>
->> +	ret = imx8mp_audiomix_reset_get_regmap(dev);
->> +	if (ret)
->> +		return dev_err_probe(dev, ret, "failed to get regmap\n");
->> +
->>  	ret = devm_reset_controller_register(dev, &priv->rcdev);
->>  	if (ret)
->> -		goto out_unmap;
->> +		return dev_err_probe(dev, ret,
->> +				     "failed to register reset controller\n");
->>
->>  	return 0;
->> -
->> -out_unmap:
->> -	iounmap(priv->base);
->> -	return ret;
->> -}
->> -
->> -static void imx8mp_audiomix_reset_remove(struct auxiliary_device *adev)
->> -{
->> -	struct imx8mp_audiomix_reset *priv = dev_get_drvdata(&adev->dev);
->> -
->> -	iounmap(priv->base);
->>  }
->>
->>  static const struct auxiliary_device_id imx8mp_audiomix_reset_ids[] = {
->> @@ -147,7 +171,6 @@ MODULE_DEVICE_TABLE(auxiliary, imx8mp_audiomix_reset_ids);
->>
->>  static struct auxiliary_driver imx8mp_audiomix_reset_driver = {
->>  	.probe		= imx8mp_audiomix_reset_probe,
->> -	.remove		= imx8mp_audiomix_reset_remove,
->>  	.id_table	= imx8mp_audiomix_reset_ids,
->>  };
->>
->> --
->> 2.43.0
->>
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUmFuZHkgRHVubGFwIDxy
+ZHVubGFwQGluZnJhZGVhZC5vcmc+DQo+IFNlbnQ6IFdlZG5lc2RheSwgT2N0b2JlciAyOSwgMjAy
+NSAzOjQ3IFBNDQo+IFRvOiBTaGVud2VpIFdhbmcgPHNoZW53ZWkud2FuZ0BueHAuY29tPjsgTGlu
+dXMgV2FsbGVpag0KPiA8bGludXMud2FsbGVpakBsaW5hcm8ub3JnPjsgQmFydG9zeiBHb2xhc3pl
+d3NraSA8YnJnbEBiZ2Rldi5wbD47IEpvbmF0aGFuDQo+IENvcmJldCA8Y29yYmV0QGx3bi5uZXQ+
+OyBCam9ybiBBbmRlcnNzb24gPGFuZGVyc3NvbkBrZXJuZWwub3JnPjsgTWF0aGlldQ0KPiBQb2ly
+aWVyIDxtYXRoaWV1LnBvaXJpZXJAbGluYXJvLm9yZz47IFJvYiBIZXJyaW5nIDxyb2JoQGtlcm5l
+bC5vcmc+OyBLcnp5c3p0b2YNCj4gS296bG93c2tpIDxrcnprK2R0QGtlcm5lbC5vcmc+OyBDb25v
+ciBEb29sZXkgPGNvbm9yK2R0QGtlcm5lbC5vcmc+OyBTaGF3bg0KPiBHdW8gPHNoYXduZ3VvQGtl
+cm5lbC5vcmc+OyBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+DQo+IENjOiBQ
+ZW5ndXRyb25peCBLZXJuZWwgVGVhbSA8a2VybmVsQHBlbmd1dHJvbml4LmRlPjsgRmFiaW8gRXN0
+ZXZhbQ0KPiA8ZmVzdGV2YW1AZ21haWwuY29tPjsgUGVuZyBGYW4gPHBlbmcuZmFuQG54cC5jb20+
+OyBsaW51eC0NCj4gZ3Bpb0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWRvY0B2Z2VyLmtlcm5lbC5v
+cmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LXJlbW90ZXByb2NAdmdl
+ci5rZXJuZWwub3JnOyBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZzsNCj4gaW14QGxpc3RzLmxp
+bnV4LmRldjsgZGwtbGludXgtaW14IDxsaW51eC1pbXhAbnhwLmNvbT4NCj4gU3ViamVjdDogW0VY
+VF0gUmU6IFtQQVRDSCB2NCAzLzVdIGRvY3M6IGFkbWluLWd1aWRlOiBncGlvOiBycG1zZzogZ3Bp
+byBvdmVyDQo+IHJwbXNnIGJ1cw0KPiANCj4gSGktLQ0KPiANCj4gT24gMTAvMjkvMjUgMTI6NTYg
+UE0sIFNoZW53ZWkgV2FuZyB3cm90ZToNCj4gPiBEZXNjcmliZXMgdGhlIGdwaW8gcnBtc2cgdHJh
+bnNwb3J0IHByb3RvY29sIG92ZXIgdGhlIHJwbXNnIGJ1cyBiZXR3ZWVuDQo+ID4gdGhlIGNvcmVz
+Lg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogU2hlbndlaSBXYW5nIDxzaGVud2VpLndhbmdAbnhw
+LmNvbT4NCj4gPiAtLS0NCj4gPiAgRG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlkZS9ncGlvL2dwaW8t
+cnBtc2cucnN0IHwgMjAyICsrKysrKysrKysrKysrKysrKw0KPiA+ICBEb2N1bWVudGF0aW9uL2Fk
+bWluLWd1aWRlL2dwaW8vaW5kZXgucnN0ICAgICAgfCAgIDEgKw0KPiA+ICAyIGZpbGVzIGNoYW5n
+ZWQsIDIwMyBpbnNlcnRpb25zKCspDQo+ID4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBEb2N1bWVudGF0
+aW9uL2FkbWluLWd1aWRlL2dwaW8vZ3Bpby1ycG1zZy5yc3QNCj4gPg0KPiANCj4gSSBkb24ndCB0
+aGluayB0aGlzIHNob3VsZCBiZSBpbiBhZG1pbi1ndWlkZS9ncGlvLy4NCj4gSG93IGFib3V0IGlu
+IGRyaXZlci1hcGkvZ3Bpby8/DQo+IFRoYXQgbWF5IG5vdCBiZSBwZXJmZWN0IGVpdGhlciwgYnV0
+IHRyYW5zcG9ydCBwcm90b2NvbHMgYXJlIG5vdCB0eXBpY2FsbHkgYWRtaW4NCj4gbWF0ZXJpYWwg
+QUZBSUsuDQo+IA0KDQpIb3cgYWJvdXQgcHV0dGluZyBpdCBpbiBEb2N1bWVudGF0aW9uL3N0YWdp
+bmcgZGlyZWN0b3J5Pw0KSSBzYXcgYm90aCByZW1vdGVwcm9jLnJzdCBhbmQgcnBtc2cucnN0IGFy
+ZSBpbiB0aGUgZGlyZWN0b3J5Lg0KDQpUaGFua3MsDQpTaGVud2VpDQoNCj4gPiBkaWZmIC0tZ2l0
+IGEvRG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlkZS9ncGlvL2luZGV4LnJzdA0KPiA+IGIvRG9jdW1l
+bnRhdGlvbi9hZG1pbi1ndWlkZS9ncGlvL2luZGV4LnJzdA0KPiA+IGluZGV4IDcxMmYzNzk3MzFj
+Yi4uOWM4ZjQ0NDEwMzhhIDEwMDY0NA0KPiA+IC0tLSBhL0RvY3VtZW50YXRpb24vYWRtaW4tZ3Vp
+ZGUvZ3Bpby9pbmRleC5yc3QNCj4gPiArKysgYi9Eb2N1bWVudGF0aW9uL2FkbWluLWd1aWRlL2dw
+aW8vaW5kZXgucnN0DQo+ID4gQEAgLTksNiArOSw3IEBAIEdQSU8NCj4gPg0KPiA+ICAgICAgQ2hh
+cmFjdGVyIERldmljZSBVc2Vyc3BhY2UgQVBJIDwuLi8uLi91c2Vyc3BhY2UtYXBpL2dwaW8vY2hh
+cmRldj4NCj4gPiAgICAgIGdwaW8tYWdncmVnYXRvcg0KPiA+ICsgICAgZ3Bpby1ycG1zZw0KPiA+
+ICAgICAgZ3Bpby1zaW0NCj4gPiAgICAgIGdwaW8tdmlydHVzZXINCj4gPiAgICAgIE9ic29sZXRl
+IEFQSXMgPG9ic29sZXRlPg0KPiBJZiBzb21lb25lIHRoaW5rcyB0aGF0IGl0IHNob3VsZCBiZSBp
+biBhZG1pbi1ndWlkZS8scGxlYXNlIGV4cGxhaW4gd2h5Lg0KPiANCj4gVGhhbmtzLg0KPiAtLQ0K
+PiB+UmFuZHkNCg0K
