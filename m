@@ -1,269 +1,124 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5632E5427
-	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 10:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D1D32ED5F
+	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 10:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761732348; cv=none; b=NxkHBf97i9PwaGLw28pW0CSBTKO1VkNeUIOmPQdpA5X4BB/tdv7XR7zqVVmYTQDyLznS1u6wy0FYDsByiOze6a7MuLKfP8iKOsjOx0HnOJUzM1FCzkCEu8cDjPQdxUMLH2aJa0cI6C1yu29ZA/iBXJyr21Ajafsrm8+qZSGuTcc=
+	t=1761734557; cv=none; b=S48nTRKiSlX/vdYb2xdYS6rANUyw4nsOxt4WnECtvoosHJ0mw9pKpc/7Q/IXusvMhoZt1b2Iv2GM630yNU+PcTJ3zm6uBD4NUNipIjcpxnoQsLg226THLFAVM0t9y2FZbvSaNss+WhStVpHSYwkM+Ieg8rTQ2TbFOqA91gMDNmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761732348; c=relaxed/simple;
-	bh=6fhlONikyziLKXSOgsIWG9Q5ws9vOabN9oCSLCgESxY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mtZ3+8sdS+nITkD8+aj4GM5Y+gBgmlfUtHpjBtbzDoyxG3yM0DvtVQ7lZjZbcpq1iZC222x1/I+Eb5Qyc8YsnNJHiVtgzm/CfX5LddnHx2l0XHJdF+DfWp2FppEPmv/DkPeRIBEFp0IxcnJW8WQ+pzo77cACWjy3Gat6cwJOAXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GNA4Gmre; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761734557; c=relaxed/simple;
+	bh=7gxDdxyM9gVNPiVVC4eGHnzzvY2SF9OG1/2DP5fZaVY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=umP+QYSd22JBSYtgccLJ67BYbey9gsCnI7vet1XXjpiOvh6+3zitybfnWGC5CXdGmTM4yPZdnTyTEP70LQ16CF1ryqIXSlkzDsgW/fL/inhMh+CsiPsGF1A/r5z7Odq8WjFuHZblUVMEtRPbD0r7F7s0M5aMd6OsixCyB+NGi2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FlzPs23G; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GNA4Gmre"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-378e622e9e3so11031441fa.0
-        for <imx@lists.linux.dev>; Wed, 29 Oct 2025 03:05:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761732344; x=1762337144; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uijkDtADuxF9K7YO0wHfT0dqUWSv/gYtiCeLIm0pwtg=;
-        b=GNA4GmrewYeCLzCL8L5Os5aXcjGvToBM38oPTXH3E775RpzDO1HSIRtStKy06rESLX
-         eoDbg2pRgCqzKbqh1ZbUIVVZQCBN0k9CHTPyayh82WtxngGi3ZV/n/UXtH2EKAubodnv
-         z1yzNG5NrZDS2W0detDJ0TwlIS5ocB6+BhP3DsBWmC/SCQfBrs7z+YzG6z9U5OoL1kPH
-         tOcr5yLjgxjeeDGztecg4qXZHZg7J2i0ehOS/lro8CmJeIgHFhR9+5CTSMsNlwytfwGp
-         mHVrRzrvCz1heCISf1YJtIlvMGW+e7PpX23B2+vDIT54LrN6XZWKx4F/fEHk2XhBYn7G
-         iw+Q==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FlzPs23G"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761734554;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VO6JMeF+Y/rlXeytLrI1t4e8cSgJmr6x8lUSlNHIFuE=;
+	b=FlzPs23GF9gPC/lhfI1jdg9PoHjUKCYbM9K2Da1qbXaCA1u/6GDg2POq1TReWSHbjnZCnr
+	snIAognbu+wmYhhvQVjim91nPwibvF4JvnYstdp6xcsmdr6XivwgiNwkMlMFrfPqUxQV1z
+	lIbmmshOPeEzTrFgVF9Z2jlh6SvqmvQ=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-509-02A6Q8PePCybPWNbRqm-fA-1; Wed, 29 Oct 2025 06:42:33 -0400
+X-MC-Unique: 02A6Q8PePCybPWNbRqm-fA-1
+X-Mimecast-MFC-AGG-ID: 02A6Q8PePCybPWNbRqm-fA_1761734552
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-426d4f59cbcso487085f8f.1
+        for <imx@lists.linux.dev>; Wed, 29 Oct 2025 03:42:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761732344; x=1762337144;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uijkDtADuxF9K7YO0wHfT0dqUWSv/gYtiCeLIm0pwtg=;
-        b=DXB6smNFu45germbA+rQhEXBX5u9uBkS+iGINYkD+bVxb8qaofjKk0cz135Q1WyK6g
-         IbewcGcws4g8qwCYELhkX4oHgtDadSrY7R8oLHLmZCxz5sXIryrxijR+G05phWjT0D2E
-         jneyGBWDXrhz/6eXMOTSkP34ptx7wDVgw2Izzt8kYny+7Hq+uJgqqbTWtB+iAJdO0SD6
-         Q3NIKnKbaRB4h8IELrihlBoN9mAgC8me54hMyXUkOrymDCtFMcWbis8cx5b4RG7KVos5
-         bk3Z9tH/Q/YufaUby8NwNhBlZGEA1EpqJYcpodTSvpFukJEqjkTtcU7emUS24oE1npm8
-         SVAw==
-X-Forwarded-Encrypted: i=1; AJvYcCVkJv8PfkHG9WBU7KMvxyVuoutOgx/F0lCoaNMNfUWyswPleY/mwCfrElqUVjj+CIvvP/k=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzSGruyXd3tubq4ee8HfETsjAWViQL2TEUzNnXHEJukdF2jTu+T
-	jU1OcV38fVnqRmtL/rPaDLssD70zVmoJHBFOx30utFkOmJaq9xphHrn4
-X-Gm-Gg: ASbGncvbs7VUhuK9RNBAw1Gi+LPuDtYxbA1ZN/SH01qBSdHoTouhg6wg1rbLJ0hDuBT
-	0e/EOBigwmgPQYKxuUoP/fWgMxon5TPlZcpgwQNWIBzk5mVIo2Mw9qkOmO4OdKXrzUsjNuJxUmh
-	EllwsRhRA+G8rcDqm2aKp3sqataNWynYVrGE/Pku642CKLWFDnfioUOTdo0Tq2Xpn46CHsZBMbh
-	/z5/Ws3eMwfL8bV8AcyK0YvXncvftaPuBBF2HQpZa8VnbpkfNegp3i8D7GGwhC/KDuXvF5FyhC4
-	oXpAIn9l7PMbbzAQ4vcR+wwl5qBeDAx+eE3qBrT7LvyR4n0BWCs3Em+zd4S4hLfr+rVc2Ts0hu3
-	eydqp8R3JebbaWemx6oAjR5xcIB/3mwh+07yz4sBfXdQiNVyVvv3WHVa3BVxWzF+Bi/YO3Ne9CT
-	B40sdAd/fNOw==
-X-Google-Smtp-Source: AGHT+IGPxek9rb53Ximkpkaumucrgng5VeDuIhUsDvmIZ+V2MTxI6ONwkIEmWMDo7OzJnyOZGmVRjw==
-X-Received: by 2002:a05:651c:1614:b0:373:a93d:5b4d with SMTP id 38308e7fff4ca-37a05e4e256mr6276451fa.14.1761732344095;
-        Wed, 29 Oct 2025 03:05:44 -0700 (PDT)
-Received: from [10.38.18.54] ([213.255.186.37])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-378ee09213fsm32546531fa.1.2025.10.29.03.05.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 03:05:43 -0700 (PDT)
-Message-ID: <d05c62c9-7ed7-46e4-aa4d-27172741b5ee@gmail.com>
-Date: Wed, 29 Oct 2025 12:05:42 +0200
+        d=1e100.net; s=20230601; t=1761734552; x=1762339352;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VO6JMeF+Y/rlXeytLrI1t4e8cSgJmr6x8lUSlNHIFuE=;
+        b=opcdf9EqEgTrRpXuvkVq8eesd8qfsz7fJ75hkasHVDykcseW7RyisktszIVti7EzYR
+         4SqAzQvvCleGIhnYWrh5RPedi1fwbGEvOYDVU2TDD86wJgPiEt9/Rzqq3n+jHhldSZzL
+         Wtzf430H0QhkC+9OQq9rGTd/81lN053V75Xw+aYKmhTkWSn3xUcwsZIJXIGZmG9Uecdp
+         FB5j3biwhYkjlIEWEeIoUZxBCMjBUzXkoGRQVuSVmCZz8XuCf06Fh8qhum9KYCUxgTLM
+         x9APUVBJ0lZqUP0v3Mu2dsUYfWsmPGGjrDWHxuWQZQOzDq4CnLmkYAVciDBaYDStw5dV
+         5cHg==
+X-Forwarded-Encrypted: i=1; AJvYcCXs0wsZ7kKA6hIEFRxd/oszOYl3tLtV6z6TpIYOMFGWAx4T8AYCTT4cookxJW/wmJdCqr0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyWAMxLpkq1AN1eFNGDwLtWNecOFPtWJUIhiiv3bYmWHfki1gzp
+	ylTIGCyaM+ejR0dUjBJ4//LgUeCXzNlk5Zy9fGxjdxZY3Y093FFEH0dPdiS1Szc84yp9PJF8r7V
+	z1/zwrLKem+xz4XpGfpnzD/icAeF21MtV43gSjWG0FOx0mi+2TpIRew==
+X-Gm-Gg: ASbGncv1UjyZUQCeCIIGtOhqCTWHxCrvifgF+Qdsxuk+kB4DfYPKXiIeDfqcSIW5hox
+	HB0kXaKZDXnvWh6U0TUwGNZ5cyIzW+/sqB6extJl91Zu4DZmxu8/QoNPKOShs6OCQTfsb5YG2TK
+	b/4HFeUpkFfOSTsjfvPpPcFuLgh5yiwsi20mlyrTjA4BA7epKhG53JUVwSxRVy2xg01zXmge26t
+	G+iaZ3we5gojbL+TvxyvWfAD2sJQyFZIzbjJZ0zE1cjhMYnAHcrfPMBYVBNaXORHln2yuwq+RQ/
+	yVRpnnleZ6Ih80SyY8orZ97Hk59LPw/35VXF26dK+AB4uWhaplXHOCaY5SffAtkBMqansupD5/J
+	94vHDLWUIIrMEBd4XkusaOQTGVMQ9tIhHd6GW563nhoOD/lDJ
+X-Received: by 2002:a05:6000:2313:b0:425:6fb5:2add with SMTP id ffacd0b85a97d-429a81eb864mr5415912f8f.19.1761734552406;
+        Wed, 29 Oct 2025 03:42:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFl6mj9Yhn8JAOvs+rKKdsBa63eFivbLmo5z2lKtEdDXOT0AMmmPQdmaMB5a5oRC1AheFEt+w==
+X-Received: by 2002:a05:6000:2313:b0:425:6fb5:2add with SMTP id ffacd0b85a97d-429a81eb864mr5415884f8f.19.1761734552031;
+        Wed, 29 Oct 2025 03:42:32 -0700 (PDT)
+Received: from lbulwahn-thinkpadx1carbongen12.rmtde.csb ([2a02:810d:7e01:ef00:ff56:9b88:c93b:ed43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4771e387baesm40719725e9.2.2025.10.29.03.42.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Oct 2025 03:42:31 -0700 (PDT)
+From: Lukas Bulwahn <lbulwahn@redhat.com>
+X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+To: Samuel Kayode <samuel.kayode@savoirfairelinux.com>,
+	Lee Jones <lee@kernel.org>,
+	imx@lists.linux.dev
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sean Nyekjaer <sean@geanix.com>,
+	kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Subject: [PATCH] MAINTAINERS: adjust file entry in NXP PF1550 PMIC MFD DRIVER
+Date: Wed, 29 Oct 2025 11:42:28 +0100
+Message-ID: <20251029104228.95498-1-lukas.bulwahn@redhat.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] arm64: dts: freescale: add Ka-Ro Electronics
- tx8m-1610 COM
-To: =?UTF-8?Q?Lothar_Wa=C3=9Fmann?= <LW@KARO-electronics.de>
-Cc: Maud Spierings <maudspierings@gocontroll.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
- <20251022-mini_iv-v2-3-20af8f9aac14@gocontroll.com>
- <a7012995-c2a8-48a3-abe1-5c227272f21c@gmail.com>
- <65202d1f-6c4f-4d4e-9fef-85cfb74ec768@gocontroll.com>
- <938f85b0-4c9b-463a-960a-f5f4e4092480@gocontroll.com>
- <20251029081138.2161a92a@karo-electronics.de>
- <4a47b9b5-f482-41b6-a441-7728572c5a0c@gmail.com>
- <20251029104838.44c5adcf@karo-electronics.de>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20251029104838.44c5adcf@karo-electronics.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: gdgsfl2v_voKfHnJ7sfNkZ5Bpr-20O59tPaq1J3G_MU_1761734552
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On 29/10/2025 11:48, Lothar Waßmann wrote:
-> Hi,
-> 
-> On Wed, 29 Oct 2025 10:42:17 +0200 Matti Vaittinen wrote:
->> On 29/10/2025 09:11, Lothar Waßmann wrote:
->>> Hi,
->>>
->>> On Tue, 28 Oct 2025 14:10:04 +0100 Maud Spierings wrote:
->>>> On 10/28/25 13:42, Maud Spierings wrote:
->>>>> On 10/28/25 13:15, Matti Vaittinen wrote:
->>> [...]
->>>>>> Could/Should this be described using the:
->>>>>> 'rohm,feedback-pull-up-r1-ohms' and
->>>>>> 'rohm,feedback-pull-up-r2-ohms'? If I understand the comment
->>>>>> correctly, that might allow the driver to be able to use correctly
->>>>>> scaled voltages.
->>>>>>
->>>>>> https://elixir.bootlin.com/linux/v6.18-rc1/source/Documentation/
->>>>>> devicetree/bindings/regulator/rohm,bd71837-regulator.yaml#L108
->>>>>>      
->>>>>
->>>>> Ah I didn't know those existed, should've checked the bindings in more
->>>>> detail, thanks for the hint!
->>>>>
->>>>> I will have to investigate this carefully, since I don't have access to
->>>>> the actual design of the COM, so I don't know exactly what is there.
->>>>>       
->>>>
->>>> So I am not yet entirely sure if this works out, I used the calculation
->>>> in the driver:
->>>>
->>>> /*
->>>>     * Setups where regulator (especially the buck8) output voltage is scaled
->>>>     * by adding external connection where some other regulator output is
->>>> connected
->>>>     * to feedback-pin (over suitable resistors) is getting popular amongst
->>>> users
->>>>     * of BD71837. (This allows for example scaling down the buck8 voltages
->>>> to suit
->>>>     * lover GPU voltages for projects where buck8 is (ab)used to supply power
->>>>     * for GPU. Additionally some setups do allow DVS for buck8 but as this do
->>>>     * produce voltage spikes the HW must be evaluated to be able to
->>>> survive this
->>>>     * - hence I keep the DVS disabled for non DVS bucks by default. I
->>>> don't want
->>>>     * to help you burn your proto board)
->>>>     *
->>>>     * So we allow describing this external connection from DT and scale the
->>>>     * voltages accordingly. This is what the connection should look like:
->>>>     *
->>>>     * |------------|
->>>>     * |	buck 8  |-------+----->Vout
->>>>     * |		|	|
->>>>     * |------------|	|
->>>>     *	| FB pin	|
->>>>     *	|		|
->>>>     *	+-------+--R2---+
->>>>     *		|
->>>>     *		R1
->>>>     *		|
->>>>     *	V FB-pull-up
->>>>     *
->>>>     *	Here the buck output is sifted according to formula:
->>>>     *
->>>>     * Vout_o = Vo - (Vpu - Vo)*R2/R1
->>>>     * Linear_step = step_orig*(R1+R2)/R1
->>>>     *
->>>>     * where:
->>>>     * Vout_o is adjusted voltage output at vsel reg value 0
->>>>     * Vo is original voltage output at vsel reg value 0
->>>>     * Vpu is the pull-up voltage V FB-pull-up in the picture
->>>>     * R1 and R2 are resistor values.
->>>>     *
->>>>     * As a real world example for buck8 and a specific GPU:
->>>>     * VLDO = 1.6V (used as FB-pull-up)
->>>>     * R1 = 1000ohms
->>>>     * R2 = 150ohms
->>>>     * VSEL 0x0 => 0.8V – (VLDO – 0.8) * R2 / R1 = 0.68V
->>>>     * Linear Step = 10mV * (R1 + R2) / R1 = 11.5mV
->>>>     */
->>>>
->>>> Because I do not know the pull up voltage, and I am not sure if it is a
->>>> pull up.
->>>>
->>>> So:
->>>> Vout_o = 1.35V
->>>> Vo = 1.1V
->>>> Vpu = unknown
->>>> R2 = 499 Ohm
->>>> R1 = 2200 Ohm
->>>> Gives:
->>>> Vpu = ~0V
->>>>
->>>> And:
->>>> Vout_o = 1.35V
->>>> Vo = 1.1V
->>>> Vpu = unknown
->>>> R2 = 2200 Ohm
->>>> R1 = 499 Ohm
->>>> Gives:
->>>> Vpu = ~1.04V
->>>>
->>>> I am not quite sure which resistor is R1 and which is R2 but having
->>>> there be a pull down to 0V seems the most logical answer?
->>>>
->>>> I am adding Lothar from Ka-Ro to the CC maybe he can shed some light on
->>>> this setup.
->>>>   
->>> R2 is connected to GND, so Vpu = 0.
->>> With:
->>> 	regulator-min-microvolt = <1350000>;
->>> 	regulator-max-microvolt = <1350000>;
->>> 	rohm,fb-pull-up-microvolt = <0>;
->>> 	rohm,feedback-pull-up-r1-ohms = <2200>;
->>> 	rohm,feedback-pull-up-r2-ohms = <499>;
->>> the correct voltage should be produced on the BUCK8 output, but a quick
->>> test with these parameters led to:
->>> |failed to get the current voltage: -EINVAL
->>> |bd718xx-pmic bd71847-pmic.3.auto: error -EINVAL: failed to register buck6 regulator
->>> |bd718xx-pmic: probe of bd71847-pmic.3.auto failed with error -22
->>>
->>> Apparently noone has ever tested this feature in real life.
->>
->> Thanks for trying it out Lothar. I am positive this was tested - but
->> probably the use-case has been using a pull-up. I assume having the zero
->> pull-up voltage causes the driver to calculate some bogus values. I
->> think fixing the computation in the driver might not be that big of a
->> task(?) The benefit of doing it would be that the correct voltages would
->> be calculated by the driver.
->>
->> If real voltages aren't matching what is calculated by the driver, then
->> the voltages requested by regulator consumers will cause wrong voltages
->> to be applied. Debug interfaces will also show wrong voltages, and the
->> safety limits set in the device-tree will not be really respected.
->>
->> I think this would be well worth fixing.
->>
-> Before doing the real-life test I did the same calculation that's done
-> in the driver to be sure that it will generate the correct values:
-> bc 1.07.1
-> Copyright 1991-1994, 1997, 1998, 2000, 2004, 2006, 2008, 2012-2017 Free Software Foundation, Inc.
-> This is free software with ABSOLUTELY NO WARRANTY.
-> For details type `warranty'.
-> fb_uv=0
-> r1=2200
-> r2=499
-> min=800000
-> step=10000
-> # default voltage without divider
-> min+30*step
-> 1100000
-> min=min-(fb_uv-min)*r2/r1
-> step=step*(r1+r2)/r1
-> min
-> 981454
-> step
-> 12268
-> # default voltage with divider
-> min+30*step
-> 1349494
-> 
-> Probably we need to use this value rather than the nominal 135000 as
-> the target voltage in the DTB.
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-Yes. When the driver calculates the voltages which match the actual 
-voltages, then you should also use the actual voltages in the device-tree.
+Commit ebaec90ec0b5 ("mfd: pf1550: Add core driver for the PF1550 PMIC")
+adds the header file pf1550.h in include/linux/mfd/, and commit
+a7d6255a0bf3 ("MAINTAINERS: Add an entry for PF1550 MFD driver") adds a new
+section NXP PF1550 PMIC MFD DRIVER intending to refer to that header file.
+It however adds the entry for pfd1550.h; note the additional letter in the
+filename.
 
-Yours,
-	-- Matti
+Adjust the file entry to refer to the intended file.
 
-> 
-> 
-> Lothar Waßmann
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+---
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 70de2f9c4a50..e428ec79dd24 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18718,7 +18718,7 @@ F:	drivers/input/misc/pf1550-onkey.c
+ F:	drivers/mfd/pf1550.c
+ F:	drivers/power/supply/pf1550-charger.c
+ F:	drivers/regulator/pf1550-regulator.c
+-F:	include/linux/mfd/pfd1550.h
++F:	include/linux/mfd/pf1550.h
+ 
+ NXP PF8100/PF8121A/PF8200 PMIC REGULATOR DEVICE DRIVER
+ M:	Jagan Teki <jagan@amarulasolutions.com>
+-- 
+2.51.0
 
