@@ -1,188 +1,147 @@
-Received: from dd54918.kasserver.com (dd54918.kasserver.com [85.13.167.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26E630F937
-	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 07:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.13.167.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD15311C2F
+	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 08:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761722468; cv=none; b=qdUYWPRGeiuqjS8DDIi6XIGzexACuO6tMVbAg7yb2kRYhdQhjTqP2zpk7Ifp+XcaeUnDHCupBa8r/CNfx2Zdi3CZpPru4RhbRwiyHT59XqntJ72RnJwLZKfEYk4INgzwyA7Fa6fStjzRpYRYOqfGgXZIhadd04k8DWRAIEOD9Cw=
+	t=1761725246; cv=none; b=r/hlUNWYMeFxTboERj9VOryI3FryUliUnwcLhvCZXHeSQgu09CWlz3hfGiTCATP+8eZPOw/0wFU8Zd7Fuxzqa/tRq0U4hmoEnsqs0SacTXYQxQ38wAyjbn8pT7LGmraIqfXgwFktZDg6l+FEEwbo9NnVR74ZZDWV6Odache5vpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761722468; c=relaxed/simple;
-	bh=Ep9YwSgs0Aw5mqUfs23xGd+sVMID51I+Lkb//qQB47w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eJ4lv2mKtc8QbPZJB9Ph53mJTIUlT7yrkfS5fT0GyRahgsBz+3RUV3CdXP5SAR2rPOcVub9CZGq52WTAQhYYMUZsRdKCrnCmh9uZvqoCSO2wfBnzMtF1oS+ZuaA9W4jte8Arh/A9BkWSfkRvM6WFH34MLRbgUTgsT+3S6/DB/vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=KARO-electronics.de; spf=pass smtp.mailfrom=KARO-electronics.de; dkim=pass (2048-bit key) header.d=karo-electronics.de header.i=@karo-electronics.de header.b=bznq++z1; arc=none smtp.client-ip=85.13.167.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=KARO-electronics.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=KARO-electronics.de
+	s=arc-20240116; t=1761725246; c=relaxed/simple;
+	bh=28lsY/xP5QLqKPIvrhKvHJ0CklqT6R1GJ9nsZJRxcNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lW3yeEIXS91fLn6mCtlMO1z9/WlYC5wVDP2gPkGTmCppySI4wa1ME+4fuBEpj8zQJT7/p7FvRfECYwFWSsaJggKBMDPFHaU/DQZpD1pVUsWJ57WVdASfETVaSzghkc8zPGedIlGI8wpcVyfEatj/W4YnbkrjyVU+3Gll54jgZB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OFFjwBU4; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=karo-electronics.de header.i=@karo-electronics.de header.b="bznq++z1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=karo-electronics.de;
-	s=kas202509031142; t=1761721899;
-	bh=p4QsNcOQhnUQw6VKEs7EI/wgC6PCFii9ExA5HZIUu54=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=bznq++z1b8rF88YPcJ6xYK7ARpc5BTe4nHGirZoOAmRxuOpP6qsWpbhDl+YJIo4Sa
-	 1xp7tRIrE6inZOQEh7tLtORenFq22DazEDbm72wtHcPpMHPdGOW0RR2As/KtzRm6hm
-	 h+ggStXDiMT8tKoPcI+oWGccGbYV8+Kd4sX6W98RnzhBdJk07WsloMsyICnrKkcmMi
-	 EvlCHhmUsG9z1w9HNONCrZ2sOgjqR8SEyv4PQCn9bxIGKZcGgNH4cnOgTPi3ntgGil
-	 SNXjBfuIY1n+xEoCYcstKwVb4ZhjLy9ZQZUnzWrMnYAkzTPejA2GAuwMacrThsSEL7
-	 XVV8ou4/lOLgQ==
-Received: from karo-electronics.de (unknown [89.1.81.74])
-	by dd54918.kasserver.com (Postfix) with ESMTPSA id 4A289772C311;
-	Wed, 29 Oct 2025 08:11:39 +0100 (CET)
-Date: Wed, 29 Oct 2025 08:11:38 +0100
-From: Lothar =?UTF-8?B?V2HDn21hbm4=?= <LW@KARO-electronics.de>
-To: Maud Spierings <maudspierings@gocontroll.com>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 3/5] arm64: dts: freescale: add Ka-Ro Electronics
- tx8m-1610 COM
-Message-ID: <20251029081138.2161a92a@karo-electronics.de>
-In-Reply-To: <938f85b0-4c9b-463a-960a-f5f4e4092480@gocontroll.com>
-References: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
-	<20251022-mini_iv-v2-3-20af8f9aac14@gocontroll.com>
-	<a7012995-c2a8-48a3-abe1-5c227272f21c@gmail.com>
-	<65202d1f-6c4f-4d4e-9fef-85cfb74ec768@gocontroll.com>
-	<938f85b0-4c9b-463a-960a-f5f4e4092480@gocontroll.com>
-Organization: Ka-Ro electronics GmbH
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OFFjwBU4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761725244; x=1793261244;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=28lsY/xP5QLqKPIvrhKvHJ0CklqT6R1GJ9nsZJRxcNw=;
+  b=OFFjwBU4/a/8r/3fU+/bwXVJK6BIkMijH7fgSWHJSTJvR1Vyw3/rF9u9
+   wKAbauBbPuasoUbaOkttk6TE5oLWnyXS29Ib80p6S9imnlXYf7mOt5f7v
+   rbgG+fdCvR8ReecJZcJgg+BquvNo3XmoToCILuyL1GuT4U0pO2aoTqPnS
+   F/6SmFEELguOK0X/2xjPcEeA4yfOeI+tqgd7A3+ucdR8giPmZJd2JcVC1
+   5vvANpuBjVoTA73ZVpW3LY8mpUlMWy8gl71J4sdB196qYtpXLmA1pEQLW
+   tv2HFBhJ1mLJP4LA76agrBnmshRnJs49Wv7aBnRsO2XRV2hUpFWfuqaas
+   Q==;
+X-CSE-ConnectionGUID: YMKHAle8TuKCYEqqqGLavg==
+X-CSE-MsgGUID: ciZSZy55RlOmPUtmeVLdOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63539921"
+X-IronPort-AV: E=Sophos;i="6.19,263,1754982000"; 
+   d="scan'208";a="63539921"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 01:07:24 -0700
+X-CSE-ConnectionGUID: LIDXKcu/RGm3nxaG4wzKIg==
+X-CSE-MsgGUID: tiwr6C3HS+Wk4w+q89cWBg==
+X-ExtLoop1: 1
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.248])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 01:07:20 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vE1DA-00000003Y70-4Bfj;
+	Wed, 29 Oct 2025 10:07:17 +0200
+Date: Wed, 29 Oct 2025 10:07:16 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
+	Adrian Fluturel <fluturel.adrian@gmail.com>
+Subject: Re: [PATCH v7 5/5] iio: magnetometer: Add mmc5633 sensor
+Message-ID: <aQHLNIKK4EknyWEr@smile.fi.intel.com>
+References: <20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com>
+ <20251027-i3c_ddr-v7-5-866a0ff7fc46@nxp.com>
+ <aQCgD3iVOXoNr7uY@smile.fi.intel.com>
+ <aQDhv/r0l0oOjb9t@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Bar: +
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQDhv/r0l0oOjb9t@lizhi-Precision-Tower-5810>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi,
+On Tue, Oct 28, 2025 at 11:31:11AM -0400, Frank Li wrote:
+> On Tue, Oct 28, 2025 at 12:50:55PM +0200, Andy Shevchenko wrote:
+> > On Mon, Oct 27, 2025 at 04:08:33PM -0400, Frank Li wrote:
 
-On Tue, 28 Oct 2025 14:10:04 +0100 Maud Spierings wrote:
-> On 10/28/25 13:42, Maud Spierings wrote:
-> > On 10/28/25 13:15, Matti Vaittinen wrote: =20
-[...]
-> >> Could/Should this be described using the:
-> >> 'rohm,feedback-pull-up-r1-ohms' and
-> >> 'rohm,feedback-pull-up-r2-ohms'? If I understand the comment=20
-> >> correctly, that might allow the driver to be able to use correctly=20
-> >> scaled voltages.
-> >>
-> >> https://elixir.bootlin.com/linux/v6.18-rc1/source/Documentation/=20
-> >> devicetree/bindings/regulator/rohm,bd71837-regulator.yaml#L108
-> >> =20
-> >=20
-> > Ah I didn't know those existed, should've checked the bindings in more=
-=20
-> > detail, thanks for the hint!
-> >=20
-> > I will have to investigate this carefully, since I don't have access to=
-=20
-> > the actual design of the COM, so I don't know exactly what is there.
-> >  =20
->=20
-> So I am not yet entirely sure if this works out, I used the calculation=20
-> in the driver:
->=20
-> /*
->   * Setups where regulator (especially the buck8) output voltage is scaled
->   * by adding external connection where some other regulator output is=20
-> connected
->   * to feedback-pin (over suitable resistors) is getting popular amongst=
-=20
-> users
->   * of BD71837. (This allows for example scaling down the buck8 voltages=
-=20
-> to suit
->   * lover GPU voltages for projects where buck8 is (ab)used to supply pow=
-er
->   * for GPU. Additionally some setups do allow DVS for buck8 but as this =
-do
->   * produce voltage spikes the HW must be evaluated to be able to=20
-> survive this
->   * - hence I keep the DVS disabled for non DVS bucks by default. I=20
-> don't want
->   * to help you burn your proto board)
->   *
->   * So we allow describing this external connection from DT and scale the
->   * voltages accordingly. This is what the connection should look like:
->   *
->   * |------------|
->   * |	buck 8  |-------+----->Vout
->   * |		|	|
->   * |------------|	|
->   *	| FB pin	|
->   *	|		|
->   *	+-------+--R2---+
->   *		|
->   *		R1
->   *		|
->   *	V FB-pull-up
->   *
->   *	Here the buck output is sifted according to formula:
->   *
->   * Vout_o =3D Vo - (Vpu - Vo)*R2/R1
->   * Linear_step =3D step_orig*(R1+R2)/R1
->   *
->   * where:
->   * Vout_o is adjusted voltage output at vsel reg value 0
->   * Vo is original voltage output at vsel reg value 0
->   * Vpu is the pull-up voltage V FB-pull-up in the picture
->   * R1 and R2 are resistor values.
->   *
->   * As a real world example for buck8 and a specific GPU:
->   * VLDO =3D 1.6V (used as FB-pull-up)
->   * R1 =3D 1000ohms
->   * R2 =3D 150ohms
->   * VSEL 0x0 =3D> 0.8V =E2=80=93 (VLDO =E2=80=93 0.8) * R2 / R1 =3D 0.68V
->   * Linear Step =3D 10mV * (R1 + R2) / R1 =3D 11.5mV
->   */
->=20
-> Because I do not know the pull up voltage, and I am not sure if it is a=20
-> pull up.
->=20
-> So:
-> Vout_o =3D 1.35V
-> Vo =3D 1.1V
-> Vpu =3D unknown
-> R2 =3D 499 Ohm
-> R1 =3D 2200 Ohm
-> Gives:
-> Vpu =3D ~0V
->=20
-> And:
-> Vout_o =3D 1.35V
-> Vo =3D 1.1V
-> Vpu =3D unknown
-> R2 =3D 2200 Ohm
-> R1 =3D 499 Ohm
-> Gives:
-> Vpu =3D ~1.04V
->=20
-> I am not quite sure which resistor is R1 and which is R2 but having=20
-> there be a pull down to 0V seems the most logical answer?
->=20
-> I am adding Lothar from Ka-Ro to the CC maybe he can shed some light on=20
-> this setup.
->
-R2 is connected to GND, so Vpu =3D 0.
-With:
-	regulator-min-microvolt =3D <1350000>;
-	regulator-max-microvolt =3D <1350000>;
-	rohm,fb-pull-up-microvolt =3D <0>;
-	rohm,feedback-pull-up-r1-ohms =3D <2200>;
-	rohm,feedback-pull-up-r2-ohms =3D <499>;
-the correct voltage should be produced on the BUCK8 output, but a quick
-test with these parameters led to:
-|failed to get the current voltage: -EINVAL
-|bd718xx-pmic bd71847-pmic.3.auto: error -EINVAL: failed to register buck6 =
-regulator
-|bd718xx-pmic: probe of bd71847-pmic.3.auto failed with error -22
+...
 
-Apparently noone has ever tested this feature in real life.
+> > + time.h // for time constants
+
+First of all, please, please remove the context you are agree with
+(non-replying to).
+
+...
+
+> > > +struct mmc5633_data {
+> > > +	struct device *dev;
+> > > +	struct i3c_device *i3cdev;
+> > > +	struct mutex mutex; /* protect to finish one whole measurement */
+> > > +	struct regmap *regmap;
+> >
+> > regmap has struct device, i3c_device presumable also, and here is struct
+> > device. Don't we have some overhead?
+> 
+> i3cdev is used for check it is i2c host or i3c host. If device connect to
+> i2c host, i3cdev will be NULL.
+> 
+> Only if connect to i3c host, driver can use i3c transfer api. The HDR
+> command is quite difference with SDR or I2C, which hard to wrap into regmap.
+> 
+> Anyway we need varible to indicate i3c or i2c. struct i3c_device *i3cdev
+> will be simple and needn't force convert struct device in regmap.
+
+This answers only to part of my question. Okay, let's leave it there, why do we
+need an explicit struct device then?
+
+> > > +};
+
+...
+
+> > > +static int mmc5633_suspend(struct device *dev)
+> > > +{
+> > > +	struct mmc5633_data *data = iio_priv(dev_get_drvdata(dev));
+> >
+> > Than regmap will be derived directly from a device.
+> 
+> I have not got your idea. Can you point me a example?
+
+dev_get_regmap()
+
+> > > +	regcache_cache_only(data->regmap, true);
+> > > +
+> > > +	return 0;
+> > > +}
+
+...
+
+> > > +	return mmc5633_common_probe(dev, regmap, "mmc5633_i3c", i3cdev);
+> >
+> > struct i3c_device doesn't have a name, does it?
+
+No answer?
 
 
-Lothar Wa=C3=9Fmann
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
