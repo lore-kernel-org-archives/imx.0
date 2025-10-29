@@ -1,126 +1,174 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5E432570B;
-	Wed, 29 Oct 2025 13:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761743332; cv=pass; b=sYRcpMbN1iWfynIIZBig3w5F0OS9cmoJCcNm19qg0UY0l18W/5qm9CJZc7CUNU/PSRBXXv3Ld4sw2WHqoj5uku4UwAhcX6QEzvmKKUfzXCnXf6wfyfmfjTPyOzDJJpqsv/HAynRi+OUxuFv9eHtXftd4JJdqWkgOCZaMYYXWzRQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761743332; c=relaxed/simple;
-	bh=GbgKFbM23FJf40EYp3wxJOdmysbQkt83nRPhacGu1eA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M4OKU1ZBtS4AeQq/JKkeOMm5owun848jpz1HJGOuBGHOu5X6OGOuOwbYOHs4G3srn9hMpgeH49Bj5J/kC8klFX3zrxABL9b7IHl/ePuPGKoN7p7fr3sJZACg0ZtIPj4jdVO7wGXGy/CX61NpACbRa5JkltsPL3nNn9VqF3WBCls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=jk5xCZs2; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42F124E4C3
+	for <imx@lists.linux.dev>; Wed, 29 Oct 2025 13:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761746160; cv=none; b=l6Rdsha1t3+IJwRcJ4hNfw9/amUlF++0n9hyUlTkgJbgzldGa3mSWVYyKv/psSPR74mTBcO/Pi8PtQc9YZz0bCgTXdFD+qOW8wgMzighrK5m2vHa5uTUmP15D+3KiBfs3uuQCq+JBKe1xSP3OX9p5FRmjxKKUQljIUvqT3not2Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761746160; c=relaxed/simple;
+	bh=sHPEcCDYogiAcXc5LYqps5Dm5uc9aiRfkvHMbT9kJm4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mTreKqkdM0H4PVP9NVLqiR0O8FR8zySlfLYC6BznB9IkfW+rdBkwHWNnW6WmQwhwfesFdxRLDrn2Gq/NQhscPX37GidR3nsEiLiXoCkZWYDGWXiTor+5g9dJB5bLPQE6ETwQYtHss6J9gqXAoOxDXq+Qjp6ZWkjWPRM4l4d+Zcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tf5ykY8S; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="jk5xCZs2"
-Received: from hillosipuli.retiisi.eu (91-158-51-183.elisa-laajakaista.fi [91.158.51.183])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sailus)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4cxSH81sV3z49Q8y;
-	Wed, 29 Oct 2025 15:08:36 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1761743318;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9fpXvJaxUezX/qrHlm1Wc2qpJNkfgp6lz8sBDtu/HNk=;
-	b=jk5xCZs2MhJ6YV0WbgnrB6KrYUYYgRll8qz+FZ0cYkqAiYwipqdWCnAi6lyXbGAZcJXqkE
-	KzDf7WdkZ4Iil8qEkO9Rz/rPuLBO6YvqlFb56rpGJMSJq+/15HEcSsgVSBnaQewQF6j/YD
-	9Vs2D2q2ZrW4d9BFtKP7GhX41Z0ogUZ3jDjgyeZGOV5w7qhB4VQOATBWZxVgKuEqDCRbbr
-	v/YbFWdKeJw2aelyObzMQcIhHElcISRvozrd/pMfl2NAWfFn06fZvCFmg48TdXV1myVQsD
-	Z2rU78zR5OPZvPkt/jnSj3MPAbvf62u7dQn4Jcq3iEY8Hu6LQy5PPOhZX1T8xQ==
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1761743318; a=rsa-sha256;
-	cv=none;
-	b=tp2biwcG6TD4/1R1UJK1dPWB2mg9cHYaQB4U6s/t9jQe6+JFUsF4XZJblE6aur/0DJZcwm
-	sxHFlwGztav721qoQBihahfdm/bprdIKl0SsWrzjp4p2vC768v7P6WcZX8iPqlEg9PTpoe
-	AdnWDL/aA779EiDbvnxlFXmArGpmdeoC20MUXO8YP/GNZTN090o8SfrfT8oJjMQYnI2rgw
-	QjuIwNcT1W6Zw5HV6w67EFWLpNrgr6FxjQddSzH4aMhF0MCDivo54T4BcOw90I/ov+WEhf
-	rPwboAeQbaeJQUckruhackPuZIzNAououq6TDhhZR3kAA/8Uh5FRR6q60M2mgQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1761743318;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9fpXvJaxUezX/qrHlm1Wc2qpJNkfgp6lz8sBDtu/HNk=;
-	b=ZvkgpX/FQ74zH8z7fM/WHCxsFU2vxWamDQJB/eW9eTWdtg1Psy+HGlAbjiCL0YMI4te1Td
-	bgPPKLFWpKUpicreBmdu8Q42vBg+DsQm9nbe36xlwTxxtenKkyvDdmIsOIvVAX5Tj1bWjW
-	NHqvQoEGys9BagIJhTLOr90fNNaodI+5ZIPvTuJYyzNRcteEGqVIlaY/ptmbb0PNMLPP4I
-	jUdut+KtbNgnKmFmqfDwxDUjmqNQjujY3sbIe2lQhng9SOJocg6gIYnkn2pP6AREw74YJ6
-	3dko+PeZACZS5t4NZa8q+Z0d8qWegf7KCwZp7CmDpwOawFYioXLbd8y1XknteA==
-Received: from valkosipuli.retiisi.eu (valkosipuli.local [192.168.4.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hillosipuli.retiisi.eu (Postfix) with ESMTPS id B6E39634C50;
-	Wed, 29 Oct 2025 15:08:35 +0200 (EET)
-Date: Wed, 29 Oct 2025 15:08:35 +0200
-From: Sakari Ailus <sakari.ailus@iki.fi>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tf5ykY8S"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b7042e50899so165018266b.0
+        for <imx@lists.linux.dev>; Wed, 29 Oct 2025 06:55:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761746157; x=1762350957; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=t3O1Iu/ksHRGyZsz6LMTY3M2UTA+pLqkjIUkkgFcc18=;
+        b=Tf5ykY8Sf3SUzKg7Oswh8mNOjjUb09AMNkKErOB+MnQ3TEV1zyKWKIztMR6/BORu3d
+         xrf4ekKtPC7b6O2eciBfhW9i4n3kzOUiV+8/Y6KXIiKUwwjxU5boLyTm6Rj5X9+5VNt1
+         z5EzHj3fBnKvMI1aJgTX4L/1Qn162dg0EnhLzh5bX61+799HjdGN5bJSnCa7vsQCZYbl
+         35S9jx1pAiCni/p2MCtnV9xiRUhbbf5XrD9OFyOlaMdgMZjNnJCBd+a8XlffMl9Ijs6O
+         D0RjHNZBHUThBrsG8geoqQySftGtjF6TYEY/Eq0gVbhqEwYURaPGNANKR04yuiWhVGxK
+         28kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761746157; x=1762350957;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t3O1Iu/ksHRGyZsz6LMTY3M2UTA+pLqkjIUkkgFcc18=;
+        b=EgyfcbsetBzrRvwS24DsM6aP5C8c7yO87IRFx6tG1bctxxtuSGR/bDU7CamAX9dHhk
+         7nw1IGvmKGLEeeRP3C4CLDcE9RLugmZgRAGcd8d3L1l6YsSYILlIa1BlSAKPyM9cQA5t
+         ZcnKDZvSWvv2RrJLpKPl2AVE/k0UY28jfnW6EVMPxr66LBe5IgnJp6QjJUCokkzVk3SN
+         dwemk7BIl3+Y/ias6jDDkGS+Vw4zbctIcT/DVdlx7fvgDiZ7gUhTS6U1Dy799I/9uAQR
+         4r/tBMG4+LZGZJZxYJwNd9n33YM3lTGPrGg37S/X7gQg4Hta2VqrsYyXtLIb38YSpS7X
+         Isbw==
+X-Forwarded-Encrypted: i=1; AJvYcCUVJ7mo61nZ+Q7pIuwzKHq7eJ34WPv1ellylKqpOq5tXu2+y+hOhfU2g+Qj5JSuVbVJUbs=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywre5tT95B5i2MqBUnbkI3/Wp+VMFdqRA7L8uf03H4MnJ3zerEy
+	ARbRxCxav89MtXPn3/U5LRvCaI4j7NGFkF7ney6KWORBPKNooo0oJ8j0
+X-Gm-Gg: ASbGncu3D7SKPSJd69TgVUswG/FqUL/m6OE3N+woZLTNeMW0nX4M1T+KC5Ml12SFI8C
+	OchpCeXt/ylNyUCE+QZ3xJEn+P7Sbv6boYOHj3vl/G++5V7vZkWJB71QAn8zBEyh6aj1MGlAFtZ
+	g/UrRhIze5a8Zz27Wj1HdNml1oSQcLCkk9/pzgEUpxInoL8Wre1Ef2yvkerR1SWBQmZ+aMuMSyH
+	GDl5vsByl/SDB9K3D8Hc1zxD2kfEL2FD4514sFHV9TP39kkXRcR1+xTjbpAwvpasSNcwgruJBLz
+	zGoad8w7LNoZx6lsgzbIEOJ+WdvjxgCtPcElhXV+7Nvn302xqJpURdTksLx4f90J9t0oU80+5sp
+	BPZw+73blvA/1HLKHqdirPVFnaTj7C092hw2HrUdeccIDNHg6KDElpmndGA/AlP+HPCqMoSrUId
+	jI5CkStxvbaZthoenE38Zk3W6U1w==
+X-Google-Smtp-Source: AGHT+IG3fjXdxPy5yprhsiCpSi+P154WFnEbny0GwxKhkE7eZydOCcZ5Zo9k8sLJC5ZAu8sCW+HiNg==
+X-Received: by 2002:a17:906:ee8b:b0:b45:913d:f523 with SMTP id a640c23a62f3a-b703d2fe6ffmr341163266b.18.1761746157108;
+        Wed, 29 Oct 2025 06:55:57 -0700 (PDT)
+Received: from SMW024614.wbi.nxp.com ([128.77.115.157])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d8534d99dsm1444960766b.21.2025.10.29.06.55.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Oct 2025 06:55:56 -0700 (PDT)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Alice Yuan <alice.yuan@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
 	Philipp Zabel <p.zabel@pengutronix.de>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
-	linux-staging@lists.linux.dev
-Subject: Re: [PATCH v3 03/31] media: v4l2-common: Add helper function
- media_bus_fmt_to_csi2_(bpp|dt)()
-Message-ID: <aQIR03RD0BekWkmX@valkosipuli.retiisi.eu>
-References: <20250821-95_cam-v3-0-c9286fbb34b9@nxp.com>
- <20250821-95_cam-v3-3-c9286fbb34b9@nxp.com>
- <aP81s4FDhj0-3WFh@valkosipuli.retiisi.eu>
- <aP+isGnWmJ4tLXcs@lizhi-Precision-Tower-5810>
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [PATCH v3 0/8] Add support for i.MX8ULP's SIM LPAV
+Date: Wed, 29 Oct 2025 06:52:21 -0700
+Message-ID: <20251029135229.890-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aP+isGnWmJ4tLXcs@lizhi-Precision-Tower-5810>
+Content-Transfer-Encoding: 8bit
 
-Hi Frank,
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-On Mon, Oct 27, 2025 at 12:49:52PM -0400, Frank Li wrote:
-> On Mon, Oct 27, 2025 at 11:04:51AM +0200, Sakari Ailus wrote:
-> > > +/* DT value ref to MIPI Camera Serial Interface 2 Spec Ver4.1 section 9.4 */
-> >
-> > I'm not sure if I'd add such a reference here. At least it shouldn't be in
-> > this patch.
-> 
-> Still not in v6.18-rc3. I add comments in this patch because try to add
-> media_bus_fmt_to_csi2_dt().
-> 
-> If dt define is not standard, media_bus_fmt_to_csi2_dt() don't make sense.
-> the difference vendor choose difference dt values.
-> 
-> I am fine create patch for it before this one.
+The LPAV System Integration Module (SIM) is an IP found inside i.MX8ULP's
+LPAV subsystem, which offers clock gating, reset line
+assertion/de-assertion, and various other misc. options.
 
-Sounds good to me.
+This series adds support for the IP by introducing a new clock HW provider
+driver and by modifying i.MX8MP's AUDIOMIX block control reset driver to
+allow it to be used for i.MX8ULP's SIM LPAV as well.
+
+This series is a spin-off from [1].
+
+[1]: https://lore.kernel.org/lkml/20240922174225.75948-1-laurentiumihalcea111@gmail.com/
+
+---
+Changes in v3:
+
+* rename "lpav_bus", "hifi_core", and "hifi_plat" to "bus", "core", "plat"
+* don't assign the "name" field of "struct clk_parent_data". Previously, we
+  were assigning the local parent name to this field, which wouldn't have
+  worked anyways if, for whatever reason, the fallback mechanism would kick in.
+* replace the whole auxiliary reset driver creation chunk by
+  a single devm_auxiliary_device_create() call.
+* replace the "shift" field from "struct imx8mp_reset_map" with the usage of
+  ffs()
+* shorten commit description for patch 6
+* cast "id->driver_data" to "void *" instead of the previous
+  "const struct imx8mp_reset_info *", which makes the line shorter.
+* open question resulting from Peng Fan's comment on V2: how to access
+  interconnect QoS registers? do we need to model the sim_lpav as an
+  interconnect provider as well or is it fine to have another interconnect
+  provider that references the sim_lpav node and accesses its registers
+  via regmap (dev_get_regmap(), specifically, NOT syscon).
+* link to v2: https://lore.kernel.org/lkml/20251017112025.11997-1-laurentiumihalcea111@gmail.com/
+
+Changes in v2:
+
+* drop redundant description for "#clock-cells"/"#reset-cells" properties
+  from binding
+* make "mux-controller" and "#reset-cells" properties mandatory
+* add "mux-controller" child to binding example node
+* drop the compatiblity with syscon - this was never actually needed and
+  it was done to allow using "mmio-mux", which requires a syscon parent
+* modify the auxiliary reset driver to use regmap - this will allow the
+  mux controller, clock control and reset control APIs to use the same
+  spinlock.
+* rename "imx8ulp-reset-sim-lpav.h" to "fsl,imx8ulp-sim-lpav.h"
+* drop the "IMX8ULP_CLK_SIM_LPAV_END" macro, which doesn't belong to the
+  binding headers
+* fix the values of "IMX8MP_AUDIOMIX_EARC_RESET_MASK" and
+  "IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK", which were previously incorrect
+* drop redundant macros from auxiliary reset driver - replace their
+  occurrences with their values
+* squash the binding-related macro additions into the binding patch
+* add mux-controller child node to the sim_lpav node
+* make the "gates" array static
+* link to v1: https://lore.kernel.org/lkml/20250804155407.285353-1-laurentiumihalcea111@gmail.com/
+---
+
+Laurentiu Mihalcea (8):
+  reset: imx8mp-audiomix: Fix bad mask values
+  dt-bindings: clock: document 8ULP's SIM LPAV
+  clk: imx: add driver for imx8ulp's sim lpav
+  reset: imx8mp-audiomix: Drop unneeded macros
+  reset: imx8mp-audiomix: Switch to using regmap API
+  reset: imx8mp-audiomix: Extend the driver usage
+  reset: imx8mp-audiomix: Support i.MX8ULP SIM LPAV
+  arm64: dts: imx8ulp: add sim lpav node
+
+ .../bindings/clock/fsl,imx8ulp-sim-lpav.yaml  |  72 ++++++++
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi    |  17 ++
+ drivers/clk/imx/Makefile                      |   1 +
+ drivers/clk/imx/clk-imx8ulp-sim-lpav.c        | 160 +++++++++++++++++
+ drivers/reset/reset-imx8mp-audiomix.c         | 164 +++++++++++++-----
+ include/dt-bindings/clock/imx8ulp-clock.h     |   5 +
+ .../dt-bindings/reset/fsl,imx8ulp-sim-lpav.h  |  16 ++
+ 7 files changed, 392 insertions(+), 43 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/fsl,imx8ulp-sim-lpav.yaml
+ create mode 100644 drivers/clk/imx/clk-imx8ulp-sim-lpav.c
+ create mode 100644 include/dt-bindings/reset/fsl,imx8ulp-sim-lpav.h
 
 -- 
-Sakari Ailus
+2.43.0
+
