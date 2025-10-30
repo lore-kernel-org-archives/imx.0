@@ -1,48 +1,48 @@
-Received: from mx-relay32-hz1.antispameurope.com (mx-relay32-hz1.antispameurope.com [94.100.133.208])
+Received: from mx-relay172-hz1.antispameurope.com (mx-relay172-hz1.antispameurope.com [94.100.132.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EECE34028D
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 12:51:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCFD3446CC
+	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 12:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761828669; cv=pass; b=rhQMG0h/jZ/QqX7xoukhuoYCFOSNbKNg1J8sa7ui9QAd+2sct74iydboPkMj591O6oSrysFaGRL025JeYKMnheghre2Sjc+uLPDdK5P+VgEoeP79gpCFYBDlUBAZgTdu4gwW75DTDK6Y5Y7f4a2pPT/TZNAxc+A0dLYT84txhTs=
+	t=1761828670; cv=pass; b=HOhkYG5gIBjPAHuDYtKKU94Bkg863WGwSB+trSE0Fd3yECHlVwomKlqwVrx2C2YHTeJEE+94kfGGYpYEkMwAkD9VwO4E6hwo3KYfcA1IPsJkk+rc/XIlc7tuXFNVJShoBaw/2J6h0teO2x52nTWwdomVYwO60ixOEVY2swDiLRc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761828669; c=relaxed/simple;
-	bh=8R70P4kEEcIbFjodXfQBxXqAq+lQZtKZ+MdM85RNf64=;
+	s=arc-20240116; t=1761828670; c=relaxed/simple;
+	bh=SBO7GNLcfMbKloOhhNir70H2TF40KEEU8NLb1BkwWh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1MrIKbaK2xcYRXBtHDohlWvqfS87ntc3IU0zM2qPQbmbjSl7qGGSyXs3QBgnfj/saGypd0O0v9jx+OHuJlLrmFM7vjrzgCSzO7sek+bIREC7SVmN591QBjF70+mx3R5C7TG0BezGiUh4MKqSfkB5uqDrgeeoLxFrbCfa8BuExI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=gBT0fuSF; arc=pass smtp.client-ip=94.100.133.208
+	 MIME-Version; b=mRGbikY245TKISPXgOgMyQZ44vjNsNav92DHHO2+QRCAl78XvRdfq/6gHIEwbFr/HzTCfBSyXSzOv6PrpoHDurO4LVwQh+CZyrhki8HIf7jXuN0YQPHn0YV4thHpuY7dBJYHO6UPZNtip+1XEieehSeBqU9OY9kzqpb40nnnvb8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=nK9fC9+M; arc=pass smtp.client-ip=94.100.132.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="gBT0fuSF"
-ARC-Authentication-Results: i=1; mx-gate32-hz1.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="nK9fC9+M"
+ARC-Authentication-Results: i=1; mx-gate172-hz1.hornetsecurity.com 1;
+ spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
  smtp.mailfrom=ew.tq-group.com
  smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
  header.from=ew.tq-group.com orig.disposition=pass
 ARC-Message-Signature: a=rsa-sha256;
- bh=orpjfmaMqp/ep6TopDZ6qss0KQr8oMJ5sbynNFItMqc=; c=relaxed/relaxed;
+ bh=yQrnZtKYkTmoOqZMGCIOD6/kHXaWhNyn+TUU1owbG/U=; c=relaxed/relaxed;
  d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1761828613;
- b=qyx23syYf6W0oE9hOPWb4LVMWWcgEBjyIunCRWyoh7tWsWWw+bOQ43K6YGRYlZiBxC2n1YYv
- GFIRXFjk0o3H4oQEDLww/oq1vqAd8VXBF1XSRcMJlrvxGS/2IaAeSV4B53Q9wxpq87p9eI5WDAs
- DAvKuY5Nh+DvoaghHC/SgMH49xvrRudksI7cnKOMak172LE7Fgh5ypcouEQhhmeU0ZU5RngSmSd
- mOWU3Rvt9Ect9VRkQxr9uBNCvQiimf6PyUwcaW6Oywg8aB5MhIu6Evgjp2ZvsM7RIWWRd3tu90f
- WmFAcgTHNh1twBh2XnCn6JzlIbQYHUbAnj06WRxIjscRg==
+ t=1761828604;
+ b=FyG3sipBagXEe+L4w4oRvQLIWwaCax+Vu02E4YCDckegtQSmLkw27XFhRVDsfXb8qR8LYcYr
+ W9WlfADlXjPBr6JGZfhm5FZt2+6Dixg5Be9JitbnSwxkjGWuIJ5fkm8ahlm6XVe6NG7CVYiVj0C
+ 0wZWZA5kHrCJp4EzwJxlMVEvgJelpo0Mwk3oIkgWIWEhIzYuMaOAH8vNECUDAYri9BMOBFs7qXT
+ XYsnFdJKXXU1y4QbwfnknO2S/KpglFryqvoCTA+Zr7vwhIFrHzAV6B7rH03iPVmbtp7YxrkWskE
+ Nd1TLrgq1m2KwhumJTUPzuPqm5hPMqbMMRL+lvFVedxKw==
 ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1761828613;
- b=nV9VfcUFmTXOYAGkdDDJRwqQBo6NqlNDHx02c9Mw5Wc02YrddYQiRrBd0BqRNoAbRmhQKKKx
- SUxjfwxHCS6xdzk4RfP2EAL1f6fBjndslOv0m3uSQ+XEjldTDoQ6ha+LvFXQObjWdrd+5GwKgVs
- cpPZUqMg4jS78rb6erz2uUGFzb9z9XUtWOtw4zxoGXqlco9gIlUTO2Rq/rk36wzP/ma0bit1CCl
- iQuUDJVb25PrszxD1nJHZu9maQEt3OGpyUFNTifQY3FhqI9Sv78VrjiKQdnH9yaOz+7yQAfEjmV
- NIFXAe3ET2oEwq1GWfCr+FiBIHFDfhV6CVCa6lRhSE8Rg==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay32-hz1.antispameurope.com;
- Thu, 30 Oct 2025 13:50:12 +0100
+ t=1761828604;
+ b=Tx7IZ2iYE6N2lFDE8vqP5PASMUMnYUXUUtqxkeIfPG27XBC6x4HUYqkuUL3EX88MJpt8NEHP
+ Lb93eZ8/XHscZUOiubBD4AiVB+3HLcC3C3IsbIanyyMHO1ibq1pqgMzKcgu/aGXZEh58u5MZQG3
+ rjM3LO0lCElg7T4/pZ1dqdYoS+IOvEXDeRCEGEyOh29ooR6WfyRAzvVUP9J7JcXtqvI3owXSImh
+ Ju8xdPjS2RFBUH2gXIUfaZWNmR2DvK8VyTRVyR4Q9bMX8R7kWzRp+AmszPa1SkkYMIk+bibDGqa
+ oilRZj2zNqS5Qw75h4Cp2x1hWuTN3Iv3foz3BcLlpT62w==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay172-hz1.antispameurope.com;
+ Thu, 30 Oct 2025 13:50:03 +0100
 Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
 	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id CFE28220C62;
-	Thu, 30 Oct 2025 13:50:02 +0100 (CET)
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 9E58A220D24;
+	Thu, 30 Oct 2025 13:49:52 +0100 (CET)
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -57,9 +57,9 @@ Cc: linux@ew.tq-group.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 10/19] arm64: dts: imx95-tqma9596sa: remove superfluous pinmux for flexspi
-Date: Thu, 30 Oct 2025 13:49:17 +0100
-Message-ID: <20251030124936.1408152-11-alexander.stein@ew.tq-group.com>
+Subject: [PATCH 02/19] arm64: dts: imx95-tqma9596sa: reduce maximum FlexSPI frequency to 66MHz
+Date: Thu, 30 Oct 2025 13:49:09 +0100
+Message-ID: <20251030124936.1408152-3-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
 References: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
@@ -76,43 +76,43 @@ X-cloud-security-crypt: load encryption module
 X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
 X-cloud-security-Mailarchivtype:outbound
 X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay32-hz1.antispameurope.com with 4cy3qH419Jz8stG
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay172-hz1.antispameurope.com with 4cy3q51zVyz1Z1pc
 X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:201a609ca4cd8de84ce042f2b20575b7
-X-cloud-security:scantime:1.813
+X-cloud-security-Digest:22167396eefe238fc1584f087a1c054f
+X-cloud-security:scantime:2.247
 DKIM-Signature: a=rsa-sha256;
- bh=orpjfmaMqp/ep6TopDZ6qss0KQr8oMJ5sbynNFItMqc=; c=relaxed/relaxed;
+ bh=yQrnZtKYkTmoOqZMGCIOD6/kHXaWhNyn+TUU1owbG/U=; c=relaxed/relaxed;
  d=ew.tq-group.com;
  h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1761828612; v=1;
- b=gBT0fuSF3CLV4X1VejfzuwEy2SU9djDwthoJVC1p0ULr6HR4QwsXk5cWX3Hv+2xOIRWJflWe
- oBhlk/Gp+pjnYvVSM7AlRe2hJDNj0i5YMA9Qch3FY9NRVm3SWDH2L4/yBo+wVO46L8tcuI0p75u
- Lj9oJy7nkcLg98kV5OI13v9mS9sdRajTpd32pHPrPxx75h0m1F5BA8qW7VGww4+scMZmUfXUEwt
- 1QSCbo5IF+i25dxXKD4SCzBu/LIXmQESY8mhyQviOOqLy8+sc6i1jfCNNQJW8byyYFuBf2ZSX1y
- zeZ6VGmx+YPweRos0LFl78Fpa8gaOhw4bbVuFo5jB7uhg==
+ t=1761828603; v=1;
+ b=nK9fC9+MruZl79opQ/SQomuQeZY+PSgo/lRgh93T+cDmThkdmOA3qu77u60igKK7+DHlDq0O
+ lXD2HPaIxJXpqRRvFS6CBknLhG+7HHcGyhODvAnv4HgjKSMQ5nCon4Qpugofx9VeQIVtIpQEi8z
+ LWtXF1ayBqcEkP7Yy4GEoJx/aOEiff0Ar1ibqJBZtyXyFk2ZQQekH/EIo+tk75OxPotwRQm3Roa
+ 2pPm0FDoSWZ/LjUoOWCBH9R+EKj7+ULevn8CHSuDwI2ut2Nax9wisEaZHRPeU40D1aa5DS/9mSx
+ qsoOHF5ijbsHWkrhio7PBEEdaO9JGcuZxmGX1IKUgpoGg==
 
-A sleep pin mux is not useful if it is the same as the normal pin mux.
+66 MHz is the maximum FlexPI clock frequency in normal/overdrive mode
+when RXCLKSRC = 0 (Default)
 
+Fixes: d2c4d71b6cde ("arm64: dt: imx95: Add TQMa95xxSA")
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-index 36da8ff8d1835..b7136982700a9 100644
+index c3bb61ea67961..16c40d11d3b5d 100644
 --- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-@@ -117,9 +117,8 @@ &flexcan3 {
- };
- 
- &flexspi1 {
--	pinctrl-names = "default", "sleep";
-+	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_flexspi1>;
--	pinctrl-1 = <&pinctrl_flexspi1>;
- 	status = "okay";
- 
+@@ -115,7 +115,7 @@ &flexspi1 {
  	flash0: flash@0 {
+ 		compatible = "jedec,spi-nor";
+ 		reg = <0>;
+-		spi-max-frequency = <80000000>;
++		spi-max-frequency = <66000000>;
+ 		spi-tx-bus-width = <4>;
+ 		spi-rx-bus-width = <4>;
+ 		vcc-supply = <&reg_1v8>;
 -- 
 2.43.0
 
