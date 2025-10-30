@@ -1,84 +1,107 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C172D0C73
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 16:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF52F2EB859;
+	Thu, 30 Oct 2025 16:35:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761840012; cv=none; b=ABeJoq9SJ+XcffssvBQCbF3UnV5FLTzv1elcdkKl3WbNjyJl/ORbBs9V0n/JKU04F5D+Lpl8t3Zv9SwadYYaRcVxz/s8vpTbu5zNd/kJyzSsRT4QLuv0lDRqqP2pXBNFzdPWGW6K4F99/cyD6TwkpoZhZy4W96fsbbh5E0oQyxI=
+	t=1761842106; cv=none; b=tKE670J2+avMTOiaI6S8knyEBGMeJfZ+nf+k+S02uY2xoUbFLH6qDVW0sp3z0N9O8vt3yz36uGFKbeFnere9ZyjyxC9eDjCl/RLojvSg/O/uNveNz2YV6CW2xVWzqEXecar7+GXff4UNiRQ/jDMMHnMfUSzl4eCSzddNPAKdFII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761840012; c=relaxed/simple;
-	bh=Ky4Q60KcF9tVrnVev4zZPdHy1WTFcz9x/SsAdn3+7Gs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jRQ93N36OPdhH7WcosU+Hzqi1CcUla3iC9Jyav2HlGsU/wW4v0mR0UtIwFq4cUn7j0RMIJ5eJsE7ojIxh6Fhg2lcNkynEL8kjvXh4OC3hsK+p6wLpRXc4Lm57VIdPA0rdcdZnPUjX9mRDFSc06FduuT9JPnBIjcgNOMJbiVOD/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vEV4A-0004VY-QL; Thu, 30 Oct 2025 16:59:58 +0100
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vEV49-006Egv-2T;
-	Thu, 30 Oct 2025 16:59:57 +0100
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vEV49-00000000DJV-2o09;
-	Thu, 30 Oct 2025 16:59:57 +0100
-Message-ID: <b8b2ae426c8f79664f5b54c5ddb4511a086d3c86.camel@pengutronix.de>
-Subject: Re: [PATCH 0/2] drm/imx: parallel-display: fix
- drm/panel/panel-simple v6.17 WARNING regression
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Ernest Van Hoecke	
- <ernestvanhoecke@gmail.com>, Maarten Lankhorst	
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Shawn Guo	 <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
-	 <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Date: Thu, 30 Oct 2025 16:59:57 +0100
-In-Reply-To: <20251014-drm-bridge-alloc-imx-ipuv3-v1-0-a1bb1dcbff50@bootlin.com>
-References: 
-	<20251014-drm-bridge-alloc-imx-ipuv3-v1-0-a1bb1dcbff50@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1-1+deb13u1 
+	s=arc-20240116; t=1761842106; c=relaxed/simple;
+	bh=HdDzBszjRT1bjtGdY7rWYwp2aMVoUkReGlxOWh0bxh4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VjZD4EoVLNA80jzv9dr46sL0TIb8cI7rUIOg2S+C0A5sA08S12xP7RFSQ9hn8y/CQteQTfuIhCEDohXIJNQHfUIPPkDBf0wrA/gNrNNAx9yru1yuiyHqeZyWbHjFyL7i7poQV+DN8NuBjC1C70KY+3D0hMZ+9ePvdXS6IadH+jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kRagolsW; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kRagolsW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88974C4CEFB;
+	Thu, 30 Oct 2025 16:35:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761842106;
+	bh=HdDzBszjRT1bjtGdY7rWYwp2aMVoUkReGlxOWh0bxh4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kRagolsWLCR0E/AtgHrrngcBHOH1aVkzgGg2k9G2AXliMsHK2pnRhICuB+64f7pJs
+	 eEJbkxjveKUSGSADFl8aLj4YK3XZ2gXatdyIoufEMRtkXIGHkNPfRVsMWljFd3FcmA
+	 0gERd3kK1D0r/wW3qpxRBqVuUBfWs6gRWi2INFZnMjLh98qbEtNQ4l7Jw9PU5HHBI6
+	 Kk3oWqAUnl1Jno55agbNT/X+lrdL7M79j+iToYZpFhCvxt3EeyrZcnS1vvPXJMVmui
+	 UmEWfNOYhgwTek+aCj7uwD6n5gCK7elmKe2prS8NRjRfHVom9hq5Z8mIqrVUZWjLXR
+	 xCtLERFmWeMig==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vEVcI-0000000047N-15xn;
+	Thu, 30 Oct 2025 17:35:14 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2] drm/imx/tve: fix probe device leak
+Date: Thu, 30 Oct 2025 17:34:56 +0100
+Message-ID: <20251030163456.15807-1-johan@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
 
-On Di, 2025-10-14 at 13:30 +0200, Luca Ceresoli wrote:
-> This series fixes the WARNING regressions reported by Ernest [0] and due =
-to
-> the missing conversion of the DRM_IMX driver to the new
-> devm_drm_bridge_alloc() API.
->=20
-> The second patch also adds drm_bridge_add(), which is a good practice and
-> proposed to become mandatory [1].
->=20
-> [0] https://lore.kernel.org/all/hlf4wdopapxnh4rekl5s3kvoi6egaga3lrjfbx6r2=
-23ar3txri@3ik53xw5idyh/
-> [1] https://lore.kernel.org/lkml/20251003-b4-drm-bridge-alloc-add-before-=
-attach-v1-0-92fb40d27704@bootlin.com/
->=20
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Make sure to drop the reference taken to the DDC device during probe on
+probe failure (e.g. probe deferral) and on driver unbind.
 
-Applied to drm-misc-fixes, thanks!
+Fixes: fcbc51e54d2a ("staging: drm/imx: Add support for Television Encoder (TVEv2)")
+Cc: stable@vger.kernel.org	# 3.10
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
 
-regards
-Philipp
+Changes in v2:
+ - add missing NULL ddc check
+
+
+ drivers/gpu/drm/imx/ipuv3/imx-tve.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/drivers/gpu/drm/imx/ipuv3/imx-tve.c b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
+index fd1e617e171e..68bbbdbd347b 100644
+--- a/drivers/gpu/drm/imx/ipuv3/imx-tve.c
++++ b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
+@@ -525,6 +525,13 @@ static const struct component_ops imx_tve_ops = {
+ 	.bind	= imx_tve_bind,
+ };
+ 
++static void imx_tve_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int imx_tve_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -546,6 +553,12 @@ static int imx_tve_probe(struct platform_device *pdev)
+ 	if (ddc_node) {
+ 		tve->ddc = of_find_i2c_adapter_by_node(ddc_node);
+ 		of_node_put(ddc_node);
++		if (tve->ddc) {
++			ret = devm_add_action_or_reset(dev, imx_tve_put_device,
++						       &tve->ddc->dev);
++			if (ret)
++				return ret;
++		}
+ 	}
+ 
+ 	tve->mode = of_get_tve_mode(np);
+-- 
+2.51.0
+
