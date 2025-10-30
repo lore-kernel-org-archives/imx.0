@@ -1,48 +1,48 @@
-Received: from mx-relay47-hz3.antispameurope.com (mx-relay47-hz3.antispameurope.com [94.100.134.236])
+Received: from mx-relay48-hz3.antispameurope.com (mx-relay48-hz3.antispameurope.com [94.100.134.237])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AA3343D6A
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 12:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEE6342177
+	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 12:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.237
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761828668; cv=pass; b=ZiCIk4jBOL+bJv3rhuA0cCUktkKaG6GxnkoYaWY386j43HXStxHp0BXieTCugcku1jSZ1+EWx0xesE+MxqgzTT8c6VzKN06ncFY7B8MjmdjXiMtmSB66YKyXyg6X5hSWrG/TLdQUh5HgjmF0o9gV5OZcsB7J1Ej3hab+D8jS2b0=
+	t=1761828668; cv=pass; b=JKi8a1rEKycFGKep6ZfA+NjpanfNya4H+9DHUDBZIuEsNTCUdiOx9n0XY4CwlfYJDHZCd1tpzem/4zJqeaifrq/9y8TfpNMsDxZgYhkHTwE0xeCfbBkSRZ5PfxEkI2awy1rxAzZ335DK5MQjZrw8LGYP7izjrI0ua+uVwYz7wmc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761828668; c=relaxed/simple;
-	bh=RXYjUkTJGEzey6bj9duMrj1tLyzMQrd7xG/D9di9Oss=;
+	bh=MxFVFohRZKm6vYmHBOWCpbni7KD1iEQ0SAmlRMH+Sfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uPo+p8/iMQGtizXhbvZ9EEIFjs0Jeo749khSA3VEUJes4fzmeEncnxAXdWT8aAfXaj2YrBseVaGfwzeM17ha1y80I3v5GXZjseusrHyjMAwo+Zm6u2J+SJWe/+B+UQpWSaoDWz+yvpCXnrbP+6qpOtJHM6tDZxIwLG7xedrKo1I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=anAsF3rm; arc=pass smtp.client-ip=94.100.134.236
+	 MIME-Version; b=O2t+y/Ab02/S60XEkPDot8FmLbM55fAD+vGgLFB9SvM5U5C9aE4PgfpznaFjJWHHWCXL3sMjtlkk5e38QO2VASwsI5VrMaeX8j91O25uAv4RhOWuSO/Eoei75TX/SCNCDiKRSPwmSNLm63x7LsXQhnWsshN9w75eh3A57SEXNY8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=dogEg61X; arc=pass smtp.client-ip=94.100.134.237
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="anAsF3rm"
-ARC-Authentication-Results: i=1; mx-gate47-hz3.hornetsecurity.com 1; spf=pass
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="dogEg61X"
+ARC-Authentication-Results: i=1; mx-gate48-hz3.hornetsecurity.com 1; spf=pass
  reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
  smtp.mailfrom=ew.tq-group.com
  smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
  header.from=ew.tq-group.com orig.disposition=pass
 ARC-Message-Signature: a=rsa-sha256;
- bh=fa0W+DLjU6OOWbYOutYrRj99tl16LW0xzYOEJzrNODs=; c=relaxed/relaxed;
+ bh=dJM31IhVnkrhRCrb49g6ODItYSKCRzC2GROjcDOi1x0=; c=relaxed/relaxed;
  d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1761828608;
- b=eI1BzNKx+3g20LOBbM51YV4iKWACtWv8ewM9zPI8wKWZKGpiCimpyRxKQfrhPn1tKrDym3et
- Akrq+ZX7gbQr3COjfFlA2nfZozNzGOCY5JozxClragVwslj9qIoT5MP5ey+PRhg4rxanN3yuDgP
- Sd7buZxck0wsUZT/5nD8VsMWjB4W56zwc4dUEcu/KpDeiytCfh1ms10ZBRpsI6F2fjHC+xnoTKY
- O6MrWaxfcf7nzJ4N90YqFGma9sJHX07UhKnsUrGjhyPEQHnPKRb91ixYcWWno/WqDpiviOA4Nz4
- E19r2IZst6fl7hS4r2ixd3kRCxqbv/rfDwEuscUNam2ZA==
+ t=1761828611;
+ b=WdewHqPqseS8SmvUN16GT5qCzc0ba7r0s1389BUOr1xw6alTqZOz/lrFajFOr1diffTsePow
+ Ouyq+rEJjn5JoU2Z2wS4VVSWcdkT6MNX5zHXK12LPU13aRZv/0DLUXgaEL93Kcp0EWmK8FPqU90
+ aapemjvsL6jPpMLg3s1O/kGuSUUPNabppArx3s/4zZVUC23OhsPQbkHN+kaOFa9f1V9JcLA80E9
+ xTdPMV2XNmc4Xs4QFFQJyUwDOwZzyArliOGTfHhd0cbiXZrr0xjdY3sWJ9d3nXQADaTlBSXFPnZ
+ L+qBgDagfYruTg5aq/+csW/5RxE8D69N75cv2UlxXf3yw==
 ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1761828608;
- b=fKYRJWNZjFJyB/cXcKdCdHQDjpLhSOpA2O9ETulZe695Nc4EazVAe16zKnp3wGflLVzhPM07
- bxm3mJSFuD8/J/hB75dTA4mIhMyLYbaS9HMZdN5TL1mdZ+fpwxlFY7ofovH9ta+KZixYPE9IF0L
- 343upc0jELejYp4LruE0miDUz1G0ek4S6CZcgP4Y6N7qg0zt2sGSk0WWLzaTk1Pfq2ndfqKTRfT
- zt8rfdoWC6MrHTCPH532Ek5NMLWOyU/m3WeKqf4fUZt3JznGKEDdSiYz56cl6/rLM+n14k2oQx0
- qmgKWGtnII8/I25NzR3Wv/adiGo93YNK0pKkSBi89pd1Q==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay47-hz3.antispameurope.com;
- Thu, 30 Oct 2025 13:50:07 +0100
+ t=1761828611;
+ b=F9aakgye8qIIY5jOFN4fbhH9avEB+eKScp3DYyZziiYf5nyFJBOwIBtKBkuQRXZdMkprY2bb
+ 8zi4xtV6UAK6zoB5nUOniKRfwR4EewHLY33kooSj5xD3eZEwPUNEeknddxsDEJJ7QW+ykG6Qdkm
+ RLeesUHGqbekrU560EYw8e/LO2R3VEqNwMYQqf/dXz/Ugfi+wlGmYRfWItoD0e3OG8f4cLXjW6Z
+ FLq+kXyvGc+WqTMDQ8oV20Y2KwZ9j4v+gfgG1KSImPNzOe5LaqFnwPkvAC+Q0WIsBJn/iTpCeyF
+ wnj8VrJEJXpNv2xPKZWGRlnGyEkJmemiTxtbQtIH8i2XA==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay48-hz3.antispameurope.com;
+ Thu, 30 Oct 2025 13:50:11 +0100
 Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
 	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 00EF9220D32;
-	Thu, 30 Oct 2025 13:49:54 +0100 (CET)
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 9F4B6220D37;
+	Thu, 30 Oct 2025 13:50:01 +0100 (CET)
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -56,11 +56,10 @@ Cc: linux@ew.tq-group.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Subject: [PATCH 04/19] arm64: dts: imx95-tqma9596sa: move flexcan pinctrl to SOM
-Date: Thu, 30 Oct 2025 13:49:11 +0100
-Message-ID: <20251030124936.1408152-5-alexander.stein@ew.tq-group.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 09/19] arm64: dts: imx95-tqma9596sa: update pcie config
+Date: Thu, 30 Oct 2025 13:49:16 +0100
+Message-ID: <20251030124936.1408152-10-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
 References: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
@@ -77,71 +76,66 @@ X-cloud-security-crypt: load encryption module
 X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
 X-cloud-security-Mailarchivtype:outbound
 X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay47-hz3.antispameurope.com with 4cy3q7583Vz4Mb31
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay48-hz3.antispameurope.com with 4cy3qG2sY6z1kNh4N
 X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:690fe049c6c3fd8ba19a2c0a294a5505
-X-cloud-security:scantime:2.329
+X-cloud-security-Digest:0baac1aa37dfad4f2d55415cd4bd5fae
+X-cloud-security:scantime:1.795
 DKIM-Signature: a=rsa-sha256;
- bh=fa0W+DLjU6OOWbYOutYrRj99tl16LW0xzYOEJzrNODs=; c=relaxed/relaxed;
+ bh=dJM31IhVnkrhRCrb49g6ODItYSKCRzC2GROjcDOi1x0=; c=relaxed/relaxed;
  d=ew.tq-group.com;
  h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1761828607; v=1;
- b=anAsF3rmpZJa9mCioWQdH5f8mzxFCDtpmp6rvW1e5DvmopgqOrGL5TqXxhD15R84Ew+ucxy6
- vJOgArrSYIlWzDX6K1UZ1wD8vvyH/17NDSvejj97Md8jqMgznvgQXRm2u9UgzCf/zXCIephD2iY
- wPl2CL6w/aljBwRBwUjhUoFDW4gJbTNrkeAHWjEb9vGPqG05PuETbh8Gbk5dXIKHC5PiTYeTa6P
- fq/M9W19YVXkb2K36cEsVScqhdu12YgB0nNLgBQ+GU2SAt8yKtUsgoRiUyZKMnvhvmKXTJ/nwHi
- 1W2WYWUu47xTITHfSfigI0xEzXIt7A9dILHzUg0DVObaQ==
+ t=1761828611; v=1;
+ b=dogEg61XZgS1MJguqySCN5AG5Ght/dPk0TwccsQKSeekVf/ZJUtuMBjgewvSHYf1LptdTdLx
+ iL4hqocSLkPTeF9ayAxKsvM0Im8NBvtLZXLGsSnXC7NtBIIQthzhhVfouzmPoVrvWJmE8BB2KBE
+ TGeTJQYBWLlY3Iwl6Ep/E0r/jI52Ij2Y7NUNGsuRERPU6RFdKzlWOiLwB8i2LCJbsNr+te8hlBj
+ fD3t0PYIhOxhvLj2z266o80V8BGVO6XBRWFirStxQJxoxdwg/GXgp5SzLb5Itd1pfgSk6QOjuNe
+ mdaRCcA9vm//YCl2mGZ+ZuID83acRPiMij3orikuc1T3g==
 
-The muxing for flexcan is determined by SOM, so add it at this level.
+Fix pcie clock config and switch from deprecated reset-gpio to
+reset-gpios.
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- .../boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts |  4 ----
- arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi    | 10 ++++++++++
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ .../boot/dts/freescale/imx95-tqma9596sa.dtsi   | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
-index 5b6b2bb80b288..e3c7554b7f709 100644
---- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
-@@ -172,15 +172,11 @@ pcie2-clk-en-hog {
- };
- 
- &flexcan1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_flexcan1>;
- 	xceiver-supply = <&reg_3v3>;
- 	status = "okay";
- };
- 
- &flexcan3 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_flexcan3>;
- 	xceiver-supply = <&reg_3v3>;
- 	status = "okay";
- };
 diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-index 52355a65a62da..759a09a912be1 100644
+index 832c753abcd75..36da8ff8d1835 100644
 --- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-@@ -106,6 +106,16 @@ &netc_timer {
- 	status = "okay";
+@@ -395,22 +395,24 @@ &pcie0 {
+ 	pinctrl-0 = <&pinctrl_pcie0>;
+ 	pinctrl-names = "default";
+ 	clocks = <&scmi_clk IMX95_CLK_HSIO>,
+-		 <&pcieclk 1>,
++		 <&scmi_clk IMX95_CLK_HSIOPLL>,
+ 		 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+-		 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+-	clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+-	reset-gpio = <&expander2 9 GPIO_ACTIVE_LOW>;
++		 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
++		 <&pcieclk 1>;
++	clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
++	reset-gpios = <&expander2 9 GPIO_ACTIVE_LOW>;
  };
  
-+&flexcan1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_flexcan1>;
-+};
-+
-+&flexcan3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_flexcan3>;
-+};
-+
- &flexspi1 {
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&pinctrl_flexspi1>;
+ &pcie1 {
+ 	pinctrl-0 = <&pinctrl_pcie1>;
+ 	pinctrl-names = "default";
+ 	clocks = <&scmi_clk IMX95_CLK_HSIO>,
+-		 <&pcieclk 0>,
++		 <&scmi_clk IMX95_CLK_HSIOPLL>,
+ 		 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+-		 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+-	clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+-	reset-gpio = <&expander2 10 GPIO_ACTIVE_LOW>;
++		 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
++		 <&pcieclk 0>;
++	clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
++	reset-gpios = <&expander2 10 GPIO_ACTIVE_LOW>;
+ };
+ 
+ &sai3 {
 -- 
 2.43.0
 
