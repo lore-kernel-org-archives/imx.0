@@ -1,129 +1,124 @@
-Received: from mx-relay94-hz2.antispameurope.com (mx-relay94-hz2.antispameurope.com [94.100.136.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8829B2620F5
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 13:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.194
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761832507; cv=pass; b=fNl7FNRPH7/nKZnSJ6E1FRaRB+jxsIQI/+7YOHTzNqYqtxXDLZR9b0iI+35iuN9+WeK/74bw3jJnb7AU7hvRE1jZOAOXOGpKTk+aGTU2V/9oVeRYHU3PnO5vYcK2SxWF9m73BVCsiFsFUA6Zl5ENNAp1Q0uLJ0UTmuMW3O4eRs4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761832507; c=relaxed/simple;
-	bh=Js2Xlt1TcksUkzr8bWmp3YdEt6kTQ3aB6Ws4q1qzjx8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KqQDr+DpP8PGcOJRbyDewsg/X4Dey7PbvtaksNeJBwymUTZaOcUfPVDnYRggarjbWD49syFQSCxYMBq8n8TgDvoaM09U0mso18B2iAcVynioYcEljpwNqc70qnCKhhnaZz5m6yQs7zJncCRlnFEL2fQ7/8JFk8liiSfhCOOUJpA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=a2miSHL1; arc=pass smtp.client-ip=94.100.136.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD73023C513;
+	Thu, 30 Oct 2025 14:14:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761833701; cv=none; b=SKWjHsyDdAWWep/tmNZkHK1OVlWGngxy3JyVdyDoBl0idjiT9c2l/yJlydz6565Mbb72bmjrwSpOrJUnuzOVpqqpVI+hLio3mkCwFE8xy5oRJUeUn+aYteD9RCBt5jhPr7ZvXw9LXWy5Xso/9e4N7bwBgqmkX95O509ox2PoCOU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761833701; c=relaxed/simple;
+	bh=ARkbEZwIcjtq3UHgVcwLTAhe5ywrSMfhcggmgV1iso8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pNVNM00lVRKALcENWHxHbHY5k8r2rKMp+mk4MNMxn5U9M5jP8vhYuXxgpfaD2CkScw1vlasg/8gVwPeh7PeEIfqlJIwJsm9hAb2zKcJq7nw/YjjWhVCTTTXRJZ6ipLExsajTdpucrkEYT4atv2gTa63YcCC+BD6L4ZoiuzcrrwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZRg3Lcv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="a2miSHL1"
-ARC-Authentication-Results: i=1; mx-gate94-hz2.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out02-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=OgKqByS2/RO1SRU9MW5M+/ddL3PnmL8qHsnqkvfLvhY=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1761832412;
- b=NSBFHlJBoRdzUflL9NpyD1vwJxL2mKXTmw/UAVXs/IUS+WufDGF3tc8ew8HxPihEpH5k0YHF
- wdRSQVb/UkbZQCd0KTKK2jtouers2m705OJRohzf8Ulp+BU7u0WLqSJ4NQI9/uvtD2ppXGeY48A
- ZNkGdiCAECmbYHjLKUdQJ7dH3v6UOSjSx5Wt21QbFMtzO3mDEej8SKWiKe1W1HF4DORUDfp4l4f
- UEFsoHzaIrXtUkpJRiV+XWKfjpFvMA7aXPKO1Edwp4BUAYxgY/9FQaubB/CSrDlLconuUUtlpL/
- 9eQISeuChwBAvXz+U9J8M2CF3sXckYxNNcPv1y17FAjLQ==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1761832412;
- b=Et8aDBfSa+YW7FCu3rdGu+Eb5uCCUHb2TeF6no14as97mlD/DBaveEQnVygpeVfmcnjo68xM
- 48UJ56gq4i2m9oQj8SkLxCvht9PRaCsp/FONb9lLnT1Kx0WT0/rE6xpZhxhndCZTDOI/yUp4x83
- bHmOw9dnJtpzSht+dSo08uu8MkTqo1yLKFH20cd4781amdS0vY8m6GDNYjMUkV8t/7x7M8p7YGV
- ZEbMfq49OlPBdIMhNX8Gt0/ToD0JtxcSBj5bSDA//oFA3lR40/wZ8MATaYW7/3q4RMl2jLbiYI/
- JfGDQ9zxcCYnzL0jTp0spMFu7wyeUR/3O0kxye+GLEeFA==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay94-hz2.antispameurope.com;
- Thu, 30 Oct 2025 14:53:31 +0100
-Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out02-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 136855A07D3;
-	Thu, 30 Oct 2025 14:53:14 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZRg3Lcv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43177C4CEFF;
+	Thu, 30 Oct 2025 14:14:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761833699;
+	bh=ARkbEZwIcjtq3UHgVcwLTAhe5ywrSMfhcggmgV1iso8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TZRg3Lcvd8GObcu7mv5GNEOQTP82tLQK9Fl51npkDqQkq8vYqiXjd+sdbWRm+AaKS
+	 KM05NDknRHsO9S3x92lDMWSXtGzaU5EbeIrn74EMy0Vn9dsDaegeR4nvExsA3djLUP
+	 VIgK0Wjr8X+dTo/niyqSMRgbYKTqJXZY0RP0Co/azFwbieXvnh7lwPpyXWLgV7FNWX
+	 twXnIP0x8vUNwSyA96xXCYhrS/xVTBSa143Z2dBIN1G3kq1e9zqrIJRND6e/Nt9r7B
+	 CEPqGJIpLThMFYq2/zDzz6r1MwoPduvgQLuJg5UqqWx2aNvdP/Aj492SQNNbrfTU54
+	 3aj6I/1c7UcYQ==
+Date: Thu, 30 Oct 2025 09:14:48 -0500
+From: Rob Herring <robh@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 14/19] arm64: dts: imx95-tqma9596sa: whitespace fixes
-Date: Thu, 30 Oct 2025 14:52:56 +0100
-Message-ID: <20251030135306.1421154-4-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251030135306.1421154-1-alexander.stein@ew.tq-group.com>
-References: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
- <20251030135306.1421154-1-alexander.stein@ew.tq-group.com>
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	David Rhodes <david.rhodes@cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
+	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 05/29] dt-bindings: bus: Add simple-platform-bus
+Message-ID: <20251030141448.GA3853761-robh@kernel.org>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-6-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay94-hz2.antispameurope.com with 4cy5DK3v73z3dGQg
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:783d95388d58bfc72f1c3cb0f6f3ac9e
-X-cloud-security:scantime:1.915
-DKIM-Signature: a=rsa-sha256;
- bh=OgKqByS2/RO1SRU9MW5M+/ddL3PnmL8qHsnqkvfLvhY=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1761832411; v=1;
- b=a2miSHL1kIofURy+OSNj8mT+pCy83fXA/vEPMHairpB3AJdIGUbYsCjCW3B/G2z8c+B+GxdK
- oUaER7BXusa+QU59j9tDs+6Xa3qpdvOA6NhpUVaSEgN4BfP6lGvzApU8pznAgJAZBYNri84B7ny
- WOCOMkQmyd0uSJDH917ZtTNduoPQo0rZjkSelHWqLai8aQgAqJQbqQIsqmkA+MOAoWTgR8zguyd
- hDy0EA17XHco82tkyqpy8sYDaou2Cv92c6impfraA5cbr3l1Fgo0dZQzbyeFhnfgnzveS6pVhde
- 52Yu1IYVt0AhOwuTnYggcRupABVrrgmauehlY+BsintSQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015071420.1173068-6-herve.codina@bootlin.com>
 
-Use tabs instead of spaces for indentation.
+On Wed, Oct 15, 2025 at 09:13:52AM +0200, Herve Codina wrote:
+> A Simple Platform Bus is a transparent bus that doesn't need a specific
+> driver to perform operations at bus level.
+> 
+> Similar to simple-bus, a Simple Platform Bus allows to automatically
+> instantiate devices connected to this bus.
+> 
+> Those devices are instantiated only by the Simple Platform Bus probe
+> function itself.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Don't let Greg see this... :)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-index 9c892cd8ff215..a4c6083ab43b1 100644
---- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-@@ -621,8 +621,8 @@ pinctrl_lpi2c3_gpio: lpi2c3-gpiogrp {
- 	};
- 
- 	pinctrl_lpi2c4: lpi2c4grp {
--		fsl,pins = <IMX95_PAD_GPIO_IO30__LPI2C4_SDA             0x4000191e>,
--			   <IMX95_PAD_GPIO_IO31__LPI2C4_SCL             0x4000191e>;
-+		fsl,pins = <IMX95_PAD_GPIO_IO30__LPI2C4_SDA		0x4000191e>,
-+			   <IMX95_PAD_GPIO_IO31__LPI2C4_SCL		0x4000191e>;
- 	};
- 
- 	pinctrl_lpi2c4_gpio: lpi2c4-gpiogrp {
-@@ -631,8 +631,8 @@ pinctrl_lpi2c4_gpio: lpi2c4-gpiogrp {
- 	};
- 
- 	pinctrl_lpi2c6: lpi2c6grp {
--		fsl,pins = <IMX95_PAD_GPIO_IO02__LPI2C6_SDA             0x4000191e>,
--			   <IMX95_PAD_GPIO_IO03__LPI2C6_SCL             0x4000191e>;
-+		fsl,pins = <IMX95_PAD_GPIO_IO02__LPI2C6_SDA		0x4000191e>,
-+			   <IMX95_PAD_GPIO_IO03__LPI2C6_SCL		0x4000191e>;
- 	};
- 
- 	pinctrl_lpi2c6_gpio: lpi2c6-gpiogrp {
--- 
-2.43.0
+I can't say I'm a fan either. "Platform bus" is a kernel thing, and the 
+distinction here between the 2 compatibles is certainly a kernel thing.
 
+I think this needs to be solved within the kernel.
+
+What I previously said is define a list of compatibles to not 
+instantiate the child devices. This would essentially be any case having 
+a specific compatible and having its own driver. So if someone has 
+'compatible = "vendor,not-so-simple-bus", "simple-bus"', when and if 
+they add a driver for "vendor,not-so-simple-bus", then they have to add 
+the compatible to the list in the simple-pm-bus driver. I wouldn't 
+expect this to be a large list. There's only a handful of cases where 
+"simple-bus" has a more specific compatible. And only a few of those 
+have a driver. A more general and complicated solution would be making 
+linux handle 2 (or more) drivers matching a node and picking the driver 
+with most specific match. That gets complicated with built-in vs. 
+modules. I'm not sure we really need to solve that problem.
+
+If we have to do something in the DT, then I think I prefer a property 
+to control the behavior. That way we have the option to ignore it.
+
+Rob
