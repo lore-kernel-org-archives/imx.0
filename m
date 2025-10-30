@@ -1,123 +1,198 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C9F2D8779;
-	Thu, 30 Oct 2025 18:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF063168E0;
+	Thu, 30 Oct 2025 19:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761849295; cv=none; b=Uq25sSXKeMy2tEpesXn133e/ONpOy5qw2tErwRMIqcqG34aWZCKX6jJafAAQwbCSxXTQkqH7iZPUKPwQn3U3Qj2wzFSSKJzRegbBnEttAAM0RcB7pzVEG/aEHuncuV/dy/tEtp+yKhPX/KnC33A01BPlPgHdn8L1WY1k0d1ZRBA=
+	t=1761851668; cv=none; b=QkZd4VjbEEMH3kU+UBXdhPXFqv556xlxLZrs98j0mTKFvpDhjhnu1SidrPBXMMINbLeEc+hfCShMOs8BVUGh2gmAYkqovtD8D6HpVPjFsLZycWhl9jEYKCNGzD+NmSOSwDfjgsfySnvGKx9I8cjz/r6WgGep28N8zwrnFJT+34A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761849295; c=relaxed/simple;
-	bh=19dZGN/2hByWH5OvB7rCwr9tGLgsitN6UUruD1+2W6c=;
+	s=arc-20240116; t=1761851668; c=relaxed/simple;
+	bh=o2SN2zjrswOtJi3dLC6TZZ6AulJzzG+lj6v/WztOym4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=crDb5GI6Ri+bd/FsREaXEArmI9/3b/ttZtY/mq6i6n6TR0iGqowNA3xZWqkGBpXhJqWmOau78ZXbrp7db5qnRBOO3toUoOLaRtsQ46Av6YIllIM+yim93hqgxxrDjWoJDzP8EsQNw4espVyJQC8wUUs1fkKpkIj0rPpfyycpWVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVJes9xZ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=X9Z8xI73y2FXeMuuXW1e780asOvuKs3OHYIir603IIvNyaELNU1XDR1SiUldbiwk0WrUjGqr2CWRSMhUPHia9TJ1/7M+QHl1BYFaGtP8TANdIUjodzmUnk9iy8dGCYxoVJKML9eUvDNnHiq/AskdnCcuhtErjJ9cVcLvTk4zGC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TnZw6Uc4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVJes9xZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E40C4CEF8;
-	Thu, 30 Oct 2025 18:34:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TnZw6Uc4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E70FC4CEF1;
+	Thu, 30 Oct 2025 19:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761849294;
-	bh=19dZGN/2hByWH5OvB7rCwr9tGLgsitN6UUruD1+2W6c=;
+	s=k20201202; t=1761851668;
+	bh=o2SN2zjrswOtJi3dLC6TZZ6AulJzzG+lj6v/WztOym4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EVJes9xZb67Y/8dNTIGJXu0HMKXdhgIVp91UY55fqScatzuvHuRVHU2rd5SOqqCso
-	 KOiZQIADVLXJA7xmAGib3APWenetswqPARw+ZXduYiDdU0oMABqkRMsmdPKqiBWg7N
-	 t9eRSZpu03Pm+u/fpkJiQ1A1nNqH6uFOdIc8P08zu5YNsUZeSH3xqe9ywXVHI5CtPK
-	 gXx6JWTZg1SEN9Aevqu+ZjpovE3fm0ve0kQd5Hq5fWvvL+o8F9Zd+4SM6WcG2QTgk3
-	 2bBZ0vjtLs19JJeQ0Yf97l5Mppsn6F7I1yE/wbwevsYoF6Nu20vZy9XN+EPe2yi1Bp
-	 HN5B+vJ7HpPqw==
-Date: Thu, 30 Oct 2025 18:34:49 +0000
-From: Conor Dooley <conor@kernel.org>
-To: maudspierings@gocontroll.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
+	b=TnZw6Uc4QrAv4IZFXnvNcgUX5U1R++tDJSyUVpzl8NPX/Lfc92gK8ylGeXEncdlvk
+	 CUp8UkIZI9fHLuceSmkYlYjT9JOQwvXEP+S7a7jXZBwVVhuAuvADxArQoZdyE1nHyd
+	 mtlTs7w7gD1GMJlEZpF2QsTHuRiGXAg8zDAOa3Y8suvoEObg4OvnY7q/p+y0j9taEM
+	 bj3CMQbgLSIV6MwwrHrRXJUFMMi9aJlqAKygdQwZBJMYH+pF953apxxkm4GcxungAW
+	 mMJ1fOEpFQHUL4sq30O8/a4bs5EEyYDpo0fO8toWq492nvYGBxhwS2TxWg9SZLR5so
+	 XklBRPsLFR9CQ==
+Date: Thu, 30 Oct 2025 14:14:23 -0500
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/6] dt-bindings: arm: fsl: Add GOcontroll Moduline
- IV/Mini
-Message-ID: <20251030-unfailing-venue-e27a74ebab2d@spud>
-References: <20251030-mini_iv-v3-0-ef56c4d9f219@gocontroll.com>
- <20251030-mini_iv-v3-1-ef56c4d9f219@gocontroll.com>
+	Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Martin =?utf-8?Q?Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Support Opensource <support.opensource@diasemi.com>,
+	Peter Rosin <peda@axentia.se>,
+	in file <patches@opensource.cirrus.com>,
+	"open list:ANALOG DEVICES INC ASOC CODEC DRIVERS" <linux-sound@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:ARM/APPLE MACHINE SOUND DRIVERS" <asahi@lists.linux.dev>,
+	imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] ASoC: dt-bindings: consolidate simple audio codec to
+ trivial-codec.yaml
+Message-ID: <20251030191423.GA270802-robh@kernel.org>
+References: <20251029214018.3969034-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="M5nFIgRaiFYSCzu6"
-Content-Disposition: inline
-In-Reply-To: <20251030-mini_iv-v3-1-ef56c4d9f219@gocontroll.com>
-
-
---M5nFIgRaiFYSCzu6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20251029214018.3969034-1-Frank.Li@nxp.com>
 
-On Thu, Oct 30, 2025 at 07:35:37AM +0100, Maud Spierings via B4 Relay wrote:
-> From: Maud Spierings <maudspierings@gocontroll.com>
->=20
-> Document the compatible strings for the Moduline IV and Mini.
+On Wed, Oct 29, 2025 at 05:40:15PM -0400, Frank Li wrote:
+> Consolidate simple audio codec (one compatible string, one reg and
+> '#sound-dai-cells' 0) to a trivial-codec.yaml.
 
-> Also add a compatible for the Ka-Ro Electronics TX8M-1610
+I feel like we're going to be moving things back out when/if supplies 
+are added. I imagine there's not much alignment there. OTOH, if this is 
+all older stuff, then that may never happen.
 
-This is not very helpful to say, makes what you've done seem accidental.
-I assumed this was wrong, until I looked up this device and found out it
-was a SoM. Please put that in the commit message.
-With that info,
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: changes-requested
-
->=20
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  Documentation/devicetree/bindings/arm/fsl.yaml | 8 ++++++++
->  1 file changed, 8 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
-on/devicetree/bindings/arm/fsl.yaml
-> index 00cdf490b0620..15000923b648a 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -996,6 +996,14 @@ properties:
->            - const: engicam,icore-mx8mm             # i.MX8MM Engicam i.C=
-ore MX8M Mini SoM
->            - const: fsl,imx8mm
-> =20
-> +      - description: Ka-Ro Electronics TX8M-1610 based boards
-> +        items:
-> +          - enum:
-> +              - gocontroll,moduline-iv-306-d
-> +              - gocontroll,moduline-mini-111
-> +          - const: karo,imx8mm-tx8m-1610
-> +          - const: fsl,imx8mm
+>  .../bindings/sound/adi,max98363.yaml          | 60 -----------------
+>  .../bindings/sound/adi,ssm3515.yaml           | 49 --------------
+>  .../devicetree/bindings/sound/da9055.txt      | 22 -------
+>  .../bindings/sound/nuvoton,nau8540.yaml       | 40 ------------
+>  .../bindings/sound/nuvoton,nau8810.yaml       | 45 -------------
+>  .../bindings/sound/nxp,tfa9879.yaml           | 44 -------------
+>  .../bindings/sound/nxp,uda1342.yaml           | 42 ------------
+>  .../bindings/sound/trivial-codec.yaml         | 65 +++++++++++++++++++
+>  .../devicetree/bindings/sound/wlf,wm8510.yaml | 41 ------------
+>  .../devicetree/bindings/sound/wlf,wm8523.yaml | 40 ------------
+>  .../devicetree/bindings/sound/wlf,wm8580.yaml | 42 ------------
+>  .../devicetree/bindings/sound/wlf,wm8711.yaml | 40 ------------
+>  .../devicetree/bindings/sound/wlf,wm8728.yaml | 40 ------------
+>  .../devicetree/bindings/sound/wlf,wm8737.yaml | 40 ------------
+>  .../devicetree/bindings/sound/wlf,wm8750.yaml | 42 ------------
+>  .../devicetree/bindings/sound/wlf,wm8753.yaml | 62 ------------------
+>  .../devicetree/bindings/sound/wlf,wm8776.yaml | 41 ------------
+>  .../devicetree/bindings/sound/wlf,wm8961.yaml | 43 ------------
+>  .../devicetree/bindings/sound/wlf,wm8974.yaml | 41 ------------
+>  .../devicetree/bindings/sound/wm8770.txt      | 16 -----
+
+Also, these can be added I think:
+
+cirrus,cs4349
+cirrus,cs4341a
+cirrus,cs4265
+"adi,ssm2602", "adi,ssm2603", "adi,ssm2604"
+ti,pcm1792a
+ti,pcm1789 (Add reset-gpios)
+ti,pcm5102a
+dlg,da9055-codec
+
+>  20 files changed, 65 insertions(+), 790 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/sound/adi,max98363.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/adi,ssm3515.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/da9055.txt
+>  delete mode 100644 Documentation/devicetree/bindings/sound/nuvoton,nau8540.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/nuvoton,nau8810.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/nxp,tfa9879.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/nxp,uda1342.yaml
+>  create mode 100644 Documentation/devicetree/bindings/sound/trivial-codec.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wlf,wm8510.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wlf,wm8523.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wlf,wm8580.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wlf,wm8711.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wlf,wm8728.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wlf,wm8737.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wlf,wm8750.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wlf,wm8753.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wlf,wm8776.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wlf,wm8961.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wlf,wm8974.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/wm8770.txt
+
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/sound/trivial-codec.yaml
+> @@ -0,0 +1,65 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/sound/trivial-codec.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
->        - description: Kontron BL i.MX8MM (N801X S) Board
->          items:
->            - const: kontron,imx8mm-bl
->=20
-> --=20
-> 2.51.2
->=20
->=20
->=20
+> +title: collect trivial audio codec
 
---M5nFIgRaiFYSCzu6
-Content-Type: application/pgp-signature; name="signature.asc"
+Just 'Trivial Audio Codecs'
 
------BEGIN PGP SIGNATURE-----
+> +
+> +maintainers:
+> +  - patches@opensource.cirrus.com
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaQOvyQAKCRB4tDGHoIJi
-0pftAP4qv3RuQCQkYDQWrTB8t2YEBbGDaVO1XJqQOOzX/ElfLwD+O39KNZYTtmns
-P40SiHPh/Xz+FOwiwDya6Zu/qAtzKQo=
-=leRe
------END PGP SIGNATURE-----
+You can put me.
 
---M5nFIgRaiFYSCzu6--
+> +
+> +allOf:
+> +  - $ref: dai-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ssm3515
+> +      - dlg,da9055-codec
+> +      # Nuvoton Technology Corporation NAU85L40 Audio CODEC
+> +      - nuvoton,nau8540
+> +      - nuvoton,nau8810
+> +      - nuvoton,nau8812
+> +      - nuvoton,nau8814
+> +      # NXP TFA9879 class-D audio amplifier
+> +      - nxp,tfa9879
+> +      - nxp,uda1342
+> +      - sdw3019f836300
+> +      - wlf,wm8510
+> +      - wlf,wm8523
+> +      - wlf,wm8580
+> +      - wlf,wm8581
+> +      - wlf,wm8711
+> +      - wlf,wm8728
+> +      - wlf,wm8737
+> +      - wlf,wm8750
+> +      - wlf,wm8753
+> +      - wlf,wm8770
+> +      - wlf,wm8776
+> +      - wlf,wm8961
+> +      - wlf,wm8974
+> +      - wlf,wm8987
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  "#sound-dai-cells":
+> +    const: 0
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        codec@1a {
+> +            compatible = "wlf,wm8523";
+> +            reg = <0x1a>;
+> +        };
+> +    };
