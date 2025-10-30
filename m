@@ -1,128 +1,68 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC6233439D
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 07:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F0221D3C9;
+	Thu, 30 Oct 2025 08:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761810678; cv=none; b=EYdzMi5Ti8kG9aYNCIKhCQ9edjDfrsPB+cThh2Igbj7h0KciazxIB2i84e2zRrT2Twj4UAwJNQYb7ajQcHeiX5f8iUcUTtnq+xO84zTeCgi8gCgPGH0p0rGcGPQ7dn8oZKerB2YTV11kWsCl/OVuZsvUKW99ztppOdZcELZCsAc=
+	t=1761812620; cv=none; b=ei+II+lFRs27dAkIEzkB2jguVM8BwNoB2i4B19gi21BGsXbTqARbc7XJyOBax71qVCSeFow5aIjSRu4rVJ70M6SO8OpVmThvL3f5MXkPRLJwlgixo8+uzqveXYZi1NUFFYJOQID1ddIBs07b+mvIpGs0aoJ+ylW5ibZsKEfWjS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761810678; c=relaxed/simple;
-	bh=i2o3lPX24fKmxQVeAxzXXKnFXNnmPunVGpcSChGJjZ4=;
+	s=arc-20240116; t=1761812620; c=relaxed/simple;
+	bh=gBVwjjZuRmmTBdFscwrvsDCkSft7hllufmJNPbvi1Dg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oWhYO3g0K94+vZU0XQv8j1Zn+qj3rgI1UtneQPeB53cYEwKUc77vmFaChRfW2m4lF6WilgTz9DBEljQFzVoU8FWlWhzQy5wvZw7cqJcYj12FV1X70IoxItbaG2rtZonTxVgFZ9aWCc56Okc+Nu1rh9Seko1QHFW/CYoWVBIJWwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lVzDYaXD; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ykz1aA6nQEbkJcvXzevDh2hLOsMudvc5S4pLyJ861EE4oHZOqSl5a1FGnw5q6OKmzeblJHJVm6m+N0gF4lXBnP8Cyxh3fxHtyZfcrkXqwfvhBG2G/8dgcPOv37XDY1rZV7HqEsiZGfSiywvWqjJmmgyr+egmj5Wl4SO4O14R0To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a8twPJGw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lVzDYaXD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761810677; x=1793346677;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=i2o3lPX24fKmxQVeAxzXXKnFXNnmPunVGpcSChGJjZ4=;
-  b=lVzDYaXD1JoJJnUqSkTB7HDMRCHfcWp0pxUcGEL1LkfKwFB5LJdxVP/W
-   nhvTFQlj4av5gjObJzGXXfn1ngM/9Xs9t0HMDERbdPnhy96CGev8lGKEV
-   O6cow1DIUP8qUqF84Lrg5lqbqC3Nj5LcD/6+zIx7/Xf01UzFNEy7BQwPt
-   Pxbg1qEKPuShLmWYHWB0jphitrPkIl5jq2uUQTZHBXwdCSjaMrLZRX+/L
-   VgibVpU8kEoL/nvbQ+sJ9KGXj9bFYy0lVUQgkfqjUMDnXVDYCG7xK9ysw
-   0yI2iXmoaEcL9DgVsxEYxJogMUKMIZ13qxS6L/LtCL8aHzECz2baaiITV
-   g==;
-X-CSE-ConnectionGUID: IeEq9QgNQImjqH50CSPlVA==
-X-CSE-MsgGUID: r9Yv2KQcR6ynsQnSPqMt4w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="63977102"
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="63977102"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 00:51:16 -0700
-X-CSE-ConnectionGUID: I2DDdL9vQWaAvAcwSGvghg==
-X-CSE-MsgGUID: MHQTsx82RMa03zag5bzJtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="186231747"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.174])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 00:51:12 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vENR7-00000003ps3-2Wqs;
-	Thu, 30 Oct 2025 09:51:09 +0200
-Date: Thu, 30 Oct 2025 09:51:09 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v7 5/5] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <aQMY7WaDixv9C2QE@smile.fi.intel.com>
-References: <20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com>
- <20251027-i3c_ddr-v7-5-866a0ff7fc46@nxp.com>
- <aQCgD3iVOXoNr7uY@smile.fi.intel.com>
- <aQI4v1lVcagBWY3i@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a8twPJGw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58805C4CEFB;
+	Thu, 30 Oct 2025 08:23:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761812619;
+	bh=gBVwjjZuRmmTBdFscwrvsDCkSft7hllufmJNPbvi1Dg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a8twPJGwfECe8D22djcRL2xzNGe9HJW9Ge8u5E2dw24wTEfxKv6mU/uiurjI7AU9d
+	 V6VzYsBCtbofa8uG1H3Z1oQ4Cs7BVeb2BOoVZ6rpIR+kHfC9PTgYlfwjBXC81XAw+W
+	 3iRFppajzVYbF4rwhwQqgDVGFMRa2CMPbjZRAs3H+uiD7LzOB0TtDgl647yoiKyp+W
+	 ycYiQ9Lx1cnAPvJ9ojkj74AQIaMwGFjJmU0N0YFLHXD59mV2KuO8eHX3vyqOdL3NQj
+	 eSs+oeRfUl1yVb0qge6YM9TecNr4wJw0Pfy9o6BPASBVoKKCrV0OLeEdXGRTxShWMQ
+	 zA4kcqHOB+Ykw==
+Date: Thu, 30 Oct 2025 09:23:37 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: imu: mpu6050: remove interrupts
+ from required list
+Message-ID: <20251030-glorious-nano-muskox-e37d49@kuoka>
+References: <20251029-qxp_sensor-v1-0-e97ee1de96d8@nxp.com>
+ <20251029-qxp_sensor-v1-1-e97ee1de96d8@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aQI4v1lVcagBWY3i@lizhi-Precision-Tower-5810>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20251029-qxp_sensor-v1-1-e97ee1de96d8@nxp.com>
 
-On Wed, Oct 29, 2025 at 11:54:39AM -0400, Frank Li wrote:
-> On Tue, Oct 28, 2025 at 12:50:55PM +0200, Andy Shevchenko wrote:
-> > On Mon, Oct 27, 2025 at 04:08:33PM -0400, Frank Li wrote:
-
-...
-
-> > > +static const struct {
-> > > +   int val;
-> > > +   int val2;
-> >
-> > No need. Just
-> >
-> > > +} mmc5633_samp_freq[] = {
+On Wed, Oct 29, 2025 at 03:27:18PM -0400, Frank Li wrote:
+> Irq is optional signal to make sensor work. Not all boards connect this
+> signals, so remove it from required list.
 > 
-> There are some place will like
-> 
->         if (mmc5633_samp_freq[i][0] == val &&
->                 mmc5633_samp_freq[i][1] == val2)
-> 
-> previous
->         if (mmc5633_samp_freq[i].val == val &&
->                 mmc5633_samp_freq[i].val2 == val2)
-> 
-> Previous version seem have better readablity. But it is not big deal, if
-> you like, I change to [0][1].
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml | 1 -
+>  1 file changed, 1 deletion(-)
 
-It's not my preference, it's how all but this driver do in IIO, it's about
-consistency of the style / patterns.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-...
-
-> > struct i3c_device doesn't have a name, does it?
-> 
-> It has name, but it is hexnumber (VID+PID), like 0-4a20000f000.
-> So use friend/readable name here.
-
-I think it's better to use the name provided by the subsystem. This way we may
-guarantee the unique one. The hard coded values potentially might collide
-(imagine some I³C driver for the very similar chip, let's say, in hwmon).
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Best regards,
+Krzysztof
 
