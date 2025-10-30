@@ -1,83 +1,69 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx-relay50-hz3.antispameurope.com (mx-relay50-hz3.antispameurope.com [94.100.134.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE45320397
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 12:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761825773; cv=none; b=XVX/spyp5Fqk3kpZmqM41puwaH/w+SMeA7RvZDkGs2xsyW9gHseTd4Lq5tQGb8e2Db2AZi9fywt9AKphubzSUe84Hk7y31tBhCWCrTd+yfg8FssNvt6NdMzC2LfhhVEO7qhz2z/+LTPVpIL/MIcd6IeDGFBOIQPe8phW+Okg7sg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761825773; c=relaxed/simple;
-	bh=e8pxQEqLtW1Slow0rZY/48Rg7tSYJ1oUbuHVlI3G87Q=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470EA340D93
+	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 12:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.239
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761828621; cv=pass; b=jmHIx9ICuGnVuXTjPrla3BF+/zkpY8UXO5Qdl8C9ClmORl45eBUJz0Hd+XDuLQNFWhf9nwNtJWbaGeo/SbWbZ5kA4SgfzutrHr/nLKxZ+O6u52j22JfQtK9eFW9kulFm8rAj4E59KTxIeCzP5BjafI6QHYi/1/JDguQt5+p1mJ4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761828621; c=relaxed/simple;
+	bh=gsntOPMD2rPmRjXq5D6VPWvyhyUwrWd5WBIPPuLLrjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qGgj+r2JXK36om5de3VDrdCm7CPEYhYcXn67ffCRlBw14jAGSFlnUnTjp75RcIONbhl20FkhWXtrQLy086YzaFgbwezrU82w/To9mUIm3fmqIAvJw7FonniUjebLJ9+SgkEvtgF77ObQ7BOqVIpW+n5z6LDtccZZIVkYnTrNV7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nKxuE4d+; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=p7pUhK08KhglBKnKwbFT0HVvtCqH+Yx+fQS+HmVPLAlm/IuQVy2del4ROjGPP+tRuxZ/sN2j5/ZJjyh6PsRIFkTGL4uJ1xTrNRnmf93i0akhmfCIvZOIidX6KkHKJ4DJiSGBdfjieqIT0Z22hu89UwTh/aYk6id2LO3UwBUN4XM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=lB3EgHYW; arc=pass smtp.client-ip=94.100.134.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nKxuE4d+"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3ecdf2b1751so634092f8f.0
-        for <imx@lists.linux.dev>; Thu, 30 Oct 2025 05:02:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761825770; x=1762430570; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qu8nOseerJIwiaKexI9V+78CH5dDbgipqtlgAiyDwbk=;
-        b=nKxuE4d+WhxDNxflyLr31Bm2JsHuFDrFa6KaLbRVTxvtOJwBk8Oxi9tGuhqys4mWrt
-         jAOOyzhs+jsO8BzKQeMgWtfQ96lYpVsld+Rf/UQ5qja/yTmpKUsPbjOg/gbxDfrZ7evQ
-         XKS59v3iq9HgXDM7C+SZRbxVKMR1GIoAaKmuXb4vO6EW1uFyTXedHiVvI4CjOLReZpW6
-         d7/8FlMKo0Ky86qxnQwqYS7wf2fmOVP2W7E1yMcbTxa8/zLuxqh76q3h5TnXC9pSLwgJ
-         FDaXv97bbvK4SOnFKhAKc3EwVieLjdPKsI8WK1X99aLKJQMjqiOYqKg5VzQO/ya3Sx3q
-         hhJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761825770; x=1762430570;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Qu8nOseerJIwiaKexI9V+78CH5dDbgipqtlgAiyDwbk=;
-        b=jPlXysfGButzYLyF1y4SDkZXguYyE7Vdw7OU050cZBTYDj27aUl81Q3+ogkLKF1lHP
-         OvipJkR0Y4Kda9VxwRhShoQkMO4TCEi/SPV2ZSp+N5hnA8bn4fg85NNr/wXlcEVsNRMO
-         Hao0x3n6dCjGl3Lge1wLxo+a2VR6XOSNxpV7sv0DEDoC4uxLvZyB7ikYB/693VU3BbfR
-         umiGwjvse+En9SWHQfSSE7omLmHGpwaNKcNSO9Mfz492R/tiqM4bX5CvNk7iPi6ywsMU
-         Nc5zKOL1aJsCB4R1vHSUKn4Pg9zOkO/XPrlyj/bOivM8ETcISe8vymIwCZbEaVRm9DRn
-         KBqw==
-X-Forwarded-Encrypted: i=1; AJvYcCXSip0ORmB3hmquHPaLuCGNipfTyfmGUY4zCuUeo/NmXQo/YBuP87o5l/hcUnkvoAnzjn8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YymwYn4zrqWjwRqFh9fNsefKVzxqSi10Ug4E0WYzZQFkbXgaa2c
-	7MkW3NoSruQesTOri0bOiDA/lHiifx+SRgqEQn4J9Oin9s//cSpel7Zb
-X-Gm-Gg: ASbGncsQ29uSUFLY5hvj9cJg61DrtKPgb7BVKIY+YDrODrVdogz/B+uvMFOC9Vdruv8
-	BnoeVwiRJPbfs5+02w5QYh3Z5p43qVeUrN0+9xQTUHvd83UYKlhrHfZcXq/weHMampVF21PX5Ub
-	9lnLZntDB3X30j01ZQXd+f90HWoJVam441xrsu6Zlm1Oo90uI18o61YGDT5XmZSmbadbR80Oc8H
-	Ar8jEEWfnb9VI8grtE9ViGHqE/KGVhyhQwe15zvcdaYgWzvju2Bak4/l2SYj8YUKNVHvvBQCRbn
-	de2uSZNtWDWw1YHMhl+UPnme8FRlYjfG4O3zGm0lvIn2XDJ/hcIC1Qrn1TtAFnkWMwyOvYA7QsM
-	MxpSba689tkZNO3DkuiYnsoaKrMCeQwPBWrzTf3X+0IC2H29Lde0N1W0B5plx9CHVpy7kv2/Kbk
-	wvwi0QSRKzyIMqrKpBUEG+p+8CUsbGaeFPdTlpXxbEmBPuUvR+3zQfbXTMsFe9iTVH+Pmo9zoC
-X-Google-Smtp-Source: AGHT+IHFni13l9ewEcMuX6++qZosCb8kSPle7LBBV+o9CF/LKnPDmcWv4Piuhrw/JZlMYaZ2eGkiDw==
-X-Received: by 2002:a05:6000:1a87:b0:3e9:3b91:e846 with SMTP id ffacd0b85a97d-429b4c73527mr2728446f8f.10.1761825769830;
-        Thu, 30 Oct 2025 05:02:49 -0700 (PDT)
-Received: from Lord-Beerus.station (net-93-146-98-100.cust.vodafonedsl.it. [93.146.98.100])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429b9b436efsm2399848f8f.23.2025.10.30.05.02.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 05:02:49 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Stefano Radaelli <stefano.radaelli21@gmail.com>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="lB3EgHYW"
+ARC-Authentication-Results: i=1; mx-gate50-hz3.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=k7CHMivira0x/FyH+Ow1E9d8fqnubbrxUxidvJeHW7o=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1761828602;
+ b=IgB62SkO6MafWzVc1DO/bGvmy5oL/aTrSlFyRHYOiQmzdRyn9x/gnKViru/uNYQnkos2hiGz
+ qDQFZrmtdGNWHV7E+scZmaKnAZONSzGdbXkj6TjVlGKYzvLlPFyMkpwG1DW3PIyxgNt+LIrrmll
+ PPT2dFrE54MVULUnonSAAWHeHRuDU03JrrsTpZZMv5Bmqc1kneLVTrRO9Qjh3xtHwwN7ExNAfL2
+ SHwekR9oNl8jXBzR9kZg0TdNNe4lQFJWycIeQqj8a0UBhkUr13h9+HYmN486u2qD9EqjbDLgvu0
+ f4PYL5LYG8ezZxAbRvR+C/L/weOwSxDaG6GzTNOd3CVDg==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1761828602;
+ b=JiKViHpqQhx9vB7npXDGv2hk50KqQ4RftpJDJLFm8AitLBmU/xKYoLzjp2TnH3sxFauk2mh7
+ WQGBQXGQeFrtsYH2K8gbLH0TIU2cGz6uetFcdDDQmeKAK5o+QepQIeQWPhOpDpnitSP0dtQI0fh
+ xna+8eoyB8i9HWo/Sk5HwmVE6KGW7hYQz5j8bVGlIDWOm/HN6pBnmUz5tIiNpF3auKtuIF3PQUe
+ sEYBCKfRPwcsfJhc33HPEY9y+Rmx9A5J/t0dfFvG9TUqgtcPGBncu2tkotR0AU+fGEx1io6zNhW
+ xsWIRH3+1Ke8mcRSHdA+wy21FiugUQH0dPWKrRTRuneGg==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay50-hz3.antispameurope.com;
+ Thu, 30 Oct 2025 13:50:02 +0100
+Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 6035B220CC1;
+	Thu, 30 Oct 2025 13:49:51 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 4/4] arm64: dts: freescale: imx93-var-som: Add support for ADS7846 touchscreen
-Date: Thu, 30 Oct 2025 13:01:24 +0100
-Message-ID: <20251030120127.509933-5-stefano.radaelli21@gmail.com>
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 01/19] arm64: dts: imx95-tqma9596sa: fix TPM5 pinctrl node name
+Date: Thu, 30 Oct 2025 13:49:08 +0100
+Message-ID: <20251030124936.1408152-2-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251030120127.509933-1-stefano.radaelli21@gmail.com>
-References: <20251030120127.509933-1-stefano.radaelli21@gmail.com>
+In-Reply-To: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
+References: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -85,93 +71,51 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay50-hz3.antispameurope.com with 4cy3q40Wp6z2nHFG
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:c734b9e42def97ec10e90bed4c62542d
+X-cloud-security:scantime:1.998
+DKIM-Signature: a=rsa-sha256;
+ bh=k7CHMivira0x/FyH+Ow1E9d8fqnubbrxUxidvJeHW7o=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1761828601; v=1;
+ b=lB3EgHYWqzaqjOqV+PDUIa2wD3ZvdJFFX1zCs6uFdM7fYDKXxe0ZfYUu13GJuid18KlW1sv+
+ lIadz46AUqXovtLYCAuO/4KhE+Mk015sR6ycW5BFZ4fPpq1BeFX0/KE10f8SjQkFanau2RpxE1Z
+ I8XMSD/hE2kOcrtT59yHK1zqvtvWTYEM8czeM00/4QnwrjC1KmwCgVqmXE+/7Yipa++BZPxDcj8
+ goK/T/NHbcjHyQAFbNIwAj85CwUoQzTH/BJGV4iIXWhMG1p0YliIgto0PrUffde4PJxyhADZg/G
+ 3JgsmS33QOgOvalE7XAMh4UomK5FcM/+IMIAbviZg9OuA==
 
-The VAR-SOM-MX93 integrates an ADS7846 resistive touchscreen controller.
-The controller is physically located on the SOM, and its signals are
-routed to the SOM pins, allowing carrier boards to make use of it.
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-This patch adds the ADS7846 node and the appropriate SPI controller.
+tpm4grp will be overwritten. Fix node name
 
-Signed-off-by: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Fixes: d2c4d71b6cde ("arm64: dt: imx95: Add TQMa95xxSA")
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
-v2:
- - Fix pinctrl alignment
+ arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- .../boot/dts/freescale/imx93-var-som.dtsi     | 47 +++++++++++++++++++
- 1 file changed, 47 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
-index 0b7f6740e5ad..2dc8b18ae91e 100644
---- a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
-@@ -212,6 +212,38 @@ wm8904: audio-codec@1a {
- 	};
- };
- 
-+&lpspi8 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_lpspi8>;
-+	cs-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	/* Resistive touch controller */
-+	ads7846: touchscreen@0 {
-+		compatible = "ti,ads7846";
-+		reg = <0>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_restouch>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <29 IRQ_TYPE_EDGE_FALLING>;
-+		spi-max-frequency = <1000000>;
-+		pendown-gpio = <&gpio4 29 0>;
-+		vcc-supply = <&buck5>;
-+		ti,x-min = /bits/ 16 <125>;
-+		ti,x-max = /bits/ 16 <4008>;
-+		ti,y-min = /bits/ 16 <282>;
-+		ti,y-max = /bits/ 16 <3864>;
-+		ti,x-plate-ohms = /bits/ 16 <180>;
-+		ti,pressure-max = /bits/ 16 <255>;
-+		ti,debounce-max = /bits/ 16 <10>;
-+		ti,debounce-tol = /bits/ 16 <3>;
-+		ti,debounce-rep = /bits/ 16 <1>;
-+		ti,settle-delay-usec = /bits/ 16 <150>;
-+		ti,keep-vref-on;
-+		wakeup-source;
-+	};
-+};
-+
- /* BT module */
- &lpuart5 {
- 	pinctrl-names = "default";
-@@ -307,6 +339,15 @@ MX93_PAD_GPIO_IO29__GPIO2_IO29		0x40000b9e
- 		>;
+diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
+index 180124cc5bce1..c3bb61ea67961 100644
+--- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
+@@ -617,7 +617,7 @@ pinctrl_tpm4: tpm4grp {
+ 		fsl,pins = <IMX95_PAD_GPIO_IO05__TPM4_CH0			0x51e>;
  	};
  
-+	pinctrl_lpspi8: lpspi8grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO12__GPIO2_IO12		0x31e
-+			MX93_PAD_GPIO_IO13__LPSPI8_SIN		0x31e
-+			MX93_PAD_GPIO_IO14__LPSPI8_SOUT		0x31e
-+			MX93_PAD_GPIO_IO15__LPSPI8_SCK		0x31e
-+		>;
-+	};
-+
- 	pinctrl_lpuart5: lpuart5grp {
- 		fsl,pins = <
- 			MX93_PAD_DAP_TDO_TRACESWO__LPUART5_TX   0x31e
-@@ -316,6 +357,12 @@ MX93_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B  0x31e
- 		>;
+-	pinctrl_tpm5: tpm4grp {
++	pinctrl_tpm5: tpm5grp {
+ 		fsl,pins = <IMX95_PAD_GPIO_IO06__TPM5_CH0			0x51e>;
  	};
  
-+	pinctrl_restouch: restouchgrp {
-+		fsl,pins = <
-+			MX93_PAD_CCM_CLKO4__GPIO4_IO29		0x31e
-+		>;
-+	};
-+
- 	pinctrl_sai1: sai1grp {
- 		fsl,pins = <
- 			MX93_PAD_SAI1_TXC__SAI1_TX_BCLK		0x31e
 -- 
 2.43.0
 
