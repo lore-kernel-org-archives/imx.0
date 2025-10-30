@@ -1,48 +1,48 @@
-Received: from mx-relay50-hz3.antispameurope.com (mx-relay50-hz3.antispameurope.com [94.100.134.239])
+Received: from mx-relay24-hz1.antispameurope.com (mx-relay24-hz1.antispameurope.com [94.100.132.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470EA340D93
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 12:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F682D1F44
+	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 12:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.224
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761828621; cv=pass; b=jmHIx9ICuGnVuXTjPrla3BF+/zkpY8UXO5Qdl8C9ClmORl45eBUJz0Hd+XDuLQNFWhf9nwNtJWbaGeo/SbWbZ5kA4SgfzutrHr/nLKxZ+O6u52j22JfQtK9eFW9kulFm8rAj4E59KTxIeCzP5BjafI6QHYi/1/JDguQt5+p1mJ4=
+	t=1761828666; cv=pass; b=hjLuZLNPJAt3NVRACR5M/T2sU0/hRRYU1Pv1qKt2hzubU76gILU1k4PAVKPPaMLAocrBhyaVvUqyLEh0SMH+N7ZazIgqmj3r20kt7cm9+revC+XdwZm/02KrpjzsjA6r27Ks5dGPDMP2X+Z8fJEcTplRi1pRDgLCoPac4roEA80=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761828621; c=relaxed/simple;
-	bh=gsntOPMD2rPmRjXq5D6VPWvyhyUwrWd5WBIPPuLLrjc=;
+	s=arc-20240116; t=1761828666; c=relaxed/simple;
+	bh=WEGW24WPzjWc2KNh4+viKAoZJgq3f6jFWXB1Ds1Y+bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7pUhK08KhglBKnKwbFT0HVvtCqH+Yx+fQS+HmVPLAlm/IuQVy2del4ROjGPP+tRuxZ/sN2j5/ZJjyh6PsRIFkTGL4uJ1xTrNRnmf93i0akhmfCIvZOIidX6KkHKJ4DJiSGBdfjieqIT0Z22hu89UwTh/aYk6id2LO3UwBUN4XM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=lB3EgHYW; arc=pass smtp.client-ip=94.100.134.239
+	 MIME-Version; b=c4UPAOSmGkp6a/D7DO1APjvRV2d3EX+JUFgzbj7qczpFj8rOiE9wkFQYeixhNDhJBgAFVG37AzFqhJuGACFnlZY92pU7+qoZnD68/3nqN3ZZFaXnEEwjEYcFAGK8/YUH/jHpt9+lYOH+wvyHNM6dx2EV1dEyCKvlWpUFK4RHxhE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=GHlthLiW; arc=pass smtp.client-ip=94.100.132.224
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="lB3EgHYW"
-ARC-Authentication-Results: i=1; mx-gate50-hz3.hornetsecurity.com 1; spf=pass
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="GHlthLiW"
+ARC-Authentication-Results: i=1; mx-gate24-hz1.hornetsecurity.com 1; spf=pass
  reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
  smtp.mailfrom=ew.tq-group.com
  smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
  header.from=ew.tq-group.com orig.disposition=pass
 ARC-Message-Signature: a=rsa-sha256;
- bh=k7CHMivira0x/FyH+Ow1E9d8fqnubbrxUxidvJeHW7o=; c=relaxed/relaxed;
+ bh=MLLHlgU1kgOKOY9uazP3g/sgaaBJysCOurDX7bu2Hg8=; c=relaxed/relaxed;
  d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1761828602;
- b=IgB62SkO6MafWzVc1DO/bGvmy5oL/aTrSlFyRHYOiQmzdRyn9x/gnKViru/uNYQnkos2hiGz
- qDQFZrmtdGNWHV7E+scZmaKnAZONSzGdbXkj6TjVlGKYzvLlPFyMkpwG1DW3PIyxgNt+LIrrmll
- PPT2dFrE54MVULUnonSAAWHeHRuDU03JrrsTpZZMv5Bmqc1kneLVTrRO9Qjh3xtHwwN7ExNAfL2
- SHwekR9oNl8jXBzR9kZg0TdNNe4lQFJWycIeQqj8a0UBhkUr13h9+HYmN486u2qD9EqjbDLgvu0
- f4PYL5LYG8ezZxAbRvR+C/L/weOwSxDaG6GzTNOd3CVDg==
+ t=1761828607;
+ b=NOpK+uXwzCaI8t4zKonnoYZFQ5WixSueQSwGk5Uh6mJL42J8C42pJyozzjG40Z28J1/9HgVU
+ HEN2F8ZX8A0WpfBpnZCAqljqGrzK1OA5f4UC4emi5zxyf6Q9RvhtcmhngjCsqXz2FGRYBLM/S/C
+ VO1CpsB/9FpgC6u3Yc8ieJANHDN9FVgxzHrXxVHvb7nVF+E6aUa19iVVNs5SupiFI1rAll6S/9p
+ rYEbhsfjbeFGXP/SXczfPxjzgpS5XwGfARKRyEaBnZpS+bOd22/TSNxLVj5AQU9ppbegd1wPKh5
+ AbqWZTOvDMm13ib5jfZKmyDGAdH77qG5Jn1fCD3SSI5PQ==
 ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1761828602;
- b=JiKViHpqQhx9vB7npXDGv2hk50KqQ4RftpJDJLFm8AitLBmU/xKYoLzjp2TnH3sxFauk2mh7
- WQGBQXGQeFrtsYH2K8gbLH0TIU2cGz6uetFcdDDQmeKAK5o+QepQIeQWPhOpDpnitSP0dtQI0fh
- xna+8eoyB8i9HWo/Sk5HwmVE6KGW7hYQz5j8bVGlIDWOm/HN6pBnmUz5tIiNpF3auKtuIF3PQUe
- sEYBCKfRPwcsfJhc33HPEY9y+Rmx9A5J/t0dfFvG9TUqgtcPGBncu2tkotR0AU+fGEx1io6zNhW
- xsWIRH3+1Ke8mcRSHdA+wy21FiugUQH0dPWKrRTRuneGg==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay50-hz3.antispameurope.com;
- Thu, 30 Oct 2025 13:50:02 +0100
+ t=1761828607;
+ b=nSNmu05PQ0+8PRJO5+x1qPi8zQNZlbq+7sY14Az9hfglnjbHZpSx7SmJyWKQH0mwpSZbb6oQ
+ vkQDRcNjbAXFnePVCnelbMlccrC/hik3MF0KZIdXU4lVT1A6wVHM0GuwTmhVtedz7gRhgFLBBUv
+ V3WLEnAue+B2njVoquKRILa2Pbhtp/0aGBgy6jLoXNXoSZPyUnniqosQZnoYUW9KtsG5vCR/qsk
+ 5iH9sUslN/0zfEdbYp6R77YQYIkqiO4aaETMW4Pa0sy5zOmaeEPK0rM0hxhVEB2xxfw8SvBT9uf
+ 6GSY3FPiQBmjkFV8Fp1sDTfkxXWeOn9ews5psuzYv8iOg==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay24-hz1.antispameurope.com;
+ Thu, 30 Oct 2025 13:50:06 +0100
 Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
 	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 6035B220CC1;
-	Thu, 30 Oct 2025 13:49:51 +0100 (CET)
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 62C05220D34;
+	Thu, 30 Oct 2025 13:49:56 +0100 (CET)
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -52,15 +52,15 @@ To: Rob Herring <robh@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
 	Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	linux@ew.tq-group.com,
+Cc: linux@ew.tq-group.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 01/19] arm64: dts: imx95-tqma9596sa: fix TPM5 pinctrl node name
-Date: Thu, 30 Oct 2025 13:49:08 +0100
-Message-ID: <20251030124936.1408152-2-alexander.stein@ew.tq-group.com>
+	linux-kernel@vger.kernel.org,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Subject: [PATCH 05/19] arm64: dts: imx95-tqma9596sa: move lpspi3 pinctrl to SOM
+Date: Thu, 30 Oct 2025 13:49:12 +0100
+Message-ID: <20251030124936.1408152-6-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
 References: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
@@ -77,45 +77,61 @@ X-cloud-security-crypt: load encryption module
 X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
 X-cloud-security-Mailarchivtype:outbound
 X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay50-hz3.antispameurope.com with 4cy3q40Wp6z2nHFG
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay24-hz1.antispameurope.com with 4cy3q90T5vz2fdgJ
 X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:c734b9e42def97ec10e90bed4c62542d
-X-cloud-security:scantime:1.998
+X-cloud-security-Digest:6a48f4ba851c95ecc7e4057f5ee77018
+X-cloud-security:scantime:1.826
 DKIM-Signature: a=rsa-sha256;
- bh=k7CHMivira0x/FyH+Ow1E9d8fqnubbrxUxidvJeHW7o=; c=relaxed/relaxed;
+ bh=MLLHlgU1kgOKOY9uazP3g/sgaaBJysCOurDX7bu2Hg8=; c=relaxed/relaxed;
  d=ew.tq-group.com;
  h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1761828601; v=1;
- b=lB3EgHYWqzaqjOqV+PDUIa2wD3ZvdJFFX1zCs6uFdM7fYDKXxe0ZfYUu13GJuid18KlW1sv+
- lIadz46AUqXovtLYCAuO/4KhE+Mk015sR6ycW5BFZ4fPpq1BeFX0/KE10f8SjQkFanau2RpxE1Z
- I8XMSD/hE2kOcrtT59yHK1zqvtvWTYEM8czeM00/4QnwrjC1KmwCgVqmXE+/7Yipa++BZPxDcj8
- goK/T/NHbcjHyQAFbNIwAj85CwUoQzTH/BJGV4iIXWhMG1p0YliIgto0PrUffde4PJxyhADZg/G
- 3JgsmS33QOgOvalE7XAMh4UomK5FcM/+IMIAbviZg9OuA==
+ t=1761828606; v=1;
+ b=GHlthLiWp10WfU28fYPi0sh1KXUuFAtwNv8kJeCKx38h3NzmoseuVTKgr//LqwWqM9jdMPfw
+ VaREHbN1mfzIDen81yKGZtPLajeKqivFZJ0pAt7QcejtHfznrhlJzqZMSvQ5AooNFQiCgZndrnQ
+ iwDlbi0bjE5nUCQsH7lGPuj1qb27v6QYBnZSn/jOk8F5PkhW7lb/xJroyk89GXmZUyeibQ4nSms
+ Ho5Lpptz2WgoxzxKabxgyXjMD1VHR6YStIspj9kWtEAgjOwQfgAmNVMo+ZDaNF3dsw7W4hIRztI
+ hH8dlQOHgZgP5Iw4L/5IdYAwy8pf9RTKHWok6X06oE+Ew==
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+The muxing is determined by SOM, so add it at this level.
 
-tpm4grp will be overwritten. Fix node name
-
-Fixes: d2c4d71b6cde ("arm64: dt: imx95: Add TQMa95xxSA")
 Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts      | 3 ---
+ arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi         | 6 ++++++
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
+diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
+index e3c7554b7f709..43ed55e57d2a3 100644
+--- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
++++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
+@@ -200,9 +200,6 @@ eeprom2: eeprom@57 {
+ };
+ 
+ &lpspi3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_lpspi3>;
+-	cs-gpios = <&gpio2 8 GPIO_ACTIVE_LOW>, <&gpio2 7 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
+ };
+ 
 diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-index 180124cc5bce1..c3bb61ea67961 100644
+index 759a09a912be1..8da9e368c1f4d 100644
 --- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-@@ -617,7 +617,7 @@ pinctrl_tpm4: tpm4grp {
- 		fsl,pins = <IMX95_PAD_GPIO_IO05__TPM4_CH0			0x51e>;
- 	};
+@@ -317,6 +317,12 @@ &lpi2c6 {
+ 	status = "okay";
+ };
  
--	pinctrl_tpm5: tpm4grp {
-+	pinctrl_tpm5: tpm5grp {
- 		fsl,pins = <IMX95_PAD_GPIO_IO06__TPM5_CH0			0x51e>;
- 	};
- 
++&lpspi3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpspi3>;
++	cs-gpios = <&gpio2 8 GPIO_ACTIVE_LOW>, <&gpio2 7 GPIO_ACTIVE_LOW>;
++};
++
+ /* SER0 */
+ &lpuart1 {
+ 	pinctrl-names = "default";
 -- 
 2.43.0
 
