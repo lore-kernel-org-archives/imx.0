@@ -1,65 +1,38 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BE92F3610
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 03:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428E52DC76C;
+	Thu, 30 Oct 2025 06:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761793774; cv=none; b=iJL946tMkI8nhVJVqn8C4lmDIpY1XBZfYxiUqVQ7jnYArHVpbP8QKj5ALBFF343vTyLD2jndLLZZDr3UPX6EmIQy0G8F0kPJ8BwZ/0AKla33mxZjgYxf/FyGJ0JfQYqUkdBAWSzqYpTK4A/AJ+eh7rsDBphc07sB341KR3Ic20s=
+	t=1761806142; cv=none; b=fLOKJtmuiV4LAl6CzCwIW9kPZpNPc8590mnZiw+8yS6l6+x173uEYkqQpqAzukygrR1AR7L0NLT+aaEMuEIWYmrwi0UggU8yfsEETSGFJdhN5lQftpFWkZqPeBZOBwoCz8e9ehKFL3OQ/mYs1g1fw7otbXvxf/o0B/0u0msoAM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761793774; c=relaxed/simple;
-	bh=+yp0oNIbPIHplJ49C3RLHC542xFtRCi3lHAph1pF8Vk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AznqqnfUQQA07YrfJ5pOVQokDlv9gWoUpNutUnn+jf9MZSCpFy9m8J9cpJh/C6ugeUZb/kqKIv27uMmHAzl7vNvXK3/+5EsXi3rQQGdoseeojt90NJNX7/4khNbrZxtdj3Zc9cg7PXVJqAGIMEahMtnPYWMRgirVdpzRu4IDMOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F3WGB0Xj; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761806142; c=relaxed/simple;
+	bh=U7srSnWzfH6yj+mfSTGf2OP0Gg/vZlzbpPNFl8Dk7XQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CnxMnWCLX/t83bHvqxJBD/24uCN773YJm/AUEx0/xJRIZpZOx+VA853HsfRHCsyzJEgWh8CS/i75O9nha+TLWPjqfjPoXFLIZG2J53iGuCef12x+ZeP/chPDvRdd8FGMwQBz0Il22zZhxtKWE9ALVcudU+GpFdCDupCdUBTVNqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NlDL1fkO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F3WGB0Xj"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-89c81839de7so33423885a.1
-        for <imx@lists.linux.dev>; Wed, 29 Oct 2025 20:09:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761793771; x=1762398571; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=w9yBtaoQMt4RjwkfwUxgTG/0MkFajbObVmdDtK6y0Xk=;
-        b=F3WGB0XjtmyLxAkWq23h+ewN8zCHk9aJpbfk5PIW0NHG5/fWA4Ez9kAno5WhrFWwzS
-         qNN3tg96V6Uf7Dd7gpGlA8SUnhb/G6Q+gtUxRCJiJTCYJJidVamcCdXwv9qDkLOi/POX
-         wreCVVH0Aue1bczg5S8C0TONfNuIELO2e75URicv3otnxcUF/jVrz0DEqYMGkBH1IWH8
-         u5dc4TWwcU1NcVDAD46zGuLDusXDjJ/b00OS8uhH98ZU8Wbbr/W0X81gvqyIONOxatH3
-         dGZluhOlM+M1QUmwEUuCUHGQh+PhUsAZQKelbOcdewT1QpVz4ClWGyTy6WMDODAisJ6Z
-         V3xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761793771; x=1762398571;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w9yBtaoQMt4RjwkfwUxgTG/0MkFajbObVmdDtK6y0Xk=;
-        b=kAiRrDhPR7NkuJL9pxw0dtpY0ORoCk52FlegwIsUsWiEqV/E8D086ZFWsPPgVeY/2r
-         OPQLjU9x3W4UvM12hQaGq70tQy283Emv/66N95o3THy7rXPIW6osQ/eBvZ5c5wlXpI8H
-         7h5pp9lZEVqxwqnfNtqgvz3ASxgdkQZspSDnDOtgJXDRp5qVcWl10gf/bPByVoGs7FKi
-         dwTm1IYOqYBvDO6w8pXxmQyMswiEH8WkT+S3ofJ6DbmS6ReHV2XDgoVMq3CQkw1JaCNT
-         TPkMmjSr7++OPszpSlWWb6wvRbBthsXkTQ+q/ehvzvAthCsjjuoYx0mzbqzNVl3EA9gZ
-         qr9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVCNw2NS8fQ7Qd7/9iLECBw9rNhQOm7JZkhYHhLmtgEv1QYt3tQqYJu8C287Nn/Gz4lvEE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyEw+afnchRUqkPnnWpDA+Vgf8lkLZA0XT5mjqpRy0QoYPWlAdQ
-	aivAhZmM911Ge35mKksxfNkFdJekllhYfZEnxl+zaqEwFqUBxrU33HNl
-X-Gm-Gg: ASbGncuZzXrZvKuiMVHzJfax5+ckn/A3k+x1EBjJYb5WnH+gHt3+PUTTadvd+ahvKNY
-	iJy5CWPQIbgCa+dVBvHMfGOcxt/B8YR59c8GG71g0kjpeOpOH8H9QGusXemPxlSLtcrT6te2CS8
-	XqbGiOIfEfoS2U4mpSGpAfiZMtg4TNYadQy8G2ruSXSFDr4gKiYviHi/Xvzv682Ahu41ML0IYl+
-	oaIJ3HoH8QPvi6DcREf+L3p8zxZviHKrwHO/4h8QVL3fF03qz1rXIM3OthMGYOKIAN+VtRYWQq+
-	lx3aIrkQuFDpSvJynDQoRxUGAa5LE/MWfQ0Ki0Dgjg5dTdVY29FMKXaq3R5Kl1JHT+UZ1+Kt33a
-	KhRYECIDfXfH1m1u6kzj3GO2IDQBRZtWUNQYd2rr1jituHtzfL3cvxuGlZvCOfwJesPf5yiG8fT
-	mTlBwCyxXFyAyyLWR4
-X-Google-Smtp-Source: AGHT+IFSneEe/D0Nm5OTWim+N+3MwI7PLvrIFHurjKJIj/dFQhAHVJ8uDPxnXPaqhaufAkrkxzryiw==
-X-Received: by 2002:a05:620a:2913:b0:89f:8089:332 with SMTP id af79cd13be357-8aa2c658481mr270286585a.27.1761793771563;
-        Wed, 29 Oct 2025 20:09:31 -0700 (PDT)
-Received: from [10.73.222.215] ([142.182.130.176])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-89f254a6461sm1216363885a.30.2025.10.29.20.09.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 20:09:31 -0700 (PDT)
-From: Samuel Kayode <samkay014@gmail.com>
-Date: Wed, 29 Oct 2025 23:09:22 -0400
-Subject: [PATCH] MAINTAINERS: update PF1550 driver email address
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NlDL1fkO"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CE418C4CEF1;
+	Thu, 30 Oct 2025 06:35:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761806141;
+	bh=U7srSnWzfH6yj+mfSTGf2OP0Gg/vZlzbpPNFl8Dk7XQ=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=NlDL1fkOcAvWdTiWh1qtupEVkylVn1RCIvJ+Ecjz5Oz1PDX6y8bXubduJuudCf07i
+	 LCmJxNofOQoRyt3bMHI4qEr0Xt6n0oJjHCMpCeBX+V/6+tuQiSNkTdXeow1yIUTSv2
+	 PgbOCoRVkPwNfrZhWtr7vHionZGSVsLxEOCG/zMN9XufSTj5LKgLOLuY37HeBY3ICr
+	 /vrSwoXJjPpPMwxIeoHAcfNWaRJDtgnbgl63QX53xtCfVIxVSFyODmSwVCxPURc+x5
+	 fC9+x1NZOa5BOfCtR6HyoEO2sTjD+y2GBdkiZXtsuHBQaEc9TShNMEoWnywD8BB2Kr
+	 1coGiCDQUhPDg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B982CCCF9F0;
+	Thu, 30 Oct 2025 06:35:41 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Subject: [PATCH v3 0/6] arm64: dts: freescale: add support for the
+ GOcontroll Moduline IV/Mini
+Date: Thu, 30 Oct 2025 07:35:36 +0100
+Message-Id: <20251030-mini_iv-v3-0-ef56c4d9f219@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,56 +41,83 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251029-update-email-v1-1-f38f45aac2e8@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAOHWAmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDAyNL3dKClMSSVN3U3MTMHN00i8QkE6MUw0TTVEsloJaCotS0zAqwcdG
- xtbUA6AFtqV4AAAA=
-X-Change-ID: 20251029-update-email-f8ab42d1a5e9
-To: Lee Jones <lee@kernel.org>
-Cc: Lukas Bulwahn <lbulwahn@redhat.com>, 
- Jerome Oufella <jerome.oufella@savoirfairelinux.com>, 
- Samuel Kayode <samkay014@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Sean Nyekjaer <sean@geanix.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761793770; l=974;
- i=samkay014@gmail.com; s=20251028; h=from:subject:message-id;
- bh=+yp0oNIbPIHplJ49C3RLHC542xFtRCi3lHAph1pF8Vk=;
- b=a2wytk14s8diN6iiqQV8aaMVjzlSE7YtEsqQfx/ZJgYXoe/Usct04+SEmzwzwdqb9Dv20yTJo
- nxQCcLNAWowAqXcKYuSZVFDGndaeD/JIiJbzfPZqslyOt9/j2pAJtMq
-X-Developer-Key: i=samkay014@gmail.com; a=ed25519;
- pk=favoK08ilD1j62PrGf+RHihBzbqJGWMC6f2nszR5UIc=
+X-B4-Tracking: v=1; b=H4sIADgHA2kC/2WMwQqDMBAFf0X23JRkNdT01P8opYQ00QVNJJHQI
+ v57o5cWPM7jzSyQbCSb4FotEG2mRMEXqE8VmF77zjJ6FQbkKAXnio3k6UmZaS6tNGgEYg3lPUX
+ r6L2X7o/CPaU5xM8ezmJbj40sGGeubltlGoWNvNy6YIKfYxiGswkjbKGMfzLiT8YiI9eudUprI
+ 5qDvK7rF7GCyXHgAAAA
+X-Change-ID: 20251009-mini_iv-a05e5c2c1223
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Maud Spierings <maudspierings@gocontroll.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761806140; l=2171;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=U7srSnWzfH6yj+mfSTGf2OP0Gg/vZlzbpPNFl8Dk7XQ=;
+ b=dUk+8sCZB3oHVtlOsJveFBg7XJlVdMloMj3tLjhulGXp3ipCK3pKsZ3y9+/ItK5lwGpdeSH5w
+ w8ba6dfY5LSB1w1EJjYBMGOe9hQZkJEhiH4z1nI3D8f52VgHf6f8MpU
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-Update Sam's email address for the PF1550 PMIC driver.
+Add initial support for the Moduline IV and Moduline Mini embedded
+controllers.
 
-Signed-off-by: Samuel Kayode <samkay014@gmail.com>
+These systems are powered by the Ka-Ro Electronics tx8m-1610 COM, which
+features an imx8mm SoC.
+
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
-I left Savoir-faire Linux but I do intend to continue maintaining this
-driver.
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v3:
+- Add patch fixing the pmic driver
+- Use the proper feedback properties for BUCK6
+- Slightly rework the compatibles, acked by conor dropped
+- Add missing CAN interface supplies, remove the leftover comment
+- Add missing vled-supply
+- Add missing ethernet phy interrupt (doesn't work)
+- Fix the cs-gpios properties in all spi interfaces
+- Fix the order of properties in all spi interfaces
+- Remove unused labels for regulators of the PMIC
+- Link to v2: https://lore.kernel.org/r/20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2a9330f05e2fca6b8661bb698dea17dcfd7fc254..c44d2cf7e7b85104a6eb09142da8ef3d9fa7e55d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18608,7 +18608,7 @@ F:	Documentation/devicetree/bindings/regulator/nxp,pf5300.yaml
- F:	drivers/regulator/pf530x-regulator.c
- 
- NXP PF1550 PMIC MFD DRIVER
--M:	Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-+M:	Samuel Kayode <samkay014@gmail.com>
- L:	imx@lists.linux.dev
- S:	Maintained
- F:	Documentation/devicetree/bindings/mfd/nxp,pf1550.yaml
+Changes in v2:
+- Fix allignment issue in imx8mm-tx8m-1610.dtsi (fec1)
+- Move phy-reset into fec (works better in barebox)
+- Make the gpio-line-names groups of four on every line
+- Link to v1: https://lore.kernel.org/r/20251009-mini_iv-v1-0-f3889c492457@gocontroll.com
 
 ---
-base-commit: bb57b5ac4f83df384fcbc5ba38a397ca0eb91562
-change-id: 20251029-update-email-f8ab42d1a5e9
+Maud Spierings (6):
+      dt-bindings: arm: fsl: Add GOcontroll Moduline IV/Mini
+      regulator: bd718x7: Fix voltages scaled by resistor divider
+      arm64: dts: imx8mm: Add pinctrl config definitions
+      arm64: dts: freescale: add Ka-Ro Electronics tx8m-1610 COM
+      arm64: dts: freescale: Add the GOcontroll Moduline IV
+      arm64: dts: freescale: Add the GOcontroll Moduline Mini
+
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   8 +
+ arch/arm64/boot/dts/freescale/Makefile             |   3 +
+ arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h     |  33 +
+ .../imx8mm-tx8m-1610-moduline-iv-306-d.dts         | 800 +++++++++++++++++++++
+ .../imx8mm-tx8m-1610-moduline-mini-111.dts         | 688 ++++++++++++++++++
+ .../arm64/boot/dts/freescale/imx8mm-tx8m-1610.dtsi | 444 ++++++++++++
+ drivers/regulator/bd718x7-regulator.c              |   2 +
+ 7 files changed, 1978 insertions(+)
+---
+base-commit: 7c3ba4249a3604477ea9c077e10089ba7ddcaa03
+change-id: 20251009-mini_iv-a05e5c2c1223
 
 Best regards,
 -- 
-Samuel Kayode <samkay014@gmail.com>
+Maud Spierings <maudspierings@gocontroll.com>
+
 
