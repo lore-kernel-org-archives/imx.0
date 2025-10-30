@@ -1,229 +1,90 @@
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vs81.iboxed.net (vs10.datenmanufaktur-hosting.net [213.160.73.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C185231770B
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 19:48:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36902DCF5B
+	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 19:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761853685; cv=none; b=ERMnIpbSE2dAT4Za5stWlRIag76R5Fwm0W6MMlUEp2cD3V8GKvDQMQzAtuPuJxM2Waqn/cKTrYOX7YrGEkOnGRUm0bqCzez02g/k2vgqs4PK52FJa87vFdcI/kOIgO7GU+YiqPE1gx4YTwBcLXcCF9oUdVOlfhFW9zp/euRtgoo=
+	t=1761854120; cv=none; b=GGkhSkl1zkoAA//U9lSHc9j6e6x7oZikLlps9XXWDCctRr5RGBgMGXVgTwyOLs6VmRJXw+HQo2lLZ8nVInIX+XwMc7lOs3SGvrnRDsqRQwAqo5FJg9WcU9vpfEgQkmAfxGb5C1juqRS+pCuonZdDeQh0eozhLAdhmtd1/0niDVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761853685; c=relaxed/simple;
-	bh=V4gEPAw7c1Xo4RZkpTqr+1GnVCaVV1FvxqrK4WYDs+M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mdkh1sRSPnJuRJmSM7AanI0m4GyOfBaaX75SX62B14aPafm0sDID/boutEv/yRXZiKE+LgLoSfEN55ohvH10d7ATiQMC2spIngOFX/7V1AZ9GtXLGjSMXZhNZmsTbzqMip8CzSgrgJeMYTfxo7zrx787yZD8qShLjKFHZXuZ41E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org; spf=pass smtp.mailfrom=ieee.org; dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b=AjGCaxof; arc=none smtp.client-ip=209.85.166.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b="AjGCaxof"
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-430b6a0eaeaso13925905ab.1
-        for <imx@lists.linux.dev>; Thu, 30 Oct 2025 12:48:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1761853682; x=1762458482; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NyHHMh5+Ig5nWuJhvXvhTG1NXrgVmuFvDzkpLb+CBVo=;
-        b=AjGCaxofCtb2hacKmdQIjTsBbwykLm9rZlds+lpnJDskTMvpEvKDeLBEL/DjJegFm6
-         zWwMVVEET7L9uE9i14rddBlTFmeDNmEbwm+VdYjXsMc9gpZMmy8vQqJLbGTxktNJiuYx
-         E3P6DFvpKmA8GSvzJWOTpSQ2rZNaUx48NCIic=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761853682; x=1762458482;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NyHHMh5+Ig5nWuJhvXvhTG1NXrgVmuFvDzkpLb+CBVo=;
-        b=iX0zQDiGpfQJv8BCeg8s24wGvtAOXj6Cphf1uKbOI1PTjJQ7M4EqMyeiVHWUwbijSM
-         KRcdZxLVtUzJ237enbHpDzomzSumeqwl2lPCeUQpy9KnQ0n9SlKH93uX6QJzeDBlYezp
-         HIJPWexERBDx9WQ737MTf01AEUADMKOo25RgfgrBCmbiTWW+H9cC06iNFsZaU27DDtn5
-         F6wQO5VSqN4ARvJuEbV+2sqRLtqQNpq55G0/xCSig/ztru/m1NXyYUubbhAw+Y4FPBr0
-         YwjvBezDmc9U+VznsZP5BEL2BWjwkXM7SNxnnTOUvFOkaWVONwphnShi82A44xRzgtmD
-         6oNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVsG83r0omlzrFB/hlLzkdZs3TwJWCQFzzxgIQ7Pr7zNn3wIu154ZrBlWPn+WAvgmD8PK8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxGTQP/raox/clfoDYKvpjqo3OFDZ+HOE9FJTouKcpmMu4CHnHy
-	LfFokB11GnqiEoy3soi+R/doO9F7AHgBGKQi3tKqSFRMWaEP2ft6sjzuQh16rFAZCA==
-X-Gm-Gg: ASbGncs4ELZ8TthvhJyWgyufJGo+F6b2Ks2e+FkTrJ8w4MQRZohtlGPCoITeP0BHh6C
-	UHw5TYCGtE27M+HTRLQYoHZTQ8oPHvXIahzwCK+y1Wx1lYY1dRMKnH9LI1S1BxP3MvImdTnSt0Z
-	3TPjnzo5200ZUTCqEFiMqaSWc5xu03JQb6ZbB5/zSDq3PQJO8GqV2lox3H7nFSKdXdhhlSFg/tW
-	7MvPlRpy1VZPGUw+cP0fzN5sZXEYLFZnDMjM8wJvCphYH87ixqPv7gFv5iWwKmN+EFOb9vaKWqD
-	AIjY3JVG0PjoQEJlvTGZ+J3Rc62d4OM2ALL0vfm5vRt4PyD8Bb1d0rqHaXUSKLraMnbFLqXYGGH
-	s3to83MYqO778YgGJJJJ0vBs/ovi14PEcoLiXE97aJP+MhHFt/+nxKDBqAGyxDWKJ1j5PPa7P8F
-	qSSr8K5YCNPQdVYHyEfomVCvy0LUx3H63DweIS8evvaxNSqA==
-X-Google-Smtp-Source: AGHT+IF4U576EpcuWMn8dengv2WlARr6njaCWT9h6oVZ6fzg/nO5M7RbgoKh1r0euu415UbWbr61ag==
-X-Received: by 2002:a05:6e02:339d:b0:423:fcd6:5488 with SMTP id e9e14a558f8ab-4330d1435a8mr16944295ab.12.1761853681791;
-        Thu, 30 Oct 2025 12:48:01 -0700 (PDT)
-Received: from [172.22.22.234] (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
-        by smtp.googlemail.com with ESMTPSA id 8926c6da1cb9f-5aea995e701sm6883943173.49.2025.10.30.12.47.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Oct 2025 12:48:01 -0700 (PDT)
-Message-ID: <6cfe0af8-77f9-4f3d-9494-17f4defe6558@ieee.org>
-Date: Thu, 30 Oct 2025 14:47:56 -0500
+	s=arc-20240116; t=1761854120; c=relaxed/simple;
+	bh=1K65T+QRQPvRIGdXU/w+k/IIV/8h+Bu/VmkZtTAW9uM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NnHXgdcUfnQ0A4NqMqWrmz/418aMgTHjkoMDJlAz1CmA+RLM74fBSEqX2Gpo3lqIbPk2gIXlSYtBmoTIu6o8TNhGjInMduYvbTRb9sBdTn6YA0KXQCNYysY08o3YopbRenABzwse5II729UgD9IBUPs8qfo/qsK9SxN/RFBzodU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blala.de; spf=pass smtp.mailfrom=blala.de; arc=none smtp.client-ip=213.160.73.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blala.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blala.de
+Received: from blala.de (localhost [127.0.0.1])
+	by vs81.iboxed.net (8.15.2/8.15.2/Debian-14~deb10u1) with ESMTP id 59UJvCVD020239;
+	Thu, 30 Oct 2025 19:57:12 GMT
+Received: (from akurz@localhost)
+	by blala.de (8.15.2/8.15.2/Submit) id 59UJvCCN020235;
+	Thu, 30 Oct 2025 19:57:12 GMT
+From: Alexander Kurz <akurz@blala.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Lee Jones <lee@kernel.org>, Dzmitry Sankouski <dsankouski@gmail.com>,
+        Griffin Kroah-Hartman <griffin.kroah@fairphone.com>,
+        Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        "Dr . David Alan Gilbert" <linux@treblig.org>,
+        Job Sava <jsava@criticallink.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-input@vger.kernel.org, Alexander Kurz <akurz@blala.de>
+Subject: [PATCH v6 6/6] ARM: dts: imx53: add imx53-qsrb PMIC power button
+Date: Thu, 30 Oct 2025 19:56:54 +0000
+Message-Id: <20251030195654.20142-7-akurz@blala.de>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20251030195654.20142-1-akurz@blala.de>
+References: <20251030195654.20142-1-akurz@blala.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 2/4] net: ipa: Remove redundant
- pm_runtime_mark_last_busy() calls
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, netdev@vger.kernel.org
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
- Clark Wang <xiaoning.wang@nxp.com>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
- Paul Barker <paul@pbarker.dev>, Siddharth Vadapalli <s-vadapalli@ti.com>,
- Roger Quadros <rogerq@kernel.org>, Alex Elder <elder@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Stephan Gerhold <stephan@gerhold.net>,
- Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Sergey Ryazanov <ryazanov.s.a@gmail.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
- Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
- Liu Haijun <haijun.liu@mediatek.com>,
- Ricardo Martinez <ricardo.martinez@linux.intel.com>,
- "Dr. David Alan Gilbert" <linux@treblig.org>, Ingo Molnar
- <mingo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Michael Nemanov <michael.nemanov@ti.com>, Kalle Valo <kvalo@kernel.org>,
- Andreas Kemnade <andreas@kemnade.info>,
- Roopni Devanathan <quic_rdevanat@quicinc.com>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>, imx@lists.linux.dev,
- linux-renesas-soc@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org
-References: <20251027115022.390997-1-sakari.ailus@linux.intel.com>
- <20251027115022.390997-2-sakari.ailus@linux.intel.com>
-Content-Language: en-US
-From: Alex Elder <elder@ieee.org>
-In-Reply-To: <20251027115022.390997-2-sakari.ailus@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/27/25 6:50 AM, Sakari Ailus wrote:
-> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-> pm_runtime_mark_last_busy().
-> 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+As described in the board hardware user guide IMX53RQSBRM-R.pdf, the
+mc34708 pin PWRON1 is connected to a button "SW6"/"POWER", connecting
+this line to GND.
+Add support for the imx53-qsrb "POWER" button.
 
-Acked-by: Alex Elder <elder@riscstar.com>
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-> ---
->   drivers/net/ipa/ipa_interrupt.c | 1 -
->   drivers/net/ipa/ipa_main.c      | 1 -
->   drivers/net/ipa/ipa_modem.c     | 4 ----
->   drivers/net/ipa/ipa_smp2p.c     | 2 --
->   drivers/net/ipa/ipa_uc.c        | 2 --
->   5 files changed, 10 deletions(-)
-> 
-> diff --git a/drivers/net/ipa/ipa_interrupt.c b/drivers/net/ipa/ipa_interrupt.c
-> index 245a06997055..8336596b1247 100644
-> --- a/drivers/net/ipa/ipa_interrupt.c
-> +++ b/drivers/net/ipa/ipa_interrupt.c
-> @@ -149,7 +149,6 @@ static irqreturn_t ipa_isr_thread(int irq, void *dev_id)
->   		iowrite32(pending, ipa->reg_virt + reg_offset(reg));
->   	}
->   out_power_put:
-> -	pm_runtime_mark_last_busy(dev);
->   	(void)pm_runtime_put_autosuspend(dev);
->   
->   	return IRQ_HANDLED;
-> diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
-> index 25500c5a6928..95a61bae3124 100644
-> --- a/drivers/net/ipa/ipa_main.c
-> +++ b/drivers/net/ipa/ipa_main.c
-> @@ -903,7 +903,6 @@ static int ipa_probe(struct platform_device *pdev)
->   	if (ret)
->   		goto err_deconfig;
->   done:
-> -	pm_runtime_mark_last_busy(dev);
->   	(void)pm_runtime_put_autosuspend(dev);
->   
->   	return 0;
-> diff --git a/drivers/net/ipa/ipa_modem.c b/drivers/net/ipa/ipa_modem.c
-> index 8fe0d0e1a00f..9b136f6b8b4a 100644
-> --- a/drivers/net/ipa/ipa_modem.c
-> +++ b/drivers/net/ipa/ipa_modem.c
-> @@ -71,7 +71,6 @@ static int ipa_open(struct net_device *netdev)
->   
->   	netif_start_queue(netdev);
->   
-> -	pm_runtime_mark_last_busy(dev);
->   	(void)pm_runtime_put_autosuspend(dev);
->   
->   	return 0;
-> @@ -102,7 +101,6 @@ static int ipa_stop(struct net_device *netdev)
->   	ipa_endpoint_disable_one(priv->rx);
->   	ipa_endpoint_disable_one(priv->tx);
->   out_power_put:
-> -	pm_runtime_mark_last_busy(dev);
->   	(void)pm_runtime_put_autosuspend(dev);
->   
->   	return 0;
-> @@ -175,7 +173,6 @@ ipa_start_xmit(struct sk_buff *skb, struct net_device *netdev)
->   
->   	ret = ipa_endpoint_skb_tx(endpoint, skb);
->   
-> -	pm_runtime_mark_last_busy(dev);
->   	(void)pm_runtime_put_autosuspend(dev);
->   
->   	if (ret) {
-> @@ -432,7 +429,6 @@ static void ipa_modem_crashed(struct ipa *ipa)
->   		dev_err(dev, "error %d zeroing modem memory regions\n", ret);
->   
->   out_power_put:
-> -	pm_runtime_mark_last_busy(dev);
->   	(void)pm_runtime_put_autosuspend(dev);
->   }
->   
-> diff --git a/drivers/net/ipa/ipa_smp2p.c b/drivers/net/ipa/ipa_smp2p.c
-> index fcaadd111a8a..420098796eec 100644
-> --- a/drivers/net/ipa/ipa_smp2p.c
-> +++ b/drivers/net/ipa/ipa_smp2p.c
-> @@ -171,7 +171,6 @@ static irqreturn_t ipa_smp2p_modem_setup_ready_isr(int irq, void *dev_id)
->   	WARN(ret != 0, "error %d from ipa_setup()\n", ret);
->   
->   out_power_put:
-> -	pm_runtime_mark_last_busy(dev);
->   	(void)pm_runtime_put_autosuspend(dev);
->   
->   	return IRQ_HANDLED;
-> @@ -213,7 +212,6 @@ static void ipa_smp2p_power_release(struct ipa *ipa)
->   	if (!ipa->smp2p->power_on)
->   		return;
->   
-> -	pm_runtime_mark_last_busy(dev);
->   	(void)pm_runtime_put_autosuspend(dev);
->   	ipa->smp2p->power_on = false;
->   }
-> diff --git a/drivers/net/ipa/ipa_uc.c b/drivers/net/ipa/ipa_uc.c
-> index 2963db83ab6b..dc7e92f2a4fb 100644
-> --- a/drivers/net/ipa/ipa_uc.c
-> +++ b/drivers/net/ipa/ipa_uc.c
-> @@ -158,7 +158,6 @@ static void ipa_uc_response_hdlr(struct ipa *ipa)
->   		if (ipa->uc_powered) {
->   			ipa->uc_loaded = true;
->   			ipa_power_retention(ipa, true);
-> -			pm_runtime_mark_last_busy(dev);
->   			(void)pm_runtime_put_autosuspend(dev);
->   			ipa->uc_powered = false;
->   		} else {
-> @@ -203,7 +202,6 @@ void ipa_uc_deconfig(struct ipa *ipa)
->   	if (!ipa->uc_powered)
->   		return;
->   
-> -	pm_runtime_mark_last_busy(dev);
->   	(void)pm_runtime_put_autosuspend(dev);
->   }
->   
+diff --git a/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts b/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts
+index 2f06ad61a766..2a6d28e9e8f8 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts
+@@ -139,6 +139,18 @@ vgen2_reg: vgen2 {
+ 				regulator-always-on;
+ 			};
+ 		};
++
++		buttons {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			onkey@0 {
++				reg = <0>;
++				linux,code = <KEY_POWER>;
++				debounce-delay-ms = <30>;
++				active-low;
++				fsl,enable-reset;
++			};
++		};
+ 	};
+ };
+ 
+-- 
+2.39.5
 
