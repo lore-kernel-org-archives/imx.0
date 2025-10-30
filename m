@@ -1,128 +1,117 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pmg.emh-metering.com (pmg.emh-metering.com [62.153.85.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDB932E122
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 08:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB24120010C
+	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 08:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.153.85.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761814514; cv=none; b=qjYD8DFo2hVYxBiF2bpF7DWO92BjTmfdN5oAh22fdJ0pHNN0XTemUHN6tpRdqZ6UiTEO9Bg8wgaoh7o4hMQdvINZlio1PH3JMf7/jorEhFtKDPsbtbnkcLYxYJvYKlCN2xGjw0PlWCZ0D0K3U8Rj7FdnCX3G/DEVUYum9tQkogU=
+	t=1761814629; cv=none; b=TSmzvZ4gEa3gyxU7YyYX/d+EpbA3rIpCAvkARoXcM7QwjNOyQ/27GcKy33ZZnl1NGcgPTJhEJPOW+ENkzVun23sXHxjxVHtpHDvlNxphOYV5dMCrxCfsEyLQ5GJHrGjmx2JbeV1Q+q4bcYC97DUtbCK8RC6o/7gw0hMKIo1m1wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761814514; c=relaxed/simple;
-	bh=gCe206Sd+n4icVwxXqzoKWpmtTKswWt6dHVdlGTXLL4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nXKHITAHlI8nb6i8l2EconweQvF+jPN/X013FyA24qOdFg6eZV0+GJNmBwexM+SLcRc4x7kiLnA32nHZ9bw//MPG4/edz5F8HUGX5vASFzV0rvQUdkgww33t0J3Vxg2UvcdDnpRCoq+hdDKfnKTQMQf8U0FPbdXtzubyXE35+J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hvkmh8CP; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761814629; c=relaxed/simple;
+	bh=0r3JH/OKc/obMtkwojem6t6BoX7GyuazF9lJiH+WOzc=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=j0nb0xyUJ1DPBuZ556fWBOe3fMhVcsiOHPEc/KPP2NzZ1B09uHMDnrfm3HB32AtUzlIGzwBWXdS3IjrdiV+U6yItOXZGLvn8XInv+7+9H2BXQH89DmfQ7z5xnfX/GfVhwN1EHhfaHX8jLTnJAjhYWKYg+rTJ1Okh0NdXMeMIayo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=emh-metering.com; spf=pass smtp.mailfrom=emh-metering.com; dkim=pass (2048-bit key) header.d=emh-metering.com header.i=@emh-metering.com header.b=Bw59v1gN; arc=none smtp.client-ip=62.153.85.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=emh-metering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=emh-metering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hvkmh8CP"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-57992ba129eso1017372e87.3
-        for <imx@lists.linux.dev>; Thu, 30 Oct 2025 01:55:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761814509; x=1762419309; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lz2wxKaeXnztSBPHZVxZj1ui+100tXbJd+q75YbpezI=;
-        b=Hvkmh8CPn0Occ6gKRa9y2upSulkFJp4tgYuGpCCm6xGvLwQpaKPowtb2USz91dsjYG
-         hYKY28zMSD/isFI7Ufk6zRoalb76WsVjvZ4bsQ7ZzTvTjP75X1Okq49++H6FHZox1qnJ
-         +v0QTQlKgict2hhfcugy7f7QIR7ZYH8QuXAsy9LtRDpU7Zdr0Kj/7TAqLyvwo+aBNLfe
-         dT+pDSIpoKJnmdWQU5K6Qmf1t5d77OzkgT8bCkvlLNxMtHG+8IsXZx5wGkn2Ij7JFHSD
-         AMGxBlzZWd85PRSCAlfno4Ik6Z3xxuk7yzQwXRGD3qzIooz85tP8jAfcs4z23mRAt5+f
-         kLXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761814509; x=1762419309;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lz2wxKaeXnztSBPHZVxZj1ui+100tXbJd+q75YbpezI=;
-        b=tWACFyklWfIynZRc3kFKMndCjjolmmEjSvzQV1ChrG1AtBxazBVRPUO7ZTekPLQJ+t
-         JQghEYdNSVSzJy5FnB8k7T6oYC8D9vFflvzDIQXN6Yq2eqz2eByAqKjy/2pmizjVbD+e
-         9heZG7fHChgGak0v1F7QEaDdAaD469wcBnhpwWM0cPZFCOIdWg2vgoahc1mZxbVFdgaM
-         6o8KnIJPh0PY8+KQyekFRKwb0K2abHEgDi0DAXYKiHTo8iui8lMAwUeXlyPgqc9BHiEp
-         S319lwIT2XVsA+DEPpGAcAcvEgkPRtwbNZRas7WsHIsi2UWcUce+YJcJ7mO+XCcb/9Pl
-         sJ7g==
-X-Forwarded-Encrypted: i=1; AJvYcCUh5Hep0BL/obFdmTdNR5Ke/X5ACljTWA8elgM7lmLS+g+1zjiKwZgZvXRaI6qVXfsl0tk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YznO5MPoj+uucA6GQdTUk3ogDzNbt/W7lcO9IVM5UM3hcT2+t/d
-	F5R+dr6o0cw51iGFgy2ZONS5o0tssIbntAsCkrDIQoKYlxhAfO5mxQj0
-X-Gm-Gg: ASbGncuPsdMJoOum7F0VUK6y6rvA6LL85qJ5LiV7AziuopbxwC9tRhR9g/JOPt2CbGe
-	Ur6ChSMHSBh5z06rUMgBJ54Yl/H6ZQnZCLPSDFMpX6Sj6iMUSis6cu+X2/GAH7XdTuyenejYv8g
-	Ooe7kjidG8QhDgZb5V6RNqErOF0hyuJqjoQOGvF2fsqS2vdv/M72fgDguI9w2KNzA7Ureyrp1zG
-	f/dWzPrDusWl06p2upN/0RNSNEoaY+/QpHZOIndi+mXNYiucsdp0hshBaEHl0em8+ESA7CPw1ul
-	CBEpWcXAbzbDGApPdfSRy3pkqbOg18NYSFlSMg/Mot3JmS9CuPpFBZ6rI8J40LsXwuvLAWIihKK
-	aOYEpjYq9lb4LcaUaSmO1UvRIVPWX6ojcEIo8A0unqLR62XtBEaDIRI3XwXjz4Fg4txBuGZSUXc
-	V9otQkJgS/YbbEwuV3cnspZBLQC0wMAvCvksx92WMH0Sb27mYqP1ql1u9Ysg==
-X-Google-Smtp-Source: AGHT+IGxefDaDMkvXf+C6MInrLdPPOS2BAZ41RZb8shvZ6Cg4IwpRXpVQvrD4g2MHSCgteFU4nxUAQ==
-X-Received: by 2002:a05:6512:b8c:b0:584:2746:c6d8 with SMTP id 2adb3069b0e04-59412c424b5mr1969364e87.29.1761814509186;
-        Thu, 30 Oct 2025 01:55:09 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5941566452esm866246e87.8.2025.10.30.01.55.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Oct 2025 01:55:08 -0700 (PDT)
-Message-ID: <8fb5a1a0-96a5-4830-a9f5-4e624ac806cc@gmail.com>
-Date: Thu, 30 Oct 2025 10:55:07 +0200
+	dkim=pass (2048-bit key) header.d=emh-metering.com header.i=@emh-metering.com header.b="Bw59v1gN"
+Received: from pmg.emh-metering.com (localhost.localdomain [127.0.0.1])
+	by pmg.emh-metering.com (Proxmox) with ESMTP id 2E088201A2B;
+	Thu, 30 Oct 2025 09:51:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	emh-metering.com; h=cc:content-transfer-encoding:content-type
+	:content-type:date:from:from:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=EMH; bh=MHQiv9s65d
+	po7FDHmAP6xWP3YKRgmxyddilHRLa35UM=; b=Bw59v1gNBZSiPl3Mo91zylHTR0
+	Z0arcUb+nLgdab2KDuPkoC4Za4CNhc55VGbBNKnQYw49qJrZ8MnBqYMcJ5DThUtk
+	EGI2gi5AkG6GbK410FTCFBnMGtWq03/hfIWzJoRFV8kP+cgLG0WRS9u0LB4LYhcO
+	sUeO98N+sOyDz86Wb7Ko1TcFbqWUYWiAUXoQQwb/x6W39+FnutNj9mM8HreuKxLY
+	93I8YQx7EMtFjlCp0kZC+/1WnQLZzY8ieKYKCp3QgVaJhSI3o6gc9SnFPEnIBuMq
+	ORsGKMbK5owlLdPjzGAn9rGh58FRw3kTrQBw3K18MYVzoBSXOr1CbOpBsC9w==
+From: "Krebs, Olaf" <Olaf.Krebs@emh-metering.com>
+To: =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= <ukleinek@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"open list:PWM SUBSYSTEM" <linux-pwm@vger.kernel.org>, "open
+ list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+	<linux-arm-kernel@lists.infradead.org>, open list
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH] Fix IMX PWM period setting
+Thread-Topic: [PATCH] Fix IMX PWM period setting
+Thread-Index: AQHcSXnStwBUqBV5nkubIW1yr2rgX7TaYM8g
+Date: Thu, 30 Oct 2025 08:51:20 +0000
+Message-ID: <c26fde7dff3a41ff9f7e6c97e2a31801@emh-metering.com>
+References: <20251030084727.4098222-1-user@jenkins>
+In-Reply-To: <20251030084727.4098222-1-user@jenkins>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/6] regulator: bd718x7: Fix voltages scaled by
- resistor divider
-To: maudspierings@gocontroll.com, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20251030-mini_iv-v3-0-ef56c4d9f219@gocontroll.com>
- <20251030-mini_iv-v3-2-ef56c4d9f219@gocontroll.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20251030-mini_iv-v3-2-ef56c4d9f219@gocontroll.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 30/10/2025 08:35, Maud Spierings via B4 Relay wrote:
-> From: Maud Spierings <maudspierings@gocontroll.com>
-> 
-> The .min_sel and .max_sel fields remained uninitialized in the new
-> linear_range, causing an error further down the line. Copy the old
-> values of these fields to the new one as they represent the range of
-> register values, which does not change.
-> 
-> Fixes: d2ad981151b3a ("regulator: bd718x7: Support external connection to scale voltages")
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-> ---
->   drivers/regulator/bd718x7-regulator.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/regulator/bd718x7-regulator.c b/drivers/regulator/bd718x7-regulator.c
-> index 022d98f3c32a2..ea9c4058ee6a5 100644
-> --- a/drivers/regulator/bd718x7-regulator.c
-> +++ b/drivers/regulator/bd718x7-regulator.c
-> @@ -1613,6 +1613,8 @@ static int setup_feedback_loop(struct device *dev, struct device_node *np,
->   				step /= r1;
->   
->   				new[j].min = min;
-> +				new[j].min_sel = desc->linear_ranges[j].min_sel;
-> +				new[j].max_sel = desc->linear_ranges[j].max_sel;
->   				new[j].step = step;
->   
->   				dev_dbg(dev, "%s: old range min %d, step %d\n",
-> 
+From: Olaf krebs <olaf.krebs@emh-metering.com>
 
-Thanks a ton for fixing this! Very much appreciated :)
+We use 3 PWM channels to control an RGB LED. Without this patch we get an e=
+rror:
 
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+[    7.395326] leds_pwm_multicolor led-controller: error -EBUSY: failed to =
+set led PWM value for (null)
+[    7.405167] leds_pwm_multicolor led-controller: probe with driver leds_p=
+wm_multicolor failed with error -16
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+Our DTS-Config for an imx93-Board:
+	...
+	led-controller {
+		compatible =3D "pwm-leds-multicolor";
+		multi-led {
+			label =3D "RGBled";
+			color =3D <LED_COLOR_ID_RGB>;
+			function =3D LED_FUNCTION_INDICATOR;
+			max-brightness =3D <255>;
+			led-red {
+				pwms =3D <&tpm5 0 1000000 PWM_POLARITY_INVERTED>;
+				color =3D <LED_COLOR_ID_RED>;
+			};
+			led-green {
+				pwms =3D <&tpm6 2 1000000 PWM_POLARITY_INVERTED>;
+				color =3D <LED_COLOR_ID_GREEN>;
+			};
+			led-blue {
+				pwms =3D <&tpm5 1 1000000 PWM_POLARITY_INVERTED>;
+				color =3D <LED_COLOR_ID_BLUE>;
+			};
+		};
+	};
+	...
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+Signed-off-by: Olaf krebs <olaf.krebs@emh-metering.com>
+---
+ drivers/pwm/pwm-imx-tpm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c index 5b=
+399de16d60..82db43f56da8 100644
+--- a/drivers/pwm/pwm-imx-tpm.c
++++ b/drivers/pwm/pwm-imx-tpm.c
+@@ -190,7 +190,7 @@ static int pwm_imx_tpm_apply_hw(struct pwm_chip *chip,
+ 		 * there are multiple channels in use with different
+ 		 * period settings.
+ 		 */
+-		if (tpm->user_count > 1)
++		if ((tpm->user_count > 1) && (tmp->real_period !=3D 0))
+ 			return -EBUSY;
+=20
+ 		val =3D readl(tpm->base + PWM_IMX_TPM_SC);
+--
+2.43.0
+
+
