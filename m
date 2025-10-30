@@ -1,47 +1,47 @@
-Received: from mx-relay73-hz1.antispameurope.com (mx-relay73-hz1.antispameurope.com [94.100.132.237])
+Received: from mx-relay50-hz3.antispameurope.com (mx-relay50-hz3.antispameurope.com [94.100.134.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4814C224B0E
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 13:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.237
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7058837A3BF
+	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 13:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.239
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761832435; cv=pass; b=SlOqXQUmkqTLOO4bCONzcHo24B8fPie3Nd+yRUIkRqhS9y6J+wjLitZ4AUmyyeysIvU+W/42wAm5YOeKMNrUzFh86+Nq1gPrhDgC/kfAY4uThf09ANEQ2FuORftQ/O9htetbe1WqsSqCPSm45mCeDQG4AHjJunbbe2Q1T6QcEsQ=
+	t=1761832436; cv=pass; b=klv+kialovHl6A8mnFnELvXm2A3jxtqVrPHzKVwkdAtsbwzMxrTl2AFhIk9nyIUecKZGtkUOYqr7hP/5nnsMOteLK0EW2iKqxQbJgJXB+NFwICfRoZuvU8PEJP2KhEcBo+PWp8O0xP+GoR+ha77jv7gyRydb/lJgqSRkCYMV4pY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761832435; c=relaxed/simple;
-	bh=tJrQacF40a7gkfl20Qlli9OSH8A6qFFlTzAw0DY/ick=;
+	s=arc-20240116; t=1761832436; c=relaxed/simple;
+	bh=a0hUOLlXKcl9dQnZySZ63Qhf3hUcavWQoWIZINB11V0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SfzxM1hKiCqTgd5w1EUfbPIN1ZfwICna8JXuIBH3GP+/hOPXqklL59FUS82MabLFx8HPfGEFwM+3FWzwNQ6LtDdJzjhiWTW/RM+ItOp+iinui8T4ZkxiMONC24xR2TmwY9xL2i31Tvy597zKZHPjlOAUvT9itoCxIZVR/c/Xvpo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=gv4ECHzD; arc=pass smtp.client-ip=94.100.132.237
+	 MIME-Version; b=EAKWe60z7RDgWbAY2JmpuCxSuEW0bmhzCrYBeD5/bjv1I4ABoWnifVXCGPkIPJisKEjgwI6T3/O3ZzIcXdHTKDBQU9v3n4kGdCgYq0GRxETnXJHXzlsn4AKL1PEkrl1WaRTCMzpGwXU28IMtL+qXzMsZiLKDS2FJLyBsGelkAe4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=UCo4V2u+; arc=pass smtp.client-ip=94.100.134.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="gv4ECHzD"
-ARC-Authentication-Results: i=1; mx-gate73-hz1.hornetsecurity.com 1; spf=pass
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="UCo4V2u+"
+ARC-Authentication-Results: i=1; mx-gate50-hz3.hornetsecurity.com 1; spf=pass
  reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
  smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out02-hz1.hornetsecurity.com;
  dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
 ARC-Message-Signature: a=rsa-sha256;
- bh=WrjQJJxL5a0An32raO9r8CtscWfKA5mlsUuQyxrLoQk=; c=relaxed/relaxed;
+ bh=AnIuiwyqQKsNxaCMen44jTAA0px2zVCsntf2UHUmosQ=; c=relaxed/relaxed;
  d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
  t=1761832420;
- b=ZZQEf77V+PrIyrYSfPELzgGPkbS/+6AR2BCna0hdP4lwhr6vBujwqzKMzCbbu6RxFtTJzE+O
- cr9mavrfm69uTV8NxuYF4IfeSTIxe+rOoEy+gswZPOXa3l81wXqrhigct+IwPfvg3MRzcHJvigX
- /wenm3rgl4acFQofBCL1j472nrxAYCKSYavVfiaepdyOqP7dcJgmEXUDJm4xZNPT/TF31Vs7cFy
- hxO/6dv1XoMeRtXwbdLEMay2Rr/4d4rcmwKjkVCgH1y/n4h2kHx/NLWd7RkDIDfYPYd431ffrW/
- lH/gkqvIZJzaj+7hp8VsSipKyk/04/E/ZnN1++DxuJ10g==
+ b=GrINtD7M2ZjNgaWJG+CSeb5ghfz7BhRNMzXnD8k2tfAPYJIdhUtbJ3E2UpY55cxkhFNDwlhx
+ qgbdU/lTOvqK8poT+fHwxZiafBCdEwwP5KYjs0OeZfCBEC23GrOZaksXzf2JFJYlOFf3Wy3xGcd
+ Oyvk00+RXojMd9UvLStG6acjCepEd6TfirsgKizEToWWVqV6FavgNeHDgelGfklPtHGDrNB7wLS
+ mGFoNIur0JJ0iT9i6v6Je+Qnkvzk1bvXZ5E5UUwN5CydSWdZFd3aanY7VeJTuMv9dcOq9Wl5YuB
+ SGwmT3Po8eseQGa+w1Gfkc2ziZA9i2iD37avagLaAbBgg==
 ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
  t=1761832420;
- b=m0ZRbzpJdlTJdqDaCrN+ZLm+LRxcpeT8pMrvV0LerEFP4Owa6Apfy7Jt0vLkWGXgvByuyuEk
- 7522b1UFYWB7YgQz34Iauc/61jIDTCTi0WdAicWAIrREtoGwfpbeTbl6L+YibSzi4oyxVBOQ3yk
- Fyl+Wju5SDc1R6H+SgYkFhLFuKGJlGywrmQoldhavhhIYYakhqj+AsQ9HuYXcKWlGECrnawn639
- A6FwiatWhEEJyxg2vbOmGcr2ckZzTe/J5Ebol7VnhCiTWDWfrWgsZpwnQ+lMV7FeXo7o6OKZ0t6
- G5Sec1W7usXkWNb3DTSl9/0Oq3szdWLMIgLvhPwoPnu7Q==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay73-hz1.antispameurope.com;
+ b=pWNLD0h5POyrBW7zof1xVqPOKHzRKvUI5Evq9L5kK/EoQQ1OLW9dHT+wJlTkj8NCn7E5BbaI
+ Uih4p+D5TOPyZsCPzM4wL6KdyV3xAambIGgNw+PbWu4wmKd9ekhcHaNSGHzsQVzVgZAYUZ/E6oF
+ 5YaByMto/ry6hJxGW+e3dy3PuvH9RQFiH//Tb8EBdjRYuyjSUXTOWcZTN/o0MkKHO5k2DAWHmii
+ eOj6cRaoLTeqKykT1LgCH1re8xvxr6J66a6/1QNVBRP+agj8+SEC01eqkQWbVkma99Wu0678HEv
+ RmxBHN5E/j6hM/mc/7tbFkjXUvK0oQfjMzdH1Tz75ba4g==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay50-hz3.antispameurope.com;
  Thu, 30 Oct 2025 14:53:40 +0100
 Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
 	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out02-hz1.hornetsecurity.com (Postfix) with ESMTPSA id CE8195A0AF8;
-	Thu, 30 Oct 2025 14:53:17 +0100 (CET)
+	by smtp-out02-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 95FA65A0A3E;
+	Thu, 30 Oct 2025 14:53:16 +0100 (CET)
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -56,9 +56,9 @@ Cc: linux@ew.tq-group.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 17/19] arm64: dts: imx95-tqma9596sa-mb-smarc-2: mark LPUART1 as reserved
-Date: Thu, 30 Oct 2025 14:52:59 +0100
-Message-ID: <20251030135306.1421154-7-alexander.stein@ew.tq-group.com>
+Subject: [PATCH 16/19] arm64: dts: imx95-tqma9596sa-mb-smarc-2: Add MicIn routing
+Date: Thu, 30 Oct 2025 14:52:58 +0100
+Message-ID: <20251030135306.1421154-6-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251030135306.1421154-1-alexander.stein@ew.tq-group.com>
 References: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
@@ -76,42 +76,46 @@ X-cloud-security-crypt: load encryption module
 X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
 X-cloud-security-Mailarchivtype:outbound
 X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay73-hz1.antispameurope.com with 4cy5DV2Rr7z14YKb
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay50-hz3.antispameurope.com with 4cy5DV2mnCz2nGl0
 X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:adb5c744a6af74ddd2c8a6726a431f2a
-X-cloud-security:scantime:1.676
+X-cloud-security-Digest:af15caf252ad1b03706cb5988fd6514c
+X-cloud-security:scantime:1.978
 DKIM-Signature: a=rsa-sha256;
- bh=WrjQJJxL5a0An32raO9r8CtscWfKA5mlsUuQyxrLoQk=; c=relaxed/relaxed;
+ bh=AnIuiwyqQKsNxaCMen44jTAA0px2zVCsntf2UHUmosQ=; c=relaxed/relaxed;
  d=ew.tq-group.com;
  h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1761832419; v=1;
- b=gv4ECHzDs8MI2B4Tmx8MQk3xQz1KzWqrAxK9iNNayGj10dxf9/hRouUuhgIPpbZw9WQgfZZy
- AQmGUCsmmQ3GkRuOTLQj9LpI/voZ3HR9jjEsXb9F8iZjx8Z3EsX/T0WRjlw64tlD/SZ3lFA7K7d
- 5KMmcFPRx/dR4A6vq5EWkLU+1h+vGEBwmx6Sft1wLkxIiBzzlNp7/6vzNSA6qJwet1lILsxnIZC
- wWvSvAPHhhdY4xbyh2MfB+irqI1TQPu0lq/s1BhFku/eKm5Oz2bb6i3H/DsVCHc9zBHxE0qVrua
- D1lXmvDIkdNai05WGk8aVEU6dA1G99eU8Nr7T4KtMUS6g==
+ t=1761832420; v=1;
+ b=UCo4V2u+0yJhcenc6UoBINkAbrXuRgumSUtlqHTvQxkd5vG8pasIjYGc5zoJThpX/n2k31Rc
+ yySAExe2N02173EV0Clapg8V4fgX+RZFq3P3D9xwgllXr/0PexQDtI3TfslA66kAEyuctkT0F3F
+ 4SJe1y1fN1Se6k9efaKsqqllG2rcPL0/i54OJpeWexxNDuzoA1ci5GLUX/awleriv5ywCZEpnV9
+ C8Rj0QLQAAFL6m2l966Caf2L544n9Yh7EF7+b/eJihNbwbkR5KWZcZXiD/aajfNAdKTJQ2AVE42
+ BZaQMl1Ps3j88t7juSJT88xfCOzkCOvt2V/Gyfbb2gldQ==
 
-LPUART1 is not disabled, but used by system manager (SM) and should not
-be used by Linux.
+MicIn is connected to IN3_L. Add routing including the Mic Bias.
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts     | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
-index d1c3d55b14469..15d117d785445 100644
+index 8caf0c68ba9fc..d1c3d55b14469 100644
 --- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
 +++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
-@@ -212,7 +212,7 @@ &lpspi3 {
- 
- /* SER0 */
- &lpuart1 {
--	status = "disabled";
-+	status = "reserved";
+@@ -144,6 +144,13 @@ sound {
+ 		model = "tqm-tlv320aic32";
+ 		audio-codec = <&tlv320aic3x04>;
+ 		audio-cpu = <&sai3>;
++		audio-routing =
++			"IN3_L", "Mic Jack",
++			"Mic Jack", "Mic Bias",
++			"IN1_L", "Line In Jack",
++			"IN1_R", "Line In Jack",
++			"Line Out Jack", "LOL",
++			"Line Out Jack", "LOR";
+ 	};
  };
  
- /* SER3 */
 -- 
 2.43.0
 
