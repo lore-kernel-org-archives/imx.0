@@ -1,106 +1,82 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B2B2E7167
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 10:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E0233DEFD
+	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 10:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761818649; cv=none; b=gXVaKtjF1cGWcN1HUJurvAOKtGNPmK5vrUmIxUC/2Hk2lyP66e096OYBFsdnCcBTWzh7g0Pb5w/fxiwQ3Y2UCzllwi6VeimqIJsrgJDgt2QQNTY0weXTWSW+HEOnEAyxZFgp1mgKNyTs1rplXw5UV1OJYluzVsDnf1tbTyLI0DA=
+	t=1761820818; cv=none; b=Aofy1vg7tbte5JnOYDW1B/xbemu+wMOk+XeG+it4jMBogHn1Bu+WPDD3k/NiEvFW+GIdon+3nB6MjZVgPbwo7jMRxCVD9epLgAKIbrzqcy5jjoeJJm5V6JC7BYZIxjTlIqOposBz2/gopr1YbXfQduGAk5fQKNAd7KY2bNnhqyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761818649; c=relaxed/simple;
-	bh=Bbu5f3ekraU0UTZNwEa5wKqb5Ak3IfFXpXp5DIw2MRc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T8jaj1wMtbKbo5IF82LL9IplsOjBywZsVa1Wfie6bJ+pgJNm0q5TEohyk4zxWJZ/3BIDcK9BzIR9NtZTXVCgi5da/d8Qc8rs2QX2gJ62nOqk+dsU22TT/4P7WNNXSfvFEOz3BnWFNiByUVHmJSE4pAnslvgttsanxWdpEQHfEsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d8agLYTO; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761820818; c=relaxed/simple;
+	bh=8Vzuw1iAvx1zgZghcv2owGbdLTGXx8dqKeXVGD0+4B4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V5yYUbF9fOj8qkKQSLmwYFigAmnnvgxzjt7wHETPcflT9wkkxMVPc9+uS/FtJBG4MGKuklQkf2ffQULGjLwtod8hbjLOBcN/Yn52LI4TeETHFLxsCZn1VkETDn5kUP2JYZmNBwQvlqLMQJHpLDCkK50zkhWUzHGt5ZDVjm9HYFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Dipggkwh; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d8agLYTO"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-37a0d3d2e8aso9136601fa.0
-        for <imx@lists.linux.dev>; Thu, 30 Oct 2025 03:04:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761818646; x=1762423446; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dauqN1FImNWy4rwXPKxul6Sk7/dfHFTeFablnNaeE7s=;
-        b=d8agLYTOg+GnDuc3f4vQTfCpVcWR/mkjwou+gbHd/aWt9G0dFkJzvAR9HEeE0NoFyM
-         P2+uidPvGzGtC1gDcxrN8JQSsEidpetbaU1g40VKUisAVLfd37Wrk96VbtkSWW4xjXiQ
-         wqNfOvBNJjct568BAXedaAZvh+dt70ZodKSTb3WVVZ6m8JUVFEIpafU5TsdL2Z2Ogucn
-         pNOh9qbzyjXbREfoRFazML36N2osuxpRrdWNMyycVYGlnmh5djLgsHyNvc0uv/NcwNtU
-         j9HHSF3IswdunOO+IbFNyb702d3OcE6xwJCCMTjxAtw7+lpJLGN3+ljEubIJ03nLZP7y
-         BkcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761818646; x=1762423446;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dauqN1FImNWy4rwXPKxul6Sk7/dfHFTeFablnNaeE7s=;
-        b=vccFCwaYd1HXv0HiTb8zFn4Zc5xJL6lCA55IPaLyLLMf34nreJwyMWyv+aNtglsRf+
-         YbY60xR6RS8L5g5bsj6gfI0T4IixvhXErYCfYETVF9N/Yp/2EdV/23PxgAbeYScvdAln
-         x7vTOefbGK48/gBgS2FF2WQv1uTaf49rfCXC1HuiFaVDfC9jgSH246sZUjT3xz5IqmbA
-         trAEFDip7JIut2VkL1Tf9JSCsJIH0FFHQksVYuSRUEtwZhyy++H9pJnJmxGJ4N4r5gxy
-         qju6dQA5PsnIBXYbIN//Vf6YpdLFXCxFGSILn+K5IsKI7Wj8rqwswuYL9ALyUso9UkL8
-         aCtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU96xHxp5lIGd5PifBPat0cojbnyhyXDLWjidYFZYVwn63iuJZ9tekm5OUlqXqrfL42af8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YylNRuihG1cjKbvOQVBWKGViXoLZVQxIX8BUC1fWNHcnQyb1JGR
-	0WGiLc/fAWxgHcSQ4iMKX9PVVq+9CLlUo1gUbCEqW6h9bHfJiAnNHK1i
-X-Gm-Gg: ASbGncsbl7U/wvZFGI97w2m6i6xeJHp9nGrcE2OKnQ0iK2OWCAWOkmKlJeDu0YejHEE
-	0GAQUjLnvVlmvFURaIePL3kZy+vQUxgSWcqd5W8RXnPPzbQloPbiyYCMtH6N/3SKb+pBUiLG3lb
-	Pwfhcvu34r9POqhs1IW78aj0Mwzvx9B/HvasdEPUX7OEOwDh38Kmsy8MJc+iNPek0IGEDbMhYlx
-	Yn0MR7rnn+w1xTW6/p+X8bfTB9yIIYX3l96bCetOCcjCF9r4ZVxfY2OJNs1UMGh561fqUs+X5Vy
-	AOWBSaXzmdMZ/xV1EpSifmdP29qrHe0L7sAtujbwO5kndKr3zo5X69ANlqUCV//ZRd/UIt+jIRJ
-	CWh42esAQBCudvPjiSe1JAzFt6gilOIR9aioYG4d6YGmHcQDDoz35ckZIyu4vrJW26JYsqR1e97
-	DwPhHLbdBMdGPBLuHEZxk4JQ35gJjMvAC0jjJh8lhD9Y7C1ve5lqxbCBcmHQ==
-X-Google-Smtp-Source: AGHT+IGyCpQSfbBRdEYvu2lNdOmyrZXNNZuheExnuJl6d4xQSCtQI8cyPqqgwbNtC67LbnCVinYQhw==
-X-Received: by 2002:a2e:a9ac:0:b0:373:a3e2:b907 with SMTP id 38308e7fff4ca-37a023b0b88mr20842611fa.10.1761818645333;
-        Thu, 30 Oct 2025 03:04:05 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-378ee0bc2aasm39339011fa.24.2025.10.30.03.04.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Oct 2025 03:04:04 -0700 (PDT)
-Message-ID: <bd938b24-59ee-4a61-87bc-4416b1a0e55a@gmail.com>
-Date: Thu, 30 Oct 2025 12:04:03 +0200
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Dipggkwh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=RCywyWtPG7xhPz4mDJsFONHwjktY6zCv82HEx1Rjk2s=; b=DipggkwhifOTGFbt6Tw5h2OBCG
+	ShvA3eH+PJz5SAosWXlC6MzBX0ny72o8hYDYFpCd5ZK9t17vVAL7cnGRxOkUqXQj27Sp9XpKs3uvC
+	O3SEkV74W7Luyvz+J6dpAqBP4jxEu1R5EjfqvFHoejfVCpjfRI2hlEMc0QFR7Bf8nFdQke89adTkV
+	nu5PTgG+SEC2sNHaPYTG4pjLAhZCujDjhj3rGYHxFH3kG4/9go3ViQTBk5j7F2PcqHJsmjq2aFvI/
+	5yFSXd+d92/XAiED1/xTe2pTex1tL8h+M0oGuwIGJYAt7YVzmXUJStuz35ynhA7hNd5+2rO0ZQiEc
+	8APENvFA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34098)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vEQ4g-000000005ZB-0ady;
+	Thu, 30 Oct 2025 10:40:10 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vEQ4e-000000008Oe-2a4n;
+	Thu, 30 Oct 2025 10:40:08 +0000
+Date: Thu, 30 Oct 2025 10:40:08 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: "Krebs, Olaf" <Olaf.Krebs@emh-metering.com>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:PWM SUBSYSTEM" <linux-pwm@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] Fix IMX PWM period setting
+Message-ID: <aQNAiDVKahkIrLYA@shell.armlinux.org.uk>
+References: <20251030084727.4098222-1-user@jenkins>
+ <c26fde7dff3a41ff9f7e6c97e2a31801@emh-metering.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/6] arm64: dts: freescale: add Ka-Ro Electronics
- tx8m-1610 COM
-To: maudspierings@gocontroll.com, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20251030-mini_iv-v3-0-ef56c4d9f219@gocontroll.com>
- <20251030-mini_iv-v3-4-ef56c4d9f219@gocontroll.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20251030-mini_iv-v3-4-ef56c4d9f219@gocontroll.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c26fde7dff3a41ff9f7e6c97e2a31801@emh-metering.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 30/10/2025 08:35, Maud Spierings via B4 Relay wrote:
-> From: Maud Spierings <maudspierings@gocontroll.com>
+On Thu, Oct 30, 2025 at 08:51:20AM +0000, Krebs, Olaf wrote:
+> From: Olaf krebs <olaf.krebs@emh-metering.com>
 > 
-> The Ka-Ro Electronics tx8m-1610 is a COM based on the imx8mm SOC. It has
-> 1 GB of ram and 4 GB of eMMC storage on board.
-> 
-> Add it to enable boards based on this module
-> 
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-FWIW: Looks good to me.
+> We use 3 PWM channels to control an RGB LED. Without this patch we get an error:
+
+Not build-tested.
+
+> -		if (tpm->user_count > 1)
+> +		if ((tpm->user_count > 1) && (tmp->real_period != 0))
+
+"tmp" vs "tpm". As there's no variable called "tmp" in this function...
 
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
