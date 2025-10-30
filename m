@@ -1,118 +1,220 @@
-Received: from mx-relay172-hz1.antispameurope.com (mx-relay172-hz1.antispameurope.com [94.100.132.169])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCFD3446CC
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 12:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761828670; cv=pass; b=HOhkYG5gIBjPAHuDYtKKU94Bkg863WGwSB+trSE0Fd3yECHlVwomKlqwVrx2C2YHTeJEE+94kfGGYpYEkMwAkD9VwO4E6hwo3KYfcA1IPsJkk+rc/XIlc7tuXFNVJShoBaw/2J6h0teO2x52nTWwdomVYwO60ixOEVY2swDiLRc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761828670; c=relaxed/simple;
-	bh=SBO7GNLcfMbKloOhhNir70H2TF40KEEU8NLb1BkwWh4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRGbikY245TKISPXgOgMyQZ44vjNsNav92DHHO2+QRCAl78XvRdfq/6gHIEwbFr/HzTCfBSyXSzOv6PrpoHDurO4LVwQh+CZyrhki8HIf7jXuN0YQPHn0YV4thHpuY7dBJYHO6UPZNtip+1XEieehSeBqU9OY9kzqpb40nnnvb8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=nK9fC9+M; arc=pass smtp.client-ip=94.100.132.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="nK9fC9+M"
-ARC-Authentication-Results: i=1; mx-gate172-hz1.hornetsecurity.com 1;
- spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
- header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=yQrnZtKYkTmoOqZMGCIOD6/kHXaWhNyn+TUU1owbG/U=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1761828604;
- b=FyG3sipBagXEe+L4w4oRvQLIWwaCax+Vu02E4YCDckegtQSmLkw27XFhRVDsfXb8qR8LYcYr
- W9WlfADlXjPBr6JGZfhm5FZt2+6Dixg5Be9JitbnSwxkjGWuIJ5fkm8ahlm6XVe6NG7CVYiVj0C
- 0wZWZA5kHrCJp4EzwJxlMVEvgJelpo0Mwk3oIkgWIWEhIzYuMaOAH8vNECUDAYri9BMOBFs7qXT
- XYsnFdJKXXU1y4QbwfnknO2S/KpglFryqvoCTA+Zr7vwhIFrHzAV6B7rH03iPVmbtp7YxrkWskE
- Nd1TLrgq1m2KwhumJTUPzuPqm5hPMqbMMRL+lvFVedxKw==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1761828604;
- b=Tx7IZ2iYE6N2lFDE8vqP5PASMUMnYUXUUtqxkeIfPG27XBC6x4HUYqkuUL3EX88MJpt8NEHP
- Lb93eZ8/XHscZUOiubBD4AiVB+3HLcC3C3IsbIanyyMHO1ibq1pqgMzKcgu/aGXZEh58u5MZQG3
- rjM3LO0lCElg7T4/pZ1dqdYoS+IOvEXDeRCEGEyOh29ooR6WfyRAzvVUP9J7JcXtqvI3owXSImh
- Ju8xdPjS2RFBUH2gXIUfaZWNmR2DvK8VyTRVyR4Q9bMX8R7kWzRp+AmszPa1SkkYMIk+bibDGqa
- oilRZj2zNqS5Qw75h4Cp2x1hWuTN3Iv3foz3BcLlpT62w==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay172-hz1.antispameurope.com;
- Thu, 30 Oct 2025 13:50:03 +0100
-Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 9E58A220D24;
-	Thu, 30 Oct 2025 13:49:52 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 02/19] arm64: dts: imx95-tqma9596sa: reduce maximum FlexSPI frequency to 66MHz
-Date: Thu, 30 Oct 2025 13:49:09 +0100
-Message-ID: <20251030124936.1408152-3-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
-References: <20251030124936.1408152-1-alexander.stein@ew.tq-group.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F525306B0D
+	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 13:06:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761829604; cv=none; b=ffP///mAoqcupnplwTa7hUxTXWxz8Vd1jFe3hJYTjkj/OVwC7X3vvkojka3HIZR6DaI7PN92G1yqQczHXev4dBcgAtYedOvR80QRRpdfXP0qKSY53kKmYgSIgwz2DBQg7ykmoX0mDrMDnjvRf0YXxH0LX4zuzAjLq5kY4GbH1rQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761829604; c=relaxed/simple;
+	bh=tyv5U14rZUqntfSo8Ih2AZ1Lql7y8cKlmbDYXAk3K1c=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Gunc9ota1pQNhWTbJt2+x7zShILc44AxnOJ4ufOuSoaeFLhYwR+SIlf3TQ11EpuKfrArfCGbA6BPrtn3Uw2xw1jo+cfRIXjfkyQ9DnsdQtwu+D4D3Ug+NO9QOG83rlX6w15s7dOAmThv8yjoJ6J5M2ozR0BZmkK2mtGq0j/7fBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vESMJ-0006ym-Cs; Thu, 30 Oct 2025 14:06:31 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vESMI-006DXP-03;
+	Thu, 30 Oct 2025 14:06:30 +0100
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vESMH-000000009YP-3s7P;
+	Thu, 30 Oct 2025 14:06:29 +0100
+Message-ID: <105ed81ed67d8e4cacb63a83a606e206a4d6f310.camel@pengutronix.de>
+Subject: Re: [PATCH v3 5/8] reset: imx8mp-audiomix: Switch to using regmap
+ API
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>, Abel Vesa
+	 <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Michael Turquette
+	 <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring
+	 <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	 <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Fabio Estevam
+	 <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
+	 <shengjiu.wang@nxp.com>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org,  Pengutronix Kernel Team	
+ <kernel@pengutronix.de>
+Date: Thu, 30 Oct 2025 14:06:29 +0100
+In-Reply-To: <20251029135229.890-6-laurentiumihalcea111@gmail.com>
+References: <20251029135229.890-1-laurentiumihalcea111@gmail.com>
+	 <20251029135229.890-6-laurentiumihalcea111@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1+deb13u1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay172-hz1.antispameurope.com with 4cy3q51zVyz1Z1pc
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:22167396eefe238fc1584f087a1c054f
-X-cloud-security:scantime:2.247
-DKIM-Signature: a=rsa-sha256;
- bh=yQrnZtKYkTmoOqZMGCIOD6/kHXaWhNyn+TUU1owbG/U=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1761828603; v=1;
- b=nK9fC9+MruZl79opQ/SQomuQeZY+PSgo/lRgh93T+cDmThkdmOA3qu77u60igKK7+DHlDq0O
- lXD2HPaIxJXpqRRvFS6CBknLhG+7HHcGyhODvAnv4HgjKSMQ5nCon4Qpugofx9VeQIVtIpQEi8z
- LWtXF1ayBqcEkP7Yy4GEoJx/aOEiff0Ar1ibqJBZtyXyFk2ZQQekH/EIo+tk75OxPotwRQm3Roa
- 2pPm0FDoSWZ/LjUoOWCBH9R+EKj7+ULevn8CHSuDwI2ut2Nax9wisEaZHRPeU40D1aa5DS/9mSx
- qsoOHF5ijbsHWkrhio7PBEEdaO9JGcuZxmGX1IKUgpoGg==
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-66 MHz is the maximum FlexPI clock frequency in normal/overdrive mode
-when RXCLKSRC = 0 (Default)
+On Mi, 2025-10-29 at 06:52 -0700, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>=20
+> As far as the Linux kernel is concerned, block devices such as i.MX8MP's
+> AUDIOMIX block control or i.MX8ULP's SIM LPAV can simultaneously act as
+> clock controllers, reset controllers or mux controllers. Since these IPs
+> offer different functionalities through different subsystem APIs, it's
+> important to make sure that the register R-M-W cycles are performed under
+> the same lock across all subsystem APIs. This will ensure that registers
+> will not end up with the wrong values because of race conditions (e.g.
+> clock consumer tries to update block control register A, while, at the
+> same time, reset consumer tries to update the same block control register=
+).
+>=20
+> However, the aforementioned race conditions will only impact block contro=
+l
+> IPs which use the same register for multiple functionalities. For example=
+,
+> i.MX8MP's AUDIOMIX block control IP provides clock gating functionalities
+> and reset control functionalities through different registers. This is wh=
+y
+> the current approach (i.e. clock control and reset control work using
+> different locks) has worked well so far.
+>=20
+> Since we want to extend this driver to be usable for i.MX8ULP's SIM LPAV
+> block control IP, we need to make sure that clock control, reset control,
+> and mux control APIs use the same lock since all of these functionalities
+> are performed using the SYSCTRL0 register.
+>=20
+> To do so, we need to switch to the regmap API and, if possible, use the
+> parent device's regmap, which, in the case of i.MX8ULP, will be the clock
+> controller. This way, we can make sure that the clock gates and the reset
+> controller will use the same lock to perform the register R-M-W cycles.
+>=20
+> This change will also work fine for cases where we don't really need to
+> share the lock across multiple APIs (e.g. i.MX8MP's AUDIOMIX block
+> control) since regmap will take care of the locking we were previously
+> explicitly performing in the driver.
+>=20
+> The transition to the regmap API also involves some cleanup. Specifically=
+,
+> we can make use of devres to unmap the device's memory and get rid of the
+> memory mapping-related error paths and the remove() function altogether.
+>=20
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> ---
+>  drivers/reset/reset-imx8mp-audiomix.c | 91 +++++++++++++++++----------
+>  1 file changed, 57 insertions(+), 34 deletions(-)
+>=20
+> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-=
+imx8mp-audiomix.c
+> index e9643365a62c..3f6d11270918 100644
+> --- a/drivers/reset/reset-imx8mp-audiomix.c
+> +++ b/drivers/reset/reset-imx8mp-audiomix.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+>  #include <linux/of_address.h>
+> +#include <linux/regmap.h>
+>  #include <linux/reset-controller.h>
+> =20
+>  #define IMX8MP_AUDIOMIX_EARC_RESET_OFFSET	0x200
+> @@ -42,8 +43,8 @@ static const struct imx8mp_reset_map reset_map[] =3D {
+> =20
+>  struct imx8mp_audiomix_reset {
+>  	struct reset_controller_dev rcdev;
+> -	spinlock_t lock; /* protect register read-modify-write cycle */
+>  	void __iomem *base;
 
-Fixes: d2c4d71b6cde ("arm64: dt: imx95: Add TQMa95xxSA")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Drop base as well, better let devres handle this.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-index c3bb61ea67961..16c40d11d3b5d 100644
---- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa.dtsi
-@@ -115,7 +115,7 @@ &flexspi1 {
- 	flash0: flash@0 {
- 		compatible = "jedec,spi-nor";
- 		reg = <0>;
--		spi-max-frequency = <80000000>;
-+		spi-max-frequency = <66000000>;
- 		spi-tx-bus-width = <4>;
- 		spi-rx-bus-width = <4>;
- 		vcc-supply = <&reg_1v8>;
--- 
-2.43.0
+[...]
 
+> +/* assumption: registered only if not using parent regmap */
+> +static void imx8mp_audiomix_reset_iounmap(void *data)
+
+Pass base instead of dev.
+
+> +{
+> +	struct imx8mp_audiomix_reset *priv =3D dev_get_drvdata(data);
+> +
+> +	iounmap(priv->base);
+
+	void __iomem *base =3D data;
+
+	iounmap(base);
+
+> +}
+> +
+> +/* assumption: dev_set_drvdata() is called before this */
+
+Why not just pass priv instead of dev?
+
+> +static int imx8mp_audiomix_reset_get_regmap(struct device *dev)
+> +{
+> +	struct imx8mp_audiomix_reset *priv;
+> +	int ret;
+> +
+> +	priv =3D dev_get_drvdata(dev);
+> +
+> +	/* try to use the parent's regmap */
+> +	priv->regmap =3D dev_get_regmap(dev->parent, NULL);
+> +	if (priv->regmap)
+> +		return 0;
+> +
+> +	/* ... if that's not possible then initialize the regmap right now */
+> +	priv->base =3D of_iomap(dev->parent->of_node, 0);
+
+Make base a local variable ...
+
+> +	if (!priv->base)
+> +		return dev_err_probe(dev, -ENOMEM, "failed to iomap address space\n");
+> +
+> +	ret =3D devm_add_action_or_reset(dev, imx8mp_audiomix_reset_iounmap, de=
+v);
+
+... and pass it as data instead of dev.
+
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "failed to register action\n");
+> +
+> +	priv->regmap =3D devm_regmap_init_mmio(dev, priv->base, &regmap_config)=
+;
+> +	if (IS_ERR(priv->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(priv->regmap),
+> +				     "failed to initialize regmap\n");
+> +
+> +	return 0;
+> +}
+> +
+>  static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
+>  				       const struct auxiliary_device_id *id)
+>  {
+> @@ -105,36 +139,26 @@ static int imx8mp_audiomix_reset_probe(struct auxil=
+iary_device *adev,
+>  	if (!priv)
+>  		return -ENOMEM;
+> =20
+> -	spin_lock_init(&priv->lock);
+> -
+>  	priv->rcdev.owner     =3D THIS_MODULE;
+>  	priv->rcdev.nr_resets =3D ARRAY_SIZE(reset_map);
+>  	priv->rcdev.ops       =3D &imx8mp_audiomix_reset_ops;
+>  	priv->rcdev.of_node   =3D dev->parent->of_node;
+>  	priv->rcdev.dev	      =3D dev;
+>  	priv->rcdev.of_reset_n_cells =3D 1;
+> -	priv->base            =3D of_iomap(dev->parent->of_node, 0);
+> -	if (!priv->base)
+> -		return -ENOMEM;
+> =20
+> +	/* keep before call to imx8mp_audiomix_reset_init_regmap() */
+
+Not needed if priv is passed to it directly.
+
+regards
+Philipp
