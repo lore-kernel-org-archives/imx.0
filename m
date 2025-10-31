@@ -1,371 +1,157 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05ADD2882A9
-	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 14:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F2434BA3E
+	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 14:29:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761919922; cv=none; b=WHjeBlkCr1RZXOMPAjBziV4MIHTbvfXQsTngjb/IJS9Y+/ZkDo3tCdhXloQOcvI75XuI6jGtEysLOhUQG6YGvV+JvtRj+dQwLqLLndR6kumSD3sU8zviR6pKC/C+p1iXGIisrwAIrSEfvxxbNnAoMlF7XPw7o1Uy2uY2g6FzsFg=
+	t=1761920996; cv=none; b=CQt5vnxV0b3BTcEpySiqNAFBDq4AdaiVweZjVokrBoM4N2cgo1dsZx/PmR2Um7B7unLu3pY5vSKXgZMLZHcKtINuXF/+URt54d9C9Xi2s63nxZ039QN/wVwgf93gJD7f/YZGi/fuWVVKltfCBRxHDrbIcNLlJInMtGv9Qi1zahw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761919922; c=relaxed/simple;
-	bh=+T4v+KUgJc/8+w8pb5xNmHcDFnylEKU+WWd2hPof9DY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ipIMFD4rrk2QYxgSGEHKOSNF/A6RX1HntaI1qd2Etjt3Nt/DKIJCGPMKpFdHTLNOkpVt+UzAdgpzTuKkPWFe3RQdd+XE4NZlU4CFfZEIpBVGnCQv1WICIj4vUGQH0eYkQbZuoWCIeA9a5WvXwybVX2f+XseHINutAg5jQcfpH70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id D76C4202F7E;
-	Fri, 31 Oct 2025 15:04:55 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id CA781202F7C;
-	Fri, 31 Oct 2025 15:04:55 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 8372720259;
-	Fri, 31 Oct 2025 15:04:55 +0100 (CET)
-Date: Fri, 31 Oct 2025 15:04:55 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Shawn Guo <shawnguo2@yeah.net>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: freescale: Add GMAC Ethernet for S32G2 EVB
- and RDB2 and S32G3 RDB3
-Message-ID: <aQTCBwLzhRDl+pH9@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20251006-nxp-s32g-boards-v1-1-f70a57b8087f@oss.nxp.com>
- <aP8Ezk_zjo-NZCD4@dragon>
+	s=arc-20240116; t=1761920996; c=relaxed/simple;
+	bh=DpRmmnQNFBCQ/QafgwFnqLT9Yw/H1JWWO9tLoLVtAy4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hMMjOQbF57fXTy+zbieJu1qFW39orZSv+ayUi8JjyWWcCWxL1SCswVkW9rIRidzut4IYufxLO/gEUNuW/Ax5zw1xQEIbB6pnIwqjnYu6dwUIRFPx4aGzgGQKqU9xRfUqQbrjvaoFBDWQxW4Reo+l9cu3HD/x3FNppGBJ7eJ2tGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=m/llmHWP; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="m/llmHWP"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D63C34E4143C;
+	Fri, 31 Oct 2025 14:29:51 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9DC5860704;
+	Fri, 31 Oct 2025 14:29:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C4B4A11818003;
+	Fri, 31 Oct 2025 15:29:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1761920989; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=H1xEmCgdr5BM399Kc4ZsWwaTbhEQ52MJYYiQpqbSK6Q=;
+	b=m/llmHWPK2GTOxgP86qebD1Z2Edet7KZozbxg7xHP71zP8WGHqlNCsjTjzbgRJW6AoYEg9
+	PGGuEBK7TNuc+3zADlLbC1jrjiYc/TXhPfAwEtjv3025kcM3TvB0cUwMNtHDn+fuYXbapk
+	18lKsj6lpv1/ObuOPQiBVRZx/Tm+zaLVFOXH7eT76X6+OiJSchpc3v+iGXicmC9AbAQ7Fi
+	n3R42rQTkma0JCEYRFgzMb9znRzRns4yCbMUv4DSU7pRjgiVIxLEd6NnupsCZT4TGW2iAp
+	n6HmKRiLt0yJEP375+9QgT+CNjKgF6b7Kiq48SW1im8mtyVm7PYpr3cu982RMw==
+Date: Fri, 31 Oct 2025 15:29:30 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
+ Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, Bjorn
+ Helgaas <bhelgaas@google.com>, Charles Keepax
+ <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
+ Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Mark Brown <broonie@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, Davidlohr
+ Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Wolfram Sang <wsa@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 05/29] dt-bindings: bus: Add simple-platform-bus
+Message-ID: <20251031152930.3c51a313@bootlin.com>
+In-Reply-To: <CAMuHMdVnsWMB24BTFKwggEXKOtqJ96GWZh2Xz+ogocQHM+=+6Q@mail.gmail.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+	<20251015071420.1173068-6-herve.codina@bootlin.com>
+	<CAMuHMdVnsWMB24BTFKwggEXKOtqJ96GWZh2Xz+ogocQHM+=+6Q@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aP8Ezk_zjo-NZCD4@dragon>
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Oct 27, 2025 at 01:36:14PM +0800, Shawn Guo wrote:
-> On Mon, Oct 06, 2025 at 06:31:28PM +0200, Jan Petrous via B4 Relay wrote:
-> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-> > 
-> > Add support for the Ethernet connection over GMAC controller connected to
-> > the Micrel KSZ9031 Ethernet RGMII PHY located on the boards.
-> > 
-> > The mentioned GMAC controller is one of two network controllers
-> > embedded on the NXP Automotive SoCs S32G2 and S32G3.
-> > 
-> > The supported boards:
-> >  * EVB:  S32G-VNP-EVB with S32G2 SoC
-> >  * RDB2: S32G-VNP-RDB2
-> >  * RDB3: S32G-VNP-RDB3
-> > 
-> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/s32g2.dtsi        | 50 ++++++++++++++++++++++++-
-> >  arch/arm64/boot/dts/freescale/s32g274a-evb.dts  | 21 ++++++++++-
-> >  arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts | 19 ++++++++++
-> >  arch/arm64/boot/dts/freescale/s32g3.dtsi        | 50 ++++++++++++++++++++++++-
-> >  arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts | 21 ++++++++++-
-> >  5 files changed, 157 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> > index d167624d1f0c..d06103e9564e 100644
-> > --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> > @@ -3,7 +3,7 @@
-> >   * NXP S32G2 SoC family
-> >   *
-> >   * Copyright (c) 2021 SUSE LLC
-> > - * Copyright 2017-2021, 2024 NXP
-> > + * Copyright 2017-2021, 2024-2025 NXP
-> >   */
-> >  
-> >  #include <dt-bindings/interrupt-controller/arm-gic.h>
-> > @@ -738,5 +738,53 @@ gic: interrupt-controller@50800000 {
-> >  			interrupt-controller;
-> >  			#interrupt-cells = <3>;
-> >  		};
-> > +
-> > +		gmac0: ethernet@4033c000 {
+On Fri, 31 Oct 2025 09:52:16 +0100
+Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+
+> Hi Hervé,
 > 
-> Please sort devices in order of unit-address.
+> On Wed, 15 Oct 2025 at 09:17, Herve Codina <herve.codina@bootlin.com> wrote:
+> > A Simple Platform Bus is a transparent bus that doesn't need a specific
+> > driver to perform operations at bus level.
+> >
+> > Similar to simple-bus, a Simple Platform Bus allows to automatically
+> > instantiate devices connected to this bus.
+> >
+> > Those devices are instantiated only by the Simple Platform Bus probe
+> > function itself.
+> >
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
 > 
-
-Moved up.
-
-> > +			compatible = "nxp,s32g2-dwmac";
-> > +			reg = <0x4033c000 0x2000>, /* gmac IP */
-> > +			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
-> > +			interrupt-parent = <&gic>;
-> > +			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-> > +			interrupt-names = "macirq";
-> > +			snps,mtl-rx-config = <&mtl_rx_setup>;
-> > +			snps,mtl-tx-config = <&mtl_tx_setup>;
-> > +			status = "disabled";
-> > +
-> > +			mtl_rx_setup: rx-queues-config {
-> > +				snps,rx-queues-to-use = <5>;
-> > +
-> > +				queue0 {
-> > +				};
+> Thanks for your patch!
 > 
-> We usually have newline between nodes.
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/bus/simple-platform-bus.yaml
+> > @@ -0,0 +1,50 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/bus/simple-platform-bus.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Simple Platform Bus
+> > +
+> > +maintainers:
+> > +  - Herve Codina <herve.codina@bootlin.com>
+> > +
+> > +description: |
+> > +  A Simple Platform Bus is a transparent bus that doesn't need a specific
+> > +  driver to perform operations at bus level.
+> > +
+> > +  Similar to simple-bus, a Simple Platform Bus allows to automatically
+> > +  instantiate devices connected to this bus. Those devices are instantiated
+> > +  only by the Simple Platform Bus probe function itself.  
 > 
+> So what are the differences with simple-bus? That its children are
+> instantiated "only by the Simple Platform Bus probe function itself"?
+> If that is the case, in which other places are simple-bus children
+> instantiated?
 
-Added newline between queue subnodes.
+In of_platform_populate(). It call of_platform_bus_create() which is
+recursive:
+  https://elixir.bootlin.com/linux/v6.14/source/drivers/of/platform.c#L374
 
-> > +				queue1 {
-> > +				};
-> > +				queue2 {
-> > +				};
-> > +				queue3 {
-> > +				};
-> > +				queue4 {
-> > +				};
-> > +			};
-> > +
-> > +			mtl_tx_setup: tx-queues-config {
-> > +				snps,tx-queues-to-use = <5>;
-> > +
-> > +				queue0 {
-> > +				};
-> > +				queue1 {
-> > +				};
-> > +				queue2 {
-> > +				};
-> > +				queue3 {
-> > +				};
-> > +				queue4 {
-> > +				};
-> > +			};
-> > +
-> > +			gmac0mdio: mdio {
-> > +				#address-cells = <1>;
-> > +				#size-cells = <0>;
-> > +				compatible = "snps,dwmac-mdio";
-> > +			};
-> > +		};
-> >  	};
-> >  };
-> > diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> > index c4a195dd67bf..f020da03979a 100644
-> > --- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> > +++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
-> > @@ -1,7 +1,7 @@
-> >  // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-> >  /*
-> >   * Copyright (c) 2021 SUSE LLC
-> > - * Copyright 2019-2021, 2024 NXP
-> > + * Copyright 2019-2021, 2024-2025 NXP
-> >   */
-> >  
-> >  /dts-v1/;
-> > @@ -15,6 +15,7 @@ / {
-> >  
-> >  	aliases {
-> >  		serial0 = &uart0;
-> > +		ethernet0 = &gmac0;
-> 
-> Sort aliases in alphabetical order.
+So children are instantiated out of the bus probe().
 
-Swapped.
 
 > 
-> Shawn
+> Do we need properties related to power-management (clocks, power-domains),
+> or will we need a "simple-pm-platform-bus" later? ;-)
 > 
+> FTR, I still think we wouldn't have needed the distinction between
+> "simple-bus" and "simple-pm-bus"...
 
-Prepared v2.
-Thanks for review.
+I would like that. Using simple-pm-bus solves my issue but I don't have any
+clocks or power-domains to set. The simple-pm-bus bus requires at least
+one of them. Even if the driver itself solved my issue, I cannot be
+compliant with its binding.
 
-/Jan
-
-> >  	};
-> >  
-> >  	chosen {
-> > @@ -43,3 +44,21 @@ &usdhc0 {
-> >  	no-1-8-v;
-> >  	status = "okay";
-> >  };
-> > +
-> > +&gmac0 {
-> > +	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
-> > +	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
-> > +	phy-mode = "rgmii-id";
-> > +	phy-handle = <&rgmiiaphy4>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +&gmac0mdio {
-> > +	#address-cells = <1>;
-> > +	#size-cells = <0>;
-> > +
-> > +	/* KSZ 9031 on RGMII */
-> > +	rgmiiaphy4: ethernet-phy@4 {
-> > +		reg = <4>;
-> > +	};
-> > +};
-> > diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> > index 4f58be68c818..b9c2f964b3f7 100644
-> > --- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> > +++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
-> > @@ -16,6 +16,7 @@ / {
-> >  	aliases {
-> >  		serial0 = &uart0;
-> >  		serial1 = &uart1;
-> > +		ethernet0 = &gmac0;
-> >  	};
-> >  
-> >  	chosen {
-> > @@ -77,3 +78,21 @@ &usdhc0 {
-> >  	no-1-8-v;
-> >  	status = "okay";
-> >  };
-> > +
-> > +&gmac0 {
-> > +	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
-> > +	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
-> > +	phy-mode = "rgmii-id";
-> > +	phy-handle = <&rgmiiaphy1>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +&gmac0mdio {
-> > +	#address-cells = <1>;
-> > +	#size-cells = <0>;
-> > +
-> > +	/* KSZ 9031 on RGMII */
-> > +	rgmiiaphy1: ethernet-phy@1 {
-> > +		reg = <1>;
-> > +	};
-> > +};
-> > diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> > index be3a582ebc1b..e31184847371 100644
-> > --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> > @@ -1,6 +1,6 @@
-> >  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-> >  /*
-> > - * Copyright 2021-2024 NXP
-> > + * Copyright 2021-2025 NXP
-> >   *
-> >   * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-> >   *          Ciprian Costea <ciprianmarian.costea@nxp.com>
-> > @@ -883,6 +883,54 @@ gic: interrupt-controller@50800000 {
-> >  			      <0x50420000 0x2000>;
-> >  			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
-> >  		};
-> > +
-> > +		gmac0: ethernet@4033c000 {
-> > +			compatible = "nxp,s32g2-dwmac";
-> > +			reg = <0x4033c000 0x2000>, /* gmac IP */
-> > +			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
-> > +			interrupt-parent = <&gic>;
-> > +			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-> > +			interrupt-names = "macirq";
-> > +			snps,mtl-rx-config = <&mtl_rx_setup>;
-> > +			snps,mtl-tx-config = <&mtl_tx_setup>;
-> > +			status = "disabled";
-> > +
-> > +			mtl_rx_setup: rx-queues-config {
-> > +				snps,rx-queues-to-use = <5>;
-> > +
-> > +				queue0 {
-> > +				};
-> > +				queue1 {
-> > +				};
-> > +				queue2 {
-> > +				};
-> > +				queue3 {
-> > +				};
-> > +				queue4 {
-> > +				};
-> > +			};
-> > +
-> > +			mtl_tx_setup: tx-queues-config {
-> > +				snps,tx-queues-to-use = <5>;
-> > +
-> > +				queue0 {
-> > +				};
-> > +				queue1 {
-> > +				};
-> > +				queue2 {
-> > +				};
-> > +				queue3 {
-> > +				};
-> > +				queue4 {
-> > +				};
-> > +			};
-> > +
-> > +			gmac0mdio: mdio {
-> > +				#address-cells = <1>;
-> > +				#size-cells = <0>;
-> > +				compatible = "snps,dwmac-mdio";
-> > +			};
-> > +		};
-> >  	};
-> >  
-> >  	timer {
-> > diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> > index e94f70ad82d9..4a74923789ae 100644
-> > --- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> > +++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
-> > @@ -1,6 +1,6 @@
-> >  // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-> >  /*
-> > - * Copyright 2021-2024 NXP
-> > + * Copyright 2021-2025 NXP
-> >   *
-> >   * NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)
-> >   */
-> > @@ -18,6 +18,7 @@ aliases {
-> >  		mmc0 = &usdhc0;
-> >  		serial0 = &uart0;
-> >  		serial1 = &uart1;
-> > +		ethernet0 = &gmac0;
-> >  	};
-> >  
-> >  	chosen {
-> > @@ -93,3 +94,21 @@ &usdhc0 {
-> >  	disable-wp;
-> >  	status = "okay";
-> >  };
-> > +
-> > +&gmac0 {
-> > +	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
-> > +	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
-> > +	phy-mode = "rgmii-id";
-> > +	phy-handle = <&rgmiiaphy1>;
-> > +	status = "okay";
-> > +};
-> > +
-> > +&gmac0mdio {
-> > +	#address-cells = <1>;
-> > +	#size-cells = <0>;
-> > +
-> > +	/* KSZ 9031 on RGMII */
-> > +	rgmiiaphy1: ethernet-phy@1 {
-> > +		reg = <1>;
-> > +	};
-> > +};
-> > 
-> > ---
-> > base-commit: fd94619c43360eb44d28bd3ef326a4f85c600a07
-> > change-id: 20251006-nxp-s32g-boards-2d156255b592
-> > 
-> > Best regards,
-> > -- 
-> > Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> > 
-> > 
-> 
+Best regards,
+Hervé
