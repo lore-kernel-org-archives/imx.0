@@ -1,142 +1,219 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012039.outbound.protection.outlook.com [52.101.66.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7BC2BEC43
-	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 15:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761924030; cv=none; b=ZNEKAbLyroFbt3tBAvQcZY9QYeTiAGiX1SzC8peQ4f8t+sDmwBelAleHe5XPOyzm9NUFeYsreEwcOGds458lXU5MraRIVJ0L6MNSAcyiDNtxm8zqSCuAi2I9F3QLJ22H/qeulh/VWG00arhqpdxT/nw4+xEbdGOGGzK3iXxMfdM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761924030; c=relaxed/simple;
-	bh=y3b+wUCsWckPBCTPgAZadRRNBEdlpxrfsSHKNnGesNY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IIaBcq2DZFuFNWCJ69Rp0+KvIfpGueRbZrey+b0r4YUEldPX23/cFLYyPXuR7y7OVFEDeUfC36Mk+wy6edhs8knsppObLPKWJzX7olzwvTmKIcm7U2PRpgMev9arNBx8aTv5dw3R4a0H4WpDPy2dAuPOut7Zp8NffcGGgLtXzO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZXX1Bma9; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DCE1E520A
+	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 16:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761928525; cv=fail; b=PBw5kvDVcHgUVZGpsauXVdWy6t0DaWIjuWFMQCoAQp4qP0a1i5Lb9I1Sq59aLaF26kBYfBmIDjcYFokIu8JFYph5DUALwMXaGQdME4qKAOaGjkPJt3GnBrESuvLIo0C6hrmqbO7CagTdiK8LmNkVbqX1OgMtWxrQ8tyECHvo6p8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761928525; c=relaxed/simple;
+	bh=Nx47BPuSqp8+Eh6MDbaeF1AL5pRyzoqlDKSxKFYUtbg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=iGdvvMyV5ip9tpgXM9Ap39+82ba2QAEysgq2eS7HhPMFnkDmSSxfcHA9NC0lGX54Su+YLtHhCj7nya6A8CyZt990Cud39p3FiB54k2gS/z6zbP74jgMIdeORjf0KhDnFgf8qQquyDlbRYnbcz2LwV9V86ptcg9zjnAKHFNKoWqA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nU8ANocg; arc=fail smtp.client-ip=52.101.66.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZXX1Bma9"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id EAD594E41441;
-	Fri, 31 Oct 2025 15:20:25 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9CDE360710;
-	Fri, 31 Oct 2025 15:20:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 067DE11818041;
-	Fri, 31 Oct 2025 16:20:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761924023; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=goHQM/1NASiwEpJFuU+gt1w80LtYcWXr5Gc0K9tmMcc=;
-	b=ZXX1Bma9X3KMNXlEJ6m3KmzgeWaoHvqKZUDGbtyXcyczSWNcqa1WxZl7PaaP3QnmzL9gq4
-	h0YuPlq7t/ag22Qc0RV6DUkEOizZ8aU4YvVAi5tQ0oCrNCN9uTlgnrGvmTf6uzjWAFrc/P
-	iOZon5nGEinDurKqvP8UIygDFPUWAiUqm59zHUbmHyOs3e60XOGs63ifmZhf114mLUKRqK
-	bIKj+JoZJxnMO/w5PK2AbEIM7ADXeVegLKetdhc6qx0E6UYxyvcnSln30z+BZXKje9+TfM
-	AmSNEEcgTn5HJwFcJWmSNYyzhr1jXdHX0RhRB0lSnwspgtNFDoD+bFqnfo/hgQ==
-Date: Fri, 31 Oct 2025 16:20:04 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
- Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
- Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, Bjorn
- Helgaas <bhelgaas@google.com>, Charles Keepax
- <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
- <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
- Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Mark Brown <broonie@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, Davidlohr
- Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Dave Jiang <dave.jiang@intel.com>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Wolfram Sang <wsa@kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 05/29] dt-bindings: bus: Add simple-platform-bus
-Message-ID: <20251031162004.180d5e3f@bootlin.com>
-In-Reply-To: <20251030141448.GA3853761-robh@kernel.org>
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
-	<20251015071420.1173068-6-herve.codina@bootlin.com>
-	<20251030141448.GA3853761-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nU8ANocg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hWTdNgUzbPgehnbUuPcuSmtEtKqKnkv0VPJKtMZaPy5ZlSBwLV4HWNyehFzoXiVd8gI1x+LIOO4y5dgF0QiyOLciQBCYg4UXC57fP4jux24HmiAMQGES60JKimMobNJ+hFeOH/6GJWg6hIloMHjkFzqa6ER3H9wtL6nRDvLTvyy1CKOSlZKj7fm9LRT9dQk+7/GfwM1CMohEnHKtJgZqnnmhHwSMqg0PcZRT/YB3VfxQho7GLHVLSB+zt9FyE/cOrEhoLVoW7IysZ17USTKO2PSOadzPPe80aJzaiE2jIJ8INBuOWIwVPg+cQBvW4lLrMpWhiMudYMfvsxmOw1gD/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=taIPcN7Yu27XeFjq5HCNywGXMEYihVAZDOrIKiDHYiM=;
+ b=KedpARM+rYrTbZX7DV4X1SqRFsdELu9tituF+scy6+jnGHRLdYqRwGfYHTQB3AkttuuytxVpCrDE4ZoJOt00qkGapAMNlnuHRfUNjnapc9t0QedyCaob2EnUeuMzf8SeAOhKM3KyBsH02kM2O5IJ+Z2HOvwLqhgVAltXS2RZm0eOXXqb0X5WxmCZXm4ABrScNX0FJ+VLteZiGAI0Uu2HYT5wTInHMHArpSLbeluqOY4onsMqJ55yB0icYVnu9moGiBiKhcdIT/92gRzIMKPg+huVtAhx0zJglZkAmSvkL2An6f/rcQuDJ659S+ygVX9Zea8EuEzvkGOLpPRFinl/ng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=taIPcN7Yu27XeFjq5HCNywGXMEYihVAZDOrIKiDHYiM=;
+ b=nU8ANocgHnl2SaMqyLf9SiqPu5LNqSuJJWlPatmV+xfsJQXVBAUVn7xWwzP/iqigP3hIuDUykRcRVpBjJnQPHSYSI0FHkyok7FUkkutviqoWHwnhXT9WapuN332iQnlXZQ60TZX/I4bh1WXFbixEjR/LSgHU9j4UifQbtmElqevDYpB0T/Cb9iRuZHOX5ELJSzNLXtUASMd0jCFS0OVoPs6BANwNnjXND8KQXxEefZ9WYj+97fd3wrkCq5nZupuLPbccLTTwyB4Prks5kqUwt+VApHKdXfqHHFZlhYoj+m2C7BC/ghMzYUMVWBglqnHVS6fm6rxPTqihEW1nTlP6NQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by AS8PR04MB8198.eurprd04.prod.outlook.com (2603:10a6:20b:3b0::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Fri, 31 Oct
+ 2025 16:35:20 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9275.011; Fri, 31 Oct 2025
+ 16:35:19 +0000
+Date: Fri, 31 Oct 2025 12:35:10 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: jan.petrous@oss.nxp.com
+Cc: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Enric Balletbo i Serra <eballetb@redhat.com>
+Subject: Re: [PATCH v2] arm64: dts: freescale: Add GMAC Ethernet for S32G2
+ EVB and RDB2 and S32G3 RDB3
+Message-ID: <aQTlPgDLRwOhzD/V@lizhi-Precision-Tower-5810>
+References: <20251031-nxp-s32g-boards-v2-1-6e214f247f4e@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251031-nxp-s32g-boards-v2-1-6e214f247f4e@oss.nxp.com>
+X-ClientProxiedBy: PH7P220CA0040.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:32b::24) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS8PR04MB8198:EE_
+X-MS-Office365-Filtering-Correlation-Id: 36388238-613e-4263-aca0-08de189b7a95
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|52116014|366016|376014|7416014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?t+hIyh+tbqtoHNSeeclXp4G6X5jc8kkPrMK2um3CebFRGlHZo7kfjwRTva9/?=
+ =?us-ascii?Q?XGmgaf8JBwAbpFmBRZRqUzM3imrxQiAsIAkANvpsZsqFxAgt2bgiZr1T+2dP?=
+ =?us-ascii?Q?GKe8Ww9Gigu8ZyPwn80fDAs8eDNCfK4vuTZVbgb1pCGoyY5jqjjDcHlMf1lr?=
+ =?us-ascii?Q?Yigw2E6GscFzvFVbrHnYIA5u9SJ1FPOkNyyQrm/BFuygn4S61eZRiriwMB67?=
+ =?us-ascii?Q?etPznzo1gBV1MAZy4LpWKkZTtHK3XTSd4rjy618mI4JOV/FiuIq+p1hPqvop?=
+ =?us-ascii?Q?FKNOL7Mw9oflJyJUKJfV8DW0ScjDiwrh2706mwW/aUiRX0W8rsNS8SV2b4gQ?=
+ =?us-ascii?Q?dClCk6ugpuZzgW6h3sAeWc+rWtkraE7w86+kEVLlAaRXXIT5VvOa4RzSpAJy?=
+ =?us-ascii?Q?Ew6kBDpgPMYArF5svY7spxpfZb7oNO9OPJL/XucV1+CwLTXT7uREoB6zcFv3?=
+ =?us-ascii?Q?6dTqSdGi3IiO3BCmBS0Cdz1WOGZTVOZk3ZtjdQho6MsD0tOZHsj1uL/hCuvS?=
+ =?us-ascii?Q?ECa2P3EHmGGVvQelnH6b6jg2gHOKu/rtiiSR3YvMaoQ5+PMnPUkzVE2d2GF1?=
+ =?us-ascii?Q?zQ+Px8NT69WkYJGAe1jpu6eJIsmg9CjtT1yOYvI5xo4iM22WTVGrbfPmEOJI?=
+ =?us-ascii?Q?S7i6PwxZ3sjx5EkmWumYmxL+9K7T/FT9ysVPqrawrqogtp8A0OUF4nwiAtPI?=
+ =?us-ascii?Q?jqeut/UNKoIuIRhqBReOs9r68XX1v7u9/o/KlMO9qBj8eeSBt+X6mywjaoau?=
+ =?us-ascii?Q?mz2NDOZP1vS3okUCj+EEySJ5MGUPAQBJrztSmhYGGHBVfSSnBZFSiN0SlomZ?=
+ =?us-ascii?Q?Tf1HY7lOUsc4GxKx6/rLXeioX31CARZ0J5l2bA05T4eeRLrJXJqUC/igoqTu?=
+ =?us-ascii?Q?69jFVeAgdozRljINmuw4TwdqITmTNv7G4qGm3wiHaZWbDzvIVP6LR5LiRw08?=
+ =?us-ascii?Q?WeexeymVyKsOuV2JeQa/lcAcxjawOoHNIMmOutOgdzhFFaWyqEDFvN3W2fwP?=
+ =?us-ascii?Q?eca1BC5PLr6jR0qtbkgdo07TJ722l4P9Ee1juRAroKLdcpxPdaeO53JzvCFK?=
+ =?us-ascii?Q?GTbwnvDTZ/r4k7tgf8B1f+I5epqcMjKw2aeizq1gTjEMQv8P/zMUUHGx79dk?=
+ =?us-ascii?Q?q3vRTKyyDuJecpvVRY+7kQK49ciIPRYKJrGfdQSyozs8vSHwUbOLWMoABH1t?=
+ =?us-ascii?Q?qCvcUe/79jCtsC4UTdkQLWoOEBG80gd2w6Sr2AihPpMdCZi4ezro2A9y13nU?=
+ =?us-ascii?Q?YMTaNGleboxBOe4n3QoH1nNUOruAy82WrgW5oWyeo3kKRxdBEB1+g7xgfxVK?=
+ =?us-ascii?Q?ZJ+5g8Dw/ZdmK+1favWq1Ycrijp6Nu63JDzcPuAp2bJM3edwR59tb324MuTr?=
+ =?us-ascii?Q?1hOLf2morLK3C2ymRbUO7yEhWTDJtB9rkOjXveMEl2MGUuFzE01QGRhrenM8?=
+ =?us-ascii?Q?reSf6G59ivn+lGu217Poeej93PwrUYzcQBWvQBOeDG/XmBsKhPmWqlCbd6Ld?=
+ =?us-ascii?Q?bMpF0ho0zOrdkcKSRdK7BPjFFWwGhMtJvSch?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(366016)(376014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?i56o+SDhZoZHVRWzYho6m/Ldryb/zXEUDp2TrY5DhGJgsoBQyRy7/PEhvidK?=
+ =?us-ascii?Q?bNaIbJ4F70yuAzp1lTptNHDLUn+pZX2MfvVoUoYnn8I2rIKVtNYhR8KYSbEs?=
+ =?us-ascii?Q?8wuJYcloLtIQmTvlX02rvecaGqgyVOffNHuDG6U5xDi7HZauSl6iHsGIo283?=
+ =?us-ascii?Q?jm77v3ena86iLfXEyrOHOPTWWPoL34gcM5NvLxZEd/bjsBiUFiG8L57R3oQG?=
+ =?us-ascii?Q?91h2+3fhhi3eZHBGVEepCKWhJLGg/zVzYjtRJnpBFbDTBCFrSgOiYZt3jWT2?=
+ =?us-ascii?Q?xn0+FoTUVy8KLq4dyBDn6CL75sdIr+FYOumfDPWj+1cZhlUhC8cx8+E058mN?=
+ =?us-ascii?Q?wbmjR4u4IvbhSBSUmqlNFbOY2UQcTJEnPLkXbno1cIq0P7LoiH8GvBuUHoa7?=
+ =?us-ascii?Q?h5Ju8dXrmcEPsd+7Fg/fOliN/FnMkUgZnbGCFkqpS8Fn2adGb4i1DnhiNMfR?=
+ =?us-ascii?Q?dEqxsdsJjs3PmAIPULQ7k8LPIHijE8aNZqTIqsZxTZ/9vEl5apl1jGOx11fD?=
+ =?us-ascii?Q?/+KTUzEoeytI3WFicvPeGPO0p5s6+fbwN/1bLLhIjyDTUbV8BjEUKbe/CW5o?=
+ =?us-ascii?Q?8HVwR7e1tJd79Ib3ly31WvDssTKrm1faD1PAbR87/NZYv6p3DhWnP3JVc+g3?=
+ =?us-ascii?Q?9JNtfFe5xLUDANDkOYrEd9e/hix8U/wUF5odm/1pG0d/Z8zgy6bfNSuco7ri?=
+ =?us-ascii?Q?NaeHsxPYOIHpxHr/44cbp7adk1TS6cUfUqa71hDts83T6dYJ9Wv6a5+DlKL8?=
+ =?us-ascii?Q?zqCSJ78zq7x52pfk5evNLc9n+GFtF7ER/zQS6mGuUTWHdFqSi5qzec1WmnM4?=
+ =?us-ascii?Q?IJSMDIw4ex2Mtp1amxDYwppmle7d5ONup/eDuHZ4aY/LCPXCt2/WezQ9ZkYk?=
+ =?us-ascii?Q?j4A2tIuzkwZFy4FB4oOMItWd+zvqV7ldP9ynGwl5RDS7AjQL4u3ly0q7+YVI?=
+ =?us-ascii?Q?XsptE4Vs+q8SfpLVMl0/KDoYguI/9LBkcl9XdFtN9dNs19eF4HLOJRpUEy1O?=
+ =?us-ascii?Q?iWrilElXuqKhIz1pAht/PxFRik36t7SjxLVQwwHT7y+mYzI3Gad95NdDUK2i?=
+ =?us-ascii?Q?EO5+eajrwsEdrW1Meu0Xrc5SnOd74jZMgc9A8uichCLWb6r9xlQjXBtPBda4?=
+ =?us-ascii?Q?a1rxq7V2KUGWNEG6mAXPenCnx++Ns2qgRQZ3cbUdDDZIEkBm7uxqGUOtNKsL?=
+ =?us-ascii?Q?19d3aj0jQP29P6s02HdYht+Tw1iEZ6kJKKkLRzIiueXVS+xh/FegfvUR5mg/?=
+ =?us-ascii?Q?n66Dy9ufsnsOkk9SpdKzCsCmuLD6rVHWWeWAEm0/rXQpEFi4ZQZ6PQ77ulJi?=
+ =?us-ascii?Q?wdgvNyi1H9lF6KJwQBIhCr1g4+v3KV9aIWD9fLYKMrPn25gcym10uodwvbAM?=
+ =?us-ascii?Q?6PeN8XVmp/5iwVvyWgQZ8HnoQ0gTxbU+o1wBgPseT3ZHBhOVm1jPy3AtjXtW?=
+ =?us-ascii?Q?wQsNG2H3WwEZdwW9Rc3r1x+ypqmz4dZTPYrdUcqIthgd8msfWqIx31+HVnjL?=
+ =?us-ascii?Q?sC4psu6fRgXVl211Dnc0zmKD63INLKxph7jJoByXlPLa5ketqLM3xUhLvdZ2?=
+ =?us-ascii?Q?sC2i5JoW4Db3obWUfuw=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36388238-613e-4263-aca0-08de189b7a95
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2025 16:35:19.0000
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: S7hxJ/wJ7GdgXD4x65Wj9hsHcZxzzYDUbSulk0scKULY8b89dYqEW219bMW9PhRQ7jmTmgeNaztQDctE76YsNw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8198
 
-Hi Rob,
+On Fri, Oct 31, 2025 at 03:06:17PM +0100, Jan Petrous via B4 Relay wrote:
+> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+>
+> Add support for the Ethernet connection over GMAC controller connected to
+> the Micrel KSZ9031 Ethernet RGMII PHY located on the boards.
+>
+> The mentioned GMAC controller is one of two network controllers
+> embedded on the NXP Automotive SoCs S32G2 and S32G3.
+>
+> The supported boards:
+>  * EVB:  S32G-VNP-EVB with S32G2 SoC
+>  * RDB2: S32G-VNP-RDB2
+>  * RDB3: S32G-VNP-RDB3
+>
+> Tested-by: Enric Balletbo i Serra <eballetb@redhat.com>
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> ---
+> Changes in v2:
+>  - fixed correct instance orders, include blank lines
+>  - Link to v1: https://lore.kernel.org/r/20251006-nxp-s32g-boards-v1-1-f70a57b8087f@oss.nxp.com
+> ---
+...
+> +
+> +			gmac0mdio: mdio {
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				compatible = "snps,dwmac-mdio";
 
-On Thu, 30 Oct 2025 09:14:48 -0500
-Rob Herring <robh@kernel.org> wrote:
+compatible should be first property,  Move address(size)-cells after it.
 
-> On Wed, Oct 15, 2025 at 09:13:52AM +0200, Herve Codina wrote:
-> > A Simple Platform Bus is a transparent bus that doesn't need a specific
-> > driver to perform operations at bus level.
-> > 
-> > Similar to simple-bus, a Simple Platform Bus allows to automatically
-> > instantiate devices connected to this bus.
-> > 
-> > Those devices are instantiated only by the Simple Platform Bus probe
-> > function itself.  
-> 
-> Don't let Greg see this... :)
-> 
-> I can't say I'm a fan either. "Platform bus" is a kernel thing, and the 
-> distinction here between the 2 compatibles is certainly a kernel thing.
-> 
-> I think this needs to be solved within the kernel.
 
-I fully agree with that.
+> +			};
+> +		};
+> +
+>  		gic: interrupt-controller@50800000 {
+>  			compatible = "arm,gic-v3";
+>  			reg = <0x50800000 0x10000>,
+> diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+> index c4a195dd67bf..fb4002a2aa67 100644
+> --- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+> +++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+...
+> +
+> +&gmac0mdio {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
 
-> 
-> What I previously said is define a list of compatibles to not 
-> instantiate the child devices. This would essentially be any case having 
-> a specific compatible and having its own driver. So if someone has 
-> 'compatible = "vendor,not-so-simple-bus", "simple-bus"', when and if 
-> they add a driver for "vendor,not-so-simple-bus", then they have to add 
-> the compatible to the list in the simple-pm-bus driver. I wouldn't 
-> expect this to be a large list. There's only a handful of cases where 
-> "simple-bus" has a more specific compatible. And only a few of those 
-> have a driver. A more general and complicated solution would be making 
-> linux handle 2 (or more) drivers matching a node and picking the driver 
-> with most specific match. That gets complicated with built-in vs. 
-> modules. I'm not sure we really need to solve that problem.
+needn't it here because your dtsi already set it.
 
-Right. Let discard the "more general and complicated solution" and focus
-on the list of compatible to avoid child devices instantiation.
-
-Do you mean that, for "simple-bus" compatible we should:
- - Remove the recursive device instantiation from of_platform_populate().
- - In simple-bus probe(), check the device we probe against the
-   'no_instantiate_children' list
-      - If it matches, do not instantiate chidren
-      - If it doesn't match instantiate children
-
-Is that correct?
-
-Best regards,
-Hervé
+Frank
+> +
+> +	/* KSZ 9031 on RGMII */
+> +	rgmiiaphy1: ethernet-phy@1 {
+> +		reg = <1>;
+> +	};
+> +};
+>
+> ---
+> base-commit: fd94619c43360eb44d28bd3ef326a4f85c600a07
+> change-id: 20251006-nxp-s32g-boards-2d156255b592
+>
+> Best regards,
+> --
+> Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+>
+>
