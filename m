@@ -1,120 +1,169 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3160D167272
-	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 08:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D64B2F5469
+	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 08:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761897676; cv=none; b=pp3CL0dNH38nzKcERZpkij+TTP+xlL5nu/S0jtiPByI8mBTjp9X09oRWKTzvDmDR2HvWuSFu4RQHtYeJ4pFi3GRjGcfpX+EPB5cdZFJs9flii++NjurZ9tZXkoDkQvraPhKDt1XCO6mfxqRYgQlPaGsXFdKFIAJU+xeuWMnlgns=
+	t=1761898496; cv=none; b=u3kXWS9SDWAFbtxAp9G5SxrRAm0TSDuRB4xa6sVlygq7izSJOIzZUlXyOhyU8uRdld/XWwHmmxJ9MJnM7Kav+x2JFrAHsXaVJvoAXbSyomGDHnuA5SmYPpPRqlRSo08jaadoINrT7iNwQ87XIpBl0xwzCxRVosrdwrWdge4mOv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761897676; c=relaxed/simple;
-	bh=6p33IUItqsgTbWao0/8LpE6O8R7ZzMno24041gdGicw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TmZ9EV7wO5xb8IPabRXnWn/sH0gbvuqT/CP7pU98DI6ZU+1LpzHsDoO8w5SPuKTOOZC9c3QZScLE8rTMuM1EZnLwZdqJu7Q9G1rOdK60gr2w4aljsbkkFBR+iX0+fyYtOxqtFFRcRyobGu3Phz4BedDh1GO2EKVrPyYZGZN/ZVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MFPhiygU; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761898496; c=relaxed/simple;
+	bh=/QnJcZUJ5qnAWkQ1qujlZ/10Xlu6j2TSKjRO9Yhs9zM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=tD+WVIwFthG43TrWb5JGWAXMbgRw79Mq6RnfCH4LncNRXPzlIX10B3fs/zVz5GL6YyObTWOzhQvvDhQ6n5eIssxvaSpyrrUq6a28aCm4mIF6g+2oztrpE3Bv6XqNPSMuocRfsINyKDC4M/KuyC/JjvTNZZUSODLI6zeRIFwX72A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=T1ygqf85; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MFPhiygU"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-429be5d31c9so433386f8f.1
-        for <imx@lists.linux.dev>; Fri, 31 Oct 2025 01:01:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761897673; x=1762502473; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xQXG0TEjmE73mxJaXICzQHfEj42B/5Z9uI7ucSq7Rog=;
-        b=MFPhiygUmz2tKGsUMJ0JnmEefUXKdv9fHfFXtDcdg/yhXL2oo/NXPmhPq8oqaNWBJ8
-         jU0I0NcIFXTA/w6Ua8cx8PHYaqd5BcH1C3JVkZmmMqR6vNO2MhLnJXOnPq0D/E5KphSG
-         Vkm1EMYmipL2xp3ZmD35AnFS4muPrwe7t8Wqy7ycE2198GU60mjOqHz2qav4JSt/yuKg
-         RM55+ujDCOUM8CLCdlP5PJeqNhB5mAnbQEEmzA/dDLmE9NeUMnDAKjIjN99GOkcP0AcY
-         Dg+PAB6TjZNnThn3grkRokZDW2ApeRp8SaWIo0u2drcnvXiX06j67Wheuvi0UeWf1An0
-         TTSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761897673; x=1762502473;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xQXG0TEjmE73mxJaXICzQHfEj42B/5Z9uI7ucSq7Rog=;
-        b=Vu8scnee34I1sPx5F8WUrVRjDJGmKKGO9b8jHMdiAhumcbyqbcZEmB48YSVsStfG6d
-         XrgiVJ6lBdXk0zrqk2OQVRKgc/bBnVjhzVbK5lEd3oAL/bgZZyJocJcXOobahGo4phBF
-         XzoP3Zc5zhF4PhgoczriywcwAIyvw1DsplDWb+qa4XeLT6rNt5ULVeC0jnS/XSpAANX8
-         lyGUsPmn1Ah9+hUi2W8CWh1laQueJqle9AtOi+bfk8lRdLikNHdS20LNRA0aT85yq72q
-         V09ioDwg+lvsLKyOpy5/OzcTqIUCKXDSYS1INq29z9Hqg1YBLE6slHbr8b8EEK6miwkZ
-         bDQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVAqNx7caNWS++7oprWsdrD91PXnbIv4J6PqUxzX+70DrUh09fapuwpq5nOSItxiDt6dE4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxtLh+2uae+T7oY9tvxNyJMM6PX9sqgYJEdRCAWnLFy09v/sTW1
-	zEOLSZ7P88Q6UyXRXNx1jIDLEw/XnG26NuApCQZwXUS+yQsfh4pWGk6n
-X-Gm-Gg: ASbGnctnSr+wdS+OG/mUH49VJ6mt3i6Eq4+1kkNA804bq8E3EaWRHs4hHq2PucP0yWT
-	AMl34AcDVdKeU21Uh+PaQDchkZvuaeo7If2ywEGvHmwBzWYxt8a84CFGi2WCKqUvXvrGWV0qVFV
-	LPNtDrYpo6r2Qn3bdDCAy9gCeKYbsg59UG2uooDigwf6SvVF6oLieUreiCPmpwTLsRHIFjKHXuS
-	300XIoyC6k0rYPyJ2jwX1yPbXuFaMnsKbv5WZOhXjPkum0goerqrKDGmZcppPfVudLTQ2OTg++u
-	4CV3tYcq8mCe7FHqm3cfagbNbpzPGaB0sktG0Hhpkj1LF6bzBRpjHD+9OLZDsogPOX8cF+I/vXk
-	1y90A1Q7oYwpOGciDAQyV/5foLAQoQ4b+5Vw48e7diB4zhyO3rORJSoYj2OaySfkhp6ug1SIoaR
-	H7wtFGNwbZXgPlQ1rZjnw8uai3B0FRQj+NnTGVpwM/vmsgSXVAFhtHc+nyqbJx1glj3SjXFkx+F
-	P5OXCy0HUg5FF1jPfdURYHlanS/QIx07QlJk9zWkySOIUxeHAg=
-X-Google-Smtp-Source: AGHT+IG3O6vg8rF+wyYnH9VY8eDwwYFcOfRL+X70Z7BOTOQha5cuoUjm6Rm7WfFX1PmypLP9cnG59A==
-X-Received: by 2002:a5d:5847:0:b0:3fa:5925:4b11 with SMTP id ffacd0b85a97d-429bd6e100bmr1988899f8f.42.1761897673065;
-        Fri, 31 Oct 2025 01:01:13 -0700 (PDT)
-Received: from ?IPV6:2003:ea:8f28:b500:9590:7da:a3e7:284b? (p200300ea8f28b500959007daa3e7284b.dip0.t-ipconnect.de. [2003:ea:8f28:b500:9590:7da:a3e7:284b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c1125ad0sm2128765f8f.13.2025.10.31.01.01.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Oct 2025 01:01:12 -0700 (PDT)
-Message-ID: <827e9890-efc1-4630-9a84-931b8482cff5@gmail.com>
-Date: Fri, 31 Oct 2025 09:01:19 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="T1ygqf85"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id D640EC0E949;
+	Fri, 31 Oct 2025 08:14:31 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3224F60704;
+	Fri, 31 Oct 2025 08:14:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5BCFC1180FC53;
+	Fri, 31 Oct 2025 09:14:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1761898491; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=5kqeQwCaBXcdDdY/fhWUYtRy6WjKsRWcRbvT6plygZk=;
+	b=T1ygqf85lOMPWNIDgy20hrud9rCyd1xYGw6YtoFTSBH3pQHtW1WHik1l52Ilu0OT6lsl/L
+	zHbQrU6Klq8WUqyjfkbqD9cE5v1+IHAHs3ioVdpqt4SZ+4sVt52p45QAqmqiNS4tAT6jN4
+	JcFj+iG9CLwUNVoTsgr3/ZvFloNGRaGHDiWEJFsdStw7t0+V8b1u/1Cl4GZQUUToGmJ0Lj
+	Aqk8f1rIgCxzN3KcXKmwhU9EE9CdtmRjNu8cIpT9LENVwKr1icISps9Ay8L6Yvp7cxG2ju
+	K4FEKe9rAKcgYlnMBOvrU+XSh0Q0AWraH9ZR4sWbJefClS7Y3DjOAJX7nyVD2g==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/6] net: fec: register a fixed phy using
- fixed_phy_register_100fd if needed
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Greg Ungerer <gerg@linux-m68k.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, Hauke Mehrtens <hauke@hauke-m.de>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Michael Chan <michael.chan@broadcom.com>, Shenwei Wang
- <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
-References: <0285fcb0-0fb5-4f6f-823c-7b6e85e28ba3@gmail.com>
- <adf4dc5c-5fa3-4ae6-a75c-a73954dede73@gmail.com>
- <PAXPR04MB851024F31700200CC78CE60988F8A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-In-Reply-To: <PAXPR04MB851024F31700200CC78CE60988F8A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Fri, 31 Oct 2025 09:14:45 +0100
+Message-Id: <DDWCVYBQSV10.2MFZFEEHPYJY4@bootlin.com>
+To: "Laurentiu Palcu" <laurentiu.palcu@oss.nxp.com>, <imx@lists.linux.dev>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Shawn Guo"
+ <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>
+Cc: <dri-devel@lists.freedesktop.org>, "Sandor Yu" <sandor.yu@nxp.com>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v5 5/9] drm/imx: Add support for i.MX94 DCIF
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20250911-dcif-upstreaming-v5-0-a1e8dab8ae40@oss.nxp.com>
+ <20250911-dcif-upstreaming-v5-5-a1e8dab8ae40@oss.nxp.com>
+In-Reply-To: <20250911-dcif-upstreaming-v5-5-a1e8dab8ae40@oss.nxp.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/31/2025 4:36 AM, Wei Fang wrote:
->> Note 2: Usage of phy_find_next() makes use of the fact that dev_id can
->> only be 0 or 1.
->>
-> I'm not familiar with the ColdFire platforms. Do these platforms only have
-> a maximum of two FEC ports?
-> 
-> The logic below doesn't show a maximum of two FEC ports.
-> 
-Right, the quoted logic would support more ports. But AFAIK there's no
-hardware with more than two ports. Max is dual fec designs, see comments
-in the code wrt i.MX28, and also following commit description:
-3d125f9c91c5 ("net: fec: fix MDIO bus assignement for dual fec SoC's")
+Hello Laurentiu,
 
-> for (phy_id = 0; (phy_id < PHY_MAX_ADDR); phy_id++) {
-> 	if (!mdiobus_is_registered_device(fep->mii_bus, phy_id))
-> 		continue;
-> 	if (dev_id--)
-> 		continue;
-> 	strscpy(mdio_bus_id, fep->mii_bus->id, MII_BUS_ID_SIZE);
-> 	break;
-> }
+On Thu Sep 11, 2025 at 1:37 PM CEST, Laurentiu Palcu wrote:
 
+...
+
+> +static struct drm_bridge *dcif_crtc_get_bridge(struct drm_crtc *crtc,
+> +					       struct drm_crtc_state *crtc_state)
+> +{
+> +	struct drm_connector_state *conn_state;
+> +	struct drm_encoder *encoder;
+> +	struct drm_connector *conn;
+> +	struct drm_bridge *bridge;
+> +	int i;
+> +
+> +	for_each_new_connector_in_state(crtc_state->state, conn, conn_state, i)=
+ {
+> +		if (crtc !=3D conn_state->crtc)
+> +			continue;
+> +
+> +		encoder =3D conn_state->best_encoder;
+> +
+> +		bridge =3D drm_bridge_chain_get_first_bridge(encoder);
+
+The bridge returned by drm_bridge_chain_get_first_bridge() is refcounted
+since v6.18-rc1 [0], so you have to put that reference...
+
+> +		if (bridge)
+> +			return bridge;
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +static void dcif_crtc_query_output_bus_format(struct drm_crtc *crtc,
+> +					      struct drm_crtc_state *crtc_state)
+> +{
+> +	struct dcif_crtc_state *dcif_state =3D to_dcif_crtc_state(crtc_state);
+> +	struct drm_bridge_state *bridge_state;
+> +	struct drm_bridge *bridge;
+> +
+> +	dcif_state->bus_format =3D MEDIA_BUS_FMT_RGB888_1X24;
+> +	dcif_state->bus_flags =3D 0;
+> +
+> +	bridge =3D dcif_crtc_get_bridge(crtc, crtc_state);
+> +	if (!bridge)
+> +		return;
+> +
+> +	bridge_state =3D drm_atomic_get_new_bridge_state(crtc_state->state, bri=
+dge);
+> +	if (!bridge_state)
+> +		return;
+> +
+> +	dcif_state->bus_format =3D bridge_state->input_bus_cfg.format;
+> +	dcif_state->bus_flags =3D bridge_state->input_bus_cfg.flags;
+
+...perhaps here, when both the bridge pointer and the bridge_state pointer
+referencing it go out of scope.
+
+> +}
+
+You can just call drm_bridge_put(bridge) there, or (at your option) use a
+cleanup action:
+
+ static void dcif_crtc_query_output_bus_format(struct drm_crtc *crtc,
+                                               struct drm_crtc_state *crtc_=
+state)
+ {
+         struct dcif_crtc_state *dcif_state =3D to_dcif_crtc_state(crtc_sta=
+te);
+         struct drm_bridge_state *bridge_state;
+-        struct drm_bridge *bridge;
+
+         dcif_state->bus_format =3D MEDIA_BUS_FMT_RGB888_1X24;
+         dcif_state->bus_flags =3D 0;
+
+-        bridge =3D dcif_crtc_get_bridge(crtc, crtc_state);
++        struct drm_bridge *bridge __free(drm_bridge_put) =3D dcif_crtc_get=
+_bridge(crtc, crtc_state);
+         if (!bridge)
+                 return;
+
+         bridge_state =3D drm_atomic_get_new_bridge_state(crtc_state->state=
+, bridge);
+         if (!bridge_state)
+                 return;
+
+         dcif_state->bus_format =3D bridge_state->input_bus_cfg.format;
+         dcif_state->bus_flags =3D bridge_state->input_bus_cfg.flags;
+ }
+
+This would call drm_bridge_put() at end of scope, i.e. end of function.
+
+You can also have a look at recent commits involving drm_bridge_put (git
+log -p -Gdrm_bridge_put v6.16..origin/master) to see how other parts of the
+kernel have added drm_bridge_put().
+
+[0] https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/8fa5909400f3773=
+51836419223c33f1131f0f7d3
+
+Best regards,
+Luca
+
+---
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
