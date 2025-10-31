@@ -1,214 +1,259 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013026.outbound.protection.outlook.com [40.107.159.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA62D34405D
-	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 12:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761912428; cv=none; b=Bm0bZHFr5mOxJfn7iSrD82hyAglRRCt8wJfwdoCp5OaNhFSt/saQMGgwvcZ0TBYi9YFa3/EShFboqekEUg6pIhWSsLicYNH1TKjlYoOqd/6RO69Ys0B08AkFmpfXxUlKwTQcvT6PlSsdrolXCOg88uzhS4bvnV84gl/wiRyBQww=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761912428; c=relaxed/simple;
-	bh=QdfcKgydSkRm0A8GQzQXVINVhev5YokC6RzzW3M0ueA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SY7yhJHKD+jh5JeqSplQMKBtwIu9GUocUHseaFj8BrPqiI0RtA+V9ont+82w8d3hVovpp8GVWnlmpbNdpjc5XfzbSFjriMZCHe+QgUs6Z0EvdyVOW6XXKfHmxNRKjesnDxKFoWsfTvuirQMnE3ZEpxuNUSi6ijA36bPcJngHvlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZlkD3Zx; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13EF10A1E
+	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 12:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761912919; cv=fail; b=EPN1CtNhZKOBqoktko10VMy3LWbSsomrpjpx6WPoFO+vnRuLozl0AuLo6GJSw0kIsXGwgs3WKlbYxRYuGDsSiqWFU6ZyTGW7Z9HGJ8rcB/oZau9nbLJMBftk/v804TpVUcArJGjsnwDYBnGfWueblmMU/u2okSoZNOa2qwuw4Fs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761912919; c=relaxed/simple;
+	bh=8BBfk0LWX2955rF+o3djTh+URs859/Ab17R/0Zidz3o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fSL9Vc8N0131vqiIteAgx/2ythP+3PKYJ+r1uF3AHLQhxeYVtzk8VQmqks0raAlfj+p6c393wVFTA9pvZEvfESr3wxGFGn7mB9kKEhzuBupFQ+FX+vUmkgpwWyBw+FqCng2OpdDQJYvo/xHMNLwRhOkUNCSDD3PKZj0ki1jfN44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=UsSBwXkj; arc=fail smtp.client-ip=40.107.159.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZlkD3Zx"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-37a17d470dfso17206931fa.3
-        for <imx@lists.linux.dev>; Fri, 31 Oct 2025 05:07:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761912425; x=1762517225; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=g+wNT7KW8FpybzoaA+6FfZ6C32T5hx5xiEfdag3k3wE=;
-        b=YZlkD3Zx9qrDDH2mlc2RWjcJlv8fLh+2ZGh+XsTuiZfPxuiiFxfh/xFlgMC8Acl+E8
-         H2ugQslOIShAHZ3ZLWa9CPJYtlI62PBlx3iBLxBAcsm3unuAur7rQGO5BecT2vn+19fL
-         EjUunZaWVVn55dMWHe0txXl84cDRf+hDuRAjGF1Xo5WpNBmn03iolLVtPgAbUdiFPu7h
-         X7rD+aIaieHFGpIVxFgMKxMDL1i0fPhAt57VJIXDCfc/ZvhiBkcA0VIOVmVhEg9+g60G
-         AzvkVuM4C7w0MAjfYzoghvsojqzMy4PBqqeZxV++lyGkePgRQ2ZhBYH4GwWyeaIw9kk6
-         ueOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761912425; x=1762517225;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g+wNT7KW8FpybzoaA+6FfZ6C32T5hx5xiEfdag3k3wE=;
-        b=sPjgtfE80qAt9Tun8fHGBAAGD+VXS2vKFVMnN0xgr0ObgIBEewg78zU/UiCvr6RY7L
-         u2HbTz022e9txb7B71FwRaq4alwmFmkJns51/lwrzoZ7gRC4Lsp2BePAp4T/Q0rdI9hk
-         gvFFECtp7EnnzKbcWQR00rYOhvPKh/WWxyN/9q7WMFA9qaT8P0x4x+7xA+ZhjpUZCQSe
-         ot1lR43Q5/jWVjp4SYhZ+Ns5Dj7FaNuGWEkle/wMWFSXzam3bCS8HnJUQc99zaocipw3
-         uM4wBQ3cuL4Wm26x3Ura4xdMkUKnWW0QZJUmlXLoaH8cC8Hw8H0YwRZLMD8vNrtWUO2N
-         gENg==
-X-Forwarded-Encrypted: i=1; AJvYcCXS7ZBwIk8JJyuIuE3GzX6AqCk3wLCW6s/BXoGWqcqA/FvjRtOPvVkfgjrn8At/rzh3rqk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxltfPNm/MB/u6we/dRuyq1n0emroS/h8EO8GoHldlwFnMK2avJ
-	Xf/4va9MJ/ZXtXosDjOn4kDJBw3+x/3gRp0SpTVzEiHWUGXkWiD/Wi9d
-X-Gm-Gg: ASbGncs7ECY1P6EkmusuQpmjP2bDaXL2thbvOk2OFlBn39WduRYEmpxs8rAuI/py882
-	vjKGVvNPOdlFuscwPsWQIMIFWbfyUpKrLGwlj4LoY+YVDf0qalQZi60XSoHoUmkg5zmn9HhxJ/2
-	7vFYFcHhDAAGgbZ10LMaEWa+HDUinjeVN2+JZ+RHAxAlCM8n5xnl9nMvMYAxJ7fLhVnP66NndT7
-	kQgL/hplSoR1xc78s4QmDXnrWrPoyOMQmB5YoxjyYJtIGcwSQlrPwRUXDm+oaeZRyzndeRpagGk
-	OaLhRiCrS4tSKyyPX22kqeDcrtwQMRvCDbSujRqfxnkAf4GbmkfDEcZotvvskqvDOKfIYOBF7ss
-	h0y8Ontep4iQuKJMk1/B2G+p45W3Y64I2NycOc/hE7PiA47c++YEjuywCBH6RWCJ8MU8HQajhHe
-	zWZSpXXMibN1wXtEJorFz8VyDhPcBBbxjHefsy02kcpcoVtyhrDmSKvwfyG1Wk+SgolcB5
-X-Google-Smtp-Source: AGHT+IH/ICNj/bMV5RVGbwRdK/Ejd2emYkz7dh/g7c7spskiA/UNWUDs1dQqtabTPzVdNpWwUCQDtw==
-X-Received: by 2002:a2e:8689:0:b0:36a:925e:cf3c with SMTP id 38308e7fff4ca-37a18dc7311mr10659721fa.31.1761912424618;
-        Fri, 31 Oct 2025 05:07:04 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37a1bfb3e70sm3216571fa.12.2025.10.31.05.07.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Oct 2025 05:07:03 -0700 (PDT)
-Message-ID: <0beeacba-c484-43c0-80fb-66b2e0293681@gmail.com>
-Date: Fri, 31 Oct 2025 14:07:03 +0200
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="UsSBwXkj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=I7FxcFksLvOqCYF9Xu3pSCTsmw5Ncqkockba9zE5u428VNi4JhuJRmWMlkGodnWKAK/McQZaLpBlj3IR6P0Gn3pq2jT208nM2cUBeDcoiKxVGjNt+/sbQbhGDDSlA/FSpd6LAHjYHlRDmYGNXS+xNuka8jW8vzV74q9udPv1bmzMUEH0GpCyPvzjakThK16EIpaUVxTNDK5jW2emjU7y/ItWkVw6CXxBFi8hRCipZQb8gsUkPkiLjvWmHNrGVQVxl1JtGZL1NoLuxGs/4QRSjDpvDO+5Ipg45Q/53Ro4tEjlBJKu0PS8Q+G0HfBvRmicroPcNMIIGYKWwj77wON9uQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QFtWnMg7Uhet9d3YnVeZ4EL10kP2OkEq2Wh0jKXZQ8I=;
+ b=orX8ws3c2sPY2DgL1bF+iVwvQdSVFwVTWFoD4kyf11E5RP5FRtpxm4A1Gcyhe36Uf1mLoi6nzMOi/Ft8IkzINRgrfczWTzvxJDHM9UHZKhv4+biiZI8lfjMoPw/Uh12MFw/AoXVRZ9+d0NWrlL394eAt4EXyYDp/1Cz6dil0d6FtMJQSZf5m85q5UUF8pMG7DRrUruJRuzmyZlnPGq3jgE9x2dvjmRCyGos2NzX5rY0widthPCZTkmyWlnHZeWaIlL7FClyp9VXeLdnpI8byH+ixXUPlDLDggImbE//c20fVp/tjVscnCTo0Q6fZoanhODE0DLuE0+ACCGb4uv4yXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QFtWnMg7Uhet9d3YnVeZ4EL10kP2OkEq2Wh0jKXZQ8I=;
+ b=UsSBwXkjK2ttLRLxY+zIlMIzu+Nj0PPsn6y3tsQm52k4gWcbBu3LNVtYwLmE8u45s0JExTGavFvIsJKFvTK+p1wGQDXRm5cJrIJzkIzIM4uRmVI+dkT10b7pWJa0AiVZJ3M/4ydN3PFLf27R6iR0BJHcjyFQfvoCpJEBRyKGYpxuCR4iHimLcyvC8VZHo9/eOUDsWN1kGBTRjzTXI53jnx2phsVwfZK6rY4/pMLzAU0dEqsFIhQdwtFzK3ETJF9aRL/KNq4TFUUERXhxqSNhbPqWWxqSmw2uwE7yoruMbmt/Bd+VJeEN7hH5ObIakBclwbbB23z0cBFNG3D1ik0AvQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV1PR04MB9135.eurprd04.prod.outlook.com (2603:10a6:150:26::19)
+ by PAXPR04MB8750.eurprd04.prod.outlook.com (2603:10a6:102:20c::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.13; Fri, 31 Oct
+ 2025 12:15:12 +0000
+Received: from GV1PR04MB9135.eurprd04.prod.outlook.com
+ ([fe80::b1f6:475e:de5d:8442]) by GV1PR04MB9135.eurprd04.prod.outlook.com
+ ([fe80::b1f6:475e:de5d:8442%7]) with mapi id 15.20.9275.013; Fri, 31 Oct 2025
+ 12:15:12 +0000
+Date: Fri, 31 Oct 2025 14:15:08 +0200
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: imx@lists.linux.dev, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org, Sandor Yu <sandor.yu@nxp.com>, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 5/9] drm/imx: Add support for i.MX94 DCIF
+Message-ID: <m6dh52cih2xzzxb45hsfohrkrqdr3hqnewbeupqk43wzlcyznm@j5sfwnhealvx>
+References: <20250911-dcif-upstreaming-v5-0-a1e8dab8ae40@oss.nxp.com>
+ <20250911-dcif-upstreaming-v5-5-a1e8dab8ae40@oss.nxp.com>
+ <DDWCVYBQSV10.2MFZFEEHPYJY4@bootlin.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DDWCVYBQSV10.2MFZFEEHPYJY4@bootlin.com>
+X-ClientProxiedBy: AS4P195CA0020.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d6::7) To GV1PR04MB9135.eurprd04.prod.outlook.com
+ (2603:10a6:150:26::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] arm64: dts: freescale: add Ka-Ro Electronics
- tx8m-1610 COM
-To: =?UTF-8?Q?Lothar_Wa=C3=9Fmann?= <LW@KARO-electronics.de>
-Cc: Maud Spierings <maudspierings@gocontroll.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
- <20251022-mini_iv-v2-3-20af8f9aac14@gocontroll.com>
- <a7012995-c2a8-48a3-abe1-5c227272f21c@gmail.com>
- <65202d1f-6c4f-4d4e-9fef-85cfb74ec768@gocontroll.com>
- <938f85b0-4c9b-463a-960a-f5f4e4092480@gocontroll.com>
- <20251029081138.2161a92a@karo-electronics.de>
- <4a47b9b5-f482-41b6-a441-7728572c5a0c@gmail.com>
- <20251029104838.44c5adcf@karo-electronics.de>
- <d05c62c9-7ed7-46e4-aa4d-27172741b5ee@gmail.com>
- <0667e026-99f3-4233-b3f6-e38273961d49@gocontroll.com>
- <20251030095434.1dc06df2@karo-electronics.de>
- <26fc62bb-3484-4812-b576-6640eef72c49@gmail.com>
- <20251030130006.0221957a@karo-electronics.de>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20251030130006.0221957a@karo-electronics.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV1PR04MB9135:EE_|PAXPR04MB8750:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5170dcc7-7aee-47d8-7c5a-08de1877241b
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|7416014|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?r2BqaRQbgbI4QEbbH5y8ZiG+5ptcGQ2PUcp7E8F+zN1ixdEyHXNTvtwmOcPj?=
+ =?us-ascii?Q?gR7oeGuREKQufhq7wwQEqGOCM0TWL+DF5QOTwblGXqSedlzCR7LWwZmmirkQ?=
+ =?us-ascii?Q?jwQKll3E4RJmt2TxdhaXA73qF7xVEWtlfyJ/lck6D3bsciGiUCNlAG/Y3Ooz?=
+ =?us-ascii?Q?jpDgoPI72vwcPO5/56b+HPhlHDziPPfZC99zf86zsnUdq5QcEDQ2xgMOIBcO?=
+ =?us-ascii?Q?t1QIDKZu60dx0KSDTWfYWLBB8EJFgjTOtvWIXHKl8+NLZzSuQj09prSfhmok?=
+ =?us-ascii?Q?gzqC72QNwvk9aqisuXGoMPL2XmRI6d06axan90+dpBaw41/xfI00Y3Qnl3Zm?=
+ =?us-ascii?Q?+w9ImXW4ax6T7ZTvlCEGay4HlBUDix5s9n58m79/KM8IFi6eQhz0AHu2rUlJ?=
+ =?us-ascii?Q?TwIBN/jYaV8QIkK8s4lnOE1vdNNwj1BMJ7ABp6QCs9SOSbra9gcf4umdaVTq?=
+ =?us-ascii?Q?xuq4u7u1eQeVv5knoBAHQ9QZIjcqUsjcMfyURBkL419Y3WvPqNGbvEqCuEOq?=
+ =?us-ascii?Q?4ba/9MruvbBaxVNEFO32DJIuLj4X45NBaEFNT5CvMED6dA0YJnYGvvi3s09+?=
+ =?us-ascii?Q?NzOxH4WWqb1Y6DE6wInqt1CHFYyz6GDbT6ISQlzd1R5OSIjxwQT9Oo3O26vo?=
+ =?us-ascii?Q?GWh2QUJRI1rJ457S3hhWivWV6FwWS2J2EDvEyN3Vf9YN1yNyXwqcIUqsLF9z?=
+ =?us-ascii?Q?tUvTiA8Jw9iBT7WwSRGOQpzc/CYid8Qimg6X88oBMPc1+ofAcsxPtGeRcn8S?=
+ =?us-ascii?Q?9SfycK0HsRN5ZmWB7GgK/X6gizc221JwEC37cyQ2om/wzPEHZW0rwuEvLCkF?=
+ =?us-ascii?Q?h42PTGRiNnV3Dyc/d0SBpZc5DBakrg2rzVW6uhmLM9K6Nyy/UxyblAbajrdu?=
+ =?us-ascii?Q?THGYDmzAFazLsoHDL7ygCqOQsKYiQZR9JJWTpFQpgnSwunqewZpANs5/PFjq?=
+ =?us-ascii?Q?buDLCD4l/MAHMs1N686bm4CpiNPsqgyxHkZflJB6u/ukYUbBkhH9QtCehjay?=
+ =?us-ascii?Q?C1i0vnGmW3eDWJ0luWeCBDfAeUlyMUoRyw4DiBKOID0tyVCkdGIX5+vMlu6C?=
+ =?us-ascii?Q?pZRZ/74EXElT+JcsVe47pG1ity2UJyfSNHDpfPcWZCG+aP+Nq6WRKiHzhp14?=
+ =?us-ascii?Q?jTtl68WEiwKl7V9JZDjCEh1/3T+fP9/fsFAsSBviPu5iBJIP6Qxnsp/AXeu3?=
+ =?us-ascii?Q?BNl/zpNkFhsxLuk3+gKU78+qK1BfyTxloc3/SR5v/sJCXZcU71fLQ3RTl7AT?=
+ =?us-ascii?Q?gFB2ANhrssD2JFzt7G/G7uC3BZ3lalYn1uhFgSiHT9nrryc4VDBnlOhFYSR4?=
+ =?us-ascii?Q?Xo3DXr9f1mxU058uQnFr+rI/jEN903UhLAkWO2XQJSjggwysS3jo1y3Az9t1?=
+ =?us-ascii?Q?aoTK71ZikYTkLhEDEbny587FcpOm?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR04MB9135.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Nh4Hi/esARfSQcJg6bzxkvct3TpzSUXB1QW82xcyu3keuKBKbzUnhAGm4TXZ?=
+ =?us-ascii?Q?qeEQlcDOk9NB9usYmW9efliVsUcHMKDKT8YY6xsY+y7nODXquerropthtI6f?=
+ =?us-ascii?Q?nhdAktkgs22pdxyhLryggm14jJPrWcIdicF90+u1UgSNyyBu9lHOPRKWvQQV?=
+ =?us-ascii?Q?vsSzG3vIbwv4MLSshqeaFMVbtduGnGtHBkclNkLrr0Ale1UBehtcL6uQ7Kwl?=
+ =?us-ascii?Q?bg5+dAd/SYIwa4V7f+uI7K3WTvBkK23e+v4+cCxOlNQl2TmO4oZYKku2KmB8?=
+ =?us-ascii?Q?OXXk4qlK7V7Fxfkd08vAnO4YVKZGX5KKFMYAdnnmi5QvtNO0YdiaqLLOj/Wp?=
+ =?us-ascii?Q?eNNXce6+Iy0kfoTNiMsRN3owUpgNR4E+Eeniwo6rIw7RHMEgfyMORhOYibwC?=
+ =?us-ascii?Q?lm1+KmRO4CdHRI1lqqWpr+I1zAg68skb4kWiGHUU1G4q7p9R1/njWEX3TC4r?=
+ =?us-ascii?Q?TIkj24pnX5OvGiYO0iDV+8PKVeF4hjXrvil6RwGEFatINE4eKnKa0Vp/Pf3y?=
+ =?us-ascii?Q?3Co7c9I5aW08nxmDYK3dMfpUynWb5qAdp+uqg+KnJR8hUKa1Eo81kObpHS5O?=
+ =?us-ascii?Q?7JN3vMtIO45sN3I5YHV5pTGYkT8TMnGZy+WX7llzWNkFInRfrFvnbNxcIrGi?=
+ =?us-ascii?Q?KetZs/ts6qRatx8Pb5Au2itQSVvfd8ybj0UAOuJ2hZgiJH3vAKETlhOinTsr?=
+ =?us-ascii?Q?MuRn2mBx3kZTjUHzjAnOTbh27HYI58LJ8oxN0Qt9zosOXsnwPtBrpcjxcOnP?=
+ =?us-ascii?Q?bXN+StKiY5n6xc4CUBIObb8RK7QmWMyI9Z2E32WsNVZ/apM9bRvv/KjLTQ/d?=
+ =?us-ascii?Q?rDwLy/J3xmeFuKk8lhv0y/+AVvOyKMR7uMNEQM6vbSI6dwmXqS1lwb26ECE5?=
+ =?us-ascii?Q?tReVD4EEDbhiqbiIg1xuDc6jXW+Y4cMs0y7gEd7YbGUQYU7dFMCMjpxsh8Ft?=
+ =?us-ascii?Q?NLutGfssqv7mG+ldMK/EC8nC/VFhtl/UtGK26waOP6m1kLjDP4iHR2pV8fab?=
+ =?us-ascii?Q?M15US0xpd/Cee9XVgxuR0FVV7Ibf2DJRP/5tNC8T0iNT6rrbs/Ty83ylpzcN?=
+ =?us-ascii?Q?+l7JnFtO6EcmU1pimHMT42G40nr7mFcH5NnzNfDZvsCm5Kx8lWuwzXVlnQQr?=
+ =?us-ascii?Q?WExlQ9cHkJOlVfRi5kufd8y2hHme+zsi6TI5cAtJv7RVmMwe3xP2abgqME9G?=
+ =?us-ascii?Q?kWo/FvC/PE+j/UmJpw0DeAP1XYNQ9UbymTN2uKJ67DFLYJmm9jyclJ9nAyXG?=
+ =?us-ascii?Q?RBAx0TpXJV6huZzqCCiusxNpNiUMb/QQHQ3NNtxs08o/zM6EYNFRAsPq4489?=
+ =?us-ascii?Q?IhpOGtJFKnWSoqZtjFUN2+0aUobDHA/xMEf227Frkkay9OJb6BU02j7zOnNo?=
+ =?us-ascii?Q?rHb7gKZOk85++jpNbRqTvK29NikuO344d3RkioGfssaiItok8kBP1Q/VE3Wu?=
+ =?us-ascii?Q?iKEuJ7oXjms+3zOAz3FYjIQ0xBnhbC28RrGpAjsabrOhULJP+g89wlQexFMZ?=
+ =?us-ascii?Q?2075jIiuISxXtR5RMkl5ly+FFmuAApd1omyDshwkJ/ScrQcqJWIjY+94sVDn?=
+ =?us-ascii?Q?OMgpYRAcS8AfLI7WemZKgyV5/Ppm112Fuv8f9Htyq01RpnQmUqHJ5SEvatKr?=
+ =?us-ascii?Q?Sw=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5170dcc7-7aee-47d8-7c5a-08de1877241b
+X-MS-Exchange-CrossTenant-AuthSource: GV1PR04MB9135.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2025 12:15:12.3365
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: g8IcxW1OhAg1XEtoHCey4REVl4eZKXvU6gHLwThK3jXQ2PN3kfgSkdu742sBDoiUS3nfvTfePRAvlO82JB8sfw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8750
 
-On 30/10/2025 14:00, Lothar Waßmann wrote:
-> Hi,
+Hi Luca,
+
+On Fri, Oct 31, 2025 at 09:14:45AM +0100, Luca Ceresoli wrote:
+> Hello Laurentiu,
 > 
-> On Thu, 30 Oct 2025 13:01:52 +0200 Matti Vaittinen wrote:
->> On 30/10/2025 10:54, Lothar Waßmann wrote:
->>> Hi,
->>>
->>> On Wed, 29 Oct 2025 16:35:25 +0100 Maud Spierings wrote:
->>>> Hi Matti,
->>>>
->>>> On 10/29/25 11:05, Matti Vaittinen wrote:
->>>>> On 29/10/2025 11:48, Lothar Waßmann wrote:
->>>>>> Hi,
->>>>>>
->>>>>> On Wed, 29 Oct 2025 10:42:17 +0200 Matti Vaittinen wrote:
->>>>>>> On 29/10/2025 09:11, Lothar Waßmann wrote:
->>>>>>>> Hi,
->>>>>>>>
->>>>>>>> On Tue, 28 Oct 2025 14:10:04 +0100 Maud Spierings wrote:
->>>>>>>>> On 10/28/25 13:42, Maud Spierings wrote:
->>>>>>>>>> On 10/28/25 13:15, Matti Vaittinen wrote:
->>>>>>>> [...]
->>>>>>>>>>> Could/Should this be described using the:
->>>>>>>>>>> 'rohm,feedback-pull-up-r1-ohms' and
->>>>>>>>>>> 'rohm,feedback-pull-up-r2-ohms'? If I understand the comment
->>>>>>>>>>> correctly, that might allow the driver to be able to use correctly
->>>>>>>>>>> scaled voltages.
->>>>>>>>>>>
->>>>>>>>>>> https://elixir.bootlin.com/linux/v6.18-rc1/source/Documentation/
->>>>>>>>>>> devicetree/bindings/regulator/rohm,bd71837-regulator.yaml#L108
->>>>>>>>>>   
->>
->> // snip
->>
->>>>>>>
->>>>>>> If real voltages aren't matching what is calculated by the driver, then
->>>>>>> the voltages requested by regulator consumers will cause wrong voltages
->>>>>>> to be applied. Debug interfaces will also show wrong voltages, and the
->>>>>>> safety limits set in the device-tree will not be really respected.
->>>>>>>
->>>>>>> I think this would be well worth fixing.
->>>>>>>      
->>>>>> Before doing the real-life test I did the same calculation that's done
->>>>>> in the driver to be sure that it will generate the correct values:
->>>>>> bc 1.07.1
->>>>>> Copyright 1991-1994, 1997, 1998, 2000, 2004, 2006, 2008, 2012-2017
->>>>>> Free Software Foundation, Inc.
->>>>>> This is free software with ABSOLUTELY NO WARRANTY.
->>>>>> For details type `warranty'.
->>>>>> fb_uv=0
->>>>>> r1=2200
->>>>>> r2=499
->>>>>> min=800000
->>>>>> step=10000
->>>>>> # default voltage without divider
->>>>>> min+30*step
->>>>>> 1100000
->>>>>> min=min-(fb_uv-min)*r2/r1
->>>>>> step=step*(r1+r2)/r1
->>>>>> min
->>>>>> 981454
->>>>>> step
->>>>>> 12268
->>>>>> # default voltage with divider
->>>>>> min+30*step
->>>>>> 1349494
->>>>>>
->>>>>> Probably we need to use this value rather than the nominal 135000 as
->>>>>> the target voltage in the DTB.
->>>>>
->>>>> Yes. When the driver calculates the voltages which match the actual
->>>>> voltages, then you should also use the actual voltages in the device-tree.
->>>>>       
->>>>   
->>
->> // snip
->>
->>>>
->>>> Then setting 1349494 as the actual voltage makes it fully work.
->>>> Otherwise it complains:
->>>> buck6: failed to apply 1350000-1350000uV constraint: -EINVAL
->>>>
->>>> Final debug output now:
->>>> [    0.327807] rohm-bd718x7 0-004b: buck6: old range min 800000, step 10000
->>>> [    0.327813] rohm-bd718x7 0-004b: new range min 981454, step 12268
->>>> [    0.327819] rohm-bd718x7 0-004b: regulator 'buck6' has FB pull-up
->>>> configured
->>>>
->>>> I will add this fix to the next version of this patchset and include
->>>> your requested change in the dts.
->>>>   
->>> Does it also work with min/max settings in the DTS that are taken from
->>> the designated value +/- 5% tolerance margin, so that the DTS contains
->>> reasonable values determined by the HW requirements, rather than some
->>> artificial number that is enforced by the SW behaviour?
->>
->> I am unsure what you mean by "artificial number that is enforced by the
->> SW behaviour"?
->>
-> The nominal voltage that is required by the consumer is 1.35 V. That's
-> the voltage I would expect to set as target for the regulator.
-> If that voltage cannot be achieved exactly, I would prefer to have the
-> intended voltage listed explicitly rather than listing a value that
-> accidentally can be achieved by the regulator but has nothing to do with
-> the requirements of the consumer.
+> On Thu Sep 11, 2025 at 1:37 PM CEST, Laurentiu Palcu wrote:
+> 
+> ...
+> 
+> > +static struct drm_bridge *dcif_crtc_get_bridge(struct drm_crtc *crtc,
+> > +					       struct drm_crtc_state *crtc_state)
+> > +{
+> > +	struct drm_connector_state *conn_state;
+> > +	struct drm_encoder *encoder;
+> > +	struct drm_connector *conn;
+> > +	struct drm_bridge *bridge;
+> > +	int i;
+> > +
+> > +	for_each_new_connector_in_state(crtc_state->state, conn, conn_state, i) {
+> > +		if (crtc != conn_state->crtc)
+> > +			continue;
+> > +
+> > +		encoder = conn_state->best_encoder;
+> > +
+> > +		bridge = drm_bridge_chain_get_first_bridge(encoder);
+> 
+> The bridge returned by drm_bridge_chain_get_first_bridge() is refcounted
+> since v6.18-rc1 [0], so you have to put that reference...
+> 
+> > +		if (bridge)
+> > +			return bridge;
+> > +	}
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> > +static void dcif_crtc_query_output_bus_format(struct drm_crtc *crtc,
+> > +					      struct drm_crtc_state *crtc_state)
+> > +{
+> > +	struct dcif_crtc_state *dcif_state = to_dcif_crtc_state(crtc_state);
+> > +	struct drm_bridge_state *bridge_state;
+> > +	struct drm_bridge *bridge;
+> > +
+> > +	dcif_state->bus_format = MEDIA_BUS_FMT_RGB888_1X24;
+> > +	dcif_state->bus_flags = 0;
+> > +
+> > +	bridge = dcif_crtc_get_bridge(crtc, crtc_state);
+> > +	if (!bridge)
+> > +		return;
+> > +
+> > +	bridge_state = drm_atomic_get_new_bridge_state(crtc_state->state, bridge);
+> > +	if (!bridge_state)
+> > +		return;
+> > +
+> > +	dcif_state->bus_format = bridge_state->input_bus_cfg.format;
+> > +	dcif_state->bus_flags = bridge_state->input_bus_cfg.flags;
+> 
+> ...perhaps here, when both the bridge pointer and the bridge_state pointer
+> referencing it go out of scope.
+> 
+> > +}
+> 
+> You can just call drm_bridge_put(bridge) there, or (at your option) use a
+> cleanup action:
+> 
+>  static void dcif_crtc_query_output_bus_format(struct drm_crtc *crtc,
+>                                                struct drm_crtc_state *crtc_state)
+>  {
+>          struct dcif_crtc_state *dcif_state = to_dcif_crtc_state(crtc_state);
+>          struct drm_bridge_state *bridge_state;
+> -        struct drm_bridge *bridge;
+> 
+>          dcif_state->bus_format = MEDIA_BUS_FMT_RGB888_1X24;
+>          dcif_state->bus_flags = 0;
+> 
+> -        bridge = dcif_crtc_get_bridge(crtc, crtc_state);
+> +        struct drm_bridge *bridge __free(drm_bridge_put) = dcif_crtc_get_bridge(crtc, crtc_state);
+>          if (!bridge)
+>                  return;
+> 
+>          bridge_state = drm_atomic_get_new_bridge_state(crtc_state->state, bridge);
+>          if (!bridge_state)
+>                  return;
+> 
+>          dcif_state->bus_format = bridge_state->input_bus_cfg.format;
+>          dcif_state->bus_flags = bridge_state->input_bus_cfg.flags;
+>  }
+> 
+> This would call drm_bridge_put() at end of scope, i.e. end of function.
+> 
+> You can also have a look at recent commits involving drm_bridge_put (git
+> log -p -Gdrm_bridge_put v6.16..origin/master) to see how other parts of the
+> kernel have added drm_bridge_put().
 
-Ah. Thanks for the explanation. I get it now - sorry for the noise.
+Thanks for reviewing and the heads-up on using drm_bridge_put(). I'll
+send a v6 next week with the fix.
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+Thanks,
+Laurentiu
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+> 
+> [0] https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/8fa5909400f377351836419223c33f1131f0f7d3
+> 
+> Best regards,
+> Luca
+> 
+> ---
+> Luca Ceresoli, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
