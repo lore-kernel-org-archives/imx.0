@@ -1,203 +1,99 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010061.outbound.protection.outlook.com [52.101.84.61])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5678933B96C
-	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 10:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761906086; cv=fail; b=gFPEoTQw1UsFiKgA+UplLknMHGQP/fIrHrrkL+3rfHRkEXEkvNDqqYm5L+EulFjyLAMA5AuUj6vlkZtsLpeUELFMEDscbZVpep8BPF178+1VEyxlqo880raC4pkKvBS6q1HDt4XmIc2xtVojlHCDemCeFfZRqs8sVBexyOakVVE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761906086; c=relaxed/simple;
-	bh=q5qAekZsVu2C0CsB7DstUC+weWf9F4WdEK07LlG5Ppg=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=Pdfn/76QL3kU9BolgbMxZotXNUk6TFiaNWcOpV4d5SNUNrpz/LdYrWJ0pmeael/9wy3YyOn6sVRRZaqwJk7rVffOUs9buiEOqAsxnFBPrrlKW87MB5BQSe4LpdrgCMasJezJZHRxA5dXlzfD23oC3u3+nIInTzVmDevWRdZUAok=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=keZxvGGn; arc=fail smtp.client-ip=52.101.84.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C71324B2D
+	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 11:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761909037; cv=none; b=RN4ApGIhy/zfA3L2CGQcEuf9q4KMZSh1seRNiHhrvy2eOGsSqsPLA4aFBKo+YiyhXISTYtKkawCIv0CJxm8AYCbdgvCFJzkAji7QdGJRgRPiaRnFyQ9/LLv3LfuQnZIOyQVriWrOi2K3wwxKEHQK97DZHRg7zpUASYNmbVGFxKU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761909037; c=relaxed/simple;
+	bh=ewOE6YnT3j0Xu8woT0FrilxeSuCBz+Se1xNrBX55jeI=;
+	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
+	 Message-Id:Date; b=VBHSv2OBhnEEI5EweRwR8UnCE+8vDgDyVrSqUt4CgOK+2dyhaeuI8/NgBCY8c+J9RrOlvVMgswL9eYLLipBZda1vuSISjYwkWccER0CPimffth/JPPgULm61FQjGfhU2ebEujXCqzsixBJiafrsZKLbJOojXTOrcN+QCGhHNRvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=joABAYhG; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="keZxvGGn"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WeWe2gt2mqN07/0zpC4mDNLhjxhpggO6k9N4EPScS2yAeB469N2I7V8m4cCc/BT909CGSK+gp8Q7KiRv7U/n8fxtziw0Ijv4Y7BxvEYY8y1tDnVGVS93MOw1Tm6U39jWlRMTnheTmzH0uXNMGAniS+tduJXtIzVlTcYl9jaevuxybwx5K6xwBfKLCkF13Y8ulFrj+eJmGTV5QJtwOOiPoDGMNyaS731ZsNkVqp/wmr/X/SuS9h6sP6+rXgOdRMLLAW/TdhA12Mqp0PRdjnnV5faFbd/431PLu2u6MsuMfHlqpszwyxfCGDQEQRGcjy5M3NLTjXeY7OXTkTi5r3zWcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ksiW92odG01+LAy3d2A2oDV3FJg6/BKSIndRYTVtY2g=;
- b=nooov4biTudkUinTpuEEWCJBZFnDCUwb1CTQ7RbM8E34mHgqjPLQ955m/lk3lvOjYavjoM3aZ/B1tkAsVZPaPmoKSkJ1IOpj2zb+kzVcLMOBQx64f1ij7aDTc1WeVuH8EDLr9akiB2o6LmzfbMQjmB7kHF7GXofkQyuL/ikaHvtvVMkotxRo9MuHmTt0aZDu6tmDhbwowtmDm4O+fUfU7GkJ34tsgJIPaN7tCMmbSJKMcTW//ClH/k5LiUqYJnLsWzReeDPk23NWsZaG1eJxRFJdsK7EXhzFoWEwTeml8P/YH41+50NMfjeejfkvqSdbNU+mH/tGHbUInGzRSaCi2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ksiW92odG01+LAy3d2A2oDV3FJg6/BKSIndRYTVtY2g=;
- b=keZxvGGnVCDb9pySc8N09k/nKdZDlbpxD+vWyc9q9Vmh+JoRZqxgmRnqaFq4VS2PAi66XjxfJC+jEdMEgguFKF2uRzq5dZIPpitTRBwYXDwXd/L9RisgfNh1I6VuWWWTJUmXTRJOmFmjJyU7OdQGUoKtrtk9MFjVIYbdPrmAlDdNSBMk+GAV6COG2Xq6bruzBW4JQW5RZrscBPOvPmNd6u03eKTkW9EO3aoyp2oRfzw9mgq5DVGgM1pBcNWtvTKWHG80tQ6hxszvR4DC4W4doapbzCHpKS2f90MX+oUBnYYlbBF09nXXNyTgZBU8VX1I63vwy2M5Ob3BkVJtJnPeTQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from VI1PR04MB7056.eurprd04.prod.outlook.com (2603:10a6:800:12c::21)
- by AMDPR04MB11677.eurprd04.prod.outlook.com (2603:10a6:20b:718::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.14; Fri, 31 Oct
- 2025 10:21:23 +0000
-Received: from VI1PR04MB7056.eurprd04.prod.outlook.com
- ([fe80::66b9:8242:90ad:ac74]) by VI1PR04MB7056.eurprd04.prod.outlook.com
- ([fe80::66b9:8242:90ad:ac74%5]) with mapi id 15.20.9275.013; Fri, 31 Oct 2025
- 10:21:22 +0000
-From: Liu Ying <victor.liu@nxp.com>
-Date: Fri, 31 Oct 2025 18:21:25 +0800
-Subject: [PATCH 2/2] drm/imx: dc-crtc: Use flush worker
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251031-drm-crtc-flush-worker-v1-2-9edc94da0fb7@nxp.com>
-References: <20251031-drm-crtc-flush-worker-v1-0-9edc94da0fb7@nxp.com>
-In-Reply-To: <20251031-drm-crtc-flush-worker-v1-0-9edc94da0fb7@nxp.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Liu Ying <victor.liu@nxp.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: SG2PR01CA0145.apcprd01.prod.exchangelabs.com
- (2603:1096:4:8f::25) To VI1PR04MB7056.eurprd04.prod.outlook.com
- (2603:10a6:800:12c::21)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="joABAYhG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=F9+uCkTTPZNitcXoasL3jxbNQG9cxbs2rnefJEzDKW0=; b=joABAYhGrqXg1LpCJ/57xmaHzs
+	Joy9pfh00DUTWJrxapt5IQ8iU/TrR3I0S+p4RMyUwSRI27Nf/Sddz3PZkFJLMuww3lIuTL14iKaFE
+	V6g/09pEEIq/s1Rl86FgEwnsWjvWhd7h+lqsghtMTAsqztSQBuiBIYp4RIlQ2wwPZ4ABkxSqJzU1z
+	T7l4aMuhpDI/TP3n35qtkYnVosxfwUXg9p7b1rIA9Y/mys6xLnGXffOhaPrlXxGIY50UwpUORc2SF
+	I35kWcofuGvmy/rCJNyNtRf/kqiogoDbWBCfmefc58OTUnIUxnKK2WTVNp4ilIKjIDqGPO5WiqD8I
+	qqOlOtCQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:35954 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1vEn1X-000000006oz-1kl6;
+	Fri, 31 Oct 2025 11:10:27 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1vEn1W-0000000CHoi-2koP;
+	Fri, 31 Oct 2025 11:10:26 +0000
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH net-next] net: stmmac: imx: use phylink's interface mode for
+ set_clk_tx_rate()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR04MB7056:EE_|AMDPR04MB11677:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6fe0847b-dda9-4a4c-2646-08de18673d9f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|7416014|52116014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MFdjUEhnRVp3T2pZMkhZMjdqWFJwa0h1Q0p0RjNQSWkxUHB3eWx4UDF2Sk5j?=
- =?utf-8?B?VXVBckIxWUdCZkRCYnZqQXdNaTlkWXVNeGtWdjNpNUExcXVVOTFKL3Uvek9I?=
- =?utf-8?B?Tit1MHh6SUw5V3h2dTIzUmt6UHA2RzV4Nnl2OHpxaFNHRURMakFzWUgyZjA4?=
- =?utf-8?B?ZW8wTDJrRkpuQnp0cjdicFl2eERZTm5KRjI4SHVMTGxCUmNGbVNzbjErenRQ?=
- =?utf-8?B?UVRwZWd2c3UrM0h5SWZpRVdvZk1pMWJMcDFoWmxrSnRHcTBwZXdHaFFUc3pY?=
- =?utf-8?B?a2wxWE04Qlo1ZHNwQmVVZlBiWUpSUjhvekw2aXpBUWV3Sm5zKys0UzV1NFQz?=
- =?utf-8?B?QVhQaE5xWHp2UjMwQjBNaG4yVkV2ak1RY3V1RytIeloxb25zQ2F4ejR4Y1Y1?=
- =?utf-8?B?OGdyeG5xVll4UmlNMGdzQVV4aXkvSEtzVTZ0SkZjRVZzbzJMOFRhaWFIS2Na?=
- =?utf-8?B?VURUVjFXM1RLejEyNEROTEJ2WmN6ZVh1NE5Dc0dwVE1yaUZMa2VZM1NBRjl3?=
- =?utf-8?B?STJ2ZFFtNEprc2h4OUZ5MEtCMGQyOS9jVExTWnUvcFhlbU5wbFZvSGd5eFp4?=
- =?utf-8?B?TklDMmM5SjdWTk84dFpaVFpKSzBsWjZ3UWdpKzJIUzFpWStTN3B2VlM5VVNF?=
- =?utf-8?B?NC9FWkdJZkVGZ2dmMnJvSFplT081V3FQMWp1ZjFQbzY4emxGeVlRM1ZUZmox?=
- =?utf-8?B?VFNHTVIrcU5tcENWd3ZBVk1NMmNlbEdoWVIyVEFuQm1WS1NYcmszekRPZ05P?=
- =?utf-8?B?MVhtSXlGUEtnMUVSL0xSWGFOcDFhY01ITzIvQVNFVEFoRnVQYzM1c2Voblli?=
- =?utf-8?B?dDNJZlVjUktYazlGZVUvZDlnOFBmRzdtMHF6elhtenk1Ti9MdmFTK043ZzBu?=
- =?utf-8?B?YW1JcWI4QVBmYk1uamo3Zm1JVEtTSmZKamJiV0hqQjkxbnJJUVJ1SlhzTFNN?=
- =?utf-8?B?SFB6NDB0WGUwbjQrSFpxMnJDZXBUcjhLNmtPSjY0SW5mT1MrYTI0SGFIRU5k?=
- =?utf-8?B?TjR4U05yWHBNUzBNMG85TXVoUzZTUUZrSk9lU1NMN3M0eitlNEMrQkJ6Tmk2?=
- =?utf-8?B?MjExb3FWM1VlVTdwbEJISjVuTGw5WGR4Rndqd1djejM2eXlEbTBTd3ErdjZV?=
- =?utf-8?B?NFkrakpmaUQvU2Y5TUpLSFY1NVVPemxXUDcrUVRaV3ZxUE1tWFptaUs2SmFq?=
- =?utf-8?B?Ujhkd0VkUHdHUms3UERrd2YzQnRKMTMyNWdOd1dIYk4yUGxRblFkQll2NWpQ?=
- =?utf-8?B?UEJuWlpEQkJkZFYzRWkxSytkMEZzTWZITE1DUjFMUWZnUGJNeTJCYi9XTk4w?=
- =?utf-8?B?U1cxRVNnYVRydWlSVlppblp0akl6S0Erb1VteUVTcXFud1ZDUDlyN1dZMzdB?=
- =?utf-8?B?cFBuZFJJcXNGSzNBQmRWeWdIY3VtTjNUdGxvbjJ3ZnVESnBBSG40VlVzZjZF?=
- =?utf-8?B?TWFPcjRtL3pNWEV6UGZZQStFcXRQbHlXNWhSeDAvWURUMkFFYXh0ZVkxQS9o?=
- =?utf-8?B?Nmx3S3NGVk1lcDdxTXQvMW94NEFsVm1lODduVTBEOElrKy9FbHhqWHFXQ0hO?=
- =?utf-8?B?ZWczMmlreXZiMkp1VWpRY2lEM2dhc3YxTmo2T0FXWVZUeE9ON3V3RiswV2w5?=
- =?utf-8?B?QTR1czZpMExTUmIxY3FONE1DUUtBekVTUGVkTFJHQzZLU3VDQ0tYQS9OUzU1?=
- =?utf-8?B?NWNDLzA4ZzJlOTFPTUkxdjdqY2NocU84WjE0cUpyQ3V0b0svMmROMWtwaHha?=
- =?utf-8?B?YjV3ZVk0RUZVSTMyUml3cW5UTktteFZ0NEMyRHdUUnE4UmdHclo5UXdTdlNj?=
- =?utf-8?B?SGZOaDJZVUhUSnBwR0c5ZUpLczNseGMrUjlmdzdHdVVmWnZLZm1tbndkd1h0?=
- =?utf-8?B?Yy9Ha09xZkZKSGxxM2FaWWFyVng3d1JTU1NnYURjT204VlNwWm5QTGxrYldV?=
- =?utf-8?B?SDhkc3h6VVRUbUFaWFRiSytsWjAzdENLc1ZKc3dJZkRxSy9jMkdSM2RLUFgx?=
- =?utf-8?B?akVpbVRaTXk2RjI4NXNSOUh4bExMelRiU0ptQ1lST05LQ0FOMEYzVTJBM3FK?=
- =?utf-8?Q?tcIcuC?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB7056.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eWxJM1BaVWxwanBQSys3Z3pYS2ZBNkx0QTBBZkRmR3pEemxWaXVTSGg0bHBj?=
- =?utf-8?B?ZHZUMDVVU05UNXNEQzNPampQSTVjV0VyazNjMXc4V1BDRWJ5d21JaGVOeVZv?=
- =?utf-8?B?R1UrN1JXbTdRR2c1YkgwbGdUMW5nb2o1UUhwYWNubHhZeGJuSDkwc2Nseldk?=
- =?utf-8?B?TVIrNHVJQUk5emltdlNrMHovVVVlQTJpU1JiT3UrOERMQ0Z2Q0RzVXFTMndn?=
- =?utf-8?B?bjZYdEpLSXF5YXJpUkVneUN5WWJ3cDZubkVkRnZvL1BkajhCUGhoQ0ZmZmQ4?=
- =?utf-8?B?MjcxbmpQcFpvMSsva2hpVU5hbk53N1RCdjZZYW1tRWNNa0kxQXdDbVYwRUdE?=
- =?utf-8?B?VWVBdkt5TXZOcWd5ZGNhUmNYMEovTnVtYmF6S0lGc1orOHZIQnRxenNhSitj?=
- =?utf-8?B?WnBLQkRTdkZaQmh3czhwMmhHY3JmaE9NcTNvZUxnRGdja0xJOWxLVDRncTFl?=
- =?utf-8?B?VVZheXIzNnRka0E0VmszSUpLQi9nRURBTjlIQmtDWlJkRGtXcXlaZ1F4dUt5?=
- =?utf-8?B?SkJpTjJYTGcwTlJQOHVNQ3hLYzQ4QkptM1c1ZDhQeXZWOU9kY2xpMEsrTkRt?=
- =?utf-8?B?alVTUW0ybFlKOEpkaUlrVEE0VlkreEVheFFOWkd4ZWY5Nnd5eTIwR2dXeDQ5?=
- =?utf-8?B?S2tWKzVCa3dKL0N6SW04TEtlaG12bkd4RW85R3JtR0xyT2wrYUZZZ1hZRlNW?=
- =?utf-8?B?OGxMK1N2dnMzRHRZUG50MkZkdE51UGxxbjJEbHJkNSs3SmhpZzZ2cjYyUmd5?=
- =?utf-8?B?c09LVXNCZlhZcDN0cDRqWitRTlVzeW9RaFJLYUsxeVh0VUhSTVhuR0ZIdDZS?=
- =?utf-8?B?SjJ6Tk4rQ0c4NU41dHdnbXFVaXNybnVHdkpraGtiVHprUjhYR0xQYnAyczlp?=
- =?utf-8?B?Q3Z2SEtjSlFVanhvZ2RnWlRTWEhmZmd6dWJoOHVGblppeHBudVNUalpLYmVj?=
- =?utf-8?B?Wnk0akZaNU02ZFNmZlJNbnQ1UThSNGliOTlMb25BSEpMUFBoZFE1Q1lpRXRS?=
- =?utf-8?B?ZFZhbDk4MVpOQjdNTmNCbSt1ZjlmSFRrVThpM3VENjljdVlQMkVKMHEyWlZJ?=
- =?utf-8?B?SFdvbVYwaGhYUzZ1L2ZNSitFWEZjeGNsTUt0dS90NW1JZElrNnRnT0V1V0dO?=
- =?utf-8?B?aFR6MjVXeUlteDFkd29SL3JpYzVMa0dNNVNFS04wYXIwWWFHTjNrWTBVRDhl?=
- =?utf-8?B?YXllaUxQa1NydlQweDB4bEszUkppVzdDY3JkWnFPaUExRjJ0ckthbFM4dmRa?=
- =?utf-8?B?YXRlNnRkR1pzVVo2dHNtQlhkSEtZcHZvOFVCeFZ3aUNwQm9xUWdZRmlHeW4w?=
- =?utf-8?B?eHkzcy9xYmF5VVVXNXZkRHJ4OCsveXh4QkZ0WlNlSFpFQXFzSGM4aDJwbjBB?=
- =?utf-8?B?K0U1dnB0a2JFREgxYXdEN2ZWZEpTOGMvZ0hnNXJUQXFRcCtoYldWOUpsdmpN?=
- =?utf-8?B?cU40eUZOQ1B4Z3BZaGV6WXlKTHZMNm54dnZ0NXRha2xQWjdiYVVnaVVDMFNk?=
- =?utf-8?B?dXhjaEZuR3NKb2Q0Q3libHRBSURnaFI2b1R0bmNidi9XQ016Smd6QndnSjhj?=
- =?utf-8?B?N3lqbzljRXhaZGpJWEQ3eFdjT3pxY2xmaGdJNm11YTJaT0JYYmMvN0RHS0cx?=
- =?utf-8?B?dU9wQUFSUXd1WmZvU2V4a25YVmo1b0FLNXhnVloyeUcrWENMd0xFRjZsSmpJ?=
- =?utf-8?B?dkNrb3lKTWVRZ0NFK0hzTmtWbVRMVHNHbCtOVmRXSVoybkIwMitoM0pmZTZy?=
- =?utf-8?B?VCswR3puRDFRNzNoa3VROS9yNjJJdlAycDFWNGlKeTlVcUNRSVdqc2JXNUdi?=
- =?utf-8?B?OHNNeXZSOG1BME5iSHhuVkJQVXpiWCtSRE5rZlpLVEk2OTVCYTZrQVBhUkQy?=
- =?utf-8?B?KzZoZTJGR2tvWlh2MG4wcUZHeUp3STR2cFBzeEVjbDhCdjNDcXJxQ0hxNU1C?=
- =?utf-8?B?Q21HMVVaVWdDZlozR0wva2xqamNhRkRRNXMrV3I3R0ppdG9SK1JhbG5KOUg2?=
- =?utf-8?B?SkRkcTVCeHZWUHFBVnVkVGZxTW5wVCsvUmZJSWNYZDNzY0ptYTlESjlnQnpa?=
- =?utf-8?B?KytUTE9MRENMVmRzMmkwdXd4Yzh6a2FnMGNPOGhnMExYVzduMm9odkRsL2ZU?=
- =?utf-8?Q?SUEGKSn3T3Xf+KQjAg9HaRfGo?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6fe0847b-dda9-4a4c-2646-08de18673d9f
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB7056.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2025 10:21:22.9215
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nWeNcAhfRjd1IyIU3OXi6Kn81qGu7fdlWZszBby5rBR3lr8MCNMdAn7PrKguGssC+eKJctfOXAcoBZYQvGsR5g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR04MB11677
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1vEn1W-0000000CHoi-2koP@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Fri, 31 Oct 2025 11:10:26 +0000
 
-As dc_crtc_atomic_flush() is blocking due to waiting for shadow load
-done event, page flip performance could be low when atomic flush for
-two CRTCs are conducted sequentially by drm_atomic_helper_commit_planes()
-with a single atomic commit.  So, call drmm_crtc_flush_worker_init()
-from dc_crtc_init() to initialize a flush worker for each CRTC so that
-atomic flush can run in parallel by drm_atomic_helper_commit_planes()
-for multiple CRTCs to achieve better page flip performance.
+imx_dwmac_set_clk_tx_rate() is passed the interface mode from phylink
+which will be the same as plat_dat->phy_interface. Use the passed-in
+interface mode rather than plat_dat->phy_interface.
 
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/gpu/drm/imx/dc/dc-crtc.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/imx/dc/dc-crtc.c b/drivers/gpu/drm/imx/dc/dc-crtc.c
-index 31d3a982deaf7a0390937285c9d5d00100323181..fb1049a09296a3ecaad8d1430d818fd6e2f25a54 100644
---- a/drivers/gpu/drm/imx/dc/dc-crtc.c
-+++ b/drivers/gpu/drm/imx/dc/dc-crtc.c
-@@ -540,8 +540,15 @@ int dc_crtc_init(struct dc_drm_device *dc_drm, int crtc_index)
- 
- 	ret = drm_crtc_init_with_planes(drm, &dc_crtc->base, &dc_primary->base,
- 					NULL, &dc_crtc_funcs, NULL);
--	if (ret)
-+	if (ret) {
- 		dev_err(de->dev, "failed to add CRTC: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = drmm_crtc_flush_worker_init(drm, &dc_crtc->base);
-+	if (ret)
-+		dev_err(de->dev,
-+			"failed to initialize flush worker for CRTC: %d\n", ret);
- 
- 	return ret;
- }
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+index 4268b9987237..147fa08d5b6e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+@@ -195,9 +195,6 @@ static void imx_dwmac_exit(struct platform_device *pdev, void *priv)
+ static int imx_dwmac_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
+ 				     phy_interface_t interface, int speed)
+ {
+-	struct imx_priv_data *dwmac = bsp_priv;
+-
+-	interface = dwmac->plat_dat->phy_interface;
+ 	if (interface == PHY_INTERFACE_MODE_RMII ||
+ 	    interface == PHY_INTERFACE_MODE_MII)
+ 		return 0;
 -- 
-2.34.1
+2.47.3
 
