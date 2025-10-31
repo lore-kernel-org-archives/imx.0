@@ -1,176 +1,380 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6086331A4C
-	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 12:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D44534C135;
+	Fri, 31 Oct 2025 14:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761915333; cv=none; b=Qe5SVIf9hSLgAaTtE69LE9ag1SH3+tgCpoJ0FUKx1eUOTBhqTQhatZ23ADy9L0yF3fDqwr3GT99CTduMbR0TKgyKYjn3GRwzd+SyrQQRYg6t+H6XC7Lq10uNGRtmchK0BF1GPf58wJIwHXg+CuZhaaGyTycH6c6TY8fzSl2ekgM=
+	t=1761919610; cv=none; b=IRMFRij6jPLfsusZcEG5+O5rYakoUeu1H6XT/LKsEnjUGxH8LyLcvGnZ9JzNfBtcZtMDk3Y9DZvUqQA52rE8H4L0Gflo+AOwHmnRAgftuBul0rN8PgjlzTdxRlR9J50mjqKWr8lX30+j9v9J2b/ROs9mdN4BrzFZWGkt7WooRcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761915333; c=relaxed/simple;
-	bh=maxNummCODk3xOKN9REfqVWBI6syLE7tsnIUSjVMlfQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mDgvhzv5xSMeBBnzMcF0t3YWT5KHWCwn6MrLDstLua0PrzjaIblfC2xMqjM82O1VPn/qLu75ZUIeZESFi/7zr2JqmHL2ebZNe0AhLUmVYyQ8+jJUYmTs8e/JCDTRkmCZmRno+PfwCzuQwIqp4fqfIAiEhw3x2SpbHX7bEtwOE5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aJcle2Co; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761919610; c=relaxed/simple;
+	bh=Srakam9afkBWsyM8ZSqlUr6TdJbYj/XFwaqGL0k1kLw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QtzGkoDrMs3R3VYDr7C5yDRKXlF39PhjGVojnSmROD9Amj5txFl8pSrNCNvNyYlNEvfImy39zDMcl5hUc+Il+DyYGLTNZwa4OzTjWyxWF6M6/DQjXgxAXnR4A97RR35B7K2Q6ItA4oeiPtk1oJIcC8bY/5AVPFgMLz0Clnn8cnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZNuayPN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aJcle2Co"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4710683a644so19546505e9.0
-        for <imx@lists.linux.dev>; Fri, 31 Oct 2025 05:55:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761915330; x=1762520130; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ur2nzdK93Gujnnrr7/bhg1o+Yu3Nd/Uvn3Pjsb5/zzU=;
-        b=aJcle2CoCMQ/+qjLB0oy6l4qf2tLCYXkUQkZ0i7ShBkimpWHYqa3WnXPuhNDVI05df
-         jOVkRGzODMkB057gydVIFoEwC7UO1t7H3VBy+SBg8Tl9O1SGfbYtL2E6fSsRi++Yws+c
-         o5LUFDTRfDc3o52QvqjgkJFYAX2OciULhIhD/Qj3DYkrlkmJA0d7q909io98W5ueAHHc
-         X+TQV4GqQZ/WCcG3pziQgUzeY9HTGQJXY9YPfTbnuv+X05HIWuNGhIVdeUrnbE4O7Ulk
-         7FsgsRVqjMa4J5boCusordLekBkZh9yOThxUo7dkhlfWvL1YyJU8r9o4a1yQJlKjxd+k
-         //sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761915330; x=1762520130;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ur2nzdK93Gujnnrr7/bhg1o+Yu3Nd/Uvn3Pjsb5/zzU=;
-        b=Of1hBtIWAyCTAR+mhgDGsq8hueximdkYo3P3N0QOrimt1tc8wkxy/xgJCT2tQye9XH
-         2ViC8IPGSO/yQLoKLP7R9XH/fcNvHvIF8TgUhaa/g4WU9UuAI4J7cjiWpEMyBQk0zR8t
-         XrwcjbVonPOoWKpy9/LwtVtT3FD0rNm/7j3y9BtNzZlJgdBbC2QGQdCf8g5NeU5EZEUo
-         sBVQVcfGf2lUCnPUiRRE0NegyJomrjRia9xLkBPmW+S7ebMnatGjS7byaqPlKZRUakpt
-         kTHBLSpHJrIeYhiqw6BUMKIkDGqQ6S/yNFpXrGSYWVT7PJ1PJz2/lywfql3pS5+2v+c6
-         JO2A==
-X-Forwarded-Encrypted: i=1; AJvYcCWDL4Z7t7uaxd8ta1RZaFZVjbomx52ikuEDJOdO5Rp6FJzQUWFza97MFuLM+UGYBGR8+vY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxYSfvvltX+/JNJpP2t393OvyE0DhiNvRgkQDlvYP9zNuzBmPuR
-	J9/cwB6rF91DJ4lTnhb/iHVK+/XCyaXgXjFS+2Q48nT24gZsXCKIgF7W
-X-Gm-Gg: ASbGncurnz0ztKUGmiPJby3JJtbC5+2fALxNdUafFz6fChsZzYqGOI8Xgh9vn3JmXEB
-	c7ptD4y5/PlOjnTLIT+lfRoBCxEMQ9fud/99BFWdo5hWTkOyr/5i/sVLioydFeW2TLKsfAzTE6h
-	Dsta/Vcpu2R44xE4v7YL3QGxe2noARsFOgumDGmB8oBOVStf5UysuYKfOH1/J5GxtPd7mjrwqXn
-	TSlBDRcFYlCBWQ3DJyiNypz96tgtDP9Dj6F4iw1n1ljVAqMiDnClk9urohdLBfUSoBxHPKZZhJ9
-	nXwodMhowu5KcRh1alAENettU3aBlwk/uRL448d6bwA3Tvhx52E+YpUvF/KVbBD8uouibega6HZ
-	Zv8Ei3smx6cvWC48eWAwboPDAKkB7cI8CvNHPWjgaCUq4kCTsp2Nth/hghyZha0ctZmp3oNXNTs
-	rSPQdB9okOfZJDqR5Ol8DaEwc6PLBCyeBgMhacHir88VHgtuUMBR2IPKaO5FZ4XC6UXg6nx0rlA
-	vi6t2kRvAhHU8dP
-X-Google-Smtp-Source: AGHT+IHKkMjFYDq3sA/7iAVV6Ds+dv03BvTAXq+xvomUp5eBrJogf0XF/TD11Cyme54hAMfPd6Wl0w==
-X-Received: by 2002:a05:600c:c4a5:b0:475:ddad:c3a9 with SMTP id 5b1f17b1804b1-4773010641fmr38615415e9.13.1761915329775;
-        Fri, 31 Oct 2025 05:55:29 -0700 (PDT)
-Received: from toolbox.int.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c54efcadsm99111f8f.5.2025.10.31.05.55.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Oct 2025 05:55:29 -0700 (PDT)
-From: max.oss.09@gmail.com
-To: Max Krummenacher <max.krummenacher@toradex.com>
-Cc: Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: imx8qm-apalis: add pwm used by the backlight
-Date: Fri, 31 Oct 2025 13:55:07 +0100
-Message-ID: <20251031125510.433175-1-max.oss.09@gmail.com>
-X-Mailer: git-send-email 2.42.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZNuayPN"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D9B22C4CEE7;
+	Fri, 31 Oct 2025 14:06:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761919609;
+	bh=Srakam9afkBWsyM8ZSqlUr6TdJbYj/XFwaqGL0k1kLw=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=aZNuayPNNc3EUH2c4rxIClMgiiTUolg1OYi9q04y0LqzfLAeR1qGj1dICWgLdLOQf
+	 xmLZZ7QY5F+YzY+HIWV/DMpjsRFJlQx+zYgzkrmZG7qJY0bMm+Rtd48a6LVgX2jrLZ
+	 ToDJoB7/SixlOHIQeJnQA2ifVvL7CoY++UVLSFX3frO5rgW78EFlYzD0C+OiU3NxJk
+	 /FinbcCfQF+MVFmnz99vbo9S5/Kz/g6bUQ1j9L+q4YCbpVQ6j9qifzgjC/C1eqkvYZ
+	 dG/6MncngVE5MZe9qPzJ3u4v+2Qz5upK8fLNm09EWR/6+ktJ0Cm+Y3RhHyFSRd3C9+
+	 pPXrw/7Q/G2Kw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C993ACCF9FE;
+	Fri, 31 Oct 2025 14:06:49 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Fri, 31 Oct 2025 15:06:17 +0100
+Subject: [PATCH v2] arm64: dts: freescale: Add GMAC Ethernet for S32G2 EVB
+ and RDB2 and S32G3 RDB3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251031-nxp-s32g-boards-v2-1-6e214f247f4e@oss.nxp.com>
+X-B4-Tracking: v=1; b=H4sIAFjCBGkC/3WNwQ6DIBBEf8XsuWtgG8T21P9oPKCAcigYtjE2h
+ n8v9d7jm8y8OYBdDo7h3hyQ3RY4pFiBLg1Mi4mzw2ArAwlSUogO474iX2nGMZlsGclK1ZFSo7o
+ R1NWanQ/7aXwOlZfA75Q/58Emf+l/1yZRotfCKD32otf+kZjb2mqn9IKhlPIFhRSidrAAAAA=
+To: Chester Lin <chester62515@gmail.com>, 
+ Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, Enric Balletbo i Serra <eballetb@redhat.com>, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761919608; l=7502;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=Su3BAxA6SBNR4XfbrIKIFNt01TOwYKZFUS6VmQVlP1U=;
+ b=i3rydhtY1bWZ9jK1kaeVX90I4TK0PoPRydjO74xv6L9E+8tKUzx7wXKuU/AmDteIv2jnv0hC9
+ ip0irIpy+MWCB5GbjNgoRGyXDJ4jXenMIIQ6EYfvwIfB37Aps4SUTOi
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-From: Max Krummenacher <max.krummenacher@toradex.com>
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-Add pwm node used by the backlight output pin BKL1_PWM and
-reference it from the pwm-backlight node.
+Add support for the Ethernet connection over GMAC controller connected to
+the Micrel KSZ9031 Ethernet RGMII PHY located on the boards.
 
-Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+The mentioned GMAC controller is one of two network controllers
+embedded on the NXP Automotive SoCs S32G2 and S32G3.
 
+The supported boards:
+ * EVB:  S32G-VNP-EVB with S32G2 SoC
+ * RDB2: S32G-VNP-RDB2
+ * RDB3: S32G-VNP-RDB3
+
+Tested-by: Enric Balletbo i Serra <eballetb@redhat.com>
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
+Changes in v2:
+ - fixed correct instance orders, include blank lines
+ - Link to v1: https://lore.kernel.org/r/20251006-nxp-s32g-boards-v1-1-f70a57b8087f@oss.nxp.com
+---
+ arch/arm64/boot/dts/freescale/s32g2.dtsi        | 58 ++++++++++++++++++++++++-
+ arch/arm64/boot/dts/freescale/s32g274a-evb.dts  | 21 ++++++++-
+ arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts | 19 ++++++++
+ arch/arm64/boot/dts/freescale/s32g3.dtsi        | 58 ++++++++++++++++++++++++-
+ arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts | 21 ++++++++-
+ 5 files changed, 173 insertions(+), 4 deletions(-)
 
- arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi       | 5 ++++-
- arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi | 5 ++++-
- arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi | 5 ++++-
- arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi       | 7 +++++--
- 4 files changed, 17 insertions(+), 5 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-index 311d4950793c..06790255a764 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-@@ -109,7 +109,10 @@ &pciea {
- 	status = "okay";
- };
+diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+index d167624d1f0c..6f0a307fbab1 100644
+--- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+@@ -3,7 +3,7 @@
+  * NXP S32G2 SoC family
+  *
+  * Copyright (c) 2021 SUSE LLC
+- * Copyright 2017-2021, 2024 NXP
++ * Copyright 2017-2021, 2024-2025 NXP
+  */
  
--/* TODO: Apalis BKL1_PWM */
-+/* Apalis BKL1_PWM */
-+&pwm_lvds1 {
-+	status = "okay";
-+};
+ #include <dt-bindings/interrupt-controller/arm-gic.h>
+@@ -727,6 +727,62 @@ usdhc0: mmc@402f0000 {
+ 			status = "disabled";
+ 		};
  
- /* Apalis DAP1 */
- &sai1 {
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-index 3d8731504ce1..7022de46b8bf 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-@@ -196,7 +196,10 @@ &pciea {
- 	status = "okay";
- };
++		gmac0: ethernet@4033c000 {
++			compatible = "nxp,s32g2-dwmac";
++			reg = <0x4033c000 0x2000>, /* gmac IP */
++			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
++			interrupt-parent = <&gic>;
++			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq";
++			snps,mtl-rx-config = <&mtl_rx_setup>;
++			snps,mtl-tx-config = <&mtl_tx_setup>;
++			status = "disabled";
++
++			mtl_rx_setup: rx-queues-config {
++				snps,rx-queues-to-use = <5>;
++
++				queue0 {
++				};
++
++				queue1 {
++				};
++
++				queue2 {
++				};
++
++				queue3 {
++				};
++
++				queue4 {
++				};
++			};
++
++			mtl_tx_setup: tx-queues-config {
++				snps,tx-queues-to-use = <5>;
++
++				queue0 {
++				};
++
++				queue1 {
++				};
++
++				queue2 {
++				};
++
++				queue3 {
++				};
++
++				queue4 {
++				};
++			};
++
++			gmac0mdio: mdio {
++				#address-cells = <1>;
++				#size-cells = <0>;
++				compatible = "snps,dwmac-mdio";
++			};
++		};
++
+ 		gic: interrupt-controller@50800000 {
+ 			compatible = "arm,gic-v3";
+ 			reg = <0x50800000 0x10000>,
+diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+index c4a195dd67bf..fb4002a2aa67 100644
+--- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
++++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+ /*
+  * Copyright (c) 2021 SUSE LLC
+- * Copyright 2019-2021, 2024 NXP
++ * Copyright 2019-2021, 2024-2025 NXP
+  */
  
--/* TODO: Apalis BKL1_PWM */
-+/* Apalis BKL1_PWM */
-+&pwm_lvds1 {
-+	status = "okay";
-+};
+ /dts-v1/;
+@@ -14,6 +14,7 @@ / {
+ 	compatible = "nxp,s32g274a-evb", "nxp,s32g2";
  
- /* Apalis DAP1 */
- &sai1 {
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-index 106e802a68ba..12732ed7f811 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-@@ -245,7 +245,10 @@ &pciea {
- 	status = "okay";
- };
- 
--/* TODO: Apalis BKL1_PWM */
-+/* Apalis BKL1_PWM */
-+&pwm_lvds1 {
-+	status = "okay";
-+};
- 
- /* Apalis DAP1 */
- &sai1 {
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-index 86d018f470c1..66261c0286d6 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-@@ -18,7 +18,7 @@ backlight: backlight {
- 		brightness-levels = <0 45 63 88 119 158 203 255>;
- 		default-brightness-level = <4>;
- 		enable-gpios = <&lsio_gpio1 4 GPIO_ACTIVE_HIGH>; /* Apalis BKL1_ON */
--		/* TODO: hook-up to Apalis BKL1_PWM */
-+		pwms = <&pwm_lvds1 0 6666667 PWM_POLARITY_INVERTED>;
- 		status = "disabled";
+ 	aliases {
++		ethernet0 = &gmac0;
+ 		serial0 = &uart0;
  	};
  
-@@ -799,7 +799,10 @@ &phyx2_lpcg {
- 		 <&hsio_refa_clk>, <&hsio_per_clk>;
+@@ -43,3 +44,21 @@ &usdhc0 {
+ 	no-1-8-v;
+ 	status = "okay";
  };
- 
--/* TODO: Apalis BKL1_PWM */
-+&pwm_lvds1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pwm_bkl>;
++
++&gmac0 {
++	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
++	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
++	phy-mode = "rgmii-id";
++	phy-handle = <&rgmiiaphy4>;
++	status = "okay";
 +};
++
++&gmac0mdio {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	/* KSZ 9031 on RGMII */
++	rgmiiaphy4: ethernet-phy@4 {
++		reg = <4>;
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+index 4f58be68c818..b632b0ffd6a8 100644
+--- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
++++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+@@ -14,6 +14,7 @@ / {
+ 	compatible = "nxp,s32g274a-rdb2", "nxp,s32g2";
  
- /* Apalis DAP1 */
- &sai1 {
+ 	aliases {
++		ethernet0 = &gmac0;
+ 		serial0 = &uart0;
+ 		serial1 = &uart1;
+ 	};
+@@ -77,3 +78,21 @@ &usdhc0 {
+ 	no-1-8-v;
+ 	status = "okay";
+ };
++
++&gmac0 {
++	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
++	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
++	phy-mode = "rgmii-id";
++	phy-handle = <&rgmiiaphy1>;
++	status = "okay";
++};
++
++&gmac0mdio {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	/* KSZ 9031 on RGMII */
++	rgmiiaphy1: ethernet-phy@1 {
++		reg = <1>;
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+index be3a582ebc1b..ccb761137273 100644
+--- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+ /*
+- * Copyright 2021-2024 NXP
++ * Copyright 2021-2025 NXP
+  *
+  * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+  *          Ciprian Costea <ciprianmarian.costea@nxp.com>
+@@ -804,6 +804,62 @@ usdhc0: mmc@402f0000 {
+ 			status = "disabled";
+ 		};
+ 
++		gmac0: ethernet@4033c000 {
++			compatible = "nxp,s32g2-dwmac";
++			reg = <0x4033c000 0x2000>, /* gmac IP */
++			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
++			interrupt-parent = <&gic>;
++			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq";
++			snps,mtl-rx-config = <&mtl_rx_setup>;
++			snps,mtl-tx-config = <&mtl_tx_setup>;
++			status = "disabled";
++
++			mtl_rx_setup: rx-queues-config {
++				snps,rx-queues-to-use = <5>;
++
++				queue0 {
++				};
++
++				queue1 {
++				};
++
++				queue2 {
++				};
++
++				queue3 {
++				};
++
++				queue4 {
++				};
++			};
++
++			mtl_tx_setup: tx-queues-config {
++				snps,tx-queues-to-use = <5>;
++
++				queue0 {
++				};
++
++				queue1 {
++				};
++
++				queue2 {
++				};
++
++				queue3 {
++				};
++
++				queue4 {
++				};
++			};
++
++			gmac0mdio: mdio {
++				#address-cells = <1>;
++				#size-cells = <0>;
++				compatible = "snps,dwmac-mdio";
++			};
++		};
++
+ 		swt8: watchdog@40500000 {
+ 			compatible = "nxp,s32g3-swt", "nxp,s32g2-swt";
+ 			reg = <40500000 0x1000>;
+diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
+index e94f70ad82d9..d7213d2872a4 100644
+--- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
++++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+ /*
+- * Copyright 2021-2024 NXP
++ * Copyright 2021-2025 NXP
+  *
+  * NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)
+  */
+@@ -15,6 +15,7 @@ / {
+ 	compatible = "nxp,s32g399a-rdb3", "nxp,s32g3";
+ 
+ 	aliases {
++		ethernet0 = &gmac0;
+ 		mmc0 = &usdhc0;
+ 		serial0 = &uart0;
+ 		serial1 = &uart1;
+@@ -93,3 +94,21 @@ &usdhc0 {
+ 	disable-wp;
+ 	status = "okay";
+ };
++
++&gmac0 {
++	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
++	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
++	phy-mode = "rgmii-id";
++	phy-handle = <&rgmiiaphy1>;
++	status = "okay";
++};
++
++&gmac0mdio {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	/* KSZ 9031 on RGMII */
++	rgmiiaphy1: ethernet-phy@1 {
++		reg = <1>;
++	};
++};
+
+---
+base-commit: fd94619c43360eb44d28bd3ef326a4f85c600a07
+change-id: 20251006-nxp-s32g-boards-2d156255b592
+
+Best regards,
 -- 
-2.42.0
+Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+
 
