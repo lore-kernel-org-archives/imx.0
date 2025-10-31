@@ -1,72 +1,105 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472811B142D;
-	Fri, 31 Oct 2025 12:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8901F09A3
+	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 12:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761913890; cv=none; b=WYiOjFFZlGNAxrjqBYnsE9WVvTVylG0j6i73ibppjgr00JZCm101Awzw9T8o2PsjpRwHnMA26Ou4PBgwRSWZvLzdsFvc5HSj+Ifc9DuM0s36nA8fxGYrwqJkz1liuBeuOr+W/djwzR04e3h+heAOJ0sx4P9VmlNCqBcKXuSI42A=
+	t=1761915053; cv=none; b=NFbOw2/qKj503hcEAZ9VCvXdKrsPtAw4t4LA5UR0OQFylf1zhXkqJa3BieAzZmAwi4viBnbKEAYxlCPq5EJX6UNxDWkv9Z3Dl591e9sXUCA1fYCOxryZTPdukvKFTqGF8FOe2+Czv+RaOgqWJEbXwJ/rwnKPGDGf2JfXEBmCQeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761913890; c=relaxed/simple;
-	bh=BB5MOJGAVcdNd8OyLaHPub0S39Sbsei9GmLKIfB6kss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=grySdA5NDqNsre7Z15hdopyGSqcfp3ioCjQT03vcWJmDF/5duwXNUdBphqp7D0Y6T7S8AjsuIduvvwtTNSra1oqS3pCgSc9MwTv4QxcXppCraXsASprF4gYUsBpnFKftpA+KB2jYUzYbn+yoH6tssTBJFxjVTK0xTp+JdBnbAao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Gi2elDP7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1761915053; c=relaxed/simple;
+	bh=H4Q6r6e/iHzGIp6iZre79NI2YVcV9IoFpqa7zETW6IA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i/4eD2hFq4RvgHuV+2f1uf0QMwBSu/9Xw3mNSpSfywaD+ArF9RE7Cp2ckgji059z4zNxa10WDCZiB8BT0KMUUQVEjcK6nFRkR/lHroTqHkMCe/RNyADfWBymh9Vng58m8sfJbdK4+NfwRUfOouIgkWyaH+GAXiEXDIYVmFDBb68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UWGP2KAU; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Gi2elDP7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=d2FCYC7D36HFZv9IvfozZxXlDh5wK0T/QIEPgoR4o5M=; b=Gi2elDP7xLpfFTJ+Lp6A8TSr7R
-	Nd6q1bXXFo7Q/7TX0kE6ZjqtqeQjMG2oy7JT+ozuGI5KFP7Iy9Oz2fbTPdIf8PczK7ldZd7bb8H3G
-	l4nns1QoqSeXcychHTpjScb4ZJe92eB9m5xe23Hn/Zq6Aac/+W2oL1B6SNlQKHi3DZBc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vEoHo-00Cb4i-Cq; Fri, 31 Oct 2025 13:31:20 +0100
-Date: Fri, 31 Oct 2025 13:31:20 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	Aziz Sellami <aziz.sellami@nxp.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next 0/3] net: enetc: add port MDIO support for both
- i.MX94 and i.MX95
-Message-ID: <fef3dbdc-50e4-4388-a32e-b5ae9aaaed6d@lunn.ch>
-References: <20251030091538.581541-1-wei.fang@nxp.com>
- <f6db67ec-9eb0-4730-af18-31214afe2e09@lunn.ch>
- <PAXPR04MB8510744BB954BB245FA7A4A088F8A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UWGP2KAU"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3f99ac9acc4so2181028f8f.3
+        for <imx@lists.linux.dev>; Fri, 31 Oct 2025 05:50:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761915050; x=1762519850; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mO2KtY6kpP/4dstvJ2/nd3TfZivPb0AjpquB+Jg3MoM=;
+        b=UWGP2KAUrSkjgSX22zopua0OsT9sSdEBL0vZBAQWgMcLPtJWmwhYqeIPnpq7IGjSZu
+         VcgQ2ssyrWNw936bJctm5ow3iRCyJ+tGQ+eggQZYidkjkchSlPX3PZ0LLEKGGWHshtKe
+         WlxlIePW7PklRLfIFOgYQS2SbNLJ/Ec1vfUOSSSkiamFz1LUVZYJBLOqokbNK70M5fKm
+         tvd5qLUUQsMzXVsKmn5lJMffWUQZ6GXUJ0mCvDr4VNGZ+hDpgKj0s4i12Jwrv2YyAh5k
+         XW70sD7lAxx7JvtHx3cJUxY1KMBesrWjQTJUsexGrXwv+V1LB0jP7+Tn4EwehAgfaNgq
+         DvAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761915050; x=1762519850;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mO2KtY6kpP/4dstvJ2/nd3TfZivPb0AjpquB+Jg3MoM=;
+        b=gajL7HEiWpZqk0PO6+lxuEIPXIxVjASH8UlJp79zEKZu3FVjvm2D5TNU3DR0U4v739
+         s1RMbOhpkUgRADRI37rdFMK/LGbtdIaPgqG5Ap3M+KIPxn/AjCx+dmMg/86kpYLuH/V0
+         DjCbmM8R0a1pyPlK+HKA/b7RiLkzeC6xIsW8iflMMAmNKxZIiF6ayCR2jz+FarcRisE4
+         gEAjwaaJ2hQz+fPq0Z641kkMfX3Y4gc4ozDY2WwpO8TqkzzqsYAZfN8SN0U6T4evhnSI
+         L+pIC5+TfMHuapLAH6Gw78C6yxlVKqY1MDlrZq5yhuCyOET5tttJbMAPXrqHuyXS+F2d
+         SMmA==
+X-Forwarded-Encrypted: i=1; AJvYcCXPZKEQCm8++5X6yHlnX2Synh6fsdAEob8hFugN+fsNT0m5yZNlGCVMkFuQEOlPyU5t2Zo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy439sIOERR7LHkb3e0Jv1F28H9GHtEqeXqUyc/WnUpORFjyDWb
+	6wZ+qkBt080Spizg1/d7gYBODXCfGmE8pa/5RjS5JE0CAwzx7tAr02Kn
+X-Gm-Gg: ASbGncv5dvq8MOGopCq7DJGtSqaeHB/sxO0BVsrK0G3V2ZwQgXSg6OR2w+Z2COot8ia
+	VYtAzAdGGLXqVSWhALh9X3ja+ULTpm0q3Te/qbDALMzsa/mVzsA+4UxeNfjMJMsrEiBgfVkp42N
+	CaOT7JntPQCF9E41DV5VLSpsj3JC4+3CTJP761rq5ps24Uk40r5qPUrE/HI5UzO7rY7W7JOEymt
+	8bZnW81+NPMY7dX1hofjqM43DxM+L+/N85J0R7kPNhD/EtzI0KOkEoQwStXAYbcxBZYzjLOenv8
+	FOVGyjSj8Z3Iaz+crJEiOo6nmS3D4emPBef0nwcDLj6ko2ZI+HO6GgMaBJOonnmeASZvZH/ieNx
+	5rikLa5z8ZozQNtv3LZgLpYj5w1BVzn2BB12BRCoisiZS2CC3LWThse0eiyIwaYpc5P8sBTzG3X
+	iE8kr7pjpyAEGjYU2bGZxzfNWTEmGfjB8I1isdijQgYvk6T9XXi+R9X1B+pOgnE4n/xkKIyk929
+	ZywUg==
+X-Google-Smtp-Source: AGHT+IF9Do9nR03BStcy/ENSw/8pRxFisHxazSviyoAjb3tK/ts2RifiuU7Em2HOcQoiNKmeoGdqBg==
+X-Received: by 2002:a05:6000:2908:b0:429:8b47:2f35 with SMTP id ffacd0b85a97d-429bd689dc1mr3344895f8f.26.1761915049784;
+        Fri, 31 Oct 2025 05:50:49 -0700 (PDT)
+Received: from toolbox.int.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c13f1d4csm3144559f8f.39.2025.10.31.05.50.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 05:50:49 -0700 (PDT)
+From: max.oss.09@gmail.com
+To: Max Krummenacher <max.krummenacher@toradex.com>
+Cc: Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/3] arm64: dts: imx8x-colibri: add additional functionality
+Date: Fri, 31 Oct 2025 13:49:40 +0100
+Message-ID: <20251031125003.275033-1-max.oss.09@gmail.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8510744BB954BB245FA7A4A088F8A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 
-> What we get from the DT is the external PHY address, just like the mdio
-> driver, this external PHY address based on the board, ENETC needs to
-> know its external PHY address so that its port MIDO can work properly.
+From: Max Krummenacher <max.krummenacher@toradex.com>
 
-So i don't get this. MDIO is just a bus, two lines. It can have up to
-32 devices on it. The bus master should not need to have any idea what
-devices are on it, it just twiddles the lines as requested.
+Provide a pwm-backlight.
+Provide the 32kHz Wi-Fi clock used during low-power operation.
+Configure CMA from the device tree.
 
-Why does it need to know the external PHY address? In general, the
-only thing which needs to know the PHY address is phylib.
 
-	Andrew
+Max Krummenacher (1):
+  arm64: dts: colibri-imx8x: Add wi-fi 32kHz clock
+
+Philippe Schenker (2):
+  arm64: dts: colibri-imx8x: Add backlight
+  arm64: dts: colibri-imx8x: Add cma memory
+
+ .../boot/dts/freescale/imx8x-colibri.dtsi     | 29 ++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
+
+-- 
+2.42.0
+
