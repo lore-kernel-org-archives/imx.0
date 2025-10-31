@@ -1,66 +1,66 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02EA32254E
-	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 11:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA62D34405D
+	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 12:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761911625; cv=none; b=j0gqT4AqlH/MVt03Dob3DYwvE4bSp5teEulkyQn5dWPVKi8RfuySQ8j38wNLN5apvMRKGkyqShJjP98iowuRVpfMxQmLiw2YBXMbm9CUGdWpt7LG/FwueKLhlQ+dZS3L1POiZJv3m4b3w3ZPNAsvevK0DFvs4dXjmrpu2PT6ixY=
+	t=1761912428; cv=none; b=Bm0bZHFr5mOxJfn7iSrD82hyAglRRCt8wJfwdoCp5OaNhFSt/saQMGgwvcZ0TBYi9YFa3/EShFboqekEUg6pIhWSsLicYNH1TKjlYoOqd/6RO69Ys0B08AkFmpfXxUlKwTQcvT6PlSsdrolXCOg88uzhS4bvnV84gl/wiRyBQww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761911625; c=relaxed/simple;
-	bh=O35spgqehOrZR2tvQvdo7EUbG49QpK95STsTyry3mOY=;
+	s=arc-20240116; t=1761912428; c=relaxed/simple;
+	bh=QdfcKgydSkRm0A8GQzQXVINVhev5YokC6RzzW3M0ueA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SVevvBLzx/5lXrqU8bzqcL4rUVZESAFYhiZ+nzj+YfiIU4eUm09UJk/de0RicxA04zy3eEXqaw4ozs5kUt2lwgm3WcQWitdq1+UaO7sFDQbD7UefCM2Y9oE6eK9qWdOUksUi5AenK25qIdNKAYtNY04BqDfXQDFKaBayyaIlqxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4KigKEc; arc=none smtp.client-ip=209.85.208.48
+	 In-Reply-To:Content-Type; b=SY7yhJHKD+jh5JeqSplQMKBtwIu9GUocUHseaFj8BrPqiI0RtA+V9ont+82w8d3hVovpp8GVWnlmpbNdpjc5XfzbSFjriMZCHe+QgUs6Z0EvdyVOW6XXKfHmxNRKjesnDxKFoWsfTvuirQMnE3ZEpxuNUSi6ijA36bPcJngHvlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZlkD3Zx; arc=none smtp.client-ip=209.85.208.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4KigKEc"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-63d6ee383bdso4611753a12.2
-        for <imx@lists.linux.dev>; Fri, 31 Oct 2025 04:53:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZlkD3Zx"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-37a17d470dfso17206931fa.3
+        for <imx@lists.linux.dev>; Fri, 31 Oct 2025 05:07:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761911620; x=1762516420; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1761912425; x=1762517225; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=OCQNcQncDV0pig2wQUB4eR+mXGNrWHfstydWTHE+XYM=;
-        b=S4KigKEcfzQ6EHQ9+5j5zSbggKwhG5FSPHpNcnnjzq14VMFvsVhnqzKQrsKdMebjhV
-         p+HQgI34SzKZFqEIqjqaEx4XpjZmuitK/R++XivYHby1FQs5nmtfrLKK0idsXWPY4xup
-         X3Lq8yhqOZ0dzfudzDF+jnL50rIqC3XaL2ehs0+Rik+wdkVi9p6Rt4C/wCiTAr/ONhes
-         AVeSuahFPknj4j6ftLkxF6IiZMGJSu6x6r++ytpdVXbolbRSmm1i/cBjmiv9mHlKRMW5
-         zVndxjtsnpJ2kJR6/n6uOAh6dzwwBmbb9IT/G5pWCgaDobz2DrVzm4C0LM2zisZu3G40
-         TNtQ==
+        bh=g+wNT7KW8FpybzoaA+6FfZ6C32T5hx5xiEfdag3k3wE=;
+        b=YZlkD3Zx9qrDDH2mlc2RWjcJlv8fLh+2ZGh+XsTuiZfPxuiiFxfh/xFlgMC8Acl+E8
+         H2ugQslOIShAHZ3ZLWa9CPJYtlI62PBlx3iBLxBAcsm3unuAur7rQGO5BecT2vn+19fL
+         EjUunZaWVVn55dMWHe0txXl84cDRf+hDuRAjGF1Xo5WpNBmn03iolLVtPgAbUdiFPu7h
+         X7rD+aIaieHFGpIVxFgMKxMDL1i0fPhAt57VJIXDCfc/ZvhiBkcA0VIOVmVhEg9+g60G
+         AzvkVuM4C7w0MAjfYzoghvsojqzMy4PBqqeZxV++lyGkePgRQ2ZhBYH4GwWyeaIw9kk6
+         ueOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761911620; x=1762516420;
+        d=1e100.net; s=20230601; t=1761912425; x=1762517225;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OCQNcQncDV0pig2wQUB4eR+mXGNrWHfstydWTHE+XYM=;
-        b=ByQ1FNuT7+0XdjjHXfZQuFWh+mj5sekNZnUF9B0lei+aAEcSu5kMiOkR5fpmGA2Qqk
-         2cPZf1Ew4pC8H6ef2z5IYHhUCQN6xxzSFeb1OBYphpadaXiE1hDTjfU+V9fJeb+WZ1/K
-         4daZSzFZvIrV9lNRMEZ7X8F+cGtaVdKM7kUw3z67tyPRtbQMZPg/q2kiF1TfUa/1x8yd
-         APiw0L3P9kQLBB8lEecQ0kYORj9FrW9dlsQBbTQTVvOlXAg/h/km3pqaTvUqPQJB2RJw
-         Bc3SFXSk6QLTxgLmxFNXATtwbRjsOpEfAJgCgyhH961Gsd0/n+onszZnoSd1lSc5h650
-         QhYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXW42bhcQ/wwfuX9/+OYnPKty4R00D8zQfU84F1aMnBQYHDhMg/LFHOd5TvP5UOhwua2GA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzOE1oE/RIefHbVu1jTU2ZwF15mnqoJBSv7Kjxe81pgYQXuYP+j
-	Gg4TLfvDVsw7ZZTsVhy+Gz8K4Hmk9Jq9zeJrjyCURtUp8CW0bghKC8vh
-X-Gm-Gg: ASbGncsSG6XaCWsNGB1Bt2ni1RoFxQwxHCv+kibgWaI22jCTkAB2JZ6i/ote5ogR1aA
-	Zl2xfG/PTq5F1JlcdDHHwkXKnhr92mp82MDuyBzh46Wls7dV3sjo2EbT2i2Cefo/0wRA7SZ5qGN
-	FPBVHpt3cMXH5v684KUboU13byKoWM72I8isLB6fuITtMCxfVaFZQEGD+v0G5BZTWahJpYuO43D
-	EO7QQ/FX8zlDJiuKAaxULcjtgXsn23vxDKOumfnX9VjT88nVNeNWod2lKsX2uFJgCeMofEHQxCb
-	AY5+Cg4R0t5GdTgqp2MxwDC6OR9k/cQH62WRoYVV3uNECchZGwuA+u2NPC0BT0cf8BpgXEgexOF
-	JAWrmYx2/f/nunYCLmFxs+BVG8qvF4CrpX1I9V0N6xOpEZ/pwkG7kndLg6DYOzqP4t/L4T7a/1P
-	86WplLC+CKq/8DOJo7FdVl2Gv9xny/tWOL9CYCdX0Gv2g=
-X-Google-Smtp-Source: AGHT+IGxIlFPS8hS595Xkfumk9wGbCOJQPHRYRtPAuDqD8SnR4VGwjFq2oqrDoT+nBuHOhjxEg9Krw==
-X-Received: by 2002:a05:6402:1e94:b0:640:7529:b8b9 with SMTP id 4fb4d7f45d1cf-640770820e2mr2209238a12.30.1761911620065;
-        Fri, 31 Oct 2025 04:53:40 -0700 (PDT)
-Received: from [10.25.210.164] ([128.77.115.157])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6407b448ed9sm1418859a12.35.2025.10.31.04.53.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Oct 2025 04:53:39 -0700 (PDT)
-Message-ID: <19ef0124-9a61-455d-8402-70e840309cf5@gmail.com>
-Date: Fri, 31 Oct 2025 04:53:37 -0700
+        bh=g+wNT7KW8FpybzoaA+6FfZ6C32T5hx5xiEfdag3k3wE=;
+        b=sPjgtfE80qAt9Tun8fHGBAAGD+VXS2vKFVMnN0xgr0ObgIBEewg78zU/UiCvr6RY7L
+         u2HbTz022e9txb7B71FwRaq4alwmFmkJns51/lwrzoZ7gRC4Lsp2BePAp4T/Q0rdI9hk
+         gvFFECtp7EnnzKbcWQR00rYOhvPKh/WWxyN/9q7WMFA9qaT8P0x4x+7xA+ZhjpUZCQSe
+         ot1lR43Q5/jWVjp4SYhZ+Ns5Dj7FaNuGWEkle/wMWFSXzam3bCS8HnJUQc99zaocipw3
+         uM4wBQ3cuL4Wm26x3Ura4xdMkUKnWW0QZJUmlXLoaH8cC8Hw8H0YwRZLMD8vNrtWUO2N
+         gENg==
+X-Forwarded-Encrypted: i=1; AJvYcCXS7ZBwIk8JJyuIuE3GzX6AqCk3wLCW6s/BXoGWqcqA/FvjRtOPvVkfgjrn8At/rzh3rqk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxltfPNm/MB/u6we/dRuyq1n0emroS/h8EO8GoHldlwFnMK2avJ
+	Xf/4va9MJ/ZXtXosDjOn4kDJBw3+x/3gRp0SpTVzEiHWUGXkWiD/Wi9d
+X-Gm-Gg: ASbGncs7ECY1P6EkmusuQpmjP2bDaXL2thbvOk2OFlBn39WduRYEmpxs8rAuI/py882
+	vjKGVvNPOdlFuscwPsWQIMIFWbfyUpKrLGwlj4LoY+YVDf0qalQZi60XSoHoUmkg5zmn9HhxJ/2
+	7vFYFcHhDAAGgbZ10LMaEWa+HDUinjeVN2+JZ+RHAxAlCM8n5xnl9nMvMYAxJ7fLhVnP66NndT7
+	kQgL/hplSoR1xc78s4QmDXnrWrPoyOMQmB5YoxjyYJtIGcwSQlrPwRUXDm+oaeZRyzndeRpagGk
+	OaLhRiCrS4tSKyyPX22kqeDcrtwQMRvCDbSujRqfxnkAf4GbmkfDEcZotvvskqvDOKfIYOBF7ss
+	h0y8Ontep4iQuKJMk1/B2G+p45W3Y64I2NycOc/hE7PiA47c++YEjuywCBH6RWCJ8MU8HQajhHe
+	zWZSpXXMibN1wXtEJorFz8VyDhPcBBbxjHefsy02kcpcoVtyhrDmSKvwfyG1Wk+SgolcB5
+X-Google-Smtp-Source: AGHT+IH/ICNj/bMV5RVGbwRdK/Ejd2emYkz7dh/g7c7spskiA/UNWUDs1dQqtabTPzVdNpWwUCQDtw==
+X-Received: by 2002:a2e:8689:0:b0:36a:925e:cf3c with SMTP id 38308e7fff4ca-37a18dc7311mr10659721fa.31.1761912424618;
+        Fri, 31 Oct 2025 05:07:04 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37a1bfb3e70sm3216571fa.12.2025.10.31.05.07.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Oct 2025 05:07:03 -0700 (PDT)
+Message-ID: <0beeacba-c484-43c0-80fb-66b2e0293681@gmail.com>
+Date: Fri, 31 Oct 2025 14:07:03 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,179 +68,147 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/8] reset: imx8mp-audiomix: Switch to using regmap API
-To: Philipp Zabel <p.zabel@pengutronix.de>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20251029135229.890-1-laurentiumihalcea111@gmail.com>
- <20251029135229.890-6-laurentiumihalcea111@gmail.com>
- <105ed81ed67d8e4cacb63a83a606e206a4d6f310.camel@pengutronix.de>
-Content-Language: en-US
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <105ed81ed67d8e4cacb63a83a606e206a4d6f310.camel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 3/5] arm64: dts: freescale: add Ka-Ro Electronics
+ tx8m-1610 COM
+To: =?UTF-8?Q?Lothar_Wa=C3=9Fmann?= <LW@KARO-electronics.de>
+Cc: Maud Spierings <maudspierings@gocontroll.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com>
+ <20251022-mini_iv-v2-3-20af8f9aac14@gocontroll.com>
+ <a7012995-c2a8-48a3-abe1-5c227272f21c@gmail.com>
+ <65202d1f-6c4f-4d4e-9fef-85cfb74ec768@gocontroll.com>
+ <938f85b0-4c9b-463a-960a-f5f4e4092480@gocontroll.com>
+ <20251029081138.2161a92a@karo-electronics.de>
+ <4a47b9b5-f482-41b6-a441-7728572c5a0c@gmail.com>
+ <20251029104838.44c5adcf@karo-electronics.de>
+ <d05c62c9-7ed7-46e4-aa4d-27172741b5ee@gmail.com>
+ <0667e026-99f3-4233-b3f6-e38273961d49@gocontroll.com>
+ <20251030095434.1dc06df2@karo-electronics.de>
+ <26fc62bb-3484-4812-b576-6640eef72c49@gmail.com>
+ <20251030130006.0221957a@karo-electronics.de>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20251030130006.0221957a@karo-electronics.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
-On 10/30/2025 6:06 AM, Philipp Zabel wrote:
-> On Mi, 2025-10-29 at 06:52 -0700, Laurentiu Mihalcea wrote:
->> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On 30/10/2025 14:00, Lothar Waßmann wrote:
+> Hi,
+> 
+> On Thu, 30 Oct 2025 13:01:52 +0200 Matti Vaittinen wrote:
+>> On 30/10/2025 10:54, Lothar Waßmann wrote:
+>>> Hi,
+>>>
+>>> On Wed, 29 Oct 2025 16:35:25 +0100 Maud Spierings wrote:
+>>>> Hi Matti,
+>>>>
+>>>> On 10/29/25 11:05, Matti Vaittinen wrote:
+>>>>> On 29/10/2025 11:48, Lothar Waßmann wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>>> On Wed, 29 Oct 2025 10:42:17 +0200 Matti Vaittinen wrote:
+>>>>>>> On 29/10/2025 09:11, Lothar Waßmann wrote:
+>>>>>>>> Hi,
+>>>>>>>>
+>>>>>>>> On Tue, 28 Oct 2025 14:10:04 +0100 Maud Spierings wrote:
+>>>>>>>>> On 10/28/25 13:42, Maud Spierings wrote:
+>>>>>>>>>> On 10/28/25 13:15, Matti Vaittinen wrote:
+>>>>>>>> [...]
+>>>>>>>>>>> Could/Should this be described using the:
+>>>>>>>>>>> 'rohm,feedback-pull-up-r1-ohms' and
+>>>>>>>>>>> 'rohm,feedback-pull-up-r2-ohms'? If I understand the comment
+>>>>>>>>>>> correctly, that might allow the driver to be able to use correctly
+>>>>>>>>>>> scaled voltages.
+>>>>>>>>>>>
+>>>>>>>>>>> https://elixir.bootlin.com/linux/v6.18-rc1/source/Documentation/
+>>>>>>>>>>> devicetree/bindings/regulator/rohm,bd71837-regulator.yaml#L108
+>>>>>>>>>>   
 >>
->> As far as the Linux kernel is concerned, block devices such as i.MX8MP's
->> AUDIOMIX block control or i.MX8ULP's SIM LPAV can simultaneously act as
->> clock controllers, reset controllers or mux controllers. Since these IPs
->> offer different functionalities through different subsystem APIs, it's
->> important to make sure that the register R-M-W cycles are performed under
->> the same lock across all subsystem APIs. This will ensure that registers
->> will not end up with the wrong values because of race conditions (e.g.
->> clock consumer tries to update block control register A, while, at the
->> same time, reset consumer tries to update the same block control register).
+>> // snip
 >>
->> However, the aforementioned race conditions will only impact block control
->> IPs which use the same register for multiple functionalities. For example,
->> i.MX8MP's AUDIOMIX block control IP provides clock gating functionalities
->> and reset control functionalities through different registers. This is why
->> the current approach (i.e. clock control and reset control work using
->> different locks) has worked well so far.
+>>>>>>>
+>>>>>>> If real voltages aren't matching what is calculated by the driver, then
+>>>>>>> the voltages requested by regulator consumers will cause wrong voltages
+>>>>>>> to be applied. Debug interfaces will also show wrong voltages, and the
+>>>>>>> safety limits set in the device-tree will not be really respected.
+>>>>>>>
+>>>>>>> I think this would be well worth fixing.
+>>>>>>>      
+>>>>>> Before doing the real-life test I did the same calculation that's done
+>>>>>> in the driver to be sure that it will generate the correct values:
+>>>>>> bc 1.07.1
+>>>>>> Copyright 1991-1994, 1997, 1998, 2000, 2004, 2006, 2008, 2012-2017
+>>>>>> Free Software Foundation, Inc.
+>>>>>> This is free software with ABSOLUTELY NO WARRANTY.
+>>>>>> For details type `warranty'.
+>>>>>> fb_uv=0
+>>>>>> r1=2200
+>>>>>> r2=499
+>>>>>> min=800000
+>>>>>> step=10000
+>>>>>> # default voltage without divider
+>>>>>> min+30*step
+>>>>>> 1100000
+>>>>>> min=min-(fb_uv-min)*r2/r1
+>>>>>> step=step*(r1+r2)/r1
+>>>>>> min
+>>>>>> 981454
+>>>>>> step
+>>>>>> 12268
+>>>>>> # default voltage with divider
+>>>>>> min+30*step
+>>>>>> 1349494
+>>>>>>
+>>>>>> Probably we need to use this value rather than the nominal 135000 as
+>>>>>> the target voltage in the DTB.
+>>>>>
+>>>>> Yes. When the driver calculates the voltages which match the actual
+>>>>> voltages, then you should also use the actual voltages in the device-tree.
+>>>>>       
+>>>>   
 >>
->> Since we want to extend this driver to be usable for i.MX8ULP's SIM LPAV
->> block control IP, we need to make sure that clock control, reset control,
->> and mux control APIs use the same lock since all of these functionalities
->> are performed using the SYSCTRL0 register.
+>> // snip
 >>
->> To do so, we need to switch to the regmap API and, if possible, use the
->> parent device's regmap, which, in the case of i.MX8ULP, will be the clock
->> controller. This way, we can make sure that the clock gates and the reset
->> controller will use the same lock to perform the register R-M-W cycles.
+>>>>
+>>>> Then setting 1349494 as the actual voltage makes it fully work.
+>>>> Otherwise it complains:
+>>>> buck6: failed to apply 1350000-1350000uV constraint: -EINVAL
+>>>>
+>>>> Final debug output now:
+>>>> [    0.327807] rohm-bd718x7 0-004b: buck6: old range min 800000, step 10000
+>>>> [    0.327813] rohm-bd718x7 0-004b: new range min 981454, step 12268
+>>>> [    0.327819] rohm-bd718x7 0-004b: regulator 'buck6' has FB pull-up
+>>>> configured
+>>>>
+>>>> I will add this fix to the next version of this patchset and include
+>>>> your requested change in the dts.
+>>>>   
+>>> Does it also work with min/max settings in the DTS that are taken from
+>>> the designated value +/- 5% tolerance margin, so that the DTS contains
+>>> reasonable values determined by the HW requirements, rather than some
+>>> artificial number that is enforced by the SW behaviour?
 >>
->> This change will also work fine for cases where we don't really need to
->> share the lock across multiple APIs (e.g. i.MX8MP's AUDIOMIX block
->> control) since regmap will take care of the locking we were previously
->> explicitly performing in the driver.
+>> I am unsure what you mean by "artificial number that is enforced by the
+>> SW behaviour"?
 >>
->> The transition to the regmap API also involves some cleanup. Specifically,
->> we can make use of devres to unmap the device's memory and get rid of the
->> memory mapping-related error paths and the remove() function altogether.
->>
->> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->> ---
->>  drivers/reset/reset-imx8mp-audiomix.c | 91 +++++++++++++++++----------
->>  1 file changed, 57 insertions(+), 34 deletions(-)
->>
->> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
->> index e9643365a62c..3f6d11270918 100644
->> --- a/drivers/reset/reset-imx8mp-audiomix.c
->> +++ b/drivers/reset/reset-imx8mp-audiomix.c
->> @@ -11,6 +11,7 @@
->>  #include <linux/module.h>
->>  #include <linux/of.h>
->>  #include <linux/of_address.h>
->> +#include <linux/regmap.h>
->>  #include <linux/reset-controller.h>
->>  
->>  #define IMX8MP_AUDIOMIX_EARC_RESET_OFFSET	0x200
->> @@ -42,8 +43,8 @@ static const struct imx8mp_reset_map reset_map[] = {
->>  
->>  struct imx8mp_audiomix_reset {
->>  	struct reset_controller_dev rcdev;
->> -	spinlock_t lock; /* protect register read-modify-write cycle */
->>  	void __iomem *base;
-> Drop base as well, better let devres handle this.
->
-> [...]
->
->> +/* assumption: registered only if not using parent regmap */
->> +static void imx8mp_audiomix_reset_iounmap(void *data)
-> Pass base instead of dev.
+> The nominal voltage that is required by the consumer is 1.35 V. That's
+> the voltage I would expect to set as target for the regulator.
+> If that voltage cannot be achieved exactly, I would prefer to have the
+> intended voltage listed explicitly rather than listing a value that
+> accidentally can be achieved by the regulator but has nothing to do with
+> the requirements of the consumer.
 
+Ah. Thanks for the explanation. I get it now - sorry for the noise.
 
-ACK. Will need some extra casts/annotations though as sparse will definitely
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-not be happy with this.
-
-
->
->> +{
->> +	struct imx8mp_audiomix_reset *priv = dev_get_drvdata(data);
->> +
->> +	iounmap(priv->base);
-> 	void __iomem *base = data;
->
-> 	iounmap(base);
->
->> +}
->> +
->> +/* assumption: dev_set_drvdata() is called before this */
-> Why not just pass priv instead of dev?
->
->> +static int imx8mp_audiomix_reset_get_regmap(struct device *dev)
->> +{
->> +	struct imx8mp_audiomix_reset *priv;
->> +	int ret;
->> +
->> +	priv = dev_get_drvdata(dev);
->> +
->> +	/* try to use the parent's regmap */
->> +	priv->regmap = dev_get_regmap(dev->parent, NULL);
->> +	if (priv->regmap)
->> +		return 0;
->> +
->> +	/* ... if that's not possible then initialize the regmap right now */
->> +	priv->base = of_iomap(dev->parent->of_node, 0);
-> Make base a local variable ...
->
->> +	if (!priv->base)
->> +		return dev_err_probe(dev, -ENOMEM, "failed to iomap address space\n");
->> +
->> +	ret = devm_add_action_or_reset(dev, imx8mp_audiomix_reset_iounmap, dev);
-> ... and pass it as data instead of dev.
->
->> +	if (ret)
->> +		return dev_err_probe(dev, ret, "failed to register action\n");
->> +
->> +	priv->regmap = devm_regmap_init_mmio(dev, priv->base, &regmap_config);
->> +	if (IS_ERR(priv->regmap))
->> +		return dev_err_probe(dev, PTR_ERR(priv->regmap),
->> +				     "failed to initialize regmap\n");
->> +
->> +	return 0;
->> +}
->> +
->>  static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
->>  				       const struct auxiliary_device_id *id)
->>  {
->> @@ -105,36 +139,26 @@ static int imx8mp_audiomix_reset_probe(struct auxiliary_device *adev,
->>  	if (!priv)
->>  		return -ENOMEM;
->>  
->> -	spin_lock_init(&priv->lock);
->> -
->>  	priv->rcdev.owner     = THIS_MODULE;
->>  	priv->rcdev.nr_resets = ARRAY_SIZE(reset_map);
->>  	priv->rcdev.ops       = &imx8mp_audiomix_reset_ops;
->>  	priv->rcdev.of_node   = dev->parent->of_node;
->>  	priv->rcdev.dev	      = dev;
->>  	priv->rcdev.of_reset_n_cells = 1;
->> -	priv->base            = of_iomap(dev->parent->of_node, 0);
->> -	if (!priv->base)
->> -		return -ENOMEM;
->>  
->> +	/* keep before call to imx8mp_audiomix_reset_init_regmap() */
-> Not needed if priv is passed to it directly.
-
-
-right, somehow I forgot that rcdev holds a pointer to our "struct device" even though it's right there....
-
-will make the change, thanks!
-
-
->
-> regards
-> Philipp
+~~ When things go utterly wrong vim users can always type :help! ~~
