@@ -1,46 +1,50 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AD133E353
-	for <imx@lists.linux.dev>; Thu, 30 Oct 2025 23:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CC842AA9
+	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 01:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761867827; cv=none; b=hNeuP6odAww/GARitJndlm+Si/L9Pav48+2JFZNbJAb0sj9DLaDOb9L86773SoyDwaITtATTP/lXl7m3IDQD+lbFRvAdCiQu0otNVYQ2S5jOHEicwHyyqT0uMEDzoavsmlTomecMA7mzvM2DLLoRCXSVxEm2tChzGRsQgK+UVbc=
+	t=1761874571; cv=none; b=Ewe6gFUQR1+7ilS1P+AjMJ1ffEbjhx6bcj2R5+XrIqPpKJzaLzNywQVkkWYqwMh+N7QfRMyQlyNUtqOW77G6FzzBhP/lM6p0VUM+Z0ECt/d+E6haJOy3N79l/Oysm3jSac20oSTar3xGKL4LHgkY/l1ZTrW+FoCxQjAgAz5TiN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761867827; c=relaxed/simple;
-	bh=PtQD0u6r75GGhXvET9DPoCf5+VY/3uU14M594x/zFFw=;
+	s=arc-20240116; t=1761874571; c=relaxed/simple;
+	bh=WlF7VMa1y5OUxpqnvA9leqytX5erYzN0ryYse+m+1+Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Asq5plxyqvvzNlBWJngCgWiLWV+N30aRXmmaOGK/5r+bPjOvXtqhzAjOz/iDOCMIVrObnQKhAJ/qlgeKFucdGFZiBXC6DmKvlCd1/ZEWdCdeftClH5u71YWMwqIRjTQtSOvBOJ8Gvg4skYTELJoJUOgHrwXNtG6QYVb0u6Nxj1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ITROjdTe; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=qPRcHj0s/hwU95I9F0Q7IXJBinT9HBm0A9eRs0IX/LqsNL3Hxgv+iaFUXKvp1qx99qzsEOLbrZAvmFJlMd7hSdPJeA+TzS6n/UyLEyRv08sn6g+2sU9wRGWjmzmICVred+1R+2KaaUNiDlxoeCzkxEa4tY7VUAGH/587PvzseDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=Y6LtKCIQ; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ITROjdTe"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 40F47C0BEBE;
-	Thu, 30 Oct 2025 23:43:21 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7EADA60331;
-	Thu, 30 Oct 2025 23:43:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1D03E1180CD93;
-	Fri, 31 Oct 2025 00:43:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761867820; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=7xAYHK3it1+6qqe3o8nqRfZAVs8VSB3PxQiuuoM7amY=;
-	b=ITROjdTedUGq3gJUgqHH6S0De7ydtsZ4r1VhlIH2qPzMWkz+vHFO/TkJ1hgie+Y3k4uvJr
-	egoxyNdfMqIJMS45n19uCAmp6HYhx1UfvwwDw7nZYv0EqyBN/WNFZ3cylATjTr61Ck5Eq1
-	sS6ADz5V3dSAMa0LHiC9Wm2MIOgYgtW4erM0xIWJ2ngsCPoiLtJcY0pzSBVR9lFVjNQkIL
-	rCTIl1nr+DGa2Ex5fbTIsGL45Xq9IxrsnljtPWTD5qEQvqSgrjdn9Wa9oZIFga4Ocm5DYz
-	q82r9jeZSKEth6Anxh4Y1hcIG2rB/T+3RveGCpyXLiQmuHYNSTpgTFECo8H3yg==
-Date: Fri, 31 Oct 2025 00:43:38 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] i3c: fix refcount inconsistency in
- i3c_master_register
-Message-ID: <176186765078.475593.5246237578344242065.b4-ty@bootlin.com>
-References: <20251016143814.2551256-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="Y6LtKCIQ"
+Received: from macsyma.thunk.org ([104.135.220.250])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 59V1Xaj5027349
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Oct 2025 21:33:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1761874420; bh=P3I8cNYLZMmveAjSeJGwTBzKs1G7OdEm7OMhibpVomU=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=Y6LtKCIQDi/6z8+qmoyY2BEIOGve4MmpP1VdPBPjckBw19DhcLVxjkFQAOvuQ7zbr
+	 i91ds7wNw7zDZEXrP7qpXE5TjfN6EScpwF4AzW2BEve3yQytVwzO8p9N+k7/CUzhE0
+	 X1iKFoO8n3J9HKtXw1WAdUzRyPmYgUsI36fwh2moo5MZ/FMUJK6y7rt5fQrYoPVoa9
+	 Bc1IPVZahjlASLCBClO4VcpL4b9xuEVBDplL8qGsZ0By5l2QV/ip8TF9uCsC1W0Kcj
+	 v/rWz4Mm7iSsEITV3ePjU7fgJqJBM8TGuJTJfdeuC4oDvOmNS93YLOioiOdaOkRu2L
+	 jh5MhM2fJNXug==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id BCA5C48AB9B3; Thu, 30 Oct 2025 18:33:35 -0700 (PDT)
+Date: Thu, 30 Oct 2025 18:33:35 -0700
+From: "Theodore Tso" <tytso@mit.edu>
+To: Bough Chen <haibo.chen@nxp.com>
+Cc: "jack@suse.cz" <jack@suse.cz>,
+        "adilger.kernel@dilger.ca" <adilger.kernel@dilger.ca>,
+        "linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
+        "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: ext4 issue on  linux-next(next-20251030)
+Message-ID: <20251031013335.GA10593@macsyma-3.local>
+References: <20251023-qm_dts-v1-0-9830d6a45939@nxp.com>
+ <20251023-qm_dts-v1-2-9830d6a45939@nxp.com>
+ <DU0PR04MB9496D99F17904D1B2EFB9E5090FBA@DU0PR04MB9496.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,27 +53,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251016143814.2551256-1-Frank.Li@nxp.com>
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <DU0PR04MB9496D99F17904D1B2EFB9E5090FBA@DU0PR04MB9496.eurprd04.prod.outlook.com>
 
-On Thu, 16 Oct 2025 10:38:13 -0400, Frank Li wrote:
-> In `i3c_master_register`, a possible refcount inconsistency has been
-> identified, causing possible resource leak.
+On Thu, Oct 30, 2025 at 11:11:51AM +0000, Bough Chen wrote:
+> Hi Jack,
 > 
-> Function `of_node_get` increases the refcount of `parent->of_node`. If
-> function `i3c_bus_init` fails, the function returns immediately without
-> a corresponding decrease, resulting in an inconsistent refcounter.
-> 
-> [...]
+> On the latest linux-next, I find your patch acf943e9768e ("ext4: fix checks for orphan inodes") trigger the following issue on our imx7d-sdb board.
+> I do not have enough background knowledge of ext4, so don't know why there are orphan inodes on the partition with ext4. Not sure whether this 
+> is a real issue or we need some special operation on current ext4 partition.
 
-Applied, thanks!
+If you are willing to let me to see your file
+names, you could send me just the metadata blocks so I can examine file
+system image.  The details are in the REPORTING BUGS section of the
+e2fsck man page and as well as the RAW IMAGE FILE and QCOW2 IMAGE FILE
+sections of the e2image man page, but the short version is:
 
-[1/1] i3c: fix refcount inconsistency in i3c_master_register
-      https://git.kernel.org/abelloni/c/9d4f219807d5
 
-Best regards,
+            e2image -Q /dev/mmcblkp2p2 fs.qcow2
+            bzip2 -z fs.qcow2
 
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+... and then send me the fs.qcow2.bz file.
+
+If you aren't please try running "dumpe2fs -h /dev/mmcblk2p2" and send
+me the output.
+
+Thanks,
+
+						- Ted
