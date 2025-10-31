@@ -1,24 +1,25 @@
 Received: from vs81.iboxed.net (vs10.datenmanufaktur-hosting.net [213.160.73.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FD83161B7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB738315D41
 	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 19:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761940310; cv=none; b=XbcXoit01JNlW2jZb2LLAItcE/ksaJ+YjMfEk4HCWXkmNkLPzzkZNY4Wn0bV7OdSLVrZTBp6aStA/SWd8LPJCu+lUJbeqXADtA9z3JCB5I85GMjjcNqzvU4ssUFy9vmqC1PrDsDJmlN+kFd/0c4KHUMUXlHRhTNnHUOeTl8UfVg=
+	t=1761940310; cv=none; b=YwuhabGbNfoBFOp+R1TXiQ6wIJmGHzb9Hcv1pXp0vDiWke8d76ftuciYp3bwOVTgd3uVsT+HTN4X5JRmM9WpauVC4Vkc6JEI0T4brVmDQxcHiAPG2Z3QTc8aYWxgU2Tx+1P5pN/3PFF0PyhgKsxvr+w/6e+jcL35wQLzGuyPn3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761940310; c=relaxed/simple;
-	bh=cMgCJWSyjFRcIaO7ryP+HqMt+0jh7Nasdqb3fw8sPvc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Qw5pp/bJ/7sc+LqHHPMrbUVaLqhJi3MNuC4YNScbkPXi2mOE7VyYiRIVaIQUAnn0/PL67vjdxxJYMoyLrP9aq7P7or95iDPftwp6ublnzFzd815hkHPvydyyfLLfetLedUq7rF6dEyyRmmWpB7QZwLqBdt9VddjxN04F+hs7T/s=
+	bh=YUcyedh+Ntez3IQlxuY7679Cka78QeSfCB23BV2KlBQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ifd9+L1jG+pl3S4UsBz1XAVuvvPJWpZKqsqD6DlHCsBDau0f9FpNp/eoQYvphgfmZ6hFtypLhgF7wXTZsottpBOUykFmUnPAhJdy4jALBfGOLyiyQGRfl905Rr65ok9w3Dyn1n0NrXz5QmQvbX/+fw6sI3GveqF3xUwmXvdCUus=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blala.de; spf=pass smtp.mailfrom=blala.de; arc=none smtp.client-ip=213.160.73.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blala.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blala.de
 Received: from blala.de (localhost [127.0.0.1])
-	by vs81.iboxed.net (8.15.2/8.15.2/Debian-14~deb10u1) with ESMTP id 59VJvJIv001630;
-	Fri, 31 Oct 2025 19:57:19 GMT
+	by vs81.iboxed.net (8.15.2/8.15.2/Debian-14~deb10u1) with ESMTP id 59VJvKHv001646;
+	Fri, 31 Oct 2025 19:57:20 GMT
 Received: (from akurz@localhost)
-	by blala.de (8.15.2/8.15.2/Submit) id 59VJvJqM001629;
-	Fri, 31 Oct 2025 19:57:19 GMT
+	by blala.de (8.15.2/8.15.2/Submit) id 59VJvKAD001642;
+	Fri, 31 Oct 2025 19:57:20 GMT
 From: Alexander Kurz <akurz@blala.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -37,10 +38,12 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-input@vger.kernel.org, Alexander Kurz <akurz@blala.de>
-Subject: [PATCH v7 0/6] Fix, extend and support OF to mc13xxx pwrbutton
-Date: Fri, 31 Oct 2025 19:57:12 +0000
-Message-Id: <20251031195718.1586-1-akurz@blala.de>
+Subject: [PATCH v7 2/6] Input: mc13783-pwrbutton: fix irq mixup and use resources
+Date: Fri, 31 Oct 2025 19:57:14 +0000
+Message-Id: <20251031195718.1586-3-akurz@blala.de>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20251031195718.1586-1-akurz@blala.de>
+References: <20251031195718.1586-1-akurz@blala.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,86 +52,340 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Goal of this patch series is to make mx13xxx power buttons usable
-on DT based systems.
-A ten-year-old IRQ issue needed a fix, mc13783-pwrbutton had to be
-extended to the other to mc13xxx PMIC as well and adding OF support.
-The implementation has been tested with PWRON1 on mc13892 found e.g.
-in amazon kindle D01100/D01200/EY21 readers and also in on mc34708
-in the imx53-qsrb "i.MX53 Quick start board".
+The mfd mc13xxx interrupt handling was migrated to regmap with commit
+10f9edaeaa30 ("mfd: mc13xxx: Use regmap irq framework for interrupts").
+As a consequence, button_irq() got get called with virtual irq instead
+of chip-internal irq.
 
-Changes in v7:
-- Link to v6: https://lore.kernel.org/linux-input/20251030195654.20142-1-akurz@blala.de/
-- Fixed missing empty line for imx53-qsrb dts patch, thanks Frank.
+Make use of mfd_cell resources to pass interrupts from mfd so that
+platform_get_irq_byname() can be used in mc13783-pwrbutton. The
+amount of required interrupt related cleanup can be reduced this way.
 
-Changes in v6:
-- Link to v5: https://lore.kernel.org/linux-input/20251008064401.13863-1-akurz@blala.de/
-- Rebase to v6.18-rc1
-- Add a imx53-qsrb dts patch to enable the "power" button on the
-  i.MX53 Quick start board.
+Note, that mc13783-pwrbutton is still considered to support only the
+model mc13783.
 
-Changes in v5:
-- Link to v4: https://lore.kernel.org/linux-input/20250914193723.10544-1-akurz@blala.de/
-- Rebase to current to include already merged dt-schema patches and
-  a different mc13xxx related patch.
-- Drop patch to use devm_mfd_add_devices and devm_regmap_add_irq_chip -
-  won't like to do the proposed mutex-cleanup now.
-- While adding OF support, remove the platform_data configuration
-  interface as proposed by Dmitry Torokhov. Also drop the change
-  to use module_platform_driver_probe.
+Signed-off-by: Alexander Kurz <akurz@blala.de>
+---
+ drivers/input/misc/mc13783-pwrbutton.c | 103 +++++++++++--------------
+ drivers/mfd/mc13xxx-core.c             |  39 ++++++++--
+ drivers/mfd/mc13xxx.h                  |   2 +
+ 3 files changed, 79 insertions(+), 65 deletions(-)
 
-Changes in v4:
-- Link to v3: https://lore.kernel.org/linux-input/20250829201517.15374-1-akurz@blala.de/
-- Rebase to git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git
-  tags/ib-mfd-input-rtc-v6.18 in order to include a different mc13xxx
-  related patch (sorry for that).
-- Re-ordered commits since dt-bindings changes already go reviewes by
-  Rob Herring.
-- Following Dmitrys suggestions, resources for irq are now passed from
-  mfd to input allowing a more simple implementation. Work on other mfd
-  cells with irq usage might still be a future project.
-- Input-related differences between the mc13xxx variants are encoded
-  in data structures, making the implementation of mc13892 PWRON3 a
-  simple task.
-
-Changes in v3:
-- Link to v2: https://lore.kernel.org/linux-input/20250823144441.12654-1-akurz@blala.de/
-- Undo all changes to led-control (rename to fsl,led-control), thanks Rob
-- Restructured the new buttons node for unevaluatedProperties: false
-- Various other remarks from Rob
-- Rebase to current state
-
-Changes in v2:
-- Link to v1: https://lore.kernel.org/linux-input/20250817102751.29709-1-akurz@blala.de/
-- Convert dt-bindings from txt to fsl,mc13xxx.yaml and add vendor prefix
-  to led-control property, causing changes in dts and driver.
-- Change node name from pwrbuttons to buttons
-- Change property debounce-delay-value to debounce-delay-ms
-- Fixed a section mismatch error
-- Fixed https://lore.kernel.org/r/202508210551.VzAtE5re-lkp@intel.com/
-  (wrong index used when converting to array access)
-- Usage of generic device properties API in mc13783-pwrbutton.c
-- Provide chip-specific max button id via platform_device_id, therefore
-  swap patches 3 and 4.
-
-Alexander Kurz (6):
-  Input: mc13783-pwrbutton: use managed resources
-  Input: mc13783-pwrbutton: fix irq mixup and use resources
-  Input: mc13783-pwrbutton: convert pdata members to array
-  Input: mc13783-pwrbutton: enable other mc13xxx PMIC
-  Input: mc13783-pwrbutton: add OF support and drop platform_data
-  ARM: dts: imx53: add imx53-qsrb PMIC power button
-
- arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts |  13 ++
- drivers/input/misc/Kconfig               |   4 +-
- drivers/input/misc/mc13783-pwrbutton.c   | 278 +++++++++++++----------
- drivers/mfd/mc13xxx-core.c               |  49 +++-
- drivers/mfd/mc13xxx.h                    |   2 +
- include/linux/mfd/mc13783.h              |   4 +-
- include/linux/mfd/mc13892.h              |   1 +
- include/linux/mfd/mc13xxx.h              |  20 +-
- 8 files changed, 220 insertions(+), 151 deletions(-)
-
+diff --git a/drivers/input/misc/mc13783-pwrbutton.c b/drivers/input/misc/mc13783-pwrbutton.c
+index 82434ea9cca5..20f68aab6edf 100644
+--- a/drivers/input/misc/mc13783-pwrbutton.c
++++ b/drivers/input/misc/mc13783-pwrbutton.c
+@@ -33,13 +33,15 @@
+ struct mc13783_pwrb {
+ 	struct input_dev *pwr;
+ 	struct mc13xxx *mc13783;
+-#define MC13783_PWRB_B1_POL_INVERT	(1 << 0)
+-#define MC13783_PWRB_B2_POL_INVERT	(1 << 1)
+-#define MC13783_PWRB_B3_POL_INVERT	(1 << 2)
+ 	int flags;
+ 	unsigned short keymap[3];
++	int irq[3];
+ };
+ 
++#define MC13783_PWRB_B1_POL_INVERT	(1 << 0)
++#define MC13783_PWRB_B2_POL_INVERT	(1 << 1)
++#define MC13783_PWRB_B3_POL_INVERT	(1 << 2)
++
+ #define MC13783_REG_INTERRUPT_SENSE_1		5
+ #define MC13783_IRQSENSE1_ONOFD1S		(1 << 3)
+ #define MC13783_IRQSENSE1_ONOFD2S		(1 << 4)
+@@ -60,27 +62,21 @@ static irqreturn_t button_irq(int irq, void *_priv)
+ 
+ 	mc13xxx_reg_read(priv->mc13783, MC13783_REG_INTERRUPT_SENSE_1, &val);
+ 
+-	switch (irq) {
+-	case MC13783_IRQ_ONOFD1:
++	if (irq == priv->irq[0]) {
+ 		val = val & MC13783_IRQSENSE1_ONOFD1S ? 1 : 0;
+ 		if (priv->flags & MC13783_PWRB_B1_POL_INVERT)
+ 			val ^= 1;
+ 		input_report_key(priv->pwr, priv->keymap[0], val);
+-		break;
+-
+-	case MC13783_IRQ_ONOFD2:
++	} else if (irq == priv->irq[1]) {
+ 		val = val & MC13783_IRQSENSE1_ONOFD2S ? 1 : 0;
+ 		if (priv->flags & MC13783_PWRB_B2_POL_INVERT)
+ 			val ^= 1;
+ 		input_report_key(priv->pwr, priv->keymap[1], val);
+-		break;
+-
+-	case MC13783_IRQ_ONOFD3:
++	} else if (irq == priv->irq[2]) {
+ 		val = val & MC13783_IRQSENSE1_ONOFD3S ? 1 : 0;
+ 		if (priv->flags & MC13783_PWRB_B3_POL_INVERT)
+ 			val ^= 1;
+ 		input_report_key(priv->pwr, priv->keymap[2], val);
+-		break;
+ 	}
+ 
+ 	input_sync(priv->pwr);
+@@ -96,6 +92,7 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
+ 	struct mc13783_pwrb *priv;
+ 	int err = 0;
+ 	int reg = 0;
++	int irq = 0;
+ 
+ 	pdata = dev_get_platdata(&pdev->dev);
+ 	if (!pdata) {
+@@ -131,12 +128,20 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
+ 		if (pdata->b1on_flags & MC13783_BUTTON_RESET_EN)
+ 			reg |= MC13783_POWER_CONTROL_2_ON1BRSTEN;
+ 
+-		err = mc13xxx_irq_request(mc13783, MC13783_IRQ_ONOFD1,
+-					  button_irq, "b1on", priv);
+-		if (err) {
++		irq = platform_get_irq_byname(pdev, "b1on");
++
++		if (irq < 0) {
+ 			dev_dbg(&pdev->dev, "Can't request irq\n");
+ 			goto free_mc13xxx_lock;
+ 		}
++
++		err = devm_request_any_context_irq(&pdev->dev, irq, button_irq,
++						   IRQF_ONESHOT, "b1on",
++						   priv);
++		if (err < 0)
++			goto free_mc13xxx_lock;
++
++		priv->irq[0] = irq;
+ 	}
+ 
+ 	if (pdata->b2on_flags & MC13783_BUTTON_ENABLE) {
+@@ -150,12 +155,20 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
+ 		if (pdata->b2on_flags & MC13783_BUTTON_RESET_EN)
+ 			reg |= MC13783_POWER_CONTROL_2_ON2BRSTEN;
+ 
+-		err = mc13xxx_irq_request(mc13783, MC13783_IRQ_ONOFD2,
+-					  button_irq, "b2on", priv);
+-		if (err) {
++		irq = platform_get_irq_byname(pdev, "b2on");
++
++		if (irq < 0) {
+ 			dev_dbg(&pdev->dev, "Can't request irq\n");
+-			goto free_irq_b1;
++			goto free_mc13xxx_lock;
+ 		}
++
++		err = devm_request_any_context_irq(&pdev->dev, irq, button_irq,
++						   IRQF_ONESHOT, "b2on",
++						   priv);
++		if (err < 0)
++			goto free_mc13xxx_lock;
++
++		priv->irq[1] = irq;
+ 	}
+ 
+ 	if (pdata->b3on_flags & MC13783_BUTTON_ENABLE) {
+@@ -169,12 +182,20 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
+ 		if (pdata->b3on_flags & MC13783_BUTTON_RESET_EN)
+ 			reg |= MC13783_POWER_CONTROL_2_ON3BRSTEN;
+ 
+-		err = mc13xxx_irq_request(mc13783, MC13783_IRQ_ONOFD3,
+-					  button_irq, "b3on", priv);
+-		if (err) {
++		irq = platform_get_irq_byname(pdev, "b3on");
++
++		if (irq < 0) {
+ 			dev_dbg(&pdev->dev, "Can't request irq: %d\n", err);
+-			goto free_irq_b2;
++			goto free_mc13xxx_lock;
+ 		}
++
++		err = devm_request_any_context_irq(&pdev->dev, irq, button_irq,
++						   IRQF_ONESHOT, "b3on",
++						   priv);
++		if (err < 0)
++			goto free_mc13xxx_lock;
++
++		priv->irq[2] = irq;
+ 	}
+ 
+ 	mc13xxx_reg_rmw(mc13783, MC13783_REG_POWER_CONTROL_2, 0x3FE, reg);
+@@ -192,55 +213,21 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
+ 	err = input_register_device(pwr);
+ 	if (err) {
+ 		dev_dbg(&pdev->dev, "Can't register power button: %d\n", err);
+-		goto free_irq;
++		return err;
+ 	}
+ 
+ 	platform_set_drvdata(pdev, priv);
+ 
+ 	return 0;
+ 
+-free_irq:
+-	mc13xxx_lock(mc13783);
+-
+-	if (pdata->b3on_flags & MC13783_BUTTON_ENABLE)
+-		mc13xxx_irq_free(mc13783, MC13783_IRQ_ONOFD3, priv);
+-
+-free_irq_b2:
+-	if (pdata->b2on_flags & MC13783_BUTTON_ENABLE)
+-		mc13xxx_irq_free(mc13783, MC13783_IRQ_ONOFD2, priv);
+-
+-free_irq_b1:
+-	if (pdata->b1on_flags & MC13783_BUTTON_ENABLE)
+-		mc13xxx_irq_free(mc13783, MC13783_IRQ_ONOFD1, priv);
+-
+ free_mc13xxx_lock:
+ 	mc13xxx_unlock(mc13783);
+ 
+ 	return err;
+ }
+ 
+-static void mc13783_pwrbutton_remove(struct platform_device *pdev)
+-{
+-	struct mc13783_pwrb *priv = platform_get_drvdata(pdev);
+-	const struct mc13xxx_buttons_platform_data *pdata;
+-
+-	pdata = dev_get_platdata(&pdev->dev);
+-
+-	mc13xxx_lock(priv->mc13783);
+-
+-	if (pdata->b3on_flags & MC13783_BUTTON_ENABLE)
+-		mc13xxx_irq_free(priv->mc13783, MC13783_IRQ_ONOFD3, priv);
+-	if (pdata->b2on_flags & MC13783_BUTTON_ENABLE)
+-		mc13xxx_irq_free(priv->mc13783, MC13783_IRQ_ONOFD2, priv);
+-	if (pdata->b1on_flags & MC13783_BUTTON_ENABLE)
+-		mc13xxx_irq_free(priv->mc13783, MC13783_IRQ_ONOFD1, priv);
+-
+-	mc13xxx_unlock(priv->mc13783);
+-}
+-
+ static struct platform_driver mc13783_pwrbutton_driver = {
+ 	.probe		= mc13783_pwrbutton_probe,
+-	.remove		= mc13783_pwrbutton_remove,
+ 	.driver		= {
+ 		.name	= "mc13783-pwrbutton",
+ 	},
+diff --git a/drivers/mfd/mc13xxx-core.c b/drivers/mfd/mc13xxx-core.c
+index 920797b806ce..1756c8d47d5e 100644
+--- a/drivers/mfd/mc13xxx-core.c
++++ b/drivers/mfd/mc13xxx-core.c
+@@ -13,6 +13,7 @@
+ #include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/mfd/core.h>
++#include <linux/mfd/mc13783.h>
+ 
+ #include "mc13xxx.h"
+ 
+@@ -46,6 +47,12 @@
+ 
+ #define MC13XXX_ADC2		45
+ 
++static const struct resource mc13783_button_resources[] = {
++	DEFINE_RES_IRQ_NAMED(MC13783_IRQ_ONOFD1, "b1on"),
++	DEFINE_RES_IRQ_NAMED(MC13783_IRQ_ONOFD2, "b2on"),
++	DEFINE_RES_IRQ_NAMED(MC13783_IRQ_ONOFD3, "b3on"),
++};
++
+ void mc13xxx_lock(struct mc13xxx *mc13xxx)
+ {
+ 	if (!mutex_trylock(&mc13xxx->lock)) {
+@@ -201,18 +208,22 @@ static void mc34708_print_revision(struct mc13xxx *mc13xxx, u32 revision)
+ /* These are only exported for mc13xxx-i2c and mc13xxx-spi */
+ struct mc13xxx_variant mc13xxx_variant_mc13783 = {
+ 	.name = "mc13783",
++	.button_resources = mc13783_button_resources,
++	.button_resources_size = ARRAY_SIZE(mc13783_button_resources),
+ 	.print_revision = mc13xxx_print_revision,
+ };
+ EXPORT_SYMBOL_GPL(mc13xxx_variant_mc13783);
+ 
+ struct mc13xxx_variant mc13xxx_variant_mc13892 = {
+ 	.name = "mc13892",
++	.button_resources_size = 0,
+ 	.print_revision = mc13xxx_print_revision,
+ };
+ EXPORT_SYMBOL_GPL(mc13xxx_variant_mc13892);
+ 
+ struct mc13xxx_variant mc13xxx_variant_mc34708 = {
+ 	.name = "mc34708",
++	.button_resources_size = 0,
+ 	.print_revision = mc34708_print_revision,
+ };
+ EXPORT_SYMBOL_GPL(mc13xxx_variant_mc34708);
+@@ -362,15 +373,18 @@ int mc13xxx_adc_do_conversion(struct mc13xxx *mc13xxx, unsigned int mode,
+ }
+ EXPORT_SYMBOL_GPL(mc13xxx_adc_do_conversion);
+ 
+-static int mc13xxx_add_subdevice_pdata(struct mc13xxx *mc13xxx,
+-		const char *format, void *pdata, size_t pdata_size)
++static int mc13xxx_add_subdevice_pdata_res(struct mc13xxx *mc13xxx,
++		const char *format, void *pdata, size_t pdata_size,
++		const struct resource *resources, int num_resources)
+ {
+ 	char buf[30];
+ 	const char *name = mc13xxx_get_chipname(mc13xxx);
+ 
+ 	struct mfd_cell cell = {
+-		.platform_data = pdata,
+-		.pdata_size = pdata_size,
++		.platform_data	= pdata,
++		.pdata_size	= pdata_size,
++		.resources	= resources,
++		.num_resources	= num_resources,
+ 	};
+ 
+ 	/* there is no asnprintf in the kernel :-( */
+@@ -385,6 +399,12 @@ static int mc13xxx_add_subdevice_pdata(struct mc13xxx *mc13xxx,
+ 			       regmap_irq_get_domain(mc13xxx->irq_data));
+ }
+ 
++static int mc13xxx_add_subdevice_pdata(struct mc13xxx *mc13xxx,
++		const char *format, void *pdata, size_t pdata_size)
++{
++	return mc13xxx_add_subdevice_pdata_res(mc13xxx, format, pdata, pdata_size, NULL, 0);
++}
++
+ static int mc13xxx_add_subdevice(struct mc13xxx *mc13xxx, const char *format)
+ {
+ 	return mc13xxx_add_subdevice_pdata(mc13xxx, format, NULL, 0);
+@@ -470,8 +490,10 @@ int mc13xxx_common_init(struct device *dev)
+ 			&pdata->regulators, sizeof(pdata->regulators));
+ 		mc13xxx_add_subdevice_pdata(mc13xxx, "%s-led",
+ 				pdata->leds, sizeof(*pdata->leds));
+-		mc13xxx_add_subdevice_pdata(mc13xxx, "%s-pwrbutton",
+-				pdata->buttons, sizeof(*pdata->buttons));
++		mc13xxx_add_subdevice_pdata_res(mc13xxx, "%s-pwrbutton",
++				pdata->buttons, sizeof(*pdata->buttons),
++				mc13xxx->variant->button_resources,
++				mc13xxx->variant->button_resources_size);
+ 		if (mc13xxx->flags & MC13XXX_USE_CODEC)
+ 			mc13xxx_add_subdevice_pdata(mc13xxx, "%s-codec",
+ 				pdata->codec, sizeof(*pdata->codec));
+@@ -481,7 +503,10 @@ int mc13xxx_common_init(struct device *dev)
+ 	} else {
+ 		mc13xxx_add_subdevice(mc13xxx, "%s-regulator");
+ 		mc13xxx_add_subdevice(mc13xxx, "%s-led");
+-		mc13xxx_add_subdevice(mc13xxx, "%s-pwrbutton");
++		mc13xxx_add_subdevice_pdata_res(mc13xxx, "%s-pwrbutton",
++				NULL, 0,
++				mc13xxx->variant->button_resources,
++				mc13xxx->variant->button_resources_size);
+ 		if (mc13xxx->flags & MC13XXX_USE_CODEC)
+ 			mc13xxx_add_subdevice(mc13xxx, "%s-codec");
+ 		if (mc13xxx->flags & MC13XXX_USE_TOUCHSCREEN)
+diff --git a/drivers/mfd/mc13xxx.h b/drivers/mfd/mc13xxx.h
+index bd5ba9a0e14f..b13ae652f4ec 100644
+--- a/drivers/mfd/mc13xxx.h
++++ b/drivers/mfd/mc13xxx.h
+@@ -18,6 +18,8 @@ struct mc13xxx;
+ 
+ struct mc13xxx_variant {
+ 	const char *name;
++	const struct resource *button_resources;
++	int button_resources_size;
+ 	void (*print_revision)(struct mc13xxx *mc13xxx, u32 revision);
+ };
+ 
 -- 
 2.39.5
 
