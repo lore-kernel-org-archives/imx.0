@@ -1,24 +1,24 @@
 Received: from vs81.iboxed.net (vs10.datenmanufaktur-hosting.net [213.160.73.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA75285CAA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CFF30AAD6
 	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 19:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761940309; cv=none; b=s4zpM8J61DSmbYR576c8qCVUdo29kA/UoyrEdpg8ZEXOURUQC/RHs4n9YEer2ndOWw1sag76CmZ3uRonlkqvC5PhNHkriNcF7GBIWmVLETJXhBkjrah4Tfb2O2QYCvQO/iKyGCT5VwvXh0VY7YqwTAOfcRXpzlAbD5zALfkVBPk=
+	t=1761940309; cv=none; b=hwpr2IRkkLK6uDfXfRw6uB8Mv7VQ0V0hhkQoMeUmzlP6AKXACPdOu5cWvROLc2bfiDgBJh12Vjc1fdMJkAF30GQT/ou3pr8Vzz4xFOwhYsVv7BVn3eRPfGzndk/OZIawJ9HlpnsRLBrSiN/VsJhZ27Nk10/PO6Bpta5IiuUqfJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761940309; c=relaxed/simple;
-	bh=f3nk6RtA5IYDVa82v6LnaN3lzAk1OrTgcNHp4zY+tDk=;
+	bh=f47jV7OFWwfnBq5ZsXpvjaNfTAGs2LmH562peNfEJpU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=A4EwFV995byPS2r7ilRnBxMl7KDgwxcbzhtUChPOF12lLkLA19KY1LjuEYt/oNext4is+8Am8D1m6dLZCFull3a1F1qgAxUcb4719MIA2rm2kkVqqkrsM5/75ZZnRctvgcd1QMWnQz0D0+1wxwZh7EfcHpGZHpqdwlok6m9GioI=
+	 MIME-Version; b=dGnZL2DhXtZNtrjBcSp/Fuvrl+MdLNqGQ3Sm1V1w99s1xN7eHVG/hFWrRX9t68yNsJzMlGbk3EYlawGJVd40njPazj8xnQ89kNJKgfDD/U75wxkKdve8OKVup3u139JKxqP1T/B+wL5B5C2iHCzRsKHEv1jhucLf8xmopPM6fCs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blala.de; spf=pass smtp.mailfrom=blala.de; arc=none smtp.client-ip=213.160.73.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blala.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blala.de
 Received: from blala.de (localhost [127.0.0.1])
-	by vs81.iboxed.net (8.15.2/8.15.2/Debian-14~deb10u1) with ESMTP id 59VJvKLY001654;
+	by vs81.iboxed.net (8.15.2/8.15.2/Debian-14~deb10u1) with ESMTP id 59VJvKXm001678;
 	Fri, 31 Oct 2025 19:57:20 GMT
 Received: (from akurz@localhost)
-	by blala.de (8.15.2/8.15.2/Submit) id 59VJvKdj001649;
+	by blala.de (8.15.2/8.15.2/Submit) id 59VJvKr9001674;
 	Fri, 31 Oct 2025 19:57:20 GMT
 From: Alexander Kurz <akurz@blala.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -38,9 +38,9 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-input@vger.kernel.org, Alexander Kurz <akurz@blala.de>
-Subject: [PATCH v7 3/6] Input: mc13783-pwrbutton: convert pdata members to array
-Date: Fri, 31 Oct 2025 19:57:15 +0000
-Message-Id: <20251031195718.1586-4-akurz@blala.de>
+Subject: [PATCH v7 6/6] ARM: dts: imx53: add imx53-qsrb PMIC power button
+Date: Fri, 31 Oct 2025 19:57:18 +0000
+Message-Id: <20251031195718.1586-7-akurz@blala.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20251031195718.1586-1-akurz@blala.de>
 References: <20251031195718.1586-1-akurz@blala.de>
@@ -52,117 +52,40 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-As preparation for the extension of support for all three mc13xxx
-variants, convert the members of mc13xxx_buttons_platform_data to
-arrays to allow index access within the next commit.
+As described in the board hardware user guide IMX53RQSBRM-R.pdf, the
+mc34708 pin PWRON1 is connected to a button "SW6"/"POWER", connecting
+this line to GND.
+Add support for the imx53-qsrb "POWER" button.
 
 Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- drivers/input/misc/mc13783-pwrbutton.c | 42 +++++++++++++-------------
- include/linux/mfd/mc13xxx.h            |  8 ++---
- 2 files changed, 23 insertions(+), 27 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/input/misc/mc13783-pwrbutton.c b/drivers/input/misc/mc13783-pwrbutton.c
-index 20f68aab6edf..2ee115d77b1c 100644
---- a/drivers/input/misc/mc13783-pwrbutton.c
-+++ b/drivers/input/misc/mc13783-pwrbutton.c
-@@ -108,24 +108,24 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
- 	if (!priv)
- 		return -ENOMEM;
- 
--	reg |= (pdata->b1on_flags & 0x3) << MC13783_POWER_CONTROL_2_ON1BDBNC;
--	reg |= (pdata->b2on_flags & 0x3) << MC13783_POWER_CONTROL_2_ON2BDBNC;
--	reg |= (pdata->b3on_flags & 0x3) << MC13783_POWER_CONTROL_2_ON3BDBNC;
-+	reg |= (pdata->b_on_flags[0] & 0x3) << MC13783_POWER_CONTROL_2_ON1BDBNC;
-+	reg |= (pdata->b_on_flags[1] & 0x3) << MC13783_POWER_CONTROL_2_ON2BDBNC;
-+	reg |= (pdata->b_on_flags[2] & 0x3) << MC13783_POWER_CONTROL_2_ON3BDBNC;
- 
- 	priv->pwr = pwr;
- 	priv->mc13783 = mc13783;
- 
- 	mc13xxx_lock(mc13783);
- 
--	if (pdata->b1on_flags & MC13783_BUTTON_ENABLE) {
--		priv->keymap[0] = pdata->b1on_key;
--		if (pdata->b1on_key != KEY_RESERVED)
--			__set_bit(pdata->b1on_key, pwr->keybit);
-+	if (pdata->b_on_flags[0] & MC13783_BUTTON_ENABLE) {
-+		priv->keymap[0] = pdata->b_on_key[0];
-+		if (pdata->b_on_key[0] != KEY_RESERVED)
-+			__set_bit(pdata->b_on_key[0], pwr->keybit);
- 
--		if (pdata->b1on_flags & MC13783_BUTTON_POL_INVERT)
-+		if (pdata->b_on_flags[0] & MC13783_BUTTON_POL_INVERT)
- 			priv->flags |= MC13783_PWRB_B1_POL_INVERT;
- 
--		if (pdata->b1on_flags & MC13783_BUTTON_RESET_EN)
-+		if (pdata->b_on_flags[0] & MC13783_BUTTON_RESET_EN)
- 			reg |= MC13783_POWER_CONTROL_2_ON1BRSTEN;
- 
- 		irq = platform_get_irq_byname(pdev, "b1on");
-@@ -144,15 +144,15 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
- 		priv->irq[0] = irq;
- 	}
- 
--	if (pdata->b2on_flags & MC13783_BUTTON_ENABLE) {
--		priv->keymap[1] = pdata->b2on_key;
--		if (pdata->b2on_key != KEY_RESERVED)
--			__set_bit(pdata->b2on_key, pwr->keybit);
-+	if (pdata->b_on_flags[1] & MC13783_BUTTON_ENABLE) {
-+		priv->keymap[1] = pdata->b_on_key[1];
-+		if (pdata->b_on_key[1] != KEY_RESERVED)
-+			__set_bit(pdata->b_on_key[1], pwr->keybit);
- 
--		if (pdata->b2on_flags & MC13783_BUTTON_POL_INVERT)
-+		if (pdata->b_on_flags[1] & MC13783_BUTTON_POL_INVERT)
- 			priv->flags |= MC13783_PWRB_B2_POL_INVERT;
- 
--		if (pdata->b2on_flags & MC13783_BUTTON_RESET_EN)
-+		if (pdata->b_on_flags[1] & MC13783_BUTTON_RESET_EN)
- 			reg |= MC13783_POWER_CONTROL_2_ON2BRSTEN;
- 
- 		irq = platform_get_irq_byname(pdev, "b2on");
-@@ -171,15 +171,15 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
- 		priv->irq[1] = irq;
- 	}
- 
--	if (pdata->b3on_flags & MC13783_BUTTON_ENABLE) {
--		priv->keymap[2] = pdata->b3on_key;
--		if (pdata->b3on_key != KEY_RESERVED)
--			__set_bit(pdata->b3on_key, pwr->keybit);
-+	if (pdata->b_on_flags[2] & MC13783_BUTTON_ENABLE) {
-+		priv->keymap[2] = pdata->b_on_key[2];
-+		if (pdata->b_on_key[2] != KEY_RESERVED)
-+			__set_bit(pdata->b_on_key[2], pwr->keybit);
- 
--		if (pdata->b3on_flags & MC13783_BUTTON_POL_INVERT)
-+		if (pdata->b_on_flags[2] & MC13783_BUTTON_POL_INVERT)
- 			priv->flags |= MC13783_PWRB_B3_POL_INVERT;
- 
--		if (pdata->b3on_flags & MC13783_BUTTON_RESET_EN)
-+		if (pdata->b_on_flags[2] & MC13783_BUTTON_RESET_EN)
- 			reg |= MC13783_POWER_CONTROL_2_ON3BRSTEN;
- 
- 		irq = platform_get_irq_byname(pdev, "b3on");
-diff --git a/include/linux/mfd/mc13xxx.h b/include/linux/mfd/mc13xxx.h
-index dd46fe424a80..4437ab80fcf8 100644
---- a/include/linux/mfd/mc13xxx.h
-+++ b/include/linux/mfd/mc13xxx.h
-@@ -181,12 +181,8 @@ struct mc13xxx_leds_platform_data {
- #define MC13783_BUTTON_RESET_EN		(1 << 4)
- 
- struct mc13xxx_buttons_platform_data {
--	int b1on_flags;
--	unsigned short b1on_key;
--	int b2on_flags;
--	unsigned short b2on_key;
--	int b3on_flags;
--	unsigned short b3on_key;
-+	int b_on_flags[3];
-+	unsigned int b_on_key[3];
+diff --git a/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts b/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts
+index 2f06ad61a766..977dff72b9e2 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx53-qsrb.dts
+@@ -139,6 +139,19 @@ vgen2_reg: vgen2 {
+ 				regulator-always-on;
+ 			};
+ 		};
++
++		buttons {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			onkey@0 {
++				reg = <0>;
++				linux,code = <KEY_POWER>;
++				debounce-delay-ms = <30>;
++				active-low;
++				fsl,enable-reset;
++			};
++		};
+ 	};
  };
  
- #define MC13783_TS_ATO_FIRST	false
 -- 
 2.39.5
 
