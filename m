@@ -1,395 +1,192 @@
-Received: from vs81.iboxed.net (vs10.datenmanufaktur-hosting.net [213.160.73.65])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013034.outbound.protection.outlook.com [40.107.159.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6B8314D01
-	for <imx@lists.linux.dev>; Fri, 31 Oct 2025 19:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761940311; cv=none; b=G4PAe8mpIbcIQ6yzXkkDCxjeMO+uUwHsGaurAkWDCtJ2mySbB4Nmi8jDcMVvyms67+W6hIym3JecZyXmhVrnqpCHx1xWQlO41iBlzrJ97yvrriDsiXGyaSFR38cNfulpMz8D/KHVHCyRfafH0W0A9vILSs5QaYM85ulTjG2KZRk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761940311; c=relaxed/simple;
-	bh=v2Rk65C84wGjPcKZGHwetGQ+S4/eTd+Il+tBR4ROURo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SUGWWNQvbdwjFWqJJpUnPfkQ5nyQ1Ad7ujrURPvmmrkvfQHS8QcVkAS3gBEuKCHmNykqhhCCr6hu4qYGizZpj1FkwXvDBV6lkBL0e5MqxpK5G0a5YCnNAsKjBsaBfai7KlLY9W+jMIEuTa46wmpuw2VfggtfmWY9/2VT6KTkF/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blala.de; spf=pass smtp.mailfrom=blala.de; arc=none smtp.client-ip=213.160.73.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blala.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blala.de
-Received: from blala.de (localhost [127.0.0.1])
-	by vs81.iboxed.net (8.15.2/8.15.2/Debian-14~deb10u1) with ESMTP id 59VJvKLa001662;
-	Fri, 31 Oct 2025 19:57:20 GMT
-Received: (from akurz@localhost)
-	by blala.de (8.15.2/8.15.2/Submit) id 59VJvKxT001658;
-	Fri, 31 Oct 2025 19:57:20 GMT
-From: Alexander Kurz <akurz@blala.de>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee@kernel.org>, Dzmitry Sankouski <dsankouski@gmail.com>,
-        Griffin Kroah-Hartman <griffin.kroah@fairphone.com>,
-        Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        "Dr . David Alan Gilbert" <linux@treblig.org>,
-        Job Sava <jsava@criticallink.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-input@vger.kernel.org, Alexander Kurz <akurz@blala.de>
-Subject: [PATCH v7 4/6] Input: mc13783-pwrbutton: enable other mc13xxx PMIC
-Date: Fri, 31 Oct 2025 19:57:16 +0000
-Message-Id: <20251031195718.1586-5-akurz@blala.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20251031195718.1586-1-akurz@blala.de>
-References: <20251031195718.1586-1-akurz@blala.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FAF1C4A24
+	for <imx@lists.linux.dev>; Sat,  1 Nov 2025 00:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761956688; cv=fail; b=uxVtZ6M5i8Wygr8xNiiFVo0vslfMz8NR5NmBLZJtDxBuMdcekQWTAzfLkaYRGo9b/utVyCWRcAUfSuVR8VNP6IOM8BljJ2nwjkgcAxN9a6gERSux1GKABdVJ9coMU1j4ei8k6X7zpvrOiitncbC9GbdWbF377Vf1DEJFdtSTvPk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761956688; c=relaxed/simple;
+	bh=8XG8dWQfZxDTLHGx/Dl7Y1dLOtZrM0GySIfGpNGc8LE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Kts+H9JmVQDoLLz89CvxdqgKs5/rG+3QXR/3jetu4jKVyNBNKHkPOirhbDgBWtm77lxKEwjWMMVCXr4szlBJov0dePJGcRCVdwSg7JDFkE/i2HuErnS0AMWBbgJfdONNbJyByANebBCzqZ3X8gbfIIm2hsC9p74t+DrczqCGCT0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=g+SAUALv; arc=fail smtp.client-ip=40.107.159.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="g+SAUALv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v8XqbWK4qUrbbjTcmW/52T9d8Q788ncamXxPeefZ7ZlQ9Jw72yorR9wkR91IVu2GdPULQU28SFRhGvsLrg4J0nm70C8bBISq1ZhNH+P7KyRCCK2iWc+6A0j5Eoa4BU/uVFNIUk63kf1qG/hufsRDBi+b6b2kkSPMZrOg8Jeh88wHRGnUjSOT7plJr3X1dY5EObA0B1WyuIheHmE3ZSb79DKK0VgB0ekri49cJkmXP0qcgy7HHfmhYCVaRUiW2ZTlwQqa89EcyZB6YMsJWDUNPnBPxwnDna3+K23hYiCW8J6mcqpgNla0WneWA0A2ex17sawolIhOA5+0c0itQS63kg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8XG8dWQfZxDTLHGx/Dl7Y1dLOtZrM0GySIfGpNGc8LE=;
+ b=uMAjheSZ64km5P7nwzNeYbdXv2ZMXn3zTZfnLzvWCivCnNha2qID8sL0KMT6rMy1Hwkeq4jJWLFmr+Z9cQc1vX5gr/IWpQwQ57HKmnRGlTlHhoelLXLgycLLtdRjZXLFbe/Vy88sVHP4eAYW5MUY6wp9YpGJdqXZYF8EfW1P7tm6nrxUAuZZx/cEGOFGHKVEnuwkTCKgwTtjTu/crZBeLcT0gmGzgYIiMeFne28LcMElBKeZdloaZSeJkkUkeRxHx+w0Fzj24l0IbBcS0Gmh5oac7Of8ITAcHT9qBxV2IQ7FJ+e7+L0qMiP6GTiucJA0RSp+qzwB+xHjEjazkHa7Lw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8XG8dWQfZxDTLHGx/Dl7Y1dLOtZrM0GySIfGpNGc8LE=;
+ b=g+SAUALvWN1iDRc1/pb17IlekiU6JruZEF75RIDc6JjP9H66ebg7qNF44ejJIuC764IItZWDR5H1u+P6V6PW6ME15i7Pc+Kqk9ry0IiLNUE74k8sL9A8LHPiWPkD+YqJ3yX9b6jh6sGYpnn37oa8agYaO3Z1H82hflTiJ3ocPN10vby0CoGsUSaqDpWx+ktVvQJFwjnb8ktc6S3pYbSuLq2+ZP5RcxvN1D6RNqF19O0PEskP3ZFD5xaCGLCsF8h21Zl+SK96lBUN2/BOxIwQY1BawVR+G368DzT2SUdBNjofIFANuDWL8uRIDrbNQbQMX6ahHqeahHTaBownTN5vvg==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AS5PR04MB10017.eurprd04.prod.outlook.com (2603:10a6:20b:67c::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Sat, 1 Nov
+ 2025 00:24:42 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9275.013; Sat, 1 Nov 2025
+ 00:24:42 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	Aziz Sellami <aziz.sellami@nxp.com>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net-next 0/3] net: enetc: add port MDIO support for both
+ i.MX94 and i.MX95
+Thread-Topic: [PATCH net-next 0/3] net: enetc: add port MDIO support for both
+ i.MX94 and i.MX95
+Thread-Index: AQHcSYDXkRjFYTA/aU2GC/wHEDze/bTa9nwAgACBd7CAALmQAIAAv5Sg
+Date: Sat, 1 Nov 2025 00:24:42 +0000
+Message-ID:
+ <PAXPR04MB85101E443E1489D07927BCFE88F9A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20251030091538.581541-1-wei.fang@nxp.com>
+ <f6db67ec-9eb0-4730-af18-31214afe2e09@lunn.ch>
+ <PAXPR04MB8510744BB954BB245FA7A4A088F8A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <fef3dbdc-50e4-4388-a32e-b5ae9aaaed6d@lunn.ch>
+In-Reply-To: <fef3dbdc-50e4-4388-a32e-b5ae9aaaed6d@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS5PR04MB10017:EE_
+x-ms-office365-filtering-correlation-id: 11088bde-bc82-431b-9c5b-08de18dd0d67
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|1800799024|366016|19092799006|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?ZjuhIzedrnk0ZVOFXMounAT6xzkjfvO+UNvgaR6HoEh3p7lzkj0ycxLN9aGv?=
+ =?us-ascii?Q?G4r+y3NB9Noj1Jbbgqn7C5uR45dSHrMglPPK8IB4VwvgCLW3dJQ/DOQ0DB/m?=
+ =?us-ascii?Q?9ll+0bpLuBMqKflG6wBOJFRBEn5JRdwXr1jHrG0SPOZlsxXcW0iLKCZPstLb?=
+ =?us-ascii?Q?jOZZ+DTdeRn7VLyWT2qbZWDJU3QltObPhCAH25r0W65dCpVNLRDAwA1vjEM2?=
+ =?us-ascii?Q?csM7is0nyhmGEvjgrBt7511gFph79IJU+m5SKipHLAj/+KPxFel+DB8DvQ9T?=
+ =?us-ascii?Q?/l/7uROSt7xZ2R7EqyQlzIw78ORCHnQFvfaSO06ahq+06Cim4bb2Tey5tSmC?=
+ =?us-ascii?Q?2Nfn8eDQm1G+Ar709G1nl64PFcmc23F7AZfYc45kizGDSDaCf7wKEX+ADDW9?=
+ =?us-ascii?Q?Tvx6EPaXUARUNhpEyUpBWQ81E24WB/uZJjYpLJ1GHx6+ah6ebT54sfHHk2FY?=
+ =?us-ascii?Q?oZHUB97NZdYV216GuD6iBTfPT3VscZucUUa4NGJGmOCUgIfVNl6BRIV9a8GL?=
+ =?us-ascii?Q?cBVTxHyvREgnBB2Z6szCKFMbJSSgz4ZsI0duk3C3f762bJXed9CdqWPnLHJG?=
+ =?us-ascii?Q?N1EMLuU9EVSd3CRuLMsSHoP/K3sLcfmwaXxfnVCxnQ8X74nwpx1+exZTFxCN?=
+ =?us-ascii?Q?lvRCbpz3zfhzf1W3Li8Fc4a3EzTqdNxT432HgWaaWjKA8SrV2VXqJGPUu71y?=
+ =?us-ascii?Q?YMAaKY9axUnxIODcVxO4L1l2ro8WiqNMDBsVCOoiYXfl6Qpd6ekrE/WM+Nl0?=
+ =?us-ascii?Q?BMSNrh88wXXHZ19vOKGdzvAjDSrYIcebK5abYgB1nCUR8M+bkIUUfvRI/Mn+?=
+ =?us-ascii?Q?UxJSk1MuHRuZxfZj+1DAbCM+skWZEtKqnmm1ZfySaBqVq7Eiqj+8v5KwKhJV?=
+ =?us-ascii?Q?GWoQXRPfI2xeU2HcytqJlEMxk1H1veMHa1whlmHGDpVZMSpb+0sb0A/BwsRW?=
+ =?us-ascii?Q?6PsH1ncWBFBxkF/eAOipXB4eMVJI2uL/qWG0WIqBpfOA171Jii43oLz1OAm2?=
+ =?us-ascii?Q?vcGQ3npd2SOC5tVQbaKFQYlGalhBcIUQMjreC7PA3gd1ht8km9ssNmTDiy3x?=
+ =?us-ascii?Q?Tz/GQ79n2Z/oE3oYZoe+F1Z3RrHVrPHrVOm9saV6xm9KOoxwZwvJja7vedx7?=
+ =?us-ascii?Q?w18ZMPaqpORuk842yO6SAczwwVw6YDwAb4Q5z+QwLTiOqsp7bx2TCPAqGCB/?=
+ =?us-ascii?Q?Q+/N0SwqgjFuu5ZxX7xJnsodheofqLbEDrcaQR8vme5o21pUWZqHktj38+/y?=
+ =?us-ascii?Q?GyBYqVFho2wT4QfjmaHjSDcRkexhc4JaFknumcSphaG4Qw93k7BZRvJRTL3A?=
+ =?us-ascii?Q?YKlMq5w4rB1eyPr5z6hD8APcJLsPgKYd4AtJNQstCaULxuUlNoqdzVvaiO0B?=
+ =?us-ascii?Q?5YVrl4nalAsSsKHJ8DaFTsq7syimjZ/UvwounbPu5Kff9XEQTWAAkEJkOQHJ?=
+ =?us-ascii?Q?LcyqkpjGgQyRN8zpZbE4RSmlDmYSDS8kJN9rtmzoJ9gUe37onZBqbaiSk0NP?=
+ =?us-ascii?Q?w72YPZPE7YyniNhEP0IYnYYDNu8NQRHoJW9N?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(19092799006)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?KevaPGumBpiXDqIopJc/JguqZY3Wy8rGq0Q+4UJsiErBFuvtUH+nck3rpOK1?=
+ =?us-ascii?Q?ycVxrP2hPBAhwALKLaHV2NePN4lwBJ38iIwZA2VoEiEd14lNjcFs1ESJ9xfz?=
+ =?us-ascii?Q?omfjMwIslMiQIXl8BApWFR5joU2nHsW8Nj7wcZfqRHnieabcpHgmcem5A08Y?=
+ =?us-ascii?Q?D9sYbOA9RK0f6ubw+Giy3guqQNJPaiz9h1JvweH4yf6GJgpac9HOx4qBjBjk?=
+ =?us-ascii?Q?SCXnVW1gXZyBPVOw9p+sEH+l7siDQwFwC61dStVSdsr2DaURtZnrXS5ICfbO?=
+ =?us-ascii?Q?PKVwuTeEw+9YPw1y7mR/bHEdWDXoMUkSxFSWWd1016mxRF4TZv+SVETrHHcD?=
+ =?us-ascii?Q?a4uEtdHY3YJih0uU3dLfqkFDwNleyand5u0gfKYQzMky7I7+f2HnErc4FS7d?=
+ =?us-ascii?Q?SI3DH0lRS8asOXQwEKfdJe9rDBUbwErXn3zLKPEVnRe6RdEL5yhAFd7XXi4H?=
+ =?us-ascii?Q?+w4VMGtRixqVZlKT/ZAfLoSchWPj3S54D8WI5ycCCS0nAEknvMKD8bGo1zuA?=
+ =?us-ascii?Q?m+oGkqEXu7uA1TLp7tPGmMuEVnNv4yVIu/enbUHPkEdi/flqWWWtwOP3A8vi?=
+ =?us-ascii?Q?c7YZ7jplOGKhEd+BbHvfDcaCSf2MPWZ9UwP9P/G8TnT5+br2X3pB4NDpwwF4?=
+ =?us-ascii?Q?A1xL7FuztNf6jQGZ0zd9TPiaYPn63JLjAGz3ittBmzuXwH49Be7auMaKbtLZ?=
+ =?us-ascii?Q?kGkyT/iuTo/FR0sJEYohhy5Y9rVnPFg5qwU2+GDajBxD+QTHgxqKP91FRH9X?=
+ =?us-ascii?Q?DBvfLTL8irJC1u+Vv0lsdBckpc2pz8WOIKw6e6s600xBoxBJlxhKLnmFiajf?=
+ =?us-ascii?Q?mf9XU9EqlPMUUaDYRClS5IuiDk+ffh/sQyF/UGsngj4RFqIkTNwaMZMLMu5t?=
+ =?us-ascii?Q?3LOoU3tbkeIC6S7bNVxNukc1D7MKqCE3imT1kcKajjnyFVpPPZdocCiMUCKp?=
+ =?us-ascii?Q?49a5HpULmORNdwd22nvhmsa0gq3rt5uY/+b/nqdzqyhOdg6NwdoCDg7AIa9j?=
+ =?us-ascii?Q?WaHsMCXmoDmwfBoPSKcPkUCIaID52fKYelNxfzIuOgzKsHjdojbclJIWsWpM?=
+ =?us-ascii?Q?2SMYhjK3ObRBS8srQd/98WA1M10PHikChQzYeLjcYHOToZDaM8vCBxzM4JRi?=
+ =?us-ascii?Q?jLF5urxAlir9l3TmiNXQDxUDszu7Rg163OgY0gC4bp/+KvaVpCLcQ4RE3DyV?=
+ =?us-ascii?Q?Yso5Eaur84oIJdWto2hB0XuefWYhiRrHcIChrObo9BsVCcJK3HIKkp0tM09K?=
+ =?us-ascii?Q?AhuAYf6K4K9jbAX5y59jhW37prIJOx8zMUcVdfu67cEVdIzl+4RWbaeaJsXh?=
+ =?us-ascii?Q?HOt/ePoNUCLmKiETrvb4CoKLQs1z9fcqDe7Kj9NyU5DcARsP4JgrE0w3vZMO?=
+ =?us-ascii?Q?Aar/v1QQQgCEQGr2+uCB1SLexc7D1OroW/uf/qvJfi190vteuOVZ198456mB?=
+ =?us-ascii?Q?r+catp5ln8/lI5PHKicwqbBqK3ljxy0LvdonXXIYWuNR1bfO8sjYkG7fhT34?=
+ =?us-ascii?Q?KaWfnFzgPPLn+4tgvZBHm9fDqswuem6nxDlaGglzZClUfCIcfxGNfUN1RCjV?=
+ =?us-ascii?Q?+tuRUjVxYl7lMeKL6/g=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11088bde-bc82-431b-9c5b-08de18dd0d67
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Nov 2025 00:24:42.4517
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: sFZVkrYiySDzGY7AkCZQxsI9P2L5e0Ezd9fexWgO6X5xVTqkIcW/xM/EDBXtaL548hQMZ/oYDK+AFmoHuzSmTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB10017
 
-All three mc13xxx types feature two common power buttons referred in
-the datasheets as ONOFD[12] (mc13783) and PWRON[12] (mc13892/mc34708).
-A third button is available on the mc13783 and mc13892 models, which
-however uses distinct interrupt register bits.
+> > What we get from the DT is the external PHY address, just like the mdio
+> > driver, this external PHY address based on the board, ENETC needs to
+> > know its external PHY address so that its port MIDO can work properly.
+>=20
+> So i don't get this. MDIO is just a bus, two lines. It can have up to
+> 32 devices on it. The bus master should not need to have any idea what
+> devices are on it, it just twiddles the lines as requested.
+>=20
+> Why does it need to know the external PHY address? In general, the
+> only thing which needs to know the PHY address is phylib.
+>=20
 
-Add support for mc13892/mc34708 to support all available power buttons
-in the mc13xxx series.
+From the hardware perspective, NETC IP has only one external master MDIO
+interface (eMDIO) for managing external PHYs. The 'EMDIO function' and the
+ENETC port MDIO are all virtual ports of the eMDIO.
 
-Signed-off-by: Alexander Kurz <akurz@blala.de>
----
- drivers/input/misc/Kconfig             |   4 +-
- drivers/input/misc/mc13783-pwrbutton.c | 131 +++++++++++--------------
- drivers/mfd/mc13xxx-core.c             |  22 ++++-
- include/linux/mfd/mc13783.h            |   4 +-
- include/linux/mfd/mc13892.h            |   1 +
- include/linux/mfd/mc13xxx.h            |   2 +
- 6 files changed, 84 insertions(+), 80 deletions(-)
+The difference is that 'EMDIO function' is a 'global port', it can access a=
+nd
+control all the PHYs on the eMDIO, so it provides a means for different
+software modules to share a single set of MDIO signals to access their PHYs=
+.
 
-diff --git a/drivers/input/misc/Kconfig b/drivers/input/misc/Kconfig
-index cc2558630797..c967daa0388a 100644
---- a/drivers/input/misc/Kconfig
-+++ b/drivers/input/misc/Kconfig
-@@ -297,8 +297,8 @@ config INPUT_MC13783_PWRBUTTON
- 	tristate "MC13783 ON buttons"
- 	depends on MFD_MC13XXX
- 	help
--	  Support the ON buttons of MC13783 PMIC as an input device
--	  reporting power button status.
-+	  Support the ON buttons of MC13783/MC13892/MC34708 PMIC as an input
-+	  device reporting power button status.
- 
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called mc13783-pwrbutton.
-diff --git a/drivers/input/misc/mc13783-pwrbutton.c b/drivers/input/misc/mc13783-pwrbutton.c
-index 2ee115d77b1c..08618c59197f 100644
---- a/drivers/input/misc/mc13783-pwrbutton.c
-+++ b/drivers/input/misc/mc13783-pwrbutton.c
-@@ -30,9 +30,16 @@
- #include <linux/sched.h>
- #include <linux/slab.h>
- 
-+struct mc13xxx_button_devtype {
-+	int button_id_max;
-+	const char *irq_name[3];
-+	int irq_sense_reg[3];
-+};
-+
- struct mc13783_pwrb {
- 	struct input_dev *pwr;
- 	struct mc13xxx *mc13783;
-+	const struct mc13xxx_button_devtype *devtype;
- 	int flags;
- 	unsigned short keymap[3];
- 	int irq[3];
-@@ -43,9 +50,6 @@ struct mc13783_pwrb {
- #define MC13783_PWRB_B3_POL_INVERT	(1 << 2)
- 
- #define MC13783_REG_INTERRUPT_SENSE_1		5
--#define MC13783_IRQSENSE1_ONOFD1S		(1 << 3)
--#define MC13783_IRQSENSE1_ONOFD2S		(1 << 4)
--#define MC13783_IRQSENSE1_ONOFD3S		(1 << 5)
- 
- #define MC13783_REG_POWER_CONTROL_2		15
- #define MC13783_POWER_CONTROL_2_ON1BDBNC	4
-@@ -63,17 +67,17 @@ static irqreturn_t button_irq(int irq, void *_priv)
- 	mc13xxx_reg_read(priv->mc13783, MC13783_REG_INTERRUPT_SENSE_1, &val);
- 
- 	if (irq == priv->irq[0]) {
--		val = val & MC13783_IRQSENSE1_ONOFD1S ? 1 : 0;
-+		val = val & (1 << priv->devtype->irq_sense_reg[0]) ? 1 : 0;
- 		if (priv->flags & MC13783_PWRB_B1_POL_INVERT)
- 			val ^= 1;
- 		input_report_key(priv->pwr, priv->keymap[0], val);
- 	} else if (irq == priv->irq[1]) {
--		val = val & MC13783_IRQSENSE1_ONOFD2S ? 1 : 0;
-+		val = val & (1 << priv->devtype->irq_sense_reg[1]) ? 1 : 0;
- 		if (priv->flags & MC13783_PWRB_B2_POL_INVERT)
- 			val ^= 1;
- 		input_report_key(priv->pwr, priv->keymap[1], val);
--	} else if (irq == priv->irq[2]) {
--		val = val & MC13783_IRQSENSE1_ONOFD3S ? 1 : 0;
-+	} else if (irq == priv->irq[2] && priv->devtype->button_id_max >= 2) {
-+		val = val & (1 << priv->devtype->irq_sense_reg[2]) ? 1 : 0;
- 		if (priv->flags & MC13783_PWRB_B3_POL_INVERT)
- 			val ^= 1;
- 		input_report_key(priv->pwr, priv->keymap[2], val);
-@@ -88,6 +92,8 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
- {
- 	const struct mc13xxx_buttons_platform_data *pdata;
- 	struct mc13xxx *mc13783 = dev_get_drvdata(pdev->dev.parent);
-+	struct mc13xxx_button_devtype *devtype =
-+		(struct mc13xxx_button_devtype *)pdev->id_entry->driver_data;
- 	struct input_dev *pwr;
- 	struct mc13783_pwrb *priv;
- 	int err = 0;
-@@ -108,54 +114,36 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
- 	if (!priv)
- 		return -ENOMEM;
- 
-+	if (devtype->button_id_max < 2 && pdata->b_on_flags[2] & 0x3) {
-+		dev_err(&pdev->dev, "button not supported\n");
-+		return -ENODEV;
-+	}
-+
- 	reg |= (pdata->b_on_flags[0] & 0x3) << MC13783_POWER_CONTROL_2_ON1BDBNC;
- 	reg |= (pdata->b_on_flags[1] & 0x3) << MC13783_POWER_CONTROL_2_ON2BDBNC;
- 	reg |= (pdata->b_on_flags[2] & 0x3) << MC13783_POWER_CONTROL_2_ON3BDBNC;
- 
- 	priv->pwr = pwr;
- 	priv->mc13783 = mc13783;
-+	priv->devtype = devtype;
- 
- 	mc13xxx_lock(mc13783);
- 
--	if (pdata->b_on_flags[0] & MC13783_BUTTON_ENABLE) {
--		priv->keymap[0] = pdata->b_on_key[0];
--		if (pdata->b_on_key[0] != KEY_RESERVED)
--			__set_bit(pdata->b_on_key[0], pwr->keybit);
-+	for (int i = 0; i < devtype->button_id_max; i++) {
-+		if ((pdata->b_on_flags[i] & MC13783_BUTTON_ENABLE) == 0)
-+			continue;
- 
--		if (pdata->b_on_flags[0] & MC13783_BUTTON_POL_INVERT)
--			priv->flags |= MC13783_PWRB_B1_POL_INVERT;
-+		priv->keymap[i] = pdata->b_on_key[i];
-+		if (pdata->b_on_key[i] != KEY_RESERVED)
-+			__set_bit(pdata->b_on_key[i], pwr->keybit);
- 
--		if (pdata->b_on_flags[0] & MC13783_BUTTON_RESET_EN)
--			reg |= MC13783_POWER_CONTROL_2_ON1BRSTEN;
-+		if (pdata->b_on_flags[i] & MC13783_BUTTON_POL_INVERT)
-+			priv->flags |= (MC13783_PWRB_B1_POL_INVERT << i);
- 
--		irq = platform_get_irq_byname(pdev, "b1on");
-+		if (pdata->b_on_flags[i] & MC13783_BUTTON_RESET_EN)
-+			reg |= (MC13783_POWER_CONTROL_2_ON1BRSTEN << i);
- 
--		if (irq < 0) {
--			dev_dbg(&pdev->dev, "Can't request irq\n");
--			goto free_mc13xxx_lock;
--		}
--
--		err = devm_request_any_context_irq(&pdev->dev, irq, button_irq,
--						   IRQF_ONESHOT, "b1on",
--						   priv);
--		if (err < 0)
--			goto free_mc13xxx_lock;
--
--		priv->irq[0] = irq;
--	}
--
--	if (pdata->b_on_flags[1] & MC13783_BUTTON_ENABLE) {
--		priv->keymap[1] = pdata->b_on_key[1];
--		if (pdata->b_on_key[1] != KEY_RESERVED)
--			__set_bit(pdata->b_on_key[1], pwr->keybit);
--
--		if (pdata->b_on_flags[1] & MC13783_BUTTON_POL_INVERT)
--			priv->flags |= MC13783_PWRB_B2_POL_INVERT;
--
--		if (pdata->b_on_flags[1] & MC13783_BUTTON_RESET_EN)
--			reg |= MC13783_POWER_CONTROL_2_ON2BRSTEN;
--
--		irq = platform_get_irq_byname(pdev, "b2on");
-+		irq = platform_get_irq_byname(pdev, devtype->irq_name[i]);
- 
- 		if (irq < 0) {
- 			dev_dbg(&pdev->dev, "Can't request irq\n");
-@@ -163,39 +151,12 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
- 		}
- 
- 		err = devm_request_any_context_irq(&pdev->dev, irq, button_irq,
--						   IRQF_ONESHOT, "b2on",
--						   priv);
-+					   IRQF_ONESHOT, devtype->irq_name[i],
-+					   priv);
- 		if (err < 0)
- 			goto free_mc13xxx_lock;
- 
--		priv->irq[1] = irq;
--	}
--
--	if (pdata->b_on_flags[2] & MC13783_BUTTON_ENABLE) {
--		priv->keymap[2] = pdata->b_on_key[2];
--		if (pdata->b_on_key[2] != KEY_RESERVED)
--			__set_bit(pdata->b_on_key[2], pwr->keybit);
--
--		if (pdata->b_on_flags[2] & MC13783_BUTTON_POL_INVERT)
--			priv->flags |= MC13783_PWRB_B3_POL_INVERT;
--
--		if (pdata->b_on_flags[2] & MC13783_BUTTON_RESET_EN)
--			reg |= MC13783_POWER_CONTROL_2_ON3BRSTEN;
--
--		irq = platform_get_irq_byname(pdev, "b3on");
--
--		if (irq < 0) {
--			dev_dbg(&pdev->dev, "Can't request irq: %d\n", err);
--			goto free_mc13xxx_lock;
--		}
--
--		err = devm_request_any_context_irq(&pdev->dev, irq, button_irq,
--						   IRQF_ONESHOT, "b3on",
--						   priv);
--		if (err < 0)
--			goto free_mc13xxx_lock;
--
--		priv->irq[2] = irq;
-+		priv->irq[i] = irq;
- 	}
- 
- 	mc13xxx_reg_rmw(mc13783, MC13783_REG_POWER_CONTROL_2, 0x3FE, reg);
-@@ -226,7 +187,33 @@ static int mc13783_pwrbutton_probe(struct platform_device *pdev)
- 	return err;
- }
- 
-+static const struct mc13xxx_button_devtype mc13783_button_devtype = {
-+	.button_id_max	= 2,
-+	.irq_name = { "b1on", "b2on", "b3on" },
-+	.irq_sense_reg = { 3, 4, 5 },
-+};
-+
-+static const struct mc13xxx_button_devtype mc13892_button_devtype = {
-+	.button_id_max	= 2,
-+	.irq_name = { "b1on", "b2on", "b3on" },
-+	.irq_sense_reg = { 3, 4, 2 },
-+};
-+
-+static const struct mc13xxx_button_devtype mc34708_button_devtype = {
-+	.button_id_max	= 1,
-+	.irq_name = { "b1on", "b2on" },
-+	.irq_sense_reg = { 3, 4 },
-+};
-+
-+static const struct platform_device_id mc13xxx_pwrbutton_idtable[] = {
-+	{ "mc13783-pwrbutton", (kernel_ulong_t)&mc13783_button_devtype },
-+	{ "mc13892-pwrbutton", (kernel_ulong_t)&mc13892_button_devtype },
-+	{ "mc34708-pwrbutton", (kernel_ulong_t)&mc34708_button_devtype },
-+	{ /* sentinel */ }
-+};
-+
- static struct platform_driver mc13783_pwrbutton_driver = {
-+	.id_table	= mc13xxx_pwrbutton_idtable,
- 	.probe		= mc13783_pwrbutton_probe,
- 	.driver		= {
- 		.name	= "mc13783-pwrbutton",
-diff --git a/drivers/mfd/mc13xxx-core.c b/drivers/mfd/mc13xxx-core.c
-index 1756c8d47d5e..c29974722704 100644
---- a/drivers/mfd/mc13xxx-core.c
-+++ b/drivers/mfd/mc13xxx-core.c
-@@ -14,6 +14,7 @@
- #include <linux/platform_device.h>
- #include <linux/mfd/core.h>
- #include <linux/mfd/mc13783.h>
-+#include <linux/mfd/mc13892.h>
- 
- #include "mc13xxx.h"
- 
-@@ -48,11 +49,22 @@
- #define MC13XXX_ADC2		45
- 
- static const struct resource mc13783_button_resources[] = {
--	DEFINE_RES_IRQ_NAMED(MC13783_IRQ_ONOFD1, "b1on"),
--	DEFINE_RES_IRQ_NAMED(MC13783_IRQ_ONOFD2, "b2on"),
-+	DEFINE_RES_IRQ_NAMED(MC13XXX_IRQ_PWRON1, "b1on"),
-+	DEFINE_RES_IRQ_NAMED(MC13XXX_IRQ_PWRON2, "b2on"),
- 	DEFINE_RES_IRQ_NAMED(MC13783_IRQ_ONOFD3, "b3on"),
- };
- 
-+static const struct resource mc13892_button_resources[] = {
-+	DEFINE_RES_IRQ_NAMED(MC13XXX_IRQ_PWRON1, "b1on"),
-+	DEFINE_RES_IRQ_NAMED(MC13XXX_IRQ_PWRON2, "b2on"),
-+	DEFINE_RES_IRQ_NAMED(MC13892_IRQ_PWRON3, "b3on"),
-+};
-+
-+static const struct resource mc34708_button_resources[] = {
-+	DEFINE_RES_IRQ_NAMED(MC13XXX_IRQ_PWRON1, "b1on"),
-+	DEFINE_RES_IRQ_NAMED(MC13XXX_IRQ_PWRON2, "b2on"),
-+};
-+
- void mc13xxx_lock(struct mc13xxx *mc13xxx)
- {
- 	if (!mutex_trylock(&mc13xxx->lock)) {
-@@ -216,14 +228,16 @@ EXPORT_SYMBOL_GPL(mc13xxx_variant_mc13783);
- 
- struct mc13xxx_variant mc13xxx_variant_mc13892 = {
- 	.name = "mc13892",
--	.button_resources_size = 0,
-+	.button_resources = mc13892_button_resources,
-+	.button_resources_size = ARRAY_SIZE(mc13892_button_resources),
- 	.print_revision = mc13xxx_print_revision,
- };
- EXPORT_SYMBOL_GPL(mc13xxx_variant_mc13892);
- 
- struct mc13xxx_variant mc13xxx_variant_mc34708 = {
- 	.name = "mc34708",
--	.button_resources_size = 0,
-+	.button_resources = mc34708_button_resources,
-+	.button_resources_size = ARRAY_SIZE(mc34708_button_resources),
- 	.print_revision = mc34708_print_revision,
- };
- EXPORT_SYMBOL_GPL(mc13xxx_variant_mc34708);
-diff --git a/include/linux/mfd/mc13783.h b/include/linux/mfd/mc13783.h
-index c25b1676741b..ab6db774e1fa 100644
---- a/include/linux/mfd/mc13783.h
-+++ b/include/linux/mfd/mc13783.h
-@@ -65,8 +65,8 @@
- #define MC13783_IRQ_UDM		23
- #define MC13783_IRQ_1HZ		MC13XXX_IRQ_1HZ
- #define MC13783_IRQ_TODA	MC13XXX_IRQ_TODA
--#define MC13783_IRQ_ONOFD1	27
--#define MC13783_IRQ_ONOFD2	28
-+#define MC13783_IRQ_ONOFD1	MC13XXX_IRQ_PWRON1
-+#define MC13783_IRQ_ONOFD2	MC13XXX_IRQ_PWRON2
- #define MC13783_IRQ_ONOFD3	29
- #define MC13783_IRQ_SYSRST	MC13XXX_IRQ_SYSRST
- #define MC13783_IRQ_RTCRST	MC13XXX_IRQ_RTCRST
-diff --git a/include/linux/mfd/mc13892.h b/include/linux/mfd/mc13892.h
-index 880cd949d12a..567d527825df 100644
---- a/include/linux/mfd/mc13892.h
-+++ b/include/linux/mfd/mc13892.h
-@@ -33,4 +33,5 @@
- #define MC13892_PWGT2SPI	22
- #define MC13892_VCOINCELL	23
- 
-+#define MC13892_IRQ_PWRON3	26
- #endif
-diff --git a/include/linux/mfd/mc13xxx.h b/include/linux/mfd/mc13xxx.h
-index 4437ab80fcf8..71c7d3614d4c 100644
---- a/include/linux/mfd/mc13xxx.h
-+++ b/include/linux/mfd/mc13xxx.h
-@@ -61,6 +61,8 @@ int mc13xxx_irq_unmask(struct mc13xxx *mc13xxx, int irq);
- #define MC13XXX_IRQ_LOBATH	14
- #define MC13XXX_IRQ_1HZ		24
- #define MC13XXX_IRQ_TODA	25
-+#define MC13XXX_IRQ_PWRON1	27
-+#define MC13XXX_IRQ_PWRON2	28
- #define MC13XXX_IRQ_SYSRST	30
- #define MC13XXX_IRQ_RTCRST	31
- #define MC13XXX_IRQ_PC		32
--- 
-2.39.5
+But for ENETC port MDIO, each ENETC can access its set of registers to
+initiate accesses on the MDIO and the eMDIO arbitrates between them,
+completing one access before proceeding with the next. It is required that
+each ENETC port MDIO has exclusive access and control of its PHY. That is
+why we need to set the external PHY address for ENETCs, so that its port
+MDIO can only access its PHY. If the PHY address accessed by the port
+MDIO is different from the preset PHY address, the MDIO access will be
+invalid.
+
+Normally, all ENETCs use the interfaces provided by the 'EMDIO function'
+to access their PHYs, provided that the ENETC and EMDIO are on the same
+OS. If an ENETC is assigned to a guest OS, it will not be able to use the
+interfaces provided by EMDIO, so it must uses its port MDIO to access and
+manage its PHY.
 
