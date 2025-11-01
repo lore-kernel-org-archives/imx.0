@@ -1,76 +1,55 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE1F2C21D0
-	for <imx@lists.linux.dev>; Sat,  1 Nov 2025 13:25:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208021DED7B;
+	Sat,  1 Nov 2025 14:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762003535; cv=none; b=s5EDkcofZd8t1BJeRx7epfP7d63KknNxX3FefJEsQewfIjB4NrYShA3xwBMsvVsZKx2i4LXQ+nnfa3loPiN4isrE8u8HEDda7eYtIWmJQ8haxnhm+zXhLv34JxbtBJC/J/UWcDYTZc/pMyDYgcWln6plRfvXCBE/tQU43lWYM4s=
+	t=1762008229; cv=none; b=D93Zpiw/hY/QDzhWBVjJqU4MeMKF9bpXhQuZfsumT7gPpDX1gX8T7RBoYkoT/lcIercudzhOIgxXcSAaAOzASHDX3agg5dWxzN5UowGAZqMzfktYctuK0XYrYndPGuqSc/cCpgZ7SZuTbGADiC8U+Fl+ggSZ8o5qApBXOfcSkOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762003535; c=relaxed/simple;
-	bh=Z98SLm/EfpTZZ+75oYqs1vAnViW8qDAEJMAoaxRjcMQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=rp33CBEu1CD/ydQDxs3m2ylAh58ba754L0dlUc75sUEpRxMAoKoMuQoSv7MVrEzWdjZ7SQcE583i3pFlFGy3U7fgc0fSz+zs45+4ZdWykQOlt8eC6HZRLpurxL8Z/8gkCSgakOLqLwaystyHU5YkV6z94ru87DeoSjtUbnC3SI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sBV1DnYh; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1762008229; c=relaxed/simple;
+	bh=CHj1Zkul6hoVNKjHSeA7+UVJxNaSbzYzOpQ/55QeZ+g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n2ldyHq9esk/XeWuqZq6vZGgwNNl4BdmyFV7SUYK2r5SlwWN+QhyNRZDjBuB1wxg4k9DdE5JVFHIqEAFPq0rEuGaaHDVvV1vXYRZXNSl/jTA99y3dmWFGfvj2qIYgGDcl/rs2CTnTjl6lvqQBGixtwW/9/n8rWNJxaYPPrQHrdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QTHqesBE; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sBV1DnYh"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-47112edf9f7so24810385e9.0
-        for <imx@lists.linux.dev>; Sat, 01 Nov 2025 06:25:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762003531; x=1762608331; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=L9gbS+9LrLe7y4J6JOoi0YS3Bk4wJ8cYhZR5dEyxBSU=;
-        b=sBV1DnYhyDkEj+cCD/Bafrz3M6jO7LqdK4jeMZzljL/+wwQs+IX1mIg4RzeXS1D6qx
-         Nt/Kpj4fkARz7NVUh49oB2oQv6EgYNc0JtFkpHYFY0TYeSlkDf6I6wgXv+GvsZg8UZa9
-         LrGJY+9unqNiByk+nROkEW96L2hdReu28AEzhLbCLJXZjp12pjE0wZ9Ym0FCXQqX+7H5
-         WCK71gh8rXsWxsL19BOi3vjNcCQvG9rV+cbMBy3NyZTZM+N1nZaEZ+mHGLa3WAjRnmP1
-         Pa+KmPY/uBMR/K9OKhV2yTA5IVmvPJZBseeWIxnxosRLVvltYKFQjyUC/POdvp+NCTle
-         CgVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762003531; x=1762608331;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L9gbS+9LrLe7y4J6JOoi0YS3Bk4wJ8cYhZR5dEyxBSU=;
-        b=vKUrSklO34XU2E/Rp4NISjMErlQSiqq1Yhrle6w537Tf5zBt/DMnUXSbOhShZt/+GO
-         ANcp20Tka2tgj2l9zfBugcHWEOGg/9LEtYViqfWNyQru7eg/IepwcIPb9lrjfqgARedR
-         YrNybBPYvV4xlG9R26HOWMxSe6ERMtayJmVFQhw6XS2UyZ9MTG/zilBECPz453kqgQXT
-         TvBgfgz92pH52wePiYVMZ+DEXsO0iWb1pB7eKyjvSCEK4mflRayHgWWMrIfmdFUT1qPw
-         q3nZJZ0pA5dzfnEOn4yF8wfnmXoawyYv42bXl3CrQ7+sCM9UvCre2AaFicYUzsThRR4i
-         w7Uw==
-X-Forwarded-Encrypted: i=1; AJvYcCUUgzlPqfZg7LtVcqQVPGaBVnrR1Xm6VQefEJMOGOcA9ZQ2zmj/OJlyAN1L+QNS93OB52Y=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzNivqIUmlcuBqCtcxF0iFvFrexPKx//oBQEKLYCCjIjbbWxeh/
-	qHLoSTrrolWSKceWUUykr2gRFf3EEjN0v5ru14VZdBUoQpMlrjiL6n0/g1/TQ+E/Was=
-X-Gm-Gg: ASbGncuQuiPrDmwuzk7LyMhlaBVPDQoPXac2qAy44jlipp76rEFihoem3dqcA7Vn2ci
-	n+aP3NOaxbA5ALA6bEMwetEXa2YWBXdxs9qHhi/RfR6qFx9AA+WxRXx14bXyKXZVmOi4OY3rTm2
-	HxyLDHmDW9+/+Pdy06YqEKIcUkGSCVHSftBnA8a7YxGEBMkG3W/lUd539I2/Tlu8NGUnw4kHKgJ
-	RKQXSB/sB8Nnm8PvXOgPxbufqyfTAdMJzl7jQ9KB+OWwTD/jQuEMq9evHqt3sm0Ksvedz23ogja
-	Iln5b7mlkFgkdwyEjH3fnbWY0oFNPshJJsIM8PYRcFGOqKpHrTTpDgwoTI+KSYmGSsSwDT8DmlH
-	luUygP6Dh/BYJChGkylQYGQhQ9S892UsJvtKFMGlS5eQ8F7Y2ihalgY2+R66HVfxmLNDRqAXRAZ
-	W2Ovh2aA==
-X-Google-Smtp-Source: AGHT+IHfkE8YJK+hEniklXFT4GhX0FQkyrWL8TAH+8xEiRGBmRw2WAmAAnJ/Iz+FCPOhsKJuLyo9JQ==
-X-Received: by 2002:a05:600c:1e19:b0:46e:711c:efeb with SMTP id 5b1f17b1804b1-477308aa8acmr60161545e9.25.1762003531066;
-        Sat, 01 Nov 2025 06:25:31 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4773c48de65sm47854815e9.1.2025.11.01.06.25.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Nov 2025 06:25:30 -0700 (PDT)
-Date: Sat, 1 Nov 2025 16:25:27 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Anson Huang <Anson.Huang@nxp.com>
-Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] Input: imx_sc_key - Fix memory corruption on unload
-Message-ID: <aQYKR75r2VMFJutT@stanley.mountain>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QTHqesBE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=kbrQJNAxkCeAlLdCX6AM0uLGxMIQSMwoVqkBE0HruFk=; b=QTHqesBE/rr9SPQWh1nAIjaULw
+	IP+06M4QcoN3gZcv/zQvkXIGEOiftxnyf8ljgtb6GYVONV2IYA1yoEo1zZ75m1WMpQY0A3jx5R+H4
+	VTEV+q46wSSb14kP+8e3LDBMBpbutfuuzHoz2IXFgs9L0wsneNmOm73bc42A3iWynGpk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vFCpE-00CfRd-Le; Sat, 01 Nov 2025 15:43:28 +0100
+Date: Sat, 1 Nov 2025 15:43:28 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	Aziz Sellami <aziz.sellami@nxp.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 0/3] net: enetc: add port MDIO support for both
+ i.MX94 and i.MX95
+Message-ID: <157cf60d-5fc2-4da0-be71-3c495e018c3d@lunn.ch>
+References: <20251030091538.581541-1-wei.fang@nxp.com>
+ <f6db67ec-9eb0-4730-af18-31214afe2e09@lunn.ch>
+ <PAXPR04MB8510744BB954BB245FA7A4A088F8A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <fef3dbdc-50e4-4388-a32e-b5ae9aaaed6d@lunn.ch>
+ <PAXPR04MB85101E443E1489D07927BCFE88F9A@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,31 +58,58 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+In-Reply-To: <PAXPR04MB85101E443E1489D07927BCFE88F9A@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-This is supposed to be "priv" but we accidentally pass "&priv" which is
-an address in the stack and so it will lead to memory corruption when
-the imx_sc_key_action() function is called.  Remove the &.
+On Sat, Nov 01, 2025 at 12:24:42AM +0000, Wei Fang wrote:
+> > > What we get from the DT is the external PHY address, just like the mdio
+> > > driver, this external PHY address based on the board, ENETC needs to
+> > > know its external PHY address so that its port MIDO can work properly.
+> > 
+> > So i don't get this. MDIO is just a bus, two lines. It can have up to
+> > 32 devices on it. The bus master should not need to have any idea what
+> > devices are on it, it just twiddles the lines as requested.
+> > 
+> > Why does it need to know the external PHY address? In general, the
+> > only thing which needs to know the PHY address is phylib.
+> > 
+> 
+> >From the hardware perspective, NETC IP has only one external master MDIO
+> interface (eMDIO) for managing external PHYs. The 'EMDIO function' and the
+> ENETC port MDIO are all virtual ports of the eMDIO.
+> 
+> The difference is that 'EMDIO function' is a 'global port', it can access and
+> control all the PHYs on the eMDIO, so it provides a means for different
+> software modules to share a single set of MDIO signals to access their PHYs.
+> 
+> But for ENETC port MDIO, each ENETC can access its set of registers to
+> initiate accesses on the MDIO and the eMDIO arbitrates between them,
+> completing one access before proceeding with the next. It is required that
+> each ENETC port MDIO has exclusive access and control of its PHY. That is
+> why we need to set the external PHY address for ENETCs, so that its port
+> MDIO can only access its PHY. If the PHY address accessed by the port
+> MDIO is different from the preset PHY address, the MDIO access will be
+> invalid.
+> 
+> Normally, all ENETCs use the interfaces provided by the 'EMDIO function'
+> to access their PHYs, provided that the ENETC and EMDIO are on the same
+> OS. If an ENETC is assigned to a guest OS, it will not be able to use the
+> interfaces provided by EMDIO, so it must uses its port MDIO to access and
+> manage its PHY.
 
-Fixes: 768062fd1284 ("Input: imx_sc_key - use devm_add_action_or_reset() to handle all cleanups")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- drivers/input/keyboard/imx_sc_key.c | 2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+So you have up to 32 virtual MDIO busses stacked on top of one
+physical MDIO bus. When creating the virtual MDIO bus, you need to
+tell it what address it should allow through and which it should
+block?
 
-diff --git a/drivers/input/keyboard/imx_sc_key.c b/drivers/input/keyboard/imx_sc_key.c
-index d18839f1f4f6..b620cd310cdb 100644
---- a/drivers/input/keyboard/imx_sc_key.c
-+++ b/drivers/input/keyboard/imx_sc_key.c
-@@ -158,7 +158,7 @@ static int imx_sc_key_probe(struct platform_device *pdev)
- 		return error;
- 	}
- 
--	error = devm_add_action_or_reset(&pdev->dev, imx_sc_key_action, &priv);
-+	error = devm_add_action_or_reset(&pdev->dev, imx_sc_key_action, priv);
- 	if (error)
- 		return error;
- 
--- 
-2.51.0
+If what i'm saying is correct, please make the commit message a lot
+easier to understand.
+
+But this is still broken. Linux has no restrictions on the number of
+PHYs on an MDIO bus. It also does not limit the MDIO bus to only
+PHYs. It could be an Ethernet switch on the bus, using a number of
+addresses on the bus. So its not an address you need to program into
+the virtual MDIO bus, it is a bitmap of addresses.
+
+	Andrew
+
 
