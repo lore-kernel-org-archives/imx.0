@@ -1,164 +1,248 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9666E23C8A1
-	for <imx@lists.linux.dev>; Sun,  2 Nov 2025 16:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52F81C84CB
+	for <imx@lists.linux.dev>; Sun,  2 Nov 2025 17:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762101572; cv=none; b=Bv2P2lmhk7tddieMzFK16uq3+TGCWpMRUAU4p8t5aAvEC+O/73swlRPEdemJ+emF+qSrjJTwVGWgL0YMklRfCWzaRERJbL5XkgYiMD9B7oxlNtdNpM/wvs5aC3tGsx45jm3W59zAyJOe/2gwtwNiC6zNeQ6aCEcapcTEXbnqGhA=
+	t=1762102990; cv=none; b=ZW35uC+DHAQrqSSadxghtUljl3e3eoiL5VJPAvjFYAlTHwas6P3suH3C95nlqB6nrHDpKGuGkKWD1/47zlzoXbNiPbWh3QAyi58JjxwgmRSAFD2G1abCUgIMS86Qa57LfO6y0tWrQ7ZDMkgh5KvHHiMcDyYLPmZ58fQzggBnwg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762101572; c=relaxed/simple;
-	bh=/wk0r2WF7kQ5J/280jubxtFtMyKSbwHx02KsbYzueY4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oHElUUSd12Us5i171oyFT9AgvjEp40ffHA8O9mfpaVcTdJlpYQhRrGkoucCnui1t7/MYHwmBNKQFtLj7i65iy+E0xJuU1O9KCSq4Dr9iGhejkb2eibWcQqZ5EqxP2vUEnQMXzzxEfIGvrNYRxAXoPWFJlFgBzkbtCenP/N0N/Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MofBD+Fv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KnAiAV88; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1762102990; c=relaxed/simple;
+	bh=Q44u91lhf5R27Cl1jnURa9DZbc9cRDZspfIyAdqwurY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tnd0b/9ZvhdDTL2mJi1vLSoQEPmg/wiG3mhn/5g1JTbclWZ1QUUMmsYSSE+/ocZ2fQV9K8ayfD0cR0DcYa6HXTbrbNZDE8Nj9oka0N4Qb36XPedstoolD4R3dPX+C5gEllok2+/gdaX0nyVi97vA1ws/RwhuLUaBzocD1hTNVmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=n2Q1XX2L; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=iRvrAYr4; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MofBD+Fv";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KnAiAV88"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A2F1q4C434597
-	for <imx@lists.linux.dev>; Sun, 2 Nov 2025 16:39:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=Vsudp5PRE81p+UL97II9GrFo
-	Q82PxOzVdfpShaNANXY=; b=MofBD+FvgCKPFuq3/UZeyNcPO7m4lbnHivOxOn7h
-	/9eQpsVBicILU9Wyi7oVMysvN7k7Mw9FwfT4cK38MU7Xn9j/1v/0p6/Jf6+/PVhO
-	gWjMNLjyOeisd7CIbEtHAh3y7coy+AFabvbvPQNy5jnA6RaGEUMgR++iZmAmLSpe
-	FcF9U8T7xzAOGwsxol6eOhhJkNqSmZlDbcZrzrZiAZn9Ez/KyqbMLuBybNFobZGt
-	AKrAXmbeaQ/JJrjNAqJO71reaAmJEanyzsfP6lFJkKGi84AHIyY/ZHYgjIvjNIlD
-	VzG8fDkGWx/j74iJT8C/kUi3FZfSjsTjW7BgeK1e/d4lMA==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4a57weaht4-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Sun, 02 Nov 2025 16:39:29 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4ecf8faf8bdso80528671cf.1
-        for <imx@lists.linux.dev>; Sun, 02 Nov 2025 08:39:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1762101569; x=1762706369; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vsudp5PRE81p+UL97II9GrFoQ82PxOzVdfpShaNANXY=;
-        b=KnAiAV888Z9+b6BYxlC3S4mGyf18EGWTNNXgYc1z5xMTwswE1Sn7H86icxcoLt3gou
-         Y/p+ABmYz7gvlKPyADS2dIlb7l/qZ3qB2+EqQjFVAjNcyGMnY9GGbr4tQJsmjwwyiYML
-         ByFkIkAHHb79u8pGIT0KEETBH9lxDzJo2vS2YjgzZz7+2d0IObiwPUmftRSmCVR3Whz7
-         j+fVKv5DJxho/LR/bOhCXhIt7GF9SeI8ALp7vgHFzZZ8DDYOtb3oK1J5r7cvqzNBgPbK
-         faFSqKRIbcnh9RD3m6gDAHSe+7OH13tAehl97Y/QFO7vMiV5VIJgp0EqtwC6NChxwTMM
-         ydRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762101569; x=1762706369;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vsudp5PRE81p+UL97II9GrFoQ82PxOzVdfpShaNANXY=;
-        b=LR9cckSmtiuiXc203nVePxBa8fSTM39vulxKj4sVCZ93qWntdxR9UI97qRBE1Z6N0a
-         9a0zgLsvUMxsQyyDVWg3yBmtlBStdU833we1Mv7YuGnuZTD6Ql9G0cXbJ+7laoKCRaxm
-         teZ4DwoW1sYpBM5BrOVDyh1QOWmg/T5AAdajuIQAyqaaFMeF1HHjfWYCXOya1YPec42X
-         0NTmzr/svbIn0sxXeuwS2fkUyPuU6v9rGXj8Y899CgQLUlPtSUjlLoVPn6FcYsL9f+Ab
-         DywgA6+KHICgjyc39W/+40+dGDKcYOB8S1llh17rpaeYrQWBibhZDp+Z0wgTNETJJQL1
-         wwdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU9LuYYhf5b8zaCR9bjOKjyZupDJ9rGKwX/p9Ite2mzervOMIQAPF7lnrcBwgxPg1DceaU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyL6BXNNnV3FjMHFpNQlLriss3oLxlHwAAykeFnneb0eWWnhIL+
-	YGyW+7QfTuDDwB4/Jzu8ZDk7+t+KoVcx4IJWtMRaP/s/PKIco7A5Wjo+rFOKzbfYqNkIFIcPadv
-	Lt7SOR2lSMwCiNlO7iuivZOUJ03pGJcXRtOlCSBFnxx56WOHjYbUaQKU=
-X-Gm-Gg: ASbGncuYyk7qxeYfdvqepRskuWTykb0400M/B3hiOmKbqQ348RGpLAR02lSvPAfim4X
-	mcCPvUfg0xcWwu/WahnC93NkZfErC1v7xpO8lEx5du59WfCMsEN9rNneWtQitzIWhaNF35/ybxy
-	SZI84iJpZTjaR79FwND7LYvbbTKVvePm9vxNNAu21TtA/OZGM2ZQpeSiMvVSMzBO+7Zn2abZQ4z
-	xm6p4OYQOdQo1tfAFOJQ9AQO54cc+xb1YTh6PQMmCpg3byHe1n1wZh8U802dgeEXMHQ1DY5GEEn
-	NdYfJKg3BpVNPvEn2+ITVXETGysJ2ISUtDLlZoylSMOgxuSVHPj4ptEciHvfxZvvSZqpvbWn1WN
-	6U6ytR3Jb9E3ohEdt4KljKZt2u+ZulEsOTB57ap3AH2qiQcfX3evGAzKZGDNvpXIhjQEVeB6x8g
-	DtX0pfZpXJs1q6
-X-Received: by 2002:a05:622a:834f:b0:4ed:423d:48d4 with SMTP id d75a77b69052e-4ed423d4eccmr57411111cf.54.1762101568692;
-        Sun, 02 Nov 2025 08:39:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFBDCWJDKPzqxu7f2En5m/zHiJp5IOVrgHqGPH6qz1rOivQAZXaoWbSK0Fgiw9Mg8qUeB+6cA==
-X-Received: by 2002:a05:622a:834f:b0:4ed:423d:48d4 with SMTP id d75a77b69052e-4ed423d4eccmr57410861cf.54.1762101568242;
-        Sun, 02 Nov 2025 08:39:28 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-594282be8adsm789469e87.51.2025.11.02.08.39.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Nov 2025 08:39:27 -0800 (PST)
-Date: Sun, 2 Nov 2025 18:39:25 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: simona@ffwll.ch, airlied@gmail.com, mripard@kernel.org,
-        maarten.lankhorst@linux.intel.com, geert@linux-m68k.org,
-        tomi.valkeinen@ideasonboard.com, dri-devel@lists.freedesktop.org,
-        linux-mediatek@lists.infradead.org, freedreno@lists.freedesktop.org,
-        linux-arm-msm@vger.kernel.org, imx@lists.linux.dev,
-        linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org,
-        virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org,
-        linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        linux-tegra@vger.kernel.org, intel-xe@lists.freedesktop.org,
-        xen-devel@lists.xenproject.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>
-Subject: Re: [PATCH v6 13/25] drm/msm: Compute dumb-buffer sizes with
- drm_mode_size_dumb()
-Message-ID: <vptw5tquup34e3jen62znnw26qe76f3pys4lpsal5g3czwev6y@2q724ibos7by>
-References: <20250821081918.79786-1-tzimmermann@suse.de>
- <20250821081918.79786-14-tzimmermann@suse.de>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="n2Q1XX2L";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="iRvrAYr4"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4d01Hr69VNz9tWy;
+	Sun,  2 Nov 2025 18:03:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1762102984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=cObXJ30PSUthwthSYfE+TCB57ZPuOUf5acEEf646mE0=;
+	b=n2Q1XX2LmiQ/N2Mkv3nqCEAW57yBf3oAFd/XIEY92LJCgpXFFM/rOquUPeSzHcodQIP0jj
+	kTIgPHcGfZURrQgPkaOgKZXa0WXzbhChKaBq65Iq4SrTeLR/zu9wYu97Xp6wscT9mXCsav
+	1d62AVGPtijgbe8BXNZcHNGKBJ+QwQcD4ooSqOjXFdbYWeWoYLqnACKwrl1EblsZaOxTvB
+	GHwxzYc8psf2tnHLZ+lqG3YSP9byE21ENYKcrfthmfG8b+JFFamfPEA5iTZRq4M89IQpM0
+	DyfJR6a6QT2XzGVeGGXGFXKwulNzZ+4kywdCFTnMAg3PKfqD4JGfLn9L5Ozy8w==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=iRvrAYr4;
+	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
+From: Marek Vasut <marek.vasut@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1762102983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=cObXJ30PSUthwthSYfE+TCB57ZPuOUf5acEEf646mE0=;
+	b=iRvrAYr4FO7AzaJkf8eBmFevGmmIb+djXPYubKgKxQmGZmQqcTQK4UGrqDgKr8IIEDxzPr
+	0JqqYJxZ1fSjgOaWZlot8P69AO8eKAS3zYuT1FZ2K0gm+16zBLhdWS2njea6YQIenKxt34
+	hIFtklgZ5r154mq91B+Qu27HipodPiJRIfAFpa7/XlKXtT7YNrG6AA4QjzgnO7NRj8vreq
+	ILdHwrmgU97EQW3W/nWzF/kg1B0WvuxNuDBfHUS1G0jco/lBE1dma2arhnO61BOifwUUXo
+	Bv08mHPeL+zySrbVc/RomM+vY6rDxbPrYYefqjg8xsgxMHaZXR3Cf1t5pwKbqQ==
+To: dri-devel@lists.freedesktop.org
+Cc: Marek Vasut <marek.vasut@mailbox.org>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Liu Ying <victor.liu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org
+Subject: [PATCH v2] drm/bridge: fsl-ldb: Parse register offsets from DT
+Date: Sun,  2 Nov 2025 18:02:18 +0100
+Message-ID: <20251102170257.65491-1-marek.vasut@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250821081918.79786-14-tzimmermann@suse.de>
-X-Authority-Analysis: v=2.4 cv=M85A6iws c=1 sm=1 tr=0 ts=69078941 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=KKAkSRfTAAAA:8 a=pGLkceISAAAA:8 a=COk6AnOGAAAA:8 a=tVI0ZWmoAAAA:8
- a=4vBwfh3hQKJL6CJddaEA:9 a=CjuIK1q_8ugA:10 a=uxP6HrT_eTzRwkO_Te1X:22
- a=cvBusfyB2V15izCimMoJ:22 a=TjNXssC_j7lpFel5tvFf:22 a=-BPWgnxRz2uhmvdm1NTO:22
-X-Proofpoint-ORIG-GUID: jjOHshp6HXUAfykXfPH2bIviT5jzCelc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAyMDE1NCBTYWx0ZWRfX5ZqjDPhBDwph
- bBXwH1sT4AWvmzKG8GoTDpoTJ0A2YvLwdUBfyB7/v/imTOqML5LeECkNBiRGW69syFWYargIzU4
- CGzkLLvmRJtgVWQc5pDIcftvbeZuzISV9UMJ0S2BnoTTBBEiQda/EBUs/LL/ObXvWv2fKBDspzI
- VNsLIMQFtfOJQdC9CNMF2qhyzlG0UgssU90STSIA4RrtCrR1AZ+OB2cu74sENC2IKf16TtIA68b
- hf9YTFUanJPvSjkcWBJt6LieTxFETENEW/3IjtGrbBQc/lVP1wmyYkRTjMIH4oxFwjZd1ZlX9N8
- JsBwlpjBYpRS93x5SAij4uEXyKSkbXmWTAsbqqG2/LCYaIPMPCVMELCK0fSIUybRwzj/elqkjy7
- 557hvdHHRL/n/qgD7wy5Pxw2+zrgfw==
-X-Proofpoint-GUID: jjOHshp6HXUAfykXfPH2bIviT5jzCelc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-02_02,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- malwarescore=0 bulkscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511020154
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: xcxj75s7zio9aapmup5yw6jehygx1ii8
+X-MBO-RS-ID: 309f2c2b1c1acb202cc
+X-Rspamd-Queue-Id: 4d01Hr69VNz9tWy
 
-On Thu, Aug 21, 2025 at 10:17:20AM +0200, Thomas Zimmermann wrote:
-> Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch
-> and buffer size. Alignment is specified in bytes, but the hardware
-> requires the scanline pitch to be a multiple of 32 pixels. Therefore
-> compute the byte size of 32 pixels in the given color mode and align
-> the pitch accordingly. This replaces the existing code in the driver's
-> align_pitch() helper.
-> 
-> v3:
-> - clarify pitch alignment in commit message (Dmitry)
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: Rob Clark <robdclark@gmail.com>
-> Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: Sean Paul <sean@poorly.run>
-> Cc: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
->  drivers/gpu/drm/msm/msm_gem.c | 27 +++++++++++++++++++++++++--
->  1 file changed, 25 insertions(+), 2 deletions(-)
-> 
+The DT binding for this bridge describe register offsets for the LDB,
+parse the register offsets from DT instead of hard-coding them in the
+driver. No functional change.
 
-This broke kms_getfb@getfb-reject-nv12 and kms_getfb@getfb2-accept-nv12
-IGT tests. I'll submit a fix separately.
+Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+---
+Cc: Abel Vesa <abelvesa@kernel.org>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+Cc: Liu Ying <victor.liu@nxp.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>
+Cc: Peng Fan <peng.fan@nxp.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: devicetree@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-clk@vger.kernel.org
+---
+V2: - Switch to of_property_read_reg()
+    - Parse single-register LDB variants from DT too
+---
+ drivers/gpu/drm/bridge/fsl-ldb.c | 58 ++++++++++++++++++++------------
+ 1 file changed, 36 insertions(+), 22 deletions(-)
 
+diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fsl-ldb.c
+index 5c3cf37200bce..2357cb2fbbe39 100644
+--- a/drivers/gpu/drm/bridge/fsl-ldb.c
++++ b/drivers/gpu/drm/bridge/fsl-ldb.c
+@@ -8,6 +8,7 @@
+ #include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/of_address.h>
+ #include <linux/of_graph.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+@@ -61,24 +62,13 @@ enum fsl_ldb_devtype {
+ };
+ 
+ struct fsl_ldb_devdata {
+-	u32 ldb_ctrl;
+-	u32 lvds_ctrl;
+ 	bool lvds_en_bit;
+-	bool single_ctrl_reg;
+ };
+ 
+ static const struct fsl_ldb_devdata fsl_ldb_devdata[] = {
+-	[IMX6SX_LDB] = {
+-		.ldb_ctrl = 0x18,
+-		.single_ctrl_reg = true,
+-	},
+-	[IMX8MP_LDB] = {
+-		.ldb_ctrl = 0x5c,
+-		.lvds_ctrl = 0x128,
+-	},
++	[IMX6SX_LDB] = { },
++	[IMX8MP_LDB] = { },
+ 	[IMX93_LDB] = {
+-		.ldb_ctrl = 0x20,
+-		.lvds_ctrl = 0x24,
+ 		.lvds_en_bit = true,
+ 	},
+ };
+@@ -90,8 +80,11 @@ struct fsl_ldb {
+ 	struct clk *clk;
+ 	struct regmap *regmap;
+ 	const struct fsl_ldb_devdata *devdata;
++	u64 ldb_ctrl;
++	u64 lvds_ctrl;
+ 	bool ch0_enabled;
+ 	bool ch1_enabled;
++	bool single_ctrl_reg;
+ };
+ 
+ static bool fsl_ldb_is_dual(const struct fsl_ldb *fsl_ldb)
+@@ -204,15 +197,15 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *bridge,
+ 		reg |=	(fsl_ldb->ch0_enabled ? LDB_CTRL_DI0_VSYNC_POLARITY : 0) |
+ 			(fsl_ldb->ch1_enabled ? LDB_CTRL_DI1_VSYNC_POLARITY : 0);
+ 
+-	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->ldb_ctrl, reg);
++	regmap_write(fsl_ldb->regmap, fsl_ldb->ldb_ctrl, reg);
+ 
+-	if (fsl_ldb->devdata->single_ctrl_reg)
++	if (fsl_ldb->single_ctrl_reg)
+ 		return;
+ 
+ 	/* Program LVDS_CTRL */
+ 	reg = LVDS_CTRL_CC_ADJ(2) | LVDS_CTRL_PRE_EMPH_EN |
+ 	      LVDS_CTRL_PRE_EMPH_ADJ(3) | LVDS_CTRL_VBG_EN;
+-	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, reg);
++	regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, reg);
+ 
+ 	/* Wait for VBG to stabilize. */
+ 	usleep_range(15, 20);
+@@ -220,7 +213,7 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *bridge,
+ 	reg |=	(fsl_ldb->ch0_enabled ? LVDS_CTRL_CH0_EN : 0) |
+ 		(fsl_ldb->ch1_enabled ? LVDS_CTRL_CH1_EN : 0);
+ 
+-	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, reg);
++	regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, reg);
+ }
+ 
+ static void fsl_ldb_atomic_disable(struct drm_bridge *bridge,
+@@ -231,12 +224,12 @@ static void fsl_ldb_atomic_disable(struct drm_bridge *bridge,
+ 	/* Stop channel(s). */
+ 	if (fsl_ldb->devdata->lvds_en_bit)
+ 		/* Set LVDS_CTRL_LVDS_EN bit to disable. */
+-		regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl,
++		regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl,
+ 			     LVDS_CTRL_LVDS_EN);
+ 	else
+-		if (!fsl_ldb->devdata->single_ctrl_reg)
+-			regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, 0);
+-	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->ldb_ctrl, 0);
++		if (!fsl_ldb->single_ctrl_reg)
++			regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, 0);
++	regmap_write(fsl_ldb->regmap, fsl_ldb->ldb_ctrl, 0);
+ 
+ 	clk_disable_unprepare(fsl_ldb->clk);
+ }
+@@ -296,7 +289,7 @@ static int fsl_ldb_probe(struct platform_device *pdev)
+ 	struct device_node *remote1, *remote2;
+ 	struct drm_panel *panel;
+ 	struct fsl_ldb *fsl_ldb;
+-	int dual_link;
++	int dual_link, idx, ret;
+ 
+ 	fsl_ldb = devm_drm_bridge_alloc(dev, struct fsl_ldb, bridge, &funcs);
+ 	if (IS_ERR(fsl_ldb))
+@@ -309,6 +302,27 @@ static int fsl_ldb_probe(struct platform_device *pdev)
+ 	fsl_ldb->dev = &pdev->dev;
+ 	fsl_ldb->bridge.of_node = dev->of_node;
+ 
++	/* No "reg-names" property likely means single-register LDB */
++	idx = of_property_match_string(dev->of_node, "reg-names", "ldb");
++	if (idx < 0) {
++		fsl_ldb->single_ctrl_reg = true;
++		idx = 0;
++	}
++
++	ret = of_property_read_reg(dev->of_node, idx, &fsl_ldb->ldb_ctrl, NULL);
++	if (ret)
++		return ret;
++
++	if (!fsl_ldb->single_ctrl_reg) {
++		idx = of_property_match_string(dev->of_node, "reg-names", "lvds");
++		if (idx < 0)
++			return idx;
++
++		ret = of_property_read_reg(dev->of_node, idx, &fsl_ldb->lvds_ctrl, NULL);
++		if (ret)
++			return ret;
++	}
++
+ 	fsl_ldb->clk = devm_clk_get(dev, "ldb");
+ 	if (IS_ERR(fsl_ldb->clk))
+ 		return PTR_ERR(fsl_ldb->clk);
 -- 
-With best wishes
-Dmitry
+2.51.0
+
