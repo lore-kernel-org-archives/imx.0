@@ -1,248 +1,119 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52F81C84CB
-	for <imx@lists.linux.dev>; Sun,  2 Nov 2025 17:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD10918D65C
+	for <imx@lists.linux.dev>; Sun,  2 Nov 2025 17:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762102990; cv=none; b=ZW35uC+DHAQrqSSadxghtUljl3e3eoiL5VJPAvjFYAlTHwas6P3suH3C95nlqB6nrHDpKGuGkKWD1/47zlzoXbNiPbWh3QAyi58JjxwgmRSAFD2G1abCUgIMS86Qa57LfO6y0tWrQ7ZDMkgh5KvHHiMcDyYLPmZ58fQzggBnwg0=
+	t=1762103727; cv=none; b=dgvNTTX/g3mTEeK2Br9DhUvPT8WfRuYpzZqRBup2T6g74HAA7p+mFZLcHjw94CMeHl4XEjrTdKB77yMYolKSKdiAsSlSs63EgGGBUnD7iA+M/xJasepj+zlT1Bhw9t6u7o704TAdQkR/oEsE7/nhhrco0FX1vfgOcEgG4PJwmdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762102990; c=relaxed/simple;
-	bh=Q44u91lhf5R27Cl1jnURa9DZbc9cRDZspfIyAdqwurY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tnd0b/9ZvhdDTL2mJi1vLSoQEPmg/wiG3mhn/5g1JTbclWZ1QUUMmsYSSE+/ocZ2fQV9K8ayfD0cR0DcYa6HXTbrbNZDE8Nj9oka0N4Qb36XPedstoolD4R3dPX+C5gEllok2+/gdaX0nyVi97vA1ws/RwhuLUaBzocD1hTNVmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=n2Q1XX2L; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=iRvrAYr4; arc=none smtp.client-ip=80.241.56.171
+	s=arc-20240116; t=1762103727; c=relaxed/simple;
+	bh=/QhroAsSo0Y2EwqhxEnrjVx8V0/aRjNyFLOtqeiTt94=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T062Wit8aloDrNKVkaPcAj0/VeNW5DVOPymuI9XyKuxBMrKb+wqvA7mfO1DBVmfDLRNUOhGUmv27T9F6cIOJpDpcK7eYGVV4/UQJzjbqR/RllNw03tqwUh9AskkQqjDe2iq8/yVEaLJ67LqbxUu62KScXMR2VP5IEDq0Bk5MT6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=UvXRZ7bD; arc=none smtp.client-ip=80.241.56.161
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="n2Q1XX2L";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="iRvrAYr4"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="UvXRZ7bD"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4d01Hr69VNz9tWy;
-	Sun,  2 Nov 2025 18:03:04 +0100 (CET)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4d01Z20q5Tz9slM;
+	Sun,  2 Nov 2025 18:15:22 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1762102984;
+	t=1762103722;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=cObXJ30PSUthwthSYfE+TCB57ZPuOUf5acEEf646mE0=;
-	b=n2Q1XX2LmiQ/N2Mkv3nqCEAW57yBf3oAFd/XIEY92LJCgpXFFM/rOquUPeSzHcodQIP0jj
-	kTIgPHcGfZURrQgPkaOgKZXa0WXzbhChKaBq65Iq4SrTeLR/zu9wYu97Xp6wscT9mXCsav
-	1d62AVGPtijgbe8BXNZcHNGKBJ+QwQcD4ooSqOjXFdbYWeWoYLqnACKwrl1EblsZaOxTvB
-	GHwxzYc8psf2tnHLZ+lqG3YSP9byE21ENYKcrfthmfG8b+JFFamfPEA5iTZRq4M89IQpM0
-	DyfJR6a6QT2XzGVeGGXGFXKwulNzZ+4kywdCFTnMAg3PKfqD4JGfLn9L5Ozy8w==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=iRvrAYr4;
-	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
-From: Marek Vasut <marek.vasut@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1762102983;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=cObXJ30PSUthwthSYfE+TCB57ZPuOUf5acEEf646mE0=;
-	b=iRvrAYr4FO7AzaJkf8eBmFevGmmIb+djXPYubKgKxQmGZmQqcTQK4UGrqDgKr8IIEDxzPr
-	0JqqYJxZ1fSjgOaWZlot8P69AO8eKAS3zYuT1FZ2K0gm+16zBLhdWS2njea6YQIenKxt34
-	hIFtklgZ5r154mq91B+Qu27HipodPiJRIfAFpa7/XlKXtT7YNrG6AA4QjzgnO7NRj8vreq
-	ILdHwrmgU97EQW3W/nWzF/kg1B0WvuxNuDBfHUS1G0jco/lBE1dma2arhnO61BOifwUUXo
-	Bv08mHPeL+zySrbVc/RomM+vY6rDxbPrYYefqjg8xsgxMHaZXR3Cf1t5pwKbqQ==
-To: dri-devel@lists.freedesktop.org
-Cc: Marek Vasut <marek.vasut@mailbox.org>,
-	Abel Vesa <abelvesa@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Liu Ying <victor.liu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH v2] drm/bridge: fsl-ldb: Parse register offsets from DT
-Date: Sun,  2 Nov 2025 18:02:18 +0100
-Message-ID: <20251102170257.65491-1-marek.vasut@mailbox.org>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BFpdLMII0EG/uXMQS+E4Vw7nKG+ReHRISfwxssVFI9s=;
+	b=UvXRZ7bDu9O4ZrHV72XvvB6yU3Z5LI+jaMxZyKdMUO3KU2hA46wC+PxOVP9bzqNXvsneUs
+	sl9HWw55Jlu4y11sF+dvaApaLFTp1oQVtMVHy2yA3AZt0K3Kh0b7dCpzsPydXqYbwCjFrU
+	okvozNZIQgwpk/q1LcTaDYx/QIMOxKxcvhul3wifKN2qeUb0cgEI7dduhm6a3fW1k4lVdu
+	A+CW9EgF0cmJ67bNJ8laI/8XlP5xaK4zEybXOCxsVG0R9vukPlju6vxyI3GjM/+iquR91V
+	tuLoIL2I8aQLwgBt+kfOI0MXZc6BrnLQCuGQNOjQLl5zVGs9eoFpMXkaMcS3Ig==
+Message-ID: <500852c9-2cd5-4897-a139-4e93988f5469@mailbox.org>
+Date: Sun, 2 Nov 2025 17:14:05 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: xcxj75s7zio9aapmup5yw6jehygx1ii8
-X-MBO-RS-ID: 309f2c2b1c1acb202cc
-X-Rspamd-Queue-Id: 4d01Hr69VNz9tWy
+Subject: Re: [PATCH v4 07/14] drm/imx: dc: Add DPR channel support
+To: Liu Ying <victor.liu@nxp.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dmitry Baryshkov <lumag@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+References: <20251016-imx8-dc-prefetch-v4-0-dfda347cb3c5@nxp.com>
+ <20251016-imx8-dc-prefetch-v4-7-dfda347cb3c5@nxp.com>
+ <174bdb5a-b5a8-4856-a0ac-8caaaefde136@mailbox.org>
+ <24f99c46-ca5d-43cc-a2eb-a6e5029e9f86@nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <24f99c46-ca5d-43cc-a2eb-a6e5029e9f86@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-META: 3sitdqczazy5k6eyore371b5sdu9hua4
+X-MBO-RS-ID: 505e1783efc7f667bb3
 
-The DT binding for this bridge describe register offsets for the LDB,
-parse the register offsets from DT instead of hard-coding them in the
-driver. No functional change.
+On 10/20/25 4:47 AM, Liu Ying wrote:
 
-Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
----
-Cc: Abel Vesa <abelvesa@kernel.org>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-Cc: Liu Ying <victor.liu@nxp.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>
-Cc: Peng Fan <peng.fan@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: devicetree@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-clk@vger.kernel.org
----
-V2: - Switch to of_property_read_reg()
-    - Parse single-register LDB variants from DT too
----
- drivers/gpu/drm/bridge/fsl-ldb.c | 58 ++++++++++++++++++++------------
- 1 file changed, 36 insertions(+), 22 deletions(-)
+Hello Liu,
 
-diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fsl-ldb.c
-index 5c3cf37200bce..2357cb2fbbe39 100644
---- a/drivers/gpu/drm/bridge/fsl-ldb.c
-+++ b/drivers/gpu/drm/bridge/fsl-ldb.c
-@@ -8,6 +8,7 @@
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_address.h>
- #include <linux/of_graph.h>
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
-@@ -61,24 +62,13 @@ enum fsl_ldb_devtype {
- };
- 
- struct fsl_ldb_devdata {
--	u32 ldb_ctrl;
--	u32 lvds_ctrl;
- 	bool lvds_en_bit;
--	bool single_ctrl_reg;
- };
- 
- static const struct fsl_ldb_devdata fsl_ldb_devdata[] = {
--	[IMX6SX_LDB] = {
--		.ldb_ctrl = 0x18,
--		.single_ctrl_reg = true,
--	},
--	[IMX8MP_LDB] = {
--		.ldb_ctrl = 0x5c,
--		.lvds_ctrl = 0x128,
--	},
-+	[IMX6SX_LDB] = { },
-+	[IMX8MP_LDB] = { },
- 	[IMX93_LDB] = {
--		.ldb_ctrl = 0x20,
--		.lvds_ctrl = 0x24,
- 		.lvds_en_bit = true,
- 	},
- };
-@@ -90,8 +80,11 @@ struct fsl_ldb {
- 	struct clk *clk;
- 	struct regmap *regmap;
- 	const struct fsl_ldb_devdata *devdata;
-+	u64 ldb_ctrl;
-+	u64 lvds_ctrl;
- 	bool ch0_enabled;
- 	bool ch1_enabled;
-+	bool single_ctrl_reg;
- };
- 
- static bool fsl_ldb_is_dual(const struct fsl_ldb *fsl_ldb)
-@@ -204,15 +197,15 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *bridge,
- 		reg |=	(fsl_ldb->ch0_enabled ? LDB_CTRL_DI0_VSYNC_POLARITY : 0) |
- 			(fsl_ldb->ch1_enabled ? LDB_CTRL_DI1_VSYNC_POLARITY : 0);
- 
--	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->ldb_ctrl, reg);
-+	regmap_write(fsl_ldb->regmap, fsl_ldb->ldb_ctrl, reg);
- 
--	if (fsl_ldb->devdata->single_ctrl_reg)
-+	if (fsl_ldb->single_ctrl_reg)
- 		return;
- 
- 	/* Program LVDS_CTRL */
- 	reg = LVDS_CTRL_CC_ADJ(2) | LVDS_CTRL_PRE_EMPH_EN |
- 	      LVDS_CTRL_PRE_EMPH_ADJ(3) | LVDS_CTRL_VBG_EN;
--	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, reg);
-+	regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, reg);
- 
- 	/* Wait for VBG to stabilize. */
- 	usleep_range(15, 20);
-@@ -220,7 +213,7 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *bridge,
- 	reg |=	(fsl_ldb->ch0_enabled ? LVDS_CTRL_CH0_EN : 0) |
- 		(fsl_ldb->ch1_enabled ? LVDS_CTRL_CH1_EN : 0);
- 
--	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, reg);
-+	regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, reg);
- }
- 
- static void fsl_ldb_atomic_disable(struct drm_bridge *bridge,
-@@ -231,12 +224,12 @@ static void fsl_ldb_atomic_disable(struct drm_bridge *bridge,
- 	/* Stop channel(s). */
- 	if (fsl_ldb->devdata->lvds_en_bit)
- 		/* Set LVDS_CTRL_LVDS_EN bit to disable. */
--		regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl,
-+		regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl,
- 			     LVDS_CTRL_LVDS_EN);
- 	else
--		if (!fsl_ldb->devdata->single_ctrl_reg)
--			regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, 0);
--	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->ldb_ctrl, 0);
-+		if (!fsl_ldb->single_ctrl_reg)
-+			regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, 0);
-+	regmap_write(fsl_ldb->regmap, fsl_ldb->ldb_ctrl, 0);
- 
- 	clk_disable_unprepare(fsl_ldb->clk);
- }
-@@ -296,7 +289,7 @@ static int fsl_ldb_probe(struct platform_device *pdev)
- 	struct device_node *remote1, *remote2;
- 	struct drm_panel *panel;
- 	struct fsl_ldb *fsl_ldb;
--	int dual_link;
-+	int dual_link, idx, ret;
- 
- 	fsl_ldb = devm_drm_bridge_alloc(dev, struct fsl_ldb, bridge, &funcs);
- 	if (IS_ERR(fsl_ldb))
-@@ -309,6 +302,27 @@ static int fsl_ldb_probe(struct platform_device *pdev)
- 	fsl_ldb->dev = &pdev->dev;
- 	fsl_ldb->bridge.of_node = dev->of_node;
- 
-+	/* No "reg-names" property likely means single-register LDB */
-+	idx = of_property_match_string(dev->of_node, "reg-names", "ldb");
-+	if (idx < 0) {
-+		fsl_ldb->single_ctrl_reg = true;
-+		idx = 0;
-+	}
-+
-+	ret = of_property_read_reg(dev->of_node, idx, &fsl_ldb->ldb_ctrl, NULL);
-+	if (ret)
-+		return ret;
-+
-+	if (!fsl_ldb->single_ctrl_reg) {
-+		idx = of_property_match_string(dev->of_node, "reg-names", "lvds");
-+		if (idx < 0)
-+			return idx;
-+
-+		ret = of_property_read_reg(dev->of_node, idx, &fsl_ldb->lvds_ctrl, NULL);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	fsl_ldb->clk = devm_clk_get(dev, "ldb");
- 	if (IS_ERR(fsl_ldb->clk))
- 		return PTR_ERR(fsl_ldb->clk);
--- 
-2.51.0
+sorry for my late reply.
 
+>>> +++ b/drivers/gpu/drm/imx/dc/Kconfig
+>>> @@ -1,6 +1,7 @@
+>>>    config DRM_IMX8_DC
+>>>        tristate "Freescale i.MX8 Display Controller Graphics"
+>>>        depends on DRM && COMMON_CLK && OF && (ARCH_MXC || COMPILE_TEST)
+>>> +    depends on IMX_SCU
+>> Can the SCU dependency be made optional,
+> 
+> I don't think this can be done.  If you grep 'depends on IMX_SCU' in
+> kernel, you may find a handful of existing dependancies.
+
+Sure, I do not dispute this part.
+
+But the SCU dependency can be contained in a component of this driver, 
+which is not used by MX95, and used only by MX8Q . Then there will be no 
+problem.
+
+>> or per-module,
+> 
+> Well, DRM_IMX8_DC(for the imx8_dc_drm module) depends on IMX_SCU just as
+> this patch does.
+
+I assume it shouldn't have to, because the SCU dependency is only 
+relevant for the prefetch engine ?
+
+>> or somehow abstracted out (via regmap?),
+> 
+> Like I replied to your i.MX95 DC patch series's cover letter, SCU accesses
+> registers via Cortex-M core instead of Cortex-A core IIUC.  I really don't
+> know how to abstract IMX_SCU out, especially via regmap.
+
+The simplest way would be to use regmap_config .reg_read and .reg_write 
+, if there is no better way.
+
+>> so iMX95 support can be added into the driver easily too ?
+> 
+> Like I replied to your i.MX95 DC patch series, I think i.MX95 DC support
+> can be in drivers/gpu/drm/imx/dc, but it should be in a separate module
+> (something like imx95_dc_drm) plus an additional common module(like
+> imx_dc_drm_common).
+This design part is something I do not fully understand. Sure, it can be 
+two modules, but in the end, the result would have to be capable of 
+being compiled into single kernel binary if both modules would be =y in 
+Kconfig anyway.
