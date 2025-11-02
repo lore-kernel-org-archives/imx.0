@@ -1,108 +1,98 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01E434D3BF
-	for <imx@lists.linux.dev>; Sun,  2 Nov 2025 17:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AFF5695
+	for <imx@lists.linux.dev>; Sun,  2 Nov 2025 23:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762105358; cv=none; b=MUyJ7GmPs7c8i3yvpDPniD7cpxB/p1vyfxSpXiLQpMSL3o0WcAdZNInRigLZBOTk6bBUMLlOfWmmrQNIsTwxnalPgJvK4RI9RPMi6/CRMrQ6VHBEbSPkyIq1tLhJKUWFHT3dQEWixFq7Z9/5cbCVr1HLidD1NfvRmCy4lJCttsU=
+	t=1762124536; cv=none; b=FXa1pjhYnAYnARgwb/8NM6ESZauC0wX1ITfeOkSfnOYQie1VJ5n79kTwIi3MbbNpSSphyV3hKXFNAnv2MOD/FN0KC3LV6RI4OwBUTGTBl7JuWl9gwDuj567TZokAd6ikXG8xsPVQbAw35Gg1eBdx1bd7sP2xA8UR8znJUTtE9+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762105358; c=relaxed/simple;
-	bh=eWf1ssYER9+ZZB8rUrrghh1FssKnX/b4h4BzwdjLbu8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GpLmFLfb2YWS6j09y+sQFrvr+9HnNpQg8ugrQK6QyWCWyC90VSeb9LUKnW7OKLxqY/WENXZaBb9Lhashi5EWG+40C43SZ8I8GcXehmags8EFEqrutdmgembhZiQIh3C13KlH/mU+rof3rmqrnzd6uGJlCC07cz0aIn/lyKuoRB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=VP9PRTxK; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1762124536; c=relaxed/simple;
+	bh=nZm+KO4+ZVuNc4gxK7tkO1KbJMk9/Tr67Ic5LCJjzF0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q/nh6rihDhjUXol62uefOAOXl5ncETWCEqjw1P2TOZc1WEBapKoboCKA7kF3N+0tUewUItfJQ8HyiG8cPhWYgpPh61/5wOEkTJlIP1w52RDgo9dasa/xbOyRrfWcyRNuYmrrtfOabqMp5N92izJYYCLVRZbL8B84+rHX0oNie4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=K2eDJo9p; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="VP9PRTxK"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4d029P19yRz9sxG;
-	Sun,  2 Nov 2025 18:42:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1762105353;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ebfnwj7tMpis+tR7jktZ8bbJq6Qt0Nfjii5Z7X6heM8=;
-	b=VP9PRTxKRANrUVATpLf4VpHENaXsPDbREzODzM8r+WFvGQ/++XvFMtw1qGHV1h4Fo1h4X3
-	gHHeLPJ/jPdlwUlGKqEHK2dYKhnla7T79zRVnSJXaQmA4SX+bs2tO/8fzM57LLD2pPKhlm
-	6fV254HOzBLCUrKXWx+uCcOLffONq80p+E5lp9R0asgGAPQnpqfppepsesVxCq76SN8KqS
-	F86GqtTjt+N0bdPjUTLOHmFph/dNbTnjmQyJ5gslpeBuNUb2qdlANqP6qI8l1Wc/31bNMp
-	NfXHS6y9WXwQFuuVxsAxcoH5NpZL6L6nAbpNXI1GCNEDQK1uwa8tCrehg0kZQg==
-Message-ID: <636f24ff-e775-468e-a13b-b86542098c74@mailbox.org>
-Date: Sun, 2 Nov 2025 18:42:26 +0100
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="K2eDJo9p"
+Received: from pendragon.ideasonboard.com (82-203-160-149.bb.dnainternet.fi [82.203.160.149])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id D35E71E2E;
+	Mon,  3 Nov 2025 00:00:18 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1762124419;
+	bh=nZm+KO4+ZVuNc4gxK7tkO1KbJMk9/Tr67Ic5LCJjzF0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K2eDJo9pQwFOmxXLCxfKT48xZOvC6SoDhjDn6pR+J5Ofi8Zlpv7dkpPpm1DxhyQy3
+	 QVuvKTvyw2cfUBB9HVhNnDLP72N2bI0JEjHiXSOoFdvvffhOBUF5O1m7dVdmE67+jV
+	 vltwYGu2sFTnnysEuPqwwyBJIublm9T9GboUkhk4=
+Date: Mon, 3 Nov 2025 01:01:57 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: linux-media@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Inbaraj E <inbaraj.e@samsung.com>,
+	Isaac Scott <isaac.scott@ideasonboard.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Martin Kepplinger <martink@posteo.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>, Rui Miguel Silva <rmfrfs@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Purism Kernel Team <kernel@puri.sm>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 13/13] arm64: dts: imx8mp: Specify the number of
+ channels for CSI-2 receivers
+Message-ID: <20251102230157.GA31427@pendragon.ideasonboard.com>
+References: <20250822002734.23516-1-laurent.pinchart@ideasonboard.com>
+ <20250822002734.23516-14-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH v1] dts: arm64: freescale: move imx9*-clock.h
- imx9*-power.h into dt-bindings
-To: Peng Fan <peng.fan@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
- E Shattow <e@freeshell.de>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>
-References: <20250831200516.522179-1-e@freeshell.de>
- <20250901032203.GA393@nxa18884-linux.ap.freescale.net>
- <3a165d77-3e36-4c0d-a193-aa9b27e0d523@mailbox.org>
- <05f7d69a-9c05-4b47-ab04-594c37e975eb@kernel.org>
- <51daddc4-1b86-4688-98cb-ef0f041d4126@mailbox.org>
- <8920d24b-e796-4b02-b43b-8a5deed3e8fb@kernel.org>
- <be2fc937-b7a6-49a7-b57d-6e3f16f4ccc3@mailbox.org>
- <20250904093442.GA13411@nxa18884-linux.ap.freescale.net>
- <afe58aa6-0c3e-4508-8133-8e7621a0484a@mailbox.org>
- <PAXPR04MB845970863A16718967270D1A880EA@PAXPR04MB8459.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <PAXPR04MB845970863A16718967270D1A880EA@PAXPR04MB8459.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: siz7namta7ztp8gt3hs83jgy4x3gfjit
-X-MBO-RS-ID: 6783862ee9dc7f685d6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250822002734.23516-14-laurent.pinchart@ideasonboard.com>
 
-On 9/10/25 9:07 AM, Peng Fan wrote:
+Hi Shawn,
 
-Hello Peng,
+The DT bindings have been merged in v6.18, could you please pick this
+patch for v6.19 ?
 
->>> Marek,
->>>     Some U-Boot code indeed directly use the IDs to configure the clock
->> without
->>>     relying on any drivers. Since the SCMI IDs could not be moved to
->>> dt-bindings,
->>
->> Why can they not be moved to DT bindings ?
+On Fri, Aug 22, 2025 at 03:27:33AM +0300, Laurent Pinchart wrote:
+> The CSI-2 receivers in the i.MX8MP have 3 output channels. Specify this
+> in the device tree, to enable support for more than one channel.
 > 
-> DT maintainers suggested to keep the files under
-> arch/arm64/boot/dts/freescale/
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> https://lore.kernel.org/all/75ab9162-ed02-479d-92a1-7cfabff6b32e@linaro.org/
-
-I think the larger question really is -- are the SCMI clock IDs part of 
-DT ABI or not ? The SCMI clock IDs are part of firmware ABI, for sure. 
-Does that imply they are part of DT ABI too ?
-
-Or, is there by any chance a plan to allow e.g. resolution of SCMI clock 
-IDs by their shortnames, and allow SCMI clock IDs to change across 
-different firmware versions, even on the same platform ?
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> index bb24dba7338e..1e52840078df 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -1764,6 +1764,7 @@ mipi_csi_0: csi@32e40000 {
+>  				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_250M>,
+>  							 <&clk IMX8MP_CLK_24M>;
+>  				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_1>;
+> +				fsl,num-channels = <3>;
+>  				status = "disabled";
+>  
+>  				ports {
+> @@ -1799,6 +1800,7 @@ mipi_csi_1: csi@32e50000 {
+>  				assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_250M>,
+>  							 <&clk IMX8MP_CLK_24M>;
+>  				power-domains = <&media_blk_ctrl IMX8MP_MEDIABLK_PD_MIPI_CSI2_2>;
+> +				fsl,num-channels = <3>;
+>  				status = "disabled";
+>  
+>  				ports {
 
 -- 
-Best regards,
-Marek Vasut
+Regards,
+
+Laurent Pinchart
