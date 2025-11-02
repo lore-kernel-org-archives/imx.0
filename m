@@ -1,82 +1,71 @@
 Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749DE221F00
-	for <imx@lists.linux.dev>; Sun,  2 Nov 2025 16:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC7B1DC198
+	for <imx@lists.linux.dev>; Sun,  2 Nov 2025 16:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762099789; cv=none; b=FNrPHS0jailg8ySnudxjaNlwT200wsLWBuBXyLKhSKk9rbtLTHtI9rhiaaTmZ4hSPWbGGIhbgu/l2v88pVdHXwlLwdtxs5Lt2k/XZHLXJ/ea3xvCPLe2xW/oZ1iWXpmofyijnaJov2rjLupv6fD+uzdI1MNZbfFWdftLtleiyMA=
+	t=1762100651; cv=none; b=EJLNEFGu3SZ8v6zxUnR9ENQmKSn2BPyoAcG1BqIxp/3isoZPSwOUPsMPb8y6J0tzaINgx2AKJCXBKGrBFWPvsXgye8GiO88Lb0Qp1jn9Kvol06KUmwkdmUcSu113gdlTOfDfTsvrH8VoXD65xzfCcvkUkKAJ62E/poFtRjSiC7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762099789; c=relaxed/simple;
-	bh=elyW8NLd4DlS1HHkYDaS/O6acEUOc8I9ftJ7xJwCPZs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aSxsSAtuxTIVn9iA28Ys0umlaZQs2zdUCzohlxXxbRUQStDVbbkxOjoLbJyLSruWpxLknKSBfgwLIM13dKO/spGC7RLfnsjK14XIQ3cel0hEu3YKjv4mOmNaswVef43YD02AEEVph3kKexk8qpte1911RS239z5b1tRZqlNHJa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=F9GC5Haf; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=CmZydwOX; arc=none smtp.client-ip=80.241.56.151
+	s=arc-20240116; t=1762100651; c=relaxed/simple;
+	bh=mGmYapIzbZQrxhsTq6KP7Hn6ec7HXaroEZyEdQBtMyg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eSh3gtk7Z7ZdYTrEFgjdUiFnegolFOpbexR1Sd4U618LQwHUZEM4Yywze3HIRKTZ1HiTh4vXwqoPHfoEGVEZIpJLYb+mNP/auCQCyp4KS53YF7IpZsaKwwE9e/3p19lO5vAWw/ugtmRvZo+KwbMYc9eVfFWDJxhda1QLlEQyDLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Xa9Ul6+T; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=TmZAXsEg; arc=none smtp.client-ip=80.241.56.151
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="F9GC5Haf";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="CmZydwOX"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Xa9Ul6+T";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="TmZAXsEg"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4d006C1mXzz9slq;
-	Sun,  2 Nov 2025 17:09:39 +0100 (CET)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4d00Qv3Xpyz9tKH;
+	Sun,  2 Nov 2025 17:24:07 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1762099779;
+	t=1762100647;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=WRWlBAxaLwlIJ+KJHtMqZraX6wDCd2McXv/vowb6x6Y=;
-	b=F9GC5HafzrCeSJU3lMXKf2jcEjvnBUojT6aRb3vRMIaHDsJN9LuYprMzKWTc9bb8VmTpha
-	j/jGvjATNXZdaFBCwBY+O8Mx1fxda4WBLiExXthmRGAEb5yI+aq7DlBh1K//rWBUzM1o1L
-	ja+X4kiDZy5G1WQIizSB9Wle8qH+E644QBxe24p6sEhajCd1wTo9SawOz0dR/cqPciHWD5
-	MdXeelDnqCRFxOBH6EWnc/E56AJXqIK+U4QcyYEKJvRyPgG0xcsZqXGQBqlZPaRm8I/MHJ
-	Z8lgiQKmspkXSlzczL/CYMphZAUXCLhBhheuQgs1BeFEBqrLM9eO1IIyA7R58A==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=CmZydwOX;
-	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
+	bh=PtV0EHNf/bgETwb9Y5Wbm3a2baMq2ICCpIudlf4ZcoA=;
+	b=Xa9Ul6+TIPiPSgkEFYOzN98Iev3vxi70wR63uOnVxRJs7koYkbLQRL56J4EgLpbJrUvIhc
+	rWDAGWO2hSdalURNPfLWwEpQl2SZi6bqdkL4qsx0gkPehTSaGrAvdMLVQobEfpL+puSycW
+	r0Gj0PsEsLWoTETq7cYAyYrmZDdmQKk755dWjDDuXmbA+boHwx2jwMmEbXADchSwWResWn
+	ZuveQoAwV1nbyJ/Rpe4l+dBC5CMfZCkkEsmX360SV0BtyHrbIen2pL7AWShlZuhZMtMkLm
+	EjnB9aqfJhlP1GU87joZnRZT6I971tcvw9ZO4pEQMgvns8bO6V6mg9u+h+ztug==
 From: Marek Vasut <marek.vasut@mailbox.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1762099777;
+	t=1762100645;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=WRWlBAxaLwlIJ+KJHtMqZraX6wDCd2McXv/vowb6x6Y=;
-	b=CmZydwOXCdqv2rs2s4kd4EQ0FhAUY+kyls/iw2j1iTsmUCQbrqM2oDtu7NLYpPUwoyCixp
-	GXGB9IQ+iLy40Q+BDHyXAFUQD9qBbBtwHsakb/PHPMsJhmci1Eypj3nwm39Jj62AArybuL
-	tKStgfRAEtTnC9KiFwTT4soUwa0j3r3N3frMGwKruqcIJ23Fvooi0BAh46d8H50syCk4qv
-	YYtmEjhUKEqClp+A6w9ZLv8iVxrWZiYhm7HeNXj7gCLU5aAIi78l8LBme7mjGWtUYr334O
-	t6VAN7W6Vj2MumG2vpcDpXxCIRuG/YJ5ZwlvPPrNryZlDzMkPCLBqZZvgFippw==
-To: linux-arm-kernel@lists.infradead.org
+	bh=PtV0EHNf/bgETwb9Y5Wbm3a2baMq2ICCpIudlf4ZcoA=;
+	b=TmZAXsEgScdvfvZ6jcY39fxhG2Tej1tbAc+p3enP122evrensmuHB+fKR8fgU0hWIVyLg1
+	D+aD/w83gVNXUIzO6l+AU3q84bRZmAv0tixjTq3/Btn4cglBxV18e/R1euGQ9uZua1B7sd
+	3pdgQ/f6ET8ng3AxknLK14LrE5b5XhDEFvdXjefQht/pO9YWdbxtomZhsXs3GCWnfxawkG
+	a6oK1HFaj9822CQ2F6A/OQcDjKwp1Fg2u+YXaZ97a66QoDviUcaoV8VMy+U8/Nw0/voRlt
+	O2KQe+hiCXiSOg8foPMNPaNbefvYX1GD8mWXPwudQpqxTbOgLJ6R3Or+tXoMRQ==
+To: dri-devel@lists.freedesktop.org
 Cc: Marek Vasut <marek.vasut@mailbox.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	Abel Vesa <abelvesa@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	David Airlie <airlied@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	"Jiyu Yang (OSS)" <jiyu.yang@oss.nxp.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Liu Ying <victor.liu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Sebastian Reichel <sre@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>,
-	Steven Price <steven.price@arm.com>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
-	Xianzhong Li <xianzhong.li@nxp.com>,
 	devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev
-Subject: [PATCH v4 1/2] dt-bindings: gpu: mali-valhall-csf: Document i.MX95 support
-Date: Sun,  2 Nov 2025 17:09:06 +0100
-Message-ID: <20251102160927.45157-1-marek.vasut@mailbox.org>
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org
+Subject: [PATCH v2] drm/imx: dc-plane: Add more RGB swizzling options
+Date: Sun,  2 Nov 2025 17:23:35 +0100
+Message-ID: <20251102162359.49263-1-marek.vasut@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -84,64 +73,91 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: wnbswggsbryxtn3g8tpcuso9gjh438be
-X-MBO-RS-ID: 36e0d0c2e5fa586b9b5
-X-Rspamd-Queue-Id: 4d006C1mXzz9slq
+X-MBO-RS-META: afzkpsu1auh545uzmwggapoykz6abq1y
+X-MBO-RS-ID: 3d859c5a7696e309fbc
 
-The instance of the GPU populated in Freescale i.MX95 is the
-Mali G310, document support for this variant.
+Add additional buffer format swizzling options beyond XR24, the
+hardware is capable of sampling other formats, fill them in.
 
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
 ---
-Cc: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Abel Vesa <abelvesa@kernel.org>
 Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: David Airlie <airlied@gmail.com>
 Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Jiyu Yang (OSS) <jiyu.yang@oss.nxp.com>
 Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Liviu Dudau <liviu.dudau@arm.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+Cc: Liu Ying <victor.liu@nxp.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>
+Cc: Peng Fan <peng.fan@nxp.com>
 Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
 Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Sebastian Reichel <sre@kernel.org>
 Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Steven Price <steven.price@arm.com>
 Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Xianzhong Li <xianzhong.li@nxp.com>
 Cc: devicetree@vger.kernel.org
 Cc: dri-devel@lists.freedesktop.org
 Cc: imx@lists.linux.dev
 Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-clk@vger.kernel.org
 ---
-V2: - Add RB from Frank and Alexander
-    - Make resets: mandatory on i.MX95
-    - Switch from fsl, to nxp, vendor prefix
-V3: - Add RB from Rob
-    - Drop the reset part, this is now unnecessary
-V4: - No change
+V2: - Adjust commit subject
+    - Drop the alpha formats for now, add RGB888/BGR888 to dc_plane_formats[]
 ---
- Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/imx/dc/dc-fu.c    | 24 ++++++++++++++++++++++++
+ drivers/gpu/drm/imx/dc/dc-plane.c |  6 ++++++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-index 613040fdb4448..8da8ceb0308d8 100644
---- a/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-+++ b/Documentation/devicetree/bindings/gpu/arm,mali-valhall-csf.yaml
-@@ -19,6 +19,7 @@ properties:
-       - items:
-           - enum:
-               - mediatek,mt8196-mali
-+              - nxp,imx95-mali            # G310
-               - rockchip,rk3588-mali
-           - const: arm,mali-valhall-csf   # Mali Valhall GPU model/revision is fully discoverable
+diff --git a/drivers/gpu/drm/imx/dc/dc-fu.c b/drivers/gpu/drm/imx/dc/dc-fu.c
+index 1d8f74babef8a..b4a3f8c58cbb0 100644
+--- a/drivers/gpu/drm/imx/dc/dc-fu.c
++++ b/drivers/gpu/drm/imx/dc/dc-fu.c
+@@ -65,6 +65,30 @@ static const struct dc_fu_pixel_format pixel_formats[] = {
+ 		DRM_FORMAT_XRGB8888,
+ 		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
+ 		R_SHIFT(16) | G_SHIFT(8)  | B_SHIFT(0)  | A_SHIFT(0),
++	}, {
++		DRM_FORMAT_XBGR8888,
++		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
++		R_SHIFT(0)  | G_SHIFT(8)  | B_SHIFT(16) | A_SHIFT(0),
++	}, {
++		DRM_FORMAT_RGBX8888,
++		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
++		R_SHIFT(24) | G_SHIFT(16) | B_SHIFT(8)  | A_SHIFT(0),
++	}, {
++		DRM_FORMAT_BGRX8888,
++		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
++		R_SHIFT(8)  | G_SHIFT(16) | B_SHIFT(24) | A_SHIFT(0),
++	}, {
++		DRM_FORMAT_RGB888,
++		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
++		R_SHIFT(16) | G_SHIFT(8)  | B_SHIFT(0)  | A_SHIFT(0),
++	}, {
++		DRM_FORMAT_BGR888,
++		R_BITS(8)   | G_BITS(8)   | B_BITS(8)   | A_BITS(0),
++		R_SHIFT(0)  | G_SHIFT(8)  | B_SHIFT(16) | A_SHIFT(0),
++	}, {
++		DRM_FORMAT_RGB565,
++		R_BITS(5)   | G_BITS(6)   | B_BITS(5)   | A_BITS(0),
++		R_SHIFT(11) | G_SHIFT(5)  | B_SHIFT(0)  | A_SHIFT(0),
+ 	},
+ };
  
+diff --git a/drivers/gpu/drm/imx/dc/dc-plane.c b/drivers/gpu/drm/imx/dc/dc-plane.c
+index e40d5d66c5c1f..4fd58afef16bb 100644
+--- a/drivers/gpu/drm/imx/dc/dc-plane.c
++++ b/drivers/gpu/drm/imx/dc/dc-plane.c
+@@ -33,6 +33,12 @@ do {									\
+ 
+ static const uint32_t dc_plane_formats[] = {
+ 	DRM_FORMAT_XRGB8888,
++	DRM_FORMAT_XBGR8888,
++	DRM_FORMAT_RGBX8888,
++	DRM_FORMAT_BGRX8888,
++	DRM_FORMAT_RGB888,
++	DRM_FORMAT_BGR888,
++	DRM_FORMAT_RGB565,
+ };
+ 
+ static const struct drm_plane_funcs dc_plane_funcs = {
 -- 
 2.51.0
 
