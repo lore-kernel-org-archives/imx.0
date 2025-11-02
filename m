@@ -1,93 +1,108 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D438033985
-	for <imx@lists.linux.dev>; Sun,  2 Nov 2025 16:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C24381C4;
+	Sun,  2 Nov 2025 16:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762099376; cv=none; b=L5ei8LwPD/Qjn9tZCOu5fo6oUoDzDqU7jzX1ym4s1oJboRKUcjGA/GgUBfho3S31ZZLgimraIHqjisX1QBp2sWKiERXkSTZ4dq8iYUFaJDJsPkF3peahHXIRnR/SRn81paONN71ZenT1truho+ahMb73A9wV4dY7tTqzbI0B7H4=
+	t=1762099476; cv=none; b=temMZVICra9j+k0ppItQHrW8NN8gBQ/ujRrqsqFdwHrZctsd8LVvGgC6OPIO7G4CGIo51vjxNJDbJXf1ZqqyLPoCuEjY9TTw2+TaJRmm+UJxbPsG0t9YovSnd0azYsjh5H2eWvvQy4fJGwZH3mCpYMHzvrhYJFpW4//AJH6kI2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762099376; c=relaxed/simple;
-	bh=sC0JUchej1gDcK02dqF7Fyds3gz6bTwWxk2L7OGNmSo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HISqPZDyhojGXK17Lj09HJqqKYlly1pHxmmfJ+hMnhI53YabxcnjEV9GhqS9NgexqnlwjJJa1dW1XzdIGQmNKnpZtnzKaVJMUW8oil4GKntAO/iBHypxzZbozItRDlUic/2quxSrnGpdoJ5T66Cfs9SkOBEqrvdMdUGODK3WIhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Ue/O+sHM; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1762099476; c=relaxed/simple;
+	bh=LDVvvx4d31uLUm6uFJRNmDhHPt6c/ETBVWcMM1W43j0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FH8RUItmsugBQ+1EpfSJoFgEncoVFkpNqLOnXZtv7P+7+tD5tmU+jSNHq7wb3pZP500OHItoFV/bezDmNk3Y0Jl0FMX+FMEWEbvbM1orFFBHoyokQJBp57VMmEX4/aVT2AI7h+/lSl4S6JOlxb4NFHf4RX7rCuhnnf0JBnJg8Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LXhs0E7Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Ue/O+sHM"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4czzyF0XKyz9scN;
-	Sun,  2 Nov 2025 17:02:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1762099365;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yXnbX8obOxTZByxtaFJTonCzW0Sj9xEqQruBvutIFTA=;
-	b=Ue/O+sHMUIkVTVRZaqnQY+gmPnJbUOOEBZIbT8CGO97u8N3tB+gLpKYvh8BEZtSersVGge
-	upilb0Rhvh6hy5E5+SfBTkm5u7AMVoh4LoIdO9lVcDn7ddtBLV0KOk2b/GQsWIO7THRJeK
-	HsvvmAILyejprOUKQjlOBCmfc9CjlbUUgjpXAOtVTqYmxF+ILu849OgGIF1BDsjXxQQx9x
-	rGdzrgx0nwi6Rrt0CVCFLfodWD7QfgB+/t67TckYeO+UHNaUE+BblzA2MXBOD+xbDisIK0
-	Gv3wb3/8kkofEhxIpZfEYCRKdtpTJSiDdzv7v+4RI5nWyxcmOcHIKdGUeK9qRA==
-Message-ID: <f9057853-8b43-4ab6-ae65-ee5e4d569c46@mailbox.org>
-Date: Sun, 2 Nov 2025 17:02:37 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LXhs0E7Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FABEC4CEF7;
+	Sun,  2 Nov 2025 16:04:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762099475;
+	bh=LDVvvx4d31uLUm6uFJRNmDhHPt6c/ETBVWcMM1W43j0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LXhs0E7QOaDTPLyzD8sh/jKT2Lz+iJJI6iYwTOW9F8nF60mefcKIvxTvQ63fAj9lV
+	 yC/ha9bLOKwUfgg4yyx8MbxaPZTQNCsPyrEnf9qZbFHkSpJuQL+nVECb+iEDNk3un5
+	 3ZQ1hqAVbhb8YasBBjC8vp88snPxhgN9yV06v8vIGm8pbvggNmh9qIzIhQKZMl8tvE
+	 GlAYumEoNncebVpQCc+LrXzrQpraQmPERM9dgM6bZGaPV0CTvaE328gAQoFiWrOkqX
+	 nMSxdODCL8ahHVpU6MGMrUBaYU20ezVq2hMZfRvnAb97pskQHt6UoGb6x71fV7qlJt
+	 P4wLy5vt+5kDQ==
+Date: Sun, 2 Nov 2025 17:04:33 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	bhelgaas@google.com, frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, mani@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 2/3] dt-bindings: PCI: pci-imx6: Add external
+ reference clock input
+Message-ID: <20251102-complex-placid-frog-09cbed@kuoka>
+References: <20251031031907.1390870-1-hongxing.zhu@nxp.com>
+ <20251031031907.1390870-3-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 2/2] arm64: dts: imx95: Describe Mali G310 GPU
-To: Shawn Guo <shawnguo2@yeah.net>, Rain Yang <jiyu.yang@oss.nxp.com>
-Cc: airlied@gmail.com, boris.brezillon@collabora.com, conor+dt@kernel.org,
- devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
- festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de,
- krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
- liviu.dudau@arm.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- p.zabel@pengutronix.de, robh@kernel.org, s.hauer@pengutronix.de,
- shawnguo@kernel.org, simona@ffwll.ch, sre@kernel.org, steven.price@arm.com,
- tzimmermann@suse.de, xianzhong.li@nxp.com
-References: <20250925203938.169880-1-marek.vasut@mailbox.org>
- <20250925203938.169880-2-marek.vasut@mailbox.org>
- <ba95487c-ada7-48a4-90b7-fd99a0278f51@mailbox.org> <aP7DZCMk1pQ7wsFo@dragon>
- <aQB88c_AEC1RAZtH@oss.nxp.com> <aQCIAfyUC6N5y2fB@dragon>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <aQCIAfyUC6N5y2fB@dragon>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: s6w1ijnr4si371hym9im6ykirojs63uu
-X-MBO-RS-ID: 393e84e1997a987fb3c
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251031031907.1390870-3-hongxing.zhu@nxp.com>
 
-On 10/28/25 10:08 AM, Shawn Guo wrote:
-> On Tue, Oct 28, 2025 at 04:21:05PM +0800, Rain Yang wrote:
->> On Mon, Oct 27, 2025 at 08:57:08AM +0800, Shawn Guo wrote:
->>> On Sat, Oct 11, 2025 at 12:53:29PM +0200, Marek Vasut wrote:
->>>> On 9/25/25 10:38 PM, Marek Vasut wrote:
->>>>> The instance of the GPU populated in i.MX95 is the G310, describe this
->>>>> GPU in the DT. Include dummy GPU voltage regulator and OPP tables.
->>>> Is there still anything that should be changed with this patchset, or can it
->>>> be applied ?
->>>
->>> I'm waiting binding change to be applied first.  Or is it already done?
->>>
->>> Shawn
->>>
->> Hi Shawn,
->> It might be better for Marek to remove the always-on GPUAPB clock from the DTS, given that
->> it's an SCMI protocol clock and the kernel expects it to be available during operations.
->>
->> Also, the gpu_fix_reg appears unnecessary for the driver and could be removed[1].
->>
->> [1] https://cgit.freedesktop.org/drm/drm-misc/commit/?id=a8cb5ca53690aa809f4f65e14192753073e61a71,
->> https://cgit.freedesktop.org/drm/drm-misc/commit/?id=02df3543f3e0ea572e2c739605ebd6c20e1149c4
+On Fri, Oct 31, 2025 at 11:19:06AM +0800, Richard Zhu wrote:
+> i.MX95 PCIes have two reference clock inputs: one from internal PLL, the
+> other from off chip crystal oscillator. The "extref" clock refers to a
+> reference clock from an external crystal oscillator.
 > 
-> Ah, sorry! I did not know we haven't reached agreement on the change.
-The feedback above is new to me, so I am somewhat surprised too.
+> Add external reference clock input for i.MX95 PCIes.
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> index ca5f2970f217c..703c776d28e6f 100644
+> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> @@ -44,7 +44,7 @@ properties:
+>  
+>    clock-names:
+>      minItems: 3
+> -    maxItems: 5
+> +    maxItems: 6
+>  
+>    interrupts:
+>      minItems: 1
+> @@ -212,14 +212,17 @@ allOf:
+>      then:
+>        properties:
+>          clocks:
+> -          maxItems: 5
+> +          minItems: 4
+> +          maxItems: 6
+>          clock-names:
+> +          minItems: 4
+>            items:
+>              - const: pcie
+>              - const: pcie_bus
+>              - const: pcie_phy
+>              - const: pcie_aux
+>              - const: ref
 
-I'll just send a rebased V4 now.
+This was required last time. Nothing in commit msg explained changing
+that.
+
+> +            - const: extref  # Optional
+
+Drop the comment, do not repeat the schema. And why only this is marked
+as optional if 'ref' is optional as well now.
+
+It is v9, can you please really think thoroughly what you are sending,
+so obvious issues won't be there?
+
+Best regards,
+Krzysztof
+
