@@ -1,190 +1,101 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E100270545
-	for <imx@lists.linux.dev>; Sat,  1 Nov 2025 21:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB40F4A02
+	for <imx@lists.linux.dev>; Sun,  2 Nov 2025 01:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762032461; cv=none; b=dKjulp+lsurNBPHfyCshifAS7hpPbXq1/cxf7/PS5+mN62xHMBmWaii7j9P862ABcJAeP/cwJ5PrOrm6hwYEFeyqMMtRoQjrlTdi+MGk/Dh2O8hR7STyiM2jOpToP/4ULaj7M2i1tZiE3/FxoJmFiGFJml7UMAl8icAyAmWPxw8=
+	t=1762046193; cv=none; b=Wr0UDI2AevJ1NEQIr6/dhlAft8fRdJdn0vpitG4+ZAoZcetosTJ1JuzTB9DnEs7/M1Eh2pChDa9OP/RbP9vZPg7LeDDUKEeNfr7G+8tYVJkUYfvLGgpTaRKSt3eScGHyqJOP/inHhnMgcC6cd+gbzmfP4ne8/oiioZOdyF3Sbiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762032461; c=relaxed/simple;
-	bh=IyMOrE3IZXQkr57uglInK4/AoFrP2M5HRazI6poDrPc=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=gL6Vzk7jXSRad3fCH+s/3QBEnASI09jkMmSCD0CseKhkCPC2V9hPW89m8mryOCIJjJQzAJk7jUQ/8dravx3H0g+n6+qy2Ln71uktP7V6nTY3TGX5Bw6cgwAQM0+Yb3zaZ0cfxICyE4AZF/T6wA2yuN9Buggy/rfDaAU6LD4WXTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=ndufresne.ca; spf=fail smtp.mailfrom=ndufresne.ca; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=ndufresne.ca
-Received: from [IPv6:2606:6d00:17:ebd3::5ac] (unknown [IPv6:2606:6d00:17:ebd3::5ac])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1674F17E13F9;
-	Sat,  1 Nov 2025 22:27:28 +0100 (CET)
-Message-ID: <4d1260be46be22d7b40fab9788763af796d118dc.camel@ndufresne.ca>
-Subject: Re: [PATCH v3 2/4] media: docs: dev-decoder: Trigger dynamic
- source change for colorspace
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: ming.qian@oss.nxp.com, mchehab@kernel.org, hverkuil-cisco@xs4all.nl
-Cc: sebastian.fricke@collabora.com, shawnguo@kernel.org,
- s.hauer@pengutronix.de, 	kernel@pengutronix.de, festevam@gmail.com,
- linux-imx@nxp.com, xiahong.bao@nxp.com, 	eagle.zhou@nxp.com,
- imx@lists.linux.dev, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20250418085422.193-2-ming.qian@oss.nxp.com>
-References: <20250418085422.193-1-ming.qian@oss.nxp.com>
-	 <20250418085422.193-2-ming.qian@oss.nxp.com>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0MU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAY29sbGFib3JhLmNvbT6ImQQTFg
- oAQQIbAwULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgBYhBO8NUoEVxMPCGgRvEtlBlFEpYHL0BQJ
- oLLLGBQkJZfd1AAoJENlBlFEpYHL0BEkA/3qkWYt99myYFSmTJUF8UB/7OroEm3vr1HRqXeQe9Qp2
- AP0bsoAe6KjEPa/pJfuJ2khrOPPHxvyt/PBNbI5BYcIABLQnTmljb2xhcyBEdWZyZXNuZSA8bmljb
- 2xhc0BuZHVmcmVzbmUuY2E+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQ
- TvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyy+AUJCWX3dQAKCRDZQZRRKWBy9FJ5AQCNy8SX8DpHbLa
- cy58vgDwyIpB89mok9eWGGejY9mqpRwEAhHzs+/n5xlVlM3bqy1yHnAzJqVwqBE1D0jG0a9V6VQI=
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-7roVwGdgaHQCxf+hVe0E"
-Date: Fri, 01 Aug 2025 11:23:35 -0400
+	s=arc-20240116; t=1762046193; c=relaxed/simple;
+	bh=5haLsaAB5+Dt1jog+Tyy3aRUvPmxkpKhR5q+8+mwLP8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=sTo7ki2hb514wZHY8YUe4WNYail1VRaZ8fhsMDDy3zL9C351Caf6Q/AwOzLJvfKVWWoqsBqvDbnNWWNY4c7hk0LSXGN8IYqGo+338xpIIKmqS3m81eBNWtMJXhcRI2wxOn9RDQJbNEz+xBTQJZcd9DvVraCsH8ERnQUVv6+igtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=G/iJR6a3; arc=none smtp.client-ip=1.95.21.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="G/iJR6a3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=f8iBdMTYM8add2wHtraFxMsoOR1Rfz8Ac9Ii3lBw+1g=;
+	b=G/iJR6a31RtVvkPkhUHo2zBInVOCT0kg8KmhXCSQDThUtD02BIm/R8do2JmOGE
+	RkonRU9THFcD19yJ8vxsUdLa9YJ4AQ/7cjkmtIcraiNJNeajNOtT0hy2yVhtcnZD
+	1gb6IgSktZGgaqwezvVyazzYhFod3ILORO/XS++SCBAyo=
+Received: from dragon (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgDnr6_IsAZp2dEiAQ--.53065S3;
+	Sun, 02 Nov 2025 09:15:54 +0800 (CST)
+Date: Sun, 2 Nov 2025 09:15:52 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: soc@kernel.org, arm@kernel.org
+Cc: Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	kernel@pengutronix.de, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL] i.MX fixes for 6.18
+Message-ID: <aQawyJZbMn52EKk_@dragon>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:M88vCgDnr6_IsAZp2dEiAQ--.53065S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WFykCw47Kw4rCryDtFWDJwb_yoW8ZFW3pF
+	4fCrsxGr4kGryrGrnrXrs2y3yFyFn7Jr43Jr1UX348Xry3Z3W8Xrs8Krsa9ryUAFyxZw4F
+	vr18GryDKw129F7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j2PfQUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIQw7oGkGsMykygAA3L
 
+The following changes since commit 3a8660878839faadb4f1a6dd72c3179c1df56787:
 
---=-7roVwGdgaHQCxf+hVe0E
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  Linux 6.18-rc1 (2025-10-12 13:42:36 -0700)
 
-Hi Ming,
+are available in the Git repository at:
 
-Le vendredi 18 avril 2025 =C3=A0 16:54 +0800, ming.qian@oss.nxp.com a =C3=
-=A9crit=C2=A0:
-> From: Ming Qian <ming.qian@oss.nxp.com>
->=20
-> If colorspace changes, the client needs to renegotiate the pipeline,
-> otherwise the decoded frame may not be displayed correctly.
->=20
-> When a colorspace change in the stream, the decoder sends a
-> V4L2_EVENT_SOURCE_CHANGE event with changes set to
-> V4L2_EVENT_SRC_CH_COLORSPACE. After client receive this source change
-> event, then client can switch to the correct stream setting. And each
-> frame can be displayed properly.
+  https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.18
 
-sorry for the long delay. While reading this, in any case userspace have to=
- read
-the new format. Why can't userspace compare the old and new v4l2_format and
-decide to avoid re-allocation that way ?
+for you to fetch changes up to 6504297872c7a5d0d06247970d32940eba26b8b3:
 
-There is also backward compatbility issues for driver that was sending
-V4L2_EVENT_SRC_CH_RESOLUTION for colorspace change before. Despite the cost=
-ly
-re-allocation, userspace only watching for V4L2_EVENT_SRC_CH_RESOLUTION wou=
-ld
-endup not updating the colorspace anymore.
+  arm64: dts: imx8mp-kontron: Fix USB OTG role switching (2025-10-28 17:01:42 +0800)
 
-Combining both would be an option, but then V4L2_EVENT_SRC_CH_RESOLUTION me=
-ans
-any v4l2_format changes, which is awkward. What do you think of leaving to
-userspace the task of comparing the old and new v4l2_format ?
+----------------------------------------------------------------
+i.MX fixes for 6.18:
 
-Nicolas
+- Enable ext4 support explicitly in imx_v6_v7_defconfig to fix a regression
+  caused by commit d6ace46c82fd ("ext4: remove obsolete EXT3 config options")
+- Correct report-rate-hz setting for imx6ull-engicam-microgea-rmm board
+- Fix MSI mapping for i.MX95 PCIe endpoint device nodes
+- Fix USB OTG role switching for imx8mp-kontron board
+- Fix a dt-schema warning caused by audmux node for imx51-zii-rdu1 board
+- Avoid gpio0_mipi_csi GPIOs being deferred for i.MX8 img subsystem
 
->=20
-> So add colorspace as a trigger parameter for dynamic resolution change.
->=20
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> ---
-> v2
-> - Add V4L2_EVENT_SRC_CH_COLORSPACE for colorspace source change event
->=20
-> =C2=A0.../userspace-api/media/v4l/dev-decoder.rst=C2=A0=C2=A0=C2=A0=C2=A0=
- | 17 +++++++++++++----
-> =C2=A01 file changed, 13 insertions(+), 4 deletions(-)
->=20
-> diff --git a/Documentation/userspace-api/media/v4l/dev-decoder.rst
-> b/Documentation/userspace-api/media/v4l/dev-decoder.rst
-> index ef8e8cf31f90..51d6da3eea4a 100644
-> --- a/Documentation/userspace-api/media/v4l/dev-decoder.rst
-> +++ b/Documentation/userspace-api/media/v4l/dev-decoder.rst
-> @@ -784,8 +784,8 @@ before the sequence started. Last of the buffers will=
- have
-> the
-> =C2=A0must check if there is any pending event and:
-> =C2=A0
-> =C2=A0* if a ``V4L2_EVENT_SOURCE_CHANGE`` event with ``changes`` set to
-> -=C2=A0 ``V4L2_EVENT_SRC_CH_RESOLUTION`` is pending, the `Dynamic Resolut=
-ion
-> -=C2=A0 Change` sequence needs to be followed,
-> +=C2=A0 ``V4L2_EVENT_SRC_CH_RESOLUTION`` or ``V4L2_EVENT_SRC_CH_COLORSPAC=
-E`` is
-> pending,
-> +=C2=A0 the `Dynamic Resolution Change` sequence needs to be followed,
-> =C2=A0
-> =C2=A0* if a ``V4L2_EVENT_EOS`` event is pending, the `End of Stream` seq=
-uence
-> needs
-> =C2=A0=C2=A0 to be followed.
-> @@ -932,13 +932,17 @@ reflected by corresponding queries):
-> =C2=A0
-> =C2=A0* the minimum number of buffers needed for decoding,
-> =C2=A0
-> -* bit-depth of the bitstream has been changed.
-> +* bit-depth of the bitstream has been changed,
-> +
-> +* colorspace of the bitstream has been changed.
-> =C2=A0
-> =C2=A0Whenever that happens, the decoder must proceed as follows:
-> =C2=A0
-> =C2=A01.=C2=A0 After encountering a resolution change in the stream, the =
-decoder sends a
-> =C2=A0=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SOURCE_CHANGE`` event with ``change=
-s`` set to
-> -=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SRC_CH_RESOLUTION``.
-> +=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SRC_CH_RESOLUTION``, or a colorspace cha=
-nge in the stream,
-> the
-> +=C2=A0=C2=A0=C2=A0 decoder sends a ``V4L2_EVENT_SOURCE_CHANGE`` event wi=
-th ``changes`` set
-> to
-> +=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SRC_CH_COLORSPACE``.
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0 .. important::
-> =C2=A0
-> @@ -946,6 +950,11 @@ Whenever that happens, the decoder must proceed as
-> follows:
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 values applying to the stream =
-after the resolution change, including
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 queue formats, selection recta=
-ngles and controls.
-> =C2=A0
-> +.. note::
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 A ``V4L2_EVENT_SOURCE_CHANGE`=
-` event with ``changes`` set to
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SRC_CH_RESOLUTIO=
-N`` will affect the allocation, but
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ``V4L2_EVENT_SRC_CH_COLORSPAC=
-E`` won't.
-> +
-> =C2=A02.=C2=A0 The decoder will then process and decode all remaining buf=
-fers from
-> before
-> =C2=A0=C2=A0=C2=A0=C2=A0 the resolution change point.
-> =C2=A0
+----------------------------------------------------------------
+Andreas Kemnade (1):
+      arm: imx_v6_v7_defconfig: enable ext4 directly
 
---=-7roVwGdgaHQCxf+hVe0E
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+Dario Binacchi (1):
+      ARM: dts: imx6ull-engicam-microgea-rmm: fix report-rate-hz value
 
------BEGIN PGP SIGNATURE-----
+Frank Li (1):
+      arm64: dts: imx95: Fix MSI mapping for PCIe endpoint nodes
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaIzb9AAKCRDZQZRRKWBy
-9J4AAPsHUIFEn3VY8agsSDDBhYSCgjQgdq6VCsTIZOI/onEoFwD/eMf1L5FSeA/7
-DuR3YPAOrYGgjgJ5M4KhzEvWSIq08ws=
-=mLm3
------END PGP SIGNATURE-----
+Frieder Schrempf (1):
+      arm64: dts: imx8mp-kontron: Fix USB OTG role switching
 
---=-7roVwGdgaHQCxf+hVe0E--
+Jihed Chaibi (1):
+      ARM: dts: imx51-zii-rdu1: Fix audmux node names
+
+João Paulo Gonçalves (1):
+      arm64: dts: imx8-ss-img: Avoid gpio0_mipi_csi GPIOs being deferred
+
+ arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts       |  4 ++--
+ .../dts/nxp/imx/imx6ull-engicam-microgea-rmm.dts   |  2 +-
+ arch/arm/configs/imx_v6_v7_defconfig               |  6 +++---
+ arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi     |  2 --
+ .../boot/dts/freescale/imx8mp-kontron-bl-osm-s.dts | 24 +++++++++++++++++-----
+ arch/arm64/boot/dts/freescale/imx95.dtsi           |  3 ++-
+ 6 files changed, 27 insertions(+), 14 deletions(-)
+
