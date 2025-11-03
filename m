@@ -1,53 +1,53 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF912D73B0
-	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 08:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8BF28DF07
+	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 08:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762157034; cv=none; b=olnjZb9JbFf6uaPOSD9ZIs7HEvOwzdFl4BpdR10BqEFl9RQr020nYvxCo3Imz9OPm3nFuRRH8RR2Rk1giTMThNC2BVYPG/6ZZOJxCkecr1/Btudh6HoGihpiDBhd5UKObQHBUBOu6hajG98UQFCvRCSLeNXeyBoUkk0cTYiavzg=
+	t=1762157651; cv=none; b=lNRZjwOjobyn5anet4x4ruU+VuO3kinxOnw1uRm+2FdDwtHxawQ/eDKp/Hv22keCeQXr/+9vOef+CY3lrY6PvQf2mheOLZlnXQAdGCB/VAumtziLa3MdzTA4pznQKvUrvOx+GMbcdygWGVoAHpYlhiYUVf9XjSYlZuyayeIHkp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762157034; c=relaxed/simple;
-	bh=5pXyRXIxVt0Iau8mWou9oXadjFJmaZdgpbKlkoLVbSU=;
+	s=arc-20240116; t=1762157651; c=relaxed/simple;
+	bh=eUC7CdLY2n+Ok064KsLsxj3DXcXd7nr4SrWNiG96MhI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fUXaCZtYhiWEbqoW01lh2j2f9eM2qTyTZMksau9KaQBZfMKQaquiIC84cCxZFOCpxhusqfF2XMrAV7VQCYWZDz7+JphBgbD7kWU21PZBtTJGHKOewwaf6uIz8HY9RyVoX8uaBjdXsqD6vFOjdWcNFpuRf8fjLt8/cL7DVKO2jjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DLzwhkf6; arc=none smtp.client-ip=192.198.163.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=hgqNT8uqfurFKMhyvCM518VoKs9Vlc5M93tma1Jny4eYOj7QxkKpiX03GL3nmUumMDUhM2HHLApbChkSSP4nfFeURjNqvy8yub6/y/f4E2epQ2XJyFNWEKURf/Iw19SURGMsaUbKj5QJZ2A/30Ixp55ISXN8fD9DzbGv/Sd+LtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cTEg7NhN; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DLzwhkf6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cTEg7NhN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762157032; x=1793693032;
+  t=1762157650; x=1793693650;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=5pXyRXIxVt0Iau8mWou9oXadjFJmaZdgpbKlkoLVbSU=;
-  b=DLzwhkf6JVtn5aygnbhHB9zYbfO9dnSoPkNSp1SpCq4UGOTRGGCPwhGH
-   U2ux0/j0ZbeBeaOv3AdzrxHACPQP65Vwsxq+CZhR6l0QkHoHTzicNrhXR
-   shg3KEjxQ6cuSwt8em6lMjP9nt1sbLhx3SchVWNi0m3no/95/y5zsAqey
-   bn6O2BFEt0KWmd5ugh7mpZWFy9zWlyh0nifVBezZfupI0/VURnXo5z1S8
-   Ok+YdKx8t9xue71f8yLwPfjTVBHP5+EydkDgOodmgCd0oDrx6LrASTTvK
-   riiEeWGsS6MDPj/Qrm4/CTpeAJfQQEyIkRP/KktXa1+yldfeoi9CjZGl9
-   A==;
-X-CSE-ConnectionGUID: 0EwRBFzNSpqUy/j+U2nQ1Q==
-X-CSE-MsgGUID: 9mdA9SoGTP6OuDjOh2FIxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="64143994"
-X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="64143994"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:03:51 -0800
-X-CSE-ConnectionGUID: W2KynLE4QPibqsxiZlCTFg==
-X-CSE-MsgGUID: x44oWC41SpWrm2y4Xsghpg==
+  bh=eUC7CdLY2n+Ok064KsLsxj3DXcXd7nr4SrWNiG96MhI=;
+  b=cTEg7NhN6ciEy+10lKUGFA8BGfIB6u8yv/7P4TOcP8MLU3bCwxipwNZp
+   EYN0sJAY3iIBthiIDYeSsaPHdziNuH98WPNi0E4Tw5SYHV8A0HzWpxsPv
+   an6R0UofyKgR3KvzTXfbrqEPc5T0y47QgTN5jprPaFAoct655G+GUZIc3
+   u2oSljv9xS2BVkglfsruKZklbIIJrraRqshGYwE2vMxgl45GeI9E4Gwoc
+   pS3u5A3EuqgwKXn6A24xhggS1TfO0USYutNYC2+Kuzl+3SgJ2HZGnRhgP
+   jsaGPLDwzhW88hB8zbPcqh/eZaL5bCdCzf1acieV47WJRcA7bQjMjSqeK
+   Q==;
+X-CSE-ConnectionGUID: gEMnF+5xSoqe3YZZ1i0WVA==
+X-CSE-MsgGUID: DEx150MuTk21U4NO/JIfVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="68066186"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="68066186"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:14:10 -0800
+X-CSE-ConnectionGUID: ndL/zb5NTZGkQ8kBQOxdhw==
+X-CSE-MsgGUID: wc3i3tJZR1O9K3nOaBqx6Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="186042022"
+   d="scan'208";a="186952919"
 Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:03:47 -0800
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:14:06 -0800
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vFpXQ-000000055GF-3PTd;
-	Mon, 03 Nov 2025 10:03:40 +0200
-Date: Mon, 3 Nov 2025 10:03:39 +0200
+	id 1vFphP-000000055OO-0fwu;
+	Mon, 03 Nov 2025 10:13:59 +0200
+Date: Mon, 3 Nov 2025 10:13:58 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -61,11 +61,12 @@ Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
 	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
 	devicetree@vger.kernel.org, linux@roeck-us.net,
-	Carlos Song <carlos.song@nxp.com>
-Subject: Re: [PATCH v9 4/6] i3c: master: svc: Add basic HDR mode support
-Message-ID: <aQhh2zZVxh1oVuJz@smile.fi.intel.com>
+	Carlos Song <carlos.song@nxp.com>,
+	Adrian Fluturel <fluturel.adrian@gmail.com>
+Subject: Re: [PATCH v9 6/6] iio: magnetometer: Add mmc5633 sensor
+Message-ID: <aQhkRmtJMoB7vv8U@smile.fi.intel.com>
 References: <20251031-i3c_ddr-v9-0-f1e523ebaf78@nxp.com>
- <20251031-i3c_ddr-v9-4-f1e523ebaf78@nxp.com>
+ <20251031-i3c_ddr-v9-6-f1e523ebaf78@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -74,67 +75,70 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251031-i3c_ddr-v9-4-f1e523ebaf78@nxp.com>
+In-Reply-To: <20251031-i3c_ddr-v9-6-f1e523ebaf78@nxp.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Oct 31, 2025 at 12:39:16PM -0400, Frank Li wrote:
-> Add basic HDR mode support for the svs I3C master driver.
-> 
-> Only support for private transfers and does not support sending CCC
-> commands in HDR mode.
-> 
-> Key differences:
-> - HDR uses commands (0x00-0x7F for write, 0x80-0xFF for read) to
-> distinguish transfer direction.
-> - HDR read/write commands must be written to FIFO before issuing the I3C
-> address command. The hardware automatically sends the standard CCC command
-> to enter HDR mode.
-> - HDR exit pattern must be sent instead of send a stop after transfer
-> completion.
-> - Read/write data size must be an even number.
+On Fri, Oct 31, 2025 at 12:39:18PM -0400, Frank Li wrote:
+> Add mmc5633 sensor basic support.
+> - Support read 20 bits X/Y/Z magnetic.
+> - Support I3C HDR mode to send start measurememt command.
+> - Support I3C HDR mode to read all sensors data by one command.
 
 ...
 
->  static bool svc_cmd_is_read(u32 rnw_cmd, u32 type)
->  {
-> -	return rnw_cmd;
-> +	return (type == SVC_I3C_MCTRL_TYPE_DDR) ? !!(rnw_cmd & 0x80) : rnw_cmd;
+> - 1 -> ARRAY_SIZE()
 
-This seems confusing. Either !! is redundant (which is actually the case) or
-I don't know what the idea behind this.
-
-> +}
+Maybe I missed the answer, but why are the arrays to begin with?
 
 ...
 
-> +static void svc_i3c_master_emit_force_exit(struct svc_i3c_master *master)
-> +{
-> +	u32 reg;
-> +
-> +	writel(SVC_I3C_MCTRL_REQUEST_FORCE_EXIT, master->regs + SVC_I3C_MCTRL);
-> +
-> +	/*
-> +	 * Not need check error here because it is never happen at hardware. IP
+> +#define MMC5633_REG_YOUT_H	0x03
+> +#define MMC5633_REG_ZOUT_L	0x04
+> +#define MMC5633_REG_ZOUT_H	0x05
+> +#define MMC5633_REG_XOUT_2	0x06
+> +#define MMC5633_REG_YOUT_2	0x07
+> +#define MMC5633_REG_ZOUT_2	0x08
+> +#define MMC5633_REG_TOUT	0x09
 
-If you move 'IP' to the next line it will be better to read.
+Are those _L, _H, _2 come from the datasheet?
 
-> +	 * just wait for few fclk cycle to complete DDR exit pattern. Even
-> +	 * though fclk stop, timeout happen here, the whole data actually
-> +	 * already finish transfer. The next command will be timeout because
-> +	 * wrong hardware state.
-> +	 */
-> +	readl_poll_timeout_atomic(master->regs + SVC_I3C_MSTATUS, reg,
-> +				  SVC_I3C_MSTATUS_MCTRLDONE(reg), 0, 1000);
-> +
-> +	/*
-> +	 * This delay is necessary after the emission of a stop, otherwise eg.
-> +	 * repeating IBIs do not get detected. There is a note in the manual
-> +	 * about it, stating that the stop condition might not be settled
-> +	 * correctly if a start condition follows too rapidly.
-> +	 */
-> +	udelay(1);
->  }
+...
+
+> +struct mmc5633_data {
+> +	struct i3c_device *i3cdev;
+> +	struct mutex mutex; /* protect to finish one whole measurement */
+> +	struct regmap *regmap;
+
+Btw, have you experimented to shuffle this to put regmap to be the first
+member, for example? Does it affect the binary (compiled object) size?
+
+> +};
+
+...
+
+> +	regmap = devm_regmap_init_i2c(client, &mmc5633_regmap_config);
+> +	if (IS_ERR(regmap))
+> +		return dev_err_probe(dev, PTR_ERR(regmap), "regmap init failed");
+
+Missing trailing \n. Please, double check all messages for this.
+
+...
+
+> +	ret = regmap_attach_dev(dev, regmap, &mmc5633_regmap_config);
+> +	if (ret)
+> +		return ret;
+
+Why?
+
+...
+
+> +	ret = regmap_attach_dev(dev, regmap, &mmc5633_regmap_config);
+> +	if (ret)
+> +		return ret;
+
+
+Ditto.
 
 -- 
 With Best Regards,
