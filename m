@@ -1,91 +1,100 @@
-Received: from mail.actia.se (mail.actia.se [212.181.117.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6758A2F2603
-	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 11:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371E7303C8E
+	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 11:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762169891; cv=none; b=KAoxQ5nEdpXgwkl3cKx0Qa+dhLhsn7BuKClvf5tUBic/y3FfpPeDuO9C9iCJ3cVwnGNYRbe2sBDg9Li0zrbqHAsQIABh4wF/eSz7c9IIRuxPMuvfdWtsqhWZP7JGeoWXMCI7ipRW1ofN27yVIgaaF3ZdTAWSIb3gdqF4VMMUZv4=
+	t=1762170586; cv=none; b=KqVdatH7xUH5z0HdAbbIeTa9o9YWi/opR0ypN0mNDYlPJVB39uQuYdMYCsTzyjfBt3Wxe5r9bqNvjzsK5eFVwXkRRO5KjtpxMt0aAlHFlrOc7Y8n8sE5CTT3dUvN77FuOXtg1YEL+MwmKW9DW8k4vApdi2lkm0syfIvXax8mXBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762169891; c=relaxed/simple;
-	bh=exqkU2W4405iLdMUWHXw5BM2kfwhHK0Qe+hJF0tu1AA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=MLY60btaRJdJygYQmJ+42vkTR8WaSKvXc44mR513Ovzxe14DEB34RyB7ZSCq07l5hCQmufJplmbbGVP+d7xaTdX1Uuiv15DVCQ43jyrEN5N3SG+mRJuclfsZJJSJwVhmMG2RbtfQ3F0fY7lBsE39s68GSWqxiiXYXAHgTz2IwXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=actia.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S036ANL.actianordic.se
- (10.12.31.117) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.61; Mon, 3 Nov
- 2025 12:22:55 +0100
-Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
- S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
- 15.01.2507.061; Mon, 3 Nov 2025 12:22:55 +0100
-From: John Ernberg <john.ernberg@actia.se>
-To: Frank Li <Frank.Li@nxp.com>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 02/12] arm64: dts: imx8qxp: add readonly for ocotp
-Thread-Topic: [PATCH 02/12] arm64: dts: imx8qxp: add readonly for ocotp
-Thread-Index: AQHcTLQz74YmS54d7E+9okQ8t4TKIA==
-Date: Mon, 3 Nov 2025 11:22:55 +0000
-Message-ID: <aQiQiIaVH3TTVLHV@w447anl.localdomain>
-References: <20251029-8qxp_dts-v1-0-cf61b7e5fc78@nxp.com>
- <20251029-8qxp_dts-v1-2-cf61b7e5fc78@nxp.com>
-In-Reply-To: <20251029-8qxp_dts-v1-2-cf61b7e5fc78@nxp.com>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-esetresult: clean, is OK
-x-esetid: 37303A2955B14451667462
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <BAFE1A0430C1E4479033CF0A8528C49B@actia.se>
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1762170586; c=relaxed/simple;
+	bh=tVBS72/wkKu2upsUuTa7Hv8lDJkTrOtJ9STg0clPhAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ql1eHwJwUJC1QGxvYsQXcIW5493glvqkRC/cWoZSxjejBYTieygN+5hu4yRoj19nxX+suWHrgdor3Aanva1prUGRd7gXxupfF5YRgPZoN7r8zcwys6o15JYi9tVI1JZO+wZeCvpFUZQkIGPX3fxFvDmjIdFsSdm2qKOsZjzEZDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=gNKzdyIA; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="gNKzdyIA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=GTfMsl5VdszDHeLyngBRKiaPiX+MAqFEJJUPqI8k2GI=; b=gNKzdyIAH2mme3mWN8ZqzZZWor
+	vNnDr4RJdn7vga8saNkBBGnBLW5U2X78/HI2+HCcVG0VTWh0SIIHJQfU3qWFyWzeGhBCR8MaQGPVj
+	rKBALG4yYpxykQEFWOtBtSuE23KFadOONtu5PDwNTLlfc9mGp98uXHRT8Z5+Qkh77ZOSQ45F/HiiI
+	Cd8pEeclcM6R8ItQhkSojdVgfuoLLzJd53hFABseSHuns+iLoZT/wPvIyzn7yv5XD591V77ksOSKf
+	XvrUjJ4ph1dKJH5Uh64MpOOLpGPAbVTIwnbczewIdaV2RxdxpA7P77vQiaOJS4Xuj6hoqGEbG1FrX
+	XIJxknVw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55964)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vFt46-000000000ep-0SZE;
+	Mon, 03 Nov 2025 11:49:38 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vFt43-000000003mC-1llA;
+	Mon, 03 Nov 2025 11:49:35 +0000
+Date: Mon, 3 Nov 2025 11:49:35 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jan Petrous <jan.petrous@oss.nxp.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, s32@nxp.com,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH net-next 00/11] net: stmmac: multi-interface stmmac
+Message-ID: <aQiWzyrXU_2hGJ4j@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Frank,
+Hi,
 
-On Wed, Oct 29, 2025 at 03:54:38PM -0400, Frank Li wrote:
-> Add readonly for ocotp because i.MX8QXP only support program fuse by scu.
+This series adds a callback for platform glue to configure the stmmac
+core interface mode depending on the PHY interface mode that is being
+used. This is currently only called justbefore the dwmac core is reset
+since these signals are latched on reset.
 
-This is not true? The driver supports writing the fuses via the SCFW API,
-and we are using this way to populate the MAC fuses.
+Included in this series are changes to s32 to move its PHY_INTF_SEL_x
+definitions out of the way of the dwmac core's signals which has more
+entitlement to use this name. We convert dwmac-imx as an example.
 
-Best regards // John Ernberg
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8qxp.dtsi | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot=
-/dts/freescale/imx8qxp.dtsi
-> index def6de8d579d40919e4bf7f88e119611ae4cb69a..cc82cc319159c2558400fa641=
-570cddd3ad3083d 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
-> @@ -234,6 +234,7 @@ ocotp: ocotp {
->  			compatible =3D "fsl,imx8qxp-scu-ocotp";
->  			#address-cells =3D <1>;
->  			#size-cells =3D <1>;
-> +			read-only;
-> =20
->  			fec_mac0: mac@2c4 {
->  				reg =3D <0x2c4 6>;
->=20
-> --=20
-> 2.34.1
->=20
+Including other platform glue would make this series excessively large,
+but once this core code is merged, the individual platform glue updates
+can be posted one after another as they will be independent of each
+other.
+
+It is hoped that this callback can be used in future to reconfigure the
+dwmac core when the interface mode changes to support PHYs that change
+their interface mode, but we're nowhere near being able to do that yet.
+
+ drivers/net/ethernet/stmicro/stmmac/common.h      |  10 ++
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c   | 134 +++++++---------------
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c   |  10 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h      |   1 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |  54 +++++++++
+ include/linux/stmmac.h                            |   1 +
+ 6 files changed, 115 insertions(+), 95 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
