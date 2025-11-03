@@ -1,180 +1,79 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9323530C35D
-	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 12:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB9F1DF24F;
+	Mon,  3 Nov 2025 13:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762172617; cv=none; b=RexqJGkzFRigtmDdXRNunGMIg1BLlwy3a+NJ7BsFbH9+/6IB1J5x++VH5w3wdLn1Vbp04sPSsjuL9zwHkESf7zNIv01r0HvvrK45+ttp2FdqCIOxf5ko6Q0/lGOpP7stc1BnIRQ617GsQouQfku77IbCVlOed/8mjVPK7L1umbo=
+	t=1762175791; cv=none; b=lIVGflgBD+0W2TV9gG/MxqmwTdxcizfoVjgIGlP7O2cmbqNChTQ0keZnM+SLJepWcSJjkh8AfTsdT7Cy7Ec8vItnhSPVVZ4cHKq+hBz8k+OoqBr3BKLkB14BjRi0Jtr2Le6H4rRw/yeQ+wVbB3oDKPS0OtHHW29UrjESk/iW5yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762172617; c=relaxed/simple;
-	bh=HEShMzZKAsuD2pJQ1j+0chm5T3Nli1m/xpt2pjx+ejY=;
+	s=arc-20240116; t=1762175791; c=relaxed/simple;
+	bh=RS+edTG+MOF/a0RYfyBazFVhDI9bve35ADPbL2FNpp0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N6+nXcJ5gTe+r2CLoiRbZwtXGNvAQQlPs5JVoZxLwlC/vFebG52W903G8SAkWbO6u/En+mKHNPdy8roEKogOYL916U5wUW4n+qarbUCRqmmlzH0jzL0KHwfe8+GD5UFKnh7zQVuPtQSH0oA3p9t7CpMUsDxP9FWyjArEscZAozQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=APEaBeGR; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=GIKXUJgzM5vHSBCIQWR2nQ87TEvWEqjOb6Kdb5JIGMHF3RVWAS0dJFoZ5l+YFg48aw0g/3LcFXStC/ueM6j8jwAGNSgOvJfj/wn1K5HSmQB/87JbKN1a+79e8+J8UZke+fipeTEz+MCiWhZGJiX7uOl4DVVIZtXfpSQwhW64az4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3nlO9/2Z; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="APEaBeGR"
-Received: from pendragon.ideasonboard.com (82-203-160-149.bb.dnainternet.fi [82.203.160.149])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id E5E7F99F;
-	Mon,  3 Nov 2025 13:21:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1762172501;
-	bh=HEShMzZKAsuD2pJQ1j+0chm5T3Nli1m/xpt2pjx+ejY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=APEaBeGRxHqPYPNuEVrAcHNep/jjdgFLhbG9UWla37ARJU0RUb2V20wikG9Y5WtAc
-	 Jb4OimaCU+KfrW35gTqmK6nrnaMqy7Fc2sdC9dX8JXa9q5w610E5Tw1iy8FiYPCvLl
-	 5s+Pl1rwsehi3cDP7nFSXLUHRSe9QB8r3+d+yUkc=
-Date: Mon, 3 Nov 2025 14:23:20 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Guoniu Zhou <guoniu.zhou@nxp.com>
-Subject: Re: [PATCH 1/3] media: dt-bindings: nxp,imx8-isi: Add i.MX95 ISI
- compatible string
-Message-ID: <20251103122320.GT27255@pendragon.ideasonboard.com>
-References: <20251024-isi_imx95-v1-0-3ad1af7c3d61@nxp.com>
- <20251024-isi_imx95-v1-1-3ad1af7c3d61@nxp.com>
- <aPuAVqVUHjrPCbIH@lizhi-Precision-Tower-5810>
- <20251026220438.GG13023@pendragon.ideasonboard.com>
- <aP/F3joJ0RnL0G1z@lizhi-Precision-Tower-5810>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3nlO9/2Z"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=q54XyotxDzl0Do/tOaZrlIdoln6H4SaGnU+6mMDDVKU=; b=3nlO9/2Z8LUvgu1+VI453njg4R
+	krenkInq7j6bIs7MmsoxnEZN6gZt8AVCXr+JYfEhZ7PQHQCQvSCwokHPGZNuaO+bU/ndRM2xr91Rt
+	N7+AAciZM8nSSD091W+JJk79YIzhP/a6ZcTqm2MFdmFmdVJlN9g34tSDi50uhjy7cgEg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vFuPz-00CmX9-SX; Mon, 03 Nov 2025 14:16:19 +0100
+Date: Mon, 3 Nov 2025 14:16:19 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	Aziz Sellami <aziz.sellami@nxp.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 0/3] net: enetc: add port MDIO support for both
+ i.MX94 and i.MX95
+Message-ID: <82a5d4b9-9327-4f0e-86ec-8861e1de57f2@lunn.ch>
+References: <20251030091538.581541-1-wei.fang@nxp.com>
+ <f6db67ec-9eb0-4730-af18-31214afe2e09@lunn.ch>
+ <PAXPR04MB8510744BB954BB245FA7A4A088F8A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <fef3dbdc-50e4-4388-a32e-b5ae9aaaed6d@lunn.ch>
+ <PAXPR04MB85101E443E1489D07927BCFE88F9A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <157cf60d-5fc2-4da0-be71-3c495e018c3d@lunn.ch>
+ <PAXPR04MB8510D431ACAF445F8E516A0288C7A@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aP/F3joJ0RnL0G1z@lizhi-Precision-Tower-5810>
+In-Reply-To: <PAXPR04MB8510D431ACAF445F8E516A0288C7A@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-On Mon, Oct 27, 2025 at 03:19:58PM -0400, Frank Li wrote:
-> On Mon, Oct 27, 2025 at 12:04:38AM +0200, Laurent Pinchart wrote:
-> > On Fri, Oct 24, 2025 at 09:34:14AM -0400, Frank Li wrote:
-> > > On Fri, Oct 24, 2025 at 05:46:52PM +0800, Guoniu Zhou wrote:
-> > > > From: Guoniu Zhou <guoniu.zhou@nxp.com>
-> > > >
-> > > > The ISI module on i.MX95 supports up to eight channels and four link
-> > > > sources to obtain the image data for processing in its pipelines. It
-> > > > can process up to eight image sources at the same time.
-> > > >
-> > > > Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-> > > > ---
-> > > >  .../devicetree/bindings/media/nxp,imx8-isi.yaml    | 26 +++++++++++++++++++++-
-> > > >  1 file changed, 25 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
-> > > > index f43b91984f0152fbbcf80db3b3bbad7e8ad6c11e..eaab98ecf343a2cd3620f7469c016c3955d37406 100644
-> > > > --- a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
-> > > > +++ b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
-> > > > @@ -23,6 +23,7 @@ properties:
-> > > >        - fsl,imx8mp-isi
-> > > >        - fsl,imx8ulp-isi
-> > > >        - fsl,imx93-isi
-> > > > +      - fsl,imx95-isi
-> > > >
-> > > >    reg:
-> > > >      maxItems: 1
-> > > > @@ -49,7 +50,7 @@ properties:
-> > > >    interrupts:
-> > > >      description: Processing pipeline interrupts, one per pipeline
-> > > >      minItems: 1
-> > > > -    maxItems: 2
-> > > > +    maxItems: 8
-> > > >
-> > > >    power-domains:
-> > > >      maxItems: 1
-> > > > @@ -109,6 +110,29 @@ allOf:
-> > > >              - port@0
-> > > >              - port@1
-> > > >
-> > > > +  - if:
-> > > > +      properties:
-> > > > +        compatible:
-> > > > +          contains:
-> > > > +            const: fsl,imx95-isi
-> > > > +    then:
-> > > > +      properties:
-> > > > +        interrupts:
-> > > > +          maxItems: 8
-> > >
-> > > should minItems: 8 because you already limit maxItems at top;
-> >
-> > As far as I understand, when no "items" are specified, minItems defaults
-> > to 1, and maxItems defaults to minItems (if specified) or 0 (if minItems
-> > is not specified). This is implemented in dtschema/lib.py of
-> > https://github.com/devicetree-org/dt-schema.git.
-> >
-> > Then, in dtschema/fixups.py, if only one of minItems or maxItems is
-> > specified, the other one is set to the same value. I believe relying on
-> > this is frowned upon by the DT maintainers.
-> >
-> > We could specify minItems only here, as the top-level constraint will
-> > ensure we don't go over 8. That's not very future-proof though, so I
-> > think specifying both minItems and maxItems would be best. Confirmation
-> > from a DT maintainer would be appreciated.
+> > So you have up to 32 virtual MDIO busses stacked on top of one
 > 
-> I pretty sure I am correct. please below thread, I met many similar cases
-> before.
-> https://lore.kernel.org/imx/72c29785-eb7a-4cc8-a74c-3aad50129a23@kernel.org/
+> Theoretically, there are up to 33 virtual MDIO buses, 32 port MDIO +
+> 1 'EMDIO function'. The EMDIO function can access all the PHYs on
+> the physical MDIO bus.
 
-I discussed this with Krzysztof on IRC last week. He said that in
-conditional statements, both minItems and maxItems should be set, except
-when one of them is a border constraint (being the same as the top-level
-constraint). In that case it can be omitted.
+The EMDIO function sound dangerous. All the locking and PHY drivers
+assume they have exclusive access to a devices on the bus. Bad things
+will happen if they don't. And given how infrequently MDIO is
+typically used, such bugs are going to be hard to find.
 
-So in this particular case you're right, we should specify minItems
-here, not maxItems.
+You might want to make the 32 port MDIOs and the EMDIO mutually
+exclusive, so you can eliminate those potential bugs.
 
-> > The fsl,imx8mp-isi block above should then be fixed. It currently only
-> > has maxItems set, minItems should be set to 2 as well.
-
-The fsl,imx8mp-isi conditional block should specify both minItems and
-maxItems, and set both to 2.
-
-> >
-> > > > +        ports:
-> > > > +          properties:
-> > > > +            port@0:
-> > > > +              description: Pixel Link Slave 0
-> > > > +            port@1:
-> > > > +              description: Pixel Link Slave 1
-> > > > +            port@2:
-> > > > +              description: MIPI CSI-2 RX 0
-> > > > +            port@3:
-> > > > +              description: MIPI CSI-2 RX 1
-> > > > +          required:
-> > > > +            - port@2
-> > > > +            - port@3
-> > > > +
-> > >
-> > >      else
-> > >        properties:
-> > >          interrupts:
-> > >            maxItem: 2
-> > >
-> > > to keep the same restriction for existed compatible string.
-> >
-> > We already specify the number of interrupts in two separate conditional
-> > blocks above, with any else statement (for all but fsl,imx8mp-isi first,
-> > and then for fsl,imx8mp-isi). Both specify maxItems, so I think we're
-> > fine.
-> >
-> > > >  additionalProperties: false
-> > > >
-> > > >  examples:
-
--- 
-Regards,
-
-Laurent Pinchart
+	   Andrew
