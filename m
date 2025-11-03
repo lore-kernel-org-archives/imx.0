@@ -1,193 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996B6B663;
-	Mon,  3 Nov 2025 03:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4644BEACD
+	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 03:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762139760; cv=none; b=Et38ailS5wtYFLWOFvAMM46SWfsFRBgNhrx2VgskbamUKMQNJ2RKvLXJG1cZEg5AI3Fjxf+ehLLGO+wnZr4O/3ptfJQhcXHV1Xwa6x6mAnwmrGzA1bIdYRQHmytfLIKj7702xz8uHaNd0T3WlMBdpK9O42Fy3QjLznHQLanITQY=
+	t=1762139960; cv=none; b=ARhhDSjGg3WGsc9sZHyJFLJOKvGa7pdGpY1u6IAEQEzuGlpFL7dL4bTPq2qFwPgNIKXp+SMSFsZ4Y1Wn06rVCO6/mvONMoELILoJ+4KPv4AaODk/JCIQA3iCbZZQRdeVUtSTUJ/bN+oFGYenCAmLQjeH41bgRXZQWkEmcXaoaiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762139760; c=relaxed/simple;
-	bh=PJx0HWoEEcs+Uc8d495i6e3iUYjf9DGJNO+LHpcf9wU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OURZ06b4z6beAm94h/kMdVHCsiOT8dAIs8GFTNr7F7xrii9cqUxHxwSGI2/oaK+gP+6UsSB+RLUIm2SlpP6Lk/1A+C8Vp8PL48xjxMaAtbeo9c6gqm5Mff48XR82JlKsnAOaLpCOp7w4SXTcleYfY8KLZsY5eGsQEK7uJdgq+BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85D8C4CEE7;
-	Mon,  3 Nov 2025 03:15:55 +0000 (UTC)
-Message-ID: <7a495800-a639-4356-bc23-1134280c350c@linux-m68k.org>
-Date: Mon, 3 Nov 2025 13:15:53 +1000
+	s=arc-20240116; t=1762139960; c=relaxed/simple;
+	bh=ziBDk35TYk7YiW6K7GPffNVDP98Fs1iA4htR5FdmfDY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LxBSffZi7TNh3P1H710XlC/ZJq20bx9DpKjW0oLLfaZwGf5EH3aCP7qmbIdRoGNZU7go18t+qwYmXFYxXCmw+P/ykmAUeNlFFG0IrANxo+ZP6/7na9bcCwKDwL3bRp+an3eNpT39YOTx0Lx3SdhcfCoHC7g6T2C6L/Dym8rj67w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dSIubuUi; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dSIubuUi"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-89f07fee490so544414685a.0
+        for <imx@lists.linux.dev>; Sun, 02 Nov 2025 19:19:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762139958; x=1762744758; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QiKTLSU3N8p12FQc+H8NuC8MRpkLZYq4zZdU+gN4fiI=;
+        b=dSIubuUiQRXYY3CuJbtcHiP/6DyG30bj7MtycHDFiV7jmfBERxUfOH+D3FK/oZH+3g
+         XuBhUbwPcexmOC8i8rY7SUVWBb7oJT7aYOFmM1YHi96HqHy5JolCM91zJ+49T1UDJka8
+         9nyp9VIRarpMoVvN/7ZOId6wAhhRr7PvOzr0jUvbt2OJ7ML9wOBJ/d12uC2bA8Xl8Q/6
+         gUvY3ReViHDBKQIrLcN6exMnDmBCKuMholpFQaTpQQRKrsSoweeLVGfIK+3KJroroz/f
+         ULh4brfORWNu6fMiK6aSJO/Gt5ot1NwuQ/duWtbasnZ1RlWlOEwuKPEaPYgs3XQ4GpKb
+         lGPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762139958; x=1762744758;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QiKTLSU3N8p12FQc+H8NuC8MRpkLZYq4zZdU+gN4fiI=;
+        b=C4ReF6SIYHZBHbQsMYw2OABl3t79Pm0/hFQNKB1QxW0LNjPeSTZWq3c8P/MrKlJZaM
+         PUQ+IklvPuSpyA7oyIYgQlsBgOUQ4imLWciCzCljTXNT/CDzkBGuWA50E9oRNzYuhHKZ
+         6xrq6XrxN6UR04emZHjqeB2zxi7JrTI2tFKILH5Wf7iUXRgrtHwFd2xekHx2KUVETHBM
+         k4+QCAgWyQDFRAk8JPkVBSBd61RXgyWG3pwy9fre2PJdiInPnjO73RUdGORuJxB+5uBz
+         n3YTGmd5Jyz4ARGSuRJk/7e7QnE83R3H5Wobw4sTH+6yWByQ4eGFPnPUsjRr3u/jlVXf
+         tqaA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSnamILMXeiU3T0DbxkdsKRYCubtBLH829KTt53Xov3A2FcZTpqoS4BMfIuB3HW3lTdd0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyXi9GM4NpGHOB046SYz6Tf+VzyD44jXZUZ1Nx8t3KMarPP2AZf
+	LBtzWj099IF0qcWHtEcFzC4bJvRlWarpKu9DhtjQeNvzMdkuo3YWfjF5
+X-Gm-Gg: ASbGncumLhdl/il+qiWDX/pgNG5YBh4c10D6gFJTgsHWwP89iilDjRJOxeoxEF8fxQ6
+	2u93U6eZ9Hv6D0dijwObv35YyNujIvLSrRYhROCm9smCoB037lY2Ehk3v4euJMhQNWRtsSRUZvd
+	PCkVeODVtiJjgtunOvTVDpH8/e4KES9s4As/WD4TqgHC89yn6jrfQ0m7zS6hgkqzl4ILHghcsfS
+	/L7NY5RTRZmSv3FGdiKAs5uA8oO2cVC7V72dPq8MxJZnHyi/PxOBNIwOKt67pZLO2jZIUKA0FvK
+	rvXh5eG72ftRNvC4MTNOtxwfuZUXBPVGprEfOs0yakntDg9/1Cfw1G+2huB4qvbj2KhSFu9sxot
+	wbSwtzx25slewXGMU0sSzqbSBJ4EzGzHBfbz/hkWPuEy/RuGD3yqXmRAqTq5xYIxJ1PiUQCqEBm
+	7HtgFu2w==
+X-Google-Smtp-Source: AGHT+IE4NH3mqhfFMGevhbXMAQxKll+ttwxjlpittKvsFjn+CaMQpOl2cv8RmzF3ghkopKQb71oVug==
+X-Received: by 2002:a05:620a:370f:b0:892:636a:5675 with SMTP id af79cd13be357-8ab9ade53ffmr1387887285a.58.1762139958109;
+        Sun, 02 Nov 2025 19:19:18 -0800 (PST)
+Received: from [10.73.222.215] ([142.182.130.176])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ac03f50616sm586898685a.58.2025.11.02.19.19.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Nov 2025 19:19:17 -0800 (PST)
+From: Samuel Kayode <samkay014@gmail.com>
+Date: Sun, 02 Nov 2025 22:19:08 -0500
+Subject: [PATCH v3] MAINTAINERS: update PF1550 driver email address
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/6] net: fec: register a fixed phy using
- fixed_phy_register_100fd if needed
-To: Heiner Kallweit <hkallweit1@gmail.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Hauke Mehrtens
- <hauke@hauke-m.de>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Michael Chan <michael.chan@broadcom.com>, Wei Fang <wei.fang@nxp.com>,
- Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
-Cc: linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- imx@lists.linux.dev, "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <0285fcb0-0fb5-4f6f-823c-7b6e85e28ba3@gmail.com>
- <adf4dc5c-5fa3-4ae6-a75c-a73954dede73@gmail.com>
-Content-Language: en-US
-From: Greg Ungerer <gerg@linux-m68k.org>
-In-Reply-To: <adf4dc5c-5fa3-4ae6-a75c-a73954dede73@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20251102-update-email-v3-1-8e2c4a4507f4@gmail.com>
+X-B4-Tracking: v=1; b=H4sIACsfCGkC/3WPQW7CMBBFrxJ5XVeecWwMq96j6mJij8FSQ6gdI
+ hDi7p3AolWlLv8fvac/N9W4Fm5q191U5aW0Mh0l2JdOxQMd96xLkqzQoAODW30+JZpZ80jlU+d
+ AQ48JyPFWCXKqnMvloXv/kHwobZ7q9WFfYG3/ES2gQWcbcu+IInJ426/9a5xGtYoW/IHBwB8YB
+ YaNS4jAsTf5N3x/zqr8dZbn5uc2NVBjLfexzLuONsmjc2SGbA1Gg4GiD8b53ltLXga57AGSyO7
+ f9chebTEBAAA=
+X-Change-ID: 20251029-update-email-f8ab42d1a5e9
+To: Lee Jones <lee@kernel.org>
+Cc: Lukas Bulwahn <lbulwahn@redhat.com>, 
+ Jerome Oufella <jerome.oufella@savoirfairelinux.com>, 
+ Samuel Kayode <samkay014@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Sean Nyekjaer <sean@geanix.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762139957; l=1937;
+ i=samkay014@gmail.com; s=20251028; h=from:subject:message-id;
+ bh=ziBDk35TYk7YiW6K7GPffNVDP98Fs1iA4htR5FdmfDY=;
+ b=ziXHDkBCkPPalk7Y9MwodVSJGPE4Eb2svQ5s3l1Q1PdMrCt3OHBJY5qgsSHpibllG+gdqqxfr
+ mgZ2ua0CkxjCFisZ5ZJczWkKvmrDNjmZgKgh+KP6FptmivPHA4+Zeaa
+X-Developer-Key: i=samkay014@gmail.com; a=ed25519;
+ pk=favoK08ilD1j62PrGf+RHihBzbqJGWMC6f2nszR5UIc=
 
-Hi Heiner,
+Update Sam's email address for the PF1550 PMIC driver.
 
-On 31/10/25 07:42, Heiner Kallweit wrote:
-> In case of coldfire/5272 a fixed phy is used, which so far is created
-> by platform code, using fixed_phy_add(). This function has a number of
-> problems, therefore create a potentially needed fixed phy here, using
-> fixed_phy_register_100fd.
-> 
-> Note 1: This includes a small functional change, as coldfire/5272
-> created a fixed phy in half-duplex mode. Likely this was by mistake,
-> because the fec MAC is 100FD-capable, and connection is to a switch.
-> 
-> Note 2: Usage of phy_find_next() makes use of the fact that dev_id can
-> only be 0 or 1.
-> 
-> Due to lack of hardware, this is compile-tested only.
+Signed-off-by: Samuel Kayode <samkay014@gmail.com>
+---
+Changes in v3:
+- update .mailmap
+- Link to v2: https://lore.kernel.org/r/20251101-update-email-v2-1-175d221ec40f@gmail.com
 
-I did not get net-next and try this all out, but it doesn't compile when
-applied to 6.18-rc4.
+Changes in v2:
+- rebase on ib-mfd-input-power-regulator-v6.19
+- Link to v1: https://lore.kernel.org/r/20251029-update-email-v1-1-f38f45aac2e8@gmail.com
+---
+I left Savoir-faire Linux but I do intend to continue maintaining this
+driver.
+---
+ .mailmap    | 1 +
+ MAINTAINERS | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/.mailmap b/.mailmap
+index d2edd256b19d6d68e2f4268b098b1845b9bddf08..857054460bd9f971421082b958e207ebdedf63cd 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -686,6 +686,7 @@ Sachin P Sant <ssant@in.ibm.com>
+ Sai Prakash Ranjan <quic_saipraka@quicinc.com> <saiprakash.ranjan@codeaurora.org>
+ Sakari Ailus <sakari.ailus@linux.intel.com> <sakari.ailus@iki.fi>
+ Sam Ravnborg <sam@mars.ravnborg.org>
++Samuel Kayode <samkay014@gmail.com> <samuel.kayode@savoirfairelinux.com>
+ Sankeerth Billakanti <quic_sbillaka@quicinc.com> <sbillaka@codeaurora.org>
+ Santosh Shilimkar <santosh.shilimkar@oracle.org>
+ Santosh Shilimkar <ssantosh@kernel.org>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2a9330f05e2fca6b8661bb698dea17dcfd7fc254..c44d2cf7e7b85104a6eb09142da8ef3d9fa7e55d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18608,7 +18608,7 @@ F:	Documentation/devicetree/bindings/regulator/nxp,pf5300.yaml
+ F:	drivers/regulator/pf530x-regulator.c
+ 
+ NXP PF1550 PMIC MFD DRIVER
+-M:	Samuel Kayode <samuel.kayode@savoirfairelinux.com>
++M:	Samuel Kayode <samkay014@gmail.com>
+ L:	imx@lists.linux.dev
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/mfd/nxp,pf1550.yaml
 
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> ---
->   drivers/net/ethernet/freescale/Kconfig    |  1 +
->   drivers/net/ethernet/freescale/fec_main.c | 52 +++++++++++------------
->   2 files changed, 27 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/Kconfig b/drivers/net/ethernet/freescale/Kconfig
-> index bbef47c34..e2a591cf9 100644
-> --- a/drivers/net/ethernet/freescale/Kconfig
-> +++ b/drivers/net/ethernet/freescale/Kconfig
-> @@ -28,6 +28,7 @@ config FEC
->   	depends on PTP_1588_CLOCK_OPTIONAL
->   	select CRC32
->   	select PHYLIB
-> +	select FIXED_PHY if M5272
+---
+base-commit: a7d6255a0bf302c028ac680564633a6aac5f611d
+change-id: 20251029-update-email-f8ab42d1a5e9
 
-Does it make sense to limit this to 5272 only here?
-I get that this most closely keeps functionality same as before.
-
-Regards
-Greg
-
-
-
->   	select PAGE_POOL
->   	imply PAGE_POOL_STATS
->   	imply NET_SELFTESTS
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index c60ed8bac..0b71e4c15 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -52,6 +52,7 @@
->   #include <linux/of_net.h>
->   #include <linux/phy.h>
->   #include <linux/pinctrl/consumer.h>
-> +#include <linux/phy_fixed.h>
->   #include <linux/platform_device.h>
->   #include <linux/pm_runtime.h>
->   #include <linux/prefetch.h>
-> @@ -2476,11 +2477,8 @@ static int fec_enet_parse_rgmii_delay(struct fec_enet_private *fep,
->   static int fec_enet_mii_probe(struct net_device *ndev)
->   {
->   	struct fec_enet_private *fep = netdev_priv(ndev);
-> -	struct phy_device *phy_dev = NULL;
-> -	char mdio_bus_id[MII_BUS_ID_SIZE];
-> -	char phy_name[MII_BUS_ID_SIZE + 3];
-> -	int phy_id;
-> -	int dev_id = fep->dev_id;
-> +	struct phy_device *phy_dev;
-> +	int ret;
->   
->   	if (fep->phy_node) {
->   		phy_dev = of_phy_connect(ndev, fep->phy_node,
-> @@ -2492,30 +2490,28 @@ static int fec_enet_mii_probe(struct net_device *ndev)
->   		}
->   	} else {
->   		/* check for attached phy */
-> -		for (phy_id = 0; (phy_id < PHY_MAX_ADDR); phy_id++) {
-> -			if (!mdiobus_is_registered_device(fep->mii_bus, phy_id))
-> -				continue;
-> -			if (dev_id--)
-> -				continue;
-> -			strscpy(mdio_bus_id, fep->mii_bus->id, MII_BUS_ID_SIZE);
-> -			break;
-> -		}
-> +		phy_dev = phy_find_first(fep->mii_bus);
-> +		if (fep->dev_id && phy_dev)
-> +			phy_dev = phy_find_next(fep->mii_bus, phy_dev);
->   
-> -		if (phy_id >= PHY_MAX_ADDR) {
-> +		if (!phy_dev) {
->   			netdev_info(ndev, "no PHY, assuming direct connection to switch\n");
-> -			strscpy(mdio_bus_id, "fixed-0", MII_BUS_ID_SIZE);
-> -			phy_id = 0;
-> +			phy_dev = fixed_phy_register_100fd();
-> +			if (IS_ERR(phy_dev)) {
-> +				netdev_err(ndev, "could not register fixed PHY\n");
-> +				return PTR_ERR(phy_dev);
-> +			}
->   		}
->   
-> -		snprintf(phy_name, sizeof(phy_name),
-> -			 PHY_ID_FMT, mdio_bus_id, phy_id);
-> -		phy_dev = phy_connect(ndev, phy_name, &fec_enet_adjust_link,
-> -				      fep->phy_interface);
-> -	}
-> +		ret = phy_connect_direct(ndev, phy_dev, &fec_enet_adjust_link,
-> +					 fep->phy_interface);
-> +		if (ret) {
-> +			if (phy_is_pseudo_fixed_link(phy_dev))
-> +				fixed_phy_unregister(phy_dev);
-> +			netdev_err(ndev, "could not attach to PHY\n");
-> +			return ret;
-> +		}
->   
-> -	if (IS_ERR(phy_dev)) {
-> -		netdev_err(ndev, "could not attach to PHY\n");
-> -		return PTR_ERR(phy_dev);
->   	}
->   
->   	/* mask with MAC supported features */
-> @@ -3622,8 +3618,9 @@ static int
->   fec_enet_close(struct net_device *ndev)
->   {
->   	struct fec_enet_private *fep = netdev_priv(ndev);
-> +	struct phy_device *phy_dev = ndev->phydev;
->   
-> -	phy_stop(ndev->phydev);
-> +	phy_stop(phy_dev);
->   
->   	if (netif_device_present(ndev)) {
->   		napi_disable(&fep->napi);
-> @@ -3631,7 +3628,10 @@ fec_enet_close(struct net_device *ndev)
->   		fec_stop(ndev);
->   	}
->   
-> -	phy_disconnect(ndev->phydev);
-> +	phy_disconnect(phy_dev);
-> +
-> +	if (!fep->phy_node && phy_is_pseudo_fixed_link(phy_dev))
-> +		fixed_phy_unregister(phy_dev);
->   
->   	if (fep->quirks & FEC_QUIRK_ERR006687)
->   		imx6q_cpuidle_fec_irqs_unused();
+Best regards,
+-- 
+Samuel Kayode <samkay014@gmail.com>
 
