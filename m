@@ -1,147 +1,180 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29750303C8E
-	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 11:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9323530C35D
+	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 12:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762170667; cv=none; b=EkjqhDDBMbuLwUofDbJzS3HlXcS1/bFJ46wErbckwyQ8SjbWWW0DxTS91sxnBxx1uZeDJLw8Skp6JhiWTt543RNkmOcv5+SfPDQvW73eSnimJF+/VJyjhwpyDYZpgwgLVhc8ZF6+c4rtTrKq2O11Zvhc9QVqM97lO9eKb1rW/+I=
+	t=1762172617; cv=none; b=RexqJGkzFRigtmDdXRNunGMIg1BLlwy3a+NJ7BsFbH9+/6IB1J5x++VH5w3wdLn1Vbp04sPSsjuL9zwHkESf7zNIv01r0HvvrK45+ttp2FdqCIOxf5ko6Q0/lGOpP7stc1BnIRQ617GsQouQfku77IbCVlOed/8mjVPK7L1umbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762170667; c=relaxed/simple;
-	bh=Vibd5ps+PSRFnQF3jIOYvV/vKKoP4zJIccCzF29G8rg=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=r9cySHnus76V/ERvxWiTe1EKPQ4zFKdQFZhF3fIhe2usu342eRJ+Xx1+pPO+hVHyQNIeuNhYIpqsuIJGplS12obz2NpJ21cfm5y1mmgZgMiYzuCKW0MHu4dawLjqTzztTjDCVTAAH4ZvEgAorHmmpKY6Ecs9IGFL7ki9kohfiPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=eDlTZlto; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1762172617; c=relaxed/simple;
+	bh=HEShMzZKAsuD2pJQ1j+0chm5T3Nli1m/xpt2pjx+ejY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N6+nXcJ5gTe+r2CLoiRbZwtXGNvAQQlPs5JVoZxLwlC/vFebG52W903G8SAkWbO6u/En+mKHNPdy8roEKogOYL916U5wUW4n+qarbUCRqmmlzH0jzL0KHwfe8+GD5UFKnh7zQVuPtQSH0oA3p9t7CpMUsDxP9FWyjArEscZAozQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=APEaBeGR; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="eDlTZlto"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+x67xrOfs+NtjduqtRJxZD8HBELV2D7qvud2IndiqU4=; b=eDlTZltoetN3Hk1dXyigbldu0u
-	gLYRDBWpaj8VhWcsanGsGMOEUnFEmvC66Nj4x1QtyF9BH1Qc/u73b7jubrIw5ZWPWmoKzk3GSGmtL
-	xJ9VYkHMSdMM42Dt1mcLxJSlD11vWe+IaORHyBYfRrUznWsbnT5Hyy7U7dB07Z7+qFT+pT95V8b0G
-	XWTfellsJlbbkChSQwSejkGFdESfUc9XW1T0/bSPpZgSgo6LMOMRm7sDvUaOFtMzQNbTnJWGkGbZz
-	FjQGf64JAQ9Xj87x8/+0Fzjt3KRvSmN7HSRkQXrWz0SxaznipsaFpnMXTXOx7CdEYBEMhIlYm9jnl
-	sc2ueNDQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:35376 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vFt5G-000000000iL-006H;
-	Mon, 03 Nov 2025 11:50:50 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vFt5C-0000000ChpR-2kAB;
-	Mon, 03 Nov 2025 11:50:46 +0000
-In-Reply-To: <aQiWzyrXU_2hGJ4j@shell.armlinux.org.uk>
-References: <aQiWzyrXU_2hGJ4j@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	s32@nxp.com,
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="APEaBeGR"
+Received: from pendragon.ideasonboard.com (82-203-160-149.bb.dnainternet.fi [82.203.160.149])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id E5E7F99F;
+	Mon,  3 Nov 2025 13:21:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1762172501;
+	bh=HEShMzZKAsuD2pJQ1j+0chm5T3Nli1m/xpt2pjx+ejY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=APEaBeGRxHqPYPNuEVrAcHNep/jjdgFLhbG9UWla37ARJU0RUb2V20wikG9Y5WtAc
+	 Jb4OimaCU+KfrW35gTqmK6nrnaMqy7Fc2sdC9dX8JXa9q5w610E5Tw1iy8FiYPCvLl
+	 5s+Pl1rwsehi3cDP7nFSXLUHRSe9QB8r3+d+yUkc=
+Date: Mon, 3 Nov 2025 14:23:20 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH net-next 11/11] net: stmmac: imx: use ->set_phy_intf_sel()
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Guoniu Zhou <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH 1/3] media: dt-bindings: nxp,imx8-isi: Add i.MX95 ISI
+ compatible string
+Message-ID: <20251103122320.GT27255@pendragon.ideasonboard.com>
+References: <20251024-isi_imx95-v1-0-3ad1af7c3d61@nxp.com>
+ <20251024-isi_imx95-v1-1-3ad1af7c3d61@nxp.com>
+ <aPuAVqVUHjrPCbIH@lizhi-Precision-Tower-5810>
+ <20251026220438.GG13023@pendragon.ideasonboard.com>
+ <aP/F3joJ0RnL0G1z@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vFt5C-0000000ChpR-2kAB@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 03 Nov 2025 11:50:46 +0000
+In-Reply-To: <aP/F3joJ0RnL0G1z@lizhi-Precision-Tower-5810>
 
-Rather than placing the phy_intf_sel() setup in the ->init() method,
-move it to the new ->set_phy_intf_sel() method.
+On Mon, Oct 27, 2025 at 03:19:58PM -0400, Frank Li wrote:
+> On Mon, Oct 27, 2025 at 12:04:38AM +0200, Laurent Pinchart wrote:
+> > On Fri, Oct 24, 2025 at 09:34:14AM -0400, Frank Li wrote:
+> > > On Fri, Oct 24, 2025 at 05:46:52PM +0800, Guoniu Zhou wrote:
+> > > > From: Guoniu Zhou <guoniu.zhou@nxp.com>
+> > > >
+> > > > The ISI module on i.MX95 supports up to eight channels and four link
+> > > > sources to obtain the image data for processing in its pipelines. It
+> > > > can process up to eight image sources at the same time.
+> > > >
+> > > > Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> > > > ---
+> > > >  .../devicetree/bindings/media/nxp,imx8-isi.yaml    | 26 +++++++++++++++++++++-
+> > > >  1 file changed, 25 insertions(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> > > > index f43b91984f0152fbbcf80db3b3bbad7e8ad6c11e..eaab98ecf343a2cd3620f7469c016c3955d37406 100644
+> > > > --- a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> > > > +++ b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> > > > @@ -23,6 +23,7 @@ properties:
+> > > >        - fsl,imx8mp-isi
+> > > >        - fsl,imx8ulp-isi
+> > > >        - fsl,imx93-isi
+> > > > +      - fsl,imx95-isi
+> > > >
+> > > >    reg:
+> > > >      maxItems: 1
+> > > > @@ -49,7 +50,7 @@ properties:
+> > > >    interrupts:
+> > > >      description: Processing pipeline interrupts, one per pipeline
+> > > >      minItems: 1
+> > > > -    maxItems: 2
+> > > > +    maxItems: 8
+> > > >
+> > > >    power-domains:
+> > > >      maxItems: 1
+> > > > @@ -109,6 +110,29 @@ allOf:
+> > > >              - port@0
+> > > >              - port@1
+> > > >
+> > > > +  - if:
+> > > > +      properties:
+> > > > +        compatible:
+> > > > +          contains:
+> > > > +            const: fsl,imx95-isi
+> > > > +    then:
+> > > > +      properties:
+> > > > +        interrupts:
+> > > > +          maxItems: 8
+> > >
+> > > should minItems: 8 because you already limit maxItems at top;
+> >
+> > As far as I understand, when no "items" are specified, minItems defaults
+> > to 1, and maxItems defaults to minItems (if specified) or 0 (if minItems
+> > is not specified). This is implemented in dtschema/lib.py of
+> > https://github.com/devicetree-org/dt-schema.git.
+> >
+> > Then, in dtschema/fixups.py, if only one of minItems or maxItems is
+> > specified, the other one is set to the same value. I believe relying on
+> > this is frowned upon by the DT maintainers.
+> >
+> > We could specify minItems only here, as the top-level constraint will
+> > ensure we don't go over 8. That's not very future-proof though, so I
+> > think specifying both minItems and maxItems would be best. Confirmation
+> > from a DT maintainer would be appreciated.
+> 
+> I pretty sure I am correct. please below thread, I met many similar cases
+> before.
+> https://lore.kernel.org/imx/72c29785-eb7a-4cc8-a74c-3aad50129a23@kernel.org/
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 38 +++++--------------
- 1 file changed, 10 insertions(+), 28 deletions(-)
+I discussed this with Krzysztof on IRC last week. He said that in
+conditional statements, both minItems and maxItems should be set, except
+when one of them is a border constraint (being the same as the top-level
+constraint). In that case it can be omitted.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index ae1b73e1bcb2..db288fbd5a4d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -134,36 +134,19 @@ static int imx_dwmac_clks_config(void *priv, bool enabled)
- 	return ret;
- }
- 
--static int imx_dwmac_init(struct platform_device *pdev, void *priv)
-+static int imx_set_phy_intf_sel(void *bsp_priv, u8 phy_intf_sel)
- {
--	struct imx_priv_data *dwmac = priv;
--	phy_interface_t interface;
--	int phy_intf_sel, ret;
--
--	if (dwmac->ops->set_intf_mode) {
--		interface = dwmac->plat_dat->phy_interface;
--
--		phy_intf_sel = stmmac_get_phy_intf_sel(interface);
--		if (phy_intf_sel != PHY_INTF_SEL_GMII_MII &&
--		    phy_intf_sel != PHY_INTF_SEL_RGMII &&
--		    phy_intf_sel != PHY_INTF_SEL_RMII) {
--			dev_dbg(dwmac->dev,
--				"imx dwmac doesn't support %s interface\n",
--				phy_modes(interface));
--			return phy_intf_sel < 0 ? phy_intf_sel : -EINVAL;
--		}
-+	struct imx_priv_data *dwmac = bsp_priv;
- 
--		ret = dwmac->ops->set_intf_mode(dwmac, phy_intf_sel);
--		if (ret)
--			return ret;
--	}
-+	if (!dwmac->ops->set_intf_mode)
-+		return 0;
- 
--	return 0;
--}
-+	if (phy_intf_sel != PHY_INTF_SEL_GMII_MII &&
-+	    phy_intf_sel != PHY_INTF_SEL_RGMII &&
-+	    phy_intf_sel != PHY_INTF_SEL_RMII)
-+		return -EINVAL;
- 
--static void imx_dwmac_exit(struct platform_device *pdev, void *priv)
--{
--	/* nothing to do now */
-+	return dwmac->ops->set_intf_mode(dwmac, phy_intf_sel);
- }
- 
- static int imx_dwmac_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
-@@ -342,8 +325,7 @@ static int imx_dwmac_probe(struct platform_device *pdev)
- 		plat_dat->tx_queues_cfg[i].tbs_en = 1;
- 
- 	plat_dat->host_dma_width = dwmac->ops->addr_width;
--	plat_dat->init = imx_dwmac_init;
--	plat_dat->exit = imx_dwmac_exit;
-+	plat_dat->set_phy_intf_sel = imx_set_phy_intf_sel;
- 	plat_dat->clks_config = imx_dwmac_clks_config;
- 	plat_dat->bsp_priv = dwmac;
- 	dwmac->plat_dat = plat_dat;
+So in this particular case you're right, we should specify minItems
+here, not maxItems.
+
+> > The fsl,imx8mp-isi block above should then be fixed. It currently only
+> > has maxItems set, minItems should be set to 2 as well.
+
+The fsl,imx8mp-isi conditional block should specify both minItems and
+maxItems, and set both to 2.
+
+> >
+> > > > +        ports:
+> > > > +          properties:
+> > > > +            port@0:
+> > > > +              description: Pixel Link Slave 0
+> > > > +            port@1:
+> > > > +              description: Pixel Link Slave 1
+> > > > +            port@2:
+> > > > +              description: MIPI CSI-2 RX 0
+> > > > +            port@3:
+> > > > +              description: MIPI CSI-2 RX 1
+> > > > +          required:
+> > > > +            - port@2
+> > > > +            - port@3
+> > > > +
+> > >
+> > >      else
+> > >        properties:
+> > >          interrupts:
+> > >            maxItem: 2
+> > >
+> > > to keep the same restriction for existed compatible string.
+> >
+> > We already specify the number of interrupts in two separate conditional
+> > blocks above, with any else statement (for all but fsl,imx8mp-isi first,
+> > and then for fsl,imx8mp-isi). Both specify maxItems, so I think we're
+> > fine.
+> >
+> > > >  additionalProperties: false
+> > > >
+> > > >  examples:
+
 -- 
-2.47.3
+Regards,
 
+Laurent Pinchart
