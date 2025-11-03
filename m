@@ -1,140 +1,85 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAEE236A8B
-	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 01:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765F91D7995
+	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 02:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762221041; cv=none; b=Zcw96Nyj9oUAgSCC9NPRLN/ypxW9Ppj17+07WrbrDbd5ZJP+ilsf5o9Y8DQg3zSqhfzLnZPCfp2a/cnDdfDm7N+nquRrMUYWwuG7Xy3vZGXcp6AZPnLTnKjjZTXaMCqrhhmf6F1zSbVNhVlgJ8vd6D2mI5/szodFjo8LxhJL7A0=
+	t=1762221902; cv=none; b=TZGcYGTDMVkl0N6epemTQ6R5P0DVQCcDXYetB+EfuqPttcEtMcMO3/9WIiTR6IidfODxzfBQhAI1beeWL12/lfLk6Yy393abLZ/2kzB8Ce0it8iOFvV3GvXgxw+itMyJ4Yv+hDiRNjLoV1K0mozSpqVweZb6M6u7UbwNqxqInjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762221041; c=relaxed/simple;
-	bh=SAgtMFsubG/8VFAlFqC1sgnxtzgYTVufuKhUVFsu2ts=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qILOf6ttUSPtOBBbV29h4qSSj5/vUd7tkUNwuQABBhDzaVypDU5Ts26mr4+qAR2zMpoDb+Ud5RdWMGaaudXowMovJ8cqIKbJxfiVVt57CigWUn1dHa8GYoDRIiLFGqAE9BElB5A1R3oUi4q+AGf98zys1eIp3B29EP3WecjKRZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ukJVPvGh; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Nz0/zpV2; arc=none smtp.client-ip=80.241.56.171
+	s=arc-20240116; t=1762221902; c=relaxed/simple;
+	bh=VQ6ZbWc/+0kA0XArRYwHD1GETvoyhwhdHwWcUTKzdBc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XjgRYlK5J4s7YblYfoAZ7R6OjMAugd1VDRUnPYOOx+H8EnSsudNSQWjYZswfq5aohNS49Ia+9UXQkMusZmasyyAaAVUlTIfbt0zd9SfBAo5RbU3vbePzZ3IEUQhTu96ANdT2RxqsjEMOc8KfEBJo9lJha+x0FXphIerpJpJ2DXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=RtgfVc6B; arc=none smtp.client-ip=80.241.56.161
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ukJVPvGh";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Nz0/zpV2"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="RtgfVc6B"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4d0ry56v23z9srX;
-	Tue,  4 Nov 2025 02:50:37 +0100 (CET)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4d0sGd5r2Xz9th6;
+	Tue,  4 Nov 2025 03:04:57 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1762221038;
+	t=1762221897;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vUDHSpaYhTM0MBeAOADgsVN/8YIxpgXSREgpli9VDxQ=;
-	b=ukJVPvGh+jPAzd2bTJM3eVvURU44gCZP64EThJ2NRe4oMxdWMz2Rbsn/MjNztsTKjVWYEx
-	oDzzNfVo4WxMvt+WUAy35xZT8ABUEAZcdysCVTnZbnHWTgemkbqKtBVgAs33cLBlvyh8B7
-	BLRqHb90xE3HuF0abJZNO8L+ec3n/6P2M1nxzXe/zRW6VgaJLGAHqxQ9e8jb3t8ihvUvym
-	opB5SI4auDxm3szd9iUCYAMZYn9oWYQT41kTYaMxyuzeYM05nplqqsVX85gOA939JUN5IB
-	ZcLHUlv/NM0kQiznvblVcfj6JvUBaHWpKcEXRptPcL/q8YsPzKcDGpufiai8PQ==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b="Nz0/zpV2";
-	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
-From: Marek Vasut <marek.vasut@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1762221036;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vUDHSpaYhTM0MBeAOADgsVN/8YIxpgXSREgpli9VDxQ=;
-	b=Nz0/zpV2VQ8MgfMYtlSwdN3MtmMNXbZWWCs7Na3VxwDqQWNNUzmsvSWzkY0PXgOZElGZKK
-	1eoqvJspPTAUyEzoFv8U3HIzTzo/bKbiBiLIen/eUZ5xNdZ4viALN1Ow9f/jlkkGFkMtKL
-	tYpWtT8E1emmoWDmSSQXYcFMfB/EETCat25k0HKnJYit80h3wwogHn7AbgNOxQDoS5W/AE
-	Ylw0F/K7EoVfg+RlVhBd8wetjya0e4gv25dHH+CWqR8alt2X0gXQadlKTNRR/TTExT85zn
-	DHI8SWyozPIY2azVYU5ZRtgnQ4lE0gVFSCmdRw1anCBde25I5TUZSqWjgMY4vA==
-To: linux-arm-kernel@lists.infradead.org
-Cc: Marek Vasut <marek.vasut@mailbox.org>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	kernel@dh-electronics.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: imx8mp: Add missing LED enumerators for DH electronics i.MX8M Plus DHCOM on PDK2
-Date: Tue,  4 Nov 2025 02:50:13 +0100
-Message-ID: <20251104015031.219863-1-marek.vasut@mailbox.org>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q0yWbu7y1QVa2c8kKeP3bloSf5n0MlRqUOGmDNRFYWs=;
+	b=RtgfVc6BU5L52qXx6mbD7p7VtqF4yj+yLn55bS3cm5xcC4cm9RS19rhx7NeFUYWAsg8KpG
+	E8A+X2LgR4HdJRRXGiyl6zt3aCz38ZsfLE+ssHatAOXcdM7+29FsSUW0WZm/yzWChe+XDi
+	CRF1VpVsx8xqcG7FVeD38C3U9unZ3XbB4ys7Df1kL2e8DEj/nEN2BW+10XY0v4sCkzO+sH
+	gYbSDjqwNPHG0/Xx43THSDWf0dE0uXHBdTBAdxr1q40ImSVqONPKXIiYQ8IjrDq0qdSjnV
+	7CY3eG+avTc+gbbY66ug9hli5gN7Ix4L/Ig5Pc18wCXOfMyYpptResjQWu9RzA==
+Message-ID: <b8f61be8-281a-4057-bb05-c7d106e53f01@mailbox.org>
+Date: Tue, 4 Nov 2025 00:47:58 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: d7f6xkzgu6my1hhenurh89d46ohba76d
-X-MBO-RS-ID: b536646df4ffa1c32ed
-X-Rspamd-Queue-Id: 4d0ry56v23z9srX
+Subject: Re: [PATCH v3 2/2] arm64: dts: imx95: Describe Mali G310 GPU
+To: Rain Yang <jiyu.yang@oss.nxp.com>
+Cc: shawnguo2@yeah.net, airlied@gmail.com, boris.brezillon@collabora.com,
+ conor+dt@kernel.org, devicetree@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, festevam@gmail.com, imx@lists.linux.dev,
+ kernel@pengutronix.de, krzk+dt@kernel.org,
+ linux-arm-kernel@lists.infradead.org, liviu.dudau@arm.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ p.zabel@pengutronix.de, robh@kernel.org, s.hauer@pengutronix.de,
+ shawnguo@kernel.org, simona@ffwll.ch, sre@kernel.org, steven.price@arm.com,
+ tzimmermann@suse.de, xianzhong.li@nxp.com
+References: <20250925203938.169880-1-marek.vasut@mailbox.org>
+ <20250925203938.169880-2-marek.vasut@mailbox.org>
+ <ba95487c-ada7-48a4-90b7-fd99a0278f51@mailbox.org> <aP7DZCMk1pQ7wsFo@dragon>
+ <aQB88c_AEC1RAZtH@oss.nxp.com> <aQCIAfyUC6N5y2fB@dragon>
+ <f9057853-8b43-4ab6-ae65-ee5e4d569c46@mailbox.org>
+ <aQhd0Ri4CviuGMOE@oss.nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <aQhd0Ri4CviuGMOE@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-META: azhnsga89ktmxpihnm4emkymm3cay3uo
+X-MBO-RS-ID: ab159e2ebd1e51d8cf5
 
-The LED enumerators are missing, which prevents the LEDs from being
-accurately told apart by label. Fill in the enumerators the same way
-they are already present on PDK3.
+On 11/3/25 8:46 AM, Rain Yang wrote:
 
-Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
----
-Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: kernel@dh-electronics.com
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
----
- arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+Hello Rain,
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts
-index ebdf13e97b4e2..3d18c964a22cd 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts
-@@ -88,6 +88,7 @@ led-0 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			default-state = "off";
- 			function = LED_FUNCTION_INDICATOR;
-+			function-enumerator = <0>;
- 			gpios = <&gpio5 22 GPIO_ACTIVE_HIGH>; /* GPIO E */
- 			pinctrl-0 = <&pinctrl_dhcom_e>;
- 			pinctrl-names = "default";
-@@ -97,6 +98,7 @@ led-1 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			default-state = "off";
- 			function = LED_FUNCTION_INDICATOR;
-+			function-enumerator = <1>;
- 			gpios = <&gpio5 23 GPIO_ACTIVE_HIGH>; /* GPIO F */
- 			pinctrl-0 = <&pinctrl_dhcom_f>;
- 			pinctrl-names = "default";
-@@ -106,6 +108,7 @@ led-2 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			default-state = "off";
- 			function = LED_FUNCTION_INDICATOR;
-+			function-enumerator = <2>;
- 			gpios = <&gpio1 11 GPIO_ACTIVE_HIGH>; /* GPIO H */
- 			pinctrl-0 = <&pinctrl_dhcom_h>;
- 			pinctrl-names = "default";
-@@ -115,6 +118,7 @@ led-3 {
- 			color = <LED_COLOR_ID_GREEN>;
- 			default-state = "off";
- 			function = LED_FUNCTION_INDICATOR;
-+			function-enumerator = <3>;
- 			gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>; /* GPIO I */
- 			pinctrl-0 = <&pinctrl_dhcom_i>;
- 			pinctrl-names = "default";
+> thanks for your patch to make i.MX95 GPU upstreamed.
+> Maybe I didn't express it clearly in the previous e-mails.
+> the always-on GPUAPB clock must be removed, otherwise, it will result in redundant and unnecessary
+> function call to M33.
+
+DT should describe the hardware fully, that means DT should also 
+describe the clock. Why should this clock description be removed from DT 
+? The SCMI clock call over SMT transport is cheap.
+
 -- 
-2.51.0
-
+Best regards,
+Marek Vasut
